@@ -6,116 +6,107 @@ Licensed under https://github.com/vczh-libraries/License
 
 #include "JsonAst_Traverse.h"
 
-namespace vl
+namespace vl::glr::json::traverse_visitor
 {
-	namespace glr
+	void AstVisitor::Traverse(vl::glr::ParsingToken& token) {}
+	void AstVisitor::Traverse(vl::glr::ParsingAstBase* node) {}
+	void AstVisitor::Traverse(JsonArray* node) {}
+	void AstVisitor::Traverse(JsonLiteral* node) {}
+	void AstVisitor::Traverse(JsonNode* node) {}
+	void AstVisitor::Traverse(JsonNumber* node) {}
+	void AstVisitor::Traverse(JsonObject* node) {}
+	void AstVisitor::Traverse(JsonObjectField* node) {}
+	void AstVisitor::Traverse(JsonString* node) {}
+
+	void AstVisitor::Finishing(vl::glr::ParsingAstBase* node) {}
+	void AstVisitor::Finishing(JsonArray* node) {}
+	void AstVisitor::Finishing(JsonLiteral* node) {}
+	void AstVisitor::Finishing(JsonNode* node) {}
+	void AstVisitor::Finishing(JsonNumber* node) {}
+	void AstVisitor::Finishing(JsonObject* node) {}
+	void AstVisitor::Finishing(JsonObjectField* node) {}
+	void AstVisitor::Finishing(JsonString* node) {}
+
+	void AstVisitor::Visit(JsonLiteral* node)
 	{
-		namespace json
-		{
-			namespace traverse_visitor
-			{
-				void AstVisitor::Traverse(vl::glr::ParsingToken& token) {}
-				void AstVisitor::Traverse(vl::glr::ParsingAstBase* node) {}
-				void AstVisitor::Traverse(JsonArray* node) {}
-				void AstVisitor::Traverse(JsonLiteral* node) {}
-				void AstVisitor::Traverse(JsonNode* node) {}
-				void AstVisitor::Traverse(JsonNumber* node) {}
-				void AstVisitor::Traverse(JsonObject* node) {}
-				void AstVisitor::Traverse(JsonObjectField* node) {}
-				void AstVisitor::Traverse(JsonString* node) {}
-
-				void AstVisitor::Finishing(vl::glr::ParsingAstBase* node) {}
-				void AstVisitor::Finishing(JsonArray* node) {}
-				void AstVisitor::Finishing(JsonLiteral* node) {}
-				void AstVisitor::Finishing(JsonNode* node) {}
-				void AstVisitor::Finishing(JsonNumber* node) {}
-				void AstVisitor::Finishing(JsonObject* node) {}
-				void AstVisitor::Finishing(JsonObjectField* node) {}
-				void AstVisitor::Finishing(JsonString* node) {}
-
-				void AstVisitor::Visit(JsonLiteral* node)
-				{
-					if (!node) return;
-					Traverse(static_cast<vl::glr::ParsingAstBase*>(node));
-					Traverse(static_cast<JsonNode*>(node));
-					Traverse(static_cast<JsonLiteral*>(node));
-					Finishing(static_cast<JsonLiteral*>(node));
-					Finishing(static_cast<JsonNode*>(node));
-					Finishing(static_cast<vl::glr::ParsingAstBase*>(node));
-				}
-
-				void AstVisitor::Visit(JsonString* node)
-				{
-					if (!node) return;
-					Traverse(static_cast<vl::glr::ParsingAstBase*>(node));
-					Traverse(static_cast<JsonNode*>(node));
-					Traverse(static_cast<JsonString*>(node));
-					Traverse(node->content);
-					Finishing(static_cast<JsonString*>(node));
-					Finishing(static_cast<JsonNode*>(node));
-					Finishing(static_cast<vl::glr::ParsingAstBase*>(node));
-				}
-
-				void AstVisitor::Visit(JsonNumber* node)
-				{
-					if (!node) return;
-					Traverse(static_cast<vl::glr::ParsingAstBase*>(node));
-					Traverse(static_cast<JsonNode*>(node));
-					Traverse(static_cast<JsonNumber*>(node));
-					Traverse(node->content);
-					Finishing(static_cast<JsonNumber*>(node));
-					Finishing(static_cast<JsonNode*>(node));
-					Finishing(static_cast<vl::glr::ParsingAstBase*>(node));
-				}
-
-				void AstVisitor::Visit(JsonArray* node)
-				{
-					if (!node) return;
-					Traverse(static_cast<vl::glr::ParsingAstBase*>(node));
-					Traverse(static_cast<JsonNode*>(node));
-					Traverse(static_cast<JsonArray*>(node));
-					for (auto&& listItem : node->items)
-					{
-						InspectInto(listItem.Obj());
-					}
-					Finishing(static_cast<JsonArray*>(node));
-					Finishing(static_cast<JsonNode*>(node));
-					Finishing(static_cast<vl::glr::ParsingAstBase*>(node));
-				}
-
-				void AstVisitor::Visit(JsonObject* node)
-				{
-					if (!node) return;
-					Traverse(static_cast<vl::glr::ParsingAstBase*>(node));
-					Traverse(static_cast<JsonNode*>(node));
-					Traverse(static_cast<JsonObject*>(node));
-					for (auto&& listItem : node->fields)
-					{
-						InspectInto(listItem.Obj());
-					}
-					Finishing(static_cast<JsonObject*>(node));
-					Finishing(static_cast<JsonNode*>(node));
-					Finishing(static_cast<vl::glr::ParsingAstBase*>(node));
-				}
-
-				void AstVisitor::InspectInto(JsonNode* node)
-				{
-					if (!node) return;
-					node->Accept(static_cast<JsonNode::IVisitor*>(this));
-				}
-
-				void AstVisitor::InspectInto(JsonObjectField* node)
-				{
-					if (!node) return;
-					Traverse(static_cast<vl::glr::ParsingAstBase*>(node));
-					Traverse(static_cast<JsonObjectField*>(node));
-					Traverse(node->name);
-					InspectInto(node->value.Obj());
-					Finishing(static_cast<JsonObjectField*>(node));
-					Finishing(static_cast<vl::glr::ParsingAstBase*>(node));
-				}
-
-			}
-		}
+		if (!node) return;
+		Traverse(static_cast<vl::glr::ParsingAstBase*>(node));
+		Traverse(static_cast<JsonNode*>(node));
+		Traverse(static_cast<JsonLiteral*>(node));
+		Finishing(static_cast<JsonLiteral*>(node));
+		Finishing(static_cast<JsonNode*>(node));
+		Finishing(static_cast<vl::glr::ParsingAstBase*>(node));
 	}
+
+	void AstVisitor::Visit(JsonString* node)
+	{
+		if (!node) return;
+		Traverse(static_cast<vl::glr::ParsingAstBase*>(node));
+		Traverse(static_cast<JsonNode*>(node));
+		Traverse(static_cast<JsonString*>(node));
+		Traverse(node->content);
+		Finishing(static_cast<JsonString*>(node));
+		Finishing(static_cast<JsonNode*>(node));
+		Finishing(static_cast<vl::glr::ParsingAstBase*>(node));
+	}
+
+	void AstVisitor::Visit(JsonNumber* node)
+	{
+		if (!node) return;
+		Traverse(static_cast<vl::glr::ParsingAstBase*>(node));
+		Traverse(static_cast<JsonNode*>(node));
+		Traverse(static_cast<JsonNumber*>(node));
+		Traverse(node->content);
+		Finishing(static_cast<JsonNumber*>(node));
+		Finishing(static_cast<JsonNode*>(node));
+		Finishing(static_cast<vl::glr::ParsingAstBase*>(node));
+	}
+
+	void AstVisitor::Visit(JsonArray* node)
+	{
+		if (!node) return;
+		Traverse(static_cast<vl::glr::ParsingAstBase*>(node));
+		Traverse(static_cast<JsonNode*>(node));
+		Traverse(static_cast<JsonArray*>(node));
+		for (auto&& listItem : node->items)
+		{
+			InspectInto(listItem.Obj());
+		}
+		Finishing(static_cast<JsonArray*>(node));
+		Finishing(static_cast<JsonNode*>(node));
+		Finishing(static_cast<vl::glr::ParsingAstBase*>(node));
+	}
+
+	void AstVisitor::Visit(JsonObject* node)
+	{
+		if (!node) return;
+		Traverse(static_cast<vl::glr::ParsingAstBase*>(node));
+		Traverse(static_cast<JsonNode*>(node));
+		Traverse(static_cast<JsonObject*>(node));
+		for (auto&& listItem : node->fields)
+		{
+			InspectInto(listItem.Obj());
+		}
+		Finishing(static_cast<JsonObject*>(node));
+		Finishing(static_cast<JsonNode*>(node));
+		Finishing(static_cast<vl::glr::ParsingAstBase*>(node));
+	}
+
+	void AstVisitor::InspectInto(JsonNode* node)
+	{
+		if (!node) return;
+		node->Accept(static_cast<JsonNode::IVisitor*>(this));
+	}
+
+	void AstVisitor::InspectInto(JsonObjectField* node)
+	{
+		if (!node) return;
+		Traverse(static_cast<vl::glr::ParsingAstBase*>(node));
+		Traverse(static_cast<JsonObjectField*>(node));
+		Traverse(node->name);
+		InspectInto(node->value.Obj());
+		Finishing(static_cast<JsonObjectField*>(node));
+		Finishing(static_cast<vl::glr::ParsingAstBase*>(node));
+	}
+
 }

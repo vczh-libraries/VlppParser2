@@ -9,53 +9,44 @@ Licensed under https://github.com/vczh-libraries/License
 
 #include "JsonAst.h"
 
-namespace vl
+namespace vl::glr::json::builder
 {
-	namespace glr
+	class MakeArray : public vl::glr::ParsingAstBuilder<JsonArray>
 	{
-		namespace json
-		{
-			namespace builder
-			{
-				class MakeArray : public vl::glr::ParsingAstBuilder<JsonArray>
-				{
-				public:
-					MakeArray& items(const vl::Ptr<JsonNode>& value);
-				};
+	public:
+		MakeArray& items(const vl::Ptr<JsonNode>& value);
+	};
 
-				class MakeLiteral : public vl::glr::ParsingAstBuilder<JsonLiteral>
-				{
-				public:
-					MakeLiteral& value(JsonLiteralValue value);
-				};
+	class MakeLiteral : public vl::glr::ParsingAstBuilder<JsonLiteral>
+	{
+	public:
+		MakeLiteral& value(JsonLiteralValue value);
+	};
 
-				class MakeNumber : public vl::glr::ParsingAstBuilder<JsonNumber>
-				{
-				public:
-					MakeNumber& content(const vl::WString& value);
-				};
+	class MakeNumber : public vl::glr::ParsingAstBuilder<JsonNumber>
+	{
+	public:
+		MakeNumber& content(const vl::WString& value);
+	};
 
-				class MakeObject : public vl::glr::ParsingAstBuilder<JsonObject>
-				{
-				public:
-					MakeObject& fields(const vl::Ptr<JsonObjectField>& value);
-				};
+	class MakeObject : public vl::glr::ParsingAstBuilder<JsonObject>
+	{
+	public:
+		MakeObject& fields(const vl::Ptr<JsonObjectField>& value);
+	};
 
-				class MakeObjectField : public vl::glr::ParsingAstBuilder<JsonObjectField>
-				{
-				public:
-					MakeObjectField& name(const vl::WString& value);
-					MakeObjectField& value(const vl::Ptr<JsonNode>& value);
-				};
+	class MakeObjectField : public vl::glr::ParsingAstBuilder<JsonObjectField>
+	{
+	public:
+		MakeObjectField& name(const vl::WString& value);
+		MakeObjectField& value(const vl::Ptr<JsonNode>& value);
+	};
 
-				class MakeString : public vl::glr::ParsingAstBuilder<JsonString>
-				{
-				public:
-					MakeString& content(const vl::WString& value);
-				};
+	class MakeString : public vl::glr::ParsingAstBuilder<JsonString>
+	{
+	public:
+		MakeString& content(const vl::WString& value);
+	};
 
-			}
-		}
-	}
 }
 #endif

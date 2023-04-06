@@ -10,40 +10,34 @@ Licensed under https://github.com/vczh-libraries/License
 #include "Json_Assembler.h"
 #include "Json_Lexer.h"
 
-namespace vl
+namespace vl::glr::json
 {
-	namespace glr
+	enum class ParserStates
 	{
-		namespace json
-		{
-			enum class ParserStates
-			{
-				JLiteral = 0,
-				JField = 7,
-				JObject = 12,
-				JArray = 18,
-				JValue = 24,
-				JRoot = 29,
-			};
+		JLiteral = 0,
+		JField = 7,
+		JObject = 12,
+		JArray = 18,
+		JValue = 24,
+		JRoot = 29,
+	};
 
-			const wchar_t* ParserRuleName(vl::vint index);
-			const wchar_t* ParserStateLabel(vl::vint index);
-			extern void JsonParserData(vl::stream::IStream& outputStream);
+	const wchar_t* ParserRuleName(vl::vint index);
+	const wchar_t* ParserStateLabel(vl::vint index);
+	extern void JsonParserData(vl::stream::IStream& outputStream);
 
-			class Parser
-				: public vl::glr::ParserBase<JsonTokens, ParserStates, JsonAstInsReceiver>
-				, protected vl::glr::automaton::IExecutor::ITypeCallback
-			{
-			protected:
-				vl::WString GetClassName(vl::vint32_t classIndex) const override;
-				vl::vint32_t FindCommonBaseClass(vl::vint32_t class1, vl::vint32_t class2) const override;
-			public:
-				Parser();
+	class Parser
+		: public vl::glr::ParserBase<JsonTokens, ParserStates, JsonAstInsReceiver>
+		, protected vl::glr::automaton::IExecutor::ITypeCallback
+	{
+	protected:
+		vl::WString GetClassName(vl::vint32_t classIndex) const override;
+		vl::vint32_t FindCommonBaseClass(vl::vint32_t class1, vl::vint32_t class2) const override;
+	public:
+		Parser();
 
-				vl::Ptr<vl::glr::json::JsonNode> ParseJRoot(const vl::WString& input, vl::vint codeIndex = -1) const;
-				vl::Ptr<vl::glr::json::JsonNode> ParseJRoot(vl::collections::List<vl::regex::RegexToken>& tokens, vl::vint codeIndex = -1) const;
-			};
-		}
-	}
+		vl::Ptr<vl::glr::json::JsonNode> ParseJRoot(const vl::WString& input, vl::vint codeIndex = -1) const;
+		vl::Ptr<vl::glr::json::JsonNode> ParseJRoot(vl::collections::List<vl::regex::RegexToken>& tokens, vl::vint codeIndex = -1) const;
+	};
 }
 #endif

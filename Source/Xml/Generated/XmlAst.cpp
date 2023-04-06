@@ -6,181 +6,169 @@ Licensed under https://github.com/vczh-libraries/License
 
 #include "XmlAst.h"
 
-namespace vl
+namespace vl::glr::xml
 {
-	namespace glr
-	{
-		namespace xml
-		{
 /***********************************************************************
 Visitor Pattern Implementation
 ***********************************************************************/
 
-			void XmlText::Accept(XmlNode::IVisitor* visitor)
-			{
-				visitor->Visit(this);
-			}
+	void XmlText::Accept(XmlNode::IVisitor* visitor)
+	{
+		visitor->Visit(this);
+	}
 
-			void XmlCData::Accept(XmlNode::IVisitor* visitor)
-			{
-				visitor->Visit(this);
-			}
+	void XmlCData::Accept(XmlNode::IVisitor* visitor)
+	{
+		visitor->Visit(this);
+	}
 
-			void XmlComment::Accept(XmlNode::IVisitor* visitor)
-			{
-				visitor->Visit(this);
-			}
+	void XmlComment::Accept(XmlNode::IVisitor* visitor)
+	{
+		visitor->Visit(this);
+	}
 
-			void XmlElement::Accept(XmlNode::IVisitor* visitor)
-			{
-				visitor->Visit(this);
-			}
+	void XmlElement::Accept(XmlNode::IVisitor* visitor)
+	{
+		visitor->Visit(this);
+	}
 
-			void XmlInstruction::Accept(XmlNode::IVisitor* visitor)
-			{
-				visitor->Visit(this);
-			}
+	void XmlInstruction::Accept(XmlNode::IVisitor* visitor)
+	{
+		visitor->Visit(this);
+	}
 
-			void XmlDocument::Accept(XmlNode::IVisitor* visitor)
-			{
-				visitor->Visit(this);
-			}
-		}
+	void XmlDocument::Accept(XmlNode::IVisitor* visitor)
+	{
+		visitor->Visit(this);
 	}
 }
-namespace vl
+namespace vl::reflection::description
 {
-	namespace reflection
-	{
-		namespace description
-		{
 #ifndef VCZH_DEBUG_NO_REFLECTION
 
-			IMPL_TYPE_INFO_RENAME(vl::glr::xml::XmlNode, system::XmlNode)
-			IMPL_TYPE_INFO_RENAME(vl::glr::xml::XmlNode::IVisitor, system::XmlNode::IVisitor)
-			IMPL_TYPE_INFO_RENAME(vl::glr::xml::XmlText, system::XmlText)
-			IMPL_TYPE_INFO_RENAME(vl::glr::xml::XmlCData, system::XmlCData)
-			IMPL_TYPE_INFO_RENAME(vl::glr::xml::XmlAttribute, system::XmlAttribute)
-			IMPL_TYPE_INFO_RENAME(vl::glr::xml::XmlComment, system::XmlComment)
-			IMPL_TYPE_INFO_RENAME(vl::glr::xml::XmlElement, system::XmlElement)
-			IMPL_TYPE_INFO_RENAME(vl::glr::xml::XmlInstruction, system::XmlInstruction)
-			IMPL_TYPE_INFO_RENAME(vl::glr::xml::XmlDocument, system::XmlDocument)
+	IMPL_TYPE_INFO_RENAME(vl::glr::xml::XmlNode, system::XmlNode)
+	IMPL_TYPE_INFO_RENAME(vl::glr::xml::XmlNode::IVisitor, system::XmlNode::IVisitor)
+	IMPL_TYPE_INFO_RENAME(vl::glr::xml::XmlText, system::XmlText)
+	IMPL_TYPE_INFO_RENAME(vl::glr::xml::XmlCData, system::XmlCData)
+	IMPL_TYPE_INFO_RENAME(vl::glr::xml::XmlAttribute, system::XmlAttribute)
+	IMPL_TYPE_INFO_RENAME(vl::glr::xml::XmlComment, system::XmlComment)
+	IMPL_TYPE_INFO_RENAME(vl::glr::xml::XmlElement, system::XmlElement)
+	IMPL_TYPE_INFO_RENAME(vl::glr::xml::XmlInstruction, system::XmlInstruction)
+	IMPL_TYPE_INFO_RENAME(vl::glr::xml::XmlDocument, system::XmlDocument)
 
 #ifdef VCZH_DESCRIPTABLEOBJECT_WITH_METADATA
 
-			BEGIN_CLASS_MEMBER(vl::glr::xml::XmlNode)
-				CLASS_MEMBER_BASE(vl::glr::ParsingAstBase)
+	BEGIN_CLASS_MEMBER(vl::glr::xml::XmlNode)
+		CLASS_MEMBER_BASE(vl::glr::ParsingAstBase)
 
-			END_CLASS_MEMBER(vl::glr::xml::XmlNode)
+	END_CLASS_MEMBER(vl::glr::xml::XmlNode)
 
-			BEGIN_CLASS_MEMBER(vl::glr::xml::XmlText)
-				CLASS_MEMBER_BASE(vl::glr::xml::XmlNode)
+	BEGIN_CLASS_MEMBER(vl::glr::xml::XmlText)
+		CLASS_MEMBER_BASE(vl::glr::xml::XmlNode)
 
-				CLASS_MEMBER_CONSTRUCTOR(vl::Ptr<vl::glr::xml::XmlText>(), NO_PARAMETER)
+		CLASS_MEMBER_CONSTRUCTOR(vl::Ptr<vl::glr::xml::XmlText>(), NO_PARAMETER)
 
-				CLASS_MEMBER_FIELD(content)
-			END_CLASS_MEMBER(vl::glr::xml::XmlText)
+		CLASS_MEMBER_FIELD(content)
+	END_CLASS_MEMBER(vl::glr::xml::XmlText)
 
-			BEGIN_CLASS_MEMBER(vl::glr::xml::XmlCData)
-				CLASS_MEMBER_BASE(vl::glr::xml::XmlNode)
+	BEGIN_CLASS_MEMBER(vl::glr::xml::XmlCData)
+		CLASS_MEMBER_BASE(vl::glr::xml::XmlNode)
 
-				CLASS_MEMBER_CONSTRUCTOR(vl::Ptr<vl::glr::xml::XmlCData>(), NO_PARAMETER)
+		CLASS_MEMBER_CONSTRUCTOR(vl::Ptr<vl::glr::xml::XmlCData>(), NO_PARAMETER)
 
-				CLASS_MEMBER_FIELD(content)
-			END_CLASS_MEMBER(vl::glr::xml::XmlCData)
+		CLASS_MEMBER_FIELD(content)
+	END_CLASS_MEMBER(vl::glr::xml::XmlCData)
 
-			BEGIN_CLASS_MEMBER(vl::glr::xml::XmlAttribute)
-				CLASS_MEMBER_BASE(vl::glr::ParsingAstBase)
+	BEGIN_CLASS_MEMBER(vl::glr::xml::XmlAttribute)
+		CLASS_MEMBER_BASE(vl::glr::ParsingAstBase)
 
-				CLASS_MEMBER_CONSTRUCTOR(vl::Ptr<vl::glr::xml::XmlAttribute>(), NO_PARAMETER)
+		CLASS_MEMBER_CONSTRUCTOR(vl::Ptr<vl::glr::xml::XmlAttribute>(), NO_PARAMETER)
 
-				CLASS_MEMBER_FIELD(name)
-				CLASS_MEMBER_FIELD(value)
-			END_CLASS_MEMBER(vl::glr::xml::XmlAttribute)
+		CLASS_MEMBER_FIELD(name)
+		CLASS_MEMBER_FIELD(value)
+	END_CLASS_MEMBER(vl::glr::xml::XmlAttribute)
 
-			BEGIN_CLASS_MEMBER(vl::glr::xml::XmlComment)
-				CLASS_MEMBER_BASE(vl::glr::xml::XmlNode)
+	BEGIN_CLASS_MEMBER(vl::glr::xml::XmlComment)
+		CLASS_MEMBER_BASE(vl::glr::xml::XmlNode)
 
-				CLASS_MEMBER_CONSTRUCTOR(vl::Ptr<vl::glr::xml::XmlComment>(), NO_PARAMETER)
+		CLASS_MEMBER_CONSTRUCTOR(vl::Ptr<vl::glr::xml::XmlComment>(), NO_PARAMETER)
 
-				CLASS_MEMBER_FIELD(content)
-			END_CLASS_MEMBER(vl::glr::xml::XmlComment)
+		CLASS_MEMBER_FIELD(content)
+	END_CLASS_MEMBER(vl::glr::xml::XmlComment)
 
-			BEGIN_CLASS_MEMBER(vl::glr::xml::XmlElement)
-				CLASS_MEMBER_BASE(vl::glr::xml::XmlNode)
+	BEGIN_CLASS_MEMBER(vl::glr::xml::XmlElement)
+		CLASS_MEMBER_BASE(vl::glr::xml::XmlNode)
 
-				CLASS_MEMBER_CONSTRUCTOR(vl::Ptr<vl::glr::xml::XmlElement>(), NO_PARAMETER)
+		CLASS_MEMBER_CONSTRUCTOR(vl::Ptr<vl::glr::xml::XmlElement>(), NO_PARAMETER)
 
-				CLASS_MEMBER_FIELD(name)
-				CLASS_MEMBER_FIELD(closingName)
-				CLASS_MEMBER_FIELD(attributes)
-				CLASS_MEMBER_FIELD(subNodes)
-			END_CLASS_MEMBER(vl::glr::xml::XmlElement)
+		CLASS_MEMBER_FIELD(name)
+		CLASS_MEMBER_FIELD(closingName)
+		CLASS_MEMBER_FIELD(attributes)
+		CLASS_MEMBER_FIELD(subNodes)
+	END_CLASS_MEMBER(vl::glr::xml::XmlElement)
 
-			BEGIN_CLASS_MEMBER(vl::glr::xml::XmlInstruction)
-				CLASS_MEMBER_BASE(vl::glr::xml::XmlNode)
+	BEGIN_CLASS_MEMBER(vl::glr::xml::XmlInstruction)
+		CLASS_MEMBER_BASE(vl::glr::xml::XmlNode)
 
-				CLASS_MEMBER_CONSTRUCTOR(vl::Ptr<vl::glr::xml::XmlInstruction>(), NO_PARAMETER)
+		CLASS_MEMBER_CONSTRUCTOR(vl::Ptr<vl::glr::xml::XmlInstruction>(), NO_PARAMETER)
 
-				CLASS_MEMBER_FIELD(name)
-				CLASS_MEMBER_FIELD(attributes)
-			END_CLASS_MEMBER(vl::glr::xml::XmlInstruction)
+		CLASS_MEMBER_FIELD(name)
+		CLASS_MEMBER_FIELD(attributes)
+	END_CLASS_MEMBER(vl::glr::xml::XmlInstruction)
 
-			BEGIN_CLASS_MEMBER(vl::glr::xml::XmlDocument)
-				CLASS_MEMBER_BASE(vl::glr::xml::XmlNode)
+	BEGIN_CLASS_MEMBER(vl::glr::xml::XmlDocument)
+		CLASS_MEMBER_BASE(vl::glr::xml::XmlNode)
 
-				CLASS_MEMBER_CONSTRUCTOR(vl::Ptr<vl::glr::xml::XmlDocument>(), NO_PARAMETER)
+		CLASS_MEMBER_CONSTRUCTOR(vl::Ptr<vl::glr::xml::XmlDocument>(), NO_PARAMETER)
 
-				CLASS_MEMBER_FIELD(prologs)
-				CLASS_MEMBER_FIELD(rootElement)
-			END_CLASS_MEMBER(vl::glr::xml::XmlDocument)
+		CLASS_MEMBER_FIELD(prologs)
+		CLASS_MEMBER_FIELD(rootElement)
+	END_CLASS_MEMBER(vl::glr::xml::XmlDocument)
 
-			BEGIN_INTERFACE_MEMBER(vl::glr::xml::XmlNode::IVisitor)
-				CLASS_MEMBER_METHOD_OVERLOAD(Visit, {L"node"}, void(vl::glr::xml::XmlNode::IVisitor::*)(vl::glr::xml::XmlText* node))
-				CLASS_MEMBER_METHOD_OVERLOAD(Visit, {L"node"}, void(vl::glr::xml::XmlNode::IVisitor::*)(vl::glr::xml::XmlCData* node))
-				CLASS_MEMBER_METHOD_OVERLOAD(Visit, {L"node"}, void(vl::glr::xml::XmlNode::IVisitor::*)(vl::glr::xml::XmlComment* node))
-				CLASS_MEMBER_METHOD_OVERLOAD(Visit, {L"node"}, void(vl::glr::xml::XmlNode::IVisitor::*)(vl::glr::xml::XmlElement* node))
-				CLASS_MEMBER_METHOD_OVERLOAD(Visit, {L"node"}, void(vl::glr::xml::XmlNode::IVisitor::*)(vl::glr::xml::XmlInstruction* node))
-				CLASS_MEMBER_METHOD_OVERLOAD(Visit, {L"node"}, void(vl::glr::xml::XmlNode::IVisitor::*)(vl::glr::xml::XmlDocument* node))
-			END_INTERFACE_MEMBER(vl::glr::xml::XmlNode)
+	BEGIN_INTERFACE_MEMBER(vl::glr::xml::XmlNode::IVisitor)
+		CLASS_MEMBER_METHOD_OVERLOAD(Visit, {L"node"}, void(vl::glr::xml::XmlNode::IVisitor::*)(vl::glr::xml::XmlText* node))
+		CLASS_MEMBER_METHOD_OVERLOAD(Visit, {L"node"}, void(vl::glr::xml::XmlNode::IVisitor::*)(vl::glr::xml::XmlCData* node))
+		CLASS_MEMBER_METHOD_OVERLOAD(Visit, {L"node"}, void(vl::glr::xml::XmlNode::IVisitor::*)(vl::glr::xml::XmlComment* node))
+		CLASS_MEMBER_METHOD_OVERLOAD(Visit, {L"node"}, void(vl::glr::xml::XmlNode::IVisitor::*)(vl::glr::xml::XmlElement* node))
+		CLASS_MEMBER_METHOD_OVERLOAD(Visit, {L"node"}, void(vl::glr::xml::XmlNode::IVisitor::*)(vl::glr::xml::XmlInstruction* node))
+		CLASS_MEMBER_METHOD_OVERLOAD(Visit, {L"node"}, void(vl::glr::xml::XmlNode::IVisitor::*)(vl::glr::xml::XmlDocument* node))
+	END_INTERFACE_MEMBER(vl::glr::xml::XmlNode)
 
 #endif
 
 #ifdef VCZH_DESCRIPTABLEOBJECT_WITH_METADATA
-			class XmlAstTypeLoader : public vl::Object, public ITypeLoader
-			{
-			public:
-				void Load(ITypeManager* manager)
-				{
-					ADD_TYPE_INFO(vl::glr::xml::XmlNode)
-					ADD_TYPE_INFO(vl::glr::xml::XmlNode::IVisitor)
-					ADD_TYPE_INFO(vl::glr::xml::XmlText)
-					ADD_TYPE_INFO(vl::glr::xml::XmlCData)
-					ADD_TYPE_INFO(vl::glr::xml::XmlAttribute)
-					ADD_TYPE_INFO(vl::glr::xml::XmlComment)
-					ADD_TYPE_INFO(vl::glr::xml::XmlElement)
-					ADD_TYPE_INFO(vl::glr::xml::XmlInstruction)
-					ADD_TYPE_INFO(vl::glr::xml::XmlDocument)
-				}
-
-				void Unload(ITypeManager* manager)
-				{
-				}
-			};
-#endif
-#endif
-
-			bool XmlAstLoadTypes()
-			{
-#ifdef VCZH_DESCRIPTABLEOBJECT_WITH_METADATA
-				if (auto manager = GetGlobalTypeManager())
-				{
-					auto loader = Ptr(new XmlAstTypeLoader);
-					return manager->AddTypeLoader(loader);
-				}
-#endif
-				return false;
-			}
+	class XmlAstTypeLoader : public vl::Object, public ITypeLoader
+	{
+	public:
+		void Load(ITypeManager* manager)
+		{
+			ADD_TYPE_INFO(vl::glr::xml::XmlNode)
+			ADD_TYPE_INFO(vl::glr::xml::XmlNode::IVisitor)
+			ADD_TYPE_INFO(vl::glr::xml::XmlText)
+			ADD_TYPE_INFO(vl::glr::xml::XmlCData)
+			ADD_TYPE_INFO(vl::glr::xml::XmlAttribute)
+			ADD_TYPE_INFO(vl::glr::xml::XmlComment)
+			ADD_TYPE_INFO(vl::glr::xml::XmlElement)
+			ADD_TYPE_INFO(vl::glr::xml::XmlInstruction)
+			ADD_TYPE_INFO(vl::glr::xml::XmlDocument)
 		}
+
+		void Unload(ITypeManager* manager)
+		{
+		}
+	};
+#endif
+#endif
+
+	bool XmlAstLoadTypes()
+	{
+#ifdef VCZH_DESCRIPTABLEOBJECT_WITH_METADATA
+		if (auto manager = GetGlobalTypeManager())
+		{
+			auto loader = Ptr(new XmlAstTypeLoader);
+			return manager->AddTypeLoader(loader);
+		}
+#endif
+		return false;
 	}
 }

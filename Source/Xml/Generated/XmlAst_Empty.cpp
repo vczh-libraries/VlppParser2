@@ -6,45 +6,36 @@ Licensed under https://github.com/vczh-libraries/License
 
 #include "XmlAst_Empty.h"
 
-namespace vl
+namespace vl::glr::xml::empty_visitor
 {
-	namespace glr
-	{
-		namespace xml
-		{
-			namespace empty_visitor
-			{
 
 /***********************************************************************
 NodeVisitor
 ***********************************************************************/
 
-				// Visitor Members -----------------------------------
+	// Visitor Members -----------------------------------
 
-				void NodeVisitor::Visit(XmlText* node)
-				{
-				}
+	void NodeVisitor::Visit(XmlText* node)
+	{
+	}
 
-				void NodeVisitor::Visit(XmlCData* node)
-				{
-				}
+	void NodeVisitor::Visit(XmlCData* node)
+	{
+	}
 
-				void NodeVisitor::Visit(XmlComment* node)
-				{
-				}
+	void NodeVisitor::Visit(XmlComment* node)
+	{
+	}
 
-				void NodeVisitor::Visit(XmlElement* node)
-				{
-				}
+	void NodeVisitor::Visit(XmlElement* node)
+	{
+	}
 
-				void NodeVisitor::Visit(XmlInstruction* node)
-				{
-				}
+	void NodeVisitor::Visit(XmlInstruction* node)
+	{
+	}
 
-				void NodeVisitor::Visit(XmlDocument* node)
-				{
-				}
-			}
-		}
+	void NodeVisitor::Visit(XmlDocument* node)
+	{
 	}
 }

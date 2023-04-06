@@ -9,483 +9,480 @@ Licensed under https://github.com/vczh-libraries/License
 
 #include "CppAst.h"
 
-namespace cpp_parser
+namespace cpp_parser::builder
 {
-	namespace builder
+	class MakeAdvancedType : public vl::glr::ParsingAstBuilder<CppAdvancedType>
 	{
-		class MakeAdvancedType : public vl::glr::ParsingAstBuilder<CppAdvancedType>
-		{
-		public:
-			MakeAdvancedType& argument(const vl::Ptr<CppTypeOrExpr>& value);
-			MakeAdvancedType& kind(CppAdvancedTypeKinds value);
-		};
-
-		class MakeBinaryExpr : public vl::glr::ParsingAstBuilder<CppBinaryExpr>
-		{
-		public:
-			MakeBinaryExpr& left(const vl::Ptr<CppTypeOrExpr>& value);
-			MakeBinaryExpr& op(CppOperators value);
-			MakeBinaryExpr& right(const vl::Ptr<CppTypeOrExpr>& value);
-		};
-
-		class MakeBlockStat : public vl::glr::ParsingAstBuilder<CppBlockStat>
-		{
-		public:
-			MakeBlockStat& statements(const vl::Ptr<CppStatement>& value);
-		};
-
-		class MakeBraceExpr : public vl::glr::ParsingAstBuilder<CppBraceExpr>
-		{
-		public:
-			MakeBraceExpr& arguments(const vl::Ptr<CppTypeOrExpr>& value);
-		};
-
-		class MakeCallExpr : public vl::glr::ParsingAstBuilder<CppCallExpr>
-		{
-		public:
-			MakeCallExpr& arguments(const vl::Ptr<CppTypeOrExpr>& value);
-			MakeCallExpr& kind(CppCallKinds value);
-			MakeCallExpr& operand(const vl::Ptr<CppTypeOrExpr>& value);
-		};
-
-		class MakeCaseStat : public vl::glr::ParsingAstBuilder<CppCaseStat>
-		{
-		public:
-			MakeCaseStat& expr(const vl::Ptr<CppTypeOrExpr>& value);
-			MakeCaseStat& stat(const vl::Ptr<CppStatement>& value);
-		};
-
-		class MakeCastExpr : public vl::glr::ParsingAstBuilder<CppCastExpr>
-		{
-		public:
-			MakeCastExpr& expr(const vl::Ptr<CppTypeOrExpr>& value);
-			MakeCastExpr& keyword(const vl::WString& value);
-			MakeCastExpr& type(const vl::Ptr<CppTypeOrExpr>& value);
-		};
-
-		class MakeConstType : public vl::glr::ParsingAstBuilder<CppConstType>
-		{
-		public:
-			MakeConstType& type(const vl::Ptr<CppTypeOrExpr>& value);
-		};
-
-		class MakeDeclStat : public vl::glr::ParsingAstBuilder<CppDeclStat>
-		{
-		public:
-			MakeDeclStat& decl(const vl::Ptr<CppDeclaration>& value);
-		};
-
-		class MakeDeclarator : public vl::glr::ParsingAstBuilder<CppDeclarator>
-		{
-		public:
-			MakeDeclarator& advancedTypes(const vl::Ptr<CppAdvancedType>& value);
-			MakeDeclarator& arrayParts(const vl::Ptr<CppDeclaratorArrayPart>& value);
-			MakeDeclarator& funcPart(const vl::Ptr<CppDeclaratorFunctionPart>& value);
-			MakeDeclarator& id(const vl::Ptr<CppIdentifier>& value);
-			MakeDeclarator& innerDeclarator(const vl::Ptr<CppDeclarator>& value);
-			MakeDeclarator& keywords(const vl::Ptr<CppDeclaratorKeyword>& value);
-			MakeDeclarator& variadic(const vl::WString& value);
-		};
-
-		class MakeDeclaratorArrayPart : public vl::glr::ParsingAstBuilder<CppDeclaratorArrayPart>
-		{
-		public:
-			MakeDeclaratorArrayPart& argument(const vl::Ptr<CppTypeOrExpr>& value);
-		};
-
-		class MakeDeclaratorFunctionPart : public vl::glr::ParsingAstBuilder<CppDeclaratorFunctionPart>
-		{
-		public:
-			MakeDeclaratorFunctionPart& deferredType(const vl::Ptr<CppTypeOrExpr>& value);
-			MakeDeclaratorFunctionPart& keywords(const vl::Ptr<CppFunctionKeyword>& value);
-			MakeDeclaratorFunctionPart& parameters(const vl::Ptr<CppTypeOrExprOrOthers>& value);
-			MakeDeclaratorFunctionPart& variadic(const vl::WString& value);
-		};
-
-		class MakeDeclaratorKeyword : public vl::glr::ParsingAstBuilder<CppDeclaratorKeyword>
-		{
-		public:
-			MakeDeclaratorKeyword& keyword(const vl::WString& value);
-		};
-
-		class MakeDeclaratorType : public vl::glr::ParsingAstBuilder<CppDeclaratorType>
-		{
-		public:
-			MakeDeclaratorType& declarator(const vl::Ptr<CppDeclarator>& value);
-			MakeDeclaratorType& keywords(const vl::Ptr<CppDeclaratorKeyword>& value);
-			MakeDeclaratorType& type(const vl::Ptr<CppTypeOrExpr>& value);
-		};
-
-		class MakeDeclaratorVariablePart : public vl::glr::ParsingAstBuilder<CppDeclaratorVariablePart>
-		{
-		public:
-			MakeDeclaratorVariablePart& declarator(const vl::Ptr<CppDeclarator>& value);
-			MakeDeclaratorVariablePart& init(const vl::Ptr<CppVarInit>& value);
-		};
-
-		class MakeDefaultStat : public vl::glr::ParsingAstBuilder<CppDefaultStat>
-		{
-		public:
-			MakeDefaultStat& stat(const vl::Ptr<CppStatement>& value);
-		};
-
-		class MakeDeleteExpr : public vl::glr::ParsingAstBuilder<CppDeleteExpr>
-		{
-		public:
-			MakeDeleteExpr& argument(const vl::Ptr<CppTypeOrExpr>& value);
-			MakeDeleteExpr& array(CppOperatorArray value);
-			MakeDeleteExpr& scope(CppOperatorScope value);
-		};
-
-		class MakeDoWhileStat : public vl::glr::ParsingAstBuilder<CppDoWhileStat>
-		{
-		public:
-			MakeDoWhileStat& condition(const vl::Ptr<CppTypeOrExpr>& value);
-			MakeDoWhileStat& stat(const vl::Ptr<CppStatement>& value);
-		};
-
-		class MakeExprStat : public vl::glr::ParsingAstBuilder<CppExprStat>
-		{
-		public:
-			MakeExprStat& expr(const vl::Ptr<CppTypeOrExpr>& value);
-		};
-
-		class MakeForStat : public vl::glr::ParsingAstBuilder<CppForStat>
-		{
-		public:
-			MakeForStat& conditionPart(const vl::Ptr<CppForStatConditionPart>& value);
-			MakeForStat& stat(const vl::Ptr<CppStatement>& value);
-		};
-
-		class MakeForStatIterateCondition : public vl::glr::ParsingAstBuilder<CppForStatIterateCondition>
-		{
-		public:
-			MakeForStatIterateCondition& collection(const vl::Ptr<CppTypeOrExpr>& value);
-			MakeForStatIterateCondition& decl(const vl::Ptr<CppSingleVarDeclaration>& value);
-		};
-
-		class MakeForStatLoopCondition : public vl::glr::ParsingAstBuilder<CppForStatLoopCondition>
-		{
-		public:
-			MakeForStatLoopCondition& condition(const vl::Ptr<CppTypeOrExpr>& value);
-			MakeForStatLoopCondition& sideEffect(const vl::Ptr<CppTypeOrExpr>& value);
-			MakeForStatLoopCondition& varsDecl(const vl::Ptr<CppTypeOrExprOrOthers>& value);
-		};
-
-		class MakeFunctionKeyword : public vl::glr::ParsingAstBuilder<CppFunctionKeyword>
-		{
-		public:
-			MakeFunctionKeyword& arguments(const vl::Ptr<CppTypeOrExpr>& value);
-			MakeFunctionKeyword& keyword(const vl::WString& value);
-		};
-
-		class MakeGenericArgument : public vl::glr::ParsingAstBuilder<CppGenericArgument>
-		{
-		public:
-			MakeGenericArgument& argument(const vl::Ptr<CppTypeOrExpr>& value);
-			MakeGenericArgument& variadic(const vl::WString& value);
-		};
-
-		class MakeGenericArguments : public vl::glr::ParsingAstBuilder<CppGenericArguments>
-		{
-		public:
-			MakeGenericArguments& arguments(const vl::Ptr<CppTypeOrExprOrOthers>& value);
-		};
-
-		class MakeGenericHeader : public vl::glr::ParsingAstBuilder<CppGenericHeader>
-		{
-		public:
-			MakeGenericHeader& parameters(const vl::Ptr<CppTypeOrExprOrOthers>& value);
-		};
-
-		class MakeGotoStat : public vl::glr::ParsingAstBuilder<CppGotoStat>
-		{
-		public:
-			MakeGotoStat& label(const vl::WString& value);
-		};
-
-		class MakeIfElseStat : public vl::glr::ParsingAstBuilder<CppIfElseStat>
-		{
-		public:
-			MakeIfElseStat& condition(const vl::Ptr<CppTypeOrExprOrOthers>& value);
-			MakeIfElseStat& falseStat(const vl::Ptr<CppStatement>& value);
-			MakeIfElseStat& trueStat(const vl::Ptr<CppStatement>& value);
-			MakeIfElseStat& varsDecl(const vl::Ptr<CppMultipleVarDeclaration>& value);
-		};
-
-		class MakeIfExpr : public vl::glr::ParsingAstBuilder<CppIfExpr>
-		{
-		public:
-			MakeIfExpr& condition(const vl::Ptr<CppTypeOrExpr>& value);
-			MakeIfExpr& falseBranch(const vl::Ptr<CppTypeOrExpr>& value);
-			MakeIfExpr& trueBranch(const vl::Ptr<CppTypeOrExpr>& value);
-		};
-
-		class MakeIndexExpr : public vl::glr::ParsingAstBuilder<CppIndexExpr>
-		{
-		public:
-			MakeIndexExpr& index(const vl::Ptr<CppTypeOrExpr>& value);
-			MakeIndexExpr& operand(const vl::Ptr<CppTypeOrExpr>& value);
-		};
-
-		class MakeLabelStat : public vl::glr::ParsingAstBuilder<CppLabelStat>
-		{
-		public:
-			MakeLabelStat& label(const vl::WString& value);
-			MakeLabelStat& stat(const vl::Ptr<CppStatement>& value);
-		};
-
-		class MakeLambdaCapture : public vl::glr::ParsingAstBuilder<CppLambdaCapture>
-		{
-		public:
-			MakeLambdaCapture& id(const vl::Ptr<CppIdentifier>& value);
-			MakeLambdaCapture& init(const vl::Ptr<CppVarInit>& value);
-			MakeLambdaCapture& objKind(CppLambdaCaptureObjectKinds value);
-			MakeLambdaCapture& refKind(CppLambdaCaptureRefeferenceKinds value);
-		};
-
-		class MakeLambdaExpr : public vl::glr::ParsingAstBuilder<CppLambdaExpr>
-		{
-		public:
-			MakeLambdaExpr& captures(const vl::Ptr<CppLambdaCapture>& value);
-			MakeLambdaExpr& functionHeader(const vl::Ptr<CppDeclaratorFunctionPart>& value);
-			MakeLambdaExpr& genericHeader(const vl::Ptr<CppGenericHeader>& value);
-			MakeLambdaExpr& stat(const vl::Ptr<CppStatement>& value);
-		};
-
-		class MakeMultipleVarDeclaration : public vl::glr::ParsingAstBuilder<CppMultipleVarDeclaration>
-		{
-		public:
-			MakeMultipleVarDeclaration& keywords(const vl::Ptr<CppDeclaratorKeyword>& value);
-			MakeMultipleVarDeclaration& type(const vl::Ptr<CppTypeOrExpr>& value);
-			MakeMultipleVarDeclaration& varParts(const vl::Ptr<CppDeclaratorVariablePart>& value);
-		};
-
-		class MakeNameIdentifier : public vl::glr::ParsingAstBuilder<CppNameIdentifier>
-		{
-		public:
-			MakeNameIdentifier& kind(CppNameKinds value);
-			MakeNameIdentifier& name(const vl::WString& value);
-		};
-
-		class MakeNewExpr : public vl::glr::ParsingAstBuilder<CppNewExpr>
-		{
-		public:
-			MakeNewExpr& arrayArguments(const vl::Ptr<CppTypeOrExpr>& value);
-			MakeNewExpr& init(const vl::Ptr<CppVarInit>& value);
-			MakeNewExpr& placementArguments(const vl::Ptr<CppTypeOrExpr>& value);
-			MakeNewExpr& scope(CppOperatorScope value);
-			MakeNewExpr& type(const vl::Ptr<CppTypeOrExpr>& value);
-		};
-
-		class MakeNumericExprLiteral : public vl::glr::ParsingAstBuilder<CppNumericExprLiteral>
-		{
-		public:
-			MakeNumericExprLiteral& kind(CppNumericExprLiteralKinds value);
-			MakeNumericExprLiteral& literal(const vl::WString& value);
-		};
-
-		class MakeOperatorIdentifier : public vl::glr::ParsingAstBuilder<CppOperatorIdentifier>
-		{
-		public:
-			MakeOperatorIdentifier& op(CppOperators value);
-		};
-
-		class MakeOrdinaryGenericParameter : public vl::glr::ParsingAstBuilder<CppOrdinaryGenericParameter>
-		{
-		public:
-			MakeOrdinaryGenericParameter& genericHeader(const vl::Ptr<CppGenericHeader>& value);
-			MakeOrdinaryGenericParameter& id(const vl::Ptr<CppIdentifier>& value);
-			MakeOrdinaryGenericParameter& init(const vl::Ptr<CppTypeOrExpr>& value);
-			MakeOrdinaryGenericParameter& typenameToken(const vl::WString& value);
-			MakeOrdinaryGenericParameter& variadic(const vl::WString& value);
-		};
-
-		class MakeParenthesisExpr : public vl::glr::ParsingAstBuilder<CppParenthesisExpr>
-		{
-		public:
-			MakeParenthesisExpr& expr(const vl::Ptr<CppTypeOrExpr>& value);
-		};
-
-		class MakePostfixUnaryExpr : public vl::glr::ParsingAstBuilder<CppPostfixUnaryExpr>
-		{
-		public:
-			MakePostfixUnaryExpr& op(CppOperators value);
-			MakePostfixUnaryExpr& operand(const vl::Ptr<CppTypeOrExpr>& value);
-		};
-
-		class MakePrefixUnaryExpr : public vl::glr::ParsingAstBuilder<CppPrefixUnaryExpr>
-		{
-		public:
-			MakePrefixUnaryExpr& op(CppOperators value);
-			MakePrefixUnaryExpr& operand(const vl::Ptr<CppTypeOrExpr>& value);
-		};
-
-		class MakePrimitiveExprLiteral : public vl::glr::ParsingAstBuilder<CppPrimitiveExprLiteral>
-		{
-		public:
-			MakePrimitiveExprLiteral& kind(CppPrimitiveExprLiteralKinds value);
-		};
-
-		class MakePrimitiveType : public vl::glr::ParsingAstBuilder<CppPrimitiveType>
-		{
-		public:
-			MakePrimitiveType& kind(CppPrimitiveTypeKinds value);
-			MakePrimitiveType& literal1(const vl::WString& value);
-			MakePrimitiveType& literal2(const vl::WString& value);
-		};
-
-		class MakeQualifiedName : public vl::glr::ParsingAstBuilder<CppQualifiedName>
-		{
-		public:
-			MakeQualifiedName& arguments(const vl::Ptr<CppGenericArguments>& value);
-			MakeQualifiedName& expr(const vl::Ptr<CppTypeOrExpr>& value);
-			MakeQualifiedName& id(const vl::Ptr<CppIdentifier>& value);
-			MakeQualifiedName& kind(CppQualifiedNameKinds value);
-			MakeQualifiedName& parent(const vl::Ptr<CppQualifiedName>& value);
-		};
-
-		class MakeReturnStat : public vl::glr::ParsingAstBuilder<CppReturnStat>
-		{
-		public:
-			MakeReturnStat& expr(const vl::Ptr<CppTypeOrExpr>& value);
-		};
-
-		class MakeSingleVarDeclaration : public vl::glr::ParsingAstBuilder<CppSingleVarDeclaration>
-		{
-		public:
-			MakeSingleVarDeclaration& keywords(const vl::Ptr<CppDeclaratorKeyword>& value);
-			MakeSingleVarDeclaration& type(const vl::Ptr<CppTypeOrExpr>& value);
-			MakeSingleVarDeclaration& varPart(const vl::Ptr<CppDeclaratorVariablePart>& value);
-		};
-
-		class MakeSizeofExpr : public vl::glr::ParsingAstBuilder<CppSizeofExpr>
-		{
-		public:
-			MakeSizeofExpr& argument(const vl::Ptr<CppTypeOrExpr>& value);
-			MakeSizeofExpr& variadic(const vl::WString& value);
-		};
-
-		class MakeStatementToResolve : public vl::glr::ParsingAstBuilder<CppStatementToResolve>
-		{
-		public:
-			MakeStatementToResolve& candidates(const vl::Ptr<CppStatement>& value);
-		};
-
-		class MakeStaticAssertDeclaration : public vl::glr::ParsingAstBuilder<CppStaticAssertDeclaration>
-		{
-		public:
-			MakeStaticAssertDeclaration& expr(const vl::Ptr<CppTypeOrExpr>& value);
-			MakeStaticAssertDeclaration& message(const vl::Ptr<CppTypeOrExpr>& value);
-		};
-
-		class MakeStringLiteral : public vl::glr::ParsingAstBuilder<CppStringLiteral>
-		{
-		public:
-			MakeStringLiteral& fragments(const vl::Ptr<CppStringLiteralFragment>& value);
-		};
-
-		class MakeStringLiteralFragment : public vl::glr::ParsingAstBuilder<CppStringLiteralFragment>
-		{
-		public:
-			MakeStringLiteralFragment& kind(CppStringLiteralKinds value);
-			MakeStringLiteralFragment& literal(const vl::WString& value);
-		};
-
-		class MakeSwitchStat : public vl::glr::ParsingAstBuilder<CppSwitchStat>
-		{
-		public:
-			MakeSwitchStat& condition(const vl::Ptr<CppTypeOrExprOrOthers>& value);
-			MakeSwitchStat& stat(const vl::Ptr<CppStatement>& value);
-		};
-
-		class MakeSysFuncExpr : public vl::glr::ParsingAstBuilder<CppSysFuncExpr>
-		{
-		public:
-			MakeSysFuncExpr& argument(const vl::Ptr<CppTypeOrExpr>& value);
-			MakeSysFuncExpr& keyword(const vl::WString& value);
-			MakeSysFuncExpr& variadic(const vl::WString& value);
-		};
-
-		class MakeThrowExpr : public vl::glr::ParsingAstBuilder<CppThrowExpr>
-		{
-		public:
-			MakeThrowExpr& argument(const vl::Ptr<CppTypeOrExpr>& value);
-		};
-
-		class MakeTryStat : public vl::glr::ParsingAstBuilder<CppTryStat>
-		{
-		public:
-			MakeTryStat& catchParts(const vl::Ptr<CppTryStatCatchPart>& value);
-			MakeTryStat& tryStat(const vl::Ptr<CppStatement>& value);
-		};
-
-		class MakeTryStatCatchPart : public vl::glr::ParsingAstBuilder<CppTryStatCatchPart>
-		{
-		public:
-			MakeTryStatCatchPart& decl(const vl::Ptr<CppTypeOrExprOrOthers>& value);
-			MakeTryStatCatchPart& stat(const vl::Ptr<CppStatement>& value);
-		};
-
-		class MakeTypeOrExprOrOthersToResolve : public vl::glr::ParsingAstBuilder<CppTypeOrExprOrOthersToResolve>
-		{
-		public:
-			MakeTypeOrExprOrOthersToResolve& candidates(const vl::Ptr<CppTypeOrExprOrOthers>& value);
-		};
-
-		class MakeTypeOrExprToResolve : public vl::glr::ParsingAstBuilder<CppTypeOrExprToResolve>
-		{
-		public:
-			MakeTypeOrExprToResolve& candidates(const vl::Ptr<CppTypeOrExpr>& value);
-		};
-
-		class MakeVarBraceInit : public vl::glr::ParsingAstBuilder<CppVarBraceInit>
-		{
-		public:
-			MakeVarBraceInit& arguments(const vl::Ptr<CppTypeOrExpr>& value);
-		};
-
-		class MakeVarParanthesisInit : public vl::glr::ParsingAstBuilder<CppVarParanthesisInit>
-		{
-		public:
-			MakeVarParanthesisInit& arguments(const vl::Ptr<CppTypeOrExpr>& value);
-		};
-
-		class MakeVarValueInit : public vl::glr::ParsingAstBuilder<CppVarValueInit>
-		{
-		public:
-			MakeVarValueInit& expr(const vl::Ptr<CppTypeOrExpr>& value);
-		};
-
-		class MakeVariadicExpr : public vl::glr::ParsingAstBuilder<CppVariadicExpr>
-		{
-		public:
-			MakeVariadicExpr& operand(const vl::Ptr<CppTypeOrExpr>& value);
-			MakeVariadicExpr& variadic(const vl::WString& value);
-		};
-
-		class MakeVolatileType : public vl::glr::ParsingAstBuilder<CppVolatileType>
-		{
-		public:
-			MakeVolatileType& type(const vl::Ptr<CppTypeOrExpr>& value);
-		};
-
-		class MakeWhileStat : public vl::glr::ParsingAstBuilder<CppWhileStat>
-		{
-		public:
-			MakeWhileStat& condition(const vl::Ptr<CppTypeOrExprOrOthers>& value);
-			MakeWhileStat& stat(const vl::Ptr<CppStatement>& value);
-		};
-
-		class Make__TryStat : public vl::glr::ParsingAstBuilder<Cpp__TryStat>
-		{
-		public:
-			Make__TryStat& exceptStat(const vl::Ptr<CppStatement>& value);
-			Make__TryStat& filter(const vl::Ptr<CppTypeOrExpr>& value);
-			Make__TryStat& finallyStat(const vl::Ptr<CppStatement>& value);
-			Make__TryStat& tryStat(const vl::Ptr<CppStatement>& value);
-		};
-
-	}
+	public:
+		MakeAdvancedType& argument(const vl::Ptr<CppTypeOrExpr>& value);
+		MakeAdvancedType& kind(CppAdvancedTypeKinds value);
+	};
+
+	class MakeBinaryExpr : public vl::glr::ParsingAstBuilder<CppBinaryExpr>
+	{
+	public:
+		MakeBinaryExpr& left(const vl::Ptr<CppTypeOrExpr>& value);
+		MakeBinaryExpr& op(CppOperators value);
+		MakeBinaryExpr& right(const vl::Ptr<CppTypeOrExpr>& value);
+	};
+
+	class MakeBlockStat : public vl::glr::ParsingAstBuilder<CppBlockStat>
+	{
+	public:
+		MakeBlockStat& statements(const vl::Ptr<CppStatement>& value);
+	};
+
+	class MakeBraceExpr : public vl::glr::ParsingAstBuilder<CppBraceExpr>
+	{
+	public:
+		MakeBraceExpr& arguments(const vl::Ptr<CppTypeOrExpr>& value);
+	};
+
+	class MakeCallExpr : public vl::glr::ParsingAstBuilder<CppCallExpr>
+	{
+	public:
+		MakeCallExpr& arguments(const vl::Ptr<CppTypeOrExpr>& value);
+		MakeCallExpr& kind(CppCallKinds value);
+		MakeCallExpr& operand(const vl::Ptr<CppTypeOrExpr>& value);
+	};
+
+	class MakeCaseStat : public vl::glr::ParsingAstBuilder<CppCaseStat>
+	{
+	public:
+		MakeCaseStat& expr(const vl::Ptr<CppTypeOrExpr>& value);
+		MakeCaseStat& stat(const vl::Ptr<CppStatement>& value);
+	};
+
+	class MakeCastExpr : public vl::glr::ParsingAstBuilder<CppCastExpr>
+	{
+	public:
+		MakeCastExpr& expr(const vl::Ptr<CppTypeOrExpr>& value);
+		MakeCastExpr& keyword(const vl::WString& value);
+		MakeCastExpr& type(const vl::Ptr<CppTypeOrExpr>& value);
+	};
+
+	class MakeConstType : public vl::glr::ParsingAstBuilder<CppConstType>
+	{
+	public:
+		MakeConstType& type(const vl::Ptr<CppTypeOrExpr>& value);
+	};
+
+	class MakeDeclStat : public vl::glr::ParsingAstBuilder<CppDeclStat>
+	{
+	public:
+		MakeDeclStat& decl(const vl::Ptr<CppDeclaration>& value);
+	};
+
+	class MakeDeclarator : public vl::glr::ParsingAstBuilder<CppDeclarator>
+	{
+	public:
+		MakeDeclarator& advancedTypes(const vl::Ptr<CppAdvancedType>& value);
+		MakeDeclarator& arrayParts(const vl::Ptr<CppDeclaratorArrayPart>& value);
+		MakeDeclarator& funcPart(const vl::Ptr<CppDeclaratorFunctionPart>& value);
+		MakeDeclarator& id(const vl::Ptr<CppIdentifier>& value);
+		MakeDeclarator& innerDeclarator(const vl::Ptr<CppDeclarator>& value);
+		MakeDeclarator& keywords(const vl::Ptr<CppDeclaratorKeyword>& value);
+		MakeDeclarator& variadic(const vl::WString& value);
+	};
+
+	class MakeDeclaratorArrayPart : public vl::glr::ParsingAstBuilder<CppDeclaratorArrayPart>
+	{
+	public:
+		MakeDeclaratorArrayPart& argument(const vl::Ptr<CppTypeOrExpr>& value);
+	};
+
+	class MakeDeclaratorFunctionPart : public vl::glr::ParsingAstBuilder<CppDeclaratorFunctionPart>
+	{
+	public:
+		MakeDeclaratorFunctionPart& deferredType(const vl::Ptr<CppTypeOrExpr>& value);
+		MakeDeclaratorFunctionPart& keywords(const vl::Ptr<CppFunctionKeyword>& value);
+		MakeDeclaratorFunctionPart& parameters(const vl::Ptr<CppTypeOrExprOrOthers>& value);
+		MakeDeclaratorFunctionPart& variadic(const vl::WString& value);
+	};
+
+	class MakeDeclaratorKeyword : public vl::glr::ParsingAstBuilder<CppDeclaratorKeyword>
+	{
+	public:
+		MakeDeclaratorKeyword& keyword(const vl::WString& value);
+	};
+
+	class MakeDeclaratorType : public vl::glr::ParsingAstBuilder<CppDeclaratorType>
+	{
+	public:
+		MakeDeclaratorType& declarator(const vl::Ptr<CppDeclarator>& value);
+		MakeDeclaratorType& keywords(const vl::Ptr<CppDeclaratorKeyword>& value);
+		MakeDeclaratorType& type(const vl::Ptr<CppTypeOrExpr>& value);
+	};
+
+	class MakeDeclaratorVariablePart : public vl::glr::ParsingAstBuilder<CppDeclaratorVariablePart>
+	{
+	public:
+		MakeDeclaratorVariablePart& declarator(const vl::Ptr<CppDeclarator>& value);
+		MakeDeclaratorVariablePart& init(const vl::Ptr<CppVarInit>& value);
+	};
+
+	class MakeDefaultStat : public vl::glr::ParsingAstBuilder<CppDefaultStat>
+	{
+	public:
+		MakeDefaultStat& stat(const vl::Ptr<CppStatement>& value);
+	};
+
+	class MakeDeleteExpr : public vl::glr::ParsingAstBuilder<CppDeleteExpr>
+	{
+	public:
+		MakeDeleteExpr& argument(const vl::Ptr<CppTypeOrExpr>& value);
+		MakeDeleteExpr& array(CppOperatorArray value);
+		MakeDeleteExpr& scope(CppOperatorScope value);
+	};
+
+	class MakeDoWhileStat : public vl::glr::ParsingAstBuilder<CppDoWhileStat>
+	{
+	public:
+		MakeDoWhileStat& condition(const vl::Ptr<CppTypeOrExpr>& value);
+		MakeDoWhileStat& stat(const vl::Ptr<CppStatement>& value);
+	};
+
+	class MakeExprStat : public vl::glr::ParsingAstBuilder<CppExprStat>
+	{
+	public:
+		MakeExprStat& expr(const vl::Ptr<CppTypeOrExpr>& value);
+	};
+
+	class MakeForStat : public vl::glr::ParsingAstBuilder<CppForStat>
+	{
+	public:
+		MakeForStat& conditionPart(const vl::Ptr<CppForStatConditionPart>& value);
+		MakeForStat& stat(const vl::Ptr<CppStatement>& value);
+	};
+
+	class MakeForStatIterateCondition : public vl::glr::ParsingAstBuilder<CppForStatIterateCondition>
+	{
+	public:
+		MakeForStatIterateCondition& collection(const vl::Ptr<CppTypeOrExpr>& value);
+		MakeForStatIterateCondition& decl(const vl::Ptr<CppSingleVarDeclaration>& value);
+	};
+
+	class MakeForStatLoopCondition : public vl::glr::ParsingAstBuilder<CppForStatLoopCondition>
+	{
+	public:
+		MakeForStatLoopCondition& condition(const vl::Ptr<CppTypeOrExpr>& value);
+		MakeForStatLoopCondition& sideEffect(const vl::Ptr<CppTypeOrExpr>& value);
+		MakeForStatLoopCondition& varsDecl(const vl::Ptr<CppTypeOrExprOrOthers>& value);
+	};
+
+	class MakeFunctionKeyword : public vl::glr::ParsingAstBuilder<CppFunctionKeyword>
+	{
+	public:
+		MakeFunctionKeyword& arguments(const vl::Ptr<CppTypeOrExpr>& value);
+		MakeFunctionKeyword& keyword(const vl::WString& value);
+	};
+
+	class MakeGenericArgument : public vl::glr::ParsingAstBuilder<CppGenericArgument>
+	{
+	public:
+		MakeGenericArgument& argument(const vl::Ptr<CppTypeOrExpr>& value);
+		MakeGenericArgument& variadic(const vl::WString& value);
+	};
+
+	class MakeGenericArguments : public vl::glr::ParsingAstBuilder<CppGenericArguments>
+	{
+	public:
+		MakeGenericArguments& arguments(const vl::Ptr<CppTypeOrExprOrOthers>& value);
+	};
+
+	class MakeGenericHeader : public vl::glr::ParsingAstBuilder<CppGenericHeader>
+	{
+	public:
+		MakeGenericHeader& parameters(const vl::Ptr<CppTypeOrExprOrOthers>& value);
+	};
+
+	class MakeGotoStat : public vl::glr::ParsingAstBuilder<CppGotoStat>
+	{
+	public:
+		MakeGotoStat& label(const vl::WString& value);
+	};
+
+	class MakeIfElseStat : public vl::glr::ParsingAstBuilder<CppIfElseStat>
+	{
+	public:
+		MakeIfElseStat& condition(const vl::Ptr<CppTypeOrExprOrOthers>& value);
+		MakeIfElseStat& falseStat(const vl::Ptr<CppStatement>& value);
+		MakeIfElseStat& trueStat(const vl::Ptr<CppStatement>& value);
+		MakeIfElseStat& varsDecl(const vl::Ptr<CppMultipleVarDeclaration>& value);
+	};
+
+	class MakeIfExpr : public vl::glr::ParsingAstBuilder<CppIfExpr>
+	{
+	public:
+		MakeIfExpr& condition(const vl::Ptr<CppTypeOrExpr>& value);
+		MakeIfExpr& falseBranch(const vl::Ptr<CppTypeOrExpr>& value);
+		MakeIfExpr& trueBranch(const vl::Ptr<CppTypeOrExpr>& value);
+	};
+
+	class MakeIndexExpr : public vl::glr::ParsingAstBuilder<CppIndexExpr>
+	{
+	public:
+		MakeIndexExpr& index(const vl::Ptr<CppTypeOrExpr>& value);
+		MakeIndexExpr& operand(const vl::Ptr<CppTypeOrExpr>& value);
+	};
+
+	class MakeLabelStat : public vl::glr::ParsingAstBuilder<CppLabelStat>
+	{
+	public:
+		MakeLabelStat& label(const vl::WString& value);
+		MakeLabelStat& stat(const vl::Ptr<CppStatement>& value);
+	};
+
+	class MakeLambdaCapture : public vl::glr::ParsingAstBuilder<CppLambdaCapture>
+	{
+	public:
+		MakeLambdaCapture& id(const vl::Ptr<CppIdentifier>& value);
+		MakeLambdaCapture& init(const vl::Ptr<CppVarInit>& value);
+		MakeLambdaCapture& objKind(CppLambdaCaptureObjectKinds value);
+		MakeLambdaCapture& refKind(CppLambdaCaptureRefeferenceKinds value);
+	};
+
+	class MakeLambdaExpr : public vl::glr::ParsingAstBuilder<CppLambdaExpr>
+	{
+	public:
+		MakeLambdaExpr& captures(const vl::Ptr<CppLambdaCapture>& value);
+		MakeLambdaExpr& functionHeader(const vl::Ptr<CppDeclaratorFunctionPart>& value);
+		MakeLambdaExpr& genericHeader(const vl::Ptr<CppGenericHeader>& value);
+		MakeLambdaExpr& stat(const vl::Ptr<CppStatement>& value);
+	};
+
+	class MakeMultipleVarDeclaration : public vl::glr::ParsingAstBuilder<CppMultipleVarDeclaration>
+	{
+	public:
+		MakeMultipleVarDeclaration& keywords(const vl::Ptr<CppDeclaratorKeyword>& value);
+		MakeMultipleVarDeclaration& type(const vl::Ptr<CppTypeOrExpr>& value);
+		MakeMultipleVarDeclaration& varParts(const vl::Ptr<CppDeclaratorVariablePart>& value);
+	};
+
+	class MakeNameIdentifier : public vl::glr::ParsingAstBuilder<CppNameIdentifier>
+	{
+	public:
+		MakeNameIdentifier& kind(CppNameKinds value);
+		MakeNameIdentifier& name(const vl::WString& value);
+	};
+
+	class MakeNewExpr : public vl::glr::ParsingAstBuilder<CppNewExpr>
+	{
+	public:
+		MakeNewExpr& arrayArguments(const vl::Ptr<CppTypeOrExpr>& value);
+		MakeNewExpr& init(const vl::Ptr<CppVarInit>& value);
+		MakeNewExpr& placementArguments(const vl::Ptr<CppTypeOrExpr>& value);
+		MakeNewExpr& scope(CppOperatorScope value);
+		MakeNewExpr& type(const vl::Ptr<CppTypeOrExpr>& value);
+	};
+
+	class MakeNumericExprLiteral : public vl::glr::ParsingAstBuilder<CppNumericExprLiteral>
+	{
+	public:
+		MakeNumericExprLiteral& kind(CppNumericExprLiteralKinds value);
+		MakeNumericExprLiteral& literal(const vl::WString& value);
+	};
+
+	class MakeOperatorIdentifier : public vl::glr::ParsingAstBuilder<CppOperatorIdentifier>
+	{
+	public:
+		MakeOperatorIdentifier& op(CppOperators value);
+	};
+
+	class MakeOrdinaryGenericParameter : public vl::glr::ParsingAstBuilder<CppOrdinaryGenericParameter>
+	{
+	public:
+		MakeOrdinaryGenericParameter& genericHeader(const vl::Ptr<CppGenericHeader>& value);
+		MakeOrdinaryGenericParameter& id(const vl::Ptr<CppIdentifier>& value);
+		MakeOrdinaryGenericParameter& init(const vl::Ptr<CppTypeOrExpr>& value);
+		MakeOrdinaryGenericParameter& typenameToken(const vl::WString& value);
+		MakeOrdinaryGenericParameter& variadic(const vl::WString& value);
+	};
+
+	class MakeParenthesisExpr : public vl::glr::ParsingAstBuilder<CppParenthesisExpr>
+	{
+	public:
+		MakeParenthesisExpr& expr(const vl::Ptr<CppTypeOrExpr>& value);
+	};
+
+	class MakePostfixUnaryExpr : public vl::glr::ParsingAstBuilder<CppPostfixUnaryExpr>
+	{
+	public:
+		MakePostfixUnaryExpr& op(CppOperators value);
+		MakePostfixUnaryExpr& operand(const vl::Ptr<CppTypeOrExpr>& value);
+	};
+
+	class MakePrefixUnaryExpr : public vl::glr::ParsingAstBuilder<CppPrefixUnaryExpr>
+	{
+	public:
+		MakePrefixUnaryExpr& op(CppOperators value);
+		MakePrefixUnaryExpr& operand(const vl::Ptr<CppTypeOrExpr>& value);
+	};
+
+	class MakePrimitiveExprLiteral : public vl::glr::ParsingAstBuilder<CppPrimitiveExprLiteral>
+	{
+	public:
+		MakePrimitiveExprLiteral& kind(CppPrimitiveExprLiteralKinds value);
+	};
+
+	class MakePrimitiveType : public vl::glr::ParsingAstBuilder<CppPrimitiveType>
+	{
+	public:
+		MakePrimitiveType& kind(CppPrimitiveTypeKinds value);
+		MakePrimitiveType& literal1(const vl::WString& value);
+		MakePrimitiveType& literal2(const vl::WString& value);
+	};
+
+	class MakeQualifiedName : public vl::glr::ParsingAstBuilder<CppQualifiedName>
+	{
+	public:
+		MakeQualifiedName& arguments(const vl::Ptr<CppGenericArguments>& value);
+		MakeQualifiedName& expr(const vl::Ptr<CppTypeOrExpr>& value);
+		MakeQualifiedName& id(const vl::Ptr<CppIdentifier>& value);
+		MakeQualifiedName& kind(CppQualifiedNameKinds value);
+		MakeQualifiedName& parent(const vl::Ptr<CppQualifiedName>& value);
+	};
+
+	class MakeReturnStat : public vl::glr::ParsingAstBuilder<CppReturnStat>
+	{
+	public:
+		MakeReturnStat& expr(const vl::Ptr<CppTypeOrExpr>& value);
+	};
+
+	class MakeSingleVarDeclaration : public vl::glr::ParsingAstBuilder<CppSingleVarDeclaration>
+	{
+	public:
+		MakeSingleVarDeclaration& keywords(const vl::Ptr<CppDeclaratorKeyword>& value);
+		MakeSingleVarDeclaration& type(const vl::Ptr<CppTypeOrExpr>& value);
+		MakeSingleVarDeclaration& varPart(const vl::Ptr<CppDeclaratorVariablePart>& value);
+	};
+
+	class MakeSizeofExpr : public vl::glr::ParsingAstBuilder<CppSizeofExpr>
+	{
+	public:
+		MakeSizeofExpr& argument(const vl::Ptr<CppTypeOrExpr>& value);
+		MakeSizeofExpr& variadic(const vl::WString& value);
+	};
+
+	class MakeStatementToResolve : public vl::glr::ParsingAstBuilder<CppStatementToResolve>
+	{
+	public:
+		MakeStatementToResolve& candidates(const vl::Ptr<CppStatement>& value);
+	};
+
+	class MakeStaticAssertDeclaration : public vl::glr::ParsingAstBuilder<CppStaticAssertDeclaration>
+	{
+	public:
+		MakeStaticAssertDeclaration& expr(const vl::Ptr<CppTypeOrExpr>& value);
+		MakeStaticAssertDeclaration& message(const vl::Ptr<CppTypeOrExpr>& value);
+	};
+
+	class MakeStringLiteral : public vl::glr::ParsingAstBuilder<CppStringLiteral>
+	{
+	public:
+		MakeStringLiteral& fragments(const vl::Ptr<CppStringLiteralFragment>& value);
+	};
+
+	class MakeStringLiteralFragment : public vl::glr::ParsingAstBuilder<CppStringLiteralFragment>
+	{
+	public:
+		MakeStringLiteralFragment& kind(CppStringLiteralKinds value);
+		MakeStringLiteralFragment& literal(const vl::WString& value);
+	};
+
+	class MakeSwitchStat : public vl::glr::ParsingAstBuilder<CppSwitchStat>
+	{
+	public:
+		MakeSwitchStat& condition(const vl::Ptr<CppTypeOrExprOrOthers>& value);
+		MakeSwitchStat& stat(const vl::Ptr<CppStatement>& value);
+	};
+
+	class MakeSysFuncExpr : public vl::glr::ParsingAstBuilder<CppSysFuncExpr>
+	{
+	public:
+		MakeSysFuncExpr& argument(const vl::Ptr<CppTypeOrExpr>& value);
+		MakeSysFuncExpr& keyword(const vl::WString& value);
+		MakeSysFuncExpr& variadic(const vl::WString& value);
+	};
+
+	class MakeThrowExpr : public vl::glr::ParsingAstBuilder<CppThrowExpr>
+	{
+	public:
+		MakeThrowExpr& argument(const vl::Ptr<CppTypeOrExpr>& value);
+	};
+
+	class MakeTryStat : public vl::glr::ParsingAstBuilder<CppTryStat>
+	{
+	public:
+		MakeTryStat& catchParts(const vl::Ptr<CppTryStatCatchPart>& value);
+		MakeTryStat& tryStat(const vl::Ptr<CppStatement>& value);
+	};
+
+	class MakeTryStatCatchPart : public vl::glr::ParsingAstBuilder<CppTryStatCatchPart>
+	{
+	public:
+		MakeTryStatCatchPart& decl(const vl::Ptr<CppTypeOrExprOrOthers>& value);
+		MakeTryStatCatchPart& stat(const vl::Ptr<CppStatement>& value);
+	};
+
+	class MakeTypeOrExprOrOthersToResolve : public vl::glr::ParsingAstBuilder<CppTypeOrExprOrOthersToResolve>
+	{
+	public:
+		MakeTypeOrExprOrOthersToResolve& candidates(const vl::Ptr<CppTypeOrExprOrOthers>& value);
+	};
+
+	class MakeTypeOrExprToResolve : public vl::glr::ParsingAstBuilder<CppTypeOrExprToResolve>
+	{
+	public:
+		MakeTypeOrExprToResolve& candidates(const vl::Ptr<CppTypeOrExpr>& value);
+	};
+
+	class MakeVarBraceInit : public vl::glr::ParsingAstBuilder<CppVarBraceInit>
+	{
+	public:
+		MakeVarBraceInit& arguments(const vl::Ptr<CppTypeOrExpr>& value);
+	};
+
+	class MakeVarParanthesisInit : public vl::glr::ParsingAstBuilder<CppVarParanthesisInit>
+	{
+	public:
+		MakeVarParanthesisInit& arguments(const vl::Ptr<CppTypeOrExpr>& value);
+	};
+
+	class MakeVarValueInit : public vl::glr::ParsingAstBuilder<CppVarValueInit>
+	{
+	public:
+		MakeVarValueInit& expr(const vl::Ptr<CppTypeOrExpr>& value);
+	};
+
+	class MakeVariadicExpr : public vl::glr::ParsingAstBuilder<CppVariadicExpr>
+	{
+	public:
+		MakeVariadicExpr& operand(const vl::Ptr<CppTypeOrExpr>& value);
+		MakeVariadicExpr& variadic(const vl::WString& value);
+	};
+
+	class MakeVolatileType : public vl::glr::ParsingAstBuilder<CppVolatileType>
+	{
+	public:
+		MakeVolatileType& type(const vl::Ptr<CppTypeOrExpr>& value);
+	};
+
+	class MakeWhileStat : public vl::glr::ParsingAstBuilder<CppWhileStat>
+	{
+	public:
+		MakeWhileStat& condition(const vl::Ptr<CppTypeOrExprOrOthers>& value);
+		MakeWhileStat& stat(const vl::Ptr<CppStatement>& value);
+	};
+
+	class Make__TryStat : public vl::glr::ParsingAstBuilder<Cpp__TryStat>
+	{
+	public:
+		Make__TryStat& exceptStat(const vl::Ptr<CppStatement>& value);
+		Make__TryStat& filter(const vl::Ptr<CppTypeOrExpr>& value);
+		Make__TryStat& finallyStat(const vl::Ptr<CppStatement>& value);
+		Make__TryStat& tryStat(const vl::Ptr<CppStatement>& value);
+	};
+
 }
 #endif

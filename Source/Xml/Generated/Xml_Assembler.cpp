@@ -6,172 +6,166 @@ Licensed under https://github.com/vczh-libraries/License
 
 #include "Xml_Assembler.h"
 
-namespace vl
+namespace vl::glr::xml
 {
-	namespace glr
-	{
-		namespace xml
-		{
 
 /***********************************************************************
 XmlAstInsReceiver : public vl::glr::AstInsReceiverBase
 ***********************************************************************/
 
-			vl::Ptr<vl::glr::ParsingAstBase> XmlAstInsReceiver::CreateAstNode(vl::vint32_t type)
-			{
-				auto cppTypeName = XmlCppTypeName((XmlClasses)type);
-				switch((XmlClasses)type)
-				{
-				case XmlClasses::Attribute:
-					return vl::Ptr(new vl::glr::xml::XmlAttribute);
-				case XmlClasses::CData:
-					return vl::Ptr(new vl::glr::xml::XmlCData);
-				case XmlClasses::Comment:
-					return vl::Ptr(new vl::glr::xml::XmlComment);
-				case XmlClasses::Document:
-					return vl::Ptr(new vl::glr::xml::XmlDocument);
-				case XmlClasses::Element:
-					return vl::Ptr(new vl::glr::xml::XmlElement);
-				case XmlClasses::Instruction:
-					return vl::Ptr(new vl::glr::xml::XmlInstruction);
-				case XmlClasses::Text:
-					return vl::Ptr(new vl::glr::xml::XmlText);
-				default:
-					return vl::glr::AssemblyThrowCannotCreateAbstractType(type, cppTypeName);
-				}
-			}
-
-			void XmlAstInsReceiver::SetField(vl::glr::ParsingAstBase* object, vl::vint32_t field, vl::Ptr<vl::glr::ParsingAstBase> value)
-			{
-				auto cppFieldName = XmlCppFieldName((XmlFields)field);
-				switch((XmlFields)field)
-				{
-				case XmlFields::Document_prologs:
-					return vl::glr::AssemblerSetObjectField(&vl::glr::xml::XmlDocument::prologs, object, field, value, cppFieldName);
-				case XmlFields::Document_rootElement:
-					return vl::glr::AssemblerSetObjectField(&vl::glr::xml::XmlDocument::rootElement, object, field, value, cppFieldName);
-				case XmlFields::Element_attributes:
-					return vl::glr::AssemblerSetObjectField(&vl::glr::xml::XmlElement::attributes, object, field, value, cppFieldName);
-				case XmlFields::Element_subNodes:
-					return vl::glr::AssemblerSetObjectField(&vl::glr::xml::XmlElement::subNodes, object, field, value, cppFieldName);
-				case XmlFields::Instruction_attributes:
-					return vl::glr::AssemblerSetObjectField(&vl::glr::xml::XmlInstruction::attributes, object, field, value, cppFieldName);
-				default:
-					return vl::glr::AssemblyThrowFieldNotObject(field, cppFieldName);
-				}
-			}
-
-			void XmlAstInsReceiver::SetField(vl::glr::ParsingAstBase* object, vl::vint32_t field, const vl::regex::RegexToken& token, vl::vint32_t tokenIndex)
-			{
-				auto cppFieldName = XmlCppFieldName((XmlFields)field);
-				switch((XmlFields)field)
-				{
-				case XmlFields::Attribute_name:
-					return vl::glr::AssemblerSetTokenField(&vl::glr::xml::XmlAttribute::name, object, field, token, tokenIndex, cppFieldName);
-				case XmlFields::Attribute_value:
-					return vl::glr::AssemblerSetTokenField(&vl::glr::xml::XmlAttribute::value, object, field, token, tokenIndex, cppFieldName);
-				case XmlFields::CData_content:
-					return vl::glr::AssemblerSetTokenField(&vl::glr::xml::XmlCData::content, object, field, token, tokenIndex, cppFieldName);
-				case XmlFields::Comment_content:
-					return vl::glr::AssemblerSetTokenField(&vl::glr::xml::XmlComment::content, object, field, token, tokenIndex, cppFieldName);
-				case XmlFields::Element_closingName:
-					return vl::glr::AssemblerSetTokenField(&vl::glr::xml::XmlElement::closingName, object, field, token, tokenIndex, cppFieldName);
-				case XmlFields::Element_name:
-					return vl::glr::AssemblerSetTokenField(&vl::glr::xml::XmlElement::name, object, field, token, tokenIndex, cppFieldName);
-				case XmlFields::Instruction_name:
-					return vl::glr::AssemblerSetTokenField(&vl::glr::xml::XmlInstruction::name, object, field, token, tokenIndex, cppFieldName);
-				case XmlFields::Text_content:
-					return vl::glr::AssemblerSetTokenField(&vl::glr::xml::XmlText::content, object, field, token, tokenIndex, cppFieldName);
-				default:
-					return vl::glr::AssemblyThrowFieldNotToken(field, cppFieldName);
-				}
-			}
-
-			void XmlAstInsReceiver::SetField(vl::glr::ParsingAstBase* object, vl::vint32_t field, vl::vint32_t enumItem, bool weakAssignment)
-			{
-				auto cppFieldName = XmlCppFieldName((XmlFields)field);
-				return vl::glr::AssemblyThrowFieldNotEnum(field, cppFieldName);
-			}
-
-			const wchar_t* XmlTypeName(XmlClasses type)
-			{
-				const wchar_t* results[] = {
-					L"Attribute",
-					L"CData",
-					L"Comment",
-					L"Document",
-					L"Element",
-					L"Instruction",
-					L"Node",
-					L"Text",
-				};
-				vl::vint index = (vl::vint)type;
-				return 0 <= index && index < 8 ? results[index] : nullptr;
-			}
-
-			const wchar_t* XmlCppTypeName(XmlClasses type)
-			{
-				const wchar_t* results[] = {
-					L"vl::glr::xml::XmlAttribute",
-					L"vl::glr::xml::XmlCData",
-					L"vl::glr::xml::XmlComment",
-					L"vl::glr::xml::XmlDocument",
-					L"vl::glr::xml::XmlElement",
-					L"vl::glr::xml::XmlInstruction",
-					L"vl::glr::xml::XmlNode",
-					L"vl::glr::xml::XmlText",
-				};
-				vl::vint index = (vl::vint)type;
-				return 0 <= index && index < 8 ? results[index] : nullptr;
-			}
-
-			const wchar_t* XmlFieldName(XmlFields field)
-			{
-				const wchar_t* results[] = {
-					L"Attribute::name",
-					L"Attribute::value",
-					L"CData::content",
-					L"Comment::content",
-					L"Document::prologs",
-					L"Document::rootElement",
-					L"Element::attributes",
-					L"Element::closingName",
-					L"Element::name",
-					L"Element::subNodes",
-					L"Instruction::attributes",
-					L"Instruction::name",
-					L"Text::content",
-				};
-				vl::vint index = (vl::vint)field;
-				return 0 <= index && index < 13 ? results[index] : nullptr;
-			}
-
-			const wchar_t* XmlCppFieldName(XmlFields field)
-			{
-				const wchar_t* results[] = {
-					L"vl::glr::xml::XmlAttribute::name",
-					L"vl::glr::xml::XmlAttribute::value",
-					L"vl::glr::xml::XmlCData::content",
-					L"vl::glr::xml::XmlComment::content",
-					L"vl::glr::xml::XmlDocument::prologs",
-					L"vl::glr::xml::XmlDocument::rootElement",
-					L"vl::glr::xml::XmlElement::attributes",
-					L"vl::glr::xml::XmlElement::closingName",
-					L"vl::glr::xml::XmlElement::name",
-					L"vl::glr::xml::XmlElement::subNodes",
-					L"vl::glr::xml::XmlInstruction::attributes",
-					L"vl::glr::xml::XmlInstruction::name",
-					L"vl::glr::xml::XmlText::content",
-				};
-				vl::vint index = (vl::vint)field;
-				return 0 <= index && index < 13 ? results[index] : nullptr;
-			}
-
-			vl::Ptr<vl::glr::ParsingAstBase> XmlAstInsReceiver::ResolveAmbiguity(vl::vint32_t type, vl::collections::Array<vl::Ptr<vl::glr::ParsingAstBase>>& candidates)
-			{
-				auto cppTypeName = XmlCppTypeName((XmlClasses)type);
-				return vl::glr::AssemblyThrowTypeNotAllowAmbiguity(type, cppTypeName);
-			}
+	vl::Ptr<vl::glr::ParsingAstBase> XmlAstInsReceiver::CreateAstNode(vl::vint32_t type)
+	{
+		auto cppTypeName = XmlCppTypeName((XmlClasses)type);
+		switch((XmlClasses)type)
+		{
+		case XmlClasses::Attribute:
+			return vl::Ptr(new vl::glr::xml::XmlAttribute);
+		case XmlClasses::CData:
+			return vl::Ptr(new vl::glr::xml::XmlCData);
+		case XmlClasses::Comment:
+			return vl::Ptr(new vl::glr::xml::XmlComment);
+		case XmlClasses::Document:
+			return vl::Ptr(new vl::glr::xml::XmlDocument);
+		case XmlClasses::Element:
+			return vl::Ptr(new vl::glr::xml::XmlElement);
+		case XmlClasses::Instruction:
+			return vl::Ptr(new vl::glr::xml::XmlInstruction);
+		case XmlClasses::Text:
+			return vl::Ptr(new vl::glr::xml::XmlText);
+		default:
+			return vl::glr::AssemblyThrowCannotCreateAbstractType(type, cppTypeName);
 		}
+	}
+
+	void XmlAstInsReceiver::SetField(vl::glr::ParsingAstBase* object, vl::vint32_t field, vl::Ptr<vl::glr::ParsingAstBase> value)
+	{
+		auto cppFieldName = XmlCppFieldName((XmlFields)field);
+		switch((XmlFields)field)
+		{
+		case XmlFields::Document_prologs:
+			return vl::glr::AssemblerSetObjectField(&vl::glr::xml::XmlDocument::prologs, object, field, value, cppFieldName);
+		case XmlFields::Document_rootElement:
+			return vl::glr::AssemblerSetObjectField(&vl::glr::xml::XmlDocument::rootElement, object, field, value, cppFieldName);
+		case XmlFields::Element_attributes:
+			return vl::glr::AssemblerSetObjectField(&vl::glr::xml::XmlElement::attributes, object, field, value, cppFieldName);
+		case XmlFields::Element_subNodes:
+			return vl::glr::AssemblerSetObjectField(&vl::glr::xml::XmlElement::subNodes, object, field, value, cppFieldName);
+		case XmlFields::Instruction_attributes:
+			return vl::glr::AssemblerSetObjectField(&vl::glr::xml::XmlInstruction::attributes, object, field, value, cppFieldName);
+		default:
+			return vl::glr::AssemblyThrowFieldNotObject(field, cppFieldName);
+		}
+	}
+
+	void XmlAstInsReceiver::SetField(vl::glr::ParsingAstBase* object, vl::vint32_t field, const vl::regex::RegexToken& token, vl::vint32_t tokenIndex)
+	{
+		auto cppFieldName = XmlCppFieldName((XmlFields)field);
+		switch((XmlFields)field)
+		{
+		case XmlFields::Attribute_name:
+			return vl::glr::AssemblerSetTokenField(&vl::glr::xml::XmlAttribute::name, object, field, token, tokenIndex, cppFieldName);
+		case XmlFields::Attribute_value:
+			return vl::glr::AssemblerSetTokenField(&vl::glr::xml::XmlAttribute::value, object, field, token, tokenIndex, cppFieldName);
+		case XmlFields::CData_content:
+			return vl::glr::AssemblerSetTokenField(&vl::glr::xml::XmlCData::content, object, field, token, tokenIndex, cppFieldName);
+		case XmlFields::Comment_content:
+			return vl::glr::AssemblerSetTokenField(&vl::glr::xml::XmlComment::content, object, field, token, tokenIndex, cppFieldName);
+		case XmlFields::Element_closingName:
+			return vl::glr::AssemblerSetTokenField(&vl::glr::xml::XmlElement::closingName, object, field, token, tokenIndex, cppFieldName);
+		case XmlFields::Element_name:
+			return vl::glr::AssemblerSetTokenField(&vl::glr::xml::XmlElement::name, object, field, token, tokenIndex, cppFieldName);
+		case XmlFields::Instruction_name:
+			return vl::glr::AssemblerSetTokenField(&vl::glr::xml::XmlInstruction::name, object, field, token, tokenIndex, cppFieldName);
+		case XmlFields::Text_content:
+			return vl::glr::AssemblerSetTokenField(&vl::glr::xml::XmlText::content, object, field, token, tokenIndex, cppFieldName);
+		default:
+			return vl::glr::AssemblyThrowFieldNotToken(field, cppFieldName);
+		}
+	}
+
+	void XmlAstInsReceiver::SetField(vl::glr::ParsingAstBase* object, vl::vint32_t field, vl::vint32_t enumItem, bool weakAssignment)
+	{
+		auto cppFieldName = XmlCppFieldName((XmlFields)field);
+		return vl::glr::AssemblyThrowFieldNotEnum(field, cppFieldName);
+	}
+
+	const wchar_t* XmlTypeName(XmlClasses type)
+	{
+		const wchar_t* results[] = {
+			L"Attribute",
+			L"CData",
+			L"Comment",
+			L"Document",
+			L"Element",
+			L"Instruction",
+			L"Node",
+			L"Text",
+		};
+		vl::vint index = (vl::vint)type;
+		return 0 <= index && index < 8 ? results[index] : nullptr;
+	}
+
+	const wchar_t* XmlCppTypeName(XmlClasses type)
+	{
+		const wchar_t* results[] = {
+			L"vl::glr::xml::XmlAttribute",
+			L"vl::glr::xml::XmlCData",
+			L"vl::glr::xml::XmlComment",
+			L"vl::glr::xml::XmlDocument",
+			L"vl::glr::xml::XmlElement",
+			L"vl::glr::xml::XmlInstruction",
+			L"vl::glr::xml::XmlNode",
+			L"vl::glr::xml::XmlText",
+		};
+		vl::vint index = (vl::vint)type;
+		return 0 <= index && index < 8 ? results[index] : nullptr;
+	}
+
+	const wchar_t* XmlFieldName(XmlFields field)
+	{
+		const wchar_t* results[] = {
+			L"Attribute::name",
+			L"Attribute::value",
+			L"CData::content",
+			L"Comment::content",
+			L"Document::prologs",
+			L"Document::rootElement",
+			L"Element::attributes",
+			L"Element::closingName",
+			L"Element::name",
+			L"Element::subNodes",
+			L"Instruction::attributes",
+			L"Instruction::name",
+			L"Text::content",
+		};
+		vl::vint index = (vl::vint)field;
+		return 0 <= index && index < 13 ? results[index] : nullptr;
+	}
+
+	const wchar_t* XmlCppFieldName(XmlFields field)
+	{
+		const wchar_t* results[] = {
+			L"vl::glr::xml::XmlAttribute::name",
+			L"vl::glr::xml::XmlAttribute::value",
+			L"vl::glr::xml::XmlCData::content",
+			L"vl::glr::xml::XmlComment::content",
+			L"vl::glr::xml::XmlDocument::prologs",
+			L"vl::glr::xml::XmlDocument::rootElement",
+			L"vl::glr::xml::XmlElement::attributes",
+			L"vl::glr::xml::XmlElement::closingName",
+			L"vl::glr::xml::XmlElement::name",
+			L"vl::glr::xml::XmlElement::subNodes",
+			L"vl::glr::xml::XmlInstruction::attributes",
+			L"vl::glr::xml::XmlInstruction::name",
+			L"vl::glr::xml::XmlText::content",
+		};
+		vl::vint index = (vl::vint)field;
+		return 0 <= index && index < 13 ? results[index] : nullptr;
+	}
+
+	vl::Ptr<vl::glr::ParsingAstBase> XmlAstInsReceiver::ResolveAmbiguity(vl::vint32_t type, vl::collections::Array<vl::Ptr<vl::glr::ParsingAstBase>>& candidates)
+	{
+		auto cppTypeName = XmlCppTypeName((XmlClasses)type);
+		return vl::glr::AssemblyThrowTypeNotAllowAmbiguity(type, cppTypeName);
 	}
 }

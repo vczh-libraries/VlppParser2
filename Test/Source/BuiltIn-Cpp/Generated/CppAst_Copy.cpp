@@ -6,1645 +6,1642 @@ Licensed under https://github.com/vczh-libraries/License
 
 #include "CppAst_Copy.h"
 
-namespace cpp_parser
+namespace cpp_parser::copy_visitor
 {
-	namespace copy_visitor
+	void AstVisitor::CopyFields(CppAdvancedType* from, CppAdvancedType* to)
 	{
-		void AstVisitor::CopyFields(CppAdvancedType* from, CppAdvancedType* to)
-		{
-			to->argument = CopyNode(from->argument.Obj());
-			to->kind = from->kind;
-		}
-
-		void AstVisitor::CopyFields(CppBinaryExpr* from, CppBinaryExpr* to)
-		{
-			CopyFields(static_cast<CppExprOnly*>(from), static_cast<CppExprOnly*>(to));
-			to->left = CopyNode(from->left.Obj());
-			to->op = from->op;
-			to->right = CopyNode(from->right.Obj());
-		}
-
-		void AstVisitor::CopyFields(CppBlockStat* from, CppBlockStat* to)
-		{
-			CopyFields(static_cast<CppStatement*>(from), static_cast<CppStatement*>(to));
-			for (auto&& listItem : from->statements)
-			{
-				to->statements.Add(CopyNode(listItem.Obj()));
-			}
-		}
-
-		void AstVisitor::CopyFields(CppBraceExpr* from, CppBraceExpr* to)
-		{
-			CopyFields(static_cast<CppExprOnly*>(from), static_cast<CppExprOnly*>(to));
-			for (auto&& listItem : from->arguments)
-			{
-				to->arguments.Add(CopyNode(listItem.Obj()));
-			}
-		}
-
-		void AstVisitor::CopyFields(CppBreakStat* from, CppBreakStat* to)
-		{
-			CopyFields(static_cast<CppStatement*>(from), static_cast<CppStatement*>(to));
-		}
-
-		void AstVisitor::CopyFields(CppCallExpr* from, CppCallExpr* to)
-		{
-			CopyFields(static_cast<CppExprOnly*>(from), static_cast<CppExprOnly*>(to));
-			for (auto&& listItem : from->arguments)
-			{
-				to->arguments.Add(CopyNode(listItem.Obj()));
-			}
-			to->kind = from->kind;
-			to->operand = CopyNode(from->operand.Obj());
-		}
-
-		void AstVisitor::CopyFields(CppCaseStat* from, CppCaseStat* to)
-		{
-			CopyFields(static_cast<CppStatement*>(from), static_cast<CppStatement*>(to));
-			to->expr = CopyNode(from->expr.Obj());
-			to->stat = CopyNode(from->stat.Obj());
-		}
-
-		void AstVisitor::CopyFields(CppCastExpr* from, CppCastExpr* to)
-		{
-			CopyFields(static_cast<CppExprOnly*>(from), static_cast<CppExprOnly*>(to));
-			to->expr = CopyNode(from->expr.Obj());
-			to->keyword = from->keyword;
-			to->type = CopyNode(from->type.Obj());
-		}
-
-		void AstVisitor::CopyFields(CppConstType* from, CppConstType* to)
-		{
-			CopyFields(static_cast<CppTypeOnly*>(from), static_cast<CppTypeOnly*>(to));
-			to->type = CopyNode(from->type.Obj());
-		}
-
-		void AstVisitor::CopyFields(CppContinueStat* from, CppContinueStat* to)
-		{
-			CopyFields(static_cast<CppStatement*>(from), static_cast<CppStatement*>(to));
-		}
-
-		void AstVisitor::CopyFields(CppDeclStat* from, CppDeclStat* to)
-		{
-			CopyFields(static_cast<CppStatement*>(from), static_cast<CppStatement*>(to));
-			to->decl = CopyNode(from->decl.Obj());
-		}
-
-		void AstVisitor::CopyFields(CppDeclaration* from, CppDeclaration* to)
-		{
-			CopyFields(static_cast<CppTypeOrExprOrOthers*>(from), static_cast<CppTypeOrExprOrOthers*>(to));
-		}
-
-		void AstVisitor::CopyFields(CppDeclarator* from, CppDeclarator* to)
-		{
-			for (auto&& listItem : from->advancedTypes)
-			{
-				to->advancedTypes.Add(CopyNode(listItem.Obj()));
-			}
-			for (auto&& listItem : from->arrayParts)
-			{
-				to->arrayParts.Add(CopyNode(listItem.Obj()));
-			}
-			to->funcPart = CopyNode(from->funcPart.Obj());
-			to->id = CopyNode(from->id.Obj());
-			to->innerDeclarator = CopyNode(from->innerDeclarator.Obj());
-			for (auto&& listItem : from->keywords)
-			{
-				to->keywords.Add(CopyNode(listItem.Obj()));
-			}
-			to->variadic = from->variadic;
-		}
-
-		void AstVisitor::CopyFields(CppDeclaratorArrayPart* from, CppDeclaratorArrayPart* to)
-		{
-			to->argument = CopyNode(from->argument.Obj());
-		}
-
-		void AstVisitor::CopyFields(CppDeclaratorFunctionPart* from, CppDeclaratorFunctionPart* to)
-		{
-			to->deferredType = CopyNode(from->deferredType.Obj());
-			for (auto&& listItem : from->keywords)
-			{
-				to->keywords.Add(CopyNode(listItem.Obj()));
-			}
-			for (auto&& listItem : from->parameters)
-			{
-				to->parameters.Add(CopyNode(listItem.Obj()));
-			}
-			to->variadic = from->variadic;
-		}
-
-		void AstVisitor::CopyFields(CppDeclaratorKeyword* from, CppDeclaratorKeyword* to)
-		{
-			to->keyword = from->keyword;
-		}
-
-		void AstVisitor::CopyFields(CppDeclaratorType* from, CppDeclaratorType* to)
-		{
-			CopyFields(static_cast<CppTypeOrExpr*>(from), static_cast<CppTypeOrExpr*>(to));
-			to->declarator = CopyNode(from->declarator.Obj());
-			for (auto&& listItem : from->keywords)
-			{
-				to->keywords.Add(CopyNode(listItem.Obj()));
-			}
-			to->type = CopyNode(from->type.Obj());
-		}
-
-		void AstVisitor::CopyFields(CppDeclaratorVariablePart* from, CppDeclaratorVariablePart* to)
-		{
-			to->declarator = CopyNode(from->declarator.Obj());
-			to->init = CopyNode(from->init.Obj());
-		}
-
-		void AstVisitor::CopyFields(CppDefaultStat* from, CppDefaultStat* to)
-		{
-			CopyFields(static_cast<CppStatement*>(from), static_cast<CppStatement*>(to));
-			to->stat = CopyNode(from->stat.Obj());
-		}
-
-		void AstVisitor::CopyFields(CppDeleteExpr* from, CppDeleteExpr* to)
-		{
-			CopyFields(static_cast<CppExprOnly*>(from), static_cast<CppExprOnly*>(to));
-			to->argument = CopyNode(from->argument.Obj());
-			to->array = from->array;
-			to->scope = from->scope;
-		}
-
-		void AstVisitor::CopyFields(CppDoWhileStat* from, CppDoWhileStat* to)
-		{
-			CopyFields(static_cast<CppStatement*>(from), static_cast<CppStatement*>(to));
-			to->condition = CopyNode(from->condition.Obj());
-			to->stat = CopyNode(from->stat.Obj());
-		}
-
-		void AstVisitor::CopyFields(CppEmptyStat* from, CppEmptyStat* to)
-		{
-			CopyFields(static_cast<CppStatement*>(from), static_cast<CppStatement*>(to));
-		}
-
-		void AstVisitor::CopyFields(CppExprOnly* from, CppExprOnly* to)
-		{
-			CopyFields(static_cast<CppTypeOrExpr*>(from), static_cast<CppTypeOrExpr*>(to));
-		}
-
-		void AstVisitor::CopyFields(CppExprStat* from, CppExprStat* to)
-		{
-			CopyFields(static_cast<CppStatement*>(from), static_cast<CppStatement*>(to));
-			to->expr = CopyNode(from->expr.Obj());
-		}
-
-		void AstVisitor::CopyFields(CppFile* from, CppFile* to)
-		{
-		}
-
-		void AstVisitor::CopyFields(CppForStat* from, CppForStat* to)
-		{
-			CopyFields(static_cast<CppStatement*>(from), static_cast<CppStatement*>(to));
-			to->conditionPart = CopyNode(from->conditionPart.Obj());
-			to->stat = CopyNode(from->stat.Obj());
-		}
-
-		void AstVisitor::CopyFields(CppForStatConditionPart* from, CppForStatConditionPart* to)
-		{
-		}
-
-		void AstVisitor::CopyFields(CppForStatIterateCondition* from, CppForStatIterateCondition* to)
-		{
-			CopyFields(static_cast<CppForStatConditionPart*>(from), static_cast<CppForStatConditionPart*>(to));
-			to->collection = CopyNode(from->collection.Obj());
-			to->decl = CopyNode(from->decl.Obj());
-		}
-
-		void AstVisitor::CopyFields(CppForStatLoopCondition* from, CppForStatLoopCondition* to)
-		{
-			CopyFields(static_cast<CppForStatConditionPart*>(from), static_cast<CppForStatConditionPart*>(to));
-			to->condition = CopyNode(from->condition.Obj());
-			to->sideEffect = CopyNode(from->sideEffect.Obj());
-			to->varsDecl = CopyNode(from->varsDecl.Obj());
-		}
-
-		void AstVisitor::CopyFields(CppFunctionKeyword* from, CppFunctionKeyword* to)
-		{
-			for (auto&& listItem : from->arguments)
-			{
-				to->arguments.Add(CopyNode(listItem.Obj()));
-			}
-			to->keyword = from->keyword;
-		}
-
-		void AstVisitor::CopyFields(CppGenericArgument* from, CppGenericArgument* to)
-		{
-			CopyFields(static_cast<CppTypeOrExprOrOthers*>(from), static_cast<CppTypeOrExprOrOthers*>(to));
-			to->argument = CopyNode(from->argument.Obj());
-			to->variadic = from->variadic;
-		}
-
-		void AstVisitor::CopyFields(CppGenericArguments* from, CppGenericArguments* to)
-		{
-			for (auto&& listItem : from->arguments)
-			{
-				to->arguments.Add(CopyNode(listItem.Obj()));
-			}
-		}
-
-		void AstVisitor::CopyFields(CppGenericHeader* from, CppGenericHeader* to)
-		{
-			for (auto&& listItem : from->parameters)
-			{
-				to->parameters.Add(CopyNode(listItem.Obj()));
-			}
-		}
-
-		void AstVisitor::CopyFields(CppGotoStat* from, CppGotoStat* to)
-		{
-			CopyFields(static_cast<CppStatement*>(from), static_cast<CppStatement*>(to));
-			to->label = from->label;
-		}
-
-		void AstVisitor::CopyFields(CppIdentifier* from, CppIdentifier* to)
-		{
-		}
-
-		void AstVisitor::CopyFields(CppIfElseStat* from, CppIfElseStat* to)
-		{
-			CopyFields(static_cast<CppStatement*>(from), static_cast<CppStatement*>(to));
-			to->condition = CopyNode(from->condition.Obj());
-			to->falseStat = CopyNode(from->falseStat.Obj());
-			to->trueStat = CopyNode(from->trueStat.Obj());
-			to->varsDecl = CopyNode(from->varsDecl.Obj());
-		}
-
-		void AstVisitor::CopyFields(CppIfExpr* from, CppIfExpr* to)
-		{
-			CopyFields(static_cast<CppExprOnly*>(from), static_cast<CppExprOnly*>(to));
-			to->condition = CopyNode(from->condition.Obj());
-			to->falseBranch = CopyNode(from->falseBranch.Obj());
-			to->trueBranch = CopyNode(from->trueBranch.Obj());
-		}
-
-		void AstVisitor::CopyFields(CppIndexExpr* from, CppIndexExpr* to)
-		{
-			CopyFields(static_cast<CppExprOnly*>(from), static_cast<CppExprOnly*>(to));
-			to->index = CopyNode(from->index.Obj());
-			to->operand = CopyNode(from->operand.Obj());
-		}
-
-		void AstVisitor::CopyFields(CppLabelStat* from, CppLabelStat* to)
-		{
-			CopyFields(static_cast<CppStatement*>(from), static_cast<CppStatement*>(to));
-			to->label = from->label;
-			to->stat = CopyNode(from->stat.Obj());
-		}
-
-		void AstVisitor::CopyFields(CppLambdaCapture* from, CppLambdaCapture* to)
-		{
-			to->id = CopyNode(from->id.Obj());
-			to->init = CopyNode(from->init.Obj());
-			to->objKind = from->objKind;
-			to->refKind = from->refKind;
-		}
-
-		void AstVisitor::CopyFields(CppLambdaExpr* from, CppLambdaExpr* to)
-		{
-			CopyFields(static_cast<CppExprOnly*>(from), static_cast<CppExprOnly*>(to));
-			for (auto&& listItem : from->captures)
-			{
-				to->captures.Add(CopyNode(listItem.Obj()));
-			}
-			to->functionHeader = CopyNode(from->functionHeader.Obj());
-			to->genericHeader = CopyNode(from->genericHeader.Obj());
-			to->stat = CopyNode(from->stat.Obj());
-		}
-
-		void AstVisitor::CopyFields(CppMultipleVarDeclaration* from, CppMultipleVarDeclaration* to)
-		{
-			CopyFields(static_cast<CppDeclaration*>(from), static_cast<CppDeclaration*>(to));
-			for (auto&& listItem : from->keywords)
-			{
-				to->keywords.Add(CopyNode(listItem.Obj()));
-			}
-			to->type = CopyNode(from->type.Obj());
-			for (auto&& listItem : from->varParts)
-			{
-				to->varParts.Add(CopyNode(listItem.Obj()));
-			}
-		}
-
-		void AstVisitor::CopyFields(CppNameIdentifier* from, CppNameIdentifier* to)
-		{
-			CopyFields(static_cast<CppIdentifier*>(from), static_cast<CppIdentifier*>(to));
-			to->kind = from->kind;
-			to->name = from->name;
-		}
-
-		void AstVisitor::CopyFields(CppNewExpr* from, CppNewExpr* to)
-		{
-			CopyFields(static_cast<CppExprOnly*>(from), static_cast<CppExprOnly*>(to));
-			for (auto&& listItem : from->arrayArguments)
-			{
-				to->arrayArguments.Add(CopyNode(listItem.Obj()));
-			}
-			to->init = CopyNode(from->init.Obj());
-			for (auto&& listItem : from->placementArguments)
-			{
-				to->placementArguments.Add(CopyNode(listItem.Obj()));
-			}
-			to->scope = from->scope;
-			for (auto&& listItem : from->type)
-			{
-				to->type.Add(CopyNode(listItem.Obj()));
-			}
-		}
-
-		void AstVisitor::CopyFields(CppNumericExprLiteral* from, CppNumericExprLiteral* to)
-		{
-			CopyFields(static_cast<CppExprOnly*>(from), static_cast<CppExprOnly*>(to));
-			to->kind = from->kind;
-			to->literal = from->literal;
-		}
-
-		void AstVisitor::CopyFields(CppOperatorIdentifier* from, CppOperatorIdentifier* to)
-		{
-			CopyFields(static_cast<CppIdentifier*>(from), static_cast<CppIdentifier*>(to));
-			to->op = from->op;
-		}
-
-		void AstVisitor::CopyFields(CppOrdinaryGenericParameter* from, CppOrdinaryGenericParameter* to)
-		{
-			CopyFields(static_cast<CppTypeOrExprOrOthers*>(from), static_cast<CppTypeOrExprOrOthers*>(to));
-			to->genericHeader = CopyNode(from->genericHeader.Obj());
-			to->id = CopyNode(from->id.Obj());
-			to->init = CopyNode(from->init.Obj());
-			to->typenameToken = from->typenameToken;
-			to->variadic = from->variadic;
-		}
-
-		void AstVisitor::CopyFields(CppParenthesisExpr* from, CppParenthesisExpr* to)
-		{
-			CopyFields(static_cast<CppExprOnly*>(from), static_cast<CppExprOnly*>(to));
-			to->expr = CopyNode(from->expr.Obj());
-		}
-
-		void AstVisitor::CopyFields(CppPostfixUnaryExpr* from, CppPostfixUnaryExpr* to)
-		{
-			CopyFields(static_cast<CppExprOnly*>(from), static_cast<CppExprOnly*>(to));
-			to->op = from->op;
-			to->operand = CopyNode(from->operand.Obj());
-		}
-
-		void AstVisitor::CopyFields(CppPrefixUnaryExpr* from, CppPrefixUnaryExpr* to)
-		{
-			CopyFields(static_cast<CppExprOnly*>(from), static_cast<CppExprOnly*>(to));
-			to->op = from->op;
-			to->operand = CopyNode(from->operand.Obj());
-		}
-
-		void AstVisitor::CopyFields(CppPrimitiveExprLiteral* from, CppPrimitiveExprLiteral* to)
-		{
-			CopyFields(static_cast<CppExprOnly*>(from), static_cast<CppExprOnly*>(to));
-			to->kind = from->kind;
-		}
-
-		void AstVisitor::CopyFields(CppPrimitiveType* from, CppPrimitiveType* to)
-		{
-			CopyFields(static_cast<CppTypeOnly*>(from), static_cast<CppTypeOnly*>(to));
-			to->kind = from->kind;
-			to->literal1 = from->literal1;
-			to->literal2 = from->literal2;
-		}
-
-		void AstVisitor::CopyFields(CppQualifiedName* from, CppQualifiedName* to)
-		{
-			CopyFields(static_cast<CppTypeOrExpr*>(from), static_cast<CppTypeOrExpr*>(to));
-			to->arguments = CopyNode(from->arguments.Obj());
-			to->expr = CopyNode(from->expr.Obj());
-			to->id = CopyNode(from->id.Obj());
-			to->kind = from->kind;
-			to->parent = CopyNode(from->parent.Obj());
-		}
-
-		void AstVisitor::CopyFields(CppReturnStat* from, CppReturnStat* to)
-		{
-			CopyFields(static_cast<CppStatement*>(from), static_cast<CppStatement*>(to));
-			to->expr = CopyNode(from->expr.Obj());
-		}
-
-		void AstVisitor::CopyFields(CppSingleVarDeclaration* from, CppSingleVarDeclaration* to)
-		{
-			CopyFields(static_cast<CppDeclaration*>(from), static_cast<CppDeclaration*>(to));
-			for (auto&& listItem : from->keywords)
-			{
-				to->keywords.Add(CopyNode(listItem.Obj()));
-			}
-			to->type = CopyNode(from->type.Obj());
-			to->varPart = CopyNode(from->varPart.Obj());
-		}
-
-		void AstVisitor::CopyFields(CppSizeofExpr* from, CppSizeofExpr* to)
-		{
-			CopyFields(static_cast<CppExprOnly*>(from), static_cast<CppExprOnly*>(to));
-			to->argument = CopyNode(from->argument.Obj());
-			to->variadic = from->variadic;
-		}
-
-		void AstVisitor::CopyFields(CppStatement* from, CppStatement* to)
-		{
-		}
-
-		void AstVisitor::CopyFields(CppStatementToResolve* from, CppStatementToResolve* to)
-		{
-			CopyFields(static_cast<CppStatement*>(from), static_cast<CppStatement*>(to));
-			for (auto&& listItem : from->candidates)
-			{
-				to->candidates.Add(CopyNode(listItem.Obj()));
-			}
-		}
-
-		void AstVisitor::CopyFields(CppStaticAssertDeclaration* from, CppStaticAssertDeclaration* to)
-		{
-			CopyFields(static_cast<CppDeclaration*>(from), static_cast<CppDeclaration*>(to));
-			to->expr = CopyNode(from->expr.Obj());
-			to->message = CopyNode(from->message.Obj());
-		}
-
-		void AstVisitor::CopyFields(CppStringLiteral* from, CppStringLiteral* to)
-		{
-			CopyFields(static_cast<CppExprOnly*>(from), static_cast<CppExprOnly*>(to));
-			for (auto&& listItem : from->fragments)
-			{
-				to->fragments.Add(CopyNode(listItem.Obj()));
-			}
-		}
-
-		void AstVisitor::CopyFields(CppStringLiteralFragment* from, CppStringLiteralFragment* to)
-		{
-			to->kind = from->kind;
-			to->literal = from->literal;
-		}
-
-		void AstVisitor::CopyFields(CppSwitchStat* from, CppSwitchStat* to)
-		{
-			CopyFields(static_cast<CppStatement*>(from), static_cast<CppStatement*>(to));
-			to->condition = CopyNode(from->condition.Obj());
-			to->stat = CopyNode(from->stat.Obj());
-		}
-
-		void AstVisitor::CopyFields(CppSysFuncExpr* from, CppSysFuncExpr* to)
-		{
-			CopyFields(static_cast<CppExprOnly*>(from), static_cast<CppExprOnly*>(to));
-			to->argument = CopyNode(from->argument.Obj());
-			to->keyword = from->keyword;
-			to->variadic = from->variadic;
-		}
-
-		void AstVisitor::CopyFields(CppThrowExpr* from, CppThrowExpr* to)
-		{
-			CopyFields(static_cast<CppExprOnly*>(from), static_cast<CppExprOnly*>(to));
-			to->argument = CopyNode(from->argument.Obj());
-		}
-
-		void AstVisitor::CopyFields(CppTryStat* from, CppTryStat* to)
-		{
-			CopyFields(static_cast<CppStatement*>(from), static_cast<CppStatement*>(to));
-			for (auto&& listItem : from->catchParts)
-			{
-				to->catchParts.Add(CopyNode(listItem.Obj()));
-			}
-			to->tryStat = CopyNode(from->tryStat.Obj());
-		}
-
-		void AstVisitor::CopyFields(CppTryStatCatchPart* from, CppTryStatCatchPart* to)
-		{
-			to->decl = CopyNode(from->decl.Obj());
-			to->stat = CopyNode(from->stat.Obj());
-		}
-
-		void AstVisitor::CopyFields(CppTypeOnly* from, CppTypeOnly* to)
-		{
-			CopyFields(static_cast<CppTypeOrExpr*>(from), static_cast<CppTypeOrExpr*>(to));
-		}
-
-		void AstVisitor::CopyFields(CppTypeOrExpr* from, CppTypeOrExpr* to)
-		{
-			CopyFields(static_cast<CppTypeOrExprOrOthers*>(from), static_cast<CppTypeOrExprOrOthers*>(to));
-		}
-
-		void AstVisitor::CopyFields(CppTypeOrExprOrOthers* from, CppTypeOrExprOrOthers* to)
-		{
-		}
-
-		void AstVisitor::CopyFields(CppTypeOrExprOrOthersToResolve* from, CppTypeOrExprOrOthersToResolve* to)
-		{
-			CopyFields(static_cast<CppTypeOrExprOrOthers*>(from), static_cast<CppTypeOrExprOrOthers*>(to));
-			for (auto&& listItem : from->candidates)
-			{
-				to->candidates.Add(CopyNode(listItem.Obj()));
-			}
-		}
-
-		void AstVisitor::CopyFields(CppTypeOrExprToResolve* from, CppTypeOrExprToResolve* to)
-		{
-			CopyFields(static_cast<CppTypeOrExpr*>(from), static_cast<CppTypeOrExpr*>(to));
-			for (auto&& listItem : from->candidates)
-			{
-				to->candidates.Add(CopyNode(listItem.Obj()));
-			}
-		}
-
-		void AstVisitor::CopyFields(CppVarBraceInit* from, CppVarBraceInit* to)
-		{
-			CopyFields(static_cast<CppVarInit*>(from), static_cast<CppVarInit*>(to));
-			for (auto&& listItem : from->arguments)
-			{
-				to->arguments.Add(CopyNode(listItem.Obj()));
-			}
-		}
-
-		void AstVisitor::CopyFields(CppVarInit* from, CppVarInit* to)
-		{
-		}
-
-		void AstVisitor::CopyFields(CppVarParanthesisInit* from, CppVarParanthesisInit* to)
-		{
-			CopyFields(static_cast<CppVarInit*>(from), static_cast<CppVarInit*>(to));
-			for (auto&& listItem : from->arguments)
-			{
-				to->arguments.Add(CopyNode(listItem.Obj()));
-			}
-		}
-
-		void AstVisitor::CopyFields(CppVarValueInit* from, CppVarValueInit* to)
-		{
-			CopyFields(static_cast<CppVarInit*>(from), static_cast<CppVarInit*>(to));
-			to->expr = CopyNode(from->expr.Obj());
-		}
-
-		void AstVisitor::CopyFields(CppVariadicExpr* from, CppVariadicExpr* to)
-		{
-			CopyFields(static_cast<CppExprOnly*>(from), static_cast<CppExprOnly*>(to));
-			to->operand = CopyNode(from->operand.Obj());
-			to->variadic = from->variadic;
-		}
-
-		void AstVisitor::CopyFields(CppVolatileType* from, CppVolatileType* to)
-		{
-			CopyFields(static_cast<CppTypeOnly*>(from), static_cast<CppTypeOnly*>(to));
-			to->type = CopyNode(from->type.Obj());
-		}
-
-		void AstVisitor::CopyFields(CppWhileStat* from, CppWhileStat* to)
-		{
-			CopyFields(static_cast<CppStatement*>(from), static_cast<CppStatement*>(to));
-			to->condition = CopyNode(from->condition.Obj());
-			to->stat = CopyNode(from->stat.Obj());
-		}
-
-		void AstVisitor::CopyFields(Cpp__LeaveStat* from, Cpp__LeaveStat* to)
-		{
-			CopyFields(static_cast<CppStatement*>(from), static_cast<CppStatement*>(to));
-		}
-
-		void AstVisitor::CopyFields(Cpp__TryStat* from, Cpp__TryStat* to)
-		{
-			CopyFields(static_cast<CppStatement*>(from), static_cast<CppStatement*>(to));
-			to->exceptStat = CopyNode(from->exceptStat.Obj());
-			to->filter = CopyNode(from->filter.Obj());
-			to->finallyStat = CopyNode(from->finallyStat.Obj());
-			to->tryStat = CopyNode(from->tryStat.Obj());
-		}
-
-		void AstVisitor::Visit(CppGenericArguments* node)
-		{
-			auto newNode = vl::Ptr(new CppGenericArguments);
-			CopyFields(node, newNode.Obj());
-			this->result = newNode;
-		}
-
-		void AstVisitor::Visit(CppGenericHeader* node)
-		{
-			auto newNode = vl::Ptr(new CppGenericHeader);
-			CopyFields(node, newNode.Obj());
-			this->result = newNode;
-		}
-
-		void AstVisitor::Visit(CppStringLiteralFragment* node)
-		{
-			auto newNode = vl::Ptr(new CppStringLiteralFragment);
-			CopyFields(node, newNode.Obj());
-			this->result = newNode;
-		}
-
-		void AstVisitor::Visit(CppLambdaCapture* node)
-		{
-			auto newNode = vl::Ptr(new CppLambdaCapture);
-			CopyFields(node, newNode.Obj());
-			this->result = newNode;
-		}
-
-		void AstVisitor::Visit(CppAdvancedType* node)
-		{
-			auto newNode = vl::Ptr(new CppAdvancedType);
-			CopyFields(node, newNode.Obj());
-			this->result = newNode;
-		}
-
-		void AstVisitor::Visit(CppDeclaratorKeyword* node)
-		{
-			auto newNode = vl::Ptr(new CppDeclaratorKeyword);
-			CopyFields(node, newNode.Obj());
-			this->result = newNode;
-		}
-
-		void AstVisitor::Visit(CppFunctionKeyword* node)
-		{
-			auto newNode = vl::Ptr(new CppFunctionKeyword);
-			CopyFields(node, newNode.Obj());
-			this->result = newNode;
-		}
-
-		void AstVisitor::Visit(CppDeclaratorFunctionPart* node)
-		{
-			auto newNode = vl::Ptr(new CppDeclaratorFunctionPart);
-			CopyFields(node, newNode.Obj());
-			this->result = newNode;
-		}
-
-		void AstVisitor::Visit(CppDeclaratorArrayPart* node)
-		{
-			auto newNode = vl::Ptr(new CppDeclaratorArrayPart);
-			CopyFields(node, newNode.Obj());
-			this->result = newNode;
-		}
-
-		void AstVisitor::Visit(CppDeclarator* node)
-		{
-			auto newNode = vl::Ptr(new CppDeclarator);
-			CopyFields(node, newNode.Obj());
-			this->result = newNode;
-		}
-
-		void AstVisitor::Visit(CppDeclaratorVariablePart* node)
-		{
-			auto newNode = vl::Ptr(new CppDeclaratorVariablePart);
-			CopyFields(node, newNode.Obj());
-			this->result = newNode;
-		}
-
-		void AstVisitor::Visit(CppTryStatCatchPart* node)
-		{
-			auto newNode = vl::Ptr(new CppTryStatCatchPart);
-			CopyFields(node, newNode.Obj());
-			this->result = newNode;
-		}
-
-		void AstVisitor::Visit(CppFile* node)
-		{
-			auto newNode = vl::Ptr(new CppFile);
-			CopyFields(node, newNode.Obj());
-			this->result = newNode;
-		}
-
-		void AstVisitor::Visit(CppTypeOrExprOrOthersToResolve* node)
-		{
-			auto newNode = vl::Ptr(new CppTypeOrExprOrOthersToResolve);
-			CopyFields(node, newNode.Obj());
-			this->result = newNode;
-		}
-
-		void AstVisitor::Visit(CppDeclaration* node)
-		{
-			node->Accept(static_cast<CppDeclaration::IVisitor*>(this));
-		}
-
-		void AstVisitor::Visit(CppTypeOrExpr* node)
-		{
-			node->Accept(static_cast<CppTypeOrExpr::IVisitor*>(this));
-		}
-
-		void AstVisitor::Visit(CppGenericArgument* node)
-		{
-			auto newNode = vl::Ptr(new CppGenericArgument);
-			CopyFields(node, newNode.Obj());
-			this->result = newNode;
-		}
-
-		void AstVisitor::Visit(CppOrdinaryGenericParameter* node)
-		{
-			auto newNode = vl::Ptr(new CppOrdinaryGenericParameter);
-			CopyFields(node, newNode.Obj());
-			this->result = newNode;
-		}
-
-		void AstVisitor::Visit(CppSingleVarDeclaration* node)
-		{
-			auto newNode = vl::Ptr(new CppSingleVarDeclaration);
-			CopyFields(node, newNode.Obj());
-			this->result = newNode;
-		}
-
-		void AstVisitor::Visit(CppMultipleVarDeclaration* node)
-		{
-			auto newNode = vl::Ptr(new CppMultipleVarDeclaration);
-			CopyFields(node, newNode.Obj());
-			this->result = newNode;
-		}
-
-		void AstVisitor::Visit(CppStaticAssertDeclaration* node)
-		{
-			auto newNode = vl::Ptr(new CppStaticAssertDeclaration);
-			CopyFields(node, newNode.Obj());
-			this->result = newNode;
-		}
-
-		void AstVisitor::Visit(CppTypeOrExprToResolve* node)
-		{
-			auto newNode = vl::Ptr(new CppTypeOrExprToResolve);
-			CopyFields(node, newNode.Obj());
-			this->result = newNode;
-		}
-
-		void AstVisitor::Visit(CppExprOnly* node)
-		{
-			node->Accept(static_cast<CppExprOnly::IVisitor*>(this));
-		}
-
-		void AstVisitor::Visit(CppTypeOnly* node)
-		{
-			node->Accept(static_cast<CppTypeOnly::IVisitor*>(this));
-		}
-
-		void AstVisitor::Visit(CppQualifiedName* node)
-		{
-			auto newNode = vl::Ptr(new CppQualifiedName);
-			CopyFields(node, newNode.Obj());
-			this->result = newNode;
-		}
-
-		void AstVisitor::Visit(CppDeclaratorType* node)
-		{
-			auto newNode = vl::Ptr(new CppDeclaratorType);
-			CopyFields(node, newNode.Obj());
-			this->result = newNode;
-		}
-
-		void AstVisitor::Visit(CppPrimitiveExprLiteral* node)
-		{
-			auto newNode = vl::Ptr(new CppPrimitiveExprLiteral);
-			CopyFields(node, newNode.Obj());
-			this->result = newNode;
-		}
-
-		void AstVisitor::Visit(CppNumericExprLiteral* node)
-		{
-			auto newNode = vl::Ptr(new CppNumericExprLiteral);
-			CopyFields(node, newNode.Obj());
-			this->result = newNode;
-		}
-
-		void AstVisitor::Visit(CppStringLiteral* node)
-		{
-			auto newNode = vl::Ptr(new CppStringLiteral);
-			CopyFields(node, newNode.Obj());
-			this->result = newNode;
-		}
-
-		void AstVisitor::Visit(CppLambdaExpr* node)
-		{
-			auto newNode = vl::Ptr(new CppLambdaExpr);
-			CopyFields(node, newNode.Obj());
-			this->result = newNode;
-		}
-
-		void AstVisitor::Visit(CppParenthesisExpr* node)
-		{
-			auto newNode = vl::Ptr(new CppParenthesisExpr);
-			CopyFields(node, newNode.Obj());
-			this->result = newNode;
-		}
-
-		void AstVisitor::Visit(CppBraceExpr* node)
-		{
-			auto newNode = vl::Ptr(new CppBraceExpr);
-			CopyFields(node, newNode.Obj());
-			this->result = newNode;
-		}
-
-		void AstVisitor::Visit(CppCastExpr* node)
-		{
-			auto newNode = vl::Ptr(new CppCastExpr);
-			CopyFields(node, newNode.Obj());
-			this->result = newNode;
-		}
-
-		void AstVisitor::Visit(CppSysFuncExpr* node)
-		{
-			auto newNode = vl::Ptr(new CppSysFuncExpr);
-			CopyFields(node, newNode.Obj());
-			this->result = newNode;
-		}
-
-		void AstVisitor::Visit(CppSizeofExpr* node)
-		{
-			auto newNode = vl::Ptr(new CppSizeofExpr);
-			CopyFields(node, newNode.Obj());
-			this->result = newNode;
-		}
-
-		void AstVisitor::Visit(CppDeleteExpr* node)
-		{
-			auto newNode = vl::Ptr(new CppDeleteExpr);
-			CopyFields(node, newNode.Obj());
-			this->result = newNode;
-		}
-
-		void AstVisitor::Visit(CppNewExpr* node)
-		{
-			auto newNode = vl::Ptr(new CppNewExpr);
-			CopyFields(node, newNode.Obj());
-			this->result = newNode;
-		}
-
-		void AstVisitor::Visit(CppPrefixUnaryExpr* node)
-		{
-			auto newNode = vl::Ptr(new CppPrefixUnaryExpr);
-			CopyFields(node, newNode.Obj());
-			this->result = newNode;
-		}
-
-		void AstVisitor::Visit(CppPostfixUnaryExpr* node)
-		{
-			auto newNode = vl::Ptr(new CppPostfixUnaryExpr);
-			CopyFields(node, newNode.Obj());
-			this->result = newNode;
-		}
-
-		void AstVisitor::Visit(CppIndexExpr* node)
-		{
-			auto newNode = vl::Ptr(new CppIndexExpr);
-			CopyFields(node, newNode.Obj());
-			this->result = newNode;
-		}
-
-		void AstVisitor::Visit(CppCallExpr* node)
-		{
-			auto newNode = vl::Ptr(new CppCallExpr);
-			CopyFields(node, newNode.Obj());
-			this->result = newNode;
-		}
-
-		void AstVisitor::Visit(CppBinaryExpr* node)
-		{
-			auto newNode = vl::Ptr(new CppBinaryExpr);
-			CopyFields(node, newNode.Obj());
-			this->result = newNode;
-		}
-
-		void AstVisitor::Visit(CppIfExpr* node)
-		{
-			auto newNode = vl::Ptr(new CppIfExpr);
-			CopyFields(node, newNode.Obj());
-			this->result = newNode;
-		}
-
-		void AstVisitor::Visit(CppThrowExpr* node)
-		{
-			auto newNode = vl::Ptr(new CppThrowExpr);
-			CopyFields(node, newNode.Obj());
-			this->result = newNode;
-		}
-
-		void AstVisitor::Visit(CppVariadicExpr* node)
-		{
-			auto newNode = vl::Ptr(new CppVariadicExpr);
-			CopyFields(node, newNode.Obj());
-			this->result = newNode;
-		}
-
-		void AstVisitor::Visit(CppPrimitiveType* node)
-		{
-			auto newNode = vl::Ptr(new CppPrimitiveType);
-			CopyFields(node, newNode.Obj());
-			this->result = newNode;
-		}
-
-		void AstVisitor::Visit(CppConstType* node)
-		{
-			auto newNode = vl::Ptr(new CppConstType);
-			CopyFields(node, newNode.Obj());
-			this->result = newNode;
-		}
-
-		void AstVisitor::Visit(CppVolatileType* node)
-		{
-			auto newNode = vl::Ptr(new CppVolatileType);
-			CopyFields(node, newNode.Obj());
-			this->result = newNode;
-		}
-
-		void AstVisitor::Visit(CppNameIdentifier* node)
-		{
-			auto newNode = vl::Ptr(new CppNameIdentifier);
-			CopyFields(node, newNode.Obj());
-			this->result = newNode;
-		}
-
-		void AstVisitor::Visit(CppOperatorIdentifier* node)
-		{
-			auto newNode = vl::Ptr(new CppOperatorIdentifier);
-			CopyFields(node, newNode.Obj());
-			this->result = newNode;
-		}
-
-		void AstVisitor::Visit(CppVarValueInit* node)
-		{
-			auto newNode = vl::Ptr(new CppVarValueInit);
-			CopyFields(node, newNode.Obj());
-			this->result = newNode;
-		}
-
-		void AstVisitor::Visit(CppVarParanthesisInit* node)
-		{
-			auto newNode = vl::Ptr(new CppVarParanthesisInit);
-			CopyFields(node, newNode.Obj());
-			this->result = newNode;
-		}
-
-		void AstVisitor::Visit(CppVarBraceInit* node)
-		{
-			auto newNode = vl::Ptr(new CppVarBraceInit);
-			CopyFields(node, newNode.Obj());
-			this->result = newNode;
-		}
-
-		void AstVisitor::Visit(CppStatementToResolve* node)
-		{
-			auto newNode = vl::Ptr(new CppStatementToResolve);
-			CopyFields(node, newNode.Obj());
-			this->result = newNode;
-		}
-
-		void AstVisitor::Visit(CppEmptyStat* node)
-		{
-			auto newNode = vl::Ptr(new CppEmptyStat);
-			CopyFields(node, newNode.Obj());
-			this->result = newNode;
-		}
-
-		void AstVisitor::Visit(CppBlockStat* node)
-		{
-			auto newNode = vl::Ptr(new CppBlockStat);
-			CopyFields(node, newNode.Obj());
-			this->result = newNode;
-		}
-
-		void AstVisitor::Visit(CppExprStat* node)
-		{
-			auto newNode = vl::Ptr(new CppExprStat);
-			CopyFields(node, newNode.Obj());
-			this->result = newNode;
-		}
-
-		void AstVisitor::Visit(CppDeclStat* node)
-		{
-			auto newNode = vl::Ptr(new CppDeclStat);
-			CopyFields(node, newNode.Obj());
-			this->result = newNode;
-		}
-
-		void AstVisitor::Visit(CppBreakStat* node)
-		{
-			auto newNode = vl::Ptr(new CppBreakStat);
-			CopyFields(node, newNode.Obj());
-			this->result = newNode;
-		}
-
-		void AstVisitor::Visit(CppContinueStat* node)
-		{
-			auto newNode = vl::Ptr(new CppContinueStat);
-			CopyFields(node, newNode.Obj());
-			this->result = newNode;
-		}
-
-		void AstVisitor::Visit(CppReturnStat* node)
-		{
-			auto newNode = vl::Ptr(new CppReturnStat);
-			CopyFields(node, newNode.Obj());
-			this->result = newNode;
-		}
-
-		void AstVisitor::Visit(CppLabelStat* node)
-		{
-			auto newNode = vl::Ptr(new CppLabelStat);
-			CopyFields(node, newNode.Obj());
-			this->result = newNode;
-		}
-
-		void AstVisitor::Visit(CppGotoStat* node)
-		{
-			auto newNode = vl::Ptr(new CppGotoStat);
-			CopyFields(node, newNode.Obj());
-			this->result = newNode;
-		}
-
-		void AstVisitor::Visit(CppCaseStat* node)
-		{
-			auto newNode = vl::Ptr(new CppCaseStat);
-			CopyFields(node, newNode.Obj());
-			this->result = newNode;
-		}
-
-		void AstVisitor::Visit(CppDefaultStat* node)
-		{
-			auto newNode = vl::Ptr(new CppDefaultStat);
-			CopyFields(node, newNode.Obj());
-			this->result = newNode;
-		}
-
-		void AstVisitor::Visit(Cpp__LeaveStat* node)
-		{
-			auto newNode = vl::Ptr(new Cpp__LeaveStat);
-			CopyFields(node, newNode.Obj());
-			this->result = newNode;
-		}
-
-		void AstVisitor::Visit(CppWhileStat* node)
-		{
-			auto newNode = vl::Ptr(new CppWhileStat);
-			CopyFields(node, newNode.Obj());
-			this->result = newNode;
-		}
-
-		void AstVisitor::Visit(CppDoWhileStat* node)
-		{
-			auto newNode = vl::Ptr(new CppDoWhileStat);
-			CopyFields(node, newNode.Obj());
-			this->result = newNode;
-		}
-
-		void AstVisitor::Visit(CppIfElseStat* node)
-		{
-			auto newNode = vl::Ptr(new CppIfElseStat);
-			CopyFields(node, newNode.Obj());
-			this->result = newNode;
-		}
-
-		void AstVisitor::Visit(CppForStat* node)
-		{
-			auto newNode = vl::Ptr(new CppForStat);
-			CopyFields(node, newNode.Obj());
-			this->result = newNode;
-		}
-
-		void AstVisitor::Visit(CppSwitchStat* node)
-		{
-			auto newNode = vl::Ptr(new CppSwitchStat);
-			CopyFields(node, newNode.Obj());
-			this->result = newNode;
-		}
-
-		void AstVisitor::Visit(CppTryStat* node)
-		{
-			auto newNode = vl::Ptr(new CppTryStat);
-			CopyFields(node, newNode.Obj());
-			this->result = newNode;
-		}
-
-		void AstVisitor::Visit(Cpp__TryStat* node)
-		{
-			auto newNode = vl::Ptr(new Cpp__TryStat);
-			CopyFields(node, newNode.Obj());
-			this->result = newNode;
-		}
-
-		void AstVisitor::Visit(CppForStatLoopCondition* node)
-		{
-			auto newNode = vl::Ptr(new CppForStatLoopCondition);
-			CopyFields(node, newNode.Obj());
-			this->result = newNode;
-		}
-
-		void AstVisitor::Visit(CppForStatIterateCondition* node)
-		{
-			auto newNode = vl::Ptr(new CppForStatIterateCondition);
-			CopyFields(node, newNode.Obj());
-			this->result = newNode;
-		}
-
-		vl::Ptr<CppTypeOrExprOrOthers> AstVisitor::CopyNode(CppTypeOrExprOrOthers* node)
-		{
-			if (!node) return nullptr;
-			node->Accept(static_cast<CppTypeOrExprOrOthers::IVisitor*>(this));
-			this->result->codeRange = node->codeRange;
-			return this->result.Cast<CppTypeOrExprOrOthers>();
-		}
-
-		vl::Ptr<CppIdentifier> AstVisitor::CopyNode(CppIdentifier* node)
-		{
-			if (!node) return nullptr;
-			node->Accept(static_cast<CppIdentifier::IVisitor*>(this));
-			this->result->codeRange = node->codeRange;
-			return this->result.Cast<CppIdentifier>();
-		}
-
-		vl::Ptr<CppVarInit> AstVisitor::CopyNode(CppVarInit* node)
-		{
-			if (!node) return nullptr;
-			node->Accept(static_cast<CppVarInit::IVisitor*>(this));
-			this->result->codeRange = node->codeRange;
-			return this->result.Cast<CppVarInit>();
-		}
-
-		vl::Ptr<CppStatement> AstVisitor::CopyNode(CppStatement* node)
-		{
-			if (!node) return nullptr;
-			node->Accept(static_cast<CppStatement::IVisitor*>(this));
-			this->result->codeRange = node->codeRange;
-			return this->result.Cast<CppStatement>();
-		}
-
-		vl::Ptr<CppForStatConditionPart> AstVisitor::CopyNode(CppForStatConditionPart* node)
-		{
-			if (!node) return nullptr;
-			node->Accept(static_cast<CppForStatConditionPart::IVisitor*>(this));
-			this->result->codeRange = node->codeRange;
-			return this->result.Cast<CppForStatConditionPart>();
-		}
-
-		vl::Ptr<CppGenericArguments> AstVisitor::CopyNode(CppGenericArguments* node)
-		{
-			if (!node) return nullptr;
-			Visit(node);
-			this->result->codeRange = node->codeRange;
-			return this->result.Cast<CppGenericArguments>();
-		}
-
-		vl::Ptr<CppGenericHeader> AstVisitor::CopyNode(CppGenericHeader* node)
-		{
-			if (!node) return nullptr;
-			Visit(node);
-			this->result->codeRange = node->codeRange;
-			return this->result.Cast<CppGenericHeader>();
-		}
-
-		vl::Ptr<CppStringLiteralFragment> AstVisitor::CopyNode(CppStringLiteralFragment* node)
-		{
-			if (!node) return nullptr;
-			Visit(node);
-			this->result->codeRange = node->codeRange;
-			return this->result.Cast<CppStringLiteralFragment>();
-		}
-
-		vl::Ptr<CppLambdaCapture> AstVisitor::CopyNode(CppLambdaCapture* node)
-		{
-			if (!node) return nullptr;
-			Visit(node);
-			this->result->codeRange = node->codeRange;
-			return this->result.Cast<CppLambdaCapture>();
-		}
-
-		vl::Ptr<CppAdvancedType> AstVisitor::CopyNode(CppAdvancedType* node)
-		{
-			if (!node) return nullptr;
-			Visit(node);
-			this->result->codeRange = node->codeRange;
-			return this->result.Cast<CppAdvancedType>();
-		}
-
-		vl::Ptr<CppDeclaratorKeyword> AstVisitor::CopyNode(CppDeclaratorKeyword* node)
-		{
-			if (!node) return nullptr;
-			Visit(node);
-			this->result->codeRange = node->codeRange;
-			return this->result.Cast<CppDeclaratorKeyword>();
-		}
-
-		vl::Ptr<CppFunctionKeyword> AstVisitor::CopyNode(CppFunctionKeyword* node)
-		{
-			if (!node) return nullptr;
-			Visit(node);
-			this->result->codeRange = node->codeRange;
-			return this->result.Cast<CppFunctionKeyword>();
-		}
-
-		vl::Ptr<CppDeclaratorFunctionPart> AstVisitor::CopyNode(CppDeclaratorFunctionPart* node)
-		{
-			if (!node) return nullptr;
-			Visit(node);
-			this->result->codeRange = node->codeRange;
-			return this->result.Cast<CppDeclaratorFunctionPart>();
-		}
-
-		vl::Ptr<CppDeclaratorArrayPart> AstVisitor::CopyNode(CppDeclaratorArrayPart* node)
-		{
-			if (!node) return nullptr;
-			Visit(node);
-			this->result->codeRange = node->codeRange;
-			return this->result.Cast<CppDeclaratorArrayPart>();
-		}
-
-		vl::Ptr<CppDeclarator> AstVisitor::CopyNode(CppDeclarator* node)
-		{
-			if (!node) return nullptr;
-			Visit(node);
-			this->result->codeRange = node->codeRange;
-			return this->result.Cast<CppDeclarator>();
-		}
-
-		vl::Ptr<CppDeclaratorVariablePart> AstVisitor::CopyNode(CppDeclaratorVariablePart* node)
-		{
-			if (!node) return nullptr;
-			Visit(node);
-			this->result->codeRange = node->codeRange;
-			return this->result.Cast<CppDeclaratorVariablePart>();
-		}
-
-		vl::Ptr<CppTryStatCatchPart> AstVisitor::CopyNode(CppTryStatCatchPart* node)
-		{
-			if (!node) return nullptr;
-			Visit(node);
-			this->result->codeRange = node->codeRange;
-			return this->result.Cast<CppTryStatCatchPart>();
-		}
-
-		vl::Ptr<CppFile> AstVisitor::CopyNode(CppFile* node)
-		{
-			if (!node) return nullptr;
-			Visit(node);
-			this->result->codeRange = node->codeRange;
-			return this->result.Cast<CppFile>();
-		}
-
-		vl::Ptr<CppBinaryExpr> AstVisitor::CopyNode(CppBinaryExpr* node)
-		{
-			if (!node) return nullptr;
-			return CopyNode(static_cast<CppTypeOrExprOrOthers*>(node)).Cast<CppBinaryExpr>();
-		}
-
-		vl::Ptr<CppBlockStat> AstVisitor::CopyNode(CppBlockStat* node)
-		{
-			if (!node) return nullptr;
-			return CopyNode(static_cast<CppStatement*>(node)).Cast<CppBlockStat>();
-		}
-
-		vl::Ptr<CppBraceExpr> AstVisitor::CopyNode(CppBraceExpr* node)
-		{
-			if (!node) return nullptr;
-			return CopyNode(static_cast<CppTypeOrExprOrOthers*>(node)).Cast<CppBraceExpr>();
-		}
-
-		vl::Ptr<CppBreakStat> AstVisitor::CopyNode(CppBreakStat* node)
-		{
-			if (!node) return nullptr;
-			return CopyNode(static_cast<CppStatement*>(node)).Cast<CppBreakStat>();
-		}
-
-		vl::Ptr<CppCallExpr> AstVisitor::CopyNode(CppCallExpr* node)
-		{
-			if (!node) return nullptr;
-			return CopyNode(static_cast<CppTypeOrExprOrOthers*>(node)).Cast<CppCallExpr>();
-		}
-
-		vl::Ptr<CppCaseStat> AstVisitor::CopyNode(CppCaseStat* node)
-		{
-			if (!node) return nullptr;
-			return CopyNode(static_cast<CppStatement*>(node)).Cast<CppCaseStat>();
-		}
-
-		vl::Ptr<CppCastExpr> AstVisitor::CopyNode(CppCastExpr* node)
-		{
-			if (!node) return nullptr;
-			return CopyNode(static_cast<CppTypeOrExprOrOthers*>(node)).Cast<CppCastExpr>();
-		}
-
-		vl::Ptr<CppConstType> AstVisitor::CopyNode(CppConstType* node)
-		{
-			if (!node) return nullptr;
-			return CopyNode(static_cast<CppTypeOrExprOrOthers*>(node)).Cast<CppConstType>();
-		}
-
-		vl::Ptr<CppContinueStat> AstVisitor::CopyNode(CppContinueStat* node)
-		{
-			if (!node) return nullptr;
-			return CopyNode(static_cast<CppStatement*>(node)).Cast<CppContinueStat>();
-		}
-
-		vl::Ptr<CppDeclStat> AstVisitor::CopyNode(CppDeclStat* node)
-		{
-			if (!node) return nullptr;
-			return CopyNode(static_cast<CppStatement*>(node)).Cast<CppDeclStat>();
-		}
-
-		vl::Ptr<CppDeclaration> AstVisitor::CopyNode(CppDeclaration* node)
-		{
-			if (!node) return nullptr;
-			return CopyNode(static_cast<CppTypeOrExprOrOthers*>(node)).Cast<CppDeclaration>();
-		}
-
-		vl::Ptr<CppDeclaratorType> AstVisitor::CopyNode(CppDeclaratorType* node)
-		{
-			if (!node) return nullptr;
-			return CopyNode(static_cast<CppTypeOrExprOrOthers*>(node)).Cast<CppDeclaratorType>();
-		}
-
-		vl::Ptr<CppDefaultStat> AstVisitor::CopyNode(CppDefaultStat* node)
-		{
-			if (!node) return nullptr;
-			return CopyNode(static_cast<CppStatement*>(node)).Cast<CppDefaultStat>();
-		}
-
-		vl::Ptr<CppDeleteExpr> AstVisitor::CopyNode(CppDeleteExpr* node)
-		{
-			if (!node) return nullptr;
-			return CopyNode(static_cast<CppTypeOrExprOrOthers*>(node)).Cast<CppDeleteExpr>();
-		}
-
-		vl::Ptr<CppDoWhileStat> AstVisitor::CopyNode(CppDoWhileStat* node)
-		{
-			if (!node) return nullptr;
-			return CopyNode(static_cast<CppStatement*>(node)).Cast<CppDoWhileStat>();
-		}
-
-		vl::Ptr<CppEmptyStat> AstVisitor::CopyNode(CppEmptyStat* node)
-		{
-			if (!node) return nullptr;
-			return CopyNode(static_cast<CppStatement*>(node)).Cast<CppEmptyStat>();
-		}
-
-		vl::Ptr<CppExprOnly> AstVisitor::CopyNode(CppExprOnly* node)
-		{
-			if (!node) return nullptr;
-			return CopyNode(static_cast<CppTypeOrExprOrOthers*>(node)).Cast<CppExprOnly>();
-		}
-
-		vl::Ptr<CppExprStat> AstVisitor::CopyNode(CppExprStat* node)
-		{
-			if (!node) return nullptr;
-			return CopyNode(static_cast<CppStatement*>(node)).Cast<CppExprStat>();
-		}
-
-		vl::Ptr<CppForStat> AstVisitor::CopyNode(CppForStat* node)
-		{
-			if (!node) return nullptr;
-			return CopyNode(static_cast<CppStatement*>(node)).Cast<CppForStat>();
-		}
-
-		vl::Ptr<CppForStatIterateCondition> AstVisitor::CopyNode(CppForStatIterateCondition* node)
-		{
-			if (!node) return nullptr;
-			return CopyNode(static_cast<CppForStatConditionPart*>(node)).Cast<CppForStatIterateCondition>();
-		}
-
-		vl::Ptr<CppForStatLoopCondition> AstVisitor::CopyNode(CppForStatLoopCondition* node)
-		{
-			if (!node) return nullptr;
-			return CopyNode(static_cast<CppForStatConditionPart*>(node)).Cast<CppForStatLoopCondition>();
-		}
-
-		vl::Ptr<CppGenericArgument> AstVisitor::CopyNode(CppGenericArgument* node)
-		{
-			if (!node) return nullptr;
-			return CopyNode(static_cast<CppTypeOrExprOrOthers*>(node)).Cast<CppGenericArgument>();
-		}
-
-		vl::Ptr<CppGotoStat> AstVisitor::CopyNode(CppGotoStat* node)
-		{
-			if (!node) return nullptr;
-			return CopyNode(static_cast<CppStatement*>(node)).Cast<CppGotoStat>();
-		}
-
-		vl::Ptr<CppIfElseStat> AstVisitor::CopyNode(CppIfElseStat* node)
-		{
-			if (!node) return nullptr;
-			return CopyNode(static_cast<CppStatement*>(node)).Cast<CppIfElseStat>();
-		}
-
-		vl::Ptr<CppIfExpr> AstVisitor::CopyNode(CppIfExpr* node)
-		{
-			if (!node) return nullptr;
-			return CopyNode(static_cast<CppTypeOrExprOrOthers*>(node)).Cast<CppIfExpr>();
-		}
-
-		vl::Ptr<CppIndexExpr> AstVisitor::CopyNode(CppIndexExpr* node)
-		{
-			if (!node) return nullptr;
-			return CopyNode(static_cast<CppTypeOrExprOrOthers*>(node)).Cast<CppIndexExpr>();
-		}
-
-		vl::Ptr<CppLabelStat> AstVisitor::CopyNode(CppLabelStat* node)
-		{
-			if (!node) return nullptr;
-			return CopyNode(static_cast<CppStatement*>(node)).Cast<CppLabelStat>();
-		}
-
-		vl::Ptr<CppLambdaExpr> AstVisitor::CopyNode(CppLambdaExpr* node)
-		{
-			if (!node) return nullptr;
-			return CopyNode(static_cast<CppTypeOrExprOrOthers*>(node)).Cast<CppLambdaExpr>();
-		}
-
-		vl::Ptr<CppMultipleVarDeclaration> AstVisitor::CopyNode(CppMultipleVarDeclaration* node)
-		{
-			if (!node) return nullptr;
-			return CopyNode(static_cast<CppTypeOrExprOrOthers*>(node)).Cast<CppMultipleVarDeclaration>();
-		}
-
-		vl::Ptr<CppNameIdentifier> AstVisitor::CopyNode(CppNameIdentifier* node)
-		{
-			if (!node) return nullptr;
-			return CopyNode(static_cast<CppIdentifier*>(node)).Cast<CppNameIdentifier>();
-		}
-
-		vl::Ptr<CppNewExpr> AstVisitor::CopyNode(CppNewExpr* node)
-		{
-			if (!node) return nullptr;
-			return CopyNode(static_cast<CppTypeOrExprOrOthers*>(node)).Cast<CppNewExpr>();
-		}
-
-		vl::Ptr<CppNumericExprLiteral> AstVisitor::CopyNode(CppNumericExprLiteral* node)
-		{
-			if (!node) return nullptr;
-			return CopyNode(static_cast<CppTypeOrExprOrOthers*>(node)).Cast<CppNumericExprLiteral>();
-		}
-
-		vl::Ptr<CppOperatorIdentifier> AstVisitor::CopyNode(CppOperatorIdentifier* node)
-		{
-			if (!node) return nullptr;
-			return CopyNode(static_cast<CppIdentifier*>(node)).Cast<CppOperatorIdentifier>();
-		}
-
-		vl::Ptr<CppOrdinaryGenericParameter> AstVisitor::CopyNode(CppOrdinaryGenericParameter* node)
-		{
-			if (!node) return nullptr;
-			return CopyNode(static_cast<CppTypeOrExprOrOthers*>(node)).Cast<CppOrdinaryGenericParameter>();
-		}
-
-		vl::Ptr<CppParenthesisExpr> AstVisitor::CopyNode(CppParenthesisExpr* node)
-		{
-			if (!node) return nullptr;
-			return CopyNode(static_cast<CppTypeOrExprOrOthers*>(node)).Cast<CppParenthesisExpr>();
-		}
-
-		vl::Ptr<CppPostfixUnaryExpr> AstVisitor::CopyNode(CppPostfixUnaryExpr* node)
-		{
-			if (!node) return nullptr;
-			return CopyNode(static_cast<CppTypeOrExprOrOthers*>(node)).Cast<CppPostfixUnaryExpr>();
-		}
-
-		vl::Ptr<CppPrefixUnaryExpr> AstVisitor::CopyNode(CppPrefixUnaryExpr* node)
-		{
-			if (!node) return nullptr;
-			return CopyNode(static_cast<CppTypeOrExprOrOthers*>(node)).Cast<CppPrefixUnaryExpr>();
-		}
-
-		vl::Ptr<CppPrimitiveExprLiteral> AstVisitor::CopyNode(CppPrimitiveExprLiteral* node)
-		{
-			if (!node) return nullptr;
-			return CopyNode(static_cast<CppTypeOrExprOrOthers*>(node)).Cast<CppPrimitiveExprLiteral>();
-		}
-
-		vl::Ptr<CppPrimitiveType> AstVisitor::CopyNode(CppPrimitiveType* node)
-		{
-			if (!node) return nullptr;
-			return CopyNode(static_cast<CppTypeOrExprOrOthers*>(node)).Cast<CppPrimitiveType>();
-		}
-
-		vl::Ptr<CppQualifiedName> AstVisitor::CopyNode(CppQualifiedName* node)
-		{
-			if (!node) return nullptr;
-			return CopyNode(static_cast<CppTypeOrExprOrOthers*>(node)).Cast<CppQualifiedName>();
-		}
-
-		vl::Ptr<CppReturnStat> AstVisitor::CopyNode(CppReturnStat* node)
-		{
-			if (!node) return nullptr;
-			return CopyNode(static_cast<CppStatement*>(node)).Cast<CppReturnStat>();
-		}
-
-		vl::Ptr<CppSingleVarDeclaration> AstVisitor::CopyNode(CppSingleVarDeclaration* node)
-		{
-			if (!node) return nullptr;
-			return CopyNode(static_cast<CppTypeOrExprOrOthers*>(node)).Cast<CppSingleVarDeclaration>();
-		}
-
-		vl::Ptr<CppSizeofExpr> AstVisitor::CopyNode(CppSizeofExpr* node)
-		{
-			if (!node) return nullptr;
-			return CopyNode(static_cast<CppTypeOrExprOrOthers*>(node)).Cast<CppSizeofExpr>();
-		}
-
-		vl::Ptr<CppStatementToResolve> AstVisitor::CopyNode(CppStatementToResolve* node)
-		{
-			if (!node) return nullptr;
-			return CopyNode(static_cast<CppStatement*>(node)).Cast<CppStatementToResolve>();
-		}
-
-		vl::Ptr<CppStaticAssertDeclaration> AstVisitor::CopyNode(CppStaticAssertDeclaration* node)
-		{
-			if (!node) return nullptr;
-			return CopyNode(static_cast<CppTypeOrExprOrOthers*>(node)).Cast<CppStaticAssertDeclaration>();
-		}
-
-		vl::Ptr<CppStringLiteral> AstVisitor::CopyNode(CppStringLiteral* node)
-		{
-			if (!node) return nullptr;
-			return CopyNode(static_cast<CppTypeOrExprOrOthers*>(node)).Cast<CppStringLiteral>();
-		}
-
-		vl::Ptr<CppSwitchStat> AstVisitor::CopyNode(CppSwitchStat* node)
-		{
-			if (!node) return nullptr;
-			return CopyNode(static_cast<CppStatement*>(node)).Cast<CppSwitchStat>();
-		}
-
-		vl::Ptr<CppSysFuncExpr> AstVisitor::CopyNode(CppSysFuncExpr* node)
-		{
-			if (!node) return nullptr;
-			return CopyNode(static_cast<CppTypeOrExprOrOthers*>(node)).Cast<CppSysFuncExpr>();
-		}
-
-		vl::Ptr<CppThrowExpr> AstVisitor::CopyNode(CppThrowExpr* node)
-		{
-			if (!node) return nullptr;
-			return CopyNode(static_cast<CppTypeOrExprOrOthers*>(node)).Cast<CppThrowExpr>();
-		}
-
-		vl::Ptr<CppTryStat> AstVisitor::CopyNode(CppTryStat* node)
-		{
-			if (!node) return nullptr;
-			return CopyNode(static_cast<CppStatement*>(node)).Cast<CppTryStat>();
-		}
-
-		vl::Ptr<CppTypeOnly> AstVisitor::CopyNode(CppTypeOnly* node)
-		{
-			if (!node) return nullptr;
-			return CopyNode(static_cast<CppTypeOrExprOrOthers*>(node)).Cast<CppTypeOnly>();
-		}
-
-		vl::Ptr<CppTypeOrExpr> AstVisitor::CopyNode(CppTypeOrExpr* node)
-		{
-			if (!node) return nullptr;
-			return CopyNode(static_cast<CppTypeOrExprOrOthers*>(node)).Cast<CppTypeOrExpr>();
-		}
-
-		vl::Ptr<CppTypeOrExprOrOthersToResolve> AstVisitor::CopyNode(CppTypeOrExprOrOthersToResolve* node)
-		{
-			if (!node) return nullptr;
-			return CopyNode(static_cast<CppTypeOrExprOrOthers*>(node)).Cast<CppTypeOrExprOrOthersToResolve>();
-		}
-
-		vl::Ptr<CppTypeOrExprToResolve> AstVisitor::CopyNode(CppTypeOrExprToResolve* node)
-		{
-			if (!node) return nullptr;
-			return CopyNode(static_cast<CppTypeOrExprOrOthers*>(node)).Cast<CppTypeOrExprToResolve>();
-		}
-
-		vl::Ptr<CppVarBraceInit> AstVisitor::CopyNode(CppVarBraceInit* node)
-		{
-			if (!node) return nullptr;
-			return CopyNode(static_cast<CppVarInit*>(node)).Cast<CppVarBraceInit>();
-		}
-
-		vl::Ptr<CppVarParanthesisInit> AstVisitor::CopyNode(CppVarParanthesisInit* node)
-		{
-			if (!node) return nullptr;
-			return CopyNode(static_cast<CppVarInit*>(node)).Cast<CppVarParanthesisInit>();
-		}
-
-		vl::Ptr<CppVarValueInit> AstVisitor::CopyNode(CppVarValueInit* node)
-		{
-			if (!node) return nullptr;
-			return CopyNode(static_cast<CppVarInit*>(node)).Cast<CppVarValueInit>();
-		}
-
-		vl::Ptr<CppVariadicExpr> AstVisitor::CopyNode(CppVariadicExpr* node)
-		{
-			if (!node) return nullptr;
-			return CopyNode(static_cast<CppTypeOrExprOrOthers*>(node)).Cast<CppVariadicExpr>();
-		}
-
-		vl::Ptr<CppVolatileType> AstVisitor::CopyNode(CppVolatileType* node)
-		{
-			if (!node) return nullptr;
-			return CopyNode(static_cast<CppTypeOrExprOrOthers*>(node)).Cast<CppVolatileType>();
-		}
-
-		vl::Ptr<CppWhileStat> AstVisitor::CopyNode(CppWhileStat* node)
-		{
-			if (!node) return nullptr;
-			return CopyNode(static_cast<CppStatement*>(node)).Cast<CppWhileStat>();
-		}
-
-		vl::Ptr<Cpp__LeaveStat> AstVisitor::CopyNode(Cpp__LeaveStat* node)
-		{
-			if (!node) return nullptr;
-			return CopyNode(static_cast<CppStatement*>(node)).Cast<Cpp__LeaveStat>();
-		}
-
-		vl::Ptr<Cpp__TryStat> AstVisitor::CopyNode(Cpp__TryStat* node)
-		{
-			if (!node) return nullptr;
-			return CopyNode(static_cast<CppStatement*>(node)).Cast<Cpp__TryStat>();
-		}
-
+		to->argument = CopyNode(from->argument.Obj());
+		to->kind = from->kind;
 	}
+
+	void AstVisitor::CopyFields(CppBinaryExpr* from, CppBinaryExpr* to)
+	{
+		CopyFields(static_cast<CppExprOnly*>(from), static_cast<CppExprOnly*>(to));
+		to->left = CopyNode(from->left.Obj());
+		to->op = from->op;
+		to->right = CopyNode(from->right.Obj());
+	}
+
+	void AstVisitor::CopyFields(CppBlockStat* from, CppBlockStat* to)
+	{
+		CopyFields(static_cast<CppStatement*>(from), static_cast<CppStatement*>(to));
+		for (auto&& listItem : from->statements)
+		{
+			to->statements.Add(CopyNode(listItem.Obj()));
+		}
+	}
+
+	void AstVisitor::CopyFields(CppBraceExpr* from, CppBraceExpr* to)
+	{
+		CopyFields(static_cast<CppExprOnly*>(from), static_cast<CppExprOnly*>(to));
+		for (auto&& listItem : from->arguments)
+		{
+			to->arguments.Add(CopyNode(listItem.Obj()));
+		}
+	}
+
+	void AstVisitor::CopyFields(CppBreakStat* from, CppBreakStat* to)
+	{
+		CopyFields(static_cast<CppStatement*>(from), static_cast<CppStatement*>(to));
+	}
+
+	void AstVisitor::CopyFields(CppCallExpr* from, CppCallExpr* to)
+	{
+		CopyFields(static_cast<CppExprOnly*>(from), static_cast<CppExprOnly*>(to));
+		for (auto&& listItem : from->arguments)
+		{
+			to->arguments.Add(CopyNode(listItem.Obj()));
+		}
+		to->kind = from->kind;
+		to->operand = CopyNode(from->operand.Obj());
+	}
+
+	void AstVisitor::CopyFields(CppCaseStat* from, CppCaseStat* to)
+	{
+		CopyFields(static_cast<CppStatement*>(from), static_cast<CppStatement*>(to));
+		to->expr = CopyNode(from->expr.Obj());
+		to->stat = CopyNode(from->stat.Obj());
+	}
+
+	void AstVisitor::CopyFields(CppCastExpr* from, CppCastExpr* to)
+	{
+		CopyFields(static_cast<CppExprOnly*>(from), static_cast<CppExprOnly*>(to));
+		to->expr = CopyNode(from->expr.Obj());
+		to->keyword = from->keyword;
+		to->type = CopyNode(from->type.Obj());
+	}
+
+	void AstVisitor::CopyFields(CppConstType* from, CppConstType* to)
+	{
+		CopyFields(static_cast<CppTypeOnly*>(from), static_cast<CppTypeOnly*>(to));
+		to->type = CopyNode(from->type.Obj());
+	}
+
+	void AstVisitor::CopyFields(CppContinueStat* from, CppContinueStat* to)
+	{
+		CopyFields(static_cast<CppStatement*>(from), static_cast<CppStatement*>(to));
+	}
+
+	void AstVisitor::CopyFields(CppDeclStat* from, CppDeclStat* to)
+	{
+		CopyFields(static_cast<CppStatement*>(from), static_cast<CppStatement*>(to));
+		to->decl = CopyNode(from->decl.Obj());
+	}
+
+	void AstVisitor::CopyFields(CppDeclaration* from, CppDeclaration* to)
+	{
+		CopyFields(static_cast<CppTypeOrExprOrOthers*>(from), static_cast<CppTypeOrExprOrOthers*>(to));
+	}
+
+	void AstVisitor::CopyFields(CppDeclarator* from, CppDeclarator* to)
+	{
+		for (auto&& listItem : from->advancedTypes)
+		{
+			to->advancedTypes.Add(CopyNode(listItem.Obj()));
+		}
+		for (auto&& listItem : from->arrayParts)
+		{
+			to->arrayParts.Add(CopyNode(listItem.Obj()));
+		}
+		to->funcPart = CopyNode(from->funcPart.Obj());
+		to->id = CopyNode(from->id.Obj());
+		to->innerDeclarator = CopyNode(from->innerDeclarator.Obj());
+		for (auto&& listItem : from->keywords)
+		{
+			to->keywords.Add(CopyNode(listItem.Obj()));
+		}
+		to->variadic = from->variadic;
+	}
+
+	void AstVisitor::CopyFields(CppDeclaratorArrayPart* from, CppDeclaratorArrayPart* to)
+	{
+		to->argument = CopyNode(from->argument.Obj());
+	}
+
+	void AstVisitor::CopyFields(CppDeclaratorFunctionPart* from, CppDeclaratorFunctionPart* to)
+	{
+		to->deferredType = CopyNode(from->deferredType.Obj());
+		for (auto&& listItem : from->keywords)
+		{
+			to->keywords.Add(CopyNode(listItem.Obj()));
+		}
+		for (auto&& listItem : from->parameters)
+		{
+			to->parameters.Add(CopyNode(listItem.Obj()));
+		}
+		to->variadic = from->variadic;
+	}
+
+	void AstVisitor::CopyFields(CppDeclaratorKeyword* from, CppDeclaratorKeyword* to)
+	{
+		to->keyword = from->keyword;
+	}
+
+	void AstVisitor::CopyFields(CppDeclaratorType* from, CppDeclaratorType* to)
+	{
+		CopyFields(static_cast<CppTypeOrExpr*>(from), static_cast<CppTypeOrExpr*>(to));
+		to->declarator = CopyNode(from->declarator.Obj());
+		for (auto&& listItem : from->keywords)
+		{
+			to->keywords.Add(CopyNode(listItem.Obj()));
+		}
+		to->type = CopyNode(from->type.Obj());
+	}
+
+	void AstVisitor::CopyFields(CppDeclaratorVariablePart* from, CppDeclaratorVariablePart* to)
+	{
+		to->declarator = CopyNode(from->declarator.Obj());
+		to->init = CopyNode(from->init.Obj());
+	}
+
+	void AstVisitor::CopyFields(CppDefaultStat* from, CppDefaultStat* to)
+	{
+		CopyFields(static_cast<CppStatement*>(from), static_cast<CppStatement*>(to));
+		to->stat = CopyNode(from->stat.Obj());
+	}
+
+	void AstVisitor::CopyFields(CppDeleteExpr* from, CppDeleteExpr* to)
+	{
+		CopyFields(static_cast<CppExprOnly*>(from), static_cast<CppExprOnly*>(to));
+		to->argument = CopyNode(from->argument.Obj());
+		to->array = from->array;
+		to->scope = from->scope;
+	}
+
+	void AstVisitor::CopyFields(CppDoWhileStat* from, CppDoWhileStat* to)
+	{
+		CopyFields(static_cast<CppStatement*>(from), static_cast<CppStatement*>(to));
+		to->condition = CopyNode(from->condition.Obj());
+		to->stat = CopyNode(from->stat.Obj());
+	}
+
+	void AstVisitor::CopyFields(CppEmptyStat* from, CppEmptyStat* to)
+	{
+		CopyFields(static_cast<CppStatement*>(from), static_cast<CppStatement*>(to));
+	}
+
+	void AstVisitor::CopyFields(CppExprOnly* from, CppExprOnly* to)
+	{
+		CopyFields(static_cast<CppTypeOrExpr*>(from), static_cast<CppTypeOrExpr*>(to));
+	}
+
+	void AstVisitor::CopyFields(CppExprStat* from, CppExprStat* to)
+	{
+		CopyFields(static_cast<CppStatement*>(from), static_cast<CppStatement*>(to));
+		to->expr = CopyNode(from->expr.Obj());
+	}
+
+	void AstVisitor::CopyFields(CppFile* from, CppFile* to)
+	{
+	}
+
+	void AstVisitor::CopyFields(CppForStat* from, CppForStat* to)
+	{
+		CopyFields(static_cast<CppStatement*>(from), static_cast<CppStatement*>(to));
+		to->conditionPart = CopyNode(from->conditionPart.Obj());
+		to->stat = CopyNode(from->stat.Obj());
+	}
+
+	void AstVisitor::CopyFields(CppForStatConditionPart* from, CppForStatConditionPart* to)
+	{
+	}
+
+	void AstVisitor::CopyFields(CppForStatIterateCondition* from, CppForStatIterateCondition* to)
+	{
+		CopyFields(static_cast<CppForStatConditionPart*>(from), static_cast<CppForStatConditionPart*>(to));
+		to->collection = CopyNode(from->collection.Obj());
+		to->decl = CopyNode(from->decl.Obj());
+	}
+
+	void AstVisitor::CopyFields(CppForStatLoopCondition* from, CppForStatLoopCondition* to)
+	{
+		CopyFields(static_cast<CppForStatConditionPart*>(from), static_cast<CppForStatConditionPart*>(to));
+		to->condition = CopyNode(from->condition.Obj());
+		to->sideEffect = CopyNode(from->sideEffect.Obj());
+		to->varsDecl = CopyNode(from->varsDecl.Obj());
+	}
+
+	void AstVisitor::CopyFields(CppFunctionKeyword* from, CppFunctionKeyword* to)
+	{
+		for (auto&& listItem : from->arguments)
+		{
+			to->arguments.Add(CopyNode(listItem.Obj()));
+		}
+		to->keyword = from->keyword;
+	}
+
+	void AstVisitor::CopyFields(CppGenericArgument* from, CppGenericArgument* to)
+	{
+		CopyFields(static_cast<CppTypeOrExprOrOthers*>(from), static_cast<CppTypeOrExprOrOthers*>(to));
+		to->argument = CopyNode(from->argument.Obj());
+		to->variadic = from->variadic;
+	}
+
+	void AstVisitor::CopyFields(CppGenericArguments* from, CppGenericArguments* to)
+	{
+		for (auto&& listItem : from->arguments)
+		{
+			to->arguments.Add(CopyNode(listItem.Obj()));
+		}
+	}
+
+	void AstVisitor::CopyFields(CppGenericHeader* from, CppGenericHeader* to)
+	{
+		for (auto&& listItem : from->parameters)
+		{
+			to->parameters.Add(CopyNode(listItem.Obj()));
+		}
+	}
+
+	void AstVisitor::CopyFields(CppGotoStat* from, CppGotoStat* to)
+	{
+		CopyFields(static_cast<CppStatement*>(from), static_cast<CppStatement*>(to));
+		to->label = from->label;
+	}
+
+	void AstVisitor::CopyFields(CppIdentifier* from, CppIdentifier* to)
+	{
+	}
+
+	void AstVisitor::CopyFields(CppIfElseStat* from, CppIfElseStat* to)
+	{
+		CopyFields(static_cast<CppStatement*>(from), static_cast<CppStatement*>(to));
+		to->condition = CopyNode(from->condition.Obj());
+		to->falseStat = CopyNode(from->falseStat.Obj());
+		to->trueStat = CopyNode(from->trueStat.Obj());
+		to->varsDecl = CopyNode(from->varsDecl.Obj());
+	}
+
+	void AstVisitor::CopyFields(CppIfExpr* from, CppIfExpr* to)
+	{
+		CopyFields(static_cast<CppExprOnly*>(from), static_cast<CppExprOnly*>(to));
+		to->condition = CopyNode(from->condition.Obj());
+		to->falseBranch = CopyNode(from->falseBranch.Obj());
+		to->trueBranch = CopyNode(from->trueBranch.Obj());
+	}
+
+	void AstVisitor::CopyFields(CppIndexExpr* from, CppIndexExpr* to)
+	{
+		CopyFields(static_cast<CppExprOnly*>(from), static_cast<CppExprOnly*>(to));
+		to->index = CopyNode(from->index.Obj());
+		to->operand = CopyNode(from->operand.Obj());
+	}
+
+	void AstVisitor::CopyFields(CppLabelStat* from, CppLabelStat* to)
+	{
+		CopyFields(static_cast<CppStatement*>(from), static_cast<CppStatement*>(to));
+		to->label = from->label;
+		to->stat = CopyNode(from->stat.Obj());
+	}
+
+	void AstVisitor::CopyFields(CppLambdaCapture* from, CppLambdaCapture* to)
+	{
+		to->id = CopyNode(from->id.Obj());
+		to->init = CopyNode(from->init.Obj());
+		to->objKind = from->objKind;
+		to->refKind = from->refKind;
+	}
+
+	void AstVisitor::CopyFields(CppLambdaExpr* from, CppLambdaExpr* to)
+	{
+		CopyFields(static_cast<CppExprOnly*>(from), static_cast<CppExprOnly*>(to));
+		for (auto&& listItem : from->captures)
+		{
+			to->captures.Add(CopyNode(listItem.Obj()));
+		}
+		to->functionHeader = CopyNode(from->functionHeader.Obj());
+		to->genericHeader = CopyNode(from->genericHeader.Obj());
+		to->stat = CopyNode(from->stat.Obj());
+	}
+
+	void AstVisitor::CopyFields(CppMultipleVarDeclaration* from, CppMultipleVarDeclaration* to)
+	{
+		CopyFields(static_cast<CppDeclaration*>(from), static_cast<CppDeclaration*>(to));
+		for (auto&& listItem : from->keywords)
+		{
+			to->keywords.Add(CopyNode(listItem.Obj()));
+		}
+		to->type = CopyNode(from->type.Obj());
+		for (auto&& listItem : from->varParts)
+		{
+			to->varParts.Add(CopyNode(listItem.Obj()));
+		}
+	}
+
+	void AstVisitor::CopyFields(CppNameIdentifier* from, CppNameIdentifier* to)
+	{
+		CopyFields(static_cast<CppIdentifier*>(from), static_cast<CppIdentifier*>(to));
+		to->kind = from->kind;
+		to->name = from->name;
+	}
+
+	void AstVisitor::CopyFields(CppNewExpr* from, CppNewExpr* to)
+	{
+		CopyFields(static_cast<CppExprOnly*>(from), static_cast<CppExprOnly*>(to));
+		for (auto&& listItem : from->arrayArguments)
+		{
+			to->arrayArguments.Add(CopyNode(listItem.Obj()));
+		}
+		to->init = CopyNode(from->init.Obj());
+		for (auto&& listItem : from->placementArguments)
+		{
+			to->placementArguments.Add(CopyNode(listItem.Obj()));
+		}
+		to->scope = from->scope;
+		for (auto&& listItem : from->type)
+		{
+			to->type.Add(CopyNode(listItem.Obj()));
+		}
+	}
+
+	void AstVisitor::CopyFields(CppNumericExprLiteral* from, CppNumericExprLiteral* to)
+	{
+		CopyFields(static_cast<CppExprOnly*>(from), static_cast<CppExprOnly*>(to));
+		to->kind = from->kind;
+		to->literal = from->literal;
+	}
+
+	void AstVisitor::CopyFields(CppOperatorIdentifier* from, CppOperatorIdentifier* to)
+	{
+		CopyFields(static_cast<CppIdentifier*>(from), static_cast<CppIdentifier*>(to));
+		to->op = from->op;
+	}
+
+	void AstVisitor::CopyFields(CppOrdinaryGenericParameter* from, CppOrdinaryGenericParameter* to)
+	{
+		CopyFields(static_cast<CppTypeOrExprOrOthers*>(from), static_cast<CppTypeOrExprOrOthers*>(to));
+		to->genericHeader = CopyNode(from->genericHeader.Obj());
+		to->id = CopyNode(from->id.Obj());
+		to->init = CopyNode(from->init.Obj());
+		to->typenameToken = from->typenameToken;
+		to->variadic = from->variadic;
+	}
+
+	void AstVisitor::CopyFields(CppParenthesisExpr* from, CppParenthesisExpr* to)
+	{
+		CopyFields(static_cast<CppExprOnly*>(from), static_cast<CppExprOnly*>(to));
+		to->expr = CopyNode(from->expr.Obj());
+	}
+
+	void AstVisitor::CopyFields(CppPostfixUnaryExpr* from, CppPostfixUnaryExpr* to)
+	{
+		CopyFields(static_cast<CppExprOnly*>(from), static_cast<CppExprOnly*>(to));
+		to->op = from->op;
+		to->operand = CopyNode(from->operand.Obj());
+	}
+
+	void AstVisitor::CopyFields(CppPrefixUnaryExpr* from, CppPrefixUnaryExpr* to)
+	{
+		CopyFields(static_cast<CppExprOnly*>(from), static_cast<CppExprOnly*>(to));
+		to->op = from->op;
+		to->operand = CopyNode(from->operand.Obj());
+	}
+
+	void AstVisitor::CopyFields(CppPrimitiveExprLiteral* from, CppPrimitiveExprLiteral* to)
+	{
+		CopyFields(static_cast<CppExprOnly*>(from), static_cast<CppExprOnly*>(to));
+		to->kind = from->kind;
+	}
+
+	void AstVisitor::CopyFields(CppPrimitiveType* from, CppPrimitiveType* to)
+	{
+		CopyFields(static_cast<CppTypeOnly*>(from), static_cast<CppTypeOnly*>(to));
+		to->kind = from->kind;
+		to->literal1 = from->literal1;
+		to->literal2 = from->literal2;
+	}
+
+	void AstVisitor::CopyFields(CppQualifiedName* from, CppQualifiedName* to)
+	{
+		CopyFields(static_cast<CppTypeOrExpr*>(from), static_cast<CppTypeOrExpr*>(to));
+		to->arguments = CopyNode(from->arguments.Obj());
+		to->expr = CopyNode(from->expr.Obj());
+		to->id = CopyNode(from->id.Obj());
+		to->kind = from->kind;
+		to->parent = CopyNode(from->parent.Obj());
+	}
+
+	void AstVisitor::CopyFields(CppReturnStat* from, CppReturnStat* to)
+	{
+		CopyFields(static_cast<CppStatement*>(from), static_cast<CppStatement*>(to));
+		to->expr = CopyNode(from->expr.Obj());
+	}
+
+	void AstVisitor::CopyFields(CppSingleVarDeclaration* from, CppSingleVarDeclaration* to)
+	{
+		CopyFields(static_cast<CppDeclaration*>(from), static_cast<CppDeclaration*>(to));
+		for (auto&& listItem : from->keywords)
+		{
+			to->keywords.Add(CopyNode(listItem.Obj()));
+		}
+		to->type = CopyNode(from->type.Obj());
+		to->varPart = CopyNode(from->varPart.Obj());
+	}
+
+	void AstVisitor::CopyFields(CppSizeofExpr* from, CppSizeofExpr* to)
+	{
+		CopyFields(static_cast<CppExprOnly*>(from), static_cast<CppExprOnly*>(to));
+		to->argument = CopyNode(from->argument.Obj());
+		to->variadic = from->variadic;
+	}
+
+	void AstVisitor::CopyFields(CppStatement* from, CppStatement* to)
+	{
+	}
+
+	void AstVisitor::CopyFields(CppStatementToResolve* from, CppStatementToResolve* to)
+	{
+		CopyFields(static_cast<CppStatement*>(from), static_cast<CppStatement*>(to));
+		for (auto&& listItem : from->candidates)
+		{
+			to->candidates.Add(CopyNode(listItem.Obj()));
+		}
+	}
+
+	void AstVisitor::CopyFields(CppStaticAssertDeclaration* from, CppStaticAssertDeclaration* to)
+	{
+		CopyFields(static_cast<CppDeclaration*>(from), static_cast<CppDeclaration*>(to));
+		to->expr = CopyNode(from->expr.Obj());
+		to->message = CopyNode(from->message.Obj());
+	}
+
+	void AstVisitor::CopyFields(CppStringLiteral* from, CppStringLiteral* to)
+	{
+		CopyFields(static_cast<CppExprOnly*>(from), static_cast<CppExprOnly*>(to));
+		for (auto&& listItem : from->fragments)
+		{
+			to->fragments.Add(CopyNode(listItem.Obj()));
+		}
+	}
+
+	void AstVisitor::CopyFields(CppStringLiteralFragment* from, CppStringLiteralFragment* to)
+	{
+		to->kind = from->kind;
+		to->literal = from->literal;
+	}
+
+	void AstVisitor::CopyFields(CppSwitchStat* from, CppSwitchStat* to)
+	{
+		CopyFields(static_cast<CppStatement*>(from), static_cast<CppStatement*>(to));
+		to->condition = CopyNode(from->condition.Obj());
+		to->stat = CopyNode(from->stat.Obj());
+	}
+
+	void AstVisitor::CopyFields(CppSysFuncExpr* from, CppSysFuncExpr* to)
+	{
+		CopyFields(static_cast<CppExprOnly*>(from), static_cast<CppExprOnly*>(to));
+		to->argument = CopyNode(from->argument.Obj());
+		to->keyword = from->keyword;
+		to->variadic = from->variadic;
+	}
+
+	void AstVisitor::CopyFields(CppThrowExpr* from, CppThrowExpr* to)
+	{
+		CopyFields(static_cast<CppExprOnly*>(from), static_cast<CppExprOnly*>(to));
+		to->argument = CopyNode(from->argument.Obj());
+	}
+
+	void AstVisitor::CopyFields(CppTryStat* from, CppTryStat* to)
+	{
+		CopyFields(static_cast<CppStatement*>(from), static_cast<CppStatement*>(to));
+		for (auto&& listItem : from->catchParts)
+		{
+			to->catchParts.Add(CopyNode(listItem.Obj()));
+		}
+		to->tryStat = CopyNode(from->tryStat.Obj());
+	}
+
+	void AstVisitor::CopyFields(CppTryStatCatchPart* from, CppTryStatCatchPart* to)
+	{
+		to->decl = CopyNode(from->decl.Obj());
+		to->stat = CopyNode(from->stat.Obj());
+	}
+
+	void AstVisitor::CopyFields(CppTypeOnly* from, CppTypeOnly* to)
+	{
+		CopyFields(static_cast<CppTypeOrExpr*>(from), static_cast<CppTypeOrExpr*>(to));
+	}
+
+	void AstVisitor::CopyFields(CppTypeOrExpr* from, CppTypeOrExpr* to)
+	{
+		CopyFields(static_cast<CppTypeOrExprOrOthers*>(from), static_cast<CppTypeOrExprOrOthers*>(to));
+	}
+
+	void AstVisitor::CopyFields(CppTypeOrExprOrOthers* from, CppTypeOrExprOrOthers* to)
+	{
+	}
+
+	void AstVisitor::CopyFields(CppTypeOrExprOrOthersToResolve* from, CppTypeOrExprOrOthersToResolve* to)
+	{
+		CopyFields(static_cast<CppTypeOrExprOrOthers*>(from), static_cast<CppTypeOrExprOrOthers*>(to));
+		for (auto&& listItem : from->candidates)
+		{
+			to->candidates.Add(CopyNode(listItem.Obj()));
+		}
+	}
+
+	void AstVisitor::CopyFields(CppTypeOrExprToResolve* from, CppTypeOrExprToResolve* to)
+	{
+		CopyFields(static_cast<CppTypeOrExpr*>(from), static_cast<CppTypeOrExpr*>(to));
+		for (auto&& listItem : from->candidates)
+		{
+			to->candidates.Add(CopyNode(listItem.Obj()));
+		}
+	}
+
+	void AstVisitor::CopyFields(CppVarBraceInit* from, CppVarBraceInit* to)
+	{
+		CopyFields(static_cast<CppVarInit*>(from), static_cast<CppVarInit*>(to));
+		for (auto&& listItem : from->arguments)
+		{
+			to->arguments.Add(CopyNode(listItem.Obj()));
+		}
+	}
+
+	void AstVisitor::CopyFields(CppVarInit* from, CppVarInit* to)
+	{
+	}
+
+	void AstVisitor::CopyFields(CppVarParanthesisInit* from, CppVarParanthesisInit* to)
+	{
+		CopyFields(static_cast<CppVarInit*>(from), static_cast<CppVarInit*>(to));
+		for (auto&& listItem : from->arguments)
+		{
+			to->arguments.Add(CopyNode(listItem.Obj()));
+		}
+	}
+
+	void AstVisitor::CopyFields(CppVarValueInit* from, CppVarValueInit* to)
+	{
+		CopyFields(static_cast<CppVarInit*>(from), static_cast<CppVarInit*>(to));
+		to->expr = CopyNode(from->expr.Obj());
+	}
+
+	void AstVisitor::CopyFields(CppVariadicExpr* from, CppVariadicExpr* to)
+	{
+		CopyFields(static_cast<CppExprOnly*>(from), static_cast<CppExprOnly*>(to));
+		to->operand = CopyNode(from->operand.Obj());
+		to->variadic = from->variadic;
+	}
+
+	void AstVisitor::CopyFields(CppVolatileType* from, CppVolatileType* to)
+	{
+		CopyFields(static_cast<CppTypeOnly*>(from), static_cast<CppTypeOnly*>(to));
+		to->type = CopyNode(from->type.Obj());
+	}
+
+	void AstVisitor::CopyFields(CppWhileStat* from, CppWhileStat* to)
+	{
+		CopyFields(static_cast<CppStatement*>(from), static_cast<CppStatement*>(to));
+		to->condition = CopyNode(from->condition.Obj());
+		to->stat = CopyNode(from->stat.Obj());
+	}
+
+	void AstVisitor::CopyFields(Cpp__LeaveStat* from, Cpp__LeaveStat* to)
+	{
+		CopyFields(static_cast<CppStatement*>(from), static_cast<CppStatement*>(to));
+	}
+
+	void AstVisitor::CopyFields(Cpp__TryStat* from, Cpp__TryStat* to)
+	{
+		CopyFields(static_cast<CppStatement*>(from), static_cast<CppStatement*>(to));
+		to->exceptStat = CopyNode(from->exceptStat.Obj());
+		to->filter = CopyNode(from->filter.Obj());
+		to->finallyStat = CopyNode(from->finallyStat.Obj());
+		to->tryStat = CopyNode(from->tryStat.Obj());
+	}
+
+	void AstVisitor::Visit(CppGenericArguments* node)
+	{
+		auto newNode = vl::Ptr(new CppGenericArguments);
+		CopyFields(node, newNode.Obj());
+		this->result = newNode;
+	}
+
+	void AstVisitor::Visit(CppGenericHeader* node)
+	{
+		auto newNode = vl::Ptr(new CppGenericHeader);
+		CopyFields(node, newNode.Obj());
+		this->result = newNode;
+	}
+
+	void AstVisitor::Visit(CppStringLiteralFragment* node)
+	{
+		auto newNode = vl::Ptr(new CppStringLiteralFragment);
+		CopyFields(node, newNode.Obj());
+		this->result = newNode;
+	}
+
+	void AstVisitor::Visit(CppLambdaCapture* node)
+	{
+		auto newNode = vl::Ptr(new CppLambdaCapture);
+		CopyFields(node, newNode.Obj());
+		this->result = newNode;
+	}
+
+	void AstVisitor::Visit(CppAdvancedType* node)
+	{
+		auto newNode = vl::Ptr(new CppAdvancedType);
+		CopyFields(node, newNode.Obj());
+		this->result = newNode;
+	}
+
+	void AstVisitor::Visit(CppDeclaratorKeyword* node)
+	{
+		auto newNode = vl::Ptr(new CppDeclaratorKeyword);
+		CopyFields(node, newNode.Obj());
+		this->result = newNode;
+	}
+
+	void AstVisitor::Visit(CppFunctionKeyword* node)
+	{
+		auto newNode = vl::Ptr(new CppFunctionKeyword);
+		CopyFields(node, newNode.Obj());
+		this->result = newNode;
+	}
+
+	void AstVisitor::Visit(CppDeclaratorFunctionPart* node)
+	{
+		auto newNode = vl::Ptr(new CppDeclaratorFunctionPart);
+		CopyFields(node, newNode.Obj());
+		this->result = newNode;
+	}
+
+	void AstVisitor::Visit(CppDeclaratorArrayPart* node)
+	{
+		auto newNode = vl::Ptr(new CppDeclaratorArrayPart);
+		CopyFields(node, newNode.Obj());
+		this->result = newNode;
+	}
+
+	void AstVisitor::Visit(CppDeclarator* node)
+	{
+		auto newNode = vl::Ptr(new CppDeclarator);
+		CopyFields(node, newNode.Obj());
+		this->result = newNode;
+	}
+
+	void AstVisitor::Visit(CppDeclaratorVariablePart* node)
+	{
+		auto newNode = vl::Ptr(new CppDeclaratorVariablePart);
+		CopyFields(node, newNode.Obj());
+		this->result = newNode;
+	}
+
+	void AstVisitor::Visit(CppTryStatCatchPart* node)
+	{
+		auto newNode = vl::Ptr(new CppTryStatCatchPart);
+		CopyFields(node, newNode.Obj());
+		this->result = newNode;
+	}
+
+	void AstVisitor::Visit(CppFile* node)
+	{
+		auto newNode = vl::Ptr(new CppFile);
+		CopyFields(node, newNode.Obj());
+		this->result = newNode;
+	}
+
+	void AstVisitor::Visit(CppTypeOrExprOrOthersToResolve* node)
+	{
+		auto newNode = vl::Ptr(new CppTypeOrExprOrOthersToResolve);
+		CopyFields(node, newNode.Obj());
+		this->result = newNode;
+	}
+
+	void AstVisitor::Visit(CppDeclaration* node)
+	{
+		node->Accept(static_cast<CppDeclaration::IVisitor*>(this));
+	}
+
+	void AstVisitor::Visit(CppTypeOrExpr* node)
+	{
+		node->Accept(static_cast<CppTypeOrExpr::IVisitor*>(this));
+	}
+
+	void AstVisitor::Visit(CppGenericArgument* node)
+	{
+		auto newNode = vl::Ptr(new CppGenericArgument);
+		CopyFields(node, newNode.Obj());
+		this->result = newNode;
+	}
+
+	void AstVisitor::Visit(CppOrdinaryGenericParameter* node)
+	{
+		auto newNode = vl::Ptr(new CppOrdinaryGenericParameter);
+		CopyFields(node, newNode.Obj());
+		this->result = newNode;
+	}
+
+	void AstVisitor::Visit(CppSingleVarDeclaration* node)
+	{
+		auto newNode = vl::Ptr(new CppSingleVarDeclaration);
+		CopyFields(node, newNode.Obj());
+		this->result = newNode;
+	}
+
+	void AstVisitor::Visit(CppMultipleVarDeclaration* node)
+	{
+		auto newNode = vl::Ptr(new CppMultipleVarDeclaration);
+		CopyFields(node, newNode.Obj());
+		this->result = newNode;
+	}
+
+	void AstVisitor::Visit(CppStaticAssertDeclaration* node)
+	{
+		auto newNode = vl::Ptr(new CppStaticAssertDeclaration);
+		CopyFields(node, newNode.Obj());
+		this->result = newNode;
+	}
+
+	void AstVisitor::Visit(CppTypeOrExprToResolve* node)
+	{
+		auto newNode = vl::Ptr(new CppTypeOrExprToResolve);
+		CopyFields(node, newNode.Obj());
+		this->result = newNode;
+	}
+
+	void AstVisitor::Visit(CppExprOnly* node)
+	{
+		node->Accept(static_cast<CppExprOnly::IVisitor*>(this));
+	}
+
+	void AstVisitor::Visit(CppTypeOnly* node)
+	{
+		node->Accept(static_cast<CppTypeOnly::IVisitor*>(this));
+	}
+
+	void AstVisitor::Visit(CppQualifiedName* node)
+	{
+		auto newNode = vl::Ptr(new CppQualifiedName);
+		CopyFields(node, newNode.Obj());
+		this->result = newNode;
+	}
+
+	void AstVisitor::Visit(CppDeclaratorType* node)
+	{
+		auto newNode = vl::Ptr(new CppDeclaratorType);
+		CopyFields(node, newNode.Obj());
+		this->result = newNode;
+	}
+
+	void AstVisitor::Visit(CppPrimitiveExprLiteral* node)
+	{
+		auto newNode = vl::Ptr(new CppPrimitiveExprLiteral);
+		CopyFields(node, newNode.Obj());
+		this->result = newNode;
+	}
+
+	void AstVisitor::Visit(CppNumericExprLiteral* node)
+	{
+		auto newNode = vl::Ptr(new CppNumericExprLiteral);
+		CopyFields(node, newNode.Obj());
+		this->result = newNode;
+	}
+
+	void AstVisitor::Visit(CppStringLiteral* node)
+	{
+		auto newNode = vl::Ptr(new CppStringLiteral);
+		CopyFields(node, newNode.Obj());
+		this->result = newNode;
+	}
+
+	void AstVisitor::Visit(CppLambdaExpr* node)
+	{
+		auto newNode = vl::Ptr(new CppLambdaExpr);
+		CopyFields(node, newNode.Obj());
+		this->result = newNode;
+	}
+
+	void AstVisitor::Visit(CppParenthesisExpr* node)
+	{
+		auto newNode = vl::Ptr(new CppParenthesisExpr);
+		CopyFields(node, newNode.Obj());
+		this->result = newNode;
+	}
+
+	void AstVisitor::Visit(CppBraceExpr* node)
+	{
+		auto newNode = vl::Ptr(new CppBraceExpr);
+		CopyFields(node, newNode.Obj());
+		this->result = newNode;
+	}
+
+	void AstVisitor::Visit(CppCastExpr* node)
+	{
+		auto newNode = vl::Ptr(new CppCastExpr);
+		CopyFields(node, newNode.Obj());
+		this->result = newNode;
+	}
+
+	void AstVisitor::Visit(CppSysFuncExpr* node)
+	{
+		auto newNode = vl::Ptr(new CppSysFuncExpr);
+		CopyFields(node, newNode.Obj());
+		this->result = newNode;
+	}
+
+	void AstVisitor::Visit(CppSizeofExpr* node)
+	{
+		auto newNode = vl::Ptr(new CppSizeofExpr);
+		CopyFields(node, newNode.Obj());
+		this->result = newNode;
+	}
+
+	void AstVisitor::Visit(CppDeleteExpr* node)
+	{
+		auto newNode = vl::Ptr(new CppDeleteExpr);
+		CopyFields(node, newNode.Obj());
+		this->result = newNode;
+	}
+
+	void AstVisitor::Visit(CppNewExpr* node)
+	{
+		auto newNode = vl::Ptr(new CppNewExpr);
+		CopyFields(node, newNode.Obj());
+		this->result = newNode;
+	}
+
+	void AstVisitor::Visit(CppPrefixUnaryExpr* node)
+	{
+		auto newNode = vl::Ptr(new CppPrefixUnaryExpr);
+		CopyFields(node, newNode.Obj());
+		this->result = newNode;
+	}
+
+	void AstVisitor::Visit(CppPostfixUnaryExpr* node)
+	{
+		auto newNode = vl::Ptr(new CppPostfixUnaryExpr);
+		CopyFields(node, newNode.Obj());
+		this->result = newNode;
+	}
+
+	void AstVisitor::Visit(CppIndexExpr* node)
+	{
+		auto newNode = vl::Ptr(new CppIndexExpr);
+		CopyFields(node, newNode.Obj());
+		this->result = newNode;
+	}
+
+	void AstVisitor::Visit(CppCallExpr* node)
+	{
+		auto newNode = vl::Ptr(new CppCallExpr);
+		CopyFields(node, newNode.Obj());
+		this->result = newNode;
+	}
+
+	void AstVisitor::Visit(CppBinaryExpr* node)
+	{
+		auto newNode = vl::Ptr(new CppBinaryExpr);
+		CopyFields(node, newNode.Obj());
+		this->result = newNode;
+	}
+
+	void AstVisitor::Visit(CppIfExpr* node)
+	{
+		auto newNode = vl::Ptr(new CppIfExpr);
+		CopyFields(node, newNode.Obj());
+		this->result = newNode;
+	}
+
+	void AstVisitor::Visit(CppThrowExpr* node)
+	{
+		auto newNode = vl::Ptr(new CppThrowExpr);
+		CopyFields(node, newNode.Obj());
+		this->result = newNode;
+	}
+
+	void AstVisitor::Visit(CppVariadicExpr* node)
+	{
+		auto newNode = vl::Ptr(new CppVariadicExpr);
+		CopyFields(node, newNode.Obj());
+		this->result = newNode;
+	}
+
+	void AstVisitor::Visit(CppPrimitiveType* node)
+	{
+		auto newNode = vl::Ptr(new CppPrimitiveType);
+		CopyFields(node, newNode.Obj());
+		this->result = newNode;
+	}
+
+	void AstVisitor::Visit(CppConstType* node)
+	{
+		auto newNode = vl::Ptr(new CppConstType);
+		CopyFields(node, newNode.Obj());
+		this->result = newNode;
+	}
+
+	void AstVisitor::Visit(CppVolatileType* node)
+	{
+		auto newNode = vl::Ptr(new CppVolatileType);
+		CopyFields(node, newNode.Obj());
+		this->result = newNode;
+	}
+
+	void AstVisitor::Visit(CppNameIdentifier* node)
+	{
+		auto newNode = vl::Ptr(new CppNameIdentifier);
+		CopyFields(node, newNode.Obj());
+		this->result = newNode;
+	}
+
+	void AstVisitor::Visit(CppOperatorIdentifier* node)
+	{
+		auto newNode = vl::Ptr(new CppOperatorIdentifier);
+		CopyFields(node, newNode.Obj());
+		this->result = newNode;
+	}
+
+	void AstVisitor::Visit(CppVarValueInit* node)
+	{
+		auto newNode = vl::Ptr(new CppVarValueInit);
+		CopyFields(node, newNode.Obj());
+		this->result = newNode;
+	}
+
+	void AstVisitor::Visit(CppVarParanthesisInit* node)
+	{
+		auto newNode = vl::Ptr(new CppVarParanthesisInit);
+		CopyFields(node, newNode.Obj());
+		this->result = newNode;
+	}
+
+	void AstVisitor::Visit(CppVarBraceInit* node)
+	{
+		auto newNode = vl::Ptr(new CppVarBraceInit);
+		CopyFields(node, newNode.Obj());
+		this->result = newNode;
+	}
+
+	void AstVisitor::Visit(CppStatementToResolve* node)
+	{
+		auto newNode = vl::Ptr(new CppStatementToResolve);
+		CopyFields(node, newNode.Obj());
+		this->result = newNode;
+	}
+
+	void AstVisitor::Visit(CppEmptyStat* node)
+	{
+		auto newNode = vl::Ptr(new CppEmptyStat);
+		CopyFields(node, newNode.Obj());
+		this->result = newNode;
+	}
+
+	void AstVisitor::Visit(CppBlockStat* node)
+	{
+		auto newNode = vl::Ptr(new CppBlockStat);
+		CopyFields(node, newNode.Obj());
+		this->result = newNode;
+	}
+
+	void AstVisitor::Visit(CppExprStat* node)
+	{
+		auto newNode = vl::Ptr(new CppExprStat);
+		CopyFields(node, newNode.Obj());
+		this->result = newNode;
+	}
+
+	void AstVisitor::Visit(CppDeclStat* node)
+	{
+		auto newNode = vl::Ptr(new CppDeclStat);
+		CopyFields(node, newNode.Obj());
+		this->result = newNode;
+	}
+
+	void AstVisitor::Visit(CppBreakStat* node)
+	{
+		auto newNode = vl::Ptr(new CppBreakStat);
+		CopyFields(node, newNode.Obj());
+		this->result = newNode;
+	}
+
+	void AstVisitor::Visit(CppContinueStat* node)
+	{
+		auto newNode = vl::Ptr(new CppContinueStat);
+		CopyFields(node, newNode.Obj());
+		this->result = newNode;
+	}
+
+	void AstVisitor::Visit(CppReturnStat* node)
+	{
+		auto newNode = vl::Ptr(new CppReturnStat);
+		CopyFields(node, newNode.Obj());
+		this->result = newNode;
+	}
+
+	void AstVisitor::Visit(CppLabelStat* node)
+	{
+		auto newNode = vl::Ptr(new CppLabelStat);
+		CopyFields(node, newNode.Obj());
+		this->result = newNode;
+	}
+
+	void AstVisitor::Visit(CppGotoStat* node)
+	{
+		auto newNode = vl::Ptr(new CppGotoStat);
+		CopyFields(node, newNode.Obj());
+		this->result = newNode;
+	}
+
+	void AstVisitor::Visit(CppCaseStat* node)
+	{
+		auto newNode = vl::Ptr(new CppCaseStat);
+		CopyFields(node, newNode.Obj());
+		this->result = newNode;
+	}
+
+	void AstVisitor::Visit(CppDefaultStat* node)
+	{
+		auto newNode = vl::Ptr(new CppDefaultStat);
+		CopyFields(node, newNode.Obj());
+		this->result = newNode;
+	}
+
+	void AstVisitor::Visit(Cpp__LeaveStat* node)
+	{
+		auto newNode = vl::Ptr(new Cpp__LeaveStat);
+		CopyFields(node, newNode.Obj());
+		this->result = newNode;
+	}
+
+	void AstVisitor::Visit(CppWhileStat* node)
+	{
+		auto newNode = vl::Ptr(new CppWhileStat);
+		CopyFields(node, newNode.Obj());
+		this->result = newNode;
+	}
+
+	void AstVisitor::Visit(CppDoWhileStat* node)
+	{
+		auto newNode = vl::Ptr(new CppDoWhileStat);
+		CopyFields(node, newNode.Obj());
+		this->result = newNode;
+	}
+
+	void AstVisitor::Visit(CppIfElseStat* node)
+	{
+		auto newNode = vl::Ptr(new CppIfElseStat);
+		CopyFields(node, newNode.Obj());
+		this->result = newNode;
+	}
+
+	void AstVisitor::Visit(CppForStat* node)
+	{
+		auto newNode = vl::Ptr(new CppForStat);
+		CopyFields(node, newNode.Obj());
+		this->result = newNode;
+	}
+
+	void AstVisitor::Visit(CppSwitchStat* node)
+	{
+		auto newNode = vl::Ptr(new CppSwitchStat);
+		CopyFields(node, newNode.Obj());
+		this->result = newNode;
+	}
+
+	void AstVisitor::Visit(CppTryStat* node)
+	{
+		auto newNode = vl::Ptr(new CppTryStat);
+		CopyFields(node, newNode.Obj());
+		this->result = newNode;
+	}
+
+	void AstVisitor::Visit(Cpp__TryStat* node)
+	{
+		auto newNode = vl::Ptr(new Cpp__TryStat);
+		CopyFields(node, newNode.Obj());
+		this->result = newNode;
+	}
+
+	void AstVisitor::Visit(CppForStatLoopCondition* node)
+	{
+		auto newNode = vl::Ptr(new CppForStatLoopCondition);
+		CopyFields(node, newNode.Obj());
+		this->result = newNode;
+	}
+
+	void AstVisitor::Visit(CppForStatIterateCondition* node)
+	{
+		auto newNode = vl::Ptr(new CppForStatIterateCondition);
+		CopyFields(node, newNode.Obj());
+		this->result = newNode;
+	}
+
+	vl::Ptr<CppTypeOrExprOrOthers> AstVisitor::CopyNode(CppTypeOrExprOrOthers* node)
+	{
+		if (!node) return nullptr;
+		node->Accept(static_cast<CppTypeOrExprOrOthers::IVisitor*>(this));
+		this->result->codeRange = node->codeRange;
+		return this->result.Cast<CppTypeOrExprOrOthers>();
+	}
+
+	vl::Ptr<CppIdentifier> AstVisitor::CopyNode(CppIdentifier* node)
+	{
+		if (!node) return nullptr;
+		node->Accept(static_cast<CppIdentifier::IVisitor*>(this));
+		this->result->codeRange = node->codeRange;
+		return this->result.Cast<CppIdentifier>();
+	}
+
+	vl::Ptr<CppVarInit> AstVisitor::CopyNode(CppVarInit* node)
+	{
+		if (!node) return nullptr;
+		node->Accept(static_cast<CppVarInit::IVisitor*>(this));
+		this->result->codeRange = node->codeRange;
+		return this->result.Cast<CppVarInit>();
+	}
+
+	vl::Ptr<CppStatement> AstVisitor::CopyNode(CppStatement* node)
+	{
+		if (!node) return nullptr;
+		node->Accept(static_cast<CppStatement::IVisitor*>(this));
+		this->result->codeRange = node->codeRange;
+		return this->result.Cast<CppStatement>();
+	}
+
+	vl::Ptr<CppForStatConditionPart> AstVisitor::CopyNode(CppForStatConditionPart* node)
+	{
+		if (!node) return nullptr;
+		node->Accept(static_cast<CppForStatConditionPart::IVisitor*>(this));
+		this->result->codeRange = node->codeRange;
+		return this->result.Cast<CppForStatConditionPart>();
+	}
+
+	vl::Ptr<CppGenericArguments> AstVisitor::CopyNode(CppGenericArguments* node)
+	{
+		if (!node) return nullptr;
+		Visit(node);
+		this->result->codeRange = node->codeRange;
+		return this->result.Cast<CppGenericArguments>();
+	}
+
+	vl::Ptr<CppGenericHeader> AstVisitor::CopyNode(CppGenericHeader* node)
+	{
+		if (!node) return nullptr;
+		Visit(node);
+		this->result->codeRange = node->codeRange;
+		return this->result.Cast<CppGenericHeader>();
+	}
+
+	vl::Ptr<CppStringLiteralFragment> AstVisitor::CopyNode(CppStringLiteralFragment* node)
+	{
+		if (!node) return nullptr;
+		Visit(node);
+		this->result->codeRange = node->codeRange;
+		return this->result.Cast<CppStringLiteralFragment>();
+	}
+
+	vl::Ptr<CppLambdaCapture> AstVisitor::CopyNode(CppLambdaCapture* node)
+	{
+		if (!node) return nullptr;
+		Visit(node);
+		this->result->codeRange = node->codeRange;
+		return this->result.Cast<CppLambdaCapture>();
+	}
+
+	vl::Ptr<CppAdvancedType> AstVisitor::CopyNode(CppAdvancedType* node)
+	{
+		if (!node) return nullptr;
+		Visit(node);
+		this->result->codeRange = node->codeRange;
+		return this->result.Cast<CppAdvancedType>();
+	}
+
+	vl::Ptr<CppDeclaratorKeyword> AstVisitor::CopyNode(CppDeclaratorKeyword* node)
+	{
+		if (!node) return nullptr;
+		Visit(node);
+		this->result->codeRange = node->codeRange;
+		return this->result.Cast<CppDeclaratorKeyword>();
+	}
+
+	vl::Ptr<CppFunctionKeyword> AstVisitor::CopyNode(CppFunctionKeyword* node)
+	{
+		if (!node) return nullptr;
+		Visit(node);
+		this->result->codeRange = node->codeRange;
+		return this->result.Cast<CppFunctionKeyword>();
+	}
+
+	vl::Ptr<CppDeclaratorFunctionPart> AstVisitor::CopyNode(CppDeclaratorFunctionPart* node)
+	{
+		if (!node) return nullptr;
+		Visit(node);
+		this->result->codeRange = node->codeRange;
+		return this->result.Cast<CppDeclaratorFunctionPart>();
+	}
+
+	vl::Ptr<CppDeclaratorArrayPart> AstVisitor::CopyNode(CppDeclaratorArrayPart* node)
+	{
+		if (!node) return nullptr;
+		Visit(node);
+		this->result->codeRange = node->codeRange;
+		return this->result.Cast<CppDeclaratorArrayPart>();
+	}
+
+	vl::Ptr<CppDeclarator> AstVisitor::CopyNode(CppDeclarator* node)
+	{
+		if (!node) return nullptr;
+		Visit(node);
+		this->result->codeRange = node->codeRange;
+		return this->result.Cast<CppDeclarator>();
+	}
+
+	vl::Ptr<CppDeclaratorVariablePart> AstVisitor::CopyNode(CppDeclaratorVariablePart* node)
+	{
+		if (!node) return nullptr;
+		Visit(node);
+		this->result->codeRange = node->codeRange;
+		return this->result.Cast<CppDeclaratorVariablePart>();
+	}
+
+	vl::Ptr<CppTryStatCatchPart> AstVisitor::CopyNode(CppTryStatCatchPart* node)
+	{
+		if (!node) return nullptr;
+		Visit(node);
+		this->result->codeRange = node->codeRange;
+		return this->result.Cast<CppTryStatCatchPart>();
+	}
+
+	vl::Ptr<CppFile> AstVisitor::CopyNode(CppFile* node)
+	{
+		if (!node) return nullptr;
+		Visit(node);
+		this->result->codeRange = node->codeRange;
+		return this->result.Cast<CppFile>();
+	}
+
+	vl::Ptr<CppBinaryExpr> AstVisitor::CopyNode(CppBinaryExpr* node)
+	{
+		if (!node) return nullptr;
+		return CopyNode(static_cast<CppTypeOrExprOrOthers*>(node)).Cast<CppBinaryExpr>();
+	}
+
+	vl::Ptr<CppBlockStat> AstVisitor::CopyNode(CppBlockStat* node)
+	{
+		if (!node) return nullptr;
+		return CopyNode(static_cast<CppStatement*>(node)).Cast<CppBlockStat>();
+	}
+
+	vl::Ptr<CppBraceExpr> AstVisitor::CopyNode(CppBraceExpr* node)
+	{
+		if (!node) return nullptr;
+		return CopyNode(static_cast<CppTypeOrExprOrOthers*>(node)).Cast<CppBraceExpr>();
+	}
+
+	vl::Ptr<CppBreakStat> AstVisitor::CopyNode(CppBreakStat* node)
+	{
+		if (!node) return nullptr;
+		return CopyNode(static_cast<CppStatement*>(node)).Cast<CppBreakStat>();
+	}
+
+	vl::Ptr<CppCallExpr> AstVisitor::CopyNode(CppCallExpr* node)
+	{
+		if (!node) return nullptr;
+		return CopyNode(static_cast<CppTypeOrExprOrOthers*>(node)).Cast<CppCallExpr>();
+	}
+
+	vl::Ptr<CppCaseStat> AstVisitor::CopyNode(CppCaseStat* node)
+	{
+		if (!node) return nullptr;
+		return CopyNode(static_cast<CppStatement*>(node)).Cast<CppCaseStat>();
+	}
+
+	vl::Ptr<CppCastExpr> AstVisitor::CopyNode(CppCastExpr* node)
+	{
+		if (!node) return nullptr;
+		return CopyNode(static_cast<CppTypeOrExprOrOthers*>(node)).Cast<CppCastExpr>();
+	}
+
+	vl::Ptr<CppConstType> AstVisitor::CopyNode(CppConstType* node)
+	{
+		if (!node) return nullptr;
+		return CopyNode(static_cast<CppTypeOrExprOrOthers*>(node)).Cast<CppConstType>();
+	}
+
+	vl::Ptr<CppContinueStat> AstVisitor::CopyNode(CppContinueStat* node)
+	{
+		if (!node) return nullptr;
+		return CopyNode(static_cast<CppStatement*>(node)).Cast<CppContinueStat>();
+	}
+
+	vl::Ptr<CppDeclStat> AstVisitor::CopyNode(CppDeclStat* node)
+	{
+		if (!node) return nullptr;
+		return CopyNode(static_cast<CppStatement*>(node)).Cast<CppDeclStat>();
+	}
+
+	vl::Ptr<CppDeclaration> AstVisitor::CopyNode(CppDeclaration* node)
+	{
+		if (!node) return nullptr;
+		return CopyNode(static_cast<CppTypeOrExprOrOthers*>(node)).Cast<CppDeclaration>();
+	}
+
+	vl::Ptr<CppDeclaratorType> AstVisitor::CopyNode(CppDeclaratorType* node)
+	{
+		if (!node) return nullptr;
+		return CopyNode(static_cast<CppTypeOrExprOrOthers*>(node)).Cast<CppDeclaratorType>();
+	}
+
+	vl::Ptr<CppDefaultStat> AstVisitor::CopyNode(CppDefaultStat* node)
+	{
+		if (!node) return nullptr;
+		return CopyNode(static_cast<CppStatement*>(node)).Cast<CppDefaultStat>();
+	}
+
+	vl::Ptr<CppDeleteExpr> AstVisitor::CopyNode(CppDeleteExpr* node)
+	{
+		if (!node) return nullptr;
+		return CopyNode(static_cast<CppTypeOrExprOrOthers*>(node)).Cast<CppDeleteExpr>();
+	}
+
+	vl::Ptr<CppDoWhileStat> AstVisitor::CopyNode(CppDoWhileStat* node)
+	{
+		if (!node) return nullptr;
+		return CopyNode(static_cast<CppStatement*>(node)).Cast<CppDoWhileStat>();
+	}
+
+	vl::Ptr<CppEmptyStat> AstVisitor::CopyNode(CppEmptyStat* node)
+	{
+		if (!node) return nullptr;
+		return CopyNode(static_cast<CppStatement*>(node)).Cast<CppEmptyStat>();
+	}
+
+	vl::Ptr<CppExprOnly> AstVisitor::CopyNode(CppExprOnly* node)
+	{
+		if (!node) return nullptr;
+		return CopyNode(static_cast<CppTypeOrExprOrOthers*>(node)).Cast<CppExprOnly>();
+	}
+
+	vl::Ptr<CppExprStat> AstVisitor::CopyNode(CppExprStat* node)
+	{
+		if (!node) return nullptr;
+		return CopyNode(static_cast<CppStatement*>(node)).Cast<CppExprStat>();
+	}
+
+	vl::Ptr<CppForStat> AstVisitor::CopyNode(CppForStat* node)
+	{
+		if (!node) return nullptr;
+		return CopyNode(static_cast<CppStatement*>(node)).Cast<CppForStat>();
+	}
+
+	vl::Ptr<CppForStatIterateCondition> AstVisitor::CopyNode(CppForStatIterateCondition* node)
+	{
+		if (!node) return nullptr;
+		return CopyNode(static_cast<CppForStatConditionPart*>(node)).Cast<CppForStatIterateCondition>();
+	}
+
+	vl::Ptr<CppForStatLoopCondition> AstVisitor::CopyNode(CppForStatLoopCondition* node)
+	{
+		if (!node) return nullptr;
+		return CopyNode(static_cast<CppForStatConditionPart*>(node)).Cast<CppForStatLoopCondition>();
+	}
+
+	vl::Ptr<CppGenericArgument> AstVisitor::CopyNode(CppGenericArgument* node)
+	{
+		if (!node) return nullptr;
+		return CopyNode(static_cast<CppTypeOrExprOrOthers*>(node)).Cast<CppGenericArgument>();
+	}
+
+	vl::Ptr<CppGotoStat> AstVisitor::CopyNode(CppGotoStat* node)
+	{
+		if (!node) return nullptr;
+		return CopyNode(static_cast<CppStatement*>(node)).Cast<CppGotoStat>();
+	}
+
+	vl::Ptr<CppIfElseStat> AstVisitor::CopyNode(CppIfElseStat* node)
+	{
+		if (!node) return nullptr;
+		return CopyNode(static_cast<CppStatement*>(node)).Cast<CppIfElseStat>();
+	}
+
+	vl::Ptr<CppIfExpr> AstVisitor::CopyNode(CppIfExpr* node)
+	{
+		if (!node) return nullptr;
+		return CopyNode(static_cast<CppTypeOrExprOrOthers*>(node)).Cast<CppIfExpr>();
+	}
+
+	vl::Ptr<CppIndexExpr> AstVisitor::CopyNode(CppIndexExpr* node)
+	{
+		if (!node) return nullptr;
+		return CopyNode(static_cast<CppTypeOrExprOrOthers*>(node)).Cast<CppIndexExpr>();
+	}
+
+	vl::Ptr<CppLabelStat> AstVisitor::CopyNode(CppLabelStat* node)
+	{
+		if (!node) return nullptr;
+		return CopyNode(static_cast<CppStatement*>(node)).Cast<CppLabelStat>();
+	}
+
+	vl::Ptr<CppLambdaExpr> AstVisitor::CopyNode(CppLambdaExpr* node)
+	{
+		if (!node) return nullptr;
+		return CopyNode(static_cast<CppTypeOrExprOrOthers*>(node)).Cast<CppLambdaExpr>();
+	}
+
+	vl::Ptr<CppMultipleVarDeclaration> AstVisitor::CopyNode(CppMultipleVarDeclaration* node)
+	{
+		if (!node) return nullptr;
+		return CopyNode(static_cast<CppTypeOrExprOrOthers*>(node)).Cast<CppMultipleVarDeclaration>();
+	}
+
+	vl::Ptr<CppNameIdentifier> AstVisitor::CopyNode(CppNameIdentifier* node)
+	{
+		if (!node) return nullptr;
+		return CopyNode(static_cast<CppIdentifier*>(node)).Cast<CppNameIdentifier>();
+	}
+
+	vl::Ptr<CppNewExpr> AstVisitor::CopyNode(CppNewExpr* node)
+	{
+		if (!node) return nullptr;
+		return CopyNode(static_cast<CppTypeOrExprOrOthers*>(node)).Cast<CppNewExpr>();
+	}
+
+	vl::Ptr<CppNumericExprLiteral> AstVisitor::CopyNode(CppNumericExprLiteral* node)
+	{
+		if (!node) return nullptr;
+		return CopyNode(static_cast<CppTypeOrExprOrOthers*>(node)).Cast<CppNumericExprLiteral>();
+	}
+
+	vl::Ptr<CppOperatorIdentifier> AstVisitor::CopyNode(CppOperatorIdentifier* node)
+	{
+		if (!node) return nullptr;
+		return CopyNode(static_cast<CppIdentifier*>(node)).Cast<CppOperatorIdentifier>();
+	}
+
+	vl::Ptr<CppOrdinaryGenericParameter> AstVisitor::CopyNode(CppOrdinaryGenericParameter* node)
+	{
+		if (!node) return nullptr;
+		return CopyNode(static_cast<CppTypeOrExprOrOthers*>(node)).Cast<CppOrdinaryGenericParameter>();
+	}
+
+	vl::Ptr<CppParenthesisExpr> AstVisitor::CopyNode(CppParenthesisExpr* node)
+	{
+		if (!node) return nullptr;
+		return CopyNode(static_cast<CppTypeOrExprOrOthers*>(node)).Cast<CppParenthesisExpr>();
+	}
+
+	vl::Ptr<CppPostfixUnaryExpr> AstVisitor::CopyNode(CppPostfixUnaryExpr* node)
+	{
+		if (!node) return nullptr;
+		return CopyNode(static_cast<CppTypeOrExprOrOthers*>(node)).Cast<CppPostfixUnaryExpr>();
+	}
+
+	vl::Ptr<CppPrefixUnaryExpr> AstVisitor::CopyNode(CppPrefixUnaryExpr* node)
+	{
+		if (!node) return nullptr;
+		return CopyNode(static_cast<CppTypeOrExprOrOthers*>(node)).Cast<CppPrefixUnaryExpr>();
+	}
+
+	vl::Ptr<CppPrimitiveExprLiteral> AstVisitor::CopyNode(CppPrimitiveExprLiteral* node)
+	{
+		if (!node) return nullptr;
+		return CopyNode(static_cast<CppTypeOrExprOrOthers*>(node)).Cast<CppPrimitiveExprLiteral>();
+	}
+
+	vl::Ptr<CppPrimitiveType> AstVisitor::CopyNode(CppPrimitiveType* node)
+	{
+		if (!node) return nullptr;
+		return CopyNode(static_cast<CppTypeOrExprOrOthers*>(node)).Cast<CppPrimitiveType>();
+	}
+
+	vl::Ptr<CppQualifiedName> AstVisitor::CopyNode(CppQualifiedName* node)
+	{
+		if (!node) return nullptr;
+		return CopyNode(static_cast<CppTypeOrExprOrOthers*>(node)).Cast<CppQualifiedName>();
+	}
+
+	vl::Ptr<CppReturnStat> AstVisitor::CopyNode(CppReturnStat* node)
+	{
+		if (!node) return nullptr;
+		return CopyNode(static_cast<CppStatement*>(node)).Cast<CppReturnStat>();
+	}
+
+	vl::Ptr<CppSingleVarDeclaration> AstVisitor::CopyNode(CppSingleVarDeclaration* node)
+	{
+		if (!node) return nullptr;
+		return CopyNode(static_cast<CppTypeOrExprOrOthers*>(node)).Cast<CppSingleVarDeclaration>();
+	}
+
+	vl::Ptr<CppSizeofExpr> AstVisitor::CopyNode(CppSizeofExpr* node)
+	{
+		if (!node) return nullptr;
+		return CopyNode(static_cast<CppTypeOrExprOrOthers*>(node)).Cast<CppSizeofExpr>();
+	}
+
+	vl::Ptr<CppStatementToResolve> AstVisitor::CopyNode(CppStatementToResolve* node)
+	{
+		if (!node) return nullptr;
+		return CopyNode(static_cast<CppStatement*>(node)).Cast<CppStatementToResolve>();
+	}
+
+	vl::Ptr<CppStaticAssertDeclaration> AstVisitor::CopyNode(CppStaticAssertDeclaration* node)
+	{
+		if (!node) return nullptr;
+		return CopyNode(static_cast<CppTypeOrExprOrOthers*>(node)).Cast<CppStaticAssertDeclaration>();
+	}
+
+	vl::Ptr<CppStringLiteral> AstVisitor::CopyNode(CppStringLiteral* node)
+	{
+		if (!node) return nullptr;
+		return CopyNode(static_cast<CppTypeOrExprOrOthers*>(node)).Cast<CppStringLiteral>();
+	}
+
+	vl::Ptr<CppSwitchStat> AstVisitor::CopyNode(CppSwitchStat* node)
+	{
+		if (!node) return nullptr;
+		return CopyNode(static_cast<CppStatement*>(node)).Cast<CppSwitchStat>();
+	}
+
+	vl::Ptr<CppSysFuncExpr> AstVisitor::CopyNode(CppSysFuncExpr* node)
+	{
+		if (!node) return nullptr;
+		return CopyNode(static_cast<CppTypeOrExprOrOthers*>(node)).Cast<CppSysFuncExpr>();
+	}
+
+	vl::Ptr<CppThrowExpr> AstVisitor::CopyNode(CppThrowExpr* node)
+	{
+		if (!node) return nullptr;
+		return CopyNode(static_cast<CppTypeOrExprOrOthers*>(node)).Cast<CppThrowExpr>();
+	}
+
+	vl::Ptr<CppTryStat> AstVisitor::CopyNode(CppTryStat* node)
+	{
+		if (!node) return nullptr;
+		return CopyNode(static_cast<CppStatement*>(node)).Cast<CppTryStat>();
+	}
+
+	vl::Ptr<CppTypeOnly> AstVisitor::CopyNode(CppTypeOnly* node)
+	{
+		if (!node) return nullptr;
+		return CopyNode(static_cast<CppTypeOrExprOrOthers*>(node)).Cast<CppTypeOnly>();
+	}
+
+	vl::Ptr<CppTypeOrExpr> AstVisitor::CopyNode(CppTypeOrExpr* node)
+	{
+		if (!node) return nullptr;
+		return CopyNode(static_cast<CppTypeOrExprOrOthers*>(node)).Cast<CppTypeOrExpr>();
+	}
+
+	vl::Ptr<CppTypeOrExprOrOthersToResolve> AstVisitor::CopyNode(CppTypeOrExprOrOthersToResolve* node)
+	{
+		if (!node) return nullptr;
+		return CopyNode(static_cast<CppTypeOrExprOrOthers*>(node)).Cast<CppTypeOrExprOrOthersToResolve>();
+	}
+
+	vl::Ptr<CppTypeOrExprToResolve> AstVisitor::CopyNode(CppTypeOrExprToResolve* node)
+	{
+		if (!node) return nullptr;
+		return CopyNode(static_cast<CppTypeOrExprOrOthers*>(node)).Cast<CppTypeOrExprToResolve>();
+	}
+
+	vl::Ptr<CppVarBraceInit> AstVisitor::CopyNode(CppVarBraceInit* node)
+	{
+		if (!node) return nullptr;
+		return CopyNode(static_cast<CppVarInit*>(node)).Cast<CppVarBraceInit>();
+	}
+
+	vl::Ptr<CppVarParanthesisInit> AstVisitor::CopyNode(CppVarParanthesisInit* node)
+	{
+		if (!node) return nullptr;
+		return CopyNode(static_cast<CppVarInit*>(node)).Cast<CppVarParanthesisInit>();
+	}
+
+	vl::Ptr<CppVarValueInit> AstVisitor::CopyNode(CppVarValueInit* node)
+	{
+		if (!node) return nullptr;
+		return CopyNode(static_cast<CppVarInit*>(node)).Cast<CppVarValueInit>();
+	}
+
+	vl::Ptr<CppVariadicExpr> AstVisitor::CopyNode(CppVariadicExpr* node)
+	{
+		if (!node) return nullptr;
+		return CopyNode(static_cast<CppTypeOrExprOrOthers*>(node)).Cast<CppVariadicExpr>();
+	}
+
+	vl::Ptr<CppVolatileType> AstVisitor::CopyNode(CppVolatileType* node)
+	{
+		if (!node) return nullptr;
+		return CopyNode(static_cast<CppTypeOrExprOrOthers*>(node)).Cast<CppVolatileType>();
+	}
+
+	vl::Ptr<CppWhileStat> AstVisitor::CopyNode(CppWhileStat* node)
+	{
+		if (!node) return nullptr;
+		return CopyNode(static_cast<CppStatement*>(node)).Cast<CppWhileStat>();
+	}
+
+	vl::Ptr<Cpp__LeaveStat> AstVisitor::CopyNode(Cpp__LeaveStat* node)
+	{
+		if (!node) return nullptr;
+		return CopyNode(static_cast<CppStatement*>(node)).Cast<Cpp__LeaveStat>();
+	}
+
+	vl::Ptr<Cpp__TryStat> AstVisitor::CopyNode(Cpp__TryStat* node)
+	{
+		if (!node) return nullptr;
+		return CopyNode(static_cast<CppStatement*>(node)).Cast<Cpp__TryStat>();
+	}
+
 }

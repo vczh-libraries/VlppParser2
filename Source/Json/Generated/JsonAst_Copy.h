@@ -9,49 +9,40 @@ Licensed under https://github.com/vczh-libraries/License
 
 #include "JsonAst.h"
 
-namespace vl
+namespace vl::glr::json::copy_visitor
 {
-	namespace glr
+	/// <summary>A copy visitor, overriding all abstract methods with AST copying code.</summary>
+	class AstVisitor
+		: public virtual vl::glr::CopyVisitorBase
+		, protected virtual JsonNode::IVisitor
 	{
-		namespace json
-		{
-			namespace copy_visitor
-			{
-				/// <summary>A copy visitor, overriding all abstract methods with AST copying code.</summary>
-				class AstVisitor
-					: public virtual vl::glr::CopyVisitorBase
-					, protected virtual JsonNode::IVisitor
-				{
-				protected:
-					void CopyFields(JsonArray* from, JsonArray* to);
-					void CopyFields(JsonLiteral* from, JsonLiteral* to);
-					void CopyFields(JsonNode* from, JsonNode* to);
-					void CopyFields(JsonNumber* from, JsonNumber* to);
-					void CopyFields(JsonObject* from, JsonObject* to);
-					void CopyFields(JsonObjectField* from, JsonObjectField* to);
-					void CopyFields(JsonString* from, JsonString* to);
+	protected:
+		void CopyFields(JsonArray* from, JsonArray* to);
+		void CopyFields(JsonLiteral* from, JsonLiteral* to);
+		void CopyFields(JsonNode* from, JsonNode* to);
+		void CopyFields(JsonNumber* from, JsonNumber* to);
+		void CopyFields(JsonObject* from, JsonObject* to);
+		void CopyFields(JsonObjectField* from, JsonObjectField* to);
+		void CopyFields(JsonString* from, JsonString* to);
 
-				protected:
-					virtual void Visit(JsonObjectField* node);
+	protected:
+		virtual void Visit(JsonObjectField* node);
 
-					void Visit(JsonLiteral* node) override;
-					void Visit(JsonString* node) override;
-					void Visit(JsonNumber* node) override;
-					void Visit(JsonArray* node) override;
-					void Visit(JsonObject* node) override;
+		void Visit(JsonLiteral* node) override;
+		void Visit(JsonString* node) override;
+		void Visit(JsonNumber* node) override;
+		void Visit(JsonArray* node) override;
+		void Visit(JsonObject* node) override;
 
-				public:
-					virtual vl::Ptr<JsonNode> CopyNode(JsonNode* node);
-					virtual vl::Ptr<JsonObjectField> CopyNode(JsonObjectField* node);
+	public:
+		virtual vl::Ptr<JsonNode> CopyNode(JsonNode* node);
+		virtual vl::Ptr<JsonObjectField> CopyNode(JsonObjectField* node);
 
-					vl::Ptr<JsonArray> CopyNode(JsonArray* node);
-					vl::Ptr<JsonLiteral> CopyNode(JsonLiteral* node);
-					vl::Ptr<JsonNumber> CopyNode(JsonNumber* node);
-					vl::Ptr<JsonObject> CopyNode(JsonObject* node);
-					vl::Ptr<JsonString> CopyNode(JsonString* node);
-				};
-			}
-		}
-	}
+		vl::Ptr<JsonArray> CopyNode(JsonArray* node);
+		vl::Ptr<JsonLiteral> CopyNode(JsonLiteral* node);
+		vl::Ptr<JsonNumber> CopyNode(JsonNumber* node);
+		vl::Ptr<JsonObject> CopyNode(JsonObject* node);
+		vl::Ptr<JsonString> CopyNode(JsonString* node);
+	};
 }
 #endif

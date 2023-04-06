@@ -6,315 +6,312 @@ Licensed under https://github.com/vczh-libraries/License
 
 #include "CppAst_Empty.h"
 
-namespace cpp_parser
+namespace cpp_parser::empty_visitor
 {
-	namespace empty_visitor
-	{
 
 /***********************************************************************
 TypeOrExprOrOthersVisitor
 ***********************************************************************/
 
-		// Visitor Members -----------------------------------
+	// Visitor Members -----------------------------------
 
-		void TypeOrExprOrOthersVisitor::Visit(CppTypeOrExprOrOthersToResolve* node)
-		{
-		}
+	void TypeOrExprOrOthersVisitor::Visit(CppTypeOrExprOrOthersToResolve* node)
+	{
+	}
 
-		void TypeOrExprOrOthersVisitor::Visit(CppDeclaration* node)
-		{
-			Dispatch(node);
-		}
+	void TypeOrExprOrOthersVisitor::Visit(CppDeclaration* node)
+	{
+		Dispatch(node);
+	}
 
-		void TypeOrExprOrOthersVisitor::Visit(CppTypeOrExpr* node)
-		{
-			Dispatch(node);
-		}
+	void TypeOrExprOrOthersVisitor::Visit(CppTypeOrExpr* node)
+	{
+		Dispatch(node);
+	}
 
-		void TypeOrExprOrOthersVisitor::Visit(CppGenericArgument* node)
-		{
-		}
+	void TypeOrExprOrOthersVisitor::Visit(CppGenericArgument* node)
+	{
+	}
 
-		void TypeOrExprOrOthersVisitor::Visit(CppOrdinaryGenericParameter* node)
-		{
-		}
+	void TypeOrExprOrOthersVisitor::Visit(CppOrdinaryGenericParameter* node)
+	{
+	}
 
 /***********************************************************************
 DeclarationVisitor
 ***********************************************************************/
 
-		// Visitor Members -----------------------------------
+	// Visitor Members -----------------------------------
 
-		void DeclarationVisitor::Visit(CppSingleVarDeclaration* node)
-		{
-		}
+	void DeclarationVisitor::Visit(CppSingleVarDeclaration* node)
+	{
+	}
 
-		void DeclarationVisitor::Visit(CppMultipleVarDeclaration* node)
-		{
-		}
+	void DeclarationVisitor::Visit(CppMultipleVarDeclaration* node)
+	{
+	}
 
-		void DeclarationVisitor::Visit(CppStaticAssertDeclaration* node)
-		{
-		}
+	void DeclarationVisitor::Visit(CppStaticAssertDeclaration* node)
+	{
+	}
 
 /***********************************************************************
 TypeOrExprVisitor
 ***********************************************************************/
 
-		// Visitor Members -----------------------------------
+	// Visitor Members -----------------------------------
 
-		void TypeOrExprVisitor::Visit(CppTypeOrExprToResolve* node)
-		{
-		}
+	void TypeOrExprVisitor::Visit(CppTypeOrExprToResolve* node)
+	{
+	}
 
-		void TypeOrExprVisitor::Visit(CppExprOnly* node)
-		{
-			Dispatch(node);
-		}
+	void TypeOrExprVisitor::Visit(CppExprOnly* node)
+	{
+		Dispatch(node);
+	}
 
-		void TypeOrExprVisitor::Visit(CppTypeOnly* node)
-		{
-			Dispatch(node);
-		}
+	void TypeOrExprVisitor::Visit(CppTypeOnly* node)
+	{
+		Dispatch(node);
+	}
 
-		void TypeOrExprVisitor::Visit(CppQualifiedName* node)
-		{
-		}
+	void TypeOrExprVisitor::Visit(CppQualifiedName* node)
+	{
+	}
 
-		void TypeOrExprVisitor::Visit(CppDeclaratorType* node)
-		{
-		}
+	void TypeOrExprVisitor::Visit(CppDeclaratorType* node)
+	{
+	}
 
 /***********************************************************************
 ExprOnlyVisitor
 ***********************************************************************/
 
-		// Visitor Members -----------------------------------
+	// Visitor Members -----------------------------------
 
-		void ExprOnlyVisitor::Visit(CppPrimitiveExprLiteral* node)
-		{
-		}
+	void ExprOnlyVisitor::Visit(CppPrimitiveExprLiteral* node)
+	{
+	}
 
-		void ExprOnlyVisitor::Visit(CppNumericExprLiteral* node)
-		{
-		}
+	void ExprOnlyVisitor::Visit(CppNumericExprLiteral* node)
+	{
+	}
 
-		void ExprOnlyVisitor::Visit(CppStringLiteral* node)
-		{
-		}
+	void ExprOnlyVisitor::Visit(CppStringLiteral* node)
+	{
+	}
 
-		void ExprOnlyVisitor::Visit(CppLambdaExpr* node)
-		{
-		}
+	void ExprOnlyVisitor::Visit(CppLambdaExpr* node)
+	{
+	}
 
-		void ExprOnlyVisitor::Visit(CppParenthesisExpr* node)
-		{
-		}
+	void ExprOnlyVisitor::Visit(CppParenthesisExpr* node)
+	{
+	}
 
-		void ExprOnlyVisitor::Visit(CppBraceExpr* node)
-		{
-		}
+	void ExprOnlyVisitor::Visit(CppBraceExpr* node)
+	{
+	}
 
-		void ExprOnlyVisitor::Visit(CppCastExpr* node)
-		{
-		}
+	void ExprOnlyVisitor::Visit(CppCastExpr* node)
+	{
+	}
 
-		void ExprOnlyVisitor::Visit(CppSysFuncExpr* node)
-		{
-		}
+	void ExprOnlyVisitor::Visit(CppSysFuncExpr* node)
+	{
+	}
 
-		void ExprOnlyVisitor::Visit(CppSizeofExpr* node)
-		{
-		}
+	void ExprOnlyVisitor::Visit(CppSizeofExpr* node)
+	{
+	}
 
-		void ExprOnlyVisitor::Visit(CppDeleteExpr* node)
-		{
-		}
+	void ExprOnlyVisitor::Visit(CppDeleteExpr* node)
+	{
+	}
 
-		void ExprOnlyVisitor::Visit(CppNewExpr* node)
-		{
-		}
+	void ExprOnlyVisitor::Visit(CppNewExpr* node)
+	{
+	}
 
-		void ExprOnlyVisitor::Visit(CppPrefixUnaryExpr* node)
-		{
-		}
+	void ExprOnlyVisitor::Visit(CppPrefixUnaryExpr* node)
+	{
+	}
 
-		void ExprOnlyVisitor::Visit(CppPostfixUnaryExpr* node)
-		{
-		}
+	void ExprOnlyVisitor::Visit(CppPostfixUnaryExpr* node)
+	{
+	}
 
-		void ExprOnlyVisitor::Visit(CppIndexExpr* node)
-		{
-		}
+	void ExprOnlyVisitor::Visit(CppIndexExpr* node)
+	{
+	}
 
-		void ExprOnlyVisitor::Visit(CppCallExpr* node)
-		{
-		}
+	void ExprOnlyVisitor::Visit(CppCallExpr* node)
+	{
+	}
 
-		void ExprOnlyVisitor::Visit(CppBinaryExpr* node)
-		{
-		}
+	void ExprOnlyVisitor::Visit(CppBinaryExpr* node)
+	{
+	}
 
-		void ExprOnlyVisitor::Visit(CppIfExpr* node)
-		{
-		}
+	void ExprOnlyVisitor::Visit(CppIfExpr* node)
+	{
+	}
 
-		void ExprOnlyVisitor::Visit(CppThrowExpr* node)
-		{
-		}
+	void ExprOnlyVisitor::Visit(CppThrowExpr* node)
+	{
+	}
 
-		void ExprOnlyVisitor::Visit(CppVariadicExpr* node)
-		{
-		}
+	void ExprOnlyVisitor::Visit(CppVariadicExpr* node)
+	{
+	}
 
 /***********************************************************************
 TypeOnlyVisitor
 ***********************************************************************/
 
-		// Visitor Members -----------------------------------
+	// Visitor Members -----------------------------------
 
-		void TypeOnlyVisitor::Visit(CppPrimitiveType* node)
-		{
-		}
+	void TypeOnlyVisitor::Visit(CppPrimitiveType* node)
+	{
+	}
 
-		void TypeOnlyVisitor::Visit(CppConstType* node)
-		{
-		}
+	void TypeOnlyVisitor::Visit(CppConstType* node)
+	{
+	}
 
-		void TypeOnlyVisitor::Visit(CppVolatileType* node)
-		{
-		}
+	void TypeOnlyVisitor::Visit(CppVolatileType* node)
+	{
+	}
 
 /***********************************************************************
 IdentifierVisitor
 ***********************************************************************/
 
-		// Visitor Members -----------------------------------
+	// Visitor Members -----------------------------------
 
-		void IdentifierVisitor::Visit(CppNameIdentifier* node)
-		{
-		}
+	void IdentifierVisitor::Visit(CppNameIdentifier* node)
+	{
+	}
 
-		void IdentifierVisitor::Visit(CppOperatorIdentifier* node)
-		{
-		}
+	void IdentifierVisitor::Visit(CppOperatorIdentifier* node)
+	{
+	}
 
 /***********************************************************************
 VarInitVisitor
 ***********************************************************************/
 
-		// Visitor Members -----------------------------------
+	// Visitor Members -----------------------------------
 
-		void VarInitVisitor::Visit(CppVarValueInit* node)
-		{
-		}
+	void VarInitVisitor::Visit(CppVarValueInit* node)
+	{
+	}
 
-		void VarInitVisitor::Visit(CppVarParanthesisInit* node)
-		{
-		}
+	void VarInitVisitor::Visit(CppVarParanthesisInit* node)
+	{
+	}
 
-		void VarInitVisitor::Visit(CppVarBraceInit* node)
-		{
-		}
+	void VarInitVisitor::Visit(CppVarBraceInit* node)
+	{
+	}
 
 /***********************************************************************
 StatementVisitor
 ***********************************************************************/
 
-		// Visitor Members -----------------------------------
+	// Visitor Members -----------------------------------
 
-		void StatementVisitor::Visit(CppStatementToResolve* node)
-		{
-		}
+	void StatementVisitor::Visit(CppStatementToResolve* node)
+	{
+	}
 
-		void StatementVisitor::Visit(CppEmptyStat* node)
-		{
-		}
+	void StatementVisitor::Visit(CppEmptyStat* node)
+	{
+	}
 
-		void StatementVisitor::Visit(CppBlockStat* node)
-		{
-		}
+	void StatementVisitor::Visit(CppBlockStat* node)
+	{
+	}
 
-		void StatementVisitor::Visit(CppExprStat* node)
-		{
-		}
+	void StatementVisitor::Visit(CppExprStat* node)
+	{
+	}
 
-		void StatementVisitor::Visit(CppDeclStat* node)
-		{
-		}
+	void StatementVisitor::Visit(CppDeclStat* node)
+	{
+	}
 
-		void StatementVisitor::Visit(CppBreakStat* node)
-		{
-		}
+	void StatementVisitor::Visit(CppBreakStat* node)
+	{
+	}
 
-		void StatementVisitor::Visit(CppContinueStat* node)
-		{
-		}
+	void StatementVisitor::Visit(CppContinueStat* node)
+	{
+	}
 
-		void StatementVisitor::Visit(CppReturnStat* node)
-		{
-		}
+	void StatementVisitor::Visit(CppReturnStat* node)
+	{
+	}
 
-		void StatementVisitor::Visit(CppLabelStat* node)
-		{
-		}
+	void StatementVisitor::Visit(CppLabelStat* node)
+	{
+	}
 
-		void StatementVisitor::Visit(CppGotoStat* node)
-		{
-		}
+	void StatementVisitor::Visit(CppGotoStat* node)
+	{
+	}
 
-		void StatementVisitor::Visit(CppCaseStat* node)
-		{
-		}
+	void StatementVisitor::Visit(CppCaseStat* node)
+	{
+	}
 
-		void StatementVisitor::Visit(CppDefaultStat* node)
-		{
-		}
+	void StatementVisitor::Visit(CppDefaultStat* node)
+	{
+	}
 
-		void StatementVisitor::Visit(Cpp__LeaveStat* node)
-		{
-		}
+	void StatementVisitor::Visit(Cpp__LeaveStat* node)
+	{
+	}
 
-		void StatementVisitor::Visit(CppWhileStat* node)
-		{
-		}
+	void StatementVisitor::Visit(CppWhileStat* node)
+	{
+	}
 
-		void StatementVisitor::Visit(CppDoWhileStat* node)
-		{
-		}
+	void StatementVisitor::Visit(CppDoWhileStat* node)
+	{
+	}
 
-		void StatementVisitor::Visit(CppIfElseStat* node)
-		{
-		}
+	void StatementVisitor::Visit(CppIfElseStat* node)
+	{
+	}
 
-		void StatementVisitor::Visit(CppForStat* node)
-		{
-		}
+	void StatementVisitor::Visit(CppForStat* node)
+	{
+	}
 
-		void StatementVisitor::Visit(CppSwitchStat* node)
-		{
-		}
+	void StatementVisitor::Visit(CppSwitchStat* node)
+	{
+	}
 
-		void StatementVisitor::Visit(CppTryStat* node)
-		{
-		}
+	void StatementVisitor::Visit(CppTryStat* node)
+	{
+	}
 
-		void StatementVisitor::Visit(Cpp__TryStat* node)
-		{
-		}
+	void StatementVisitor::Visit(Cpp__TryStat* node)
+	{
+	}
 
 /***********************************************************************
 ForStatConditionPartVisitor
 ***********************************************************************/
 
-		// Visitor Members -----------------------------------
+	// Visitor Members -----------------------------------
 
-		void ForStatConditionPartVisitor::Visit(CppForStatLoopCondition* node)
-		{
-		}
+	void ForStatConditionPartVisitor::Visit(CppForStatLoopCondition* node)
+	{
+	}
 
-		void ForStatConditionPartVisitor::Visit(CppForStatIterateCondition* node)
-		{
-		}
+	void ForStatConditionPartVisitor::Visit(CppForStatIterateCondition* node)
+	{
 	}
 }

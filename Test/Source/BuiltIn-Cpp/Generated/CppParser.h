@@ -260,6 +260,28 @@ namespace cpp_parser
 		vl::Ptr<cpp_parser::CppTypeOrExpr> Parse_TypeOrExpr(vl::collections::List<vl::regex::RegexToken>& tokens, vl::vint codeIndex = -1) const;
 		vl::Ptr<cpp_parser::CppFile> Parse_File(const vl::WString& input, vl::vint codeIndex = -1) const;
 		vl::Ptr<cpp_parser::CppFile> Parse_File(vl::collections::List<vl::regex::RegexToken>& tokens, vl::vint codeIndex = -1) const;
+		vl::Ptr<cpp_parser::CppBlockStat> Parse_Stat_LRI_Isolated_1(const vl::WString& input, vl::vint codeIndex = -1) const;
+		vl::Ptr<cpp_parser::CppBlockStat> Parse_Stat_LRI_Isolated_1(vl::collections::List<vl::regex::RegexToken>& tokens, vl::vint codeIndex = -1) const;
+		vl::Ptr<cpp_parser::CppTryStat> Parse_Stat_LRI_Isolated_2(const vl::WString& input, vl::vint codeIndex = -1) const;
+		vl::Ptr<cpp_parser::CppTryStat> Parse_Stat_LRI_Isolated_2(vl::collections::List<vl::regex::RegexToken>& tokens, vl::vint codeIndex = -1) const;
+		vl::Ptr<cpp_parser::Cpp__TryStat> Parse_Stat_LRI_Isolated_3(const vl::WString& input, vl::vint codeIndex = -1) const;
+		vl::Ptr<cpp_parser::Cpp__TryStat> Parse_Stat_LRI_Isolated_3(vl::collections::List<vl::regex::RegexToken>& tokens, vl::vint codeIndex = -1) const;
+		vl::Ptr<cpp_parser::CppIfElseStat> Parse_Stat_LRI_Isolated_4(const vl::WString& input, vl::vint codeIndex = -1) const;
+		vl::Ptr<cpp_parser::CppIfElseStat> Parse_Stat_LRI_Isolated_4(vl::collections::List<vl::regex::RegexToken>& tokens, vl::vint codeIndex = -1) const;
+		vl::Ptr<cpp_parser::CppForStat> Parse_Stat_LRI_Isolated_5(const vl::WString& input, vl::vint codeIndex = -1) const;
+		vl::Ptr<cpp_parser::CppForStat> Parse_Stat_LRI_Isolated_5(vl::collections::List<vl::regex::RegexToken>& tokens, vl::vint codeIndex = -1) const;
+		vl::Ptr<cpp_parser::CppStatement> Parse_Stat_LRI_Isolated_6(const vl::WString& input, vl::vint codeIndex = -1) const;
+		vl::Ptr<cpp_parser::CppStatement> Parse_Stat_LRI_Isolated_6(vl::collections::List<vl::regex::RegexToken>& tokens, vl::vint codeIndex = -1) const;
+		vl::Ptr<cpp_parser::CppDeclaratorType> Parse_Type_LRI_Isolated_2(const vl::WString& input, vl::vint codeIndex = -1) const;
+		vl::Ptr<cpp_parser::CppDeclaratorType> Parse_Type_LRI_Isolated_2(vl::collections::List<vl::regex::RegexToken>& tokens, vl::vint codeIndex = -1) const;
+		vl::Ptr<cpp_parser::CppStatement> Parse_Stat_LRI_Original(const vl::WString& input, vl::vint codeIndex = -1) const;
+		vl::Ptr<cpp_parser::CppStatement> Parse_Stat_LRI_Original(vl::collections::List<vl::regex::RegexToken>& tokens, vl::vint codeIndex = -1) const;
+		vl::Ptr<cpp_parser::CppTypeOrExpr> Parse_Type_LRI_Original(const vl::WString& input, vl::vint codeIndex = -1) const;
+		vl::Ptr<cpp_parser::CppTypeOrExpr> Parse_Type_LRI_Original(vl::collections::List<vl::regex::RegexToken>& tokens, vl::vint codeIndex = -1) const;
+		vl::Ptr<cpp_parser::CppTypeOrExpr> Parse_Expr_LRI_Original(const vl::WString& input, vl::vint codeIndex = -1) const;
+		vl::Ptr<cpp_parser::CppTypeOrExpr> Parse_Expr_LRI_Original(vl::collections::List<vl::regex::RegexToken>& tokens, vl::vint codeIndex = -1) const;
+		vl::Ptr<cpp_parser::CppTypeOrExpr> Parse_TypeOrExpr_LRI_Original(const vl::WString& input, vl::vint codeIndex = -1) const;
+		vl::Ptr<cpp_parser::CppTypeOrExpr> Parse_TypeOrExpr_LRI_Original(vl::collections::List<vl::regex::RegexToken>& tokens, vl::vint codeIndex = -1) const;
 	};
 }
 #endif

@@ -6,169 +6,157 @@ Licensed under https://github.com/vczh-libraries/License
 
 #include "JsonAst.h"
 
-namespace vl
+namespace vl::glr::json
 {
-	namespace glr
-	{
-		namespace json
-		{
 /***********************************************************************
 Visitor Pattern Implementation
 ***********************************************************************/
 
-			void JsonLiteral::Accept(JsonNode::IVisitor* visitor)
-			{
-				visitor->Visit(this);
-			}
+	void JsonLiteral::Accept(JsonNode::IVisitor* visitor)
+	{
+		visitor->Visit(this);
+	}
 
-			void JsonString::Accept(JsonNode::IVisitor* visitor)
-			{
-				visitor->Visit(this);
-			}
+	void JsonString::Accept(JsonNode::IVisitor* visitor)
+	{
+		visitor->Visit(this);
+	}
 
-			void JsonNumber::Accept(JsonNode::IVisitor* visitor)
-			{
-				visitor->Visit(this);
-			}
+	void JsonNumber::Accept(JsonNode::IVisitor* visitor)
+	{
+		visitor->Visit(this);
+	}
 
-			void JsonArray::Accept(JsonNode::IVisitor* visitor)
-			{
-				visitor->Visit(this);
-			}
+	void JsonArray::Accept(JsonNode::IVisitor* visitor)
+	{
+		visitor->Visit(this);
+	}
 
-			void JsonObject::Accept(JsonNode::IVisitor* visitor)
-			{
-				visitor->Visit(this);
-			}
-		}
+	void JsonObject::Accept(JsonNode::IVisitor* visitor)
+	{
+		visitor->Visit(this);
 	}
 }
-namespace vl
+namespace vl::reflection::description
 {
-	namespace reflection
-	{
-		namespace description
-		{
 #ifndef VCZH_DEBUG_NO_REFLECTION
 
-			IMPL_TYPE_INFO_RENAME(vl::glr::json::JsonNode, system::JsonNode)
-			IMPL_TYPE_INFO_RENAME(vl::glr::json::JsonNode::IVisitor, system::JsonNode::IVisitor)
-			IMPL_TYPE_INFO_RENAME(vl::glr::json::JsonLiteralValue, system::JsonLiteralValue)
-			IMPL_TYPE_INFO_RENAME(vl::glr::json::JsonLiteral, system::JsonLiteral)
-			IMPL_TYPE_INFO_RENAME(vl::glr::json::JsonString, system::JsonString)
-			IMPL_TYPE_INFO_RENAME(vl::glr::json::JsonNumber, system::JsonNumber)
-			IMPL_TYPE_INFO_RENAME(vl::glr::json::JsonArray, system::JsonArray)
-			IMPL_TYPE_INFO_RENAME(vl::glr::json::JsonObjectField, system::JsonObjectField)
-			IMPL_TYPE_INFO_RENAME(vl::glr::json::JsonObject, system::JsonObject)
+	IMPL_TYPE_INFO_RENAME(vl::glr::json::JsonNode, system::JsonNode)
+	IMPL_TYPE_INFO_RENAME(vl::glr::json::JsonNode::IVisitor, system::JsonNode::IVisitor)
+	IMPL_TYPE_INFO_RENAME(vl::glr::json::JsonLiteralValue, system::JsonLiteralValue)
+	IMPL_TYPE_INFO_RENAME(vl::glr::json::JsonLiteral, system::JsonLiteral)
+	IMPL_TYPE_INFO_RENAME(vl::glr::json::JsonString, system::JsonString)
+	IMPL_TYPE_INFO_RENAME(vl::glr::json::JsonNumber, system::JsonNumber)
+	IMPL_TYPE_INFO_RENAME(vl::glr::json::JsonArray, system::JsonArray)
+	IMPL_TYPE_INFO_RENAME(vl::glr::json::JsonObjectField, system::JsonObjectField)
+	IMPL_TYPE_INFO_RENAME(vl::glr::json::JsonObject, system::JsonObject)
 
 #ifdef VCZH_DESCRIPTABLEOBJECT_WITH_METADATA
 
-			BEGIN_CLASS_MEMBER(vl::glr::json::JsonNode)
-				CLASS_MEMBER_BASE(vl::glr::ParsingAstBase)
+	BEGIN_CLASS_MEMBER(vl::glr::json::JsonNode)
+		CLASS_MEMBER_BASE(vl::glr::ParsingAstBase)
 
-			END_CLASS_MEMBER(vl::glr::json::JsonNode)
+	END_CLASS_MEMBER(vl::glr::json::JsonNode)
 
-			BEGIN_ENUM_ITEM(vl::glr::json::JsonLiteralValue)
-				ENUM_ITEM_NAMESPACE(vl::glr::json::JsonLiteralValue)
-				ENUM_NAMESPACE_ITEM(True)
-				ENUM_NAMESPACE_ITEM(False)
-				ENUM_NAMESPACE_ITEM(Null)
-			END_ENUM_ITEM(vl::glr::json::JsonLiteralValue)
+	BEGIN_ENUM_ITEM(vl::glr::json::JsonLiteralValue)
+		ENUM_ITEM_NAMESPACE(vl::glr::json::JsonLiteralValue)
+		ENUM_NAMESPACE_ITEM(True)
+		ENUM_NAMESPACE_ITEM(False)
+		ENUM_NAMESPACE_ITEM(Null)
+	END_ENUM_ITEM(vl::glr::json::JsonLiteralValue)
 
-			BEGIN_CLASS_MEMBER(vl::glr::json::JsonLiteral)
-				CLASS_MEMBER_BASE(vl::glr::json::JsonNode)
+	BEGIN_CLASS_MEMBER(vl::glr::json::JsonLiteral)
+		CLASS_MEMBER_BASE(vl::glr::json::JsonNode)
 
-				CLASS_MEMBER_CONSTRUCTOR(vl::Ptr<vl::glr::json::JsonLiteral>(), NO_PARAMETER)
+		CLASS_MEMBER_CONSTRUCTOR(vl::Ptr<vl::glr::json::JsonLiteral>(), NO_PARAMETER)
 
-				CLASS_MEMBER_FIELD(value)
-			END_CLASS_MEMBER(vl::glr::json::JsonLiteral)
+		CLASS_MEMBER_FIELD(value)
+	END_CLASS_MEMBER(vl::glr::json::JsonLiteral)
 
-			BEGIN_CLASS_MEMBER(vl::glr::json::JsonString)
-				CLASS_MEMBER_BASE(vl::glr::json::JsonNode)
+	BEGIN_CLASS_MEMBER(vl::glr::json::JsonString)
+		CLASS_MEMBER_BASE(vl::glr::json::JsonNode)
 
-				CLASS_MEMBER_CONSTRUCTOR(vl::Ptr<vl::glr::json::JsonString>(), NO_PARAMETER)
+		CLASS_MEMBER_CONSTRUCTOR(vl::Ptr<vl::glr::json::JsonString>(), NO_PARAMETER)
 
-				CLASS_MEMBER_FIELD(content)
-			END_CLASS_MEMBER(vl::glr::json::JsonString)
+		CLASS_MEMBER_FIELD(content)
+	END_CLASS_MEMBER(vl::glr::json::JsonString)
 
-			BEGIN_CLASS_MEMBER(vl::glr::json::JsonNumber)
-				CLASS_MEMBER_BASE(vl::glr::json::JsonNode)
+	BEGIN_CLASS_MEMBER(vl::glr::json::JsonNumber)
+		CLASS_MEMBER_BASE(vl::glr::json::JsonNode)
 
-				CLASS_MEMBER_CONSTRUCTOR(vl::Ptr<vl::glr::json::JsonNumber>(), NO_PARAMETER)
+		CLASS_MEMBER_CONSTRUCTOR(vl::Ptr<vl::glr::json::JsonNumber>(), NO_PARAMETER)
 
-				CLASS_MEMBER_FIELD(content)
-			END_CLASS_MEMBER(vl::glr::json::JsonNumber)
+		CLASS_MEMBER_FIELD(content)
+	END_CLASS_MEMBER(vl::glr::json::JsonNumber)
 
-			BEGIN_CLASS_MEMBER(vl::glr::json::JsonArray)
-				CLASS_MEMBER_BASE(vl::glr::json::JsonNode)
+	BEGIN_CLASS_MEMBER(vl::glr::json::JsonArray)
+		CLASS_MEMBER_BASE(vl::glr::json::JsonNode)
 
-				CLASS_MEMBER_CONSTRUCTOR(vl::Ptr<vl::glr::json::JsonArray>(), NO_PARAMETER)
+		CLASS_MEMBER_CONSTRUCTOR(vl::Ptr<vl::glr::json::JsonArray>(), NO_PARAMETER)
 
-				CLASS_MEMBER_FIELD(items)
-			END_CLASS_MEMBER(vl::glr::json::JsonArray)
+		CLASS_MEMBER_FIELD(items)
+	END_CLASS_MEMBER(vl::glr::json::JsonArray)
 
-			BEGIN_CLASS_MEMBER(vl::glr::json::JsonObjectField)
-				CLASS_MEMBER_BASE(vl::glr::ParsingAstBase)
+	BEGIN_CLASS_MEMBER(vl::glr::json::JsonObjectField)
+		CLASS_MEMBER_BASE(vl::glr::ParsingAstBase)
 
-				CLASS_MEMBER_CONSTRUCTOR(vl::Ptr<vl::glr::json::JsonObjectField>(), NO_PARAMETER)
+		CLASS_MEMBER_CONSTRUCTOR(vl::Ptr<vl::glr::json::JsonObjectField>(), NO_PARAMETER)
 
-				CLASS_MEMBER_FIELD(name)
-				CLASS_MEMBER_FIELD(value)
-			END_CLASS_MEMBER(vl::glr::json::JsonObjectField)
+		CLASS_MEMBER_FIELD(name)
+		CLASS_MEMBER_FIELD(value)
+	END_CLASS_MEMBER(vl::glr::json::JsonObjectField)
 
-			BEGIN_CLASS_MEMBER(vl::glr::json::JsonObject)
-				CLASS_MEMBER_BASE(vl::glr::json::JsonNode)
+	BEGIN_CLASS_MEMBER(vl::glr::json::JsonObject)
+		CLASS_MEMBER_BASE(vl::glr::json::JsonNode)
 
-				CLASS_MEMBER_CONSTRUCTOR(vl::Ptr<vl::glr::json::JsonObject>(), NO_PARAMETER)
+		CLASS_MEMBER_CONSTRUCTOR(vl::Ptr<vl::glr::json::JsonObject>(), NO_PARAMETER)
 
-				CLASS_MEMBER_FIELD(fields)
-			END_CLASS_MEMBER(vl::glr::json::JsonObject)
+		CLASS_MEMBER_FIELD(fields)
+	END_CLASS_MEMBER(vl::glr::json::JsonObject)
 
-			BEGIN_INTERFACE_MEMBER(vl::glr::json::JsonNode::IVisitor)
-				CLASS_MEMBER_METHOD_OVERLOAD(Visit, {L"node"}, void(vl::glr::json::JsonNode::IVisitor::*)(vl::glr::json::JsonLiteral* node))
-				CLASS_MEMBER_METHOD_OVERLOAD(Visit, {L"node"}, void(vl::glr::json::JsonNode::IVisitor::*)(vl::glr::json::JsonString* node))
-				CLASS_MEMBER_METHOD_OVERLOAD(Visit, {L"node"}, void(vl::glr::json::JsonNode::IVisitor::*)(vl::glr::json::JsonNumber* node))
-				CLASS_MEMBER_METHOD_OVERLOAD(Visit, {L"node"}, void(vl::glr::json::JsonNode::IVisitor::*)(vl::glr::json::JsonArray* node))
-				CLASS_MEMBER_METHOD_OVERLOAD(Visit, {L"node"}, void(vl::glr::json::JsonNode::IVisitor::*)(vl::glr::json::JsonObject* node))
-			END_INTERFACE_MEMBER(vl::glr::json::JsonNode)
+	BEGIN_INTERFACE_MEMBER(vl::glr::json::JsonNode::IVisitor)
+		CLASS_MEMBER_METHOD_OVERLOAD(Visit, {L"node"}, void(vl::glr::json::JsonNode::IVisitor::*)(vl::glr::json::JsonLiteral* node))
+		CLASS_MEMBER_METHOD_OVERLOAD(Visit, {L"node"}, void(vl::glr::json::JsonNode::IVisitor::*)(vl::glr::json::JsonString* node))
+		CLASS_MEMBER_METHOD_OVERLOAD(Visit, {L"node"}, void(vl::glr::json::JsonNode::IVisitor::*)(vl::glr::json::JsonNumber* node))
+		CLASS_MEMBER_METHOD_OVERLOAD(Visit, {L"node"}, void(vl::glr::json::JsonNode::IVisitor::*)(vl::glr::json::JsonArray* node))
+		CLASS_MEMBER_METHOD_OVERLOAD(Visit, {L"node"}, void(vl::glr::json::JsonNode::IVisitor::*)(vl::glr::json::JsonObject* node))
+	END_INTERFACE_MEMBER(vl::glr::json::JsonNode)
 
 #endif
 
 #ifdef VCZH_DESCRIPTABLEOBJECT_WITH_METADATA
-			class JsonAstTypeLoader : public vl::Object, public ITypeLoader
-			{
-			public:
-				void Load(ITypeManager* manager)
-				{
-					ADD_TYPE_INFO(vl::glr::json::JsonNode)
-					ADD_TYPE_INFO(vl::glr::json::JsonNode::IVisitor)
-					ADD_TYPE_INFO(vl::glr::json::JsonLiteralValue)
-					ADD_TYPE_INFO(vl::glr::json::JsonLiteral)
-					ADD_TYPE_INFO(vl::glr::json::JsonString)
-					ADD_TYPE_INFO(vl::glr::json::JsonNumber)
-					ADD_TYPE_INFO(vl::glr::json::JsonArray)
-					ADD_TYPE_INFO(vl::glr::json::JsonObjectField)
-					ADD_TYPE_INFO(vl::glr::json::JsonObject)
-				}
-
-				void Unload(ITypeManager* manager)
-				{
-				}
-			};
-#endif
-#endif
-
-			bool JsonAstLoadTypes()
-			{
-#ifdef VCZH_DESCRIPTABLEOBJECT_WITH_METADATA
-				if (auto manager = GetGlobalTypeManager())
-				{
-					auto loader = Ptr(new JsonAstTypeLoader);
-					return manager->AddTypeLoader(loader);
-				}
-#endif
-				return false;
-			}
+	class JsonAstTypeLoader : public vl::Object, public ITypeLoader
+	{
+	public:
+		void Load(ITypeManager* manager)
+		{
+			ADD_TYPE_INFO(vl::glr::json::JsonNode)
+			ADD_TYPE_INFO(vl::glr::json::JsonNode::IVisitor)
+			ADD_TYPE_INFO(vl::glr::json::JsonLiteralValue)
+			ADD_TYPE_INFO(vl::glr::json::JsonLiteral)
+			ADD_TYPE_INFO(vl::glr::json::JsonString)
+			ADD_TYPE_INFO(vl::glr::json::JsonNumber)
+			ADD_TYPE_INFO(vl::glr::json::JsonArray)
+			ADD_TYPE_INFO(vl::glr::json::JsonObjectField)
+			ADD_TYPE_INFO(vl::glr::json::JsonObject)
 		}
+
+		void Unload(ITypeManager* manager)
+		{
+		}
+	};
+#endif
+#endif
+
+	bool JsonAstLoadTypes()
+	{
+#ifdef VCZH_DESCRIPTABLEOBJECT_WITH_METADATA
+		if (auto manager = GetGlobalTypeManager())
+		{
+			auto loader = Ptr(new JsonAstTypeLoader);
+			return manager->AddTypeLoader(loader);
+		}
+#endif
+		return false;
 	}
 }

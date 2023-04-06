@@ -10,35 +10,29 @@ Licensed under https://github.com/vczh-libraries/License
 #include "../../AstBase.h"
 #include "../../SyntaxBase.h"
 
-namespace vl
+namespace vl::glr::json
 {
-	namespace glr
+	enum class JsonTokens : vl::vint32_t
 	{
-		namespace json
-		{
-			enum class JsonTokens : vl::vint32_t
-			{
-				TRUE_VALUE = 0,
-				FALSE_VALUE = 1,
-				NULL_VALUE = 2,
-				OBJOPEN = 3,
-				OBJCLOSE = 4,
-				ARROPEN = 5,
-				ARRCLOSE = 6,
-				COMMA = 7,
-				COLON = 8,
-				NUMBER = 9,
-				STRING = 10,
-				SPACE = 11,
-			};
+		TRUE_VALUE = 0,
+		FALSE_VALUE = 1,
+		NULL_VALUE = 2,
+		OBJOPEN = 3,
+		OBJCLOSE = 4,
+		ARROPEN = 5,
+		ARRCLOSE = 6,
+		COMMA = 7,
+		COLON = 8,
+		NUMBER = 9,
+		STRING = 10,
+		SPACE = 11,
+	};
 
-			constexpr vl::vint JsonTokenCount = 12;
-			extern bool JsonTokenDeleter(vl::vint token);
-			extern const wchar_t* JsonTokenId(JsonTokens token);
-			extern const wchar_t* JsonTokenDisplayText(JsonTokens token);
-			extern const wchar_t* JsonTokenRegex(JsonTokens token);
-			extern void JsonLexerData(vl::stream::IStream& outputStream);
-		}
-	}
+	constexpr vl::vint JsonTokenCount = 12;
+	extern bool JsonTokenDeleter(vl::vint token);
+	extern const wchar_t* JsonTokenId(JsonTokens token);
+	extern const wchar_t* JsonTokenDisplayText(JsonTokens token);
+	extern const wchar_t* JsonTokenRegex(JsonTokens token);
+	extern void JsonLexerData(vl::stream::IStream& outputStream);
 }
 #endif

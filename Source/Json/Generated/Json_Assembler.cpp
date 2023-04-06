@@ -6,148 +6,142 @@ Licensed under https://github.com/vczh-libraries/License
 
 #include "Json_Assembler.h"
 
-namespace vl
+namespace vl::glr::json
 {
-	namespace glr
-	{
-		namespace json
-		{
 
 /***********************************************************************
 JsonAstInsReceiver : public vl::glr::AstInsReceiverBase
 ***********************************************************************/
 
-			vl::Ptr<vl::glr::ParsingAstBase> JsonAstInsReceiver::CreateAstNode(vl::vint32_t type)
-			{
-				auto cppTypeName = JsonCppTypeName((JsonClasses)type);
-				switch((JsonClasses)type)
-				{
-				case JsonClasses::Array:
-					return vl::Ptr(new vl::glr::json::JsonArray);
-				case JsonClasses::Literal:
-					return vl::Ptr(new vl::glr::json::JsonLiteral);
-				case JsonClasses::Number:
-					return vl::Ptr(new vl::glr::json::JsonNumber);
-				case JsonClasses::Object:
-					return vl::Ptr(new vl::glr::json::JsonObject);
-				case JsonClasses::ObjectField:
-					return vl::Ptr(new vl::glr::json::JsonObjectField);
-				case JsonClasses::String:
-					return vl::Ptr(new vl::glr::json::JsonString);
-				default:
-					return vl::glr::AssemblyThrowCannotCreateAbstractType(type, cppTypeName);
-				}
-			}
-
-			void JsonAstInsReceiver::SetField(vl::glr::ParsingAstBase* object, vl::vint32_t field, vl::Ptr<vl::glr::ParsingAstBase> value)
-			{
-				auto cppFieldName = JsonCppFieldName((JsonFields)field);
-				switch((JsonFields)field)
-				{
-				case JsonFields::Array_items:
-					return vl::glr::AssemblerSetObjectField(&vl::glr::json::JsonArray::items, object, field, value, cppFieldName);
-				case JsonFields::Object_fields:
-					return vl::glr::AssemblerSetObjectField(&vl::glr::json::JsonObject::fields, object, field, value, cppFieldName);
-				case JsonFields::ObjectField_value:
-					return vl::glr::AssemblerSetObjectField(&vl::glr::json::JsonObjectField::value, object, field, value, cppFieldName);
-				default:
-					return vl::glr::AssemblyThrowFieldNotObject(field, cppFieldName);
-				}
-			}
-
-			void JsonAstInsReceiver::SetField(vl::glr::ParsingAstBase* object, vl::vint32_t field, const vl::regex::RegexToken& token, vl::vint32_t tokenIndex)
-			{
-				auto cppFieldName = JsonCppFieldName((JsonFields)field);
-				switch((JsonFields)field)
-				{
-				case JsonFields::Number_content:
-					return vl::glr::AssemblerSetTokenField(&vl::glr::json::JsonNumber::content, object, field, token, tokenIndex, cppFieldName);
-				case JsonFields::ObjectField_name:
-					return vl::glr::AssemblerSetTokenField(&vl::glr::json::JsonObjectField::name, object, field, token, tokenIndex, cppFieldName);
-				case JsonFields::String_content:
-					return vl::glr::AssemblerSetTokenField(&vl::glr::json::JsonString::content, object, field, token, tokenIndex, cppFieldName);
-				default:
-					return vl::glr::AssemblyThrowFieldNotToken(field, cppFieldName);
-				}
-			}
-
-			void JsonAstInsReceiver::SetField(vl::glr::ParsingAstBase* object, vl::vint32_t field, vl::vint32_t enumItem, bool weakAssignment)
-			{
-				auto cppFieldName = JsonCppFieldName((JsonFields)field);
-				switch((JsonFields)field)
-				{
-				case JsonFields::Literal_value:
-					return vl::glr::AssemblerSetEnumField(&vl::glr::json::JsonLiteral::value, object, field, enumItem, weakAssignment, cppFieldName);
-				default:
-					return vl::glr::AssemblyThrowFieldNotEnum(field, cppFieldName);
-				}
-			}
-
-			const wchar_t* JsonTypeName(JsonClasses type)
-			{
-				const wchar_t* results[] = {
-					L"Array",
-					L"Literal",
-					L"Node",
-					L"Number",
-					L"Object",
-					L"ObjectField",
-					L"String",
-				};
-				vl::vint index = (vl::vint)type;
-				return 0 <= index && index < 7 ? results[index] : nullptr;
-			}
-
-			const wchar_t* JsonCppTypeName(JsonClasses type)
-			{
-				const wchar_t* results[] = {
-					L"vl::glr::json::JsonArray",
-					L"vl::glr::json::JsonLiteral",
-					L"vl::glr::json::JsonNode",
-					L"vl::glr::json::JsonNumber",
-					L"vl::glr::json::JsonObject",
-					L"vl::glr::json::JsonObjectField",
-					L"vl::glr::json::JsonString",
-				};
-				vl::vint index = (vl::vint)type;
-				return 0 <= index && index < 7 ? results[index] : nullptr;
-			}
-
-			const wchar_t* JsonFieldName(JsonFields field)
-			{
-				const wchar_t* results[] = {
-					L"Array::items",
-					L"Literal::value",
-					L"Number::content",
-					L"Object::fields",
-					L"ObjectField::name",
-					L"ObjectField::value",
-					L"String::content",
-				};
-				vl::vint index = (vl::vint)field;
-				return 0 <= index && index < 7 ? results[index] : nullptr;
-			}
-
-			const wchar_t* JsonCppFieldName(JsonFields field)
-			{
-				const wchar_t* results[] = {
-					L"vl::glr::json::JsonArray::items",
-					L"vl::glr::json::JsonLiteral::value",
-					L"vl::glr::json::JsonNumber::content",
-					L"vl::glr::json::JsonObject::fields",
-					L"vl::glr::json::JsonObjectField::name",
-					L"vl::glr::json::JsonObjectField::value",
-					L"vl::glr::json::JsonString::content",
-				};
-				vl::vint index = (vl::vint)field;
-				return 0 <= index && index < 7 ? results[index] : nullptr;
-			}
-
-			vl::Ptr<vl::glr::ParsingAstBase> JsonAstInsReceiver::ResolveAmbiguity(vl::vint32_t type, vl::collections::Array<vl::Ptr<vl::glr::ParsingAstBase>>& candidates)
-			{
-				auto cppTypeName = JsonCppTypeName((JsonClasses)type);
-				return vl::glr::AssemblyThrowTypeNotAllowAmbiguity(type, cppTypeName);
-			}
+	vl::Ptr<vl::glr::ParsingAstBase> JsonAstInsReceiver::CreateAstNode(vl::vint32_t type)
+	{
+		auto cppTypeName = JsonCppTypeName((JsonClasses)type);
+		switch((JsonClasses)type)
+		{
+		case JsonClasses::Array:
+			return vl::Ptr(new vl::glr::json::JsonArray);
+		case JsonClasses::Literal:
+			return vl::Ptr(new vl::glr::json::JsonLiteral);
+		case JsonClasses::Number:
+			return vl::Ptr(new vl::glr::json::JsonNumber);
+		case JsonClasses::Object:
+			return vl::Ptr(new vl::glr::json::JsonObject);
+		case JsonClasses::ObjectField:
+			return vl::Ptr(new vl::glr::json::JsonObjectField);
+		case JsonClasses::String:
+			return vl::Ptr(new vl::glr::json::JsonString);
+		default:
+			return vl::glr::AssemblyThrowCannotCreateAbstractType(type, cppTypeName);
 		}
+	}
+
+	void JsonAstInsReceiver::SetField(vl::glr::ParsingAstBase* object, vl::vint32_t field, vl::Ptr<vl::glr::ParsingAstBase> value)
+	{
+		auto cppFieldName = JsonCppFieldName((JsonFields)field);
+		switch((JsonFields)field)
+		{
+		case JsonFields::Array_items:
+			return vl::glr::AssemblerSetObjectField(&vl::glr::json::JsonArray::items, object, field, value, cppFieldName);
+		case JsonFields::Object_fields:
+			return vl::glr::AssemblerSetObjectField(&vl::glr::json::JsonObject::fields, object, field, value, cppFieldName);
+		case JsonFields::ObjectField_value:
+			return vl::glr::AssemblerSetObjectField(&vl::glr::json::JsonObjectField::value, object, field, value, cppFieldName);
+		default:
+			return vl::glr::AssemblyThrowFieldNotObject(field, cppFieldName);
+		}
+	}
+
+	void JsonAstInsReceiver::SetField(vl::glr::ParsingAstBase* object, vl::vint32_t field, const vl::regex::RegexToken& token, vl::vint32_t tokenIndex)
+	{
+		auto cppFieldName = JsonCppFieldName((JsonFields)field);
+		switch((JsonFields)field)
+		{
+		case JsonFields::Number_content:
+			return vl::glr::AssemblerSetTokenField(&vl::glr::json::JsonNumber::content, object, field, token, tokenIndex, cppFieldName);
+		case JsonFields::ObjectField_name:
+			return vl::glr::AssemblerSetTokenField(&vl::glr::json::JsonObjectField::name, object, field, token, tokenIndex, cppFieldName);
+		case JsonFields::String_content:
+			return vl::glr::AssemblerSetTokenField(&vl::glr::json::JsonString::content, object, field, token, tokenIndex, cppFieldName);
+		default:
+			return vl::glr::AssemblyThrowFieldNotToken(field, cppFieldName);
+		}
+	}
+
+	void JsonAstInsReceiver::SetField(vl::glr::ParsingAstBase* object, vl::vint32_t field, vl::vint32_t enumItem, bool weakAssignment)
+	{
+		auto cppFieldName = JsonCppFieldName((JsonFields)field);
+		switch((JsonFields)field)
+		{
+		case JsonFields::Literal_value:
+			return vl::glr::AssemblerSetEnumField(&vl::glr::json::JsonLiteral::value, object, field, enumItem, weakAssignment, cppFieldName);
+		default:
+			return vl::glr::AssemblyThrowFieldNotEnum(field, cppFieldName);
+		}
+	}
+
+	const wchar_t* JsonTypeName(JsonClasses type)
+	{
+		const wchar_t* results[] = {
+			L"Array",
+			L"Literal",
+			L"Node",
+			L"Number",
+			L"Object",
+			L"ObjectField",
+			L"String",
+		};
+		vl::vint index = (vl::vint)type;
+		return 0 <= index && index < 7 ? results[index] : nullptr;
+	}
+
+	const wchar_t* JsonCppTypeName(JsonClasses type)
+	{
+		const wchar_t* results[] = {
+			L"vl::glr::json::JsonArray",
+			L"vl::glr::json::JsonLiteral",
+			L"vl::glr::json::JsonNode",
+			L"vl::glr::json::JsonNumber",
+			L"vl::glr::json::JsonObject",
+			L"vl::glr::json::JsonObjectField",
+			L"vl::glr::json::JsonString",
+		};
+		vl::vint index = (vl::vint)type;
+		return 0 <= index && index < 7 ? results[index] : nullptr;
+	}
+
+	const wchar_t* JsonFieldName(JsonFields field)
+	{
+		const wchar_t* results[] = {
+			L"Array::items",
+			L"Literal::value",
+			L"Number::content",
+			L"Object::fields",
+			L"ObjectField::name",
+			L"ObjectField::value",
+			L"String::content",
+		};
+		vl::vint index = (vl::vint)field;
+		return 0 <= index && index < 7 ? results[index] : nullptr;
+	}
+
+	const wchar_t* JsonCppFieldName(JsonFields field)
+	{
+		const wchar_t* results[] = {
+			L"vl::glr::json::JsonArray::items",
+			L"vl::glr::json::JsonLiteral::value",
+			L"vl::glr::json::JsonNumber::content",
+			L"vl::glr::json::JsonObject::fields",
+			L"vl::glr::json::JsonObjectField::name",
+			L"vl::glr::json::JsonObjectField::value",
+			L"vl::glr::json::JsonString::content",
+		};
+		vl::vint index = (vl::vint)field;
+		return 0 <= index && index < 7 ? results[index] : nullptr;
+	}
+
+	vl::Ptr<vl::glr::ParsingAstBase> JsonAstInsReceiver::ResolveAmbiguity(vl::vint32_t type, vl::collections::Array<vl::Ptr<vl::glr::ParsingAstBase>>& candidates)
+	{
+		auto cppTypeName = JsonCppTypeName((JsonClasses)type);
+		return vl::glr::AssemblyThrowTypeNotAllowAmbiguity(type, cppTypeName);
 	}
 }
