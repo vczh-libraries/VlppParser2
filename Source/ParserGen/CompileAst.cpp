@@ -58,7 +58,7 @@ CompileAst
 					{
 						classSymbol->SetBaseClass(node->baseClass.value, node->baseClass.codeRange);
 					}
-					if (node->ambiguity == GlrClassAmbiguity::Yes)
+					if (node->attAmbiguous)
 					{
 						classSymbol->CreateAmbiguousDerivedClass(node->name.codeRange);
 					}
