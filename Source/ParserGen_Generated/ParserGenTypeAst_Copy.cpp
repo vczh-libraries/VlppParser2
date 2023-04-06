@@ -25,7 +25,7 @@ namespace vl
 				void TypeAstVisitor::CopyFields(GlrClass* from, GlrClass* to)
 				{
 					CopyFields(static_cast<GlrType*>(from), static_cast<GlrType*>(to));
-					to->ambiguity = from->ambiguity;
+					to->attAmbiguous = from->attAmbiguous;
 					to->baseClass = from->baseClass;
 					for (auto&& listItem : from->props)
 					{
@@ -56,6 +56,7 @@ namespace vl
 
 				void TypeAstVisitor::CopyFields(GlrType* from, GlrType* to)
 				{
+					to->attPublic = from->attPublic;
 					to->name = from->name;
 				}
 

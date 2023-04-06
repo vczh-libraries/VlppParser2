@@ -313,6 +313,18 @@ MakeReuseClause
 MakeRule
 ***********************************************************************/
 
+				MakeRule& MakeRule::attParser(const vl::WString& value)
+				{
+					node->attParser.value = value;
+					return *this;
+				}
+
+				MakeRule& MakeRule::attPublic(const vl::WString& value)
+				{
+					node->attPublic.value = value;
+					return *this;
+				}
+
 				MakeRule& MakeRule::clauses(const vl::Ptr<GlrClause>& value)
 				{
 					node->clauses.Add(value);

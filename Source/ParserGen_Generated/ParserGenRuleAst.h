@@ -342,6 +342,8 @@ namespace vl
 			class GlrRule : public vl::glr::ParsingAstBase, vl::reflection::Description<GlrRule>
 			{
 			public:
+				vl::glr::ParsingToken attPublic;
+				vl::glr::ParsingToken attParser;
 				vl::glr::ParsingToken name;
 				vl::glr::ParsingToken type;
 				vl::collections::List<vl::Ptr<GlrClause>> clauses;

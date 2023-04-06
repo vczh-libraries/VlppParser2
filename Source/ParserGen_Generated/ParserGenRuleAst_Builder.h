@@ -147,6 +147,8 @@ namespace vl
 				class MakeRule : public vl::glr::ParsingAstBuilder<GlrRule>
 				{
 				public:
+					MakeRule& attParser(const vl::WString& value);
+					MakeRule& attPublic(const vl::WString& value);
 					MakeRule& clauses(const vl::Ptr<GlrClause>& value);
 					MakeRule& name(const vl::WString& value);
 					MakeRule& type(const vl::WString& value);

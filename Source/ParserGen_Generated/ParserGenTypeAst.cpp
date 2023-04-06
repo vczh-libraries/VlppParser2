@@ -42,7 +42,6 @@ namespace vl
 			IMPL_TYPE_INFO_RENAME(vl::glr::parsergen::GlrEnum, glr::parsergen::GlrEnum)
 			IMPL_TYPE_INFO_RENAME(vl::glr::parsergen::GlrPropType, glr::parsergen::GlrPropType)
 			IMPL_TYPE_INFO_RENAME(vl::glr::parsergen::GlrClassProp, glr::parsergen::GlrClassProp)
-			IMPL_TYPE_INFO_RENAME(vl::glr::parsergen::GlrClassAmbiguity, glr::parsergen::GlrClassAmbiguity)
 			IMPL_TYPE_INFO_RENAME(vl::glr::parsergen::GlrClass, glr::parsergen::GlrClass)
 			IMPL_TYPE_INFO_RENAME(vl::glr::parsergen::GlrAstFile, glr::parsergen::GlrAstFile)
 
@@ -51,6 +50,7 @@ namespace vl
 			BEGIN_CLASS_MEMBER(vl::glr::parsergen::GlrType)
 				CLASS_MEMBER_BASE(vl::glr::ParsingAstBase)
 
+				CLASS_MEMBER_FIELD(attPublic)
 				CLASS_MEMBER_FIELD(name)
 			END_CLASS_MEMBER(vl::glr::parsergen::GlrType)
 
@@ -87,19 +87,13 @@ namespace vl
 				CLASS_MEMBER_FIELD(propTypeName)
 			END_CLASS_MEMBER(vl::glr::parsergen::GlrClassProp)
 
-			BEGIN_ENUM_ITEM(vl::glr::parsergen::GlrClassAmbiguity)
-				ENUM_ITEM_NAMESPACE(vl::glr::parsergen::GlrClassAmbiguity)
-				ENUM_NAMESPACE_ITEM(No)
-				ENUM_NAMESPACE_ITEM(Yes)
-			END_ENUM_ITEM(vl::glr::parsergen::GlrClassAmbiguity)
-
 			BEGIN_CLASS_MEMBER(vl::glr::parsergen::GlrClass)
 				CLASS_MEMBER_BASE(vl::glr::parsergen::GlrType)
 
 				CLASS_MEMBER_CONSTRUCTOR(vl::Ptr<vl::glr::parsergen::GlrClass>(), NO_PARAMETER)
 
+				CLASS_MEMBER_FIELD(attAmbiguous)
 				CLASS_MEMBER_FIELD(baseClass)
-				CLASS_MEMBER_FIELD(ambiguity)
 				CLASS_MEMBER_FIELD(props)
 			END_CLASS_MEMBER(vl::glr::parsergen::GlrClass)
 
@@ -130,7 +124,6 @@ namespace vl
 					ADD_TYPE_INFO(vl::glr::parsergen::GlrEnum)
 					ADD_TYPE_INFO(vl::glr::parsergen::GlrPropType)
 					ADD_TYPE_INFO(vl::glr::parsergen::GlrClassProp)
-					ADD_TYPE_INFO(vl::glr::parsergen::GlrClassAmbiguity)
 					ADD_TYPE_INFO(vl::glr::parsergen::GlrClass)
 					ADD_TYPE_INFO(vl::glr::parsergen::GlrAstFile)
 				}

@@ -20,6 +20,7 @@ CreateParserGenTypeAst
 				_ast->classPrefix = L"Glr";
 
 				auto _type = _ast->CreateClass(L"Type");
+				_type->CreateProp(L"attPublic")->SetPropType(AstPropType::Token);
 				_type->CreateProp(L"name")->SetPropType(AstPropType::Token);
 
 				auto _enumItem = _ast->CreateClass(L"EnumItem");
@@ -39,14 +40,10 @@ CreateParserGenTypeAst
 				_classProp->CreateProp(L"propType")->SetPropType(AstPropType::Type, L"PropType");
 				_classProp->CreateProp(L"propTypeName")->SetPropType(AstPropType::Token);
 
-				auto _classAmbiguity = _ast->CreateEnum(L"ClassAmbiguity");
-				_classAmbiguity->CreateItem(L"No");
-				_classAmbiguity->CreateItem(L"Yes");
-
 				auto _class = _ast->CreateClass(L"Class");
 				_class->SetBaseClass(L"Type");
+				_class->CreateProp(L"attAmbiguous")->SetPropType(AstPropType::Token);
 				_class->CreateProp(L"baseClass")->SetPropType(AstPropType::Token);
-				_class->CreateProp(L"ambiguity")->SetPropType(AstPropType::Type, L"ClassAmbiguity");
 				_class->CreateProp(L"props")->SetPropType(AstPropType::Array, L"ClassProp");
 
 				auto _file = _ast->CreateClass(L"AstFile");

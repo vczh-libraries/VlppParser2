@@ -292,6 +292,12 @@ namespace vl
 				}
 				void RuleAstVisitor::PrintFields(GlrRule* node)
 				{
+					BeginField(L"attParser");
+					WriteToken(node->attParser);
+					EndField();
+					BeginField(L"attPublic");
+					WriteToken(node->attPublic);
+					EndField();
 					BeginField(L"clauses");
 					BeginArray();
 					for (auto&& listItem : node->clauses)

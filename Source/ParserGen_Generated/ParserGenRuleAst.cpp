@@ -420,6 +420,8 @@ namespace vl
 
 				CLASS_MEMBER_CONSTRUCTOR(vl::Ptr<vl::glr::parsergen::GlrRule>(), NO_PARAMETER)
 
+				CLASS_MEMBER_FIELD(attPublic)
+				CLASS_MEMBER_FIELD(attParser)
 				CLASS_MEMBER_FIELD(name)
 				CLASS_MEMBER_FIELD(type)
 				CLASS_MEMBER_FIELD(clauses)

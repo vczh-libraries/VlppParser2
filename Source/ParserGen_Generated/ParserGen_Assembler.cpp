@@ -176,6 +176,8 @@ ParserGenAstInsReceiver : public vl::glr::AstInsReceiverBase
 					return vl::glr::AssemblerSetTokenField(&vl::glr::parsergen::GlrAssignment::field, object, field, token, tokenIndex, cppFieldName);
 				case ParserGenFields::Assignment_value:
 					return vl::glr::AssemblerSetTokenField(&vl::glr::parsergen::GlrAssignment::value, object, field, token, tokenIndex, cppFieldName);
+				case ParserGenFields::Class_attAmbiguous:
+					return vl::glr::AssemblerSetTokenField(&vl::glr::parsergen::GlrClass::attAmbiguous, object, field, token, tokenIndex, cppFieldName);
 				case ParserGenFields::Class_baseClass:
 					return vl::glr::AssemblerSetTokenField(&vl::glr::parsergen::GlrClass::baseClass, object, field, token, tokenIndex, cppFieldName);
 				case ParserGenFields::ClassProp_name:
@@ -196,12 +198,18 @@ ParserGenAstInsReceiver : public vl::glr::AstInsReceiverBase
 					return vl::glr::AssemblerSetTokenField(&vl::glr::parsergen::GlrRefSyntax::field, object, field, token, tokenIndex, cppFieldName);
 				case ParserGenFields::RefSyntax_literal:
 					return vl::glr::AssemblerSetTokenField(&vl::glr::parsergen::GlrRefSyntax::literal, object, field, token, tokenIndex, cppFieldName);
+				case ParserGenFields::Rule_attParser:
+					return vl::glr::AssemblerSetTokenField(&vl::glr::parsergen::GlrRule::attParser, object, field, token, tokenIndex, cppFieldName);
+				case ParserGenFields::Rule_attPublic:
+					return vl::glr::AssemblerSetTokenField(&vl::glr::parsergen::GlrRule::attPublic, object, field, token, tokenIndex, cppFieldName);
 				case ParserGenFields::Rule_name:
 					return vl::glr::AssemblerSetTokenField(&vl::glr::parsergen::GlrRule::name, object, field, token, tokenIndex, cppFieldName);
 				case ParserGenFields::Rule_type:
 					return vl::glr::AssemblerSetTokenField(&vl::glr::parsergen::GlrRule::type, object, field, token, tokenIndex, cppFieldName);
 				case ParserGenFields::SwitchItem_name:
 					return vl::glr::AssemblerSetTokenField(&vl::glr::parsergen::GlrSwitchItem::name, object, field, token, tokenIndex, cppFieldName);
+				case ParserGenFields::Type_attPublic:
+					return vl::glr::AssemblerSetTokenField(&vl::glr::parsergen::GlrType::attPublic, object, field, token, tokenIndex, cppFieldName);
 				case ParserGenFields::Type_name:
 					return vl::glr::AssemblerSetTokenField(&vl::glr::parsergen::GlrType::name, object, field, token, tokenIndex, cppFieldName);
 				case ParserGenFields::UseSyntax_name:
@@ -218,8 +226,6 @@ ParserGenAstInsReceiver : public vl::glr::AstInsReceiverBase
 				{
 				case ParserGenFields::Assignment_type:
 					return vl::glr::AssemblerSetEnumField(&vl::glr::parsergen::GlrAssignment::type, object, field, enumItem, weakAssignment, cppFieldName);
-				case ParserGenFields::Class_ambiguity:
-					return vl::glr::AssemblerSetEnumField(&vl::glr::parsergen::GlrClass::ambiguity, object, field, enumItem, weakAssignment, cppFieldName);
 				case ParserGenFields::ClassProp_propType:
 					return vl::glr::AssemblerSetEnumField(&vl::glr::parsergen::GlrClassProp::propType, object, field, enumItem, weakAssignment, cppFieldName);
 				case ParserGenFields::LeftRecursionInjectContinuation_configuration:
@@ -332,7 +338,7 @@ ParserGenAstInsReceiver : public vl::glr::AstInsReceiverBase
 					L"Assignment::type",
 					L"Assignment::value",
 					L"AstFile::types",
-					L"Class::ambiguity",
+					L"Class::attAmbiguous",
 					L"Class::baseClass",
 					L"Class::props",
 					L"ClassProp::name",
@@ -370,6 +376,8 @@ ParserGenAstInsReceiver : public vl::glr::AstInsReceiverBase
 					L"RefSyntax::refType",
 					L"ReuseClause::assignments",
 					L"ReuseClause::syntax",
+					L"Rule::attParser",
+					L"Rule::attPublic",
 					L"Rule::clauses",
 					L"Rule::name",
 					L"Rule::type",
@@ -382,11 +390,12 @@ ParserGenAstInsReceiver : public vl::glr::AstInsReceiverBase
 					L"TestConditionBranch::condition",
 					L"TestConditionBranch::syntax",
 					L"TestConditionSyntax::branches",
+					L"Type::attPublic",
 					L"Type::name",
 					L"UseSyntax::name",
 				};
 				vl::vint index = (vl::vint)field;
-				return 0 <= index && index < 60 ? results[index] : nullptr;
+				return 0 <= index && index < 63 ? results[index] : nullptr;
 			}
 
 			const wchar_t* ParserGenCppFieldName(ParserGenFields field)
@@ -400,7 +409,7 @@ ParserGenAstInsReceiver : public vl::glr::AstInsReceiverBase
 					L"vl::glr::parsergen::GlrAssignment::type",
 					L"vl::glr::parsergen::GlrAssignment::value",
 					L"vl::glr::parsergen::GlrAstFile::types",
-					L"vl::glr::parsergen::GlrClass::ambiguity",
+					L"vl::glr::parsergen::GlrClass::attAmbiguous",
 					L"vl::glr::parsergen::GlrClass::baseClass",
 					L"vl::glr::parsergen::GlrClass::props",
 					L"vl::glr::parsergen::GlrClassProp::name",
@@ -438,6 +447,8 @@ ParserGenAstInsReceiver : public vl::glr::AstInsReceiverBase
 					L"vl::glr::parsergen::GlrRefSyntax::refType",
 					L"vl::glr::parsergen::GlrReuseClause::assignments",
 					L"vl::glr::parsergen::GlrReuseClause::syntax",
+					L"vl::glr::parsergen::GlrRule::attParser",
+					L"vl::glr::parsergen::GlrRule::attPublic",
 					L"vl::glr::parsergen::GlrRule::clauses",
 					L"vl::glr::parsergen::GlrRule::name",
 					L"vl::glr::parsergen::GlrRule::type",
@@ -450,11 +461,12 @@ ParserGenAstInsReceiver : public vl::glr::AstInsReceiverBase
 					L"vl::glr::parsergen::GlrTestConditionBranch::condition",
 					L"vl::glr::parsergen::GlrTestConditionBranch::syntax",
 					L"vl::glr::parsergen::GlrTestConditionSyntax::branches",
+					L"vl::glr::parsergen::GlrType::attPublic",
 					L"vl::glr::parsergen::GlrType::name",
 					L"vl::glr::parsergen::GlrUseSyntax::name",
 				};
 				vl::vint index = (vl::vint)field;
-				return 0 <= index && index < 60 ? results[index] : nullptr;
+				return 0 <= index && index < 63 ? results[index] : nullptr;
 			}
 
 			vl::Ptr<vl::glr::ParsingAstBase> ParserGenAstInsReceiver::ResolveAmbiguity(vl::vint32_t type, vl::collections::Array<vl::Ptr<vl::glr::ParsingAstBase>>& candidates)

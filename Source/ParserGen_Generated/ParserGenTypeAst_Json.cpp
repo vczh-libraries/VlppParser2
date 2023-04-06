@@ -29,18 +29,8 @@ namespace vl
 				}
 				void TypeAstVisitor::PrintFields(GlrClass* node)
 				{
-					BeginField(L"ambiguity");
-					switch (node->ambiguity)
-					{
-					case vl::glr::parsergen::GlrClassAmbiguity::No:
-						WriteString(L"No");
-						break;
-					case vl::glr::parsergen::GlrClassAmbiguity::Yes:
-						WriteString(L"Yes");
-						break;
-					default:
-						WriteNull();
-					}
+					BeginField(L"attAmbiguous");
+					WriteToken(node->attAmbiguous);
 					EndField();
 					BeginField(L"baseClass");
 					WriteToken(node->baseClass);
@@ -102,6 +92,9 @@ namespace vl
 				}
 				void TypeAstVisitor::PrintFields(GlrType* node)
 				{
+					BeginField(L"attPublic");
+					WriteToken(node->attPublic);
+					EndField();
 					BeginField(L"name");
 					WriteToken(node->name);
 					EndField();

@@ -26,9 +26,10 @@ namespace vl
 				class MakeClass : public vl::glr::ParsingAstBuilder<GlrClass>
 				{
 				public:
-					MakeClass& ambiguity(GlrClassAmbiguity value);
+					MakeClass& attAmbiguous(const vl::WString& value);
 					MakeClass& baseClass(const vl::WString& value);
 					MakeClass& props(const vl::Ptr<GlrClassProp>& value);
+					MakeClass& attPublic(const vl::WString& value);
 					MakeClass& name(const vl::WString& value);
 				};
 
@@ -44,6 +45,7 @@ namespace vl
 				{
 				public:
 					MakeEnum& items(const vl::Ptr<GlrEnumItem>& value);
+					MakeEnum& attPublic(const vl::WString& value);
 					MakeEnum& name(const vl::WString& value);
 				};
 
@@ -56,6 +58,7 @@ namespace vl
 				class MakeType : public vl::glr::ParsingAstBuilder<GlrType>
 				{
 				public:
+					MakeType& attPublic(const vl::WString& value);
 					MakeType& name(const vl::WString& value);
 				};
 

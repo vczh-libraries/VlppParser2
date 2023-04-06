@@ -169,6 +169,8 @@ namespace vl
 
 				void RuleAstVisitor::CopyFields(GlrRule* from, GlrRule* to)
 				{
+					to->attParser = from->attParser;
+					to->attPublic = from->attPublic;
 					for (auto&& listItem : from->clauses)
 					{
 						to->clauses.Add(CopyNode(listItem.Obj()));

@@ -29,9 +29,9 @@ MakeAstFile
 MakeClass
 ***********************************************************************/
 
-				MakeClass& MakeClass::ambiguity(GlrClassAmbiguity value)
+				MakeClass& MakeClass::attAmbiguous(const vl::WString& value)
 				{
-					node->ambiguity = value;
+					node->attAmbiguous.value = value;
 					return *this;
 				}
 
@@ -44,6 +44,12 @@ MakeClass
 				MakeClass& MakeClass::props(const vl::Ptr<GlrClassProp>& value)
 				{
 					node->props.Add(value);
+					return *this;
+				}
+
+				MakeClass& MakeClass::attPublic(const vl::WString& value)
+				{
+					node->attPublic.value = value;
 					return *this;
 				}
 
@@ -85,6 +91,12 @@ MakeEnum
 					return *this;
 				}
 
+				MakeEnum& MakeEnum::attPublic(const vl::WString& value)
+				{
+					node->attPublic.value = value;
+					return *this;
+				}
+
 				MakeEnum& MakeEnum::name(const vl::WString& value)
 				{
 					node->name.value = value;
@@ -104,6 +116,12 @@ MakeEnumItem
 /***********************************************************************
 MakeType
 ***********************************************************************/
+
+				MakeType& MakeType::attPublic(const vl::WString& value)
+				{
+					node->attPublic.value = value;
+					return *this;
+				}
 
 				MakeType& MakeType::name(const vl::WString& value)
 				{

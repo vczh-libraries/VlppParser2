@@ -41,6 +41,7 @@ namespace vl
 					{
 						InspectInto(listItem.Obj());
 					}
+					Traverse(node->attPublic);
 					Traverse(node->name);
 					Finishing(static_cast<GlrEnum*>(node));
 					Finishing(static_cast<GlrType*>(node));
@@ -53,11 +54,13 @@ namespace vl
 					Traverse(static_cast<vl::glr::ParsingAstBase*>(node));
 					Traverse(static_cast<GlrType*>(node));
 					Traverse(static_cast<GlrClass*>(node));
+					Traverse(node->attAmbiguous);
 					Traverse(node->baseClass);
 					for (auto&& listItem : node->props)
 					{
 						InspectInto(listItem.Obj());
 					}
+					Traverse(node->attPublic);
 					Traverse(node->name);
 					Finishing(static_cast<GlrClass*>(node));
 					Finishing(static_cast<GlrType*>(node));

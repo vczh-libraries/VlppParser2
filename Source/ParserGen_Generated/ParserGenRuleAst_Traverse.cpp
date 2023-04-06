@@ -404,6 +404,8 @@ namespace vl
 					if (!node) return;
 					Traverse(static_cast<vl::glr::ParsingAstBase*>(node));
 					Traverse(static_cast<GlrRule*>(node));
+					Traverse(node->attParser);
+					Traverse(node->attPublic);
 					for (auto&& listItem : node->clauses)
 					{
 						InspectInto(listItem.Obj());
