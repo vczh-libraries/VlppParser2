@@ -183,8 +183,6 @@ SyntaxSymbolManager
 			{
 				using StateList = collections::List<Ptr<StateSymbol>>;
 				using EdgeList = collections::List<Ptr<EdgeSymbol>>;
-				using RuleTypeMap = collections::Dictionary<RuleSymbol*, WString>;
-				using RuleList = collections::List<RuleSymbol*>;
 				using LrpFlagList = collections::SortedList<WString>;
 			protected:
 				MappedOwning<RuleSymbol>	rules;
@@ -206,8 +204,6 @@ SyntaxSymbolManager
 				SyntaxSymbolManager(ParserSymbolManager& _global);
 
 				WString						name;
-				RuleTypeMap					ruleTypes;
-				RuleList					parsableRules;
 				LrpFlagList					lrpFlags;
 
 				RuleSymbol*					CreateRule(const WString& name, ParsingTextRange codeRange = {});
