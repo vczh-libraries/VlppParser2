@@ -20,10 +20,10 @@ namespace vl
 			{
 				EnumItem = 0,
 				Enum = 4,
-				ClassPropType = 11,
-				classProp = 18,
-				ClassBody = 25,
-				Class = 33,
+				ClassPropType = 12,
+				classProp = 19,
+				ClassBody = 26,
+				Class = 34,
 				Type = 40,
 				File = 44,
 			};
