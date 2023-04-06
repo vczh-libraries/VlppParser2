@@ -34,8 +34,7 @@ CreateParserGenTypeSyntax
 				_classPropType->isPartial = true;
 				_classBody->isPartial = true;
 
-				manager.parsableRules.Add(_file);
-				manager.ruleTypes.Add(_file, L"vl::glr::parsergen::GlrAstFile");
+				_file->isParser = true;
 
 				using T = ParserGenTokens;
 				using C = ParserGenClasses;

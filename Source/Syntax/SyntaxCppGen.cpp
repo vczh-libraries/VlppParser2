@@ -24,6 +24,17 @@ GenerateSyntaxFileNames
 				return syntaxOutput;
 			}
 
+			WString AstClassSymbolToString(AstClassSymbol* astType)
+			{
+				return GenerateToStream([&](StreamWriter& writer)
+				{
+					WriteNssName(astType->Owner()->cppNss, writer);
+					writer.WriteString(L"::");
+					writer.WriteString(astType->Owner()->classPrefix);
+					writer.WriteString(astType->Name());
+				});
+			}
+
 /***********************************************************************
 WriteSyntaxHeaderFile
 ***********************************************************************/
@@ -81,9 +92,9 @@ WriteSyntaxHeaderFile
 					for (auto ruleName : manager.RuleOrder())
 					{
 						auto ruleSymbol = manager.Rules()[ruleName];
-						if (manager.parsableRules.Contains(ruleSymbol))
+						if (ruleSymbol->isParser)
 						{
-							auto astType = manager.ruleTypes[ruleSymbol];
+							auto astType = AstClassSymbolToString(ruleSymbol->ruleType);
 							writer.WriteLine(prefix + L"\tvl::Ptr<" + astType + L"> Parse" + ruleName + L"(const vl::WString& input, vl::vint codeIndex = -1) const;");
 							writer.WriteLine(prefix + L"\tvl::Ptr<" + astType + L"> Parse" + ruleName + L"(vl::collections::List<vl::regex::RegexToken>& tokens, vl::vint codeIndex = -1) const;");
 						}
@@ -213,9 +224,9 @@ WriteSyntaxCppFile
 				for (auto ruleName : manager.RuleOrder())
 				{
 					auto ruleSymbol = manager.Rules()[ruleName];
-					if (manager.parsableRules.Contains(ruleSymbol))
+					if (ruleSymbol->isParser)
 					{
-						auto astType = manager.ruleTypes[ruleSymbol];
+						auto astType = AstClassSymbolToString(ruleSymbol->ruleType);
 						writer.WriteLine(L"");
 						writer.WriteLine(prefix + L"vl::Ptr<" + astType + L"> " + manager.name + L"::Parse" + ruleName + L"(const vl::WString& input, vl::vint codeIndex) const");
 						writer.WriteLine(prefix + L"{");

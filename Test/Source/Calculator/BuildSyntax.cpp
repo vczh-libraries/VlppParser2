@@ -43,10 +43,8 @@ void GenerateCalculatorSyntax(SyntaxSymbolManager& manager)
 	auto _import = manager.CreateRule(L"Import");
 	auto _module = manager.CreateRule(L"Module");
 
-	manager.parsableRules.Add(_module);
-	manager.parsableRules.Add(_exp);
-	manager.ruleTypes.Add(_module, L"calculator::Module");
-	manager.ruleTypes.Add(_exp, L"calculator::Expr");
+	_exp->isParser = true;
+	_module->isParser = true;
 
 	using T = CalculatorTokens;
 	using C = CalculatorClasses;

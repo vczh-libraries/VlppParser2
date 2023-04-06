@@ -54,8 +54,7 @@ CreateParserGenRuleSyntax
 				_lriConfig->isPartial = true;
 				_lriContinuationBody->isPartial = true;
 
-				manager.parsableRules.Add(_file);
-				manager.ruleTypes.Add(_file, L"vl::glr::parsergen::GlrSyntaxFile");
+				_file->isParser = true;
 
 				using T = ParserGenTokens;
 				using C = ParserGenClasses;
