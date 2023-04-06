@@ -10,42 +10,36 @@ Licensed under https://github.com/vczh-libraries/License
 #include "ParserGen_Assembler.h"
 #include "ParserGen_Lexer.h"
 
-namespace vl
+namespace vl::glr::parsergen
 {
-	namespace glr
+	enum class TypeParserStates
 	{
-		namespace parsergen
-		{
-			enum class TypeParserStates
-			{
-				EnumItem = 0,
-				Enum = 4,
-				ClassPropType = 12,
-				classProp = 19,
-				ClassBody = 26,
-				Class = 34,
-				Type = 40,
-				File = 44,
-			};
+		EnumItem = 0,
+		Enum = 4,
+		ClassPropType = 12,
+		classProp = 19,
+		ClassBody = 26,
+		Class = 34,
+		Type = 40,
+		File = 44,
+	};
 
-			const wchar_t* TypeParserRuleName(vl::vint index);
-			const wchar_t* TypeParserStateLabel(vl::vint index);
-			extern void ParserGenTypeParserData(vl::stream::IStream& outputStream);
+	const wchar_t* TypeParserRuleName(vl::vint index);
+	const wchar_t* TypeParserStateLabel(vl::vint index);
+	extern void ParserGenTypeParserData(vl::stream::IStream& outputStream);
 
-			class TypeParser
-				: public vl::glr::ParserBase<ParserGenTokens, TypeParserStates, ParserGenAstInsReceiver>
-				, protected vl::glr::automaton::IExecutor::ITypeCallback
-			{
-			protected:
-				vl::WString GetClassName(vl::vint32_t classIndex) const override;
-				vl::vint32_t FindCommonBaseClass(vl::vint32_t class1, vl::vint32_t class2) const override;
-			public:
-				TypeParser();
+	class TypeParser
+		: public vl::glr::ParserBase<ParserGenTokens, TypeParserStates, ParserGenAstInsReceiver>
+		, protected vl::glr::automaton::IExecutor::ITypeCallback
+	{
+	protected:
+		vl::WString GetClassName(vl::vint32_t classIndex) const override;
+		vl::vint32_t FindCommonBaseClass(vl::vint32_t class1, vl::vint32_t class2) const override;
+	public:
+		TypeParser();
 
-				vl::Ptr<vl::glr::parsergen::GlrAstFile> ParseFile(const vl::WString& input, vl::vint codeIndex = -1) const;
-				vl::Ptr<vl::glr::parsergen::GlrAstFile> ParseFile(vl::collections::List<vl::regex::RegexToken>& tokens, vl::vint codeIndex = -1) const;
-			};
-		}
-	}
+		vl::Ptr<vl::glr::parsergen::GlrAstFile> ParseFile(const vl::WString& input, vl::vint codeIndex = -1) const;
+		vl::Ptr<vl::glr::parsergen::GlrAstFile> ParseFile(vl::collections::List<vl::regex::RegexToken>& tokens, vl::vint codeIndex = -1) const;
+	};
 }
 #endif

@@ -10,58 +10,52 @@ Licensed under https://github.com/vczh-libraries/License
 #include "ParserGen_Assembler.h"
 #include "ParserGen_Lexer.h"
 
-namespace vl
+namespace vl::glr::parsergen
 {
-	namespace glr
+	enum class RuleParserStates
 	{
-		namespace parsergen
-		{
-			enum class RuleParserStates
-			{
-				Cond0 = 0,
-				Cond1 = 8,
-				Cond2 = 14,
-				Cond = 20,
-				SwitchItem = 23,
-				Switches = 28,
-				OptionalBody = 34,
-				TestBranch = 39,
-				Token = 45,
-				Syntax0 = 50,
-				Syntax1 = 81,
-				Syntax2 = 86,
-				Syntax = 92,
-				AssignmentOp = 95,
-				Assignment = 99,
-				Clause = 104,
-				Placeholder = 140,
-				RuleName = 143,
-				LriConfig = 146,
-				LriContinuationBody = 150,
-				LriContinuation = 161,
-				LriTarget = 167,
-				Rule = 174,
-				File = 184,
-			};
+		Cond0 = 0,
+		Cond1 = 8,
+		Cond2 = 14,
+		Cond = 20,
+		SwitchItem = 23,
+		Switches = 28,
+		OptionalBody = 34,
+		TestBranch = 39,
+		Token = 45,
+		Syntax0 = 50,
+		Syntax1 = 81,
+		Syntax2 = 86,
+		Syntax = 92,
+		AssignmentOp = 95,
+		Assignment = 99,
+		Clause = 104,
+		Placeholder = 140,
+		RuleName = 143,
+		LriConfig = 146,
+		LriContinuationBody = 150,
+		LriContinuation = 161,
+		LriTarget = 167,
+		Rule = 174,
+		File = 184,
+	};
 
-			const wchar_t* RuleParserRuleName(vl::vint index);
-			const wchar_t* RuleParserStateLabel(vl::vint index);
-			extern void ParserGenRuleParserData(vl::stream::IStream& outputStream);
+	const wchar_t* RuleParserRuleName(vl::vint index);
+	const wchar_t* RuleParserStateLabel(vl::vint index);
+	extern void ParserGenRuleParserData(vl::stream::IStream& outputStream);
 
-			class RuleParser
-				: public vl::glr::ParserBase<ParserGenTokens, RuleParserStates, ParserGenAstInsReceiver>
-				, protected vl::glr::automaton::IExecutor::ITypeCallback
-			{
-			protected:
-				vl::WString GetClassName(vl::vint32_t classIndex) const override;
-				vl::vint32_t FindCommonBaseClass(vl::vint32_t class1, vl::vint32_t class2) const override;
-			public:
-				RuleParser();
+	class RuleParser
+		: public vl::glr::ParserBase<ParserGenTokens, RuleParserStates, ParserGenAstInsReceiver>
+		, protected vl::glr::automaton::IExecutor::ITypeCallback
+	{
+	protected:
+		vl::WString GetClassName(vl::vint32_t classIndex) const override;
+		vl::vint32_t FindCommonBaseClass(vl::vint32_t class1, vl::vint32_t class2) const override;
+	public:
+		RuleParser();
 
-				vl::Ptr<vl::glr::parsergen::GlrSyntaxFile> ParseFile(const vl::WString& input, vl::vint codeIndex = -1) const;
-				vl::Ptr<vl::glr::parsergen::GlrSyntaxFile> ParseFile(vl::collections::List<vl::regex::RegexToken>& tokens, vl::vint codeIndex = -1) const;
-			};
-		}
-	}
+		vl::Ptr<vl::glr::parsergen::GlrSyntaxFile> ParseFile(const vl::WString& input, vl::vint codeIndex = -1) const;
+		vl::Ptr<vl::glr::parsergen::GlrSyntaxFile> ParseFile(vl::collections::List<vl::regex::RegexToken>& tokens, vl::vint codeIndex = -1) const;
+	};
 }
 #endif

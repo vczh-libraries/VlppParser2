@@ -1,4 +1,5 @@
 #include "SyntaxSymbolWriter.h"
+#include "../../Source/Ast/AstSymbol.h"
 #include "../../Source/ParserGen_Generated/ParserGen_Assembler.h"
 #include "../../Source/ParserGen_Generated/ParserGen_Lexer.h"
 
@@ -18,7 +19,7 @@ namespace vl
 CreateParserGenRuleSyntax
 ***********************************************************************/
 
-			void CreateParserGenRuleSyntax(SyntaxSymbolManager& manager)
+			void CreateParserGenRuleSyntax(AstSymbolManager& ast, SyntaxSymbolManager& manager)
 			{
 				manager.name = L"RuleParser";
 
@@ -55,6 +56,7 @@ CreateParserGenRuleSyntax
 				_lriContinuationBody->isPartial = true;
 
 				_file->isParser = true;
+				_file->ruleType = dynamic_cast<AstClassSymbol*>(ast.Symbols()[L"SyntaxFile"]);
 
 				using T = ParserGenTokens;
 				using C = ParserGenClasses;

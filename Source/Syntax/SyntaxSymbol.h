@@ -15,6 +15,7 @@ namespace vl
 	{
 		namespace parsergen
 		{
+			class AstSymbolManager;
 			class AstClassSymbol;
 			class StateSymbol;
 			class EdgeSymbol;
@@ -231,8 +232,8 @@ SyntaxSymbolManager
 				}
 			};
 
-			extern void						CreateParserGenTypeSyntax(SyntaxSymbolManager& manager);
-			extern void						CreateParserGenRuleSyntax(SyntaxSymbolManager& manager);
+			extern void						CreateParserGenTypeSyntax(AstSymbolManager& ast, SyntaxSymbolManager& manager);
+			extern void						CreateParserGenRuleSyntax(AstSymbolManager& ast, SyntaxSymbolManager& manager);
 		}
 	}
 }
