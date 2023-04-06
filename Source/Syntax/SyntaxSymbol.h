@@ -148,6 +148,7 @@ RuleSymbol
 				RuleSymbol(SyntaxSymbolManager* _ownerManager, const WString& _name);
 			public:
 				StateList					startStates;
+				bool						isPublic = false;
 				bool						isParser = false;
 				bool						isPartial = false;
 				bool						assignedNonArrayField = false;

@@ -55,6 +55,8 @@ CompileSyntax
 					else
 					{
 						auto ruleSymbol = syntaxManager.CreateRule(rule->name.value, rule->codeRange);
+						ruleSymbol->isPublic = rule->attPublic;
+						ruleSymbol->isParser = rule->attParser;
 					}
 
 					for (auto clause : rule->clauses)

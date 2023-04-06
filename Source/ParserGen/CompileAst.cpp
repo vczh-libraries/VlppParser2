@@ -23,12 +23,14 @@ CompileAst
 
 				void Visit(GlrEnum* node) override
 				{
-					astDefFile->CreateEnum(node->name.value, node->name.codeRange);
+					auto symbol = astDefFile->CreateEnum(node->name.value, node->name.codeRange);
+					symbol->isPublic = node->attPublic;
 				}
 
 				void Visit(GlrClass* node) override
 				{
-					astDefFile->CreateClass(node->name.value, node->name.codeRange);
+					auto symbol = astDefFile->CreateClass(node->name.value, node->name.codeRange);
+					symbol->isPublic = node->attPublic;
 				}
 			};
 
