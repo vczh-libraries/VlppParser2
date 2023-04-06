@@ -4122,6 +4122,7 @@ CalculateObjectFirstInstruction
 #endif
 					}
 				}
+#undef ERROR_MESSAGE_PREFIX
 			}
 
 #undef NEW_MERGE_STACK_MAGIC_COUNTER
