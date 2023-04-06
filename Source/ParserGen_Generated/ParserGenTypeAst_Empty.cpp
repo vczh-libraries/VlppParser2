@@ -6,29 +6,20 @@ Licensed under https://github.com/vczh-libraries/License
 
 #include "ParserGenTypeAst_Empty.h"
 
-namespace vl
+namespace vl::glr::parsergen::empty_visitor
 {
-	namespace glr
-	{
-		namespace parsergen
-		{
-			namespace empty_visitor
-			{
 
 /***********************************************************************
 TypeVisitor
 ***********************************************************************/
 
-				// Visitor Members -----------------------------------
+	// Visitor Members -----------------------------------
 
-				void TypeVisitor::Visit(GlrEnum* node)
-				{
-				}
+	void TypeVisitor::Visit(GlrEnum* node)
+	{
+	}
 
-				void TypeVisitor::Visit(GlrClass* node)
-				{
-				}
-			}
-		}
+	void TypeVisitor::Visit(GlrClass* node)
+	{
 	}
 }

@@ -9,28 +9,19 @@ Licensed under https://github.com/vczh-libraries/License
 
 #include "ParserGenTypeAst.h"
 
-namespace vl
+namespace vl::glr::parsergen::empty_visitor
 {
-	namespace glr
+	/// <summary>An empty visitor, overriding all abstract methods with empty implementations.</summary>
+	class TypeVisitor : public vl::Object, public GlrType::IVisitor
 	{
-		namespace parsergen
-		{
-			namespace empty_visitor
-			{
-				/// <summary>An empty visitor, overriding all abstract methods with empty implementations.</summary>
-				class TypeVisitor : public vl::Object, public GlrType::IVisitor
-				{
-				protected:
-					// Dispatch (virtual) --------------------------------
+	protected:
+		// Dispatch (virtual) --------------------------------
 
-				public:
-					// Visitor Members -----------------------------------
-					void Visit(GlrEnum* node) override;
-					void Visit(GlrClass* node) override;
-				};
+	public:
+		// Visitor Members -----------------------------------
+		void Visit(GlrEnum* node) override;
+		void Visit(GlrClass* node) override;
+	};
 
-			}
-		}
-	}
 }
 #endif

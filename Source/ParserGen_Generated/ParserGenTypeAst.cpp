@@ -6,146 +6,134 @@ Licensed under https://github.com/vczh-libraries/License
 
 #include "ParserGenTypeAst.h"
 
-namespace vl
+namespace vl::glr::parsergen
 {
-	namespace glr
-	{
-		namespace parsergen
-		{
 /***********************************************************************
 Visitor Pattern Implementation
 ***********************************************************************/
 
-			void GlrEnum::Accept(GlrType::IVisitor* visitor)
-			{
-				visitor->Visit(this);
-			}
+	void GlrEnum::Accept(GlrType::IVisitor* visitor)
+	{
+		visitor->Visit(this);
+	}
 
-			void GlrClass::Accept(GlrType::IVisitor* visitor)
-			{
-				visitor->Visit(this);
-			}
-		}
+	void GlrClass::Accept(GlrType::IVisitor* visitor)
+	{
+		visitor->Visit(this);
 	}
 }
-namespace vl
+namespace vl::reflection::description
 {
-	namespace reflection
-	{
-		namespace description
-		{
 #ifndef VCZH_DEBUG_NO_REFLECTION
 
-			IMPL_TYPE_INFO_RENAME(vl::glr::parsergen::GlrType, glr::parsergen::GlrType)
-			IMPL_TYPE_INFO_RENAME(vl::glr::parsergen::GlrType::IVisitor, glr::parsergen::GlrType::IVisitor)
-			IMPL_TYPE_INFO_RENAME(vl::glr::parsergen::GlrEnumItem, glr::parsergen::GlrEnumItem)
-			IMPL_TYPE_INFO_RENAME(vl::glr::parsergen::GlrEnum, glr::parsergen::GlrEnum)
-			IMPL_TYPE_INFO_RENAME(vl::glr::parsergen::GlrPropType, glr::parsergen::GlrPropType)
-			IMPL_TYPE_INFO_RENAME(vl::glr::parsergen::GlrClassProp, glr::parsergen::GlrClassProp)
-			IMPL_TYPE_INFO_RENAME(vl::glr::parsergen::GlrClass, glr::parsergen::GlrClass)
-			IMPL_TYPE_INFO_RENAME(vl::glr::parsergen::GlrAstFile, glr::parsergen::GlrAstFile)
+	IMPL_TYPE_INFO_RENAME(vl::glr::parsergen::GlrType, glr::parsergen::GlrType)
+	IMPL_TYPE_INFO_RENAME(vl::glr::parsergen::GlrType::IVisitor, glr::parsergen::GlrType::IVisitor)
+	IMPL_TYPE_INFO_RENAME(vl::glr::parsergen::GlrEnumItem, glr::parsergen::GlrEnumItem)
+	IMPL_TYPE_INFO_RENAME(vl::glr::parsergen::GlrEnum, glr::parsergen::GlrEnum)
+	IMPL_TYPE_INFO_RENAME(vl::glr::parsergen::GlrPropType, glr::parsergen::GlrPropType)
+	IMPL_TYPE_INFO_RENAME(vl::glr::parsergen::GlrClassProp, glr::parsergen::GlrClassProp)
+	IMPL_TYPE_INFO_RENAME(vl::glr::parsergen::GlrClass, glr::parsergen::GlrClass)
+	IMPL_TYPE_INFO_RENAME(vl::glr::parsergen::GlrAstFile, glr::parsergen::GlrAstFile)
 
 #ifdef VCZH_DESCRIPTABLEOBJECT_WITH_METADATA
 
-			BEGIN_CLASS_MEMBER(vl::glr::parsergen::GlrType)
-				CLASS_MEMBER_BASE(vl::glr::ParsingAstBase)
+	BEGIN_CLASS_MEMBER(vl::glr::parsergen::GlrType)
+		CLASS_MEMBER_BASE(vl::glr::ParsingAstBase)
 
-				CLASS_MEMBER_FIELD(attPublic)
-				CLASS_MEMBER_FIELD(name)
-			END_CLASS_MEMBER(vl::glr::parsergen::GlrType)
+		CLASS_MEMBER_FIELD(attPublic)
+		CLASS_MEMBER_FIELD(name)
+	END_CLASS_MEMBER(vl::glr::parsergen::GlrType)
 
-			BEGIN_CLASS_MEMBER(vl::glr::parsergen::GlrEnumItem)
-				CLASS_MEMBER_BASE(vl::glr::ParsingAstBase)
+	BEGIN_CLASS_MEMBER(vl::glr::parsergen::GlrEnumItem)
+		CLASS_MEMBER_BASE(vl::glr::ParsingAstBase)
 
-				CLASS_MEMBER_CONSTRUCTOR(vl::Ptr<vl::glr::parsergen::GlrEnumItem>(), NO_PARAMETER)
+		CLASS_MEMBER_CONSTRUCTOR(vl::Ptr<vl::glr::parsergen::GlrEnumItem>(), NO_PARAMETER)
 
-				CLASS_MEMBER_FIELD(name)
-			END_CLASS_MEMBER(vl::glr::parsergen::GlrEnumItem)
+		CLASS_MEMBER_FIELD(name)
+	END_CLASS_MEMBER(vl::glr::parsergen::GlrEnumItem)
 
-			BEGIN_CLASS_MEMBER(vl::glr::parsergen::GlrEnum)
-				CLASS_MEMBER_BASE(vl::glr::parsergen::GlrType)
+	BEGIN_CLASS_MEMBER(vl::glr::parsergen::GlrEnum)
+		CLASS_MEMBER_BASE(vl::glr::parsergen::GlrType)
 
-				CLASS_MEMBER_CONSTRUCTOR(vl::Ptr<vl::glr::parsergen::GlrEnum>(), NO_PARAMETER)
+		CLASS_MEMBER_CONSTRUCTOR(vl::Ptr<vl::glr::parsergen::GlrEnum>(), NO_PARAMETER)
 
-				CLASS_MEMBER_FIELD(items)
-			END_CLASS_MEMBER(vl::glr::parsergen::GlrEnum)
+		CLASS_MEMBER_FIELD(items)
+	END_CLASS_MEMBER(vl::glr::parsergen::GlrEnum)
 
-			BEGIN_ENUM_ITEM(vl::glr::parsergen::GlrPropType)
-				ENUM_ITEM_NAMESPACE(vl::glr::parsergen::GlrPropType)
-				ENUM_NAMESPACE_ITEM(Token)
-				ENUM_NAMESPACE_ITEM(Type)
-				ENUM_NAMESPACE_ITEM(Array)
-			END_ENUM_ITEM(vl::glr::parsergen::GlrPropType)
+	BEGIN_ENUM_ITEM(vl::glr::parsergen::GlrPropType)
+		ENUM_ITEM_NAMESPACE(vl::glr::parsergen::GlrPropType)
+		ENUM_NAMESPACE_ITEM(Token)
+		ENUM_NAMESPACE_ITEM(Type)
+		ENUM_NAMESPACE_ITEM(Array)
+	END_ENUM_ITEM(vl::glr::parsergen::GlrPropType)
 
-			BEGIN_CLASS_MEMBER(vl::glr::parsergen::GlrClassProp)
-				CLASS_MEMBER_BASE(vl::glr::ParsingAstBase)
+	BEGIN_CLASS_MEMBER(vl::glr::parsergen::GlrClassProp)
+		CLASS_MEMBER_BASE(vl::glr::ParsingAstBase)
 
-				CLASS_MEMBER_CONSTRUCTOR(vl::Ptr<vl::glr::parsergen::GlrClassProp>(), NO_PARAMETER)
+		CLASS_MEMBER_CONSTRUCTOR(vl::Ptr<vl::glr::parsergen::GlrClassProp>(), NO_PARAMETER)
 
-				CLASS_MEMBER_FIELD(name)
-				CLASS_MEMBER_FIELD(propType)
-				CLASS_MEMBER_FIELD(propTypeName)
-			END_CLASS_MEMBER(vl::glr::parsergen::GlrClassProp)
+		CLASS_MEMBER_FIELD(name)
+		CLASS_MEMBER_FIELD(propType)
+		CLASS_MEMBER_FIELD(propTypeName)
+	END_CLASS_MEMBER(vl::glr::parsergen::GlrClassProp)
 
-			BEGIN_CLASS_MEMBER(vl::glr::parsergen::GlrClass)
-				CLASS_MEMBER_BASE(vl::glr::parsergen::GlrType)
+	BEGIN_CLASS_MEMBER(vl::glr::parsergen::GlrClass)
+		CLASS_MEMBER_BASE(vl::glr::parsergen::GlrType)
 
-				CLASS_MEMBER_CONSTRUCTOR(vl::Ptr<vl::glr::parsergen::GlrClass>(), NO_PARAMETER)
+		CLASS_MEMBER_CONSTRUCTOR(vl::Ptr<vl::glr::parsergen::GlrClass>(), NO_PARAMETER)
 
-				CLASS_MEMBER_FIELD(attAmbiguous)
-				CLASS_MEMBER_FIELD(baseClass)
-				CLASS_MEMBER_FIELD(props)
-			END_CLASS_MEMBER(vl::glr::parsergen::GlrClass)
+		CLASS_MEMBER_FIELD(attAmbiguous)
+		CLASS_MEMBER_FIELD(baseClass)
+		CLASS_MEMBER_FIELD(props)
+	END_CLASS_MEMBER(vl::glr::parsergen::GlrClass)
 
-			BEGIN_CLASS_MEMBER(vl::glr::parsergen::GlrAstFile)
-				CLASS_MEMBER_BASE(vl::glr::ParsingAstBase)
+	BEGIN_CLASS_MEMBER(vl::glr::parsergen::GlrAstFile)
+		CLASS_MEMBER_BASE(vl::glr::ParsingAstBase)
 
-				CLASS_MEMBER_CONSTRUCTOR(vl::Ptr<vl::glr::parsergen::GlrAstFile>(), NO_PARAMETER)
+		CLASS_MEMBER_CONSTRUCTOR(vl::Ptr<vl::glr::parsergen::GlrAstFile>(), NO_PARAMETER)
 
-				CLASS_MEMBER_FIELD(types)
-			END_CLASS_MEMBER(vl::glr::parsergen::GlrAstFile)
+		CLASS_MEMBER_FIELD(types)
+	END_CLASS_MEMBER(vl::glr::parsergen::GlrAstFile)
 
-			BEGIN_INTERFACE_MEMBER(vl::glr::parsergen::GlrType::IVisitor)
-				CLASS_MEMBER_METHOD_OVERLOAD(Visit, {L"node"}, void(vl::glr::parsergen::GlrType::IVisitor::*)(vl::glr::parsergen::GlrEnum* node))
-				CLASS_MEMBER_METHOD_OVERLOAD(Visit, {L"node"}, void(vl::glr::parsergen::GlrType::IVisitor::*)(vl::glr::parsergen::GlrClass* node))
-			END_INTERFACE_MEMBER(vl::glr::parsergen::GlrType)
+	BEGIN_INTERFACE_MEMBER(vl::glr::parsergen::GlrType::IVisitor)
+		CLASS_MEMBER_METHOD_OVERLOAD(Visit, {L"node"}, void(vl::glr::parsergen::GlrType::IVisitor::*)(vl::glr::parsergen::GlrEnum* node))
+		CLASS_MEMBER_METHOD_OVERLOAD(Visit, {L"node"}, void(vl::glr::parsergen::GlrType::IVisitor::*)(vl::glr::parsergen::GlrClass* node))
+	END_INTERFACE_MEMBER(vl::glr::parsergen::GlrType)
 
 #endif
 
 #ifdef VCZH_DESCRIPTABLEOBJECT_WITH_METADATA
-			class ParserGenTypeAstTypeLoader : public vl::Object, public ITypeLoader
-			{
-			public:
-				void Load(ITypeManager* manager)
-				{
-					ADD_TYPE_INFO(vl::glr::parsergen::GlrType)
-					ADD_TYPE_INFO(vl::glr::parsergen::GlrType::IVisitor)
-					ADD_TYPE_INFO(vl::glr::parsergen::GlrEnumItem)
-					ADD_TYPE_INFO(vl::glr::parsergen::GlrEnum)
-					ADD_TYPE_INFO(vl::glr::parsergen::GlrPropType)
-					ADD_TYPE_INFO(vl::glr::parsergen::GlrClassProp)
-					ADD_TYPE_INFO(vl::glr::parsergen::GlrClass)
-					ADD_TYPE_INFO(vl::glr::parsergen::GlrAstFile)
-				}
-
-				void Unload(ITypeManager* manager)
-				{
-				}
-			};
-#endif
-#endif
-
-			bool ParserGenTypeAstLoadTypes()
-			{
-#ifdef VCZH_DESCRIPTABLEOBJECT_WITH_METADATA
-				if (auto manager = GetGlobalTypeManager())
-				{
-					auto loader = Ptr(new ParserGenTypeAstTypeLoader);
-					return manager->AddTypeLoader(loader);
-				}
-#endif
-				return false;
-			}
+	class ParserGenTypeAstTypeLoader : public vl::Object, public ITypeLoader
+	{
+	public:
+		void Load(ITypeManager* manager)
+		{
+			ADD_TYPE_INFO(vl::glr::parsergen::GlrType)
+			ADD_TYPE_INFO(vl::glr::parsergen::GlrType::IVisitor)
+			ADD_TYPE_INFO(vl::glr::parsergen::GlrEnumItem)
+			ADD_TYPE_INFO(vl::glr::parsergen::GlrEnum)
+			ADD_TYPE_INFO(vl::glr::parsergen::GlrPropType)
+			ADD_TYPE_INFO(vl::glr::parsergen::GlrClassProp)
+			ADD_TYPE_INFO(vl::glr::parsergen::GlrClass)
+			ADD_TYPE_INFO(vl::glr::parsergen::GlrAstFile)
 		}
+
+		void Unload(ITypeManager* manager)
+		{
+		}
+	};
+#endif
+#endif
+
+	bool ParserGenTypeAstLoadTypes()
+	{
+#ifdef VCZH_DESCRIPTABLEOBJECT_WITH_METADATA
+		if (auto manager = GetGlobalTypeManager())
+		{
+			auto loader = Ptr(new ParserGenTypeAstTypeLoader);
+			return manager->AddTypeLoader(loader);
+		}
+#endif
+		return false;
 	}
 }

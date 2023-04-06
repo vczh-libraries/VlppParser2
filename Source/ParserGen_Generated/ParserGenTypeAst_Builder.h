@@ -9,61 +9,52 @@ Licensed under https://github.com/vczh-libraries/License
 
 #include "ParserGenTypeAst.h"
 
-namespace vl
+namespace vl::glr::parsergen::builder
 {
-	namespace glr
+	class MakeAstFile : public vl::glr::ParsingAstBuilder<GlrAstFile>
 	{
-		namespace parsergen
-		{
-			namespace builder
-			{
-				class MakeAstFile : public vl::glr::ParsingAstBuilder<GlrAstFile>
-				{
-				public:
-					MakeAstFile& types(const vl::Ptr<GlrType>& value);
-				};
+	public:
+		MakeAstFile& types(const vl::Ptr<GlrType>& value);
+	};
 
-				class MakeClass : public vl::glr::ParsingAstBuilder<GlrClass>
-				{
-				public:
-					MakeClass& attAmbiguous(const vl::WString& value);
-					MakeClass& baseClass(const vl::WString& value);
-					MakeClass& props(const vl::Ptr<GlrClassProp>& value);
-					MakeClass& attPublic(const vl::WString& value);
-					MakeClass& name(const vl::WString& value);
-				};
+	class MakeClass : public vl::glr::ParsingAstBuilder<GlrClass>
+	{
+	public:
+		MakeClass& attAmbiguous(const vl::WString& value);
+		MakeClass& baseClass(const vl::WString& value);
+		MakeClass& props(const vl::Ptr<GlrClassProp>& value);
+		MakeClass& attPublic(const vl::WString& value);
+		MakeClass& name(const vl::WString& value);
+	};
 
-				class MakeClassProp : public vl::glr::ParsingAstBuilder<GlrClassProp>
-				{
-				public:
-					MakeClassProp& name(const vl::WString& value);
-					MakeClassProp& propType(GlrPropType value);
-					MakeClassProp& propTypeName(const vl::WString& value);
-				};
+	class MakeClassProp : public vl::glr::ParsingAstBuilder<GlrClassProp>
+	{
+	public:
+		MakeClassProp& name(const vl::WString& value);
+		MakeClassProp& propType(GlrPropType value);
+		MakeClassProp& propTypeName(const vl::WString& value);
+	};
 
-				class MakeEnum : public vl::glr::ParsingAstBuilder<GlrEnum>
-				{
-				public:
-					MakeEnum& items(const vl::Ptr<GlrEnumItem>& value);
-					MakeEnum& attPublic(const vl::WString& value);
-					MakeEnum& name(const vl::WString& value);
-				};
+	class MakeEnum : public vl::glr::ParsingAstBuilder<GlrEnum>
+	{
+	public:
+		MakeEnum& items(const vl::Ptr<GlrEnumItem>& value);
+		MakeEnum& attPublic(const vl::WString& value);
+		MakeEnum& name(const vl::WString& value);
+	};
 
-				class MakeEnumItem : public vl::glr::ParsingAstBuilder<GlrEnumItem>
-				{
-				public:
-					MakeEnumItem& name(const vl::WString& value);
-				};
+	class MakeEnumItem : public vl::glr::ParsingAstBuilder<GlrEnumItem>
+	{
+	public:
+		MakeEnumItem& name(const vl::WString& value);
+	};
 
-				class MakeType : public vl::glr::ParsingAstBuilder<GlrType>
-				{
-				public:
-					MakeType& attPublic(const vl::WString& value);
-					MakeType& name(const vl::WString& value);
-				};
+	class MakeType : public vl::glr::ParsingAstBuilder<GlrType>
+	{
+	public:
+		MakeType& attPublic(const vl::WString& value);
+		MakeType& name(const vl::WString& value);
+	};
 
-			}
-		}
-	}
 }
 #endif

@@ -10,132 +10,126 @@ Licensed under https://github.com/vczh-libraries/License
 #include "ParserGenRuleAst.h"
 #include "ParserGenTypeAst.h"
 
-namespace vl
+namespace vl::glr::parsergen
 {
-	namespace glr
+	enum class ParserGenClasses : vl::vint32_t
 	{
-		namespace parsergen
-		{
-			enum class ParserGenClasses : vl::vint32_t
-			{
-				AlternativeSyntax = 0,
-				AndCondition = 1,
-				Assignment = 2,
-				AstFile = 3,
-				Class = 4,
-				ClassProp = 5,
-				Clause = 6,
-				Condition = 7,
-				CreateClause = 8,
-				Enum = 9,
-				EnumItem = 10,
-				LeftRecursionInjectClause = 11,
-				LeftRecursionInjectContinuation = 12,
-				LeftRecursionPlaceholder = 13,
-				LeftRecursionPlaceholderClause = 14,
-				LoopSyntax = 15,
-				NotCondition = 16,
-				OptionalSyntax = 17,
-				OrCondition = 18,
-				PartialClause = 19,
-				PrefixMergeClause = 20,
-				PushConditionSyntax = 21,
-				RefCondition = 22,
-				RefSyntax = 23,
-				ReuseClause = 24,
-				Rule = 25,
-				SequenceSyntax = 26,
-				SwitchItem = 27,
-				Syntax = 28,
-				SyntaxFile = 29,
-				TestConditionBranch = 30,
-				TestConditionSyntax = 31,
-				Type = 32,
-				UseSyntax = 33,
-			};
+		AlternativeSyntax = 0,
+		AndCondition = 1,
+		Assignment = 2,
+		AstFile = 3,
+		Class = 4,
+		ClassProp = 5,
+		Clause = 6,
+		Condition = 7,
+		CreateClause = 8,
+		Enum = 9,
+		EnumItem = 10,
+		LeftRecursionInjectClause = 11,
+		LeftRecursionInjectContinuation = 12,
+		LeftRecursionPlaceholder = 13,
+		LeftRecursionPlaceholderClause = 14,
+		LoopSyntax = 15,
+		NotCondition = 16,
+		OptionalSyntax = 17,
+		OrCondition = 18,
+		PartialClause = 19,
+		PrefixMergeClause = 20,
+		PushConditionSyntax = 21,
+		RefCondition = 22,
+		RefSyntax = 23,
+		ReuseClause = 24,
+		Rule = 25,
+		SequenceSyntax = 26,
+		SwitchItem = 27,
+		Syntax = 28,
+		SyntaxFile = 29,
+		TestConditionBranch = 30,
+		TestConditionSyntax = 31,
+		Type = 32,
+		UseSyntax = 33,
+	};
 
-			enum class ParserGenFields : vl::vint32_t
-			{
-				AlternativeSyntax_first = 0,
-				AlternativeSyntax_second = 1,
-				AndCondition_first = 2,
-				AndCondition_second = 3,
-				Assignment_field = 4,
-				Assignment_type = 5,
-				Assignment_value = 6,
-				AstFile_types = 7,
-				Class_attAmbiguous = 8,
-				Class_baseClass = 9,
-				Class_props = 10,
-				ClassProp_name = 11,
-				ClassProp_propType = 12,
-				ClassProp_propTypeName = 13,
-				CreateClause_assignments = 14,
-				CreateClause_syntax = 15,
-				CreateClause_type = 16,
-				Enum_items = 17,
-				EnumItem_name = 18,
-				LeftRecursionInjectClause_continuation = 19,
-				LeftRecursionInjectClause_rule = 20,
-				LeftRecursionInjectContinuation_configuration = 21,
-				LeftRecursionInjectContinuation_flags = 22,
-				LeftRecursionInjectContinuation_injectionTargets = 23,
-				LeftRecursionInjectContinuation_type = 24,
-				LeftRecursionPlaceholder_flag = 25,
-				LeftRecursionPlaceholderClause_flags = 26,
-				LoopSyntax_delimiter = 27,
-				LoopSyntax_syntax = 28,
-				NotCondition_condition = 29,
-				OptionalSyntax_priority = 30,
-				OptionalSyntax_syntax = 31,
-				OrCondition_first = 32,
-				OrCondition_second = 33,
-				PartialClause_assignments = 34,
-				PartialClause_syntax = 35,
-				PartialClause_type = 36,
-				PrefixMergeClause_rule = 37,
-				PushConditionSyntax_switches = 38,
-				PushConditionSyntax_syntax = 39,
-				RefCondition_name = 40,
-				RefSyntax_field = 41,
-				RefSyntax_literal = 42,
-				RefSyntax_refType = 43,
-				ReuseClause_assignments = 44,
-				ReuseClause_syntax = 45,
-				Rule_attParser = 46,
-				Rule_attPublic = 47,
-				Rule_clauses = 48,
-				Rule_name = 49,
-				Rule_type = 50,
-				SequenceSyntax_first = 51,
-				SequenceSyntax_second = 52,
-				SwitchItem_name = 53,
-				SwitchItem_value = 54,
-				SyntaxFile_rules = 55,
-				SyntaxFile_switches = 56,
-				TestConditionBranch_condition = 57,
-				TestConditionBranch_syntax = 58,
-				TestConditionSyntax_branches = 59,
-				Type_attPublic = 60,
-				Type_name = 61,
-				UseSyntax_name = 62,
-			};
+	enum class ParserGenFields : vl::vint32_t
+	{
+		AlternativeSyntax_first = 0,
+		AlternativeSyntax_second = 1,
+		AndCondition_first = 2,
+		AndCondition_second = 3,
+		Assignment_field = 4,
+		Assignment_type = 5,
+		Assignment_value = 6,
+		AstFile_types = 7,
+		Class_attAmbiguous = 8,
+		Class_baseClass = 9,
+		Class_props = 10,
+		ClassProp_name = 11,
+		ClassProp_propType = 12,
+		ClassProp_propTypeName = 13,
+		CreateClause_assignments = 14,
+		CreateClause_syntax = 15,
+		CreateClause_type = 16,
+		Enum_items = 17,
+		EnumItem_name = 18,
+		LeftRecursionInjectClause_continuation = 19,
+		LeftRecursionInjectClause_rule = 20,
+		LeftRecursionInjectContinuation_configuration = 21,
+		LeftRecursionInjectContinuation_flags = 22,
+		LeftRecursionInjectContinuation_injectionTargets = 23,
+		LeftRecursionInjectContinuation_type = 24,
+		LeftRecursionPlaceholder_flag = 25,
+		LeftRecursionPlaceholderClause_flags = 26,
+		LoopSyntax_delimiter = 27,
+		LoopSyntax_syntax = 28,
+		NotCondition_condition = 29,
+		OptionalSyntax_priority = 30,
+		OptionalSyntax_syntax = 31,
+		OrCondition_first = 32,
+		OrCondition_second = 33,
+		PartialClause_assignments = 34,
+		PartialClause_syntax = 35,
+		PartialClause_type = 36,
+		PrefixMergeClause_rule = 37,
+		PushConditionSyntax_switches = 38,
+		PushConditionSyntax_syntax = 39,
+		RefCondition_name = 40,
+		RefSyntax_field = 41,
+		RefSyntax_literal = 42,
+		RefSyntax_refType = 43,
+		ReuseClause_assignments = 44,
+		ReuseClause_syntax = 45,
+		Rule_attParser = 46,
+		Rule_attPublic = 47,
+		Rule_clauses = 48,
+		Rule_name = 49,
+		Rule_type = 50,
+		SequenceSyntax_first = 51,
+		SequenceSyntax_second = 52,
+		SwitchItem_name = 53,
+		SwitchItem_value = 54,
+		SyntaxFile_rules = 55,
+		SyntaxFile_switches = 56,
+		TestConditionBranch_condition = 57,
+		TestConditionBranch_syntax = 58,
+		TestConditionSyntax_branches = 59,
+		Type_attPublic = 60,
+		Type_name = 61,
+		UseSyntax_name = 62,
+	};
 
-			extern const wchar_t* ParserGenTypeName(ParserGenClasses type);
-			extern const wchar_t* ParserGenCppTypeName(ParserGenClasses type);
-			extern const wchar_t* ParserGenFieldName(ParserGenFields field);
-			extern const wchar_t* ParserGenCppFieldName(ParserGenFields field);
+	extern const wchar_t* ParserGenTypeName(ParserGenClasses type);
+	extern const wchar_t* ParserGenCppTypeName(ParserGenClasses type);
+	extern const wchar_t* ParserGenFieldName(ParserGenFields field);
+	extern const wchar_t* ParserGenCppFieldName(ParserGenFields field);
 
-			class ParserGenAstInsReceiver : public vl::glr::AstInsReceiverBase
-			{
-			protected:
-				vl::Ptr<vl::glr::ParsingAstBase> CreateAstNode(vl::vint32_t type) override;
-				void SetField(vl::glr::ParsingAstBase* object, vl::vint32_t field, vl::Ptr<vl::glr::ParsingAstBase> value) override;
-				void SetField(vl::glr::ParsingAstBase* object, vl::vint32_t field, const vl::regex::RegexToken& token, vl::vint32_t tokenIndex) override;
-				void SetField(vl::glr::ParsingAstBase* object, vl::vint32_t field, vl::vint32_t enumItem, bool weakAssignment) override;
-				vl::Ptr<vl::glr::ParsingAstBase> ResolveAmbiguity(vl::vint32_t type, vl::collections::Array<vl::Ptr<vl::glr::ParsingAstBase>>& candidates) override;
-			};
-		}
-	}
+	class ParserGenAstInsReceiver : public vl::glr::AstInsReceiverBase
+	{
+	protected:
+		vl::Ptr<vl::glr::ParsingAstBase> CreateAstNode(vl::vint32_t type) override;
+		void SetField(vl::glr::ParsingAstBase* object, vl::vint32_t field, vl::Ptr<vl::glr::ParsingAstBase> value) override;
+		void SetField(vl::glr::ParsingAstBase* object, vl::vint32_t field, const vl::regex::RegexToken& token, vl::vint32_t tokenIndex) override;
+		void SetField(vl::glr::ParsingAstBase* object, vl::vint32_t field, vl::vint32_t enumItem, bool weakAssignment) override;
+		vl::Ptr<vl::glr::ParsingAstBase> ResolveAmbiguity(vl::vint32_t type, vl::collections::Array<vl::Ptr<vl::glr::ParsingAstBase>>& candidates) override;
+	};
 }
 #endif

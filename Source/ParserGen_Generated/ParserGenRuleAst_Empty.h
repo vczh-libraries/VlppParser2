@@ -9,64 +9,55 @@ Licensed under https://github.com/vczh-libraries/License
 
 #include "ParserGenRuleAst.h"
 
-namespace vl
+namespace vl::glr::parsergen::empty_visitor
 {
-	namespace glr
+	/// <summary>An empty visitor, overriding all abstract methods with empty implementations.</summary>
+	class ConditionVisitor : public vl::Object, public GlrCondition::IVisitor
 	{
-		namespace parsergen
-		{
-			namespace empty_visitor
-			{
-				/// <summary>An empty visitor, overriding all abstract methods with empty implementations.</summary>
-				class ConditionVisitor : public vl::Object, public GlrCondition::IVisitor
-				{
-				protected:
-					// Dispatch (virtual) --------------------------------
+	protected:
+		// Dispatch (virtual) --------------------------------
 
-				public:
-					// Visitor Members -----------------------------------
-					void Visit(GlrRefCondition* node) override;
-					void Visit(GlrNotCondition* node) override;
-					void Visit(GlrAndCondition* node) override;
-					void Visit(GlrOrCondition* node) override;
-				};
+	public:
+		// Visitor Members -----------------------------------
+		void Visit(GlrRefCondition* node) override;
+		void Visit(GlrNotCondition* node) override;
+		void Visit(GlrAndCondition* node) override;
+		void Visit(GlrOrCondition* node) override;
+	};
 
-				/// <summary>An empty visitor, overriding all abstract methods with empty implementations.</summary>
-				class SyntaxVisitor : public vl::Object, public GlrSyntax::IVisitor
-				{
-				protected:
-					// Dispatch (virtual) --------------------------------
+	/// <summary>An empty visitor, overriding all abstract methods with empty implementations.</summary>
+	class SyntaxVisitor : public vl::Object, public GlrSyntax::IVisitor
+	{
+	protected:
+		// Dispatch (virtual) --------------------------------
 
-				public:
-					// Visitor Members -----------------------------------
-					void Visit(GlrRefSyntax* node) override;
-					void Visit(GlrUseSyntax* node) override;
-					void Visit(GlrLoopSyntax* node) override;
-					void Visit(GlrOptionalSyntax* node) override;
-					void Visit(GlrSequenceSyntax* node) override;
-					void Visit(GlrAlternativeSyntax* node) override;
-					void Visit(GlrPushConditionSyntax* node) override;
-					void Visit(GlrTestConditionSyntax* node) override;
-				};
+	public:
+		// Visitor Members -----------------------------------
+		void Visit(GlrRefSyntax* node) override;
+		void Visit(GlrUseSyntax* node) override;
+		void Visit(GlrLoopSyntax* node) override;
+		void Visit(GlrOptionalSyntax* node) override;
+		void Visit(GlrSequenceSyntax* node) override;
+		void Visit(GlrAlternativeSyntax* node) override;
+		void Visit(GlrPushConditionSyntax* node) override;
+		void Visit(GlrTestConditionSyntax* node) override;
+	};
 
-				/// <summary>An empty visitor, overriding all abstract methods with empty implementations.</summary>
-				class ClauseVisitor : public vl::Object, public GlrClause::IVisitor
-				{
-				protected:
-					// Dispatch (virtual) --------------------------------
+	/// <summary>An empty visitor, overriding all abstract methods with empty implementations.</summary>
+	class ClauseVisitor : public vl::Object, public GlrClause::IVisitor
+	{
+	protected:
+		// Dispatch (virtual) --------------------------------
 
-				public:
-					// Visitor Members -----------------------------------
-					void Visit(GlrCreateClause* node) override;
-					void Visit(GlrPartialClause* node) override;
-					void Visit(GlrReuseClause* node) override;
-					void Visit(GlrLeftRecursionPlaceholderClause* node) override;
-					void Visit(GlrLeftRecursionInjectClause* node) override;
-					void Visit(GlrPrefixMergeClause* node) override;
-				};
+	public:
+		// Visitor Members -----------------------------------
+		void Visit(GlrCreateClause* node) override;
+		void Visit(GlrPartialClause* node) override;
+		void Visit(GlrReuseClause* node) override;
+		void Visit(GlrLeftRecursionPlaceholderClause* node) override;
+		void Visit(GlrLeftRecursionInjectClause* node) override;
+		void Visit(GlrPrefixMergeClause* node) override;
+	};
 
-			}
-		}
-	}
 }
 #endif

@@ -9,50 +9,41 @@ Licensed under https://github.com/vczh-libraries/License
 
 #include "ParserGenTypeAst.h"
 
-namespace vl
+namespace vl::glr::parsergen::traverse_visitor
 {
-	namespace glr
+	/// <summary>A traverse visitor, overriding all abstract methods with AST visiting code.</summary>
+	class TypeAstVisitor
+		: public vl::Object
+		, protected virtual GlrType::IVisitor
 	{
-		namespace parsergen
-		{
-			namespace traverse_visitor
-			{
-				/// <summary>A traverse visitor, overriding all abstract methods with AST visiting code.</summary>
-				class TypeAstVisitor
-					: public vl::Object
-					, protected virtual GlrType::IVisitor
-				{
-				protected:
-					virtual void Traverse(vl::glr::ParsingToken& token);
-					virtual void Traverse(vl::glr::ParsingAstBase* node);
-					virtual void Traverse(GlrAstFile* node);
-					virtual void Traverse(GlrClass* node);
-					virtual void Traverse(GlrClassProp* node);
-					virtual void Traverse(GlrEnum* node);
-					virtual void Traverse(GlrEnumItem* node);
-					virtual void Traverse(GlrType* node);
+	protected:
+		virtual void Traverse(vl::glr::ParsingToken& token);
+		virtual void Traverse(vl::glr::ParsingAstBase* node);
+		virtual void Traverse(GlrAstFile* node);
+		virtual void Traverse(GlrClass* node);
+		virtual void Traverse(GlrClassProp* node);
+		virtual void Traverse(GlrEnum* node);
+		virtual void Traverse(GlrEnumItem* node);
+		virtual void Traverse(GlrType* node);
 
-				protected:
-					virtual void Finishing(vl::glr::ParsingAstBase* node);
-					virtual void Finishing(GlrAstFile* node);
-					virtual void Finishing(GlrClass* node);
-					virtual void Finishing(GlrClassProp* node);
-					virtual void Finishing(GlrEnum* node);
-					virtual void Finishing(GlrEnumItem* node);
-					virtual void Finishing(GlrType* node);
+	protected:
+		virtual void Finishing(vl::glr::ParsingAstBase* node);
+		virtual void Finishing(GlrAstFile* node);
+		virtual void Finishing(GlrClass* node);
+		virtual void Finishing(GlrClassProp* node);
+		virtual void Finishing(GlrEnum* node);
+		virtual void Finishing(GlrEnumItem* node);
+		virtual void Finishing(GlrType* node);
 
-				protected:
-					void Visit(GlrEnum* node) override;
-					void Visit(GlrClass* node) override;
+	protected:
+		void Visit(GlrEnum* node) override;
+		void Visit(GlrClass* node) override;
 
-				public:
-					void InspectInto(GlrType* node);
-					void InspectInto(GlrEnumItem* node);
-					void InspectInto(GlrClassProp* node);
-					void InspectInto(GlrAstFile* node);
-				};
-			}
-		}
-	}
+	public:
+		void InspectInto(GlrType* node);
+		void InspectInto(GlrEnumItem* node);
+		void InspectInto(GlrClassProp* node);
+		void InspectInto(GlrAstFile* node);
+	};
 }
 #endif

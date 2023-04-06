@@ -6,108 +6,99 @@ Licensed under https://github.com/vczh-libraries/License
 
 #include "ParserGenTypeAst_Traverse.h"
 
-namespace vl
+namespace vl::glr::parsergen::traverse_visitor
 {
-	namespace glr
+	void TypeAstVisitor::Traverse(vl::glr::ParsingToken& token) {}
+	void TypeAstVisitor::Traverse(vl::glr::ParsingAstBase* node) {}
+	void TypeAstVisitor::Traverse(GlrAstFile* node) {}
+	void TypeAstVisitor::Traverse(GlrClass* node) {}
+	void TypeAstVisitor::Traverse(GlrClassProp* node) {}
+	void TypeAstVisitor::Traverse(GlrEnum* node) {}
+	void TypeAstVisitor::Traverse(GlrEnumItem* node) {}
+	void TypeAstVisitor::Traverse(GlrType* node) {}
+
+	void TypeAstVisitor::Finishing(vl::glr::ParsingAstBase* node) {}
+	void TypeAstVisitor::Finishing(GlrAstFile* node) {}
+	void TypeAstVisitor::Finishing(GlrClass* node) {}
+	void TypeAstVisitor::Finishing(GlrClassProp* node) {}
+	void TypeAstVisitor::Finishing(GlrEnum* node) {}
+	void TypeAstVisitor::Finishing(GlrEnumItem* node) {}
+	void TypeAstVisitor::Finishing(GlrType* node) {}
+
+	void TypeAstVisitor::Visit(GlrEnum* node)
 	{
-		namespace parsergen
+		if (!node) return;
+		Traverse(static_cast<vl::glr::ParsingAstBase*>(node));
+		Traverse(static_cast<GlrType*>(node));
+		Traverse(static_cast<GlrEnum*>(node));
+		for (auto&& listItem : node->items)
 		{
-			namespace traverse_visitor
-			{
-				void TypeAstVisitor::Traverse(vl::glr::ParsingToken& token) {}
-				void TypeAstVisitor::Traverse(vl::glr::ParsingAstBase* node) {}
-				void TypeAstVisitor::Traverse(GlrAstFile* node) {}
-				void TypeAstVisitor::Traverse(GlrClass* node) {}
-				void TypeAstVisitor::Traverse(GlrClassProp* node) {}
-				void TypeAstVisitor::Traverse(GlrEnum* node) {}
-				void TypeAstVisitor::Traverse(GlrEnumItem* node) {}
-				void TypeAstVisitor::Traverse(GlrType* node) {}
-
-				void TypeAstVisitor::Finishing(vl::glr::ParsingAstBase* node) {}
-				void TypeAstVisitor::Finishing(GlrAstFile* node) {}
-				void TypeAstVisitor::Finishing(GlrClass* node) {}
-				void TypeAstVisitor::Finishing(GlrClassProp* node) {}
-				void TypeAstVisitor::Finishing(GlrEnum* node) {}
-				void TypeAstVisitor::Finishing(GlrEnumItem* node) {}
-				void TypeAstVisitor::Finishing(GlrType* node) {}
-
-				void TypeAstVisitor::Visit(GlrEnum* node)
-				{
-					if (!node) return;
-					Traverse(static_cast<vl::glr::ParsingAstBase*>(node));
-					Traverse(static_cast<GlrType*>(node));
-					Traverse(static_cast<GlrEnum*>(node));
-					for (auto&& listItem : node->items)
-					{
-						InspectInto(listItem.Obj());
-					}
-					Traverse(node->attPublic);
-					Traverse(node->name);
-					Finishing(static_cast<GlrEnum*>(node));
-					Finishing(static_cast<GlrType*>(node));
-					Finishing(static_cast<vl::glr::ParsingAstBase*>(node));
-				}
-
-				void TypeAstVisitor::Visit(GlrClass* node)
-				{
-					if (!node) return;
-					Traverse(static_cast<vl::glr::ParsingAstBase*>(node));
-					Traverse(static_cast<GlrType*>(node));
-					Traverse(static_cast<GlrClass*>(node));
-					Traverse(node->attAmbiguous);
-					Traverse(node->baseClass);
-					for (auto&& listItem : node->props)
-					{
-						InspectInto(listItem.Obj());
-					}
-					Traverse(node->attPublic);
-					Traverse(node->name);
-					Finishing(static_cast<GlrClass*>(node));
-					Finishing(static_cast<GlrType*>(node));
-					Finishing(static_cast<vl::glr::ParsingAstBase*>(node));
-				}
-
-				void TypeAstVisitor::InspectInto(GlrType* node)
-				{
-					if (!node) return;
-					node->Accept(static_cast<GlrType::IVisitor*>(this));
-				}
-
-				void TypeAstVisitor::InspectInto(GlrEnumItem* node)
-				{
-					if (!node) return;
-					Traverse(static_cast<vl::glr::ParsingAstBase*>(node));
-					Traverse(static_cast<GlrEnumItem*>(node));
-					Traverse(node->name);
-					Finishing(static_cast<GlrEnumItem*>(node));
-					Finishing(static_cast<vl::glr::ParsingAstBase*>(node));
-				}
-
-				void TypeAstVisitor::InspectInto(GlrClassProp* node)
-				{
-					if (!node) return;
-					Traverse(static_cast<vl::glr::ParsingAstBase*>(node));
-					Traverse(static_cast<GlrClassProp*>(node));
-					Traverse(node->name);
-					Traverse(node->propTypeName);
-					Finishing(static_cast<GlrClassProp*>(node));
-					Finishing(static_cast<vl::glr::ParsingAstBase*>(node));
-				}
-
-				void TypeAstVisitor::InspectInto(GlrAstFile* node)
-				{
-					if (!node) return;
-					Traverse(static_cast<vl::glr::ParsingAstBase*>(node));
-					Traverse(static_cast<GlrAstFile*>(node));
-					for (auto&& listItem : node->types)
-					{
-						InspectInto(listItem.Obj());
-					}
-					Finishing(static_cast<GlrAstFile*>(node));
-					Finishing(static_cast<vl::glr::ParsingAstBase*>(node));
-				}
-
-			}
+			InspectInto(listItem.Obj());
 		}
+		Traverse(node->attPublic);
+		Traverse(node->name);
+		Finishing(static_cast<GlrEnum*>(node));
+		Finishing(static_cast<GlrType*>(node));
+		Finishing(static_cast<vl::glr::ParsingAstBase*>(node));
 	}
+
+	void TypeAstVisitor::Visit(GlrClass* node)
+	{
+		if (!node) return;
+		Traverse(static_cast<vl::glr::ParsingAstBase*>(node));
+		Traverse(static_cast<GlrType*>(node));
+		Traverse(static_cast<GlrClass*>(node));
+		Traverse(node->attAmbiguous);
+		Traverse(node->baseClass);
+		for (auto&& listItem : node->props)
+		{
+			InspectInto(listItem.Obj());
+		}
+		Traverse(node->attPublic);
+		Traverse(node->name);
+		Finishing(static_cast<GlrClass*>(node));
+		Finishing(static_cast<GlrType*>(node));
+		Finishing(static_cast<vl::glr::ParsingAstBase*>(node));
+	}
+
+	void TypeAstVisitor::InspectInto(GlrType* node)
+	{
+		if (!node) return;
+		node->Accept(static_cast<GlrType::IVisitor*>(this));
+	}
+
+	void TypeAstVisitor::InspectInto(GlrEnumItem* node)
+	{
+		if (!node) return;
+		Traverse(static_cast<vl::glr::ParsingAstBase*>(node));
+		Traverse(static_cast<GlrEnumItem*>(node));
+		Traverse(node->name);
+		Finishing(static_cast<GlrEnumItem*>(node));
+		Finishing(static_cast<vl::glr::ParsingAstBase*>(node));
+	}
+
+	void TypeAstVisitor::InspectInto(GlrClassProp* node)
+	{
+		if (!node) return;
+		Traverse(static_cast<vl::glr::ParsingAstBase*>(node));
+		Traverse(static_cast<GlrClassProp*>(node));
+		Traverse(node->name);
+		Traverse(node->propTypeName);
+		Finishing(static_cast<GlrClassProp*>(node));
+		Finishing(static_cast<vl::glr::ParsingAstBase*>(node));
+	}
+
+	void TypeAstVisitor::InspectInto(GlrAstFile* node)
+	{
+		if (!node) return;
+		Traverse(static_cast<vl::glr::ParsingAstBase*>(node));
+		Traverse(static_cast<GlrAstFile*>(node));
+		for (auto&& listItem : node->types)
+		{
+			InspectInto(listItem.Obj());
+		}
+		Finishing(static_cast<GlrAstFile*>(node));
+		Finishing(static_cast<vl::glr::ParsingAstBase*>(node));
+	}
+
 }

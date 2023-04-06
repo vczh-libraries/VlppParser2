@@ -9,89 +9,80 @@ Licensed under https://github.com/vczh-libraries/License
 
 #include "ParserGenRuleAst.h"
 
-namespace vl
+namespace vl::glr::parsergen::json_visitor
 {
-	namespace glr
+	/// <summary>A JSON visitor, overriding all abstract methods with AST to JSON serialization code.</summary>
+	class RuleAstVisitor
+		: public vl::glr::JsonVisitorBase
+		, protected virtual GlrCondition::IVisitor
+		, protected virtual GlrSyntax::IVisitor
+		, protected virtual GlrClause::IVisitor
 	{
-		namespace parsergen
-		{
-			namespace json_visitor
-			{
-				/// <summary>A JSON visitor, overriding all abstract methods with AST to JSON serialization code.</summary>
-				class RuleAstVisitor
-					: public vl::glr::JsonVisitorBase
-					, protected virtual GlrCondition::IVisitor
-					, protected virtual GlrSyntax::IVisitor
-					, protected virtual GlrClause::IVisitor
-				{
-				protected:
-					virtual void PrintFields(GlrAlternativeSyntax* node);
-					virtual void PrintFields(GlrAndCondition* node);
-					virtual void PrintFields(GlrAssignment* node);
-					virtual void PrintFields(GlrClause* node);
-					virtual void PrintFields(GlrCondition* node);
-					virtual void PrintFields(GlrCreateClause* node);
-					virtual void PrintFields(GlrLeftRecursionInjectClause* node);
-					virtual void PrintFields(GlrLeftRecursionInjectContinuation* node);
-					virtual void PrintFields(GlrLeftRecursionPlaceholder* node);
-					virtual void PrintFields(GlrLeftRecursionPlaceholderClause* node);
-					virtual void PrintFields(GlrLoopSyntax* node);
-					virtual void PrintFields(GlrNotCondition* node);
-					virtual void PrintFields(GlrOptionalSyntax* node);
-					virtual void PrintFields(GlrOrCondition* node);
-					virtual void PrintFields(GlrPartialClause* node);
-					virtual void PrintFields(GlrPrefixMergeClause* node);
-					virtual void PrintFields(GlrPushConditionSyntax* node);
-					virtual void PrintFields(GlrRefCondition* node);
-					virtual void PrintFields(GlrRefSyntax* node);
-					virtual void PrintFields(GlrReuseClause* node);
-					virtual void PrintFields(GlrRule* node);
-					virtual void PrintFields(GlrSequenceSyntax* node);
-					virtual void PrintFields(GlrSwitchItem* node);
-					virtual void PrintFields(GlrSyntax* node);
-					virtual void PrintFields(GlrSyntaxFile* node);
-					virtual void PrintFields(GlrTestConditionBranch* node);
-					virtual void PrintFields(GlrTestConditionSyntax* node);
-					virtual void PrintFields(GlrUseSyntax* node);
+	protected:
+		virtual void PrintFields(GlrAlternativeSyntax* node);
+		virtual void PrintFields(GlrAndCondition* node);
+		virtual void PrintFields(GlrAssignment* node);
+		virtual void PrintFields(GlrClause* node);
+		virtual void PrintFields(GlrCondition* node);
+		virtual void PrintFields(GlrCreateClause* node);
+		virtual void PrintFields(GlrLeftRecursionInjectClause* node);
+		virtual void PrintFields(GlrLeftRecursionInjectContinuation* node);
+		virtual void PrintFields(GlrLeftRecursionPlaceholder* node);
+		virtual void PrintFields(GlrLeftRecursionPlaceholderClause* node);
+		virtual void PrintFields(GlrLoopSyntax* node);
+		virtual void PrintFields(GlrNotCondition* node);
+		virtual void PrintFields(GlrOptionalSyntax* node);
+		virtual void PrintFields(GlrOrCondition* node);
+		virtual void PrintFields(GlrPartialClause* node);
+		virtual void PrintFields(GlrPrefixMergeClause* node);
+		virtual void PrintFields(GlrPushConditionSyntax* node);
+		virtual void PrintFields(GlrRefCondition* node);
+		virtual void PrintFields(GlrRefSyntax* node);
+		virtual void PrintFields(GlrReuseClause* node);
+		virtual void PrintFields(GlrRule* node);
+		virtual void PrintFields(GlrSequenceSyntax* node);
+		virtual void PrintFields(GlrSwitchItem* node);
+		virtual void PrintFields(GlrSyntax* node);
+		virtual void PrintFields(GlrSyntaxFile* node);
+		virtual void PrintFields(GlrTestConditionBranch* node);
+		virtual void PrintFields(GlrTestConditionSyntax* node);
+		virtual void PrintFields(GlrUseSyntax* node);
 
-				protected:
-					void Visit(GlrRefCondition* node) override;
-					void Visit(GlrNotCondition* node) override;
-					void Visit(GlrAndCondition* node) override;
-					void Visit(GlrOrCondition* node) override;
+	protected:
+		void Visit(GlrRefCondition* node) override;
+		void Visit(GlrNotCondition* node) override;
+		void Visit(GlrAndCondition* node) override;
+		void Visit(GlrOrCondition* node) override;
 
-					void Visit(GlrRefSyntax* node) override;
-					void Visit(GlrUseSyntax* node) override;
-					void Visit(GlrLoopSyntax* node) override;
-					void Visit(GlrOptionalSyntax* node) override;
-					void Visit(GlrSequenceSyntax* node) override;
-					void Visit(GlrAlternativeSyntax* node) override;
-					void Visit(GlrPushConditionSyntax* node) override;
-					void Visit(GlrTestConditionSyntax* node) override;
+		void Visit(GlrRefSyntax* node) override;
+		void Visit(GlrUseSyntax* node) override;
+		void Visit(GlrLoopSyntax* node) override;
+		void Visit(GlrOptionalSyntax* node) override;
+		void Visit(GlrSequenceSyntax* node) override;
+		void Visit(GlrAlternativeSyntax* node) override;
+		void Visit(GlrPushConditionSyntax* node) override;
+		void Visit(GlrTestConditionSyntax* node) override;
 
-					void Visit(GlrCreateClause* node) override;
-					void Visit(GlrPartialClause* node) override;
-					void Visit(GlrReuseClause* node) override;
-					void Visit(GlrLeftRecursionPlaceholderClause* node) override;
-					void Visit(GlrLeftRecursionInjectClause* node) override;
-					void Visit(GlrPrefixMergeClause* node) override;
+		void Visit(GlrCreateClause* node) override;
+		void Visit(GlrPartialClause* node) override;
+		void Visit(GlrReuseClause* node) override;
+		void Visit(GlrLeftRecursionPlaceholderClause* node) override;
+		void Visit(GlrLeftRecursionInjectClause* node) override;
+		void Visit(GlrPrefixMergeClause* node) override;
 
-				public:
-					RuleAstVisitor(vl::stream::StreamWriter& _writer);
+	public:
+		RuleAstVisitor(vl::stream::StreamWriter& _writer);
 
-					void Print(GlrCondition* node);
-					void Print(GlrSyntax* node);
-					void Print(GlrClause* node);
-					void Print(GlrSwitchItem* node);
-					void Print(GlrTestConditionBranch* node);
-					void Print(GlrAssignment* node);
-					void Print(GlrLeftRecursionPlaceholder* node);
-					void Print(GlrLeftRecursionInjectContinuation* node);
-					void Print(GlrRule* node);
-					void Print(GlrSyntaxFile* node);
-				};
-			}
-		}
-	}
+		void Print(GlrCondition* node);
+		void Print(GlrSyntax* node);
+		void Print(GlrClause* node);
+		void Print(GlrSwitchItem* node);
+		void Print(GlrTestConditionBranch* node);
+		void Print(GlrAssignment* node);
+		void Print(GlrLeftRecursionPlaceholder* node);
+		void Print(GlrLeftRecursionInjectContinuation* node);
+		void Print(GlrRule* node);
+		void Print(GlrSyntaxFile* node);
+	};
 }
 #endif

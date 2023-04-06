@@ -9,41 +9,38 @@ Licensed under https://github.com/vczh-libraries/License
 
 #include "CalculatorExprAst.h"
 
-namespace calculator
+namespace calculator::empty_visitor
 {
-	namespace empty_visitor
+	/// <summary>An empty visitor, overriding all abstract methods with empty implementations.</summary>
+	class ExprVisitor : public vl::Object, public Expr::IVisitor
 	{
-		/// <summary>An empty visitor, overriding all abstract methods with empty implementations.</summary>
-		class ExprVisitor : public vl::Object, public Expr::IVisitor
-		{
-		protected:
-			// Dispatch (virtual) --------------------------------
-			virtual void Dispatch(Expandable* node) = 0;
+	protected:
+		// Dispatch (virtual) --------------------------------
+		virtual void Dispatch(Expandable* node) = 0;
 
-		public:
-			// Visitor Members -----------------------------------
-			void Visit(NumExpr* node) override;
-			void Visit(Ref* node) override;
-			void Visit(True* node) override;
-			void Visit(False* node) override;
-			void Visit(Func* node) override;
-			void Visit(Call* node) override;
-			void Visit(Expandable* node) override;
-		};
+	public:
+		// Visitor Members -----------------------------------
+		void Visit(NumExpr* node) override;
+		void Visit(Ref* node) override;
+		void Visit(True* node) override;
+		void Visit(False* node) override;
+		void Visit(Func* node) override;
+		void Visit(Call* node) override;
+		void Visit(Expandable* node) override;
+	};
 
-		/// <summary>An empty visitor, overriding all abstract methods with empty implementations.</summary>
-		class ExpandableVisitor : public vl::Object, public Expandable::IVisitor
-		{
-		protected:
-			// Dispatch (virtual) --------------------------------
+	/// <summary>An empty visitor, overriding all abstract methods with empty implementations.</summary>
+	class ExpandableVisitor : public vl::Object, public Expandable::IVisitor
+	{
+	protected:
+		// Dispatch (virtual) --------------------------------
 
-		public:
-			// Visitor Members -----------------------------------
-			void Visit(LetExpr* node) override;
-			void Visit(Unary* node) override;
-			void Visit(Binary* node) override;
-		};
+	public:
+		// Visitor Members -----------------------------------
+		void Visit(LetExpr* node) override;
+		void Visit(Unary* node) override;
+		void Visit(Binary* node) override;
+	};
 
-	}
 }
 #endif

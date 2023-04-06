@@ -10,62 +10,56 @@ Licensed under https://github.com/vczh-libraries/License
 #include "../AstBase.h"
 #include "../SyntaxBase.h"
 
-namespace vl
+namespace vl::glr::parsergen
 {
-	namespace glr
+	enum class ParserGenTokens : vl::vint32_t
 	{
-		namespace parsergen
-		{
-			enum class ParserGenTokens : vl::vint32_t
-			{
-				ATT_AMBIGUOUS = 0,
-				ATT_PUBLIC = 1,
-				ATT_PARSER = 2,
-				CLASS = 3,
-				ENUM = 4,
-				VAR = 5,
-				SWITCH = 6,
-				TOKEN = 7,
-				AS = 8,
-				PARTIAL = 9,
-				OPEN_ROUND = 10,
-				CLOSE_ROUND = 11,
-				OPEN_SQUARE = 12,
-				CLOSE_SQUARE = 13,
-				OPEN_CURLY = 14,
-				CLOSE_CURLY = 15,
-				OPEN_PUSH = 16,
-				OPEN_TEST = 17,
-				AND = 18,
-				OR = 19,
-				COMMA = 20,
-				COLON = 21,
-				SEMICOLON = 22,
-				INFER = 23,
-				ALTERNATIVE = 24,
-				USE = 25,
-				ASSIGN = 26,
-				WEAK_ASSIGN = 27,
-				POSITIVE = 28,
-				NEGATIVE = 29,
-				LS_PH = 30,
-				LS_I = 31,
-				LS_IM = 32,
-				LS_PM = 33,
-				ID = 34,
-				STRING = 35,
-				CONDITIONAL_LITERAL = 36,
-				SPACE = 37,
-				COMMENT = 38,
-			};
+		ATT_AMBIGUOUS = 0,
+		ATT_PUBLIC = 1,
+		ATT_PARSER = 2,
+		CLASS = 3,
+		ENUM = 4,
+		VAR = 5,
+		SWITCH = 6,
+		TOKEN = 7,
+		AS = 8,
+		PARTIAL = 9,
+		OPEN_ROUND = 10,
+		CLOSE_ROUND = 11,
+		OPEN_SQUARE = 12,
+		CLOSE_SQUARE = 13,
+		OPEN_CURLY = 14,
+		CLOSE_CURLY = 15,
+		OPEN_PUSH = 16,
+		OPEN_TEST = 17,
+		AND = 18,
+		OR = 19,
+		COMMA = 20,
+		COLON = 21,
+		SEMICOLON = 22,
+		INFER = 23,
+		ALTERNATIVE = 24,
+		USE = 25,
+		ASSIGN = 26,
+		WEAK_ASSIGN = 27,
+		POSITIVE = 28,
+		NEGATIVE = 29,
+		LS_PH = 30,
+		LS_I = 31,
+		LS_IM = 32,
+		LS_PM = 33,
+		ID = 34,
+		STRING = 35,
+		CONDITIONAL_LITERAL = 36,
+		SPACE = 37,
+		COMMENT = 38,
+	};
 
-			constexpr vl::vint ParserGenTokenCount = 39;
-			extern bool ParserGenTokenDeleter(vl::vint token);
-			extern const wchar_t* ParserGenTokenId(ParserGenTokens token);
-			extern const wchar_t* ParserGenTokenDisplayText(ParserGenTokens token);
-			extern const wchar_t* ParserGenTokenRegex(ParserGenTokens token);
-			extern void ParserGenLexerData(vl::stream::IStream& outputStream);
-		}
-	}
+	constexpr vl::vint ParserGenTokenCount = 39;
+	extern bool ParserGenTokenDeleter(vl::vint token);
+	extern const wchar_t* ParserGenTokenId(ParserGenTokens token);
+	extern const wchar_t* ParserGenTokenDisplayText(ParserGenTokens token);
+	extern const wchar_t* ParserGenTokenRegex(ParserGenTokens token);
+	extern void ParserGenLexerData(vl::stream::IStream& outputStream);
 }
 #endif

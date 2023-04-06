@@ -6,777 +6,768 @@ Licensed under https://github.com/vczh-libraries/License
 
 #include "ParserGenRuleAst_Json.h"
 
-namespace vl
+namespace vl::glr::parsergen::json_visitor
 {
-	namespace glr
+	void RuleAstVisitor::PrintFields(GlrAlternativeSyntax* node)
 	{
-		namespace parsergen
-		{
-			namespace json_visitor
-			{
-				void RuleAstVisitor::PrintFields(GlrAlternativeSyntax* node)
-				{
-					BeginField(L"first");
-					Print(node->first.Obj());
-					EndField();
-					BeginField(L"second");
-					Print(node->second.Obj());
-					EndField();
-				}
-				void RuleAstVisitor::PrintFields(GlrAndCondition* node)
-				{
-					BeginField(L"first");
-					Print(node->first.Obj());
-					EndField();
-					BeginField(L"second");
-					Print(node->second.Obj());
-					EndField();
-				}
-				void RuleAstVisitor::PrintFields(GlrAssignment* node)
-				{
-					BeginField(L"field");
-					WriteToken(node->field);
-					EndField();
-					BeginField(L"type");
-					switch (node->type)
-					{
-					case vl::glr::parsergen::GlrAssignmentType::Strong:
-						WriteString(L"Strong");
-						break;
-					case vl::glr::parsergen::GlrAssignmentType::Weak:
-						WriteString(L"Weak");
-						break;
-					default:
-						WriteNull();
-					}
-					EndField();
-					BeginField(L"value");
-					WriteToken(node->value);
-					EndField();
-				}
-				void RuleAstVisitor::PrintFields(GlrClause* node)
-				{
-				}
-				void RuleAstVisitor::PrintFields(GlrCondition* node)
-				{
-				}
-				void RuleAstVisitor::PrintFields(GlrCreateClause* node)
-				{
-					BeginField(L"assignments");
-					BeginArray();
-					for (auto&& listItem : node->assignments)
-					{
-						BeginArrayItem();
-						Print(listItem.Obj());
-						EndArrayItem();
-					}
-					EndArray();
-					EndField();
-					BeginField(L"syntax");
-					Print(node->syntax.Obj());
-					EndField();
-					BeginField(L"type");
-					WriteToken(node->type);
-					EndField();
-				}
-				void RuleAstVisitor::PrintFields(GlrLeftRecursionInjectClause* node)
-				{
-					BeginField(L"continuation");
-					Print(node->continuation.Obj());
-					EndField();
-					BeginField(L"rule");
-					Print(node->rule.Obj());
-					EndField();
-				}
-				void RuleAstVisitor::PrintFields(GlrLeftRecursionInjectContinuation* node)
-				{
-					BeginField(L"configuration");
-					switch (node->configuration)
-					{
-					case vl::glr::parsergen::GlrLeftRecursionConfiguration::Multiple:
-						WriteString(L"Multiple");
-						break;
-					case vl::glr::parsergen::GlrLeftRecursionConfiguration::Single:
-						WriteString(L"Single");
-						break;
-					default:
-						WriteNull();
-					}
-					EndField();
-					BeginField(L"flags");
-					BeginArray();
-					for (auto&& listItem : node->flags)
-					{
-						BeginArrayItem();
-						Print(listItem.Obj());
-						EndArrayItem();
-					}
-					EndArray();
-					EndField();
-					BeginField(L"injectionTargets");
-					BeginArray();
-					for (auto&& listItem : node->injectionTargets)
-					{
-						BeginArrayItem();
-						Print(listItem.Obj());
-						EndArrayItem();
-					}
-					EndArray();
-					EndField();
-					BeginField(L"type");
-					switch (node->type)
-					{
-					case vl::glr::parsergen::GlrLeftRecursionInjectContinuationType::Optional:
-						WriteString(L"Optional");
-						break;
-					case vl::glr::parsergen::GlrLeftRecursionInjectContinuationType::Required:
-						WriteString(L"Required");
-						break;
-					default:
-						WriteNull();
-					}
-					EndField();
-				}
-				void RuleAstVisitor::PrintFields(GlrLeftRecursionPlaceholder* node)
-				{
-					BeginField(L"flag");
-					WriteToken(node->flag);
-					EndField();
-				}
-				void RuleAstVisitor::PrintFields(GlrLeftRecursionPlaceholderClause* node)
-				{
-					BeginField(L"flags");
-					BeginArray();
-					for (auto&& listItem : node->flags)
-					{
-						BeginArrayItem();
-						Print(listItem.Obj());
-						EndArrayItem();
-					}
-					EndArray();
-					EndField();
-				}
-				void RuleAstVisitor::PrintFields(GlrLoopSyntax* node)
-				{
-					BeginField(L"delimiter");
-					Print(node->delimiter.Obj());
-					EndField();
-					BeginField(L"syntax");
-					Print(node->syntax.Obj());
-					EndField();
-				}
-				void RuleAstVisitor::PrintFields(GlrNotCondition* node)
-				{
-					BeginField(L"condition");
-					Print(node->condition.Obj());
-					EndField();
-				}
-				void RuleAstVisitor::PrintFields(GlrOptionalSyntax* node)
-				{
-					BeginField(L"priority");
-					switch (node->priority)
-					{
-					case vl::glr::parsergen::GlrOptionalPriority::Equal:
-						WriteString(L"Equal");
-						break;
-					case vl::glr::parsergen::GlrOptionalPriority::PreferSkip:
-						WriteString(L"PreferSkip");
-						break;
-					case vl::glr::parsergen::GlrOptionalPriority::PreferTake:
-						WriteString(L"PreferTake");
-						break;
-					default:
-						WriteNull();
-					}
-					EndField();
-					BeginField(L"syntax");
-					Print(node->syntax.Obj());
-					EndField();
-				}
-				void RuleAstVisitor::PrintFields(GlrOrCondition* node)
-				{
-					BeginField(L"first");
-					Print(node->first.Obj());
-					EndField();
-					BeginField(L"second");
-					Print(node->second.Obj());
-					EndField();
-				}
-				void RuleAstVisitor::PrintFields(GlrPartialClause* node)
-				{
-					BeginField(L"assignments");
-					BeginArray();
-					for (auto&& listItem : node->assignments)
-					{
-						BeginArrayItem();
-						Print(listItem.Obj());
-						EndArrayItem();
-					}
-					EndArray();
-					EndField();
-					BeginField(L"syntax");
-					Print(node->syntax.Obj());
-					EndField();
-					BeginField(L"type");
-					WriteToken(node->type);
-					EndField();
-				}
-				void RuleAstVisitor::PrintFields(GlrPrefixMergeClause* node)
-				{
-					BeginField(L"rule");
-					Print(node->rule.Obj());
-					EndField();
-				}
-				void RuleAstVisitor::PrintFields(GlrPushConditionSyntax* node)
-				{
-					BeginField(L"switches");
-					BeginArray();
-					for (auto&& listItem : node->switches)
-					{
-						BeginArrayItem();
-						Print(listItem.Obj());
-						EndArrayItem();
-					}
-					EndArray();
-					EndField();
-					BeginField(L"syntax");
-					Print(node->syntax.Obj());
-					EndField();
-				}
-				void RuleAstVisitor::PrintFields(GlrRefCondition* node)
-				{
-					BeginField(L"name");
-					WriteToken(node->name);
-					EndField();
-				}
-				void RuleAstVisitor::PrintFields(GlrRefSyntax* node)
-				{
-					BeginField(L"field");
-					WriteToken(node->field);
-					EndField();
-					BeginField(L"literal");
-					WriteToken(node->literal);
-					EndField();
-					BeginField(L"refType");
-					switch (node->refType)
-					{
-					case vl::glr::parsergen::GlrRefType::ConditionalLiteral:
-						WriteString(L"ConditionalLiteral");
-						break;
-					case vl::glr::parsergen::GlrRefType::Id:
-						WriteString(L"Id");
-						break;
-					case vl::glr::parsergen::GlrRefType::Literal:
-						WriteString(L"Literal");
-						break;
-					default:
-						WriteNull();
-					}
-					EndField();
-				}
-				void RuleAstVisitor::PrintFields(GlrReuseClause* node)
-				{
-					BeginField(L"assignments");
-					BeginArray();
-					for (auto&& listItem : node->assignments)
-					{
-						BeginArrayItem();
-						Print(listItem.Obj());
-						EndArrayItem();
-					}
-					EndArray();
-					EndField();
-					BeginField(L"syntax");
-					Print(node->syntax.Obj());
-					EndField();
-				}
-				void RuleAstVisitor::PrintFields(GlrRule* node)
-				{
-					BeginField(L"attParser");
-					WriteToken(node->attParser);
-					EndField();
-					BeginField(L"attPublic");
-					WriteToken(node->attPublic);
-					EndField();
-					BeginField(L"clauses");
-					BeginArray();
-					for (auto&& listItem : node->clauses)
-					{
-						BeginArrayItem();
-						Print(listItem.Obj());
-						EndArrayItem();
-					}
-					EndArray();
-					EndField();
-					BeginField(L"name");
-					WriteToken(node->name);
-					EndField();
-					BeginField(L"type");
-					WriteToken(node->type);
-					EndField();
-				}
-				void RuleAstVisitor::PrintFields(GlrSequenceSyntax* node)
-				{
-					BeginField(L"first");
-					Print(node->first.Obj());
-					EndField();
-					BeginField(L"second");
-					Print(node->second.Obj());
-					EndField();
-				}
-				void RuleAstVisitor::PrintFields(GlrSwitchItem* node)
-				{
-					BeginField(L"name");
-					WriteToken(node->name);
-					EndField();
-					BeginField(L"value");
-					switch (node->value)
-					{
-					case vl::glr::parsergen::GlrSwitchValue::False:
-						WriteString(L"False");
-						break;
-					case vl::glr::parsergen::GlrSwitchValue::True:
-						WriteString(L"True");
-						break;
-					default:
-						WriteNull();
-					}
-					EndField();
-				}
-				void RuleAstVisitor::PrintFields(GlrSyntax* node)
-				{
-				}
-				void RuleAstVisitor::PrintFields(GlrSyntaxFile* node)
-				{
-					BeginField(L"rules");
-					BeginArray();
-					for (auto&& listItem : node->rules)
-					{
-						BeginArrayItem();
-						Print(listItem.Obj());
-						EndArrayItem();
-					}
-					EndArray();
-					EndField();
-					BeginField(L"switches");
-					BeginArray();
-					for (auto&& listItem : node->switches)
-					{
-						BeginArrayItem();
-						Print(listItem.Obj());
-						EndArrayItem();
-					}
-					EndArray();
-					EndField();
-				}
-				void RuleAstVisitor::PrintFields(GlrTestConditionBranch* node)
-				{
-					BeginField(L"condition");
-					Print(node->condition.Obj());
-					EndField();
-					BeginField(L"syntax");
-					Print(node->syntax.Obj());
-					EndField();
-				}
-				void RuleAstVisitor::PrintFields(GlrTestConditionSyntax* node)
-				{
-					BeginField(L"branches");
-					BeginArray();
-					for (auto&& listItem : node->branches)
-					{
-						BeginArrayItem();
-						Print(listItem.Obj());
-						EndArrayItem();
-					}
-					EndArray();
-					EndField();
-				}
-				void RuleAstVisitor::PrintFields(GlrUseSyntax* node)
-				{
-					BeginField(L"name");
-					WriteToken(node->name);
-					EndField();
-				}
-
-				void RuleAstVisitor::Visit(GlrRefCondition* node)
-				{
-					if (!node)
-					{
-						WriteNull();
-						return;
-					}
-					BeginObject();
-					WriteType(L"RefCondition", node);
-					PrintFields(static_cast<GlrCondition*>(node));
-					PrintFields(static_cast<GlrRefCondition*>(node));
-					EndObject();
-				}
-
-				void RuleAstVisitor::Visit(GlrNotCondition* node)
-				{
-					if (!node)
-					{
-						WriteNull();
-						return;
-					}
-					BeginObject();
-					WriteType(L"NotCondition", node);
-					PrintFields(static_cast<GlrCondition*>(node));
-					PrintFields(static_cast<GlrNotCondition*>(node));
-					EndObject();
-				}
-
-				void RuleAstVisitor::Visit(GlrAndCondition* node)
-				{
-					if (!node)
-					{
-						WriteNull();
-						return;
-					}
-					BeginObject();
-					WriteType(L"AndCondition", node);
-					PrintFields(static_cast<GlrCondition*>(node));
-					PrintFields(static_cast<GlrAndCondition*>(node));
-					EndObject();
-				}
-
-				void RuleAstVisitor::Visit(GlrOrCondition* node)
-				{
-					if (!node)
-					{
-						WriteNull();
-						return;
-					}
-					BeginObject();
-					WriteType(L"OrCondition", node);
-					PrintFields(static_cast<GlrCondition*>(node));
-					PrintFields(static_cast<GlrOrCondition*>(node));
-					EndObject();
-				}
-
-				void RuleAstVisitor::Visit(GlrRefSyntax* node)
-				{
-					if (!node)
-					{
-						WriteNull();
-						return;
-					}
-					BeginObject();
-					WriteType(L"RefSyntax", node);
-					PrintFields(static_cast<GlrSyntax*>(node));
-					PrintFields(static_cast<GlrRefSyntax*>(node));
-					EndObject();
-				}
-
-				void RuleAstVisitor::Visit(GlrUseSyntax* node)
-				{
-					if (!node)
-					{
-						WriteNull();
-						return;
-					}
-					BeginObject();
-					WriteType(L"UseSyntax", node);
-					PrintFields(static_cast<GlrSyntax*>(node));
-					PrintFields(static_cast<GlrUseSyntax*>(node));
-					EndObject();
-				}
-
-				void RuleAstVisitor::Visit(GlrLoopSyntax* node)
-				{
-					if (!node)
-					{
-						WriteNull();
-						return;
-					}
-					BeginObject();
-					WriteType(L"LoopSyntax", node);
-					PrintFields(static_cast<GlrSyntax*>(node));
-					PrintFields(static_cast<GlrLoopSyntax*>(node));
-					EndObject();
-				}
-
-				void RuleAstVisitor::Visit(GlrOptionalSyntax* node)
-				{
-					if (!node)
-					{
-						WriteNull();
-						return;
-					}
-					BeginObject();
-					WriteType(L"OptionalSyntax", node);
-					PrintFields(static_cast<GlrSyntax*>(node));
-					PrintFields(static_cast<GlrOptionalSyntax*>(node));
-					EndObject();
-				}
-
-				void RuleAstVisitor::Visit(GlrSequenceSyntax* node)
-				{
-					if (!node)
-					{
-						WriteNull();
-						return;
-					}
-					BeginObject();
-					WriteType(L"SequenceSyntax", node);
-					PrintFields(static_cast<GlrSyntax*>(node));
-					PrintFields(static_cast<GlrSequenceSyntax*>(node));
-					EndObject();
-				}
-
-				void RuleAstVisitor::Visit(GlrAlternativeSyntax* node)
-				{
-					if (!node)
-					{
-						WriteNull();
-						return;
-					}
-					BeginObject();
-					WriteType(L"AlternativeSyntax", node);
-					PrintFields(static_cast<GlrSyntax*>(node));
-					PrintFields(static_cast<GlrAlternativeSyntax*>(node));
-					EndObject();
-				}
-
-				void RuleAstVisitor::Visit(GlrPushConditionSyntax* node)
-				{
-					if (!node)
-					{
-						WriteNull();
-						return;
-					}
-					BeginObject();
-					WriteType(L"PushConditionSyntax", node);
-					PrintFields(static_cast<GlrSyntax*>(node));
-					PrintFields(static_cast<GlrPushConditionSyntax*>(node));
-					EndObject();
-				}
-
-				void RuleAstVisitor::Visit(GlrTestConditionSyntax* node)
-				{
-					if (!node)
-					{
-						WriteNull();
-						return;
-					}
-					BeginObject();
-					WriteType(L"TestConditionSyntax", node);
-					PrintFields(static_cast<GlrSyntax*>(node));
-					PrintFields(static_cast<GlrTestConditionSyntax*>(node));
-					EndObject();
-				}
-
-				void RuleAstVisitor::Visit(GlrCreateClause* node)
-				{
-					if (!node)
-					{
-						WriteNull();
-						return;
-					}
-					BeginObject();
-					WriteType(L"CreateClause", node);
-					PrintFields(static_cast<GlrClause*>(node));
-					PrintFields(static_cast<GlrCreateClause*>(node));
-					EndObject();
-				}
-
-				void RuleAstVisitor::Visit(GlrPartialClause* node)
-				{
-					if (!node)
-					{
-						WriteNull();
-						return;
-					}
-					BeginObject();
-					WriteType(L"PartialClause", node);
-					PrintFields(static_cast<GlrClause*>(node));
-					PrintFields(static_cast<GlrPartialClause*>(node));
-					EndObject();
-				}
-
-				void RuleAstVisitor::Visit(GlrReuseClause* node)
-				{
-					if (!node)
-					{
-						WriteNull();
-						return;
-					}
-					BeginObject();
-					WriteType(L"ReuseClause", node);
-					PrintFields(static_cast<GlrClause*>(node));
-					PrintFields(static_cast<GlrReuseClause*>(node));
-					EndObject();
-				}
-
-				void RuleAstVisitor::Visit(GlrLeftRecursionPlaceholderClause* node)
-				{
-					if (!node)
-					{
-						WriteNull();
-						return;
-					}
-					BeginObject();
-					WriteType(L"LeftRecursionPlaceholderClause", node);
-					PrintFields(static_cast<GlrClause*>(node));
-					PrintFields(static_cast<GlrLeftRecursionPlaceholderClause*>(node));
-					EndObject();
-				}
-
-				void RuleAstVisitor::Visit(GlrLeftRecursionInjectClause* node)
-				{
-					if (!node)
-					{
-						WriteNull();
-						return;
-					}
-					BeginObject();
-					WriteType(L"LeftRecursionInjectClause", node);
-					PrintFields(static_cast<GlrClause*>(node));
-					PrintFields(static_cast<GlrLeftRecursionInjectClause*>(node));
-					EndObject();
-				}
-
-				void RuleAstVisitor::Visit(GlrPrefixMergeClause* node)
-				{
-					if (!node)
-					{
-						WriteNull();
-						return;
-					}
-					BeginObject();
-					WriteType(L"PrefixMergeClause", node);
-					PrintFields(static_cast<GlrClause*>(node));
-					PrintFields(static_cast<GlrPrefixMergeClause*>(node));
-					EndObject();
-				}
-
-				RuleAstVisitor::RuleAstVisitor(vl::stream::StreamWriter& _writer)
-					: vl::glr::JsonVisitorBase(_writer)
-				{
-				}
-
-				void RuleAstVisitor::Print(GlrCondition* node)
-				{
-					if (!node)
-					{
-						WriteNull();
-						return;
-					}
-					node->Accept(static_cast<GlrCondition::IVisitor*>(this));
-				}
-
-				void RuleAstVisitor::Print(GlrSyntax* node)
-				{
-					if (!node)
-					{
-						WriteNull();
-						return;
-					}
-					node->Accept(static_cast<GlrSyntax::IVisitor*>(this));
-				}
-
-				void RuleAstVisitor::Print(GlrClause* node)
-				{
-					if (!node)
-					{
-						WriteNull();
-						return;
-					}
-					node->Accept(static_cast<GlrClause::IVisitor*>(this));
-				}
-
-				void RuleAstVisitor::Print(GlrSwitchItem* node)
-				{
-					if (!node)
-					{
-						WriteNull();
-						return;
-					}
-					BeginObject();
-					WriteType(L"SwitchItem", node);
-					PrintFields(static_cast<GlrSwitchItem*>(node));
-					EndObject();
-				}
-
-				void RuleAstVisitor::Print(GlrTestConditionBranch* node)
-				{
-					if (!node)
-					{
-						WriteNull();
-						return;
-					}
-					BeginObject();
-					WriteType(L"TestConditionBranch", node);
-					PrintFields(static_cast<GlrTestConditionBranch*>(node));
-					EndObject();
-				}
-
-				void RuleAstVisitor::Print(GlrAssignment* node)
-				{
-					if (!node)
-					{
-						WriteNull();
-						return;
-					}
-					BeginObject();
-					WriteType(L"Assignment", node);
-					PrintFields(static_cast<GlrAssignment*>(node));
-					EndObject();
-				}
-
-				void RuleAstVisitor::Print(GlrLeftRecursionPlaceholder* node)
-				{
-					if (!node)
-					{
-						WriteNull();
-						return;
-					}
-					BeginObject();
-					WriteType(L"LeftRecursionPlaceholder", node);
-					PrintFields(static_cast<GlrLeftRecursionPlaceholder*>(node));
-					EndObject();
-				}
-
-				void RuleAstVisitor::Print(GlrLeftRecursionInjectContinuation* node)
-				{
-					if (!node)
-					{
-						WriteNull();
-						return;
-					}
-					BeginObject();
-					WriteType(L"LeftRecursionInjectContinuation", node);
-					PrintFields(static_cast<GlrLeftRecursionInjectContinuation*>(node));
-					EndObject();
-				}
-
-				void RuleAstVisitor::Print(GlrRule* node)
-				{
-					if (!node)
-					{
-						WriteNull();
-						return;
-					}
-					BeginObject();
-					WriteType(L"Rule", node);
-					PrintFields(static_cast<GlrRule*>(node));
-					EndObject();
-				}
-
-				void RuleAstVisitor::Print(GlrSyntaxFile* node)
-				{
-					if (!node)
-					{
-						WriteNull();
-						return;
-					}
-					BeginObject();
-					WriteType(L"SyntaxFile", node);
-					PrintFields(static_cast<GlrSyntaxFile*>(node));
-					EndObject();
-				}
-
-			}
-		}
+		BeginField(L"first");
+		Print(node->first.Obj());
+		EndField();
+		BeginField(L"second");
+		Print(node->second.Obj());
+		EndField();
 	}
+	void RuleAstVisitor::PrintFields(GlrAndCondition* node)
+	{
+		BeginField(L"first");
+		Print(node->first.Obj());
+		EndField();
+		BeginField(L"second");
+		Print(node->second.Obj());
+		EndField();
+	}
+	void RuleAstVisitor::PrintFields(GlrAssignment* node)
+	{
+		BeginField(L"field");
+		WriteToken(node->field);
+		EndField();
+		BeginField(L"type");
+		switch (node->type)
+		{
+		case vl::glr::parsergen::GlrAssignmentType::Strong:
+			WriteString(L"Strong");
+			break;
+		case vl::glr::parsergen::GlrAssignmentType::Weak:
+			WriteString(L"Weak");
+			break;
+		default:
+			WriteNull();
+		}
+		EndField();
+		BeginField(L"value");
+		WriteToken(node->value);
+		EndField();
+	}
+	void RuleAstVisitor::PrintFields(GlrClause* node)
+	{
+	}
+	void RuleAstVisitor::PrintFields(GlrCondition* node)
+	{
+	}
+	void RuleAstVisitor::PrintFields(GlrCreateClause* node)
+	{
+		BeginField(L"assignments");
+		BeginArray();
+		for (auto&& listItem : node->assignments)
+		{
+			BeginArrayItem();
+			Print(listItem.Obj());
+			EndArrayItem();
+		}
+		EndArray();
+		EndField();
+		BeginField(L"syntax");
+		Print(node->syntax.Obj());
+		EndField();
+		BeginField(L"type");
+		WriteToken(node->type);
+		EndField();
+	}
+	void RuleAstVisitor::PrintFields(GlrLeftRecursionInjectClause* node)
+	{
+		BeginField(L"continuation");
+		Print(node->continuation.Obj());
+		EndField();
+		BeginField(L"rule");
+		Print(node->rule.Obj());
+		EndField();
+	}
+	void RuleAstVisitor::PrintFields(GlrLeftRecursionInjectContinuation* node)
+	{
+		BeginField(L"configuration");
+		switch (node->configuration)
+		{
+		case vl::glr::parsergen::GlrLeftRecursionConfiguration::Multiple:
+			WriteString(L"Multiple");
+			break;
+		case vl::glr::parsergen::GlrLeftRecursionConfiguration::Single:
+			WriteString(L"Single");
+			break;
+		default:
+			WriteNull();
+		}
+		EndField();
+		BeginField(L"flags");
+		BeginArray();
+		for (auto&& listItem : node->flags)
+		{
+			BeginArrayItem();
+			Print(listItem.Obj());
+			EndArrayItem();
+		}
+		EndArray();
+		EndField();
+		BeginField(L"injectionTargets");
+		BeginArray();
+		for (auto&& listItem : node->injectionTargets)
+		{
+			BeginArrayItem();
+			Print(listItem.Obj());
+			EndArrayItem();
+		}
+		EndArray();
+		EndField();
+		BeginField(L"type");
+		switch (node->type)
+		{
+		case vl::glr::parsergen::GlrLeftRecursionInjectContinuationType::Optional:
+			WriteString(L"Optional");
+			break;
+		case vl::glr::parsergen::GlrLeftRecursionInjectContinuationType::Required:
+			WriteString(L"Required");
+			break;
+		default:
+			WriteNull();
+		}
+		EndField();
+	}
+	void RuleAstVisitor::PrintFields(GlrLeftRecursionPlaceholder* node)
+	{
+		BeginField(L"flag");
+		WriteToken(node->flag);
+		EndField();
+	}
+	void RuleAstVisitor::PrintFields(GlrLeftRecursionPlaceholderClause* node)
+	{
+		BeginField(L"flags");
+		BeginArray();
+		for (auto&& listItem : node->flags)
+		{
+			BeginArrayItem();
+			Print(listItem.Obj());
+			EndArrayItem();
+		}
+		EndArray();
+		EndField();
+	}
+	void RuleAstVisitor::PrintFields(GlrLoopSyntax* node)
+	{
+		BeginField(L"delimiter");
+		Print(node->delimiter.Obj());
+		EndField();
+		BeginField(L"syntax");
+		Print(node->syntax.Obj());
+		EndField();
+	}
+	void RuleAstVisitor::PrintFields(GlrNotCondition* node)
+	{
+		BeginField(L"condition");
+		Print(node->condition.Obj());
+		EndField();
+	}
+	void RuleAstVisitor::PrintFields(GlrOptionalSyntax* node)
+	{
+		BeginField(L"priority");
+		switch (node->priority)
+		{
+		case vl::glr::parsergen::GlrOptionalPriority::Equal:
+			WriteString(L"Equal");
+			break;
+		case vl::glr::parsergen::GlrOptionalPriority::PreferSkip:
+			WriteString(L"PreferSkip");
+			break;
+		case vl::glr::parsergen::GlrOptionalPriority::PreferTake:
+			WriteString(L"PreferTake");
+			break;
+		default:
+			WriteNull();
+		}
+		EndField();
+		BeginField(L"syntax");
+		Print(node->syntax.Obj());
+		EndField();
+	}
+	void RuleAstVisitor::PrintFields(GlrOrCondition* node)
+	{
+		BeginField(L"first");
+		Print(node->first.Obj());
+		EndField();
+		BeginField(L"second");
+		Print(node->second.Obj());
+		EndField();
+	}
+	void RuleAstVisitor::PrintFields(GlrPartialClause* node)
+	{
+		BeginField(L"assignments");
+		BeginArray();
+		for (auto&& listItem : node->assignments)
+		{
+			BeginArrayItem();
+			Print(listItem.Obj());
+			EndArrayItem();
+		}
+		EndArray();
+		EndField();
+		BeginField(L"syntax");
+		Print(node->syntax.Obj());
+		EndField();
+		BeginField(L"type");
+		WriteToken(node->type);
+		EndField();
+	}
+	void RuleAstVisitor::PrintFields(GlrPrefixMergeClause* node)
+	{
+		BeginField(L"rule");
+		Print(node->rule.Obj());
+		EndField();
+	}
+	void RuleAstVisitor::PrintFields(GlrPushConditionSyntax* node)
+	{
+		BeginField(L"switches");
+		BeginArray();
+		for (auto&& listItem : node->switches)
+		{
+			BeginArrayItem();
+			Print(listItem.Obj());
+			EndArrayItem();
+		}
+		EndArray();
+		EndField();
+		BeginField(L"syntax");
+		Print(node->syntax.Obj());
+		EndField();
+	}
+	void RuleAstVisitor::PrintFields(GlrRefCondition* node)
+	{
+		BeginField(L"name");
+		WriteToken(node->name);
+		EndField();
+	}
+	void RuleAstVisitor::PrintFields(GlrRefSyntax* node)
+	{
+		BeginField(L"field");
+		WriteToken(node->field);
+		EndField();
+		BeginField(L"literal");
+		WriteToken(node->literal);
+		EndField();
+		BeginField(L"refType");
+		switch (node->refType)
+		{
+		case vl::glr::parsergen::GlrRefType::ConditionalLiteral:
+			WriteString(L"ConditionalLiteral");
+			break;
+		case vl::glr::parsergen::GlrRefType::Id:
+			WriteString(L"Id");
+			break;
+		case vl::glr::parsergen::GlrRefType::Literal:
+			WriteString(L"Literal");
+			break;
+		default:
+			WriteNull();
+		}
+		EndField();
+	}
+	void RuleAstVisitor::PrintFields(GlrReuseClause* node)
+	{
+		BeginField(L"assignments");
+		BeginArray();
+		for (auto&& listItem : node->assignments)
+		{
+			BeginArrayItem();
+			Print(listItem.Obj());
+			EndArrayItem();
+		}
+		EndArray();
+		EndField();
+		BeginField(L"syntax");
+		Print(node->syntax.Obj());
+		EndField();
+	}
+	void RuleAstVisitor::PrintFields(GlrRule* node)
+	{
+		BeginField(L"attParser");
+		WriteToken(node->attParser);
+		EndField();
+		BeginField(L"attPublic");
+		WriteToken(node->attPublic);
+		EndField();
+		BeginField(L"clauses");
+		BeginArray();
+		for (auto&& listItem : node->clauses)
+		{
+			BeginArrayItem();
+			Print(listItem.Obj());
+			EndArrayItem();
+		}
+		EndArray();
+		EndField();
+		BeginField(L"name");
+		WriteToken(node->name);
+		EndField();
+		BeginField(L"type");
+		WriteToken(node->type);
+		EndField();
+	}
+	void RuleAstVisitor::PrintFields(GlrSequenceSyntax* node)
+	{
+		BeginField(L"first");
+		Print(node->first.Obj());
+		EndField();
+		BeginField(L"second");
+		Print(node->second.Obj());
+		EndField();
+	}
+	void RuleAstVisitor::PrintFields(GlrSwitchItem* node)
+	{
+		BeginField(L"name");
+		WriteToken(node->name);
+		EndField();
+		BeginField(L"value");
+		switch (node->value)
+		{
+		case vl::glr::parsergen::GlrSwitchValue::False:
+			WriteString(L"False");
+			break;
+		case vl::glr::parsergen::GlrSwitchValue::True:
+			WriteString(L"True");
+			break;
+		default:
+			WriteNull();
+		}
+		EndField();
+	}
+	void RuleAstVisitor::PrintFields(GlrSyntax* node)
+	{
+	}
+	void RuleAstVisitor::PrintFields(GlrSyntaxFile* node)
+	{
+		BeginField(L"rules");
+		BeginArray();
+		for (auto&& listItem : node->rules)
+		{
+			BeginArrayItem();
+			Print(listItem.Obj());
+			EndArrayItem();
+		}
+		EndArray();
+		EndField();
+		BeginField(L"switches");
+		BeginArray();
+		for (auto&& listItem : node->switches)
+		{
+			BeginArrayItem();
+			Print(listItem.Obj());
+			EndArrayItem();
+		}
+		EndArray();
+		EndField();
+	}
+	void RuleAstVisitor::PrintFields(GlrTestConditionBranch* node)
+	{
+		BeginField(L"condition");
+		Print(node->condition.Obj());
+		EndField();
+		BeginField(L"syntax");
+		Print(node->syntax.Obj());
+		EndField();
+	}
+	void RuleAstVisitor::PrintFields(GlrTestConditionSyntax* node)
+	{
+		BeginField(L"branches");
+		BeginArray();
+		for (auto&& listItem : node->branches)
+		{
+			BeginArrayItem();
+			Print(listItem.Obj());
+			EndArrayItem();
+		}
+		EndArray();
+		EndField();
+	}
+	void RuleAstVisitor::PrintFields(GlrUseSyntax* node)
+	{
+		BeginField(L"name");
+		WriteToken(node->name);
+		EndField();
+	}
+
+	void RuleAstVisitor::Visit(GlrRefCondition* node)
+	{
+		if (!node)
+		{
+			WriteNull();
+			return;
+		}
+		BeginObject();
+		WriteType(L"RefCondition", node);
+		PrintFields(static_cast<GlrCondition*>(node));
+		PrintFields(static_cast<GlrRefCondition*>(node));
+		EndObject();
+	}
+
+	void RuleAstVisitor::Visit(GlrNotCondition* node)
+	{
+		if (!node)
+		{
+			WriteNull();
+			return;
+		}
+		BeginObject();
+		WriteType(L"NotCondition", node);
+		PrintFields(static_cast<GlrCondition*>(node));
+		PrintFields(static_cast<GlrNotCondition*>(node));
+		EndObject();
+	}
+
+	void RuleAstVisitor::Visit(GlrAndCondition* node)
+	{
+		if (!node)
+		{
+			WriteNull();
+			return;
+		}
+		BeginObject();
+		WriteType(L"AndCondition", node);
+		PrintFields(static_cast<GlrCondition*>(node));
+		PrintFields(static_cast<GlrAndCondition*>(node));
+		EndObject();
+	}
+
+	void RuleAstVisitor::Visit(GlrOrCondition* node)
+	{
+		if (!node)
+		{
+			WriteNull();
+			return;
+		}
+		BeginObject();
+		WriteType(L"OrCondition", node);
+		PrintFields(static_cast<GlrCondition*>(node));
+		PrintFields(static_cast<GlrOrCondition*>(node));
+		EndObject();
+	}
+
+	void RuleAstVisitor::Visit(GlrRefSyntax* node)
+	{
+		if (!node)
+		{
+			WriteNull();
+			return;
+		}
+		BeginObject();
+		WriteType(L"RefSyntax", node);
+		PrintFields(static_cast<GlrSyntax*>(node));
+		PrintFields(static_cast<GlrRefSyntax*>(node));
+		EndObject();
+	}
+
+	void RuleAstVisitor::Visit(GlrUseSyntax* node)
+	{
+		if (!node)
+		{
+			WriteNull();
+			return;
+		}
+		BeginObject();
+		WriteType(L"UseSyntax", node);
+		PrintFields(static_cast<GlrSyntax*>(node));
+		PrintFields(static_cast<GlrUseSyntax*>(node));
+		EndObject();
+	}
+
+	void RuleAstVisitor::Visit(GlrLoopSyntax* node)
+	{
+		if (!node)
+		{
+			WriteNull();
+			return;
+		}
+		BeginObject();
+		WriteType(L"LoopSyntax", node);
+		PrintFields(static_cast<GlrSyntax*>(node));
+		PrintFields(static_cast<GlrLoopSyntax*>(node));
+		EndObject();
+	}
+
+	void RuleAstVisitor::Visit(GlrOptionalSyntax* node)
+	{
+		if (!node)
+		{
+			WriteNull();
+			return;
+		}
+		BeginObject();
+		WriteType(L"OptionalSyntax", node);
+		PrintFields(static_cast<GlrSyntax*>(node));
+		PrintFields(static_cast<GlrOptionalSyntax*>(node));
+		EndObject();
+	}
+
+	void RuleAstVisitor::Visit(GlrSequenceSyntax* node)
+	{
+		if (!node)
+		{
+			WriteNull();
+			return;
+		}
+		BeginObject();
+		WriteType(L"SequenceSyntax", node);
+		PrintFields(static_cast<GlrSyntax*>(node));
+		PrintFields(static_cast<GlrSequenceSyntax*>(node));
+		EndObject();
+	}
+
+	void RuleAstVisitor::Visit(GlrAlternativeSyntax* node)
+	{
+		if (!node)
+		{
+			WriteNull();
+			return;
+		}
+		BeginObject();
+		WriteType(L"AlternativeSyntax", node);
+		PrintFields(static_cast<GlrSyntax*>(node));
+		PrintFields(static_cast<GlrAlternativeSyntax*>(node));
+		EndObject();
+	}
+
+	void RuleAstVisitor::Visit(GlrPushConditionSyntax* node)
+	{
+		if (!node)
+		{
+			WriteNull();
+			return;
+		}
+		BeginObject();
+		WriteType(L"PushConditionSyntax", node);
+		PrintFields(static_cast<GlrSyntax*>(node));
+		PrintFields(static_cast<GlrPushConditionSyntax*>(node));
+		EndObject();
+	}
+
+	void RuleAstVisitor::Visit(GlrTestConditionSyntax* node)
+	{
+		if (!node)
+		{
+			WriteNull();
+			return;
+		}
+		BeginObject();
+		WriteType(L"TestConditionSyntax", node);
+		PrintFields(static_cast<GlrSyntax*>(node));
+		PrintFields(static_cast<GlrTestConditionSyntax*>(node));
+		EndObject();
+	}
+
+	void RuleAstVisitor::Visit(GlrCreateClause* node)
+	{
+		if (!node)
+		{
+			WriteNull();
+			return;
+		}
+		BeginObject();
+		WriteType(L"CreateClause", node);
+		PrintFields(static_cast<GlrClause*>(node));
+		PrintFields(static_cast<GlrCreateClause*>(node));
+		EndObject();
+	}
+
+	void RuleAstVisitor::Visit(GlrPartialClause* node)
+	{
+		if (!node)
+		{
+			WriteNull();
+			return;
+		}
+		BeginObject();
+		WriteType(L"PartialClause", node);
+		PrintFields(static_cast<GlrClause*>(node));
+		PrintFields(static_cast<GlrPartialClause*>(node));
+		EndObject();
+	}
+
+	void RuleAstVisitor::Visit(GlrReuseClause* node)
+	{
+		if (!node)
+		{
+			WriteNull();
+			return;
+		}
+		BeginObject();
+		WriteType(L"ReuseClause", node);
+		PrintFields(static_cast<GlrClause*>(node));
+		PrintFields(static_cast<GlrReuseClause*>(node));
+		EndObject();
+	}
+
+	void RuleAstVisitor::Visit(GlrLeftRecursionPlaceholderClause* node)
+	{
+		if (!node)
+		{
+			WriteNull();
+			return;
+		}
+		BeginObject();
+		WriteType(L"LeftRecursionPlaceholderClause", node);
+		PrintFields(static_cast<GlrClause*>(node));
+		PrintFields(static_cast<GlrLeftRecursionPlaceholderClause*>(node));
+		EndObject();
+	}
+
+	void RuleAstVisitor::Visit(GlrLeftRecursionInjectClause* node)
+	{
+		if (!node)
+		{
+			WriteNull();
+			return;
+		}
+		BeginObject();
+		WriteType(L"LeftRecursionInjectClause", node);
+		PrintFields(static_cast<GlrClause*>(node));
+		PrintFields(static_cast<GlrLeftRecursionInjectClause*>(node));
+		EndObject();
+	}
+
+	void RuleAstVisitor::Visit(GlrPrefixMergeClause* node)
+	{
+		if (!node)
+		{
+			WriteNull();
+			return;
+		}
+		BeginObject();
+		WriteType(L"PrefixMergeClause", node);
+		PrintFields(static_cast<GlrClause*>(node));
+		PrintFields(static_cast<GlrPrefixMergeClause*>(node));
+		EndObject();
+	}
+
+	RuleAstVisitor::RuleAstVisitor(vl::stream::StreamWriter& _writer)
+		: vl::glr::JsonVisitorBase(_writer)
+	{
+	}
+
+	void RuleAstVisitor::Print(GlrCondition* node)
+	{
+		if (!node)
+		{
+			WriteNull();
+			return;
+		}
+		node->Accept(static_cast<GlrCondition::IVisitor*>(this));
+	}
+
+	void RuleAstVisitor::Print(GlrSyntax* node)
+	{
+		if (!node)
+		{
+			WriteNull();
+			return;
+		}
+		node->Accept(static_cast<GlrSyntax::IVisitor*>(this));
+	}
+
+	void RuleAstVisitor::Print(GlrClause* node)
+	{
+		if (!node)
+		{
+			WriteNull();
+			return;
+		}
+		node->Accept(static_cast<GlrClause::IVisitor*>(this));
+	}
+
+	void RuleAstVisitor::Print(GlrSwitchItem* node)
+	{
+		if (!node)
+		{
+			WriteNull();
+			return;
+		}
+		BeginObject();
+		WriteType(L"SwitchItem", node);
+		PrintFields(static_cast<GlrSwitchItem*>(node));
+		EndObject();
+	}
+
+	void RuleAstVisitor::Print(GlrTestConditionBranch* node)
+	{
+		if (!node)
+		{
+			WriteNull();
+			return;
+		}
+		BeginObject();
+		WriteType(L"TestConditionBranch", node);
+		PrintFields(static_cast<GlrTestConditionBranch*>(node));
+		EndObject();
+	}
+
+	void RuleAstVisitor::Print(GlrAssignment* node)
+	{
+		if (!node)
+		{
+			WriteNull();
+			return;
+		}
+		BeginObject();
+		WriteType(L"Assignment", node);
+		PrintFields(static_cast<GlrAssignment*>(node));
+		EndObject();
+	}
+
+	void RuleAstVisitor::Print(GlrLeftRecursionPlaceholder* node)
+	{
+		if (!node)
+		{
+			WriteNull();
+			return;
+		}
+		BeginObject();
+		WriteType(L"LeftRecursionPlaceholder", node);
+		PrintFields(static_cast<GlrLeftRecursionPlaceholder*>(node));
+		EndObject();
+	}
+
+	void RuleAstVisitor::Print(GlrLeftRecursionInjectContinuation* node)
+	{
+		if (!node)
+		{
+			WriteNull();
+			return;
+		}
+		BeginObject();
+		WriteType(L"LeftRecursionInjectContinuation", node);
+		PrintFields(static_cast<GlrLeftRecursionInjectContinuation*>(node));
+		EndObject();
+	}
+
+	void RuleAstVisitor::Print(GlrRule* node)
+	{
+		if (!node)
+		{
+			WriteNull();
+			return;
+		}
+		BeginObject();
+		WriteType(L"Rule", node);
+		PrintFields(static_cast<GlrRule*>(node));
+		EndObject();
+	}
+
+	void RuleAstVisitor::Print(GlrSyntaxFile* node)
+	{
+		if (!node)
+		{
+			WriteNull();
+			return;
+		}
+		BeginObject();
+		WriteType(L"SyntaxFile", node);
+		PrintFields(static_cast<GlrSyntaxFile*>(node));
+		EndObject();
+	}
+
 }

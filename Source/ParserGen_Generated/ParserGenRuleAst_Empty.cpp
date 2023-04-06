@@ -6,105 +6,96 @@ Licensed under https://github.com/vczh-libraries/License
 
 #include "ParserGenRuleAst_Empty.h"
 
-namespace vl
+namespace vl::glr::parsergen::empty_visitor
 {
-	namespace glr
-	{
-		namespace parsergen
-		{
-			namespace empty_visitor
-			{
 
 /***********************************************************************
 ConditionVisitor
 ***********************************************************************/
 
-				// Visitor Members -----------------------------------
+	// Visitor Members -----------------------------------
 
-				void ConditionVisitor::Visit(GlrRefCondition* node)
-				{
-				}
+	void ConditionVisitor::Visit(GlrRefCondition* node)
+	{
+	}
 
-				void ConditionVisitor::Visit(GlrNotCondition* node)
-				{
-				}
+	void ConditionVisitor::Visit(GlrNotCondition* node)
+	{
+	}
 
-				void ConditionVisitor::Visit(GlrAndCondition* node)
-				{
-				}
+	void ConditionVisitor::Visit(GlrAndCondition* node)
+	{
+	}
 
-				void ConditionVisitor::Visit(GlrOrCondition* node)
-				{
-				}
+	void ConditionVisitor::Visit(GlrOrCondition* node)
+	{
+	}
 
 /***********************************************************************
 SyntaxVisitor
 ***********************************************************************/
 
-				// Visitor Members -----------------------------------
+	// Visitor Members -----------------------------------
 
-				void SyntaxVisitor::Visit(GlrRefSyntax* node)
-				{
-				}
+	void SyntaxVisitor::Visit(GlrRefSyntax* node)
+	{
+	}
 
-				void SyntaxVisitor::Visit(GlrUseSyntax* node)
-				{
-				}
+	void SyntaxVisitor::Visit(GlrUseSyntax* node)
+	{
+	}
 
-				void SyntaxVisitor::Visit(GlrLoopSyntax* node)
-				{
-				}
+	void SyntaxVisitor::Visit(GlrLoopSyntax* node)
+	{
+	}
 
-				void SyntaxVisitor::Visit(GlrOptionalSyntax* node)
-				{
-				}
+	void SyntaxVisitor::Visit(GlrOptionalSyntax* node)
+	{
+	}
 
-				void SyntaxVisitor::Visit(GlrSequenceSyntax* node)
-				{
-				}
+	void SyntaxVisitor::Visit(GlrSequenceSyntax* node)
+	{
+	}
 
-				void SyntaxVisitor::Visit(GlrAlternativeSyntax* node)
-				{
-				}
+	void SyntaxVisitor::Visit(GlrAlternativeSyntax* node)
+	{
+	}
 
-				void SyntaxVisitor::Visit(GlrPushConditionSyntax* node)
-				{
-				}
+	void SyntaxVisitor::Visit(GlrPushConditionSyntax* node)
+	{
+	}
 
-				void SyntaxVisitor::Visit(GlrTestConditionSyntax* node)
-				{
-				}
+	void SyntaxVisitor::Visit(GlrTestConditionSyntax* node)
+	{
+	}
 
 /***********************************************************************
 ClauseVisitor
 ***********************************************************************/
 
-				// Visitor Members -----------------------------------
+	// Visitor Members -----------------------------------
 
-				void ClauseVisitor::Visit(GlrCreateClause* node)
-				{
-				}
+	void ClauseVisitor::Visit(GlrCreateClause* node)
+	{
+	}
 
-				void ClauseVisitor::Visit(GlrPartialClause* node)
-				{
-				}
+	void ClauseVisitor::Visit(GlrPartialClause* node)
+	{
+	}
 
-				void ClauseVisitor::Visit(GlrReuseClause* node)
-				{
-				}
+	void ClauseVisitor::Visit(GlrReuseClause* node)
+	{
+	}
 
-				void ClauseVisitor::Visit(GlrLeftRecursionPlaceholderClause* node)
-				{
-				}
+	void ClauseVisitor::Visit(GlrLeftRecursionPlaceholderClause* node)
+	{
+	}
 
-				void ClauseVisitor::Visit(GlrLeftRecursionInjectClause* node)
-				{
-				}
+	void ClauseVisitor::Visit(GlrLeftRecursionInjectClause* node)
+	{
+	}
 
-				void ClauseVisitor::Visit(GlrPrefixMergeClause* node)
-				{
-				}
-			}
-		}
+	void ClauseVisitor::Visit(GlrPrefixMergeClause* node)
+	{
 	}
 }
