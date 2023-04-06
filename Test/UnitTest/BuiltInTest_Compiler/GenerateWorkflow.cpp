@@ -106,31 +106,6 @@ TEST_FILE
 			[&](vint32_t index) { auto token = lexerManager.Tokens()[lexerManager.TokenOrder()[index]]; return token->displayText == L"" ? token->Name() : L"\"" + token->displayText + L"\""; }
 			);
 	
-		{
-			auto rule = syntaxManager.Rules()[L"_Type"];
-			syntaxManager.parsableRules.Add(rule);
-			syntaxManager.ruleTypes.Add(rule, L"vl::glr::workflow::WfType");
-		}
-		{
-			auto rule = syntaxManager.Rules()[L"_Expression"];
-			syntaxManager.parsableRules.Add(rule);
-			syntaxManager.ruleTypes.Add(rule, L"vl::glr::workflow::WfExpression");
-		}
-		{
-			auto rule = syntaxManager.Rules()[L"_Statement"];
-			syntaxManager.parsableRules.Add(rule);
-			syntaxManager.ruleTypes.Add(rule, L"vl::glr::workflow::WfStatement");
-		}
-		{
-			auto rule = syntaxManager.Rules()[L"_Declaration"];
-			syntaxManager.parsableRules.Add(rule);
-			syntaxManager.ruleTypes.Add(rule, L"vl::glr::workflow::WfDeclaration");
-		}
-		{
-			auto rule = syntaxManager.Rules()[L"_Module"];
-			syntaxManager.parsableRules.Add(rule);
-			syntaxManager.ruleTypes.Add(rule, L"vl::glr::workflow::WfModule");
-		}
 		WriteSyntaxFiles(syntaxManager, executable, metadata, output, files);
 	});
 

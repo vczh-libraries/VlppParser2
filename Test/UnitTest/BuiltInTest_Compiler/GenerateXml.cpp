@@ -106,16 +106,6 @@ TEST_FILE
 			[&](vint32_t index) { auto token = lexerManager.Tokens()[lexerManager.TokenOrder()[index]]; return token->displayText == L"" ? token->Name() : L"\"" + token->displayText + L"\""; }
 			);
 
-		{
-			auto rule = syntaxManager.Rules()[L"XElement"];
-			syntaxManager.parsableRules.Add(rule);
-			syntaxManager.ruleTypes.Add(rule, L"vl::glr::xml::XmlElement");
-		}
-		{
-			auto rule = syntaxManager.Rules()[L"XDocument"];
-			syntaxManager.parsableRules.Add(rule);
-			syntaxManager.ruleTypes.Add(rule, L"vl::glr::xml::XmlDocument");
-		}
 		WriteSyntaxFiles(syntaxManager, executable, metadata, output, files);
 	});
 

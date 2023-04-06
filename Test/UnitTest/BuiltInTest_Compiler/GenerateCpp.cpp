@@ -192,31 +192,6 @@ TEST_FILE
 			);
 
 		unittest::UnitTest::PrintMessage(L"WriteSyntaxFiles() ...", unittest::UnitTest::MessageKind::Info);
-		{
-			auto rule = syntaxManager.Rules()[L"_Type"];
-			syntaxManager.parsableRules.Add(rule);
-			syntaxManager.ruleTypes.Add(rule, L"cpp_parser::CppTypeOrExpr");
-		}
-		{
-			auto rule = syntaxManager.Rules()[L"_Expr"];
-			syntaxManager.parsableRules.Add(rule);
-			syntaxManager.ruleTypes.Add(rule, L"cpp_parser::CppTypeOrExpr");
-		}
-		{
-			auto rule = syntaxManager.Rules()[L"_TypeOrExpr"];
-			syntaxManager.parsableRules.Add(rule);
-			syntaxManager.ruleTypes.Add(rule, L"cpp_parser::CppTypeOrExpr");
-		}
-		{
-			auto rule = syntaxManager.Rules()[L"_Stat"];
-			syntaxManager.parsableRules.Add(rule);
-			syntaxManager.ruleTypes.Add(rule, L"cpp_parser::CppStatement");
-		}
-		{
-			auto rule = syntaxManager.Rules()[L"_File"];
-			syntaxManager.parsableRules.Add(rule);
-			syntaxManager.ruleTypes.Add(rule, L"cpp_parser::CppFile");
-		}
 		WriteSyntaxFiles(syntaxManager, executable, metadata, output, files);
 	});
 

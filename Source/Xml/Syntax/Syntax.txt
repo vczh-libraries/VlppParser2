@@ -17,7 +17,7 @@ XComment
   ::= COMMENT:content as Comment
   ;
 
-XElement
+@parser XElement
   ::= "<" NAME:name {XAttribute:attributes} ("/>" | ">" {XSubNode:subNodes} "</" NAME:closingName ">") as Element
   ;
 
@@ -29,6 +29,6 @@ XInstruction
  ::= "<?" NAME:name {XAttribute:attributes} "?>" as Instruction
  ;
 
-XDocument
+@parser XDocument
  ::= {XInstruction:prologs | XComment:prologs} XElement:rootElement as Document
  ;

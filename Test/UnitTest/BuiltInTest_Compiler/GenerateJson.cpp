@@ -106,11 +106,6 @@ TEST_FILE
 			[&](vint32_t index) { auto token = lexerManager.Tokens()[lexerManager.TokenOrder()[index]]; return token->displayText == L"" ? token->Name() : L"\"" + token->displayText + L"\""; }
 			);
 
-		{
-			auto rule = syntaxManager.Rules()[L"JRoot"];
-			syntaxManager.parsableRules.Add(rule);
-			syntaxManager.ruleTypes.Add(rule, L"vl::glr::json::JsonNode");
-		}
 		WriteSyntaxFiles(syntaxManager, executable, metadata, output, files);
 	});
 
