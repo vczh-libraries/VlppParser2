@@ -9,166 +9,163 @@ Licensed under https://github.com/vczh-libraries/License
 
 #include "CppAst.h"
 
-namespace cpp_parser
+namespace cpp_parser::empty_visitor
 {
-	namespace empty_visitor
+	/// <summary>An empty visitor, overriding all abstract methods with empty implementations.</summary>
+	class TypeOrExprOrOthersVisitor : public vl::Object, public CppTypeOrExprOrOthers::IVisitor
 	{
-		/// <summary>An empty visitor, overriding all abstract methods with empty implementations.</summary>
-		class TypeOrExprOrOthersVisitor : public vl::Object, public CppTypeOrExprOrOthers::IVisitor
-		{
-		protected:
-			// Dispatch (virtual) --------------------------------
-			virtual void Dispatch(CppDeclaration* node) = 0;
-			virtual void Dispatch(CppTypeOrExpr* node) = 0;
+	protected:
+		// Dispatch (virtual) --------------------------------
+		virtual void Dispatch(CppDeclaration* node) = 0;
+		virtual void Dispatch(CppTypeOrExpr* node) = 0;
 
-		public:
-			// Visitor Members -----------------------------------
-			void Visit(CppTypeOrExprOrOthersToResolve* node) override;
-			void Visit(CppDeclaration* node) override;
-			void Visit(CppTypeOrExpr* node) override;
-			void Visit(CppGenericArgument* node) override;
-			void Visit(CppOrdinaryGenericParameter* node) override;
-		};
+	public:
+		// Visitor Members -----------------------------------
+		void Visit(CppTypeOrExprOrOthersToResolve* node) override;
+		void Visit(CppDeclaration* node) override;
+		void Visit(CppTypeOrExpr* node) override;
+		void Visit(CppGenericArgument* node) override;
+		void Visit(CppOrdinaryGenericParameter* node) override;
+	};
 
-		/// <summary>An empty visitor, overriding all abstract methods with empty implementations.</summary>
-		class DeclarationVisitor : public vl::Object, public CppDeclaration::IVisitor
-		{
-		protected:
-			// Dispatch (virtual) --------------------------------
+	/// <summary>An empty visitor, overriding all abstract methods with empty implementations.</summary>
+	class DeclarationVisitor : public vl::Object, public CppDeclaration::IVisitor
+	{
+	protected:
+		// Dispatch (virtual) --------------------------------
 
-		public:
-			// Visitor Members -----------------------------------
-			void Visit(CppSingleVarDeclaration* node) override;
-			void Visit(CppMultipleVarDeclaration* node) override;
-			void Visit(CppStaticAssertDeclaration* node) override;
-		};
+	public:
+		// Visitor Members -----------------------------------
+		void Visit(CppSingleVarDeclaration* node) override;
+		void Visit(CppMultipleVarDeclaration* node) override;
+		void Visit(CppStaticAssertDeclaration* node) override;
+	};
 
-		/// <summary>An empty visitor, overriding all abstract methods with empty implementations.</summary>
-		class TypeOrExprVisitor : public vl::Object, public CppTypeOrExpr::IVisitor
-		{
-		protected:
-			// Dispatch (virtual) --------------------------------
-			virtual void Dispatch(CppExprOnly* node) = 0;
-			virtual void Dispatch(CppTypeOnly* node) = 0;
+	/// <summary>An empty visitor, overriding all abstract methods with empty implementations.</summary>
+	class TypeOrExprVisitor : public vl::Object, public CppTypeOrExpr::IVisitor
+	{
+	protected:
+		// Dispatch (virtual) --------------------------------
+		virtual void Dispatch(CppExprOnly* node) = 0;
+		virtual void Dispatch(CppTypeOnly* node) = 0;
 
-		public:
-			// Visitor Members -----------------------------------
-			void Visit(CppTypeOrExprToResolve* node) override;
-			void Visit(CppExprOnly* node) override;
-			void Visit(CppTypeOnly* node) override;
-			void Visit(CppQualifiedName* node) override;
-			void Visit(CppDeclaratorType* node) override;
-		};
+	public:
+		// Visitor Members -----------------------------------
+		void Visit(CppTypeOrExprToResolve* node) override;
+		void Visit(CppExprOnly* node) override;
+		void Visit(CppTypeOnly* node) override;
+		void Visit(CppQualifiedName* node) override;
+		void Visit(CppDeclaratorType* node) override;
+	};
 
-		/// <summary>An empty visitor, overriding all abstract methods with empty implementations.</summary>
-		class ExprOnlyVisitor : public vl::Object, public CppExprOnly::IVisitor
-		{
-		protected:
-			// Dispatch (virtual) --------------------------------
+	/// <summary>An empty visitor, overriding all abstract methods with empty implementations.</summary>
+	class ExprOnlyVisitor : public vl::Object, public CppExprOnly::IVisitor
+	{
+	protected:
+		// Dispatch (virtual) --------------------------------
 
-		public:
-			// Visitor Members -----------------------------------
-			void Visit(CppPrimitiveExprLiteral* node) override;
-			void Visit(CppNumericExprLiteral* node) override;
-			void Visit(CppStringLiteral* node) override;
-			void Visit(CppLambdaExpr* node) override;
-			void Visit(CppParenthesisExpr* node) override;
-			void Visit(CppBraceExpr* node) override;
-			void Visit(CppCastExpr* node) override;
-			void Visit(CppSysFuncExpr* node) override;
-			void Visit(CppSizeofExpr* node) override;
-			void Visit(CppDeleteExpr* node) override;
-			void Visit(CppNewExpr* node) override;
-			void Visit(CppPrefixUnaryExpr* node) override;
-			void Visit(CppPostfixUnaryExpr* node) override;
-			void Visit(CppIndexExpr* node) override;
-			void Visit(CppCallExpr* node) override;
-			void Visit(CppBinaryExpr* node) override;
-			void Visit(CppIfExpr* node) override;
-			void Visit(CppThrowExpr* node) override;
-			void Visit(CppVariadicExpr* node) override;
-		};
+	public:
+		// Visitor Members -----------------------------------
+		void Visit(CppPrimitiveExprLiteral* node) override;
+		void Visit(CppNumericExprLiteral* node) override;
+		void Visit(CppStringLiteral* node) override;
+		void Visit(CppLambdaExpr* node) override;
+		void Visit(CppParenthesisExpr* node) override;
+		void Visit(CppBraceExpr* node) override;
+		void Visit(CppCastExpr* node) override;
+		void Visit(CppSysFuncExpr* node) override;
+		void Visit(CppSizeofExpr* node) override;
+		void Visit(CppDeleteExpr* node) override;
+		void Visit(CppNewExpr* node) override;
+		void Visit(CppPrefixUnaryExpr* node) override;
+		void Visit(CppPostfixUnaryExpr* node) override;
+		void Visit(CppIndexExpr* node) override;
+		void Visit(CppCallExpr* node) override;
+		void Visit(CppBinaryExpr* node) override;
+		void Visit(CppIfExpr* node) override;
+		void Visit(CppThrowExpr* node) override;
+		void Visit(CppVariadicExpr* node) override;
+	};
 
-		/// <summary>An empty visitor, overriding all abstract methods with empty implementations.</summary>
-		class TypeOnlyVisitor : public vl::Object, public CppTypeOnly::IVisitor
-		{
-		protected:
-			// Dispatch (virtual) --------------------------------
+	/// <summary>An empty visitor, overriding all abstract methods with empty implementations.</summary>
+	class TypeOnlyVisitor : public vl::Object, public CppTypeOnly::IVisitor
+	{
+	protected:
+		// Dispatch (virtual) --------------------------------
 
-		public:
-			// Visitor Members -----------------------------------
-			void Visit(CppPrimitiveType* node) override;
-			void Visit(CppConstType* node) override;
-			void Visit(CppVolatileType* node) override;
-		};
+	public:
+		// Visitor Members -----------------------------------
+		void Visit(CppPrimitiveType* node) override;
+		void Visit(CppConstType* node) override;
+		void Visit(CppVolatileType* node) override;
+	};
 
-		/// <summary>An empty visitor, overriding all abstract methods with empty implementations.</summary>
-		class IdentifierVisitor : public vl::Object, public CppIdentifier::IVisitor
-		{
-		protected:
-			// Dispatch (virtual) --------------------------------
+	/// <summary>An empty visitor, overriding all abstract methods with empty implementations.</summary>
+	class IdentifierVisitor : public vl::Object, public CppIdentifier::IVisitor
+	{
+	protected:
+		// Dispatch (virtual) --------------------------------
 
-		public:
-			// Visitor Members -----------------------------------
-			void Visit(CppNameIdentifier* node) override;
-			void Visit(CppOperatorIdentifier* node) override;
-		};
+	public:
+		// Visitor Members -----------------------------------
+		void Visit(CppNameIdentifier* node) override;
+		void Visit(CppOperatorIdentifier* node) override;
+	};
 
-		/// <summary>An empty visitor, overriding all abstract methods with empty implementations.</summary>
-		class VarInitVisitor : public vl::Object, public CppVarInit::IVisitor
-		{
-		protected:
-			// Dispatch (virtual) --------------------------------
+	/// <summary>An empty visitor, overriding all abstract methods with empty implementations.</summary>
+	class VarInitVisitor : public vl::Object, public CppVarInit::IVisitor
+	{
+	protected:
+		// Dispatch (virtual) --------------------------------
 
-		public:
-			// Visitor Members -----------------------------------
-			void Visit(CppVarValueInit* node) override;
-			void Visit(CppVarParanthesisInit* node) override;
-			void Visit(CppVarBraceInit* node) override;
-		};
+	public:
+		// Visitor Members -----------------------------------
+		void Visit(CppVarValueInit* node) override;
+		void Visit(CppVarParanthesisInit* node) override;
+		void Visit(CppVarBraceInit* node) override;
+	};
 
-		/// <summary>An empty visitor, overriding all abstract methods with empty implementations.</summary>
-		class StatementVisitor : public vl::Object, public CppStatement::IVisitor
-		{
-		protected:
-			// Dispatch (virtual) --------------------------------
+	/// <summary>An empty visitor, overriding all abstract methods with empty implementations.</summary>
+	class StatementVisitor : public vl::Object, public CppStatement::IVisitor
+	{
+	protected:
+		// Dispatch (virtual) --------------------------------
 
-		public:
-			// Visitor Members -----------------------------------
-			void Visit(CppStatementToResolve* node) override;
-			void Visit(CppEmptyStat* node) override;
-			void Visit(CppBlockStat* node) override;
-			void Visit(CppExprStat* node) override;
-			void Visit(CppDeclStat* node) override;
-			void Visit(CppBreakStat* node) override;
-			void Visit(CppContinueStat* node) override;
-			void Visit(CppReturnStat* node) override;
-			void Visit(CppLabelStat* node) override;
-			void Visit(CppGotoStat* node) override;
-			void Visit(CppCaseStat* node) override;
-			void Visit(CppDefaultStat* node) override;
-			void Visit(Cpp__LeaveStat* node) override;
-			void Visit(CppWhileStat* node) override;
-			void Visit(CppDoWhileStat* node) override;
-			void Visit(CppIfElseStat* node) override;
-			void Visit(CppForStat* node) override;
-			void Visit(CppSwitchStat* node) override;
-			void Visit(CppTryStat* node) override;
-			void Visit(Cpp__TryStat* node) override;
-		};
+	public:
+		// Visitor Members -----------------------------------
+		void Visit(CppStatementToResolve* node) override;
+		void Visit(CppEmptyStat* node) override;
+		void Visit(CppBlockStat* node) override;
+		void Visit(CppExprStat* node) override;
+		void Visit(CppDeclStat* node) override;
+		void Visit(CppBreakStat* node) override;
+		void Visit(CppContinueStat* node) override;
+		void Visit(CppReturnStat* node) override;
+		void Visit(CppLabelStat* node) override;
+		void Visit(CppGotoStat* node) override;
+		void Visit(CppCaseStat* node) override;
+		void Visit(CppDefaultStat* node) override;
+		void Visit(Cpp__LeaveStat* node) override;
+		void Visit(CppWhileStat* node) override;
+		void Visit(CppDoWhileStat* node) override;
+		void Visit(CppIfElseStat* node) override;
+		void Visit(CppForStat* node) override;
+		void Visit(CppSwitchStat* node) override;
+		void Visit(CppTryStat* node) override;
+		void Visit(Cpp__TryStat* node) override;
+	};
 
-		/// <summary>An empty visitor, overriding all abstract methods with empty implementations.</summary>
-		class ForStatConditionPartVisitor : public vl::Object, public CppForStatConditionPart::IVisitor
-		{
-		protected:
-			// Dispatch (virtual) --------------------------------
+	/// <summary>An empty visitor, overriding all abstract methods with empty implementations.</summary>
+	class ForStatConditionPartVisitor : public vl::Object, public CppForStatConditionPart::IVisitor
+	{
+	protected:
+		// Dispatch (virtual) --------------------------------
 
-		public:
-			// Visitor Members -----------------------------------
-			void Visit(CppForStatLoopCondition* node) override;
-			void Visit(CppForStatIterateCondition* node) override;
-		};
+	public:
+		// Visitor Members -----------------------------------
+		void Visit(CppForStatLoopCondition* node) override;
+		void Visit(CppForStatIterateCondition* node) override;
+	};
 
-	}
 }
 #endif

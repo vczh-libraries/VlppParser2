@@ -158,103 +158,97 @@ namespace prefixmerge6_pm2
 		void Accept(TypeOrExpr::IVisitor* visitor) override;
 	};
 }
-namespace vl
+namespace vl::reflection::description
 {
-	namespace reflection
-	{
-		namespace description
-		{
 #ifndef VCZH_DEBUG_NO_REFLECTION
-			DECL_TYPE_INFO(prefixmerge6_pm2::TypeOrExpr)
-			DECL_TYPE_INFO(prefixmerge6_pm2::TypeOrExpr::IVisitor)
-			DECL_TYPE_INFO(prefixmerge6_pm2::QualifiedName)
-			DECL_TYPE_INFO(prefixmerge6_pm2::QualifiedName::IVisitor)
-			DECL_TYPE_INFO(prefixmerge6_pm2::Name)
-			DECL_TYPE_INFO(prefixmerge6_pm2::MemberName)
-			DECL_TYPE_INFO(prefixmerge6_pm2::CallExpr)
-			DECL_TYPE_INFO(prefixmerge6_pm2::CtorExpr)
-			DECL_TYPE_INFO(prefixmerge6_pm2::MulExpr)
-			DECL_TYPE_INFO(prefixmerge6_pm2::ThrowExpr)
-			DECL_TYPE_INFO(prefixmerge6_pm2::CommaExpr)
-			DECL_TYPE_INFO(prefixmerge6_pm2::ConstType)
-			DECL_TYPE_INFO(prefixmerge6_pm2::PointerType)
-			DECL_TYPE_INFO(prefixmerge6_pm2::FunctionType)
-			DECL_TYPE_INFO(prefixmerge6_pm2::TypeOrExprToResolve)
+	DECL_TYPE_INFO(prefixmerge6_pm2::TypeOrExpr)
+	DECL_TYPE_INFO(prefixmerge6_pm2::TypeOrExpr::IVisitor)
+	DECL_TYPE_INFO(prefixmerge6_pm2::QualifiedName)
+	DECL_TYPE_INFO(prefixmerge6_pm2::QualifiedName::IVisitor)
+	DECL_TYPE_INFO(prefixmerge6_pm2::Name)
+	DECL_TYPE_INFO(prefixmerge6_pm2::MemberName)
+	DECL_TYPE_INFO(prefixmerge6_pm2::CallExpr)
+	DECL_TYPE_INFO(prefixmerge6_pm2::CtorExpr)
+	DECL_TYPE_INFO(prefixmerge6_pm2::MulExpr)
+	DECL_TYPE_INFO(prefixmerge6_pm2::ThrowExpr)
+	DECL_TYPE_INFO(prefixmerge6_pm2::CommaExpr)
+	DECL_TYPE_INFO(prefixmerge6_pm2::ConstType)
+	DECL_TYPE_INFO(prefixmerge6_pm2::PointerType)
+	DECL_TYPE_INFO(prefixmerge6_pm2::FunctionType)
+	DECL_TYPE_INFO(prefixmerge6_pm2::TypeOrExprToResolve)
 
 #ifdef VCZH_DESCRIPTABLEOBJECT_WITH_METADATA
 
-			BEGIN_INTERFACE_PROXY_NOPARENT_SHAREDPTR(prefixmerge6_pm2::TypeOrExpr::IVisitor)
-				void Visit(prefixmerge6_pm2::TypeOrExprToResolve* node) override
-				{
-					INVOKE_INTERFACE_PROXY(Visit, node);
-				}
-
-				void Visit(prefixmerge6_pm2::QualifiedName* node) override
-				{
-					INVOKE_INTERFACE_PROXY(Visit, node);
-				}
-
-				void Visit(prefixmerge6_pm2::CallExpr* node) override
-				{
-					INVOKE_INTERFACE_PROXY(Visit, node);
-				}
-
-				void Visit(prefixmerge6_pm2::CtorExpr* node) override
-				{
-					INVOKE_INTERFACE_PROXY(Visit, node);
-				}
-
-				void Visit(prefixmerge6_pm2::MulExpr* node) override
-				{
-					INVOKE_INTERFACE_PROXY(Visit, node);
-				}
-
-				void Visit(prefixmerge6_pm2::ThrowExpr* node) override
-				{
-					INVOKE_INTERFACE_PROXY(Visit, node);
-				}
-
-				void Visit(prefixmerge6_pm2::CommaExpr* node) override
-				{
-					INVOKE_INTERFACE_PROXY(Visit, node);
-				}
-
-				void Visit(prefixmerge6_pm2::ConstType* node) override
-				{
-					INVOKE_INTERFACE_PROXY(Visit, node);
-				}
-
-				void Visit(prefixmerge6_pm2::PointerType* node) override
-				{
-					INVOKE_INTERFACE_PROXY(Visit, node);
-				}
-
-				void Visit(prefixmerge6_pm2::FunctionType* node) override
-				{
-					INVOKE_INTERFACE_PROXY(Visit, node);
-				}
-
-			END_INTERFACE_PROXY(prefixmerge6_pm2::TypeOrExpr::IVisitor)
-
-			BEGIN_INTERFACE_PROXY_NOPARENT_SHAREDPTR(prefixmerge6_pm2::QualifiedName::IVisitor)
-				void Visit(prefixmerge6_pm2::Name* node) override
-				{
-					INVOKE_INTERFACE_PROXY(Visit, node);
-				}
-
-				void Visit(prefixmerge6_pm2::MemberName* node) override
-				{
-					INVOKE_INTERFACE_PROXY(Visit, node);
-				}
-
-			END_INTERFACE_PROXY(prefixmerge6_pm2::QualifiedName::IVisitor)
-
-#endif
-#endif
-			/// <summary>Load all reflectable AST types, only available when <b>VCZH_DEBUG_NO_REFLECTION</b> is off.</summary>
-			/// <returns>Returns true if this operation succeeded.</returns>
-			extern bool PrefixMerge6_Pm2TypeOrExprLoadTypes();
+	BEGIN_INTERFACE_PROXY_NOPARENT_SHAREDPTR(prefixmerge6_pm2::TypeOrExpr::IVisitor)
+		void Visit(prefixmerge6_pm2::TypeOrExprToResolve* node) override
+		{
+			INVOKE_INTERFACE_PROXY(Visit, node);
 		}
-	}
+
+		void Visit(prefixmerge6_pm2::QualifiedName* node) override
+		{
+			INVOKE_INTERFACE_PROXY(Visit, node);
+		}
+
+		void Visit(prefixmerge6_pm2::CallExpr* node) override
+		{
+			INVOKE_INTERFACE_PROXY(Visit, node);
+		}
+
+		void Visit(prefixmerge6_pm2::CtorExpr* node) override
+		{
+			INVOKE_INTERFACE_PROXY(Visit, node);
+		}
+
+		void Visit(prefixmerge6_pm2::MulExpr* node) override
+		{
+			INVOKE_INTERFACE_PROXY(Visit, node);
+		}
+
+		void Visit(prefixmerge6_pm2::ThrowExpr* node) override
+		{
+			INVOKE_INTERFACE_PROXY(Visit, node);
+		}
+
+		void Visit(prefixmerge6_pm2::CommaExpr* node) override
+		{
+			INVOKE_INTERFACE_PROXY(Visit, node);
+		}
+
+		void Visit(prefixmerge6_pm2::ConstType* node) override
+		{
+			INVOKE_INTERFACE_PROXY(Visit, node);
+		}
+
+		void Visit(prefixmerge6_pm2::PointerType* node) override
+		{
+			INVOKE_INTERFACE_PROXY(Visit, node);
+		}
+
+		void Visit(prefixmerge6_pm2::FunctionType* node) override
+		{
+			INVOKE_INTERFACE_PROXY(Visit, node);
+		}
+
+	END_INTERFACE_PROXY(prefixmerge6_pm2::TypeOrExpr::IVisitor)
+
+	BEGIN_INTERFACE_PROXY_NOPARENT_SHAREDPTR(prefixmerge6_pm2::QualifiedName::IVisitor)
+		void Visit(prefixmerge6_pm2::Name* node) override
+		{
+			INVOKE_INTERFACE_PROXY(Visit, node);
+		}
+
+		void Visit(prefixmerge6_pm2::MemberName* node) override
+		{
+			INVOKE_INTERFACE_PROXY(Visit, node);
+		}
+
+	END_INTERFACE_PROXY(prefixmerge6_pm2::QualifiedName::IVisitor)
+
+#endif
+#endif
+	/// <summary>Load all reflectable AST types, only available when <b>VCZH_DEBUG_NO_REFLECTION</b> is off.</summary>
+	/// <returns>Returns true if this operation succeeded.</returns>
+	extern bool PrefixMerge6_Pm2TypeOrExprLoadTypes();
 }
 #endif

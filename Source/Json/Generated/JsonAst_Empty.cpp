@@ -6,41 +6,32 @@ Licensed under https://github.com/vczh-libraries/License
 
 #include "JsonAst_Empty.h"
 
-namespace vl
+namespace vl::glr::json::empty_visitor
 {
-	namespace glr
-	{
-		namespace json
-		{
-			namespace empty_visitor
-			{
 
 /***********************************************************************
 NodeVisitor
 ***********************************************************************/
 
-				// Visitor Members -----------------------------------
+	// Visitor Members -----------------------------------
 
-				void NodeVisitor::Visit(JsonLiteral* node)
-				{
-				}
+	void NodeVisitor::Visit(JsonLiteral* node)
+	{
+	}
 
-				void NodeVisitor::Visit(JsonString* node)
-				{
-				}
+	void NodeVisitor::Visit(JsonString* node)
+	{
+	}
 
-				void NodeVisitor::Visit(JsonNumber* node)
-				{
-				}
+	void NodeVisitor::Visit(JsonNumber* node)
+	{
+	}
 
-				void NodeVisitor::Visit(JsonArray* node)
-				{
-				}
+	void NodeVisitor::Visit(JsonArray* node)
+	{
+	}
 
-				void NodeVisitor::Visit(JsonObject* node)
-				{
-				}
-			}
-		}
+	void NodeVisitor::Visit(JsonObject* node)
+	{
 	}
 }

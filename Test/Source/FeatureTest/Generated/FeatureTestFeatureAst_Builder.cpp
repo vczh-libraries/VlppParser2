@@ -6,201 +6,198 @@ Licensed under https://github.com/vczh-libraries/License
 
 #include "FeatureTestFeatureAst_Builder.h"
 
-namespace featuretest
+namespace featuretest::builder
 {
-	namespace builder
-	{
 
 /***********************************************************************
 MakeBranchedOptionalFeature
 ***********************************************************************/
 
-		MakeBranchedOptionalFeature& MakeBranchedOptionalFeature::optional(const vl::Ptr<Plus>& value)
-		{
-			node->optional = value;
-			return *this;
-		}
+	MakeBranchedOptionalFeature& MakeBranchedOptionalFeature::optional(const vl::Ptr<Plus>& value)
+	{
+		node->optional = value;
+		return *this;
+	}
 
-		MakeBranchedOptionalFeature& MakeBranchedOptionalFeature::tails(const vl::Ptr<Plus>& value)
-		{
-			node->tails.Add(value);
-			return *this;
-		}
+	MakeBranchedOptionalFeature& MakeBranchedOptionalFeature::tails(const vl::Ptr<Plus>& value)
+	{
+		node->tails.Add(value);
+		return *this;
+	}
 
-		MakeBranchedOptionalFeature& MakeBranchedOptionalFeature::type(BranchType value)
-		{
-			node->type = value;
-			return *this;
-		}
+	MakeBranchedOptionalFeature& MakeBranchedOptionalFeature::type(BranchType value)
+	{
+		node->type = value;
+		return *this;
+	}
 
 /***********************************************************************
 MakeClFeature
 ***********************************************************************/
 
-		MakeClFeature& MakeClFeature::id(const vl::WString& value)
-		{
-			node->id.value = value;
-			return *this;
-		}
+	MakeClFeature& MakeClFeature::id(const vl::WString& value)
+	{
+		node->id.value = value;
+		return *this;
+	}
 
 /***********************************************************************
 MakeFaFeature
 ***********************************************************************/
 
-		MakeFaFeature& MakeFaFeature::fa(FieldAssignment value)
-		{
-			node->fa = value;
-			return *this;
-		}
+	MakeFaFeature& MakeFaFeature::fa(FieldAssignment value)
+	{
+		node->fa = value;
+		return *this;
+	}
 
 /***********************************************************************
 MakeFeatureToResolve
 ***********************************************************************/
 
-		MakeFeatureToResolve& MakeFeatureToResolve::candidates(const vl::Ptr<Feature>& value)
-		{
-			node->candidates.Add(value);
-			return *this;
-		}
+	MakeFeatureToResolve& MakeFeatureToResolve::candidates(const vl::Ptr<Feature>& value)
+	{
+		node->candidates.Add(value);
+		return *this;
+	}
 
 /***********************************************************************
 MakeNestedOptionalFeature
 ***********************************************************************/
 
-		MakeNestedOptionalFeature& MakeNestedOptionalFeature::optional(const vl::Ptr<Plus>& value)
-		{
-			node->optional = value;
-			return *this;
-		}
+	MakeNestedOptionalFeature& MakeNestedOptionalFeature::optional(const vl::Ptr<Plus>& value)
+	{
+		node->optional = value;
+		return *this;
+	}
 
-		MakeNestedOptionalFeature& MakeNestedOptionalFeature::tail1(const vl::Ptr<Plus>& value)
-		{
-			node->tail1 = value;
-			return *this;
-		}
+	MakeNestedOptionalFeature& MakeNestedOptionalFeature::tail1(const vl::Ptr<Plus>& value)
+	{
+		node->tail1 = value;
+		return *this;
+	}
 
-		MakeNestedOptionalFeature& MakeNestedOptionalFeature::tail2(const vl::Ptr<Plus>& value)
-		{
-			node->tail2 = value;
-			return *this;
-		}
+	MakeNestedOptionalFeature& MakeNestedOptionalFeature::tail2(const vl::Ptr<Plus>& value)
+	{
+		node->tail2 = value;
+		return *this;
+	}
 
-		MakeNestedOptionalFeature& MakeNestedOptionalFeature::tail3(const vl::Ptr<Plus>& value)
-		{
-			node->tail3 = value;
-			return *this;
-		}
+	MakeNestedOptionalFeature& MakeNestedOptionalFeature::tail3(const vl::Ptr<Plus>& value)
+	{
+		node->tail3 = value;
+		return *this;
+	}
 
-		MakeNestedOptionalFeature& MakeNestedOptionalFeature::tails(const vl::Ptr<Plus>& value)
-		{
-			node->tails.Add(value);
-			return *this;
-		}
+	MakeNestedOptionalFeature& MakeNestedOptionalFeature::tails(const vl::Ptr<Plus>& value)
+	{
+		node->tails.Add(value);
+		return *this;
+	}
 
 /***********************************************************************
 MakeOptionalFeature
 ***********************************************************************/
 
-		MakeOptionalFeature& MakeOptionalFeature::loop(const vl::Ptr<Plus>& value)
-		{
-			node->loop.Add(value);
-			return *this;
-		}
+	MakeOptionalFeature& MakeOptionalFeature::loop(const vl::Ptr<Plus>& value)
+	{
+		node->loop.Add(value);
+		return *this;
+	}
 
-		MakeOptionalFeature& MakeOptionalFeature::optional(const vl::Ptr<Plus>& value)
-		{
-			node->optional = value;
-			return *this;
-		}
+	MakeOptionalFeature& MakeOptionalFeature::optional(const vl::Ptr<Plus>& value)
+	{
+		node->optional = value;
+		return *this;
+	}
 
-		MakeOptionalFeature& MakeOptionalFeature::priority(OptionalProprity value)
-		{
-			node->priority = value;
-			return *this;
-		}
+	MakeOptionalFeature& MakeOptionalFeature::priority(OptionalProprity value)
+	{
+		node->priority = value;
+		return *this;
+	}
 
 /***********************************************************************
 MakePbaFeature
 ***********************************************************************/
 
-		MakePbaFeature& MakePbaFeature::gts(const vl::Ptr<Gt>& value)
-		{
-			node->gts.Add(value);
-			return *this;
-		}
+	MakePbaFeature& MakePbaFeature::gts(const vl::Ptr<Gt>& value)
+	{
+		node->gts.Add(value);
+		return *this;
+	}
 
-		MakePbaFeature& MakePbaFeature::lts(const vl::Ptr<Lt>& value)
-		{
-			node->lts.Add(value);
-			return *this;
-		}
+	MakePbaFeature& MakePbaFeature::lts(const vl::Ptr<Lt>& value)
+	{
+		node->lts.Add(value);
+		return *this;
+	}
 
-		MakePbaFeature& MakePbaFeature::optional(const vl::Ptr<Plus>& value)
-		{
-			node->optional = value;
-			return *this;
-		}
+	MakePbaFeature& MakePbaFeature::optional(const vl::Ptr<Plus>& value)
+	{
+		node->optional = value;
+		return *this;
+	}
 
-		MakePbaFeature& MakePbaFeature::tail(const vl::Ptr<Plus>& value)
-		{
-			node->tail = value;
-			return *this;
-		}
+	MakePbaFeature& MakePbaFeature::tail(const vl::Ptr<Plus>& value)
+	{
+		node->tail = value;
+		return *this;
+	}
 
-		MakePbaFeature& MakePbaFeature::tails(const vl::Ptr<Plus>& value)
-		{
-			node->tails.Add(value);
-			return *this;
-		}
+	MakePbaFeature& MakePbaFeature::tails(const vl::Ptr<Plus>& value)
+	{
+		node->tails.Add(value);
+		return *this;
+	}
 
 /***********************************************************************
 MakePwa1Feature
 ***********************************************************************/
 
-		MakePwa1Feature& MakePwa1Feature::gts(const vl::Ptr<Gt>& value)
-		{
-			node->gts.Add(value);
-			return *this;
-		}
+	MakePwa1Feature& MakePwa1Feature::gts(const vl::Ptr<Gt>& value)
+	{
+		node->gts.Add(value);
+		return *this;
+	}
 
-		MakePwa1Feature& MakePwa1Feature::lts(const vl::Ptr<Lt>& value)
-		{
-			node->lts.Add(value);
-			return *this;
-		}
+	MakePwa1Feature& MakePwa1Feature::lts(const vl::Ptr<Lt>& value)
+	{
+		node->lts.Add(value);
+		return *this;
+	}
 
-		MakePwa1Feature& MakePwa1Feature::pba(const vl::Ptr<Feature>& value)
-		{
-			node->pba = value;
-			return *this;
-		}
+	MakePwa1Feature& MakePwa1Feature::pba(const vl::Ptr<Feature>& value)
+	{
+		node->pba = value;
+		return *this;
+	}
 
 /***********************************************************************
 MakePwlFeature
 ***********************************************************************/
 
-		MakePwlFeature& MakePwlFeature::one(const vl::Ptr<Lt>& value)
-		{
-			node->one.Add(value);
-			return *this;
-		}
+	MakePwlFeature& MakePwlFeature::one(const vl::Ptr<Lt>& value)
+	{
+		node->one.Add(value);
+		return *this;
+	}
 
-		MakePwlFeature& MakePwlFeature::prefix(const vl::Ptr<Plus>& value)
-		{
-			node->prefix.Add(value);
-			return *this;
-		}
+	MakePwlFeature& MakePwlFeature::prefix(const vl::Ptr<Plus>& value)
+	{
+		node->prefix.Add(value);
+		return *this;
+	}
 
-		MakePwlFeature& MakePwlFeature::prev(const vl::Ptr<PwlFeature>& value)
-		{
-			node->prev = value;
-			return *this;
-		}
+	MakePwlFeature& MakePwlFeature::prev(const vl::Ptr<PwlFeature>& value)
+	{
+		node->prev = value;
+		return *this;
+	}
 
-		MakePwlFeature& MakePwlFeature::two(const vl::Ptr<Lt>& value)
-		{
-			node->two.Add(value);
-			return *this;
-		}
+	MakePwlFeature& MakePwlFeature::two(const vl::Ptr<Lt>& value)
+	{
+		node->two.Add(value);
+		return *this;
 	}
 }

@@ -284,4 +284,14 @@ namespace prefixmerge6_pm2
 	{
 		 return ParseWithTokens<prefixmerge6_pm2::TypeOrExpr, ModuleParserStates::Module>(tokens, this, codeIndex);
 	}
+
+	vl::Ptr<prefixmerge6_pm2::TypeOrExpr> ModuleParser::ParseModule_LRI_Original(const vl::WString& input, vl::vint codeIndex) const
+	{
+		 return ParseWithString<prefixmerge6_pm2::TypeOrExpr, ModuleParserStates::Module_LRI_Original>(input, this, codeIndex);
+	}
+
+	vl::Ptr<prefixmerge6_pm2::TypeOrExpr> ModuleParser::ParseModule_LRI_Original(vl::collections::List<vl::regex::RegexToken>& tokens, vl::vint codeIndex) const
+	{
+		 return ParseWithTokens<prefixmerge6_pm2::TypeOrExpr, ModuleParserStates::Module_LRI_Original>(tokens, this, codeIndex);
+	}
 }

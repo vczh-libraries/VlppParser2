@@ -27,100 +27,94 @@ Visitor Pattern Implementation
 		visitor->Visit(this);
 	}
 }
-namespace vl
+namespace vl::reflection::description
 {
-	namespace reflection
-	{
-		namespace description
-		{
 #ifndef VCZH_DEBUG_NO_REFLECTION
 
-			IMPL_TYPE_INFO_RENAME(ifelsepriority::Stat, ifelsepriority::Stat)
-			IMPL_TYPE_INFO_RENAME(ifelsepriority::Stat::IVisitor, ifelsepriority::Stat::IVisitor)
-			IMPL_TYPE_INFO_RENAME(ifelsepriority::DoStat, ifelsepriority::DoStat)
-			IMPL_TYPE_INFO_RENAME(ifelsepriority::IfStat, ifelsepriority::IfStat)
-			IMPL_TYPE_INFO_RENAME(ifelsepriority::BlockStat, ifelsepriority::BlockStat)
-			IMPL_TYPE_INFO_RENAME(ifelsepriority::Module, ifelsepriority::Module)
+	IMPL_TYPE_INFO_RENAME(ifelsepriority::Stat, ifelsepriority::Stat)
+	IMPL_TYPE_INFO_RENAME(ifelsepriority::Stat::IVisitor, ifelsepriority::Stat::IVisitor)
+	IMPL_TYPE_INFO_RENAME(ifelsepriority::DoStat, ifelsepriority::DoStat)
+	IMPL_TYPE_INFO_RENAME(ifelsepriority::IfStat, ifelsepriority::IfStat)
+	IMPL_TYPE_INFO_RENAME(ifelsepriority::BlockStat, ifelsepriority::BlockStat)
+	IMPL_TYPE_INFO_RENAME(ifelsepriority::Module, ifelsepriority::Module)
 
 #ifdef VCZH_DESCRIPTABLEOBJECT_WITH_METADATA
 
-			BEGIN_CLASS_MEMBER(ifelsepriority::Stat)
-				CLASS_MEMBER_BASE(vl::glr::ParsingAstBase)
+	BEGIN_CLASS_MEMBER(ifelsepriority::Stat)
+		CLASS_MEMBER_BASE(vl::glr::ParsingAstBase)
 
-			END_CLASS_MEMBER(ifelsepriority::Stat)
+	END_CLASS_MEMBER(ifelsepriority::Stat)
 
-			BEGIN_CLASS_MEMBER(ifelsepriority::DoStat)
-				CLASS_MEMBER_BASE(ifelsepriority::Stat)
+	BEGIN_CLASS_MEMBER(ifelsepriority::DoStat)
+		CLASS_MEMBER_BASE(ifelsepriority::Stat)
 
-				CLASS_MEMBER_CONSTRUCTOR(vl::Ptr<ifelsepriority::DoStat>(), NO_PARAMETER)
+		CLASS_MEMBER_CONSTRUCTOR(vl::Ptr<ifelsepriority::DoStat>(), NO_PARAMETER)
 
-			END_CLASS_MEMBER(ifelsepriority::DoStat)
+	END_CLASS_MEMBER(ifelsepriority::DoStat)
 
-			BEGIN_CLASS_MEMBER(ifelsepriority::IfStat)
-				CLASS_MEMBER_BASE(ifelsepriority::Stat)
+	BEGIN_CLASS_MEMBER(ifelsepriority::IfStat)
+		CLASS_MEMBER_BASE(ifelsepriority::Stat)
 
-				CLASS_MEMBER_CONSTRUCTOR(vl::Ptr<ifelsepriority::IfStat>(), NO_PARAMETER)
+		CLASS_MEMBER_CONSTRUCTOR(vl::Ptr<ifelsepriority::IfStat>(), NO_PARAMETER)
 
-				CLASS_MEMBER_FIELD(thenBranch)
-				CLASS_MEMBER_FIELD(elseBranch)
-			END_CLASS_MEMBER(ifelsepriority::IfStat)
+		CLASS_MEMBER_FIELD(thenBranch)
+		CLASS_MEMBER_FIELD(elseBranch)
+	END_CLASS_MEMBER(ifelsepriority::IfStat)
 
-			BEGIN_CLASS_MEMBER(ifelsepriority::BlockStat)
-				CLASS_MEMBER_BASE(ifelsepriority::Stat)
+	BEGIN_CLASS_MEMBER(ifelsepriority::BlockStat)
+		CLASS_MEMBER_BASE(ifelsepriority::Stat)
 
-				CLASS_MEMBER_CONSTRUCTOR(vl::Ptr<ifelsepriority::BlockStat>(), NO_PARAMETER)
+		CLASS_MEMBER_CONSTRUCTOR(vl::Ptr<ifelsepriority::BlockStat>(), NO_PARAMETER)
 
-				CLASS_MEMBER_FIELD(stats)
-			END_CLASS_MEMBER(ifelsepriority::BlockStat)
+		CLASS_MEMBER_FIELD(stats)
+	END_CLASS_MEMBER(ifelsepriority::BlockStat)
 
-			BEGIN_CLASS_MEMBER(ifelsepriority::Module)
-				CLASS_MEMBER_BASE(vl::glr::ParsingAstBase)
+	BEGIN_CLASS_MEMBER(ifelsepriority::Module)
+		CLASS_MEMBER_BASE(vl::glr::ParsingAstBase)
 
-				CLASS_MEMBER_CONSTRUCTOR(vl::Ptr<ifelsepriority::Module>(), NO_PARAMETER)
+		CLASS_MEMBER_CONSTRUCTOR(vl::Ptr<ifelsepriority::Module>(), NO_PARAMETER)
 
-				CLASS_MEMBER_FIELD(stat)
-			END_CLASS_MEMBER(ifelsepriority::Module)
+		CLASS_MEMBER_FIELD(stat)
+	END_CLASS_MEMBER(ifelsepriority::Module)
 
-			BEGIN_INTERFACE_MEMBER(ifelsepriority::Stat::IVisitor)
-				CLASS_MEMBER_METHOD_OVERLOAD(Visit, {L"node"}, void(ifelsepriority::Stat::IVisitor::*)(ifelsepriority::DoStat* node))
-				CLASS_MEMBER_METHOD_OVERLOAD(Visit, {L"node"}, void(ifelsepriority::Stat::IVisitor::*)(ifelsepriority::IfStat* node))
-				CLASS_MEMBER_METHOD_OVERLOAD(Visit, {L"node"}, void(ifelsepriority::Stat::IVisitor::*)(ifelsepriority::BlockStat* node))
-			END_INTERFACE_MEMBER(ifelsepriority::Stat)
+	BEGIN_INTERFACE_MEMBER(ifelsepriority::Stat::IVisitor)
+		CLASS_MEMBER_METHOD_OVERLOAD(Visit, {L"node"}, void(ifelsepriority::Stat::IVisitor::*)(ifelsepriority::DoStat* node))
+		CLASS_MEMBER_METHOD_OVERLOAD(Visit, {L"node"}, void(ifelsepriority::Stat::IVisitor::*)(ifelsepriority::IfStat* node))
+		CLASS_MEMBER_METHOD_OVERLOAD(Visit, {L"node"}, void(ifelsepriority::Stat::IVisitor::*)(ifelsepriority::BlockStat* node))
+	END_INTERFACE_MEMBER(ifelsepriority::Stat)
 
 #endif
 
 #ifdef VCZH_DESCRIPTABLEOBJECT_WITH_METADATA
-			class IfElsePriorityStatAstTypeLoader : public vl::Object, public ITypeLoader
-			{
-			public:
-				void Load(ITypeManager* manager)
-				{
-					ADD_TYPE_INFO(ifelsepriority::Stat)
-					ADD_TYPE_INFO(ifelsepriority::Stat::IVisitor)
-					ADD_TYPE_INFO(ifelsepriority::DoStat)
-					ADD_TYPE_INFO(ifelsepriority::IfStat)
-					ADD_TYPE_INFO(ifelsepriority::BlockStat)
-					ADD_TYPE_INFO(ifelsepriority::Module)
-				}
-
-				void Unload(ITypeManager* manager)
-				{
-				}
-			};
-#endif
-#endif
-
-			bool IfElsePriorityStatAstLoadTypes()
-			{
-#ifdef VCZH_DESCRIPTABLEOBJECT_WITH_METADATA
-				if (auto manager = GetGlobalTypeManager())
-				{
-					auto loader = Ptr(new IfElsePriorityStatAstTypeLoader);
-					return manager->AddTypeLoader(loader);
-				}
-#endif
-				return false;
-			}
+	class IfElsePriorityStatAstTypeLoader : public vl::Object, public ITypeLoader
+	{
+	public:
+		void Load(ITypeManager* manager)
+		{
+			ADD_TYPE_INFO(ifelsepriority::Stat)
+			ADD_TYPE_INFO(ifelsepriority::Stat::IVisitor)
+			ADD_TYPE_INFO(ifelsepriority::DoStat)
+			ADD_TYPE_INFO(ifelsepriority::IfStat)
+			ADD_TYPE_INFO(ifelsepriority::BlockStat)
+			ADD_TYPE_INFO(ifelsepriority::Module)
 		}
+
+		void Unload(ITypeManager* manager)
+		{
+		}
+	};
+#endif
+#endif
+
+	bool IfElsePriorityStatAstLoadTypes()
+	{
+#ifdef VCZH_DESCRIPTABLEOBJECT_WITH_METADATA
+		if (auto manager = GetGlobalTypeManager())
+		{
+			auto loader = Ptr(new IfElsePriorityStatAstTypeLoader);
+			return manager->AddTypeLoader(loader);
+		}
+#endif
+		return false;
 	}
 }

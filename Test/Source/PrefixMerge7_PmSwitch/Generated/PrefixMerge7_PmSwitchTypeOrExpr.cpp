@@ -97,258 +97,252 @@ Visitor Pattern Implementation
 		visitor->Visit(this);
 	}
 }
-namespace vl
+namespace vl::reflection::description
 {
-	namespace reflection
-	{
-		namespace description
-		{
 #ifndef VCZH_DEBUG_NO_REFLECTION
 
-			IMPL_TYPE_INFO_RENAME(prefixmerge7_pmswitch::TypeOrExpr, prefixmerge7_pmswitch::TypeOrExpr)
-			IMPL_TYPE_INFO_RENAME(prefixmerge7_pmswitch::TypeOrExpr::IVisitor, prefixmerge7_pmswitch::TypeOrExpr::IVisitor)
-			IMPL_TYPE_INFO_RENAME(prefixmerge7_pmswitch::QualifiedName, prefixmerge7_pmswitch::QualifiedName)
-			IMPL_TYPE_INFO_RENAME(prefixmerge7_pmswitch::QualifiedName::IVisitor, prefixmerge7_pmswitch::QualifiedName::IVisitor)
-			IMPL_TYPE_INFO_RENAME(prefixmerge7_pmswitch::Name, prefixmerge7_pmswitch::Name)
-			IMPL_TYPE_INFO_RENAME(prefixmerge7_pmswitch::MemberName, prefixmerge7_pmswitch::MemberName)
-			IMPL_TYPE_INFO_RENAME(prefixmerge7_pmswitch::GenericQualifiedName, prefixmerge7_pmswitch::GenericQualifiedName)
-			IMPL_TYPE_INFO_RENAME(prefixmerge7_pmswitch::GenericQualifiedName::IVisitor, prefixmerge7_pmswitch::GenericQualifiedName::IVisitor)
-			IMPL_TYPE_INFO_RENAME(prefixmerge7_pmswitch::GenericName, prefixmerge7_pmswitch::GenericName)
-			IMPL_TYPE_INFO_RENAME(prefixmerge7_pmswitch::GenericMemberName, prefixmerge7_pmswitch::GenericMemberName)
-			IMPL_TYPE_INFO_RENAME(prefixmerge7_pmswitch::CallExpr, prefixmerge7_pmswitch::CallExpr)
-			IMPL_TYPE_INFO_RENAME(prefixmerge7_pmswitch::CtorExpr, prefixmerge7_pmswitch::CtorExpr)
-			IMPL_TYPE_INFO_RENAME(prefixmerge7_pmswitch::MulExpr, prefixmerge7_pmswitch::MulExpr)
-			IMPL_TYPE_INFO_RENAME(prefixmerge7_pmswitch::LtExpr, prefixmerge7_pmswitch::LtExpr)
-			IMPL_TYPE_INFO_RENAME(prefixmerge7_pmswitch::GtExpr, prefixmerge7_pmswitch::GtExpr)
-			IMPL_TYPE_INFO_RENAME(prefixmerge7_pmswitch::ThrowExpr, prefixmerge7_pmswitch::ThrowExpr)
-			IMPL_TYPE_INFO_RENAME(prefixmerge7_pmswitch::CommaExpr, prefixmerge7_pmswitch::CommaExpr)
-			IMPL_TYPE_INFO_RENAME(prefixmerge7_pmswitch::ConstType, prefixmerge7_pmswitch::ConstType)
-			IMPL_TYPE_INFO_RENAME(prefixmerge7_pmswitch::PointerType, prefixmerge7_pmswitch::PointerType)
-			IMPL_TYPE_INFO_RENAME(prefixmerge7_pmswitch::FunctionType, prefixmerge7_pmswitch::FunctionType)
-			IMPL_TYPE_INFO_RENAME(prefixmerge7_pmswitch::TypeOrExprToResolve, prefixmerge7_pmswitch::TypeOrExprToResolve)
+	IMPL_TYPE_INFO_RENAME(prefixmerge7_pmswitch::TypeOrExpr, prefixmerge7_pmswitch::TypeOrExpr)
+	IMPL_TYPE_INFO_RENAME(prefixmerge7_pmswitch::TypeOrExpr::IVisitor, prefixmerge7_pmswitch::TypeOrExpr::IVisitor)
+	IMPL_TYPE_INFO_RENAME(prefixmerge7_pmswitch::QualifiedName, prefixmerge7_pmswitch::QualifiedName)
+	IMPL_TYPE_INFO_RENAME(prefixmerge7_pmswitch::QualifiedName::IVisitor, prefixmerge7_pmswitch::QualifiedName::IVisitor)
+	IMPL_TYPE_INFO_RENAME(prefixmerge7_pmswitch::Name, prefixmerge7_pmswitch::Name)
+	IMPL_TYPE_INFO_RENAME(prefixmerge7_pmswitch::MemberName, prefixmerge7_pmswitch::MemberName)
+	IMPL_TYPE_INFO_RENAME(prefixmerge7_pmswitch::GenericQualifiedName, prefixmerge7_pmswitch::GenericQualifiedName)
+	IMPL_TYPE_INFO_RENAME(prefixmerge7_pmswitch::GenericQualifiedName::IVisitor, prefixmerge7_pmswitch::GenericQualifiedName::IVisitor)
+	IMPL_TYPE_INFO_RENAME(prefixmerge7_pmswitch::GenericName, prefixmerge7_pmswitch::GenericName)
+	IMPL_TYPE_INFO_RENAME(prefixmerge7_pmswitch::GenericMemberName, prefixmerge7_pmswitch::GenericMemberName)
+	IMPL_TYPE_INFO_RENAME(prefixmerge7_pmswitch::CallExpr, prefixmerge7_pmswitch::CallExpr)
+	IMPL_TYPE_INFO_RENAME(prefixmerge7_pmswitch::CtorExpr, prefixmerge7_pmswitch::CtorExpr)
+	IMPL_TYPE_INFO_RENAME(prefixmerge7_pmswitch::MulExpr, prefixmerge7_pmswitch::MulExpr)
+	IMPL_TYPE_INFO_RENAME(prefixmerge7_pmswitch::LtExpr, prefixmerge7_pmswitch::LtExpr)
+	IMPL_TYPE_INFO_RENAME(prefixmerge7_pmswitch::GtExpr, prefixmerge7_pmswitch::GtExpr)
+	IMPL_TYPE_INFO_RENAME(prefixmerge7_pmswitch::ThrowExpr, prefixmerge7_pmswitch::ThrowExpr)
+	IMPL_TYPE_INFO_RENAME(prefixmerge7_pmswitch::CommaExpr, prefixmerge7_pmswitch::CommaExpr)
+	IMPL_TYPE_INFO_RENAME(prefixmerge7_pmswitch::ConstType, prefixmerge7_pmswitch::ConstType)
+	IMPL_TYPE_INFO_RENAME(prefixmerge7_pmswitch::PointerType, prefixmerge7_pmswitch::PointerType)
+	IMPL_TYPE_INFO_RENAME(prefixmerge7_pmswitch::FunctionType, prefixmerge7_pmswitch::FunctionType)
+	IMPL_TYPE_INFO_RENAME(prefixmerge7_pmswitch::TypeOrExprToResolve, prefixmerge7_pmswitch::TypeOrExprToResolve)
 
 #ifdef VCZH_DESCRIPTABLEOBJECT_WITH_METADATA
 
-			BEGIN_CLASS_MEMBER(prefixmerge7_pmswitch::TypeOrExpr)
-				CLASS_MEMBER_BASE(vl::glr::ParsingAstBase)
+	BEGIN_CLASS_MEMBER(prefixmerge7_pmswitch::TypeOrExpr)
+		CLASS_MEMBER_BASE(vl::glr::ParsingAstBase)
 
-			END_CLASS_MEMBER(prefixmerge7_pmswitch::TypeOrExpr)
+	END_CLASS_MEMBER(prefixmerge7_pmswitch::TypeOrExpr)
 
-			BEGIN_CLASS_MEMBER(prefixmerge7_pmswitch::QualifiedName)
-				CLASS_MEMBER_BASE(prefixmerge7_pmswitch::TypeOrExpr)
+	BEGIN_CLASS_MEMBER(prefixmerge7_pmswitch::QualifiedName)
+		CLASS_MEMBER_BASE(prefixmerge7_pmswitch::TypeOrExpr)
 
-			END_CLASS_MEMBER(prefixmerge7_pmswitch::QualifiedName)
+	END_CLASS_MEMBER(prefixmerge7_pmswitch::QualifiedName)
 
-			BEGIN_CLASS_MEMBER(prefixmerge7_pmswitch::Name)
-				CLASS_MEMBER_BASE(prefixmerge7_pmswitch::QualifiedName)
+	BEGIN_CLASS_MEMBER(prefixmerge7_pmswitch::Name)
+		CLASS_MEMBER_BASE(prefixmerge7_pmswitch::QualifiedName)
 
-				CLASS_MEMBER_CONSTRUCTOR(vl::Ptr<prefixmerge7_pmswitch::Name>(), NO_PARAMETER)
+		CLASS_MEMBER_CONSTRUCTOR(vl::Ptr<prefixmerge7_pmswitch::Name>(), NO_PARAMETER)
 
-				CLASS_MEMBER_FIELD(name)
-			END_CLASS_MEMBER(prefixmerge7_pmswitch::Name)
+		CLASS_MEMBER_FIELD(name)
+	END_CLASS_MEMBER(prefixmerge7_pmswitch::Name)
 
-			BEGIN_CLASS_MEMBER(prefixmerge7_pmswitch::MemberName)
-				CLASS_MEMBER_BASE(prefixmerge7_pmswitch::QualifiedName)
+	BEGIN_CLASS_MEMBER(prefixmerge7_pmswitch::MemberName)
+		CLASS_MEMBER_BASE(prefixmerge7_pmswitch::QualifiedName)
 
-				CLASS_MEMBER_CONSTRUCTOR(vl::Ptr<prefixmerge7_pmswitch::MemberName>(), NO_PARAMETER)
+		CLASS_MEMBER_CONSTRUCTOR(vl::Ptr<prefixmerge7_pmswitch::MemberName>(), NO_PARAMETER)
 
-				CLASS_MEMBER_FIELD(parent)
-				CLASS_MEMBER_FIELD(member)
-			END_CLASS_MEMBER(prefixmerge7_pmswitch::MemberName)
+		CLASS_MEMBER_FIELD(parent)
+		CLASS_MEMBER_FIELD(member)
+	END_CLASS_MEMBER(prefixmerge7_pmswitch::MemberName)
 
-			BEGIN_CLASS_MEMBER(prefixmerge7_pmswitch::GenericQualifiedName)
-				CLASS_MEMBER_BASE(prefixmerge7_pmswitch::QualifiedName)
+	BEGIN_CLASS_MEMBER(prefixmerge7_pmswitch::GenericQualifiedName)
+		CLASS_MEMBER_BASE(prefixmerge7_pmswitch::QualifiedName)
 
-				CLASS_MEMBER_FIELD(args)
-			END_CLASS_MEMBER(prefixmerge7_pmswitch::GenericQualifiedName)
+		CLASS_MEMBER_FIELD(args)
+	END_CLASS_MEMBER(prefixmerge7_pmswitch::GenericQualifiedName)
 
-			BEGIN_CLASS_MEMBER(prefixmerge7_pmswitch::GenericName)
-				CLASS_MEMBER_BASE(prefixmerge7_pmswitch::GenericQualifiedName)
+	BEGIN_CLASS_MEMBER(prefixmerge7_pmswitch::GenericName)
+		CLASS_MEMBER_BASE(prefixmerge7_pmswitch::GenericQualifiedName)
 
-				CLASS_MEMBER_CONSTRUCTOR(vl::Ptr<prefixmerge7_pmswitch::GenericName>(), NO_PARAMETER)
+		CLASS_MEMBER_CONSTRUCTOR(vl::Ptr<prefixmerge7_pmswitch::GenericName>(), NO_PARAMETER)
 
-				CLASS_MEMBER_FIELD(name)
-			END_CLASS_MEMBER(prefixmerge7_pmswitch::GenericName)
+		CLASS_MEMBER_FIELD(name)
+	END_CLASS_MEMBER(prefixmerge7_pmswitch::GenericName)
 
-			BEGIN_CLASS_MEMBER(prefixmerge7_pmswitch::GenericMemberName)
-				CLASS_MEMBER_BASE(prefixmerge7_pmswitch::GenericQualifiedName)
+	BEGIN_CLASS_MEMBER(prefixmerge7_pmswitch::GenericMemberName)
+		CLASS_MEMBER_BASE(prefixmerge7_pmswitch::GenericQualifiedName)
 
-				CLASS_MEMBER_CONSTRUCTOR(vl::Ptr<prefixmerge7_pmswitch::GenericMemberName>(), NO_PARAMETER)
+		CLASS_MEMBER_CONSTRUCTOR(vl::Ptr<prefixmerge7_pmswitch::GenericMemberName>(), NO_PARAMETER)
 
-				CLASS_MEMBER_FIELD(parent)
-				CLASS_MEMBER_FIELD(member)
-			END_CLASS_MEMBER(prefixmerge7_pmswitch::GenericMemberName)
+		CLASS_MEMBER_FIELD(parent)
+		CLASS_MEMBER_FIELD(member)
+	END_CLASS_MEMBER(prefixmerge7_pmswitch::GenericMemberName)
 
-			BEGIN_CLASS_MEMBER(prefixmerge7_pmswitch::CallExpr)
-				CLASS_MEMBER_BASE(prefixmerge7_pmswitch::TypeOrExpr)
+	BEGIN_CLASS_MEMBER(prefixmerge7_pmswitch::CallExpr)
+		CLASS_MEMBER_BASE(prefixmerge7_pmswitch::TypeOrExpr)
 
-				CLASS_MEMBER_CONSTRUCTOR(vl::Ptr<prefixmerge7_pmswitch::CallExpr>(), NO_PARAMETER)
+		CLASS_MEMBER_CONSTRUCTOR(vl::Ptr<prefixmerge7_pmswitch::CallExpr>(), NO_PARAMETER)
 
-				CLASS_MEMBER_FIELD(func)
-				CLASS_MEMBER_FIELD(args)
-			END_CLASS_MEMBER(prefixmerge7_pmswitch::CallExpr)
+		CLASS_MEMBER_FIELD(func)
+		CLASS_MEMBER_FIELD(args)
+	END_CLASS_MEMBER(prefixmerge7_pmswitch::CallExpr)
 
-			BEGIN_CLASS_MEMBER(prefixmerge7_pmswitch::CtorExpr)
-				CLASS_MEMBER_BASE(prefixmerge7_pmswitch::TypeOrExpr)
+	BEGIN_CLASS_MEMBER(prefixmerge7_pmswitch::CtorExpr)
+		CLASS_MEMBER_BASE(prefixmerge7_pmswitch::TypeOrExpr)
 
-				CLASS_MEMBER_CONSTRUCTOR(vl::Ptr<prefixmerge7_pmswitch::CtorExpr>(), NO_PARAMETER)
+		CLASS_MEMBER_CONSTRUCTOR(vl::Ptr<prefixmerge7_pmswitch::CtorExpr>(), NO_PARAMETER)
 
-				CLASS_MEMBER_FIELD(type)
-				CLASS_MEMBER_FIELD(args)
-			END_CLASS_MEMBER(prefixmerge7_pmswitch::CtorExpr)
+		CLASS_MEMBER_FIELD(type)
+		CLASS_MEMBER_FIELD(args)
+	END_CLASS_MEMBER(prefixmerge7_pmswitch::CtorExpr)
 
-			BEGIN_CLASS_MEMBER(prefixmerge7_pmswitch::MulExpr)
-				CLASS_MEMBER_BASE(prefixmerge7_pmswitch::TypeOrExpr)
+	BEGIN_CLASS_MEMBER(prefixmerge7_pmswitch::MulExpr)
+		CLASS_MEMBER_BASE(prefixmerge7_pmswitch::TypeOrExpr)
 
-				CLASS_MEMBER_CONSTRUCTOR(vl::Ptr<prefixmerge7_pmswitch::MulExpr>(), NO_PARAMETER)
+		CLASS_MEMBER_CONSTRUCTOR(vl::Ptr<prefixmerge7_pmswitch::MulExpr>(), NO_PARAMETER)
 
-				CLASS_MEMBER_FIELD(first)
-				CLASS_MEMBER_FIELD(second)
-			END_CLASS_MEMBER(prefixmerge7_pmswitch::MulExpr)
+		CLASS_MEMBER_FIELD(first)
+		CLASS_MEMBER_FIELD(second)
+	END_CLASS_MEMBER(prefixmerge7_pmswitch::MulExpr)
 
-			BEGIN_CLASS_MEMBER(prefixmerge7_pmswitch::LtExpr)
-				CLASS_MEMBER_BASE(prefixmerge7_pmswitch::TypeOrExpr)
+	BEGIN_CLASS_MEMBER(prefixmerge7_pmswitch::LtExpr)
+		CLASS_MEMBER_BASE(prefixmerge7_pmswitch::TypeOrExpr)
 
-				CLASS_MEMBER_CONSTRUCTOR(vl::Ptr<prefixmerge7_pmswitch::LtExpr>(), NO_PARAMETER)
+		CLASS_MEMBER_CONSTRUCTOR(vl::Ptr<prefixmerge7_pmswitch::LtExpr>(), NO_PARAMETER)
 
-				CLASS_MEMBER_FIELD(first)
-				CLASS_MEMBER_FIELD(second)
-			END_CLASS_MEMBER(prefixmerge7_pmswitch::LtExpr)
+		CLASS_MEMBER_FIELD(first)
+		CLASS_MEMBER_FIELD(second)
+	END_CLASS_MEMBER(prefixmerge7_pmswitch::LtExpr)
 
-			BEGIN_CLASS_MEMBER(prefixmerge7_pmswitch::GtExpr)
-				CLASS_MEMBER_BASE(prefixmerge7_pmswitch::TypeOrExpr)
+	BEGIN_CLASS_MEMBER(prefixmerge7_pmswitch::GtExpr)
+		CLASS_MEMBER_BASE(prefixmerge7_pmswitch::TypeOrExpr)
 
-				CLASS_MEMBER_CONSTRUCTOR(vl::Ptr<prefixmerge7_pmswitch::GtExpr>(), NO_PARAMETER)
+		CLASS_MEMBER_CONSTRUCTOR(vl::Ptr<prefixmerge7_pmswitch::GtExpr>(), NO_PARAMETER)
 
-				CLASS_MEMBER_FIELD(first)
-				CLASS_MEMBER_FIELD(second)
-			END_CLASS_MEMBER(prefixmerge7_pmswitch::GtExpr)
+		CLASS_MEMBER_FIELD(first)
+		CLASS_MEMBER_FIELD(second)
+	END_CLASS_MEMBER(prefixmerge7_pmswitch::GtExpr)
 
-			BEGIN_CLASS_MEMBER(prefixmerge7_pmswitch::ThrowExpr)
-				CLASS_MEMBER_BASE(prefixmerge7_pmswitch::TypeOrExpr)
+	BEGIN_CLASS_MEMBER(prefixmerge7_pmswitch::ThrowExpr)
+		CLASS_MEMBER_BASE(prefixmerge7_pmswitch::TypeOrExpr)
 
-				CLASS_MEMBER_CONSTRUCTOR(vl::Ptr<prefixmerge7_pmswitch::ThrowExpr>(), NO_PARAMETER)
+		CLASS_MEMBER_CONSTRUCTOR(vl::Ptr<prefixmerge7_pmswitch::ThrowExpr>(), NO_PARAMETER)
 
-				CLASS_MEMBER_FIELD(arg)
-			END_CLASS_MEMBER(prefixmerge7_pmswitch::ThrowExpr)
+		CLASS_MEMBER_FIELD(arg)
+	END_CLASS_MEMBER(prefixmerge7_pmswitch::ThrowExpr)
 
-			BEGIN_CLASS_MEMBER(prefixmerge7_pmswitch::CommaExpr)
-				CLASS_MEMBER_BASE(prefixmerge7_pmswitch::TypeOrExpr)
+	BEGIN_CLASS_MEMBER(prefixmerge7_pmswitch::CommaExpr)
+		CLASS_MEMBER_BASE(prefixmerge7_pmswitch::TypeOrExpr)
 
-				CLASS_MEMBER_CONSTRUCTOR(vl::Ptr<prefixmerge7_pmswitch::CommaExpr>(), NO_PARAMETER)
+		CLASS_MEMBER_CONSTRUCTOR(vl::Ptr<prefixmerge7_pmswitch::CommaExpr>(), NO_PARAMETER)
 
-				CLASS_MEMBER_FIELD(first)
-				CLASS_MEMBER_FIELD(second)
-			END_CLASS_MEMBER(prefixmerge7_pmswitch::CommaExpr)
+		CLASS_MEMBER_FIELD(first)
+		CLASS_MEMBER_FIELD(second)
+	END_CLASS_MEMBER(prefixmerge7_pmswitch::CommaExpr)
 
-			BEGIN_CLASS_MEMBER(prefixmerge7_pmswitch::ConstType)
-				CLASS_MEMBER_BASE(prefixmerge7_pmswitch::TypeOrExpr)
+	BEGIN_CLASS_MEMBER(prefixmerge7_pmswitch::ConstType)
+		CLASS_MEMBER_BASE(prefixmerge7_pmswitch::TypeOrExpr)
 
-				CLASS_MEMBER_CONSTRUCTOR(vl::Ptr<prefixmerge7_pmswitch::ConstType>(), NO_PARAMETER)
+		CLASS_MEMBER_CONSTRUCTOR(vl::Ptr<prefixmerge7_pmswitch::ConstType>(), NO_PARAMETER)
 
-				CLASS_MEMBER_FIELD(type)
-			END_CLASS_MEMBER(prefixmerge7_pmswitch::ConstType)
+		CLASS_MEMBER_FIELD(type)
+	END_CLASS_MEMBER(prefixmerge7_pmswitch::ConstType)
 
-			BEGIN_CLASS_MEMBER(prefixmerge7_pmswitch::PointerType)
-				CLASS_MEMBER_BASE(prefixmerge7_pmswitch::TypeOrExpr)
+	BEGIN_CLASS_MEMBER(prefixmerge7_pmswitch::PointerType)
+		CLASS_MEMBER_BASE(prefixmerge7_pmswitch::TypeOrExpr)
 
-				CLASS_MEMBER_CONSTRUCTOR(vl::Ptr<prefixmerge7_pmswitch::PointerType>(), NO_PARAMETER)
+		CLASS_MEMBER_CONSTRUCTOR(vl::Ptr<prefixmerge7_pmswitch::PointerType>(), NO_PARAMETER)
 
-				CLASS_MEMBER_FIELD(type)
-			END_CLASS_MEMBER(prefixmerge7_pmswitch::PointerType)
+		CLASS_MEMBER_FIELD(type)
+	END_CLASS_MEMBER(prefixmerge7_pmswitch::PointerType)
 
-			BEGIN_CLASS_MEMBER(prefixmerge7_pmswitch::FunctionType)
-				CLASS_MEMBER_BASE(prefixmerge7_pmswitch::TypeOrExpr)
+	BEGIN_CLASS_MEMBER(prefixmerge7_pmswitch::FunctionType)
+		CLASS_MEMBER_BASE(prefixmerge7_pmswitch::TypeOrExpr)
 
-				CLASS_MEMBER_CONSTRUCTOR(vl::Ptr<prefixmerge7_pmswitch::FunctionType>(), NO_PARAMETER)
+		CLASS_MEMBER_CONSTRUCTOR(vl::Ptr<prefixmerge7_pmswitch::FunctionType>(), NO_PARAMETER)
 
-				CLASS_MEMBER_FIELD(returnType)
-				CLASS_MEMBER_FIELD(args)
-			END_CLASS_MEMBER(prefixmerge7_pmswitch::FunctionType)
+		CLASS_MEMBER_FIELD(returnType)
+		CLASS_MEMBER_FIELD(args)
+	END_CLASS_MEMBER(prefixmerge7_pmswitch::FunctionType)
 
-			BEGIN_CLASS_MEMBER(prefixmerge7_pmswitch::TypeOrExprToResolve)
-				CLASS_MEMBER_BASE(prefixmerge7_pmswitch::TypeOrExpr)
+	BEGIN_CLASS_MEMBER(prefixmerge7_pmswitch::TypeOrExprToResolve)
+		CLASS_MEMBER_BASE(prefixmerge7_pmswitch::TypeOrExpr)
 
-				CLASS_MEMBER_CONSTRUCTOR(vl::Ptr<prefixmerge7_pmswitch::TypeOrExprToResolve>(), NO_PARAMETER)
+		CLASS_MEMBER_CONSTRUCTOR(vl::Ptr<prefixmerge7_pmswitch::TypeOrExprToResolve>(), NO_PARAMETER)
 
-				CLASS_MEMBER_FIELD(candidates)
-			END_CLASS_MEMBER(prefixmerge7_pmswitch::TypeOrExprToResolve)
+		CLASS_MEMBER_FIELD(candidates)
+	END_CLASS_MEMBER(prefixmerge7_pmswitch::TypeOrExprToResolve)
 
-			BEGIN_INTERFACE_MEMBER(prefixmerge7_pmswitch::TypeOrExpr::IVisitor)
-				CLASS_MEMBER_METHOD_OVERLOAD(Visit, {L"node"}, void(prefixmerge7_pmswitch::TypeOrExpr::IVisitor::*)(prefixmerge7_pmswitch::TypeOrExprToResolve* node))
-				CLASS_MEMBER_METHOD_OVERLOAD(Visit, {L"node"}, void(prefixmerge7_pmswitch::TypeOrExpr::IVisitor::*)(prefixmerge7_pmswitch::QualifiedName* node))
-				CLASS_MEMBER_METHOD_OVERLOAD(Visit, {L"node"}, void(prefixmerge7_pmswitch::TypeOrExpr::IVisitor::*)(prefixmerge7_pmswitch::CallExpr* node))
-				CLASS_MEMBER_METHOD_OVERLOAD(Visit, {L"node"}, void(prefixmerge7_pmswitch::TypeOrExpr::IVisitor::*)(prefixmerge7_pmswitch::CtorExpr* node))
-				CLASS_MEMBER_METHOD_OVERLOAD(Visit, {L"node"}, void(prefixmerge7_pmswitch::TypeOrExpr::IVisitor::*)(prefixmerge7_pmswitch::MulExpr* node))
-				CLASS_MEMBER_METHOD_OVERLOAD(Visit, {L"node"}, void(prefixmerge7_pmswitch::TypeOrExpr::IVisitor::*)(prefixmerge7_pmswitch::LtExpr* node))
-				CLASS_MEMBER_METHOD_OVERLOAD(Visit, {L"node"}, void(prefixmerge7_pmswitch::TypeOrExpr::IVisitor::*)(prefixmerge7_pmswitch::GtExpr* node))
-				CLASS_MEMBER_METHOD_OVERLOAD(Visit, {L"node"}, void(prefixmerge7_pmswitch::TypeOrExpr::IVisitor::*)(prefixmerge7_pmswitch::ThrowExpr* node))
-				CLASS_MEMBER_METHOD_OVERLOAD(Visit, {L"node"}, void(prefixmerge7_pmswitch::TypeOrExpr::IVisitor::*)(prefixmerge7_pmswitch::CommaExpr* node))
-				CLASS_MEMBER_METHOD_OVERLOAD(Visit, {L"node"}, void(prefixmerge7_pmswitch::TypeOrExpr::IVisitor::*)(prefixmerge7_pmswitch::ConstType* node))
-				CLASS_MEMBER_METHOD_OVERLOAD(Visit, {L"node"}, void(prefixmerge7_pmswitch::TypeOrExpr::IVisitor::*)(prefixmerge7_pmswitch::PointerType* node))
-				CLASS_MEMBER_METHOD_OVERLOAD(Visit, {L"node"}, void(prefixmerge7_pmswitch::TypeOrExpr::IVisitor::*)(prefixmerge7_pmswitch::FunctionType* node))
-			END_INTERFACE_MEMBER(prefixmerge7_pmswitch::TypeOrExpr)
+	BEGIN_INTERFACE_MEMBER(prefixmerge7_pmswitch::TypeOrExpr::IVisitor)
+		CLASS_MEMBER_METHOD_OVERLOAD(Visit, {L"node"}, void(prefixmerge7_pmswitch::TypeOrExpr::IVisitor::*)(prefixmerge7_pmswitch::TypeOrExprToResolve* node))
+		CLASS_MEMBER_METHOD_OVERLOAD(Visit, {L"node"}, void(prefixmerge7_pmswitch::TypeOrExpr::IVisitor::*)(prefixmerge7_pmswitch::QualifiedName* node))
+		CLASS_MEMBER_METHOD_OVERLOAD(Visit, {L"node"}, void(prefixmerge7_pmswitch::TypeOrExpr::IVisitor::*)(prefixmerge7_pmswitch::CallExpr* node))
+		CLASS_MEMBER_METHOD_OVERLOAD(Visit, {L"node"}, void(prefixmerge7_pmswitch::TypeOrExpr::IVisitor::*)(prefixmerge7_pmswitch::CtorExpr* node))
+		CLASS_MEMBER_METHOD_OVERLOAD(Visit, {L"node"}, void(prefixmerge7_pmswitch::TypeOrExpr::IVisitor::*)(prefixmerge7_pmswitch::MulExpr* node))
+		CLASS_MEMBER_METHOD_OVERLOAD(Visit, {L"node"}, void(prefixmerge7_pmswitch::TypeOrExpr::IVisitor::*)(prefixmerge7_pmswitch::LtExpr* node))
+		CLASS_MEMBER_METHOD_OVERLOAD(Visit, {L"node"}, void(prefixmerge7_pmswitch::TypeOrExpr::IVisitor::*)(prefixmerge7_pmswitch::GtExpr* node))
+		CLASS_MEMBER_METHOD_OVERLOAD(Visit, {L"node"}, void(prefixmerge7_pmswitch::TypeOrExpr::IVisitor::*)(prefixmerge7_pmswitch::ThrowExpr* node))
+		CLASS_MEMBER_METHOD_OVERLOAD(Visit, {L"node"}, void(prefixmerge7_pmswitch::TypeOrExpr::IVisitor::*)(prefixmerge7_pmswitch::CommaExpr* node))
+		CLASS_MEMBER_METHOD_OVERLOAD(Visit, {L"node"}, void(prefixmerge7_pmswitch::TypeOrExpr::IVisitor::*)(prefixmerge7_pmswitch::ConstType* node))
+		CLASS_MEMBER_METHOD_OVERLOAD(Visit, {L"node"}, void(prefixmerge7_pmswitch::TypeOrExpr::IVisitor::*)(prefixmerge7_pmswitch::PointerType* node))
+		CLASS_MEMBER_METHOD_OVERLOAD(Visit, {L"node"}, void(prefixmerge7_pmswitch::TypeOrExpr::IVisitor::*)(prefixmerge7_pmswitch::FunctionType* node))
+	END_INTERFACE_MEMBER(prefixmerge7_pmswitch::TypeOrExpr)
 
-			BEGIN_INTERFACE_MEMBER(prefixmerge7_pmswitch::QualifiedName::IVisitor)
-				CLASS_MEMBER_METHOD_OVERLOAD(Visit, {L"node"}, void(prefixmerge7_pmswitch::QualifiedName::IVisitor::*)(prefixmerge7_pmswitch::Name* node))
-				CLASS_MEMBER_METHOD_OVERLOAD(Visit, {L"node"}, void(prefixmerge7_pmswitch::QualifiedName::IVisitor::*)(prefixmerge7_pmswitch::MemberName* node))
-				CLASS_MEMBER_METHOD_OVERLOAD(Visit, {L"node"}, void(prefixmerge7_pmswitch::QualifiedName::IVisitor::*)(prefixmerge7_pmswitch::GenericQualifiedName* node))
-			END_INTERFACE_MEMBER(prefixmerge7_pmswitch::QualifiedName)
+	BEGIN_INTERFACE_MEMBER(prefixmerge7_pmswitch::QualifiedName::IVisitor)
+		CLASS_MEMBER_METHOD_OVERLOAD(Visit, {L"node"}, void(prefixmerge7_pmswitch::QualifiedName::IVisitor::*)(prefixmerge7_pmswitch::Name* node))
+		CLASS_MEMBER_METHOD_OVERLOAD(Visit, {L"node"}, void(prefixmerge7_pmswitch::QualifiedName::IVisitor::*)(prefixmerge7_pmswitch::MemberName* node))
+		CLASS_MEMBER_METHOD_OVERLOAD(Visit, {L"node"}, void(prefixmerge7_pmswitch::QualifiedName::IVisitor::*)(prefixmerge7_pmswitch::GenericQualifiedName* node))
+	END_INTERFACE_MEMBER(prefixmerge7_pmswitch::QualifiedName)
 
-			BEGIN_INTERFACE_MEMBER(prefixmerge7_pmswitch::GenericQualifiedName::IVisitor)
-				CLASS_MEMBER_METHOD_OVERLOAD(Visit, {L"node"}, void(prefixmerge7_pmswitch::GenericQualifiedName::IVisitor::*)(prefixmerge7_pmswitch::GenericName* node))
-				CLASS_MEMBER_METHOD_OVERLOAD(Visit, {L"node"}, void(prefixmerge7_pmswitch::GenericQualifiedName::IVisitor::*)(prefixmerge7_pmswitch::GenericMemberName* node))
-			END_INTERFACE_MEMBER(prefixmerge7_pmswitch::GenericQualifiedName)
+	BEGIN_INTERFACE_MEMBER(prefixmerge7_pmswitch::GenericQualifiedName::IVisitor)
+		CLASS_MEMBER_METHOD_OVERLOAD(Visit, {L"node"}, void(prefixmerge7_pmswitch::GenericQualifiedName::IVisitor::*)(prefixmerge7_pmswitch::GenericName* node))
+		CLASS_MEMBER_METHOD_OVERLOAD(Visit, {L"node"}, void(prefixmerge7_pmswitch::GenericQualifiedName::IVisitor::*)(prefixmerge7_pmswitch::GenericMemberName* node))
+	END_INTERFACE_MEMBER(prefixmerge7_pmswitch::GenericQualifiedName)
 
 #endif
 
 #ifdef VCZH_DESCRIPTABLEOBJECT_WITH_METADATA
-			class PrefixMerge7_PmSwitchTypeOrExprTypeLoader : public vl::Object, public ITypeLoader
-			{
-			public:
-				void Load(ITypeManager* manager)
-				{
-					ADD_TYPE_INFO(prefixmerge7_pmswitch::TypeOrExpr)
-					ADD_TYPE_INFO(prefixmerge7_pmswitch::TypeOrExpr::IVisitor)
-					ADD_TYPE_INFO(prefixmerge7_pmswitch::QualifiedName)
-					ADD_TYPE_INFO(prefixmerge7_pmswitch::QualifiedName::IVisitor)
-					ADD_TYPE_INFO(prefixmerge7_pmswitch::Name)
-					ADD_TYPE_INFO(prefixmerge7_pmswitch::MemberName)
-					ADD_TYPE_INFO(prefixmerge7_pmswitch::GenericQualifiedName)
-					ADD_TYPE_INFO(prefixmerge7_pmswitch::GenericQualifiedName::IVisitor)
-					ADD_TYPE_INFO(prefixmerge7_pmswitch::GenericName)
-					ADD_TYPE_INFO(prefixmerge7_pmswitch::GenericMemberName)
-					ADD_TYPE_INFO(prefixmerge7_pmswitch::CallExpr)
-					ADD_TYPE_INFO(prefixmerge7_pmswitch::CtorExpr)
-					ADD_TYPE_INFO(prefixmerge7_pmswitch::MulExpr)
-					ADD_TYPE_INFO(prefixmerge7_pmswitch::LtExpr)
-					ADD_TYPE_INFO(prefixmerge7_pmswitch::GtExpr)
-					ADD_TYPE_INFO(prefixmerge7_pmswitch::ThrowExpr)
-					ADD_TYPE_INFO(prefixmerge7_pmswitch::CommaExpr)
-					ADD_TYPE_INFO(prefixmerge7_pmswitch::ConstType)
-					ADD_TYPE_INFO(prefixmerge7_pmswitch::PointerType)
-					ADD_TYPE_INFO(prefixmerge7_pmswitch::FunctionType)
-					ADD_TYPE_INFO(prefixmerge7_pmswitch::TypeOrExprToResolve)
-				}
-
-				void Unload(ITypeManager* manager)
-				{
-				}
-			};
-#endif
-#endif
-
-			bool PrefixMerge7_PmSwitchTypeOrExprLoadTypes()
-			{
-#ifdef VCZH_DESCRIPTABLEOBJECT_WITH_METADATA
-				if (auto manager = GetGlobalTypeManager())
-				{
-					auto loader = Ptr(new PrefixMerge7_PmSwitchTypeOrExprTypeLoader);
-					return manager->AddTypeLoader(loader);
-				}
-#endif
-				return false;
-			}
+	class PrefixMerge7_PmSwitchTypeOrExprTypeLoader : public vl::Object, public ITypeLoader
+	{
+	public:
+		void Load(ITypeManager* manager)
+		{
+			ADD_TYPE_INFO(prefixmerge7_pmswitch::TypeOrExpr)
+			ADD_TYPE_INFO(prefixmerge7_pmswitch::TypeOrExpr::IVisitor)
+			ADD_TYPE_INFO(prefixmerge7_pmswitch::QualifiedName)
+			ADD_TYPE_INFO(prefixmerge7_pmswitch::QualifiedName::IVisitor)
+			ADD_TYPE_INFO(prefixmerge7_pmswitch::Name)
+			ADD_TYPE_INFO(prefixmerge7_pmswitch::MemberName)
+			ADD_TYPE_INFO(prefixmerge7_pmswitch::GenericQualifiedName)
+			ADD_TYPE_INFO(prefixmerge7_pmswitch::GenericQualifiedName::IVisitor)
+			ADD_TYPE_INFO(prefixmerge7_pmswitch::GenericName)
+			ADD_TYPE_INFO(prefixmerge7_pmswitch::GenericMemberName)
+			ADD_TYPE_INFO(prefixmerge7_pmswitch::CallExpr)
+			ADD_TYPE_INFO(prefixmerge7_pmswitch::CtorExpr)
+			ADD_TYPE_INFO(prefixmerge7_pmswitch::MulExpr)
+			ADD_TYPE_INFO(prefixmerge7_pmswitch::LtExpr)
+			ADD_TYPE_INFO(prefixmerge7_pmswitch::GtExpr)
+			ADD_TYPE_INFO(prefixmerge7_pmswitch::ThrowExpr)
+			ADD_TYPE_INFO(prefixmerge7_pmswitch::CommaExpr)
+			ADD_TYPE_INFO(prefixmerge7_pmswitch::ConstType)
+			ADD_TYPE_INFO(prefixmerge7_pmswitch::PointerType)
+			ADD_TYPE_INFO(prefixmerge7_pmswitch::FunctionType)
+			ADD_TYPE_INFO(prefixmerge7_pmswitch::TypeOrExprToResolve)
 		}
+
+		void Unload(ITypeManager* manager)
+		{
+		}
+	};
+#endif
+#endif
+
+	bool PrefixMerge7_PmSwitchTypeOrExprLoadTypes()
+	{
+#ifdef VCZH_DESCRIPTABLEOBJECT_WITH_METADATA
+		if (auto manager = GetGlobalTypeManager())
+		{
+			auto loader = Ptr(new PrefixMerge7_PmSwitchTypeOrExprTypeLoader);
+			return manager->AddTypeLoader(loader);
+		}
+#endif
+		return false;
 	}
 }

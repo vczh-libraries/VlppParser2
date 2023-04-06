@@ -9,35 +9,32 @@ Licensed under https://github.com/vczh-libraries/License
 
 #include "IfElseAmbiguityOnStat2StatAst.h"
 
-namespace ifelseambiguityonstat2
+namespace ifelseambiguityonstat2::json_visitor
 {
-	namespace json_visitor
+	/// <summary>A JSON visitor, overriding all abstract methods with AST to JSON serialization code.</summary>
+	class StatAstVisitor
+		: public vl::glr::JsonVisitorBase
+		, protected virtual Stat::IVisitor
 	{
-		/// <summary>A JSON visitor, overriding all abstract methods with AST to JSON serialization code.</summary>
-		class StatAstVisitor
-			: public vl::glr::JsonVisitorBase
-			, protected virtual Stat::IVisitor
-		{
-		protected:
-			virtual void PrintFields(BlockStat* node);
-			virtual void PrintFields(DoStat* node);
-			virtual void PrintFields(IfStat* node);
-			virtual void PrintFields(Module* node);
-			virtual void PrintFields(Stat* node);
-			virtual void PrintFields(StatToResolve* node);
+	protected:
+		virtual void PrintFields(BlockStat* node);
+		virtual void PrintFields(DoStat* node);
+		virtual void PrintFields(IfStat* node);
+		virtual void PrintFields(Module* node);
+		virtual void PrintFields(Stat* node);
+		virtual void PrintFields(StatToResolve* node);
 
-		protected:
-			void Visit(StatToResolve* node) override;
-			void Visit(DoStat* node) override;
-			void Visit(IfStat* node) override;
-			void Visit(BlockStat* node) override;
+	protected:
+		void Visit(StatToResolve* node) override;
+		void Visit(DoStat* node) override;
+		void Visit(IfStat* node) override;
+		void Visit(BlockStat* node) override;
 
-		public:
-			StatAstVisitor(vl::stream::StreamWriter& _writer);
+	public:
+		StatAstVisitor(vl::stream::StreamWriter& _writer);
 
-			void Print(Stat* node);
-			void Print(Module* node);
-		};
-	}
+		void Print(Stat* node);
+		void Print(Module* node);
+	};
 }
 #endif

@@ -6,190 +6,174 @@ Licensed under https://github.com/vczh-libraries/License
 
 #include "ParserGenTypeAst_Json.h"
 
-namespace vl
+namespace vl::glr::parsergen::json_visitor
 {
-	namespace glr
+	void TypeAstVisitor::PrintFields(GlrAstFile* node)
 	{
-		namespace parsergen
+		BeginField(L"types");
+		BeginArray();
+		for (auto&& listItem : node->types)
 		{
-			namespace json_visitor
-			{
-				void TypeAstVisitor::PrintFields(GlrAstFile* node)
-				{
-					BeginField(L"types");
-					BeginArray();
-					for (auto&& listItem : node->types)
-					{
-						BeginArrayItem();
-						Print(listItem.Obj());
-						EndArrayItem();
-					}
-					EndArray();
-					EndField();
-				}
-				void TypeAstVisitor::PrintFields(GlrClass* node)
-				{
-					BeginField(L"ambiguity");
-					switch (node->ambiguity)
-					{
-					case vl::glr::parsergen::GlrClassAmbiguity::No:
-						WriteString(L"No");
-						break;
-					case vl::glr::parsergen::GlrClassAmbiguity::Yes:
-						WriteString(L"Yes");
-						break;
-					default:
-						WriteNull();
-					}
-					EndField();
-					BeginField(L"baseClass");
-					WriteToken(node->baseClass);
-					EndField();
-					BeginField(L"props");
-					BeginArray();
-					for (auto&& listItem : node->props)
-					{
-						BeginArrayItem();
-						Print(listItem.Obj());
-						EndArrayItem();
-					}
-					EndArray();
-					EndField();
-				}
-				void TypeAstVisitor::PrintFields(GlrClassProp* node)
-				{
-					BeginField(L"name");
-					WriteToken(node->name);
-					EndField();
-					BeginField(L"propType");
-					switch (node->propType)
-					{
-					case vl::glr::parsergen::GlrPropType::Array:
-						WriteString(L"Array");
-						break;
-					case vl::glr::parsergen::GlrPropType::Token:
-						WriteString(L"Token");
-						break;
-					case vl::glr::parsergen::GlrPropType::Type:
-						WriteString(L"Type");
-						break;
-					default:
-						WriteNull();
-					}
-					EndField();
-					BeginField(L"propTypeName");
-					WriteToken(node->propTypeName);
-					EndField();
-				}
-				void TypeAstVisitor::PrintFields(GlrEnum* node)
-				{
-					BeginField(L"items");
-					BeginArray();
-					for (auto&& listItem : node->items)
-					{
-						BeginArrayItem();
-						Print(listItem.Obj());
-						EndArrayItem();
-					}
-					EndArray();
-					EndField();
-				}
-				void TypeAstVisitor::PrintFields(GlrEnumItem* node)
-				{
-					BeginField(L"name");
-					WriteToken(node->name);
-					EndField();
-				}
-				void TypeAstVisitor::PrintFields(GlrType* node)
-				{
-					BeginField(L"name");
-					WriteToken(node->name);
-					EndField();
-				}
-
-				void TypeAstVisitor::Visit(GlrEnum* node)
-				{
-					if (!node)
-					{
-						WriteNull();
-						return;
-					}
-					BeginObject();
-					WriteType(L"Enum", node);
-					PrintFields(static_cast<GlrType*>(node));
-					PrintFields(static_cast<GlrEnum*>(node));
-					EndObject();
-				}
-
-				void TypeAstVisitor::Visit(GlrClass* node)
-				{
-					if (!node)
-					{
-						WriteNull();
-						return;
-					}
-					BeginObject();
-					WriteType(L"Class", node);
-					PrintFields(static_cast<GlrType*>(node));
-					PrintFields(static_cast<GlrClass*>(node));
-					EndObject();
-				}
-
-				TypeAstVisitor::TypeAstVisitor(vl::stream::StreamWriter& _writer)
-					: vl::glr::JsonVisitorBase(_writer)
-				{
-				}
-
-				void TypeAstVisitor::Print(GlrType* node)
-				{
-					if (!node)
-					{
-						WriteNull();
-						return;
-					}
-					node->Accept(static_cast<GlrType::IVisitor*>(this));
-				}
-
-				void TypeAstVisitor::Print(GlrEnumItem* node)
-				{
-					if (!node)
-					{
-						WriteNull();
-						return;
-					}
-					BeginObject();
-					WriteType(L"EnumItem", node);
-					PrintFields(static_cast<GlrEnumItem*>(node));
-					EndObject();
-				}
-
-				void TypeAstVisitor::Print(GlrClassProp* node)
-				{
-					if (!node)
-					{
-						WriteNull();
-						return;
-					}
-					BeginObject();
-					WriteType(L"ClassProp", node);
-					PrintFields(static_cast<GlrClassProp*>(node));
-					EndObject();
-				}
-
-				void TypeAstVisitor::Print(GlrAstFile* node)
-				{
-					if (!node)
-					{
-						WriteNull();
-						return;
-					}
-					BeginObject();
-					WriteType(L"AstFile", node);
-					PrintFields(static_cast<GlrAstFile*>(node));
-					EndObject();
-				}
-
-			}
+			BeginArrayItem();
+			Print(listItem.Obj());
+			EndArrayItem();
 		}
+		EndArray();
+		EndField();
 	}
+	void TypeAstVisitor::PrintFields(GlrClass* node)
+	{
+		BeginField(L"attAmbiguous");
+		WriteToken(node->attAmbiguous);
+		EndField();
+		BeginField(L"baseClass");
+		WriteToken(node->baseClass);
+		EndField();
+		BeginField(L"props");
+		BeginArray();
+		for (auto&& listItem : node->props)
+		{
+			BeginArrayItem();
+			Print(listItem.Obj());
+			EndArrayItem();
+		}
+		EndArray();
+		EndField();
+	}
+	void TypeAstVisitor::PrintFields(GlrClassProp* node)
+	{
+		BeginField(L"name");
+		WriteToken(node->name);
+		EndField();
+		BeginField(L"propType");
+		switch (node->propType)
+		{
+		case vl::glr::parsergen::GlrPropType::Array:
+			WriteString(L"Array");
+			break;
+		case vl::glr::parsergen::GlrPropType::Token:
+			WriteString(L"Token");
+			break;
+		case vl::glr::parsergen::GlrPropType::Type:
+			WriteString(L"Type");
+			break;
+		default:
+			WriteNull();
+		}
+		EndField();
+		BeginField(L"propTypeName");
+		WriteToken(node->propTypeName);
+		EndField();
+	}
+	void TypeAstVisitor::PrintFields(GlrEnum* node)
+	{
+		BeginField(L"items");
+		BeginArray();
+		for (auto&& listItem : node->items)
+		{
+			BeginArrayItem();
+			Print(listItem.Obj());
+			EndArrayItem();
+		}
+		EndArray();
+		EndField();
+	}
+	void TypeAstVisitor::PrintFields(GlrEnumItem* node)
+	{
+		BeginField(L"name");
+		WriteToken(node->name);
+		EndField();
+	}
+	void TypeAstVisitor::PrintFields(GlrType* node)
+	{
+		BeginField(L"attPublic");
+		WriteToken(node->attPublic);
+		EndField();
+		BeginField(L"name");
+		WriteToken(node->name);
+		EndField();
+	}
+
+	void TypeAstVisitor::Visit(GlrEnum* node)
+	{
+		if (!node)
+		{
+			WriteNull();
+			return;
+		}
+		BeginObject();
+		WriteType(L"Enum", node);
+		PrintFields(static_cast<GlrType*>(node));
+		PrintFields(static_cast<GlrEnum*>(node));
+		EndObject();
+	}
+
+	void TypeAstVisitor::Visit(GlrClass* node)
+	{
+		if (!node)
+		{
+			WriteNull();
+			return;
+		}
+		BeginObject();
+		WriteType(L"Class", node);
+		PrintFields(static_cast<GlrType*>(node));
+		PrintFields(static_cast<GlrClass*>(node));
+		EndObject();
+	}
+
+	TypeAstVisitor::TypeAstVisitor(vl::stream::StreamWriter& _writer)
+		: vl::glr::JsonVisitorBase(_writer)
+	{
+	}
+
+	void TypeAstVisitor::Print(GlrType* node)
+	{
+		if (!node)
+		{
+			WriteNull();
+			return;
+		}
+		node->Accept(static_cast<GlrType::IVisitor*>(this));
+	}
+
+	void TypeAstVisitor::Print(GlrEnumItem* node)
+	{
+		if (!node)
+		{
+			WriteNull();
+			return;
+		}
+		BeginObject();
+		WriteType(L"EnumItem", node);
+		PrintFields(static_cast<GlrEnumItem*>(node));
+		EndObject();
+	}
+
+	void TypeAstVisitor::Print(GlrClassProp* node)
+	{
+		if (!node)
+		{
+			WriteNull();
+			return;
+		}
+		BeginObject();
+		WriteType(L"ClassProp", node);
+		PrintFields(static_cast<GlrClassProp*>(node));
+		EndObject();
+	}
+
+	void TypeAstVisitor::Print(GlrAstFile* node)
+	{
+		if (!node)
+		{
+			WriteNull();
+			return;
+		}
+		BeginObject();
+		WriteType(L"AstFile", node);
+		PrintFields(static_cast<GlrAstFile*>(node));
+		EndObject();
+	}
+
 }

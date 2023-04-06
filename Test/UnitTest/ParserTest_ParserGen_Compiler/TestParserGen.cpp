@@ -169,17 +169,6 @@ TEST_FILE
 					[&](vint32_t index) { auto token = lexerManager.Tokens()[lexerManager.TokenOrder()[index]]; return token->displayText == L"" ? token->Name() : L"\"" + token->displayText + L"\""; }
 					);
 
-				{
-					auto rule = syntaxManager.Rules()[ruleName];
-					syntaxManager.parsableRules.Add(rule);
-					syntaxManager.ruleTypes.Add(rule, wlower(parserName) + L"::" + rule->ruleType->Name());
-				}
-				if (parserName == L"Calculator")
-				{
-					auto rule = syntaxManager.Rules()[L"Exp"];
-					syntaxManager.parsableRules.Add(rule);
-					syntaxManager.ruleTypes.Add(rule, wlower(parserName) + L"::" + rule->ruleType->Name());
-				}
 				WriteSyntaxFiles(syntaxManager, executable, metadata, output, files);
 			});
 

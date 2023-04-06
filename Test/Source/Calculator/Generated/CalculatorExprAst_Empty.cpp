@@ -6,62 +6,59 @@ Licensed under https://github.com/vczh-libraries/License
 
 #include "CalculatorExprAst_Empty.h"
 
-namespace calculator
+namespace calculator::empty_visitor
 {
-	namespace empty_visitor
-	{
 
 /***********************************************************************
 ExprVisitor
 ***********************************************************************/
 
-		// Visitor Members -----------------------------------
+	// Visitor Members -----------------------------------
 
-		void ExprVisitor::Visit(NumExpr* node)
-		{
-		}
+	void ExprVisitor::Visit(NumExpr* node)
+	{
+	}
 
-		void ExprVisitor::Visit(Ref* node)
-		{
-		}
+	void ExprVisitor::Visit(Ref* node)
+	{
+	}
 
-		void ExprVisitor::Visit(True* node)
-		{
-		}
+	void ExprVisitor::Visit(True* node)
+	{
+	}
 
-		void ExprVisitor::Visit(False* node)
-		{
-		}
+	void ExprVisitor::Visit(False* node)
+	{
+	}
 
-		void ExprVisitor::Visit(Func* node)
-		{
-		}
+	void ExprVisitor::Visit(Func* node)
+	{
+	}
 
-		void ExprVisitor::Visit(Call* node)
-		{
-		}
+	void ExprVisitor::Visit(Call* node)
+	{
+	}
 
-		void ExprVisitor::Visit(Expandable* node)
-		{
-			Dispatch(node);
-		}
+	void ExprVisitor::Visit(Expandable* node)
+	{
+		Dispatch(node);
+	}
 
 /***********************************************************************
 ExpandableVisitor
 ***********************************************************************/
 
-		// Visitor Members -----------------------------------
+	// Visitor Members -----------------------------------
 
-		void ExpandableVisitor::Visit(LetExpr* node)
-		{
-		}
+	void ExpandableVisitor::Visit(LetExpr* node)
+	{
+	}
 
-		void ExpandableVisitor::Visit(Unary* node)
-		{
-		}
+	void ExpandableVisitor::Visit(Unary* node)
+	{
+	}
 
-		void ExpandableVisitor::Visit(Binary* node)
-		{
-		}
+	void ExpandableVisitor::Visit(Binary* node)
+	{
 	}
 }

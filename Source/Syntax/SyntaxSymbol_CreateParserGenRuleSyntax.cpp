@@ -1,4 +1,5 @@
 #include "SyntaxSymbolWriter.h"
+#include "../../Source/Ast/AstSymbol.h"
 #include "../../Source/ParserGen_Generated/ParserGen_Assembler.h"
 #include "../../Source/ParserGen_Generated/ParserGen_Lexer.h"
 
@@ -18,7 +19,7 @@ namespace vl
 CreateParserGenRuleSyntax
 ***********************************************************************/
 
-			void CreateParserGenRuleSyntax(SyntaxSymbolManager& manager)
+			void CreateParserGenRuleSyntax(AstSymbolManager& ast, SyntaxSymbolManager& manager)
 			{
 				manager.name = L"RuleParser";
 
@@ -54,8 +55,8 @@ CreateParserGenRuleSyntax
 				_lriConfig->isPartial = true;
 				_lriContinuationBody->isPartial = true;
 
-				manager.parsableRules.Add(_file);
-				manager.ruleTypes.Add(_file, L"vl::glr::parsergen::GlrSyntaxFile");
+				_file->isParser = true;
+				_file->ruleType = dynamic_cast<AstClassSymbol*>(ast.Symbols()[L"SyntaxFile"]);
 
 				using T = ParserGenTokens;
 				using C = ParserGenClasses;
@@ -249,8 +250,8 @@ CreateParserGenRuleSyntax
 				// File
 				///////////////////////////////////////////////////////////////////////////////////
 
-				// ID:name {"::=" Clause:clauses} ";" as Rule
-				Clause{ _rule } = create(tok(T::ID, F::Rule_name) + opt(tok(T::COLON) + tok(T::ID, F::Rule_type)) + loop(tok(T::INFER) + rule(_clause, F::Rule_clauses)) + tok(T::SEMICOLON), C::Rule);
+				// ["@public"] ["@parser"] ID:name {"::=" Clause:clauses} ";" as Rule
+				Clause{ _rule } = create(opt(tok(T::ATT_PUBLIC, F::Rule_attParser)) + opt(tok(T::ATT_PARSER, F::Rule_attParser)) + tok(T::ID, F::Rule_name) + opt(tok(T::COLON) + tok(T::ID, F::Rule_type)) + loop(tok(T::INFER) + rule(_clause, F::Rule_clauses)) + tok(T::SEMICOLON), C::Rule);
 
 				// [Switches] Rule:rules {Rule:rules} as SyntaxFile
 				Clause{ _file } = create(opt(prule(_switches)) + rule(_rule, F::SyntaxFile_rules) + loop(rule(_rule, F::SyntaxFile_rules)), C::SyntaxFile);

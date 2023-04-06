@@ -6,51 +6,48 @@ Licensed under https://github.com/vczh-libraries/License
 
 #include "FeatureTestFeatureAst_Empty.h"
 
-namespace featuretest
+namespace featuretest::empty_visitor
 {
-	namespace empty_visitor
-	{
 
 /***********************************************************************
 FeatureVisitor
 ***********************************************************************/
 
-		// Visitor Members -----------------------------------
+	// Visitor Members -----------------------------------
 
-		void FeatureVisitor::Visit(FeatureToResolve* node)
-		{
-		}
+	void FeatureVisitor::Visit(FeatureToResolve* node)
+	{
+	}
 
-		void FeatureVisitor::Visit(OptionalFeature* node)
-		{
-		}
+	void FeatureVisitor::Visit(OptionalFeature* node)
+	{
+	}
 
-		void FeatureVisitor::Visit(NestedOptionalFeature* node)
-		{
-		}
+	void FeatureVisitor::Visit(NestedOptionalFeature* node)
+	{
+	}
 
-		void FeatureVisitor::Visit(BranchedOptionalFeature* node)
-		{
-		}
+	void FeatureVisitor::Visit(BranchedOptionalFeature* node)
+	{
+	}
 
-		void FeatureVisitor::Visit(PbaFeature* node)
-		{
-		}
+	void FeatureVisitor::Visit(PbaFeature* node)
+	{
+	}
 
-		void FeatureVisitor::Visit(Pwa1Feature* node)
-		{
-		}
+	void FeatureVisitor::Visit(Pwa1Feature* node)
+	{
+	}
 
-		void FeatureVisitor::Visit(PwlFeature* node)
-		{
-		}
+	void FeatureVisitor::Visit(PwlFeature* node)
+	{
+	}
 
-		void FeatureVisitor::Visit(ClFeature* node)
-		{
-		}
+	void FeatureVisitor::Visit(ClFeature* node)
+	{
+	}
 
-		void FeatureVisitor::Visit(FaFeature* node)
-		{
-		}
+	void FeatureVisitor::Visit(FaFeature* node)
+	{
 	}
 }

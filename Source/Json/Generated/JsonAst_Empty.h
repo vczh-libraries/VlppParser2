@@ -9,31 +9,22 @@ Licensed under https://github.com/vczh-libraries/License
 
 #include "JsonAst.h"
 
-namespace vl
+namespace vl::glr::json::empty_visitor
 {
-	namespace glr
+	/// <summary>An empty visitor, overriding all abstract methods with empty implementations.</summary>
+	class NodeVisitor : public vl::Object, public JsonNode::IVisitor
 	{
-		namespace json
-		{
-			namespace empty_visitor
-			{
-				/// <summary>An empty visitor, overriding all abstract methods with empty implementations.</summary>
-				class NodeVisitor : public vl::Object, public JsonNode::IVisitor
-				{
-				protected:
-					// Dispatch (virtual) --------------------------------
+	protected:
+		// Dispatch (virtual) --------------------------------
 
-				public:
-					// Visitor Members -----------------------------------
-					void Visit(JsonLiteral* node) override;
-					void Visit(JsonString* node) override;
-					void Visit(JsonNumber* node) override;
-					void Visit(JsonArray* node) override;
-					void Visit(JsonObject* node) override;
-				};
+	public:
+		// Visitor Members -----------------------------------
+		void Visit(JsonLiteral* node) override;
+		void Visit(JsonString* node) override;
+		void Visit(JsonNumber* node) override;
+		void Visit(JsonArray* node) override;
+		void Visit(JsonObject* node) override;
+	};
 
-			}
-		}
-	}
 }
 #endif

@@ -47,6 +47,8 @@ namespace prefixmerge5_pm
 
 		vl::Ptr<prefixmerge5_pm::TypeOrExpr> ParseModule(const vl::WString& input, vl::vint codeIndex = -1) const;
 		vl::Ptr<prefixmerge5_pm::TypeOrExpr> ParseModule(vl::collections::List<vl::regex::RegexToken>& tokens, vl::vint codeIndex = -1) const;
+		vl::Ptr<prefixmerge5_pm::TypeOrExpr> ParseModule_LRI_Original(const vl::WString& input, vl::vint codeIndex = -1) const;
+		vl::Ptr<prefixmerge5_pm::TypeOrExpr> ParseModule_LRI_Original(vl::collections::List<vl::regex::RegexToken>& tokens, vl::vint codeIndex = -1) const;
 	};
 }
 #endif

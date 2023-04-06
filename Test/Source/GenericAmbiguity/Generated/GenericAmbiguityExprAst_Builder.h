@@ -9,63 +9,60 @@ Licensed under https://github.com/vczh-libraries/License
 
 #include "GenericAmbiguityExprAst.h"
 
-namespace genericambiguity
+namespace genericambiguity::builder
 {
-	namespace builder
+	class MakeBinaryExpr : public vl::glr::ParsingAstBuilder<BinaryExpr>
 	{
-		class MakeBinaryExpr : public vl::glr::ParsingAstBuilder<BinaryExpr>
-		{
-		public:
-			MakeBinaryExpr& left(const vl::Ptr<Expr>& value);
-			MakeBinaryExpr& op(BinaryOp value);
-			MakeBinaryExpr& right(const vl::Ptr<Expr>& value);
-		};
+	public:
+		MakeBinaryExpr& left(const vl::Ptr<Expr>& value);
+		MakeBinaryExpr& op(BinaryOp value);
+		MakeBinaryExpr& right(const vl::Ptr<Expr>& value);
+	};
 
-		class MakeCallExpr : public vl::glr::ParsingAstBuilder<CallExpr>
-		{
-		public:
-			MakeCallExpr& args(const vl::Ptr<Expr>& value);
-			MakeCallExpr& func(const vl::Ptr<Expr>& value);
-		};
+	class MakeCallExpr : public vl::glr::ParsingAstBuilder<CallExpr>
+	{
+	public:
+		MakeCallExpr& args(const vl::Ptr<Expr>& value);
+		MakeCallExpr& func(const vl::Ptr<Expr>& value);
+	};
 
-		class MakeDecrementExpr : public vl::glr::ParsingAstBuilder<DecrementExpr>
-		{
-		public:
-			MakeDecrementExpr& expr(const vl::Ptr<Expr>& value);
-		};
+	class MakeDecrementExpr : public vl::glr::ParsingAstBuilder<DecrementExpr>
+	{
+	public:
+		MakeDecrementExpr& expr(const vl::Ptr<Expr>& value);
+	};
 
-		class MakeExprToResolve : public vl::glr::ParsingAstBuilder<ExprToResolve>
-		{
-		public:
-			MakeExprToResolve& candidates(const vl::Ptr<Expr>& value);
-		};
+	class MakeExprToResolve : public vl::glr::ParsingAstBuilder<ExprToResolve>
+	{
+	public:
+		MakeExprToResolve& candidates(const vl::Ptr<Expr>& value);
+	};
 
-		class MakeGenericExpr : public vl::glr::ParsingAstBuilder<GenericExpr>
-		{
-		public:
-			MakeGenericExpr& args(const vl::Ptr<Expr>& value);
-			MakeGenericExpr& name(const vl::WString& value);
-		};
+	class MakeGenericExpr : public vl::glr::ParsingAstBuilder<GenericExpr>
+	{
+	public:
+		MakeGenericExpr& args(const vl::Ptr<Expr>& value);
+		MakeGenericExpr& name(const vl::WString& value);
+	};
 
-		class MakeModule : public vl::glr::ParsingAstBuilder<Module>
-		{
-		public:
-			MakeModule& expr(const vl::Ptr<Expr>& value);
-		};
+	class MakeModule : public vl::glr::ParsingAstBuilder<Module>
+	{
+	public:
+		MakeModule& expr(const vl::Ptr<Expr>& value);
+	};
 
-		class MakePostfixExpr : public vl::glr::ParsingAstBuilder<PostfixExpr>
-		{
-		public:
-			MakePostfixExpr& expr(const vl::Ptr<Expr>& value);
-			MakePostfixExpr& op(PostfixOp value);
-		};
+	class MakePostfixExpr : public vl::glr::ParsingAstBuilder<PostfixExpr>
+	{
+	public:
+		MakePostfixExpr& expr(const vl::Ptr<Expr>& value);
+		MakePostfixExpr& op(PostfixOp value);
+	};
 
-		class MakeRefExpr : public vl::glr::ParsingAstBuilder<RefExpr>
-		{
-		public:
-			MakeRefExpr& name(const vl::WString& value);
-		};
+	class MakeRefExpr : public vl::glr::ParsingAstBuilder<RefExpr>
+	{
+	public:
+		MakeRefExpr& name(const vl::WString& value);
+	};
 
-	}
 }
 #endif

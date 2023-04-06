@@ -6,45 +6,42 @@ Licensed under https://github.com/vczh-libraries/License
 
 #include "IfElseSwitchStatAst_Builder.h"
 
-namespace ifelseswitch
+namespace ifelseswitch::builder
 {
-	namespace builder
-	{
 
 /***********************************************************************
 MakeBlockStat
 ***********************************************************************/
 
-		MakeBlockStat& MakeBlockStat::stats(const vl::Ptr<Stat>& value)
-		{
-			node->stats.Add(value);
-			return *this;
-		}
+	MakeBlockStat& MakeBlockStat::stats(const vl::Ptr<Stat>& value)
+	{
+		node->stats.Add(value);
+		return *this;
+	}
 
 /***********************************************************************
 MakeIfStat
 ***********************************************************************/
 
-		MakeIfStat& MakeIfStat::elseBranch(const vl::Ptr<Stat>& value)
-		{
-			node->elseBranch = value;
-			return *this;
-		}
+	MakeIfStat& MakeIfStat::elseBranch(const vl::Ptr<Stat>& value)
+	{
+		node->elseBranch = value;
+		return *this;
+	}
 
-		MakeIfStat& MakeIfStat::thenBranch(const vl::Ptr<Stat>& value)
-		{
-			node->thenBranch = value;
-			return *this;
-		}
+	MakeIfStat& MakeIfStat::thenBranch(const vl::Ptr<Stat>& value)
+	{
+		node->thenBranch = value;
+		return *this;
+	}
 
 /***********************************************************************
 MakeModule
 ***********************************************************************/
 
-		MakeModule& MakeModule::stat(const vl::Ptr<Stat>& value)
-		{
-			node->stat = value;
-			return *this;
-		}
+	MakeModule& MakeModule::stat(const vl::Ptr<Stat>& value)
+	{
+		node->stat = value;
+		return *this;
 	}
 }

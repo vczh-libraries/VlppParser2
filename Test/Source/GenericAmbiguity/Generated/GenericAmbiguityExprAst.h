@@ -123,72 +123,66 @@ namespace genericambiguity
 		void Accept(Expr::IVisitor* visitor) override;
 	};
 }
-namespace vl
+namespace vl::reflection::description
 {
-	namespace reflection
-	{
-		namespace description
-		{
 #ifndef VCZH_DEBUG_NO_REFLECTION
-			DECL_TYPE_INFO(genericambiguity::Expr)
-			DECL_TYPE_INFO(genericambiguity::Expr::IVisitor)
-			DECL_TYPE_INFO(genericambiguity::RefExpr)
-			DECL_TYPE_INFO(genericambiguity::GenericExpr)
-			DECL_TYPE_INFO(genericambiguity::CallExpr)
-			DECL_TYPE_INFO(genericambiguity::PostfixOp)
-			DECL_TYPE_INFO(genericambiguity::PostfixExpr)
-			DECL_TYPE_INFO(genericambiguity::DecrementExpr)
-			DECL_TYPE_INFO(genericambiguity::BinaryOp)
-			DECL_TYPE_INFO(genericambiguity::BinaryExpr)
-			DECL_TYPE_INFO(genericambiguity::Module)
-			DECL_TYPE_INFO(genericambiguity::ExprToResolve)
+	DECL_TYPE_INFO(genericambiguity::Expr)
+	DECL_TYPE_INFO(genericambiguity::Expr::IVisitor)
+	DECL_TYPE_INFO(genericambiguity::RefExpr)
+	DECL_TYPE_INFO(genericambiguity::GenericExpr)
+	DECL_TYPE_INFO(genericambiguity::CallExpr)
+	DECL_TYPE_INFO(genericambiguity::PostfixOp)
+	DECL_TYPE_INFO(genericambiguity::PostfixExpr)
+	DECL_TYPE_INFO(genericambiguity::DecrementExpr)
+	DECL_TYPE_INFO(genericambiguity::BinaryOp)
+	DECL_TYPE_INFO(genericambiguity::BinaryExpr)
+	DECL_TYPE_INFO(genericambiguity::Module)
+	DECL_TYPE_INFO(genericambiguity::ExprToResolve)
 
 #ifdef VCZH_DESCRIPTABLEOBJECT_WITH_METADATA
 
-			BEGIN_INTERFACE_PROXY_NOPARENT_SHAREDPTR(genericambiguity::Expr::IVisitor)
-				void Visit(genericambiguity::ExprToResolve* node) override
-				{
-					INVOKE_INTERFACE_PROXY(Visit, node);
-				}
-
-				void Visit(genericambiguity::RefExpr* node) override
-				{
-					INVOKE_INTERFACE_PROXY(Visit, node);
-				}
-
-				void Visit(genericambiguity::GenericExpr* node) override
-				{
-					INVOKE_INTERFACE_PROXY(Visit, node);
-				}
-
-				void Visit(genericambiguity::CallExpr* node) override
-				{
-					INVOKE_INTERFACE_PROXY(Visit, node);
-				}
-
-				void Visit(genericambiguity::PostfixExpr* node) override
-				{
-					INVOKE_INTERFACE_PROXY(Visit, node);
-				}
-
-				void Visit(genericambiguity::DecrementExpr* node) override
-				{
-					INVOKE_INTERFACE_PROXY(Visit, node);
-				}
-
-				void Visit(genericambiguity::BinaryExpr* node) override
-				{
-					INVOKE_INTERFACE_PROXY(Visit, node);
-				}
-
-			END_INTERFACE_PROXY(genericambiguity::Expr::IVisitor)
-
-#endif
-#endif
-			/// <summary>Load all reflectable AST types, only available when <b>VCZH_DEBUG_NO_REFLECTION</b> is off.</summary>
-			/// <returns>Returns true if this operation succeeded.</returns>
-			extern bool GenericAmbiguityExprAstLoadTypes();
+	BEGIN_INTERFACE_PROXY_NOPARENT_SHAREDPTR(genericambiguity::Expr::IVisitor)
+		void Visit(genericambiguity::ExprToResolve* node) override
+		{
+			INVOKE_INTERFACE_PROXY(Visit, node);
 		}
-	}
+
+		void Visit(genericambiguity::RefExpr* node) override
+		{
+			INVOKE_INTERFACE_PROXY(Visit, node);
+		}
+
+		void Visit(genericambiguity::GenericExpr* node) override
+		{
+			INVOKE_INTERFACE_PROXY(Visit, node);
+		}
+
+		void Visit(genericambiguity::CallExpr* node) override
+		{
+			INVOKE_INTERFACE_PROXY(Visit, node);
+		}
+
+		void Visit(genericambiguity::PostfixExpr* node) override
+		{
+			INVOKE_INTERFACE_PROXY(Visit, node);
+		}
+
+		void Visit(genericambiguity::DecrementExpr* node) override
+		{
+			INVOKE_INTERFACE_PROXY(Visit, node);
+		}
+
+		void Visit(genericambiguity::BinaryExpr* node) override
+		{
+			INVOKE_INTERFACE_PROXY(Visit, node);
+		}
+
+	END_INTERFACE_PROXY(genericambiguity::Expr::IVisitor)
+
+#endif
+#endif
+	/// <summary>Load all reflectable AST types, only available when <b>VCZH_DEBUG_NO_REFLECTION</b> is off.</summary>
+	/// <returns>Returns true if this operation succeeded.</returns>
+	extern bool GenericAmbiguityExprAstLoadTypes();
 }
 #endif

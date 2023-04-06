@@ -6,41 +6,38 @@ Licensed under https://github.com/vczh-libraries/License
 
 #include "BinaryOpExprAst_Builder.h"
 
-namespace binaryop
+namespace binaryop::builder
 {
-	namespace builder
-	{
 
 /***********************************************************************
 MakeBinaryExpr
 ***********************************************************************/
 
-		MakeBinaryExpr& MakeBinaryExpr::left(const vl::Ptr<Expr>& value)
-		{
-			node->left = value;
-			return *this;
-		}
+	MakeBinaryExpr& MakeBinaryExpr::left(const vl::Ptr<Expr>& value)
+	{
+		node->left = value;
+		return *this;
+	}
 
-		MakeBinaryExpr& MakeBinaryExpr::op(BinaryOp value)
-		{
-			node->op = value;
-			return *this;
-		}
+	MakeBinaryExpr& MakeBinaryExpr::op(BinaryOp value)
+	{
+		node->op = value;
+		return *this;
+	}
 
-		MakeBinaryExpr& MakeBinaryExpr::right(const vl::Ptr<Expr>& value)
-		{
-			node->right = value;
-			return *this;
-		}
+	MakeBinaryExpr& MakeBinaryExpr::right(const vl::Ptr<Expr>& value)
+	{
+		node->right = value;
+		return *this;
+	}
 
 /***********************************************************************
 MakeRefExpr
 ***********************************************************************/
 
-		MakeRefExpr& MakeRefExpr::name(const vl::WString& value)
-		{
-			node->name.value = value;
-			return *this;
-		}
+	MakeRefExpr& MakeRefExpr::name(const vl::WString& value)
+	{
+		node->name.value = value;
+		return *this;
 	}
 }

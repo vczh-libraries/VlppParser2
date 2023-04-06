@@ -6,27 +6,24 @@ Licensed under https://github.com/vczh-libraries/License
 
 #include "IfElseManualStatAst_Empty.h"
 
-namespace ifelsemanual
+namespace ifelsemanual::empty_visitor
 {
-	namespace empty_visitor
-	{
 
 /***********************************************************************
 StatVisitor
 ***********************************************************************/
 
-		// Visitor Members -----------------------------------
+	// Visitor Members -----------------------------------
 
-		void StatVisitor::Visit(DoStat* node)
-		{
-		}
+	void StatVisitor::Visit(DoStat* node)
+	{
+	}
 
-		void StatVisitor::Visit(IfStat* node)
-		{
-		}
+	void StatVisitor::Visit(IfStat* node)
+	{
+	}
 
-		void StatVisitor::Visit(BlockStat* node)
-		{
-		}
+	void StatVisitor::Visit(BlockStat* node)
+	{
 	}
 }

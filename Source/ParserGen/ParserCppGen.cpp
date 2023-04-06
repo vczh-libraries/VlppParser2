@@ -72,27 +72,36 @@ Utility
 				writer.WriteLine(L"");
 			}
 
+			void WriteNssName(const collections::List<WString>& cppNss, stream::StreamWriter& writer)
+			{
+				for (auto [ns, index] : indexed(cppNss))
+				{
+					if (index != 0) writer.WriteString(L"::");
+					writer.WriteString(ns);
+				}
+			}
+
 			WString WriteNssBegin(const collections::List<WString>& cppNss, stream::StreamWriter& writer)
 			{
-				WString prefix;
-				for (auto ns : cppNss)
+				if (cppNss.Count() == 0)
 				{
-					writer.WriteLine(prefix + L"namespace " + ns);
-					writer.WriteLine(prefix + L"{");
-					prefix += L"\t";
+					return WString::Empty;
 				}
-				return prefix;
+
+				writer.WriteString(L"namespace ");
+				WriteNssName(cppNss, writer);
+				writer.WriteLine(WString::Empty);
+				writer.WriteLine(L"{");
+				return WString::Unmanaged(L"\t");
 			}
 
 			void WriteNssEnd(const collections::List<WString>& cppNss, stream::StreamWriter& writer)
 			{
-				vint counter = cppNss.Count();
-				for (auto ns : cppNss)
+				if (cppNss.Count() == 0)
 				{
-					counter--;
-					for (vint i = 0; i < counter; i++) writer.WriteChar(L'\t');
-					writer.WriteLine(L"}");
+					return;
 				}
+				writer.WriteLine(L"}");
 			}
 
 			extern void WriteLoadDataFunctionHeader(const WString& prefix, const WString& functionName, stream::StreamWriter& writer)

@@ -130,6 +130,8 @@ FillMissingPrefixMergeClauses
 
 						// fix rule and clause symbols
 						auto newRuleSymbol = syntaxManager.CreateRule(newRule->name.value, ruleRaw->name.codeRange);
+						newRuleSymbol->isPublic = ruleSymbol->isPublic;
+						newRuleSymbol->isParser = ruleSymbol->isParser;
 						newRuleSymbol->isPartial = ruleSymbol->isPartial;
 						newRuleSymbol->ruleType = vContext.clauseTypes[clause.Obj()];
 						vContext.astRules.Add(newRuleSymbol, newRule.Obj());
@@ -302,6 +304,8 @@ FixRuleTypes
 						auto lriRule = rContext.lriRules[ruleSymbol];
 						auto originSymbol = syntaxManager.CreateRule(originRule->name.value, originRule->codeRange);
 
+						originSymbol->isPublic = ruleSymbol->isPublic;
+						originSymbol->isParser = ruleSymbol->isParser;
 						originSymbol->isPartial = ruleSymbol->isPartial;
 						originSymbol->ruleType = ruleSymbol->ruleType;
 						rContext.fixedAstRules.Set(originSymbol, originRule);

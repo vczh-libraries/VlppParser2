@@ -9,49 +9,46 @@ Licensed under https://github.com/vczh-libraries/License
 
 #include "FeatureTestFeatureAst.h"
 
-namespace featuretest
+namespace featuretest::json_visitor
 {
-	namespace json_visitor
+	/// <summary>A JSON visitor, overriding all abstract methods with AST to JSON serialization code.</summary>
+	class FeatureAstVisitor
+		: public vl::glr::JsonVisitorBase
+		, protected virtual Feature::IVisitor
 	{
-		/// <summary>A JSON visitor, overriding all abstract methods with AST to JSON serialization code.</summary>
-		class FeatureAstVisitor
-			: public vl::glr::JsonVisitorBase
-			, protected virtual Feature::IVisitor
-		{
-		protected:
-			virtual void PrintFields(BranchedOptionalFeature* node);
-			virtual void PrintFields(ClFeature* node);
-			virtual void PrintFields(FaFeature* node);
-			virtual void PrintFields(Feature* node);
-			virtual void PrintFields(FeatureToResolve* node);
-			virtual void PrintFields(Gt* node);
-			virtual void PrintFields(Lt* node);
-			virtual void PrintFields(NestedOptionalFeature* node);
-			virtual void PrintFields(OptionalFeature* node);
-			virtual void PrintFields(PbaFeature* node);
-			virtual void PrintFields(Plus* node);
-			virtual void PrintFields(Pwa1Feature* node);
-			virtual void PrintFields(PwlFeature* node);
+	protected:
+		virtual void PrintFields(BranchedOptionalFeature* node);
+		virtual void PrintFields(ClFeature* node);
+		virtual void PrintFields(FaFeature* node);
+		virtual void PrintFields(Feature* node);
+		virtual void PrintFields(FeatureToResolve* node);
+		virtual void PrintFields(Gt* node);
+		virtual void PrintFields(Lt* node);
+		virtual void PrintFields(NestedOptionalFeature* node);
+		virtual void PrintFields(OptionalFeature* node);
+		virtual void PrintFields(PbaFeature* node);
+		virtual void PrintFields(Plus* node);
+		virtual void PrintFields(Pwa1Feature* node);
+		virtual void PrintFields(PwlFeature* node);
 
-		protected:
-			void Visit(FeatureToResolve* node) override;
-			void Visit(OptionalFeature* node) override;
-			void Visit(NestedOptionalFeature* node) override;
-			void Visit(BranchedOptionalFeature* node) override;
-			void Visit(PbaFeature* node) override;
-			void Visit(Pwa1Feature* node) override;
-			void Visit(PwlFeature* node) override;
-			void Visit(ClFeature* node) override;
-			void Visit(FaFeature* node) override;
+	protected:
+		void Visit(FeatureToResolve* node) override;
+		void Visit(OptionalFeature* node) override;
+		void Visit(NestedOptionalFeature* node) override;
+		void Visit(BranchedOptionalFeature* node) override;
+		void Visit(PbaFeature* node) override;
+		void Visit(Pwa1Feature* node) override;
+		void Visit(PwlFeature* node) override;
+		void Visit(ClFeature* node) override;
+		void Visit(FaFeature* node) override;
 
-		public:
-			FeatureAstVisitor(vl::stream::StreamWriter& _writer);
+	public:
+		FeatureAstVisitor(vl::stream::StreamWriter& _writer);
 
-			void Print(Feature* node);
-			void Print(Plus* node);
-			void Print(Lt* node);
-			void Print(Gt* node);
-		};
-	}
+		void Print(Feature* node);
+		void Print(Plus* node);
+		void Print(Lt* node);
+		void Print(Gt* node);
+	};
 }
 #endif

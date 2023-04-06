@@ -1048,461 +1048,455 @@ namespace cpp_parser
 		void Accept(CppStatement::IVisitor* visitor) override;
 	};
 }
-namespace vl
+namespace vl::reflection::description
 {
-	namespace reflection
-	{
-		namespace description
-		{
 #ifndef VCZH_DEBUG_NO_REFLECTION
-			DECL_TYPE_INFO(cpp_parser::CppTypeOrExprOrOthers)
-			DECL_TYPE_INFO(cpp_parser::CppTypeOrExprOrOthers::IVisitor)
-			DECL_TYPE_INFO(cpp_parser::CppDeclaration)
-			DECL_TYPE_INFO(cpp_parser::CppDeclaration::IVisitor)
-			DECL_TYPE_INFO(cpp_parser::CppTypeOrExpr)
-			DECL_TYPE_INFO(cpp_parser::CppTypeOrExpr::IVisitor)
-			DECL_TYPE_INFO(cpp_parser::CppExprOnly)
-			DECL_TYPE_INFO(cpp_parser::CppExprOnly::IVisitor)
-			DECL_TYPE_INFO(cpp_parser::CppTypeOnly)
-			DECL_TYPE_INFO(cpp_parser::CppTypeOnly::IVisitor)
-			DECL_TYPE_INFO(cpp_parser::CppNameKinds)
-			DECL_TYPE_INFO(cpp_parser::CppIdentifier)
-			DECL_TYPE_INFO(cpp_parser::CppIdentifier::IVisitor)
-			DECL_TYPE_INFO(cpp_parser::CppNameIdentifier)
-			DECL_TYPE_INFO(cpp_parser::CppOperators)
-			DECL_TYPE_INFO(cpp_parser::CppOperatorIdentifier)
-			DECL_TYPE_INFO(cpp_parser::CppGenericArgument)
-			DECL_TYPE_INFO(cpp_parser::CppGenericArguments)
-			DECL_TYPE_INFO(cpp_parser::CppQualifiedNameKinds)
-			DECL_TYPE_INFO(cpp_parser::CppQualifiedName)
-			DECL_TYPE_INFO(cpp_parser::CppOrdinaryGenericParameter)
-			DECL_TYPE_INFO(cpp_parser::CppGenericHeader)
-			DECL_TYPE_INFO(cpp_parser::CppPrimitiveExprLiteralKinds)
-			DECL_TYPE_INFO(cpp_parser::CppPrimitiveExprLiteral)
-			DECL_TYPE_INFO(cpp_parser::CppNumericExprLiteralKinds)
-			DECL_TYPE_INFO(cpp_parser::CppNumericExprLiteral)
-			DECL_TYPE_INFO(cpp_parser::CppStringLiteralKinds)
-			DECL_TYPE_INFO(cpp_parser::CppStringLiteralFragment)
-			DECL_TYPE_INFO(cpp_parser::CppStringLiteral)
-			DECL_TYPE_INFO(cpp_parser::CppLambdaCaptureObjectKinds)
-			DECL_TYPE_INFO(cpp_parser::CppLambdaCaptureRefeferenceKinds)
-			DECL_TYPE_INFO(cpp_parser::CppLambdaCapture)
-			DECL_TYPE_INFO(cpp_parser::CppLambdaExpr)
-			DECL_TYPE_INFO(cpp_parser::CppParenthesisExpr)
-			DECL_TYPE_INFO(cpp_parser::CppBraceExpr)
-			DECL_TYPE_INFO(cpp_parser::CppCastExpr)
-			DECL_TYPE_INFO(cpp_parser::CppSysFuncExpr)
-			DECL_TYPE_INFO(cpp_parser::CppOperatorScope)
-			DECL_TYPE_INFO(cpp_parser::CppSizeofExpr)
-			DECL_TYPE_INFO(cpp_parser::CppOperatorArray)
-			DECL_TYPE_INFO(cpp_parser::CppDeleteExpr)
-			DECL_TYPE_INFO(cpp_parser::CppNewExpr)
-			DECL_TYPE_INFO(cpp_parser::CppPrefixUnaryExpr)
-			DECL_TYPE_INFO(cpp_parser::CppPostfixUnaryExpr)
-			DECL_TYPE_INFO(cpp_parser::CppIndexExpr)
-			DECL_TYPE_INFO(cpp_parser::CppCallKinds)
-			DECL_TYPE_INFO(cpp_parser::CppCallExpr)
-			DECL_TYPE_INFO(cpp_parser::CppBinaryExpr)
-			DECL_TYPE_INFO(cpp_parser::CppIfExpr)
-			DECL_TYPE_INFO(cpp_parser::CppThrowExpr)
-			DECL_TYPE_INFO(cpp_parser::CppVariadicExpr)
-			DECL_TYPE_INFO(cpp_parser::CppPrimitiveTypeKinds)
-			DECL_TYPE_INFO(cpp_parser::CppPrimitiveType)
-			DECL_TYPE_INFO(cpp_parser::CppConstType)
-			DECL_TYPE_INFO(cpp_parser::CppVolatileType)
-			DECL_TYPE_INFO(cpp_parser::CppAdvancedTypeKinds)
-			DECL_TYPE_INFO(cpp_parser::CppAdvancedType)
-			DECL_TYPE_INFO(cpp_parser::CppDeclaratorKeyword)
-			DECL_TYPE_INFO(cpp_parser::CppFunctionKeyword)
-			DECL_TYPE_INFO(cpp_parser::CppDeclaratorFunctionPart)
-			DECL_TYPE_INFO(cpp_parser::CppDeclaratorArrayPart)
-			DECL_TYPE_INFO(cpp_parser::CppDeclarator)
-			DECL_TYPE_INFO(cpp_parser::CppDeclaratorType)
-			DECL_TYPE_INFO(cpp_parser::CppVarInit)
-			DECL_TYPE_INFO(cpp_parser::CppVarInit::IVisitor)
-			DECL_TYPE_INFO(cpp_parser::CppVarValueInit)
-			DECL_TYPE_INFO(cpp_parser::CppVarParanthesisInit)
-			DECL_TYPE_INFO(cpp_parser::CppVarBraceInit)
-			DECL_TYPE_INFO(cpp_parser::CppDeclaratorVariablePart)
-			DECL_TYPE_INFO(cpp_parser::CppSingleVarDeclaration)
-			DECL_TYPE_INFO(cpp_parser::CppMultipleVarDeclaration)
-			DECL_TYPE_INFO(cpp_parser::CppStaticAssertDeclaration)
-			DECL_TYPE_INFO(cpp_parser::CppStatement)
-			DECL_TYPE_INFO(cpp_parser::CppStatement::IVisitor)
-			DECL_TYPE_INFO(cpp_parser::CppEmptyStat)
-			DECL_TYPE_INFO(cpp_parser::CppBlockStat)
-			DECL_TYPE_INFO(cpp_parser::CppExprStat)
-			DECL_TYPE_INFO(cpp_parser::CppDeclStat)
-			DECL_TYPE_INFO(cpp_parser::CppBreakStat)
-			DECL_TYPE_INFO(cpp_parser::CppContinueStat)
-			DECL_TYPE_INFO(cpp_parser::CppReturnStat)
-			DECL_TYPE_INFO(cpp_parser::CppLabelStat)
-			DECL_TYPE_INFO(cpp_parser::CppGotoStat)
-			DECL_TYPE_INFO(cpp_parser::CppCaseStat)
-			DECL_TYPE_INFO(cpp_parser::CppDefaultStat)
-			DECL_TYPE_INFO(cpp_parser::Cpp__LeaveStat)
-			DECL_TYPE_INFO(cpp_parser::CppWhileStat)
-			DECL_TYPE_INFO(cpp_parser::CppDoWhileStat)
-			DECL_TYPE_INFO(cpp_parser::CppIfElseStat)
-			DECL_TYPE_INFO(cpp_parser::CppForStatConditionPart)
-			DECL_TYPE_INFO(cpp_parser::CppForStatConditionPart::IVisitor)
-			DECL_TYPE_INFO(cpp_parser::CppForStatLoopCondition)
-			DECL_TYPE_INFO(cpp_parser::CppForStatIterateCondition)
-			DECL_TYPE_INFO(cpp_parser::CppForStat)
-			DECL_TYPE_INFO(cpp_parser::CppSwitchStat)
-			DECL_TYPE_INFO(cpp_parser::CppTryStatCatchPart)
-			DECL_TYPE_INFO(cpp_parser::CppTryStat)
-			DECL_TYPE_INFO(cpp_parser::Cpp__TryStat)
-			DECL_TYPE_INFO(cpp_parser::CppFile)
-			DECL_TYPE_INFO(cpp_parser::CppTypeOrExprOrOthersToResolve)
-			DECL_TYPE_INFO(cpp_parser::CppTypeOrExprToResolve)
-			DECL_TYPE_INFO(cpp_parser::CppStatementToResolve)
+	DECL_TYPE_INFO(cpp_parser::CppTypeOrExprOrOthers)
+	DECL_TYPE_INFO(cpp_parser::CppTypeOrExprOrOthers::IVisitor)
+	DECL_TYPE_INFO(cpp_parser::CppDeclaration)
+	DECL_TYPE_INFO(cpp_parser::CppDeclaration::IVisitor)
+	DECL_TYPE_INFO(cpp_parser::CppTypeOrExpr)
+	DECL_TYPE_INFO(cpp_parser::CppTypeOrExpr::IVisitor)
+	DECL_TYPE_INFO(cpp_parser::CppExprOnly)
+	DECL_TYPE_INFO(cpp_parser::CppExprOnly::IVisitor)
+	DECL_TYPE_INFO(cpp_parser::CppTypeOnly)
+	DECL_TYPE_INFO(cpp_parser::CppTypeOnly::IVisitor)
+	DECL_TYPE_INFO(cpp_parser::CppNameKinds)
+	DECL_TYPE_INFO(cpp_parser::CppIdentifier)
+	DECL_TYPE_INFO(cpp_parser::CppIdentifier::IVisitor)
+	DECL_TYPE_INFO(cpp_parser::CppNameIdentifier)
+	DECL_TYPE_INFO(cpp_parser::CppOperators)
+	DECL_TYPE_INFO(cpp_parser::CppOperatorIdentifier)
+	DECL_TYPE_INFO(cpp_parser::CppGenericArgument)
+	DECL_TYPE_INFO(cpp_parser::CppGenericArguments)
+	DECL_TYPE_INFO(cpp_parser::CppQualifiedNameKinds)
+	DECL_TYPE_INFO(cpp_parser::CppQualifiedName)
+	DECL_TYPE_INFO(cpp_parser::CppOrdinaryGenericParameter)
+	DECL_TYPE_INFO(cpp_parser::CppGenericHeader)
+	DECL_TYPE_INFO(cpp_parser::CppPrimitiveExprLiteralKinds)
+	DECL_TYPE_INFO(cpp_parser::CppPrimitiveExprLiteral)
+	DECL_TYPE_INFO(cpp_parser::CppNumericExprLiteralKinds)
+	DECL_TYPE_INFO(cpp_parser::CppNumericExprLiteral)
+	DECL_TYPE_INFO(cpp_parser::CppStringLiteralKinds)
+	DECL_TYPE_INFO(cpp_parser::CppStringLiteralFragment)
+	DECL_TYPE_INFO(cpp_parser::CppStringLiteral)
+	DECL_TYPE_INFO(cpp_parser::CppLambdaCaptureObjectKinds)
+	DECL_TYPE_INFO(cpp_parser::CppLambdaCaptureRefeferenceKinds)
+	DECL_TYPE_INFO(cpp_parser::CppLambdaCapture)
+	DECL_TYPE_INFO(cpp_parser::CppLambdaExpr)
+	DECL_TYPE_INFO(cpp_parser::CppParenthesisExpr)
+	DECL_TYPE_INFO(cpp_parser::CppBraceExpr)
+	DECL_TYPE_INFO(cpp_parser::CppCastExpr)
+	DECL_TYPE_INFO(cpp_parser::CppSysFuncExpr)
+	DECL_TYPE_INFO(cpp_parser::CppOperatorScope)
+	DECL_TYPE_INFO(cpp_parser::CppSizeofExpr)
+	DECL_TYPE_INFO(cpp_parser::CppOperatorArray)
+	DECL_TYPE_INFO(cpp_parser::CppDeleteExpr)
+	DECL_TYPE_INFO(cpp_parser::CppNewExpr)
+	DECL_TYPE_INFO(cpp_parser::CppPrefixUnaryExpr)
+	DECL_TYPE_INFO(cpp_parser::CppPostfixUnaryExpr)
+	DECL_TYPE_INFO(cpp_parser::CppIndexExpr)
+	DECL_TYPE_INFO(cpp_parser::CppCallKinds)
+	DECL_TYPE_INFO(cpp_parser::CppCallExpr)
+	DECL_TYPE_INFO(cpp_parser::CppBinaryExpr)
+	DECL_TYPE_INFO(cpp_parser::CppIfExpr)
+	DECL_TYPE_INFO(cpp_parser::CppThrowExpr)
+	DECL_TYPE_INFO(cpp_parser::CppVariadicExpr)
+	DECL_TYPE_INFO(cpp_parser::CppPrimitiveTypeKinds)
+	DECL_TYPE_INFO(cpp_parser::CppPrimitiveType)
+	DECL_TYPE_INFO(cpp_parser::CppConstType)
+	DECL_TYPE_INFO(cpp_parser::CppVolatileType)
+	DECL_TYPE_INFO(cpp_parser::CppAdvancedTypeKinds)
+	DECL_TYPE_INFO(cpp_parser::CppAdvancedType)
+	DECL_TYPE_INFO(cpp_parser::CppDeclaratorKeyword)
+	DECL_TYPE_INFO(cpp_parser::CppFunctionKeyword)
+	DECL_TYPE_INFO(cpp_parser::CppDeclaratorFunctionPart)
+	DECL_TYPE_INFO(cpp_parser::CppDeclaratorArrayPart)
+	DECL_TYPE_INFO(cpp_parser::CppDeclarator)
+	DECL_TYPE_INFO(cpp_parser::CppDeclaratorType)
+	DECL_TYPE_INFO(cpp_parser::CppVarInit)
+	DECL_TYPE_INFO(cpp_parser::CppVarInit::IVisitor)
+	DECL_TYPE_INFO(cpp_parser::CppVarValueInit)
+	DECL_TYPE_INFO(cpp_parser::CppVarParanthesisInit)
+	DECL_TYPE_INFO(cpp_parser::CppVarBraceInit)
+	DECL_TYPE_INFO(cpp_parser::CppDeclaratorVariablePart)
+	DECL_TYPE_INFO(cpp_parser::CppSingleVarDeclaration)
+	DECL_TYPE_INFO(cpp_parser::CppMultipleVarDeclaration)
+	DECL_TYPE_INFO(cpp_parser::CppStaticAssertDeclaration)
+	DECL_TYPE_INFO(cpp_parser::CppStatement)
+	DECL_TYPE_INFO(cpp_parser::CppStatement::IVisitor)
+	DECL_TYPE_INFO(cpp_parser::CppEmptyStat)
+	DECL_TYPE_INFO(cpp_parser::CppBlockStat)
+	DECL_TYPE_INFO(cpp_parser::CppExprStat)
+	DECL_TYPE_INFO(cpp_parser::CppDeclStat)
+	DECL_TYPE_INFO(cpp_parser::CppBreakStat)
+	DECL_TYPE_INFO(cpp_parser::CppContinueStat)
+	DECL_TYPE_INFO(cpp_parser::CppReturnStat)
+	DECL_TYPE_INFO(cpp_parser::CppLabelStat)
+	DECL_TYPE_INFO(cpp_parser::CppGotoStat)
+	DECL_TYPE_INFO(cpp_parser::CppCaseStat)
+	DECL_TYPE_INFO(cpp_parser::CppDefaultStat)
+	DECL_TYPE_INFO(cpp_parser::Cpp__LeaveStat)
+	DECL_TYPE_INFO(cpp_parser::CppWhileStat)
+	DECL_TYPE_INFO(cpp_parser::CppDoWhileStat)
+	DECL_TYPE_INFO(cpp_parser::CppIfElseStat)
+	DECL_TYPE_INFO(cpp_parser::CppForStatConditionPart)
+	DECL_TYPE_INFO(cpp_parser::CppForStatConditionPart::IVisitor)
+	DECL_TYPE_INFO(cpp_parser::CppForStatLoopCondition)
+	DECL_TYPE_INFO(cpp_parser::CppForStatIterateCondition)
+	DECL_TYPE_INFO(cpp_parser::CppForStat)
+	DECL_TYPE_INFO(cpp_parser::CppSwitchStat)
+	DECL_TYPE_INFO(cpp_parser::CppTryStatCatchPart)
+	DECL_TYPE_INFO(cpp_parser::CppTryStat)
+	DECL_TYPE_INFO(cpp_parser::Cpp__TryStat)
+	DECL_TYPE_INFO(cpp_parser::CppFile)
+	DECL_TYPE_INFO(cpp_parser::CppTypeOrExprOrOthersToResolve)
+	DECL_TYPE_INFO(cpp_parser::CppTypeOrExprToResolve)
+	DECL_TYPE_INFO(cpp_parser::CppStatementToResolve)
 
 #ifdef VCZH_DESCRIPTABLEOBJECT_WITH_METADATA
 
-			BEGIN_INTERFACE_PROXY_NOPARENT_SHAREDPTR(cpp_parser::CppTypeOrExprOrOthers::IVisitor)
-				void Visit(cpp_parser::CppTypeOrExprOrOthersToResolve* node) override
-				{
-					INVOKE_INTERFACE_PROXY(Visit, node);
-				}
-
-				void Visit(cpp_parser::CppDeclaration* node) override
-				{
-					INVOKE_INTERFACE_PROXY(Visit, node);
-				}
-
-				void Visit(cpp_parser::CppTypeOrExpr* node) override
-				{
-					INVOKE_INTERFACE_PROXY(Visit, node);
-				}
-
-				void Visit(cpp_parser::CppGenericArgument* node) override
-				{
-					INVOKE_INTERFACE_PROXY(Visit, node);
-				}
-
-				void Visit(cpp_parser::CppOrdinaryGenericParameter* node) override
-				{
-					INVOKE_INTERFACE_PROXY(Visit, node);
-				}
-
-			END_INTERFACE_PROXY(cpp_parser::CppTypeOrExprOrOthers::IVisitor)
-
-			BEGIN_INTERFACE_PROXY_NOPARENT_SHAREDPTR(cpp_parser::CppDeclaration::IVisitor)
-				void Visit(cpp_parser::CppSingleVarDeclaration* node) override
-				{
-					INVOKE_INTERFACE_PROXY(Visit, node);
-				}
-
-				void Visit(cpp_parser::CppMultipleVarDeclaration* node) override
-				{
-					INVOKE_INTERFACE_PROXY(Visit, node);
-				}
-
-				void Visit(cpp_parser::CppStaticAssertDeclaration* node) override
-				{
-					INVOKE_INTERFACE_PROXY(Visit, node);
-				}
-
-			END_INTERFACE_PROXY(cpp_parser::CppDeclaration::IVisitor)
-
-			BEGIN_INTERFACE_PROXY_NOPARENT_SHAREDPTR(cpp_parser::CppTypeOrExpr::IVisitor)
-				void Visit(cpp_parser::CppTypeOrExprToResolve* node) override
-				{
-					INVOKE_INTERFACE_PROXY(Visit, node);
-				}
-
-				void Visit(cpp_parser::CppExprOnly* node) override
-				{
-					INVOKE_INTERFACE_PROXY(Visit, node);
-				}
-
-				void Visit(cpp_parser::CppTypeOnly* node) override
-				{
-					INVOKE_INTERFACE_PROXY(Visit, node);
-				}
-
-				void Visit(cpp_parser::CppQualifiedName* node) override
-				{
-					INVOKE_INTERFACE_PROXY(Visit, node);
-				}
-
-				void Visit(cpp_parser::CppDeclaratorType* node) override
-				{
-					INVOKE_INTERFACE_PROXY(Visit, node);
-				}
-
-			END_INTERFACE_PROXY(cpp_parser::CppTypeOrExpr::IVisitor)
-
-			BEGIN_INTERFACE_PROXY_NOPARENT_SHAREDPTR(cpp_parser::CppExprOnly::IVisitor)
-				void Visit(cpp_parser::CppPrimitiveExprLiteral* node) override
-				{
-					INVOKE_INTERFACE_PROXY(Visit, node);
-				}
-
-				void Visit(cpp_parser::CppNumericExprLiteral* node) override
-				{
-					INVOKE_INTERFACE_PROXY(Visit, node);
-				}
-
-				void Visit(cpp_parser::CppStringLiteral* node) override
-				{
-					INVOKE_INTERFACE_PROXY(Visit, node);
-				}
-
-				void Visit(cpp_parser::CppLambdaExpr* node) override
-				{
-					INVOKE_INTERFACE_PROXY(Visit, node);
-				}
-
-				void Visit(cpp_parser::CppParenthesisExpr* node) override
-				{
-					INVOKE_INTERFACE_PROXY(Visit, node);
-				}
-
-				void Visit(cpp_parser::CppBraceExpr* node) override
-				{
-					INVOKE_INTERFACE_PROXY(Visit, node);
-				}
-
-				void Visit(cpp_parser::CppCastExpr* node) override
-				{
-					INVOKE_INTERFACE_PROXY(Visit, node);
-				}
-
-				void Visit(cpp_parser::CppSysFuncExpr* node) override
-				{
-					INVOKE_INTERFACE_PROXY(Visit, node);
-				}
-
-				void Visit(cpp_parser::CppSizeofExpr* node) override
-				{
-					INVOKE_INTERFACE_PROXY(Visit, node);
-				}
-
-				void Visit(cpp_parser::CppDeleteExpr* node) override
-				{
-					INVOKE_INTERFACE_PROXY(Visit, node);
-				}
-
-				void Visit(cpp_parser::CppNewExpr* node) override
-				{
-					INVOKE_INTERFACE_PROXY(Visit, node);
-				}
-
-				void Visit(cpp_parser::CppPrefixUnaryExpr* node) override
-				{
-					INVOKE_INTERFACE_PROXY(Visit, node);
-				}
-
-				void Visit(cpp_parser::CppPostfixUnaryExpr* node) override
-				{
-					INVOKE_INTERFACE_PROXY(Visit, node);
-				}
-
-				void Visit(cpp_parser::CppIndexExpr* node) override
-				{
-					INVOKE_INTERFACE_PROXY(Visit, node);
-				}
-
-				void Visit(cpp_parser::CppCallExpr* node) override
-				{
-					INVOKE_INTERFACE_PROXY(Visit, node);
-				}
-
-				void Visit(cpp_parser::CppBinaryExpr* node) override
-				{
-					INVOKE_INTERFACE_PROXY(Visit, node);
-				}
-
-				void Visit(cpp_parser::CppIfExpr* node) override
-				{
-					INVOKE_INTERFACE_PROXY(Visit, node);
-				}
-
-				void Visit(cpp_parser::CppThrowExpr* node) override
-				{
-					INVOKE_INTERFACE_PROXY(Visit, node);
-				}
-
-				void Visit(cpp_parser::CppVariadicExpr* node) override
-				{
-					INVOKE_INTERFACE_PROXY(Visit, node);
-				}
-
-			END_INTERFACE_PROXY(cpp_parser::CppExprOnly::IVisitor)
-
-			BEGIN_INTERFACE_PROXY_NOPARENT_SHAREDPTR(cpp_parser::CppTypeOnly::IVisitor)
-				void Visit(cpp_parser::CppPrimitiveType* node) override
-				{
-					INVOKE_INTERFACE_PROXY(Visit, node);
-				}
-
-				void Visit(cpp_parser::CppConstType* node) override
-				{
-					INVOKE_INTERFACE_PROXY(Visit, node);
-				}
-
-				void Visit(cpp_parser::CppVolatileType* node) override
-				{
-					INVOKE_INTERFACE_PROXY(Visit, node);
-				}
-
-			END_INTERFACE_PROXY(cpp_parser::CppTypeOnly::IVisitor)
-
-			BEGIN_INTERFACE_PROXY_NOPARENT_SHAREDPTR(cpp_parser::CppIdentifier::IVisitor)
-				void Visit(cpp_parser::CppNameIdentifier* node) override
-				{
-					INVOKE_INTERFACE_PROXY(Visit, node);
-				}
-
-				void Visit(cpp_parser::CppOperatorIdentifier* node) override
-				{
-					INVOKE_INTERFACE_PROXY(Visit, node);
-				}
-
-			END_INTERFACE_PROXY(cpp_parser::CppIdentifier::IVisitor)
-
-			BEGIN_INTERFACE_PROXY_NOPARENT_SHAREDPTR(cpp_parser::CppVarInit::IVisitor)
-				void Visit(cpp_parser::CppVarValueInit* node) override
-				{
-					INVOKE_INTERFACE_PROXY(Visit, node);
-				}
-
-				void Visit(cpp_parser::CppVarParanthesisInit* node) override
-				{
-					INVOKE_INTERFACE_PROXY(Visit, node);
-				}
-
-				void Visit(cpp_parser::CppVarBraceInit* node) override
-				{
-					INVOKE_INTERFACE_PROXY(Visit, node);
-				}
-
-			END_INTERFACE_PROXY(cpp_parser::CppVarInit::IVisitor)
-
-			BEGIN_INTERFACE_PROXY_NOPARENT_SHAREDPTR(cpp_parser::CppStatement::IVisitor)
-				void Visit(cpp_parser::CppStatementToResolve* node) override
-				{
-					INVOKE_INTERFACE_PROXY(Visit, node);
-				}
-
-				void Visit(cpp_parser::CppEmptyStat* node) override
-				{
-					INVOKE_INTERFACE_PROXY(Visit, node);
-				}
-
-				void Visit(cpp_parser::CppBlockStat* node) override
-				{
-					INVOKE_INTERFACE_PROXY(Visit, node);
-				}
-
-				void Visit(cpp_parser::CppExprStat* node) override
-				{
-					INVOKE_INTERFACE_PROXY(Visit, node);
-				}
-
-				void Visit(cpp_parser::CppDeclStat* node) override
-				{
-					INVOKE_INTERFACE_PROXY(Visit, node);
-				}
-
-				void Visit(cpp_parser::CppBreakStat* node) override
-				{
-					INVOKE_INTERFACE_PROXY(Visit, node);
-				}
-
-				void Visit(cpp_parser::CppContinueStat* node) override
-				{
-					INVOKE_INTERFACE_PROXY(Visit, node);
-				}
-
-				void Visit(cpp_parser::CppReturnStat* node) override
-				{
-					INVOKE_INTERFACE_PROXY(Visit, node);
-				}
-
-				void Visit(cpp_parser::CppLabelStat* node) override
-				{
-					INVOKE_INTERFACE_PROXY(Visit, node);
-				}
-
-				void Visit(cpp_parser::CppGotoStat* node) override
-				{
-					INVOKE_INTERFACE_PROXY(Visit, node);
-				}
-
-				void Visit(cpp_parser::CppCaseStat* node) override
-				{
-					INVOKE_INTERFACE_PROXY(Visit, node);
-				}
-
-				void Visit(cpp_parser::CppDefaultStat* node) override
-				{
-					INVOKE_INTERFACE_PROXY(Visit, node);
-				}
-
-				void Visit(cpp_parser::Cpp__LeaveStat* node) override
-				{
-					INVOKE_INTERFACE_PROXY(Visit, node);
-				}
-
-				void Visit(cpp_parser::CppWhileStat* node) override
-				{
-					INVOKE_INTERFACE_PROXY(Visit, node);
-				}
-
-				void Visit(cpp_parser::CppDoWhileStat* node) override
-				{
-					INVOKE_INTERFACE_PROXY(Visit, node);
-				}
-
-				void Visit(cpp_parser::CppIfElseStat* node) override
-				{
-					INVOKE_INTERFACE_PROXY(Visit, node);
-				}
-
-				void Visit(cpp_parser::CppForStat* node) override
-				{
-					INVOKE_INTERFACE_PROXY(Visit, node);
-				}
-
-				void Visit(cpp_parser::CppSwitchStat* node) override
-				{
-					INVOKE_INTERFACE_PROXY(Visit, node);
-				}
-
-				void Visit(cpp_parser::CppTryStat* node) override
-				{
-					INVOKE_INTERFACE_PROXY(Visit, node);
-				}
-
-				void Visit(cpp_parser::Cpp__TryStat* node) override
-				{
-					INVOKE_INTERFACE_PROXY(Visit, node);
-				}
-
-			END_INTERFACE_PROXY(cpp_parser::CppStatement::IVisitor)
-
-			BEGIN_INTERFACE_PROXY_NOPARENT_SHAREDPTR(cpp_parser::CppForStatConditionPart::IVisitor)
-				void Visit(cpp_parser::CppForStatLoopCondition* node) override
-				{
-					INVOKE_INTERFACE_PROXY(Visit, node);
-				}
-
-				void Visit(cpp_parser::CppForStatIterateCondition* node) override
-				{
-					INVOKE_INTERFACE_PROXY(Visit, node);
-				}
-
-			END_INTERFACE_PROXY(cpp_parser::CppForStatConditionPart::IVisitor)
-
-#endif
-#endif
-			/// <summary>Load all reflectable AST types, only available when <b>VCZH_DEBUG_NO_REFLECTION</b> is off.</summary>
-			/// <returns>Returns true if this operation succeeded.</returns>
-			extern bool CppAstLoadTypes();
+	BEGIN_INTERFACE_PROXY_NOPARENT_SHAREDPTR(cpp_parser::CppTypeOrExprOrOthers::IVisitor)
+		void Visit(cpp_parser::CppTypeOrExprOrOthersToResolve* node) override
+		{
+			INVOKE_INTERFACE_PROXY(Visit, node);
 		}
-	}
+
+		void Visit(cpp_parser::CppDeclaration* node) override
+		{
+			INVOKE_INTERFACE_PROXY(Visit, node);
+		}
+
+		void Visit(cpp_parser::CppTypeOrExpr* node) override
+		{
+			INVOKE_INTERFACE_PROXY(Visit, node);
+		}
+
+		void Visit(cpp_parser::CppGenericArgument* node) override
+		{
+			INVOKE_INTERFACE_PROXY(Visit, node);
+		}
+
+		void Visit(cpp_parser::CppOrdinaryGenericParameter* node) override
+		{
+			INVOKE_INTERFACE_PROXY(Visit, node);
+		}
+
+	END_INTERFACE_PROXY(cpp_parser::CppTypeOrExprOrOthers::IVisitor)
+
+	BEGIN_INTERFACE_PROXY_NOPARENT_SHAREDPTR(cpp_parser::CppDeclaration::IVisitor)
+		void Visit(cpp_parser::CppSingleVarDeclaration* node) override
+		{
+			INVOKE_INTERFACE_PROXY(Visit, node);
+		}
+
+		void Visit(cpp_parser::CppMultipleVarDeclaration* node) override
+		{
+			INVOKE_INTERFACE_PROXY(Visit, node);
+		}
+
+		void Visit(cpp_parser::CppStaticAssertDeclaration* node) override
+		{
+			INVOKE_INTERFACE_PROXY(Visit, node);
+		}
+
+	END_INTERFACE_PROXY(cpp_parser::CppDeclaration::IVisitor)
+
+	BEGIN_INTERFACE_PROXY_NOPARENT_SHAREDPTR(cpp_parser::CppTypeOrExpr::IVisitor)
+		void Visit(cpp_parser::CppTypeOrExprToResolve* node) override
+		{
+			INVOKE_INTERFACE_PROXY(Visit, node);
+		}
+
+		void Visit(cpp_parser::CppExprOnly* node) override
+		{
+			INVOKE_INTERFACE_PROXY(Visit, node);
+		}
+
+		void Visit(cpp_parser::CppTypeOnly* node) override
+		{
+			INVOKE_INTERFACE_PROXY(Visit, node);
+		}
+
+		void Visit(cpp_parser::CppQualifiedName* node) override
+		{
+			INVOKE_INTERFACE_PROXY(Visit, node);
+		}
+
+		void Visit(cpp_parser::CppDeclaratorType* node) override
+		{
+			INVOKE_INTERFACE_PROXY(Visit, node);
+		}
+
+	END_INTERFACE_PROXY(cpp_parser::CppTypeOrExpr::IVisitor)
+
+	BEGIN_INTERFACE_PROXY_NOPARENT_SHAREDPTR(cpp_parser::CppExprOnly::IVisitor)
+		void Visit(cpp_parser::CppPrimitiveExprLiteral* node) override
+		{
+			INVOKE_INTERFACE_PROXY(Visit, node);
+		}
+
+		void Visit(cpp_parser::CppNumericExprLiteral* node) override
+		{
+			INVOKE_INTERFACE_PROXY(Visit, node);
+		}
+
+		void Visit(cpp_parser::CppStringLiteral* node) override
+		{
+			INVOKE_INTERFACE_PROXY(Visit, node);
+		}
+
+		void Visit(cpp_parser::CppLambdaExpr* node) override
+		{
+			INVOKE_INTERFACE_PROXY(Visit, node);
+		}
+
+		void Visit(cpp_parser::CppParenthesisExpr* node) override
+		{
+			INVOKE_INTERFACE_PROXY(Visit, node);
+		}
+
+		void Visit(cpp_parser::CppBraceExpr* node) override
+		{
+			INVOKE_INTERFACE_PROXY(Visit, node);
+		}
+
+		void Visit(cpp_parser::CppCastExpr* node) override
+		{
+			INVOKE_INTERFACE_PROXY(Visit, node);
+		}
+
+		void Visit(cpp_parser::CppSysFuncExpr* node) override
+		{
+			INVOKE_INTERFACE_PROXY(Visit, node);
+		}
+
+		void Visit(cpp_parser::CppSizeofExpr* node) override
+		{
+			INVOKE_INTERFACE_PROXY(Visit, node);
+		}
+
+		void Visit(cpp_parser::CppDeleteExpr* node) override
+		{
+			INVOKE_INTERFACE_PROXY(Visit, node);
+		}
+
+		void Visit(cpp_parser::CppNewExpr* node) override
+		{
+			INVOKE_INTERFACE_PROXY(Visit, node);
+		}
+
+		void Visit(cpp_parser::CppPrefixUnaryExpr* node) override
+		{
+			INVOKE_INTERFACE_PROXY(Visit, node);
+		}
+
+		void Visit(cpp_parser::CppPostfixUnaryExpr* node) override
+		{
+			INVOKE_INTERFACE_PROXY(Visit, node);
+		}
+
+		void Visit(cpp_parser::CppIndexExpr* node) override
+		{
+			INVOKE_INTERFACE_PROXY(Visit, node);
+		}
+
+		void Visit(cpp_parser::CppCallExpr* node) override
+		{
+			INVOKE_INTERFACE_PROXY(Visit, node);
+		}
+
+		void Visit(cpp_parser::CppBinaryExpr* node) override
+		{
+			INVOKE_INTERFACE_PROXY(Visit, node);
+		}
+
+		void Visit(cpp_parser::CppIfExpr* node) override
+		{
+			INVOKE_INTERFACE_PROXY(Visit, node);
+		}
+
+		void Visit(cpp_parser::CppThrowExpr* node) override
+		{
+			INVOKE_INTERFACE_PROXY(Visit, node);
+		}
+
+		void Visit(cpp_parser::CppVariadicExpr* node) override
+		{
+			INVOKE_INTERFACE_PROXY(Visit, node);
+		}
+
+	END_INTERFACE_PROXY(cpp_parser::CppExprOnly::IVisitor)
+
+	BEGIN_INTERFACE_PROXY_NOPARENT_SHAREDPTR(cpp_parser::CppTypeOnly::IVisitor)
+		void Visit(cpp_parser::CppPrimitiveType* node) override
+		{
+			INVOKE_INTERFACE_PROXY(Visit, node);
+		}
+
+		void Visit(cpp_parser::CppConstType* node) override
+		{
+			INVOKE_INTERFACE_PROXY(Visit, node);
+		}
+
+		void Visit(cpp_parser::CppVolatileType* node) override
+		{
+			INVOKE_INTERFACE_PROXY(Visit, node);
+		}
+
+	END_INTERFACE_PROXY(cpp_parser::CppTypeOnly::IVisitor)
+
+	BEGIN_INTERFACE_PROXY_NOPARENT_SHAREDPTR(cpp_parser::CppIdentifier::IVisitor)
+		void Visit(cpp_parser::CppNameIdentifier* node) override
+		{
+			INVOKE_INTERFACE_PROXY(Visit, node);
+		}
+
+		void Visit(cpp_parser::CppOperatorIdentifier* node) override
+		{
+			INVOKE_INTERFACE_PROXY(Visit, node);
+		}
+
+	END_INTERFACE_PROXY(cpp_parser::CppIdentifier::IVisitor)
+
+	BEGIN_INTERFACE_PROXY_NOPARENT_SHAREDPTR(cpp_parser::CppVarInit::IVisitor)
+		void Visit(cpp_parser::CppVarValueInit* node) override
+		{
+			INVOKE_INTERFACE_PROXY(Visit, node);
+		}
+
+		void Visit(cpp_parser::CppVarParanthesisInit* node) override
+		{
+			INVOKE_INTERFACE_PROXY(Visit, node);
+		}
+
+		void Visit(cpp_parser::CppVarBraceInit* node) override
+		{
+			INVOKE_INTERFACE_PROXY(Visit, node);
+		}
+
+	END_INTERFACE_PROXY(cpp_parser::CppVarInit::IVisitor)
+
+	BEGIN_INTERFACE_PROXY_NOPARENT_SHAREDPTR(cpp_parser::CppStatement::IVisitor)
+		void Visit(cpp_parser::CppStatementToResolve* node) override
+		{
+			INVOKE_INTERFACE_PROXY(Visit, node);
+		}
+
+		void Visit(cpp_parser::CppEmptyStat* node) override
+		{
+			INVOKE_INTERFACE_PROXY(Visit, node);
+		}
+
+		void Visit(cpp_parser::CppBlockStat* node) override
+		{
+			INVOKE_INTERFACE_PROXY(Visit, node);
+		}
+
+		void Visit(cpp_parser::CppExprStat* node) override
+		{
+			INVOKE_INTERFACE_PROXY(Visit, node);
+		}
+
+		void Visit(cpp_parser::CppDeclStat* node) override
+		{
+			INVOKE_INTERFACE_PROXY(Visit, node);
+		}
+
+		void Visit(cpp_parser::CppBreakStat* node) override
+		{
+			INVOKE_INTERFACE_PROXY(Visit, node);
+		}
+
+		void Visit(cpp_parser::CppContinueStat* node) override
+		{
+			INVOKE_INTERFACE_PROXY(Visit, node);
+		}
+
+		void Visit(cpp_parser::CppReturnStat* node) override
+		{
+			INVOKE_INTERFACE_PROXY(Visit, node);
+		}
+
+		void Visit(cpp_parser::CppLabelStat* node) override
+		{
+			INVOKE_INTERFACE_PROXY(Visit, node);
+		}
+
+		void Visit(cpp_parser::CppGotoStat* node) override
+		{
+			INVOKE_INTERFACE_PROXY(Visit, node);
+		}
+
+		void Visit(cpp_parser::CppCaseStat* node) override
+		{
+			INVOKE_INTERFACE_PROXY(Visit, node);
+		}
+
+		void Visit(cpp_parser::CppDefaultStat* node) override
+		{
+			INVOKE_INTERFACE_PROXY(Visit, node);
+		}
+
+		void Visit(cpp_parser::Cpp__LeaveStat* node) override
+		{
+			INVOKE_INTERFACE_PROXY(Visit, node);
+		}
+
+		void Visit(cpp_parser::CppWhileStat* node) override
+		{
+			INVOKE_INTERFACE_PROXY(Visit, node);
+		}
+
+		void Visit(cpp_parser::CppDoWhileStat* node) override
+		{
+			INVOKE_INTERFACE_PROXY(Visit, node);
+		}
+
+		void Visit(cpp_parser::CppIfElseStat* node) override
+		{
+			INVOKE_INTERFACE_PROXY(Visit, node);
+		}
+
+		void Visit(cpp_parser::CppForStat* node) override
+		{
+			INVOKE_INTERFACE_PROXY(Visit, node);
+		}
+
+		void Visit(cpp_parser::CppSwitchStat* node) override
+		{
+			INVOKE_INTERFACE_PROXY(Visit, node);
+		}
+
+		void Visit(cpp_parser::CppTryStat* node) override
+		{
+			INVOKE_INTERFACE_PROXY(Visit, node);
+		}
+
+		void Visit(cpp_parser::Cpp__TryStat* node) override
+		{
+			INVOKE_INTERFACE_PROXY(Visit, node);
+		}
+
+	END_INTERFACE_PROXY(cpp_parser::CppStatement::IVisitor)
+
+	BEGIN_INTERFACE_PROXY_NOPARENT_SHAREDPTR(cpp_parser::CppForStatConditionPart::IVisitor)
+		void Visit(cpp_parser::CppForStatLoopCondition* node) override
+		{
+			INVOKE_INTERFACE_PROXY(Visit, node);
+		}
+
+		void Visit(cpp_parser::CppForStatIterateCondition* node) override
+		{
+			INVOKE_INTERFACE_PROXY(Visit, node);
+		}
+
+	END_INTERFACE_PROXY(cpp_parser::CppForStatConditionPart::IVisitor)
+
+#endif
+#endif
+	/// <summary>Load all reflectable AST types, only available when <b>VCZH_DEBUG_NO_REFLECTION</b> is off.</summary>
+	/// <returns>Returns true if this operation succeeded.</returns>
+	extern bool CppAstLoadTypes();
 }
 #endif

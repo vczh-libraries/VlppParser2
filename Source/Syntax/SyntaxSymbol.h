@@ -15,6 +15,7 @@ namespace vl
 	{
 		namespace parsergen
 		{
+			class AstSymbolManager;
 			class AstClassSymbol;
 			class StateSymbol;
 			class EdgeSymbol;
@@ -147,6 +148,8 @@ RuleSymbol
 				RuleSymbol(SyntaxSymbolManager* _ownerManager, const WString& _name);
 			public:
 				StateList					startStates;
+				bool						isPublic = false;
+				bool						isParser = false;
 				bool						isPartial = false;
 				bool						assignedNonArrayField = false;
 				AstClassSymbol*				ruleType = nullptr;
@@ -183,8 +186,6 @@ SyntaxSymbolManager
 			{
 				using StateList = collections::List<Ptr<StateSymbol>>;
 				using EdgeList = collections::List<Ptr<EdgeSymbol>>;
-				using RuleTypeMap = collections::Dictionary<RuleSymbol*, WString>;
-				using RuleList = collections::List<RuleSymbol*>;
 				using LrpFlagList = collections::SortedList<WString>;
 			protected:
 				MappedOwning<RuleSymbol>	rules;
@@ -206,8 +207,6 @@ SyntaxSymbolManager
 				SyntaxSymbolManager(ParserSymbolManager& _global);
 
 				WString						name;
-				RuleTypeMap					ruleTypes;
-				RuleList					parsableRules;
 				LrpFlagList					lrpFlags;
 
 				RuleSymbol*					CreateRule(const WString& name, ParsingTextRange codeRange = {});
@@ -234,8 +233,8 @@ SyntaxSymbolManager
 				}
 			};
 
-			extern void						CreateParserGenTypeSyntax(SyntaxSymbolManager& manager);
-			extern void						CreateParserGenRuleSyntax(SyntaxSymbolManager& manager);
+			extern void						CreateParserGenTypeSyntax(AstSymbolManager& ast, SyntaxSymbolManager& manager);
+			extern void						CreateParserGenRuleSyntax(AstSymbolManager& ast, SyntaxSymbolManager& manager);
 		}
 	}
 }

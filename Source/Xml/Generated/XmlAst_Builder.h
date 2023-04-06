@@ -9,64 +9,55 @@ Licensed under https://github.com/vczh-libraries/License
 
 #include "XmlAst.h"
 
-namespace vl
+namespace vl::glr::xml::builder
 {
-	namespace glr
+	class MakeAttribute : public vl::glr::ParsingAstBuilder<XmlAttribute>
 	{
-		namespace xml
-		{
-			namespace builder
-			{
-				class MakeAttribute : public vl::glr::ParsingAstBuilder<XmlAttribute>
-				{
-				public:
-					MakeAttribute& name(const vl::WString& value);
-					MakeAttribute& value(const vl::WString& value);
-				};
+	public:
+		MakeAttribute& name(const vl::WString& value);
+		MakeAttribute& value(const vl::WString& value);
+	};
 
-				class MakeCData : public vl::glr::ParsingAstBuilder<XmlCData>
-				{
-				public:
-					MakeCData& content(const vl::WString& value);
-				};
+	class MakeCData : public vl::glr::ParsingAstBuilder<XmlCData>
+	{
+	public:
+		MakeCData& content(const vl::WString& value);
+	};
 
-				class MakeComment : public vl::glr::ParsingAstBuilder<XmlComment>
-				{
-				public:
-					MakeComment& content(const vl::WString& value);
-				};
+	class MakeComment : public vl::glr::ParsingAstBuilder<XmlComment>
+	{
+	public:
+		MakeComment& content(const vl::WString& value);
+	};
 
-				class MakeDocument : public vl::glr::ParsingAstBuilder<XmlDocument>
-				{
-				public:
-					MakeDocument& prologs(const vl::Ptr<XmlNode>& value);
-					MakeDocument& rootElement(const vl::Ptr<XmlElement>& value);
-				};
+	class MakeDocument : public vl::glr::ParsingAstBuilder<XmlDocument>
+	{
+	public:
+		MakeDocument& prologs(const vl::Ptr<XmlNode>& value);
+		MakeDocument& rootElement(const vl::Ptr<XmlElement>& value);
+	};
 
-				class MakeElement : public vl::glr::ParsingAstBuilder<XmlElement>
-				{
-				public:
-					MakeElement& attributes(const vl::Ptr<XmlAttribute>& value);
-					MakeElement& closingName(const vl::WString& value);
-					MakeElement& name(const vl::WString& value);
-					MakeElement& subNodes(const vl::Ptr<XmlNode>& value);
-				};
+	class MakeElement : public vl::glr::ParsingAstBuilder<XmlElement>
+	{
+	public:
+		MakeElement& attributes(const vl::Ptr<XmlAttribute>& value);
+		MakeElement& closingName(const vl::WString& value);
+		MakeElement& name(const vl::WString& value);
+		MakeElement& subNodes(const vl::Ptr<XmlNode>& value);
+	};
 
-				class MakeInstruction : public vl::glr::ParsingAstBuilder<XmlInstruction>
-				{
-				public:
-					MakeInstruction& attributes(const vl::Ptr<XmlAttribute>& value);
-					MakeInstruction& name(const vl::WString& value);
-				};
+	class MakeInstruction : public vl::glr::ParsingAstBuilder<XmlInstruction>
+	{
+	public:
+		MakeInstruction& attributes(const vl::Ptr<XmlAttribute>& value);
+		MakeInstruction& name(const vl::WString& value);
+	};
 
-				class MakeText : public vl::glr::ParsingAstBuilder<XmlText>
-				{
-				public:
-					MakeText& content(const vl::WString& value);
-				};
+	class MakeText : public vl::glr::ParsingAstBuilder<XmlText>
+	{
+	public:
+		MakeText& content(const vl::WString& value);
+	};
 
-			}
-		}
-	}
 }
 #endif

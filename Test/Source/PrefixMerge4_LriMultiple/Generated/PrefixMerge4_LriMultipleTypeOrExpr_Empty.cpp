@@ -6,62 +6,59 @@ Licensed under https://github.com/vczh-libraries/License
 
 #include "PrefixMerge4_LriMultipleTypeOrExpr_Empty.h"
 
-namespace prefixmerge4_lrimultiple
+namespace prefixmerge4_lrimultiple::empty_visitor
 {
-	namespace empty_visitor
-	{
 
 /***********************************************************************
 TypeOrExprVisitor
 ***********************************************************************/
 
-		// Visitor Members -----------------------------------
+	// Visitor Members -----------------------------------
 
-		void TypeOrExprVisitor::Visit(TypeOrExprToResolve* node)
-		{
-		}
+	void TypeOrExprVisitor::Visit(TypeOrExprToResolve* node)
+	{
+	}
 
-		void TypeOrExprVisitor::Visit(QualifiedName* node)
-		{
-			Dispatch(node);
-		}
+	void TypeOrExprVisitor::Visit(QualifiedName* node)
+	{
+		Dispatch(node);
+	}
 
-		void TypeOrExprVisitor::Visit(CallExpr* node)
-		{
-		}
+	void TypeOrExprVisitor::Visit(CallExpr* node)
+	{
+	}
 
-		void TypeOrExprVisitor::Visit(CtorExpr* node)
-		{
-		}
+	void TypeOrExprVisitor::Visit(CtorExpr* node)
+	{
+	}
 
-		void TypeOrExprVisitor::Visit(MulExpr* node)
-		{
-		}
+	void TypeOrExprVisitor::Visit(MulExpr* node)
+	{
+	}
 
-		void TypeOrExprVisitor::Visit(ConstType* node)
-		{
-		}
+	void TypeOrExprVisitor::Visit(ConstType* node)
+	{
+	}
 
-		void TypeOrExprVisitor::Visit(PointerType* node)
-		{
-		}
+	void TypeOrExprVisitor::Visit(PointerType* node)
+	{
+	}
 
-		void TypeOrExprVisitor::Visit(FunctionType* node)
-		{
-		}
+	void TypeOrExprVisitor::Visit(FunctionType* node)
+	{
+	}
 
 /***********************************************************************
 QualifiedNameVisitor
 ***********************************************************************/
 
-		// Visitor Members -----------------------------------
+	// Visitor Members -----------------------------------
 
-		void QualifiedNameVisitor::Visit(Name* node)
-		{
-		}
+	void QualifiedNameVisitor::Visit(Name* node)
+	{
+	}
 
-		void QualifiedNameVisitor::Visit(MemberName* node)
-		{
-		}
+	void QualifiedNameVisitor::Visit(MemberName* node)
+	{
 	}
 }

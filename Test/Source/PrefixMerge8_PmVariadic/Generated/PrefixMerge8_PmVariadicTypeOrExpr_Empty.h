@@ -9,69 +9,66 @@ Licensed under https://github.com/vczh-libraries/License
 
 #include "PrefixMerge8_PmVariadicTypeOrExpr.h"
 
-namespace prefixmerge8_pmvariadic
+namespace prefixmerge8_pmvariadic::empty_visitor
 {
-	namespace empty_visitor
+	/// <summary>An empty visitor, overriding all abstract methods with empty implementations.</summary>
+	class TypeOrExprOrOthersVisitor : public vl::Object, public TypeOrExprOrOthers::IVisitor
 	{
-		/// <summary>An empty visitor, overriding all abstract methods with empty implementations.</summary>
-		class TypeOrExprOrOthersVisitor : public vl::Object, public TypeOrExprOrOthers::IVisitor
-		{
-		protected:
-			// Dispatch (virtual) --------------------------------
-			virtual void Dispatch(TypeOrExpr* node) = 0;
+	protected:
+		// Dispatch (virtual) --------------------------------
+		virtual void Dispatch(TypeOrExpr* node) = 0;
 
-		public:
-			// Visitor Members -----------------------------------
-			void Visit(TypeOrExprOrOthersToResolve* node) override;
-			void Visit(VariadicArgument* node) override;
-			void Visit(TypeOrExpr* node) override;
-		};
+	public:
+		// Visitor Members -----------------------------------
+		void Visit(TypeOrExprOrOthersToResolve* node) override;
+		void Visit(VariadicArgument* node) override;
+		void Visit(TypeOrExpr* node) override;
+	};
 
-		/// <summary>An empty visitor, overriding all abstract methods with empty implementations.</summary>
-		class TypeOrExprVisitor : public vl::Object, public TypeOrExpr::IVisitor
-		{
-		protected:
-			// Dispatch (virtual) --------------------------------
-			virtual void Dispatch(QualifiedName* node) = 0;
+	/// <summary>An empty visitor, overriding all abstract methods with empty implementations.</summary>
+	class TypeOrExprVisitor : public vl::Object, public TypeOrExpr::IVisitor
+	{
+	protected:
+		// Dispatch (virtual) --------------------------------
+		virtual void Dispatch(QualifiedName* node) = 0;
 
-		public:
-			// Visitor Members -----------------------------------
-			void Visit(TypeOrExprToResolve* node) override;
-			void Visit(QualifiedName* node) override;
-			void Visit(CallExpr* node) override;
-			void Visit(CtorExpr* node) override;
-			void Visit(MulExpr* node) override;
-			void Visit(ConstType* node) override;
-			void Visit(PointerType* node) override;
-			void Visit(FunctionType* node) override;
-		};
+	public:
+		// Visitor Members -----------------------------------
+		void Visit(TypeOrExprToResolve* node) override;
+		void Visit(QualifiedName* node) override;
+		void Visit(CallExpr* node) override;
+		void Visit(CtorExpr* node) override;
+		void Visit(MulExpr* node) override;
+		void Visit(ConstType* node) override;
+		void Visit(PointerType* node) override;
+		void Visit(FunctionType* node) override;
+	};
 
-		/// <summary>An empty visitor, overriding all abstract methods with empty implementations.</summary>
-		class QualifiedNameVisitor : public vl::Object, public QualifiedName::IVisitor
-		{
-		protected:
-			// Dispatch (virtual) --------------------------------
-			virtual void Dispatch(GenericQualifiedName* node) = 0;
+	/// <summary>An empty visitor, overriding all abstract methods with empty implementations.</summary>
+	class QualifiedNameVisitor : public vl::Object, public QualifiedName::IVisitor
+	{
+	protected:
+		// Dispatch (virtual) --------------------------------
+		virtual void Dispatch(GenericQualifiedName* node) = 0;
 
-		public:
-			// Visitor Members -----------------------------------
-			void Visit(Name* node) override;
-			void Visit(MemberName* node) override;
-			void Visit(GenericQualifiedName* node) override;
-		};
+	public:
+		// Visitor Members -----------------------------------
+		void Visit(Name* node) override;
+		void Visit(MemberName* node) override;
+		void Visit(GenericQualifiedName* node) override;
+	};
 
-		/// <summary>An empty visitor, overriding all abstract methods with empty implementations.</summary>
-		class GenericQualifiedNameVisitor : public vl::Object, public GenericQualifiedName::IVisitor
-		{
-		protected:
-			// Dispatch (virtual) --------------------------------
+	/// <summary>An empty visitor, overriding all abstract methods with empty implementations.</summary>
+	class GenericQualifiedNameVisitor : public vl::Object, public GenericQualifiedName::IVisitor
+	{
+	protected:
+		// Dispatch (virtual) --------------------------------
 
-		public:
-			// Visitor Members -----------------------------------
-			void Visit(GenericName* node) override;
-			void Visit(GenericMemberName* node) override;
-		};
+	public:
+		// Visitor Members -----------------------------------
+		void Visit(GenericName* node) override;
+		void Visit(GenericMemberName* node) override;
+	};
 
-	}
 }
 #endif

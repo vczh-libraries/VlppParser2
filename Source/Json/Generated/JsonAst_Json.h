@@ -9,43 +9,34 @@ Licensed under https://github.com/vczh-libraries/License
 
 #include "JsonAst.h"
 
-namespace vl
+namespace vl::glr::json::json_visitor
 {
-	namespace glr
+	/// <summary>A JSON visitor, overriding all abstract methods with AST to JSON serialization code.</summary>
+	class AstVisitor
+		: public vl::glr::JsonVisitorBase
+		, protected virtual JsonNode::IVisitor
 	{
-		namespace json
-		{
-			namespace json_visitor
-			{
-				/// <summary>A JSON visitor, overriding all abstract methods with AST to JSON serialization code.</summary>
-				class AstVisitor
-					: public vl::glr::JsonVisitorBase
-					, protected virtual JsonNode::IVisitor
-				{
-				protected:
-					virtual void PrintFields(JsonArray* node);
-					virtual void PrintFields(JsonLiteral* node);
-					virtual void PrintFields(JsonNode* node);
-					virtual void PrintFields(JsonNumber* node);
-					virtual void PrintFields(JsonObject* node);
-					virtual void PrintFields(JsonObjectField* node);
-					virtual void PrintFields(JsonString* node);
+	protected:
+		virtual void PrintFields(JsonArray* node);
+		virtual void PrintFields(JsonLiteral* node);
+		virtual void PrintFields(JsonNode* node);
+		virtual void PrintFields(JsonNumber* node);
+		virtual void PrintFields(JsonObject* node);
+		virtual void PrintFields(JsonObjectField* node);
+		virtual void PrintFields(JsonString* node);
 
-				protected:
-					void Visit(JsonLiteral* node) override;
-					void Visit(JsonString* node) override;
-					void Visit(JsonNumber* node) override;
-					void Visit(JsonArray* node) override;
-					void Visit(JsonObject* node) override;
+	protected:
+		void Visit(JsonLiteral* node) override;
+		void Visit(JsonString* node) override;
+		void Visit(JsonNumber* node) override;
+		void Visit(JsonArray* node) override;
+		void Visit(JsonObject* node) override;
 
-				public:
-					AstVisitor(vl::stream::StreamWriter& _writer);
+	public:
+		AstVisitor(vl::stream::StreamWriter& _writer);
 
-					void Print(JsonNode* node);
-					void Print(JsonObjectField* node);
-				};
-			}
-		}
-	}
+		void Print(JsonNode* node);
+		void Print(JsonObjectField* node);
+	};
 }
 #endif

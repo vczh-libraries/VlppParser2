@@ -14,7 +14,10 @@ CreateParserGenAst
 
 			void CreateParserGenLexer(LexerSymbolManager& manager)
 			{
-				manager.CreateToken(L"AMBIGUOUS", L"ambiguous");
+				manager.CreateToken(L"ATT_AMBIGUOUS", L"@ambiguous");
+				manager.CreateToken(L"ATT_PUBLIC", L"@public");
+				manager.CreateToken(L"ATT_PARSER", L"@parser");
+
 				manager.CreateToken(L"CLASS", L"class");
 				manager.CreateToken(L"ENUM", L"enum");
 				manager.CreateToken(L"VAR", L"var");

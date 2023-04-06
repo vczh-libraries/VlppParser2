@@ -6,235 +6,232 @@ Licensed under https://github.com/vczh-libraries/License
 
 #include "PrefixMerge7_PmSwitchTypeOrExpr_Builder.h"
 
-namespace prefixmerge7_pmswitch
+namespace prefixmerge7_pmswitch::builder
 {
-	namespace builder
-	{
 
 /***********************************************************************
 MakeCallExpr
 ***********************************************************************/
 
-		MakeCallExpr& MakeCallExpr::args(const vl::Ptr<TypeOrExpr>& value)
-		{
-			node->args.Add(value);
-			return *this;
-		}
+	MakeCallExpr& MakeCallExpr::args(const vl::Ptr<TypeOrExpr>& value)
+	{
+		node->args.Add(value);
+		return *this;
+	}
 
-		MakeCallExpr& MakeCallExpr::func(const vl::Ptr<TypeOrExpr>& value)
-		{
-			node->func = value;
-			return *this;
-		}
+	MakeCallExpr& MakeCallExpr::func(const vl::Ptr<TypeOrExpr>& value)
+	{
+		node->func = value;
+		return *this;
+	}
 
 /***********************************************************************
 MakeCommaExpr
 ***********************************************************************/
 
-		MakeCommaExpr& MakeCommaExpr::first(const vl::Ptr<TypeOrExpr>& value)
-		{
-			node->first = value;
-			return *this;
-		}
+	MakeCommaExpr& MakeCommaExpr::first(const vl::Ptr<TypeOrExpr>& value)
+	{
+		node->first = value;
+		return *this;
+	}
 
-		MakeCommaExpr& MakeCommaExpr::second(const vl::Ptr<TypeOrExpr>& value)
-		{
-			node->second = value;
-			return *this;
-		}
+	MakeCommaExpr& MakeCommaExpr::second(const vl::Ptr<TypeOrExpr>& value)
+	{
+		node->second = value;
+		return *this;
+	}
 
 /***********************************************************************
 MakeConstType
 ***********************************************************************/
 
-		MakeConstType& MakeConstType::type(const vl::Ptr<TypeOrExpr>& value)
-		{
-			node->type = value;
-			return *this;
-		}
+	MakeConstType& MakeConstType::type(const vl::Ptr<TypeOrExpr>& value)
+	{
+		node->type = value;
+		return *this;
+	}
 
 /***********************************************************************
 MakeCtorExpr
 ***********************************************************************/
 
-		MakeCtorExpr& MakeCtorExpr::args(const vl::Ptr<TypeOrExpr>& value)
-		{
-			node->args.Add(value);
-			return *this;
-		}
+	MakeCtorExpr& MakeCtorExpr::args(const vl::Ptr<TypeOrExpr>& value)
+	{
+		node->args.Add(value);
+		return *this;
+	}
 
-		MakeCtorExpr& MakeCtorExpr::type(const vl::Ptr<TypeOrExpr>& value)
-		{
-			node->type = value;
-			return *this;
-		}
+	MakeCtorExpr& MakeCtorExpr::type(const vl::Ptr<TypeOrExpr>& value)
+	{
+		node->type = value;
+		return *this;
+	}
 
 /***********************************************************************
 MakeFunctionType
 ***********************************************************************/
 
-		MakeFunctionType& MakeFunctionType::args(const vl::Ptr<TypeOrExpr>& value)
-		{
-			node->args.Add(value);
-			return *this;
-		}
+	MakeFunctionType& MakeFunctionType::args(const vl::Ptr<TypeOrExpr>& value)
+	{
+		node->args.Add(value);
+		return *this;
+	}
 
-		MakeFunctionType& MakeFunctionType::returnType(const vl::Ptr<TypeOrExpr>& value)
-		{
-			node->returnType = value;
-			return *this;
-		}
+	MakeFunctionType& MakeFunctionType::returnType(const vl::Ptr<TypeOrExpr>& value)
+	{
+		node->returnType = value;
+		return *this;
+	}
 
 /***********************************************************************
 MakeGenericMemberName
 ***********************************************************************/
 
-		MakeGenericMemberName& MakeGenericMemberName::member(const vl::WString& value)
-		{
-			node->member.value = value;
-			return *this;
-		}
+	MakeGenericMemberName& MakeGenericMemberName::member(const vl::WString& value)
+	{
+		node->member.value = value;
+		return *this;
+	}
 
-		MakeGenericMemberName& MakeGenericMemberName::parent(const vl::Ptr<QualifiedName>& value)
-		{
-			node->parent = value;
-			return *this;
-		}
+	MakeGenericMemberName& MakeGenericMemberName::parent(const vl::Ptr<QualifiedName>& value)
+	{
+		node->parent = value;
+		return *this;
+	}
 
-		MakeGenericMemberName& MakeGenericMemberName::args(const vl::Ptr<TypeOrExpr>& value)
-		{
-			node->args.Add(value);
-			return *this;
-		}
+	MakeGenericMemberName& MakeGenericMemberName::args(const vl::Ptr<TypeOrExpr>& value)
+	{
+		node->args.Add(value);
+		return *this;
+	}
 
 /***********************************************************************
 MakeGenericName
 ***********************************************************************/
 
-		MakeGenericName& MakeGenericName::name(const vl::WString& value)
-		{
-			node->name.value = value;
-			return *this;
-		}
+	MakeGenericName& MakeGenericName::name(const vl::WString& value)
+	{
+		node->name.value = value;
+		return *this;
+	}
 
-		MakeGenericName& MakeGenericName::args(const vl::Ptr<TypeOrExpr>& value)
-		{
-			node->args.Add(value);
-			return *this;
-		}
+	MakeGenericName& MakeGenericName::args(const vl::Ptr<TypeOrExpr>& value)
+	{
+		node->args.Add(value);
+		return *this;
+	}
 
 /***********************************************************************
 MakeGenericQualifiedName
 ***********************************************************************/
 
-		MakeGenericQualifiedName& MakeGenericQualifiedName::args(const vl::Ptr<TypeOrExpr>& value)
-		{
-			node->args.Add(value);
-			return *this;
-		}
+	MakeGenericQualifiedName& MakeGenericQualifiedName::args(const vl::Ptr<TypeOrExpr>& value)
+	{
+		node->args.Add(value);
+		return *this;
+	}
 
 /***********************************************************************
 MakeGtExpr
 ***********************************************************************/
 
-		MakeGtExpr& MakeGtExpr::first(const vl::Ptr<TypeOrExpr>& value)
-		{
-			node->first = value;
-			return *this;
-		}
+	MakeGtExpr& MakeGtExpr::first(const vl::Ptr<TypeOrExpr>& value)
+	{
+		node->first = value;
+		return *this;
+	}
 
-		MakeGtExpr& MakeGtExpr::second(const vl::Ptr<TypeOrExpr>& value)
-		{
-			node->second = value;
-			return *this;
-		}
+	MakeGtExpr& MakeGtExpr::second(const vl::Ptr<TypeOrExpr>& value)
+	{
+		node->second = value;
+		return *this;
+	}
 
 /***********************************************************************
 MakeLtExpr
 ***********************************************************************/
 
-		MakeLtExpr& MakeLtExpr::first(const vl::Ptr<TypeOrExpr>& value)
-		{
-			node->first = value;
-			return *this;
-		}
+	MakeLtExpr& MakeLtExpr::first(const vl::Ptr<TypeOrExpr>& value)
+	{
+		node->first = value;
+		return *this;
+	}
 
-		MakeLtExpr& MakeLtExpr::second(const vl::Ptr<TypeOrExpr>& value)
-		{
-			node->second = value;
-			return *this;
-		}
+	MakeLtExpr& MakeLtExpr::second(const vl::Ptr<TypeOrExpr>& value)
+	{
+		node->second = value;
+		return *this;
+	}
 
 /***********************************************************************
 MakeMemberName
 ***********************************************************************/
 
-		MakeMemberName& MakeMemberName::member(const vl::WString& value)
-		{
-			node->member.value = value;
-			return *this;
-		}
+	MakeMemberName& MakeMemberName::member(const vl::WString& value)
+	{
+		node->member.value = value;
+		return *this;
+	}
 
-		MakeMemberName& MakeMemberName::parent(const vl::Ptr<QualifiedName>& value)
-		{
-			node->parent = value;
-			return *this;
-		}
+	MakeMemberName& MakeMemberName::parent(const vl::Ptr<QualifiedName>& value)
+	{
+		node->parent = value;
+		return *this;
+	}
 
 /***********************************************************************
 MakeMulExpr
 ***********************************************************************/
 
-		MakeMulExpr& MakeMulExpr::first(const vl::Ptr<TypeOrExpr>& value)
-		{
-			node->first = value;
-			return *this;
-		}
+	MakeMulExpr& MakeMulExpr::first(const vl::Ptr<TypeOrExpr>& value)
+	{
+		node->first = value;
+		return *this;
+	}
 
-		MakeMulExpr& MakeMulExpr::second(const vl::Ptr<TypeOrExpr>& value)
-		{
-			node->second = value;
-			return *this;
-		}
+	MakeMulExpr& MakeMulExpr::second(const vl::Ptr<TypeOrExpr>& value)
+	{
+		node->second = value;
+		return *this;
+	}
 
 /***********************************************************************
 MakeName
 ***********************************************************************/
 
-		MakeName& MakeName::name(const vl::WString& value)
-		{
-			node->name.value = value;
-			return *this;
-		}
+	MakeName& MakeName::name(const vl::WString& value)
+	{
+		node->name.value = value;
+		return *this;
+	}
 
 /***********************************************************************
 MakePointerType
 ***********************************************************************/
 
-		MakePointerType& MakePointerType::type(const vl::Ptr<TypeOrExpr>& value)
-		{
-			node->type = value;
-			return *this;
-		}
+	MakePointerType& MakePointerType::type(const vl::Ptr<TypeOrExpr>& value)
+	{
+		node->type = value;
+		return *this;
+	}
 
 /***********************************************************************
 MakeThrowExpr
 ***********************************************************************/
 
-		MakeThrowExpr& MakeThrowExpr::arg(const vl::Ptr<TypeOrExpr>& value)
-		{
-			node->arg.Add(value);
-			return *this;
-		}
+	MakeThrowExpr& MakeThrowExpr::arg(const vl::Ptr<TypeOrExpr>& value)
+	{
+		node->arg.Add(value);
+		return *this;
+	}
 
 /***********************************************************************
 MakeTypeOrExprToResolve
 ***********************************************************************/
 
-		MakeTypeOrExprToResolve& MakeTypeOrExprToResolve::candidates(const vl::Ptr<TypeOrExpr>& value)
-		{
-			node->candidates.Add(value);
-			return *this;
-		}
+	MakeTypeOrExprToResolve& MakeTypeOrExprToResolve::candidates(const vl::Ptr<TypeOrExpr>& value)
+	{
+		node->candidates.Add(value);
+		return *this;
 	}
 }

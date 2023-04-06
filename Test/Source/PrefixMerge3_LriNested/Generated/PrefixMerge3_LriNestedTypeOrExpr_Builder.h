@@ -9,69 +9,66 @@ Licensed under https://github.com/vczh-libraries/License
 
 #include "PrefixMerge3_LriNestedTypeOrExpr.h"
 
-namespace prefixmerge3_lrinested
+namespace prefixmerge3_lrinested::builder
 {
-	namespace builder
+	class MakeCallExpr : public vl::glr::ParsingAstBuilder<CallExpr>
 	{
-		class MakeCallExpr : public vl::glr::ParsingAstBuilder<CallExpr>
-		{
-		public:
-			MakeCallExpr& args(const vl::Ptr<TypeOrExpr>& value);
-			MakeCallExpr& func(const vl::Ptr<TypeOrExpr>& value);
-		};
+	public:
+		MakeCallExpr& args(const vl::Ptr<TypeOrExpr>& value);
+		MakeCallExpr& func(const vl::Ptr<TypeOrExpr>& value);
+	};
 
-		class MakeConstType : public vl::glr::ParsingAstBuilder<ConstType>
-		{
-		public:
-			MakeConstType& type(const vl::Ptr<TypeOrExpr>& value);
-		};
+	class MakeConstType : public vl::glr::ParsingAstBuilder<ConstType>
+	{
+	public:
+		MakeConstType& type(const vl::Ptr<TypeOrExpr>& value);
+	};
 
-		class MakeCtorExpr : public vl::glr::ParsingAstBuilder<CtorExpr>
-		{
-		public:
-			MakeCtorExpr& args(const vl::Ptr<TypeOrExpr>& value);
-			MakeCtorExpr& type(const vl::Ptr<TypeOrExpr>& value);
-		};
+	class MakeCtorExpr : public vl::glr::ParsingAstBuilder<CtorExpr>
+	{
+	public:
+		MakeCtorExpr& args(const vl::Ptr<TypeOrExpr>& value);
+		MakeCtorExpr& type(const vl::Ptr<TypeOrExpr>& value);
+	};
 
-		class MakeFunctionType : public vl::glr::ParsingAstBuilder<FunctionType>
-		{
-		public:
-			MakeFunctionType& args(const vl::Ptr<TypeOrExpr>& value);
-			MakeFunctionType& returnType(const vl::Ptr<TypeOrExpr>& value);
-		};
+	class MakeFunctionType : public vl::glr::ParsingAstBuilder<FunctionType>
+	{
+	public:
+		MakeFunctionType& args(const vl::Ptr<TypeOrExpr>& value);
+		MakeFunctionType& returnType(const vl::Ptr<TypeOrExpr>& value);
+	};
 
-		class MakeMemberName : public vl::glr::ParsingAstBuilder<MemberName>
-		{
-		public:
-			MakeMemberName& member(const vl::WString& value);
-			MakeMemberName& parent(const vl::Ptr<QualifiedName>& value);
-		};
+	class MakeMemberName : public vl::glr::ParsingAstBuilder<MemberName>
+	{
+	public:
+		MakeMemberName& member(const vl::WString& value);
+		MakeMemberName& parent(const vl::Ptr<QualifiedName>& value);
+	};
 
-		class MakeMulExpr : public vl::glr::ParsingAstBuilder<MulExpr>
-		{
-		public:
-			MakeMulExpr& first(const vl::Ptr<TypeOrExpr>& value);
-			MakeMulExpr& second(const vl::Ptr<TypeOrExpr>& value);
-		};
+	class MakeMulExpr : public vl::glr::ParsingAstBuilder<MulExpr>
+	{
+	public:
+		MakeMulExpr& first(const vl::Ptr<TypeOrExpr>& value);
+		MakeMulExpr& second(const vl::Ptr<TypeOrExpr>& value);
+	};
 
-		class MakeName : public vl::glr::ParsingAstBuilder<Name>
-		{
-		public:
-			MakeName& name(const vl::WString& value);
-		};
+	class MakeName : public vl::glr::ParsingAstBuilder<Name>
+	{
+	public:
+		MakeName& name(const vl::WString& value);
+	};
 
-		class MakePointerType : public vl::glr::ParsingAstBuilder<PointerType>
-		{
-		public:
-			MakePointerType& type(const vl::Ptr<TypeOrExpr>& value);
-		};
+	class MakePointerType : public vl::glr::ParsingAstBuilder<PointerType>
+	{
+	public:
+		MakePointerType& type(const vl::Ptr<TypeOrExpr>& value);
+	};
 
-		class MakeTypeOrExprToResolve : public vl::glr::ParsingAstBuilder<TypeOrExprToResolve>
-		{
-		public:
-			MakeTypeOrExprToResolve& candidates(const vl::Ptr<TypeOrExpr>& value);
-		};
+	class MakeTypeOrExprToResolve : public vl::glr::ParsingAstBuilder<TypeOrExprToResolve>
+	{
+	public:
+		MakeTypeOrExprToResolve& candidates(const vl::Ptr<TypeOrExpr>& value);
+	};
 
-	}
 }
 #endif

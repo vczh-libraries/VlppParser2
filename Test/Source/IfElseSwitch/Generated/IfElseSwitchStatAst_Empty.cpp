@@ -6,27 +6,24 @@ Licensed under https://github.com/vczh-libraries/License
 
 #include "IfElseSwitchStatAst_Empty.h"
 
-namespace ifelseswitch
+namespace ifelseswitch::empty_visitor
 {
-	namespace empty_visitor
-	{
 
 /***********************************************************************
 StatVisitor
 ***********************************************************************/
 
-		// Visitor Members -----------------------------------
+	// Visitor Members -----------------------------------
 
-		void StatVisitor::Visit(DoStat* node)
-		{
-		}
+	void StatVisitor::Visit(DoStat* node)
+	{
+	}
 
-		void StatVisitor::Visit(IfStat* node)
-		{
-		}
+	void StatVisitor::Visit(IfStat* node)
+	{
+	}
 
-		void StatVisitor::Visit(BlockStat* node)
-		{
-		}
+	void StatVisitor::Visit(BlockStat* node)
+	{
 	}
 }

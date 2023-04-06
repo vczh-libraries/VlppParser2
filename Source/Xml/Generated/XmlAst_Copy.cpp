@@ -6,179 +6,170 @@ Licensed under https://github.com/vczh-libraries/License
 
 #include "XmlAst_Copy.h"
 
-namespace vl
+namespace vl::glr::xml::copy_visitor
 {
-	namespace glr
+	void AstVisitor::CopyFields(XmlAttribute* from, XmlAttribute* to)
 	{
-		namespace xml
+		to->name = from->name;
+		to->value = from->value;
+	}
+
+	void AstVisitor::CopyFields(XmlCData* from, XmlCData* to)
+	{
+		CopyFields(static_cast<XmlNode*>(from), static_cast<XmlNode*>(to));
+		to->content = from->content;
+	}
+
+	void AstVisitor::CopyFields(XmlComment* from, XmlComment* to)
+	{
+		CopyFields(static_cast<XmlNode*>(from), static_cast<XmlNode*>(to));
+		to->content = from->content;
+	}
+
+	void AstVisitor::CopyFields(XmlDocument* from, XmlDocument* to)
+	{
+		CopyFields(static_cast<XmlNode*>(from), static_cast<XmlNode*>(to));
+		for (auto&& listItem : from->prologs)
 		{
-			namespace copy_visitor
-			{
-				void AstVisitor::CopyFields(XmlAttribute* from, XmlAttribute* to)
-				{
-					to->name = from->name;
-					to->value = from->value;
-				}
+			to->prologs.Add(CopyNode(listItem.Obj()));
+		}
+		to->rootElement = CopyNode(from->rootElement.Obj());
+	}
 
-				void AstVisitor::CopyFields(XmlCData* from, XmlCData* to)
-				{
-					CopyFields(static_cast<XmlNode*>(from), static_cast<XmlNode*>(to));
-					to->content = from->content;
-				}
-
-				void AstVisitor::CopyFields(XmlComment* from, XmlComment* to)
-				{
-					CopyFields(static_cast<XmlNode*>(from), static_cast<XmlNode*>(to));
-					to->content = from->content;
-				}
-
-				void AstVisitor::CopyFields(XmlDocument* from, XmlDocument* to)
-				{
-					CopyFields(static_cast<XmlNode*>(from), static_cast<XmlNode*>(to));
-					for (auto&& listItem : from->prologs)
-					{
-						to->prologs.Add(CopyNode(listItem.Obj()));
-					}
-					to->rootElement = CopyNode(from->rootElement.Obj());
-				}
-
-				void AstVisitor::CopyFields(XmlElement* from, XmlElement* to)
-				{
-					CopyFields(static_cast<XmlNode*>(from), static_cast<XmlNode*>(to));
-					for (auto&& listItem : from->attributes)
-					{
-						to->attributes.Add(CopyNode(listItem.Obj()));
-					}
-					to->closingName = from->closingName;
-					to->name = from->name;
-					for (auto&& listItem : from->subNodes)
-					{
-						to->subNodes.Add(CopyNode(listItem.Obj()));
-					}
-				}
-
-				void AstVisitor::CopyFields(XmlInstruction* from, XmlInstruction* to)
-				{
-					CopyFields(static_cast<XmlNode*>(from), static_cast<XmlNode*>(to));
-					for (auto&& listItem : from->attributes)
-					{
-						to->attributes.Add(CopyNode(listItem.Obj()));
-					}
-					to->name = from->name;
-				}
-
-				void AstVisitor::CopyFields(XmlNode* from, XmlNode* to)
-				{
-				}
-
-				void AstVisitor::CopyFields(XmlText* from, XmlText* to)
-				{
-					CopyFields(static_cast<XmlNode*>(from), static_cast<XmlNode*>(to));
-					to->content = from->content;
-				}
-
-				void AstVisitor::Visit(XmlAttribute* node)
-				{
-					auto newNode = vl::Ptr(new XmlAttribute);
-					CopyFields(node, newNode.Obj());
-					this->result = newNode;
-				}
-
-				void AstVisitor::Visit(XmlText* node)
-				{
-					auto newNode = vl::Ptr(new XmlText);
-					CopyFields(node, newNode.Obj());
-					this->result = newNode;
-				}
-
-				void AstVisitor::Visit(XmlCData* node)
-				{
-					auto newNode = vl::Ptr(new XmlCData);
-					CopyFields(node, newNode.Obj());
-					this->result = newNode;
-				}
-
-				void AstVisitor::Visit(XmlComment* node)
-				{
-					auto newNode = vl::Ptr(new XmlComment);
-					CopyFields(node, newNode.Obj());
-					this->result = newNode;
-				}
-
-				void AstVisitor::Visit(XmlElement* node)
-				{
-					auto newNode = vl::Ptr(new XmlElement);
-					CopyFields(node, newNode.Obj());
-					this->result = newNode;
-				}
-
-				void AstVisitor::Visit(XmlInstruction* node)
-				{
-					auto newNode = vl::Ptr(new XmlInstruction);
-					CopyFields(node, newNode.Obj());
-					this->result = newNode;
-				}
-
-				void AstVisitor::Visit(XmlDocument* node)
-				{
-					auto newNode = vl::Ptr(new XmlDocument);
-					CopyFields(node, newNode.Obj());
-					this->result = newNode;
-				}
-
-				vl::Ptr<XmlNode> AstVisitor::CopyNode(XmlNode* node)
-				{
-					if (!node) return nullptr;
-					node->Accept(static_cast<XmlNode::IVisitor*>(this));
-					this->result->codeRange = node->codeRange;
-					return this->result.Cast<XmlNode>();
-				}
-
-				vl::Ptr<XmlAttribute> AstVisitor::CopyNode(XmlAttribute* node)
-				{
-					if (!node) return nullptr;
-					Visit(node);
-					this->result->codeRange = node->codeRange;
-					return this->result.Cast<XmlAttribute>();
-				}
-
-				vl::Ptr<XmlCData> AstVisitor::CopyNode(XmlCData* node)
-				{
-					if (!node) return nullptr;
-					return CopyNode(static_cast<XmlNode*>(node)).Cast<XmlCData>();
-				}
-
-				vl::Ptr<XmlComment> AstVisitor::CopyNode(XmlComment* node)
-				{
-					if (!node) return nullptr;
-					return CopyNode(static_cast<XmlNode*>(node)).Cast<XmlComment>();
-				}
-
-				vl::Ptr<XmlDocument> AstVisitor::CopyNode(XmlDocument* node)
-				{
-					if (!node) return nullptr;
-					return CopyNode(static_cast<XmlNode*>(node)).Cast<XmlDocument>();
-				}
-
-				vl::Ptr<XmlElement> AstVisitor::CopyNode(XmlElement* node)
-				{
-					if (!node) return nullptr;
-					return CopyNode(static_cast<XmlNode*>(node)).Cast<XmlElement>();
-				}
-
-				vl::Ptr<XmlInstruction> AstVisitor::CopyNode(XmlInstruction* node)
-				{
-					if (!node) return nullptr;
-					return CopyNode(static_cast<XmlNode*>(node)).Cast<XmlInstruction>();
-				}
-
-				vl::Ptr<XmlText> AstVisitor::CopyNode(XmlText* node)
-				{
-					if (!node) return nullptr;
-					return CopyNode(static_cast<XmlNode*>(node)).Cast<XmlText>();
-				}
-
-			}
+	void AstVisitor::CopyFields(XmlElement* from, XmlElement* to)
+	{
+		CopyFields(static_cast<XmlNode*>(from), static_cast<XmlNode*>(to));
+		for (auto&& listItem : from->attributes)
+		{
+			to->attributes.Add(CopyNode(listItem.Obj()));
+		}
+		to->closingName = from->closingName;
+		to->name = from->name;
+		for (auto&& listItem : from->subNodes)
+		{
+			to->subNodes.Add(CopyNode(listItem.Obj()));
 		}
 	}
+
+	void AstVisitor::CopyFields(XmlInstruction* from, XmlInstruction* to)
+	{
+		CopyFields(static_cast<XmlNode*>(from), static_cast<XmlNode*>(to));
+		for (auto&& listItem : from->attributes)
+		{
+			to->attributes.Add(CopyNode(listItem.Obj()));
+		}
+		to->name = from->name;
+	}
+
+	void AstVisitor::CopyFields(XmlNode* from, XmlNode* to)
+	{
+	}
+
+	void AstVisitor::CopyFields(XmlText* from, XmlText* to)
+	{
+		CopyFields(static_cast<XmlNode*>(from), static_cast<XmlNode*>(to));
+		to->content = from->content;
+	}
+
+	void AstVisitor::Visit(XmlAttribute* node)
+	{
+		auto newNode = vl::Ptr(new XmlAttribute);
+		CopyFields(node, newNode.Obj());
+		this->result = newNode;
+	}
+
+	void AstVisitor::Visit(XmlText* node)
+	{
+		auto newNode = vl::Ptr(new XmlText);
+		CopyFields(node, newNode.Obj());
+		this->result = newNode;
+	}
+
+	void AstVisitor::Visit(XmlCData* node)
+	{
+		auto newNode = vl::Ptr(new XmlCData);
+		CopyFields(node, newNode.Obj());
+		this->result = newNode;
+	}
+
+	void AstVisitor::Visit(XmlComment* node)
+	{
+		auto newNode = vl::Ptr(new XmlComment);
+		CopyFields(node, newNode.Obj());
+		this->result = newNode;
+	}
+
+	void AstVisitor::Visit(XmlElement* node)
+	{
+		auto newNode = vl::Ptr(new XmlElement);
+		CopyFields(node, newNode.Obj());
+		this->result = newNode;
+	}
+
+	void AstVisitor::Visit(XmlInstruction* node)
+	{
+		auto newNode = vl::Ptr(new XmlInstruction);
+		CopyFields(node, newNode.Obj());
+		this->result = newNode;
+	}
+
+	void AstVisitor::Visit(XmlDocument* node)
+	{
+		auto newNode = vl::Ptr(new XmlDocument);
+		CopyFields(node, newNode.Obj());
+		this->result = newNode;
+	}
+
+	vl::Ptr<XmlNode> AstVisitor::CopyNode(XmlNode* node)
+	{
+		if (!node) return nullptr;
+		node->Accept(static_cast<XmlNode::IVisitor*>(this));
+		this->result->codeRange = node->codeRange;
+		return this->result.Cast<XmlNode>();
+	}
+
+	vl::Ptr<XmlAttribute> AstVisitor::CopyNode(XmlAttribute* node)
+	{
+		if (!node) return nullptr;
+		Visit(node);
+		this->result->codeRange = node->codeRange;
+		return this->result.Cast<XmlAttribute>();
+	}
+
+	vl::Ptr<XmlCData> AstVisitor::CopyNode(XmlCData* node)
+	{
+		if (!node) return nullptr;
+		return CopyNode(static_cast<XmlNode*>(node)).Cast<XmlCData>();
+	}
+
+	vl::Ptr<XmlComment> AstVisitor::CopyNode(XmlComment* node)
+	{
+		if (!node) return nullptr;
+		return CopyNode(static_cast<XmlNode*>(node)).Cast<XmlComment>();
+	}
+
+	vl::Ptr<XmlDocument> AstVisitor::CopyNode(XmlDocument* node)
+	{
+		if (!node) return nullptr;
+		return CopyNode(static_cast<XmlNode*>(node)).Cast<XmlDocument>();
+	}
+
+	vl::Ptr<XmlElement> AstVisitor::CopyNode(XmlElement* node)
+	{
+		if (!node) return nullptr;
+		return CopyNode(static_cast<XmlNode*>(node)).Cast<XmlElement>();
+	}
+
+	vl::Ptr<XmlInstruction> AstVisitor::CopyNode(XmlInstruction* node)
+	{
+		if (!node) return nullptr;
+		return CopyNode(static_cast<XmlNode*>(node)).Cast<XmlInstruction>();
+	}
+
+	vl::Ptr<XmlText> AstVisitor::CopyNode(XmlText* node)
+	{
+		if (!node) return nullptr;
+		return CopyNode(static_cast<XmlNode*>(node)).Cast<XmlText>();
+	}
+
 }

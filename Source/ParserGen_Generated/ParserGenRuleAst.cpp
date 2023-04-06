@@ -6,526 +6,516 @@ Licensed under https://github.com/vczh-libraries/License
 
 #include "ParserGenRuleAst.h"
 
-namespace vl
+namespace vl::glr::parsergen
 {
-	namespace glr
-	{
-		namespace parsergen
-		{
 /***********************************************************************
 Visitor Pattern Implementation
 ***********************************************************************/
 
-			void GlrRefCondition::Accept(GlrCondition::IVisitor* visitor)
-			{
-				visitor->Visit(this);
-			}
+	void GlrRefCondition::Accept(GlrCondition::IVisitor* visitor)
+	{
+		visitor->Visit(this);
+	}
 
-			void GlrNotCondition::Accept(GlrCondition::IVisitor* visitor)
-			{
-				visitor->Visit(this);
-			}
+	void GlrNotCondition::Accept(GlrCondition::IVisitor* visitor)
+	{
+		visitor->Visit(this);
+	}
 
-			void GlrAndCondition::Accept(GlrCondition::IVisitor* visitor)
-			{
-				visitor->Visit(this);
-			}
+	void GlrAndCondition::Accept(GlrCondition::IVisitor* visitor)
+	{
+		visitor->Visit(this);
+	}
 
-			void GlrOrCondition::Accept(GlrCondition::IVisitor* visitor)
-			{
-				visitor->Visit(this);
-			}
+	void GlrOrCondition::Accept(GlrCondition::IVisitor* visitor)
+	{
+		visitor->Visit(this);
+	}
 
-			void GlrRefSyntax::Accept(GlrSyntax::IVisitor* visitor)
-			{
-				visitor->Visit(this);
-			}
+	void GlrRefSyntax::Accept(GlrSyntax::IVisitor* visitor)
+	{
+		visitor->Visit(this);
+	}
 
-			void GlrUseSyntax::Accept(GlrSyntax::IVisitor* visitor)
-			{
-				visitor->Visit(this);
-			}
+	void GlrUseSyntax::Accept(GlrSyntax::IVisitor* visitor)
+	{
+		visitor->Visit(this);
+	}
 
-			void GlrLoopSyntax::Accept(GlrSyntax::IVisitor* visitor)
-			{
-				visitor->Visit(this);
-			}
+	void GlrLoopSyntax::Accept(GlrSyntax::IVisitor* visitor)
+	{
+		visitor->Visit(this);
+	}
 
-			void GlrOptionalSyntax::Accept(GlrSyntax::IVisitor* visitor)
-			{
-				visitor->Visit(this);
-			}
+	void GlrOptionalSyntax::Accept(GlrSyntax::IVisitor* visitor)
+	{
+		visitor->Visit(this);
+	}
 
-			void GlrSequenceSyntax::Accept(GlrSyntax::IVisitor* visitor)
-			{
-				visitor->Visit(this);
-			}
+	void GlrSequenceSyntax::Accept(GlrSyntax::IVisitor* visitor)
+	{
+		visitor->Visit(this);
+	}
 
-			void GlrAlternativeSyntax::Accept(GlrSyntax::IVisitor* visitor)
-			{
-				visitor->Visit(this);
-			}
+	void GlrAlternativeSyntax::Accept(GlrSyntax::IVisitor* visitor)
+	{
+		visitor->Visit(this);
+	}
 
-			void GlrPushConditionSyntax::Accept(GlrSyntax::IVisitor* visitor)
-			{
-				visitor->Visit(this);
-			}
+	void GlrPushConditionSyntax::Accept(GlrSyntax::IVisitor* visitor)
+	{
+		visitor->Visit(this);
+	}
 
-			void GlrTestConditionSyntax::Accept(GlrSyntax::IVisitor* visitor)
-			{
-				visitor->Visit(this);
-			}
+	void GlrTestConditionSyntax::Accept(GlrSyntax::IVisitor* visitor)
+	{
+		visitor->Visit(this);
+	}
 
-			void GlrCreateClause::Accept(GlrClause::IVisitor* visitor)
-			{
-				visitor->Visit(this);
-			}
+	void GlrCreateClause::Accept(GlrClause::IVisitor* visitor)
+	{
+		visitor->Visit(this);
+	}
 
-			void GlrPartialClause::Accept(GlrClause::IVisitor* visitor)
-			{
-				visitor->Visit(this);
-			}
+	void GlrPartialClause::Accept(GlrClause::IVisitor* visitor)
+	{
+		visitor->Visit(this);
+	}
 
-			void GlrReuseClause::Accept(GlrClause::IVisitor* visitor)
-			{
-				visitor->Visit(this);
-			}
+	void GlrReuseClause::Accept(GlrClause::IVisitor* visitor)
+	{
+		visitor->Visit(this);
+	}
 
-			void GlrLeftRecursionPlaceholderClause::Accept(GlrClause::IVisitor* visitor)
-			{
-				visitor->Visit(this);
-			}
+	void GlrLeftRecursionPlaceholderClause::Accept(GlrClause::IVisitor* visitor)
+	{
+		visitor->Visit(this);
+	}
 
-			void GlrLeftRecursionInjectClause::Accept(GlrClause::IVisitor* visitor)
-			{
-				visitor->Visit(this);
-			}
+	void GlrLeftRecursionInjectClause::Accept(GlrClause::IVisitor* visitor)
+	{
+		visitor->Visit(this);
+	}
 
-			void GlrPrefixMergeClause::Accept(GlrClause::IVisitor* visitor)
-			{
-				visitor->Visit(this);
-			}
-		}
+	void GlrPrefixMergeClause::Accept(GlrClause::IVisitor* visitor)
+	{
+		visitor->Visit(this);
 	}
 }
-namespace vl
+namespace vl::reflection::description
 {
-	namespace reflection
-	{
-		namespace description
-		{
 #ifndef VCZH_DEBUG_NO_REFLECTION
 
-			IMPL_TYPE_INFO_RENAME(vl::glr::parsergen::GlrCondition, glr::parsergen::GlrCondition)
-			IMPL_TYPE_INFO_RENAME(vl::glr::parsergen::GlrCondition::IVisitor, glr::parsergen::GlrCondition::IVisitor)
-			IMPL_TYPE_INFO_RENAME(vl::glr::parsergen::GlrRefCondition, glr::parsergen::GlrRefCondition)
-			IMPL_TYPE_INFO_RENAME(vl::glr::parsergen::GlrNotCondition, glr::parsergen::GlrNotCondition)
-			IMPL_TYPE_INFO_RENAME(vl::glr::parsergen::GlrAndCondition, glr::parsergen::GlrAndCondition)
-			IMPL_TYPE_INFO_RENAME(vl::glr::parsergen::GlrOrCondition, glr::parsergen::GlrOrCondition)
-			IMPL_TYPE_INFO_RENAME(vl::glr::parsergen::GlrSwitchValue, glr::parsergen::GlrSwitchValue)
-			IMPL_TYPE_INFO_RENAME(vl::glr::parsergen::GlrSwitchItem, glr::parsergen::GlrSwitchItem)
-			IMPL_TYPE_INFO_RENAME(vl::glr::parsergen::GlrSyntax, glr::parsergen::GlrSyntax)
-			IMPL_TYPE_INFO_RENAME(vl::glr::parsergen::GlrSyntax::IVisitor, glr::parsergen::GlrSyntax::IVisitor)
-			IMPL_TYPE_INFO_RENAME(vl::glr::parsergen::GlrRefType, glr::parsergen::GlrRefType)
-			IMPL_TYPE_INFO_RENAME(vl::glr::parsergen::GlrRefSyntax, glr::parsergen::GlrRefSyntax)
-			IMPL_TYPE_INFO_RENAME(vl::glr::parsergen::GlrUseSyntax, glr::parsergen::GlrUseSyntax)
-			IMPL_TYPE_INFO_RENAME(vl::glr::parsergen::GlrLoopSyntax, glr::parsergen::GlrLoopSyntax)
-			IMPL_TYPE_INFO_RENAME(vl::glr::parsergen::GlrOptionalPriority, glr::parsergen::GlrOptionalPriority)
-			IMPL_TYPE_INFO_RENAME(vl::glr::parsergen::GlrOptionalSyntax, glr::parsergen::GlrOptionalSyntax)
-			IMPL_TYPE_INFO_RENAME(vl::glr::parsergen::GlrSequenceSyntax, glr::parsergen::GlrSequenceSyntax)
-			IMPL_TYPE_INFO_RENAME(vl::glr::parsergen::GlrAlternativeSyntax, glr::parsergen::GlrAlternativeSyntax)
-			IMPL_TYPE_INFO_RENAME(vl::glr::parsergen::GlrPushConditionSyntax, glr::parsergen::GlrPushConditionSyntax)
-			IMPL_TYPE_INFO_RENAME(vl::glr::parsergen::GlrTestConditionBranch, glr::parsergen::GlrTestConditionBranch)
-			IMPL_TYPE_INFO_RENAME(vl::glr::parsergen::GlrTestConditionSyntax, glr::parsergen::GlrTestConditionSyntax)
-			IMPL_TYPE_INFO_RENAME(vl::glr::parsergen::GlrClause, glr::parsergen::GlrClause)
-			IMPL_TYPE_INFO_RENAME(vl::glr::parsergen::GlrClause::IVisitor, glr::parsergen::GlrClause::IVisitor)
-			IMPL_TYPE_INFO_RENAME(vl::glr::parsergen::GlrAssignmentType, glr::parsergen::GlrAssignmentType)
-			IMPL_TYPE_INFO_RENAME(vl::glr::parsergen::GlrAssignment, glr::parsergen::GlrAssignment)
-			IMPL_TYPE_INFO_RENAME(vl::glr::parsergen::GlrCreateClause, glr::parsergen::GlrCreateClause)
-			IMPL_TYPE_INFO_RENAME(vl::glr::parsergen::GlrPartialClause, glr::parsergen::GlrPartialClause)
-			IMPL_TYPE_INFO_RENAME(vl::glr::parsergen::GlrReuseClause, glr::parsergen::GlrReuseClause)
-			IMPL_TYPE_INFO_RENAME(vl::glr::parsergen::GlrLeftRecursionPlaceholder, glr::parsergen::GlrLeftRecursionPlaceholder)
-			IMPL_TYPE_INFO_RENAME(vl::glr::parsergen::GlrLeftRecursionPlaceholderClause, glr::parsergen::GlrLeftRecursionPlaceholderClause)
-			IMPL_TYPE_INFO_RENAME(vl::glr::parsergen::GlrLeftRecursionConfiguration, glr::parsergen::GlrLeftRecursionConfiguration)
-			IMPL_TYPE_INFO_RENAME(vl::glr::parsergen::GlrLeftRecursionInjectContinuationType, glr::parsergen::GlrLeftRecursionInjectContinuationType)
-			IMPL_TYPE_INFO_RENAME(vl::glr::parsergen::GlrLeftRecursionInjectContinuation, glr::parsergen::GlrLeftRecursionInjectContinuation)
-			IMPL_TYPE_INFO_RENAME(vl::glr::parsergen::GlrLeftRecursionInjectClause, glr::parsergen::GlrLeftRecursionInjectClause)
-			IMPL_TYPE_INFO_RENAME(vl::glr::parsergen::GlrPrefixMergeClause, glr::parsergen::GlrPrefixMergeClause)
-			IMPL_TYPE_INFO_RENAME(vl::glr::parsergen::GlrRule, glr::parsergen::GlrRule)
-			IMPL_TYPE_INFO_RENAME(vl::glr::parsergen::GlrSyntaxFile, glr::parsergen::GlrSyntaxFile)
+	IMPL_TYPE_INFO_RENAME(vl::glr::parsergen::GlrCondition, glr::parsergen::GlrCondition)
+	IMPL_TYPE_INFO_RENAME(vl::glr::parsergen::GlrCondition::IVisitor, glr::parsergen::GlrCondition::IVisitor)
+	IMPL_TYPE_INFO_RENAME(vl::glr::parsergen::GlrRefCondition, glr::parsergen::GlrRefCondition)
+	IMPL_TYPE_INFO_RENAME(vl::glr::parsergen::GlrNotCondition, glr::parsergen::GlrNotCondition)
+	IMPL_TYPE_INFO_RENAME(vl::glr::parsergen::GlrAndCondition, glr::parsergen::GlrAndCondition)
+	IMPL_TYPE_INFO_RENAME(vl::glr::parsergen::GlrOrCondition, glr::parsergen::GlrOrCondition)
+	IMPL_TYPE_INFO_RENAME(vl::glr::parsergen::GlrSwitchValue, glr::parsergen::GlrSwitchValue)
+	IMPL_TYPE_INFO_RENAME(vl::glr::parsergen::GlrSwitchItem, glr::parsergen::GlrSwitchItem)
+	IMPL_TYPE_INFO_RENAME(vl::glr::parsergen::GlrSyntax, glr::parsergen::GlrSyntax)
+	IMPL_TYPE_INFO_RENAME(vl::glr::parsergen::GlrSyntax::IVisitor, glr::parsergen::GlrSyntax::IVisitor)
+	IMPL_TYPE_INFO_RENAME(vl::glr::parsergen::GlrRefType, glr::parsergen::GlrRefType)
+	IMPL_TYPE_INFO_RENAME(vl::glr::parsergen::GlrRefSyntax, glr::parsergen::GlrRefSyntax)
+	IMPL_TYPE_INFO_RENAME(vl::glr::parsergen::GlrUseSyntax, glr::parsergen::GlrUseSyntax)
+	IMPL_TYPE_INFO_RENAME(vl::glr::parsergen::GlrLoopSyntax, glr::parsergen::GlrLoopSyntax)
+	IMPL_TYPE_INFO_RENAME(vl::glr::parsergen::GlrOptionalPriority, glr::parsergen::GlrOptionalPriority)
+	IMPL_TYPE_INFO_RENAME(vl::glr::parsergen::GlrOptionalSyntax, glr::parsergen::GlrOptionalSyntax)
+	IMPL_TYPE_INFO_RENAME(vl::glr::parsergen::GlrSequenceSyntax, glr::parsergen::GlrSequenceSyntax)
+	IMPL_TYPE_INFO_RENAME(vl::glr::parsergen::GlrAlternativeSyntax, glr::parsergen::GlrAlternativeSyntax)
+	IMPL_TYPE_INFO_RENAME(vl::glr::parsergen::GlrPushConditionSyntax, glr::parsergen::GlrPushConditionSyntax)
+	IMPL_TYPE_INFO_RENAME(vl::glr::parsergen::GlrTestConditionBranch, glr::parsergen::GlrTestConditionBranch)
+	IMPL_TYPE_INFO_RENAME(vl::glr::parsergen::GlrTestConditionSyntax, glr::parsergen::GlrTestConditionSyntax)
+	IMPL_TYPE_INFO_RENAME(vl::glr::parsergen::GlrClause, glr::parsergen::GlrClause)
+	IMPL_TYPE_INFO_RENAME(vl::glr::parsergen::GlrClause::IVisitor, glr::parsergen::GlrClause::IVisitor)
+	IMPL_TYPE_INFO_RENAME(vl::glr::parsergen::GlrAssignmentType, glr::parsergen::GlrAssignmentType)
+	IMPL_TYPE_INFO_RENAME(vl::glr::parsergen::GlrAssignment, glr::parsergen::GlrAssignment)
+	IMPL_TYPE_INFO_RENAME(vl::glr::parsergen::GlrCreateClause, glr::parsergen::GlrCreateClause)
+	IMPL_TYPE_INFO_RENAME(vl::glr::parsergen::GlrPartialClause, glr::parsergen::GlrPartialClause)
+	IMPL_TYPE_INFO_RENAME(vl::glr::parsergen::GlrReuseClause, glr::parsergen::GlrReuseClause)
+	IMPL_TYPE_INFO_RENAME(vl::glr::parsergen::GlrLeftRecursionPlaceholder, glr::parsergen::GlrLeftRecursionPlaceholder)
+	IMPL_TYPE_INFO_RENAME(vl::glr::parsergen::GlrLeftRecursionPlaceholderClause, glr::parsergen::GlrLeftRecursionPlaceholderClause)
+	IMPL_TYPE_INFO_RENAME(vl::glr::parsergen::GlrLeftRecursionConfiguration, glr::parsergen::GlrLeftRecursionConfiguration)
+	IMPL_TYPE_INFO_RENAME(vl::glr::parsergen::GlrLeftRecursionInjectContinuationType, glr::parsergen::GlrLeftRecursionInjectContinuationType)
+	IMPL_TYPE_INFO_RENAME(vl::glr::parsergen::GlrLeftRecursionInjectContinuation, glr::parsergen::GlrLeftRecursionInjectContinuation)
+	IMPL_TYPE_INFO_RENAME(vl::glr::parsergen::GlrLeftRecursionInjectClause, glr::parsergen::GlrLeftRecursionInjectClause)
+	IMPL_TYPE_INFO_RENAME(vl::glr::parsergen::GlrPrefixMergeClause, glr::parsergen::GlrPrefixMergeClause)
+	IMPL_TYPE_INFO_RENAME(vl::glr::parsergen::GlrRule, glr::parsergen::GlrRule)
+	IMPL_TYPE_INFO_RENAME(vl::glr::parsergen::GlrSyntaxFile, glr::parsergen::GlrSyntaxFile)
 
 #ifdef VCZH_DESCRIPTABLEOBJECT_WITH_METADATA
 
-			BEGIN_CLASS_MEMBER(vl::glr::parsergen::GlrCondition)
-				CLASS_MEMBER_BASE(vl::glr::ParsingAstBase)
+	BEGIN_CLASS_MEMBER(vl::glr::parsergen::GlrCondition)
+		CLASS_MEMBER_BASE(vl::glr::ParsingAstBase)
 
-			END_CLASS_MEMBER(vl::glr::parsergen::GlrCondition)
+	END_CLASS_MEMBER(vl::glr::parsergen::GlrCondition)
 
-			BEGIN_CLASS_MEMBER(vl::glr::parsergen::GlrRefCondition)
-				CLASS_MEMBER_BASE(vl::glr::parsergen::GlrCondition)
+	BEGIN_CLASS_MEMBER(vl::glr::parsergen::GlrRefCondition)
+		CLASS_MEMBER_BASE(vl::glr::parsergen::GlrCondition)
 
-				CLASS_MEMBER_CONSTRUCTOR(vl::Ptr<vl::glr::parsergen::GlrRefCondition>(), NO_PARAMETER)
+		CLASS_MEMBER_CONSTRUCTOR(vl::Ptr<vl::glr::parsergen::GlrRefCondition>(), NO_PARAMETER)
 
-				CLASS_MEMBER_FIELD(name)
-			END_CLASS_MEMBER(vl::glr::parsergen::GlrRefCondition)
+		CLASS_MEMBER_FIELD(name)
+	END_CLASS_MEMBER(vl::glr::parsergen::GlrRefCondition)
 
-			BEGIN_CLASS_MEMBER(vl::glr::parsergen::GlrNotCondition)
-				CLASS_MEMBER_BASE(vl::glr::parsergen::GlrCondition)
+	BEGIN_CLASS_MEMBER(vl::glr::parsergen::GlrNotCondition)
+		CLASS_MEMBER_BASE(vl::glr::parsergen::GlrCondition)
 
-				CLASS_MEMBER_CONSTRUCTOR(vl::Ptr<vl::glr::parsergen::GlrNotCondition>(), NO_PARAMETER)
+		CLASS_MEMBER_CONSTRUCTOR(vl::Ptr<vl::glr::parsergen::GlrNotCondition>(), NO_PARAMETER)
 
-				CLASS_MEMBER_FIELD(condition)
-			END_CLASS_MEMBER(vl::glr::parsergen::GlrNotCondition)
+		CLASS_MEMBER_FIELD(condition)
+	END_CLASS_MEMBER(vl::glr::parsergen::GlrNotCondition)
 
-			BEGIN_CLASS_MEMBER(vl::glr::parsergen::GlrAndCondition)
-				CLASS_MEMBER_BASE(vl::glr::parsergen::GlrCondition)
+	BEGIN_CLASS_MEMBER(vl::glr::parsergen::GlrAndCondition)
+		CLASS_MEMBER_BASE(vl::glr::parsergen::GlrCondition)
 
-				CLASS_MEMBER_CONSTRUCTOR(vl::Ptr<vl::glr::parsergen::GlrAndCondition>(), NO_PARAMETER)
+		CLASS_MEMBER_CONSTRUCTOR(vl::Ptr<vl::glr::parsergen::GlrAndCondition>(), NO_PARAMETER)
 
-				CLASS_MEMBER_FIELD(first)
-				CLASS_MEMBER_FIELD(second)
-			END_CLASS_MEMBER(vl::glr::parsergen::GlrAndCondition)
+		CLASS_MEMBER_FIELD(first)
+		CLASS_MEMBER_FIELD(second)
+	END_CLASS_MEMBER(vl::glr::parsergen::GlrAndCondition)
 
-			BEGIN_CLASS_MEMBER(vl::glr::parsergen::GlrOrCondition)
-				CLASS_MEMBER_BASE(vl::glr::parsergen::GlrCondition)
+	BEGIN_CLASS_MEMBER(vl::glr::parsergen::GlrOrCondition)
+		CLASS_MEMBER_BASE(vl::glr::parsergen::GlrCondition)
 
-				CLASS_MEMBER_CONSTRUCTOR(vl::Ptr<vl::glr::parsergen::GlrOrCondition>(), NO_PARAMETER)
+		CLASS_MEMBER_CONSTRUCTOR(vl::Ptr<vl::glr::parsergen::GlrOrCondition>(), NO_PARAMETER)
 
-				CLASS_MEMBER_FIELD(first)
-				CLASS_MEMBER_FIELD(second)
-			END_CLASS_MEMBER(vl::glr::parsergen::GlrOrCondition)
+		CLASS_MEMBER_FIELD(first)
+		CLASS_MEMBER_FIELD(second)
+	END_CLASS_MEMBER(vl::glr::parsergen::GlrOrCondition)
 
-			BEGIN_ENUM_ITEM(vl::glr::parsergen::GlrSwitchValue)
-				ENUM_ITEM_NAMESPACE(vl::glr::parsergen::GlrSwitchValue)
-				ENUM_NAMESPACE_ITEM(False)
-				ENUM_NAMESPACE_ITEM(True)
-			END_ENUM_ITEM(vl::glr::parsergen::GlrSwitchValue)
+	BEGIN_ENUM_ITEM(vl::glr::parsergen::GlrSwitchValue)
+		ENUM_ITEM_NAMESPACE(vl::glr::parsergen::GlrSwitchValue)
+		ENUM_NAMESPACE_ITEM(False)
+		ENUM_NAMESPACE_ITEM(True)
+	END_ENUM_ITEM(vl::glr::parsergen::GlrSwitchValue)
 
-			BEGIN_CLASS_MEMBER(vl::glr::parsergen::GlrSwitchItem)
-				CLASS_MEMBER_BASE(vl::glr::ParsingAstBase)
+	BEGIN_CLASS_MEMBER(vl::glr::parsergen::GlrSwitchItem)
+		CLASS_MEMBER_BASE(vl::glr::ParsingAstBase)
 
-				CLASS_MEMBER_CONSTRUCTOR(vl::Ptr<vl::glr::parsergen::GlrSwitchItem>(), NO_PARAMETER)
+		CLASS_MEMBER_CONSTRUCTOR(vl::Ptr<vl::glr::parsergen::GlrSwitchItem>(), NO_PARAMETER)
 
-				CLASS_MEMBER_FIELD(name)
-				CLASS_MEMBER_FIELD(value)
-			END_CLASS_MEMBER(vl::glr::parsergen::GlrSwitchItem)
+		CLASS_MEMBER_FIELD(name)
+		CLASS_MEMBER_FIELD(value)
+	END_CLASS_MEMBER(vl::glr::parsergen::GlrSwitchItem)
 
-			BEGIN_CLASS_MEMBER(vl::glr::parsergen::GlrSyntax)
-				CLASS_MEMBER_BASE(vl::glr::ParsingAstBase)
+	BEGIN_CLASS_MEMBER(vl::glr::parsergen::GlrSyntax)
+		CLASS_MEMBER_BASE(vl::glr::ParsingAstBase)
 
-			END_CLASS_MEMBER(vl::glr::parsergen::GlrSyntax)
+	END_CLASS_MEMBER(vl::glr::parsergen::GlrSyntax)
 
-			BEGIN_ENUM_ITEM(vl::glr::parsergen::GlrRefType)
-				ENUM_ITEM_NAMESPACE(vl::glr::parsergen::GlrRefType)
-				ENUM_NAMESPACE_ITEM(Id)
-				ENUM_NAMESPACE_ITEM(Literal)
-				ENUM_NAMESPACE_ITEM(ConditionalLiteral)
-			END_ENUM_ITEM(vl::glr::parsergen::GlrRefType)
+	BEGIN_ENUM_ITEM(vl::glr::parsergen::GlrRefType)
+		ENUM_ITEM_NAMESPACE(vl::glr::parsergen::GlrRefType)
+		ENUM_NAMESPACE_ITEM(Id)
+		ENUM_NAMESPACE_ITEM(Literal)
+		ENUM_NAMESPACE_ITEM(ConditionalLiteral)
+	END_ENUM_ITEM(vl::glr::parsergen::GlrRefType)
 
-			BEGIN_CLASS_MEMBER(vl::glr::parsergen::GlrRefSyntax)
-				CLASS_MEMBER_BASE(vl::glr::parsergen::GlrSyntax)
+	BEGIN_CLASS_MEMBER(vl::glr::parsergen::GlrRefSyntax)
+		CLASS_MEMBER_BASE(vl::glr::parsergen::GlrSyntax)
 
-				CLASS_MEMBER_CONSTRUCTOR(vl::Ptr<vl::glr::parsergen::GlrRefSyntax>(), NO_PARAMETER)
+		CLASS_MEMBER_CONSTRUCTOR(vl::Ptr<vl::glr::parsergen::GlrRefSyntax>(), NO_PARAMETER)
 
-				CLASS_MEMBER_FIELD(refType)
-				CLASS_MEMBER_FIELD(literal)
-				CLASS_MEMBER_FIELD(field)
-			END_CLASS_MEMBER(vl::glr::parsergen::GlrRefSyntax)
+		CLASS_MEMBER_FIELD(refType)
+		CLASS_MEMBER_FIELD(literal)
+		CLASS_MEMBER_FIELD(field)
+	END_CLASS_MEMBER(vl::glr::parsergen::GlrRefSyntax)
 
-			BEGIN_CLASS_MEMBER(vl::glr::parsergen::GlrUseSyntax)
-				CLASS_MEMBER_BASE(vl::glr::parsergen::GlrSyntax)
+	BEGIN_CLASS_MEMBER(vl::glr::parsergen::GlrUseSyntax)
+		CLASS_MEMBER_BASE(vl::glr::parsergen::GlrSyntax)
 
-				CLASS_MEMBER_CONSTRUCTOR(vl::Ptr<vl::glr::parsergen::GlrUseSyntax>(), NO_PARAMETER)
+		CLASS_MEMBER_CONSTRUCTOR(vl::Ptr<vl::glr::parsergen::GlrUseSyntax>(), NO_PARAMETER)
 
-				CLASS_MEMBER_FIELD(name)
-			END_CLASS_MEMBER(vl::glr::parsergen::GlrUseSyntax)
+		CLASS_MEMBER_FIELD(name)
+	END_CLASS_MEMBER(vl::glr::parsergen::GlrUseSyntax)
 
-			BEGIN_CLASS_MEMBER(vl::glr::parsergen::GlrLoopSyntax)
-				CLASS_MEMBER_BASE(vl::glr::parsergen::GlrSyntax)
+	BEGIN_CLASS_MEMBER(vl::glr::parsergen::GlrLoopSyntax)
+		CLASS_MEMBER_BASE(vl::glr::parsergen::GlrSyntax)
 
-				CLASS_MEMBER_CONSTRUCTOR(vl::Ptr<vl::glr::parsergen::GlrLoopSyntax>(), NO_PARAMETER)
+		CLASS_MEMBER_CONSTRUCTOR(vl::Ptr<vl::glr::parsergen::GlrLoopSyntax>(), NO_PARAMETER)
 
-				CLASS_MEMBER_FIELD(syntax)
-				CLASS_MEMBER_FIELD(delimiter)
-			END_CLASS_MEMBER(vl::glr::parsergen::GlrLoopSyntax)
+		CLASS_MEMBER_FIELD(syntax)
+		CLASS_MEMBER_FIELD(delimiter)
+	END_CLASS_MEMBER(vl::glr::parsergen::GlrLoopSyntax)
 
-			BEGIN_ENUM_ITEM(vl::glr::parsergen::GlrOptionalPriority)
-				ENUM_ITEM_NAMESPACE(vl::glr::parsergen::GlrOptionalPriority)
-				ENUM_NAMESPACE_ITEM(Equal)
-				ENUM_NAMESPACE_ITEM(PreferTake)
-				ENUM_NAMESPACE_ITEM(PreferSkip)
-			END_ENUM_ITEM(vl::glr::parsergen::GlrOptionalPriority)
+	BEGIN_ENUM_ITEM(vl::glr::parsergen::GlrOptionalPriority)
+		ENUM_ITEM_NAMESPACE(vl::glr::parsergen::GlrOptionalPriority)
+		ENUM_NAMESPACE_ITEM(Equal)
+		ENUM_NAMESPACE_ITEM(PreferTake)
+		ENUM_NAMESPACE_ITEM(PreferSkip)
+	END_ENUM_ITEM(vl::glr::parsergen::GlrOptionalPriority)
 
-			BEGIN_CLASS_MEMBER(vl::glr::parsergen::GlrOptionalSyntax)
-				CLASS_MEMBER_BASE(vl::glr::parsergen::GlrSyntax)
+	BEGIN_CLASS_MEMBER(vl::glr::parsergen::GlrOptionalSyntax)
+		CLASS_MEMBER_BASE(vl::glr::parsergen::GlrSyntax)
 
-				CLASS_MEMBER_CONSTRUCTOR(vl::Ptr<vl::glr::parsergen::GlrOptionalSyntax>(), NO_PARAMETER)
+		CLASS_MEMBER_CONSTRUCTOR(vl::Ptr<vl::glr::parsergen::GlrOptionalSyntax>(), NO_PARAMETER)
 
-				CLASS_MEMBER_FIELD(priority)
-				CLASS_MEMBER_FIELD(syntax)
-			END_CLASS_MEMBER(vl::glr::parsergen::GlrOptionalSyntax)
+		CLASS_MEMBER_FIELD(priority)
+		CLASS_MEMBER_FIELD(syntax)
+	END_CLASS_MEMBER(vl::glr::parsergen::GlrOptionalSyntax)
 
-			BEGIN_CLASS_MEMBER(vl::glr::parsergen::GlrSequenceSyntax)
-				CLASS_MEMBER_BASE(vl::glr::parsergen::GlrSyntax)
+	BEGIN_CLASS_MEMBER(vl::glr::parsergen::GlrSequenceSyntax)
+		CLASS_MEMBER_BASE(vl::glr::parsergen::GlrSyntax)
 
-				CLASS_MEMBER_CONSTRUCTOR(vl::Ptr<vl::glr::parsergen::GlrSequenceSyntax>(), NO_PARAMETER)
+		CLASS_MEMBER_CONSTRUCTOR(vl::Ptr<vl::glr::parsergen::GlrSequenceSyntax>(), NO_PARAMETER)
 
-				CLASS_MEMBER_FIELD(first)
-				CLASS_MEMBER_FIELD(second)
-			END_CLASS_MEMBER(vl::glr::parsergen::GlrSequenceSyntax)
+		CLASS_MEMBER_FIELD(first)
+		CLASS_MEMBER_FIELD(second)
+	END_CLASS_MEMBER(vl::glr::parsergen::GlrSequenceSyntax)
 
-			BEGIN_CLASS_MEMBER(vl::glr::parsergen::GlrAlternativeSyntax)
-				CLASS_MEMBER_BASE(vl::glr::parsergen::GlrSyntax)
+	BEGIN_CLASS_MEMBER(vl::glr::parsergen::GlrAlternativeSyntax)
+		CLASS_MEMBER_BASE(vl::glr::parsergen::GlrSyntax)
 
-				CLASS_MEMBER_CONSTRUCTOR(vl::Ptr<vl::glr::parsergen::GlrAlternativeSyntax>(), NO_PARAMETER)
+		CLASS_MEMBER_CONSTRUCTOR(vl::Ptr<vl::glr::parsergen::GlrAlternativeSyntax>(), NO_PARAMETER)
 
-				CLASS_MEMBER_FIELD(first)
-				CLASS_MEMBER_FIELD(second)
-			END_CLASS_MEMBER(vl::glr::parsergen::GlrAlternativeSyntax)
+		CLASS_MEMBER_FIELD(first)
+		CLASS_MEMBER_FIELD(second)
+	END_CLASS_MEMBER(vl::glr::parsergen::GlrAlternativeSyntax)
 
-			BEGIN_CLASS_MEMBER(vl::glr::parsergen::GlrPushConditionSyntax)
-				CLASS_MEMBER_BASE(vl::glr::parsergen::GlrSyntax)
+	BEGIN_CLASS_MEMBER(vl::glr::parsergen::GlrPushConditionSyntax)
+		CLASS_MEMBER_BASE(vl::glr::parsergen::GlrSyntax)
 
-				CLASS_MEMBER_CONSTRUCTOR(vl::Ptr<vl::glr::parsergen::GlrPushConditionSyntax>(), NO_PARAMETER)
+		CLASS_MEMBER_CONSTRUCTOR(vl::Ptr<vl::glr::parsergen::GlrPushConditionSyntax>(), NO_PARAMETER)
 
-				CLASS_MEMBER_FIELD(switches)
-				CLASS_MEMBER_FIELD(syntax)
-			END_CLASS_MEMBER(vl::glr::parsergen::GlrPushConditionSyntax)
+		CLASS_MEMBER_FIELD(switches)
+		CLASS_MEMBER_FIELD(syntax)
+	END_CLASS_MEMBER(vl::glr::parsergen::GlrPushConditionSyntax)
 
-			BEGIN_CLASS_MEMBER(vl::glr::parsergen::GlrTestConditionBranch)
-				CLASS_MEMBER_BASE(vl::glr::ParsingAstBase)
+	BEGIN_CLASS_MEMBER(vl::glr::parsergen::GlrTestConditionBranch)
+		CLASS_MEMBER_BASE(vl::glr::ParsingAstBase)
 
-				CLASS_MEMBER_CONSTRUCTOR(vl::Ptr<vl::glr::parsergen::GlrTestConditionBranch>(), NO_PARAMETER)
+		CLASS_MEMBER_CONSTRUCTOR(vl::Ptr<vl::glr::parsergen::GlrTestConditionBranch>(), NO_PARAMETER)
 
-				CLASS_MEMBER_FIELD(condition)
-				CLASS_MEMBER_FIELD(syntax)
-			END_CLASS_MEMBER(vl::glr::parsergen::GlrTestConditionBranch)
+		CLASS_MEMBER_FIELD(condition)
+		CLASS_MEMBER_FIELD(syntax)
+	END_CLASS_MEMBER(vl::glr::parsergen::GlrTestConditionBranch)
 
-			BEGIN_CLASS_MEMBER(vl::glr::parsergen::GlrTestConditionSyntax)
-				CLASS_MEMBER_BASE(vl::glr::parsergen::GlrSyntax)
+	BEGIN_CLASS_MEMBER(vl::glr::parsergen::GlrTestConditionSyntax)
+		CLASS_MEMBER_BASE(vl::glr::parsergen::GlrSyntax)
 
-				CLASS_MEMBER_CONSTRUCTOR(vl::Ptr<vl::glr::parsergen::GlrTestConditionSyntax>(), NO_PARAMETER)
+		CLASS_MEMBER_CONSTRUCTOR(vl::Ptr<vl::glr::parsergen::GlrTestConditionSyntax>(), NO_PARAMETER)
 
-				CLASS_MEMBER_FIELD(branches)
-			END_CLASS_MEMBER(vl::glr::parsergen::GlrTestConditionSyntax)
+		CLASS_MEMBER_FIELD(branches)
+	END_CLASS_MEMBER(vl::glr::parsergen::GlrTestConditionSyntax)
 
-			BEGIN_CLASS_MEMBER(vl::glr::parsergen::GlrClause)
-				CLASS_MEMBER_BASE(vl::glr::ParsingAstBase)
+	BEGIN_CLASS_MEMBER(vl::glr::parsergen::GlrClause)
+		CLASS_MEMBER_BASE(vl::glr::ParsingAstBase)
 
-			END_CLASS_MEMBER(vl::glr::parsergen::GlrClause)
+	END_CLASS_MEMBER(vl::glr::parsergen::GlrClause)
 
-			BEGIN_ENUM_ITEM(vl::glr::parsergen::GlrAssignmentType)
-				ENUM_ITEM_NAMESPACE(vl::glr::parsergen::GlrAssignmentType)
-				ENUM_NAMESPACE_ITEM(Strong)
-				ENUM_NAMESPACE_ITEM(Weak)
-			END_ENUM_ITEM(vl::glr::parsergen::GlrAssignmentType)
+	BEGIN_ENUM_ITEM(vl::glr::parsergen::GlrAssignmentType)
+		ENUM_ITEM_NAMESPACE(vl::glr::parsergen::GlrAssignmentType)
+		ENUM_NAMESPACE_ITEM(Strong)
+		ENUM_NAMESPACE_ITEM(Weak)
+	END_ENUM_ITEM(vl::glr::parsergen::GlrAssignmentType)
 
-			BEGIN_CLASS_MEMBER(vl::glr::parsergen::GlrAssignment)
-				CLASS_MEMBER_BASE(vl::glr::ParsingAstBase)
+	BEGIN_CLASS_MEMBER(vl::glr::parsergen::GlrAssignment)
+		CLASS_MEMBER_BASE(vl::glr::ParsingAstBase)
 
-				CLASS_MEMBER_CONSTRUCTOR(vl::Ptr<vl::glr::parsergen::GlrAssignment>(), NO_PARAMETER)
+		CLASS_MEMBER_CONSTRUCTOR(vl::Ptr<vl::glr::parsergen::GlrAssignment>(), NO_PARAMETER)
 
-				CLASS_MEMBER_FIELD(type)
-				CLASS_MEMBER_FIELD(field)
-				CLASS_MEMBER_FIELD(value)
-			END_CLASS_MEMBER(vl::glr::parsergen::GlrAssignment)
+		CLASS_MEMBER_FIELD(type)
+		CLASS_MEMBER_FIELD(field)
+		CLASS_MEMBER_FIELD(value)
+	END_CLASS_MEMBER(vl::glr::parsergen::GlrAssignment)
 
-			BEGIN_CLASS_MEMBER(vl::glr::parsergen::GlrCreateClause)
-				CLASS_MEMBER_BASE(vl::glr::parsergen::GlrClause)
+	BEGIN_CLASS_MEMBER(vl::glr::parsergen::GlrCreateClause)
+		CLASS_MEMBER_BASE(vl::glr::parsergen::GlrClause)
 
-				CLASS_MEMBER_CONSTRUCTOR(vl::Ptr<vl::glr::parsergen::GlrCreateClause>(), NO_PARAMETER)
+		CLASS_MEMBER_CONSTRUCTOR(vl::Ptr<vl::glr::parsergen::GlrCreateClause>(), NO_PARAMETER)
 
-				CLASS_MEMBER_FIELD(type)
-				CLASS_MEMBER_FIELD(syntax)
-				CLASS_MEMBER_FIELD(assignments)
-			END_CLASS_MEMBER(vl::glr::parsergen::GlrCreateClause)
+		CLASS_MEMBER_FIELD(type)
+		CLASS_MEMBER_FIELD(syntax)
+		CLASS_MEMBER_FIELD(assignments)
+	END_CLASS_MEMBER(vl::glr::parsergen::GlrCreateClause)
 
-			BEGIN_CLASS_MEMBER(vl::glr::parsergen::GlrPartialClause)
-				CLASS_MEMBER_BASE(vl::glr::parsergen::GlrClause)
+	BEGIN_CLASS_MEMBER(vl::glr::parsergen::GlrPartialClause)
+		CLASS_MEMBER_BASE(vl::glr::parsergen::GlrClause)
 
-				CLASS_MEMBER_CONSTRUCTOR(vl::Ptr<vl::glr::parsergen::GlrPartialClause>(), NO_PARAMETER)
+		CLASS_MEMBER_CONSTRUCTOR(vl::Ptr<vl::glr::parsergen::GlrPartialClause>(), NO_PARAMETER)
 
-				CLASS_MEMBER_FIELD(type)
-				CLASS_MEMBER_FIELD(syntax)
-				CLASS_MEMBER_FIELD(assignments)
-			END_CLASS_MEMBER(vl::glr::parsergen::GlrPartialClause)
+		CLASS_MEMBER_FIELD(type)
+		CLASS_MEMBER_FIELD(syntax)
+		CLASS_MEMBER_FIELD(assignments)
+	END_CLASS_MEMBER(vl::glr::parsergen::GlrPartialClause)
 
-			BEGIN_CLASS_MEMBER(vl::glr::parsergen::GlrReuseClause)
-				CLASS_MEMBER_BASE(vl::glr::parsergen::GlrClause)
+	BEGIN_CLASS_MEMBER(vl::glr::parsergen::GlrReuseClause)
+		CLASS_MEMBER_BASE(vl::glr::parsergen::GlrClause)
 
-				CLASS_MEMBER_CONSTRUCTOR(vl::Ptr<vl::glr::parsergen::GlrReuseClause>(), NO_PARAMETER)
+		CLASS_MEMBER_CONSTRUCTOR(vl::Ptr<vl::glr::parsergen::GlrReuseClause>(), NO_PARAMETER)
 
-				CLASS_MEMBER_FIELD(syntax)
-				CLASS_MEMBER_FIELD(assignments)
-			END_CLASS_MEMBER(vl::glr::parsergen::GlrReuseClause)
+		CLASS_MEMBER_FIELD(syntax)
+		CLASS_MEMBER_FIELD(assignments)
+	END_CLASS_MEMBER(vl::glr::parsergen::GlrReuseClause)
 
-			BEGIN_CLASS_MEMBER(vl::glr::parsergen::GlrLeftRecursionPlaceholder)
-				CLASS_MEMBER_BASE(vl::glr::ParsingAstBase)
+	BEGIN_CLASS_MEMBER(vl::glr::parsergen::GlrLeftRecursionPlaceholder)
+		CLASS_MEMBER_BASE(vl::glr::ParsingAstBase)
 
-				CLASS_MEMBER_CONSTRUCTOR(vl::Ptr<vl::glr::parsergen::GlrLeftRecursionPlaceholder>(), NO_PARAMETER)
+		CLASS_MEMBER_CONSTRUCTOR(vl::Ptr<vl::glr::parsergen::GlrLeftRecursionPlaceholder>(), NO_PARAMETER)
 
-				CLASS_MEMBER_FIELD(flag)
-			END_CLASS_MEMBER(vl::glr::parsergen::GlrLeftRecursionPlaceholder)
+		CLASS_MEMBER_FIELD(flag)
+	END_CLASS_MEMBER(vl::glr::parsergen::GlrLeftRecursionPlaceholder)
 
-			BEGIN_CLASS_MEMBER(vl::glr::parsergen::GlrLeftRecursionPlaceholderClause)
-				CLASS_MEMBER_BASE(vl::glr::parsergen::GlrClause)
+	BEGIN_CLASS_MEMBER(vl::glr::parsergen::GlrLeftRecursionPlaceholderClause)
+		CLASS_MEMBER_BASE(vl::glr::parsergen::GlrClause)
 
-				CLASS_MEMBER_CONSTRUCTOR(vl::Ptr<vl::glr::parsergen::GlrLeftRecursionPlaceholderClause>(), NO_PARAMETER)
+		CLASS_MEMBER_CONSTRUCTOR(vl::Ptr<vl::glr::parsergen::GlrLeftRecursionPlaceholderClause>(), NO_PARAMETER)
 
-				CLASS_MEMBER_FIELD(flags)
-			END_CLASS_MEMBER(vl::glr::parsergen::GlrLeftRecursionPlaceholderClause)
+		CLASS_MEMBER_FIELD(flags)
+	END_CLASS_MEMBER(vl::glr::parsergen::GlrLeftRecursionPlaceholderClause)
 
-			BEGIN_ENUM_ITEM(vl::glr::parsergen::GlrLeftRecursionConfiguration)
-				ENUM_ITEM_NAMESPACE(vl::glr::parsergen::GlrLeftRecursionConfiguration)
-				ENUM_NAMESPACE_ITEM(Single)
-				ENUM_NAMESPACE_ITEM(Multiple)
-			END_ENUM_ITEM(vl::glr::parsergen::GlrLeftRecursionConfiguration)
+	BEGIN_ENUM_ITEM(vl::glr::parsergen::GlrLeftRecursionConfiguration)
+		ENUM_ITEM_NAMESPACE(vl::glr::parsergen::GlrLeftRecursionConfiguration)
+		ENUM_NAMESPACE_ITEM(Single)
+		ENUM_NAMESPACE_ITEM(Multiple)
+	END_ENUM_ITEM(vl::glr::parsergen::GlrLeftRecursionConfiguration)
 
-			BEGIN_ENUM_ITEM(vl::glr::parsergen::GlrLeftRecursionInjectContinuationType)
-				ENUM_ITEM_NAMESPACE(vl::glr::parsergen::GlrLeftRecursionInjectContinuationType)
-				ENUM_NAMESPACE_ITEM(Optional)
-				ENUM_NAMESPACE_ITEM(Required)
-			END_ENUM_ITEM(vl::glr::parsergen::GlrLeftRecursionInjectContinuationType)
+	BEGIN_ENUM_ITEM(vl::glr::parsergen::GlrLeftRecursionInjectContinuationType)
+		ENUM_ITEM_NAMESPACE(vl::glr::parsergen::GlrLeftRecursionInjectContinuationType)
+		ENUM_NAMESPACE_ITEM(Optional)
+		ENUM_NAMESPACE_ITEM(Required)
+	END_ENUM_ITEM(vl::glr::parsergen::GlrLeftRecursionInjectContinuationType)
 
-			BEGIN_CLASS_MEMBER(vl::glr::parsergen::GlrLeftRecursionInjectContinuation)
-				CLASS_MEMBER_BASE(vl::glr::ParsingAstBase)
+	BEGIN_CLASS_MEMBER(vl::glr::parsergen::GlrLeftRecursionInjectContinuation)
+		CLASS_MEMBER_BASE(vl::glr::ParsingAstBase)
 
-				CLASS_MEMBER_CONSTRUCTOR(vl::Ptr<vl::glr::parsergen::GlrLeftRecursionInjectContinuation>(), NO_PARAMETER)
+		CLASS_MEMBER_CONSTRUCTOR(vl::Ptr<vl::glr::parsergen::GlrLeftRecursionInjectContinuation>(), NO_PARAMETER)
 
-				CLASS_MEMBER_FIELD(flags)
-				CLASS_MEMBER_FIELD(configuration)
-				CLASS_MEMBER_FIELD(type)
-				CLASS_MEMBER_FIELD(injectionTargets)
-			END_CLASS_MEMBER(vl::glr::parsergen::GlrLeftRecursionInjectContinuation)
+		CLASS_MEMBER_FIELD(flags)
+		CLASS_MEMBER_FIELD(configuration)
+		CLASS_MEMBER_FIELD(type)
+		CLASS_MEMBER_FIELD(injectionTargets)
+	END_CLASS_MEMBER(vl::glr::parsergen::GlrLeftRecursionInjectContinuation)
 
-			BEGIN_CLASS_MEMBER(vl::glr::parsergen::GlrLeftRecursionInjectClause)
-				CLASS_MEMBER_BASE(vl::glr::parsergen::GlrClause)
+	BEGIN_CLASS_MEMBER(vl::glr::parsergen::GlrLeftRecursionInjectClause)
+		CLASS_MEMBER_BASE(vl::glr::parsergen::GlrClause)
 
-				CLASS_MEMBER_CONSTRUCTOR(vl::Ptr<vl::glr::parsergen::GlrLeftRecursionInjectClause>(), NO_PARAMETER)
+		CLASS_MEMBER_CONSTRUCTOR(vl::Ptr<vl::glr::parsergen::GlrLeftRecursionInjectClause>(), NO_PARAMETER)
 
-				CLASS_MEMBER_FIELD(rule)
-				CLASS_MEMBER_FIELD(continuation)
-			END_CLASS_MEMBER(vl::glr::parsergen::GlrLeftRecursionInjectClause)
+		CLASS_MEMBER_FIELD(rule)
+		CLASS_MEMBER_FIELD(continuation)
+	END_CLASS_MEMBER(vl::glr::parsergen::GlrLeftRecursionInjectClause)
 
-			BEGIN_CLASS_MEMBER(vl::glr::parsergen::GlrPrefixMergeClause)
-				CLASS_MEMBER_BASE(vl::glr::parsergen::GlrClause)
+	BEGIN_CLASS_MEMBER(vl::glr::parsergen::GlrPrefixMergeClause)
+		CLASS_MEMBER_BASE(vl::glr::parsergen::GlrClause)
 
-				CLASS_MEMBER_CONSTRUCTOR(vl::Ptr<vl::glr::parsergen::GlrPrefixMergeClause>(), NO_PARAMETER)
+		CLASS_MEMBER_CONSTRUCTOR(vl::Ptr<vl::glr::parsergen::GlrPrefixMergeClause>(), NO_PARAMETER)
 
-				CLASS_MEMBER_FIELD(rule)
-			END_CLASS_MEMBER(vl::glr::parsergen::GlrPrefixMergeClause)
+		CLASS_MEMBER_FIELD(rule)
+	END_CLASS_MEMBER(vl::glr::parsergen::GlrPrefixMergeClause)
 
-			BEGIN_CLASS_MEMBER(vl::glr::parsergen::GlrRule)
-				CLASS_MEMBER_BASE(vl::glr::ParsingAstBase)
+	BEGIN_CLASS_MEMBER(vl::glr::parsergen::GlrRule)
+		CLASS_MEMBER_BASE(vl::glr::ParsingAstBase)
 
-				CLASS_MEMBER_CONSTRUCTOR(vl::Ptr<vl::glr::parsergen::GlrRule>(), NO_PARAMETER)
+		CLASS_MEMBER_CONSTRUCTOR(vl::Ptr<vl::glr::parsergen::GlrRule>(), NO_PARAMETER)
 
-				CLASS_MEMBER_FIELD(name)
-				CLASS_MEMBER_FIELD(type)
-				CLASS_MEMBER_FIELD(clauses)
-			END_CLASS_MEMBER(vl::glr::parsergen::GlrRule)
+		CLASS_MEMBER_FIELD(attPublic)
+		CLASS_MEMBER_FIELD(attParser)
+		CLASS_MEMBER_FIELD(name)
+		CLASS_MEMBER_FIELD(type)
+		CLASS_MEMBER_FIELD(clauses)
+	END_CLASS_MEMBER(vl::glr::parsergen::GlrRule)
 
-			BEGIN_CLASS_MEMBER(vl::glr::parsergen::GlrSyntaxFile)
-				CLASS_MEMBER_BASE(vl::glr::ParsingAstBase)
+	BEGIN_CLASS_MEMBER(vl::glr::parsergen::GlrSyntaxFile)
+		CLASS_MEMBER_BASE(vl::glr::ParsingAstBase)
 
-				CLASS_MEMBER_CONSTRUCTOR(vl::Ptr<vl::glr::parsergen::GlrSyntaxFile>(), NO_PARAMETER)
+		CLASS_MEMBER_CONSTRUCTOR(vl::Ptr<vl::glr::parsergen::GlrSyntaxFile>(), NO_PARAMETER)
 
-				CLASS_MEMBER_FIELD(switches)
-				CLASS_MEMBER_FIELD(rules)
-			END_CLASS_MEMBER(vl::glr::parsergen::GlrSyntaxFile)
+		CLASS_MEMBER_FIELD(switches)
+		CLASS_MEMBER_FIELD(rules)
+	END_CLASS_MEMBER(vl::glr::parsergen::GlrSyntaxFile)
 
-			BEGIN_INTERFACE_MEMBER(vl::glr::parsergen::GlrCondition::IVisitor)
-				CLASS_MEMBER_METHOD_OVERLOAD(Visit, {L"node"}, void(vl::glr::parsergen::GlrCondition::IVisitor::*)(vl::glr::parsergen::GlrRefCondition* node))
-				CLASS_MEMBER_METHOD_OVERLOAD(Visit, {L"node"}, void(vl::glr::parsergen::GlrCondition::IVisitor::*)(vl::glr::parsergen::GlrNotCondition* node))
-				CLASS_MEMBER_METHOD_OVERLOAD(Visit, {L"node"}, void(vl::glr::parsergen::GlrCondition::IVisitor::*)(vl::glr::parsergen::GlrAndCondition* node))
-				CLASS_MEMBER_METHOD_OVERLOAD(Visit, {L"node"}, void(vl::glr::parsergen::GlrCondition::IVisitor::*)(vl::glr::parsergen::GlrOrCondition* node))
-			END_INTERFACE_MEMBER(vl::glr::parsergen::GlrCondition)
+	BEGIN_INTERFACE_MEMBER(vl::glr::parsergen::GlrCondition::IVisitor)
+		CLASS_MEMBER_METHOD_OVERLOAD(Visit, {L"node"}, void(vl::glr::parsergen::GlrCondition::IVisitor::*)(vl::glr::parsergen::GlrRefCondition* node))
+		CLASS_MEMBER_METHOD_OVERLOAD(Visit, {L"node"}, void(vl::glr::parsergen::GlrCondition::IVisitor::*)(vl::glr::parsergen::GlrNotCondition* node))
+		CLASS_MEMBER_METHOD_OVERLOAD(Visit, {L"node"}, void(vl::glr::parsergen::GlrCondition::IVisitor::*)(vl::glr::parsergen::GlrAndCondition* node))
+		CLASS_MEMBER_METHOD_OVERLOAD(Visit, {L"node"}, void(vl::glr::parsergen::GlrCondition::IVisitor::*)(vl::glr::parsergen::GlrOrCondition* node))
+	END_INTERFACE_MEMBER(vl::glr::parsergen::GlrCondition)
 
-			BEGIN_INTERFACE_MEMBER(vl::glr::parsergen::GlrSyntax::IVisitor)
-				CLASS_MEMBER_METHOD_OVERLOAD(Visit, {L"node"}, void(vl::glr::parsergen::GlrSyntax::IVisitor::*)(vl::glr::parsergen::GlrRefSyntax* node))
-				CLASS_MEMBER_METHOD_OVERLOAD(Visit, {L"node"}, void(vl::glr::parsergen::GlrSyntax::IVisitor::*)(vl::glr::parsergen::GlrUseSyntax* node))
-				CLASS_MEMBER_METHOD_OVERLOAD(Visit, {L"node"}, void(vl::glr::parsergen::GlrSyntax::IVisitor::*)(vl::glr::parsergen::GlrLoopSyntax* node))
-				CLASS_MEMBER_METHOD_OVERLOAD(Visit, {L"node"}, void(vl::glr::parsergen::GlrSyntax::IVisitor::*)(vl::glr::parsergen::GlrOptionalSyntax* node))
-				CLASS_MEMBER_METHOD_OVERLOAD(Visit, {L"node"}, void(vl::glr::parsergen::GlrSyntax::IVisitor::*)(vl::glr::parsergen::GlrSequenceSyntax* node))
-				CLASS_MEMBER_METHOD_OVERLOAD(Visit, {L"node"}, void(vl::glr::parsergen::GlrSyntax::IVisitor::*)(vl::glr::parsergen::GlrAlternativeSyntax* node))
-				CLASS_MEMBER_METHOD_OVERLOAD(Visit, {L"node"}, void(vl::glr::parsergen::GlrSyntax::IVisitor::*)(vl::glr::parsergen::GlrPushConditionSyntax* node))
-				CLASS_MEMBER_METHOD_OVERLOAD(Visit, {L"node"}, void(vl::glr::parsergen::GlrSyntax::IVisitor::*)(vl::glr::parsergen::GlrTestConditionSyntax* node))
-			END_INTERFACE_MEMBER(vl::glr::parsergen::GlrSyntax)
+	BEGIN_INTERFACE_MEMBER(vl::glr::parsergen::GlrSyntax::IVisitor)
+		CLASS_MEMBER_METHOD_OVERLOAD(Visit, {L"node"}, void(vl::glr::parsergen::GlrSyntax::IVisitor::*)(vl::glr::parsergen::GlrRefSyntax* node))
+		CLASS_MEMBER_METHOD_OVERLOAD(Visit, {L"node"}, void(vl::glr::parsergen::GlrSyntax::IVisitor::*)(vl::glr::parsergen::GlrUseSyntax* node))
+		CLASS_MEMBER_METHOD_OVERLOAD(Visit, {L"node"}, void(vl::glr::parsergen::GlrSyntax::IVisitor::*)(vl::glr::parsergen::GlrLoopSyntax* node))
+		CLASS_MEMBER_METHOD_OVERLOAD(Visit, {L"node"}, void(vl::glr::parsergen::GlrSyntax::IVisitor::*)(vl::glr::parsergen::GlrOptionalSyntax* node))
+		CLASS_MEMBER_METHOD_OVERLOAD(Visit, {L"node"}, void(vl::glr::parsergen::GlrSyntax::IVisitor::*)(vl::glr::parsergen::GlrSequenceSyntax* node))
+		CLASS_MEMBER_METHOD_OVERLOAD(Visit, {L"node"}, void(vl::glr::parsergen::GlrSyntax::IVisitor::*)(vl::glr::parsergen::GlrAlternativeSyntax* node))
+		CLASS_MEMBER_METHOD_OVERLOAD(Visit, {L"node"}, void(vl::glr::parsergen::GlrSyntax::IVisitor::*)(vl::glr::parsergen::GlrPushConditionSyntax* node))
+		CLASS_MEMBER_METHOD_OVERLOAD(Visit, {L"node"}, void(vl::glr::parsergen::GlrSyntax::IVisitor::*)(vl::glr::parsergen::GlrTestConditionSyntax* node))
+	END_INTERFACE_MEMBER(vl::glr::parsergen::GlrSyntax)
 
-			BEGIN_INTERFACE_MEMBER(vl::glr::parsergen::GlrClause::IVisitor)
-				CLASS_MEMBER_METHOD_OVERLOAD(Visit, {L"node"}, void(vl::glr::parsergen::GlrClause::IVisitor::*)(vl::glr::parsergen::GlrCreateClause* node))
-				CLASS_MEMBER_METHOD_OVERLOAD(Visit, {L"node"}, void(vl::glr::parsergen::GlrClause::IVisitor::*)(vl::glr::parsergen::GlrPartialClause* node))
-				CLASS_MEMBER_METHOD_OVERLOAD(Visit, {L"node"}, void(vl::glr::parsergen::GlrClause::IVisitor::*)(vl::glr::parsergen::GlrReuseClause* node))
-				CLASS_MEMBER_METHOD_OVERLOAD(Visit, {L"node"}, void(vl::glr::parsergen::GlrClause::IVisitor::*)(vl::glr::parsergen::GlrLeftRecursionPlaceholderClause* node))
-				CLASS_MEMBER_METHOD_OVERLOAD(Visit, {L"node"}, void(vl::glr::parsergen::GlrClause::IVisitor::*)(vl::glr::parsergen::GlrLeftRecursionInjectClause* node))
-				CLASS_MEMBER_METHOD_OVERLOAD(Visit, {L"node"}, void(vl::glr::parsergen::GlrClause::IVisitor::*)(vl::glr::parsergen::GlrPrefixMergeClause* node))
-			END_INTERFACE_MEMBER(vl::glr::parsergen::GlrClause)
+	BEGIN_INTERFACE_MEMBER(vl::glr::parsergen::GlrClause::IVisitor)
+		CLASS_MEMBER_METHOD_OVERLOAD(Visit, {L"node"}, void(vl::glr::parsergen::GlrClause::IVisitor::*)(vl::glr::parsergen::GlrCreateClause* node))
+		CLASS_MEMBER_METHOD_OVERLOAD(Visit, {L"node"}, void(vl::glr::parsergen::GlrClause::IVisitor::*)(vl::glr::parsergen::GlrPartialClause* node))
+		CLASS_MEMBER_METHOD_OVERLOAD(Visit, {L"node"}, void(vl::glr::parsergen::GlrClause::IVisitor::*)(vl::glr::parsergen::GlrReuseClause* node))
+		CLASS_MEMBER_METHOD_OVERLOAD(Visit, {L"node"}, void(vl::glr::parsergen::GlrClause::IVisitor::*)(vl::glr::parsergen::GlrLeftRecursionPlaceholderClause* node))
+		CLASS_MEMBER_METHOD_OVERLOAD(Visit, {L"node"}, void(vl::glr::parsergen::GlrClause::IVisitor::*)(vl::glr::parsergen::GlrLeftRecursionInjectClause* node))
+		CLASS_MEMBER_METHOD_OVERLOAD(Visit, {L"node"}, void(vl::glr::parsergen::GlrClause::IVisitor::*)(vl::glr::parsergen::GlrPrefixMergeClause* node))
+	END_INTERFACE_MEMBER(vl::glr::parsergen::GlrClause)
 
 #endif
 
 #ifdef VCZH_DESCRIPTABLEOBJECT_WITH_METADATA
-			class ParserGenRuleAstTypeLoader : public vl::Object, public ITypeLoader
-			{
-			public:
-				void Load(ITypeManager* manager)
-				{
-					ADD_TYPE_INFO(vl::glr::parsergen::GlrCondition)
-					ADD_TYPE_INFO(vl::glr::parsergen::GlrCondition::IVisitor)
-					ADD_TYPE_INFO(vl::glr::parsergen::GlrRefCondition)
-					ADD_TYPE_INFO(vl::glr::parsergen::GlrNotCondition)
-					ADD_TYPE_INFO(vl::glr::parsergen::GlrAndCondition)
-					ADD_TYPE_INFO(vl::glr::parsergen::GlrOrCondition)
-					ADD_TYPE_INFO(vl::glr::parsergen::GlrSwitchValue)
-					ADD_TYPE_INFO(vl::glr::parsergen::GlrSwitchItem)
-					ADD_TYPE_INFO(vl::glr::parsergen::GlrSyntax)
-					ADD_TYPE_INFO(vl::glr::parsergen::GlrSyntax::IVisitor)
-					ADD_TYPE_INFO(vl::glr::parsergen::GlrRefType)
-					ADD_TYPE_INFO(vl::glr::parsergen::GlrRefSyntax)
-					ADD_TYPE_INFO(vl::glr::parsergen::GlrUseSyntax)
-					ADD_TYPE_INFO(vl::glr::parsergen::GlrLoopSyntax)
-					ADD_TYPE_INFO(vl::glr::parsergen::GlrOptionalPriority)
-					ADD_TYPE_INFO(vl::glr::parsergen::GlrOptionalSyntax)
-					ADD_TYPE_INFO(vl::glr::parsergen::GlrSequenceSyntax)
-					ADD_TYPE_INFO(vl::glr::parsergen::GlrAlternativeSyntax)
-					ADD_TYPE_INFO(vl::glr::parsergen::GlrPushConditionSyntax)
-					ADD_TYPE_INFO(vl::glr::parsergen::GlrTestConditionBranch)
-					ADD_TYPE_INFO(vl::glr::parsergen::GlrTestConditionSyntax)
-					ADD_TYPE_INFO(vl::glr::parsergen::GlrClause)
-					ADD_TYPE_INFO(vl::glr::parsergen::GlrClause::IVisitor)
-					ADD_TYPE_INFO(vl::glr::parsergen::GlrAssignmentType)
-					ADD_TYPE_INFO(vl::glr::parsergen::GlrAssignment)
-					ADD_TYPE_INFO(vl::glr::parsergen::GlrCreateClause)
-					ADD_TYPE_INFO(vl::glr::parsergen::GlrPartialClause)
-					ADD_TYPE_INFO(vl::glr::parsergen::GlrReuseClause)
-					ADD_TYPE_INFO(vl::glr::parsergen::GlrLeftRecursionPlaceholder)
-					ADD_TYPE_INFO(vl::glr::parsergen::GlrLeftRecursionPlaceholderClause)
-					ADD_TYPE_INFO(vl::glr::parsergen::GlrLeftRecursionConfiguration)
-					ADD_TYPE_INFO(vl::glr::parsergen::GlrLeftRecursionInjectContinuationType)
-					ADD_TYPE_INFO(vl::glr::parsergen::GlrLeftRecursionInjectContinuation)
-					ADD_TYPE_INFO(vl::glr::parsergen::GlrLeftRecursionInjectClause)
-					ADD_TYPE_INFO(vl::glr::parsergen::GlrPrefixMergeClause)
-					ADD_TYPE_INFO(vl::glr::parsergen::GlrRule)
-					ADD_TYPE_INFO(vl::glr::parsergen::GlrSyntaxFile)
-				}
-
-				void Unload(ITypeManager* manager)
-				{
-				}
-			};
-#endif
-#endif
-
-			bool ParserGenRuleAstLoadTypes()
-			{
-#ifdef VCZH_DESCRIPTABLEOBJECT_WITH_METADATA
-				if (auto manager = GetGlobalTypeManager())
-				{
-					auto loader = Ptr(new ParserGenRuleAstTypeLoader);
-					return manager->AddTypeLoader(loader);
-				}
-#endif
-				return false;
-			}
+	class ParserGenRuleAstTypeLoader : public vl::Object, public ITypeLoader
+	{
+	public:
+		void Load(ITypeManager* manager)
+		{
+			ADD_TYPE_INFO(vl::glr::parsergen::GlrCondition)
+			ADD_TYPE_INFO(vl::glr::parsergen::GlrCondition::IVisitor)
+			ADD_TYPE_INFO(vl::glr::parsergen::GlrRefCondition)
+			ADD_TYPE_INFO(vl::glr::parsergen::GlrNotCondition)
+			ADD_TYPE_INFO(vl::glr::parsergen::GlrAndCondition)
+			ADD_TYPE_INFO(vl::glr::parsergen::GlrOrCondition)
+			ADD_TYPE_INFO(vl::glr::parsergen::GlrSwitchValue)
+			ADD_TYPE_INFO(vl::glr::parsergen::GlrSwitchItem)
+			ADD_TYPE_INFO(vl::glr::parsergen::GlrSyntax)
+			ADD_TYPE_INFO(vl::glr::parsergen::GlrSyntax::IVisitor)
+			ADD_TYPE_INFO(vl::glr::parsergen::GlrRefType)
+			ADD_TYPE_INFO(vl::glr::parsergen::GlrRefSyntax)
+			ADD_TYPE_INFO(vl::glr::parsergen::GlrUseSyntax)
+			ADD_TYPE_INFO(vl::glr::parsergen::GlrLoopSyntax)
+			ADD_TYPE_INFO(vl::glr::parsergen::GlrOptionalPriority)
+			ADD_TYPE_INFO(vl::glr::parsergen::GlrOptionalSyntax)
+			ADD_TYPE_INFO(vl::glr::parsergen::GlrSequenceSyntax)
+			ADD_TYPE_INFO(vl::glr::parsergen::GlrAlternativeSyntax)
+			ADD_TYPE_INFO(vl::glr::parsergen::GlrPushConditionSyntax)
+			ADD_TYPE_INFO(vl::glr::parsergen::GlrTestConditionBranch)
+			ADD_TYPE_INFO(vl::glr::parsergen::GlrTestConditionSyntax)
+			ADD_TYPE_INFO(vl::glr::parsergen::GlrClause)
+			ADD_TYPE_INFO(vl::glr::parsergen::GlrClause::IVisitor)
+			ADD_TYPE_INFO(vl::glr::parsergen::GlrAssignmentType)
+			ADD_TYPE_INFO(vl::glr::parsergen::GlrAssignment)
+			ADD_TYPE_INFO(vl::glr::parsergen::GlrCreateClause)
+			ADD_TYPE_INFO(vl::glr::parsergen::GlrPartialClause)
+			ADD_TYPE_INFO(vl::glr::parsergen::GlrReuseClause)
+			ADD_TYPE_INFO(vl::glr::parsergen::GlrLeftRecursionPlaceholder)
+			ADD_TYPE_INFO(vl::glr::parsergen::GlrLeftRecursionPlaceholderClause)
+			ADD_TYPE_INFO(vl::glr::parsergen::GlrLeftRecursionConfiguration)
+			ADD_TYPE_INFO(vl::glr::parsergen::GlrLeftRecursionInjectContinuationType)
+			ADD_TYPE_INFO(vl::glr::parsergen::GlrLeftRecursionInjectContinuation)
+			ADD_TYPE_INFO(vl::glr::parsergen::GlrLeftRecursionInjectClause)
+			ADD_TYPE_INFO(vl::glr::parsergen::GlrPrefixMergeClause)
+			ADD_TYPE_INFO(vl::glr::parsergen::GlrRule)
+			ADD_TYPE_INFO(vl::glr::parsergen::GlrSyntaxFile)
 		}
+
+		void Unload(ITypeManager* manager)
+		{
+		}
+	};
+#endif
+#endif
+
+	bool ParserGenRuleAstLoadTypes()
+	{
+#ifdef VCZH_DESCRIPTABLEOBJECT_WITH_METADATA
+		if (auto manager = GetGlobalTypeManager())
+		{
+			auto loader = Ptr(new ParserGenRuleAstTypeLoader);
+			return manager->AddTypeLoader(loader);
+		}
+#endif
+		return false;
 	}
 }

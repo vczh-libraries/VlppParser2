@@ -9,199 +9,196 @@ Licensed under https://github.com/vczh-libraries/License
 
 #include "CppAst.h"
 
-namespace cpp_parser
+namespace cpp_parser::json_visitor
 {
-	namespace json_visitor
+	/// <summary>A JSON visitor, overriding all abstract methods with AST to JSON serialization code.</summary>
+	class AstVisitor
+		: public vl::glr::JsonVisitorBase
+		, protected virtual CppTypeOrExprOrOthers::IVisitor
+		, protected virtual CppDeclaration::IVisitor
+		, protected virtual CppTypeOrExpr::IVisitor
+		, protected virtual CppExprOnly::IVisitor
+		, protected virtual CppTypeOnly::IVisitor
+		, protected virtual CppIdentifier::IVisitor
+		, protected virtual CppVarInit::IVisitor
+		, protected virtual CppStatement::IVisitor
+		, protected virtual CppForStatConditionPart::IVisitor
 	{
-		/// <summary>A JSON visitor, overriding all abstract methods with AST to JSON serialization code.</summary>
-		class AstVisitor
-			: public vl::glr::JsonVisitorBase
-			, protected virtual CppTypeOrExprOrOthers::IVisitor
-			, protected virtual CppDeclaration::IVisitor
-			, protected virtual CppTypeOrExpr::IVisitor
-			, protected virtual CppExprOnly::IVisitor
-			, protected virtual CppTypeOnly::IVisitor
-			, protected virtual CppIdentifier::IVisitor
-			, protected virtual CppVarInit::IVisitor
-			, protected virtual CppStatement::IVisitor
-			, protected virtual CppForStatConditionPart::IVisitor
-		{
-		protected:
-			virtual void PrintFields(CppAdvancedType* node);
-			virtual void PrintFields(CppBinaryExpr* node);
-			virtual void PrintFields(CppBlockStat* node);
-			virtual void PrintFields(CppBraceExpr* node);
-			virtual void PrintFields(CppBreakStat* node);
-			virtual void PrintFields(CppCallExpr* node);
-			virtual void PrintFields(CppCaseStat* node);
-			virtual void PrintFields(CppCastExpr* node);
-			virtual void PrintFields(CppConstType* node);
-			virtual void PrintFields(CppContinueStat* node);
-			virtual void PrintFields(CppDeclStat* node);
-			virtual void PrintFields(CppDeclaration* node);
-			virtual void PrintFields(CppDeclarator* node);
-			virtual void PrintFields(CppDeclaratorArrayPart* node);
-			virtual void PrintFields(CppDeclaratorFunctionPart* node);
-			virtual void PrintFields(CppDeclaratorKeyword* node);
-			virtual void PrintFields(CppDeclaratorType* node);
-			virtual void PrintFields(CppDeclaratorVariablePart* node);
-			virtual void PrintFields(CppDefaultStat* node);
-			virtual void PrintFields(CppDeleteExpr* node);
-			virtual void PrintFields(CppDoWhileStat* node);
-			virtual void PrintFields(CppEmptyStat* node);
-			virtual void PrintFields(CppExprOnly* node);
-			virtual void PrintFields(CppExprStat* node);
-			virtual void PrintFields(CppFile* node);
-			virtual void PrintFields(CppForStat* node);
-			virtual void PrintFields(CppForStatConditionPart* node);
-			virtual void PrintFields(CppForStatIterateCondition* node);
-			virtual void PrintFields(CppForStatLoopCondition* node);
-			virtual void PrintFields(CppFunctionKeyword* node);
-			virtual void PrintFields(CppGenericArgument* node);
-			virtual void PrintFields(CppGenericArguments* node);
-			virtual void PrintFields(CppGenericHeader* node);
-			virtual void PrintFields(CppGotoStat* node);
-			virtual void PrintFields(CppIdentifier* node);
-			virtual void PrintFields(CppIfElseStat* node);
-			virtual void PrintFields(CppIfExpr* node);
-			virtual void PrintFields(CppIndexExpr* node);
-			virtual void PrintFields(CppLabelStat* node);
-			virtual void PrintFields(CppLambdaCapture* node);
-			virtual void PrintFields(CppLambdaExpr* node);
-			virtual void PrintFields(CppMultipleVarDeclaration* node);
-			virtual void PrintFields(CppNameIdentifier* node);
-			virtual void PrintFields(CppNewExpr* node);
-			virtual void PrintFields(CppNumericExprLiteral* node);
-			virtual void PrintFields(CppOperatorIdentifier* node);
-			virtual void PrintFields(CppOrdinaryGenericParameter* node);
-			virtual void PrintFields(CppParenthesisExpr* node);
-			virtual void PrintFields(CppPostfixUnaryExpr* node);
-			virtual void PrintFields(CppPrefixUnaryExpr* node);
-			virtual void PrintFields(CppPrimitiveExprLiteral* node);
-			virtual void PrintFields(CppPrimitiveType* node);
-			virtual void PrintFields(CppQualifiedName* node);
-			virtual void PrintFields(CppReturnStat* node);
-			virtual void PrintFields(CppSingleVarDeclaration* node);
-			virtual void PrintFields(CppSizeofExpr* node);
-			virtual void PrintFields(CppStatement* node);
-			virtual void PrintFields(CppStatementToResolve* node);
-			virtual void PrintFields(CppStaticAssertDeclaration* node);
-			virtual void PrintFields(CppStringLiteral* node);
-			virtual void PrintFields(CppStringLiteralFragment* node);
-			virtual void PrintFields(CppSwitchStat* node);
-			virtual void PrintFields(CppSysFuncExpr* node);
-			virtual void PrintFields(CppThrowExpr* node);
-			virtual void PrintFields(CppTryStat* node);
-			virtual void PrintFields(CppTryStatCatchPart* node);
-			virtual void PrintFields(CppTypeOnly* node);
-			virtual void PrintFields(CppTypeOrExpr* node);
-			virtual void PrintFields(CppTypeOrExprOrOthers* node);
-			virtual void PrintFields(CppTypeOrExprOrOthersToResolve* node);
-			virtual void PrintFields(CppTypeOrExprToResolve* node);
-			virtual void PrintFields(CppVarBraceInit* node);
-			virtual void PrintFields(CppVarInit* node);
-			virtual void PrintFields(CppVarParanthesisInit* node);
-			virtual void PrintFields(CppVarValueInit* node);
-			virtual void PrintFields(CppVariadicExpr* node);
-			virtual void PrintFields(CppVolatileType* node);
-			virtual void PrintFields(CppWhileStat* node);
-			virtual void PrintFields(Cpp__LeaveStat* node);
-			virtual void PrintFields(Cpp__TryStat* node);
+	protected:
+		virtual void PrintFields(CppAdvancedType* node);
+		virtual void PrintFields(CppBinaryExpr* node);
+		virtual void PrintFields(CppBlockStat* node);
+		virtual void PrintFields(CppBraceExpr* node);
+		virtual void PrintFields(CppBreakStat* node);
+		virtual void PrintFields(CppCallExpr* node);
+		virtual void PrintFields(CppCaseStat* node);
+		virtual void PrintFields(CppCastExpr* node);
+		virtual void PrintFields(CppConstType* node);
+		virtual void PrintFields(CppContinueStat* node);
+		virtual void PrintFields(CppDeclStat* node);
+		virtual void PrintFields(CppDeclaration* node);
+		virtual void PrintFields(CppDeclarator* node);
+		virtual void PrintFields(CppDeclaratorArrayPart* node);
+		virtual void PrintFields(CppDeclaratorFunctionPart* node);
+		virtual void PrintFields(CppDeclaratorKeyword* node);
+		virtual void PrintFields(CppDeclaratorType* node);
+		virtual void PrintFields(CppDeclaratorVariablePart* node);
+		virtual void PrintFields(CppDefaultStat* node);
+		virtual void PrintFields(CppDeleteExpr* node);
+		virtual void PrintFields(CppDoWhileStat* node);
+		virtual void PrintFields(CppEmptyStat* node);
+		virtual void PrintFields(CppExprOnly* node);
+		virtual void PrintFields(CppExprStat* node);
+		virtual void PrintFields(CppFile* node);
+		virtual void PrintFields(CppForStat* node);
+		virtual void PrintFields(CppForStatConditionPart* node);
+		virtual void PrintFields(CppForStatIterateCondition* node);
+		virtual void PrintFields(CppForStatLoopCondition* node);
+		virtual void PrintFields(CppFunctionKeyword* node);
+		virtual void PrintFields(CppGenericArgument* node);
+		virtual void PrintFields(CppGenericArguments* node);
+		virtual void PrintFields(CppGenericHeader* node);
+		virtual void PrintFields(CppGotoStat* node);
+		virtual void PrintFields(CppIdentifier* node);
+		virtual void PrintFields(CppIfElseStat* node);
+		virtual void PrintFields(CppIfExpr* node);
+		virtual void PrintFields(CppIndexExpr* node);
+		virtual void PrintFields(CppLabelStat* node);
+		virtual void PrintFields(CppLambdaCapture* node);
+		virtual void PrintFields(CppLambdaExpr* node);
+		virtual void PrintFields(CppMultipleVarDeclaration* node);
+		virtual void PrintFields(CppNameIdentifier* node);
+		virtual void PrintFields(CppNewExpr* node);
+		virtual void PrintFields(CppNumericExprLiteral* node);
+		virtual void PrintFields(CppOperatorIdentifier* node);
+		virtual void PrintFields(CppOrdinaryGenericParameter* node);
+		virtual void PrintFields(CppParenthesisExpr* node);
+		virtual void PrintFields(CppPostfixUnaryExpr* node);
+		virtual void PrintFields(CppPrefixUnaryExpr* node);
+		virtual void PrintFields(CppPrimitiveExprLiteral* node);
+		virtual void PrintFields(CppPrimitiveType* node);
+		virtual void PrintFields(CppQualifiedName* node);
+		virtual void PrintFields(CppReturnStat* node);
+		virtual void PrintFields(CppSingleVarDeclaration* node);
+		virtual void PrintFields(CppSizeofExpr* node);
+		virtual void PrintFields(CppStatement* node);
+		virtual void PrintFields(CppStatementToResolve* node);
+		virtual void PrintFields(CppStaticAssertDeclaration* node);
+		virtual void PrintFields(CppStringLiteral* node);
+		virtual void PrintFields(CppStringLiteralFragment* node);
+		virtual void PrintFields(CppSwitchStat* node);
+		virtual void PrintFields(CppSysFuncExpr* node);
+		virtual void PrintFields(CppThrowExpr* node);
+		virtual void PrintFields(CppTryStat* node);
+		virtual void PrintFields(CppTryStatCatchPart* node);
+		virtual void PrintFields(CppTypeOnly* node);
+		virtual void PrintFields(CppTypeOrExpr* node);
+		virtual void PrintFields(CppTypeOrExprOrOthers* node);
+		virtual void PrintFields(CppTypeOrExprOrOthersToResolve* node);
+		virtual void PrintFields(CppTypeOrExprToResolve* node);
+		virtual void PrintFields(CppVarBraceInit* node);
+		virtual void PrintFields(CppVarInit* node);
+		virtual void PrintFields(CppVarParanthesisInit* node);
+		virtual void PrintFields(CppVarValueInit* node);
+		virtual void PrintFields(CppVariadicExpr* node);
+		virtual void PrintFields(CppVolatileType* node);
+		virtual void PrintFields(CppWhileStat* node);
+		virtual void PrintFields(Cpp__LeaveStat* node);
+		virtual void PrintFields(Cpp__TryStat* node);
 
-		protected:
-			void Visit(CppTypeOrExprOrOthersToResolve* node) override;
-			void Visit(CppDeclaration* node) override;
-			void Visit(CppTypeOrExpr* node) override;
-			void Visit(CppGenericArgument* node) override;
-			void Visit(CppOrdinaryGenericParameter* node) override;
+	protected:
+		void Visit(CppTypeOrExprOrOthersToResolve* node) override;
+		void Visit(CppDeclaration* node) override;
+		void Visit(CppTypeOrExpr* node) override;
+		void Visit(CppGenericArgument* node) override;
+		void Visit(CppOrdinaryGenericParameter* node) override;
 
-			void Visit(CppSingleVarDeclaration* node) override;
-			void Visit(CppMultipleVarDeclaration* node) override;
-			void Visit(CppStaticAssertDeclaration* node) override;
+		void Visit(CppSingleVarDeclaration* node) override;
+		void Visit(CppMultipleVarDeclaration* node) override;
+		void Visit(CppStaticAssertDeclaration* node) override;
 
-			void Visit(CppTypeOrExprToResolve* node) override;
-			void Visit(CppExprOnly* node) override;
-			void Visit(CppTypeOnly* node) override;
-			void Visit(CppQualifiedName* node) override;
-			void Visit(CppDeclaratorType* node) override;
+		void Visit(CppTypeOrExprToResolve* node) override;
+		void Visit(CppExprOnly* node) override;
+		void Visit(CppTypeOnly* node) override;
+		void Visit(CppQualifiedName* node) override;
+		void Visit(CppDeclaratorType* node) override;
 
-			void Visit(CppPrimitiveExprLiteral* node) override;
-			void Visit(CppNumericExprLiteral* node) override;
-			void Visit(CppStringLiteral* node) override;
-			void Visit(CppLambdaExpr* node) override;
-			void Visit(CppParenthesisExpr* node) override;
-			void Visit(CppBraceExpr* node) override;
-			void Visit(CppCastExpr* node) override;
-			void Visit(CppSysFuncExpr* node) override;
-			void Visit(CppSizeofExpr* node) override;
-			void Visit(CppDeleteExpr* node) override;
-			void Visit(CppNewExpr* node) override;
-			void Visit(CppPrefixUnaryExpr* node) override;
-			void Visit(CppPostfixUnaryExpr* node) override;
-			void Visit(CppIndexExpr* node) override;
-			void Visit(CppCallExpr* node) override;
-			void Visit(CppBinaryExpr* node) override;
-			void Visit(CppIfExpr* node) override;
-			void Visit(CppThrowExpr* node) override;
-			void Visit(CppVariadicExpr* node) override;
+		void Visit(CppPrimitiveExprLiteral* node) override;
+		void Visit(CppNumericExprLiteral* node) override;
+		void Visit(CppStringLiteral* node) override;
+		void Visit(CppLambdaExpr* node) override;
+		void Visit(CppParenthesisExpr* node) override;
+		void Visit(CppBraceExpr* node) override;
+		void Visit(CppCastExpr* node) override;
+		void Visit(CppSysFuncExpr* node) override;
+		void Visit(CppSizeofExpr* node) override;
+		void Visit(CppDeleteExpr* node) override;
+		void Visit(CppNewExpr* node) override;
+		void Visit(CppPrefixUnaryExpr* node) override;
+		void Visit(CppPostfixUnaryExpr* node) override;
+		void Visit(CppIndexExpr* node) override;
+		void Visit(CppCallExpr* node) override;
+		void Visit(CppBinaryExpr* node) override;
+		void Visit(CppIfExpr* node) override;
+		void Visit(CppThrowExpr* node) override;
+		void Visit(CppVariadicExpr* node) override;
 
-			void Visit(CppPrimitiveType* node) override;
-			void Visit(CppConstType* node) override;
-			void Visit(CppVolatileType* node) override;
+		void Visit(CppPrimitiveType* node) override;
+		void Visit(CppConstType* node) override;
+		void Visit(CppVolatileType* node) override;
 
-			void Visit(CppNameIdentifier* node) override;
-			void Visit(CppOperatorIdentifier* node) override;
+		void Visit(CppNameIdentifier* node) override;
+		void Visit(CppOperatorIdentifier* node) override;
 
-			void Visit(CppVarValueInit* node) override;
-			void Visit(CppVarParanthesisInit* node) override;
-			void Visit(CppVarBraceInit* node) override;
+		void Visit(CppVarValueInit* node) override;
+		void Visit(CppVarParanthesisInit* node) override;
+		void Visit(CppVarBraceInit* node) override;
 
-			void Visit(CppStatementToResolve* node) override;
-			void Visit(CppEmptyStat* node) override;
-			void Visit(CppBlockStat* node) override;
-			void Visit(CppExprStat* node) override;
-			void Visit(CppDeclStat* node) override;
-			void Visit(CppBreakStat* node) override;
-			void Visit(CppContinueStat* node) override;
-			void Visit(CppReturnStat* node) override;
-			void Visit(CppLabelStat* node) override;
-			void Visit(CppGotoStat* node) override;
-			void Visit(CppCaseStat* node) override;
-			void Visit(CppDefaultStat* node) override;
-			void Visit(Cpp__LeaveStat* node) override;
-			void Visit(CppWhileStat* node) override;
-			void Visit(CppDoWhileStat* node) override;
-			void Visit(CppIfElseStat* node) override;
-			void Visit(CppForStat* node) override;
-			void Visit(CppSwitchStat* node) override;
-			void Visit(CppTryStat* node) override;
-			void Visit(Cpp__TryStat* node) override;
+		void Visit(CppStatementToResolve* node) override;
+		void Visit(CppEmptyStat* node) override;
+		void Visit(CppBlockStat* node) override;
+		void Visit(CppExprStat* node) override;
+		void Visit(CppDeclStat* node) override;
+		void Visit(CppBreakStat* node) override;
+		void Visit(CppContinueStat* node) override;
+		void Visit(CppReturnStat* node) override;
+		void Visit(CppLabelStat* node) override;
+		void Visit(CppGotoStat* node) override;
+		void Visit(CppCaseStat* node) override;
+		void Visit(CppDefaultStat* node) override;
+		void Visit(Cpp__LeaveStat* node) override;
+		void Visit(CppWhileStat* node) override;
+		void Visit(CppDoWhileStat* node) override;
+		void Visit(CppIfElseStat* node) override;
+		void Visit(CppForStat* node) override;
+		void Visit(CppSwitchStat* node) override;
+		void Visit(CppTryStat* node) override;
+		void Visit(Cpp__TryStat* node) override;
 
-			void Visit(CppForStatLoopCondition* node) override;
-			void Visit(CppForStatIterateCondition* node) override;
+		void Visit(CppForStatLoopCondition* node) override;
+		void Visit(CppForStatIterateCondition* node) override;
 
-		public:
-			AstVisitor(vl::stream::StreamWriter& _writer);
+	public:
+		AstVisitor(vl::stream::StreamWriter& _writer);
 
-			void Print(CppTypeOrExprOrOthers* node);
-			void Print(CppIdentifier* node);
-			void Print(CppVarInit* node);
-			void Print(CppStatement* node);
-			void Print(CppForStatConditionPart* node);
-			void Print(CppGenericArguments* node);
-			void Print(CppGenericHeader* node);
-			void Print(CppStringLiteralFragment* node);
-			void Print(CppLambdaCapture* node);
-			void Print(CppAdvancedType* node);
-			void Print(CppDeclaratorKeyword* node);
-			void Print(CppFunctionKeyword* node);
-			void Print(CppDeclaratorFunctionPart* node);
-			void Print(CppDeclaratorArrayPart* node);
-			void Print(CppDeclarator* node);
-			void Print(CppDeclaratorVariablePart* node);
-			void Print(CppTryStatCatchPart* node);
-			void Print(CppFile* node);
-		};
-	}
+		void Print(CppTypeOrExprOrOthers* node);
+		void Print(CppIdentifier* node);
+		void Print(CppVarInit* node);
+		void Print(CppStatement* node);
+		void Print(CppForStatConditionPart* node);
+		void Print(CppGenericArguments* node);
+		void Print(CppGenericHeader* node);
+		void Print(CppStringLiteralFragment* node);
+		void Print(CppLambdaCapture* node);
+		void Print(CppAdvancedType* node);
+		void Print(CppDeclaratorKeyword* node);
+		void Print(CppFunctionKeyword* node);
+		void Print(CppDeclaratorFunctionPart* node);
+		void Print(CppDeclaratorArrayPart* node);
+		void Print(CppDeclarator* node);
+		void Print(CppDeclaratorVariablePart* node);
+		void Print(CppTryStatCatchPart* node);
+		void Print(CppFile* node);
+	};
 }
 #endif

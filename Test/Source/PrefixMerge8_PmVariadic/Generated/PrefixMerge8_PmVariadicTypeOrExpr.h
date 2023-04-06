@@ -211,135 +211,129 @@ namespace prefixmerge8_pmvariadic
 		void Accept(TypeOrExpr::IVisitor* visitor) override;
 	};
 }
-namespace vl
+namespace vl::reflection::description
 {
-	namespace reflection
-	{
-		namespace description
-		{
 #ifndef VCZH_DEBUG_NO_REFLECTION
-			DECL_TYPE_INFO(prefixmerge8_pmvariadic::TypeOrExprOrOthers)
-			DECL_TYPE_INFO(prefixmerge8_pmvariadic::TypeOrExprOrOthers::IVisitor)
-			DECL_TYPE_INFO(prefixmerge8_pmvariadic::VariadicArgument)
-			DECL_TYPE_INFO(prefixmerge8_pmvariadic::TypeOrExpr)
-			DECL_TYPE_INFO(prefixmerge8_pmvariadic::TypeOrExpr::IVisitor)
-			DECL_TYPE_INFO(prefixmerge8_pmvariadic::QualifiedName)
-			DECL_TYPE_INFO(prefixmerge8_pmvariadic::QualifiedName::IVisitor)
-			DECL_TYPE_INFO(prefixmerge8_pmvariadic::Name)
-			DECL_TYPE_INFO(prefixmerge8_pmvariadic::MemberName)
-			DECL_TYPE_INFO(prefixmerge8_pmvariadic::GenericQualifiedName)
-			DECL_TYPE_INFO(prefixmerge8_pmvariadic::GenericQualifiedName::IVisitor)
-			DECL_TYPE_INFO(prefixmerge8_pmvariadic::GenericName)
-			DECL_TYPE_INFO(prefixmerge8_pmvariadic::GenericMemberName)
-			DECL_TYPE_INFO(prefixmerge8_pmvariadic::CallExpr)
-			DECL_TYPE_INFO(prefixmerge8_pmvariadic::CtorExpr)
-			DECL_TYPE_INFO(prefixmerge8_pmvariadic::MulExpr)
-			DECL_TYPE_INFO(prefixmerge8_pmvariadic::ConstType)
-			DECL_TYPE_INFO(prefixmerge8_pmvariadic::PointerType)
-			DECL_TYPE_INFO(prefixmerge8_pmvariadic::FunctionType)
-			DECL_TYPE_INFO(prefixmerge8_pmvariadic::TypeOrExprOrOthersToResolve)
-			DECL_TYPE_INFO(prefixmerge8_pmvariadic::TypeOrExprToResolve)
+	DECL_TYPE_INFO(prefixmerge8_pmvariadic::TypeOrExprOrOthers)
+	DECL_TYPE_INFO(prefixmerge8_pmvariadic::TypeOrExprOrOthers::IVisitor)
+	DECL_TYPE_INFO(prefixmerge8_pmvariadic::VariadicArgument)
+	DECL_TYPE_INFO(prefixmerge8_pmvariadic::TypeOrExpr)
+	DECL_TYPE_INFO(prefixmerge8_pmvariadic::TypeOrExpr::IVisitor)
+	DECL_TYPE_INFO(prefixmerge8_pmvariadic::QualifiedName)
+	DECL_TYPE_INFO(prefixmerge8_pmvariadic::QualifiedName::IVisitor)
+	DECL_TYPE_INFO(prefixmerge8_pmvariadic::Name)
+	DECL_TYPE_INFO(prefixmerge8_pmvariadic::MemberName)
+	DECL_TYPE_INFO(prefixmerge8_pmvariadic::GenericQualifiedName)
+	DECL_TYPE_INFO(prefixmerge8_pmvariadic::GenericQualifiedName::IVisitor)
+	DECL_TYPE_INFO(prefixmerge8_pmvariadic::GenericName)
+	DECL_TYPE_INFO(prefixmerge8_pmvariadic::GenericMemberName)
+	DECL_TYPE_INFO(prefixmerge8_pmvariadic::CallExpr)
+	DECL_TYPE_INFO(prefixmerge8_pmvariadic::CtorExpr)
+	DECL_TYPE_INFO(prefixmerge8_pmvariadic::MulExpr)
+	DECL_TYPE_INFO(prefixmerge8_pmvariadic::ConstType)
+	DECL_TYPE_INFO(prefixmerge8_pmvariadic::PointerType)
+	DECL_TYPE_INFO(prefixmerge8_pmvariadic::FunctionType)
+	DECL_TYPE_INFO(prefixmerge8_pmvariadic::TypeOrExprOrOthersToResolve)
+	DECL_TYPE_INFO(prefixmerge8_pmvariadic::TypeOrExprToResolve)
 
 #ifdef VCZH_DESCRIPTABLEOBJECT_WITH_METADATA
 
-			BEGIN_INTERFACE_PROXY_NOPARENT_SHAREDPTR(prefixmerge8_pmvariadic::TypeOrExprOrOthers::IVisitor)
-				void Visit(prefixmerge8_pmvariadic::TypeOrExprOrOthersToResolve* node) override
-				{
-					INVOKE_INTERFACE_PROXY(Visit, node);
-				}
-
-				void Visit(prefixmerge8_pmvariadic::VariadicArgument* node) override
-				{
-					INVOKE_INTERFACE_PROXY(Visit, node);
-				}
-
-				void Visit(prefixmerge8_pmvariadic::TypeOrExpr* node) override
-				{
-					INVOKE_INTERFACE_PROXY(Visit, node);
-				}
-
-			END_INTERFACE_PROXY(prefixmerge8_pmvariadic::TypeOrExprOrOthers::IVisitor)
-
-			BEGIN_INTERFACE_PROXY_NOPARENT_SHAREDPTR(prefixmerge8_pmvariadic::TypeOrExpr::IVisitor)
-				void Visit(prefixmerge8_pmvariadic::TypeOrExprToResolve* node) override
-				{
-					INVOKE_INTERFACE_PROXY(Visit, node);
-				}
-
-				void Visit(prefixmerge8_pmvariadic::QualifiedName* node) override
-				{
-					INVOKE_INTERFACE_PROXY(Visit, node);
-				}
-
-				void Visit(prefixmerge8_pmvariadic::CallExpr* node) override
-				{
-					INVOKE_INTERFACE_PROXY(Visit, node);
-				}
-
-				void Visit(prefixmerge8_pmvariadic::CtorExpr* node) override
-				{
-					INVOKE_INTERFACE_PROXY(Visit, node);
-				}
-
-				void Visit(prefixmerge8_pmvariadic::MulExpr* node) override
-				{
-					INVOKE_INTERFACE_PROXY(Visit, node);
-				}
-
-				void Visit(prefixmerge8_pmvariadic::ConstType* node) override
-				{
-					INVOKE_INTERFACE_PROXY(Visit, node);
-				}
-
-				void Visit(prefixmerge8_pmvariadic::PointerType* node) override
-				{
-					INVOKE_INTERFACE_PROXY(Visit, node);
-				}
-
-				void Visit(prefixmerge8_pmvariadic::FunctionType* node) override
-				{
-					INVOKE_INTERFACE_PROXY(Visit, node);
-				}
-
-			END_INTERFACE_PROXY(prefixmerge8_pmvariadic::TypeOrExpr::IVisitor)
-
-			BEGIN_INTERFACE_PROXY_NOPARENT_SHAREDPTR(prefixmerge8_pmvariadic::QualifiedName::IVisitor)
-				void Visit(prefixmerge8_pmvariadic::Name* node) override
-				{
-					INVOKE_INTERFACE_PROXY(Visit, node);
-				}
-
-				void Visit(prefixmerge8_pmvariadic::MemberName* node) override
-				{
-					INVOKE_INTERFACE_PROXY(Visit, node);
-				}
-
-				void Visit(prefixmerge8_pmvariadic::GenericQualifiedName* node) override
-				{
-					INVOKE_INTERFACE_PROXY(Visit, node);
-				}
-
-			END_INTERFACE_PROXY(prefixmerge8_pmvariadic::QualifiedName::IVisitor)
-
-			BEGIN_INTERFACE_PROXY_NOPARENT_SHAREDPTR(prefixmerge8_pmvariadic::GenericQualifiedName::IVisitor)
-				void Visit(prefixmerge8_pmvariadic::GenericName* node) override
-				{
-					INVOKE_INTERFACE_PROXY(Visit, node);
-				}
-
-				void Visit(prefixmerge8_pmvariadic::GenericMemberName* node) override
-				{
-					INVOKE_INTERFACE_PROXY(Visit, node);
-				}
-
-			END_INTERFACE_PROXY(prefixmerge8_pmvariadic::GenericQualifiedName::IVisitor)
-
-#endif
-#endif
-			/// <summary>Load all reflectable AST types, only available when <b>VCZH_DEBUG_NO_REFLECTION</b> is off.</summary>
-			/// <returns>Returns true if this operation succeeded.</returns>
-			extern bool PrefixMerge8_PmVariadicTypeOrExprLoadTypes();
+	BEGIN_INTERFACE_PROXY_NOPARENT_SHAREDPTR(prefixmerge8_pmvariadic::TypeOrExprOrOthers::IVisitor)
+		void Visit(prefixmerge8_pmvariadic::TypeOrExprOrOthersToResolve* node) override
+		{
+			INVOKE_INTERFACE_PROXY(Visit, node);
 		}
-	}
+
+		void Visit(prefixmerge8_pmvariadic::VariadicArgument* node) override
+		{
+			INVOKE_INTERFACE_PROXY(Visit, node);
+		}
+
+		void Visit(prefixmerge8_pmvariadic::TypeOrExpr* node) override
+		{
+			INVOKE_INTERFACE_PROXY(Visit, node);
+		}
+
+	END_INTERFACE_PROXY(prefixmerge8_pmvariadic::TypeOrExprOrOthers::IVisitor)
+
+	BEGIN_INTERFACE_PROXY_NOPARENT_SHAREDPTR(prefixmerge8_pmvariadic::TypeOrExpr::IVisitor)
+		void Visit(prefixmerge8_pmvariadic::TypeOrExprToResolve* node) override
+		{
+			INVOKE_INTERFACE_PROXY(Visit, node);
+		}
+
+		void Visit(prefixmerge8_pmvariadic::QualifiedName* node) override
+		{
+			INVOKE_INTERFACE_PROXY(Visit, node);
+		}
+
+		void Visit(prefixmerge8_pmvariadic::CallExpr* node) override
+		{
+			INVOKE_INTERFACE_PROXY(Visit, node);
+		}
+
+		void Visit(prefixmerge8_pmvariadic::CtorExpr* node) override
+		{
+			INVOKE_INTERFACE_PROXY(Visit, node);
+		}
+
+		void Visit(prefixmerge8_pmvariadic::MulExpr* node) override
+		{
+			INVOKE_INTERFACE_PROXY(Visit, node);
+		}
+
+		void Visit(prefixmerge8_pmvariadic::ConstType* node) override
+		{
+			INVOKE_INTERFACE_PROXY(Visit, node);
+		}
+
+		void Visit(prefixmerge8_pmvariadic::PointerType* node) override
+		{
+			INVOKE_INTERFACE_PROXY(Visit, node);
+		}
+
+		void Visit(prefixmerge8_pmvariadic::FunctionType* node) override
+		{
+			INVOKE_INTERFACE_PROXY(Visit, node);
+		}
+
+	END_INTERFACE_PROXY(prefixmerge8_pmvariadic::TypeOrExpr::IVisitor)
+
+	BEGIN_INTERFACE_PROXY_NOPARENT_SHAREDPTR(prefixmerge8_pmvariadic::QualifiedName::IVisitor)
+		void Visit(prefixmerge8_pmvariadic::Name* node) override
+		{
+			INVOKE_INTERFACE_PROXY(Visit, node);
+		}
+
+		void Visit(prefixmerge8_pmvariadic::MemberName* node) override
+		{
+			INVOKE_INTERFACE_PROXY(Visit, node);
+		}
+
+		void Visit(prefixmerge8_pmvariadic::GenericQualifiedName* node) override
+		{
+			INVOKE_INTERFACE_PROXY(Visit, node);
+		}
+
+	END_INTERFACE_PROXY(prefixmerge8_pmvariadic::QualifiedName::IVisitor)
+
+	BEGIN_INTERFACE_PROXY_NOPARENT_SHAREDPTR(prefixmerge8_pmvariadic::GenericQualifiedName::IVisitor)
+		void Visit(prefixmerge8_pmvariadic::GenericName* node) override
+		{
+			INVOKE_INTERFACE_PROXY(Visit, node);
+		}
+
+		void Visit(prefixmerge8_pmvariadic::GenericMemberName* node) override
+		{
+			INVOKE_INTERFACE_PROXY(Visit, node);
+		}
+
+	END_INTERFACE_PROXY(prefixmerge8_pmvariadic::GenericQualifiedName::IVisitor)
+
+#endif
+#endif
+	/// <summary>Load all reflectable AST types, only available when <b>VCZH_DEBUG_NO_REFLECTION</b> is off.</summary>
+	/// <returns>Returns true if this operation succeeded.</returns>
+	extern bool PrefixMerge8_PmVariadicTypeOrExprLoadTypes();
 }
 #endif

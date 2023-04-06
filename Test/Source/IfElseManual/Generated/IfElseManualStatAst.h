@@ -63,46 +63,40 @@ namespace ifelsemanual
 		vl::Ptr<Stat> stat;
 	};
 }
-namespace vl
+namespace vl::reflection::description
 {
-	namespace reflection
-	{
-		namespace description
-		{
 #ifndef VCZH_DEBUG_NO_REFLECTION
-			DECL_TYPE_INFO(ifelsemanual::Stat)
-			DECL_TYPE_INFO(ifelsemanual::Stat::IVisitor)
-			DECL_TYPE_INFO(ifelsemanual::DoStat)
-			DECL_TYPE_INFO(ifelsemanual::IfStat)
-			DECL_TYPE_INFO(ifelsemanual::BlockStat)
-			DECL_TYPE_INFO(ifelsemanual::Module)
+	DECL_TYPE_INFO(ifelsemanual::Stat)
+	DECL_TYPE_INFO(ifelsemanual::Stat::IVisitor)
+	DECL_TYPE_INFO(ifelsemanual::DoStat)
+	DECL_TYPE_INFO(ifelsemanual::IfStat)
+	DECL_TYPE_INFO(ifelsemanual::BlockStat)
+	DECL_TYPE_INFO(ifelsemanual::Module)
 
 #ifdef VCZH_DESCRIPTABLEOBJECT_WITH_METADATA
 
-			BEGIN_INTERFACE_PROXY_NOPARENT_SHAREDPTR(ifelsemanual::Stat::IVisitor)
-				void Visit(ifelsemanual::DoStat* node) override
-				{
-					INVOKE_INTERFACE_PROXY(Visit, node);
-				}
-
-				void Visit(ifelsemanual::IfStat* node) override
-				{
-					INVOKE_INTERFACE_PROXY(Visit, node);
-				}
-
-				void Visit(ifelsemanual::BlockStat* node) override
-				{
-					INVOKE_INTERFACE_PROXY(Visit, node);
-				}
-
-			END_INTERFACE_PROXY(ifelsemanual::Stat::IVisitor)
-
-#endif
-#endif
-			/// <summary>Load all reflectable AST types, only available when <b>VCZH_DEBUG_NO_REFLECTION</b> is off.</summary>
-			/// <returns>Returns true if this operation succeeded.</returns>
-			extern bool IfElseManualStatAstLoadTypes();
+	BEGIN_INTERFACE_PROXY_NOPARENT_SHAREDPTR(ifelsemanual::Stat::IVisitor)
+		void Visit(ifelsemanual::DoStat* node) override
+		{
+			INVOKE_INTERFACE_PROXY(Visit, node);
 		}
-	}
+
+		void Visit(ifelsemanual::IfStat* node) override
+		{
+			INVOKE_INTERFACE_PROXY(Visit, node);
+		}
+
+		void Visit(ifelsemanual::BlockStat* node) override
+		{
+			INVOKE_INTERFACE_PROXY(Visit, node);
+		}
+
+	END_INTERFACE_PROXY(ifelsemanual::Stat::IVisitor)
+
+#endif
+#endif
+	/// <summary>Load all reflectable AST types, only available when <b>VCZH_DEBUG_NO_REFLECTION</b> is off.</summary>
+	/// <returns>Returns true if this operation succeeded.</returns>
+	extern bool IfElseManualStatAstLoadTypes();
 }
 #endif

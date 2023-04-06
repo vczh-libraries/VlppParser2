@@ -9,32 +9,23 @@ Licensed under https://github.com/vczh-libraries/License
 
 #include "XmlAst.h"
 
-namespace vl
+namespace vl::glr::xml::empty_visitor
 {
-	namespace glr
+	/// <summary>An empty visitor, overriding all abstract methods with empty implementations.</summary>
+	class NodeVisitor : public vl::Object, public XmlNode::IVisitor
 	{
-		namespace xml
-		{
-			namespace empty_visitor
-			{
-				/// <summary>An empty visitor, overriding all abstract methods with empty implementations.</summary>
-				class NodeVisitor : public vl::Object, public XmlNode::IVisitor
-				{
-				protected:
-					// Dispatch (virtual) --------------------------------
+	protected:
+		// Dispatch (virtual) --------------------------------
 
-				public:
-					// Visitor Members -----------------------------------
-					void Visit(XmlText* node) override;
-					void Visit(XmlCData* node) override;
-					void Visit(XmlComment* node) override;
-					void Visit(XmlElement* node) override;
-					void Visit(XmlInstruction* node) override;
-					void Visit(XmlDocument* node) override;
-				};
+	public:
+		// Visitor Members -----------------------------------
+		void Visit(XmlText* node) override;
+		void Visit(XmlCData* node) override;
+		void Visit(XmlComment* node) override;
+		void Visit(XmlElement* node) override;
+		void Visit(XmlInstruction* node) override;
+		void Visit(XmlDocument* node) override;
+	};
 
-			}
-		}
-	}
 }
 #endif

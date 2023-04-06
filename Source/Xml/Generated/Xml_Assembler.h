@@ -9,56 +9,50 @@ Licensed under https://github.com/vczh-libraries/License
 
 #include "XmlAst.h"
 
-namespace vl
+namespace vl::glr::xml
 {
-	namespace glr
+	enum class XmlClasses : vl::vint32_t
 	{
-		namespace xml
-		{
-			enum class XmlClasses : vl::vint32_t
-			{
-				Attribute = 0,
-				CData = 1,
-				Comment = 2,
-				Document = 3,
-				Element = 4,
-				Instruction = 5,
-				Node = 6,
-				Text = 7,
-			};
+		Attribute = 0,
+		CData = 1,
+		Comment = 2,
+		Document = 3,
+		Element = 4,
+		Instruction = 5,
+		Node = 6,
+		Text = 7,
+	};
 
-			enum class XmlFields : vl::vint32_t
-			{
-				Attribute_name = 0,
-				Attribute_value = 1,
-				CData_content = 2,
-				Comment_content = 3,
-				Document_prologs = 4,
-				Document_rootElement = 5,
-				Element_attributes = 6,
-				Element_closingName = 7,
-				Element_name = 8,
-				Element_subNodes = 9,
-				Instruction_attributes = 10,
-				Instruction_name = 11,
-				Text_content = 12,
-			};
+	enum class XmlFields : vl::vint32_t
+	{
+		Attribute_name = 0,
+		Attribute_value = 1,
+		CData_content = 2,
+		Comment_content = 3,
+		Document_prologs = 4,
+		Document_rootElement = 5,
+		Element_attributes = 6,
+		Element_closingName = 7,
+		Element_name = 8,
+		Element_subNodes = 9,
+		Instruction_attributes = 10,
+		Instruction_name = 11,
+		Text_content = 12,
+	};
 
-			extern const wchar_t* XmlTypeName(XmlClasses type);
-			extern const wchar_t* XmlCppTypeName(XmlClasses type);
-			extern const wchar_t* XmlFieldName(XmlFields field);
-			extern const wchar_t* XmlCppFieldName(XmlFields field);
+	extern const wchar_t* XmlTypeName(XmlClasses type);
+	extern const wchar_t* XmlCppTypeName(XmlClasses type);
+	extern const wchar_t* XmlFieldName(XmlFields field);
+	extern const wchar_t* XmlCppFieldName(XmlFields field);
 
-			class XmlAstInsReceiver : public vl::glr::AstInsReceiverBase
-			{
-			protected:
-				vl::Ptr<vl::glr::ParsingAstBase> CreateAstNode(vl::vint32_t type) override;
-				void SetField(vl::glr::ParsingAstBase* object, vl::vint32_t field, vl::Ptr<vl::glr::ParsingAstBase> value) override;
-				void SetField(vl::glr::ParsingAstBase* object, vl::vint32_t field, const vl::regex::RegexToken& token, vl::vint32_t tokenIndex) override;
-				void SetField(vl::glr::ParsingAstBase* object, vl::vint32_t field, vl::vint32_t enumItem, bool weakAssignment) override;
-				vl::Ptr<vl::glr::ParsingAstBase> ResolveAmbiguity(vl::vint32_t type, vl::collections::Array<vl::Ptr<vl::glr::ParsingAstBase>>& candidates) override;
-			};
-		}
-	}
+	class XmlAstInsReceiver : public vl::glr::AstInsReceiverBase
+	{
+	protected:
+		vl::Ptr<vl::glr::ParsingAstBase> CreateAstNode(vl::vint32_t type) override;
+		void SetField(vl::glr::ParsingAstBase* object, vl::vint32_t field, vl::Ptr<vl::glr::ParsingAstBase> value) override;
+		void SetField(vl::glr::ParsingAstBase* object, vl::vint32_t field, const vl::regex::RegexToken& token, vl::vint32_t tokenIndex) override;
+		void SetField(vl::glr::ParsingAstBase* object, vl::vint32_t field, vl::vint32_t enumItem, bool weakAssignment) override;
+		vl::Ptr<vl::glr::ParsingAstBase> ResolveAmbiguity(vl::vint32_t type, vl::collections::Array<vl::Ptr<vl::glr::ParsingAstBase>>& candidates) override;
+	};
 }
 #endif

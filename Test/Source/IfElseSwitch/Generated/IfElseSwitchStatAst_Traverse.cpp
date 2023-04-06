@@ -6,79 +6,76 @@ Licensed under https://github.com/vczh-libraries/License
 
 #include "IfElseSwitchStatAst_Traverse.h"
 
-namespace ifelseswitch
+namespace ifelseswitch::traverse_visitor
 {
-	namespace traverse_visitor
+	void StatAstVisitor::Traverse(vl::glr::ParsingToken& token) {}
+	void StatAstVisitor::Traverse(vl::glr::ParsingAstBase* node) {}
+	void StatAstVisitor::Traverse(BlockStat* node) {}
+	void StatAstVisitor::Traverse(DoStat* node) {}
+	void StatAstVisitor::Traverse(IfStat* node) {}
+	void StatAstVisitor::Traverse(Module* node) {}
+	void StatAstVisitor::Traverse(Stat* node) {}
+
+	void StatAstVisitor::Finishing(vl::glr::ParsingAstBase* node) {}
+	void StatAstVisitor::Finishing(BlockStat* node) {}
+	void StatAstVisitor::Finishing(DoStat* node) {}
+	void StatAstVisitor::Finishing(IfStat* node) {}
+	void StatAstVisitor::Finishing(Module* node) {}
+	void StatAstVisitor::Finishing(Stat* node) {}
+
+	void StatAstVisitor::Visit(DoStat* node)
 	{
-		void StatAstVisitor::Traverse(vl::glr::ParsingToken& token) {}
-		void StatAstVisitor::Traverse(vl::glr::ParsingAstBase* node) {}
-		void StatAstVisitor::Traverse(BlockStat* node) {}
-		void StatAstVisitor::Traverse(DoStat* node) {}
-		void StatAstVisitor::Traverse(IfStat* node) {}
-		void StatAstVisitor::Traverse(Module* node) {}
-		void StatAstVisitor::Traverse(Stat* node) {}
-
-		void StatAstVisitor::Finishing(vl::glr::ParsingAstBase* node) {}
-		void StatAstVisitor::Finishing(BlockStat* node) {}
-		void StatAstVisitor::Finishing(DoStat* node) {}
-		void StatAstVisitor::Finishing(IfStat* node) {}
-		void StatAstVisitor::Finishing(Module* node) {}
-		void StatAstVisitor::Finishing(Stat* node) {}
-
-		void StatAstVisitor::Visit(DoStat* node)
-		{
-			if (!node) return;
-			Traverse(static_cast<vl::glr::ParsingAstBase*>(node));
-			Traverse(static_cast<Stat*>(node));
-			Traverse(static_cast<DoStat*>(node));
-			Finishing(static_cast<DoStat*>(node));
-			Finishing(static_cast<Stat*>(node));
-			Finishing(static_cast<vl::glr::ParsingAstBase*>(node));
-		}
-
-		void StatAstVisitor::Visit(IfStat* node)
-		{
-			if (!node) return;
-			Traverse(static_cast<vl::glr::ParsingAstBase*>(node));
-			Traverse(static_cast<Stat*>(node));
-			Traverse(static_cast<IfStat*>(node));
-			InspectInto(node->elseBranch.Obj());
-			InspectInto(node->thenBranch.Obj());
-			Finishing(static_cast<IfStat*>(node));
-			Finishing(static_cast<Stat*>(node));
-			Finishing(static_cast<vl::glr::ParsingAstBase*>(node));
-		}
-
-		void StatAstVisitor::Visit(BlockStat* node)
-		{
-			if (!node) return;
-			Traverse(static_cast<vl::glr::ParsingAstBase*>(node));
-			Traverse(static_cast<Stat*>(node));
-			Traverse(static_cast<BlockStat*>(node));
-			for (auto&& listItem : node->stats)
-			{
-				InspectInto(listItem.Obj());
-			}
-			Finishing(static_cast<BlockStat*>(node));
-			Finishing(static_cast<Stat*>(node));
-			Finishing(static_cast<vl::glr::ParsingAstBase*>(node));
-		}
-
-		void StatAstVisitor::InspectInto(Stat* node)
-		{
-			if (!node) return;
-			node->Accept(static_cast<Stat::IVisitor*>(this));
-		}
-
-		void StatAstVisitor::InspectInto(Module* node)
-		{
-			if (!node) return;
-			Traverse(static_cast<vl::glr::ParsingAstBase*>(node));
-			Traverse(static_cast<Module*>(node));
-			InspectInto(node->stat.Obj());
-			Finishing(static_cast<Module*>(node));
-			Finishing(static_cast<vl::glr::ParsingAstBase*>(node));
-		}
-
+		if (!node) return;
+		Traverse(static_cast<vl::glr::ParsingAstBase*>(node));
+		Traverse(static_cast<Stat*>(node));
+		Traverse(static_cast<DoStat*>(node));
+		Finishing(static_cast<DoStat*>(node));
+		Finishing(static_cast<Stat*>(node));
+		Finishing(static_cast<vl::glr::ParsingAstBase*>(node));
 	}
+
+	void StatAstVisitor::Visit(IfStat* node)
+	{
+		if (!node) return;
+		Traverse(static_cast<vl::glr::ParsingAstBase*>(node));
+		Traverse(static_cast<Stat*>(node));
+		Traverse(static_cast<IfStat*>(node));
+		InspectInto(node->elseBranch.Obj());
+		InspectInto(node->thenBranch.Obj());
+		Finishing(static_cast<IfStat*>(node));
+		Finishing(static_cast<Stat*>(node));
+		Finishing(static_cast<vl::glr::ParsingAstBase*>(node));
+	}
+
+	void StatAstVisitor::Visit(BlockStat* node)
+	{
+		if (!node) return;
+		Traverse(static_cast<vl::glr::ParsingAstBase*>(node));
+		Traverse(static_cast<Stat*>(node));
+		Traverse(static_cast<BlockStat*>(node));
+		for (auto&& listItem : node->stats)
+		{
+			InspectInto(listItem.Obj());
+		}
+		Finishing(static_cast<BlockStat*>(node));
+		Finishing(static_cast<Stat*>(node));
+		Finishing(static_cast<vl::glr::ParsingAstBase*>(node));
+	}
+
+	void StatAstVisitor::InspectInto(Stat* node)
+	{
+		if (!node) return;
+		node->Accept(static_cast<Stat::IVisitor*>(this));
+	}
+
+	void StatAstVisitor::InspectInto(Module* node)
+	{
+		if (!node) return;
+		Traverse(static_cast<vl::glr::ParsingAstBase*>(node));
+		Traverse(static_cast<Module*>(node));
+		InspectInto(node->stat.Obj());
+		Finishing(static_cast<Module*>(node));
+		Finishing(static_cast<vl::glr::ParsingAstBase*>(node));
+	}
+
 }

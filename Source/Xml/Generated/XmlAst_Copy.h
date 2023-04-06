@@ -9,52 +9,43 @@ Licensed under https://github.com/vczh-libraries/License
 
 #include "XmlAst.h"
 
-namespace vl
+namespace vl::glr::xml::copy_visitor
 {
-	namespace glr
+	/// <summary>A copy visitor, overriding all abstract methods with AST copying code.</summary>
+	class AstVisitor
+		: public virtual vl::glr::CopyVisitorBase
+		, protected virtual XmlNode::IVisitor
 	{
-		namespace xml
-		{
-			namespace copy_visitor
-			{
-				/// <summary>A copy visitor, overriding all abstract methods with AST copying code.</summary>
-				class AstVisitor
-					: public virtual vl::glr::CopyVisitorBase
-					, protected virtual XmlNode::IVisitor
-				{
-				protected:
-					void CopyFields(XmlAttribute* from, XmlAttribute* to);
-					void CopyFields(XmlCData* from, XmlCData* to);
-					void CopyFields(XmlComment* from, XmlComment* to);
-					void CopyFields(XmlDocument* from, XmlDocument* to);
-					void CopyFields(XmlElement* from, XmlElement* to);
-					void CopyFields(XmlInstruction* from, XmlInstruction* to);
-					void CopyFields(XmlNode* from, XmlNode* to);
-					void CopyFields(XmlText* from, XmlText* to);
+	protected:
+		void CopyFields(XmlAttribute* from, XmlAttribute* to);
+		void CopyFields(XmlCData* from, XmlCData* to);
+		void CopyFields(XmlComment* from, XmlComment* to);
+		void CopyFields(XmlDocument* from, XmlDocument* to);
+		void CopyFields(XmlElement* from, XmlElement* to);
+		void CopyFields(XmlInstruction* from, XmlInstruction* to);
+		void CopyFields(XmlNode* from, XmlNode* to);
+		void CopyFields(XmlText* from, XmlText* to);
 
-				protected:
-					virtual void Visit(XmlAttribute* node);
+	protected:
+		virtual void Visit(XmlAttribute* node);
 
-					void Visit(XmlText* node) override;
-					void Visit(XmlCData* node) override;
-					void Visit(XmlComment* node) override;
-					void Visit(XmlElement* node) override;
-					void Visit(XmlInstruction* node) override;
-					void Visit(XmlDocument* node) override;
+		void Visit(XmlText* node) override;
+		void Visit(XmlCData* node) override;
+		void Visit(XmlComment* node) override;
+		void Visit(XmlElement* node) override;
+		void Visit(XmlInstruction* node) override;
+		void Visit(XmlDocument* node) override;
 
-				public:
-					virtual vl::Ptr<XmlNode> CopyNode(XmlNode* node);
-					virtual vl::Ptr<XmlAttribute> CopyNode(XmlAttribute* node);
+	public:
+		virtual vl::Ptr<XmlNode> CopyNode(XmlNode* node);
+		virtual vl::Ptr<XmlAttribute> CopyNode(XmlAttribute* node);
 
-					vl::Ptr<XmlCData> CopyNode(XmlCData* node);
-					vl::Ptr<XmlComment> CopyNode(XmlComment* node);
-					vl::Ptr<XmlDocument> CopyNode(XmlDocument* node);
-					vl::Ptr<XmlElement> CopyNode(XmlElement* node);
-					vl::Ptr<XmlInstruction> CopyNode(XmlInstruction* node);
-					vl::Ptr<XmlText> CopyNode(XmlText* node);
-				};
-			}
-		}
-	}
+		vl::Ptr<XmlCData> CopyNode(XmlCData* node);
+		vl::Ptr<XmlComment> CopyNode(XmlComment* node);
+		vl::Ptr<XmlDocument> CopyNode(XmlDocument* node);
+		vl::Ptr<XmlElement> CopyNode(XmlElement* node);
+		vl::Ptr<XmlInstruction> CopyNode(XmlInstruction* node);
+		vl::Ptr<XmlText> CopyNode(XmlText* node);
+	};
 }
 #endif

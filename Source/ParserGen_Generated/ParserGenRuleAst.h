@@ -10,504 +10,494 @@ Licensed under https://github.com/vczh-libraries/License
 #include "../AstBase.h"
 #include "../SyntaxBase.h"
 
-namespace vl
+namespace vl::glr::parsergen
 {
-	namespace glr
+	class GlrAlternativeSyntax;
+	class GlrAndCondition;
+	class GlrAssignment;
+	class GlrClause;
+	class GlrCondition;
+	class GlrCreateClause;
+	class GlrLeftRecursionInjectClause;
+	class GlrLeftRecursionInjectContinuation;
+	class GlrLeftRecursionPlaceholder;
+	class GlrLeftRecursionPlaceholderClause;
+	class GlrLoopSyntax;
+	class GlrNotCondition;
+	class GlrOptionalSyntax;
+	class GlrOrCondition;
+	class GlrPartialClause;
+	class GlrPrefixMergeClause;
+	class GlrPushConditionSyntax;
+	class GlrRefCondition;
+	class GlrRefSyntax;
+	class GlrReuseClause;
+	class GlrRule;
+	class GlrSequenceSyntax;
+	class GlrSwitchItem;
+	class GlrSyntax;
+	class GlrSyntaxFile;
+	class GlrTestConditionBranch;
+	class GlrTestConditionSyntax;
+	class GlrUseSyntax;
+
+	enum class GlrSwitchValue
 	{
-		namespace parsergen
+		UNDEFINED_ENUM_ITEM_VALUE = -1,
+		False = 0,
+		True = 1,
+	};
+
+	enum class GlrRefType
+	{
+		UNDEFINED_ENUM_ITEM_VALUE = -1,
+		Id = 0,
+		Literal = 1,
+		ConditionalLiteral = 2,
+	};
+
+	enum class GlrOptionalPriority
+	{
+		UNDEFINED_ENUM_ITEM_VALUE = -1,
+		Equal = 0,
+		PreferTake = 1,
+		PreferSkip = 2,
+	};
+
+	enum class GlrAssignmentType
+	{
+		UNDEFINED_ENUM_ITEM_VALUE = -1,
+		Strong = 0,
+		Weak = 1,
+	};
+
+	enum class GlrLeftRecursionConfiguration
+	{
+		UNDEFINED_ENUM_ITEM_VALUE = -1,
+		Single = 0,
+		Multiple = 1,
+	};
+
+	enum class GlrLeftRecursionInjectContinuationType
+	{
+		UNDEFINED_ENUM_ITEM_VALUE = -1,
+		Optional = 0,
+		Required = 1,
+	};
+
+	class GlrCondition abstract : public vl::glr::ParsingAstBase, vl::reflection::Description<GlrCondition>
+	{
+	public:
+		class IVisitor : public virtual vl::reflection::IDescriptable, vl::reflection::Description<IVisitor>
 		{
-			class GlrAlternativeSyntax;
-			class GlrAndCondition;
-			class GlrAssignment;
-			class GlrClause;
-			class GlrCondition;
-			class GlrCreateClause;
-			class GlrLeftRecursionInjectClause;
-			class GlrLeftRecursionInjectContinuation;
-			class GlrLeftRecursionPlaceholder;
-			class GlrLeftRecursionPlaceholderClause;
-			class GlrLoopSyntax;
-			class GlrNotCondition;
-			class GlrOptionalSyntax;
-			class GlrOrCondition;
-			class GlrPartialClause;
-			class GlrPrefixMergeClause;
-			class GlrPushConditionSyntax;
-			class GlrRefCondition;
-			class GlrRefSyntax;
-			class GlrReuseClause;
-			class GlrRule;
-			class GlrSequenceSyntax;
-			class GlrSwitchItem;
-			class GlrSyntax;
-			class GlrSyntaxFile;
-			class GlrTestConditionBranch;
-			class GlrTestConditionSyntax;
-			class GlrUseSyntax;
+		public:
+			virtual void Visit(GlrRefCondition* node) = 0;
+			virtual void Visit(GlrNotCondition* node) = 0;
+			virtual void Visit(GlrAndCondition* node) = 0;
+			virtual void Visit(GlrOrCondition* node) = 0;
+		};
 
-			enum class GlrSwitchValue
-			{
-				UNDEFINED_ENUM_ITEM_VALUE = -1,
-				False = 0,
-				True = 1,
-			};
+		virtual void Accept(GlrCondition::IVisitor* visitor) = 0;
 
-			enum class GlrRefType
-			{
-				UNDEFINED_ENUM_ITEM_VALUE = -1,
-				Id = 0,
-				Literal = 1,
-				ConditionalLiteral = 2,
-			};
+	};
 
-			enum class GlrOptionalPriority
-			{
-				UNDEFINED_ENUM_ITEM_VALUE = -1,
-				Equal = 0,
-				PreferTake = 1,
-				PreferSkip = 2,
-			};
+	class GlrRefCondition : public GlrCondition, vl::reflection::Description<GlrRefCondition>
+	{
+	public:
+		vl::glr::ParsingToken name;
 
-			enum class GlrAssignmentType
-			{
-				UNDEFINED_ENUM_ITEM_VALUE = -1,
-				Strong = 0,
-				Weak = 1,
-			};
+		void Accept(GlrCondition::IVisitor* visitor) override;
+	};
 
-			enum class GlrLeftRecursionConfiguration
-			{
-				UNDEFINED_ENUM_ITEM_VALUE = -1,
-				Single = 0,
-				Multiple = 1,
-			};
+	class GlrNotCondition : public GlrCondition, vl::reflection::Description<GlrNotCondition>
+	{
+	public:
+		vl::Ptr<GlrCondition> condition;
 
-			enum class GlrLeftRecursionInjectContinuationType
-			{
-				UNDEFINED_ENUM_ITEM_VALUE = -1,
-				Optional = 0,
-				Required = 1,
-			};
+		void Accept(GlrCondition::IVisitor* visitor) override;
+	};
 
-			class GlrCondition abstract : public vl::glr::ParsingAstBase, vl::reflection::Description<GlrCondition>
-			{
-			public:
-				class IVisitor : public virtual vl::reflection::IDescriptable, vl::reflection::Description<IVisitor>
-				{
-				public:
-					virtual void Visit(GlrRefCondition* node) = 0;
-					virtual void Visit(GlrNotCondition* node) = 0;
-					virtual void Visit(GlrAndCondition* node) = 0;
-					virtual void Visit(GlrOrCondition* node) = 0;
-				};
+	class GlrAndCondition : public GlrCondition, vl::reflection::Description<GlrAndCondition>
+	{
+	public:
+		vl::Ptr<GlrCondition> first;
+		vl::Ptr<GlrCondition> second;
 
-				virtual void Accept(GlrCondition::IVisitor* visitor) = 0;
+		void Accept(GlrCondition::IVisitor* visitor) override;
+	};
 
-			};
+	class GlrOrCondition : public GlrCondition, vl::reflection::Description<GlrOrCondition>
+	{
+	public:
+		vl::Ptr<GlrCondition> first;
+		vl::Ptr<GlrCondition> second;
 
-			class GlrRefCondition : public GlrCondition, vl::reflection::Description<GlrRefCondition>
-			{
-			public:
-				vl::glr::ParsingToken name;
+		void Accept(GlrCondition::IVisitor* visitor) override;
+	};
 
-				void Accept(GlrCondition::IVisitor* visitor) override;
-			};
+	class GlrSwitchItem : public vl::glr::ParsingAstBase, vl::reflection::Description<GlrSwitchItem>
+	{
+	public:
+		vl::glr::ParsingToken name;
+		GlrSwitchValue value = GlrSwitchValue::UNDEFINED_ENUM_ITEM_VALUE;
+	};
 
-			class GlrNotCondition : public GlrCondition, vl::reflection::Description<GlrNotCondition>
-			{
-			public:
-				vl::Ptr<GlrCondition> condition;
+	class GlrSyntax abstract : public vl::glr::ParsingAstBase, vl::reflection::Description<GlrSyntax>
+	{
+	public:
+		class IVisitor : public virtual vl::reflection::IDescriptable, vl::reflection::Description<IVisitor>
+		{
+		public:
+			virtual void Visit(GlrRefSyntax* node) = 0;
+			virtual void Visit(GlrUseSyntax* node) = 0;
+			virtual void Visit(GlrLoopSyntax* node) = 0;
+			virtual void Visit(GlrOptionalSyntax* node) = 0;
+			virtual void Visit(GlrSequenceSyntax* node) = 0;
+			virtual void Visit(GlrAlternativeSyntax* node) = 0;
+			virtual void Visit(GlrPushConditionSyntax* node) = 0;
+			virtual void Visit(GlrTestConditionSyntax* node) = 0;
+		};
 
-				void Accept(GlrCondition::IVisitor* visitor) override;
-			};
+		virtual void Accept(GlrSyntax::IVisitor* visitor) = 0;
 
-			class GlrAndCondition : public GlrCondition, vl::reflection::Description<GlrAndCondition>
-			{
-			public:
-				vl::Ptr<GlrCondition> first;
-				vl::Ptr<GlrCondition> second;
+	};
 
-				void Accept(GlrCondition::IVisitor* visitor) override;
-			};
+	class GlrRefSyntax : public GlrSyntax, vl::reflection::Description<GlrRefSyntax>
+	{
+	public:
+		GlrRefType refType = GlrRefType::UNDEFINED_ENUM_ITEM_VALUE;
+		vl::glr::ParsingToken literal;
+		vl::glr::ParsingToken field;
 
-			class GlrOrCondition : public GlrCondition, vl::reflection::Description<GlrOrCondition>
-			{
-			public:
-				vl::Ptr<GlrCondition> first;
-				vl::Ptr<GlrCondition> second;
+		void Accept(GlrSyntax::IVisitor* visitor) override;
+	};
 
-				void Accept(GlrCondition::IVisitor* visitor) override;
-			};
+	class GlrUseSyntax : public GlrSyntax, vl::reflection::Description<GlrUseSyntax>
+	{
+	public:
+		vl::glr::ParsingToken name;
 
-			class GlrSwitchItem : public vl::glr::ParsingAstBase, vl::reflection::Description<GlrSwitchItem>
-			{
-			public:
-				vl::glr::ParsingToken name;
-				GlrSwitchValue value = GlrSwitchValue::UNDEFINED_ENUM_ITEM_VALUE;
-			};
+		void Accept(GlrSyntax::IVisitor* visitor) override;
+	};
 
-			class GlrSyntax abstract : public vl::glr::ParsingAstBase, vl::reflection::Description<GlrSyntax>
-			{
-			public:
-				class IVisitor : public virtual vl::reflection::IDescriptable, vl::reflection::Description<IVisitor>
-				{
-				public:
-					virtual void Visit(GlrRefSyntax* node) = 0;
-					virtual void Visit(GlrUseSyntax* node) = 0;
-					virtual void Visit(GlrLoopSyntax* node) = 0;
-					virtual void Visit(GlrOptionalSyntax* node) = 0;
-					virtual void Visit(GlrSequenceSyntax* node) = 0;
-					virtual void Visit(GlrAlternativeSyntax* node) = 0;
-					virtual void Visit(GlrPushConditionSyntax* node) = 0;
-					virtual void Visit(GlrTestConditionSyntax* node) = 0;
-				};
+	class GlrLoopSyntax : public GlrSyntax, vl::reflection::Description<GlrLoopSyntax>
+	{
+	public:
+		vl::Ptr<GlrSyntax> syntax;
+		vl::Ptr<GlrSyntax> delimiter;
 
-				virtual void Accept(GlrSyntax::IVisitor* visitor) = 0;
+		void Accept(GlrSyntax::IVisitor* visitor) override;
+	};
 
-			};
+	class GlrOptionalSyntax : public GlrSyntax, vl::reflection::Description<GlrOptionalSyntax>
+	{
+	public:
+		GlrOptionalPriority priority = GlrOptionalPriority::UNDEFINED_ENUM_ITEM_VALUE;
+		vl::Ptr<GlrSyntax> syntax;
 
-			class GlrRefSyntax : public GlrSyntax, vl::reflection::Description<GlrRefSyntax>
-			{
-			public:
-				GlrRefType refType = GlrRefType::UNDEFINED_ENUM_ITEM_VALUE;
-				vl::glr::ParsingToken literal;
-				vl::glr::ParsingToken field;
+		void Accept(GlrSyntax::IVisitor* visitor) override;
+	};
 
-				void Accept(GlrSyntax::IVisitor* visitor) override;
-			};
+	class GlrSequenceSyntax : public GlrSyntax, vl::reflection::Description<GlrSequenceSyntax>
+	{
+	public:
+		vl::Ptr<GlrSyntax> first;
+		vl::Ptr<GlrSyntax> second;
 
-			class GlrUseSyntax : public GlrSyntax, vl::reflection::Description<GlrUseSyntax>
-			{
-			public:
-				vl::glr::ParsingToken name;
+		void Accept(GlrSyntax::IVisitor* visitor) override;
+	};
 
-				void Accept(GlrSyntax::IVisitor* visitor) override;
-			};
+	class GlrAlternativeSyntax : public GlrSyntax, vl::reflection::Description<GlrAlternativeSyntax>
+	{
+	public:
+		vl::Ptr<GlrSyntax> first;
+		vl::Ptr<GlrSyntax> second;
 
-			class GlrLoopSyntax : public GlrSyntax, vl::reflection::Description<GlrLoopSyntax>
-			{
-			public:
-				vl::Ptr<GlrSyntax> syntax;
-				vl::Ptr<GlrSyntax> delimiter;
+		void Accept(GlrSyntax::IVisitor* visitor) override;
+	};
 
-				void Accept(GlrSyntax::IVisitor* visitor) override;
-			};
+	class GlrPushConditionSyntax : public GlrSyntax, vl::reflection::Description<GlrPushConditionSyntax>
+	{
+	public:
+		vl::collections::List<vl::Ptr<GlrSwitchItem>> switches;
+		vl::Ptr<GlrSyntax> syntax;
 
-			class GlrOptionalSyntax : public GlrSyntax, vl::reflection::Description<GlrOptionalSyntax>
-			{
-			public:
-				GlrOptionalPriority priority = GlrOptionalPriority::UNDEFINED_ENUM_ITEM_VALUE;
-				vl::Ptr<GlrSyntax> syntax;
+		void Accept(GlrSyntax::IVisitor* visitor) override;
+	};
 
-				void Accept(GlrSyntax::IVisitor* visitor) override;
-			};
+	class GlrTestConditionBranch : public vl::glr::ParsingAstBase, vl::reflection::Description<GlrTestConditionBranch>
+	{
+	public:
+		vl::Ptr<GlrCondition> condition;
+		vl::Ptr<GlrSyntax> syntax;
+	};
 
-			class GlrSequenceSyntax : public GlrSyntax, vl::reflection::Description<GlrSequenceSyntax>
-			{
-			public:
-				vl::Ptr<GlrSyntax> first;
-				vl::Ptr<GlrSyntax> second;
+	class GlrTestConditionSyntax : public GlrSyntax, vl::reflection::Description<GlrTestConditionSyntax>
+	{
+	public:
+		vl::collections::List<vl::Ptr<GlrTestConditionBranch>> branches;
 
-				void Accept(GlrSyntax::IVisitor* visitor) override;
-			};
+		void Accept(GlrSyntax::IVisitor* visitor) override;
+	};
 
-			class GlrAlternativeSyntax : public GlrSyntax, vl::reflection::Description<GlrAlternativeSyntax>
-			{
-			public:
-				vl::Ptr<GlrSyntax> first;
-				vl::Ptr<GlrSyntax> second;
+	class GlrClause abstract : public vl::glr::ParsingAstBase, vl::reflection::Description<GlrClause>
+	{
+	public:
+		class IVisitor : public virtual vl::reflection::IDescriptable, vl::reflection::Description<IVisitor>
+		{
+		public:
+			virtual void Visit(GlrCreateClause* node) = 0;
+			virtual void Visit(GlrPartialClause* node) = 0;
+			virtual void Visit(GlrReuseClause* node) = 0;
+			virtual void Visit(GlrLeftRecursionPlaceholderClause* node) = 0;
+			virtual void Visit(GlrLeftRecursionInjectClause* node) = 0;
+			virtual void Visit(GlrPrefixMergeClause* node) = 0;
+		};
 
-				void Accept(GlrSyntax::IVisitor* visitor) override;
-			};
+		virtual void Accept(GlrClause::IVisitor* visitor) = 0;
 
-			class GlrPushConditionSyntax : public GlrSyntax, vl::reflection::Description<GlrPushConditionSyntax>
-			{
-			public:
-				vl::collections::List<vl::Ptr<GlrSwitchItem>> switches;
-				vl::Ptr<GlrSyntax> syntax;
+	};
 
-				void Accept(GlrSyntax::IVisitor* visitor) override;
-			};
+	class GlrAssignment : public vl::glr::ParsingAstBase, vl::reflection::Description<GlrAssignment>
+	{
+	public:
+		GlrAssignmentType type = GlrAssignmentType::UNDEFINED_ENUM_ITEM_VALUE;
+		vl::glr::ParsingToken field;
+		vl::glr::ParsingToken value;
+	};
 
-			class GlrTestConditionBranch : public vl::glr::ParsingAstBase, vl::reflection::Description<GlrTestConditionBranch>
-			{
-			public:
-				vl::Ptr<GlrCondition> condition;
-				vl::Ptr<GlrSyntax> syntax;
-			};
+	class GlrCreateClause : public GlrClause, vl::reflection::Description<GlrCreateClause>
+	{
+	public:
+		vl::glr::ParsingToken type;
+		vl::Ptr<GlrSyntax> syntax;
+		vl::collections::List<vl::Ptr<GlrAssignment>> assignments;
 
-			class GlrTestConditionSyntax : public GlrSyntax, vl::reflection::Description<GlrTestConditionSyntax>
-			{
-			public:
-				vl::collections::List<vl::Ptr<GlrTestConditionBranch>> branches;
+		void Accept(GlrClause::IVisitor* visitor) override;
+	};
 
-				void Accept(GlrSyntax::IVisitor* visitor) override;
-			};
+	class GlrPartialClause : public GlrClause, vl::reflection::Description<GlrPartialClause>
+	{
+	public:
+		vl::glr::ParsingToken type;
+		vl::Ptr<GlrSyntax> syntax;
+		vl::collections::List<vl::Ptr<GlrAssignment>> assignments;
 
-			class GlrClause abstract : public vl::glr::ParsingAstBase, vl::reflection::Description<GlrClause>
-			{
-			public:
-				class IVisitor : public virtual vl::reflection::IDescriptable, vl::reflection::Description<IVisitor>
-				{
-				public:
-					virtual void Visit(GlrCreateClause* node) = 0;
-					virtual void Visit(GlrPartialClause* node) = 0;
-					virtual void Visit(GlrReuseClause* node) = 0;
-					virtual void Visit(GlrLeftRecursionPlaceholderClause* node) = 0;
-					virtual void Visit(GlrLeftRecursionInjectClause* node) = 0;
-					virtual void Visit(GlrPrefixMergeClause* node) = 0;
-				};
+		void Accept(GlrClause::IVisitor* visitor) override;
+	};
 
-				virtual void Accept(GlrClause::IVisitor* visitor) = 0;
+	class GlrReuseClause : public GlrClause, vl::reflection::Description<GlrReuseClause>
+	{
+	public:
+		vl::Ptr<GlrSyntax> syntax;
+		vl::collections::List<vl::Ptr<GlrAssignment>> assignments;
 
-			};
+		void Accept(GlrClause::IVisitor* visitor) override;
+	};
 
-			class GlrAssignment : public vl::glr::ParsingAstBase, vl::reflection::Description<GlrAssignment>
-			{
-			public:
-				GlrAssignmentType type = GlrAssignmentType::UNDEFINED_ENUM_ITEM_VALUE;
-				vl::glr::ParsingToken field;
-				vl::glr::ParsingToken value;
-			};
+	class GlrLeftRecursionPlaceholder : public vl::glr::ParsingAstBase, vl::reflection::Description<GlrLeftRecursionPlaceholder>
+	{
+	public:
+		vl::glr::ParsingToken flag;
+	};
 
-			class GlrCreateClause : public GlrClause, vl::reflection::Description<GlrCreateClause>
-			{
-			public:
-				vl::glr::ParsingToken type;
-				vl::Ptr<GlrSyntax> syntax;
-				vl::collections::List<vl::Ptr<GlrAssignment>> assignments;
+	class GlrLeftRecursionPlaceholderClause : public GlrClause, vl::reflection::Description<GlrLeftRecursionPlaceholderClause>
+	{
+	public:
+		vl::collections::List<vl::Ptr<GlrLeftRecursionPlaceholder>> flags;
 
-				void Accept(GlrClause::IVisitor* visitor) override;
-			};
+		void Accept(GlrClause::IVisitor* visitor) override;
+	};
 
-			class GlrPartialClause : public GlrClause, vl::reflection::Description<GlrPartialClause>
-			{
-			public:
-				vl::glr::ParsingToken type;
-				vl::Ptr<GlrSyntax> syntax;
-				vl::collections::List<vl::Ptr<GlrAssignment>> assignments;
+	class GlrLeftRecursionInjectContinuation : public vl::glr::ParsingAstBase, vl::reflection::Description<GlrLeftRecursionInjectContinuation>
+	{
+	public:
+		vl::collections::List<vl::Ptr<GlrLeftRecursionPlaceholder>> flags;
+		GlrLeftRecursionConfiguration configuration = GlrLeftRecursionConfiguration::UNDEFINED_ENUM_ITEM_VALUE;
+		GlrLeftRecursionInjectContinuationType type = GlrLeftRecursionInjectContinuationType::UNDEFINED_ENUM_ITEM_VALUE;
+		vl::collections::List<vl::Ptr<GlrLeftRecursionInjectClause>> injectionTargets;
+	};
 
-				void Accept(GlrClause::IVisitor* visitor) override;
-			};
+	class GlrLeftRecursionInjectClause : public GlrClause, vl::reflection::Description<GlrLeftRecursionInjectClause>
+	{
+	public:
+		vl::Ptr<GlrRefSyntax> rule;
+		vl::Ptr<GlrLeftRecursionInjectContinuation> continuation;
 
-			class GlrReuseClause : public GlrClause, vl::reflection::Description<GlrReuseClause>
-			{
-			public:
-				vl::Ptr<GlrSyntax> syntax;
-				vl::collections::List<vl::Ptr<GlrAssignment>> assignments;
+		void Accept(GlrClause::IVisitor* visitor) override;
+	};
 
-				void Accept(GlrClause::IVisitor* visitor) override;
-			};
+	class GlrPrefixMergeClause : public GlrClause, vl::reflection::Description<GlrPrefixMergeClause>
+	{
+	public:
+		vl::Ptr<GlrRefSyntax> rule;
 
-			class GlrLeftRecursionPlaceholder : public vl::glr::ParsingAstBase, vl::reflection::Description<GlrLeftRecursionPlaceholder>
-			{
-			public:
-				vl::glr::ParsingToken flag;
-			};
+		void Accept(GlrClause::IVisitor* visitor) override;
+	};
 
-			class GlrLeftRecursionPlaceholderClause : public GlrClause, vl::reflection::Description<GlrLeftRecursionPlaceholderClause>
-			{
-			public:
-				vl::collections::List<vl::Ptr<GlrLeftRecursionPlaceholder>> flags;
+	class GlrRule : public vl::glr::ParsingAstBase, vl::reflection::Description<GlrRule>
+	{
+	public:
+		vl::glr::ParsingToken attPublic;
+		vl::glr::ParsingToken attParser;
+		vl::glr::ParsingToken name;
+		vl::glr::ParsingToken type;
+		vl::collections::List<vl::Ptr<GlrClause>> clauses;
+	};
 
-				void Accept(GlrClause::IVisitor* visitor) override;
-			};
-
-			class GlrLeftRecursionInjectContinuation : public vl::glr::ParsingAstBase, vl::reflection::Description<GlrLeftRecursionInjectContinuation>
-			{
-			public:
-				vl::collections::List<vl::Ptr<GlrLeftRecursionPlaceholder>> flags;
-				GlrLeftRecursionConfiguration configuration = GlrLeftRecursionConfiguration::UNDEFINED_ENUM_ITEM_VALUE;
-				GlrLeftRecursionInjectContinuationType type = GlrLeftRecursionInjectContinuationType::UNDEFINED_ENUM_ITEM_VALUE;
-				vl::collections::List<vl::Ptr<GlrLeftRecursionInjectClause>> injectionTargets;
-			};
-
-			class GlrLeftRecursionInjectClause : public GlrClause, vl::reflection::Description<GlrLeftRecursionInjectClause>
-			{
-			public:
-				vl::Ptr<GlrRefSyntax> rule;
-				vl::Ptr<GlrLeftRecursionInjectContinuation> continuation;
-
-				void Accept(GlrClause::IVisitor* visitor) override;
-			};
-
-			class GlrPrefixMergeClause : public GlrClause, vl::reflection::Description<GlrPrefixMergeClause>
-			{
-			public:
-				vl::Ptr<GlrRefSyntax> rule;
-
-				void Accept(GlrClause::IVisitor* visitor) override;
-			};
-
-			class GlrRule : public vl::glr::ParsingAstBase, vl::reflection::Description<GlrRule>
-			{
-			public:
-				vl::glr::ParsingToken name;
-				vl::glr::ParsingToken type;
-				vl::collections::List<vl::Ptr<GlrClause>> clauses;
-			};
-
-			class GlrSyntaxFile : public vl::glr::ParsingAstBase, vl::reflection::Description<GlrSyntaxFile>
-			{
-			public:
-				vl::collections::List<vl::Ptr<GlrSwitchItem>> switches;
-				vl::collections::List<vl::Ptr<GlrRule>> rules;
-			};
-		}
-	}
+	class GlrSyntaxFile : public vl::glr::ParsingAstBase, vl::reflection::Description<GlrSyntaxFile>
+	{
+	public:
+		vl::collections::List<vl::Ptr<GlrSwitchItem>> switches;
+		vl::collections::List<vl::Ptr<GlrRule>> rules;
+	};
 }
-namespace vl
+namespace vl::reflection::description
 {
-	namespace reflection
-	{
-		namespace description
-		{
 #ifndef VCZH_DEBUG_NO_REFLECTION
-			DECL_TYPE_INFO(vl::glr::parsergen::GlrCondition)
-			DECL_TYPE_INFO(vl::glr::parsergen::GlrCondition::IVisitor)
-			DECL_TYPE_INFO(vl::glr::parsergen::GlrRefCondition)
-			DECL_TYPE_INFO(vl::glr::parsergen::GlrNotCondition)
-			DECL_TYPE_INFO(vl::glr::parsergen::GlrAndCondition)
-			DECL_TYPE_INFO(vl::glr::parsergen::GlrOrCondition)
-			DECL_TYPE_INFO(vl::glr::parsergen::GlrSwitchValue)
-			DECL_TYPE_INFO(vl::glr::parsergen::GlrSwitchItem)
-			DECL_TYPE_INFO(vl::glr::parsergen::GlrSyntax)
-			DECL_TYPE_INFO(vl::glr::parsergen::GlrSyntax::IVisitor)
-			DECL_TYPE_INFO(vl::glr::parsergen::GlrRefType)
-			DECL_TYPE_INFO(vl::glr::parsergen::GlrRefSyntax)
-			DECL_TYPE_INFO(vl::glr::parsergen::GlrUseSyntax)
-			DECL_TYPE_INFO(vl::glr::parsergen::GlrLoopSyntax)
-			DECL_TYPE_INFO(vl::glr::parsergen::GlrOptionalPriority)
-			DECL_TYPE_INFO(vl::glr::parsergen::GlrOptionalSyntax)
-			DECL_TYPE_INFO(vl::glr::parsergen::GlrSequenceSyntax)
-			DECL_TYPE_INFO(vl::glr::parsergen::GlrAlternativeSyntax)
-			DECL_TYPE_INFO(vl::glr::parsergen::GlrPushConditionSyntax)
-			DECL_TYPE_INFO(vl::glr::parsergen::GlrTestConditionBranch)
-			DECL_TYPE_INFO(vl::glr::parsergen::GlrTestConditionSyntax)
-			DECL_TYPE_INFO(vl::glr::parsergen::GlrClause)
-			DECL_TYPE_INFO(vl::glr::parsergen::GlrClause::IVisitor)
-			DECL_TYPE_INFO(vl::glr::parsergen::GlrAssignmentType)
-			DECL_TYPE_INFO(vl::glr::parsergen::GlrAssignment)
-			DECL_TYPE_INFO(vl::glr::parsergen::GlrCreateClause)
-			DECL_TYPE_INFO(vl::glr::parsergen::GlrPartialClause)
-			DECL_TYPE_INFO(vl::glr::parsergen::GlrReuseClause)
-			DECL_TYPE_INFO(vl::glr::parsergen::GlrLeftRecursionPlaceholder)
-			DECL_TYPE_INFO(vl::glr::parsergen::GlrLeftRecursionPlaceholderClause)
-			DECL_TYPE_INFO(vl::glr::parsergen::GlrLeftRecursionConfiguration)
-			DECL_TYPE_INFO(vl::glr::parsergen::GlrLeftRecursionInjectContinuationType)
-			DECL_TYPE_INFO(vl::glr::parsergen::GlrLeftRecursionInjectContinuation)
-			DECL_TYPE_INFO(vl::glr::parsergen::GlrLeftRecursionInjectClause)
-			DECL_TYPE_INFO(vl::glr::parsergen::GlrPrefixMergeClause)
-			DECL_TYPE_INFO(vl::glr::parsergen::GlrRule)
-			DECL_TYPE_INFO(vl::glr::parsergen::GlrSyntaxFile)
+	DECL_TYPE_INFO(vl::glr::parsergen::GlrCondition)
+	DECL_TYPE_INFO(vl::glr::parsergen::GlrCondition::IVisitor)
+	DECL_TYPE_INFO(vl::glr::parsergen::GlrRefCondition)
+	DECL_TYPE_INFO(vl::glr::parsergen::GlrNotCondition)
+	DECL_TYPE_INFO(vl::glr::parsergen::GlrAndCondition)
+	DECL_TYPE_INFO(vl::glr::parsergen::GlrOrCondition)
+	DECL_TYPE_INFO(vl::glr::parsergen::GlrSwitchValue)
+	DECL_TYPE_INFO(vl::glr::parsergen::GlrSwitchItem)
+	DECL_TYPE_INFO(vl::glr::parsergen::GlrSyntax)
+	DECL_TYPE_INFO(vl::glr::parsergen::GlrSyntax::IVisitor)
+	DECL_TYPE_INFO(vl::glr::parsergen::GlrRefType)
+	DECL_TYPE_INFO(vl::glr::parsergen::GlrRefSyntax)
+	DECL_TYPE_INFO(vl::glr::parsergen::GlrUseSyntax)
+	DECL_TYPE_INFO(vl::glr::parsergen::GlrLoopSyntax)
+	DECL_TYPE_INFO(vl::glr::parsergen::GlrOptionalPriority)
+	DECL_TYPE_INFO(vl::glr::parsergen::GlrOptionalSyntax)
+	DECL_TYPE_INFO(vl::glr::parsergen::GlrSequenceSyntax)
+	DECL_TYPE_INFO(vl::glr::parsergen::GlrAlternativeSyntax)
+	DECL_TYPE_INFO(vl::glr::parsergen::GlrPushConditionSyntax)
+	DECL_TYPE_INFO(vl::glr::parsergen::GlrTestConditionBranch)
+	DECL_TYPE_INFO(vl::glr::parsergen::GlrTestConditionSyntax)
+	DECL_TYPE_INFO(vl::glr::parsergen::GlrClause)
+	DECL_TYPE_INFO(vl::glr::parsergen::GlrClause::IVisitor)
+	DECL_TYPE_INFO(vl::glr::parsergen::GlrAssignmentType)
+	DECL_TYPE_INFO(vl::glr::parsergen::GlrAssignment)
+	DECL_TYPE_INFO(vl::glr::parsergen::GlrCreateClause)
+	DECL_TYPE_INFO(vl::glr::parsergen::GlrPartialClause)
+	DECL_TYPE_INFO(vl::glr::parsergen::GlrReuseClause)
+	DECL_TYPE_INFO(vl::glr::parsergen::GlrLeftRecursionPlaceholder)
+	DECL_TYPE_INFO(vl::glr::parsergen::GlrLeftRecursionPlaceholderClause)
+	DECL_TYPE_INFO(vl::glr::parsergen::GlrLeftRecursionConfiguration)
+	DECL_TYPE_INFO(vl::glr::parsergen::GlrLeftRecursionInjectContinuationType)
+	DECL_TYPE_INFO(vl::glr::parsergen::GlrLeftRecursionInjectContinuation)
+	DECL_TYPE_INFO(vl::glr::parsergen::GlrLeftRecursionInjectClause)
+	DECL_TYPE_INFO(vl::glr::parsergen::GlrPrefixMergeClause)
+	DECL_TYPE_INFO(vl::glr::parsergen::GlrRule)
+	DECL_TYPE_INFO(vl::glr::parsergen::GlrSyntaxFile)
 
 #ifdef VCZH_DESCRIPTABLEOBJECT_WITH_METADATA
 
-			BEGIN_INTERFACE_PROXY_NOPARENT_SHAREDPTR(vl::glr::parsergen::GlrCondition::IVisitor)
-				void Visit(vl::glr::parsergen::GlrRefCondition* node) override
-				{
-					INVOKE_INTERFACE_PROXY(Visit, node);
-				}
-
-				void Visit(vl::glr::parsergen::GlrNotCondition* node) override
-				{
-					INVOKE_INTERFACE_PROXY(Visit, node);
-				}
-
-				void Visit(vl::glr::parsergen::GlrAndCondition* node) override
-				{
-					INVOKE_INTERFACE_PROXY(Visit, node);
-				}
-
-				void Visit(vl::glr::parsergen::GlrOrCondition* node) override
-				{
-					INVOKE_INTERFACE_PROXY(Visit, node);
-				}
-
-			END_INTERFACE_PROXY(vl::glr::parsergen::GlrCondition::IVisitor)
-
-			BEGIN_INTERFACE_PROXY_NOPARENT_SHAREDPTR(vl::glr::parsergen::GlrSyntax::IVisitor)
-				void Visit(vl::glr::parsergen::GlrRefSyntax* node) override
-				{
-					INVOKE_INTERFACE_PROXY(Visit, node);
-				}
-
-				void Visit(vl::glr::parsergen::GlrUseSyntax* node) override
-				{
-					INVOKE_INTERFACE_PROXY(Visit, node);
-				}
-
-				void Visit(vl::glr::parsergen::GlrLoopSyntax* node) override
-				{
-					INVOKE_INTERFACE_PROXY(Visit, node);
-				}
-
-				void Visit(vl::glr::parsergen::GlrOptionalSyntax* node) override
-				{
-					INVOKE_INTERFACE_PROXY(Visit, node);
-				}
-
-				void Visit(vl::glr::parsergen::GlrSequenceSyntax* node) override
-				{
-					INVOKE_INTERFACE_PROXY(Visit, node);
-				}
-
-				void Visit(vl::glr::parsergen::GlrAlternativeSyntax* node) override
-				{
-					INVOKE_INTERFACE_PROXY(Visit, node);
-				}
-
-				void Visit(vl::glr::parsergen::GlrPushConditionSyntax* node) override
-				{
-					INVOKE_INTERFACE_PROXY(Visit, node);
-				}
-
-				void Visit(vl::glr::parsergen::GlrTestConditionSyntax* node) override
-				{
-					INVOKE_INTERFACE_PROXY(Visit, node);
-				}
-
-			END_INTERFACE_PROXY(vl::glr::parsergen::GlrSyntax::IVisitor)
-
-			BEGIN_INTERFACE_PROXY_NOPARENT_SHAREDPTR(vl::glr::parsergen::GlrClause::IVisitor)
-				void Visit(vl::glr::parsergen::GlrCreateClause* node) override
-				{
-					INVOKE_INTERFACE_PROXY(Visit, node);
-				}
-
-				void Visit(vl::glr::parsergen::GlrPartialClause* node) override
-				{
-					INVOKE_INTERFACE_PROXY(Visit, node);
-				}
-
-				void Visit(vl::glr::parsergen::GlrReuseClause* node) override
-				{
-					INVOKE_INTERFACE_PROXY(Visit, node);
-				}
-
-				void Visit(vl::glr::parsergen::GlrLeftRecursionPlaceholderClause* node) override
-				{
-					INVOKE_INTERFACE_PROXY(Visit, node);
-				}
-
-				void Visit(vl::glr::parsergen::GlrLeftRecursionInjectClause* node) override
-				{
-					INVOKE_INTERFACE_PROXY(Visit, node);
-				}
-
-				void Visit(vl::glr::parsergen::GlrPrefixMergeClause* node) override
-				{
-					INVOKE_INTERFACE_PROXY(Visit, node);
-				}
-
-			END_INTERFACE_PROXY(vl::glr::parsergen::GlrClause::IVisitor)
-
-#endif
-#endif
-			/// <summary>Load all reflectable AST types, only available when <b>VCZH_DEBUG_NO_REFLECTION</b> is off.</summary>
-			/// <returns>Returns true if this operation succeeded.</returns>
-			extern bool ParserGenRuleAstLoadTypes();
+	BEGIN_INTERFACE_PROXY_NOPARENT_SHAREDPTR(vl::glr::parsergen::GlrCondition::IVisitor)
+		void Visit(vl::glr::parsergen::GlrRefCondition* node) override
+		{
+			INVOKE_INTERFACE_PROXY(Visit, node);
 		}
-	}
+
+		void Visit(vl::glr::parsergen::GlrNotCondition* node) override
+		{
+			INVOKE_INTERFACE_PROXY(Visit, node);
+		}
+
+		void Visit(vl::glr::parsergen::GlrAndCondition* node) override
+		{
+			INVOKE_INTERFACE_PROXY(Visit, node);
+		}
+
+		void Visit(vl::glr::parsergen::GlrOrCondition* node) override
+		{
+			INVOKE_INTERFACE_PROXY(Visit, node);
+		}
+
+	END_INTERFACE_PROXY(vl::glr::parsergen::GlrCondition::IVisitor)
+
+	BEGIN_INTERFACE_PROXY_NOPARENT_SHAREDPTR(vl::glr::parsergen::GlrSyntax::IVisitor)
+		void Visit(vl::glr::parsergen::GlrRefSyntax* node) override
+		{
+			INVOKE_INTERFACE_PROXY(Visit, node);
+		}
+
+		void Visit(vl::glr::parsergen::GlrUseSyntax* node) override
+		{
+			INVOKE_INTERFACE_PROXY(Visit, node);
+		}
+
+		void Visit(vl::glr::parsergen::GlrLoopSyntax* node) override
+		{
+			INVOKE_INTERFACE_PROXY(Visit, node);
+		}
+
+		void Visit(vl::glr::parsergen::GlrOptionalSyntax* node) override
+		{
+			INVOKE_INTERFACE_PROXY(Visit, node);
+		}
+
+		void Visit(vl::glr::parsergen::GlrSequenceSyntax* node) override
+		{
+			INVOKE_INTERFACE_PROXY(Visit, node);
+		}
+
+		void Visit(vl::glr::parsergen::GlrAlternativeSyntax* node) override
+		{
+			INVOKE_INTERFACE_PROXY(Visit, node);
+		}
+
+		void Visit(vl::glr::parsergen::GlrPushConditionSyntax* node) override
+		{
+			INVOKE_INTERFACE_PROXY(Visit, node);
+		}
+
+		void Visit(vl::glr::parsergen::GlrTestConditionSyntax* node) override
+		{
+			INVOKE_INTERFACE_PROXY(Visit, node);
+		}
+
+	END_INTERFACE_PROXY(vl::glr::parsergen::GlrSyntax::IVisitor)
+
+	BEGIN_INTERFACE_PROXY_NOPARENT_SHAREDPTR(vl::glr::parsergen::GlrClause::IVisitor)
+		void Visit(vl::glr::parsergen::GlrCreateClause* node) override
+		{
+			INVOKE_INTERFACE_PROXY(Visit, node);
+		}
+
+		void Visit(vl::glr::parsergen::GlrPartialClause* node) override
+		{
+			INVOKE_INTERFACE_PROXY(Visit, node);
+		}
+
+		void Visit(vl::glr::parsergen::GlrReuseClause* node) override
+		{
+			INVOKE_INTERFACE_PROXY(Visit, node);
+		}
+
+		void Visit(vl::glr::parsergen::GlrLeftRecursionPlaceholderClause* node) override
+		{
+			INVOKE_INTERFACE_PROXY(Visit, node);
+		}
+
+		void Visit(vl::glr::parsergen::GlrLeftRecursionInjectClause* node) override
+		{
+			INVOKE_INTERFACE_PROXY(Visit, node);
+		}
+
+		void Visit(vl::glr::parsergen::GlrPrefixMergeClause* node) override
+		{
+			INVOKE_INTERFACE_PROXY(Visit, node);
+		}
+
+	END_INTERFACE_PROXY(vl::glr::parsergen::GlrClause::IVisitor)
+
+#endif
+#endif
+	/// <summary>Load all reflectable AST types, only available when <b>VCZH_DEBUG_NO_REFLECTION</b> is off.</summary>
+	/// <returns>Returns true if this operation succeeded.</returns>
+	extern bool ParserGenRuleAstLoadTypes();
 }
 #endif

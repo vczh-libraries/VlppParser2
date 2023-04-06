@@ -174,87 +174,81 @@ namespace featuretest
 		void Accept(Feature::IVisitor* visitor) override;
 	};
 }
-namespace vl
+namespace vl::reflection::description
 {
-	namespace reflection
-	{
-		namespace description
-		{
 #ifndef VCZH_DEBUG_NO_REFLECTION
-			DECL_TYPE_INFO(featuretest::Plus)
-			DECL_TYPE_INFO(featuretest::Lt)
-			DECL_TYPE_INFO(featuretest::Gt)
-			DECL_TYPE_INFO(featuretest::Feature)
-			DECL_TYPE_INFO(featuretest::Feature::IVisitor)
-			DECL_TYPE_INFO(featuretest::OptionalProprity)
-			DECL_TYPE_INFO(featuretest::OptionalFeature)
-			DECL_TYPE_INFO(featuretest::NestedOptionalFeature)
-			DECL_TYPE_INFO(featuretest::BranchType)
-			DECL_TYPE_INFO(featuretest::BranchedOptionalFeature)
-			DECL_TYPE_INFO(featuretest::PbaFeature)
-			DECL_TYPE_INFO(featuretest::Pwa1Feature)
-			DECL_TYPE_INFO(featuretest::PwlFeature)
-			DECL_TYPE_INFO(featuretest::ClFeature)
-			DECL_TYPE_INFO(featuretest::FieldAssignment)
-			DECL_TYPE_INFO(featuretest::FaFeature)
-			DECL_TYPE_INFO(featuretest::FeatureToResolve)
+	DECL_TYPE_INFO(featuretest::Plus)
+	DECL_TYPE_INFO(featuretest::Lt)
+	DECL_TYPE_INFO(featuretest::Gt)
+	DECL_TYPE_INFO(featuretest::Feature)
+	DECL_TYPE_INFO(featuretest::Feature::IVisitor)
+	DECL_TYPE_INFO(featuretest::OptionalProprity)
+	DECL_TYPE_INFO(featuretest::OptionalFeature)
+	DECL_TYPE_INFO(featuretest::NestedOptionalFeature)
+	DECL_TYPE_INFO(featuretest::BranchType)
+	DECL_TYPE_INFO(featuretest::BranchedOptionalFeature)
+	DECL_TYPE_INFO(featuretest::PbaFeature)
+	DECL_TYPE_INFO(featuretest::Pwa1Feature)
+	DECL_TYPE_INFO(featuretest::PwlFeature)
+	DECL_TYPE_INFO(featuretest::ClFeature)
+	DECL_TYPE_INFO(featuretest::FieldAssignment)
+	DECL_TYPE_INFO(featuretest::FaFeature)
+	DECL_TYPE_INFO(featuretest::FeatureToResolve)
 
 #ifdef VCZH_DESCRIPTABLEOBJECT_WITH_METADATA
 
-			BEGIN_INTERFACE_PROXY_NOPARENT_SHAREDPTR(featuretest::Feature::IVisitor)
-				void Visit(featuretest::FeatureToResolve* node) override
-				{
-					INVOKE_INTERFACE_PROXY(Visit, node);
-				}
-
-				void Visit(featuretest::OptionalFeature* node) override
-				{
-					INVOKE_INTERFACE_PROXY(Visit, node);
-				}
-
-				void Visit(featuretest::NestedOptionalFeature* node) override
-				{
-					INVOKE_INTERFACE_PROXY(Visit, node);
-				}
-
-				void Visit(featuretest::BranchedOptionalFeature* node) override
-				{
-					INVOKE_INTERFACE_PROXY(Visit, node);
-				}
-
-				void Visit(featuretest::PbaFeature* node) override
-				{
-					INVOKE_INTERFACE_PROXY(Visit, node);
-				}
-
-				void Visit(featuretest::Pwa1Feature* node) override
-				{
-					INVOKE_INTERFACE_PROXY(Visit, node);
-				}
-
-				void Visit(featuretest::PwlFeature* node) override
-				{
-					INVOKE_INTERFACE_PROXY(Visit, node);
-				}
-
-				void Visit(featuretest::ClFeature* node) override
-				{
-					INVOKE_INTERFACE_PROXY(Visit, node);
-				}
-
-				void Visit(featuretest::FaFeature* node) override
-				{
-					INVOKE_INTERFACE_PROXY(Visit, node);
-				}
-
-			END_INTERFACE_PROXY(featuretest::Feature::IVisitor)
-
-#endif
-#endif
-			/// <summary>Load all reflectable AST types, only available when <b>VCZH_DEBUG_NO_REFLECTION</b> is off.</summary>
-			/// <returns>Returns true if this operation succeeded.</returns>
-			extern bool FeatureTestFeatureAstLoadTypes();
+	BEGIN_INTERFACE_PROXY_NOPARENT_SHAREDPTR(featuretest::Feature::IVisitor)
+		void Visit(featuretest::FeatureToResolve* node) override
+		{
+			INVOKE_INTERFACE_PROXY(Visit, node);
 		}
-	}
+
+		void Visit(featuretest::OptionalFeature* node) override
+		{
+			INVOKE_INTERFACE_PROXY(Visit, node);
+		}
+
+		void Visit(featuretest::NestedOptionalFeature* node) override
+		{
+			INVOKE_INTERFACE_PROXY(Visit, node);
+		}
+
+		void Visit(featuretest::BranchedOptionalFeature* node) override
+		{
+			INVOKE_INTERFACE_PROXY(Visit, node);
+		}
+
+		void Visit(featuretest::PbaFeature* node) override
+		{
+			INVOKE_INTERFACE_PROXY(Visit, node);
+		}
+
+		void Visit(featuretest::Pwa1Feature* node) override
+		{
+			INVOKE_INTERFACE_PROXY(Visit, node);
+		}
+
+		void Visit(featuretest::PwlFeature* node) override
+		{
+			INVOKE_INTERFACE_PROXY(Visit, node);
+		}
+
+		void Visit(featuretest::ClFeature* node) override
+		{
+			INVOKE_INTERFACE_PROXY(Visit, node);
+		}
+
+		void Visit(featuretest::FaFeature* node) override
+		{
+			INVOKE_INTERFACE_PROXY(Visit, node);
+		}
+
+	END_INTERFACE_PROXY(featuretest::Feature::IVisitor)
+
+#endif
+#endif
+	/// <summary>Load all reflectable AST types, only available when <b>VCZH_DEBUG_NO_REFLECTION</b> is off.</summary>
+	/// <returns>Returns true if this operation succeeded.</returns>
+	extern bool FeatureTestFeatureAstLoadTypes();
 }
 #endif

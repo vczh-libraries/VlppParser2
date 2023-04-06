@@ -6,219 +6,210 @@ Licensed under https://github.com/vczh-libraries/License
 
 #include "XmlAst_Json.h"
 
-namespace vl
+namespace vl::glr::xml::json_visitor
 {
-	namespace glr
+	void AstVisitor::PrintFields(XmlAttribute* node)
 	{
-		namespace xml
-		{
-			namespace json_visitor
-			{
-				void AstVisitor::PrintFields(XmlAttribute* node)
-				{
-					BeginField(L"name");
-					WriteToken(node->name);
-					EndField();
-					BeginField(L"value");
-					WriteToken(node->value);
-					EndField();
-				}
-				void AstVisitor::PrintFields(XmlCData* node)
-				{
-					BeginField(L"content");
-					WriteToken(node->content);
-					EndField();
-				}
-				void AstVisitor::PrintFields(XmlComment* node)
-				{
-					BeginField(L"content");
-					WriteToken(node->content);
-					EndField();
-				}
-				void AstVisitor::PrintFields(XmlDocument* node)
-				{
-					BeginField(L"prologs");
-					BeginArray();
-					for (auto&& listItem : node->prologs)
-					{
-						BeginArrayItem();
-						Print(listItem.Obj());
-						EndArrayItem();
-					}
-					EndArray();
-					EndField();
-					BeginField(L"rootElement");
-					Print(node->rootElement.Obj());
-					EndField();
-				}
-				void AstVisitor::PrintFields(XmlElement* node)
-				{
-					BeginField(L"attributes");
-					BeginArray();
-					for (auto&& listItem : node->attributes)
-					{
-						BeginArrayItem();
-						Print(listItem.Obj());
-						EndArrayItem();
-					}
-					EndArray();
-					EndField();
-					BeginField(L"closingName");
-					WriteToken(node->closingName);
-					EndField();
-					BeginField(L"name");
-					WriteToken(node->name);
-					EndField();
-					BeginField(L"subNodes");
-					BeginArray();
-					for (auto&& listItem : node->subNodes)
-					{
-						BeginArrayItem();
-						Print(listItem.Obj());
-						EndArrayItem();
-					}
-					EndArray();
-					EndField();
-				}
-				void AstVisitor::PrintFields(XmlInstruction* node)
-				{
-					BeginField(L"attributes");
-					BeginArray();
-					for (auto&& listItem : node->attributes)
-					{
-						BeginArrayItem();
-						Print(listItem.Obj());
-						EndArrayItem();
-					}
-					EndArray();
-					EndField();
-					BeginField(L"name");
-					WriteToken(node->name);
-					EndField();
-				}
-				void AstVisitor::PrintFields(XmlNode* node)
-				{
-				}
-				void AstVisitor::PrintFields(XmlText* node)
-				{
-					BeginField(L"content");
-					WriteToken(node->content);
-					EndField();
-				}
-
-				void AstVisitor::Visit(XmlText* node)
-				{
-					if (!node)
-					{
-						WriteNull();
-						return;
-					}
-					BeginObject();
-					WriteType(L"Text", node);
-					PrintFields(static_cast<XmlNode*>(node));
-					PrintFields(static_cast<XmlText*>(node));
-					EndObject();
-				}
-
-				void AstVisitor::Visit(XmlCData* node)
-				{
-					if (!node)
-					{
-						WriteNull();
-						return;
-					}
-					BeginObject();
-					WriteType(L"CData", node);
-					PrintFields(static_cast<XmlNode*>(node));
-					PrintFields(static_cast<XmlCData*>(node));
-					EndObject();
-				}
-
-				void AstVisitor::Visit(XmlComment* node)
-				{
-					if (!node)
-					{
-						WriteNull();
-						return;
-					}
-					BeginObject();
-					WriteType(L"Comment", node);
-					PrintFields(static_cast<XmlNode*>(node));
-					PrintFields(static_cast<XmlComment*>(node));
-					EndObject();
-				}
-
-				void AstVisitor::Visit(XmlElement* node)
-				{
-					if (!node)
-					{
-						WriteNull();
-						return;
-					}
-					BeginObject();
-					WriteType(L"Element", node);
-					PrintFields(static_cast<XmlNode*>(node));
-					PrintFields(static_cast<XmlElement*>(node));
-					EndObject();
-				}
-
-				void AstVisitor::Visit(XmlInstruction* node)
-				{
-					if (!node)
-					{
-						WriteNull();
-						return;
-					}
-					BeginObject();
-					WriteType(L"Instruction", node);
-					PrintFields(static_cast<XmlNode*>(node));
-					PrintFields(static_cast<XmlInstruction*>(node));
-					EndObject();
-				}
-
-				void AstVisitor::Visit(XmlDocument* node)
-				{
-					if (!node)
-					{
-						WriteNull();
-						return;
-					}
-					BeginObject();
-					WriteType(L"Document", node);
-					PrintFields(static_cast<XmlNode*>(node));
-					PrintFields(static_cast<XmlDocument*>(node));
-					EndObject();
-				}
-
-				AstVisitor::AstVisitor(vl::stream::StreamWriter& _writer)
-					: vl::glr::JsonVisitorBase(_writer)
-				{
-				}
-
-				void AstVisitor::Print(XmlNode* node)
-				{
-					if (!node)
-					{
-						WriteNull();
-						return;
-					}
-					node->Accept(static_cast<XmlNode::IVisitor*>(this));
-				}
-
-				void AstVisitor::Print(XmlAttribute* node)
-				{
-					if (!node)
-					{
-						WriteNull();
-						return;
-					}
-					BeginObject();
-					WriteType(L"Attribute", node);
-					PrintFields(static_cast<XmlAttribute*>(node));
-					EndObject();
-				}
-
-			}
-		}
+		BeginField(L"name");
+		WriteToken(node->name);
+		EndField();
+		BeginField(L"value");
+		WriteToken(node->value);
+		EndField();
 	}
+	void AstVisitor::PrintFields(XmlCData* node)
+	{
+		BeginField(L"content");
+		WriteToken(node->content);
+		EndField();
+	}
+	void AstVisitor::PrintFields(XmlComment* node)
+	{
+		BeginField(L"content");
+		WriteToken(node->content);
+		EndField();
+	}
+	void AstVisitor::PrintFields(XmlDocument* node)
+	{
+		BeginField(L"prologs");
+		BeginArray();
+		for (auto&& listItem : node->prologs)
+		{
+			BeginArrayItem();
+			Print(listItem.Obj());
+			EndArrayItem();
+		}
+		EndArray();
+		EndField();
+		BeginField(L"rootElement");
+		Print(node->rootElement.Obj());
+		EndField();
+	}
+	void AstVisitor::PrintFields(XmlElement* node)
+	{
+		BeginField(L"attributes");
+		BeginArray();
+		for (auto&& listItem : node->attributes)
+		{
+			BeginArrayItem();
+			Print(listItem.Obj());
+			EndArrayItem();
+		}
+		EndArray();
+		EndField();
+		BeginField(L"closingName");
+		WriteToken(node->closingName);
+		EndField();
+		BeginField(L"name");
+		WriteToken(node->name);
+		EndField();
+		BeginField(L"subNodes");
+		BeginArray();
+		for (auto&& listItem : node->subNodes)
+		{
+			BeginArrayItem();
+			Print(listItem.Obj());
+			EndArrayItem();
+		}
+		EndArray();
+		EndField();
+	}
+	void AstVisitor::PrintFields(XmlInstruction* node)
+	{
+		BeginField(L"attributes");
+		BeginArray();
+		for (auto&& listItem : node->attributes)
+		{
+			BeginArrayItem();
+			Print(listItem.Obj());
+			EndArrayItem();
+		}
+		EndArray();
+		EndField();
+		BeginField(L"name");
+		WriteToken(node->name);
+		EndField();
+	}
+	void AstVisitor::PrintFields(XmlNode* node)
+	{
+	}
+	void AstVisitor::PrintFields(XmlText* node)
+	{
+		BeginField(L"content");
+		WriteToken(node->content);
+		EndField();
+	}
+
+	void AstVisitor::Visit(XmlText* node)
+	{
+		if (!node)
+		{
+			WriteNull();
+			return;
+		}
+		BeginObject();
+		WriteType(L"Text", node);
+		PrintFields(static_cast<XmlNode*>(node));
+		PrintFields(static_cast<XmlText*>(node));
+		EndObject();
+	}
+
+	void AstVisitor::Visit(XmlCData* node)
+	{
+		if (!node)
+		{
+			WriteNull();
+			return;
+		}
+		BeginObject();
+		WriteType(L"CData", node);
+		PrintFields(static_cast<XmlNode*>(node));
+		PrintFields(static_cast<XmlCData*>(node));
+		EndObject();
+	}
+
+	void AstVisitor::Visit(XmlComment* node)
+	{
+		if (!node)
+		{
+			WriteNull();
+			return;
+		}
+		BeginObject();
+		WriteType(L"Comment", node);
+		PrintFields(static_cast<XmlNode*>(node));
+		PrintFields(static_cast<XmlComment*>(node));
+		EndObject();
+	}
+
+	void AstVisitor::Visit(XmlElement* node)
+	{
+		if (!node)
+		{
+			WriteNull();
+			return;
+		}
+		BeginObject();
+		WriteType(L"Element", node);
+		PrintFields(static_cast<XmlNode*>(node));
+		PrintFields(static_cast<XmlElement*>(node));
+		EndObject();
+	}
+
+	void AstVisitor::Visit(XmlInstruction* node)
+	{
+		if (!node)
+		{
+			WriteNull();
+			return;
+		}
+		BeginObject();
+		WriteType(L"Instruction", node);
+		PrintFields(static_cast<XmlNode*>(node));
+		PrintFields(static_cast<XmlInstruction*>(node));
+		EndObject();
+	}
+
+	void AstVisitor::Visit(XmlDocument* node)
+	{
+		if (!node)
+		{
+			WriteNull();
+			return;
+		}
+		BeginObject();
+		WriteType(L"Document", node);
+		PrintFields(static_cast<XmlNode*>(node));
+		PrintFields(static_cast<XmlDocument*>(node));
+		EndObject();
+	}
+
+	AstVisitor::AstVisitor(vl::stream::StreamWriter& _writer)
+		: vl::glr::JsonVisitorBase(_writer)
+	{
+	}
+
+	void AstVisitor::Print(XmlNode* node)
+	{
+		if (!node)
+		{
+			WriteNull();
+			return;
+		}
+		node->Accept(static_cast<XmlNode::IVisitor*>(this));
+	}
+
+	void AstVisitor::Print(XmlAttribute* node)
+	{
+		if (!node)
+		{
+			WriteNull();
+			return;
+		}
+		BeginObject();
+		WriteType(L"Attribute", node);
+		PrintFields(static_cast<XmlAttribute*>(node));
+		EndObject();
+	}
+
 }

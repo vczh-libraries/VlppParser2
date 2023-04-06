@@ -9,23 +9,20 @@ Licensed under https://github.com/vczh-libraries/License
 
 #include "IfElsePriorityStatAst.h"
 
-namespace ifelsepriority
+namespace ifelsepriority::empty_visitor
 {
-	namespace empty_visitor
+	/// <summary>An empty visitor, overriding all abstract methods with empty implementations.</summary>
+	class StatVisitor : public vl::Object, public Stat::IVisitor
 	{
-		/// <summary>An empty visitor, overriding all abstract methods with empty implementations.</summary>
-		class StatVisitor : public vl::Object, public Stat::IVisitor
-		{
-		protected:
-			// Dispatch (virtual) --------------------------------
+	protected:
+		// Dispatch (virtual) --------------------------------
 
-		public:
-			// Visitor Members -----------------------------------
-			void Visit(DoStat* node) override;
-			void Visit(IfStat* node) override;
-			void Visit(BlockStat* node) override;
-		};
+	public:
+		// Visitor Members -----------------------------------
+		void Visit(DoStat* node) override;
+		void Visit(IfStat* node) override;
+		void Visit(BlockStat* node) override;
+	};
 
-	}
 }
 #endif

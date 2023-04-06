@@ -9,27 +9,24 @@ Licensed under https://github.com/vczh-libraries/License
 
 #include "GenericAmbiguityExprAst.h"
 
-namespace genericambiguity
+namespace genericambiguity::empty_visitor
 {
-	namespace empty_visitor
+	/// <summary>An empty visitor, overriding all abstract methods with empty implementations.</summary>
+	class ExprVisitor : public vl::Object, public Expr::IVisitor
 	{
-		/// <summary>An empty visitor, overriding all abstract methods with empty implementations.</summary>
-		class ExprVisitor : public vl::Object, public Expr::IVisitor
-		{
-		protected:
-			// Dispatch (virtual) --------------------------------
+	protected:
+		// Dispatch (virtual) --------------------------------
 
-		public:
-			// Visitor Members -----------------------------------
-			void Visit(ExprToResolve* node) override;
-			void Visit(RefExpr* node) override;
-			void Visit(GenericExpr* node) override;
-			void Visit(CallExpr* node) override;
-			void Visit(PostfixExpr* node) override;
-			void Visit(DecrementExpr* node) override;
-			void Visit(BinaryExpr* node) override;
-		};
+	public:
+		// Visitor Members -----------------------------------
+		void Visit(ExprToResolve* node) override;
+		void Visit(RefExpr* node) override;
+		void Visit(GenericExpr* node) override;
+		void Visit(CallExpr* node) override;
+		void Visit(PostfixExpr* node) override;
+		void Visit(DecrementExpr* node) override;
+		void Visit(BinaryExpr* node) override;
+	};
 
-	}
 }
 #endif

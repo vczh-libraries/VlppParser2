@@ -6,2012 +6,2000 @@ Licensed under https://github.com/vczh-libraries/License
 
 #include "WorkflowAst.h"
 
-namespace vl
+namespace vl::glr::workflow
 {
-	namespace glr
-	{
-		namespace workflow
-		{
 /***********************************************************************
 Visitor Pattern Implementation
 ***********************************************************************/
 
-			void WfPredefinedType::Accept(WfType::IVisitor* visitor)
-			{
-				visitor->Visit(this);
-			}
-
-			void WfTopQualifiedType::Accept(WfType::IVisitor* visitor)
-			{
-				visitor->Visit(this);
-			}
-
-			void WfReferenceType::Accept(WfType::IVisitor* visitor)
-			{
-				visitor->Visit(this);
-			}
-
-			void WfRawPointerType::Accept(WfType::IVisitor* visitor)
-			{
-				visitor->Visit(this);
-			}
-
-			void WfSharedPointerType::Accept(WfType::IVisitor* visitor)
-			{
-				visitor->Visit(this);
-			}
-
-			void WfNullableType::Accept(WfType::IVisitor* visitor)
-			{
-				visitor->Visit(this);
-			}
-
-			void WfEnumerableType::Accept(WfType::IVisitor* visitor)
-			{
-				visitor->Visit(this);
-			}
-
-			void WfMapType::Accept(WfType::IVisitor* visitor)
-			{
-				visitor->Visit(this);
-			}
-
-			void WfObservableListType::Accept(WfType::IVisitor* visitor)
-			{
-				visitor->Visit(this);
-			}
-
-			void WfFunctionType::Accept(WfType::IVisitor* visitor)
-			{
-				visitor->Visit(this);
-			}
-
-			void WfChildType::Accept(WfType::IVisitor* visitor)
-			{
-				visitor->Visit(this);
-			}
-
-			void WfNamespaceDeclaration::Accept(WfDeclaration::IVisitor* visitor)
-			{
-				visitor->Visit(this);
-			}
-
-			void WfFunctionDeclaration::Accept(WfDeclaration::IVisitor* visitor)
-			{
-				visitor->Visit(this);
-			}
-
-			void WfVariableDeclaration::Accept(WfDeclaration::IVisitor* visitor)
-			{
-				visitor->Visit(this);
-			}
-
-			void WfEventDeclaration::Accept(WfDeclaration::IVisitor* visitor)
-			{
-				visitor->Visit(this);
-			}
-
-			void WfPropertyDeclaration::Accept(WfDeclaration::IVisitor* visitor)
-			{
-				visitor->Visit(this);
-			}
-
-			void WfConstructorDeclaration::Accept(WfDeclaration::IVisitor* visitor)
-			{
-				visitor->Visit(this);
-			}
-
-			void WfDestructorDeclaration::Accept(WfDeclaration::IVisitor* visitor)
-			{
-				visitor->Visit(this);
-			}
-
-			void WfClassDeclaration::Accept(WfDeclaration::IVisitor* visitor)
-			{
-				visitor->Visit(this);
-			}
-
-			void WfEnumDeclaration::Accept(WfDeclaration::IVisitor* visitor)
-			{
-				visitor->Visit(this);
-			}
-
-			void WfStructDeclaration::Accept(WfDeclaration::IVisitor* visitor)
-			{
-				visitor->Visit(this);
-			}
-
-			void WfVirtualCfeDeclaration::Accept(WfDeclaration::IVisitor* visitor)
-			{
-				visitor->Visit(this);
-			}
-
-			void WfAutoPropertyDeclaration::Accept(WfVirtualCfeDeclaration::IVisitor* visitor)
-			{
-				visitor->Visit(this);
-			}
-
-			void WfCastResultInterfaceDeclaration::Accept(WfVirtualCfeDeclaration::IVisitor* visitor)
-			{
-				visitor->Visit(this);
-			}
-
-			void WfVirtualCseDeclaration::Accept(WfDeclaration::IVisitor* visitor)
-			{
-				visitor->Visit(this);
-			}
-
-			void WfStateMachineDeclaration::Accept(WfVirtualCseDeclaration::IVisitor* visitor)
-			{
-				visitor->Visit(this);
-			}
-
-			void WfBreakStatement::Accept(WfStatement::IVisitor* visitor)
-			{
-				visitor->Visit(this);
-			}
-
-			void WfContinueStatement::Accept(WfStatement::IVisitor* visitor)
-			{
-				visitor->Visit(this);
-			}
-
-			void WfReturnStatement::Accept(WfStatement::IVisitor* visitor)
-			{
-				visitor->Visit(this);
-			}
-
-			void WfDeleteStatement::Accept(WfStatement::IVisitor* visitor)
-			{
-				visitor->Visit(this);
-			}
-
-			void WfRaiseExceptionStatement::Accept(WfStatement::IVisitor* visitor)
-			{
-				visitor->Visit(this);
-			}
-
-			void WfIfStatement::Accept(WfStatement::IVisitor* visitor)
-			{
-				visitor->Visit(this);
-			}
-
-			void WfWhileStatement::Accept(WfStatement::IVisitor* visitor)
-			{
-				visitor->Visit(this);
-			}
-
-			void WfTryStatement::Accept(WfStatement::IVisitor* visitor)
-			{
-				visitor->Visit(this);
-			}
-
-			void WfBlockStatement::Accept(WfStatement::IVisitor* visitor)
-			{
-				visitor->Visit(this);
-			}
-
-			void WfGotoStatement::Accept(WfStatement::IVisitor* visitor)
-			{
-				visitor->Visit(this);
-			}
-
-			void WfVariableStatement::Accept(WfStatement::IVisitor* visitor)
-			{
-				visitor->Visit(this);
-			}
-
-			void WfExpressionStatement::Accept(WfStatement::IVisitor* visitor)
-			{
-				visitor->Visit(this);
-			}
-
-			void WfVirtualCseStatement::Accept(WfStatement::IVisitor* visitor)
-			{
-				visitor->Visit(this);
-			}
-
-			void WfForEachStatement::Accept(WfVirtualCseStatement::IVisitor* visitor)
-			{
-				visitor->Visit(this);
-			}
-
-			void WfSwitchStatement::Accept(WfVirtualCseStatement::IVisitor* visitor)
-			{
-				visitor->Visit(this);
-			}
-
-			void WfCoProviderStatement::Accept(WfVirtualCseStatement::IVisitor* visitor)
-			{
-				visitor->Visit(this);
-			}
-
-			void WfCoroutineStatement::Accept(WfStatement::IVisitor* visitor)
-			{
-				visitor->Visit(this);
-			}
-
-			void WfCoPauseStatement::Accept(WfCoroutineStatement::IVisitor* visitor)
-			{
-				visitor->Visit(this);
-			}
-
-			void WfCoOperatorStatement::Accept(WfCoroutineStatement::IVisitor* visitor)
-			{
-				visitor->Visit(this);
-			}
-
-			void WfStateMachineStatement::Accept(WfStatement::IVisitor* visitor)
-			{
-				visitor->Visit(this);
-			}
-
-			void WfStateSwitchStatement::Accept(WfStateMachineStatement::IVisitor* visitor)
-			{
-				visitor->Visit(this);
-			}
-
-			void WfStateInvokeStatement::Accept(WfStateMachineStatement::IVisitor* visitor)
-			{
-				visitor->Visit(this);
-			}
-
-			void WfThisExpression::Accept(WfExpression::IVisitor* visitor)
-			{
-				visitor->Visit(this);
-			}
-
-			void WfTopQualifiedExpression::Accept(WfExpression::IVisitor* visitor)
-			{
-				visitor->Visit(this);
-			}
-
-			void WfReferenceExpression::Accept(WfExpression::IVisitor* visitor)
-			{
-				visitor->Visit(this);
-			}
-
-			void WfOrderedNameExpression::Accept(WfExpression::IVisitor* visitor)
-			{
-				visitor->Visit(this);
-			}
-
-			void WfOrderedLambdaExpression::Accept(WfExpression::IVisitor* visitor)
-			{
-				visitor->Visit(this);
-			}
-
-			void WfMemberExpression::Accept(WfExpression::IVisitor* visitor)
-			{
-				visitor->Visit(this);
-			}
-
-			void WfChildExpression::Accept(WfExpression::IVisitor* visitor)
-			{
-				visitor->Visit(this);
-			}
-
-			void WfLiteralExpression::Accept(WfExpression::IVisitor* visitor)
-			{
-				visitor->Visit(this);
-			}
-
-			void WfFloatingExpression::Accept(WfExpression::IVisitor* visitor)
-			{
-				visitor->Visit(this);
-			}
-
-			void WfIntegerExpression::Accept(WfExpression::IVisitor* visitor)
-			{
-				visitor->Visit(this);
-			}
-
-			void WfStringExpression::Accept(WfExpression::IVisitor* visitor)
-			{
-				visitor->Visit(this);
-			}
-
-			void WfUnaryExpression::Accept(WfExpression::IVisitor* visitor)
-			{
-				visitor->Visit(this);
-			}
-
-			void WfBinaryExpression::Accept(WfExpression::IVisitor* visitor)
-			{
-				visitor->Visit(this);
-			}
-
-			void WfLetExpression::Accept(WfExpression::IVisitor* visitor)
-			{
-				visitor->Visit(this);
-			}
-
-			void WfIfExpression::Accept(WfExpression::IVisitor* visitor)
-			{
-				visitor->Visit(this);
-			}
-
-			void WfRangeExpression::Accept(WfExpression::IVisitor* visitor)
-			{
-				visitor->Visit(this);
-			}
-
-			void WfSetTestingExpression::Accept(WfExpression::IVisitor* visitor)
-			{
-				visitor->Visit(this);
-			}
-
-			void WfConstructorExpression::Accept(WfExpression::IVisitor* visitor)
-			{
-				visitor->Visit(this);
-			}
-
-			void WfInferExpression::Accept(WfExpression::IVisitor* visitor)
-			{
-				visitor->Visit(this);
-			}
-
-			void WfTypeCastingExpression::Accept(WfExpression::IVisitor* visitor)
-			{
-				visitor->Visit(this);
-			}
-
-			void WfTypeTestingExpression::Accept(WfExpression::IVisitor* visitor)
-			{
-				visitor->Visit(this);
-			}
-
-			void WfTypeOfTypeExpression::Accept(WfExpression::IVisitor* visitor)
-			{
-				visitor->Visit(this);
-			}
-
-			void WfTypeOfExpressionExpression::Accept(WfExpression::IVisitor* visitor)
-			{
-				visitor->Visit(this);
-			}
-
-			void WfAttachEventExpression::Accept(WfExpression::IVisitor* visitor)
-			{
-				visitor->Visit(this);
-			}
-
-			void WfDetachEventExpression::Accept(WfExpression::IVisitor* visitor)
-			{
-				visitor->Visit(this);
-			}
-
-			void WfObserveExpression::Accept(WfExpression::IVisitor* visitor)
-			{
-				visitor->Visit(this);
-			}
-
-			void WfCallExpression::Accept(WfExpression::IVisitor* visitor)
-			{
-				visitor->Visit(this);
-			}
-
-			void WfFunctionExpression::Accept(WfExpression::IVisitor* visitor)
-			{
-				visitor->Visit(this);
-			}
-
-			void WfNewClassExpression::Accept(WfExpression::IVisitor* visitor)
-			{
-				visitor->Visit(this);
-			}
-
-			void WfNewInterfaceExpression::Accept(WfExpression::IVisitor* visitor)
-			{
-				visitor->Visit(this);
-			}
-
-			void WfVirtualCfeExpression::Accept(WfExpression::IVisitor* visitor)
-			{
-				visitor->Visit(this);
-			}
-
-			void WfFormatExpression::Accept(WfVirtualCfeExpression::IVisitor* visitor)
-			{
-				visitor->Visit(this);
-			}
-
-			void WfVirtualCseExpression::Accept(WfExpression::IVisitor* visitor)
-			{
-				visitor->Visit(this);
-			}
-
-			void WfBindExpression::Accept(WfVirtualCseExpression::IVisitor* visitor)
-			{
-				visitor->Visit(this);
-			}
-
-			void WfNewCoroutineExpression::Accept(WfVirtualCseExpression::IVisitor* visitor)
-			{
-				visitor->Visit(this);
-			}
-
-			void WfMixinCastExpression::Accept(WfVirtualCseExpression::IVisitor* visitor)
-			{
-				visitor->Visit(this);
-			}
-
-			void WfExpectedTypeCastExpression::Accept(WfVirtualCseExpression::IVisitor* visitor)
-			{
-				visitor->Visit(this);
-			}
-
-			void WfCoOperatorExpression::Accept(WfVirtualCseExpression::IVisitor* visitor)
-			{
-				visitor->Visit(this);
-			}
-
-			void WfModuleUsingNameFragment::Accept(WfModuleUsingFragment::IVisitor* visitor)
-			{
-				visitor->Visit(this);
-			}
-
-			void WfModuleUsingWildCardFragment::Accept(WfModuleUsingFragment::IVisitor* visitor)
-			{
-				visitor->Visit(this);
-			}
-		}
+	void WfPredefinedType::Accept(WfType::IVisitor* visitor)
+	{
+		visitor->Visit(this);
+	}
+
+	void WfTopQualifiedType::Accept(WfType::IVisitor* visitor)
+	{
+		visitor->Visit(this);
+	}
+
+	void WfReferenceType::Accept(WfType::IVisitor* visitor)
+	{
+		visitor->Visit(this);
+	}
+
+	void WfRawPointerType::Accept(WfType::IVisitor* visitor)
+	{
+		visitor->Visit(this);
+	}
+
+	void WfSharedPointerType::Accept(WfType::IVisitor* visitor)
+	{
+		visitor->Visit(this);
+	}
+
+	void WfNullableType::Accept(WfType::IVisitor* visitor)
+	{
+		visitor->Visit(this);
+	}
+
+	void WfEnumerableType::Accept(WfType::IVisitor* visitor)
+	{
+		visitor->Visit(this);
+	}
+
+	void WfMapType::Accept(WfType::IVisitor* visitor)
+	{
+		visitor->Visit(this);
+	}
+
+	void WfObservableListType::Accept(WfType::IVisitor* visitor)
+	{
+		visitor->Visit(this);
+	}
+
+	void WfFunctionType::Accept(WfType::IVisitor* visitor)
+	{
+		visitor->Visit(this);
+	}
+
+	void WfChildType::Accept(WfType::IVisitor* visitor)
+	{
+		visitor->Visit(this);
+	}
+
+	void WfNamespaceDeclaration::Accept(WfDeclaration::IVisitor* visitor)
+	{
+		visitor->Visit(this);
+	}
+
+	void WfFunctionDeclaration::Accept(WfDeclaration::IVisitor* visitor)
+	{
+		visitor->Visit(this);
+	}
+
+	void WfVariableDeclaration::Accept(WfDeclaration::IVisitor* visitor)
+	{
+		visitor->Visit(this);
+	}
+
+	void WfEventDeclaration::Accept(WfDeclaration::IVisitor* visitor)
+	{
+		visitor->Visit(this);
+	}
+
+	void WfPropertyDeclaration::Accept(WfDeclaration::IVisitor* visitor)
+	{
+		visitor->Visit(this);
+	}
+
+	void WfConstructorDeclaration::Accept(WfDeclaration::IVisitor* visitor)
+	{
+		visitor->Visit(this);
+	}
+
+	void WfDestructorDeclaration::Accept(WfDeclaration::IVisitor* visitor)
+	{
+		visitor->Visit(this);
+	}
+
+	void WfClassDeclaration::Accept(WfDeclaration::IVisitor* visitor)
+	{
+		visitor->Visit(this);
+	}
+
+	void WfEnumDeclaration::Accept(WfDeclaration::IVisitor* visitor)
+	{
+		visitor->Visit(this);
+	}
+
+	void WfStructDeclaration::Accept(WfDeclaration::IVisitor* visitor)
+	{
+		visitor->Visit(this);
+	}
+
+	void WfVirtualCfeDeclaration::Accept(WfDeclaration::IVisitor* visitor)
+	{
+		visitor->Visit(this);
+	}
+
+	void WfAutoPropertyDeclaration::Accept(WfVirtualCfeDeclaration::IVisitor* visitor)
+	{
+		visitor->Visit(this);
+	}
+
+	void WfCastResultInterfaceDeclaration::Accept(WfVirtualCfeDeclaration::IVisitor* visitor)
+	{
+		visitor->Visit(this);
+	}
+
+	void WfVirtualCseDeclaration::Accept(WfDeclaration::IVisitor* visitor)
+	{
+		visitor->Visit(this);
+	}
+
+	void WfStateMachineDeclaration::Accept(WfVirtualCseDeclaration::IVisitor* visitor)
+	{
+		visitor->Visit(this);
+	}
+
+	void WfBreakStatement::Accept(WfStatement::IVisitor* visitor)
+	{
+		visitor->Visit(this);
+	}
+
+	void WfContinueStatement::Accept(WfStatement::IVisitor* visitor)
+	{
+		visitor->Visit(this);
+	}
+
+	void WfReturnStatement::Accept(WfStatement::IVisitor* visitor)
+	{
+		visitor->Visit(this);
+	}
+
+	void WfDeleteStatement::Accept(WfStatement::IVisitor* visitor)
+	{
+		visitor->Visit(this);
+	}
+
+	void WfRaiseExceptionStatement::Accept(WfStatement::IVisitor* visitor)
+	{
+		visitor->Visit(this);
+	}
+
+	void WfIfStatement::Accept(WfStatement::IVisitor* visitor)
+	{
+		visitor->Visit(this);
+	}
+
+	void WfWhileStatement::Accept(WfStatement::IVisitor* visitor)
+	{
+		visitor->Visit(this);
+	}
+
+	void WfTryStatement::Accept(WfStatement::IVisitor* visitor)
+	{
+		visitor->Visit(this);
+	}
+
+	void WfBlockStatement::Accept(WfStatement::IVisitor* visitor)
+	{
+		visitor->Visit(this);
+	}
+
+	void WfGotoStatement::Accept(WfStatement::IVisitor* visitor)
+	{
+		visitor->Visit(this);
+	}
+
+	void WfVariableStatement::Accept(WfStatement::IVisitor* visitor)
+	{
+		visitor->Visit(this);
+	}
+
+	void WfExpressionStatement::Accept(WfStatement::IVisitor* visitor)
+	{
+		visitor->Visit(this);
+	}
+
+	void WfVirtualCseStatement::Accept(WfStatement::IVisitor* visitor)
+	{
+		visitor->Visit(this);
+	}
+
+	void WfForEachStatement::Accept(WfVirtualCseStatement::IVisitor* visitor)
+	{
+		visitor->Visit(this);
+	}
+
+	void WfSwitchStatement::Accept(WfVirtualCseStatement::IVisitor* visitor)
+	{
+		visitor->Visit(this);
+	}
+
+	void WfCoProviderStatement::Accept(WfVirtualCseStatement::IVisitor* visitor)
+	{
+		visitor->Visit(this);
+	}
+
+	void WfCoroutineStatement::Accept(WfStatement::IVisitor* visitor)
+	{
+		visitor->Visit(this);
+	}
+
+	void WfCoPauseStatement::Accept(WfCoroutineStatement::IVisitor* visitor)
+	{
+		visitor->Visit(this);
+	}
+
+	void WfCoOperatorStatement::Accept(WfCoroutineStatement::IVisitor* visitor)
+	{
+		visitor->Visit(this);
+	}
+
+	void WfStateMachineStatement::Accept(WfStatement::IVisitor* visitor)
+	{
+		visitor->Visit(this);
+	}
+
+	void WfStateSwitchStatement::Accept(WfStateMachineStatement::IVisitor* visitor)
+	{
+		visitor->Visit(this);
+	}
+
+	void WfStateInvokeStatement::Accept(WfStateMachineStatement::IVisitor* visitor)
+	{
+		visitor->Visit(this);
+	}
+
+	void WfThisExpression::Accept(WfExpression::IVisitor* visitor)
+	{
+		visitor->Visit(this);
+	}
+
+	void WfTopQualifiedExpression::Accept(WfExpression::IVisitor* visitor)
+	{
+		visitor->Visit(this);
+	}
+
+	void WfReferenceExpression::Accept(WfExpression::IVisitor* visitor)
+	{
+		visitor->Visit(this);
+	}
+
+	void WfOrderedNameExpression::Accept(WfExpression::IVisitor* visitor)
+	{
+		visitor->Visit(this);
+	}
+
+	void WfOrderedLambdaExpression::Accept(WfExpression::IVisitor* visitor)
+	{
+		visitor->Visit(this);
+	}
+
+	void WfMemberExpression::Accept(WfExpression::IVisitor* visitor)
+	{
+		visitor->Visit(this);
+	}
+
+	void WfChildExpression::Accept(WfExpression::IVisitor* visitor)
+	{
+		visitor->Visit(this);
+	}
+
+	void WfLiteralExpression::Accept(WfExpression::IVisitor* visitor)
+	{
+		visitor->Visit(this);
+	}
+
+	void WfFloatingExpression::Accept(WfExpression::IVisitor* visitor)
+	{
+		visitor->Visit(this);
+	}
+
+	void WfIntegerExpression::Accept(WfExpression::IVisitor* visitor)
+	{
+		visitor->Visit(this);
+	}
+
+	void WfStringExpression::Accept(WfExpression::IVisitor* visitor)
+	{
+		visitor->Visit(this);
+	}
+
+	void WfUnaryExpression::Accept(WfExpression::IVisitor* visitor)
+	{
+		visitor->Visit(this);
+	}
+
+	void WfBinaryExpression::Accept(WfExpression::IVisitor* visitor)
+	{
+		visitor->Visit(this);
+	}
+
+	void WfLetExpression::Accept(WfExpression::IVisitor* visitor)
+	{
+		visitor->Visit(this);
+	}
+
+	void WfIfExpression::Accept(WfExpression::IVisitor* visitor)
+	{
+		visitor->Visit(this);
+	}
+
+	void WfRangeExpression::Accept(WfExpression::IVisitor* visitor)
+	{
+		visitor->Visit(this);
+	}
+
+	void WfSetTestingExpression::Accept(WfExpression::IVisitor* visitor)
+	{
+		visitor->Visit(this);
+	}
+
+	void WfConstructorExpression::Accept(WfExpression::IVisitor* visitor)
+	{
+		visitor->Visit(this);
+	}
+
+	void WfInferExpression::Accept(WfExpression::IVisitor* visitor)
+	{
+		visitor->Visit(this);
+	}
+
+	void WfTypeCastingExpression::Accept(WfExpression::IVisitor* visitor)
+	{
+		visitor->Visit(this);
+	}
+
+	void WfTypeTestingExpression::Accept(WfExpression::IVisitor* visitor)
+	{
+		visitor->Visit(this);
+	}
+
+	void WfTypeOfTypeExpression::Accept(WfExpression::IVisitor* visitor)
+	{
+		visitor->Visit(this);
+	}
+
+	void WfTypeOfExpressionExpression::Accept(WfExpression::IVisitor* visitor)
+	{
+		visitor->Visit(this);
+	}
+
+	void WfAttachEventExpression::Accept(WfExpression::IVisitor* visitor)
+	{
+		visitor->Visit(this);
+	}
+
+	void WfDetachEventExpression::Accept(WfExpression::IVisitor* visitor)
+	{
+		visitor->Visit(this);
+	}
+
+	void WfObserveExpression::Accept(WfExpression::IVisitor* visitor)
+	{
+		visitor->Visit(this);
+	}
+
+	void WfCallExpression::Accept(WfExpression::IVisitor* visitor)
+	{
+		visitor->Visit(this);
+	}
+
+	void WfFunctionExpression::Accept(WfExpression::IVisitor* visitor)
+	{
+		visitor->Visit(this);
+	}
+
+	void WfNewClassExpression::Accept(WfExpression::IVisitor* visitor)
+	{
+		visitor->Visit(this);
+	}
+
+	void WfNewInterfaceExpression::Accept(WfExpression::IVisitor* visitor)
+	{
+		visitor->Visit(this);
+	}
+
+	void WfVirtualCfeExpression::Accept(WfExpression::IVisitor* visitor)
+	{
+		visitor->Visit(this);
+	}
+
+	void WfFormatExpression::Accept(WfVirtualCfeExpression::IVisitor* visitor)
+	{
+		visitor->Visit(this);
+	}
+
+	void WfVirtualCseExpression::Accept(WfExpression::IVisitor* visitor)
+	{
+		visitor->Visit(this);
+	}
+
+	void WfBindExpression::Accept(WfVirtualCseExpression::IVisitor* visitor)
+	{
+		visitor->Visit(this);
+	}
+
+	void WfNewCoroutineExpression::Accept(WfVirtualCseExpression::IVisitor* visitor)
+	{
+		visitor->Visit(this);
+	}
+
+	void WfMixinCastExpression::Accept(WfVirtualCseExpression::IVisitor* visitor)
+	{
+		visitor->Visit(this);
+	}
+
+	void WfExpectedTypeCastExpression::Accept(WfVirtualCseExpression::IVisitor* visitor)
+	{
+		visitor->Visit(this);
+	}
+
+	void WfCoOperatorExpression::Accept(WfVirtualCseExpression::IVisitor* visitor)
+	{
+		visitor->Visit(this);
+	}
+
+	void WfModuleUsingNameFragment::Accept(WfModuleUsingFragment::IVisitor* visitor)
+	{
+		visitor->Visit(this);
+	}
+
+	void WfModuleUsingWildCardFragment::Accept(WfModuleUsingFragment::IVisitor* visitor)
+	{
+		visitor->Visit(this);
 	}
 }
-namespace vl
+namespace vl::reflection::description
 {
-	namespace reflection
-	{
-		namespace description
-		{
 #ifndef VCZH_DEBUG_NO_REFLECTION
 
-			IMPL_TYPE_INFO_RENAME(vl::glr::workflow::WfType, system::workflow::WfType)
-			IMPL_TYPE_INFO_RENAME(vl::glr::workflow::WfType::IVisitor, system::workflow::WfType::IVisitor)
-			IMPL_TYPE_INFO_RENAME(vl::glr::workflow::WfExpression, system::workflow::WfExpression)
-			IMPL_TYPE_INFO_RENAME(vl::glr::workflow::WfExpression::IVisitor, system::workflow::WfExpression::IVisitor)
-			IMPL_TYPE_INFO_RENAME(vl::glr::workflow::WfStatement, system::workflow::WfStatement)
-			IMPL_TYPE_INFO_RENAME(vl::glr::workflow::WfStatement::IVisitor, system::workflow::WfStatement::IVisitor)
-			IMPL_TYPE_INFO_RENAME(vl::glr::workflow::WfAttribute, system::workflow::WfAttribute)
-			IMPL_TYPE_INFO_RENAME(vl::glr::workflow::WfDeclaration, system::workflow::WfDeclaration)
-			IMPL_TYPE_INFO_RENAME(vl::glr::workflow::WfDeclaration::IVisitor, system::workflow::WfDeclaration::IVisitor)
-			IMPL_TYPE_INFO_RENAME(vl::glr::workflow::WfFunctionKind, system::workflow::WfFunctionKind)
-			IMPL_TYPE_INFO_RENAME(vl::glr::workflow::WfPredefinedTypeName, system::workflow::WfPredefinedTypeName)
-			IMPL_TYPE_INFO_RENAME(vl::glr::workflow::WfPredefinedType, system::workflow::WfPredefinedType)
-			IMPL_TYPE_INFO_RENAME(vl::glr::workflow::WfTopQualifiedType, system::workflow::WfTopQualifiedType)
-			IMPL_TYPE_INFO_RENAME(vl::glr::workflow::WfReferenceType, system::workflow::WfReferenceType)
-			IMPL_TYPE_INFO_RENAME(vl::glr::workflow::WfRawPointerType, system::workflow::WfRawPointerType)
-			IMPL_TYPE_INFO_RENAME(vl::glr::workflow::WfSharedPointerType, system::workflow::WfSharedPointerType)
-			IMPL_TYPE_INFO_RENAME(vl::glr::workflow::WfNullableType, system::workflow::WfNullableType)
-			IMPL_TYPE_INFO_RENAME(vl::glr::workflow::WfEnumerableType, system::workflow::WfEnumerableType)
-			IMPL_TYPE_INFO_RENAME(vl::glr::workflow::WfMapWritability, system::workflow::WfMapWritability)
-			IMPL_TYPE_INFO_RENAME(vl::glr::workflow::WfMapType, system::workflow::WfMapType)
-			IMPL_TYPE_INFO_RENAME(vl::glr::workflow::WfObservableListType, system::workflow::WfObservableListType)
-			IMPL_TYPE_INFO_RENAME(vl::glr::workflow::WfFunctionType, system::workflow::WfFunctionType)
-			IMPL_TYPE_INFO_RENAME(vl::glr::workflow::WfChildType, system::workflow::WfChildType)
-			IMPL_TYPE_INFO_RENAME(vl::glr::workflow::WfNamespaceDeclaration, system::workflow::WfNamespaceDeclaration)
-			IMPL_TYPE_INFO_RENAME(vl::glr::workflow::WfFunctionArgument, system::workflow::WfFunctionArgument)
-			IMPL_TYPE_INFO_RENAME(vl::glr::workflow::WfFunctionAnonymity, system::workflow::WfFunctionAnonymity)
-			IMPL_TYPE_INFO_RENAME(vl::glr::workflow::WfFunctionDeclaration, system::workflow::WfFunctionDeclaration)
-			IMPL_TYPE_INFO_RENAME(vl::glr::workflow::WfVariableDeclaration, system::workflow::WfVariableDeclaration)
-			IMPL_TYPE_INFO_RENAME(vl::glr::workflow::WfEventDeclaration, system::workflow::WfEventDeclaration)
-			IMPL_TYPE_INFO_RENAME(vl::glr::workflow::WfPropertyDeclaration, system::workflow::WfPropertyDeclaration)
-			IMPL_TYPE_INFO_RENAME(vl::glr::workflow::WfClassKind, system::workflow::WfClassKind)
-			IMPL_TYPE_INFO_RENAME(vl::glr::workflow::WfConstructorType, system::workflow::WfConstructorType)
-			IMPL_TYPE_INFO_RENAME(vl::glr::workflow::WfBaseConstructorCall, system::workflow::WfBaseConstructorCall)
-			IMPL_TYPE_INFO_RENAME(vl::glr::workflow::WfConstructorDeclaration, system::workflow::WfConstructorDeclaration)
-			IMPL_TYPE_INFO_RENAME(vl::glr::workflow::WfDestructorDeclaration, system::workflow::WfDestructorDeclaration)
-			IMPL_TYPE_INFO_RENAME(vl::glr::workflow::WfClassDeclaration, system::workflow::WfClassDeclaration)
-			IMPL_TYPE_INFO_RENAME(vl::glr::workflow::WfEnumKind, system::workflow::WfEnumKind)
-			IMPL_TYPE_INFO_RENAME(vl::glr::workflow::WfEnumItemKind, system::workflow::WfEnumItemKind)
-			IMPL_TYPE_INFO_RENAME(vl::glr::workflow::WfEnumItemIntersection, system::workflow::WfEnumItemIntersection)
-			IMPL_TYPE_INFO_RENAME(vl::glr::workflow::WfEnumItem, system::workflow::WfEnumItem)
-			IMPL_TYPE_INFO_RENAME(vl::glr::workflow::WfEnumDeclaration, system::workflow::WfEnumDeclaration)
-			IMPL_TYPE_INFO_RENAME(vl::glr::workflow::WfStructMember, system::workflow::WfStructMember)
-			IMPL_TYPE_INFO_RENAME(vl::glr::workflow::WfStructDeclaration, system::workflow::WfStructDeclaration)
-			IMPL_TYPE_INFO_RENAME(vl::glr::workflow::WfVirtualCfeDeclaration, system::workflow::WfVirtualCfeDeclaration)
-			IMPL_TYPE_INFO_RENAME(vl::glr::workflow::WfVirtualCfeDeclaration::IVisitor, system::workflow::WfVirtualCfeDeclaration::IVisitor)
-			IMPL_TYPE_INFO_RENAME(vl::glr::workflow::WfAPConst, system::workflow::WfAPConst)
-			IMPL_TYPE_INFO_RENAME(vl::glr::workflow::WfAPObserve, system::workflow::WfAPObserve)
-			IMPL_TYPE_INFO_RENAME(vl::glr::workflow::WfAutoPropertyDeclaration, system::workflow::WfAutoPropertyDeclaration)
-			IMPL_TYPE_INFO_RENAME(vl::glr::workflow::WfCastResultInterfaceDeclaration, system::workflow::WfCastResultInterfaceDeclaration)
-			IMPL_TYPE_INFO_RENAME(vl::glr::workflow::WfVirtualCseDeclaration, system::workflow::WfVirtualCseDeclaration)
-			IMPL_TYPE_INFO_RENAME(vl::glr::workflow::WfVirtualCseDeclaration::IVisitor, system::workflow::WfVirtualCseDeclaration::IVisitor)
-			IMPL_TYPE_INFO_RENAME(vl::glr::workflow::WfStateInput, system::workflow::WfStateInput)
-			IMPL_TYPE_INFO_RENAME(vl::glr::workflow::WfStateDeclaration, system::workflow::WfStateDeclaration)
-			IMPL_TYPE_INFO_RENAME(vl::glr::workflow::WfStateMachineDeclaration, system::workflow::WfStateMachineDeclaration)
-			IMPL_TYPE_INFO_RENAME(vl::glr::workflow::WfBreakStatement, system::workflow::WfBreakStatement)
-			IMPL_TYPE_INFO_RENAME(vl::glr::workflow::WfContinueStatement, system::workflow::WfContinueStatement)
-			IMPL_TYPE_INFO_RENAME(vl::glr::workflow::WfReturnStatement, system::workflow::WfReturnStatement)
-			IMPL_TYPE_INFO_RENAME(vl::glr::workflow::WfDeleteStatement, system::workflow::WfDeleteStatement)
-			IMPL_TYPE_INFO_RENAME(vl::glr::workflow::WfRaiseExceptionStatement, system::workflow::WfRaiseExceptionStatement)
-			IMPL_TYPE_INFO_RENAME(vl::glr::workflow::WfIfStatement, system::workflow::WfIfStatement)
-			IMPL_TYPE_INFO_RENAME(vl::glr::workflow::WfWhileStatement, system::workflow::WfWhileStatement)
-			IMPL_TYPE_INFO_RENAME(vl::glr::workflow::WfTryStatement, system::workflow::WfTryStatement)
-			IMPL_TYPE_INFO_RENAME(vl::glr::workflow::WfBlockStatement, system::workflow::WfBlockStatement)
-			IMPL_TYPE_INFO_RENAME(vl::glr::workflow::WfGotoStatement, system::workflow::WfGotoStatement)
-			IMPL_TYPE_INFO_RENAME(vl::glr::workflow::WfVariableStatement, system::workflow::WfVariableStatement)
-			IMPL_TYPE_INFO_RENAME(vl::glr::workflow::WfExpressionStatement, system::workflow::WfExpressionStatement)
-			IMPL_TYPE_INFO_RENAME(vl::glr::workflow::WfVirtualCseStatement, system::workflow::WfVirtualCseStatement)
-			IMPL_TYPE_INFO_RENAME(vl::glr::workflow::WfVirtualCseStatement::IVisitor, system::workflow::WfVirtualCseStatement::IVisitor)
-			IMPL_TYPE_INFO_RENAME(vl::glr::workflow::WfForEachDirection, system::workflow::WfForEachDirection)
-			IMPL_TYPE_INFO_RENAME(vl::glr::workflow::WfForEachStatement, system::workflow::WfForEachStatement)
-			IMPL_TYPE_INFO_RENAME(vl::glr::workflow::WfSwitchCase, system::workflow::WfSwitchCase)
-			IMPL_TYPE_INFO_RENAME(vl::glr::workflow::WfSwitchStatement, system::workflow::WfSwitchStatement)
-			IMPL_TYPE_INFO_RENAME(vl::glr::workflow::WfCoProviderStatement, system::workflow::WfCoProviderStatement)
-			IMPL_TYPE_INFO_RENAME(vl::glr::workflow::WfCoroutineStatement, system::workflow::WfCoroutineStatement)
-			IMPL_TYPE_INFO_RENAME(vl::glr::workflow::WfCoroutineStatement::IVisitor, system::workflow::WfCoroutineStatement::IVisitor)
-			IMPL_TYPE_INFO_RENAME(vl::glr::workflow::WfCoPauseStatement, system::workflow::WfCoPauseStatement)
-			IMPL_TYPE_INFO_RENAME(vl::glr::workflow::WfCoOperatorStatement, system::workflow::WfCoOperatorStatement)
-			IMPL_TYPE_INFO_RENAME(vl::glr::workflow::WfStateSwitchType, system::workflow::WfStateSwitchType)
-			IMPL_TYPE_INFO_RENAME(vl::glr::workflow::WfStateInvokeType, system::workflow::WfStateInvokeType)
-			IMPL_TYPE_INFO_RENAME(vl::glr::workflow::WfStateMachineStatement, system::workflow::WfStateMachineStatement)
-			IMPL_TYPE_INFO_RENAME(vl::glr::workflow::WfStateMachineStatement::IVisitor, system::workflow::WfStateMachineStatement::IVisitor)
-			IMPL_TYPE_INFO_RENAME(vl::glr::workflow::WfStateSwitchArgument, system::workflow::WfStateSwitchArgument)
-			IMPL_TYPE_INFO_RENAME(vl::glr::workflow::WfStateSwitchCase, system::workflow::WfStateSwitchCase)
-			IMPL_TYPE_INFO_RENAME(vl::glr::workflow::WfStateSwitchStatement, system::workflow::WfStateSwitchStatement)
-			IMPL_TYPE_INFO_RENAME(vl::glr::workflow::WfStateInvokeStatement, system::workflow::WfStateInvokeStatement)
-			IMPL_TYPE_INFO_RENAME(vl::glr::workflow::WfThisExpression, system::workflow::WfThisExpression)
-			IMPL_TYPE_INFO_RENAME(vl::glr::workflow::WfTopQualifiedExpression, system::workflow::WfTopQualifiedExpression)
-			IMPL_TYPE_INFO_RENAME(vl::glr::workflow::WfReferenceExpression, system::workflow::WfReferenceExpression)
-			IMPL_TYPE_INFO_RENAME(vl::glr::workflow::WfOrderedNameExpression, system::workflow::WfOrderedNameExpression)
-			IMPL_TYPE_INFO_RENAME(vl::glr::workflow::WfOrderedLambdaExpression, system::workflow::WfOrderedLambdaExpression)
-			IMPL_TYPE_INFO_RENAME(vl::glr::workflow::WfMemberExpression, system::workflow::WfMemberExpression)
-			IMPL_TYPE_INFO_RENAME(vl::glr::workflow::WfChildExpression, system::workflow::WfChildExpression)
-			IMPL_TYPE_INFO_RENAME(vl::glr::workflow::WfLiteralValue, system::workflow::WfLiteralValue)
-			IMPL_TYPE_INFO_RENAME(vl::glr::workflow::WfLiteralExpression, system::workflow::WfLiteralExpression)
-			IMPL_TYPE_INFO_RENAME(vl::glr::workflow::WfFloatingExpression, system::workflow::WfFloatingExpression)
-			IMPL_TYPE_INFO_RENAME(vl::glr::workflow::WfIntegerExpression, system::workflow::WfIntegerExpression)
-			IMPL_TYPE_INFO_RENAME(vl::glr::workflow::WfStringExpression, system::workflow::WfStringExpression)
-			IMPL_TYPE_INFO_RENAME(vl::glr::workflow::WfUnaryOperator, system::workflow::WfUnaryOperator)
-			IMPL_TYPE_INFO_RENAME(vl::glr::workflow::WfUnaryExpression, system::workflow::WfUnaryExpression)
-			IMPL_TYPE_INFO_RENAME(vl::glr::workflow::WfBinaryOperator, system::workflow::WfBinaryOperator)
-			IMPL_TYPE_INFO_RENAME(vl::glr::workflow::WfBinaryExpression, system::workflow::WfBinaryExpression)
-			IMPL_TYPE_INFO_RENAME(vl::glr::workflow::WfLetVariable, system::workflow::WfLetVariable)
-			IMPL_TYPE_INFO_RENAME(vl::glr::workflow::WfLetExpression, system::workflow::WfLetExpression)
-			IMPL_TYPE_INFO_RENAME(vl::glr::workflow::WfIfExpression, system::workflow::WfIfExpression)
-			IMPL_TYPE_INFO_RENAME(vl::glr::workflow::WfRangeBoundary, system::workflow::WfRangeBoundary)
-			IMPL_TYPE_INFO_RENAME(vl::glr::workflow::WfRangeExpression, system::workflow::WfRangeExpression)
-			IMPL_TYPE_INFO_RENAME(vl::glr::workflow::WfSetTesting, system::workflow::WfSetTesting)
-			IMPL_TYPE_INFO_RENAME(vl::glr::workflow::WfSetTestingExpression, system::workflow::WfSetTestingExpression)
-			IMPL_TYPE_INFO_RENAME(vl::glr::workflow::WfConstructorArgument, system::workflow::WfConstructorArgument)
-			IMPL_TYPE_INFO_RENAME(vl::glr::workflow::WfConstructorExpression, system::workflow::WfConstructorExpression)
-			IMPL_TYPE_INFO_RENAME(vl::glr::workflow::WfInferExpression, system::workflow::WfInferExpression)
-			IMPL_TYPE_INFO_RENAME(vl::glr::workflow::WfTypeCastingStrategy, system::workflow::WfTypeCastingStrategy)
-			IMPL_TYPE_INFO_RENAME(vl::glr::workflow::WfTypeCastingExpression, system::workflow::WfTypeCastingExpression)
-			IMPL_TYPE_INFO_RENAME(vl::glr::workflow::WfTypeTesting, system::workflow::WfTypeTesting)
-			IMPL_TYPE_INFO_RENAME(vl::glr::workflow::WfTypeTestingExpression, system::workflow::WfTypeTestingExpression)
-			IMPL_TYPE_INFO_RENAME(vl::glr::workflow::WfTypeOfTypeExpression, system::workflow::WfTypeOfTypeExpression)
-			IMPL_TYPE_INFO_RENAME(vl::glr::workflow::WfTypeOfExpressionExpression, system::workflow::WfTypeOfExpressionExpression)
-			IMPL_TYPE_INFO_RENAME(vl::glr::workflow::WfAttachEventExpression, system::workflow::WfAttachEventExpression)
-			IMPL_TYPE_INFO_RENAME(vl::glr::workflow::WfDetachEventExpression, system::workflow::WfDetachEventExpression)
-			IMPL_TYPE_INFO_RENAME(vl::glr::workflow::WfObserveType, system::workflow::WfObserveType)
-			IMPL_TYPE_INFO_RENAME(vl::glr::workflow::WfObserveExpression, system::workflow::WfObserveExpression)
-			IMPL_TYPE_INFO_RENAME(vl::glr::workflow::WfCallExpression, system::workflow::WfCallExpression)
-			IMPL_TYPE_INFO_RENAME(vl::glr::workflow::WfFunctionExpression, system::workflow::WfFunctionExpression)
-			IMPL_TYPE_INFO_RENAME(vl::glr::workflow::WfNewClassExpression, system::workflow::WfNewClassExpression)
-			IMPL_TYPE_INFO_RENAME(vl::glr::workflow::WfNewInterfaceExpression, system::workflow::WfNewInterfaceExpression)
-			IMPL_TYPE_INFO_RENAME(vl::glr::workflow::WfVirtualCfeExpression, system::workflow::WfVirtualCfeExpression)
-			IMPL_TYPE_INFO_RENAME(vl::glr::workflow::WfVirtualCfeExpression::IVisitor, system::workflow::WfVirtualCfeExpression::IVisitor)
-			IMPL_TYPE_INFO_RENAME(vl::glr::workflow::WfFormatExpression, system::workflow::WfFormatExpression)
-			IMPL_TYPE_INFO_RENAME(vl::glr::workflow::WfVirtualCseExpression, system::workflow::WfVirtualCseExpression)
-			IMPL_TYPE_INFO_RENAME(vl::glr::workflow::WfVirtualCseExpression::IVisitor, system::workflow::WfVirtualCseExpression::IVisitor)
-			IMPL_TYPE_INFO_RENAME(vl::glr::workflow::WfBindExpression, system::workflow::WfBindExpression)
-			IMPL_TYPE_INFO_RENAME(vl::glr::workflow::WfNewCoroutineExpression, system::workflow::WfNewCoroutineExpression)
-			IMPL_TYPE_INFO_RENAME(vl::glr::workflow::WfMixinCastExpression, system::workflow::WfMixinCastExpression)
-			IMPL_TYPE_INFO_RENAME(vl::glr::workflow::WfExpectedTypeCastExpression, system::workflow::WfExpectedTypeCastExpression)
-			IMPL_TYPE_INFO_RENAME(vl::glr::workflow::WfCoOperatorExpression, system::workflow::WfCoOperatorExpression)
-			IMPL_TYPE_INFO_RENAME(vl::glr::workflow::WfModuleUsingFragment, system::workflow::WfModuleUsingFragment)
-			IMPL_TYPE_INFO_RENAME(vl::glr::workflow::WfModuleUsingFragment::IVisitor, system::workflow::WfModuleUsingFragment::IVisitor)
-			IMPL_TYPE_INFO_RENAME(vl::glr::workflow::WfModuleUsingNameFragment, system::workflow::WfModuleUsingNameFragment)
-			IMPL_TYPE_INFO_RENAME(vl::glr::workflow::WfModuleUsingWildCardFragment, system::workflow::WfModuleUsingWildCardFragment)
-			IMPL_TYPE_INFO_RENAME(vl::glr::workflow::WfModuleUsingItem, system::workflow::WfModuleUsingItem)
-			IMPL_TYPE_INFO_RENAME(vl::glr::workflow::WfModuleUsingPath, system::workflow::WfModuleUsingPath)
-			IMPL_TYPE_INFO_RENAME(vl::glr::workflow::WfModuleType, system::workflow::WfModuleType)
-			IMPL_TYPE_INFO_RENAME(vl::glr::workflow::WfModule, system::workflow::WfModule)
+	IMPL_TYPE_INFO_RENAME(vl::glr::workflow::WfType, system::workflow::WfType)
+	IMPL_TYPE_INFO_RENAME(vl::glr::workflow::WfType::IVisitor, system::workflow::WfType::IVisitor)
+	IMPL_TYPE_INFO_RENAME(vl::glr::workflow::WfExpression, system::workflow::WfExpression)
+	IMPL_TYPE_INFO_RENAME(vl::glr::workflow::WfExpression::IVisitor, system::workflow::WfExpression::IVisitor)
+	IMPL_TYPE_INFO_RENAME(vl::glr::workflow::WfStatement, system::workflow::WfStatement)
+	IMPL_TYPE_INFO_RENAME(vl::glr::workflow::WfStatement::IVisitor, system::workflow::WfStatement::IVisitor)
+	IMPL_TYPE_INFO_RENAME(vl::glr::workflow::WfAttribute, system::workflow::WfAttribute)
+	IMPL_TYPE_INFO_RENAME(vl::glr::workflow::WfDeclaration, system::workflow::WfDeclaration)
+	IMPL_TYPE_INFO_RENAME(vl::glr::workflow::WfDeclaration::IVisitor, system::workflow::WfDeclaration::IVisitor)
+	IMPL_TYPE_INFO_RENAME(vl::glr::workflow::WfFunctionKind, system::workflow::WfFunctionKind)
+	IMPL_TYPE_INFO_RENAME(vl::glr::workflow::WfPredefinedTypeName, system::workflow::WfPredefinedTypeName)
+	IMPL_TYPE_INFO_RENAME(vl::glr::workflow::WfPredefinedType, system::workflow::WfPredefinedType)
+	IMPL_TYPE_INFO_RENAME(vl::glr::workflow::WfTopQualifiedType, system::workflow::WfTopQualifiedType)
+	IMPL_TYPE_INFO_RENAME(vl::glr::workflow::WfReferenceType, system::workflow::WfReferenceType)
+	IMPL_TYPE_INFO_RENAME(vl::glr::workflow::WfRawPointerType, system::workflow::WfRawPointerType)
+	IMPL_TYPE_INFO_RENAME(vl::glr::workflow::WfSharedPointerType, system::workflow::WfSharedPointerType)
+	IMPL_TYPE_INFO_RENAME(vl::glr::workflow::WfNullableType, system::workflow::WfNullableType)
+	IMPL_TYPE_INFO_RENAME(vl::glr::workflow::WfEnumerableType, system::workflow::WfEnumerableType)
+	IMPL_TYPE_INFO_RENAME(vl::glr::workflow::WfMapWritability, system::workflow::WfMapWritability)
+	IMPL_TYPE_INFO_RENAME(vl::glr::workflow::WfMapType, system::workflow::WfMapType)
+	IMPL_TYPE_INFO_RENAME(vl::glr::workflow::WfObservableListType, system::workflow::WfObservableListType)
+	IMPL_TYPE_INFO_RENAME(vl::glr::workflow::WfFunctionType, system::workflow::WfFunctionType)
+	IMPL_TYPE_INFO_RENAME(vl::glr::workflow::WfChildType, system::workflow::WfChildType)
+	IMPL_TYPE_INFO_RENAME(vl::glr::workflow::WfNamespaceDeclaration, system::workflow::WfNamespaceDeclaration)
+	IMPL_TYPE_INFO_RENAME(vl::glr::workflow::WfFunctionArgument, system::workflow::WfFunctionArgument)
+	IMPL_TYPE_INFO_RENAME(vl::glr::workflow::WfFunctionAnonymity, system::workflow::WfFunctionAnonymity)
+	IMPL_TYPE_INFO_RENAME(vl::glr::workflow::WfFunctionDeclaration, system::workflow::WfFunctionDeclaration)
+	IMPL_TYPE_INFO_RENAME(vl::glr::workflow::WfVariableDeclaration, system::workflow::WfVariableDeclaration)
+	IMPL_TYPE_INFO_RENAME(vl::glr::workflow::WfEventDeclaration, system::workflow::WfEventDeclaration)
+	IMPL_TYPE_INFO_RENAME(vl::glr::workflow::WfPropertyDeclaration, system::workflow::WfPropertyDeclaration)
+	IMPL_TYPE_INFO_RENAME(vl::glr::workflow::WfClassKind, system::workflow::WfClassKind)
+	IMPL_TYPE_INFO_RENAME(vl::glr::workflow::WfConstructorType, system::workflow::WfConstructorType)
+	IMPL_TYPE_INFO_RENAME(vl::glr::workflow::WfBaseConstructorCall, system::workflow::WfBaseConstructorCall)
+	IMPL_TYPE_INFO_RENAME(vl::glr::workflow::WfConstructorDeclaration, system::workflow::WfConstructorDeclaration)
+	IMPL_TYPE_INFO_RENAME(vl::glr::workflow::WfDestructorDeclaration, system::workflow::WfDestructorDeclaration)
+	IMPL_TYPE_INFO_RENAME(vl::glr::workflow::WfClassDeclaration, system::workflow::WfClassDeclaration)
+	IMPL_TYPE_INFO_RENAME(vl::glr::workflow::WfEnumKind, system::workflow::WfEnumKind)
+	IMPL_TYPE_INFO_RENAME(vl::glr::workflow::WfEnumItemKind, system::workflow::WfEnumItemKind)
+	IMPL_TYPE_INFO_RENAME(vl::glr::workflow::WfEnumItemIntersection, system::workflow::WfEnumItemIntersection)
+	IMPL_TYPE_INFO_RENAME(vl::glr::workflow::WfEnumItem, system::workflow::WfEnumItem)
+	IMPL_TYPE_INFO_RENAME(vl::glr::workflow::WfEnumDeclaration, system::workflow::WfEnumDeclaration)
+	IMPL_TYPE_INFO_RENAME(vl::glr::workflow::WfStructMember, system::workflow::WfStructMember)
+	IMPL_TYPE_INFO_RENAME(vl::glr::workflow::WfStructDeclaration, system::workflow::WfStructDeclaration)
+	IMPL_TYPE_INFO_RENAME(vl::glr::workflow::WfVirtualCfeDeclaration, system::workflow::WfVirtualCfeDeclaration)
+	IMPL_TYPE_INFO_RENAME(vl::glr::workflow::WfVirtualCfeDeclaration::IVisitor, system::workflow::WfVirtualCfeDeclaration::IVisitor)
+	IMPL_TYPE_INFO_RENAME(vl::glr::workflow::WfAPConst, system::workflow::WfAPConst)
+	IMPL_TYPE_INFO_RENAME(vl::glr::workflow::WfAPObserve, system::workflow::WfAPObserve)
+	IMPL_TYPE_INFO_RENAME(vl::glr::workflow::WfAutoPropertyDeclaration, system::workflow::WfAutoPropertyDeclaration)
+	IMPL_TYPE_INFO_RENAME(vl::glr::workflow::WfCastResultInterfaceDeclaration, system::workflow::WfCastResultInterfaceDeclaration)
+	IMPL_TYPE_INFO_RENAME(vl::glr::workflow::WfVirtualCseDeclaration, system::workflow::WfVirtualCseDeclaration)
+	IMPL_TYPE_INFO_RENAME(vl::glr::workflow::WfVirtualCseDeclaration::IVisitor, system::workflow::WfVirtualCseDeclaration::IVisitor)
+	IMPL_TYPE_INFO_RENAME(vl::glr::workflow::WfStateInput, system::workflow::WfStateInput)
+	IMPL_TYPE_INFO_RENAME(vl::glr::workflow::WfStateDeclaration, system::workflow::WfStateDeclaration)
+	IMPL_TYPE_INFO_RENAME(vl::glr::workflow::WfStateMachineDeclaration, system::workflow::WfStateMachineDeclaration)
+	IMPL_TYPE_INFO_RENAME(vl::glr::workflow::WfBreakStatement, system::workflow::WfBreakStatement)
+	IMPL_TYPE_INFO_RENAME(vl::glr::workflow::WfContinueStatement, system::workflow::WfContinueStatement)
+	IMPL_TYPE_INFO_RENAME(vl::glr::workflow::WfReturnStatement, system::workflow::WfReturnStatement)
+	IMPL_TYPE_INFO_RENAME(vl::glr::workflow::WfDeleteStatement, system::workflow::WfDeleteStatement)
+	IMPL_TYPE_INFO_RENAME(vl::glr::workflow::WfRaiseExceptionStatement, system::workflow::WfRaiseExceptionStatement)
+	IMPL_TYPE_INFO_RENAME(vl::glr::workflow::WfIfStatement, system::workflow::WfIfStatement)
+	IMPL_TYPE_INFO_RENAME(vl::glr::workflow::WfWhileStatement, system::workflow::WfWhileStatement)
+	IMPL_TYPE_INFO_RENAME(vl::glr::workflow::WfTryStatement, system::workflow::WfTryStatement)
+	IMPL_TYPE_INFO_RENAME(vl::glr::workflow::WfBlockStatement, system::workflow::WfBlockStatement)
+	IMPL_TYPE_INFO_RENAME(vl::glr::workflow::WfGotoStatement, system::workflow::WfGotoStatement)
+	IMPL_TYPE_INFO_RENAME(vl::glr::workflow::WfVariableStatement, system::workflow::WfVariableStatement)
+	IMPL_TYPE_INFO_RENAME(vl::glr::workflow::WfExpressionStatement, system::workflow::WfExpressionStatement)
+	IMPL_TYPE_INFO_RENAME(vl::glr::workflow::WfVirtualCseStatement, system::workflow::WfVirtualCseStatement)
+	IMPL_TYPE_INFO_RENAME(vl::glr::workflow::WfVirtualCseStatement::IVisitor, system::workflow::WfVirtualCseStatement::IVisitor)
+	IMPL_TYPE_INFO_RENAME(vl::glr::workflow::WfForEachDirection, system::workflow::WfForEachDirection)
+	IMPL_TYPE_INFO_RENAME(vl::glr::workflow::WfForEachStatement, system::workflow::WfForEachStatement)
+	IMPL_TYPE_INFO_RENAME(vl::glr::workflow::WfSwitchCase, system::workflow::WfSwitchCase)
+	IMPL_TYPE_INFO_RENAME(vl::glr::workflow::WfSwitchStatement, system::workflow::WfSwitchStatement)
+	IMPL_TYPE_INFO_RENAME(vl::glr::workflow::WfCoProviderStatement, system::workflow::WfCoProviderStatement)
+	IMPL_TYPE_INFO_RENAME(vl::glr::workflow::WfCoroutineStatement, system::workflow::WfCoroutineStatement)
+	IMPL_TYPE_INFO_RENAME(vl::glr::workflow::WfCoroutineStatement::IVisitor, system::workflow::WfCoroutineStatement::IVisitor)
+	IMPL_TYPE_INFO_RENAME(vl::glr::workflow::WfCoPauseStatement, system::workflow::WfCoPauseStatement)
+	IMPL_TYPE_INFO_RENAME(vl::glr::workflow::WfCoOperatorStatement, system::workflow::WfCoOperatorStatement)
+	IMPL_TYPE_INFO_RENAME(vl::glr::workflow::WfStateSwitchType, system::workflow::WfStateSwitchType)
+	IMPL_TYPE_INFO_RENAME(vl::glr::workflow::WfStateInvokeType, system::workflow::WfStateInvokeType)
+	IMPL_TYPE_INFO_RENAME(vl::glr::workflow::WfStateMachineStatement, system::workflow::WfStateMachineStatement)
+	IMPL_TYPE_INFO_RENAME(vl::glr::workflow::WfStateMachineStatement::IVisitor, system::workflow::WfStateMachineStatement::IVisitor)
+	IMPL_TYPE_INFO_RENAME(vl::glr::workflow::WfStateSwitchArgument, system::workflow::WfStateSwitchArgument)
+	IMPL_TYPE_INFO_RENAME(vl::glr::workflow::WfStateSwitchCase, system::workflow::WfStateSwitchCase)
+	IMPL_TYPE_INFO_RENAME(vl::glr::workflow::WfStateSwitchStatement, system::workflow::WfStateSwitchStatement)
+	IMPL_TYPE_INFO_RENAME(vl::glr::workflow::WfStateInvokeStatement, system::workflow::WfStateInvokeStatement)
+	IMPL_TYPE_INFO_RENAME(vl::glr::workflow::WfThisExpression, system::workflow::WfThisExpression)
+	IMPL_TYPE_INFO_RENAME(vl::glr::workflow::WfTopQualifiedExpression, system::workflow::WfTopQualifiedExpression)
+	IMPL_TYPE_INFO_RENAME(vl::glr::workflow::WfReferenceExpression, system::workflow::WfReferenceExpression)
+	IMPL_TYPE_INFO_RENAME(vl::glr::workflow::WfOrderedNameExpression, system::workflow::WfOrderedNameExpression)
+	IMPL_TYPE_INFO_RENAME(vl::glr::workflow::WfOrderedLambdaExpression, system::workflow::WfOrderedLambdaExpression)
+	IMPL_TYPE_INFO_RENAME(vl::glr::workflow::WfMemberExpression, system::workflow::WfMemberExpression)
+	IMPL_TYPE_INFO_RENAME(vl::glr::workflow::WfChildExpression, system::workflow::WfChildExpression)
+	IMPL_TYPE_INFO_RENAME(vl::glr::workflow::WfLiteralValue, system::workflow::WfLiteralValue)
+	IMPL_TYPE_INFO_RENAME(vl::glr::workflow::WfLiteralExpression, system::workflow::WfLiteralExpression)
+	IMPL_TYPE_INFO_RENAME(vl::glr::workflow::WfFloatingExpression, system::workflow::WfFloatingExpression)
+	IMPL_TYPE_INFO_RENAME(vl::glr::workflow::WfIntegerExpression, system::workflow::WfIntegerExpression)
+	IMPL_TYPE_INFO_RENAME(vl::glr::workflow::WfStringExpression, system::workflow::WfStringExpression)
+	IMPL_TYPE_INFO_RENAME(vl::glr::workflow::WfUnaryOperator, system::workflow::WfUnaryOperator)
+	IMPL_TYPE_INFO_RENAME(vl::glr::workflow::WfUnaryExpression, system::workflow::WfUnaryExpression)
+	IMPL_TYPE_INFO_RENAME(vl::glr::workflow::WfBinaryOperator, system::workflow::WfBinaryOperator)
+	IMPL_TYPE_INFO_RENAME(vl::glr::workflow::WfBinaryExpression, system::workflow::WfBinaryExpression)
+	IMPL_TYPE_INFO_RENAME(vl::glr::workflow::WfLetVariable, system::workflow::WfLetVariable)
+	IMPL_TYPE_INFO_RENAME(vl::glr::workflow::WfLetExpression, system::workflow::WfLetExpression)
+	IMPL_TYPE_INFO_RENAME(vl::glr::workflow::WfIfExpression, system::workflow::WfIfExpression)
+	IMPL_TYPE_INFO_RENAME(vl::glr::workflow::WfRangeBoundary, system::workflow::WfRangeBoundary)
+	IMPL_TYPE_INFO_RENAME(vl::glr::workflow::WfRangeExpression, system::workflow::WfRangeExpression)
+	IMPL_TYPE_INFO_RENAME(vl::glr::workflow::WfSetTesting, system::workflow::WfSetTesting)
+	IMPL_TYPE_INFO_RENAME(vl::glr::workflow::WfSetTestingExpression, system::workflow::WfSetTestingExpression)
+	IMPL_TYPE_INFO_RENAME(vl::glr::workflow::WfConstructorArgument, system::workflow::WfConstructorArgument)
+	IMPL_TYPE_INFO_RENAME(vl::glr::workflow::WfConstructorExpression, system::workflow::WfConstructorExpression)
+	IMPL_TYPE_INFO_RENAME(vl::glr::workflow::WfInferExpression, system::workflow::WfInferExpression)
+	IMPL_TYPE_INFO_RENAME(vl::glr::workflow::WfTypeCastingStrategy, system::workflow::WfTypeCastingStrategy)
+	IMPL_TYPE_INFO_RENAME(vl::glr::workflow::WfTypeCastingExpression, system::workflow::WfTypeCastingExpression)
+	IMPL_TYPE_INFO_RENAME(vl::glr::workflow::WfTypeTesting, system::workflow::WfTypeTesting)
+	IMPL_TYPE_INFO_RENAME(vl::glr::workflow::WfTypeTestingExpression, system::workflow::WfTypeTestingExpression)
+	IMPL_TYPE_INFO_RENAME(vl::glr::workflow::WfTypeOfTypeExpression, system::workflow::WfTypeOfTypeExpression)
+	IMPL_TYPE_INFO_RENAME(vl::glr::workflow::WfTypeOfExpressionExpression, system::workflow::WfTypeOfExpressionExpression)
+	IMPL_TYPE_INFO_RENAME(vl::glr::workflow::WfAttachEventExpression, system::workflow::WfAttachEventExpression)
+	IMPL_TYPE_INFO_RENAME(vl::glr::workflow::WfDetachEventExpression, system::workflow::WfDetachEventExpression)
+	IMPL_TYPE_INFO_RENAME(vl::glr::workflow::WfObserveType, system::workflow::WfObserveType)
+	IMPL_TYPE_INFO_RENAME(vl::glr::workflow::WfObserveExpression, system::workflow::WfObserveExpression)
+	IMPL_TYPE_INFO_RENAME(vl::glr::workflow::WfCallExpression, system::workflow::WfCallExpression)
+	IMPL_TYPE_INFO_RENAME(vl::glr::workflow::WfFunctionExpression, system::workflow::WfFunctionExpression)
+	IMPL_TYPE_INFO_RENAME(vl::glr::workflow::WfNewClassExpression, system::workflow::WfNewClassExpression)
+	IMPL_TYPE_INFO_RENAME(vl::glr::workflow::WfNewInterfaceExpression, system::workflow::WfNewInterfaceExpression)
+	IMPL_TYPE_INFO_RENAME(vl::glr::workflow::WfVirtualCfeExpression, system::workflow::WfVirtualCfeExpression)
+	IMPL_TYPE_INFO_RENAME(vl::glr::workflow::WfVirtualCfeExpression::IVisitor, system::workflow::WfVirtualCfeExpression::IVisitor)
+	IMPL_TYPE_INFO_RENAME(vl::glr::workflow::WfFormatExpression, system::workflow::WfFormatExpression)
+	IMPL_TYPE_INFO_RENAME(vl::glr::workflow::WfVirtualCseExpression, system::workflow::WfVirtualCseExpression)
+	IMPL_TYPE_INFO_RENAME(vl::glr::workflow::WfVirtualCseExpression::IVisitor, system::workflow::WfVirtualCseExpression::IVisitor)
+	IMPL_TYPE_INFO_RENAME(vl::glr::workflow::WfBindExpression, system::workflow::WfBindExpression)
+	IMPL_TYPE_INFO_RENAME(vl::glr::workflow::WfNewCoroutineExpression, system::workflow::WfNewCoroutineExpression)
+	IMPL_TYPE_INFO_RENAME(vl::glr::workflow::WfMixinCastExpression, system::workflow::WfMixinCastExpression)
+	IMPL_TYPE_INFO_RENAME(vl::glr::workflow::WfExpectedTypeCastExpression, system::workflow::WfExpectedTypeCastExpression)
+	IMPL_TYPE_INFO_RENAME(vl::glr::workflow::WfCoOperatorExpression, system::workflow::WfCoOperatorExpression)
+	IMPL_TYPE_INFO_RENAME(vl::glr::workflow::WfModuleUsingFragment, system::workflow::WfModuleUsingFragment)
+	IMPL_TYPE_INFO_RENAME(vl::glr::workflow::WfModuleUsingFragment::IVisitor, system::workflow::WfModuleUsingFragment::IVisitor)
+	IMPL_TYPE_INFO_RENAME(vl::glr::workflow::WfModuleUsingNameFragment, system::workflow::WfModuleUsingNameFragment)
+	IMPL_TYPE_INFO_RENAME(vl::glr::workflow::WfModuleUsingWildCardFragment, system::workflow::WfModuleUsingWildCardFragment)
+	IMPL_TYPE_INFO_RENAME(vl::glr::workflow::WfModuleUsingItem, system::workflow::WfModuleUsingItem)
+	IMPL_TYPE_INFO_RENAME(vl::glr::workflow::WfModuleUsingPath, system::workflow::WfModuleUsingPath)
+	IMPL_TYPE_INFO_RENAME(vl::glr::workflow::WfModuleType, system::workflow::WfModuleType)
+	IMPL_TYPE_INFO_RENAME(vl::glr::workflow::WfModule, system::workflow::WfModule)
 
 #ifdef VCZH_DESCRIPTABLEOBJECT_WITH_METADATA
 
-			BEGIN_CLASS_MEMBER(vl::glr::workflow::WfType)
-				CLASS_MEMBER_BASE(vl::glr::ParsingAstBase)
+	BEGIN_CLASS_MEMBER(vl::glr::workflow::WfType)
+		CLASS_MEMBER_BASE(vl::glr::ParsingAstBase)
 
-			END_CLASS_MEMBER(vl::glr::workflow::WfType)
+	END_CLASS_MEMBER(vl::glr::workflow::WfType)
 
-			BEGIN_CLASS_MEMBER(vl::glr::workflow::WfExpression)
-				CLASS_MEMBER_BASE(vl::glr::ParsingAstBase)
+	BEGIN_CLASS_MEMBER(vl::glr::workflow::WfExpression)
+		CLASS_MEMBER_BASE(vl::glr::ParsingAstBase)
 
-			END_CLASS_MEMBER(vl::glr::workflow::WfExpression)
+	END_CLASS_MEMBER(vl::glr::workflow::WfExpression)
 
-			BEGIN_CLASS_MEMBER(vl::glr::workflow::WfStatement)
-				CLASS_MEMBER_BASE(vl::glr::ParsingAstBase)
+	BEGIN_CLASS_MEMBER(vl::glr::workflow::WfStatement)
+		CLASS_MEMBER_BASE(vl::glr::ParsingAstBase)
 
-			END_CLASS_MEMBER(vl::glr::workflow::WfStatement)
+	END_CLASS_MEMBER(vl::glr::workflow::WfStatement)
 
-			BEGIN_CLASS_MEMBER(vl::glr::workflow::WfAttribute)
-				CLASS_MEMBER_BASE(vl::glr::ParsingAstBase)
+	BEGIN_CLASS_MEMBER(vl::glr::workflow::WfAttribute)
+		CLASS_MEMBER_BASE(vl::glr::ParsingAstBase)
 
-				CLASS_MEMBER_CONSTRUCTOR(vl::Ptr<vl::glr::workflow::WfAttribute>(), NO_PARAMETER)
+		CLASS_MEMBER_CONSTRUCTOR(vl::Ptr<vl::glr::workflow::WfAttribute>(), NO_PARAMETER)
 
-				CLASS_MEMBER_FIELD(category)
-				CLASS_MEMBER_FIELD(name)
-				CLASS_MEMBER_FIELD(value)
-			END_CLASS_MEMBER(vl::glr::workflow::WfAttribute)
+		CLASS_MEMBER_FIELD(category)
+		CLASS_MEMBER_FIELD(name)
+		CLASS_MEMBER_FIELD(value)
+	END_CLASS_MEMBER(vl::glr::workflow::WfAttribute)
 
-			BEGIN_CLASS_MEMBER(vl::glr::workflow::WfDeclaration)
-				CLASS_MEMBER_BASE(vl::glr::ParsingAstBase)
+	BEGIN_CLASS_MEMBER(vl::glr::workflow::WfDeclaration)
+		CLASS_MEMBER_BASE(vl::glr::ParsingAstBase)
 
-				CLASS_MEMBER_FIELD(attributes)
-				CLASS_MEMBER_FIELD(name)
-			END_CLASS_MEMBER(vl::glr::workflow::WfDeclaration)
+		CLASS_MEMBER_FIELD(attributes)
+		CLASS_MEMBER_FIELD(name)
+	END_CLASS_MEMBER(vl::glr::workflow::WfDeclaration)
 
-			BEGIN_ENUM_ITEM(vl::glr::workflow::WfFunctionKind)
-				ENUM_ITEM_NAMESPACE(vl::glr::workflow::WfFunctionKind)
-				ENUM_NAMESPACE_ITEM(Static)
-				ENUM_NAMESPACE_ITEM(Override)
-				ENUM_NAMESPACE_ITEM(Normal)
-			END_ENUM_ITEM(vl::glr::workflow::WfFunctionKind)
+	BEGIN_ENUM_ITEM(vl::glr::workflow::WfFunctionKind)
+		ENUM_ITEM_NAMESPACE(vl::glr::workflow::WfFunctionKind)
+		ENUM_NAMESPACE_ITEM(Static)
+		ENUM_NAMESPACE_ITEM(Override)
+		ENUM_NAMESPACE_ITEM(Normal)
+	END_ENUM_ITEM(vl::glr::workflow::WfFunctionKind)
 
-			BEGIN_ENUM_ITEM(vl::glr::workflow::WfPredefinedTypeName)
-				ENUM_ITEM_NAMESPACE(vl::glr::workflow::WfPredefinedTypeName)
-				ENUM_NAMESPACE_ITEM(Void)
-				ENUM_NAMESPACE_ITEM(Object)
-				ENUM_NAMESPACE_ITEM(Interface)
-				ENUM_NAMESPACE_ITEM(Int)
-				ENUM_NAMESPACE_ITEM(UInt)
-				ENUM_NAMESPACE_ITEM(Float)
-				ENUM_NAMESPACE_ITEM(Double)
-				ENUM_NAMESPACE_ITEM(String)
-				ENUM_NAMESPACE_ITEM(Char)
-				ENUM_NAMESPACE_ITEM(Bool)
-			END_ENUM_ITEM(vl::glr::workflow::WfPredefinedTypeName)
+	BEGIN_ENUM_ITEM(vl::glr::workflow::WfPredefinedTypeName)
+		ENUM_ITEM_NAMESPACE(vl::glr::workflow::WfPredefinedTypeName)
+		ENUM_NAMESPACE_ITEM(Void)
+		ENUM_NAMESPACE_ITEM(Object)
+		ENUM_NAMESPACE_ITEM(Interface)
+		ENUM_NAMESPACE_ITEM(Int)
+		ENUM_NAMESPACE_ITEM(UInt)
+		ENUM_NAMESPACE_ITEM(Float)
+		ENUM_NAMESPACE_ITEM(Double)
+		ENUM_NAMESPACE_ITEM(String)
+		ENUM_NAMESPACE_ITEM(Char)
+		ENUM_NAMESPACE_ITEM(Bool)
+	END_ENUM_ITEM(vl::glr::workflow::WfPredefinedTypeName)
 
-			BEGIN_CLASS_MEMBER(vl::glr::workflow::WfPredefinedType)
-				CLASS_MEMBER_BASE(vl::glr::workflow::WfType)
+	BEGIN_CLASS_MEMBER(vl::glr::workflow::WfPredefinedType)
+		CLASS_MEMBER_BASE(vl::glr::workflow::WfType)
 
-				CLASS_MEMBER_CONSTRUCTOR(vl::Ptr<vl::glr::workflow::WfPredefinedType>(), NO_PARAMETER)
+		CLASS_MEMBER_CONSTRUCTOR(vl::Ptr<vl::glr::workflow::WfPredefinedType>(), NO_PARAMETER)
 
-				CLASS_MEMBER_FIELD(name)
-			END_CLASS_MEMBER(vl::glr::workflow::WfPredefinedType)
+		CLASS_MEMBER_FIELD(name)
+	END_CLASS_MEMBER(vl::glr::workflow::WfPredefinedType)
 
-			BEGIN_CLASS_MEMBER(vl::glr::workflow::WfTopQualifiedType)
-				CLASS_MEMBER_BASE(vl::glr::workflow::WfType)
+	BEGIN_CLASS_MEMBER(vl::glr::workflow::WfTopQualifiedType)
+		CLASS_MEMBER_BASE(vl::glr::workflow::WfType)
 
-				CLASS_MEMBER_CONSTRUCTOR(vl::Ptr<vl::glr::workflow::WfTopQualifiedType>(), NO_PARAMETER)
+		CLASS_MEMBER_CONSTRUCTOR(vl::Ptr<vl::glr::workflow::WfTopQualifiedType>(), NO_PARAMETER)
 
-				CLASS_MEMBER_FIELD(name)
-			END_CLASS_MEMBER(vl::glr::workflow::WfTopQualifiedType)
+		CLASS_MEMBER_FIELD(name)
+	END_CLASS_MEMBER(vl::glr::workflow::WfTopQualifiedType)
 
-			BEGIN_CLASS_MEMBER(vl::glr::workflow::WfReferenceType)
-				CLASS_MEMBER_BASE(vl::glr::workflow::WfType)
+	BEGIN_CLASS_MEMBER(vl::glr::workflow::WfReferenceType)
+		CLASS_MEMBER_BASE(vl::glr::workflow::WfType)
 
-				CLASS_MEMBER_CONSTRUCTOR(vl::Ptr<vl::glr::workflow::WfReferenceType>(), NO_PARAMETER)
+		CLASS_MEMBER_CONSTRUCTOR(vl::Ptr<vl::glr::workflow::WfReferenceType>(), NO_PARAMETER)
 
-				CLASS_MEMBER_FIELD(name)
-			END_CLASS_MEMBER(vl::glr::workflow::WfReferenceType)
+		CLASS_MEMBER_FIELD(name)
+	END_CLASS_MEMBER(vl::glr::workflow::WfReferenceType)
 
-			BEGIN_CLASS_MEMBER(vl::glr::workflow::WfRawPointerType)
-				CLASS_MEMBER_BASE(vl::glr::workflow::WfType)
+	BEGIN_CLASS_MEMBER(vl::glr::workflow::WfRawPointerType)
+		CLASS_MEMBER_BASE(vl::glr::workflow::WfType)
 
-				CLASS_MEMBER_CONSTRUCTOR(vl::Ptr<vl::glr::workflow::WfRawPointerType>(), NO_PARAMETER)
+		CLASS_MEMBER_CONSTRUCTOR(vl::Ptr<vl::glr::workflow::WfRawPointerType>(), NO_PARAMETER)
 
-				CLASS_MEMBER_FIELD(element)
-			END_CLASS_MEMBER(vl::glr::workflow::WfRawPointerType)
+		CLASS_MEMBER_FIELD(element)
+	END_CLASS_MEMBER(vl::glr::workflow::WfRawPointerType)
 
-			BEGIN_CLASS_MEMBER(vl::glr::workflow::WfSharedPointerType)
-				CLASS_MEMBER_BASE(vl::glr::workflow::WfType)
+	BEGIN_CLASS_MEMBER(vl::glr::workflow::WfSharedPointerType)
+		CLASS_MEMBER_BASE(vl::glr::workflow::WfType)
 
-				CLASS_MEMBER_CONSTRUCTOR(vl::Ptr<vl::glr::workflow::WfSharedPointerType>(), NO_PARAMETER)
+		CLASS_MEMBER_CONSTRUCTOR(vl::Ptr<vl::glr::workflow::WfSharedPointerType>(), NO_PARAMETER)
 
-				CLASS_MEMBER_FIELD(element)
-			END_CLASS_MEMBER(vl::glr::workflow::WfSharedPointerType)
+		CLASS_MEMBER_FIELD(element)
+	END_CLASS_MEMBER(vl::glr::workflow::WfSharedPointerType)
 
-			BEGIN_CLASS_MEMBER(vl::glr::workflow::WfNullableType)
-				CLASS_MEMBER_BASE(vl::glr::workflow::WfType)
+	BEGIN_CLASS_MEMBER(vl::glr::workflow::WfNullableType)
+		CLASS_MEMBER_BASE(vl::glr::workflow::WfType)
 
-				CLASS_MEMBER_CONSTRUCTOR(vl::Ptr<vl::glr::workflow::WfNullableType>(), NO_PARAMETER)
+		CLASS_MEMBER_CONSTRUCTOR(vl::Ptr<vl::glr::workflow::WfNullableType>(), NO_PARAMETER)
 
-				CLASS_MEMBER_FIELD(element)
-			END_CLASS_MEMBER(vl::glr::workflow::WfNullableType)
+		CLASS_MEMBER_FIELD(element)
+	END_CLASS_MEMBER(vl::glr::workflow::WfNullableType)
 
-			BEGIN_CLASS_MEMBER(vl::glr::workflow::WfEnumerableType)
-				CLASS_MEMBER_BASE(vl::glr::workflow::WfType)
+	BEGIN_CLASS_MEMBER(vl::glr::workflow::WfEnumerableType)
+		CLASS_MEMBER_BASE(vl::glr::workflow::WfType)
 
-				CLASS_MEMBER_CONSTRUCTOR(vl::Ptr<vl::glr::workflow::WfEnumerableType>(), NO_PARAMETER)
+		CLASS_MEMBER_CONSTRUCTOR(vl::Ptr<vl::glr::workflow::WfEnumerableType>(), NO_PARAMETER)
 
-				CLASS_MEMBER_FIELD(element)
-			END_CLASS_MEMBER(vl::glr::workflow::WfEnumerableType)
+		CLASS_MEMBER_FIELD(element)
+	END_CLASS_MEMBER(vl::glr::workflow::WfEnumerableType)
 
-			BEGIN_ENUM_ITEM(vl::glr::workflow::WfMapWritability)
-				ENUM_ITEM_NAMESPACE(vl::glr::workflow::WfMapWritability)
-				ENUM_NAMESPACE_ITEM(Readonly)
-				ENUM_NAMESPACE_ITEM(Writable)
-			END_ENUM_ITEM(vl::glr::workflow::WfMapWritability)
+	BEGIN_ENUM_ITEM(vl::glr::workflow::WfMapWritability)
+		ENUM_ITEM_NAMESPACE(vl::glr::workflow::WfMapWritability)
+		ENUM_NAMESPACE_ITEM(Readonly)
+		ENUM_NAMESPACE_ITEM(Writable)
+	END_ENUM_ITEM(vl::glr::workflow::WfMapWritability)
 
-			BEGIN_CLASS_MEMBER(vl::glr::workflow::WfMapType)
-				CLASS_MEMBER_BASE(vl::glr::workflow::WfType)
+	BEGIN_CLASS_MEMBER(vl::glr::workflow::WfMapType)
+		CLASS_MEMBER_BASE(vl::glr::workflow::WfType)
 
-				CLASS_MEMBER_CONSTRUCTOR(vl::Ptr<vl::glr::workflow::WfMapType>(), NO_PARAMETER)
+		CLASS_MEMBER_CONSTRUCTOR(vl::Ptr<vl::glr::workflow::WfMapType>(), NO_PARAMETER)
 
-				CLASS_MEMBER_FIELD(writability)
-				CLASS_MEMBER_FIELD(key)
-				CLASS_MEMBER_FIELD(value)
-			END_CLASS_MEMBER(vl::glr::workflow::WfMapType)
+		CLASS_MEMBER_FIELD(writability)
+		CLASS_MEMBER_FIELD(key)
+		CLASS_MEMBER_FIELD(value)
+	END_CLASS_MEMBER(vl::glr::workflow::WfMapType)
 
-			BEGIN_CLASS_MEMBER(vl::glr::workflow::WfObservableListType)
-				CLASS_MEMBER_BASE(vl::glr::workflow::WfType)
+	BEGIN_CLASS_MEMBER(vl::glr::workflow::WfObservableListType)
+		CLASS_MEMBER_BASE(vl::glr::workflow::WfType)
 
-				CLASS_MEMBER_CONSTRUCTOR(vl::Ptr<vl::glr::workflow::WfObservableListType>(), NO_PARAMETER)
+		CLASS_MEMBER_CONSTRUCTOR(vl::Ptr<vl::glr::workflow::WfObservableListType>(), NO_PARAMETER)
 
-				CLASS_MEMBER_FIELD(element)
-			END_CLASS_MEMBER(vl::glr::workflow::WfObservableListType)
+		CLASS_MEMBER_FIELD(element)
+	END_CLASS_MEMBER(vl::glr::workflow::WfObservableListType)
 
-			BEGIN_CLASS_MEMBER(vl::glr::workflow::WfFunctionType)
-				CLASS_MEMBER_BASE(vl::glr::workflow::WfType)
+	BEGIN_CLASS_MEMBER(vl::glr::workflow::WfFunctionType)
+		CLASS_MEMBER_BASE(vl::glr::workflow::WfType)
 
-				CLASS_MEMBER_CONSTRUCTOR(vl::Ptr<vl::glr::workflow::WfFunctionType>(), NO_PARAMETER)
+		CLASS_MEMBER_CONSTRUCTOR(vl::Ptr<vl::glr::workflow::WfFunctionType>(), NO_PARAMETER)
 
-				CLASS_MEMBER_FIELD(result)
-				CLASS_MEMBER_FIELD(arguments)
-			END_CLASS_MEMBER(vl::glr::workflow::WfFunctionType)
+		CLASS_MEMBER_FIELD(result)
+		CLASS_MEMBER_FIELD(arguments)
+	END_CLASS_MEMBER(vl::glr::workflow::WfFunctionType)
 
-			BEGIN_CLASS_MEMBER(vl::glr::workflow::WfChildType)
-				CLASS_MEMBER_BASE(vl::glr::workflow::WfType)
+	BEGIN_CLASS_MEMBER(vl::glr::workflow::WfChildType)
+		CLASS_MEMBER_BASE(vl::glr::workflow::WfType)
 
-				CLASS_MEMBER_CONSTRUCTOR(vl::Ptr<vl::glr::workflow::WfChildType>(), NO_PARAMETER)
+		CLASS_MEMBER_CONSTRUCTOR(vl::Ptr<vl::glr::workflow::WfChildType>(), NO_PARAMETER)
 
-				CLASS_MEMBER_FIELD(parent)
-				CLASS_MEMBER_FIELD(name)
-			END_CLASS_MEMBER(vl::glr::workflow::WfChildType)
+		CLASS_MEMBER_FIELD(parent)
+		CLASS_MEMBER_FIELD(name)
+	END_CLASS_MEMBER(vl::glr::workflow::WfChildType)
 
-			BEGIN_CLASS_MEMBER(vl::glr::workflow::WfNamespaceDeclaration)
-				CLASS_MEMBER_BASE(vl::glr::workflow::WfDeclaration)
+	BEGIN_CLASS_MEMBER(vl::glr::workflow::WfNamespaceDeclaration)
+		CLASS_MEMBER_BASE(vl::glr::workflow::WfDeclaration)
 
-				CLASS_MEMBER_CONSTRUCTOR(vl::Ptr<vl::glr::workflow::WfNamespaceDeclaration>(), NO_PARAMETER)
+		CLASS_MEMBER_CONSTRUCTOR(vl::Ptr<vl::glr::workflow::WfNamespaceDeclaration>(), NO_PARAMETER)
 
-				CLASS_MEMBER_FIELD(declarations)
-			END_CLASS_MEMBER(vl::glr::workflow::WfNamespaceDeclaration)
+		CLASS_MEMBER_FIELD(declarations)
+	END_CLASS_MEMBER(vl::glr::workflow::WfNamespaceDeclaration)
 
-			BEGIN_CLASS_MEMBER(vl::glr::workflow::WfFunctionArgument)
-				CLASS_MEMBER_BASE(vl::glr::ParsingAstBase)
+	BEGIN_CLASS_MEMBER(vl::glr::workflow::WfFunctionArgument)
+		CLASS_MEMBER_BASE(vl::glr::ParsingAstBase)
 
-				CLASS_MEMBER_CONSTRUCTOR(vl::Ptr<vl::glr::workflow::WfFunctionArgument>(), NO_PARAMETER)
+		CLASS_MEMBER_CONSTRUCTOR(vl::Ptr<vl::glr::workflow::WfFunctionArgument>(), NO_PARAMETER)
 
-				CLASS_MEMBER_FIELD(attributes)
-				CLASS_MEMBER_FIELD(name)
-				CLASS_MEMBER_FIELD(type)
-			END_CLASS_MEMBER(vl::glr::workflow::WfFunctionArgument)
+		CLASS_MEMBER_FIELD(attributes)
+		CLASS_MEMBER_FIELD(name)
+		CLASS_MEMBER_FIELD(type)
+	END_CLASS_MEMBER(vl::glr::workflow::WfFunctionArgument)
 
-			BEGIN_ENUM_ITEM(vl::glr::workflow::WfFunctionAnonymity)
-				ENUM_ITEM_NAMESPACE(vl::glr::workflow::WfFunctionAnonymity)
-				ENUM_NAMESPACE_ITEM(Named)
-				ENUM_NAMESPACE_ITEM(Anonymous)
-			END_ENUM_ITEM(vl::glr::workflow::WfFunctionAnonymity)
+	BEGIN_ENUM_ITEM(vl::glr::workflow::WfFunctionAnonymity)
+		ENUM_ITEM_NAMESPACE(vl::glr::workflow::WfFunctionAnonymity)
+		ENUM_NAMESPACE_ITEM(Named)
+		ENUM_NAMESPACE_ITEM(Anonymous)
+	END_ENUM_ITEM(vl::glr::workflow::WfFunctionAnonymity)
 
-			BEGIN_CLASS_MEMBER(vl::glr::workflow::WfFunctionDeclaration)
-				CLASS_MEMBER_BASE(vl::glr::workflow::WfDeclaration)
+	BEGIN_CLASS_MEMBER(vl::glr::workflow::WfFunctionDeclaration)
+		CLASS_MEMBER_BASE(vl::glr::workflow::WfDeclaration)
 
-				CLASS_MEMBER_CONSTRUCTOR(vl::Ptr<vl::glr::workflow::WfFunctionDeclaration>(), NO_PARAMETER)
+		CLASS_MEMBER_CONSTRUCTOR(vl::Ptr<vl::glr::workflow::WfFunctionDeclaration>(), NO_PARAMETER)
 
-				CLASS_MEMBER_FIELD(functionKind)
-				CLASS_MEMBER_FIELD(anonymity)
-				CLASS_MEMBER_FIELD(arguments)
-				CLASS_MEMBER_FIELD(returnType)
-				CLASS_MEMBER_FIELD(statement)
-			END_CLASS_MEMBER(vl::glr::workflow::WfFunctionDeclaration)
+		CLASS_MEMBER_FIELD(functionKind)
+		CLASS_MEMBER_FIELD(anonymity)
+		CLASS_MEMBER_FIELD(arguments)
+		CLASS_MEMBER_FIELD(returnType)
+		CLASS_MEMBER_FIELD(statement)
+	END_CLASS_MEMBER(vl::glr::workflow::WfFunctionDeclaration)
 
-			BEGIN_CLASS_MEMBER(vl::glr::workflow::WfVariableDeclaration)
-				CLASS_MEMBER_BASE(vl::glr::workflow::WfDeclaration)
+	BEGIN_CLASS_MEMBER(vl::glr::workflow::WfVariableDeclaration)
+		CLASS_MEMBER_BASE(vl::glr::workflow::WfDeclaration)
 
-				CLASS_MEMBER_CONSTRUCTOR(vl::Ptr<vl::glr::workflow::WfVariableDeclaration>(), NO_PARAMETER)
+		CLASS_MEMBER_CONSTRUCTOR(vl::Ptr<vl::glr::workflow::WfVariableDeclaration>(), NO_PARAMETER)
 
-				CLASS_MEMBER_FIELD(type)
-				CLASS_MEMBER_FIELD(expression)
-			END_CLASS_MEMBER(vl::glr::workflow::WfVariableDeclaration)
+		CLASS_MEMBER_FIELD(type)
+		CLASS_MEMBER_FIELD(expression)
+	END_CLASS_MEMBER(vl::glr::workflow::WfVariableDeclaration)
 
-			BEGIN_CLASS_MEMBER(vl::glr::workflow::WfEventDeclaration)
-				CLASS_MEMBER_BASE(vl::glr::workflow::WfDeclaration)
+	BEGIN_CLASS_MEMBER(vl::glr::workflow::WfEventDeclaration)
+		CLASS_MEMBER_BASE(vl::glr::workflow::WfDeclaration)
 
-				CLASS_MEMBER_CONSTRUCTOR(vl::Ptr<vl::glr::workflow::WfEventDeclaration>(), NO_PARAMETER)
+		CLASS_MEMBER_CONSTRUCTOR(vl::Ptr<vl::glr::workflow::WfEventDeclaration>(), NO_PARAMETER)
 
-				CLASS_MEMBER_FIELD(arguments)
-			END_CLASS_MEMBER(vl::glr::workflow::WfEventDeclaration)
+		CLASS_MEMBER_FIELD(arguments)
+	END_CLASS_MEMBER(vl::glr::workflow::WfEventDeclaration)
 
-			BEGIN_CLASS_MEMBER(vl::glr::workflow::WfPropertyDeclaration)
-				CLASS_MEMBER_BASE(vl::glr::workflow::WfDeclaration)
+	BEGIN_CLASS_MEMBER(vl::glr::workflow::WfPropertyDeclaration)
+		CLASS_MEMBER_BASE(vl::glr::workflow::WfDeclaration)
 
-				CLASS_MEMBER_CONSTRUCTOR(vl::Ptr<vl::glr::workflow::WfPropertyDeclaration>(), NO_PARAMETER)
+		CLASS_MEMBER_CONSTRUCTOR(vl::Ptr<vl::glr::workflow::WfPropertyDeclaration>(), NO_PARAMETER)
 
-				CLASS_MEMBER_FIELD(type)
-				CLASS_MEMBER_FIELD(getter)
-				CLASS_MEMBER_FIELD(setter)
-				CLASS_MEMBER_FIELD(valueChangedEvent)
-			END_CLASS_MEMBER(vl::glr::workflow::WfPropertyDeclaration)
+		CLASS_MEMBER_FIELD(type)
+		CLASS_MEMBER_FIELD(getter)
+		CLASS_MEMBER_FIELD(setter)
+		CLASS_MEMBER_FIELD(valueChangedEvent)
+	END_CLASS_MEMBER(vl::glr::workflow::WfPropertyDeclaration)
 
-			BEGIN_ENUM_ITEM(vl::glr::workflow::WfClassKind)
-				ENUM_ITEM_NAMESPACE(vl::glr::workflow::WfClassKind)
-				ENUM_NAMESPACE_ITEM(Class)
-				ENUM_NAMESPACE_ITEM(Interface)
-			END_ENUM_ITEM(vl::glr::workflow::WfClassKind)
+	BEGIN_ENUM_ITEM(vl::glr::workflow::WfClassKind)
+		ENUM_ITEM_NAMESPACE(vl::glr::workflow::WfClassKind)
+		ENUM_NAMESPACE_ITEM(Class)
+		ENUM_NAMESPACE_ITEM(Interface)
+	END_ENUM_ITEM(vl::glr::workflow::WfClassKind)
 
-			BEGIN_ENUM_ITEM(vl::glr::workflow::WfConstructorType)
-				ENUM_ITEM_NAMESPACE(vl::glr::workflow::WfConstructorType)
-				ENUM_NAMESPACE_ITEM(Undefined)
-				ENUM_NAMESPACE_ITEM(SharedPtr)
-				ENUM_NAMESPACE_ITEM(RawPtr)
-			END_ENUM_ITEM(vl::glr::workflow::WfConstructorType)
+	BEGIN_ENUM_ITEM(vl::glr::workflow::WfConstructorType)
+		ENUM_ITEM_NAMESPACE(vl::glr::workflow::WfConstructorType)
+		ENUM_NAMESPACE_ITEM(Undefined)
+		ENUM_NAMESPACE_ITEM(SharedPtr)
+		ENUM_NAMESPACE_ITEM(RawPtr)
+	END_ENUM_ITEM(vl::glr::workflow::WfConstructorType)
 
-			BEGIN_CLASS_MEMBER(vl::glr::workflow::WfBaseConstructorCall)
-				CLASS_MEMBER_BASE(vl::glr::ParsingAstBase)
+	BEGIN_CLASS_MEMBER(vl::glr::workflow::WfBaseConstructorCall)
+		CLASS_MEMBER_BASE(vl::glr::ParsingAstBase)
 
-				CLASS_MEMBER_CONSTRUCTOR(vl::Ptr<vl::glr::workflow::WfBaseConstructorCall>(), NO_PARAMETER)
+		CLASS_MEMBER_CONSTRUCTOR(vl::Ptr<vl::glr::workflow::WfBaseConstructorCall>(), NO_PARAMETER)
 
-				CLASS_MEMBER_FIELD(type)
-				CLASS_MEMBER_FIELD(arguments)
-			END_CLASS_MEMBER(vl::glr::workflow::WfBaseConstructorCall)
+		CLASS_MEMBER_FIELD(type)
+		CLASS_MEMBER_FIELD(arguments)
+	END_CLASS_MEMBER(vl::glr::workflow::WfBaseConstructorCall)
 
-			BEGIN_CLASS_MEMBER(vl::glr::workflow::WfConstructorDeclaration)
-				CLASS_MEMBER_BASE(vl::glr::workflow::WfDeclaration)
+	BEGIN_CLASS_MEMBER(vl::glr::workflow::WfConstructorDeclaration)
+		CLASS_MEMBER_BASE(vl::glr::workflow::WfDeclaration)
 
-				CLASS_MEMBER_CONSTRUCTOR(vl::Ptr<vl::glr::workflow::WfConstructorDeclaration>(), NO_PARAMETER)
+		CLASS_MEMBER_CONSTRUCTOR(vl::Ptr<vl::glr::workflow::WfConstructorDeclaration>(), NO_PARAMETER)
 
-				CLASS_MEMBER_FIELD(constructorType)
-				CLASS_MEMBER_FIELD(baseConstructorCalls)
-				CLASS_MEMBER_FIELD(arguments)
-				CLASS_MEMBER_FIELD(statement)
-			END_CLASS_MEMBER(vl::glr::workflow::WfConstructorDeclaration)
+		CLASS_MEMBER_FIELD(constructorType)
+		CLASS_MEMBER_FIELD(baseConstructorCalls)
+		CLASS_MEMBER_FIELD(arguments)
+		CLASS_MEMBER_FIELD(statement)
+	END_CLASS_MEMBER(vl::glr::workflow::WfConstructorDeclaration)
 
-			BEGIN_CLASS_MEMBER(vl::glr::workflow::WfDestructorDeclaration)
-				CLASS_MEMBER_BASE(vl::glr::workflow::WfDeclaration)
+	BEGIN_CLASS_MEMBER(vl::glr::workflow::WfDestructorDeclaration)
+		CLASS_MEMBER_BASE(vl::glr::workflow::WfDeclaration)
 
-				CLASS_MEMBER_CONSTRUCTOR(vl::Ptr<vl::glr::workflow::WfDestructorDeclaration>(), NO_PARAMETER)
+		CLASS_MEMBER_CONSTRUCTOR(vl::Ptr<vl::glr::workflow::WfDestructorDeclaration>(), NO_PARAMETER)
 
-				CLASS_MEMBER_FIELD(statement)
-			END_CLASS_MEMBER(vl::glr::workflow::WfDestructorDeclaration)
+		CLASS_MEMBER_FIELD(statement)
+	END_CLASS_MEMBER(vl::glr::workflow::WfDestructorDeclaration)
 
-			BEGIN_CLASS_MEMBER(vl::glr::workflow::WfClassDeclaration)
-				CLASS_MEMBER_BASE(vl::glr::workflow::WfDeclaration)
+	BEGIN_CLASS_MEMBER(vl::glr::workflow::WfClassDeclaration)
+		CLASS_MEMBER_BASE(vl::glr::workflow::WfDeclaration)
 
-				CLASS_MEMBER_CONSTRUCTOR(vl::Ptr<vl::glr::workflow::WfClassDeclaration>(), NO_PARAMETER)
+		CLASS_MEMBER_CONSTRUCTOR(vl::Ptr<vl::glr::workflow::WfClassDeclaration>(), NO_PARAMETER)
 
-				CLASS_MEMBER_FIELD(kind)
-				CLASS_MEMBER_FIELD(constructorType)
-				CLASS_MEMBER_FIELD(baseTypes)
-				CLASS_MEMBER_FIELD(declarations)
-			END_CLASS_MEMBER(vl::glr::workflow::WfClassDeclaration)
+		CLASS_MEMBER_FIELD(kind)
+		CLASS_MEMBER_FIELD(constructorType)
+		CLASS_MEMBER_FIELD(baseTypes)
+		CLASS_MEMBER_FIELD(declarations)
+	END_CLASS_MEMBER(vl::glr::workflow::WfClassDeclaration)
 
-			BEGIN_ENUM_ITEM(vl::glr::workflow::WfEnumKind)
-				ENUM_ITEM_NAMESPACE(vl::glr::workflow::WfEnumKind)
-				ENUM_NAMESPACE_ITEM(Normal)
-				ENUM_NAMESPACE_ITEM(Flag)
-			END_ENUM_ITEM(vl::glr::workflow::WfEnumKind)
+	BEGIN_ENUM_ITEM(vl::glr::workflow::WfEnumKind)
+		ENUM_ITEM_NAMESPACE(vl::glr::workflow::WfEnumKind)
+		ENUM_NAMESPACE_ITEM(Normal)
+		ENUM_NAMESPACE_ITEM(Flag)
+	END_ENUM_ITEM(vl::glr::workflow::WfEnumKind)
 
-			BEGIN_ENUM_ITEM(vl::glr::workflow::WfEnumItemKind)
-				ENUM_ITEM_NAMESPACE(vl::glr::workflow::WfEnumItemKind)
-				ENUM_NAMESPACE_ITEM(Constant)
-				ENUM_NAMESPACE_ITEM(Intersection)
-			END_ENUM_ITEM(vl::glr::workflow::WfEnumItemKind)
+	BEGIN_ENUM_ITEM(vl::glr::workflow::WfEnumItemKind)
+		ENUM_ITEM_NAMESPACE(vl::glr::workflow::WfEnumItemKind)
+		ENUM_NAMESPACE_ITEM(Constant)
+		ENUM_NAMESPACE_ITEM(Intersection)
+	END_ENUM_ITEM(vl::glr::workflow::WfEnumItemKind)
 
-			BEGIN_CLASS_MEMBER(vl::glr::workflow::WfEnumItemIntersection)
-				CLASS_MEMBER_BASE(vl::glr::ParsingAstBase)
+	BEGIN_CLASS_MEMBER(vl::glr::workflow::WfEnumItemIntersection)
+		CLASS_MEMBER_BASE(vl::glr::ParsingAstBase)
 
-				CLASS_MEMBER_CONSTRUCTOR(vl::Ptr<vl::glr::workflow::WfEnumItemIntersection>(), NO_PARAMETER)
+		CLASS_MEMBER_CONSTRUCTOR(vl::Ptr<vl::glr::workflow::WfEnumItemIntersection>(), NO_PARAMETER)
 
-				CLASS_MEMBER_FIELD(name)
-			END_CLASS_MEMBER(vl::glr::workflow::WfEnumItemIntersection)
+		CLASS_MEMBER_FIELD(name)
+	END_CLASS_MEMBER(vl::glr::workflow::WfEnumItemIntersection)
 
-			BEGIN_CLASS_MEMBER(vl::glr::workflow::WfEnumItem)
-				CLASS_MEMBER_BASE(vl::glr::ParsingAstBase)
+	BEGIN_CLASS_MEMBER(vl::glr::workflow::WfEnumItem)
+		CLASS_MEMBER_BASE(vl::glr::ParsingAstBase)
 
-				CLASS_MEMBER_CONSTRUCTOR(vl::Ptr<vl::glr::workflow::WfEnumItem>(), NO_PARAMETER)
+		CLASS_MEMBER_CONSTRUCTOR(vl::Ptr<vl::glr::workflow::WfEnumItem>(), NO_PARAMETER)
 
-				CLASS_MEMBER_FIELD(attributes)
-				CLASS_MEMBER_FIELD(name)
-				CLASS_MEMBER_FIELD(kind)
-				CLASS_MEMBER_FIELD(number)
-				CLASS_MEMBER_FIELD(intersections)
-			END_CLASS_MEMBER(vl::glr::workflow::WfEnumItem)
+		CLASS_MEMBER_FIELD(attributes)
+		CLASS_MEMBER_FIELD(name)
+		CLASS_MEMBER_FIELD(kind)
+		CLASS_MEMBER_FIELD(number)
+		CLASS_MEMBER_FIELD(intersections)
+	END_CLASS_MEMBER(vl::glr::workflow::WfEnumItem)
 
-			BEGIN_CLASS_MEMBER(vl::glr::workflow::WfEnumDeclaration)
-				CLASS_MEMBER_BASE(vl::glr::workflow::WfDeclaration)
+	BEGIN_CLASS_MEMBER(vl::glr::workflow::WfEnumDeclaration)
+		CLASS_MEMBER_BASE(vl::glr::workflow::WfDeclaration)
 
-				CLASS_MEMBER_CONSTRUCTOR(vl::Ptr<vl::glr::workflow::WfEnumDeclaration>(), NO_PARAMETER)
+		CLASS_MEMBER_CONSTRUCTOR(vl::Ptr<vl::glr::workflow::WfEnumDeclaration>(), NO_PARAMETER)
 
-				CLASS_MEMBER_FIELD(kind)
-				CLASS_MEMBER_FIELD(items)
-			END_CLASS_MEMBER(vl::glr::workflow::WfEnumDeclaration)
+		CLASS_MEMBER_FIELD(kind)
+		CLASS_MEMBER_FIELD(items)
+	END_CLASS_MEMBER(vl::glr::workflow::WfEnumDeclaration)
 
-			BEGIN_CLASS_MEMBER(vl::glr::workflow::WfStructMember)
-				CLASS_MEMBER_BASE(vl::glr::ParsingAstBase)
+	BEGIN_CLASS_MEMBER(vl::glr::workflow::WfStructMember)
+		CLASS_MEMBER_BASE(vl::glr::ParsingAstBase)
 
-				CLASS_MEMBER_CONSTRUCTOR(vl::Ptr<vl::glr::workflow::WfStructMember>(), NO_PARAMETER)
+		CLASS_MEMBER_CONSTRUCTOR(vl::Ptr<vl::glr::workflow::WfStructMember>(), NO_PARAMETER)
 
-				CLASS_MEMBER_FIELD(attributes)
-				CLASS_MEMBER_FIELD(name)
-				CLASS_MEMBER_FIELD(type)
-			END_CLASS_MEMBER(vl::glr::workflow::WfStructMember)
+		CLASS_MEMBER_FIELD(attributes)
+		CLASS_MEMBER_FIELD(name)
+		CLASS_MEMBER_FIELD(type)
+	END_CLASS_MEMBER(vl::glr::workflow::WfStructMember)
 
-			BEGIN_CLASS_MEMBER(vl::glr::workflow::WfStructDeclaration)
-				CLASS_MEMBER_BASE(vl::glr::workflow::WfDeclaration)
+	BEGIN_CLASS_MEMBER(vl::glr::workflow::WfStructDeclaration)
+		CLASS_MEMBER_BASE(vl::glr::workflow::WfDeclaration)
 
-				CLASS_MEMBER_CONSTRUCTOR(vl::Ptr<vl::glr::workflow::WfStructDeclaration>(), NO_PARAMETER)
+		CLASS_MEMBER_CONSTRUCTOR(vl::Ptr<vl::glr::workflow::WfStructDeclaration>(), NO_PARAMETER)
 
-				CLASS_MEMBER_FIELD(members)
-			END_CLASS_MEMBER(vl::glr::workflow::WfStructDeclaration)
+		CLASS_MEMBER_FIELD(members)
+	END_CLASS_MEMBER(vl::glr::workflow::WfStructDeclaration)
 
-			BEGIN_CLASS_MEMBER(vl::glr::workflow::WfVirtualCfeDeclaration)
-				CLASS_MEMBER_BASE(vl::glr::workflow::WfDeclaration)
+	BEGIN_CLASS_MEMBER(vl::glr::workflow::WfVirtualCfeDeclaration)
+		CLASS_MEMBER_BASE(vl::glr::workflow::WfDeclaration)
 
-				CLASS_MEMBER_FIELD(expandedDeclarations)
-			END_CLASS_MEMBER(vl::glr::workflow::WfVirtualCfeDeclaration)
+		CLASS_MEMBER_FIELD(expandedDeclarations)
+	END_CLASS_MEMBER(vl::glr::workflow::WfVirtualCfeDeclaration)
 
-			BEGIN_ENUM_ITEM(vl::glr::workflow::WfAPConst)
-				ENUM_ITEM_NAMESPACE(vl::glr::workflow::WfAPConst)
-				ENUM_NAMESPACE_ITEM(Readonly)
-				ENUM_NAMESPACE_ITEM(Writable)
-			END_ENUM_ITEM(vl::glr::workflow::WfAPConst)
+	BEGIN_ENUM_ITEM(vl::glr::workflow::WfAPConst)
+		ENUM_ITEM_NAMESPACE(vl::glr::workflow::WfAPConst)
+		ENUM_NAMESPACE_ITEM(Readonly)
+		ENUM_NAMESPACE_ITEM(Writable)
+	END_ENUM_ITEM(vl::glr::workflow::WfAPConst)
 
-			BEGIN_ENUM_ITEM(vl::glr::workflow::WfAPObserve)
-				ENUM_ITEM_NAMESPACE(vl::glr::workflow::WfAPObserve)
-				ENUM_NAMESPACE_ITEM(Observable)
-				ENUM_NAMESPACE_ITEM(NotObservable)
-			END_ENUM_ITEM(vl::glr::workflow::WfAPObserve)
+	BEGIN_ENUM_ITEM(vl::glr::workflow::WfAPObserve)
+		ENUM_ITEM_NAMESPACE(vl::glr::workflow::WfAPObserve)
+		ENUM_NAMESPACE_ITEM(Observable)
+		ENUM_NAMESPACE_ITEM(NotObservable)
+	END_ENUM_ITEM(vl::glr::workflow::WfAPObserve)
 
-			BEGIN_CLASS_MEMBER(vl::glr::workflow::WfAutoPropertyDeclaration)
-				CLASS_MEMBER_BASE(vl::glr::workflow::WfVirtualCfeDeclaration)
+	BEGIN_CLASS_MEMBER(vl::glr::workflow::WfAutoPropertyDeclaration)
+		CLASS_MEMBER_BASE(vl::glr::workflow::WfVirtualCfeDeclaration)
 
-				CLASS_MEMBER_CONSTRUCTOR(vl::Ptr<vl::glr::workflow::WfAutoPropertyDeclaration>(), NO_PARAMETER)
+		CLASS_MEMBER_CONSTRUCTOR(vl::Ptr<vl::glr::workflow::WfAutoPropertyDeclaration>(), NO_PARAMETER)
 
-				CLASS_MEMBER_FIELD(functionKind)
-				CLASS_MEMBER_FIELD(type)
-				CLASS_MEMBER_FIELD(configConst)
-				CLASS_MEMBER_FIELD(configObserve)
-				CLASS_MEMBER_FIELD(expression)
-			END_CLASS_MEMBER(vl::glr::workflow::WfAutoPropertyDeclaration)
+		CLASS_MEMBER_FIELD(functionKind)
+		CLASS_MEMBER_FIELD(type)
+		CLASS_MEMBER_FIELD(configConst)
+		CLASS_MEMBER_FIELD(configObserve)
+		CLASS_MEMBER_FIELD(expression)
+	END_CLASS_MEMBER(vl::glr::workflow::WfAutoPropertyDeclaration)
 
-			BEGIN_CLASS_MEMBER(vl::glr::workflow::WfCastResultInterfaceDeclaration)
-				CLASS_MEMBER_BASE(vl::glr::workflow::WfVirtualCfeDeclaration)
+	BEGIN_CLASS_MEMBER(vl::glr::workflow::WfCastResultInterfaceDeclaration)
+		CLASS_MEMBER_BASE(vl::glr::workflow::WfVirtualCfeDeclaration)
 
-				CLASS_MEMBER_CONSTRUCTOR(vl::Ptr<vl::glr::workflow::WfCastResultInterfaceDeclaration>(), NO_PARAMETER)
+		CLASS_MEMBER_CONSTRUCTOR(vl::Ptr<vl::glr::workflow::WfCastResultInterfaceDeclaration>(), NO_PARAMETER)
 
-				CLASS_MEMBER_FIELD(baseType)
-				CLASS_MEMBER_FIELD(elementType)
-			END_CLASS_MEMBER(vl::glr::workflow::WfCastResultInterfaceDeclaration)
+		CLASS_MEMBER_FIELD(baseType)
+		CLASS_MEMBER_FIELD(elementType)
+	END_CLASS_MEMBER(vl::glr::workflow::WfCastResultInterfaceDeclaration)
 
-			BEGIN_CLASS_MEMBER(vl::glr::workflow::WfVirtualCseDeclaration)
-				CLASS_MEMBER_BASE(vl::glr::workflow::WfDeclaration)
+	BEGIN_CLASS_MEMBER(vl::glr::workflow::WfVirtualCseDeclaration)
+		CLASS_MEMBER_BASE(vl::glr::workflow::WfDeclaration)
 
-				CLASS_MEMBER_FIELD(expandedDeclarations)
-			END_CLASS_MEMBER(vl::glr::workflow::WfVirtualCseDeclaration)
+		CLASS_MEMBER_FIELD(expandedDeclarations)
+	END_CLASS_MEMBER(vl::glr::workflow::WfVirtualCseDeclaration)
 
-			BEGIN_CLASS_MEMBER(vl::glr::workflow::WfStateInput)
-				CLASS_MEMBER_BASE(vl::glr::ParsingAstBase)
+	BEGIN_CLASS_MEMBER(vl::glr::workflow::WfStateInput)
+		CLASS_MEMBER_BASE(vl::glr::ParsingAstBase)
 
-				CLASS_MEMBER_CONSTRUCTOR(vl::Ptr<vl::glr::workflow::WfStateInput>(), NO_PARAMETER)
+		CLASS_MEMBER_CONSTRUCTOR(vl::Ptr<vl::glr::workflow::WfStateInput>(), NO_PARAMETER)
 
-				CLASS_MEMBER_FIELD(name)
-				CLASS_MEMBER_FIELD(arguments)
-			END_CLASS_MEMBER(vl::glr::workflow::WfStateInput)
+		CLASS_MEMBER_FIELD(name)
+		CLASS_MEMBER_FIELD(arguments)
+	END_CLASS_MEMBER(vl::glr::workflow::WfStateInput)
 
-			BEGIN_CLASS_MEMBER(vl::glr::workflow::WfStateDeclaration)
-				CLASS_MEMBER_BASE(vl::glr::ParsingAstBase)
+	BEGIN_CLASS_MEMBER(vl::glr::workflow::WfStateDeclaration)
+		CLASS_MEMBER_BASE(vl::glr::ParsingAstBase)
 
-				CLASS_MEMBER_CONSTRUCTOR(vl::Ptr<vl::glr::workflow::WfStateDeclaration>(), NO_PARAMETER)
+		CLASS_MEMBER_CONSTRUCTOR(vl::Ptr<vl::glr::workflow::WfStateDeclaration>(), NO_PARAMETER)
 
-				CLASS_MEMBER_FIELD(name)
-				CLASS_MEMBER_FIELD(arguments)
-				CLASS_MEMBER_FIELD(statement)
-			END_CLASS_MEMBER(vl::glr::workflow::WfStateDeclaration)
+		CLASS_MEMBER_FIELD(name)
+		CLASS_MEMBER_FIELD(arguments)
+		CLASS_MEMBER_FIELD(statement)
+	END_CLASS_MEMBER(vl::glr::workflow::WfStateDeclaration)
 
-			BEGIN_CLASS_MEMBER(vl::glr::workflow::WfStateMachineDeclaration)
-				CLASS_MEMBER_BASE(vl::glr::workflow::WfVirtualCseDeclaration)
+	BEGIN_CLASS_MEMBER(vl::glr::workflow::WfStateMachineDeclaration)
+		CLASS_MEMBER_BASE(vl::glr::workflow::WfVirtualCseDeclaration)
 
-				CLASS_MEMBER_CONSTRUCTOR(vl::Ptr<vl::glr::workflow::WfStateMachineDeclaration>(), NO_PARAMETER)
+		CLASS_MEMBER_CONSTRUCTOR(vl::Ptr<vl::glr::workflow::WfStateMachineDeclaration>(), NO_PARAMETER)
 
-				CLASS_MEMBER_FIELD(inputs)
-				CLASS_MEMBER_FIELD(states)
-			END_CLASS_MEMBER(vl::glr::workflow::WfStateMachineDeclaration)
+		CLASS_MEMBER_FIELD(inputs)
+		CLASS_MEMBER_FIELD(states)
+	END_CLASS_MEMBER(vl::glr::workflow::WfStateMachineDeclaration)
 
-			BEGIN_CLASS_MEMBER(vl::glr::workflow::WfBreakStatement)
-				CLASS_MEMBER_BASE(vl::glr::workflow::WfStatement)
+	BEGIN_CLASS_MEMBER(vl::glr::workflow::WfBreakStatement)
+		CLASS_MEMBER_BASE(vl::glr::workflow::WfStatement)
 
-				CLASS_MEMBER_CONSTRUCTOR(vl::Ptr<vl::glr::workflow::WfBreakStatement>(), NO_PARAMETER)
+		CLASS_MEMBER_CONSTRUCTOR(vl::Ptr<vl::glr::workflow::WfBreakStatement>(), NO_PARAMETER)
 
-			END_CLASS_MEMBER(vl::glr::workflow::WfBreakStatement)
+	END_CLASS_MEMBER(vl::glr::workflow::WfBreakStatement)
 
-			BEGIN_CLASS_MEMBER(vl::glr::workflow::WfContinueStatement)
-				CLASS_MEMBER_BASE(vl::glr::workflow::WfStatement)
+	BEGIN_CLASS_MEMBER(vl::glr::workflow::WfContinueStatement)
+		CLASS_MEMBER_BASE(vl::glr::workflow::WfStatement)
 
-				CLASS_MEMBER_CONSTRUCTOR(vl::Ptr<vl::glr::workflow::WfContinueStatement>(), NO_PARAMETER)
+		CLASS_MEMBER_CONSTRUCTOR(vl::Ptr<vl::glr::workflow::WfContinueStatement>(), NO_PARAMETER)
 
-			END_CLASS_MEMBER(vl::glr::workflow::WfContinueStatement)
+	END_CLASS_MEMBER(vl::glr::workflow::WfContinueStatement)
 
-			BEGIN_CLASS_MEMBER(vl::glr::workflow::WfReturnStatement)
-				CLASS_MEMBER_BASE(vl::glr::workflow::WfStatement)
+	BEGIN_CLASS_MEMBER(vl::glr::workflow::WfReturnStatement)
+		CLASS_MEMBER_BASE(vl::glr::workflow::WfStatement)
 
-				CLASS_MEMBER_CONSTRUCTOR(vl::Ptr<vl::glr::workflow::WfReturnStatement>(), NO_PARAMETER)
+		CLASS_MEMBER_CONSTRUCTOR(vl::Ptr<vl::glr::workflow::WfReturnStatement>(), NO_PARAMETER)
 
-				CLASS_MEMBER_FIELD(expression)
-			END_CLASS_MEMBER(vl::glr::workflow::WfReturnStatement)
+		CLASS_MEMBER_FIELD(expression)
+	END_CLASS_MEMBER(vl::glr::workflow::WfReturnStatement)
 
-			BEGIN_CLASS_MEMBER(vl::glr::workflow::WfDeleteStatement)
-				CLASS_MEMBER_BASE(vl::glr::workflow::WfStatement)
+	BEGIN_CLASS_MEMBER(vl::glr::workflow::WfDeleteStatement)
+		CLASS_MEMBER_BASE(vl::glr::workflow::WfStatement)
 
-				CLASS_MEMBER_CONSTRUCTOR(vl::Ptr<vl::glr::workflow::WfDeleteStatement>(), NO_PARAMETER)
+		CLASS_MEMBER_CONSTRUCTOR(vl::Ptr<vl::glr::workflow::WfDeleteStatement>(), NO_PARAMETER)
 
-				CLASS_MEMBER_FIELD(expression)
-			END_CLASS_MEMBER(vl::glr::workflow::WfDeleteStatement)
+		CLASS_MEMBER_FIELD(expression)
+	END_CLASS_MEMBER(vl::glr::workflow::WfDeleteStatement)
 
-			BEGIN_CLASS_MEMBER(vl::glr::workflow::WfRaiseExceptionStatement)
-				CLASS_MEMBER_BASE(vl::glr::workflow::WfStatement)
+	BEGIN_CLASS_MEMBER(vl::glr::workflow::WfRaiseExceptionStatement)
+		CLASS_MEMBER_BASE(vl::glr::workflow::WfStatement)
 
-				CLASS_MEMBER_CONSTRUCTOR(vl::Ptr<vl::glr::workflow::WfRaiseExceptionStatement>(), NO_PARAMETER)
+		CLASS_MEMBER_CONSTRUCTOR(vl::Ptr<vl::glr::workflow::WfRaiseExceptionStatement>(), NO_PARAMETER)
 
-				CLASS_MEMBER_FIELD(expression)
-			END_CLASS_MEMBER(vl::glr::workflow::WfRaiseExceptionStatement)
+		CLASS_MEMBER_FIELD(expression)
+	END_CLASS_MEMBER(vl::glr::workflow::WfRaiseExceptionStatement)
 
-			BEGIN_CLASS_MEMBER(vl::glr::workflow::WfIfStatement)
-				CLASS_MEMBER_BASE(vl::glr::workflow::WfStatement)
+	BEGIN_CLASS_MEMBER(vl::glr::workflow::WfIfStatement)
+		CLASS_MEMBER_BASE(vl::glr::workflow::WfStatement)
 
-				CLASS_MEMBER_CONSTRUCTOR(vl::Ptr<vl::glr::workflow::WfIfStatement>(), NO_PARAMETER)
+		CLASS_MEMBER_CONSTRUCTOR(vl::Ptr<vl::glr::workflow::WfIfStatement>(), NO_PARAMETER)
 
-				CLASS_MEMBER_FIELD(type)
-				CLASS_MEMBER_FIELD(name)
-				CLASS_MEMBER_FIELD(expression)
-				CLASS_MEMBER_FIELD(trueBranch)
-				CLASS_MEMBER_FIELD(falseBranch)
-			END_CLASS_MEMBER(vl::glr::workflow::WfIfStatement)
+		CLASS_MEMBER_FIELD(type)
+		CLASS_MEMBER_FIELD(name)
+		CLASS_MEMBER_FIELD(expression)
+		CLASS_MEMBER_FIELD(trueBranch)
+		CLASS_MEMBER_FIELD(falseBranch)
+	END_CLASS_MEMBER(vl::glr::workflow::WfIfStatement)
 
-			BEGIN_CLASS_MEMBER(vl::glr::workflow::WfWhileStatement)
-				CLASS_MEMBER_BASE(vl::glr::workflow::WfStatement)
+	BEGIN_CLASS_MEMBER(vl::glr::workflow::WfWhileStatement)
+		CLASS_MEMBER_BASE(vl::glr::workflow::WfStatement)
 
-				CLASS_MEMBER_CONSTRUCTOR(vl::Ptr<vl::glr::workflow::WfWhileStatement>(), NO_PARAMETER)
+		CLASS_MEMBER_CONSTRUCTOR(vl::Ptr<vl::glr::workflow::WfWhileStatement>(), NO_PARAMETER)
 
-				CLASS_MEMBER_FIELD(condition)
-				CLASS_MEMBER_FIELD(statement)
-			END_CLASS_MEMBER(vl::glr::workflow::WfWhileStatement)
+		CLASS_MEMBER_FIELD(condition)
+		CLASS_MEMBER_FIELD(statement)
+	END_CLASS_MEMBER(vl::glr::workflow::WfWhileStatement)
 
-			BEGIN_CLASS_MEMBER(vl::glr::workflow::WfTryStatement)
-				CLASS_MEMBER_BASE(vl::glr::workflow::WfStatement)
+	BEGIN_CLASS_MEMBER(vl::glr::workflow::WfTryStatement)
+		CLASS_MEMBER_BASE(vl::glr::workflow::WfStatement)
 
-				CLASS_MEMBER_CONSTRUCTOR(vl::Ptr<vl::glr::workflow::WfTryStatement>(), NO_PARAMETER)
+		CLASS_MEMBER_CONSTRUCTOR(vl::Ptr<vl::glr::workflow::WfTryStatement>(), NO_PARAMETER)
 
-				CLASS_MEMBER_FIELD(protectedStatement)
-				CLASS_MEMBER_FIELD(name)
-				CLASS_MEMBER_FIELD(catchStatement)
-				CLASS_MEMBER_FIELD(finallyStatement)
-			END_CLASS_MEMBER(vl::glr::workflow::WfTryStatement)
+		CLASS_MEMBER_FIELD(protectedStatement)
+		CLASS_MEMBER_FIELD(name)
+		CLASS_MEMBER_FIELD(catchStatement)
+		CLASS_MEMBER_FIELD(finallyStatement)
+	END_CLASS_MEMBER(vl::glr::workflow::WfTryStatement)
 
-			BEGIN_CLASS_MEMBER(vl::glr::workflow::WfBlockStatement)
-				CLASS_MEMBER_BASE(vl::glr::workflow::WfStatement)
+	BEGIN_CLASS_MEMBER(vl::glr::workflow::WfBlockStatement)
+		CLASS_MEMBER_BASE(vl::glr::workflow::WfStatement)
 
-				CLASS_MEMBER_CONSTRUCTOR(vl::Ptr<vl::glr::workflow::WfBlockStatement>(), NO_PARAMETER)
+		CLASS_MEMBER_CONSTRUCTOR(vl::Ptr<vl::glr::workflow::WfBlockStatement>(), NO_PARAMETER)
 
-				CLASS_MEMBER_FIELD(statements)
-				CLASS_MEMBER_FIELD(endLabel)
-			END_CLASS_MEMBER(vl::glr::workflow::WfBlockStatement)
+		CLASS_MEMBER_FIELD(statements)
+		CLASS_MEMBER_FIELD(endLabel)
+	END_CLASS_MEMBER(vl::glr::workflow::WfBlockStatement)
 
-			BEGIN_CLASS_MEMBER(vl::glr::workflow::WfGotoStatement)
-				CLASS_MEMBER_BASE(vl::glr::workflow::WfStatement)
+	BEGIN_CLASS_MEMBER(vl::glr::workflow::WfGotoStatement)
+		CLASS_MEMBER_BASE(vl::glr::workflow::WfStatement)
 
-				CLASS_MEMBER_CONSTRUCTOR(vl::Ptr<vl::glr::workflow::WfGotoStatement>(), NO_PARAMETER)
+		CLASS_MEMBER_CONSTRUCTOR(vl::Ptr<vl::glr::workflow::WfGotoStatement>(), NO_PARAMETER)
 
-				CLASS_MEMBER_FIELD(label)
-			END_CLASS_MEMBER(vl::glr::workflow::WfGotoStatement)
+		CLASS_MEMBER_FIELD(label)
+	END_CLASS_MEMBER(vl::glr::workflow::WfGotoStatement)
 
-			BEGIN_CLASS_MEMBER(vl::glr::workflow::WfVariableStatement)
-				CLASS_MEMBER_BASE(vl::glr::workflow::WfStatement)
+	BEGIN_CLASS_MEMBER(vl::glr::workflow::WfVariableStatement)
+		CLASS_MEMBER_BASE(vl::glr::workflow::WfStatement)
 
-				CLASS_MEMBER_CONSTRUCTOR(vl::Ptr<vl::glr::workflow::WfVariableStatement>(), NO_PARAMETER)
+		CLASS_MEMBER_CONSTRUCTOR(vl::Ptr<vl::glr::workflow::WfVariableStatement>(), NO_PARAMETER)
 
-				CLASS_MEMBER_FIELD(variable)
-			END_CLASS_MEMBER(vl::glr::workflow::WfVariableStatement)
+		CLASS_MEMBER_FIELD(variable)
+	END_CLASS_MEMBER(vl::glr::workflow::WfVariableStatement)
 
-			BEGIN_CLASS_MEMBER(vl::glr::workflow::WfExpressionStatement)
-				CLASS_MEMBER_BASE(vl::glr::workflow::WfStatement)
+	BEGIN_CLASS_MEMBER(vl::glr::workflow::WfExpressionStatement)
+		CLASS_MEMBER_BASE(vl::glr::workflow::WfStatement)
 
-				CLASS_MEMBER_CONSTRUCTOR(vl::Ptr<vl::glr::workflow::WfExpressionStatement>(), NO_PARAMETER)
+		CLASS_MEMBER_CONSTRUCTOR(vl::Ptr<vl::glr::workflow::WfExpressionStatement>(), NO_PARAMETER)
 
-				CLASS_MEMBER_FIELD(expression)
-			END_CLASS_MEMBER(vl::glr::workflow::WfExpressionStatement)
+		CLASS_MEMBER_FIELD(expression)
+	END_CLASS_MEMBER(vl::glr::workflow::WfExpressionStatement)
 
-			BEGIN_CLASS_MEMBER(vl::glr::workflow::WfVirtualCseStatement)
-				CLASS_MEMBER_BASE(vl::glr::workflow::WfStatement)
+	BEGIN_CLASS_MEMBER(vl::glr::workflow::WfVirtualCseStatement)
+		CLASS_MEMBER_BASE(vl::glr::workflow::WfStatement)
 
-				CLASS_MEMBER_FIELD(expandedStatement)
-			END_CLASS_MEMBER(vl::glr::workflow::WfVirtualCseStatement)
+		CLASS_MEMBER_FIELD(expandedStatement)
+	END_CLASS_MEMBER(vl::glr::workflow::WfVirtualCseStatement)
 
-			BEGIN_ENUM_ITEM(vl::glr::workflow::WfForEachDirection)
-				ENUM_ITEM_NAMESPACE(vl::glr::workflow::WfForEachDirection)
-				ENUM_NAMESPACE_ITEM(Normal)
-				ENUM_NAMESPACE_ITEM(Reversed)
-			END_ENUM_ITEM(vl::glr::workflow::WfForEachDirection)
+	BEGIN_ENUM_ITEM(vl::glr::workflow::WfForEachDirection)
+		ENUM_ITEM_NAMESPACE(vl::glr::workflow::WfForEachDirection)
+		ENUM_NAMESPACE_ITEM(Normal)
+		ENUM_NAMESPACE_ITEM(Reversed)
+	END_ENUM_ITEM(vl::glr::workflow::WfForEachDirection)
 
-			BEGIN_CLASS_MEMBER(vl::glr::workflow::WfForEachStatement)
-				CLASS_MEMBER_BASE(vl::glr::workflow::WfVirtualCseStatement)
+	BEGIN_CLASS_MEMBER(vl::glr::workflow::WfForEachStatement)
+		CLASS_MEMBER_BASE(vl::glr::workflow::WfVirtualCseStatement)
 
-				CLASS_MEMBER_CONSTRUCTOR(vl::Ptr<vl::glr::workflow::WfForEachStatement>(), NO_PARAMETER)
+		CLASS_MEMBER_CONSTRUCTOR(vl::Ptr<vl::glr::workflow::WfForEachStatement>(), NO_PARAMETER)
 
-				CLASS_MEMBER_FIELD(name)
-				CLASS_MEMBER_FIELD(direction)
-				CLASS_MEMBER_FIELD(collection)
-				CLASS_MEMBER_FIELD(statement)
-			END_CLASS_MEMBER(vl::glr::workflow::WfForEachStatement)
+		CLASS_MEMBER_FIELD(name)
+		CLASS_MEMBER_FIELD(direction)
+		CLASS_MEMBER_FIELD(collection)
+		CLASS_MEMBER_FIELD(statement)
+	END_CLASS_MEMBER(vl::glr::workflow::WfForEachStatement)
 
-			BEGIN_CLASS_MEMBER(vl::glr::workflow::WfSwitchCase)
-				CLASS_MEMBER_BASE(vl::glr::ParsingAstBase)
+	BEGIN_CLASS_MEMBER(vl::glr::workflow::WfSwitchCase)
+		CLASS_MEMBER_BASE(vl::glr::ParsingAstBase)
 
-				CLASS_MEMBER_CONSTRUCTOR(vl::Ptr<vl::glr::workflow::WfSwitchCase>(), NO_PARAMETER)
+		CLASS_MEMBER_CONSTRUCTOR(vl::Ptr<vl::glr::workflow::WfSwitchCase>(), NO_PARAMETER)
 
-				CLASS_MEMBER_FIELD(expression)
-				CLASS_MEMBER_FIELD(statement)
-			END_CLASS_MEMBER(vl::glr::workflow::WfSwitchCase)
+		CLASS_MEMBER_FIELD(expression)
+		CLASS_MEMBER_FIELD(statement)
+	END_CLASS_MEMBER(vl::glr::workflow::WfSwitchCase)
 
-			BEGIN_CLASS_MEMBER(vl::glr::workflow::WfSwitchStatement)
-				CLASS_MEMBER_BASE(vl::glr::workflow::WfVirtualCseStatement)
+	BEGIN_CLASS_MEMBER(vl::glr::workflow::WfSwitchStatement)
+		CLASS_MEMBER_BASE(vl::glr::workflow::WfVirtualCseStatement)
 
-				CLASS_MEMBER_CONSTRUCTOR(vl::Ptr<vl::glr::workflow::WfSwitchStatement>(), NO_PARAMETER)
+		CLASS_MEMBER_CONSTRUCTOR(vl::Ptr<vl::glr::workflow::WfSwitchStatement>(), NO_PARAMETER)
 
-				CLASS_MEMBER_FIELD(expression)
-				CLASS_MEMBER_FIELD(caseBranches)
-				CLASS_MEMBER_FIELD(defaultBranch)
-			END_CLASS_MEMBER(vl::glr::workflow::WfSwitchStatement)
+		CLASS_MEMBER_FIELD(expression)
+		CLASS_MEMBER_FIELD(caseBranches)
+		CLASS_MEMBER_FIELD(defaultBranch)
+	END_CLASS_MEMBER(vl::glr::workflow::WfSwitchStatement)
 
-			BEGIN_CLASS_MEMBER(vl::glr::workflow::WfCoProviderStatement)
-				CLASS_MEMBER_BASE(vl::glr::workflow::WfVirtualCseStatement)
+	BEGIN_CLASS_MEMBER(vl::glr::workflow::WfCoProviderStatement)
+		CLASS_MEMBER_BASE(vl::glr::workflow::WfVirtualCseStatement)
 
-				CLASS_MEMBER_CONSTRUCTOR(vl::Ptr<vl::glr::workflow::WfCoProviderStatement>(), NO_PARAMETER)
+		CLASS_MEMBER_CONSTRUCTOR(vl::Ptr<vl::glr::workflow::WfCoProviderStatement>(), NO_PARAMETER)
 
-				CLASS_MEMBER_FIELD(name)
-				CLASS_MEMBER_FIELD(statement)
-			END_CLASS_MEMBER(vl::glr::workflow::WfCoProviderStatement)
+		CLASS_MEMBER_FIELD(name)
+		CLASS_MEMBER_FIELD(statement)
+	END_CLASS_MEMBER(vl::glr::workflow::WfCoProviderStatement)
 
-			BEGIN_CLASS_MEMBER(vl::glr::workflow::WfCoroutineStatement)
-				CLASS_MEMBER_BASE(vl::glr::workflow::WfStatement)
+	BEGIN_CLASS_MEMBER(vl::glr::workflow::WfCoroutineStatement)
+		CLASS_MEMBER_BASE(vl::glr::workflow::WfStatement)
 
-			END_CLASS_MEMBER(vl::glr::workflow::WfCoroutineStatement)
+	END_CLASS_MEMBER(vl::glr::workflow::WfCoroutineStatement)
 
-			BEGIN_CLASS_MEMBER(vl::glr::workflow::WfCoPauseStatement)
-				CLASS_MEMBER_BASE(vl::glr::workflow::WfCoroutineStatement)
+	BEGIN_CLASS_MEMBER(vl::glr::workflow::WfCoPauseStatement)
+		CLASS_MEMBER_BASE(vl::glr::workflow::WfCoroutineStatement)
 
-				CLASS_MEMBER_CONSTRUCTOR(vl::Ptr<vl::glr::workflow::WfCoPauseStatement>(), NO_PARAMETER)
+		CLASS_MEMBER_CONSTRUCTOR(vl::Ptr<vl::glr::workflow::WfCoPauseStatement>(), NO_PARAMETER)
 
-				CLASS_MEMBER_FIELD(statement)
-			END_CLASS_MEMBER(vl::glr::workflow::WfCoPauseStatement)
+		CLASS_MEMBER_FIELD(statement)
+	END_CLASS_MEMBER(vl::glr::workflow::WfCoPauseStatement)
 
-			BEGIN_CLASS_MEMBER(vl::glr::workflow::WfCoOperatorStatement)
-				CLASS_MEMBER_BASE(vl::glr::workflow::WfCoroutineStatement)
+	BEGIN_CLASS_MEMBER(vl::glr::workflow::WfCoOperatorStatement)
+		CLASS_MEMBER_BASE(vl::glr::workflow::WfCoroutineStatement)
 
-				CLASS_MEMBER_CONSTRUCTOR(vl::Ptr<vl::glr::workflow::WfCoOperatorStatement>(), NO_PARAMETER)
+		CLASS_MEMBER_CONSTRUCTOR(vl::Ptr<vl::glr::workflow::WfCoOperatorStatement>(), NO_PARAMETER)
 
-				CLASS_MEMBER_FIELD(varName)
-				CLASS_MEMBER_FIELD(opName)
-				CLASS_MEMBER_FIELD(arguments)
-			END_CLASS_MEMBER(vl::glr::workflow::WfCoOperatorStatement)
+		CLASS_MEMBER_FIELD(varName)
+		CLASS_MEMBER_FIELD(opName)
+		CLASS_MEMBER_FIELD(arguments)
+	END_CLASS_MEMBER(vl::glr::workflow::WfCoOperatorStatement)
 
-			BEGIN_ENUM_ITEM(vl::glr::workflow::WfStateSwitchType)
-				ENUM_ITEM_NAMESPACE(vl::glr::workflow::WfStateSwitchType)
-				ENUM_NAMESPACE_ITEM(Default)
-				ENUM_NAMESPACE_ITEM(Pass)
-				ENUM_NAMESPACE_ITEM(PassAndReturn)
-				ENUM_NAMESPACE_ITEM(Ignore)
-				ENUM_NAMESPACE_ITEM(IgnoreAndReturn)
-			END_ENUM_ITEM(vl::glr::workflow::WfStateSwitchType)
+	BEGIN_ENUM_ITEM(vl::glr::workflow::WfStateSwitchType)
+		ENUM_ITEM_NAMESPACE(vl::glr::workflow::WfStateSwitchType)
+		ENUM_NAMESPACE_ITEM(Default)
+		ENUM_NAMESPACE_ITEM(Pass)
+		ENUM_NAMESPACE_ITEM(PassAndReturn)
+		ENUM_NAMESPACE_ITEM(Ignore)
+		ENUM_NAMESPACE_ITEM(IgnoreAndReturn)
+	END_ENUM_ITEM(vl::glr::workflow::WfStateSwitchType)
 
-			BEGIN_ENUM_ITEM(vl::glr::workflow::WfStateInvokeType)
-				ENUM_ITEM_NAMESPACE(vl::glr::workflow::WfStateInvokeType)
-				ENUM_NAMESPACE_ITEM(Goto)
-				ENUM_NAMESPACE_ITEM(Push)
-			END_ENUM_ITEM(vl::glr::workflow::WfStateInvokeType)
+	BEGIN_ENUM_ITEM(vl::glr::workflow::WfStateInvokeType)
+		ENUM_ITEM_NAMESPACE(vl::glr::workflow::WfStateInvokeType)
+		ENUM_NAMESPACE_ITEM(Goto)
+		ENUM_NAMESPACE_ITEM(Push)
+	END_ENUM_ITEM(vl::glr::workflow::WfStateInvokeType)
 
-			BEGIN_CLASS_MEMBER(vl::glr::workflow::WfStateMachineStatement)
-				CLASS_MEMBER_BASE(vl::glr::workflow::WfStatement)
+	BEGIN_CLASS_MEMBER(vl::glr::workflow::WfStateMachineStatement)
+		CLASS_MEMBER_BASE(vl::glr::workflow::WfStatement)
 
-			END_CLASS_MEMBER(vl::glr::workflow::WfStateMachineStatement)
+	END_CLASS_MEMBER(vl::glr::workflow::WfStateMachineStatement)
 
-			BEGIN_CLASS_MEMBER(vl::glr::workflow::WfStateSwitchArgument)
-				CLASS_MEMBER_BASE(vl::glr::ParsingAstBase)
+	BEGIN_CLASS_MEMBER(vl::glr::workflow::WfStateSwitchArgument)
+		CLASS_MEMBER_BASE(vl::glr::ParsingAstBase)
 
-				CLASS_MEMBER_CONSTRUCTOR(vl::Ptr<vl::glr::workflow::WfStateSwitchArgument>(), NO_PARAMETER)
+		CLASS_MEMBER_CONSTRUCTOR(vl::Ptr<vl::glr::workflow::WfStateSwitchArgument>(), NO_PARAMETER)
 
-				CLASS_MEMBER_FIELD(name)
-			END_CLASS_MEMBER(vl::glr::workflow::WfStateSwitchArgument)
+		CLASS_MEMBER_FIELD(name)
+	END_CLASS_MEMBER(vl::glr::workflow::WfStateSwitchArgument)
 
-			BEGIN_CLASS_MEMBER(vl::glr::workflow::WfStateSwitchCase)
-				CLASS_MEMBER_BASE(vl::glr::ParsingAstBase)
+	BEGIN_CLASS_MEMBER(vl::glr::workflow::WfStateSwitchCase)
+		CLASS_MEMBER_BASE(vl::glr::ParsingAstBase)
 
-				CLASS_MEMBER_CONSTRUCTOR(vl::Ptr<vl::glr::workflow::WfStateSwitchCase>(), NO_PARAMETER)
+		CLASS_MEMBER_CONSTRUCTOR(vl::Ptr<vl::glr::workflow::WfStateSwitchCase>(), NO_PARAMETER)
 
-				CLASS_MEMBER_FIELD(name)
-				CLASS_MEMBER_FIELD(arguments)
-				CLASS_MEMBER_FIELD(statement)
-			END_CLASS_MEMBER(vl::glr::workflow::WfStateSwitchCase)
+		CLASS_MEMBER_FIELD(name)
+		CLASS_MEMBER_FIELD(arguments)
+		CLASS_MEMBER_FIELD(statement)
+	END_CLASS_MEMBER(vl::glr::workflow::WfStateSwitchCase)
 
-			BEGIN_CLASS_MEMBER(vl::glr::workflow::WfStateSwitchStatement)
-				CLASS_MEMBER_BASE(vl::glr::workflow::WfStateMachineStatement)
+	BEGIN_CLASS_MEMBER(vl::glr::workflow::WfStateSwitchStatement)
+		CLASS_MEMBER_BASE(vl::glr::workflow::WfStateMachineStatement)
 
-				CLASS_MEMBER_CONSTRUCTOR(vl::Ptr<vl::glr::workflow::WfStateSwitchStatement>(), NO_PARAMETER)
+		CLASS_MEMBER_CONSTRUCTOR(vl::Ptr<vl::glr::workflow::WfStateSwitchStatement>(), NO_PARAMETER)
 
-				CLASS_MEMBER_FIELD(type)
-				CLASS_MEMBER_FIELD(caseBranches)
-			END_CLASS_MEMBER(vl::glr::workflow::WfStateSwitchStatement)
+		CLASS_MEMBER_FIELD(type)
+		CLASS_MEMBER_FIELD(caseBranches)
+	END_CLASS_MEMBER(vl::glr::workflow::WfStateSwitchStatement)
 
-			BEGIN_CLASS_MEMBER(vl::glr::workflow::WfStateInvokeStatement)
-				CLASS_MEMBER_BASE(vl::glr::workflow::WfStateMachineStatement)
+	BEGIN_CLASS_MEMBER(vl::glr::workflow::WfStateInvokeStatement)
+		CLASS_MEMBER_BASE(vl::glr::workflow::WfStateMachineStatement)
 
-				CLASS_MEMBER_CONSTRUCTOR(vl::Ptr<vl::glr::workflow::WfStateInvokeStatement>(), NO_PARAMETER)
+		CLASS_MEMBER_CONSTRUCTOR(vl::Ptr<vl::glr::workflow::WfStateInvokeStatement>(), NO_PARAMETER)
 
-				CLASS_MEMBER_FIELD(type)
-				CLASS_MEMBER_FIELD(name)
-				CLASS_MEMBER_FIELD(arguments)
-			END_CLASS_MEMBER(vl::glr::workflow::WfStateInvokeStatement)
+		CLASS_MEMBER_FIELD(type)
+		CLASS_MEMBER_FIELD(name)
+		CLASS_MEMBER_FIELD(arguments)
+	END_CLASS_MEMBER(vl::glr::workflow::WfStateInvokeStatement)
 
-			BEGIN_CLASS_MEMBER(vl::glr::workflow::WfThisExpression)
-				CLASS_MEMBER_BASE(vl::glr::workflow::WfExpression)
+	BEGIN_CLASS_MEMBER(vl::glr::workflow::WfThisExpression)
+		CLASS_MEMBER_BASE(vl::glr::workflow::WfExpression)
 
-				CLASS_MEMBER_CONSTRUCTOR(vl::Ptr<vl::glr::workflow::WfThisExpression>(), NO_PARAMETER)
+		CLASS_MEMBER_CONSTRUCTOR(vl::Ptr<vl::glr::workflow::WfThisExpression>(), NO_PARAMETER)
 
-			END_CLASS_MEMBER(vl::glr::workflow::WfThisExpression)
+	END_CLASS_MEMBER(vl::glr::workflow::WfThisExpression)
 
-			BEGIN_CLASS_MEMBER(vl::glr::workflow::WfTopQualifiedExpression)
-				CLASS_MEMBER_BASE(vl::glr::workflow::WfExpression)
+	BEGIN_CLASS_MEMBER(vl::glr::workflow::WfTopQualifiedExpression)
+		CLASS_MEMBER_BASE(vl::glr::workflow::WfExpression)
 
-				CLASS_MEMBER_CONSTRUCTOR(vl::Ptr<vl::glr::workflow::WfTopQualifiedExpression>(), NO_PARAMETER)
+		CLASS_MEMBER_CONSTRUCTOR(vl::Ptr<vl::glr::workflow::WfTopQualifiedExpression>(), NO_PARAMETER)
 
-				CLASS_MEMBER_FIELD(name)
-			END_CLASS_MEMBER(vl::glr::workflow::WfTopQualifiedExpression)
+		CLASS_MEMBER_FIELD(name)
+	END_CLASS_MEMBER(vl::glr::workflow::WfTopQualifiedExpression)
 
-			BEGIN_CLASS_MEMBER(vl::glr::workflow::WfReferenceExpression)
-				CLASS_MEMBER_BASE(vl::glr::workflow::WfExpression)
+	BEGIN_CLASS_MEMBER(vl::glr::workflow::WfReferenceExpression)
+		CLASS_MEMBER_BASE(vl::glr::workflow::WfExpression)
 
-				CLASS_MEMBER_CONSTRUCTOR(vl::Ptr<vl::glr::workflow::WfReferenceExpression>(), NO_PARAMETER)
+		CLASS_MEMBER_CONSTRUCTOR(vl::Ptr<vl::glr::workflow::WfReferenceExpression>(), NO_PARAMETER)
 
-				CLASS_MEMBER_FIELD(name)
-			END_CLASS_MEMBER(vl::glr::workflow::WfReferenceExpression)
+		CLASS_MEMBER_FIELD(name)
+	END_CLASS_MEMBER(vl::glr::workflow::WfReferenceExpression)
 
-			BEGIN_CLASS_MEMBER(vl::glr::workflow::WfOrderedNameExpression)
-				CLASS_MEMBER_BASE(vl::glr::workflow::WfExpression)
+	BEGIN_CLASS_MEMBER(vl::glr::workflow::WfOrderedNameExpression)
+		CLASS_MEMBER_BASE(vl::glr::workflow::WfExpression)
 
-				CLASS_MEMBER_CONSTRUCTOR(vl::Ptr<vl::glr::workflow::WfOrderedNameExpression>(), NO_PARAMETER)
+		CLASS_MEMBER_CONSTRUCTOR(vl::Ptr<vl::glr::workflow::WfOrderedNameExpression>(), NO_PARAMETER)
 
-				CLASS_MEMBER_FIELD(name)
-			END_CLASS_MEMBER(vl::glr::workflow::WfOrderedNameExpression)
+		CLASS_MEMBER_FIELD(name)
+	END_CLASS_MEMBER(vl::glr::workflow::WfOrderedNameExpression)
 
-			BEGIN_CLASS_MEMBER(vl::glr::workflow::WfOrderedLambdaExpression)
-				CLASS_MEMBER_BASE(vl::glr::workflow::WfExpression)
+	BEGIN_CLASS_MEMBER(vl::glr::workflow::WfOrderedLambdaExpression)
+		CLASS_MEMBER_BASE(vl::glr::workflow::WfExpression)
 
-				CLASS_MEMBER_CONSTRUCTOR(vl::Ptr<vl::glr::workflow::WfOrderedLambdaExpression>(), NO_PARAMETER)
+		CLASS_MEMBER_CONSTRUCTOR(vl::Ptr<vl::glr::workflow::WfOrderedLambdaExpression>(), NO_PARAMETER)
 
-				CLASS_MEMBER_FIELD(body)
-			END_CLASS_MEMBER(vl::glr::workflow::WfOrderedLambdaExpression)
+		CLASS_MEMBER_FIELD(body)
+	END_CLASS_MEMBER(vl::glr::workflow::WfOrderedLambdaExpression)
 
-			BEGIN_CLASS_MEMBER(vl::glr::workflow::WfMemberExpression)
-				CLASS_MEMBER_BASE(vl::glr::workflow::WfExpression)
+	BEGIN_CLASS_MEMBER(vl::glr::workflow::WfMemberExpression)
+		CLASS_MEMBER_BASE(vl::glr::workflow::WfExpression)
 
-				CLASS_MEMBER_CONSTRUCTOR(vl::Ptr<vl::glr::workflow::WfMemberExpression>(), NO_PARAMETER)
+		CLASS_MEMBER_CONSTRUCTOR(vl::Ptr<vl::glr::workflow::WfMemberExpression>(), NO_PARAMETER)
 
-				CLASS_MEMBER_FIELD(parent)
-				CLASS_MEMBER_FIELD(name)
-			END_CLASS_MEMBER(vl::glr::workflow::WfMemberExpression)
+		CLASS_MEMBER_FIELD(parent)
+		CLASS_MEMBER_FIELD(name)
+	END_CLASS_MEMBER(vl::glr::workflow::WfMemberExpression)
 
-			BEGIN_CLASS_MEMBER(vl::glr::workflow::WfChildExpression)
-				CLASS_MEMBER_BASE(vl::glr::workflow::WfExpression)
+	BEGIN_CLASS_MEMBER(vl::glr::workflow::WfChildExpression)
+		CLASS_MEMBER_BASE(vl::glr::workflow::WfExpression)
 
-				CLASS_MEMBER_CONSTRUCTOR(vl::Ptr<vl::glr::workflow::WfChildExpression>(), NO_PARAMETER)
+		CLASS_MEMBER_CONSTRUCTOR(vl::Ptr<vl::glr::workflow::WfChildExpression>(), NO_PARAMETER)
 
-				CLASS_MEMBER_FIELD(parent)
-				CLASS_MEMBER_FIELD(name)
-			END_CLASS_MEMBER(vl::glr::workflow::WfChildExpression)
+		CLASS_MEMBER_FIELD(parent)
+		CLASS_MEMBER_FIELD(name)
+	END_CLASS_MEMBER(vl::glr::workflow::WfChildExpression)
 
-			BEGIN_ENUM_ITEM(vl::glr::workflow::WfLiteralValue)
-				ENUM_ITEM_NAMESPACE(vl::glr::workflow::WfLiteralValue)
-				ENUM_NAMESPACE_ITEM(Null)
-				ENUM_NAMESPACE_ITEM(True)
-				ENUM_NAMESPACE_ITEM(False)
-			END_ENUM_ITEM(vl::glr::workflow::WfLiteralValue)
+	BEGIN_ENUM_ITEM(vl::glr::workflow::WfLiteralValue)
+		ENUM_ITEM_NAMESPACE(vl::glr::workflow::WfLiteralValue)
+		ENUM_NAMESPACE_ITEM(Null)
+		ENUM_NAMESPACE_ITEM(True)
+		ENUM_NAMESPACE_ITEM(False)
+	END_ENUM_ITEM(vl::glr::workflow::WfLiteralValue)
 
-			BEGIN_CLASS_MEMBER(vl::glr::workflow::WfLiteralExpression)
-				CLASS_MEMBER_BASE(vl::glr::workflow::WfExpression)
+	BEGIN_CLASS_MEMBER(vl::glr::workflow::WfLiteralExpression)
+		CLASS_MEMBER_BASE(vl::glr::workflow::WfExpression)
 
-				CLASS_MEMBER_CONSTRUCTOR(vl::Ptr<vl::glr::workflow::WfLiteralExpression>(), NO_PARAMETER)
+		CLASS_MEMBER_CONSTRUCTOR(vl::Ptr<vl::glr::workflow::WfLiteralExpression>(), NO_PARAMETER)
 
-				CLASS_MEMBER_FIELD(value)
-			END_CLASS_MEMBER(vl::glr::workflow::WfLiteralExpression)
+		CLASS_MEMBER_FIELD(value)
+	END_CLASS_MEMBER(vl::glr::workflow::WfLiteralExpression)
 
-			BEGIN_CLASS_MEMBER(vl::glr::workflow::WfFloatingExpression)
-				CLASS_MEMBER_BASE(vl::glr::workflow::WfExpression)
+	BEGIN_CLASS_MEMBER(vl::glr::workflow::WfFloatingExpression)
+		CLASS_MEMBER_BASE(vl::glr::workflow::WfExpression)
 
-				CLASS_MEMBER_CONSTRUCTOR(vl::Ptr<vl::glr::workflow::WfFloatingExpression>(), NO_PARAMETER)
+		CLASS_MEMBER_CONSTRUCTOR(vl::Ptr<vl::glr::workflow::WfFloatingExpression>(), NO_PARAMETER)
 
-				CLASS_MEMBER_FIELD(value)
-			END_CLASS_MEMBER(vl::glr::workflow::WfFloatingExpression)
+		CLASS_MEMBER_FIELD(value)
+	END_CLASS_MEMBER(vl::glr::workflow::WfFloatingExpression)
 
-			BEGIN_CLASS_MEMBER(vl::glr::workflow::WfIntegerExpression)
-				CLASS_MEMBER_BASE(vl::glr::workflow::WfExpression)
+	BEGIN_CLASS_MEMBER(vl::glr::workflow::WfIntegerExpression)
+		CLASS_MEMBER_BASE(vl::glr::workflow::WfExpression)
 
-				CLASS_MEMBER_CONSTRUCTOR(vl::Ptr<vl::glr::workflow::WfIntegerExpression>(), NO_PARAMETER)
+		CLASS_MEMBER_CONSTRUCTOR(vl::Ptr<vl::glr::workflow::WfIntegerExpression>(), NO_PARAMETER)
 
-				CLASS_MEMBER_FIELD(value)
-			END_CLASS_MEMBER(vl::glr::workflow::WfIntegerExpression)
+		CLASS_MEMBER_FIELD(value)
+	END_CLASS_MEMBER(vl::glr::workflow::WfIntegerExpression)
 
-			BEGIN_CLASS_MEMBER(vl::glr::workflow::WfStringExpression)
-				CLASS_MEMBER_BASE(vl::glr::workflow::WfExpression)
+	BEGIN_CLASS_MEMBER(vl::glr::workflow::WfStringExpression)
+		CLASS_MEMBER_BASE(vl::glr::workflow::WfExpression)
 
-				CLASS_MEMBER_CONSTRUCTOR(vl::Ptr<vl::glr::workflow::WfStringExpression>(), NO_PARAMETER)
+		CLASS_MEMBER_CONSTRUCTOR(vl::Ptr<vl::glr::workflow::WfStringExpression>(), NO_PARAMETER)
 
-				CLASS_MEMBER_FIELD(value)
-			END_CLASS_MEMBER(vl::glr::workflow::WfStringExpression)
+		CLASS_MEMBER_FIELD(value)
+	END_CLASS_MEMBER(vl::glr::workflow::WfStringExpression)
 
-			BEGIN_ENUM_ITEM(vl::glr::workflow::WfUnaryOperator)
-				ENUM_ITEM_NAMESPACE(vl::glr::workflow::WfUnaryOperator)
-				ENUM_NAMESPACE_ITEM(Positive)
-				ENUM_NAMESPACE_ITEM(Negative)
-				ENUM_NAMESPACE_ITEM(Not)
-			END_ENUM_ITEM(vl::glr::workflow::WfUnaryOperator)
+	BEGIN_ENUM_ITEM(vl::glr::workflow::WfUnaryOperator)
+		ENUM_ITEM_NAMESPACE(vl::glr::workflow::WfUnaryOperator)
+		ENUM_NAMESPACE_ITEM(Positive)
+		ENUM_NAMESPACE_ITEM(Negative)
+		ENUM_NAMESPACE_ITEM(Not)
+	END_ENUM_ITEM(vl::glr::workflow::WfUnaryOperator)
 
-			BEGIN_CLASS_MEMBER(vl::glr::workflow::WfUnaryExpression)
-				CLASS_MEMBER_BASE(vl::glr::workflow::WfExpression)
+	BEGIN_CLASS_MEMBER(vl::glr::workflow::WfUnaryExpression)
+		CLASS_MEMBER_BASE(vl::glr::workflow::WfExpression)
 
-				CLASS_MEMBER_CONSTRUCTOR(vl::Ptr<vl::glr::workflow::WfUnaryExpression>(), NO_PARAMETER)
+		CLASS_MEMBER_CONSTRUCTOR(vl::Ptr<vl::glr::workflow::WfUnaryExpression>(), NO_PARAMETER)
 
-				CLASS_MEMBER_FIELD(op)
-				CLASS_MEMBER_FIELD(operand)
-			END_CLASS_MEMBER(vl::glr::workflow::WfUnaryExpression)
+		CLASS_MEMBER_FIELD(op)
+		CLASS_MEMBER_FIELD(operand)
+	END_CLASS_MEMBER(vl::glr::workflow::WfUnaryExpression)
 
-			BEGIN_ENUM_ITEM(vl::glr::workflow::WfBinaryOperator)
-				ENUM_ITEM_NAMESPACE(vl::glr::workflow::WfBinaryOperator)
-				ENUM_NAMESPACE_ITEM(Assign)
-				ENUM_NAMESPACE_ITEM(Index)
-				ENUM_NAMESPACE_ITEM(FlagAnd)
-				ENUM_NAMESPACE_ITEM(FlagOr)
-				ENUM_NAMESPACE_ITEM(FailedThen)
-				ENUM_NAMESPACE_ITEM(Exp)
-				ENUM_NAMESPACE_ITEM(Add)
-				ENUM_NAMESPACE_ITEM(Sub)
-				ENUM_NAMESPACE_ITEM(Mul)
-				ENUM_NAMESPACE_ITEM(Div)
-				ENUM_NAMESPACE_ITEM(Mod)
-				ENUM_NAMESPACE_ITEM(Shl)
-				ENUM_NAMESPACE_ITEM(Shr)
-				ENUM_NAMESPACE_ITEM(LT)
-				ENUM_NAMESPACE_ITEM(GT)
-				ENUM_NAMESPACE_ITEM(LE)
-				ENUM_NAMESPACE_ITEM(GE)
-				ENUM_NAMESPACE_ITEM(EQ)
-				ENUM_NAMESPACE_ITEM(NE)
-				ENUM_NAMESPACE_ITEM(Xor)
-				ENUM_NAMESPACE_ITEM(And)
-				ENUM_NAMESPACE_ITEM(Or)
-			END_ENUM_ITEM(vl::glr::workflow::WfBinaryOperator)
+	BEGIN_ENUM_ITEM(vl::glr::workflow::WfBinaryOperator)
+		ENUM_ITEM_NAMESPACE(vl::glr::workflow::WfBinaryOperator)
+		ENUM_NAMESPACE_ITEM(Assign)
+		ENUM_NAMESPACE_ITEM(Index)
+		ENUM_NAMESPACE_ITEM(FlagAnd)
+		ENUM_NAMESPACE_ITEM(FlagOr)
+		ENUM_NAMESPACE_ITEM(FailedThen)
+		ENUM_NAMESPACE_ITEM(Exp)
+		ENUM_NAMESPACE_ITEM(Add)
+		ENUM_NAMESPACE_ITEM(Sub)
+		ENUM_NAMESPACE_ITEM(Mul)
+		ENUM_NAMESPACE_ITEM(Div)
+		ENUM_NAMESPACE_ITEM(Mod)
+		ENUM_NAMESPACE_ITEM(Shl)
+		ENUM_NAMESPACE_ITEM(Shr)
+		ENUM_NAMESPACE_ITEM(LT)
+		ENUM_NAMESPACE_ITEM(GT)
+		ENUM_NAMESPACE_ITEM(LE)
+		ENUM_NAMESPACE_ITEM(GE)
+		ENUM_NAMESPACE_ITEM(EQ)
+		ENUM_NAMESPACE_ITEM(NE)
+		ENUM_NAMESPACE_ITEM(Xor)
+		ENUM_NAMESPACE_ITEM(And)
+		ENUM_NAMESPACE_ITEM(Or)
+	END_ENUM_ITEM(vl::glr::workflow::WfBinaryOperator)
 
-			BEGIN_CLASS_MEMBER(vl::glr::workflow::WfBinaryExpression)
-				CLASS_MEMBER_BASE(vl::glr::workflow::WfExpression)
+	BEGIN_CLASS_MEMBER(vl::glr::workflow::WfBinaryExpression)
+		CLASS_MEMBER_BASE(vl::glr::workflow::WfExpression)
 
-				CLASS_MEMBER_CONSTRUCTOR(vl::Ptr<vl::glr::workflow::WfBinaryExpression>(), NO_PARAMETER)
+		CLASS_MEMBER_CONSTRUCTOR(vl::Ptr<vl::glr::workflow::WfBinaryExpression>(), NO_PARAMETER)
 
-				CLASS_MEMBER_FIELD(op)
-				CLASS_MEMBER_FIELD(first)
-				CLASS_MEMBER_FIELD(second)
-			END_CLASS_MEMBER(vl::glr::workflow::WfBinaryExpression)
+		CLASS_MEMBER_FIELD(op)
+		CLASS_MEMBER_FIELD(first)
+		CLASS_MEMBER_FIELD(second)
+	END_CLASS_MEMBER(vl::glr::workflow::WfBinaryExpression)
 
-			BEGIN_CLASS_MEMBER(vl::glr::workflow::WfLetVariable)
-				CLASS_MEMBER_BASE(vl::glr::ParsingAstBase)
+	BEGIN_CLASS_MEMBER(vl::glr::workflow::WfLetVariable)
+		CLASS_MEMBER_BASE(vl::glr::ParsingAstBase)
 
-				CLASS_MEMBER_CONSTRUCTOR(vl::Ptr<vl::glr::workflow::WfLetVariable>(), NO_PARAMETER)
+		CLASS_MEMBER_CONSTRUCTOR(vl::Ptr<vl::glr::workflow::WfLetVariable>(), NO_PARAMETER)
 
-				CLASS_MEMBER_FIELD(name)
-				CLASS_MEMBER_FIELD(value)
-			END_CLASS_MEMBER(vl::glr::workflow::WfLetVariable)
+		CLASS_MEMBER_FIELD(name)
+		CLASS_MEMBER_FIELD(value)
+	END_CLASS_MEMBER(vl::glr::workflow::WfLetVariable)
 
-			BEGIN_CLASS_MEMBER(vl::glr::workflow::WfLetExpression)
-				CLASS_MEMBER_BASE(vl::glr::workflow::WfExpression)
+	BEGIN_CLASS_MEMBER(vl::glr::workflow::WfLetExpression)
+		CLASS_MEMBER_BASE(vl::glr::workflow::WfExpression)
 
-				CLASS_MEMBER_CONSTRUCTOR(vl::Ptr<vl::glr::workflow::WfLetExpression>(), NO_PARAMETER)
+		CLASS_MEMBER_CONSTRUCTOR(vl::Ptr<vl::glr::workflow::WfLetExpression>(), NO_PARAMETER)
 
-				CLASS_MEMBER_FIELD(variables)
-				CLASS_MEMBER_FIELD(expression)
-			END_CLASS_MEMBER(vl::glr::workflow::WfLetExpression)
+		CLASS_MEMBER_FIELD(variables)
+		CLASS_MEMBER_FIELD(expression)
+	END_CLASS_MEMBER(vl::glr::workflow::WfLetExpression)
 
-			BEGIN_CLASS_MEMBER(vl::glr::workflow::WfIfExpression)
-				CLASS_MEMBER_BASE(vl::glr::workflow::WfExpression)
+	BEGIN_CLASS_MEMBER(vl::glr::workflow::WfIfExpression)
+		CLASS_MEMBER_BASE(vl::glr::workflow::WfExpression)
 
-				CLASS_MEMBER_CONSTRUCTOR(vl::Ptr<vl::glr::workflow::WfIfExpression>(), NO_PARAMETER)
+		CLASS_MEMBER_CONSTRUCTOR(vl::Ptr<vl::glr::workflow::WfIfExpression>(), NO_PARAMETER)
 
-				CLASS_MEMBER_FIELD(condition)
-				CLASS_MEMBER_FIELD(trueBranch)
-				CLASS_MEMBER_FIELD(falseBranch)
-			END_CLASS_MEMBER(vl::glr::workflow::WfIfExpression)
+		CLASS_MEMBER_FIELD(condition)
+		CLASS_MEMBER_FIELD(trueBranch)
+		CLASS_MEMBER_FIELD(falseBranch)
+	END_CLASS_MEMBER(vl::glr::workflow::WfIfExpression)
 
-			BEGIN_ENUM_ITEM(vl::glr::workflow::WfRangeBoundary)
-				ENUM_ITEM_NAMESPACE(vl::glr::workflow::WfRangeBoundary)
-				ENUM_NAMESPACE_ITEM(Inclusive)
-				ENUM_NAMESPACE_ITEM(Exclusive)
-			END_ENUM_ITEM(vl::glr::workflow::WfRangeBoundary)
+	BEGIN_ENUM_ITEM(vl::glr::workflow::WfRangeBoundary)
+		ENUM_ITEM_NAMESPACE(vl::glr::workflow::WfRangeBoundary)
+		ENUM_NAMESPACE_ITEM(Inclusive)
+		ENUM_NAMESPACE_ITEM(Exclusive)
+	END_ENUM_ITEM(vl::glr::workflow::WfRangeBoundary)
 
-			BEGIN_CLASS_MEMBER(vl::glr::workflow::WfRangeExpression)
-				CLASS_MEMBER_BASE(vl::glr::workflow::WfExpression)
+	BEGIN_CLASS_MEMBER(vl::glr::workflow::WfRangeExpression)
+		CLASS_MEMBER_BASE(vl::glr::workflow::WfExpression)
 
-				CLASS_MEMBER_CONSTRUCTOR(vl::Ptr<vl::glr::workflow::WfRangeExpression>(), NO_PARAMETER)
+		CLASS_MEMBER_CONSTRUCTOR(vl::Ptr<vl::glr::workflow::WfRangeExpression>(), NO_PARAMETER)
 
-				CLASS_MEMBER_FIELD(begin)
-				CLASS_MEMBER_FIELD(beginBoundary)
-				CLASS_MEMBER_FIELD(end)
-				CLASS_MEMBER_FIELD(endBoundary)
-			END_CLASS_MEMBER(vl::glr::workflow::WfRangeExpression)
+		CLASS_MEMBER_FIELD(begin)
+		CLASS_MEMBER_FIELD(beginBoundary)
+		CLASS_MEMBER_FIELD(end)
+		CLASS_MEMBER_FIELD(endBoundary)
+	END_CLASS_MEMBER(vl::glr::workflow::WfRangeExpression)
 
-			BEGIN_ENUM_ITEM(vl::glr::workflow::WfSetTesting)
-				ENUM_ITEM_NAMESPACE(vl::glr::workflow::WfSetTesting)
-				ENUM_NAMESPACE_ITEM(In)
-				ENUM_NAMESPACE_ITEM(NotIn)
-			END_ENUM_ITEM(vl::glr::workflow::WfSetTesting)
+	BEGIN_ENUM_ITEM(vl::glr::workflow::WfSetTesting)
+		ENUM_ITEM_NAMESPACE(vl::glr::workflow::WfSetTesting)
+		ENUM_NAMESPACE_ITEM(In)
+		ENUM_NAMESPACE_ITEM(NotIn)
+	END_ENUM_ITEM(vl::glr::workflow::WfSetTesting)
 
-			BEGIN_CLASS_MEMBER(vl::glr::workflow::WfSetTestingExpression)
-				CLASS_MEMBER_BASE(vl::glr::workflow::WfExpression)
+	BEGIN_CLASS_MEMBER(vl::glr::workflow::WfSetTestingExpression)
+		CLASS_MEMBER_BASE(vl::glr::workflow::WfExpression)
 
-				CLASS_MEMBER_CONSTRUCTOR(vl::Ptr<vl::glr::workflow::WfSetTestingExpression>(), NO_PARAMETER)
+		CLASS_MEMBER_CONSTRUCTOR(vl::Ptr<vl::glr::workflow::WfSetTestingExpression>(), NO_PARAMETER)
 
-				CLASS_MEMBER_FIELD(test)
-				CLASS_MEMBER_FIELD(element)
-				CLASS_MEMBER_FIELD(collection)
-			END_CLASS_MEMBER(vl::glr::workflow::WfSetTestingExpression)
+		CLASS_MEMBER_FIELD(test)
+		CLASS_MEMBER_FIELD(element)
+		CLASS_MEMBER_FIELD(collection)
+	END_CLASS_MEMBER(vl::glr::workflow::WfSetTestingExpression)
 
-			BEGIN_CLASS_MEMBER(vl::glr::workflow::WfConstructorArgument)
-				CLASS_MEMBER_BASE(vl::glr::ParsingAstBase)
+	BEGIN_CLASS_MEMBER(vl::glr::workflow::WfConstructorArgument)
+		CLASS_MEMBER_BASE(vl::glr::ParsingAstBase)
 
-				CLASS_MEMBER_CONSTRUCTOR(vl::Ptr<vl::glr::workflow::WfConstructorArgument>(), NO_PARAMETER)
+		CLASS_MEMBER_CONSTRUCTOR(vl::Ptr<vl::glr::workflow::WfConstructorArgument>(), NO_PARAMETER)
 
-				CLASS_MEMBER_FIELD(key)
-				CLASS_MEMBER_FIELD(value)
-			END_CLASS_MEMBER(vl::glr::workflow::WfConstructorArgument)
+		CLASS_MEMBER_FIELD(key)
+		CLASS_MEMBER_FIELD(value)
+	END_CLASS_MEMBER(vl::glr::workflow::WfConstructorArgument)
 
-			BEGIN_CLASS_MEMBER(vl::glr::workflow::WfConstructorExpression)
-				CLASS_MEMBER_BASE(vl::glr::workflow::WfExpression)
+	BEGIN_CLASS_MEMBER(vl::glr::workflow::WfConstructorExpression)
+		CLASS_MEMBER_BASE(vl::glr::workflow::WfExpression)
 
-				CLASS_MEMBER_CONSTRUCTOR(vl::Ptr<vl::glr::workflow::WfConstructorExpression>(), NO_PARAMETER)
+		CLASS_MEMBER_CONSTRUCTOR(vl::Ptr<vl::glr::workflow::WfConstructorExpression>(), NO_PARAMETER)
 
-				CLASS_MEMBER_FIELD(arguments)
-			END_CLASS_MEMBER(vl::glr::workflow::WfConstructorExpression)
+		CLASS_MEMBER_FIELD(arguments)
+	END_CLASS_MEMBER(vl::glr::workflow::WfConstructorExpression)
 
-			BEGIN_CLASS_MEMBER(vl::glr::workflow::WfInferExpression)
-				CLASS_MEMBER_BASE(vl::glr::workflow::WfExpression)
+	BEGIN_CLASS_MEMBER(vl::glr::workflow::WfInferExpression)
+		CLASS_MEMBER_BASE(vl::glr::workflow::WfExpression)
 
-				CLASS_MEMBER_CONSTRUCTOR(vl::Ptr<vl::glr::workflow::WfInferExpression>(), NO_PARAMETER)
+		CLASS_MEMBER_CONSTRUCTOR(vl::Ptr<vl::glr::workflow::WfInferExpression>(), NO_PARAMETER)
 
-				CLASS_MEMBER_FIELD(expression)
-				CLASS_MEMBER_FIELD(type)
-			END_CLASS_MEMBER(vl::glr::workflow::WfInferExpression)
+		CLASS_MEMBER_FIELD(expression)
+		CLASS_MEMBER_FIELD(type)
+	END_CLASS_MEMBER(vl::glr::workflow::WfInferExpression)
 
-			BEGIN_ENUM_ITEM(vl::glr::workflow::WfTypeCastingStrategy)
-				ENUM_ITEM_NAMESPACE(vl::glr::workflow::WfTypeCastingStrategy)
-				ENUM_NAMESPACE_ITEM(Strong)
-				ENUM_NAMESPACE_ITEM(Weak)
-			END_ENUM_ITEM(vl::glr::workflow::WfTypeCastingStrategy)
+	BEGIN_ENUM_ITEM(vl::glr::workflow::WfTypeCastingStrategy)
+		ENUM_ITEM_NAMESPACE(vl::glr::workflow::WfTypeCastingStrategy)
+		ENUM_NAMESPACE_ITEM(Strong)
+		ENUM_NAMESPACE_ITEM(Weak)
+	END_ENUM_ITEM(vl::glr::workflow::WfTypeCastingStrategy)
 
-			BEGIN_CLASS_MEMBER(vl::glr::workflow::WfTypeCastingExpression)
-				CLASS_MEMBER_BASE(vl::glr::workflow::WfExpression)
+	BEGIN_CLASS_MEMBER(vl::glr::workflow::WfTypeCastingExpression)
+		CLASS_MEMBER_BASE(vl::glr::workflow::WfExpression)
 
-				CLASS_MEMBER_CONSTRUCTOR(vl::Ptr<vl::glr::workflow::WfTypeCastingExpression>(), NO_PARAMETER)
+		CLASS_MEMBER_CONSTRUCTOR(vl::Ptr<vl::glr::workflow::WfTypeCastingExpression>(), NO_PARAMETER)
 
-				CLASS_MEMBER_FIELD(strategy)
-				CLASS_MEMBER_FIELD(expression)
-				CLASS_MEMBER_FIELD(type)
-			END_CLASS_MEMBER(vl::glr::workflow::WfTypeCastingExpression)
+		CLASS_MEMBER_FIELD(strategy)
+		CLASS_MEMBER_FIELD(expression)
+		CLASS_MEMBER_FIELD(type)
+	END_CLASS_MEMBER(vl::glr::workflow::WfTypeCastingExpression)
 
-			BEGIN_ENUM_ITEM(vl::glr::workflow::WfTypeTesting)
-				ENUM_ITEM_NAMESPACE(vl::glr::workflow::WfTypeTesting)
-				ENUM_NAMESPACE_ITEM(IsType)
-				ENUM_NAMESPACE_ITEM(IsNotType)
-				ENUM_NAMESPACE_ITEM(IsNull)
-				ENUM_NAMESPACE_ITEM(IsNotNull)
-			END_ENUM_ITEM(vl::glr::workflow::WfTypeTesting)
+	BEGIN_ENUM_ITEM(vl::glr::workflow::WfTypeTesting)
+		ENUM_ITEM_NAMESPACE(vl::glr::workflow::WfTypeTesting)
+		ENUM_NAMESPACE_ITEM(IsType)
+		ENUM_NAMESPACE_ITEM(IsNotType)
+		ENUM_NAMESPACE_ITEM(IsNull)
+		ENUM_NAMESPACE_ITEM(IsNotNull)
+	END_ENUM_ITEM(vl::glr::workflow::WfTypeTesting)
 
-			BEGIN_CLASS_MEMBER(vl::glr::workflow::WfTypeTestingExpression)
-				CLASS_MEMBER_BASE(vl::glr::workflow::WfExpression)
+	BEGIN_CLASS_MEMBER(vl::glr::workflow::WfTypeTestingExpression)
+		CLASS_MEMBER_BASE(vl::glr::workflow::WfExpression)
 
-				CLASS_MEMBER_CONSTRUCTOR(vl::Ptr<vl::glr::workflow::WfTypeTestingExpression>(), NO_PARAMETER)
+		CLASS_MEMBER_CONSTRUCTOR(vl::Ptr<vl::glr::workflow::WfTypeTestingExpression>(), NO_PARAMETER)
 
-				CLASS_MEMBER_FIELD(test)
-				CLASS_MEMBER_FIELD(expression)
-				CLASS_MEMBER_FIELD(type)
-			END_CLASS_MEMBER(vl::glr::workflow::WfTypeTestingExpression)
+		CLASS_MEMBER_FIELD(test)
+		CLASS_MEMBER_FIELD(expression)
+		CLASS_MEMBER_FIELD(type)
+	END_CLASS_MEMBER(vl::glr::workflow::WfTypeTestingExpression)
 
-			BEGIN_CLASS_MEMBER(vl::glr::workflow::WfTypeOfTypeExpression)
-				CLASS_MEMBER_BASE(vl::glr::workflow::WfExpression)
+	BEGIN_CLASS_MEMBER(vl::glr::workflow::WfTypeOfTypeExpression)
+		CLASS_MEMBER_BASE(vl::glr::workflow::WfExpression)
 
-				CLASS_MEMBER_CONSTRUCTOR(vl::Ptr<vl::glr::workflow::WfTypeOfTypeExpression>(), NO_PARAMETER)
+		CLASS_MEMBER_CONSTRUCTOR(vl::Ptr<vl::glr::workflow::WfTypeOfTypeExpression>(), NO_PARAMETER)
 
-				CLASS_MEMBER_FIELD(type)
-			END_CLASS_MEMBER(vl::glr::workflow::WfTypeOfTypeExpression)
+		CLASS_MEMBER_FIELD(type)
+	END_CLASS_MEMBER(vl::glr::workflow::WfTypeOfTypeExpression)
 
-			BEGIN_CLASS_MEMBER(vl::glr::workflow::WfTypeOfExpressionExpression)
-				CLASS_MEMBER_BASE(vl::glr::workflow::WfExpression)
+	BEGIN_CLASS_MEMBER(vl::glr::workflow::WfTypeOfExpressionExpression)
+		CLASS_MEMBER_BASE(vl::glr::workflow::WfExpression)
 
-				CLASS_MEMBER_CONSTRUCTOR(vl::Ptr<vl::glr::workflow::WfTypeOfExpressionExpression>(), NO_PARAMETER)
+		CLASS_MEMBER_CONSTRUCTOR(vl::Ptr<vl::glr::workflow::WfTypeOfExpressionExpression>(), NO_PARAMETER)
 
-				CLASS_MEMBER_FIELD(expression)
-			END_CLASS_MEMBER(vl::glr::workflow::WfTypeOfExpressionExpression)
+		CLASS_MEMBER_FIELD(expression)
+	END_CLASS_MEMBER(vl::glr::workflow::WfTypeOfExpressionExpression)
 
-			BEGIN_CLASS_MEMBER(vl::glr::workflow::WfAttachEventExpression)
-				CLASS_MEMBER_BASE(vl::glr::workflow::WfExpression)
+	BEGIN_CLASS_MEMBER(vl::glr::workflow::WfAttachEventExpression)
+		CLASS_MEMBER_BASE(vl::glr::workflow::WfExpression)
 
-				CLASS_MEMBER_CONSTRUCTOR(vl::Ptr<vl::glr::workflow::WfAttachEventExpression>(), NO_PARAMETER)
+		CLASS_MEMBER_CONSTRUCTOR(vl::Ptr<vl::glr::workflow::WfAttachEventExpression>(), NO_PARAMETER)
 
-				CLASS_MEMBER_FIELD(event)
-				CLASS_MEMBER_FIELD(function)
-			END_CLASS_MEMBER(vl::glr::workflow::WfAttachEventExpression)
+		CLASS_MEMBER_FIELD(event)
+		CLASS_MEMBER_FIELD(function)
+	END_CLASS_MEMBER(vl::glr::workflow::WfAttachEventExpression)
 
-			BEGIN_CLASS_MEMBER(vl::glr::workflow::WfDetachEventExpression)
-				CLASS_MEMBER_BASE(vl::glr::workflow::WfExpression)
+	BEGIN_CLASS_MEMBER(vl::glr::workflow::WfDetachEventExpression)
+		CLASS_MEMBER_BASE(vl::glr::workflow::WfExpression)
 
-				CLASS_MEMBER_CONSTRUCTOR(vl::Ptr<vl::glr::workflow::WfDetachEventExpression>(), NO_PARAMETER)
+		CLASS_MEMBER_CONSTRUCTOR(vl::Ptr<vl::glr::workflow::WfDetachEventExpression>(), NO_PARAMETER)
 
-				CLASS_MEMBER_FIELD(event)
-				CLASS_MEMBER_FIELD(handler)
-			END_CLASS_MEMBER(vl::glr::workflow::WfDetachEventExpression)
+		CLASS_MEMBER_FIELD(event)
+		CLASS_MEMBER_FIELD(handler)
+	END_CLASS_MEMBER(vl::glr::workflow::WfDetachEventExpression)
 
-			BEGIN_ENUM_ITEM(vl::glr::workflow::WfObserveType)
-				ENUM_ITEM_NAMESPACE(vl::glr::workflow::WfObserveType)
-				ENUM_NAMESPACE_ITEM(SimpleObserve)
-				ENUM_NAMESPACE_ITEM(ExtendedObserve)
-			END_ENUM_ITEM(vl::glr::workflow::WfObserveType)
+	BEGIN_ENUM_ITEM(vl::glr::workflow::WfObserveType)
+		ENUM_ITEM_NAMESPACE(vl::glr::workflow::WfObserveType)
+		ENUM_NAMESPACE_ITEM(SimpleObserve)
+		ENUM_NAMESPACE_ITEM(ExtendedObserve)
+	END_ENUM_ITEM(vl::glr::workflow::WfObserveType)
 
-			BEGIN_CLASS_MEMBER(vl::glr::workflow::WfObserveExpression)
-				CLASS_MEMBER_BASE(vl::glr::workflow::WfExpression)
+	BEGIN_CLASS_MEMBER(vl::glr::workflow::WfObserveExpression)
+		CLASS_MEMBER_BASE(vl::glr::workflow::WfExpression)
 
-				CLASS_MEMBER_CONSTRUCTOR(vl::Ptr<vl::glr::workflow::WfObserveExpression>(), NO_PARAMETER)
+		CLASS_MEMBER_CONSTRUCTOR(vl::Ptr<vl::glr::workflow::WfObserveExpression>(), NO_PARAMETER)
 
-				CLASS_MEMBER_FIELD(parent)
-				CLASS_MEMBER_FIELD(observeType)
-				CLASS_MEMBER_FIELD(name)
-				CLASS_MEMBER_FIELD(expression)
-				CLASS_MEMBER_FIELD(events)
-			END_CLASS_MEMBER(vl::glr::workflow::WfObserveExpression)
+		CLASS_MEMBER_FIELD(parent)
+		CLASS_MEMBER_FIELD(observeType)
+		CLASS_MEMBER_FIELD(name)
+		CLASS_MEMBER_FIELD(expression)
+		CLASS_MEMBER_FIELD(events)
+	END_CLASS_MEMBER(vl::glr::workflow::WfObserveExpression)
 
-			BEGIN_CLASS_MEMBER(vl::glr::workflow::WfCallExpression)
-				CLASS_MEMBER_BASE(vl::glr::workflow::WfExpression)
+	BEGIN_CLASS_MEMBER(vl::glr::workflow::WfCallExpression)
+		CLASS_MEMBER_BASE(vl::glr::workflow::WfExpression)
 
-				CLASS_MEMBER_CONSTRUCTOR(vl::Ptr<vl::glr::workflow::WfCallExpression>(), NO_PARAMETER)
+		CLASS_MEMBER_CONSTRUCTOR(vl::Ptr<vl::glr::workflow::WfCallExpression>(), NO_PARAMETER)
 
-				CLASS_MEMBER_FIELD(function)
-				CLASS_MEMBER_FIELD(arguments)
-			END_CLASS_MEMBER(vl::glr::workflow::WfCallExpression)
+		CLASS_MEMBER_FIELD(function)
+		CLASS_MEMBER_FIELD(arguments)
+	END_CLASS_MEMBER(vl::glr::workflow::WfCallExpression)
 
-			BEGIN_CLASS_MEMBER(vl::glr::workflow::WfFunctionExpression)
-				CLASS_MEMBER_BASE(vl::glr::workflow::WfExpression)
+	BEGIN_CLASS_MEMBER(vl::glr::workflow::WfFunctionExpression)
+		CLASS_MEMBER_BASE(vl::glr::workflow::WfExpression)
 
-				CLASS_MEMBER_CONSTRUCTOR(vl::Ptr<vl::glr::workflow::WfFunctionExpression>(), NO_PARAMETER)
+		CLASS_MEMBER_CONSTRUCTOR(vl::Ptr<vl::glr::workflow::WfFunctionExpression>(), NO_PARAMETER)
 
-				CLASS_MEMBER_FIELD(function)
-			END_CLASS_MEMBER(vl::glr::workflow::WfFunctionExpression)
+		CLASS_MEMBER_FIELD(function)
+	END_CLASS_MEMBER(vl::glr::workflow::WfFunctionExpression)
 
-			BEGIN_CLASS_MEMBER(vl::glr::workflow::WfNewClassExpression)
-				CLASS_MEMBER_BASE(vl::glr::workflow::WfExpression)
+	BEGIN_CLASS_MEMBER(vl::glr::workflow::WfNewClassExpression)
+		CLASS_MEMBER_BASE(vl::glr::workflow::WfExpression)
 
-				CLASS_MEMBER_CONSTRUCTOR(vl::Ptr<vl::glr::workflow::WfNewClassExpression>(), NO_PARAMETER)
+		CLASS_MEMBER_CONSTRUCTOR(vl::Ptr<vl::glr::workflow::WfNewClassExpression>(), NO_PARAMETER)
 
-				CLASS_MEMBER_FIELD(type)
-				CLASS_MEMBER_FIELD(arguments)
-			END_CLASS_MEMBER(vl::glr::workflow::WfNewClassExpression)
+		CLASS_MEMBER_FIELD(type)
+		CLASS_MEMBER_FIELD(arguments)
+	END_CLASS_MEMBER(vl::glr::workflow::WfNewClassExpression)
 
-			BEGIN_CLASS_MEMBER(vl::glr::workflow::WfNewInterfaceExpression)
-				CLASS_MEMBER_BASE(vl::glr::workflow::WfExpression)
+	BEGIN_CLASS_MEMBER(vl::glr::workflow::WfNewInterfaceExpression)
+		CLASS_MEMBER_BASE(vl::glr::workflow::WfExpression)
 
-				CLASS_MEMBER_CONSTRUCTOR(vl::Ptr<vl::glr::workflow::WfNewInterfaceExpression>(), NO_PARAMETER)
+		CLASS_MEMBER_CONSTRUCTOR(vl::Ptr<vl::glr::workflow::WfNewInterfaceExpression>(), NO_PARAMETER)
 
-				CLASS_MEMBER_FIELD(type)
-				CLASS_MEMBER_FIELD(declarations)
-			END_CLASS_MEMBER(vl::glr::workflow::WfNewInterfaceExpression)
+		CLASS_MEMBER_FIELD(type)
+		CLASS_MEMBER_FIELD(declarations)
+	END_CLASS_MEMBER(vl::glr::workflow::WfNewInterfaceExpression)
 
-			BEGIN_CLASS_MEMBER(vl::glr::workflow::WfVirtualCfeExpression)
-				CLASS_MEMBER_BASE(vl::glr::workflow::WfExpression)
+	BEGIN_CLASS_MEMBER(vl::glr::workflow::WfVirtualCfeExpression)
+		CLASS_MEMBER_BASE(vl::glr::workflow::WfExpression)
 
-				CLASS_MEMBER_FIELD(expandedExpression)
-			END_CLASS_MEMBER(vl::glr::workflow::WfVirtualCfeExpression)
+		CLASS_MEMBER_FIELD(expandedExpression)
+	END_CLASS_MEMBER(vl::glr::workflow::WfVirtualCfeExpression)
 
-			BEGIN_CLASS_MEMBER(vl::glr::workflow::WfFormatExpression)
-				CLASS_MEMBER_BASE(vl::glr::workflow::WfVirtualCfeExpression)
+	BEGIN_CLASS_MEMBER(vl::glr::workflow::WfFormatExpression)
+		CLASS_MEMBER_BASE(vl::glr::workflow::WfVirtualCfeExpression)
 
-				CLASS_MEMBER_CONSTRUCTOR(vl::Ptr<vl::glr::workflow::WfFormatExpression>(), NO_PARAMETER)
+		CLASS_MEMBER_CONSTRUCTOR(vl::Ptr<vl::glr::workflow::WfFormatExpression>(), NO_PARAMETER)
 
-				CLASS_MEMBER_FIELD(value)
-			END_CLASS_MEMBER(vl::glr::workflow::WfFormatExpression)
+		CLASS_MEMBER_FIELD(value)
+	END_CLASS_MEMBER(vl::glr::workflow::WfFormatExpression)
 
-			BEGIN_CLASS_MEMBER(vl::glr::workflow::WfVirtualCseExpression)
-				CLASS_MEMBER_BASE(vl::glr::workflow::WfExpression)
+	BEGIN_CLASS_MEMBER(vl::glr::workflow::WfVirtualCseExpression)
+		CLASS_MEMBER_BASE(vl::glr::workflow::WfExpression)
 
-				CLASS_MEMBER_FIELD(expandedExpression)
-			END_CLASS_MEMBER(vl::glr::workflow::WfVirtualCseExpression)
+		CLASS_MEMBER_FIELD(expandedExpression)
+	END_CLASS_MEMBER(vl::glr::workflow::WfVirtualCseExpression)
 
-			BEGIN_CLASS_MEMBER(vl::glr::workflow::WfBindExpression)
-				CLASS_MEMBER_BASE(vl::glr::workflow::WfVirtualCseExpression)
+	BEGIN_CLASS_MEMBER(vl::glr::workflow::WfBindExpression)
+		CLASS_MEMBER_BASE(vl::glr::workflow::WfVirtualCseExpression)
 
-				CLASS_MEMBER_CONSTRUCTOR(vl::Ptr<vl::glr::workflow::WfBindExpression>(), NO_PARAMETER)
+		CLASS_MEMBER_CONSTRUCTOR(vl::Ptr<vl::glr::workflow::WfBindExpression>(), NO_PARAMETER)
 
-				CLASS_MEMBER_FIELD(expression)
-			END_CLASS_MEMBER(vl::glr::workflow::WfBindExpression)
+		CLASS_MEMBER_FIELD(expression)
+	END_CLASS_MEMBER(vl::glr::workflow::WfBindExpression)
 
-			BEGIN_CLASS_MEMBER(vl::glr::workflow::WfNewCoroutineExpression)
-				CLASS_MEMBER_BASE(vl::glr::workflow::WfVirtualCseExpression)
+	BEGIN_CLASS_MEMBER(vl::glr::workflow::WfNewCoroutineExpression)
+		CLASS_MEMBER_BASE(vl::glr::workflow::WfVirtualCseExpression)
 
-				CLASS_MEMBER_CONSTRUCTOR(vl::Ptr<vl::glr::workflow::WfNewCoroutineExpression>(), NO_PARAMETER)
+		CLASS_MEMBER_CONSTRUCTOR(vl::Ptr<vl::glr::workflow::WfNewCoroutineExpression>(), NO_PARAMETER)
 
-				CLASS_MEMBER_FIELD(name)
-				CLASS_MEMBER_FIELD(statement)
-			END_CLASS_MEMBER(vl::glr::workflow::WfNewCoroutineExpression)
+		CLASS_MEMBER_FIELD(name)
+		CLASS_MEMBER_FIELD(statement)
+	END_CLASS_MEMBER(vl::glr::workflow::WfNewCoroutineExpression)
 
-			BEGIN_CLASS_MEMBER(vl::glr::workflow::WfMixinCastExpression)
-				CLASS_MEMBER_BASE(vl::glr::workflow::WfVirtualCseExpression)
+	BEGIN_CLASS_MEMBER(vl::glr::workflow::WfMixinCastExpression)
+		CLASS_MEMBER_BASE(vl::glr::workflow::WfVirtualCseExpression)
 
-				CLASS_MEMBER_CONSTRUCTOR(vl::Ptr<vl::glr::workflow::WfMixinCastExpression>(), NO_PARAMETER)
+		CLASS_MEMBER_CONSTRUCTOR(vl::Ptr<vl::glr::workflow::WfMixinCastExpression>(), NO_PARAMETER)
 
-				CLASS_MEMBER_FIELD(type)
-				CLASS_MEMBER_FIELD(expression)
-			END_CLASS_MEMBER(vl::glr::workflow::WfMixinCastExpression)
+		CLASS_MEMBER_FIELD(type)
+		CLASS_MEMBER_FIELD(expression)
+	END_CLASS_MEMBER(vl::glr::workflow::WfMixinCastExpression)
 
-			BEGIN_CLASS_MEMBER(vl::glr::workflow::WfExpectedTypeCastExpression)
-				CLASS_MEMBER_BASE(vl::glr::workflow::WfVirtualCseExpression)
+	BEGIN_CLASS_MEMBER(vl::glr::workflow::WfExpectedTypeCastExpression)
+		CLASS_MEMBER_BASE(vl::glr::workflow::WfVirtualCseExpression)
 
-				CLASS_MEMBER_CONSTRUCTOR(vl::Ptr<vl::glr::workflow::WfExpectedTypeCastExpression>(), NO_PARAMETER)
+		CLASS_MEMBER_CONSTRUCTOR(vl::Ptr<vl::glr::workflow::WfExpectedTypeCastExpression>(), NO_PARAMETER)
 
-				CLASS_MEMBER_FIELD(strategy)
-				CLASS_MEMBER_FIELD(expression)
-			END_CLASS_MEMBER(vl::glr::workflow::WfExpectedTypeCastExpression)
+		CLASS_MEMBER_FIELD(strategy)
+		CLASS_MEMBER_FIELD(expression)
+	END_CLASS_MEMBER(vl::glr::workflow::WfExpectedTypeCastExpression)
 
-			BEGIN_CLASS_MEMBER(vl::glr::workflow::WfCoOperatorExpression)
-				CLASS_MEMBER_BASE(vl::glr::workflow::WfVirtualCseExpression)
+	BEGIN_CLASS_MEMBER(vl::glr::workflow::WfCoOperatorExpression)
+		CLASS_MEMBER_BASE(vl::glr::workflow::WfVirtualCseExpression)
 
-				CLASS_MEMBER_CONSTRUCTOR(vl::Ptr<vl::glr::workflow::WfCoOperatorExpression>(), NO_PARAMETER)
+		CLASS_MEMBER_CONSTRUCTOR(vl::Ptr<vl::glr::workflow::WfCoOperatorExpression>(), NO_PARAMETER)
 
-				CLASS_MEMBER_FIELD(name)
-			END_CLASS_MEMBER(vl::glr::workflow::WfCoOperatorExpression)
+		CLASS_MEMBER_FIELD(name)
+	END_CLASS_MEMBER(vl::glr::workflow::WfCoOperatorExpression)
 
-			BEGIN_CLASS_MEMBER(vl::glr::workflow::WfModuleUsingFragment)
-				CLASS_MEMBER_BASE(vl::glr::ParsingAstBase)
+	BEGIN_CLASS_MEMBER(vl::glr::workflow::WfModuleUsingFragment)
+		CLASS_MEMBER_BASE(vl::glr::ParsingAstBase)
 
-			END_CLASS_MEMBER(vl::glr::workflow::WfModuleUsingFragment)
+	END_CLASS_MEMBER(vl::glr::workflow::WfModuleUsingFragment)
 
-			BEGIN_CLASS_MEMBER(vl::glr::workflow::WfModuleUsingNameFragment)
-				CLASS_MEMBER_BASE(vl::glr::workflow::WfModuleUsingFragment)
+	BEGIN_CLASS_MEMBER(vl::glr::workflow::WfModuleUsingNameFragment)
+		CLASS_MEMBER_BASE(vl::glr::workflow::WfModuleUsingFragment)
 
-				CLASS_MEMBER_CONSTRUCTOR(vl::Ptr<vl::glr::workflow::WfModuleUsingNameFragment>(), NO_PARAMETER)
+		CLASS_MEMBER_CONSTRUCTOR(vl::Ptr<vl::glr::workflow::WfModuleUsingNameFragment>(), NO_PARAMETER)
 
-				CLASS_MEMBER_FIELD(name)
-			END_CLASS_MEMBER(vl::glr::workflow::WfModuleUsingNameFragment)
+		CLASS_MEMBER_FIELD(name)
+	END_CLASS_MEMBER(vl::glr::workflow::WfModuleUsingNameFragment)
 
-			BEGIN_CLASS_MEMBER(vl::glr::workflow::WfModuleUsingWildCardFragment)
-				CLASS_MEMBER_BASE(vl::glr::workflow::WfModuleUsingFragment)
+	BEGIN_CLASS_MEMBER(vl::glr::workflow::WfModuleUsingWildCardFragment)
+		CLASS_MEMBER_BASE(vl::glr::workflow::WfModuleUsingFragment)
 
-				CLASS_MEMBER_CONSTRUCTOR(vl::Ptr<vl::glr::workflow::WfModuleUsingWildCardFragment>(), NO_PARAMETER)
+		CLASS_MEMBER_CONSTRUCTOR(vl::Ptr<vl::glr::workflow::WfModuleUsingWildCardFragment>(), NO_PARAMETER)
 
-			END_CLASS_MEMBER(vl::glr::workflow::WfModuleUsingWildCardFragment)
+	END_CLASS_MEMBER(vl::glr::workflow::WfModuleUsingWildCardFragment)
 
-			BEGIN_CLASS_MEMBER(vl::glr::workflow::WfModuleUsingItem)
-				CLASS_MEMBER_BASE(vl::glr::ParsingAstBase)
+	BEGIN_CLASS_MEMBER(vl::glr::workflow::WfModuleUsingItem)
+		CLASS_MEMBER_BASE(vl::glr::ParsingAstBase)
 
-				CLASS_MEMBER_CONSTRUCTOR(vl::Ptr<vl::glr::workflow::WfModuleUsingItem>(), NO_PARAMETER)
+		CLASS_MEMBER_CONSTRUCTOR(vl::Ptr<vl::glr::workflow::WfModuleUsingItem>(), NO_PARAMETER)
 
-				CLASS_MEMBER_FIELD(fragments)
-			END_CLASS_MEMBER(vl::glr::workflow::WfModuleUsingItem)
+		CLASS_MEMBER_FIELD(fragments)
+	END_CLASS_MEMBER(vl::glr::workflow::WfModuleUsingItem)
 
-			BEGIN_CLASS_MEMBER(vl::glr::workflow::WfModuleUsingPath)
-				CLASS_MEMBER_BASE(vl::glr::ParsingAstBase)
+	BEGIN_CLASS_MEMBER(vl::glr::workflow::WfModuleUsingPath)
+		CLASS_MEMBER_BASE(vl::glr::ParsingAstBase)
 
-				CLASS_MEMBER_CONSTRUCTOR(vl::Ptr<vl::glr::workflow::WfModuleUsingPath>(), NO_PARAMETER)
+		CLASS_MEMBER_CONSTRUCTOR(vl::Ptr<vl::glr::workflow::WfModuleUsingPath>(), NO_PARAMETER)
 
-				CLASS_MEMBER_FIELD(items)
-			END_CLASS_MEMBER(vl::glr::workflow::WfModuleUsingPath)
+		CLASS_MEMBER_FIELD(items)
+	END_CLASS_MEMBER(vl::glr::workflow::WfModuleUsingPath)
 
-			BEGIN_ENUM_ITEM(vl::glr::workflow::WfModuleType)
-				ENUM_ITEM_NAMESPACE(vl::glr::workflow::WfModuleType)
-				ENUM_NAMESPACE_ITEM(Module)
-				ENUM_NAMESPACE_ITEM(Unit)
-			END_ENUM_ITEM(vl::glr::workflow::WfModuleType)
+	BEGIN_ENUM_ITEM(vl::glr::workflow::WfModuleType)
+		ENUM_ITEM_NAMESPACE(vl::glr::workflow::WfModuleType)
+		ENUM_NAMESPACE_ITEM(Module)
+		ENUM_NAMESPACE_ITEM(Unit)
+	END_ENUM_ITEM(vl::glr::workflow::WfModuleType)
 
-			BEGIN_CLASS_MEMBER(vl::glr::workflow::WfModule)
-				CLASS_MEMBER_BASE(vl::glr::ParsingAstBase)
+	BEGIN_CLASS_MEMBER(vl::glr::workflow::WfModule)
+		CLASS_MEMBER_BASE(vl::glr::ParsingAstBase)
 
-				CLASS_MEMBER_CONSTRUCTOR(vl::Ptr<vl::glr::workflow::WfModule>(), NO_PARAMETER)
+		CLASS_MEMBER_CONSTRUCTOR(vl::Ptr<vl::glr::workflow::WfModule>(), NO_PARAMETER)
 
-				CLASS_MEMBER_FIELD(moduleType)
-				CLASS_MEMBER_FIELD(name)
-				CLASS_MEMBER_FIELD(paths)
-				CLASS_MEMBER_FIELD(declarations)
-			END_CLASS_MEMBER(vl::glr::workflow::WfModule)
+		CLASS_MEMBER_FIELD(moduleType)
+		CLASS_MEMBER_FIELD(name)
+		CLASS_MEMBER_FIELD(paths)
+		CLASS_MEMBER_FIELD(declarations)
+	END_CLASS_MEMBER(vl::glr::workflow::WfModule)
 
-			BEGIN_INTERFACE_MEMBER(vl::glr::workflow::WfType::IVisitor)
-				CLASS_MEMBER_METHOD_OVERLOAD(Visit, {L"node"}, void(vl::glr::workflow::WfType::IVisitor::*)(vl::glr::workflow::WfPredefinedType* node))
-				CLASS_MEMBER_METHOD_OVERLOAD(Visit, {L"node"}, void(vl::glr::workflow::WfType::IVisitor::*)(vl::glr::workflow::WfTopQualifiedType* node))
-				CLASS_MEMBER_METHOD_OVERLOAD(Visit, {L"node"}, void(vl::glr::workflow::WfType::IVisitor::*)(vl::glr::workflow::WfReferenceType* node))
-				CLASS_MEMBER_METHOD_OVERLOAD(Visit, {L"node"}, void(vl::glr::workflow::WfType::IVisitor::*)(vl::glr::workflow::WfRawPointerType* node))
-				CLASS_MEMBER_METHOD_OVERLOAD(Visit, {L"node"}, void(vl::glr::workflow::WfType::IVisitor::*)(vl::glr::workflow::WfSharedPointerType* node))
-				CLASS_MEMBER_METHOD_OVERLOAD(Visit, {L"node"}, void(vl::glr::workflow::WfType::IVisitor::*)(vl::glr::workflow::WfNullableType* node))
-				CLASS_MEMBER_METHOD_OVERLOAD(Visit, {L"node"}, void(vl::glr::workflow::WfType::IVisitor::*)(vl::glr::workflow::WfEnumerableType* node))
-				CLASS_MEMBER_METHOD_OVERLOAD(Visit, {L"node"}, void(vl::glr::workflow::WfType::IVisitor::*)(vl::glr::workflow::WfMapType* node))
-				CLASS_MEMBER_METHOD_OVERLOAD(Visit, {L"node"}, void(vl::glr::workflow::WfType::IVisitor::*)(vl::glr::workflow::WfObservableListType* node))
-				CLASS_MEMBER_METHOD_OVERLOAD(Visit, {L"node"}, void(vl::glr::workflow::WfType::IVisitor::*)(vl::glr::workflow::WfFunctionType* node))
-				CLASS_MEMBER_METHOD_OVERLOAD(Visit, {L"node"}, void(vl::glr::workflow::WfType::IVisitor::*)(vl::glr::workflow::WfChildType* node))
-			END_INTERFACE_MEMBER(vl::glr::workflow::WfType)
+	BEGIN_INTERFACE_MEMBER(vl::glr::workflow::WfType::IVisitor)
+		CLASS_MEMBER_METHOD_OVERLOAD(Visit, {L"node"}, void(vl::glr::workflow::WfType::IVisitor::*)(vl::glr::workflow::WfPredefinedType* node))
+		CLASS_MEMBER_METHOD_OVERLOAD(Visit, {L"node"}, void(vl::glr::workflow::WfType::IVisitor::*)(vl::glr::workflow::WfTopQualifiedType* node))
+		CLASS_MEMBER_METHOD_OVERLOAD(Visit, {L"node"}, void(vl::glr::workflow::WfType::IVisitor::*)(vl::glr::workflow::WfReferenceType* node))
+		CLASS_MEMBER_METHOD_OVERLOAD(Visit, {L"node"}, void(vl::glr::workflow::WfType::IVisitor::*)(vl::glr::workflow::WfRawPointerType* node))
+		CLASS_MEMBER_METHOD_OVERLOAD(Visit, {L"node"}, void(vl::glr::workflow::WfType::IVisitor::*)(vl::glr::workflow::WfSharedPointerType* node))
+		CLASS_MEMBER_METHOD_OVERLOAD(Visit, {L"node"}, void(vl::glr::workflow::WfType::IVisitor::*)(vl::glr::workflow::WfNullableType* node))
+		CLASS_MEMBER_METHOD_OVERLOAD(Visit, {L"node"}, void(vl::glr::workflow::WfType::IVisitor::*)(vl::glr::workflow::WfEnumerableType* node))
+		CLASS_MEMBER_METHOD_OVERLOAD(Visit, {L"node"}, void(vl::glr::workflow::WfType::IVisitor::*)(vl::glr::workflow::WfMapType* node))
+		CLASS_MEMBER_METHOD_OVERLOAD(Visit, {L"node"}, void(vl::glr::workflow::WfType::IVisitor::*)(vl::glr::workflow::WfObservableListType* node))
+		CLASS_MEMBER_METHOD_OVERLOAD(Visit, {L"node"}, void(vl::glr::workflow::WfType::IVisitor::*)(vl::glr::workflow::WfFunctionType* node))
+		CLASS_MEMBER_METHOD_OVERLOAD(Visit, {L"node"}, void(vl::glr::workflow::WfType::IVisitor::*)(vl::glr::workflow::WfChildType* node))
+	END_INTERFACE_MEMBER(vl::glr::workflow::WfType)
 
-			BEGIN_INTERFACE_MEMBER(vl::glr::workflow::WfExpression::IVisitor)
-				CLASS_MEMBER_METHOD_OVERLOAD(Visit, {L"node"}, void(vl::glr::workflow::WfExpression::IVisitor::*)(vl::glr::workflow::WfThisExpression* node))
-				CLASS_MEMBER_METHOD_OVERLOAD(Visit, {L"node"}, void(vl::glr::workflow::WfExpression::IVisitor::*)(vl::glr::workflow::WfTopQualifiedExpression* node))
-				CLASS_MEMBER_METHOD_OVERLOAD(Visit, {L"node"}, void(vl::glr::workflow::WfExpression::IVisitor::*)(vl::glr::workflow::WfReferenceExpression* node))
-				CLASS_MEMBER_METHOD_OVERLOAD(Visit, {L"node"}, void(vl::glr::workflow::WfExpression::IVisitor::*)(vl::glr::workflow::WfOrderedNameExpression* node))
-				CLASS_MEMBER_METHOD_OVERLOAD(Visit, {L"node"}, void(vl::glr::workflow::WfExpression::IVisitor::*)(vl::glr::workflow::WfOrderedLambdaExpression* node))
-				CLASS_MEMBER_METHOD_OVERLOAD(Visit, {L"node"}, void(vl::glr::workflow::WfExpression::IVisitor::*)(vl::glr::workflow::WfMemberExpression* node))
-				CLASS_MEMBER_METHOD_OVERLOAD(Visit, {L"node"}, void(vl::glr::workflow::WfExpression::IVisitor::*)(vl::glr::workflow::WfChildExpression* node))
-				CLASS_MEMBER_METHOD_OVERLOAD(Visit, {L"node"}, void(vl::glr::workflow::WfExpression::IVisitor::*)(vl::glr::workflow::WfLiteralExpression* node))
-				CLASS_MEMBER_METHOD_OVERLOAD(Visit, {L"node"}, void(vl::glr::workflow::WfExpression::IVisitor::*)(vl::glr::workflow::WfFloatingExpression* node))
-				CLASS_MEMBER_METHOD_OVERLOAD(Visit, {L"node"}, void(vl::glr::workflow::WfExpression::IVisitor::*)(vl::glr::workflow::WfIntegerExpression* node))
-				CLASS_MEMBER_METHOD_OVERLOAD(Visit, {L"node"}, void(vl::glr::workflow::WfExpression::IVisitor::*)(vl::glr::workflow::WfStringExpression* node))
-				CLASS_MEMBER_METHOD_OVERLOAD(Visit, {L"node"}, void(vl::glr::workflow::WfExpression::IVisitor::*)(vl::glr::workflow::WfUnaryExpression* node))
-				CLASS_MEMBER_METHOD_OVERLOAD(Visit, {L"node"}, void(vl::glr::workflow::WfExpression::IVisitor::*)(vl::glr::workflow::WfBinaryExpression* node))
-				CLASS_MEMBER_METHOD_OVERLOAD(Visit, {L"node"}, void(vl::glr::workflow::WfExpression::IVisitor::*)(vl::glr::workflow::WfLetExpression* node))
-				CLASS_MEMBER_METHOD_OVERLOAD(Visit, {L"node"}, void(vl::glr::workflow::WfExpression::IVisitor::*)(vl::glr::workflow::WfIfExpression* node))
-				CLASS_MEMBER_METHOD_OVERLOAD(Visit, {L"node"}, void(vl::glr::workflow::WfExpression::IVisitor::*)(vl::glr::workflow::WfRangeExpression* node))
-				CLASS_MEMBER_METHOD_OVERLOAD(Visit, {L"node"}, void(vl::glr::workflow::WfExpression::IVisitor::*)(vl::glr::workflow::WfSetTestingExpression* node))
-				CLASS_MEMBER_METHOD_OVERLOAD(Visit, {L"node"}, void(vl::glr::workflow::WfExpression::IVisitor::*)(vl::glr::workflow::WfConstructorExpression* node))
-				CLASS_MEMBER_METHOD_OVERLOAD(Visit, {L"node"}, void(vl::glr::workflow::WfExpression::IVisitor::*)(vl::glr::workflow::WfInferExpression* node))
-				CLASS_MEMBER_METHOD_OVERLOAD(Visit, {L"node"}, void(vl::glr::workflow::WfExpression::IVisitor::*)(vl::glr::workflow::WfTypeCastingExpression* node))
-				CLASS_MEMBER_METHOD_OVERLOAD(Visit, {L"node"}, void(vl::glr::workflow::WfExpression::IVisitor::*)(vl::glr::workflow::WfTypeTestingExpression* node))
-				CLASS_MEMBER_METHOD_OVERLOAD(Visit, {L"node"}, void(vl::glr::workflow::WfExpression::IVisitor::*)(vl::glr::workflow::WfTypeOfTypeExpression* node))
-				CLASS_MEMBER_METHOD_OVERLOAD(Visit, {L"node"}, void(vl::glr::workflow::WfExpression::IVisitor::*)(vl::glr::workflow::WfTypeOfExpressionExpression* node))
-				CLASS_MEMBER_METHOD_OVERLOAD(Visit, {L"node"}, void(vl::glr::workflow::WfExpression::IVisitor::*)(vl::glr::workflow::WfAttachEventExpression* node))
-				CLASS_MEMBER_METHOD_OVERLOAD(Visit, {L"node"}, void(vl::glr::workflow::WfExpression::IVisitor::*)(vl::glr::workflow::WfDetachEventExpression* node))
-				CLASS_MEMBER_METHOD_OVERLOAD(Visit, {L"node"}, void(vl::glr::workflow::WfExpression::IVisitor::*)(vl::glr::workflow::WfObserveExpression* node))
-				CLASS_MEMBER_METHOD_OVERLOAD(Visit, {L"node"}, void(vl::glr::workflow::WfExpression::IVisitor::*)(vl::glr::workflow::WfCallExpression* node))
-				CLASS_MEMBER_METHOD_OVERLOAD(Visit, {L"node"}, void(vl::glr::workflow::WfExpression::IVisitor::*)(vl::glr::workflow::WfFunctionExpression* node))
-				CLASS_MEMBER_METHOD_OVERLOAD(Visit, {L"node"}, void(vl::glr::workflow::WfExpression::IVisitor::*)(vl::glr::workflow::WfNewClassExpression* node))
-				CLASS_MEMBER_METHOD_OVERLOAD(Visit, {L"node"}, void(vl::glr::workflow::WfExpression::IVisitor::*)(vl::glr::workflow::WfNewInterfaceExpression* node))
-				CLASS_MEMBER_METHOD_OVERLOAD(Visit, {L"node"}, void(vl::glr::workflow::WfExpression::IVisitor::*)(vl::glr::workflow::WfVirtualCfeExpression* node))
-				CLASS_MEMBER_METHOD_OVERLOAD(Visit, {L"node"}, void(vl::glr::workflow::WfExpression::IVisitor::*)(vl::glr::workflow::WfVirtualCseExpression* node))
-			END_INTERFACE_MEMBER(vl::glr::workflow::WfExpression)
+	BEGIN_INTERFACE_MEMBER(vl::glr::workflow::WfExpression::IVisitor)
+		CLASS_MEMBER_METHOD_OVERLOAD(Visit, {L"node"}, void(vl::glr::workflow::WfExpression::IVisitor::*)(vl::glr::workflow::WfThisExpression* node))
+		CLASS_MEMBER_METHOD_OVERLOAD(Visit, {L"node"}, void(vl::glr::workflow::WfExpression::IVisitor::*)(vl::glr::workflow::WfTopQualifiedExpression* node))
+		CLASS_MEMBER_METHOD_OVERLOAD(Visit, {L"node"}, void(vl::glr::workflow::WfExpression::IVisitor::*)(vl::glr::workflow::WfReferenceExpression* node))
+		CLASS_MEMBER_METHOD_OVERLOAD(Visit, {L"node"}, void(vl::glr::workflow::WfExpression::IVisitor::*)(vl::glr::workflow::WfOrderedNameExpression* node))
+		CLASS_MEMBER_METHOD_OVERLOAD(Visit, {L"node"}, void(vl::glr::workflow::WfExpression::IVisitor::*)(vl::glr::workflow::WfOrderedLambdaExpression* node))
+		CLASS_MEMBER_METHOD_OVERLOAD(Visit, {L"node"}, void(vl::glr::workflow::WfExpression::IVisitor::*)(vl::glr::workflow::WfMemberExpression* node))
+		CLASS_MEMBER_METHOD_OVERLOAD(Visit, {L"node"}, void(vl::glr::workflow::WfExpression::IVisitor::*)(vl::glr::workflow::WfChildExpression* node))
+		CLASS_MEMBER_METHOD_OVERLOAD(Visit, {L"node"}, void(vl::glr::workflow::WfExpression::IVisitor::*)(vl::glr::workflow::WfLiteralExpression* node))
+		CLASS_MEMBER_METHOD_OVERLOAD(Visit, {L"node"}, void(vl::glr::workflow::WfExpression::IVisitor::*)(vl::glr::workflow::WfFloatingExpression* node))
+		CLASS_MEMBER_METHOD_OVERLOAD(Visit, {L"node"}, void(vl::glr::workflow::WfExpression::IVisitor::*)(vl::glr::workflow::WfIntegerExpression* node))
+		CLASS_MEMBER_METHOD_OVERLOAD(Visit, {L"node"}, void(vl::glr::workflow::WfExpression::IVisitor::*)(vl::glr::workflow::WfStringExpression* node))
+		CLASS_MEMBER_METHOD_OVERLOAD(Visit, {L"node"}, void(vl::glr::workflow::WfExpression::IVisitor::*)(vl::glr::workflow::WfUnaryExpression* node))
+		CLASS_MEMBER_METHOD_OVERLOAD(Visit, {L"node"}, void(vl::glr::workflow::WfExpression::IVisitor::*)(vl::glr::workflow::WfBinaryExpression* node))
+		CLASS_MEMBER_METHOD_OVERLOAD(Visit, {L"node"}, void(vl::glr::workflow::WfExpression::IVisitor::*)(vl::glr::workflow::WfLetExpression* node))
+		CLASS_MEMBER_METHOD_OVERLOAD(Visit, {L"node"}, void(vl::glr::workflow::WfExpression::IVisitor::*)(vl::glr::workflow::WfIfExpression* node))
+		CLASS_MEMBER_METHOD_OVERLOAD(Visit, {L"node"}, void(vl::glr::workflow::WfExpression::IVisitor::*)(vl::glr::workflow::WfRangeExpression* node))
+		CLASS_MEMBER_METHOD_OVERLOAD(Visit, {L"node"}, void(vl::glr::workflow::WfExpression::IVisitor::*)(vl::glr::workflow::WfSetTestingExpression* node))
+		CLASS_MEMBER_METHOD_OVERLOAD(Visit, {L"node"}, void(vl::glr::workflow::WfExpression::IVisitor::*)(vl::glr::workflow::WfConstructorExpression* node))
+		CLASS_MEMBER_METHOD_OVERLOAD(Visit, {L"node"}, void(vl::glr::workflow::WfExpression::IVisitor::*)(vl::glr::workflow::WfInferExpression* node))
+		CLASS_MEMBER_METHOD_OVERLOAD(Visit, {L"node"}, void(vl::glr::workflow::WfExpression::IVisitor::*)(vl::glr::workflow::WfTypeCastingExpression* node))
+		CLASS_MEMBER_METHOD_OVERLOAD(Visit, {L"node"}, void(vl::glr::workflow::WfExpression::IVisitor::*)(vl::glr::workflow::WfTypeTestingExpression* node))
+		CLASS_MEMBER_METHOD_OVERLOAD(Visit, {L"node"}, void(vl::glr::workflow::WfExpression::IVisitor::*)(vl::glr::workflow::WfTypeOfTypeExpression* node))
+		CLASS_MEMBER_METHOD_OVERLOAD(Visit, {L"node"}, void(vl::glr::workflow::WfExpression::IVisitor::*)(vl::glr::workflow::WfTypeOfExpressionExpression* node))
+		CLASS_MEMBER_METHOD_OVERLOAD(Visit, {L"node"}, void(vl::glr::workflow::WfExpression::IVisitor::*)(vl::glr::workflow::WfAttachEventExpression* node))
+		CLASS_MEMBER_METHOD_OVERLOAD(Visit, {L"node"}, void(vl::glr::workflow::WfExpression::IVisitor::*)(vl::glr::workflow::WfDetachEventExpression* node))
+		CLASS_MEMBER_METHOD_OVERLOAD(Visit, {L"node"}, void(vl::glr::workflow::WfExpression::IVisitor::*)(vl::glr::workflow::WfObserveExpression* node))
+		CLASS_MEMBER_METHOD_OVERLOAD(Visit, {L"node"}, void(vl::glr::workflow::WfExpression::IVisitor::*)(vl::glr::workflow::WfCallExpression* node))
+		CLASS_MEMBER_METHOD_OVERLOAD(Visit, {L"node"}, void(vl::glr::workflow::WfExpression::IVisitor::*)(vl::glr::workflow::WfFunctionExpression* node))
+		CLASS_MEMBER_METHOD_OVERLOAD(Visit, {L"node"}, void(vl::glr::workflow::WfExpression::IVisitor::*)(vl::glr::workflow::WfNewClassExpression* node))
+		CLASS_MEMBER_METHOD_OVERLOAD(Visit, {L"node"}, void(vl::glr::workflow::WfExpression::IVisitor::*)(vl::glr::workflow::WfNewInterfaceExpression* node))
+		CLASS_MEMBER_METHOD_OVERLOAD(Visit, {L"node"}, void(vl::glr::workflow::WfExpression::IVisitor::*)(vl::glr::workflow::WfVirtualCfeExpression* node))
+		CLASS_MEMBER_METHOD_OVERLOAD(Visit, {L"node"}, void(vl::glr::workflow::WfExpression::IVisitor::*)(vl::glr::workflow::WfVirtualCseExpression* node))
+	END_INTERFACE_MEMBER(vl::glr::workflow::WfExpression)
 
-			BEGIN_INTERFACE_MEMBER(vl::glr::workflow::WfStatement::IVisitor)
-				CLASS_MEMBER_METHOD_OVERLOAD(Visit, {L"node"}, void(vl::glr::workflow::WfStatement::IVisitor::*)(vl::glr::workflow::WfBreakStatement* node))
-				CLASS_MEMBER_METHOD_OVERLOAD(Visit, {L"node"}, void(vl::glr::workflow::WfStatement::IVisitor::*)(vl::glr::workflow::WfContinueStatement* node))
-				CLASS_MEMBER_METHOD_OVERLOAD(Visit, {L"node"}, void(vl::glr::workflow::WfStatement::IVisitor::*)(vl::glr::workflow::WfReturnStatement* node))
-				CLASS_MEMBER_METHOD_OVERLOAD(Visit, {L"node"}, void(vl::glr::workflow::WfStatement::IVisitor::*)(vl::glr::workflow::WfDeleteStatement* node))
-				CLASS_MEMBER_METHOD_OVERLOAD(Visit, {L"node"}, void(vl::glr::workflow::WfStatement::IVisitor::*)(vl::glr::workflow::WfRaiseExceptionStatement* node))
-				CLASS_MEMBER_METHOD_OVERLOAD(Visit, {L"node"}, void(vl::glr::workflow::WfStatement::IVisitor::*)(vl::glr::workflow::WfIfStatement* node))
-				CLASS_MEMBER_METHOD_OVERLOAD(Visit, {L"node"}, void(vl::glr::workflow::WfStatement::IVisitor::*)(vl::glr::workflow::WfWhileStatement* node))
-				CLASS_MEMBER_METHOD_OVERLOAD(Visit, {L"node"}, void(vl::glr::workflow::WfStatement::IVisitor::*)(vl::glr::workflow::WfTryStatement* node))
-				CLASS_MEMBER_METHOD_OVERLOAD(Visit, {L"node"}, void(vl::glr::workflow::WfStatement::IVisitor::*)(vl::glr::workflow::WfBlockStatement* node))
-				CLASS_MEMBER_METHOD_OVERLOAD(Visit, {L"node"}, void(vl::glr::workflow::WfStatement::IVisitor::*)(vl::glr::workflow::WfGotoStatement* node))
-				CLASS_MEMBER_METHOD_OVERLOAD(Visit, {L"node"}, void(vl::glr::workflow::WfStatement::IVisitor::*)(vl::glr::workflow::WfVariableStatement* node))
-				CLASS_MEMBER_METHOD_OVERLOAD(Visit, {L"node"}, void(vl::glr::workflow::WfStatement::IVisitor::*)(vl::glr::workflow::WfExpressionStatement* node))
-				CLASS_MEMBER_METHOD_OVERLOAD(Visit, {L"node"}, void(vl::glr::workflow::WfStatement::IVisitor::*)(vl::glr::workflow::WfVirtualCseStatement* node))
-				CLASS_MEMBER_METHOD_OVERLOAD(Visit, {L"node"}, void(vl::glr::workflow::WfStatement::IVisitor::*)(vl::glr::workflow::WfCoroutineStatement* node))
-				CLASS_MEMBER_METHOD_OVERLOAD(Visit, {L"node"}, void(vl::glr::workflow::WfStatement::IVisitor::*)(vl::glr::workflow::WfStateMachineStatement* node))
-			END_INTERFACE_MEMBER(vl::glr::workflow::WfStatement)
+	BEGIN_INTERFACE_MEMBER(vl::glr::workflow::WfStatement::IVisitor)
+		CLASS_MEMBER_METHOD_OVERLOAD(Visit, {L"node"}, void(vl::glr::workflow::WfStatement::IVisitor::*)(vl::glr::workflow::WfBreakStatement* node))
+		CLASS_MEMBER_METHOD_OVERLOAD(Visit, {L"node"}, void(vl::glr::workflow::WfStatement::IVisitor::*)(vl::glr::workflow::WfContinueStatement* node))
+		CLASS_MEMBER_METHOD_OVERLOAD(Visit, {L"node"}, void(vl::glr::workflow::WfStatement::IVisitor::*)(vl::glr::workflow::WfReturnStatement* node))
+		CLASS_MEMBER_METHOD_OVERLOAD(Visit, {L"node"}, void(vl::glr::workflow::WfStatement::IVisitor::*)(vl::glr::workflow::WfDeleteStatement* node))
+		CLASS_MEMBER_METHOD_OVERLOAD(Visit, {L"node"}, void(vl::glr::workflow::WfStatement::IVisitor::*)(vl::glr::workflow::WfRaiseExceptionStatement* node))
+		CLASS_MEMBER_METHOD_OVERLOAD(Visit, {L"node"}, void(vl::glr::workflow::WfStatement::IVisitor::*)(vl::glr::workflow::WfIfStatement* node))
+		CLASS_MEMBER_METHOD_OVERLOAD(Visit, {L"node"}, void(vl::glr::workflow::WfStatement::IVisitor::*)(vl::glr::workflow::WfWhileStatement* node))
+		CLASS_MEMBER_METHOD_OVERLOAD(Visit, {L"node"}, void(vl::glr::workflow::WfStatement::IVisitor::*)(vl::glr::workflow::WfTryStatement* node))
+		CLASS_MEMBER_METHOD_OVERLOAD(Visit, {L"node"}, void(vl::glr::workflow::WfStatement::IVisitor::*)(vl::glr::workflow::WfBlockStatement* node))
+		CLASS_MEMBER_METHOD_OVERLOAD(Visit, {L"node"}, void(vl::glr::workflow::WfStatement::IVisitor::*)(vl::glr::workflow::WfGotoStatement* node))
+		CLASS_MEMBER_METHOD_OVERLOAD(Visit, {L"node"}, void(vl::glr::workflow::WfStatement::IVisitor::*)(vl::glr::workflow::WfVariableStatement* node))
+		CLASS_MEMBER_METHOD_OVERLOAD(Visit, {L"node"}, void(vl::glr::workflow::WfStatement::IVisitor::*)(vl::glr::workflow::WfExpressionStatement* node))
+		CLASS_MEMBER_METHOD_OVERLOAD(Visit, {L"node"}, void(vl::glr::workflow::WfStatement::IVisitor::*)(vl::glr::workflow::WfVirtualCseStatement* node))
+		CLASS_MEMBER_METHOD_OVERLOAD(Visit, {L"node"}, void(vl::glr::workflow::WfStatement::IVisitor::*)(vl::glr::workflow::WfCoroutineStatement* node))
+		CLASS_MEMBER_METHOD_OVERLOAD(Visit, {L"node"}, void(vl::glr::workflow::WfStatement::IVisitor::*)(vl::glr::workflow::WfStateMachineStatement* node))
+	END_INTERFACE_MEMBER(vl::glr::workflow::WfStatement)
 
-			BEGIN_INTERFACE_MEMBER(vl::glr::workflow::WfDeclaration::IVisitor)
-				CLASS_MEMBER_METHOD_OVERLOAD(Visit, {L"node"}, void(vl::glr::workflow::WfDeclaration::IVisitor::*)(vl::glr::workflow::WfNamespaceDeclaration* node))
-				CLASS_MEMBER_METHOD_OVERLOAD(Visit, {L"node"}, void(vl::glr::workflow::WfDeclaration::IVisitor::*)(vl::glr::workflow::WfFunctionDeclaration* node))
-				CLASS_MEMBER_METHOD_OVERLOAD(Visit, {L"node"}, void(vl::glr::workflow::WfDeclaration::IVisitor::*)(vl::glr::workflow::WfVariableDeclaration* node))
-				CLASS_MEMBER_METHOD_OVERLOAD(Visit, {L"node"}, void(vl::glr::workflow::WfDeclaration::IVisitor::*)(vl::glr::workflow::WfEventDeclaration* node))
-				CLASS_MEMBER_METHOD_OVERLOAD(Visit, {L"node"}, void(vl::glr::workflow::WfDeclaration::IVisitor::*)(vl::glr::workflow::WfPropertyDeclaration* node))
-				CLASS_MEMBER_METHOD_OVERLOAD(Visit, {L"node"}, void(vl::glr::workflow::WfDeclaration::IVisitor::*)(vl::glr::workflow::WfConstructorDeclaration* node))
-				CLASS_MEMBER_METHOD_OVERLOAD(Visit, {L"node"}, void(vl::glr::workflow::WfDeclaration::IVisitor::*)(vl::glr::workflow::WfDestructorDeclaration* node))
-				CLASS_MEMBER_METHOD_OVERLOAD(Visit, {L"node"}, void(vl::glr::workflow::WfDeclaration::IVisitor::*)(vl::glr::workflow::WfClassDeclaration* node))
-				CLASS_MEMBER_METHOD_OVERLOAD(Visit, {L"node"}, void(vl::glr::workflow::WfDeclaration::IVisitor::*)(vl::glr::workflow::WfEnumDeclaration* node))
-				CLASS_MEMBER_METHOD_OVERLOAD(Visit, {L"node"}, void(vl::glr::workflow::WfDeclaration::IVisitor::*)(vl::glr::workflow::WfStructDeclaration* node))
-				CLASS_MEMBER_METHOD_OVERLOAD(Visit, {L"node"}, void(vl::glr::workflow::WfDeclaration::IVisitor::*)(vl::glr::workflow::WfVirtualCfeDeclaration* node))
-				CLASS_MEMBER_METHOD_OVERLOAD(Visit, {L"node"}, void(vl::glr::workflow::WfDeclaration::IVisitor::*)(vl::glr::workflow::WfVirtualCseDeclaration* node))
-			END_INTERFACE_MEMBER(vl::glr::workflow::WfDeclaration)
+	BEGIN_INTERFACE_MEMBER(vl::glr::workflow::WfDeclaration::IVisitor)
+		CLASS_MEMBER_METHOD_OVERLOAD(Visit, {L"node"}, void(vl::glr::workflow::WfDeclaration::IVisitor::*)(vl::glr::workflow::WfNamespaceDeclaration* node))
+		CLASS_MEMBER_METHOD_OVERLOAD(Visit, {L"node"}, void(vl::glr::workflow::WfDeclaration::IVisitor::*)(vl::glr::workflow::WfFunctionDeclaration* node))
+		CLASS_MEMBER_METHOD_OVERLOAD(Visit, {L"node"}, void(vl::glr::workflow::WfDeclaration::IVisitor::*)(vl::glr::workflow::WfVariableDeclaration* node))
+		CLASS_MEMBER_METHOD_OVERLOAD(Visit, {L"node"}, void(vl::glr::workflow::WfDeclaration::IVisitor::*)(vl::glr::workflow::WfEventDeclaration* node))
+		CLASS_MEMBER_METHOD_OVERLOAD(Visit, {L"node"}, void(vl::glr::workflow::WfDeclaration::IVisitor::*)(vl::glr::workflow::WfPropertyDeclaration* node))
+		CLASS_MEMBER_METHOD_OVERLOAD(Visit, {L"node"}, void(vl::glr::workflow::WfDeclaration::IVisitor::*)(vl::glr::workflow::WfConstructorDeclaration* node))
+		CLASS_MEMBER_METHOD_OVERLOAD(Visit, {L"node"}, void(vl::glr::workflow::WfDeclaration::IVisitor::*)(vl::glr::workflow::WfDestructorDeclaration* node))
+		CLASS_MEMBER_METHOD_OVERLOAD(Visit, {L"node"}, void(vl::glr::workflow::WfDeclaration::IVisitor::*)(vl::glr::workflow::WfClassDeclaration* node))
+		CLASS_MEMBER_METHOD_OVERLOAD(Visit, {L"node"}, void(vl::glr::workflow::WfDeclaration::IVisitor::*)(vl::glr::workflow::WfEnumDeclaration* node))
+		CLASS_MEMBER_METHOD_OVERLOAD(Visit, {L"node"}, void(vl::glr::workflow::WfDeclaration::IVisitor::*)(vl::glr::workflow::WfStructDeclaration* node))
+		CLASS_MEMBER_METHOD_OVERLOAD(Visit, {L"node"}, void(vl::glr::workflow::WfDeclaration::IVisitor::*)(vl::glr::workflow::WfVirtualCfeDeclaration* node))
+		CLASS_MEMBER_METHOD_OVERLOAD(Visit, {L"node"}, void(vl::glr::workflow::WfDeclaration::IVisitor::*)(vl::glr::workflow::WfVirtualCseDeclaration* node))
+	END_INTERFACE_MEMBER(vl::glr::workflow::WfDeclaration)
 
-			BEGIN_INTERFACE_MEMBER(vl::glr::workflow::WfVirtualCfeDeclaration::IVisitor)
-				CLASS_MEMBER_METHOD_OVERLOAD(Visit, {L"node"}, void(vl::glr::workflow::WfVirtualCfeDeclaration::IVisitor::*)(vl::glr::workflow::WfAutoPropertyDeclaration* node))
-				CLASS_MEMBER_METHOD_OVERLOAD(Visit, {L"node"}, void(vl::glr::workflow::WfVirtualCfeDeclaration::IVisitor::*)(vl::glr::workflow::WfCastResultInterfaceDeclaration* node))
-			END_INTERFACE_MEMBER(vl::glr::workflow::WfVirtualCfeDeclaration)
+	BEGIN_INTERFACE_MEMBER(vl::glr::workflow::WfVirtualCfeDeclaration::IVisitor)
+		CLASS_MEMBER_METHOD_OVERLOAD(Visit, {L"node"}, void(vl::glr::workflow::WfVirtualCfeDeclaration::IVisitor::*)(vl::glr::workflow::WfAutoPropertyDeclaration* node))
+		CLASS_MEMBER_METHOD_OVERLOAD(Visit, {L"node"}, void(vl::glr::workflow::WfVirtualCfeDeclaration::IVisitor::*)(vl::glr::workflow::WfCastResultInterfaceDeclaration* node))
+	END_INTERFACE_MEMBER(vl::glr::workflow::WfVirtualCfeDeclaration)
 
-			BEGIN_INTERFACE_MEMBER(vl::glr::workflow::WfVirtualCseDeclaration::IVisitor)
-				CLASS_MEMBER_METHOD_OVERLOAD(Visit, {L"node"}, void(vl::glr::workflow::WfVirtualCseDeclaration::IVisitor::*)(vl::glr::workflow::WfStateMachineDeclaration* node))
-			END_INTERFACE_MEMBER(vl::glr::workflow::WfVirtualCseDeclaration)
+	BEGIN_INTERFACE_MEMBER(vl::glr::workflow::WfVirtualCseDeclaration::IVisitor)
+		CLASS_MEMBER_METHOD_OVERLOAD(Visit, {L"node"}, void(vl::glr::workflow::WfVirtualCseDeclaration::IVisitor::*)(vl::glr::workflow::WfStateMachineDeclaration* node))
+	END_INTERFACE_MEMBER(vl::glr::workflow::WfVirtualCseDeclaration)
 
-			BEGIN_INTERFACE_MEMBER(vl::glr::workflow::WfVirtualCseStatement::IVisitor)
-				CLASS_MEMBER_METHOD_OVERLOAD(Visit, {L"node"}, void(vl::glr::workflow::WfVirtualCseStatement::IVisitor::*)(vl::glr::workflow::WfForEachStatement* node))
-				CLASS_MEMBER_METHOD_OVERLOAD(Visit, {L"node"}, void(vl::glr::workflow::WfVirtualCseStatement::IVisitor::*)(vl::glr::workflow::WfSwitchStatement* node))
-				CLASS_MEMBER_METHOD_OVERLOAD(Visit, {L"node"}, void(vl::glr::workflow::WfVirtualCseStatement::IVisitor::*)(vl::glr::workflow::WfCoProviderStatement* node))
-			END_INTERFACE_MEMBER(vl::glr::workflow::WfVirtualCseStatement)
+	BEGIN_INTERFACE_MEMBER(vl::glr::workflow::WfVirtualCseStatement::IVisitor)
+		CLASS_MEMBER_METHOD_OVERLOAD(Visit, {L"node"}, void(vl::glr::workflow::WfVirtualCseStatement::IVisitor::*)(vl::glr::workflow::WfForEachStatement* node))
+		CLASS_MEMBER_METHOD_OVERLOAD(Visit, {L"node"}, void(vl::glr::workflow::WfVirtualCseStatement::IVisitor::*)(vl::glr::workflow::WfSwitchStatement* node))
+		CLASS_MEMBER_METHOD_OVERLOAD(Visit, {L"node"}, void(vl::glr::workflow::WfVirtualCseStatement::IVisitor::*)(vl::glr::workflow::WfCoProviderStatement* node))
+	END_INTERFACE_MEMBER(vl::glr::workflow::WfVirtualCseStatement)
 
-			BEGIN_INTERFACE_MEMBER(vl::glr::workflow::WfCoroutineStatement::IVisitor)
-				CLASS_MEMBER_METHOD_OVERLOAD(Visit, {L"node"}, void(vl::glr::workflow::WfCoroutineStatement::IVisitor::*)(vl::glr::workflow::WfCoPauseStatement* node))
-				CLASS_MEMBER_METHOD_OVERLOAD(Visit, {L"node"}, void(vl::glr::workflow::WfCoroutineStatement::IVisitor::*)(vl::glr::workflow::WfCoOperatorStatement* node))
-			END_INTERFACE_MEMBER(vl::glr::workflow::WfCoroutineStatement)
+	BEGIN_INTERFACE_MEMBER(vl::glr::workflow::WfCoroutineStatement::IVisitor)
+		CLASS_MEMBER_METHOD_OVERLOAD(Visit, {L"node"}, void(vl::glr::workflow::WfCoroutineStatement::IVisitor::*)(vl::glr::workflow::WfCoPauseStatement* node))
+		CLASS_MEMBER_METHOD_OVERLOAD(Visit, {L"node"}, void(vl::glr::workflow::WfCoroutineStatement::IVisitor::*)(vl::glr::workflow::WfCoOperatorStatement* node))
+	END_INTERFACE_MEMBER(vl::glr::workflow::WfCoroutineStatement)
 
-			BEGIN_INTERFACE_MEMBER(vl::glr::workflow::WfStateMachineStatement::IVisitor)
-				CLASS_MEMBER_METHOD_OVERLOAD(Visit, {L"node"}, void(vl::glr::workflow::WfStateMachineStatement::IVisitor::*)(vl::glr::workflow::WfStateSwitchStatement* node))
-				CLASS_MEMBER_METHOD_OVERLOAD(Visit, {L"node"}, void(vl::glr::workflow::WfStateMachineStatement::IVisitor::*)(vl::glr::workflow::WfStateInvokeStatement* node))
-			END_INTERFACE_MEMBER(vl::glr::workflow::WfStateMachineStatement)
+	BEGIN_INTERFACE_MEMBER(vl::glr::workflow::WfStateMachineStatement::IVisitor)
+		CLASS_MEMBER_METHOD_OVERLOAD(Visit, {L"node"}, void(vl::glr::workflow::WfStateMachineStatement::IVisitor::*)(vl::glr::workflow::WfStateSwitchStatement* node))
+		CLASS_MEMBER_METHOD_OVERLOAD(Visit, {L"node"}, void(vl::glr::workflow::WfStateMachineStatement::IVisitor::*)(vl::glr::workflow::WfStateInvokeStatement* node))
+	END_INTERFACE_MEMBER(vl::glr::workflow::WfStateMachineStatement)
 
-			BEGIN_INTERFACE_MEMBER(vl::glr::workflow::WfVirtualCfeExpression::IVisitor)
-				CLASS_MEMBER_METHOD_OVERLOAD(Visit, {L"node"}, void(vl::glr::workflow::WfVirtualCfeExpression::IVisitor::*)(vl::glr::workflow::WfFormatExpression* node))
-			END_INTERFACE_MEMBER(vl::glr::workflow::WfVirtualCfeExpression)
+	BEGIN_INTERFACE_MEMBER(vl::glr::workflow::WfVirtualCfeExpression::IVisitor)
+		CLASS_MEMBER_METHOD_OVERLOAD(Visit, {L"node"}, void(vl::glr::workflow::WfVirtualCfeExpression::IVisitor::*)(vl::glr::workflow::WfFormatExpression* node))
+	END_INTERFACE_MEMBER(vl::glr::workflow::WfVirtualCfeExpression)
 
-			BEGIN_INTERFACE_MEMBER(vl::glr::workflow::WfVirtualCseExpression::IVisitor)
-				CLASS_MEMBER_METHOD_OVERLOAD(Visit, {L"node"}, void(vl::glr::workflow::WfVirtualCseExpression::IVisitor::*)(vl::glr::workflow::WfBindExpression* node))
-				CLASS_MEMBER_METHOD_OVERLOAD(Visit, {L"node"}, void(vl::glr::workflow::WfVirtualCseExpression::IVisitor::*)(vl::glr::workflow::WfNewCoroutineExpression* node))
-				CLASS_MEMBER_METHOD_OVERLOAD(Visit, {L"node"}, void(vl::glr::workflow::WfVirtualCseExpression::IVisitor::*)(vl::glr::workflow::WfMixinCastExpression* node))
-				CLASS_MEMBER_METHOD_OVERLOAD(Visit, {L"node"}, void(vl::glr::workflow::WfVirtualCseExpression::IVisitor::*)(vl::glr::workflow::WfExpectedTypeCastExpression* node))
-				CLASS_MEMBER_METHOD_OVERLOAD(Visit, {L"node"}, void(vl::glr::workflow::WfVirtualCseExpression::IVisitor::*)(vl::glr::workflow::WfCoOperatorExpression* node))
-			END_INTERFACE_MEMBER(vl::glr::workflow::WfVirtualCseExpression)
+	BEGIN_INTERFACE_MEMBER(vl::glr::workflow::WfVirtualCseExpression::IVisitor)
+		CLASS_MEMBER_METHOD_OVERLOAD(Visit, {L"node"}, void(vl::glr::workflow::WfVirtualCseExpression::IVisitor::*)(vl::glr::workflow::WfBindExpression* node))
+		CLASS_MEMBER_METHOD_OVERLOAD(Visit, {L"node"}, void(vl::glr::workflow::WfVirtualCseExpression::IVisitor::*)(vl::glr::workflow::WfNewCoroutineExpression* node))
+		CLASS_MEMBER_METHOD_OVERLOAD(Visit, {L"node"}, void(vl::glr::workflow::WfVirtualCseExpression::IVisitor::*)(vl::glr::workflow::WfMixinCastExpression* node))
+		CLASS_MEMBER_METHOD_OVERLOAD(Visit, {L"node"}, void(vl::glr::workflow::WfVirtualCseExpression::IVisitor::*)(vl::glr::workflow::WfExpectedTypeCastExpression* node))
+		CLASS_MEMBER_METHOD_OVERLOAD(Visit, {L"node"}, void(vl::glr::workflow::WfVirtualCseExpression::IVisitor::*)(vl::glr::workflow::WfCoOperatorExpression* node))
+	END_INTERFACE_MEMBER(vl::glr::workflow::WfVirtualCseExpression)
 
-			BEGIN_INTERFACE_MEMBER(vl::glr::workflow::WfModuleUsingFragment::IVisitor)
-				CLASS_MEMBER_METHOD_OVERLOAD(Visit, {L"node"}, void(vl::glr::workflow::WfModuleUsingFragment::IVisitor::*)(vl::glr::workflow::WfModuleUsingNameFragment* node))
-				CLASS_MEMBER_METHOD_OVERLOAD(Visit, {L"node"}, void(vl::glr::workflow::WfModuleUsingFragment::IVisitor::*)(vl::glr::workflow::WfModuleUsingWildCardFragment* node))
-			END_INTERFACE_MEMBER(vl::glr::workflow::WfModuleUsingFragment)
+	BEGIN_INTERFACE_MEMBER(vl::glr::workflow::WfModuleUsingFragment::IVisitor)
+		CLASS_MEMBER_METHOD_OVERLOAD(Visit, {L"node"}, void(vl::glr::workflow::WfModuleUsingFragment::IVisitor::*)(vl::glr::workflow::WfModuleUsingNameFragment* node))
+		CLASS_MEMBER_METHOD_OVERLOAD(Visit, {L"node"}, void(vl::glr::workflow::WfModuleUsingFragment::IVisitor::*)(vl::glr::workflow::WfModuleUsingWildCardFragment* node))
+	END_INTERFACE_MEMBER(vl::glr::workflow::WfModuleUsingFragment)
 
 #endif
 
 #ifdef VCZH_DESCRIPTABLEOBJECT_WITH_METADATA
-			class WorkflowAstTypeLoader : public vl::Object, public ITypeLoader
-			{
-			public:
-				void Load(ITypeManager* manager)
-				{
-					ADD_TYPE_INFO(vl::glr::workflow::WfType)
-					ADD_TYPE_INFO(vl::glr::workflow::WfType::IVisitor)
-					ADD_TYPE_INFO(vl::glr::workflow::WfExpression)
-					ADD_TYPE_INFO(vl::glr::workflow::WfExpression::IVisitor)
-					ADD_TYPE_INFO(vl::glr::workflow::WfStatement)
-					ADD_TYPE_INFO(vl::glr::workflow::WfStatement::IVisitor)
-					ADD_TYPE_INFO(vl::glr::workflow::WfAttribute)
-					ADD_TYPE_INFO(vl::glr::workflow::WfDeclaration)
-					ADD_TYPE_INFO(vl::glr::workflow::WfDeclaration::IVisitor)
-					ADD_TYPE_INFO(vl::glr::workflow::WfFunctionKind)
-					ADD_TYPE_INFO(vl::glr::workflow::WfPredefinedTypeName)
-					ADD_TYPE_INFO(vl::glr::workflow::WfPredefinedType)
-					ADD_TYPE_INFO(vl::glr::workflow::WfTopQualifiedType)
-					ADD_TYPE_INFO(vl::glr::workflow::WfReferenceType)
-					ADD_TYPE_INFO(vl::glr::workflow::WfRawPointerType)
-					ADD_TYPE_INFO(vl::glr::workflow::WfSharedPointerType)
-					ADD_TYPE_INFO(vl::glr::workflow::WfNullableType)
-					ADD_TYPE_INFO(vl::glr::workflow::WfEnumerableType)
-					ADD_TYPE_INFO(vl::glr::workflow::WfMapWritability)
-					ADD_TYPE_INFO(vl::glr::workflow::WfMapType)
-					ADD_TYPE_INFO(vl::glr::workflow::WfObservableListType)
-					ADD_TYPE_INFO(vl::glr::workflow::WfFunctionType)
-					ADD_TYPE_INFO(vl::glr::workflow::WfChildType)
-					ADD_TYPE_INFO(vl::glr::workflow::WfNamespaceDeclaration)
-					ADD_TYPE_INFO(vl::glr::workflow::WfFunctionArgument)
-					ADD_TYPE_INFO(vl::glr::workflow::WfFunctionAnonymity)
-					ADD_TYPE_INFO(vl::glr::workflow::WfFunctionDeclaration)
-					ADD_TYPE_INFO(vl::glr::workflow::WfVariableDeclaration)
-					ADD_TYPE_INFO(vl::glr::workflow::WfEventDeclaration)
-					ADD_TYPE_INFO(vl::glr::workflow::WfPropertyDeclaration)
-					ADD_TYPE_INFO(vl::glr::workflow::WfClassKind)
-					ADD_TYPE_INFO(vl::glr::workflow::WfConstructorType)
-					ADD_TYPE_INFO(vl::glr::workflow::WfBaseConstructorCall)
-					ADD_TYPE_INFO(vl::glr::workflow::WfConstructorDeclaration)
-					ADD_TYPE_INFO(vl::glr::workflow::WfDestructorDeclaration)
-					ADD_TYPE_INFO(vl::glr::workflow::WfClassDeclaration)
-					ADD_TYPE_INFO(vl::glr::workflow::WfEnumKind)
-					ADD_TYPE_INFO(vl::glr::workflow::WfEnumItemKind)
-					ADD_TYPE_INFO(vl::glr::workflow::WfEnumItemIntersection)
-					ADD_TYPE_INFO(vl::glr::workflow::WfEnumItem)
-					ADD_TYPE_INFO(vl::glr::workflow::WfEnumDeclaration)
-					ADD_TYPE_INFO(vl::glr::workflow::WfStructMember)
-					ADD_TYPE_INFO(vl::glr::workflow::WfStructDeclaration)
-					ADD_TYPE_INFO(vl::glr::workflow::WfVirtualCfeDeclaration)
-					ADD_TYPE_INFO(vl::glr::workflow::WfVirtualCfeDeclaration::IVisitor)
-					ADD_TYPE_INFO(vl::glr::workflow::WfAPConst)
-					ADD_TYPE_INFO(vl::glr::workflow::WfAPObserve)
-					ADD_TYPE_INFO(vl::glr::workflow::WfAutoPropertyDeclaration)
-					ADD_TYPE_INFO(vl::glr::workflow::WfCastResultInterfaceDeclaration)
-					ADD_TYPE_INFO(vl::glr::workflow::WfVirtualCseDeclaration)
-					ADD_TYPE_INFO(vl::glr::workflow::WfVirtualCseDeclaration::IVisitor)
-					ADD_TYPE_INFO(vl::glr::workflow::WfStateInput)
-					ADD_TYPE_INFO(vl::glr::workflow::WfStateDeclaration)
-					ADD_TYPE_INFO(vl::glr::workflow::WfStateMachineDeclaration)
-					ADD_TYPE_INFO(vl::glr::workflow::WfBreakStatement)
-					ADD_TYPE_INFO(vl::glr::workflow::WfContinueStatement)
-					ADD_TYPE_INFO(vl::glr::workflow::WfReturnStatement)
-					ADD_TYPE_INFO(vl::glr::workflow::WfDeleteStatement)
-					ADD_TYPE_INFO(vl::glr::workflow::WfRaiseExceptionStatement)
-					ADD_TYPE_INFO(vl::glr::workflow::WfIfStatement)
-					ADD_TYPE_INFO(vl::glr::workflow::WfWhileStatement)
-					ADD_TYPE_INFO(vl::glr::workflow::WfTryStatement)
-					ADD_TYPE_INFO(vl::glr::workflow::WfBlockStatement)
-					ADD_TYPE_INFO(vl::glr::workflow::WfGotoStatement)
-					ADD_TYPE_INFO(vl::glr::workflow::WfVariableStatement)
-					ADD_TYPE_INFO(vl::glr::workflow::WfExpressionStatement)
-					ADD_TYPE_INFO(vl::glr::workflow::WfVirtualCseStatement)
-					ADD_TYPE_INFO(vl::glr::workflow::WfVirtualCseStatement::IVisitor)
-					ADD_TYPE_INFO(vl::glr::workflow::WfForEachDirection)
-					ADD_TYPE_INFO(vl::glr::workflow::WfForEachStatement)
-					ADD_TYPE_INFO(vl::glr::workflow::WfSwitchCase)
-					ADD_TYPE_INFO(vl::glr::workflow::WfSwitchStatement)
-					ADD_TYPE_INFO(vl::glr::workflow::WfCoProviderStatement)
-					ADD_TYPE_INFO(vl::glr::workflow::WfCoroutineStatement)
-					ADD_TYPE_INFO(vl::glr::workflow::WfCoroutineStatement::IVisitor)
-					ADD_TYPE_INFO(vl::glr::workflow::WfCoPauseStatement)
-					ADD_TYPE_INFO(vl::glr::workflow::WfCoOperatorStatement)
-					ADD_TYPE_INFO(vl::glr::workflow::WfStateSwitchType)
-					ADD_TYPE_INFO(vl::glr::workflow::WfStateInvokeType)
-					ADD_TYPE_INFO(vl::glr::workflow::WfStateMachineStatement)
-					ADD_TYPE_INFO(vl::glr::workflow::WfStateMachineStatement::IVisitor)
-					ADD_TYPE_INFO(vl::glr::workflow::WfStateSwitchArgument)
-					ADD_TYPE_INFO(vl::glr::workflow::WfStateSwitchCase)
-					ADD_TYPE_INFO(vl::glr::workflow::WfStateSwitchStatement)
-					ADD_TYPE_INFO(vl::glr::workflow::WfStateInvokeStatement)
-					ADD_TYPE_INFO(vl::glr::workflow::WfThisExpression)
-					ADD_TYPE_INFO(vl::glr::workflow::WfTopQualifiedExpression)
-					ADD_TYPE_INFO(vl::glr::workflow::WfReferenceExpression)
-					ADD_TYPE_INFO(vl::glr::workflow::WfOrderedNameExpression)
-					ADD_TYPE_INFO(vl::glr::workflow::WfOrderedLambdaExpression)
-					ADD_TYPE_INFO(vl::glr::workflow::WfMemberExpression)
-					ADD_TYPE_INFO(vl::glr::workflow::WfChildExpression)
-					ADD_TYPE_INFO(vl::glr::workflow::WfLiteralValue)
-					ADD_TYPE_INFO(vl::glr::workflow::WfLiteralExpression)
-					ADD_TYPE_INFO(vl::glr::workflow::WfFloatingExpression)
-					ADD_TYPE_INFO(vl::glr::workflow::WfIntegerExpression)
-					ADD_TYPE_INFO(vl::glr::workflow::WfStringExpression)
-					ADD_TYPE_INFO(vl::glr::workflow::WfUnaryOperator)
-					ADD_TYPE_INFO(vl::glr::workflow::WfUnaryExpression)
-					ADD_TYPE_INFO(vl::glr::workflow::WfBinaryOperator)
-					ADD_TYPE_INFO(vl::glr::workflow::WfBinaryExpression)
-					ADD_TYPE_INFO(vl::glr::workflow::WfLetVariable)
-					ADD_TYPE_INFO(vl::glr::workflow::WfLetExpression)
-					ADD_TYPE_INFO(vl::glr::workflow::WfIfExpression)
-					ADD_TYPE_INFO(vl::glr::workflow::WfRangeBoundary)
-					ADD_TYPE_INFO(vl::glr::workflow::WfRangeExpression)
-					ADD_TYPE_INFO(vl::glr::workflow::WfSetTesting)
-					ADD_TYPE_INFO(vl::glr::workflow::WfSetTestingExpression)
-					ADD_TYPE_INFO(vl::glr::workflow::WfConstructorArgument)
-					ADD_TYPE_INFO(vl::glr::workflow::WfConstructorExpression)
-					ADD_TYPE_INFO(vl::glr::workflow::WfInferExpression)
-					ADD_TYPE_INFO(vl::glr::workflow::WfTypeCastingStrategy)
-					ADD_TYPE_INFO(vl::glr::workflow::WfTypeCastingExpression)
-					ADD_TYPE_INFO(vl::glr::workflow::WfTypeTesting)
-					ADD_TYPE_INFO(vl::glr::workflow::WfTypeTestingExpression)
-					ADD_TYPE_INFO(vl::glr::workflow::WfTypeOfTypeExpression)
-					ADD_TYPE_INFO(vl::glr::workflow::WfTypeOfExpressionExpression)
-					ADD_TYPE_INFO(vl::glr::workflow::WfAttachEventExpression)
-					ADD_TYPE_INFO(vl::glr::workflow::WfDetachEventExpression)
-					ADD_TYPE_INFO(vl::glr::workflow::WfObserveType)
-					ADD_TYPE_INFO(vl::glr::workflow::WfObserveExpression)
-					ADD_TYPE_INFO(vl::glr::workflow::WfCallExpression)
-					ADD_TYPE_INFO(vl::glr::workflow::WfFunctionExpression)
-					ADD_TYPE_INFO(vl::glr::workflow::WfNewClassExpression)
-					ADD_TYPE_INFO(vl::glr::workflow::WfNewInterfaceExpression)
-					ADD_TYPE_INFO(vl::glr::workflow::WfVirtualCfeExpression)
-					ADD_TYPE_INFO(vl::glr::workflow::WfVirtualCfeExpression::IVisitor)
-					ADD_TYPE_INFO(vl::glr::workflow::WfFormatExpression)
-					ADD_TYPE_INFO(vl::glr::workflow::WfVirtualCseExpression)
-					ADD_TYPE_INFO(vl::glr::workflow::WfVirtualCseExpression::IVisitor)
-					ADD_TYPE_INFO(vl::glr::workflow::WfBindExpression)
-					ADD_TYPE_INFO(vl::glr::workflow::WfNewCoroutineExpression)
-					ADD_TYPE_INFO(vl::glr::workflow::WfMixinCastExpression)
-					ADD_TYPE_INFO(vl::glr::workflow::WfExpectedTypeCastExpression)
-					ADD_TYPE_INFO(vl::glr::workflow::WfCoOperatorExpression)
-					ADD_TYPE_INFO(vl::glr::workflow::WfModuleUsingFragment)
-					ADD_TYPE_INFO(vl::glr::workflow::WfModuleUsingFragment::IVisitor)
-					ADD_TYPE_INFO(vl::glr::workflow::WfModuleUsingNameFragment)
-					ADD_TYPE_INFO(vl::glr::workflow::WfModuleUsingWildCardFragment)
-					ADD_TYPE_INFO(vl::glr::workflow::WfModuleUsingItem)
-					ADD_TYPE_INFO(vl::glr::workflow::WfModuleUsingPath)
-					ADD_TYPE_INFO(vl::glr::workflow::WfModuleType)
-					ADD_TYPE_INFO(vl::glr::workflow::WfModule)
-				}
-
-				void Unload(ITypeManager* manager)
-				{
-				}
-			};
-#endif
-#endif
-
-			bool WorkflowAstLoadTypes()
-			{
-#ifdef VCZH_DESCRIPTABLEOBJECT_WITH_METADATA
-				if (auto manager = GetGlobalTypeManager())
-				{
-					auto loader = Ptr(new WorkflowAstTypeLoader);
-					return manager->AddTypeLoader(loader);
-				}
-#endif
-				return false;
-			}
+	class WorkflowAstTypeLoader : public vl::Object, public ITypeLoader
+	{
+	public:
+		void Load(ITypeManager* manager)
+		{
+			ADD_TYPE_INFO(vl::glr::workflow::WfType)
+			ADD_TYPE_INFO(vl::glr::workflow::WfType::IVisitor)
+			ADD_TYPE_INFO(vl::glr::workflow::WfExpression)
+			ADD_TYPE_INFO(vl::glr::workflow::WfExpression::IVisitor)
+			ADD_TYPE_INFO(vl::glr::workflow::WfStatement)
+			ADD_TYPE_INFO(vl::glr::workflow::WfStatement::IVisitor)
+			ADD_TYPE_INFO(vl::glr::workflow::WfAttribute)
+			ADD_TYPE_INFO(vl::glr::workflow::WfDeclaration)
+			ADD_TYPE_INFO(vl::glr::workflow::WfDeclaration::IVisitor)
+			ADD_TYPE_INFO(vl::glr::workflow::WfFunctionKind)
+			ADD_TYPE_INFO(vl::glr::workflow::WfPredefinedTypeName)
+			ADD_TYPE_INFO(vl::glr::workflow::WfPredefinedType)
+			ADD_TYPE_INFO(vl::glr::workflow::WfTopQualifiedType)
+			ADD_TYPE_INFO(vl::glr::workflow::WfReferenceType)
+			ADD_TYPE_INFO(vl::glr::workflow::WfRawPointerType)
+			ADD_TYPE_INFO(vl::glr::workflow::WfSharedPointerType)
+			ADD_TYPE_INFO(vl::glr::workflow::WfNullableType)
+			ADD_TYPE_INFO(vl::glr::workflow::WfEnumerableType)
+			ADD_TYPE_INFO(vl::glr::workflow::WfMapWritability)
+			ADD_TYPE_INFO(vl::glr::workflow::WfMapType)
+			ADD_TYPE_INFO(vl::glr::workflow::WfObservableListType)
+			ADD_TYPE_INFO(vl::glr::workflow::WfFunctionType)
+			ADD_TYPE_INFO(vl::glr::workflow::WfChildType)
+			ADD_TYPE_INFO(vl::glr::workflow::WfNamespaceDeclaration)
+			ADD_TYPE_INFO(vl::glr::workflow::WfFunctionArgument)
+			ADD_TYPE_INFO(vl::glr::workflow::WfFunctionAnonymity)
+			ADD_TYPE_INFO(vl::glr::workflow::WfFunctionDeclaration)
+			ADD_TYPE_INFO(vl::glr::workflow::WfVariableDeclaration)
+			ADD_TYPE_INFO(vl::glr::workflow::WfEventDeclaration)
+			ADD_TYPE_INFO(vl::glr::workflow::WfPropertyDeclaration)
+			ADD_TYPE_INFO(vl::glr::workflow::WfClassKind)
+			ADD_TYPE_INFO(vl::glr::workflow::WfConstructorType)
+			ADD_TYPE_INFO(vl::glr::workflow::WfBaseConstructorCall)
+			ADD_TYPE_INFO(vl::glr::workflow::WfConstructorDeclaration)
+			ADD_TYPE_INFO(vl::glr::workflow::WfDestructorDeclaration)
+			ADD_TYPE_INFO(vl::glr::workflow::WfClassDeclaration)
+			ADD_TYPE_INFO(vl::glr::workflow::WfEnumKind)
+			ADD_TYPE_INFO(vl::glr::workflow::WfEnumItemKind)
+			ADD_TYPE_INFO(vl::glr::workflow::WfEnumItemIntersection)
+			ADD_TYPE_INFO(vl::glr::workflow::WfEnumItem)
+			ADD_TYPE_INFO(vl::glr::workflow::WfEnumDeclaration)
+			ADD_TYPE_INFO(vl::glr::workflow::WfStructMember)
+			ADD_TYPE_INFO(vl::glr::workflow::WfStructDeclaration)
+			ADD_TYPE_INFO(vl::glr::workflow::WfVirtualCfeDeclaration)
+			ADD_TYPE_INFO(vl::glr::workflow::WfVirtualCfeDeclaration::IVisitor)
+			ADD_TYPE_INFO(vl::glr::workflow::WfAPConst)
+			ADD_TYPE_INFO(vl::glr::workflow::WfAPObserve)
+			ADD_TYPE_INFO(vl::glr::workflow::WfAutoPropertyDeclaration)
+			ADD_TYPE_INFO(vl::glr::workflow::WfCastResultInterfaceDeclaration)
+			ADD_TYPE_INFO(vl::glr::workflow::WfVirtualCseDeclaration)
+			ADD_TYPE_INFO(vl::glr::workflow::WfVirtualCseDeclaration::IVisitor)
+			ADD_TYPE_INFO(vl::glr::workflow::WfStateInput)
+			ADD_TYPE_INFO(vl::glr::workflow::WfStateDeclaration)
+			ADD_TYPE_INFO(vl::glr::workflow::WfStateMachineDeclaration)
+			ADD_TYPE_INFO(vl::glr::workflow::WfBreakStatement)
+			ADD_TYPE_INFO(vl::glr::workflow::WfContinueStatement)
+			ADD_TYPE_INFO(vl::glr::workflow::WfReturnStatement)
+			ADD_TYPE_INFO(vl::glr::workflow::WfDeleteStatement)
+			ADD_TYPE_INFO(vl::glr::workflow::WfRaiseExceptionStatement)
+			ADD_TYPE_INFO(vl::glr::workflow::WfIfStatement)
+			ADD_TYPE_INFO(vl::glr::workflow::WfWhileStatement)
+			ADD_TYPE_INFO(vl::glr::workflow::WfTryStatement)
+			ADD_TYPE_INFO(vl::glr::workflow::WfBlockStatement)
+			ADD_TYPE_INFO(vl::glr::workflow::WfGotoStatement)
+			ADD_TYPE_INFO(vl::glr::workflow::WfVariableStatement)
+			ADD_TYPE_INFO(vl::glr::workflow::WfExpressionStatement)
+			ADD_TYPE_INFO(vl::glr::workflow::WfVirtualCseStatement)
+			ADD_TYPE_INFO(vl::glr::workflow::WfVirtualCseStatement::IVisitor)
+			ADD_TYPE_INFO(vl::glr::workflow::WfForEachDirection)
+			ADD_TYPE_INFO(vl::glr::workflow::WfForEachStatement)
+			ADD_TYPE_INFO(vl::glr::workflow::WfSwitchCase)
+			ADD_TYPE_INFO(vl::glr::workflow::WfSwitchStatement)
+			ADD_TYPE_INFO(vl::glr::workflow::WfCoProviderStatement)
+			ADD_TYPE_INFO(vl::glr::workflow::WfCoroutineStatement)
+			ADD_TYPE_INFO(vl::glr::workflow::WfCoroutineStatement::IVisitor)
+			ADD_TYPE_INFO(vl::glr::workflow::WfCoPauseStatement)
+			ADD_TYPE_INFO(vl::glr::workflow::WfCoOperatorStatement)
+			ADD_TYPE_INFO(vl::glr::workflow::WfStateSwitchType)
+			ADD_TYPE_INFO(vl::glr::workflow::WfStateInvokeType)
+			ADD_TYPE_INFO(vl::glr::workflow::WfStateMachineStatement)
+			ADD_TYPE_INFO(vl::glr::workflow::WfStateMachineStatement::IVisitor)
+			ADD_TYPE_INFO(vl::glr::workflow::WfStateSwitchArgument)
+			ADD_TYPE_INFO(vl::glr::workflow::WfStateSwitchCase)
+			ADD_TYPE_INFO(vl::glr::workflow::WfStateSwitchStatement)
+			ADD_TYPE_INFO(vl::glr::workflow::WfStateInvokeStatement)
+			ADD_TYPE_INFO(vl::glr::workflow::WfThisExpression)
+			ADD_TYPE_INFO(vl::glr::workflow::WfTopQualifiedExpression)
+			ADD_TYPE_INFO(vl::glr::workflow::WfReferenceExpression)
+			ADD_TYPE_INFO(vl::glr::workflow::WfOrderedNameExpression)
+			ADD_TYPE_INFO(vl::glr::workflow::WfOrderedLambdaExpression)
+			ADD_TYPE_INFO(vl::glr::workflow::WfMemberExpression)
+			ADD_TYPE_INFO(vl::glr::workflow::WfChildExpression)
+			ADD_TYPE_INFO(vl::glr::workflow::WfLiteralValue)
+			ADD_TYPE_INFO(vl::glr::workflow::WfLiteralExpression)
+			ADD_TYPE_INFO(vl::glr::workflow::WfFloatingExpression)
+			ADD_TYPE_INFO(vl::glr::workflow::WfIntegerExpression)
+			ADD_TYPE_INFO(vl::glr::workflow::WfStringExpression)
+			ADD_TYPE_INFO(vl::glr::workflow::WfUnaryOperator)
+			ADD_TYPE_INFO(vl::glr::workflow::WfUnaryExpression)
+			ADD_TYPE_INFO(vl::glr::workflow::WfBinaryOperator)
+			ADD_TYPE_INFO(vl::glr::workflow::WfBinaryExpression)
+			ADD_TYPE_INFO(vl::glr::workflow::WfLetVariable)
+			ADD_TYPE_INFO(vl::glr::workflow::WfLetExpression)
+			ADD_TYPE_INFO(vl::glr::workflow::WfIfExpression)
+			ADD_TYPE_INFO(vl::glr::workflow::WfRangeBoundary)
+			ADD_TYPE_INFO(vl::glr::workflow::WfRangeExpression)
+			ADD_TYPE_INFO(vl::glr::workflow::WfSetTesting)
+			ADD_TYPE_INFO(vl::glr::workflow::WfSetTestingExpression)
+			ADD_TYPE_INFO(vl::glr::workflow::WfConstructorArgument)
+			ADD_TYPE_INFO(vl::glr::workflow::WfConstructorExpression)
+			ADD_TYPE_INFO(vl::glr::workflow::WfInferExpression)
+			ADD_TYPE_INFO(vl::glr::workflow::WfTypeCastingStrategy)
+			ADD_TYPE_INFO(vl::glr::workflow::WfTypeCastingExpression)
+			ADD_TYPE_INFO(vl::glr::workflow::WfTypeTesting)
+			ADD_TYPE_INFO(vl::glr::workflow::WfTypeTestingExpression)
+			ADD_TYPE_INFO(vl::glr::workflow::WfTypeOfTypeExpression)
+			ADD_TYPE_INFO(vl::glr::workflow::WfTypeOfExpressionExpression)
+			ADD_TYPE_INFO(vl::glr::workflow::WfAttachEventExpression)
+			ADD_TYPE_INFO(vl::glr::workflow::WfDetachEventExpression)
+			ADD_TYPE_INFO(vl::glr::workflow::WfObserveType)
+			ADD_TYPE_INFO(vl::glr::workflow::WfObserveExpression)
+			ADD_TYPE_INFO(vl::glr::workflow::WfCallExpression)
+			ADD_TYPE_INFO(vl::glr::workflow::WfFunctionExpression)
+			ADD_TYPE_INFO(vl::glr::workflow::WfNewClassExpression)
+			ADD_TYPE_INFO(vl::glr::workflow::WfNewInterfaceExpression)
+			ADD_TYPE_INFO(vl::glr::workflow::WfVirtualCfeExpression)
+			ADD_TYPE_INFO(vl::glr::workflow::WfVirtualCfeExpression::IVisitor)
+			ADD_TYPE_INFO(vl::glr::workflow::WfFormatExpression)
+			ADD_TYPE_INFO(vl::glr::workflow::WfVirtualCseExpression)
+			ADD_TYPE_INFO(vl::glr::workflow::WfVirtualCseExpression::IVisitor)
+			ADD_TYPE_INFO(vl::glr::workflow::WfBindExpression)
+			ADD_TYPE_INFO(vl::glr::workflow::WfNewCoroutineExpression)
+			ADD_TYPE_INFO(vl::glr::workflow::WfMixinCastExpression)
+			ADD_TYPE_INFO(vl::glr::workflow::WfExpectedTypeCastExpression)
+			ADD_TYPE_INFO(vl::glr::workflow::WfCoOperatorExpression)
+			ADD_TYPE_INFO(vl::glr::workflow::WfModuleUsingFragment)
+			ADD_TYPE_INFO(vl::glr::workflow::WfModuleUsingFragment::IVisitor)
+			ADD_TYPE_INFO(vl::glr::workflow::WfModuleUsingNameFragment)
+			ADD_TYPE_INFO(vl::glr::workflow::WfModuleUsingWildCardFragment)
+			ADD_TYPE_INFO(vl::glr::workflow::WfModuleUsingItem)
+			ADD_TYPE_INFO(vl::glr::workflow::WfModuleUsingPath)
+			ADD_TYPE_INFO(vl::glr::workflow::WfModuleType)
+			ADD_TYPE_INFO(vl::glr::workflow::WfModule)
 		}
+
+		void Unload(ITypeManager* manager)
+		{
+		}
+	};
+#endif
+#endif
+
+	bool WorkflowAstLoadTypes()
+	{
+#ifdef VCZH_DESCRIPTABLEOBJECT_WITH_METADATA
+		if (auto manager = GetGlobalTypeManager())
+		{
+			auto loader = Ptr(new WorkflowAstTypeLoader);
+			return manager->AddTypeLoader(loader);
+		}
+#endif
+		return false;
 	}
 }

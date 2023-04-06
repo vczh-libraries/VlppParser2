@@ -10,127 +10,108 @@ Licensed under https://github.com/vczh-libraries/License
 #include "../AstBase.h"
 #include "../SyntaxBase.h"
 
-namespace vl
+namespace vl::glr::parsergen
 {
-	namespace glr
+	class GlrAstFile;
+	class GlrClass;
+	class GlrClassProp;
+	class GlrEnum;
+	class GlrEnumItem;
+	class GlrType;
+
+	enum class GlrPropType
 	{
-		namespace parsergen
+		UNDEFINED_ENUM_ITEM_VALUE = -1,
+		Token = 0,
+		Type = 1,
+		Array = 2,
+	};
+
+	class GlrType abstract : public vl::glr::ParsingAstBase, vl::reflection::Description<GlrType>
+	{
+	public:
+		class IVisitor : public virtual vl::reflection::IDescriptable, vl::reflection::Description<IVisitor>
 		{
-			class GlrAstFile;
-			class GlrClass;
-			class GlrClassProp;
-			class GlrEnum;
-			class GlrEnumItem;
-			class GlrType;
+		public:
+			virtual void Visit(GlrEnum* node) = 0;
+			virtual void Visit(GlrClass* node) = 0;
+		};
 
-			enum class GlrPropType
-			{
-				UNDEFINED_ENUM_ITEM_VALUE = -1,
-				Token = 0,
-				Type = 1,
-				Array = 2,
-			};
+		virtual void Accept(GlrType::IVisitor* visitor) = 0;
 
-			enum class GlrClassAmbiguity
-			{
-				UNDEFINED_ENUM_ITEM_VALUE = -1,
-				No = 0,
-				Yes = 1,
-			};
+		vl::glr::ParsingToken attPublic;
+		vl::glr::ParsingToken name;
+	};
 
-			class GlrType abstract : public vl::glr::ParsingAstBase, vl::reflection::Description<GlrType>
-			{
-			public:
-				class IVisitor : public virtual vl::reflection::IDescriptable, vl::reflection::Description<IVisitor>
-				{
-				public:
-					virtual void Visit(GlrEnum* node) = 0;
-					virtual void Visit(GlrClass* node) = 0;
-				};
+	class GlrEnumItem : public vl::glr::ParsingAstBase, vl::reflection::Description<GlrEnumItem>
+	{
+	public:
+		vl::glr::ParsingToken name;
+	};
 
-				virtual void Accept(GlrType::IVisitor* visitor) = 0;
+	class GlrEnum : public GlrType, vl::reflection::Description<GlrEnum>
+	{
+	public:
+		vl::collections::List<vl::Ptr<GlrEnumItem>> items;
 
-				vl::glr::ParsingToken name;
-			};
+		void Accept(GlrType::IVisitor* visitor) override;
+	};
 
-			class GlrEnumItem : public vl::glr::ParsingAstBase, vl::reflection::Description<GlrEnumItem>
-			{
-			public:
-				vl::glr::ParsingToken name;
-			};
+	class GlrClassProp : public vl::glr::ParsingAstBase, vl::reflection::Description<GlrClassProp>
+	{
+	public:
+		vl::glr::ParsingToken name;
+		GlrPropType propType = GlrPropType::UNDEFINED_ENUM_ITEM_VALUE;
+		vl::glr::ParsingToken propTypeName;
+	};
 
-			class GlrEnum : public GlrType, vl::reflection::Description<GlrEnum>
-			{
-			public:
-				vl::collections::List<vl::Ptr<GlrEnumItem>> items;
+	class GlrClass : public GlrType, vl::reflection::Description<GlrClass>
+	{
+	public:
+		vl::glr::ParsingToken attAmbiguous;
+		vl::glr::ParsingToken baseClass;
+		vl::collections::List<vl::Ptr<GlrClassProp>> props;
 
-				void Accept(GlrType::IVisitor* visitor) override;
-			};
+		void Accept(GlrType::IVisitor* visitor) override;
+	};
 
-			class GlrClassProp : public vl::glr::ParsingAstBase, vl::reflection::Description<GlrClassProp>
-			{
-			public:
-				vl::glr::ParsingToken name;
-				GlrPropType propType = GlrPropType::UNDEFINED_ENUM_ITEM_VALUE;
-				vl::glr::ParsingToken propTypeName;
-			};
-
-			class GlrClass : public GlrType, vl::reflection::Description<GlrClass>
-			{
-			public:
-				vl::glr::ParsingToken baseClass;
-				GlrClassAmbiguity ambiguity = GlrClassAmbiguity::UNDEFINED_ENUM_ITEM_VALUE;
-				vl::collections::List<vl::Ptr<GlrClassProp>> props;
-
-				void Accept(GlrType::IVisitor* visitor) override;
-			};
-
-			class GlrAstFile : public vl::glr::ParsingAstBase, vl::reflection::Description<GlrAstFile>
-			{
-			public:
-				vl::collections::List<vl::Ptr<GlrType>> types;
-			};
-		}
-	}
+	class GlrAstFile : public vl::glr::ParsingAstBase, vl::reflection::Description<GlrAstFile>
+	{
+	public:
+		vl::collections::List<vl::Ptr<GlrType>> types;
+	};
 }
-namespace vl
+namespace vl::reflection::description
 {
-	namespace reflection
-	{
-		namespace description
-		{
 #ifndef VCZH_DEBUG_NO_REFLECTION
-			DECL_TYPE_INFO(vl::glr::parsergen::GlrType)
-			DECL_TYPE_INFO(vl::glr::parsergen::GlrType::IVisitor)
-			DECL_TYPE_INFO(vl::glr::parsergen::GlrEnumItem)
-			DECL_TYPE_INFO(vl::glr::parsergen::GlrEnum)
-			DECL_TYPE_INFO(vl::glr::parsergen::GlrPropType)
-			DECL_TYPE_INFO(vl::glr::parsergen::GlrClassProp)
-			DECL_TYPE_INFO(vl::glr::parsergen::GlrClassAmbiguity)
-			DECL_TYPE_INFO(vl::glr::parsergen::GlrClass)
-			DECL_TYPE_INFO(vl::glr::parsergen::GlrAstFile)
+	DECL_TYPE_INFO(vl::glr::parsergen::GlrType)
+	DECL_TYPE_INFO(vl::glr::parsergen::GlrType::IVisitor)
+	DECL_TYPE_INFO(vl::glr::parsergen::GlrEnumItem)
+	DECL_TYPE_INFO(vl::glr::parsergen::GlrEnum)
+	DECL_TYPE_INFO(vl::glr::parsergen::GlrPropType)
+	DECL_TYPE_INFO(vl::glr::parsergen::GlrClassProp)
+	DECL_TYPE_INFO(vl::glr::parsergen::GlrClass)
+	DECL_TYPE_INFO(vl::glr::parsergen::GlrAstFile)
 
 #ifdef VCZH_DESCRIPTABLEOBJECT_WITH_METADATA
 
-			BEGIN_INTERFACE_PROXY_NOPARENT_SHAREDPTR(vl::glr::parsergen::GlrType::IVisitor)
-				void Visit(vl::glr::parsergen::GlrEnum* node) override
-				{
-					INVOKE_INTERFACE_PROXY(Visit, node);
-				}
-
-				void Visit(vl::glr::parsergen::GlrClass* node) override
-				{
-					INVOKE_INTERFACE_PROXY(Visit, node);
-				}
-
-			END_INTERFACE_PROXY(vl::glr::parsergen::GlrType::IVisitor)
-
-#endif
-#endif
-			/// <summary>Load all reflectable AST types, only available when <b>VCZH_DEBUG_NO_REFLECTION</b> is off.</summary>
-			/// <returns>Returns true if this operation succeeded.</returns>
-			extern bool ParserGenTypeAstLoadTypes();
+	BEGIN_INTERFACE_PROXY_NOPARENT_SHAREDPTR(vl::glr::parsergen::GlrType::IVisitor)
+		void Visit(vl::glr::parsergen::GlrEnum* node) override
+		{
+			INVOKE_INTERFACE_PROXY(Visit, node);
 		}
-	}
+
+		void Visit(vl::glr::parsergen::GlrClass* node) override
+		{
+			INVOKE_INTERFACE_PROXY(Visit, node);
+		}
+
+	END_INTERFACE_PROXY(vl::glr::parsergen::GlrType::IVisitor)
+
+#endif
+#endif
+	/// <summary>Load all reflectable AST types, only available when <b>VCZH_DEBUG_NO_REFLECTION</b> is off.</summary>
+	/// <returns>Returns true if this operation succeeded.</returns>
+	extern bool ParserGenTypeAstLoadTypes();
 }
 #endif

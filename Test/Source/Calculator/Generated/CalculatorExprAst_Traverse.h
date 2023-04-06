@@ -9,70 +9,67 @@ Licensed under https://github.com/vczh-libraries/License
 
 #include "CalculatorExprAst.h"
 
-namespace calculator
+namespace calculator::traverse_visitor
 {
-	namespace traverse_visitor
+	/// <summary>A traverse visitor, overriding all abstract methods with AST visiting code.</summary>
+	class ExprAstVisitor
+		: public vl::Object
+		, protected virtual Expr::IVisitor
+		, protected virtual Expandable::IVisitor
 	{
-		/// <summary>A traverse visitor, overriding all abstract methods with AST visiting code.</summary>
-		class ExprAstVisitor
-			: public vl::Object
-			, protected virtual Expr::IVisitor
-			, protected virtual Expandable::IVisitor
-		{
-		protected:
-			virtual void Traverse(vl::glr::ParsingToken& token);
-			virtual void Traverse(vl::glr::ParsingAstBase* node);
-			virtual void Traverse(Arg* node);
-			virtual void Traverse(Binary* node);
-			virtual void Traverse(Call* node);
-			virtual void Traverse(Expandable* node);
-			virtual void Traverse(Expr* node);
-			virtual void Traverse(False* node);
-			virtual void Traverse(Func* node);
-			virtual void Traverse(Import* node);
-			virtual void Traverse(LetExpr* node);
-			virtual void Traverse(Module* node);
-			virtual void Traverse(NumExpr* node);
-			virtual void Traverse(Ref* node);
-			virtual void Traverse(True* node);
-			virtual void Traverse(Unary* node);
+	protected:
+		virtual void Traverse(vl::glr::ParsingToken& token);
+		virtual void Traverse(vl::glr::ParsingAstBase* node);
+		virtual void Traverse(Arg* node);
+		virtual void Traverse(Binary* node);
+		virtual void Traverse(Call* node);
+		virtual void Traverse(Expandable* node);
+		virtual void Traverse(Expr* node);
+		virtual void Traverse(False* node);
+		virtual void Traverse(Func* node);
+		virtual void Traverse(Import* node);
+		virtual void Traverse(LetExpr* node);
+		virtual void Traverse(Module* node);
+		virtual void Traverse(NumExpr* node);
+		virtual void Traverse(Ref* node);
+		virtual void Traverse(True* node);
+		virtual void Traverse(Unary* node);
 
-		protected:
-			virtual void Finishing(vl::glr::ParsingAstBase* node);
-			virtual void Finishing(Arg* node);
-			virtual void Finishing(Binary* node);
-			virtual void Finishing(Call* node);
-			virtual void Finishing(Expandable* node);
-			virtual void Finishing(Expr* node);
-			virtual void Finishing(False* node);
-			virtual void Finishing(Func* node);
-			virtual void Finishing(Import* node);
-			virtual void Finishing(LetExpr* node);
-			virtual void Finishing(Module* node);
-			virtual void Finishing(NumExpr* node);
-			virtual void Finishing(Ref* node);
-			virtual void Finishing(True* node);
-			virtual void Finishing(Unary* node);
+	protected:
+		virtual void Finishing(vl::glr::ParsingAstBase* node);
+		virtual void Finishing(Arg* node);
+		virtual void Finishing(Binary* node);
+		virtual void Finishing(Call* node);
+		virtual void Finishing(Expandable* node);
+		virtual void Finishing(Expr* node);
+		virtual void Finishing(False* node);
+		virtual void Finishing(Func* node);
+		virtual void Finishing(Import* node);
+		virtual void Finishing(LetExpr* node);
+		virtual void Finishing(Module* node);
+		virtual void Finishing(NumExpr* node);
+		virtual void Finishing(Ref* node);
+		virtual void Finishing(True* node);
+		virtual void Finishing(Unary* node);
 
-		protected:
-			void Visit(NumExpr* node) override;
-			void Visit(Ref* node) override;
-			void Visit(True* node) override;
-			void Visit(False* node) override;
-			void Visit(Func* node) override;
-			void Visit(Call* node) override;
-			void Visit(Expandable* node) override;
+	protected:
+		void Visit(NumExpr* node) override;
+		void Visit(Ref* node) override;
+		void Visit(True* node) override;
+		void Visit(False* node) override;
+		void Visit(Func* node) override;
+		void Visit(Call* node) override;
+		void Visit(Expandable* node) override;
 
-			void Visit(LetExpr* node) override;
-			void Visit(Unary* node) override;
-			void Visit(Binary* node) override;
+		void Visit(LetExpr* node) override;
+		void Visit(Unary* node) override;
+		void Visit(Binary* node) override;
 
-		public:
-			void InspectInto(Expr* node);
-			void InspectInto(Arg* node);
-			void InspectInto(Import* node);
-			void InspectInto(Module* node);
-		};
-	}
+	public:
+		void InspectInto(Expr* node);
+		void InspectInto(Arg* node);
+		void InspectInto(Import* node);
+		void InspectInto(Module* node);
+	};
 }
 #endif

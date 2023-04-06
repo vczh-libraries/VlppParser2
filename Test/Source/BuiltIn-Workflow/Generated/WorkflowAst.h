@@ -10,2040 +10,2028 @@ Licensed under https://github.com/vczh-libraries/License
 #include "../../../../Source/AstBase.h"
 #include "../../../../Source/SyntaxBase.h"
 
-namespace vl
+namespace vl::glr::workflow
 {
-	namespace glr
+	class WfAttachEventExpression;
+	class WfAttribute;
+	class WfAutoPropertyDeclaration;
+	class WfBaseConstructorCall;
+	class WfBinaryExpression;
+	class WfBindExpression;
+	class WfBlockStatement;
+	class WfBreakStatement;
+	class WfCallExpression;
+	class WfCastResultInterfaceDeclaration;
+	class WfChildExpression;
+	class WfChildType;
+	class WfClassDeclaration;
+	class WfCoOperatorExpression;
+	class WfCoOperatorStatement;
+	class WfCoPauseStatement;
+	class WfCoProviderStatement;
+	class WfConstructorArgument;
+	class WfConstructorDeclaration;
+	class WfConstructorExpression;
+	class WfContinueStatement;
+	class WfCoroutineStatement;
+	class WfDeclaration;
+	class WfDeleteStatement;
+	class WfDestructorDeclaration;
+	class WfDetachEventExpression;
+	class WfEnumDeclaration;
+	class WfEnumItem;
+	class WfEnumItemIntersection;
+	class WfEnumerableType;
+	class WfEventDeclaration;
+	class WfExpectedTypeCastExpression;
+	class WfExpression;
+	class WfExpressionStatement;
+	class WfFloatingExpression;
+	class WfForEachStatement;
+	class WfFormatExpression;
+	class WfFunctionArgument;
+	class WfFunctionDeclaration;
+	class WfFunctionExpression;
+	class WfFunctionType;
+	class WfGotoStatement;
+	class WfIfExpression;
+	class WfIfStatement;
+	class WfInferExpression;
+	class WfIntegerExpression;
+	class WfLetExpression;
+	class WfLetVariable;
+	class WfLiteralExpression;
+	class WfMapType;
+	class WfMemberExpression;
+	class WfMixinCastExpression;
+	class WfModule;
+	class WfModuleUsingFragment;
+	class WfModuleUsingItem;
+	class WfModuleUsingNameFragment;
+	class WfModuleUsingPath;
+	class WfModuleUsingWildCardFragment;
+	class WfNamespaceDeclaration;
+	class WfNewClassExpression;
+	class WfNewCoroutineExpression;
+	class WfNewInterfaceExpression;
+	class WfNullableType;
+	class WfObservableListType;
+	class WfObserveExpression;
+	class WfOrderedLambdaExpression;
+	class WfOrderedNameExpression;
+	class WfPredefinedType;
+	class WfPropertyDeclaration;
+	class WfRaiseExceptionStatement;
+	class WfRangeExpression;
+	class WfRawPointerType;
+	class WfReferenceExpression;
+	class WfReferenceType;
+	class WfReturnStatement;
+	class WfSetTestingExpression;
+	class WfSharedPointerType;
+	class WfStateDeclaration;
+	class WfStateInput;
+	class WfStateInvokeStatement;
+	class WfStateMachineDeclaration;
+	class WfStateMachineStatement;
+	class WfStateSwitchArgument;
+	class WfStateSwitchCase;
+	class WfStateSwitchStatement;
+	class WfStatement;
+	class WfStringExpression;
+	class WfStructDeclaration;
+	class WfStructMember;
+	class WfSwitchCase;
+	class WfSwitchStatement;
+	class WfThisExpression;
+	class WfTopQualifiedExpression;
+	class WfTopQualifiedType;
+	class WfTryStatement;
+	class WfType;
+	class WfTypeCastingExpression;
+	class WfTypeOfExpressionExpression;
+	class WfTypeOfTypeExpression;
+	class WfTypeTestingExpression;
+	class WfUnaryExpression;
+	class WfVariableDeclaration;
+	class WfVariableStatement;
+	class WfVirtualCfeDeclaration;
+	class WfVirtualCfeExpression;
+	class WfVirtualCseDeclaration;
+	class WfVirtualCseExpression;
+	class WfVirtualCseStatement;
+	class WfWhileStatement;
+
+	enum class WfFunctionKind
 	{
-		namespace workflow
+		UNDEFINED_ENUM_ITEM_VALUE = -1,
+		Static = 0,
+		Override = 1,
+		Normal = 2,
+	};
+
+	enum class WfPredefinedTypeName
+	{
+		UNDEFINED_ENUM_ITEM_VALUE = -1,
+		Void = 0,
+		Object = 1,
+		Interface = 2,
+		Int = 3,
+		UInt = 4,
+		Float = 5,
+		Double = 6,
+		String = 7,
+		Char = 8,
+		Bool = 9,
+	};
+
+	enum class WfMapWritability
+	{
+		UNDEFINED_ENUM_ITEM_VALUE = -1,
+		Readonly = 0,
+		Writable = 1,
+	};
+
+	enum class WfFunctionAnonymity
+	{
+		UNDEFINED_ENUM_ITEM_VALUE = -1,
+		Named = 0,
+		Anonymous = 1,
+	};
+
+	enum class WfClassKind
+	{
+		UNDEFINED_ENUM_ITEM_VALUE = -1,
+		Class = 0,
+		Interface = 1,
+	};
+
+	enum class WfConstructorType
+	{
+		UNDEFINED_ENUM_ITEM_VALUE = -1,
+		Undefined = 0,
+		SharedPtr = 1,
+		RawPtr = 2,
+	};
+
+	enum class WfEnumKind
+	{
+		UNDEFINED_ENUM_ITEM_VALUE = -1,
+		Normal = 0,
+		Flag = 1,
+	};
+
+	enum class WfEnumItemKind
+	{
+		UNDEFINED_ENUM_ITEM_VALUE = -1,
+		Constant = 0,
+		Intersection = 1,
+	};
+
+	enum class WfAPConst
+	{
+		UNDEFINED_ENUM_ITEM_VALUE = -1,
+		Readonly = 0,
+		Writable = 1,
+	};
+
+	enum class WfAPObserve
+	{
+		UNDEFINED_ENUM_ITEM_VALUE = -1,
+		Observable = 0,
+		NotObservable = 1,
+	};
+
+	enum class WfForEachDirection
+	{
+		UNDEFINED_ENUM_ITEM_VALUE = -1,
+		Normal = 0,
+		Reversed = 1,
+	};
+
+	enum class WfStateSwitchType
+	{
+		UNDEFINED_ENUM_ITEM_VALUE = -1,
+		Default = 0,
+		Pass = 1,
+		PassAndReturn = 2,
+		Ignore = 3,
+		IgnoreAndReturn = 4,
+	};
+
+	enum class WfStateInvokeType
+	{
+		UNDEFINED_ENUM_ITEM_VALUE = -1,
+		Goto = 0,
+		Push = 1,
+	};
+
+	enum class WfLiteralValue
+	{
+		UNDEFINED_ENUM_ITEM_VALUE = -1,
+		Null = 0,
+		True = 1,
+		False = 2,
+	};
+
+	enum class WfUnaryOperator
+	{
+		UNDEFINED_ENUM_ITEM_VALUE = -1,
+		Positive = 0,
+		Negative = 1,
+		Not = 2,
+	};
+
+	enum class WfBinaryOperator
+	{
+		UNDEFINED_ENUM_ITEM_VALUE = -1,
+		Assign = 0,
+		Index = 1,
+		FlagAnd = 2,
+		FlagOr = 3,
+		FailedThen = 4,
+		Exp = 5,
+		Add = 6,
+		Sub = 7,
+		Mul = 8,
+		Div = 9,
+		Mod = 10,
+		Shl = 11,
+		Shr = 12,
+		LT = 13,
+		GT = 14,
+		LE = 15,
+		GE = 16,
+		EQ = 17,
+		NE = 18,
+		Xor = 19,
+		And = 20,
+		Or = 21,
+	};
+
+	enum class WfRangeBoundary
+	{
+		UNDEFINED_ENUM_ITEM_VALUE = -1,
+		Inclusive = 0,
+		Exclusive = 1,
+	};
+
+	enum class WfSetTesting
+	{
+		UNDEFINED_ENUM_ITEM_VALUE = -1,
+		In = 0,
+		NotIn = 1,
+	};
+
+	enum class WfTypeCastingStrategy
+	{
+		UNDEFINED_ENUM_ITEM_VALUE = -1,
+		Strong = 0,
+		Weak = 1,
+	};
+
+	enum class WfTypeTesting
+	{
+		UNDEFINED_ENUM_ITEM_VALUE = -1,
+		IsType = 0,
+		IsNotType = 1,
+		IsNull = 2,
+		IsNotNull = 3,
+	};
+
+	enum class WfObserveType
+	{
+		UNDEFINED_ENUM_ITEM_VALUE = -1,
+		SimpleObserve = 0,
+		ExtendedObserve = 1,
+	};
+
+	enum class WfModuleType
+	{
+		UNDEFINED_ENUM_ITEM_VALUE = -1,
+		Module = 0,
+		Unit = 1,
+	};
+
+	class WfType abstract : public vl::glr::ParsingAstBase, vl::reflection::Description<WfType>
+	{
+	public:
+		class IVisitor : public virtual vl::reflection::IDescriptable, vl::reflection::Description<IVisitor>
 		{
-			class WfAttachEventExpression;
-			class WfAttribute;
-			class WfAutoPropertyDeclaration;
-			class WfBaseConstructorCall;
-			class WfBinaryExpression;
-			class WfBindExpression;
-			class WfBlockStatement;
-			class WfBreakStatement;
-			class WfCallExpression;
-			class WfCastResultInterfaceDeclaration;
-			class WfChildExpression;
-			class WfChildType;
-			class WfClassDeclaration;
-			class WfCoOperatorExpression;
-			class WfCoOperatorStatement;
-			class WfCoPauseStatement;
-			class WfCoProviderStatement;
-			class WfConstructorArgument;
-			class WfConstructorDeclaration;
-			class WfConstructorExpression;
-			class WfContinueStatement;
-			class WfCoroutineStatement;
-			class WfDeclaration;
-			class WfDeleteStatement;
-			class WfDestructorDeclaration;
-			class WfDetachEventExpression;
-			class WfEnumDeclaration;
-			class WfEnumItem;
-			class WfEnumItemIntersection;
-			class WfEnumerableType;
-			class WfEventDeclaration;
-			class WfExpectedTypeCastExpression;
-			class WfExpression;
-			class WfExpressionStatement;
-			class WfFloatingExpression;
-			class WfForEachStatement;
-			class WfFormatExpression;
-			class WfFunctionArgument;
-			class WfFunctionDeclaration;
-			class WfFunctionExpression;
-			class WfFunctionType;
-			class WfGotoStatement;
-			class WfIfExpression;
-			class WfIfStatement;
-			class WfInferExpression;
-			class WfIntegerExpression;
-			class WfLetExpression;
-			class WfLetVariable;
-			class WfLiteralExpression;
-			class WfMapType;
-			class WfMemberExpression;
-			class WfMixinCastExpression;
-			class WfModule;
-			class WfModuleUsingFragment;
-			class WfModuleUsingItem;
-			class WfModuleUsingNameFragment;
-			class WfModuleUsingPath;
-			class WfModuleUsingWildCardFragment;
-			class WfNamespaceDeclaration;
-			class WfNewClassExpression;
-			class WfNewCoroutineExpression;
-			class WfNewInterfaceExpression;
-			class WfNullableType;
-			class WfObservableListType;
-			class WfObserveExpression;
-			class WfOrderedLambdaExpression;
-			class WfOrderedNameExpression;
-			class WfPredefinedType;
-			class WfPropertyDeclaration;
-			class WfRaiseExceptionStatement;
-			class WfRangeExpression;
-			class WfRawPointerType;
-			class WfReferenceExpression;
-			class WfReferenceType;
-			class WfReturnStatement;
-			class WfSetTestingExpression;
-			class WfSharedPointerType;
-			class WfStateDeclaration;
-			class WfStateInput;
-			class WfStateInvokeStatement;
-			class WfStateMachineDeclaration;
-			class WfStateMachineStatement;
-			class WfStateSwitchArgument;
-			class WfStateSwitchCase;
-			class WfStateSwitchStatement;
-			class WfStatement;
-			class WfStringExpression;
-			class WfStructDeclaration;
-			class WfStructMember;
-			class WfSwitchCase;
-			class WfSwitchStatement;
-			class WfThisExpression;
-			class WfTopQualifiedExpression;
-			class WfTopQualifiedType;
-			class WfTryStatement;
-			class WfType;
-			class WfTypeCastingExpression;
-			class WfTypeOfExpressionExpression;
-			class WfTypeOfTypeExpression;
-			class WfTypeTestingExpression;
-			class WfUnaryExpression;
-			class WfVariableDeclaration;
-			class WfVariableStatement;
-			class WfVirtualCfeDeclaration;
-			class WfVirtualCfeExpression;
-			class WfVirtualCseDeclaration;
-			class WfVirtualCseExpression;
-			class WfVirtualCseStatement;
-			class WfWhileStatement;
-
-			enum class WfFunctionKind
-			{
-				UNDEFINED_ENUM_ITEM_VALUE = -1,
-				Static = 0,
-				Override = 1,
-				Normal = 2,
-			};
-
-			enum class WfPredefinedTypeName
-			{
-				UNDEFINED_ENUM_ITEM_VALUE = -1,
-				Void = 0,
-				Object = 1,
-				Interface = 2,
-				Int = 3,
-				UInt = 4,
-				Float = 5,
-				Double = 6,
-				String = 7,
-				Char = 8,
-				Bool = 9,
-			};
-
-			enum class WfMapWritability
-			{
-				UNDEFINED_ENUM_ITEM_VALUE = -1,
-				Readonly = 0,
-				Writable = 1,
-			};
-
-			enum class WfFunctionAnonymity
-			{
-				UNDEFINED_ENUM_ITEM_VALUE = -1,
-				Named = 0,
-				Anonymous = 1,
-			};
-
-			enum class WfClassKind
-			{
-				UNDEFINED_ENUM_ITEM_VALUE = -1,
-				Class = 0,
-				Interface = 1,
-			};
-
-			enum class WfConstructorType
-			{
-				UNDEFINED_ENUM_ITEM_VALUE = -1,
-				Undefined = 0,
-				SharedPtr = 1,
-				RawPtr = 2,
-			};
-
-			enum class WfEnumKind
-			{
-				UNDEFINED_ENUM_ITEM_VALUE = -1,
-				Normal = 0,
-				Flag = 1,
-			};
-
-			enum class WfEnumItemKind
-			{
-				UNDEFINED_ENUM_ITEM_VALUE = -1,
-				Constant = 0,
-				Intersection = 1,
-			};
-
-			enum class WfAPConst
-			{
-				UNDEFINED_ENUM_ITEM_VALUE = -1,
-				Readonly = 0,
-				Writable = 1,
-			};
-
-			enum class WfAPObserve
-			{
-				UNDEFINED_ENUM_ITEM_VALUE = -1,
-				Observable = 0,
-				NotObservable = 1,
-			};
-
-			enum class WfForEachDirection
-			{
-				UNDEFINED_ENUM_ITEM_VALUE = -1,
-				Normal = 0,
-				Reversed = 1,
-			};
-
-			enum class WfStateSwitchType
-			{
-				UNDEFINED_ENUM_ITEM_VALUE = -1,
-				Default = 0,
-				Pass = 1,
-				PassAndReturn = 2,
-				Ignore = 3,
-				IgnoreAndReturn = 4,
-			};
-
-			enum class WfStateInvokeType
-			{
-				UNDEFINED_ENUM_ITEM_VALUE = -1,
-				Goto = 0,
-				Push = 1,
-			};
-
-			enum class WfLiteralValue
-			{
-				UNDEFINED_ENUM_ITEM_VALUE = -1,
-				Null = 0,
-				True = 1,
-				False = 2,
-			};
-
-			enum class WfUnaryOperator
-			{
-				UNDEFINED_ENUM_ITEM_VALUE = -1,
-				Positive = 0,
-				Negative = 1,
-				Not = 2,
-			};
-
-			enum class WfBinaryOperator
-			{
-				UNDEFINED_ENUM_ITEM_VALUE = -1,
-				Assign = 0,
-				Index = 1,
-				FlagAnd = 2,
-				FlagOr = 3,
-				FailedThen = 4,
-				Exp = 5,
-				Add = 6,
-				Sub = 7,
-				Mul = 8,
-				Div = 9,
-				Mod = 10,
-				Shl = 11,
-				Shr = 12,
-				LT = 13,
-				GT = 14,
-				LE = 15,
-				GE = 16,
-				EQ = 17,
-				NE = 18,
-				Xor = 19,
-				And = 20,
-				Or = 21,
-			};
-
-			enum class WfRangeBoundary
-			{
-				UNDEFINED_ENUM_ITEM_VALUE = -1,
-				Inclusive = 0,
-				Exclusive = 1,
-			};
-
-			enum class WfSetTesting
-			{
-				UNDEFINED_ENUM_ITEM_VALUE = -1,
-				In = 0,
-				NotIn = 1,
-			};
-
-			enum class WfTypeCastingStrategy
-			{
-				UNDEFINED_ENUM_ITEM_VALUE = -1,
-				Strong = 0,
-				Weak = 1,
-			};
-
-			enum class WfTypeTesting
-			{
-				UNDEFINED_ENUM_ITEM_VALUE = -1,
-				IsType = 0,
-				IsNotType = 1,
-				IsNull = 2,
-				IsNotNull = 3,
-			};
-
-			enum class WfObserveType
-			{
-				UNDEFINED_ENUM_ITEM_VALUE = -1,
-				SimpleObserve = 0,
-				ExtendedObserve = 1,
-			};
-
-			enum class WfModuleType
-			{
-				UNDEFINED_ENUM_ITEM_VALUE = -1,
-				Module = 0,
-				Unit = 1,
-			};
-
-			class WfType abstract : public vl::glr::ParsingAstBase, vl::reflection::Description<WfType>
-			{
-			public:
-				class IVisitor : public virtual vl::reflection::IDescriptable, vl::reflection::Description<IVisitor>
-				{
-				public:
-					virtual void Visit(WfPredefinedType* node) = 0;
-					virtual void Visit(WfTopQualifiedType* node) = 0;
-					virtual void Visit(WfReferenceType* node) = 0;
-					virtual void Visit(WfRawPointerType* node) = 0;
-					virtual void Visit(WfSharedPointerType* node) = 0;
-					virtual void Visit(WfNullableType* node) = 0;
-					virtual void Visit(WfEnumerableType* node) = 0;
-					virtual void Visit(WfMapType* node) = 0;
-					virtual void Visit(WfObservableListType* node) = 0;
-					virtual void Visit(WfFunctionType* node) = 0;
-					virtual void Visit(WfChildType* node) = 0;
-				};
-
-				virtual void Accept(WfType::IVisitor* visitor) = 0;
-
-			};
-
-			class WfExpression abstract : public vl::glr::ParsingAstBase, vl::reflection::Description<WfExpression>
-			{
-			public:
-				class IVisitor : public virtual vl::reflection::IDescriptable, vl::reflection::Description<IVisitor>
-				{
-				public:
-					virtual void Visit(WfThisExpression* node) = 0;
-					virtual void Visit(WfTopQualifiedExpression* node) = 0;
-					virtual void Visit(WfReferenceExpression* node) = 0;
-					virtual void Visit(WfOrderedNameExpression* node) = 0;
-					virtual void Visit(WfOrderedLambdaExpression* node) = 0;
-					virtual void Visit(WfMemberExpression* node) = 0;
-					virtual void Visit(WfChildExpression* node) = 0;
-					virtual void Visit(WfLiteralExpression* node) = 0;
-					virtual void Visit(WfFloatingExpression* node) = 0;
-					virtual void Visit(WfIntegerExpression* node) = 0;
-					virtual void Visit(WfStringExpression* node) = 0;
-					virtual void Visit(WfUnaryExpression* node) = 0;
-					virtual void Visit(WfBinaryExpression* node) = 0;
-					virtual void Visit(WfLetExpression* node) = 0;
-					virtual void Visit(WfIfExpression* node) = 0;
-					virtual void Visit(WfRangeExpression* node) = 0;
-					virtual void Visit(WfSetTestingExpression* node) = 0;
-					virtual void Visit(WfConstructorExpression* node) = 0;
-					virtual void Visit(WfInferExpression* node) = 0;
-					virtual void Visit(WfTypeCastingExpression* node) = 0;
-					virtual void Visit(WfTypeTestingExpression* node) = 0;
-					virtual void Visit(WfTypeOfTypeExpression* node) = 0;
-					virtual void Visit(WfTypeOfExpressionExpression* node) = 0;
-					virtual void Visit(WfAttachEventExpression* node) = 0;
-					virtual void Visit(WfDetachEventExpression* node) = 0;
-					virtual void Visit(WfObserveExpression* node) = 0;
-					virtual void Visit(WfCallExpression* node) = 0;
-					virtual void Visit(WfFunctionExpression* node) = 0;
-					virtual void Visit(WfNewClassExpression* node) = 0;
-					virtual void Visit(WfNewInterfaceExpression* node) = 0;
-					virtual void Visit(WfVirtualCfeExpression* node) = 0;
-					virtual void Visit(WfVirtualCseExpression* node) = 0;
-				};
-
-				virtual void Accept(WfExpression::IVisitor* visitor) = 0;
-
-			};
-
-			class WfStatement abstract : public vl::glr::ParsingAstBase, vl::reflection::Description<WfStatement>
-			{
-			public:
-				class IVisitor : public virtual vl::reflection::IDescriptable, vl::reflection::Description<IVisitor>
-				{
-				public:
-					virtual void Visit(WfBreakStatement* node) = 0;
-					virtual void Visit(WfContinueStatement* node) = 0;
-					virtual void Visit(WfReturnStatement* node) = 0;
-					virtual void Visit(WfDeleteStatement* node) = 0;
-					virtual void Visit(WfRaiseExceptionStatement* node) = 0;
-					virtual void Visit(WfIfStatement* node) = 0;
-					virtual void Visit(WfWhileStatement* node) = 0;
-					virtual void Visit(WfTryStatement* node) = 0;
-					virtual void Visit(WfBlockStatement* node) = 0;
-					virtual void Visit(WfGotoStatement* node) = 0;
-					virtual void Visit(WfVariableStatement* node) = 0;
-					virtual void Visit(WfExpressionStatement* node) = 0;
-					virtual void Visit(WfVirtualCseStatement* node) = 0;
-					virtual void Visit(WfCoroutineStatement* node) = 0;
-					virtual void Visit(WfStateMachineStatement* node) = 0;
-				};
-
-				virtual void Accept(WfStatement::IVisitor* visitor) = 0;
-
-			};
-
-			class WfAttribute : public vl::glr::ParsingAstBase, vl::reflection::Description<WfAttribute>
-			{
-			public:
-				vl::glr::ParsingToken category;
-				vl::glr::ParsingToken name;
-				vl::Ptr<WfExpression> value;
-			};
-
-			class WfDeclaration abstract : public vl::glr::ParsingAstBase, vl::reflection::Description<WfDeclaration>
-			{
-			public:
-				class IVisitor : public virtual vl::reflection::IDescriptable, vl::reflection::Description<IVisitor>
-				{
-				public:
-					virtual void Visit(WfNamespaceDeclaration* node) = 0;
-					virtual void Visit(WfFunctionDeclaration* node) = 0;
-					virtual void Visit(WfVariableDeclaration* node) = 0;
-					virtual void Visit(WfEventDeclaration* node) = 0;
-					virtual void Visit(WfPropertyDeclaration* node) = 0;
-					virtual void Visit(WfConstructorDeclaration* node) = 0;
-					virtual void Visit(WfDestructorDeclaration* node) = 0;
-					virtual void Visit(WfClassDeclaration* node) = 0;
-					virtual void Visit(WfEnumDeclaration* node) = 0;
-					virtual void Visit(WfStructDeclaration* node) = 0;
-					virtual void Visit(WfVirtualCfeDeclaration* node) = 0;
-					virtual void Visit(WfVirtualCseDeclaration* node) = 0;
-				};
-
-				virtual void Accept(WfDeclaration::IVisitor* visitor) = 0;
-
-				vl::collections::List<vl::Ptr<WfAttribute>> attributes;
-				vl::glr::ParsingToken name;
-			};
-
-			class WfPredefinedType : public WfType, vl::reflection::Description<WfPredefinedType>
-			{
-			public:
-				WfPredefinedTypeName name = WfPredefinedTypeName::UNDEFINED_ENUM_ITEM_VALUE;
-
-				void Accept(WfType::IVisitor* visitor) override;
-			};
-
-			class WfTopQualifiedType : public WfType, vl::reflection::Description<WfTopQualifiedType>
-			{
-			public:
-				vl::glr::ParsingToken name;
-
-				void Accept(WfType::IVisitor* visitor) override;
-			};
-
-			class WfReferenceType : public WfType, vl::reflection::Description<WfReferenceType>
-			{
-			public:
-				vl::glr::ParsingToken name;
-
-				void Accept(WfType::IVisitor* visitor) override;
-			};
-
-			class WfRawPointerType : public WfType, vl::reflection::Description<WfRawPointerType>
-			{
-			public:
-				vl::Ptr<WfType> element;
-
-				void Accept(WfType::IVisitor* visitor) override;
-			};
-
-			class WfSharedPointerType : public WfType, vl::reflection::Description<WfSharedPointerType>
-			{
-			public:
-				vl::Ptr<WfType> element;
-
-				void Accept(WfType::IVisitor* visitor) override;
-			};
-
-			class WfNullableType : public WfType, vl::reflection::Description<WfNullableType>
-			{
-			public:
-				vl::Ptr<WfType> element;
-
-				void Accept(WfType::IVisitor* visitor) override;
-			};
-
-			class WfEnumerableType : public WfType, vl::reflection::Description<WfEnumerableType>
-			{
-			public:
-				vl::Ptr<WfType> element;
-
-				void Accept(WfType::IVisitor* visitor) override;
-			};
-
-			class WfMapType : public WfType, vl::reflection::Description<WfMapType>
-			{
-			public:
-				WfMapWritability writability = WfMapWritability::UNDEFINED_ENUM_ITEM_VALUE;
-				vl::Ptr<WfType> key;
-				vl::Ptr<WfType> value;
-
-				void Accept(WfType::IVisitor* visitor) override;
-			};
-
-			class WfObservableListType : public WfType, vl::reflection::Description<WfObservableListType>
-			{
-			public:
-				vl::Ptr<WfType> element;
-
-				void Accept(WfType::IVisitor* visitor) override;
-			};
-
-			class WfFunctionType : public WfType, vl::reflection::Description<WfFunctionType>
-			{
-			public:
-				vl::Ptr<WfType> result;
-				vl::collections::List<vl::Ptr<WfType>> arguments;
-
-				void Accept(WfType::IVisitor* visitor) override;
-			};
-
-			class WfChildType : public WfType, vl::reflection::Description<WfChildType>
-			{
-			public:
-				vl::Ptr<WfType> parent;
-				vl::glr::ParsingToken name;
-
-				void Accept(WfType::IVisitor* visitor) override;
-			};
-
-			class WfNamespaceDeclaration : public WfDeclaration, vl::reflection::Description<WfNamespaceDeclaration>
-			{
-			public:
-				vl::collections::List<vl::Ptr<WfDeclaration>> declarations;
-
-				void Accept(WfDeclaration::IVisitor* visitor) override;
-			};
-
-			class WfFunctionArgument : public vl::glr::ParsingAstBase, vl::reflection::Description<WfFunctionArgument>
-			{
-			public:
-				vl::collections::List<vl::Ptr<WfAttribute>> attributes;
-				vl::glr::ParsingToken name;
-				vl::Ptr<WfType> type;
-			};
-
-			class WfFunctionDeclaration : public WfDeclaration, vl::reflection::Description<WfFunctionDeclaration>
-			{
-			public:
-				WfFunctionKind functionKind = WfFunctionKind::UNDEFINED_ENUM_ITEM_VALUE;
-				WfFunctionAnonymity anonymity = WfFunctionAnonymity::UNDEFINED_ENUM_ITEM_VALUE;
-				vl::collections::List<vl::Ptr<WfFunctionArgument>> arguments;
-				vl::Ptr<WfType> returnType;
-				vl::Ptr<WfStatement> statement;
-
-				void Accept(WfDeclaration::IVisitor* visitor) override;
-			};
-
-			class WfVariableDeclaration : public WfDeclaration, vl::reflection::Description<WfVariableDeclaration>
-			{
-			public:
-				vl::Ptr<WfType> type;
-				vl::Ptr<WfExpression> expression;
-
-				void Accept(WfDeclaration::IVisitor* visitor) override;
-			};
-
-			class WfEventDeclaration : public WfDeclaration, vl::reflection::Description<WfEventDeclaration>
-			{
-			public:
-				vl::collections::List<vl::Ptr<WfType>> arguments;
-
-				void Accept(WfDeclaration::IVisitor* visitor) override;
-			};
-
-			class WfPropertyDeclaration : public WfDeclaration, vl::reflection::Description<WfPropertyDeclaration>
-			{
-			public:
-				vl::Ptr<WfType> type;
-				vl::glr::ParsingToken getter;
-				vl::glr::ParsingToken setter;
-				vl::glr::ParsingToken valueChangedEvent;
-
-				void Accept(WfDeclaration::IVisitor* visitor) override;
-			};
-
-			class WfBaseConstructorCall : public vl::glr::ParsingAstBase, vl::reflection::Description<WfBaseConstructorCall>
-			{
-			public:
-				vl::Ptr<WfType> type;
-				vl::collections::List<vl::Ptr<WfExpression>> arguments;
-			};
-
-			class WfConstructorDeclaration : public WfDeclaration, vl::reflection::Description<WfConstructorDeclaration>
-			{
-			public:
-				WfConstructorType constructorType = WfConstructorType::UNDEFINED_ENUM_ITEM_VALUE;
-				vl::collections::List<vl::Ptr<WfBaseConstructorCall>> baseConstructorCalls;
-				vl::collections::List<vl::Ptr<WfFunctionArgument>> arguments;
-				vl::Ptr<WfStatement> statement;
-
-				void Accept(WfDeclaration::IVisitor* visitor) override;
-			};
-
-			class WfDestructorDeclaration : public WfDeclaration, vl::reflection::Description<WfDestructorDeclaration>
-			{
-			public:
-				vl::Ptr<WfStatement> statement;
-
-				void Accept(WfDeclaration::IVisitor* visitor) override;
-			};
-
-			class WfClassDeclaration : public WfDeclaration, vl::reflection::Description<WfClassDeclaration>
-			{
-			public:
-				WfClassKind kind = WfClassKind::UNDEFINED_ENUM_ITEM_VALUE;
-				WfConstructorType constructorType = WfConstructorType::UNDEFINED_ENUM_ITEM_VALUE;
-				vl::collections::List<vl::Ptr<WfType>> baseTypes;
-				vl::collections::List<vl::Ptr<WfDeclaration>> declarations;
-
-				void Accept(WfDeclaration::IVisitor* visitor) override;
-			};
-
-			class WfEnumItemIntersection : public vl::glr::ParsingAstBase, vl::reflection::Description<WfEnumItemIntersection>
-			{
-			public:
-				vl::glr::ParsingToken name;
-			};
-
-			class WfEnumItem : public vl::glr::ParsingAstBase, vl::reflection::Description<WfEnumItem>
-			{
-			public:
-				vl::collections::List<vl::Ptr<WfAttribute>> attributes;
-				vl::glr::ParsingToken name;
-				WfEnumItemKind kind = WfEnumItemKind::UNDEFINED_ENUM_ITEM_VALUE;
-				vl::glr::ParsingToken number;
-				vl::collections::List<vl::Ptr<WfEnumItemIntersection>> intersections;
-			};
-
-			class WfEnumDeclaration : public WfDeclaration, vl::reflection::Description<WfEnumDeclaration>
-			{
-			public:
-				WfEnumKind kind = WfEnumKind::UNDEFINED_ENUM_ITEM_VALUE;
-				vl::collections::List<vl::Ptr<WfEnumItem>> items;
-
-				void Accept(WfDeclaration::IVisitor* visitor) override;
-			};
-
-			class WfStructMember : public vl::glr::ParsingAstBase, vl::reflection::Description<WfStructMember>
-			{
-			public:
-				vl::collections::List<vl::Ptr<WfAttribute>> attributes;
-				vl::glr::ParsingToken name;
-				vl::Ptr<WfType> type;
-			};
-
-			class WfStructDeclaration : public WfDeclaration, vl::reflection::Description<WfStructDeclaration>
-			{
-			public:
-				vl::collections::List<vl::Ptr<WfStructMember>> members;
-
-				void Accept(WfDeclaration::IVisitor* visitor) override;
-			};
-
-			class WfVirtualCfeDeclaration abstract : public WfDeclaration, vl::reflection::Description<WfVirtualCfeDeclaration>
-			{
-			public:
-				class IVisitor : public virtual vl::reflection::IDescriptable, vl::reflection::Description<IVisitor>
-				{
-				public:
-					virtual void Visit(WfAutoPropertyDeclaration* node) = 0;
-					virtual void Visit(WfCastResultInterfaceDeclaration* node) = 0;
-				};
-
-				virtual void Accept(WfVirtualCfeDeclaration::IVisitor* visitor) = 0;
-
-				vl::collections::List<vl::Ptr<WfDeclaration>> expandedDeclarations;
-
-				void Accept(WfDeclaration::IVisitor* visitor) override;
-			};
-
-			class WfAutoPropertyDeclaration : public WfVirtualCfeDeclaration, vl::reflection::Description<WfAutoPropertyDeclaration>
-			{
-			public:
-				WfFunctionKind functionKind = WfFunctionKind::UNDEFINED_ENUM_ITEM_VALUE;
-				vl::Ptr<WfType> type;
-				WfAPConst configConst = WfAPConst::UNDEFINED_ENUM_ITEM_VALUE;
-				WfAPObserve configObserve = WfAPObserve::UNDEFINED_ENUM_ITEM_VALUE;
-				vl::Ptr<WfExpression> expression;
-
-				void Accept(WfVirtualCfeDeclaration::IVisitor* visitor) override;
-			};
-
-			class WfCastResultInterfaceDeclaration : public WfVirtualCfeDeclaration, vl::reflection::Description<WfCastResultInterfaceDeclaration>
-			{
-			public:
-				vl::Ptr<WfType> baseType;
-				vl::Ptr<WfType> elementType;
-
-				void Accept(WfVirtualCfeDeclaration::IVisitor* visitor) override;
-			};
-
-			class WfVirtualCseDeclaration abstract : public WfDeclaration, vl::reflection::Description<WfVirtualCseDeclaration>
-			{
-			public:
-				class IVisitor : public virtual vl::reflection::IDescriptable, vl::reflection::Description<IVisitor>
-				{
-				public:
-					virtual void Visit(WfStateMachineDeclaration* node) = 0;
-				};
-
-				virtual void Accept(WfVirtualCseDeclaration::IVisitor* visitor) = 0;
-
-				vl::collections::List<vl::Ptr<WfDeclaration>> expandedDeclarations;
-
-				void Accept(WfDeclaration::IVisitor* visitor) override;
-			};
-
-			class WfStateInput : public vl::glr::ParsingAstBase, vl::reflection::Description<WfStateInput>
-			{
-			public:
-				vl::glr::ParsingToken name;
-				vl::collections::List<vl::Ptr<WfFunctionArgument>> arguments;
-			};
-
-			class WfStateDeclaration : public vl::glr::ParsingAstBase, vl::reflection::Description<WfStateDeclaration>
-			{
-			public:
-				vl::glr::ParsingToken name;
-				vl::collections::List<vl::Ptr<WfFunctionArgument>> arguments;
-				vl::Ptr<WfStatement> statement;
-			};
-
-			class WfStateMachineDeclaration : public WfVirtualCseDeclaration, vl::reflection::Description<WfStateMachineDeclaration>
-			{
-			public:
-				vl::collections::List<vl::Ptr<WfStateInput>> inputs;
-				vl::collections::List<vl::Ptr<WfStateDeclaration>> states;
-
-				void Accept(WfVirtualCseDeclaration::IVisitor* visitor) override;
-			};
-
-			class WfBreakStatement : public WfStatement, vl::reflection::Description<WfBreakStatement>
-			{
-			public:
-
-				void Accept(WfStatement::IVisitor* visitor) override;
-			};
-
-			class WfContinueStatement : public WfStatement, vl::reflection::Description<WfContinueStatement>
-			{
-			public:
-
-				void Accept(WfStatement::IVisitor* visitor) override;
-			};
-
-			class WfReturnStatement : public WfStatement, vl::reflection::Description<WfReturnStatement>
-			{
-			public:
-				vl::Ptr<WfExpression> expression;
-
-				void Accept(WfStatement::IVisitor* visitor) override;
-			};
-
-			class WfDeleteStatement : public WfStatement, vl::reflection::Description<WfDeleteStatement>
-			{
-			public:
-				vl::Ptr<WfExpression> expression;
-
-				void Accept(WfStatement::IVisitor* visitor) override;
-			};
-
-			class WfRaiseExceptionStatement : public WfStatement, vl::reflection::Description<WfRaiseExceptionStatement>
-			{
-			public:
-				vl::Ptr<WfExpression> expression;
-
-				void Accept(WfStatement::IVisitor* visitor) override;
-			};
-
-			class WfIfStatement : public WfStatement, vl::reflection::Description<WfIfStatement>
-			{
-			public:
-				vl::Ptr<WfType> type;
-				vl::glr::ParsingToken name;
-				vl::Ptr<WfExpression> expression;
-				vl::Ptr<WfStatement> trueBranch;
-				vl::Ptr<WfStatement> falseBranch;
-
-				void Accept(WfStatement::IVisitor* visitor) override;
-			};
-
-			class WfWhileStatement : public WfStatement, vl::reflection::Description<WfWhileStatement>
-			{
-			public:
-				vl::Ptr<WfExpression> condition;
-				vl::Ptr<WfStatement> statement;
-
-				void Accept(WfStatement::IVisitor* visitor) override;
-			};
-
-			class WfTryStatement : public WfStatement, vl::reflection::Description<WfTryStatement>
-			{
-			public:
-				vl::Ptr<WfStatement> protectedStatement;
-				vl::glr::ParsingToken name;
-				vl::Ptr<WfStatement> catchStatement;
-				vl::Ptr<WfStatement> finallyStatement;
-
-				void Accept(WfStatement::IVisitor* visitor) override;
-			};
-
-			class WfBlockStatement : public WfStatement, vl::reflection::Description<WfBlockStatement>
-			{
-			public:
-				vl::collections::List<vl::Ptr<WfStatement>> statements;
-				vl::glr::ParsingToken endLabel;
-
-				void Accept(WfStatement::IVisitor* visitor) override;
-			};
-
-			class WfGotoStatement : public WfStatement, vl::reflection::Description<WfGotoStatement>
-			{
-			public:
-				vl::glr::ParsingToken label;
-
-				void Accept(WfStatement::IVisitor* visitor) override;
-			};
-
-			class WfVariableStatement : public WfStatement, vl::reflection::Description<WfVariableStatement>
-			{
-			public:
-				vl::Ptr<WfVariableDeclaration> variable;
-
-				void Accept(WfStatement::IVisitor* visitor) override;
-			};
-
-			class WfExpressionStatement : public WfStatement, vl::reflection::Description<WfExpressionStatement>
-			{
-			public:
-				vl::Ptr<WfExpression> expression;
-
-				void Accept(WfStatement::IVisitor* visitor) override;
-			};
-
-			class WfVirtualCseStatement abstract : public WfStatement, vl::reflection::Description<WfVirtualCseStatement>
-			{
-			public:
-				class IVisitor : public virtual vl::reflection::IDescriptable, vl::reflection::Description<IVisitor>
-				{
-				public:
-					virtual void Visit(WfForEachStatement* node) = 0;
-					virtual void Visit(WfSwitchStatement* node) = 0;
-					virtual void Visit(WfCoProviderStatement* node) = 0;
-				};
-
-				virtual void Accept(WfVirtualCseStatement::IVisitor* visitor) = 0;
-
-				vl::Ptr<WfStatement> expandedStatement;
-
-				void Accept(WfStatement::IVisitor* visitor) override;
-			};
-
-			class WfForEachStatement : public WfVirtualCseStatement, vl::reflection::Description<WfForEachStatement>
-			{
-			public:
-				vl::glr::ParsingToken name;
-				WfForEachDirection direction = WfForEachDirection::UNDEFINED_ENUM_ITEM_VALUE;
-				vl::Ptr<WfExpression> collection;
-				vl::Ptr<WfStatement> statement;
-
-				void Accept(WfVirtualCseStatement::IVisitor* visitor) override;
-			};
-
-			class WfSwitchCase : public vl::glr::ParsingAstBase, vl::reflection::Description<WfSwitchCase>
-			{
-			public:
-				vl::Ptr<WfExpression> expression;
-				vl::Ptr<WfStatement> statement;
-			};
-
-			class WfSwitchStatement : public WfVirtualCseStatement, vl::reflection::Description<WfSwitchStatement>
-			{
-			public:
-				vl::Ptr<WfExpression> expression;
-				vl::collections::List<vl::Ptr<WfSwitchCase>> caseBranches;
-				vl::Ptr<WfStatement> defaultBranch;
-
-				void Accept(WfVirtualCseStatement::IVisitor* visitor) override;
-			};
-
-			class WfCoProviderStatement : public WfVirtualCseStatement, vl::reflection::Description<WfCoProviderStatement>
-			{
-			public:
-				vl::glr::ParsingToken name;
-				vl::Ptr<WfStatement> statement;
-
-				void Accept(WfVirtualCseStatement::IVisitor* visitor) override;
-			};
-
-			class WfCoroutineStatement abstract : public WfStatement, vl::reflection::Description<WfCoroutineStatement>
-			{
-			public:
-				class IVisitor : public virtual vl::reflection::IDescriptable, vl::reflection::Description<IVisitor>
-				{
-				public:
-					virtual void Visit(WfCoPauseStatement* node) = 0;
-					virtual void Visit(WfCoOperatorStatement* node) = 0;
-				};
-
-				virtual void Accept(WfCoroutineStatement::IVisitor* visitor) = 0;
-
-
-				void Accept(WfStatement::IVisitor* visitor) override;
-			};
-
-			class WfCoPauseStatement : public WfCoroutineStatement, vl::reflection::Description<WfCoPauseStatement>
-			{
-			public:
-				vl::Ptr<WfStatement> statement;
-
-				void Accept(WfCoroutineStatement::IVisitor* visitor) override;
-			};
-
-			class WfCoOperatorStatement : public WfCoroutineStatement, vl::reflection::Description<WfCoOperatorStatement>
-			{
-			public:
-				vl::glr::ParsingToken varName;
-				vl::glr::ParsingToken opName;
-				vl::collections::List<vl::Ptr<WfExpression>> arguments;
-
-				void Accept(WfCoroutineStatement::IVisitor* visitor) override;
-			};
-
-			class WfStateMachineStatement abstract : public WfStatement, vl::reflection::Description<WfStateMachineStatement>
-			{
-			public:
-				class IVisitor : public virtual vl::reflection::IDescriptable, vl::reflection::Description<IVisitor>
-				{
-				public:
-					virtual void Visit(WfStateSwitchStatement* node) = 0;
-					virtual void Visit(WfStateInvokeStatement* node) = 0;
-				};
-
-				virtual void Accept(WfStateMachineStatement::IVisitor* visitor) = 0;
-
-
-				void Accept(WfStatement::IVisitor* visitor) override;
-			};
-
-			class WfStateSwitchArgument : public vl::glr::ParsingAstBase, vl::reflection::Description<WfStateSwitchArgument>
-			{
-			public:
-				vl::glr::ParsingToken name;
-			};
-
-			class WfStateSwitchCase : public vl::glr::ParsingAstBase, vl::reflection::Description<WfStateSwitchCase>
-			{
-			public:
-				vl::glr::ParsingToken name;
-				vl::collections::List<vl::Ptr<WfStateSwitchArgument>> arguments;
-				vl::Ptr<WfStatement> statement;
-			};
-
-			class WfStateSwitchStatement : public WfStateMachineStatement, vl::reflection::Description<WfStateSwitchStatement>
-			{
-			public:
-				WfStateSwitchType type = WfStateSwitchType::UNDEFINED_ENUM_ITEM_VALUE;
-				vl::collections::List<vl::Ptr<WfStateSwitchCase>> caseBranches;
-
-				void Accept(WfStateMachineStatement::IVisitor* visitor) override;
-			};
-
-			class WfStateInvokeStatement : public WfStateMachineStatement, vl::reflection::Description<WfStateInvokeStatement>
-			{
-			public:
-				WfStateInvokeType type = WfStateInvokeType::UNDEFINED_ENUM_ITEM_VALUE;
-				vl::glr::ParsingToken name;
-				vl::collections::List<vl::Ptr<WfExpression>> arguments;
-
-				void Accept(WfStateMachineStatement::IVisitor* visitor) override;
-			};
-
-			class WfThisExpression : public WfExpression, vl::reflection::Description<WfThisExpression>
-			{
-			public:
-
-				void Accept(WfExpression::IVisitor* visitor) override;
-			};
-
-			class WfTopQualifiedExpression : public WfExpression, vl::reflection::Description<WfTopQualifiedExpression>
-			{
-			public:
-				vl::glr::ParsingToken name;
-
-				void Accept(WfExpression::IVisitor* visitor) override;
-			};
-
-			class WfReferenceExpression : public WfExpression, vl::reflection::Description<WfReferenceExpression>
-			{
-			public:
-				vl::glr::ParsingToken name;
-
-				void Accept(WfExpression::IVisitor* visitor) override;
-			};
-
-			class WfOrderedNameExpression : public WfExpression, vl::reflection::Description<WfOrderedNameExpression>
-			{
-			public:
-				vl::glr::ParsingToken name;
-
-				void Accept(WfExpression::IVisitor* visitor) override;
-			};
-
-			class WfOrderedLambdaExpression : public WfExpression, vl::reflection::Description<WfOrderedLambdaExpression>
-			{
-			public:
-				vl::Ptr<WfExpression> body;
-
-				void Accept(WfExpression::IVisitor* visitor) override;
-			};
-
-			class WfMemberExpression : public WfExpression, vl::reflection::Description<WfMemberExpression>
-			{
-			public:
-				vl::Ptr<WfExpression> parent;
-				vl::glr::ParsingToken name;
-
-				void Accept(WfExpression::IVisitor* visitor) override;
-			};
-
-			class WfChildExpression : public WfExpression, vl::reflection::Description<WfChildExpression>
-			{
-			public:
-				vl::Ptr<WfExpression> parent;
-				vl::glr::ParsingToken name;
-
-				void Accept(WfExpression::IVisitor* visitor) override;
-			};
-
-			class WfLiteralExpression : public WfExpression, vl::reflection::Description<WfLiteralExpression>
-			{
-			public:
-				WfLiteralValue value = WfLiteralValue::UNDEFINED_ENUM_ITEM_VALUE;
-
-				void Accept(WfExpression::IVisitor* visitor) override;
-			};
-
-			class WfFloatingExpression : public WfExpression, vl::reflection::Description<WfFloatingExpression>
-			{
-			public:
-				vl::glr::ParsingToken value;
-
-				void Accept(WfExpression::IVisitor* visitor) override;
-			};
-
-			class WfIntegerExpression : public WfExpression, vl::reflection::Description<WfIntegerExpression>
-			{
-			public:
-				vl::glr::ParsingToken value;
-
-				void Accept(WfExpression::IVisitor* visitor) override;
-			};
-
-			class WfStringExpression : public WfExpression, vl::reflection::Description<WfStringExpression>
-			{
-			public:
-				vl::glr::ParsingToken value;
-
-				void Accept(WfExpression::IVisitor* visitor) override;
-			};
-
-			class WfUnaryExpression : public WfExpression, vl::reflection::Description<WfUnaryExpression>
-			{
-			public:
-				WfUnaryOperator op = WfUnaryOperator::UNDEFINED_ENUM_ITEM_VALUE;
-				vl::Ptr<WfExpression> operand;
-
-				void Accept(WfExpression::IVisitor* visitor) override;
-			};
-
-			class WfBinaryExpression : public WfExpression, vl::reflection::Description<WfBinaryExpression>
-			{
-			public:
-				WfBinaryOperator op = WfBinaryOperator::UNDEFINED_ENUM_ITEM_VALUE;
-				vl::Ptr<WfExpression> first;
-				vl::Ptr<WfExpression> second;
-
-				void Accept(WfExpression::IVisitor* visitor) override;
-			};
-
-			class WfLetVariable : public vl::glr::ParsingAstBase, vl::reflection::Description<WfLetVariable>
-			{
-			public:
-				vl::glr::ParsingToken name;
-				vl::Ptr<WfExpression> value;
-			};
-
-			class WfLetExpression : public WfExpression, vl::reflection::Description<WfLetExpression>
-			{
-			public:
-				vl::collections::List<vl::Ptr<WfLetVariable>> variables;
-				vl::Ptr<WfExpression> expression;
-
-				void Accept(WfExpression::IVisitor* visitor) override;
-			};
-
-			class WfIfExpression : public WfExpression, vl::reflection::Description<WfIfExpression>
-			{
-			public:
-				vl::Ptr<WfExpression> condition;
-				vl::Ptr<WfExpression> trueBranch;
-				vl::Ptr<WfExpression> falseBranch;
-
-				void Accept(WfExpression::IVisitor* visitor) override;
-			};
-
-			class WfRangeExpression : public WfExpression, vl::reflection::Description<WfRangeExpression>
-			{
-			public:
-				vl::Ptr<WfExpression> begin;
-				WfRangeBoundary beginBoundary = WfRangeBoundary::UNDEFINED_ENUM_ITEM_VALUE;
-				vl::Ptr<WfExpression> end;
-				WfRangeBoundary endBoundary = WfRangeBoundary::UNDEFINED_ENUM_ITEM_VALUE;
-
-				void Accept(WfExpression::IVisitor* visitor) override;
-			};
-
-			class WfSetTestingExpression : public WfExpression, vl::reflection::Description<WfSetTestingExpression>
-			{
-			public:
-				WfSetTesting test = WfSetTesting::UNDEFINED_ENUM_ITEM_VALUE;
-				vl::Ptr<WfExpression> element;
-				vl::Ptr<WfExpression> collection;
-
-				void Accept(WfExpression::IVisitor* visitor) override;
-			};
-
-			class WfConstructorArgument : public vl::glr::ParsingAstBase, vl::reflection::Description<WfConstructorArgument>
-			{
-			public:
-				vl::Ptr<WfExpression> key;
-				vl::Ptr<WfExpression> value;
-			};
-
-			class WfConstructorExpression : public WfExpression, vl::reflection::Description<WfConstructorExpression>
-			{
-			public:
-				vl::collections::List<vl::Ptr<WfConstructorArgument>> arguments;
-
-				void Accept(WfExpression::IVisitor* visitor) override;
-			};
-
-			class WfInferExpression : public WfExpression, vl::reflection::Description<WfInferExpression>
-			{
-			public:
-				vl::Ptr<WfExpression> expression;
-				vl::Ptr<WfType> type;
-
-				void Accept(WfExpression::IVisitor* visitor) override;
-			};
-
-			class WfTypeCastingExpression : public WfExpression, vl::reflection::Description<WfTypeCastingExpression>
-			{
-			public:
-				WfTypeCastingStrategy strategy = WfTypeCastingStrategy::UNDEFINED_ENUM_ITEM_VALUE;
-				vl::Ptr<WfExpression> expression;
-				vl::Ptr<WfType> type;
-
-				void Accept(WfExpression::IVisitor* visitor) override;
-			};
-
-			class WfTypeTestingExpression : public WfExpression, vl::reflection::Description<WfTypeTestingExpression>
-			{
-			public:
-				WfTypeTesting test = WfTypeTesting::UNDEFINED_ENUM_ITEM_VALUE;
-				vl::Ptr<WfExpression> expression;
-				vl::Ptr<WfType> type;
-
-				void Accept(WfExpression::IVisitor* visitor) override;
-			};
-
-			class WfTypeOfTypeExpression : public WfExpression, vl::reflection::Description<WfTypeOfTypeExpression>
-			{
-			public:
-				vl::Ptr<WfType> type;
-
-				void Accept(WfExpression::IVisitor* visitor) override;
-			};
-
-			class WfTypeOfExpressionExpression : public WfExpression, vl::reflection::Description<WfTypeOfExpressionExpression>
-			{
-			public:
-				vl::Ptr<WfExpression> expression;
-
-				void Accept(WfExpression::IVisitor* visitor) override;
-			};
-
-			class WfAttachEventExpression : public WfExpression, vl::reflection::Description<WfAttachEventExpression>
-			{
-			public:
-				vl::Ptr<WfExpression> event;
-				vl::Ptr<WfExpression> function;
-
-				void Accept(WfExpression::IVisitor* visitor) override;
-			};
-
-			class WfDetachEventExpression : public WfExpression, vl::reflection::Description<WfDetachEventExpression>
-			{
-			public:
-				vl::Ptr<WfExpression> event;
-				vl::Ptr<WfExpression> handler;
-
-				void Accept(WfExpression::IVisitor* visitor) override;
-			};
-
-			class WfObserveExpression : public WfExpression, vl::reflection::Description<WfObserveExpression>
-			{
-			public:
-				vl::Ptr<WfExpression> parent;
-				WfObserveType observeType = WfObserveType::UNDEFINED_ENUM_ITEM_VALUE;
-				vl::glr::ParsingToken name;
-				vl::Ptr<WfExpression> expression;
-				vl::collections::List<vl::Ptr<WfExpression>> events;
-
-				void Accept(WfExpression::IVisitor* visitor) override;
-			};
-
-			class WfCallExpression : public WfExpression, vl::reflection::Description<WfCallExpression>
-			{
-			public:
-				vl::Ptr<WfExpression> function;
-				vl::collections::List<vl::Ptr<WfExpression>> arguments;
-
-				void Accept(WfExpression::IVisitor* visitor) override;
-			};
-
-			class WfFunctionExpression : public WfExpression, vl::reflection::Description<WfFunctionExpression>
-			{
-			public:
-				vl::Ptr<WfFunctionDeclaration> function;
-
-				void Accept(WfExpression::IVisitor* visitor) override;
-			};
-
-			class WfNewClassExpression : public WfExpression, vl::reflection::Description<WfNewClassExpression>
-			{
-			public:
-				vl::Ptr<WfType> type;
-				vl::collections::List<vl::Ptr<WfExpression>> arguments;
-
-				void Accept(WfExpression::IVisitor* visitor) override;
-			};
-
-			class WfNewInterfaceExpression : public WfExpression, vl::reflection::Description<WfNewInterfaceExpression>
-			{
-			public:
-				vl::Ptr<WfType> type;
-				vl::collections::List<vl::Ptr<WfDeclaration>> declarations;
-
-				void Accept(WfExpression::IVisitor* visitor) override;
-			};
-
-			class WfVirtualCfeExpression abstract : public WfExpression, vl::reflection::Description<WfVirtualCfeExpression>
-			{
-			public:
-				class IVisitor : public virtual vl::reflection::IDescriptable, vl::reflection::Description<IVisitor>
-				{
-				public:
-					virtual void Visit(WfFormatExpression* node) = 0;
-				};
-
-				virtual void Accept(WfVirtualCfeExpression::IVisitor* visitor) = 0;
-
-				vl::Ptr<WfExpression> expandedExpression;
-
-				void Accept(WfExpression::IVisitor* visitor) override;
-			};
-
-			class WfFormatExpression : public WfVirtualCfeExpression, vl::reflection::Description<WfFormatExpression>
-			{
-			public:
-				vl::glr::ParsingToken value;
-
-				void Accept(WfVirtualCfeExpression::IVisitor* visitor) override;
-			};
-
-			class WfVirtualCseExpression abstract : public WfExpression, vl::reflection::Description<WfVirtualCseExpression>
-			{
-			public:
-				class IVisitor : public virtual vl::reflection::IDescriptable, vl::reflection::Description<IVisitor>
-				{
-				public:
-					virtual void Visit(WfBindExpression* node) = 0;
-					virtual void Visit(WfNewCoroutineExpression* node) = 0;
-					virtual void Visit(WfMixinCastExpression* node) = 0;
-					virtual void Visit(WfExpectedTypeCastExpression* node) = 0;
-					virtual void Visit(WfCoOperatorExpression* node) = 0;
-				};
-
-				virtual void Accept(WfVirtualCseExpression::IVisitor* visitor) = 0;
-
-				vl::Ptr<WfExpression> expandedExpression;
-
-				void Accept(WfExpression::IVisitor* visitor) override;
-			};
-
-			class WfBindExpression : public WfVirtualCseExpression, vl::reflection::Description<WfBindExpression>
-			{
-			public:
-				vl::Ptr<WfExpression> expression;
-
-				void Accept(WfVirtualCseExpression::IVisitor* visitor) override;
-			};
-
-			class WfNewCoroutineExpression : public WfVirtualCseExpression, vl::reflection::Description<WfNewCoroutineExpression>
-			{
-			public:
-				vl::glr::ParsingToken name;
-				vl::Ptr<WfStatement> statement;
-
-				void Accept(WfVirtualCseExpression::IVisitor* visitor) override;
-			};
-
-			class WfMixinCastExpression : public WfVirtualCseExpression, vl::reflection::Description<WfMixinCastExpression>
-			{
-			public:
-				vl::Ptr<WfType> type;
-				vl::Ptr<WfExpression> expression;
-
-				void Accept(WfVirtualCseExpression::IVisitor* visitor) override;
-			};
-
-			class WfExpectedTypeCastExpression : public WfVirtualCseExpression, vl::reflection::Description<WfExpectedTypeCastExpression>
-			{
-			public:
-				WfTypeCastingStrategy strategy = WfTypeCastingStrategy::UNDEFINED_ENUM_ITEM_VALUE;
-				vl::Ptr<WfExpression> expression;
-
-				void Accept(WfVirtualCseExpression::IVisitor* visitor) override;
-			};
-
-			class WfCoOperatorExpression : public WfVirtualCseExpression, vl::reflection::Description<WfCoOperatorExpression>
-			{
-			public:
-				vl::glr::ParsingToken name;
-
-				void Accept(WfVirtualCseExpression::IVisitor* visitor) override;
-			};
-
-			class WfModuleUsingFragment abstract : public vl::glr::ParsingAstBase, vl::reflection::Description<WfModuleUsingFragment>
-			{
-			public:
-				class IVisitor : public virtual vl::reflection::IDescriptable, vl::reflection::Description<IVisitor>
-				{
-				public:
-					virtual void Visit(WfModuleUsingNameFragment* node) = 0;
-					virtual void Visit(WfModuleUsingWildCardFragment* node) = 0;
-				};
-
-				virtual void Accept(WfModuleUsingFragment::IVisitor* visitor) = 0;
-
-			};
-
-			class WfModuleUsingNameFragment : public WfModuleUsingFragment, vl::reflection::Description<WfModuleUsingNameFragment>
-			{
-			public:
-				vl::glr::ParsingToken name;
-
-				void Accept(WfModuleUsingFragment::IVisitor* visitor) override;
-			};
-
-			class WfModuleUsingWildCardFragment : public WfModuleUsingFragment, vl::reflection::Description<WfModuleUsingWildCardFragment>
-			{
-			public:
-
-				void Accept(WfModuleUsingFragment::IVisitor* visitor) override;
-			};
-
-			class WfModuleUsingItem : public vl::glr::ParsingAstBase, vl::reflection::Description<WfModuleUsingItem>
-			{
-			public:
-				vl::collections::List<vl::Ptr<WfModuleUsingFragment>> fragments;
-			};
-
-			class WfModuleUsingPath : public vl::glr::ParsingAstBase, vl::reflection::Description<WfModuleUsingPath>
-			{
-			public:
-				vl::collections::List<vl::Ptr<WfModuleUsingItem>> items;
-			};
-
-			class WfModule : public vl::glr::ParsingAstBase, vl::reflection::Description<WfModule>
-			{
-			public:
-				WfModuleType moduleType = WfModuleType::UNDEFINED_ENUM_ITEM_VALUE;
-				vl::glr::ParsingToken name;
-				vl::collections::List<vl::Ptr<WfModuleUsingPath>> paths;
-				vl::collections::List<vl::Ptr<WfDeclaration>> declarations;
-			};
-		}
-	}
+		public:
+			virtual void Visit(WfPredefinedType* node) = 0;
+			virtual void Visit(WfTopQualifiedType* node) = 0;
+			virtual void Visit(WfReferenceType* node) = 0;
+			virtual void Visit(WfRawPointerType* node) = 0;
+			virtual void Visit(WfSharedPointerType* node) = 0;
+			virtual void Visit(WfNullableType* node) = 0;
+			virtual void Visit(WfEnumerableType* node) = 0;
+			virtual void Visit(WfMapType* node) = 0;
+			virtual void Visit(WfObservableListType* node) = 0;
+			virtual void Visit(WfFunctionType* node) = 0;
+			virtual void Visit(WfChildType* node) = 0;
+		};
+
+		virtual void Accept(WfType::IVisitor* visitor) = 0;
+
+	};
+
+	class WfExpression abstract : public vl::glr::ParsingAstBase, vl::reflection::Description<WfExpression>
+	{
+	public:
+		class IVisitor : public virtual vl::reflection::IDescriptable, vl::reflection::Description<IVisitor>
+		{
+		public:
+			virtual void Visit(WfThisExpression* node) = 0;
+			virtual void Visit(WfTopQualifiedExpression* node) = 0;
+			virtual void Visit(WfReferenceExpression* node) = 0;
+			virtual void Visit(WfOrderedNameExpression* node) = 0;
+			virtual void Visit(WfOrderedLambdaExpression* node) = 0;
+			virtual void Visit(WfMemberExpression* node) = 0;
+			virtual void Visit(WfChildExpression* node) = 0;
+			virtual void Visit(WfLiteralExpression* node) = 0;
+			virtual void Visit(WfFloatingExpression* node) = 0;
+			virtual void Visit(WfIntegerExpression* node) = 0;
+			virtual void Visit(WfStringExpression* node) = 0;
+			virtual void Visit(WfUnaryExpression* node) = 0;
+			virtual void Visit(WfBinaryExpression* node) = 0;
+			virtual void Visit(WfLetExpression* node) = 0;
+			virtual void Visit(WfIfExpression* node) = 0;
+			virtual void Visit(WfRangeExpression* node) = 0;
+			virtual void Visit(WfSetTestingExpression* node) = 0;
+			virtual void Visit(WfConstructorExpression* node) = 0;
+			virtual void Visit(WfInferExpression* node) = 0;
+			virtual void Visit(WfTypeCastingExpression* node) = 0;
+			virtual void Visit(WfTypeTestingExpression* node) = 0;
+			virtual void Visit(WfTypeOfTypeExpression* node) = 0;
+			virtual void Visit(WfTypeOfExpressionExpression* node) = 0;
+			virtual void Visit(WfAttachEventExpression* node) = 0;
+			virtual void Visit(WfDetachEventExpression* node) = 0;
+			virtual void Visit(WfObserveExpression* node) = 0;
+			virtual void Visit(WfCallExpression* node) = 0;
+			virtual void Visit(WfFunctionExpression* node) = 0;
+			virtual void Visit(WfNewClassExpression* node) = 0;
+			virtual void Visit(WfNewInterfaceExpression* node) = 0;
+			virtual void Visit(WfVirtualCfeExpression* node) = 0;
+			virtual void Visit(WfVirtualCseExpression* node) = 0;
+		};
+
+		virtual void Accept(WfExpression::IVisitor* visitor) = 0;
+
+	};
+
+	class WfStatement abstract : public vl::glr::ParsingAstBase, vl::reflection::Description<WfStatement>
+	{
+	public:
+		class IVisitor : public virtual vl::reflection::IDescriptable, vl::reflection::Description<IVisitor>
+		{
+		public:
+			virtual void Visit(WfBreakStatement* node) = 0;
+			virtual void Visit(WfContinueStatement* node) = 0;
+			virtual void Visit(WfReturnStatement* node) = 0;
+			virtual void Visit(WfDeleteStatement* node) = 0;
+			virtual void Visit(WfRaiseExceptionStatement* node) = 0;
+			virtual void Visit(WfIfStatement* node) = 0;
+			virtual void Visit(WfWhileStatement* node) = 0;
+			virtual void Visit(WfTryStatement* node) = 0;
+			virtual void Visit(WfBlockStatement* node) = 0;
+			virtual void Visit(WfGotoStatement* node) = 0;
+			virtual void Visit(WfVariableStatement* node) = 0;
+			virtual void Visit(WfExpressionStatement* node) = 0;
+			virtual void Visit(WfVirtualCseStatement* node) = 0;
+			virtual void Visit(WfCoroutineStatement* node) = 0;
+			virtual void Visit(WfStateMachineStatement* node) = 0;
+		};
+
+		virtual void Accept(WfStatement::IVisitor* visitor) = 0;
+
+	};
+
+	class WfAttribute : public vl::glr::ParsingAstBase, vl::reflection::Description<WfAttribute>
+	{
+	public:
+		vl::glr::ParsingToken category;
+		vl::glr::ParsingToken name;
+		vl::Ptr<WfExpression> value;
+	};
+
+	class WfDeclaration abstract : public vl::glr::ParsingAstBase, vl::reflection::Description<WfDeclaration>
+	{
+	public:
+		class IVisitor : public virtual vl::reflection::IDescriptable, vl::reflection::Description<IVisitor>
+		{
+		public:
+			virtual void Visit(WfNamespaceDeclaration* node) = 0;
+			virtual void Visit(WfFunctionDeclaration* node) = 0;
+			virtual void Visit(WfVariableDeclaration* node) = 0;
+			virtual void Visit(WfEventDeclaration* node) = 0;
+			virtual void Visit(WfPropertyDeclaration* node) = 0;
+			virtual void Visit(WfConstructorDeclaration* node) = 0;
+			virtual void Visit(WfDestructorDeclaration* node) = 0;
+			virtual void Visit(WfClassDeclaration* node) = 0;
+			virtual void Visit(WfEnumDeclaration* node) = 0;
+			virtual void Visit(WfStructDeclaration* node) = 0;
+			virtual void Visit(WfVirtualCfeDeclaration* node) = 0;
+			virtual void Visit(WfVirtualCseDeclaration* node) = 0;
+		};
+
+		virtual void Accept(WfDeclaration::IVisitor* visitor) = 0;
+
+		vl::collections::List<vl::Ptr<WfAttribute>> attributes;
+		vl::glr::ParsingToken name;
+	};
+
+	class WfPredefinedType : public WfType, vl::reflection::Description<WfPredefinedType>
+	{
+	public:
+		WfPredefinedTypeName name = WfPredefinedTypeName::UNDEFINED_ENUM_ITEM_VALUE;
+
+		void Accept(WfType::IVisitor* visitor) override;
+	};
+
+	class WfTopQualifiedType : public WfType, vl::reflection::Description<WfTopQualifiedType>
+	{
+	public:
+		vl::glr::ParsingToken name;
+
+		void Accept(WfType::IVisitor* visitor) override;
+	};
+
+	class WfReferenceType : public WfType, vl::reflection::Description<WfReferenceType>
+	{
+	public:
+		vl::glr::ParsingToken name;
+
+		void Accept(WfType::IVisitor* visitor) override;
+	};
+
+	class WfRawPointerType : public WfType, vl::reflection::Description<WfRawPointerType>
+	{
+	public:
+		vl::Ptr<WfType> element;
+
+		void Accept(WfType::IVisitor* visitor) override;
+	};
+
+	class WfSharedPointerType : public WfType, vl::reflection::Description<WfSharedPointerType>
+	{
+	public:
+		vl::Ptr<WfType> element;
+
+		void Accept(WfType::IVisitor* visitor) override;
+	};
+
+	class WfNullableType : public WfType, vl::reflection::Description<WfNullableType>
+	{
+	public:
+		vl::Ptr<WfType> element;
+
+		void Accept(WfType::IVisitor* visitor) override;
+	};
+
+	class WfEnumerableType : public WfType, vl::reflection::Description<WfEnumerableType>
+	{
+	public:
+		vl::Ptr<WfType> element;
+
+		void Accept(WfType::IVisitor* visitor) override;
+	};
+
+	class WfMapType : public WfType, vl::reflection::Description<WfMapType>
+	{
+	public:
+		WfMapWritability writability = WfMapWritability::UNDEFINED_ENUM_ITEM_VALUE;
+		vl::Ptr<WfType> key;
+		vl::Ptr<WfType> value;
+
+		void Accept(WfType::IVisitor* visitor) override;
+	};
+
+	class WfObservableListType : public WfType, vl::reflection::Description<WfObservableListType>
+	{
+	public:
+		vl::Ptr<WfType> element;
+
+		void Accept(WfType::IVisitor* visitor) override;
+	};
+
+	class WfFunctionType : public WfType, vl::reflection::Description<WfFunctionType>
+	{
+	public:
+		vl::Ptr<WfType> result;
+		vl::collections::List<vl::Ptr<WfType>> arguments;
+
+		void Accept(WfType::IVisitor* visitor) override;
+	};
+
+	class WfChildType : public WfType, vl::reflection::Description<WfChildType>
+	{
+	public:
+		vl::Ptr<WfType> parent;
+		vl::glr::ParsingToken name;
+
+		void Accept(WfType::IVisitor* visitor) override;
+	};
+
+	class WfNamespaceDeclaration : public WfDeclaration, vl::reflection::Description<WfNamespaceDeclaration>
+	{
+	public:
+		vl::collections::List<vl::Ptr<WfDeclaration>> declarations;
+
+		void Accept(WfDeclaration::IVisitor* visitor) override;
+	};
+
+	class WfFunctionArgument : public vl::glr::ParsingAstBase, vl::reflection::Description<WfFunctionArgument>
+	{
+	public:
+		vl::collections::List<vl::Ptr<WfAttribute>> attributes;
+		vl::glr::ParsingToken name;
+		vl::Ptr<WfType> type;
+	};
+
+	class WfFunctionDeclaration : public WfDeclaration, vl::reflection::Description<WfFunctionDeclaration>
+	{
+	public:
+		WfFunctionKind functionKind = WfFunctionKind::UNDEFINED_ENUM_ITEM_VALUE;
+		WfFunctionAnonymity anonymity = WfFunctionAnonymity::UNDEFINED_ENUM_ITEM_VALUE;
+		vl::collections::List<vl::Ptr<WfFunctionArgument>> arguments;
+		vl::Ptr<WfType> returnType;
+		vl::Ptr<WfStatement> statement;
+
+		void Accept(WfDeclaration::IVisitor* visitor) override;
+	};
+
+	class WfVariableDeclaration : public WfDeclaration, vl::reflection::Description<WfVariableDeclaration>
+	{
+	public:
+		vl::Ptr<WfType> type;
+		vl::Ptr<WfExpression> expression;
+
+		void Accept(WfDeclaration::IVisitor* visitor) override;
+	};
+
+	class WfEventDeclaration : public WfDeclaration, vl::reflection::Description<WfEventDeclaration>
+	{
+	public:
+		vl::collections::List<vl::Ptr<WfType>> arguments;
+
+		void Accept(WfDeclaration::IVisitor* visitor) override;
+	};
+
+	class WfPropertyDeclaration : public WfDeclaration, vl::reflection::Description<WfPropertyDeclaration>
+	{
+	public:
+		vl::Ptr<WfType> type;
+		vl::glr::ParsingToken getter;
+		vl::glr::ParsingToken setter;
+		vl::glr::ParsingToken valueChangedEvent;
+
+		void Accept(WfDeclaration::IVisitor* visitor) override;
+	};
+
+	class WfBaseConstructorCall : public vl::glr::ParsingAstBase, vl::reflection::Description<WfBaseConstructorCall>
+	{
+	public:
+		vl::Ptr<WfType> type;
+		vl::collections::List<vl::Ptr<WfExpression>> arguments;
+	};
+
+	class WfConstructorDeclaration : public WfDeclaration, vl::reflection::Description<WfConstructorDeclaration>
+	{
+	public:
+		WfConstructorType constructorType = WfConstructorType::UNDEFINED_ENUM_ITEM_VALUE;
+		vl::collections::List<vl::Ptr<WfBaseConstructorCall>> baseConstructorCalls;
+		vl::collections::List<vl::Ptr<WfFunctionArgument>> arguments;
+		vl::Ptr<WfStatement> statement;
+
+		void Accept(WfDeclaration::IVisitor* visitor) override;
+	};
+
+	class WfDestructorDeclaration : public WfDeclaration, vl::reflection::Description<WfDestructorDeclaration>
+	{
+	public:
+		vl::Ptr<WfStatement> statement;
+
+		void Accept(WfDeclaration::IVisitor* visitor) override;
+	};
+
+	class WfClassDeclaration : public WfDeclaration, vl::reflection::Description<WfClassDeclaration>
+	{
+	public:
+		WfClassKind kind = WfClassKind::UNDEFINED_ENUM_ITEM_VALUE;
+		WfConstructorType constructorType = WfConstructorType::UNDEFINED_ENUM_ITEM_VALUE;
+		vl::collections::List<vl::Ptr<WfType>> baseTypes;
+		vl::collections::List<vl::Ptr<WfDeclaration>> declarations;
+
+		void Accept(WfDeclaration::IVisitor* visitor) override;
+	};
+
+	class WfEnumItemIntersection : public vl::glr::ParsingAstBase, vl::reflection::Description<WfEnumItemIntersection>
+	{
+	public:
+		vl::glr::ParsingToken name;
+	};
+
+	class WfEnumItem : public vl::glr::ParsingAstBase, vl::reflection::Description<WfEnumItem>
+	{
+	public:
+		vl::collections::List<vl::Ptr<WfAttribute>> attributes;
+		vl::glr::ParsingToken name;
+		WfEnumItemKind kind = WfEnumItemKind::UNDEFINED_ENUM_ITEM_VALUE;
+		vl::glr::ParsingToken number;
+		vl::collections::List<vl::Ptr<WfEnumItemIntersection>> intersections;
+	};
+
+	class WfEnumDeclaration : public WfDeclaration, vl::reflection::Description<WfEnumDeclaration>
+	{
+	public:
+		WfEnumKind kind = WfEnumKind::UNDEFINED_ENUM_ITEM_VALUE;
+		vl::collections::List<vl::Ptr<WfEnumItem>> items;
+
+		void Accept(WfDeclaration::IVisitor* visitor) override;
+	};
+
+	class WfStructMember : public vl::glr::ParsingAstBase, vl::reflection::Description<WfStructMember>
+	{
+	public:
+		vl::collections::List<vl::Ptr<WfAttribute>> attributes;
+		vl::glr::ParsingToken name;
+		vl::Ptr<WfType> type;
+	};
+
+	class WfStructDeclaration : public WfDeclaration, vl::reflection::Description<WfStructDeclaration>
+	{
+	public:
+		vl::collections::List<vl::Ptr<WfStructMember>> members;
+
+		void Accept(WfDeclaration::IVisitor* visitor) override;
+	};
+
+	class WfVirtualCfeDeclaration abstract : public WfDeclaration, vl::reflection::Description<WfVirtualCfeDeclaration>
+	{
+	public:
+		class IVisitor : public virtual vl::reflection::IDescriptable, vl::reflection::Description<IVisitor>
+		{
+		public:
+			virtual void Visit(WfAutoPropertyDeclaration* node) = 0;
+			virtual void Visit(WfCastResultInterfaceDeclaration* node) = 0;
+		};
+
+		virtual void Accept(WfVirtualCfeDeclaration::IVisitor* visitor) = 0;
+
+		vl::collections::List<vl::Ptr<WfDeclaration>> expandedDeclarations;
+
+		void Accept(WfDeclaration::IVisitor* visitor) override;
+	};
+
+	class WfAutoPropertyDeclaration : public WfVirtualCfeDeclaration, vl::reflection::Description<WfAutoPropertyDeclaration>
+	{
+	public:
+		WfFunctionKind functionKind = WfFunctionKind::UNDEFINED_ENUM_ITEM_VALUE;
+		vl::Ptr<WfType> type;
+		WfAPConst configConst = WfAPConst::UNDEFINED_ENUM_ITEM_VALUE;
+		WfAPObserve configObserve = WfAPObserve::UNDEFINED_ENUM_ITEM_VALUE;
+		vl::Ptr<WfExpression> expression;
+
+		void Accept(WfVirtualCfeDeclaration::IVisitor* visitor) override;
+	};
+
+	class WfCastResultInterfaceDeclaration : public WfVirtualCfeDeclaration, vl::reflection::Description<WfCastResultInterfaceDeclaration>
+	{
+	public:
+		vl::Ptr<WfType> baseType;
+		vl::Ptr<WfType> elementType;
+
+		void Accept(WfVirtualCfeDeclaration::IVisitor* visitor) override;
+	};
+
+	class WfVirtualCseDeclaration abstract : public WfDeclaration, vl::reflection::Description<WfVirtualCseDeclaration>
+	{
+	public:
+		class IVisitor : public virtual vl::reflection::IDescriptable, vl::reflection::Description<IVisitor>
+		{
+		public:
+			virtual void Visit(WfStateMachineDeclaration* node) = 0;
+		};
+
+		virtual void Accept(WfVirtualCseDeclaration::IVisitor* visitor) = 0;
+
+		vl::collections::List<vl::Ptr<WfDeclaration>> expandedDeclarations;
+
+		void Accept(WfDeclaration::IVisitor* visitor) override;
+	};
+
+	class WfStateInput : public vl::glr::ParsingAstBase, vl::reflection::Description<WfStateInput>
+	{
+	public:
+		vl::glr::ParsingToken name;
+		vl::collections::List<vl::Ptr<WfFunctionArgument>> arguments;
+	};
+
+	class WfStateDeclaration : public vl::glr::ParsingAstBase, vl::reflection::Description<WfStateDeclaration>
+	{
+	public:
+		vl::glr::ParsingToken name;
+		vl::collections::List<vl::Ptr<WfFunctionArgument>> arguments;
+		vl::Ptr<WfStatement> statement;
+	};
+
+	class WfStateMachineDeclaration : public WfVirtualCseDeclaration, vl::reflection::Description<WfStateMachineDeclaration>
+	{
+	public:
+		vl::collections::List<vl::Ptr<WfStateInput>> inputs;
+		vl::collections::List<vl::Ptr<WfStateDeclaration>> states;
+
+		void Accept(WfVirtualCseDeclaration::IVisitor* visitor) override;
+	};
+
+	class WfBreakStatement : public WfStatement, vl::reflection::Description<WfBreakStatement>
+	{
+	public:
+
+		void Accept(WfStatement::IVisitor* visitor) override;
+	};
+
+	class WfContinueStatement : public WfStatement, vl::reflection::Description<WfContinueStatement>
+	{
+	public:
+
+		void Accept(WfStatement::IVisitor* visitor) override;
+	};
+
+	class WfReturnStatement : public WfStatement, vl::reflection::Description<WfReturnStatement>
+	{
+	public:
+		vl::Ptr<WfExpression> expression;
+
+		void Accept(WfStatement::IVisitor* visitor) override;
+	};
+
+	class WfDeleteStatement : public WfStatement, vl::reflection::Description<WfDeleteStatement>
+	{
+	public:
+		vl::Ptr<WfExpression> expression;
+
+		void Accept(WfStatement::IVisitor* visitor) override;
+	};
+
+	class WfRaiseExceptionStatement : public WfStatement, vl::reflection::Description<WfRaiseExceptionStatement>
+	{
+	public:
+		vl::Ptr<WfExpression> expression;
+
+		void Accept(WfStatement::IVisitor* visitor) override;
+	};
+
+	class WfIfStatement : public WfStatement, vl::reflection::Description<WfIfStatement>
+	{
+	public:
+		vl::Ptr<WfType> type;
+		vl::glr::ParsingToken name;
+		vl::Ptr<WfExpression> expression;
+		vl::Ptr<WfStatement> trueBranch;
+		vl::Ptr<WfStatement> falseBranch;
+
+		void Accept(WfStatement::IVisitor* visitor) override;
+	};
+
+	class WfWhileStatement : public WfStatement, vl::reflection::Description<WfWhileStatement>
+	{
+	public:
+		vl::Ptr<WfExpression> condition;
+		vl::Ptr<WfStatement> statement;
+
+		void Accept(WfStatement::IVisitor* visitor) override;
+	};
+
+	class WfTryStatement : public WfStatement, vl::reflection::Description<WfTryStatement>
+	{
+	public:
+		vl::Ptr<WfStatement> protectedStatement;
+		vl::glr::ParsingToken name;
+		vl::Ptr<WfStatement> catchStatement;
+		vl::Ptr<WfStatement> finallyStatement;
+
+		void Accept(WfStatement::IVisitor* visitor) override;
+	};
+
+	class WfBlockStatement : public WfStatement, vl::reflection::Description<WfBlockStatement>
+	{
+	public:
+		vl::collections::List<vl::Ptr<WfStatement>> statements;
+		vl::glr::ParsingToken endLabel;
+
+		void Accept(WfStatement::IVisitor* visitor) override;
+	};
+
+	class WfGotoStatement : public WfStatement, vl::reflection::Description<WfGotoStatement>
+	{
+	public:
+		vl::glr::ParsingToken label;
+
+		void Accept(WfStatement::IVisitor* visitor) override;
+	};
+
+	class WfVariableStatement : public WfStatement, vl::reflection::Description<WfVariableStatement>
+	{
+	public:
+		vl::Ptr<WfVariableDeclaration> variable;
+
+		void Accept(WfStatement::IVisitor* visitor) override;
+	};
+
+	class WfExpressionStatement : public WfStatement, vl::reflection::Description<WfExpressionStatement>
+	{
+	public:
+		vl::Ptr<WfExpression> expression;
+
+		void Accept(WfStatement::IVisitor* visitor) override;
+	};
+
+	class WfVirtualCseStatement abstract : public WfStatement, vl::reflection::Description<WfVirtualCseStatement>
+	{
+	public:
+		class IVisitor : public virtual vl::reflection::IDescriptable, vl::reflection::Description<IVisitor>
+		{
+		public:
+			virtual void Visit(WfForEachStatement* node) = 0;
+			virtual void Visit(WfSwitchStatement* node) = 0;
+			virtual void Visit(WfCoProviderStatement* node) = 0;
+		};
+
+		virtual void Accept(WfVirtualCseStatement::IVisitor* visitor) = 0;
+
+		vl::Ptr<WfStatement> expandedStatement;
+
+		void Accept(WfStatement::IVisitor* visitor) override;
+	};
+
+	class WfForEachStatement : public WfVirtualCseStatement, vl::reflection::Description<WfForEachStatement>
+	{
+	public:
+		vl::glr::ParsingToken name;
+		WfForEachDirection direction = WfForEachDirection::UNDEFINED_ENUM_ITEM_VALUE;
+		vl::Ptr<WfExpression> collection;
+		vl::Ptr<WfStatement> statement;
+
+		void Accept(WfVirtualCseStatement::IVisitor* visitor) override;
+	};
+
+	class WfSwitchCase : public vl::glr::ParsingAstBase, vl::reflection::Description<WfSwitchCase>
+	{
+	public:
+		vl::Ptr<WfExpression> expression;
+		vl::Ptr<WfStatement> statement;
+	};
+
+	class WfSwitchStatement : public WfVirtualCseStatement, vl::reflection::Description<WfSwitchStatement>
+	{
+	public:
+		vl::Ptr<WfExpression> expression;
+		vl::collections::List<vl::Ptr<WfSwitchCase>> caseBranches;
+		vl::Ptr<WfStatement> defaultBranch;
+
+		void Accept(WfVirtualCseStatement::IVisitor* visitor) override;
+	};
+
+	class WfCoProviderStatement : public WfVirtualCseStatement, vl::reflection::Description<WfCoProviderStatement>
+	{
+	public:
+		vl::glr::ParsingToken name;
+		vl::Ptr<WfStatement> statement;
+
+		void Accept(WfVirtualCseStatement::IVisitor* visitor) override;
+	};
+
+	class WfCoroutineStatement abstract : public WfStatement, vl::reflection::Description<WfCoroutineStatement>
+	{
+	public:
+		class IVisitor : public virtual vl::reflection::IDescriptable, vl::reflection::Description<IVisitor>
+		{
+		public:
+			virtual void Visit(WfCoPauseStatement* node) = 0;
+			virtual void Visit(WfCoOperatorStatement* node) = 0;
+		};
+
+		virtual void Accept(WfCoroutineStatement::IVisitor* visitor) = 0;
+
+
+		void Accept(WfStatement::IVisitor* visitor) override;
+	};
+
+	class WfCoPauseStatement : public WfCoroutineStatement, vl::reflection::Description<WfCoPauseStatement>
+	{
+	public:
+		vl::Ptr<WfStatement> statement;
+
+		void Accept(WfCoroutineStatement::IVisitor* visitor) override;
+	};
+
+	class WfCoOperatorStatement : public WfCoroutineStatement, vl::reflection::Description<WfCoOperatorStatement>
+	{
+	public:
+		vl::glr::ParsingToken varName;
+		vl::glr::ParsingToken opName;
+		vl::collections::List<vl::Ptr<WfExpression>> arguments;
+
+		void Accept(WfCoroutineStatement::IVisitor* visitor) override;
+	};
+
+	class WfStateMachineStatement abstract : public WfStatement, vl::reflection::Description<WfStateMachineStatement>
+	{
+	public:
+		class IVisitor : public virtual vl::reflection::IDescriptable, vl::reflection::Description<IVisitor>
+		{
+		public:
+			virtual void Visit(WfStateSwitchStatement* node) = 0;
+			virtual void Visit(WfStateInvokeStatement* node) = 0;
+		};
+
+		virtual void Accept(WfStateMachineStatement::IVisitor* visitor) = 0;
+
+
+		void Accept(WfStatement::IVisitor* visitor) override;
+	};
+
+	class WfStateSwitchArgument : public vl::glr::ParsingAstBase, vl::reflection::Description<WfStateSwitchArgument>
+	{
+	public:
+		vl::glr::ParsingToken name;
+	};
+
+	class WfStateSwitchCase : public vl::glr::ParsingAstBase, vl::reflection::Description<WfStateSwitchCase>
+	{
+	public:
+		vl::glr::ParsingToken name;
+		vl::collections::List<vl::Ptr<WfStateSwitchArgument>> arguments;
+		vl::Ptr<WfStatement> statement;
+	};
+
+	class WfStateSwitchStatement : public WfStateMachineStatement, vl::reflection::Description<WfStateSwitchStatement>
+	{
+	public:
+		WfStateSwitchType type = WfStateSwitchType::UNDEFINED_ENUM_ITEM_VALUE;
+		vl::collections::List<vl::Ptr<WfStateSwitchCase>> caseBranches;
+
+		void Accept(WfStateMachineStatement::IVisitor* visitor) override;
+	};
+
+	class WfStateInvokeStatement : public WfStateMachineStatement, vl::reflection::Description<WfStateInvokeStatement>
+	{
+	public:
+		WfStateInvokeType type = WfStateInvokeType::UNDEFINED_ENUM_ITEM_VALUE;
+		vl::glr::ParsingToken name;
+		vl::collections::List<vl::Ptr<WfExpression>> arguments;
+
+		void Accept(WfStateMachineStatement::IVisitor* visitor) override;
+	};
+
+	class WfThisExpression : public WfExpression, vl::reflection::Description<WfThisExpression>
+	{
+	public:
+
+		void Accept(WfExpression::IVisitor* visitor) override;
+	};
+
+	class WfTopQualifiedExpression : public WfExpression, vl::reflection::Description<WfTopQualifiedExpression>
+	{
+	public:
+		vl::glr::ParsingToken name;
+
+		void Accept(WfExpression::IVisitor* visitor) override;
+	};
+
+	class WfReferenceExpression : public WfExpression, vl::reflection::Description<WfReferenceExpression>
+	{
+	public:
+		vl::glr::ParsingToken name;
+
+		void Accept(WfExpression::IVisitor* visitor) override;
+	};
+
+	class WfOrderedNameExpression : public WfExpression, vl::reflection::Description<WfOrderedNameExpression>
+	{
+	public:
+		vl::glr::ParsingToken name;
+
+		void Accept(WfExpression::IVisitor* visitor) override;
+	};
+
+	class WfOrderedLambdaExpression : public WfExpression, vl::reflection::Description<WfOrderedLambdaExpression>
+	{
+	public:
+		vl::Ptr<WfExpression> body;
+
+		void Accept(WfExpression::IVisitor* visitor) override;
+	};
+
+	class WfMemberExpression : public WfExpression, vl::reflection::Description<WfMemberExpression>
+	{
+	public:
+		vl::Ptr<WfExpression> parent;
+		vl::glr::ParsingToken name;
+
+		void Accept(WfExpression::IVisitor* visitor) override;
+	};
+
+	class WfChildExpression : public WfExpression, vl::reflection::Description<WfChildExpression>
+	{
+	public:
+		vl::Ptr<WfExpression> parent;
+		vl::glr::ParsingToken name;
+
+		void Accept(WfExpression::IVisitor* visitor) override;
+	};
+
+	class WfLiteralExpression : public WfExpression, vl::reflection::Description<WfLiteralExpression>
+	{
+	public:
+		WfLiteralValue value = WfLiteralValue::UNDEFINED_ENUM_ITEM_VALUE;
+
+		void Accept(WfExpression::IVisitor* visitor) override;
+	};
+
+	class WfFloatingExpression : public WfExpression, vl::reflection::Description<WfFloatingExpression>
+	{
+	public:
+		vl::glr::ParsingToken value;
+
+		void Accept(WfExpression::IVisitor* visitor) override;
+	};
+
+	class WfIntegerExpression : public WfExpression, vl::reflection::Description<WfIntegerExpression>
+	{
+	public:
+		vl::glr::ParsingToken value;
+
+		void Accept(WfExpression::IVisitor* visitor) override;
+	};
+
+	class WfStringExpression : public WfExpression, vl::reflection::Description<WfStringExpression>
+	{
+	public:
+		vl::glr::ParsingToken value;
+
+		void Accept(WfExpression::IVisitor* visitor) override;
+	};
+
+	class WfUnaryExpression : public WfExpression, vl::reflection::Description<WfUnaryExpression>
+	{
+	public:
+		WfUnaryOperator op = WfUnaryOperator::UNDEFINED_ENUM_ITEM_VALUE;
+		vl::Ptr<WfExpression> operand;
+
+		void Accept(WfExpression::IVisitor* visitor) override;
+	};
+
+	class WfBinaryExpression : public WfExpression, vl::reflection::Description<WfBinaryExpression>
+	{
+	public:
+		WfBinaryOperator op = WfBinaryOperator::UNDEFINED_ENUM_ITEM_VALUE;
+		vl::Ptr<WfExpression> first;
+		vl::Ptr<WfExpression> second;
+
+		void Accept(WfExpression::IVisitor* visitor) override;
+	};
+
+	class WfLetVariable : public vl::glr::ParsingAstBase, vl::reflection::Description<WfLetVariable>
+	{
+	public:
+		vl::glr::ParsingToken name;
+		vl::Ptr<WfExpression> value;
+	};
+
+	class WfLetExpression : public WfExpression, vl::reflection::Description<WfLetExpression>
+	{
+	public:
+		vl::collections::List<vl::Ptr<WfLetVariable>> variables;
+		vl::Ptr<WfExpression> expression;
+
+		void Accept(WfExpression::IVisitor* visitor) override;
+	};
+
+	class WfIfExpression : public WfExpression, vl::reflection::Description<WfIfExpression>
+	{
+	public:
+		vl::Ptr<WfExpression> condition;
+		vl::Ptr<WfExpression> trueBranch;
+		vl::Ptr<WfExpression> falseBranch;
+
+		void Accept(WfExpression::IVisitor* visitor) override;
+	};
+
+	class WfRangeExpression : public WfExpression, vl::reflection::Description<WfRangeExpression>
+	{
+	public:
+		vl::Ptr<WfExpression> begin;
+		WfRangeBoundary beginBoundary = WfRangeBoundary::UNDEFINED_ENUM_ITEM_VALUE;
+		vl::Ptr<WfExpression> end;
+		WfRangeBoundary endBoundary = WfRangeBoundary::UNDEFINED_ENUM_ITEM_VALUE;
+
+		void Accept(WfExpression::IVisitor* visitor) override;
+	};
+
+	class WfSetTestingExpression : public WfExpression, vl::reflection::Description<WfSetTestingExpression>
+	{
+	public:
+		WfSetTesting test = WfSetTesting::UNDEFINED_ENUM_ITEM_VALUE;
+		vl::Ptr<WfExpression> element;
+		vl::Ptr<WfExpression> collection;
+
+		void Accept(WfExpression::IVisitor* visitor) override;
+	};
+
+	class WfConstructorArgument : public vl::glr::ParsingAstBase, vl::reflection::Description<WfConstructorArgument>
+	{
+	public:
+		vl::Ptr<WfExpression> key;
+		vl::Ptr<WfExpression> value;
+	};
+
+	class WfConstructorExpression : public WfExpression, vl::reflection::Description<WfConstructorExpression>
+	{
+	public:
+		vl::collections::List<vl::Ptr<WfConstructorArgument>> arguments;
+
+		void Accept(WfExpression::IVisitor* visitor) override;
+	};
+
+	class WfInferExpression : public WfExpression, vl::reflection::Description<WfInferExpression>
+	{
+	public:
+		vl::Ptr<WfExpression> expression;
+		vl::Ptr<WfType> type;
+
+		void Accept(WfExpression::IVisitor* visitor) override;
+	};
+
+	class WfTypeCastingExpression : public WfExpression, vl::reflection::Description<WfTypeCastingExpression>
+	{
+	public:
+		WfTypeCastingStrategy strategy = WfTypeCastingStrategy::UNDEFINED_ENUM_ITEM_VALUE;
+		vl::Ptr<WfExpression> expression;
+		vl::Ptr<WfType> type;
+
+		void Accept(WfExpression::IVisitor* visitor) override;
+	};
+
+	class WfTypeTestingExpression : public WfExpression, vl::reflection::Description<WfTypeTestingExpression>
+	{
+	public:
+		WfTypeTesting test = WfTypeTesting::UNDEFINED_ENUM_ITEM_VALUE;
+		vl::Ptr<WfExpression> expression;
+		vl::Ptr<WfType> type;
+
+		void Accept(WfExpression::IVisitor* visitor) override;
+	};
+
+	class WfTypeOfTypeExpression : public WfExpression, vl::reflection::Description<WfTypeOfTypeExpression>
+	{
+	public:
+		vl::Ptr<WfType> type;
+
+		void Accept(WfExpression::IVisitor* visitor) override;
+	};
+
+	class WfTypeOfExpressionExpression : public WfExpression, vl::reflection::Description<WfTypeOfExpressionExpression>
+	{
+	public:
+		vl::Ptr<WfExpression> expression;
+
+		void Accept(WfExpression::IVisitor* visitor) override;
+	};
+
+	class WfAttachEventExpression : public WfExpression, vl::reflection::Description<WfAttachEventExpression>
+	{
+	public:
+		vl::Ptr<WfExpression> event;
+		vl::Ptr<WfExpression> function;
+
+		void Accept(WfExpression::IVisitor* visitor) override;
+	};
+
+	class WfDetachEventExpression : public WfExpression, vl::reflection::Description<WfDetachEventExpression>
+	{
+	public:
+		vl::Ptr<WfExpression> event;
+		vl::Ptr<WfExpression> handler;
+
+		void Accept(WfExpression::IVisitor* visitor) override;
+	};
+
+	class WfObserveExpression : public WfExpression, vl::reflection::Description<WfObserveExpression>
+	{
+	public:
+		vl::Ptr<WfExpression> parent;
+		WfObserveType observeType = WfObserveType::UNDEFINED_ENUM_ITEM_VALUE;
+		vl::glr::ParsingToken name;
+		vl::Ptr<WfExpression> expression;
+		vl::collections::List<vl::Ptr<WfExpression>> events;
+
+		void Accept(WfExpression::IVisitor* visitor) override;
+	};
+
+	class WfCallExpression : public WfExpression, vl::reflection::Description<WfCallExpression>
+	{
+	public:
+		vl::Ptr<WfExpression> function;
+		vl::collections::List<vl::Ptr<WfExpression>> arguments;
+
+		void Accept(WfExpression::IVisitor* visitor) override;
+	};
+
+	class WfFunctionExpression : public WfExpression, vl::reflection::Description<WfFunctionExpression>
+	{
+	public:
+		vl::Ptr<WfFunctionDeclaration> function;
+
+		void Accept(WfExpression::IVisitor* visitor) override;
+	};
+
+	class WfNewClassExpression : public WfExpression, vl::reflection::Description<WfNewClassExpression>
+	{
+	public:
+		vl::Ptr<WfType> type;
+		vl::collections::List<vl::Ptr<WfExpression>> arguments;
+
+		void Accept(WfExpression::IVisitor* visitor) override;
+	};
+
+	class WfNewInterfaceExpression : public WfExpression, vl::reflection::Description<WfNewInterfaceExpression>
+	{
+	public:
+		vl::Ptr<WfType> type;
+		vl::collections::List<vl::Ptr<WfDeclaration>> declarations;
+
+		void Accept(WfExpression::IVisitor* visitor) override;
+	};
+
+	class WfVirtualCfeExpression abstract : public WfExpression, vl::reflection::Description<WfVirtualCfeExpression>
+	{
+	public:
+		class IVisitor : public virtual vl::reflection::IDescriptable, vl::reflection::Description<IVisitor>
+		{
+		public:
+			virtual void Visit(WfFormatExpression* node) = 0;
+		};
+
+		virtual void Accept(WfVirtualCfeExpression::IVisitor* visitor) = 0;
+
+		vl::Ptr<WfExpression> expandedExpression;
+
+		void Accept(WfExpression::IVisitor* visitor) override;
+	};
+
+	class WfFormatExpression : public WfVirtualCfeExpression, vl::reflection::Description<WfFormatExpression>
+	{
+	public:
+		vl::glr::ParsingToken value;
+
+		void Accept(WfVirtualCfeExpression::IVisitor* visitor) override;
+	};
+
+	class WfVirtualCseExpression abstract : public WfExpression, vl::reflection::Description<WfVirtualCseExpression>
+	{
+	public:
+		class IVisitor : public virtual vl::reflection::IDescriptable, vl::reflection::Description<IVisitor>
+		{
+		public:
+			virtual void Visit(WfBindExpression* node) = 0;
+			virtual void Visit(WfNewCoroutineExpression* node) = 0;
+			virtual void Visit(WfMixinCastExpression* node) = 0;
+			virtual void Visit(WfExpectedTypeCastExpression* node) = 0;
+			virtual void Visit(WfCoOperatorExpression* node) = 0;
+		};
+
+		virtual void Accept(WfVirtualCseExpression::IVisitor* visitor) = 0;
+
+		vl::Ptr<WfExpression> expandedExpression;
+
+		void Accept(WfExpression::IVisitor* visitor) override;
+	};
+
+	class WfBindExpression : public WfVirtualCseExpression, vl::reflection::Description<WfBindExpression>
+	{
+	public:
+		vl::Ptr<WfExpression> expression;
+
+		void Accept(WfVirtualCseExpression::IVisitor* visitor) override;
+	};
+
+	class WfNewCoroutineExpression : public WfVirtualCseExpression, vl::reflection::Description<WfNewCoroutineExpression>
+	{
+	public:
+		vl::glr::ParsingToken name;
+		vl::Ptr<WfStatement> statement;
+
+		void Accept(WfVirtualCseExpression::IVisitor* visitor) override;
+	};
+
+	class WfMixinCastExpression : public WfVirtualCseExpression, vl::reflection::Description<WfMixinCastExpression>
+	{
+	public:
+		vl::Ptr<WfType> type;
+		vl::Ptr<WfExpression> expression;
+
+		void Accept(WfVirtualCseExpression::IVisitor* visitor) override;
+	};
+
+	class WfExpectedTypeCastExpression : public WfVirtualCseExpression, vl::reflection::Description<WfExpectedTypeCastExpression>
+	{
+	public:
+		WfTypeCastingStrategy strategy = WfTypeCastingStrategy::UNDEFINED_ENUM_ITEM_VALUE;
+		vl::Ptr<WfExpression> expression;
+
+		void Accept(WfVirtualCseExpression::IVisitor* visitor) override;
+	};
+
+	class WfCoOperatorExpression : public WfVirtualCseExpression, vl::reflection::Description<WfCoOperatorExpression>
+	{
+	public:
+		vl::glr::ParsingToken name;
+
+		void Accept(WfVirtualCseExpression::IVisitor* visitor) override;
+	};
+
+	class WfModuleUsingFragment abstract : public vl::glr::ParsingAstBase, vl::reflection::Description<WfModuleUsingFragment>
+	{
+	public:
+		class IVisitor : public virtual vl::reflection::IDescriptable, vl::reflection::Description<IVisitor>
+		{
+		public:
+			virtual void Visit(WfModuleUsingNameFragment* node) = 0;
+			virtual void Visit(WfModuleUsingWildCardFragment* node) = 0;
+		};
+
+		virtual void Accept(WfModuleUsingFragment::IVisitor* visitor) = 0;
+
+	};
+
+	class WfModuleUsingNameFragment : public WfModuleUsingFragment, vl::reflection::Description<WfModuleUsingNameFragment>
+	{
+	public:
+		vl::glr::ParsingToken name;
+
+		void Accept(WfModuleUsingFragment::IVisitor* visitor) override;
+	};
+
+	class WfModuleUsingWildCardFragment : public WfModuleUsingFragment, vl::reflection::Description<WfModuleUsingWildCardFragment>
+	{
+	public:
+
+		void Accept(WfModuleUsingFragment::IVisitor* visitor) override;
+	};
+
+	class WfModuleUsingItem : public vl::glr::ParsingAstBase, vl::reflection::Description<WfModuleUsingItem>
+	{
+	public:
+		vl::collections::List<vl::Ptr<WfModuleUsingFragment>> fragments;
+	};
+
+	class WfModuleUsingPath : public vl::glr::ParsingAstBase, vl::reflection::Description<WfModuleUsingPath>
+	{
+	public:
+		vl::collections::List<vl::Ptr<WfModuleUsingItem>> items;
+	};
+
+	class WfModule : public vl::glr::ParsingAstBase, vl::reflection::Description<WfModule>
+	{
+	public:
+		WfModuleType moduleType = WfModuleType::UNDEFINED_ENUM_ITEM_VALUE;
+		vl::glr::ParsingToken name;
+		vl::collections::List<vl::Ptr<WfModuleUsingPath>> paths;
+		vl::collections::List<vl::Ptr<WfDeclaration>> declarations;
+	};
 }
-namespace vl
+namespace vl::reflection::description
 {
-	namespace reflection
-	{
-		namespace description
-		{
 #ifndef VCZH_DEBUG_NO_REFLECTION
-			DECL_TYPE_INFO(vl::glr::workflow::WfType)
-			DECL_TYPE_INFO(vl::glr::workflow::WfType::IVisitor)
-			DECL_TYPE_INFO(vl::glr::workflow::WfExpression)
-			DECL_TYPE_INFO(vl::glr::workflow::WfExpression::IVisitor)
-			DECL_TYPE_INFO(vl::glr::workflow::WfStatement)
-			DECL_TYPE_INFO(vl::glr::workflow::WfStatement::IVisitor)
-			DECL_TYPE_INFO(vl::glr::workflow::WfAttribute)
-			DECL_TYPE_INFO(vl::glr::workflow::WfDeclaration)
-			DECL_TYPE_INFO(vl::glr::workflow::WfDeclaration::IVisitor)
-			DECL_TYPE_INFO(vl::glr::workflow::WfFunctionKind)
-			DECL_TYPE_INFO(vl::glr::workflow::WfPredefinedTypeName)
-			DECL_TYPE_INFO(vl::glr::workflow::WfPredefinedType)
-			DECL_TYPE_INFO(vl::glr::workflow::WfTopQualifiedType)
-			DECL_TYPE_INFO(vl::glr::workflow::WfReferenceType)
-			DECL_TYPE_INFO(vl::glr::workflow::WfRawPointerType)
-			DECL_TYPE_INFO(vl::glr::workflow::WfSharedPointerType)
-			DECL_TYPE_INFO(vl::glr::workflow::WfNullableType)
-			DECL_TYPE_INFO(vl::glr::workflow::WfEnumerableType)
-			DECL_TYPE_INFO(vl::glr::workflow::WfMapWritability)
-			DECL_TYPE_INFO(vl::glr::workflow::WfMapType)
-			DECL_TYPE_INFO(vl::glr::workflow::WfObservableListType)
-			DECL_TYPE_INFO(vl::glr::workflow::WfFunctionType)
-			DECL_TYPE_INFO(vl::glr::workflow::WfChildType)
-			DECL_TYPE_INFO(vl::glr::workflow::WfNamespaceDeclaration)
-			DECL_TYPE_INFO(vl::glr::workflow::WfFunctionArgument)
-			DECL_TYPE_INFO(vl::glr::workflow::WfFunctionAnonymity)
-			DECL_TYPE_INFO(vl::glr::workflow::WfFunctionDeclaration)
-			DECL_TYPE_INFO(vl::glr::workflow::WfVariableDeclaration)
-			DECL_TYPE_INFO(vl::glr::workflow::WfEventDeclaration)
-			DECL_TYPE_INFO(vl::glr::workflow::WfPropertyDeclaration)
-			DECL_TYPE_INFO(vl::glr::workflow::WfClassKind)
-			DECL_TYPE_INFO(vl::glr::workflow::WfConstructorType)
-			DECL_TYPE_INFO(vl::glr::workflow::WfBaseConstructorCall)
-			DECL_TYPE_INFO(vl::glr::workflow::WfConstructorDeclaration)
-			DECL_TYPE_INFO(vl::glr::workflow::WfDestructorDeclaration)
-			DECL_TYPE_INFO(vl::glr::workflow::WfClassDeclaration)
-			DECL_TYPE_INFO(vl::glr::workflow::WfEnumKind)
-			DECL_TYPE_INFO(vl::glr::workflow::WfEnumItemKind)
-			DECL_TYPE_INFO(vl::glr::workflow::WfEnumItemIntersection)
-			DECL_TYPE_INFO(vl::glr::workflow::WfEnumItem)
-			DECL_TYPE_INFO(vl::glr::workflow::WfEnumDeclaration)
-			DECL_TYPE_INFO(vl::glr::workflow::WfStructMember)
-			DECL_TYPE_INFO(vl::glr::workflow::WfStructDeclaration)
-			DECL_TYPE_INFO(vl::glr::workflow::WfVirtualCfeDeclaration)
-			DECL_TYPE_INFO(vl::glr::workflow::WfVirtualCfeDeclaration::IVisitor)
-			DECL_TYPE_INFO(vl::glr::workflow::WfAPConst)
-			DECL_TYPE_INFO(vl::glr::workflow::WfAPObserve)
-			DECL_TYPE_INFO(vl::glr::workflow::WfAutoPropertyDeclaration)
-			DECL_TYPE_INFO(vl::glr::workflow::WfCastResultInterfaceDeclaration)
-			DECL_TYPE_INFO(vl::glr::workflow::WfVirtualCseDeclaration)
-			DECL_TYPE_INFO(vl::glr::workflow::WfVirtualCseDeclaration::IVisitor)
-			DECL_TYPE_INFO(vl::glr::workflow::WfStateInput)
-			DECL_TYPE_INFO(vl::glr::workflow::WfStateDeclaration)
-			DECL_TYPE_INFO(vl::glr::workflow::WfStateMachineDeclaration)
-			DECL_TYPE_INFO(vl::glr::workflow::WfBreakStatement)
-			DECL_TYPE_INFO(vl::glr::workflow::WfContinueStatement)
-			DECL_TYPE_INFO(vl::glr::workflow::WfReturnStatement)
-			DECL_TYPE_INFO(vl::glr::workflow::WfDeleteStatement)
-			DECL_TYPE_INFO(vl::glr::workflow::WfRaiseExceptionStatement)
-			DECL_TYPE_INFO(vl::glr::workflow::WfIfStatement)
-			DECL_TYPE_INFO(vl::glr::workflow::WfWhileStatement)
-			DECL_TYPE_INFO(vl::glr::workflow::WfTryStatement)
-			DECL_TYPE_INFO(vl::glr::workflow::WfBlockStatement)
-			DECL_TYPE_INFO(vl::glr::workflow::WfGotoStatement)
-			DECL_TYPE_INFO(vl::glr::workflow::WfVariableStatement)
-			DECL_TYPE_INFO(vl::glr::workflow::WfExpressionStatement)
-			DECL_TYPE_INFO(vl::glr::workflow::WfVirtualCseStatement)
-			DECL_TYPE_INFO(vl::glr::workflow::WfVirtualCseStatement::IVisitor)
-			DECL_TYPE_INFO(vl::glr::workflow::WfForEachDirection)
-			DECL_TYPE_INFO(vl::glr::workflow::WfForEachStatement)
-			DECL_TYPE_INFO(vl::glr::workflow::WfSwitchCase)
-			DECL_TYPE_INFO(vl::glr::workflow::WfSwitchStatement)
-			DECL_TYPE_INFO(vl::glr::workflow::WfCoProviderStatement)
-			DECL_TYPE_INFO(vl::glr::workflow::WfCoroutineStatement)
-			DECL_TYPE_INFO(vl::glr::workflow::WfCoroutineStatement::IVisitor)
-			DECL_TYPE_INFO(vl::glr::workflow::WfCoPauseStatement)
-			DECL_TYPE_INFO(vl::glr::workflow::WfCoOperatorStatement)
-			DECL_TYPE_INFO(vl::glr::workflow::WfStateSwitchType)
-			DECL_TYPE_INFO(vl::glr::workflow::WfStateInvokeType)
-			DECL_TYPE_INFO(vl::glr::workflow::WfStateMachineStatement)
-			DECL_TYPE_INFO(vl::glr::workflow::WfStateMachineStatement::IVisitor)
-			DECL_TYPE_INFO(vl::glr::workflow::WfStateSwitchArgument)
-			DECL_TYPE_INFO(vl::glr::workflow::WfStateSwitchCase)
-			DECL_TYPE_INFO(vl::glr::workflow::WfStateSwitchStatement)
-			DECL_TYPE_INFO(vl::glr::workflow::WfStateInvokeStatement)
-			DECL_TYPE_INFO(vl::glr::workflow::WfThisExpression)
-			DECL_TYPE_INFO(vl::glr::workflow::WfTopQualifiedExpression)
-			DECL_TYPE_INFO(vl::glr::workflow::WfReferenceExpression)
-			DECL_TYPE_INFO(vl::glr::workflow::WfOrderedNameExpression)
-			DECL_TYPE_INFO(vl::glr::workflow::WfOrderedLambdaExpression)
-			DECL_TYPE_INFO(vl::glr::workflow::WfMemberExpression)
-			DECL_TYPE_INFO(vl::glr::workflow::WfChildExpression)
-			DECL_TYPE_INFO(vl::glr::workflow::WfLiteralValue)
-			DECL_TYPE_INFO(vl::glr::workflow::WfLiteralExpression)
-			DECL_TYPE_INFO(vl::glr::workflow::WfFloatingExpression)
-			DECL_TYPE_INFO(vl::glr::workflow::WfIntegerExpression)
-			DECL_TYPE_INFO(vl::glr::workflow::WfStringExpression)
-			DECL_TYPE_INFO(vl::glr::workflow::WfUnaryOperator)
-			DECL_TYPE_INFO(vl::glr::workflow::WfUnaryExpression)
-			DECL_TYPE_INFO(vl::glr::workflow::WfBinaryOperator)
-			DECL_TYPE_INFO(vl::glr::workflow::WfBinaryExpression)
-			DECL_TYPE_INFO(vl::glr::workflow::WfLetVariable)
-			DECL_TYPE_INFO(vl::glr::workflow::WfLetExpression)
-			DECL_TYPE_INFO(vl::glr::workflow::WfIfExpression)
-			DECL_TYPE_INFO(vl::glr::workflow::WfRangeBoundary)
-			DECL_TYPE_INFO(vl::glr::workflow::WfRangeExpression)
-			DECL_TYPE_INFO(vl::glr::workflow::WfSetTesting)
-			DECL_TYPE_INFO(vl::glr::workflow::WfSetTestingExpression)
-			DECL_TYPE_INFO(vl::glr::workflow::WfConstructorArgument)
-			DECL_TYPE_INFO(vl::glr::workflow::WfConstructorExpression)
-			DECL_TYPE_INFO(vl::glr::workflow::WfInferExpression)
-			DECL_TYPE_INFO(vl::glr::workflow::WfTypeCastingStrategy)
-			DECL_TYPE_INFO(vl::glr::workflow::WfTypeCastingExpression)
-			DECL_TYPE_INFO(vl::glr::workflow::WfTypeTesting)
-			DECL_TYPE_INFO(vl::glr::workflow::WfTypeTestingExpression)
-			DECL_TYPE_INFO(vl::glr::workflow::WfTypeOfTypeExpression)
-			DECL_TYPE_INFO(vl::glr::workflow::WfTypeOfExpressionExpression)
-			DECL_TYPE_INFO(vl::glr::workflow::WfAttachEventExpression)
-			DECL_TYPE_INFO(vl::glr::workflow::WfDetachEventExpression)
-			DECL_TYPE_INFO(vl::glr::workflow::WfObserveType)
-			DECL_TYPE_INFO(vl::glr::workflow::WfObserveExpression)
-			DECL_TYPE_INFO(vl::glr::workflow::WfCallExpression)
-			DECL_TYPE_INFO(vl::glr::workflow::WfFunctionExpression)
-			DECL_TYPE_INFO(vl::glr::workflow::WfNewClassExpression)
-			DECL_TYPE_INFO(vl::glr::workflow::WfNewInterfaceExpression)
-			DECL_TYPE_INFO(vl::glr::workflow::WfVirtualCfeExpression)
-			DECL_TYPE_INFO(vl::glr::workflow::WfVirtualCfeExpression::IVisitor)
-			DECL_TYPE_INFO(vl::glr::workflow::WfFormatExpression)
-			DECL_TYPE_INFO(vl::glr::workflow::WfVirtualCseExpression)
-			DECL_TYPE_INFO(vl::glr::workflow::WfVirtualCseExpression::IVisitor)
-			DECL_TYPE_INFO(vl::glr::workflow::WfBindExpression)
-			DECL_TYPE_INFO(vl::glr::workflow::WfNewCoroutineExpression)
-			DECL_TYPE_INFO(vl::glr::workflow::WfMixinCastExpression)
-			DECL_TYPE_INFO(vl::glr::workflow::WfExpectedTypeCastExpression)
-			DECL_TYPE_INFO(vl::glr::workflow::WfCoOperatorExpression)
-			DECL_TYPE_INFO(vl::glr::workflow::WfModuleUsingFragment)
-			DECL_TYPE_INFO(vl::glr::workflow::WfModuleUsingFragment::IVisitor)
-			DECL_TYPE_INFO(vl::glr::workflow::WfModuleUsingNameFragment)
-			DECL_TYPE_INFO(vl::glr::workflow::WfModuleUsingWildCardFragment)
-			DECL_TYPE_INFO(vl::glr::workflow::WfModuleUsingItem)
-			DECL_TYPE_INFO(vl::glr::workflow::WfModuleUsingPath)
-			DECL_TYPE_INFO(vl::glr::workflow::WfModuleType)
-			DECL_TYPE_INFO(vl::glr::workflow::WfModule)
+	DECL_TYPE_INFO(vl::glr::workflow::WfType)
+	DECL_TYPE_INFO(vl::glr::workflow::WfType::IVisitor)
+	DECL_TYPE_INFO(vl::glr::workflow::WfExpression)
+	DECL_TYPE_INFO(vl::glr::workflow::WfExpression::IVisitor)
+	DECL_TYPE_INFO(vl::glr::workflow::WfStatement)
+	DECL_TYPE_INFO(vl::glr::workflow::WfStatement::IVisitor)
+	DECL_TYPE_INFO(vl::glr::workflow::WfAttribute)
+	DECL_TYPE_INFO(vl::glr::workflow::WfDeclaration)
+	DECL_TYPE_INFO(vl::glr::workflow::WfDeclaration::IVisitor)
+	DECL_TYPE_INFO(vl::glr::workflow::WfFunctionKind)
+	DECL_TYPE_INFO(vl::glr::workflow::WfPredefinedTypeName)
+	DECL_TYPE_INFO(vl::glr::workflow::WfPredefinedType)
+	DECL_TYPE_INFO(vl::glr::workflow::WfTopQualifiedType)
+	DECL_TYPE_INFO(vl::glr::workflow::WfReferenceType)
+	DECL_TYPE_INFO(vl::glr::workflow::WfRawPointerType)
+	DECL_TYPE_INFO(vl::glr::workflow::WfSharedPointerType)
+	DECL_TYPE_INFO(vl::glr::workflow::WfNullableType)
+	DECL_TYPE_INFO(vl::glr::workflow::WfEnumerableType)
+	DECL_TYPE_INFO(vl::glr::workflow::WfMapWritability)
+	DECL_TYPE_INFO(vl::glr::workflow::WfMapType)
+	DECL_TYPE_INFO(vl::glr::workflow::WfObservableListType)
+	DECL_TYPE_INFO(vl::glr::workflow::WfFunctionType)
+	DECL_TYPE_INFO(vl::glr::workflow::WfChildType)
+	DECL_TYPE_INFO(vl::glr::workflow::WfNamespaceDeclaration)
+	DECL_TYPE_INFO(vl::glr::workflow::WfFunctionArgument)
+	DECL_TYPE_INFO(vl::glr::workflow::WfFunctionAnonymity)
+	DECL_TYPE_INFO(vl::glr::workflow::WfFunctionDeclaration)
+	DECL_TYPE_INFO(vl::glr::workflow::WfVariableDeclaration)
+	DECL_TYPE_INFO(vl::glr::workflow::WfEventDeclaration)
+	DECL_TYPE_INFO(vl::glr::workflow::WfPropertyDeclaration)
+	DECL_TYPE_INFO(vl::glr::workflow::WfClassKind)
+	DECL_TYPE_INFO(vl::glr::workflow::WfConstructorType)
+	DECL_TYPE_INFO(vl::glr::workflow::WfBaseConstructorCall)
+	DECL_TYPE_INFO(vl::glr::workflow::WfConstructorDeclaration)
+	DECL_TYPE_INFO(vl::glr::workflow::WfDestructorDeclaration)
+	DECL_TYPE_INFO(vl::glr::workflow::WfClassDeclaration)
+	DECL_TYPE_INFO(vl::glr::workflow::WfEnumKind)
+	DECL_TYPE_INFO(vl::glr::workflow::WfEnumItemKind)
+	DECL_TYPE_INFO(vl::glr::workflow::WfEnumItemIntersection)
+	DECL_TYPE_INFO(vl::glr::workflow::WfEnumItem)
+	DECL_TYPE_INFO(vl::glr::workflow::WfEnumDeclaration)
+	DECL_TYPE_INFO(vl::glr::workflow::WfStructMember)
+	DECL_TYPE_INFO(vl::glr::workflow::WfStructDeclaration)
+	DECL_TYPE_INFO(vl::glr::workflow::WfVirtualCfeDeclaration)
+	DECL_TYPE_INFO(vl::glr::workflow::WfVirtualCfeDeclaration::IVisitor)
+	DECL_TYPE_INFO(vl::glr::workflow::WfAPConst)
+	DECL_TYPE_INFO(vl::glr::workflow::WfAPObserve)
+	DECL_TYPE_INFO(vl::glr::workflow::WfAutoPropertyDeclaration)
+	DECL_TYPE_INFO(vl::glr::workflow::WfCastResultInterfaceDeclaration)
+	DECL_TYPE_INFO(vl::glr::workflow::WfVirtualCseDeclaration)
+	DECL_TYPE_INFO(vl::glr::workflow::WfVirtualCseDeclaration::IVisitor)
+	DECL_TYPE_INFO(vl::glr::workflow::WfStateInput)
+	DECL_TYPE_INFO(vl::glr::workflow::WfStateDeclaration)
+	DECL_TYPE_INFO(vl::glr::workflow::WfStateMachineDeclaration)
+	DECL_TYPE_INFO(vl::glr::workflow::WfBreakStatement)
+	DECL_TYPE_INFO(vl::glr::workflow::WfContinueStatement)
+	DECL_TYPE_INFO(vl::glr::workflow::WfReturnStatement)
+	DECL_TYPE_INFO(vl::glr::workflow::WfDeleteStatement)
+	DECL_TYPE_INFO(vl::glr::workflow::WfRaiseExceptionStatement)
+	DECL_TYPE_INFO(vl::glr::workflow::WfIfStatement)
+	DECL_TYPE_INFO(vl::glr::workflow::WfWhileStatement)
+	DECL_TYPE_INFO(vl::glr::workflow::WfTryStatement)
+	DECL_TYPE_INFO(vl::glr::workflow::WfBlockStatement)
+	DECL_TYPE_INFO(vl::glr::workflow::WfGotoStatement)
+	DECL_TYPE_INFO(vl::glr::workflow::WfVariableStatement)
+	DECL_TYPE_INFO(vl::glr::workflow::WfExpressionStatement)
+	DECL_TYPE_INFO(vl::glr::workflow::WfVirtualCseStatement)
+	DECL_TYPE_INFO(vl::glr::workflow::WfVirtualCseStatement::IVisitor)
+	DECL_TYPE_INFO(vl::glr::workflow::WfForEachDirection)
+	DECL_TYPE_INFO(vl::glr::workflow::WfForEachStatement)
+	DECL_TYPE_INFO(vl::glr::workflow::WfSwitchCase)
+	DECL_TYPE_INFO(vl::glr::workflow::WfSwitchStatement)
+	DECL_TYPE_INFO(vl::glr::workflow::WfCoProviderStatement)
+	DECL_TYPE_INFO(vl::glr::workflow::WfCoroutineStatement)
+	DECL_TYPE_INFO(vl::glr::workflow::WfCoroutineStatement::IVisitor)
+	DECL_TYPE_INFO(vl::glr::workflow::WfCoPauseStatement)
+	DECL_TYPE_INFO(vl::glr::workflow::WfCoOperatorStatement)
+	DECL_TYPE_INFO(vl::glr::workflow::WfStateSwitchType)
+	DECL_TYPE_INFO(vl::glr::workflow::WfStateInvokeType)
+	DECL_TYPE_INFO(vl::glr::workflow::WfStateMachineStatement)
+	DECL_TYPE_INFO(vl::glr::workflow::WfStateMachineStatement::IVisitor)
+	DECL_TYPE_INFO(vl::glr::workflow::WfStateSwitchArgument)
+	DECL_TYPE_INFO(vl::glr::workflow::WfStateSwitchCase)
+	DECL_TYPE_INFO(vl::glr::workflow::WfStateSwitchStatement)
+	DECL_TYPE_INFO(vl::glr::workflow::WfStateInvokeStatement)
+	DECL_TYPE_INFO(vl::glr::workflow::WfThisExpression)
+	DECL_TYPE_INFO(vl::glr::workflow::WfTopQualifiedExpression)
+	DECL_TYPE_INFO(vl::glr::workflow::WfReferenceExpression)
+	DECL_TYPE_INFO(vl::glr::workflow::WfOrderedNameExpression)
+	DECL_TYPE_INFO(vl::glr::workflow::WfOrderedLambdaExpression)
+	DECL_TYPE_INFO(vl::glr::workflow::WfMemberExpression)
+	DECL_TYPE_INFO(vl::glr::workflow::WfChildExpression)
+	DECL_TYPE_INFO(vl::glr::workflow::WfLiteralValue)
+	DECL_TYPE_INFO(vl::glr::workflow::WfLiteralExpression)
+	DECL_TYPE_INFO(vl::glr::workflow::WfFloatingExpression)
+	DECL_TYPE_INFO(vl::glr::workflow::WfIntegerExpression)
+	DECL_TYPE_INFO(vl::glr::workflow::WfStringExpression)
+	DECL_TYPE_INFO(vl::glr::workflow::WfUnaryOperator)
+	DECL_TYPE_INFO(vl::glr::workflow::WfUnaryExpression)
+	DECL_TYPE_INFO(vl::glr::workflow::WfBinaryOperator)
+	DECL_TYPE_INFO(vl::glr::workflow::WfBinaryExpression)
+	DECL_TYPE_INFO(vl::glr::workflow::WfLetVariable)
+	DECL_TYPE_INFO(vl::glr::workflow::WfLetExpression)
+	DECL_TYPE_INFO(vl::glr::workflow::WfIfExpression)
+	DECL_TYPE_INFO(vl::glr::workflow::WfRangeBoundary)
+	DECL_TYPE_INFO(vl::glr::workflow::WfRangeExpression)
+	DECL_TYPE_INFO(vl::glr::workflow::WfSetTesting)
+	DECL_TYPE_INFO(vl::glr::workflow::WfSetTestingExpression)
+	DECL_TYPE_INFO(vl::glr::workflow::WfConstructorArgument)
+	DECL_TYPE_INFO(vl::glr::workflow::WfConstructorExpression)
+	DECL_TYPE_INFO(vl::glr::workflow::WfInferExpression)
+	DECL_TYPE_INFO(vl::glr::workflow::WfTypeCastingStrategy)
+	DECL_TYPE_INFO(vl::glr::workflow::WfTypeCastingExpression)
+	DECL_TYPE_INFO(vl::glr::workflow::WfTypeTesting)
+	DECL_TYPE_INFO(vl::glr::workflow::WfTypeTestingExpression)
+	DECL_TYPE_INFO(vl::glr::workflow::WfTypeOfTypeExpression)
+	DECL_TYPE_INFO(vl::glr::workflow::WfTypeOfExpressionExpression)
+	DECL_TYPE_INFO(vl::glr::workflow::WfAttachEventExpression)
+	DECL_TYPE_INFO(vl::glr::workflow::WfDetachEventExpression)
+	DECL_TYPE_INFO(vl::glr::workflow::WfObserveType)
+	DECL_TYPE_INFO(vl::glr::workflow::WfObserveExpression)
+	DECL_TYPE_INFO(vl::glr::workflow::WfCallExpression)
+	DECL_TYPE_INFO(vl::glr::workflow::WfFunctionExpression)
+	DECL_TYPE_INFO(vl::glr::workflow::WfNewClassExpression)
+	DECL_TYPE_INFO(vl::glr::workflow::WfNewInterfaceExpression)
+	DECL_TYPE_INFO(vl::glr::workflow::WfVirtualCfeExpression)
+	DECL_TYPE_INFO(vl::glr::workflow::WfVirtualCfeExpression::IVisitor)
+	DECL_TYPE_INFO(vl::glr::workflow::WfFormatExpression)
+	DECL_TYPE_INFO(vl::glr::workflow::WfVirtualCseExpression)
+	DECL_TYPE_INFO(vl::glr::workflow::WfVirtualCseExpression::IVisitor)
+	DECL_TYPE_INFO(vl::glr::workflow::WfBindExpression)
+	DECL_TYPE_INFO(vl::glr::workflow::WfNewCoroutineExpression)
+	DECL_TYPE_INFO(vl::glr::workflow::WfMixinCastExpression)
+	DECL_TYPE_INFO(vl::glr::workflow::WfExpectedTypeCastExpression)
+	DECL_TYPE_INFO(vl::glr::workflow::WfCoOperatorExpression)
+	DECL_TYPE_INFO(vl::glr::workflow::WfModuleUsingFragment)
+	DECL_TYPE_INFO(vl::glr::workflow::WfModuleUsingFragment::IVisitor)
+	DECL_TYPE_INFO(vl::glr::workflow::WfModuleUsingNameFragment)
+	DECL_TYPE_INFO(vl::glr::workflow::WfModuleUsingWildCardFragment)
+	DECL_TYPE_INFO(vl::glr::workflow::WfModuleUsingItem)
+	DECL_TYPE_INFO(vl::glr::workflow::WfModuleUsingPath)
+	DECL_TYPE_INFO(vl::glr::workflow::WfModuleType)
+	DECL_TYPE_INFO(vl::glr::workflow::WfModule)
 
 #ifdef VCZH_DESCRIPTABLEOBJECT_WITH_METADATA
 
-			BEGIN_INTERFACE_PROXY_NOPARENT_SHAREDPTR(vl::glr::workflow::WfType::IVisitor)
-				void Visit(vl::glr::workflow::WfPredefinedType* node) override
-				{
-					INVOKE_INTERFACE_PROXY(Visit, node);
-				}
-
-				void Visit(vl::glr::workflow::WfTopQualifiedType* node) override
-				{
-					INVOKE_INTERFACE_PROXY(Visit, node);
-				}
-
-				void Visit(vl::glr::workflow::WfReferenceType* node) override
-				{
-					INVOKE_INTERFACE_PROXY(Visit, node);
-				}
-
-				void Visit(vl::glr::workflow::WfRawPointerType* node) override
-				{
-					INVOKE_INTERFACE_PROXY(Visit, node);
-				}
-
-				void Visit(vl::glr::workflow::WfSharedPointerType* node) override
-				{
-					INVOKE_INTERFACE_PROXY(Visit, node);
-				}
-
-				void Visit(vl::glr::workflow::WfNullableType* node) override
-				{
-					INVOKE_INTERFACE_PROXY(Visit, node);
-				}
-
-				void Visit(vl::glr::workflow::WfEnumerableType* node) override
-				{
-					INVOKE_INTERFACE_PROXY(Visit, node);
-				}
-
-				void Visit(vl::glr::workflow::WfMapType* node) override
-				{
-					INVOKE_INTERFACE_PROXY(Visit, node);
-				}
-
-				void Visit(vl::glr::workflow::WfObservableListType* node) override
-				{
-					INVOKE_INTERFACE_PROXY(Visit, node);
-				}
-
-				void Visit(vl::glr::workflow::WfFunctionType* node) override
-				{
-					INVOKE_INTERFACE_PROXY(Visit, node);
-				}
-
-				void Visit(vl::glr::workflow::WfChildType* node) override
-				{
-					INVOKE_INTERFACE_PROXY(Visit, node);
-				}
-
-			END_INTERFACE_PROXY(vl::glr::workflow::WfType::IVisitor)
-
-			BEGIN_INTERFACE_PROXY_NOPARENT_SHAREDPTR(vl::glr::workflow::WfExpression::IVisitor)
-				void Visit(vl::glr::workflow::WfThisExpression* node) override
-				{
-					INVOKE_INTERFACE_PROXY(Visit, node);
-				}
-
-				void Visit(vl::glr::workflow::WfTopQualifiedExpression* node) override
-				{
-					INVOKE_INTERFACE_PROXY(Visit, node);
-				}
-
-				void Visit(vl::glr::workflow::WfReferenceExpression* node) override
-				{
-					INVOKE_INTERFACE_PROXY(Visit, node);
-				}
-
-				void Visit(vl::glr::workflow::WfOrderedNameExpression* node) override
-				{
-					INVOKE_INTERFACE_PROXY(Visit, node);
-				}
-
-				void Visit(vl::glr::workflow::WfOrderedLambdaExpression* node) override
-				{
-					INVOKE_INTERFACE_PROXY(Visit, node);
-				}
-
-				void Visit(vl::glr::workflow::WfMemberExpression* node) override
-				{
-					INVOKE_INTERFACE_PROXY(Visit, node);
-				}
-
-				void Visit(vl::glr::workflow::WfChildExpression* node) override
-				{
-					INVOKE_INTERFACE_PROXY(Visit, node);
-				}
-
-				void Visit(vl::glr::workflow::WfLiteralExpression* node) override
-				{
-					INVOKE_INTERFACE_PROXY(Visit, node);
-				}
-
-				void Visit(vl::glr::workflow::WfFloatingExpression* node) override
-				{
-					INVOKE_INTERFACE_PROXY(Visit, node);
-				}
-
-				void Visit(vl::glr::workflow::WfIntegerExpression* node) override
-				{
-					INVOKE_INTERFACE_PROXY(Visit, node);
-				}
-
-				void Visit(vl::glr::workflow::WfStringExpression* node) override
-				{
-					INVOKE_INTERFACE_PROXY(Visit, node);
-				}
-
-				void Visit(vl::glr::workflow::WfUnaryExpression* node) override
-				{
-					INVOKE_INTERFACE_PROXY(Visit, node);
-				}
-
-				void Visit(vl::glr::workflow::WfBinaryExpression* node) override
-				{
-					INVOKE_INTERFACE_PROXY(Visit, node);
-				}
-
-				void Visit(vl::glr::workflow::WfLetExpression* node) override
-				{
-					INVOKE_INTERFACE_PROXY(Visit, node);
-				}
-
-				void Visit(vl::glr::workflow::WfIfExpression* node) override
-				{
-					INVOKE_INTERFACE_PROXY(Visit, node);
-				}
-
-				void Visit(vl::glr::workflow::WfRangeExpression* node) override
-				{
-					INVOKE_INTERFACE_PROXY(Visit, node);
-				}
-
-				void Visit(vl::glr::workflow::WfSetTestingExpression* node) override
-				{
-					INVOKE_INTERFACE_PROXY(Visit, node);
-				}
-
-				void Visit(vl::glr::workflow::WfConstructorExpression* node) override
-				{
-					INVOKE_INTERFACE_PROXY(Visit, node);
-				}
-
-				void Visit(vl::glr::workflow::WfInferExpression* node) override
-				{
-					INVOKE_INTERFACE_PROXY(Visit, node);
-				}
-
-				void Visit(vl::glr::workflow::WfTypeCastingExpression* node) override
-				{
-					INVOKE_INTERFACE_PROXY(Visit, node);
-				}
-
-				void Visit(vl::glr::workflow::WfTypeTestingExpression* node) override
-				{
-					INVOKE_INTERFACE_PROXY(Visit, node);
-				}
-
-				void Visit(vl::glr::workflow::WfTypeOfTypeExpression* node) override
-				{
-					INVOKE_INTERFACE_PROXY(Visit, node);
-				}
-
-				void Visit(vl::glr::workflow::WfTypeOfExpressionExpression* node) override
-				{
-					INVOKE_INTERFACE_PROXY(Visit, node);
-				}
-
-				void Visit(vl::glr::workflow::WfAttachEventExpression* node) override
-				{
-					INVOKE_INTERFACE_PROXY(Visit, node);
-				}
-
-				void Visit(vl::glr::workflow::WfDetachEventExpression* node) override
-				{
-					INVOKE_INTERFACE_PROXY(Visit, node);
-				}
-
-				void Visit(vl::glr::workflow::WfObserveExpression* node) override
-				{
-					INVOKE_INTERFACE_PROXY(Visit, node);
-				}
-
-				void Visit(vl::glr::workflow::WfCallExpression* node) override
-				{
-					INVOKE_INTERFACE_PROXY(Visit, node);
-				}
-
-				void Visit(vl::glr::workflow::WfFunctionExpression* node) override
-				{
-					INVOKE_INTERFACE_PROXY(Visit, node);
-				}
-
-				void Visit(vl::glr::workflow::WfNewClassExpression* node) override
-				{
-					INVOKE_INTERFACE_PROXY(Visit, node);
-				}
-
-				void Visit(vl::glr::workflow::WfNewInterfaceExpression* node) override
-				{
-					INVOKE_INTERFACE_PROXY(Visit, node);
-				}
-
-				void Visit(vl::glr::workflow::WfVirtualCfeExpression* node) override
-				{
-					INVOKE_INTERFACE_PROXY(Visit, node);
-				}
-
-				void Visit(vl::glr::workflow::WfVirtualCseExpression* node) override
-				{
-					INVOKE_INTERFACE_PROXY(Visit, node);
-				}
-
-			END_INTERFACE_PROXY(vl::glr::workflow::WfExpression::IVisitor)
-
-			BEGIN_INTERFACE_PROXY_NOPARENT_SHAREDPTR(vl::glr::workflow::WfStatement::IVisitor)
-				void Visit(vl::glr::workflow::WfBreakStatement* node) override
-				{
-					INVOKE_INTERFACE_PROXY(Visit, node);
-				}
-
-				void Visit(vl::glr::workflow::WfContinueStatement* node) override
-				{
-					INVOKE_INTERFACE_PROXY(Visit, node);
-				}
-
-				void Visit(vl::glr::workflow::WfReturnStatement* node) override
-				{
-					INVOKE_INTERFACE_PROXY(Visit, node);
-				}
-
-				void Visit(vl::glr::workflow::WfDeleteStatement* node) override
-				{
-					INVOKE_INTERFACE_PROXY(Visit, node);
-				}
-
-				void Visit(vl::glr::workflow::WfRaiseExceptionStatement* node) override
-				{
-					INVOKE_INTERFACE_PROXY(Visit, node);
-				}
-
-				void Visit(vl::glr::workflow::WfIfStatement* node) override
-				{
-					INVOKE_INTERFACE_PROXY(Visit, node);
-				}
-
-				void Visit(vl::glr::workflow::WfWhileStatement* node) override
-				{
-					INVOKE_INTERFACE_PROXY(Visit, node);
-				}
-
-				void Visit(vl::glr::workflow::WfTryStatement* node) override
-				{
-					INVOKE_INTERFACE_PROXY(Visit, node);
-				}
-
-				void Visit(vl::glr::workflow::WfBlockStatement* node) override
-				{
-					INVOKE_INTERFACE_PROXY(Visit, node);
-				}
-
-				void Visit(vl::glr::workflow::WfGotoStatement* node) override
-				{
-					INVOKE_INTERFACE_PROXY(Visit, node);
-				}
-
-				void Visit(vl::glr::workflow::WfVariableStatement* node) override
-				{
-					INVOKE_INTERFACE_PROXY(Visit, node);
-				}
-
-				void Visit(vl::glr::workflow::WfExpressionStatement* node) override
-				{
-					INVOKE_INTERFACE_PROXY(Visit, node);
-				}
-
-				void Visit(vl::glr::workflow::WfVirtualCseStatement* node) override
-				{
-					INVOKE_INTERFACE_PROXY(Visit, node);
-				}
-
-				void Visit(vl::glr::workflow::WfCoroutineStatement* node) override
-				{
-					INVOKE_INTERFACE_PROXY(Visit, node);
-				}
-
-				void Visit(vl::glr::workflow::WfStateMachineStatement* node) override
-				{
-					INVOKE_INTERFACE_PROXY(Visit, node);
-				}
-
-			END_INTERFACE_PROXY(vl::glr::workflow::WfStatement::IVisitor)
-
-			BEGIN_INTERFACE_PROXY_NOPARENT_SHAREDPTR(vl::glr::workflow::WfDeclaration::IVisitor)
-				void Visit(vl::glr::workflow::WfNamespaceDeclaration* node) override
-				{
-					INVOKE_INTERFACE_PROXY(Visit, node);
-				}
-
-				void Visit(vl::glr::workflow::WfFunctionDeclaration* node) override
-				{
-					INVOKE_INTERFACE_PROXY(Visit, node);
-				}
-
-				void Visit(vl::glr::workflow::WfVariableDeclaration* node) override
-				{
-					INVOKE_INTERFACE_PROXY(Visit, node);
-				}
-
-				void Visit(vl::glr::workflow::WfEventDeclaration* node) override
-				{
-					INVOKE_INTERFACE_PROXY(Visit, node);
-				}
-
-				void Visit(vl::glr::workflow::WfPropertyDeclaration* node) override
-				{
-					INVOKE_INTERFACE_PROXY(Visit, node);
-				}
-
-				void Visit(vl::glr::workflow::WfConstructorDeclaration* node) override
-				{
-					INVOKE_INTERFACE_PROXY(Visit, node);
-				}
-
-				void Visit(vl::glr::workflow::WfDestructorDeclaration* node) override
-				{
-					INVOKE_INTERFACE_PROXY(Visit, node);
-				}
-
-				void Visit(vl::glr::workflow::WfClassDeclaration* node) override
-				{
-					INVOKE_INTERFACE_PROXY(Visit, node);
-				}
-
-				void Visit(vl::glr::workflow::WfEnumDeclaration* node) override
-				{
-					INVOKE_INTERFACE_PROXY(Visit, node);
-				}
-
-				void Visit(vl::glr::workflow::WfStructDeclaration* node) override
-				{
-					INVOKE_INTERFACE_PROXY(Visit, node);
-				}
-
-				void Visit(vl::glr::workflow::WfVirtualCfeDeclaration* node) override
-				{
-					INVOKE_INTERFACE_PROXY(Visit, node);
-				}
-
-				void Visit(vl::glr::workflow::WfVirtualCseDeclaration* node) override
-				{
-					INVOKE_INTERFACE_PROXY(Visit, node);
-				}
-
-			END_INTERFACE_PROXY(vl::glr::workflow::WfDeclaration::IVisitor)
-
-			BEGIN_INTERFACE_PROXY_NOPARENT_SHAREDPTR(vl::glr::workflow::WfVirtualCfeDeclaration::IVisitor)
-				void Visit(vl::glr::workflow::WfAutoPropertyDeclaration* node) override
-				{
-					INVOKE_INTERFACE_PROXY(Visit, node);
-				}
-
-				void Visit(vl::glr::workflow::WfCastResultInterfaceDeclaration* node) override
-				{
-					INVOKE_INTERFACE_PROXY(Visit, node);
-				}
-
-			END_INTERFACE_PROXY(vl::glr::workflow::WfVirtualCfeDeclaration::IVisitor)
-
-			BEGIN_INTERFACE_PROXY_NOPARENT_SHAREDPTR(vl::glr::workflow::WfVirtualCseDeclaration::IVisitor)
-				void Visit(vl::glr::workflow::WfStateMachineDeclaration* node) override
-				{
-					INVOKE_INTERFACE_PROXY(Visit, node);
-				}
-
-			END_INTERFACE_PROXY(vl::glr::workflow::WfVirtualCseDeclaration::IVisitor)
-
-			BEGIN_INTERFACE_PROXY_NOPARENT_SHAREDPTR(vl::glr::workflow::WfVirtualCseStatement::IVisitor)
-				void Visit(vl::glr::workflow::WfForEachStatement* node) override
-				{
-					INVOKE_INTERFACE_PROXY(Visit, node);
-				}
-
-				void Visit(vl::glr::workflow::WfSwitchStatement* node) override
-				{
-					INVOKE_INTERFACE_PROXY(Visit, node);
-				}
-
-				void Visit(vl::glr::workflow::WfCoProviderStatement* node) override
-				{
-					INVOKE_INTERFACE_PROXY(Visit, node);
-				}
-
-			END_INTERFACE_PROXY(vl::glr::workflow::WfVirtualCseStatement::IVisitor)
-
-			BEGIN_INTERFACE_PROXY_NOPARENT_SHAREDPTR(vl::glr::workflow::WfCoroutineStatement::IVisitor)
-				void Visit(vl::glr::workflow::WfCoPauseStatement* node) override
-				{
-					INVOKE_INTERFACE_PROXY(Visit, node);
-				}
-
-				void Visit(vl::glr::workflow::WfCoOperatorStatement* node) override
-				{
-					INVOKE_INTERFACE_PROXY(Visit, node);
-				}
-
-			END_INTERFACE_PROXY(vl::glr::workflow::WfCoroutineStatement::IVisitor)
-
-			BEGIN_INTERFACE_PROXY_NOPARENT_SHAREDPTR(vl::glr::workflow::WfStateMachineStatement::IVisitor)
-				void Visit(vl::glr::workflow::WfStateSwitchStatement* node) override
-				{
-					INVOKE_INTERFACE_PROXY(Visit, node);
-				}
-
-				void Visit(vl::glr::workflow::WfStateInvokeStatement* node) override
-				{
-					INVOKE_INTERFACE_PROXY(Visit, node);
-				}
-
-			END_INTERFACE_PROXY(vl::glr::workflow::WfStateMachineStatement::IVisitor)
-
-			BEGIN_INTERFACE_PROXY_NOPARENT_SHAREDPTR(vl::glr::workflow::WfVirtualCfeExpression::IVisitor)
-				void Visit(vl::glr::workflow::WfFormatExpression* node) override
-				{
-					INVOKE_INTERFACE_PROXY(Visit, node);
-				}
-
-			END_INTERFACE_PROXY(vl::glr::workflow::WfVirtualCfeExpression::IVisitor)
-
-			BEGIN_INTERFACE_PROXY_NOPARENT_SHAREDPTR(vl::glr::workflow::WfVirtualCseExpression::IVisitor)
-				void Visit(vl::glr::workflow::WfBindExpression* node) override
-				{
-					INVOKE_INTERFACE_PROXY(Visit, node);
-				}
-
-				void Visit(vl::glr::workflow::WfNewCoroutineExpression* node) override
-				{
-					INVOKE_INTERFACE_PROXY(Visit, node);
-				}
-
-				void Visit(vl::glr::workflow::WfMixinCastExpression* node) override
-				{
-					INVOKE_INTERFACE_PROXY(Visit, node);
-				}
-
-				void Visit(vl::glr::workflow::WfExpectedTypeCastExpression* node) override
-				{
-					INVOKE_INTERFACE_PROXY(Visit, node);
-				}
-
-				void Visit(vl::glr::workflow::WfCoOperatorExpression* node) override
-				{
-					INVOKE_INTERFACE_PROXY(Visit, node);
-				}
-
-			END_INTERFACE_PROXY(vl::glr::workflow::WfVirtualCseExpression::IVisitor)
-
-			BEGIN_INTERFACE_PROXY_NOPARENT_SHAREDPTR(vl::glr::workflow::WfModuleUsingFragment::IVisitor)
-				void Visit(vl::glr::workflow::WfModuleUsingNameFragment* node) override
-				{
-					INVOKE_INTERFACE_PROXY(Visit, node);
-				}
-
-				void Visit(vl::glr::workflow::WfModuleUsingWildCardFragment* node) override
-				{
-					INVOKE_INTERFACE_PROXY(Visit, node);
-				}
-
-			END_INTERFACE_PROXY(vl::glr::workflow::WfModuleUsingFragment::IVisitor)
-
-#endif
-#endif
-			/// <summary>Load all reflectable AST types, only available when <b>VCZH_DEBUG_NO_REFLECTION</b> is off.</summary>
-			/// <returns>Returns true if this operation succeeded.</returns>
-			extern bool WorkflowAstLoadTypes();
+	BEGIN_INTERFACE_PROXY_NOPARENT_SHAREDPTR(vl::glr::workflow::WfType::IVisitor)
+		void Visit(vl::glr::workflow::WfPredefinedType* node) override
+		{
+			INVOKE_INTERFACE_PROXY(Visit, node);
 		}
-	}
+
+		void Visit(vl::glr::workflow::WfTopQualifiedType* node) override
+		{
+			INVOKE_INTERFACE_PROXY(Visit, node);
+		}
+
+		void Visit(vl::glr::workflow::WfReferenceType* node) override
+		{
+			INVOKE_INTERFACE_PROXY(Visit, node);
+		}
+
+		void Visit(vl::glr::workflow::WfRawPointerType* node) override
+		{
+			INVOKE_INTERFACE_PROXY(Visit, node);
+		}
+
+		void Visit(vl::glr::workflow::WfSharedPointerType* node) override
+		{
+			INVOKE_INTERFACE_PROXY(Visit, node);
+		}
+
+		void Visit(vl::glr::workflow::WfNullableType* node) override
+		{
+			INVOKE_INTERFACE_PROXY(Visit, node);
+		}
+
+		void Visit(vl::glr::workflow::WfEnumerableType* node) override
+		{
+			INVOKE_INTERFACE_PROXY(Visit, node);
+		}
+
+		void Visit(vl::glr::workflow::WfMapType* node) override
+		{
+			INVOKE_INTERFACE_PROXY(Visit, node);
+		}
+
+		void Visit(vl::glr::workflow::WfObservableListType* node) override
+		{
+			INVOKE_INTERFACE_PROXY(Visit, node);
+		}
+
+		void Visit(vl::glr::workflow::WfFunctionType* node) override
+		{
+			INVOKE_INTERFACE_PROXY(Visit, node);
+		}
+
+		void Visit(vl::glr::workflow::WfChildType* node) override
+		{
+			INVOKE_INTERFACE_PROXY(Visit, node);
+		}
+
+	END_INTERFACE_PROXY(vl::glr::workflow::WfType::IVisitor)
+
+	BEGIN_INTERFACE_PROXY_NOPARENT_SHAREDPTR(vl::glr::workflow::WfExpression::IVisitor)
+		void Visit(vl::glr::workflow::WfThisExpression* node) override
+		{
+			INVOKE_INTERFACE_PROXY(Visit, node);
+		}
+
+		void Visit(vl::glr::workflow::WfTopQualifiedExpression* node) override
+		{
+			INVOKE_INTERFACE_PROXY(Visit, node);
+		}
+
+		void Visit(vl::glr::workflow::WfReferenceExpression* node) override
+		{
+			INVOKE_INTERFACE_PROXY(Visit, node);
+		}
+
+		void Visit(vl::glr::workflow::WfOrderedNameExpression* node) override
+		{
+			INVOKE_INTERFACE_PROXY(Visit, node);
+		}
+
+		void Visit(vl::glr::workflow::WfOrderedLambdaExpression* node) override
+		{
+			INVOKE_INTERFACE_PROXY(Visit, node);
+		}
+
+		void Visit(vl::glr::workflow::WfMemberExpression* node) override
+		{
+			INVOKE_INTERFACE_PROXY(Visit, node);
+		}
+
+		void Visit(vl::glr::workflow::WfChildExpression* node) override
+		{
+			INVOKE_INTERFACE_PROXY(Visit, node);
+		}
+
+		void Visit(vl::glr::workflow::WfLiteralExpression* node) override
+		{
+			INVOKE_INTERFACE_PROXY(Visit, node);
+		}
+
+		void Visit(vl::glr::workflow::WfFloatingExpression* node) override
+		{
+			INVOKE_INTERFACE_PROXY(Visit, node);
+		}
+
+		void Visit(vl::glr::workflow::WfIntegerExpression* node) override
+		{
+			INVOKE_INTERFACE_PROXY(Visit, node);
+		}
+
+		void Visit(vl::glr::workflow::WfStringExpression* node) override
+		{
+			INVOKE_INTERFACE_PROXY(Visit, node);
+		}
+
+		void Visit(vl::glr::workflow::WfUnaryExpression* node) override
+		{
+			INVOKE_INTERFACE_PROXY(Visit, node);
+		}
+
+		void Visit(vl::glr::workflow::WfBinaryExpression* node) override
+		{
+			INVOKE_INTERFACE_PROXY(Visit, node);
+		}
+
+		void Visit(vl::glr::workflow::WfLetExpression* node) override
+		{
+			INVOKE_INTERFACE_PROXY(Visit, node);
+		}
+
+		void Visit(vl::glr::workflow::WfIfExpression* node) override
+		{
+			INVOKE_INTERFACE_PROXY(Visit, node);
+		}
+
+		void Visit(vl::glr::workflow::WfRangeExpression* node) override
+		{
+			INVOKE_INTERFACE_PROXY(Visit, node);
+		}
+
+		void Visit(vl::glr::workflow::WfSetTestingExpression* node) override
+		{
+			INVOKE_INTERFACE_PROXY(Visit, node);
+		}
+
+		void Visit(vl::glr::workflow::WfConstructorExpression* node) override
+		{
+			INVOKE_INTERFACE_PROXY(Visit, node);
+		}
+
+		void Visit(vl::glr::workflow::WfInferExpression* node) override
+		{
+			INVOKE_INTERFACE_PROXY(Visit, node);
+		}
+
+		void Visit(vl::glr::workflow::WfTypeCastingExpression* node) override
+		{
+			INVOKE_INTERFACE_PROXY(Visit, node);
+		}
+
+		void Visit(vl::glr::workflow::WfTypeTestingExpression* node) override
+		{
+			INVOKE_INTERFACE_PROXY(Visit, node);
+		}
+
+		void Visit(vl::glr::workflow::WfTypeOfTypeExpression* node) override
+		{
+			INVOKE_INTERFACE_PROXY(Visit, node);
+		}
+
+		void Visit(vl::glr::workflow::WfTypeOfExpressionExpression* node) override
+		{
+			INVOKE_INTERFACE_PROXY(Visit, node);
+		}
+
+		void Visit(vl::glr::workflow::WfAttachEventExpression* node) override
+		{
+			INVOKE_INTERFACE_PROXY(Visit, node);
+		}
+
+		void Visit(vl::glr::workflow::WfDetachEventExpression* node) override
+		{
+			INVOKE_INTERFACE_PROXY(Visit, node);
+		}
+
+		void Visit(vl::glr::workflow::WfObserveExpression* node) override
+		{
+			INVOKE_INTERFACE_PROXY(Visit, node);
+		}
+
+		void Visit(vl::glr::workflow::WfCallExpression* node) override
+		{
+			INVOKE_INTERFACE_PROXY(Visit, node);
+		}
+
+		void Visit(vl::glr::workflow::WfFunctionExpression* node) override
+		{
+			INVOKE_INTERFACE_PROXY(Visit, node);
+		}
+
+		void Visit(vl::glr::workflow::WfNewClassExpression* node) override
+		{
+			INVOKE_INTERFACE_PROXY(Visit, node);
+		}
+
+		void Visit(vl::glr::workflow::WfNewInterfaceExpression* node) override
+		{
+			INVOKE_INTERFACE_PROXY(Visit, node);
+		}
+
+		void Visit(vl::glr::workflow::WfVirtualCfeExpression* node) override
+		{
+			INVOKE_INTERFACE_PROXY(Visit, node);
+		}
+
+		void Visit(vl::glr::workflow::WfVirtualCseExpression* node) override
+		{
+			INVOKE_INTERFACE_PROXY(Visit, node);
+		}
+
+	END_INTERFACE_PROXY(vl::glr::workflow::WfExpression::IVisitor)
+
+	BEGIN_INTERFACE_PROXY_NOPARENT_SHAREDPTR(vl::glr::workflow::WfStatement::IVisitor)
+		void Visit(vl::glr::workflow::WfBreakStatement* node) override
+		{
+			INVOKE_INTERFACE_PROXY(Visit, node);
+		}
+
+		void Visit(vl::glr::workflow::WfContinueStatement* node) override
+		{
+			INVOKE_INTERFACE_PROXY(Visit, node);
+		}
+
+		void Visit(vl::glr::workflow::WfReturnStatement* node) override
+		{
+			INVOKE_INTERFACE_PROXY(Visit, node);
+		}
+
+		void Visit(vl::glr::workflow::WfDeleteStatement* node) override
+		{
+			INVOKE_INTERFACE_PROXY(Visit, node);
+		}
+
+		void Visit(vl::glr::workflow::WfRaiseExceptionStatement* node) override
+		{
+			INVOKE_INTERFACE_PROXY(Visit, node);
+		}
+
+		void Visit(vl::glr::workflow::WfIfStatement* node) override
+		{
+			INVOKE_INTERFACE_PROXY(Visit, node);
+		}
+
+		void Visit(vl::glr::workflow::WfWhileStatement* node) override
+		{
+			INVOKE_INTERFACE_PROXY(Visit, node);
+		}
+
+		void Visit(vl::glr::workflow::WfTryStatement* node) override
+		{
+			INVOKE_INTERFACE_PROXY(Visit, node);
+		}
+
+		void Visit(vl::glr::workflow::WfBlockStatement* node) override
+		{
+			INVOKE_INTERFACE_PROXY(Visit, node);
+		}
+
+		void Visit(vl::glr::workflow::WfGotoStatement* node) override
+		{
+			INVOKE_INTERFACE_PROXY(Visit, node);
+		}
+
+		void Visit(vl::glr::workflow::WfVariableStatement* node) override
+		{
+			INVOKE_INTERFACE_PROXY(Visit, node);
+		}
+
+		void Visit(vl::glr::workflow::WfExpressionStatement* node) override
+		{
+			INVOKE_INTERFACE_PROXY(Visit, node);
+		}
+
+		void Visit(vl::glr::workflow::WfVirtualCseStatement* node) override
+		{
+			INVOKE_INTERFACE_PROXY(Visit, node);
+		}
+
+		void Visit(vl::glr::workflow::WfCoroutineStatement* node) override
+		{
+			INVOKE_INTERFACE_PROXY(Visit, node);
+		}
+
+		void Visit(vl::glr::workflow::WfStateMachineStatement* node) override
+		{
+			INVOKE_INTERFACE_PROXY(Visit, node);
+		}
+
+	END_INTERFACE_PROXY(vl::glr::workflow::WfStatement::IVisitor)
+
+	BEGIN_INTERFACE_PROXY_NOPARENT_SHAREDPTR(vl::glr::workflow::WfDeclaration::IVisitor)
+		void Visit(vl::glr::workflow::WfNamespaceDeclaration* node) override
+		{
+			INVOKE_INTERFACE_PROXY(Visit, node);
+		}
+
+		void Visit(vl::glr::workflow::WfFunctionDeclaration* node) override
+		{
+			INVOKE_INTERFACE_PROXY(Visit, node);
+		}
+
+		void Visit(vl::glr::workflow::WfVariableDeclaration* node) override
+		{
+			INVOKE_INTERFACE_PROXY(Visit, node);
+		}
+
+		void Visit(vl::glr::workflow::WfEventDeclaration* node) override
+		{
+			INVOKE_INTERFACE_PROXY(Visit, node);
+		}
+
+		void Visit(vl::glr::workflow::WfPropertyDeclaration* node) override
+		{
+			INVOKE_INTERFACE_PROXY(Visit, node);
+		}
+
+		void Visit(vl::glr::workflow::WfConstructorDeclaration* node) override
+		{
+			INVOKE_INTERFACE_PROXY(Visit, node);
+		}
+
+		void Visit(vl::glr::workflow::WfDestructorDeclaration* node) override
+		{
+			INVOKE_INTERFACE_PROXY(Visit, node);
+		}
+
+		void Visit(vl::glr::workflow::WfClassDeclaration* node) override
+		{
+			INVOKE_INTERFACE_PROXY(Visit, node);
+		}
+
+		void Visit(vl::glr::workflow::WfEnumDeclaration* node) override
+		{
+			INVOKE_INTERFACE_PROXY(Visit, node);
+		}
+
+		void Visit(vl::glr::workflow::WfStructDeclaration* node) override
+		{
+			INVOKE_INTERFACE_PROXY(Visit, node);
+		}
+
+		void Visit(vl::glr::workflow::WfVirtualCfeDeclaration* node) override
+		{
+			INVOKE_INTERFACE_PROXY(Visit, node);
+		}
+
+		void Visit(vl::glr::workflow::WfVirtualCseDeclaration* node) override
+		{
+			INVOKE_INTERFACE_PROXY(Visit, node);
+		}
+
+	END_INTERFACE_PROXY(vl::glr::workflow::WfDeclaration::IVisitor)
+
+	BEGIN_INTERFACE_PROXY_NOPARENT_SHAREDPTR(vl::glr::workflow::WfVirtualCfeDeclaration::IVisitor)
+		void Visit(vl::glr::workflow::WfAutoPropertyDeclaration* node) override
+		{
+			INVOKE_INTERFACE_PROXY(Visit, node);
+		}
+
+		void Visit(vl::glr::workflow::WfCastResultInterfaceDeclaration* node) override
+		{
+			INVOKE_INTERFACE_PROXY(Visit, node);
+		}
+
+	END_INTERFACE_PROXY(vl::glr::workflow::WfVirtualCfeDeclaration::IVisitor)
+
+	BEGIN_INTERFACE_PROXY_NOPARENT_SHAREDPTR(vl::glr::workflow::WfVirtualCseDeclaration::IVisitor)
+		void Visit(vl::glr::workflow::WfStateMachineDeclaration* node) override
+		{
+			INVOKE_INTERFACE_PROXY(Visit, node);
+		}
+
+	END_INTERFACE_PROXY(vl::glr::workflow::WfVirtualCseDeclaration::IVisitor)
+
+	BEGIN_INTERFACE_PROXY_NOPARENT_SHAREDPTR(vl::glr::workflow::WfVirtualCseStatement::IVisitor)
+		void Visit(vl::glr::workflow::WfForEachStatement* node) override
+		{
+			INVOKE_INTERFACE_PROXY(Visit, node);
+		}
+
+		void Visit(vl::glr::workflow::WfSwitchStatement* node) override
+		{
+			INVOKE_INTERFACE_PROXY(Visit, node);
+		}
+
+		void Visit(vl::glr::workflow::WfCoProviderStatement* node) override
+		{
+			INVOKE_INTERFACE_PROXY(Visit, node);
+		}
+
+	END_INTERFACE_PROXY(vl::glr::workflow::WfVirtualCseStatement::IVisitor)
+
+	BEGIN_INTERFACE_PROXY_NOPARENT_SHAREDPTR(vl::glr::workflow::WfCoroutineStatement::IVisitor)
+		void Visit(vl::glr::workflow::WfCoPauseStatement* node) override
+		{
+			INVOKE_INTERFACE_PROXY(Visit, node);
+		}
+
+		void Visit(vl::glr::workflow::WfCoOperatorStatement* node) override
+		{
+			INVOKE_INTERFACE_PROXY(Visit, node);
+		}
+
+	END_INTERFACE_PROXY(vl::glr::workflow::WfCoroutineStatement::IVisitor)
+
+	BEGIN_INTERFACE_PROXY_NOPARENT_SHAREDPTR(vl::glr::workflow::WfStateMachineStatement::IVisitor)
+		void Visit(vl::glr::workflow::WfStateSwitchStatement* node) override
+		{
+			INVOKE_INTERFACE_PROXY(Visit, node);
+		}
+
+		void Visit(vl::glr::workflow::WfStateInvokeStatement* node) override
+		{
+			INVOKE_INTERFACE_PROXY(Visit, node);
+		}
+
+	END_INTERFACE_PROXY(vl::glr::workflow::WfStateMachineStatement::IVisitor)
+
+	BEGIN_INTERFACE_PROXY_NOPARENT_SHAREDPTR(vl::glr::workflow::WfVirtualCfeExpression::IVisitor)
+		void Visit(vl::glr::workflow::WfFormatExpression* node) override
+		{
+			INVOKE_INTERFACE_PROXY(Visit, node);
+		}
+
+	END_INTERFACE_PROXY(vl::glr::workflow::WfVirtualCfeExpression::IVisitor)
+
+	BEGIN_INTERFACE_PROXY_NOPARENT_SHAREDPTR(vl::glr::workflow::WfVirtualCseExpression::IVisitor)
+		void Visit(vl::glr::workflow::WfBindExpression* node) override
+		{
+			INVOKE_INTERFACE_PROXY(Visit, node);
+		}
+
+		void Visit(vl::glr::workflow::WfNewCoroutineExpression* node) override
+		{
+			INVOKE_INTERFACE_PROXY(Visit, node);
+		}
+
+		void Visit(vl::glr::workflow::WfMixinCastExpression* node) override
+		{
+			INVOKE_INTERFACE_PROXY(Visit, node);
+		}
+
+		void Visit(vl::glr::workflow::WfExpectedTypeCastExpression* node) override
+		{
+			INVOKE_INTERFACE_PROXY(Visit, node);
+		}
+
+		void Visit(vl::glr::workflow::WfCoOperatorExpression* node) override
+		{
+			INVOKE_INTERFACE_PROXY(Visit, node);
+		}
+
+	END_INTERFACE_PROXY(vl::glr::workflow::WfVirtualCseExpression::IVisitor)
+
+	BEGIN_INTERFACE_PROXY_NOPARENT_SHAREDPTR(vl::glr::workflow::WfModuleUsingFragment::IVisitor)
+		void Visit(vl::glr::workflow::WfModuleUsingNameFragment* node) override
+		{
+			INVOKE_INTERFACE_PROXY(Visit, node);
+		}
+
+		void Visit(vl::glr::workflow::WfModuleUsingWildCardFragment* node) override
+		{
+			INVOKE_INTERFACE_PROXY(Visit, node);
+		}
+
+	END_INTERFACE_PROXY(vl::glr::workflow::WfModuleUsingFragment::IVisitor)
+
+#endif
+#endif
+	/// <summary>Load all reflectable AST types, only available when <b>VCZH_DEBUG_NO_REFLECTION</b> is off.</summary>
+	/// <returns>Returns true if this operation succeeded.</returns>
+	extern bool WorkflowAstLoadTypes();
 }
 #endif

@@ -1,4 +1,5 @@
 #include "../../../Source/Syntax/SyntaxCppGen.h"
+#include "../../../Source/Ast/AstSymbol.h"
 #include "../../Source/Calculator/Parser/Calculator_Lexer.h"
 
 using namespace vl;
@@ -12,19 +13,22 @@ using namespace calculator;
 extern WString GetTestParserInputPath(const WString& parserName);
 extern void WriteFilesIfChanged(FilePath outputDir, Dictionary<WString, WString>& files);
 extern void InitializeCalculatorParserSymbolManager(ParserSymbolManager& manager);
-extern void GenerateCalculatorSyntax(SyntaxSymbolManager& manager);
+extern void GenerateCalculatorAst(AstSymbolManager& manager);
+extern void GenerateCalculatorSyntax(AstSymbolManager& ast, SyntaxSymbolManager& manager);
 
 TEST_FILE
 {
 	TEST_CASE(L"CreateCalculatorLexer")
 	{
 		ParserSymbolManager global;
+		AstSymbolManager astManager(global);
 		SyntaxSymbolManager syntaxManager(global);
 		Executable executable;
 		Metadata metadata;
 
 		InitializeCalculatorParserSymbolManager(global);
-		GenerateCalculatorSyntax(syntaxManager);
+		GenerateCalculatorAst(astManager);
+		GenerateCalculatorSyntax(astManager, syntaxManager);
 		TEST_ASSERT(global.Errors().Count() == 0);
 
 		syntaxManager.BuildCompactNFA();

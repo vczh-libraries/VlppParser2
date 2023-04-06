@@ -9,66 +9,63 @@ Licensed under https://github.com/vczh-libraries/License
 
 #include "CalculatorExprAst.h"
 
-namespace calculator
+namespace calculator::copy_visitor
 {
-	namespace copy_visitor
+	/// <summary>A copy visitor, overriding all abstract methods with AST copying code.</summary>
+	class ExprAstVisitor
+		: public virtual vl::glr::CopyVisitorBase
+		, protected virtual Expr::IVisitor
+		, protected virtual Expandable::IVisitor
 	{
-		/// <summary>A copy visitor, overriding all abstract methods with AST copying code.</summary>
-		class ExprAstVisitor
-			: public virtual vl::glr::CopyVisitorBase
-			, protected virtual Expr::IVisitor
-			, protected virtual Expandable::IVisitor
-		{
-		protected:
-			void CopyFields(Arg* from, Arg* to);
-			void CopyFields(Binary* from, Binary* to);
-			void CopyFields(Call* from, Call* to);
-			void CopyFields(Expandable* from, Expandable* to);
-			void CopyFields(Expr* from, Expr* to);
-			void CopyFields(False* from, False* to);
-			void CopyFields(Func* from, Func* to);
-			void CopyFields(Import* from, Import* to);
-			void CopyFields(LetExpr* from, LetExpr* to);
-			void CopyFields(Module* from, Module* to);
-			void CopyFields(NumExpr* from, NumExpr* to);
-			void CopyFields(Ref* from, Ref* to);
-			void CopyFields(True* from, True* to);
-			void CopyFields(Unary* from, Unary* to);
+	protected:
+		void CopyFields(Arg* from, Arg* to);
+		void CopyFields(Binary* from, Binary* to);
+		void CopyFields(Call* from, Call* to);
+		void CopyFields(Expandable* from, Expandable* to);
+		void CopyFields(Expr* from, Expr* to);
+		void CopyFields(False* from, False* to);
+		void CopyFields(Func* from, Func* to);
+		void CopyFields(Import* from, Import* to);
+		void CopyFields(LetExpr* from, LetExpr* to);
+		void CopyFields(Module* from, Module* to);
+		void CopyFields(NumExpr* from, NumExpr* to);
+		void CopyFields(Ref* from, Ref* to);
+		void CopyFields(True* from, True* to);
+		void CopyFields(Unary* from, Unary* to);
 
-		protected:
-			virtual void Visit(Arg* node);
-			virtual void Visit(Import* node);
-			virtual void Visit(Module* node);
+	protected:
+		virtual void Visit(Arg* node);
+		virtual void Visit(Import* node);
+		virtual void Visit(Module* node);
 
-			void Visit(NumExpr* node) override;
-			void Visit(Ref* node) override;
-			void Visit(True* node) override;
-			void Visit(False* node) override;
-			void Visit(Func* node) override;
-			void Visit(Call* node) override;
-			void Visit(Expandable* node) override;
+		void Visit(NumExpr* node) override;
+		void Visit(Ref* node) override;
+		void Visit(True* node) override;
+		void Visit(False* node) override;
+		void Visit(Func* node) override;
+		void Visit(Call* node) override;
+		void Visit(Expandable* node) override;
 
-			void Visit(LetExpr* node) override;
-			void Visit(Unary* node) override;
-			void Visit(Binary* node) override;
+		void Visit(LetExpr* node) override;
+		void Visit(Unary* node) override;
+		void Visit(Binary* node) override;
 
-		public:
-			virtual vl::Ptr<Expr> CopyNode(Expr* node);
-			virtual vl::Ptr<Arg> CopyNode(Arg* node);
-			virtual vl::Ptr<Import> CopyNode(Import* node);
-			virtual vl::Ptr<Module> CopyNode(Module* node);
+	public:
+		virtual vl::Ptr<Expr> CopyNode(Expr* node);
+		virtual vl::Ptr<Arg> CopyNode(Arg* node);
+		virtual vl::Ptr<Import> CopyNode(Import* node);
+		virtual vl::Ptr<Module> CopyNode(Module* node);
 
-			vl::Ptr<Binary> CopyNode(Binary* node);
-			vl::Ptr<Call> CopyNode(Call* node);
-			vl::Ptr<Expandable> CopyNode(Expandable* node);
-			vl::Ptr<False> CopyNode(False* node);
-			vl::Ptr<Func> CopyNode(Func* node);
-			vl::Ptr<LetExpr> CopyNode(LetExpr* node);
-			vl::Ptr<NumExpr> CopyNode(NumExpr* node);
-			vl::Ptr<Ref> CopyNode(Ref* node);
-			vl::Ptr<True> CopyNode(True* node);
-			vl::Ptr<Unary> CopyNode(Unary* node);
-		};
-	}
+		vl::Ptr<Binary> CopyNode(Binary* node);
+		vl::Ptr<Call> CopyNode(Call* node);
+		vl::Ptr<Expandable> CopyNode(Expandable* node);
+		vl::Ptr<False> CopyNode(False* node);
+		vl::Ptr<Func> CopyNode(Func* node);
+		vl::Ptr<LetExpr> CopyNode(LetExpr* node);
+		vl::Ptr<NumExpr> CopyNode(NumExpr* node);
+		vl::Ptr<Ref> CopyNode(Ref* node);
+		vl::Ptr<True> CopyNode(True* node);
+		vl::Ptr<Unary> CopyNode(Unary* node);
+	};
 }
 #endif

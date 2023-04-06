@@ -6,1131 +6,1128 @@ Licensed under https://github.com/vczh-libraries/License
 
 #include "CppAst_Builder.h"
 
-namespace cpp_parser
+namespace cpp_parser::builder
 {
-	namespace builder
-	{
 
 /***********************************************************************
 MakeAdvancedType
 ***********************************************************************/
 
-		MakeAdvancedType& MakeAdvancedType::argument(const vl::Ptr<CppTypeOrExpr>& value)
-		{
-			node->argument = value;
-			return *this;
-		}
+	MakeAdvancedType& MakeAdvancedType::argument(const vl::Ptr<CppTypeOrExpr>& value)
+	{
+		node->argument = value;
+		return *this;
+	}
 
-		MakeAdvancedType& MakeAdvancedType::kind(CppAdvancedTypeKinds value)
-		{
-			node->kind = value;
-			return *this;
-		}
+	MakeAdvancedType& MakeAdvancedType::kind(CppAdvancedTypeKinds value)
+	{
+		node->kind = value;
+		return *this;
+	}
 
 /***********************************************************************
 MakeBinaryExpr
 ***********************************************************************/
 
-		MakeBinaryExpr& MakeBinaryExpr::left(const vl::Ptr<CppTypeOrExpr>& value)
-		{
-			node->left = value;
-			return *this;
-		}
+	MakeBinaryExpr& MakeBinaryExpr::left(const vl::Ptr<CppTypeOrExpr>& value)
+	{
+		node->left = value;
+		return *this;
+	}
 
-		MakeBinaryExpr& MakeBinaryExpr::op(CppOperators value)
-		{
-			node->op = value;
-			return *this;
-		}
+	MakeBinaryExpr& MakeBinaryExpr::op(CppOperators value)
+	{
+		node->op = value;
+		return *this;
+	}
 
-		MakeBinaryExpr& MakeBinaryExpr::right(const vl::Ptr<CppTypeOrExpr>& value)
-		{
-			node->right = value;
-			return *this;
-		}
+	MakeBinaryExpr& MakeBinaryExpr::right(const vl::Ptr<CppTypeOrExpr>& value)
+	{
+		node->right = value;
+		return *this;
+	}
 
 /***********************************************************************
 MakeBlockStat
 ***********************************************************************/
 
-		MakeBlockStat& MakeBlockStat::statements(const vl::Ptr<CppStatement>& value)
-		{
-			node->statements.Add(value);
-			return *this;
-		}
+	MakeBlockStat& MakeBlockStat::statements(const vl::Ptr<CppStatement>& value)
+	{
+		node->statements.Add(value);
+		return *this;
+	}
 
 /***********************************************************************
 MakeBraceExpr
 ***********************************************************************/
 
-		MakeBraceExpr& MakeBraceExpr::arguments(const vl::Ptr<CppTypeOrExpr>& value)
-		{
-			node->arguments.Add(value);
-			return *this;
-		}
+	MakeBraceExpr& MakeBraceExpr::arguments(const vl::Ptr<CppTypeOrExpr>& value)
+	{
+		node->arguments.Add(value);
+		return *this;
+	}
 
 /***********************************************************************
 MakeCallExpr
 ***********************************************************************/
 
-		MakeCallExpr& MakeCallExpr::arguments(const vl::Ptr<CppTypeOrExpr>& value)
-		{
-			node->arguments.Add(value);
-			return *this;
-		}
+	MakeCallExpr& MakeCallExpr::arguments(const vl::Ptr<CppTypeOrExpr>& value)
+	{
+		node->arguments.Add(value);
+		return *this;
+	}
 
-		MakeCallExpr& MakeCallExpr::kind(CppCallKinds value)
-		{
-			node->kind = value;
-			return *this;
-		}
+	MakeCallExpr& MakeCallExpr::kind(CppCallKinds value)
+	{
+		node->kind = value;
+		return *this;
+	}
 
-		MakeCallExpr& MakeCallExpr::operand(const vl::Ptr<CppTypeOrExpr>& value)
-		{
-			node->operand = value;
-			return *this;
-		}
+	MakeCallExpr& MakeCallExpr::operand(const vl::Ptr<CppTypeOrExpr>& value)
+	{
+		node->operand = value;
+		return *this;
+	}
 
 /***********************************************************************
 MakeCaseStat
 ***********************************************************************/
 
-		MakeCaseStat& MakeCaseStat::expr(const vl::Ptr<CppTypeOrExpr>& value)
-		{
-			node->expr = value;
-			return *this;
-		}
+	MakeCaseStat& MakeCaseStat::expr(const vl::Ptr<CppTypeOrExpr>& value)
+	{
+		node->expr = value;
+		return *this;
+	}
 
-		MakeCaseStat& MakeCaseStat::stat(const vl::Ptr<CppStatement>& value)
-		{
-			node->stat = value;
-			return *this;
-		}
+	MakeCaseStat& MakeCaseStat::stat(const vl::Ptr<CppStatement>& value)
+	{
+		node->stat = value;
+		return *this;
+	}
 
 /***********************************************************************
 MakeCastExpr
 ***********************************************************************/
 
-		MakeCastExpr& MakeCastExpr::expr(const vl::Ptr<CppTypeOrExpr>& value)
-		{
-			node->expr = value;
-			return *this;
-		}
+	MakeCastExpr& MakeCastExpr::expr(const vl::Ptr<CppTypeOrExpr>& value)
+	{
+		node->expr = value;
+		return *this;
+	}
 
-		MakeCastExpr& MakeCastExpr::keyword(const vl::WString& value)
-		{
-			node->keyword.value = value;
-			return *this;
-		}
+	MakeCastExpr& MakeCastExpr::keyword(const vl::WString& value)
+	{
+		node->keyword.value = value;
+		return *this;
+	}
 
-		MakeCastExpr& MakeCastExpr::type(const vl::Ptr<CppTypeOrExpr>& value)
-		{
-			node->type = value;
-			return *this;
-		}
+	MakeCastExpr& MakeCastExpr::type(const vl::Ptr<CppTypeOrExpr>& value)
+	{
+		node->type = value;
+		return *this;
+	}
 
 /***********************************************************************
 MakeConstType
 ***********************************************************************/
 
-		MakeConstType& MakeConstType::type(const vl::Ptr<CppTypeOrExpr>& value)
-		{
-			node->type = value;
-			return *this;
-		}
+	MakeConstType& MakeConstType::type(const vl::Ptr<CppTypeOrExpr>& value)
+	{
+		node->type = value;
+		return *this;
+	}
 
 /***********************************************************************
 MakeDeclStat
 ***********************************************************************/
 
-		MakeDeclStat& MakeDeclStat::decl(const vl::Ptr<CppDeclaration>& value)
-		{
-			node->decl = value;
-			return *this;
-		}
+	MakeDeclStat& MakeDeclStat::decl(const vl::Ptr<CppDeclaration>& value)
+	{
+		node->decl = value;
+		return *this;
+	}
 
 /***********************************************************************
 MakeDeclarator
 ***********************************************************************/
 
-		MakeDeclarator& MakeDeclarator::advancedTypes(const vl::Ptr<CppAdvancedType>& value)
-		{
-			node->advancedTypes.Add(value);
-			return *this;
-		}
+	MakeDeclarator& MakeDeclarator::advancedTypes(const vl::Ptr<CppAdvancedType>& value)
+	{
+		node->advancedTypes.Add(value);
+		return *this;
+	}
 
-		MakeDeclarator& MakeDeclarator::arrayParts(const vl::Ptr<CppDeclaratorArrayPart>& value)
-		{
-			node->arrayParts.Add(value);
-			return *this;
-		}
+	MakeDeclarator& MakeDeclarator::arrayParts(const vl::Ptr<CppDeclaratorArrayPart>& value)
+	{
+		node->arrayParts.Add(value);
+		return *this;
+	}
 
-		MakeDeclarator& MakeDeclarator::funcPart(const vl::Ptr<CppDeclaratorFunctionPart>& value)
-		{
-			node->funcPart = value;
-			return *this;
-		}
+	MakeDeclarator& MakeDeclarator::funcPart(const vl::Ptr<CppDeclaratorFunctionPart>& value)
+	{
+		node->funcPart = value;
+		return *this;
+	}
 
-		MakeDeclarator& MakeDeclarator::id(const vl::Ptr<CppIdentifier>& value)
-		{
-			node->id = value;
-			return *this;
-		}
+	MakeDeclarator& MakeDeclarator::id(const vl::Ptr<CppIdentifier>& value)
+	{
+		node->id = value;
+		return *this;
+	}
 
-		MakeDeclarator& MakeDeclarator::innerDeclarator(const vl::Ptr<CppDeclarator>& value)
-		{
-			node->innerDeclarator = value;
-			return *this;
-		}
+	MakeDeclarator& MakeDeclarator::innerDeclarator(const vl::Ptr<CppDeclarator>& value)
+	{
+		node->innerDeclarator = value;
+		return *this;
+	}
 
-		MakeDeclarator& MakeDeclarator::keywords(const vl::Ptr<CppDeclaratorKeyword>& value)
-		{
-			node->keywords.Add(value);
-			return *this;
-		}
+	MakeDeclarator& MakeDeclarator::keywords(const vl::Ptr<CppDeclaratorKeyword>& value)
+	{
+		node->keywords.Add(value);
+		return *this;
+	}
 
-		MakeDeclarator& MakeDeclarator::variadic(const vl::WString& value)
-		{
-			node->variadic.value = value;
-			return *this;
-		}
+	MakeDeclarator& MakeDeclarator::variadic(const vl::WString& value)
+	{
+		node->variadic.value = value;
+		return *this;
+	}
 
 /***********************************************************************
 MakeDeclaratorArrayPart
 ***********************************************************************/
 
-		MakeDeclaratorArrayPart& MakeDeclaratorArrayPart::argument(const vl::Ptr<CppTypeOrExpr>& value)
-		{
-			node->argument = value;
-			return *this;
-		}
+	MakeDeclaratorArrayPart& MakeDeclaratorArrayPart::argument(const vl::Ptr<CppTypeOrExpr>& value)
+	{
+		node->argument = value;
+		return *this;
+	}
 
 /***********************************************************************
 MakeDeclaratorFunctionPart
 ***********************************************************************/
 
-		MakeDeclaratorFunctionPart& MakeDeclaratorFunctionPart::deferredType(const vl::Ptr<CppTypeOrExpr>& value)
-		{
-			node->deferredType = value;
-			return *this;
-		}
+	MakeDeclaratorFunctionPart& MakeDeclaratorFunctionPart::deferredType(const vl::Ptr<CppTypeOrExpr>& value)
+	{
+		node->deferredType = value;
+		return *this;
+	}
 
-		MakeDeclaratorFunctionPart& MakeDeclaratorFunctionPart::keywords(const vl::Ptr<CppFunctionKeyword>& value)
-		{
-			node->keywords.Add(value);
-			return *this;
-		}
+	MakeDeclaratorFunctionPart& MakeDeclaratorFunctionPart::keywords(const vl::Ptr<CppFunctionKeyword>& value)
+	{
+		node->keywords.Add(value);
+		return *this;
+	}
 
-		MakeDeclaratorFunctionPart& MakeDeclaratorFunctionPart::parameters(const vl::Ptr<CppTypeOrExprOrOthers>& value)
-		{
-			node->parameters.Add(value);
-			return *this;
-		}
+	MakeDeclaratorFunctionPart& MakeDeclaratorFunctionPart::parameters(const vl::Ptr<CppTypeOrExprOrOthers>& value)
+	{
+		node->parameters.Add(value);
+		return *this;
+	}
 
-		MakeDeclaratorFunctionPart& MakeDeclaratorFunctionPart::variadic(const vl::WString& value)
-		{
-			node->variadic.value = value;
-			return *this;
-		}
+	MakeDeclaratorFunctionPart& MakeDeclaratorFunctionPart::variadic(const vl::WString& value)
+	{
+		node->variadic.value = value;
+		return *this;
+	}
 
 /***********************************************************************
 MakeDeclaratorKeyword
 ***********************************************************************/
 
-		MakeDeclaratorKeyword& MakeDeclaratorKeyword::keyword(const vl::WString& value)
-		{
-			node->keyword.value = value;
-			return *this;
-		}
+	MakeDeclaratorKeyword& MakeDeclaratorKeyword::keyword(const vl::WString& value)
+	{
+		node->keyword.value = value;
+		return *this;
+	}
 
 /***********************************************************************
 MakeDeclaratorType
 ***********************************************************************/
 
-		MakeDeclaratorType& MakeDeclaratorType::declarator(const vl::Ptr<CppDeclarator>& value)
-		{
-			node->declarator = value;
-			return *this;
-		}
+	MakeDeclaratorType& MakeDeclaratorType::declarator(const vl::Ptr<CppDeclarator>& value)
+	{
+		node->declarator = value;
+		return *this;
+	}
 
-		MakeDeclaratorType& MakeDeclaratorType::keywords(const vl::Ptr<CppDeclaratorKeyword>& value)
-		{
-			node->keywords.Add(value);
-			return *this;
-		}
+	MakeDeclaratorType& MakeDeclaratorType::keywords(const vl::Ptr<CppDeclaratorKeyword>& value)
+	{
+		node->keywords.Add(value);
+		return *this;
+	}
 
-		MakeDeclaratorType& MakeDeclaratorType::type(const vl::Ptr<CppTypeOrExpr>& value)
-		{
-			node->type = value;
-			return *this;
-		}
+	MakeDeclaratorType& MakeDeclaratorType::type(const vl::Ptr<CppTypeOrExpr>& value)
+	{
+		node->type = value;
+		return *this;
+	}
 
 /***********************************************************************
 MakeDeclaratorVariablePart
 ***********************************************************************/
 
-		MakeDeclaratorVariablePart& MakeDeclaratorVariablePart::declarator(const vl::Ptr<CppDeclarator>& value)
-		{
-			node->declarator = value;
-			return *this;
-		}
+	MakeDeclaratorVariablePart& MakeDeclaratorVariablePart::declarator(const vl::Ptr<CppDeclarator>& value)
+	{
+		node->declarator = value;
+		return *this;
+	}
 
-		MakeDeclaratorVariablePart& MakeDeclaratorVariablePart::init(const vl::Ptr<CppVarInit>& value)
-		{
-			node->init = value;
-			return *this;
-		}
+	MakeDeclaratorVariablePart& MakeDeclaratorVariablePart::init(const vl::Ptr<CppVarInit>& value)
+	{
+		node->init = value;
+		return *this;
+	}
 
 /***********************************************************************
 MakeDefaultStat
 ***********************************************************************/
 
-		MakeDefaultStat& MakeDefaultStat::stat(const vl::Ptr<CppStatement>& value)
-		{
-			node->stat = value;
-			return *this;
-		}
+	MakeDefaultStat& MakeDefaultStat::stat(const vl::Ptr<CppStatement>& value)
+	{
+		node->stat = value;
+		return *this;
+	}
 
 /***********************************************************************
 MakeDeleteExpr
 ***********************************************************************/
 
-		MakeDeleteExpr& MakeDeleteExpr::argument(const vl::Ptr<CppTypeOrExpr>& value)
-		{
-			node->argument = value;
-			return *this;
-		}
+	MakeDeleteExpr& MakeDeleteExpr::argument(const vl::Ptr<CppTypeOrExpr>& value)
+	{
+		node->argument = value;
+		return *this;
+	}
 
-		MakeDeleteExpr& MakeDeleteExpr::array(CppOperatorArray value)
-		{
-			node->array = value;
-			return *this;
-		}
+	MakeDeleteExpr& MakeDeleteExpr::array(CppOperatorArray value)
+	{
+		node->array = value;
+		return *this;
+	}
 
-		MakeDeleteExpr& MakeDeleteExpr::scope(CppOperatorScope value)
-		{
-			node->scope = value;
-			return *this;
-		}
+	MakeDeleteExpr& MakeDeleteExpr::scope(CppOperatorScope value)
+	{
+		node->scope = value;
+		return *this;
+	}
 
 /***********************************************************************
 MakeDoWhileStat
 ***********************************************************************/
 
-		MakeDoWhileStat& MakeDoWhileStat::condition(const vl::Ptr<CppTypeOrExpr>& value)
-		{
-			node->condition = value;
-			return *this;
-		}
+	MakeDoWhileStat& MakeDoWhileStat::condition(const vl::Ptr<CppTypeOrExpr>& value)
+	{
+		node->condition = value;
+		return *this;
+	}
 
-		MakeDoWhileStat& MakeDoWhileStat::stat(const vl::Ptr<CppStatement>& value)
-		{
-			node->stat = value;
-			return *this;
-		}
+	MakeDoWhileStat& MakeDoWhileStat::stat(const vl::Ptr<CppStatement>& value)
+	{
+		node->stat = value;
+		return *this;
+	}
 
 /***********************************************************************
 MakeExprStat
 ***********************************************************************/
 
-		MakeExprStat& MakeExprStat::expr(const vl::Ptr<CppTypeOrExpr>& value)
-		{
-			node->expr = value;
-			return *this;
-		}
+	MakeExprStat& MakeExprStat::expr(const vl::Ptr<CppTypeOrExpr>& value)
+	{
+		node->expr = value;
+		return *this;
+	}
 
 /***********************************************************************
 MakeForStat
 ***********************************************************************/
 
-		MakeForStat& MakeForStat::conditionPart(const vl::Ptr<CppForStatConditionPart>& value)
-		{
-			node->conditionPart = value;
-			return *this;
-		}
+	MakeForStat& MakeForStat::conditionPart(const vl::Ptr<CppForStatConditionPart>& value)
+	{
+		node->conditionPart = value;
+		return *this;
+	}
 
-		MakeForStat& MakeForStat::stat(const vl::Ptr<CppStatement>& value)
-		{
-			node->stat = value;
-			return *this;
-		}
+	MakeForStat& MakeForStat::stat(const vl::Ptr<CppStatement>& value)
+	{
+		node->stat = value;
+		return *this;
+	}
 
 /***********************************************************************
 MakeForStatIterateCondition
 ***********************************************************************/
 
-		MakeForStatIterateCondition& MakeForStatIterateCondition::collection(const vl::Ptr<CppTypeOrExpr>& value)
-		{
-			node->collection = value;
-			return *this;
-		}
+	MakeForStatIterateCondition& MakeForStatIterateCondition::collection(const vl::Ptr<CppTypeOrExpr>& value)
+	{
+		node->collection = value;
+		return *this;
+	}
 
-		MakeForStatIterateCondition& MakeForStatIterateCondition::decl(const vl::Ptr<CppSingleVarDeclaration>& value)
-		{
-			node->decl = value;
-			return *this;
-		}
+	MakeForStatIterateCondition& MakeForStatIterateCondition::decl(const vl::Ptr<CppSingleVarDeclaration>& value)
+	{
+		node->decl = value;
+		return *this;
+	}
 
 /***********************************************************************
 MakeForStatLoopCondition
 ***********************************************************************/
 
-		MakeForStatLoopCondition& MakeForStatLoopCondition::condition(const vl::Ptr<CppTypeOrExpr>& value)
-		{
-			node->condition = value;
-			return *this;
-		}
+	MakeForStatLoopCondition& MakeForStatLoopCondition::condition(const vl::Ptr<CppTypeOrExpr>& value)
+	{
+		node->condition = value;
+		return *this;
+	}
 
-		MakeForStatLoopCondition& MakeForStatLoopCondition::sideEffect(const vl::Ptr<CppTypeOrExpr>& value)
-		{
-			node->sideEffect = value;
-			return *this;
-		}
+	MakeForStatLoopCondition& MakeForStatLoopCondition::sideEffect(const vl::Ptr<CppTypeOrExpr>& value)
+	{
+		node->sideEffect = value;
+		return *this;
+	}
 
-		MakeForStatLoopCondition& MakeForStatLoopCondition::varsDecl(const vl::Ptr<CppTypeOrExprOrOthers>& value)
-		{
-			node->varsDecl = value;
-			return *this;
-		}
+	MakeForStatLoopCondition& MakeForStatLoopCondition::varsDecl(const vl::Ptr<CppTypeOrExprOrOthers>& value)
+	{
+		node->varsDecl = value;
+		return *this;
+	}
 
 /***********************************************************************
 MakeFunctionKeyword
 ***********************************************************************/
 
-		MakeFunctionKeyword& MakeFunctionKeyword::arguments(const vl::Ptr<CppTypeOrExpr>& value)
-		{
-			node->arguments.Add(value);
-			return *this;
-		}
+	MakeFunctionKeyword& MakeFunctionKeyword::arguments(const vl::Ptr<CppTypeOrExpr>& value)
+	{
+		node->arguments.Add(value);
+		return *this;
+	}
 
-		MakeFunctionKeyword& MakeFunctionKeyword::keyword(const vl::WString& value)
-		{
-			node->keyword.value = value;
-			return *this;
-		}
+	MakeFunctionKeyword& MakeFunctionKeyword::keyword(const vl::WString& value)
+	{
+		node->keyword.value = value;
+		return *this;
+	}
 
 /***********************************************************************
 MakeGenericArgument
 ***********************************************************************/
 
-		MakeGenericArgument& MakeGenericArgument::argument(const vl::Ptr<CppTypeOrExpr>& value)
-		{
-			node->argument = value;
-			return *this;
-		}
+	MakeGenericArgument& MakeGenericArgument::argument(const vl::Ptr<CppTypeOrExpr>& value)
+	{
+		node->argument = value;
+		return *this;
+	}
 
-		MakeGenericArgument& MakeGenericArgument::variadic(const vl::WString& value)
-		{
-			node->variadic.value = value;
-			return *this;
-		}
+	MakeGenericArgument& MakeGenericArgument::variadic(const vl::WString& value)
+	{
+		node->variadic.value = value;
+		return *this;
+	}
 
 /***********************************************************************
 MakeGenericArguments
 ***********************************************************************/
 
-		MakeGenericArguments& MakeGenericArguments::arguments(const vl::Ptr<CppTypeOrExprOrOthers>& value)
-		{
-			node->arguments.Add(value);
-			return *this;
-		}
+	MakeGenericArguments& MakeGenericArguments::arguments(const vl::Ptr<CppTypeOrExprOrOthers>& value)
+	{
+		node->arguments.Add(value);
+		return *this;
+	}
 
 /***********************************************************************
 MakeGenericHeader
 ***********************************************************************/
 
-		MakeGenericHeader& MakeGenericHeader::parameters(const vl::Ptr<CppTypeOrExprOrOthers>& value)
-		{
-			node->parameters.Add(value);
-			return *this;
-		}
+	MakeGenericHeader& MakeGenericHeader::parameters(const vl::Ptr<CppTypeOrExprOrOthers>& value)
+	{
+		node->parameters.Add(value);
+		return *this;
+	}
 
 /***********************************************************************
 MakeGotoStat
 ***********************************************************************/
 
-		MakeGotoStat& MakeGotoStat::label(const vl::WString& value)
-		{
-			node->label.value = value;
-			return *this;
-		}
+	MakeGotoStat& MakeGotoStat::label(const vl::WString& value)
+	{
+		node->label.value = value;
+		return *this;
+	}
 
 /***********************************************************************
 MakeIfElseStat
 ***********************************************************************/
 
-		MakeIfElseStat& MakeIfElseStat::condition(const vl::Ptr<CppTypeOrExprOrOthers>& value)
-		{
-			node->condition = value;
-			return *this;
-		}
+	MakeIfElseStat& MakeIfElseStat::condition(const vl::Ptr<CppTypeOrExprOrOthers>& value)
+	{
+		node->condition = value;
+		return *this;
+	}
 
-		MakeIfElseStat& MakeIfElseStat::falseStat(const vl::Ptr<CppStatement>& value)
-		{
-			node->falseStat = value;
-			return *this;
-		}
+	MakeIfElseStat& MakeIfElseStat::falseStat(const vl::Ptr<CppStatement>& value)
+	{
+		node->falseStat = value;
+		return *this;
+	}
 
-		MakeIfElseStat& MakeIfElseStat::trueStat(const vl::Ptr<CppStatement>& value)
-		{
-			node->trueStat = value;
-			return *this;
-		}
+	MakeIfElseStat& MakeIfElseStat::trueStat(const vl::Ptr<CppStatement>& value)
+	{
+		node->trueStat = value;
+		return *this;
+	}
 
-		MakeIfElseStat& MakeIfElseStat::varsDecl(const vl::Ptr<CppMultipleVarDeclaration>& value)
-		{
-			node->varsDecl = value;
-			return *this;
-		}
+	MakeIfElseStat& MakeIfElseStat::varsDecl(const vl::Ptr<CppMultipleVarDeclaration>& value)
+	{
+		node->varsDecl = value;
+		return *this;
+	}
 
 /***********************************************************************
 MakeIfExpr
 ***********************************************************************/
 
-		MakeIfExpr& MakeIfExpr::condition(const vl::Ptr<CppTypeOrExpr>& value)
-		{
-			node->condition = value;
-			return *this;
-		}
+	MakeIfExpr& MakeIfExpr::condition(const vl::Ptr<CppTypeOrExpr>& value)
+	{
+		node->condition = value;
+		return *this;
+	}
 
-		MakeIfExpr& MakeIfExpr::falseBranch(const vl::Ptr<CppTypeOrExpr>& value)
-		{
-			node->falseBranch = value;
-			return *this;
-		}
+	MakeIfExpr& MakeIfExpr::falseBranch(const vl::Ptr<CppTypeOrExpr>& value)
+	{
+		node->falseBranch = value;
+		return *this;
+	}
 
-		MakeIfExpr& MakeIfExpr::trueBranch(const vl::Ptr<CppTypeOrExpr>& value)
-		{
-			node->trueBranch = value;
-			return *this;
-		}
+	MakeIfExpr& MakeIfExpr::trueBranch(const vl::Ptr<CppTypeOrExpr>& value)
+	{
+		node->trueBranch = value;
+		return *this;
+	}
 
 /***********************************************************************
 MakeIndexExpr
 ***********************************************************************/
 
-		MakeIndexExpr& MakeIndexExpr::index(const vl::Ptr<CppTypeOrExpr>& value)
-		{
-			node->index = value;
-			return *this;
-		}
+	MakeIndexExpr& MakeIndexExpr::index(const vl::Ptr<CppTypeOrExpr>& value)
+	{
+		node->index = value;
+		return *this;
+	}
 
-		MakeIndexExpr& MakeIndexExpr::operand(const vl::Ptr<CppTypeOrExpr>& value)
-		{
-			node->operand = value;
-			return *this;
-		}
+	MakeIndexExpr& MakeIndexExpr::operand(const vl::Ptr<CppTypeOrExpr>& value)
+	{
+		node->operand = value;
+		return *this;
+	}
 
 /***********************************************************************
 MakeLabelStat
 ***********************************************************************/
 
-		MakeLabelStat& MakeLabelStat::label(const vl::WString& value)
-		{
-			node->label.value = value;
-			return *this;
-		}
+	MakeLabelStat& MakeLabelStat::label(const vl::WString& value)
+	{
+		node->label.value = value;
+		return *this;
+	}
 
-		MakeLabelStat& MakeLabelStat::stat(const vl::Ptr<CppStatement>& value)
-		{
-			node->stat = value;
-			return *this;
-		}
+	MakeLabelStat& MakeLabelStat::stat(const vl::Ptr<CppStatement>& value)
+	{
+		node->stat = value;
+		return *this;
+	}
 
 /***********************************************************************
 MakeLambdaCapture
 ***********************************************************************/
 
-		MakeLambdaCapture& MakeLambdaCapture::id(const vl::Ptr<CppIdentifier>& value)
-		{
-			node->id = value;
-			return *this;
-		}
+	MakeLambdaCapture& MakeLambdaCapture::id(const vl::Ptr<CppIdentifier>& value)
+	{
+		node->id = value;
+		return *this;
+	}
 
-		MakeLambdaCapture& MakeLambdaCapture::init(const vl::Ptr<CppVarInit>& value)
-		{
-			node->init = value;
-			return *this;
-		}
+	MakeLambdaCapture& MakeLambdaCapture::init(const vl::Ptr<CppVarInit>& value)
+	{
+		node->init = value;
+		return *this;
+	}
 
-		MakeLambdaCapture& MakeLambdaCapture::objKind(CppLambdaCaptureObjectKinds value)
-		{
-			node->objKind = value;
-			return *this;
-		}
+	MakeLambdaCapture& MakeLambdaCapture::objKind(CppLambdaCaptureObjectKinds value)
+	{
+		node->objKind = value;
+		return *this;
+	}
 
-		MakeLambdaCapture& MakeLambdaCapture::refKind(CppLambdaCaptureRefeferenceKinds value)
-		{
-			node->refKind = value;
-			return *this;
-		}
+	MakeLambdaCapture& MakeLambdaCapture::refKind(CppLambdaCaptureRefeferenceKinds value)
+	{
+		node->refKind = value;
+		return *this;
+	}
 
 /***********************************************************************
 MakeLambdaExpr
 ***********************************************************************/
 
-		MakeLambdaExpr& MakeLambdaExpr::captures(const vl::Ptr<CppLambdaCapture>& value)
-		{
-			node->captures.Add(value);
-			return *this;
-		}
+	MakeLambdaExpr& MakeLambdaExpr::captures(const vl::Ptr<CppLambdaCapture>& value)
+	{
+		node->captures.Add(value);
+		return *this;
+	}
 
-		MakeLambdaExpr& MakeLambdaExpr::functionHeader(const vl::Ptr<CppDeclaratorFunctionPart>& value)
-		{
-			node->functionHeader = value;
-			return *this;
-		}
+	MakeLambdaExpr& MakeLambdaExpr::functionHeader(const vl::Ptr<CppDeclaratorFunctionPart>& value)
+	{
+		node->functionHeader = value;
+		return *this;
+	}
 
-		MakeLambdaExpr& MakeLambdaExpr::genericHeader(const vl::Ptr<CppGenericHeader>& value)
-		{
-			node->genericHeader = value;
-			return *this;
-		}
+	MakeLambdaExpr& MakeLambdaExpr::genericHeader(const vl::Ptr<CppGenericHeader>& value)
+	{
+		node->genericHeader = value;
+		return *this;
+	}
 
-		MakeLambdaExpr& MakeLambdaExpr::stat(const vl::Ptr<CppStatement>& value)
-		{
-			node->stat = value;
-			return *this;
-		}
+	MakeLambdaExpr& MakeLambdaExpr::stat(const vl::Ptr<CppStatement>& value)
+	{
+		node->stat = value;
+		return *this;
+	}
 
 /***********************************************************************
 MakeMultipleVarDeclaration
 ***********************************************************************/
 
-		MakeMultipleVarDeclaration& MakeMultipleVarDeclaration::keywords(const vl::Ptr<CppDeclaratorKeyword>& value)
-		{
-			node->keywords.Add(value);
-			return *this;
-		}
+	MakeMultipleVarDeclaration& MakeMultipleVarDeclaration::keywords(const vl::Ptr<CppDeclaratorKeyword>& value)
+	{
+		node->keywords.Add(value);
+		return *this;
+	}
 
-		MakeMultipleVarDeclaration& MakeMultipleVarDeclaration::type(const vl::Ptr<CppTypeOrExpr>& value)
-		{
-			node->type = value;
-			return *this;
-		}
+	MakeMultipleVarDeclaration& MakeMultipleVarDeclaration::type(const vl::Ptr<CppTypeOrExpr>& value)
+	{
+		node->type = value;
+		return *this;
+	}
 
-		MakeMultipleVarDeclaration& MakeMultipleVarDeclaration::varParts(const vl::Ptr<CppDeclaratorVariablePart>& value)
-		{
-			node->varParts.Add(value);
-			return *this;
-		}
+	MakeMultipleVarDeclaration& MakeMultipleVarDeclaration::varParts(const vl::Ptr<CppDeclaratorVariablePart>& value)
+	{
+		node->varParts.Add(value);
+		return *this;
+	}
 
 /***********************************************************************
 MakeNameIdentifier
 ***********************************************************************/
 
-		MakeNameIdentifier& MakeNameIdentifier::kind(CppNameKinds value)
-		{
-			node->kind = value;
-			return *this;
-		}
+	MakeNameIdentifier& MakeNameIdentifier::kind(CppNameKinds value)
+	{
+		node->kind = value;
+		return *this;
+	}
 
-		MakeNameIdentifier& MakeNameIdentifier::name(const vl::WString& value)
-		{
-			node->name.value = value;
-			return *this;
-		}
+	MakeNameIdentifier& MakeNameIdentifier::name(const vl::WString& value)
+	{
+		node->name.value = value;
+		return *this;
+	}
 
 /***********************************************************************
 MakeNewExpr
 ***********************************************************************/
 
-		MakeNewExpr& MakeNewExpr::arrayArguments(const vl::Ptr<CppTypeOrExpr>& value)
-		{
-			node->arrayArguments.Add(value);
-			return *this;
-		}
+	MakeNewExpr& MakeNewExpr::arrayArguments(const vl::Ptr<CppTypeOrExpr>& value)
+	{
+		node->arrayArguments.Add(value);
+		return *this;
+	}
 
-		MakeNewExpr& MakeNewExpr::init(const vl::Ptr<CppVarInit>& value)
-		{
-			node->init = value;
-			return *this;
-		}
+	MakeNewExpr& MakeNewExpr::init(const vl::Ptr<CppVarInit>& value)
+	{
+		node->init = value;
+		return *this;
+	}
 
-		MakeNewExpr& MakeNewExpr::placementArguments(const vl::Ptr<CppTypeOrExpr>& value)
-		{
-			node->placementArguments.Add(value);
-			return *this;
-		}
+	MakeNewExpr& MakeNewExpr::placementArguments(const vl::Ptr<CppTypeOrExpr>& value)
+	{
+		node->placementArguments.Add(value);
+		return *this;
+	}
 
-		MakeNewExpr& MakeNewExpr::scope(CppOperatorScope value)
-		{
-			node->scope = value;
-			return *this;
-		}
+	MakeNewExpr& MakeNewExpr::scope(CppOperatorScope value)
+	{
+		node->scope = value;
+		return *this;
+	}
 
-		MakeNewExpr& MakeNewExpr::type(const vl::Ptr<CppTypeOrExpr>& value)
-		{
-			node->type.Add(value);
-			return *this;
-		}
+	MakeNewExpr& MakeNewExpr::type(const vl::Ptr<CppTypeOrExpr>& value)
+	{
+		node->type.Add(value);
+		return *this;
+	}
 
 /***********************************************************************
 MakeNumericExprLiteral
 ***********************************************************************/
 
-		MakeNumericExprLiteral& MakeNumericExprLiteral::kind(CppNumericExprLiteralKinds value)
-		{
-			node->kind = value;
-			return *this;
-		}
+	MakeNumericExprLiteral& MakeNumericExprLiteral::kind(CppNumericExprLiteralKinds value)
+	{
+		node->kind = value;
+		return *this;
+	}
 
-		MakeNumericExprLiteral& MakeNumericExprLiteral::literal(const vl::WString& value)
-		{
-			node->literal.value = value;
-			return *this;
-		}
+	MakeNumericExprLiteral& MakeNumericExprLiteral::literal(const vl::WString& value)
+	{
+		node->literal.value = value;
+		return *this;
+	}
 
 /***********************************************************************
 MakeOperatorIdentifier
 ***********************************************************************/
 
-		MakeOperatorIdentifier& MakeOperatorIdentifier::op(CppOperators value)
-		{
-			node->op = value;
-			return *this;
-		}
+	MakeOperatorIdentifier& MakeOperatorIdentifier::op(CppOperators value)
+	{
+		node->op = value;
+		return *this;
+	}
 
 /***********************************************************************
 MakeOrdinaryGenericParameter
 ***********************************************************************/
 
-		MakeOrdinaryGenericParameter& MakeOrdinaryGenericParameter::genericHeader(const vl::Ptr<CppGenericHeader>& value)
-		{
-			node->genericHeader = value;
-			return *this;
-		}
+	MakeOrdinaryGenericParameter& MakeOrdinaryGenericParameter::genericHeader(const vl::Ptr<CppGenericHeader>& value)
+	{
+		node->genericHeader = value;
+		return *this;
+	}
 
-		MakeOrdinaryGenericParameter& MakeOrdinaryGenericParameter::id(const vl::Ptr<CppIdentifier>& value)
-		{
-			node->id = value;
-			return *this;
-		}
+	MakeOrdinaryGenericParameter& MakeOrdinaryGenericParameter::id(const vl::Ptr<CppIdentifier>& value)
+	{
+		node->id = value;
+		return *this;
+	}
 
-		MakeOrdinaryGenericParameter& MakeOrdinaryGenericParameter::init(const vl::Ptr<CppTypeOrExpr>& value)
-		{
-			node->init = value;
-			return *this;
-		}
+	MakeOrdinaryGenericParameter& MakeOrdinaryGenericParameter::init(const vl::Ptr<CppTypeOrExpr>& value)
+	{
+		node->init = value;
+		return *this;
+	}
 
-		MakeOrdinaryGenericParameter& MakeOrdinaryGenericParameter::typenameToken(const vl::WString& value)
-		{
-			node->typenameToken.value = value;
-			return *this;
-		}
+	MakeOrdinaryGenericParameter& MakeOrdinaryGenericParameter::typenameToken(const vl::WString& value)
+	{
+		node->typenameToken.value = value;
+		return *this;
+	}
 
-		MakeOrdinaryGenericParameter& MakeOrdinaryGenericParameter::variadic(const vl::WString& value)
-		{
-			node->variadic.value = value;
-			return *this;
-		}
+	MakeOrdinaryGenericParameter& MakeOrdinaryGenericParameter::variadic(const vl::WString& value)
+	{
+		node->variadic.value = value;
+		return *this;
+	}
 
 /***********************************************************************
 MakeParenthesisExpr
 ***********************************************************************/
 
-		MakeParenthesisExpr& MakeParenthesisExpr::expr(const vl::Ptr<CppTypeOrExpr>& value)
-		{
-			node->expr = value;
-			return *this;
-		}
+	MakeParenthesisExpr& MakeParenthesisExpr::expr(const vl::Ptr<CppTypeOrExpr>& value)
+	{
+		node->expr = value;
+		return *this;
+	}
 
 /***********************************************************************
 MakePostfixUnaryExpr
 ***********************************************************************/
 
-		MakePostfixUnaryExpr& MakePostfixUnaryExpr::op(CppOperators value)
-		{
-			node->op = value;
-			return *this;
-		}
+	MakePostfixUnaryExpr& MakePostfixUnaryExpr::op(CppOperators value)
+	{
+		node->op = value;
+		return *this;
+	}
 
-		MakePostfixUnaryExpr& MakePostfixUnaryExpr::operand(const vl::Ptr<CppTypeOrExpr>& value)
-		{
-			node->operand = value;
-			return *this;
-		}
+	MakePostfixUnaryExpr& MakePostfixUnaryExpr::operand(const vl::Ptr<CppTypeOrExpr>& value)
+	{
+		node->operand = value;
+		return *this;
+	}
 
 /***********************************************************************
 MakePrefixUnaryExpr
 ***********************************************************************/
 
-		MakePrefixUnaryExpr& MakePrefixUnaryExpr::op(CppOperators value)
-		{
-			node->op = value;
-			return *this;
-		}
+	MakePrefixUnaryExpr& MakePrefixUnaryExpr::op(CppOperators value)
+	{
+		node->op = value;
+		return *this;
+	}
 
-		MakePrefixUnaryExpr& MakePrefixUnaryExpr::operand(const vl::Ptr<CppTypeOrExpr>& value)
-		{
-			node->operand = value;
-			return *this;
-		}
+	MakePrefixUnaryExpr& MakePrefixUnaryExpr::operand(const vl::Ptr<CppTypeOrExpr>& value)
+	{
+		node->operand = value;
+		return *this;
+	}
 
 /***********************************************************************
 MakePrimitiveExprLiteral
 ***********************************************************************/
 
-		MakePrimitiveExprLiteral& MakePrimitiveExprLiteral::kind(CppPrimitiveExprLiteralKinds value)
-		{
-			node->kind = value;
-			return *this;
-		}
+	MakePrimitiveExprLiteral& MakePrimitiveExprLiteral::kind(CppPrimitiveExprLiteralKinds value)
+	{
+		node->kind = value;
+		return *this;
+	}
 
 /***********************************************************************
 MakePrimitiveType
 ***********************************************************************/
 
-		MakePrimitiveType& MakePrimitiveType::kind(CppPrimitiveTypeKinds value)
-		{
-			node->kind = value;
-			return *this;
-		}
+	MakePrimitiveType& MakePrimitiveType::kind(CppPrimitiveTypeKinds value)
+	{
+		node->kind = value;
+		return *this;
+	}
 
-		MakePrimitiveType& MakePrimitiveType::literal1(const vl::WString& value)
-		{
-			node->literal1.value = value;
-			return *this;
-		}
+	MakePrimitiveType& MakePrimitiveType::literal1(const vl::WString& value)
+	{
+		node->literal1.value = value;
+		return *this;
+	}
 
-		MakePrimitiveType& MakePrimitiveType::literal2(const vl::WString& value)
-		{
-			node->literal2.value = value;
-			return *this;
-		}
+	MakePrimitiveType& MakePrimitiveType::literal2(const vl::WString& value)
+	{
+		node->literal2.value = value;
+		return *this;
+	}
 
 /***********************************************************************
 MakeQualifiedName
 ***********************************************************************/
 
-		MakeQualifiedName& MakeQualifiedName::arguments(const vl::Ptr<CppGenericArguments>& value)
-		{
-			node->arguments = value;
-			return *this;
-		}
+	MakeQualifiedName& MakeQualifiedName::arguments(const vl::Ptr<CppGenericArguments>& value)
+	{
+		node->arguments = value;
+		return *this;
+	}
 
-		MakeQualifiedName& MakeQualifiedName::expr(const vl::Ptr<CppTypeOrExpr>& value)
-		{
-			node->expr = value;
-			return *this;
-		}
+	MakeQualifiedName& MakeQualifiedName::expr(const vl::Ptr<CppTypeOrExpr>& value)
+	{
+		node->expr = value;
+		return *this;
+	}
 
-		MakeQualifiedName& MakeQualifiedName::id(const vl::Ptr<CppIdentifier>& value)
-		{
-			node->id = value;
-			return *this;
-		}
+	MakeQualifiedName& MakeQualifiedName::id(const vl::Ptr<CppIdentifier>& value)
+	{
+		node->id = value;
+		return *this;
+	}
 
-		MakeQualifiedName& MakeQualifiedName::kind(CppQualifiedNameKinds value)
-		{
-			node->kind = value;
-			return *this;
-		}
+	MakeQualifiedName& MakeQualifiedName::kind(CppQualifiedNameKinds value)
+	{
+		node->kind = value;
+		return *this;
+	}
 
-		MakeQualifiedName& MakeQualifiedName::parent(const vl::Ptr<CppQualifiedName>& value)
-		{
-			node->parent = value;
-			return *this;
-		}
+	MakeQualifiedName& MakeQualifiedName::parent(const vl::Ptr<CppQualifiedName>& value)
+	{
+		node->parent = value;
+		return *this;
+	}
 
 /***********************************************************************
 MakeReturnStat
 ***********************************************************************/
 
-		MakeReturnStat& MakeReturnStat::expr(const vl::Ptr<CppTypeOrExpr>& value)
-		{
-			node->expr = value;
-			return *this;
-		}
+	MakeReturnStat& MakeReturnStat::expr(const vl::Ptr<CppTypeOrExpr>& value)
+	{
+		node->expr = value;
+		return *this;
+	}
 
 /***********************************************************************
 MakeSingleVarDeclaration
 ***********************************************************************/
 
-		MakeSingleVarDeclaration& MakeSingleVarDeclaration::keywords(const vl::Ptr<CppDeclaratorKeyword>& value)
-		{
-			node->keywords.Add(value);
-			return *this;
-		}
+	MakeSingleVarDeclaration& MakeSingleVarDeclaration::keywords(const vl::Ptr<CppDeclaratorKeyword>& value)
+	{
+		node->keywords.Add(value);
+		return *this;
+	}
 
-		MakeSingleVarDeclaration& MakeSingleVarDeclaration::type(const vl::Ptr<CppTypeOrExpr>& value)
-		{
-			node->type = value;
-			return *this;
-		}
+	MakeSingleVarDeclaration& MakeSingleVarDeclaration::type(const vl::Ptr<CppTypeOrExpr>& value)
+	{
+		node->type = value;
+		return *this;
+	}
 
-		MakeSingleVarDeclaration& MakeSingleVarDeclaration::varPart(const vl::Ptr<CppDeclaratorVariablePart>& value)
-		{
-			node->varPart = value;
-			return *this;
-		}
+	MakeSingleVarDeclaration& MakeSingleVarDeclaration::varPart(const vl::Ptr<CppDeclaratorVariablePart>& value)
+	{
+		node->varPart = value;
+		return *this;
+	}
 
 /***********************************************************************
 MakeSizeofExpr
 ***********************************************************************/
 
-		MakeSizeofExpr& MakeSizeofExpr::argument(const vl::Ptr<CppTypeOrExpr>& value)
-		{
-			node->argument = value;
-			return *this;
-		}
+	MakeSizeofExpr& MakeSizeofExpr::argument(const vl::Ptr<CppTypeOrExpr>& value)
+	{
+		node->argument = value;
+		return *this;
+	}
 
-		MakeSizeofExpr& MakeSizeofExpr::variadic(const vl::WString& value)
-		{
-			node->variadic.value = value;
-			return *this;
-		}
+	MakeSizeofExpr& MakeSizeofExpr::variadic(const vl::WString& value)
+	{
+		node->variadic.value = value;
+		return *this;
+	}
 
 /***********************************************************************
 MakeStatementToResolve
 ***********************************************************************/
 
-		MakeStatementToResolve& MakeStatementToResolve::candidates(const vl::Ptr<CppStatement>& value)
-		{
-			node->candidates.Add(value);
-			return *this;
-		}
+	MakeStatementToResolve& MakeStatementToResolve::candidates(const vl::Ptr<CppStatement>& value)
+	{
+		node->candidates.Add(value);
+		return *this;
+	}
 
 /***********************************************************************
 MakeStaticAssertDeclaration
 ***********************************************************************/
 
-		MakeStaticAssertDeclaration& MakeStaticAssertDeclaration::expr(const vl::Ptr<CppTypeOrExpr>& value)
-		{
-			node->expr = value;
-			return *this;
-		}
+	MakeStaticAssertDeclaration& MakeStaticAssertDeclaration::expr(const vl::Ptr<CppTypeOrExpr>& value)
+	{
+		node->expr = value;
+		return *this;
+	}
 
-		MakeStaticAssertDeclaration& MakeStaticAssertDeclaration::message(const vl::Ptr<CppTypeOrExpr>& value)
-		{
-			node->message = value;
-			return *this;
-		}
+	MakeStaticAssertDeclaration& MakeStaticAssertDeclaration::message(const vl::Ptr<CppTypeOrExpr>& value)
+	{
+		node->message = value;
+		return *this;
+	}
 
 /***********************************************************************
 MakeStringLiteral
 ***********************************************************************/
 
-		MakeStringLiteral& MakeStringLiteral::fragments(const vl::Ptr<CppStringLiteralFragment>& value)
-		{
-			node->fragments.Add(value);
-			return *this;
-		}
+	MakeStringLiteral& MakeStringLiteral::fragments(const vl::Ptr<CppStringLiteralFragment>& value)
+	{
+		node->fragments.Add(value);
+		return *this;
+	}
 
 /***********************************************************************
 MakeStringLiteralFragment
 ***********************************************************************/
 
-		MakeStringLiteralFragment& MakeStringLiteralFragment::kind(CppStringLiteralKinds value)
-		{
-			node->kind = value;
-			return *this;
-		}
+	MakeStringLiteralFragment& MakeStringLiteralFragment::kind(CppStringLiteralKinds value)
+	{
+		node->kind = value;
+		return *this;
+	}
 
-		MakeStringLiteralFragment& MakeStringLiteralFragment::literal(const vl::WString& value)
-		{
-			node->literal.value = value;
-			return *this;
-		}
+	MakeStringLiteralFragment& MakeStringLiteralFragment::literal(const vl::WString& value)
+	{
+		node->literal.value = value;
+		return *this;
+	}
 
 /***********************************************************************
 MakeSwitchStat
 ***********************************************************************/
 
-		MakeSwitchStat& MakeSwitchStat::condition(const vl::Ptr<CppTypeOrExprOrOthers>& value)
-		{
-			node->condition = value;
-			return *this;
-		}
+	MakeSwitchStat& MakeSwitchStat::condition(const vl::Ptr<CppTypeOrExprOrOthers>& value)
+	{
+		node->condition = value;
+		return *this;
+	}
 
-		MakeSwitchStat& MakeSwitchStat::stat(const vl::Ptr<CppStatement>& value)
-		{
-			node->stat = value;
-			return *this;
-		}
+	MakeSwitchStat& MakeSwitchStat::stat(const vl::Ptr<CppStatement>& value)
+	{
+		node->stat = value;
+		return *this;
+	}
 
 /***********************************************************************
 MakeSysFuncExpr
 ***********************************************************************/
 
-		MakeSysFuncExpr& MakeSysFuncExpr::argument(const vl::Ptr<CppTypeOrExpr>& value)
-		{
-			node->argument = value;
-			return *this;
-		}
+	MakeSysFuncExpr& MakeSysFuncExpr::argument(const vl::Ptr<CppTypeOrExpr>& value)
+	{
+		node->argument = value;
+		return *this;
+	}
 
-		MakeSysFuncExpr& MakeSysFuncExpr::keyword(const vl::WString& value)
-		{
-			node->keyword.value = value;
-			return *this;
-		}
+	MakeSysFuncExpr& MakeSysFuncExpr::keyword(const vl::WString& value)
+	{
+		node->keyword.value = value;
+		return *this;
+	}
 
-		MakeSysFuncExpr& MakeSysFuncExpr::variadic(const vl::WString& value)
-		{
-			node->variadic.value = value;
-			return *this;
-		}
+	MakeSysFuncExpr& MakeSysFuncExpr::variadic(const vl::WString& value)
+	{
+		node->variadic.value = value;
+		return *this;
+	}
 
 /***********************************************************************
 MakeThrowExpr
 ***********************************************************************/
 
-		MakeThrowExpr& MakeThrowExpr::argument(const vl::Ptr<CppTypeOrExpr>& value)
-		{
-			node->argument = value;
-			return *this;
-		}
+	MakeThrowExpr& MakeThrowExpr::argument(const vl::Ptr<CppTypeOrExpr>& value)
+	{
+		node->argument = value;
+		return *this;
+	}
 
 /***********************************************************************
 MakeTryStat
 ***********************************************************************/
 
-		MakeTryStat& MakeTryStat::catchParts(const vl::Ptr<CppTryStatCatchPart>& value)
-		{
-			node->catchParts.Add(value);
-			return *this;
-		}
+	MakeTryStat& MakeTryStat::catchParts(const vl::Ptr<CppTryStatCatchPart>& value)
+	{
+		node->catchParts.Add(value);
+		return *this;
+	}
 
-		MakeTryStat& MakeTryStat::tryStat(const vl::Ptr<CppStatement>& value)
-		{
-			node->tryStat = value;
-			return *this;
-		}
+	MakeTryStat& MakeTryStat::tryStat(const vl::Ptr<CppStatement>& value)
+	{
+		node->tryStat = value;
+		return *this;
+	}
 
 /***********************************************************************
 MakeTryStatCatchPart
 ***********************************************************************/
 
-		MakeTryStatCatchPart& MakeTryStatCatchPart::decl(const vl::Ptr<CppTypeOrExprOrOthers>& value)
-		{
-			node->decl = value;
-			return *this;
-		}
+	MakeTryStatCatchPart& MakeTryStatCatchPart::decl(const vl::Ptr<CppTypeOrExprOrOthers>& value)
+	{
+		node->decl = value;
+		return *this;
+	}
 
-		MakeTryStatCatchPart& MakeTryStatCatchPart::stat(const vl::Ptr<CppStatement>& value)
-		{
-			node->stat = value;
-			return *this;
-		}
+	MakeTryStatCatchPart& MakeTryStatCatchPart::stat(const vl::Ptr<CppStatement>& value)
+	{
+		node->stat = value;
+		return *this;
+	}
 
 /***********************************************************************
 MakeTypeOrExprOrOthersToResolve
 ***********************************************************************/
 
-		MakeTypeOrExprOrOthersToResolve& MakeTypeOrExprOrOthersToResolve::candidates(const vl::Ptr<CppTypeOrExprOrOthers>& value)
-		{
-			node->candidates.Add(value);
-			return *this;
-		}
+	MakeTypeOrExprOrOthersToResolve& MakeTypeOrExprOrOthersToResolve::candidates(const vl::Ptr<CppTypeOrExprOrOthers>& value)
+	{
+		node->candidates.Add(value);
+		return *this;
+	}
 
 /***********************************************************************
 MakeTypeOrExprToResolve
 ***********************************************************************/
 
-		MakeTypeOrExprToResolve& MakeTypeOrExprToResolve::candidates(const vl::Ptr<CppTypeOrExpr>& value)
-		{
-			node->candidates.Add(value);
-			return *this;
-		}
+	MakeTypeOrExprToResolve& MakeTypeOrExprToResolve::candidates(const vl::Ptr<CppTypeOrExpr>& value)
+	{
+		node->candidates.Add(value);
+		return *this;
+	}
 
 /***********************************************************************
 MakeVarBraceInit
 ***********************************************************************/
 
-		MakeVarBraceInit& MakeVarBraceInit::arguments(const vl::Ptr<CppTypeOrExpr>& value)
-		{
-			node->arguments.Add(value);
-			return *this;
-		}
+	MakeVarBraceInit& MakeVarBraceInit::arguments(const vl::Ptr<CppTypeOrExpr>& value)
+	{
+		node->arguments.Add(value);
+		return *this;
+	}
 
 /***********************************************************************
 MakeVarParanthesisInit
 ***********************************************************************/
 
-		MakeVarParanthesisInit& MakeVarParanthesisInit::arguments(const vl::Ptr<CppTypeOrExpr>& value)
-		{
-			node->arguments.Add(value);
-			return *this;
-		}
+	MakeVarParanthesisInit& MakeVarParanthesisInit::arguments(const vl::Ptr<CppTypeOrExpr>& value)
+	{
+		node->arguments.Add(value);
+		return *this;
+	}
 
 /***********************************************************************
 MakeVarValueInit
 ***********************************************************************/
 
-		MakeVarValueInit& MakeVarValueInit::expr(const vl::Ptr<CppTypeOrExpr>& value)
-		{
-			node->expr = value;
-			return *this;
-		}
+	MakeVarValueInit& MakeVarValueInit::expr(const vl::Ptr<CppTypeOrExpr>& value)
+	{
+		node->expr = value;
+		return *this;
+	}
 
 /***********************************************************************
 MakeVariadicExpr
 ***********************************************************************/
 
-		MakeVariadicExpr& MakeVariadicExpr::operand(const vl::Ptr<CppTypeOrExpr>& value)
-		{
-			node->operand = value;
-			return *this;
-		}
+	MakeVariadicExpr& MakeVariadicExpr::operand(const vl::Ptr<CppTypeOrExpr>& value)
+	{
+		node->operand = value;
+		return *this;
+	}
 
-		MakeVariadicExpr& MakeVariadicExpr::variadic(const vl::WString& value)
-		{
-			node->variadic.value = value;
-			return *this;
-		}
+	MakeVariadicExpr& MakeVariadicExpr::variadic(const vl::WString& value)
+	{
+		node->variadic.value = value;
+		return *this;
+	}
 
 /***********************************************************************
 MakeVolatileType
 ***********************************************************************/
 
-		MakeVolatileType& MakeVolatileType::type(const vl::Ptr<CppTypeOrExpr>& value)
-		{
-			node->type = value;
-			return *this;
-		}
+	MakeVolatileType& MakeVolatileType::type(const vl::Ptr<CppTypeOrExpr>& value)
+	{
+		node->type = value;
+		return *this;
+	}
 
 /***********************************************************************
 MakeWhileStat
 ***********************************************************************/
 
-		MakeWhileStat& MakeWhileStat::condition(const vl::Ptr<CppTypeOrExprOrOthers>& value)
-		{
-			node->condition = value;
-			return *this;
-		}
+	MakeWhileStat& MakeWhileStat::condition(const vl::Ptr<CppTypeOrExprOrOthers>& value)
+	{
+		node->condition = value;
+		return *this;
+	}
 
-		MakeWhileStat& MakeWhileStat::stat(const vl::Ptr<CppStatement>& value)
-		{
-			node->stat = value;
-			return *this;
-		}
+	MakeWhileStat& MakeWhileStat::stat(const vl::Ptr<CppStatement>& value)
+	{
+		node->stat = value;
+		return *this;
+	}
 
 /***********************************************************************
 Make__TryStat
 ***********************************************************************/
 
-		Make__TryStat& Make__TryStat::exceptStat(const vl::Ptr<CppStatement>& value)
-		{
-			node->exceptStat = value;
-			return *this;
-		}
+	Make__TryStat& Make__TryStat::exceptStat(const vl::Ptr<CppStatement>& value)
+	{
+		node->exceptStat = value;
+		return *this;
+	}
 
-		Make__TryStat& Make__TryStat::filter(const vl::Ptr<CppTypeOrExpr>& value)
-		{
-			node->filter = value;
-			return *this;
-		}
+	Make__TryStat& Make__TryStat::filter(const vl::Ptr<CppTypeOrExpr>& value)
+	{
+		node->filter = value;
+		return *this;
+	}
 
-		Make__TryStat& Make__TryStat::finallyStat(const vl::Ptr<CppStatement>& value)
-		{
-			node->finallyStat = value;
-			return *this;
-		}
+	Make__TryStat& Make__TryStat::finallyStat(const vl::Ptr<CppStatement>& value)
+	{
+		node->finallyStat = value;
+		return *this;
+	}
 
-		Make__TryStat& Make__TryStat::tryStat(const vl::Ptr<CppStatement>& value)
-		{
-			node->tryStat = value;
-			return *this;
-		}
+	Make__TryStat& Make__TryStat::tryStat(const vl::Ptr<CppStatement>& value)
+	{
+		node->tryStat = value;
+		return *this;
 	}
 }

@@ -218,137 +218,131 @@ namespace prefixmerge7_pmswitch
 		void Accept(TypeOrExpr::IVisitor* visitor) override;
 	};
 }
-namespace vl
+namespace vl::reflection::description
 {
-	namespace reflection
-	{
-		namespace description
-		{
 #ifndef VCZH_DEBUG_NO_REFLECTION
-			DECL_TYPE_INFO(prefixmerge7_pmswitch::TypeOrExpr)
-			DECL_TYPE_INFO(prefixmerge7_pmswitch::TypeOrExpr::IVisitor)
-			DECL_TYPE_INFO(prefixmerge7_pmswitch::QualifiedName)
-			DECL_TYPE_INFO(prefixmerge7_pmswitch::QualifiedName::IVisitor)
-			DECL_TYPE_INFO(prefixmerge7_pmswitch::Name)
-			DECL_TYPE_INFO(prefixmerge7_pmswitch::MemberName)
-			DECL_TYPE_INFO(prefixmerge7_pmswitch::GenericQualifiedName)
-			DECL_TYPE_INFO(prefixmerge7_pmswitch::GenericQualifiedName::IVisitor)
-			DECL_TYPE_INFO(prefixmerge7_pmswitch::GenericName)
-			DECL_TYPE_INFO(prefixmerge7_pmswitch::GenericMemberName)
-			DECL_TYPE_INFO(prefixmerge7_pmswitch::CallExpr)
-			DECL_TYPE_INFO(prefixmerge7_pmswitch::CtorExpr)
-			DECL_TYPE_INFO(prefixmerge7_pmswitch::MulExpr)
-			DECL_TYPE_INFO(prefixmerge7_pmswitch::LtExpr)
-			DECL_TYPE_INFO(prefixmerge7_pmswitch::GtExpr)
-			DECL_TYPE_INFO(prefixmerge7_pmswitch::ThrowExpr)
-			DECL_TYPE_INFO(prefixmerge7_pmswitch::CommaExpr)
-			DECL_TYPE_INFO(prefixmerge7_pmswitch::ConstType)
-			DECL_TYPE_INFO(prefixmerge7_pmswitch::PointerType)
-			DECL_TYPE_INFO(prefixmerge7_pmswitch::FunctionType)
-			DECL_TYPE_INFO(prefixmerge7_pmswitch::TypeOrExprToResolve)
+	DECL_TYPE_INFO(prefixmerge7_pmswitch::TypeOrExpr)
+	DECL_TYPE_INFO(prefixmerge7_pmswitch::TypeOrExpr::IVisitor)
+	DECL_TYPE_INFO(prefixmerge7_pmswitch::QualifiedName)
+	DECL_TYPE_INFO(prefixmerge7_pmswitch::QualifiedName::IVisitor)
+	DECL_TYPE_INFO(prefixmerge7_pmswitch::Name)
+	DECL_TYPE_INFO(prefixmerge7_pmswitch::MemberName)
+	DECL_TYPE_INFO(prefixmerge7_pmswitch::GenericQualifiedName)
+	DECL_TYPE_INFO(prefixmerge7_pmswitch::GenericQualifiedName::IVisitor)
+	DECL_TYPE_INFO(prefixmerge7_pmswitch::GenericName)
+	DECL_TYPE_INFO(prefixmerge7_pmswitch::GenericMemberName)
+	DECL_TYPE_INFO(prefixmerge7_pmswitch::CallExpr)
+	DECL_TYPE_INFO(prefixmerge7_pmswitch::CtorExpr)
+	DECL_TYPE_INFO(prefixmerge7_pmswitch::MulExpr)
+	DECL_TYPE_INFO(prefixmerge7_pmswitch::LtExpr)
+	DECL_TYPE_INFO(prefixmerge7_pmswitch::GtExpr)
+	DECL_TYPE_INFO(prefixmerge7_pmswitch::ThrowExpr)
+	DECL_TYPE_INFO(prefixmerge7_pmswitch::CommaExpr)
+	DECL_TYPE_INFO(prefixmerge7_pmswitch::ConstType)
+	DECL_TYPE_INFO(prefixmerge7_pmswitch::PointerType)
+	DECL_TYPE_INFO(prefixmerge7_pmswitch::FunctionType)
+	DECL_TYPE_INFO(prefixmerge7_pmswitch::TypeOrExprToResolve)
 
 #ifdef VCZH_DESCRIPTABLEOBJECT_WITH_METADATA
 
-			BEGIN_INTERFACE_PROXY_NOPARENT_SHAREDPTR(prefixmerge7_pmswitch::TypeOrExpr::IVisitor)
-				void Visit(prefixmerge7_pmswitch::TypeOrExprToResolve* node) override
-				{
-					INVOKE_INTERFACE_PROXY(Visit, node);
-				}
-
-				void Visit(prefixmerge7_pmswitch::QualifiedName* node) override
-				{
-					INVOKE_INTERFACE_PROXY(Visit, node);
-				}
-
-				void Visit(prefixmerge7_pmswitch::CallExpr* node) override
-				{
-					INVOKE_INTERFACE_PROXY(Visit, node);
-				}
-
-				void Visit(prefixmerge7_pmswitch::CtorExpr* node) override
-				{
-					INVOKE_INTERFACE_PROXY(Visit, node);
-				}
-
-				void Visit(prefixmerge7_pmswitch::MulExpr* node) override
-				{
-					INVOKE_INTERFACE_PROXY(Visit, node);
-				}
-
-				void Visit(prefixmerge7_pmswitch::LtExpr* node) override
-				{
-					INVOKE_INTERFACE_PROXY(Visit, node);
-				}
-
-				void Visit(prefixmerge7_pmswitch::GtExpr* node) override
-				{
-					INVOKE_INTERFACE_PROXY(Visit, node);
-				}
-
-				void Visit(prefixmerge7_pmswitch::ThrowExpr* node) override
-				{
-					INVOKE_INTERFACE_PROXY(Visit, node);
-				}
-
-				void Visit(prefixmerge7_pmswitch::CommaExpr* node) override
-				{
-					INVOKE_INTERFACE_PROXY(Visit, node);
-				}
-
-				void Visit(prefixmerge7_pmswitch::ConstType* node) override
-				{
-					INVOKE_INTERFACE_PROXY(Visit, node);
-				}
-
-				void Visit(prefixmerge7_pmswitch::PointerType* node) override
-				{
-					INVOKE_INTERFACE_PROXY(Visit, node);
-				}
-
-				void Visit(prefixmerge7_pmswitch::FunctionType* node) override
-				{
-					INVOKE_INTERFACE_PROXY(Visit, node);
-				}
-
-			END_INTERFACE_PROXY(prefixmerge7_pmswitch::TypeOrExpr::IVisitor)
-
-			BEGIN_INTERFACE_PROXY_NOPARENT_SHAREDPTR(prefixmerge7_pmswitch::QualifiedName::IVisitor)
-				void Visit(prefixmerge7_pmswitch::Name* node) override
-				{
-					INVOKE_INTERFACE_PROXY(Visit, node);
-				}
-
-				void Visit(prefixmerge7_pmswitch::MemberName* node) override
-				{
-					INVOKE_INTERFACE_PROXY(Visit, node);
-				}
-
-				void Visit(prefixmerge7_pmswitch::GenericQualifiedName* node) override
-				{
-					INVOKE_INTERFACE_PROXY(Visit, node);
-				}
-
-			END_INTERFACE_PROXY(prefixmerge7_pmswitch::QualifiedName::IVisitor)
-
-			BEGIN_INTERFACE_PROXY_NOPARENT_SHAREDPTR(prefixmerge7_pmswitch::GenericQualifiedName::IVisitor)
-				void Visit(prefixmerge7_pmswitch::GenericName* node) override
-				{
-					INVOKE_INTERFACE_PROXY(Visit, node);
-				}
-
-				void Visit(prefixmerge7_pmswitch::GenericMemberName* node) override
-				{
-					INVOKE_INTERFACE_PROXY(Visit, node);
-				}
-
-			END_INTERFACE_PROXY(prefixmerge7_pmswitch::GenericQualifiedName::IVisitor)
-
-#endif
-#endif
-			/// <summary>Load all reflectable AST types, only available when <b>VCZH_DEBUG_NO_REFLECTION</b> is off.</summary>
-			/// <returns>Returns true if this operation succeeded.</returns>
-			extern bool PrefixMerge7_PmSwitchTypeOrExprLoadTypes();
+	BEGIN_INTERFACE_PROXY_NOPARENT_SHAREDPTR(prefixmerge7_pmswitch::TypeOrExpr::IVisitor)
+		void Visit(prefixmerge7_pmswitch::TypeOrExprToResolve* node) override
+		{
+			INVOKE_INTERFACE_PROXY(Visit, node);
 		}
-	}
+
+		void Visit(prefixmerge7_pmswitch::QualifiedName* node) override
+		{
+			INVOKE_INTERFACE_PROXY(Visit, node);
+		}
+
+		void Visit(prefixmerge7_pmswitch::CallExpr* node) override
+		{
+			INVOKE_INTERFACE_PROXY(Visit, node);
+		}
+
+		void Visit(prefixmerge7_pmswitch::CtorExpr* node) override
+		{
+			INVOKE_INTERFACE_PROXY(Visit, node);
+		}
+
+		void Visit(prefixmerge7_pmswitch::MulExpr* node) override
+		{
+			INVOKE_INTERFACE_PROXY(Visit, node);
+		}
+
+		void Visit(prefixmerge7_pmswitch::LtExpr* node) override
+		{
+			INVOKE_INTERFACE_PROXY(Visit, node);
+		}
+
+		void Visit(prefixmerge7_pmswitch::GtExpr* node) override
+		{
+			INVOKE_INTERFACE_PROXY(Visit, node);
+		}
+
+		void Visit(prefixmerge7_pmswitch::ThrowExpr* node) override
+		{
+			INVOKE_INTERFACE_PROXY(Visit, node);
+		}
+
+		void Visit(prefixmerge7_pmswitch::CommaExpr* node) override
+		{
+			INVOKE_INTERFACE_PROXY(Visit, node);
+		}
+
+		void Visit(prefixmerge7_pmswitch::ConstType* node) override
+		{
+			INVOKE_INTERFACE_PROXY(Visit, node);
+		}
+
+		void Visit(prefixmerge7_pmswitch::PointerType* node) override
+		{
+			INVOKE_INTERFACE_PROXY(Visit, node);
+		}
+
+		void Visit(prefixmerge7_pmswitch::FunctionType* node) override
+		{
+			INVOKE_INTERFACE_PROXY(Visit, node);
+		}
+
+	END_INTERFACE_PROXY(prefixmerge7_pmswitch::TypeOrExpr::IVisitor)
+
+	BEGIN_INTERFACE_PROXY_NOPARENT_SHAREDPTR(prefixmerge7_pmswitch::QualifiedName::IVisitor)
+		void Visit(prefixmerge7_pmswitch::Name* node) override
+		{
+			INVOKE_INTERFACE_PROXY(Visit, node);
+		}
+
+		void Visit(prefixmerge7_pmswitch::MemberName* node) override
+		{
+			INVOKE_INTERFACE_PROXY(Visit, node);
+		}
+
+		void Visit(prefixmerge7_pmswitch::GenericQualifiedName* node) override
+		{
+			INVOKE_INTERFACE_PROXY(Visit, node);
+		}
+
+	END_INTERFACE_PROXY(prefixmerge7_pmswitch::QualifiedName::IVisitor)
+
+	BEGIN_INTERFACE_PROXY_NOPARENT_SHAREDPTR(prefixmerge7_pmswitch::GenericQualifiedName::IVisitor)
+		void Visit(prefixmerge7_pmswitch::GenericName* node) override
+		{
+			INVOKE_INTERFACE_PROXY(Visit, node);
+		}
+
+		void Visit(prefixmerge7_pmswitch::GenericMemberName* node) override
+		{
+			INVOKE_INTERFACE_PROXY(Visit, node);
+		}
+
+	END_INTERFACE_PROXY(prefixmerge7_pmswitch::GenericQualifiedName::IVisitor)
+
+#endif
+#endif
+	/// <summary>Load all reflectable AST types, only available when <b>VCZH_DEBUG_NO_REFLECTION</b> is off.</summary>
+	/// <returns>Returns true if this operation succeeded.</returns>
+	extern bool PrefixMerge7_PmSwitchTypeOrExprLoadTypes();
 }
 #endif

@@ -9,45 +9,42 @@ Licensed under https://github.com/vczh-libraries/License
 
 #include "PrefixMerge2_LriRequiredTypeOrExpr.h"
 
-namespace prefixmerge2_lrirequired
+namespace prefixmerge2_lrirequired::json_visitor
 {
-	namespace json_visitor
+	/// <summary>A JSON visitor, overriding all abstract methods with AST to JSON serialization code.</summary>
+	class TypeOrExprVisitor
+		: public vl::glr::JsonVisitorBase
+		, protected virtual TypeOrExpr::IVisitor
+		, protected virtual QualifiedName::IVisitor
 	{
-		/// <summary>A JSON visitor, overriding all abstract methods with AST to JSON serialization code.</summary>
-		class TypeOrExprVisitor
-			: public vl::glr::JsonVisitorBase
-			, protected virtual TypeOrExpr::IVisitor
-			, protected virtual QualifiedName::IVisitor
-		{
-		protected:
-			virtual void PrintFields(CallExpr* node);
-			virtual void PrintFields(ConstType* node);
-			virtual void PrintFields(FunctionType* node);
-			virtual void PrintFields(MemberName* node);
-			virtual void PrintFields(MulExpr* node);
-			virtual void PrintFields(Name* node);
-			virtual void PrintFields(PointerType* node);
-			virtual void PrintFields(QualifiedName* node);
-			virtual void PrintFields(TypeOrExpr* node);
-			virtual void PrintFields(TypeOrExprToResolve* node);
+	protected:
+		virtual void PrintFields(CallExpr* node);
+		virtual void PrintFields(ConstType* node);
+		virtual void PrintFields(FunctionType* node);
+		virtual void PrintFields(MemberName* node);
+		virtual void PrintFields(MulExpr* node);
+		virtual void PrintFields(Name* node);
+		virtual void PrintFields(PointerType* node);
+		virtual void PrintFields(QualifiedName* node);
+		virtual void PrintFields(TypeOrExpr* node);
+		virtual void PrintFields(TypeOrExprToResolve* node);
 
-		protected:
-			void Visit(TypeOrExprToResolve* node) override;
-			void Visit(QualifiedName* node) override;
-			void Visit(CallExpr* node) override;
-			void Visit(MulExpr* node) override;
-			void Visit(ConstType* node) override;
-			void Visit(PointerType* node) override;
-			void Visit(FunctionType* node) override;
+	protected:
+		void Visit(TypeOrExprToResolve* node) override;
+		void Visit(QualifiedName* node) override;
+		void Visit(CallExpr* node) override;
+		void Visit(MulExpr* node) override;
+		void Visit(ConstType* node) override;
+		void Visit(PointerType* node) override;
+		void Visit(FunctionType* node) override;
 
-			void Visit(Name* node) override;
-			void Visit(MemberName* node) override;
+		void Visit(Name* node) override;
+		void Visit(MemberName* node) override;
 
-		public:
-			TypeOrExprVisitor(vl::stream::StreamWriter& _writer);
+	public:
+		TypeOrExprVisitor(vl::stream::StreamWriter& _writer);
 
-			void Print(TypeOrExpr* node);
-		};
-	}
+		void Print(TypeOrExpr* node);
+	};
 }
 #endif

@@ -73,52 +73,46 @@ namespace ifelseambiguityonstat2
 		void Accept(Stat::IVisitor* visitor) override;
 	};
 }
-namespace vl
+namespace vl::reflection::description
 {
-	namespace reflection
-	{
-		namespace description
-		{
 #ifndef VCZH_DEBUG_NO_REFLECTION
-			DECL_TYPE_INFO(ifelseambiguityonstat2::Stat)
-			DECL_TYPE_INFO(ifelseambiguityonstat2::Stat::IVisitor)
-			DECL_TYPE_INFO(ifelseambiguityonstat2::DoStat)
-			DECL_TYPE_INFO(ifelseambiguityonstat2::IfStat)
-			DECL_TYPE_INFO(ifelseambiguityonstat2::BlockStat)
-			DECL_TYPE_INFO(ifelseambiguityonstat2::Module)
-			DECL_TYPE_INFO(ifelseambiguityonstat2::StatToResolve)
+	DECL_TYPE_INFO(ifelseambiguityonstat2::Stat)
+	DECL_TYPE_INFO(ifelseambiguityonstat2::Stat::IVisitor)
+	DECL_TYPE_INFO(ifelseambiguityonstat2::DoStat)
+	DECL_TYPE_INFO(ifelseambiguityonstat2::IfStat)
+	DECL_TYPE_INFO(ifelseambiguityonstat2::BlockStat)
+	DECL_TYPE_INFO(ifelseambiguityonstat2::Module)
+	DECL_TYPE_INFO(ifelseambiguityonstat2::StatToResolve)
 
 #ifdef VCZH_DESCRIPTABLEOBJECT_WITH_METADATA
 
-			BEGIN_INTERFACE_PROXY_NOPARENT_SHAREDPTR(ifelseambiguityonstat2::Stat::IVisitor)
-				void Visit(ifelseambiguityonstat2::StatToResolve* node) override
-				{
-					INVOKE_INTERFACE_PROXY(Visit, node);
-				}
-
-				void Visit(ifelseambiguityonstat2::DoStat* node) override
-				{
-					INVOKE_INTERFACE_PROXY(Visit, node);
-				}
-
-				void Visit(ifelseambiguityonstat2::IfStat* node) override
-				{
-					INVOKE_INTERFACE_PROXY(Visit, node);
-				}
-
-				void Visit(ifelseambiguityonstat2::BlockStat* node) override
-				{
-					INVOKE_INTERFACE_PROXY(Visit, node);
-				}
-
-			END_INTERFACE_PROXY(ifelseambiguityonstat2::Stat::IVisitor)
-
-#endif
-#endif
-			/// <summary>Load all reflectable AST types, only available when <b>VCZH_DEBUG_NO_REFLECTION</b> is off.</summary>
-			/// <returns>Returns true if this operation succeeded.</returns>
-			extern bool IfElseAmbiguityOnStat2StatAstLoadTypes();
+	BEGIN_INTERFACE_PROXY_NOPARENT_SHAREDPTR(ifelseambiguityonstat2::Stat::IVisitor)
+		void Visit(ifelseambiguityonstat2::StatToResolve* node) override
+		{
+			INVOKE_INTERFACE_PROXY(Visit, node);
 		}
-	}
+
+		void Visit(ifelseambiguityonstat2::DoStat* node) override
+		{
+			INVOKE_INTERFACE_PROXY(Visit, node);
+		}
+
+		void Visit(ifelseambiguityonstat2::IfStat* node) override
+		{
+			INVOKE_INTERFACE_PROXY(Visit, node);
+		}
+
+		void Visit(ifelseambiguityonstat2::BlockStat* node) override
+		{
+			INVOKE_INTERFACE_PROXY(Visit, node);
+		}
+
+	END_INTERFACE_PROXY(ifelseambiguityonstat2::Stat::IVisitor)
+
+#endif
+#endif
+	/// <summary>Load all reflectable AST types, only available when <b>VCZH_DEBUG_NO_REFLECTION</b> is off.</summary>
+	/// <returns>Returns true if this operation succeeded.</returns>
+	extern bool IfElseAmbiguityOnStat2StatAstLoadTypes();
 }
 #endif

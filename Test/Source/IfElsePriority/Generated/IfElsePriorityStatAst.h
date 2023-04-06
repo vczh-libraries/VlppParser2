@@ -63,46 +63,40 @@ namespace ifelsepriority
 		vl::Ptr<Stat> stat;
 	};
 }
-namespace vl
+namespace vl::reflection::description
 {
-	namespace reflection
-	{
-		namespace description
-		{
 #ifndef VCZH_DEBUG_NO_REFLECTION
-			DECL_TYPE_INFO(ifelsepriority::Stat)
-			DECL_TYPE_INFO(ifelsepriority::Stat::IVisitor)
-			DECL_TYPE_INFO(ifelsepriority::DoStat)
-			DECL_TYPE_INFO(ifelsepriority::IfStat)
-			DECL_TYPE_INFO(ifelsepriority::BlockStat)
-			DECL_TYPE_INFO(ifelsepriority::Module)
+	DECL_TYPE_INFO(ifelsepriority::Stat)
+	DECL_TYPE_INFO(ifelsepriority::Stat::IVisitor)
+	DECL_TYPE_INFO(ifelsepriority::DoStat)
+	DECL_TYPE_INFO(ifelsepriority::IfStat)
+	DECL_TYPE_INFO(ifelsepriority::BlockStat)
+	DECL_TYPE_INFO(ifelsepriority::Module)
 
 #ifdef VCZH_DESCRIPTABLEOBJECT_WITH_METADATA
 
-			BEGIN_INTERFACE_PROXY_NOPARENT_SHAREDPTR(ifelsepriority::Stat::IVisitor)
-				void Visit(ifelsepriority::DoStat* node) override
-				{
-					INVOKE_INTERFACE_PROXY(Visit, node);
-				}
-
-				void Visit(ifelsepriority::IfStat* node) override
-				{
-					INVOKE_INTERFACE_PROXY(Visit, node);
-				}
-
-				void Visit(ifelsepriority::BlockStat* node) override
-				{
-					INVOKE_INTERFACE_PROXY(Visit, node);
-				}
-
-			END_INTERFACE_PROXY(ifelsepriority::Stat::IVisitor)
-
-#endif
-#endif
-			/// <summary>Load all reflectable AST types, only available when <b>VCZH_DEBUG_NO_REFLECTION</b> is off.</summary>
-			/// <returns>Returns true if this operation succeeded.</returns>
-			extern bool IfElsePriorityStatAstLoadTypes();
+	BEGIN_INTERFACE_PROXY_NOPARENT_SHAREDPTR(ifelsepriority::Stat::IVisitor)
+		void Visit(ifelsepriority::DoStat* node) override
+		{
+			INVOKE_INTERFACE_PROXY(Visit, node);
 		}
-	}
+
+		void Visit(ifelsepriority::IfStat* node) override
+		{
+			INVOKE_INTERFACE_PROXY(Visit, node);
+		}
+
+		void Visit(ifelsepriority::BlockStat* node) override
+		{
+			INVOKE_INTERFACE_PROXY(Visit, node);
+		}
+
+	END_INTERFACE_PROXY(ifelsepriority::Stat::IVisitor)
+
+#endif
+#endif
+	/// <summary>Load all reflectable AST types, only available when <b>VCZH_DEBUG_NO_REFLECTION</b> is off.</summary>
+	/// <returns>Returns true if this operation succeeded.</returns>
+	extern bool IfElsePriorityStatAstLoadTypes();
 }
 #endif

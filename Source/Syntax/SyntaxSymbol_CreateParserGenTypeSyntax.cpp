@@ -1,4 +1,5 @@
 #include "SyntaxSymbolWriter.h"
+#include "../../Source/Ast/AstSymbol.h"
 #include "../../Source/ParserGen_Generated/ParserGen_Assembler.h"
 #include "../../Source/ParserGen_Generated/ParserGen_Lexer.h"
 
@@ -18,7 +19,7 @@ namespace vl
 CreateParserGenTypeSyntax
 ***********************************************************************/
 
-			void CreateParserGenTypeSyntax(SyntaxSymbolManager& manager)
+			void CreateParserGenTypeSyntax(AstSymbolManager& ast, SyntaxSymbolManager& manager)
 			{
 				manager.name = L"TypeParser";
 
@@ -34,8 +35,8 @@ CreateParserGenTypeSyntax
 				_classPropType->isPartial = true;
 				_classBody->isPartial = true;
 
-				manager.parsableRules.Add(_file);
-				manager.ruleTypes.Add(_file, L"vl::glr::parsergen::GlrAstFile");
+				_file->isParser = true;
+				_file->ruleType = dynamic_cast<AstClassSymbol*>(ast.Symbols()[L"AstFile"]);
 
 				using T = ParserGenTokens;
 				using C = ParserGenClasses;
@@ -44,8 +45,8 @@ CreateParserGenTypeSyntax
 				// ID:name "," as EnumItem
 				Clause{ _enumItem } = create(tok(T::ID, F::EnumItem_name) + tok(T::COMMA), C::EnumItem);
 
-				// "enum" ID:name "{" {EnumItem} "}" as Enum
-				Clause{ _enum } = create(tok(T::ENUM) + tok(T::ID, F::Type_name) + tok(T::OPEN_CURLY) + loop(rule(_enumItem, F::Enum_items)) + tok(T::CLOSE_CURLY), C::Enum);
+				// ["@public"] "enum" ID:name "{" {EnumItem} "}" as Enum
+				Clause{ _enum } = create(opt(tok(T::ATT_PUBLIC, F::Type_attPublic)) + tok(T::ENUM) + tok(T::ID, F::Type_name) + tok(T::OPEN_CURLY) + loop(rule(_enumItem, F::Enum_items)) + tok(T::CLOSE_CURLY), C::Enum);
 
 				// "token" as partial ClassProp {propType = "Token"}
 				Clause{ _classPropType } = partial(tok(T::TOKEN)).with(F::ClassProp_propType, GlrPropType::Token);
@@ -62,11 +63,8 @@ CreateParserGenTypeSyntax
 				// ID:name [":" ID:baseClass] "{" {ClassProp} "}" as partial Class
 				Clause{ _classBody } = partial(tok(T::ID, F::Type_name) + opt(tok(T::COLON) + tok(T::ID, F::Class_baseClass)) + tok(T::OPEN_CURLY) + loop(rule(_classProp, F::Class_props)) + tok(T::CLOSE_CURLY));
 
-				// "class" ClassBody {ambiguity = No}
-				Clause{ _class } = create(tok(T::CLASS) + prule(_classBody), C::Class).with(F::Class_ambiguity, GlrClassAmbiguity::No);
-
-				// "ambiguous" "class" ClassBody {ambiguity = Yes}
-				Clause{ _class } = create(tok(T::AMBIGUOUS) + tok(T::CLASS) + prule(_classBody), C::Class).with(F::Class_ambiguity, GlrClassAmbiguity::Yes);
+				// ["@public"] ["@ambiguous"] "class" ClassBody {ambiguity = Yes}
+				Clause{ _class } = create(opt(tok(T::ATT_PUBLIC, F::Type_attPublic)) + opt(tok(T::ATT_AMBIGUOUS, F::Class_attAmbiguous)) + tok(T::CLASS) + prule(_classBody), C::Class);
 
 				// !Class | !Enum
 				Clause{ _type } = use(_enum) | use(_class);

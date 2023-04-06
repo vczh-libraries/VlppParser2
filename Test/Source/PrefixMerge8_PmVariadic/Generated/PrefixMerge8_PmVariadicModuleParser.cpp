@@ -311,4 +311,14 @@ namespace prefixmerge8_pmvariadic
 	{
 		 return ParseWithTokens<prefixmerge8_pmvariadic::TypeOrExpr, ModuleParserStates::Module>(tokens, this, codeIndex);
 	}
+
+	vl::Ptr<prefixmerge8_pmvariadic::TypeOrExpr> ModuleParser::ParseModule_LRI_Original(const vl::WString& input, vl::vint codeIndex) const
+	{
+		 return ParseWithString<prefixmerge8_pmvariadic::TypeOrExpr, ModuleParserStates::Module_LRI_Original>(input, this, codeIndex);
+	}
+
+	vl::Ptr<prefixmerge8_pmvariadic::TypeOrExpr> ModuleParser::ParseModule_LRI_Original(vl::collections::List<vl::regex::RegexToken>& tokens, vl::vint codeIndex) const
+	{
+		 return ParseWithTokens<prefixmerge8_pmvariadic::TypeOrExpr, ModuleParserStates::Module_LRI_Original>(tokens, this, codeIndex);
+	}
 }

@@ -6,185 +6,182 @@ Licensed under https://github.com/vczh-libraries/License
 
 #include "CalculatorExprAst_Builder.h"
 
-namespace calculator
+namespace calculator::builder
 {
-	namespace builder
-	{
 
 /***********************************************************************
 MakeArg
 ***********************************************************************/
 
-		MakeArg& MakeArg::name(const vl::WString& value)
-		{
-			node->name.value = value;
-			return *this;
-		}
+	MakeArg& MakeArg::name(const vl::WString& value)
+	{
+		node->name.value = value;
+		return *this;
+	}
 
 /***********************************************************************
 MakeBinary
 ***********************************************************************/
 
-		MakeBinary& MakeBinary::left(const vl::Ptr<Expr>& value)
-		{
-			node->left = value;
-			return *this;
-		}
+	MakeBinary& MakeBinary::left(const vl::Ptr<Expr>& value)
+	{
+		node->left = value;
+		return *this;
+	}
 
-		MakeBinary& MakeBinary::op(BinaryOp value)
-		{
-			node->op = value;
-			return *this;
-		}
+	MakeBinary& MakeBinary::op(BinaryOp value)
+	{
+		node->op = value;
+		return *this;
+	}
 
-		MakeBinary& MakeBinary::right(const vl::Ptr<Expr>& value)
-		{
-			node->right = value;
-			return *this;
-		}
+	MakeBinary& MakeBinary::right(const vl::Ptr<Expr>& value)
+	{
+		node->right = value;
+		return *this;
+	}
 
-		MakeBinary& MakeBinary::expanded(const vl::Ptr<Expr>& value)
-		{
-			node->expanded = value;
-			return *this;
-		}
+	MakeBinary& MakeBinary::expanded(const vl::Ptr<Expr>& value)
+	{
+		node->expanded = value;
+		return *this;
+	}
 
 /***********************************************************************
 MakeCall
 ***********************************************************************/
 
-		MakeCall& MakeCall::args(const vl::Ptr<Expr>& value)
-		{
-			node->args.Add(value);
-			return *this;
-		}
+	MakeCall& MakeCall::args(const vl::Ptr<Expr>& value)
+	{
+		node->args.Add(value);
+		return *this;
+	}
 
-		MakeCall& MakeCall::func(const vl::Ptr<Expr>& value)
-		{
-			node->func = value;
-			return *this;
-		}
+	MakeCall& MakeCall::func(const vl::Ptr<Expr>& value)
+	{
+		node->func = value;
+		return *this;
+	}
 
 /***********************************************************************
 MakeExpandable
 ***********************************************************************/
 
-		MakeExpandable& MakeExpandable::expanded(const vl::Ptr<Expr>& value)
-		{
-			node->expanded = value;
-			return *this;
-		}
+	MakeExpandable& MakeExpandable::expanded(const vl::Ptr<Expr>& value)
+	{
+		node->expanded = value;
+		return *this;
+	}
 
 /***********************************************************************
 MakeFunc
 ***********************************************************************/
 
-		MakeFunc& MakeFunc::args(const vl::Ptr<Arg>& value)
-		{
-			node->args.Add(value);
-			return *this;
-		}
+	MakeFunc& MakeFunc::args(const vl::Ptr<Arg>& value)
+	{
+		node->args.Add(value);
+		return *this;
+	}
 
-		MakeFunc& MakeFunc::value(const vl::Ptr<Expr>& value)
-		{
-			node->value = value;
-			return *this;
-		}
+	MakeFunc& MakeFunc::value(const vl::Ptr<Expr>& value)
+	{
+		node->value = value;
+		return *this;
+	}
 
 /***********************************************************************
 MakeImport
 ***********************************************************************/
 
-		MakeImport& MakeImport::name(const vl::WString& value)
-		{
-			node->name.value = value;
-			return *this;
-		}
+	MakeImport& MakeImport::name(const vl::WString& value)
+	{
+		node->name.value = value;
+		return *this;
+	}
 
 /***********************************************************************
 MakeLetExpr
 ***********************************************************************/
 
-		MakeLetExpr& MakeLetExpr::name(const vl::WString& value)
-		{
-			node->name.value = value;
-			return *this;
-		}
+	MakeLetExpr& MakeLetExpr::name(const vl::WString& value)
+	{
+		node->name.value = value;
+		return *this;
+	}
 
-		MakeLetExpr& MakeLetExpr::result(const vl::Ptr<Expr>& value)
-		{
-			node->result = value;
-			return *this;
-		}
+	MakeLetExpr& MakeLetExpr::result(const vl::Ptr<Expr>& value)
+	{
+		node->result = value;
+		return *this;
+	}
 
-		MakeLetExpr& MakeLetExpr::value(const vl::Ptr<Expr>& value)
-		{
-			node->value = value;
-			return *this;
-		}
+	MakeLetExpr& MakeLetExpr::value(const vl::Ptr<Expr>& value)
+	{
+		node->value = value;
+		return *this;
+	}
 
-		MakeLetExpr& MakeLetExpr::expanded(const vl::Ptr<Expr>& value)
-		{
-			node->expanded = value;
-			return *this;
-		}
+	MakeLetExpr& MakeLetExpr::expanded(const vl::Ptr<Expr>& value)
+	{
+		node->expanded = value;
+		return *this;
+	}
 
 /***********************************************************************
 MakeModule
 ***********************************************************************/
 
-		MakeModule& MakeModule::exported(const vl::Ptr<Expr>& value)
-		{
-			node->exported = value;
-			return *this;
-		}
+	MakeModule& MakeModule::exported(const vl::Ptr<Expr>& value)
+	{
+		node->exported = value;
+		return *this;
+	}
 
-		MakeModule& MakeModule::imports(const vl::Ptr<Import>& value)
-		{
-			node->imports.Add(value);
-			return *this;
-		}
+	MakeModule& MakeModule::imports(const vl::Ptr<Import>& value)
+	{
+		node->imports.Add(value);
+		return *this;
+	}
 
 /***********************************************************************
 MakeNumExpr
 ***********************************************************************/
 
-		MakeNumExpr& MakeNumExpr::value(const vl::WString& value)
-		{
-			node->value.value = value;
-			return *this;
-		}
+	MakeNumExpr& MakeNumExpr::value(const vl::WString& value)
+	{
+		node->value.value = value;
+		return *this;
+	}
 
 /***********************************************************************
 MakeRef
 ***********************************************************************/
 
-		MakeRef& MakeRef::name(const vl::WString& value)
-		{
-			node->name.value = value;
-			return *this;
-		}
+	MakeRef& MakeRef::name(const vl::WString& value)
+	{
+		node->name.value = value;
+		return *this;
+	}
 
 /***********************************************************************
 MakeUnary
 ***********************************************************************/
 
-		MakeUnary& MakeUnary::op(UnaryOp value)
-		{
-			node->op = value;
-			return *this;
-		}
+	MakeUnary& MakeUnary::op(UnaryOp value)
+	{
+		node->op = value;
+		return *this;
+	}
 
-		MakeUnary& MakeUnary::operand(const vl::Ptr<Expr>& value)
-		{
-			node->operand = value;
-			return *this;
-		}
+	MakeUnary& MakeUnary::operand(const vl::Ptr<Expr>& value)
+	{
+		node->operand = value;
+		return *this;
+	}
 
-		MakeUnary& MakeUnary::expanded(const vl::Ptr<Expr>& value)
-		{
-			node->expanded = value;
-			return *this;
-		}
+	MakeUnary& MakeUnary::expanded(const vl::Ptr<Expr>& value)
+	{
+		node->expanded = value;
+		return *this;
 	}
 }

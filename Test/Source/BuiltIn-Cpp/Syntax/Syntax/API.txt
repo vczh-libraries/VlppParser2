@@ -4,7 +4,7 @@ switch allow_GT;
 // Type
 //////////////////////////////////////////////////////////////////
 
-_Type
+@parser _Type
   ::= !_TypeBeforeDeclarator
   ::= _TypeBeforeDeclarator:type _DeclaratorWithoutName:declarator as DeclaratorType
   ::= _DeclaratorKeyword:keywords {_DeclaratorKeyword:keywords} _TypeBeforeDeclarator:type [_DeclaratorWithoutName:declarator] as DeclaratorType
@@ -15,7 +15,7 @@ _Type
 //////////////////////////////////////////////////////////////////
 
 _Expr_NoComma            ::= !( allow_GT; !_Expr_NoComma_Raw);
-_Expr                    ::= !( allow_GT; !_Expr_Raw);
+@parser _Expr            ::= !( allow_GT; !_Expr_Raw);
 
 _Expr_Argument
   ::= !_Expr_NoComma
@@ -37,12 +37,12 @@ _TypeOrExpr_Raw
   ;
 
 _TypeOrExpr_NoComma_NoGT ::= !(!allow_GT; !_TypeOrExpr_NoComma_Raw);
-_TypeOrExpr              ::= !( allow_GT; !_TypeOrExpr_Raw);
+@parser _TypeOrExpr      ::= !( allow_GT; !_TypeOrExpr_Raw);
 
 //////////////////////////////////////////////////////////////////
 // SYNTAX
 //////////////////////////////////////////////////////////////////
 
-_File
+@parser _File
   ::= ";" as File
   ;

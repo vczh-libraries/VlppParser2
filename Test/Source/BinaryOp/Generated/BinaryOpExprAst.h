@@ -59,40 +59,34 @@ namespace binaryop
 		void Accept(Expr::IVisitor* visitor) override;
 	};
 }
-namespace vl
+namespace vl::reflection::description
 {
-	namespace reflection
-	{
-		namespace description
-		{
 #ifndef VCZH_DEBUG_NO_REFLECTION
-			DECL_TYPE_INFO(binaryop::Expr)
-			DECL_TYPE_INFO(binaryop::Expr::IVisitor)
-			DECL_TYPE_INFO(binaryop::RefExpr)
-			DECL_TYPE_INFO(binaryop::BinaryOp)
-			DECL_TYPE_INFO(binaryop::BinaryExpr)
+	DECL_TYPE_INFO(binaryop::Expr)
+	DECL_TYPE_INFO(binaryop::Expr::IVisitor)
+	DECL_TYPE_INFO(binaryop::RefExpr)
+	DECL_TYPE_INFO(binaryop::BinaryOp)
+	DECL_TYPE_INFO(binaryop::BinaryExpr)
 
 #ifdef VCZH_DESCRIPTABLEOBJECT_WITH_METADATA
 
-			BEGIN_INTERFACE_PROXY_NOPARENT_SHAREDPTR(binaryop::Expr::IVisitor)
-				void Visit(binaryop::RefExpr* node) override
-				{
-					INVOKE_INTERFACE_PROXY(Visit, node);
-				}
-
-				void Visit(binaryop::BinaryExpr* node) override
-				{
-					INVOKE_INTERFACE_PROXY(Visit, node);
-				}
-
-			END_INTERFACE_PROXY(binaryop::Expr::IVisitor)
-
-#endif
-#endif
-			/// <summary>Load all reflectable AST types, only available when <b>VCZH_DEBUG_NO_REFLECTION</b> is off.</summary>
-			/// <returns>Returns true if this operation succeeded.</returns>
-			extern bool BinaryOpExprAstLoadTypes();
+	BEGIN_INTERFACE_PROXY_NOPARENT_SHAREDPTR(binaryop::Expr::IVisitor)
+		void Visit(binaryop::RefExpr* node) override
+		{
+			INVOKE_INTERFACE_PROXY(Visit, node);
 		}
-	}
+
+		void Visit(binaryop::BinaryExpr* node) override
+		{
+			INVOKE_INTERFACE_PROXY(Visit, node);
+		}
+
+	END_INTERFACE_PROXY(binaryop::Expr::IVisitor)
+
+#endif
+#endif
+	/// <summary>Load all reflectable AST types, only available when <b>VCZH_DEBUG_NO_REFLECTION</b> is off.</summary>
+	/// <returns>Returns true if this operation succeeded.</returns>
+	extern bool BinaryOpExprAstLoadTypes();
 }
 #endif

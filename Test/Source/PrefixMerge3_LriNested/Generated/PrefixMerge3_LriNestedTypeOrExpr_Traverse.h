@@ -9,61 +9,58 @@ Licensed under https://github.com/vczh-libraries/License
 
 #include "PrefixMerge3_LriNestedTypeOrExpr.h"
 
-namespace prefixmerge3_lrinested
+namespace prefixmerge3_lrinested::traverse_visitor
 {
-	namespace traverse_visitor
+	/// <summary>A traverse visitor, overriding all abstract methods with AST visiting code.</summary>
+	class TypeOrExprVisitor
+		: public vl::Object
+		, protected virtual TypeOrExpr::IVisitor
+		, protected virtual QualifiedName::IVisitor
 	{
-		/// <summary>A traverse visitor, overriding all abstract methods with AST visiting code.</summary>
-		class TypeOrExprVisitor
-			: public vl::Object
-			, protected virtual TypeOrExpr::IVisitor
-			, protected virtual QualifiedName::IVisitor
-		{
-		protected:
-			virtual void Traverse(vl::glr::ParsingToken& token);
-			virtual void Traverse(vl::glr::ParsingAstBase* node);
-			virtual void Traverse(CallExpr* node);
-			virtual void Traverse(ConstType* node);
-			virtual void Traverse(CtorExpr* node);
-			virtual void Traverse(FunctionType* node);
-			virtual void Traverse(MemberName* node);
-			virtual void Traverse(MulExpr* node);
-			virtual void Traverse(Name* node);
-			virtual void Traverse(PointerType* node);
-			virtual void Traverse(QualifiedName* node);
-			virtual void Traverse(TypeOrExpr* node);
-			virtual void Traverse(TypeOrExprToResolve* node);
+	protected:
+		virtual void Traverse(vl::glr::ParsingToken& token);
+		virtual void Traverse(vl::glr::ParsingAstBase* node);
+		virtual void Traverse(CallExpr* node);
+		virtual void Traverse(ConstType* node);
+		virtual void Traverse(CtorExpr* node);
+		virtual void Traverse(FunctionType* node);
+		virtual void Traverse(MemberName* node);
+		virtual void Traverse(MulExpr* node);
+		virtual void Traverse(Name* node);
+		virtual void Traverse(PointerType* node);
+		virtual void Traverse(QualifiedName* node);
+		virtual void Traverse(TypeOrExpr* node);
+		virtual void Traverse(TypeOrExprToResolve* node);
 
-		protected:
-			virtual void Finishing(vl::glr::ParsingAstBase* node);
-			virtual void Finishing(CallExpr* node);
-			virtual void Finishing(ConstType* node);
-			virtual void Finishing(CtorExpr* node);
-			virtual void Finishing(FunctionType* node);
-			virtual void Finishing(MemberName* node);
-			virtual void Finishing(MulExpr* node);
-			virtual void Finishing(Name* node);
-			virtual void Finishing(PointerType* node);
-			virtual void Finishing(QualifiedName* node);
-			virtual void Finishing(TypeOrExpr* node);
-			virtual void Finishing(TypeOrExprToResolve* node);
+	protected:
+		virtual void Finishing(vl::glr::ParsingAstBase* node);
+		virtual void Finishing(CallExpr* node);
+		virtual void Finishing(ConstType* node);
+		virtual void Finishing(CtorExpr* node);
+		virtual void Finishing(FunctionType* node);
+		virtual void Finishing(MemberName* node);
+		virtual void Finishing(MulExpr* node);
+		virtual void Finishing(Name* node);
+		virtual void Finishing(PointerType* node);
+		virtual void Finishing(QualifiedName* node);
+		virtual void Finishing(TypeOrExpr* node);
+		virtual void Finishing(TypeOrExprToResolve* node);
 
-		protected:
-			void Visit(TypeOrExprToResolve* node) override;
-			void Visit(QualifiedName* node) override;
-			void Visit(CallExpr* node) override;
-			void Visit(CtorExpr* node) override;
-			void Visit(MulExpr* node) override;
-			void Visit(ConstType* node) override;
-			void Visit(PointerType* node) override;
-			void Visit(FunctionType* node) override;
+	protected:
+		void Visit(TypeOrExprToResolve* node) override;
+		void Visit(QualifiedName* node) override;
+		void Visit(CallExpr* node) override;
+		void Visit(CtorExpr* node) override;
+		void Visit(MulExpr* node) override;
+		void Visit(ConstType* node) override;
+		void Visit(PointerType* node) override;
+		void Visit(FunctionType* node) override;
 
-			void Visit(Name* node) override;
-			void Visit(MemberName* node) override;
+		void Visit(Name* node) override;
+		void Visit(MemberName* node) override;
 
-		public:
-			void InspectInto(TypeOrExpr* node);
-		};
-	}
+	public:
+		void InspectInto(TypeOrExpr* node);
+	};
 }
 #endif

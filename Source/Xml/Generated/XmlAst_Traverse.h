@@ -9,56 +9,47 @@ Licensed under https://github.com/vczh-libraries/License
 
 #include "XmlAst.h"
 
-namespace vl
+namespace vl::glr::xml::traverse_visitor
 {
-	namespace glr
+	/// <summary>A traverse visitor, overriding all abstract methods with AST visiting code.</summary>
+	class AstVisitor
+		: public vl::Object
+		, protected virtual XmlNode::IVisitor
 	{
-		namespace xml
-		{
-			namespace traverse_visitor
-			{
-				/// <summary>A traverse visitor, overriding all abstract methods with AST visiting code.</summary>
-				class AstVisitor
-					: public vl::Object
-					, protected virtual XmlNode::IVisitor
-				{
-				protected:
-					virtual void Traverse(vl::glr::ParsingToken& token);
-					virtual void Traverse(vl::glr::ParsingAstBase* node);
-					virtual void Traverse(XmlAttribute* node);
-					virtual void Traverse(XmlCData* node);
-					virtual void Traverse(XmlComment* node);
-					virtual void Traverse(XmlDocument* node);
-					virtual void Traverse(XmlElement* node);
-					virtual void Traverse(XmlInstruction* node);
-					virtual void Traverse(XmlNode* node);
-					virtual void Traverse(XmlText* node);
+	protected:
+		virtual void Traverse(vl::glr::ParsingToken& token);
+		virtual void Traverse(vl::glr::ParsingAstBase* node);
+		virtual void Traverse(XmlAttribute* node);
+		virtual void Traverse(XmlCData* node);
+		virtual void Traverse(XmlComment* node);
+		virtual void Traverse(XmlDocument* node);
+		virtual void Traverse(XmlElement* node);
+		virtual void Traverse(XmlInstruction* node);
+		virtual void Traverse(XmlNode* node);
+		virtual void Traverse(XmlText* node);
 
-				protected:
-					virtual void Finishing(vl::glr::ParsingAstBase* node);
-					virtual void Finishing(XmlAttribute* node);
-					virtual void Finishing(XmlCData* node);
-					virtual void Finishing(XmlComment* node);
-					virtual void Finishing(XmlDocument* node);
-					virtual void Finishing(XmlElement* node);
-					virtual void Finishing(XmlInstruction* node);
-					virtual void Finishing(XmlNode* node);
-					virtual void Finishing(XmlText* node);
+	protected:
+		virtual void Finishing(vl::glr::ParsingAstBase* node);
+		virtual void Finishing(XmlAttribute* node);
+		virtual void Finishing(XmlCData* node);
+		virtual void Finishing(XmlComment* node);
+		virtual void Finishing(XmlDocument* node);
+		virtual void Finishing(XmlElement* node);
+		virtual void Finishing(XmlInstruction* node);
+		virtual void Finishing(XmlNode* node);
+		virtual void Finishing(XmlText* node);
 
-				protected:
-					void Visit(XmlText* node) override;
-					void Visit(XmlCData* node) override;
-					void Visit(XmlComment* node) override;
-					void Visit(XmlElement* node) override;
-					void Visit(XmlInstruction* node) override;
-					void Visit(XmlDocument* node) override;
+	protected:
+		void Visit(XmlText* node) override;
+		void Visit(XmlCData* node) override;
+		void Visit(XmlComment* node) override;
+		void Visit(XmlElement* node) override;
+		void Visit(XmlInstruction* node) override;
+		void Visit(XmlDocument* node) override;
 
-				public:
-					void InspectInto(XmlNode* node);
-					void InspectInto(XmlAttribute* node);
-				};
-			}
-		}
-	}
+	public:
+		void InspectInto(XmlNode* node);
+		void InspectInto(XmlAttribute* node);
+	};
 }
 #endif

@@ -6,1294 +6,1288 @@ Licensed under https://github.com/vczh-libraries/License
 
 #include "Workflow_Assembler.h"
 
-namespace vl
+namespace vl::glr::workflow
 {
-	namespace glr
-	{
-		namespace workflow
-		{
 
 /***********************************************************************
 WorkflowAstInsReceiver : public vl::glr::AstInsReceiverBase
 ***********************************************************************/
 
-			vl::Ptr<vl::glr::ParsingAstBase> WorkflowAstInsReceiver::CreateAstNode(vl::vint32_t type)
-			{
-				auto cppTypeName = WorkflowCppTypeName((WorkflowClasses)type);
-				switch((WorkflowClasses)type)
-				{
-				case WorkflowClasses::AttachEventExpression:
-					return vl::Ptr(new vl::glr::workflow::WfAttachEventExpression);
-				case WorkflowClasses::Attribute:
-					return vl::Ptr(new vl::glr::workflow::WfAttribute);
-				case WorkflowClasses::AutoPropertyDeclaration:
-					return vl::Ptr(new vl::glr::workflow::WfAutoPropertyDeclaration);
-				case WorkflowClasses::BaseConstructorCall:
-					return vl::Ptr(new vl::glr::workflow::WfBaseConstructorCall);
-				case WorkflowClasses::BinaryExpression:
-					return vl::Ptr(new vl::glr::workflow::WfBinaryExpression);
-				case WorkflowClasses::BindExpression:
-					return vl::Ptr(new vl::glr::workflow::WfBindExpression);
-				case WorkflowClasses::BlockStatement:
-					return vl::Ptr(new vl::glr::workflow::WfBlockStatement);
-				case WorkflowClasses::BreakStatement:
-					return vl::Ptr(new vl::glr::workflow::WfBreakStatement);
-				case WorkflowClasses::CallExpression:
-					return vl::Ptr(new vl::glr::workflow::WfCallExpression);
-				case WorkflowClasses::CastResultInterfaceDeclaration:
-					return vl::Ptr(new vl::glr::workflow::WfCastResultInterfaceDeclaration);
-				case WorkflowClasses::ChildExpression:
-					return vl::Ptr(new vl::glr::workflow::WfChildExpression);
-				case WorkflowClasses::ChildType:
-					return vl::Ptr(new vl::glr::workflow::WfChildType);
-				case WorkflowClasses::ClassDeclaration:
-					return vl::Ptr(new vl::glr::workflow::WfClassDeclaration);
-				case WorkflowClasses::CoOperatorExpression:
-					return vl::Ptr(new vl::glr::workflow::WfCoOperatorExpression);
-				case WorkflowClasses::CoOperatorStatement:
-					return vl::Ptr(new vl::glr::workflow::WfCoOperatorStatement);
-				case WorkflowClasses::CoPauseStatement:
-					return vl::Ptr(new vl::glr::workflow::WfCoPauseStatement);
-				case WorkflowClasses::CoProviderStatement:
-					return vl::Ptr(new vl::glr::workflow::WfCoProviderStatement);
-				case WorkflowClasses::ConstructorArgument:
-					return vl::Ptr(new vl::glr::workflow::WfConstructorArgument);
-				case WorkflowClasses::ConstructorDeclaration:
-					return vl::Ptr(new vl::glr::workflow::WfConstructorDeclaration);
-				case WorkflowClasses::ConstructorExpression:
-					return vl::Ptr(new vl::glr::workflow::WfConstructorExpression);
-				case WorkflowClasses::ContinueStatement:
-					return vl::Ptr(new vl::glr::workflow::WfContinueStatement);
-				case WorkflowClasses::DeleteStatement:
-					return vl::Ptr(new vl::glr::workflow::WfDeleteStatement);
-				case WorkflowClasses::DestructorDeclaration:
-					return vl::Ptr(new vl::glr::workflow::WfDestructorDeclaration);
-				case WorkflowClasses::DetachEventExpression:
-					return vl::Ptr(new vl::glr::workflow::WfDetachEventExpression);
-				case WorkflowClasses::EnumDeclaration:
-					return vl::Ptr(new vl::glr::workflow::WfEnumDeclaration);
-				case WorkflowClasses::EnumItem:
-					return vl::Ptr(new vl::glr::workflow::WfEnumItem);
-				case WorkflowClasses::EnumItemIntersection:
-					return vl::Ptr(new vl::glr::workflow::WfEnumItemIntersection);
-				case WorkflowClasses::EnumerableType:
-					return vl::Ptr(new vl::glr::workflow::WfEnumerableType);
-				case WorkflowClasses::EventDeclaration:
-					return vl::Ptr(new vl::glr::workflow::WfEventDeclaration);
-				case WorkflowClasses::ExpectedTypeCastExpression:
-					return vl::Ptr(new vl::glr::workflow::WfExpectedTypeCastExpression);
-				case WorkflowClasses::ExpressionStatement:
-					return vl::Ptr(new vl::glr::workflow::WfExpressionStatement);
-				case WorkflowClasses::FloatingExpression:
-					return vl::Ptr(new vl::glr::workflow::WfFloatingExpression);
-				case WorkflowClasses::ForEachStatement:
-					return vl::Ptr(new vl::glr::workflow::WfForEachStatement);
-				case WorkflowClasses::FormatExpression:
-					return vl::Ptr(new vl::glr::workflow::WfFormatExpression);
-				case WorkflowClasses::FunctionArgument:
-					return vl::Ptr(new vl::glr::workflow::WfFunctionArgument);
-				case WorkflowClasses::FunctionDeclaration:
-					return vl::Ptr(new vl::glr::workflow::WfFunctionDeclaration);
-				case WorkflowClasses::FunctionExpression:
-					return vl::Ptr(new vl::glr::workflow::WfFunctionExpression);
-				case WorkflowClasses::FunctionType:
-					return vl::Ptr(new vl::glr::workflow::WfFunctionType);
-				case WorkflowClasses::GotoStatement:
-					return vl::Ptr(new vl::glr::workflow::WfGotoStatement);
-				case WorkflowClasses::IfExpression:
-					return vl::Ptr(new vl::glr::workflow::WfIfExpression);
-				case WorkflowClasses::IfStatement:
-					return vl::Ptr(new vl::glr::workflow::WfIfStatement);
-				case WorkflowClasses::InferExpression:
-					return vl::Ptr(new vl::glr::workflow::WfInferExpression);
-				case WorkflowClasses::IntegerExpression:
-					return vl::Ptr(new vl::glr::workflow::WfIntegerExpression);
-				case WorkflowClasses::LetExpression:
-					return vl::Ptr(new vl::glr::workflow::WfLetExpression);
-				case WorkflowClasses::LetVariable:
-					return vl::Ptr(new vl::glr::workflow::WfLetVariable);
-				case WorkflowClasses::LiteralExpression:
-					return vl::Ptr(new vl::glr::workflow::WfLiteralExpression);
-				case WorkflowClasses::MapType:
-					return vl::Ptr(new vl::glr::workflow::WfMapType);
-				case WorkflowClasses::MemberExpression:
-					return vl::Ptr(new vl::glr::workflow::WfMemberExpression);
-				case WorkflowClasses::MixinCastExpression:
-					return vl::Ptr(new vl::glr::workflow::WfMixinCastExpression);
-				case WorkflowClasses::Module:
-					return vl::Ptr(new vl::glr::workflow::WfModule);
-				case WorkflowClasses::ModuleUsingItem:
-					return vl::Ptr(new vl::glr::workflow::WfModuleUsingItem);
-				case WorkflowClasses::ModuleUsingNameFragment:
-					return vl::Ptr(new vl::glr::workflow::WfModuleUsingNameFragment);
-				case WorkflowClasses::ModuleUsingPath:
-					return vl::Ptr(new vl::glr::workflow::WfModuleUsingPath);
-				case WorkflowClasses::ModuleUsingWildCardFragment:
-					return vl::Ptr(new vl::glr::workflow::WfModuleUsingWildCardFragment);
-				case WorkflowClasses::NamespaceDeclaration:
-					return vl::Ptr(new vl::glr::workflow::WfNamespaceDeclaration);
-				case WorkflowClasses::NewClassExpression:
-					return vl::Ptr(new vl::glr::workflow::WfNewClassExpression);
-				case WorkflowClasses::NewCoroutineExpression:
-					return vl::Ptr(new vl::glr::workflow::WfNewCoroutineExpression);
-				case WorkflowClasses::NewInterfaceExpression:
-					return vl::Ptr(new vl::glr::workflow::WfNewInterfaceExpression);
-				case WorkflowClasses::NullableType:
-					return vl::Ptr(new vl::glr::workflow::WfNullableType);
-				case WorkflowClasses::ObservableListType:
-					return vl::Ptr(new vl::glr::workflow::WfObservableListType);
-				case WorkflowClasses::ObserveExpression:
-					return vl::Ptr(new vl::glr::workflow::WfObserveExpression);
-				case WorkflowClasses::OrderedLambdaExpression:
-					return vl::Ptr(new vl::glr::workflow::WfOrderedLambdaExpression);
-				case WorkflowClasses::OrderedNameExpression:
-					return vl::Ptr(new vl::glr::workflow::WfOrderedNameExpression);
-				case WorkflowClasses::PredefinedType:
-					return vl::Ptr(new vl::glr::workflow::WfPredefinedType);
-				case WorkflowClasses::PropertyDeclaration:
-					return vl::Ptr(new vl::glr::workflow::WfPropertyDeclaration);
-				case WorkflowClasses::RaiseExceptionStatement:
-					return vl::Ptr(new vl::glr::workflow::WfRaiseExceptionStatement);
-				case WorkflowClasses::RangeExpression:
-					return vl::Ptr(new vl::glr::workflow::WfRangeExpression);
-				case WorkflowClasses::RawPointerType:
-					return vl::Ptr(new vl::glr::workflow::WfRawPointerType);
-				case WorkflowClasses::ReferenceExpression:
-					return vl::Ptr(new vl::glr::workflow::WfReferenceExpression);
-				case WorkflowClasses::ReferenceType:
-					return vl::Ptr(new vl::glr::workflow::WfReferenceType);
-				case WorkflowClasses::ReturnStatement:
-					return vl::Ptr(new vl::glr::workflow::WfReturnStatement);
-				case WorkflowClasses::SetTestingExpression:
-					return vl::Ptr(new vl::glr::workflow::WfSetTestingExpression);
-				case WorkflowClasses::SharedPointerType:
-					return vl::Ptr(new vl::glr::workflow::WfSharedPointerType);
-				case WorkflowClasses::StateDeclaration:
-					return vl::Ptr(new vl::glr::workflow::WfStateDeclaration);
-				case WorkflowClasses::StateInput:
-					return vl::Ptr(new vl::glr::workflow::WfStateInput);
-				case WorkflowClasses::StateInvokeStatement:
-					return vl::Ptr(new vl::glr::workflow::WfStateInvokeStatement);
-				case WorkflowClasses::StateMachineDeclaration:
-					return vl::Ptr(new vl::glr::workflow::WfStateMachineDeclaration);
-				case WorkflowClasses::StateSwitchArgument:
-					return vl::Ptr(new vl::glr::workflow::WfStateSwitchArgument);
-				case WorkflowClasses::StateSwitchCase:
-					return vl::Ptr(new vl::glr::workflow::WfStateSwitchCase);
-				case WorkflowClasses::StateSwitchStatement:
-					return vl::Ptr(new vl::glr::workflow::WfStateSwitchStatement);
-				case WorkflowClasses::StringExpression:
-					return vl::Ptr(new vl::glr::workflow::WfStringExpression);
-				case WorkflowClasses::StructDeclaration:
-					return vl::Ptr(new vl::glr::workflow::WfStructDeclaration);
-				case WorkflowClasses::StructMember:
-					return vl::Ptr(new vl::glr::workflow::WfStructMember);
-				case WorkflowClasses::SwitchCase:
-					return vl::Ptr(new vl::glr::workflow::WfSwitchCase);
-				case WorkflowClasses::SwitchStatement:
-					return vl::Ptr(new vl::glr::workflow::WfSwitchStatement);
-				case WorkflowClasses::ThisExpression:
-					return vl::Ptr(new vl::glr::workflow::WfThisExpression);
-				case WorkflowClasses::TopQualifiedExpression:
-					return vl::Ptr(new vl::glr::workflow::WfTopQualifiedExpression);
-				case WorkflowClasses::TopQualifiedType:
-					return vl::Ptr(new vl::glr::workflow::WfTopQualifiedType);
-				case WorkflowClasses::TryStatement:
-					return vl::Ptr(new vl::glr::workflow::WfTryStatement);
-				case WorkflowClasses::TypeCastingExpression:
-					return vl::Ptr(new vl::glr::workflow::WfTypeCastingExpression);
-				case WorkflowClasses::TypeOfExpressionExpression:
-					return vl::Ptr(new vl::glr::workflow::WfTypeOfExpressionExpression);
-				case WorkflowClasses::TypeOfTypeExpression:
-					return vl::Ptr(new vl::glr::workflow::WfTypeOfTypeExpression);
-				case WorkflowClasses::TypeTestingExpression:
-					return vl::Ptr(new vl::glr::workflow::WfTypeTestingExpression);
-				case WorkflowClasses::UnaryExpression:
-					return vl::Ptr(new vl::glr::workflow::WfUnaryExpression);
-				case WorkflowClasses::VariableDeclaration:
-					return vl::Ptr(new vl::glr::workflow::WfVariableDeclaration);
-				case WorkflowClasses::VariableStatement:
-					return vl::Ptr(new vl::glr::workflow::WfVariableStatement);
-				case WorkflowClasses::WhileStatement:
-					return vl::Ptr(new vl::glr::workflow::WfWhileStatement);
-				default:
-					return vl::glr::AssemblyThrowCannotCreateAbstractType(type, cppTypeName);
-				}
-			}
-
-			void WorkflowAstInsReceiver::SetField(vl::glr::ParsingAstBase* object, vl::vint32_t field, vl::Ptr<vl::glr::ParsingAstBase> value)
-			{
-				auto cppFieldName = WorkflowCppFieldName((WorkflowFields)field);
-				switch((WorkflowFields)field)
-				{
-				case WorkflowFields::AttachEventExpression_event:
-					return vl::glr::AssemblerSetObjectField(&vl::glr::workflow::WfAttachEventExpression::event, object, field, value, cppFieldName);
-				case WorkflowFields::AttachEventExpression_function:
-					return vl::glr::AssemblerSetObjectField(&vl::glr::workflow::WfAttachEventExpression::function, object, field, value, cppFieldName);
-				case WorkflowFields::Attribute_value:
-					return vl::glr::AssemblerSetObjectField(&vl::glr::workflow::WfAttribute::value, object, field, value, cppFieldName);
-				case WorkflowFields::AutoPropertyDeclaration_expression:
-					return vl::glr::AssemblerSetObjectField(&vl::glr::workflow::WfAutoPropertyDeclaration::expression, object, field, value, cppFieldName);
-				case WorkflowFields::AutoPropertyDeclaration_type:
-					return vl::glr::AssemblerSetObjectField(&vl::glr::workflow::WfAutoPropertyDeclaration::type, object, field, value, cppFieldName);
-				case WorkflowFields::BaseConstructorCall_arguments:
-					return vl::glr::AssemblerSetObjectField(&vl::glr::workflow::WfBaseConstructorCall::arguments, object, field, value, cppFieldName);
-				case WorkflowFields::BaseConstructorCall_type:
-					return vl::glr::AssemblerSetObjectField(&vl::glr::workflow::WfBaseConstructorCall::type, object, field, value, cppFieldName);
-				case WorkflowFields::BinaryExpression_first:
-					return vl::glr::AssemblerSetObjectField(&vl::glr::workflow::WfBinaryExpression::first, object, field, value, cppFieldName);
-				case WorkflowFields::BinaryExpression_second:
-					return vl::glr::AssemblerSetObjectField(&vl::glr::workflow::WfBinaryExpression::second, object, field, value, cppFieldName);
-				case WorkflowFields::BindExpression_expression:
-					return vl::glr::AssemblerSetObjectField(&vl::glr::workflow::WfBindExpression::expression, object, field, value, cppFieldName);
-				case WorkflowFields::BlockStatement_statements:
-					return vl::glr::AssemblerSetObjectField(&vl::glr::workflow::WfBlockStatement::statements, object, field, value, cppFieldName);
-				case WorkflowFields::CallExpression_arguments:
-					return vl::glr::AssemblerSetObjectField(&vl::glr::workflow::WfCallExpression::arguments, object, field, value, cppFieldName);
-				case WorkflowFields::CallExpression_function:
-					return vl::glr::AssemblerSetObjectField(&vl::glr::workflow::WfCallExpression::function, object, field, value, cppFieldName);
-				case WorkflowFields::CastResultInterfaceDeclaration_baseType:
-					return vl::glr::AssemblerSetObjectField(&vl::glr::workflow::WfCastResultInterfaceDeclaration::baseType, object, field, value, cppFieldName);
-				case WorkflowFields::CastResultInterfaceDeclaration_elementType:
-					return vl::glr::AssemblerSetObjectField(&vl::glr::workflow::WfCastResultInterfaceDeclaration::elementType, object, field, value, cppFieldName);
-				case WorkflowFields::ChildExpression_parent:
-					return vl::glr::AssemblerSetObjectField(&vl::glr::workflow::WfChildExpression::parent, object, field, value, cppFieldName);
-				case WorkflowFields::ChildType_parent:
-					return vl::glr::AssemblerSetObjectField(&vl::glr::workflow::WfChildType::parent, object, field, value, cppFieldName);
-				case WorkflowFields::ClassDeclaration_baseTypes:
-					return vl::glr::AssemblerSetObjectField(&vl::glr::workflow::WfClassDeclaration::baseTypes, object, field, value, cppFieldName);
-				case WorkflowFields::ClassDeclaration_declarations:
-					return vl::glr::AssemblerSetObjectField(&vl::glr::workflow::WfClassDeclaration::declarations, object, field, value, cppFieldName);
-				case WorkflowFields::CoOperatorStatement_arguments:
-					return vl::glr::AssemblerSetObjectField(&vl::glr::workflow::WfCoOperatorStatement::arguments, object, field, value, cppFieldName);
-				case WorkflowFields::CoPauseStatement_statement:
-					return vl::glr::AssemblerSetObjectField(&vl::glr::workflow::WfCoPauseStatement::statement, object, field, value, cppFieldName);
-				case WorkflowFields::CoProviderStatement_statement:
-					return vl::glr::AssemblerSetObjectField(&vl::glr::workflow::WfCoProviderStatement::statement, object, field, value, cppFieldName);
-				case WorkflowFields::ConstructorArgument_key:
-					return vl::glr::AssemblerSetObjectField(&vl::glr::workflow::WfConstructorArgument::key, object, field, value, cppFieldName);
-				case WorkflowFields::ConstructorArgument_value:
-					return vl::glr::AssemblerSetObjectField(&vl::glr::workflow::WfConstructorArgument::value, object, field, value, cppFieldName);
-				case WorkflowFields::ConstructorDeclaration_arguments:
-					return vl::glr::AssemblerSetObjectField(&vl::glr::workflow::WfConstructorDeclaration::arguments, object, field, value, cppFieldName);
-				case WorkflowFields::ConstructorDeclaration_baseConstructorCalls:
-					return vl::glr::AssemblerSetObjectField(&vl::glr::workflow::WfConstructorDeclaration::baseConstructorCalls, object, field, value, cppFieldName);
-				case WorkflowFields::ConstructorDeclaration_statement:
-					return vl::glr::AssemblerSetObjectField(&vl::glr::workflow::WfConstructorDeclaration::statement, object, field, value, cppFieldName);
-				case WorkflowFields::ConstructorExpression_arguments:
-					return vl::glr::AssemblerSetObjectField(&vl::glr::workflow::WfConstructorExpression::arguments, object, field, value, cppFieldName);
-				case WorkflowFields::Declaration_attributes:
-					return vl::glr::AssemblerSetObjectField(&vl::glr::workflow::WfDeclaration::attributes, object, field, value, cppFieldName);
-				case WorkflowFields::DeleteStatement_expression:
-					return vl::glr::AssemblerSetObjectField(&vl::glr::workflow::WfDeleteStatement::expression, object, field, value, cppFieldName);
-				case WorkflowFields::DestructorDeclaration_statement:
-					return vl::glr::AssemblerSetObjectField(&vl::glr::workflow::WfDestructorDeclaration::statement, object, field, value, cppFieldName);
-				case WorkflowFields::DetachEventExpression_event:
-					return vl::glr::AssemblerSetObjectField(&vl::glr::workflow::WfDetachEventExpression::event, object, field, value, cppFieldName);
-				case WorkflowFields::DetachEventExpression_handler:
-					return vl::glr::AssemblerSetObjectField(&vl::glr::workflow::WfDetachEventExpression::handler, object, field, value, cppFieldName);
-				case WorkflowFields::EnumDeclaration_items:
-					return vl::glr::AssemblerSetObjectField(&vl::glr::workflow::WfEnumDeclaration::items, object, field, value, cppFieldName);
-				case WorkflowFields::EnumItem_attributes:
-					return vl::glr::AssemblerSetObjectField(&vl::glr::workflow::WfEnumItem::attributes, object, field, value, cppFieldName);
-				case WorkflowFields::EnumItem_intersections:
-					return vl::glr::AssemblerSetObjectField(&vl::glr::workflow::WfEnumItem::intersections, object, field, value, cppFieldName);
-				case WorkflowFields::EnumerableType_element:
-					return vl::glr::AssemblerSetObjectField(&vl::glr::workflow::WfEnumerableType::element, object, field, value, cppFieldName);
-				case WorkflowFields::EventDeclaration_arguments:
-					return vl::glr::AssemblerSetObjectField(&vl::glr::workflow::WfEventDeclaration::arguments, object, field, value, cppFieldName);
-				case WorkflowFields::ExpectedTypeCastExpression_expression:
-					return vl::glr::AssemblerSetObjectField(&vl::glr::workflow::WfExpectedTypeCastExpression::expression, object, field, value, cppFieldName);
-				case WorkflowFields::ExpressionStatement_expression:
-					return vl::glr::AssemblerSetObjectField(&vl::glr::workflow::WfExpressionStatement::expression, object, field, value, cppFieldName);
-				case WorkflowFields::ForEachStatement_collection:
-					return vl::glr::AssemblerSetObjectField(&vl::glr::workflow::WfForEachStatement::collection, object, field, value, cppFieldName);
-				case WorkflowFields::ForEachStatement_statement:
-					return vl::glr::AssemblerSetObjectField(&vl::glr::workflow::WfForEachStatement::statement, object, field, value, cppFieldName);
-				case WorkflowFields::FunctionArgument_attributes:
-					return vl::glr::AssemblerSetObjectField(&vl::glr::workflow::WfFunctionArgument::attributes, object, field, value, cppFieldName);
-				case WorkflowFields::FunctionArgument_type:
-					return vl::glr::AssemblerSetObjectField(&vl::glr::workflow::WfFunctionArgument::type, object, field, value, cppFieldName);
-				case WorkflowFields::FunctionDeclaration_arguments:
-					return vl::glr::AssemblerSetObjectField(&vl::glr::workflow::WfFunctionDeclaration::arguments, object, field, value, cppFieldName);
-				case WorkflowFields::FunctionDeclaration_returnType:
-					return vl::glr::AssemblerSetObjectField(&vl::glr::workflow::WfFunctionDeclaration::returnType, object, field, value, cppFieldName);
-				case WorkflowFields::FunctionDeclaration_statement:
-					return vl::glr::AssemblerSetObjectField(&vl::glr::workflow::WfFunctionDeclaration::statement, object, field, value, cppFieldName);
-				case WorkflowFields::FunctionExpression_function:
-					return vl::glr::AssemblerSetObjectField(&vl::glr::workflow::WfFunctionExpression::function, object, field, value, cppFieldName);
-				case WorkflowFields::FunctionType_arguments:
-					return vl::glr::AssemblerSetObjectField(&vl::glr::workflow::WfFunctionType::arguments, object, field, value, cppFieldName);
-				case WorkflowFields::FunctionType_result:
-					return vl::glr::AssemblerSetObjectField(&vl::glr::workflow::WfFunctionType::result, object, field, value, cppFieldName);
-				case WorkflowFields::IfExpression_condition:
-					return vl::glr::AssemblerSetObjectField(&vl::glr::workflow::WfIfExpression::condition, object, field, value, cppFieldName);
-				case WorkflowFields::IfExpression_falseBranch:
-					return vl::glr::AssemblerSetObjectField(&vl::glr::workflow::WfIfExpression::falseBranch, object, field, value, cppFieldName);
-				case WorkflowFields::IfExpression_trueBranch:
-					return vl::glr::AssemblerSetObjectField(&vl::glr::workflow::WfIfExpression::trueBranch, object, field, value, cppFieldName);
-				case WorkflowFields::IfStatement_expression:
-					return vl::glr::AssemblerSetObjectField(&vl::glr::workflow::WfIfStatement::expression, object, field, value, cppFieldName);
-				case WorkflowFields::IfStatement_falseBranch:
-					return vl::glr::AssemblerSetObjectField(&vl::glr::workflow::WfIfStatement::falseBranch, object, field, value, cppFieldName);
-				case WorkflowFields::IfStatement_trueBranch:
-					return vl::glr::AssemblerSetObjectField(&vl::glr::workflow::WfIfStatement::trueBranch, object, field, value, cppFieldName);
-				case WorkflowFields::IfStatement_type:
-					return vl::glr::AssemblerSetObjectField(&vl::glr::workflow::WfIfStatement::type, object, field, value, cppFieldName);
-				case WorkflowFields::InferExpression_expression:
-					return vl::glr::AssemblerSetObjectField(&vl::glr::workflow::WfInferExpression::expression, object, field, value, cppFieldName);
-				case WorkflowFields::InferExpression_type:
-					return vl::glr::AssemblerSetObjectField(&vl::glr::workflow::WfInferExpression::type, object, field, value, cppFieldName);
-				case WorkflowFields::LetExpression_expression:
-					return vl::glr::AssemblerSetObjectField(&vl::glr::workflow::WfLetExpression::expression, object, field, value, cppFieldName);
-				case WorkflowFields::LetExpression_variables:
-					return vl::glr::AssemblerSetObjectField(&vl::glr::workflow::WfLetExpression::variables, object, field, value, cppFieldName);
-				case WorkflowFields::LetVariable_value:
-					return vl::glr::AssemblerSetObjectField(&vl::glr::workflow::WfLetVariable::value, object, field, value, cppFieldName);
-				case WorkflowFields::MapType_key:
-					return vl::glr::AssemblerSetObjectField(&vl::glr::workflow::WfMapType::key, object, field, value, cppFieldName);
-				case WorkflowFields::MapType_value:
-					return vl::glr::AssemblerSetObjectField(&vl::glr::workflow::WfMapType::value, object, field, value, cppFieldName);
-				case WorkflowFields::MemberExpression_parent:
-					return vl::glr::AssemblerSetObjectField(&vl::glr::workflow::WfMemberExpression::parent, object, field, value, cppFieldName);
-				case WorkflowFields::MixinCastExpression_expression:
-					return vl::glr::AssemblerSetObjectField(&vl::glr::workflow::WfMixinCastExpression::expression, object, field, value, cppFieldName);
-				case WorkflowFields::MixinCastExpression_type:
-					return vl::glr::AssemblerSetObjectField(&vl::glr::workflow::WfMixinCastExpression::type, object, field, value, cppFieldName);
-				case WorkflowFields::Module_declarations:
-					return vl::glr::AssemblerSetObjectField(&vl::glr::workflow::WfModule::declarations, object, field, value, cppFieldName);
-				case WorkflowFields::Module_paths:
-					return vl::glr::AssemblerSetObjectField(&vl::glr::workflow::WfModule::paths, object, field, value, cppFieldName);
-				case WorkflowFields::ModuleUsingItem_fragments:
-					return vl::glr::AssemblerSetObjectField(&vl::glr::workflow::WfModuleUsingItem::fragments, object, field, value, cppFieldName);
-				case WorkflowFields::ModuleUsingPath_items:
-					return vl::glr::AssemblerSetObjectField(&vl::glr::workflow::WfModuleUsingPath::items, object, field, value, cppFieldName);
-				case WorkflowFields::NamespaceDeclaration_declarations:
-					return vl::glr::AssemblerSetObjectField(&vl::glr::workflow::WfNamespaceDeclaration::declarations, object, field, value, cppFieldName);
-				case WorkflowFields::NewClassExpression_arguments:
-					return vl::glr::AssemblerSetObjectField(&vl::glr::workflow::WfNewClassExpression::arguments, object, field, value, cppFieldName);
-				case WorkflowFields::NewClassExpression_type:
-					return vl::glr::AssemblerSetObjectField(&vl::glr::workflow::WfNewClassExpression::type, object, field, value, cppFieldName);
-				case WorkflowFields::NewCoroutineExpression_statement:
-					return vl::glr::AssemblerSetObjectField(&vl::glr::workflow::WfNewCoroutineExpression::statement, object, field, value, cppFieldName);
-				case WorkflowFields::NewInterfaceExpression_declarations:
-					return vl::glr::AssemblerSetObjectField(&vl::glr::workflow::WfNewInterfaceExpression::declarations, object, field, value, cppFieldName);
-				case WorkflowFields::NewInterfaceExpression_type:
-					return vl::glr::AssemblerSetObjectField(&vl::glr::workflow::WfNewInterfaceExpression::type, object, field, value, cppFieldName);
-				case WorkflowFields::NullableType_element:
-					return vl::glr::AssemblerSetObjectField(&vl::glr::workflow::WfNullableType::element, object, field, value, cppFieldName);
-				case WorkflowFields::ObservableListType_element:
-					return vl::glr::AssemblerSetObjectField(&vl::glr::workflow::WfObservableListType::element, object, field, value, cppFieldName);
-				case WorkflowFields::ObserveExpression_events:
-					return vl::glr::AssemblerSetObjectField(&vl::glr::workflow::WfObserveExpression::events, object, field, value, cppFieldName);
-				case WorkflowFields::ObserveExpression_expression:
-					return vl::glr::AssemblerSetObjectField(&vl::glr::workflow::WfObserveExpression::expression, object, field, value, cppFieldName);
-				case WorkflowFields::ObserveExpression_parent:
-					return vl::glr::AssemblerSetObjectField(&vl::glr::workflow::WfObserveExpression::parent, object, field, value, cppFieldName);
-				case WorkflowFields::OrderedLambdaExpression_body:
-					return vl::glr::AssemblerSetObjectField(&vl::glr::workflow::WfOrderedLambdaExpression::body, object, field, value, cppFieldName);
-				case WorkflowFields::PropertyDeclaration_type:
-					return vl::glr::AssemblerSetObjectField(&vl::glr::workflow::WfPropertyDeclaration::type, object, field, value, cppFieldName);
-				case WorkflowFields::RaiseExceptionStatement_expression:
-					return vl::glr::AssemblerSetObjectField(&vl::glr::workflow::WfRaiseExceptionStatement::expression, object, field, value, cppFieldName);
-				case WorkflowFields::RangeExpression_begin:
-					return vl::glr::AssemblerSetObjectField(&vl::glr::workflow::WfRangeExpression::begin, object, field, value, cppFieldName);
-				case WorkflowFields::RangeExpression_end:
-					return vl::glr::AssemblerSetObjectField(&vl::glr::workflow::WfRangeExpression::end, object, field, value, cppFieldName);
-				case WorkflowFields::RawPointerType_element:
-					return vl::glr::AssemblerSetObjectField(&vl::glr::workflow::WfRawPointerType::element, object, field, value, cppFieldName);
-				case WorkflowFields::ReturnStatement_expression:
-					return vl::glr::AssemblerSetObjectField(&vl::glr::workflow::WfReturnStatement::expression, object, field, value, cppFieldName);
-				case WorkflowFields::SetTestingExpression_collection:
-					return vl::glr::AssemblerSetObjectField(&vl::glr::workflow::WfSetTestingExpression::collection, object, field, value, cppFieldName);
-				case WorkflowFields::SetTestingExpression_element:
-					return vl::glr::AssemblerSetObjectField(&vl::glr::workflow::WfSetTestingExpression::element, object, field, value, cppFieldName);
-				case WorkflowFields::SharedPointerType_element:
-					return vl::glr::AssemblerSetObjectField(&vl::glr::workflow::WfSharedPointerType::element, object, field, value, cppFieldName);
-				case WorkflowFields::StateDeclaration_arguments:
-					return vl::glr::AssemblerSetObjectField(&vl::glr::workflow::WfStateDeclaration::arguments, object, field, value, cppFieldName);
-				case WorkflowFields::StateDeclaration_statement:
-					return vl::glr::AssemblerSetObjectField(&vl::glr::workflow::WfStateDeclaration::statement, object, field, value, cppFieldName);
-				case WorkflowFields::StateInput_arguments:
-					return vl::glr::AssemblerSetObjectField(&vl::glr::workflow::WfStateInput::arguments, object, field, value, cppFieldName);
-				case WorkflowFields::StateInvokeStatement_arguments:
-					return vl::glr::AssemblerSetObjectField(&vl::glr::workflow::WfStateInvokeStatement::arguments, object, field, value, cppFieldName);
-				case WorkflowFields::StateMachineDeclaration_inputs:
-					return vl::glr::AssemblerSetObjectField(&vl::glr::workflow::WfStateMachineDeclaration::inputs, object, field, value, cppFieldName);
-				case WorkflowFields::StateMachineDeclaration_states:
-					return vl::glr::AssemblerSetObjectField(&vl::glr::workflow::WfStateMachineDeclaration::states, object, field, value, cppFieldName);
-				case WorkflowFields::StateSwitchCase_arguments:
-					return vl::glr::AssemblerSetObjectField(&vl::glr::workflow::WfStateSwitchCase::arguments, object, field, value, cppFieldName);
-				case WorkflowFields::StateSwitchCase_statement:
-					return vl::glr::AssemblerSetObjectField(&vl::glr::workflow::WfStateSwitchCase::statement, object, field, value, cppFieldName);
-				case WorkflowFields::StateSwitchStatement_caseBranches:
-					return vl::glr::AssemblerSetObjectField(&vl::glr::workflow::WfStateSwitchStatement::caseBranches, object, field, value, cppFieldName);
-				case WorkflowFields::StructDeclaration_members:
-					return vl::glr::AssemblerSetObjectField(&vl::glr::workflow::WfStructDeclaration::members, object, field, value, cppFieldName);
-				case WorkflowFields::StructMember_attributes:
-					return vl::glr::AssemblerSetObjectField(&vl::glr::workflow::WfStructMember::attributes, object, field, value, cppFieldName);
-				case WorkflowFields::StructMember_type:
-					return vl::glr::AssemblerSetObjectField(&vl::glr::workflow::WfStructMember::type, object, field, value, cppFieldName);
-				case WorkflowFields::SwitchCase_expression:
-					return vl::glr::AssemblerSetObjectField(&vl::glr::workflow::WfSwitchCase::expression, object, field, value, cppFieldName);
-				case WorkflowFields::SwitchCase_statement:
-					return vl::glr::AssemblerSetObjectField(&vl::glr::workflow::WfSwitchCase::statement, object, field, value, cppFieldName);
-				case WorkflowFields::SwitchStatement_caseBranches:
-					return vl::glr::AssemblerSetObjectField(&vl::glr::workflow::WfSwitchStatement::caseBranches, object, field, value, cppFieldName);
-				case WorkflowFields::SwitchStatement_defaultBranch:
-					return vl::glr::AssemblerSetObjectField(&vl::glr::workflow::WfSwitchStatement::defaultBranch, object, field, value, cppFieldName);
-				case WorkflowFields::SwitchStatement_expression:
-					return vl::glr::AssemblerSetObjectField(&vl::glr::workflow::WfSwitchStatement::expression, object, field, value, cppFieldName);
-				case WorkflowFields::TryStatement_catchStatement:
-					return vl::glr::AssemblerSetObjectField(&vl::glr::workflow::WfTryStatement::catchStatement, object, field, value, cppFieldName);
-				case WorkflowFields::TryStatement_finallyStatement:
-					return vl::glr::AssemblerSetObjectField(&vl::glr::workflow::WfTryStatement::finallyStatement, object, field, value, cppFieldName);
-				case WorkflowFields::TryStatement_protectedStatement:
-					return vl::glr::AssemblerSetObjectField(&vl::glr::workflow::WfTryStatement::protectedStatement, object, field, value, cppFieldName);
-				case WorkflowFields::TypeCastingExpression_expression:
-					return vl::glr::AssemblerSetObjectField(&vl::glr::workflow::WfTypeCastingExpression::expression, object, field, value, cppFieldName);
-				case WorkflowFields::TypeCastingExpression_type:
-					return vl::glr::AssemblerSetObjectField(&vl::glr::workflow::WfTypeCastingExpression::type, object, field, value, cppFieldName);
-				case WorkflowFields::TypeOfExpressionExpression_expression:
-					return vl::glr::AssemblerSetObjectField(&vl::glr::workflow::WfTypeOfExpressionExpression::expression, object, field, value, cppFieldName);
-				case WorkflowFields::TypeOfTypeExpression_type:
-					return vl::glr::AssemblerSetObjectField(&vl::glr::workflow::WfTypeOfTypeExpression::type, object, field, value, cppFieldName);
-				case WorkflowFields::TypeTestingExpression_expression:
-					return vl::glr::AssemblerSetObjectField(&vl::glr::workflow::WfTypeTestingExpression::expression, object, field, value, cppFieldName);
-				case WorkflowFields::TypeTestingExpression_type:
-					return vl::glr::AssemblerSetObjectField(&vl::glr::workflow::WfTypeTestingExpression::type, object, field, value, cppFieldName);
-				case WorkflowFields::UnaryExpression_operand:
-					return vl::glr::AssemblerSetObjectField(&vl::glr::workflow::WfUnaryExpression::operand, object, field, value, cppFieldName);
-				case WorkflowFields::VariableDeclaration_expression:
-					return vl::glr::AssemblerSetObjectField(&vl::glr::workflow::WfVariableDeclaration::expression, object, field, value, cppFieldName);
-				case WorkflowFields::VariableDeclaration_type:
-					return vl::glr::AssemblerSetObjectField(&vl::glr::workflow::WfVariableDeclaration::type, object, field, value, cppFieldName);
-				case WorkflowFields::VariableStatement_variable:
-					return vl::glr::AssemblerSetObjectField(&vl::glr::workflow::WfVariableStatement::variable, object, field, value, cppFieldName);
-				case WorkflowFields::VirtualCfeDeclaration_expandedDeclarations:
-					return vl::glr::AssemblerSetObjectField(&vl::glr::workflow::WfVirtualCfeDeclaration::expandedDeclarations, object, field, value, cppFieldName);
-				case WorkflowFields::VirtualCfeExpression_expandedExpression:
-					return vl::glr::AssemblerSetObjectField(&vl::glr::workflow::WfVirtualCfeExpression::expandedExpression, object, field, value, cppFieldName);
-				case WorkflowFields::VirtualCseDeclaration_expandedDeclarations:
-					return vl::glr::AssemblerSetObjectField(&vl::glr::workflow::WfVirtualCseDeclaration::expandedDeclarations, object, field, value, cppFieldName);
-				case WorkflowFields::VirtualCseExpression_expandedExpression:
-					return vl::glr::AssemblerSetObjectField(&vl::glr::workflow::WfVirtualCseExpression::expandedExpression, object, field, value, cppFieldName);
-				case WorkflowFields::VirtualCseStatement_expandedStatement:
-					return vl::glr::AssemblerSetObjectField(&vl::glr::workflow::WfVirtualCseStatement::expandedStatement, object, field, value, cppFieldName);
-				case WorkflowFields::WhileStatement_condition:
-					return vl::glr::AssemblerSetObjectField(&vl::glr::workflow::WfWhileStatement::condition, object, field, value, cppFieldName);
-				case WorkflowFields::WhileStatement_statement:
-					return vl::glr::AssemblerSetObjectField(&vl::glr::workflow::WfWhileStatement::statement, object, field, value, cppFieldName);
-				default:
-					return vl::glr::AssemblyThrowFieldNotObject(field, cppFieldName);
-				}
-			}
-
-			void WorkflowAstInsReceiver::SetField(vl::glr::ParsingAstBase* object, vl::vint32_t field, const vl::regex::RegexToken& token, vl::vint32_t tokenIndex)
-			{
-				auto cppFieldName = WorkflowCppFieldName((WorkflowFields)field);
-				switch((WorkflowFields)field)
-				{
-				case WorkflowFields::Attribute_category:
-					return vl::glr::AssemblerSetTokenField(&vl::glr::workflow::WfAttribute::category, object, field, token, tokenIndex, cppFieldName);
-				case WorkflowFields::Attribute_name:
-					return vl::glr::AssemblerSetTokenField(&vl::glr::workflow::WfAttribute::name, object, field, token, tokenIndex, cppFieldName);
-				case WorkflowFields::BlockStatement_endLabel:
-					return vl::glr::AssemblerSetTokenField(&vl::glr::workflow::WfBlockStatement::endLabel, object, field, token, tokenIndex, cppFieldName);
-				case WorkflowFields::ChildExpression_name:
-					return vl::glr::AssemblerSetTokenField(&vl::glr::workflow::WfChildExpression::name, object, field, token, tokenIndex, cppFieldName);
-				case WorkflowFields::ChildType_name:
-					return vl::glr::AssemblerSetTokenField(&vl::glr::workflow::WfChildType::name, object, field, token, tokenIndex, cppFieldName);
-				case WorkflowFields::CoOperatorExpression_name:
-					return vl::glr::AssemblerSetTokenField(&vl::glr::workflow::WfCoOperatorExpression::name, object, field, token, tokenIndex, cppFieldName);
-				case WorkflowFields::CoOperatorStatement_opName:
-					return vl::glr::AssemblerSetTokenField(&vl::glr::workflow::WfCoOperatorStatement::opName, object, field, token, tokenIndex, cppFieldName);
-				case WorkflowFields::CoOperatorStatement_varName:
-					return vl::glr::AssemblerSetTokenField(&vl::glr::workflow::WfCoOperatorStatement::varName, object, field, token, tokenIndex, cppFieldName);
-				case WorkflowFields::CoProviderStatement_name:
-					return vl::glr::AssemblerSetTokenField(&vl::glr::workflow::WfCoProviderStatement::name, object, field, token, tokenIndex, cppFieldName);
-				case WorkflowFields::Declaration_name:
-					return vl::glr::AssemblerSetTokenField(&vl::glr::workflow::WfDeclaration::name, object, field, token, tokenIndex, cppFieldName);
-				case WorkflowFields::EnumItem_name:
-					return vl::glr::AssemblerSetTokenField(&vl::glr::workflow::WfEnumItem::name, object, field, token, tokenIndex, cppFieldName);
-				case WorkflowFields::EnumItem_number:
-					return vl::glr::AssemblerSetTokenField(&vl::glr::workflow::WfEnumItem::number, object, field, token, tokenIndex, cppFieldName);
-				case WorkflowFields::EnumItemIntersection_name:
-					return vl::glr::AssemblerSetTokenField(&vl::glr::workflow::WfEnumItemIntersection::name, object, field, token, tokenIndex, cppFieldName);
-				case WorkflowFields::FloatingExpression_value:
-					return vl::glr::AssemblerSetTokenField(&vl::glr::workflow::WfFloatingExpression::value, object, field, token, tokenIndex, cppFieldName);
-				case WorkflowFields::ForEachStatement_name:
-					return vl::glr::AssemblerSetTokenField(&vl::glr::workflow::WfForEachStatement::name, object, field, token, tokenIndex, cppFieldName);
-				case WorkflowFields::FormatExpression_value:
-					return vl::glr::AssemblerSetTokenField(&vl::glr::workflow::WfFormatExpression::value, object, field, token, tokenIndex, cppFieldName);
-				case WorkflowFields::FunctionArgument_name:
-					return vl::glr::AssemblerSetTokenField(&vl::glr::workflow::WfFunctionArgument::name, object, field, token, tokenIndex, cppFieldName);
-				case WorkflowFields::GotoStatement_label:
-					return vl::glr::AssemblerSetTokenField(&vl::glr::workflow::WfGotoStatement::label, object, field, token, tokenIndex, cppFieldName);
-				case WorkflowFields::IfStatement_name:
-					return vl::glr::AssemblerSetTokenField(&vl::glr::workflow::WfIfStatement::name, object, field, token, tokenIndex, cppFieldName);
-				case WorkflowFields::IntegerExpression_value:
-					return vl::glr::AssemblerSetTokenField(&vl::glr::workflow::WfIntegerExpression::value, object, field, token, tokenIndex, cppFieldName);
-				case WorkflowFields::LetVariable_name:
-					return vl::glr::AssemblerSetTokenField(&vl::glr::workflow::WfLetVariable::name, object, field, token, tokenIndex, cppFieldName);
-				case WorkflowFields::MemberExpression_name:
-					return vl::glr::AssemblerSetTokenField(&vl::glr::workflow::WfMemberExpression::name, object, field, token, tokenIndex, cppFieldName);
-				case WorkflowFields::Module_name:
-					return vl::glr::AssemblerSetTokenField(&vl::glr::workflow::WfModule::name, object, field, token, tokenIndex, cppFieldName);
-				case WorkflowFields::ModuleUsingNameFragment_name:
-					return vl::glr::AssemblerSetTokenField(&vl::glr::workflow::WfModuleUsingNameFragment::name, object, field, token, tokenIndex, cppFieldName);
-				case WorkflowFields::NewCoroutineExpression_name:
-					return vl::glr::AssemblerSetTokenField(&vl::glr::workflow::WfNewCoroutineExpression::name, object, field, token, tokenIndex, cppFieldName);
-				case WorkflowFields::ObserveExpression_name:
-					return vl::glr::AssemblerSetTokenField(&vl::glr::workflow::WfObserveExpression::name, object, field, token, tokenIndex, cppFieldName);
-				case WorkflowFields::OrderedNameExpression_name:
-					return vl::glr::AssemblerSetTokenField(&vl::glr::workflow::WfOrderedNameExpression::name, object, field, token, tokenIndex, cppFieldName);
-				case WorkflowFields::PropertyDeclaration_getter:
-					return vl::glr::AssemblerSetTokenField(&vl::glr::workflow::WfPropertyDeclaration::getter, object, field, token, tokenIndex, cppFieldName);
-				case WorkflowFields::PropertyDeclaration_setter:
-					return vl::glr::AssemblerSetTokenField(&vl::glr::workflow::WfPropertyDeclaration::setter, object, field, token, tokenIndex, cppFieldName);
-				case WorkflowFields::PropertyDeclaration_valueChangedEvent:
-					return vl::glr::AssemblerSetTokenField(&vl::glr::workflow::WfPropertyDeclaration::valueChangedEvent, object, field, token, tokenIndex, cppFieldName);
-				case WorkflowFields::ReferenceExpression_name:
-					return vl::glr::AssemblerSetTokenField(&vl::glr::workflow::WfReferenceExpression::name, object, field, token, tokenIndex, cppFieldName);
-				case WorkflowFields::ReferenceType_name:
-					return vl::glr::AssemblerSetTokenField(&vl::glr::workflow::WfReferenceType::name, object, field, token, tokenIndex, cppFieldName);
-				case WorkflowFields::StateDeclaration_name:
-					return vl::glr::AssemblerSetTokenField(&vl::glr::workflow::WfStateDeclaration::name, object, field, token, tokenIndex, cppFieldName);
-				case WorkflowFields::StateInput_name:
-					return vl::glr::AssemblerSetTokenField(&vl::glr::workflow::WfStateInput::name, object, field, token, tokenIndex, cppFieldName);
-				case WorkflowFields::StateInvokeStatement_name:
-					return vl::glr::AssemblerSetTokenField(&vl::glr::workflow::WfStateInvokeStatement::name, object, field, token, tokenIndex, cppFieldName);
-				case WorkflowFields::StateSwitchArgument_name:
-					return vl::glr::AssemblerSetTokenField(&vl::glr::workflow::WfStateSwitchArgument::name, object, field, token, tokenIndex, cppFieldName);
-				case WorkflowFields::StateSwitchCase_name:
-					return vl::glr::AssemblerSetTokenField(&vl::glr::workflow::WfStateSwitchCase::name, object, field, token, tokenIndex, cppFieldName);
-				case WorkflowFields::StringExpression_value:
-					return vl::glr::AssemblerSetTokenField(&vl::glr::workflow::WfStringExpression::value, object, field, token, tokenIndex, cppFieldName);
-				case WorkflowFields::StructMember_name:
-					return vl::glr::AssemblerSetTokenField(&vl::glr::workflow::WfStructMember::name, object, field, token, tokenIndex, cppFieldName);
-				case WorkflowFields::TopQualifiedExpression_name:
-					return vl::glr::AssemblerSetTokenField(&vl::glr::workflow::WfTopQualifiedExpression::name, object, field, token, tokenIndex, cppFieldName);
-				case WorkflowFields::TopQualifiedType_name:
-					return vl::glr::AssemblerSetTokenField(&vl::glr::workflow::WfTopQualifiedType::name, object, field, token, tokenIndex, cppFieldName);
-				case WorkflowFields::TryStatement_name:
-					return vl::glr::AssemblerSetTokenField(&vl::glr::workflow::WfTryStatement::name, object, field, token, tokenIndex, cppFieldName);
-				default:
-					return vl::glr::AssemblyThrowFieldNotToken(field, cppFieldName);
-				}
-			}
-
-			void WorkflowAstInsReceiver::SetField(vl::glr::ParsingAstBase* object, vl::vint32_t field, vl::vint32_t enumItem, bool weakAssignment)
-			{
-				auto cppFieldName = WorkflowCppFieldName((WorkflowFields)field);
-				switch((WorkflowFields)field)
-				{
-				case WorkflowFields::AutoPropertyDeclaration_configConst:
-					return vl::glr::AssemblerSetEnumField(&vl::glr::workflow::WfAutoPropertyDeclaration::configConst, object, field, enumItem, weakAssignment, cppFieldName);
-				case WorkflowFields::AutoPropertyDeclaration_configObserve:
-					return vl::glr::AssemblerSetEnumField(&vl::glr::workflow::WfAutoPropertyDeclaration::configObserve, object, field, enumItem, weakAssignment, cppFieldName);
-				case WorkflowFields::AutoPropertyDeclaration_functionKind:
-					return vl::glr::AssemblerSetEnumField(&vl::glr::workflow::WfAutoPropertyDeclaration::functionKind, object, field, enumItem, weakAssignment, cppFieldName);
-				case WorkflowFields::BinaryExpression_op:
-					return vl::glr::AssemblerSetEnumField(&vl::glr::workflow::WfBinaryExpression::op, object, field, enumItem, weakAssignment, cppFieldName);
-				case WorkflowFields::ClassDeclaration_constructorType:
-					return vl::glr::AssemblerSetEnumField(&vl::glr::workflow::WfClassDeclaration::constructorType, object, field, enumItem, weakAssignment, cppFieldName);
-				case WorkflowFields::ClassDeclaration_kind:
-					return vl::glr::AssemblerSetEnumField(&vl::glr::workflow::WfClassDeclaration::kind, object, field, enumItem, weakAssignment, cppFieldName);
-				case WorkflowFields::ConstructorDeclaration_constructorType:
-					return vl::glr::AssemblerSetEnumField(&vl::glr::workflow::WfConstructorDeclaration::constructorType, object, field, enumItem, weakAssignment, cppFieldName);
-				case WorkflowFields::EnumDeclaration_kind:
-					return vl::glr::AssemblerSetEnumField(&vl::glr::workflow::WfEnumDeclaration::kind, object, field, enumItem, weakAssignment, cppFieldName);
-				case WorkflowFields::EnumItem_kind:
-					return vl::glr::AssemblerSetEnumField(&vl::glr::workflow::WfEnumItem::kind, object, field, enumItem, weakAssignment, cppFieldName);
-				case WorkflowFields::ExpectedTypeCastExpression_strategy:
-					return vl::glr::AssemblerSetEnumField(&vl::glr::workflow::WfExpectedTypeCastExpression::strategy, object, field, enumItem, weakAssignment, cppFieldName);
-				case WorkflowFields::ForEachStatement_direction:
-					return vl::glr::AssemblerSetEnumField(&vl::glr::workflow::WfForEachStatement::direction, object, field, enumItem, weakAssignment, cppFieldName);
-				case WorkflowFields::FunctionDeclaration_anonymity:
-					return vl::glr::AssemblerSetEnumField(&vl::glr::workflow::WfFunctionDeclaration::anonymity, object, field, enumItem, weakAssignment, cppFieldName);
-				case WorkflowFields::FunctionDeclaration_functionKind:
-					return vl::glr::AssemblerSetEnumField(&vl::glr::workflow::WfFunctionDeclaration::functionKind, object, field, enumItem, weakAssignment, cppFieldName);
-				case WorkflowFields::LiteralExpression_value:
-					return vl::glr::AssemblerSetEnumField(&vl::glr::workflow::WfLiteralExpression::value, object, field, enumItem, weakAssignment, cppFieldName);
-				case WorkflowFields::MapType_writability:
-					return vl::glr::AssemblerSetEnumField(&vl::glr::workflow::WfMapType::writability, object, field, enumItem, weakAssignment, cppFieldName);
-				case WorkflowFields::Module_moduleType:
-					return vl::glr::AssemblerSetEnumField(&vl::glr::workflow::WfModule::moduleType, object, field, enumItem, weakAssignment, cppFieldName);
-				case WorkflowFields::ObserveExpression_observeType:
-					return vl::glr::AssemblerSetEnumField(&vl::glr::workflow::WfObserveExpression::observeType, object, field, enumItem, weakAssignment, cppFieldName);
-				case WorkflowFields::PredefinedType_name:
-					return vl::glr::AssemblerSetEnumField(&vl::glr::workflow::WfPredefinedType::name, object, field, enumItem, weakAssignment, cppFieldName);
-				case WorkflowFields::RangeExpression_beginBoundary:
-					return vl::glr::AssemblerSetEnumField(&vl::glr::workflow::WfRangeExpression::beginBoundary, object, field, enumItem, weakAssignment, cppFieldName);
-				case WorkflowFields::RangeExpression_endBoundary:
-					return vl::glr::AssemblerSetEnumField(&vl::glr::workflow::WfRangeExpression::endBoundary, object, field, enumItem, weakAssignment, cppFieldName);
-				case WorkflowFields::SetTestingExpression_test:
-					return vl::glr::AssemblerSetEnumField(&vl::glr::workflow::WfSetTestingExpression::test, object, field, enumItem, weakAssignment, cppFieldName);
-				case WorkflowFields::StateInvokeStatement_type:
-					return vl::glr::AssemblerSetEnumField(&vl::glr::workflow::WfStateInvokeStatement::type, object, field, enumItem, weakAssignment, cppFieldName);
-				case WorkflowFields::StateSwitchStatement_type:
-					return vl::glr::AssemblerSetEnumField(&vl::glr::workflow::WfStateSwitchStatement::type, object, field, enumItem, weakAssignment, cppFieldName);
-				case WorkflowFields::TypeCastingExpression_strategy:
-					return vl::glr::AssemblerSetEnumField(&vl::glr::workflow::WfTypeCastingExpression::strategy, object, field, enumItem, weakAssignment, cppFieldName);
-				case WorkflowFields::TypeTestingExpression_test:
-					return vl::glr::AssemblerSetEnumField(&vl::glr::workflow::WfTypeTestingExpression::test, object, field, enumItem, weakAssignment, cppFieldName);
-				case WorkflowFields::UnaryExpression_op:
-					return vl::glr::AssemblerSetEnumField(&vl::glr::workflow::WfUnaryExpression::op, object, field, enumItem, weakAssignment, cppFieldName);
-				default:
-					return vl::glr::AssemblyThrowFieldNotEnum(field, cppFieldName);
-				}
-			}
-
-			const wchar_t* WorkflowTypeName(WorkflowClasses type)
-			{
-				const wchar_t* results[] = {
-					L"AttachEventExpression",
-					L"Attribute",
-					L"AutoPropertyDeclaration",
-					L"BaseConstructorCall",
-					L"BinaryExpression",
-					L"BindExpression",
-					L"BlockStatement",
-					L"BreakStatement",
-					L"CallExpression",
-					L"CastResultInterfaceDeclaration",
-					L"ChildExpression",
-					L"ChildType",
-					L"ClassDeclaration",
-					L"CoOperatorExpression",
-					L"CoOperatorStatement",
-					L"CoPauseStatement",
-					L"CoProviderStatement",
-					L"ConstructorArgument",
-					L"ConstructorDeclaration",
-					L"ConstructorExpression",
-					L"ContinueStatement",
-					L"CoroutineStatement",
-					L"Declaration",
-					L"DeleteStatement",
-					L"DestructorDeclaration",
-					L"DetachEventExpression",
-					L"EnumDeclaration",
-					L"EnumItem",
-					L"EnumItemIntersection",
-					L"EnumerableType",
-					L"EventDeclaration",
-					L"ExpectedTypeCastExpression",
-					L"Expression",
-					L"ExpressionStatement",
-					L"FloatingExpression",
-					L"ForEachStatement",
-					L"FormatExpression",
-					L"FunctionArgument",
-					L"FunctionDeclaration",
-					L"FunctionExpression",
-					L"FunctionType",
-					L"GotoStatement",
-					L"IfExpression",
-					L"IfStatement",
-					L"InferExpression",
-					L"IntegerExpression",
-					L"LetExpression",
-					L"LetVariable",
-					L"LiteralExpression",
-					L"MapType",
-					L"MemberExpression",
-					L"MixinCastExpression",
-					L"Module",
-					L"ModuleUsingFragment",
-					L"ModuleUsingItem",
-					L"ModuleUsingNameFragment",
-					L"ModuleUsingPath",
-					L"ModuleUsingWildCardFragment",
-					L"NamespaceDeclaration",
-					L"NewClassExpression",
-					L"NewCoroutineExpression",
-					L"NewInterfaceExpression",
-					L"NullableType",
-					L"ObservableListType",
-					L"ObserveExpression",
-					L"OrderedLambdaExpression",
-					L"OrderedNameExpression",
-					L"PredefinedType",
-					L"PropertyDeclaration",
-					L"RaiseExceptionStatement",
-					L"RangeExpression",
-					L"RawPointerType",
-					L"ReferenceExpression",
-					L"ReferenceType",
-					L"ReturnStatement",
-					L"SetTestingExpression",
-					L"SharedPointerType",
-					L"StateDeclaration",
-					L"StateInput",
-					L"StateInvokeStatement",
-					L"StateMachineDeclaration",
-					L"StateMachineStatement",
-					L"StateSwitchArgument",
-					L"StateSwitchCase",
-					L"StateSwitchStatement",
-					L"Statement",
-					L"StringExpression",
-					L"StructDeclaration",
-					L"StructMember",
-					L"SwitchCase",
-					L"SwitchStatement",
-					L"ThisExpression",
-					L"TopQualifiedExpression",
-					L"TopQualifiedType",
-					L"TryStatement",
-					L"Type",
-					L"TypeCastingExpression",
-					L"TypeOfExpressionExpression",
-					L"TypeOfTypeExpression",
-					L"TypeTestingExpression",
-					L"UnaryExpression",
-					L"VariableDeclaration",
-					L"VariableStatement",
-					L"VirtualCfeDeclaration",
-					L"VirtualCfeExpression",
-					L"VirtualCseDeclaration",
-					L"VirtualCseExpression",
-					L"VirtualCseStatement",
-					L"WhileStatement",
-				};
-				vl::vint index = (vl::vint)type;
-				return 0 <= index && index < 109 ? results[index] : nullptr;
-			}
-
-			const wchar_t* WorkflowCppTypeName(WorkflowClasses type)
-			{
-				const wchar_t* results[] = {
-					L"vl::glr::workflow::WfAttachEventExpression",
-					L"vl::glr::workflow::WfAttribute",
-					L"vl::glr::workflow::WfAutoPropertyDeclaration",
-					L"vl::glr::workflow::WfBaseConstructorCall",
-					L"vl::glr::workflow::WfBinaryExpression",
-					L"vl::glr::workflow::WfBindExpression",
-					L"vl::glr::workflow::WfBlockStatement",
-					L"vl::glr::workflow::WfBreakStatement",
-					L"vl::glr::workflow::WfCallExpression",
-					L"vl::glr::workflow::WfCastResultInterfaceDeclaration",
-					L"vl::glr::workflow::WfChildExpression",
-					L"vl::glr::workflow::WfChildType",
-					L"vl::glr::workflow::WfClassDeclaration",
-					L"vl::glr::workflow::WfCoOperatorExpression",
-					L"vl::glr::workflow::WfCoOperatorStatement",
-					L"vl::glr::workflow::WfCoPauseStatement",
-					L"vl::glr::workflow::WfCoProviderStatement",
-					L"vl::glr::workflow::WfConstructorArgument",
-					L"vl::glr::workflow::WfConstructorDeclaration",
-					L"vl::glr::workflow::WfConstructorExpression",
-					L"vl::glr::workflow::WfContinueStatement",
-					L"vl::glr::workflow::WfCoroutineStatement",
-					L"vl::glr::workflow::WfDeclaration",
-					L"vl::glr::workflow::WfDeleteStatement",
-					L"vl::glr::workflow::WfDestructorDeclaration",
-					L"vl::glr::workflow::WfDetachEventExpression",
-					L"vl::glr::workflow::WfEnumDeclaration",
-					L"vl::glr::workflow::WfEnumItem",
-					L"vl::glr::workflow::WfEnumItemIntersection",
-					L"vl::glr::workflow::WfEnumerableType",
-					L"vl::glr::workflow::WfEventDeclaration",
-					L"vl::glr::workflow::WfExpectedTypeCastExpression",
-					L"vl::glr::workflow::WfExpression",
-					L"vl::glr::workflow::WfExpressionStatement",
-					L"vl::glr::workflow::WfFloatingExpression",
-					L"vl::glr::workflow::WfForEachStatement",
-					L"vl::glr::workflow::WfFormatExpression",
-					L"vl::glr::workflow::WfFunctionArgument",
-					L"vl::glr::workflow::WfFunctionDeclaration",
-					L"vl::glr::workflow::WfFunctionExpression",
-					L"vl::glr::workflow::WfFunctionType",
-					L"vl::glr::workflow::WfGotoStatement",
-					L"vl::glr::workflow::WfIfExpression",
-					L"vl::glr::workflow::WfIfStatement",
-					L"vl::glr::workflow::WfInferExpression",
-					L"vl::glr::workflow::WfIntegerExpression",
-					L"vl::glr::workflow::WfLetExpression",
-					L"vl::glr::workflow::WfLetVariable",
-					L"vl::glr::workflow::WfLiteralExpression",
-					L"vl::glr::workflow::WfMapType",
-					L"vl::glr::workflow::WfMemberExpression",
-					L"vl::glr::workflow::WfMixinCastExpression",
-					L"vl::glr::workflow::WfModule",
-					L"vl::glr::workflow::WfModuleUsingFragment",
-					L"vl::glr::workflow::WfModuleUsingItem",
-					L"vl::glr::workflow::WfModuleUsingNameFragment",
-					L"vl::glr::workflow::WfModuleUsingPath",
-					L"vl::glr::workflow::WfModuleUsingWildCardFragment",
-					L"vl::glr::workflow::WfNamespaceDeclaration",
-					L"vl::glr::workflow::WfNewClassExpression",
-					L"vl::glr::workflow::WfNewCoroutineExpression",
-					L"vl::glr::workflow::WfNewInterfaceExpression",
-					L"vl::glr::workflow::WfNullableType",
-					L"vl::glr::workflow::WfObservableListType",
-					L"vl::glr::workflow::WfObserveExpression",
-					L"vl::glr::workflow::WfOrderedLambdaExpression",
-					L"vl::glr::workflow::WfOrderedNameExpression",
-					L"vl::glr::workflow::WfPredefinedType",
-					L"vl::glr::workflow::WfPropertyDeclaration",
-					L"vl::glr::workflow::WfRaiseExceptionStatement",
-					L"vl::glr::workflow::WfRangeExpression",
-					L"vl::glr::workflow::WfRawPointerType",
-					L"vl::glr::workflow::WfReferenceExpression",
-					L"vl::glr::workflow::WfReferenceType",
-					L"vl::glr::workflow::WfReturnStatement",
-					L"vl::glr::workflow::WfSetTestingExpression",
-					L"vl::glr::workflow::WfSharedPointerType",
-					L"vl::glr::workflow::WfStateDeclaration",
-					L"vl::glr::workflow::WfStateInput",
-					L"vl::glr::workflow::WfStateInvokeStatement",
-					L"vl::glr::workflow::WfStateMachineDeclaration",
-					L"vl::glr::workflow::WfStateMachineStatement",
-					L"vl::glr::workflow::WfStateSwitchArgument",
-					L"vl::glr::workflow::WfStateSwitchCase",
-					L"vl::glr::workflow::WfStateSwitchStatement",
-					L"vl::glr::workflow::WfStatement",
-					L"vl::glr::workflow::WfStringExpression",
-					L"vl::glr::workflow::WfStructDeclaration",
-					L"vl::glr::workflow::WfStructMember",
-					L"vl::glr::workflow::WfSwitchCase",
-					L"vl::glr::workflow::WfSwitchStatement",
-					L"vl::glr::workflow::WfThisExpression",
-					L"vl::glr::workflow::WfTopQualifiedExpression",
-					L"vl::glr::workflow::WfTopQualifiedType",
-					L"vl::glr::workflow::WfTryStatement",
-					L"vl::glr::workflow::WfType",
-					L"vl::glr::workflow::WfTypeCastingExpression",
-					L"vl::glr::workflow::WfTypeOfExpressionExpression",
-					L"vl::glr::workflow::WfTypeOfTypeExpression",
-					L"vl::glr::workflow::WfTypeTestingExpression",
-					L"vl::glr::workflow::WfUnaryExpression",
-					L"vl::glr::workflow::WfVariableDeclaration",
-					L"vl::glr::workflow::WfVariableStatement",
-					L"vl::glr::workflow::WfVirtualCfeDeclaration",
-					L"vl::glr::workflow::WfVirtualCfeExpression",
-					L"vl::glr::workflow::WfVirtualCseDeclaration",
-					L"vl::glr::workflow::WfVirtualCseExpression",
-					L"vl::glr::workflow::WfVirtualCseStatement",
-					L"vl::glr::workflow::WfWhileStatement",
-				};
-				vl::vint index = (vl::vint)type;
-				return 0 <= index && index < 109 ? results[index] : nullptr;
-			}
-
-			const wchar_t* WorkflowFieldName(WorkflowFields field)
-			{
-				const wchar_t* results[] = {
-					L"AttachEventExpression::event",
-					L"AttachEventExpression::function",
-					L"Attribute::category",
-					L"Attribute::name",
-					L"Attribute::value",
-					L"AutoPropertyDeclaration::configConst",
-					L"AutoPropertyDeclaration::configObserve",
-					L"AutoPropertyDeclaration::expression",
-					L"AutoPropertyDeclaration::functionKind",
-					L"AutoPropertyDeclaration::type",
-					L"BaseConstructorCall::arguments",
-					L"BaseConstructorCall::type",
-					L"BinaryExpression::first",
-					L"BinaryExpression::op",
-					L"BinaryExpression::second",
-					L"BindExpression::expression",
-					L"BlockStatement::endLabel",
-					L"BlockStatement::statements",
-					L"CallExpression::arguments",
-					L"CallExpression::function",
-					L"CastResultInterfaceDeclaration::baseType",
-					L"CastResultInterfaceDeclaration::elementType",
-					L"ChildExpression::name",
-					L"ChildExpression::parent",
-					L"ChildType::name",
-					L"ChildType::parent",
-					L"ClassDeclaration::baseTypes",
-					L"ClassDeclaration::constructorType",
-					L"ClassDeclaration::declarations",
-					L"ClassDeclaration::kind",
-					L"CoOperatorExpression::name",
-					L"CoOperatorStatement::arguments",
-					L"CoOperatorStatement::opName",
-					L"CoOperatorStatement::varName",
-					L"CoPauseStatement::statement",
-					L"CoProviderStatement::name",
-					L"CoProviderStatement::statement",
-					L"ConstructorArgument::key",
-					L"ConstructorArgument::value",
-					L"ConstructorDeclaration::arguments",
-					L"ConstructorDeclaration::baseConstructorCalls",
-					L"ConstructorDeclaration::constructorType",
-					L"ConstructorDeclaration::statement",
-					L"ConstructorExpression::arguments",
-					L"Declaration::attributes",
-					L"Declaration::name",
-					L"DeleteStatement::expression",
-					L"DestructorDeclaration::statement",
-					L"DetachEventExpression::event",
-					L"DetachEventExpression::handler",
-					L"EnumDeclaration::items",
-					L"EnumDeclaration::kind",
-					L"EnumItem::attributes",
-					L"EnumItem::intersections",
-					L"EnumItem::kind",
-					L"EnumItem::name",
-					L"EnumItem::number",
-					L"EnumItemIntersection::name",
-					L"EnumerableType::element",
-					L"EventDeclaration::arguments",
-					L"ExpectedTypeCastExpression::expression",
-					L"ExpectedTypeCastExpression::strategy",
-					L"ExpressionStatement::expression",
-					L"FloatingExpression::value",
-					L"ForEachStatement::collection",
-					L"ForEachStatement::direction",
-					L"ForEachStatement::name",
-					L"ForEachStatement::statement",
-					L"FormatExpression::value",
-					L"FunctionArgument::attributes",
-					L"FunctionArgument::name",
-					L"FunctionArgument::type",
-					L"FunctionDeclaration::anonymity",
-					L"FunctionDeclaration::arguments",
-					L"FunctionDeclaration::functionKind",
-					L"FunctionDeclaration::returnType",
-					L"FunctionDeclaration::statement",
-					L"FunctionExpression::function",
-					L"FunctionType::arguments",
-					L"FunctionType::result",
-					L"GotoStatement::label",
-					L"IfExpression::condition",
-					L"IfExpression::falseBranch",
-					L"IfExpression::trueBranch",
-					L"IfStatement::expression",
-					L"IfStatement::falseBranch",
-					L"IfStatement::name",
-					L"IfStatement::trueBranch",
-					L"IfStatement::type",
-					L"InferExpression::expression",
-					L"InferExpression::type",
-					L"IntegerExpression::value",
-					L"LetExpression::expression",
-					L"LetExpression::variables",
-					L"LetVariable::name",
-					L"LetVariable::value",
-					L"LiteralExpression::value",
-					L"MapType::key",
-					L"MapType::value",
-					L"MapType::writability",
-					L"MemberExpression::name",
-					L"MemberExpression::parent",
-					L"MixinCastExpression::expression",
-					L"MixinCastExpression::type",
-					L"Module::declarations",
-					L"Module::moduleType",
-					L"Module::name",
-					L"Module::paths",
-					L"ModuleUsingItem::fragments",
-					L"ModuleUsingNameFragment::name",
-					L"ModuleUsingPath::items",
-					L"NamespaceDeclaration::declarations",
-					L"NewClassExpression::arguments",
-					L"NewClassExpression::type",
-					L"NewCoroutineExpression::name",
-					L"NewCoroutineExpression::statement",
-					L"NewInterfaceExpression::declarations",
-					L"NewInterfaceExpression::type",
-					L"NullableType::element",
-					L"ObservableListType::element",
-					L"ObserveExpression::events",
-					L"ObserveExpression::expression",
-					L"ObserveExpression::name",
-					L"ObserveExpression::observeType",
-					L"ObserveExpression::parent",
-					L"OrderedLambdaExpression::body",
-					L"OrderedNameExpression::name",
-					L"PredefinedType::name",
-					L"PropertyDeclaration::getter",
-					L"PropertyDeclaration::setter",
-					L"PropertyDeclaration::type",
-					L"PropertyDeclaration::valueChangedEvent",
-					L"RaiseExceptionStatement::expression",
-					L"RangeExpression::begin",
-					L"RangeExpression::beginBoundary",
-					L"RangeExpression::end",
-					L"RangeExpression::endBoundary",
-					L"RawPointerType::element",
-					L"ReferenceExpression::name",
-					L"ReferenceType::name",
-					L"ReturnStatement::expression",
-					L"SetTestingExpression::collection",
-					L"SetTestingExpression::element",
-					L"SetTestingExpression::test",
-					L"SharedPointerType::element",
-					L"StateDeclaration::arguments",
-					L"StateDeclaration::name",
-					L"StateDeclaration::statement",
-					L"StateInput::arguments",
-					L"StateInput::name",
-					L"StateInvokeStatement::arguments",
-					L"StateInvokeStatement::name",
-					L"StateInvokeStatement::type",
-					L"StateMachineDeclaration::inputs",
-					L"StateMachineDeclaration::states",
-					L"StateSwitchArgument::name",
-					L"StateSwitchCase::arguments",
-					L"StateSwitchCase::name",
-					L"StateSwitchCase::statement",
-					L"StateSwitchStatement::caseBranches",
-					L"StateSwitchStatement::type",
-					L"StringExpression::value",
-					L"StructDeclaration::members",
-					L"StructMember::attributes",
-					L"StructMember::name",
-					L"StructMember::type",
-					L"SwitchCase::expression",
-					L"SwitchCase::statement",
-					L"SwitchStatement::caseBranches",
-					L"SwitchStatement::defaultBranch",
-					L"SwitchStatement::expression",
-					L"TopQualifiedExpression::name",
-					L"TopQualifiedType::name",
-					L"TryStatement::catchStatement",
-					L"TryStatement::finallyStatement",
-					L"TryStatement::name",
-					L"TryStatement::protectedStatement",
-					L"TypeCastingExpression::expression",
-					L"TypeCastingExpression::strategy",
-					L"TypeCastingExpression::type",
-					L"TypeOfExpressionExpression::expression",
-					L"TypeOfTypeExpression::type",
-					L"TypeTestingExpression::expression",
-					L"TypeTestingExpression::test",
-					L"TypeTestingExpression::type",
-					L"UnaryExpression::op",
-					L"UnaryExpression::operand",
-					L"VariableDeclaration::expression",
-					L"VariableDeclaration::type",
-					L"VariableStatement::variable",
-					L"VirtualCfeDeclaration::expandedDeclarations",
-					L"VirtualCfeExpression::expandedExpression",
-					L"VirtualCseDeclaration::expandedDeclarations",
-					L"VirtualCseExpression::expandedExpression",
-					L"VirtualCseStatement::expandedStatement",
-					L"WhileStatement::condition",
-					L"WhileStatement::statement",
-				};
-				vl::vint index = (vl::vint)field;
-				return 0 <= index && index < 197 ? results[index] : nullptr;
-			}
-
-			const wchar_t* WorkflowCppFieldName(WorkflowFields field)
-			{
-				const wchar_t* results[] = {
-					L"vl::glr::workflow::WfAttachEventExpression::event",
-					L"vl::glr::workflow::WfAttachEventExpression::function",
-					L"vl::glr::workflow::WfAttribute::category",
-					L"vl::glr::workflow::WfAttribute::name",
-					L"vl::glr::workflow::WfAttribute::value",
-					L"vl::glr::workflow::WfAutoPropertyDeclaration::configConst",
-					L"vl::glr::workflow::WfAutoPropertyDeclaration::configObserve",
-					L"vl::glr::workflow::WfAutoPropertyDeclaration::expression",
-					L"vl::glr::workflow::WfAutoPropertyDeclaration::functionKind",
-					L"vl::glr::workflow::WfAutoPropertyDeclaration::type",
-					L"vl::glr::workflow::WfBaseConstructorCall::arguments",
-					L"vl::glr::workflow::WfBaseConstructorCall::type",
-					L"vl::glr::workflow::WfBinaryExpression::first",
-					L"vl::glr::workflow::WfBinaryExpression::op",
-					L"vl::glr::workflow::WfBinaryExpression::second",
-					L"vl::glr::workflow::WfBindExpression::expression",
-					L"vl::glr::workflow::WfBlockStatement::endLabel",
-					L"vl::glr::workflow::WfBlockStatement::statements",
-					L"vl::glr::workflow::WfCallExpression::arguments",
-					L"vl::glr::workflow::WfCallExpression::function",
-					L"vl::glr::workflow::WfCastResultInterfaceDeclaration::baseType",
-					L"vl::glr::workflow::WfCastResultInterfaceDeclaration::elementType",
-					L"vl::glr::workflow::WfChildExpression::name",
-					L"vl::glr::workflow::WfChildExpression::parent",
-					L"vl::glr::workflow::WfChildType::name",
-					L"vl::glr::workflow::WfChildType::parent",
-					L"vl::glr::workflow::WfClassDeclaration::baseTypes",
-					L"vl::glr::workflow::WfClassDeclaration::constructorType",
-					L"vl::glr::workflow::WfClassDeclaration::declarations",
-					L"vl::glr::workflow::WfClassDeclaration::kind",
-					L"vl::glr::workflow::WfCoOperatorExpression::name",
-					L"vl::glr::workflow::WfCoOperatorStatement::arguments",
-					L"vl::glr::workflow::WfCoOperatorStatement::opName",
-					L"vl::glr::workflow::WfCoOperatorStatement::varName",
-					L"vl::glr::workflow::WfCoPauseStatement::statement",
-					L"vl::glr::workflow::WfCoProviderStatement::name",
-					L"vl::glr::workflow::WfCoProviderStatement::statement",
-					L"vl::glr::workflow::WfConstructorArgument::key",
-					L"vl::glr::workflow::WfConstructorArgument::value",
-					L"vl::glr::workflow::WfConstructorDeclaration::arguments",
-					L"vl::glr::workflow::WfConstructorDeclaration::baseConstructorCalls",
-					L"vl::glr::workflow::WfConstructorDeclaration::constructorType",
-					L"vl::glr::workflow::WfConstructorDeclaration::statement",
-					L"vl::glr::workflow::WfConstructorExpression::arguments",
-					L"vl::glr::workflow::WfDeclaration::attributes",
-					L"vl::glr::workflow::WfDeclaration::name",
-					L"vl::glr::workflow::WfDeleteStatement::expression",
-					L"vl::glr::workflow::WfDestructorDeclaration::statement",
-					L"vl::glr::workflow::WfDetachEventExpression::event",
-					L"vl::glr::workflow::WfDetachEventExpression::handler",
-					L"vl::glr::workflow::WfEnumDeclaration::items",
-					L"vl::glr::workflow::WfEnumDeclaration::kind",
-					L"vl::glr::workflow::WfEnumItem::attributes",
-					L"vl::glr::workflow::WfEnumItem::intersections",
-					L"vl::glr::workflow::WfEnumItem::kind",
-					L"vl::glr::workflow::WfEnumItem::name",
-					L"vl::glr::workflow::WfEnumItem::number",
-					L"vl::glr::workflow::WfEnumItemIntersection::name",
-					L"vl::glr::workflow::WfEnumerableType::element",
-					L"vl::glr::workflow::WfEventDeclaration::arguments",
-					L"vl::glr::workflow::WfExpectedTypeCastExpression::expression",
-					L"vl::glr::workflow::WfExpectedTypeCastExpression::strategy",
-					L"vl::glr::workflow::WfExpressionStatement::expression",
-					L"vl::glr::workflow::WfFloatingExpression::value",
-					L"vl::glr::workflow::WfForEachStatement::collection",
-					L"vl::glr::workflow::WfForEachStatement::direction",
-					L"vl::glr::workflow::WfForEachStatement::name",
-					L"vl::glr::workflow::WfForEachStatement::statement",
-					L"vl::glr::workflow::WfFormatExpression::value",
-					L"vl::glr::workflow::WfFunctionArgument::attributes",
-					L"vl::glr::workflow::WfFunctionArgument::name",
-					L"vl::glr::workflow::WfFunctionArgument::type",
-					L"vl::glr::workflow::WfFunctionDeclaration::anonymity",
-					L"vl::glr::workflow::WfFunctionDeclaration::arguments",
-					L"vl::glr::workflow::WfFunctionDeclaration::functionKind",
-					L"vl::glr::workflow::WfFunctionDeclaration::returnType",
-					L"vl::glr::workflow::WfFunctionDeclaration::statement",
-					L"vl::glr::workflow::WfFunctionExpression::function",
-					L"vl::glr::workflow::WfFunctionType::arguments",
-					L"vl::glr::workflow::WfFunctionType::result",
-					L"vl::glr::workflow::WfGotoStatement::label",
-					L"vl::glr::workflow::WfIfExpression::condition",
-					L"vl::glr::workflow::WfIfExpression::falseBranch",
-					L"vl::glr::workflow::WfIfExpression::trueBranch",
-					L"vl::glr::workflow::WfIfStatement::expression",
-					L"vl::glr::workflow::WfIfStatement::falseBranch",
-					L"vl::glr::workflow::WfIfStatement::name",
-					L"vl::glr::workflow::WfIfStatement::trueBranch",
-					L"vl::glr::workflow::WfIfStatement::type",
-					L"vl::glr::workflow::WfInferExpression::expression",
-					L"vl::glr::workflow::WfInferExpression::type",
-					L"vl::glr::workflow::WfIntegerExpression::value",
-					L"vl::glr::workflow::WfLetExpression::expression",
-					L"vl::glr::workflow::WfLetExpression::variables",
-					L"vl::glr::workflow::WfLetVariable::name",
-					L"vl::glr::workflow::WfLetVariable::value",
-					L"vl::glr::workflow::WfLiteralExpression::value",
-					L"vl::glr::workflow::WfMapType::key",
-					L"vl::glr::workflow::WfMapType::value",
-					L"vl::glr::workflow::WfMapType::writability",
-					L"vl::glr::workflow::WfMemberExpression::name",
-					L"vl::glr::workflow::WfMemberExpression::parent",
-					L"vl::glr::workflow::WfMixinCastExpression::expression",
-					L"vl::glr::workflow::WfMixinCastExpression::type",
-					L"vl::glr::workflow::WfModule::declarations",
-					L"vl::glr::workflow::WfModule::moduleType",
-					L"vl::glr::workflow::WfModule::name",
-					L"vl::glr::workflow::WfModule::paths",
-					L"vl::glr::workflow::WfModuleUsingItem::fragments",
-					L"vl::glr::workflow::WfModuleUsingNameFragment::name",
-					L"vl::glr::workflow::WfModuleUsingPath::items",
-					L"vl::glr::workflow::WfNamespaceDeclaration::declarations",
-					L"vl::glr::workflow::WfNewClassExpression::arguments",
-					L"vl::glr::workflow::WfNewClassExpression::type",
-					L"vl::glr::workflow::WfNewCoroutineExpression::name",
-					L"vl::glr::workflow::WfNewCoroutineExpression::statement",
-					L"vl::glr::workflow::WfNewInterfaceExpression::declarations",
-					L"vl::glr::workflow::WfNewInterfaceExpression::type",
-					L"vl::glr::workflow::WfNullableType::element",
-					L"vl::glr::workflow::WfObservableListType::element",
-					L"vl::glr::workflow::WfObserveExpression::events",
-					L"vl::glr::workflow::WfObserveExpression::expression",
-					L"vl::glr::workflow::WfObserveExpression::name",
-					L"vl::glr::workflow::WfObserveExpression::observeType",
-					L"vl::glr::workflow::WfObserveExpression::parent",
-					L"vl::glr::workflow::WfOrderedLambdaExpression::body",
-					L"vl::glr::workflow::WfOrderedNameExpression::name",
-					L"vl::glr::workflow::WfPredefinedType::name",
-					L"vl::glr::workflow::WfPropertyDeclaration::getter",
-					L"vl::glr::workflow::WfPropertyDeclaration::setter",
-					L"vl::glr::workflow::WfPropertyDeclaration::type",
-					L"vl::glr::workflow::WfPropertyDeclaration::valueChangedEvent",
-					L"vl::glr::workflow::WfRaiseExceptionStatement::expression",
-					L"vl::glr::workflow::WfRangeExpression::begin",
-					L"vl::glr::workflow::WfRangeExpression::beginBoundary",
-					L"vl::glr::workflow::WfRangeExpression::end",
-					L"vl::glr::workflow::WfRangeExpression::endBoundary",
-					L"vl::glr::workflow::WfRawPointerType::element",
-					L"vl::glr::workflow::WfReferenceExpression::name",
-					L"vl::glr::workflow::WfReferenceType::name",
-					L"vl::glr::workflow::WfReturnStatement::expression",
-					L"vl::glr::workflow::WfSetTestingExpression::collection",
-					L"vl::glr::workflow::WfSetTestingExpression::element",
-					L"vl::glr::workflow::WfSetTestingExpression::test",
-					L"vl::glr::workflow::WfSharedPointerType::element",
-					L"vl::glr::workflow::WfStateDeclaration::arguments",
-					L"vl::glr::workflow::WfStateDeclaration::name",
-					L"vl::glr::workflow::WfStateDeclaration::statement",
-					L"vl::glr::workflow::WfStateInput::arguments",
-					L"vl::glr::workflow::WfStateInput::name",
-					L"vl::glr::workflow::WfStateInvokeStatement::arguments",
-					L"vl::glr::workflow::WfStateInvokeStatement::name",
-					L"vl::glr::workflow::WfStateInvokeStatement::type",
-					L"vl::glr::workflow::WfStateMachineDeclaration::inputs",
-					L"vl::glr::workflow::WfStateMachineDeclaration::states",
-					L"vl::glr::workflow::WfStateSwitchArgument::name",
-					L"vl::glr::workflow::WfStateSwitchCase::arguments",
-					L"vl::glr::workflow::WfStateSwitchCase::name",
-					L"vl::glr::workflow::WfStateSwitchCase::statement",
-					L"vl::glr::workflow::WfStateSwitchStatement::caseBranches",
-					L"vl::glr::workflow::WfStateSwitchStatement::type",
-					L"vl::glr::workflow::WfStringExpression::value",
-					L"vl::glr::workflow::WfStructDeclaration::members",
-					L"vl::glr::workflow::WfStructMember::attributes",
-					L"vl::glr::workflow::WfStructMember::name",
-					L"vl::glr::workflow::WfStructMember::type",
-					L"vl::glr::workflow::WfSwitchCase::expression",
-					L"vl::glr::workflow::WfSwitchCase::statement",
-					L"vl::glr::workflow::WfSwitchStatement::caseBranches",
-					L"vl::glr::workflow::WfSwitchStatement::defaultBranch",
-					L"vl::glr::workflow::WfSwitchStatement::expression",
-					L"vl::glr::workflow::WfTopQualifiedExpression::name",
-					L"vl::glr::workflow::WfTopQualifiedType::name",
-					L"vl::glr::workflow::WfTryStatement::catchStatement",
-					L"vl::glr::workflow::WfTryStatement::finallyStatement",
-					L"vl::glr::workflow::WfTryStatement::name",
-					L"vl::glr::workflow::WfTryStatement::protectedStatement",
-					L"vl::glr::workflow::WfTypeCastingExpression::expression",
-					L"vl::glr::workflow::WfTypeCastingExpression::strategy",
-					L"vl::glr::workflow::WfTypeCastingExpression::type",
-					L"vl::glr::workflow::WfTypeOfExpressionExpression::expression",
-					L"vl::glr::workflow::WfTypeOfTypeExpression::type",
-					L"vl::glr::workflow::WfTypeTestingExpression::expression",
-					L"vl::glr::workflow::WfTypeTestingExpression::test",
-					L"vl::glr::workflow::WfTypeTestingExpression::type",
-					L"vl::glr::workflow::WfUnaryExpression::op",
-					L"vl::glr::workflow::WfUnaryExpression::operand",
-					L"vl::glr::workflow::WfVariableDeclaration::expression",
-					L"vl::glr::workflow::WfVariableDeclaration::type",
-					L"vl::glr::workflow::WfVariableStatement::variable",
-					L"vl::glr::workflow::WfVirtualCfeDeclaration::expandedDeclarations",
-					L"vl::glr::workflow::WfVirtualCfeExpression::expandedExpression",
-					L"vl::glr::workflow::WfVirtualCseDeclaration::expandedDeclarations",
-					L"vl::glr::workflow::WfVirtualCseExpression::expandedExpression",
-					L"vl::glr::workflow::WfVirtualCseStatement::expandedStatement",
-					L"vl::glr::workflow::WfWhileStatement::condition",
-					L"vl::glr::workflow::WfWhileStatement::statement",
-				};
-				vl::vint index = (vl::vint)field;
-				return 0 <= index && index < 197 ? results[index] : nullptr;
-			}
-
-			vl::Ptr<vl::glr::ParsingAstBase> WorkflowAstInsReceiver::ResolveAmbiguity(vl::vint32_t type, vl::collections::Array<vl::Ptr<vl::glr::ParsingAstBase>>& candidates)
-			{
-				auto cppTypeName = WorkflowCppTypeName((WorkflowClasses)type);
-				return vl::glr::AssemblyThrowTypeNotAllowAmbiguity(type, cppTypeName);
-			}
+	vl::Ptr<vl::glr::ParsingAstBase> WorkflowAstInsReceiver::CreateAstNode(vl::vint32_t type)
+	{
+		auto cppTypeName = WorkflowCppTypeName((WorkflowClasses)type);
+		switch((WorkflowClasses)type)
+		{
+		case WorkflowClasses::AttachEventExpression:
+			return vl::Ptr(new vl::glr::workflow::WfAttachEventExpression);
+		case WorkflowClasses::Attribute:
+			return vl::Ptr(new vl::glr::workflow::WfAttribute);
+		case WorkflowClasses::AutoPropertyDeclaration:
+			return vl::Ptr(new vl::glr::workflow::WfAutoPropertyDeclaration);
+		case WorkflowClasses::BaseConstructorCall:
+			return vl::Ptr(new vl::glr::workflow::WfBaseConstructorCall);
+		case WorkflowClasses::BinaryExpression:
+			return vl::Ptr(new vl::glr::workflow::WfBinaryExpression);
+		case WorkflowClasses::BindExpression:
+			return vl::Ptr(new vl::glr::workflow::WfBindExpression);
+		case WorkflowClasses::BlockStatement:
+			return vl::Ptr(new vl::glr::workflow::WfBlockStatement);
+		case WorkflowClasses::BreakStatement:
+			return vl::Ptr(new vl::glr::workflow::WfBreakStatement);
+		case WorkflowClasses::CallExpression:
+			return vl::Ptr(new vl::glr::workflow::WfCallExpression);
+		case WorkflowClasses::CastResultInterfaceDeclaration:
+			return vl::Ptr(new vl::glr::workflow::WfCastResultInterfaceDeclaration);
+		case WorkflowClasses::ChildExpression:
+			return vl::Ptr(new vl::glr::workflow::WfChildExpression);
+		case WorkflowClasses::ChildType:
+			return vl::Ptr(new vl::glr::workflow::WfChildType);
+		case WorkflowClasses::ClassDeclaration:
+			return vl::Ptr(new vl::glr::workflow::WfClassDeclaration);
+		case WorkflowClasses::CoOperatorExpression:
+			return vl::Ptr(new vl::glr::workflow::WfCoOperatorExpression);
+		case WorkflowClasses::CoOperatorStatement:
+			return vl::Ptr(new vl::glr::workflow::WfCoOperatorStatement);
+		case WorkflowClasses::CoPauseStatement:
+			return vl::Ptr(new vl::glr::workflow::WfCoPauseStatement);
+		case WorkflowClasses::CoProviderStatement:
+			return vl::Ptr(new vl::glr::workflow::WfCoProviderStatement);
+		case WorkflowClasses::ConstructorArgument:
+			return vl::Ptr(new vl::glr::workflow::WfConstructorArgument);
+		case WorkflowClasses::ConstructorDeclaration:
+			return vl::Ptr(new vl::glr::workflow::WfConstructorDeclaration);
+		case WorkflowClasses::ConstructorExpression:
+			return vl::Ptr(new vl::glr::workflow::WfConstructorExpression);
+		case WorkflowClasses::ContinueStatement:
+			return vl::Ptr(new vl::glr::workflow::WfContinueStatement);
+		case WorkflowClasses::DeleteStatement:
+			return vl::Ptr(new vl::glr::workflow::WfDeleteStatement);
+		case WorkflowClasses::DestructorDeclaration:
+			return vl::Ptr(new vl::glr::workflow::WfDestructorDeclaration);
+		case WorkflowClasses::DetachEventExpression:
+			return vl::Ptr(new vl::glr::workflow::WfDetachEventExpression);
+		case WorkflowClasses::EnumDeclaration:
+			return vl::Ptr(new vl::glr::workflow::WfEnumDeclaration);
+		case WorkflowClasses::EnumItem:
+			return vl::Ptr(new vl::glr::workflow::WfEnumItem);
+		case WorkflowClasses::EnumItemIntersection:
+			return vl::Ptr(new vl::glr::workflow::WfEnumItemIntersection);
+		case WorkflowClasses::EnumerableType:
+			return vl::Ptr(new vl::glr::workflow::WfEnumerableType);
+		case WorkflowClasses::EventDeclaration:
+			return vl::Ptr(new vl::glr::workflow::WfEventDeclaration);
+		case WorkflowClasses::ExpectedTypeCastExpression:
+			return vl::Ptr(new vl::glr::workflow::WfExpectedTypeCastExpression);
+		case WorkflowClasses::ExpressionStatement:
+			return vl::Ptr(new vl::glr::workflow::WfExpressionStatement);
+		case WorkflowClasses::FloatingExpression:
+			return vl::Ptr(new vl::glr::workflow::WfFloatingExpression);
+		case WorkflowClasses::ForEachStatement:
+			return vl::Ptr(new vl::glr::workflow::WfForEachStatement);
+		case WorkflowClasses::FormatExpression:
+			return vl::Ptr(new vl::glr::workflow::WfFormatExpression);
+		case WorkflowClasses::FunctionArgument:
+			return vl::Ptr(new vl::glr::workflow::WfFunctionArgument);
+		case WorkflowClasses::FunctionDeclaration:
+			return vl::Ptr(new vl::glr::workflow::WfFunctionDeclaration);
+		case WorkflowClasses::FunctionExpression:
+			return vl::Ptr(new vl::glr::workflow::WfFunctionExpression);
+		case WorkflowClasses::FunctionType:
+			return vl::Ptr(new vl::glr::workflow::WfFunctionType);
+		case WorkflowClasses::GotoStatement:
+			return vl::Ptr(new vl::glr::workflow::WfGotoStatement);
+		case WorkflowClasses::IfExpression:
+			return vl::Ptr(new vl::glr::workflow::WfIfExpression);
+		case WorkflowClasses::IfStatement:
+			return vl::Ptr(new vl::glr::workflow::WfIfStatement);
+		case WorkflowClasses::InferExpression:
+			return vl::Ptr(new vl::glr::workflow::WfInferExpression);
+		case WorkflowClasses::IntegerExpression:
+			return vl::Ptr(new vl::glr::workflow::WfIntegerExpression);
+		case WorkflowClasses::LetExpression:
+			return vl::Ptr(new vl::glr::workflow::WfLetExpression);
+		case WorkflowClasses::LetVariable:
+			return vl::Ptr(new vl::glr::workflow::WfLetVariable);
+		case WorkflowClasses::LiteralExpression:
+			return vl::Ptr(new vl::glr::workflow::WfLiteralExpression);
+		case WorkflowClasses::MapType:
+			return vl::Ptr(new vl::glr::workflow::WfMapType);
+		case WorkflowClasses::MemberExpression:
+			return vl::Ptr(new vl::glr::workflow::WfMemberExpression);
+		case WorkflowClasses::MixinCastExpression:
+			return vl::Ptr(new vl::glr::workflow::WfMixinCastExpression);
+		case WorkflowClasses::Module:
+			return vl::Ptr(new vl::glr::workflow::WfModule);
+		case WorkflowClasses::ModuleUsingItem:
+			return vl::Ptr(new vl::glr::workflow::WfModuleUsingItem);
+		case WorkflowClasses::ModuleUsingNameFragment:
+			return vl::Ptr(new vl::glr::workflow::WfModuleUsingNameFragment);
+		case WorkflowClasses::ModuleUsingPath:
+			return vl::Ptr(new vl::glr::workflow::WfModuleUsingPath);
+		case WorkflowClasses::ModuleUsingWildCardFragment:
+			return vl::Ptr(new vl::glr::workflow::WfModuleUsingWildCardFragment);
+		case WorkflowClasses::NamespaceDeclaration:
+			return vl::Ptr(new vl::glr::workflow::WfNamespaceDeclaration);
+		case WorkflowClasses::NewClassExpression:
+			return vl::Ptr(new vl::glr::workflow::WfNewClassExpression);
+		case WorkflowClasses::NewCoroutineExpression:
+			return vl::Ptr(new vl::glr::workflow::WfNewCoroutineExpression);
+		case WorkflowClasses::NewInterfaceExpression:
+			return vl::Ptr(new vl::glr::workflow::WfNewInterfaceExpression);
+		case WorkflowClasses::NullableType:
+			return vl::Ptr(new vl::glr::workflow::WfNullableType);
+		case WorkflowClasses::ObservableListType:
+			return vl::Ptr(new vl::glr::workflow::WfObservableListType);
+		case WorkflowClasses::ObserveExpression:
+			return vl::Ptr(new vl::glr::workflow::WfObserveExpression);
+		case WorkflowClasses::OrderedLambdaExpression:
+			return vl::Ptr(new vl::glr::workflow::WfOrderedLambdaExpression);
+		case WorkflowClasses::OrderedNameExpression:
+			return vl::Ptr(new vl::glr::workflow::WfOrderedNameExpression);
+		case WorkflowClasses::PredefinedType:
+			return vl::Ptr(new vl::glr::workflow::WfPredefinedType);
+		case WorkflowClasses::PropertyDeclaration:
+			return vl::Ptr(new vl::glr::workflow::WfPropertyDeclaration);
+		case WorkflowClasses::RaiseExceptionStatement:
+			return vl::Ptr(new vl::glr::workflow::WfRaiseExceptionStatement);
+		case WorkflowClasses::RangeExpression:
+			return vl::Ptr(new vl::glr::workflow::WfRangeExpression);
+		case WorkflowClasses::RawPointerType:
+			return vl::Ptr(new vl::glr::workflow::WfRawPointerType);
+		case WorkflowClasses::ReferenceExpression:
+			return vl::Ptr(new vl::glr::workflow::WfReferenceExpression);
+		case WorkflowClasses::ReferenceType:
+			return vl::Ptr(new vl::glr::workflow::WfReferenceType);
+		case WorkflowClasses::ReturnStatement:
+			return vl::Ptr(new vl::glr::workflow::WfReturnStatement);
+		case WorkflowClasses::SetTestingExpression:
+			return vl::Ptr(new vl::glr::workflow::WfSetTestingExpression);
+		case WorkflowClasses::SharedPointerType:
+			return vl::Ptr(new vl::glr::workflow::WfSharedPointerType);
+		case WorkflowClasses::StateDeclaration:
+			return vl::Ptr(new vl::glr::workflow::WfStateDeclaration);
+		case WorkflowClasses::StateInput:
+			return vl::Ptr(new vl::glr::workflow::WfStateInput);
+		case WorkflowClasses::StateInvokeStatement:
+			return vl::Ptr(new vl::glr::workflow::WfStateInvokeStatement);
+		case WorkflowClasses::StateMachineDeclaration:
+			return vl::Ptr(new vl::glr::workflow::WfStateMachineDeclaration);
+		case WorkflowClasses::StateSwitchArgument:
+			return vl::Ptr(new vl::glr::workflow::WfStateSwitchArgument);
+		case WorkflowClasses::StateSwitchCase:
+			return vl::Ptr(new vl::glr::workflow::WfStateSwitchCase);
+		case WorkflowClasses::StateSwitchStatement:
+			return vl::Ptr(new vl::glr::workflow::WfStateSwitchStatement);
+		case WorkflowClasses::StringExpression:
+			return vl::Ptr(new vl::glr::workflow::WfStringExpression);
+		case WorkflowClasses::StructDeclaration:
+			return vl::Ptr(new vl::glr::workflow::WfStructDeclaration);
+		case WorkflowClasses::StructMember:
+			return vl::Ptr(new vl::glr::workflow::WfStructMember);
+		case WorkflowClasses::SwitchCase:
+			return vl::Ptr(new vl::glr::workflow::WfSwitchCase);
+		case WorkflowClasses::SwitchStatement:
+			return vl::Ptr(new vl::glr::workflow::WfSwitchStatement);
+		case WorkflowClasses::ThisExpression:
+			return vl::Ptr(new vl::glr::workflow::WfThisExpression);
+		case WorkflowClasses::TopQualifiedExpression:
+			return vl::Ptr(new vl::glr::workflow::WfTopQualifiedExpression);
+		case WorkflowClasses::TopQualifiedType:
+			return vl::Ptr(new vl::glr::workflow::WfTopQualifiedType);
+		case WorkflowClasses::TryStatement:
+			return vl::Ptr(new vl::glr::workflow::WfTryStatement);
+		case WorkflowClasses::TypeCastingExpression:
+			return vl::Ptr(new vl::glr::workflow::WfTypeCastingExpression);
+		case WorkflowClasses::TypeOfExpressionExpression:
+			return vl::Ptr(new vl::glr::workflow::WfTypeOfExpressionExpression);
+		case WorkflowClasses::TypeOfTypeExpression:
+			return vl::Ptr(new vl::glr::workflow::WfTypeOfTypeExpression);
+		case WorkflowClasses::TypeTestingExpression:
+			return vl::Ptr(new vl::glr::workflow::WfTypeTestingExpression);
+		case WorkflowClasses::UnaryExpression:
+			return vl::Ptr(new vl::glr::workflow::WfUnaryExpression);
+		case WorkflowClasses::VariableDeclaration:
+			return vl::Ptr(new vl::glr::workflow::WfVariableDeclaration);
+		case WorkflowClasses::VariableStatement:
+			return vl::Ptr(new vl::glr::workflow::WfVariableStatement);
+		case WorkflowClasses::WhileStatement:
+			return vl::Ptr(new vl::glr::workflow::WfWhileStatement);
+		default:
+			return vl::glr::AssemblyThrowCannotCreateAbstractType(type, cppTypeName);
 		}
+	}
+
+	void WorkflowAstInsReceiver::SetField(vl::glr::ParsingAstBase* object, vl::vint32_t field, vl::Ptr<vl::glr::ParsingAstBase> value)
+	{
+		auto cppFieldName = WorkflowCppFieldName((WorkflowFields)field);
+		switch((WorkflowFields)field)
+		{
+		case WorkflowFields::AttachEventExpression_event:
+			return vl::glr::AssemblerSetObjectField(&vl::glr::workflow::WfAttachEventExpression::event, object, field, value, cppFieldName);
+		case WorkflowFields::AttachEventExpression_function:
+			return vl::glr::AssemblerSetObjectField(&vl::glr::workflow::WfAttachEventExpression::function, object, field, value, cppFieldName);
+		case WorkflowFields::Attribute_value:
+			return vl::glr::AssemblerSetObjectField(&vl::glr::workflow::WfAttribute::value, object, field, value, cppFieldName);
+		case WorkflowFields::AutoPropertyDeclaration_expression:
+			return vl::glr::AssemblerSetObjectField(&vl::glr::workflow::WfAutoPropertyDeclaration::expression, object, field, value, cppFieldName);
+		case WorkflowFields::AutoPropertyDeclaration_type:
+			return vl::glr::AssemblerSetObjectField(&vl::glr::workflow::WfAutoPropertyDeclaration::type, object, field, value, cppFieldName);
+		case WorkflowFields::BaseConstructorCall_arguments:
+			return vl::glr::AssemblerSetObjectField(&vl::glr::workflow::WfBaseConstructorCall::arguments, object, field, value, cppFieldName);
+		case WorkflowFields::BaseConstructorCall_type:
+			return vl::glr::AssemblerSetObjectField(&vl::glr::workflow::WfBaseConstructorCall::type, object, field, value, cppFieldName);
+		case WorkflowFields::BinaryExpression_first:
+			return vl::glr::AssemblerSetObjectField(&vl::glr::workflow::WfBinaryExpression::first, object, field, value, cppFieldName);
+		case WorkflowFields::BinaryExpression_second:
+			return vl::glr::AssemblerSetObjectField(&vl::glr::workflow::WfBinaryExpression::second, object, field, value, cppFieldName);
+		case WorkflowFields::BindExpression_expression:
+			return vl::glr::AssemblerSetObjectField(&vl::glr::workflow::WfBindExpression::expression, object, field, value, cppFieldName);
+		case WorkflowFields::BlockStatement_statements:
+			return vl::glr::AssemblerSetObjectField(&vl::glr::workflow::WfBlockStatement::statements, object, field, value, cppFieldName);
+		case WorkflowFields::CallExpression_arguments:
+			return vl::glr::AssemblerSetObjectField(&vl::glr::workflow::WfCallExpression::arguments, object, field, value, cppFieldName);
+		case WorkflowFields::CallExpression_function:
+			return vl::glr::AssemblerSetObjectField(&vl::glr::workflow::WfCallExpression::function, object, field, value, cppFieldName);
+		case WorkflowFields::CastResultInterfaceDeclaration_baseType:
+			return vl::glr::AssemblerSetObjectField(&vl::glr::workflow::WfCastResultInterfaceDeclaration::baseType, object, field, value, cppFieldName);
+		case WorkflowFields::CastResultInterfaceDeclaration_elementType:
+			return vl::glr::AssemblerSetObjectField(&vl::glr::workflow::WfCastResultInterfaceDeclaration::elementType, object, field, value, cppFieldName);
+		case WorkflowFields::ChildExpression_parent:
+			return vl::glr::AssemblerSetObjectField(&vl::glr::workflow::WfChildExpression::parent, object, field, value, cppFieldName);
+		case WorkflowFields::ChildType_parent:
+			return vl::glr::AssemblerSetObjectField(&vl::glr::workflow::WfChildType::parent, object, field, value, cppFieldName);
+		case WorkflowFields::ClassDeclaration_baseTypes:
+			return vl::glr::AssemblerSetObjectField(&vl::glr::workflow::WfClassDeclaration::baseTypes, object, field, value, cppFieldName);
+		case WorkflowFields::ClassDeclaration_declarations:
+			return vl::glr::AssemblerSetObjectField(&vl::glr::workflow::WfClassDeclaration::declarations, object, field, value, cppFieldName);
+		case WorkflowFields::CoOperatorStatement_arguments:
+			return vl::glr::AssemblerSetObjectField(&vl::glr::workflow::WfCoOperatorStatement::arguments, object, field, value, cppFieldName);
+		case WorkflowFields::CoPauseStatement_statement:
+			return vl::glr::AssemblerSetObjectField(&vl::glr::workflow::WfCoPauseStatement::statement, object, field, value, cppFieldName);
+		case WorkflowFields::CoProviderStatement_statement:
+			return vl::glr::AssemblerSetObjectField(&vl::glr::workflow::WfCoProviderStatement::statement, object, field, value, cppFieldName);
+		case WorkflowFields::ConstructorArgument_key:
+			return vl::glr::AssemblerSetObjectField(&vl::glr::workflow::WfConstructorArgument::key, object, field, value, cppFieldName);
+		case WorkflowFields::ConstructorArgument_value:
+			return vl::glr::AssemblerSetObjectField(&vl::glr::workflow::WfConstructorArgument::value, object, field, value, cppFieldName);
+		case WorkflowFields::ConstructorDeclaration_arguments:
+			return vl::glr::AssemblerSetObjectField(&vl::glr::workflow::WfConstructorDeclaration::arguments, object, field, value, cppFieldName);
+		case WorkflowFields::ConstructorDeclaration_baseConstructorCalls:
+			return vl::glr::AssemblerSetObjectField(&vl::glr::workflow::WfConstructorDeclaration::baseConstructorCalls, object, field, value, cppFieldName);
+		case WorkflowFields::ConstructorDeclaration_statement:
+			return vl::glr::AssemblerSetObjectField(&vl::glr::workflow::WfConstructorDeclaration::statement, object, field, value, cppFieldName);
+		case WorkflowFields::ConstructorExpression_arguments:
+			return vl::glr::AssemblerSetObjectField(&vl::glr::workflow::WfConstructorExpression::arguments, object, field, value, cppFieldName);
+		case WorkflowFields::Declaration_attributes:
+			return vl::glr::AssemblerSetObjectField(&vl::glr::workflow::WfDeclaration::attributes, object, field, value, cppFieldName);
+		case WorkflowFields::DeleteStatement_expression:
+			return vl::glr::AssemblerSetObjectField(&vl::glr::workflow::WfDeleteStatement::expression, object, field, value, cppFieldName);
+		case WorkflowFields::DestructorDeclaration_statement:
+			return vl::glr::AssemblerSetObjectField(&vl::glr::workflow::WfDestructorDeclaration::statement, object, field, value, cppFieldName);
+		case WorkflowFields::DetachEventExpression_event:
+			return vl::glr::AssemblerSetObjectField(&vl::glr::workflow::WfDetachEventExpression::event, object, field, value, cppFieldName);
+		case WorkflowFields::DetachEventExpression_handler:
+			return vl::glr::AssemblerSetObjectField(&vl::glr::workflow::WfDetachEventExpression::handler, object, field, value, cppFieldName);
+		case WorkflowFields::EnumDeclaration_items:
+			return vl::glr::AssemblerSetObjectField(&vl::glr::workflow::WfEnumDeclaration::items, object, field, value, cppFieldName);
+		case WorkflowFields::EnumItem_attributes:
+			return vl::glr::AssemblerSetObjectField(&vl::glr::workflow::WfEnumItem::attributes, object, field, value, cppFieldName);
+		case WorkflowFields::EnumItem_intersections:
+			return vl::glr::AssemblerSetObjectField(&vl::glr::workflow::WfEnumItem::intersections, object, field, value, cppFieldName);
+		case WorkflowFields::EnumerableType_element:
+			return vl::glr::AssemblerSetObjectField(&vl::glr::workflow::WfEnumerableType::element, object, field, value, cppFieldName);
+		case WorkflowFields::EventDeclaration_arguments:
+			return vl::glr::AssemblerSetObjectField(&vl::glr::workflow::WfEventDeclaration::arguments, object, field, value, cppFieldName);
+		case WorkflowFields::ExpectedTypeCastExpression_expression:
+			return vl::glr::AssemblerSetObjectField(&vl::glr::workflow::WfExpectedTypeCastExpression::expression, object, field, value, cppFieldName);
+		case WorkflowFields::ExpressionStatement_expression:
+			return vl::glr::AssemblerSetObjectField(&vl::glr::workflow::WfExpressionStatement::expression, object, field, value, cppFieldName);
+		case WorkflowFields::ForEachStatement_collection:
+			return vl::glr::AssemblerSetObjectField(&vl::glr::workflow::WfForEachStatement::collection, object, field, value, cppFieldName);
+		case WorkflowFields::ForEachStatement_statement:
+			return vl::glr::AssemblerSetObjectField(&vl::glr::workflow::WfForEachStatement::statement, object, field, value, cppFieldName);
+		case WorkflowFields::FunctionArgument_attributes:
+			return vl::glr::AssemblerSetObjectField(&vl::glr::workflow::WfFunctionArgument::attributes, object, field, value, cppFieldName);
+		case WorkflowFields::FunctionArgument_type:
+			return vl::glr::AssemblerSetObjectField(&vl::glr::workflow::WfFunctionArgument::type, object, field, value, cppFieldName);
+		case WorkflowFields::FunctionDeclaration_arguments:
+			return vl::glr::AssemblerSetObjectField(&vl::glr::workflow::WfFunctionDeclaration::arguments, object, field, value, cppFieldName);
+		case WorkflowFields::FunctionDeclaration_returnType:
+			return vl::glr::AssemblerSetObjectField(&vl::glr::workflow::WfFunctionDeclaration::returnType, object, field, value, cppFieldName);
+		case WorkflowFields::FunctionDeclaration_statement:
+			return vl::glr::AssemblerSetObjectField(&vl::glr::workflow::WfFunctionDeclaration::statement, object, field, value, cppFieldName);
+		case WorkflowFields::FunctionExpression_function:
+			return vl::glr::AssemblerSetObjectField(&vl::glr::workflow::WfFunctionExpression::function, object, field, value, cppFieldName);
+		case WorkflowFields::FunctionType_arguments:
+			return vl::glr::AssemblerSetObjectField(&vl::glr::workflow::WfFunctionType::arguments, object, field, value, cppFieldName);
+		case WorkflowFields::FunctionType_result:
+			return vl::glr::AssemblerSetObjectField(&vl::glr::workflow::WfFunctionType::result, object, field, value, cppFieldName);
+		case WorkflowFields::IfExpression_condition:
+			return vl::glr::AssemblerSetObjectField(&vl::glr::workflow::WfIfExpression::condition, object, field, value, cppFieldName);
+		case WorkflowFields::IfExpression_falseBranch:
+			return vl::glr::AssemblerSetObjectField(&vl::glr::workflow::WfIfExpression::falseBranch, object, field, value, cppFieldName);
+		case WorkflowFields::IfExpression_trueBranch:
+			return vl::glr::AssemblerSetObjectField(&vl::glr::workflow::WfIfExpression::trueBranch, object, field, value, cppFieldName);
+		case WorkflowFields::IfStatement_expression:
+			return vl::glr::AssemblerSetObjectField(&vl::glr::workflow::WfIfStatement::expression, object, field, value, cppFieldName);
+		case WorkflowFields::IfStatement_falseBranch:
+			return vl::glr::AssemblerSetObjectField(&vl::glr::workflow::WfIfStatement::falseBranch, object, field, value, cppFieldName);
+		case WorkflowFields::IfStatement_trueBranch:
+			return vl::glr::AssemblerSetObjectField(&vl::glr::workflow::WfIfStatement::trueBranch, object, field, value, cppFieldName);
+		case WorkflowFields::IfStatement_type:
+			return vl::glr::AssemblerSetObjectField(&vl::glr::workflow::WfIfStatement::type, object, field, value, cppFieldName);
+		case WorkflowFields::InferExpression_expression:
+			return vl::glr::AssemblerSetObjectField(&vl::glr::workflow::WfInferExpression::expression, object, field, value, cppFieldName);
+		case WorkflowFields::InferExpression_type:
+			return vl::glr::AssemblerSetObjectField(&vl::glr::workflow::WfInferExpression::type, object, field, value, cppFieldName);
+		case WorkflowFields::LetExpression_expression:
+			return vl::glr::AssemblerSetObjectField(&vl::glr::workflow::WfLetExpression::expression, object, field, value, cppFieldName);
+		case WorkflowFields::LetExpression_variables:
+			return vl::glr::AssemblerSetObjectField(&vl::glr::workflow::WfLetExpression::variables, object, field, value, cppFieldName);
+		case WorkflowFields::LetVariable_value:
+			return vl::glr::AssemblerSetObjectField(&vl::glr::workflow::WfLetVariable::value, object, field, value, cppFieldName);
+		case WorkflowFields::MapType_key:
+			return vl::glr::AssemblerSetObjectField(&vl::glr::workflow::WfMapType::key, object, field, value, cppFieldName);
+		case WorkflowFields::MapType_value:
+			return vl::glr::AssemblerSetObjectField(&vl::glr::workflow::WfMapType::value, object, field, value, cppFieldName);
+		case WorkflowFields::MemberExpression_parent:
+			return vl::glr::AssemblerSetObjectField(&vl::glr::workflow::WfMemberExpression::parent, object, field, value, cppFieldName);
+		case WorkflowFields::MixinCastExpression_expression:
+			return vl::glr::AssemblerSetObjectField(&vl::glr::workflow::WfMixinCastExpression::expression, object, field, value, cppFieldName);
+		case WorkflowFields::MixinCastExpression_type:
+			return vl::glr::AssemblerSetObjectField(&vl::glr::workflow::WfMixinCastExpression::type, object, field, value, cppFieldName);
+		case WorkflowFields::Module_declarations:
+			return vl::glr::AssemblerSetObjectField(&vl::glr::workflow::WfModule::declarations, object, field, value, cppFieldName);
+		case WorkflowFields::Module_paths:
+			return vl::glr::AssemblerSetObjectField(&vl::glr::workflow::WfModule::paths, object, field, value, cppFieldName);
+		case WorkflowFields::ModuleUsingItem_fragments:
+			return vl::glr::AssemblerSetObjectField(&vl::glr::workflow::WfModuleUsingItem::fragments, object, field, value, cppFieldName);
+		case WorkflowFields::ModuleUsingPath_items:
+			return vl::glr::AssemblerSetObjectField(&vl::glr::workflow::WfModuleUsingPath::items, object, field, value, cppFieldName);
+		case WorkflowFields::NamespaceDeclaration_declarations:
+			return vl::glr::AssemblerSetObjectField(&vl::glr::workflow::WfNamespaceDeclaration::declarations, object, field, value, cppFieldName);
+		case WorkflowFields::NewClassExpression_arguments:
+			return vl::glr::AssemblerSetObjectField(&vl::glr::workflow::WfNewClassExpression::arguments, object, field, value, cppFieldName);
+		case WorkflowFields::NewClassExpression_type:
+			return vl::glr::AssemblerSetObjectField(&vl::glr::workflow::WfNewClassExpression::type, object, field, value, cppFieldName);
+		case WorkflowFields::NewCoroutineExpression_statement:
+			return vl::glr::AssemblerSetObjectField(&vl::glr::workflow::WfNewCoroutineExpression::statement, object, field, value, cppFieldName);
+		case WorkflowFields::NewInterfaceExpression_declarations:
+			return vl::glr::AssemblerSetObjectField(&vl::glr::workflow::WfNewInterfaceExpression::declarations, object, field, value, cppFieldName);
+		case WorkflowFields::NewInterfaceExpression_type:
+			return vl::glr::AssemblerSetObjectField(&vl::glr::workflow::WfNewInterfaceExpression::type, object, field, value, cppFieldName);
+		case WorkflowFields::NullableType_element:
+			return vl::glr::AssemblerSetObjectField(&vl::glr::workflow::WfNullableType::element, object, field, value, cppFieldName);
+		case WorkflowFields::ObservableListType_element:
+			return vl::glr::AssemblerSetObjectField(&vl::glr::workflow::WfObservableListType::element, object, field, value, cppFieldName);
+		case WorkflowFields::ObserveExpression_events:
+			return vl::glr::AssemblerSetObjectField(&vl::glr::workflow::WfObserveExpression::events, object, field, value, cppFieldName);
+		case WorkflowFields::ObserveExpression_expression:
+			return vl::glr::AssemblerSetObjectField(&vl::glr::workflow::WfObserveExpression::expression, object, field, value, cppFieldName);
+		case WorkflowFields::ObserveExpression_parent:
+			return vl::glr::AssemblerSetObjectField(&vl::glr::workflow::WfObserveExpression::parent, object, field, value, cppFieldName);
+		case WorkflowFields::OrderedLambdaExpression_body:
+			return vl::glr::AssemblerSetObjectField(&vl::glr::workflow::WfOrderedLambdaExpression::body, object, field, value, cppFieldName);
+		case WorkflowFields::PropertyDeclaration_type:
+			return vl::glr::AssemblerSetObjectField(&vl::glr::workflow::WfPropertyDeclaration::type, object, field, value, cppFieldName);
+		case WorkflowFields::RaiseExceptionStatement_expression:
+			return vl::glr::AssemblerSetObjectField(&vl::glr::workflow::WfRaiseExceptionStatement::expression, object, field, value, cppFieldName);
+		case WorkflowFields::RangeExpression_begin:
+			return vl::glr::AssemblerSetObjectField(&vl::glr::workflow::WfRangeExpression::begin, object, field, value, cppFieldName);
+		case WorkflowFields::RangeExpression_end:
+			return vl::glr::AssemblerSetObjectField(&vl::glr::workflow::WfRangeExpression::end, object, field, value, cppFieldName);
+		case WorkflowFields::RawPointerType_element:
+			return vl::glr::AssemblerSetObjectField(&vl::glr::workflow::WfRawPointerType::element, object, field, value, cppFieldName);
+		case WorkflowFields::ReturnStatement_expression:
+			return vl::glr::AssemblerSetObjectField(&vl::glr::workflow::WfReturnStatement::expression, object, field, value, cppFieldName);
+		case WorkflowFields::SetTestingExpression_collection:
+			return vl::glr::AssemblerSetObjectField(&vl::glr::workflow::WfSetTestingExpression::collection, object, field, value, cppFieldName);
+		case WorkflowFields::SetTestingExpression_element:
+			return vl::glr::AssemblerSetObjectField(&vl::glr::workflow::WfSetTestingExpression::element, object, field, value, cppFieldName);
+		case WorkflowFields::SharedPointerType_element:
+			return vl::glr::AssemblerSetObjectField(&vl::glr::workflow::WfSharedPointerType::element, object, field, value, cppFieldName);
+		case WorkflowFields::StateDeclaration_arguments:
+			return vl::glr::AssemblerSetObjectField(&vl::glr::workflow::WfStateDeclaration::arguments, object, field, value, cppFieldName);
+		case WorkflowFields::StateDeclaration_statement:
+			return vl::glr::AssemblerSetObjectField(&vl::glr::workflow::WfStateDeclaration::statement, object, field, value, cppFieldName);
+		case WorkflowFields::StateInput_arguments:
+			return vl::glr::AssemblerSetObjectField(&vl::glr::workflow::WfStateInput::arguments, object, field, value, cppFieldName);
+		case WorkflowFields::StateInvokeStatement_arguments:
+			return vl::glr::AssemblerSetObjectField(&vl::glr::workflow::WfStateInvokeStatement::arguments, object, field, value, cppFieldName);
+		case WorkflowFields::StateMachineDeclaration_inputs:
+			return vl::glr::AssemblerSetObjectField(&vl::glr::workflow::WfStateMachineDeclaration::inputs, object, field, value, cppFieldName);
+		case WorkflowFields::StateMachineDeclaration_states:
+			return vl::glr::AssemblerSetObjectField(&vl::glr::workflow::WfStateMachineDeclaration::states, object, field, value, cppFieldName);
+		case WorkflowFields::StateSwitchCase_arguments:
+			return vl::glr::AssemblerSetObjectField(&vl::glr::workflow::WfStateSwitchCase::arguments, object, field, value, cppFieldName);
+		case WorkflowFields::StateSwitchCase_statement:
+			return vl::glr::AssemblerSetObjectField(&vl::glr::workflow::WfStateSwitchCase::statement, object, field, value, cppFieldName);
+		case WorkflowFields::StateSwitchStatement_caseBranches:
+			return vl::glr::AssemblerSetObjectField(&vl::glr::workflow::WfStateSwitchStatement::caseBranches, object, field, value, cppFieldName);
+		case WorkflowFields::StructDeclaration_members:
+			return vl::glr::AssemblerSetObjectField(&vl::glr::workflow::WfStructDeclaration::members, object, field, value, cppFieldName);
+		case WorkflowFields::StructMember_attributes:
+			return vl::glr::AssemblerSetObjectField(&vl::glr::workflow::WfStructMember::attributes, object, field, value, cppFieldName);
+		case WorkflowFields::StructMember_type:
+			return vl::glr::AssemblerSetObjectField(&vl::glr::workflow::WfStructMember::type, object, field, value, cppFieldName);
+		case WorkflowFields::SwitchCase_expression:
+			return vl::glr::AssemblerSetObjectField(&vl::glr::workflow::WfSwitchCase::expression, object, field, value, cppFieldName);
+		case WorkflowFields::SwitchCase_statement:
+			return vl::glr::AssemblerSetObjectField(&vl::glr::workflow::WfSwitchCase::statement, object, field, value, cppFieldName);
+		case WorkflowFields::SwitchStatement_caseBranches:
+			return vl::glr::AssemblerSetObjectField(&vl::glr::workflow::WfSwitchStatement::caseBranches, object, field, value, cppFieldName);
+		case WorkflowFields::SwitchStatement_defaultBranch:
+			return vl::glr::AssemblerSetObjectField(&vl::glr::workflow::WfSwitchStatement::defaultBranch, object, field, value, cppFieldName);
+		case WorkflowFields::SwitchStatement_expression:
+			return vl::glr::AssemblerSetObjectField(&vl::glr::workflow::WfSwitchStatement::expression, object, field, value, cppFieldName);
+		case WorkflowFields::TryStatement_catchStatement:
+			return vl::glr::AssemblerSetObjectField(&vl::glr::workflow::WfTryStatement::catchStatement, object, field, value, cppFieldName);
+		case WorkflowFields::TryStatement_finallyStatement:
+			return vl::glr::AssemblerSetObjectField(&vl::glr::workflow::WfTryStatement::finallyStatement, object, field, value, cppFieldName);
+		case WorkflowFields::TryStatement_protectedStatement:
+			return vl::glr::AssemblerSetObjectField(&vl::glr::workflow::WfTryStatement::protectedStatement, object, field, value, cppFieldName);
+		case WorkflowFields::TypeCastingExpression_expression:
+			return vl::glr::AssemblerSetObjectField(&vl::glr::workflow::WfTypeCastingExpression::expression, object, field, value, cppFieldName);
+		case WorkflowFields::TypeCastingExpression_type:
+			return vl::glr::AssemblerSetObjectField(&vl::glr::workflow::WfTypeCastingExpression::type, object, field, value, cppFieldName);
+		case WorkflowFields::TypeOfExpressionExpression_expression:
+			return vl::glr::AssemblerSetObjectField(&vl::glr::workflow::WfTypeOfExpressionExpression::expression, object, field, value, cppFieldName);
+		case WorkflowFields::TypeOfTypeExpression_type:
+			return vl::glr::AssemblerSetObjectField(&vl::glr::workflow::WfTypeOfTypeExpression::type, object, field, value, cppFieldName);
+		case WorkflowFields::TypeTestingExpression_expression:
+			return vl::glr::AssemblerSetObjectField(&vl::glr::workflow::WfTypeTestingExpression::expression, object, field, value, cppFieldName);
+		case WorkflowFields::TypeTestingExpression_type:
+			return vl::glr::AssemblerSetObjectField(&vl::glr::workflow::WfTypeTestingExpression::type, object, field, value, cppFieldName);
+		case WorkflowFields::UnaryExpression_operand:
+			return vl::glr::AssemblerSetObjectField(&vl::glr::workflow::WfUnaryExpression::operand, object, field, value, cppFieldName);
+		case WorkflowFields::VariableDeclaration_expression:
+			return vl::glr::AssemblerSetObjectField(&vl::glr::workflow::WfVariableDeclaration::expression, object, field, value, cppFieldName);
+		case WorkflowFields::VariableDeclaration_type:
+			return vl::glr::AssemblerSetObjectField(&vl::glr::workflow::WfVariableDeclaration::type, object, field, value, cppFieldName);
+		case WorkflowFields::VariableStatement_variable:
+			return vl::glr::AssemblerSetObjectField(&vl::glr::workflow::WfVariableStatement::variable, object, field, value, cppFieldName);
+		case WorkflowFields::VirtualCfeDeclaration_expandedDeclarations:
+			return vl::glr::AssemblerSetObjectField(&vl::glr::workflow::WfVirtualCfeDeclaration::expandedDeclarations, object, field, value, cppFieldName);
+		case WorkflowFields::VirtualCfeExpression_expandedExpression:
+			return vl::glr::AssemblerSetObjectField(&vl::glr::workflow::WfVirtualCfeExpression::expandedExpression, object, field, value, cppFieldName);
+		case WorkflowFields::VirtualCseDeclaration_expandedDeclarations:
+			return vl::glr::AssemblerSetObjectField(&vl::glr::workflow::WfVirtualCseDeclaration::expandedDeclarations, object, field, value, cppFieldName);
+		case WorkflowFields::VirtualCseExpression_expandedExpression:
+			return vl::glr::AssemblerSetObjectField(&vl::glr::workflow::WfVirtualCseExpression::expandedExpression, object, field, value, cppFieldName);
+		case WorkflowFields::VirtualCseStatement_expandedStatement:
+			return vl::glr::AssemblerSetObjectField(&vl::glr::workflow::WfVirtualCseStatement::expandedStatement, object, field, value, cppFieldName);
+		case WorkflowFields::WhileStatement_condition:
+			return vl::glr::AssemblerSetObjectField(&vl::glr::workflow::WfWhileStatement::condition, object, field, value, cppFieldName);
+		case WorkflowFields::WhileStatement_statement:
+			return vl::glr::AssemblerSetObjectField(&vl::glr::workflow::WfWhileStatement::statement, object, field, value, cppFieldName);
+		default:
+			return vl::glr::AssemblyThrowFieldNotObject(field, cppFieldName);
+		}
+	}
+
+	void WorkflowAstInsReceiver::SetField(vl::glr::ParsingAstBase* object, vl::vint32_t field, const vl::regex::RegexToken& token, vl::vint32_t tokenIndex)
+	{
+		auto cppFieldName = WorkflowCppFieldName((WorkflowFields)field);
+		switch((WorkflowFields)field)
+		{
+		case WorkflowFields::Attribute_category:
+			return vl::glr::AssemblerSetTokenField(&vl::glr::workflow::WfAttribute::category, object, field, token, tokenIndex, cppFieldName);
+		case WorkflowFields::Attribute_name:
+			return vl::glr::AssemblerSetTokenField(&vl::glr::workflow::WfAttribute::name, object, field, token, tokenIndex, cppFieldName);
+		case WorkflowFields::BlockStatement_endLabel:
+			return vl::glr::AssemblerSetTokenField(&vl::glr::workflow::WfBlockStatement::endLabel, object, field, token, tokenIndex, cppFieldName);
+		case WorkflowFields::ChildExpression_name:
+			return vl::glr::AssemblerSetTokenField(&vl::glr::workflow::WfChildExpression::name, object, field, token, tokenIndex, cppFieldName);
+		case WorkflowFields::ChildType_name:
+			return vl::glr::AssemblerSetTokenField(&vl::glr::workflow::WfChildType::name, object, field, token, tokenIndex, cppFieldName);
+		case WorkflowFields::CoOperatorExpression_name:
+			return vl::glr::AssemblerSetTokenField(&vl::glr::workflow::WfCoOperatorExpression::name, object, field, token, tokenIndex, cppFieldName);
+		case WorkflowFields::CoOperatorStatement_opName:
+			return vl::glr::AssemblerSetTokenField(&vl::glr::workflow::WfCoOperatorStatement::opName, object, field, token, tokenIndex, cppFieldName);
+		case WorkflowFields::CoOperatorStatement_varName:
+			return vl::glr::AssemblerSetTokenField(&vl::glr::workflow::WfCoOperatorStatement::varName, object, field, token, tokenIndex, cppFieldName);
+		case WorkflowFields::CoProviderStatement_name:
+			return vl::glr::AssemblerSetTokenField(&vl::glr::workflow::WfCoProviderStatement::name, object, field, token, tokenIndex, cppFieldName);
+		case WorkflowFields::Declaration_name:
+			return vl::glr::AssemblerSetTokenField(&vl::glr::workflow::WfDeclaration::name, object, field, token, tokenIndex, cppFieldName);
+		case WorkflowFields::EnumItem_name:
+			return vl::glr::AssemblerSetTokenField(&vl::glr::workflow::WfEnumItem::name, object, field, token, tokenIndex, cppFieldName);
+		case WorkflowFields::EnumItem_number:
+			return vl::glr::AssemblerSetTokenField(&vl::glr::workflow::WfEnumItem::number, object, field, token, tokenIndex, cppFieldName);
+		case WorkflowFields::EnumItemIntersection_name:
+			return vl::glr::AssemblerSetTokenField(&vl::glr::workflow::WfEnumItemIntersection::name, object, field, token, tokenIndex, cppFieldName);
+		case WorkflowFields::FloatingExpression_value:
+			return vl::glr::AssemblerSetTokenField(&vl::glr::workflow::WfFloatingExpression::value, object, field, token, tokenIndex, cppFieldName);
+		case WorkflowFields::ForEachStatement_name:
+			return vl::glr::AssemblerSetTokenField(&vl::glr::workflow::WfForEachStatement::name, object, field, token, tokenIndex, cppFieldName);
+		case WorkflowFields::FormatExpression_value:
+			return vl::glr::AssemblerSetTokenField(&vl::glr::workflow::WfFormatExpression::value, object, field, token, tokenIndex, cppFieldName);
+		case WorkflowFields::FunctionArgument_name:
+			return vl::glr::AssemblerSetTokenField(&vl::glr::workflow::WfFunctionArgument::name, object, field, token, tokenIndex, cppFieldName);
+		case WorkflowFields::GotoStatement_label:
+			return vl::glr::AssemblerSetTokenField(&vl::glr::workflow::WfGotoStatement::label, object, field, token, tokenIndex, cppFieldName);
+		case WorkflowFields::IfStatement_name:
+			return vl::glr::AssemblerSetTokenField(&vl::glr::workflow::WfIfStatement::name, object, field, token, tokenIndex, cppFieldName);
+		case WorkflowFields::IntegerExpression_value:
+			return vl::glr::AssemblerSetTokenField(&vl::glr::workflow::WfIntegerExpression::value, object, field, token, tokenIndex, cppFieldName);
+		case WorkflowFields::LetVariable_name:
+			return vl::glr::AssemblerSetTokenField(&vl::glr::workflow::WfLetVariable::name, object, field, token, tokenIndex, cppFieldName);
+		case WorkflowFields::MemberExpression_name:
+			return vl::glr::AssemblerSetTokenField(&vl::glr::workflow::WfMemberExpression::name, object, field, token, tokenIndex, cppFieldName);
+		case WorkflowFields::Module_name:
+			return vl::glr::AssemblerSetTokenField(&vl::glr::workflow::WfModule::name, object, field, token, tokenIndex, cppFieldName);
+		case WorkflowFields::ModuleUsingNameFragment_name:
+			return vl::glr::AssemblerSetTokenField(&vl::glr::workflow::WfModuleUsingNameFragment::name, object, field, token, tokenIndex, cppFieldName);
+		case WorkflowFields::NewCoroutineExpression_name:
+			return vl::glr::AssemblerSetTokenField(&vl::glr::workflow::WfNewCoroutineExpression::name, object, field, token, tokenIndex, cppFieldName);
+		case WorkflowFields::ObserveExpression_name:
+			return vl::glr::AssemblerSetTokenField(&vl::glr::workflow::WfObserveExpression::name, object, field, token, tokenIndex, cppFieldName);
+		case WorkflowFields::OrderedNameExpression_name:
+			return vl::glr::AssemblerSetTokenField(&vl::glr::workflow::WfOrderedNameExpression::name, object, field, token, tokenIndex, cppFieldName);
+		case WorkflowFields::PropertyDeclaration_getter:
+			return vl::glr::AssemblerSetTokenField(&vl::glr::workflow::WfPropertyDeclaration::getter, object, field, token, tokenIndex, cppFieldName);
+		case WorkflowFields::PropertyDeclaration_setter:
+			return vl::glr::AssemblerSetTokenField(&vl::glr::workflow::WfPropertyDeclaration::setter, object, field, token, tokenIndex, cppFieldName);
+		case WorkflowFields::PropertyDeclaration_valueChangedEvent:
+			return vl::glr::AssemblerSetTokenField(&vl::glr::workflow::WfPropertyDeclaration::valueChangedEvent, object, field, token, tokenIndex, cppFieldName);
+		case WorkflowFields::ReferenceExpression_name:
+			return vl::glr::AssemblerSetTokenField(&vl::glr::workflow::WfReferenceExpression::name, object, field, token, tokenIndex, cppFieldName);
+		case WorkflowFields::ReferenceType_name:
+			return vl::glr::AssemblerSetTokenField(&vl::glr::workflow::WfReferenceType::name, object, field, token, tokenIndex, cppFieldName);
+		case WorkflowFields::StateDeclaration_name:
+			return vl::glr::AssemblerSetTokenField(&vl::glr::workflow::WfStateDeclaration::name, object, field, token, tokenIndex, cppFieldName);
+		case WorkflowFields::StateInput_name:
+			return vl::glr::AssemblerSetTokenField(&vl::glr::workflow::WfStateInput::name, object, field, token, tokenIndex, cppFieldName);
+		case WorkflowFields::StateInvokeStatement_name:
+			return vl::glr::AssemblerSetTokenField(&vl::glr::workflow::WfStateInvokeStatement::name, object, field, token, tokenIndex, cppFieldName);
+		case WorkflowFields::StateSwitchArgument_name:
+			return vl::glr::AssemblerSetTokenField(&vl::glr::workflow::WfStateSwitchArgument::name, object, field, token, tokenIndex, cppFieldName);
+		case WorkflowFields::StateSwitchCase_name:
+			return vl::glr::AssemblerSetTokenField(&vl::glr::workflow::WfStateSwitchCase::name, object, field, token, tokenIndex, cppFieldName);
+		case WorkflowFields::StringExpression_value:
+			return vl::glr::AssemblerSetTokenField(&vl::glr::workflow::WfStringExpression::value, object, field, token, tokenIndex, cppFieldName);
+		case WorkflowFields::StructMember_name:
+			return vl::glr::AssemblerSetTokenField(&vl::glr::workflow::WfStructMember::name, object, field, token, tokenIndex, cppFieldName);
+		case WorkflowFields::TopQualifiedExpression_name:
+			return vl::glr::AssemblerSetTokenField(&vl::glr::workflow::WfTopQualifiedExpression::name, object, field, token, tokenIndex, cppFieldName);
+		case WorkflowFields::TopQualifiedType_name:
+			return vl::glr::AssemblerSetTokenField(&vl::glr::workflow::WfTopQualifiedType::name, object, field, token, tokenIndex, cppFieldName);
+		case WorkflowFields::TryStatement_name:
+			return vl::glr::AssemblerSetTokenField(&vl::glr::workflow::WfTryStatement::name, object, field, token, tokenIndex, cppFieldName);
+		default:
+			return vl::glr::AssemblyThrowFieldNotToken(field, cppFieldName);
+		}
+	}
+
+	void WorkflowAstInsReceiver::SetField(vl::glr::ParsingAstBase* object, vl::vint32_t field, vl::vint32_t enumItem, bool weakAssignment)
+	{
+		auto cppFieldName = WorkflowCppFieldName((WorkflowFields)field);
+		switch((WorkflowFields)field)
+		{
+		case WorkflowFields::AutoPropertyDeclaration_configConst:
+			return vl::glr::AssemblerSetEnumField(&vl::glr::workflow::WfAutoPropertyDeclaration::configConst, object, field, enumItem, weakAssignment, cppFieldName);
+		case WorkflowFields::AutoPropertyDeclaration_configObserve:
+			return vl::glr::AssemblerSetEnumField(&vl::glr::workflow::WfAutoPropertyDeclaration::configObserve, object, field, enumItem, weakAssignment, cppFieldName);
+		case WorkflowFields::AutoPropertyDeclaration_functionKind:
+			return vl::glr::AssemblerSetEnumField(&vl::glr::workflow::WfAutoPropertyDeclaration::functionKind, object, field, enumItem, weakAssignment, cppFieldName);
+		case WorkflowFields::BinaryExpression_op:
+			return vl::glr::AssemblerSetEnumField(&vl::glr::workflow::WfBinaryExpression::op, object, field, enumItem, weakAssignment, cppFieldName);
+		case WorkflowFields::ClassDeclaration_constructorType:
+			return vl::glr::AssemblerSetEnumField(&vl::glr::workflow::WfClassDeclaration::constructorType, object, field, enumItem, weakAssignment, cppFieldName);
+		case WorkflowFields::ClassDeclaration_kind:
+			return vl::glr::AssemblerSetEnumField(&vl::glr::workflow::WfClassDeclaration::kind, object, field, enumItem, weakAssignment, cppFieldName);
+		case WorkflowFields::ConstructorDeclaration_constructorType:
+			return vl::glr::AssemblerSetEnumField(&vl::glr::workflow::WfConstructorDeclaration::constructorType, object, field, enumItem, weakAssignment, cppFieldName);
+		case WorkflowFields::EnumDeclaration_kind:
+			return vl::glr::AssemblerSetEnumField(&vl::glr::workflow::WfEnumDeclaration::kind, object, field, enumItem, weakAssignment, cppFieldName);
+		case WorkflowFields::EnumItem_kind:
+			return vl::glr::AssemblerSetEnumField(&vl::glr::workflow::WfEnumItem::kind, object, field, enumItem, weakAssignment, cppFieldName);
+		case WorkflowFields::ExpectedTypeCastExpression_strategy:
+			return vl::glr::AssemblerSetEnumField(&vl::glr::workflow::WfExpectedTypeCastExpression::strategy, object, field, enumItem, weakAssignment, cppFieldName);
+		case WorkflowFields::ForEachStatement_direction:
+			return vl::glr::AssemblerSetEnumField(&vl::glr::workflow::WfForEachStatement::direction, object, field, enumItem, weakAssignment, cppFieldName);
+		case WorkflowFields::FunctionDeclaration_anonymity:
+			return vl::glr::AssemblerSetEnumField(&vl::glr::workflow::WfFunctionDeclaration::anonymity, object, field, enumItem, weakAssignment, cppFieldName);
+		case WorkflowFields::FunctionDeclaration_functionKind:
+			return vl::glr::AssemblerSetEnumField(&vl::glr::workflow::WfFunctionDeclaration::functionKind, object, field, enumItem, weakAssignment, cppFieldName);
+		case WorkflowFields::LiteralExpression_value:
+			return vl::glr::AssemblerSetEnumField(&vl::glr::workflow::WfLiteralExpression::value, object, field, enumItem, weakAssignment, cppFieldName);
+		case WorkflowFields::MapType_writability:
+			return vl::glr::AssemblerSetEnumField(&vl::glr::workflow::WfMapType::writability, object, field, enumItem, weakAssignment, cppFieldName);
+		case WorkflowFields::Module_moduleType:
+			return vl::glr::AssemblerSetEnumField(&vl::glr::workflow::WfModule::moduleType, object, field, enumItem, weakAssignment, cppFieldName);
+		case WorkflowFields::ObserveExpression_observeType:
+			return vl::glr::AssemblerSetEnumField(&vl::glr::workflow::WfObserveExpression::observeType, object, field, enumItem, weakAssignment, cppFieldName);
+		case WorkflowFields::PredefinedType_name:
+			return vl::glr::AssemblerSetEnumField(&vl::glr::workflow::WfPredefinedType::name, object, field, enumItem, weakAssignment, cppFieldName);
+		case WorkflowFields::RangeExpression_beginBoundary:
+			return vl::glr::AssemblerSetEnumField(&vl::glr::workflow::WfRangeExpression::beginBoundary, object, field, enumItem, weakAssignment, cppFieldName);
+		case WorkflowFields::RangeExpression_endBoundary:
+			return vl::glr::AssemblerSetEnumField(&vl::glr::workflow::WfRangeExpression::endBoundary, object, field, enumItem, weakAssignment, cppFieldName);
+		case WorkflowFields::SetTestingExpression_test:
+			return vl::glr::AssemblerSetEnumField(&vl::glr::workflow::WfSetTestingExpression::test, object, field, enumItem, weakAssignment, cppFieldName);
+		case WorkflowFields::StateInvokeStatement_type:
+			return vl::glr::AssemblerSetEnumField(&vl::glr::workflow::WfStateInvokeStatement::type, object, field, enumItem, weakAssignment, cppFieldName);
+		case WorkflowFields::StateSwitchStatement_type:
+			return vl::glr::AssemblerSetEnumField(&vl::glr::workflow::WfStateSwitchStatement::type, object, field, enumItem, weakAssignment, cppFieldName);
+		case WorkflowFields::TypeCastingExpression_strategy:
+			return vl::glr::AssemblerSetEnumField(&vl::glr::workflow::WfTypeCastingExpression::strategy, object, field, enumItem, weakAssignment, cppFieldName);
+		case WorkflowFields::TypeTestingExpression_test:
+			return vl::glr::AssemblerSetEnumField(&vl::glr::workflow::WfTypeTestingExpression::test, object, field, enumItem, weakAssignment, cppFieldName);
+		case WorkflowFields::UnaryExpression_op:
+			return vl::glr::AssemblerSetEnumField(&vl::glr::workflow::WfUnaryExpression::op, object, field, enumItem, weakAssignment, cppFieldName);
+		default:
+			return vl::glr::AssemblyThrowFieldNotEnum(field, cppFieldName);
+		}
+	}
+
+	const wchar_t* WorkflowTypeName(WorkflowClasses type)
+	{
+		const wchar_t* results[] = {
+			L"AttachEventExpression",
+			L"Attribute",
+			L"AutoPropertyDeclaration",
+			L"BaseConstructorCall",
+			L"BinaryExpression",
+			L"BindExpression",
+			L"BlockStatement",
+			L"BreakStatement",
+			L"CallExpression",
+			L"CastResultInterfaceDeclaration",
+			L"ChildExpression",
+			L"ChildType",
+			L"ClassDeclaration",
+			L"CoOperatorExpression",
+			L"CoOperatorStatement",
+			L"CoPauseStatement",
+			L"CoProviderStatement",
+			L"ConstructorArgument",
+			L"ConstructorDeclaration",
+			L"ConstructorExpression",
+			L"ContinueStatement",
+			L"CoroutineStatement",
+			L"Declaration",
+			L"DeleteStatement",
+			L"DestructorDeclaration",
+			L"DetachEventExpression",
+			L"EnumDeclaration",
+			L"EnumItem",
+			L"EnumItemIntersection",
+			L"EnumerableType",
+			L"EventDeclaration",
+			L"ExpectedTypeCastExpression",
+			L"Expression",
+			L"ExpressionStatement",
+			L"FloatingExpression",
+			L"ForEachStatement",
+			L"FormatExpression",
+			L"FunctionArgument",
+			L"FunctionDeclaration",
+			L"FunctionExpression",
+			L"FunctionType",
+			L"GotoStatement",
+			L"IfExpression",
+			L"IfStatement",
+			L"InferExpression",
+			L"IntegerExpression",
+			L"LetExpression",
+			L"LetVariable",
+			L"LiteralExpression",
+			L"MapType",
+			L"MemberExpression",
+			L"MixinCastExpression",
+			L"Module",
+			L"ModuleUsingFragment",
+			L"ModuleUsingItem",
+			L"ModuleUsingNameFragment",
+			L"ModuleUsingPath",
+			L"ModuleUsingWildCardFragment",
+			L"NamespaceDeclaration",
+			L"NewClassExpression",
+			L"NewCoroutineExpression",
+			L"NewInterfaceExpression",
+			L"NullableType",
+			L"ObservableListType",
+			L"ObserveExpression",
+			L"OrderedLambdaExpression",
+			L"OrderedNameExpression",
+			L"PredefinedType",
+			L"PropertyDeclaration",
+			L"RaiseExceptionStatement",
+			L"RangeExpression",
+			L"RawPointerType",
+			L"ReferenceExpression",
+			L"ReferenceType",
+			L"ReturnStatement",
+			L"SetTestingExpression",
+			L"SharedPointerType",
+			L"StateDeclaration",
+			L"StateInput",
+			L"StateInvokeStatement",
+			L"StateMachineDeclaration",
+			L"StateMachineStatement",
+			L"StateSwitchArgument",
+			L"StateSwitchCase",
+			L"StateSwitchStatement",
+			L"Statement",
+			L"StringExpression",
+			L"StructDeclaration",
+			L"StructMember",
+			L"SwitchCase",
+			L"SwitchStatement",
+			L"ThisExpression",
+			L"TopQualifiedExpression",
+			L"TopQualifiedType",
+			L"TryStatement",
+			L"Type",
+			L"TypeCastingExpression",
+			L"TypeOfExpressionExpression",
+			L"TypeOfTypeExpression",
+			L"TypeTestingExpression",
+			L"UnaryExpression",
+			L"VariableDeclaration",
+			L"VariableStatement",
+			L"VirtualCfeDeclaration",
+			L"VirtualCfeExpression",
+			L"VirtualCseDeclaration",
+			L"VirtualCseExpression",
+			L"VirtualCseStatement",
+			L"WhileStatement",
+		};
+		vl::vint index = (vl::vint)type;
+		return 0 <= index && index < 109 ? results[index] : nullptr;
+	}
+
+	const wchar_t* WorkflowCppTypeName(WorkflowClasses type)
+	{
+		const wchar_t* results[] = {
+			L"vl::glr::workflow::WfAttachEventExpression",
+			L"vl::glr::workflow::WfAttribute",
+			L"vl::glr::workflow::WfAutoPropertyDeclaration",
+			L"vl::glr::workflow::WfBaseConstructorCall",
+			L"vl::glr::workflow::WfBinaryExpression",
+			L"vl::glr::workflow::WfBindExpression",
+			L"vl::glr::workflow::WfBlockStatement",
+			L"vl::glr::workflow::WfBreakStatement",
+			L"vl::glr::workflow::WfCallExpression",
+			L"vl::glr::workflow::WfCastResultInterfaceDeclaration",
+			L"vl::glr::workflow::WfChildExpression",
+			L"vl::glr::workflow::WfChildType",
+			L"vl::glr::workflow::WfClassDeclaration",
+			L"vl::glr::workflow::WfCoOperatorExpression",
+			L"vl::glr::workflow::WfCoOperatorStatement",
+			L"vl::glr::workflow::WfCoPauseStatement",
+			L"vl::glr::workflow::WfCoProviderStatement",
+			L"vl::glr::workflow::WfConstructorArgument",
+			L"vl::glr::workflow::WfConstructorDeclaration",
+			L"vl::glr::workflow::WfConstructorExpression",
+			L"vl::glr::workflow::WfContinueStatement",
+			L"vl::glr::workflow::WfCoroutineStatement",
+			L"vl::glr::workflow::WfDeclaration",
+			L"vl::glr::workflow::WfDeleteStatement",
+			L"vl::glr::workflow::WfDestructorDeclaration",
+			L"vl::glr::workflow::WfDetachEventExpression",
+			L"vl::glr::workflow::WfEnumDeclaration",
+			L"vl::glr::workflow::WfEnumItem",
+			L"vl::glr::workflow::WfEnumItemIntersection",
+			L"vl::glr::workflow::WfEnumerableType",
+			L"vl::glr::workflow::WfEventDeclaration",
+			L"vl::glr::workflow::WfExpectedTypeCastExpression",
+			L"vl::glr::workflow::WfExpression",
+			L"vl::glr::workflow::WfExpressionStatement",
+			L"vl::glr::workflow::WfFloatingExpression",
+			L"vl::glr::workflow::WfForEachStatement",
+			L"vl::glr::workflow::WfFormatExpression",
+			L"vl::glr::workflow::WfFunctionArgument",
+			L"vl::glr::workflow::WfFunctionDeclaration",
+			L"vl::glr::workflow::WfFunctionExpression",
+			L"vl::glr::workflow::WfFunctionType",
+			L"vl::glr::workflow::WfGotoStatement",
+			L"vl::glr::workflow::WfIfExpression",
+			L"vl::glr::workflow::WfIfStatement",
+			L"vl::glr::workflow::WfInferExpression",
+			L"vl::glr::workflow::WfIntegerExpression",
+			L"vl::glr::workflow::WfLetExpression",
+			L"vl::glr::workflow::WfLetVariable",
+			L"vl::glr::workflow::WfLiteralExpression",
+			L"vl::glr::workflow::WfMapType",
+			L"vl::glr::workflow::WfMemberExpression",
+			L"vl::glr::workflow::WfMixinCastExpression",
+			L"vl::glr::workflow::WfModule",
+			L"vl::glr::workflow::WfModuleUsingFragment",
+			L"vl::glr::workflow::WfModuleUsingItem",
+			L"vl::glr::workflow::WfModuleUsingNameFragment",
+			L"vl::glr::workflow::WfModuleUsingPath",
+			L"vl::glr::workflow::WfModuleUsingWildCardFragment",
+			L"vl::glr::workflow::WfNamespaceDeclaration",
+			L"vl::glr::workflow::WfNewClassExpression",
+			L"vl::glr::workflow::WfNewCoroutineExpression",
+			L"vl::glr::workflow::WfNewInterfaceExpression",
+			L"vl::glr::workflow::WfNullableType",
+			L"vl::glr::workflow::WfObservableListType",
+			L"vl::glr::workflow::WfObserveExpression",
+			L"vl::glr::workflow::WfOrderedLambdaExpression",
+			L"vl::glr::workflow::WfOrderedNameExpression",
+			L"vl::glr::workflow::WfPredefinedType",
+			L"vl::glr::workflow::WfPropertyDeclaration",
+			L"vl::glr::workflow::WfRaiseExceptionStatement",
+			L"vl::glr::workflow::WfRangeExpression",
+			L"vl::glr::workflow::WfRawPointerType",
+			L"vl::glr::workflow::WfReferenceExpression",
+			L"vl::glr::workflow::WfReferenceType",
+			L"vl::glr::workflow::WfReturnStatement",
+			L"vl::glr::workflow::WfSetTestingExpression",
+			L"vl::glr::workflow::WfSharedPointerType",
+			L"vl::glr::workflow::WfStateDeclaration",
+			L"vl::glr::workflow::WfStateInput",
+			L"vl::glr::workflow::WfStateInvokeStatement",
+			L"vl::glr::workflow::WfStateMachineDeclaration",
+			L"vl::glr::workflow::WfStateMachineStatement",
+			L"vl::glr::workflow::WfStateSwitchArgument",
+			L"vl::glr::workflow::WfStateSwitchCase",
+			L"vl::glr::workflow::WfStateSwitchStatement",
+			L"vl::glr::workflow::WfStatement",
+			L"vl::glr::workflow::WfStringExpression",
+			L"vl::glr::workflow::WfStructDeclaration",
+			L"vl::glr::workflow::WfStructMember",
+			L"vl::glr::workflow::WfSwitchCase",
+			L"vl::glr::workflow::WfSwitchStatement",
+			L"vl::glr::workflow::WfThisExpression",
+			L"vl::glr::workflow::WfTopQualifiedExpression",
+			L"vl::glr::workflow::WfTopQualifiedType",
+			L"vl::glr::workflow::WfTryStatement",
+			L"vl::glr::workflow::WfType",
+			L"vl::glr::workflow::WfTypeCastingExpression",
+			L"vl::glr::workflow::WfTypeOfExpressionExpression",
+			L"vl::glr::workflow::WfTypeOfTypeExpression",
+			L"vl::glr::workflow::WfTypeTestingExpression",
+			L"vl::glr::workflow::WfUnaryExpression",
+			L"vl::glr::workflow::WfVariableDeclaration",
+			L"vl::glr::workflow::WfVariableStatement",
+			L"vl::glr::workflow::WfVirtualCfeDeclaration",
+			L"vl::glr::workflow::WfVirtualCfeExpression",
+			L"vl::glr::workflow::WfVirtualCseDeclaration",
+			L"vl::glr::workflow::WfVirtualCseExpression",
+			L"vl::glr::workflow::WfVirtualCseStatement",
+			L"vl::glr::workflow::WfWhileStatement",
+		};
+		vl::vint index = (vl::vint)type;
+		return 0 <= index && index < 109 ? results[index] : nullptr;
+	}
+
+	const wchar_t* WorkflowFieldName(WorkflowFields field)
+	{
+		const wchar_t* results[] = {
+			L"AttachEventExpression::event",
+			L"AttachEventExpression::function",
+			L"Attribute::category",
+			L"Attribute::name",
+			L"Attribute::value",
+			L"AutoPropertyDeclaration::configConst",
+			L"AutoPropertyDeclaration::configObserve",
+			L"AutoPropertyDeclaration::expression",
+			L"AutoPropertyDeclaration::functionKind",
+			L"AutoPropertyDeclaration::type",
+			L"BaseConstructorCall::arguments",
+			L"BaseConstructorCall::type",
+			L"BinaryExpression::first",
+			L"BinaryExpression::op",
+			L"BinaryExpression::second",
+			L"BindExpression::expression",
+			L"BlockStatement::endLabel",
+			L"BlockStatement::statements",
+			L"CallExpression::arguments",
+			L"CallExpression::function",
+			L"CastResultInterfaceDeclaration::baseType",
+			L"CastResultInterfaceDeclaration::elementType",
+			L"ChildExpression::name",
+			L"ChildExpression::parent",
+			L"ChildType::name",
+			L"ChildType::parent",
+			L"ClassDeclaration::baseTypes",
+			L"ClassDeclaration::constructorType",
+			L"ClassDeclaration::declarations",
+			L"ClassDeclaration::kind",
+			L"CoOperatorExpression::name",
+			L"CoOperatorStatement::arguments",
+			L"CoOperatorStatement::opName",
+			L"CoOperatorStatement::varName",
+			L"CoPauseStatement::statement",
+			L"CoProviderStatement::name",
+			L"CoProviderStatement::statement",
+			L"ConstructorArgument::key",
+			L"ConstructorArgument::value",
+			L"ConstructorDeclaration::arguments",
+			L"ConstructorDeclaration::baseConstructorCalls",
+			L"ConstructorDeclaration::constructorType",
+			L"ConstructorDeclaration::statement",
+			L"ConstructorExpression::arguments",
+			L"Declaration::attributes",
+			L"Declaration::name",
+			L"DeleteStatement::expression",
+			L"DestructorDeclaration::statement",
+			L"DetachEventExpression::event",
+			L"DetachEventExpression::handler",
+			L"EnumDeclaration::items",
+			L"EnumDeclaration::kind",
+			L"EnumItem::attributes",
+			L"EnumItem::intersections",
+			L"EnumItem::kind",
+			L"EnumItem::name",
+			L"EnumItem::number",
+			L"EnumItemIntersection::name",
+			L"EnumerableType::element",
+			L"EventDeclaration::arguments",
+			L"ExpectedTypeCastExpression::expression",
+			L"ExpectedTypeCastExpression::strategy",
+			L"ExpressionStatement::expression",
+			L"FloatingExpression::value",
+			L"ForEachStatement::collection",
+			L"ForEachStatement::direction",
+			L"ForEachStatement::name",
+			L"ForEachStatement::statement",
+			L"FormatExpression::value",
+			L"FunctionArgument::attributes",
+			L"FunctionArgument::name",
+			L"FunctionArgument::type",
+			L"FunctionDeclaration::anonymity",
+			L"FunctionDeclaration::arguments",
+			L"FunctionDeclaration::functionKind",
+			L"FunctionDeclaration::returnType",
+			L"FunctionDeclaration::statement",
+			L"FunctionExpression::function",
+			L"FunctionType::arguments",
+			L"FunctionType::result",
+			L"GotoStatement::label",
+			L"IfExpression::condition",
+			L"IfExpression::falseBranch",
+			L"IfExpression::trueBranch",
+			L"IfStatement::expression",
+			L"IfStatement::falseBranch",
+			L"IfStatement::name",
+			L"IfStatement::trueBranch",
+			L"IfStatement::type",
+			L"InferExpression::expression",
+			L"InferExpression::type",
+			L"IntegerExpression::value",
+			L"LetExpression::expression",
+			L"LetExpression::variables",
+			L"LetVariable::name",
+			L"LetVariable::value",
+			L"LiteralExpression::value",
+			L"MapType::key",
+			L"MapType::value",
+			L"MapType::writability",
+			L"MemberExpression::name",
+			L"MemberExpression::parent",
+			L"MixinCastExpression::expression",
+			L"MixinCastExpression::type",
+			L"Module::declarations",
+			L"Module::moduleType",
+			L"Module::name",
+			L"Module::paths",
+			L"ModuleUsingItem::fragments",
+			L"ModuleUsingNameFragment::name",
+			L"ModuleUsingPath::items",
+			L"NamespaceDeclaration::declarations",
+			L"NewClassExpression::arguments",
+			L"NewClassExpression::type",
+			L"NewCoroutineExpression::name",
+			L"NewCoroutineExpression::statement",
+			L"NewInterfaceExpression::declarations",
+			L"NewInterfaceExpression::type",
+			L"NullableType::element",
+			L"ObservableListType::element",
+			L"ObserveExpression::events",
+			L"ObserveExpression::expression",
+			L"ObserveExpression::name",
+			L"ObserveExpression::observeType",
+			L"ObserveExpression::parent",
+			L"OrderedLambdaExpression::body",
+			L"OrderedNameExpression::name",
+			L"PredefinedType::name",
+			L"PropertyDeclaration::getter",
+			L"PropertyDeclaration::setter",
+			L"PropertyDeclaration::type",
+			L"PropertyDeclaration::valueChangedEvent",
+			L"RaiseExceptionStatement::expression",
+			L"RangeExpression::begin",
+			L"RangeExpression::beginBoundary",
+			L"RangeExpression::end",
+			L"RangeExpression::endBoundary",
+			L"RawPointerType::element",
+			L"ReferenceExpression::name",
+			L"ReferenceType::name",
+			L"ReturnStatement::expression",
+			L"SetTestingExpression::collection",
+			L"SetTestingExpression::element",
+			L"SetTestingExpression::test",
+			L"SharedPointerType::element",
+			L"StateDeclaration::arguments",
+			L"StateDeclaration::name",
+			L"StateDeclaration::statement",
+			L"StateInput::arguments",
+			L"StateInput::name",
+			L"StateInvokeStatement::arguments",
+			L"StateInvokeStatement::name",
+			L"StateInvokeStatement::type",
+			L"StateMachineDeclaration::inputs",
+			L"StateMachineDeclaration::states",
+			L"StateSwitchArgument::name",
+			L"StateSwitchCase::arguments",
+			L"StateSwitchCase::name",
+			L"StateSwitchCase::statement",
+			L"StateSwitchStatement::caseBranches",
+			L"StateSwitchStatement::type",
+			L"StringExpression::value",
+			L"StructDeclaration::members",
+			L"StructMember::attributes",
+			L"StructMember::name",
+			L"StructMember::type",
+			L"SwitchCase::expression",
+			L"SwitchCase::statement",
+			L"SwitchStatement::caseBranches",
+			L"SwitchStatement::defaultBranch",
+			L"SwitchStatement::expression",
+			L"TopQualifiedExpression::name",
+			L"TopQualifiedType::name",
+			L"TryStatement::catchStatement",
+			L"TryStatement::finallyStatement",
+			L"TryStatement::name",
+			L"TryStatement::protectedStatement",
+			L"TypeCastingExpression::expression",
+			L"TypeCastingExpression::strategy",
+			L"TypeCastingExpression::type",
+			L"TypeOfExpressionExpression::expression",
+			L"TypeOfTypeExpression::type",
+			L"TypeTestingExpression::expression",
+			L"TypeTestingExpression::test",
+			L"TypeTestingExpression::type",
+			L"UnaryExpression::op",
+			L"UnaryExpression::operand",
+			L"VariableDeclaration::expression",
+			L"VariableDeclaration::type",
+			L"VariableStatement::variable",
+			L"VirtualCfeDeclaration::expandedDeclarations",
+			L"VirtualCfeExpression::expandedExpression",
+			L"VirtualCseDeclaration::expandedDeclarations",
+			L"VirtualCseExpression::expandedExpression",
+			L"VirtualCseStatement::expandedStatement",
+			L"WhileStatement::condition",
+			L"WhileStatement::statement",
+		};
+		vl::vint index = (vl::vint)field;
+		return 0 <= index && index < 197 ? results[index] : nullptr;
+	}
+
+	const wchar_t* WorkflowCppFieldName(WorkflowFields field)
+	{
+		const wchar_t* results[] = {
+			L"vl::glr::workflow::WfAttachEventExpression::event",
+			L"vl::glr::workflow::WfAttachEventExpression::function",
+			L"vl::glr::workflow::WfAttribute::category",
+			L"vl::glr::workflow::WfAttribute::name",
+			L"vl::glr::workflow::WfAttribute::value",
+			L"vl::glr::workflow::WfAutoPropertyDeclaration::configConst",
+			L"vl::glr::workflow::WfAutoPropertyDeclaration::configObserve",
+			L"vl::glr::workflow::WfAutoPropertyDeclaration::expression",
+			L"vl::glr::workflow::WfAutoPropertyDeclaration::functionKind",
+			L"vl::glr::workflow::WfAutoPropertyDeclaration::type",
+			L"vl::glr::workflow::WfBaseConstructorCall::arguments",
+			L"vl::glr::workflow::WfBaseConstructorCall::type",
+			L"vl::glr::workflow::WfBinaryExpression::first",
+			L"vl::glr::workflow::WfBinaryExpression::op",
+			L"vl::glr::workflow::WfBinaryExpression::second",
+			L"vl::glr::workflow::WfBindExpression::expression",
+			L"vl::glr::workflow::WfBlockStatement::endLabel",
+			L"vl::glr::workflow::WfBlockStatement::statements",
+			L"vl::glr::workflow::WfCallExpression::arguments",
+			L"vl::glr::workflow::WfCallExpression::function",
+			L"vl::glr::workflow::WfCastResultInterfaceDeclaration::baseType",
+			L"vl::glr::workflow::WfCastResultInterfaceDeclaration::elementType",
+			L"vl::glr::workflow::WfChildExpression::name",
+			L"vl::glr::workflow::WfChildExpression::parent",
+			L"vl::glr::workflow::WfChildType::name",
+			L"vl::glr::workflow::WfChildType::parent",
+			L"vl::glr::workflow::WfClassDeclaration::baseTypes",
+			L"vl::glr::workflow::WfClassDeclaration::constructorType",
+			L"vl::glr::workflow::WfClassDeclaration::declarations",
+			L"vl::glr::workflow::WfClassDeclaration::kind",
+			L"vl::glr::workflow::WfCoOperatorExpression::name",
+			L"vl::glr::workflow::WfCoOperatorStatement::arguments",
+			L"vl::glr::workflow::WfCoOperatorStatement::opName",
+			L"vl::glr::workflow::WfCoOperatorStatement::varName",
+			L"vl::glr::workflow::WfCoPauseStatement::statement",
+			L"vl::glr::workflow::WfCoProviderStatement::name",
+			L"vl::glr::workflow::WfCoProviderStatement::statement",
+			L"vl::glr::workflow::WfConstructorArgument::key",
+			L"vl::glr::workflow::WfConstructorArgument::value",
+			L"vl::glr::workflow::WfConstructorDeclaration::arguments",
+			L"vl::glr::workflow::WfConstructorDeclaration::baseConstructorCalls",
+			L"vl::glr::workflow::WfConstructorDeclaration::constructorType",
+			L"vl::glr::workflow::WfConstructorDeclaration::statement",
+			L"vl::glr::workflow::WfConstructorExpression::arguments",
+			L"vl::glr::workflow::WfDeclaration::attributes",
+			L"vl::glr::workflow::WfDeclaration::name",
+			L"vl::glr::workflow::WfDeleteStatement::expression",
+			L"vl::glr::workflow::WfDestructorDeclaration::statement",
+			L"vl::glr::workflow::WfDetachEventExpression::event",
+			L"vl::glr::workflow::WfDetachEventExpression::handler",
+			L"vl::glr::workflow::WfEnumDeclaration::items",
+			L"vl::glr::workflow::WfEnumDeclaration::kind",
+			L"vl::glr::workflow::WfEnumItem::attributes",
+			L"vl::glr::workflow::WfEnumItem::intersections",
+			L"vl::glr::workflow::WfEnumItem::kind",
+			L"vl::glr::workflow::WfEnumItem::name",
+			L"vl::glr::workflow::WfEnumItem::number",
+			L"vl::glr::workflow::WfEnumItemIntersection::name",
+			L"vl::glr::workflow::WfEnumerableType::element",
+			L"vl::glr::workflow::WfEventDeclaration::arguments",
+			L"vl::glr::workflow::WfExpectedTypeCastExpression::expression",
+			L"vl::glr::workflow::WfExpectedTypeCastExpression::strategy",
+			L"vl::glr::workflow::WfExpressionStatement::expression",
+			L"vl::glr::workflow::WfFloatingExpression::value",
+			L"vl::glr::workflow::WfForEachStatement::collection",
+			L"vl::glr::workflow::WfForEachStatement::direction",
+			L"vl::glr::workflow::WfForEachStatement::name",
+			L"vl::glr::workflow::WfForEachStatement::statement",
+			L"vl::glr::workflow::WfFormatExpression::value",
+			L"vl::glr::workflow::WfFunctionArgument::attributes",
+			L"vl::glr::workflow::WfFunctionArgument::name",
+			L"vl::glr::workflow::WfFunctionArgument::type",
+			L"vl::glr::workflow::WfFunctionDeclaration::anonymity",
+			L"vl::glr::workflow::WfFunctionDeclaration::arguments",
+			L"vl::glr::workflow::WfFunctionDeclaration::functionKind",
+			L"vl::glr::workflow::WfFunctionDeclaration::returnType",
+			L"vl::glr::workflow::WfFunctionDeclaration::statement",
+			L"vl::glr::workflow::WfFunctionExpression::function",
+			L"vl::glr::workflow::WfFunctionType::arguments",
+			L"vl::glr::workflow::WfFunctionType::result",
+			L"vl::glr::workflow::WfGotoStatement::label",
+			L"vl::glr::workflow::WfIfExpression::condition",
+			L"vl::glr::workflow::WfIfExpression::falseBranch",
+			L"vl::glr::workflow::WfIfExpression::trueBranch",
+			L"vl::glr::workflow::WfIfStatement::expression",
+			L"vl::glr::workflow::WfIfStatement::falseBranch",
+			L"vl::glr::workflow::WfIfStatement::name",
+			L"vl::glr::workflow::WfIfStatement::trueBranch",
+			L"vl::glr::workflow::WfIfStatement::type",
+			L"vl::glr::workflow::WfInferExpression::expression",
+			L"vl::glr::workflow::WfInferExpression::type",
+			L"vl::glr::workflow::WfIntegerExpression::value",
+			L"vl::glr::workflow::WfLetExpression::expression",
+			L"vl::glr::workflow::WfLetExpression::variables",
+			L"vl::glr::workflow::WfLetVariable::name",
+			L"vl::glr::workflow::WfLetVariable::value",
+			L"vl::glr::workflow::WfLiteralExpression::value",
+			L"vl::glr::workflow::WfMapType::key",
+			L"vl::glr::workflow::WfMapType::value",
+			L"vl::glr::workflow::WfMapType::writability",
+			L"vl::glr::workflow::WfMemberExpression::name",
+			L"vl::glr::workflow::WfMemberExpression::parent",
+			L"vl::glr::workflow::WfMixinCastExpression::expression",
+			L"vl::glr::workflow::WfMixinCastExpression::type",
+			L"vl::glr::workflow::WfModule::declarations",
+			L"vl::glr::workflow::WfModule::moduleType",
+			L"vl::glr::workflow::WfModule::name",
+			L"vl::glr::workflow::WfModule::paths",
+			L"vl::glr::workflow::WfModuleUsingItem::fragments",
+			L"vl::glr::workflow::WfModuleUsingNameFragment::name",
+			L"vl::glr::workflow::WfModuleUsingPath::items",
+			L"vl::glr::workflow::WfNamespaceDeclaration::declarations",
+			L"vl::glr::workflow::WfNewClassExpression::arguments",
+			L"vl::glr::workflow::WfNewClassExpression::type",
+			L"vl::glr::workflow::WfNewCoroutineExpression::name",
+			L"vl::glr::workflow::WfNewCoroutineExpression::statement",
+			L"vl::glr::workflow::WfNewInterfaceExpression::declarations",
+			L"vl::glr::workflow::WfNewInterfaceExpression::type",
+			L"vl::glr::workflow::WfNullableType::element",
+			L"vl::glr::workflow::WfObservableListType::element",
+			L"vl::glr::workflow::WfObserveExpression::events",
+			L"vl::glr::workflow::WfObserveExpression::expression",
+			L"vl::glr::workflow::WfObserveExpression::name",
+			L"vl::glr::workflow::WfObserveExpression::observeType",
+			L"vl::glr::workflow::WfObserveExpression::parent",
+			L"vl::glr::workflow::WfOrderedLambdaExpression::body",
+			L"vl::glr::workflow::WfOrderedNameExpression::name",
+			L"vl::glr::workflow::WfPredefinedType::name",
+			L"vl::glr::workflow::WfPropertyDeclaration::getter",
+			L"vl::glr::workflow::WfPropertyDeclaration::setter",
+			L"vl::glr::workflow::WfPropertyDeclaration::type",
+			L"vl::glr::workflow::WfPropertyDeclaration::valueChangedEvent",
+			L"vl::glr::workflow::WfRaiseExceptionStatement::expression",
+			L"vl::glr::workflow::WfRangeExpression::begin",
+			L"vl::glr::workflow::WfRangeExpression::beginBoundary",
+			L"vl::glr::workflow::WfRangeExpression::end",
+			L"vl::glr::workflow::WfRangeExpression::endBoundary",
+			L"vl::glr::workflow::WfRawPointerType::element",
+			L"vl::glr::workflow::WfReferenceExpression::name",
+			L"vl::glr::workflow::WfReferenceType::name",
+			L"vl::glr::workflow::WfReturnStatement::expression",
+			L"vl::glr::workflow::WfSetTestingExpression::collection",
+			L"vl::glr::workflow::WfSetTestingExpression::element",
+			L"vl::glr::workflow::WfSetTestingExpression::test",
+			L"vl::glr::workflow::WfSharedPointerType::element",
+			L"vl::glr::workflow::WfStateDeclaration::arguments",
+			L"vl::glr::workflow::WfStateDeclaration::name",
+			L"vl::glr::workflow::WfStateDeclaration::statement",
+			L"vl::glr::workflow::WfStateInput::arguments",
+			L"vl::glr::workflow::WfStateInput::name",
+			L"vl::glr::workflow::WfStateInvokeStatement::arguments",
+			L"vl::glr::workflow::WfStateInvokeStatement::name",
+			L"vl::glr::workflow::WfStateInvokeStatement::type",
+			L"vl::glr::workflow::WfStateMachineDeclaration::inputs",
+			L"vl::glr::workflow::WfStateMachineDeclaration::states",
+			L"vl::glr::workflow::WfStateSwitchArgument::name",
+			L"vl::glr::workflow::WfStateSwitchCase::arguments",
+			L"vl::glr::workflow::WfStateSwitchCase::name",
+			L"vl::glr::workflow::WfStateSwitchCase::statement",
+			L"vl::glr::workflow::WfStateSwitchStatement::caseBranches",
+			L"vl::glr::workflow::WfStateSwitchStatement::type",
+			L"vl::glr::workflow::WfStringExpression::value",
+			L"vl::glr::workflow::WfStructDeclaration::members",
+			L"vl::glr::workflow::WfStructMember::attributes",
+			L"vl::glr::workflow::WfStructMember::name",
+			L"vl::glr::workflow::WfStructMember::type",
+			L"vl::glr::workflow::WfSwitchCase::expression",
+			L"vl::glr::workflow::WfSwitchCase::statement",
+			L"vl::glr::workflow::WfSwitchStatement::caseBranches",
+			L"vl::glr::workflow::WfSwitchStatement::defaultBranch",
+			L"vl::glr::workflow::WfSwitchStatement::expression",
+			L"vl::glr::workflow::WfTopQualifiedExpression::name",
+			L"vl::glr::workflow::WfTopQualifiedType::name",
+			L"vl::glr::workflow::WfTryStatement::catchStatement",
+			L"vl::glr::workflow::WfTryStatement::finallyStatement",
+			L"vl::glr::workflow::WfTryStatement::name",
+			L"vl::glr::workflow::WfTryStatement::protectedStatement",
+			L"vl::glr::workflow::WfTypeCastingExpression::expression",
+			L"vl::glr::workflow::WfTypeCastingExpression::strategy",
+			L"vl::glr::workflow::WfTypeCastingExpression::type",
+			L"vl::glr::workflow::WfTypeOfExpressionExpression::expression",
+			L"vl::glr::workflow::WfTypeOfTypeExpression::type",
+			L"vl::glr::workflow::WfTypeTestingExpression::expression",
+			L"vl::glr::workflow::WfTypeTestingExpression::test",
+			L"vl::glr::workflow::WfTypeTestingExpression::type",
+			L"vl::glr::workflow::WfUnaryExpression::op",
+			L"vl::glr::workflow::WfUnaryExpression::operand",
+			L"vl::glr::workflow::WfVariableDeclaration::expression",
+			L"vl::glr::workflow::WfVariableDeclaration::type",
+			L"vl::glr::workflow::WfVariableStatement::variable",
+			L"vl::glr::workflow::WfVirtualCfeDeclaration::expandedDeclarations",
+			L"vl::glr::workflow::WfVirtualCfeExpression::expandedExpression",
+			L"vl::glr::workflow::WfVirtualCseDeclaration::expandedDeclarations",
+			L"vl::glr::workflow::WfVirtualCseExpression::expandedExpression",
+			L"vl::glr::workflow::WfVirtualCseStatement::expandedStatement",
+			L"vl::glr::workflow::WfWhileStatement::condition",
+			L"vl::glr::workflow::WfWhileStatement::statement",
+		};
+		vl::vint index = (vl::vint)field;
+		return 0 <= index && index < 197 ? results[index] : nullptr;
+	}
+
+	vl::Ptr<vl::glr::ParsingAstBase> WorkflowAstInsReceiver::ResolveAmbiguity(vl::vint32_t type, vl::collections::Array<vl::Ptr<vl::glr::ParsingAstBase>>& candidates)
+	{
+		auto cppTypeName = WorkflowCppTypeName((WorkflowClasses)type);
+		return vl::glr::AssemblyThrowTypeNotAllowAmbiguity(type, cppTypeName);
 	}
 }

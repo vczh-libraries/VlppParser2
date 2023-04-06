@@ -10,44 +10,38 @@ Licensed under https://github.com/vczh-libraries/License
 #include "Xml_Assembler.h"
 #include "Xml_Lexer.h"
 
-namespace vl
+namespace vl::glr::xml
 {
-	namespace glr
+	enum class ParserStates
 	{
-		namespace xml
-		{
-			enum class ParserStates
-			{
-				XAttribute = 0,
-				XText = 5,
-				XCData = 11,
-				XComment = 14,
-				XElement = 17,
-				XSubNode = 28,
-				XInstruction = 34,
-				XDocument = 40,
-			};
+		XAttribute = 0,
+		XText = 5,
+		XCData = 11,
+		XComment = 14,
+		XElement = 17,
+		XSubNode = 28,
+		XInstruction = 34,
+		XDocument = 40,
+	};
 
-			const wchar_t* ParserRuleName(vl::vint index);
-			const wchar_t* ParserStateLabel(vl::vint index);
-			extern void XmlParserData(vl::stream::IStream& outputStream);
+	const wchar_t* ParserRuleName(vl::vint index);
+	const wchar_t* ParserStateLabel(vl::vint index);
+	extern void XmlParserData(vl::stream::IStream& outputStream);
 
-			class Parser
-				: public vl::glr::ParserBase<XmlTokens, ParserStates, XmlAstInsReceiver>
-				, protected vl::glr::automaton::IExecutor::ITypeCallback
-			{
-			protected:
-				vl::WString GetClassName(vl::vint32_t classIndex) const override;
-				vl::vint32_t FindCommonBaseClass(vl::vint32_t class1, vl::vint32_t class2) const override;
-			public:
-				Parser();
+	class Parser
+		: public vl::glr::ParserBase<XmlTokens, ParserStates, XmlAstInsReceiver>
+		, protected vl::glr::automaton::IExecutor::ITypeCallback
+	{
+	protected:
+		vl::WString GetClassName(vl::vint32_t classIndex) const override;
+		vl::vint32_t FindCommonBaseClass(vl::vint32_t class1, vl::vint32_t class2) const override;
+	public:
+		Parser();
 
-				vl::Ptr<vl::glr::xml::XmlElement> ParseXElement(const vl::WString& input, vl::vint codeIndex = -1) const;
-				vl::Ptr<vl::glr::xml::XmlElement> ParseXElement(vl::collections::List<vl::regex::RegexToken>& tokens, vl::vint codeIndex = -1) const;
-				vl::Ptr<vl::glr::xml::XmlDocument> ParseXDocument(const vl::WString& input, vl::vint codeIndex = -1) const;
-				vl::Ptr<vl::glr::xml::XmlDocument> ParseXDocument(vl::collections::List<vl::regex::RegexToken>& tokens, vl::vint codeIndex = -1) const;
-			};
-		}
-	}
+		vl::Ptr<vl::glr::xml::XmlElement> ParseXElement(const vl::WString& input, vl::vint codeIndex = -1) const;
+		vl::Ptr<vl::glr::xml::XmlElement> ParseXElement(vl::collections::List<vl::regex::RegexToken>& tokens, vl::vint codeIndex = -1) const;
+		vl::Ptr<vl::glr::xml::XmlDocument> ParseXDocument(const vl::WString& input, vl::vint codeIndex = -1) const;
+		vl::Ptr<vl::glr::xml::XmlDocument> ParseXDocument(vl::collections::List<vl::regex::RegexToken>& tokens, vl::vint codeIndex = -1) const;
+	};
 }
 #endif

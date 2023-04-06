@@ -62,174 +62,168 @@ Visitor Pattern Implementation
 		visitor->Visit(this);
 	}
 }
-namespace vl
+namespace vl::reflection::description
 {
-	namespace reflection
-	{
-		namespace description
-		{
 #ifndef VCZH_DEBUG_NO_REFLECTION
 
-			IMPL_TYPE_INFO_RENAME(prefixmerge4_lrimultiple::TypeOrExpr, prefixmerge4_lrimultiple::TypeOrExpr)
-			IMPL_TYPE_INFO_RENAME(prefixmerge4_lrimultiple::TypeOrExpr::IVisitor, prefixmerge4_lrimultiple::TypeOrExpr::IVisitor)
-			IMPL_TYPE_INFO_RENAME(prefixmerge4_lrimultiple::QualifiedName, prefixmerge4_lrimultiple::QualifiedName)
-			IMPL_TYPE_INFO_RENAME(prefixmerge4_lrimultiple::QualifiedName::IVisitor, prefixmerge4_lrimultiple::QualifiedName::IVisitor)
-			IMPL_TYPE_INFO_RENAME(prefixmerge4_lrimultiple::Name, prefixmerge4_lrimultiple::Name)
-			IMPL_TYPE_INFO_RENAME(prefixmerge4_lrimultiple::MemberName, prefixmerge4_lrimultiple::MemberName)
-			IMPL_TYPE_INFO_RENAME(prefixmerge4_lrimultiple::CallExpr, prefixmerge4_lrimultiple::CallExpr)
-			IMPL_TYPE_INFO_RENAME(prefixmerge4_lrimultiple::CtorExpr, prefixmerge4_lrimultiple::CtorExpr)
-			IMPL_TYPE_INFO_RENAME(prefixmerge4_lrimultiple::MulExpr, prefixmerge4_lrimultiple::MulExpr)
-			IMPL_TYPE_INFO_RENAME(prefixmerge4_lrimultiple::ConstType, prefixmerge4_lrimultiple::ConstType)
-			IMPL_TYPE_INFO_RENAME(prefixmerge4_lrimultiple::PointerType, prefixmerge4_lrimultiple::PointerType)
-			IMPL_TYPE_INFO_RENAME(prefixmerge4_lrimultiple::FunctionType, prefixmerge4_lrimultiple::FunctionType)
-			IMPL_TYPE_INFO_RENAME(prefixmerge4_lrimultiple::TypeOrExprToResolve, prefixmerge4_lrimultiple::TypeOrExprToResolve)
+	IMPL_TYPE_INFO_RENAME(prefixmerge4_lrimultiple::TypeOrExpr, prefixmerge4_lrimultiple::TypeOrExpr)
+	IMPL_TYPE_INFO_RENAME(prefixmerge4_lrimultiple::TypeOrExpr::IVisitor, prefixmerge4_lrimultiple::TypeOrExpr::IVisitor)
+	IMPL_TYPE_INFO_RENAME(prefixmerge4_lrimultiple::QualifiedName, prefixmerge4_lrimultiple::QualifiedName)
+	IMPL_TYPE_INFO_RENAME(prefixmerge4_lrimultiple::QualifiedName::IVisitor, prefixmerge4_lrimultiple::QualifiedName::IVisitor)
+	IMPL_TYPE_INFO_RENAME(prefixmerge4_lrimultiple::Name, prefixmerge4_lrimultiple::Name)
+	IMPL_TYPE_INFO_RENAME(prefixmerge4_lrimultiple::MemberName, prefixmerge4_lrimultiple::MemberName)
+	IMPL_TYPE_INFO_RENAME(prefixmerge4_lrimultiple::CallExpr, prefixmerge4_lrimultiple::CallExpr)
+	IMPL_TYPE_INFO_RENAME(prefixmerge4_lrimultiple::CtorExpr, prefixmerge4_lrimultiple::CtorExpr)
+	IMPL_TYPE_INFO_RENAME(prefixmerge4_lrimultiple::MulExpr, prefixmerge4_lrimultiple::MulExpr)
+	IMPL_TYPE_INFO_RENAME(prefixmerge4_lrimultiple::ConstType, prefixmerge4_lrimultiple::ConstType)
+	IMPL_TYPE_INFO_RENAME(prefixmerge4_lrimultiple::PointerType, prefixmerge4_lrimultiple::PointerType)
+	IMPL_TYPE_INFO_RENAME(prefixmerge4_lrimultiple::FunctionType, prefixmerge4_lrimultiple::FunctionType)
+	IMPL_TYPE_INFO_RENAME(prefixmerge4_lrimultiple::TypeOrExprToResolve, prefixmerge4_lrimultiple::TypeOrExprToResolve)
 
 #ifdef VCZH_DESCRIPTABLEOBJECT_WITH_METADATA
 
-			BEGIN_CLASS_MEMBER(prefixmerge4_lrimultiple::TypeOrExpr)
-				CLASS_MEMBER_BASE(vl::glr::ParsingAstBase)
+	BEGIN_CLASS_MEMBER(prefixmerge4_lrimultiple::TypeOrExpr)
+		CLASS_MEMBER_BASE(vl::glr::ParsingAstBase)
 
-			END_CLASS_MEMBER(prefixmerge4_lrimultiple::TypeOrExpr)
+	END_CLASS_MEMBER(prefixmerge4_lrimultiple::TypeOrExpr)
 
-			BEGIN_CLASS_MEMBER(prefixmerge4_lrimultiple::QualifiedName)
-				CLASS_MEMBER_BASE(prefixmerge4_lrimultiple::TypeOrExpr)
+	BEGIN_CLASS_MEMBER(prefixmerge4_lrimultiple::QualifiedName)
+		CLASS_MEMBER_BASE(prefixmerge4_lrimultiple::TypeOrExpr)
 
-			END_CLASS_MEMBER(prefixmerge4_lrimultiple::QualifiedName)
+	END_CLASS_MEMBER(prefixmerge4_lrimultiple::QualifiedName)
 
-			BEGIN_CLASS_MEMBER(prefixmerge4_lrimultiple::Name)
-				CLASS_MEMBER_BASE(prefixmerge4_lrimultiple::QualifiedName)
+	BEGIN_CLASS_MEMBER(prefixmerge4_lrimultiple::Name)
+		CLASS_MEMBER_BASE(prefixmerge4_lrimultiple::QualifiedName)
 
-				CLASS_MEMBER_CONSTRUCTOR(vl::Ptr<prefixmerge4_lrimultiple::Name>(), NO_PARAMETER)
+		CLASS_MEMBER_CONSTRUCTOR(vl::Ptr<prefixmerge4_lrimultiple::Name>(), NO_PARAMETER)
 
-				CLASS_MEMBER_FIELD(name)
-			END_CLASS_MEMBER(prefixmerge4_lrimultiple::Name)
+		CLASS_MEMBER_FIELD(name)
+	END_CLASS_MEMBER(prefixmerge4_lrimultiple::Name)
 
-			BEGIN_CLASS_MEMBER(prefixmerge4_lrimultiple::MemberName)
-				CLASS_MEMBER_BASE(prefixmerge4_lrimultiple::QualifiedName)
+	BEGIN_CLASS_MEMBER(prefixmerge4_lrimultiple::MemberName)
+		CLASS_MEMBER_BASE(prefixmerge4_lrimultiple::QualifiedName)
 
-				CLASS_MEMBER_CONSTRUCTOR(vl::Ptr<prefixmerge4_lrimultiple::MemberName>(), NO_PARAMETER)
+		CLASS_MEMBER_CONSTRUCTOR(vl::Ptr<prefixmerge4_lrimultiple::MemberName>(), NO_PARAMETER)
 
-				CLASS_MEMBER_FIELD(parent)
-				CLASS_MEMBER_FIELD(member)
-			END_CLASS_MEMBER(prefixmerge4_lrimultiple::MemberName)
+		CLASS_MEMBER_FIELD(parent)
+		CLASS_MEMBER_FIELD(member)
+	END_CLASS_MEMBER(prefixmerge4_lrimultiple::MemberName)
 
-			BEGIN_CLASS_MEMBER(prefixmerge4_lrimultiple::CallExpr)
-				CLASS_MEMBER_BASE(prefixmerge4_lrimultiple::TypeOrExpr)
+	BEGIN_CLASS_MEMBER(prefixmerge4_lrimultiple::CallExpr)
+		CLASS_MEMBER_BASE(prefixmerge4_lrimultiple::TypeOrExpr)
 
-				CLASS_MEMBER_CONSTRUCTOR(vl::Ptr<prefixmerge4_lrimultiple::CallExpr>(), NO_PARAMETER)
+		CLASS_MEMBER_CONSTRUCTOR(vl::Ptr<prefixmerge4_lrimultiple::CallExpr>(), NO_PARAMETER)
 
-				CLASS_MEMBER_FIELD(func)
-				CLASS_MEMBER_FIELD(args)
-			END_CLASS_MEMBER(prefixmerge4_lrimultiple::CallExpr)
+		CLASS_MEMBER_FIELD(func)
+		CLASS_MEMBER_FIELD(args)
+	END_CLASS_MEMBER(prefixmerge4_lrimultiple::CallExpr)
 
-			BEGIN_CLASS_MEMBER(prefixmerge4_lrimultiple::CtorExpr)
-				CLASS_MEMBER_BASE(prefixmerge4_lrimultiple::TypeOrExpr)
+	BEGIN_CLASS_MEMBER(prefixmerge4_lrimultiple::CtorExpr)
+		CLASS_MEMBER_BASE(prefixmerge4_lrimultiple::TypeOrExpr)
 
-				CLASS_MEMBER_CONSTRUCTOR(vl::Ptr<prefixmerge4_lrimultiple::CtorExpr>(), NO_PARAMETER)
+		CLASS_MEMBER_CONSTRUCTOR(vl::Ptr<prefixmerge4_lrimultiple::CtorExpr>(), NO_PARAMETER)
 
-				CLASS_MEMBER_FIELD(type)
-				CLASS_MEMBER_FIELD(args)
-			END_CLASS_MEMBER(prefixmerge4_lrimultiple::CtorExpr)
+		CLASS_MEMBER_FIELD(type)
+		CLASS_MEMBER_FIELD(args)
+	END_CLASS_MEMBER(prefixmerge4_lrimultiple::CtorExpr)
 
-			BEGIN_CLASS_MEMBER(prefixmerge4_lrimultiple::MulExpr)
-				CLASS_MEMBER_BASE(prefixmerge4_lrimultiple::TypeOrExpr)
+	BEGIN_CLASS_MEMBER(prefixmerge4_lrimultiple::MulExpr)
+		CLASS_MEMBER_BASE(prefixmerge4_lrimultiple::TypeOrExpr)
 
-				CLASS_MEMBER_CONSTRUCTOR(vl::Ptr<prefixmerge4_lrimultiple::MulExpr>(), NO_PARAMETER)
+		CLASS_MEMBER_CONSTRUCTOR(vl::Ptr<prefixmerge4_lrimultiple::MulExpr>(), NO_PARAMETER)
 
-				CLASS_MEMBER_FIELD(first)
-				CLASS_MEMBER_FIELD(second)
-			END_CLASS_MEMBER(prefixmerge4_lrimultiple::MulExpr)
+		CLASS_MEMBER_FIELD(first)
+		CLASS_MEMBER_FIELD(second)
+	END_CLASS_MEMBER(prefixmerge4_lrimultiple::MulExpr)
 
-			BEGIN_CLASS_MEMBER(prefixmerge4_lrimultiple::ConstType)
-				CLASS_MEMBER_BASE(prefixmerge4_lrimultiple::TypeOrExpr)
+	BEGIN_CLASS_MEMBER(prefixmerge4_lrimultiple::ConstType)
+		CLASS_MEMBER_BASE(prefixmerge4_lrimultiple::TypeOrExpr)
 
-				CLASS_MEMBER_CONSTRUCTOR(vl::Ptr<prefixmerge4_lrimultiple::ConstType>(), NO_PARAMETER)
+		CLASS_MEMBER_CONSTRUCTOR(vl::Ptr<prefixmerge4_lrimultiple::ConstType>(), NO_PARAMETER)
 
-				CLASS_MEMBER_FIELD(type)
-			END_CLASS_MEMBER(prefixmerge4_lrimultiple::ConstType)
+		CLASS_MEMBER_FIELD(type)
+	END_CLASS_MEMBER(prefixmerge4_lrimultiple::ConstType)
 
-			BEGIN_CLASS_MEMBER(prefixmerge4_lrimultiple::PointerType)
-				CLASS_MEMBER_BASE(prefixmerge4_lrimultiple::TypeOrExpr)
+	BEGIN_CLASS_MEMBER(prefixmerge4_lrimultiple::PointerType)
+		CLASS_MEMBER_BASE(prefixmerge4_lrimultiple::TypeOrExpr)
 
-				CLASS_MEMBER_CONSTRUCTOR(vl::Ptr<prefixmerge4_lrimultiple::PointerType>(), NO_PARAMETER)
+		CLASS_MEMBER_CONSTRUCTOR(vl::Ptr<prefixmerge4_lrimultiple::PointerType>(), NO_PARAMETER)
 
-				CLASS_MEMBER_FIELD(type)
-			END_CLASS_MEMBER(prefixmerge4_lrimultiple::PointerType)
+		CLASS_MEMBER_FIELD(type)
+	END_CLASS_MEMBER(prefixmerge4_lrimultiple::PointerType)
 
-			BEGIN_CLASS_MEMBER(prefixmerge4_lrimultiple::FunctionType)
-				CLASS_MEMBER_BASE(prefixmerge4_lrimultiple::TypeOrExpr)
+	BEGIN_CLASS_MEMBER(prefixmerge4_lrimultiple::FunctionType)
+		CLASS_MEMBER_BASE(prefixmerge4_lrimultiple::TypeOrExpr)
 
-				CLASS_MEMBER_CONSTRUCTOR(vl::Ptr<prefixmerge4_lrimultiple::FunctionType>(), NO_PARAMETER)
+		CLASS_MEMBER_CONSTRUCTOR(vl::Ptr<prefixmerge4_lrimultiple::FunctionType>(), NO_PARAMETER)
 
-				CLASS_MEMBER_FIELD(returnType)
-				CLASS_MEMBER_FIELD(args)
-			END_CLASS_MEMBER(prefixmerge4_lrimultiple::FunctionType)
+		CLASS_MEMBER_FIELD(returnType)
+		CLASS_MEMBER_FIELD(args)
+	END_CLASS_MEMBER(prefixmerge4_lrimultiple::FunctionType)
 
-			BEGIN_CLASS_MEMBER(prefixmerge4_lrimultiple::TypeOrExprToResolve)
-				CLASS_MEMBER_BASE(prefixmerge4_lrimultiple::TypeOrExpr)
+	BEGIN_CLASS_MEMBER(prefixmerge4_lrimultiple::TypeOrExprToResolve)
+		CLASS_MEMBER_BASE(prefixmerge4_lrimultiple::TypeOrExpr)
 
-				CLASS_MEMBER_CONSTRUCTOR(vl::Ptr<prefixmerge4_lrimultiple::TypeOrExprToResolve>(), NO_PARAMETER)
+		CLASS_MEMBER_CONSTRUCTOR(vl::Ptr<prefixmerge4_lrimultiple::TypeOrExprToResolve>(), NO_PARAMETER)
 
-				CLASS_MEMBER_FIELD(candidates)
-			END_CLASS_MEMBER(prefixmerge4_lrimultiple::TypeOrExprToResolve)
+		CLASS_MEMBER_FIELD(candidates)
+	END_CLASS_MEMBER(prefixmerge4_lrimultiple::TypeOrExprToResolve)
 
-			BEGIN_INTERFACE_MEMBER(prefixmerge4_lrimultiple::TypeOrExpr::IVisitor)
-				CLASS_MEMBER_METHOD_OVERLOAD(Visit, {L"node"}, void(prefixmerge4_lrimultiple::TypeOrExpr::IVisitor::*)(prefixmerge4_lrimultiple::TypeOrExprToResolve* node))
-				CLASS_MEMBER_METHOD_OVERLOAD(Visit, {L"node"}, void(prefixmerge4_lrimultiple::TypeOrExpr::IVisitor::*)(prefixmerge4_lrimultiple::QualifiedName* node))
-				CLASS_MEMBER_METHOD_OVERLOAD(Visit, {L"node"}, void(prefixmerge4_lrimultiple::TypeOrExpr::IVisitor::*)(prefixmerge4_lrimultiple::CallExpr* node))
-				CLASS_MEMBER_METHOD_OVERLOAD(Visit, {L"node"}, void(prefixmerge4_lrimultiple::TypeOrExpr::IVisitor::*)(prefixmerge4_lrimultiple::CtorExpr* node))
-				CLASS_MEMBER_METHOD_OVERLOAD(Visit, {L"node"}, void(prefixmerge4_lrimultiple::TypeOrExpr::IVisitor::*)(prefixmerge4_lrimultiple::MulExpr* node))
-				CLASS_MEMBER_METHOD_OVERLOAD(Visit, {L"node"}, void(prefixmerge4_lrimultiple::TypeOrExpr::IVisitor::*)(prefixmerge4_lrimultiple::ConstType* node))
-				CLASS_MEMBER_METHOD_OVERLOAD(Visit, {L"node"}, void(prefixmerge4_lrimultiple::TypeOrExpr::IVisitor::*)(prefixmerge4_lrimultiple::PointerType* node))
-				CLASS_MEMBER_METHOD_OVERLOAD(Visit, {L"node"}, void(prefixmerge4_lrimultiple::TypeOrExpr::IVisitor::*)(prefixmerge4_lrimultiple::FunctionType* node))
-			END_INTERFACE_MEMBER(prefixmerge4_lrimultiple::TypeOrExpr)
+	BEGIN_INTERFACE_MEMBER(prefixmerge4_lrimultiple::TypeOrExpr::IVisitor)
+		CLASS_MEMBER_METHOD_OVERLOAD(Visit, {L"node"}, void(prefixmerge4_lrimultiple::TypeOrExpr::IVisitor::*)(prefixmerge4_lrimultiple::TypeOrExprToResolve* node))
+		CLASS_MEMBER_METHOD_OVERLOAD(Visit, {L"node"}, void(prefixmerge4_lrimultiple::TypeOrExpr::IVisitor::*)(prefixmerge4_lrimultiple::QualifiedName* node))
+		CLASS_MEMBER_METHOD_OVERLOAD(Visit, {L"node"}, void(prefixmerge4_lrimultiple::TypeOrExpr::IVisitor::*)(prefixmerge4_lrimultiple::CallExpr* node))
+		CLASS_MEMBER_METHOD_OVERLOAD(Visit, {L"node"}, void(prefixmerge4_lrimultiple::TypeOrExpr::IVisitor::*)(prefixmerge4_lrimultiple::CtorExpr* node))
+		CLASS_MEMBER_METHOD_OVERLOAD(Visit, {L"node"}, void(prefixmerge4_lrimultiple::TypeOrExpr::IVisitor::*)(prefixmerge4_lrimultiple::MulExpr* node))
+		CLASS_MEMBER_METHOD_OVERLOAD(Visit, {L"node"}, void(prefixmerge4_lrimultiple::TypeOrExpr::IVisitor::*)(prefixmerge4_lrimultiple::ConstType* node))
+		CLASS_MEMBER_METHOD_OVERLOAD(Visit, {L"node"}, void(prefixmerge4_lrimultiple::TypeOrExpr::IVisitor::*)(prefixmerge4_lrimultiple::PointerType* node))
+		CLASS_MEMBER_METHOD_OVERLOAD(Visit, {L"node"}, void(prefixmerge4_lrimultiple::TypeOrExpr::IVisitor::*)(prefixmerge4_lrimultiple::FunctionType* node))
+	END_INTERFACE_MEMBER(prefixmerge4_lrimultiple::TypeOrExpr)
 
-			BEGIN_INTERFACE_MEMBER(prefixmerge4_lrimultiple::QualifiedName::IVisitor)
-				CLASS_MEMBER_METHOD_OVERLOAD(Visit, {L"node"}, void(prefixmerge4_lrimultiple::QualifiedName::IVisitor::*)(prefixmerge4_lrimultiple::Name* node))
-				CLASS_MEMBER_METHOD_OVERLOAD(Visit, {L"node"}, void(prefixmerge4_lrimultiple::QualifiedName::IVisitor::*)(prefixmerge4_lrimultiple::MemberName* node))
-			END_INTERFACE_MEMBER(prefixmerge4_lrimultiple::QualifiedName)
+	BEGIN_INTERFACE_MEMBER(prefixmerge4_lrimultiple::QualifiedName::IVisitor)
+		CLASS_MEMBER_METHOD_OVERLOAD(Visit, {L"node"}, void(prefixmerge4_lrimultiple::QualifiedName::IVisitor::*)(prefixmerge4_lrimultiple::Name* node))
+		CLASS_MEMBER_METHOD_OVERLOAD(Visit, {L"node"}, void(prefixmerge4_lrimultiple::QualifiedName::IVisitor::*)(prefixmerge4_lrimultiple::MemberName* node))
+	END_INTERFACE_MEMBER(prefixmerge4_lrimultiple::QualifiedName)
 
 #endif
 
 #ifdef VCZH_DESCRIPTABLEOBJECT_WITH_METADATA
-			class PrefixMerge4_LriMultipleTypeOrExprTypeLoader : public vl::Object, public ITypeLoader
-			{
-			public:
-				void Load(ITypeManager* manager)
-				{
-					ADD_TYPE_INFO(prefixmerge4_lrimultiple::TypeOrExpr)
-					ADD_TYPE_INFO(prefixmerge4_lrimultiple::TypeOrExpr::IVisitor)
-					ADD_TYPE_INFO(prefixmerge4_lrimultiple::QualifiedName)
-					ADD_TYPE_INFO(prefixmerge4_lrimultiple::QualifiedName::IVisitor)
-					ADD_TYPE_INFO(prefixmerge4_lrimultiple::Name)
-					ADD_TYPE_INFO(prefixmerge4_lrimultiple::MemberName)
-					ADD_TYPE_INFO(prefixmerge4_lrimultiple::CallExpr)
-					ADD_TYPE_INFO(prefixmerge4_lrimultiple::CtorExpr)
-					ADD_TYPE_INFO(prefixmerge4_lrimultiple::MulExpr)
-					ADD_TYPE_INFO(prefixmerge4_lrimultiple::ConstType)
-					ADD_TYPE_INFO(prefixmerge4_lrimultiple::PointerType)
-					ADD_TYPE_INFO(prefixmerge4_lrimultiple::FunctionType)
-					ADD_TYPE_INFO(prefixmerge4_lrimultiple::TypeOrExprToResolve)
-				}
-
-				void Unload(ITypeManager* manager)
-				{
-				}
-			};
-#endif
-#endif
-
-			bool PrefixMerge4_LriMultipleTypeOrExprLoadTypes()
-			{
-#ifdef VCZH_DESCRIPTABLEOBJECT_WITH_METADATA
-				if (auto manager = GetGlobalTypeManager())
-				{
-					auto loader = Ptr(new PrefixMerge4_LriMultipleTypeOrExprTypeLoader);
-					return manager->AddTypeLoader(loader);
-				}
-#endif
-				return false;
-			}
+	class PrefixMerge4_LriMultipleTypeOrExprTypeLoader : public vl::Object, public ITypeLoader
+	{
+	public:
+		void Load(ITypeManager* manager)
+		{
+			ADD_TYPE_INFO(prefixmerge4_lrimultiple::TypeOrExpr)
+			ADD_TYPE_INFO(prefixmerge4_lrimultiple::TypeOrExpr::IVisitor)
+			ADD_TYPE_INFO(prefixmerge4_lrimultiple::QualifiedName)
+			ADD_TYPE_INFO(prefixmerge4_lrimultiple::QualifiedName::IVisitor)
+			ADD_TYPE_INFO(prefixmerge4_lrimultiple::Name)
+			ADD_TYPE_INFO(prefixmerge4_lrimultiple::MemberName)
+			ADD_TYPE_INFO(prefixmerge4_lrimultiple::CallExpr)
+			ADD_TYPE_INFO(prefixmerge4_lrimultiple::CtorExpr)
+			ADD_TYPE_INFO(prefixmerge4_lrimultiple::MulExpr)
+			ADD_TYPE_INFO(prefixmerge4_lrimultiple::ConstType)
+			ADD_TYPE_INFO(prefixmerge4_lrimultiple::PointerType)
+			ADD_TYPE_INFO(prefixmerge4_lrimultiple::FunctionType)
+			ADD_TYPE_INFO(prefixmerge4_lrimultiple::TypeOrExprToResolve)
 		}
+
+		void Unload(ITypeManager* manager)
+		{
+		}
+	};
+#endif
+#endif
+
+	bool PrefixMerge4_LriMultipleTypeOrExprLoadTypes()
+	{
+#ifdef VCZH_DESCRIPTABLEOBJECT_WITH_METADATA
+		if (auto manager = GetGlobalTypeManager())
+		{
+			auto loader = Ptr(new PrefixMerge4_LriMultipleTypeOrExprTypeLoader);
+			return manager->AddTypeLoader(loader);
+		}
+#endif
+		return false;
 	}
 }

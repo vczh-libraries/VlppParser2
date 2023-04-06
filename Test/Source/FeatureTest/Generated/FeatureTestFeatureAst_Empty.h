@@ -9,29 +9,26 @@ Licensed under https://github.com/vczh-libraries/License
 
 #include "FeatureTestFeatureAst.h"
 
-namespace featuretest
+namespace featuretest::empty_visitor
 {
-	namespace empty_visitor
+	/// <summary>An empty visitor, overriding all abstract methods with empty implementations.</summary>
+	class FeatureVisitor : public vl::Object, public Feature::IVisitor
 	{
-		/// <summary>An empty visitor, overriding all abstract methods with empty implementations.</summary>
-		class FeatureVisitor : public vl::Object, public Feature::IVisitor
-		{
-		protected:
-			// Dispatch (virtual) --------------------------------
+	protected:
+		// Dispatch (virtual) --------------------------------
 
-		public:
-			// Visitor Members -----------------------------------
-			void Visit(FeatureToResolve* node) override;
-			void Visit(OptionalFeature* node) override;
-			void Visit(NestedOptionalFeature* node) override;
-			void Visit(BranchedOptionalFeature* node) override;
-			void Visit(PbaFeature* node) override;
-			void Visit(Pwa1Feature* node) override;
-			void Visit(PwlFeature* node) override;
-			void Visit(ClFeature* node) override;
-			void Visit(FaFeature* node) override;
-		};
+	public:
+		// Visitor Members -----------------------------------
+		void Visit(FeatureToResolve* node) override;
+		void Visit(OptionalFeature* node) override;
+		void Visit(NestedOptionalFeature* node) override;
+		void Visit(BranchedOptionalFeature* node) override;
+		void Visit(PbaFeature* node) override;
+		void Visit(Pwa1Feature* node) override;
+		void Visit(PwlFeature* node) override;
+		void Visit(ClFeature* node) override;
+		void Visit(FaFeature* node) override;
+	};
 
-	}
 }
 #endif

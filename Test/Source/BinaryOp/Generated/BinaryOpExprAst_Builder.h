@@ -9,24 +9,21 @@ Licensed under https://github.com/vczh-libraries/License
 
 #include "BinaryOpExprAst.h"
 
-namespace binaryop
+namespace binaryop::builder
 {
-	namespace builder
+	class MakeBinaryExpr : public vl::glr::ParsingAstBuilder<BinaryExpr>
 	{
-		class MakeBinaryExpr : public vl::glr::ParsingAstBuilder<BinaryExpr>
-		{
-		public:
-			MakeBinaryExpr& left(const vl::Ptr<Expr>& value);
-			MakeBinaryExpr& op(BinaryOp value);
-			MakeBinaryExpr& right(const vl::Ptr<Expr>& value);
-		};
+	public:
+		MakeBinaryExpr& left(const vl::Ptr<Expr>& value);
+		MakeBinaryExpr& op(BinaryOp value);
+		MakeBinaryExpr& right(const vl::Ptr<Expr>& value);
+	};
 
-		class MakeRefExpr : public vl::glr::ParsingAstBuilder<RefExpr>
-		{
-		public:
-			MakeRefExpr& name(const vl::WString& value);
-		};
+	class MakeRefExpr : public vl::glr::ParsingAstBuilder<RefExpr>
+	{
+	public:
+		MakeRefExpr& name(const vl::WString& value);
+	};
 
-	}
 }
 #endif

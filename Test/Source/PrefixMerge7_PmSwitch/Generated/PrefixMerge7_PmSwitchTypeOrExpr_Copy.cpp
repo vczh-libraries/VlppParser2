@@ -6,366 +6,363 @@ Licensed under https://github.com/vczh-libraries/License
 
 #include "PrefixMerge7_PmSwitchTypeOrExpr_Copy.h"
 
-namespace prefixmerge7_pmswitch
+namespace prefixmerge7_pmswitch::copy_visitor
 {
-	namespace copy_visitor
+	void TypeOrExprVisitor::CopyFields(CallExpr* from, CallExpr* to)
 	{
-		void TypeOrExprVisitor::CopyFields(CallExpr* from, CallExpr* to)
+		CopyFields(static_cast<TypeOrExpr*>(from), static_cast<TypeOrExpr*>(to));
+		for (auto&& listItem : from->args)
 		{
-			CopyFields(static_cast<TypeOrExpr*>(from), static_cast<TypeOrExpr*>(to));
-			for (auto&& listItem : from->args)
-			{
-				to->args.Add(CopyNode(listItem.Obj()));
-			}
-			to->func = CopyNode(from->func.Obj());
+			to->args.Add(CopyNode(listItem.Obj()));
 		}
-
-		void TypeOrExprVisitor::CopyFields(CommaExpr* from, CommaExpr* to)
-		{
-			CopyFields(static_cast<TypeOrExpr*>(from), static_cast<TypeOrExpr*>(to));
-			to->first = CopyNode(from->first.Obj());
-			to->second = CopyNode(from->second.Obj());
-		}
-
-		void TypeOrExprVisitor::CopyFields(ConstType* from, ConstType* to)
-		{
-			CopyFields(static_cast<TypeOrExpr*>(from), static_cast<TypeOrExpr*>(to));
-			to->type = CopyNode(from->type.Obj());
-		}
-
-		void TypeOrExprVisitor::CopyFields(CtorExpr* from, CtorExpr* to)
-		{
-			CopyFields(static_cast<TypeOrExpr*>(from), static_cast<TypeOrExpr*>(to));
-			for (auto&& listItem : from->args)
-			{
-				to->args.Add(CopyNode(listItem.Obj()));
-			}
-			to->type = CopyNode(from->type.Obj());
-		}
-
-		void TypeOrExprVisitor::CopyFields(FunctionType* from, FunctionType* to)
-		{
-			CopyFields(static_cast<TypeOrExpr*>(from), static_cast<TypeOrExpr*>(to));
-			for (auto&& listItem : from->args)
-			{
-				to->args.Add(CopyNode(listItem.Obj()));
-			}
-			to->returnType = CopyNode(from->returnType.Obj());
-		}
-
-		void TypeOrExprVisitor::CopyFields(GenericMemberName* from, GenericMemberName* to)
-		{
-			CopyFields(static_cast<GenericQualifiedName*>(from), static_cast<GenericQualifiedName*>(to));
-			to->member = from->member;
-			to->parent = CopyNode(from->parent.Obj());
-		}
-
-		void TypeOrExprVisitor::CopyFields(GenericName* from, GenericName* to)
-		{
-			CopyFields(static_cast<GenericQualifiedName*>(from), static_cast<GenericQualifiedName*>(to));
-			to->name = from->name;
-		}
-
-		void TypeOrExprVisitor::CopyFields(GenericQualifiedName* from, GenericQualifiedName* to)
-		{
-			CopyFields(static_cast<QualifiedName*>(from), static_cast<QualifiedName*>(to));
-			for (auto&& listItem : from->args)
-			{
-				to->args.Add(CopyNode(listItem.Obj()));
-			}
-		}
-
-		void TypeOrExprVisitor::CopyFields(GtExpr* from, GtExpr* to)
-		{
-			CopyFields(static_cast<TypeOrExpr*>(from), static_cast<TypeOrExpr*>(to));
-			to->first = CopyNode(from->first.Obj());
-			to->second = CopyNode(from->second.Obj());
-		}
-
-		void TypeOrExprVisitor::CopyFields(LtExpr* from, LtExpr* to)
-		{
-			CopyFields(static_cast<TypeOrExpr*>(from), static_cast<TypeOrExpr*>(to));
-			to->first = CopyNode(from->first.Obj());
-			to->second = CopyNode(from->second.Obj());
-		}
-
-		void TypeOrExprVisitor::CopyFields(MemberName* from, MemberName* to)
-		{
-			CopyFields(static_cast<QualifiedName*>(from), static_cast<QualifiedName*>(to));
-			to->member = from->member;
-			to->parent = CopyNode(from->parent.Obj());
-		}
-
-		void TypeOrExprVisitor::CopyFields(MulExpr* from, MulExpr* to)
-		{
-			CopyFields(static_cast<TypeOrExpr*>(from), static_cast<TypeOrExpr*>(to));
-			to->first = CopyNode(from->first.Obj());
-			to->second = CopyNode(from->second.Obj());
-		}
-
-		void TypeOrExprVisitor::CopyFields(Name* from, Name* to)
-		{
-			CopyFields(static_cast<QualifiedName*>(from), static_cast<QualifiedName*>(to));
-			to->name = from->name;
-		}
-
-		void TypeOrExprVisitor::CopyFields(PointerType* from, PointerType* to)
-		{
-			CopyFields(static_cast<TypeOrExpr*>(from), static_cast<TypeOrExpr*>(to));
-			to->type = CopyNode(from->type.Obj());
-		}
-
-		void TypeOrExprVisitor::CopyFields(QualifiedName* from, QualifiedName* to)
-		{
-			CopyFields(static_cast<TypeOrExpr*>(from), static_cast<TypeOrExpr*>(to));
-		}
-
-		void TypeOrExprVisitor::CopyFields(ThrowExpr* from, ThrowExpr* to)
-		{
-			CopyFields(static_cast<TypeOrExpr*>(from), static_cast<TypeOrExpr*>(to));
-			for (auto&& listItem : from->arg)
-			{
-				to->arg.Add(CopyNode(listItem.Obj()));
-			}
-		}
-
-		void TypeOrExprVisitor::CopyFields(TypeOrExpr* from, TypeOrExpr* to)
-		{
-		}
-
-		void TypeOrExprVisitor::CopyFields(TypeOrExprToResolve* from, TypeOrExprToResolve* to)
-		{
-			CopyFields(static_cast<TypeOrExpr*>(from), static_cast<TypeOrExpr*>(to));
-			for (auto&& listItem : from->candidates)
-			{
-				to->candidates.Add(CopyNode(listItem.Obj()));
-			}
-		}
-
-		void TypeOrExprVisitor::Visit(TypeOrExprToResolve* node)
-		{
-			auto newNode = vl::Ptr(new TypeOrExprToResolve);
-			CopyFields(node, newNode.Obj());
-			this->result = newNode;
-		}
-
-		void TypeOrExprVisitor::Visit(QualifiedName* node)
-		{
-			node->Accept(static_cast<QualifiedName::IVisitor*>(this));
-		}
-
-		void TypeOrExprVisitor::Visit(CallExpr* node)
-		{
-			auto newNode = vl::Ptr(new CallExpr);
-			CopyFields(node, newNode.Obj());
-			this->result = newNode;
-		}
-
-		void TypeOrExprVisitor::Visit(CtorExpr* node)
-		{
-			auto newNode = vl::Ptr(new CtorExpr);
-			CopyFields(node, newNode.Obj());
-			this->result = newNode;
-		}
-
-		void TypeOrExprVisitor::Visit(MulExpr* node)
-		{
-			auto newNode = vl::Ptr(new MulExpr);
-			CopyFields(node, newNode.Obj());
-			this->result = newNode;
-		}
-
-		void TypeOrExprVisitor::Visit(LtExpr* node)
-		{
-			auto newNode = vl::Ptr(new LtExpr);
-			CopyFields(node, newNode.Obj());
-			this->result = newNode;
-		}
-
-		void TypeOrExprVisitor::Visit(GtExpr* node)
-		{
-			auto newNode = vl::Ptr(new GtExpr);
-			CopyFields(node, newNode.Obj());
-			this->result = newNode;
-		}
-
-		void TypeOrExprVisitor::Visit(ThrowExpr* node)
-		{
-			auto newNode = vl::Ptr(new ThrowExpr);
-			CopyFields(node, newNode.Obj());
-			this->result = newNode;
-		}
-
-		void TypeOrExprVisitor::Visit(CommaExpr* node)
-		{
-			auto newNode = vl::Ptr(new CommaExpr);
-			CopyFields(node, newNode.Obj());
-			this->result = newNode;
-		}
-
-		void TypeOrExprVisitor::Visit(ConstType* node)
-		{
-			auto newNode = vl::Ptr(new ConstType);
-			CopyFields(node, newNode.Obj());
-			this->result = newNode;
-		}
-
-		void TypeOrExprVisitor::Visit(PointerType* node)
-		{
-			auto newNode = vl::Ptr(new PointerType);
-			CopyFields(node, newNode.Obj());
-			this->result = newNode;
-		}
-
-		void TypeOrExprVisitor::Visit(FunctionType* node)
-		{
-			auto newNode = vl::Ptr(new FunctionType);
-			CopyFields(node, newNode.Obj());
-			this->result = newNode;
-		}
-
-		void TypeOrExprVisitor::Visit(Name* node)
-		{
-			auto newNode = vl::Ptr(new Name);
-			CopyFields(node, newNode.Obj());
-			this->result = newNode;
-		}
-
-		void TypeOrExprVisitor::Visit(MemberName* node)
-		{
-			auto newNode = vl::Ptr(new MemberName);
-			CopyFields(node, newNode.Obj());
-			this->result = newNode;
-		}
-
-		void TypeOrExprVisitor::Visit(GenericQualifiedName* node)
-		{
-			node->Accept(static_cast<GenericQualifiedName::IVisitor*>(this));
-		}
-
-		void TypeOrExprVisitor::Visit(GenericName* node)
-		{
-			auto newNode = vl::Ptr(new GenericName);
-			CopyFields(node, newNode.Obj());
-			this->result = newNode;
-		}
-
-		void TypeOrExprVisitor::Visit(GenericMemberName* node)
-		{
-			auto newNode = vl::Ptr(new GenericMemberName);
-			CopyFields(node, newNode.Obj());
-			this->result = newNode;
-		}
-
-		vl::Ptr<TypeOrExpr> TypeOrExprVisitor::CopyNode(TypeOrExpr* node)
-		{
-			if (!node) return nullptr;
-			node->Accept(static_cast<TypeOrExpr::IVisitor*>(this));
-			this->result->codeRange = node->codeRange;
-			return this->result.Cast<TypeOrExpr>();
-		}
-
-		vl::Ptr<CallExpr> TypeOrExprVisitor::CopyNode(CallExpr* node)
-		{
-			if (!node) return nullptr;
-			return CopyNode(static_cast<TypeOrExpr*>(node)).Cast<CallExpr>();
-		}
-
-		vl::Ptr<CommaExpr> TypeOrExprVisitor::CopyNode(CommaExpr* node)
-		{
-			if (!node) return nullptr;
-			return CopyNode(static_cast<TypeOrExpr*>(node)).Cast<CommaExpr>();
-		}
-
-		vl::Ptr<ConstType> TypeOrExprVisitor::CopyNode(ConstType* node)
-		{
-			if (!node) return nullptr;
-			return CopyNode(static_cast<TypeOrExpr*>(node)).Cast<ConstType>();
-		}
-
-		vl::Ptr<CtorExpr> TypeOrExprVisitor::CopyNode(CtorExpr* node)
-		{
-			if (!node) return nullptr;
-			return CopyNode(static_cast<TypeOrExpr*>(node)).Cast<CtorExpr>();
-		}
-
-		vl::Ptr<FunctionType> TypeOrExprVisitor::CopyNode(FunctionType* node)
-		{
-			if (!node) return nullptr;
-			return CopyNode(static_cast<TypeOrExpr*>(node)).Cast<FunctionType>();
-		}
-
-		vl::Ptr<GenericMemberName> TypeOrExprVisitor::CopyNode(GenericMemberName* node)
-		{
-			if (!node) return nullptr;
-			return CopyNode(static_cast<TypeOrExpr*>(node)).Cast<GenericMemberName>();
-		}
-
-		vl::Ptr<GenericName> TypeOrExprVisitor::CopyNode(GenericName* node)
-		{
-			if (!node) return nullptr;
-			return CopyNode(static_cast<TypeOrExpr*>(node)).Cast<GenericName>();
-		}
-
-		vl::Ptr<GenericQualifiedName> TypeOrExprVisitor::CopyNode(GenericQualifiedName* node)
-		{
-			if (!node) return nullptr;
-			return CopyNode(static_cast<TypeOrExpr*>(node)).Cast<GenericQualifiedName>();
-		}
-
-		vl::Ptr<GtExpr> TypeOrExprVisitor::CopyNode(GtExpr* node)
-		{
-			if (!node) return nullptr;
-			return CopyNode(static_cast<TypeOrExpr*>(node)).Cast<GtExpr>();
-		}
-
-		vl::Ptr<LtExpr> TypeOrExprVisitor::CopyNode(LtExpr* node)
-		{
-			if (!node) return nullptr;
-			return CopyNode(static_cast<TypeOrExpr*>(node)).Cast<LtExpr>();
-		}
-
-		vl::Ptr<MemberName> TypeOrExprVisitor::CopyNode(MemberName* node)
-		{
-			if (!node) return nullptr;
-			return CopyNode(static_cast<TypeOrExpr*>(node)).Cast<MemberName>();
-		}
-
-		vl::Ptr<MulExpr> TypeOrExprVisitor::CopyNode(MulExpr* node)
-		{
-			if (!node) return nullptr;
-			return CopyNode(static_cast<TypeOrExpr*>(node)).Cast<MulExpr>();
-		}
-
-		vl::Ptr<Name> TypeOrExprVisitor::CopyNode(Name* node)
-		{
-			if (!node) return nullptr;
-			return CopyNode(static_cast<TypeOrExpr*>(node)).Cast<Name>();
-		}
-
-		vl::Ptr<PointerType> TypeOrExprVisitor::CopyNode(PointerType* node)
-		{
-			if (!node) return nullptr;
-			return CopyNode(static_cast<TypeOrExpr*>(node)).Cast<PointerType>();
-		}
-
-		vl::Ptr<QualifiedName> TypeOrExprVisitor::CopyNode(QualifiedName* node)
-		{
-			if (!node) return nullptr;
-			return CopyNode(static_cast<TypeOrExpr*>(node)).Cast<QualifiedName>();
-		}
-
-		vl::Ptr<ThrowExpr> TypeOrExprVisitor::CopyNode(ThrowExpr* node)
-		{
-			if (!node) return nullptr;
-			return CopyNode(static_cast<TypeOrExpr*>(node)).Cast<ThrowExpr>();
-		}
-
-		vl::Ptr<TypeOrExprToResolve> TypeOrExprVisitor::CopyNode(TypeOrExprToResolve* node)
-		{
-			if (!node) return nullptr;
-			return CopyNode(static_cast<TypeOrExpr*>(node)).Cast<TypeOrExprToResolve>();
-		}
-
+		to->func = CopyNode(from->func.Obj());
 	}
+
+	void TypeOrExprVisitor::CopyFields(CommaExpr* from, CommaExpr* to)
+	{
+		CopyFields(static_cast<TypeOrExpr*>(from), static_cast<TypeOrExpr*>(to));
+		to->first = CopyNode(from->first.Obj());
+		to->second = CopyNode(from->second.Obj());
+	}
+
+	void TypeOrExprVisitor::CopyFields(ConstType* from, ConstType* to)
+	{
+		CopyFields(static_cast<TypeOrExpr*>(from), static_cast<TypeOrExpr*>(to));
+		to->type = CopyNode(from->type.Obj());
+	}
+
+	void TypeOrExprVisitor::CopyFields(CtorExpr* from, CtorExpr* to)
+	{
+		CopyFields(static_cast<TypeOrExpr*>(from), static_cast<TypeOrExpr*>(to));
+		for (auto&& listItem : from->args)
+		{
+			to->args.Add(CopyNode(listItem.Obj()));
+		}
+		to->type = CopyNode(from->type.Obj());
+	}
+
+	void TypeOrExprVisitor::CopyFields(FunctionType* from, FunctionType* to)
+	{
+		CopyFields(static_cast<TypeOrExpr*>(from), static_cast<TypeOrExpr*>(to));
+		for (auto&& listItem : from->args)
+		{
+			to->args.Add(CopyNode(listItem.Obj()));
+		}
+		to->returnType = CopyNode(from->returnType.Obj());
+	}
+
+	void TypeOrExprVisitor::CopyFields(GenericMemberName* from, GenericMemberName* to)
+	{
+		CopyFields(static_cast<GenericQualifiedName*>(from), static_cast<GenericQualifiedName*>(to));
+		to->member = from->member;
+		to->parent = CopyNode(from->parent.Obj());
+	}
+
+	void TypeOrExprVisitor::CopyFields(GenericName* from, GenericName* to)
+	{
+		CopyFields(static_cast<GenericQualifiedName*>(from), static_cast<GenericQualifiedName*>(to));
+		to->name = from->name;
+	}
+
+	void TypeOrExprVisitor::CopyFields(GenericQualifiedName* from, GenericQualifiedName* to)
+	{
+		CopyFields(static_cast<QualifiedName*>(from), static_cast<QualifiedName*>(to));
+		for (auto&& listItem : from->args)
+		{
+			to->args.Add(CopyNode(listItem.Obj()));
+		}
+	}
+
+	void TypeOrExprVisitor::CopyFields(GtExpr* from, GtExpr* to)
+	{
+		CopyFields(static_cast<TypeOrExpr*>(from), static_cast<TypeOrExpr*>(to));
+		to->first = CopyNode(from->first.Obj());
+		to->second = CopyNode(from->second.Obj());
+	}
+
+	void TypeOrExprVisitor::CopyFields(LtExpr* from, LtExpr* to)
+	{
+		CopyFields(static_cast<TypeOrExpr*>(from), static_cast<TypeOrExpr*>(to));
+		to->first = CopyNode(from->first.Obj());
+		to->second = CopyNode(from->second.Obj());
+	}
+
+	void TypeOrExprVisitor::CopyFields(MemberName* from, MemberName* to)
+	{
+		CopyFields(static_cast<QualifiedName*>(from), static_cast<QualifiedName*>(to));
+		to->member = from->member;
+		to->parent = CopyNode(from->parent.Obj());
+	}
+
+	void TypeOrExprVisitor::CopyFields(MulExpr* from, MulExpr* to)
+	{
+		CopyFields(static_cast<TypeOrExpr*>(from), static_cast<TypeOrExpr*>(to));
+		to->first = CopyNode(from->first.Obj());
+		to->second = CopyNode(from->second.Obj());
+	}
+
+	void TypeOrExprVisitor::CopyFields(Name* from, Name* to)
+	{
+		CopyFields(static_cast<QualifiedName*>(from), static_cast<QualifiedName*>(to));
+		to->name = from->name;
+	}
+
+	void TypeOrExprVisitor::CopyFields(PointerType* from, PointerType* to)
+	{
+		CopyFields(static_cast<TypeOrExpr*>(from), static_cast<TypeOrExpr*>(to));
+		to->type = CopyNode(from->type.Obj());
+	}
+
+	void TypeOrExprVisitor::CopyFields(QualifiedName* from, QualifiedName* to)
+	{
+		CopyFields(static_cast<TypeOrExpr*>(from), static_cast<TypeOrExpr*>(to));
+	}
+
+	void TypeOrExprVisitor::CopyFields(ThrowExpr* from, ThrowExpr* to)
+	{
+		CopyFields(static_cast<TypeOrExpr*>(from), static_cast<TypeOrExpr*>(to));
+		for (auto&& listItem : from->arg)
+		{
+			to->arg.Add(CopyNode(listItem.Obj()));
+		}
+	}
+
+	void TypeOrExprVisitor::CopyFields(TypeOrExpr* from, TypeOrExpr* to)
+	{
+	}
+
+	void TypeOrExprVisitor::CopyFields(TypeOrExprToResolve* from, TypeOrExprToResolve* to)
+	{
+		CopyFields(static_cast<TypeOrExpr*>(from), static_cast<TypeOrExpr*>(to));
+		for (auto&& listItem : from->candidates)
+		{
+			to->candidates.Add(CopyNode(listItem.Obj()));
+		}
+	}
+
+	void TypeOrExprVisitor::Visit(TypeOrExprToResolve* node)
+	{
+		auto newNode = vl::Ptr(new TypeOrExprToResolve);
+		CopyFields(node, newNode.Obj());
+		this->result = newNode;
+	}
+
+	void TypeOrExprVisitor::Visit(QualifiedName* node)
+	{
+		node->Accept(static_cast<QualifiedName::IVisitor*>(this));
+	}
+
+	void TypeOrExprVisitor::Visit(CallExpr* node)
+	{
+		auto newNode = vl::Ptr(new CallExpr);
+		CopyFields(node, newNode.Obj());
+		this->result = newNode;
+	}
+
+	void TypeOrExprVisitor::Visit(CtorExpr* node)
+	{
+		auto newNode = vl::Ptr(new CtorExpr);
+		CopyFields(node, newNode.Obj());
+		this->result = newNode;
+	}
+
+	void TypeOrExprVisitor::Visit(MulExpr* node)
+	{
+		auto newNode = vl::Ptr(new MulExpr);
+		CopyFields(node, newNode.Obj());
+		this->result = newNode;
+	}
+
+	void TypeOrExprVisitor::Visit(LtExpr* node)
+	{
+		auto newNode = vl::Ptr(new LtExpr);
+		CopyFields(node, newNode.Obj());
+		this->result = newNode;
+	}
+
+	void TypeOrExprVisitor::Visit(GtExpr* node)
+	{
+		auto newNode = vl::Ptr(new GtExpr);
+		CopyFields(node, newNode.Obj());
+		this->result = newNode;
+	}
+
+	void TypeOrExprVisitor::Visit(ThrowExpr* node)
+	{
+		auto newNode = vl::Ptr(new ThrowExpr);
+		CopyFields(node, newNode.Obj());
+		this->result = newNode;
+	}
+
+	void TypeOrExprVisitor::Visit(CommaExpr* node)
+	{
+		auto newNode = vl::Ptr(new CommaExpr);
+		CopyFields(node, newNode.Obj());
+		this->result = newNode;
+	}
+
+	void TypeOrExprVisitor::Visit(ConstType* node)
+	{
+		auto newNode = vl::Ptr(new ConstType);
+		CopyFields(node, newNode.Obj());
+		this->result = newNode;
+	}
+
+	void TypeOrExprVisitor::Visit(PointerType* node)
+	{
+		auto newNode = vl::Ptr(new PointerType);
+		CopyFields(node, newNode.Obj());
+		this->result = newNode;
+	}
+
+	void TypeOrExprVisitor::Visit(FunctionType* node)
+	{
+		auto newNode = vl::Ptr(new FunctionType);
+		CopyFields(node, newNode.Obj());
+		this->result = newNode;
+	}
+
+	void TypeOrExprVisitor::Visit(Name* node)
+	{
+		auto newNode = vl::Ptr(new Name);
+		CopyFields(node, newNode.Obj());
+		this->result = newNode;
+	}
+
+	void TypeOrExprVisitor::Visit(MemberName* node)
+	{
+		auto newNode = vl::Ptr(new MemberName);
+		CopyFields(node, newNode.Obj());
+		this->result = newNode;
+	}
+
+	void TypeOrExprVisitor::Visit(GenericQualifiedName* node)
+	{
+		node->Accept(static_cast<GenericQualifiedName::IVisitor*>(this));
+	}
+
+	void TypeOrExprVisitor::Visit(GenericName* node)
+	{
+		auto newNode = vl::Ptr(new GenericName);
+		CopyFields(node, newNode.Obj());
+		this->result = newNode;
+	}
+
+	void TypeOrExprVisitor::Visit(GenericMemberName* node)
+	{
+		auto newNode = vl::Ptr(new GenericMemberName);
+		CopyFields(node, newNode.Obj());
+		this->result = newNode;
+	}
+
+	vl::Ptr<TypeOrExpr> TypeOrExprVisitor::CopyNode(TypeOrExpr* node)
+	{
+		if (!node) return nullptr;
+		node->Accept(static_cast<TypeOrExpr::IVisitor*>(this));
+		this->result->codeRange = node->codeRange;
+		return this->result.Cast<TypeOrExpr>();
+	}
+
+	vl::Ptr<CallExpr> TypeOrExprVisitor::CopyNode(CallExpr* node)
+	{
+		if (!node) return nullptr;
+		return CopyNode(static_cast<TypeOrExpr*>(node)).Cast<CallExpr>();
+	}
+
+	vl::Ptr<CommaExpr> TypeOrExprVisitor::CopyNode(CommaExpr* node)
+	{
+		if (!node) return nullptr;
+		return CopyNode(static_cast<TypeOrExpr*>(node)).Cast<CommaExpr>();
+	}
+
+	vl::Ptr<ConstType> TypeOrExprVisitor::CopyNode(ConstType* node)
+	{
+		if (!node) return nullptr;
+		return CopyNode(static_cast<TypeOrExpr*>(node)).Cast<ConstType>();
+	}
+
+	vl::Ptr<CtorExpr> TypeOrExprVisitor::CopyNode(CtorExpr* node)
+	{
+		if (!node) return nullptr;
+		return CopyNode(static_cast<TypeOrExpr*>(node)).Cast<CtorExpr>();
+	}
+
+	vl::Ptr<FunctionType> TypeOrExprVisitor::CopyNode(FunctionType* node)
+	{
+		if (!node) return nullptr;
+		return CopyNode(static_cast<TypeOrExpr*>(node)).Cast<FunctionType>();
+	}
+
+	vl::Ptr<GenericMemberName> TypeOrExprVisitor::CopyNode(GenericMemberName* node)
+	{
+		if (!node) return nullptr;
+		return CopyNode(static_cast<TypeOrExpr*>(node)).Cast<GenericMemberName>();
+	}
+
+	vl::Ptr<GenericName> TypeOrExprVisitor::CopyNode(GenericName* node)
+	{
+		if (!node) return nullptr;
+		return CopyNode(static_cast<TypeOrExpr*>(node)).Cast<GenericName>();
+	}
+
+	vl::Ptr<GenericQualifiedName> TypeOrExprVisitor::CopyNode(GenericQualifiedName* node)
+	{
+		if (!node) return nullptr;
+		return CopyNode(static_cast<TypeOrExpr*>(node)).Cast<GenericQualifiedName>();
+	}
+
+	vl::Ptr<GtExpr> TypeOrExprVisitor::CopyNode(GtExpr* node)
+	{
+		if (!node) return nullptr;
+		return CopyNode(static_cast<TypeOrExpr*>(node)).Cast<GtExpr>();
+	}
+
+	vl::Ptr<LtExpr> TypeOrExprVisitor::CopyNode(LtExpr* node)
+	{
+		if (!node) return nullptr;
+		return CopyNode(static_cast<TypeOrExpr*>(node)).Cast<LtExpr>();
+	}
+
+	vl::Ptr<MemberName> TypeOrExprVisitor::CopyNode(MemberName* node)
+	{
+		if (!node) return nullptr;
+		return CopyNode(static_cast<TypeOrExpr*>(node)).Cast<MemberName>();
+	}
+
+	vl::Ptr<MulExpr> TypeOrExprVisitor::CopyNode(MulExpr* node)
+	{
+		if (!node) return nullptr;
+		return CopyNode(static_cast<TypeOrExpr*>(node)).Cast<MulExpr>();
+	}
+
+	vl::Ptr<Name> TypeOrExprVisitor::CopyNode(Name* node)
+	{
+		if (!node) return nullptr;
+		return CopyNode(static_cast<TypeOrExpr*>(node)).Cast<Name>();
+	}
+
+	vl::Ptr<PointerType> TypeOrExprVisitor::CopyNode(PointerType* node)
+	{
+		if (!node) return nullptr;
+		return CopyNode(static_cast<TypeOrExpr*>(node)).Cast<PointerType>();
+	}
+
+	vl::Ptr<QualifiedName> TypeOrExprVisitor::CopyNode(QualifiedName* node)
+	{
+		if (!node) return nullptr;
+		return CopyNode(static_cast<TypeOrExpr*>(node)).Cast<QualifiedName>();
+	}
+
+	vl::Ptr<ThrowExpr> TypeOrExprVisitor::CopyNode(ThrowExpr* node)
+	{
+		if (!node) return nullptr;
+		return CopyNode(static_cast<TypeOrExpr*>(node)).Cast<ThrowExpr>();
+	}
+
+	vl::Ptr<TypeOrExprToResolve> TypeOrExprVisitor::CopyNode(TypeOrExprToResolve* node)
+	{
+		if (!node) return nullptr;
+		return CopyNode(static_cast<TypeOrExpr*>(node)).Cast<TypeOrExprToResolve>();
+	}
+
 }

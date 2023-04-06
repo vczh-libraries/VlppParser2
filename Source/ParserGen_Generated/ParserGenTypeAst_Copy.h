@@ -9,46 +9,37 @@ Licensed under https://github.com/vczh-libraries/License
 
 #include "ParserGenTypeAst.h"
 
-namespace vl
+namespace vl::glr::parsergen::copy_visitor
 {
-	namespace glr
+	/// <summary>A copy visitor, overriding all abstract methods with AST copying code.</summary>
+	class TypeAstVisitor
+		: public virtual vl::glr::CopyVisitorBase
+		, protected virtual GlrType::IVisitor
 	{
-		namespace parsergen
-		{
-			namespace copy_visitor
-			{
-				/// <summary>A copy visitor, overriding all abstract methods with AST copying code.</summary>
-				class TypeAstVisitor
-					: public virtual vl::glr::CopyVisitorBase
-					, protected virtual GlrType::IVisitor
-				{
-				protected:
-					void CopyFields(GlrAstFile* from, GlrAstFile* to);
-					void CopyFields(GlrClass* from, GlrClass* to);
-					void CopyFields(GlrClassProp* from, GlrClassProp* to);
-					void CopyFields(GlrEnum* from, GlrEnum* to);
-					void CopyFields(GlrEnumItem* from, GlrEnumItem* to);
-					void CopyFields(GlrType* from, GlrType* to);
+	protected:
+		void CopyFields(GlrAstFile* from, GlrAstFile* to);
+		void CopyFields(GlrClass* from, GlrClass* to);
+		void CopyFields(GlrClassProp* from, GlrClassProp* to);
+		void CopyFields(GlrEnum* from, GlrEnum* to);
+		void CopyFields(GlrEnumItem* from, GlrEnumItem* to);
+		void CopyFields(GlrType* from, GlrType* to);
 
-				protected:
-					virtual void Visit(GlrEnumItem* node);
-					virtual void Visit(GlrClassProp* node);
-					virtual void Visit(GlrAstFile* node);
+	protected:
+		virtual void Visit(GlrEnumItem* node);
+		virtual void Visit(GlrClassProp* node);
+		virtual void Visit(GlrAstFile* node);
 
-					void Visit(GlrEnum* node) override;
-					void Visit(GlrClass* node) override;
+		void Visit(GlrEnum* node) override;
+		void Visit(GlrClass* node) override;
 
-				public:
-					virtual vl::Ptr<GlrType> CopyNode(GlrType* node);
-					virtual vl::Ptr<GlrEnumItem> CopyNode(GlrEnumItem* node);
-					virtual vl::Ptr<GlrClassProp> CopyNode(GlrClassProp* node);
-					virtual vl::Ptr<GlrAstFile> CopyNode(GlrAstFile* node);
+	public:
+		virtual vl::Ptr<GlrType> CopyNode(GlrType* node);
+		virtual vl::Ptr<GlrEnumItem> CopyNode(GlrEnumItem* node);
+		virtual vl::Ptr<GlrClassProp> CopyNode(GlrClassProp* node);
+		virtual vl::Ptr<GlrAstFile> CopyNode(GlrAstFile* node);
 
-					vl::Ptr<GlrClass> CopyNode(GlrClass* node);
-					vl::Ptr<GlrEnum> CopyNode(GlrEnum* node);
-				};
-			}
-		}
-	}
+		vl::Ptr<GlrClass> CopyNode(GlrClass* node);
+		vl::Ptr<GlrEnum> CopyNode(GlrEnum* node);
+	};
 }
 #endif

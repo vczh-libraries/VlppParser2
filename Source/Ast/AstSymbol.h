@@ -31,6 +31,7 @@ AstSymbol
 
 				AstSymbol(AstDefFile* _file, const WString& _name);
 			public:
+				bool								isPublic = false;
 				AstDefFile*							Owner() { return ownerFile; }
 				const WString&						Name() { return name; }
 			};

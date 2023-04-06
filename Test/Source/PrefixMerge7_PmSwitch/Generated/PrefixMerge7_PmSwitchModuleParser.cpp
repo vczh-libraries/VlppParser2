@@ -478,4 +478,14 @@ namespace prefixmerge7_pmswitch
 	{
 		 return ParseWithTokens<prefixmerge7_pmswitch::TypeOrExpr, ModuleParserStates::Module>(tokens, this, codeIndex);
 	}
+
+	vl::Ptr<prefixmerge7_pmswitch::TypeOrExpr> ModuleParser::ParseModule_LRI_Original(const vl::WString& input, vl::vint codeIndex) const
+	{
+		 return ParseWithString<prefixmerge7_pmswitch::TypeOrExpr, ModuleParserStates::Module_LRI_Original>(input, this, codeIndex);
+	}
+
+	vl::Ptr<prefixmerge7_pmswitch::TypeOrExpr> ModuleParser::ParseModule_LRI_Original(vl::collections::List<vl::regex::RegexToken>& tokens, vl::vint codeIndex) const
+	{
+		 return ParseWithTokens<prefixmerge7_pmswitch::TypeOrExpr, ModuleParserStates::Module_LRI_Original>(tokens, this, codeIndex);
+	}
 }

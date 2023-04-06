@@ -6,101 +6,98 @@ Licensed under https://github.com/vczh-libraries/License
 
 #include "IfElseSwitchStatAst_Copy.h"
 
-namespace ifelseswitch
+namespace ifelseswitch::copy_visitor
 {
-	namespace copy_visitor
+	void StatAstVisitor::CopyFields(BlockStat* from, BlockStat* to)
 	{
-		void StatAstVisitor::CopyFields(BlockStat* from, BlockStat* to)
+		CopyFields(static_cast<Stat*>(from), static_cast<Stat*>(to));
+		for (auto&& listItem : from->stats)
 		{
-			CopyFields(static_cast<Stat*>(from), static_cast<Stat*>(to));
-			for (auto&& listItem : from->stats)
-			{
-				to->stats.Add(CopyNode(listItem.Obj()));
-			}
+			to->stats.Add(CopyNode(listItem.Obj()));
 		}
-
-		void StatAstVisitor::CopyFields(DoStat* from, DoStat* to)
-		{
-			CopyFields(static_cast<Stat*>(from), static_cast<Stat*>(to));
-		}
-
-		void StatAstVisitor::CopyFields(IfStat* from, IfStat* to)
-		{
-			CopyFields(static_cast<Stat*>(from), static_cast<Stat*>(to));
-			to->elseBranch = CopyNode(from->elseBranch.Obj());
-			to->thenBranch = CopyNode(from->thenBranch.Obj());
-		}
-
-		void StatAstVisitor::CopyFields(Module* from, Module* to)
-		{
-			to->stat = CopyNode(from->stat.Obj());
-		}
-
-		void StatAstVisitor::CopyFields(Stat* from, Stat* to)
-		{
-		}
-
-		void StatAstVisitor::Visit(Module* node)
-		{
-			auto newNode = vl::Ptr(new Module);
-			CopyFields(node, newNode.Obj());
-			this->result = newNode;
-		}
-
-		void StatAstVisitor::Visit(DoStat* node)
-		{
-			auto newNode = vl::Ptr(new DoStat);
-			CopyFields(node, newNode.Obj());
-			this->result = newNode;
-		}
-
-		void StatAstVisitor::Visit(IfStat* node)
-		{
-			auto newNode = vl::Ptr(new IfStat);
-			CopyFields(node, newNode.Obj());
-			this->result = newNode;
-		}
-
-		void StatAstVisitor::Visit(BlockStat* node)
-		{
-			auto newNode = vl::Ptr(new BlockStat);
-			CopyFields(node, newNode.Obj());
-			this->result = newNode;
-		}
-
-		vl::Ptr<Stat> StatAstVisitor::CopyNode(Stat* node)
-		{
-			if (!node) return nullptr;
-			node->Accept(static_cast<Stat::IVisitor*>(this));
-			this->result->codeRange = node->codeRange;
-			return this->result.Cast<Stat>();
-		}
-
-		vl::Ptr<Module> StatAstVisitor::CopyNode(Module* node)
-		{
-			if (!node) return nullptr;
-			Visit(node);
-			this->result->codeRange = node->codeRange;
-			return this->result.Cast<Module>();
-		}
-
-		vl::Ptr<BlockStat> StatAstVisitor::CopyNode(BlockStat* node)
-		{
-			if (!node) return nullptr;
-			return CopyNode(static_cast<Stat*>(node)).Cast<BlockStat>();
-		}
-
-		vl::Ptr<DoStat> StatAstVisitor::CopyNode(DoStat* node)
-		{
-			if (!node) return nullptr;
-			return CopyNode(static_cast<Stat*>(node)).Cast<DoStat>();
-		}
-
-		vl::Ptr<IfStat> StatAstVisitor::CopyNode(IfStat* node)
-		{
-			if (!node) return nullptr;
-			return CopyNode(static_cast<Stat*>(node)).Cast<IfStat>();
-		}
-
 	}
+
+	void StatAstVisitor::CopyFields(DoStat* from, DoStat* to)
+	{
+		CopyFields(static_cast<Stat*>(from), static_cast<Stat*>(to));
+	}
+
+	void StatAstVisitor::CopyFields(IfStat* from, IfStat* to)
+	{
+		CopyFields(static_cast<Stat*>(from), static_cast<Stat*>(to));
+		to->elseBranch = CopyNode(from->elseBranch.Obj());
+		to->thenBranch = CopyNode(from->thenBranch.Obj());
+	}
+
+	void StatAstVisitor::CopyFields(Module* from, Module* to)
+	{
+		to->stat = CopyNode(from->stat.Obj());
+	}
+
+	void StatAstVisitor::CopyFields(Stat* from, Stat* to)
+	{
+	}
+
+	void StatAstVisitor::Visit(Module* node)
+	{
+		auto newNode = vl::Ptr(new Module);
+		CopyFields(node, newNode.Obj());
+		this->result = newNode;
+	}
+
+	void StatAstVisitor::Visit(DoStat* node)
+	{
+		auto newNode = vl::Ptr(new DoStat);
+		CopyFields(node, newNode.Obj());
+		this->result = newNode;
+	}
+
+	void StatAstVisitor::Visit(IfStat* node)
+	{
+		auto newNode = vl::Ptr(new IfStat);
+		CopyFields(node, newNode.Obj());
+		this->result = newNode;
+	}
+
+	void StatAstVisitor::Visit(BlockStat* node)
+	{
+		auto newNode = vl::Ptr(new BlockStat);
+		CopyFields(node, newNode.Obj());
+		this->result = newNode;
+	}
+
+	vl::Ptr<Stat> StatAstVisitor::CopyNode(Stat* node)
+	{
+		if (!node) return nullptr;
+		node->Accept(static_cast<Stat::IVisitor*>(this));
+		this->result->codeRange = node->codeRange;
+		return this->result.Cast<Stat>();
+	}
+
+	vl::Ptr<Module> StatAstVisitor::CopyNode(Module* node)
+	{
+		if (!node) return nullptr;
+		Visit(node);
+		this->result->codeRange = node->codeRange;
+		return this->result.Cast<Module>();
+	}
+
+	vl::Ptr<BlockStat> StatAstVisitor::CopyNode(BlockStat* node)
+	{
+		if (!node) return nullptr;
+		return CopyNode(static_cast<Stat*>(node)).Cast<BlockStat>();
+	}
+
+	vl::Ptr<DoStat> StatAstVisitor::CopyNode(DoStat* node)
+	{
+		if (!node) return nullptr;
+		return CopyNode(static_cast<Stat*>(node)).Cast<DoStat>();
+	}
+
+	vl::Ptr<IfStat> StatAstVisitor::CopyNode(IfStat* node)
+	{
+		if (!node) return nullptr;
+		return CopyNode(static_cast<Stat*>(node)).Cast<IfStat>();
+	}
+
 }

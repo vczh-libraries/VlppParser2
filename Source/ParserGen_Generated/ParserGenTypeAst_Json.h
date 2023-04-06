@@ -9,41 +9,32 @@ Licensed under https://github.com/vczh-libraries/License
 
 #include "ParserGenTypeAst.h"
 
-namespace vl
+namespace vl::glr::parsergen::json_visitor
 {
-	namespace glr
+	/// <summary>A JSON visitor, overriding all abstract methods with AST to JSON serialization code.</summary>
+	class TypeAstVisitor
+		: public vl::glr::JsonVisitorBase
+		, protected virtual GlrType::IVisitor
 	{
-		namespace parsergen
-		{
-			namespace json_visitor
-			{
-				/// <summary>A JSON visitor, overriding all abstract methods with AST to JSON serialization code.</summary>
-				class TypeAstVisitor
-					: public vl::glr::JsonVisitorBase
-					, protected virtual GlrType::IVisitor
-				{
-				protected:
-					virtual void PrintFields(GlrAstFile* node);
-					virtual void PrintFields(GlrClass* node);
-					virtual void PrintFields(GlrClassProp* node);
-					virtual void PrintFields(GlrEnum* node);
-					virtual void PrintFields(GlrEnumItem* node);
-					virtual void PrintFields(GlrType* node);
+	protected:
+		virtual void PrintFields(GlrAstFile* node);
+		virtual void PrintFields(GlrClass* node);
+		virtual void PrintFields(GlrClassProp* node);
+		virtual void PrintFields(GlrEnum* node);
+		virtual void PrintFields(GlrEnumItem* node);
+		virtual void PrintFields(GlrType* node);
 
-				protected:
-					void Visit(GlrEnum* node) override;
-					void Visit(GlrClass* node) override;
+	protected:
+		void Visit(GlrEnum* node) override;
+		void Visit(GlrClass* node) override;
 
-				public:
-					TypeAstVisitor(vl::stream::StreamWriter& _writer);
+	public:
+		TypeAstVisitor(vl::stream::StreamWriter& _writer);
 
-					void Print(GlrType* node);
-					void Print(GlrEnumItem* node);
-					void Print(GlrClassProp* node);
-					void Print(GlrAstFile* node);
-				};
-			}
-		}
-	}
+		void Print(GlrType* node);
+		void Print(GlrEnumItem* node);
+		void Print(GlrClassProp* node);
+		void Print(GlrAstFile* node);
+	};
 }
 #endif

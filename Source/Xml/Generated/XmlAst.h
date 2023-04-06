@@ -10,159 +10,147 @@ Licensed under https://github.com/vczh-libraries/License
 #include "../../AstBase.h"
 #include "../../SyntaxBase.h"
 
-namespace vl
+namespace vl::glr::xml
 {
-	namespace glr
+	class XmlAttribute;
+	class XmlCData;
+	class XmlComment;
+	class XmlDocument;
+	class XmlElement;
+	class XmlInstruction;
+	class XmlNode;
+	class XmlText;
+
+	class XmlNode abstract : public vl::glr::ParsingAstBase, vl::reflection::Description<XmlNode>
 	{
-		namespace xml
+	public:
+		class IVisitor : public virtual vl::reflection::IDescriptable, vl::reflection::Description<IVisitor>
 		{
-			class XmlAttribute;
-			class XmlCData;
-			class XmlComment;
-			class XmlDocument;
-			class XmlElement;
-			class XmlInstruction;
-			class XmlNode;
-			class XmlText;
+		public:
+			virtual void Visit(XmlText* node) = 0;
+			virtual void Visit(XmlCData* node) = 0;
+			virtual void Visit(XmlComment* node) = 0;
+			virtual void Visit(XmlElement* node) = 0;
+			virtual void Visit(XmlInstruction* node) = 0;
+			virtual void Visit(XmlDocument* node) = 0;
+		};
 
-			class XmlNode abstract : public vl::glr::ParsingAstBase, vl::reflection::Description<XmlNode>
-			{
-			public:
-				class IVisitor : public virtual vl::reflection::IDescriptable, vl::reflection::Description<IVisitor>
-				{
-				public:
-					virtual void Visit(XmlText* node) = 0;
-					virtual void Visit(XmlCData* node) = 0;
-					virtual void Visit(XmlComment* node) = 0;
-					virtual void Visit(XmlElement* node) = 0;
-					virtual void Visit(XmlInstruction* node) = 0;
-					virtual void Visit(XmlDocument* node) = 0;
-				};
+		virtual void Accept(XmlNode::IVisitor* visitor) = 0;
 
-				virtual void Accept(XmlNode::IVisitor* visitor) = 0;
+	};
 
-			};
+	class XmlText : public XmlNode, vl::reflection::Description<XmlText>
+	{
+	public:
+		vl::glr::ParsingToken content;
 
-			class XmlText : public XmlNode, vl::reflection::Description<XmlText>
-			{
-			public:
-				vl::glr::ParsingToken content;
+		void Accept(XmlNode::IVisitor* visitor) override;
+	};
 
-				void Accept(XmlNode::IVisitor* visitor) override;
-			};
+	class XmlCData : public XmlNode, vl::reflection::Description<XmlCData>
+	{
+	public:
+		vl::glr::ParsingToken content;
 
-			class XmlCData : public XmlNode, vl::reflection::Description<XmlCData>
-			{
-			public:
-				vl::glr::ParsingToken content;
+		void Accept(XmlNode::IVisitor* visitor) override;
+	};
 
-				void Accept(XmlNode::IVisitor* visitor) override;
-			};
+	class XmlAttribute : public vl::glr::ParsingAstBase, vl::reflection::Description<XmlAttribute>
+	{
+	public:
+		vl::glr::ParsingToken name;
+		vl::glr::ParsingToken value;
+	};
 
-			class XmlAttribute : public vl::glr::ParsingAstBase, vl::reflection::Description<XmlAttribute>
-			{
-			public:
-				vl::glr::ParsingToken name;
-				vl::glr::ParsingToken value;
-			};
+	class XmlComment : public XmlNode, vl::reflection::Description<XmlComment>
+	{
+	public:
+		vl::glr::ParsingToken content;
 
-			class XmlComment : public XmlNode, vl::reflection::Description<XmlComment>
-			{
-			public:
-				vl::glr::ParsingToken content;
+		void Accept(XmlNode::IVisitor* visitor) override;
+	};
 
-				void Accept(XmlNode::IVisitor* visitor) override;
-			};
+	class XmlElement : public XmlNode, vl::reflection::Description<XmlElement>
+	{
+	public:
+		vl::glr::ParsingToken name;
+		vl::glr::ParsingToken closingName;
+		vl::collections::List<vl::Ptr<XmlAttribute>> attributes;
+		vl::collections::List<vl::Ptr<XmlNode>> subNodes;
 
-			class XmlElement : public XmlNode, vl::reflection::Description<XmlElement>
-			{
-			public:
-				vl::glr::ParsingToken name;
-				vl::glr::ParsingToken closingName;
-				vl::collections::List<vl::Ptr<XmlAttribute>> attributes;
-				vl::collections::List<vl::Ptr<XmlNode>> subNodes;
+		void Accept(XmlNode::IVisitor* visitor) override;
+	};
 
-				void Accept(XmlNode::IVisitor* visitor) override;
-			};
+	class XmlInstruction : public XmlNode, vl::reflection::Description<XmlInstruction>
+	{
+	public:
+		vl::glr::ParsingToken name;
+		vl::collections::List<vl::Ptr<XmlAttribute>> attributes;
 
-			class XmlInstruction : public XmlNode, vl::reflection::Description<XmlInstruction>
-			{
-			public:
-				vl::glr::ParsingToken name;
-				vl::collections::List<vl::Ptr<XmlAttribute>> attributes;
+		void Accept(XmlNode::IVisitor* visitor) override;
+	};
 
-				void Accept(XmlNode::IVisitor* visitor) override;
-			};
+	class XmlDocument : public XmlNode, vl::reflection::Description<XmlDocument>
+	{
+	public:
+		vl::collections::List<vl::Ptr<XmlNode>> prologs;
+		vl::Ptr<XmlElement> rootElement;
 
-			class XmlDocument : public XmlNode, vl::reflection::Description<XmlDocument>
-			{
-			public:
-				vl::collections::List<vl::Ptr<XmlNode>> prologs;
-				vl::Ptr<XmlElement> rootElement;
-
-				void Accept(XmlNode::IVisitor* visitor) override;
-			};
-		}
-	}
+		void Accept(XmlNode::IVisitor* visitor) override;
+	};
 }
-namespace vl
+namespace vl::reflection::description
 {
-	namespace reflection
-	{
-		namespace description
-		{
 #ifndef VCZH_DEBUG_NO_REFLECTION
-			DECL_TYPE_INFO(vl::glr::xml::XmlNode)
-			DECL_TYPE_INFO(vl::glr::xml::XmlNode::IVisitor)
-			DECL_TYPE_INFO(vl::glr::xml::XmlText)
-			DECL_TYPE_INFO(vl::glr::xml::XmlCData)
-			DECL_TYPE_INFO(vl::glr::xml::XmlAttribute)
-			DECL_TYPE_INFO(vl::glr::xml::XmlComment)
-			DECL_TYPE_INFO(vl::glr::xml::XmlElement)
-			DECL_TYPE_INFO(vl::glr::xml::XmlInstruction)
-			DECL_TYPE_INFO(vl::glr::xml::XmlDocument)
+	DECL_TYPE_INFO(vl::glr::xml::XmlNode)
+	DECL_TYPE_INFO(vl::glr::xml::XmlNode::IVisitor)
+	DECL_TYPE_INFO(vl::glr::xml::XmlText)
+	DECL_TYPE_INFO(vl::glr::xml::XmlCData)
+	DECL_TYPE_INFO(vl::glr::xml::XmlAttribute)
+	DECL_TYPE_INFO(vl::glr::xml::XmlComment)
+	DECL_TYPE_INFO(vl::glr::xml::XmlElement)
+	DECL_TYPE_INFO(vl::glr::xml::XmlInstruction)
+	DECL_TYPE_INFO(vl::glr::xml::XmlDocument)
 
 #ifdef VCZH_DESCRIPTABLEOBJECT_WITH_METADATA
 
-			BEGIN_INTERFACE_PROXY_NOPARENT_SHAREDPTR(vl::glr::xml::XmlNode::IVisitor)
-				void Visit(vl::glr::xml::XmlText* node) override
-				{
-					INVOKE_INTERFACE_PROXY(Visit, node);
-				}
-
-				void Visit(vl::glr::xml::XmlCData* node) override
-				{
-					INVOKE_INTERFACE_PROXY(Visit, node);
-				}
-
-				void Visit(vl::glr::xml::XmlComment* node) override
-				{
-					INVOKE_INTERFACE_PROXY(Visit, node);
-				}
-
-				void Visit(vl::glr::xml::XmlElement* node) override
-				{
-					INVOKE_INTERFACE_PROXY(Visit, node);
-				}
-
-				void Visit(vl::glr::xml::XmlInstruction* node) override
-				{
-					INVOKE_INTERFACE_PROXY(Visit, node);
-				}
-
-				void Visit(vl::glr::xml::XmlDocument* node) override
-				{
-					INVOKE_INTERFACE_PROXY(Visit, node);
-				}
-
-			END_INTERFACE_PROXY(vl::glr::xml::XmlNode::IVisitor)
-
-#endif
-#endif
-			/// <summary>Load all reflectable AST types, only available when <b>VCZH_DEBUG_NO_REFLECTION</b> is off.</summary>
-			/// <returns>Returns true if this operation succeeded.</returns>
-			extern bool XmlAstLoadTypes();
+	BEGIN_INTERFACE_PROXY_NOPARENT_SHAREDPTR(vl::glr::xml::XmlNode::IVisitor)
+		void Visit(vl::glr::xml::XmlText* node) override
+		{
+			INVOKE_INTERFACE_PROXY(Visit, node);
 		}
-	}
+
+		void Visit(vl::glr::xml::XmlCData* node) override
+		{
+			INVOKE_INTERFACE_PROXY(Visit, node);
+		}
+
+		void Visit(vl::glr::xml::XmlComment* node) override
+		{
+			INVOKE_INTERFACE_PROXY(Visit, node);
+		}
+
+		void Visit(vl::glr::xml::XmlElement* node) override
+		{
+			INVOKE_INTERFACE_PROXY(Visit, node);
+		}
+
+		void Visit(vl::glr::xml::XmlInstruction* node) override
+		{
+			INVOKE_INTERFACE_PROXY(Visit, node);
+		}
+
+		void Visit(vl::glr::xml::XmlDocument* node) override
+		{
+			INVOKE_INTERFACE_PROXY(Visit, node);
+		}
+
+	END_INTERFACE_PROXY(vl::glr::xml::XmlNode::IVisitor)
+
+#endif
+#endif
+	/// <summary>Load all reflectable AST types, only available when <b>VCZH_DEBUG_NO_REFLECTION</b> is off.</summary>
+	/// <returns>Returns true if this operation succeeded.</returns>
+	extern bool XmlAstLoadTypes();
 }
 #endif
