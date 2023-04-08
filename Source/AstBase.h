@@ -282,21 +282,19 @@ Instructions
 			vint32_t									param = -1;
 			vint										count = -1;
 
-			vint Compare(const AstIns& ins) const
+			std::strong_ordering operator<=>(const AstIns& ins) const
 			{
-				auto result = (vint)type - (vint)ins.type;
-				if (result != 0) return result;
-				result = (vint)param - (vint)ins.param;
-				if (result != 0) return result;
-				return count - ins.count;
+				std::strong_ordering
+				result = type <=> ins.type; if (result != 0) return result;
+				result = param <=> ins.param; if (result != 0) return result;
+				result = count <=> ins.count; if (result != 0) return result;
+				return result;
 			}
 
-			bool operator==(const AstIns& ins) const { return Compare(ins) == 0; }
-			bool operator!=(const AstIns& ins) const { return Compare(ins) != 0; }
-			bool operator< (const AstIns& ins) const { return Compare(ins) < 0; }
-			bool operator<=(const AstIns& ins) const { return Compare(ins) <= 0; }
-			bool operator> (const AstIns& ins) const { return Compare(ins) > 0; }
-			bool operator>=(const AstIns& ins) const { return Compare(ins) >= 0; }
+			bool operator==(const AstIns& ins) const
+			{
+				return (*this <=> ins) == 0;
+			}
 		};
 
 		enum class AstInsErrorType

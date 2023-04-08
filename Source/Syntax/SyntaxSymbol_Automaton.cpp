@@ -82,9 +82,9 @@ SyntaxSymbolManager::BuildAutomaton
 									return edge->input.type == EdgeInputType::Token && edge->input.token == input - automaton::Executable::TokenBegin;
 								}
 							})
-							.OrderBy([&](EdgeSymbol* e1, EdgeSymbol* e2)
+							.OrderByKey([&](EdgeSymbol* e)
 							{
-								return statesInOrder.IndexOf(e1->To()) - statesInOrder.IndexOf(e2->To());
+								return statesInOrder.IndexOf(e->To());
 							});
 						transition.start = (vint32_t)edgesInOrder.Count();
 						CopyFrom(edgesInOrder, orderedEdges, true);

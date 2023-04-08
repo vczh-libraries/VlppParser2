@@ -24,42 +24,38 @@ StateSymbol
 				CopyFrom(orderedEdges, From(outEdges)
 					.OrderBy([&](EdgeSymbol* e1, EdgeSymbol* e2)
 					{
-						vint result = 0;
-						if (e1->input.type != e2->input.type)
-						{
-							result = (vint)e1->input.type - (vint)e2->input.type;
-						}
-						else
+						std::strong_ordering result = e1->input.type <=> e2->input.type;
+						if (result == 0)
 						{
 							switch (e1->input.type)
 							{
 							case EdgeInputType::Token:
-								result = e1->input.token - e2->input.token;
+								result = e1->input.token <=> e2->input.token;
 								if (result == 0)
 								{
 									if (e1->input.condition && e2->input.condition)
 									{
-										result = (vint)WString::Compare(e1->input.condition.Value(), e2->input.condition.Value());
+										result = e1->input.condition.Value() <=> e2->input.condition.Value();
 									}
 									else if (e1->input.condition)
 									{
-										result = 1;
+										result = std::strong_ordering::greater;
 									}
 									else if (e2->input.condition)
 									{
-										result = -1;
+										result = std::strong_ordering::less;
 									}
 								}
 								break;
 							case EdgeInputType::Rule:
-								result = ownerManager->RuleOrder().IndexOf(e1->input.rule->Name()) - ownerManager->RuleOrder().IndexOf(e2->input.rule->Name());
+								result = ownerManager->RuleOrder().IndexOf(e1->input.rule->Name()) <=> ownerManager->RuleOrder().IndexOf(e2->input.rule->Name());
 								break;
 							default:;
 							}
 						}
 
 						if (result != 0) return result;
-						return orderedStates.IndexOf(e1->To()) - orderedStates.IndexOf(e2->To());
+						return orderedStates.IndexOf(e1->To()) <=> orderedStates.IndexOf(e2->To());
 					}));
 			}
 
@@ -183,9 +179,9 @@ SyntaxSymbolManager
 					{
 						auto ruleSymbol = rules.map[ruleName];
 						auto orderedStates = From(groupedStates[ruleSymbol])
-							.OrderBy([](StateSymbol* s1, StateSymbol* s2)
+							.OrderByKey([](StateSymbol* s)
 							{
-								return WString::Compare(s1->label, s2->label);
+								return s->label;
 							});
 						for (auto state : orderedStates)
 						{
