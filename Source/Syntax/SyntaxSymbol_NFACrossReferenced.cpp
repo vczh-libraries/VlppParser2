@@ -234,21 +234,18 @@ SyntaxSymbolManager::FixLeftRecursionInjectEdge
 						List<EdgeSymbol*>*		returnEdges;
 						vint					returnEdgeCount;
 
-						vint Compare(const Entry& entry)const
+						std::strong_ordering operator<=>(const Entry& entry)const
 						{
-							if (lrEdge < entry.lrEdge) return -1;
-							if (lrEdge > entry.lrEdge) return 1;
-							if (tokenEdge < entry.tokenEdge) return -1;
-							if (tokenEdge > entry.tokenEdge) return 1;
+							std::strong_ordering
+							result = lrEdge <=> entry.lrEdge; if (result != 0) return result;
+							result = tokenEdge <=> entry.tokenEdge; if (result != 0) return result;
 							return CompareEnumerable(
 								From(*returnEdges).Take(returnEdgeCount),
 								From(*entry.returnEdges).Take(returnEdgeCount)
 								);
 						}
 
-						bool operator< (const Entry& entry)const { return Compare(entry) < 0; }
-						bool operator> (const Entry& entry)const { return Compare(entry) > 0; }
-						bool operator==(const Entry& entry)const { return Compare(entry) == 0; }
+						bool operator==(const Entry& entry) const { return (*this <=> entry) == 0; }
 					};
 					Group<Entry, vint> simpleUseRecords;
 

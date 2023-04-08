@@ -38,24 +38,16 @@ AllocateOnly<T>
 				explicit Ref(vint32_t _handle) :handle(_handle) {}
 
 				__forceinline bool operator==(NullRef) const { return handle == -1; }
-				__forceinline bool operator!=(NullRef) const { return handle != -1; }
+
+				__forceinline std::strong_ordering operator<=>(const Ref<T>& ref) const { return handle <=> ref.handle; }
 				__forceinline bool operator==(const Ref<T>& ref) const { return handle == ref.handle; }
-				__forceinline bool operator!=(const Ref<T>& ref) const { return handle != ref.handle; }
-				__forceinline bool operator> (const Ref<T>& ref) const { return handle >  ref.handle; }
-				__forceinline bool operator>=(const Ref<T>& ref) const { return handle >= ref.handle; }
-				__forceinline bool operator< (const Ref<T>& ref) const { return handle <  ref.handle; }
-				__forceinline bool operator<=(const Ref<T>& ref) const { return handle <= ref.handle; }
 
 				__forceinline Ref& operator=(const Ref<T>& ref) { handle = ref.handle; return *this; }
 				__forceinline Ref& operator=(T* obj) { handle = obj == nullptr ? -1 : obj->allocatedIndex; return *this; }
 				__forceinline Ref& operator=(NullRef) { handle = -1; return *this; }
 
+				__forceinline std::strong_ordering operator<=>(vint32_t) = delete;
 				__forceinline bool operator==(vint32_t) = delete;
-				__forceinline bool operator!=(vint32_t) = delete;
-				__forceinline bool operator> (vint32_t) = delete;
-				__forceinline bool operator>=(vint32_t) = delete;
-				__forceinline bool operator< (vint32_t) = delete;
-				__forceinline bool operator<=(vint32_t) = delete;
 				__forceinline Ref& operator=(vint32_t) = delete;
 			};
 

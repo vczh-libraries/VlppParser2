@@ -65,20 +65,15 @@ StateSymbolSet
 					return states ? *states.Obj() : EmptyStates;
 				}
 
-				vint Compare(const StateSymbolSet& set) const
+				std::strong_ordering operator<=>(const StateSymbolSet& set) const
 				{
-					if (!states && !set.states) return 0;
-					if (!states) return -1;
-					if (!set.states) return 1;
+					if (!states && !set.states) return std::strong_ordering::equal;
+					if (!states) return std::strong_ordering::less;
+					if (!set.states) return std::strong_ordering::greater;
 					return CompareEnumerable(*states.Obj(), *set.states.Obj());
 				}
 
-				bool operator==(const StateSymbolSet& set) const { return Compare(set) == 0; }
-				bool operator!=(const StateSymbolSet& set) const { return Compare(set) != 0; }
-				bool operator< (const StateSymbolSet& set) const { return Compare(set) < 0; }
-				bool operator<=(const StateSymbolSet& set) const { return Compare(set) <= 0; }
-				bool operator> (const StateSymbolSet& set) const { return Compare(set) > 0; }
-				bool operator>=(const StateSymbolSet& set) const { return Compare(set) >= 0; }
+				bool operator==(const StateSymbolSet& set) const { return (*this <=> set) == 0; }
 			};
 			const SortedList<StateSymbol*> StateSymbolSet::EmptyStates;
 
