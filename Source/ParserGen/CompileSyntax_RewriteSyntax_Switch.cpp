@@ -722,7 +722,7 @@ RewriteSyntax
 					if (index != -1)
 					{
 						for (auto expandedRule : From(expandedRules.GetByIndex(index))
-							.OrderBy([](auto a, auto b) { return WString::Compare(a->name.value, b->name.value); })
+							.OrderByKey([](auto&& a) { return a->name.value; })
 							)
 						{
 							rewritten->rules.Add(expandedRule);
@@ -733,7 +733,7 @@ RewriteSyntax
 				void CreateRuleSymbols(SyntaxSymbolManager& syntaxManager, Group<RuleSymbol*, Ptr<GlrRule>>& expandedRules)
 				{
 					for (auto ruleSymbol : From(expandedRules.Keys())
-						.OrderBy([](auto a, auto b) { return WString::Compare(a->Name(), b->Name()); })
+						.OrderByKey([](auto&& a) { return a->Name(); })
 						)
 					{
 						for (auto rule : expandedRules[ruleSymbol])

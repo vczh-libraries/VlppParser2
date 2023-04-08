@@ -275,7 +275,7 @@ CreateRewrittenRules
 						auto originRule = vContext.astRules[ruleSymbol];
 						auto&& prefixClauses = rContext.extractPrefixClauses.GetByIndex(index);
 						for (auto [prefixRuleSymbol, prefixClause] : From(prefixClauses)
-							.OrderBy([](auto p1, auto p2) {return WString::Compare(p1.ruleSymbol->Name(), p2.ruleSymbol->Name()); }))
+							.OrderByKey([](auto&& p) {return p.ruleSymbol->Name(); }))
 						{
 							if (!rContext.extractedPrefixRules.Keys().Contains({ ruleSymbol,prefixRuleSymbol }))
 							{
