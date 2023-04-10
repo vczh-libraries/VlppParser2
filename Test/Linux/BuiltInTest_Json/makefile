@@ -18,7 +18,7 @@ clean:
 
 all:pre-build ./Bin/UnitTest
 
-./Bin/UnitTest:./Obj/Vlpp.o ./Obj/Vlpp.Linux.o ./Obj/VlppOS.o ./Obj/VlppOS.Linux.o ./Obj/VlppReflection.o ./Obj/VlppRegex.o ./Obj/AstBase.o ./Obj/AstPrint.o ./Obj/Executable.o ./Obj/SyntaxBase.o ./Obj/TmPtr_AllocateExecutionData.o ./Obj/TmPtr_BuildAmbiguityStructures.o ./Obj/TmPtr_PartialExecuteTraces.o ./Obj/TmPtr_PartialExecuteTraces_CalculateObjectFirstInstruction.o ./Obj/TmPtr_PartialExecuteTraces_EnsureInsExecContextCompatible.o ./Obj/TmPtr_PartialExecuteTraces_MergeInsExecContext.o ./Obj/TmPtr_PartialExecuteTraces_PartialExecuteOrdinaryTrace.o ./Obj/TmRa.o ./Obj/TmRa_BuildExecutionOrder.o ./Obj/TmRa_CheckMergeTraces.o ./Obj/TraceManager.o ./Obj/TraceManager_Common.o ./Obj/TraceManager_ExecuteTrace.o ./Obj/TmInput.o ./Obj/TmInput_Ambiguity.o ./Obj/TmInput_Competition.o ./Obj/TmInput_ReturnStack.o ./Obj/TmInput_Walk.o ./Obj/TmPtr.o ./Obj/JsonAst.o ./Obj/JsonAst_Builder.o ./Obj/JsonAst_Copy.o ./Obj/JsonAst_Empty.o ./Obj/JsonAst_Json.o ./Obj/JsonAst_Traverse.o ./Obj/JsonParser.o ./Obj/Json_Assembler.o ./Obj/Json_Lexer.o ./Obj/GlrJson.o ./Obj/LogTrace.o ./Obj/CommonMain.o ./Obj/TestAPI.o ./Obj/TestParser.o
+./Bin/UnitTest:./Obj/Vlpp.o ./Obj/Vlpp.Linux.o ./Obj/VlppOS.o ./Obj/VlppOS.Linux.o ./Obj/VlppReflection.o ./Obj/VlppRegex.o ./Obj/AstBase.o ./Obj/AstPrint.o ./Obj/Executable.o ./Obj/SyntaxBase.o ./Obj/TmPtr_AllocateExecutionData.o ./Obj/TmPtr_BuildAmbiguityStructures.o ./Obj/TmPtr_PartialExecuteTraces.o ./Obj/TmPtr_PartialExecuteTraces_CalculateObjectFirstInstruction.o ./Obj/TmPtr_PartialExecuteTraces_CalculateObjectLastInstruction.o ./Obj/TmPtr_PartialExecuteTraces_EnsureInsExecContextCompatible.o ./Obj/TmPtr_PartialExecuteTraces_MergeInsExecContext.o ./Obj/TmPtr_PartialExecuteTraces_PartialExecuteOrdinaryTrace.o ./Obj/TmRa.o ./Obj/TmRa_BuildExecutionOrder.o ./Obj/TmRa_CheckMergeTraces.o ./Obj/TraceManager.o ./Obj/TraceManager_Common.o ./Obj/TraceManager_ExecuteTrace.o ./Obj/TmInput.o ./Obj/TmInput_Ambiguity.o ./Obj/TmInput_Competition.o ./Obj/TmInput_ReturnStack.o ./Obj/TmInput_Walk.o ./Obj/TmPtr.o ./Obj/JsonAst.o ./Obj/JsonAst_Builder.o ./Obj/JsonAst_Copy.o ./Obj/JsonAst_Empty.o ./Obj/JsonAst_Json.o ./Obj/JsonAst_Traverse.o ./Obj/JsonParser.o ./Obj/Json_Assembler.o ./Obj/Json_Lexer.o ./Obj/GlrJson.o ./Obj/LogTrace.o ./Obj/CommonMain.o ./Obj/TestAPI.o ./Obj/TestParser.o
 	$(CPP_LINK)
 
 ./Obj/Vlpp.o: ../../../Import/Vlpp.cpp ../../../Import/Vlpp.h
@@ -61,6 +61,9 @@ all:pre-build ./Bin/UnitTest
 	$(CPP_COMPILE)
 
 ./Obj/TmPtr_PartialExecuteTraces_CalculateObjectFirstInstruction.o: ../../../Source/TraceManager/TmPtr_PartialExecuteTraces_CalculateObjectFirstInstruction.cpp ../../../Source/TraceManager/TraceManager.h ../../../Source/TraceManager/../Executable.h ../../../Source/TraceManager/../AstBase.h ../../../Import/VlppReflection.h ../../../Import/VlppOS.h ../../../Import/Vlpp.h ../../../Import/VlppRegex.h
+	$(CPP_COMPILE)
+
+./Obj/TmPtr_PartialExecuteTraces_CalculateObjectLastInstruction.o: ../../../Source/TraceManager/TmPtr_PartialExecuteTraces_CalculateObjectLastInstruction.cpp ../../../Source/TraceManager/TraceManager.h ../../../Source/TraceManager/../Executable.h ../../../Source/TraceManager/../AstBase.h ../../../Import/VlppReflection.h ../../../Import/VlppOS.h ../../../Import/Vlpp.h ../../../Import/VlppRegex.h
 	$(CPP_COMPILE)
 
 ./Obj/TmPtr_PartialExecuteTraces_EnsureInsExecContextCompatible.o: ../../../Source/TraceManager/TmPtr_PartialExecuteTraces_EnsureInsExecContextCompatible.cpp ../../../Source/TraceManager/TraceManager.h ../../../Source/TraceManager/../Executable.h ../../../Source/TraceManager/../AstBase.h ../../../Import/VlppReflection.h ../../../Import/VlppOS.h ../../../Import/Vlpp.h ../../../Import/VlppRegex.h
