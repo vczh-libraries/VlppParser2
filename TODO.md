@@ -57,6 +57,7 @@
 - TODO in `SyntaxSymbolManager::EliminateSingleRulePrefix`.
   - Deny `A ::= !B ::= B as Something ::= ...;`.
 - TODO in `CalculateObjectLastInstruction`
+- TODO in `CheckAmbiguityResolution`
 - Print correct codeRange for:
   - `ParserErrorType::RuleIsIndirectlyLeftRecursive`
   - `ParserErrorType::LeftRecursiveClauseInsidePushCondition`
