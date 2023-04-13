@@ -98,6 +98,7 @@ namespace vl::glr::workflow
 	class WfStateSwitchCase;
 	class WfStateSwitchStatement;
 	class WfStatement;
+	class WfStaticInitDeclaration;
 	class WfStringExpression;
 	class WfStructDeclaration;
 	class WfStructMember;
@@ -426,6 +427,7 @@ namespace vl::glr::workflow
 			virtual void Visit(WfVariableDeclaration* node) = 0;
 			virtual void Visit(WfEventDeclaration* node) = 0;
 			virtual void Visit(WfPropertyDeclaration* node) = 0;
+			virtual void Visit(WfStaticInitDeclaration* node) = 0;
 			virtual void Visit(WfConstructorDeclaration* node) = 0;
 			virtual void Visit(WfDestructorDeclaration* node) = 0;
 			virtual void Visit(WfClassDeclaration* node) = 0;
@@ -585,6 +587,14 @@ namespace vl::glr::workflow
 		vl::glr::ParsingToken getter;
 		vl::glr::ParsingToken setter;
 		vl::glr::ParsingToken valueChangedEvent;
+
+		void Accept(WfDeclaration::IVisitor* visitor) override;
+	};
+
+	class WfStaticInitDeclaration : public WfDeclaration, vl::reflection::Description<WfStaticInitDeclaration>
+	{
+	public:
+		vl::Ptr<WfStatement> statement;
 
 		void Accept(WfDeclaration::IVisitor* visitor) override;
 	};
@@ -1436,6 +1446,7 @@ namespace vl::reflection::description
 	DECL_TYPE_INFO(vl::glr::workflow::WfVariableDeclaration)
 	DECL_TYPE_INFO(vl::glr::workflow::WfEventDeclaration)
 	DECL_TYPE_INFO(vl::glr::workflow::WfPropertyDeclaration)
+	DECL_TYPE_INFO(vl::glr::workflow::WfStaticInitDeclaration)
 	DECL_TYPE_INFO(vl::glr::workflow::WfClassKind)
 	DECL_TYPE_INFO(vl::glr::workflow::WfConstructorType)
 	DECL_TYPE_INFO(vl::glr::workflow::WfBaseConstructorCall)
@@ -1873,6 +1884,11 @@ namespace vl::reflection::description
 		}
 
 		void Visit(vl::glr::workflow::WfPropertyDeclaration* node) override
+		{
+			INVOKE_INTERFACE_PROXY(Visit, node);
+		}
+
+		void Visit(vl::glr::workflow::WfStaticInitDeclaration* node) override
 		{
 			INVOKE_INTERFACE_PROXY(Visit, node);
 		}
