@@ -1,0 +1,824 @@
+﻿================ EXECUTION STEPS ================
+[0]: 0@0 - 45@2
+
+==================== TRACES =====================
+
++-----------------------+
+| [0]: <Start>          |
+| [817][_Module] BEGIN  |
+| [AST-INSTRUCTIONS]:   |
+| [SUCCESORS 1-1]: [1]  |
++-----------------------+
+[0]
+ |
+ +
+ |
+[0]
+++==========================================++
+|| [1]: {KEYWORD_MODULE} module             ||
+|| [819][_Module]< "module" @ _ModuleBody > ||
+|| [AST-INSTRUCTIONS]:                      ||
+||   - BeginObject(Module)                  ||
+|| [PREDECESSORS 0-0]: [0]                  ||
+|| [SUCCESORS 2-2]: [2]                     ||
+++==========================================++
+[0]
+ |
+ +
+ |
+[0]
+++===================================================================++
+|| [2]: {NAME} test                                                  ||
+|| [816][_ModuleBody]NAME @ ";" { _UsingPath } { _Declaration }      ||
+|| [AST-INSTRUCTIONS]:                                               ||
+||   + Token()                                                       ||
+||   + Field(Module::name)                                           ||
+|| [RETURN STACK]:                                                   ||
+||   [0][1]: _ModuleBody -> [820][_Module]< "module" _ModuleBody @ > ||
+|| [PREDECESSORS 1-1]: [1]                                           ||
+|| [SUCCESORS 3-3]: [3]                                              ||
+++===================================================================++
+[0]
+ |
+ +
+ |
+[0]
+++===================================================================++
+|| [3]: {SEMICOLON} ;                                                ||
+|| [813][_ModuleBody]NAME ";" @ { _UsingPath } { _Declaration }      ||
+|| [AST-INSTRUCTIONS]:                                               ||
+|| [RETURN STACK]:                                                   ||
+||   [0][1]: _ModuleBody -> [820][_Module]< "module" _ModuleBody @ > ||
+|| [PREDECESSORS 2-2]: [2]                                           ||
+|| [SUCCESORS 5-5]: [5]                                              ||
+++===================================================================++
+[0]
+ |
+ +
+ |
+[0]
+++======================================================================================++
+|| [5]: {KEYWORD_USING} using                                                           ||
+|| [806][_UsingPath]< "using" @ _UsingItem { "::" _UsingItem } ";" >                    ||
+|| [AST-INSTRUCTIONS]:                                                                  ||
+||   - BeginObject(ModuleUsingPath)                                                     ||
+|| [RETURN STACK]:                                                                      ||
+||   [1][3]: _UsingPath -> [814][_ModuleBody]NAME ";" { _UsingPath @ } { _Declaration } ||
+||   [0][1]: _ModuleBody -> [820][_Module]< "module" _ModuleBody @ >                    ||
+|| [PREDECESSORS 3-3]: [3]                                                              ||
+|| [SUCCESORS 6-6]: [6]                                                                 ||
+++======================================================================================++
+[0]
+ |
+ +
+ |
+[0]
+++===========================================================================================++
+|| [6]: {NAME} system                                                                        ||
+|| [799][_UsingFragment]< NAME @ >                                                           ||
+|| [AST-INSTRUCTIONS]:                                                                       ||
+||   - BeginObject(ModuleUsingItem)                                                          ||
+||   - BeginObject(ModuleUsingNameFragment)                                                  ||
+||   + Token()                                                                               ||
+||   + Field(ModuleUsingNameFragment::name)                                                  ||
+|| [RETURN STACK]:                                                                           ||
+||   [3][5]: _UsingFragment -> [802][_UsingItem]< _UsingFragment @ { _UsingFragment } >      ||
+||   [2][5]: _UsingItem -> [807][_UsingPath]< "using" _UsingItem @ { "::" _UsingItem } ";" > ||
+||   [1][3]: _UsingPath -> [814][_ModuleBody]NAME ";" { _UsingPath @ } { _Declaration }      ||
+||   [0][1]: _ModuleBody -> [820][_Module]< "module" _ModuleBody @ >                         ||
+|| [PREDECESSORS 5-5]: [5]                                                                   ||
+|| [SUCCESORS 7-7]: [7]                                                                      ||
+++===========================================================================================++
+|
++
+|
++-------------------------------------------------------------------------------------------+
+| [7]: <Ending>                                                                             |
+| [802][_UsingItem]< _UsingFragment @ { _UsingFragment } >                                  |
+| [AST-INSTRUCTIONS]:                                                                       |
+|   - EndObject()                                                                           |
+|   > Field(ModuleUsingItem::fragments)                                                     |
+| [RETURN STACK]:                                                                           |
+|   [2][5]: _UsingItem -> [807][_UsingPath]< "using" _UsingItem @ { "::" _UsingItem } ";" > |
+|   [1][3]: _UsingPath -> [814][_ModuleBody]NAME ";" { _UsingPath @ } { _Declaration }      |
+|   [0][1]: _ModuleBody -> [820][_Module]< "module" _ModuleBody @ >                         |
+| [PREDECESSORS 6-6]: [6]                                                                   |
+| [SUCCESORS 8-8]: [8]                                                                      |
++-------------------------------------------------------------------------------------------+
+|
++
+|
++--------------------------------------------------------------------------------------+
+| [8]: <Ending>                                                                        |
+| [807][_UsingPath]< "using" _UsingItem @ { "::" _UsingItem } ";" >                    |
+| [AST-INSTRUCTIONS]:                                                                  |
+|   - EndObject()                                                                      |
+|   > Field(ModuleUsingPath::items)                                                    |
+| [RETURN STACK]:                                                                      |
+|   [1][3]: _UsingPath -> [814][_ModuleBody]NAME ";" { _UsingPath @ } { _Declaration } |
+|   [0][1]: _ModuleBody -> [820][_Module]< "module" _ModuleBody @ >                    |
+| [PREDECESSORS 7-7]: [7]                                                              |
+| [SUCCESORS 9-9]: [9]                                                                 |
++--------------------------------------------------------------------------------------+
+[0]
+ |
+ +
+ |
+[0]
+++======================================================================================++
+|| [9]: {SCOPE_DELIMITER} ::                                                            ||
+|| [808][_UsingPath]< "using" _UsingItem { "::" @ _UsingItem } ";" >                    ||
+|| [AST-INSTRUCTIONS]:                                                                  ||
+|| [RETURN STACK]:                                                                      ||
+||   [1][3]: _UsingPath -> [814][_ModuleBody]NAME ";" { _UsingPath @ } { _Declaration } ||
+||   [0][1]: _ModuleBody -> [820][_Module]< "module" _ModuleBody @ >                    ||
+|| [PREDECESSORS 8-8]: [8]                                                              ||
+|| [SUCCESORS 10-10]: [10]                                                              ||
+++======================================================================================++
+[0]
+ |
+ +
+ |
+[0]
+++===========================================================================================++
+|| [10]: {MUL} *                                                                             ||
+|| [798][_UsingFragment]< "*" @ >                                                            ||
+|| [AST-INSTRUCTIONS]:                                                                       ||
+||   - BeginObject(ModuleUsingItem)                                                          ||
+||   - BeginObject(ModuleUsingWildCardFragment)                                              ||
+|| [RETURN STACK]:                                                                           ||
+||   [5][9]: _UsingFragment -> [802][_UsingItem]< _UsingFragment @ { _UsingFragment } >      ||
+||   [4][9]: _UsingItem -> [809][_UsingPath]< "using" _UsingItem { "::" _UsingItem @ } ";" > ||
+||   [1][3]: _UsingPath -> [814][_ModuleBody]NAME ";" { _UsingPath @ } { _Declaration }      ||
+||   [0][1]: _ModuleBody -> [820][_Module]< "module" _ModuleBody @ >                         ||
+|| [PREDECESSORS 9-9]: [9]                                                                   ||
+|| [SUCCESORS 11-11]: [11]                                                                   ||
+++===========================================================================================++
+|
++
+|
++-------------------------------------------------------------------------------------------+
+| [11]: <Ending>                                                                            |
+| [802][_UsingItem]< _UsingFragment @ { _UsingFragment } >                                  |
+| [AST-INSTRUCTIONS]:                                                                       |
+|   - EndObject()                                                                           |
+|   > Field(ModuleUsingItem::fragments)                                                     |
+| [RETURN STACK]:                                                                           |
+|   [4][9]: _UsingItem -> [809][_UsingPath]< "using" _UsingItem { "::" _UsingItem @ } ";" > |
+|   [1][3]: _UsingPath -> [814][_ModuleBody]NAME ";" { _UsingPath @ } { _Declaration }      |
+|   [0][1]: _ModuleBody -> [820][_Module]< "module" _ModuleBody @ >                         |
+| [PREDECESSORS 10-10]: [10]                                                                |
+| [SUCCESORS 12-12]: [12]                                                                   |
++-------------------------------------------------------------------------------------------+
+|
++
+|
++--------------------------------------------------------------------------------------+
+| [12]: <Ending>                                                                       |
+| [809][_UsingPath]< "using" _UsingItem { "::" _UsingItem @ } ";" >                    |
+| [AST-INSTRUCTIONS]:                                                                  |
+|   - EndObject()                                                                      |
+|   > Field(ModuleUsingPath::items)                                                    |
+| [RETURN STACK]:                                                                      |
+|   [1][3]: _UsingPath -> [814][_ModuleBody]NAME ";" { _UsingPath @ } { _Declaration } |
+|   [0][1]: _ModuleBody -> [820][_Module]< "module" _ModuleBody @ >                    |
+| [PREDECESSORS 11-11]: [11]                                                           |
+| [SUCCESORS 13-13]: [13]                                                              |
++--------------------------------------------------------------------------------------+
+[0]
+ |
+ +
+ |
+[0]
+++======================================================================================++
+|| [13]: {SEMICOLON} ;                                                                  ||
+|| [810][_UsingPath]< "using" _UsingItem { "::" _UsingItem } ";" @ >                    ||
+|| [AST-INSTRUCTIONS]:                                                                  ||
+|| [RETURN STACK]:                                                                      ||
+||   [1][3]: _UsingPath -> [814][_ModuleBody]NAME ";" { _UsingPath @ } { _Declaration } ||
+||   [0][1]: _ModuleBody -> [820][_Module]< "module" _ModuleBody @ >                    ||
+|| [PREDECESSORS 12-12]: [12]                                                           ||
+|| [SUCCESORS 14-14]: [14]                                                              ||
+++======================================================================================++
+|
++
+|
++-------------------------------------------------------------------+
+| [14]: <Ending>                                                    |
+| [814][_ModuleBody]NAME ";" { _UsingPath @ } { _Declaration }      |
+| [AST-INSTRUCTIONS]:                                               |
+|   - EndObject()                                                   |
+|   > Field(Module::paths)                                          |
+| [RETURN STACK]:                                                   |
+|   [0][1]: _ModuleBody -> [820][_Module]< "module" _ModuleBody @ > |
+| [PREDECESSORS 13-13]: [13]                                        |
+| [SUCCESORS 18-18]: [18]                                           |
++-------------------------------------------------------------------+
+[0]
+ |
+ +
+ |
+[0]
+++=========================================================================================================++
+|| [18]: {KEYWORD_STATIC} static                                                                           ||
+|| [635][_StaticInit]< "static" @ _Block >                                                                 ||
+|| [AST-INSTRUCTIONS]:                                                                                     ||
+||   - DelayFieldAssignment()                                                                              ||
+||   - DelayFieldAssignment()                                                                              ||
+||   - BeginObject(StaticInitDeclaration)                                                                  ||
+|| [RETURN STACK]:                                                                                         ||
+||   [14][14]: _StaticInit -> [789][_DeclarationCandidates]<< !_StaticInit @ >>                            ||
+||   [13][14]: _DeclarationCandidates -> [795][_Declaration]<< { _Attribute } !_DeclarationCandidates @ >> ||
+||   [6][14]: _Declaration -> [815][_ModuleBody]NAME ";" { _UsingPath } { _Declaration @ }                 ||
+||   [0][1]: _ModuleBody -> [820][_Module]< "module" _ModuleBody @ >                                       ||
+|| [PREDECESSORS 14-14]: [14]                                                                              ||
+|| [SUCCESORS 20-20]: [20]                                                                                 ||
+++=========================================================================================================++
+[0]
+ |
+ +
+ |
+[0]
+++=========================================================================================================++
+|| [20]: {OPEN_BRACE} {                                                                                    ||
+|| [358][_Block]< "{" @ { _Statement } [ NAME ":" ";" ] "}" >                                              ||
+|| [AST-INSTRUCTIONS]:                                                                                     ||
+||   - BeginObject(BlockStatement)                                                                         ||
+|| [RETURN STACK]:                                                                                         ||
+||   [18][18]: _Block -> [636][_StaticInit]< "static" _Block @ >                                           ||
+||   [14][14]: _StaticInit -> [789][_DeclarationCandidates]<< !_StaticInit @ >>                            ||
+||   [13][14]: _DeclarationCandidates -> [795][_Declaration]<< { _Attribute } !_DeclarationCandidates @ >> ||
+||   [6][14]: _Declaration -> [815][_ModuleBody]NAME ";" { _UsingPath } { _Declaration @ }                 ||
+||   [0][1]: _ModuleBody -> [820][_Module]< "module" _ModuleBody @ >                                       ||
+|| [PREDECESSORS 18-18]: [18]                                                                              ||
+|| [SUCCESORS 21-21]: [21]                                                                                 ||
+++=========================================================================================================++
+[0]
+ |
+ +
+ |
+[0]
+++=========================================================================================================++
+|| [21]: {KEYWORD_RETURN} return                                                                           ||
+|| [495][_Statement]< "return" @ [ _Expression ] ";" >                                                     ||
+|| [AST-INSTRUCTIONS]:                                                                                     ||
+||   - BeginObject(ReturnStatement)                                                                        ||
+|| [RETURN STACK]:                                                                                         ||
+||   [19][20]: _Statement -> [359][_Block]< "{" { _Statement @ } [ NAME ":" ";" ] "}" >                    ||
+||   [18][18]: _Block -> [636][_StaticInit]< "static" _Block @ >                                           ||
+||   [14][14]: _StaticInit -> [789][_DeclarationCandidates]<< !_StaticInit @ >>                            ||
+||   [13][14]: _DeclarationCandidates -> [795][_Declaration]<< { _Attribute } !_DeclarationCandidates @ >> ||
+||   [6][14]: _Declaration -> [815][_ModuleBody]NAME ";" { _UsingPath } { _Declaration @ }                 ||
+||   [0][1]: _ModuleBody -> [820][_Module]< "module" _ModuleBody @ >                                       ||
+|| [PREDECESSORS 20-20]: [20]                                                                              ||
+|| [SUCCESORS 22-22]: [22]                                                                                 ||
+++=========================================================================================================++
+[0]
+ |
+ +
+ |
+[0]
+++=========================================================================================================++
+|| [22]: {INTEGER} 0                                                                                       ||
+|| [158][_ExpPrimitive]< INTEGER @ >                                                                       ||
+|| [AST-INSTRUCTIONS]:                                                                                     ||
+||   - DelayFieldAssignment()                                                                              ||
+||   - DelayFieldAssignment()                                                                              ||
+||   - DelayFieldAssignment()                                                                              ||
+||   - DelayFieldAssignment()                                                                              ||
+||   - DelayFieldAssignment()                                                                              ||
+||   - DelayFieldAssignment()                                                                              ||
+||   - DelayFieldAssignment()                                                                              ||
+||   - DelayFieldAssignment()                                                                              ||
+||   - DelayFieldAssignment()                                                                              ||
+||   - DelayFieldAssignment()                                                                              ||
+||   - DelayFieldAssignment()                                                                              ||
+||   - BeginObject(IntegerExpression)                                                                      ||
+||   + Token()                                                                                             ||
+||   + Field(IntegerExpression::value)                                                                     ||
+|| [RETURN STACK]:                                                                                         ||
+||   [33][21]: _ExpPrimitive -> [245][_Exp0]<< !_ExpPrimitive @ >>                                         ||
+||   [32][21]: _Exp0 -> [251][_Exp1]<< !_Exp0 @ >>                                                         ||
+||   [31][21]: _Exp1 -> [263][_Exp2]<< !_Exp1 @ >>                                                         ||
+||   [30][21]: _Exp2 -> [278][_Exp3]<< !_Exp2 @ >>                                                         ||
+||   [29][21]: _Exp3 -> [287][_Exp4]<< !_Exp3 @ >>                                                         ||
+||   [28][21]: _Exp4 -> [308][_Exp5]<< !_Exp4 @ >>                                                         ||
+||   [27][21]: _Exp5 -> [314][_Exp6]<< !_Exp5 @ >>                                                         ||
+||   [26][21]: _Exp6 -> [320][_Exp7]<< !_Exp6 @ >>                                                         ||
+||   [25][21]: _Exp7 -> [326][_Exp8]<< !_Exp7 @ >>                                                         ||
+||   [24][21]: _Exp8 -> [332][_Exp9]<< !_Exp8 @ >>                                                         ||
+||   [23][21]: _Exp9 -> [340][_Exp10]<< !_Exp9 @ >>                                                        ||
+||   [22][21]: _Exp10 -> [346][_Exp11]<< !_Exp10 @ >>                                                      ||
+||   [21][21]: _Exp11 -> [349][_Expression]<< !_Exp11 @ >>                                                 ||
+||   [20][21]: _Expression -> [496][_Statement]< "return" [ _Expression @ ] ";" >                          ||
+||   [19][20]: _Statement -> [359][_Block]< "{" { _Statement @ } [ NAME ":" ";" ] "}" >                    ||
+||   [18][18]: _Block -> [636][_StaticInit]< "static" _Block @ >                                           ||
+||   [14][14]: _StaticInit -> [789][_DeclarationCandidates]<< !_StaticInit @ >>                            ||
+||   [13][14]: _DeclarationCandidates -> [795][_Declaration]<< { _Attribute } !_DeclarationCandidates @ >> ||
+||   [6][14]: _Declaration -> [815][_ModuleBody]NAME ";" { _UsingPath } { _Declaration @ }                 ||
+||   [0][1]: _ModuleBody -> [820][_Module]< "module" _ModuleBody @ >                                       ||
+|| [PREDECESSORS 21-21]: [21]                                                                              ||
+|| [SUCCESORS 23-23]: [23]                                                                                 ||
+++=========================================================================================================++
+|
++
+|
++---------------------------------------------------------------------------------------------------------+
+| [23]: <Ending>                                                                                          |
+| [245][_Exp0]<< !_ExpPrimitive @ >>                                                                      |
+| [AST-INSTRUCTIONS]:                                                                                     |
+|   - EndObject()                                                                                         |
+| [RETURN STACK]:                                                                                         |
+|   [32][21]: _Exp0 -> [251][_Exp1]<< !_Exp0 @ >>                                                         |
+|   [31][21]: _Exp1 -> [263][_Exp2]<< !_Exp1 @ >>                                                         |
+|   [30][21]: _Exp2 -> [278][_Exp3]<< !_Exp2 @ >>                                                         |
+|   [29][21]: _Exp3 -> [287][_Exp4]<< !_Exp3 @ >>                                                         |
+|   [28][21]: _Exp4 -> [308][_Exp5]<< !_Exp4 @ >>                                                         |
+|   [27][21]: _Exp5 -> [314][_Exp6]<< !_Exp5 @ >>                                                         |
+|   [26][21]: _Exp6 -> [320][_Exp7]<< !_Exp6 @ >>                                                         |
+|   [25][21]: _Exp7 -> [326][_Exp8]<< !_Exp7 @ >>                                                         |
+|   [24][21]: _Exp8 -> [332][_Exp9]<< !_Exp8 @ >>                                                         |
+|   [23][21]: _Exp9 -> [340][_Exp10]<< !_Exp9 @ >>                                                        |
+|   [22][21]: _Exp10 -> [346][_Exp11]<< !_Exp10 @ >>                                                      |
+|   [21][21]: _Exp11 -> [349][_Expression]<< !_Exp11 @ >>                                                 |
+|   [20][21]: _Expression -> [496][_Statement]< "return" [ _Expression @ ] ";" >                          |
+|   [19][20]: _Statement -> [359][_Block]< "{" { _Statement @ } [ NAME ":" ";" ] "}" >                    |
+|   [18][18]: _Block -> [636][_StaticInit]< "static" _Block @ >                                           |
+|   [14][14]: _StaticInit -> [789][_DeclarationCandidates]<< !_StaticInit @ >>                            |
+|   [13][14]: _DeclarationCandidates -> [795][_Declaration]<< { _Attribute } !_DeclarationCandidates @ >> |
+|   [6][14]: _Declaration -> [815][_ModuleBody]NAME ";" { _UsingPath } { _Declaration @ }                 |
+|   [0][1]: _ModuleBody -> [820][_Module]< "module" _ModuleBody @ >                                       |
+| [PREDECESSORS 22-22]: [22]                                                                              |
+| [SUCCESORS 24-24]: [24]                                                                                 |
++---------------------------------------------------------------------------------------------------------+
+|
++
+|
++---------------------------------------------------------------------------------------------------------+
+| [24]: <Ending>                                                                                          |
+| [251][_Exp1]<< !_Exp0 @ >>                                                                              |
+| [AST-INSTRUCTIONS]:                                                                                     |
+|   - ReopenObject()                                                                                      |
+|   - EndObject()                                                                                         |
+|   > ReopenObject()                                                                                      |
+| [RETURN STACK]:                                                                                         |
+|   [31][21]: _Exp1 -> [263][_Exp2]<< !_Exp1 @ >>                                                         |
+|   [30][21]: _Exp2 -> [278][_Exp3]<< !_Exp2 @ >>                                                         |
+|   [29][21]: _Exp3 -> [287][_Exp4]<< !_Exp3 @ >>                                                         |
+|   [28][21]: _Exp4 -> [308][_Exp5]<< !_Exp4 @ >>                                                         |
+|   [27][21]: _Exp5 -> [314][_Exp6]<< !_Exp5 @ >>                                                         |
+|   [26][21]: _Exp6 -> [320][_Exp7]<< !_Exp6 @ >>                                                         |
+|   [25][21]: _Exp7 -> [326][_Exp8]<< !_Exp7 @ >>                                                         |
+|   [24][21]: _Exp8 -> [332][_Exp9]<< !_Exp8 @ >>                                                         |
+|   [23][21]: _Exp9 -> [340][_Exp10]<< !_Exp9 @ >>                                                        |
+|   [22][21]: _Exp10 -> [346][_Exp11]<< !_Exp10 @ >>                                                      |
+|   [21][21]: _Exp11 -> [349][_Expression]<< !_Exp11 @ >>                                                 |
+|   [20][21]: _Expression -> [496][_Statement]< "return" [ _Expression @ ] ";" >                          |
+|   [19][20]: _Statement -> [359][_Block]< "{" { _Statement @ } [ NAME ":" ";" ] "}" >                    |
+|   [18][18]: _Block -> [636][_StaticInit]< "static" _Block @ >                                           |
+|   [14][14]: _StaticInit -> [789][_DeclarationCandidates]<< !_StaticInit @ >>                            |
+|   [13][14]: _DeclarationCandidates -> [795][_Declaration]<< { _Attribute } !_DeclarationCandidates @ >> |
+|   [6][14]: _Declaration -> [815][_ModuleBody]NAME ";" { _UsingPath } { _Declaration @ }                 |
+|   [0][1]: _ModuleBody -> [820][_Module]< "module" _ModuleBody @ >                                       |
+| [PREDECESSORS 23-23]: [23]                                                                              |
+| [SUCCESORS 25-25]: [25]                                                                                 |
++---------------------------------------------------------------------------------------------------------+
+|
++
+|
++---------------------------------------------------------------------------------------------------------+
+| [25]: <Ending>                                                                                          |
+| [263][_Exp2]<< !_Exp1 @ >>                                                                              |
+| [AST-INSTRUCTIONS]:                                                                                     |
+|   - EndObject()                                                                                         |
+|   > ReopenObject()                                                                                      |
+| [RETURN STACK]:                                                                                         |
+|   [30][21]: _Exp2 -> [278][_Exp3]<< !_Exp2 @ >>                                                         |
+|   [29][21]: _Exp3 -> [287][_Exp4]<< !_Exp3 @ >>                                                         |
+|   [28][21]: _Exp4 -> [308][_Exp5]<< !_Exp4 @ >>                                                         |
+|   [27][21]: _Exp5 -> [314][_Exp6]<< !_Exp5 @ >>                                                         |
+|   [26][21]: _Exp6 -> [320][_Exp7]<< !_Exp6 @ >>                                                         |
+|   [25][21]: _Exp7 -> [326][_Exp8]<< !_Exp7 @ >>                                                         |
+|   [24][21]: _Exp8 -> [332][_Exp9]<< !_Exp8 @ >>                                                         |
+|   [23][21]: _Exp9 -> [340][_Exp10]<< !_Exp9 @ >>                                                        |
+|   [22][21]: _Exp10 -> [346][_Exp11]<< !_Exp10 @ >>                                                      |
+|   [21][21]: _Exp11 -> [349][_Expression]<< !_Exp11 @ >>                                                 |
+|   [20][21]: _Expression -> [496][_Statement]< "return" [ _Expression @ ] ";" >                          |
+|   [19][20]: _Statement -> [359][_Block]< "{" { _Statement @ } [ NAME ":" ";" ] "}" >                    |
+|   [18][18]: _Block -> [636][_StaticInit]< "static" _Block @ >                                           |
+|   [14][14]: _StaticInit -> [789][_DeclarationCandidates]<< !_StaticInit @ >>                            |
+|   [13][14]: _DeclarationCandidates -> [795][_Declaration]<< { _Attribute } !_DeclarationCandidates @ >> |
+|   [6][14]: _Declaration -> [815][_ModuleBody]NAME ";" { _UsingPath } { _Declaration @ }                 |
+|   [0][1]: _ModuleBody -> [820][_Module]< "module" _ModuleBody @ >                                       |
+| [PREDECESSORS 24-24]: [24]                                                                              |
+| [SUCCESORS 26-26]: [26]                                                                                 |
++---------------------------------------------------------------------------------------------------------+
+|
++
+|
++---------------------------------------------------------------------------------------------------------+
+| [26]: <Ending>                                                                                          |
+| [278][_Exp3]<< !_Exp2 @ >>                                                                              |
+| [AST-INSTRUCTIONS]:                                                                                     |
+|   - EndObject()                                                                                         |
+|   > ReopenObject()                                                                                      |
+| [RETURN STACK]:                                                                                         |
+|   [29][21]: _Exp3 -> [287][_Exp4]<< !_Exp3 @ >>                                                         |
+|   [28][21]: _Exp4 -> [308][_Exp5]<< !_Exp4 @ >>                                                         |
+|   [27][21]: _Exp5 -> [314][_Exp6]<< !_Exp5 @ >>                                                         |
+|   [26][21]: _Exp6 -> [320][_Exp7]<< !_Exp6 @ >>                                                         |
+|   [25][21]: _Exp7 -> [326][_Exp8]<< !_Exp7 @ >>                                                         |
+|   [24][21]: _Exp8 -> [332][_Exp9]<< !_Exp8 @ >>                                                         |
+|   [23][21]: _Exp9 -> [340][_Exp10]<< !_Exp9 @ >>                                                        |
+|   [22][21]: _Exp10 -> [346][_Exp11]<< !_Exp10 @ >>                                                      |
+|   [21][21]: _Exp11 -> [349][_Expression]<< !_Exp11 @ >>                                                 |
+|   [20][21]: _Expression -> [496][_Statement]< "return" [ _Expression @ ] ";" >                          |
+|   [19][20]: _Statement -> [359][_Block]< "{" { _Statement @ } [ NAME ":" ";" ] "}" >                    |
+|   [18][18]: _Block -> [636][_StaticInit]< "static" _Block @ >                                           |
+|   [14][14]: _StaticInit -> [789][_DeclarationCandidates]<< !_StaticInit @ >>                            |
+|   [13][14]: _DeclarationCandidates -> [795][_Declaration]<< { _Attribute } !_DeclarationCandidates @ >> |
+|   [6][14]: _Declaration -> [815][_ModuleBody]NAME ";" { _UsingPath } { _Declaration @ }                 |
+|   [0][1]: _ModuleBody -> [820][_Module]< "module" _ModuleBody @ >                                       |
+| [PREDECESSORS 25-25]: [25]                                                                              |
+| [SUCCESORS 27-27]: [27]                                                                                 |
++---------------------------------------------------------------------------------------------------------+
+|
++
+|
++---------------------------------------------------------------------------------------------------------+
+| [27]: <Ending>                                                                                          |
+| [287][_Exp4]<< !_Exp3 @ >>                                                                              |
+| [AST-INSTRUCTIONS]:                                                                                     |
+|   - EndObject()                                                                                         |
+|   > ReopenObject()                                                                                      |
+| [RETURN STACK]:                                                                                         |
+|   [28][21]: _Exp4 -> [308][_Exp5]<< !_Exp4 @ >>                                                         |
+|   [27][21]: _Exp5 -> [314][_Exp6]<< !_Exp5 @ >>                                                         |
+|   [26][21]: _Exp6 -> [320][_Exp7]<< !_Exp6 @ >>                                                         |
+|   [25][21]: _Exp7 -> [326][_Exp8]<< !_Exp7 @ >>                                                         |
+|   [24][21]: _Exp8 -> [332][_Exp9]<< !_Exp8 @ >>                                                         |
+|   [23][21]: _Exp9 -> [340][_Exp10]<< !_Exp9 @ >>                                                        |
+|   [22][21]: _Exp10 -> [346][_Exp11]<< !_Exp10 @ >>                                                      |
+|   [21][21]: _Exp11 -> [349][_Expression]<< !_Exp11 @ >>                                                 |
+|   [20][21]: _Expression -> [496][_Statement]< "return" [ _Expression @ ] ";" >                          |
+|   [19][20]: _Statement -> [359][_Block]< "{" { _Statement @ } [ NAME ":" ";" ] "}" >                    |
+|   [18][18]: _Block -> [636][_StaticInit]< "static" _Block @ >                                           |
+|   [14][14]: _StaticInit -> [789][_DeclarationCandidates]<< !_StaticInit @ >>                            |
+|   [13][14]: _DeclarationCandidates -> [795][_Declaration]<< { _Attribute } !_DeclarationCandidates @ >> |
+|   [6][14]: _Declaration -> [815][_ModuleBody]NAME ";" { _UsingPath } { _Declaration @ }                 |
+|   [0][1]: _ModuleBody -> [820][_Module]< "module" _ModuleBody @ >                                       |
+| [PREDECESSORS 26-26]: [26]                                                                              |
+| [SUCCESORS 28-28]: [28]                                                                                 |
++---------------------------------------------------------------------------------------------------------+
+|
++
+|
++---------------------------------------------------------------------------------------------------------+
+| [28]: <Ending>                                                                                          |
+| [308][_Exp5]<< !_Exp4 @ >>                                                                              |
+| [AST-INSTRUCTIONS]:                                                                                     |
+|   - EndObject()                                                                                         |
+|   > ReopenObject()                                                                                      |
+| [RETURN STACK]:                                                                                         |
+|   [27][21]: _Exp5 -> [314][_Exp6]<< !_Exp5 @ >>                                                         |
+|   [26][21]: _Exp6 -> [320][_Exp7]<< !_Exp6 @ >>                                                         |
+|   [25][21]: _Exp7 -> [326][_Exp8]<< !_Exp7 @ >>                                                         |
+|   [24][21]: _Exp8 -> [332][_Exp9]<< !_Exp8 @ >>                                                         |
+|   [23][21]: _Exp9 -> [340][_Exp10]<< !_Exp9 @ >>                                                        |
+|   [22][21]: _Exp10 -> [346][_Exp11]<< !_Exp10 @ >>                                                      |
+|   [21][21]: _Exp11 -> [349][_Expression]<< !_Exp11 @ >>                                                 |
+|   [20][21]: _Expression -> [496][_Statement]< "return" [ _Expression @ ] ";" >                          |
+|   [19][20]: _Statement -> [359][_Block]< "{" { _Statement @ } [ NAME ":" ";" ] "}" >                    |
+|   [18][18]: _Block -> [636][_StaticInit]< "static" _Block @ >                                           |
+|   [14][14]: _StaticInit -> [789][_DeclarationCandidates]<< !_StaticInit @ >>                            |
+|   [13][14]: _DeclarationCandidates -> [795][_Declaration]<< { _Attribute } !_DeclarationCandidates @ >> |
+|   [6][14]: _Declaration -> [815][_ModuleBody]NAME ";" { _UsingPath } { _Declaration @ }                 |
+|   [0][1]: _ModuleBody -> [820][_Module]< "module" _ModuleBody @ >                                       |
+| [PREDECESSORS 27-27]: [27]                                                                              |
+| [SUCCESORS 29-29]: [29]                                                                                 |
++---------------------------------------------------------------------------------------------------------+
+|
++
+|
++---------------------------------------------------------------------------------------------------------+
+| [29]: <Ending>                                                                                          |
+| [314][_Exp6]<< !_Exp5 @ >>                                                                              |
+| [AST-INSTRUCTIONS]:                                                                                     |
+|   - EndObject()                                                                                         |
+|   > ReopenObject()                                                                                      |
+| [RETURN STACK]:                                                                                         |
+|   [26][21]: _Exp6 -> [320][_Exp7]<< !_Exp6 @ >>                                                         |
+|   [25][21]: _Exp7 -> [326][_Exp8]<< !_Exp7 @ >>                                                         |
+|   [24][21]: _Exp8 -> [332][_Exp9]<< !_Exp8 @ >>                                                         |
+|   [23][21]: _Exp9 -> [340][_Exp10]<< !_Exp9 @ >>                                                        |
+|   [22][21]: _Exp10 -> [346][_Exp11]<< !_Exp10 @ >>                                                      |
+|   [21][21]: _Exp11 -> [349][_Expression]<< !_Exp11 @ >>                                                 |
+|   [20][21]: _Expression -> [496][_Statement]< "return" [ _Expression @ ] ";" >                          |
+|   [19][20]: _Statement -> [359][_Block]< "{" { _Statement @ } [ NAME ":" ";" ] "}" >                    |
+|   [18][18]: _Block -> [636][_StaticInit]< "static" _Block @ >                                           |
+|   [14][14]: _StaticInit -> [789][_DeclarationCandidates]<< !_StaticInit @ >>                            |
+|   [13][14]: _DeclarationCandidates -> [795][_Declaration]<< { _Attribute } !_DeclarationCandidates @ >> |
+|   [6][14]: _Declaration -> [815][_ModuleBody]NAME ";" { _UsingPath } { _Declaration @ }                 |
+|   [0][1]: _ModuleBody -> [820][_Module]< "module" _ModuleBody @ >                                       |
+| [PREDECESSORS 28-28]: [28]                                                                              |
+| [SUCCESORS 30-30]: [30]                                                                                 |
++---------------------------------------------------------------------------------------------------------+
+|
++
+|
++---------------------------------------------------------------------------------------------------------+
+| [30]: <Ending>                                                                                          |
+| [320][_Exp7]<< !_Exp6 @ >>                                                                              |
+| [AST-INSTRUCTIONS]:                                                                                     |
+|   - EndObject()                                                                                         |
+|   > ReopenObject()                                                                                      |
+| [RETURN STACK]:                                                                                         |
+|   [25][21]: _Exp7 -> [326][_Exp8]<< !_Exp7 @ >>                                                         |
+|   [24][21]: _Exp8 -> [332][_Exp9]<< !_Exp8 @ >>                                                         |
+|   [23][21]: _Exp9 -> [340][_Exp10]<< !_Exp9 @ >>                                                        |
+|   [22][21]: _Exp10 -> [346][_Exp11]<< !_Exp10 @ >>                                                      |
+|   [21][21]: _Exp11 -> [349][_Expression]<< !_Exp11 @ >>                                                 |
+|   [20][21]: _Expression -> [496][_Statement]< "return" [ _Expression @ ] ";" >                          |
+|   [19][20]: _Statement -> [359][_Block]< "{" { _Statement @ } [ NAME ":" ";" ] "}" >                    |
+|   [18][18]: _Block -> [636][_StaticInit]< "static" _Block @ >                                           |
+|   [14][14]: _StaticInit -> [789][_DeclarationCandidates]<< !_StaticInit @ >>                            |
+|   [13][14]: _DeclarationCandidates -> [795][_Declaration]<< { _Attribute } !_DeclarationCandidates @ >> |
+|   [6][14]: _Declaration -> [815][_ModuleBody]NAME ";" { _UsingPath } { _Declaration @ }                 |
+|   [0][1]: _ModuleBody -> [820][_Module]< "module" _ModuleBody @ >                                       |
+| [PREDECESSORS 29-29]: [29]                                                                              |
+| [SUCCESORS 31-31]: [31]                                                                                 |
++---------------------------------------------------------------------------------------------------------+
+|
++
+|
++---------------------------------------------------------------------------------------------------------+
+| [31]: <Ending>                                                                                          |
+| [326][_Exp8]<< !_Exp7 @ >>                                                                              |
+| [AST-INSTRUCTIONS]:                                                                                     |
+|   - EndObject()                                                                                         |
+|   > ReopenObject()                                                                                      |
+| [RETURN STACK]:                                                                                         |
+|   [24][21]: _Exp8 -> [332][_Exp9]<< !_Exp8 @ >>                                                         |
+|   [23][21]: _Exp9 -> [340][_Exp10]<< !_Exp9 @ >>                                                        |
+|   [22][21]: _Exp10 -> [346][_Exp11]<< !_Exp10 @ >>                                                      |
+|   [21][21]: _Exp11 -> [349][_Expression]<< !_Exp11 @ >>                                                 |
+|   [20][21]: _Expression -> [496][_Statement]< "return" [ _Expression @ ] ";" >                          |
+|   [19][20]: _Statement -> [359][_Block]< "{" { _Statement @ } [ NAME ":" ";" ] "}" >                    |
+|   [18][18]: _Block -> [636][_StaticInit]< "static" _Block @ >                                           |
+|   [14][14]: _StaticInit -> [789][_DeclarationCandidates]<< !_StaticInit @ >>                            |
+|   [13][14]: _DeclarationCandidates -> [795][_Declaration]<< { _Attribute } !_DeclarationCandidates @ >> |
+|   [6][14]: _Declaration -> [815][_ModuleBody]NAME ";" { _UsingPath } { _Declaration @ }                 |
+|   [0][1]: _ModuleBody -> [820][_Module]< "module" _ModuleBody @ >                                       |
+| [PREDECESSORS 30-30]: [30]                                                                              |
+| [SUCCESORS 32-32]: [32]                                                                                 |
++---------------------------------------------------------------------------------------------------------+
+|
++
+|
++---------------------------------------------------------------------------------------------------------+
+| [32]: <Ending>                                                                                          |
+| [332][_Exp9]<< !_Exp8 @ >>                                                                              |
+| [AST-INSTRUCTIONS]:                                                                                     |
+|   - EndObject()                                                                                         |
+|   > ReopenObject()                                                                                      |
+| [RETURN STACK]:                                                                                         |
+|   [23][21]: _Exp9 -> [340][_Exp10]<< !_Exp9 @ >>                                                        |
+|   [22][21]: _Exp10 -> [346][_Exp11]<< !_Exp10 @ >>                                                      |
+|   [21][21]: _Exp11 -> [349][_Expression]<< !_Exp11 @ >>                                                 |
+|   [20][21]: _Expression -> [496][_Statement]< "return" [ _Expression @ ] ";" >                          |
+|   [19][20]: _Statement -> [359][_Block]< "{" { _Statement @ } [ NAME ":" ";" ] "}" >                    |
+|   [18][18]: _Block -> [636][_StaticInit]< "static" _Block @ >                                           |
+|   [14][14]: _StaticInit -> [789][_DeclarationCandidates]<< !_StaticInit @ >>                            |
+|   [13][14]: _DeclarationCandidates -> [795][_Declaration]<< { _Attribute } !_DeclarationCandidates @ >> |
+|   [6][14]: _Declaration -> [815][_ModuleBody]NAME ";" { _UsingPath } { _Declaration @ }                 |
+|   [0][1]: _ModuleBody -> [820][_Module]< "module" _ModuleBody @ >                                       |
+| [PREDECESSORS 31-31]: [31]                                                                              |
+| [SUCCESORS 33-33]: [33]                                                                                 |
++---------------------------------------------------------------------------------------------------------+
+|
++
+|
++---------------------------------------------------------------------------------------------------------+
+| [33]: <Ending>                                                                                          |
+| [340][_Exp10]<< !_Exp9 @ >>                                                                             |
+| [AST-INSTRUCTIONS]:                                                                                     |
+|   - EndObject()                                                                                         |
+| [RETURN STACK]:                                                                                         |
+|   [22][21]: _Exp10 -> [346][_Exp11]<< !_Exp10 @ >>                                                      |
+|   [21][21]: _Exp11 -> [349][_Expression]<< !_Exp11 @ >>                                                 |
+|   [20][21]: _Expression -> [496][_Statement]< "return" [ _Expression @ ] ";" >                          |
+|   [19][20]: _Statement -> [359][_Block]< "{" { _Statement @ } [ NAME ":" ";" ] "}" >                    |
+|   [18][18]: _Block -> [636][_StaticInit]< "static" _Block @ >                                           |
+|   [14][14]: _StaticInit -> [789][_DeclarationCandidates]<< !_StaticInit @ >>                            |
+|   [13][14]: _DeclarationCandidates -> [795][_Declaration]<< { _Attribute } !_DeclarationCandidates @ >> |
+|   [6][14]: _Declaration -> [815][_ModuleBody]NAME ";" { _UsingPath } { _Declaration @ }                 |
+|   [0][1]: _ModuleBody -> [820][_Module]< "module" _ModuleBody @ >                                       |
+| [PREDECESSORS 32-32]: [32]                                                                              |
+| [SUCCESORS 34-34]: [34]                                                                                 |
++---------------------------------------------------------------------------------------------------------+
+|
++
+|
++---------------------------------------------------------------------------------------------------------+
+| [34]: <Ending>                                                                                          |
+| [346][_Exp11]<< !_Exp10 @ >>                                                                            |
+| [AST-INSTRUCTIONS]:                                                                                     |
+|   - LriStore()                                                                                          |
+|   - DelayFieldAssignment()                                                                              |
+|   - LriFetch()                                                                                          |
+|   - ReopenObject()                                                                                      |
+|   - EndObject()                                                                                         |
+| [RETURN STACK]:                                                                                         |
+|   [21][21]: _Exp11 -> [349][_Expression]<< !_Exp11 @ >>                                                 |
+|   [20][21]: _Expression -> [496][_Statement]< "return" [ _Expression @ ] ";" >                          |
+|   [19][20]: _Statement -> [359][_Block]< "{" { _Statement @ } [ NAME ":" ";" ] "}" >                    |
+|   [18][18]: _Block -> [636][_StaticInit]< "static" _Block @ >                                           |
+|   [14][14]: _StaticInit -> [789][_DeclarationCandidates]<< !_StaticInit @ >>                            |
+|   [13][14]: _DeclarationCandidates -> [795][_Declaration]<< { _Attribute } !_DeclarationCandidates @ >> |
+|   [6][14]: _Declaration -> [815][_ModuleBody]NAME ";" { _UsingPath } { _Declaration @ }                 |
+|   [0][1]: _ModuleBody -> [820][_Module]< "module" _ModuleBody @ >                                       |
+| [PREDECESSORS 33-33]: [33]                                                                              |
+| [SUCCESORS 35-35]: [35]                                                                                 |
++---------------------------------------------------------------------------------------------------------+
+|
++
+|
++---------------------------------------------------------------------------------------------------------+
+| [35]: <Ending>                                                                                          |
+| [349][_Expression]<< !_Exp11 @ >>                                                                       |
+| [AST-INSTRUCTIONS]:                                                                                     |
+|   - LriStore()                                                                                          |
+|   - DelayFieldAssignment()                                                                              |
+|   - LriFetch()                                                                                          |
+|   - ReopenObject()                                                                                      |
+|   - EndObject()                                                                                         |
+| [RETURN STACK]:                                                                                         |
+|   [20][21]: _Expression -> [496][_Statement]< "return" [ _Expression @ ] ";" >                          |
+|   [19][20]: _Statement -> [359][_Block]< "{" { _Statement @ } [ NAME ":" ";" ] "}" >                    |
+|   [18][18]: _Block -> [636][_StaticInit]< "static" _Block @ >                                           |
+|   [14][14]: _StaticInit -> [789][_DeclarationCandidates]<< !_StaticInit @ >>                            |
+|   [13][14]: _DeclarationCandidates -> [795][_Declaration]<< { _Attribute } !_DeclarationCandidates @ >> |
+|   [6][14]: _Declaration -> [815][_ModuleBody]NAME ";" { _UsingPath } { _Declaration @ }                 |
+|   [0][1]: _ModuleBody -> [820][_Module]< "module" _ModuleBody @ >                                       |
+| [PREDECESSORS 34-34]: [34]                                                                              |
+| [SUCCESORS 36-36]: [36]                                                                                 |
++---------------------------------------------------------------------------------------------------------+
+|
++
+|
++---------------------------------------------------------------------------------------------------------+
+| [36]: <Ending>                                                                                          |
+| [496][_Statement]< "return" [ _Expression @ ] ";" >                                                     |
+| [AST-INSTRUCTIONS]:                                                                                     |
+|   - ReopenObject()                                                                                      |
+|   - EndObject()                                                                                         |
+|   > Field(ReturnStatement::expression)                                                                  |
+| [RETURN STACK]:                                                                                         |
+|   [19][20]: _Statement -> [359][_Block]< "{" { _Statement @ } [ NAME ":" ";" ] "}" >                    |
+|   [18][18]: _Block -> [636][_StaticInit]< "static" _Block @ >                                           |
+|   [14][14]: _StaticInit -> [789][_DeclarationCandidates]<< !_StaticInit @ >>                            |
+|   [13][14]: _DeclarationCandidates -> [795][_Declaration]<< { _Attribute } !_DeclarationCandidates @ >> |
+|   [6][14]: _Declaration -> [815][_ModuleBody]NAME ";" { _UsingPath } { _Declaration @ }                 |
+|   [0][1]: _ModuleBody -> [820][_Module]< "module" _ModuleBody @ >                                       |
+| [PREDECESSORS 35-35]: [35]                                                                              |
+| [SUCCESORS 37-37]: [37]                                                                                 |
++---------------------------------------------------------------------------------------------------------+
+[0]
+ |
+ +
+ |
+[0]
+++=========================================================================================================++
+|| [37]: {SEMICOLON} ;                                                                                     ||
+|| [497][_Statement]< "return" [ _Expression ] ";" @ >                                                     ||
+|| [AST-INSTRUCTIONS]:                                                                                     ||
+|| [RETURN STACK]:                                                                                         ||
+||   [19][20]: _Statement -> [359][_Block]< "{" { _Statement @ } [ NAME ":" ";" ] "}" >                    ||
+||   [18][18]: _Block -> [636][_StaticInit]< "static" _Block @ >                                           ||
+||   [14][14]: _StaticInit -> [789][_DeclarationCandidates]<< !_StaticInit @ >>                            ||
+||   [13][14]: _DeclarationCandidates -> [795][_Declaration]<< { _Attribute } !_DeclarationCandidates @ >> ||
+||   [6][14]: _Declaration -> [815][_ModuleBody]NAME ";" { _UsingPath } { _Declaration @ }                 ||
+||   [0][1]: _ModuleBody -> [820][_Module]< "module" _ModuleBody @ >                                       ||
+|| [PREDECESSORS 36-36]: [36]                                                                              ||
+|| [SUCCESORS 38-38]: [38]                                                                                 ||
+++=========================================================================================================++
+|
++
+|
++---------------------------------------------------------------------------------------------------------+
+| [38]: <Ending>                                                                                          |
+| [359][_Block]< "{" { _Statement @ } [ NAME ":" ";" ] "}" >                                              |
+| [AST-INSTRUCTIONS]:                                                                                     |
+|   - EndObject()                                                                                         |
+|   > Field(BlockStatement::statements)                                                                   |
+| [RETURN STACK]:                                                                                         |
+|   [18][18]: _Block -> [636][_StaticInit]< "static" _Block @ >                                           |
+|   [14][14]: _StaticInit -> [789][_DeclarationCandidates]<< !_StaticInit @ >>                            |
+|   [13][14]: _DeclarationCandidates -> [795][_Declaration]<< { _Attribute } !_DeclarationCandidates @ >> |
+|   [6][14]: _Declaration -> [815][_ModuleBody]NAME ";" { _UsingPath } { _Declaration @ }                 |
+|   [0][1]: _ModuleBody -> [820][_Module]< "module" _ModuleBody @ >                                       |
+| [PREDECESSORS 37-37]: [37]                                                                              |
+| [SUCCESORS 39-39]: [39]                                                                                 |
++---------------------------------------------------------------------------------------------------------+
+[0]
+ |
+ +
+ |
+[0]
+++=========================================================================================================++
+|| [39]: {CLOSE_BRACE} }                                                                                   ||
+|| [361][_Block]< "{" { _Statement } [ NAME ":" ";" ] "}" @ >                                              ||
+|| [AST-INSTRUCTIONS]:                                                                                     ||
+|| [RETURN STACK]:                                                                                         ||
+||   [18][18]: _Block -> [636][_StaticInit]< "static" _Block @ >                                           ||
+||   [14][14]: _StaticInit -> [789][_DeclarationCandidates]<< !_StaticInit @ >>                            ||
+||   [13][14]: _DeclarationCandidates -> [795][_Declaration]<< { _Attribute } !_DeclarationCandidates @ >> ||
+||   [6][14]: _Declaration -> [815][_ModuleBody]NAME ";" { _UsingPath } { _Declaration @ }                 ||
+||   [0][1]: _ModuleBody -> [820][_Module]< "module" _ModuleBody @ >                                       ||
+|| [PREDECESSORS 38-38]: [38]                                                                              ||
+|| [SUCCESORS 40-40]: [40]                                                                                 ||
+++=========================================================================================================++
+|
++
+|
++---------------------------------------------------------------------------------------------------------+
+| [40]: <Ending>                                                                                          |
+| [636][_StaticInit]< "static" _Block @ >                                                                 |
+| [AST-INSTRUCTIONS]:                                                                                     |
+|   - EndObject()                                                                                         |
+|   > Field(StaticInitDeclaration::statement)                                                             |
+| [RETURN STACK]:                                                                                         |
+|   [14][14]: _StaticInit -> [789][_DeclarationCandidates]<< !_StaticInit @ >>                            |
+|   [13][14]: _DeclarationCandidates -> [795][_Declaration]<< { _Attribute } !_DeclarationCandidates @ >> |
+|   [6][14]: _Declaration -> [815][_ModuleBody]NAME ";" { _UsingPath } { _Declaration @ }                 |
+|   [0][1]: _ModuleBody -> [820][_Module]< "module" _ModuleBody @ >                                       |
+| [PREDECESSORS 39-39]: [39]                                                                              |
+| [SUCCESORS 41-41]: [41]                                                                                 |
++---------------------------------------------------------------------------------------------------------+
+|
++
+|
++---------------------------------------------------------------------------------------------------------+
+| [41]: <Ending>                                                                                          |
+| [789][_DeclarationCandidates]<< !_StaticInit @ >>                                                       |
+| [AST-INSTRUCTIONS]:                                                                                     |
+|   - EndObject()                                                                                         |
+| [RETURN STACK]:                                                                                         |
+|   [13][14]: _DeclarationCandidates -> [795][_Declaration]<< { _Attribute } !_DeclarationCandidates @ >> |
+|   [6][14]: _Declaration -> [815][_ModuleBody]NAME ";" { _UsingPath } { _Declaration @ }                 |
+|   [0][1]: _ModuleBody -> [820][_Module]< "module" _ModuleBody @ >                                       |
+| [PREDECESSORS 40-40]: [40]                                                                              |
+| [SUCCESORS 42-42]: [42]                                                                                 |
++---------------------------------------------------------------------------------------------------------+
+|
++
+|
++-----------------------------------------------------------------------------------------+
+| [42]: <Ending>                                                                          |
+| [795][_Declaration]<< { _Attribute } !_DeclarationCandidates @ >>                       |
+| [AST-INSTRUCTIONS]:                                                                     |
+|   - ReopenObject()                                                                      |
+|   - EndObject()                                                                         |
+|   > ReopenObject()                                                                      |
+| [RETURN STACK]:                                                                         |
+|   [6][14]: _Declaration -> [815][_ModuleBody]NAME ";" { _UsingPath } { _Declaration @ } |
+|   [0][1]: _ModuleBody -> [820][_Module]< "module" _ModuleBody @ >                       |
+| [PREDECESSORS 41-41]: [41]                                                              |
+| [SUCCESORS 43-43]: [43]                                                                 |
++-----------------------------------------------------------------------------------------+
+|
++
+|
++-------------------------------------------------------------------+
+| [43]: <Ending>                                                    |
+| [815][_ModuleBody]NAME ";" { _UsingPath } { _Declaration @ }      |
+| [AST-INSTRUCTIONS]:                                               |
+|   - EndObject()                                                   |
+|   > Field(Module::declarations)                                   |
+| [RETURN STACK]:                                                   |
+|   [0][1]: _ModuleBody -> [820][_Module]< "module" _ModuleBody @ > |
+| [PREDECESSORS 42-42]: [42]                                        |
+| [SUCCESORS 44-44]: [44]                                           |
++-------------------------------------------------------------------+
+|
++
+|
++------------------------------------------+
+| [44]: <Ending>                           |
+| [820][_Module]< "module" _ModuleBody @ > |
+| [AST-INSTRUCTIONS]:                      |
+| [PREDECESSORS 43-43]: [43]               |
+| [SUCCESORS 45-45]: [45]                  |
++------------------------------------------+
+|
++
+|
++-------------------------------+
+| [45]: <Ending>                |
+| [818][_Module] END [ENDING]   |
+| [AST-INSTRUCTIONS]:           |
+|   - EnumItem(0)               |
+|   - Field(Module::moduleType) |
+|   - EndObject()               |
+| [PREDECESSORS 44-44]: [44]    |
++-------------------------------+
