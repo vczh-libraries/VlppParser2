@@ -32,6 +32,9 @@
 - Create ambiguity test case caused by only one clause with alternative syntax.
 - Test when an object get LriFetch to multiple branches following a ReopenObject.
 - Deny `X ::= Y LRI ...` when `X` is or a prefix of `Y`.
+- Windows and Linux test output inconsistency on
+  - the order of ambiguous candidates.
+  - `\r\n` or `\n` serialized into `<![CDATA[]]>`.
 
 ## Features to Add
 
