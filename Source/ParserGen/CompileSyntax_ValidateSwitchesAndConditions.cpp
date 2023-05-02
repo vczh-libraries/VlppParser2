@@ -135,6 +135,7 @@ CollectRuleAffectedSwitchesSecondPassVisitor
 						vint indexSwitch = sContext.ruleAffectedSwitches.Keys().IndexOf(refRuleSymbol);
 						if (indexSwitch != -1)
 						{
+							// TODO: (enumerable) operate on GetByIndex returned list object directly
 							for (auto&& name : sContext.ruleAffectedSwitches.GetByIndex(indexSwitch))
 							{
 								if (!pushedSwitches.Contains(name))

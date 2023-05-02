@@ -170,6 +170,7 @@ SyntaxSymbolManager::FixLeftRecursionInjectEdge
 					auto& endingStates = endingStatesArray[index];
 					auto& returnEdges = returnEdgesArray[index];
 
+					// TODO: (enumerable) foreach:indexed(reversed)
 					for (vint i = returnEdges.Count() - 1; i >= 0; i--)
 					{
 						auto endingState = endingStates[i];
@@ -212,6 +213,7 @@ SyntaxSymbolManager::FixLeftRecursionInjectEdge
 					}
 				}
 
+				// TODO: (enumerable) foreach on group
 				for (auto [input, inputIndex] : indexed(acceptableInputs.Keys()))
 				{
 					auto [inputToken, returnEdgeCount] = input;
@@ -250,6 +252,7 @@ SyntaxSymbolManager::FixLeftRecursionInjectEdge
 					Group<Entry, vint> simpleUseRecords;
 
 					// search for placeholder edges where their excluded return edges are all reuse edges
+					// TODO: (enumerable) foreach on group
 					for (vint recordIndex = 0; recordIndex < placeholderRecords.Count(); recordIndex++)
 					{
 						auto [placeholderIndex, lrEdge, tokenEdge] = placeholderRecords[recordIndex];
@@ -266,6 +269,7 @@ SyntaxSymbolManager::FixLeftRecursionInjectEdge
 					// for each group, if there are more than one placeholder edges
 					// mark them as deleted except the first one
 					SortedList<vint> recordsToRemove;
+					// TODO: (enumerable) foreach on group
 					for (vint recordGroup = 0; recordGroup < simpleUseRecords.Count(); recordGroup++)
 					{
 						auto&& records = simpleUseRecords.GetByIndex(recordGroup);
@@ -277,6 +281,7 @@ SyntaxSymbolManager::FixLeftRecursionInjectEdge
 
 					// delete them in Group
 					// this way is not recommended but the group is going to be discarded very soon
+					// TODO: (enumerable) foreach:reversed
 					for (vint i = recordsToRemove.Count() - 1; i >= 0; i--)
 					{
 						const_cast<List<InputValue>&>(placeholderRecords).RemoveAt(recordsToRemove[i]);
@@ -312,7 +317,8 @@ SyntaxSymbolManager::FixLeftRecursionInjectEdge
 						CopyFrom(instructionPrefix, placeholderEdge->insBeforeInput, true);
 						instructionPrefix.Add({ AstInsType::LriFetch });
 
-						for (vint i = returnEdges.Count() - 1; i >= returnEdgeCount;i --)
+						// TODO: (enumerable) foreach:reversed
+						for (vint i = returnEdges.Count() - 1; i >= returnEdgeCount; i--)
 						{
 							auto endingState = endingStates[i];
 							auto returnEdge = returnEdges[i];

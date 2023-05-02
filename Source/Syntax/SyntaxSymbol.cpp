@@ -156,6 +156,7 @@ SyntaxSymbolManager
 							if (!visited.Contains(startState))
 							{
 								vint startIndex = visited.Add(startState);
+								// TODO: (enumerable) Linq:Skip
 								for (vint i = startIndex; i < visited.Count(); i++)
 								{
 									auto state = visited[i];

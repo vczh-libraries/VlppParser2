@@ -214,6 +214,7 @@ CalculateFirstSet
 				while (true)
 				{
 					vint offset = 0;
+					// TODO: (enumerable) foreach:alterable
 					for (auto [rule, index] : indexed(indirect.Keys()))
 					{
 						auto&& startRules1 = indirect.GetByIndex(index);

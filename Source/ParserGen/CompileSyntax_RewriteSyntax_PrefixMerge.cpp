@@ -79,6 +79,7 @@ FillMissingPrefixMergeClauses
 					if (index != -1)
 					{
 						auto&& values = const_cast<List<RuleClausePath>&>(references.GetByIndex(index));
+						// TODO: (enumerable) foreach:indexed(alterable(reversed))
 						for (vint i = values.Count() - 1; i >= 0; i--)
 						{
 							if (values[i].clause == clause)
@@ -270,6 +271,7 @@ CreateRewrittenRules
 						originRule->name.value += L"_LRI_Original";
 					}
 
+					// TODO: (enumerable) foreach
 					for (auto [ruleSymbol, index] : indexed(rContext.extractPrefixClauses.Keys()))
 					{
 						auto originRule = vContext.astRules[ruleSymbol];
@@ -642,6 +644,7 @@ RewriteRules (Unaffected)
 					SortedList<WString>& knownOptionalStartRules
 				)
 				{
+					// TODO: (enumerable) foreach on group
 					for (auto [pmName, pmIndex] : indexed(pmClauses.Keys()))
 					{
 						//   if originRule is not left recursive
@@ -738,6 +741,7 @@ RewriteRules (Affected)
 						}
 					}
 
+					// TODO: (enumerable) foreach on group
 					for (auto [pmName, pmIndex] : indexed(pmClauses.Keys()))
 					{
 						//   if originRule is not left recursive
@@ -852,6 +856,7 @@ RewriteRules (Affected)
 					SortedList<WString>& knownOptionalStartRules
 				)
 				{
+					// TODO: (enumerable) foreach on group
 					for (auto [conflictedClause, conflictedIndex] : indexed(conflict->conflictedClauses.Keys()))
 					{
 						auto conflictedRuleSymbol = vContext.simpleUseClauseToReferencedRules[conflictedClause];
@@ -903,6 +908,7 @@ RewriteRules
 					auto cont1 = c1->continuation;
 					auto cont2 = c2->continuation;
 					if (cont1->flags.Count() != cont2->flags.Count()) return false;
+					// TODO: (enumerable) foreach:indexed, flag not used, considering Linq:Zip, Any
 					for (auto [flag, i] : indexed(cont1->flags))
 					{
 						if (cont1->flags[i]->flag.value != cont2->flags[i]->flag.value) return false;
@@ -931,6 +937,7 @@ RewriteRules
 						{
 							auto candidate = candidates[candidates.Count() - 1];
 							candidates.RemoveAt(candidates.Count() - 1);
+							// TODO: (enumerable) foreach:indexed(alterable(reversed))
 							for (vint i = candidates.Count() - 1; i >= 0; i--)
 							{
 								auto compare = candidates[i];

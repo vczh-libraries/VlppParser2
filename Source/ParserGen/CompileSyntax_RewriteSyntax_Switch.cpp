@@ -379,6 +379,7 @@ ExpandClauseVisitor
 							auto alt = Ptr(new GlrAlternativeSyntax);
 							alt->first = items[0];
 							alt->second = items[1];
+							// TODO: (enumerable) Linq:Skip
 							for (vint i = 2; i < items.Count(); i++)
 							{
 								auto newAlt = Ptr(new GlrAlternativeSyntax);
@@ -732,6 +733,7 @@ RewriteSyntax
 
 				void CreateRuleSymbols(SyntaxSymbolManager& syntaxManager, Group<RuleSymbol*, Ptr<GlrRule>>& expandedRules)
 				{
+					// TODO: (enumerable) foreach on group, sort pairs instead of calling Get
 					for (auto ruleSymbol : From(expandedRules.Keys())
 						.OrderByKey([](auto&& a) { return a->Name(); })
 						)

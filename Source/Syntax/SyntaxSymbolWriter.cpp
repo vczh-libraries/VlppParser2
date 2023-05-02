@@ -214,6 +214,7 @@ AutomatonBuilder (Syntax)
 				*/
 				CHECK_ERROR(elements.Count() > 0, L"vl::glr::parsergen::AutomatonBuilder::BuildSequenceSyntax(List<StateBuilder>&)#Elements must not be empty.");
 				auto pair = elements[0]();
+				// TODO: (enumerable) Linq:Skip
 				for (vint i = 1; i < elements.Count(); i++)
 				{
 					clauseDisplayText += L" ";
@@ -239,6 +240,7 @@ AutomatonBuilder (Syntax)
 				startPoses.Add(pair.begin, clauseDisplayText.Length());
 
 				clauseDisplayText += L"( ";
+				// TODO: (enumerable) foreach:indexed
 				for (vint i = 0; i < elements.Count(); i++)
 				{
 					if (i > 0) clauseDisplayText += L" | ";
@@ -358,6 +360,7 @@ AutomatonBuilder (Clause)
 				}
 
 				clauseDisplayText += L"lrp:(";
+				// TODO: (enumerable) Linq:Aggregate
 				for (vint i = 0; i < flags.Count(); i++)
 				{
 					if (i > 0) clauseDisplayText += L",";
@@ -385,6 +388,7 @@ AutomatonBuilder (Clause)
 				}
 
 				clauseDisplayText += L"lri:(";
+				// TODO: (enumerable) Linq:Aggregate
 				for (vint i = 0; i < flags.Count(); i++)
 				{
 					if (i > 0) clauseDisplayText += L",";

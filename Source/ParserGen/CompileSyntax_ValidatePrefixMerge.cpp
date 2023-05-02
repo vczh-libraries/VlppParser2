@@ -475,6 +475,7 @@ ValidatePrefixMerge
 									SortedList<RuleSymbol*> visited;
 									CopyFrom(visiting, context.clauseToStartRules.GetByIndex(index));
 
+									// TODO: (enumerable) visiting/visited
 									for (vint i = 0; i < visiting.Count(); i++)
 									{
 										auto visitingRule = visiting[i];

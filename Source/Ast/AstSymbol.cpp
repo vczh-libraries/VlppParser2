@@ -140,6 +140,7 @@ AstClassSymbol
 
 				List<AstClassSymbol*> visited;
 				visited.Add(newBaseClass);
+				// TODO: (enumerable) foreach:alterable
 				for (vint i = 0; i < visited.Count(); i++)
 				{
 					auto currentSymbol = visited[i];
@@ -324,6 +325,7 @@ AstDefFile
 
 				List<WString> visited;
 				visited.Add(dependency);
+				// TODO: (enumerable) foreach
 				for (vint i = 0; i < visited.Count(); i++)
 				{
 					auto currentName = visited[i];
@@ -338,6 +340,7 @@ AstDefFile
 						return false;
 					}
 					auto current = ownerManager->Files()[currentName];
+					// TODO: (enumerable) foreach
 					for (vint j = 0; j < current->dependencies.Count(); j++)
 					{
 						auto dep = current->dependencies[j];

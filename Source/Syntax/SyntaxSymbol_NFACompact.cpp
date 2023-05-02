@@ -237,6 +237,7 @@ SyntaxSymbolManager::BuildLeftRecEdge
 				CopyFrom(newEdge->insBeforeInput, lrecPrefixEdge->insBeforeInput, true);
 				CopyFrom(newEdge->insAfterInput, lrecPrefixEdge->insAfterInput, true);
 
+				// TODO: (enumerable) foreach:indexed(alterable(reversed))
 				for (vint i = newEdge->insBeforeInput.Count() - 1; i >= 0; i--)
 				{
 					if (newEdge->insBeforeInput[i].type == AstInsType::BeginObject)
@@ -245,6 +246,7 @@ SyntaxSymbolManager::BuildLeftRecEdge
 						newEdge->insBeforeInput.Insert(i + 2, { AstInsType::LriFetch });
 					}
 				}
+				// TODO: (enumerable) foreach:indexed(alterable(reversed))
 				for (vint i = newEdge->insAfterInput.Count() - 1; i >= 0; i--)
 				{
 					if (newEdge->insAfterInput[i].type == AstInsType::BeginObject)
@@ -359,6 +361,7 @@ SyntaxSymbolManager::EliminateSingleRulePrefix
 					}
 				}
 
+				// TODO: (enumerable) foreach on group
 				for (auto [ruleSymbol, prefixIndex] : indexed(prefixEdges.Keys()))
 				{
 					auto&& prefixEdgesOfRule = prefixEdges.GetByIndex(prefixIndex);
@@ -380,6 +383,7 @@ SyntaxSymbolManager::EliminateSingleRulePrefix
 				// if their insBeforeInput are different
 				// move prefixEdge's insBeforeInput to insAfterInput with help from LriStore and LriFetch
 				SortedList<RuleSymbol*> compatibleInsBeforeInputPrefixRules;
+				// TODO: (enumerable) foreach on group
 				for (auto [ruleSymbol, prefixIndex] : indexed(prefixEdges.Keys()))
 				{
 					// see if all prefixEdges are compatible
@@ -412,6 +416,7 @@ SyntaxSymbolManager::EliminateSingleRulePrefix
 				// for all prefixEdge that fails the above test
 				// combine insBeforeInput with insAfterInput with the help from LriStore and LriFetch
 				// properly move instructions from prefixEdge to endingEdge
+				// TODO: (enumerable) foreach on group
 				for (auto [ruleSymbol, prefixIndex] : indexed(prefixEdges.Keys()))
 				{
 					bool compatible = compatibleInsBeforeInputPrefixRules.Contains(ruleSymbol);
@@ -536,6 +541,7 @@ SyntaxSymbolManager::EliminateEpsilonEdges
 
 				// all epsilon-NFAs of its clauses become one connected epsilon-NFA of this rule
 				// we can build the compact-NFA out of this epsilon-NFA starting from the start state
+				// TODO: (enumerable) foreach:alterable
 				for (vint i = 0; i < visited.Count(); i++)
 				{
 					auto current = visited[i];
