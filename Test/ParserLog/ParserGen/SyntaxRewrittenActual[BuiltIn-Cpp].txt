@@ -958,8 +958,8 @@ _TypeOrExpr_LRI_Original : TypeOrExpr
   ::= !_TypeOrExpr_Raw_SWITCH_1allow_GT_LRI_Original
   ;
 
-_File : File
-  ::= ";" as File
+_File_LRI_Original : File
+  ::= _Decl_LRI_Original:decls {_Decl:decls} as File
   ;
 
 _GenericArgument : TypeOrExprOrOthers
@@ -1520,5 +1520,14 @@ _TypeOrExpr : TypeOrExpr
   ::= !_PrimitiveExpr [left_recursion_inject_multiple(LRI__QualifiedName_PrimitiveExpr) _TypeOrExpr_LRI_Original]
   ::= !_PrimitiveType [left_recursion_inject_multiple(LRI__PM_PrimitiveType) _TypeOrExpr_LRI_Original]
   ::= !_QualifiedName [left_recursion_inject_multiple(LRI__PM_QualifiedName, LRI__QualifiedName_PrimitiveExpr) _TypeOrExpr_LRI_Original]
+  ;
+
+_File : File
+  ::= !_CallConstructibleTypeBeforeDeclarator_LRI_Isolated_1 left_recursion_inject(LRI__CallConstructibleTypeBeforeDeclarator) _File_LRI_Original
+  ::= !_CallConstructibleTypeBeforeDeclarator_LRI_Isolated_2 left_recursion_inject(LRI__CallConstructibleTypeBeforeDeclarator) _File_LRI_Original
+  ::= !_Decl_LRI_Isolated_1 left_recursion_inject(LRI__Decl) _File_LRI_Original
+  ::= !_PrimitiveType left_recursion_inject(LRI__PM_PrimitiveType) _File_LRI_Original
+  ::= !_QualifiedName left_recursion_inject(LRI__PM_QualifiedName) _File_LRI_Original
+  ::= !_VarsDecl_LRI_Isolated_1 left_recursion_inject(LRI__VarsDecl) _File_LRI_Original
   ;
 

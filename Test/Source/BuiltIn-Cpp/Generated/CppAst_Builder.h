@@ -148,6 +148,12 @@ namespace cpp_parser::builder
 		MakeExprStat& expr(const vl::Ptr<CppTypeOrExpr>& value);
 	};
 
+	class MakeFile : public vl::glr::ParsingAstBuilder<CppFile>
+	{
+	public:
+		MakeFile& decls(const vl::Ptr<CppDeclaration>& value);
+	};
+
 	class MakeForStat : public vl::glr::ParsingAstBuilder<CppForStat>
 	{
 	public:

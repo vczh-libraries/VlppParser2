@@ -1022,6 +1022,7 @@ namespace cpp_parser
 	class CppFile : public vl::glr::ParsingAstBase, vl::reflection::Description<CppFile>
 	{
 	public:
+		vl::collections::List<vl::Ptr<CppDeclaration>> decls;
 	};
 
 	class CppTypeOrExprOrOthersToResolve : public CppTypeOrExprOrOthers, vl::reflection::Description<CppTypeOrExprOrOthersToResolve>

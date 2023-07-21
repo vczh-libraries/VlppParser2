@@ -1278,6 +1278,10 @@ namespace cpp_parser::traverse_visitor
 		if (!node) return;
 		Traverse(static_cast<vl::glr::ParsingAstBase*>(node));
 		Traverse(static_cast<CppFile*>(node));
+		for (auto&& listItem : node->decls)
+		{
+			InspectInto(listItem.Obj());
+		}
 		Finishing(static_cast<CppFile*>(node));
 		Finishing(static_cast<vl::glr::ParsingAstBase*>(node));
 	}

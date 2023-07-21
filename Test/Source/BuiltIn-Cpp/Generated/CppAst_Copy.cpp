@@ -193,6 +193,10 @@ namespace cpp_parser::copy_visitor
 
 	void AstVisitor::CopyFields(CppFile* from, CppFile* to)
 	{
+		for (auto&& listItem : from->decls)
+		{
+			to->decls.Add(CopyNode(listItem.Obj()));
+		}
 	}
 
 	void AstVisitor::CopyFields(CppForStat* from, CppForStat* to)

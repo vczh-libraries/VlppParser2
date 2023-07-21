@@ -1240,6 +1240,7 @@ namespace vl::reflection::description
 
 		CLASS_MEMBER_CONSTRUCTOR(vl::Ptr<cpp_parser::CppFile>(), NO_PARAMETER)
 
+		CLASS_MEMBER_FIELD(decls)
 	END_CLASS_MEMBER(cpp_parser::CppFile)
 
 	BEGIN_CLASS_MEMBER(cpp_parser::CppTypeOrExprOrOthersToResolve)

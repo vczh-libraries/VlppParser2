@@ -236,6 +236,8 @@ CppAstInsReceiver : public vl::glr::AstInsReceiverBase
 			return vl::glr::AssemblerSetObjectField(&cpp_parser::CppDoWhileStat::stat, object, field, value, cppFieldName);
 		case CppFields::ExprStat_expr:
 			return vl::glr::AssemblerSetObjectField(&cpp_parser::CppExprStat::expr, object, field, value, cppFieldName);
+		case CppFields::File_decls:
+			return vl::glr::AssemblerSetObjectField(&cpp_parser::CppFile::decls, object, field, value, cppFieldName);
 		case CppFields::ForStat_conditionPart:
 			return vl::glr::AssemblerSetObjectField(&cpp_parser::CppForStat::conditionPart, object, field, value, cppFieldName);
 		case CppFields::ForStat_stat:
@@ -702,6 +704,7 @@ CppAstInsReceiver : public vl::glr::AstInsReceiverBase
 			L"DoWhileStat::condition",
 			L"DoWhileStat::stat",
 			L"ExprStat::expr",
+			L"File::decls",
 			L"ForStat::conditionPart",
 			L"ForStat::stat",
 			L"ForStatIterateCondition::collection",
@@ -805,7 +808,7 @@ CppAstInsReceiver : public vl::glr::AstInsReceiverBase
 			L"__TryStat::tryStat",
 		};
 		vl::vint index = (vl::vint)field;
-		return 0 <= index && index < 143 ? results[index] : nullptr;
+		return 0 <= index && index < 144 ? results[index] : nullptr;
 	}
 
 	const wchar_t* CppCppFieldName(CppFields field)
@@ -853,6 +856,7 @@ CppAstInsReceiver : public vl::glr::AstInsReceiverBase
 			L"cpp_parser::CppDoWhileStat::condition",
 			L"cpp_parser::CppDoWhileStat::stat",
 			L"cpp_parser::CppExprStat::expr",
+			L"cpp_parser::CppFile::decls",
 			L"cpp_parser::CppForStat::conditionPart",
 			L"cpp_parser::CppForStat::stat",
 			L"cpp_parser::CppForStatIterateCondition::collection",
@@ -956,7 +960,7 @@ CppAstInsReceiver : public vl::glr::AstInsReceiverBase
 			L"cpp_parser::Cpp__TryStat::tryStat",
 		};
 		vl::vint index = (vl::vint)field;
-		return 0 <= index && index < 143 ? results[index] : nullptr;
+		return 0 <= index && index < 144 ? results[index] : nullptr;
 	}
 
 	vl::Ptr<vl::glr::ParsingAstBase> CppAstInsReceiver::ResolveAmbiguity(vl::vint32_t type, vl::collections::Array<vl::Ptr<vl::glr::ParsingAstBase>>& candidates)

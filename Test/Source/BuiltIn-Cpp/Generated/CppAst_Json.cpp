@@ -474,6 +474,16 @@ namespace cpp_parser::json_visitor
 	}
 	void AstVisitor::PrintFields(CppFile* node)
 	{
+		BeginField(L"decls");
+		BeginArray();
+		for (auto&& listItem : node->decls)
+		{
+			BeginArrayItem();
+			Print(listItem.Obj());
+			EndArrayItem();
+		}
+		EndArray();
+		EndField();
 	}
 	void AstVisitor::PrintFields(CppForStat* node)
 	{
