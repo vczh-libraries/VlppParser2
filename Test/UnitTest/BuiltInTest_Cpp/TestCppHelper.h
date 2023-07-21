@@ -51,6 +51,14 @@ void ParseStatement(cpp_parser::Parser& parser, const WString& code)
 	AssertPtrStruct<TArgs...>::AssertPtr(ast.Obj());
 }
 
+template<typename ...TArgs>
+void ParseFile(cpp_parser::Parser& parser, const WString& code)
+{
+	auto ast = parser.Parse_File(code);
+	TEST_ASSERT(ast);
+	AssertPtrStruct<TArgs...>::AssertPtr(ast.Obj());
+}
+
 /////////////////////////////////////////////////////////
 
 template<typename ...TArgs>
@@ -125,3 +133,28 @@ void TestParser(const wchar_t* caseName, const wchar_t* fileName, TTestCase&& te
 }
 
 #define TEST_PARSER(CATEGORY, CASE) TestParser(CASE, CATEGORY L"_" CASE L".txt", [](cpp_parser::Parser& parser, const WString& line)
+
+/////////////////////////////////////////////////////////
+
+template<typename TTestCase>
+void TestDeclParser(const wchar_t* categoryName, const wchar_t* fileName, TTestCase&& testCase)
+{
+	TEST_CATEGORY(WString::Unmanaged(fileName))
+	{
+		WString lines;
+		bool testFileExists = File(
+			FilePath(GetTestParserInputPath(L"BuiltIn-Cpp"))
+			/ L"Input"
+			/ L"Declarations"
+			/ categoryName
+			/ WString::Unmanaged(fileName)
+		).ReadAllTextByBom(lines);
+		TEST_CASE_ASSERT(testFileExists);
+		TEST_CASE(WString::Unmanaged(fileName))
+		{
+			testCase(GetCppParser(), lines);
+		});
+	});
+}
+
+#define TEST_DECL_PARSER(CATEGORYNAME, FILENAME) TestDeclParser(CATEGORYNAME, FILENAME, [](cpp_parser::Parser& parser, const WString& lines)
