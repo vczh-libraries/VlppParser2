@@ -34,19 +34,14 @@ _ClassBody
 // Class Declarations
 //////////////////////////////////////////////////////////////////
 
-_ClassDeclPartial
-  ::= _ClassBody:body as partial ClassDeclaration
-  ::= ";" as partial ClassDeclaration
-  ;
-
-_ClassDeclInTypedef
+_ClassDecl
   ::= "class"  [ID:name] _ClassBody:body as ClassDeclaration {kind = Class}
   ::= "struct" [ID:name] _ClassBody:body as ClassDeclaration {kind = Struct}
   ::= "union"  [ID:name] _ClassBody:body as ClassDeclaration {kind = Union}
   ;
 
-_ClassDecl
-  ::= "class"  ID:name _ClassDeclPartial as ClassDeclaration {kind = Class}
-  ::= "struct" ID:name _ClassDeclPartial as ClassDeclaration {kind = Struct}
-  ::= "union"  ID:name _ClassDeclPartial as ClassDeclaration {kind = Union}
+_ClassDeclForwardDecl
+  ::= "class"  ID:name as ClassDeclaration {kind = Class}
+  ::= "struct" ID:name as ClassDeclaration {kind = Struct}
+  ::= "union"  ID:name as ClassDeclaration {kind = Union}
   ;

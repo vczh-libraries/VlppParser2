@@ -12,7 +12,8 @@ _StaticAssertDecl
 
 _TypedefCompatibleDecl
   ::= !_VarsDeclWithoutKeyword
-  ::= !_ClassDeclInTypedef
+  ::= !_ClassDecl
+  ::= !_EnumDecl
   ;
 
 _TypedefDecl
@@ -32,7 +33,7 @@ _FriendDecl
 //////////////////////////////////////////////////////////////////
 
 _ExternDecl
-  ::= "extern" [STRING] "{" _DeclWithSemicolon:decls "}" as ExternDeclaration
+  ::= "extern" [STRING] "{" {_DeclWithSemicolon:decls} "}" as ExternDeclaration
   ;
   
 //////////////////////////////////////////////////////////////////
@@ -44,7 +45,7 @@ _NsName
   ;
 
 _NsDecl
-  ::= "namespace" {_NsName:names ; "::"} "{" _DeclWithSemicolon:decls "}" as NamespaceDeclaration
+  ::= "namespace" {_NsName:names ; "::"} "{" {_DeclWithSemicolon:decls} "}" as NamespaceDeclaration
   ;
 
 //////////////////////////////////////////////////////////////////
@@ -59,25 +60,12 @@ _EnumBody
   ::= "{" [_EnumItem:items {_EnumItem:items ; ","} [","]] "}" as EnumBody
   ;
 
-_EnumDeclPartial
-  ::= _EnumBody:body as partial EnumDeclaration
-  ::= ";" as partial EnumDeclaration
-  ;
-
 _EnumDecl
-  ::= "enum" ID:name _EnumDeclPartial as EnumDeclaration {kind = Enum}
-  ::= "enum" "class" ID:name [":" _Type:type] _EnumDeclPartial as EnumDeclaration {kind = EnumClass}
+  ::= "enum" [ID:name] _EnumBody:body as EnumDeclaration {kind = Enum}
+  ::= "enum" "class" [ID:name] [":" _Type:type] _EnumBody:body as EnumDeclaration {kind = EnumClass}
   ;
 
-//////////////////////////////////////////////////////////////////
-// Other Declarations
-//////////////////////////////////////////////////////////////////
-
-_OtherDecl
-  ::= !_StaticAssertDecl
-  ::= !_TypedefDecl
-  ::= !_FriendDecl
-  ::= !_ExternDecl
-  ::= !_NsDecl
-  ::= !_EnumDecl
+_EnumDeclForwardDecl
+  ::= "enum" ID:name as EnumDeclaration {kind = Enum}
+  ::= "enum" "class" ID:name [":" _Type:type] as EnumDeclaration {kind = EnumClass}
   ;
