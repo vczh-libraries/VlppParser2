@@ -118,13 +118,8 @@ vint CheckTokens(List<RegexToken>& tokens)
 		case CppTokens::RBRACKET:
 		case CppTokens::LPARENTHESIS:
 		case CppTokens::RPARENTHESIS:
-		case CppTokens::LSE:
-		case CppTokens::LS:
-		case CppTokens::LE:
+		case CppTokens::COMPARE:
 		case CppTokens::LT:
-		case CppTokens::RSE:
-		case CppTokens::RS:
-		case CppTokens::GE:
 		case CppTokens::GT:
 		case CppTokens::EQ:
 		case CppTokens::NE:
@@ -503,6 +498,6 @@ int main()
 )";
 		List<RegexToken> tokens;
 		cppLexer->Parse(input).ReadToEnd(tokens);
-		TEST_ASSERT(CheckTokens(tokens) == 29);
+		TEST_ASSERT(CheckTokens(tokens) == 31);
 	});
 }

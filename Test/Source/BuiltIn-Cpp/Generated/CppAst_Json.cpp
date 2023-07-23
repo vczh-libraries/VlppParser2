@@ -77,6 +77,9 @@ namespace cpp_parser::json_visitor
 		case cpp_parser::CppOperators::Comma:
 			WriteString(L"Comma");
 			break;
+		case cpp_parser::CppOperators::Compare:
+			WriteString(L"Compare");
+			break;
 		case cpp_parser::CppOperators::Decrease:
 			WriteString(L"Decrease");
 			break;
@@ -858,6 +861,9 @@ namespace cpp_parser::json_visitor
 		case cpp_parser::CppOperators::Comma:
 			WriteString(L"Comma");
 			break;
+		case cpp_parser::CppOperators::Compare:
+			WriteString(L"Compare");
+			break;
 		case cpp_parser::CppOperators::Decrease:
 			WriteString(L"Decrease");
 			break;
@@ -1030,6 +1036,9 @@ namespace cpp_parser::json_visitor
 		case cpp_parser::CppOperators::Comma:
 			WriteString(L"Comma");
 			break;
+		case cpp_parser::CppOperators::Compare:
+			WriteString(L"Compare");
+			break;
 		case cpp_parser::CppOperators::Decrease:
 			WriteString(L"Decrease");
 			break;
@@ -1180,6 +1189,9 @@ namespace cpp_parser::json_visitor
 			break;
 		case cpp_parser::CppOperators::Comma:
 			WriteString(L"Comma");
+			break;
+		case cpp_parser::CppOperators::Compare:
+			WriteString(L"Compare");
 			break;
 		case cpp_parser::CppOperators::Decrease:
 			WriteString(L"Decrease");

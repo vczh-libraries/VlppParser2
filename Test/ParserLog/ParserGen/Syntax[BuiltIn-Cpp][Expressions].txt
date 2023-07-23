@@ -2541,15 +2541,24 @@
                 "first": {
                     "$ast": "SequenceSyntax",
                     "first": {
-                        "$ast": "RefSyntax",
-                        "field": "left",
-                        "literal": "_BExpr3",
-                        "refType": "Id"
+                        "$ast": "SequenceSyntax",
+                        "first": {
+                            "$ast": "RefSyntax",
+                            "field": "left",
+                            "literal": "_BExpr3",
+                            "refType": "Id"
+                        },
+                        "second": {
+                            "$ast": "RefSyntax",
+                            "field": "",
+                            "literal": "\"<\"",
+                            "refType": "Literal"
+                        }
                     },
                     "second": {
                         "$ast": "RefSyntax",
                         "field": "",
-                        "literal": "\"<<\"",
+                        "literal": "\"<\"",
                         "refType": "Literal"
                     }
                 },
@@ -2574,15 +2583,24 @@
                 "first": {
                     "$ast": "SequenceSyntax",
                     "first": {
-                        "$ast": "RefSyntax",
-                        "field": "left",
-                        "literal": "_BExpr3",
-                        "refType": "Id"
+                        "$ast": "SequenceSyntax",
+                        "first": {
+                            "$ast": "RefSyntax",
+                            "field": "left",
+                            "literal": "_BExpr3",
+                            "refType": "Id"
+                        },
+                        "second": {
+                            "$ast": "RefSyntax",
+                            "field": "",
+                            "literal": "\">\"",
+                            "refType": "Literal"
+                        }
                     },
                     "second": {
                         "$ast": "RefSyntax",
                         "field": "",
-                        "literal": "\">>\"",
+                        "literal": "\">\"",
                         "refType": "Literal"
                     }
                 },
@@ -2614,7 +2632,7 @@
                 "$ast": "Assignment",
                 "field": "op",
                 "type": "Strong",
-                "value": "LT"
+                "value": "Compare"
             }],
             "syntax": {
                 "$ast": "SequenceSyntax",
@@ -2623,122 +2641,13 @@
                     "first": {
                         "$ast": "RefSyntax",
                         "field": "left",
-                        "literal": "_BExpr4",
+                        "literal": "_BExpr3",
                         "refType": "Id"
                     },
                     "second": {
                         "$ast": "RefSyntax",
                         "field": "",
-                        "literal": "\"<\"",
-                        "refType": "Literal"
-                    }
-                },
-                "second": {
-                    "$ast": "RefSyntax",
-                    "field": "right",
-                    "literal": "_BExpr3",
-                    "refType": "Id"
-                }
-            },
-            "type": "BinaryExpr"
-        }, {
-            "$ast": "CreateClause",
-            "assignments": [{
-                "$ast": "Assignment",
-                "field": "op",
-                "type": "Strong",
-                "value": "GT"
-            }],
-            "syntax": {
-                "$ast": "SequenceSyntax",
-                "first": {
-                    "$ast": "RefSyntax",
-                    "field": "left",
-                    "literal": "_BExpr4",
-                    "refType": "Id"
-                },
-                "second": {
-                    "$ast": "TestConditionSyntax",
-                    "branches": [{
-                        "$ast": "TestConditionBranch",
-                        "condition": {
-                            "$ast": "RefCondition",
-                            "name": "allow_GT"
-                        },
-                        "syntax": {
-                            "$ast": "SequenceSyntax",
-                            "first": {
-                                "$ast": "RefSyntax",
-                                "field": "",
-                                "literal": "\">\"",
-                                "refType": "Literal"
-                            },
-                            "second": {
-                                "$ast": "RefSyntax",
-                                "field": "right",
-                                "literal": "_BExpr3",
-                                "refType": "Id"
-                            }
-                        }
-                    }]
-                }
-            },
-            "type": "BinaryExpr"
-        }, {
-            "$ast": "CreateClause",
-            "assignments": [{
-                "$ast": "Assignment",
-                "field": "op",
-                "type": "Strong",
-                "value": "LE"
-            }],
-            "syntax": {
-                "$ast": "SequenceSyntax",
-                "first": {
-                    "$ast": "SequenceSyntax",
-                    "first": {
-                        "$ast": "RefSyntax",
-                        "field": "left",
-                        "literal": "_BExpr4",
-                        "refType": "Id"
-                    },
-                    "second": {
-                        "$ast": "RefSyntax",
-                        "field": "",
-                        "literal": "\"<=\"",
-                        "refType": "Literal"
-                    }
-                },
-                "second": {
-                    "$ast": "RefSyntax",
-                    "field": "right",
-                    "literal": "_BExpr3",
-                    "refType": "Id"
-                }
-            },
-            "type": "BinaryExpr"
-        }, {
-            "$ast": "CreateClause",
-            "assignments": [{
-                "$ast": "Assignment",
-                "field": "op",
-                "type": "Strong",
-                "value": "GE"
-            }],
-            "syntax": {
-                "$ast": "SequenceSyntax",
-                "first": {
-                    "$ast": "SequenceSyntax",
-                    "first": {
-                        "$ast": "RefSyntax",
-                        "field": "left",
-                        "literal": "_BExpr4",
-                        "refType": "Id"
-                    },
-                    "second": {
-                        "$ast": "RefSyntax",
-                        "field": "",
-                        "literal": "\">=\"",
+                        "literal": "\"<=>\"",
                         "refType": "Literal"
                     }
                 },
@@ -2770,7 +2679,7 @@
                 "$ast": "Assignment",
                 "field": "op",
                 "type": "Strong",
-                "value": "EQ"
+                "value": "LT"
             }],
             "syntax": {
                 "$ast": "SequenceSyntax",
@@ -2785,7 +2694,7 @@
                     "second": {
                         "$ast": "RefSyntax",
                         "field": "",
-                        "literal": "\"==\"",
+                        "literal": "\"<\"",
                         "refType": "Literal"
                     }
                 },
@@ -2803,22 +2712,116 @@
                 "$ast": "Assignment",
                 "field": "op",
                 "type": "Strong",
-                "value": "NE"
+                "value": "GT"
+            }],
+            "syntax": {
+                "$ast": "SequenceSyntax",
+                "first": {
+                    "$ast": "RefSyntax",
+                    "field": "left",
+                    "literal": "_BExpr5",
+                    "refType": "Id"
+                },
+                "second": {
+                    "$ast": "TestConditionSyntax",
+                    "branches": [{
+                        "$ast": "TestConditionBranch",
+                        "condition": {
+                            "$ast": "RefCondition",
+                            "name": "allow_GT"
+                        },
+                        "syntax": {
+                            "$ast": "SequenceSyntax",
+                            "first": {
+                                "$ast": "RefSyntax",
+                                "field": "",
+                                "literal": "\">\"",
+                                "refType": "Literal"
+                            },
+                            "second": {
+                                "$ast": "RefSyntax",
+                                "field": "right",
+                                "literal": "_BExpr4",
+                                "refType": "Id"
+                            }
+                        }
+                    }]
+                }
+            },
+            "type": "BinaryExpr"
+        }, {
+            "$ast": "CreateClause",
+            "assignments": [{
+                "$ast": "Assignment",
+                "field": "op",
+                "type": "Strong",
+                "value": "LE"
             }],
             "syntax": {
                 "$ast": "SequenceSyntax",
                 "first": {
                     "$ast": "SequenceSyntax",
                     "first": {
-                        "$ast": "RefSyntax",
-                        "field": "left",
-                        "literal": "_BExpr5",
-                        "refType": "Id"
+                        "$ast": "SequenceSyntax",
+                        "first": {
+                            "$ast": "RefSyntax",
+                            "field": "left",
+                            "literal": "_BExpr5",
+                            "refType": "Id"
+                        },
+                        "second": {
+                            "$ast": "RefSyntax",
+                            "field": "",
+                            "literal": "\"<\"",
+                            "refType": "Literal"
+                        }
                     },
                     "second": {
                         "$ast": "RefSyntax",
                         "field": "",
-                        "literal": "\"!=\"",
+                        "literal": "\"=\"",
+                        "refType": "Literal"
+                    }
+                },
+                "second": {
+                    "$ast": "RefSyntax",
+                    "field": "right",
+                    "literal": "_BExpr4",
+                    "refType": "Id"
+                }
+            },
+            "type": "BinaryExpr"
+        }, {
+            "$ast": "CreateClause",
+            "assignments": [{
+                "$ast": "Assignment",
+                "field": "op",
+                "type": "Strong",
+                "value": "GE"
+            }],
+            "syntax": {
+                "$ast": "SequenceSyntax",
+                "first": {
+                    "$ast": "SequenceSyntax",
+                    "first": {
+                        "$ast": "SequenceSyntax",
+                        "first": {
+                            "$ast": "RefSyntax",
+                            "field": "left",
+                            "literal": "_BExpr5",
+                            "refType": "Id"
+                        },
+                        "second": {
+                            "$ast": "RefSyntax",
+                            "field": "",
+                            "literal": "\">\"",
+                            "refType": "Literal"
+                        }
+                    },
+                    "second": {
+                        "$ast": "RefSyntax",
+                        "field": "",
+                        "literal": "\"=\"",
                         "refType": "Literal"
                     }
                 },
@@ -2850,7 +2853,7 @@
                 "$ast": "Assignment",
                 "field": "op",
                 "type": "Strong",
-                "value": "BitwiseAnd"
+                "value": "EQ"
             }],
             "syntax": {
                 "$ast": "SequenceSyntax",
@@ -2865,7 +2868,40 @@
                     "second": {
                         "$ast": "RefSyntax",
                         "field": "",
-                        "literal": "\"&\"",
+                        "literal": "\"==\"",
+                        "refType": "Literal"
+                    }
+                },
+                "second": {
+                    "$ast": "RefSyntax",
+                    "field": "right",
+                    "literal": "_BExpr5",
+                    "refType": "Id"
+                }
+            },
+            "type": "BinaryExpr"
+        }, {
+            "$ast": "CreateClause",
+            "assignments": [{
+                "$ast": "Assignment",
+                "field": "op",
+                "type": "Strong",
+                "value": "NE"
+            }],
+            "syntax": {
+                "$ast": "SequenceSyntax",
+                "first": {
+                    "$ast": "SequenceSyntax",
+                    "first": {
+                        "$ast": "RefSyntax",
+                        "field": "left",
+                        "literal": "_BExpr6",
+                        "refType": "Id"
+                    },
+                    "second": {
+                        "$ast": "RefSyntax",
+                        "field": "",
+                        "literal": "\"!=\"",
                         "refType": "Literal"
                     }
                 },
@@ -2897,7 +2933,7 @@
                 "$ast": "Assignment",
                 "field": "op",
                 "type": "Strong",
-                "value": "Xor"
+                "value": "BitwiseAnd"
             }],
             "syntax": {
                 "$ast": "SequenceSyntax",
@@ -2912,7 +2948,7 @@
                     "second": {
                         "$ast": "RefSyntax",
                         "field": "",
-                        "literal": "\"^\"",
+                        "literal": "\"&\"",
                         "refType": "Literal"
                     }
                 },
@@ -2944,7 +2980,7 @@
                 "$ast": "Assignment",
                 "field": "op",
                 "type": "Strong",
-                "value": "BitwiseOr"
+                "value": "Xor"
             }],
             "syntax": {
                 "$ast": "SequenceSyntax",
@@ -2959,7 +2995,7 @@
                     "second": {
                         "$ast": "RefSyntax",
                         "field": "",
-                        "literal": "\"|\"",
+                        "literal": "\"^\"",
                         "refType": "Literal"
                     }
                 },
@@ -2991,7 +3027,7 @@
                 "$ast": "Assignment",
                 "field": "op",
                 "type": "Strong",
-                "value": "And"
+                "value": "BitwiseOr"
             }],
             "syntax": {
                 "$ast": "SequenceSyntax",
@@ -3006,7 +3042,7 @@
                     "second": {
                         "$ast": "RefSyntax",
                         "field": "",
-                        "literal": "\"&&\"",
+                        "literal": "\"|\"",
                         "refType": "Literal"
                     }
                 },
@@ -3038,7 +3074,7 @@
                 "$ast": "Assignment",
                 "field": "op",
                 "type": "Strong",
-                "value": "Or"
+                "value": "And"
             }],
             "syntax": {
                 "$ast": "SequenceSyntax",
@@ -3053,7 +3089,7 @@
                     "second": {
                         "$ast": "RefSyntax",
                         "field": "",
-                        "literal": "\"||\"",
+                        "literal": "\"&&\"",
                         "refType": "Literal"
                     }
                 },
@@ -3067,6 +3103,53 @@
             "type": "BinaryExpr"
         }],
         "name": "_BExpr10",
+        "type": ""
+    }, {
+        "$ast": "Rule",
+        "attParser": "",
+        "attPublic": "",
+        "clauses": [{
+            "$ast": "ReuseClause",
+            "assignments": [],
+            "syntax": {
+                "$ast": "UseSyntax",
+                "name": "_BExpr10"
+            }
+        }, {
+            "$ast": "CreateClause",
+            "assignments": [{
+                "$ast": "Assignment",
+                "field": "op",
+                "type": "Strong",
+                "value": "Or"
+            }],
+            "syntax": {
+                "$ast": "SequenceSyntax",
+                "first": {
+                    "$ast": "SequenceSyntax",
+                    "first": {
+                        "$ast": "RefSyntax",
+                        "field": "left",
+                        "literal": "_BExpr11",
+                        "refType": "Id"
+                    },
+                    "second": {
+                        "$ast": "RefSyntax",
+                        "field": "",
+                        "literal": "\"||\"",
+                        "refType": "Literal"
+                    }
+                },
+                "second": {
+                    "$ast": "RefSyntax",
+                    "field": "right",
+                    "literal": "_BExpr10",
+                    "refType": "Id"
+                }
+            },
+            "type": "BinaryExpr"
+        }],
+        "name": "_BExpr11",
         "type": ""
     }, {
         "$ast": "Rule",
@@ -3107,7 +3190,7 @@
             "assignments": [],
             "syntax": {
                 "$ast": "UseSyntax",
-                "name": "_BExpr10"
+                "name": "_BExpr11"
             }
         }, {
             "$ast": "ReuseClause",
@@ -3130,7 +3213,7 @@
                             "first": {
                                 "$ast": "RefSyntax",
                                 "field": "condition",
-                                "literal": "_BExpr10",
+                                "literal": "_BExpr11",
                                 "refType": "Id"
                             },
                             "second": {
@@ -3177,7 +3260,7 @@
                     "first": {
                         "$ast": "RefSyntax",
                         "field": "left",
-                        "literal": "_BExpr10",
+                        "literal": "_BExpr11",
                         "refType": "Id"
                     },
                     "second": {
@@ -3210,7 +3293,7 @@
                     "first": {
                         "$ast": "RefSyntax",
                         "field": "left",
-                        "literal": "_BExpr10",
+                        "literal": "_BExpr11",
                         "refType": "Id"
                     },
                     "second": {
@@ -3243,7 +3326,7 @@
                     "first": {
                         "$ast": "RefSyntax",
                         "field": "left",
-                        "literal": "_BExpr10",
+                        "literal": "_BExpr11",
                         "refType": "Id"
                     },
                     "second": {
@@ -3276,7 +3359,7 @@
                     "first": {
                         "$ast": "RefSyntax",
                         "field": "left",
-                        "literal": "_BExpr10",
+                        "literal": "_BExpr11",
                         "refType": "Id"
                     },
                     "second": {
@@ -3309,7 +3392,7 @@
                     "first": {
                         "$ast": "RefSyntax",
                         "field": "left",
-                        "literal": "_BExpr10",
+                        "literal": "_BExpr11",
                         "refType": "Id"
                     },
                     "second": {
@@ -3342,7 +3425,7 @@
                     "first": {
                         "$ast": "RefSyntax",
                         "field": "left",
-                        "literal": "_BExpr10",
+                        "literal": "_BExpr11",
                         "refType": "Id"
                     },
                     "second": {
@@ -3373,15 +3456,33 @@
                 "first": {
                     "$ast": "SequenceSyntax",
                     "first": {
-                        "$ast": "RefSyntax",
-                        "field": "left",
-                        "literal": "_BExpr10",
-                        "refType": "Id"
+                        "$ast": "SequenceSyntax",
+                        "first": {
+                            "$ast": "SequenceSyntax",
+                            "first": {
+                                "$ast": "RefSyntax",
+                                "field": "left",
+                                "literal": "_BExpr11",
+                                "refType": "Id"
+                            },
+                            "second": {
+                                "$ast": "RefSyntax",
+                                "field": "",
+                                "literal": "\"<\"",
+                                "refType": "Literal"
+                            }
+                        },
+                        "second": {
+                            "$ast": "RefSyntax",
+                            "field": "",
+                            "literal": "\"<\"",
+                            "refType": "Literal"
+                        }
                     },
                     "second": {
                         "$ast": "RefSyntax",
                         "field": "",
-                        "literal": "\"<<=\"",
+                        "literal": "\"=\"",
                         "refType": "Literal"
                     }
                 },
@@ -3406,15 +3507,33 @@
                 "first": {
                     "$ast": "SequenceSyntax",
                     "first": {
-                        "$ast": "RefSyntax",
-                        "field": "left",
-                        "literal": "_BExpr10",
-                        "refType": "Id"
+                        "$ast": "SequenceSyntax",
+                        "first": {
+                            "$ast": "SequenceSyntax",
+                            "first": {
+                                "$ast": "RefSyntax",
+                                "field": "left",
+                                "literal": "_BExpr11",
+                                "refType": "Id"
+                            },
+                            "second": {
+                                "$ast": "RefSyntax",
+                                "field": "",
+                                "literal": "\">\"",
+                                "refType": "Literal"
+                            }
+                        },
+                        "second": {
+                            "$ast": "RefSyntax",
+                            "field": "",
+                            "literal": "\">\"",
+                            "refType": "Literal"
+                        }
                     },
                     "second": {
                         "$ast": "RefSyntax",
                         "field": "",
-                        "literal": "\">>=\"",
+                        "literal": "\"=\"",
                         "refType": "Literal"
                     }
                 },
@@ -3441,7 +3560,7 @@
                     "first": {
                         "$ast": "RefSyntax",
                         "field": "left",
-                        "literal": "_BExpr10",
+                        "literal": "_BExpr11",
                         "refType": "Id"
                     },
                     "second": {
@@ -3474,7 +3593,7 @@
                     "first": {
                         "$ast": "RefSyntax",
                         "field": "left",
-                        "literal": "_BExpr10",
+                        "literal": "_BExpr11",
                         "refType": "Id"
                     },
                     "second": {
@@ -3507,7 +3626,7 @@
                     "first": {
                         "$ast": "RefSyntax",
                         "field": "left",
-                        "literal": "_BExpr10",
+                        "literal": "_BExpr11",
                         "refType": "Id"
                     },
                     "second": {
