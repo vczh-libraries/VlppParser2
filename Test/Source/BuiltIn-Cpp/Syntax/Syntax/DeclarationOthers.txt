@@ -53,11 +53,9 @@ _EnumBody
   ;
 
 _EnumDecl
-  ::= "enum" [ID:name] _EnumBody:body as EnumDeclaration {kind = Enum}
-  ::= "enum" "class" [ID:name] [":" _Type:type] _EnumBody:body as EnumDeclaration {kind = EnumClass}
+  ::= "enum" ["class"] [ID:name] _EnumBody:body as EnumDeclaration {kind = Enum}
   ;
 
 _EnumDeclForwardDecl
-  ::= "enum" ID:name as EnumDeclaration {kind = Enum}
-  ::= "enum" "class" ID:name [":" _Type:type] as EnumDeclaration {kind = EnumClass}
+  ::= "enum" ["class"] ID:name as EnumDeclaration {kind = Enum}
   ;
