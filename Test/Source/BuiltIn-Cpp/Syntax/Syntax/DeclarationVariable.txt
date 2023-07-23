@@ -159,11 +159,12 @@ _VarsFuncForwardDecl
 // Variable Declarations
 //////////////////////////////////////////////////////////////////
 
-_FuncDeclWithoutKeyword
-  ::= {_DeclaratorKeyword:keywords} _DeclaratorUntypedFuncParRequiredInit:varPart as SingleVarDeclaration
+_VarsFuncDeclWithoutKeyword
+  ::= !_VarsFuncForwardDeclWithoutKeyword ";"
+  ::= _DeclaratorUntypedFuncParRequiredInit:varPart as SingleVarDeclaration
   ;
 
-_FuncDecl
-  ::= !_FuncDeclWithoutKeyword
-  ::= _DeclaratorKeyword:keywords {_DeclaratorKeyword:keywords} !_FuncDeclWithoutKeyword
+_VarsFuncDecl
+  ::= !_VarsFuncDeclWithoutKeyword
+  ::= _DeclaratorKeyword:keywords {_DeclaratorKeyword:keywords} !_VarsFuncDeclWithoutKeyword
   ;

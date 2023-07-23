@@ -2,8 +2,7 @@
 // Declarations
 //////////////////////////////////////////////////////////////////
 
-_Decl
-  ::= !_VarsFuncForwardDecl
+_DeclWithoutVarsFuncSemicolon
   ::= !_StaticAssertDecl
   ::= !_TypedefDecl
   ::= !_EnumDecl
@@ -12,9 +11,14 @@ _Decl
   ::= !_ClassForwardDecl
   ;
 
+_DeclInStat
+  ::= !_DeclWithoutVarsFuncSemicolon
+  ::= !_VarsFuncForwardDecl
+  ;
+
 _DeclWithSemicolon
-  ::= !_Decl ";"
-  ::= !_FuncDecl
+  ::= !_DeclWithoutVarsFuncSemicolon ";"
+  ::= !_VarsFuncDecl
   ::= !_ExternDecl
   ::= !_NsDecl
   ;
