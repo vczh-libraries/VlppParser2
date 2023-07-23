@@ -16,16 +16,19 @@ _ClassInheritanceSecond
   ::= "," "public"    _Type:type as ClassInheritance {accessor = Public}
   ;
 
-_ClassMemberPart
+_ClassMemberPartFirst
   ::=  _DeclWithSemicolon:decls {_DeclWithSemicolon:decls} as ClassMemberPart {accessor = Default}
+  ;
+
+_ClassMemberPartSecond
   ::= "private"   ":"           {_DeclWithSemicolon:decls} as ClassMemberPart {accessor = Private}
   ::= "protected" ":"           {_DeclWithSemicolon:decls} as ClassMemberPart {accessor = Protected}
   ::= "public"    ":"           {_DeclWithSemicolon:decls} as ClassMemberPart {accessor = Public}
   ;
 
 _ClassBody
-  ::= [_ClassInheritanceFirst:inheritances {_ClassInheritanceSecond:inheritances}]
-      "{" {_ClassMemberPart:memberParts} "}"
+  ::= [_ClassInheritanceFirst:inheritances] {_ClassInheritanceSecond:inheritances}
+      "{" [_ClassMemberPartFirst:memberParts] {_ClassMemberPartSecond:memberParts} "}"
       {_DeclaratorVariablePartOptionalInit:varParts ","}
       as ClassBody
   ;
