@@ -72,6 +72,10 @@ _OperatorIdentifier
   ::= "operator" ">"                as OperatorIdentifier {op = GT}
   ;
 
+_OperatorTypeIdentifier
+  ::= "operator" _Type:type         as OperatorTypeIdentifier
+  ;
+
 _Identifier
   ::= !_NameIdentifier
   ::= !_TypeIdentifier
@@ -94,6 +98,7 @@ _QualifiedNameFragment
 
 _MemberQualifiedNameFragment
   ::= _DtorIdentifier:id as partial QualifiedName
+  ::= _OperatorTypeIdentifier:id as partial QualifiedName
   ;
 
 _SingleLevelQualifiedName
