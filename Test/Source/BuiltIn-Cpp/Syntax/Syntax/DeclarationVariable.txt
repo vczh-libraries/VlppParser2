@@ -129,7 +129,7 @@ _GenericHeader
   ;
 
 //////////////////////////////////////////////////////////////////
-// Variable Declarations
+// Variable Forward Declarations
 //////////////////////////////////////////////////////////////////
 
 _VarWithoutInit
@@ -145,14 +145,25 @@ _VarsDecl
   ::= _DeclaratorKeyword:keywords {_DeclaratorKeyword:keywords} !_VarsDeclWithoutKeyword
   ;
 
-//////////////////////////////////////////////////////////////////
-// Function Declarations
-//////////////////////////////////////////////////////////////////
-
-_CtorDtorForwardDecl
-  ::= {_DeclaratorKeyword:keywords} _DeclaratorCtorDtorPartWithoutInit:varPart as CtorDtorDeclaration
+_VarsFuncForwardDeclWithoutKeyword
+  ::= !_VarsDeclWithoutKeyword
+  ::= _DeclaratorCtorDtorPartWithoutInit:varPart as SingleVarDeclaration
   ;
 
-_CtorDtorDecl
-  ::= {_DeclaratorKeyword:keywords} _DeclaratorCtorDtorParRequiredInit:varPart as CtorDtorDeclaration
+_VarsFuncForwardDecl
+  ::= !_VarsFuncForwardDeclWithoutKeyword
+  ::= _DeclaratorKeyword:keywords {_DeclaratorKeyword:keywords} !_VarsFuncForwardDeclWithoutKeyword
+  ;
+
+//////////////////////////////////////////////////////////////////
+// Variable Declarations
+//////////////////////////////////////////////////////////////////
+
+_FuncDeclWithoutKeyword
+  ::= {_DeclaratorKeyword:keywords} _DeclaratorCtorDtorParRequiredInit:varPart as SingleVarDeclaration
+  ;
+
+_FuncDecl
+  ::= !_FuncDeclWithoutKeyword
+  ::= _DeclaratorKeyword:keywords {_DeclaratorKeyword:keywords} !_FuncDeclWithoutKeyword
   ;

@@ -494,24 +494,20 @@ class DeclaratorVariablePart
     var init : VarInit;
 }
 
-class SingleVarDeclaration : Declaration
+class CommonVarDeclaration : Declaration
 {
     var keywords : DeclaratorKeyword[];
     var type : TypeOrExpr;
+}
+
+class SingleVarDeclaration : CommonVarDeclaration
+{
     var varPart : DeclaratorVariablePart;
 }
 
-class MultipleVarDeclaration : Declaration
+class MultipleVarDeclaration : CommonVarDeclaration
 {
-    var keywords : DeclaratorKeyword[];
-    var type : TypeOrExpr;
     var varParts : DeclaratorVariablePart[];
-}
-
-class CtorDtorDeclaration : Declaration
-{
-    var keywords : DeclaratorKeyword[];
-    var varPart : DeclaratorVariablePart;
 }
 
 //////////////////////////////////////////////////////////////////
