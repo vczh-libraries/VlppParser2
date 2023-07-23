@@ -128,6 +128,82 @@ MakeCastExpr
 	}
 
 /***********************************************************************
+MakeClassBody
+***********************************************************************/
+
+	MakeClassBody& MakeClassBody::inheritances(const vl::Ptr<CppClassInheritance>& value)
+	{
+		node->inheritances.Add(value);
+		return *this;
+	}
+
+	MakeClassBody& MakeClassBody::memberParts(const vl::Ptr<CppClassMemberPart>& value)
+	{
+		node->memberParts.Add(value);
+		return *this;
+	}
+
+	MakeClassBody& MakeClassBody::varParts(const vl::Ptr<CppDeclaratorVariablePart>& value)
+	{
+		node->varParts.Add(value);
+		return *this;
+	}
+
+/***********************************************************************
+MakeClassDeclaration
+***********************************************************************/
+
+	MakeClassDeclaration& MakeClassDeclaration::body(const vl::Ptr<CppClassBody>& value)
+	{
+		node->body = value;
+		return *this;
+	}
+
+	MakeClassDeclaration& MakeClassDeclaration::kind(CppClassKind value)
+	{
+		node->kind = value;
+		return *this;
+	}
+
+	MakeClassDeclaration& MakeClassDeclaration::name(const vl::WString& value)
+	{
+		node->name.value = value;
+		return *this;
+	}
+
+/***********************************************************************
+MakeClassInheritance
+***********************************************************************/
+
+	MakeClassInheritance& MakeClassInheritance::accessor(CppClassAccessor value)
+	{
+		node->accessor = value;
+		return *this;
+	}
+
+	MakeClassInheritance& MakeClassInheritance::type(const vl::Ptr<CppTypeOrExpr>& value)
+	{
+		node->type = value;
+		return *this;
+	}
+
+/***********************************************************************
+MakeClassMemberPart
+***********************************************************************/
+
+	MakeClassMemberPart& MakeClassMemberPart::accessor(CppClassAccessor value)
+	{
+		node->accessor = value;
+		return *this;
+	}
+
+	MakeClassMemberPart& MakeClassMemberPart::decls(const vl::Ptr<CppDeclaration>& value)
+	{
+		node->decls.Add(value);
+		return *this;
+	}
+
+/***********************************************************************
 MakeConstType
 ***********************************************************************/
 
@@ -328,6 +404,60 @@ MakeDoWhileStat
 	}
 
 /***********************************************************************
+MakeEnumBody
+***********************************************************************/
+
+	MakeEnumBody& MakeEnumBody::items(const vl::Ptr<CppEnumItem>& value)
+	{
+		node->items.Add(value);
+		return *this;
+	}
+
+/***********************************************************************
+MakeEnumDeclaration
+***********************************************************************/
+
+	MakeEnumDeclaration& MakeEnumDeclaration::body(const vl::Ptr<CppEnumBody>& value)
+	{
+		node->body = value;
+		return *this;
+	}
+
+	MakeEnumDeclaration& MakeEnumDeclaration::kind(CppEnumKind value)
+	{
+		node->kind = value;
+		return *this;
+	}
+
+	MakeEnumDeclaration& MakeEnumDeclaration::name(const vl::WString& value)
+	{
+		node->name.value = value;
+		return *this;
+	}
+
+	MakeEnumDeclaration& MakeEnumDeclaration::type(const vl::Ptr<CppTypeOrExpr>& value)
+	{
+		node->type = value;
+		return *this;
+	}
+
+/***********************************************************************
+MakeEnumItem
+***********************************************************************/
+
+	MakeEnumItem& MakeEnumItem::expr(const vl::Ptr<CppTypeOrExpr>& value)
+	{
+		node->expr = value;
+		return *this;
+	}
+
+	MakeEnumItem& MakeEnumItem::name(const vl::WString& value)
+	{
+		node->name.value = value;
+		return *this;
+	}
+
+/***********************************************************************
 MakeExprStat
 ***********************************************************************/
 
@@ -398,6 +528,16 @@ MakeForStatLoopCondition
 	MakeForStatLoopCondition& MakeForStatLoopCondition::varsDecl(const vl::Ptr<CppTypeOrExprOrOthers>& value)
 	{
 		node->varsDecl = value;
+		return *this;
+	}
+
+/***********************************************************************
+MakeFriendDeclaration
+***********************************************************************/
+
+	MakeFriendDeclaration& MakeFriendDeclaration::decl(const vl::Ptr<CppDeclaration>& value)
+	{
+		node->decl = value;
 		return *this;
 	}
 
@@ -634,6 +774,32 @@ MakeNameIdentifier
 	}
 
 	MakeNameIdentifier& MakeNameIdentifier::name(const vl::WString& value)
+	{
+		node->name.value = value;
+		return *this;
+	}
+
+/***********************************************************************
+MakeNamespaceDeclaration
+***********************************************************************/
+
+	MakeNamespaceDeclaration& MakeNamespaceDeclaration::decls(const vl::Ptr<CppDeclaration>& value)
+	{
+		node->decls.Add(value);
+		return *this;
+	}
+
+	MakeNamespaceDeclaration& MakeNamespaceDeclaration::names(const vl::Ptr<CppNamespaceName>& value)
+	{
+		node->names.Add(value);
+		return *this;
+	}
+
+/***********************************************************************
+MakeNamespaceName
+***********************************************************************/
+
+	MakeNamespaceName& MakeNamespaceName::name(const vl::WString& value)
 	{
 		node->name.value = value;
 		return *this;
@@ -1038,6 +1204,16 @@ MakeTypeOrExprToResolve
 	MakeTypeOrExprToResolve& MakeTypeOrExprToResolve::candidates(const vl::Ptr<CppTypeOrExpr>& value)
 	{
 		node->candidates.Add(value);
+		return *this;
+	}
+
+/***********************************************************************
+MakeTypedefDeclaration
+***********************************************************************/
+
+	MakeTypedefDeclaration& MakeTypedefDeclaration::decl(const vl::Ptr<CppDeclaration>& value)
+	{
+		node->decl = value;
 		return *this;
 	}
 

@@ -1,0 +1,505 @@
+﻿{
+    "$ast": "SyntaxFile",
+    "rules": [{
+        "$ast": "Rule",
+        "attParser": "",
+        "attPublic": "",
+        "clauses": [{
+            "$ast": "CreateClause",
+            "assignments": [],
+            "syntax": {
+                "$ast": "RefSyntax",
+                "field": "name",
+                "literal": "ID",
+                "refType": "Id"
+            },
+            "type": "NamespaceName"
+        }],
+        "name": "_NsName",
+        "type": ""
+    }, {
+        "$ast": "Rule",
+        "attParser": "",
+        "attPublic": "",
+        "clauses": [{
+            "$ast": "CreateClause",
+            "assignments": [],
+            "syntax": {
+                "$ast": "SequenceSyntax",
+                "first": {
+                    "$ast": "SequenceSyntax",
+                    "first": {
+                        "$ast": "SequenceSyntax",
+                        "first": {
+                            "$ast": "SequenceSyntax",
+                            "first": {
+                                "$ast": "RefSyntax",
+                                "field": "",
+                                "literal": "\"namespace\"",
+                                "refType": "Literal"
+                            },
+                            "second": {
+                                "$ast": "LoopSyntax",
+                                "delimiter": {
+                                    "$ast": "RefSyntax",
+                                    "field": "",
+                                    "literal": "\"::\"",
+                                    "refType": "Literal"
+                                },
+                                "syntax": {
+                                    "$ast": "RefSyntax",
+                                    "field": "names",
+                                    "literal": "_NsName",
+                                    "refType": "Id"
+                                }
+                            }
+                        },
+                        "second": {
+                            "$ast": "RefSyntax",
+                            "field": "",
+                            "literal": "\"{\"",
+                            "refType": "Literal"
+                        }
+                    },
+                    "second": {
+                        "$ast": "RefSyntax",
+                        "field": "decls",
+                        "literal": "_DeclWithSemicolon",
+                        "refType": "Id"
+                    }
+                },
+                "second": {
+                    "$ast": "RefSyntax",
+                    "field": "",
+                    "literal": "\"}\"",
+                    "refType": "Literal"
+                }
+            },
+            "type": "NamespaceDeclaration"
+        }],
+        "name": "_NsDecl",
+        "type": ""
+    }, {
+        "$ast": "Rule",
+        "attParser": "",
+        "attPublic": "",
+        "clauses": [{
+            "$ast": "ReuseClause",
+            "assignments": [],
+            "syntax": {
+                "$ast": "UseSyntax",
+                "name": "_VarsDeclWithoutKeyword"
+            }
+        }, {
+            "$ast": "ReuseClause",
+            "assignments": [],
+            "syntax": {
+                "$ast": "UseSyntax",
+                "name": "_ClassDeclInTypedef"
+            }
+        }],
+        "name": "_TypedefCompatibleDecl",
+        "type": ""
+    }, {
+        "$ast": "Rule",
+        "attParser": "",
+        "attPublic": "",
+        "clauses": [{
+            "$ast": "CreateClause",
+            "assignments": [],
+            "syntax": {
+                "$ast": "SequenceSyntax",
+                "first": {
+                    "$ast": "RefSyntax",
+                    "field": "",
+                    "literal": "\"typedef\"",
+                    "refType": "Literal"
+                },
+                "second": {
+                    "$ast": "RefSyntax",
+                    "field": "decl",
+                    "literal": "_TypedefCompatibleDecl",
+                    "refType": "Id"
+                }
+            },
+            "type": "TypedefDeclaration"
+        }],
+        "name": "_TypedefDecl",
+        "type": ""
+    }, {
+        "$ast": "Rule",
+        "attParser": "",
+        "attPublic": "",
+        "clauses": [{
+            "$ast": "CreateClause",
+            "assignments": [],
+            "syntax": {
+                "$ast": "SequenceSyntax",
+                "first": {
+                    "$ast": "RefSyntax",
+                    "field": "",
+                    "literal": "\"friend\"",
+                    "refType": "Literal"
+                },
+                "second": {
+                    "$ast": "RefSyntax",
+                    "field": "decl",
+                    "literal": "_Decl",
+                    "refType": "Id"
+                }
+            },
+            "type": "FriendDeclaration"
+        }],
+        "name": "_FriendDecl",
+        "type": ""
+    }, {
+        "$ast": "Rule",
+        "attParser": "",
+        "attPublic": "",
+        "clauses": [{
+            "$ast": "CreateClause",
+            "assignments": [],
+            "syntax": {
+                "$ast": "SequenceSyntax",
+                "first": {
+                    "$ast": "SequenceSyntax",
+                    "first": {
+                        "$ast": "SequenceSyntax",
+                        "first": {
+                            "$ast": "SequenceSyntax",
+                            "first": {
+                                "$ast": "RefSyntax",
+                                "field": "",
+                                "literal": "\"static_assert\"",
+                                "refType": "Literal"
+                            },
+                            "second": {
+                                "$ast": "RefSyntax",
+                                "field": "",
+                                "literal": "\"(\"",
+                                "refType": "Literal"
+                            }
+                        },
+                        "second": {
+                            "$ast": "RefSyntax",
+                            "field": "expr",
+                            "literal": "_Expr",
+                            "refType": "Id"
+                        }
+                    },
+                    "second": {
+                        "$ast": "OptionalSyntax",
+                        "priority": "Equal",
+                        "syntax": {
+                            "$ast": "SequenceSyntax",
+                            "first": {
+                                "$ast": "RefSyntax",
+                                "field": "",
+                                "literal": "\",\"",
+                                "refType": "Literal"
+                            },
+                            "second": {
+                                "$ast": "RefSyntax",
+                                "field": "message",
+                                "literal": "_Expr",
+                                "refType": "Id"
+                            }
+                        }
+                    }
+                },
+                "second": {
+                    "$ast": "RefSyntax",
+                    "field": "",
+                    "literal": "\")\"",
+                    "refType": "Literal"
+                }
+            },
+            "type": "StaticAssertDeclaration"
+        }],
+        "name": "_StaticAssertDecl",
+        "type": ""
+    }, {
+        "$ast": "Rule",
+        "attParser": "",
+        "attPublic": "",
+        "clauses": [{
+            "$ast": "CreateClause",
+            "assignments": [],
+            "syntax": {
+                "$ast": "SequenceSyntax",
+                "first": {
+                    "$ast": "RefSyntax",
+                    "field": "name",
+                    "literal": "ID",
+                    "refType": "Id"
+                },
+                "second": {
+                    "$ast": "OptionalSyntax",
+                    "priority": "Equal",
+                    "syntax": {
+                        "$ast": "SequenceSyntax",
+                        "first": {
+                            "$ast": "RefSyntax",
+                            "field": "",
+                            "literal": "\"=\"",
+                            "refType": "Literal"
+                        },
+                        "second": {
+                            "$ast": "RefSyntax",
+                            "field": "expr",
+                            "literal": "_Expr",
+                            "refType": "Id"
+                        }
+                    }
+                }
+            },
+            "type": "EnumItem"
+        }],
+        "name": "_EnumItem",
+        "type": ""
+    }, {
+        "$ast": "Rule",
+        "attParser": "",
+        "attPublic": "",
+        "clauses": [{
+            "$ast": "CreateClause",
+            "assignments": [],
+            "syntax": {
+                "$ast": "SequenceSyntax",
+                "first": {
+                    "$ast": "SequenceSyntax",
+                    "first": {
+                        "$ast": "RefSyntax",
+                        "field": "",
+                        "literal": "\"{\"",
+                        "refType": "Literal"
+                    },
+                    "second": {
+                        "$ast": "OptionalSyntax",
+                        "priority": "Equal",
+                        "syntax": {
+                            "$ast": "SequenceSyntax",
+                            "first": {
+                                "$ast": "SequenceSyntax",
+                                "first": {
+                                    "$ast": "RefSyntax",
+                                    "field": "items",
+                                    "literal": "_EnumItem",
+                                    "refType": "Id"
+                                },
+                                "second": {
+                                    "$ast": "LoopSyntax",
+                                    "delimiter": {
+                                        "$ast": "RefSyntax",
+                                        "field": "",
+                                        "literal": "\",\"",
+                                        "refType": "Literal"
+                                    },
+                                    "syntax": {
+                                        "$ast": "RefSyntax",
+                                        "field": "items",
+                                        "literal": "_EnumItem",
+                                        "refType": "Id"
+                                    }
+                                }
+                            },
+                            "second": {
+                                "$ast": "OptionalSyntax",
+                                "priority": "Equal",
+                                "syntax": {
+                                    "$ast": "RefSyntax",
+                                    "field": "",
+                                    "literal": "\",\"",
+                                    "refType": "Literal"
+                                }
+                            }
+                        }
+                    }
+                },
+                "second": {
+                    "$ast": "RefSyntax",
+                    "field": "",
+                    "literal": "\"}\"",
+                    "refType": "Literal"
+                }
+            },
+            "type": "EnumBody"
+        }],
+        "name": "_EnumBody",
+        "type": ""
+    }, {
+        "$ast": "Rule",
+        "attParser": "",
+        "attPublic": "",
+        "clauses": [{
+            "$ast": "PartialClause",
+            "assignments": [],
+            "syntax": {
+                "$ast": "RefSyntax",
+                "field": "body",
+                "literal": "_EnumBody",
+                "refType": "Id"
+            },
+            "type": "EnumDeclaration"
+        }, {
+            "$ast": "PartialClause",
+            "assignments": [],
+            "syntax": {
+                "$ast": "RefSyntax",
+                "field": "",
+                "literal": "\";\"",
+                "refType": "Literal"
+            },
+            "type": "EnumDeclaration"
+        }],
+        "name": "_EnumDeclPartial",
+        "type": ""
+    }, {
+        "$ast": "Rule",
+        "attParser": "",
+        "attPublic": "",
+        "clauses": [{
+            "$ast": "CreateClause",
+            "assignments": [{
+                "$ast": "Assignment",
+                "field": "kind",
+                "type": "Strong",
+                "value": "Enum"
+            }],
+            "syntax": {
+                "$ast": "SequenceSyntax",
+                "first": {
+                    "$ast": "SequenceSyntax",
+                    "first": {
+                        "$ast": "RefSyntax",
+                        "field": "",
+                        "literal": "\"enum\"",
+                        "refType": "Literal"
+                    },
+                    "second": {
+                        "$ast": "RefSyntax",
+                        "field": "name",
+                        "literal": "ID",
+                        "refType": "Id"
+                    }
+                },
+                "second": {
+                    "$ast": "RefSyntax",
+                    "field": "",
+                    "literal": "_EnumDeclPartial",
+                    "refType": "Id"
+                }
+            },
+            "type": "EnumDeclaration"
+        }, {
+            "$ast": "CreateClause",
+            "assignments": [{
+                "$ast": "Assignment",
+                "field": "kind",
+                "type": "Strong",
+                "value": "EnumClass"
+            }],
+            "syntax": {
+                "$ast": "SequenceSyntax",
+                "first": {
+                    "$ast": "SequenceSyntax",
+                    "first": {
+                        "$ast": "SequenceSyntax",
+                        "first": {
+                            "$ast": "SequenceSyntax",
+                            "first": {
+                                "$ast": "RefSyntax",
+                                "field": "",
+                                "literal": "\"enum\"",
+                                "refType": "Literal"
+                            },
+                            "second": {
+                                "$ast": "RefSyntax",
+                                "field": "",
+                                "literal": "\"class\"",
+                                "refType": "Literal"
+                            }
+                        },
+                        "second": {
+                            "$ast": "RefSyntax",
+                            "field": "name",
+                            "literal": "ID",
+                            "refType": "Id"
+                        }
+                    },
+                    "second": {
+                        "$ast": "OptionalSyntax",
+                        "priority": "Equal",
+                        "syntax": {
+                            "$ast": "SequenceSyntax",
+                            "first": {
+                                "$ast": "RefSyntax",
+                                "field": "",
+                                "literal": "\":\"",
+                                "refType": "Literal"
+                            },
+                            "second": {
+                                "$ast": "RefSyntax",
+                                "field": "type",
+                                "literal": "_Type",
+                                "refType": "Id"
+                            }
+                        }
+                    }
+                },
+                "second": {
+                    "$ast": "RefSyntax",
+                    "field": "",
+                    "literal": "_EnumDeclPartial",
+                    "refType": "Id"
+                }
+            },
+            "type": "EnumDeclaration"
+        }],
+        "name": "_EnumDecl",
+        "type": ""
+    }, {
+        "$ast": "Rule",
+        "attParser": "",
+        "attPublic": "",
+        "clauses": [{
+            "$ast": "ReuseClause",
+            "assignments": [],
+            "syntax": {
+                "$ast": "UseSyntax",
+                "name": "_NsDecl"
+            }
+        }, {
+            "$ast": "ReuseClause",
+            "assignments": [],
+            "syntax": {
+                "$ast": "UseSyntax",
+                "name": "_TypedefDecl"
+            }
+        }, {
+            "$ast": "ReuseClause",
+            "assignments": [],
+            "syntax": {
+                "$ast": "UseSyntax",
+                "name": "_FriendDecl"
+            }
+        }, {
+            "$ast": "ReuseClause",
+            "assignments": [],
+            "syntax": {
+                "$ast": "UseSyntax",
+                "name": "_StaticAssertDecl"
+            }
+        }, {
+            "$ast": "ReuseClause",
+            "assignments": [],
+            "syntax": {
+                "$ast": "UseSyntax",
+                "name": "_EnumDecl"
+            }
+        }],
+        "name": "_OtherDecl",
+        "type": ""
+    }],
+    "switches": []
+}

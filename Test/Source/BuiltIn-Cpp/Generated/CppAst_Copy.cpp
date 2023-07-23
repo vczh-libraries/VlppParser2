@@ -71,6 +71,45 @@ namespace cpp_parser::copy_visitor
 		to->type = CopyNode(from->type.Obj());
 	}
 
+	void AstVisitor::CopyFields(CppClassBody* from, CppClassBody* to)
+	{
+		for (auto&& listItem : from->inheritances)
+		{
+			to->inheritances.Add(CopyNode(listItem.Obj()));
+		}
+		for (auto&& listItem : from->memberParts)
+		{
+			to->memberParts.Add(CopyNode(listItem.Obj()));
+		}
+		for (auto&& listItem : from->varParts)
+		{
+			to->varParts.Add(CopyNode(listItem.Obj()));
+		}
+	}
+
+	void AstVisitor::CopyFields(CppClassDeclaration* from, CppClassDeclaration* to)
+	{
+		CopyFields(static_cast<CppDeclaration*>(from), static_cast<CppDeclaration*>(to));
+		to->body = CopyNode(from->body.Obj());
+		to->kind = from->kind;
+		to->name = from->name;
+	}
+
+	void AstVisitor::CopyFields(CppClassInheritance* from, CppClassInheritance* to)
+	{
+		to->accessor = from->accessor;
+		to->type = CopyNode(from->type.Obj());
+	}
+
+	void AstVisitor::CopyFields(CppClassMemberPart* from, CppClassMemberPart* to)
+	{
+		to->accessor = from->accessor;
+		for (auto&& listItem : from->decls)
+		{
+			to->decls.Add(CopyNode(listItem.Obj()));
+		}
+	}
+
 	void AstVisitor::CopyFields(CppConstType* from, CppConstType* to)
 	{
 		CopyFields(static_cast<CppTypeOnly*>(from), static_cast<CppTypeOnly*>(to));
@@ -180,6 +219,29 @@ namespace cpp_parser::copy_visitor
 		CopyFields(static_cast<CppStatement*>(from), static_cast<CppStatement*>(to));
 	}
 
+	void AstVisitor::CopyFields(CppEnumBody* from, CppEnumBody* to)
+	{
+		for (auto&& listItem : from->items)
+		{
+			to->items.Add(CopyNode(listItem.Obj()));
+		}
+	}
+
+	void AstVisitor::CopyFields(CppEnumDeclaration* from, CppEnumDeclaration* to)
+	{
+		CopyFields(static_cast<CppDeclaration*>(from), static_cast<CppDeclaration*>(to));
+		to->body = CopyNode(from->body.Obj());
+		to->kind = from->kind;
+		to->name = from->name;
+		to->type = CopyNode(from->type.Obj());
+	}
+
+	void AstVisitor::CopyFields(CppEnumItem* from, CppEnumItem* to)
+	{
+		to->expr = CopyNode(from->expr.Obj());
+		to->name = from->name;
+	}
+
 	void AstVisitor::CopyFields(CppExprOnly* from, CppExprOnly* to)
 	{
 		CopyFields(static_cast<CppTypeOrExpr*>(from), static_cast<CppTypeOrExpr*>(to));
@@ -223,6 +285,12 @@ namespace cpp_parser::copy_visitor
 		to->condition = CopyNode(from->condition.Obj());
 		to->sideEffect = CopyNode(from->sideEffect.Obj());
 		to->varsDecl = CopyNode(from->varsDecl.Obj());
+	}
+
+	void AstVisitor::CopyFields(CppFriendDeclaration* from, CppFriendDeclaration* to)
+	{
+		CopyFields(static_cast<CppDeclaration*>(from), static_cast<CppDeclaration*>(to));
+		to->decl = CopyNode(from->decl.Obj());
 	}
 
 	void AstVisitor::CopyFields(CppFunctionKeyword* from, CppFunctionKeyword* to)
@@ -336,6 +404,24 @@ namespace cpp_parser::copy_visitor
 	{
 		CopyFields(static_cast<CppIdentifier*>(from), static_cast<CppIdentifier*>(to));
 		to->kind = from->kind;
+		to->name = from->name;
+	}
+
+	void AstVisitor::CopyFields(CppNamespaceDeclaration* from, CppNamespaceDeclaration* to)
+	{
+		CopyFields(static_cast<CppDeclaration*>(from), static_cast<CppDeclaration*>(to));
+		for (auto&& listItem : from->decls)
+		{
+			to->decls.Add(CopyNode(listItem.Obj()));
+		}
+		for (auto&& listItem : from->names)
+		{
+			to->names.Add(CopyNode(listItem.Obj()));
+		}
+	}
+
+	void AstVisitor::CopyFields(CppNamespaceName* from, CppNamespaceName* to)
+	{
 		to->name = from->name;
 	}
 
@@ -553,6 +639,12 @@ namespace cpp_parser::copy_visitor
 		}
 	}
 
+	void AstVisitor::CopyFields(CppTypedefDeclaration* from, CppTypedefDeclaration* to)
+	{
+		CopyFields(static_cast<CppDeclaration*>(from), static_cast<CppDeclaration*>(to));
+		to->decl = CopyNode(from->decl.Obj());
+	}
+
 	void AstVisitor::CopyFields(CppVarBraceInit* from, CppVarBraceInit* to)
 	{
 		CopyFields(static_cast<CppVarInit*>(from), static_cast<CppVarInit*>(to));
@@ -692,6 +784,48 @@ namespace cpp_parser::copy_visitor
 		this->result = newNode;
 	}
 
+	void AstVisitor::Visit(CppClassInheritance* node)
+	{
+		auto newNode = vl::Ptr(new CppClassInheritance);
+		CopyFields(node, newNode.Obj());
+		this->result = newNode;
+	}
+
+	void AstVisitor::Visit(CppClassMemberPart* node)
+	{
+		auto newNode = vl::Ptr(new CppClassMemberPart);
+		CopyFields(node, newNode.Obj());
+		this->result = newNode;
+	}
+
+	void AstVisitor::Visit(CppClassBody* node)
+	{
+		auto newNode = vl::Ptr(new CppClassBody);
+		CopyFields(node, newNode.Obj());
+		this->result = newNode;
+	}
+
+	void AstVisitor::Visit(CppEnumItem* node)
+	{
+		auto newNode = vl::Ptr(new CppEnumItem);
+		CopyFields(node, newNode.Obj());
+		this->result = newNode;
+	}
+
+	void AstVisitor::Visit(CppEnumBody* node)
+	{
+		auto newNode = vl::Ptr(new CppEnumBody);
+		CopyFields(node, newNode.Obj());
+		this->result = newNode;
+	}
+
+	void AstVisitor::Visit(CppNamespaceName* node)
+	{
+		auto newNode = vl::Ptr(new CppNamespaceName);
+		CopyFields(node, newNode.Obj());
+		this->result = newNode;
+	}
+
 	void AstVisitor::Visit(CppTryStatCatchPart* node)
 	{
 		auto newNode = vl::Ptr(new CppTryStatCatchPart);
@@ -751,9 +885,44 @@ namespace cpp_parser::copy_visitor
 		this->result = newNode;
 	}
 
+	void AstVisitor::Visit(CppClassDeclaration* node)
+	{
+		auto newNode = vl::Ptr(new CppClassDeclaration);
+		CopyFields(node, newNode.Obj());
+		this->result = newNode;
+	}
+
+	void AstVisitor::Visit(CppEnumDeclaration* node)
+	{
+		auto newNode = vl::Ptr(new CppEnumDeclaration);
+		CopyFields(node, newNode.Obj());
+		this->result = newNode;
+	}
+
 	void AstVisitor::Visit(CppStaticAssertDeclaration* node)
 	{
 		auto newNode = vl::Ptr(new CppStaticAssertDeclaration);
+		CopyFields(node, newNode.Obj());
+		this->result = newNode;
+	}
+
+	void AstVisitor::Visit(CppTypedefDeclaration* node)
+	{
+		auto newNode = vl::Ptr(new CppTypedefDeclaration);
+		CopyFields(node, newNode.Obj());
+		this->result = newNode;
+	}
+
+	void AstVisitor::Visit(CppFriendDeclaration* node)
+	{
+		auto newNode = vl::Ptr(new CppFriendDeclaration);
+		CopyFields(node, newNode.Obj());
+		this->result = newNode;
+	}
+
+	void AstVisitor::Visit(CppNamespaceDeclaration* node)
+	{
+		auto newNode = vl::Ptr(new CppNamespaceDeclaration);
 		CopyFields(node, newNode.Obj());
 		this->result = newNode;
 	}
@@ -1260,6 +1429,54 @@ namespace cpp_parser::copy_visitor
 		return this->result.Cast<CppDeclaratorVariablePart>();
 	}
 
+	vl::Ptr<CppClassInheritance> AstVisitor::CopyNode(CppClassInheritance* node)
+	{
+		if (!node) return nullptr;
+		Visit(node);
+		this->result->codeRange = node->codeRange;
+		return this->result.Cast<CppClassInheritance>();
+	}
+
+	vl::Ptr<CppClassMemberPart> AstVisitor::CopyNode(CppClassMemberPart* node)
+	{
+		if (!node) return nullptr;
+		Visit(node);
+		this->result->codeRange = node->codeRange;
+		return this->result.Cast<CppClassMemberPart>();
+	}
+
+	vl::Ptr<CppClassBody> AstVisitor::CopyNode(CppClassBody* node)
+	{
+		if (!node) return nullptr;
+		Visit(node);
+		this->result->codeRange = node->codeRange;
+		return this->result.Cast<CppClassBody>();
+	}
+
+	vl::Ptr<CppEnumItem> AstVisitor::CopyNode(CppEnumItem* node)
+	{
+		if (!node) return nullptr;
+		Visit(node);
+		this->result->codeRange = node->codeRange;
+		return this->result.Cast<CppEnumItem>();
+	}
+
+	vl::Ptr<CppEnumBody> AstVisitor::CopyNode(CppEnumBody* node)
+	{
+		if (!node) return nullptr;
+		Visit(node);
+		this->result->codeRange = node->codeRange;
+		return this->result.Cast<CppEnumBody>();
+	}
+
+	vl::Ptr<CppNamespaceName> AstVisitor::CopyNode(CppNamespaceName* node)
+	{
+		if (!node) return nullptr;
+		Visit(node);
+		this->result->codeRange = node->codeRange;
+		return this->result.Cast<CppNamespaceName>();
+	}
+
 	vl::Ptr<CppTryStatCatchPart> AstVisitor::CopyNode(CppTryStatCatchPart* node)
 	{
 		if (!node) return nullptr;
@@ -1318,6 +1535,12 @@ namespace cpp_parser::copy_visitor
 		return CopyNode(static_cast<CppTypeOrExprOrOthers*>(node)).Cast<CppCastExpr>();
 	}
 
+	vl::Ptr<CppClassDeclaration> AstVisitor::CopyNode(CppClassDeclaration* node)
+	{
+		if (!node) return nullptr;
+		return CopyNode(static_cast<CppTypeOrExprOrOthers*>(node)).Cast<CppClassDeclaration>();
+	}
+
 	vl::Ptr<CppConstType> AstVisitor::CopyNode(CppConstType* node)
 	{
 		if (!node) return nullptr;
@@ -1372,6 +1595,12 @@ namespace cpp_parser::copy_visitor
 		return CopyNode(static_cast<CppStatement*>(node)).Cast<CppEmptyStat>();
 	}
 
+	vl::Ptr<CppEnumDeclaration> AstVisitor::CopyNode(CppEnumDeclaration* node)
+	{
+		if (!node) return nullptr;
+		return CopyNode(static_cast<CppTypeOrExprOrOthers*>(node)).Cast<CppEnumDeclaration>();
+	}
+
 	vl::Ptr<CppExprOnly> AstVisitor::CopyNode(CppExprOnly* node)
 	{
 		if (!node) return nullptr;
@@ -1400,6 +1629,12 @@ namespace cpp_parser::copy_visitor
 	{
 		if (!node) return nullptr;
 		return CopyNode(static_cast<CppForStatConditionPart*>(node)).Cast<CppForStatLoopCondition>();
+	}
+
+	vl::Ptr<CppFriendDeclaration> AstVisitor::CopyNode(CppFriendDeclaration* node)
+	{
+		if (!node) return nullptr;
+		return CopyNode(static_cast<CppTypeOrExprOrOthers*>(node)).Cast<CppFriendDeclaration>();
 	}
 
 	vl::Ptr<CppGenericArgument> AstVisitor::CopyNode(CppGenericArgument* node)
@@ -1454,6 +1689,12 @@ namespace cpp_parser::copy_visitor
 	{
 		if (!node) return nullptr;
 		return CopyNode(static_cast<CppIdentifier*>(node)).Cast<CppNameIdentifier>();
+	}
+
+	vl::Ptr<CppNamespaceDeclaration> AstVisitor::CopyNode(CppNamespaceDeclaration* node)
+	{
+		if (!node) return nullptr;
+		return CopyNode(static_cast<CppTypeOrExprOrOthers*>(node)).Cast<CppNamespaceDeclaration>();
 	}
 
 	vl::Ptr<CppNewExpr> AstVisitor::CopyNode(CppNewExpr* node)
@@ -1598,6 +1839,12 @@ namespace cpp_parser::copy_visitor
 	{
 		if (!node) return nullptr;
 		return CopyNode(static_cast<CppTypeOrExprOrOthers*>(node)).Cast<CppTypeOrExprToResolve>();
+	}
+
+	vl::Ptr<CppTypedefDeclaration> AstVisitor::CopyNode(CppTypedefDeclaration* node)
+	{
+		if (!node) return nullptr;
+		return CopyNode(static_cast<CppTypeOrExprOrOthers*>(node)).Cast<CppTypedefDeclaration>();
 	}
 
 	vl::Ptr<CppVarBraceInit> AstVisitor::CopyNode(CppVarBraceInit* node)

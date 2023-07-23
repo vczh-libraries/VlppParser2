@@ -20,6 +20,10 @@ namespace cpp_parser
 	class CppCallExpr;
 	class CppCaseStat;
 	class CppCastExpr;
+	class CppClassBody;
+	class CppClassDeclaration;
+	class CppClassInheritance;
+	class CppClassMemberPart;
 	class CppConstType;
 	class CppContinueStat;
 	class CppDeclStat;
@@ -34,6 +38,9 @@ namespace cpp_parser
 	class CppDeleteExpr;
 	class CppDoWhileStat;
 	class CppEmptyStat;
+	class CppEnumBody;
+	class CppEnumDeclaration;
+	class CppEnumItem;
 	class CppExprOnly;
 	class CppExprStat;
 	class CppFile;
@@ -41,6 +48,7 @@ namespace cpp_parser
 	class CppForStatConditionPart;
 	class CppForStatIterateCondition;
 	class CppForStatLoopCondition;
+	class CppFriendDeclaration;
 	class CppFunctionKeyword;
 	class CppGenericArgument;
 	class CppGenericArguments;
@@ -55,6 +63,8 @@ namespace cpp_parser
 	class CppLambdaExpr;
 	class CppMultipleVarDeclaration;
 	class CppNameIdentifier;
+	class CppNamespaceDeclaration;
+	class CppNamespaceName;
 	class CppNewExpr;
 	class CppNumericExprLiteral;
 	class CppOperatorIdentifier;
@@ -83,6 +93,7 @@ namespace cpp_parser
 	class CppTypeOrExprOrOthers;
 	class CppTypeOrExprOrOthersToResolve;
 	class CppTypeOrExprToResolve;
+	class CppTypedefDeclaration;
 	class CppVarBraceInit;
 	class CppVarInit;
 	class CppVarParanthesisInit;
@@ -257,6 +268,30 @@ namespace cpp_parser
 		AlignAs = 8,
 	};
 
+	enum class CppClassKind
+	{
+		UNDEFINED_ENUM_ITEM_VALUE = -1,
+		Class = 0,
+		Struct = 1,
+		Union = 2,
+	};
+
+	enum class CppClassAccessor
+	{
+		UNDEFINED_ENUM_ITEM_VALUE = -1,
+		Default = 0,
+		Private = 1,
+		Protected = 2,
+		Public = 3,
+	};
+
+	enum class CppEnumKind
+	{
+		UNDEFINED_ENUM_ITEM_VALUE = -1,
+		Enum = 0,
+		EnumClass = 1,
+	};
+
 	class CppTypeOrExprOrOthers abstract : public vl::glr::ParsingAstBase, vl::reflection::Description<CppTypeOrExprOrOthers>
 	{
 	public:
@@ -282,7 +317,12 @@ namespace cpp_parser
 		public:
 			virtual void Visit(CppSingleVarDeclaration* node) = 0;
 			virtual void Visit(CppMultipleVarDeclaration* node) = 0;
+			virtual void Visit(CppClassDeclaration* node) = 0;
+			virtual void Visit(CppEnumDeclaration* node) = 0;
 			virtual void Visit(CppStaticAssertDeclaration* node) = 0;
+			virtual void Visit(CppTypedefDeclaration* node) = 0;
+			virtual void Visit(CppFriendDeclaration* node) = 0;
+			virtual void Visit(CppNamespaceDeclaration* node) = 0;
 		};
 
 		virtual void Accept(CppDeclaration::IVisitor* visitor) = 0;
@@ -778,11 +818,98 @@ namespace cpp_parser
 		void Accept(CppDeclaration::IVisitor* visitor) override;
 	};
 
+	class CppClassInheritance : public vl::glr::ParsingAstBase, vl::reflection::Description<CppClassInheritance>
+	{
+	public:
+		CppClassAccessor accessor = CppClassAccessor::UNDEFINED_ENUM_ITEM_VALUE;
+		vl::Ptr<CppTypeOrExpr> type;
+	};
+
+	class CppClassMemberPart : public vl::glr::ParsingAstBase, vl::reflection::Description<CppClassMemberPart>
+	{
+	public:
+		CppClassAccessor accessor = CppClassAccessor::UNDEFINED_ENUM_ITEM_VALUE;
+		vl::collections::List<vl::Ptr<CppDeclaration>> decls;
+	};
+
+	class CppClassBody : public vl::glr::ParsingAstBase, vl::reflection::Description<CppClassBody>
+	{
+	public:
+		vl::collections::List<vl::Ptr<CppClassInheritance>> inheritances;
+		vl::collections::List<vl::Ptr<CppClassMemberPart>> memberParts;
+		vl::collections::List<vl::Ptr<CppDeclaratorVariablePart>> varParts;
+	};
+
+	class CppClassDeclaration : public CppDeclaration, vl::reflection::Description<CppClassDeclaration>
+	{
+	public:
+		CppClassKind kind = CppClassKind::UNDEFINED_ENUM_ITEM_VALUE;
+		vl::glr::ParsingToken name;
+		vl::Ptr<CppClassBody> body;
+
+		void Accept(CppDeclaration::IVisitor* visitor) override;
+	};
+
+	class CppEnumItem : public vl::glr::ParsingAstBase, vl::reflection::Description<CppEnumItem>
+	{
+	public:
+		vl::glr::ParsingToken name;
+		vl::Ptr<CppTypeOrExpr> expr;
+	};
+
+	class CppEnumBody : public vl::glr::ParsingAstBase, vl::reflection::Description<CppEnumBody>
+	{
+	public:
+		vl::collections::List<vl::Ptr<CppEnumItem>> items;
+	};
+
+	class CppEnumDeclaration : public CppDeclaration, vl::reflection::Description<CppEnumDeclaration>
+	{
+	public:
+		CppEnumKind kind = CppEnumKind::UNDEFINED_ENUM_ITEM_VALUE;
+		vl::glr::ParsingToken name;
+		vl::Ptr<CppTypeOrExpr> type;
+		vl::Ptr<CppEnumBody> body;
+
+		void Accept(CppDeclaration::IVisitor* visitor) override;
+	};
+
 	class CppStaticAssertDeclaration : public CppDeclaration, vl::reflection::Description<CppStaticAssertDeclaration>
 	{
 	public:
 		vl::Ptr<CppTypeOrExpr> expr;
 		vl::Ptr<CppTypeOrExpr> message;
+
+		void Accept(CppDeclaration::IVisitor* visitor) override;
+	};
+
+	class CppTypedefDeclaration : public CppDeclaration, vl::reflection::Description<CppTypedefDeclaration>
+	{
+	public:
+		vl::Ptr<CppDeclaration> decl;
+
+		void Accept(CppDeclaration::IVisitor* visitor) override;
+	};
+
+	class CppFriendDeclaration : public CppDeclaration, vl::reflection::Description<CppFriendDeclaration>
+	{
+	public:
+		vl::Ptr<CppDeclaration> decl;
+
+		void Accept(CppDeclaration::IVisitor* visitor) override;
+	};
+
+	class CppNamespaceName : public vl::glr::ParsingAstBase, vl::reflection::Description<CppNamespaceName>
+	{
+	public:
+		vl::glr::ParsingToken name;
+	};
+
+	class CppNamespaceDeclaration : public CppDeclaration, vl::reflection::Description<CppNamespaceDeclaration>
+	{
+	public:
+		vl::collections::List<vl::Ptr<CppNamespaceName>> names;
+		vl::collections::List<vl::Ptr<CppDeclaration>> decls;
 
 		void Accept(CppDeclaration::IVisitor* visitor) override;
 	};
@@ -1124,7 +1251,21 @@ namespace vl::reflection::description
 	DECL_TYPE_INFO(cpp_parser::CppDeclaratorVariablePart)
 	DECL_TYPE_INFO(cpp_parser::CppSingleVarDeclaration)
 	DECL_TYPE_INFO(cpp_parser::CppMultipleVarDeclaration)
+	DECL_TYPE_INFO(cpp_parser::CppClassKind)
+	DECL_TYPE_INFO(cpp_parser::CppClassAccessor)
+	DECL_TYPE_INFO(cpp_parser::CppClassInheritance)
+	DECL_TYPE_INFO(cpp_parser::CppClassMemberPart)
+	DECL_TYPE_INFO(cpp_parser::CppClassBody)
+	DECL_TYPE_INFO(cpp_parser::CppClassDeclaration)
+	DECL_TYPE_INFO(cpp_parser::CppEnumKind)
+	DECL_TYPE_INFO(cpp_parser::CppEnumItem)
+	DECL_TYPE_INFO(cpp_parser::CppEnumBody)
+	DECL_TYPE_INFO(cpp_parser::CppEnumDeclaration)
 	DECL_TYPE_INFO(cpp_parser::CppStaticAssertDeclaration)
+	DECL_TYPE_INFO(cpp_parser::CppTypedefDeclaration)
+	DECL_TYPE_INFO(cpp_parser::CppFriendDeclaration)
+	DECL_TYPE_INFO(cpp_parser::CppNamespaceName)
+	DECL_TYPE_INFO(cpp_parser::CppNamespaceDeclaration)
 	DECL_TYPE_INFO(cpp_parser::CppStatement)
 	DECL_TYPE_INFO(cpp_parser::CppStatement::IVisitor)
 	DECL_TYPE_INFO(cpp_parser::CppEmptyStat)
@@ -1197,7 +1338,32 @@ namespace vl::reflection::description
 			INVOKE_INTERFACE_PROXY(Visit, node);
 		}
 
+		void Visit(cpp_parser::CppClassDeclaration* node) override
+		{
+			INVOKE_INTERFACE_PROXY(Visit, node);
+		}
+
+		void Visit(cpp_parser::CppEnumDeclaration* node) override
+		{
+			INVOKE_INTERFACE_PROXY(Visit, node);
+		}
+
 		void Visit(cpp_parser::CppStaticAssertDeclaration* node) override
+		{
+			INVOKE_INTERFACE_PROXY(Visit, node);
+		}
+
+		void Visit(cpp_parser::CppTypedefDeclaration* node) override
+		{
+			INVOKE_INTERFACE_PROXY(Visit, node);
+		}
+
+		void Visit(cpp_parser::CppFriendDeclaration* node) override
+		{
+			INVOKE_INTERFACE_PROXY(Visit, node);
+		}
+
+		void Visit(cpp_parser::CppNamespaceDeclaration* node) override
 		{
 			INVOKE_INTERFACE_PROXY(Visit, node);
 		}

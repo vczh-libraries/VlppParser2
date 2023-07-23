@@ -61,6 +61,36 @@ namespace cpp_parser::builder
 		MakeCastExpr& type(const vl::Ptr<CppTypeOrExpr>& value);
 	};
 
+	class MakeClassBody : public vl::glr::ParsingAstBuilder<CppClassBody>
+	{
+	public:
+		MakeClassBody& inheritances(const vl::Ptr<CppClassInheritance>& value);
+		MakeClassBody& memberParts(const vl::Ptr<CppClassMemberPart>& value);
+		MakeClassBody& varParts(const vl::Ptr<CppDeclaratorVariablePart>& value);
+	};
+
+	class MakeClassDeclaration : public vl::glr::ParsingAstBuilder<CppClassDeclaration>
+	{
+	public:
+		MakeClassDeclaration& body(const vl::Ptr<CppClassBody>& value);
+		MakeClassDeclaration& kind(CppClassKind value);
+		MakeClassDeclaration& name(const vl::WString& value);
+	};
+
+	class MakeClassInheritance : public vl::glr::ParsingAstBuilder<CppClassInheritance>
+	{
+	public:
+		MakeClassInheritance& accessor(CppClassAccessor value);
+		MakeClassInheritance& type(const vl::Ptr<CppTypeOrExpr>& value);
+	};
+
+	class MakeClassMemberPart : public vl::glr::ParsingAstBuilder<CppClassMemberPart>
+	{
+	public:
+		MakeClassMemberPart& accessor(CppClassAccessor value);
+		MakeClassMemberPart& decls(const vl::Ptr<CppDeclaration>& value);
+	};
+
 	class MakeConstType : public vl::glr::ParsingAstBuilder<CppConstType>
 	{
 	public:
@@ -142,6 +172,28 @@ namespace cpp_parser::builder
 		MakeDoWhileStat& stat(const vl::Ptr<CppStatement>& value);
 	};
 
+	class MakeEnumBody : public vl::glr::ParsingAstBuilder<CppEnumBody>
+	{
+	public:
+		MakeEnumBody& items(const vl::Ptr<CppEnumItem>& value);
+	};
+
+	class MakeEnumDeclaration : public vl::glr::ParsingAstBuilder<CppEnumDeclaration>
+	{
+	public:
+		MakeEnumDeclaration& body(const vl::Ptr<CppEnumBody>& value);
+		MakeEnumDeclaration& kind(CppEnumKind value);
+		MakeEnumDeclaration& name(const vl::WString& value);
+		MakeEnumDeclaration& type(const vl::Ptr<CppTypeOrExpr>& value);
+	};
+
+	class MakeEnumItem : public vl::glr::ParsingAstBuilder<CppEnumItem>
+	{
+	public:
+		MakeEnumItem& expr(const vl::Ptr<CppTypeOrExpr>& value);
+		MakeEnumItem& name(const vl::WString& value);
+	};
+
 	class MakeExprStat : public vl::glr::ParsingAstBuilder<CppExprStat>
 	{
 	public:
@@ -174,6 +226,12 @@ namespace cpp_parser::builder
 		MakeForStatLoopCondition& condition(const vl::Ptr<CppTypeOrExpr>& value);
 		MakeForStatLoopCondition& sideEffect(const vl::Ptr<CppTypeOrExpr>& value);
 		MakeForStatLoopCondition& varsDecl(const vl::Ptr<CppTypeOrExprOrOthers>& value);
+	};
+
+	class MakeFriendDeclaration : public vl::glr::ParsingAstBuilder<CppFriendDeclaration>
+	{
+	public:
+		MakeFriendDeclaration& decl(const vl::Ptr<CppDeclaration>& value);
 	};
 
 	class MakeFunctionKeyword : public vl::glr::ParsingAstBuilder<CppFunctionKeyword>
@@ -270,6 +328,19 @@ namespace cpp_parser::builder
 	public:
 		MakeNameIdentifier& kind(CppNameKinds value);
 		MakeNameIdentifier& name(const vl::WString& value);
+	};
+
+	class MakeNamespaceDeclaration : public vl::glr::ParsingAstBuilder<CppNamespaceDeclaration>
+	{
+	public:
+		MakeNamespaceDeclaration& decls(const vl::Ptr<CppDeclaration>& value);
+		MakeNamespaceDeclaration& names(const vl::Ptr<CppNamespaceName>& value);
+	};
+
+	class MakeNamespaceName : public vl::glr::ParsingAstBuilder<CppNamespaceName>
+	{
+	public:
+		MakeNamespaceName& name(const vl::WString& value);
 	};
 
 	class MakeNewExpr : public vl::glr::ParsingAstBuilder<CppNewExpr>
@@ -441,6 +512,12 @@ namespace cpp_parser::builder
 	{
 	public:
 		MakeTypeOrExprToResolve& candidates(const vl::Ptr<CppTypeOrExpr>& value);
+	};
+
+	class MakeTypedefDeclaration : public vl::glr::ParsingAstBuilder<CppTypedefDeclaration>
+	{
+	public:
+		MakeTypedefDeclaration& decl(const vl::Ptr<CppDeclaration>& value);
 	};
 
 	class MakeVarBraceInit : public vl::glr::ParsingAstBuilder<CppVarBraceInit>

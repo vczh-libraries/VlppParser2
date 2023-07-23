@@ -539,7 +539,6 @@ _DeclaratorKeyword : DeclaratorKeyword
   ::= "thread_local":keyword as DeclaratorKeyword
   ::= "virtual":keyword as DeclaratorKeyword
   ::= "explicit":keyword as DeclaratorKeyword
-  ::= "friend":keyword as DeclaratorKeyword
   ::= "abstract":keyword as DeclaratorKeyword
   ::= "inline":keyword as DeclaratorKeyword
   ::= "__inline":keyword as DeclaratorKeyword
@@ -804,11 +803,118 @@ _VarsDecl_LRI_Original : MultipleVarDeclaration
   ::= !_VarsDecl_LRI_Isolated_1
   ;
 
-_OtherDecl : StaticAssertDeclaration
+_ClassInheritanceFirst : ClassInheritance
+  ::= "::" _Type:type as ClassInheritance {accessor = Default}
+  ::= "::" "private" _Type:type as ClassInheritance {accessor = Private}
+  ::= "::" "protected" _Type:type as ClassInheritance {accessor = Protected}
+  ::= "::" "public" _Type:type as ClassInheritance {accessor = Public}
+  ;
+
+_ClassInheritanceSecond : ClassInheritance
+  ::= "," _Type:type as ClassInheritance {accessor = Default}
+  ::= "," "private" _Type:type as ClassInheritance {accessor = Private}
+  ::= "," "protected" _Type:type as ClassInheritance {accessor = Protected}
+  ::= "," "public" _Type:type as ClassInheritance {accessor = Public}
+  ;
+
+_ClassMemberPart_LRI_Isolated_1 : ClassMemberPart
+  ::= "private" ":" {_DeclWithSemicolon:decls} as ClassMemberPart {accessor = Private}
+  ;
+
+_ClassMemberPart_LRI_Isolated_2 : ClassMemberPart
+  ::= "protected" ":" {_DeclWithSemicolon:decls} as ClassMemberPart {accessor = Protected}
+  ;
+
+_ClassMemberPart_LRI_Isolated_3 : ClassMemberPart
+  ::= "public" ":" {_DeclWithSemicolon:decls} as ClassMemberPart {accessor = Public}
+  ;
+
+_ClassMemberPart_LRI_Original : ClassMemberPart
+  ::= left_recursion_placeholder(LRI__ClassMemberPart)
+  ::= _DeclWithSemicolon_LRI_Original:decls {_DeclWithSemicolon:decls} as ClassMemberPart {accessor = Default}
+  ::= !_ClassMemberPart_LRI_Isolated_1
+  ::= !_ClassMemberPart_LRI_Isolated_2
+  ::= !_ClassMemberPart_LRI_Isolated_3
+  ;
+
+_ClassBody : ClassBody
+  ::= [_ClassInheritanceFirst:inheritances {_ClassInheritanceSecond:inheritances}] "{" {_ClassMemberPart:memberParts} "}" {_DeclaratorVariablePartOptionalInit:varParts ","} as ClassBody
+  ;
+
+_ClassDeclPartial : ClassDeclaration
+  ::= _ClassBody:body as partial ClassDeclaration
+  ::= ";" as partial ClassDeclaration
+  ;
+
+_ClassDeclInTypedef : ClassDeclaration
+  ::= "class" [ID:name] _ClassBody:body as ClassDeclaration {kind = Class}
+  ::= "struct" [ID:name] _ClassBody:body as ClassDeclaration {kind = Struct}
+  ::= "union" [ID:name] _ClassBody:body as ClassDeclaration {kind = Union}
+  ;
+
+_ClassDecl : ClassDeclaration
+  ::= "class" ID:name _ClassDeclPartial as ClassDeclaration {kind = Class}
+  ::= "struct" ID:name _ClassDeclPartial as ClassDeclaration {kind = Struct}
+  ::= "union" ID:name _ClassDeclPartial as ClassDeclaration {kind = Union}
+  ;
+
+_NsName : NamespaceName
+  ::= ID:name as NamespaceName
+  ;
+
+_NsDecl : NamespaceDeclaration
+  ::= "namespace" {_NsName:names ; "::"} "{" _DeclWithSemicolon:decls "}" as NamespaceDeclaration
+  ;
+
+_TypedefCompatibleDecl_LRI_Isolated_1 : ClassDeclaration
+  ::= !_ClassDeclInTypedef
+  ;
+
+_TypedefCompatibleDecl_LRI_Original : Declaration
+  ::= left_recursion_placeholder(LRI__TypedefCompatibleDecl)
+  ::= !_VarsDeclWithoutKeyword_LRI_Original
+  ::= !_TypedefCompatibleDecl_LRI_Isolated_1
+  ;
+
+_TypedefDecl : TypedefDeclaration
+  ::= "typedef" _TypedefCompatibleDecl:decl as TypedefDeclaration
+  ;
+
+_FriendDecl : FriendDeclaration
+  ::= "friend" _Decl:decl as FriendDeclaration
+  ;
+
+_StaticAssertDecl : StaticAssertDeclaration
   ::= "static_assert" "(" _Expr:expr ["," _Expr:message] ")" as StaticAssertDeclaration
   ;
 
-_Decl_LRI_Isolated_1 : StaticAssertDeclaration
+_EnumItem : EnumItem
+  ::= ID:name ["=" _Expr:expr] as EnumItem
+  ;
+
+_EnumBody : EnumBody
+  ::= "{" [_EnumItem:items {_EnumItem:items ; ","} [","]] "}" as EnumBody
+  ;
+
+_EnumDeclPartial : EnumDeclaration
+  ::= _EnumBody:body as partial EnumDeclaration
+  ::= ";" as partial EnumDeclaration
+  ;
+
+_EnumDecl : EnumDeclaration
+  ::= "enum" ID:name _EnumDeclPartial as EnumDeclaration {kind = Enum}
+  ::= "enum" "class" ID:name [":" _Type:type] _EnumDeclPartial as EnumDeclaration {kind = EnumClass}
+  ;
+
+_OtherDecl : Declaration
+  ::= !_NsDecl
+  ::= !_TypedefDecl
+  ::= !_FriendDecl
+  ::= !_StaticAssertDecl
+  ::= !_EnumDecl
+  ;
+
+_Decl_LRI_Isolated_1 : Declaration
   ::= !_OtherDecl
   ;
 
@@ -816,6 +922,10 @@ _Decl_LRI_Original : Declaration
   ::= left_recursion_placeholder(LRI__Decl)
   ::= !_VarsDecl_LRI_Original
   ::= !_Decl_LRI_Isolated_1
+  ;
+
+_DeclWithSemicolon_LRI_Original : Declaration
+  ::= !_Decl_LRI_Original ";"
   ;
 
 _ExprStat_LRI_Original : Statement
@@ -965,7 +1075,7 @@ _TypeOrExpr_LRI_Original : TypeOrExpr
   ;
 
 _File_LRI_Original : File
-  ::= _Decl_LRI_Original:decls {_Decl:decls} as File
+  ::= _DeclWithSemicolon_LRI_Original:decls {_DeclWithSemicolon:decls} as File
   ;
 
 _GenericArgument : TypeOrExprOrOthers
@@ -1366,6 +1476,26 @@ _VarsDecl : MultipleVarDeclaration
   ::= !_QualifiedName left_recursion_inject(LRI__PM_QualifiedName) _VarsDecl_LRI_Original
   ;
 
+_ClassMemberPart : ClassMemberPart
+  ::= !_ClassMemberPart_LRI_Isolated_1
+  ::= !_ClassMemberPart_LRI_Isolated_2
+  ::= !_ClassMemberPart_LRI_Isolated_3
+  ::= !_CallConstructibleTypeBeforeDeclarator_LRI_Isolated_1 left_recursion_inject(LRI__CallConstructibleTypeBeforeDeclarator) _ClassMemberPart_LRI_Original
+  ::= !_CallConstructibleTypeBeforeDeclarator_LRI_Isolated_2 left_recursion_inject(LRI__CallConstructibleTypeBeforeDeclarator) _ClassMemberPart_LRI_Original
+  ::= !_Decl_LRI_Isolated_1 left_recursion_inject(LRI__Decl) _ClassMemberPart_LRI_Original
+  ::= !_PrimitiveType left_recursion_inject(LRI__PM_PrimitiveType) _ClassMemberPart_LRI_Original
+  ::= !_QualifiedName left_recursion_inject(LRI__PM_QualifiedName) _ClassMemberPart_LRI_Original
+  ::= !_VarsDecl_LRI_Isolated_1 left_recursion_inject(LRI__VarsDecl) _ClassMemberPart_LRI_Original
+  ;
+
+_TypedefCompatibleDecl : Declaration
+  ::= !_TypedefCompatibleDecl_LRI_Isolated_1
+  ::= !_CallConstructibleTypeBeforeDeclarator_LRI_Isolated_1 left_recursion_inject(LRI__CallConstructibleTypeBeforeDeclarator) _TypedefCompatibleDecl_LRI_Original
+  ::= !_CallConstructibleTypeBeforeDeclarator_LRI_Isolated_2 left_recursion_inject(LRI__CallConstructibleTypeBeforeDeclarator) _TypedefCompatibleDecl_LRI_Original
+  ::= !_PrimitiveType left_recursion_inject(LRI__PM_PrimitiveType) _TypedefCompatibleDecl_LRI_Original
+  ::= !_QualifiedName left_recursion_inject(LRI__PM_QualifiedName) _TypedefCompatibleDecl_LRI_Original
+  ;
+
 _Decl : Declaration
   ::= !_Decl_LRI_Isolated_1
   ::= !_VarsDecl_LRI_Isolated_1
@@ -1373,6 +1503,15 @@ _Decl : Declaration
   ::= !_CallConstructibleTypeBeforeDeclarator_LRI_Isolated_2 left_recursion_inject(LRI__CallConstructibleTypeBeforeDeclarator) _Decl_LRI_Original
   ::= !_PrimitiveType left_recursion_inject(LRI__PM_PrimitiveType) _Decl_LRI_Original
   ::= !_QualifiedName left_recursion_inject(LRI__PM_QualifiedName) _Decl_LRI_Original
+  ;
+
+_DeclWithSemicolon : Declaration
+  ::= !_CallConstructibleTypeBeforeDeclarator_LRI_Isolated_1 left_recursion_inject(LRI__CallConstructibleTypeBeforeDeclarator) _DeclWithSemicolon_LRI_Original
+  ::= !_CallConstructibleTypeBeforeDeclarator_LRI_Isolated_2 left_recursion_inject(LRI__CallConstructibleTypeBeforeDeclarator) _DeclWithSemicolon_LRI_Original
+  ::= !_Decl_LRI_Isolated_1 left_recursion_inject(LRI__Decl) _DeclWithSemicolon_LRI_Original
+  ::= !_PrimitiveType left_recursion_inject(LRI__PM_PrimitiveType) _DeclWithSemicolon_LRI_Original
+  ::= !_QualifiedName left_recursion_inject(LRI__PM_QualifiedName) _DeclWithSemicolon_LRI_Original
+  ::= !_VarsDecl_LRI_Isolated_1 left_recursion_inject(LRI__VarsDecl) _DeclWithSemicolon_LRI_Original
   ;
 
 _ExprStat : Statement

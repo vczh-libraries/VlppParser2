@@ -51,7 +51,27 @@ DeclarationVisitor
 	{
 	}
 
+	void DeclarationVisitor::Visit(CppClassDeclaration* node)
+	{
+	}
+
+	void DeclarationVisitor::Visit(CppEnumDeclaration* node)
+	{
+	}
+
 	void DeclarationVisitor::Visit(CppStaticAssertDeclaration* node)
+	{
+	}
+
+	void DeclarationVisitor::Visit(CppTypedefDeclaration* node)
+	{
+	}
+
+	void DeclarationVisitor::Visit(CppFriendDeclaration* node)
+	{
+	}
+
+	void DeclarationVisitor::Visit(CppNamespaceDeclaration* node)
 	{
 	}
 

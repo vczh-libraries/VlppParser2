@@ -35,6 +35,10 @@ namespace cpp_parser::traverse_visitor
 		virtual void Traverse(CppCallExpr* node);
 		virtual void Traverse(CppCaseStat* node);
 		virtual void Traverse(CppCastExpr* node);
+		virtual void Traverse(CppClassBody* node);
+		virtual void Traverse(CppClassDeclaration* node);
+		virtual void Traverse(CppClassInheritance* node);
+		virtual void Traverse(CppClassMemberPart* node);
 		virtual void Traverse(CppConstType* node);
 		virtual void Traverse(CppContinueStat* node);
 		virtual void Traverse(CppDeclStat* node);
@@ -49,6 +53,9 @@ namespace cpp_parser::traverse_visitor
 		virtual void Traverse(CppDeleteExpr* node);
 		virtual void Traverse(CppDoWhileStat* node);
 		virtual void Traverse(CppEmptyStat* node);
+		virtual void Traverse(CppEnumBody* node);
+		virtual void Traverse(CppEnumDeclaration* node);
+		virtual void Traverse(CppEnumItem* node);
 		virtual void Traverse(CppExprOnly* node);
 		virtual void Traverse(CppExprStat* node);
 		virtual void Traverse(CppFile* node);
@@ -56,6 +63,7 @@ namespace cpp_parser::traverse_visitor
 		virtual void Traverse(CppForStatConditionPart* node);
 		virtual void Traverse(CppForStatIterateCondition* node);
 		virtual void Traverse(CppForStatLoopCondition* node);
+		virtual void Traverse(CppFriendDeclaration* node);
 		virtual void Traverse(CppFunctionKeyword* node);
 		virtual void Traverse(CppGenericArgument* node);
 		virtual void Traverse(CppGenericArguments* node);
@@ -70,6 +78,8 @@ namespace cpp_parser::traverse_visitor
 		virtual void Traverse(CppLambdaExpr* node);
 		virtual void Traverse(CppMultipleVarDeclaration* node);
 		virtual void Traverse(CppNameIdentifier* node);
+		virtual void Traverse(CppNamespaceDeclaration* node);
+		virtual void Traverse(CppNamespaceName* node);
 		virtual void Traverse(CppNewExpr* node);
 		virtual void Traverse(CppNumericExprLiteral* node);
 		virtual void Traverse(CppOperatorIdentifier* node);
@@ -98,6 +108,7 @@ namespace cpp_parser::traverse_visitor
 		virtual void Traverse(CppTypeOrExprOrOthers* node);
 		virtual void Traverse(CppTypeOrExprOrOthersToResolve* node);
 		virtual void Traverse(CppTypeOrExprToResolve* node);
+		virtual void Traverse(CppTypedefDeclaration* node);
 		virtual void Traverse(CppVarBraceInit* node);
 		virtual void Traverse(CppVarInit* node);
 		virtual void Traverse(CppVarParanthesisInit* node);
@@ -118,6 +129,10 @@ namespace cpp_parser::traverse_visitor
 		virtual void Finishing(CppCallExpr* node);
 		virtual void Finishing(CppCaseStat* node);
 		virtual void Finishing(CppCastExpr* node);
+		virtual void Finishing(CppClassBody* node);
+		virtual void Finishing(CppClassDeclaration* node);
+		virtual void Finishing(CppClassInheritance* node);
+		virtual void Finishing(CppClassMemberPart* node);
 		virtual void Finishing(CppConstType* node);
 		virtual void Finishing(CppContinueStat* node);
 		virtual void Finishing(CppDeclStat* node);
@@ -132,6 +147,9 @@ namespace cpp_parser::traverse_visitor
 		virtual void Finishing(CppDeleteExpr* node);
 		virtual void Finishing(CppDoWhileStat* node);
 		virtual void Finishing(CppEmptyStat* node);
+		virtual void Finishing(CppEnumBody* node);
+		virtual void Finishing(CppEnumDeclaration* node);
+		virtual void Finishing(CppEnumItem* node);
 		virtual void Finishing(CppExprOnly* node);
 		virtual void Finishing(CppExprStat* node);
 		virtual void Finishing(CppFile* node);
@@ -139,6 +157,7 @@ namespace cpp_parser::traverse_visitor
 		virtual void Finishing(CppForStatConditionPart* node);
 		virtual void Finishing(CppForStatIterateCondition* node);
 		virtual void Finishing(CppForStatLoopCondition* node);
+		virtual void Finishing(CppFriendDeclaration* node);
 		virtual void Finishing(CppFunctionKeyword* node);
 		virtual void Finishing(CppGenericArgument* node);
 		virtual void Finishing(CppGenericArguments* node);
@@ -153,6 +172,8 @@ namespace cpp_parser::traverse_visitor
 		virtual void Finishing(CppLambdaExpr* node);
 		virtual void Finishing(CppMultipleVarDeclaration* node);
 		virtual void Finishing(CppNameIdentifier* node);
+		virtual void Finishing(CppNamespaceDeclaration* node);
+		virtual void Finishing(CppNamespaceName* node);
 		virtual void Finishing(CppNewExpr* node);
 		virtual void Finishing(CppNumericExprLiteral* node);
 		virtual void Finishing(CppOperatorIdentifier* node);
@@ -181,6 +202,7 @@ namespace cpp_parser::traverse_visitor
 		virtual void Finishing(CppTypeOrExprOrOthers* node);
 		virtual void Finishing(CppTypeOrExprOrOthersToResolve* node);
 		virtual void Finishing(CppTypeOrExprToResolve* node);
+		virtual void Finishing(CppTypedefDeclaration* node);
 		virtual void Finishing(CppVarBraceInit* node);
 		virtual void Finishing(CppVarInit* node);
 		virtual void Finishing(CppVarParanthesisInit* node);
@@ -200,7 +222,12 @@ namespace cpp_parser::traverse_visitor
 
 		void Visit(CppSingleVarDeclaration* node) override;
 		void Visit(CppMultipleVarDeclaration* node) override;
+		void Visit(CppClassDeclaration* node) override;
+		void Visit(CppEnumDeclaration* node) override;
 		void Visit(CppStaticAssertDeclaration* node) override;
+		void Visit(CppTypedefDeclaration* node) override;
+		void Visit(CppFriendDeclaration* node) override;
+		void Visit(CppNamespaceDeclaration* node) override;
 
 		void Visit(CppTypeOrExprToResolve* node) override;
 		void Visit(CppExprOnly* node) override;
@@ -280,6 +307,12 @@ namespace cpp_parser::traverse_visitor
 		void InspectInto(CppDeclaratorArrayPart* node);
 		void InspectInto(CppDeclarator* node);
 		void InspectInto(CppDeclaratorVariablePart* node);
+		void InspectInto(CppClassInheritance* node);
+		void InspectInto(CppClassMemberPart* node);
+		void InspectInto(CppClassBody* node);
+		void InspectInto(CppEnumItem* node);
+		void InspectInto(CppEnumBody* node);
+		void InspectInto(CppNamespaceName* node);
 		void InspectInto(CppTryStatCatchPart* node);
 		void InspectInto(CppFile* node);
 	};

@@ -284,6 +284,121 @@ namespace cpp_parser::json_visitor
 		Print(node->type.Obj());
 		EndField();
 	}
+	void AstVisitor::PrintFields(CppClassBody* node)
+	{
+		BeginField(L"inheritances");
+		BeginArray();
+		for (auto&& listItem : node->inheritances)
+		{
+			BeginArrayItem();
+			Print(listItem.Obj());
+			EndArrayItem();
+		}
+		EndArray();
+		EndField();
+		BeginField(L"memberParts");
+		BeginArray();
+		for (auto&& listItem : node->memberParts)
+		{
+			BeginArrayItem();
+			Print(listItem.Obj());
+			EndArrayItem();
+		}
+		EndArray();
+		EndField();
+		BeginField(L"varParts");
+		BeginArray();
+		for (auto&& listItem : node->varParts)
+		{
+			BeginArrayItem();
+			Print(listItem.Obj());
+			EndArrayItem();
+		}
+		EndArray();
+		EndField();
+	}
+	void AstVisitor::PrintFields(CppClassDeclaration* node)
+	{
+		BeginField(L"body");
+		Print(node->body.Obj());
+		EndField();
+		BeginField(L"kind");
+		switch (node->kind)
+		{
+		case cpp_parser::CppClassKind::Class:
+			WriteString(L"Class");
+			break;
+		case cpp_parser::CppClassKind::Struct:
+			WriteString(L"Struct");
+			break;
+		case cpp_parser::CppClassKind::Union:
+			WriteString(L"Union");
+			break;
+		default:
+			WriteNull();
+		}
+		EndField();
+		BeginField(L"name");
+		WriteToken(node->name);
+		EndField();
+	}
+	void AstVisitor::PrintFields(CppClassInheritance* node)
+	{
+		BeginField(L"accessor");
+		switch (node->accessor)
+		{
+		case cpp_parser::CppClassAccessor::Default:
+			WriteString(L"Default");
+			break;
+		case cpp_parser::CppClassAccessor::Private:
+			WriteString(L"Private");
+			break;
+		case cpp_parser::CppClassAccessor::Protected:
+			WriteString(L"Protected");
+			break;
+		case cpp_parser::CppClassAccessor::Public:
+			WriteString(L"Public");
+			break;
+		default:
+			WriteNull();
+		}
+		EndField();
+		BeginField(L"type");
+		Print(node->type.Obj());
+		EndField();
+	}
+	void AstVisitor::PrintFields(CppClassMemberPart* node)
+	{
+		BeginField(L"accessor");
+		switch (node->accessor)
+		{
+		case cpp_parser::CppClassAccessor::Default:
+			WriteString(L"Default");
+			break;
+		case cpp_parser::CppClassAccessor::Private:
+			WriteString(L"Private");
+			break;
+		case cpp_parser::CppClassAccessor::Protected:
+			WriteString(L"Protected");
+			break;
+		case cpp_parser::CppClassAccessor::Public:
+			WriteString(L"Public");
+			break;
+		default:
+			WriteNull();
+		}
+		EndField();
+		BeginField(L"decls");
+		BeginArray();
+		for (auto&& listItem : node->decls)
+		{
+			BeginArrayItem();
+			Print(listItem.Obj());
+			EndArrayItem();
+		}
+		EndArray();
+		EndField();
+	}
 	void AstVisitor::PrintFields(CppConstType* node)
 	{
 		BeginField(L"type");
@@ -466,6 +581,53 @@ namespace cpp_parser::json_visitor
 	void AstVisitor::PrintFields(CppEmptyStat* node)
 	{
 	}
+	void AstVisitor::PrintFields(CppEnumBody* node)
+	{
+		BeginField(L"items");
+		BeginArray();
+		for (auto&& listItem : node->items)
+		{
+			BeginArrayItem();
+			Print(listItem.Obj());
+			EndArrayItem();
+		}
+		EndArray();
+		EndField();
+	}
+	void AstVisitor::PrintFields(CppEnumDeclaration* node)
+	{
+		BeginField(L"body");
+		Print(node->body.Obj());
+		EndField();
+		BeginField(L"kind");
+		switch (node->kind)
+		{
+		case cpp_parser::CppEnumKind::Enum:
+			WriteString(L"Enum");
+			break;
+		case cpp_parser::CppEnumKind::EnumClass:
+			WriteString(L"EnumClass");
+			break;
+		default:
+			WriteNull();
+		}
+		EndField();
+		BeginField(L"name");
+		WriteToken(node->name);
+		EndField();
+		BeginField(L"type");
+		Print(node->type.Obj());
+		EndField();
+	}
+	void AstVisitor::PrintFields(CppEnumItem* node)
+	{
+		BeginField(L"expr");
+		Print(node->expr.Obj());
+		EndField();
+		BeginField(L"name");
+		WriteToken(node->name);
+		EndField();
+	}
 	void AstVisitor::PrintFields(CppExprOnly* node)
 	{
 	}
@@ -519,6 +681,12 @@ namespace cpp_parser::json_visitor
 		EndField();
 		BeginField(L"varsDecl");
 		Print(node->varsDecl.Obj());
+		EndField();
+	}
+	void AstVisitor::PrintFields(CppFriendDeclaration* node)
+	{
+		BeginField(L"decl");
+		Print(node->decl.Obj());
 		EndField();
 	}
 	void AstVisitor::PrintFields(CppFunctionKeyword* node)
@@ -751,6 +919,35 @@ namespace cpp_parser::json_visitor
 			WriteNull();
 		}
 		EndField();
+		BeginField(L"name");
+		WriteToken(node->name);
+		EndField();
+	}
+	void AstVisitor::PrintFields(CppNamespaceDeclaration* node)
+	{
+		BeginField(L"decls");
+		BeginArray();
+		for (auto&& listItem : node->decls)
+		{
+			BeginArrayItem();
+			Print(listItem.Obj());
+			EndArrayItem();
+		}
+		EndArray();
+		EndField();
+		BeginField(L"names");
+		BeginArray();
+		for (auto&& listItem : node->names)
+		{
+			BeginArrayItem();
+			Print(listItem.Obj());
+			EndArrayItem();
+		}
+		EndArray();
+		EndField();
+	}
+	void AstVisitor::PrintFields(CppNamespaceName* node)
+	{
 		BeginField(L"name");
 		WriteToken(node->name);
 		EndField();
@@ -1586,6 +1783,12 @@ namespace cpp_parser::json_visitor
 		EndArray();
 		EndField();
 	}
+	void AstVisitor::PrintFields(CppTypedefDeclaration* node)
+	{
+		BeginField(L"decl");
+		Print(node->decl.Obj());
+		EndField();
+	}
 	void AstVisitor::PrintFields(CppVarBraceInit* node)
 	{
 		BeginField(L"arguments");
@@ -1746,6 +1949,36 @@ namespace cpp_parser::json_visitor
 		EndObject();
 	}
 
+	void AstVisitor::Visit(CppClassDeclaration* node)
+	{
+		if (!node)
+		{
+			WriteNull();
+			return;
+		}
+		BeginObject();
+		WriteType(L"ClassDeclaration", node);
+		PrintFields(static_cast<CppTypeOrExprOrOthers*>(node));
+		PrintFields(static_cast<CppDeclaration*>(node));
+		PrintFields(static_cast<CppClassDeclaration*>(node));
+		EndObject();
+	}
+
+	void AstVisitor::Visit(CppEnumDeclaration* node)
+	{
+		if (!node)
+		{
+			WriteNull();
+			return;
+		}
+		BeginObject();
+		WriteType(L"EnumDeclaration", node);
+		PrintFields(static_cast<CppTypeOrExprOrOthers*>(node));
+		PrintFields(static_cast<CppDeclaration*>(node));
+		PrintFields(static_cast<CppEnumDeclaration*>(node));
+		EndObject();
+	}
+
 	void AstVisitor::Visit(CppStaticAssertDeclaration* node)
 	{
 		if (!node)
@@ -1758,6 +1991,51 @@ namespace cpp_parser::json_visitor
 		PrintFields(static_cast<CppTypeOrExprOrOthers*>(node));
 		PrintFields(static_cast<CppDeclaration*>(node));
 		PrintFields(static_cast<CppStaticAssertDeclaration*>(node));
+		EndObject();
+	}
+
+	void AstVisitor::Visit(CppTypedefDeclaration* node)
+	{
+		if (!node)
+		{
+			WriteNull();
+			return;
+		}
+		BeginObject();
+		WriteType(L"TypedefDeclaration", node);
+		PrintFields(static_cast<CppTypeOrExprOrOthers*>(node));
+		PrintFields(static_cast<CppDeclaration*>(node));
+		PrintFields(static_cast<CppTypedefDeclaration*>(node));
+		EndObject();
+	}
+
+	void AstVisitor::Visit(CppFriendDeclaration* node)
+	{
+		if (!node)
+		{
+			WriteNull();
+			return;
+		}
+		BeginObject();
+		WriteType(L"FriendDeclaration", node);
+		PrintFields(static_cast<CppTypeOrExprOrOthers*>(node));
+		PrintFields(static_cast<CppDeclaration*>(node));
+		PrintFields(static_cast<CppFriendDeclaration*>(node));
+		EndObject();
+	}
+
+	void AstVisitor::Visit(CppNamespaceDeclaration* node)
+	{
+		if (!node)
+		{
+			WriteNull();
+			return;
+		}
+		BeginObject();
+		WriteType(L"NamespaceDeclaration", node);
+		PrintFields(static_cast<CppTypeOrExprOrOthers*>(node));
+		PrintFields(static_cast<CppDeclaration*>(node));
+		PrintFields(static_cast<CppNamespaceDeclaration*>(node));
 		EndObject();
 	}
 
@@ -2741,6 +3019,84 @@ namespace cpp_parser::json_visitor
 		BeginObject();
 		WriteType(L"DeclaratorVariablePart", node);
 		PrintFields(static_cast<CppDeclaratorVariablePart*>(node));
+		EndObject();
+	}
+
+	void AstVisitor::Print(CppClassInheritance* node)
+	{
+		if (!node)
+		{
+			WriteNull();
+			return;
+		}
+		BeginObject();
+		WriteType(L"ClassInheritance", node);
+		PrintFields(static_cast<CppClassInheritance*>(node));
+		EndObject();
+	}
+
+	void AstVisitor::Print(CppClassMemberPart* node)
+	{
+		if (!node)
+		{
+			WriteNull();
+			return;
+		}
+		BeginObject();
+		WriteType(L"ClassMemberPart", node);
+		PrintFields(static_cast<CppClassMemberPart*>(node));
+		EndObject();
+	}
+
+	void AstVisitor::Print(CppClassBody* node)
+	{
+		if (!node)
+		{
+			WriteNull();
+			return;
+		}
+		BeginObject();
+		WriteType(L"ClassBody", node);
+		PrintFields(static_cast<CppClassBody*>(node));
+		EndObject();
+	}
+
+	void AstVisitor::Print(CppEnumItem* node)
+	{
+		if (!node)
+		{
+			WriteNull();
+			return;
+		}
+		BeginObject();
+		WriteType(L"EnumItem", node);
+		PrintFields(static_cast<CppEnumItem*>(node));
+		EndObject();
+	}
+
+	void AstVisitor::Print(CppEnumBody* node)
+	{
+		if (!node)
+		{
+			WriteNull();
+			return;
+		}
+		BeginObject();
+		WriteType(L"EnumBody", node);
+		PrintFields(static_cast<CppEnumBody*>(node));
+		EndObject();
+	}
+
+	void AstVisitor::Print(CppNamespaceName* node)
+	{
+		if (!node)
+		{
+			WriteNull();
+			return;
+		}
+		BeginObject();
+		WriteType(L"NamespaceName", node);
+		PrintFields(static_cast<CppNamespaceName*>(node));
 		EndObject();
 	}
 
