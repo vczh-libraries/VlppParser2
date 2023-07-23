@@ -56,12 +56,12 @@ namespace cpp_parser::json_visitor
 		virtual void PrintFields(CppEnumItem* node);
 		virtual void PrintFields(CppExprOnly* node);
 		virtual void PrintFields(CppExprStat* node);
+		virtual void PrintFields(CppExternDeclaration* node);
 		virtual void PrintFields(CppFile* node);
 		virtual void PrintFields(CppForStat* node);
 		virtual void PrintFields(CppForStatConditionPart* node);
 		virtual void PrintFields(CppForStatIterateCondition* node);
 		virtual void PrintFields(CppForStatLoopCondition* node);
-		virtual void PrintFields(CppFriendDeclaration* node);
 		virtual void PrintFields(CppFunctionKeyword* node);
 		virtual void PrintFields(CppGenericArgument* node);
 		virtual void PrintFields(CppGenericArguments* node);
@@ -130,7 +130,7 @@ namespace cpp_parser::json_visitor
 		void Visit(CppEnumDeclaration* node) override;
 		void Visit(CppStaticAssertDeclaration* node) override;
 		void Visit(CppTypedefDeclaration* node) override;
-		void Visit(CppFriendDeclaration* node) override;
+		void Visit(CppExternDeclaration* node) override;
 		void Visit(CppNamespaceDeclaration* node) override;
 
 		void Visit(CppTypeOrExprToResolve* node) override;

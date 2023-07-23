@@ -67,7 +67,7 @@ DeclarationVisitor
 	{
 	}
 
-	void DeclarationVisitor::Visit(CppFriendDeclaration* node)
+	void DeclarationVisitor::Visit(CppExternDeclaration* node)
 	{
 	}
 

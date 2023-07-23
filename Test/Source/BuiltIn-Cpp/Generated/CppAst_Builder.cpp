@@ -159,6 +159,12 @@ MakeClassDeclaration
 		return *this;
 	}
 
+	MakeClassDeclaration& MakeClassDeclaration::friendToken(const vl::WString& value)
+	{
+		node->friendToken.value = value;
+		return *this;
+	}
+
 	MakeClassDeclaration& MakeClassDeclaration::kind(CppClassKind value)
 	{
 		node->kind = value;
@@ -236,6 +242,12 @@ MakeDeclarator
 	MakeDeclarator& MakeDeclarator::arrayParts(const vl::Ptr<CppDeclaratorArrayPart>& value)
 	{
 		node->arrayParts.Add(value);
+		return *this;
+	}
+
+	MakeDeclarator& MakeDeclarator::bitfield(const vl::Ptr<CppTypeOrExpr>& value)
+	{
+		node->bitfield = value;
 		return *this;
 	}
 
@@ -468,6 +480,16 @@ MakeExprStat
 	}
 
 /***********************************************************************
+MakeExternDeclaration
+***********************************************************************/
+
+	MakeExternDeclaration& MakeExternDeclaration::decls(const vl::Ptr<CppDeclaration>& value)
+	{
+		node->decls.Add(value);
+		return *this;
+	}
+
+/***********************************************************************
 MakeFile
 ***********************************************************************/
 
@@ -528,16 +550,6 @@ MakeForStatLoopCondition
 	MakeForStatLoopCondition& MakeForStatLoopCondition::varsDecl(const vl::Ptr<CppTypeOrExprOrOthers>& value)
 	{
 		node->varsDecl = value;
-		return *this;
-	}
-
-/***********************************************************************
-MakeFriendDeclaration
-***********************************************************************/
-
-	MakeFriendDeclaration& MakeFriendDeclaration::decl(const vl::Ptr<CppDeclaration>& value)
-	{
-		node->decl = value;
 		return *this;
 	}
 

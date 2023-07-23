@@ -43,12 +43,12 @@ namespace cpp_parser
 	class CppEnumItem;
 	class CppExprOnly;
 	class CppExprStat;
+	class CppExternDeclaration;
 	class CppFile;
 	class CppForStat;
 	class CppForStatConditionPart;
 	class CppForStatIterateCondition;
 	class CppForStatLoopCondition;
-	class CppFriendDeclaration;
 	class CppFunctionKeyword;
 	class CppGenericArgument;
 	class CppGenericArguments;
@@ -321,7 +321,7 @@ namespace cpp_parser
 			virtual void Visit(CppEnumDeclaration* node) = 0;
 			virtual void Visit(CppStaticAssertDeclaration* node) = 0;
 			virtual void Visit(CppTypedefDeclaration* node) = 0;
-			virtual void Visit(CppFriendDeclaration* node) = 0;
+			virtual void Visit(CppExternDeclaration* node) = 0;
 			virtual void Visit(CppNamespaceDeclaration* node) = 0;
 		};
 
@@ -737,6 +737,7 @@ namespace cpp_parser
 		vl::collections::List<vl::Ptr<CppAdvancedType>> advancedTypes;
 		vl::glr::ParsingToken variadic;
 		vl::Ptr<CppIdentifier> id;
+		vl::Ptr<CppTypeOrExpr> bitfield;
 		vl::Ptr<CppDeclarator> innerDeclarator;
 		vl::Ptr<CppDeclaratorFunctionPart> funcPart;
 		vl::collections::List<vl::Ptr<CppDeclaratorArrayPart>> arrayParts;
@@ -843,6 +844,7 @@ namespace cpp_parser
 	class CppClassDeclaration : public CppDeclaration, vl::reflection::Description<CppClassDeclaration>
 	{
 	public:
+		vl::glr::ParsingToken friendToken;
 		CppClassKind kind = CppClassKind::UNDEFINED_ENUM_ITEM_VALUE;
 		vl::glr::ParsingToken name;
 		vl::Ptr<CppClassBody> body;
@@ -891,10 +893,10 @@ namespace cpp_parser
 		void Accept(CppDeclaration::IVisitor* visitor) override;
 	};
 
-	class CppFriendDeclaration : public CppDeclaration, vl::reflection::Description<CppFriendDeclaration>
+	class CppExternDeclaration : public CppDeclaration, vl::reflection::Description<CppExternDeclaration>
 	{
 	public:
-		vl::Ptr<CppDeclaration> decl;
+		vl::collections::List<vl::Ptr<CppDeclaration>> decls;
 
 		void Accept(CppDeclaration::IVisitor* visitor) override;
 	};
@@ -1263,7 +1265,7 @@ namespace vl::reflection::description
 	DECL_TYPE_INFO(cpp_parser::CppEnumDeclaration)
 	DECL_TYPE_INFO(cpp_parser::CppStaticAssertDeclaration)
 	DECL_TYPE_INFO(cpp_parser::CppTypedefDeclaration)
-	DECL_TYPE_INFO(cpp_parser::CppFriendDeclaration)
+	DECL_TYPE_INFO(cpp_parser::CppExternDeclaration)
 	DECL_TYPE_INFO(cpp_parser::CppNamespaceName)
 	DECL_TYPE_INFO(cpp_parser::CppNamespaceDeclaration)
 	DECL_TYPE_INFO(cpp_parser::CppStatement)
@@ -1358,7 +1360,7 @@ namespace vl::reflection::description
 			INVOKE_INTERFACE_PROXY(Visit, node);
 		}
 
-		void Visit(cpp_parser::CppFriendDeclaration* node) override
+		void Visit(cpp_parser::CppExternDeclaration* node) override
 		{
 			INVOKE_INTERFACE_PROXY(Visit, node);
 		}

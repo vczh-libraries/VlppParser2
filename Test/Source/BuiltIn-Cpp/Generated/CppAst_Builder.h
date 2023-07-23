@@ -73,6 +73,7 @@ namespace cpp_parser::builder
 	{
 	public:
 		MakeClassDeclaration& body(const vl::Ptr<CppClassBody>& value);
+		MakeClassDeclaration& friendToken(const vl::WString& value);
 		MakeClassDeclaration& kind(CppClassKind value);
 		MakeClassDeclaration& name(const vl::WString& value);
 	};
@@ -108,6 +109,7 @@ namespace cpp_parser::builder
 	public:
 		MakeDeclarator& advancedTypes(const vl::Ptr<CppAdvancedType>& value);
 		MakeDeclarator& arrayParts(const vl::Ptr<CppDeclaratorArrayPart>& value);
+		MakeDeclarator& bitfield(const vl::Ptr<CppTypeOrExpr>& value);
 		MakeDeclarator& funcPart(const vl::Ptr<CppDeclaratorFunctionPart>& value);
 		MakeDeclarator& id(const vl::Ptr<CppIdentifier>& value);
 		MakeDeclarator& innerDeclarator(const vl::Ptr<CppDeclarator>& value);
@@ -200,6 +202,12 @@ namespace cpp_parser::builder
 		MakeExprStat& expr(const vl::Ptr<CppTypeOrExpr>& value);
 	};
 
+	class MakeExternDeclaration : public vl::glr::ParsingAstBuilder<CppExternDeclaration>
+	{
+	public:
+		MakeExternDeclaration& decls(const vl::Ptr<CppDeclaration>& value);
+	};
+
 	class MakeFile : public vl::glr::ParsingAstBuilder<CppFile>
 	{
 	public:
@@ -226,12 +234,6 @@ namespace cpp_parser::builder
 		MakeForStatLoopCondition& condition(const vl::Ptr<CppTypeOrExpr>& value);
 		MakeForStatLoopCondition& sideEffect(const vl::Ptr<CppTypeOrExpr>& value);
 		MakeForStatLoopCondition& varsDecl(const vl::Ptr<CppTypeOrExprOrOthers>& value);
-	};
-
-	class MakeFriendDeclaration : public vl::glr::ParsingAstBuilder<CppFriendDeclaration>
-	{
-	public:
-		MakeFriendDeclaration& decl(const vl::Ptr<CppDeclaration>& value);
 	};
 
 	class MakeFunctionKeyword : public vl::glr::ParsingAstBuilder<CppFunctionKeyword>

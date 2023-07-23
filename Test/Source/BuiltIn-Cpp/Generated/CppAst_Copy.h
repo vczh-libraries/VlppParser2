@@ -56,12 +56,12 @@ namespace cpp_parser::copy_visitor
 		void CopyFields(CppEnumItem* from, CppEnumItem* to);
 		void CopyFields(CppExprOnly* from, CppExprOnly* to);
 		void CopyFields(CppExprStat* from, CppExprStat* to);
+		void CopyFields(CppExternDeclaration* from, CppExternDeclaration* to);
 		void CopyFields(CppFile* from, CppFile* to);
 		void CopyFields(CppForStat* from, CppForStat* to);
 		void CopyFields(CppForStatConditionPart* from, CppForStatConditionPart* to);
 		void CopyFields(CppForStatIterateCondition* from, CppForStatIterateCondition* to);
 		void CopyFields(CppForStatLoopCondition* from, CppForStatLoopCondition* to);
-		void CopyFields(CppFriendDeclaration* from, CppFriendDeclaration* to);
 		void CopyFields(CppFunctionKeyword* from, CppFunctionKeyword* to);
 		void CopyFields(CppGenericArgument* from, CppGenericArgument* to);
 		void CopyFields(CppGenericArguments* from, CppGenericArguments* to);
@@ -150,7 +150,7 @@ namespace cpp_parser::copy_visitor
 		void Visit(CppEnumDeclaration* node) override;
 		void Visit(CppStaticAssertDeclaration* node) override;
 		void Visit(CppTypedefDeclaration* node) override;
-		void Visit(CppFriendDeclaration* node) override;
+		void Visit(CppExternDeclaration* node) override;
 		void Visit(CppNamespaceDeclaration* node) override;
 
 		void Visit(CppTypeOrExprToResolve* node) override;
@@ -260,10 +260,10 @@ namespace cpp_parser::copy_visitor
 		vl::Ptr<CppEnumDeclaration> CopyNode(CppEnumDeclaration* node);
 		vl::Ptr<CppExprOnly> CopyNode(CppExprOnly* node);
 		vl::Ptr<CppExprStat> CopyNode(CppExprStat* node);
+		vl::Ptr<CppExternDeclaration> CopyNode(CppExternDeclaration* node);
 		vl::Ptr<CppForStat> CopyNode(CppForStat* node);
 		vl::Ptr<CppForStatIterateCondition> CopyNode(CppForStatIterateCondition* node);
 		vl::Ptr<CppForStatLoopCondition> CopyNode(CppForStatLoopCondition* node);
-		vl::Ptr<CppFriendDeclaration> CopyNode(CppFriendDeclaration* node);
 		vl::Ptr<CppGenericArgument> CopyNode(CppGenericArgument* node);
 		vl::Ptr<CppGotoStat> CopyNode(CppGotoStat* node);
 		vl::Ptr<CppIfElseStat> CopyNode(CppIfElseStat* node);

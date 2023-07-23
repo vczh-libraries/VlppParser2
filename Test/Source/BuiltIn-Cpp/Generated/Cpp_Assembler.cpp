@@ -76,6 +76,8 @@ CppAstInsReceiver : public vl::glr::AstInsReceiverBase
 			return vl::Ptr(new cpp_parser::CppEnumItem);
 		case CppClasses::ExprStat:
 			return vl::Ptr(new cpp_parser::CppExprStat);
+		case CppClasses::ExternDeclaration:
+			return vl::Ptr(new cpp_parser::CppExternDeclaration);
 		case CppClasses::File:
 			return vl::Ptr(new cpp_parser::CppFile);
 		case CppClasses::ForStat:
@@ -84,8 +86,6 @@ CppAstInsReceiver : public vl::glr::AstInsReceiverBase
 			return vl::Ptr(new cpp_parser::CppForStatIterateCondition);
 		case CppClasses::ForStatLoopCondition:
 			return vl::Ptr(new cpp_parser::CppForStatLoopCondition);
-		case CppClasses::FriendDeclaration:
-			return vl::Ptr(new cpp_parser::CppFriendDeclaration);
 		case CppClasses::FunctionKeyword:
 			return vl::Ptr(new cpp_parser::CppFunctionKeyword);
 		case CppClasses::GenericArgument:
@@ -234,6 +234,8 @@ CppAstInsReceiver : public vl::glr::AstInsReceiverBase
 			return vl::glr::AssemblerSetObjectField(&cpp_parser::CppDeclarator::advancedTypes, object, field, value, cppFieldName);
 		case CppFields::Declarator_arrayParts:
 			return vl::glr::AssemblerSetObjectField(&cpp_parser::CppDeclarator::arrayParts, object, field, value, cppFieldName);
+		case CppFields::Declarator_bitfield:
+			return vl::glr::AssemblerSetObjectField(&cpp_parser::CppDeclarator::bitfield, object, field, value, cppFieldName);
 		case CppFields::Declarator_funcPart:
 			return vl::glr::AssemblerSetObjectField(&cpp_parser::CppDeclarator::funcPart, object, field, value, cppFieldName);
 		case CppFields::Declarator_id:
@@ -278,6 +280,8 @@ CppAstInsReceiver : public vl::glr::AstInsReceiverBase
 			return vl::glr::AssemblerSetObjectField(&cpp_parser::CppEnumItem::expr, object, field, value, cppFieldName);
 		case CppFields::ExprStat_expr:
 			return vl::glr::AssemblerSetObjectField(&cpp_parser::CppExprStat::expr, object, field, value, cppFieldName);
+		case CppFields::ExternDeclaration_decls:
+			return vl::glr::AssemblerSetObjectField(&cpp_parser::CppExternDeclaration::decls, object, field, value, cppFieldName);
 		case CppFields::File_decls:
 			return vl::glr::AssemblerSetObjectField(&cpp_parser::CppFile::decls, object, field, value, cppFieldName);
 		case CppFields::ForStat_conditionPart:
@@ -294,8 +298,6 @@ CppAstInsReceiver : public vl::glr::AstInsReceiverBase
 			return vl::glr::AssemblerSetObjectField(&cpp_parser::CppForStatLoopCondition::sideEffect, object, field, value, cppFieldName);
 		case CppFields::ForStatLoopCondition_varsDecl:
 			return vl::glr::AssemblerSetObjectField(&cpp_parser::CppForStatLoopCondition::varsDecl, object, field, value, cppFieldName);
-		case CppFields::FriendDeclaration_decl:
-			return vl::glr::AssemblerSetObjectField(&cpp_parser::CppFriendDeclaration::decl, object, field, value, cppFieldName);
 		case CppFields::FunctionKeyword_arguments:
 			return vl::glr::AssemblerSetObjectField(&cpp_parser::CppFunctionKeyword::arguments, object, field, value, cppFieldName);
 		case CppFields::GenericArgument_argument:
@@ -448,6 +450,8 @@ CppAstInsReceiver : public vl::glr::AstInsReceiverBase
 		{
 		case CppFields::CastExpr_keyword:
 			return vl::glr::AssemblerSetTokenField(&cpp_parser::CppCastExpr::keyword, object, field, token, tokenIndex, cppFieldName);
+		case CppFields::ClassDeclaration_friendToken:
+			return vl::glr::AssemblerSetTokenField(&cpp_parser::CppClassDeclaration::friendToken, object, field, token, tokenIndex, cppFieldName);
 		case CppFields::ClassDeclaration_name:
 			return vl::glr::AssemblerSetTokenField(&cpp_parser::CppClassDeclaration::name, object, field, token, tokenIndex, cppFieldName);
 		case CppFields::Declarator_variadic:
@@ -583,12 +587,12 @@ CppAstInsReceiver : public vl::glr::AstInsReceiverBase
 			L"EnumItem",
 			L"ExprOnly",
 			L"ExprStat",
+			L"ExternDeclaration",
 			L"File",
 			L"ForStat",
 			L"ForStatConditionPart",
 			L"ForStatIterateCondition",
 			L"ForStatLoopCondition",
-			L"FriendDeclaration",
 			L"FunctionKeyword",
 			L"GenericArgument",
 			L"GenericArguments",
@@ -682,12 +686,12 @@ CppAstInsReceiver : public vl::glr::AstInsReceiverBase
 			L"cpp_parser::CppEnumItem",
 			L"cpp_parser::CppExprOnly",
 			L"cpp_parser::CppExprStat",
+			L"cpp_parser::CppExternDeclaration",
 			L"cpp_parser::CppFile",
 			L"cpp_parser::CppForStat",
 			L"cpp_parser::CppForStatConditionPart",
 			L"cpp_parser::CppForStatIterateCondition",
 			L"cpp_parser::CppForStatLoopCondition",
-			L"cpp_parser::CppFriendDeclaration",
 			L"cpp_parser::CppFunctionKeyword",
 			L"cpp_parser::CppGenericArgument",
 			L"cpp_parser::CppGenericArguments",
@@ -769,6 +773,7 @@ CppAstInsReceiver : public vl::glr::AstInsReceiverBase
 			L"ClassBody::memberParts",
 			L"ClassBody::varParts",
 			L"ClassDeclaration::body",
+			L"ClassDeclaration::friendToken",
 			L"ClassDeclaration::kind",
 			L"ClassDeclaration::name",
 			L"ClassInheritance::accessor",
@@ -779,6 +784,7 @@ CppAstInsReceiver : public vl::glr::AstInsReceiverBase
 			L"DeclStat::decl",
 			L"Declarator::advancedTypes",
 			L"Declarator::arrayParts",
+			L"Declarator::bitfield",
 			L"Declarator::funcPart",
 			L"Declarator::id",
 			L"Declarator::innerDeclarator",
@@ -809,6 +815,7 @@ CppAstInsReceiver : public vl::glr::AstInsReceiverBase
 			L"EnumItem::expr",
 			L"EnumItem::name",
 			L"ExprStat::expr",
+			L"ExternDeclaration::decls",
 			L"File::decls",
 			L"ForStat::conditionPart",
 			L"ForStat::stat",
@@ -817,7 +824,6 @@ CppAstInsReceiver : public vl::glr::AstInsReceiverBase
 			L"ForStatLoopCondition::condition",
 			L"ForStatLoopCondition::sideEffect",
 			L"ForStatLoopCondition::varsDecl",
-			L"FriendDeclaration::decl",
 			L"FunctionKeyword::arguments",
 			L"FunctionKeyword::keyword",
 			L"GenericArgument::argument",
@@ -918,7 +924,7 @@ CppAstInsReceiver : public vl::glr::AstInsReceiverBase
 			L"__TryStat::tryStat",
 		};
 		vl::vint index = (vl::vint)field;
-		return 0 <= index && index < 166 ? results[index] : nullptr;
+		return 0 <= index && index < 168 ? results[index] : nullptr;
 	}
 
 	const wchar_t* CppCppFieldName(CppFields field)
@@ -943,6 +949,7 @@ CppAstInsReceiver : public vl::glr::AstInsReceiverBase
 			L"cpp_parser::CppClassBody::memberParts",
 			L"cpp_parser::CppClassBody::varParts",
 			L"cpp_parser::CppClassDeclaration::body",
+			L"cpp_parser::CppClassDeclaration::friendToken",
 			L"cpp_parser::CppClassDeclaration::kind",
 			L"cpp_parser::CppClassDeclaration::name",
 			L"cpp_parser::CppClassInheritance::accessor",
@@ -953,6 +960,7 @@ CppAstInsReceiver : public vl::glr::AstInsReceiverBase
 			L"cpp_parser::CppDeclStat::decl",
 			L"cpp_parser::CppDeclarator::advancedTypes",
 			L"cpp_parser::CppDeclarator::arrayParts",
+			L"cpp_parser::CppDeclarator::bitfield",
 			L"cpp_parser::CppDeclarator::funcPart",
 			L"cpp_parser::CppDeclarator::id",
 			L"cpp_parser::CppDeclarator::innerDeclarator",
@@ -983,6 +991,7 @@ CppAstInsReceiver : public vl::glr::AstInsReceiverBase
 			L"cpp_parser::CppEnumItem::expr",
 			L"cpp_parser::CppEnumItem::name",
 			L"cpp_parser::CppExprStat::expr",
+			L"cpp_parser::CppExternDeclaration::decls",
 			L"cpp_parser::CppFile::decls",
 			L"cpp_parser::CppForStat::conditionPart",
 			L"cpp_parser::CppForStat::stat",
@@ -991,7 +1000,6 @@ CppAstInsReceiver : public vl::glr::AstInsReceiverBase
 			L"cpp_parser::CppForStatLoopCondition::condition",
 			L"cpp_parser::CppForStatLoopCondition::sideEffect",
 			L"cpp_parser::CppForStatLoopCondition::varsDecl",
-			L"cpp_parser::CppFriendDeclaration::decl",
 			L"cpp_parser::CppFunctionKeyword::arguments",
 			L"cpp_parser::CppFunctionKeyword::keyword",
 			L"cpp_parser::CppGenericArgument::argument",
@@ -1092,7 +1100,7 @@ CppAstInsReceiver : public vl::glr::AstInsReceiverBase
 			L"cpp_parser::Cpp__TryStat::tryStat",
 		};
 		vl::vint index = (vl::vint)field;
-		return 0 <= index && index < 166 ? results[index] : nullptr;
+		return 0 <= index && index < 168 ? results[index] : nullptr;
 	}
 
 	vl::Ptr<vl::glr::ParsingAstBase> CppAstInsReceiver::ResolveAmbiguity(vl::vint32_t type, vl::collections::Array<vl::Ptr<vl::glr::ParsingAstBase>>& candidates)
@@ -1140,10 +1148,10 @@ CppAstInsReceiver : public vl::glr::AstInsReceiverBase
 			return vl::glr::AssemblerResolveAmbiguity<cpp_parser::CppExprOnly, cpp_parser::CppTypeOrExprToResolve>(type, candidates, cppTypeName);
 		case CppClasses::ExprStat:
 			return vl::glr::AssemblerResolveAmbiguity<cpp_parser::CppExprStat, cpp_parser::CppStatementToResolve>(type, candidates, cppTypeName);
+		case CppClasses::ExternDeclaration:
+			return vl::glr::AssemblerResolveAmbiguity<cpp_parser::CppExternDeclaration, cpp_parser::CppTypeOrExprOrOthersToResolve>(type, candidates, cppTypeName);
 		case CppClasses::ForStat:
 			return vl::glr::AssemblerResolveAmbiguity<cpp_parser::CppForStat, cpp_parser::CppStatementToResolve>(type, candidates, cppTypeName);
-		case CppClasses::FriendDeclaration:
-			return vl::glr::AssemblerResolveAmbiguity<cpp_parser::CppFriendDeclaration, cpp_parser::CppTypeOrExprOrOthersToResolve>(type, candidates, cppTypeName);
 		case CppClasses::GenericArgument:
 			return vl::glr::AssemblerResolveAmbiguity<cpp_parser::CppGenericArgument, cpp_parser::CppTypeOrExprOrOthersToResolve>(type, candidates, cppTypeName);
 		case CppClasses::GotoStat:

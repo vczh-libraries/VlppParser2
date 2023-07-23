@@ -58,12 +58,12 @@ namespace cpp_parser::traverse_visitor
 		virtual void Traverse(CppEnumItem* node);
 		virtual void Traverse(CppExprOnly* node);
 		virtual void Traverse(CppExprStat* node);
+		virtual void Traverse(CppExternDeclaration* node);
 		virtual void Traverse(CppFile* node);
 		virtual void Traverse(CppForStat* node);
 		virtual void Traverse(CppForStatConditionPart* node);
 		virtual void Traverse(CppForStatIterateCondition* node);
 		virtual void Traverse(CppForStatLoopCondition* node);
-		virtual void Traverse(CppFriendDeclaration* node);
 		virtual void Traverse(CppFunctionKeyword* node);
 		virtual void Traverse(CppGenericArgument* node);
 		virtual void Traverse(CppGenericArguments* node);
@@ -152,12 +152,12 @@ namespace cpp_parser::traverse_visitor
 		virtual void Finishing(CppEnumItem* node);
 		virtual void Finishing(CppExprOnly* node);
 		virtual void Finishing(CppExprStat* node);
+		virtual void Finishing(CppExternDeclaration* node);
 		virtual void Finishing(CppFile* node);
 		virtual void Finishing(CppForStat* node);
 		virtual void Finishing(CppForStatConditionPart* node);
 		virtual void Finishing(CppForStatIterateCondition* node);
 		virtual void Finishing(CppForStatLoopCondition* node);
-		virtual void Finishing(CppFriendDeclaration* node);
 		virtual void Finishing(CppFunctionKeyword* node);
 		virtual void Finishing(CppGenericArgument* node);
 		virtual void Finishing(CppGenericArguments* node);
@@ -226,7 +226,7 @@ namespace cpp_parser::traverse_visitor
 		void Visit(CppEnumDeclaration* node) override;
 		void Visit(CppStaticAssertDeclaration* node) override;
 		void Visit(CppTypedefDeclaration* node) override;
-		void Visit(CppFriendDeclaration* node) override;
+		void Visit(CppExternDeclaration* node) override;
 		void Visit(CppNamespaceDeclaration* node) override;
 
 		void Visit(CppTypeOrExprToResolve* node) override;

@@ -217,7 +217,7 @@ Visitor Pattern Implementation
 		visitor->Visit(this);
 	}
 
-	void CppFriendDeclaration::Accept(CppDeclaration::IVisitor* visitor)
+	void CppExternDeclaration::Accept(CppDeclaration::IVisitor* visitor)
 	{
 		visitor->Visit(this);
 	}
@@ -434,7 +434,7 @@ namespace vl::reflection::description
 	IMPL_TYPE_INFO_RENAME(cpp_parser::CppEnumDeclaration, cpp_parser::CppEnumDeclaration)
 	IMPL_TYPE_INFO_RENAME(cpp_parser::CppStaticAssertDeclaration, cpp_parser::CppStaticAssertDeclaration)
 	IMPL_TYPE_INFO_RENAME(cpp_parser::CppTypedefDeclaration, cpp_parser::CppTypedefDeclaration)
-	IMPL_TYPE_INFO_RENAME(cpp_parser::CppFriendDeclaration, cpp_parser::CppFriendDeclaration)
+	IMPL_TYPE_INFO_RENAME(cpp_parser::CppExternDeclaration, cpp_parser::CppExternDeclaration)
 	IMPL_TYPE_INFO_RENAME(cpp_parser::CppNamespaceName, cpp_parser::CppNamespaceName)
 	IMPL_TYPE_INFO_RENAME(cpp_parser::CppNamespaceDeclaration, cpp_parser::CppNamespaceDeclaration)
 	IMPL_TYPE_INFO_RENAME(cpp_parser::CppStatement, cpp_parser::CppStatement)
@@ -994,6 +994,7 @@ namespace vl::reflection::description
 		CLASS_MEMBER_FIELD(advancedTypes)
 		CLASS_MEMBER_FIELD(variadic)
 		CLASS_MEMBER_FIELD(id)
+		CLASS_MEMBER_FIELD(bitfield)
 		CLASS_MEMBER_FIELD(innerDeclarator)
 		CLASS_MEMBER_FIELD(funcPart)
 		CLASS_MEMBER_FIELD(arrayParts)
@@ -1115,6 +1116,7 @@ namespace vl::reflection::description
 
 		CLASS_MEMBER_CONSTRUCTOR(vl::Ptr<cpp_parser::CppClassDeclaration>(), NO_PARAMETER)
 
+		CLASS_MEMBER_FIELD(friendToken)
 		CLASS_MEMBER_FIELD(kind)
 		CLASS_MEMBER_FIELD(name)
 		CLASS_MEMBER_FIELD(body)
@@ -1171,13 +1173,13 @@ namespace vl::reflection::description
 		CLASS_MEMBER_FIELD(decl)
 	END_CLASS_MEMBER(cpp_parser::CppTypedefDeclaration)
 
-	BEGIN_CLASS_MEMBER(cpp_parser::CppFriendDeclaration)
+	BEGIN_CLASS_MEMBER(cpp_parser::CppExternDeclaration)
 		CLASS_MEMBER_BASE(cpp_parser::CppDeclaration)
 
-		CLASS_MEMBER_CONSTRUCTOR(vl::Ptr<cpp_parser::CppFriendDeclaration>(), NO_PARAMETER)
+		CLASS_MEMBER_CONSTRUCTOR(vl::Ptr<cpp_parser::CppExternDeclaration>(), NO_PARAMETER)
 
-		CLASS_MEMBER_FIELD(decl)
-	END_CLASS_MEMBER(cpp_parser::CppFriendDeclaration)
+		CLASS_MEMBER_FIELD(decls)
+	END_CLASS_MEMBER(cpp_parser::CppExternDeclaration)
 
 	BEGIN_CLASS_MEMBER(cpp_parser::CppNamespaceName)
 		CLASS_MEMBER_BASE(vl::glr::ParsingAstBase)
@@ -1442,7 +1444,7 @@ namespace vl::reflection::description
 		CLASS_MEMBER_METHOD_OVERLOAD(Visit, {L"node"}, void(cpp_parser::CppDeclaration::IVisitor::*)(cpp_parser::CppEnumDeclaration* node))
 		CLASS_MEMBER_METHOD_OVERLOAD(Visit, {L"node"}, void(cpp_parser::CppDeclaration::IVisitor::*)(cpp_parser::CppStaticAssertDeclaration* node))
 		CLASS_MEMBER_METHOD_OVERLOAD(Visit, {L"node"}, void(cpp_parser::CppDeclaration::IVisitor::*)(cpp_parser::CppTypedefDeclaration* node))
-		CLASS_MEMBER_METHOD_OVERLOAD(Visit, {L"node"}, void(cpp_parser::CppDeclaration::IVisitor::*)(cpp_parser::CppFriendDeclaration* node))
+		CLASS_MEMBER_METHOD_OVERLOAD(Visit, {L"node"}, void(cpp_parser::CppDeclaration::IVisitor::*)(cpp_parser::CppExternDeclaration* node))
 		CLASS_MEMBER_METHOD_OVERLOAD(Visit, {L"node"}, void(cpp_parser::CppDeclaration::IVisitor::*)(cpp_parser::CppNamespaceDeclaration* node))
 	END_INTERFACE_MEMBER(cpp_parser::CppDeclaration)
 
@@ -1612,7 +1614,7 @@ namespace vl::reflection::description
 			ADD_TYPE_INFO(cpp_parser::CppEnumDeclaration)
 			ADD_TYPE_INFO(cpp_parser::CppStaticAssertDeclaration)
 			ADD_TYPE_INFO(cpp_parser::CppTypedefDeclaration)
-			ADD_TYPE_INFO(cpp_parser::CppFriendDeclaration)
+			ADD_TYPE_INFO(cpp_parser::CppExternDeclaration)
 			ADD_TYPE_INFO(cpp_parser::CppNamespaceName)
 			ADD_TYPE_INFO(cpp_parser::CppNamespaceDeclaration)
 			ADD_TYPE_INFO(cpp_parser::CppStatement)
