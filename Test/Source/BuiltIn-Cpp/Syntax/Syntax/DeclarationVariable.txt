@@ -23,6 +23,10 @@ _VarCtorInit
   ::= !_VarBraceInit
   ;
 
+_VarStatInit
+  ::= _BlockStat:stat
+  ;
+
 _VarInit
   ::= !_VarValueInit
   ::= !_VarVarParanInit
@@ -43,14 +47,12 @@ _DeclaratorVariablePartRequiredInit
   ::= _DeclaratorRequiredName:declarator _VarInit:init as DeclaratorVariablePart
   ;
 
-//================================================================
-
-_VarWithoutInit
-  ::= _TypeBeforeDeclarator:type _DeclaratorVariablePartWithoutInit:varPart as SingleVarDeclaration
+_DeclaratorCtorDtorPartWithoutInit
+  ::= _DeclaratorCtorDtor:declarator as DeclaratorVariablePart
   ;
 
-_VarRequiredInit
-  ::= _TypeBeforeDeclarator:type _DeclaratorVariablePartRequiredInit:varPart as SingleVarDeclaration
+_DeclaratorCtorDtorParRequiredInit
+  ::= _DeclaratorCtorDtor:declarator _VarStatInit:init as DeclaratorVariablePart
   ;
 
 //================================================================
@@ -130,6 +132,10 @@ _GenericHeader
 // Variable Declarations
 //////////////////////////////////////////////////////////////////
 
+_VarWithoutInit
+  ::= _TypeBeforeDeclarator:type _DeclaratorVariablePartWithoutInit:varPart as SingleVarDeclaration
+  ;
+
 _VarsDeclWithoutKeyword
   ::= _TypeBeforeDeclarator:type _DeclaratorVariablePartOptionalInit:varParts {"," _DeclaratorVariablePartOptionalInit:varParts} as MultipleVarDeclaration
   ;
@@ -144,7 +150,9 @@ _VarsDecl
 //////////////////////////////////////////////////////////////////
 
 _CtorDtorForwardDecl
+  ::= {_DeclaratorKeyword:keywords} _DeclaratorCtorDtorPartWithoutInit:varPart as CtorDtorDeclaration
   ;
 
 _CtorDtorDecl
+  ::= {_DeclaratorKeyword:keywords} _DeclaratorCtorDtorParRequiredInit:varPart as CtorDtorDeclaration
   ;

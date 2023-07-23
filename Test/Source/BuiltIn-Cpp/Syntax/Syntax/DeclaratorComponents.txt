@@ -68,6 +68,11 @@ _DeclaratorAKMember
   ::= _AdvancedTypeMember:advancedTypes as partial Declarator
   ;
 
+_DeclaratorAKCtorDtor
+  ::= _DeclaratorKeyword:keywords as partial Declarator
+  ::= _AdvancedTypeMember:advancedTypes as partial Declarator
+  ;
+
 //////////////////////////////////////////////////////////////////
 // Declarator Function and Variable Parts
 //////////////////////////////////////////////////////////////////
@@ -109,6 +114,10 @@ _DeclaratorArrayPart
 
 _DeclaratorId
   ::= !_NameIdentifier
-  ::= !_DtorIdentifier
   ::= !_OperatorIdentifier
+  ;
+
+_DeclaratorCtorDtorId
+  ::= !_NameIdentifier
+  ::= !_DtorIdentifier
   ;
