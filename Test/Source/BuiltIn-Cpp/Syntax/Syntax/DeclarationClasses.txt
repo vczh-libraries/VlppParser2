@@ -34,14 +34,16 @@ _ClassBody
 // Class Declarations
 //////////////////////////////////////////////////////////////////
 
+_ClassDeclPrefix
+  ::= ["friend":friendToken] "class"  [ID:name] as partial ClassDeclaration {kind = Class}
+  ::= ["friend":friendToken] "struct" [ID:name] as partial ClassDeclaration {kind = Struct}
+  ::= ["friend":friendToken] "union"  [ID:name] as partial ClassDeclaration {kind = Union}
+  ;
+
 _ClassDecl
-  ::= "class"  [ID:name] _ClassBody:body as ClassDeclaration {kind = Class}
-  ::= "struct" [ID:name] _ClassBody:body as ClassDeclaration {kind = Struct}
-  ::= "union"  [ID:name] _ClassBody:body as ClassDeclaration {kind = Union}
+  ::= _ClassDeclPrefix [ID:name] _ClassBody:body as ClassDeclaration
   ;
 
 _ClassDeclForwardDecl
-  ::= "class"  ID:name as ClassDeclaration {kind = Class}
-  ::= "struct" ID:name as ClassDeclaration {kind = Struct}
-  ::= "union"  ID:name as ClassDeclaration {kind = Union}
+  ::= _ClassDeclPrefix ID:name as ClassDeclaration {kind = Class}
   ;
