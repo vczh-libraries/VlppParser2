@@ -1,13 +1,9 @@
 //////////////////////////////////////////////////////////////////
-// Namespace Declaration
+// Static Assert Declaration
 //////////////////////////////////////////////////////////////////
 
-_NsName
-  ::= ID:name as NamespaceName
-  ;
-
-_NsDecl
-  ::= "namespace" {_NsName:names ; "::"} "{" _DeclWithSemicolon:decls "}" as NamespaceDeclaration
+_StaticAssertDecl
+  ::= "static_assert" "(" _Expr:expr ["," _Expr:message] ")" as StaticAssertDeclaration
   ;
   
 //////////////////////////////////////////////////////////////////
@@ -30,15 +26,27 @@ _TypedefDecl
 _FriendDecl
   ::= "friend" _Decl:decl as FriendDeclaration
   ;
-
+  
 //////////////////////////////////////////////////////////////////
-// Static Assert Declaration
+// Extern Declaration
 //////////////////////////////////////////////////////////////////
 
-_StaticAssertDecl
-  ::= "static_assert" "(" _Expr:expr ["," _Expr:message] ")" as StaticAssertDeclaration
+_ExternDecl
+  ::= "extern" [STRING] "{" _DeclWithSemicolon:decls "}" as ExternDeclaration
   ;
   
+//////////////////////////////////////////////////////////////////
+// Namespace Declaration
+//////////////////////////////////////////////////////////////////
+
+_NsName
+  ::= ID:name as NamespaceName
+  ;
+
+_NsDecl
+  ::= "namespace" {_NsName:names ; "::"} "{" _DeclWithSemicolon:decls "}" as NamespaceDeclaration
+  ;
+
 //////////////////////////////////////////////////////////////////
 // Enum Declaration
 //////////////////////////////////////////////////////////////////
@@ -66,9 +74,10 @@ _EnumDecl
 //////////////////////////////////////////////////////////////////
 
 _OtherDecl
-  ::= !_NsDecl
+  ::= !_StaticAssertDecl
   ::= !_TypedefDecl
   ::= !_FriendDecl
-  ::= !_StaticAssertDecl
+  ::= !_ExternDecl
+  ::= !_NsDecl
   ::= !_EnumDecl
   ;
