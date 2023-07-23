@@ -102,6 +102,8 @@ TEST_FILE
 	syntaxFileNames.Add(L"Types");
 	syntaxFileNames.Add(L"DeclaratorComponents");
 	syntaxFileNames.Add(L"DeclaratorConfigurations");
+	syntaxFileNames.Add(L"DeclarationVariable");
+	syntaxFileNames.Add(L"DeclarationOthers");
 	syntaxFileNames.Add(L"Declarations");
 	syntaxFileNames.Add(L"Statements");
 	syntaxFileNames.Add(L"API");
