@@ -47,12 +47,12 @@ _DeclaratorVariablePartRequiredInit
   ::= _DeclaratorRequiredName:declarator _VarInit:init as DeclaratorVariablePart
   ;
 
-_DeclaratorCtorDtorPartWithoutInit
-  ::= _DeclaratorCtorDtor:declarator as DeclaratorVariablePart
+_DeclaratorUntypedFuncPartWithoutInit
+  ::= _DeclaratorUntypedFunc:declarator as DeclaratorVariablePart
   ;
 
-_DeclaratorCtorDtorParRequiredInit
-  ::= _DeclaratorCtorDtor:declarator _VarStatInit:init as DeclaratorVariablePart
+_DeclaratorUntypedFuncParRequiredInit
+  ::= _DeclaratorUntypedFunc:declarator _VarStatInit:init as DeclaratorVariablePart
   ;
 
 //================================================================
@@ -147,7 +147,7 @@ _VarsDecl
 
 _VarsFuncForwardDeclWithoutKeyword
   ::= !_VarsDeclWithoutKeyword
-  ::= _DeclaratorCtorDtorPartWithoutInit:varPart as SingleVarDeclaration
+  ::= _DeclaratorUntypedFuncPartWithoutInit:varPart as SingleVarDeclaration
   ;
 
 _VarsFuncForwardDecl
@@ -160,7 +160,7 @@ _VarsFuncForwardDecl
 //////////////////////////////////////////////////////////////////
 
 _FuncDeclWithoutKeyword
-  ::= {_DeclaratorKeyword:keywords} _DeclaratorCtorDtorParRequiredInit:varPart as SingleVarDeclaration
+  ::= {_DeclaratorKeyword:keywords} _DeclaratorUntypedFuncParRequiredInit:varPart as SingleVarDeclaration
   ;
 
 _FuncDecl
