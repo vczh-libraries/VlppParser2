@@ -24,6 +24,7 @@ namespace cpp_parser
 	class CppClassDeclaration;
 	class CppClassInheritance;
 	class CppClassMemberPart;
+	class CppCommonVarDeclaration;
 	class CppConstType;
 	class CppContinueStat;
 	class CppDeclStat;
@@ -68,6 +69,7 @@ namespace cpp_parser
 	class CppNewExpr;
 	class CppNumericExprLiteral;
 	class CppOperatorIdentifier;
+	class CppOperatorTypeIdentifier;
 	class CppOrdinaryGenericParameter;
 	class CppParenthesisExpr;
 	class CppPostfixUnaryExpr;
@@ -97,6 +99,7 @@ namespace cpp_parser
 	class CppVarBraceInit;
 	class CppVarInit;
 	class CppVarParanthesisInit;
+	class CppVarStatInit;
 	class CppVarValueInit;
 	class CppVariadicExpr;
 	class CppVolatileType;
@@ -315,8 +318,7 @@ namespace cpp_parser
 		class IVisitor : public virtual vl::reflection::IDescriptable, vl::reflection::Description<IVisitor>
 		{
 		public:
-			virtual void Visit(CppSingleVarDeclaration* node) = 0;
-			virtual void Visit(CppMultipleVarDeclaration* node) = 0;
+			virtual void Visit(CppCommonVarDeclaration* node) = 0;
 			virtual void Visit(CppClassDeclaration* node) = 0;
 			virtual void Visit(CppEnumDeclaration* node) = 0;
 			virtual void Visit(CppStaticAssertDeclaration* node) = 0;
@@ -408,6 +410,7 @@ namespace cpp_parser
 		public:
 			virtual void Visit(CppNameIdentifier* node) = 0;
 			virtual void Visit(CppOperatorIdentifier* node) = 0;
+			virtual void Visit(CppOperatorTypeIdentifier* node) = 0;
 		};
 
 		virtual void Accept(CppIdentifier::IVisitor* visitor) = 0;
@@ -427,6 +430,14 @@ namespace cpp_parser
 	{
 	public:
 		CppOperators op = CppOperators::UNDEFINED_ENUM_ITEM_VALUE;
+
+		void Accept(CppIdentifier::IVisitor* visitor) override;
+	};
+
+	class CppOperatorTypeIdentifier : public CppIdentifier, vl::reflection::Description<CppOperatorTypeIdentifier>
+	{
+	public:
+		vl::Ptr<CppTypeOrExpr> type;
 
 		void Accept(CppIdentifier::IVisitor* visitor) override;
 	};
@@ -762,6 +773,7 @@ namespace cpp_parser
 			virtual void Visit(CppVarValueInit* node) = 0;
 			virtual void Visit(CppVarParanthesisInit* node) = 0;
 			virtual void Visit(CppVarBraceInit* node) = 0;
+			virtual void Visit(CppVarStatInit* node) = 0;
 		};
 
 		virtual void Accept(CppVarInit::IVisitor* visitor) = 0;
@@ -792,6 +804,14 @@ namespace cpp_parser
 		void Accept(CppVarInit::IVisitor* visitor) override;
 	};
 
+	class CppVarStatInit : public CppVarInit, vl::reflection::Description<CppVarStatInit>
+	{
+	public:
+		vl::Ptr<CppBlockStat> stat;
+
+		void Accept(CppVarInit::IVisitor* visitor) override;
+	};
+
 	class CppDeclaratorVariablePart : public vl::glr::ParsingAstBase, vl::reflection::Description<CppDeclaratorVariablePart>
 	{
 	public:
@@ -799,24 +819,38 @@ namespace cpp_parser
 		vl::Ptr<CppVarInit> init;
 	};
 
-	class CppSingleVarDeclaration : public CppDeclaration, vl::reflection::Description<CppSingleVarDeclaration>
+	class CppCommonVarDeclaration abstract : public CppDeclaration, vl::reflection::Description<CppCommonVarDeclaration>
 	{
 	public:
+		class IVisitor : public virtual vl::reflection::IDescriptable, vl::reflection::Description<IVisitor>
+		{
+		public:
+			virtual void Visit(CppSingleVarDeclaration* node) = 0;
+			virtual void Visit(CppMultipleVarDeclaration* node) = 0;
+		};
+
+		virtual void Accept(CppCommonVarDeclaration::IVisitor* visitor) = 0;
+
 		vl::collections::List<vl::Ptr<CppDeclaratorKeyword>> keywords;
 		vl::Ptr<CppTypeOrExpr> type;
-		vl::Ptr<CppDeclaratorVariablePart> varPart;
 
 		void Accept(CppDeclaration::IVisitor* visitor) override;
 	};
 
-	class CppMultipleVarDeclaration : public CppDeclaration, vl::reflection::Description<CppMultipleVarDeclaration>
+	class CppSingleVarDeclaration : public CppCommonVarDeclaration, vl::reflection::Description<CppSingleVarDeclaration>
 	{
 	public:
-		vl::collections::List<vl::Ptr<CppDeclaratorKeyword>> keywords;
-		vl::Ptr<CppTypeOrExpr> type;
+		vl::Ptr<CppDeclaratorVariablePart> varPart;
+
+		void Accept(CppCommonVarDeclaration::IVisitor* visitor) override;
+	};
+
+	class CppMultipleVarDeclaration : public CppCommonVarDeclaration, vl::reflection::Description<CppMultipleVarDeclaration>
+	{
+	public:
 		vl::collections::List<vl::Ptr<CppDeclaratorVariablePart>> varParts;
 
-		void Accept(CppDeclaration::IVisitor* visitor) override;
+		void Accept(CppCommonVarDeclaration::IVisitor* visitor) override;
 	};
 
 	class CppClassInheritance : public vl::glr::ParsingAstBase, vl::reflection::Description<CppClassInheritance>
@@ -1198,6 +1232,7 @@ namespace vl::reflection::description
 	DECL_TYPE_INFO(cpp_parser::CppNameIdentifier)
 	DECL_TYPE_INFO(cpp_parser::CppOperators)
 	DECL_TYPE_INFO(cpp_parser::CppOperatorIdentifier)
+	DECL_TYPE_INFO(cpp_parser::CppOperatorTypeIdentifier)
 	DECL_TYPE_INFO(cpp_parser::CppGenericArgument)
 	DECL_TYPE_INFO(cpp_parser::CppGenericArguments)
 	DECL_TYPE_INFO(cpp_parser::CppQualifiedNameKinds)
@@ -1250,7 +1285,10 @@ namespace vl::reflection::description
 	DECL_TYPE_INFO(cpp_parser::CppVarValueInit)
 	DECL_TYPE_INFO(cpp_parser::CppVarParanthesisInit)
 	DECL_TYPE_INFO(cpp_parser::CppVarBraceInit)
+	DECL_TYPE_INFO(cpp_parser::CppVarStatInit)
 	DECL_TYPE_INFO(cpp_parser::CppDeclaratorVariablePart)
+	DECL_TYPE_INFO(cpp_parser::CppCommonVarDeclaration)
+	DECL_TYPE_INFO(cpp_parser::CppCommonVarDeclaration::IVisitor)
 	DECL_TYPE_INFO(cpp_parser::CppSingleVarDeclaration)
 	DECL_TYPE_INFO(cpp_parser::CppMultipleVarDeclaration)
 	DECL_TYPE_INFO(cpp_parser::CppClassKind)
@@ -1330,12 +1368,7 @@ namespace vl::reflection::description
 	END_INTERFACE_PROXY(cpp_parser::CppTypeOrExprOrOthers::IVisitor)
 
 	BEGIN_INTERFACE_PROXY_NOPARENT_SHAREDPTR(cpp_parser::CppDeclaration::IVisitor)
-		void Visit(cpp_parser::CppSingleVarDeclaration* node) override
-		{
-			INVOKE_INTERFACE_PROXY(Visit, node);
-		}
-
-		void Visit(cpp_parser::CppMultipleVarDeclaration* node) override
+		void Visit(cpp_parser::CppCommonVarDeclaration* node) override
 		{
 			INVOKE_INTERFACE_PROXY(Visit, node);
 		}
@@ -1527,6 +1560,11 @@ namespace vl::reflection::description
 			INVOKE_INTERFACE_PROXY(Visit, node);
 		}
 
+		void Visit(cpp_parser::CppOperatorTypeIdentifier* node) override
+		{
+			INVOKE_INTERFACE_PROXY(Visit, node);
+		}
+
 	END_INTERFACE_PROXY(cpp_parser::CppIdentifier::IVisitor)
 
 	BEGIN_INTERFACE_PROXY_NOPARENT_SHAREDPTR(cpp_parser::CppVarInit::IVisitor)
@@ -1545,7 +1583,25 @@ namespace vl::reflection::description
 			INVOKE_INTERFACE_PROXY(Visit, node);
 		}
 
+		void Visit(cpp_parser::CppVarStatInit* node) override
+		{
+			INVOKE_INTERFACE_PROXY(Visit, node);
+		}
+
 	END_INTERFACE_PROXY(cpp_parser::CppVarInit::IVisitor)
+
+	BEGIN_INTERFACE_PROXY_NOPARENT_SHAREDPTR(cpp_parser::CppCommonVarDeclaration::IVisitor)
+		void Visit(cpp_parser::CppSingleVarDeclaration* node) override
+		{
+			INVOKE_INTERFACE_PROXY(Visit, node);
+		}
+
+		void Visit(cpp_parser::CppMultipleVarDeclaration* node) override
+		{
+			INVOKE_INTERFACE_PROXY(Visit, node);
+		}
+
+	END_INTERFACE_PROXY(cpp_parser::CppCommonVarDeclaration::IVisitor)
 
 	BEGIN_INTERFACE_PROXY_NOPARENT_SHAREDPTR(cpp_parser::CppStatement::IVisitor)
 		void Visit(cpp_parser::CppStatementToResolve* node) override

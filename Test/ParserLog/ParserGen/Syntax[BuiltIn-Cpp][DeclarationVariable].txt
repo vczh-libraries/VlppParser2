@@ -197,6 +197,23 @@
         "attParser": "",
         "attPublic": "",
         "clauses": [{
+            "$ast": "CreateClause",
+            "assignments": [],
+            "syntax": {
+                "$ast": "RefSyntax",
+                "field": "stat",
+                "literal": "_BlockStat",
+                "refType": "Id"
+            },
+            "type": "VarStatInit"
+        }],
+        "name": "_VarStatInit",
+        "type": ""
+    }, {
+        "$ast": "Rule",
+        "attParser": "",
+        "attPublic": "",
+        "clauses": [{
             "$ast": "ReuseClause",
             "assignments": [],
             "syntax": {
@@ -301,23 +318,14 @@
             "$ast": "CreateClause",
             "assignments": [],
             "syntax": {
-                "$ast": "SequenceSyntax",
-                "first": {
-                    "$ast": "RefSyntax",
-                    "field": "type",
-                    "literal": "_TypeBeforeDeclarator",
-                    "refType": "Id"
-                },
-                "second": {
-                    "$ast": "RefSyntax",
-                    "field": "varPart",
-                    "literal": "_DeclaratorVariablePartWithoutInit",
-                    "refType": "Id"
-                }
+                "$ast": "RefSyntax",
+                "field": "declarator",
+                "literal": "_DeclaratorUntypedFunc",
+                "refType": "Id"
             },
-            "type": "SingleVarDeclaration"
+            "type": "DeclaratorVariablePart"
         }],
-        "name": "_VarWithoutInit",
+        "name": "_DeclaratorUntypedFuncPartWithoutInit",
         "type": ""
     }, {
         "$ast": "Rule",
@@ -330,20 +338,20 @@
                 "$ast": "SequenceSyntax",
                 "first": {
                     "$ast": "RefSyntax",
-                    "field": "type",
-                    "literal": "_TypeBeforeDeclarator",
+                    "field": "declarator",
+                    "literal": "_DeclaratorUntypedFunc",
                     "refType": "Id"
                 },
                 "second": {
                     "$ast": "RefSyntax",
-                    "field": "varPart",
-                    "literal": "_DeclaratorVariablePartRequiredInit",
+                    "field": "init",
+                    "literal": "_VarStatInit",
                     "refType": "Id"
                 }
             },
-            "type": "SingleVarDeclaration"
+            "type": "DeclaratorVariablePart"
         }],
-        "name": "_VarRequiredInit",
+        "name": "_DeclaratorUntypedFuncParRequiredInit",
         "type": ""
     }, {
         "$ast": "Rule",
@@ -922,6 +930,32 @@
             "syntax": {
                 "$ast": "SequenceSyntax",
                 "first": {
+                    "$ast": "RefSyntax",
+                    "field": "type",
+                    "literal": "_TypeBeforeDeclarator",
+                    "refType": "Id"
+                },
+                "second": {
+                    "$ast": "RefSyntax",
+                    "field": "varPart",
+                    "literal": "_DeclaratorVariablePartWithoutInit",
+                    "refType": "Id"
+                }
+            },
+            "type": "SingleVarDeclaration"
+        }],
+        "name": "_VarWithoutInit",
+        "type": ""
+    }, {
+        "$ast": "Rule",
+        "attParser": "",
+        "attPublic": "",
+        "clauses": [{
+            "$ast": "CreateClause",
+            "assignments": [],
+            "syntax": {
+                "$ast": "SequenceSyntax",
+                "first": {
                     "$ast": "SequenceSyntax",
                     "first": {
                         "$ast": "RefSyntax",
@@ -1002,6 +1036,146 @@
             }
         }],
         "name": "_VarsDecl",
+        "type": ""
+    }, {
+        "$ast": "Rule",
+        "attParser": "",
+        "attPublic": "",
+        "clauses": [{
+            "$ast": "ReuseClause",
+            "assignments": [],
+            "syntax": {
+                "$ast": "UseSyntax",
+                "name": "_VarsDeclWithoutKeyword"
+            }
+        }, {
+            "$ast": "CreateClause",
+            "assignments": [],
+            "syntax": {
+                "$ast": "RefSyntax",
+                "field": "varPart",
+                "literal": "_DeclaratorUntypedFuncPartWithoutInit",
+                "refType": "Id"
+            },
+            "type": "SingleVarDeclaration"
+        }],
+        "name": "_VarsFuncForwardDeclWithoutKeyword",
+        "type": ""
+    }, {
+        "$ast": "Rule",
+        "attParser": "",
+        "attPublic": "",
+        "clauses": [{
+            "$ast": "ReuseClause",
+            "assignments": [],
+            "syntax": {
+                "$ast": "UseSyntax",
+                "name": "_VarsFuncForwardDeclWithoutKeyword"
+            }
+        }, {
+            "$ast": "ReuseClause",
+            "assignments": [],
+            "syntax": {
+                "$ast": "SequenceSyntax",
+                "first": {
+                    "$ast": "SequenceSyntax",
+                    "first": {
+                        "$ast": "RefSyntax",
+                        "field": "keywords",
+                        "literal": "_DeclaratorKeyword",
+                        "refType": "Id"
+                    },
+                    "second": {
+                        "$ast": "LoopSyntax",
+                        "delimiter": null,
+                        "syntax": {
+                            "$ast": "RefSyntax",
+                            "field": "keywords",
+                            "literal": "_DeclaratorKeyword",
+                            "refType": "Id"
+                        }
+                    }
+                },
+                "second": {
+                    "$ast": "UseSyntax",
+                    "name": "_VarsFuncForwardDeclWithoutKeyword"
+                }
+            }
+        }],
+        "name": "_VarsFuncForwardDecl",
+        "type": ""
+    }, {
+        "$ast": "Rule",
+        "attParser": "",
+        "attPublic": "",
+        "clauses": [{
+            "$ast": "CreateClause",
+            "assignments": [],
+            "syntax": {
+                "$ast": "SequenceSyntax",
+                "first": {
+                    "$ast": "LoopSyntax",
+                    "delimiter": null,
+                    "syntax": {
+                        "$ast": "RefSyntax",
+                        "field": "keywords",
+                        "literal": "_DeclaratorKeyword",
+                        "refType": "Id"
+                    }
+                },
+                "second": {
+                    "$ast": "RefSyntax",
+                    "field": "varPart",
+                    "literal": "_DeclaratorUntypedFuncParRequiredInit",
+                    "refType": "Id"
+                }
+            },
+            "type": "SingleVarDeclaration"
+        }],
+        "name": "_FuncDeclWithoutKeyword",
+        "type": ""
+    }, {
+        "$ast": "Rule",
+        "attParser": "",
+        "attPublic": "",
+        "clauses": [{
+            "$ast": "ReuseClause",
+            "assignments": [],
+            "syntax": {
+                "$ast": "UseSyntax",
+                "name": "_FuncDeclWithoutKeyword"
+            }
+        }, {
+            "$ast": "ReuseClause",
+            "assignments": [],
+            "syntax": {
+                "$ast": "SequenceSyntax",
+                "first": {
+                    "$ast": "SequenceSyntax",
+                    "first": {
+                        "$ast": "RefSyntax",
+                        "field": "keywords",
+                        "literal": "_DeclaratorKeyword",
+                        "refType": "Id"
+                    },
+                    "second": {
+                        "$ast": "LoopSyntax",
+                        "delimiter": null,
+                        "syntax": {
+                            "$ast": "RefSyntax",
+                            "field": "keywords",
+                            "literal": "_DeclaratorKeyword",
+                            "refType": "Id"
+                        }
+                    }
+                },
+                "second": {
+                    "$ast": "UseSyntax",
+                    "name": "_FuncDeclWithoutKeyword"
+                }
+            }
+        }],
+        "name": "_FuncDecl",
         "type": ""
     }],
     "switches": []

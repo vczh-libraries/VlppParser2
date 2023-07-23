@@ -210,6 +210,22 @@ MakeClassMemberPart
 	}
 
 /***********************************************************************
+MakeCommonVarDeclaration
+***********************************************************************/
+
+	MakeCommonVarDeclaration& MakeCommonVarDeclaration::keywords(const vl::Ptr<CppDeclaratorKeyword>& value)
+	{
+		node->keywords.Add(value);
+		return *this;
+	}
+
+	MakeCommonVarDeclaration& MakeCommonVarDeclaration::type(const vl::Ptr<CppTypeOrExpr>& value)
+	{
+		node->type = value;
+		return *this;
+	}
+
+/***********************************************************************
 MakeConstType
 ***********************************************************************/
 
@@ -757,6 +773,12 @@ MakeLambdaExpr
 MakeMultipleVarDeclaration
 ***********************************************************************/
 
+	MakeMultipleVarDeclaration& MakeMultipleVarDeclaration::varParts(const vl::Ptr<CppDeclaratorVariablePart>& value)
+	{
+		node->varParts.Add(value);
+		return *this;
+	}
+
 	MakeMultipleVarDeclaration& MakeMultipleVarDeclaration::keywords(const vl::Ptr<CppDeclaratorKeyword>& value)
 	{
 		node->keywords.Add(value);
@@ -766,12 +788,6 @@ MakeMultipleVarDeclaration
 	MakeMultipleVarDeclaration& MakeMultipleVarDeclaration::type(const vl::Ptr<CppTypeOrExpr>& value)
 	{
 		node->type = value;
-		return *this;
-	}
-
-	MakeMultipleVarDeclaration& MakeMultipleVarDeclaration::varParts(const vl::Ptr<CppDeclaratorVariablePart>& value)
-	{
-		node->varParts.Add(value);
 		return *this;
 	}
 
@@ -874,6 +890,16 @@ MakeOperatorIdentifier
 	MakeOperatorIdentifier& MakeOperatorIdentifier::op(CppOperators value)
 	{
 		node->op = value;
+		return *this;
+	}
+
+/***********************************************************************
+MakeOperatorTypeIdentifier
+***********************************************************************/
+
+	MakeOperatorTypeIdentifier& MakeOperatorTypeIdentifier::type(const vl::Ptr<CppTypeOrExpr>& value)
+	{
+		node->type = value;
 		return *this;
 	}
 
@@ -1033,6 +1059,12 @@ MakeReturnStat
 MakeSingleVarDeclaration
 ***********************************************************************/
 
+	MakeSingleVarDeclaration& MakeSingleVarDeclaration::varPart(const vl::Ptr<CppDeclaratorVariablePart>& value)
+	{
+		node->varPart = value;
+		return *this;
+	}
+
 	MakeSingleVarDeclaration& MakeSingleVarDeclaration::keywords(const vl::Ptr<CppDeclaratorKeyword>& value)
 	{
 		node->keywords.Add(value);
@@ -1042,12 +1074,6 @@ MakeSingleVarDeclaration
 	MakeSingleVarDeclaration& MakeSingleVarDeclaration::type(const vl::Ptr<CppTypeOrExpr>& value)
 	{
 		node->type = value;
-		return *this;
-	}
-
-	MakeSingleVarDeclaration& MakeSingleVarDeclaration::varPart(const vl::Ptr<CppDeclaratorVariablePart>& value)
-	{
-		node->varPart = value;
 		return *this;
 	}
 
@@ -1246,6 +1272,16 @@ MakeVarParanthesisInit
 	MakeVarParanthesisInit& MakeVarParanthesisInit::arguments(const vl::Ptr<CppTypeOrExpr>& value)
 	{
 		node->arguments.Add(value);
+		return *this;
+	}
+
+/***********************************************************************
+MakeVarStatInit
+***********************************************************************/
+
+	MakeVarStatInit& MakeVarStatInit::stat(const vl::Ptr<CppBlockStat>& value)
+	{
+		node->stat = value;
 		return *this;
 	}
 

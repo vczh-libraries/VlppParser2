@@ -21,6 +21,7 @@ namespace cpp_parser::json_visitor
 		, protected virtual CppTypeOnly::IVisitor
 		, protected virtual CppIdentifier::IVisitor
 		, protected virtual CppVarInit::IVisitor
+		, protected virtual CppCommonVarDeclaration::IVisitor
 		, protected virtual CppStatement::IVisitor
 		, protected virtual CppForStatConditionPart::IVisitor
 	{
@@ -37,6 +38,7 @@ namespace cpp_parser::json_visitor
 		virtual void PrintFields(CppClassDeclaration* node);
 		virtual void PrintFields(CppClassInheritance* node);
 		virtual void PrintFields(CppClassMemberPart* node);
+		virtual void PrintFields(CppCommonVarDeclaration* node);
 		virtual void PrintFields(CppConstType* node);
 		virtual void PrintFields(CppContinueStat* node);
 		virtual void PrintFields(CppDeclStat* node);
@@ -81,6 +83,7 @@ namespace cpp_parser::json_visitor
 		virtual void PrintFields(CppNewExpr* node);
 		virtual void PrintFields(CppNumericExprLiteral* node);
 		virtual void PrintFields(CppOperatorIdentifier* node);
+		virtual void PrintFields(CppOperatorTypeIdentifier* node);
 		virtual void PrintFields(CppOrdinaryGenericParameter* node);
 		virtual void PrintFields(CppParenthesisExpr* node);
 		virtual void PrintFields(CppPostfixUnaryExpr* node);
@@ -110,6 +113,7 @@ namespace cpp_parser::json_visitor
 		virtual void PrintFields(CppVarBraceInit* node);
 		virtual void PrintFields(CppVarInit* node);
 		virtual void PrintFields(CppVarParanthesisInit* node);
+		virtual void PrintFields(CppVarStatInit* node);
 		virtual void PrintFields(CppVarValueInit* node);
 		virtual void PrintFields(CppVariadicExpr* node);
 		virtual void PrintFields(CppVolatileType* node);
@@ -124,8 +128,7 @@ namespace cpp_parser::json_visitor
 		void Visit(CppGenericArgument* node) override;
 		void Visit(CppOrdinaryGenericParameter* node) override;
 
-		void Visit(CppSingleVarDeclaration* node) override;
-		void Visit(CppMultipleVarDeclaration* node) override;
+		void Visit(CppCommonVarDeclaration* node) override;
 		void Visit(CppClassDeclaration* node) override;
 		void Visit(CppEnumDeclaration* node) override;
 		void Visit(CppStaticAssertDeclaration* node) override;
@@ -165,10 +168,15 @@ namespace cpp_parser::json_visitor
 
 		void Visit(CppNameIdentifier* node) override;
 		void Visit(CppOperatorIdentifier* node) override;
+		void Visit(CppOperatorTypeIdentifier* node) override;
 
 		void Visit(CppVarValueInit* node) override;
 		void Visit(CppVarParanthesisInit* node) override;
 		void Visit(CppVarBraceInit* node) override;
+		void Visit(CppVarStatInit* node) override;
+
+		void Visit(CppSingleVarDeclaration* node) override;
+		void Visit(CppMultipleVarDeclaration* node) override;
 
 		void Visit(CppStatementToResolve* node) override;
 		void Visit(CppEmptyStat* node) override;

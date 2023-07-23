@@ -402,6 +402,22 @@ namespace cpp_parser::json_visitor
 		EndArray();
 		EndField();
 	}
+	void AstVisitor::PrintFields(CppCommonVarDeclaration* node)
+	{
+		BeginField(L"keywords");
+		BeginArray();
+		for (auto&& listItem : node->keywords)
+		{
+			BeginArrayItem();
+			Print(listItem.Obj());
+			EndArrayItem();
+		}
+		EndArray();
+		EndField();
+		BeginField(L"type");
+		Print(node->type.Obj());
+		EndField();
+	}
 	void AstVisitor::PrintFields(CppConstType* node)
 	{
 		BeginField(L"type");
@@ -875,19 +891,6 @@ namespace cpp_parser::json_visitor
 	}
 	void AstVisitor::PrintFields(CppMultipleVarDeclaration* node)
 	{
-		BeginField(L"keywords");
-		BeginArray();
-		for (auto&& listItem : node->keywords)
-		{
-			BeginArrayItem();
-			Print(listItem.Obj());
-			EndArrayItem();
-		}
-		EndArray();
-		EndField();
-		BeginField(L"type");
-		Print(node->type.Obj());
-		EndField();
 		BeginField(L"varParts");
 		BeginArray();
 		for (auto&& listItem : node->varParts)
@@ -1194,6 +1197,12 @@ namespace cpp_parser::json_visitor
 		default:
 			WriteNull();
 		}
+		EndField();
+	}
+	void AstVisitor::PrintFields(CppOperatorTypeIdentifier* node)
+	{
+		BeginField(L"type");
+		Print(node->type.Obj());
 		EndField();
 	}
 	void AstVisitor::PrintFields(CppOrdinaryGenericParameter* node)
@@ -1626,19 +1635,6 @@ namespace cpp_parser::json_visitor
 	}
 	void AstVisitor::PrintFields(CppSingleVarDeclaration* node)
 	{
-		BeginField(L"keywords");
-		BeginArray();
-		for (auto&& listItem : node->keywords)
-		{
-			BeginArrayItem();
-			Print(listItem.Obj());
-			EndArrayItem();
-		}
-		EndArray();
-		EndField();
-		BeginField(L"type");
-		Print(node->type.Obj());
-		EndField();
 		BeginField(L"varPart");
 		Print(node->varPart.Obj());
 		EndField();
@@ -1831,6 +1827,12 @@ namespace cpp_parser::json_visitor
 		EndArray();
 		EndField();
 	}
+	void AstVisitor::PrintFields(CppVarStatInit* node)
+	{
+		BeginField(L"stat");
+		Print(node->stat.Obj());
+		EndField();
+	}
 	void AstVisitor::PrintFields(CppVarValueInit* node)
 	{
 		BeginField(L"expr");
@@ -1932,34 +1934,9 @@ namespace cpp_parser::json_visitor
 		EndObject();
 	}
 
-	void AstVisitor::Visit(CppSingleVarDeclaration* node)
+	void AstVisitor::Visit(CppCommonVarDeclaration* node)
 	{
-		if (!node)
-		{
-			WriteNull();
-			return;
-		}
-		BeginObject();
-		WriteType(L"SingleVarDeclaration", node);
-		PrintFields(static_cast<CppTypeOrExprOrOthers*>(node));
-		PrintFields(static_cast<CppDeclaration*>(node));
-		PrintFields(static_cast<CppSingleVarDeclaration*>(node));
-		EndObject();
-	}
-
-	void AstVisitor::Visit(CppMultipleVarDeclaration* node)
-	{
-		if (!node)
-		{
-			WriteNull();
-			return;
-		}
-		BeginObject();
-		WriteType(L"MultipleVarDeclaration", node);
-		PrintFields(static_cast<CppTypeOrExprOrOthers*>(node));
-		PrintFields(static_cast<CppDeclaration*>(node));
-		PrintFields(static_cast<CppMultipleVarDeclaration*>(node));
-		EndObject();
+		node->Accept(static_cast<CppCommonVarDeclaration::IVisitor*>(this));
 	}
 
 	void AstVisitor::Visit(CppClassDeclaration* node)
@@ -2487,6 +2464,20 @@ namespace cpp_parser::json_visitor
 		EndObject();
 	}
 
+	void AstVisitor::Visit(CppOperatorTypeIdentifier* node)
+	{
+		if (!node)
+		{
+			WriteNull();
+			return;
+		}
+		BeginObject();
+		WriteType(L"OperatorTypeIdentifier", node);
+		PrintFields(static_cast<CppIdentifier*>(node));
+		PrintFields(static_cast<CppOperatorTypeIdentifier*>(node));
+		EndObject();
+	}
+
 	void AstVisitor::Visit(CppVarValueInit* node)
 	{
 		if (!node)
@@ -2526,6 +2517,52 @@ namespace cpp_parser::json_visitor
 		WriteType(L"VarBraceInit", node);
 		PrintFields(static_cast<CppVarInit*>(node));
 		PrintFields(static_cast<CppVarBraceInit*>(node));
+		EndObject();
+	}
+
+	void AstVisitor::Visit(CppVarStatInit* node)
+	{
+		if (!node)
+		{
+			WriteNull();
+			return;
+		}
+		BeginObject();
+		WriteType(L"VarStatInit", node);
+		PrintFields(static_cast<CppVarInit*>(node));
+		PrintFields(static_cast<CppVarStatInit*>(node));
+		EndObject();
+	}
+
+	void AstVisitor::Visit(CppSingleVarDeclaration* node)
+	{
+		if (!node)
+		{
+			WriteNull();
+			return;
+		}
+		BeginObject();
+		WriteType(L"SingleVarDeclaration", node);
+		PrintFields(static_cast<CppTypeOrExprOrOthers*>(node));
+		PrintFields(static_cast<CppDeclaration*>(node));
+		PrintFields(static_cast<CppCommonVarDeclaration*>(node));
+		PrintFields(static_cast<CppSingleVarDeclaration*>(node));
+		EndObject();
+	}
+
+	void AstVisitor::Visit(CppMultipleVarDeclaration* node)
+	{
+		if (!node)
+		{
+			WriteNull();
+			return;
+		}
+		BeginObject();
+		WriteType(L"MultipleVarDeclaration", node);
+		PrintFields(static_cast<CppTypeOrExprOrOthers*>(node));
+		PrintFields(static_cast<CppDeclaration*>(node));
+		PrintFields(static_cast<CppCommonVarDeclaration*>(node));
+		PrintFields(static_cast<CppMultipleVarDeclaration*>(node));
 		EndObject();
 	}
 

@@ -92,6 +92,13 @@ namespace cpp_parser::builder
 		MakeClassMemberPart& decls(const vl::Ptr<CppDeclaration>& value);
 	};
 
+	class MakeCommonVarDeclaration : public vl::glr::ParsingAstBuilder<CppCommonVarDeclaration>
+	{
+	public:
+		MakeCommonVarDeclaration& keywords(const vl::Ptr<CppDeclaratorKeyword>& value);
+		MakeCommonVarDeclaration& type(const vl::Ptr<CppTypeOrExpr>& value);
+	};
+
 	class MakeConstType : public vl::glr::ParsingAstBuilder<CppConstType>
 	{
 	public:
@@ -320,9 +327,9 @@ namespace cpp_parser::builder
 	class MakeMultipleVarDeclaration : public vl::glr::ParsingAstBuilder<CppMultipleVarDeclaration>
 	{
 	public:
+		MakeMultipleVarDeclaration& varParts(const vl::Ptr<CppDeclaratorVariablePart>& value);
 		MakeMultipleVarDeclaration& keywords(const vl::Ptr<CppDeclaratorKeyword>& value);
 		MakeMultipleVarDeclaration& type(const vl::Ptr<CppTypeOrExpr>& value);
-		MakeMultipleVarDeclaration& varParts(const vl::Ptr<CppDeclaratorVariablePart>& value);
 	};
 
 	class MakeNameIdentifier : public vl::glr::ParsingAstBuilder<CppNameIdentifier>
@@ -366,6 +373,12 @@ namespace cpp_parser::builder
 	{
 	public:
 		MakeOperatorIdentifier& op(CppOperators value);
+	};
+
+	class MakeOperatorTypeIdentifier : public vl::glr::ParsingAstBuilder<CppOperatorTypeIdentifier>
+	{
+	public:
+		MakeOperatorTypeIdentifier& type(const vl::Ptr<CppTypeOrExpr>& value);
 	};
 
 	class MakeOrdinaryGenericParameter : public vl::glr::ParsingAstBuilder<CppOrdinaryGenericParameter>
@@ -431,9 +444,9 @@ namespace cpp_parser::builder
 	class MakeSingleVarDeclaration : public vl::glr::ParsingAstBuilder<CppSingleVarDeclaration>
 	{
 	public:
+		MakeSingleVarDeclaration& varPart(const vl::Ptr<CppDeclaratorVariablePart>& value);
 		MakeSingleVarDeclaration& keywords(const vl::Ptr<CppDeclaratorKeyword>& value);
 		MakeSingleVarDeclaration& type(const vl::Ptr<CppTypeOrExpr>& value);
-		MakeSingleVarDeclaration& varPart(const vl::Ptr<CppDeclaratorVariablePart>& value);
 	};
 
 	class MakeSizeofExpr : public vl::glr::ParsingAstBuilder<CppSizeofExpr>
@@ -532,6 +545,12 @@ namespace cpp_parser::builder
 	{
 	public:
 		MakeVarParanthesisInit& arguments(const vl::Ptr<CppTypeOrExpr>& value);
+	};
+
+	class MakeVarStatInit : public vl::glr::ParsingAstBuilder<CppVarStatInit>
+	{
+	public:
+		MakeVarStatInit& stat(const vl::Ptr<CppBlockStat>& value);
 	};
 
 	class MakeVarValueInit : public vl::glr::ParsingAstBuilder<CppVarValueInit>
