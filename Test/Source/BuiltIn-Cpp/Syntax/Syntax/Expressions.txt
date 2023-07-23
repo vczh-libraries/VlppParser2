@@ -173,8 +173,8 @@ _BExpr2
 
 _BExpr3
   ::= !_BExpr2
-  ::= _BExpr3:left "<<" _BExpr2:right as BinaryExpr {op = LeftShift}
-  ::= _BExpr3:left ">>" _BExpr2:right as BinaryExpr {op = RightShift}
+  ::= _BExpr3:left "<" "<" _BExpr2:right as BinaryExpr {op = LeftShift}
+  ::= _BExpr3:left ">" ">" _BExpr2:right as BinaryExpr {op = RightShift}
   ;
 
 _BExpr4
@@ -186,8 +186,8 @@ _BExpr5
   ::= !_BExpr4
   ::= _BExpr5:left "<" _BExpr4:right as BinaryExpr {op = LT}
   ::= _BExpr5:left ?(allow_GT: ">" _BExpr4:right) as BinaryExpr {op = GT}
-  ::= _BExpr5:left "<=" _BExpr4:right as BinaryExpr {op = LE}
-  ::= _BExpr5:left ">=" _BExpr4:right as BinaryExpr {op = GE}
+  ::= _BExpr5:left "<" "=" _BExpr4:right as BinaryExpr {op = LE}
+  ::= _BExpr5:left ">" "=" _BExpr4:right as BinaryExpr {op = GE}
   ;
 
 _BExpr6
@@ -235,8 +235,8 @@ _BExpr_NoComma
   ::= _BExpr11:left "%=" _BExpr_NoComma:right as BinaryExpr {op = ModAssign}
   ::= _BExpr11:left "+=" _BExpr_NoComma:right as BinaryExpr {op = PlusAssign}
   ::= _BExpr11:left "-=" _BExpr_NoComma:right as BinaryExpr {op = MinusAssign}
-  ::= _BExpr11:left "<<=" _BExpr_NoComma:right as BinaryExpr {op = LeftShiftAssign}
-  ::= _BExpr11:left ">>=" _BExpr_NoComma:right as BinaryExpr {op = RightShiftAssign}
+  ::= _BExpr11:left "<" "<" "=" _BExpr_NoComma:right as BinaryExpr {op = LeftShiftAssign}
+  ::= _BExpr11:left ">" ">" "=" _BExpr_NoComma:right as BinaryExpr {op = RightShiftAssign}
   ::= _BExpr11:left "&=" _BExpr_NoComma:right as BinaryExpr {op = AndAssign}
   ::= _BExpr11:left "|=" _BExpr_NoComma:right as BinaryExpr {op = OrAssign}
   ::= _BExpr11:left "^=" _BExpr_NoComma:right as BinaryExpr {op = XorAssign}
