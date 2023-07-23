@@ -525,7 +525,7 @@ class ClassInheritance
 class ClassMemberPart
 {
     var accessor : ClassAccessor;
-    var decls : Declarations[];
+    var decls : Declaration[];
 }
 
 class ClassBody
@@ -546,7 +546,7 @@ class ClassDeclaration : Declaration
 // Enum Declaration
 //////////////////////////////////////////////////////////////////
 
-class EnumKind
+enum EnumKind
 {
     Enum,
     EnumClass,
@@ -554,19 +554,19 @@ class EnumKind
 
 class EnumItem
 {
-    var name : Token;
+    var name : token;
     var expr : TypeOrExpr;
 }
 
 class EnumBody
 {
-    var items : EnumItems;
+    var items : EnumItem[];
 }
 
 class EnumDeclaration : Declaration
 {
     var kind : EnumKind;
-    var name : Token;
+    var name : token;
     var type : TypeOrExpr;
     var body : EnumBody;
 }
@@ -593,7 +593,7 @@ class FriendDeclaration : Declaration
 
 class NamespaceName
 {
-    var name : Token;
+    var name : token;
 }
 
 class NamespaceDeclaration : Declaration

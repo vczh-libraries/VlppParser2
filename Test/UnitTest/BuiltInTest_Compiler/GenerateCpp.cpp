@@ -103,6 +103,7 @@ TEST_FILE
 	syntaxFileNames.Add(L"DeclaratorComponents");
 	syntaxFileNames.Add(L"DeclaratorConfigurations");
 	syntaxFileNames.Add(L"DeclarationVariable");
+	syntaxFileNames.Add(L"DeclarationClasses");
 	syntaxFileNames.Add(L"DeclarationOthers");
 	syntaxFileNames.Add(L"Declarations");
 	syntaxFileNames.Add(L"Statements");

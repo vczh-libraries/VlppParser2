@@ -7,7 +7,7 @@ _NsName
   ;
 
 _NsDecl
-  ::= "namespace" {ID:names ; "::"} "{" _DeclWithSemicolon:decls "}" as NamespaceDeclaration
+  ::= "namespace" {_NsName:names ; "::"} "{" _DeclWithSemicolon:decls "}" as NamespaceDeclaration
   ;
   
 //////////////////////////////////////////////////////////////////
@@ -20,7 +20,7 @@ _TypedefCompatibleDecl
   ;
 
 _TypedefDecl
-  ::= "typedef" _TypedefCompatibleDecl:declaration as TypedefDeclaration
+  ::= "typedef" _TypedefCompatibleDecl:decl as TypedefDeclaration
   ;
 
 //////////////////////////////////////////////////////////////////

@@ -3,10 +3,10 @@
 //////////////////////////////////////////////////////////////////
 
 _ClassInheritance
-  ::=             _Type:type as ClassMemberPart {accessor = Default}
-  ::= "private"   _Type:type as ClassMemberPart {accessor = Private}
-  ::= "protected" _Type:type as ClassMemberPart {accessor = Protected}
-  ::= "public"    _Type:type as ClassMemberPart {accessor = Public}
+  ::=             _Type:type as ClassInheritance {accessor = Default}
+  ::= "private"   _Type:type as ClassInheritance {accessor = Private}
+  ::= "protected" _Type:type as ClassInheritance {accessor = Protected}
+  ::= "public"    _Type:type as ClassInheritance {accessor = Public}
   ;
 
 _ClassMemberPartPartial
@@ -24,7 +24,7 @@ _ClassBody
   ::= ["::" {_ClassInheritance:inheritances ; ","}]
       "{" {_ClassMemberPart:memberParts} "}"
       {_DeclaratorVariablePartOptionalInit:varParts ","}
-      as _ClassBody
+      as ClassBody
   ;
 
 //////////////////////////////////////////////////////////////////
@@ -32,18 +32,18 @@ _ClassBody
 //////////////////////////////////////////////////////////////////
 
 _ClassDeclPartial
-  ::= _ClassBody:body as partial _ClassDecl
-  ::= ";" as partial _ClassDecl
+  ::= _ClassBody:body as partial ClassDeclaration
+  ::= ";" as partial ClassDeclaration
   ;
 
 _ClassDeclInTypedef
-  ::= "class"  [ID:name] _ClassBody:body as _ClassDecl {kind = Class}
-  ::= "struct" [ID:name] _ClassBody:body as _ClassDecl {kind = Struct}
-  ::= "union"  [ID:name] _ClassBody:body as _ClassDecl {kind = Union}
+  ::= "class"  [ID:name] _ClassBody:body as ClassDeclaration {kind = Class}
+  ::= "struct" [ID:name] _ClassBody:body as ClassDeclaration {kind = Struct}
+  ::= "union"  [ID:name] _ClassBody:body as ClassDeclaration {kind = Union}
   ;
 
 _ClassDecl
-  ::= "class"  ID:name _ClassDeclPartial as _ClassDecl {kind = Class}
-  ::= "struct" ID:name _ClassDeclPartial as _ClassDecl {kind = Struct}
-  ::= "union"  ID:name _ClassDeclPartial as _ClassDecl {kind = Union}
+  ::= "class"  ID:name _ClassDeclPartial as ClassDeclaration {kind = Class}
+  ::= "struct" ID:name _ClassDeclPartial as ClassDeclaration {kind = Struct}
+  ::= "union"  ID:name _ClassDeclPartial as ClassDeclaration {kind = Union}
   ;
