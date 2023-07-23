@@ -498,8 +498,49 @@ class MultipleVarDeclaration : Declaration
 }
 
 //////////////////////////////////////////////////////////////////
-// ClassStructUnion Declaration
+// Class Declaration
 //////////////////////////////////////////////////////////////////
+
+enum ClassKind
+{
+    Class,
+    Struct,
+    Union,
+}
+
+enum ClassAccessor
+{
+    Default,
+    Private,
+    Protected,
+    Public,
+}
+
+class ClassInheritance
+{
+    var accessor : ClassAccessor;
+    var type : TypeOrExpr;
+}
+
+class ClassMemberPart
+{
+    var accessor : ClassAccessor;
+    var decls : Declarations[];
+}
+
+class ClassBody
+{
+    var memberParts : ClassMemberPart[];
+    var varParts : DeclaratorVariablePart[];
+}
+
+class ClassDeclaration : Declaration
+{
+    var kind : ClassKind;
+    var name : token;
+    var inheritances : ClassInheritance[];
+    var body : ClassBody;
+}
 
 //////////////////////////////////////////////////////////////////
 // Other Declaration
@@ -509,6 +550,11 @@ class StaticAssertDeclaration : Declaration
 {
     var expr : TypeOrExpr;
     var message : TypeOrExpr;
+}
+
+class TypedefDeclaration : Declaration
+{
+    var decl : Declaration;
 }
 
 class NamespaceName
