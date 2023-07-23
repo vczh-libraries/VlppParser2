@@ -2,6 +2,48 @@
 // Class Body
 //////////////////////////////////////////////////////////////////
 
+_ClassInheritance
+  ::=             _Type:type as ClassMemberPart {accessor = Default}
+  ::= "private"   _Type:type as ClassMemberPart {accessor = Private}
+  ::= "protected" _Type:type as ClassMemberPart {accessor = Protected}
+  ::= "public"    _Type:type as ClassMemberPart {accessor = Public}
+  ;
+
+_ClassMemberPartPartial
+  ::= _DeclWithSemicolon:decls {_DeclWithSemicolon:decls} as partial ClassMemberPart
+  ;
+
+_ClassMemberPart
+  ::=                  _ClassMemberPartPartial  as ClassMemberPart {accessor = Default}
+  ::= "private"   ":" [_ClassMemberPartPartial] as ClassMemberPart {accessor = Private}
+  ::= "protected" ":" [_ClassMemberPartPartial] as ClassMemberPart {accessor = Protected}
+  ::= "public"    ":" [_ClassMemberPartPartial] as ClassMemberPart {accessor = Public}
+  ;
+
+_ClassBody
+  ::= ["::" {_ClassInheritance:inheritances ; ","}]
+      "{" {_ClassMemberPart:memberParts} "}"
+      {_DeclaratorVariablePartOptionalInit:varParts ","}
+      as _ClassBody
+  ;
+
 //////////////////////////////////////////////////////////////////
 // Class Declarations
 //////////////////////////////////////////////////////////////////
+
+_ClassDeclPartial
+  ::= _ClassBody:body as partial _ClassDecl
+  ::= ";" as partial _ClassDecl
+  ;
+
+_ClassDeclInTypedef
+  ::= "class"  [ID:name] _ClassDeclPartial as _ClassDecl {kind = Class}
+  ::= "struct" [ID:name] _ClassDeclPartial as _ClassDecl {kind = Struct}
+  ::= "union"  [ID:name] _ClassDeclPartial as _ClassDecl {kind = Union}
+  ;
+
+_ClassDecl
+  ::= "class"  ID:name _ClassDeclPartial as _ClassDecl {kind = Class}
+  ::= "struct" ID:name _ClassDeclPartial as _ClassDecl {kind = Struct}
+  ::= "union"  ID:name _ClassDeclPartial as _ClassDecl {kind = Union}
+  ;
