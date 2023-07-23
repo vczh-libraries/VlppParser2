@@ -38,14 +38,37 @@ _FriendDecl
 _StaticAssertDecl
   ::= "static_assert" "(" _Expr:expr ["," _Expr:message] ")" as StaticAssertDeclaration
   ;
+  
+//////////////////////////////////////////////////////////////////
+// Enum Declaration
+//////////////////////////////////////////////////////////////////
+
+_EnumItem
+  ::= ID:name ["=" _Expr:expr] as EnumItem
+  ;
+
+_EnumBody
+  ::= "{" [_EnumItem:items {_EnumItem:items ; ","} [","]] "}" as EnumBody
+  ;
+
+_EnumDeclPartial
+  ::= _EnumBody:body as partial EnumDeclaration
+  ::= ";" as partial EnumDeclaration
+  ;
+
+_EnumDecl
+  ::= "enum" ID:name _EnumDeclPartial as EnumDeclaration {kind = Enum}
+  ::= "enum" "class" ID:name [":" _Type:type] _EnumDeclPartial as EnumDeclaration {kind = EnumClass}
+  ;
 
 //////////////////////////////////////////////////////////////////
 // Other Declarations
 //////////////////////////////////////////////////////////////////
 
 _OtherDecl
-  ::= !_StaticAssertDecl
   ::= !_NsDecl
   ::= !_TypedefDecl
   ::= !_FriendDecl
+  ::= !_StaticAssertDecl
+  ::= !_EnumDecl
   ;
