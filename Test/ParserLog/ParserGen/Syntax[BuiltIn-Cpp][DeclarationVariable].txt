@@ -1109,30 +1109,33 @@
         "attParser": "",
         "attPublic": "",
         "clauses": [{
-            "$ast": "CreateClause",
+            "$ast": "ReuseClause",
             "assignments": [],
             "syntax": {
                 "$ast": "SequenceSyntax",
                 "first": {
-                    "$ast": "LoopSyntax",
-                    "delimiter": null,
-                    "syntax": {
-                        "$ast": "RefSyntax",
-                        "field": "keywords",
-                        "literal": "_DeclaratorKeyword",
-                        "refType": "Id"
-                    }
+                    "$ast": "UseSyntax",
+                    "name": "_VarsFuncForwardDeclWithoutKeyword"
                 },
                 "second": {
                     "$ast": "RefSyntax",
-                    "field": "varPart",
-                    "literal": "_DeclaratorUntypedFuncParRequiredInit",
-                    "refType": "Id"
+                    "field": "",
+                    "literal": "\";\"",
+                    "refType": "Literal"
                 }
+            }
+        }, {
+            "$ast": "CreateClause",
+            "assignments": [],
+            "syntax": {
+                "$ast": "RefSyntax",
+                "field": "varPart",
+                "literal": "_DeclaratorUntypedFuncParRequiredInit",
+                "refType": "Id"
             },
             "type": "SingleVarDeclaration"
         }],
-        "name": "_FuncDeclWithoutKeyword",
+        "name": "_VarsFuncDeclWithoutKeyword",
         "type": ""
     }, {
         "$ast": "Rule",
@@ -1143,7 +1146,7 @@
             "assignments": [],
             "syntax": {
                 "$ast": "UseSyntax",
-                "name": "_FuncDeclWithoutKeyword"
+                "name": "_VarsFuncDeclWithoutKeyword"
             }
         }, {
             "$ast": "ReuseClause",
@@ -1171,11 +1174,11 @@
                 },
                 "second": {
                     "$ast": "UseSyntax",
-                    "name": "_FuncDeclWithoutKeyword"
+                    "name": "_VarsFuncDeclWithoutKeyword"
                 }
             }
         }],
-        "name": "_FuncDecl",
+        "name": "_VarsFuncDecl",
         "type": ""
     }],
     "switches": []
