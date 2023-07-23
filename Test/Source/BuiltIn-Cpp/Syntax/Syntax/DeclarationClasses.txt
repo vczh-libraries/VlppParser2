@@ -2,26 +2,29 @@
 // Class Body
 //////////////////////////////////////////////////////////////////
 
-_ClassInheritance
-  ::=             _Type:type as ClassInheritance {accessor = Default}
-  ::= "private"   _Type:type as ClassInheritance {accessor = Private}
-  ::= "protected" _Type:type as ClassInheritance {accessor = Protected}
-  ::= "public"    _Type:type as ClassInheritance {accessor = Public}
+_ClassInheritanceFirst
+  ::= "::"             _Type:type as ClassInheritance {accessor = Default}
+  ::= "::" "private"   _Type:type as ClassInheritance {accessor = Private}
+  ::= "::" "protected" _Type:type as ClassInheritance {accessor = Protected}
+  ::= "::" "public"    _Type:type as ClassInheritance {accessor = Public}
   ;
 
-_ClassMemberPartPartial
-  ::= _DeclWithSemicolon:decls {_DeclWithSemicolon:decls} as partial ClassMemberPart
+_ClassInheritanceSecond
+  ::= ","             _Type:type as ClassInheritance {accessor = Default}
+  ::= "," "private"   _Type:type as ClassInheritance {accessor = Private}
+  ::= "," "protected" _Type:type as ClassInheritance {accessor = Protected}
+  ::= "," "public"    _Type:type as ClassInheritance {accessor = Public}
   ;
 
 _ClassMemberPart
-  ::=                  _ClassMemberPartPartial  as ClassMemberPart {accessor = Default}
-  ::= "private"   ":" [_ClassMemberPartPartial] as ClassMemberPart {accessor = Private}
-  ::= "protected" ":" [_ClassMemberPartPartial] as ClassMemberPart {accessor = Protected}
-  ::= "public"    ":" [_ClassMemberPartPartial] as ClassMemberPart {accessor = Public}
+  ::=  _DeclWithSemicolon:decls {_DeclWithSemicolon:decls} as ClassMemberPart {accessor = Default}
+  ::= "private"   ":"           {_DeclWithSemicolon:decls} as ClassMemberPart {accessor = Private}
+  ::= "protected" ":"           {_DeclWithSemicolon:decls} as ClassMemberPart {accessor = Protected}
+  ::= "public"    ":"           {_DeclWithSemicolon:decls} as ClassMemberPart {accessor = Public}
   ;
 
 _ClassBody
-  ::= ["::" {_ClassInheritance:inheritances ; ","}]
+  ::= [_ClassInheritanceFirst:inheritances {_ClassInheritanceSecond:inheritances}]
       "{" {_ClassMemberPart:memberParts} "}"
       {_DeclaratorVariablePartOptionalInit:varParts ","}
       as ClassBody
