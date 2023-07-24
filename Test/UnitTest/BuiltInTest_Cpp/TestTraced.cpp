@@ -100,9 +100,24 @@ TEST_FILE
 		runParser(L"TypeOrExpr", L"AmbiguousArgument", [&]() { return GetCppParser().Parse_TypeOrExpr(L"void(int(...))"); });
 	});
 
+	TEST_CASE(L"class X;")
+	{
+		runParser(L"File", L"SimpleClassForwardDecl", [&]() { return GetCppParser().Parse_File(L"class X{};"); });
+	});
+
 	TEST_CASE(L"class X{};")
 	{
 		runParser(L"File", L"SimpleClass", [&]() { return GetCppParser().Parse_File(L"class X{};"); });
+	});
+
+	TEST_CASE(L"enum class X;")
+	{
+		runParser(L"File", L"SimpleEnumForwardDecl", [&]() { return GetCppParser().Parse_File(L"class X{};"); });
+	});
+
+	TEST_CASE(L"enum X{};")
+	{
+		runParser(L"File", L"SimpleEnum", [&]() { return GetCppParser().Parse_File(L"class X{};"); });
 	});
 
 	GetCppParser().OnTraceProcessing.Remove(handlerOnTraceProcessing);
