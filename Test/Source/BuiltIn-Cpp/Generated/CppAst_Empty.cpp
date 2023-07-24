@@ -43,9 +43,8 @@ DeclarationVisitor
 
 	// Visitor Members -----------------------------------
 
-	void DeclarationVisitor::Visit(CppCommonVarDeclaration* node)
+	void DeclarationVisitor::Visit(CppVariablesDeclaration* node)
 	{
-		Dispatch(node);
 	}
 
 	void DeclarationVisitor::Visit(CppClassDeclaration* node)
@@ -237,20 +236,6 @@ VarInitVisitor
 	}
 
 	void VarInitVisitor::Visit(CppVarStatInit* node)
-	{
-	}
-
-/***********************************************************************
-CommonVarDeclarationVisitor
-***********************************************************************/
-
-	// Visitor Members -----------------------------------
-
-	void CommonVarDeclarationVisitor::Visit(CppSingleVarDeclaration* node)
-	{
-	}
-
-	void CommonVarDeclarationVisitor::Visit(CppMultipleVarDeclaration* node)
 	{
 	}
 

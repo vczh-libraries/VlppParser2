@@ -131,6 +131,12 @@ MakeCastExpr
 MakeClassBody
 ***********************************************************************/
 
+	MakeClassBody& MakeClassBody::firstVarPart(const vl::Ptr<CppDeclaratorVariablePart>& value)
+	{
+		node->firstVarPart = value;
+		return *this;
+	}
+
 	MakeClassBody& MakeClassBody::inheritances(const vl::Ptr<CppClassInheritance>& value)
 	{
 		node->inheritances.Add(value);
@@ -140,12 +146,6 @@ MakeClassBody
 	MakeClassBody& MakeClassBody::memberParts(const vl::Ptr<CppClassMemberPart>& value)
 	{
 		node->memberParts.Add(value);
-		return *this;
-	}
-
-	MakeClassBody& MakeClassBody::varParts(const vl::Ptr<CppDeclaratorVariablePart>& value)
-	{
-		node->varParts.Add(value);
 		return *this;
 	}
 
@@ -206,22 +206,6 @@ MakeClassMemberPart
 	MakeClassMemberPart& MakeClassMemberPart::decls(const vl::Ptr<CppDeclaration>& value)
 	{
 		node->decls.Add(value);
-		return *this;
-	}
-
-/***********************************************************************
-MakeCommonVarDeclaration
-***********************************************************************/
-
-	MakeCommonVarDeclaration& MakeCommonVarDeclaration::keywords(const vl::Ptr<CppDeclaratorKeyword>& value)
-	{
-		node->keywords.Add(value);
-		return *this;
-	}
-
-	MakeCommonVarDeclaration& MakeCommonVarDeclaration::type(const vl::Ptr<CppTypeOrExpr>& value)
-	{
-		node->type = value;
 		return *this;
 	}
 
@@ -383,6 +367,12 @@ MakeDeclaratorVariablePart
 		return *this;
 	}
 
+	MakeDeclaratorVariablePart& MakeDeclaratorVariablePart::nextVarPart(const vl::Ptr<CppDeclaratorVariablePart>& value)
+	{
+		node->nextVarPart = value;
+		return *this;
+	}
+
 /***********************************************************************
 MakeDefaultStat
 ***********************************************************************/
@@ -434,6 +424,12 @@ MakeDoWhileStat
 /***********************************************************************
 MakeEnumBody
 ***********************************************************************/
+
+	MakeEnumBody& MakeEnumBody::firstVarPart(const vl::Ptr<CppDeclaratorVariablePart>& value)
+	{
+		node->firstVarPart = value;
+		return *this;
+	}
 
 	MakeEnumBody& MakeEnumBody::items(const vl::Ptr<CppEnumItem>& value)
 	{
@@ -541,7 +537,7 @@ MakeForStatIterateCondition
 		return *this;
 	}
 
-	MakeForStatIterateCondition& MakeForStatIterateCondition::decl(const vl::Ptr<CppSingleVarDeclaration>& value)
+	MakeForStatIterateCondition& MakeForStatIterateCondition::decl(const vl::Ptr<CppVariablesDeclaration>& value)
 	{
 		node->decl = value;
 		return *this;
@@ -653,7 +649,7 @@ MakeIfElseStat
 		return *this;
 	}
 
-	MakeIfElseStat& MakeIfElseStat::varsDecl(const vl::Ptr<CppMultipleVarDeclaration>& value)
+	MakeIfElseStat& MakeIfElseStat::varsDecl(const vl::Ptr<CppVariablesDeclaration>& value)
 	{
 		node->varsDecl = value;
 		return *this;
@@ -766,28 +762,6 @@ MakeLambdaExpr
 	MakeLambdaExpr& MakeLambdaExpr::stat(const vl::Ptr<CppStatement>& value)
 	{
 		node->stat = value;
-		return *this;
-	}
-
-/***********************************************************************
-MakeMultipleVarDeclaration
-***********************************************************************/
-
-	MakeMultipleVarDeclaration& MakeMultipleVarDeclaration::varParts(const vl::Ptr<CppDeclaratorVariablePart>& value)
-	{
-		node->varParts.Add(value);
-		return *this;
-	}
-
-	MakeMultipleVarDeclaration& MakeMultipleVarDeclaration::keywords(const vl::Ptr<CppDeclaratorKeyword>& value)
-	{
-		node->keywords.Add(value);
-		return *this;
-	}
-
-	MakeMultipleVarDeclaration& MakeMultipleVarDeclaration::type(const vl::Ptr<CppTypeOrExpr>& value)
-	{
-		node->type = value;
 		return *this;
 	}
 
@@ -1056,28 +1030,6 @@ MakeReturnStat
 	}
 
 /***********************************************************************
-MakeSingleVarDeclaration
-***********************************************************************/
-
-	MakeSingleVarDeclaration& MakeSingleVarDeclaration::varPart(const vl::Ptr<CppDeclaratorVariablePart>& value)
-	{
-		node->varPart = value;
-		return *this;
-	}
-
-	MakeSingleVarDeclaration& MakeSingleVarDeclaration::keywords(const vl::Ptr<CppDeclaratorKeyword>& value)
-	{
-		node->keywords.Add(value);
-		return *this;
-	}
-
-	MakeSingleVarDeclaration& MakeSingleVarDeclaration::type(const vl::Ptr<CppTypeOrExpr>& value)
-	{
-		node->type = value;
-		return *this;
-	}
-
-/***********************************************************************
 MakeSizeofExpr
 ***********************************************************************/
 
@@ -1292,6 +1244,28 @@ MakeVarValueInit
 	MakeVarValueInit& MakeVarValueInit::expr(const vl::Ptr<CppTypeOrExpr>& value)
 	{
 		node->expr = value;
+		return *this;
+	}
+
+/***********************************************************************
+MakeVariablesDeclaration
+***********************************************************************/
+
+	MakeVariablesDeclaration& MakeVariablesDeclaration::firstVarPart(const vl::Ptr<CppDeclaratorVariablePart>& value)
+	{
+		node->firstVarPart = value;
+		return *this;
+	}
+
+	MakeVariablesDeclaration& MakeVariablesDeclaration::keywords(const vl::Ptr<CppDeclaratorKeyword>& value)
+	{
+		node->keywords.Add(value);
+		return *this;
+	}
+
+	MakeVariablesDeclaration& MakeVariablesDeclaration::type(const vl::Ptr<CppTypeOrExpr>& value)
+	{
+		node->type = value;
 		return *this;
 	}
 

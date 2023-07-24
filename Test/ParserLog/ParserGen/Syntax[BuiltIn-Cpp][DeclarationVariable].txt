@@ -374,12 +374,12 @@
                 },
                 "second": {
                     "$ast": "RefSyntax",
-                    "field": "varPart",
+                    "field": "firstVarPart",
                     "literal": "_FunctionParameterVariablePart",
                     "refType": "Id"
                 }
             },
-            "type": "SingleVarDeclaration"
+            "type": "VariablesDeclaration"
         }, {
             "$ast": "CreateClause",
             "assignments": [],
@@ -418,13 +418,13 @@
                     "priority": "Equal",
                     "syntax": {
                         "$ast": "RefSyntax",
-                        "field": "varPart",
+                        "field": "firstVarPart",
                         "literal": "_FunctionParameterVariablePart",
                         "refType": "Id"
                     }
                 }
             },
-            "type": "SingleVarDeclaration"
+            "type": "VariablesDeclaration"
         }],
         "name": "_FunctionParameter",
         "type": ""
@@ -638,12 +638,12 @@
                 },
                 "second": {
                     "$ast": "RefSyntax",
-                    "field": "varPart",
+                    "field": "firstVarPart",
                     "literal": "_TypedGenericParameterVariablePart",
                     "refType": "Id"
                 }
             },
-            "type": "SingleVarDeclaration"
+            "type": "VariablesDeclaration"
         }],
         "name": "_TypedGenericParameter",
         "type": ""
@@ -753,12 +753,12 @@
                 },
                 "second": {
                     "$ast": "RefSyntax",
-                    "field": "varPart",
+                    "field": "firstVarPart",
                     "literal": "_CatchParameterVariablePart",
                     "refType": "Id"
                 }
             },
-            "type": "SingleVarDeclaration"
+            "type": "VariablesDeclaration"
         }, {
             "$ast": "CreateClause",
             "assignments": [],
@@ -794,12 +794,12 @@
                 },
                 "second": {
                     "$ast": "RefSyntax",
-                    "field": "varPart",
+                    "field": "firstVarPart",
                     "literal": "_CatchParameterVariablePart",
                     "refType": "Id"
                 }
             },
-            "type": "SingleVarDeclaration"
+            "type": "VariablesDeclaration"
         }],
         "name": "_CatchParameter",
         "type": ""
@@ -827,12 +827,12 @@
                 },
                 "second": {
                     "$ast": "RefSyntax",
-                    "field": "varPart",
+                    "field": "firstVarPart",
                     "literal": "_DeclaratorVariablePartRequiredInit",
                     "refType": "Id"
                 }
             },
-            "type": "SingleVarDeclaration"
+            "type": "VariablesDeclaration"
         }, {
             "$ast": "CreateClause",
             "assignments": [],
@@ -868,12 +868,12 @@
                 },
                 "second": {
                     "$ast": "RefSyntax",
-                    "field": "varPart",
+                    "field": "firstVarPart",
                     "literal": "_DeclaratorVariablePartRequiredInit",
                     "refType": "Id"
                 }
             },
-            "type": "SingleVarDeclaration"
+            "type": "VariablesDeclaration"
         }],
         "name": "_ExprOrVarCondition",
         "type": ""
@@ -894,14 +894,50 @@
                 },
                 "second": {
                     "$ast": "RefSyntax",
-                    "field": "varPart",
+                    "field": "firstVarPart",
                     "literal": "_DeclaratorVariablePartWithoutInit",
                     "refType": "Id"
                 }
             },
-            "type": "SingleVarDeclaration"
+            "type": "VariablesDeclaration"
         }],
         "name": "_ForEachParameter",
+        "type": ""
+    }, {
+        "$ast": "Rule",
+        "attParser": "",
+        "attPublic": "",
+        "clauses": [{
+            "$ast": "ReuseClause",
+            "assignments": [],
+            "syntax": {
+                "$ast": "SequenceSyntax",
+                "first": {
+                    "$ast": "UseSyntax",
+                    "name": "_DeclaratorVariablePartOptionalInit"
+                },
+                "second": {
+                    "$ast": "OptionalSyntax",
+                    "priority": "Equal",
+                    "syntax": {
+                        "$ast": "SequenceSyntax",
+                        "first": {
+                            "$ast": "RefSyntax",
+                            "field": "",
+                            "literal": "\",\"",
+                            "refType": "Literal"
+                        },
+                        "second": {
+                            "$ast": "RefSyntax",
+                            "field": "nextVarPart",
+                            "literal": "_MultiVarsDeclVariablePart",
+                            "refType": "Id"
+                        }
+                    }
+                }
+            }
+        }],
+        "name": "_MultiVarsDeclVariablePart",
         "type": ""
     }, {
         "$ast": "Rule",
@@ -913,43 +949,21 @@
             "syntax": {
                 "$ast": "SequenceSyntax",
                 "first": {
-                    "$ast": "SequenceSyntax",
-                    "first": {
-                        "$ast": "RefSyntax",
-                        "field": "type",
-                        "literal": "_TypeBeforeDeclarator",
-                        "refType": "Id"
-                    },
-                    "second": {
-                        "$ast": "RefSyntax",
-                        "field": "varParts",
-                        "literal": "_DeclaratorVariablePartOptionalInit",
-                        "refType": "Id"
-                    }
+                    "$ast": "RefSyntax",
+                    "field": "type",
+                    "literal": "_TypeBeforeDeclarator",
+                    "refType": "Id"
                 },
                 "second": {
-                    "$ast": "LoopSyntax",
-                    "delimiter": null,
-                    "syntax": {
-                        "$ast": "SequenceSyntax",
-                        "first": {
-                            "$ast": "RefSyntax",
-                            "field": "",
-                            "literal": "\",\"",
-                            "refType": "Literal"
-                        },
-                        "second": {
-                            "$ast": "RefSyntax",
-                            "field": "varParts",
-                            "literal": "_DeclaratorVariablePartOptionalInit",
-                            "refType": "Id"
-                        }
-                    }
+                    "$ast": "RefSyntax",
+                    "field": "firstVarPart",
+                    "literal": "_MultiVarsDeclVariablePart",
+                    "refType": "Id"
                 }
             },
-            "type": "MultipleVarDeclaration"
+            "type": "VariablesDeclaration"
         }],
-        "name": "_VarsDeclWithoutKeyword",
+        "name": "_MultiVarsDeclWithoutKeyword",
         "type": ""
     }, {
         "$ast": "Rule",
@@ -960,7 +974,7 @@
             "assignments": [],
             "syntax": {
                 "$ast": "UseSyntax",
-                "name": "_VarsDeclWithoutKeyword"
+                "name": "_MultiVarsDeclWithoutKeyword"
             }
         }, {
             "$ast": "ReuseClause",
@@ -988,11 +1002,11 @@
                 },
                 "second": {
                     "$ast": "UseSyntax",
-                    "name": "_VarsDeclWithoutKeyword"
+                    "name": "_MultiVarsDeclWithoutKeyword"
                 }
             }
         }],
-        "name": "_VarsDecl",
+        "name": "_MultiVarsDecl",
         "type": ""
     }, {
         "$ast": "Rule",
@@ -1004,7 +1018,7 @@
             "syntax": {
                 "$ast": "RefSyntax",
                 "field": "declarator",
-                "literal": "_DeclaratorUntypedFunc",
+                "literal": "_DeclaratorUntypedFuncWithoutKeyword",
                 "refType": "Id"
             },
             "type": "DeclaratorVariablePart"
@@ -1020,11 +1034,11 @@
             "assignments": [],
             "syntax": {
                 "$ast": "RefSyntax",
-                "field": "varPart",
+                "field": "firstVarPart",
                 "literal": "_UntypedFuncForwardDeclVariablePart",
                 "refType": "Id"
             },
-            "type": "SingleVarDeclaration"
+            "type": "VariablesDeclaration"
         }],
         "name": "_UntypedFuncForwardDeclWithoutKeyword",
         "type": ""
@@ -1037,7 +1051,7 @@
             "assignments": [],
             "syntax": {
                 "$ast": "UseSyntax",
-                "name": "_VarsDeclWithoutKeyword"
+                "name": "_MultiVarsDeclWithoutKeyword"
             }
         }, {
             "$ast": "ReuseClause",
@@ -1047,7 +1061,7 @@
                 "name": "_UntypedFuncForwardDeclWithoutKeyword"
             }
         }],
-        "name": "_VarsOrFuncForwardDeclWithoutKeyword",
+        "name": "_MultiVarsOrFuncForwardDeclWithoutKeyword",
         "type": ""
     }, {
         "$ast": "Rule",
@@ -1058,7 +1072,7 @@
             "assignments": [],
             "syntax": {
                 "$ast": "UseSyntax",
-                "name": "_VarsOrFuncForwardDeclWithoutKeyword"
+                "name": "_MultiVarsOrFuncForwardDeclWithoutKeyword"
             }
         }, {
             "$ast": "ReuseClause",
@@ -1086,11 +1100,111 @@
                 },
                 "second": {
                     "$ast": "UseSyntax",
-                    "name": "_VarsOrFuncForwardDeclWithoutKeyword"
+                    "name": "_MultiVarsOrFuncForwardDeclWithoutKeyword"
                 }
             }
         }],
-        "name": "_VarsOrFuncForwardDecl",
+        "name": "_MultiVarsOrFuncForwardDecl",
+        "type": ""
+    }, {
+        "$ast": "Rule",
+        "attParser": "",
+        "attPublic": "",
+        "clauses": [{
+            "$ast": "ReuseClause",
+            "assignments": [],
+            "syntax": {
+                "$ast": "SequenceSyntax",
+                "first": {
+                    "$ast": "SequenceSyntax",
+                    "first": {
+                        "$ast": "SequenceSyntax",
+                        "first": {
+                            "$ast": "UseSyntax",
+                            "name": "_DeclaratorVariablePartWithoutInit"
+                        },
+                        "second": {
+                            "$ast": "OptionalSyntax",
+                            "priority": "Equal",
+                            "syntax": {
+                                "$ast": "RefSyntax",
+                                "field": "init",
+                                "literal": "_VarInit",
+                                "refType": "Id"
+                            }
+                        }
+                    },
+                    "second": {
+                        "$ast": "OptionalSyntax",
+                        "priority": "Equal",
+                        "syntax": {
+                            "$ast": "SequenceSyntax",
+                            "first": {
+                                "$ast": "RefSyntax",
+                                "field": "",
+                                "literal": "\",\"",
+                                "refType": "Literal"
+                            },
+                            "second": {
+                                "$ast": "RefSyntax",
+                                "field": "nextVarPart",
+                                "literal": "_MultiVarsDeclVariablePart",
+                                "refType": "Id"
+                            }
+                        }
+                    }
+                },
+                "second": {
+                    "$ast": "RefSyntax",
+                    "field": "",
+                    "literal": "\";\"",
+                    "refType": "Literal"
+                }
+            }
+        }, {
+            "$ast": "ReuseClause",
+            "assignments": [],
+            "syntax": {
+                "$ast": "SequenceSyntax",
+                "first": {
+                    "$ast": "UseSyntax",
+                    "name": "_DeclaratorVariablePartWithoutInit"
+                },
+                "second": {
+                    "$ast": "RefSyntax",
+                    "field": "init",
+                    "literal": "_VarStatInit",
+                    "refType": "Id"
+                }
+            }
+        }],
+        "name": "_MultiVarsOrTypedFuncDeclVariablePart",
+        "type": ""
+    }, {
+        "$ast": "Rule",
+        "attParser": "",
+        "attPublic": "",
+        "clauses": [{
+            "$ast": "CreateClause",
+            "assignments": [],
+            "syntax": {
+                "$ast": "SequenceSyntax",
+                "first": {
+                    "$ast": "RefSyntax",
+                    "field": "type",
+                    "literal": "_TypeBeforeDeclarator",
+                    "refType": "Id"
+                },
+                "second": {
+                    "$ast": "RefSyntax",
+                    "field": "firstVarPart",
+                    "literal": "_MultiVarsOrTypedFuncDeclVariablePart",
+                    "refType": "Id"
+                }
+            },
+            "type": "VariablesDeclaration"
+        }],
+        "name": "_MultiVarsOrTypedFuncDeclWithoutKeyword",
         "type": ""
     }, {
         "$ast": "Rule",
@@ -1104,7 +1218,7 @@
                 "first": {
                     "$ast": "RefSyntax",
                     "field": "declarator",
-                    "literal": "_DeclaratorUntypedFunc",
+                    "literal": "_DeclaratorUntypedFuncWithoutKeyword",
                     "refType": "Id"
                 },
                 "second": {
@@ -1136,11 +1250,11 @@
             "assignments": [],
             "syntax": {
                 "$ast": "RefSyntax",
-                "field": "varPart",
+                "field": "firstVarPart",
                 "literal": "_UntypedFuncDeclVariablePart",
                 "refType": "Id"
             },
-            "type": "SingleVarDeclaration"
+            "type": "VariablesDeclaration"
         }],
         "name": "_UntypedFuncDeclWithoutKeyword",
         "type": ""
@@ -1152,17 +1266,8 @@
             "$ast": "ReuseClause",
             "assignments": [],
             "syntax": {
-                "$ast": "SequenceSyntax",
-                "first": {
-                    "$ast": "UseSyntax",
-                    "name": "_VarsDeclWithoutKeyword"
-                },
-                "second": {
-                    "$ast": "RefSyntax",
-                    "field": "",
-                    "literal": "\";\"",
-                    "refType": "Literal"
-                }
+                "$ast": "UseSyntax",
+                "name": "_MultiVarsOrTypedFuncDeclWithoutKeyword"
             }
         }, {
             "$ast": "ReuseClause",
@@ -1172,7 +1277,7 @@
                 "name": "_UntypedFuncDeclWithoutKeyword"
             }
         }],
-        "name": "_VarsOrFuncDeclWithoutKeyword",
+        "name": "_MultiVarsOrFuncDeclWithoutKeyword",
         "type": ""
     }, {
         "$ast": "Rule",
@@ -1183,7 +1288,7 @@
             "assignments": [],
             "syntax": {
                 "$ast": "UseSyntax",
-                "name": "_VarsOrFuncDeclWithoutKeyword"
+                "name": "_MultiVarsOrFuncDeclWithoutKeyword"
             }
         }, {
             "$ast": "ReuseClause",
@@ -1211,11 +1316,11 @@
                 },
                 "second": {
                     "$ast": "UseSyntax",
-                    "name": "_VarsOrFuncDeclWithoutKeyword"
+                    "name": "_MultiVarsOrFuncDeclWithoutKeyword"
                 }
             }
         }],
-        "name": "_VarsOrFuncDecl",
+        "name": "_MultiVarsOrFuncDecl",
         "type": ""
     }],
     "switches": []

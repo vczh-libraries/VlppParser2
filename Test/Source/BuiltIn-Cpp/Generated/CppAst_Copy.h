@@ -21,7 +21,6 @@ namespace cpp_parser::copy_visitor
 		, protected virtual CppTypeOnly::IVisitor
 		, protected virtual CppIdentifier::IVisitor
 		, protected virtual CppVarInit::IVisitor
-		, protected virtual CppCommonVarDeclaration::IVisitor
 		, protected virtual CppStatement::IVisitor
 		, protected virtual CppForStatConditionPart::IVisitor
 	{
@@ -38,7 +37,6 @@ namespace cpp_parser::copy_visitor
 		void CopyFields(CppClassDeclaration* from, CppClassDeclaration* to);
 		void CopyFields(CppClassInheritance* from, CppClassInheritance* to);
 		void CopyFields(CppClassMemberPart* from, CppClassMemberPart* to);
-		void CopyFields(CppCommonVarDeclaration* from, CppCommonVarDeclaration* to);
 		void CopyFields(CppConstType* from, CppConstType* to);
 		void CopyFields(CppContinueStat* from, CppContinueStat* to);
 		void CopyFields(CppDeclStat* from, CppDeclStat* to);
@@ -76,7 +74,6 @@ namespace cpp_parser::copy_visitor
 		void CopyFields(CppLabelStat* from, CppLabelStat* to);
 		void CopyFields(CppLambdaCapture* from, CppLambdaCapture* to);
 		void CopyFields(CppLambdaExpr* from, CppLambdaExpr* to);
-		void CopyFields(CppMultipleVarDeclaration* from, CppMultipleVarDeclaration* to);
 		void CopyFields(CppNameIdentifier* from, CppNameIdentifier* to);
 		void CopyFields(CppNamespaceDeclaration* from, CppNamespaceDeclaration* to);
 		void CopyFields(CppNamespaceName* from, CppNamespaceName* to);
@@ -92,7 +89,6 @@ namespace cpp_parser::copy_visitor
 		void CopyFields(CppPrimitiveType* from, CppPrimitiveType* to);
 		void CopyFields(CppQualifiedName* from, CppQualifiedName* to);
 		void CopyFields(CppReturnStat* from, CppReturnStat* to);
-		void CopyFields(CppSingleVarDeclaration* from, CppSingleVarDeclaration* to);
 		void CopyFields(CppSizeofExpr* from, CppSizeofExpr* to);
 		void CopyFields(CppStatement* from, CppStatement* to);
 		void CopyFields(CppStatementToResolve* from, CppStatementToResolve* to);
@@ -115,6 +111,7 @@ namespace cpp_parser::copy_visitor
 		void CopyFields(CppVarParanthesisInit* from, CppVarParanthesisInit* to);
 		void CopyFields(CppVarStatInit* from, CppVarStatInit* to);
 		void CopyFields(CppVarValueInit* from, CppVarValueInit* to);
+		void CopyFields(CppVariablesDeclaration* from, CppVariablesDeclaration* to);
 		void CopyFields(CppVariadicExpr* from, CppVariadicExpr* to);
 		void CopyFields(CppVolatileType* from, CppVolatileType* to);
 		void CopyFields(CppWhileStat* from, CppWhileStat* to);
@@ -148,7 +145,7 @@ namespace cpp_parser::copy_visitor
 		void Visit(CppGenericArgument* node) override;
 		void Visit(CppOrdinaryGenericParameter* node) override;
 
-		void Visit(CppCommonVarDeclaration* node) override;
+		void Visit(CppVariablesDeclaration* node) override;
 		void Visit(CppClassDeclaration* node) override;
 		void Visit(CppEnumDeclaration* node) override;
 		void Visit(CppStaticAssertDeclaration* node) override;
@@ -194,9 +191,6 @@ namespace cpp_parser::copy_visitor
 		void Visit(CppVarParanthesisInit* node) override;
 		void Visit(CppVarBraceInit* node) override;
 		void Visit(CppVarStatInit* node) override;
-
-		void Visit(CppSingleVarDeclaration* node) override;
-		void Visit(CppMultipleVarDeclaration* node) override;
 
 		void Visit(CppStatementToResolve* node) override;
 		void Visit(CppEmptyStat* node) override;
@@ -256,7 +250,6 @@ namespace cpp_parser::copy_visitor
 		vl::Ptr<CppCaseStat> CopyNode(CppCaseStat* node);
 		vl::Ptr<CppCastExpr> CopyNode(CppCastExpr* node);
 		vl::Ptr<CppClassDeclaration> CopyNode(CppClassDeclaration* node);
-		vl::Ptr<CppCommonVarDeclaration> CopyNode(CppCommonVarDeclaration* node);
 		vl::Ptr<CppConstType> CopyNode(CppConstType* node);
 		vl::Ptr<CppContinueStat> CopyNode(CppContinueStat* node);
 		vl::Ptr<CppDeclStat> CopyNode(CppDeclStat* node);
@@ -280,7 +273,6 @@ namespace cpp_parser::copy_visitor
 		vl::Ptr<CppIndexExpr> CopyNode(CppIndexExpr* node);
 		vl::Ptr<CppLabelStat> CopyNode(CppLabelStat* node);
 		vl::Ptr<CppLambdaExpr> CopyNode(CppLambdaExpr* node);
-		vl::Ptr<CppMultipleVarDeclaration> CopyNode(CppMultipleVarDeclaration* node);
 		vl::Ptr<CppNameIdentifier> CopyNode(CppNameIdentifier* node);
 		vl::Ptr<CppNamespaceDeclaration> CopyNode(CppNamespaceDeclaration* node);
 		vl::Ptr<CppNewExpr> CopyNode(CppNewExpr* node);
@@ -295,7 +287,6 @@ namespace cpp_parser::copy_visitor
 		vl::Ptr<CppPrimitiveType> CopyNode(CppPrimitiveType* node);
 		vl::Ptr<CppQualifiedName> CopyNode(CppQualifiedName* node);
 		vl::Ptr<CppReturnStat> CopyNode(CppReturnStat* node);
-		vl::Ptr<CppSingleVarDeclaration> CopyNode(CppSingleVarDeclaration* node);
 		vl::Ptr<CppSizeofExpr> CopyNode(CppSizeofExpr* node);
 		vl::Ptr<CppStatementToResolve> CopyNode(CppStatementToResolve* node);
 		vl::Ptr<CppStaticAssertDeclaration> CopyNode(CppStaticAssertDeclaration* node);
@@ -313,6 +304,7 @@ namespace cpp_parser::copy_visitor
 		vl::Ptr<CppVarParanthesisInit> CopyNode(CppVarParanthesisInit* node);
 		vl::Ptr<CppVarStatInit> CopyNode(CppVarStatInit* node);
 		vl::Ptr<CppVarValueInit> CopyNode(CppVarValueInit* node);
+		vl::Ptr<CppVariablesDeclaration> CopyNode(CppVariablesDeclaration* node);
 		vl::Ptr<CppVariadicExpr> CopyNode(CppVariadicExpr* node);
 		vl::Ptr<CppVolatileType> CopyNode(CppVolatileType* node);
 		vl::Ptr<CppWhileStat> CopyNode(CppWhileStat* node);

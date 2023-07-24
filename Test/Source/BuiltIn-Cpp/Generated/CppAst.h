@@ -24,7 +24,6 @@ namespace cpp_parser
 	class CppClassDeclaration;
 	class CppClassInheritance;
 	class CppClassMemberPart;
-	class CppCommonVarDeclaration;
 	class CppConstType;
 	class CppContinueStat;
 	class CppDeclStat;
@@ -62,7 +61,6 @@ namespace cpp_parser
 	class CppLabelStat;
 	class CppLambdaCapture;
 	class CppLambdaExpr;
-	class CppMultipleVarDeclaration;
 	class CppNameIdentifier;
 	class CppNamespaceDeclaration;
 	class CppNamespaceName;
@@ -78,7 +76,6 @@ namespace cpp_parser
 	class CppPrimitiveType;
 	class CppQualifiedName;
 	class CppReturnStat;
-	class CppSingleVarDeclaration;
 	class CppSizeofExpr;
 	class CppStatement;
 	class CppStatementToResolve;
@@ -101,6 +98,7 @@ namespace cpp_parser
 	class CppVarParanthesisInit;
 	class CppVarStatInit;
 	class CppVarValueInit;
+	class CppVariablesDeclaration;
 	class CppVariadicExpr;
 	class CppVolatileType;
 	class CppWhileStat;
@@ -318,7 +316,7 @@ namespace cpp_parser
 		class IVisitor : public virtual vl::reflection::IDescriptable, vl::reflection::Description<IVisitor>
 		{
 		public:
-			virtual void Visit(CppCommonVarDeclaration* node) = 0;
+			virtual void Visit(CppVariablesDeclaration* node) = 0;
 			virtual void Visit(CppClassDeclaration* node) = 0;
 			virtual void Visit(CppEnumDeclaration* node) = 0;
 			virtual void Visit(CppStaticAssertDeclaration* node) = 0;
@@ -817,40 +815,17 @@ namespace cpp_parser
 	public:
 		vl::Ptr<CppDeclarator> declarator;
 		vl::Ptr<CppVarInit> init;
+		vl::Ptr<CppDeclaratorVariablePart> nextVarPart;
 	};
 
-	class CppCommonVarDeclaration abstract : public CppDeclaration, vl::reflection::Description<CppCommonVarDeclaration>
+	class CppVariablesDeclaration : public CppDeclaration, vl::reflection::Description<CppVariablesDeclaration>
 	{
 	public:
-		class IVisitor : public virtual vl::reflection::IDescriptable, vl::reflection::Description<IVisitor>
-		{
-		public:
-			virtual void Visit(CppSingleVarDeclaration* node) = 0;
-			virtual void Visit(CppMultipleVarDeclaration* node) = 0;
-		};
-
-		virtual void Accept(CppCommonVarDeclaration::IVisitor* visitor) = 0;
-
 		vl::collections::List<vl::Ptr<CppDeclaratorKeyword>> keywords;
 		vl::Ptr<CppTypeOrExpr> type;
+		vl::Ptr<CppDeclaratorVariablePart> firstVarPart;
 
 		void Accept(CppDeclaration::IVisitor* visitor) override;
-	};
-
-	class CppSingleVarDeclaration : public CppCommonVarDeclaration, vl::reflection::Description<CppSingleVarDeclaration>
-	{
-	public:
-		vl::Ptr<CppDeclaratorVariablePart> varPart;
-
-		void Accept(CppCommonVarDeclaration::IVisitor* visitor) override;
-	};
-
-	class CppMultipleVarDeclaration : public CppCommonVarDeclaration, vl::reflection::Description<CppMultipleVarDeclaration>
-	{
-	public:
-		vl::collections::List<vl::Ptr<CppDeclaratorVariablePart>> varParts;
-
-		void Accept(CppCommonVarDeclaration::IVisitor* visitor) override;
 	};
 
 	class CppClassInheritance : public vl::glr::ParsingAstBase, vl::reflection::Description<CppClassInheritance>
@@ -872,7 +847,7 @@ namespace cpp_parser
 	public:
 		vl::collections::List<vl::Ptr<CppClassInheritance>> inheritances;
 		vl::collections::List<vl::Ptr<CppClassMemberPart>> memberParts;
-		vl::collections::List<vl::Ptr<CppDeclaratorVariablePart>> varParts;
+		vl::Ptr<CppDeclaratorVariablePart> firstVarPart;
 	};
 
 	class CppClassDeclaration : public CppDeclaration, vl::reflection::Description<CppClassDeclaration>
@@ -897,6 +872,7 @@ namespace cpp_parser
 	{
 	public:
 		vl::collections::List<vl::Ptr<CppEnumItem>> items;
+		vl::Ptr<CppDeclaratorVariablePart> firstVarPart;
 	};
 
 	class CppEnumDeclaration : public CppDeclaration, vl::reflection::Description<CppEnumDeclaration>
@@ -1097,7 +1073,7 @@ namespace cpp_parser
 	class CppIfElseStat : public CppStatement, vl::reflection::Description<CppIfElseStat>
 	{
 	public:
-		vl::Ptr<CppMultipleVarDeclaration> varsDecl;
+		vl::Ptr<CppVariablesDeclaration> varsDecl;
 		vl::Ptr<CppTypeOrExprOrOthers> condition;
 		vl::Ptr<CppStatement> trueStat;
 		vl::Ptr<CppStatement> falseStat;
@@ -1132,7 +1108,7 @@ namespace cpp_parser
 	class CppForStatIterateCondition : public CppForStatConditionPart, vl::reflection::Description<CppForStatIterateCondition>
 	{
 	public:
-		vl::Ptr<CppSingleVarDeclaration> decl;
+		vl::Ptr<CppVariablesDeclaration> decl;
 		vl::Ptr<CppTypeOrExpr> collection;
 
 		void Accept(CppForStatConditionPart::IVisitor* visitor) override;
@@ -1287,10 +1263,7 @@ namespace vl::reflection::description
 	DECL_TYPE_INFO(cpp_parser::CppVarBraceInit)
 	DECL_TYPE_INFO(cpp_parser::CppVarStatInit)
 	DECL_TYPE_INFO(cpp_parser::CppDeclaratorVariablePart)
-	DECL_TYPE_INFO(cpp_parser::CppCommonVarDeclaration)
-	DECL_TYPE_INFO(cpp_parser::CppCommonVarDeclaration::IVisitor)
-	DECL_TYPE_INFO(cpp_parser::CppSingleVarDeclaration)
-	DECL_TYPE_INFO(cpp_parser::CppMultipleVarDeclaration)
+	DECL_TYPE_INFO(cpp_parser::CppVariablesDeclaration)
 	DECL_TYPE_INFO(cpp_parser::CppClassKind)
 	DECL_TYPE_INFO(cpp_parser::CppClassAccessor)
 	DECL_TYPE_INFO(cpp_parser::CppClassInheritance)
@@ -1368,7 +1341,7 @@ namespace vl::reflection::description
 	END_INTERFACE_PROXY(cpp_parser::CppTypeOrExprOrOthers::IVisitor)
 
 	BEGIN_INTERFACE_PROXY_NOPARENT_SHAREDPTR(cpp_parser::CppDeclaration::IVisitor)
-		void Visit(cpp_parser::CppCommonVarDeclaration* node) override
+		void Visit(cpp_parser::CppVariablesDeclaration* node) override
 		{
 			INVOKE_INTERFACE_PROXY(Visit, node);
 		}
@@ -1589,19 +1562,6 @@ namespace vl::reflection::description
 		}
 
 	END_INTERFACE_PROXY(cpp_parser::CppVarInit::IVisitor)
-
-	BEGIN_INTERFACE_PROXY_NOPARENT_SHAREDPTR(cpp_parser::CppCommonVarDeclaration::IVisitor)
-		void Visit(cpp_parser::CppSingleVarDeclaration* node) override
-		{
-			INVOKE_INTERFACE_PROXY(Visit, node);
-		}
-
-		void Visit(cpp_parser::CppMultipleVarDeclaration* node) override
-		{
-			INVOKE_INTERFACE_PROXY(Visit, node);
-		}
-
-	END_INTERFACE_PROXY(cpp_parser::CppCommonVarDeclaration::IVisitor)
 
 	BEGIN_INTERFACE_PROXY_NOPARENT_SHAREDPTR(cpp_parser::CppStatement::IVisitor)
 		void Visit(cpp_parser::CppStatementToResolve* node) override

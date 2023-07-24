@@ -33,11 +33,10 @@ namespace cpp_parser::empty_visitor
 	{
 	protected:
 		// Dispatch (virtual) --------------------------------
-		virtual void Dispatch(CppCommonVarDeclaration* node) = 0;
 
 	public:
 		// Visitor Members -----------------------------------
-		void Visit(CppCommonVarDeclaration* node) override;
+		void Visit(CppVariablesDeclaration* node) override;
 		void Visit(CppClassDeclaration* node) override;
 		void Visit(CppEnumDeclaration* node) override;
 		void Visit(CppStaticAssertDeclaration* node) override;
@@ -130,18 +129,6 @@ namespace cpp_parser::empty_visitor
 		void Visit(CppVarParanthesisInit* node) override;
 		void Visit(CppVarBraceInit* node) override;
 		void Visit(CppVarStatInit* node) override;
-	};
-
-	/// <summary>An empty visitor, overriding all abstract methods with empty implementations.</summary>
-	class CommonVarDeclarationVisitor : public vl::Object, public CppCommonVarDeclaration::IVisitor
-	{
-	protected:
-		// Dispatch (virtual) --------------------------------
-
-	public:
-		// Visitor Members -----------------------------------
-		void Visit(CppSingleVarDeclaration* node) override;
-		void Visit(CppMultipleVarDeclaration* node) override;
 	};
 
 	/// <summary>An empty visitor, overriding all abstract methods with empty implementations.</summary>
