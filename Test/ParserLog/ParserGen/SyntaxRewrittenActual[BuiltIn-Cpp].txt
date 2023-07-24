@@ -978,11 +978,13 @@ _EnumBody : EnumBody
   ;
 
 _EnumDecl : EnumDeclaration
-  ::= "enum" ["class"] [ID:name] _EnumBody:body as EnumDeclaration {kind = Enum}
+  ::= "enum" [ID:name] [":" _Type:type] _EnumBody:body as EnumDeclaration {kind = Enum}
+  ::= "enum" "class" ID:name [":" _Type:type] _EnumBody:body as EnumDeclaration {kind = EnumClass}
   ;
 
 _EnumForwardDecl : EnumDeclaration
-  ::= "enum" ["class"] ID:name as EnumDeclaration {kind = Enum}
+  ::= "enum" ID:name [":" _Type:type] as EnumDeclaration {kind = Enum}
+  ::= "enum" "class" ID:name [":" _Type:type] as EnumDeclaration {kind = EnumClass}
   ;
 
 _DeclWithoutVarsFuncSemicolon : Declaration
