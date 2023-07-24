@@ -11,7 +11,7 @@ _StaticAssertDecl
 //////////////////////////////////////////////////////////////////
 
 _TypedefCompatibleDecl
-  ::= !_VarsDeclWithoutKeyword
+  ::= !_MultiVarsDeclWithoutKeyword
   ::= !_ClassDecl
   ::= !_EnumDecl
   ;
@@ -49,7 +49,7 @@ _EnumItem
   ;
 
 _EnumBody
-  ::= "{" [_EnumItem:items {_EnumItem:items ; ","} [","]] "}" as EnumBody
+  ::= "{" [_EnumItem:items {_EnumItem:items ; ","} [","]] "}" [_MultiVarsDeclVariablePart:firstVarPart] as EnumBody
   ;
 
 _EnumDecl

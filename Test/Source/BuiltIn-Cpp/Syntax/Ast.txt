@@ -492,22 +492,14 @@ class DeclaratorVariablePart
 {
     var declarator : Declarator;
     var init : VarInit;
+    var nextVarPart : DeclaratorVariablePart;
 }
 
-class CommonVarDeclaration : Declaration
+class VariablesDeclaration : Declaration
 {
     var keywords : DeclaratorKeyword[];
     var type : TypeOrExpr;
-}
-
-class SingleVarDeclaration : CommonVarDeclaration
-{
-    var varPart : DeclaratorVariablePart;
-}
-
-class MultipleVarDeclaration : CommonVarDeclaration
-{
-    var varParts : DeclaratorVariablePart[];
+    var firstVarPart : DeclaratorVariablePart;
 }
 
 //////////////////////////////////////////////////////////////////
@@ -545,7 +537,7 @@ class ClassBody
 {
     var inheritances : ClassInheritance[];
     var memberParts : ClassMemberPart[];
-    var varParts : DeclaratorVariablePart[];
+    var firstVarPart : DeclaratorVariablePart;
 }
 
 class ClassDeclaration : Declaration
@@ -575,6 +567,7 @@ class EnumItem
 class EnumBody
 {
     var items : EnumItem[];
+    var firstVarPart : DeclaratorVariablePart;
 }
 
 class EnumDeclaration : Declaration
@@ -696,7 +689,7 @@ class DoWhileStat : Statement
 
 class IfElseStat : Statement
 {
-    var varsDecl : MultipleVarDeclaration;
+    var varsDecl : VariablesDeclaration;
     var condition : TypeOrExprOrOthers;
     var trueStat : Statement;
     var falseStat : Statement;
@@ -715,7 +708,7 @@ class ForStatLoopCondition : ForStatConditionPart
 
 class ForStatIterateCondition : ForStatConditionPart
 {
-    var decl : SingleVarDeclaration;
+    var decl : VariablesDeclaration;
     var collection : TypeOrExpr;
 }
 

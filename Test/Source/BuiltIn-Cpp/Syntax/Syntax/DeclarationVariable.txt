@@ -60,9 +60,9 @@ _FunctionParameterVariablePart
 
 _FunctionParameter
   ::= !_TypeBeforeDeclarator
-  ::= _TypeBeforeDeclarator:type _FunctionParameterVariablePart:varPart as SingleVarDeclaration
+  ::= _TypeBeforeDeclarator:type _FunctionParameterVariablePart:firstVarPart as VariablesDeclaration
   ::= _DeclaratorKeyword:keywords {_DeclaratorKeyword:keywords}
-      _TypeBeforeDeclarator:type [_FunctionParameterVariablePart:varPart] as SingleVarDeclaration
+      _TypeBeforeDeclarator:type [_FunctionParameterVariablePart:firstVarPart] as VariablesDeclaration
   ;
 
 //////////////////////////////////////////////////////////////////
@@ -90,7 +90,7 @@ _TypedGenericParameterVariablePart
 
 _TypedGenericParameter
   ::= !_TypeBeforeDeclarator
-  ::= _TypeBeforeDeclarator:type _TypedGenericParameterVariablePart:varPart as SingleVarDeclaration
+  ::= _TypeBeforeDeclarator:type _TypedGenericParameterVariablePart:firstVarPart as VariablesDeclaration
   ;
 
 _GenericParameter
@@ -112,37 +112,41 @@ _CatchParameterVariablePart
 
 _CatchParameter
   ::= !_TypeBeforeDeclarator
-  ::= _TypeBeforeDeclarator:type _CatchParameterVariablePart:varPart as SingleVarDeclaration
+  ::= _TypeBeforeDeclarator:type _CatchParameterVariablePart:firstVarPart as VariablesDeclaration
   ::= _DeclaratorKeyword:keywords {_DeclaratorKeyword:keywords}
-      _TypeBeforeDeclarator:type _CatchParameterVariablePart:varPart as SingleVarDeclaration
+      _TypeBeforeDeclarator:type _CatchParameterVariablePart:firstVarPart as VariablesDeclaration
   ;
 
 _ExprOrVarCondition
   ::= !_Expr
-  ::= _TypeBeforeDeclarator:type _DeclaratorVariablePartRequiredInit:varPart as SingleVarDeclaration
+  ::= _TypeBeforeDeclarator:type _DeclaratorVariablePartRequiredInit:firstVarPart as VariablesDeclaration
   ::= _DeclaratorKeyword:keywords {_DeclaratorKeyword:keywords}
-      _TypeBeforeDeclarator:type _DeclaratorVariablePartRequiredInit:varPart as SingleVarDeclaration
+      _TypeBeforeDeclarator:type _DeclaratorVariablePartRequiredInit:firstVarPart as VariablesDeclaration
   ;
 
 _ForEachParameter
-  ::= _TypeBeforeDeclarator:type _DeclaratorVariablePartWithoutInit:varPart as SingleVarDeclaration
+  ::= _TypeBeforeDeclarator:type _DeclaratorVariablePartWithoutInit:firstVarPart as VariablesDeclaration
   ;
 
 //////////////////////////////////////////////////////////////////
-// Variable Declarations
+// Multiple Variable Declarations
 //////////////////////////////////////////////////////////////////
 
-_VarsDeclWithoutKeyword
-  ::= _TypeBeforeDeclarator:type _DeclaratorVariablePartOptionalInit:varParts {"," _DeclaratorVariablePartOptionalInit:varParts} as MultipleVarDeclaration
+_MultiVarsDeclVariablePart
+  ::= !_DeclaratorVariablePartOptionalInit ["," _DeclaratorVariablePartOptionalInit:nextVarPart]
   ;
 
-_VarsDecl
-  ::= !_VarsDeclWithoutKeyword
-  ::= _DeclaratorKeyword:keywords {_DeclaratorKeyword:keywords} !_VarsDeclWithoutKeyword
+_MultiVarsDeclWithoutKeyword
+  ::= _TypeBeforeDeclarator:type _MultiVarsDeclVariablePart:firstVarPart as VariablesDeclaration
+  ;
+
+_MultiVarsDecl
+  ::= !_MultiVarsDeclWithoutKeyword
+  ::= _DeclaratorKeyword:keywords {_DeclaratorKeyword:keywords} !_MultiVarsDeclWithoutKeyword
   ;
 
 //////////////////////////////////////////////////////////////////
-// Variable or Function Forward Declarations
+// Multiple Variable or Function Forward Declarations
 //////////////////////////////////////////////////////////////////
 
 _UntypedFuncForwardDeclVariablePart
@@ -150,21 +154,21 @@ _UntypedFuncForwardDeclVariablePart
   ;
 
 _UntypedFuncForwardDeclWithoutKeyword
-  ::= _UntypedFuncForwardDeclVariablePart:varPart as SingleVarDeclaration
+  ::= _UntypedFuncForwardDeclVariablePart:firstVarPart as VariablesDeclaration
   ;
 
-_VarsOrFuncForwardDeclWithoutKeyword
-  ::= !_VarsDeclWithoutKeyword
+_MultiVarsOrFuncForwardDeclWithoutKeyword
+  ::= !_MultiVarsDeclWithoutKeyword
   ::= !_UntypedFuncForwardDeclWithoutKeyword
   ;
 
-_VarsOrFuncForwardDecl
-  ::= !_VarsOrFuncForwardDeclWithoutKeyword
-  ::= _DeclaratorKeyword:keywords {_DeclaratorKeyword:keywords} !_VarsOrFuncForwardDeclWithoutKeyword
+_MultiVarsOrFuncForwardDecl
+  ::= !_MultiVarsOrFuncForwardDeclWithoutKeyword
+  ::= _DeclaratorKeyword:keywords {_DeclaratorKeyword:keywords} !_MultiVarsOrFuncForwardDeclWithoutKeyword
   ;
 
 //////////////////////////////////////////////////////////////////
-// Variable or Function Forward/Impl Declarations
+// Multiple Variable or Function Forward/Impl Declarations
 //////////////////////////////////////////////////////////////////
 
 _UntypedFuncDeclVariablePart
@@ -172,15 +176,15 @@ _UntypedFuncDeclVariablePart
   ;
 
 _UntypedFuncDeclWithoutKeyword
-  ::= _UntypedFuncDeclVariablePart:varPart as SingleVarDeclaration
+  ::= _UntypedFuncDeclVariablePart:firstVarPart as VariablesDeclaration
   ;
 
-_VarsOrFuncDeclWithoutKeyword
-  ::= !_VarsDeclWithoutKeyword ";"
+_MultiVarsOrFuncDeclWithoutKeyword
+  ::= !_MultiVarsDeclWithoutKeyword ";"
   ::= !_UntypedFuncDeclWithoutKeyword
   ;
 
-_VarsOrFuncDecl
-  ::= !_VarsOrFuncDeclWithoutKeyword
-  ::= _DeclaratorKeyword:keywords {_DeclaratorKeyword:keywords} !_VarsOrFuncDeclWithoutKeyword
+_MultiVarsOrFuncDecl
+  ::= !_MultiVarsOrFuncDeclWithoutKeyword
+  ::= _DeclaratorKeyword:keywords {_DeclaratorKeyword:keywords} !_MultiVarsOrFuncDeclWithoutKeyword
   ;
