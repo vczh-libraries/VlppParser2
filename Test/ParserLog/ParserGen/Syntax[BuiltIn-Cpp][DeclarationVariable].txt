@@ -319,49 +319,6 @@
             "assignments": [],
             "syntax": {
                 "$ast": "RefSyntax",
-                "field": "declarator",
-                "literal": "_DeclaratorUntypedFunc",
-                "refType": "Id"
-            },
-            "type": "DeclaratorVariablePart"
-        }],
-        "name": "_DeclaratorUntypedFuncPartWithoutInit",
-        "type": ""
-    }, {
-        "$ast": "Rule",
-        "attParser": "",
-        "attPublic": "",
-        "clauses": [{
-            "$ast": "CreateClause",
-            "assignments": [],
-            "syntax": {
-                "$ast": "SequenceSyntax",
-                "first": {
-                    "$ast": "RefSyntax",
-                    "field": "declarator",
-                    "literal": "_DeclaratorUntypedFunc",
-                    "refType": "Id"
-                },
-                "second": {
-                    "$ast": "RefSyntax",
-                    "field": "init",
-                    "literal": "_VarStatInit",
-                    "refType": "Id"
-                }
-            },
-            "type": "DeclaratorVariablePart"
-        }],
-        "name": "_DeclaratorUntypedFuncParRequiredInit",
-        "type": ""
-    }, {
-        "$ast": "Rule",
-        "attParser": "",
-        "attPublic": "",
-        "clauses": [{
-            "$ast": "CreateClause",
-            "assignments": [],
-            "syntax": {
-                "$ast": "RefSyntax",
                 "field": "init",
                 "literal": "_VarValueInit",
                 "refType": "Id"
@@ -1046,8 +1003,25 @@
             "assignments": [],
             "syntax": {
                 "$ast": "RefSyntax",
+                "field": "declarator",
+                "literal": "_DeclaratorUntypedFunc",
+                "refType": "Id"
+            },
+            "type": "DeclaratorVariablePart"
+        }],
+        "name": "_UntypedFuncForwardDeclVariablePart",
+        "type": ""
+    }, {
+        "$ast": "Rule",
+        "attParser": "",
+        "attPublic": "",
+        "clauses": [{
+            "$ast": "CreateClause",
+            "assignments": [],
+            "syntax": {
+                "$ast": "RefSyntax",
                 "field": "varPart",
-                "literal": "_DeclaratorUntypedFuncPartWithoutInit",
+                "literal": "_UntypedFuncForwardDeclVariablePart",
                 "refType": "Id"
             },
             "type": "SingleVarDeclaration"
@@ -1126,9 +1100,44 @@
             "$ast": "CreateClause",
             "assignments": [],
             "syntax": {
+                "$ast": "SequenceSyntax",
+                "first": {
+                    "$ast": "RefSyntax",
+                    "field": "declarator",
+                    "literal": "_DeclaratorUntypedFunc",
+                    "refType": "Id"
+                },
+                "second": {
+                    "$ast": "AlternativeSyntax",
+                    "first": {
+                        "$ast": "RefSyntax",
+                        "field": "init",
+                        "literal": "_VarStatInit",
+                        "refType": "Id"
+                    },
+                    "second": {
+                        "$ast": "RefSyntax",
+                        "field": "",
+                        "literal": "\";\"",
+                        "refType": "Literal"
+                    }
+                }
+            },
+            "type": "DeclaratorVariablePart"
+        }],
+        "name": "_UntypedFuncDeclVariablePart",
+        "type": ""
+    }, {
+        "$ast": "Rule",
+        "attParser": "",
+        "attPublic": "",
+        "clauses": [{
+            "$ast": "CreateClause",
+            "assignments": [],
+            "syntax": {
                 "$ast": "RefSyntax",
                 "field": "varPart",
-                "literal": "_DeclaratorUntypedFuncParRequiredInit",
+                "literal": "_UntypedFuncDeclVariablePart",
                 "refType": "Id"
             },
             "type": "SingleVarDeclaration"
@@ -1147,22 +1156,6 @@
                 "first": {
                     "$ast": "UseSyntax",
                     "name": "_VarsDeclWithoutKeyword"
-                },
-                "second": {
-                    "$ast": "RefSyntax",
-                    "field": "",
-                    "literal": "\";\"",
-                    "refType": "Literal"
-                }
-            }
-        }, {
-            "$ast": "ReuseClause",
-            "assignments": [],
-            "syntax": {
-                "$ast": "SequenceSyntax",
-                "first": {
-                    "$ast": "UseSyntax",
-                    "name": "_UntypedFuncForwardDeclWithoutKeyword"
                 },
                 "second": {
                     "$ast": "RefSyntax",

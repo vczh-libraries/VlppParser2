@@ -726,14 +726,6 @@ _DeclaratorVariablePartRequiredInit : DeclaratorVariablePart
   ::= _DeclaratorRequiredName:declarator _VarInit:init as DeclaratorVariablePart
   ;
 
-_DeclaratorUntypedFuncPartWithoutInit : DeclaratorVariablePart
-  ::= _DeclaratorUntypedFunc:declarator as DeclaratorVariablePart
-  ;
-
-_DeclaratorUntypedFuncParRequiredInit : DeclaratorVariablePart
-  ::= _DeclaratorUntypedFunc:declarator _VarStatInit:init as DeclaratorVariablePart
-  ;
-
 _FunctionParameterVariablePart : DeclaratorVariablePart
   ::= _VarValueInit:init as DeclaratorVariablePart
   ::= _DeclaratorOptionalName:declarator [_VarValueInit:init] as DeclaratorVariablePart
@@ -832,8 +824,12 @@ _VarsDecl_LRI_Original : MultipleVarDeclaration
   ::= !_VarsDecl_LRI_Isolated_1
   ;
 
+_UntypedFuncForwardDeclVariablePart : DeclaratorVariablePart
+  ::= _DeclaratorUntypedFunc:declarator as DeclaratorVariablePart
+  ;
+
 _UntypedFuncForwardDeclWithoutKeyword : SingleVarDeclaration
-  ::= _DeclaratorUntypedFuncPartWithoutInit:varPart as SingleVarDeclaration
+  ::= _UntypedFuncForwardDeclVariablePart:varPart as SingleVarDeclaration
   ;
 
 _VarsOrFuncForwardDeclWithoutKeyword_LRI_Isolated_1 : SingleVarDeclaration
@@ -856,15 +852,15 @@ _VarsOrFuncForwardDecl_LRI_Original : CommonVarDeclaration
   ::= !_VarsOrFuncForwardDecl_LRI_Isolated_1
   ;
 
+_UntypedFuncDeclVariablePart : DeclaratorVariablePart
+  ::= _DeclaratorUntypedFunc:declarator (_VarStatInit:init | ";") as DeclaratorVariablePart
+  ;
+
 _UntypedFuncDeclWithoutKeyword : SingleVarDeclaration
-  ::= _DeclaratorUntypedFuncParRequiredInit:varPart as SingleVarDeclaration
+  ::= _UntypedFuncDeclVariablePart:varPart as SingleVarDeclaration
   ;
 
 _VarsOrFuncDeclWithoutKeyword_LRI_Isolated_1 : SingleVarDeclaration
-  ::= !_UntypedFuncForwardDeclWithoutKeyword ";"
-  ;
-
-_VarsOrFuncDeclWithoutKeyword_LRI_Isolated_2 : SingleVarDeclaration
   ::= !_UntypedFuncDeclWithoutKeyword
   ;
 
@@ -872,7 +868,6 @@ _VarsOrFuncDeclWithoutKeyword_LRI_Original : CommonVarDeclaration
   ::= left_recursion_placeholder(LRI__VarsOrFuncDeclWithoutKeyword)
   ::= !_VarsDeclWithoutKeyword_LRI_Original ";"
   ::= !_VarsOrFuncDeclWithoutKeyword_LRI_Isolated_1
-  ::= !_VarsOrFuncDeclWithoutKeyword_LRI_Isolated_2
   ;
 
 _VarsOrFuncDecl_LRI_Isolated_1 : CommonVarDeclaration
@@ -1577,7 +1572,6 @@ _VarsOrFuncForwardDecl : CommonVarDeclaration
 
 _VarsOrFuncDeclWithoutKeyword : CommonVarDeclaration
   ::= !_VarsOrFuncDeclWithoutKeyword_LRI_Isolated_1
-  ::= !_VarsOrFuncDeclWithoutKeyword_LRI_Isolated_2
   ::= !_CallConstructibleTypeBeforeDeclarator_LRI_Isolated_1 left_recursion_inject(LRI__CallConstructibleTypeBeforeDeclarator) _VarsOrFuncDeclWithoutKeyword_LRI_Original
   ::= !_CallConstructibleTypeBeforeDeclarator_LRI_Isolated_2 left_recursion_inject(LRI__CallConstructibleTypeBeforeDeclarator) _VarsOrFuncDeclWithoutKeyword_LRI_Original
   ::= !_PrimitiveType left_recursion_inject(LRI__PM_PrimitiveType) _VarsOrFuncDeclWithoutKeyword_LRI_Original
@@ -1586,7 +1580,6 @@ _VarsOrFuncDeclWithoutKeyword : CommonVarDeclaration
 
 _VarsOrFuncDecl : CommonVarDeclaration
   ::= !_VarsOrFuncDeclWithoutKeyword_LRI_Isolated_1
-  ::= !_VarsOrFuncDeclWithoutKeyword_LRI_Isolated_2
   ::= !_VarsOrFuncDecl_LRI_Isolated_1
   ::= !_CallConstructibleTypeBeforeDeclarator_LRI_Isolated_1 left_recursion_inject(LRI__CallConstructibleTypeBeforeDeclarator) _VarsOrFuncDecl_LRI_Original
   ::= !_CallConstructibleTypeBeforeDeclarator_LRI_Isolated_2 left_recursion_inject(LRI__CallConstructibleTypeBeforeDeclarator) _VarsOrFuncDecl_LRI_Original
@@ -1603,7 +1596,6 @@ _ClassMemberPartFirst : ClassMemberPart
   ::= !_PrimitiveType left_recursion_inject(LRI__PM_PrimitiveType) _ClassMemberPartFirst_LRI_Original
   ::= !_QualifiedName left_recursion_inject(LRI__PM_QualifiedName) _ClassMemberPartFirst_LRI_Original
   ::= !_VarsOrFuncDeclWithoutKeyword_LRI_Isolated_1 left_recursion_inject(LRI__VarsOrFuncDeclWithoutKeyword) _ClassMemberPartFirst_LRI_Original
-  ::= !_VarsOrFuncDeclWithoutKeyword_LRI_Isolated_2 left_recursion_inject(LRI__VarsOrFuncDeclWithoutKeyword) _ClassMemberPartFirst_LRI_Original
   ::= !_VarsOrFuncDecl_LRI_Isolated_1 left_recursion_inject(LRI__VarsOrFuncDecl) _ClassMemberPartFirst_LRI_Original
   ;
 
@@ -1631,7 +1623,6 @@ _DeclWithSemicolon : Declaration
   ::= !_DeclWithSemicolon_LRI_Isolated_2
   ::= !_DeclWithSemicolon_LRI_Isolated_3
   ::= !_VarsOrFuncDeclWithoutKeyword_LRI_Isolated_1
-  ::= !_VarsOrFuncDeclWithoutKeyword_LRI_Isolated_2
   ::= !_VarsOrFuncDecl_LRI_Isolated_1
   ::= !_CallConstructibleTypeBeforeDeclarator_LRI_Isolated_1 left_recursion_inject(LRI__CallConstructibleTypeBeforeDeclarator) _DeclWithSemicolon_LRI_Original
   ::= !_CallConstructibleTypeBeforeDeclarator_LRI_Isolated_2 left_recursion_inject(LRI__CallConstructibleTypeBeforeDeclarator) _DeclWithSemicolon_LRI_Original
@@ -1813,7 +1804,6 @@ _File : File
   ::= !_PrimitiveType left_recursion_inject(LRI__PM_PrimitiveType) _File_LRI_Original
   ::= !_QualifiedName left_recursion_inject(LRI__PM_QualifiedName) _File_LRI_Original
   ::= !_VarsOrFuncDeclWithoutKeyword_LRI_Isolated_1 left_recursion_inject(LRI__VarsOrFuncDeclWithoutKeyword) _File_LRI_Original
-  ::= !_VarsOrFuncDeclWithoutKeyword_LRI_Isolated_2 left_recursion_inject(LRI__VarsOrFuncDeclWithoutKeyword) _File_LRI_Original
   ::= !_VarsOrFuncDecl_LRI_Isolated_1 left_recursion_inject(LRI__VarsOrFuncDecl) _File_LRI_Original
   ;
 
