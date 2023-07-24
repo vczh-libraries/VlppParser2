@@ -11,11 +11,11 @@ namespace a::b
 		Something(Something&&);
 		explicit Something(int);
 		~Something();
+		explicit operator bool()const;
+		explicit operator bool();
 
 		void Do();
 		virtual void Do(int) = 0;
-		explicit operator bool()const;
-		explicit operator bool();
 		Something operator++();
 		Something operator++(int);
 	};
@@ -28,10 +28,11 @@ namespace a::b
 	Something::Something(Something&&){}
 	Something::Something(int){}
 	Something::~Something(){}
-	void Something::Do(){}
-	void Something::Do(int) {}
 	Something::operator bool()const{}
 	Something::operator bool(){}
+
+	void Something::Do(){}
+	void Something::Do(int) {}
 	Something Something::operator++(){}
 	Something Something::operator++(int){}
 }

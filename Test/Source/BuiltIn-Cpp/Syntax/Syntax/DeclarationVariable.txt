@@ -49,14 +49,6 @@ _DeclaratorVariablePartRequiredInit
   ::= _DeclaratorRequiredName:declarator _VarInit:init as DeclaratorVariablePart
   ;
 
-_DeclaratorUntypedFuncPartWithoutInit
-  ::= _DeclaratorUntypedFunc:declarator as DeclaratorVariablePart
-  ;
-
-_DeclaratorUntypedFuncParRequiredInit
-  ::= _DeclaratorUntypedFunc:declarator _VarStatInit:init as DeclaratorVariablePart
-  ;
-
 //////////////////////////////////////////////////////////////////
 // Function Parameter
 //////////////////////////////////////////////////////////////////
@@ -153,8 +145,12 @@ _VarsDecl
 // Variable or Function Forward Declarations
 //////////////////////////////////////////////////////////////////
 
+_UntypedFuncForwardDeclVariablePart
+  ::= _DeclaratorUntypedFunc:declarator as DeclaratorVariablePart
+  ;
+
 _UntypedFuncForwardDeclWithoutKeyword
-  ::= _DeclaratorUntypedFuncPartWithoutInit:varPart as SingleVarDeclaration
+  ::= _UntypedFuncForwardDeclVariablePart:varPart as SingleVarDeclaration
   ;
 
 _VarsOrFuncForwardDeclWithoutKeyword
@@ -171,13 +167,16 @@ _VarsOrFuncForwardDecl
 // Variable or Function Forward/Impl Declarations
 //////////////////////////////////////////////////////////////////
 
+_UntypedFuncDeclVariablePart
+  ::= _DeclaratorUntypedFunc:declarator (_VarStatInit:init | ";") as DeclaratorVariablePart
+  ;
+
 _UntypedFuncDeclWithoutKeyword
-  ::= _DeclaratorUntypedFuncParRequiredInit:varPart as SingleVarDeclaration
+  ::= _UntypedFuncDeclVariablePart:varPart as SingleVarDeclaration
   ;
 
 _VarsOrFuncDeclWithoutKeyword
   ::= !_VarsDeclWithoutKeyword ";"
-  ::= !_UntypedFuncForwardDeclWithoutKeyword ";"
   ::= !_UntypedFuncDeclWithoutKeyword
   ;
 
