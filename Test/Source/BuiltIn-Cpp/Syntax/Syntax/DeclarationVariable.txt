@@ -1,5 +1,5 @@
 //////////////////////////////////////////////////////////////////
-// Mixed Declarations
+// Variable Initialization
 //////////////////////////////////////////////////////////////////
 
 _VarValueInit
@@ -33,7 +33,9 @@ _VarInit
   ::= !_VarBraceInit
   ;
 
-//================================================================
+//////////////////////////////////////////////////////////////////
+// Declarators in Variables
+//////////////////////////////////////////////////////////////////
 
 _DeclaratorVariablePartWithoutInit
   ::= _DeclaratorRequiredName:declarator as DeclaratorVariablePart
@@ -55,7 +57,9 @@ _DeclaratorUntypedFuncParRequiredInit
   ::= _DeclaratorUntypedFunc:declarator _VarStatInit:init as DeclaratorVariablePart
   ;
 
-//================================================================
+//////////////////////////////////////////////////////////////////
+// Function Parameter
+//////////////////////////////////////////////////////////////////
 
 _FunctionParameterVariablePart
   ::= _VarValueInit:init as DeclaratorVariablePart
@@ -67,28 +71,6 @@ _FunctionParameter
   ::= _TypeBeforeDeclarator:type _FunctionParameterVariablePart:varPart as SingleVarDeclaration
   ::= _DeclaratorKeyword:keywords {_DeclaratorKeyword:keywords}
       _TypeBeforeDeclarator:type [_FunctionParameterVariablePart:varPart] as SingleVarDeclaration
-  ;
-
-//================================================================
-
-_CatchParameterVariablePart
-  ::= _DeclaratorOptionalName:declarator as DeclaratorVariablePart
-  ;
-
-_CatchParameter
-  ::= !_TypeBeforeDeclarator
-  ::= _TypeBeforeDeclarator:type _CatchParameterVariablePart:varPart as SingleVarDeclaration
-  ::= _DeclaratorKeyword:keywords {_DeclaratorKeyword:keywords}
-      _TypeBeforeDeclarator:type _CatchParameterVariablePart:varPart as SingleVarDeclaration
-  ;
-
-//================================================================
-
-_ExprOrVarWithInit
-  ::= !_Expr
-  ::= _TypeBeforeDeclarator:type _DeclaratorVariablePartRequiredInit:varPart as SingleVarDeclaration
-  ::= _DeclaratorKeyword:keywords {_DeclaratorKeyword:keywords}
-      _TypeBeforeDeclarator:type _DeclaratorVariablePartRequiredInit:varPart as SingleVarDeclaration
   ;
 
 //////////////////////////////////////////////////////////////////
@@ -129,12 +111,34 @@ _GenericHeader
   ;
 
 //////////////////////////////////////////////////////////////////
-// Variable Forward Declarations
+// Variable in Statement Declarations
 //////////////////////////////////////////////////////////////////
 
-_VarWithoutInit
+_CatchParameterVariablePart
+  ::= _DeclaratorOptionalName:declarator as DeclaratorVariablePart
+  ;
+
+_CatchParameter
+  ::= !_TypeBeforeDeclarator
+  ::= _TypeBeforeDeclarator:type _CatchParameterVariablePart:varPart as SingleVarDeclaration
+  ::= _DeclaratorKeyword:keywords {_DeclaratorKeyword:keywords}
+      _TypeBeforeDeclarator:type _CatchParameterVariablePart:varPart as SingleVarDeclaration
+  ;
+
+_ExprOrVarCondition
+  ::= !_Expr
+  ::= _TypeBeforeDeclarator:type _DeclaratorVariablePartRequiredInit:varPart as SingleVarDeclaration
+  ::= _DeclaratorKeyword:keywords {_DeclaratorKeyword:keywords}
+      _TypeBeforeDeclarator:type _DeclaratorVariablePartRequiredInit:varPart as SingleVarDeclaration
+  ;
+
+_ForEachParameter
   ::= _TypeBeforeDeclarator:type _DeclaratorVariablePartWithoutInit:varPart as SingleVarDeclaration
   ;
+
+//////////////////////////////////////////////////////////////////
+// Variable Declarations
+//////////////////////////////////////////////////////////////////
 
 _VarsDeclWithoutKeyword
   ::= _TypeBeforeDeclarator:type _DeclaratorVariablePartOptionalInit:varParts {"," _DeclaratorVariablePartOptionalInit:varParts} as MultipleVarDeclaration
@@ -145,26 +149,39 @@ _VarsDecl
   ::= _DeclaratorKeyword:keywords {_DeclaratorKeyword:keywords} !_VarsDeclWithoutKeyword
   ;
 
-_VarsFuncForwardDeclWithoutKeyword
-  ::= !_VarsDeclWithoutKeyword
+//////////////////////////////////////////////////////////////////
+// Variable or Function Forward Declarations
+//////////////////////////////////////////////////////////////////
+
+_UntypedFuncForwardDeclWithoutKeyword
   ::= _DeclaratorUntypedFuncPartWithoutInit:varPart as SingleVarDeclaration
   ;
 
-_VarsFuncForwardDecl
-  ::= !_VarsFuncForwardDeclWithoutKeyword
-  ::= _DeclaratorKeyword:keywords {_DeclaratorKeyword:keywords} !_VarsFuncForwardDeclWithoutKeyword
+_VarsOrFuncForwardDeclWithoutKeyword
+  ::= !_VarsDeclWithoutKeyword
+  ::= !_UntypedFuncForwardDeclWithoutKeyword
+  ;
+
+_VarsOrFuncForwardDecl
+  ::= !_VarsOrFuncForwardDeclWithoutKeyword
+  ::= _DeclaratorKeyword:keywords {_DeclaratorKeyword:keywords} !_VarsOrFuncForwardDeclWithoutKeyword
   ;
 
 //////////////////////////////////////////////////////////////////
-// Variable Declarations
+// Variable or Function Forward/Impl Declarations
 //////////////////////////////////////////////////////////////////
 
-_VarsFuncDeclWithoutKeyword
-  ::= !_VarsFuncForwardDeclWithoutKeyword ";"
+_UntypedFuncDeclWithoutKeyword
   ::= _DeclaratorUntypedFuncParRequiredInit:varPart as SingleVarDeclaration
   ;
 
-_VarsFuncDecl
-  ::= !_VarsFuncDeclWithoutKeyword
-  ::= _DeclaratorKeyword:keywords {_DeclaratorKeyword:keywords} !_VarsFuncDeclWithoutKeyword
+_VarsOrFuncDeclWithoutKeyword
+  ::= !_VarsDeclWithoutKeyword ";"
+  ::= !_UntypedFuncForwardDeclWithoutKeyword ";"
+  ::= !_UntypedFuncDeclWithoutKeyword
+  ;
+
+_VarsOrFuncDecl
+  ::= !_VarsOrFuncDeclWithoutKeyword
+  ::= _DeclaratorKeyword:keywords {_DeclaratorKeyword:keywords} !_VarsOrFuncDeclWithoutKeyword
   ;

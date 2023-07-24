@@ -24,8 +24,8 @@ ___TryStat
   ;
 
 _IfStatConditionPart
-  ::= _ExprOrVarWithInit:condition ")" as IfElseStat
-  ::= _VarsDecl:varsDecl ";" _ExprOrVarWithInit:condition ")" as IfElseStat
+  ::= _ExprOrVarCondition:condition ")" as IfElseStat
+  ::= _VarsDecl:varsDecl ";" _ExprOrVarCondition:condition ")" as IfElseStat
   ;
 
 _IfStat
@@ -36,7 +36,7 @@ _ForStatConditionPart
   ::= ";" [_Expr:condition] ";" [_Expr:sideEffect] as ForStatLoopCondition
   ::= _Expr:varsDecl ";" [_Expr:condition] ";" [_Expr:sideEffect] as ForStatLoopCondition
   ::= _VarsDecl:varsDecl ";" [_Expr:condition] ";" [_Expr:sideEffect] as ForStatLoopCondition
-  ::= _VarWithoutInit:decl ":" _Expr:collection as ForStatIterateCondition
+  ::= _ForEachParameter:decl ":" _Expr:collection as ForStatIterateCondition
   ;
 
 _ForStat
@@ -53,9 +53,9 @@ _OtherStats
   ::= "case" _Expr:expr ":" _Stat:stat as CaseStat
   ::= "default" ":" _Stat:stat as DefaultStat
   ::= "__leave" ";" as __LeaveStat
-  ::= "while" "(" _ExprOrVarWithInit:condition ")" _Stat:stat as WhileStat
+  ::= "while" "(" _ExprOrVarCondition:condition ")" _Stat:stat as WhileStat
   ::= "do" _Stat:stat "while" "(" _Expr:condition ")" ";" as DoWhileStat
-  ::= "switch" "(" _ExprOrVarWithInit:condition ")" _Stat:stat as SwitchStat
+  ::= "switch" "(" _ExprOrVarCondition:condition ")" _Stat:stat as SwitchStat
   ;
 
 @parser _Stat
