@@ -1,0 +1,38 @@
+_Int : IntItem
+  ::= "int" as IntItem
+  ;
+
+_IntItem_LRI_Original : IntItem
+  ::= left_recursion_placeholder(LRI__IntItem)
+  ::= !_Int
+  ;
+
+_Item_LRI_Isolated_2 : ClassItem
+  ::= "class" as ClassItem
+  ;
+
+_Item_LRI_Original : Item
+  ::= left_recursion_placeholder(LRI__Item)
+  ::= _IntItem_LRI_Original "," as IntCommaItem
+  ::= _IntItem_LRI_Original "." as IntDotItem
+  ::= !_Item_LRI_Isolated_2
+  ;
+
+Module_LRI_Original : File
+  ::= _Item_LRI_Original:items {_Item:items} as File
+  ;
+
+_IntItem : IntItem
+  ::= !_Int
+  ;
+
+_Item : Item
+  ::= !_Item_LRI_Isolated_2
+  ::= !_Int left_recursion_inject_multiple(LRI__IntItem) _Item_LRI_Original
+  ;
+
+@parser Module : File
+  ::= !_Int left_recursion_inject_multiple(LRI__IntItem) Module_LRI_Original
+  ::= !_Item_LRI_Isolated_2 left_recursion_inject(LRI__Item) Module_LRI_Original
+  ;
+

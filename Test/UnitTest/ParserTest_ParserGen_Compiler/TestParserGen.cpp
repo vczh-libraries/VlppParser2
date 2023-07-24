@@ -47,6 +47,7 @@ TEST_FILE
 	parsersToLoad.Add(ParserDef{ L"PrefixMerge6_Pm2",			L"TypeOrExpr",	L"Module" });
 	parsersToLoad.Add(ParserDef{ L"PrefixMerge7_PmSwitch",		L"TypeOrExpr",	L"Module" });
 	parsersToLoad.Add(ParserDef{ L"PrefixMerge8_PmVariadic",	L"TypeOrExpr",	L"Module" });
+	parsersToLoad.Add(ParserDef{ L"PrefixMerge9_PmLoop",		L"File",		L"Module" });
 
 	for (auto&& [_parserName, _astName, _ruleName] : parsersToLoad)
 	{

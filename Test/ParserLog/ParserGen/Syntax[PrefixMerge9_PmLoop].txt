@@ -1,0 +1,122 @@
+﻿{
+    "$ast": "SyntaxFile",
+    "rules": [{
+        "$ast": "Rule",
+        "attParser": "",
+        "attPublic": "",
+        "clauses": [{
+            "$ast": "CreateClause",
+            "assignments": [],
+            "syntax": {
+                "$ast": "RefSyntax",
+                "field": "",
+                "literal": "\"int\"",
+                "refType": "Literal"
+            },
+            "type": "IntItem"
+        }],
+        "name": "_Int",
+        "type": ""
+    }, {
+        "$ast": "Rule",
+        "attParser": "",
+        "attPublic": "",
+        "clauses": [{
+            "$ast": "PrefixMergeClause",
+            "rule": {
+                "$ast": "RefSyntax",
+                "field": "",
+                "literal": "_Int",
+                "refType": "Id"
+            }
+        }],
+        "name": "_IntItem",
+        "type": ""
+    }, {
+        "$ast": "Rule",
+        "attParser": "",
+        "attPublic": "",
+        "clauses": [{
+            "$ast": "CreateClause",
+            "assignments": [],
+            "syntax": {
+                "$ast": "SequenceSyntax",
+                "first": {
+                    "$ast": "RefSyntax",
+                    "field": "",
+                    "literal": "_IntItem",
+                    "refType": "Id"
+                },
+                "second": {
+                    "$ast": "RefSyntax",
+                    "field": "",
+                    "literal": "\",\"",
+                    "refType": "Literal"
+                }
+            },
+            "type": "IntCommaItem"
+        }, {
+            "$ast": "CreateClause",
+            "assignments": [],
+            "syntax": {
+                "$ast": "SequenceSyntax",
+                "first": {
+                    "$ast": "RefSyntax",
+                    "field": "",
+                    "literal": "_IntItem",
+                    "refType": "Id"
+                },
+                "second": {
+                    "$ast": "RefSyntax",
+                    "field": "",
+                    "literal": "\".\"",
+                    "refType": "Literal"
+                }
+            },
+            "type": "IntDotItem"
+        }, {
+            "$ast": "CreateClause",
+            "assignments": [],
+            "syntax": {
+                "$ast": "RefSyntax",
+                "field": "",
+                "literal": "\"class\"",
+                "refType": "Literal"
+            },
+            "type": "ClassItem"
+        }],
+        "name": "_Item",
+        "type": ""
+    }, {
+        "$ast": "Rule",
+        "attParser": "@parser",
+        "attPublic": "",
+        "clauses": [{
+            "$ast": "CreateClause",
+            "assignments": [],
+            "syntax": {
+                "$ast": "SequenceSyntax",
+                "first": {
+                    "$ast": "RefSyntax",
+                    "field": "items",
+                    "literal": "_Item",
+                    "refType": "Id"
+                },
+                "second": {
+                    "$ast": "LoopSyntax",
+                    "delimiter": null,
+                    "syntax": {
+                        "$ast": "RefSyntax",
+                        "field": "items",
+                        "literal": "_Item",
+                        "refType": "Id"
+                    }
+                }
+            },
+            "type": "File"
+        }],
+        "name": "Module",
+        "type": ""
+    }],
+    "switches": []
+}
