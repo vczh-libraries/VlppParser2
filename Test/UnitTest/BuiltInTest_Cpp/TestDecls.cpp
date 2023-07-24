@@ -2,7 +2,6 @@
 
 TEST_FILE
 {
-	return;
 	const wchar_t* categories[] = {
 		L"Decls",
 		L"Members_Decls",

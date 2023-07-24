@@ -57,6 +57,7 @@ TEST_FILE
 		Folder dirBaseline = parserFolder.GetFilePath() / L"Output";
 		if (!dirBaseline.Exists()) continue;
 
+		parserName = parserFolder.GetFilePath().GetName();
 		TEST_CATEGORY(L"Test JSON on Outputs: " + parserName)
 		{
 			FilePath dirOutput = GetOutputDir(L"BuiltIn-Json");
