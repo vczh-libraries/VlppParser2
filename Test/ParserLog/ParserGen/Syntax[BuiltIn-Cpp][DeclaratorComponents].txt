@@ -896,13 +896,26 @@
                         "refType": "Id"
                     },
                     "second": {
-                        "$ast": "LoopSyntax",
-                        "delimiter": null,
+                        "$ast": "OptionalSyntax",
+                        "priority": "PreferTake",
                         "syntax": {
-                            "$ast": "RefSyntax",
-                            "field": "keywords",
-                            "literal": "_FunctionKeyword",
-                            "refType": "Id"
+                            "$ast": "SequenceSyntax",
+                            "first": {
+                                "$ast": "RefSyntax",
+                                "field": "keywords",
+                                "literal": "_FunctionKeyword",
+                                "refType": "Id"
+                            },
+                            "second": {
+                                "$ast": "LoopSyntax",
+                                "delimiter": null,
+                                "syntax": {
+                                    "$ast": "RefSyntax",
+                                    "field": "keywords",
+                                    "literal": "_FunctionKeyword",
+                                    "refType": "Id"
+                                }
+                            }
                         }
                     }
                 },
