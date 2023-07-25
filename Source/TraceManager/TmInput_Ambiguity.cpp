@@ -103,21 +103,22 @@ TryMergeSurvivingTraces
 				};
 
 				vint32_t survivingTraceCount = concurrentCount;
-				Dictionary<Trace*, EndingTraceData> endingTraces;
-				Group<vint32_t, Trace*> tracesByState;
+				Dictionary<Trace*, EndingTraceData> endingOrMergeTraces;
+				Group<vint32_t, Trace*> endingOrMergeTracesByState;
 
 				// index surviving traces
 				for (vint i = 0; i < survivingTraceCount; i++)
 				{
-					auto trace = EnsureTraceWithValidStates(backupTraces->Get(i));
+					auto trace = backupTraces->Get(i);
+					endingOrMergeTraces.Add(trace, {});
+
 					if (trace->state == -1)
 					{
-						tracesByState.Add(EnsureTraceWithValidStates(trace)->state, trace);
+						endingOrMergeTracesByState.Add(EnsureTraceWithValidStates(trace)->state, trace);
 					}
 					else if (trace->byInput == Executable::EndingInput)
 					{
-						endingTraces.Add(trace, {});
-						tracesByState.Add(trace->state, trace);
+						endingOrMergeTracesByState.Add(trace->state, trace);
 					}
 				}
 
@@ -125,7 +126,7 @@ TryMergeSurvivingTraces
 				// check assumptions
 				for (vint i = 0; i < survivingTraceCount; i++)
 				{
-					auto trace = EnsureTraceWithValidStates(backupTraces->Get(i));
+					auto trace = backupTraces->Get(i);
 					if (trace->state == -1)
 					{
 						auto predecessorId = trace->predecessors.first;
@@ -134,7 +135,7 @@ TryMergeSurvivingTraces
 							auto predecessor = GetTrace(predecessorId);
 							predecessorId = predecessor->predecessors.siblingNext;
 
-							CHECK_ERROR(endingTraces.Keys().IndexOf(predecessor) == -1, ERROR_MESSAGE_PREFIX L"Internal error: Predecessors of a merge trace should not survive.");
+							CHECK_ERROR(endingOrMergeTraces.Keys().IndexOf(predecessor) == -1, ERROR_MESSAGE_PREFIX L"Internal error: Predecessors of a merge trace should not survive.");
 						}
 					}
 					else if (trace->byInput == Executable::EndingInput)
@@ -145,23 +146,25 @@ TryMergeSurvivingTraces
 #endif
 
 				// check if a trace survived
-				// if a trace survived but its only predecessor does not
+				// if an Executable::EndingInput trace survived but its only predecessor does not
 				// it becomes not survived
-				auto ensureEndingTraceSurvived = [this, &endingTraces](Trace* trace)
+				auto ensureEndingTraceSurvived = [this, &endingOrMergeTraces](Trace* trace)
 				{
 					if (trace == initialTrace) return true;
 
-					auto& data = const_cast<EndingTraceData&>(endingTraces[trace]);
+					auto& data = const_cast<EndingTraceData&>(endingOrMergeTraces[trace]);
 					if (!data.surviving) return false;
 
-					auto predecessorId = trace->predecessors.first;
-					if (predecessorId != nullref)
+					if (trace->state != -1)
 					{
-						auto predecessor = GetTrace(predecessorId);
-						vint index = endingTraces.Keys().IndexOf(predecessor);
-						if (index != -1 && !endingTraces.Values()[index].surviving)
+						auto predecessorId = trace->predecessors.first;
+						if (predecessorId != nullref)
 						{
-							data.surviving = false;
+							auto predecessor = GetTrace(predecessorId);
+							if (!endingOrMergeTraces[predecessor].surviving)
+							{
+								data.surviving = false;
+							}
 						}
 					}
 					return data.surviving;
@@ -171,13 +174,13 @@ TryMergeSurvivingTraces
 				for (vint i = 0; i < survivingTraceCount; i++)
 				{
 					// get the next surviving Executable::EndingInput trace
-					auto trace = EnsureTraceWithValidStates(backupTraces->Get(i));
+					auto trace = backupTraces->Get(i);
 					if (trace->state != -1 && trace->byInput != Executable::EndingInput) continue;
 					if (!ensureEndingTraceSurvived(trace)) continue;
 					auto realTrace = EnsureTraceWithValidStates(trace);
 
 					// find all traces Executable::EndingInput traces with the same state that after it
-					auto&& candidates = tracesByState[trace->state];
+					auto&& candidates = endingOrMergeTracesByState[realTrace->state];
 					vint index = candidates.IndexOf(trace);
 					for (vint j = index + 1; j < candidates.Count(); j++)
 					{
@@ -211,6 +214,10 @@ TryMergeSurvivingTraces
 						}
 					}
 				}
+
+				// mark all unsurviving traces
+
+				// clean up surviving trace list
 
 #undef ERROR_MESSAGE_PREFIX
 			}
