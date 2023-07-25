@@ -107,7 +107,12 @@ TEST_FILE
 
 	TEST_CASE(L"A X(B);")
 	{
-		runParser(L"File", L"AmbiguousFuncVar", [&]() { return GetCppParser().Parse_File(L"A X(B);"); });
+		runParser(L"File", L"AmbiguousFuncVarDecl", [&]() { return GetCppParser().Parse_File(L"A X(B);"); });
+	});
+
+	TEST_CASE(L"int main() {A X(B);}")
+	{
+		runParser(L"File", L"AmbiguousFuncVarStat", [&]() { return GetCppParser().Parse_File(L"int main() {A X(B);}"); });
 	});
 
 	GetCppParser().OnTraceProcessing.Remove(handlerOnTraceProcessing);
