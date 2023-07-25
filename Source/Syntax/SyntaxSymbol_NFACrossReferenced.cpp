@@ -153,7 +153,7 @@ SyntaxSymbolManager::FixLeftRecursionInjectEdge
 					return;
 				}
 
-				// calculate all acceptable input from inject edge
+				// calculate all acceptable Token input from inject edge
 				// key:
 				//   token
 				//   the number of return edges carried into this edge, at least 1
@@ -164,6 +164,13 @@ SyntaxSymbolManager::FixLeftRecursionInjectEdge
 				using InputKey = Pair<vint32_t, vint>;
 				using InputValue = Tuple<vint, EdgeSymbol*, EdgeSymbol*>;
 				Group<InputKey, InputValue> acceptableInputs;
+
+				// calculate all acceptable Ending input from inject edge
+				// value:
+				//   index of placeholder edge
+				//   the additional Ending edge
+				using EndingInputValue = Pair<vint, EdgeSymbol*>;
+				List<EndingInputValue> acceptableEndingInputs;
 
 				for(auto [placeholderEdge, index] : indexed(placeholderEdges))
 				{
@@ -192,9 +199,10 @@ SyntaxSymbolManager::FixLeftRecursionInjectEdge
 									// an optional injection can be skipped
 									// a non-optional injection can be skipped by surrounding syntax
 
-									if (!From(injectEdge->To()->OutEdges())
+									auto endingEdgeAfterInject = From(injectEdge->To()->OutEdges())
 										.Where([](auto edge) { return edge->input.type == EdgeInputType::Ending; })
-										.IsEmpty())
+										.First(nullptr);
+									if (endingEdgeAfterInject)
 									{
 										// find if there is a state in the same rule that looks like:
 										//      +-------------------(ending)---------------------+
@@ -262,10 +270,8 @@ SyntaxSymbolManager::FixLeftRecursionInjectEdge
 
 										{
 											// if there is no such state
-											unittest::UnitTest::PrintMessage(L"Non skippable lr-inject edge found which should skip", unittest::UnitTest::MessageKind::Error);
-											unittest::UnitTest::PrintMessage(L"  RULE: " + injectEdge->From()->Rule()->Name(), unittest::UnitTest::MessageKind::Error);
-											unittest::UnitTest::PrintMessage(L"  FROM: " + injectEdge->From()->label, unittest::UnitTest::MessageKind::Error);
-											unittest::UnitTest::PrintMessage(L"  TO:   " + injectEdge->To()->label, unittest::UnitTest::MessageKind::Error);
+											// an Ending edge is needed
+											acceptableEndingInputs.Add({ index,endingEdgeAfterInject });
 										}
 									SKIP_SEARCHING:;
 									}
@@ -459,7 +465,7 @@ SyntaxSymbolManager::FixLeftRecursionInjectEdge
 				}
 
 				// report an error if nothing is created
-				if (acceptableInputs.Count() == 0)
+				if (acceptableInputs.Count() == 0 && acceptableEndingInputs.Count() == 0)
 				{
 					AddError(
 						ParserErrorType::LeftRecursionInjectHasNoContinuation,
