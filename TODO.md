@@ -3,7 +3,6 @@
 ## BuiltIn-Cpp
 
 - Progress
-  - After calling `CheckBackupTracesBeforeSwapping`, if some competitions are closed, check if existing `Ending` traces could be merged or not.
   - Generic Declaration unfinished.
 
 ## Next task

@@ -64,7 +64,7 @@ namespace cpp_parser::builder
 	class MakeClassBody : public vl::glr::ParsingAstBuilder<CppClassBody>
 	{
 	public:
-		MakeClassBody& firstVarPart(const vl::Ptr<CppDeclaratorVariablePart>& value);
+		MakeClassBody& firstVarPart(const vl::Ptr<CppDeclaratorVariablePartBase>& value);
 		MakeClassBody& inheritances(const vl::Ptr<CppClassInheritance>& value);
 		MakeClassBody& memberParts(const vl::Ptr<CppClassMemberPart>& value);
 	};
@@ -116,7 +116,7 @@ namespace cpp_parser::builder
 		MakeDeclarator& advancedTypes(const vl::Ptr<CppAdvancedType>& value);
 		MakeDeclarator& arrayParts(const vl::Ptr<CppDeclaratorArrayPart>& value);
 		MakeDeclarator& bitfield(const vl::Ptr<CppTypeOrExpr>& value);
-		MakeDeclarator& funcPart(const vl::Ptr<CppDeclaratorFunctionPart>& value);
+		MakeDeclarator& funcPart(const vl::Ptr<CppDeclaratorFunctionPartBase>& value);
 		MakeDeclarator& id(const vl::Ptr<CppIdentifier>& value);
 		MakeDeclarator& innerDeclarator(const vl::Ptr<CppDeclarator>& value);
 		MakeDeclarator& keywords(const vl::Ptr<CppDeclaratorKeyword>& value);
@@ -138,6 +138,12 @@ namespace cpp_parser::builder
 		MakeDeclaratorFunctionPart& variadic(const vl::WString& value);
 	};
 
+	class MakeDeclaratorFunctionPartBaseToResolve : public vl::glr::ParsingAstBuilder<CppDeclaratorFunctionPartBaseToResolve>
+	{
+	public:
+		MakeDeclaratorFunctionPartBaseToResolve& candidates(const vl::Ptr<CppDeclaratorFunctionPartBase>& value);
+	};
+
 	class MakeDeclaratorKeyword : public vl::glr::ParsingAstBuilder<CppDeclaratorKeyword>
 	{
 	public:
@@ -157,7 +163,13 @@ namespace cpp_parser::builder
 	public:
 		MakeDeclaratorVariablePart& declarator(const vl::Ptr<CppDeclarator>& value);
 		MakeDeclaratorVariablePart& init(const vl::Ptr<CppVarInit>& value);
-		MakeDeclaratorVariablePart& nextVarPart(const vl::Ptr<CppDeclaratorVariablePart>& value);
+		MakeDeclaratorVariablePart& nextVarPart(const vl::Ptr<CppDeclaratorVariablePartBase>& value);
+	};
+
+	class MakeDeclaratorVariablePartBaseToResolve : public vl::glr::ParsingAstBuilder<CppDeclaratorVariablePartBaseToResolve>
+	{
+	public:
+		MakeDeclaratorVariablePartBaseToResolve& candidates(const vl::Ptr<CppDeclaratorVariablePartBase>& value);
 	};
 
 	class MakeDefaultStat : public vl::glr::ParsingAstBuilder<CppDefaultStat>
@@ -184,7 +196,7 @@ namespace cpp_parser::builder
 	class MakeEnumBody : public vl::glr::ParsingAstBuilder<CppEnumBody>
 	{
 	public:
-		MakeEnumBody& firstVarPart(const vl::Ptr<CppDeclaratorVariablePart>& value);
+		MakeEnumBody& firstVarPart(const vl::Ptr<CppDeclaratorVariablePartBase>& value);
 		MakeEnumBody& items(const vl::Ptr<CppEnumItem>& value);
 	};
 
@@ -329,7 +341,7 @@ namespace cpp_parser::builder
 	{
 	public:
 		MakeLambdaExpr& captures(const vl::Ptr<CppLambdaCapture>& value);
-		MakeLambdaExpr& functionHeader(const vl::Ptr<CppDeclaratorFunctionPart>& value);
+		MakeLambdaExpr& functionHeader(const vl::Ptr<CppDeclaratorFunctionPartBase>& value);
 		MakeLambdaExpr& genericHeader(const vl::Ptr<CppGenericHeader>& value);
 		MakeLambdaExpr& stat(const vl::Ptr<CppStatement>& value);
 	};
@@ -589,7 +601,7 @@ namespace cpp_parser::builder
 	class MakeVariablesDeclaration : public vl::glr::ParsingAstBuilder<CppVariablesDeclaration>
 	{
 	public:
-		MakeVariablesDeclaration& firstVarPart(const vl::Ptr<CppDeclaratorVariablePart>& value);
+		MakeVariablesDeclaration& firstVarPart(const vl::Ptr<CppDeclaratorVariablePartBase>& value);
 		MakeVariablesDeclaration& type(const vl::Ptr<CppTypeOrExpr>& value);
 		MakeVariablesDeclaration& keywords(const vl::Ptr<CppDeclaratorKeyword>& value);
 	};

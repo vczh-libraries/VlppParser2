@@ -20,7 +20,9 @@ namespace cpp_parser::traverse_visitor
 		, protected virtual CppExprOnly::IVisitor
 		, protected virtual CppTypeOnly::IVisitor
 		, protected virtual CppIdentifier::IVisitor
+		, protected virtual CppDeclaratorFunctionPartBase::IVisitor
 		, protected virtual CppVarInit::IVisitor
+		, protected virtual CppDeclaratorVariablePartBase::IVisitor
 		, protected virtual CppStatement::IVisitor
 		, protected virtual CppForStatConditionPart::IVisitor
 	{
@@ -46,9 +48,13 @@ namespace cpp_parser::traverse_visitor
 		virtual void Traverse(CppDeclarator* node);
 		virtual void Traverse(CppDeclaratorArrayPart* node);
 		virtual void Traverse(CppDeclaratorFunctionPart* node);
+		virtual void Traverse(CppDeclaratorFunctionPartBase* node);
+		virtual void Traverse(CppDeclaratorFunctionPartBaseToResolve* node);
 		virtual void Traverse(CppDeclaratorKeyword* node);
 		virtual void Traverse(CppDeclaratorType* node);
 		virtual void Traverse(CppDeclaratorVariablePart* node);
+		virtual void Traverse(CppDeclaratorVariablePartBase* node);
+		virtual void Traverse(CppDeclaratorVariablePartBaseToResolve* node);
 		virtual void Traverse(CppDefaultStat* node);
 		virtual void Traverse(CppDeleteExpr* node);
 		virtual void Traverse(CppDoWhileStat* node);
@@ -146,9 +152,13 @@ namespace cpp_parser::traverse_visitor
 		virtual void Finishing(CppDeclarator* node);
 		virtual void Finishing(CppDeclaratorArrayPart* node);
 		virtual void Finishing(CppDeclaratorFunctionPart* node);
+		virtual void Finishing(CppDeclaratorFunctionPartBase* node);
+		virtual void Finishing(CppDeclaratorFunctionPartBaseToResolve* node);
 		virtual void Finishing(CppDeclaratorKeyword* node);
 		virtual void Finishing(CppDeclaratorType* node);
 		virtual void Finishing(CppDeclaratorVariablePart* node);
+		virtual void Finishing(CppDeclaratorVariablePartBase* node);
+		virtual void Finishing(CppDeclaratorVariablePartBaseToResolve* node);
 		virtual void Finishing(CppDefaultStat* node);
 		virtual void Finishing(CppDeleteExpr* node);
 		virtual void Finishing(CppDoWhileStat* node);
@@ -278,10 +288,16 @@ namespace cpp_parser::traverse_visitor
 		void Visit(CppOperatorIdentifier* node) override;
 		void Visit(CppOperatorTypeIdentifier* node) override;
 
+		void Visit(CppDeclaratorFunctionPartBaseToResolve* node) override;
+		void Visit(CppDeclaratorFunctionPart* node) override;
+
 		void Visit(CppVarValueInit* node) override;
 		void Visit(CppVarParanthesisInit* node) override;
 		void Visit(CppVarBraceInit* node) override;
 		void Visit(CppVarStatInit* node) override;
+
+		void Visit(CppDeclaratorVariablePartBaseToResolve* node) override;
+		void Visit(CppDeclaratorVariablePart* node) override;
 
 		void Visit(CppStatementToResolve* node) override;
 		void Visit(CppEmptyStat* node) override;
@@ -310,7 +326,9 @@ namespace cpp_parser::traverse_visitor
 	public:
 		void InspectInto(CppTypeOrExprOrOthers* node);
 		void InspectInto(CppIdentifier* node);
+		void InspectInto(CppDeclaratorFunctionPartBase* node);
 		void InspectInto(CppVarInit* node);
+		void InspectInto(CppDeclaratorVariablePartBase* node);
 		void InspectInto(CppStatement* node);
 		void InspectInto(CppForStatConditionPart* node);
 		void InspectInto(CppGenericArguments* node);
@@ -320,11 +338,9 @@ namespace cpp_parser::traverse_visitor
 		void InspectInto(CppAdvancedType* node);
 		void InspectInto(CppDeclaratorKeyword* node);
 		void InspectInto(CppFunctionKeyword* node);
-		void InspectInto(CppDeclaratorFunctionPart* node);
 		void InspectInto(CppDeclaratorArrayPart* node);
 		void InspectInto(CppDeclarator* node);
 		void InspectInto(CppVarStatInitItem* node);
-		void InspectInto(CppDeclaratorVariablePart* node);
 		void InspectInto(CppClassInheritance* node);
 		void InspectInto(CppClassMemberPart* node);
 		void InspectInto(CppClassBody* node);

@@ -54,12 +54,16 @@ CppAstInsReceiver : public vl::glr::AstInsReceiverBase
 			return vl::Ptr(new cpp_parser::CppDeclaratorArrayPart);
 		case CppClasses::DeclaratorFunctionPart:
 			return vl::Ptr(new cpp_parser::CppDeclaratorFunctionPart);
+		case CppClasses::DeclaratorFunctionPartBaseToResolve:
+			return vl::Ptr(new cpp_parser::CppDeclaratorFunctionPartBaseToResolve);
 		case CppClasses::DeclaratorKeyword:
 			return vl::Ptr(new cpp_parser::CppDeclaratorKeyword);
 		case CppClasses::DeclaratorType:
 			return vl::Ptr(new cpp_parser::CppDeclaratorType);
 		case CppClasses::DeclaratorVariablePart:
 			return vl::Ptr(new cpp_parser::CppDeclaratorVariablePart);
+		case CppClasses::DeclaratorVariablePartBaseToResolve:
+			return vl::Ptr(new cpp_parser::CppDeclaratorVariablePartBaseToResolve);
 		case CppClasses::DefaultStat:
 			return vl::Ptr(new cpp_parser::CppDefaultStat);
 		case CppClasses::DeleteExpr:
@@ -266,6 +270,8 @@ CppAstInsReceiver : public vl::glr::AstInsReceiverBase
 			return vl::glr::AssemblerSetObjectField(&cpp_parser::CppDeclaratorFunctionPart::keywords, object, field, value, cppFieldName);
 		case CppFields::DeclaratorFunctionPart_parameters:
 			return vl::glr::AssemblerSetObjectField(&cpp_parser::CppDeclaratorFunctionPart::parameters, object, field, value, cppFieldName);
+		case CppFields::DeclaratorFunctionPartBaseToResolve_candidates:
+			return vl::glr::AssemblerSetObjectField(&cpp_parser::CppDeclaratorFunctionPartBaseToResolve::candidates, object, field, value, cppFieldName);
 		case CppFields::DeclaratorType_declarator:
 			return vl::glr::AssemblerSetObjectField(&cpp_parser::CppDeclaratorType::declarator, object, field, value, cppFieldName);
 		case CppFields::DeclaratorType_keywords:
@@ -278,6 +284,8 @@ CppAstInsReceiver : public vl::glr::AstInsReceiverBase
 			return vl::glr::AssemblerSetObjectField(&cpp_parser::CppDeclaratorVariablePart::init, object, field, value, cppFieldName);
 		case CppFields::DeclaratorVariablePart_nextVarPart:
 			return vl::glr::AssemblerSetObjectField(&cpp_parser::CppDeclaratorVariablePart::nextVarPart, object, field, value, cppFieldName);
+		case CppFields::DeclaratorVariablePartBaseToResolve_candidates:
+			return vl::glr::AssemblerSetObjectField(&cpp_parser::CppDeclaratorVariablePartBaseToResolve::candidates, object, field, value, cppFieldName);
 		case CppFields::DefaultStat_stat:
 			return vl::glr::AssemblerSetObjectField(&cpp_parser::CppDefaultStat::stat, object, field, value, cppFieldName);
 		case CppFields::DeleteExpr_argument:
@@ -603,9 +611,13 @@ CppAstInsReceiver : public vl::glr::AstInsReceiverBase
 			L"Declarator",
 			L"DeclaratorArrayPart",
 			L"DeclaratorFunctionPart",
+			L"DeclaratorFunctionPartBase",
+			L"DeclaratorFunctionPartBaseToResolve",
 			L"DeclaratorKeyword",
 			L"DeclaratorType",
 			L"DeclaratorVariablePart",
+			L"DeclaratorVariablePartBase",
+			L"DeclaratorVariablePartBaseToResolve",
 			L"DefaultStat",
 			L"DeleteExpr",
 			L"DoWhileStat",
@@ -683,7 +695,7 @@ CppAstInsReceiver : public vl::glr::AstInsReceiverBase
 			L"__TryStat",
 		};
 		vl::vint index = (vl::vint)type;
-		return 0 <= index && index < 97 ? results[index] : nullptr;
+		return 0 <= index && index < 101 ? results[index] : nullptr;
 	}
 
 	const wchar_t* CppCppTypeName(CppClasses type)
@@ -708,9 +720,13 @@ CppAstInsReceiver : public vl::glr::AstInsReceiverBase
 			L"cpp_parser::CppDeclarator",
 			L"cpp_parser::CppDeclaratorArrayPart",
 			L"cpp_parser::CppDeclaratorFunctionPart",
+			L"cpp_parser::CppDeclaratorFunctionPartBase",
+			L"cpp_parser::CppDeclaratorFunctionPartBaseToResolve",
 			L"cpp_parser::CppDeclaratorKeyword",
 			L"cpp_parser::CppDeclaratorType",
 			L"cpp_parser::CppDeclaratorVariablePart",
+			L"cpp_parser::CppDeclaratorVariablePartBase",
+			L"cpp_parser::CppDeclaratorVariablePartBaseToResolve",
 			L"cpp_parser::CppDefaultStat",
 			L"cpp_parser::CppDeleteExpr",
 			L"cpp_parser::CppDoWhileStat",
@@ -788,7 +804,7 @@ CppAstInsReceiver : public vl::glr::AstInsReceiverBase
 			L"cpp_parser::Cpp__TryStat",
 		};
 		vl::vint index = (vl::vint)type;
-		return 0 <= index && index < 97 ? results[index] : nullptr;
+		return 0 <= index && index < 101 ? results[index] : nullptr;
 	}
 
 	const wchar_t* CppFieldName(CppFields field)
@@ -835,6 +851,7 @@ CppAstInsReceiver : public vl::glr::AstInsReceiverBase
 			L"DeclaratorFunctionPart::keywords",
 			L"DeclaratorFunctionPart::parameters",
 			L"DeclaratorFunctionPart::variadic",
+			L"DeclaratorFunctionPartBaseToResolve::candidates",
 			L"DeclaratorKeyword::keyword",
 			L"DeclaratorType::declarator",
 			L"DeclaratorType::keywords",
@@ -842,6 +859,7 @@ CppAstInsReceiver : public vl::glr::AstInsReceiverBase
 			L"DeclaratorVariablePart::declarator",
 			L"DeclaratorVariablePart::init",
 			L"DeclaratorVariablePart::nextVarPart",
+			L"DeclaratorVariablePartBaseToResolve::candidates",
 			L"DefaultStat::stat",
 			L"DeleteExpr::argument",
 			L"DeleteExpr::array",
@@ -972,7 +990,7 @@ CppAstInsReceiver : public vl::glr::AstInsReceiverBase
 			L"__TryStat::tryStat",
 		};
 		vl::vint index = (vl::vint)field;
-		return 0 <= index && index < 176 ? results[index] : nullptr;
+		return 0 <= index && index < 178 ? results[index] : nullptr;
 	}
 
 	const wchar_t* CppCppFieldName(CppFields field)
@@ -1019,6 +1037,7 @@ CppAstInsReceiver : public vl::glr::AstInsReceiverBase
 			L"cpp_parser::CppDeclaratorFunctionPart::keywords",
 			L"cpp_parser::CppDeclaratorFunctionPart::parameters",
 			L"cpp_parser::CppDeclaratorFunctionPart::variadic",
+			L"cpp_parser::CppDeclaratorFunctionPartBaseToResolve::candidates",
 			L"cpp_parser::CppDeclaratorKeyword::keyword",
 			L"cpp_parser::CppDeclaratorType::declarator",
 			L"cpp_parser::CppDeclaratorType::keywords",
@@ -1026,6 +1045,7 @@ CppAstInsReceiver : public vl::glr::AstInsReceiverBase
 			L"cpp_parser::CppDeclaratorVariablePart::declarator",
 			L"cpp_parser::CppDeclaratorVariablePart::init",
 			L"cpp_parser::CppDeclaratorVariablePart::nextVarPart",
+			L"cpp_parser::CppDeclaratorVariablePartBaseToResolve::candidates",
 			L"cpp_parser::CppDefaultStat::stat",
 			L"cpp_parser::CppDeleteExpr::argument",
 			L"cpp_parser::CppDeleteExpr::array",
@@ -1156,7 +1176,7 @@ CppAstInsReceiver : public vl::glr::AstInsReceiverBase
 			L"cpp_parser::Cpp__TryStat::tryStat",
 		};
 		vl::vint index = (vl::vint)field;
-		return 0 <= index && index < 176 ? results[index] : nullptr;
+		return 0 <= index && index < 178 ? results[index] : nullptr;
 	}
 
 	vl::Ptr<vl::glr::ParsingAstBase> CppAstInsReceiver::ResolveAmbiguity(vl::vint32_t type, vl::collections::Array<vl::Ptr<vl::glr::ParsingAstBase>>& candidates)
@@ -1188,8 +1208,20 @@ CppAstInsReceiver : public vl::glr::AstInsReceiverBase
 			return vl::glr::AssemblerResolveAmbiguity<cpp_parser::CppDeclStat, cpp_parser::CppStatementToResolve>(type, candidates, cppTypeName);
 		case CppClasses::Declaration:
 			return vl::glr::AssemblerResolveAmbiguity<cpp_parser::CppDeclaration, cpp_parser::CppTypeOrExprOrOthersToResolve>(type, candidates, cppTypeName);
+		case CppClasses::DeclaratorFunctionPart:
+			return vl::glr::AssemblerResolveAmbiguity<cpp_parser::CppDeclaratorFunctionPart, cpp_parser::CppDeclaratorFunctionPartBaseToResolve>(type, candidates, cppTypeName);
+		case CppClasses::DeclaratorFunctionPartBase:
+			return vl::glr::AssemblerResolveAmbiguity<cpp_parser::CppDeclaratorFunctionPartBase, cpp_parser::CppDeclaratorFunctionPartBaseToResolve>(type, candidates, cppTypeName);
+		case CppClasses::DeclaratorFunctionPartBaseToResolve:
+			return vl::glr::AssemblerResolveAmbiguity<cpp_parser::CppDeclaratorFunctionPartBaseToResolve, cpp_parser::CppDeclaratorFunctionPartBaseToResolve>(type, candidates, cppTypeName);
 		case CppClasses::DeclaratorType:
 			return vl::glr::AssemblerResolveAmbiguity<cpp_parser::CppDeclaratorType, cpp_parser::CppTypeOrExprToResolve>(type, candidates, cppTypeName);
+		case CppClasses::DeclaratorVariablePart:
+			return vl::glr::AssemblerResolveAmbiguity<cpp_parser::CppDeclaratorVariablePart, cpp_parser::CppDeclaratorVariablePartBaseToResolve>(type, candidates, cppTypeName);
+		case CppClasses::DeclaratorVariablePartBase:
+			return vl::glr::AssemblerResolveAmbiguity<cpp_parser::CppDeclaratorVariablePartBase, cpp_parser::CppDeclaratorVariablePartBaseToResolve>(type, candidates, cppTypeName);
+		case CppClasses::DeclaratorVariablePartBaseToResolve:
+			return vl::glr::AssemblerResolveAmbiguity<cpp_parser::CppDeclaratorVariablePartBaseToResolve, cpp_parser::CppDeclaratorVariablePartBaseToResolve>(type, candidates, cppTypeName);
 		case CppClasses::DefaultStat:
 			return vl::glr::AssemblerResolveAmbiguity<cpp_parser::CppDefaultStat, cpp_parser::CppStatementToResolve>(type, candidates, cppTypeName);
 		case CppClasses::DeleteExpr:

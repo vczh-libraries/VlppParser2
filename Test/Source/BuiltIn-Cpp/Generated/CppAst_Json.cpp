@@ -503,6 +503,22 @@ namespace cpp_parser::json_visitor
 		WriteToken(node->variadic);
 		EndField();
 	}
+	void AstVisitor::PrintFields(CppDeclaratorFunctionPartBase* node)
+	{
+	}
+	void AstVisitor::PrintFields(CppDeclaratorFunctionPartBaseToResolve* node)
+	{
+		BeginField(L"candidates");
+		BeginArray();
+		for (auto&& listItem : node->candidates)
+		{
+			BeginArrayItem();
+			Print(listItem.Obj());
+			EndArrayItem();
+		}
+		EndArray();
+		EndField();
+	}
 	void AstVisitor::PrintFields(CppDeclaratorKeyword* node)
 	{
 		BeginField(L"keyword");
@@ -538,6 +554,22 @@ namespace cpp_parser::json_visitor
 		EndField();
 		BeginField(L"nextVarPart");
 		Print(node->nextVarPart.Obj());
+		EndField();
+	}
+	void AstVisitor::PrintFields(CppDeclaratorVariablePartBase* node)
+	{
+	}
+	void AstVisitor::PrintFields(CppDeclaratorVariablePartBaseToResolve* node)
+	{
+		BeginField(L"candidates");
+		BeginArray();
+		for (auto&& listItem : node->candidates)
+		{
+			BeginArrayItem();
+			Print(listItem.Obj());
+			EndArrayItem();
+		}
+		EndArray();
 		EndField();
 	}
 	void AstVisitor::PrintFields(CppDefaultStat* node)
@@ -2581,6 +2613,34 @@ namespace cpp_parser::json_visitor
 		EndObject();
 	}
 
+	void AstVisitor::Visit(CppDeclaratorFunctionPartBaseToResolve* node)
+	{
+		if (!node)
+		{
+			WriteNull();
+			return;
+		}
+		BeginObject();
+		WriteType(L"DeclaratorFunctionPartBaseToResolve", node);
+		PrintFields(static_cast<CppDeclaratorFunctionPartBase*>(node));
+		PrintFields(static_cast<CppDeclaratorFunctionPartBaseToResolve*>(node));
+		EndObject();
+	}
+
+	void AstVisitor::Visit(CppDeclaratorFunctionPart* node)
+	{
+		if (!node)
+		{
+			WriteNull();
+			return;
+		}
+		BeginObject();
+		WriteType(L"DeclaratorFunctionPart", node);
+		PrintFields(static_cast<CppDeclaratorFunctionPartBase*>(node));
+		PrintFields(static_cast<CppDeclaratorFunctionPart*>(node));
+		EndObject();
+	}
+
 	void AstVisitor::Visit(CppVarValueInit* node)
 	{
 		if (!node)
@@ -2634,6 +2694,34 @@ namespace cpp_parser::json_visitor
 		WriteType(L"VarStatInit", node);
 		PrintFields(static_cast<CppVarInit*>(node));
 		PrintFields(static_cast<CppVarStatInit*>(node));
+		EndObject();
+	}
+
+	void AstVisitor::Visit(CppDeclaratorVariablePartBaseToResolve* node)
+	{
+		if (!node)
+		{
+			WriteNull();
+			return;
+		}
+		BeginObject();
+		WriteType(L"DeclaratorVariablePartBaseToResolve", node);
+		PrintFields(static_cast<CppDeclaratorVariablePartBase*>(node));
+		PrintFields(static_cast<CppDeclaratorVariablePartBaseToResolve*>(node));
+		EndObject();
+	}
+
+	void AstVisitor::Visit(CppDeclaratorVariablePart* node)
+	{
+		if (!node)
+		{
+			WriteNull();
+			return;
+		}
+		BeginObject();
+		WriteType(L"DeclaratorVariablePart", node);
+		PrintFields(static_cast<CppDeclaratorVariablePartBase*>(node));
+		PrintFields(static_cast<CppDeclaratorVariablePart*>(node));
 		EndObject();
 	}
 
@@ -2970,6 +3058,16 @@ namespace cpp_parser::json_visitor
 		node->Accept(static_cast<CppIdentifier::IVisitor*>(this));
 	}
 
+	void AstVisitor::Print(CppDeclaratorFunctionPartBase* node)
+	{
+		if (!node)
+		{
+			WriteNull();
+			return;
+		}
+		node->Accept(static_cast<CppDeclaratorFunctionPartBase::IVisitor*>(this));
+	}
+
 	void AstVisitor::Print(CppVarInit* node)
 	{
 		if (!node)
@@ -2978,6 +3076,16 @@ namespace cpp_parser::json_visitor
 			return;
 		}
 		node->Accept(static_cast<CppVarInit::IVisitor*>(this));
+	}
+
+	void AstVisitor::Print(CppDeclaratorVariablePartBase* node)
+	{
+		if (!node)
+		{
+			WriteNull();
+			return;
+		}
+		node->Accept(static_cast<CppDeclaratorVariablePartBase::IVisitor*>(this));
 	}
 
 	void AstVisitor::Print(CppStatement* node)
@@ -3091,19 +3199,6 @@ namespace cpp_parser::json_visitor
 		EndObject();
 	}
 
-	void AstVisitor::Print(CppDeclaratorFunctionPart* node)
-	{
-		if (!node)
-		{
-			WriteNull();
-			return;
-		}
-		BeginObject();
-		WriteType(L"DeclaratorFunctionPart", node);
-		PrintFields(static_cast<CppDeclaratorFunctionPart*>(node));
-		EndObject();
-	}
-
 	void AstVisitor::Print(CppDeclaratorArrayPart* node)
 	{
 		if (!node)
@@ -3140,19 +3235,6 @@ namespace cpp_parser::json_visitor
 		BeginObject();
 		WriteType(L"VarStatInitItem", node);
 		PrintFields(static_cast<CppVarStatInitItem*>(node));
-		EndObject();
-	}
-
-	void AstVisitor::Print(CppDeclaratorVariablePart* node)
-	{
-		if (!node)
-		{
-			WriteNull();
-			return;
-		}
-		BeginObject();
-		WriteType(L"DeclaratorVariablePart", node);
-		PrintFields(static_cast<CppDeclaratorVariablePart*>(node));
 		EndObject();
 	}
 

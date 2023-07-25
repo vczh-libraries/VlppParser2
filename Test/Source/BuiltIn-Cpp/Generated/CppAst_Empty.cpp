@@ -234,6 +234,20 @@ IdentifierVisitor
 	}
 
 /***********************************************************************
+DeclaratorFunctionPartBaseVisitor
+***********************************************************************/
+
+	// Visitor Members -----------------------------------
+
+	void DeclaratorFunctionPartBaseVisitor::Visit(CppDeclaratorFunctionPartBaseToResolve* node)
+	{
+	}
+
+	void DeclaratorFunctionPartBaseVisitor::Visit(CppDeclaratorFunctionPart* node)
+	{
+	}
+
+/***********************************************************************
 VarInitVisitor
 ***********************************************************************/
 
@@ -252,6 +266,20 @@ VarInitVisitor
 	}
 
 	void VarInitVisitor::Visit(CppVarStatInit* node)
+	{
+	}
+
+/***********************************************************************
+DeclaratorVariablePartBaseVisitor
+***********************************************************************/
+
+	// Visitor Members -----------------------------------
+
+	void DeclaratorVariablePartBaseVisitor::Visit(CppDeclaratorVariablePartBaseToResolve* node)
+	{
+	}
+
+	void DeclaratorVariablePartBaseVisitor::Visit(CppDeclaratorVariablePart* node)
 	{
 	}
 

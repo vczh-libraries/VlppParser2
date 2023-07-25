@@ -239,7 +239,7 @@ class LambdaExpr : ExprOnly
 {
     var captures : LambdaCapture[];
     var genericHeader : GenericHeader;
-    var functionHeader : DeclaratorFunctionPart;
+    var functionHeader : DeclaratorFunctionPartBase;
     var stat : Statement;
 }
 
@@ -429,7 +429,11 @@ class FunctionKeyword
     var arguments : TypeOrExpr[];
 }
 
-class DeclaratorFunctionPart
+@ambiguous class DeclaratorFunctionPartBase
+{
+}
+
+class DeclaratorFunctionPart : DeclaratorFunctionPartBase
 {
     var parameters : TypeOrExprOrOthers[];
     var variadic : token;
@@ -450,7 +454,7 @@ class Declarator
     var id : Identifier;
     var bitfield : TypeOrExpr;
     var innerDeclarator : Declarator;
-    var funcPart : DeclaratorFunctionPart;
+    var funcPart : DeclaratorFunctionPartBase;
     var arrayParts : DeclaratorArrayPart[];
 }
 
@@ -496,17 +500,21 @@ class VarStatInit : VarInit
     var stat : BlockStat;
 }
 
-class DeclaratorVariablePart
+@ambiguous class DeclaratorVariablePartBase
+{
+}
+
+class DeclaratorVariablePart : DeclaratorVariablePartBase
 {
     var declarator : Declarator;
     var init : VarInit;
-    var nextVarPart : DeclaratorVariablePart;
+    var nextVarPart : DeclaratorVariablePartBase;
 }
 
 class VariablesDeclaration : Declaration
 {
     var type : TypeOrExpr;
-    var firstVarPart : DeclaratorVariablePart;
+    var firstVarPart : DeclaratorVariablePartBase;
 }
 
 //////////////////////////////////////////////////////////////////
@@ -544,7 +552,7 @@ class ClassBody
 {
     var inheritances : ClassInheritance[];
     var memberParts : ClassMemberPart[];
-    var firstVarPart : DeclaratorVariablePart;
+    var firstVarPart : DeclaratorVariablePartBase;
 }
 
 class ClassDeclaration : Declaration
@@ -573,7 +581,7 @@ class EnumItem
 class EnumBody
 {
     var items : EnumItem[];
-    var firstVarPart : DeclaratorVariablePart;
+    var firstVarPart : DeclaratorVariablePartBase;
 }
 
 class EnumDeclaration : Declaration

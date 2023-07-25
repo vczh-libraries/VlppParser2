@@ -122,6 +122,18 @@ namespace cpp_parser::empty_visitor
 	};
 
 	/// <summary>An empty visitor, overriding all abstract methods with empty implementations.</summary>
+	class DeclaratorFunctionPartBaseVisitor : public vl::Object, public CppDeclaratorFunctionPartBase::IVisitor
+	{
+	protected:
+		// Dispatch (virtual) --------------------------------
+
+	public:
+		// Visitor Members -----------------------------------
+		void Visit(CppDeclaratorFunctionPartBaseToResolve* node) override;
+		void Visit(CppDeclaratorFunctionPart* node) override;
+	};
+
+	/// <summary>An empty visitor, overriding all abstract methods with empty implementations.</summary>
 	class VarInitVisitor : public vl::Object, public CppVarInit::IVisitor
 	{
 	protected:
@@ -133,6 +145,18 @@ namespace cpp_parser::empty_visitor
 		void Visit(CppVarParanthesisInit* node) override;
 		void Visit(CppVarBraceInit* node) override;
 		void Visit(CppVarStatInit* node) override;
+	};
+
+	/// <summary>An empty visitor, overriding all abstract methods with empty implementations.</summary>
+	class DeclaratorVariablePartBaseVisitor : public vl::Object, public CppDeclaratorVariablePartBase::IVisitor
+	{
+	protected:
+		// Dispatch (virtual) --------------------------------
+
+	public:
+		// Visitor Members -----------------------------------
+		void Visit(CppDeclaratorVariablePartBaseToResolve* node) override;
+		void Visit(CppDeclaratorVariablePart* node) override;
 	};
 
 	/// <summary>An empty visitor, overriding all abstract methods with empty implementations.</summary>

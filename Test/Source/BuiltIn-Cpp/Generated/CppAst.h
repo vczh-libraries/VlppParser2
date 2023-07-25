@@ -31,9 +31,13 @@ namespace cpp_parser
 	class CppDeclarator;
 	class CppDeclaratorArrayPart;
 	class CppDeclaratorFunctionPart;
+	class CppDeclaratorFunctionPartBase;
+	class CppDeclaratorFunctionPartBaseToResolve;
 	class CppDeclaratorKeyword;
 	class CppDeclaratorType;
 	class CppDeclaratorVariablePart;
+	class CppDeclaratorVariablePartBase;
+	class CppDeclaratorVariablePartBaseToResolve;
 	class CppDefaultStat;
 	class CppDeleteExpr;
 	class CppDoWhileStat;
@@ -541,7 +545,7 @@ namespace cpp_parser
 	public:
 		vl::collections::List<vl::Ptr<CppLambdaCapture>> captures;
 		vl::Ptr<CppGenericHeader> genericHeader;
-		vl::Ptr<CppDeclaratorFunctionPart> functionHeader;
+		vl::Ptr<CppDeclaratorFunctionPartBase> functionHeader;
 		vl::Ptr<CppStatement> stat;
 
 		void Accept(CppExprOnly::IVisitor* visitor) override;
@@ -734,13 +738,29 @@ namespace cpp_parser
 		vl::collections::List<vl::Ptr<CppTypeOrExpr>> arguments;
 	};
 
-	class CppDeclaratorFunctionPart : public vl::glr::ParsingAstBase, vl::reflection::Description<CppDeclaratorFunctionPart>
+	class CppDeclaratorFunctionPartBase abstract : public vl::glr::ParsingAstBase, vl::reflection::Description<CppDeclaratorFunctionPartBase>
+	{
+	public:
+		class IVisitor : public virtual vl::reflection::IDescriptable, vl::reflection::Description<IVisitor>
+		{
+		public:
+			virtual void Visit(CppDeclaratorFunctionPartBaseToResolve* node) = 0;
+			virtual void Visit(CppDeclaratorFunctionPart* node) = 0;
+		};
+
+		virtual void Accept(CppDeclaratorFunctionPartBase::IVisitor* visitor) = 0;
+
+	};
+
+	class CppDeclaratorFunctionPart : public CppDeclaratorFunctionPartBase, vl::reflection::Description<CppDeclaratorFunctionPart>
 	{
 	public:
 		vl::collections::List<vl::Ptr<CppTypeOrExprOrOthers>> parameters;
 		vl::glr::ParsingToken variadic;
 		vl::collections::List<vl::Ptr<CppFunctionKeyword>> keywords;
 		vl::Ptr<CppTypeOrExpr> deferredType;
+
+		void Accept(CppDeclaratorFunctionPartBase::IVisitor* visitor) override;
 	};
 
 	class CppDeclaratorArrayPart : public vl::glr::ParsingAstBase, vl::reflection::Description<CppDeclaratorArrayPart>
@@ -758,7 +778,7 @@ namespace cpp_parser
 		vl::Ptr<CppIdentifier> id;
 		vl::Ptr<CppTypeOrExpr> bitfield;
 		vl::Ptr<CppDeclarator> innerDeclarator;
-		vl::Ptr<CppDeclaratorFunctionPart> funcPart;
+		vl::Ptr<CppDeclaratorFunctionPartBase> funcPart;
 		vl::collections::List<vl::Ptr<CppDeclaratorArrayPart>> arrayParts;
 	};
 
@@ -828,19 +848,35 @@ namespace cpp_parser
 		void Accept(CppVarInit::IVisitor* visitor) override;
 	};
 
-	class CppDeclaratorVariablePart : public vl::glr::ParsingAstBase, vl::reflection::Description<CppDeclaratorVariablePart>
+	class CppDeclaratorVariablePartBase abstract : public vl::glr::ParsingAstBase, vl::reflection::Description<CppDeclaratorVariablePartBase>
+	{
+	public:
+		class IVisitor : public virtual vl::reflection::IDescriptable, vl::reflection::Description<IVisitor>
+		{
+		public:
+			virtual void Visit(CppDeclaratorVariablePartBaseToResolve* node) = 0;
+			virtual void Visit(CppDeclaratorVariablePart* node) = 0;
+		};
+
+		virtual void Accept(CppDeclaratorVariablePartBase::IVisitor* visitor) = 0;
+
+	};
+
+	class CppDeclaratorVariablePart : public CppDeclaratorVariablePartBase, vl::reflection::Description<CppDeclaratorVariablePart>
 	{
 	public:
 		vl::Ptr<CppDeclarator> declarator;
 		vl::Ptr<CppVarInit> init;
-		vl::Ptr<CppDeclaratorVariablePart> nextVarPart;
+		vl::Ptr<CppDeclaratorVariablePartBase> nextVarPart;
+
+		void Accept(CppDeclaratorVariablePartBase::IVisitor* visitor) override;
 	};
 
 	class CppVariablesDeclaration : public CppDeclaration, vl::reflection::Description<CppVariablesDeclaration>
 	{
 	public:
 		vl::Ptr<CppTypeOrExpr> type;
-		vl::Ptr<CppDeclaratorVariablePart> firstVarPart;
+		vl::Ptr<CppDeclaratorVariablePartBase> firstVarPart;
 
 		void Accept(CppDeclaration::IVisitor* visitor) override;
 	};
@@ -864,7 +900,7 @@ namespace cpp_parser
 	public:
 		vl::collections::List<vl::Ptr<CppClassInheritance>> inheritances;
 		vl::collections::List<vl::Ptr<CppClassMemberPart>> memberParts;
-		vl::Ptr<CppDeclaratorVariablePart> firstVarPart;
+		vl::Ptr<CppDeclaratorVariablePartBase> firstVarPart;
 	};
 
 	class CppClassDeclaration : public CppDeclaration, vl::reflection::Description<CppClassDeclaration>
@@ -888,7 +924,7 @@ namespace cpp_parser
 	{
 	public:
 		vl::collections::List<vl::Ptr<CppEnumItem>> items;
-		vl::Ptr<CppDeclaratorVariablePart> firstVarPart;
+		vl::Ptr<CppDeclaratorVariablePartBase> firstVarPart;
 	};
 
 	class CppEnumDeclaration : public CppDeclaration, vl::reflection::Description<CppEnumDeclaration>
@@ -1230,6 +1266,22 @@ namespace cpp_parser
 		void Accept(CppTypeOrExpr::IVisitor* visitor) override;
 	};
 
+	class CppDeclaratorFunctionPartBaseToResolve : public CppDeclaratorFunctionPartBase, vl::reflection::Description<CppDeclaratorFunctionPartBaseToResolve>
+	{
+	public:
+		vl::collections::List<vl::Ptr<CppDeclaratorFunctionPartBase>> candidates;
+
+		void Accept(CppDeclaratorFunctionPartBase::IVisitor* visitor) override;
+	};
+
+	class CppDeclaratorVariablePartBaseToResolve : public CppDeclaratorVariablePartBase, vl::reflection::Description<CppDeclaratorVariablePartBaseToResolve>
+	{
+	public:
+		vl::collections::List<vl::Ptr<CppDeclaratorVariablePartBase>> candidates;
+
+		void Accept(CppDeclaratorVariablePartBase::IVisitor* visitor) override;
+	};
+
 	class CppStatementToResolve : public CppStatement, vl::reflection::Description<CppStatementToResolve>
 	{
 	public:
@@ -1301,6 +1353,8 @@ namespace vl::reflection::description
 	DECL_TYPE_INFO(cpp_parser::CppAdvancedType)
 	DECL_TYPE_INFO(cpp_parser::CppDeclaratorKeyword)
 	DECL_TYPE_INFO(cpp_parser::CppFunctionKeyword)
+	DECL_TYPE_INFO(cpp_parser::CppDeclaratorFunctionPartBase)
+	DECL_TYPE_INFO(cpp_parser::CppDeclaratorFunctionPartBase::IVisitor)
 	DECL_TYPE_INFO(cpp_parser::CppDeclaratorFunctionPart)
 	DECL_TYPE_INFO(cpp_parser::CppDeclaratorArrayPart)
 	DECL_TYPE_INFO(cpp_parser::CppDeclarator)
@@ -1312,6 +1366,8 @@ namespace vl::reflection::description
 	DECL_TYPE_INFO(cpp_parser::CppVarBraceInit)
 	DECL_TYPE_INFO(cpp_parser::CppVarStatInitItem)
 	DECL_TYPE_INFO(cpp_parser::CppVarStatInit)
+	DECL_TYPE_INFO(cpp_parser::CppDeclaratorVariablePartBase)
+	DECL_TYPE_INFO(cpp_parser::CppDeclaratorVariablePartBase::IVisitor)
 	DECL_TYPE_INFO(cpp_parser::CppDeclaratorVariablePart)
 	DECL_TYPE_INFO(cpp_parser::CppVariablesDeclaration)
 	DECL_TYPE_INFO(cpp_parser::CppClassKind)
@@ -1362,6 +1418,8 @@ namespace vl::reflection::description
 	DECL_TYPE_INFO(cpp_parser::CppFile)
 	DECL_TYPE_INFO(cpp_parser::CppTypeOrExprOrOthersToResolve)
 	DECL_TYPE_INFO(cpp_parser::CppTypeOrExprToResolve)
+	DECL_TYPE_INFO(cpp_parser::CppDeclaratorFunctionPartBaseToResolve)
+	DECL_TYPE_INFO(cpp_parser::CppDeclaratorVariablePartBaseToResolve)
 	DECL_TYPE_INFO(cpp_parser::CppStatementToResolve)
 
 #ifdef VCZH_DESCRIPTABLEOBJECT_WITH_METADATA
@@ -1614,6 +1672,19 @@ namespace vl::reflection::description
 
 	END_INTERFACE_PROXY(cpp_parser::CppIdentifier::IVisitor)
 
+	BEGIN_INTERFACE_PROXY_NOPARENT_SHAREDPTR(cpp_parser::CppDeclaratorFunctionPartBase::IVisitor)
+		void Visit(cpp_parser::CppDeclaratorFunctionPartBaseToResolve* node) override
+		{
+			INVOKE_INTERFACE_PROXY(Visit, node);
+		}
+
+		void Visit(cpp_parser::CppDeclaratorFunctionPart* node) override
+		{
+			INVOKE_INTERFACE_PROXY(Visit, node);
+		}
+
+	END_INTERFACE_PROXY(cpp_parser::CppDeclaratorFunctionPartBase::IVisitor)
+
 	BEGIN_INTERFACE_PROXY_NOPARENT_SHAREDPTR(cpp_parser::CppVarInit::IVisitor)
 		void Visit(cpp_parser::CppVarValueInit* node) override
 		{
@@ -1636,6 +1707,19 @@ namespace vl::reflection::description
 		}
 
 	END_INTERFACE_PROXY(cpp_parser::CppVarInit::IVisitor)
+
+	BEGIN_INTERFACE_PROXY_NOPARENT_SHAREDPTR(cpp_parser::CppDeclaratorVariablePartBase::IVisitor)
+		void Visit(cpp_parser::CppDeclaratorVariablePartBaseToResolve* node) override
+		{
+			INVOKE_INTERFACE_PROXY(Visit, node);
+		}
+
+		void Visit(cpp_parser::CppDeclaratorVariablePart* node) override
+		{
+			INVOKE_INTERFACE_PROXY(Visit, node);
+		}
+
+	END_INTERFACE_PROXY(cpp_parser::CppDeclaratorVariablePartBase::IVisitor)
 
 	BEGIN_INTERFACE_PROXY_NOPARENT_SHAREDPTR(cpp_parser::CppStatement::IVisitor)
 		void Visit(cpp_parser::CppStatementToResolve* node) override
