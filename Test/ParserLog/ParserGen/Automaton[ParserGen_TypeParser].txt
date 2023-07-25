@@ -1,0 +1,405 @@
+﻿[0][EnumItem] BEGIN 
+[RULE: 0][CLAUSE: -1]
+	token: ID -> [3][EnumItem]< ID @ "," >
+		- BeginObject(EnumItem)
+		+ Token()
+		+ Field(EnumItem::name)
+
+[1][EnumItem] END [ENDING]
+[RULE: 0][CLAUSE: -1]
+
+[2][EnumItem]< ID "," @ >
+[RULE: 0][CLAUSE: 0]
+	ending -> [1][EnumItem] END [ENDING]
+		- EndObject()
+
+[3][EnumItem]< ID @ "," >
+[RULE: 0][CLAUSE: 0]
+	token: "," -> [2][EnumItem]< ID "," @ >
+
+[4][Enum] BEGIN 
+[RULE: 1][CLAUSE: -1]
+	token: "@public" -> [6][Enum]< [ "@public" @ ] "enum" ID "{" { EnumItem } "}" >
+		- BeginObject(Enum)
+		+ Token()
+		+ Field(Type::attPublic)
+	token: "enum" -> [7][Enum]< [ "@public" ] "enum" @ ID "{" { EnumItem } "}" >
+		- BeginObject(Enum)
+
+[5][Enum] END [ENDING]
+[RULE: 1][CLAUSE: -1]
+
+[6][Enum]< [ "@public" @ ] "enum" ID "{" { EnumItem } "}" >
+[RULE: 1][CLAUSE: 0]
+	token: "enum" -> [7][Enum]< [ "@public" ] "enum" @ ID "{" { EnumItem } "}" >
+
+[7][Enum]< [ "@public" ] "enum" @ ID "{" { EnumItem } "}" >
+[RULE: 1][CLAUSE: 0]
+	token: ID -> [11][Enum]< [ "@public" ] "enum" ID @ "{" { EnumItem } "}" >
+		+ Token()
+		+ Field(Type::name)
+
+[8][Enum]< [ "@public" ] "enum" ID "{" @ { EnumItem } "}" >
+[RULE: 1][CLAUSE: 0]
+	token: "}" -> [10][Enum]< [ "@public" ] "enum" ID "{" { EnumItem } "}" @ >
+	token: ID -> [3][EnumItem]< ID @ "," >
+		- BeginObject(EnumItem)
+		+ Token()
+		+ Field(EnumItem::name)
+		> rule: EnumItem -> [9][Enum]< [ "@public" ] "enum" ID "{" { EnumItem @ } "}" >
+			+ Field(Enum::items)
+
+[9][Enum]< [ "@public" ] "enum" ID "{" { EnumItem @ } "}" >
+[RULE: 1][CLAUSE: 0]
+	token: "}" -> [10][Enum]< [ "@public" ] "enum" ID "{" { EnumItem } "}" @ >
+	token: ID -> [3][EnumItem]< ID @ "," >
+		- BeginObject(EnumItem)
+		+ Token()
+		+ Field(EnumItem::name)
+		> rule: EnumItem -> [9][Enum]< [ "@public" ] "enum" ID "{" { EnumItem @ } "}" >
+			+ Field(Enum::items)
+
+[10][Enum]< [ "@public" ] "enum" ID "{" { EnumItem } "}" @ >
+[RULE: 1][CLAUSE: 0]
+	ending -> [5][Enum] END [ENDING]
+		- EndObject()
+
+[11][Enum]< [ "@public" ] "enum" ID @ "{" { EnumItem } "}" >
+[RULE: 1][CLAUSE: 0]
+	token: "{" -> [8][Enum]< [ "@public" ] "enum" ID "{" @ { EnumItem } "}" >
+
+[12][ClassPropType] BEGIN 
+[RULE: 2][CLAUSE: -1]
+	token: "token" -> [14][ClassPropType]"token" @
+	token: ID -> [17][ClassPropType]ID @
+		+ Token()
+		+ Field(ClassProp::propTypeName)
+	token: ID -> [18][ClassPropType]ID @ "[" "]"
+		+ Token()
+		+ Field(ClassProp::propTypeName)
+
+[13][ClassPropType] END [ENDING]
+[RULE: 2][CLAUSE: -1]
+
+[14][ClassPropType]"token" @
+[RULE: 2][CLAUSE: 0]
+	ending -> [13][ClassPropType] END [ENDING]
+		- EnumItem(0)
+		- Field(ClassProp::propType)
+
+[15][ClassPropType]ID "[" "]" @
+[RULE: 2][CLAUSE: 2]
+	ending -> [13][ClassPropType] END [ENDING]
+		- EnumItem(2)
+		- Field(ClassProp::propType)
+
+[16][ClassPropType]ID "[" @ "]"
+[RULE: 2][CLAUSE: 2]
+	token: "]" -> [15][ClassPropType]ID "[" "]" @
+
+[17][ClassPropType]ID @
+[RULE: 2][CLAUSE: 1]
+	ending -> [13][ClassPropType] END [ENDING]
+		- EnumItem(1)
+		- Field(ClassProp::propType)
+
+[18][ClassPropType]ID @ "[" "]"
+[RULE: 2][CLAUSE: 2]
+	token: "[" -> [16][ClassPropType]ID "[" @ "]"
+
+[19][classProp] BEGIN 
+[RULE: 3][CLAUSE: -1]
+	token: "var" -> [21][classProp]< "var" @ ID ":" ClassPropType ";" >
+		- BeginObject(ClassProp)
+
+[20][classProp] END [ENDING]
+[RULE: 3][CLAUSE: -1]
+
+[21][classProp]< "var" @ ID ":" ClassPropType ";" >
+[RULE: 3][CLAUSE: 0]
+	token: ID -> [25][classProp]< "var" ID @ ":" ClassPropType ";" >
+		+ Token()
+		+ Field(ClassProp::name)
+
+[22][classProp]< "var" ID ":" @ ClassPropType ";" >
+[RULE: 3][CLAUSE: 0]
+	token: "token" -> [14][ClassPropType]"token" @
+		> rule: ClassPropType -> [24][classProp]< "var" ID ":" ClassPropType @ ";" >
+	token: ID -> [17][ClassPropType]ID @
+		+ Token()
+		+ Field(ClassProp::propTypeName)
+		> rule: ClassPropType -> [24][classProp]< "var" ID ":" ClassPropType @ ";" >
+	token: ID -> [18][ClassPropType]ID @ "[" "]"
+		+ Token()
+		+ Field(ClassProp::propTypeName)
+		> rule: ClassPropType -> [24][classProp]< "var" ID ":" ClassPropType @ ";" >
+
+[23][classProp]< "var" ID ":" ClassPropType ";" @ >
+[RULE: 3][CLAUSE: 0]
+	ending -> [20][classProp] END [ENDING]
+		- EndObject()
+
+[24][classProp]< "var" ID ":" ClassPropType @ ";" >
+[RULE: 3][CLAUSE: 0]
+	token: ";" -> [23][classProp]< "var" ID ":" ClassPropType ";" @ >
+
+[25][classProp]< "var" ID @ ":" ClassPropType ";" >
+[RULE: 3][CLAUSE: 0]
+	token: ":" -> [22][classProp]< "var" ID ":" @ ClassPropType ";" >
+
+[26][ClassBody] BEGIN 
+[RULE: 4][CLAUSE: -1]
+	token: ID -> [28][ClassBody]ID @ [ ":" ID ] "{" { classProp } "}"
+		+ Token()
+		+ Field(Type::name)
+
+[27][ClassBody] END [ENDING]
+[RULE: 4][CLAUSE: -1]
+
+[28][ClassBody]ID @ [ ":" ID ] "{" { classProp } "}"
+[RULE: 4][CLAUSE: 0]
+	token: "{" -> [31][ClassBody]ID [ ":" ID ] "{" @ { classProp } "}"
+	token: ":" -> [29][ClassBody]ID [ ":" @ ID ] "{" { classProp } "}"
+
+[29][ClassBody]ID [ ":" @ ID ] "{" { classProp } "}"
+[RULE: 4][CLAUSE: 0]
+	token: ID -> [30][ClassBody]ID [ ":" ID @ ] "{" { classProp } "}"
+		+ Token()
+		+ Field(Class::baseClass)
+
+[30][ClassBody]ID [ ":" ID @ ] "{" { classProp } "}"
+[RULE: 4][CLAUSE: 0]
+	token: "{" -> [31][ClassBody]ID [ ":" ID ] "{" @ { classProp } "}"
+
+[31][ClassBody]ID [ ":" ID ] "{" @ { classProp } "}"
+[RULE: 4][CLAUSE: 0]
+	token: "var" -> [21][classProp]< "var" @ ID ":" ClassPropType ";" >
+		- BeginObject(ClassProp)
+		> rule: classProp -> [32][ClassBody]ID [ ":" ID ] "{" { classProp @ } "}"
+			+ Field(Class::props)
+	token: "}" -> [33][ClassBody]ID [ ":" ID ] "{" { classProp } "}" @
+
+[32][ClassBody]ID [ ":" ID ] "{" { classProp @ } "}"
+[RULE: 4][CLAUSE: 0]
+	token: "var" -> [21][classProp]< "var" @ ID ":" ClassPropType ";" >
+		- BeginObject(ClassProp)
+		> rule: classProp -> [32][ClassBody]ID [ ":" ID ] "{" { classProp @ } "}"
+			+ Field(Class::props)
+	token: "}" -> [33][ClassBody]ID [ ":" ID ] "{" { classProp } "}" @
+
+[33][ClassBody]ID [ ":" ID ] "{" { classProp } "}" @
+[RULE: 4][CLAUSE: 0]
+	ending -> [27][ClassBody] END [ENDING]
+
+[34][Class] BEGIN 
+[RULE: 5][CLAUSE: -1]
+	token: "@ambiguous" -> [37][Class]< [ "@public" ] [ "@ambiguous" @ ] "class" ClassBody >
+		- BeginObject(Class)
+		+ Token()
+		+ Field(Class::attAmbiguous)
+	token: "@public" -> [36][Class]< [ "@public" @ ] [ "@ambiguous" ] "class" ClassBody >
+		- BeginObject(Class)
+		+ Token()
+		+ Field(Type::attPublic)
+	token: "class" -> [38][Class]< [ "@public" ] [ "@ambiguous" ] "class" @ ClassBody >
+		- BeginObject(Class)
+
+[35][Class] END [ENDING]
+[RULE: 5][CLAUSE: -1]
+
+[36][Class]< [ "@public" @ ] [ "@ambiguous" ] "class" ClassBody >
+[RULE: 5][CLAUSE: 0]
+	token: "@ambiguous" -> [37][Class]< [ "@public" ] [ "@ambiguous" @ ] "class" ClassBody >
+		+ Token()
+		+ Field(Class::attAmbiguous)
+	token: "class" -> [38][Class]< [ "@public" ] [ "@ambiguous" ] "class" @ ClassBody >
+
+[37][Class]< [ "@public" ] [ "@ambiguous" @ ] "class" ClassBody >
+[RULE: 5][CLAUSE: 0]
+	token: "class" -> [38][Class]< [ "@public" ] [ "@ambiguous" ] "class" @ ClassBody >
+
+[38][Class]< [ "@public" ] [ "@ambiguous" ] "class" @ ClassBody >
+[RULE: 5][CLAUSE: 0]
+	token: ID -> [28][ClassBody]ID @ [ ":" ID ] "{" { classProp } "}"
+		+ Token()
+		+ Field(Type::name)
+		> rule: ClassBody -> [39][Class]< [ "@public" ] [ "@ambiguous" ] "class" ClassBody @ >
+
+[39][Class]< [ "@public" ] [ "@ambiguous" ] "class" ClassBody @ >
+[RULE: 5][CLAUSE: 0]
+	ending -> [35][Class] END [ENDING]
+		- EndObject()
+
+[40][Type] BEGIN 
+[RULE: 6][CLAUSE: -1]
+	token: "@ambiguous" -> [37][Class]< [ "@public" ] [ "@ambiguous" @ ] "class" ClassBody >
+		- DelayFieldAssignment()
+		- BeginObject(Class)
+		+ Token()
+		+ Field(Class::attAmbiguous)
+		> rule: Class -> [43][Type]<< ( !Enum | !Class @ ) >>
+	token: "@public" -> [6][Enum]< [ "@public" @ ] "enum" ID "{" { EnumItem } "}" >
+		- DelayFieldAssignment()
+		- BeginObject(Enum)
+		+ Token()
+		+ Field(Type::attPublic)
+		> rule: Enum -> [42][Type]<< ( !Enum @ | !Class ) >>
+	token: "@public" -> [36][Class]< [ "@public" @ ] [ "@ambiguous" ] "class" ClassBody >
+		- DelayFieldAssignment()
+		- BeginObject(Class)
+		+ Token()
+		+ Field(Type::attPublic)
+		> rule: Class -> [43][Type]<< ( !Enum | !Class @ ) >>
+	token: "class" -> [38][Class]< [ "@public" ] [ "@ambiguous" ] "class" @ ClassBody >
+		- DelayFieldAssignment()
+		- BeginObject(Class)
+		> rule: Class -> [43][Type]<< ( !Enum | !Class @ ) >>
+	token: "enum" -> [7][Enum]< [ "@public" ] "enum" @ ID "{" { EnumItem } "}" >
+		- DelayFieldAssignment()
+		- BeginObject(Enum)
+		> rule: Enum -> [42][Type]<< ( !Enum @ | !Class ) >>
+
+[41][Type] END [ENDING]
+[RULE: 6][CLAUSE: -1]
+
+[42][Type]<< ( !Enum @ | !Class ) >>
+[RULE: 6][CLAUSE: 0]
+	ending -> [41][Type] END [ENDING]
+		- ReopenObject()
+		- EndObject()
+
+[43][Type]<< ( !Enum | !Class @ ) >>
+[RULE: 6][CLAUSE: 0]
+	ending -> [41][Type] END [ENDING]
+		- ReopenObject()
+		- EndObject()
+
+[44][File] BEGIN 
+[RULE: 7][CLAUSE: -1]
+	token: "@ambiguous" -> [37][Class]< [ "@public" ] [ "@ambiguous" @ ] "class" ClassBody >
+		- BeginObject(AstFile)
+		- DelayFieldAssignment()
+		- BeginObject(Class)
+		+ Token()
+		+ Field(Class::attAmbiguous)
+		> rule: Type -> [46][File]< Type @ { Type } >
+			+ Field(AstFile::types)
+		> rule: Class -> [43][Type]<< ( !Enum | !Class @ ) >>
+	token: "@public" -> [6][Enum]< [ "@public" @ ] "enum" ID "{" { EnumItem } "}" >
+		- BeginObject(AstFile)
+		- DelayFieldAssignment()
+		- BeginObject(Enum)
+		+ Token()
+		+ Field(Type::attPublic)
+		> rule: Type -> [46][File]< Type @ { Type } >
+			+ Field(AstFile::types)
+		> rule: Enum -> [42][Type]<< ( !Enum @ | !Class ) >>
+	token: "@public" -> [36][Class]< [ "@public" @ ] [ "@ambiguous" ] "class" ClassBody >
+		- BeginObject(AstFile)
+		- DelayFieldAssignment()
+		- BeginObject(Class)
+		+ Token()
+		+ Field(Type::attPublic)
+		> rule: Type -> [46][File]< Type @ { Type } >
+			+ Field(AstFile::types)
+		> rule: Class -> [43][Type]<< ( !Enum | !Class @ ) >>
+	token: "class" -> [38][Class]< [ "@public" ] [ "@ambiguous" ] "class" @ ClassBody >
+		- BeginObject(AstFile)
+		- DelayFieldAssignment()
+		- BeginObject(Class)
+		> rule: Type -> [46][File]< Type @ { Type } >
+			+ Field(AstFile::types)
+		> rule: Class -> [43][Type]<< ( !Enum | !Class @ ) >>
+	token: "enum" -> [7][Enum]< [ "@public" ] "enum" @ ID "{" { EnumItem } "}" >
+		- BeginObject(AstFile)
+		- DelayFieldAssignment()
+		- BeginObject(Enum)
+		> rule: Type -> [46][File]< Type @ { Type } >
+			+ Field(AstFile::types)
+		> rule: Enum -> [42][Type]<< ( !Enum @ | !Class ) >>
+
+[45][File] END [ENDING]
+[RULE: 7][CLAUSE: -1]
+
+[46][File]< Type @ { Type } >
+[RULE: 7][CLAUSE: 0]
+	ending -> [45][File] END [ENDING]
+		- EndObject()
+	token: "@ambiguous" -> [37][Class]< [ "@public" ] [ "@ambiguous" @ ] "class" ClassBody >
+		- DelayFieldAssignment()
+		- BeginObject(Class)
+		+ Token()
+		+ Field(Class::attAmbiguous)
+		> rule: Type -> [47][File]< Type { Type @ } >
+			+ Field(AstFile::types)
+		> rule: Class -> [43][Type]<< ( !Enum | !Class @ ) >>
+	token: "@public" -> [6][Enum]< [ "@public" @ ] "enum" ID "{" { EnumItem } "}" >
+		- DelayFieldAssignment()
+		- BeginObject(Enum)
+		+ Token()
+		+ Field(Type::attPublic)
+		> rule: Type -> [47][File]< Type { Type @ } >
+			+ Field(AstFile::types)
+		> rule: Enum -> [42][Type]<< ( !Enum @ | !Class ) >>
+	token: "@public" -> [36][Class]< [ "@public" @ ] [ "@ambiguous" ] "class" ClassBody >
+		- DelayFieldAssignment()
+		- BeginObject(Class)
+		+ Token()
+		+ Field(Type::attPublic)
+		> rule: Type -> [47][File]< Type { Type @ } >
+			+ Field(AstFile::types)
+		> rule: Class -> [43][Type]<< ( !Enum | !Class @ ) >>
+	token: "class" -> [38][Class]< [ "@public" ] [ "@ambiguous" ] "class" @ ClassBody >
+		- DelayFieldAssignment()
+		- BeginObject(Class)
+		> rule: Type -> [47][File]< Type { Type @ } >
+			+ Field(AstFile::types)
+		> rule: Class -> [43][Type]<< ( !Enum | !Class @ ) >>
+	token: "enum" -> [7][Enum]< [ "@public" ] "enum" @ ID "{" { EnumItem } "}" >
+		- DelayFieldAssignment()
+		- BeginObject(Enum)
+		> rule: Type -> [47][File]< Type { Type @ } >
+			+ Field(AstFile::types)
+		> rule: Enum -> [42][Type]<< ( !Enum @ | !Class ) >>
+
+[47][File]< Type { Type @ } >
+[RULE: 7][CLAUSE: 0]
+	ending -> [45][File] END [ENDING]
+		- EndObject()
+	token: "@ambiguous" -> [37][Class]< [ "@public" ] [ "@ambiguous" @ ] "class" ClassBody >
+		- DelayFieldAssignment()
+		- BeginObject(Class)
+		+ Token()
+		+ Field(Class::attAmbiguous)
+		> rule: Type -> [47][File]< Type { Type @ } >
+			+ Field(AstFile::types)
+		> rule: Class -> [43][Type]<< ( !Enum | !Class @ ) >>
+	token: "@public" -> [6][Enum]< [ "@public" @ ] "enum" ID "{" { EnumItem } "}" >
+		- DelayFieldAssignment()
+		- BeginObject(Enum)
+		+ Token()
+		+ Field(Type::attPublic)
+		> rule: Type -> [47][File]< Type { Type @ } >
+			+ Field(AstFile::types)
+		> rule: Enum -> [42][Type]<< ( !Enum @ | !Class ) >>
+	token: "@public" -> [36][Class]< [ "@public" @ ] [ "@ambiguous" ] "class" ClassBody >
+		- DelayFieldAssignment()
+		- BeginObject(Class)
+		+ Token()
+		+ Field(Type::attPublic)
+		> rule: Type -> [47][File]< Type { Type @ } >
+			+ Field(AstFile::types)
+		> rule: Class -> [43][Type]<< ( !Enum | !Class @ ) >>
+	token: "class" -> [38][Class]< [ "@public" ] [ "@ambiguous" ] "class" @ ClassBody >
+		- DelayFieldAssignment()
+		- BeginObject(Class)
+		> rule: Type -> [47][File]< Type { Type @ } >
+			+ Field(AstFile::types)
+		> rule: Class -> [43][Type]<< ( !Enum | !Class @ ) >>
+	token: "enum" -> [7][Enum]< [ "@public" ] "enum" @ ID "{" { EnumItem } "}" >
+		- DelayFieldAssignment()
+		- BeginObject(Enum)
+		> rule: Type -> [47][File]< Type { Type @ } >
+			+ Field(AstFile::types)
+		> rule: Enum -> [42][Type]<< ( !Enum @ | !Class ) >>
+

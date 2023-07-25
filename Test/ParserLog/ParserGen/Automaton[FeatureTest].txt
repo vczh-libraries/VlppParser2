@@ -1,0 +1,1535 @@
+﻿[0][Plus] BEGIN 
+[RULE: 0][CLAUSE: -1]
+	token: "+" -> [2][Plus]< "+" @ >
+		- BeginObject(Plus)
+
+[1][Plus] END [ENDING]
+[RULE: 0][CLAUSE: -1]
+
+[2][Plus]< "+" @ >
+[RULE: 0][CLAUSE: 0]
+	ending -> [1][Plus] END [ENDING]
+		- EndObject()
+
+[3][Lt] BEGIN 
+[RULE: 1][CLAUSE: -1]
+	token: "<" -> [5][Lt]< "<" @ >
+		- BeginObject(Lt)
+
+[4][Lt] END [ENDING]
+[RULE: 1][CLAUSE: -1]
+
+[5][Lt]< "<" @ >
+[RULE: 1][CLAUSE: 0]
+	ending -> [4][Lt] END [ENDING]
+		- EndObject()
+
+[6][Gt] BEGIN 
+[RULE: 2][CLAUSE: -1]
+	token: ">" -> [8][Gt]< ">" @ >
+		- BeginObject(Gt)
+
+[7][Gt] END [ENDING]
+[RULE: 2][CLAUSE: -1]
+
+[8][Gt]< ">" @ >
+[RULE: 2][CLAUSE: 0]
+	ending -> [7][Gt] END [ENDING]
+		- EndObject()
+
+[9][EqualOptional] BEGIN 
+[RULE: 3][CLAUSE: -1]
+	token: "optional" -> [11][EqualOptional]< "optional" @ [ Plus ] "+" { Plus } >
+		- BeginObject(OptionalFeature)
+
+[10][EqualOptional] END [ENDING]
+[RULE: 3][CLAUSE: -1]
+
+[11][EqualOptional]< "optional" @ [ Plus ] "+" { Plus } >
+[RULE: 3][CLAUSE: 0]
+	token: "+" -> [2][Plus]< "+" @ >
+		- BeginObject(Plus)
+		> rule: Plus -> [12][EqualOptional]< "optional" [ Plus @ ] "+" { Plus } >
+			+ Field(OptionalFeature::optional)
+	token: "+" -> [13][EqualOptional]< "optional" [ Plus ] "+" @ { Plus } >
+
+[12][EqualOptional]< "optional" [ Plus @ ] "+" { Plus } >
+[RULE: 3][CLAUSE: 0]
+	token: "+" -> [13][EqualOptional]< "optional" [ Plus ] "+" @ { Plus } >
+
+[13][EqualOptional]< "optional" [ Plus ] "+" @ { Plus } >
+[RULE: 3][CLAUSE: 0]
+	ending -> [10][EqualOptional] END [ENDING]
+		- EnumItem(0)
+		- Field(OptionalFeature::priority)
+		- EndObject()
+	token: "+" -> [2][Plus]< "+" @ >
+		- BeginObject(Plus)
+		> rule: Plus -> [14][EqualOptional]< "optional" [ Plus ] "+" { Plus @ } >
+			+ Field(OptionalFeature::loop)
+
+[14][EqualOptional]< "optional" [ Plus ] "+" { Plus @ } >
+[RULE: 3][CLAUSE: 0]
+	ending -> [10][EqualOptional] END [ENDING]
+		- EnumItem(0)
+		- Field(OptionalFeature::priority)
+		- EndObject()
+	token: "+" -> [2][Plus]< "+" @ >
+		- BeginObject(Plus)
+		> rule: Plus -> [14][EqualOptional]< "optional" [ Plus ] "+" { Plus @ } >
+			+ Field(OptionalFeature::loop)
+
+[15][PositiveOptional] BEGIN 
+[RULE: 4][CLAUSE: -1]
+	token: "positive_optional" -> [20][PositiveOptional]< "positive_optional" @ +[ Plus ] "+" { Plus } >
+		- BeginObject(OptionalFeature)
+
+[16][PositiveOptional] END [ENDING]
+[RULE: 4][CLAUSE: -1]
+
+[17][PositiveOptional]< "positive_optional" +[ Plus @ ] "+" { Plus } >
+[RULE: 4][CLAUSE: 0]
+	token: "+" -> [18][PositiveOptional]< "positive_optional" +[ Plus ] "+" @ { Plus } >
+
+[18][PositiveOptional]< "positive_optional" +[ Plus ] "+" @ { Plus } >
+[RULE: 4][CLAUSE: 0]
+	ending -> [16][PositiveOptional] END [ENDING]
+		- EnumItem(1)
+		- Field(OptionalFeature::priority)
+		- EndObject()
+	token: "+" -> [2][Plus]< "+" @ >
+		- BeginObject(Plus)
+		> rule: Plus -> [19][PositiveOptional]< "positive_optional" +[ Plus ] "+" { Plus @ } >
+			+ Field(OptionalFeature::loop)
+
+[19][PositiveOptional]< "positive_optional" +[ Plus ] "+" { Plus @ } >
+[RULE: 4][CLAUSE: 0]
+	ending -> [16][PositiveOptional] END [ENDING]
+		- EnumItem(1)
+		- Field(OptionalFeature::priority)
+		- EndObject()
+	token: "+" -> [2][Plus]< "+" @ >
+		- BeginObject(Plus)
+		> rule: Plus -> [19][PositiveOptional]< "positive_optional" +[ Plus ] "+" { Plus @ } >
+			+ Field(OptionalFeature::loop)
+
+[20][PositiveOptional]< "positive_optional" @ +[ Plus ] "+" { Plus } >
+[RULE: 4][CLAUSE: 0]
+	token: "+" -> [2][Plus]< "+" @ >
+		- BeginObject(Plus)
+		> rule [HIGH PRIORITY]: Plus -> [17][PositiveOptional]< "positive_optional" +[ Plus @ ] "+" { Plus } >
+			+ Field(OptionalFeature::optional)
+	token: "+" [LOW PRIORITY] -> [18][PositiveOptional]< "positive_optional" +[ Plus ] "+" @ { Plus } >
+
+[21][NegativeOptional] BEGIN 
+[RULE: 5][CLAUSE: -1]
+	token: "negative_optional" -> [26][NegativeOptional]< "negative_optional" @ -[ Plus ] "+" { Plus } >
+		- BeginObject(OptionalFeature)
+
+[22][NegativeOptional] END [ENDING]
+[RULE: 5][CLAUSE: -1]
+
+[23][NegativeOptional]< "negative_optional" -[ Plus @ ] "+" { Plus } >
+[RULE: 5][CLAUSE: 0]
+	token: "+" -> [24][NegativeOptional]< "negative_optional" -[ Plus ] "+" @ { Plus } >
+
+[24][NegativeOptional]< "negative_optional" -[ Plus ] "+" @ { Plus } >
+[RULE: 5][CLAUSE: 0]
+	ending -> [22][NegativeOptional] END [ENDING]
+		- EnumItem(2)
+		- Field(OptionalFeature::priority)
+		- EndObject()
+	token: "+" -> [2][Plus]< "+" @ >
+		- BeginObject(Plus)
+		> rule: Plus -> [25][NegativeOptional]< "negative_optional" -[ Plus ] "+" { Plus @ } >
+			+ Field(OptionalFeature::loop)
+
+[25][NegativeOptional]< "negative_optional" -[ Plus ] "+" { Plus @ } >
+[RULE: 5][CLAUSE: 0]
+	ending -> [22][NegativeOptional] END [ENDING]
+		- EnumItem(2)
+		- Field(OptionalFeature::priority)
+		- EndObject()
+	token: "+" -> [2][Plus]< "+" @ >
+		- BeginObject(Plus)
+		> rule: Plus -> [25][NegativeOptional]< "negative_optional" -[ Plus ] "+" { Plus @ } >
+			+ Field(OptionalFeature::loop)
+
+[26][NegativeOptional]< "negative_optional" @ -[ Plus ] "+" { Plus } >
+[RULE: 5][CLAUSE: 0]
+	token: "+" -> [2][Plus]< "+" @ >
+		- BeginObject(Plus)
+		> rule [LOW PRIORITY]: Plus -> [23][NegativeOptional]< "negative_optional" -[ Plus @ ] "+" { Plus } >
+			+ Field(OptionalFeature::optional)
+	token: "+" [HIGH PRIORITY] -> [24][NegativeOptional]< "negative_optional" -[ Plus ] "+" @ { Plus } >
+
+[27][NO1] BEGIN 
+[RULE: 6][CLAUSE: -1]
+	token: "+" -> [2][Plus]< "+" @ >
+		- BeginObject(Plus)
+		> rule: Plus -> [29][NO1][ Plus @ ] Plus
+			+ Field(NestedOptionalFeature::optional)
+	token: "+" -> [2][Plus]< "+" @ >
+		- BeginObject(Plus)
+		> rule: Plus -> [30][NO1][ Plus ] Plus @
+			+ Field(NestedOptionalFeature::tail1)
+
+[28][NO1] END [ENDING]
+[RULE: 6][CLAUSE: -1]
+
+[29][NO1][ Plus @ ] Plus
+[RULE: 6][CLAUSE: 0]
+	token: "+" -> [2][Plus]< "+" @ >
+		- BeginObject(Plus)
+		> rule: Plus -> [30][NO1][ Plus ] Plus @
+			+ Field(NestedOptionalFeature::tail1)
+
+[30][NO1][ Plus ] Plus @
+[RULE: 6][CLAUSE: 0]
+	ending -> [28][NO1] END [ENDING]
+
+[31][PositiveNO1] BEGIN 
+[RULE: 7][CLAUSE: -1]
+	token: "+" -> [2][Plus]< "+" @ >
+		- BeginObject(Plus)
+		> rule [HIGH PRIORITY]: Plus -> [33][PositiveNO1]+[ Plus @ ] Plus
+			+ Field(NestedOptionalFeature::optional)
+	token: "+" -> [2][Plus]< "+" @ >
+		- BeginObject(Plus)
+		> rule [LOW PRIORITY]: Plus -> [34][PositiveNO1]+[ Plus ] Plus @
+			+ Field(NestedOptionalFeature::tail1)
+
+[32][PositiveNO1] END [ENDING]
+[RULE: 7][CLAUSE: -1]
+
+[33][PositiveNO1]+[ Plus @ ] Plus
+[RULE: 7][CLAUSE: 0]
+	token: "+" -> [2][Plus]< "+" @ >
+		- BeginObject(Plus)
+		> rule: Plus -> [34][PositiveNO1]+[ Plus ] Plus @
+			+ Field(NestedOptionalFeature::tail1)
+
+[34][PositiveNO1]+[ Plus ] Plus @
+[RULE: 7][CLAUSE: 0]
+	ending -> [32][PositiveNO1] END [ENDING]
+
+[35][NegativeNO1] BEGIN 
+[RULE: 8][CLAUSE: -1]
+	token: "+" -> [2][Plus]< "+" @ >
+		- BeginObject(Plus)
+		> rule [LOW PRIORITY]: Plus -> [37][NegativeNO1]-[ Plus @ ] Plus
+			+ Field(NestedOptionalFeature::optional)
+	token: "+" -> [2][Plus]< "+" @ >
+		- BeginObject(Plus)
+		> rule [HIGH PRIORITY]: Plus -> [38][NegativeNO1]-[ Plus ] Plus @
+			+ Field(NestedOptionalFeature::tail1)
+
+[36][NegativeNO1] END [ENDING]
+[RULE: 8][CLAUSE: -1]
+
+[37][NegativeNO1]-[ Plus @ ] Plus
+[RULE: 8][CLAUSE: 0]
+	token: "+" -> [2][Plus]< "+" @ >
+		- BeginObject(Plus)
+		> rule: Plus -> [38][NegativeNO1]-[ Plus ] Plus @
+			+ Field(NestedOptionalFeature::tail1)
+
+[38][NegativeNO1]-[ Plus ] Plus @
+[RULE: 8][CLAUSE: 0]
+	ending -> [36][NegativeNO1] END [ENDING]
+
+[39][NO2] BEGIN 
+[RULE: 9][CLAUSE: -1]
+	token: "+" -> [2][Plus]< "+" @ >
+		- BeginObject(Plus)
+		> rule: Plus -> [42][NO2][ NO1 ] Plus @
+			+ Field(NestedOptionalFeature::tail2)
+	token: "+" -> [2][Plus]< "+" @ >
+		- BeginObject(Plus)
+		> rule: NO1 -> [41][NO2][ NO1 @ ] Plus
+		> rule: Plus -> [29][NO1][ Plus @ ] Plus
+			+ Field(NestedOptionalFeature::optional)
+	token: "+" -> [2][Plus]< "+" @ >
+		- BeginObject(Plus)
+		> rule: NO1 -> [41][NO2][ NO1 @ ] Plus
+		> rule: Plus -> [30][NO1][ Plus ] Plus @
+			+ Field(NestedOptionalFeature::tail1)
+
+[40][NO2] END [ENDING]
+[RULE: 9][CLAUSE: -1]
+
+[41][NO2][ NO1 @ ] Plus
+[RULE: 9][CLAUSE: 0]
+	token: "+" -> [2][Plus]< "+" @ >
+		- BeginObject(Plus)
+		> rule: Plus -> [42][NO2][ NO1 ] Plus @
+			+ Field(NestedOptionalFeature::tail2)
+
+[42][NO2][ NO1 ] Plus @
+[RULE: 9][CLAUSE: 0]
+	ending -> [40][NO2] END [ENDING]
+
+[43][PositiveNO2] BEGIN 
+[RULE: 10][CLAUSE: -1]
+	token: "+" -> [2][Plus]< "+" @ >
+		- BeginObject(Plus)
+		> rule [LOW PRIORITY]: Plus -> [46][PositiveNO2]+[ PositiveNO1 ] Plus @
+			+ Field(NestedOptionalFeature::tail2)
+	token: "+" -> [2][Plus]< "+" @ >
+		- BeginObject(Plus)
+		> rule [HIGH PRIORITY]: PositiveNO1 -> [45][PositiveNO2]+[ PositiveNO1 @ ] Plus
+		> rule [HIGH PRIORITY]: Plus -> [33][PositiveNO1]+[ Plus @ ] Plus
+			+ Field(NestedOptionalFeature::optional)
+	token: "+" -> [2][Plus]< "+" @ >
+		- BeginObject(Plus)
+		> rule [HIGH PRIORITY]: PositiveNO1 -> [45][PositiveNO2]+[ PositiveNO1 @ ] Plus
+		> rule [LOW PRIORITY]: Plus -> [34][PositiveNO1]+[ Plus ] Plus @
+			+ Field(NestedOptionalFeature::tail1)
+
+[44][PositiveNO2] END [ENDING]
+[RULE: 10][CLAUSE: -1]
+
+[45][PositiveNO2]+[ PositiveNO1 @ ] Plus
+[RULE: 10][CLAUSE: 0]
+	token: "+" -> [2][Plus]< "+" @ >
+		- BeginObject(Plus)
+		> rule: Plus -> [46][PositiveNO2]+[ PositiveNO1 ] Plus @
+			+ Field(NestedOptionalFeature::tail2)
+
+[46][PositiveNO2]+[ PositiveNO1 ] Plus @
+[RULE: 10][CLAUSE: 0]
+	ending -> [44][PositiveNO2] END [ENDING]
+
+[47][NegativeNO2] BEGIN 
+[RULE: 11][CLAUSE: -1]
+	token: "+" -> [2][Plus]< "+" @ >
+		- BeginObject(Plus)
+		> rule [HIGH PRIORITY]: Plus -> [50][NegativeNO2]-[ NegativeNO1 ] Plus @
+			+ Field(NestedOptionalFeature::tail2)
+	token: "+" -> [2][Plus]< "+" @ >
+		- BeginObject(Plus)
+		> rule [LOW PRIORITY]: NegativeNO1 -> [49][NegativeNO2]-[ NegativeNO1 @ ] Plus
+		> rule [LOW PRIORITY]: Plus -> [37][NegativeNO1]-[ Plus @ ] Plus
+			+ Field(NestedOptionalFeature::optional)
+	token: "+" -> [2][Plus]< "+" @ >
+		- BeginObject(Plus)
+		> rule [LOW PRIORITY]: NegativeNO1 -> [49][NegativeNO2]-[ NegativeNO1 @ ] Plus
+		> rule [HIGH PRIORITY]: Plus -> [38][NegativeNO1]-[ Plus ] Plus @
+			+ Field(NestedOptionalFeature::tail1)
+
+[48][NegativeNO2] END [ENDING]
+[RULE: 11][CLAUSE: -1]
+
+[49][NegativeNO2]-[ NegativeNO1 @ ] Plus
+[RULE: 11][CLAUSE: 0]
+	token: "+" -> [2][Plus]< "+" @ >
+		- BeginObject(Plus)
+		> rule: Plus -> [50][NegativeNO2]-[ NegativeNO1 ] Plus @
+			+ Field(NestedOptionalFeature::tail2)
+
+[50][NegativeNO2]-[ NegativeNO1 ] Plus @
+[RULE: 11][CLAUSE: 0]
+	ending -> [48][NegativeNO2] END [ENDING]
+
+[51][NestedOptional] BEGIN 
+[RULE: 12][CLAUSE: -1]
+	token: "nested_optional" -> [53][NestedOptional]< "nested_optional" @ [ NO2 ] Plus { Plus } >
+		- BeginObject(NestedOptionalFeature)
+
+[52][NestedOptional] END [ENDING]
+[RULE: 12][CLAUSE: -1]
+
+[53][NestedOptional]< "nested_optional" @ [ NO2 ] Plus { Plus } >
+[RULE: 12][CLAUSE: 0]
+	token: "+" -> [2][Plus]< "+" @ >
+		- BeginObject(Plus)
+		> rule: Plus -> [55][NestedOptional]< "nested_optional" [ NO2 ] Plus @ { Plus } >
+			+ Field(NestedOptionalFeature::tail3)
+	token: "+" -> [2][Plus]< "+" @ >
+		- BeginObject(Plus)
+		> rule: NO2 -> [54][NestedOptional]< "nested_optional" [ NO2 @ ] Plus { Plus } >
+		> rule: Plus -> [42][NO2][ NO1 ] Plus @
+			+ Field(NestedOptionalFeature::tail2)
+	token: "+" -> [2][Plus]< "+" @ >
+		- BeginObject(Plus)
+		> rule: NO2 -> [54][NestedOptional]< "nested_optional" [ NO2 @ ] Plus { Plus } >
+		> rule: NO1 -> [41][NO2][ NO1 @ ] Plus
+		> rule: Plus -> [29][NO1][ Plus @ ] Plus
+			+ Field(NestedOptionalFeature::optional)
+	token: "+" -> [2][Plus]< "+" @ >
+		- BeginObject(Plus)
+		> rule: NO2 -> [54][NestedOptional]< "nested_optional" [ NO2 @ ] Plus { Plus } >
+		> rule: NO1 -> [41][NO2][ NO1 @ ] Plus
+		> rule: Plus -> [30][NO1][ Plus ] Plus @
+			+ Field(NestedOptionalFeature::tail1)
+
+[54][NestedOptional]< "nested_optional" [ NO2 @ ] Plus { Plus } >
+[RULE: 12][CLAUSE: 0]
+	token: "+" -> [2][Plus]< "+" @ >
+		- BeginObject(Plus)
+		> rule: Plus -> [55][NestedOptional]< "nested_optional" [ NO2 ] Plus @ { Plus } >
+			+ Field(NestedOptionalFeature::tail3)
+
+[55][NestedOptional]< "nested_optional" [ NO2 ] Plus @ { Plus } >
+[RULE: 12][CLAUSE: 0]
+	ending -> [52][NestedOptional] END [ENDING]
+		- EndObject()
+	token: "+" -> [2][Plus]< "+" @ >
+		- BeginObject(Plus)
+		> rule: Plus -> [56][NestedOptional]< "nested_optional" [ NO2 ] Plus { Plus @ } >
+			+ Field(NestedOptionalFeature::tails)
+
+[56][NestedOptional]< "nested_optional" [ NO2 ] Plus { Plus @ } >
+[RULE: 12][CLAUSE: 0]
+	ending -> [52][NestedOptional] END [ENDING]
+		- EndObject()
+	token: "+" -> [2][Plus]< "+" @ >
+		- BeginObject(Plus)
+		> rule: Plus -> [56][NestedOptional]< "nested_optional" [ NO2 ] Plus { Plus @ } >
+			+ Field(NestedOptionalFeature::tails)
+
+[57][NestedPositiveOptional] BEGIN 
+[RULE: 13][CLAUSE: -1]
+	token: "nested_positive_optional" -> [62][NestedPositiveOptional]< "nested_positive_optional" @ +[ PositiveNO2 ] Plus { Plus } >
+		- BeginObject(NestedOptionalFeature)
+
+[58][NestedPositiveOptional] END [ENDING]
+[RULE: 13][CLAUSE: -1]
+
+[59][NestedPositiveOptional]< "nested_positive_optional" +[ PositiveNO2 @ ] Plus { Plus } >
+[RULE: 13][CLAUSE: 0]
+	token: "+" -> [2][Plus]< "+" @ >
+		- BeginObject(Plus)
+		> rule: Plus -> [60][NestedPositiveOptional]< "nested_positive_optional" +[ PositiveNO2 ] Plus @ { Plus } >
+			+ Field(NestedOptionalFeature::tail3)
+
+[60][NestedPositiveOptional]< "nested_positive_optional" +[ PositiveNO2 ] Plus @ { Plus } >
+[RULE: 13][CLAUSE: 0]
+	ending -> [58][NestedPositiveOptional] END [ENDING]
+		- EndObject()
+	token: "+" -> [2][Plus]< "+" @ >
+		- BeginObject(Plus)
+		> rule: Plus -> [61][NestedPositiveOptional]< "nested_positive_optional" +[ PositiveNO2 ] Plus { Plus @ } >
+			+ Field(NestedOptionalFeature::tails)
+
+[61][NestedPositiveOptional]< "nested_positive_optional" +[ PositiveNO2 ] Plus { Plus @ } >
+[RULE: 13][CLAUSE: 0]
+	ending -> [58][NestedPositiveOptional] END [ENDING]
+		- EndObject()
+	token: "+" -> [2][Plus]< "+" @ >
+		- BeginObject(Plus)
+		> rule: Plus -> [61][NestedPositiveOptional]< "nested_positive_optional" +[ PositiveNO2 ] Plus { Plus @ } >
+			+ Field(NestedOptionalFeature::tails)
+
+[62][NestedPositiveOptional]< "nested_positive_optional" @ +[ PositiveNO2 ] Plus { Plus } >
+[RULE: 13][CLAUSE: 0]
+	token: "+" -> [2][Plus]< "+" @ >
+		- BeginObject(Plus)
+		> rule [LOW PRIORITY]: Plus -> [60][NestedPositiveOptional]< "nested_positive_optional" +[ PositiveNO2 ] Plus @ { Plus } >
+			+ Field(NestedOptionalFeature::tail3)
+	token: "+" -> [2][Plus]< "+" @ >
+		- BeginObject(Plus)
+		> rule [HIGH PRIORITY]: PositiveNO2 -> [59][NestedPositiveOptional]< "nested_positive_optional" +[ PositiveNO2 @ ] Plus { Plus } >
+		> rule [LOW PRIORITY]: Plus -> [46][PositiveNO2]+[ PositiveNO1 ] Plus @
+			+ Field(NestedOptionalFeature::tail2)
+	token: "+" -> [2][Plus]< "+" @ >
+		- BeginObject(Plus)
+		> rule [HIGH PRIORITY]: PositiveNO2 -> [59][NestedPositiveOptional]< "nested_positive_optional" +[ PositiveNO2 @ ] Plus { Plus } >
+		> rule [HIGH PRIORITY]: PositiveNO1 -> [45][PositiveNO2]+[ PositiveNO1 @ ] Plus
+		> rule [HIGH PRIORITY]: Plus -> [33][PositiveNO1]+[ Plus @ ] Plus
+			+ Field(NestedOptionalFeature::optional)
+	token: "+" -> [2][Plus]< "+" @ >
+		- BeginObject(Plus)
+		> rule [HIGH PRIORITY]: PositiveNO2 -> [59][NestedPositiveOptional]< "nested_positive_optional" +[ PositiveNO2 @ ] Plus { Plus } >
+		> rule [HIGH PRIORITY]: PositiveNO1 -> [45][PositiveNO2]+[ PositiveNO1 @ ] Plus
+		> rule [LOW PRIORITY]: Plus -> [34][PositiveNO1]+[ Plus ] Plus @
+			+ Field(NestedOptionalFeature::tail1)
+
+[63][NestedNegativeOptional] BEGIN 
+[RULE: 14][CLAUSE: -1]
+	token: "nested_negative_optional" -> [68][NestedNegativeOptional]< "nested_negative_optional" @ -[ NegativeNO2 ] Plus { Plus } >
+		- BeginObject(NestedOptionalFeature)
+
+[64][NestedNegativeOptional] END [ENDING]
+[RULE: 14][CLAUSE: -1]
+
+[65][NestedNegativeOptional]< "nested_negative_optional" -[ NegativeNO2 @ ] Plus { Plus } >
+[RULE: 14][CLAUSE: 0]
+	token: "+" -> [2][Plus]< "+" @ >
+		- BeginObject(Plus)
+		> rule: Plus -> [66][NestedNegativeOptional]< "nested_negative_optional" -[ NegativeNO2 ] Plus @ { Plus } >
+			+ Field(NestedOptionalFeature::tail3)
+
+[66][NestedNegativeOptional]< "nested_negative_optional" -[ NegativeNO2 ] Plus @ { Plus } >
+[RULE: 14][CLAUSE: 0]
+	ending -> [64][NestedNegativeOptional] END [ENDING]
+		- EndObject()
+	token: "+" -> [2][Plus]< "+" @ >
+		- BeginObject(Plus)
+		> rule: Plus -> [67][NestedNegativeOptional]< "nested_negative_optional" -[ NegativeNO2 ] Plus { Plus @ } >
+			+ Field(NestedOptionalFeature::tails)
+
+[67][NestedNegativeOptional]< "nested_negative_optional" -[ NegativeNO2 ] Plus { Plus @ } >
+[RULE: 14][CLAUSE: 0]
+	ending -> [64][NestedNegativeOptional] END [ENDING]
+		- EndObject()
+	token: "+" -> [2][Plus]< "+" @ >
+		- BeginObject(Plus)
+		> rule: Plus -> [67][NestedNegativeOptional]< "nested_negative_optional" -[ NegativeNO2 ] Plus { Plus @ } >
+			+ Field(NestedOptionalFeature::tails)
+
+[68][NestedNegativeOptional]< "nested_negative_optional" @ -[ NegativeNO2 ] Plus { Plus } >
+[RULE: 14][CLAUSE: 0]
+	token: "+" -> [2][Plus]< "+" @ >
+		- BeginObject(Plus)
+		> rule [HIGH PRIORITY]: Plus -> [66][NestedNegativeOptional]< "nested_negative_optional" -[ NegativeNO2 ] Plus @ { Plus } >
+			+ Field(NestedOptionalFeature::tail3)
+	token: "+" -> [2][Plus]< "+" @ >
+		- BeginObject(Plus)
+		> rule [LOW PRIORITY]: NegativeNO2 -> [65][NestedNegativeOptional]< "nested_negative_optional" -[ NegativeNO2 @ ] Plus { Plus } >
+		> rule [HIGH PRIORITY]: Plus -> [50][NegativeNO2]-[ NegativeNO1 ] Plus @
+			+ Field(NestedOptionalFeature::tail2)
+	token: "+" -> [2][Plus]< "+" @ >
+		- BeginObject(Plus)
+		> rule [LOW PRIORITY]: NegativeNO2 -> [65][NestedNegativeOptional]< "nested_negative_optional" -[ NegativeNO2 @ ] Plus { Plus } >
+		> rule [LOW PRIORITY]: NegativeNO1 -> [49][NegativeNO2]-[ NegativeNO1 @ ] Plus
+		> rule [LOW PRIORITY]: Plus -> [37][NegativeNO1]-[ Plus @ ] Plus
+			+ Field(NestedOptionalFeature::optional)
+	token: "+" -> [2][Plus]< "+" @ >
+		- BeginObject(Plus)
+		> rule [LOW PRIORITY]: NegativeNO2 -> [65][NestedNegativeOptional]< "nested_negative_optional" -[ NegativeNO2 @ ] Plus { Plus } >
+		> rule [LOW PRIORITY]: NegativeNO1 -> [49][NegativeNO2]-[ NegativeNO1 @ ] Plus
+		> rule [HIGH PRIORITY]: Plus -> [38][NegativeNO1]-[ Plus ] Plus @
+			+ Field(NestedOptionalFeature::tail1)
+
+[69][BranchedOptional] BEGIN 
+[RULE: 15][CLAUSE: -1]
+	token: "branched_optional" -> [77][BranchedOptional]< "branched_optional" @ +[ Plus ] Plus { Plus } >
+		- BeginObject(BranchedOptionalFeature)
+	token: "branched_optional" -> [78][BranchedOptional]< "branched_optional" @ -[ Plus ] Plus { Plus } >
+		- BeginObject(BranchedOptionalFeature)
+	token: "branched_optional" -> [79][BranchedOptional]< "branched_optional" @ [ Plus ] Plus { Plus } >
+		- BeginObject(BranchedOptionalFeature)
+
+[70][BranchedOptional] END [ENDING]
+[RULE: 15][CLAUSE: -1]
+
+[71][BranchedOptional]< "branched_optional" +[ Plus @ ] Plus { Plus } >
+[RULE: 15][CLAUSE: 0]
+	token: "+" -> [2][Plus]< "+" @ >
+		- BeginObject(Plus)
+		> rule: Plus -> [72][BranchedOptional]< "branched_optional" +[ Plus ] Plus @ { Plus } >
+			+ DiscardValue()
+
+[72][BranchedOptional]< "branched_optional" +[ Plus ] Plus @ { Plus } >
+[RULE: 15][CLAUSE: 0]
+	ending -> [70][BranchedOptional] END [ENDING]
+		- EnumItem(0)
+		- Field(BranchedOptionalFeature::type)
+		- EndObject()
+	token: "+" -> [2][Plus]< "+" @ >
+		- BeginObject(Plus)
+		> rule: Plus -> [73][BranchedOptional]< "branched_optional" +[ Plus ] Plus { Plus @ } >
+			+ Field(BranchedOptionalFeature::tails)
+
+[73][BranchedOptional]< "branched_optional" +[ Plus ] Plus { Plus @ } >
+[RULE: 15][CLAUSE: 0]
+	ending -> [70][BranchedOptional] END [ENDING]
+		- EnumItem(0)
+		- Field(BranchedOptionalFeature::type)
+		- EndObject()
+	token: "+" -> [2][Plus]< "+" @ >
+		- BeginObject(Plus)
+		> rule: Plus -> [73][BranchedOptional]< "branched_optional" +[ Plus ] Plus { Plus @ } >
+			+ Field(BranchedOptionalFeature::tails)
+
+[74][BranchedOptional]< "branched_optional" -[ Plus @ ] Plus { Plus } >
+[RULE: 15][CLAUSE: 1]
+	token: "+" -> [2][Plus]< "+" @ >
+		- BeginObject(Plus)
+		> rule: Plus -> [75][BranchedOptional]< "branched_optional" -[ Plus ] Plus @ { Plus } >
+			+ DiscardValue()
+
+[75][BranchedOptional]< "branched_optional" -[ Plus ] Plus @ { Plus } >
+[RULE: 15][CLAUSE: 1]
+	ending -> [70][BranchedOptional] END [ENDING]
+		- EnumItem(1)
+		- Field(BranchedOptionalFeature::type)
+		- EndObject()
+	token: "+" -> [2][Plus]< "+" @ >
+		- BeginObject(Plus)
+		> rule: Plus -> [76][BranchedOptional]< "branched_optional" -[ Plus ] Plus { Plus @ } >
+			+ Field(BranchedOptionalFeature::tails)
+
+[76][BranchedOptional]< "branched_optional" -[ Plus ] Plus { Plus @ } >
+[RULE: 15][CLAUSE: 1]
+	ending -> [70][BranchedOptional] END [ENDING]
+		- EnumItem(1)
+		- Field(BranchedOptionalFeature::type)
+		- EndObject()
+	token: "+" -> [2][Plus]< "+" @ >
+		- BeginObject(Plus)
+		> rule: Plus -> [76][BranchedOptional]< "branched_optional" -[ Plus ] Plus { Plus @ } >
+			+ Field(BranchedOptionalFeature::tails)
+
+[77][BranchedOptional]< "branched_optional" @ +[ Plus ] Plus { Plus } >
+[RULE: 15][CLAUSE: 0]
+	token: "+" -> [2][Plus]< "+" @ >
+		- BeginObject(Plus)
+		> rule [HIGH PRIORITY]: Plus -> [71][BranchedOptional]< "branched_optional" +[ Plus @ ] Plus { Plus } >
+			+ Field(BranchedOptionalFeature::optional)
+	token: "+" -> [2][Plus]< "+" @ >
+		- BeginObject(Plus)
+		> rule [LOW PRIORITY]: Plus -> [72][BranchedOptional]< "branched_optional" +[ Plus ] Plus @ { Plus } >
+			+ DiscardValue()
+
+[78][BranchedOptional]< "branched_optional" @ -[ Plus ] Plus { Plus } >
+[RULE: 15][CLAUSE: 1]
+	token: "+" -> [2][Plus]< "+" @ >
+		- BeginObject(Plus)
+		> rule [LOW PRIORITY]: Plus -> [74][BranchedOptional]< "branched_optional" -[ Plus @ ] Plus { Plus } >
+			+ Field(BranchedOptionalFeature::optional)
+	token: "+" -> [2][Plus]< "+" @ >
+		- BeginObject(Plus)
+		> rule [HIGH PRIORITY]: Plus -> [75][BranchedOptional]< "branched_optional" -[ Plus ] Plus @ { Plus } >
+			+ DiscardValue()
+
+[79][BranchedOptional]< "branched_optional" @ [ Plus ] Plus { Plus } >
+[RULE: 15][CLAUSE: 2]
+	token: "+" -> [2][Plus]< "+" @ >
+		- BeginObject(Plus)
+		> rule: Plus -> [80][BranchedOptional]< "branched_optional" [ Plus @ ] Plus { Plus } >
+			+ Field(BranchedOptionalFeature::optional)
+	token: "+" -> [2][Plus]< "+" @ >
+		- BeginObject(Plus)
+		> rule: Plus -> [81][BranchedOptional]< "branched_optional" [ Plus ] Plus @ { Plus } >
+			+ DiscardValue()
+
+[80][BranchedOptional]< "branched_optional" [ Plus @ ] Plus { Plus } >
+[RULE: 15][CLAUSE: 2]
+	token: "+" -> [2][Plus]< "+" @ >
+		- BeginObject(Plus)
+		> rule: Plus -> [81][BranchedOptional]< "branched_optional" [ Plus ] Plus @ { Plus } >
+			+ DiscardValue()
+
+[81][BranchedOptional]< "branched_optional" [ Plus ] Plus @ { Plus } >
+[RULE: 15][CLAUSE: 2]
+	ending -> [70][BranchedOptional] END [ENDING]
+		- EnumItem(2)
+		- Field(BranchedOptionalFeature::type)
+		- EndObject()
+	token: "+" -> [2][Plus]< "+" @ >
+		- BeginObject(Plus)
+		> rule: Plus -> [82][BranchedOptional]< "branched_optional" [ Plus ] Plus { Plus @ } >
+			+ Field(BranchedOptionalFeature::tails)
+
+[82][BranchedOptional]< "branched_optional" [ Plus ] Plus { Plus @ } >
+[RULE: 15][CLAUSE: 2]
+	ending -> [70][BranchedOptional] END [ENDING]
+		- EnumItem(2)
+		- Field(BranchedOptionalFeature::type)
+		- EndObject()
+	token: "+" -> [2][Plus]< "+" @ >
+		- BeginObject(Plus)
+		> rule: Plus -> [82][BranchedOptional]< "branched_optional" [ Plus ] Plus { Plus @ } >
+			+ Field(BranchedOptionalFeature::tails)
+
+[83][PbaGts] BEGIN 
+[RULE: 16][CLAUSE: -1]
+	token: ">" -> [8][Gt]< ">" @ >
+		- BeginObject(Gt)
+		> rule: Gt -> [85][PbaGts]Gt @ { Gt }
+			+ Field(PbaFeature::gts)
+
+[84][PbaGts] END [ENDING]
+[RULE: 16][CLAUSE: -1]
+
+[85][PbaGts]Gt @ { Gt }
+[RULE: 16][CLAUSE: 0]
+	ending -> [84][PbaGts] END [ENDING]
+	token: ">" -> [8][Gt]< ">" @ >
+		- BeginObject(Gt)
+		> rule: Gt -> [86][PbaGts]Gt { Gt @ }
+			+ Field(PbaFeature::gts)
+
+[86][PbaGts]Gt { Gt @ }
+[RULE: 16][CLAUSE: 0]
+	ending -> [84][PbaGts] END [ENDING]
+	token: ">" -> [8][Gt]< ">" @ >
+		- BeginObject(Gt)
+		> rule: Gt -> [86][PbaGts]Gt { Gt @ }
+			+ Field(PbaFeature::gts)
+
+[87][PbaBody] BEGIN 
+[RULE: 17][CLAUSE: -1]
+	token: "+" -> [2][Plus]< "+" @ >
+		- BeginObject(PbaFeature)
+		- BeginObject(Plus)
+		> rule: Plus -> [89][PbaBody]< [ Plus @ ] Plus { Plus } >
+			+ Field(PbaFeature::optional)
+	token: "+" -> [2][Plus]< "+" @ >
+		- BeginObject(PbaFeature)
+		- BeginObject(Plus)
+		> rule: Plus -> [90][PbaBody]< [ Plus ] Plus @ { Plus } >
+			+ DiscardValue()
+
+[88][PbaBody] END [ENDING]
+[RULE: 17][CLAUSE: -1]
+
+[89][PbaBody]< [ Plus @ ] Plus { Plus } >
+[RULE: 17][CLAUSE: 0]
+	token: "+" -> [2][Plus]< "+" @ >
+		- BeginObject(Plus)
+		> rule: Plus -> [90][PbaBody]< [ Plus ] Plus @ { Plus } >
+			+ DiscardValue()
+
+[90][PbaBody]< [ Plus ] Plus @ { Plus } >
+[RULE: 17][CLAUSE: 0]
+	ending -> [88][PbaBody] END [ENDING]
+		- EndObject()
+	token: "+" -> [2][Plus]< "+" @ >
+		- BeginObject(Plus)
+		> rule: Plus -> [91][PbaBody]< [ Plus ] Plus { Plus @ } >
+			+ Field(PbaFeature::tails)
+
+[91][PbaBody]< [ Plus ] Plus { Plus @ } >
+[RULE: 17][CLAUSE: 0]
+	ending -> [88][PbaBody] END [ENDING]
+		- EndObject()
+	token: "+" -> [2][Plus]< "+" @ >
+		- BeginObject(Plus)
+		> rule: Plus -> [91][PbaBody]< [ Plus ] Plus { Plus @ } >
+			+ Field(PbaFeature::tails)
+
+[92][Pba] BEGIN 
+[RULE: 18][CLAUSE: -1]
+	token: "prefix_before_ambiguity" -> [94][Pba]<< "prefix_before_ambiguity" @ { Lt } PbaGts !PbaBody >>
+		- DelayFieldAssignment()
+
+[93][Pba] END [ENDING]
+[RULE: 18][CLAUSE: -1]
+
+[94][Pba]<< "prefix_before_ambiguity" @ { Lt } PbaGts !PbaBody >>
+[RULE: 18][CLAUSE: 0]
+	token: "<" -> [5][Lt]< "<" @ >
+		- BeginObject(Lt)
+		> rule: Lt -> [95][Pba]<< "prefix_before_ambiguity" { Lt @ } PbaGts !PbaBody >>
+			+ Field(PbaFeature::lts)
+	token: ">" -> [8][Gt]< ">" @ >
+		- BeginObject(Gt)
+		> rule: PbaGts -> [97][Pba]<< "prefix_before_ambiguity" { Lt } PbaGts @ !PbaBody >>
+		> rule: Gt -> [85][PbaGts]Gt @ { Gt }
+			+ Field(PbaFeature::gts)
+
+[95][Pba]<< "prefix_before_ambiguity" { Lt @ } PbaGts !PbaBody >>
+[RULE: 18][CLAUSE: 0]
+	token: "<" -> [5][Lt]< "<" @ >
+		- BeginObject(Lt)
+		> rule: Lt -> [95][Pba]<< "prefix_before_ambiguity" { Lt @ } PbaGts !PbaBody >>
+			+ Field(PbaFeature::lts)
+	token: ">" -> [8][Gt]< ">" @ >
+		- BeginObject(Gt)
+		> rule: PbaGts -> [97][Pba]<< "prefix_before_ambiguity" { Lt } PbaGts @ !PbaBody >>
+		> rule: Gt -> [85][PbaGts]Gt @ { Gt }
+			+ Field(PbaFeature::gts)
+
+[96][Pba]<< "prefix_before_ambiguity" { Lt } PbaGts !PbaBody @ >>
+[RULE: 18][CLAUSE: 0]
+	ending -> [93][Pba] END [ENDING]
+		- EndObject()
+
+[97][Pba]<< "prefix_before_ambiguity" { Lt } PbaGts @ !PbaBody >>
+[RULE: 18][CLAUSE: 0]
+	token: "+" -> [2][Plus]< "+" @ >
+		- BeginObject(PbaFeature)
+		- BeginObject(Plus)
+		> rule: PbaBody -> [96][Pba]<< "prefix_before_ambiguity" { Lt } PbaGts !PbaBody @ >>
+			+ ReopenObject()
+		> rule: Plus -> [89][PbaBody]< [ Plus @ ] Plus { Plus } >
+			+ Field(PbaFeature::optional)
+	token: "+" -> [2][Plus]< "+" @ >
+		- BeginObject(PbaFeature)
+		- BeginObject(Plus)
+		> rule: PbaBody -> [96][Pba]<< "prefix_before_ambiguity" { Lt } PbaGts !PbaBody @ >>
+			+ ReopenObject()
+		> rule: Plus -> [90][PbaBody]< [ Plus ] Plus @ { Plus } >
+			+ DiscardValue()
+
+[98][Pwa1Prefix] BEGIN 
+[RULE: 19][CLAUSE: -1]
+	token: "+" -> [2][Plus]< "+" @ >
+		- BeginObject(PbaFeature)
+		- BeginObject(Plus)
+		> rule: Plus -> [100][Pwa1Prefix]< [ Plus @ ] Plus { Plus } >
+			+ Field(PbaFeature::optional)
+	token: "+" -> [2][Plus]< "+" @ >
+		- BeginObject(PbaFeature)
+		- BeginObject(Plus)
+		> rule: Plus -> [101][Pwa1Prefix]< [ Plus ] Plus @ { Plus } >
+			+ DiscardValue()
+
+[99][Pwa1Prefix] END [ENDING]
+[RULE: 19][CLAUSE: -1]
+
+[100][Pwa1Prefix]< [ Plus @ ] Plus { Plus } >
+[RULE: 19][CLAUSE: 0]
+	token: "+" -> [2][Plus]< "+" @ >
+		- BeginObject(Plus)
+		> rule: Plus -> [101][Pwa1Prefix]< [ Plus ] Plus @ { Plus } >
+			+ DiscardValue()
+
+[101][Pwa1Prefix]< [ Plus ] Plus @ { Plus } >
+[RULE: 19][CLAUSE: 0]
+	ending -> [99][Pwa1Prefix] END [ENDING]
+		- EndObject()
+	token: "+" -> [2][Plus]< "+" @ >
+		- BeginObject(Plus)
+		> rule: Plus -> [102][Pwa1Prefix]< [ Plus ] Plus { Plus @ } >
+			+ Field(PbaFeature::tails)
+
+[102][Pwa1Prefix]< [ Plus ] Plus { Plus @ } >
+[RULE: 19][CLAUSE: 0]
+	ending -> [99][Pwa1Prefix] END [ENDING]
+		- EndObject()
+	token: "+" -> [2][Plus]< "+" @ >
+		- BeginObject(Plus)
+		> rule: Plus -> [102][Pwa1Prefix]< [ Plus ] Plus { Plus @ } >
+			+ Field(PbaFeature::tails)
+
+[103][Pwa1Body] BEGIN 
+[RULE: 20][CLAUSE: -1]
+	token: "<" -> [5][Lt]< "<" @ >
+		- BeginObject(Pwa1Feature)
+		- BeginObject(Lt)
+		> rule: Lt -> [105][Pwa1Body]< Lt @ { Lt } { Gt } >
+			+ Field(Pwa1Feature::lts)
+
+[104][Pwa1Body] END [ENDING]
+[RULE: 20][CLAUSE: -1]
+
+[105][Pwa1Body]< Lt @ { Lt } { Gt } >
+[RULE: 20][CLAUSE: 0]
+	ending -> [104][Pwa1Body] END [ENDING]
+		- EndObject()
+	token: "<" -> [5][Lt]< "<" @ >
+		- BeginObject(Lt)
+		> rule: Lt -> [106][Pwa1Body]< Lt { Lt @ } { Gt } >
+			+ Field(Pwa1Feature::lts)
+	token: ">" -> [8][Gt]< ">" @ >
+		- BeginObject(Gt)
+		> rule: Gt -> [107][Pwa1Body]< Lt { Lt } { Gt @ } >
+			+ Field(Pwa1Feature::gts)
+
+[106][Pwa1Body]< Lt { Lt @ } { Gt } >
+[RULE: 20][CLAUSE: 0]
+	ending -> [104][Pwa1Body] END [ENDING]
+		- EndObject()
+	token: "<" -> [5][Lt]< "<" @ >
+		- BeginObject(Lt)
+		> rule: Lt -> [106][Pwa1Body]< Lt { Lt @ } { Gt } >
+			+ Field(Pwa1Feature::lts)
+	token: ">" -> [8][Gt]< ">" @ >
+		- BeginObject(Gt)
+		> rule: Gt -> [107][Pwa1Body]< Lt { Lt } { Gt @ } >
+			+ Field(Pwa1Feature::gts)
+
+[107][Pwa1Body]< Lt { Lt } { Gt @ } >
+[RULE: 20][CLAUSE: 0]
+	ending -> [104][Pwa1Body] END [ENDING]
+		- EndObject()
+	token: ">" -> [8][Gt]< ">" @ >
+		- BeginObject(Gt)
+		> rule: Gt -> [107][Pwa1Body]< Lt { Lt } { Gt @ } >
+			+ Field(Pwa1Feature::gts)
+
+[108][Pwa1] BEGIN 
+[RULE: 21][CLAUSE: -1]
+	token: "prefix_with_ambiguity_1" -> [110][Pwa1]<< "prefix_with_ambiguity_1" @ Pwa1Prefix !Pwa1Body >>
+		- DelayFieldAssignment()
+
+[109][Pwa1] END [ENDING]
+[RULE: 21][CLAUSE: -1]
+
+[110][Pwa1]<< "prefix_with_ambiguity_1" @ Pwa1Prefix !Pwa1Body >>
+[RULE: 21][CLAUSE: 0]
+	token: "+" -> [2][Plus]< "+" @ >
+		- BeginObject(PbaFeature)
+		- BeginObject(Plus)
+		> rule: Pwa1Prefix -> [112][Pwa1]<< "prefix_with_ambiguity_1" Pwa1Prefix @ !Pwa1Body >>
+			+ Field(Pwa1Feature::pba)
+		> rule: Plus -> [100][Pwa1Prefix]< [ Plus @ ] Plus { Plus } >
+			+ Field(PbaFeature::optional)
+	token: "+" -> [2][Plus]< "+" @ >
+		- BeginObject(PbaFeature)
+		- BeginObject(Plus)
+		> rule: Pwa1Prefix -> [112][Pwa1]<< "prefix_with_ambiguity_1" Pwa1Prefix @ !Pwa1Body >>
+			+ Field(Pwa1Feature::pba)
+		> rule: Plus -> [101][Pwa1Prefix]< [ Plus ] Plus @ { Plus } >
+			+ DiscardValue()
+
+[111][Pwa1]<< "prefix_with_ambiguity_1" Pwa1Prefix !Pwa1Body @ >>
+[RULE: 21][CLAUSE: 0]
+	ending -> [109][Pwa1] END [ENDING]
+		- EndObject()
+
+[112][Pwa1]<< "prefix_with_ambiguity_1" Pwa1Prefix @ !Pwa1Body >>
+[RULE: 21][CLAUSE: 0]
+	token: "<" -> [5][Lt]< "<" @ >
+		- BeginObject(Pwa1Feature)
+		- BeginObject(Lt)
+		> rule: Pwa1Body -> [111][Pwa1]<< "prefix_with_ambiguity_1" Pwa1Prefix !Pwa1Body @ >>
+			+ ReopenObject()
+		> rule: Lt -> [105][Pwa1Body]< Lt @ { Lt } { Gt } >
+			+ Field(Pwa1Feature::lts)
+
+[113][Pwa2Body] BEGIN 
+[RULE: 22][CLAUSE: -1]
+	token: "<" -> [5][Lt]< "<" @ >
+		- BeginObject(PbaFeature)
+		- BeginObject(Lt)
+		> rule: Lt -> [115][Pwa2Body]< Lt @ { Lt } { Gt } >
+			+ Field(PbaFeature::lts)
+
+[114][Pwa2Body] END [ENDING]
+[RULE: 22][CLAUSE: -1]
+
+[115][Pwa2Body]< Lt @ { Lt } { Gt } >
+[RULE: 22][CLAUSE: 0]
+	ending -> [114][Pwa2Body] END [ENDING]
+		- EndObject()
+	token: "<" -> [5][Lt]< "<" @ >
+		- BeginObject(Lt)
+		> rule: Lt -> [116][Pwa2Body]< Lt { Lt @ } { Gt } >
+			+ Field(PbaFeature::lts)
+	token: ">" -> [8][Gt]< ">" @ >
+		- BeginObject(Gt)
+		> rule: Gt -> [117][Pwa2Body]< Lt { Lt } { Gt @ } >
+			+ Field(PbaFeature::gts)
+
+[116][Pwa2Body]< Lt { Lt @ } { Gt } >
+[RULE: 22][CLAUSE: 0]
+	ending -> [114][Pwa2Body] END [ENDING]
+		- EndObject()
+	token: "<" -> [5][Lt]< "<" @ >
+		- BeginObject(Lt)
+		> rule: Lt -> [116][Pwa2Body]< Lt { Lt @ } { Gt } >
+			+ Field(PbaFeature::lts)
+	token: ">" -> [8][Gt]< ">" @ >
+		- BeginObject(Gt)
+		> rule: Gt -> [117][Pwa2Body]< Lt { Lt } { Gt @ } >
+			+ Field(PbaFeature::gts)
+
+[117][Pwa2Body]< Lt { Lt } { Gt @ } >
+[RULE: 22][CLAUSE: 0]
+	ending -> [114][Pwa2Body] END [ENDING]
+		- EndObject()
+	token: ">" -> [8][Gt]< ">" @ >
+		- BeginObject(Gt)
+		> rule: Gt -> [117][Pwa2Body]< Lt { Lt } { Gt @ } >
+			+ Field(PbaFeature::gts)
+
+[118][Pwa2] BEGIN 
+[RULE: 23][CLAUSE: -1]
+	token: "prefix_with_ambiguity_2" -> [120][Pwa2]<< "prefix_with_ambiguity_2" @ [ Plus ] Plus { Plus } !Pwa2Body >>
+		- DelayFieldAssignment()
+
+[119][Pwa2] END [ENDING]
+[RULE: 23][CLAUSE: -1]
+
+[120][Pwa2]<< "prefix_with_ambiguity_2" @ [ Plus ] Plus { Plus } !Pwa2Body >>
+[RULE: 23][CLAUSE: 0]
+	token: "+" -> [2][Plus]< "+" @ >
+		- BeginObject(Plus)
+		> rule: Plus -> [121][Pwa2]<< "prefix_with_ambiguity_2" [ Plus @ ] Plus { Plus } !Pwa2Body >>
+			+ Field(PbaFeature::optional)
+	token: "+" -> [2][Plus]< "+" @ >
+		- BeginObject(Plus)
+		> rule: Plus -> [122][Pwa2]<< "prefix_with_ambiguity_2" [ Plus ] Plus @ { Plus } !Pwa2Body >>
+			+ DiscardValue()
+
+[121][Pwa2]<< "prefix_with_ambiguity_2" [ Plus @ ] Plus { Plus } !Pwa2Body >>
+[RULE: 23][CLAUSE: 0]
+	token: "+" -> [2][Plus]< "+" @ >
+		- BeginObject(Plus)
+		> rule: Plus -> [122][Pwa2]<< "prefix_with_ambiguity_2" [ Plus ] Plus @ { Plus } !Pwa2Body >>
+			+ DiscardValue()
+
+[122][Pwa2]<< "prefix_with_ambiguity_2" [ Plus ] Plus @ { Plus } !Pwa2Body >>
+[RULE: 23][CLAUSE: 0]
+	token: "+" -> [2][Plus]< "+" @ >
+		- BeginObject(Plus)
+		> rule: Plus -> [123][Pwa2]<< "prefix_with_ambiguity_2" [ Plus ] Plus { Plus @ } !Pwa2Body >>
+			+ Field(PbaFeature::tails)
+	token: "<" -> [5][Lt]< "<" @ >
+		- BeginObject(PbaFeature)
+		- BeginObject(Lt)
+		> rule: Pwa2Body -> [124][Pwa2]<< "prefix_with_ambiguity_2" [ Plus ] Plus { Plus } !Pwa2Body @ >>
+			+ ReopenObject()
+		> rule: Lt -> [115][Pwa2Body]< Lt @ { Lt } { Gt } >
+			+ Field(PbaFeature::lts)
+
+[123][Pwa2]<< "prefix_with_ambiguity_2" [ Plus ] Plus { Plus @ } !Pwa2Body >>
+[RULE: 23][CLAUSE: 0]
+	token: "+" -> [2][Plus]< "+" @ >
+		- BeginObject(Plus)
+		> rule: Plus -> [123][Pwa2]<< "prefix_with_ambiguity_2" [ Plus ] Plus { Plus @ } !Pwa2Body >>
+			+ Field(PbaFeature::tails)
+	token: "<" -> [5][Lt]< "<" @ >
+		- BeginObject(PbaFeature)
+		- BeginObject(Lt)
+		> rule: Pwa2Body -> [124][Pwa2]<< "prefix_with_ambiguity_2" [ Plus ] Plus { Plus } !Pwa2Body @ >>
+			+ ReopenObject()
+		> rule: Lt -> [115][Pwa2Body]< Lt @ { Lt } { Gt } >
+			+ Field(PbaFeature::lts)
+
+[124][Pwa2]<< "prefix_with_ambiguity_2" [ Plus ] Plus { Plus } !Pwa2Body @ >>
+[RULE: 23][CLAUSE: 0]
+	ending -> [119][Pwa2] END [ENDING]
+		- EndObject()
+
+[125][Pwl1_P] BEGIN 
+[RULE: 24][CLAUSE: -1]
+	token: "+" -> [2][Plus]< "+" @ >
+		- DelayFieldAssignment()
+		- BeginObject(Plus)
+		> rule: Plus -> [129][Pwl1_P]<< Plus @ !Pwl1_P >>
+			+ Field(PwlFeature::prefix)
+	token: "<" -> [5][Lt]< "<" @ >
+		- BeginObject(PwlFeature)
+		- BeginObject(Lt)
+		> rule: Lt -> [127][Pwl1_P]< Lt @ >
+
+[126][Pwl1_P] END [ENDING]
+[RULE: 24][CLAUSE: -1]
+
+[127][Pwl1_P]< Lt @ >
+[RULE: 24][CLAUSE: 0]
+	ending -> [126][Pwl1_P] END [ENDING]
+		- Field(PwlFeature::one)
+		- EndObject()
+
+[128][Pwl1_P]<< Plus !Pwl1_P @ >>
+[RULE: 24][CLAUSE: 1]
+	ending -> [126][Pwl1_P] END [ENDING]
+		- EndObject()
+
+[129][Pwl1_P]<< Plus @ !Pwl1_P >>
+[RULE: 24][CLAUSE: 1]
+	token: "+" -> [2][Plus]< "+" @ >
+		- DelayFieldAssignment()
+		- BeginObject(Plus)
+		> rule: Pwl1_P -> [128][Pwl1_P]<< Plus !Pwl1_P @ >>
+			+ ReopenObject()
+		> rule: Plus -> [129][Pwl1_P]<< Plus @ !Pwl1_P >>
+			+ Field(PwlFeature::prefix)
+	token: "<" -> [5][Lt]< "<" @ >
+		- BeginObject(PwlFeature)
+		- BeginObject(Lt)
+		> rule: Pwl1_P -> [128][Pwl1_P]<< Plus !Pwl1_P @ >>
+			+ ReopenObject()
+		> rule: Lt -> [127][Pwl1_P]< Lt @ >
+
+[130][Pwl1] BEGIN 
+[RULE: 25][CLAUSE: -1]
+	token: "+" -> [2][Plus]< "+" @ >
+		- DelayFieldAssignment()
+		- DelayFieldAssignment()
+		- BeginObject(Plus)
+		> rule: Pwl1_P -> [134][Pwl1]<< !Pwl1_P @ >>
+			+ ReopenObject()
+		> rule: Plus -> [129][Pwl1_P]<< Plus @ !Pwl1_P >>
+			+ Field(PwlFeature::prefix)
+	token: "<" -> [5][Lt]< "<" @ >
+		- DelayFieldAssignment()
+		- BeginObject(PwlFeature)
+		- BeginObject(Lt)
+		> rule: Pwl1_P -> [134][Pwl1]<< !Pwl1_P @ >>
+			+ ReopenObject()
+		> rule: Lt -> [127][Pwl1_P]< Lt @ >
+
+[131][Pwl1] END [ENDING]
+[RULE: 25][CLAUSE: -1]
+
+[132][Pwl1]< Pwl1 @ Lt >
+[RULE: 25][CLAUSE: 1]
+	token: "<" -> [5][Lt]< "<" @ >
+		- BeginObject(Lt)
+		> rule: Lt -> [133][Pwl1]< Pwl1 Lt @ >
+			+ Field(PwlFeature::one)
+
+[133][Pwl1]< Pwl1 Lt @ >
+[RULE: 25][CLAUSE: 1]
+	ending -> [131][Pwl1] END [ENDING]
+		- EndObject()
+	leftrec -> [132][Pwl1]< Pwl1 @ Lt >
+		- EndObject()
+		- LriStore()
+		- BeginObject(PwlFeature)
+		- LriFetch()
+		+ Field(PwlFeature::prev)
+
+[134][Pwl1]<< !Pwl1_P @ >>
+[RULE: 25][CLAUSE: 0]
+	ending -> [131][Pwl1] END [ENDING]
+		- EndObject()
+	leftrec -> [132][Pwl1]< Pwl1 @ Lt >
+		- EndObject()
+		- LriStore()
+		- BeginObject(PwlFeature)
+		- LriFetch()
+		+ Field(PwlFeature::prev)
+
+[135][Pwl2_P] BEGIN 
+[RULE: 26][CLAUSE: -1]
+	token: "<" -> [5][Lt]< "<" @ >
+		- BeginObject(PwlFeature)
+		- BeginObject(Lt)
+		> rule: Lt -> [137][Pwl2_P]< Lt @ >
+			+ Field(PwlFeature::two)
+
+[136][Pwl2_P] END [ENDING]
+[RULE: 26][CLAUSE: -1]
+
+[137][Pwl2_P]< Lt @ >
+[RULE: 26][CLAUSE: 0]
+	ending -> [136][Pwl2_P] END [ENDING]
+		- EndObject()
+	leftrec -> [138][Pwl2_P]< Pwl2_P @ Lt >
+		- EndObject()
+		- LriStore()
+		- BeginObject(PwlFeature)
+		- LriFetch()
+		+ Field(PwlFeature::prev)
+
+[138][Pwl2_P]< Pwl2_P @ Lt >
+[RULE: 26][CLAUSE: 1]
+	token: "<" -> [5][Lt]< "<" @ >
+		- BeginObject(Lt)
+		> rule: Lt -> [139][Pwl2_P]< Pwl2_P Lt @ >
+			+ Field(PwlFeature::two)
+
+[139][Pwl2_P]< Pwl2_P Lt @ >
+[RULE: 26][CLAUSE: 1]
+	ending -> [136][Pwl2_P] END [ENDING]
+		- EndObject()
+	leftrec -> [138][Pwl2_P]< Pwl2_P @ Lt >
+		- EndObject()
+		- LriStore()
+		- BeginObject(PwlFeature)
+		- LriFetch()
+		+ Field(PwlFeature::prev)
+
+[140][Pwl2] BEGIN 
+[RULE: 27][CLAUSE: -1]
+	token: "+" -> [2][Plus]< "+" @ >
+		- DelayFieldAssignment()
+		- BeginObject(Plus)
+		> rule: Plus -> [142][Pwl2]<< { Plus @ } !Pwl2_P >>
+			+ Field(PwlFeature::prefix)
+	token: "<" -> [5][Lt]< "<" @ >
+		- DelayFieldAssignment()
+		- BeginObject(PwlFeature)
+		- BeginObject(Lt)
+		> rule: Pwl2_P -> [143][Pwl2]<< { Plus } !Pwl2_P @ >>
+			+ ReopenObject()
+		> rule: Lt -> [137][Pwl2_P]< Lt @ >
+			+ Field(PwlFeature::two)
+
+[141][Pwl2] END [ENDING]
+[RULE: 27][CLAUSE: -1]
+
+[142][Pwl2]<< { Plus @ } !Pwl2_P >>
+[RULE: 27][CLAUSE: 0]
+	token: "+" -> [2][Plus]< "+" @ >
+		- BeginObject(Plus)
+		> rule: Plus -> [142][Pwl2]<< { Plus @ } !Pwl2_P >>
+			+ Field(PwlFeature::prefix)
+	token: "<" -> [5][Lt]< "<" @ >
+		- BeginObject(PwlFeature)
+		- BeginObject(Lt)
+		> rule: Pwl2_P -> [143][Pwl2]<< { Plus } !Pwl2_P @ >>
+			+ ReopenObject()
+		> rule: Lt -> [137][Pwl2_P]< Lt @ >
+			+ Field(PwlFeature::two)
+
+[143][Pwl2]<< { Plus } !Pwl2_P @ >>
+[RULE: 27][CLAUSE: 0]
+	ending -> [141][Pwl2] END [ENDING]
+		- EndObject()
+
+[144][FaPrefix] BEGIN 
+[RULE: 28][CLAUSE: -1]
+	token: ID="b" -> [146][FaPrefix]ID @
+
+[145][FaPrefix] END [ENDING]
+[RULE: 28][CLAUSE: -1]
+
+[146][FaPrefix]ID @
+[RULE: 28][CLAUSE: 0]
+	ending -> [145][FaPrefix] END [ENDING]
+		- EnumItem(1)
+		- Field(FaFeature::fa)
+
+[147][Fa] BEGIN 
+[RULE: 29][CLAUSE: -1]
+	token: ID="b" -> [146][FaPrefix]ID @
+		- BeginObject(FaFeature)
+		> rule: FaPrefix -> [149][Fa]< [ FaPrefix @ ] ID >
+	token: ID="a" -> [150][Fa]< [ FaPrefix ] ID @ >
+		- BeginObject(FaFeature)
+
+[148][Fa] END [ENDING]
+[RULE: 29][CLAUSE: -1]
+
+[149][Fa]< [ FaPrefix @ ] ID >
+[RULE: 29][CLAUSE: 0]
+	token: ID="a" -> [150][Fa]< [ FaPrefix ] ID @ >
+
+[150][Fa]< [ FaPrefix ] ID @ >
+[RULE: 29][CLAUSE: 0]
+	ending -> [148][Fa] END [ENDING]
+		- EnumItem(0)
+		- FieldIfUnassigned(FaFeature::fa)
+		- EndObject()
+
+[151][Module] BEGIN 
+[RULE: 30][CLAUSE: -1]
+	token: "optional" -> [11][EqualOptional]< "optional" @ [ Plus ] "+" { Plus } >
+		- DelayFieldAssignment()
+		- BeginObject(OptionalFeature)
+		> rule: EqualOptional -> [170][Module]<< !EqualOptional @ >>
+	token: "positive_optional" -> [20][PositiveOptional]< "positive_optional" @ +[ Plus ] "+" { Plus } >
+		- DelayFieldAssignment()
+		- BeginObject(OptionalFeature)
+		> rule: PositiveOptional -> [176][Module]<< !PositiveOptional @ >>
+	token: "negative_optional" -> [26][NegativeOptional]< "negative_optional" @ -[ Plus ] "+" { Plus } >
+		- DelayFieldAssignment()
+		- BeginObject(OptionalFeature)
+		> rule: NegativeOptional -> [171][Module]<< !NegativeOptional @ >>
+	token: "nested_optional" -> [53][NestedOptional]< "nested_optional" @ [ NO2 ] Plus { Plus } >
+		- DelayFieldAssignment()
+		- BeginObject(NestedOptionalFeature)
+		> rule: NestedOptional -> [173][Module]<< !NestedOptional @ >>
+	token: "nested_positive_optional" -> [62][NestedPositiveOptional]< "nested_positive_optional" @ +[ PositiveNO2 ] Plus { Plus } >
+		- DelayFieldAssignment()
+		- BeginObject(NestedOptionalFeature)
+		> rule: NestedPositiveOptional -> [174][Module]<< !NestedPositiveOptional @ >>
+	token: "nested_negative_optional" -> [68][NestedNegativeOptional]< "nested_negative_optional" @ -[ NegativeNO2 ] Plus { Plus } >
+		- DelayFieldAssignment()
+		- BeginObject(NestedOptionalFeature)
+		> rule: NestedNegativeOptional -> [172][Module]<< !NestedNegativeOptional @ >>
+	token: "branched_optional" -> [77][BranchedOptional]< "branched_optional" @ +[ Plus ] Plus { Plus } >
+		- DelayFieldAssignment()
+		- BeginObject(BranchedOptionalFeature)
+		> rule: BranchedOptional -> [169][Module]<< !BranchedOptional @ >>
+	token: "branched_optional" -> [78][BranchedOptional]< "branched_optional" @ -[ Plus ] Plus { Plus } >
+		- DelayFieldAssignment()
+		- BeginObject(BranchedOptionalFeature)
+		> rule: BranchedOptional -> [169][Module]<< !BranchedOptional @ >>
+	token: "branched_optional" -> [79][BranchedOptional]< "branched_optional" @ [ Plus ] Plus { Plus } >
+		- DelayFieldAssignment()
+		- BeginObject(BranchedOptionalFeature)
+		> rule: BranchedOptional -> [169][Module]<< !BranchedOptional @ >>
+	token: "entry_rule_priority" -> [163][Module]< "entry_rule_priority" @ +[ Plus ] Plus { Plus } >
+		- BeginObject(BranchedOptionalFeature)
+	token: "entry_rule_priority" -> [164][Module]< "entry_rule_priority" @ -[ Plus ] Plus { Plus } >
+		- BeginObject(BranchedOptionalFeature)
+	token: "entry_rule_priority" -> [165][Module]< "entry_rule_priority" @ [ Plus ] Plus { Plus } >
+		- BeginObject(BranchedOptionalFeature)
+	token: "prefix_before_ambiguity" -> [94][Pba]<< "prefix_before_ambiguity" @ { Lt } PbaGts !PbaBody >>
+		- DelayFieldAssignment()
+		- DelayFieldAssignment()
+		> rule: Pba -> [175][Module]<< !Pba @ >>
+	token: "prefix_with_ambiguity_1" -> [110][Pwa1]<< "prefix_with_ambiguity_1" @ Pwa1Prefix !Pwa1Body >>
+		- DelayFieldAssignment()
+		- DelayFieldAssignment()
+		> rule: Pwa1 -> [177][Module]<< !Pwa1 @ >>
+	token: "prefix_with_ambiguity_2" -> [120][Pwa2]<< "prefix_with_ambiguity_2" @ [ Plus ] Plus { Plus } !Pwa2Body >>
+		- DelayFieldAssignment()
+		- DelayFieldAssignment()
+		> rule: Pwa2 -> [178][Module]<< !Pwa2 @ >>
+	token: "prefix_with_leftrec" -> [183][Module]<< "prefix_with_leftrec" @ !Pwl1 >>
+		- DelayFieldAssignment()
+	token: "prefix_with_leftrec" -> [184][Module]<< "prefix_with_leftrec" @ !Pwl2 >>
+		- DelayFieldAssignment()
+	token: "conditional_literal" -> [153][Module]< "conditional_literal" @ ID >
+		- BeginObject(ClFeature)
+	token: "conditional_literal" -> [154][Module]< "conditional_literal" @ ID >
+		- BeginObject(ClFeature)
+	token: "field_assignment" -> [180][Module]<< "field_assignment" @ !Fa >>
+		- DelayFieldAssignment()
+
+[152][Module] END [ENDING]
+[RULE: 30][CLAUSE: -1]
+
+[153][Module]< "conditional_literal" @ ID >
+[RULE: 30][CLAUSE: 15]
+	token: ID="a" -> [156][Module]< "conditional_literal" ID @ >
+		+ Token()
+		+ Field(ClFeature::id)
+
+[154][Module]< "conditional_literal" @ ID >
+[RULE: 30][CLAUSE: 16]
+	token: ID="b" -> [155][Module]< "conditional_literal" ID @ >
+		+ Token()
+		+ Field(ClFeature::id)
+
+[155][Module]< "conditional_literal" ID @ >
+[RULE: 30][CLAUSE: 16]
+	ending -> [152][Module] END [ENDING]
+		- EndObject()
+
+[156][Module]< "conditional_literal" ID @ >
+[RULE: 30][CLAUSE: 15]
+	ending -> [152][Module] END [ENDING]
+		- EndObject()
+
+[157][Module]< "entry_rule_priority" +[ Plus @ ] Plus { Plus } >
+[RULE: 30][CLAUSE: 7]
+	token: "+" -> [2][Plus]< "+" @ >
+		- BeginObject(Plus)
+		> rule: Plus -> [158][Module]< "entry_rule_priority" +[ Plus ] Plus @ { Plus } >
+			+ DiscardValue()
+
+[158][Module]< "entry_rule_priority" +[ Plus ] Plus @ { Plus } >
+[RULE: 30][CLAUSE: 7]
+	ending -> [152][Module] END [ENDING]
+		- EnumItem(0)
+		- Field(BranchedOptionalFeature::type)
+		- EndObject()
+	token: "+" -> [2][Plus]< "+" @ >
+		- BeginObject(Plus)
+		> rule: Plus -> [159][Module]< "entry_rule_priority" +[ Plus ] Plus { Plus @ } >
+			+ Field(BranchedOptionalFeature::tails)
+
+[159][Module]< "entry_rule_priority" +[ Plus ] Plus { Plus @ } >
+[RULE: 30][CLAUSE: 7]
+	ending -> [152][Module] END [ENDING]
+		- EnumItem(0)
+		- Field(BranchedOptionalFeature::type)
+		- EndObject()
+	token: "+" -> [2][Plus]< "+" @ >
+		- BeginObject(Plus)
+		> rule: Plus -> [159][Module]< "entry_rule_priority" +[ Plus ] Plus { Plus @ } >
+			+ Field(BranchedOptionalFeature::tails)
+
+[160][Module]< "entry_rule_priority" -[ Plus @ ] Plus { Plus } >
+[RULE: 30][CLAUSE: 8]
+	token: "+" -> [2][Plus]< "+" @ >
+		- BeginObject(Plus)
+		> rule: Plus -> [161][Module]< "entry_rule_priority" -[ Plus ] Plus @ { Plus } >
+			+ DiscardValue()
+
+[161][Module]< "entry_rule_priority" -[ Plus ] Plus @ { Plus } >
+[RULE: 30][CLAUSE: 8]
+	ending -> [152][Module] END [ENDING]
+		- EnumItem(1)
+		- Field(BranchedOptionalFeature::type)
+		- EndObject()
+	token: "+" -> [2][Plus]< "+" @ >
+		- BeginObject(Plus)
+		> rule: Plus -> [162][Module]< "entry_rule_priority" -[ Plus ] Plus { Plus @ } >
+			+ Field(BranchedOptionalFeature::tails)
+
+[162][Module]< "entry_rule_priority" -[ Plus ] Plus { Plus @ } >
+[RULE: 30][CLAUSE: 8]
+	ending -> [152][Module] END [ENDING]
+		- EnumItem(1)
+		- Field(BranchedOptionalFeature::type)
+		- EndObject()
+	token: "+" -> [2][Plus]< "+" @ >
+		- BeginObject(Plus)
+		> rule: Plus -> [162][Module]< "entry_rule_priority" -[ Plus ] Plus { Plus @ } >
+			+ Field(BranchedOptionalFeature::tails)
+
+[163][Module]< "entry_rule_priority" @ +[ Plus ] Plus { Plus } >
+[RULE: 30][CLAUSE: 7]
+	token: "+" -> [2][Plus]< "+" @ >
+		- BeginObject(Plus)
+		> rule [HIGH PRIORITY]: Plus -> [157][Module]< "entry_rule_priority" +[ Plus @ ] Plus { Plus } >
+			+ Field(BranchedOptionalFeature::optional)
+	token: "+" -> [2][Plus]< "+" @ >
+		- BeginObject(Plus)
+		> rule [LOW PRIORITY]: Plus -> [158][Module]< "entry_rule_priority" +[ Plus ] Plus @ { Plus } >
+			+ DiscardValue()
+
+[164][Module]< "entry_rule_priority" @ -[ Plus ] Plus { Plus } >
+[RULE: 30][CLAUSE: 8]
+	token: "+" -> [2][Plus]< "+" @ >
+		- BeginObject(Plus)
+		> rule [LOW PRIORITY]: Plus -> [160][Module]< "entry_rule_priority" -[ Plus @ ] Plus { Plus } >
+			+ Field(BranchedOptionalFeature::optional)
+	token: "+" -> [2][Plus]< "+" @ >
+		- BeginObject(Plus)
+		> rule [HIGH PRIORITY]: Plus -> [161][Module]< "entry_rule_priority" -[ Plus ] Plus @ { Plus } >
+			+ DiscardValue()
+
+[165][Module]< "entry_rule_priority" @ [ Plus ] Plus { Plus } >
+[RULE: 30][CLAUSE: 9]
+	token: "+" -> [2][Plus]< "+" @ >
+		- BeginObject(Plus)
+		> rule: Plus -> [166][Module]< "entry_rule_priority" [ Plus @ ] Plus { Plus } >
+			+ Field(BranchedOptionalFeature::optional)
+	token: "+" -> [2][Plus]< "+" @ >
+		- BeginObject(Plus)
+		> rule: Plus -> [167][Module]< "entry_rule_priority" [ Plus ] Plus @ { Plus } >
+			+ DiscardValue()
+
+[166][Module]< "entry_rule_priority" [ Plus @ ] Plus { Plus } >
+[RULE: 30][CLAUSE: 9]
+	token: "+" -> [2][Plus]< "+" @ >
+		- BeginObject(Plus)
+		> rule: Plus -> [167][Module]< "entry_rule_priority" [ Plus ] Plus @ { Plus } >
+			+ DiscardValue()
+
+[167][Module]< "entry_rule_priority" [ Plus ] Plus @ { Plus } >
+[RULE: 30][CLAUSE: 9]
+	ending -> [152][Module] END [ENDING]
+		- EnumItem(2)
+		- Field(BranchedOptionalFeature::type)
+		- EndObject()
+	token: "+" -> [2][Plus]< "+" @ >
+		- BeginObject(Plus)
+		> rule: Plus -> [168][Module]< "entry_rule_priority" [ Plus ] Plus { Plus @ } >
+			+ Field(BranchedOptionalFeature::tails)
+
+[168][Module]< "entry_rule_priority" [ Plus ] Plus { Plus @ } >
+[RULE: 30][CLAUSE: 9]
+	ending -> [152][Module] END [ENDING]
+		- EnumItem(2)
+		- Field(BranchedOptionalFeature::type)
+		- EndObject()
+	token: "+" -> [2][Plus]< "+" @ >
+		- BeginObject(Plus)
+		> rule: Plus -> [168][Module]< "entry_rule_priority" [ Plus ] Plus { Plus @ } >
+			+ Field(BranchedOptionalFeature::tails)
+
+[169][Module]<< !BranchedOptional @ >>
+[RULE: 30][CLAUSE: 6]
+	ending -> [152][Module] END [ENDING]
+		- ReopenObject()
+		- EndObject()
+
+[170][Module]<< !EqualOptional @ >>
+[RULE: 30][CLAUSE: 0]
+	ending -> [152][Module] END [ENDING]
+		- ReopenObject()
+		- EndObject()
+
+[171][Module]<< !NegativeOptional @ >>
+[RULE: 30][CLAUSE: 2]
+	ending -> [152][Module] END [ENDING]
+		- ReopenObject()
+		- EndObject()
+
+[172][Module]<< !NestedNegativeOptional @ >>
+[RULE: 30][CLAUSE: 5]
+	ending -> [152][Module] END [ENDING]
+		- ReopenObject()
+		- EndObject()
+
+[173][Module]<< !NestedOptional @ >>
+[RULE: 30][CLAUSE: 3]
+	ending -> [152][Module] END [ENDING]
+		- ReopenObject()
+		- EndObject()
+
+[174][Module]<< !NestedPositiveOptional @ >>
+[RULE: 30][CLAUSE: 4]
+	ending -> [152][Module] END [ENDING]
+		- ReopenObject()
+		- EndObject()
+
+[175][Module]<< !Pba @ >>
+[RULE: 30][CLAUSE: 10]
+	ending -> [152][Module] END [ENDING]
+		- ReopenObject()
+		- EndObject()
+
+[176][Module]<< !PositiveOptional @ >>
+[RULE: 30][CLAUSE: 1]
+	ending -> [152][Module] END [ENDING]
+		- ReopenObject()
+		- EndObject()
+
+[177][Module]<< !Pwa1 @ >>
+[RULE: 30][CLAUSE: 11]
+	ending -> [152][Module] END [ENDING]
+		- ReopenObject()
+		- EndObject()
+
+[178][Module]<< !Pwa2 @ >>
+[RULE: 30][CLAUSE: 12]
+	ending -> [152][Module] END [ENDING]
+		- ReopenObject()
+		- EndObject()
+
+[179][Module]<< "field_assignment" !Fa @ >>
+[RULE: 30][CLAUSE: 17]
+	ending -> [152][Module] END [ENDING]
+		- EndObject()
+
+[180][Module]<< "field_assignment" @ !Fa >>
+[RULE: 30][CLAUSE: 17]
+	token: ID="b" -> [146][FaPrefix]ID @
+		- BeginObject(FaFeature)
+		> rule: Fa -> [179][Module]<< "field_assignment" !Fa @ >>
+			+ ReopenObject()
+		> rule: FaPrefix -> [149][Fa]< [ FaPrefix @ ] ID >
+	token: ID="a" -> [150][Fa]< [ FaPrefix ] ID @ >
+		- BeginObject(FaFeature)
+		> rule: Fa -> [179][Module]<< "field_assignment" !Fa @ >>
+			+ ReopenObject()
+
+[181][Module]<< "prefix_with_leftrec" !Pwl1 @ >>
+[RULE: 30][CLAUSE: 13]
+	ending -> [152][Module] END [ENDING]
+		- EndObject()
+
+[182][Module]<< "prefix_with_leftrec" !Pwl2 @ >>
+[RULE: 30][CLAUSE: 14]
+	ending -> [152][Module] END [ENDING]
+		- EndObject()
+
+[183][Module]<< "prefix_with_leftrec" @ !Pwl1 >>
+[RULE: 30][CLAUSE: 13]
+	token: "+" -> [2][Plus]< "+" @ >
+		- DelayFieldAssignment()
+		- DelayFieldAssignment()
+		- BeginObject(Plus)
+		> rule: Pwl1 -> [181][Module]<< "prefix_with_leftrec" !Pwl1 @ >>
+			+ ReopenObject()
+		> rule: Pwl1_P -> [134][Pwl1]<< !Pwl1_P @ >>
+			+ ReopenObject()
+		> rule: Plus -> [129][Pwl1_P]<< Plus @ !Pwl1_P >>
+			+ Field(PwlFeature::prefix)
+	token: "<" -> [5][Lt]< "<" @ >
+		- DelayFieldAssignment()
+		- BeginObject(PwlFeature)
+		- BeginObject(Lt)
+		> rule: Pwl1 -> [181][Module]<< "prefix_with_leftrec" !Pwl1 @ >>
+			+ ReopenObject()
+		> rule: Pwl1_P -> [134][Pwl1]<< !Pwl1_P @ >>
+			+ ReopenObject()
+		> rule: Lt -> [127][Pwl1_P]< Lt @ >
+
+[184][Module]<< "prefix_with_leftrec" @ !Pwl2 >>
+[RULE: 30][CLAUSE: 14]
+	token: "+" -> [2][Plus]< "+" @ >
+		- DelayFieldAssignment()
+		- BeginObject(Plus)
+		> rule: Pwl2 -> [182][Module]<< "prefix_with_leftrec" !Pwl2 @ >>
+			+ ReopenObject()
+		> rule: Plus -> [142][Pwl2]<< { Plus @ } !Pwl2_P >>
+			+ Field(PwlFeature::prefix)
+	token: "<" -> [5][Lt]< "<" @ >
+		- DelayFieldAssignment()
+		- BeginObject(PwlFeature)
+		- BeginObject(Lt)
+		> rule: Pwl2 -> [182][Module]<< "prefix_with_leftrec" !Pwl2 @ >>
+			+ ReopenObject()
+		> rule: Pwl2_P -> [143][Pwl2]<< { Plus } !Pwl2_P @ >>
+			+ ReopenObject()
+		> rule: Lt -> [137][Pwl2_P]< Lt @ >
+			+ Field(PwlFeature::two)
+
