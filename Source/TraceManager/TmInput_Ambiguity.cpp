@@ -205,23 +205,49 @@ TryMergeSurvivingTraces
 							// merge two traces
 							if (trace == realTrace)
 							{
+								// if trace is an ordinary trace
 								if (candidate == realCandidate)
 								{
+									// if candidate is an ordinary trace
+									// turn trace into a merge trace
+									auto formerTrace = MergeTwoEndingInputTrace(candidate, trace);
+									CHECK_ERROR(formerTrace != nullptr, ERROR_MESSAGE_PREFIX L"Internal error: formerTrace should not be null.");
+									realTrace = formerTrace;
 								}
 								else
 								{
+									// if candidate is a merge trace
+									CHECK_FAIL(L"Not Implemented!");
 								}
 							}
 							else
 							{
+								// if trace is a merge trace
 								if (candidate == realCandidate)
 								{
+									// if candidate is an ordinary trace
+									// merge candidate into trace
+									auto formerTrace = MergeTwoEndingInputTrace(candidate, trace);
+									CHECK_ERROR(formerTrace == nullptr, ERROR_MESSAGE_PREFIX L"Internal error: formerTrace should be null.");
 								}
 								else
 								{
+									// if candidate is an ordinary trace
+									// give all predecessors of candidate to trace
+									auto traceTail = GetTrace(trace->predecessors.last);
+									auto candidateHead = GetTrace(candidate->predecessors.first);
+
+									traceTail->predecessors.siblingNext = candidateHead;
+									candidateHead->predecessors.siblingPrev = traceTail;
+
+									trace->predecessors.last = candidate->predecessors.last;
+									candidate->predecessors.first = nullref;
+									candidate->predecessors.last = nullref;
 								}
 							}
-							CHECK_FAIL(L"Fuck");
+
+							auto& data = const_cast<EndingOrMergeTraceData&>(endingOrMergeTraces[candidate]);
+							unsurviveTrace(candidate, data);
 						}
 					}
 				}
