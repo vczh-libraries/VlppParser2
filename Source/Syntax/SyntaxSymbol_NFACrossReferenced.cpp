@@ -349,6 +349,18 @@ SyntaxSymbolManager::FixLeftRecursionInjectEdge
 					}
 				};
 
+				for (auto [placeholderIndex, endingEdgeAfterInject] : acceptableEndingInputs)
+				{
+					auto newEdge = Ptr(new EdgeSymbol(injectEdge->From(), endingEdgeAfterInject->To()));
+					edges.Add(newEdge);
+					newEdge->input = endingEdgeAfterInject->input;
+					newEdge->importancy = endingEdgeAfterInject->importancy;
+
+					prepareLriEdgeInstructions(placeholderIndex, 0, newEdge->insBeforeInput);
+					CopyFrom(newEdge->insBeforeInput, endingEdgeAfterInject->insBeforeInput, true);
+					CopyFrom(newEdge->insBeforeInput, endingEdgeAfterInject->insAfterInput, true);
+				}
+
 				// TODO: (enumerable) foreach on group
 				for (auto [input, inputIndex] : indexed(acceptableInputs.Keys()))
 				{
@@ -426,14 +438,12 @@ SyntaxSymbolManager::FixLeftRecursionInjectEdge
 					// convert reminaings
 					for (auto [placeholderIndex, lrEdge, tokenEdge] : placeholderRecords)
 					{
-						auto& returnEdges = returnEdgesArray[placeholderIndex];
-
 						auto newEdge = Ptr(new EdgeSymbol(injectEdge->From(), tokenEdge->To()));
 						edges.Add(newEdge);
 						newEdge->input = tokenEdge->input;
 						newEdge->importancy = tokenEdge->importancy;
 
-						CopyFrom(newEdge->returnEdges, From(returnEdges).Take(returnEdgeCount), true);
+						CopyFrom(newEdge->returnEdges, From(returnEdgesArray[placeholderIndex]).Take(returnEdgeCount), true);
 						CopyFrom(newEdge->returnEdges, tokenEdge->returnEdges, true);
 						prepareLriEdgeInstructions(placeholderIndex, returnEdgeCount, newEdge->insBeforeInput);
 						if (lrEdge)
@@ -447,10 +457,6 @@ SyntaxSymbolManager::FixLeftRecursionInjectEdge
 						CopyFrom(newEdge->insBeforeInput, tokenEdge->insBeforeInput, true);
 						CopyFrom(newEdge->insAfterInput, tokenEdge->insAfterInput, true);
 					}
-				}
-
-				for (auto [placeholderIndex, endingEdgeAfterInject] : acceptableEndingInputs)
-				{
 				}
 
 				// report an error if nothing is created
