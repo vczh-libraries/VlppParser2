@@ -183,6 +183,65 @@ SyntaxSymbolManager::FixLeftRecursionInjectEdge
 							{
 							case EdgeInputType::Ending:
 								endingEdge = outEdge;
+								if (returnEdge == injectEdge)
+								{
+									// all possible Ending input are comsumed
+									// an ending edge should be created if
+									//   the injection edge cannot be skipped
+									//   the injection edge to state has Ending input
+									// an optional injection can be skipped
+									// a non-optional injection can be skipped by surrounding syntax
+
+									if (!From(injectEdge->To()->OutEdges())
+										.Where([](auto edge) { return edge->input.type == EdgeInputType::Ending; })
+										.IsEmpty())
+									{
+										// find if there is a state that looks like:
+										//      +-------------------(ending)---------------------+
+										//      |                                                |
+										//   S -+                                                +->E
+										//      |                                                |
+										//      +{ -(leftrec)-> X} -(lri:ThisEdge)-> T -(ending)-+
+
+										bool isSkippable = false;
+										List<StateSymbol*> visiting;
+										SortedList<StateSymbol*> visited;
+										visiting.Add(injectEdge->From());
+
+										// TODO: (enumerable) visiting/visited
+										for (vint i = 0; i < visiting.Count(); i++)
+										{
+											auto visitingState = visiting[i];
+											if (visited.Contains(visitingState)) continue;
+											visited.Add(visitingState);
+
+											for (auto siblingEdge : visitingState->OutEdges())
+											{
+												if (siblingEdge->input.type == EdgeInputType::Ending)
+												{
+													isSkippable = true;
+												}
+											}
+
+											for (auto commingEdge : visitingState->InEdges())
+											{
+												if (commingEdge->input.type == EdgeInputType::LeftRec)
+												{
+													visiting.Add(commingEdge->From());
+												}
+											}
+										}
+
+										if (!isSkippable)
+										{
+											// if there is no such state
+											unittest::UnitTest::PrintMessage(L"Non skippable lr-inject edge found which should skip", unittest::UnitTest::MessageKind::Error);
+											unittest::UnitTest::PrintMessage(L"  RULE: " + injectEdge->From()->Rule()->Name(), unittest::UnitTest::MessageKind::Error);
+											unittest::UnitTest::PrintMessage(L"  FROM: " + injectEdge->From()->label, unittest::UnitTest::MessageKind::Error);
+											unittest::UnitTest::PrintMessage(L"  TO:   " + injectEdge->To()->label, unittest::UnitTest::MessageKind::Error);
+										}
+									}
+								}
 								break;
 							// find if there is any LeftRec from this state
 							case EdgeInputType::LeftRec:
