@@ -25,15 +25,19 @@ _AdvancedTypeMember
   ::= _QualifiedName:argument "::" as AdvancedType {kind = Member}
   ;
 
+_DeclarationKeyword
+  ::= "extern":keyword [STRING] as DeclaratorKeyword
+  ::= "friend":keyword as DeclaratorKeyword
+  ;
+
 _DeclaratorKeyword
+  ::= !_DeclarationKeyword
   ::= "constexpr":keyword as DeclaratorKeyword
-  ::= "extern":keyword as DeclaratorKeyword
   ::= "static":keyword as DeclaratorKeyword
   ::= "mutable":keyword as DeclaratorKeyword
   ::= "thread_local":keyword as DeclaratorKeyword
   ::= "virtual":keyword as DeclaratorKeyword
   ::= "explicit":keyword as DeclaratorKeyword
-  ::= "friend":keyword as DeclaratorKeyword
   ::= "abstract":keyword as DeclaratorKeyword
   ::= "inline":keyword as DeclaratorKeyword
   ::= "__inline":keyword as DeclaratorKeyword

@@ -2,28 +2,33 @@
 // Declarations
 //////////////////////////////////////////////////////////////////
 
-_DeclSharedWithoutSemicolon
+_DeclSharedWithoutSemicolonAcceptKeyword
   ::= !_StaticAssertDecl
   ::= !_TypedefDecl
   ::= !_UsingNsDecl
   ::= !_UsingValueDecl
   ::= !_UsingTypeDecl
-  ::= !_FriendTypeDecl
   ::= !_EnumDecl
   ::= !_EnumForwardDecl
   ::= !_ClassDecl
   ::= !_ClassForwardDecl
   ;
 
+_DeclSharedWithoutSemicolon
+  ::= {_DeclarationKeyword:keywords} !_DeclSharedWithoutSemicolonAcceptKeyword
+  ::= !_FriendTypeDecl
+  ;
+
 _DeclNeedSemicolon
   ::= !_DeclSharedWithoutSemicolon
+  ::= !_FriendTypeDecl
   ::= !_MultiVarsOrFuncForwardDecl
-  ::= !_ExternDeclNeedSemicolon
   ;
 
 _DeclRejectSemicolon
   ::= !_DeclSharedWithoutSemicolon ";"
-  ::= !_MultiVarsOrFuncDecl
+  ::= !_FriendTypeDecl ";"
   ::= !_ExternDeclRejectSemicolon
+  ::= !_MultiVarsOrFuncDecl
   ::= !_NsDecl
   ;
