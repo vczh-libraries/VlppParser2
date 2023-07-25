@@ -1762,6 +1762,34 @@ namespace cpp_parser::json_visitor
 		Print(node->decl.Obj());
 		EndField();
 	}
+	void AstVisitor::PrintFields(CppUsingNamespaceDeclaration* node)
+	{
+		BeginField(L"names");
+		BeginArray();
+		for (auto&& listItem : node->names)
+		{
+			BeginArrayItem();
+			Print(listItem.Obj());
+			EndArrayItem();
+		}
+		EndArray();
+		EndField();
+	}
+	void AstVisitor::PrintFields(CppUsingTypeDeclaration* node)
+	{
+		BeginField(L"name");
+		WriteToken(node->name);
+		EndField();
+		BeginField(L"type");
+		Print(node->type.Obj());
+		EndField();
+	}
+	void AstVisitor::PrintFields(CppUsingValueDeclaration* node)
+	{
+		BeginField(L"name");
+		Print(node->name.Obj());
+		EndField();
+	}
 	void AstVisitor::PrintFields(CppVarBraceInit* node)
 	{
 		BeginField(L"arguments");
@@ -2019,6 +2047,51 @@ namespace cpp_parser::json_visitor
 		PrintFields(static_cast<CppTypeOrExprOrOthers*>(node));
 		PrintFields(static_cast<CppDeclaration*>(node));
 		PrintFields(static_cast<CppNamespaceDeclaration*>(node));
+		EndObject();
+	}
+
+	void AstVisitor::Visit(CppUsingNamespaceDeclaration* node)
+	{
+		if (!node)
+		{
+			WriteNull();
+			return;
+		}
+		BeginObject();
+		WriteType(L"UsingNamespaceDeclaration", node);
+		PrintFields(static_cast<CppTypeOrExprOrOthers*>(node));
+		PrintFields(static_cast<CppDeclaration*>(node));
+		PrintFields(static_cast<CppUsingNamespaceDeclaration*>(node));
+		EndObject();
+	}
+
+	void AstVisitor::Visit(CppUsingValueDeclaration* node)
+	{
+		if (!node)
+		{
+			WriteNull();
+			return;
+		}
+		BeginObject();
+		WriteType(L"UsingValueDeclaration", node);
+		PrintFields(static_cast<CppTypeOrExprOrOthers*>(node));
+		PrintFields(static_cast<CppDeclaration*>(node));
+		PrintFields(static_cast<CppUsingValueDeclaration*>(node));
+		EndObject();
+	}
+
+	void AstVisitor::Visit(CppUsingTypeDeclaration* node)
+	{
+		if (!node)
+		{
+			WriteNull();
+			return;
+		}
+		BeginObject();
+		WriteType(L"UsingTypeDeclaration", node);
+		PrintFields(static_cast<CppTypeOrExprOrOthers*>(node));
+		PrintFields(static_cast<CppDeclaration*>(node));
+		PrintFields(static_cast<CppUsingTypeDeclaration*>(node));
 		EndObject();
 	}
 

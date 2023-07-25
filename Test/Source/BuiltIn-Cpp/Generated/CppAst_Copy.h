@@ -106,6 +106,9 @@ namespace cpp_parser::copy_visitor
 		void CopyFields(CppTypeOrExprOrOthersToResolve* from, CppTypeOrExprOrOthersToResolve* to);
 		void CopyFields(CppTypeOrExprToResolve* from, CppTypeOrExprToResolve* to);
 		void CopyFields(CppTypedefDeclaration* from, CppTypedefDeclaration* to);
+		void CopyFields(CppUsingNamespaceDeclaration* from, CppUsingNamespaceDeclaration* to);
+		void CopyFields(CppUsingTypeDeclaration* from, CppUsingTypeDeclaration* to);
+		void CopyFields(CppUsingValueDeclaration* from, CppUsingValueDeclaration* to);
 		void CopyFields(CppVarBraceInit* from, CppVarBraceInit* to);
 		void CopyFields(CppVarInit* from, CppVarInit* to);
 		void CopyFields(CppVarParanthesisInit* from, CppVarParanthesisInit* to);
@@ -152,6 +155,9 @@ namespace cpp_parser::copy_visitor
 		void Visit(CppTypedefDeclaration* node) override;
 		void Visit(CppExternDeclaration* node) override;
 		void Visit(CppNamespaceDeclaration* node) override;
+		void Visit(CppUsingNamespaceDeclaration* node) override;
+		void Visit(CppUsingValueDeclaration* node) override;
+		void Visit(CppUsingTypeDeclaration* node) override;
 
 		void Visit(CppTypeOrExprToResolve* node) override;
 		void Visit(CppExprOnly* node) override;
@@ -300,6 +306,9 @@ namespace cpp_parser::copy_visitor
 		vl::Ptr<CppTypeOrExprOrOthersToResolve> CopyNode(CppTypeOrExprOrOthersToResolve* node);
 		vl::Ptr<CppTypeOrExprToResolve> CopyNode(CppTypeOrExprToResolve* node);
 		vl::Ptr<CppTypedefDeclaration> CopyNode(CppTypedefDeclaration* node);
+		vl::Ptr<CppUsingNamespaceDeclaration> CopyNode(CppUsingNamespaceDeclaration* node);
+		vl::Ptr<CppUsingTypeDeclaration> CopyNode(CppUsingTypeDeclaration* node);
+		vl::Ptr<CppUsingValueDeclaration> CopyNode(CppUsingValueDeclaration* node);
 		vl::Ptr<CppVarBraceInit> CopyNode(CppVarBraceInit* node);
 		vl::Ptr<CppVarParanthesisInit> CopyNode(CppVarParanthesisInit* node);
 		vl::Ptr<CppVarStatInit> CopyNode(CppVarStatInit* node);

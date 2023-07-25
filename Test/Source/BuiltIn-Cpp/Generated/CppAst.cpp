@@ -232,6 +232,21 @@ Visitor Pattern Implementation
 		visitor->Visit(this);
 	}
 
+	void CppUsingNamespaceDeclaration::Accept(CppDeclaration::IVisitor* visitor)
+	{
+		visitor->Visit(this);
+	}
+
+	void CppUsingValueDeclaration::Accept(CppDeclaration::IVisitor* visitor)
+	{
+		visitor->Visit(this);
+	}
+
+	void CppUsingTypeDeclaration::Accept(CppDeclaration::IVisitor* visitor)
+	{
+		visitor->Visit(this);
+	}
+
 	void CppEmptyStat::Accept(CppStatement::IVisitor* visitor)
 	{
 		visitor->Visit(this);
@@ -443,6 +458,9 @@ namespace vl::reflection::description
 	IMPL_TYPE_INFO_RENAME(cpp_parser::CppExternDeclaration, cpp_parser::CppExternDeclaration)
 	IMPL_TYPE_INFO_RENAME(cpp_parser::CppNamespaceName, cpp_parser::CppNamespaceName)
 	IMPL_TYPE_INFO_RENAME(cpp_parser::CppNamespaceDeclaration, cpp_parser::CppNamespaceDeclaration)
+	IMPL_TYPE_INFO_RENAME(cpp_parser::CppUsingNamespaceDeclaration, cpp_parser::CppUsingNamespaceDeclaration)
+	IMPL_TYPE_INFO_RENAME(cpp_parser::CppUsingValueDeclaration, cpp_parser::CppUsingValueDeclaration)
+	IMPL_TYPE_INFO_RENAME(cpp_parser::CppUsingTypeDeclaration, cpp_parser::CppUsingTypeDeclaration)
 	IMPL_TYPE_INFO_RENAME(cpp_parser::CppStatement, cpp_parser::CppStatement)
 	IMPL_TYPE_INFO_RENAME(cpp_parser::CppStatement::IVisitor, cpp_parser::CppStatement::IVisitor)
 	IMPL_TYPE_INFO_RENAME(cpp_parser::CppEmptyStat, cpp_parser::CppEmptyStat)
@@ -1212,6 +1230,31 @@ namespace vl::reflection::description
 		CLASS_MEMBER_FIELD(decls)
 	END_CLASS_MEMBER(cpp_parser::CppNamespaceDeclaration)
 
+	BEGIN_CLASS_MEMBER(cpp_parser::CppUsingNamespaceDeclaration)
+		CLASS_MEMBER_BASE(cpp_parser::CppDeclaration)
+
+		CLASS_MEMBER_CONSTRUCTOR(vl::Ptr<cpp_parser::CppUsingNamespaceDeclaration>(), NO_PARAMETER)
+
+		CLASS_MEMBER_FIELD(names)
+	END_CLASS_MEMBER(cpp_parser::CppUsingNamespaceDeclaration)
+
+	BEGIN_CLASS_MEMBER(cpp_parser::CppUsingValueDeclaration)
+		CLASS_MEMBER_BASE(cpp_parser::CppDeclaration)
+
+		CLASS_MEMBER_CONSTRUCTOR(vl::Ptr<cpp_parser::CppUsingValueDeclaration>(), NO_PARAMETER)
+
+		CLASS_MEMBER_FIELD(name)
+	END_CLASS_MEMBER(cpp_parser::CppUsingValueDeclaration)
+
+	BEGIN_CLASS_MEMBER(cpp_parser::CppUsingTypeDeclaration)
+		CLASS_MEMBER_BASE(cpp_parser::CppDeclaration)
+
+		CLASS_MEMBER_CONSTRUCTOR(vl::Ptr<cpp_parser::CppUsingTypeDeclaration>(), NO_PARAMETER)
+
+		CLASS_MEMBER_FIELD(name)
+		CLASS_MEMBER_FIELD(type)
+	END_CLASS_MEMBER(cpp_parser::CppUsingTypeDeclaration)
+
 	BEGIN_CLASS_MEMBER(cpp_parser::CppStatement)
 		CLASS_MEMBER_BASE(vl::glr::ParsingAstBase)
 
@@ -1459,6 +1502,9 @@ namespace vl::reflection::description
 		CLASS_MEMBER_METHOD_OVERLOAD(Visit, {L"node"}, void(cpp_parser::CppDeclaration::IVisitor::*)(cpp_parser::CppTypedefDeclaration* node))
 		CLASS_MEMBER_METHOD_OVERLOAD(Visit, {L"node"}, void(cpp_parser::CppDeclaration::IVisitor::*)(cpp_parser::CppExternDeclaration* node))
 		CLASS_MEMBER_METHOD_OVERLOAD(Visit, {L"node"}, void(cpp_parser::CppDeclaration::IVisitor::*)(cpp_parser::CppNamespaceDeclaration* node))
+		CLASS_MEMBER_METHOD_OVERLOAD(Visit, {L"node"}, void(cpp_parser::CppDeclaration::IVisitor::*)(cpp_parser::CppUsingNamespaceDeclaration* node))
+		CLASS_MEMBER_METHOD_OVERLOAD(Visit, {L"node"}, void(cpp_parser::CppDeclaration::IVisitor::*)(cpp_parser::CppUsingValueDeclaration* node))
+		CLASS_MEMBER_METHOD_OVERLOAD(Visit, {L"node"}, void(cpp_parser::CppDeclaration::IVisitor::*)(cpp_parser::CppUsingTypeDeclaration* node))
 	END_INTERFACE_MEMBER(cpp_parser::CppDeclaration)
 
 	BEGIN_INTERFACE_MEMBER(cpp_parser::CppTypeOrExpr::IVisitor)
@@ -1633,6 +1679,9 @@ namespace vl::reflection::description
 			ADD_TYPE_INFO(cpp_parser::CppExternDeclaration)
 			ADD_TYPE_INFO(cpp_parser::CppNamespaceName)
 			ADD_TYPE_INFO(cpp_parser::CppNamespaceDeclaration)
+			ADD_TYPE_INFO(cpp_parser::CppUsingNamespaceDeclaration)
+			ADD_TYPE_INFO(cpp_parser::CppUsingValueDeclaration)
+			ADD_TYPE_INFO(cpp_parser::CppUsingTypeDeclaration)
 			ADD_TYPE_INFO(cpp_parser::CppStatement)
 			ADD_TYPE_INFO(cpp_parser::CppStatement::IVisitor)
 			ADD_TYPE_INFO(cpp_parser::CppEmptyStat)

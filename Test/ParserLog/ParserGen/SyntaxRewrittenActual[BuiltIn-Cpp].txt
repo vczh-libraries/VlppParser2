@@ -969,6 +969,18 @@ _NsDecl : NamespaceDeclaration
   ::= "namespace" {_NsName:names ; "::"} "{" {_DeclWithSemicolon:decls} "}" as NamespaceDeclaration
   ;
 
+_UsingNsDecl : UsingNamespaceDeclaration
+  ::= "using" "namespace" _NsName:names {"::" _NsName:names} as UsingNamespaceDeclaration
+  ;
+
+_UsingValueDecl : UsingValueDeclaration
+  ::= "using" _QualifiedName:name as UsingValueDeclaration
+  ;
+
+_UsingTypeDecl : UsingTypeDeclaration
+  ::= "using" ID:name "=" _Type:type as UsingTypeDeclaration
+  ;
+
 _EnumItem : EnumItem
   ::= ID:name ["=" _Expr:expr] as EnumItem
   ;
@@ -990,6 +1002,9 @@ _EnumForwardDecl : EnumDeclaration
 _DeclWithoutVarsFuncSemicolon : Declaration
   ::= !_StaticAssertDecl
   ::= !_TypedefDecl
+  ::= !_UsingNsDecl
+  ::= !_UsingValueDecl
+  ::= !_UsingTypeDecl
   ::= !_EnumDecl
   ::= !_EnumForwardDecl
   ::= !_ClassDecl

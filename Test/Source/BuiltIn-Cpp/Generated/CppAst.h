@@ -93,6 +93,9 @@ namespace cpp_parser
 	class CppTypeOrExprOrOthersToResolve;
 	class CppTypeOrExprToResolve;
 	class CppTypedefDeclaration;
+	class CppUsingNamespaceDeclaration;
+	class CppUsingTypeDeclaration;
+	class CppUsingValueDeclaration;
 	class CppVarBraceInit;
 	class CppVarInit;
 	class CppVarParanthesisInit;
@@ -323,6 +326,9 @@ namespace cpp_parser
 			virtual void Visit(CppTypedefDeclaration* node) = 0;
 			virtual void Visit(CppExternDeclaration* node) = 0;
 			virtual void Visit(CppNamespaceDeclaration* node) = 0;
+			virtual void Visit(CppUsingNamespaceDeclaration* node) = 0;
+			virtual void Visit(CppUsingValueDeclaration* node) = 0;
+			virtual void Visit(CppUsingTypeDeclaration* node) = 0;
 		};
 
 		virtual void Accept(CppDeclaration::IVisitor* visitor) = 0;
@@ -926,6 +932,31 @@ namespace cpp_parser
 		void Accept(CppDeclaration::IVisitor* visitor) override;
 	};
 
+	class CppUsingNamespaceDeclaration : public CppDeclaration, vl::reflection::Description<CppUsingNamespaceDeclaration>
+	{
+	public:
+		vl::collections::List<vl::Ptr<CppNamespaceName>> names;
+
+		void Accept(CppDeclaration::IVisitor* visitor) override;
+	};
+
+	class CppUsingValueDeclaration : public CppDeclaration, vl::reflection::Description<CppUsingValueDeclaration>
+	{
+	public:
+		vl::Ptr<CppQualifiedName> name;
+
+		void Accept(CppDeclaration::IVisitor* visitor) override;
+	};
+
+	class CppUsingTypeDeclaration : public CppDeclaration, vl::reflection::Description<CppUsingTypeDeclaration>
+	{
+	public:
+		vl::glr::ParsingToken name;
+		vl::Ptr<CppTypeOrExpr> type;
+
+		void Accept(CppDeclaration::IVisitor* visitor) override;
+	};
+
 	class CppStatement abstract : public vl::glr::ParsingAstBase, vl::reflection::Description<CppStatement>
 	{
 	public:
@@ -1279,6 +1310,9 @@ namespace vl::reflection::description
 	DECL_TYPE_INFO(cpp_parser::CppExternDeclaration)
 	DECL_TYPE_INFO(cpp_parser::CppNamespaceName)
 	DECL_TYPE_INFO(cpp_parser::CppNamespaceDeclaration)
+	DECL_TYPE_INFO(cpp_parser::CppUsingNamespaceDeclaration)
+	DECL_TYPE_INFO(cpp_parser::CppUsingValueDeclaration)
+	DECL_TYPE_INFO(cpp_parser::CppUsingTypeDeclaration)
 	DECL_TYPE_INFO(cpp_parser::CppStatement)
 	DECL_TYPE_INFO(cpp_parser::CppStatement::IVisitor)
 	DECL_TYPE_INFO(cpp_parser::CppEmptyStat)
@@ -1372,6 +1406,21 @@ namespace vl::reflection::description
 		}
 
 		void Visit(cpp_parser::CppNamespaceDeclaration* node) override
+		{
+			INVOKE_INTERFACE_PROXY(Visit, node);
+		}
+
+		void Visit(cpp_parser::CppUsingNamespaceDeclaration* node) override
+		{
+			INVOKE_INTERFACE_PROXY(Visit, node);
+		}
+
+		void Visit(cpp_parser::CppUsingValueDeclaration* node) override
+		{
+			INVOKE_INTERFACE_PROXY(Visit, node);
+		}
+
+		void Visit(cpp_parser::CppUsingTypeDeclaration* node) override
 		{
 			INVOKE_INTERFACE_PROXY(Visit, node);
 		}

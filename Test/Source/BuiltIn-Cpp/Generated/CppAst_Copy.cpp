@@ -630,6 +630,28 @@ namespace cpp_parser::copy_visitor
 		to->decl = CopyNode(from->decl.Obj());
 	}
 
+	void AstVisitor::CopyFields(CppUsingNamespaceDeclaration* from, CppUsingNamespaceDeclaration* to)
+	{
+		CopyFields(static_cast<CppDeclaration*>(from), static_cast<CppDeclaration*>(to));
+		for (auto&& listItem : from->names)
+		{
+			to->names.Add(CopyNode(listItem.Obj()));
+		}
+	}
+
+	void AstVisitor::CopyFields(CppUsingTypeDeclaration* from, CppUsingTypeDeclaration* to)
+	{
+		CopyFields(static_cast<CppDeclaration*>(from), static_cast<CppDeclaration*>(to));
+		to->name = from->name;
+		to->type = CopyNode(from->type.Obj());
+	}
+
+	void AstVisitor::CopyFields(CppUsingValueDeclaration* from, CppUsingValueDeclaration* to)
+	{
+		CopyFields(static_cast<CppDeclaration*>(from), static_cast<CppDeclaration*>(to));
+		to->name = CopyNode(from->name.Obj());
+	}
+
 	void AstVisitor::CopyFields(CppVarBraceInit* from, CppVarBraceInit* to)
 	{
 		CopyFields(static_cast<CppVarInit*>(from), static_cast<CppVarInit*>(to));
@@ -918,6 +940,27 @@ namespace cpp_parser::copy_visitor
 	void AstVisitor::Visit(CppNamespaceDeclaration* node)
 	{
 		auto newNode = vl::Ptr(new CppNamespaceDeclaration);
+		CopyFields(node, newNode.Obj());
+		this->result = newNode;
+	}
+
+	void AstVisitor::Visit(CppUsingNamespaceDeclaration* node)
+	{
+		auto newNode = vl::Ptr(new CppUsingNamespaceDeclaration);
+		CopyFields(node, newNode.Obj());
+		this->result = newNode;
+	}
+
+	void AstVisitor::Visit(CppUsingValueDeclaration* node)
+	{
+		auto newNode = vl::Ptr(new CppUsingValueDeclaration);
+		CopyFields(node, newNode.Obj());
+		this->result = newNode;
+	}
+
+	void AstVisitor::Visit(CppUsingTypeDeclaration* node)
+	{
+		auto newNode = vl::Ptr(new CppUsingTypeDeclaration);
 		CopyFields(node, newNode.Obj());
 		this->result = newNode;
 	}
@@ -1848,6 +1891,24 @@ namespace cpp_parser::copy_visitor
 	{
 		if (!node) return nullptr;
 		return CopyNode(static_cast<CppTypeOrExprOrOthers*>(node)).Cast<CppTypedefDeclaration>();
+	}
+
+	vl::Ptr<CppUsingNamespaceDeclaration> AstVisitor::CopyNode(CppUsingNamespaceDeclaration* node)
+	{
+		if (!node) return nullptr;
+		return CopyNode(static_cast<CppTypeOrExprOrOthers*>(node)).Cast<CppUsingNamespaceDeclaration>();
+	}
+
+	vl::Ptr<CppUsingTypeDeclaration> AstVisitor::CopyNode(CppUsingTypeDeclaration* node)
+	{
+		if (!node) return nullptr;
+		return CopyNode(static_cast<CppTypeOrExprOrOthers*>(node)).Cast<CppUsingTypeDeclaration>();
+	}
+
+	vl::Ptr<CppUsingValueDeclaration> AstVisitor::CopyNode(CppUsingValueDeclaration* node)
+	{
+		if (!node) return nullptr;
+		return CopyNode(static_cast<CppTypeOrExprOrOthers*>(node)).Cast<CppUsingValueDeclaration>();
 	}
 
 	vl::Ptr<CppVarBraceInit> AstVisitor::CopyNode(CppVarBraceInit* node)

@@ -108,6 +108,9 @@ namespace cpp_parser::traverse_visitor
 		virtual void Traverse(CppTypeOrExprOrOthersToResolve* node);
 		virtual void Traverse(CppTypeOrExprToResolve* node);
 		virtual void Traverse(CppTypedefDeclaration* node);
+		virtual void Traverse(CppUsingNamespaceDeclaration* node);
+		virtual void Traverse(CppUsingTypeDeclaration* node);
+		virtual void Traverse(CppUsingValueDeclaration* node);
 		virtual void Traverse(CppVarBraceInit* node);
 		virtual void Traverse(CppVarInit* node);
 		virtual void Traverse(CppVarParanthesisInit* node);
@@ -203,6 +206,9 @@ namespace cpp_parser::traverse_visitor
 		virtual void Finishing(CppTypeOrExprOrOthersToResolve* node);
 		virtual void Finishing(CppTypeOrExprToResolve* node);
 		virtual void Finishing(CppTypedefDeclaration* node);
+		virtual void Finishing(CppUsingNamespaceDeclaration* node);
+		virtual void Finishing(CppUsingTypeDeclaration* node);
+		virtual void Finishing(CppUsingValueDeclaration* node);
 		virtual void Finishing(CppVarBraceInit* node);
 		virtual void Finishing(CppVarInit* node);
 		virtual void Finishing(CppVarParanthesisInit* node);
@@ -229,6 +235,9 @@ namespace cpp_parser::traverse_visitor
 		void Visit(CppTypedefDeclaration* node) override;
 		void Visit(CppExternDeclaration* node) override;
 		void Visit(CppNamespaceDeclaration* node) override;
+		void Visit(CppUsingNamespaceDeclaration* node) override;
+		void Visit(CppUsingValueDeclaration* node) override;
+		void Visit(CppUsingTypeDeclaration* node) override;
 
 		void Visit(CppTypeOrExprToResolve* node) override;
 		void Visit(CppExprOnly* node) override;

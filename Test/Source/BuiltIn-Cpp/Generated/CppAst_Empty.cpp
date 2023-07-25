@@ -71,6 +71,18 @@ DeclarationVisitor
 	{
 	}
 
+	void DeclarationVisitor::Visit(CppUsingNamespaceDeclaration* node)
+	{
+	}
+
+	void DeclarationVisitor::Visit(CppUsingValueDeclaration* node)
+	{
+	}
+
+	void DeclarationVisitor::Visit(CppUsingTypeDeclaration* node)
+	{
+	}
+
 /***********************************************************************
 TypeOrExprVisitor
 ***********************************************************************/

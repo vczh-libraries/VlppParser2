@@ -1208,6 +1208,42 @@ MakeTypedefDeclaration
 	}
 
 /***********************************************************************
+MakeUsingNamespaceDeclaration
+***********************************************************************/
+
+	MakeUsingNamespaceDeclaration& MakeUsingNamespaceDeclaration::names(const vl::Ptr<CppNamespaceName>& value)
+	{
+		node->names.Add(value);
+		return *this;
+	}
+
+/***********************************************************************
+MakeUsingTypeDeclaration
+***********************************************************************/
+
+	MakeUsingTypeDeclaration& MakeUsingTypeDeclaration::name(const vl::WString& value)
+	{
+		node->name.value = value;
+		return *this;
+	}
+
+	MakeUsingTypeDeclaration& MakeUsingTypeDeclaration::type(const vl::Ptr<CppTypeOrExpr>& value)
+	{
+		node->type = value;
+		return *this;
+	}
+
+/***********************************************************************
+MakeUsingValueDeclaration
+***********************************************************************/
+
+	MakeUsingValueDeclaration& MakeUsingValueDeclaration::name(const vl::Ptr<CppQualifiedName>& value)
+	{
+		node->name = value;
+		return *this;
+	}
+
+/***********************************************************************
 MakeVarBraceInit
 ***********************************************************************/
 

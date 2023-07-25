@@ -106,6 +106,9 @@ namespace cpp_parser::json_visitor
 		virtual void PrintFields(CppTypeOrExprOrOthersToResolve* node);
 		virtual void PrintFields(CppTypeOrExprToResolve* node);
 		virtual void PrintFields(CppTypedefDeclaration* node);
+		virtual void PrintFields(CppUsingNamespaceDeclaration* node);
+		virtual void PrintFields(CppUsingTypeDeclaration* node);
+		virtual void PrintFields(CppUsingValueDeclaration* node);
 		virtual void PrintFields(CppVarBraceInit* node);
 		virtual void PrintFields(CppVarInit* node);
 		virtual void PrintFields(CppVarParanthesisInit* node);
@@ -132,6 +135,9 @@ namespace cpp_parser::json_visitor
 		void Visit(CppTypedefDeclaration* node) override;
 		void Visit(CppExternDeclaration* node) override;
 		void Visit(CppNamespaceDeclaration* node) override;
+		void Visit(CppUsingNamespaceDeclaration* node) override;
+		void Visit(CppUsingValueDeclaration* node) override;
+		void Visit(CppUsingTypeDeclaration* node) override;
 
 		void Visit(CppTypeOrExprToResolve* node) override;
 		void Visit(CppExprOnly* node) override;

@@ -39,6 +39,22 @@ _NsName
 _NsDecl
   ::= "namespace" {_NsName:names ; "::"} "{" {_DeclWithSemicolon:decls} "}" as NamespaceDeclaration
   ;
+  
+//////////////////////////////////////////////////////////////////
+// Using Declaration
+//////////////////////////////////////////////////////////////////
+
+_UsingNsDecl
+  ::= "using" "namespace" _NsName:names {"::" _NsName:names} as UsingNamespaceDeclaration
+  ;
+
+_UsingValueDecl
+  ::= "using" _QualifiedName:name as UsingValueDeclaration
+  ;
+
+_UsingTypeDecl
+  ::= "using" ID:name "=" _Type:type as UsingTypeDeclaration
+  ;
 
 //////////////////////////////////////////////////////////////////
 // Enum Declaration

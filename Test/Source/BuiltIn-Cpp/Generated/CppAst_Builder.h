@@ -514,6 +514,25 @@ namespace cpp_parser::builder
 		MakeTypedefDeclaration& decl(const vl::Ptr<CppDeclaration>& value);
 	};
 
+	class MakeUsingNamespaceDeclaration : public vl::glr::ParsingAstBuilder<CppUsingNamespaceDeclaration>
+	{
+	public:
+		MakeUsingNamespaceDeclaration& names(const vl::Ptr<CppNamespaceName>& value);
+	};
+
+	class MakeUsingTypeDeclaration : public vl::glr::ParsingAstBuilder<CppUsingTypeDeclaration>
+	{
+	public:
+		MakeUsingTypeDeclaration& name(const vl::WString& value);
+		MakeUsingTypeDeclaration& type(const vl::Ptr<CppTypeOrExpr>& value);
+	};
+
+	class MakeUsingValueDeclaration : public vl::glr::ParsingAstBuilder<CppUsingValueDeclaration>
+	{
+	public:
+		MakeUsingValueDeclaration& name(const vl::Ptr<CppQualifiedName>& value);
+	};
+
 	class MakeVarBraceInit : public vl::glr::ParsingAstBuilder<CppVarBraceInit>
 	{
 	public:
