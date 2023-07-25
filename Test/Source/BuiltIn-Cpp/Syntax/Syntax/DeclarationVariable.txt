@@ -49,8 +49,12 @@ _DeclaratorVariablePartWithoutInit
   ::= _DeclaratorRequiredName:declarator as DeclaratorVariablePart
   ;
 
-_DeclaratorVariablePartOptionalInit
+_DeclaratorVariablePartOptionalInitFirst
   ::= _DeclaratorRequiredName:declarator [_VarInit:init] as DeclaratorVariablePart
+  ;
+
+_DeclaratorVariablePartOptionalInitSecond
+  ::= _InnerDeclaratorInnerRequiredName:declarator [_VarInit:init] as DeclaratorVariablePart
   ;
 
 _DeclaratorVariablePartRequiredInit
@@ -152,12 +156,16 @@ _MultiTypedefVarsDeclWithoutKeyword
 // Multiple Variable Declarations
 //////////////////////////////////////////////////////////////////
 
-_MultiVarsDeclVariablePart
-  ::= !_DeclaratorVariablePartOptionalInit ["," _MultiVarsDeclVariablePart:nextVarPart]
+_MultiVarsDeclVariablePartFirst
+  ::= !_DeclaratorVariablePartOptionalInitFirst ["," _MultiVarsDeclVariablePartSecond:nextVarPart]
+  ;
+
+_MultiVarsDeclVariablePartSecond
+  ::= !_DeclaratorVariablePartOptionalInitSecond ["," _MultiVarsDeclVariablePartSecond:nextVarPart]
   ;
 
 _MultiVarsDeclWithoutKeyword
-  ::= _TypeBeforeDeclarator:type _MultiVarsDeclVariablePart:firstVarPart as VariablesDeclaration
+  ::= _TypeBeforeDeclarator:type _MultiVarsDeclVariablePartFirst:firstVarPart as VariablesDeclaration
   ;
 
 _MultiVarsDecl
@@ -192,7 +200,7 @@ _MultiVarsOrFuncForwardDecl
 //////////////////////////////////////////////////////////////////
 
 _MultiVarsOrTypedFuncDeclVariablePartFollowing
-  ::= [_VarInit:init] ["," _MultiVarsDeclVariablePart:nextVarPart] ";" as partial DeclaratorVariablePart
+  ::= [_VarInit:init] ["," _MultiVarsDeclVariablePartSecond:nextVarPart] ";" as partial DeclaratorVariablePart
   ::= _VarStatInit:init as partial DeclaratorVariablePart
   ;
 
