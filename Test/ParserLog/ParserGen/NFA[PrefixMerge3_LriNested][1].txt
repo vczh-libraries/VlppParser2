@@ -1,0 +1,1184 @@
+﻿[0][_Name]< @ ID >
+[RULE: 0][CLAUSE: 0]
+	token: ID -> [3][_Name]< ID @ >
+		+ Token()
+		+ Field(Name::name)
+
+[1][_Name]< @ _Name "." ID >
+[RULE: 0][CLAUSE: 1]
+	rule: _Name -> [8][_Name]< _Name @ "." ID >
+		+ Field(MemberName::parent)
+
+[2][_Name]< ID > @[ENDING]
+[RULE: 0][CLAUSE: 0]
+
+[3][_Name]< ID @ >
+[RULE: 0][CLAUSE: 0]
+	epsilon -> [2][_Name]< ID > @[ENDING]
+		- EndObject()
+
+[4][_Name]< _Name "." @ ID >
+[RULE: 0][CLAUSE: 1]
+	epsilon -> [5][_Name]< _Name "." @ ID >
+
+[5][_Name]< _Name "." @ ID >
+[RULE: 0][CLAUSE: 1]
+	token: ID -> [7][_Name]< _Name "." ID @ >
+		+ Token()
+		+ Field(MemberName::member)
+
+[6][_Name]< _Name "." ID > @[ENDING]
+[RULE: 0][CLAUSE: 1]
+
+[7][_Name]< _Name "." ID @ >
+[RULE: 0][CLAUSE: 1]
+	epsilon -> [6][_Name]< _Name "." ID > @[ENDING]
+		- EndObject()
+
+[8][_Name]< _Name @ "." ID >
+[RULE: 0][CLAUSE: 1]
+	epsilon -> [9][_Name]< _Name @ "." ID >
+
+[9][_Name]< _Name @ "." ID >
+[RULE: 0][CLAUSE: 1]
+	token: "." -> [4][_Name]< _Name "." @ ID >
+
+[10][_Name]@ < ID >
+[RULE: 0][CLAUSE: 0]
+	epsilon -> [0][_Name]< @ ID >
+		- BeginObject(Name)
+
+[11][_Name]@ < _Name "." ID >
+[RULE: 0][CLAUSE: 1]
+	epsilon -> [1][_Name]< @ _Name "." ID >
+		- BeginObject(MemberName)
+
+[12][_PrimitiveShared]<< !_Name >> @[ENDING]
+[RULE: 1][CLAUSE: 0]
+
+[13][_PrimitiveShared]<< !_Name @ >>
+[RULE: 1][CLAUSE: 0]
+	epsilon -> [12][_PrimitiveShared]<< !_Name >> @[ENDING]
+		- EndObject()
+
+[14][_PrimitiveShared]<< @ !_Name >>
+[RULE: 1][CLAUSE: 0]
+	rule: _Name -> [13][_PrimitiveShared]<< !_Name @ >>
+		+ ReopenObject()
+
+[15][_PrimitiveShared]@ << !_Name >>
+[RULE: 1][CLAUSE: 0]
+	epsilon -> [14][_PrimitiveShared]<< @ !_Name >>
+		- DelayFieldAssignment()
+
+[16][_PrimitiveTypeOnly]< "const" @ _PrimitiveShared >
+[RULE: 2][CLAUSE: 0]
+	rule: _PrimitiveShared -> [21][_PrimitiveTypeOnly]< "const" _PrimitiveShared @ >
+		+ Field(ConstType::type)
+
+[17][_PrimitiveTypeOnly]< "const" @ _PrimitiveShared >
+[RULE: 2][CLAUSE: 0]
+	epsilon -> [16][_PrimitiveTypeOnly]< "const" @ _PrimitiveShared >
+
+[18][_PrimitiveTypeOnly]< "const" @ _PrimitiveTypeOnly >
+[RULE: 2][CLAUSE: 1]
+	epsilon -> [19][_PrimitiveTypeOnly]< "const" @ _PrimitiveTypeOnly >
+
+[19][_PrimitiveTypeOnly]< "const" @ _PrimitiveTypeOnly >
+[RULE: 2][CLAUSE: 1]
+	rule: _PrimitiveTypeOnly -> [23][_PrimitiveTypeOnly]< "const" _PrimitiveTypeOnly @ >
+		+ Field(ConstType::type)
+
+[20][_PrimitiveTypeOnly]< "const" _PrimitiveShared > @[ENDING]
+[RULE: 2][CLAUSE: 0]
+
+[21][_PrimitiveTypeOnly]< "const" _PrimitiveShared @ >
+[RULE: 2][CLAUSE: 0]
+	epsilon -> [20][_PrimitiveTypeOnly]< "const" _PrimitiveShared > @[ENDING]
+		- EndObject()
+
+[22][_PrimitiveTypeOnly]< "const" _PrimitiveTypeOnly > @[ENDING]
+[RULE: 2][CLAUSE: 1]
+
+[23][_PrimitiveTypeOnly]< "const" _PrimitiveTypeOnly @ >
+[RULE: 2][CLAUSE: 1]
+	epsilon -> [22][_PrimitiveTypeOnly]< "const" _PrimitiveTypeOnly > @[ENDING]
+		- EndObject()
+
+[24][_PrimitiveTypeOnly]< @ "const" _PrimitiveShared >
+[RULE: 2][CLAUSE: 0]
+	token: "const" -> [17][_PrimitiveTypeOnly]< "const" @ _PrimitiveShared >
+
+[25][_PrimitiveTypeOnly]< @ "const" _PrimitiveTypeOnly >
+[RULE: 2][CLAUSE: 1]
+	token: "const" -> [18][_PrimitiveTypeOnly]< "const" @ _PrimitiveTypeOnly >
+
+[26][_PrimitiveTypeOnly]@ < "const" _PrimitiveShared >
+[RULE: 2][CLAUSE: 0]
+	epsilon -> [24][_PrimitiveTypeOnly]< @ "const" _PrimitiveShared >
+		- BeginObject(ConstType)
+
+[27][_PrimitiveTypeOnly]@ < "const" _PrimitiveTypeOnly >
+[RULE: 2][CLAUSE: 1]
+	epsilon -> [25][_PrimitiveTypeOnly]< @ "const" _PrimitiveTypeOnly >
+		- BeginObject(ConstType)
+
+[28][_PrimitiveExprOnly]<< "(" !_Expr_Raw ")" >> @[ENDING]
+[RULE: 3][CLAUSE: 0]
+
+[29][_PrimitiveExprOnly]<< "(" !_Expr_Raw ")" @ >>
+[RULE: 3][CLAUSE: 0]
+	epsilon -> [28][_PrimitiveExprOnly]<< "(" !_Expr_Raw ")" >> @[ENDING]
+		- EndObject()
+
+[30][_PrimitiveExprOnly]<< "(" !_Expr_Raw @ ")" >>
+[RULE: 3][CLAUSE: 0]
+	token: ")" -> [29][_PrimitiveExprOnly]<< "(" !_Expr_Raw ")" @ >>
+
+[31][_PrimitiveExprOnly]<< "(" !_Expr_Raw @ ")" >>
+[RULE: 3][CLAUSE: 0]
+	epsilon -> [30][_PrimitiveExprOnly]<< "(" !_Expr_Raw @ ")" >>
+
+[32][_PrimitiveExprOnly]<< "(" @ !_Expr_Raw ")" >>
+[RULE: 3][CLAUSE: 0]
+	rule: _Expr_Raw -> [31][_PrimitiveExprOnly]<< "(" !_Expr_Raw @ ")" >>
+		+ ReopenObject()
+
+[33][_PrimitiveExprOnly]<< "(" @ !_Expr_Raw ")" >>
+[RULE: 3][CLAUSE: 0]
+	epsilon -> [32][_PrimitiveExprOnly]<< "(" @ !_Expr_Raw ")" >>
+
+[34][_PrimitiveExprOnly]<< @ "(" !_Expr_Raw ")" >>
+[RULE: 3][CLAUSE: 0]
+	token: "(" -> [33][_PrimitiveExprOnly]<< "(" @ !_Expr_Raw ")" >>
+
+[35][_PrimitiveExprOnly]@ << "(" !_Expr_Raw ")" >>
+[RULE: 3][CLAUSE: 0]
+	epsilon -> [34][_PrimitiveExprOnly]<< @ "(" !_Expr_Raw ")" >>
+		- DelayFieldAssignment()
+
+[36][_LongType]< @ _LongType "(" { _LongType ; "," } ")" >
+[RULE: 4][CLAUSE: 5]
+	rule: _LongType -> [54][_LongType]< _LongType @ "(" { _LongType ; "," } ")" >
+		+ Field(FunctionType::returnType)
+
+[37][_LongType]< @ _LongType "*" >
+[RULE: 4][CLAUSE: 4]
+	rule: _LongType -> [56][_LongType]< _LongType @ "*" >
+		+ Field(PointerType::type)
+
+[38][_LongType]< @ _LongType "const" >
+[RULE: 4][CLAUSE: 3]
+	rule: _LongType -> [57][_LongType]< _LongType @ "const" >
+		+ Field(ConstType::type)
+
+[39][_LongType]< _LongType "(" @ { _LongType ; "," } ")" >
+[RULE: 4][CLAUSE: 5]
+	epsilon -> [40][_LongType]< _LongType "(" @ { _LongType ; "," } ")" >
+
+[40][_LongType]< _LongType "(" @ { _LongType ; "," } ")" >
+[RULE: 4][CLAUSE: 5]
+	epsilon -> [41][_LongType]< _LongType "(" { @ _LongType ; "," } ")" >
+	epsilon -> [45][_LongType]< _LongType "(" { _LongType ; "," } @ ")" >
+
+[41][_LongType]< _LongType "(" { @ _LongType ; "," } ")" >
+[RULE: 4][CLAUSE: 5]
+	rule: _LongType -> [48][_LongType]< _LongType "(" { _LongType @ ; "," } ")" >
+		+ Field(FunctionType::args)
+
+[42][_LongType]< _LongType "(" { _LongType ; "," @ } ")" >
+[RULE: 4][CLAUSE: 5]
+	epsilon -> [41][_LongType]< _LongType "(" { @ _LongType ; "," } ")" >
+
+[43][_LongType]< _LongType "(" { _LongType ; "," } ")" > @[ENDING]
+[RULE: 4][CLAUSE: 5]
+
+[44][_LongType]< _LongType "(" { _LongType ; "," } ")" @ >
+[RULE: 4][CLAUSE: 5]
+	epsilon -> [43][_LongType]< _LongType "(" { _LongType ; "," } ")" > @[ENDING]
+		- EndObject()
+
+[45][_LongType]< _LongType "(" { _LongType ; "," } @ ")" >
+[RULE: 4][CLAUSE: 5]
+	epsilon -> [46][_LongType]< _LongType "(" { _LongType ; "," } @ ")" >
+
+[46][_LongType]< _LongType "(" { _LongType ; "," } @ ")" >
+[RULE: 4][CLAUSE: 5]
+	token: ")" -> [44][_LongType]< _LongType "(" { _LongType ; "," } ")" @ >
+
+[47][_LongType]< _LongType "(" { _LongType ; @ "," } ")" >
+[RULE: 4][CLAUSE: 5]
+	token: "," -> [42][_LongType]< _LongType "(" { _LongType ; "," @ } ")" >
+
+[48][_LongType]< _LongType "(" { _LongType @ ; "," } ")" >
+[RULE: 4][CLAUSE: 5]
+	epsilon -> [45][_LongType]< _LongType "(" { _LongType ; "," } @ ")" >
+	epsilon -> [47][_LongType]< _LongType "(" { _LongType ; @ "," } ")" >
+
+[49][_LongType]< _LongType "*" > @[ENDING]
+[RULE: 4][CLAUSE: 4]
+
+[50][_LongType]< _LongType "*" @ >
+[RULE: 4][CLAUSE: 4]
+	epsilon -> [49][_LongType]< _LongType "*" > @[ENDING]
+		- EndObject()
+
+[51][_LongType]< _LongType "const" > @[ENDING]
+[RULE: 4][CLAUSE: 3]
+
+[52][_LongType]< _LongType "const" @ >
+[RULE: 4][CLAUSE: 3]
+	epsilon -> [51][_LongType]< _LongType "const" > @[ENDING]
+		- EndObject()
+
+[53][_LongType]< _LongType @ "(" { _LongType ; "," } ")" >
+[RULE: 4][CLAUSE: 5]
+	token: "(" -> [39][_LongType]< _LongType "(" @ { _LongType ; "," } ")" >
+
+[54][_LongType]< _LongType @ "(" { _LongType ; "," } ")" >
+[RULE: 4][CLAUSE: 5]
+	epsilon -> [53][_LongType]< _LongType @ "(" { _LongType ; "," } ")" >
+
+[55][_LongType]< _LongType @ "*" >
+[RULE: 4][CLAUSE: 4]
+	token: "*" -> [50][_LongType]< _LongType "*" @ >
+
+[56][_LongType]< _LongType @ "*" >
+[RULE: 4][CLAUSE: 4]
+	epsilon -> [55][_LongType]< _LongType @ "*" >
+
+[57][_LongType]< _LongType @ "const" >
+[RULE: 4][CLAUSE: 3]
+	epsilon -> [58][_LongType]< _LongType @ "const" >
+
+[58][_LongType]< _LongType @ "const" >
+[RULE: 4][CLAUSE: 3]
+	token: "const" -> [52][_LongType]< _LongType "const" @ >
+
+[59][_LongType]<< !_PrimitiveShared >> @[ENDING]
+[RULE: 4][CLAUSE: 1]
+
+[60][_LongType]<< !_PrimitiveShared @ >>
+[RULE: 4][CLAUSE: 1]
+	epsilon -> [59][_LongType]<< !_PrimitiveShared >> @[ENDING]
+		- EndObject()
+
+[61][_LongType]<< !_PrimitiveTypeOnly >> @[ENDING]
+[RULE: 4][CLAUSE: 2]
+
+[62][_LongType]<< !_PrimitiveTypeOnly @ >>
+[RULE: 4][CLAUSE: 2]
+	epsilon -> [61][_LongType]<< !_PrimitiveTypeOnly >> @[ENDING]
+		- EndObject()
+
+[63][_LongType]<< @ !_PrimitiveShared >>
+[RULE: 4][CLAUSE: 1]
+	rule: _PrimitiveShared -> [60][_LongType]<< !_PrimitiveShared @ >>
+		+ ReopenObject()
+
+[64][_LongType]<< @ !_PrimitiveTypeOnly >>
+[RULE: 4][CLAUSE: 2]
+	rule: _PrimitiveTypeOnly -> [62][_LongType]<< !_PrimitiveTypeOnly @ >>
+		+ ReopenObject()
+
+[65][_LongType]@ < _LongType "(" { _LongType ; "," } ")" >
+[RULE: 4][CLAUSE: 5]
+	epsilon -> [36][_LongType]< @ _LongType "(" { _LongType ; "," } ")" >
+		- BeginObject(FunctionType)
+
+[66][_LongType]@ < _LongType "*" >
+[RULE: 4][CLAUSE: 4]
+	epsilon -> [37][_LongType]< @ _LongType "*" >
+		- BeginObject(PointerType)
+
+[67][_LongType]@ < _LongType "const" >
+[RULE: 4][CLAUSE: 3]
+	epsilon -> [38][_LongType]< @ _LongType "const" >
+		- BeginObject(ConstType)
+
+[68][_LongType]@ << !_PrimitiveShared >>
+[RULE: 4][CLAUSE: 1]
+	epsilon -> [63][_LongType]<< @ !_PrimitiveShared >>
+		- DelayFieldAssignment()
+
+[69][_LongType]@ << !_PrimitiveTypeOnly >>
+[RULE: 4][CLAUSE: 2]
+	epsilon -> [64][_LongType]<< @ !_PrimitiveTypeOnly >>
+		- DelayFieldAssignment()
+
+[70][_LongType]@ lrp:(Shared,Type)
+[RULE: 4][CLAUSE: 0]
+	lr-placeholder: Shared,Type -> [71][_LongType]lrp:(Shared,Type) @[ENDING]
+
+[71][_LongType]lrp:(Shared,Type) @[ENDING]
+[RULE: 4][CLAUSE: 0]
+
+[72][_Expr0_Shared]@ lrp:(Shared)
+[RULE: 5][CLAUSE: 0]
+	lr-placeholder: Shared -> [73][_Expr0_Shared]lrp:(Shared) @[ENDING]
+
+[73][_Expr0_Shared]lrp:(Shared) @[ENDING]
+[RULE: 5][CLAUSE: 0]
+
+[74][_Expr0_Type]@ lrp:(Type)
+[RULE: 6][CLAUSE: 0]
+	lr-placeholder: Type -> [75][_Expr0_Type]lrp:(Type) @[ENDING]
+
+[75][_Expr0_Type]lrp:(Type) @[ENDING]
+[RULE: 6][CLAUSE: 0]
+
+[76][_Expr0_SharedOrCtor]< @ _Expr0_Shared "{" { _Expr_Raw ; "," } "}" >
+[RULE: 7][CLAUSE: 1]
+	rule: _Expr0_Shared -> [88][_Expr0_SharedOrCtor]< _Expr0_Shared @ "{" { _Expr_Raw ; "," } "}" >
+		+ Field(CtorExpr::type)
+
+[77][_Expr0_SharedOrCtor]< @ _Expr0_Type "{" { _Expr_Raw ; "," } "}" >
+[RULE: 7][CLAUSE: 2]
+	rule: _Expr0_Type -> [101][_Expr0_SharedOrCtor]< _Expr0_Type @ "{" { _Expr_Raw ; "," } "}" >
+		+ Field(CtorExpr::type)
+
+[78][_Expr0_SharedOrCtor]< _Expr0_Shared "{" @ { _Expr_Raw ; "," } "}" >
+[RULE: 7][CLAUSE: 1]
+	epsilon -> [80][_Expr0_SharedOrCtor]< _Expr0_Shared "{" { @ _Expr_Raw ; "," } "}" >
+	epsilon -> [84][_Expr0_SharedOrCtor]< _Expr0_Shared "{" { _Expr_Raw ; "," } @ "}" >
+
+[79][_Expr0_SharedOrCtor]< _Expr0_Shared "{" @ { _Expr_Raw ; "," } "}" >
+[RULE: 7][CLAUSE: 1]
+	epsilon -> [78][_Expr0_SharedOrCtor]< _Expr0_Shared "{" @ { _Expr_Raw ; "," } "}" >
+
+[80][_Expr0_SharedOrCtor]< _Expr0_Shared "{" { @ _Expr_Raw ; "," } "}" >
+[RULE: 7][CLAUSE: 1]
+	rule: _Expr_Raw -> [87][_Expr0_SharedOrCtor]< _Expr0_Shared "{" { _Expr_Raw @ ; "," } "}" >
+		+ Field(CtorExpr::args)
+
+[81][_Expr0_SharedOrCtor]< _Expr0_Shared "{" { _Expr_Raw ; "," @ } "}" >
+[RULE: 7][CLAUSE: 1]
+	epsilon -> [80][_Expr0_SharedOrCtor]< _Expr0_Shared "{" { @ _Expr_Raw ; "," } "}" >
+
+[82][_Expr0_SharedOrCtor]< _Expr0_Shared "{" { _Expr_Raw ; "," } "}" > @[ENDING]
+[RULE: 7][CLAUSE: 1]
+
+[83][_Expr0_SharedOrCtor]< _Expr0_Shared "{" { _Expr_Raw ; "," } "}" @ >
+[RULE: 7][CLAUSE: 1]
+	epsilon -> [82][_Expr0_SharedOrCtor]< _Expr0_Shared "{" { _Expr_Raw ; "," } "}" > @[ENDING]
+		- EndObject()
+
+[84][_Expr0_SharedOrCtor]< _Expr0_Shared "{" { _Expr_Raw ; "," } @ "}" >
+[RULE: 7][CLAUSE: 1]
+	epsilon -> [85][_Expr0_SharedOrCtor]< _Expr0_Shared "{" { _Expr_Raw ; "," } @ "}" >
+
+[85][_Expr0_SharedOrCtor]< _Expr0_Shared "{" { _Expr_Raw ; "," } @ "}" >
+[RULE: 7][CLAUSE: 1]
+	token: "}" -> [83][_Expr0_SharedOrCtor]< _Expr0_Shared "{" { _Expr_Raw ; "," } "}" @ >
+
+[86][_Expr0_SharedOrCtor]< _Expr0_Shared "{" { _Expr_Raw ; @ "," } "}" >
+[RULE: 7][CLAUSE: 1]
+	token: "," -> [81][_Expr0_SharedOrCtor]< _Expr0_Shared "{" { _Expr_Raw ; "," @ } "}" >
+
+[87][_Expr0_SharedOrCtor]< _Expr0_Shared "{" { _Expr_Raw @ ; "," } "}" >
+[RULE: 7][CLAUSE: 1]
+	epsilon -> [84][_Expr0_SharedOrCtor]< _Expr0_Shared "{" { _Expr_Raw ; "," } @ "}" >
+	epsilon -> [86][_Expr0_SharedOrCtor]< _Expr0_Shared "{" { _Expr_Raw ; @ "," } "}" >
+
+[88][_Expr0_SharedOrCtor]< _Expr0_Shared @ "{" { _Expr_Raw ; "," } "}" >
+[RULE: 7][CLAUSE: 1]
+	epsilon -> [89][_Expr0_SharedOrCtor]< _Expr0_Shared @ "{" { _Expr_Raw ; "," } "}" >
+
+[89][_Expr0_SharedOrCtor]< _Expr0_Shared @ "{" { _Expr_Raw ; "," } "}" >
+[RULE: 7][CLAUSE: 1]
+	token: "{" -> [79][_Expr0_SharedOrCtor]< _Expr0_Shared "{" @ { _Expr_Raw ; "," } "}" >
+
+[90][_Expr0_SharedOrCtor]< _Expr0_Type "{" @ { _Expr_Raw ; "," } "}" >
+[RULE: 7][CLAUSE: 2]
+	epsilon -> [92][_Expr0_SharedOrCtor]< _Expr0_Type "{" { @ _Expr_Raw ; "," } "}" >
+	epsilon -> [97][_Expr0_SharedOrCtor]< _Expr0_Type "{" { _Expr_Raw ; "," } @ "}" >
+
+[91][_Expr0_SharedOrCtor]< _Expr0_Type "{" @ { _Expr_Raw ; "," } "}" >
+[RULE: 7][CLAUSE: 2]
+	epsilon -> [90][_Expr0_SharedOrCtor]< _Expr0_Type "{" @ { _Expr_Raw ; "," } "}" >
+
+[92][_Expr0_SharedOrCtor]< _Expr0_Type "{" { @ _Expr_Raw ; "," } "}" >
+[RULE: 7][CLAUSE: 2]
+	rule: _Expr_Raw -> [99][_Expr0_SharedOrCtor]< _Expr0_Type "{" { _Expr_Raw @ ; "," } "}" >
+		+ Field(CtorExpr::args)
+
+[93][_Expr0_SharedOrCtor]< _Expr0_Type "{" { _Expr_Raw ; "," @ } "}" >
+[RULE: 7][CLAUSE: 2]
+	epsilon -> [92][_Expr0_SharedOrCtor]< _Expr0_Type "{" { @ _Expr_Raw ; "," } "}" >
+
+[94][_Expr0_SharedOrCtor]< _Expr0_Type "{" { _Expr_Raw ; "," } "}" > @[ENDING]
+[RULE: 7][CLAUSE: 2]
+
+[95][_Expr0_SharedOrCtor]< _Expr0_Type "{" { _Expr_Raw ; "," } "}" @ >
+[RULE: 7][CLAUSE: 2]
+	epsilon -> [94][_Expr0_SharedOrCtor]< _Expr0_Type "{" { _Expr_Raw ; "," } "}" > @[ENDING]
+		- EndObject()
+
+[96][_Expr0_SharedOrCtor]< _Expr0_Type "{" { _Expr_Raw ; "," } @ "}" >
+[RULE: 7][CLAUSE: 2]
+	token: "}" -> [95][_Expr0_SharedOrCtor]< _Expr0_Type "{" { _Expr_Raw ; "," } "}" @ >
+
+[97][_Expr0_SharedOrCtor]< _Expr0_Type "{" { _Expr_Raw ; "," } @ "}" >
+[RULE: 7][CLAUSE: 2]
+	epsilon -> [96][_Expr0_SharedOrCtor]< _Expr0_Type "{" { _Expr_Raw ; "," } @ "}" >
+
+[98][_Expr0_SharedOrCtor]< _Expr0_Type "{" { _Expr_Raw ; @ "," } "}" >
+[RULE: 7][CLAUSE: 2]
+	token: "," -> [93][_Expr0_SharedOrCtor]< _Expr0_Type "{" { _Expr_Raw ; "," @ } "}" >
+
+[99][_Expr0_SharedOrCtor]< _Expr0_Type "{" { _Expr_Raw @ ; "," } "}" >
+[RULE: 7][CLAUSE: 2]
+	epsilon -> [97][_Expr0_SharedOrCtor]< _Expr0_Type "{" { _Expr_Raw ; "," } @ "}" >
+	epsilon -> [98][_Expr0_SharedOrCtor]< _Expr0_Type "{" { _Expr_Raw ; @ "," } "}" >
+
+[100][_Expr0_SharedOrCtor]< _Expr0_Type @ "{" { _Expr_Raw ; "," } "}" >
+[RULE: 7][CLAUSE: 2]
+	token: "{" -> [91][_Expr0_SharedOrCtor]< _Expr0_Type "{" @ { _Expr_Raw ; "," } "}" >
+
+[101][_Expr0_SharedOrCtor]< _Expr0_Type @ "{" { _Expr_Raw ; "," } "}" >
+[RULE: 7][CLAUSE: 2]
+	epsilon -> [100][_Expr0_SharedOrCtor]< _Expr0_Type @ "{" { _Expr_Raw ; "," } "}" >
+
+[102][_Expr0_SharedOrCtor]<< !_Expr0_Shared >> @[ENDING]
+[RULE: 7][CLAUSE: 0]
+
+[103][_Expr0_SharedOrCtor]<< !_Expr0_Shared @ >>
+[RULE: 7][CLAUSE: 0]
+	epsilon -> [102][_Expr0_SharedOrCtor]<< !_Expr0_Shared >> @[ENDING]
+		- EndObject()
+
+[104][_Expr0_SharedOrCtor]<< @ !_Expr0_Shared >>
+[RULE: 7][CLAUSE: 0]
+	rule: _Expr0_Shared -> [103][_Expr0_SharedOrCtor]<< !_Expr0_Shared @ >>
+		+ ReopenObject()
+
+[105][_Expr0_SharedOrCtor]@ < _Expr0_Shared "{" { _Expr_Raw ; "," } "}" >
+[RULE: 7][CLAUSE: 1]
+	epsilon -> [76][_Expr0_SharedOrCtor]< @ _Expr0_Shared "{" { _Expr_Raw ; "," } "}" >
+		- BeginObject(CtorExpr)
+
+[106][_Expr0_SharedOrCtor]@ < _Expr0_Type "{" { _Expr_Raw ; "," } "}" >
+[RULE: 7][CLAUSE: 2]
+	epsilon -> [77][_Expr0_SharedOrCtor]< @ _Expr0_Type "{" { _Expr_Raw ; "," } "}" >
+		- BeginObject(CtorExpr)
+
+[107][_Expr0_SharedOrCtor]@ << !_Expr0_Shared >>
+[RULE: 7][CLAUSE: 0]
+	epsilon -> [104][_Expr0_SharedOrCtor]<< @ !_Expr0_Shared >>
+		- DelayFieldAssignment()
+
+[108][_Expr0]<< !_Expr0_SharedOrCtor >> @[ENDING]
+[RULE: 8][CLAUSE: 0]
+
+[109][_Expr0]<< !_Expr0_SharedOrCtor @ >>
+[RULE: 8][CLAUSE: 0]
+	epsilon -> [108][_Expr0]<< !_Expr0_SharedOrCtor >> @[ENDING]
+		- EndObject()
+
+[110][_Expr0]<< @ !_Expr0_SharedOrCtor >>
+[RULE: 8][CLAUSE: 0]
+	rule: _Expr0_SharedOrCtor -> [109][_Expr0]<< !_Expr0_SharedOrCtor @ >>
+		+ ReopenObject()
+
+[111][_Expr0]@ << !_Expr0_SharedOrCtor >>
+[RULE: 8][CLAUSE: 0]
+	epsilon -> [110][_Expr0]<< @ !_Expr0_SharedOrCtor >>
+		- DelayFieldAssignment()
+
+[112][_Expr0]@ lrp:(Expr)
+[RULE: 8][CLAUSE: 1]
+	lr-placeholder: Expr -> [113][_Expr0]lrp:(Expr) @[ENDING]
+
+[113][_Expr0]lrp:(Expr) @[ENDING]
+[RULE: 8][CLAUSE: 1]
+
+[114][_Expr1]< @ _Expr1 "(" { _Expr_Raw ; "," } ")" >
+[RULE: 9][CLAUSE: 1]
+	rule: _Expr1 -> [126][_Expr1]< _Expr1 @ "(" { _Expr_Raw ; "," } ")" >
+		+ Field(CallExpr::func)
+
+[115][_Expr1]< _Expr1 "(" @ { _Expr_Raw ; "," } ")" >
+[RULE: 9][CLAUSE: 1]
+	epsilon -> [116][_Expr1]< _Expr1 "(" @ { _Expr_Raw ; "," } ")" >
+
+[116][_Expr1]< _Expr1 "(" @ { _Expr_Raw ; "," } ")" >
+[RULE: 9][CLAUSE: 1]
+	epsilon -> [117][_Expr1]< _Expr1 "(" { @ _Expr_Raw ; "," } ")" >
+	epsilon -> [121][_Expr1]< _Expr1 "(" { _Expr_Raw ; "," } @ ")" >
+
+[117][_Expr1]< _Expr1 "(" { @ _Expr_Raw ; "," } ")" >
+[RULE: 9][CLAUSE: 1]
+	rule: _Expr_Raw -> [124][_Expr1]< _Expr1 "(" { _Expr_Raw @ ; "," } ")" >
+		+ Field(CallExpr::args)
+
+[118][_Expr1]< _Expr1 "(" { _Expr_Raw ; "," @ } ")" >
+[RULE: 9][CLAUSE: 1]
+	epsilon -> [117][_Expr1]< _Expr1 "(" { @ _Expr_Raw ; "," } ")" >
+
+[119][_Expr1]< _Expr1 "(" { _Expr_Raw ; "," } ")" > @[ENDING]
+[RULE: 9][CLAUSE: 1]
+
+[120][_Expr1]< _Expr1 "(" { _Expr_Raw ; "," } ")" @ >
+[RULE: 9][CLAUSE: 1]
+	epsilon -> [119][_Expr1]< _Expr1 "(" { _Expr_Raw ; "," } ")" > @[ENDING]
+		- EndObject()
+
+[121][_Expr1]< _Expr1 "(" { _Expr_Raw ; "," } @ ")" >
+[RULE: 9][CLAUSE: 1]
+	epsilon -> [122][_Expr1]< _Expr1 "(" { _Expr_Raw ; "," } @ ")" >
+
+[122][_Expr1]< _Expr1 "(" { _Expr_Raw ; "," } @ ")" >
+[RULE: 9][CLAUSE: 1]
+	token: ")" -> [120][_Expr1]< _Expr1 "(" { _Expr_Raw ; "," } ")" @ >
+
+[123][_Expr1]< _Expr1 "(" { _Expr_Raw ; @ "," } ")" >
+[RULE: 9][CLAUSE: 1]
+	token: "," -> [118][_Expr1]< _Expr1 "(" { _Expr_Raw ; "," @ } ")" >
+
+[124][_Expr1]< _Expr1 "(" { _Expr_Raw @ ; "," } ")" >
+[RULE: 9][CLAUSE: 1]
+	epsilon -> [121][_Expr1]< _Expr1 "(" { _Expr_Raw ; "," } @ ")" >
+	epsilon -> [123][_Expr1]< _Expr1 "(" { _Expr_Raw ; @ "," } ")" >
+
+[125][_Expr1]< _Expr1 @ "(" { _Expr_Raw ; "," } ")" >
+[RULE: 9][CLAUSE: 1]
+	token: "(" -> [115][_Expr1]< _Expr1 "(" @ { _Expr_Raw ; "," } ")" >
+
+[126][_Expr1]< _Expr1 @ "(" { _Expr_Raw ; "," } ")" >
+[RULE: 9][CLAUSE: 1]
+	epsilon -> [125][_Expr1]< _Expr1 @ "(" { _Expr_Raw ; "," } ")" >
+
+[127][_Expr1]<< !_Expr0 >> @[ENDING]
+[RULE: 9][CLAUSE: 0]
+
+[128][_Expr1]<< !_Expr0 @ >>
+[RULE: 9][CLAUSE: 0]
+	epsilon -> [127][_Expr1]<< !_Expr0 >> @[ENDING]
+		- EndObject()
+
+[129][_Expr1]<< @ !_Expr0 >>
+[RULE: 9][CLAUSE: 0]
+	rule: _Expr0 -> [128][_Expr1]<< !_Expr0 @ >>
+		+ ReopenObject()
+
+[130][_Expr1]@ < _Expr1 "(" { _Expr_Raw ; "," } ")" >
+[RULE: 9][CLAUSE: 1]
+	epsilon -> [114][_Expr1]< @ _Expr1 "(" { _Expr_Raw ; "," } ")" >
+		- BeginObject(CallExpr)
+
+[131][_Expr1]@ << !_Expr0 >>
+[RULE: 9][CLAUSE: 0]
+	epsilon -> [129][_Expr1]<< @ !_Expr0 >>
+		- DelayFieldAssignment()
+
+[132][_Expr]< @ _Expr "*" _Expr1_Raw >
+[RULE: 10][CLAUSE: 1]
+	rule: _Expr -> [138][_Expr]< _Expr @ "*" _Expr1_Raw >
+		+ Field(MulExpr::first)
+
+[133][_Expr]< _Expr "*" @ _Expr1_Raw >
+[RULE: 10][CLAUSE: 1]
+	epsilon -> [134][_Expr]< _Expr "*" @ _Expr1_Raw >
+
+[134][_Expr]< _Expr "*" @ _Expr1_Raw >
+[RULE: 10][CLAUSE: 1]
+	rule: _Expr1_Raw -> [136][_Expr]< _Expr "*" _Expr1_Raw @ >
+		+ Field(MulExpr::second)
+
+[135][_Expr]< _Expr "*" _Expr1_Raw > @[ENDING]
+[RULE: 10][CLAUSE: 1]
+
+[136][_Expr]< _Expr "*" _Expr1_Raw @ >
+[RULE: 10][CLAUSE: 1]
+	epsilon -> [135][_Expr]< _Expr "*" _Expr1_Raw > @[ENDING]
+		- EndObject()
+
+[137][_Expr]< _Expr @ "*" _Expr1_Raw >
+[RULE: 10][CLAUSE: 1]
+	token: "*" -> [133][_Expr]< _Expr "*" @ _Expr1_Raw >
+
+[138][_Expr]< _Expr @ "*" _Expr1_Raw >
+[RULE: 10][CLAUSE: 1]
+	epsilon -> [137][_Expr]< _Expr @ "*" _Expr1_Raw >
+
+[139][_Expr]<< !_Expr1 >> @[ENDING]
+[RULE: 10][CLAUSE: 0]
+
+[140][_Expr]<< !_Expr1 @ >>
+[RULE: 10][CLAUSE: 0]
+	epsilon -> [139][_Expr]<< !_Expr1 >> @[ENDING]
+		- EndObject()
+
+[141][_Expr]<< @ !_Expr1 >>
+[RULE: 10][CLAUSE: 0]
+	rule: _Expr1 -> [140][_Expr]<< !_Expr1 @ >>
+		+ ReopenObject()
+
+[142][_Expr]@ < _Expr "*" _Expr1_Raw >
+[RULE: 10][CLAUSE: 1]
+	epsilon -> [132][_Expr]< @ _Expr "*" _Expr1_Raw >
+		- BeginObject(MulExpr)
+
+[143][_Expr]@ << !_Expr1 >>
+[RULE: 10][CLAUSE: 0]
+	epsilon -> [141][_Expr]<< @ !_Expr1 >>
+		- DelayFieldAssignment()
+
+[144][_Expr1_Raw]<< !_PrimitiveExprOnly ( @ lri:(Expr)->_Expr1 | lri:<skip> ) >>
+[RULE: 11][CLAUSE: 2]
+	lr-inject: Expr -> _Expr1 -> [145][_Expr1_Raw]<< !_PrimitiveExprOnly ( lri:(Expr)->_Expr1 @ | lri:<skip> ) >>
+		+ ReopenObject()
+
+[145][_Expr1_Raw]<< !_PrimitiveExprOnly ( lri:(Expr)->_Expr1 @ | lri:<skip> ) >>
+[RULE: 11][CLAUSE: 2]
+	epsilon -> [148][_Expr1_Raw]<< !_PrimitiveExprOnly ( lri:(Expr)->_Expr1 | lri:<skip> ) @ >>
+
+[146][_Expr1_Raw]<< !_PrimitiveExprOnly ( lri:(Expr)->_Expr1 | @ lri:<skip> ) >>
+[RULE: 11][CLAUSE: 2]
+	epsilon -> [149][_Expr1_Raw]<< !_PrimitiveExprOnly ( lri:(Expr)->_Expr1 | lri:<skip> @ ) >>
+
+[147][_Expr1_Raw]<< !_PrimitiveExprOnly ( lri:(Expr)->_Expr1 | lri:<skip> ) >> @[ENDING]
+[RULE: 11][CLAUSE: 2]
+
+[148][_Expr1_Raw]<< !_PrimitiveExprOnly ( lri:(Expr)->_Expr1 | lri:<skip> ) @ >>
+[RULE: 11][CLAUSE: 2]
+	epsilon -> [147][_Expr1_Raw]<< !_PrimitiveExprOnly ( lri:(Expr)->_Expr1 | lri:<skip> ) >> @[ENDING]
+		- EndObject()
+
+[149][_Expr1_Raw]<< !_PrimitiveExprOnly ( lri:(Expr)->_Expr1 | lri:<skip> @ ) >>
+[RULE: 11][CLAUSE: 2]
+	epsilon -> [148][_Expr1_Raw]<< !_PrimitiveExprOnly ( lri:(Expr)->_Expr1 | lri:<skip> ) @ >>
+
+[150][_Expr1_Raw]<< !_PrimitiveExprOnly @ ( lri:(Expr)->_Expr1 | lri:<skip> ) >>
+[RULE: 11][CLAUSE: 2]
+	epsilon -> [151][_Expr1_Raw]<< !_PrimitiveExprOnly @ ( lri:(Expr)->_Expr1 | lri:<skip> ) >>
+
+[151][_Expr1_Raw]<< !_PrimitiveExprOnly @ ( lri:(Expr)->_Expr1 | lri:<skip> ) >>
+[RULE: 11][CLAUSE: 2]
+	epsilon -> [144][_Expr1_Raw]<< !_PrimitiveExprOnly ( @ lri:(Expr)->_Expr1 | lri:<skip> ) >>
+	epsilon -> [146][_Expr1_Raw]<< !_PrimitiveExprOnly ( lri:(Expr)->_Expr1 | @ lri:<skip> ) >>
+
+[152][_Expr1_Raw]<< !_PrimitiveShared ( @ lri:(Shared)->_Expr1 | lri:(Shared)->_LongType ( lri:(Type)->_Expr1 ) | lri:<skip> ) >>
+[RULE: 11][CLAUSE: 0]
+	lr-inject: Shared -> _Expr1 -> [153][_Expr1_Raw]<< !_PrimitiveShared ( lri:(Shared)->_Expr1 @ | lri:(Shared)->_LongType ( lri:(Type)->_Expr1 ) | lri:<skip> ) >>
+		+ ReopenObject()
+
+[153][_Expr1_Raw]<< !_PrimitiveShared ( lri:(Shared)->_Expr1 @ | lri:(Shared)->_LongType ( lri:(Type)->_Expr1 ) | lri:<skip> ) >>
+[RULE: 11][CLAUSE: 0]
+	epsilon -> [159][_Expr1_Raw]<< !_PrimitiveShared ( lri:(Shared)->_Expr1 | lri:(Shared)->_LongType ( lri:(Type)->_Expr1 ) | lri:<skip> ) @ >>
+
+[154][_Expr1_Raw]<< !_PrimitiveShared ( lri:(Shared)->_Expr1 | @ lri:(Shared)->_LongType ( lri:(Type)->_Expr1 ) | lri:<skip> ) >>
+[RULE: 11][CLAUSE: 0]
+	lr-inject: Shared -> _LongType -> [163][_Expr1_Raw]<< !_PrimitiveShared ( lri:(Shared)->_Expr1 | lri:(Shared)->_LongType @ ( lri:(Type)->_Expr1 ) | lri:<skip> ) >>
+		+ ReopenObject()
+
+[155][_Expr1_Raw]<< !_PrimitiveShared ( lri:(Shared)->_Expr1 | lri:(Shared)->_LongType ( @ lri:(Type)->_Expr1 ) | lri:<skip> ) >>
+[RULE: 11][CLAUSE: 0]
+	lr-inject: Type -> _Expr1 -> [161][_Expr1_Raw]<< !_PrimitiveShared ( lri:(Shared)->_Expr1 | lri:(Shared)->_LongType ( lri:(Type)->_Expr1 @ ) | lri:<skip> ) >>
+		+ ReopenObject()
+
+[156][_Expr1_Raw]<< !_PrimitiveShared ( lri:(Shared)->_Expr1 | lri:(Shared)->_LongType ( lri:(Type)->_Expr1 ) @ | lri:<skip> ) >>
+[RULE: 11][CLAUSE: 0]
+	epsilon -> [159][_Expr1_Raw]<< !_PrimitiveShared ( lri:(Shared)->_Expr1 | lri:(Shared)->_LongType ( lri:(Type)->_Expr1 ) | lri:<skip> ) @ >>
+
+[157][_Expr1_Raw]<< !_PrimitiveShared ( lri:(Shared)->_Expr1 | lri:(Shared)->_LongType ( lri:(Type)->_Expr1 ) | @ lri:<skip> ) >>
+[RULE: 11][CLAUSE: 0]
+	epsilon -> [160][_Expr1_Raw]<< !_PrimitiveShared ( lri:(Shared)->_Expr1 | lri:(Shared)->_LongType ( lri:(Type)->_Expr1 ) | lri:<skip> @ ) >>
+
+[158][_Expr1_Raw]<< !_PrimitiveShared ( lri:(Shared)->_Expr1 | lri:(Shared)->_LongType ( lri:(Type)->_Expr1 ) | lri:<skip> ) >> @[ENDING]
+[RULE: 11][CLAUSE: 0]
+
+[159][_Expr1_Raw]<< !_PrimitiveShared ( lri:(Shared)->_Expr1 | lri:(Shared)->_LongType ( lri:(Type)->_Expr1 ) | lri:<skip> ) @ >>
+[RULE: 11][CLAUSE: 0]
+	epsilon -> [158][_Expr1_Raw]<< !_PrimitiveShared ( lri:(Shared)->_Expr1 | lri:(Shared)->_LongType ( lri:(Type)->_Expr1 ) | lri:<skip> ) >> @[ENDING]
+		- EndObject()
+
+[160][_Expr1_Raw]<< !_PrimitiveShared ( lri:(Shared)->_Expr1 | lri:(Shared)->_LongType ( lri:(Type)->_Expr1 ) | lri:<skip> @ ) >>
+[RULE: 11][CLAUSE: 0]
+	epsilon -> [159][_Expr1_Raw]<< !_PrimitiveShared ( lri:(Shared)->_Expr1 | lri:(Shared)->_LongType ( lri:(Type)->_Expr1 ) | lri:<skip> ) @ >>
+
+[161][_Expr1_Raw]<< !_PrimitiveShared ( lri:(Shared)->_Expr1 | lri:(Shared)->_LongType ( lri:(Type)->_Expr1 @ ) | lri:<skip> ) >>
+[RULE: 11][CLAUSE: 0]
+	epsilon -> [156][_Expr1_Raw]<< !_PrimitiveShared ( lri:(Shared)->_Expr1 | lri:(Shared)->_LongType ( lri:(Type)->_Expr1 ) @ | lri:<skip> ) >>
+
+[162][_Expr1_Raw]<< !_PrimitiveShared ( lri:(Shared)->_Expr1 | lri:(Shared)->_LongType @ ( lri:(Type)->_Expr1 ) | lri:<skip> ) >>
+[RULE: 11][CLAUSE: 0]
+	epsilon -> [155][_Expr1_Raw]<< !_PrimitiveShared ( lri:(Shared)->_Expr1 | lri:(Shared)->_LongType ( @ lri:(Type)->_Expr1 ) | lri:<skip> ) >>
+
+[163][_Expr1_Raw]<< !_PrimitiveShared ( lri:(Shared)->_Expr1 | lri:(Shared)->_LongType @ ( lri:(Type)->_Expr1 ) | lri:<skip> ) >>
+[RULE: 11][CLAUSE: 0]
+	epsilon -> [162][_Expr1_Raw]<< !_PrimitiveShared ( lri:(Shared)->_Expr1 | lri:(Shared)->_LongType @ ( lri:(Type)->_Expr1 ) | lri:<skip> ) >>
+
+[164][_Expr1_Raw]<< !_PrimitiveShared @ ( lri:(Shared)->_Expr1 | lri:(Shared)->_LongType ( lri:(Type)->_Expr1 ) | lri:<skip> ) >>
+[RULE: 11][CLAUSE: 0]
+	epsilon -> [165][_Expr1_Raw]<< !_PrimitiveShared @ ( lri:(Shared)->_Expr1 | lri:(Shared)->_LongType ( lri:(Type)->_Expr1 ) | lri:<skip> ) >>
+
+[165][_Expr1_Raw]<< !_PrimitiveShared @ ( lri:(Shared)->_Expr1 | lri:(Shared)->_LongType ( lri:(Type)->_Expr1 ) | lri:<skip> ) >>
+[RULE: 11][CLAUSE: 0]
+	epsilon -> [152][_Expr1_Raw]<< !_PrimitiveShared ( @ lri:(Shared)->_Expr1 | lri:(Shared)->_LongType ( lri:(Type)->_Expr1 ) | lri:<skip> ) >>
+	epsilon -> [154][_Expr1_Raw]<< !_PrimitiveShared ( lri:(Shared)->_Expr1 | @ lri:(Shared)->_LongType ( lri:(Type)->_Expr1 ) | lri:<skip> ) >>
+	epsilon -> [157][_Expr1_Raw]<< !_PrimitiveShared ( lri:(Shared)->_Expr1 | lri:(Shared)->_LongType ( lri:(Type)->_Expr1 ) | @ lri:<skip> ) >>
+
+[166][_Expr1_Raw]<< !_PrimitiveTypeOnly ( @ lri:(Type)->_Expr1 | lri:(Type)->_LongType ( lri:(Type)->_Expr1 ) ) >>
+[RULE: 11][CLAUSE: 1]
+	lr-inject: Type -> _Expr1 -> [167][_Expr1_Raw]<< !_PrimitiveTypeOnly ( lri:(Type)->_Expr1 @ | lri:(Type)->_LongType ( lri:(Type)->_Expr1 ) ) >>
+		+ ReopenObject()
+
+[167][_Expr1_Raw]<< !_PrimitiveTypeOnly ( lri:(Type)->_Expr1 @ | lri:(Type)->_LongType ( lri:(Type)->_Expr1 ) ) >>
+[RULE: 11][CLAUSE: 1]
+	epsilon -> [171][_Expr1_Raw]<< !_PrimitiveTypeOnly ( lri:(Type)->_Expr1 | lri:(Type)->_LongType ( lri:(Type)->_Expr1 ) ) @ >>
+
+[168][_Expr1_Raw]<< !_PrimitiveTypeOnly ( lri:(Type)->_Expr1 | @ lri:(Type)->_LongType ( lri:(Type)->_Expr1 ) ) >>
+[RULE: 11][CLAUSE: 1]
+	lr-inject: Type -> _LongType -> [175][_Expr1_Raw]<< !_PrimitiveTypeOnly ( lri:(Type)->_Expr1 | lri:(Type)->_LongType @ ( lri:(Type)->_Expr1 ) ) >>
+		+ ReopenObject()
+
+[169][_Expr1_Raw]<< !_PrimitiveTypeOnly ( lri:(Type)->_Expr1 | lri:(Type)->_LongType ( @ lri:(Type)->_Expr1 ) ) >>
+[RULE: 11][CLAUSE: 1]
+	lr-inject: Type -> _Expr1 -> [173][_Expr1_Raw]<< !_PrimitiveTypeOnly ( lri:(Type)->_Expr1 | lri:(Type)->_LongType ( lri:(Type)->_Expr1 @ ) ) >>
+		+ ReopenObject()
+
+[170][_Expr1_Raw]<< !_PrimitiveTypeOnly ( lri:(Type)->_Expr1 | lri:(Type)->_LongType ( lri:(Type)->_Expr1 ) ) >> @[ENDING]
+[RULE: 11][CLAUSE: 1]
+
+[171][_Expr1_Raw]<< !_PrimitiveTypeOnly ( lri:(Type)->_Expr1 | lri:(Type)->_LongType ( lri:(Type)->_Expr1 ) ) @ >>
+[RULE: 11][CLAUSE: 1]
+	epsilon -> [170][_Expr1_Raw]<< !_PrimitiveTypeOnly ( lri:(Type)->_Expr1 | lri:(Type)->_LongType ( lri:(Type)->_Expr1 ) ) >> @[ENDING]
+		- EndObject()
+
+[172][_Expr1_Raw]<< !_PrimitiveTypeOnly ( lri:(Type)->_Expr1 | lri:(Type)->_LongType ( lri:(Type)->_Expr1 ) @ ) >>
+[RULE: 11][CLAUSE: 1]
+	epsilon -> [171][_Expr1_Raw]<< !_PrimitiveTypeOnly ( lri:(Type)->_Expr1 | lri:(Type)->_LongType ( lri:(Type)->_Expr1 ) ) @ >>
+
+[173][_Expr1_Raw]<< !_PrimitiveTypeOnly ( lri:(Type)->_Expr1 | lri:(Type)->_LongType ( lri:(Type)->_Expr1 @ ) ) >>
+[RULE: 11][CLAUSE: 1]
+	epsilon -> [172][_Expr1_Raw]<< !_PrimitiveTypeOnly ( lri:(Type)->_Expr1 | lri:(Type)->_LongType ( lri:(Type)->_Expr1 ) @ ) >>
+
+[174][_Expr1_Raw]<< !_PrimitiveTypeOnly ( lri:(Type)->_Expr1 | lri:(Type)->_LongType @ ( lri:(Type)->_Expr1 ) ) >>
+[RULE: 11][CLAUSE: 1]
+	epsilon -> [169][_Expr1_Raw]<< !_PrimitiveTypeOnly ( lri:(Type)->_Expr1 | lri:(Type)->_LongType ( @ lri:(Type)->_Expr1 ) ) >>
+
+[175][_Expr1_Raw]<< !_PrimitiveTypeOnly ( lri:(Type)->_Expr1 | lri:(Type)->_LongType @ ( lri:(Type)->_Expr1 ) ) >>
+[RULE: 11][CLAUSE: 1]
+	epsilon -> [174][_Expr1_Raw]<< !_PrimitiveTypeOnly ( lri:(Type)->_Expr1 | lri:(Type)->_LongType @ ( lri:(Type)->_Expr1 ) ) >>
+
+[176][_Expr1_Raw]<< !_PrimitiveTypeOnly @ ( lri:(Type)->_Expr1 | lri:(Type)->_LongType ( lri:(Type)->_Expr1 ) ) >>
+[RULE: 11][CLAUSE: 1]
+	epsilon -> [166][_Expr1_Raw]<< !_PrimitiveTypeOnly ( @ lri:(Type)->_Expr1 | lri:(Type)->_LongType ( lri:(Type)->_Expr1 ) ) >>
+	epsilon -> [168][_Expr1_Raw]<< !_PrimitiveTypeOnly ( lri:(Type)->_Expr1 | @ lri:(Type)->_LongType ( lri:(Type)->_Expr1 ) ) >>
+
+[177][_Expr1_Raw]<< !_PrimitiveTypeOnly @ ( lri:(Type)->_Expr1 | lri:(Type)->_LongType ( lri:(Type)->_Expr1 ) ) >>
+[RULE: 11][CLAUSE: 1]
+	epsilon -> [176][_Expr1_Raw]<< !_PrimitiveTypeOnly @ ( lri:(Type)->_Expr1 | lri:(Type)->_LongType ( lri:(Type)->_Expr1 ) ) >>
+
+[178][_Expr1_Raw]<< @ !_PrimitiveExprOnly ( lri:(Expr)->_Expr1 | lri:<skip> ) >>
+[RULE: 11][CLAUSE: 2]
+	rule: _PrimitiveExprOnly -> [150][_Expr1_Raw]<< !_PrimitiveExprOnly @ ( lri:(Expr)->_Expr1 | lri:<skip> ) >>
+		+ ReopenObject()
+
+[179][_Expr1_Raw]<< @ !_PrimitiveShared ( lri:(Shared)->_Expr1 | lri:(Shared)->_LongType ( lri:(Type)->_Expr1 ) | lri:<skip> ) >>
+[RULE: 11][CLAUSE: 0]
+	rule: _PrimitiveShared -> [164][_Expr1_Raw]<< !_PrimitiveShared @ ( lri:(Shared)->_Expr1 | lri:(Shared)->_LongType ( lri:(Type)->_Expr1 ) | lri:<skip> ) >>
+		+ ReopenObject()
+
+[180][_Expr1_Raw]<< @ !_PrimitiveTypeOnly ( lri:(Type)->_Expr1 | lri:(Type)->_LongType ( lri:(Type)->_Expr1 ) ) >>
+[RULE: 11][CLAUSE: 1]
+	rule: _PrimitiveTypeOnly -> [177][_Expr1_Raw]<< !_PrimitiveTypeOnly @ ( lri:(Type)->_Expr1 | lri:(Type)->_LongType ( lri:(Type)->_Expr1 ) ) >>
+		+ ReopenObject()
+
+[181][_Expr1_Raw]@ << !_PrimitiveExprOnly ( lri:(Expr)->_Expr1 | lri:<skip> ) >>
+[RULE: 11][CLAUSE: 2]
+	epsilon -> [178][_Expr1_Raw]<< @ !_PrimitiveExprOnly ( lri:(Expr)->_Expr1 | lri:<skip> ) >>
+		- DelayFieldAssignment()
+
+[182][_Expr1_Raw]@ << !_PrimitiveShared ( lri:(Shared)->_Expr1 | lri:(Shared)->_LongType ( lri:(Type)->_Expr1 ) | lri:<skip> ) >>
+[RULE: 11][CLAUSE: 0]
+	epsilon -> [179][_Expr1_Raw]<< @ !_PrimitiveShared ( lri:(Shared)->_Expr1 | lri:(Shared)->_LongType ( lri:(Type)->_Expr1 ) | lri:<skip> ) >>
+		- DelayFieldAssignment()
+
+[183][_Expr1_Raw]@ << !_PrimitiveTypeOnly ( lri:(Type)->_Expr1 | lri:(Type)->_LongType ( lri:(Type)->_Expr1 ) ) >>
+[RULE: 11][CLAUSE: 1]
+	epsilon -> [180][_Expr1_Raw]<< @ !_PrimitiveTypeOnly ( lri:(Type)->_Expr1 | lri:(Type)->_LongType ( lri:(Type)->_Expr1 ) ) >>
+		- DelayFieldAssignment()
+
+[184][_Expr_Raw]<< !_PrimitiveExprOnly ( @ lri:(Expr)->_Expr | lri:<skip> ) >>
+[RULE: 12][CLAUSE: 2]
+	lr-inject: Expr -> _Expr -> [185][_Expr_Raw]<< !_PrimitiveExprOnly ( lri:(Expr)->_Expr @ | lri:<skip> ) >>
+		+ ReopenObject()
+
+[185][_Expr_Raw]<< !_PrimitiveExprOnly ( lri:(Expr)->_Expr @ | lri:<skip> ) >>
+[RULE: 12][CLAUSE: 2]
+	epsilon -> [188][_Expr_Raw]<< !_PrimitiveExprOnly ( lri:(Expr)->_Expr | lri:<skip> ) @ >>
+
+[186][_Expr_Raw]<< !_PrimitiveExprOnly ( lri:(Expr)->_Expr | @ lri:<skip> ) >>
+[RULE: 12][CLAUSE: 2]
+	epsilon -> [189][_Expr_Raw]<< !_PrimitiveExprOnly ( lri:(Expr)->_Expr | lri:<skip> @ ) >>
+
+[187][_Expr_Raw]<< !_PrimitiveExprOnly ( lri:(Expr)->_Expr | lri:<skip> ) >> @[ENDING]
+[RULE: 12][CLAUSE: 2]
+
+[188][_Expr_Raw]<< !_PrimitiveExprOnly ( lri:(Expr)->_Expr | lri:<skip> ) @ >>
+[RULE: 12][CLAUSE: 2]
+	epsilon -> [187][_Expr_Raw]<< !_PrimitiveExprOnly ( lri:(Expr)->_Expr | lri:<skip> ) >> @[ENDING]
+		- EndObject()
+
+[189][_Expr_Raw]<< !_PrimitiveExprOnly ( lri:(Expr)->_Expr | lri:<skip> @ ) >>
+[RULE: 12][CLAUSE: 2]
+	epsilon -> [188][_Expr_Raw]<< !_PrimitiveExprOnly ( lri:(Expr)->_Expr | lri:<skip> ) @ >>
+
+[190][_Expr_Raw]<< !_PrimitiveExprOnly @ ( lri:(Expr)->_Expr | lri:<skip> ) >>
+[RULE: 12][CLAUSE: 2]
+	epsilon -> [191][_Expr_Raw]<< !_PrimitiveExprOnly @ ( lri:(Expr)->_Expr | lri:<skip> ) >>
+
+[191][_Expr_Raw]<< !_PrimitiveExprOnly @ ( lri:(Expr)->_Expr | lri:<skip> ) >>
+[RULE: 12][CLAUSE: 2]
+	epsilon -> [184][_Expr_Raw]<< !_PrimitiveExprOnly ( @ lri:(Expr)->_Expr | lri:<skip> ) >>
+	epsilon -> [186][_Expr_Raw]<< !_PrimitiveExprOnly ( lri:(Expr)->_Expr | @ lri:<skip> ) >>
+
+[192][_Expr_Raw]<< !_PrimitiveShared ( @ lri:(Shared)->_Expr | lri:(Shared)->_LongType ( lri:(Type)->_Expr ) | lri:<skip> ) >>
+[RULE: 12][CLAUSE: 0]
+	lr-inject: Shared -> _Expr -> [193][_Expr_Raw]<< !_PrimitiveShared ( lri:(Shared)->_Expr @ | lri:(Shared)->_LongType ( lri:(Type)->_Expr ) | lri:<skip> ) >>
+		+ ReopenObject()
+
+[193][_Expr_Raw]<< !_PrimitiveShared ( lri:(Shared)->_Expr @ | lri:(Shared)->_LongType ( lri:(Type)->_Expr ) | lri:<skip> ) >>
+[RULE: 12][CLAUSE: 0]
+	epsilon -> [199][_Expr_Raw]<< !_PrimitiveShared ( lri:(Shared)->_Expr | lri:(Shared)->_LongType ( lri:(Type)->_Expr ) | lri:<skip> ) @ >>
+
+[194][_Expr_Raw]<< !_PrimitiveShared ( lri:(Shared)->_Expr | @ lri:(Shared)->_LongType ( lri:(Type)->_Expr ) | lri:<skip> ) >>
+[RULE: 12][CLAUSE: 0]
+	lr-inject: Shared -> _LongType -> [203][_Expr_Raw]<< !_PrimitiveShared ( lri:(Shared)->_Expr | lri:(Shared)->_LongType @ ( lri:(Type)->_Expr ) | lri:<skip> ) >>
+		+ ReopenObject()
+
+[195][_Expr_Raw]<< !_PrimitiveShared ( lri:(Shared)->_Expr | lri:(Shared)->_LongType ( @ lri:(Type)->_Expr ) | lri:<skip> ) >>
+[RULE: 12][CLAUSE: 0]
+	lr-inject: Type -> _Expr -> [201][_Expr_Raw]<< !_PrimitiveShared ( lri:(Shared)->_Expr | lri:(Shared)->_LongType ( lri:(Type)->_Expr @ ) | lri:<skip> ) >>
+		+ ReopenObject()
+
+[196][_Expr_Raw]<< !_PrimitiveShared ( lri:(Shared)->_Expr | lri:(Shared)->_LongType ( lri:(Type)->_Expr ) @ | lri:<skip> ) >>
+[RULE: 12][CLAUSE: 0]
+	epsilon -> [199][_Expr_Raw]<< !_PrimitiveShared ( lri:(Shared)->_Expr | lri:(Shared)->_LongType ( lri:(Type)->_Expr ) | lri:<skip> ) @ >>
+
+[197][_Expr_Raw]<< !_PrimitiveShared ( lri:(Shared)->_Expr | lri:(Shared)->_LongType ( lri:(Type)->_Expr ) | @ lri:<skip> ) >>
+[RULE: 12][CLAUSE: 0]
+	epsilon -> [200][_Expr_Raw]<< !_PrimitiveShared ( lri:(Shared)->_Expr | lri:(Shared)->_LongType ( lri:(Type)->_Expr ) | lri:<skip> @ ) >>
+
+[198][_Expr_Raw]<< !_PrimitiveShared ( lri:(Shared)->_Expr | lri:(Shared)->_LongType ( lri:(Type)->_Expr ) | lri:<skip> ) >> @[ENDING]
+[RULE: 12][CLAUSE: 0]
+
+[199][_Expr_Raw]<< !_PrimitiveShared ( lri:(Shared)->_Expr | lri:(Shared)->_LongType ( lri:(Type)->_Expr ) | lri:<skip> ) @ >>
+[RULE: 12][CLAUSE: 0]
+	epsilon -> [198][_Expr_Raw]<< !_PrimitiveShared ( lri:(Shared)->_Expr | lri:(Shared)->_LongType ( lri:(Type)->_Expr ) | lri:<skip> ) >> @[ENDING]
+		- EndObject()
+
+[200][_Expr_Raw]<< !_PrimitiveShared ( lri:(Shared)->_Expr | lri:(Shared)->_LongType ( lri:(Type)->_Expr ) | lri:<skip> @ ) >>
+[RULE: 12][CLAUSE: 0]
+	epsilon -> [199][_Expr_Raw]<< !_PrimitiveShared ( lri:(Shared)->_Expr | lri:(Shared)->_LongType ( lri:(Type)->_Expr ) | lri:<skip> ) @ >>
+
+[201][_Expr_Raw]<< !_PrimitiveShared ( lri:(Shared)->_Expr | lri:(Shared)->_LongType ( lri:(Type)->_Expr @ ) | lri:<skip> ) >>
+[RULE: 12][CLAUSE: 0]
+	epsilon -> [196][_Expr_Raw]<< !_PrimitiveShared ( lri:(Shared)->_Expr | lri:(Shared)->_LongType ( lri:(Type)->_Expr ) @ | lri:<skip> ) >>
+
+[202][_Expr_Raw]<< !_PrimitiveShared ( lri:(Shared)->_Expr | lri:(Shared)->_LongType @ ( lri:(Type)->_Expr ) | lri:<skip> ) >>
+[RULE: 12][CLAUSE: 0]
+	epsilon -> [195][_Expr_Raw]<< !_PrimitiveShared ( lri:(Shared)->_Expr | lri:(Shared)->_LongType ( @ lri:(Type)->_Expr ) | lri:<skip> ) >>
+
+[203][_Expr_Raw]<< !_PrimitiveShared ( lri:(Shared)->_Expr | lri:(Shared)->_LongType @ ( lri:(Type)->_Expr ) | lri:<skip> ) >>
+[RULE: 12][CLAUSE: 0]
+	epsilon -> [202][_Expr_Raw]<< !_PrimitiveShared ( lri:(Shared)->_Expr | lri:(Shared)->_LongType @ ( lri:(Type)->_Expr ) | lri:<skip> ) >>
+
+[204][_Expr_Raw]<< !_PrimitiveShared @ ( lri:(Shared)->_Expr | lri:(Shared)->_LongType ( lri:(Type)->_Expr ) | lri:<skip> ) >>
+[RULE: 12][CLAUSE: 0]
+	epsilon -> [205][_Expr_Raw]<< !_PrimitiveShared @ ( lri:(Shared)->_Expr | lri:(Shared)->_LongType ( lri:(Type)->_Expr ) | lri:<skip> ) >>
+
+[205][_Expr_Raw]<< !_PrimitiveShared @ ( lri:(Shared)->_Expr | lri:(Shared)->_LongType ( lri:(Type)->_Expr ) | lri:<skip> ) >>
+[RULE: 12][CLAUSE: 0]
+	epsilon -> [192][_Expr_Raw]<< !_PrimitiveShared ( @ lri:(Shared)->_Expr | lri:(Shared)->_LongType ( lri:(Type)->_Expr ) | lri:<skip> ) >>
+	epsilon -> [194][_Expr_Raw]<< !_PrimitiveShared ( lri:(Shared)->_Expr | @ lri:(Shared)->_LongType ( lri:(Type)->_Expr ) | lri:<skip> ) >>
+	epsilon -> [197][_Expr_Raw]<< !_PrimitiveShared ( lri:(Shared)->_Expr | lri:(Shared)->_LongType ( lri:(Type)->_Expr ) | @ lri:<skip> ) >>
+
+[206][_Expr_Raw]<< !_PrimitiveTypeOnly ( @ lri:(Type)->_Expr | lri:(Type)->_LongType ( lri:(Type)->_Expr ) ) >>
+[RULE: 12][CLAUSE: 1]
+	lr-inject: Type -> _Expr -> [207][_Expr_Raw]<< !_PrimitiveTypeOnly ( lri:(Type)->_Expr @ | lri:(Type)->_LongType ( lri:(Type)->_Expr ) ) >>
+		+ ReopenObject()
+
+[207][_Expr_Raw]<< !_PrimitiveTypeOnly ( lri:(Type)->_Expr @ | lri:(Type)->_LongType ( lri:(Type)->_Expr ) ) >>
+[RULE: 12][CLAUSE: 1]
+	epsilon -> [211][_Expr_Raw]<< !_PrimitiveTypeOnly ( lri:(Type)->_Expr | lri:(Type)->_LongType ( lri:(Type)->_Expr ) ) @ >>
+
+[208][_Expr_Raw]<< !_PrimitiveTypeOnly ( lri:(Type)->_Expr | @ lri:(Type)->_LongType ( lri:(Type)->_Expr ) ) >>
+[RULE: 12][CLAUSE: 1]
+	lr-inject: Type -> _LongType -> [215][_Expr_Raw]<< !_PrimitiveTypeOnly ( lri:(Type)->_Expr | lri:(Type)->_LongType @ ( lri:(Type)->_Expr ) ) >>
+		+ ReopenObject()
+
+[209][_Expr_Raw]<< !_PrimitiveTypeOnly ( lri:(Type)->_Expr | lri:(Type)->_LongType ( @ lri:(Type)->_Expr ) ) >>
+[RULE: 12][CLAUSE: 1]
+	lr-inject: Type -> _Expr -> [213][_Expr_Raw]<< !_PrimitiveTypeOnly ( lri:(Type)->_Expr | lri:(Type)->_LongType ( lri:(Type)->_Expr @ ) ) >>
+		+ ReopenObject()
+
+[210][_Expr_Raw]<< !_PrimitiveTypeOnly ( lri:(Type)->_Expr | lri:(Type)->_LongType ( lri:(Type)->_Expr ) ) >> @[ENDING]
+[RULE: 12][CLAUSE: 1]
+
+[211][_Expr_Raw]<< !_PrimitiveTypeOnly ( lri:(Type)->_Expr | lri:(Type)->_LongType ( lri:(Type)->_Expr ) ) @ >>
+[RULE: 12][CLAUSE: 1]
+	epsilon -> [210][_Expr_Raw]<< !_PrimitiveTypeOnly ( lri:(Type)->_Expr | lri:(Type)->_LongType ( lri:(Type)->_Expr ) ) >> @[ENDING]
+		- EndObject()
+
+[212][_Expr_Raw]<< !_PrimitiveTypeOnly ( lri:(Type)->_Expr | lri:(Type)->_LongType ( lri:(Type)->_Expr ) @ ) >>
+[RULE: 12][CLAUSE: 1]
+	epsilon -> [211][_Expr_Raw]<< !_PrimitiveTypeOnly ( lri:(Type)->_Expr | lri:(Type)->_LongType ( lri:(Type)->_Expr ) ) @ >>
+
+[213][_Expr_Raw]<< !_PrimitiveTypeOnly ( lri:(Type)->_Expr | lri:(Type)->_LongType ( lri:(Type)->_Expr @ ) ) >>
+[RULE: 12][CLAUSE: 1]
+	epsilon -> [212][_Expr_Raw]<< !_PrimitiveTypeOnly ( lri:(Type)->_Expr | lri:(Type)->_LongType ( lri:(Type)->_Expr ) @ ) >>
+
+[214][_Expr_Raw]<< !_PrimitiveTypeOnly ( lri:(Type)->_Expr | lri:(Type)->_LongType @ ( lri:(Type)->_Expr ) ) >>
+[RULE: 12][CLAUSE: 1]
+	epsilon -> [209][_Expr_Raw]<< !_PrimitiveTypeOnly ( lri:(Type)->_Expr | lri:(Type)->_LongType ( @ lri:(Type)->_Expr ) ) >>
+
+[215][_Expr_Raw]<< !_PrimitiveTypeOnly ( lri:(Type)->_Expr | lri:(Type)->_LongType @ ( lri:(Type)->_Expr ) ) >>
+[RULE: 12][CLAUSE: 1]
+	epsilon -> [214][_Expr_Raw]<< !_PrimitiveTypeOnly ( lri:(Type)->_Expr | lri:(Type)->_LongType @ ( lri:(Type)->_Expr ) ) >>
+
+[216][_Expr_Raw]<< !_PrimitiveTypeOnly @ ( lri:(Type)->_Expr | lri:(Type)->_LongType ( lri:(Type)->_Expr ) ) >>
+[RULE: 12][CLAUSE: 1]
+	epsilon -> [206][_Expr_Raw]<< !_PrimitiveTypeOnly ( @ lri:(Type)->_Expr | lri:(Type)->_LongType ( lri:(Type)->_Expr ) ) >>
+	epsilon -> [208][_Expr_Raw]<< !_PrimitiveTypeOnly ( lri:(Type)->_Expr | @ lri:(Type)->_LongType ( lri:(Type)->_Expr ) ) >>
+
+[217][_Expr_Raw]<< !_PrimitiveTypeOnly @ ( lri:(Type)->_Expr | lri:(Type)->_LongType ( lri:(Type)->_Expr ) ) >>
+[RULE: 12][CLAUSE: 1]
+	epsilon -> [216][_Expr_Raw]<< !_PrimitiveTypeOnly @ ( lri:(Type)->_Expr | lri:(Type)->_LongType ( lri:(Type)->_Expr ) ) >>
+
+[218][_Expr_Raw]<< @ !_PrimitiveExprOnly ( lri:(Expr)->_Expr | lri:<skip> ) >>
+[RULE: 12][CLAUSE: 2]
+	rule: _PrimitiveExprOnly -> [190][_Expr_Raw]<< !_PrimitiveExprOnly @ ( lri:(Expr)->_Expr | lri:<skip> ) >>
+		+ ReopenObject()
+
+[219][_Expr_Raw]<< @ !_PrimitiveShared ( lri:(Shared)->_Expr | lri:(Shared)->_LongType ( lri:(Type)->_Expr ) | lri:<skip> ) >>
+[RULE: 12][CLAUSE: 0]
+	rule: _PrimitiveShared -> [204][_Expr_Raw]<< !_PrimitiveShared @ ( lri:(Shared)->_Expr | lri:(Shared)->_LongType ( lri:(Type)->_Expr ) | lri:<skip> ) >>
+		+ ReopenObject()
+
+[220][_Expr_Raw]<< @ !_PrimitiveTypeOnly ( lri:(Type)->_Expr | lri:(Type)->_LongType ( lri:(Type)->_Expr ) ) >>
+[RULE: 12][CLAUSE: 1]
+	rule: _PrimitiveTypeOnly -> [217][_Expr_Raw]<< !_PrimitiveTypeOnly @ ( lri:(Type)->_Expr | lri:(Type)->_LongType ( lri:(Type)->_Expr ) ) >>
+		+ ReopenObject()
+
+[221][_Expr_Raw]@ << !_PrimitiveExprOnly ( lri:(Expr)->_Expr | lri:<skip> ) >>
+[RULE: 12][CLAUSE: 2]
+	epsilon -> [218][_Expr_Raw]<< @ !_PrimitiveExprOnly ( lri:(Expr)->_Expr | lri:<skip> ) >>
+		- DelayFieldAssignment()
+
+[222][_Expr_Raw]@ << !_PrimitiveShared ( lri:(Shared)->_Expr | lri:(Shared)->_LongType ( lri:(Type)->_Expr ) | lri:<skip> ) >>
+[RULE: 12][CLAUSE: 0]
+	epsilon -> [219][_Expr_Raw]<< @ !_PrimitiveShared ( lri:(Shared)->_Expr | lri:(Shared)->_LongType ( lri:(Type)->_Expr ) | lri:<skip> ) >>
+		- DelayFieldAssignment()
+
+[223][_Expr_Raw]@ << !_PrimitiveTypeOnly ( lri:(Type)->_Expr | lri:(Type)->_LongType ( lri:(Type)->_Expr ) ) >>
+[RULE: 12][CLAUSE: 1]
+	epsilon -> [220][_Expr_Raw]<< @ !_PrimitiveTypeOnly ( lri:(Type)->_Expr | lri:(Type)->_LongType ( lri:(Type)->_Expr ) ) >>
+		- DelayFieldAssignment()
+
+[224][Module]<< !_PrimitiveExprOnly ( @ lri:(Expr)->_Expr | lri:<skip> ) >>
+[RULE: 13][CLAUSE: 2]
+	lr-inject: Expr -> _Expr -> [225][Module]<< !_PrimitiveExprOnly ( lri:(Expr)->_Expr @ | lri:<skip> ) >>
+		+ ReopenObject()
+
+[225][Module]<< !_PrimitiveExprOnly ( lri:(Expr)->_Expr @ | lri:<skip> ) >>
+[RULE: 13][CLAUSE: 2]
+	epsilon -> [228][Module]<< !_PrimitiveExprOnly ( lri:(Expr)->_Expr | lri:<skip> ) @ >>
+
+[226][Module]<< !_PrimitiveExprOnly ( lri:(Expr)->_Expr | @ lri:<skip> ) >>
+[RULE: 13][CLAUSE: 2]
+	epsilon -> [229][Module]<< !_PrimitiveExprOnly ( lri:(Expr)->_Expr | lri:<skip> @ ) >>
+
+[227][Module]<< !_PrimitiveExprOnly ( lri:(Expr)->_Expr | lri:<skip> ) >> @[ENDING]
+[RULE: 13][CLAUSE: 2]
+
+[228][Module]<< !_PrimitiveExprOnly ( lri:(Expr)->_Expr | lri:<skip> ) @ >>
+[RULE: 13][CLAUSE: 2]
+	epsilon -> [227][Module]<< !_PrimitiveExprOnly ( lri:(Expr)->_Expr | lri:<skip> ) >> @[ENDING]
+		- EndObject()
+
+[229][Module]<< !_PrimitiveExprOnly ( lri:(Expr)->_Expr | lri:<skip> @ ) >>
+[RULE: 13][CLAUSE: 2]
+	epsilon -> [228][Module]<< !_PrimitiveExprOnly ( lri:(Expr)->_Expr | lri:<skip> ) @ >>
+
+[230][Module]<< !_PrimitiveExprOnly @ ( lri:(Expr)->_Expr | lri:<skip> ) >>
+[RULE: 13][CLAUSE: 2]
+	epsilon -> [231][Module]<< !_PrimitiveExprOnly @ ( lri:(Expr)->_Expr | lri:<skip> ) >>
+
+[231][Module]<< !_PrimitiveExprOnly @ ( lri:(Expr)->_Expr | lri:<skip> ) >>
+[RULE: 13][CLAUSE: 2]
+	epsilon -> [224][Module]<< !_PrimitiveExprOnly ( @ lri:(Expr)->_Expr | lri:<skip> ) >>
+	epsilon -> [226][Module]<< !_PrimitiveExprOnly ( lri:(Expr)->_Expr | @ lri:<skip> ) >>
+
+[232][Module]<< !_PrimitiveShared ( @ lri:(Shared)->_Expr | lri:(Shared)->_LongType ( lri:(Type)->_Expr | lri:<skip> ) | lri:<skip> ) >>
+[RULE: 13][CLAUSE: 0]
+	lr-inject: Shared -> _Expr -> [233][Module]<< !_PrimitiveShared ( lri:(Shared)->_Expr @ | lri:(Shared)->_LongType ( lri:(Type)->_Expr | lri:<skip> ) | lri:<skip> ) >>
+		+ ReopenObject()
+
+[233][Module]<< !_PrimitiveShared ( lri:(Shared)->_Expr @ | lri:(Shared)->_LongType ( lri:(Type)->_Expr | lri:<skip> ) | lri:<skip> ) >>
+[RULE: 13][CLAUSE: 0]
+	epsilon -> [241][Module]<< !_PrimitiveShared ( lri:(Shared)->_Expr | lri:(Shared)->_LongType ( lri:(Type)->_Expr | lri:<skip> ) | lri:<skip> ) @ >>
+
+[234][Module]<< !_PrimitiveShared ( lri:(Shared)->_Expr | @ lri:(Shared)->_LongType ( lri:(Type)->_Expr | lri:<skip> ) | lri:<skip> ) >>
+[RULE: 13][CLAUSE: 0]
+	lr-inject: Shared -> _LongType -> [245][Module]<< !_PrimitiveShared ( lri:(Shared)->_Expr | lri:(Shared)->_LongType @ ( lri:(Type)->_Expr | lri:<skip> ) | lri:<skip> ) >>
+		+ ReopenObject()
+
+[235][Module]<< !_PrimitiveShared ( lri:(Shared)->_Expr | lri:(Shared)->_LongType ( @ lri:(Type)->_Expr | lri:<skip> ) | lri:<skip> ) >>
+[RULE: 13][CLAUSE: 0]
+	lr-inject: Type -> _Expr -> [236][Module]<< !_PrimitiveShared ( lri:(Shared)->_Expr | lri:(Shared)->_LongType ( lri:(Type)->_Expr @ | lri:<skip> ) | lri:<skip> ) >>
+		+ ReopenObject()
+
+[236][Module]<< !_PrimitiveShared ( lri:(Shared)->_Expr | lri:(Shared)->_LongType ( lri:(Type)->_Expr @ | lri:<skip> ) | lri:<skip> ) >>
+[RULE: 13][CLAUSE: 0]
+	epsilon -> [238][Module]<< !_PrimitiveShared ( lri:(Shared)->_Expr | lri:(Shared)->_LongType ( lri:(Type)->_Expr | lri:<skip> ) @ | lri:<skip> ) >>
+
+[237][Module]<< !_PrimitiveShared ( lri:(Shared)->_Expr | lri:(Shared)->_LongType ( lri:(Type)->_Expr | @ lri:<skip> ) | lri:<skip> ) >>
+[RULE: 13][CLAUSE: 0]
+	epsilon -> [243][Module]<< !_PrimitiveShared ( lri:(Shared)->_Expr | lri:(Shared)->_LongType ( lri:(Type)->_Expr | lri:<skip> @ ) | lri:<skip> ) >>
+
+[238][Module]<< !_PrimitiveShared ( lri:(Shared)->_Expr | lri:(Shared)->_LongType ( lri:(Type)->_Expr | lri:<skip> ) @ | lri:<skip> ) >>
+[RULE: 13][CLAUSE: 0]
+	epsilon -> [241][Module]<< !_PrimitiveShared ( lri:(Shared)->_Expr | lri:(Shared)->_LongType ( lri:(Type)->_Expr | lri:<skip> ) | lri:<skip> ) @ >>
+
+[239][Module]<< !_PrimitiveShared ( lri:(Shared)->_Expr | lri:(Shared)->_LongType ( lri:(Type)->_Expr | lri:<skip> ) | @ lri:<skip> ) >>
+[RULE: 13][CLAUSE: 0]
+	epsilon -> [242][Module]<< !_PrimitiveShared ( lri:(Shared)->_Expr | lri:(Shared)->_LongType ( lri:(Type)->_Expr | lri:<skip> ) | lri:<skip> @ ) >>
+
+[240][Module]<< !_PrimitiveShared ( lri:(Shared)->_Expr | lri:(Shared)->_LongType ( lri:(Type)->_Expr | lri:<skip> ) | lri:<skip> ) >> @[ENDING]
+[RULE: 13][CLAUSE: 0]
+
+[241][Module]<< !_PrimitiveShared ( lri:(Shared)->_Expr | lri:(Shared)->_LongType ( lri:(Type)->_Expr | lri:<skip> ) | lri:<skip> ) @ >>
+[RULE: 13][CLAUSE: 0]
+	epsilon -> [240][Module]<< !_PrimitiveShared ( lri:(Shared)->_Expr | lri:(Shared)->_LongType ( lri:(Type)->_Expr | lri:<skip> ) | lri:<skip> ) >> @[ENDING]
+		- EndObject()
+
+[242][Module]<< !_PrimitiveShared ( lri:(Shared)->_Expr | lri:(Shared)->_LongType ( lri:(Type)->_Expr | lri:<skip> ) | lri:<skip> @ ) >>
+[RULE: 13][CLAUSE: 0]
+	epsilon -> [241][Module]<< !_PrimitiveShared ( lri:(Shared)->_Expr | lri:(Shared)->_LongType ( lri:(Type)->_Expr | lri:<skip> ) | lri:<skip> ) @ >>
+
+[243][Module]<< !_PrimitiveShared ( lri:(Shared)->_Expr | lri:(Shared)->_LongType ( lri:(Type)->_Expr | lri:<skip> @ ) | lri:<skip> ) >>
+[RULE: 13][CLAUSE: 0]
+	epsilon -> [238][Module]<< !_PrimitiveShared ( lri:(Shared)->_Expr | lri:(Shared)->_LongType ( lri:(Type)->_Expr | lri:<skip> ) @ | lri:<skip> ) >>
+
+[244][Module]<< !_PrimitiveShared ( lri:(Shared)->_Expr | lri:(Shared)->_LongType @ ( lri:(Type)->_Expr | lri:<skip> ) | lri:<skip> ) >>
+[RULE: 13][CLAUSE: 0]
+	epsilon -> [235][Module]<< !_PrimitiveShared ( lri:(Shared)->_Expr | lri:(Shared)->_LongType ( @ lri:(Type)->_Expr | lri:<skip> ) | lri:<skip> ) >>
+	epsilon -> [237][Module]<< !_PrimitiveShared ( lri:(Shared)->_Expr | lri:(Shared)->_LongType ( lri:(Type)->_Expr | @ lri:<skip> ) | lri:<skip> ) >>
+
+[245][Module]<< !_PrimitiveShared ( lri:(Shared)->_Expr | lri:(Shared)->_LongType @ ( lri:(Type)->_Expr | lri:<skip> ) | lri:<skip> ) >>
+[RULE: 13][CLAUSE: 0]
+	epsilon -> [244][Module]<< !_PrimitiveShared ( lri:(Shared)->_Expr | lri:(Shared)->_LongType @ ( lri:(Type)->_Expr | lri:<skip> ) | lri:<skip> ) >>
+
+[246][Module]<< !_PrimitiveShared @ ( lri:(Shared)->_Expr | lri:(Shared)->_LongType ( lri:(Type)->_Expr | lri:<skip> ) | lri:<skip> ) >>
+[RULE: 13][CLAUSE: 0]
+	epsilon -> [247][Module]<< !_PrimitiveShared @ ( lri:(Shared)->_Expr | lri:(Shared)->_LongType ( lri:(Type)->_Expr | lri:<skip> ) | lri:<skip> ) >>
+
+[247][Module]<< !_PrimitiveShared @ ( lri:(Shared)->_Expr | lri:(Shared)->_LongType ( lri:(Type)->_Expr | lri:<skip> ) | lri:<skip> ) >>
+[RULE: 13][CLAUSE: 0]
+	epsilon -> [232][Module]<< !_PrimitiveShared ( @ lri:(Shared)->_Expr | lri:(Shared)->_LongType ( lri:(Type)->_Expr | lri:<skip> ) | lri:<skip> ) >>
+	epsilon -> [234][Module]<< !_PrimitiveShared ( lri:(Shared)->_Expr | @ lri:(Shared)->_LongType ( lri:(Type)->_Expr | lri:<skip> ) | lri:<skip> ) >>
+	epsilon -> [239][Module]<< !_PrimitiveShared ( lri:(Shared)->_Expr | lri:(Shared)->_LongType ( lri:(Type)->_Expr | lri:<skip> ) | @ lri:<skip> ) >>
+
+[248][Module]<< !_PrimitiveTypeOnly ( @ lri:(Type)->_Expr | lri:(Type)->_LongType ( lri:(Type)->_Expr | lri:<skip> ) | lri:<skip> ) >>
+[RULE: 13][CLAUSE: 1]
+	lr-inject: Type -> _Expr -> [249][Module]<< !_PrimitiveTypeOnly ( lri:(Type)->_Expr @ | lri:(Type)->_LongType ( lri:(Type)->_Expr | lri:<skip> ) | lri:<skip> ) >>
+		+ ReopenObject()
+
+[249][Module]<< !_PrimitiveTypeOnly ( lri:(Type)->_Expr @ | lri:(Type)->_LongType ( lri:(Type)->_Expr | lri:<skip> ) | lri:<skip> ) >>
+[RULE: 13][CLAUSE: 1]
+	epsilon -> [257][Module]<< !_PrimitiveTypeOnly ( lri:(Type)->_Expr | lri:(Type)->_LongType ( lri:(Type)->_Expr | lri:<skip> ) | lri:<skip> ) @ >>
+
+[250][Module]<< !_PrimitiveTypeOnly ( lri:(Type)->_Expr | @ lri:(Type)->_LongType ( lri:(Type)->_Expr | lri:<skip> ) | lri:<skip> ) >>
+[RULE: 13][CLAUSE: 1]
+	lr-inject: Type -> _LongType -> [261][Module]<< !_PrimitiveTypeOnly ( lri:(Type)->_Expr | lri:(Type)->_LongType @ ( lri:(Type)->_Expr | lri:<skip> ) | lri:<skip> ) >>
+		+ ReopenObject()
+
+[251][Module]<< !_PrimitiveTypeOnly ( lri:(Type)->_Expr | lri:(Type)->_LongType ( @ lri:(Type)->_Expr | lri:<skip> ) | lri:<skip> ) >>
+[RULE: 13][CLAUSE: 1]
+	lr-inject: Type -> _Expr -> [252][Module]<< !_PrimitiveTypeOnly ( lri:(Type)->_Expr | lri:(Type)->_LongType ( lri:(Type)->_Expr @ | lri:<skip> ) | lri:<skip> ) >>
+		+ ReopenObject()
+
+[252][Module]<< !_PrimitiveTypeOnly ( lri:(Type)->_Expr | lri:(Type)->_LongType ( lri:(Type)->_Expr @ | lri:<skip> ) | lri:<skip> ) >>
+[RULE: 13][CLAUSE: 1]
+	epsilon -> [254][Module]<< !_PrimitiveTypeOnly ( lri:(Type)->_Expr | lri:(Type)->_LongType ( lri:(Type)->_Expr | lri:<skip> ) @ | lri:<skip> ) >>
+
+[253][Module]<< !_PrimitiveTypeOnly ( lri:(Type)->_Expr | lri:(Type)->_LongType ( lri:(Type)->_Expr | @ lri:<skip> ) | lri:<skip> ) >>
+[RULE: 13][CLAUSE: 1]
+	epsilon -> [259][Module]<< !_PrimitiveTypeOnly ( lri:(Type)->_Expr | lri:(Type)->_LongType ( lri:(Type)->_Expr | lri:<skip> @ ) | lri:<skip> ) >>
+
+[254][Module]<< !_PrimitiveTypeOnly ( lri:(Type)->_Expr | lri:(Type)->_LongType ( lri:(Type)->_Expr | lri:<skip> ) @ | lri:<skip> ) >>
+[RULE: 13][CLAUSE: 1]
+	epsilon -> [257][Module]<< !_PrimitiveTypeOnly ( lri:(Type)->_Expr | lri:(Type)->_LongType ( lri:(Type)->_Expr | lri:<skip> ) | lri:<skip> ) @ >>
+
+[255][Module]<< !_PrimitiveTypeOnly ( lri:(Type)->_Expr | lri:(Type)->_LongType ( lri:(Type)->_Expr | lri:<skip> ) | @ lri:<skip> ) >>
+[RULE: 13][CLAUSE: 1]
+	epsilon -> [258][Module]<< !_PrimitiveTypeOnly ( lri:(Type)->_Expr | lri:(Type)->_LongType ( lri:(Type)->_Expr | lri:<skip> ) | lri:<skip> @ ) >>
+
+[256][Module]<< !_PrimitiveTypeOnly ( lri:(Type)->_Expr | lri:(Type)->_LongType ( lri:(Type)->_Expr | lri:<skip> ) | lri:<skip> ) >> @[ENDING]
+[RULE: 13][CLAUSE: 1]
+
+[257][Module]<< !_PrimitiveTypeOnly ( lri:(Type)->_Expr | lri:(Type)->_LongType ( lri:(Type)->_Expr | lri:<skip> ) | lri:<skip> ) @ >>
+[RULE: 13][CLAUSE: 1]
+	epsilon -> [256][Module]<< !_PrimitiveTypeOnly ( lri:(Type)->_Expr | lri:(Type)->_LongType ( lri:(Type)->_Expr | lri:<skip> ) | lri:<skip> ) >> @[ENDING]
+		- EndObject()
+
+[258][Module]<< !_PrimitiveTypeOnly ( lri:(Type)->_Expr | lri:(Type)->_LongType ( lri:(Type)->_Expr | lri:<skip> ) | lri:<skip> @ ) >>
+[RULE: 13][CLAUSE: 1]
+	epsilon -> [257][Module]<< !_PrimitiveTypeOnly ( lri:(Type)->_Expr | lri:(Type)->_LongType ( lri:(Type)->_Expr | lri:<skip> ) | lri:<skip> ) @ >>
+
+[259][Module]<< !_PrimitiveTypeOnly ( lri:(Type)->_Expr | lri:(Type)->_LongType ( lri:(Type)->_Expr | lri:<skip> @ ) | lri:<skip> ) >>
+[RULE: 13][CLAUSE: 1]
+	epsilon -> [254][Module]<< !_PrimitiveTypeOnly ( lri:(Type)->_Expr | lri:(Type)->_LongType ( lri:(Type)->_Expr | lri:<skip> ) @ | lri:<skip> ) >>
+
+[260][Module]<< !_PrimitiveTypeOnly ( lri:(Type)->_Expr | lri:(Type)->_LongType @ ( lri:(Type)->_Expr | lri:<skip> ) | lri:<skip> ) >>
+[RULE: 13][CLAUSE: 1]
+	epsilon -> [251][Module]<< !_PrimitiveTypeOnly ( lri:(Type)->_Expr | lri:(Type)->_LongType ( @ lri:(Type)->_Expr | lri:<skip> ) | lri:<skip> ) >>
+	epsilon -> [253][Module]<< !_PrimitiveTypeOnly ( lri:(Type)->_Expr | lri:(Type)->_LongType ( lri:(Type)->_Expr | @ lri:<skip> ) | lri:<skip> ) >>
+
+[261][Module]<< !_PrimitiveTypeOnly ( lri:(Type)->_Expr | lri:(Type)->_LongType @ ( lri:(Type)->_Expr | lri:<skip> ) | lri:<skip> ) >>
+[RULE: 13][CLAUSE: 1]
+	epsilon -> [260][Module]<< !_PrimitiveTypeOnly ( lri:(Type)->_Expr | lri:(Type)->_LongType @ ( lri:(Type)->_Expr | lri:<skip> ) | lri:<skip> ) >>
+
+[262][Module]<< !_PrimitiveTypeOnly @ ( lri:(Type)->_Expr | lri:(Type)->_LongType ( lri:(Type)->_Expr | lri:<skip> ) | lri:<skip> ) >>
+[RULE: 13][CLAUSE: 1]
+	epsilon -> [248][Module]<< !_PrimitiveTypeOnly ( @ lri:(Type)->_Expr | lri:(Type)->_LongType ( lri:(Type)->_Expr | lri:<skip> ) | lri:<skip> ) >>
+	epsilon -> [250][Module]<< !_PrimitiveTypeOnly ( lri:(Type)->_Expr | @ lri:(Type)->_LongType ( lri:(Type)->_Expr | lri:<skip> ) | lri:<skip> ) >>
+	epsilon -> [255][Module]<< !_PrimitiveTypeOnly ( lri:(Type)->_Expr | lri:(Type)->_LongType ( lri:(Type)->_Expr | lri:<skip> ) | @ lri:<skip> ) >>
+
+[263][Module]<< !_PrimitiveTypeOnly @ ( lri:(Type)->_Expr | lri:(Type)->_LongType ( lri:(Type)->_Expr | lri:<skip> ) | lri:<skip> ) >>
+[RULE: 13][CLAUSE: 1]
+	epsilon -> [262][Module]<< !_PrimitiveTypeOnly @ ( lri:(Type)->_Expr | lri:(Type)->_LongType ( lri:(Type)->_Expr | lri:<skip> ) | lri:<skip> ) >>
+
+[264][Module]<< @ !_PrimitiveExprOnly ( lri:(Expr)->_Expr | lri:<skip> ) >>
+[RULE: 13][CLAUSE: 2]
+	rule: _PrimitiveExprOnly -> [230][Module]<< !_PrimitiveExprOnly @ ( lri:(Expr)->_Expr | lri:<skip> ) >>
+		+ ReopenObject()
+
+[265][Module]<< @ !_PrimitiveShared ( lri:(Shared)->_Expr | lri:(Shared)->_LongType ( lri:(Type)->_Expr | lri:<skip> ) | lri:<skip> ) >>
+[RULE: 13][CLAUSE: 0]
+	rule: _PrimitiveShared -> [246][Module]<< !_PrimitiveShared @ ( lri:(Shared)->_Expr | lri:(Shared)->_LongType ( lri:(Type)->_Expr | lri:<skip> ) | lri:<skip> ) >>
+		+ ReopenObject()
+
+[266][Module]<< @ !_PrimitiveTypeOnly ( lri:(Type)->_Expr | lri:(Type)->_LongType ( lri:(Type)->_Expr | lri:<skip> ) | lri:<skip> ) >>
+[RULE: 13][CLAUSE: 1]
+	rule: _PrimitiveTypeOnly -> [263][Module]<< !_PrimitiveTypeOnly @ ( lri:(Type)->_Expr | lri:(Type)->_LongType ( lri:(Type)->_Expr | lri:<skip> ) | lri:<skip> ) >>
+		+ ReopenObject()
+
+[267][Module]@ << !_PrimitiveExprOnly ( lri:(Expr)->_Expr | lri:<skip> ) >>
+[RULE: 13][CLAUSE: 2]
+	epsilon -> [264][Module]<< @ !_PrimitiveExprOnly ( lri:(Expr)->_Expr | lri:<skip> ) >>
+		- DelayFieldAssignment()
+
+[268][Module]@ << !_PrimitiveShared ( lri:(Shared)->_Expr | lri:(Shared)->_LongType ( lri:(Type)->_Expr | lri:<skip> ) | lri:<skip> ) >>
+[RULE: 13][CLAUSE: 0]
+	epsilon -> [265][Module]<< @ !_PrimitiveShared ( lri:(Shared)->_Expr | lri:(Shared)->_LongType ( lri:(Type)->_Expr | lri:<skip> ) | lri:<skip> ) >>
+		- DelayFieldAssignment()
+
+[269][Module]@ << !_PrimitiveTypeOnly ( lri:(Type)->_Expr | lri:(Type)->_LongType ( lri:(Type)->_Expr | lri:<skip> ) | lri:<skip> ) >>
+[RULE: 13][CLAUSE: 1]
+	epsilon -> [266][Module]<< @ !_PrimitiveTypeOnly ( lri:(Type)->_Expr | lri:(Type)->_LongType ( lri:(Type)->_Expr | lri:<skip> ) | lri:<skip> ) >>
+		- DelayFieldAssignment()
+

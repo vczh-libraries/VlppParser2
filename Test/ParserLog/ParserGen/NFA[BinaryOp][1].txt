@@ -1,0 +1,425 @@
+﻿[0][Exp0]< @ ID >
+[RULE: 0][CLAUSE: 0]
+	token: ID -> [2][Exp0]< ID @ >
+		+ Token()
+		+ Field(RefExpr::name)
+
+[1][Exp0]< ID > @[ENDING]
+[RULE: 0][CLAUSE: 0]
+
+[2][Exp0]< ID @ >
+[RULE: 0][CLAUSE: 0]
+	epsilon -> [1][Exp0]< ID > @[ENDING]
+		- EndObject()
+
+[3][Exp0]<< "(" !Exp6 ")" >> @[ENDING]
+[RULE: 0][CLAUSE: 1]
+
+[4][Exp0]<< "(" !Exp6 ")" @ >>
+[RULE: 0][CLAUSE: 1]
+	epsilon -> [3][Exp0]<< "(" !Exp6 ")" >> @[ENDING]
+		- EndObject()
+
+[5][Exp0]<< "(" !Exp6 @ ")" >>
+[RULE: 0][CLAUSE: 1]
+	token: ")" -> [4][Exp0]<< "(" !Exp6 ")" @ >>
+
+[6][Exp0]<< "(" !Exp6 @ ")" >>
+[RULE: 0][CLAUSE: 1]
+	epsilon -> [5][Exp0]<< "(" !Exp6 @ ")" >>
+
+[7][Exp0]<< "(" @ !Exp6 ")" >>
+[RULE: 0][CLAUSE: 1]
+	rule: Exp6 -> [6][Exp0]<< "(" !Exp6 @ ")" >>
+		+ ReopenObject()
+
+[8][Exp0]<< "(" @ !Exp6 ")" >>
+[RULE: 0][CLAUSE: 1]
+	epsilon -> [7][Exp0]<< "(" @ !Exp6 ")" >>
+
+[9][Exp0]<< @ "(" !Exp6 ")" >>
+[RULE: 0][CLAUSE: 1]
+	token: "(" -> [8][Exp0]<< "(" @ !Exp6 ")" >>
+
+[10][Exp0]@ < ID >
+[RULE: 0][CLAUSE: 0]
+	epsilon -> [0][Exp0]< @ ID >
+		- BeginObject(RefExpr)
+
+[11][Exp0]@ << "(" !Exp6 ")" >>
+[RULE: 0][CLAUSE: 1]
+	epsilon -> [9][Exp0]<< @ "(" !Exp6 ")" >>
+		- DelayFieldAssignment()
+
+[12][Exp1]< @ Exp1 "^" Exp0 >
+[RULE: 1][CLAUSE: 1]
+	rule: Exp1 -> [18][Exp1]< Exp1 @ "^" Exp0 >
+		+ Field(BinaryExpr::left)
+
+[13][Exp1]< Exp1 "^" @ Exp0 >
+[RULE: 1][CLAUSE: 1]
+	epsilon -> [14][Exp1]< Exp1 "^" @ Exp0 >
+
+[14][Exp1]< Exp1 "^" @ Exp0 >
+[RULE: 1][CLAUSE: 1]
+	rule: Exp0 -> [17][Exp1]< Exp1 "^" Exp0 @ >
+		+ Field(BinaryExpr::right)
+
+[15][Exp1]< Exp1 "^" Exp0 > @[ENDING]
+[RULE: 1][CLAUSE: 1]
+
+[16][Exp1]< Exp1 "^" Exp0 @ >
+[RULE: 1][CLAUSE: 1]
+	epsilon -> [15][Exp1]< Exp1 "^" Exp0 > @[ENDING]
+		- EndObject()
+
+[17][Exp1]< Exp1 "^" Exp0 @ >
+[RULE: 1][CLAUSE: 1]
+	epsilon -> [16][Exp1]< Exp1 "^" Exp0 @ >
+		- EnumItem(2)
+		- Field(BinaryExpr::op)
+
+[18][Exp1]< Exp1 @ "^" Exp0 >
+[RULE: 1][CLAUSE: 1]
+	epsilon -> [19][Exp1]< Exp1 @ "^" Exp0 >
+
+[19][Exp1]< Exp1 @ "^" Exp0 >
+[RULE: 1][CLAUSE: 1]
+	token: "^" -> [13][Exp1]< Exp1 "^" @ Exp0 >
+
+[20][Exp1]<< !Exp0 >> @[ENDING]
+[RULE: 1][CLAUSE: 0]
+
+[21][Exp1]<< !Exp0 @ >>
+[RULE: 1][CLAUSE: 0]
+	epsilon -> [20][Exp1]<< !Exp0 >> @[ENDING]
+		- EndObject()
+
+[22][Exp1]<< @ !Exp0 >>
+[RULE: 1][CLAUSE: 0]
+	rule: Exp0 -> [21][Exp1]<< !Exp0 @ >>
+		+ ReopenObject()
+
+[23][Exp1]@ < Exp1 "^" Exp0 >
+[RULE: 1][CLAUSE: 1]
+	epsilon -> [12][Exp1]< @ Exp1 "^" Exp0 >
+		- BeginObject(BinaryExpr)
+
+[24][Exp1]@ << !Exp0 >>
+[RULE: 1][CLAUSE: 0]
+	epsilon -> [22][Exp1]<< @ !Exp0 >>
+		- DelayFieldAssignment()
+
+[25][Exp2]< @ Exp2 "*" Exp1 >
+[RULE: 2][CLAUSE: 1]
+	rule: Exp2 -> [31][Exp2]< Exp2 @ "*" Exp1 >
+		+ Field(BinaryExpr::left)
+
+[26][Exp2]< Exp2 "*" @ Exp1 >
+[RULE: 2][CLAUSE: 1]
+	epsilon -> [27][Exp2]< Exp2 "*" @ Exp1 >
+
+[27][Exp2]< Exp2 "*" @ Exp1 >
+[RULE: 2][CLAUSE: 1]
+	rule: Exp1 -> [30][Exp2]< Exp2 "*" Exp1 @ >
+		+ Field(BinaryExpr::right)
+
+[28][Exp2]< Exp2 "*" Exp1 > @[ENDING]
+[RULE: 2][CLAUSE: 1]
+
+[29][Exp2]< Exp2 "*" Exp1 @ >
+[RULE: 2][CLAUSE: 1]
+	epsilon -> [28][Exp2]< Exp2 "*" Exp1 > @[ENDING]
+		- EndObject()
+
+[30][Exp2]< Exp2 "*" Exp1 @ >
+[RULE: 2][CLAUSE: 1]
+	epsilon -> [29][Exp2]< Exp2 "*" Exp1 @ >
+		- EnumItem(1)
+		- Field(BinaryExpr::op)
+
+[31][Exp2]< Exp2 @ "*" Exp1 >
+[RULE: 2][CLAUSE: 1]
+	epsilon -> [32][Exp2]< Exp2 @ "*" Exp1 >
+
+[32][Exp2]< Exp2 @ "*" Exp1 >
+[RULE: 2][CLAUSE: 1]
+	token: "*" -> [26][Exp2]< Exp2 "*" @ Exp1 >
+
+[33][Exp2]<< !Exp1 >> @[ENDING]
+[RULE: 2][CLAUSE: 0]
+
+[34][Exp2]<< !Exp1 @ >>
+[RULE: 2][CLAUSE: 0]
+	epsilon -> [33][Exp2]<< !Exp1 >> @[ENDING]
+		- EndObject()
+
+[35][Exp2]<< @ !Exp1 >>
+[RULE: 2][CLAUSE: 0]
+	rule: Exp1 -> [34][Exp2]<< !Exp1 @ >>
+		+ ReopenObject()
+
+[36][Exp2]@ < Exp2 "*" Exp1 >
+[RULE: 2][CLAUSE: 1]
+	epsilon -> [25][Exp2]< @ Exp2 "*" Exp1 >
+		- BeginObject(BinaryExpr)
+
+[37][Exp2]@ << !Exp1 >>
+[RULE: 2][CLAUSE: 0]
+	epsilon -> [35][Exp2]<< @ !Exp1 >>
+		- DelayFieldAssignment()
+
+[38][Exp3]< @ Exp3 "+" Exp2 >
+[RULE: 3][CLAUSE: 1]
+	rule: Exp3 -> [44][Exp3]< Exp3 @ "+" Exp2 >
+		+ Field(BinaryExpr::left)
+
+[39][Exp3]< Exp3 "+" @ Exp2 >
+[RULE: 3][CLAUSE: 1]
+	epsilon -> [40][Exp3]< Exp3 "+" @ Exp2 >
+
+[40][Exp3]< Exp3 "+" @ Exp2 >
+[RULE: 3][CLAUSE: 1]
+	rule: Exp2 -> [43][Exp3]< Exp3 "+" Exp2 @ >
+		+ Field(BinaryExpr::right)
+
+[41][Exp3]< Exp3 "+" Exp2 > @[ENDING]
+[RULE: 3][CLAUSE: 1]
+
+[42][Exp3]< Exp3 "+" Exp2 @ >
+[RULE: 3][CLAUSE: 1]
+	epsilon -> [41][Exp3]< Exp3 "+" Exp2 > @[ENDING]
+		- EndObject()
+
+[43][Exp3]< Exp3 "+" Exp2 @ >
+[RULE: 3][CLAUSE: 1]
+	epsilon -> [42][Exp3]< Exp3 "+" Exp2 @ >
+		- EnumItem(0)
+		- Field(BinaryExpr::op)
+
+[44][Exp3]< Exp3 @ "+" Exp2 >
+[RULE: 3][CLAUSE: 1]
+	epsilon -> [45][Exp3]< Exp3 @ "+" Exp2 >
+
+[45][Exp3]< Exp3 @ "+" Exp2 >
+[RULE: 3][CLAUSE: 1]
+	token: "+" -> [39][Exp3]< Exp3 "+" @ Exp2 >
+
+[46][Exp3]<< !Exp2 >> @[ENDING]
+[RULE: 3][CLAUSE: 0]
+
+[47][Exp3]<< !Exp2 @ >>
+[RULE: 3][CLAUSE: 0]
+	epsilon -> [46][Exp3]<< !Exp2 >> @[ENDING]
+		- EndObject()
+
+[48][Exp3]<< @ !Exp2 >>
+[RULE: 3][CLAUSE: 0]
+	rule: Exp2 -> [47][Exp3]<< !Exp2 @ >>
+		+ ReopenObject()
+
+[49][Exp3]@ < Exp3 "+" Exp2 >
+[RULE: 3][CLAUSE: 1]
+	epsilon -> [38][Exp3]< @ Exp3 "+" Exp2 >
+		- BeginObject(BinaryExpr)
+
+[50][Exp3]@ << !Exp2 >>
+[RULE: 3][CLAUSE: 0]
+	epsilon -> [48][Exp3]<< @ !Exp2 >>
+		- DelayFieldAssignment()
+
+[51][Exp4]< @ Exp3 "=" Exp4 >
+[RULE: 4][CLAUSE: 1]
+	rule: Exp3 -> [57][Exp4]< Exp3 @ "=" Exp4 >
+		+ Field(BinaryExpr::left)
+
+[52][Exp4]< Exp3 "=" @ Exp4 >
+[RULE: 4][CLAUSE: 1]
+	epsilon -> [53][Exp4]< Exp3 "=" @ Exp4 >
+
+[53][Exp4]< Exp3 "=" @ Exp4 >
+[RULE: 4][CLAUSE: 1]
+	rule: Exp4 -> [56][Exp4]< Exp3 "=" Exp4 @ >
+		+ Field(BinaryExpr::right)
+
+[54][Exp4]< Exp3 "=" Exp4 > @[ENDING]
+[RULE: 4][CLAUSE: 1]
+
+[55][Exp4]< Exp3 "=" Exp4 @ >
+[RULE: 4][CLAUSE: 1]
+	epsilon -> [54][Exp4]< Exp3 "=" Exp4 > @[ENDING]
+		- EndObject()
+
+[56][Exp4]< Exp3 "=" Exp4 @ >
+[RULE: 4][CLAUSE: 1]
+	epsilon -> [55][Exp4]< Exp3 "=" Exp4 @ >
+		- EnumItem(3)
+		- Field(BinaryExpr::op)
+
+[57][Exp4]< Exp3 @ "=" Exp4 >
+[RULE: 4][CLAUSE: 1]
+	epsilon -> [58][Exp4]< Exp3 @ "=" Exp4 >
+
+[58][Exp4]< Exp3 @ "=" Exp4 >
+[RULE: 4][CLAUSE: 1]
+	token: "=" -> [52][Exp4]< Exp3 "=" @ Exp4 >
+
+[59][Exp4]<< !Exp3 >> @[ENDING]
+[RULE: 4][CLAUSE: 0]
+
+[60][Exp4]<< !Exp3 @ >>
+[RULE: 4][CLAUSE: 0]
+	epsilon -> [59][Exp4]<< !Exp3 >> @[ENDING]
+		- EndObject()
+
+[61][Exp4]<< @ !Exp3 >>
+[RULE: 4][CLAUSE: 0]
+	rule: Exp3 -> [60][Exp4]<< !Exp3 @ >>
+		+ ReopenObject()
+
+[62][Exp4]@ < Exp3 "=" Exp4 >
+[RULE: 4][CLAUSE: 1]
+	epsilon -> [51][Exp4]< @ Exp3 "=" Exp4 >
+		- BeginObject(BinaryExpr)
+
+[63][Exp4]@ << !Exp3 >>
+[RULE: 4][CLAUSE: 0]
+	epsilon -> [61][Exp4]<< @ !Exp3 >>
+		- DelayFieldAssignment()
+
+[64][Exp5]< @ Exp4 "?" Exp5 >
+[RULE: 5][CLAUSE: 1]
+	rule: Exp4 -> [70][Exp5]< Exp4 @ "?" Exp5 >
+		+ Field(BinaryExpr::left)
+
+[65][Exp5]< Exp4 "?" @ Exp5 >
+[RULE: 5][CLAUSE: 1]
+	epsilon -> [66][Exp5]< Exp4 "?" @ Exp5 >
+
+[66][Exp5]< Exp4 "?" @ Exp5 >
+[RULE: 5][CLAUSE: 1]
+	rule: Exp5 -> [69][Exp5]< Exp4 "?" Exp5 @ >
+		+ Field(BinaryExpr::right)
+
+[67][Exp5]< Exp4 "?" Exp5 > @[ENDING]
+[RULE: 5][CLAUSE: 1]
+
+[68][Exp5]< Exp4 "?" Exp5 @ >
+[RULE: 5][CLAUSE: 1]
+	epsilon -> [67][Exp5]< Exp4 "?" Exp5 > @[ENDING]
+		- EndObject()
+
+[69][Exp5]< Exp4 "?" Exp5 @ >
+[RULE: 5][CLAUSE: 1]
+	epsilon -> [68][Exp5]< Exp4 "?" Exp5 @ >
+		- EnumItem(4)
+		- Field(BinaryExpr::op)
+
+[70][Exp5]< Exp4 @ "?" Exp5 >
+[RULE: 5][CLAUSE: 1]
+	epsilon -> [71][Exp5]< Exp4 @ "?" Exp5 >
+
+[71][Exp5]< Exp4 @ "?" Exp5 >
+[RULE: 5][CLAUSE: 1]
+	token: "?" -> [65][Exp5]< Exp4 "?" @ Exp5 >
+
+[72][Exp5]<< !Exp4 >> @[ENDING]
+[RULE: 5][CLAUSE: 0]
+
+[73][Exp5]<< !Exp4 @ >>
+[RULE: 5][CLAUSE: 0]
+	epsilon -> [72][Exp5]<< !Exp4 >> @[ENDING]
+		- EndObject()
+
+[74][Exp5]<< @ !Exp4 >>
+[RULE: 5][CLAUSE: 0]
+	rule: Exp4 -> [73][Exp5]<< !Exp4 @ >>
+		+ ReopenObject()
+
+[75][Exp5]@ < Exp4 "?" Exp5 >
+[RULE: 5][CLAUSE: 1]
+	epsilon -> [64][Exp5]< @ Exp4 "?" Exp5 >
+		- BeginObject(BinaryExpr)
+
+[76][Exp5]@ << !Exp4 >>
+[RULE: 5][CLAUSE: 0]
+	epsilon -> [74][Exp5]<< @ !Exp4 >>
+		- DelayFieldAssignment()
+
+[77][Exp6]< @ Exp5 "$" Exp6 >
+[RULE: 6][CLAUSE: 1]
+	rule: Exp5 -> [83][Exp6]< Exp5 @ "$" Exp6 >
+		+ Field(BinaryExpr::left)
+
+[78][Exp6]< Exp5 "$" @ Exp6 >
+[RULE: 6][CLAUSE: 1]
+	epsilon -> [79][Exp6]< Exp5 "$" @ Exp6 >
+
+[79][Exp6]< Exp5 "$" @ Exp6 >
+[RULE: 6][CLAUSE: 1]
+	rule: Exp6 -> [82][Exp6]< Exp5 "$" Exp6 @ >
+		+ Field(BinaryExpr::right)
+
+[80][Exp6]< Exp5 "$" Exp6 > @[ENDING]
+[RULE: 6][CLAUSE: 1]
+
+[81][Exp6]< Exp5 "$" Exp6 @ >
+[RULE: 6][CLAUSE: 1]
+	epsilon -> [80][Exp6]< Exp5 "$" Exp6 > @[ENDING]
+		- EndObject()
+
+[82][Exp6]< Exp5 "$" Exp6 @ >
+[RULE: 6][CLAUSE: 1]
+	epsilon -> [81][Exp6]< Exp5 "$" Exp6 @ >
+		- EnumItem(5)
+		- Field(BinaryExpr::op)
+
+[83][Exp6]< Exp5 @ "$" Exp6 >
+[RULE: 6][CLAUSE: 1]
+	epsilon -> [84][Exp6]< Exp5 @ "$" Exp6 >
+
+[84][Exp6]< Exp5 @ "$" Exp6 >
+[RULE: 6][CLAUSE: 1]
+	token: "$" -> [78][Exp6]< Exp5 "$" @ Exp6 >
+
+[85][Exp6]<< !Exp5 >> @[ENDING]
+[RULE: 6][CLAUSE: 0]
+
+[86][Exp6]<< !Exp5 @ >>
+[RULE: 6][CLAUSE: 0]
+	epsilon -> [85][Exp6]<< !Exp5 >> @[ENDING]
+		- EndObject()
+
+[87][Exp6]<< @ !Exp5 >>
+[RULE: 6][CLAUSE: 0]
+	rule: Exp5 -> [86][Exp6]<< !Exp5 @ >>
+		+ ReopenObject()
+
+[88][Exp6]@ < Exp5 "$" Exp6 >
+[RULE: 6][CLAUSE: 1]
+	epsilon -> [77][Exp6]< @ Exp5 "$" Exp6 >
+		- BeginObject(BinaryExpr)
+
+[89][Exp6]@ << !Exp5 >>
+[RULE: 6][CLAUSE: 0]
+	epsilon -> [87][Exp6]<< @ !Exp5 >>
+		- DelayFieldAssignment()
+
+[90][Module]<< !Exp6 >> @[ENDING]
+[RULE: 7][CLAUSE: 0]
+
+[91][Module]<< !Exp6 @ >>
+[RULE: 7][CLAUSE: 0]
+	epsilon -> [90][Module]<< !Exp6 >> @[ENDING]
+		- EndObject()
+
+[92][Module]<< @ !Exp6 >>
+[RULE: 7][CLAUSE: 0]
+	rule: Exp6 -> [91][Module]<< !Exp6 @ >>
+		+ ReopenObject()
+
+[93][Module]@ << !Exp6 >>
+[RULE: 7][CLAUSE: 0]
+	epsilon -> [92][Module]<< @ !Exp6 >>
+		- DelayFieldAssignment()
+

@@ -1,0 +1,468 @@
+﻿[0][Exp0]< @ ID "<" { Exp ; "," } ">" >
+[RULE: 0][CLAUSE: 1]
+	token: ID -> [13][Exp0]< ID @ "<" { Exp ; "," } ">" >
+		+ Token()
+		+ Field(GenericExpr::name)
+
+[1][Exp0]< @ ID >
+[RULE: 0][CLAUSE: 0]
+	token: ID -> [15][Exp0]< ID @ >
+		+ Token()
+		+ Field(RefExpr::name)
+
+[2][Exp0]< ID "<" @ { Exp ; "," } ">" >
+[RULE: 0][CLAUSE: 1]
+	epsilon -> [4][Exp0]< ID "<" { @ Exp ; "," } ">" >
+	epsilon -> [9][Exp0]< ID "<" { Exp ; "," } @ ">" >
+
+[3][Exp0]< ID "<" @ { Exp ; "," } ">" >
+[RULE: 0][CLAUSE: 1]
+	epsilon -> [2][Exp0]< ID "<" @ { Exp ; "," } ">" >
+
+[4][Exp0]< ID "<" { @ Exp ; "," } ">" >
+[RULE: 0][CLAUSE: 1]
+	rule: Exp -> [11][Exp0]< ID "<" { Exp @ ; "," } ">" >
+		+ Field(GenericExpr::args)
+
+[5][Exp0]< ID "<" { Exp ; "," @ } ">" >
+[RULE: 0][CLAUSE: 1]
+	epsilon -> [4][Exp0]< ID "<" { @ Exp ; "," } ">" >
+
+[6][Exp0]< ID "<" { Exp ; "," } ">" > @[ENDING]
+[RULE: 0][CLAUSE: 1]
+
+[7][Exp0]< ID "<" { Exp ; "," } ">" @ >
+[RULE: 0][CLAUSE: 1]
+	epsilon -> [6][Exp0]< ID "<" { Exp ; "," } ">" > @[ENDING]
+		- EndObject()
+
+[8][Exp0]< ID "<" { Exp ; "," } @ ">" >
+[RULE: 0][CLAUSE: 1]
+	token: ">" -> [7][Exp0]< ID "<" { Exp ; "," } ">" @ >
+
+[9][Exp0]< ID "<" { Exp ; "," } @ ">" >
+[RULE: 0][CLAUSE: 1]
+	epsilon -> [8][Exp0]< ID "<" { Exp ; "," } @ ">" >
+
+[10][Exp0]< ID "<" { Exp ; @ "," } ">" >
+[RULE: 0][CLAUSE: 1]
+	token: "," -> [5][Exp0]< ID "<" { Exp ; "," @ } ">" >
+
+[11][Exp0]< ID "<" { Exp @ ; "," } ">" >
+[RULE: 0][CLAUSE: 1]
+	epsilon -> [9][Exp0]< ID "<" { Exp ; "," } @ ">" >
+	epsilon -> [10][Exp0]< ID "<" { Exp ; @ "," } ">" >
+
+[12][Exp0]< ID > @[ENDING]
+[RULE: 0][CLAUSE: 0]
+
+[13][Exp0]< ID @ "<" { Exp ; "," } ">" >
+[RULE: 0][CLAUSE: 1]
+	epsilon -> [14][Exp0]< ID @ "<" { Exp ; "," } ">" >
+
+[14][Exp0]< ID @ "<" { Exp ; "," } ">" >
+[RULE: 0][CLAUSE: 1]
+	token: "<" -> [3][Exp0]< ID "<" @ { Exp ; "," } ">" >
+
+[15][Exp0]< ID @ >
+[RULE: 0][CLAUSE: 0]
+	epsilon -> [12][Exp0]< ID > @[ENDING]
+		- EndObject()
+
+[16][Exp0]<< "(" !Exp ")" >> @[ENDING]
+[RULE: 0][CLAUSE: 2]
+
+[17][Exp0]<< "(" !Exp ")" @ >>
+[RULE: 0][CLAUSE: 2]
+	epsilon -> [16][Exp0]<< "(" !Exp ")" >> @[ENDING]
+		- EndObject()
+
+[18][Exp0]<< "(" !Exp @ ")" >>
+[RULE: 0][CLAUSE: 2]
+	token: ")" -> [17][Exp0]<< "(" !Exp ")" @ >>
+
+[19][Exp0]<< "(" !Exp @ ")" >>
+[RULE: 0][CLAUSE: 2]
+	epsilon -> [18][Exp0]<< "(" !Exp @ ")" >>
+
+[20][Exp0]<< "(" @ !Exp ")" >>
+[RULE: 0][CLAUSE: 2]
+	epsilon -> [21][Exp0]<< "(" @ !Exp ")" >>
+
+[21][Exp0]<< "(" @ !Exp ")" >>
+[RULE: 0][CLAUSE: 2]
+	rule: Exp -> [19][Exp0]<< "(" !Exp @ ")" >>
+		+ ReopenObject()
+
+[22][Exp0]<< @ "(" !Exp ")" >>
+[RULE: 0][CLAUSE: 2]
+	token: "(" -> [20][Exp0]<< "(" @ !Exp ")" >>
+
+[23][Exp0]@ < ID "<" { Exp ; "," } ">" >
+[RULE: 0][CLAUSE: 1]
+	epsilon -> [0][Exp0]< @ ID "<" { Exp ; "," } ">" >
+		- BeginObject(GenericExpr)
+
+[24][Exp0]@ < ID >
+[RULE: 0][CLAUSE: 0]
+	epsilon -> [1][Exp0]< @ ID >
+		- BeginObject(RefExpr)
+
+[25][Exp0]@ << "(" !Exp ")" >>
+[RULE: 0][CLAUSE: 2]
+	epsilon -> [22][Exp0]<< @ "(" !Exp ")" >>
+		- DelayFieldAssignment()
+
+[26][Exp1]< @ Exp1 "(" { Exp ; "," } ")" >
+[RULE: 1][CLAUSE: 1]
+	rule: Exp1 -> [38][Exp1]< Exp1 @ "(" { Exp ; "," } ")" >
+		+ Field(CallExpr::func)
+
+[27][Exp1]< Exp1 "(" @ { Exp ; "," } ")" >
+[RULE: 1][CLAUSE: 1]
+	epsilon -> [28][Exp1]< Exp1 "(" @ { Exp ; "," } ")" >
+
+[28][Exp1]< Exp1 "(" @ { Exp ; "," } ")" >
+[RULE: 1][CLAUSE: 1]
+	epsilon -> [29][Exp1]< Exp1 "(" { @ Exp ; "," } ")" >
+	epsilon -> [33][Exp1]< Exp1 "(" { Exp ; "," } @ ")" >
+
+[29][Exp1]< Exp1 "(" { @ Exp ; "," } ")" >
+[RULE: 1][CLAUSE: 1]
+	rule: Exp -> [36][Exp1]< Exp1 "(" { Exp @ ; "," } ")" >
+		+ Field(CallExpr::args)
+
+[30][Exp1]< Exp1 "(" { Exp ; "," @ } ")" >
+[RULE: 1][CLAUSE: 1]
+	epsilon -> [29][Exp1]< Exp1 "(" { @ Exp ; "," } ")" >
+
+[31][Exp1]< Exp1 "(" { Exp ; "," } ")" > @[ENDING]
+[RULE: 1][CLAUSE: 1]
+
+[32][Exp1]< Exp1 "(" { Exp ; "," } ")" @ >
+[RULE: 1][CLAUSE: 1]
+	epsilon -> [31][Exp1]< Exp1 "(" { Exp ; "," } ")" > @[ENDING]
+		- EndObject()
+
+[33][Exp1]< Exp1 "(" { Exp ; "," } @ ")" >
+[RULE: 1][CLAUSE: 1]
+	epsilon -> [34][Exp1]< Exp1 "(" { Exp ; "," } @ ")" >
+
+[34][Exp1]< Exp1 "(" { Exp ; "," } @ ")" >
+[RULE: 1][CLAUSE: 1]
+	token: ")" -> [32][Exp1]< Exp1 "(" { Exp ; "," } ")" @ >
+
+[35][Exp1]< Exp1 "(" { Exp ; @ "," } ")" >
+[RULE: 1][CLAUSE: 1]
+	token: "," -> [30][Exp1]< Exp1 "(" { Exp ; "," @ } ")" >
+
+[36][Exp1]< Exp1 "(" { Exp @ ; "," } ")" >
+[RULE: 1][CLAUSE: 1]
+	epsilon -> [33][Exp1]< Exp1 "(" { Exp ; "," } @ ")" >
+	epsilon -> [35][Exp1]< Exp1 "(" { Exp ; @ "," } ")" >
+
+[37][Exp1]< Exp1 @ "(" { Exp ; "," } ")" >
+[RULE: 1][CLAUSE: 1]
+	token: "(" -> [27][Exp1]< Exp1 "(" @ { Exp ; "," } ")" >
+
+[38][Exp1]< Exp1 @ "(" { Exp ; "," } ")" >
+[RULE: 1][CLAUSE: 1]
+	epsilon -> [37][Exp1]< Exp1 @ "(" { Exp ; "," } ")" >
+
+[39][Exp1]<< !Exp0 >> @[ENDING]
+[RULE: 1][CLAUSE: 0]
+
+[40][Exp1]<< !Exp0 @ >>
+[RULE: 1][CLAUSE: 0]
+	epsilon -> [39][Exp1]<< !Exp0 >> @[ENDING]
+		- EndObject()
+
+[41][Exp1]<< @ !Exp0 >>
+[RULE: 1][CLAUSE: 0]
+	rule: Exp0 -> [40][Exp1]<< !Exp0 @ >>
+		+ ReopenObject()
+
+[42][Exp1]@ < Exp1 "(" { Exp ; "," } ")" >
+[RULE: 1][CLAUSE: 1]
+	epsilon -> [26][Exp1]< @ Exp1 "(" { Exp ; "," } ")" >
+		- BeginObject(CallExpr)
+
+[43][Exp1]@ << !Exp0 >>
+[RULE: 1][CLAUSE: 0]
+	epsilon -> [41][Exp1]<< @ !Exp0 >>
+		- DelayFieldAssignment()
+
+[44][Exp2]< @ Exp2 "+" "+" >
+[RULE: 2][CLAUSE: 2]
+	rule: Exp2 -> [64][Exp2]< Exp2 @ "+" "+" >
+		+ Field(PostfixExpr::expr)
+
+[45][Exp2]< @ Exp2 "+" >
+[RULE: 2][CLAUSE: 1]
+	rule: Exp2 -> [66][Exp2]< Exp2 @ "+" >
+		+ Field(PostfixExpr::expr)
+
+[46][Exp2]< @ Exp2 "-" "-" >
+[RULE: 2][CLAUSE: 4]
+	rule: Exp2 -> [67][Exp2]< Exp2 @ "-" "-" >
+		+ Field(DecrementExpr::expr)
+
+[47][Exp2]< @ Exp2 "-" >
+[RULE: 2][CLAUSE: 3]
+	rule: Exp2 -> [69][Exp2]< Exp2 @ "-" >
+		+ Field(PostfixExpr::expr)
+
+[48][Exp2]< Exp2 "+" "+" > @[ENDING]
+[RULE: 2][CLAUSE: 2]
+
+[49][Exp2]< Exp2 "+" "+" @ >
+[RULE: 2][CLAUSE: 2]
+	epsilon -> [50][Exp2]< Exp2 "+" "+" @ >
+		- EnumItem(2)
+		- Field(PostfixExpr::op)
+
+[50][Exp2]< Exp2 "+" "+" @ >
+[RULE: 2][CLAUSE: 2]
+	epsilon -> [48][Exp2]< Exp2 "+" "+" > @[ENDING]
+		- EndObject()
+
+[51][Exp2]< Exp2 "+" > @[ENDING]
+[RULE: 2][CLAUSE: 1]
+
+[52][Exp2]< Exp2 "+" @ "+" >
+[RULE: 2][CLAUSE: 2]
+	epsilon -> [53][Exp2]< Exp2 "+" @ "+" >
+
+[53][Exp2]< Exp2 "+" @ "+" >
+[RULE: 2][CLAUSE: 2]
+	token: "+" -> [49][Exp2]< Exp2 "+" "+" @ >
+
+[54][Exp2]< Exp2 "+" @ >
+[RULE: 2][CLAUSE: 1]
+	epsilon -> [55][Exp2]< Exp2 "+" @ >
+		- EnumItem(0)
+		- Field(PostfixExpr::op)
+
+[55][Exp2]< Exp2 "+" @ >
+[RULE: 2][CLAUSE: 1]
+	epsilon -> [51][Exp2]< Exp2 "+" > @[ENDING]
+		- EndObject()
+
+[56][Exp2]< Exp2 "-" "-" > @[ENDING]
+[RULE: 2][CLAUSE: 4]
+
+[57][Exp2]< Exp2 "-" "-" @ >
+[RULE: 2][CLAUSE: 4]
+	epsilon -> [56][Exp2]< Exp2 "-" "-" > @[ENDING]
+		- EndObject()
+
+[58][Exp2]< Exp2 "-" > @[ENDING]
+[RULE: 2][CLAUSE: 3]
+
+[59][Exp2]< Exp2 "-" @ "-" >
+[RULE: 2][CLAUSE: 4]
+	token: "-" -> [57][Exp2]< Exp2 "-" "-" @ >
+
+[60][Exp2]< Exp2 "-" @ "-" >
+[RULE: 2][CLAUSE: 4]
+	epsilon -> [59][Exp2]< Exp2 "-" @ "-" >
+
+[61][Exp2]< Exp2 "-" @ >
+[RULE: 2][CLAUSE: 3]
+	epsilon -> [62][Exp2]< Exp2 "-" @ >
+		- EnumItem(1)
+		- Field(PostfixExpr::op)
+
+[62][Exp2]< Exp2 "-" @ >
+[RULE: 2][CLAUSE: 3]
+	epsilon -> [58][Exp2]< Exp2 "-" > @[ENDING]
+		- EndObject()
+
+[63][Exp2]< Exp2 @ "+" "+" >
+[RULE: 2][CLAUSE: 2]
+	token: "+" -> [52][Exp2]< Exp2 "+" @ "+" >
+
+[64][Exp2]< Exp2 @ "+" "+" >
+[RULE: 2][CLAUSE: 2]
+	epsilon -> [63][Exp2]< Exp2 @ "+" "+" >
+
+[65][Exp2]< Exp2 @ "+" >
+[RULE: 2][CLAUSE: 1]
+	token: "+" -> [54][Exp2]< Exp2 "+" @ >
+
+[66][Exp2]< Exp2 @ "+" >
+[RULE: 2][CLAUSE: 1]
+	epsilon -> [65][Exp2]< Exp2 @ "+" >
+
+[67][Exp2]< Exp2 @ "-" "-" >
+[RULE: 2][CLAUSE: 4]
+	epsilon -> [68][Exp2]< Exp2 @ "-" "-" >
+
+[68][Exp2]< Exp2 @ "-" "-" >
+[RULE: 2][CLAUSE: 4]
+	token: "-" -> [60][Exp2]< Exp2 "-" @ "-" >
+
+[69][Exp2]< Exp2 @ "-" >
+[RULE: 2][CLAUSE: 3]
+	epsilon -> [70][Exp2]< Exp2 @ "-" >
+
+[70][Exp2]< Exp2 @ "-" >
+[RULE: 2][CLAUSE: 3]
+	token: "-" -> [61][Exp2]< Exp2 "-" @ >
+
+[71][Exp2]<< !Exp1 >> @[ENDING]
+[RULE: 2][CLAUSE: 0]
+
+[72][Exp2]<< !Exp1 @ >>
+[RULE: 2][CLAUSE: 0]
+	epsilon -> [71][Exp2]<< !Exp1 >> @[ENDING]
+		- EndObject()
+
+[73][Exp2]<< @ !Exp1 >>
+[RULE: 2][CLAUSE: 0]
+	rule: Exp1 -> [72][Exp2]<< !Exp1 @ >>
+		+ ReopenObject()
+
+[74][Exp2]@ < Exp2 "+" "+" >
+[RULE: 2][CLAUSE: 2]
+	epsilon -> [44][Exp2]< @ Exp2 "+" "+" >
+		- BeginObject(PostfixExpr)
+
+[75][Exp2]@ < Exp2 "+" >
+[RULE: 2][CLAUSE: 1]
+	epsilon -> [45][Exp2]< @ Exp2 "+" >
+		- BeginObject(PostfixExpr)
+
+[76][Exp2]@ < Exp2 "-" "-" >
+[RULE: 2][CLAUSE: 4]
+	epsilon -> [46][Exp2]< @ Exp2 "-" "-" >
+		- BeginObject(DecrementExpr)
+
+[77][Exp2]@ < Exp2 "-" >
+[RULE: 2][CLAUSE: 3]
+	epsilon -> [47][Exp2]< @ Exp2 "-" >
+		- BeginObject(PostfixExpr)
+
+[78][Exp2]@ << !Exp1 >>
+[RULE: 2][CLAUSE: 0]
+	epsilon -> [73][Exp2]<< @ !Exp1 >>
+		- DelayFieldAssignment()
+
+[79][Exp]< @ Exp "<" Exp2 >
+[RULE: 3][CLAUSE: 1]
+	rule: Exp -> [91][Exp]< Exp @ "<" Exp2 >
+		+ Field(BinaryExpr::left)
+
+[80][Exp]< @ Exp ">" Exp2 >
+[RULE: 3][CLAUSE: 2]
+	rule: Exp -> [94][Exp]< Exp @ ">" Exp2 >
+		+ Field(BinaryExpr::left)
+
+[81][Exp]< Exp "<" @ Exp2 >
+[RULE: 3][CLAUSE: 1]
+	rule: Exp2 -> [85][Exp]< Exp "<" Exp2 @ >
+		+ Field(BinaryExpr::right)
+
+[82][Exp]< Exp "<" @ Exp2 >
+[RULE: 3][CLAUSE: 1]
+	epsilon -> [81][Exp]< Exp "<" @ Exp2 >
+
+[83][Exp]< Exp "<" Exp2 > @[ENDING]
+[RULE: 3][CLAUSE: 1]
+
+[84][Exp]< Exp "<" Exp2 @ >
+[RULE: 3][CLAUSE: 1]
+	epsilon -> [83][Exp]< Exp "<" Exp2 > @[ENDING]
+		- EndObject()
+
+[85][Exp]< Exp "<" Exp2 @ >
+[RULE: 3][CLAUSE: 1]
+	epsilon -> [84][Exp]< Exp "<" Exp2 @ >
+		- EnumItem(0)
+		- Field(BinaryExpr::op)
+
+[86][Exp]< Exp ">" @ Exp2 >
+[RULE: 3][CLAUSE: 2]
+	epsilon -> [87][Exp]< Exp ">" @ Exp2 >
+
+[87][Exp]< Exp ">" @ Exp2 >
+[RULE: 3][CLAUSE: 2]
+	rule: Exp2 -> [90][Exp]< Exp ">" Exp2 @ >
+		+ Field(BinaryExpr::right)
+
+[88][Exp]< Exp ">" Exp2 > @[ENDING]
+[RULE: 3][CLAUSE: 2]
+
+[89][Exp]< Exp ">" Exp2 @ >
+[RULE: 3][CLAUSE: 2]
+	epsilon -> [88][Exp]< Exp ">" Exp2 > @[ENDING]
+		- EndObject()
+
+[90][Exp]< Exp ">" Exp2 @ >
+[RULE: 3][CLAUSE: 2]
+	epsilon -> [89][Exp]< Exp ">" Exp2 @ >
+		- EnumItem(1)
+		- Field(BinaryExpr::op)
+
+[91][Exp]< Exp @ "<" Exp2 >
+[RULE: 3][CLAUSE: 1]
+	epsilon -> [92][Exp]< Exp @ "<" Exp2 >
+
+[92][Exp]< Exp @ "<" Exp2 >
+[RULE: 3][CLAUSE: 1]
+	token: "<" -> [82][Exp]< Exp "<" @ Exp2 >
+
+[93][Exp]< Exp @ ">" Exp2 >
+[RULE: 3][CLAUSE: 2]
+	token: ">" -> [86][Exp]< Exp ">" @ Exp2 >
+
+[94][Exp]< Exp @ ">" Exp2 >
+[RULE: 3][CLAUSE: 2]
+	epsilon -> [93][Exp]< Exp @ ">" Exp2 >
+
+[95][Exp]<< !Exp2 >> @[ENDING]
+[RULE: 3][CLAUSE: 0]
+
+[96][Exp]<< !Exp2 @ >>
+[RULE: 3][CLAUSE: 0]
+	epsilon -> [95][Exp]<< !Exp2 >> @[ENDING]
+		- EndObject()
+
+[97][Exp]<< @ !Exp2 >>
+[RULE: 3][CLAUSE: 0]
+	rule: Exp2 -> [96][Exp]<< !Exp2 @ >>
+		+ ReopenObject()
+
+[98][Exp]@ < Exp "<" Exp2 >
+[RULE: 3][CLAUSE: 1]
+	epsilon -> [79][Exp]< @ Exp "<" Exp2 >
+		- BeginObject(BinaryExpr)
+
+[99][Exp]@ < Exp ">" Exp2 >
+[RULE: 3][CLAUSE: 2]
+	epsilon -> [80][Exp]< @ Exp ">" Exp2 >
+		- BeginObject(BinaryExpr)
+
+[100][Exp]@ << !Exp2 >>
+[RULE: 3][CLAUSE: 0]
+	epsilon -> [97][Exp]<< @ !Exp2 >>
+		- DelayFieldAssignment()
+
+[101][Module]< @ Exp >
+[RULE: 4][CLAUSE: 0]
+	rule: Exp -> [103][Module]< Exp @ >
+		+ Field(Module::expr)
+
+[102][Module]< Exp > @[ENDING]
+[RULE: 4][CLAUSE: 0]
+
+[103][Module]< Exp @ >
+[RULE: 4][CLAUSE: 0]
+	epsilon -> [102][Module]< Exp > @[ENDING]
+		- EndObject()
+
+[104][Module]@ < Exp >
+[RULE: 4][CLAUSE: 0]
+	epsilon -> [101][Module]< @ Exp >
+		- BeginObject(Module)
+

@@ -6,7 +6,7 @@
 #include "../../../Source/Ast/AstCppGen.h"
 #include "../../../Source/Lexer/LexerCppGen.h"
 #include "../../../Source/Syntax/SyntaxCppGen.h"
-#include "../../Source/LogAutomaton.h"
+#include "../../Source/LogParser.h"
 #include "../../Source/SyntaxAstToCode.h"
 
 using namespace vl::console;
@@ -138,6 +138,17 @@ TEST_FILE
 
 			TEST_CASE(L"CompilerSyntax")
 			{
+				auto logSyntax = [&](vint phase)
+				{
+					LogSyntaxWithPath(
+						syntaxManager,
+						dirOutput / (L"NFA[" + parserName + L"][" + itow(phase) + L"].txt"),
+						[&](vint32_t index) { auto type = output->classIds.Keys()[output->classIds.Values().IndexOf(index)]; return type->Name(); },
+						[&](vint32_t index) { auto prop = output->fieldIds.Keys()[output->fieldIds.Values().IndexOf(index)]; return prop->Parent()->Name() + L"::" + prop->Name(); },
+						[&](vint32_t index) { auto token = lexerManager.Tokens()[lexerManager.TokenOrder()[index]]; return token->displayText == L"" ? token->Name() : L"\"" + token->displayText + L"\""; }
+						);
+				};
+
 				List<Ptr<GlrSyntaxFile>> syntaxFiles;
 				syntaxFiles.Add(syntaxFile);
 				auto syntaxRewrittenActual = CompileSyntax(astManager, lexerManager, syntaxManager, output, syntaxFiles);
@@ -148,6 +159,8 @@ TEST_FILE
 				}
 
 				TEST_ASSERT(global.Errors().Count() == 0);
+				logSyntax(1);
+
 				TEST_ASSERT((bool)syntaxRewrittenActual == (bool)syntaxRewrittenExpected);
 				if (syntaxRewrittenExpected)
 				{
@@ -156,13 +169,17 @@ TEST_FILE
 
 				syntaxManager.BuildCompactNFA();
 				TEST_ASSERT(global.Errors().Count() == 0);
+				logSyntax(2);
+
 				syntaxManager.BuildCrossReferencedNFA();
 				TEST_ASSERT(global.Errors().Count() == 0);
+				logSyntax(3);
+
 				syntaxManager.BuildAutomaton(lexerManager.Tokens().Count(), executable, metadata);
 				TEST_ASSERT(global.Errors().Count() == 0);
 
 				LogAutomatonWithPath(
-					dirOutput / (L"Automaton[" + parserName + L"].txt"),
+					dirOutput / (L"NFA[" + parserName + L"][Automaton].txt"),
 					executable,
 					metadata,
 					[&](vint32_t index) { auto type = output->classIds.Keys()[output->classIds.Values().IndexOf(index)]; return type->Name(); },

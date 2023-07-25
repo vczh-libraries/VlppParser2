@@ -1,0 +1,808 @@
+﻿[0][Exp0] BEGIN 
+[RULE: 0][CLAUSE: -1]
+	token: "(" -> [10][Exp0]<< "(" @ !Exp ")" >>
+		- DelayFieldAssignment()
+	token: ID -> [6][Exp0]< ID @ "<" { Exp ; "," } ">" >
+		- BeginObject(GenericExpr)
+		+ Token()
+		+ Field(GenericExpr::name)
+	token: ID -> [7][Exp0]< ID @ >
+		- BeginObject(RefExpr)
+		+ Token()
+		+ Field(RefExpr::name)
+
+[1][Exp0] END [ENDING]
+[RULE: 0][CLAUSE: -1]
+
+[2][Exp0]< ID "<" @ { Exp ; "," } ">" >
+[RULE: 0][CLAUSE: 1]
+	token: "(" -> [10][Exp0]<< "(" @ !Exp ")" >>
+		- DelayFieldAssignment()
+		- DelayFieldAssignment()
+		- DelayFieldAssignment()
+		- DelayFieldAssignment()
+		> rule: Exp -> [5][Exp0]< ID "<" { Exp @ ; "," } ">" >
+			+ Field(GenericExpr::args)
+		> rule: Exp2 -> [40][Exp]<< !Exp2 @ >>
+			+ ReopenObject()
+		> rule: Exp1 -> [31][Exp2]<< !Exp1 @ >>
+			+ ReopenObject()
+		> rule: Exp0 -> [18][Exp1]<< !Exp0 @ >>
+			+ ReopenObject()
+	token: ">" -> [4][Exp0]< ID "<" { Exp ; "," } ">" @ >
+	token: ID -> [6][Exp0]< ID @ "<" { Exp ; "," } ">" >
+		- DelayFieldAssignment()
+		- DelayFieldAssignment()
+		- DelayFieldAssignment()
+		- BeginObject(GenericExpr)
+		+ Token()
+		+ Field(GenericExpr::name)
+		> rule: Exp -> [5][Exp0]< ID "<" { Exp @ ; "," } ">" >
+			+ Field(GenericExpr::args)
+		> rule: Exp2 -> [40][Exp]<< !Exp2 @ >>
+			+ ReopenObject()
+		> rule: Exp1 -> [31][Exp2]<< !Exp1 @ >>
+			+ ReopenObject()
+		> rule: Exp0 -> [18][Exp1]<< !Exp0 @ >>
+			+ ReopenObject()
+	token: ID -> [7][Exp0]< ID @ >
+		- DelayFieldAssignment()
+		- DelayFieldAssignment()
+		- DelayFieldAssignment()
+		- BeginObject(RefExpr)
+		+ Token()
+		+ Field(RefExpr::name)
+		> rule: Exp -> [5][Exp0]< ID "<" { Exp @ ; "," } ">" >
+			+ Field(GenericExpr::args)
+		> rule: Exp2 -> [40][Exp]<< !Exp2 @ >>
+			+ ReopenObject()
+		> rule: Exp1 -> [31][Exp2]<< !Exp1 @ >>
+			+ ReopenObject()
+		> rule: Exp0 -> [18][Exp1]<< !Exp0 @ >>
+			+ ReopenObject()
+
+[3][Exp0]< ID "<" { Exp ; "," @ } ">" >
+[RULE: 0][CLAUSE: 1]
+	token: "(" -> [10][Exp0]<< "(" @ !Exp ")" >>
+		- DelayFieldAssignment()
+		- DelayFieldAssignment()
+		- DelayFieldAssignment()
+		- DelayFieldAssignment()
+		> rule: Exp -> [5][Exp0]< ID "<" { Exp @ ; "," } ">" >
+			+ Field(GenericExpr::args)
+		> rule: Exp2 -> [40][Exp]<< !Exp2 @ >>
+			+ ReopenObject()
+		> rule: Exp1 -> [31][Exp2]<< !Exp1 @ >>
+			+ ReopenObject()
+		> rule: Exp0 -> [18][Exp1]<< !Exp0 @ >>
+			+ ReopenObject()
+	token: ID -> [6][Exp0]< ID @ "<" { Exp ; "," } ">" >
+		- DelayFieldAssignment()
+		- DelayFieldAssignment()
+		- DelayFieldAssignment()
+		- BeginObject(GenericExpr)
+		+ Token()
+		+ Field(GenericExpr::name)
+		> rule: Exp -> [5][Exp0]< ID "<" { Exp @ ; "," } ">" >
+			+ Field(GenericExpr::args)
+		> rule: Exp2 -> [40][Exp]<< !Exp2 @ >>
+			+ ReopenObject()
+		> rule: Exp1 -> [31][Exp2]<< !Exp1 @ >>
+			+ ReopenObject()
+		> rule: Exp0 -> [18][Exp1]<< !Exp0 @ >>
+			+ ReopenObject()
+	token: ID -> [7][Exp0]< ID @ >
+		- DelayFieldAssignment()
+		- DelayFieldAssignment()
+		- DelayFieldAssignment()
+		- BeginObject(RefExpr)
+		+ Token()
+		+ Field(RefExpr::name)
+		> rule: Exp -> [5][Exp0]< ID "<" { Exp @ ; "," } ">" >
+			+ Field(GenericExpr::args)
+		> rule: Exp2 -> [40][Exp]<< !Exp2 @ >>
+			+ ReopenObject()
+		> rule: Exp1 -> [31][Exp2]<< !Exp1 @ >>
+			+ ReopenObject()
+		> rule: Exp0 -> [18][Exp1]<< !Exp0 @ >>
+			+ ReopenObject()
+
+[4][Exp0]< ID "<" { Exp ; "," } ">" @ >
+[RULE: 0][CLAUSE: 1]
+	ending -> [1][Exp0] END [ENDING]
+		- EndObject()
+
+[5][Exp0]< ID "<" { Exp @ ; "," } ">" >
+[RULE: 0][CLAUSE: 1]
+	token: ">" -> [4][Exp0]< ID "<" { Exp ; "," } ">" @ >
+	token: "," -> [3][Exp0]< ID "<" { Exp ; "," @ } ">" >
+
+[6][Exp0]< ID @ "<" { Exp ; "," } ">" >
+[RULE: 0][CLAUSE: 1]
+	token: "<" -> [2][Exp0]< ID "<" @ { Exp ; "," } ">" >
+
+[7][Exp0]< ID @ >
+[RULE: 0][CLAUSE: 0]
+	ending -> [1][Exp0] END [ENDING]
+		- EndObject()
+
+[8][Exp0]<< "(" !Exp ")" @ >>
+[RULE: 0][CLAUSE: 2]
+	ending -> [1][Exp0] END [ENDING]
+		- EndObject()
+
+[9][Exp0]<< "(" !Exp @ ")" >>
+[RULE: 0][CLAUSE: 2]
+	token: ")" -> [8][Exp0]<< "(" !Exp ")" @ >>
+
+[10][Exp0]<< "(" @ !Exp ")" >>
+[RULE: 0][CLAUSE: 2]
+	token: "(" -> [10][Exp0]<< "(" @ !Exp ")" >>
+		- DelayFieldAssignment()
+		- DelayFieldAssignment()
+		- DelayFieldAssignment()
+		- DelayFieldAssignment()
+		> rule: Exp -> [9][Exp0]<< "(" !Exp @ ")" >>
+			+ ReopenObject()
+		> rule: Exp2 -> [40][Exp]<< !Exp2 @ >>
+			+ ReopenObject()
+		> rule: Exp1 -> [31][Exp2]<< !Exp1 @ >>
+			+ ReopenObject()
+		> rule: Exp0 -> [18][Exp1]<< !Exp0 @ >>
+			+ ReopenObject()
+	token: ID -> [6][Exp0]< ID @ "<" { Exp ; "," } ">" >
+		- DelayFieldAssignment()
+		- DelayFieldAssignment()
+		- DelayFieldAssignment()
+		- BeginObject(GenericExpr)
+		+ Token()
+		+ Field(GenericExpr::name)
+		> rule: Exp -> [9][Exp0]<< "(" !Exp @ ")" >>
+			+ ReopenObject()
+		> rule: Exp2 -> [40][Exp]<< !Exp2 @ >>
+			+ ReopenObject()
+		> rule: Exp1 -> [31][Exp2]<< !Exp1 @ >>
+			+ ReopenObject()
+		> rule: Exp0 -> [18][Exp1]<< !Exp0 @ >>
+			+ ReopenObject()
+	token: ID -> [7][Exp0]< ID @ >
+		- DelayFieldAssignment()
+		- DelayFieldAssignment()
+		- DelayFieldAssignment()
+		- BeginObject(RefExpr)
+		+ Token()
+		+ Field(RefExpr::name)
+		> rule: Exp -> [9][Exp0]<< "(" !Exp @ ")" >>
+			+ ReopenObject()
+		> rule: Exp2 -> [40][Exp]<< !Exp2 @ >>
+			+ ReopenObject()
+		> rule: Exp1 -> [31][Exp2]<< !Exp1 @ >>
+			+ ReopenObject()
+		> rule: Exp0 -> [18][Exp1]<< !Exp0 @ >>
+			+ ReopenObject()
+
+[11][Exp1] BEGIN 
+[RULE: 1][CLAUSE: -1]
+	token: "(" -> [10][Exp0]<< "(" @ !Exp ")" >>
+		- DelayFieldAssignment()
+		- DelayFieldAssignment()
+		> rule: Exp0 -> [18][Exp1]<< !Exp0 @ >>
+			+ ReopenObject()
+	token: ID -> [6][Exp0]< ID @ "<" { Exp ; "," } ">" >
+		- DelayFieldAssignment()
+		- BeginObject(GenericExpr)
+		+ Token()
+		+ Field(GenericExpr::name)
+		> rule: Exp0 -> [18][Exp1]<< !Exp0 @ >>
+			+ ReopenObject()
+	token: ID -> [7][Exp0]< ID @ >
+		- DelayFieldAssignment()
+		- BeginObject(RefExpr)
+		+ Token()
+		+ Field(RefExpr::name)
+		> rule: Exp0 -> [18][Exp1]<< !Exp0 @ >>
+			+ ReopenObject()
+
+[12][Exp1] END [ENDING]
+[RULE: 1][CLAUSE: -1]
+
+[13][Exp1]< Exp1 "(" @ { Exp ; "," } ")" >
+[RULE: 1][CLAUSE: 1]
+	token: "(" -> [10][Exp0]<< "(" @ !Exp ")" >>
+		- DelayFieldAssignment()
+		- DelayFieldAssignment()
+		- DelayFieldAssignment()
+		- DelayFieldAssignment()
+		> rule: Exp -> [16][Exp1]< Exp1 "(" { Exp @ ; "," } ")" >
+			+ Field(CallExpr::args)
+		> rule: Exp2 -> [40][Exp]<< !Exp2 @ >>
+			+ ReopenObject()
+		> rule: Exp1 -> [31][Exp2]<< !Exp1 @ >>
+			+ ReopenObject()
+		> rule: Exp0 -> [18][Exp1]<< !Exp0 @ >>
+			+ ReopenObject()
+	token: ")" -> [15][Exp1]< Exp1 "(" { Exp ; "," } ")" @ >
+	token: ID -> [6][Exp0]< ID @ "<" { Exp ; "," } ">" >
+		- DelayFieldAssignment()
+		- DelayFieldAssignment()
+		- DelayFieldAssignment()
+		- BeginObject(GenericExpr)
+		+ Token()
+		+ Field(GenericExpr::name)
+		> rule: Exp -> [16][Exp1]< Exp1 "(" { Exp @ ; "," } ")" >
+			+ Field(CallExpr::args)
+		> rule: Exp2 -> [40][Exp]<< !Exp2 @ >>
+			+ ReopenObject()
+		> rule: Exp1 -> [31][Exp2]<< !Exp1 @ >>
+			+ ReopenObject()
+		> rule: Exp0 -> [18][Exp1]<< !Exp0 @ >>
+			+ ReopenObject()
+	token: ID -> [7][Exp0]< ID @ >
+		- DelayFieldAssignment()
+		- DelayFieldAssignment()
+		- DelayFieldAssignment()
+		- BeginObject(RefExpr)
+		+ Token()
+		+ Field(RefExpr::name)
+		> rule: Exp -> [16][Exp1]< Exp1 "(" { Exp @ ; "," } ")" >
+			+ Field(CallExpr::args)
+		> rule: Exp2 -> [40][Exp]<< !Exp2 @ >>
+			+ ReopenObject()
+		> rule: Exp1 -> [31][Exp2]<< !Exp1 @ >>
+			+ ReopenObject()
+		> rule: Exp0 -> [18][Exp1]<< !Exp0 @ >>
+			+ ReopenObject()
+
+[14][Exp1]< Exp1 "(" { Exp ; "," @ } ")" >
+[RULE: 1][CLAUSE: 1]
+	token: "(" -> [10][Exp0]<< "(" @ !Exp ")" >>
+		- DelayFieldAssignment()
+		- DelayFieldAssignment()
+		- DelayFieldAssignment()
+		- DelayFieldAssignment()
+		> rule: Exp -> [16][Exp1]< Exp1 "(" { Exp @ ; "," } ")" >
+			+ Field(CallExpr::args)
+		> rule: Exp2 -> [40][Exp]<< !Exp2 @ >>
+			+ ReopenObject()
+		> rule: Exp1 -> [31][Exp2]<< !Exp1 @ >>
+			+ ReopenObject()
+		> rule: Exp0 -> [18][Exp1]<< !Exp0 @ >>
+			+ ReopenObject()
+	token: ID -> [6][Exp0]< ID @ "<" { Exp ; "," } ">" >
+		- DelayFieldAssignment()
+		- DelayFieldAssignment()
+		- DelayFieldAssignment()
+		- BeginObject(GenericExpr)
+		+ Token()
+		+ Field(GenericExpr::name)
+		> rule: Exp -> [16][Exp1]< Exp1 "(" { Exp @ ; "," } ")" >
+			+ Field(CallExpr::args)
+		> rule: Exp2 -> [40][Exp]<< !Exp2 @ >>
+			+ ReopenObject()
+		> rule: Exp1 -> [31][Exp2]<< !Exp1 @ >>
+			+ ReopenObject()
+		> rule: Exp0 -> [18][Exp1]<< !Exp0 @ >>
+			+ ReopenObject()
+	token: ID -> [7][Exp0]< ID @ >
+		- DelayFieldAssignment()
+		- DelayFieldAssignment()
+		- DelayFieldAssignment()
+		- BeginObject(RefExpr)
+		+ Token()
+		+ Field(RefExpr::name)
+		> rule: Exp -> [16][Exp1]< Exp1 "(" { Exp @ ; "," } ")" >
+			+ Field(CallExpr::args)
+		> rule: Exp2 -> [40][Exp]<< !Exp2 @ >>
+			+ ReopenObject()
+		> rule: Exp1 -> [31][Exp2]<< !Exp1 @ >>
+			+ ReopenObject()
+		> rule: Exp0 -> [18][Exp1]<< !Exp0 @ >>
+			+ ReopenObject()
+
+[15][Exp1]< Exp1 "(" { Exp ; "," } ")" @ >
+[RULE: 1][CLAUSE: 1]
+	ending -> [12][Exp1] END [ENDING]
+		- EndObject()
+	leftrec -> [17][Exp1]< Exp1 @ "(" { Exp ; "," } ")" >
+		- EndObject()
+		- LriStore()
+		- BeginObject(CallExpr)
+		- LriFetch()
+		+ Field(CallExpr::func)
+
+[16][Exp1]< Exp1 "(" { Exp @ ; "," } ")" >
+[RULE: 1][CLAUSE: 1]
+	token: ")" -> [15][Exp1]< Exp1 "(" { Exp ; "," } ")" @ >
+	token: "," -> [14][Exp1]< Exp1 "(" { Exp ; "," @ } ")" >
+
+[17][Exp1]< Exp1 @ "(" { Exp ; "," } ")" >
+[RULE: 1][CLAUSE: 1]
+	token: "(" -> [13][Exp1]< Exp1 "(" @ { Exp ; "," } ")" >
+
+[18][Exp1]<< !Exp0 @ >>
+[RULE: 1][CLAUSE: 0]
+	ending -> [12][Exp1] END [ENDING]
+		- EndObject()
+	leftrec -> [17][Exp1]< Exp1 @ "(" { Exp ; "," } ")" >
+		- EndObject()
+		- LriStore()
+		- BeginObject(CallExpr)
+		- LriFetch()
+		+ Field(CallExpr::func)
+
+[19][Exp2] BEGIN 
+[RULE: 2][CLAUSE: -1]
+	token: "(" -> [10][Exp0]<< "(" @ !Exp ")" >>
+		- DelayFieldAssignment()
+		- DelayFieldAssignment()
+		- DelayFieldAssignment()
+		> rule: Exp1 -> [31][Exp2]<< !Exp1 @ >>
+			+ ReopenObject()
+		> rule: Exp0 -> [18][Exp1]<< !Exp0 @ >>
+			+ ReopenObject()
+	token: ID -> [6][Exp0]< ID @ "<" { Exp ; "," } ">" >
+		- DelayFieldAssignment()
+		- DelayFieldAssignment()
+		- BeginObject(GenericExpr)
+		+ Token()
+		+ Field(GenericExpr::name)
+		> rule: Exp1 -> [31][Exp2]<< !Exp1 @ >>
+			+ ReopenObject()
+		> rule: Exp0 -> [18][Exp1]<< !Exp0 @ >>
+			+ ReopenObject()
+	token: ID -> [7][Exp0]< ID @ >
+		- DelayFieldAssignment()
+		- DelayFieldAssignment()
+		- BeginObject(RefExpr)
+		+ Token()
+		+ Field(RefExpr::name)
+		> rule: Exp1 -> [31][Exp2]<< !Exp1 @ >>
+			+ ReopenObject()
+		> rule: Exp0 -> [18][Exp1]<< !Exp0 @ >>
+			+ ReopenObject()
+
+[20][Exp2] END [ENDING]
+[RULE: 2][CLAUSE: -1]
+
+[21][Exp2]< Exp2 "+" "+" @ >
+[RULE: 2][CLAUSE: 2]
+	ending -> [20][Exp2] END [ENDING]
+		- EnumItem(2)
+		- Field(PostfixExpr::op)
+		- EndObject()
+	leftrec -> [27][Exp2]< Exp2 @ "+" "+" >
+		- EnumItem(2)
+		- Field(PostfixExpr::op)
+		- EndObject()
+		- LriStore()
+		- BeginObject(PostfixExpr)
+		- LriFetch()
+		+ Field(PostfixExpr::expr)
+	leftrec -> [28][Exp2]< Exp2 @ "+" >
+		- EnumItem(2)
+		- Field(PostfixExpr::op)
+		- EndObject()
+		- LriStore()
+		- BeginObject(PostfixExpr)
+		- LriFetch()
+		+ Field(PostfixExpr::expr)
+	leftrec -> [29][Exp2]< Exp2 @ "-" "-" >
+		- EnumItem(2)
+		- Field(PostfixExpr::op)
+		- EndObject()
+		- LriStore()
+		- BeginObject(DecrementExpr)
+		- LriFetch()
+		+ Field(DecrementExpr::expr)
+	leftrec -> [30][Exp2]< Exp2 @ "-" >
+		- EnumItem(2)
+		- Field(PostfixExpr::op)
+		- EndObject()
+		- LriStore()
+		- BeginObject(PostfixExpr)
+		- LriFetch()
+		+ Field(PostfixExpr::expr)
+
+[22][Exp2]< Exp2 "+" @ "+" >
+[RULE: 2][CLAUSE: 2]
+	token: "+" -> [21][Exp2]< Exp2 "+" "+" @ >
+
+[23][Exp2]< Exp2 "+" @ >
+[RULE: 2][CLAUSE: 1]
+	ending -> [20][Exp2] END [ENDING]
+		- EnumItem(0)
+		- Field(PostfixExpr::op)
+		- EndObject()
+	leftrec -> [27][Exp2]< Exp2 @ "+" "+" >
+		- EnumItem(0)
+		- Field(PostfixExpr::op)
+		- EndObject()
+		- LriStore()
+		- BeginObject(PostfixExpr)
+		- LriFetch()
+		+ Field(PostfixExpr::expr)
+	leftrec -> [28][Exp2]< Exp2 @ "+" >
+		- EnumItem(0)
+		- Field(PostfixExpr::op)
+		- EndObject()
+		- LriStore()
+		- BeginObject(PostfixExpr)
+		- LriFetch()
+		+ Field(PostfixExpr::expr)
+	leftrec -> [29][Exp2]< Exp2 @ "-" "-" >
+		- EnumItem(0)
+		- Field(PostfixExpr::op)
+		- EndObject()
+		- LriStore()
+		- BeginObject(DecrementExpr)
+		- LriFetch()
+		+ Field(DecrementExpr::expr)
+	leftrec -> [30][Exp2]< Exp2 @ "-" >
+		- EnumItem(0)
+		- Field(PostfixExpr::op)
+		- EndObject()
+		- LriStore()
+		- BeginObject(PostfixExpr)
+		- LriFetch()
+		+ Field(PostfixExpr::expr)
+
+[24][Exp2]< Exp2 "-" "-" @ >
+[RULE: 2][CLAUSE: 4]
+	ending -> [20][Exp2] END [ENDING]
+		- EndObject()
+	leftrec -> [27][Exp2]< Exp2 @ "+" "+" >
+		- EndObject()
+		- LriStore()
+		- BeginObject(PostfixExpr)
+		- LriFetch()
+		+ Field(PostfixExpr::expr)
+	leftrec -> [28][Exp2]< Exp2 @ "+" >
+		- EndObject()
+		- LriStore()
+		- BeginObject(PostfixExpr)
+		- LriFetch()
+		+ Field(PostfixExpr::expr)
+	leftrec -> [29][Exp2]< Exp2 @ "-" "-" >
+		- EndObject()
+		- LriStore()
+		- BeginObject(DecrementExpr)
+		- LriFetch()
+		+ Field(DecrementExpr::expr)
+	leftrec -> [30][Exp2]< Exp2 @ "-" >
+		- EndObject()
+		- LriStore()
+		- BeginObject(PostfixExpr)
+		- LriFetch()
+		+ Field(PostfixExpr::expr)
+
+[25][Exp2]< Exp2 "-" @ "-" >
+[RULE: 2][CLAUSE: 4]
+	token: "-" -> [24][Exp2]< Exp2 "-" "-" @ >
+
+[26][Exp2]< Exp2 "-" @ >
+[RULE: 2][CLAUSE: 3]
+	ending -> [20][Exp2] END [ENDING]
+		- EnumItem(1)
+		- Field(PostfixExpr::op)
+		- EndObject()
+	leftrec -> [27][Exp2]< Exp2 @ "+" "+" >
+		- EnumItem(1)
+		- Field(PostfixExpr::op)
+		- EndObject()
+		- LriStore()
+		- BeginObject(PostfixExpr)
+		- LriFetch()
+		+ Field(PostfixExpr::expr)
+	leftrec -> [28][Exp2]< Exp2 @ "+" >
+		- EnumItem(1)
+		- Field(PostfixExpr::op)
+		- EndObject()
+		- LriStore()
+		- BeginObject(PostfixExpr)
+		- LriFetch()
+		+ Field(PostfixExpr::expr)
+	leftrec -> [29][Exp2]< Exp2 @ "-" "-" >
+		- EnumItem(1)
+		- Field(PostfixExpr::op)
+		- EndObject()
+		- LriStore()
+		- BeginObject(DecrementExpr)
+		- LriFetch()
+		+ Field(DecrementExpr::expr)
+	leftrec -> [30][Exp2]< Exp2 @ "-" >
+		- EnumItem(1)
+		- Field(PostfixExpr::op)
+		- EndObject()
+		- LriStore()
+		- BeginObject(PostfixExpr)
+		- LriFetch()
+		+ Field(PostfixExpr::expr)
+
+[27][Exp2]< Exp2 @ "+" "+" >
+[RULE: 2][CLAUSE: 2]
+	token: "+" -> [22][Exp2]< Exp2 "+" @ "+" >
+
+[28][Exp2]< Exp2 @ "+" >
+[RULE: 2][CLAUSE: 1]
+	token: "+" -> [23][Exp2]< Exp2 "+" @ >
+
+[29][Exp2]< Exp2 @ "-" "-" >
+[RULE: 2][CLAUSE: 4]
+	token: "-" -> [25][Exp2]< Exp2 "-" @ "-" >
+
+[30][Exp2]< Exp2 @ "-" >
+[RULE: 2][CLAUSE: 3]
+	token: "-" -> [26][Exp2]< Exp2 "-" @ >
+
+[31][Exp2]<< !Exp1 @ >>
+[RULE: 2][CLAUSE: 0]
+	ending -> [20][Exp2] END [ENDING]
+		- EndObject()
+	leftrec -> [27][Exp2]< Exp2 @ "+" "+" >
+		- EndObject()
+		- LriStore()
+		- BeginObject(PostfixExpr)
+		- LriFetch()
+		+ Field(PostfixExpr::expr)
+	leftrec -> [28][Exp2]< Exp2 @ "+" >
+		- EndObject()
+		- LriStore()
+		- BeginObject(PostfixExpr)
+		- LriFetch()
+		+ Field(PostfixExpr::expr)
+	leftrec -> [29][Exp2]< Exp2 @ "-" "-" >
+		- EndObject()
+		- LriStore()
+		- BeginObject(DecrementExpr)
+		- LriFetch()
+		+ Field(DecrementExpr::expr)
+	leftrec -> [30][Exp2]< Exp2 @ "-" >
+		- EndObject()
+		- LriStore()
+		- BeginObject(PostfixExpr)
+		- LriFetch()
+		+ Field(PostfixExpr::expr)
+
+[32][Exp] BEGIN 
+[RULE: 3][CLAUSE: -1]
+	token: "(" -> [10][Exp0]<< "(" @ !Exp ")" >>
+		- DelayFieldAssignment()
+		- DelayFieldAssignment()
+		- DelayFieldAssignment()
+		- DelayFieldAssignment()
+		> rule: Exp2 -> [40][Exp]<< !Exp2 @ >>
+			+ ReopenObject()
+		> rule: Exp1 -> [31][Exp2]<< !Exp1 @ >>
+			+ ReopenObject()
+		> rule: Exp0 -> [18][Exp1]<< !Exp0 @ >>
+			+ ReopenObject()
+	token: ID -> [6][Exp0]< ID @ "<" { Exp ; "," } ">" >
+		- DelayFieldAssignment()
+		- DelayFieldAssignment()
+		- DelayFieldAssignment()
+		- BeginObject(GenericExpr)
+		+ Token()
+		+ Field(GenericExpr::name)
+		> rule: Exp2 -> [40][Exp]<< !Exp2 @ >>
+			+ ReopenObject()
+		> rule: Exp1 -> [31][Exp2]<< !Exp1 @ >>
+			+ ReopenObject()
+		> rule: Exp0 -> [18][Exp1]<< !Exp0 @ >>
+			+ ReopenObject()
+	token: ID -> [7][Exp0]< ID @ >
+		- DelayFieldAssignment()
+		- DelayFieldAssignment()
+		- DelayFieldAssignment()
+		- BeginObject(RefExpr)
+		+ Token()
+		+ Field(RefExpr::name)
+		> rule: Exp2 -> [40][Exp]<< !Exp2 @ >>
+			+ ReopenObject()
+		> rule: Exp1 -> [31][Exp2]<< !Exp1 @ >>
+			+ ReopenObject()
+		> rule: Exp0 -> [18][Exp1]<< !Exp0 @ >>
+			+ ReopenObject()
+
+[33][Exp] END [ENDING]
+[RULE: 3][CLAUSE: -1]
+
+[34][Exp]< Exp "<" @ Exp2 >
+[RULE: 3][CLAUSE: 1]
+	token: "(" -> [10][Exp0]<< "(" @ !Exp ")" >>
+		- DelayFieldAssignment()
+		- DelayFieldAssignment()
+		- DelayFieldAssignment()
+		> rule: Exp2 -> [35][Exp]< Exp "<" Exp2 @ >
+			+ Field(BinaryExpr::right)
+		> rule: Exp1 -> [31][Exp2]<< !Exp1 @ >>
+			+ ReopenObject()
+		> rule: Exp0 -> [18][Exp1]<< !Exp0 @ >>
+			+ ReopenObject()
+	token: ID -> [6][Exp0]< ID @ "<" { Exp ; "," } ">" >
+		- DelayFieldAssignment()
+		- DelayFieldAssignment()
+		- BeginObject(GenericExpr)
+		+ Token()
+		+ Field(GenericExpr::name)
+		> rule: Exp2 -> [35][Exp]< Exp "<" Exp2 @ >
+			+ Field(BinaryExpr::right)
+		> rule: Exp1 -> [31][Exp2]<< !Exp1 @ >>
+			+ ReopenObject()
+		> rule: Exp0 -> [18][Exp1]<< !Exp0 @ >>
+			+ ReopenObject()
+	token: ID -> [7][Exp0]< ID @ >
+		- DelayFieldAssignment()
+		- DelayFieldAssignment()
+		- BeginObject(RefExpr)
+		+ Token()
+		+ Field(RefExpr::name)
+		> rule: Exp2 -> [35][Exp]< Exp "<" Exp2 @ >
+			+ Field(BinaryExpr::right)
+		> rule: Exp1 -> [31][Exp2]<< !Exp1 @ >>
+			+ ReopenObject()
+		> rule: Exp0 -> [18][Exp1]<< !Exp0 @ >>
+			+ ReopenObject()
+
+[35][Exp]< Exp "<" Exp2 @ >
+[RULE: 3][CLAUSE: 1]
+	ending -> [33][Exp] END [ENDING]
+		- EnumItem(0)
+		- Field(BinaryExpr::op)
+		- EndObject()
+	leftrec -> [38][Exp]< Exp @ "<" Exp2 >
+		- EnumItem(0)
+		- Field(BinaryExpr::op)
+		- EndObject()
+		- LriStore()
+		- BeginObject(BinaryExpr)
+		- LriFetch()
+		+ Field(BinaryExpr::left)
+	leftrec -> [39][Exp]< Exp @ ">" Exp2 >
+		- EnumItem(0)
+		- Field(BinaryExpr::op)
+		- EndObject()
+		- LriStore()
+		- BeginObject(BinaryExpr)
+		- LriFetch()
+		+ Field(BinaryExpr::left)
+
+[36][Exp]< Exp ">" @ Exp2 >
+[RULE: 3][CLAUSE: 2]
+	token: "(" -> [10][Exp0]<< "(" @ !Exp ")" >>
+		- DelayFieldAssignment()
+		- DelayFieldAssignment()
+		- DelayFieldAssignment()
+		> rule: Exp2 -> [37][Exp]< Exp ">" Exp2 @ >
+			+ Field(BinaryExpr::right)
+		> rule: Exp1 -> [31][Exp2]<< !Exp1 @ >>
+			+ ReopenObject()
+		> rule: Exp0 -> [18][Exp1]<< !Exp0 @ >>
+			+ ReopenObject()
+	token: ID -> [6][Exp0]< ID @ "<" { Exp ; "," } ">" >
+		- DelayFieldAssignment()
+		- DelayFieldAssignment()
+		- BeginObject(GenericExpr)
+		+ Token()
+		+ Field(GenericExpr::name)
+		> rule: Exp2 -> [37][Exp]< Exp ">" Exp2 @ >
+			+ Field(BinaryExpr::right)
+		> rule: Exp1 -> [31][Exp2]<< !Exp1 @ >>
+			+ ReopenObject()
+		> rule: Exp0 -> [18][Exp1]<< !Exp0 @ >>
+			+ ReopenObject()
+	token: ID -> [7][Exp0]< ID @ >
+		- DelayFieldAssignment()
+		- DelayFieldAssignment()
+		- BeginObject(RefExpr)
+		+ Token()
+		+ Field(RefExpr::name)
+		> rule: Exp2 -> [37][Exp]< Exp ">" Exp2 @ >
+			+ Field(BinaryExpr::right)
+		> rule: Exp1 -> [31][Exp2]<< !Exp1 @ >>
+			+ ReopenObject()
+		> rule: Exp0 -> [18][Exp1]<< !Exp0 @ >>
+			+ ReopenObject()
+
+[37][Exp]< Exp ">" Exp2 @ >
+[RULE: 3][CLAUSE: 2]
+	ending -> [33][Exp] END [ENDING]
+		- EnumItem(1)
+		- Field(BinaryExpr::op)
+		- EndObject()
+	leftrec -> [38][Exp]< Exp @ "<" Exp2 >
+		- EnumItem(1)
+		- Field(BinaryExpr::op)
+		- EndObject()
+		- LriStore()
+		- BeginObject(BinaryExpr)
+		- LriFetch()
+		+ Field(BinaryExpr::left)
+	leftrec -> [39][Exp]< Exp @ ">" Exp2 >
+		- EnumItem(1)
+		- Field(BinaryExpr::op)
+		- EndObject()
+		- LriStore()
+		- BeginObject(BinaryExpr)
+		- LriFetch()
+		+ Field(BinaryExpr::left)
+
+[38][Exp]< Exp @ "<" Exp2 >
+[RULE: 3][CLAUSE: 1]
+	token: "<" -> [34][Exp]< Exp "<" @ Exp2 >
+
+[39][Exp]< Exp @ ">" Exp2 >
+[RULE: 3][CLAUSE: 2]
+	token: ">" -> [36][Exp]< Exp ">" @ Exp2 >
+
+[40][Exp]<< !Exp2 @ >>
+[RULE: 3][CLAUSE: 0]
+	ending -> [33][Exp] END [ENDING]
+		- EndObject()
+	leftrec -> [38][Exp]< Exp @ "<" Exp2 >
+		- EndObject()
+		- LriStore()
+		- BeginObject(BinaryExpr)
+		- LriFetch()
+		+ Field(BinaryExpr::left)
+	leftrec -> [39][Exp]< Exp @ ">" Exp2 >
+		- EndObject()
+		- LriStore()
+		- BeginObject(BinaryExpr)
+		- LriFetch()
+		+ Field(BinaryExpr::left)
+
+[41][Module] BEGIN 
+[RULE: 4][CLAUSE: -1]
+	token: "(" -> [10][Exp0]<< "(" @ !Exp ")" >>
+		- BeginObject(Module)
+		- DelayFieldAssignment()
+		- DelayFieldAssignment()
+		- DelayFieldAssignment()
+		- DelayFieldAssignment()
+		> rule: Exp -> [43][Module]< Exp @ >
+		> rule: Exp2 -> [40][Exp]<< !Exp2 @ >>
+			+ ReopenObject()
+		> rule: Exp1 -> [31][Exp2]<< !Exp1 @ >>
+			+ ReopenObject()
+		> rule: Exp0 -> [18][Exp1]<< !Exp0 @ >>
+			+ ReopenObject()
+	token: ID -> [6][Exp0]< ID @ "<" { Exp ; "," } ">" >
+		- BeginObject(Module)
+		- DelayFieldAssignment()
+		- DelayFieldAssignment()
+		- DelayFieldAssignment()
+		- BeginObject(GenericExpr)
+		+ Token()
+		+ Field(GenericExpr::name)
+		> rule: Exp -> [43][Module]< Exp @ >
+		> rule: Exp2 -> [40][Exp]<< !Exp2 @ >>
+			+ ReopenObject()
+		> rule: Exp1 -> [31][Exp2]<< !Exp1 @ >>
+			+ ReopenObject()
+		> rule: Exp0 -> [18][Exp1]<< !Exp0 @ >>
+			+ ReopenObject()
+	token: ID -> [7][Exp0]< ID @ >
+		- BeginObject(Module)
+		- DelayFieldAssignment()
+		- DelayFieldAssignment()
+		- DelayFieldAssignment()
+		- BeginObject(RefExpr)
+		+ Token()
+		+ Field(RefExpr::name)
+		> rule: Exp -> [43][Module]< Exp @ >
+		> rule: Exp2 -> [40][Exp]<< !Exp2 @ >>
+			+ ReopenObject()
+		> rule: Exp1 -> [31][Exp2]<< !Exp1 @ >>
+			+ ReopenObject()
+		> rule: Exp0 -> [18][Exp1]<< !Exp0 @ >>
+			+ ReopenObject()
+
+[42][Module] END [ENDING]
+[RULE: 4][CLAUSE: -1]
+
+[43][Module]< Exp @ >
+[RULE: 4][CLAUSE: 0]
+	ending -> [42][Module] END [ENDING]
+		- Field(Module::expr)
+		- EndObject()
+

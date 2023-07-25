@@ -1,0 +1,714 @@
+﻿[0][_Name] BEGIN 
+[RULE: 0][CLAUSE: -1]
+	token: ID -> [2][_Name]< ID @ >
+		- BeginObject(Name)
+		+ Token()
+		+ Field(Name::name)
+
+[1][_Name] END [ENDING]
+[RULE: 0][CLAUSE: -1]
+
+[2][_Name]< ID @ >
+[RULE: 0][CLAUSE: 0]
+	ending -> [1][_Name] END [ENDING]
+		- EndObject()
+	leftrec -> [5][_Name]< _Name @ "." ID >
+		- EndObject()
+		- LriStore()
+		- BeginObject(MemberName)
+		- LriFetch()
+		+ Field(MemberName::parent)
+
+[3][_Name]< _Name "." @ ID >
+[RULE: 0][CLAUSE: 1]
+	token: ID -> [4][_Name]< _Name "." ID @ >
+		+ Token()
+		+ Field(MemberName::member)
+
+[4][_Name]< _Name "." ID @ >
+[RULE: 0][CLAUSE: 1]
+	ending -> [1][_Name] END [ENDING]
+		- EndObject()
+	leftrec -> [5][_Name]< _Name @ "." ID >
+		- EndObject()
+		- LriStore()
+		- BeginObject(MemberName)
+		- LriFetch()
+		+ Field(MemberName::parent)
+
+[5][_Name]< _Name @ "." ID >
+[RULE: 0][CLAUSE: 1]
+	token: "." -> [3][_Name]< _Name "." @ ID >
+
+[6][_PrimitiveShared] BEGIN 
+[RULE: 1][CLAUSE: -1]
+	rule: _Name -> [8][_PrimitiveShared]<< !_Name @ >>
+		- DelayFieldAssignment()
+
+[7][_PrimitiveShared] END [ENDING]
+[RULE: 1][CLAUSE: -1]
+
+[8][_PrimitiveShared]<< !_Name @ >>
+[RULE: 1][CLAUSE: 0]
+	ending -> [7][_PrimitiveShared] END [ENDING]
+		- ReopenObject()
+		- EndObject()
+
+[9][_PrimitiveTypeOnly] BEGIN 
+[RULE: 2][CLAUSE: -1]
+	token: "const" -> [11][_PrimitiveTypeOnly]< "const" @ _PrimitiveShared >
+		- BeginObject(ConstType)
+	token: "const" -> [12][_PrimitiveTypeOnly]< "const" @ _PrimitiveTypeOnly >
+		- BeginObject(ConstType)
+
+[10][_PrimitiveTypeOnly] END [ENDING]
+[RULE: 2][CLAUSE: -1]
+
+[11][_PrimitiveTypeOnly]< "const" @ _PrimitiveShared >
+[RULE: 2][CLAUSE: 0]
+	rule: _PrimitiveShared -> [13][_PrimitiveTypeOnly]< "const" _PrimitiveShared @ >
+		+ Field(ConstType::type)
+
+[12][_PrimitiveTypeOnly]< "const" @ _PrimitiveTypeOnly >
+[RULE: 2][CLAUSE: 1]
+	rule: _PrimitiveTypeOnly -> [14][_PrimitiveTypeOnly]< "const" _PrimitiveTypeOnly @ >
+		+ Field(ConstType::type)
+
+[13][_PrimitiveTypeOnly]< "const" _PrimitiveShared @ >
+[RULE: 2][CLAUSE: 0]
+	ending -> [10][_PrimitiveTypeOnly] END [ENDING]
+		- EndObject()
+
+[14][_PrimitiveTypeOnly]< "const" _PrimitiveTypeOnly @ >
+[RULE: 2][CLAUSE: 1]
+	ending -> [10][_PrimitiveTypeOnly] END [ENDING]
+		- EndObject()
+
+[15][_PrimitiveExprOnly] BEGIN 
+[RULE: 3][CLAUSE: -1]
+	token: "(" -> [19][_PrimitiveExprOnly]<< "(" @ !_Expr_Raw ")" >>
+		- DelayFieldAssignment()
+
+[16][_PrimitiveExprOnly] END [ENDING]
+[RULE: 3][CLAUSE: -1]
+
+[17][_PrimitiveExprOnly]<< "(" !_Expr_Raw ")" @ >>
+[RULE: 3][CLAUSE: 0]
+	ending -> [16][_PrimitiveExprOnly] END [ENDING]
+		- EndObject()
+
+[18][_PrimitiveExprOnly]<< "(" !_Expr_Raw @ ")" >>
+[RULE: 3][CLAUSE: 0]
+	token: ")" -> [17][_PrimitiveExprOnly]<< "(" !_Expr_Raw ")" @ >>
+
+[19][_PrimitiveExprOnly]<< "(" @ !_Expr_Raw ")" >>
+[RULE: 3][CLAUSE: 0]
+	rule: _Expr_Raw -> [18][_PrimitiveExprOnly]<< "(" !_Expr_Raw @ ")" >>
+		+ ReopenObject()
+
+[20][_LongType] BEGIN 
+[RULE: 4][CLAUSE: -1]
+	rule: _PrimitiveShared -> [31][_LongType]<< !_PrimitiveShared @ >>
+		- DelayFieldAssignment()
+		+ ReopenObject()
+	rule: _PrimitiveTypeOnly -> [32][_LongType]<< !_PrimitiveTypeOnly @ >>
+		- DelayFieldAssignment()
+		+ ReopenObject()
+	lr-placeholder: Shared,Type -> [33][_LongType]lrp:(Shared,Type) @
+
+[21][_LongType] END [ENDING]
+[RULE: 4][CLAUSE: -1]
+
+[22][_LongType]< _LongType "(" @ { _LongType ; "," } ")" >
+[RULE: 4][CLAUSE: 5]
+	token: ")" -> [24][_LongType]< _LongType "(" { _LongType ; "," } ")" @ >
+	rule: _LongType -> [25][_LongType]< _LongType "(" { _LongType @ ; "," } ")" >
+		+ Field(FunctionType::args)
+
+[23][_LongType]< _LongType "(" { _LongType ; "," @ } ")" >
+[RULE: 4][CLAUSE: 5]
+	rule: _LongType -> [25][_LongType]< _LongType "(" { _LongType @ ; "," } ")" >
+		+ Field(FunctionType::args)
+
+[24][_LongType]< _LongType "(" { _LongType ; "," } ")" @ >
+[RULE: 4][CLAUSE: 5]
+	ending -> [21][_LongType] END [ENDING]
+		- EndObject()
+	leftrec -> [28][_LongType]< _LongType @ "(" { _LongType ; "," } ")" >
+		- EndObject()
+		- LriStore()
+		- BeginObject(FunctionType)
+		- LriFetch()
+		+ Field(FunctionType::returnType)
+	leftrec -> [29][_LongType]< _LongType @ "*" >
+		- EndObject()
+		- LriStore()
+		- BeginObject(PointerType)
+		- LriFetch()
+		+ Field(PointerType::type)
+	leftrec -> [30][_LongType]< _LongType @ "const" >
+		- EndObject()
+		- LriStore()
+		- BeginObject(ConstType)
+		- LriFetch()
+		+ Field(ConstType::type)
+
+[25][_LongType]< _LongType "(" { _LongType @ ; "," } ")" >
+[RULE: 4][CLAUSE: 5]
+	token: ")" -> [24][_LongType]< _LongType "(" { _LongType ; "," } ")" @ >
+	token: "," -> [23][_LongType]< _LongType "(" { _LongType ; "," @ } ")" >
+
+[26][_LongType]< _LongType "*" @ >
+[RULE: 4][CLAUSE: 4]
+	ending -> [21][_LongType] END [ENDING]
+		- EndObject()
+	leftrec -> [28][_LongType]< _LongType @ "(" { _LongType ; "," } ")" >
+		- EndObject()
+		- LriStore()
+		- BeginObject(FunctionType)
+		- LriFetch()
+		+ Field(FunctionType::returnType)
+	leftrec -> [29][_LongType]< _LongType @ "*" >
+		- EndObject()
+		- LriStore()
+		- BeginObject(PointerType)
+		- LriFetch()
+		+ Field(PointerType::type)
+	leftrec -> [30][_LongType]< _LongType @ "const" >
+		- EndObject()
+		- LriStore()
+		- BeginObject(ConstType)
+		- LriFetch()
+		+ Field(ConstType::type)
+
+[27][_LongType]< _LongType "const" @ >
+[RULE: 4][CLAUSE: 3]
+	ending -> [21][_LongType] END [ENDING]
+		- EndObject()
+	leftrec -> [28][_LongType]< _LongType @ "(" { _LongType ; "," } ")" >
+		- EndObject()
+		- LriStore()
+		- BeginObject(FunctionType)
+		- LriFetch()
+		+ Field(FunctionType::returnType)
+	leftrec -> [29][_LongType]< _LongType @ "*" >
+		- EndObject()
+		- LriStore()
+		- BeginObject(PointerType)
+		- LriFetch()
+		+ Field(PointerType::type)
+	leftrec -> [30][_LongType]< _LongType @ "const" >
+		- EndObject()
+		- LriStore()
+		- BeginObject(ConstType)
+		- LriFetch()
+		+ Field(ConstType::type)
+
+[28][_LongType]< _LongType @ "(" { _LongType ; "," } ")" >
+[RULE: 4][CLAUSE: 5]
+	token: "(" -> [22][_LongType]< _LongType "(" @ { _LongType ; "," } ")" >
+
+[29][_LongType]< _LongType @ "*" >
+[RULE: 4][CLAUSE: 4]
+	token: "*" -> [26][_LongType]< _LongType "*" @ >
+
+[30][_LongType]< _LongType @ "const" >
+[RULE: 4][CLAUSE: 3]
+	token: "const" -> [27][_LongType]< _LongType "const" @ >
+
+[31][_LongType]<< !_PrimitiveShared @ >>
+[RULE: 4][CLAUSE: 1]
+	ending -> [21][_LongType] END [ENDING]
+		- EndObject()
+	leftrec -> [28][_LongType]< _LongType @ "(" { _LongType ; "," } ")" >
+		- EndObject()
+		- LriStore()
+		- BeginObject(FunctionType)
+		- LriFetch()
+		+ Field(FunctionType::returnType)
+	leftrec -> [29][_LongType]< _LongType @ "*" >
+		- EndObject()
+		- LriStore()
+		- BeginObject(PointerType)
+		- LriFetch()
+		+ Field(PointerType::type)
+	leftrec -> [30][_LongType]< _LongType @ "const" >
+		- EndObject()
+		- LriStore()
+		- BeginObject(ConstType)
+		- LriFetch()
+		+ Field(ConstType::type)
+
+[32][_LongType]<< !_PrimitiveTypeOnly @ >>
+[RULE: 4][CLAUSE: 2]
+	ending -> [21][_LongType] END [ENDING]
+		- EndObject()
+	leftrec -> [28][_LongType]< _LongType @ "(" { _LongType ; "," } ")" >
+		- EndObject()
+		- LriStore()
+		- BeginObject(FunctionType)
+		- LriFetch()
+		+ Field(FunctionType::returnType)
+	leftrec -> [29][_LongType]< _LongType @ "*" >
+		- EndObject()
+		- LriStore()
+		- BeginObject(PointerType)
+		- LriFetch()
+		+ Field(PointerType::type)
+	leftrec -> [30][_LongType]< _LongType @ "const" >
+		- EndObject()
+		- LriStore()
+		- BeginObject(ConstType)
+		- LriFetch()
+		+ Field(ConstType::type)
+
+[33][_LongType]lrp:(Shared,Type) @
+[RULE: 4][CLAUSE: 0]
+	ending -> [21][_LongType] END [ENDING]
+	leftrec -> [28][_LongType]< _LongType @ "(" { _LongType ; "," } ")" >
+		- LriStore()
+		- BeginObject(FunctionType)
+		- LriFetch()
+		+ Field(FunctionType::returnType)
+	leftrec -> [29][_LongType]< _LongType @ "*" >
+		- LriStore()
+		- BeginObject(PointerType)
+		- LriFetch()
+		+ Field(PointerType::type)
+	leftrec -> [30][_LongType]< _LongType @ "const" >
+		- LriStore()
+		- BeginObject(ConstType)
+		- LriFetch()
+		+ Field(ConstType::type)
+
+[34][_Expr0_Shared] BEGIN 
+[RULE: 5][CLAUSE: -1]
+	lr-placeholder: Shared -> [36][_Expr0_Shared]lrp:(Shared) @
+
+[35][_Expr0_Shared] END [ENDING]
+[RULE: 5][CLAUSE: -1]
+
+[36][_Expr0_Shared]lrp:(Shared) @
+[RULE: 5][CLAUSE: 0]
+	ending -> [35][_Expr0_Shared] END [ENDING]
+
+[37][_Expr0_Type] BEGIN 
+[RULE: 6][CLAUSE: -1]
+	lr-placeholder: Type -> [39][_Expr0_Type]lrp:(Type) @
+
+[38][_Expr0_Type] END [ENDING]
+[RULE: 6][CLAUSE: -1]
+
+[39][_Expr0_Type]lrp:(Type) @
+[RULE: 6][CLAUSE: 0]
+	ending -> [38][_Expr0_Type] END [ENDING]
+
+[40][_Expr0_SharedOrCtor] BEGIN 
+[RULE: 7][CLAUSE: -1]
+	rule: _Expr0_Shared -> [52][_Expr0_SharedOrCtor]<< !_Expr0_Shared @ >>
+	rule: _Expr0_Type -> [51][_Expr0_SharedOrCtor]< _Expr0_Type @ "{" { _Expr_Raw ; "," } "}" >
+		- BeginObject(CtorExpr)
+		+ Field(CtorExpr::type)
+
+[41][_Expr0_SharedOrCtor] END [ENDING]
+[RULE: 7][CLAUSE: -1]
+
+[42][_Expr0_SharedOrCtor]< _Expr0_Shared "{" @ { _Expr_Raw ; "," } "}" >
+[RULE: 7][CLAUSE: 1]
+	token: "}" -> [44][_Expr0_SharedOrCtor]< _Expr0_Shared "{" { _Expr_Raw ; "," } "}" @ >
+	rule: _Expr_Raw -> [45][_Expr0_SharedOrCtor]< _Expr0_Shared "{" { _Expr_Raw @ ; "," } "}" >
+		+ Field(CtorExpr::args)
+
+[43][_Expr0_SharedOrCtor]< _Expr0_Shared "{" { _Expr_Raw ; "," @ } "}" >
+[RULE: 7][CLAUSE: 1]
+	rule: _Expr_Raw -> [45][_Expr0_SharedOrCtor]< _Expr0_Shared "{" { _Expr_Raw @ ; "," } "}" >
+		+ Field(CtorExpr::args)
+
+[44][_Expr0_SharedOrCtor]< _Expr0_Shared "{" { _Expr_Raw ; "," } "}" @ >
+[RULE: 7][CLAUSE: 1]
+	ending -> [41][_Expr0_SharedOrCtor] END [ENDING]
+		- EndObject()
+
+[45][_Expr0_SharedOrCtor]< _Expr0_Shared "{" { _Expr_Raw @ ; "," } "}" >
+[RULE: 7][CLAUSE: 1]
+	token: "}" -> [44][_Expr0_SharedOrCtor]< _Expr0_Shared "{" { _Expr_Raw ; "," } "}" @ >
+	token: "," -> [43][_Expr0_SharedOrCtor]< _Expr0_Shared "{" { _Expr_Raw ; "," @ } "}" >
+
+[46][_Expr0_SharedOrCtor]< _Expr0_Shared @ "{" { _Expr_Raw ; "," } "}" >
+[RULE: 7][CLAUSE: 1]
+	token: "{" -> [42][_Expr0_SharedOrCtor]< _Expr0_Shared "{" @ { _Expr_Raw ; "," } "}" >
+
+[47][_Expr0_SharedOrCtor]< _Expr0_Type "{" @ { _Expr_Raw ; "," } "}" >
+[RULE: 7][CLAUSE: 2]
+	token: "}" -> [49][_Expr0_SharedOrCtor]< _Expr0_Type "{" { _Expr_Raw ; "," } "}" @ >
+	rule: _Expr_Raw -> [50][_Expr0_SharedOrCtor]< _Expr0_Type "{" { _Expr_Raw @ ; "," } "}" >
+		+ Field(CtorExpr::args)
+
+[48][_Expr0_SharedOrCtor]< _Expr0_Type "{" { _Expr_Raw ; "," @ } "}" >
+[RULE: 7][CLAUSE: 2]
+	rule: _Expr_Raw -> [50][_Expr0_SharedOrCtor]< _Expr0_Type "{" { _Expr_Raw @ ; "," } "}" >
+		+ Field(CtorExpr::args)
+
+[49][_Expr0_SharedOrCtor]< _Expr0_Type "{" { _Expr_Raw ; "," } "}" @ >
+[RULE: 7][CLAUSE: 2]
+	ending -> [41][_Expr0_SharedOrCtor] END [ENDING]
+		- EndObject()
+
+[50][_Expr0_SharedOrCtor]< _Expr0_Type "{" { _Expr_Raw @ ; "," } "}" >
+[RULE: 7][CLAUSE: 2]
+	token: "}" -> [49][_Expr0_SharedOrCtor]< _Expr0_Type "{" { _Expr_Raw ; "," } "}" @ >
+	token: "," -> [48][_Expr0_SharedOrCtor]< _Expr0_Type "{" { _Expr_Raw ; "," @ } "}" >
+
+[51][_Expr0_SharedOrCtor]< _Expr0_Type @ "{" { _Expr_Raw ; "," } "}" >
+[RULE: 7][CLAUSE: 2]
+	token: "{" -> [47][_Expr0_SharedOrCtor]< _Expr0_Type "{" @ { _Expr_Raw ; "," } "}" >
+
+[52][_Expr0_SharedOrCtor]<< !_Expr0_Shared @ >>
+[RULE: 7][CLAUSE: 0]
+	ending -> [41][_Expr0_SharedOrCtor] END [ENDING]
+		- LriStore()
+		- DelayFieldAssignment()
+		- LriFetch()
+		- ReopenObject()
+		- EndObject()
+	leftrec -> [46][_Expr0_SharedOrCtor]< _Expr0_Shared @ "{" { _Expr_Raw ; "," } "}" >
+		+ LriStore()
+		+ BeginObject(CtorExpr)
+		+ LriFetch()
+		+ Field(CtorExpr::type)
+
+[53][_Expr0] BEGIN 
+[RULE: 8][CLAUSE: -1]
+	rule: _Expr0_SharedOrCtor -> [55][_Expr0]<< !_Expr0_SharedOrCtor @ >>
+		- DelayFieldAssignment()
+	lr-placeholder: Expr -> [56][_Expr0]lrp:(Expr) @
+
+[54][_Expr0] END [ENDING]
+[RULE: 8][CLAUSE: -1]
+
+[55][_Expr0]<< !_Expr0_SharedOrCtor @ >>
+[RULE: 8][CLAUSE: 0]
+	ending -> [54][_Expr0] END [ENDING]
+		- ReopenObject()
+		- EndObject()
+
+[56][_Expr0]lrp:(Expr) @
+[RULE: 8][CLAUSE: 1]
+	ending -> [54][_Expr0] END [ENDING]
+
+[57][_Expr1] BEGIN 
+[RULE: 9][CLAUSE: -1]
+	rule: _Expr0 -> [64][_Expr1]<< !_Expr0 @ >>
+		- DelayFieldAssignment()
+		+ ReopenObject()
+
+[58][_Expr1] END [ENDING]
+[RULE: 9][CLAUSE: -1]
+
+[59][_Expr1]< _Expr1 "(" @ { _Expr_Raw ; "," } ")" >
+[RULE: 9][CLAUSE: 1]
+	token: ")" -> [61][_Expr1]< _Expr1 "(" { _Expr_Raw ; "," } ")" @ >
+	rule: _Expr_Raw -> [62][_Expr1]< _Expr1 "(" { _Expr_Raw @ ; "," } ")" >
+		+ Field(CallExpr::args)
+
+[60][_Expr1]< _Expr1 "(" { _Expr_Raw ; "," @ } ")" >
+[RULE: 9][CLAUSE: 1]
+	rule: _Expr_Raw -> [62][_Expr1]< _Expr1 "(" { _Expr_Raw @ ; "," } ")" >
+		+ Field(CallExpr::args)
+
+[61][_Expr1]< _Expr1 "(" { _Expr_Raw ; "," } ")" @ >
+[RULE: 9][CLAUSE: 1]
+	ending -> [58][_Expr1] END [ENDING]
+		- EndObject()
+	leftrec -> [63][_Expr1]< _Expr1 @ "(" { _Expr_Raw ; "," } ")" >
+		- EndObject()
+		- LriStore()
+		- BeginObject(CallExpr)
+		- LriFetch()
+		+ Field(CallExpr::func)
+
+[62][_Expr1]< _Expr1 "(" { _Expr_Raw @ ; "," } ")" >
+[RULE: 9][CLAUSE: 1]
+	token: ")" -> [61][_Expr1]< _Expr1 "(" { _Expr_Raw ; "," } ")" @ >
+	token: "," -> [60][_Expr1]< _Expr1 "(" { _Expr_Raw ; "," @ } ")" >
+
+[63][_Expr1]< _Expr1 @ "(" { _Expr_Raw ; "," } ")" >
+[RULE: 9][CLAUSE: 1]
+	token: "(" -> [59][_Expr1]< _Expr1 "(" @ { _Expr_Raw ; "," } ")" >
+
+[64][_Expr1]<< !_Expr0 @ >>
+[RULE: 9][CLAUSE: 0]
+	ending -> [58][_Expr1] END [ENDING]
+		- EndObject()
+	leftrec -> [63][_Expr1]< _Expr1 @ "(" { _Expr_Raw ; "," } ")" >
+		- EndObject()
+		- LriStore()
+		- BeginObject(CallExpr)
+		- LriFetch()
+		+ Field(CallExpr::func)
+
+[65][_Expr] BEGIN 
+[RULE: 10][CLAUSE: -1]
+	rule: _Expr1 -> [70][_Expr]<< !_Expr1 @ >>
+		- DelayFieldAssignment()
+		+ ReopenObject()
+
+[66][_Expr] END [ENDING]
+[RULE: 10][CLAUSE: -1]
+
+[67][_Expr]< _Expr "*" @ _Expr1_Raw >
+[RULE: 10][CLAUSE: 1]
+	rule: _Expr1_Raw -> [68][_Expr]< _Expr "*" _Expr1_Raw @ >
+		+ Field(MulExpr::second)
+
+[68][_Expr]< _Expr "*" _Expr1_Raw @ >
+[RULE: 10][CLAUSE: 1]
+	ending -> [66][_Expr] END [ENDING]
+		- EndObject()
+	leftrec -> [69][_Expr]< _Expr @ "*" _Expr1_Raw >
+		- EndObject()
+		- LriStore()
+		- BeginObject(MulExpr)
+		- LriFetch()
+		+ Field(MulExpr::first)
+
+[69][_Expr]< _Expr @ "*" _Expr1_Raw >
+[RULE: 10][CLAUSE: 1]
+	token: "*" -> [67][_Expr]< _Expr "*" @ _Expr1_Raw >
+
+[70][_Expr]<< !_Expr1 @ >>
+[RULE: 10][CLAUSE: 0]
+	ending -> [66][_Expr] END [ENDING]
+		- EndObject()
+	leftrec -> [69][_Expr]< _Expr @ "*" _Expr1_Raw >
+		- EndObject()
+		- LriStore()
+		- BeginObject(MulExpr)
+		- LriFetch()
+		+ Field(MulExpr::first)
+
+[71][_Expr1_Raw] BEGIN 
+[RULE: 11][CLAUSE: -1]
+	rule: _PrimitiveShared -> [78][_Expr1_Raw]<< !_PrimitiveShared @ ( lri:(Shared)->_Expr1 | lri:(Shared)->_LongType ( lri:(Type)->_Expr1 ) | lri:<skip> ) >>
+		- DelayFieldAssignment()
+		+ ReopenObject()
+	rule: _PrimitiveTypeOnly -> [82][_Expr1_Raw]<< !_PrimitiveTypeOnly @ ( lri:(Type)->_Expr1 | lri:(Type)->_LongType ( lri:(Type)->_Expr1 ) ) >>
+		- DelayFieldAssignment()
+		+ ReopenObject()
+	rule: _PrimitiveExprOnly -> [74][_Expr1_Raw]<< !_PrimitiveExprOnly @ ( lri:(Expr)->_Expr1 | lri:<skip> ) >>
+		- DelayFieldAssignment()
+		+ ReopenObject()
+
+[72][_Expr1_Raw] END [ENDING]
+[RULE: 11][CLAUSE: -1]
+
+[73][_Expr1_Raw]<< !_PrimitiveExprOnly ( lri:(Expr)->_Expr1 @ | lri:<skip> ) >>
+[RULE: 11][CLAUSE: 2]
+	ending -> [72][_Expr1_Raw] END [ENDING]
+		- EndObject()
+
+[74][_Expr1_Raw]<< !_PrimitiveExprOnly @ ( lri:(Expr)->_Expr1 | lri:<skip> ) >>
+[RULE: 11][CLAUSE: 2]
+	ending -> [72][_Expr1_Raw] END [ENDING]
+		- EndObject()
+	lr-inject: Expr -> _Expr1 -> [73][_Expr1_Raw]<< !_PrimitiveExprOnly ( lri:(Expr)->_Expr1 @ | lri:<skip> ) >>
+		+ ReopenObject()
+
+[75][_Expr1_Raw]<< !_PrimitiveShared ( lri:(Shared)->_Expr1 @ | lri:(Shared)->_LongType ( lri:(Type)->_Expr1 ) | lri:<skip> ) >>
+[RULE: 11][CLAUSE: 0]
+	ending -> [72][_Expr1_Raw] END [ENDING]
+		- EndObject()
+
+[76][_Expr1_Raw]<< !_PrimitiveShared ( lri:(Shared)->_Expr1 | lri:(Shared)->_LongType ( lri:(Type)->_Expr1 @ ) | lri:<skip> ) >>
+[RULE: 11][CLAUSE: 0]
+	ending -> [72][_Expr1_Raw] END [ENDING]
+		- EndObject()
+
+[77][_Expr1_Raw]<< !_PrimitiveShared ( lri:(Shared)->_Expr1 | lri:(Shared)->_LongType @ ( lri:(Type)->_Expr1 ) | lri:<skip> ) >>
+[RULE: 11][CLAUSE: 0]
+	lr-inject: Type -> _Expr1 -> [76][_Expr1_Raw]<< !_PrimitiveShared ( lri:(Shared)->_Expr1 | lri:(Shared)->_LongType ( lri:(Type)->_Expr1 @ ) | lri:<skip> ) >>
+		+ ReopenObject()
+
+[78][_Expr1_Raw]<< !_PrimitiveShared @ ( lri:(Shared)->_Expr1 | lri:(Shared)->_LongType ( lri:(Type)->_Expr1 ) | lri:<skip> ) >>
+[RULE: 11][CLAUSE: 0]
+	ending -> [72][_Expr1_Raw] END [ENDING]
+		- EndObject()
+	lr-inject: Shared -> _Expr1 -> [75][_Expr1_Raw]<< !_PrimitiveShared ( lri:(Shared)->_Expr1 @ | lri:(Shared)->_LongType ( lri:(Type)->_Expr1 ) | lri:<skip> ) >>
+		+ ReopenObject()
+	lr-inject: Shared -> _LongType -> [77][_Expr1_Raw]<< !_PrimitiveShared ( lri:(Shared)->_Expr1 | lri:(Shared)->_LongType @ ( lri:(Type)->_Expr1 ) | lri:<skip> ) >>
+		+ ReopenObject()
+
+[79][_Expr1_Raw]<< !_PrimitiveTypeOnly ( lri:(Type)->_Expr1 @ | lri:(Type)->_LongType ( lri:(Type)->_Expr1 ) ) >>
+[RULE: 11][CLAUSE: 1]
+	ending -> [72][_Expr1_Raw] END [ENDING]
+		- EndObject()
+
+[80][_Expr1_Raw]<< !_PrimitiveTypeOnly ( lri:(Type)->_Expr1 | lri:(Type)->_LongType ( lri:(Type)->_Expr1 @ ) ) >>
+[RULE: 11][CLAUSE: 1]
+	ending -> [72][_Expr1_Raw] END [ENDING]
+		- EndObject()
+
+[81][_Expr1_Raw]<< !_PrimitiveTypeOnly ( lri:(Type)->_Expr1 | lri:(Type)->_LongType @ ( lri:(Type)->_Expr1 ) ) >>
+[RULE: 11][CLAUSE: 1]
+	lr-inject: Type -> _Expr1 -> [80][_Expr1_Raw]<< !_PrimitiveTypeOnly ( lri:(Type)->_Expr1 | lri:(Type)->_LongType ( lri:(Type)->_Expr1 @ ) ) >>
+		+ ReopenObject()
+
+[82][_Expr1_Raw]<< !_PrimitiveTypeOnly @ ( lri:(Type)->_Expr1 | lri:(Type)->_LongType ( lri:(Type)->_Expr1 ) ) >>
+[RULE: 11][CLAUSE: 1]
+	lr-inject: Type -> _Expr1 -> [79][_Expr1_Raw]<< !_PrimitiveTypeOnly ( lri:(Type)->_Expr1 @ | lri:(Type)->_LongType ( lri:(Type)->_Expr1 ) ) >>
+		+ ReopenObject()
+	lr-inject: Type -> _LongType -> [81][_Expr1_Raw]<< !_PrimitiveTypeOnly ( lri:(Type)->_Expr1 | lri:(Type)->_LongType @ ( lri:(Type)->_Expr1 ) ) >>
+		+ ReopenObject()
+
+[83][_Expr_Raw] BEGIN 
+[RULE: 12][CLAUSE: -1]
+	rule: _PrimitiveShared -> [90][_Expr_Raw]<< !_PrimitiveShared @ ( lri:(Shared)->_Expr | lri:(Shared)->_LongType ( lri:(Type)->_Expr ) | lri:<skip> ) >>
+		- DelayFieldAssignment()
+		+ ReopenObject()
+	rule: _PrimitiveTypeOnly -> [94][_Expr_Raw]<< !_PrimitiveTypeOnly @ ( lri:(Type)->_Expr | lri:(Type)->_LongType ( lri:(Type)->_Expr ) ) >>
+		- DelayFieldAssignment()
+		+ ReopenObject()
+	rule: _PrimitiveExprOnly -> [86][_Expr_Raw]<< !_PrimitiveExprOnly @ ( lri:(Expr)->_Expr | lri:<skip> ) >>
+		- DelayFieldAssignment()
+		+ ReopenObject()
+
+[84][_Expr_Raw] END [ENDING]
+[RULE: 12][CLAUSE: -1]
+
+[85][_Expr_Raw]<< !_PrimitiveExprOnly ( lri:(Expr)->_Expr @ | lri:<skip> ) >>
+[RULE: 12][CLAUSE: 2]
+	ending -> [84][_Expr_Raw] END [ENDING]
+		- EndObject()
+
+[86][_Expr_Raw]<< !_PrimitiveExprOnly @ ( lri:(Expr)->_Expr | lri:<skip> ) >>
+[RULE: 12][CLAUSE: 2]
+	ending -> [84][_Expr_Raw] END [ENDING]
+		- EndObject()
+	lr-inject: Expr -> _Expr -> [85][_Expr_Raw]<< !_PrimitiveExprOnly ( lri:(Expr)->_Expr @ | lri:<skip> ) >>
+		+ ReopenObject()
+
+[87][_Expr_Raw]<< !_PrimitiveShared ( lri:(Shared)->_Expr @ | lri:(Shared)->_LongType ( lri:(Type)->_Expr ) | lri:<skip> ) >>
+[RULE: 12][CLAUSE: 0]
+	ending -> [84][_Expr_Raw] END [ENDING]
+		- EndObject()
+
+[88][_Expr_Raw]<< !_PrimitiveShared ( lri:(Shared)->_Expr | lri:(Shared)->_LongType ( lri:(Type)->_Expr @ ) | lri:<skip> ) >>
+[RULE: 12][CLAUSE: 0]
+	ending -> [84][_Expr_Raw] END [ENDING]
+		- EndObject()
+
+[89][_Expr_Raw]<< !_PrimitiveShared ( lri:(Shared)->_Expr | lri:(Shared)->_LongType @ ( lri:(Type)->_Expr ) | lri:<skip> ) >>
+[RULE: 12][CLAUSE: 0]
+	lr-inject: Type -> _Expr -> [88][_Expr_Raw]<< !_PrimitiveShared ( lri:(Shared)->_Expr | lri:(Shared)->_LongType ( lri:(Type)->_Expr @ ) | lri:<skip> ) >>
+		+ ReopenObject()
+
+[90][_Expr_Raw]<< !_PrimitiveShared @ ( lri:(Shared)->_Expr | lri:(Shared)->_LongType ( lri:(Type)->_Expr ) | lri:<skip> ) >>
+[RULE: 12][CLAUSE: 0]
+	ending -> [84][_Expr_Raw] END [ENDING]
+		- EndObject()
+	lr-inject: Shared -> _Expr -> [87][_Expr_Raw]<< !_PrimitiveShared ( lri:(Shared)->_Expr @ | lri:(Shared)->_LongType ( lri:(Type)->_Expr ) | lri:<skip> ) >>
+		+ ReopenObject()
+	lr-inject: Shared -> _LongType -> [89][_Expr_Raw]<< !_PrimitiveShared ( lri:(Shared)->_Expr | lri:(Shared)->_LongType @ ( lri:(Type)->_Expr ) | lri:<skip> ) >>
+		+ ReopenObject()
+
+[91][_Expr_Raw]<< !_PrimitiveTypeOnly ( lri:(Type)->_Expr @ | lri:(Type)->_LongType ( lri:(Type)->_Expr ) ) >>
+[RULE: 12][CLAUSE: 1]
+	ending -> [84][_Expr_Raw] END [ENDING]
+		- EndObject()
+
+[92][_Expr_Raw]<< !_PrimitiveTypeOnly ( lri:(Type)->_Expr | lri:(Type)->_LongType ( lri:(Type)->_Expr @ ) ) >>
+[RULE: 12][CLAUSE: 1]
+	ending -> [84][_Expr_Raw] END [ENDING]
+		- EndObject()
+
+[93][_Expr_Raw]<< !_PrimitiveTypeOnly ( lri:(Type)->_Expr | lri:(Type)->_LongType @ ( lri:(Type)->_Expr ) ) >>
+[RULE: 12][CLAUSE: 1]
+	lr-inject: Type -> _Expr -> [92][_Expr_Raw]<< !_PrimitiveTypeOnly ( lri:(Type)->_Expr | lri:(Type)->_LongType ( lri:(Type)->_Expr @ ) ) >>
+		+ ReopenObject()
+
+[94][_Expr_Raw]<< !_PrimitiveTypeOnly @ ( lri:(Type)->_Expr | lri:(Type)->_LongType ( lri:(Type)->_Expr ) ) >>
+[RULE: 12][CLAUSE: 1]
+	lr-inject: Type -> _Expr -> [91][_Expr_Raw]<< !_PrimitiveTypeOnly ( lri:(Type)->_Expr @ | lri:(Type)->_LongType ( lri:(Type)->_Expr ) ) >>
+		+ ReopenObject()
+	lr-inject: Type -> _LongType -> [93][_Expr_Raw]<< !_PrimitiveTypeOnly ( lri:(Type)->_Expr | lri:(Type)->_LongType @ ( lri:(Type)->_Expr ) ) >>
+		+ ReopenObject()
+
+[95][Module] BEGIN 
+[RULE: 13][CLAUSE: -1]
+	rule: _PrimitiveShared -> [102][Module]<< !_PrimitiveShared @ ( lri:(Shared)->_Expr | lri:(Shared)->_LongType ( lri:(Type)->_Expr | lri:<skip> ) | lri:<skip> ) >>
+		- DelayFieldAssignment()
+		+ ReopenObject()
+	rule: _PrimitiveTypeOnly -> [106][Module]<< !_PrimitiveTypeOnly @ ( lri:(Type)->_Expr | lri:(Type)->_LongType ( lri:(Type)->_Expr | lri:<skip> ) | lri:<skip> ) >>
+		- DelayFieldAssignment()
+		+ ReopenObject()
+	rule: _PrimitiveExprOnly -> [98][Module]<< !_PrimitiveExprOnly @ ( lri:(Expr)->_Expr | lri:<skip> ) >>
+		- DelayFieldAssignment()
+		+ ReopenObject()
+
+[96][Module] END [ENDING]
+[RULE: 13][CLAUSE: -1]
+
+[97][Module]<< !_PrimitiveExprOnly ( lri:(Expr)->_Expr @ | lri:<skip> ) >>
+[RULE: 13][CLAUSE: 2]
+	ending -> [96][Module] END [ENDING]
+		- EndObject()
+
+[98][Module]<< !_PrimitiveExprOnly @ ( lri:(Expr)->_Expr | lri:<skip> ) >>
+[RULE: 13][CLAUSE: 2]
+	ending -> [96][Module] END [ENDING]
+		- EndObject()
+	lr-inject: Expr -> _Expr -> [97][Module]<< !_PrimitiveExprOnly ( lri:(Expr)->_Expr @ | lri:<skip> ) >>
+		+ ReopenObject()
+
+[99][Module]<< !_PrimitiveShared ( lri:(Shared)->_Expr @ | lri:(Shared)->_LongType ( lri:(Type)->_Expr | lri:<skip> ) | lri:<skip> ) >>
+[RULE: 13][CLAUSE: 0]
+	ending -> [96][Module] END [ENDING]
+		- EndObject()
+
+[100][Module]<< !_PrimitiveShared ( lri:(Shared)->_Expr | lri:(Shared)->_LongType ( lri:(Type)->_Expr @ | lri:<skip> ) | lri:<skip> ) >>
+[RULE: 13][CLAUSE: 0]
+	ending -> [96][Module] END [ENDING]
+		- EndObject()
+
+[101][Module]<< !_PrimitiveShared ( lri:(Shared)->_Expr | lri:(Shared)->_LongType @ ( lri:(Type)->_Expr | lri:<skip> ) | lri:<skip> ) >>
+[RULE: 13][CLAUSE: 0]
+	ending -> [96][Module] END [ENDING]
+		- EndObject()
+	lr-inject: Type -> _Expr -> [100][Module]<< !_PrimitiveShared ( lri:(Shared)->_Expr | lri:(Shared)->_LongType ( lri:(Type)->_Expr @ | lri:<skip> ) | lri:<skip> ) >>
+		+ ReopenObject()
+
+[102][Module]<< !_PrimitiveShared @ ( lri:(Shared)->_Expr | lri:(Shared)->_LongType ( lri:(Type)->_Expr | lri:<skip> ) | lri:<skip> ) >>
+[RULE: 13][CLAUSE: 0]
+	ending -> [96][Module] END [ENDING]
+		- EndObject()
+	lr-inject: Shared -> _Expr -> [99][Module]<< !_PrimitiveShared ( lri:(Shared)->_Expr @ | lri:(Shared)->_LongType ( lri:(Type)->_Expr | lri:<skip> ) | lri:<skip> ) >>
+		+ ReopenObject()
+	lr-inject: Shared -> _LongType -> [101][Module]<< !_PrimitiveShared ( lri:(Shared)->_Expr | lri:(Shared)->_LongType @ ( lri:(Type)->_Expr | lri:<skip> ) | lri:<skip> ) >>
+		+ ReopenObject()
+
+[103][Module]<< !_PrimitiveTypeOnly ( lri:(Type)->_Expr @ | lri:(Type)->_LongType ( lri:(Type)->_Expr | lri:<skip> ) | lri:<skip> ) >>
+[RULE: 13][CLAUSE: 1]
+	ending -> [96][Module] END [ENDING]
+		- EndObject()
+
+[104][Module]<< !_PrimitiveTypeOnly ( lri:(Type)->_Expr | lri:(Type)->_LongType ( lri:(Type)->_Expr @ | lri:<skip> ) | lri:<skip> ) >>
+[RULE: 13][CLAUSE: 1]
+	ending -> [96][Module] END [ENDING]
+		- EndObject()
+
+[105][Module]<< !_PrimitiveTypeOnly ( lri:(Type)->_Expr | lri:(Type)->_LongType @ ( lri:(Type)->_Expr | lri:<skip> ) | lri:<skip> ) >>
+[RULE: 13][CLAUSE: 1]
+	ending -> [96][Module] END [ENDING]
+		- EndObject()
+	lr-inject: Type -> _Expr -> [104][Module]<< !_PrimitiveTypeOnly ( lri:(Type)->_Expr | lri:(Type)->_LongType ( lri:(Type)->_Expr @ | lri:<skip> ) | lri:<skip> ) >>
+		+ ReopenObject()
+
+[106][Module]<< !_PrimitiveTypeOnly @ ( lri:(Type)->_Expr | lri:(Type)->_LongType ( lri:(Type)->_Expr | lri:<skip> ) | lri:<skip> ) >>
+[RULE: 13][CLAUSE: 1]
+	ending -> [96][Module] END [ENDING]
+		- EndObject()
+	lr-inject: Type -> _Expr -> [103][Module]<< !_PrimitiveTypeOnly ( lri:(Type)->_Expr @ | lri:(Type)->_LongType ( lri:(Type)->_Expr | lri:<skip> ) | lri:<skip> ) >>
+		+ ReopenObject()
+	lr-inject: Type -> _LongType -> [105][Module]<< !_PrimitiveTypeOnly ( lri:(Type)->_Expr | lri:(Type)->_LongType @ ( lri:(Type)->_Expr | lri:<skip> ) | lri:<skip> ) >>
+		+ ReopenObject()
+

@@ -207,7 +207,8 @@ SyntaxSymbolManager::FixLeftRecursionInjectEdge
 
 						if (!endingEdge)
 						{
-							// stop searching if any Token edge are found
+							// stop searching if there is no Ending input
+							// since there will be no more {Ending} Token edge to compact
 							break;
 						}
 					}

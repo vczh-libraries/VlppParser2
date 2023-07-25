@@ -1,0 +1,288 @@
+﻿[0][Exp0] BEGIN 
+[RULE: 0][CLAUSE: -1]
+	token: "(" -> [5][Exp0]<< "(" @ !Exp6 ")" >>
+		- DelayFieldAssignment()
+	token: ID -> [2][Exp0]< ID @ >
+		- BeginObject(RefExpr)
+		+ Token()
+		+ Field(RefExpr::name)
+
+[1][Exp0] END [ENDING]
+[RULE: 0][CLAUSE: -1]
+
+[2][Exp0]< ID @ >
+[RULE: 0][CLAUSE: 0]
+	ending -> [1][Exp0] END [ENDING]
+		- EndObject()
+
+[3][Exp0]<< "(" !Exp6 ")" @ >>
+[RULE: 0][CLAUSE: 1]
+	ending -> [1][Exp0] END [ENDING]
+		- EndObject()
+
+[4][Exp0]<< "(" !Exp6 @ ")" >>
+[RULE: 0][CLAUSE: 1]
+	token: ")" -> [3][Exp0]<< "(" !Exp6 ")" @ >>
+
+[5][Exp0]<< "(" @ !Exp6 ")" >>
+[RULE: 0][CLAUSE: 1]
+	rule: Exp6 -> [4][Exp0]<< "(" !Exp6 @ ")" >>
+		+ ReopenObject()
+
+[6][Exp1] BEGIN 
+[RULE: 1][CLAUSE: -1]
+	rule: Exp0 -> [11][Exp1]<< !Exp0 @ >>
+		- DelayFieldAssignment()
+		+ ReopenObject()
+
+[7][Exp1] END [ENDING]
+[RULE: 1][CLAUSE: -1]
+
+[8][Exp1]< Exp1 "^" @ Exp0 >
+[RULE: 1][CLAUSE: 1]
+	rule: Exp0 -> [9][Exp1]< Exp1 "^" Exp0 @ >
+		+ Field(BinaryExpr::right)
+
+[9][Exp1]< Exp1 "^" Exp0 @ >
+[RULE: 1][CLAUSE: 1]
+	ending -> [7][Exp1] END [ENDING]
+		- EnumItem(2)
+		- Field(BinaryExpr::op)
+		- EndObject()
+	leftrec -> [10][Exp1]< Exp1 @ "^" Exp0 >
+		- EnumItem(2)
+		- Field(BinaryExpr::op)
+		- EndObject()
+		- LriStore()
+		- BeginObject(BinaryExpr)
+		- LriFetch()
+		+ Field(BinaryExpr::left)
+
+[10][Exp1]< Exp1 @ "^" Exp0 >
+[RULE: 1][CLAUSE: 1]
+	token: "^" -> [8][Exp1]< Exp1 "^" @ Exp0 >
+
+[11][Exp1]<< !Exp0 @ >>
+[RULE: 1][CLAUSE: 0]
+	ending -> [7][Exp1] END [ENDING]
+		- EndObject()
+	leftrec -> [10][Exp1]< Exp1 @ "^" Exp0 >
+		- EndObject()
+		- LriStore()
+		- BeginObject(BinaryExpr)
+		- LriFetch()
+		+ Field(BinaryExpr::left)
+
+[12][Exp2] BEGIN 
+[RULE: 2][CLAUSE: -1]
+	rule: Exp1 -> [17][Exp2]<< !Exp1 @ >>
+		- DelayFieldAssignment()
+		+ ReopenObject()
+
+[13][Exp2] END [ENDING]
+[RULE: 2][CLAUSE: -1]
+
+[14][Exp2]< Exp2 "*" @ Exp1 >
+[RULE: 2][CLAUSE: 1]
+	rule: Exp1 -> [15][Exp2]< Exp2 "*" Exp1 @ >
+		+ Field(BinaryExpr::right)
+
+[15][Exp2]< Exp2 "*" Exp1 @ >
+[RULE: 2][CLAUSE: 1]
+	ending -> [13][Exp2] END [ENDING]
+		- EnumItem(1)
+		- Field(BinaryExpr::op)
+		- EndObject()
+	leftrec -> [16][Exp2]< Exp2 @ "*" Exp1 >
+		- EnumItem(1)
+		- Field(BinaryExpr::op)
+		- EndObject()
+		- LriStore()
+		- BeginObject(BinaryExpr)
+		- LriFetch()
+		+ Field(BinaryExpr::left)
+
+[16][Exp2]< Exp2 @ "*" Exp1 >
+[RULE: 2][CLAUSE: 1]
+	token: "*" -> [14][Exp2]< Exp2 "*" @ Exp1 >
+
+[17][Exp2]<< !Exp1 @ >>
+[RULE: 2][CLAUSE: 0]
+	ending -> [13][Exp2] END [ENDING]
+		- EndObject()
+	leftrec -> [16][Exp2]< Exp2 @ "*" Exp1 >
+		- EndObject()
+		- LriStore()
+		- BeginObject(BinaryExpr)
+		- LriFetch()
+		+ Field(BinaryExpr::left)
+
+[18][Exp3] BEGIN 
+[RULE: 3][CLAUSE: -1]
+	rule: Exp2 -> [23][Exp3]<< !Exp2 @ >>
+		- DelayFieldAssignment()
+		+ ReopenObject()
+
+[19][Exp3] END [ENDING]
+[RULE: 3][CLAUSE: -1]
+
+[20][Exp3]< Exp3 "+" @ Exp2 >
+[RULE: 3][CLAUSE: 1]
+	rule: Exp2 -> [21][Exp3]< Exp3 "+" Exp2 @ >
+		+ Field(BinaryExpr::right)
+
+[21][Exp3]< Exp3 "+" Exp2 @ >
+[RULE: 3][CLAUSE: 1]
+	ending -> [19][Exp3] END [ENDING]
+		- EnumItem(0)
+		- Field(BinaryExpr::op)
+		- EndObject()
+	leftrec -> [22][Exp3]< Exp3 @ "+" Exp2 >
+		- EnumItem(0)
+		- Field(BinaryExpr::op)
+		- EndObject()
+		- LriStore()
+		- BeginObject(BinaryExpr)
+		- LriFetch()
+		+ Field(BinaryExpr::left)
+
+[22][Exp3]< Exp3 @ "+" Exp2 >
+[RULE: 3][CLAUSE: 1]
+	token: "+" -> [20][Exp3]< Exp3 "+" @ Exp2 >
+
+[23][Exp3]<< !Exp2 @ >>
+[RULE: 3][CLAUSE: 0]
+	ending -> [19][Exp3] END [ENDING]
+		- EndObject()
+	leftrec -> [22][Exp3]< Exp3 @ "+" Exp2 >
+		- EndObject()
+		- LriStore()
+		- BeginObject(BinaryExpr)
+		- LriFetch()
+		+ Field(BinaryExpr::left)
+
+[24][Exp4] BEGIN 
+[RULE: 4][CLAUSE: -1]
+	rule: Exp3 -> [29][Exp4]<< !Exp3 @ >>
+
+[25][Exp4] END [ENDING]
+[RULE: 4][CLAUSE: -1]
+
+[26][Exp4]< Exp3 "=" @ Exp4 >
+[RULE: 4][CLAUSE: 1]
+	rule: Exp4 -> [27][Exp4]< Exp3 "=" Exp4 @ >
+		+ Field(BinaryExpr::right)
+
+[27][Exp4]< Exp3 "=" Exp4 @ >
+[RULE: 4][CLAUSE: 1]
+	ending -> [25][Exp4] END [ENDING]
+		- EnumItem(3)
+		- Field(BinaryExpr::op)
+		- EndObject()
+
+[28][Exp4]< Exp3 @ "=" Exp4 >
+[RULE: 4][CLAUSE: 1]
+	token: "=" -> [26][Exp4]< Exp3 "=" @ Exp4 >
+
+[29][Exp4]<< !Exp3 @ >>
+[RULE: 4][CLAUSE: 0]
+	ending -> [25][Exp4] END [ENDING]
+		- LriStore()
+		- DelayFieldAssignment()
+		- LriFetch()
+		- ReopenObject()
+		- EndObject()
+	leftrec -> [28][Exp4]< Exp3 @ "=" Exp4 >
+		+ LriStore()
+		+ BeginObject(BinaryExpr)
+		+ LriFetch()
+		+ Field(BinaryExpr::left)
+
+[30][Exp5] BEGIN 
+[RULE: 5][CLAUSE: -1]
+	rule: Exp4 -> [35][Exp5]<< !Exp4 @ >>
+
+[31][Exp5] END [ENDING]
+[RULE: 5][CLAUSE: -1]
+
+[32][Exp5]< Exp4 "?" @ Exp5 >
+[RULE: 5][CLAUSE: 1]
+	rule: Exp5 -> [33][Exp5]< Exp4 "?" Exp5 @ >
+		+ Field(BinaryExpr::right)
+
+[33][Exp5]< Exp4 "?" Exp5 @ >
+[RULE: 5][CLAUSE: 1]
+	ending -> [31][Exp5] END [ENDING]
+		- EnumItem(4)
+		- Field(BinaryExpr::op)
+		- EndObject()
+
+[34][Exp5]< Exp4 @ "?" Exp5 >
+[RULE: 5][CLAUSE: 1]
+	token: "?" -> [32][Exp5]< Exp4 "?" @ Exp5 >
+
+[35][Exp5]<< !Exp4 @ >>
+[RULE: 5][CLAUSE: 0]
+	ending -> [31][Exp5] END [ENDING]
+		- LriStore()
+		- DelayFieldAssignment()
+		- LriFetch()
+		- ReopenObject()
+		- EndObject()
+	leftrec -> [34][Exp5]< Exp4 @ "?" Exp5 >
+		+ LriStore()
+		+ BeginObject(BinaryExpr)
+		+ LriFetch()
+		+ Field(BinaryExpr::left)
+
+[36][Exp6] BEGIN 
+[RULE: 6][CLAUSE: -1]
+	rule: Exp5 -> [41][Exp6]<< !Exp5 @ >>
+
+[37][Exp6] END [ENDING]
+[RULE: 6][CLAUSE: -1]
+
+[38][Exp6]< Exp5 "$" @ Exp6 >
+[RULE: 6][CLAUSE: 1]
+	rule: Exp6 -> [39][Exp6]< Exp5 "$" Exp6 @ >
+		+ Field(BinaryExpr::right)
+
+[39][Exp6]< Exp5 "$" Exp6 @ >
+[RULE: 6][CLAUSE: 1]
+	ending -> [37][Exp6] END [ENDING]
+		- EnumItem(5)
+		- Field(BinaryExpr::op)
+		- EndObject()
+
+[40][Exp6]< Exp5 @ "$" Exp6 >
+[RULE: 6][CLAUSE: 1]
+	token: "$" -> [38][Exp6]< Exp5 "$" @ Exp6 >
+
+[41][Exp6]<< !Exp5 @ >>
+[RULE: 6][CLAUSE: 0]
+	ending -> [37][Exp6] END [ENDING]
+		- LriStore()
+		- DelayFieldAssignment()
+		- LriFetch()
+		- ReopenObject()
+		- EndObject()
+	leftrec -> [40][Exp6]< Exp5 @ "$" Exp6 >
+		+ LriStore()
+		+ BeginObject(BinaryExpr)
+		+ LriFetch()
+		+ Field(BinaryExpr::left)
+
+[42][Module] BEGIN 
+[RULE: 7][CLAUSE: -1]
+	rule: Exp6 -> [44][Module]<< !Exp6 @ >>
+		- DelayFieldAssignment()
+
+[43][Module] END [ENDING]
+[RULE: 7][CLAUSE: -1]
+
+[44][Module]<< !Exp6 @ >>
+[RULE: 7][CLAUSE: 0]
+	ending -> [43][Module] END [ENDING]
+		- ReopenObject()
+		- EndObject()
+

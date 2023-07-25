@@ -1,0 +1,347 @@
+﻿[0][Do]< "do" ";" > @[ENDING]
+[RULE: 0][CLAUSE: 0]
+
+[1][Do]< "do" ";" @ >
+[RULE: 0][CLAUSE: 0]
+	epsilon -> [0][Do]< "do" ";" > @[ENDING]
+		- EndObject()
+
+[2][Do]< "do" @ ";" >
+[RULE: 0][CLAUSE: 0]
+	epsilon -> [3][Do]< "do" @ ";" >
+
+[3][Do]< "do" @ ";" >
+[RULE: 0][CLAUSE: 0]
+	token: ";" -> [1][Do]< "do" ";" @ >
+
+[4][Do]< @ "do" ";" >
+[RULE: 0][CLAUSE: 0]
+	token: "do" -> [2][Do]< "do" @ ";" >
+
+[5][Do]@ < "do" ";" >
+[RULE: 0][CLAUSE: 0]
+	epsilon -> [4][Do]< @ "do" ";" >
+		- BeginObject(DoStat)
+
+[6][Block]< "{" @ { Stat } "}" >
+[RULE: 1][CLAUSE: 0]
+	epsilon -> [8][Block]< "{" { @ Stat } "}" >
+	epsilon -> [12][Block]< "{" { Stat } @ "}" >
+
+[7][Block]< "{" @ { Stat } "}" >
+[RULE: 1][CLAUSE: 0]
+	epsilon -> [6][Block]< "{" @ { Stat } "}" >
+
+[8][Block]< "{" { @ Stat } "}" >
+[RULE: 1][CLAUSE: 0]
+	rule: Stat -> [9][Block]< "{" { Stat @ } "}" >
+		+ Field(BlockStat::stats)
+
+[9][Block]< "{" { Stat @ } "}" >
+[RULE: 1][CLAUSE: 0]
+	epsilon -> [8][Block]< "{" { @ Stat } "}" >
+	epsilon -> [12][Block]< "{" { Stat } @ "}" >
+
+[10][Block]< "{" { Stat } "}" > @[ENDING]
+[RULE: 1][CLAUSE: 0]
+
+[11][Block]< "{" { Stat } "}" @ >
+[RULE: 1][CLAUSE: 0]
+	epsilon -> [10][Block]< "{" { Stat } "}" > @[ENDING]
+		- EndObject()
+
+[12][Block]< "{" { Stat } @ "}" >
+[RULE: 1][CLAUSE: 0]
+	epsilon -> [13][Block]< "{" { Stat } @ "}" >
+
+[13][Block]< "{" { Stat } @ "}" >
+[RULE: 1][CLAUSE: 0]
+	token: "}" -> [11][Block]< "{" { Stat } "}" @ >
+
+[14][Block]< @ "{" { Stat } "}" >
+[RULE: 1][CLAUSE: 0]
+	token: "{" -> [7][Block]< "{" @ { Stat } "}" >
+
+[15][Block]@ < "{" { Stat } "}" >
+[RULE: 1][CLAUSE: 0]
+	epsilon -> [14][Block]< @ "{" { Stat } "}" >
+		- BeginObject(BlockStat)
+
+[16][OtherStat]<< !Block >> @[ENDING]
+[RULE: 2][CLAUSE: 1]
+
+[17][OtherStat]<< !Block @ >>
+[RULE: 2][CLAUSE: 1]
+	epsilon -> [16][OtherStat]<< !Block >> @[ENDING]
+		- EndObject()
+
+[18][OtherStat]<< !Do >> @[ENDING]
+[RULE: 2][CLAUSE: 0]
+
+[19][OtherStat]<< !Do @ >>
+[RULE: 2][CLAUSE: 0]
+	epsilon -> [18][OtherStat]<< !Do >> @[ENDING]
+		- EndObject()
+
+[20][OtherStat]<< @ !Block >>
+[RULE: 2][CLAUSE: 1]
+	rule: Block -> [17][OtherStat]<< !Block @ >>
+		+ ReopenObject()
+
+[21][OtherStat]<< @ !Do >>
+[RULE: 2][CLAUSE: 0]
+	rule: Do -> [19][OtherStat]<< !Do @ >>
+		+ ReopenObject()
+
+[22][OtherStat]@ << !Block >>
+[RULE: 2][CLAUSE: 1]
+	epsilon -> [20][OtherStat]<< @ !Block >>
+		- DelayFieldAssignment()
+
+[23][OtherStat]@ << !Do >>
+[RULE: 2][CLAUSE: 0]
+	epsilon -> [21][OtherStat]<< @ !Do >>
+		- DelayFieldAssignment()
+
+[24][Stat]<< !If_SWITCH_1allow_half_if >> @[ENDING]
+[RULE: 3][CLAUSE: 1]
+
+[25][Stat]<< !If_SWITCH_1allow_half_if @ >>
+[RULE: 3][CLAUSE: 1]
+	epsilon -> [24][Stat]<< !If_SWITCH_1allow_half_if >> @[ENDING]
+		- EndObject()
+
+[26][Stat]<< !OtherStat >> @[ENDING]
+[RULE: 3][CLAUSE: 0]
+
+[27][Stat]<< !OtherStat @ >>
+[RULE: 3][CLAUSE: 0]
+	epsilon -> [26][Stat]<< !OtherStat >> @[ENDING]
+		- EndObject()
+
+[28][Stat]<< @ !If_SWITCH_1allow_half_if >>
+[RULE: 3][CLAUSE: 1]
+	rule: If_SWITCH_1allow_half_if -> [25][Stat]<< !If_SWITCH_1allow_half_if @ >>
+		+ ReopenObject()
+
+[29][Stat]<< @ !OtherStat >>
+[RULE: 3][CLAUSE: 0]
+	rule: OtherStat -> [27][Stat]<< !OtherStat @ >>
+		+ ReopenObject()
+
+[30][Stat]@ << !If_SWITCH_1allow_half_if >>
+[RULE: 3][CLAUSE: 1]
+	epsilon -> [28][Stat]<< @ !If_SWITCH_1allow_half_if >>
+		- DelayFieldAssignment()
+
+[31][Stat]@ << !OtherStat >>
+[RULE: 3][CLAUSE: 0]
+	epsilon -> [29][Stat]<< @ !OtherStat >>
+		- DelayFieldAssignment()
+
+[32][Module]< @ Stat >
+[RULE: 4][CLAUSE: 0]
+	rule: Stat -> [34][Module]< Stat @ >
+		+ Field(Module::stat)
+
+[33][Module]< Stat > @[ENDING]
+[RULE: 4][CLAUSE: 0]
+
+[34][Module]< Stat @ >
+[RULE: 4][CLAUSE: 0]
+	epsilon -> [33][Module]< Stat > @[ENDING]
+		- EndObject()
+
+[35][Module]@ < Stat >
+[RULE: 4][CLAUSE: 0]
+	epsilon -> [32][Module]< @ Stat >
+		- BeginObject(Module)
+
+[36][IfTail_SWITCH_COMBINED]@ If_SWITCH_0allow_half_if "else" Stat
+[RULE: 5][CLAUSE: 0]
+	rule: If_SWITCH_0allow_half_if -> [41][IfTail_SWITCH_COMBINED]If_SWITCH_0allow_half_if @ "else" Stat
+		+ Field(IfStat::thenBranch)
+
+[37][IfTail_SWITCH_COMBINED]If_SWITCH_0allow_half_if "else" @ Stat
+[RULE: 5][CLAUSE: 0]
+	epsilon -> [38][IfTail_SWITCH_COMBINED]If_SWITCH_0allow_half_if "else" @ Stat
+
+[38][IfTail_SWITCH_COMBINED]If_SWITCH_0allow_half_if "else" @ Stat
+[RULE: 5][CLAUSE: 0]
+	rule: Stat -> [39][IfTail_SWITCH_COMBINED]If_SWITCH_0allow_half_if "else" Stat @[ENDING]
+		+ Field(IfStat::elseBranch)
+
+[39][IfTail_SWITCH_COMBINED]If_SWITCH_0allow_half_if "else" Stat @[ENDING]
+[RULE: 5][CLAUSE: 0]
+
+[40][IfTail_SWITCH_COMBINED]If_SWITCH_0allow_half_if @ "else" Stat
+[RULE: 5][CLAUSE: 0]
+	token: "else" -> [37][IfTail_SWITCH_COMBINED]If_SWITCH_0allow_half_if "else" @ Stat
+
+[41][IfTail_SWITCH_COMBINED]If_SWITCH_0allow_half_if @ "else" Stat
+[RULE: 5][CLAUSE: 0]
+	epsilon -> [40][IfTail_SWITCH_COMBINED]If_SWITCH_0allow_half_if @ "else" Stat
+
+[42][If_SWITCH_1allow_half_if]< "if" "cond" "then" @ IfTail_SWITCH_1allow_half_if >
+[RULE: 6][CLAUSE: 0]
+	rule: IfTail_SWITCH_1allow_half_if -> [45][If_SWITCH_1allow_half_if]< "if" "cond" "then" IfTail_SWITCH_1allow_half_if @ >
+
+[43][If_SWITCH_1allow_half_if]< "if" "cond" "then" @ IfTail_SWITCH_1allow_half_if >
+[RULE: 6][CLAUSE: 0]
+	epsilon -> [42][If_SWITCH_1allow_half_if]< "if" "cond" "then" @ IfTail_SWITCH_1allow_half_if >
+
+[44][If_SWITCH_1allow_half_if]< "if" "cond" "then" IfTail_SWITCH_1allow_half_if > @[ENDING]
+[RULE: 6][CLAUSE: 0]
+
+[45][If_SWITCH_1allow_half_if]< "if" "cond" "then" IfTail_SWITCH_1allow_half_if @ >
+[RULE: 6][CLAUSE: 0]
+	epsilon -> [44][If_SWITCH_1allow_half_if]< "if" "cond" "then" IfTail_SWITCH_1allow_half_if > @[ENDING]
+		- EndObject()
+
+[46][If_SWITCH_1allow_half_if]< "if" "cond" @ "then" IfTail_SWITCH_1allow_half_if >
+[RULE: 6][CLAUSE: 0]
+	epsilon -> [47][If_SWITCH_1allow_half_if]< "if" "cond" @ "then" IfTail_SWITCH_1allow_half_if >
+
+[47][If_SWITCH_1allow_half_if]< "if" "cond" @ "then" IfTail_SWITCH_1allow_half_if >
+[RULE: 6][CLAUSE: 0]
+	token: "then" -> [43][If_SWITCH_1allow_half_if]< "if" "cond" "then" @ IfTail_SWITCH_1allow_half_if >
+
+[48][If_SWITCH_1allow_half_if]< "if" @ "cond" "then" IfTail_SWITCH_1allow_half_if >
+[RULE: 6][CLAUSE: 0]
+	epsilon -> [49][If_SWITCH_1allow_half_if]< "if" @ "cond" "then" IfTail_SWITCH_1allow_half_if >
+
+[49][If_SWITCH_1allow_half_if]< "if" @ "cond" "then" IfTail_SWITCH_1allow_half_if >
+[RULE: 6][CLAUSE: 0]
+	token: "cond" -> [46][If_SWITCH_1allow_half_if]< "if" "cond" @ "then" IfTail_SWITCH_1allow_half_if >
+
+[50][If_SWITCH_1allow_half_if]< @ "if" "cond" "then" IfTail_SWITCH_1allow_half_if >
+[RULE: 6][CLAUSE: 0]
+	token: "if" -> [48][If_SWITCH_1allow_half_if]< "if" @ "cond" "then" IfTail_SWITCH_1allow_half_if >
+
+[51][If_SWITCH_1allow_half_if]@ < "if" "cond" "then" IfTail_SWITCH_1allow_half_if >
+[RULE: 6][CLAUSE: 0]
+	epsilon -> [50][If_SWITCH_1allow_half_if]< @ "if" "cond" "then" IfTail_SWITCH_1allow_half_if >
+		- BeginObject(IfStat)
+
+[52][If_SWITCH_0allow_half_if]< "if" "cond" "then" @ IfTail_SWITCH_0allow_half_if >
+[RULE: 7][CLAUSE: 0]
+	rule: IfTail_SWITCH_0allow_half_if -> [55][If_SWITCH_0allow_half_if]< "if" "cond" "then" IfTail_SWITCH_0allow_half_if @ >
+
+[53][If_SWITCH_0allow_half_if]< "if" "cond" "then" @ IfTail_SWITCH_0allow_half_if >
+[RULE: 7][CLAUSE: 0]
+	epsilon -> [52][If_SWITCH_0allow_half_if]< "if" "cond" "then" @ IfTail_SWITCH_0allow_half_if >
+
+[54][If_SWITCH_0allow_half_if]< "if" "cond" "then" IfTail_SWITCH_0allow_half_if > @[ENDING]
+[RULE: 7][CLAUSE: 0]
+
+[55][If_SWITCH_0allow_half_if]< "if" "cond" "then" IfTail_SWITCH_0allow_half_if @ >
+[RULE: 7][CLAUSE: 0]
+	epsilon -> [54][If_SWITCH_0allow_half_if]< "if" "cond" "then" IfTail_SWITCH_0allow_half_if > @[ENDING]
+		- EndObject()
+
+[56][If_SWITCH_0allow_half_if]< "if" "cond" @ "then" IfTail_SWITCH_0allow_half_if >
+[RULE: 7][CLAUSE: 0]
+	epsilon -> [57][If_SWITCH_0allow_half_if]< "if" "cond" @ "then" IfTail_SWITCH_0allow_half_if >
+
+[57][If_SWITCH_0allow_half_if]< "if" "cond" @ "then" IfTail_SWITCH_0allow_half_if >
+[RULE: 7][CLAUSE: 0]
+	token: "then" -> [53][If_SWITCH_0allow_half_if]< "if" "cond" "then" @ IfTail_SWITCH_0allow_half_if >
+
+[58][If_SWITCH_0allow_half_if]< "if" @ "cond" "then" IfTail_SWITCH_0allow_half_if >
+[RULE: 7][CLAUSE: 0]
+	epsilon -> [59][If_SWITCH_0allow_half_if]< "if" @ "cond" "then" IfTail_SWITCH_0allow_half_if >
+
+[59][If_SWITCH_0allow_half_if]< "if" @ "cond" "then" IfTail_SWITCH_0allow_half_if >
+[RULE: 7][CLAUSE: 0]
+	token: "cond" -> [56][If_SWITCH_0allow_half_if]< "if" "cond" @ "then" IfTail_SWITCH_0allow_half_if >
+
+[60][If_SWITCH_0allow_half_if]< @ "if" "cond" "then" IfTail_SWITCH_0allow_half_if >
+[RULE: 7][CLAUSE: 0]
+	token: "if" -> [58][If_SWITCH_0allow_half_if]< "if" @ "cond" "then" IfTail_SWITCH_0allow_half_if >
+
+[61][If_SWITCH_0allow_half_if]@ < "if" "cond" "then" IfTail_SWITCH_0allow_half_if >
+[RULE: 7][CLAUSE: 0]
+	epsilon -> [60][If_SWITCH_0allow_half_if]< @ "if" "cond" "then" IfTail_SWITCH_0allow_half_if >
+		- BeginObject(IfStat)
+
+[62][IfTail_SWITCH_1allow_half_if]@ IfTail_SWITCH_COMBINED
+[RULE: 8][CLAUSE: 2]
+	rule: IfTail_SWITCH_COMBINED -> [65][IfTail_SWITCH_1allow_half_if]IfTail_SWITCH_COMBINED @[ENDING]
+
+[63][IfTail_SWITCH_1allow_half_if]@ If_SWITCH_1allow_half_if
+[RULE: 8][CLAUSE: 1]
+	rule: If_SWITCH_1allow_half_if -> [66][IfTail_SWITCH_1allow_half_if]If_SWITCH_1allow_half_if @[ENDING]
+		+ Field(IfStat::thenBranch)
+
+[64][IfTail_SWITCH_1allow_half_if]@ OtherStat [ "else" Stat ]
+[RULE: 8][CLAUSE: 0]
+	rule: OtherStat -> [67][IfTail_SWITCH_1allow_half_if]OtherStat @ [ "else" Stat ]
+		+ Field(IfStat::thenBranch)
+
+[65][IfTail_SWITCH_1allow_half_if]IfTail_SWITCH_COMBINED @[ENDING]
+[RULE: 8][CLAUSE: 2]
+
+[66][IfTail_SWITCH_1allow_half_if]If_SWITCH_1allow_half_if @[ENDING]
+[RULE: 8][CLAUSE: 1]
+
+[67][IfTail_SWITCH_1allow_half_if]OtherStat @ [ "else" Stat ]
+[RULE: 8][CLAUSE: 0]
+	epsilon -> [68][IfTail_SWITCH_1allow_half_if]OtherStat @ [ "else" Stat ]
+
+[68][IfTail_SWITCH_1allow_half_if]OtherStat @ [ "else" Stat ]
+[RULE: 8][CLAUSE: 0]
+	epsilon -> [72][IfTail_SWITCH_1allow_half_if]OtherStat [ "else" Stat ] @[ENDING]
+	epsilon -> [73][IfTail_SWITCH_1allow_half_if]OtherStat [ @ "else" Stat ]
+
+[69][IfTail_SWITCH_1allow_half_if]OtherStat [ "else" @ Stat ]
+[RULE: 8][CLAUSE: 0]
+	epsilon -> [70][IfTail_SWITCH_1allow_half_if]OtherStat [ "else" @ Stat ]
+
+[70][IfTail_SWITCH_1allow_half_if]OtherStat [ "else" @ Stat ]
+[RULE: 8][CLAUSE: 0]
+	rule: Stat -> [71][IfTail_SWITCH_1allow_half_if]OtherStat [ "else" Stat @ ]
+		+ Field(IfStat::elseBranch)
+
+[71][IfTail_SWITCH_1allow_half_if]OtherStat [ "else" Stat @ ]
+[RULE: 8][CLAUSE: 0]
+	epsilon -> [72][IfTail_SWITCH_1allow_half_if]OtherStat [ "else" Stat ] @[ENDING]
+
+[72][IfTail_SWITCH_1allow_half_if]OtherStat [ "else" Stat ] @[ENDING]
+[RULE: 8][CLAUSE: 0]
+
+[73][IfTail_SWITCH_1allow_half_if]OtherStat [ @ "else" Stat ]
+[RULE: 8][CLAUSE: 0]
+	token: "else" -> [69][IfTail_SWITCH_1allow_half_if]OtherStat [ "else" @ Stat ]
+
+[74][IfTail_SWITCH_0allow_half_if]@ IfTail_SWITCH_COMBINED
+[RULE: 9][CLAUSE: 1]
+	rule: IfTail_SWITCH_COMBINED -> [76][IfTail_SWITCH_0allow_half_if]IfTail_SWITCH_COMBINED @[ENDING]
+
+[75][IfTail_SWITCH_0allow_half_if]@ OtherStat "else" Stat
+[RULE: 9][CLAUSE: 0]
+	rule: OtherStat -> [80][IfTail_SWITCH_0allow_half_if]OtherStat @ "else" Stat
+		+ Field(IfStat::thenBranch)
+
+[76][IfTail_SWITCH_0allow_half_if]IfTail_SWITCH_COMBINED @[ENDING]
+[RULE: 9][CLAUSE: 1]
+
+[77][IfTail_SWITCH_0allow_half_if]OtherStat "else" @ Stat
+[RULE: 9][CLAUSE: 0]
+	epsilon -> [78][IfTail_SWITCH_0allow_half_if]OtherStat "else" @ Stat
+
+[78][IfTail_SWITCH_0allow_half_if]OtherStat "else" @ Stat
+[RULE: 9][CLAUSE: 0]
+	rule: Stat -> [79][IfTail_SWITCH_0allow_half_if]OtherStat "else" Stat @[ENDING]
+		+ Field(IfStat::elseBranch)
+
+[79][IfTail_SWITCH_0allow_half_if]OtherStat "else" Stat @[ENDING]
+[RULE: 9][CLAUSE: 0]
+
+[80][IfTail_SWITCH_0allow_half_if]OtherStat @ "else" Stat
+[RULE: 9][CLAUSE: 0]
+	epsilon -> [81][IfTail_SWITCH_0allow_half_if]OtherStat @ "else" Stat
+
+[81][IfTail_SWITCH_0allow_half_if]OtherStat @ "else" Stat
+[RULE: 9][CLAUSE: 0]
+	token: "else" -> [77][IfTail_SWITCH_0allow_half_if]OtherStat "else" @ Stat
+

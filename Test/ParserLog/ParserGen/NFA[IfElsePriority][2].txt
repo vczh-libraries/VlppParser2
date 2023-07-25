@@ -1,0 +1,123 @@
+﻿[0][Do] BEGIN 
+[RULE: 0][CLAUSE: -1]
+	token: "do" -> [3][Do]< "do" @ ";" >
+		- BeginObject(DoStat)
+
+[1][Do] END [ENDING]
+[RULE: 0][CLAUSE: -1]
+
+[2][Do]< "do" ";" @ >
+[RULE: 0][CLAUSE: 0]
+	ending -> [1][Do] END [ENDING]
+		- EndObject()
+
+[3][Do]< "do" @ ";" >
+[RULE: 0][CLAUSE: 0]
+	token: ";" -> [2][Do]< "do" ";" @ >
+
+[4][Block] BEGIN 
+[RULE: 1][CLAUSE: -1]
+	token: "{" -> [6][Block]< "{" @ { Stat } "}" >
+		- BeginObject(BlockStat)
+
+[5][Block] END [ENDING]
+[RULE: 1][CLAUSE: -1]
+
+[6][Block]< "{" @ { Stat } "}" >
+[RULE: 1][CLAUSE: 0]
+	token: "}" -> [8][Block]< "{" { Stat } "}" @ >
+	rule: Stat -> [7][Block]< "{" { Stat @ } "}" >
+		+ Field(BlockStat::stats)
+
+[7][Block]< "{" { Stat @ } "}" >
+[RULE: 1][CLAUSE: 0]
+	token: "}" -> [8][Block]< "{" { Stat } "}" @ >
+	rule: Stat -> [7][Block]< "{" { Stat @ } "}" >
+		+ Field(BlockStat::stats)
+
+[8][Block]< "{" { Stat } "}" @ >
+[RULE: 1][CLAUSE: 0]
+	ending -> [5][Block] END [ENDING]
+		- EndObject()
+
+[9][If] BEGIN 
+[RULE: 2][CLAUSE: -1]
+	token: "if" -> [16][If]< "if" @ "cond" "then" Stat +[ "else" Stat ] >
+		- BeginObject(IfStat)
+
+[10][If] END [ENDING]
+[RULE: 2][CLAUSE: -1]
+
+[11][If]< "if" "cond" "then" @ Stat +[ "else" Stat ] >
+[RULE: 2][CLAUSE: 0]
+	rule: Stat -> [14][If]< "if" "cond" "then" Stat @ +[ "else" Stat ] >
+		+ Field(IfStat::thenBranch)
+
+[12][If]< "if" "cond" "then" Stat +[ "else" @ Stat ] >
+[RULE: 2][CLAUSE: 0]
+	rule: Stat -> [13][If]< "if" "cond" "then" Stat +[ "else" Stat @ ] >
+		+ Field(IfStat::elseBranch)
+
+[13][If]< "if" "cond" "then" Stat +[ "else" Stat @ ] >
+[RULE: 2][CLAUSE: 0]
+	ending -> [10][If] END [ENDING]
+		- EndObject()
+
+[14][If]< "if" "cond" "then" Stat @ +[ "else" Stat ] >
+[RULE: 2][CLAUSE: 0]
+	ending -> [10][If] END [ENDING]
+		- EndObject()
+	token: "else" -> [12][If]< "if" "cond" "then" Stat +[ "else" @ Stat ] >
+
+[15][If]< "if" "cond" @ "then" Stat +[ "else" Stat ] >
+[RULE: 2][CLAUSE: 0]
+	token: "then" -> [11][If]< "if" "cond" "then" @ Stat +[ "else" Stat ] >
+
+[16][If]< "if" @ "cond" "then" Stat +[ "else" Stat ] >
+[RULE: 2][CLAUSE: 0]
+	token: "cond" -> [15][If]< "if" "cond" @ "then" Stat +[ "else" Stat ] >
+
+[17][Stat] BEGIN 
+[RULE: 3][CLAUSE: -1]
+	rule: Do -> [20][Stat]<< !Do @ >>
+		- DelayFieldAssignment()
+	rule: Block -> [19][Stat]<< !Block @ >>
+		- DelayFieldAssignment()
+	rule: If -> [21][Stat]<< !If @ >>
+		- DelayFieldAssignment()
+
+[18][Stat] END [ENDING]
+[RULE: 3][CLAUSE: -1]
+
+[19][Stat]<< !Block @ >>
+[RULE: 3][CLAUSE: 1]
+	ending -> [18][Stat] END [ENDING]
+		- ReopenObject()
+		- EndObject()
+
+[20][Stat]<< !Do @ >>
+[RULE: 3][CLAUSE: 0]
+	ending -> [18][Stat] END [ENDING]
+		- ReopenObject()
+		- EndObject()
+
+[21][Stat]<< !If @ >>
+[RULE: 3][CLAUSE: 2]
+	ending -> [18][Stat] END [ENDING]
+		- ReopenObject()
+		- EndObject()
+
+[22][Module] BEGIN 
+[RULE: 4][CLAUSE: -1]
+	rule: Stat -> [24][Module]< Stat @ >
+		- BeginObject(Module)
+
+[23][Module] END [ENDING]
+[RULE: 4][CLAUSE: -1]
+
+[24][Module]< Stat @ >
+[RULE: 4][CLAUSE: 0]
+	ending -> [23][Module] END [ENDING]
+		- Field(Module::stat)
+		- EndObject()
+

@@ -1,0 +1,1954 @@
+﻿[0][Plus]< "+" > @[ENDING]
+[RULE: 0][CLAUSE: 0]
+
+[1][Plus]< "+" @ >
+[RULE: 0][CLAUSE: 0]
+	epsilon -> [0][Plus]< "+" > @[ENDING]
+		- EndObject()
+
+[2][Plus]< @ "+" >
+[RULE: 0][CLAUSE: 0]
+	token: "+" -> [1][Plus]< "+" @ >
+
+[3][Plus]@ < "+" >
+[RULE: 0][CLAUSE: 0]
+	epsilon -> [2][Plus]< @ "+" >
+		- BeginObject(Plus)
+
+[4][Lt]< "<" > @[ENDING]
+[RULE: 1][CLAUSE: 0]
+
+[5][Lt]< "<" @ >
+[RULE: 1][CLAUSE: 0]
+	epsilon -> [4][Lt]< "<" > @[ENDING]
+		- EndObject()
+
+[6][Lt]< @ "<" >
+[RULE: 1][CLAUSE: 0]
+	token: "<" -> [5][Lt]< "<" @ >
+
+[7][Lt]@ < "<" >
+[RULE: 1][CLAUSE: 0]
+	epsilon -> [6][Lt]< @ "<" >
+		- BeginObject(Lt)
+
+[8][Gt]< ">" > @[ENDING]
+[RULE: 2][CLAUSE: 0]
+
+[9][Gt]< ">" @ >
+[RULE: 2][CLAUSE: 0]
+	epsilon -> [8][Gt]< ">" > @[ENDING]
+		- EndObject()
+
+[10][Gt]< @ ">" >
+[RULE: 2][CLAUSE: 0]
+	token: ">" -> [9][Gt]< ">" @ >
+
+[11][Gt]@ < ">" >
+[RULE: 2][CLAUSE: 0]
+	epsilon -> [10][Gt]< @ ">" >
+		- BeginObject(Gt)
+
+[12][EqualOptional]< "optional" @ [ Plus ] "+" { Plus } >
+[RULE: 3][CLAUSE: 0]
+	epsilon -> [14][EqualOptional]< "optional" [ @ Plus ] "+" { Plus } >
+	epsilon -> [23][EqualOptional]< "optional" [ Plus ] @ "+" { Plus } >
+
+[13][EqualOptional]< "optional" @ [ Plus ] "+" { Plus } >
+[RULE: 3][CLAUSE: 0]
+	epsilon -> [12][EqualOptional]< "optional" @ [ Plus ] "+" { Plus } >
+
+[14][EqualOptional]< "optional" [ @ Plus ] "+" { Plus } >
+[RULE: 3][CLAUSE: 0]
+	rule: Plus -> [15][EqualOptional]< "optional" [ Plus @ ] "+" { Plus } >
+		+ Field(OptionalFeature::optional)
+
+[15][EqualOptional]< "optional" [ Plus @ ] "+" { Plus } >
+[RULE: 3][CLAUSE: 0]
+	epsilon -> [23][EqualOptional]< "optional" [ Plus ] @ "+" { Plus } >
+
+[16][EqualOptional]< "optional" [ Plus ] "+" @ { Plus } >
+[RULE: 3][CLAUSE: 0]
+	epsilon -> [17][EqualOptional]< "optional" [ Plus ] "+" @ { Plus } >
+
+[17][EqualOptional]< "optional" [ Plus ] "+" @ { Plus } >
+[RULE: 3][CLAUSE: 0]
+	epsilon -> [18][EqualOptional]< "optional" [ Plus ] "+" { @ Plus } >
+	epsilon -> [22][EqualOptional]< "optional" [ Plus ] "+" { Plus } @ >
+
+[18][EqualOptional]< "optional" [ Plus ] "+" { @ Plus } >
+[RULE: 3][CLAUSE: 0]
+	rule: Plus -> [19][EqualOptional]< "optional" [ Plus ] "+" { Plus @ } >
+		+ Field(OptionalFeature::loop)
+
+[19][EqualOptional]< "optional" [ Plus ] "+" { Plus @ } >
+[RULE: 3][CLAUSE: 0]
+	epsilon -> [18][EqualOptional]< "optional" [ Plus ] "+" { @ Plus } >
+	epsilon -> [22][EqualOptional]< "optional" [ Plus ] "+" { Plus } @ >
+
+[20][EqualOptional]< "optional" [ Plus ] "+" { Plus } > @[ENDING]
+[RULE: 3][CLAUSE: 0]
+
+[21][EqualOptional]< "optional" [ Plus ] "+" { Plus } @ >
+[RULE: 3][CLAUSE: 0]
+	epsilon -> [20][EqualOptional]< "optional" [ Plus ] "+" { Plus } > @[ENDING]
+		- EndObject()
+
+[22][EqualOptional]< "optional" [ Plus ] "+" { Plus } @ >
+[RULE: 3][CLAUSE: 0]
+	epsilon -> [21][EqualOptional]< "optional" [ Plus ] "+" { Plus } @ >
+		- EnumItem(0)
+		- Field(OptionalFeature::priority)
+
+[23][EqualOptional]< "optional" [ Plus ] @ "+" { Plus } >
+[RULE: 3][CLAUSE: 0]
+	epsilon -> [24][EqualOptional]< "optional" [ Plus ] @ "+" { Plus } >
+
+[24][EqualOptional]< "optional" [ Plus ] @ "+" { Plus } >
+[RULE: 3][CLAUSE: 0]
+	token: "+" -> [16][EqualOptional]< "optional" [ Plus ] "+" @ { Plus } >
+
+[25][EqualOptional]< @ "optional" [ Plus ] "+" { Plus } >
+[RULE: 3][CLAUSE: 0]
+	token: "optional" -> [13][EqualOptional]< "optional" @ [ Plus ] "+" { Plus } >
+
+[26][EqualOptional]@ < "optional" [ Plus ] "+" { Plus } >
+[RULE: 3][CLAUSE: 0]
+	epsilon -> [25][EqualOptional]< @ "optional" [ Plus ] "+" { Plus } >
+		- BeginObject(OptionalFeature)
+
+[27][PositiveOptional]< "positive_optional" +[ @ Plus ] "+" { Plus } >
+[RULE: 4][CLAUSE: 0]
+	rule: Plus -> [28][PositiveOptional]< "positive_optional" +[ Plus @ ] "+" { Plus } >
+		+ Field(OptionalFeature::optional)
+
+[28][PositiveOptional]< "positive_optional" +[ Plus @ ] "+" { Plus } >
+[RULE: 4][CLAUSE: 0]
+	epsilon -> [36][PositiveOptional]< "positive_optional" +[ Plus ] @ "+" { Plus } >
+
+[29][PositiveOptional]< "positive_optional" +[ Plus ] "+" @ { Plus } >
+[RULE: 4][CLAUSE: 0]
+	epsilon -> [31][PositiveOptional]< "positive_optional" +[ Plus ] "+" { @ Plus } >
+	epsilon -> [35][PositiveOptional]< "positive_optional" +[ Plus ] "+" { Plus } @ >
+
+[30][PositiveOptional]< "positive_optional" +[ Plus ] "+" @ { Plus } >
+[RULE: 4][CLAUSE: 0]
+	epsilon -> [29][PositiveOptional]< "positive_optional" +[ Plus ] "+" @ { Plus } >
+
+[31][PositiveOptional]< "positive_optional" +[ Plus ] "+" { @ Plus } >
+[RULE: 4][CLAUSE: 0]
+	rule: Plus -> [32][PositiveOptional]< "positive_optional" +[ Plus ] "+" { Plus @ } >
+		+ Field(OptionalFeature::loop)
+
+[32][PositiveOptional]< "positive_optional" +[ Plus ] "+" { Plus @ } >
+[RULE: 4][CLAUSE: 0]
+	epsilon -> [31][PositiveOptional]< "positive_optional" +[ Plus ] "+" { @ Plus } >
+	epsilon -> [35][PositiveOptional]< "positive_optional" +[ Plus ] "+" { Plus } @ >
+
+[33][PositiveOptional]< "positive_optional" +[ Plus ] "+" { Plus } > @[ENDING]
+[RULE: 4][CLAUSE: 0]
+
+[34][PositiveOptional]< "positive_optional" +[ Plus ] "+" { Plus } @ >
+[RULE: 4][CLAUSE: 0]
+	epsilon -> [33][PositiveOptional]< "positive_optional" +[ Plus ] "+" { Plus } > @[ENDING]
+		- EndObject()
+
+[35][PositiveOptional]< "positive_optional" +[ Plus ] "+" { Plus } @ >
+[RULE: 4][CLAUSE: 0]
+	epsilon -> [34][PositiveOptional]< "positive_optional" +[ Plus ] "+" { Plus } @ >
+		- EnumItem(1)
+		- Field(OptionalFeature::priority)
+
+[36][PositiveOptional]< "positive_optional" +[ Plus ] @ "+" { Plus } >
+[RULE: 4][CLAUSE: 0]
+	epsilon -> [37][PositiveOptional]< "positive_optional" +[ Plus ] @ "+" { Plus } >
+
+[37][PositiveOptional]< "positive_optional" +[ Plus ] @ "+" { Plus } >
+[RULE: 4][CLAUSE: 0]
+	token: "+" -> [30][PositiveOptional]< "positive_optional" +[ Plus ] "+" @ { Plus } >
+
+[38][PositiveOptional]< "positive_optional" @ +[ Plus ] "+" { Plus } >
+[RULE: 4][CLAUSE: 0]
+	epsilon -> [39][PositiveOptional]< "positive_optional" @ +[ Plus ] "+" { Plus } >
+
+[39][PositiveOptional]< "positive_optional" @ +[ Plus ] "+" { Plus } >
+[RULE: 4][CLAUSE: 0]
+	epsilon -> [27][PositiveOptional]< "positive_optional" +[ @ Plus ] "+" { Plus } >
+	epsilon -> [36][PositiveOptional]< "positive_optional" +[ Plus ] @ "+" { Plus } >
+
+[40][PositiveOptional]< @ "positive_optional" +[ Plus ] "+" { Plus } >
+[RULE: 4][CLAUSE: 0]
+	token: "positive_optional" -> [38][PositiveOptional]< "positive_optional" @ +[ Plus ] "+" { Plus } >
+
+[41][PositiveOptional]@ < "positive_optional" +[ Plus ] "+" { Plus } >
+[RULE: 4][CLAUSE: 0]
+	epsilon -> [40][PositiveOptional]< @ "positive_optional" +[ Plus ] "+" { Plus } >
+		- BeginObject(OptionalFeature)
+
+[42][NegativeOptional]< "negative_optional" -[ @ Plus ] "+" { Plus } >
+[RULE: 5][CLAUSE: 0]
+	rule: Plus -> [43][NegativeOptional]< "negative_optional" -[ Plus @ ] "+" { Plus } >
+		+ Field(OptionalFeature::optional)
+
+[43][NegativeOptional]< "negative_optional" -[ Plus @ ] "+" { Plus } >
+[RULE: 5][CLAUSE: 0]
+	epsilon -> [51][NegativeOptional]< "negative_optional" -[ Plus ] @ "+" { Plus } >
+
+[44][NegativeOptional]< "negative_optional" -[ Plus ] "+" @ { Plus } >
+[RULE: 5][CLAUSE: 0]
+	epsilon -> [46][NegativeOptional]< "negative_optional" -[ Plus ] "+" { @ Plus } >
+	epsilon -> [50][NegativeOptional]< "negative_optional" -[ Plus ] "+" { Plus } @ >
+
+[45][NegativeOptional]< "negative_optional" -[ Plus ] "+" @ { Plus } >
+[RULE: 5][CLAUSE: 0]
+	epsilon -> [44][NegativeOptional]< "negative_optional" -[ Plus ] "+" @ { Plus } >
+
+[46][NegativeOptional]< "negative_optional" -[ Plus ] "+" { @ Plus } >
+[RULE: 5][CLAUSE: 0]
+	rule: Plus -> [47][NegativeOptional]< "negative_optional" -[ Plus ] "+" { Plus @ } >
+		+ Field(OptionalFeature::loop)
+
+[47][NegativeOptional]< "negative_optional" -[ Plus ] "+" { Plus @ } >
+[RULE: 5][CLAUSE: 0]
+	epsilon -> [46][NegativeOptional]< "negative_optional" -[ Plus ] "+" { @ Plus } >
+	epsilon -> [50][NegativeOptional]< "negative_optional" -[ Plus ] "+" { Plus } @ >
+
+[48][NegativeOptional]< "negative_optional" -[ Plus ] "+" { Plus } > @[ENDING]
+[RULE: 5][CLAUSE: 0]
+
+[49][NegativeOptional]< "negative_optional" -[ Plus ] "+" { Plus } @ >
+[RULE: 5][CLAUSE: 0]
+	epsilon -> [48][NegativeOptional]< "negative_optional" -[ Plus ] "+" { Plus } > @[ENDING]
+		- EndObject()
+
+[50][NegativeOptional]< "negative_optional" -[ Plus ] "+" { Plus } @ >
+[RULE: 5][CLAUSE: 0]
+	epsilon -> [49][NegativeOptional]< "negative_optional" -[ Plus ] "+" { Plus } @ >
+		- EnumItem(2)
+		- Field(OptionalFeature::priority)
+
+[51][NegativeOptional]< "negative_optional" -[ Plus ] @ "+" { Plus } >
+[RULE: 5][CLAUSE: 0]
+	epsilon -> [52][NegativeOptional]< "negative_optional" -[ Plus ] @ "+" { Plus } >
+
+[52][NegativeOptional]< "negative_optional" -[ Plus ] @ "+" { Plus } >
+[RULE: 5][CLAUSE: 0]
+	token: "+" -> [45][NegativeOptional]< "negative_optional" -[ Plus ] "+" @ { Plus } >
+
+[53][NegativeOptional]< "negative_optional" @ -[ Plus ] "+" { Plus } >
+[RULE: 5][CLAUSE: 0]
+	epsilon -> [54][NegativeOptional]< "negative_optional" @ -[ Plus ] "+" { Plus } >
+
+[54][NegativeOptional]< "negative_optional" @ -[ Plus ] "+" { Plus } >
+[RULE: 5][CLAUSE: 0]
+	epsilon -> [42][NegativeOptional]< "negative_optional" -[ @ Plus ] "+" { Plus } >
+	epsilon -> [51][NegativeOptional]< "negative_optional" -[ Plus ] @ "+" { Plus } >
+
+[55][NegativeOptional]< @ "negative_optional" -[ Plus ] "+" { Plus } >
+[RULE: 5][CLAUSE: 0]
+	token: "negative_optional" -> [53][NegativeOptional]< "negative_optional" @ -[ Plus ] "+" { Plus } >
+
+[56][NegativeOptional]@ < "negative_optional" -[ Plus ] "+" { Plus } >
+[RULE: 5][CLAUSE: 0]
+	epsilon -> [55][NegativeOptional]< @ "negative_optional" -[ Plus ] "+" { Plus } >
+		- BeginObject(OptionalFeature)
+
+[57][NO1]@ [ Plus ] Plus
+[RULE: 6][CLAUSE: 0]
+	epsilon -> [58][NO1][ @ Plus ] Plus
+	epsilon -> [60][NO1][ Plus ] @ Plus
+
+[58][NO1][ @ Plus ] Plus
+[RULE: 6][CLAUSE: 0]
+	rule: Plus -> [59][NO1][ Plus @ ] Plus
+		+ Field(NestedOptionalFeature::optional)
+
+[59][NO1][ Plus @ ] Plus
+[RULE: 6][CLAUSE: 0]
+	epsilon -> [60][NO1][ Plus ] @ Plus
+
+[60][NO1][ Plus ] @ Plus
+[RULE: 6][CLAUSE: 0]
+	epsilon -> [61][NO1][ Plus ] @ Plus
+
+[61][NO1][ Plus ] @ Plus
+[RULE: 6][CLAUSE: 0]
+	rule: Plus -> [62][NO1][ Plus ] Plus @[ENDING]
+		+ Field(NestedOptionalFeature::tail1)
+
+[62][NO1][ Plus ] Plus @[ENDING]
+[RULE: 6][CLAUSE: 0]
+
+[63][PositiveNO1]+[ @ Plus ] Plus
+[RULE: 7][CLAUSE: 0]
+	rule: Plus -> [64][PositiveNO1]+[ Plus @ ] Plus
+		+ Field(NestedOptionalFeature::optional)
+
+[64][PositiveNO1]+[ Plus @ ] Plus
+[RULE: 7][CLAUSE: 0]
+	epsilon -> [65][PositiveNO1]+[ Plus ] @ Plus
+
+[65][PositiveNO1]+[ Plus ] @ Plus
+[RULE: 7][CLAUSE: 0]
+	epsilon -> [66][PositiveNO1]+[ Plus ] @ Plus
+
+[66][PositiveNO1]+[ Plus ] @ Plus
+[RULE: 7][CLAUSE: 0]
+	rule: Plus -> [67][PositiveNO1]+[ Plus ] Plus @[ENDING]
+		+ Field(NestedOptionalFeature::tail1)
+
+[67][PositiveNO1]+[ Plus ] Plus @[ENDING]
+[RULE: 7][CLAUSE: 0]
+
+[68][PositiveNO1]@ +[ Plus ] Plus
+[RULE: 7][CLAUSE: 0]
+	epsilon -> [63][PositiveNO1]+[ @ Plus ] Plus
+	epsilon -> [65][PositiveNO1]+[ Plus ] @ Plus
+
+[69][NegativeNO1]-[ @ Plus ] Plus
+[RULE: 8][CLAUSE: 0]
+	rule: Plus -> [70][NegativeNO1]-[ Plus @ ] Plus
+		+ Field(NestedOptionalFeature::optional)
+
+[70][NegativeNO1]-[ Plus @ ] Plus
+[RULE: 8][CLAUSE: 0]
+	epsilon -> [71][NegativeNO1]-[ Plus ] @ Plus
+
+[71][NegativeNO1]-[ Plus ] @ Plus
+[RULE: 8][CLAUSE: 0]
+	epsilon -> [72][NegativeNO1]-[ Plus ] @ Plus
+
+[72][NegativeNO1]-[ Plus ] @ Plus
+[RULE: 8][CLAUSE: 0]
+	rule: Plus -> [73][NegativeNO1]-[ Plus ] Plus @[ENDING]
+		+ Field(NestedOptionalFeature::tail1)
+
+[73][NegativeNO1]-[ Plus ] Plus @[ENDING]
+[RULE: 8][CLAUSE: 0]
+
+[74][NegativeNO1]@ -[ Plus ] Plus
+[RULE: 8][CLAUSE: 0]
+	epsilon -> [69][NegativeNO1]-[ @ Plus ] Plus
+	epsilon -> [71][NegativeNO1]-[ Plus ] @ Plus
+
+[75][NO2]@ [ NO1 ] Plus
+[RULE: 9][CLAUSE: 0]
+	epsilon -> [76][NO2][ @ NO1 ] Plus
+	epsilon -> [78][NO2][ NO1 ] @ Plus
+
+[76][NO2][ @ NO1 ] Plus
+[RULE: 9][CLAUSE: 0]
+	rule: NO1 -> [77][NO2][ NO1 @ ] Plus
+
+[77][NO2][ NO1 @ ] Plus
+[RULE: 9][CLAUSE: 0]
+	epsilon -> [78][NO2][ NO1 ] @ Plus
+
+[78][NO2][ NO1 ] @ Plus
+[RULE: 9][CLAUSE: 0]
+	epsilon -> [79][NO2][ NO1 ] @ Plus
+
+[79][NO2][ NO1 ] @ Plus
+[RULE: 9][CLAUSE: 0]
+	rule: Plus -> [80][NO2][ NO1 ] Plus @[ENDING]
+		+ Field(NestedOptionalFeature::tail2)
+
+[80][NO2][ NO1 ] Plus @[ENDING]
+[RULE: 9][CLAUSE: 0]
+
+[81][PositiveNO2]+[ @ PositiveNO1 ] Plus
+[RULE: 10][CLAUSE: 0]
+	rule: PositiveNO1 -> [82][PositiveNO2]+[ PositiveNO1 @ ] Plus
+
+[82][PositiveNO2]+[ PositiveNO1 @ ] Plus
+[RULE: 10][CLAUSE: 0]
+	epsilon -> [83][PositiveNO2]+[ PositiveNO1 ] @ Plus
+
+[83][PositiveNO2]+[ PositiveNO1 ] @ Plus
+[RULE: 10][CLAUSE: 0]
+	epsilon -> [84][PositiveNO2]+[ PositiveNO1 ] @ Plus
+
+[84][PositiveNO2]+[ PositiveNO1 ] @ Plus
+[RULE: 10][CLAUSE: 0]
+	rule: Plus -> [85][PositiveNO2]+[ PositiveNO1 ] Plus @[ENDING]
+		+ Field(NestedOptionalFeature::tail2)
+
+[85][PositiveNO2]+[ PositiveNO1 ] Plus @[ENDING]
+[RULE: 10][CLAUSE: 0]
+
+[86][PositiveNO2]@ +[ PositiveNO1 ] Plus
+[RULE: 10][CLAUSE: 0]
+	epsilon -> [81][PositiveNO2]+[ @ PositiveNO1 ] Plus
+	epsilon -> [83][PositiveNO2]+[ PositiveNO1 ] @ Plus
+
+[87][NegativeNO2]-[ @ NegativeNO1 ] Plus
+[RULE: 11][CLAUSE: 0]
+	rule: NegativeNO1 -> [88][NegativeNO2]-[ NegativeNO1 @ ] Plus
+
+[88][NegativeNO2]-[ NegativeNO1 @ ] Plus
+[RULE: 11][CLAUSE: 0]
+	epsilon -> [89][NegativeNO2]-[ NegativeNO1 ] @ Plus
+
+[89][NegativeNO2]-[ NegativeNO1 ] @ Plus
+[RULE: 11][CLAUSE: 0]
+	epsilon -> [90][NegativeNO2]-[ NegativeNO1 ] @ Plus
+
+[90][NegativeNO2]-[ NegativeNO1 ] @ Plus
+[RULE: 11][CLAUSE: 0]
+	rule: Plus -> [91][NegativeNO2]-[ NegativeNO1 ] Plus @[ENDING]
+		+ Field(NestedOptionalFeature::tail2)
+
+[91][NegativeNO2]-[ NegativeNO1 ] Plus @[ENDING]
+[RULE: 11][CLAUSE: 0]
+
+[92][NegativeNO2]@ -[ NegativeNO1 ] Plus
+[RULE: 11][CLAUSE: 0]
+	epsilon -> [87][NegativeNO2]-[ @ NegativeNO1 ] Plus
+	epsilon -> [89][NegativeNO2]-[ NegativeNO1 ] @ Plus
+
+[93][NestedOptional]< "nested_optional" @ [ NO2 ] Plus { Plus } >
+[RULE: 12][CLAUSE: 0]
+	epsilon -> [95][NestedOptional]< "nested_optional" [ @ NO2 ] Plus { Plus } >
+	epsilon -> [98][NestedOptional]< "nested_optional" [ NO2 ] @ Plus { Plus } >
+
+[94][NestedOptional]< "nested_optional" @ [ NO2 ] Plus { Plus } >
+[RULE: 12][CLAUSE: 0]
+	epsilon -> [93][NestedOptional]< "nested_optional" @ [ NO2 ] Plus { Plus } >
+
+[95][NestedOptional]< "nested_optional" [ @ NO2 ] Plus { Plus } >
+[RULE: 12][CLAUSE: 0]
+	rule: NO2 -> [96][NestedOptional]< "nested_optional" [ NO2 @ ] Plus { Plus } >
+
+[96][NestedOptional]< "nested_optional" [ NO2 @ ] Plus { Plus } >
+[RULE: 12][CLAUSE: 0]
+	epsilon -> [98][NestedOptional]< "nested_optional" [ NO2 ] @ Plus { Plus } >
+
+[97][NestedOptional]< "nested_optional" [ NO2 ] @ Plus { Plus } >
+[RULE: 12][CLAUSE: 0]
+	rule: Plus -> [100][NestedOptional]< "nested_optional" [ NO2 ] Plus @ { Plus } >
+		+ Field(NestedOptionalFeature::tail3)
+
+[98][NestedOptional]< "nested_optional" [ NO2 ] @ Plus { Plus } >
+[RULE: 12][CLAUSE: 0]
+	epsilon -> [97][NestedOptional]< "nested_optional" [ NO2 ] @ Plus { Plus } >
+
+[99][NestedOptional]< "nested_optional" [ NO2 ] Plus @ { Plus } >
+[RULE: 12][CLAUSE: 0]
+	epsilon -> [101][NestedOptional]< "nested_optional" [ NO2 ] Plus { @ Plus } >
+	epsilon -> [104][NestedOptional]< "nested_optional" [ NO2 ] Plus { Plus } @ >
+
+[100][NestedOptional]< "nested_optional" [ NO2 ] Plus @ { Plus } >
+[RULE: 12][CLAUSE: 0]
+	epsilon -> [99][NestedOptional]< "nested_optional" [ NO2 ] Plus @ { Plus } >
+
+[101][NestedOptional]< "nested_optional" [ NO2 ] Plus { @ Plus } >
+[RULE: 12][CLAUSE: 0]
+	rule: Plus -> [102][NestedOptional]< "nested_optional" [ NO2 ] Plus { Plus @ } >
+		+ Field(NestedOptionalFeature::tails)
+
+[102][NestedOptional]< "nested_optional" [ NO2 ] Plus { Plus @ } >
+[RULE: 12][CLAUSE: 0]
+	epsilon -> [101][NestedOptional]< "nested_optional" [ NO2 ] Plus { @ Plus } >
+	epsilon -> [104][NestedOptional]< "nested_optional" [ NO2 ] Plus { Plus } @ >
+
+[103][NestedOptional]< "nested_optional" [ NO2 ] Plus { Plus } > @[ENDING]
+[RULE: 12][CLAUSE: 0]
+
+[104][NestedOptional]< "nested_optional" [ NO2 ] Plus { Plus } @ >
+[RULE: 12][CLAUSE: 0]
+	epsilon -> [103][NestedOptional]< "nested_optional" [ NO2 ] Plus { Plus } > @[ENDING]
+		- EndObject()
+
+[105][NestedOptional]< @ "nested_optional" [ NO2 ] Plus { Plus } >
+[RULE: 12][CLAUSE: 0]
+	token: "nested_optional" -> [94][NestedOptional]< "nested_optional" @ [ NO2 ] Plus { Plus } >
+
+[106][NestedOptional]@ < "nested_optional" [ NO2 ] Plus { Plus } >
+[RULE: 12][CLAUSE: 0]
+	epsilon -> [105][NestedOptional]< @ "nested_optional" [ NO2 ] Plus { Plus } >
+		- BeginObject(NestedOptionalFeature)
+
+[107][NestedPositiveOptional]< "nested_positive_optional" +[ @ PositiveNO2 ] Plus { Plus } >
+[RULE: 13][CLAUSE: 0]
+	rule: PositiveNO2 -> [108][NestedPositiveOptional]< "nested_positive_optional" +[ PositiveNO2 @ ] Plus { Plus } >
+
+[108][NestedPositiveOptional]< "nested_positive_optional" +[ PositiveNO2 @ ] Plus { Plus } >
+[RULE: 13][CLAUSE: 0]
+	epsilon -> [110][NestedPositiveOptional]< "nested_positive_optional" +[ PositiveNO2 ] @ Plus { Plus } >
+
+[109][NestedPositiveOptional]< "nested_positive_optional" +[ PositiveNO2 ] @ Plus { Plus } >
+[RULE: 13][CLAUSE: 0]
+	rule: Plus -> [112][NestedPositiveOptional]< "nested_positive_optional" +[ PositiveNO2 ] Plus @ { Plus } >
+		+ Field(NestedOptionalFeature::tail3)
+
+[110][NestedPositiveOptional]< "nested_positive_optional" +[ PositiveNO2 ] @ Plus { Plus } >
+[RULE: 13][CLAUSE: 0]
+	epsilon -> [109][NestedPositiveOptional]< "nested_positive_optional" +[ PositiveNO2 ] @ Plus { Plus } >
+
+[111][NestedPositiveOptional]< "nested_positive_optional" +[ PositiveNO2 ] Plus @ { Plus } >
+[RULE: 13][CLAUSE: 0]
+	epsilon -> [113][NestedPositiveOptional]< "nested_positive_optional" +[ PositiveNO2 ] Plus { @ Plus } >
+	epsilon -> [116][NestedPositiveOptional]< "nested_positive_optional" +[ PositiveNO2 ] Plus { Plus } @ >
+
+[112][NestedPositiveOptional]< "nested_positive_optional" +[ PositiveNO2 ] Plus @ { Plus } >
+[RULE: 13][CLAUSE: 0]
+	epsilon -> [111][NestedPositiveOptional]< "nested_positive_optional" +[ PositiveNO2 ] Plus @ { Plus } >
+
+[113][NestedPositiveOptional]< "nested_positive_optional" +[ PositiveNO2 ] Plus { @ Plus } >
+[RULE: 13][CLAUSE: 0]
+	rule: Plus -> [114][NestedPositiveOptional]< "nested_positive_optional" +[ PositiveNO2 ] Plus { Plus @ } >
+		+ Field(NestedOptionalFeature::tails)
+
+[114][NestedPositiveOptional]< "nested_positive_optional" +[ PositiveNO2 ] Plus { Plus @ } >
+[RULE: 13][CLAUSE: 0]
+	epsilon -> [113][NestedPositiveOptional]< "nested_positive_optional" +[ PositiveNO2 ] Plus { @ Plus } >
+	epsilon -> [116][NestedPositiveOptional]< "nested_positive_optional" +[ PositiveNO2 ] Plus { Plus } @ >
+
+[115][NestedPositiveOptional]< "nested_positive_optional" +[ PositiveNO2 ] Plus { Plus } > @[ENDING]
+[RULE: 13][CLAUSE: 0]
+
+[116][NestedPositiveOptional]< "nested_positive_optional" +[ PositiveNO2 ] Plus { Plus } @ >
+[RULE: 13][CLAUSE: 0]
+	epsilon -> [115][NestedPositiveOptional]< "nested_positive_optional" +[ PositiveNO2 ] Plus { Plus } > @[ENDING]
+		- EndObject()
+
+[117][NestedPositiveOptional]< "nested_positive_optional" @ +[ PositiveNO2 ] Plus { Plus } >
+[RULE: 13][CLAUSE: 0]
+	epsilon -> [118][NestedPositiveOptional]< "nested_positive_optional" @ +[ PositiveNO2 ] Plus { Plus } >
+
+[118][NestedPositiveOptional]< "nested_positive_optional" @ +[ PositiveNO2 ] Plus { Plus } >
+[RULE: 13][CLAUSE: 0]
+	epsilon -> [107][NestedPositiveOptional]< "nested_positive_optional" +[ @ PositiveNO2 ] Plus { Plus } >
+	epsilon -> [110][NestedPositiveOptional]< "nested_positive_optional" +[ PositiveNO2 ] @ Plus { Plus } >
+
+[119][NestedPositiveOptional]< @ "nested_positive_optional" +[ PositiveNO2 ] Plus { Plus } >
+[RULE: 13][CLAUSE: 0]
+	token: "nested_positive_optional" -> [117][NestedPositiveOptional]< "nested_positive_optional" @ +[ PositiveNO2 ] Plus { Plus } >
+
+[120][NestedPositiveOptional]@ < "nested_positive_optional" +[ PositiveNO2 ] Plus { Plus } >
+[RULE: 13][CLAUSE: 0]
+	epsilon -> [119][NestedPositiveOptional]< @ "nested_positive_optional" +[ PositiveNO2 ] Plus { Plus } >
+		- BeginObject(NestedOptionalFeature)
+
+[121][NestedNegativeOptional]< "nested_negative_optional" -[ @ NegativeNO2 ] Plus { Plus } >
+[RULE: 14][CLAUSE: 0]
+	rule: NegativeNO2 -> [122][NestedNegativeOptional]< "nested_negative_optional" -[ NegativeNO2 @ ] Plus { Plus } >
+
+[122][NestedNegativeOptional]< "nested_negative_optional" -[ NegativeNO2 @ ] Plus { Plus } >
+[RULE: 14][CLAUSE: 0]
+	epsilon -> [124][NestedNegativeOptional]< "nested_negative_optional" -[ NegativeNO2 ] @ Plus { Plus } >
+
+[123][NestedNegativeOptional]< "nested_negative_optional" -[ NegativeNO2 ] @ Plus { Plus } >
+[RULE: 14][CLAUSE: 0]
+	rule: Plus -> [126][NestedNegativeOptional]< "nested_negative_optional" -[ NegativeNO2 ] Plus @ { Plus } >
+		+ Field(NestedOptionalFeature::tail3)
+
+[124][NestedNegativeOptional]< "nested_negative_optional" -[ NegativeNO2 ] @ Plus { Plus } >
+[RULE: 14][CLAUSE: 0]
+	epsilon -> [123][NestedNegativeOptional]< "nested_negative_optional" -[ NegativeNO2 ] @ Plus { Plus } >
+
+[125][NestedNegativeOptional]< "nested_negative_optional" -[ NegativeNO2 ] Plus @ { Plus } >
+[RULE: 14][CLAUSE: 0]
+	epsilon -> [127][NestedNegativeOptional]< "nested_negative_optional" -[ NegativeNO2 ] Plus { @ Plus } >
+	epsilon -> [130][NestedNegativeOptional]< "nested_negative_optional" -[ NegativeNO2 ] Plus { Plus } @ >
+
+[126][NestedNegativeOptional]< "nested_negative_optional" -[ NegativeNO2 ] Plus @ { Plus } >
+[RULE: 14][CLAUSE: 0]
+	epsilon -> [125][NestedNegativeOptional]< "nested_negative_optional" -[ NegativeNO2 ] Plus @ { Plus } >
+
+[127][NestedNegativeOptional]< "nested_negative_optional" -[ NegativeNO2 ] Plus { @ Plus } >
+[RULE: 14][CLAUSE: 0]
+	rule: Plus -> [128][NestedNegativeOptional]< "nested_negative_optional" -[ NegativeNO2 ] Plus { Plus @ } >
+		+ Field(NestedOptionalFeature::tails)
+
+[128][NestedNegativeOptional]< "nested_negative_optional" -[ NegativeNO2 ] Plus { Plus @ } >
+[RULE: 14][CLAUSE: 0]
+	epsilon -> [127][NestedNegativeOptional]< "nested_negative_optional" -[ NegativeNO2 ] Plus { @ Plus } >
+	epsilon -> [130][NestedNegativeOptional]< "nested_negative_optional" -[ NegativeNO2 ] Plus { Plus } @ >
+
+[129][NestedNegativeOptional]< "nested_negative_optional" -[ NegativeNO2 ] Plus { Plus } > @[ENDING]
+[RULE: 14][CLAUSE: 0]
+
+[130][NestedNegativeOptional]< "nested_negative_optional" -[ NegativeNO2 ] Plus { Plus } @ >
+[RULE: 14][CLAUSE: 0]
+	epsilon -> [129][NestedNegativeOptional]< "nested_negative_optional" -[ NegativeNO2 ] Plus { Plus } > @[ENDING]
+		- EndObject()
+
+[131][NestedNegativeOptional]< "nested_negative_optional" @ -[ NegativeNO2 ] Plus { Plus } >
+[RULE: 14][CLAUSE: 0]
+	epsilon -> [132][NestedNegativeOptional]< "nested_negative_optional" @ -[ NegativeNO2 ] Plus { Plus } >
+
+[132][NestedNegativeOptional]< "nested_negative_optional" @ -[ NegativeNO2 ] Plus { Plus } >
+[RULE: 14][CLAUSE: 0]
+	epsilon -> [121][NestedNegativeOptional]< "nested_negative_optional" -[ @ NegativeNO2 ] Plus { Plus } >
+	epsilon -> [124][NestedNegativeOptional]< "nested_negative_optional" -[ NegativeNO2 ] @ Plus { Plus } >
+
+[133][NestedNegativeOptional]< @ "nested_negative_optional" -[ NegativeNO2 ] Plus { Plus } >
+[RULE: 14][CLAUSE: 0]
+	token: "nested_negative_optional" -> [131][NestedNegativeOptional]< "nested_negative_optional" @ -[ NegativeNO2 ] Plus { Plus } >
+
+[134][NestedNegativeOptional]@ < "nested_negative_optional" -[ NegativeNO2 ] Plus { Plus } >
+[RULE: 14][CLAUSE: 0]
+	epsilon -> [133][NestedNegativeOptional]< @ "nested_negative_optional" -[ NegativeNO2 ] Plus { Plus } >
+		- BeginObject(NestedOptionalFeature)
+
+[135][BranchedOptional]< "branched_optional" +[ @ Plus ] Plus { Plus } >
+[RULE: 15][CLAUSE: 0]
+	rule: Plus -> [136][BranchedOptional]< "branched_optional" +[ Plus @ ] Plus { Plus } >
+		+ Field(BranchedOptionalFeature::optional)
+
+[136][BranchedOptional]< "branched_optional" +[ Plus @ ] Plus { Plus } >
+[RULE: 15][CLAUSE: 0]
+	epsilon -> [138][BranchedOptional]< "branched_optional" +[ Plus ] @ Plus { Plus } >
+
+[137][BranchedOptional]< "branched_optional" +[ Plus ] @ Plus { Plus } >
+[RULE: 15][CLAUSE: 0]
+	rule: Plus -> [140][BranchedOptional]< "branched_optional" +[ Plus ] Plus @ { Plus } >
+		+ DiscardValue()
+
+[138][BranchedOptional]< "branched_optional" +[ Plus ] @ Plus { Plus } >
+[RULE: 15][CLAUSE: 0]
+	epsilon -> [137][BranchedOptional]< "branched_optional" +[ Plus ] @ Plus { Plus } >
+
+[139][BranchedOptional]< "branched_optional" +[ Plus ] Plus @ { Plus } >
+[RULE: 15][CLAUSE: 0]
+	epsilon -> [141][BranchedOptional]< "branched_optional" +[ Plus ] Plus { @ Plus } >
+	epsilon -> [144][BranchedOptional]< "branched_optional" +[ Plus ] Plus { Plus } @ >
+
+[140][BranchedOptional]< "branched_optional" +[ Plus ] Plus @ { Plus } >
+[RULE: 15][CLAUSE: 0]
+	epsilon -> [139][BranchedOptional]< "branched_optional" +[ Plus ] Plus @ { Plus } >
+
+[141][BranchedOptional]< "branched_optional" +[ Plus ] Plus { @ Plus } >
+[RULE: 15][CLAUSE: 0]
+	rule: Plus -> [142][BranchedOptional]< "branched_optional" +[ Plus ] Plus { Plus @ } >
+		+ Field(BranchedOptionalFeature::tails)
+
+[142][BranchedOptional]< "branched_optional" +[ Plus ] Plus { Plus @ } >
+[RULE: 15][CLAUSE: 0]
+	epsilon -> [141][BranchedOptional]< "branched_optional" +[ Plus ] Plus { @ Plus } >
+	epsilon -> [144][BranchedOptional]< "branched_optional" +[ Plus ] Plus { Plus } @ >
+
+[143][BranchedOptional]< "branched_optional" +[ Plus ] Plus { Plus } > @[ENDING]
+[RULE: 15][CLAUSE: 0]
+
+[144][BranchedOptional]< "branched_optional" +[ Plus ] Plus { Plus } @ >
+[RULE: 15][CLAUSE: 0]
+	epsilon -> [145][BranchedOptional]< "branched_optional" +[ Plus ] Plus { Plus } @ >
+		- EnumItem(0)
+		- Field(BranchedOptionalFeature::type)
+
+[145][BranchedOptional]< "branched_optional" +[ Plus ] Plus { Plus } @ >
+[RULE: 15][CLAUSE: 0]
+	epsilon -> [143][BranchedOptional]< "branched_optional" +[ Plus ] Plus { Plus } > @[ENDING]
+		- EndObject()
+
+[146][BranchedOptional]< "branched_optional" -[ @ Plus ] Plus { Plus } >
+[RULE: 15][CLAUSE: 1]
+	rule: Plus -> [147][BranchedOptional]< "branched_optional" -[ Plus @ ] Plus { Plus } >
+		+ Field(BranchedOptionalFeature::optional)
+
+[147][BranchedOptional]< "branched_optional" -[ Plus @ ] Plus { Plus } >
+[RULE: 15][CLAUSE: 1]
+	epsilon -> [149][BranchedOptional]< "branched_optional" -[ Plus ] @ Plus { Plus } >
+
+[148][BranchedOptional]< "branched_optional" -[ Plus ] @ Plus { Plus } >
+[RULE: 15][CLAUSE: 1]
+	rule: Plus -> [150][BranchedOptional]< "branched_optional" -[ Plus ] Plus @ { Plus } >
+		+ DiscardValue()
+
+[149][BranchedOptional]< "branched_optional" -[ Plus ] @ Plus { Plus } >
+[RULE: 15][CLAUSE: 1]
+	epsilon -> [148][BranchedOptional]< "branched_optional" -[ Plus ] @ Plus { Plus } >
+
+[150][BranchedOptional]< "branched_optional" -[ Plus ] Plus @ { Plus } >
+[RULE: 15][CLAUSE: 1]
+	epsilon -> [151][BranchedOptional]< "branched_optional" -[ Plus ] Plus @ { Plus } >
+
+[151][BranchedOptional]< "branched_optional" -[ Plus ] Plus @ { Plus } >
+[RULE: 15][CLAUSE: 1]
+	epsilon -> [152][BranchedOptional]< "branched_optional" -[ Plus ] Plus { @ Plus } >
+	epsilon -> [155][BranchedOptional]< "branched_optional" -[ Plus ] Plus { Plus } @ >
+
+[152][BranchedOptional]< "branched_optional" -[ Plus ] Plus { @ Plus } >
+[RULE: 15][CLAUSE: 1]
+	rule: Plus -> [153][BranchedOptional]< "branched_optional" -[ Plus ] Plus { Plus @ } >
+		+ Field(BranchedOptionalFeature::tails)
+
+[153][BranchedOptional]< "branched_optional" -[ Plus ] Plus { Plus @ } >
+[RULE: 15][CLAUSE: 1]
+	epsilon -> [152][BranchedOptional]< "branched_optional" -[ Plus ] Plus { @ Plus } >
+	epsilon -> [155][BranchedOptional]< "branched_optional" -[ Plus ] Plus { Plus } @ >
+
+[154][BranchedOptional]< "branched_optional" -[ Plus ] Plus { Plus } > @[ENDING]
+[RULE: 15][CLAUSE: 1]
+
+[155][BranchedOptional]< "branched_optional" -[ Plus ] Plus { Plus } @ >
+[RULE: 15][CLAUSE: 1]
+	epsilon -> [156][BranchedOptional]< "branched_optional" -[ Plus ] Plus { Plus } @ >
+		- EnumItem(1)
+		- Field(BranchedOptionalFeature::type)
+
+[156][BranchedOptional]< "branched_optional" -[ Plus ] Plus { Plus } @ >
+[RULE: 15][CLAUSE: 1]
+	epsilon -> [154][BranchedOptional]< "branched_optional" -[ Plus ] Plus { Plus } > @[ENDING]
+		- EndObject()
+
+[157][BranchedOptional]< "branched_optional" @ +[ Plus ] Plus { Plus } >
+[RULE: 15][CLAUSE: 0]
+	epsilon -> [158][BranchedOptional]< "branched_optional" @ +[ Plus ] Plus { Plus } >
+
+[158][BranchedOptional]< "branched_optional" @ +[ Plus ] Plus { Plus } >
+[RULE: 15][CLAUSE: 0]
+	epsilon -> [135][BranchedOptional]< "branched_optional" +[ @ Plus ] Plus { Plus } >
+	epsilon -> [138][BranchedOptional]< "branched_optional" +[ Plus ] @ Plus { Plus } >
+
+[159][BranchedOptional]< "branched_optional" @ -[ Plus ] Plus { Plus } >
+[RULE: 15][CLAUSE: 1]
+	epsilon -> [160][BranchedOptional]< "branched_optional" @ -[ Plus ] Plus { Plus } >
+
+[160][BranchedOptional]< "branched_optional" @ -[ Plus ] Plus { Plus } >
+[RULE: 15][CLAUSE: 1]
+	epsilon -> [146][BranchedOptional]< "branched_optional" -[ @ Plus ] Plus { Plus } >
+	epsilon -> [149][BranchedOptional]< "branched_optional" -[ Plus ] @ Plus { Plus } >
+
+[161][BranchedOptional]< "branched_optional" @ [ Plus ] Plus { Plus } >
+[RULE: 15][CLAUSE: 2]
+	epsilon -> [162][BranchedOptional]< "branched_optional" @ [ Plus ] Plus { Plus } >
+
+[162][BranchedOptional]< "branched_optional" @ [ Plus ] Plus { Plus } >
+[RULE: 15][CLAUSE: 2]
+	epsilon -> [163][BranchedOptional]< "branched_optional" [ @ Plus ] Plus { Plus } >
+	epsilon -> [166][BranchedOptional]< "branched_optional" [ Plus ] @ Plus { Plus } >
+
+[163][BranchedOptional]< "branched_optional" [ @ Plus ] Plus { Plus } >
+[RULE: 15][CLAUSE: 2]
+	rule: Plus -> [164][BranchedOptional]< "branched_optional" [ Plus @ ] Plus { Plus } >
+		+ Field(BranchedOptionalFeature::optional)
+
+[164][BranchedOptional]< "branched_optional" [ Plus @ ] Plus { Plus } >
+[RULE: 15][CLAUSE: 2]
+	epsilon -> [166][BranchedOptional]< "branched_optional" [ Plus ] @ Plus { Plus } >
+
+[165][BranchedOptional]< "branched_optional" [ Plus ] @ Plus { Plus } >
+[RULE: 15][CLAUSE: 2]
+	rule: Plus -> [167][BranchedOptional]< "branched_optional" [ Plus ] Plus @ { Plus } >
+		+ DiscardValue()
+
+[166][BranchedOptional]< "branched_optional" [ Plus ] @ Plus { Plus } >
+[RULE: 15][CLAUSE: 2]
+	epsilon -> [165][BranchedOptional]< "branched_optional" [ Plus ] @ Plus { Plus } >
+
+[167][BranchedOptional]< "branched_optional" [ Plus ] Plus @ { Plus } >
+[RULE: 15][CLAUSE: 2]
+	epsilon -> [168][BranchedOptional]< "branched_optional" [ Plus ] Plus @ { Plus } >
+
+[168][BranchedOptional]< "branched_optional" [ Plus ] Plus @ { Plus } >
+[RULE: 15][CLAUSE: 2]
+	epsilon -> [169][BranchedOptional]< "branched_optional" [ Plus ] Plus { @ Plus } >
+	epsilon -> [172][BranchedOptional]< "branched_optional" [ Plus ] Plus { Plus } @ >
+
+[169][BranchedOptional]< "branched_optional" [ Plus ] Plus { @ Plus } >
+[RULE: 15][CLAUSE: 2]
+	rule: Plus -> [170][BranchedOptional]< "branched_optional" [ Plus ] Plus { Plus @ } >
+		+ Field(BranchedOptionalFeature::tails)
+
+[170][BranchedOptional]< "branched_optional" [ Plus ] Plus { Plus @ } >
+[RULE: 15][CLAUSE: 2]
+	epsilon -> [169][BranchedOptional]< "branched_optional" [ Plus ] Plus { @ Plus } >
+	epsilon -> [172][BranchedOptional]< "branched_optional" [ Plus ] Plus { Plus } @ >
+
+[171][BranchedOptional]< "branched_optional" [ Plus ] Plus { Plus } > @[ENDING]
+[RULE: 15][CLAUSE: 2]
+
+[172][BranchedOptional]< "branched_optional" [ Plus ] Plus { Plus } @ >
+[RULE: 15][CLAUSE: 2]
+	epsilon -> [173][BranchedOptional]< "branched_optional" [ Plus ] Plus { Plus } @ >
+		- EnumItem(2)
+		- Field(BranchedOptionalFeature::type)
+
+[173][BranchedOptional]< "branched_optional" [ Plus ] Plus { Plus } @ >
+[RULE: 15][CLAUSE: 2]
+	epsilon -> [171][BranchedOptional]< "branched_optional" [ Plus ] Plus { Plus } > @[ENDING]
+		- EndObject()
+
+[174][BranchedOptional]< @ "branched_optional" +[ Plus ] Plus { Plus } >
+[RULE: 15][CLAUSE: 0]
+	token: "branched_optional" -> [157][BranchedOptional]< "branched_optional" @ +[ Plus ] Plus { Plus } >
+
+[175][BranchedOptional]< @ "branched_optional" -[ Plus ] Plus { Plus } >
+[RULE: 15][CLAUSE: 1]
+	token: "branched_optional" -> [159][BranchedOptional]< "branched_optional" @ -[ Plus ] Plus { Plus } >
+
+[176][BranchedOptional]< @ "branched_optional" [ Plus ] Plus { Plus } >
+[RULE: 15][CLAUSE: 2]
+	token: "branched_optional" -> [161][BranchedOptional]< "branched_optional" @ [ Plus ] Plus { Plus } >
+
+[177][BranchedOptional]@ < "branched_optional" +[ Plus ] Plus { Plus } >
+[RULE: 15][CLAUSE: 0]
+	epsilon -> [174][BranchedOptional]< @ "branched_optional" +[ Plus ] Plus { Plus } >
+		- BeginObject(BranchedOptionalFeature)
+
+[178][BranchedOptional]@ < "branched_optional" -[ Plus ] Plus { Plus } >
+[RULE: 15][CLAUSE: 1]
+	epsilon -> [175][BranchedOptional]< @ "branched_optional" -[ Plus ] Plus { Plus } >
+		- BeginObject(BranchedOptionalFeature)
+
+[179][BranchedOptional]@ < "branched_optional" [ Plus ] Plus { Plus } >
+[RULE: 15][CLAUSE: 2]
+	epsilon -> [176][BranchedOptional]< @ "branched_optional" [ Plus ] Plus { Plus } >
+		- BeginObject(BranchedOptionalFeature)
+
+[180][PbaGts]@ Gt { Gt }
+[RULE: 16][CLAUSE: 0]
+	rule: Gt -> [181][PbaGts]Gt @ { Gt }
+		+ Field(PbaFeature::gts)
+
+[181][PbaGts]Gt @ { Gt }
+[RULE: 16][CLAUSE: 0]
+	epsilon -> [182][PbaGts]Gt @ { Gt }
+
+[182][PbaGts]Gt @ { Gt }
+[RULE: 16][CLAUSE: 0]
+	epsilon -> [183][PbaGts]Gt { @ Gt }
+	epsilon -> [185][PbaGts]Gt { Gt } @[ENDING]
+
+[183][PbaGts]Gt { @ Gt }
+[RULE: 16][CLAUSE: 0]
+	rule: Gt -> [184][PbaGts]Gt { Gt @ }
+		+ Field(PbaFeature::gts)
+
+[184][PbaGts]Gt { Gt @ }
+[RULE: 16][CLAUSE: 0]
+	epsilon -> [183][PbaGts]Gt { @ Gt }
+	epsilon -> [185][PbaGts]Gt { Gt } @[ENDING]
+
+[185][PbaGts]Gt { Gt } @[ENDING]
+[RULE: 16][CLAUSE: 0]
+
+[186][PbaBody]< @ [ Plus ] Plus { Plus } >
+[RULE: 17][CLAUSE: 0]
+	epsilon -> [187][PbaBody]< [ @ Plus ] Plus { Plus } >
+	epsilon -> [189][PbaBody]< [ Plus ] @ Plus { Plus } >
+
+[187][PbaBody]< [ @ Plus ] Plus { Plus } >
+[RULE: 17][CLAUSE: 0]
+	rule: Plus -> [188][PbaBody]< [ Plus @ ] Plus { Plus } >
+		+ Field(PbaFeature::optional)
+
+[188][PbaBody]< [ Plus @ ] Plus { Plus } >
+[RULE: 17][CLAUSE: 0]
+	epsilon -> [189][PbaBody]< [ Plus ] @ Plus { Plus } >
+
+[189][PbaBody]< [ Plus ] @ Plus { Plus } >
+[RULE: 17][CLAUSE: 0]
+	epsilon -> [190][PbaBody]< [ Plus ] @ Plus { Plus } >
+
+[190][PbaBody]< [ Plus ] @ Plus { Plus } >
+[RULE: 17][CLAUSE: 0]
+	rule: Plus -> [192][PbaBody]< [ Plus ] Plus @ { Plus } >
+		+ DiscardValue()
+
+[191][PbaBody]< [ Plus ] Plus @ { Plus } >
+[RULE: 17][CLAUSE: 0]
+	epsilon -> [193][PbaBody]< [ Plus ] Plus { @ Plus } >
+	epsilon -> [196][PbaBody]< [ Plus ] Plus { Plus } @ >
+
+[192][PbaBody]< [ Plus ] Plus @ { Plus } >
+[RULE: 17][CLAUSE: 0]
+	epsilon -> [191][PbaBody]< [ Plus ] Plus @ { Plus } >
+
+[193][PbaBody]< [ Plus ] Plus { @ Plus } >
+[RULE: 17][CLAUSE: 0]
+	rule: Plus -> [194][PbaBody]< [ Plus ] Plus { Plus @ } >
+		+ Field(PbaFeature::tails)
+
+[194][PbaBody]< [ Plus ] Plus { Plus @ } >
+[RULE: 17][CLAUSE: 0]
+	epsilon -> [193][PbaBody]< [ Plus ] Plus { @ Plus } >
+	epsilon -> [196][PbaBody]< [ Plus ] Plus { Plus } @ >
+
+[195][PbaBody]< [ Plus ] Plus { Plus } > @[ENDING]
+[RULE: 17][CLAUSE: 0]
+
+[196][PbaBody]< [ Plus ] Plus { Plus } @ >
+[RULE: 17][CLAUSE: 0]
+	epsilon -> [195][PbaBody]< [ Plus ] Plus { Plus } > @[ENDING]
+		- EndObject()
+
+[197][PbaBody]@ < [ Plus ] Plus { Plus } >
+[RULE: 17][CLAUSE: 0]
+	epsilon -> [186][PbaBody]< @ [ Plus ] Plus { Plus } >
+		- BeginObject(PbaFeature)
+
+[198][Pba]<< "prefix_before_ambiguity" @ { Lt } PbaGts !PbaBody >>
+[RULE: 18][CLAUSE: 0]
+	epsilon -> [200][Pba]<< "prefix_before_ambiguity" { @ Lt } PbaGts !PbaBody >>
+	epsilon -> [203][Pba]<< "prefix_before_ambiguity" { Lt } @ PbaGts !PbaBody >>
+
+[199][Pba]<< "prefix_before_ambiguity" @ { Lt } PbaGts !PbaBody >>
+[RULE: 18][CLAUSE: 0]
+	epsilon -> [198][Pba]<< "prefix_before_ambiguity" @ { Lt } PbaGts !PbaBody >>
+
+[200][Pba]<< "prefix_before_ambiguity" { @ Lt } PbaGts !PbaBody >>
+[RULE: 18][CLAUSE: 0]
+	rule: Lt -> [201][Pba]<< "prefix_before_ambiguity" { Lt @ } PbaGts !PbaBody >>
+		+ Field(PbaFeature::lts)
+
+[201][Pba]<< "prefix_before_ambiguity" { Lt @ } PbaGts !PbaBody >>
+[RULE: 18][CLAUSE: 0]
+	epsilon -> [200][Pba]<< "prefix_before_ambiguity" { @ Lt } PbaGts !PbaBody >>
+	epsilon -> [203][Pba]<< "prefix_before_ambiguity" { Lt } @ PbaGts !PbaBody >>
+
+[202][Pba]<< "prefix_before_ambiguity" { Lt } @ PbaGts !PbaBody >>
+[RULE: 18][CLAUSE: 0]
+	rule: PbaGts -> [206][Pba]<< "prefix_before_ambiguity" { Lt } PbaGts @ !PbaBody >>
+
+[203][Pba]<< "prefix_before_ambiguity" { Lt } @ PbaGts !PbaBody >>
+[RULE: 18][CLAUSE: 0]
+	epsilon -> [202][Pba]<< "prefix_before_ambiguity" { Lt } @ PbaGts !PbaBody >>
+
+[204][Pba]<< "prefix_before_ambiguity" { Lt } PbaGts !PbaBody >> @[ENDING]
+[RULE: 18][CLAUSE: 0]
+
+[205][Pba]<< "prefix_before_ambiguity" { Lt } PbaGts !PbaBody @ >>
+[RULE: 18][CLAUSE: 0]
+	epsilon -> [204][Pba]<< "prefix_before_ambiguity" { Lt } PbaGts !PbaBody >> @[ENDING]
+		- EndObject()
+
+[206][Pba]<< "prefix_before_ambiguity" { Lt } PbaGts @ !PbaBody >>
+[RULE: 18][CLAUSE: 0]
+	epsilon -> [207][Pba]<< "prefix_before_ambiguity" { Lt } PbaGts @ !PbaBody >>
+
+[207][Pba]<< "prefix_before_ambiguity" { Lt } PbaGts @ !PbaBody >>
+[RULE: 18][CLAUSE: 0]
+	rule: PbaBody -> [205][Pba]<< "prefix_before_ambiguity" { Lt } PbaGts !PbaBody @ >>
+		+ ReopenObject()
+
+[208][Pba]<< @ "prefix_before_ambiguity" { Lt } PbaGts !PbaBody >>
+[RULE: 18][CLAUSE: 0]
+	token: "prefix_before_ambiguity" -> [199][Pba]<< "prefix_before_ambiguity" @ { Lt } PbaGts !PbaBody >>
+
+[209][Pba]@ << "prefix_before_ambiguity" { Lt } PbaGts !PbaBody >>
+[RULE: 18][CLAUSE: 0]
+	epsilon -> [208][Pba]<< @ "prefix_before_ambiguity" { Lt } PbaGts !PbaBody >>
+		- DelayFieldAssignment()
+
+[210][Pwa1Prefix]< @ [ Plus ] Plus { Plus } >
+[RULE: 19][CLAUSE: 0]
+	epsilon -> [211][Pwa1Prefix]< [ @ Plus ] Plus { Plus } >
+	epsilon -> [213][Pwa1Prefix]< [ Plus ] @ Plus { Plus } >
+
+[211][Pwa1Prefix]< [ @ Plus ] Plus { Plus } >
+[RULE: 19][CLAUSE: 0]
+	rule: Plus -> [212][Pwa1Prefix]< [ Plus @ ] Plus { Plus } >
+		+ Field(PbaFeature::optional)
+
+[212][Pwa1Prefix]< [ Plus @ ] Plus { Plus } >
+[RULE: 19][CLAUSE: 0]
+	epsilon -> [213][Pwa1Prefix]< [ Plus ] @ Plus { Plus } >
+
+[213][Pwa1Prefix]< [ Plus ] @ Plus { Plus } >
+[RULE: 19][CLAUSE: 0]
+	epsilon -> [214][Pwa1Prefix]< [ Plus ] @ Plus { Plus } >
+
+[214][Pwa1Prefix]< [ Plus ] @ Plus { Plus } >
+[RULE: 19][CLAUSE: 0]
+	rule: Plus -> [216][Pwa1Prefix]< [ Plus ] Plus @ { Plus } >
+		+ DiscardValue()
+
+[215][Pwa1Prefix]< [ Plus ] Plus @ { Plus } >
+[RULE: 19][CLAUSE: 0]
+	epsilon -> [217][Pwa1Prefix]< [ Plus ] Plus { @ Plus } >
+	epsilon -> [220][Pwa1Prefix]< [ Plus ] Plus { Plus } @ >
+
+[216][Pwa1Prefix]< [ Plus ] Plus @ { Plus } >
+[RULE: 19][CLAUSE: 0]
+	epsilon -> [215][Pwa1Prefix]< [ Plus ] Plus @ { Plus } >
+
+[217][Pwa1Prefix]< [ Plus ] Plus { @ Plus } >
+[RULE: 19][CLAUSE: 0]
+	rule: Plus -> [218][Pwa1Prefix]< [ Plus ] Plus { Plus @ } >
+		+ Field(PbaFeature::tails)
+
+[218][Pwa1Prefix]< [ Plus ] Plus { Plus @ } >
+[RULE: 19][CLAUSE: 0]
+	epsilon -> [217][Pwa1Prefix]< [ Plus ] Plus { @ Plus } >
+	epsilon -> [220][Pwa1Prefix]< [ Plus ] Plus { Plus } @ >
+
+[219][Pwa1Prefix]< [ Plus ] Plus { Plus } > @[ENDING]
+[RULE: 19][CLAUSE: 0]
+
+[220][Pwa1Prefix]< [ Plus ] Plus { Plus } @ >
+[RULE: 19][CLAUSE: 0]
+	epsilon -> [219][Pwa1Prefix]< [ Plus ] Plus { Plus } > @[ENDING]
+		- EndObject()
+
+[221][Pwa1Prefix]@ < [ Plus ] Plus { Plus } >
+[RULE: 19][CLAUSE: 0]
+	epsilon -> [210][Pwa1Prefix]< @ [ Plus ] Plus { Plus } >
+		- BeginObject(PbaFeature)
+
+[222][Pwa1Body]< @ Lt { Lt } { Gt } >
+[RULE: 20][CLAUSE: 0]
+	rule: Lt -> [224][Pwa1Body]< Lt @ { Lt } { Gt } >
+		+ Field(Pwa1Feature::lts)
+
+[223][Pwa1Body]< Lt @ { Lt } { Gt } >
+[RULE: 20][CLAUSE: 0]
+	epsilon -> [225][Pwa1Body]< Lt { @ Lt } { Gt } >
+	epsilon -> [227][Pwa1Body]< Lt { Lt } @ { Gt } >
+
+[224][Pwa1Body]< Lt @ { Lt } { Gt } >
+[RULE: 20][CLAUSE: 0]
+	epsilon -> [223][Pwa1Body]< Lt @ { Lt } { Gt } >
+
+[225][Pwa1Body]< Lt { @ Lt } { Gt } >
+[RULE: 20][CLAUSE: 0]
+	rule: Lt -> [226][Pwa1Body]< Lt { Lt @ } { Gt } >
+		+ Field(Pwa1Feature::lts)
+
+[226][Pwa1Body]< Lt { Lt @ } { Gt } >
+[RULE: 20][CLAUSE: 0]
+	epsilon -> [225][Pwa1Body]< Lt { @ Lt } { Gt } >
+	epsilon -> [227][Pwa1Body]< Lt { Lt } @ { Gt } >
+
+[227][Pwa1Body]< Lt { Lt } @ { Gt } >
+[RULE: 20][CLAUSE: 0]
+	epsilon -> [228][Pwa1Body]< Lt { Lt } @ { Gt } >
+
+[228][Pwa1Body]< Lt { Lt } @ { Gt } >
+[RULE: 20][CLAUSE: 0]
+	epsilon -> [229][Pwa1Body]< Lt { Lt } { @ Gt } >
+	epsilon -> [232][Pwa1Body]< Lt { Lt } { Gt } @ >
+
+[229][Pwa1Body]< Lt { Lt } { @ Gt } >
+[RULE: 20][CLAUSE: 0]
+	rule: Gt -> [230][Pwa1Body]< Lt { Lt } { Gt @ } >
+		+ Field(Pwa1Feature::gts)
+
+[230][Pwa1Body]< Lt { Lt } { Gt @ } >
+[RULE: 20][CLAUSE: 0]
+	epsilon -> [229][Pwa1Body]< Lt { Lt } { @ Gt } >
+	epsilon -> [232][Pwa1Body]< Lt { Lt } { Gt } @ >
+
+[231][Pwa1Body]< Lt { Lt } { Gt } > @[ENDING]
+[RULE: 20][CLAUSE: 0]
+
+[232][Pwa1Body]< Lt { Lt } { Gt } @ >
+[RULE: 20][CLAUSE: 0]
+	epsilon -> [231][Pwa1Body]< Lt { Lt } { Gt } > @[ENDING]
+		- EndObject()
+
+[233][Pwa1Body]@ < Lt { Lt } { Gt } >
+[RULE: 20][CLAUSE: 0]
+	epsilon -> [222][Pwa1Body]< @ Lt { Lt } { Gt } >
+		- BeginObject(Pwa1Feature)
+
+[234][Pwa1]<< "prefix_with_ambiguity_1" @ Pwa1Prefix !Pwa1Body >>
+[RULE: 21][CLAUSE: 0]
+	rule: Pwa1Prefix -> [238][Pwa1]<< "prefix_with_ambiguity_1" Pwa1Prefix @ !Pwa1Body >>
+		+ Field(Pwa1Feature::pba)
+
+[235][Pwa1]<< "prefix_with_ambiguity_1" @ Pwa1Prefix !Pwa1Body >>
+[RULE: 21][CLAUSE: 0]
+	epsilon -> [234][Pwa1]<< "prefix_with_ambiguity_1" @ Pwa1Prefix !Pwa1Body >>
+
+[236][Pwa1]<< "prefix_with_ambiguity_1" Pwa1Prefix !Pwa1Body >> @[ENDING]
+[RULE: 21][CLAUSE: 0]
+
+[237][Pwa1]<< "prefix_with_ambiguity_1" Pwa1Prefix !Pwa1Body @ >>
+[RULE: 21][CLAUSE: 0]
+	epsilon -> [236][Pwa1]<< "prefix_with_ambiguity_1" Pwa1Prefix !Pwa1Body >> @[ENDING]
+		- EndObject()
+
+[238][Pwa1]<< "prefix_with_ambiguity_1" Pwa1Prefix @ !Pwa1Body >>
+[RULE: 21][CLAUSE: 0]
+	epsilon -> [239][Pwa1]<< "prefix_with_ambiguity_1" Pwa1Prefix @ !Pwa1Body >>
+
+[239][Pwa1]<< "prefix_with_ambiguity_1" Pwa1Prefix @ !Pwa1Body >>
+[RULE: 21][CLAUSE: 0]
+	rule: Pwa1Body -> [237][Pwa1]<< "prefix_with_ambiguity_1" Pwa1Prefix !Pwa1Body @ >>
+		+ ReopenObject()
+
+[240][Pwa1]<< @ "prefix_with_ambiguity_1" Pwa1Prefix !Pwa1Body >>
+[RULE: 21][CLAUSE: 0]
+	token: "prefix_with_ambiguity_1" -> [235][Pwa1]<< "prefix_with_ambiguity_1" @ Pwa1Prefix !Pwa1Body >>
+
+[241][Pwa1]@ << "prefix_with_ambiguity_1" Pwa1Prefix !Pwa1Body >>
+[RULE: 21][CLAUSE: 0]
+	epsilon -> [240][Pwa1]<< @ "prefix_with_ambiguity_1" Pwa1Prefix !Pwa1Body >>
+		- DelayFieldAssignment()
+
+[242][Pwa2Body]< @ Lt { Lt } { Gt } >
+[RULE: 22][CLAUSE: 0]
+	rule: Lt -> [244][Pwa2Body]< Lt @ { Lt } { Gt } >
+		+ Field(PbaFeature::lts)
+
+[243][Pwa2Body]< Lt @ { Lt } { Gt } >
+[RULE: 22][CLAUSE: 0]
+	epsilon -> [245][Pwa2Body]< Lt { @ Lt } { Gt } >
+	epsilon -> [247][Pwa2Body]< Lt { Lt } @ { Gt } >
+
+[244][Pwa2Body]< Lt @ { Lt } { Gt } >
+[RULE: 22][CLAUSE: 0]
+	epsilon -> [243][Pwa2Body]< Lt @ { Lt } { Gt } >
+
+[245][Pwa2Body]< Lt { @ Lt } { Gt } >
+[RULE: 22][CLAUSE: 0]
+	rule: Lt -> [246][Pwa2Body]< Lt { Lt @ } { Gt } >
+		+ Field(PbaFeature::lts)
+
+[246][Pwa2Body]< Lt { Lt @ } { Gt } >
+[RULE: 22][CLAUSE: 0]
+	epsilon -> [245][Pwa2Body]< Lt { @ Lt } { Gt } >
+	epsilon -> [247][Pwa2Body]< Lt { Lt } @ { Gt } >
+
+[247][Pwa2Body]< Lt { Lt } @ { Gt } >
+[RULE: 22][CLAUSE: 0]
+	epsilon -> [248][Pwa2Body]< Lt { Lt } @ { Gt } >
+
+[248][Pwa2Body]< Lt { Lt } @ { Gt } >
+[RULE: 22][CLAUSE: 0]
+	epsilon -> [249][Pwa2Body]< Lt { Lt } { @ Gt } >
+	epsilon -> [252][Pwa2Body]< Lt { Lt } { Gt } @ >
+
+[249][Pwa2Body]< Lt { Lt } { @ Gt } >
+[RULE: 22][CLAUSE: 0]
+	rule: Gt -> [250][Pwa2Body]< Lt { Lt } { Gt @ } >
+		+ Field(PbaFeature::gts)
+
+[250][Pwa2Body]< Lt { Lt } { Gt @ } >
+[RULE: 22][CLAUSE: 0]
+	epsilon -> [249][Pwa2Body]< Lt { Lt } { @ Gt } >
+	epsilon -> [252][Pwa2Body]< Lt { Lt } { Gt } @ >
+
+[251][Pwa2Body]< Lt { Lt } { Gt } > @[ENDING]
+[RULE: 22][CLAUSE: 0]
+
+[252][Pwa2Body]< Lt { Lt } { Gt } @ >
+[RULE: 22][CLAUSE: 0]
+	epsilon -> [251][Pwa2Body]< Lt { Lt } { Gt } > @[ENDING]
+		- EndObject()
+
+[253][Pwa2Body]@ < Lt { Lt } { Gt } >
+[RULE: 22][CLAUSE: 0]
+	epsilon -> [242][Pwa2Body]< @ Lt { Lt } { Gt } >
+		- BeginObject(PbaFeature)
+
+[254][Pwa2]<< "prefix_with_ambiguity_2" @ [ Plus ] Plus { Plus } !Pwa2Body >>
+[RULE: 23][CLAUSE: 0]
+	epsilon -> [256][Pwa2]<< "prefix_with_ambiguity_2" [ @ Plus ] Plus { Plus } !Pwa2Body >>
+	epsilon -> [259][Pwa2]<< "prefix_with_ambiguity_2" [ Plus ] @ Plus { Plus } !Pwa2Body >>
+
+[255][Pwa2]<< "prefix_with_ambiguity_2" @ [ Plus ] Plus { Plus } !Pwa2Body >>
+[RULE: 23][CLAUSE: 0]
+	epsilon -> [254][Pwa2]<< "prefix_with_ambiguity_2" @ [ Plus ] Plus { Plus } !Pwa2Body >>
+
+[256][Pwa2]<< "prefix_with_ambiguity_2" [ @ Plus ] Plus { Plus } !Pwa2Body >>
+[RULE: 23][CLAUSE: 0]
+	rule: Plus -> [257][Pwa2]<< "prefix_with_ambiguity_2" [ Plus @ ] Plus { Plus } !Pwa2Body >>
+		+ Field(PbaFeature::optional)
+
+[257][Pwa2]<< "prefix_with_ambiguity_2" [ Plus @ ] Plus { Plus } !Pwa2Body >>
+[RULE: 23][CLAUSE: 0]
+	epsilon -> [259][Pwa2]<< "prefix_with_ambiguity_2" [ Plus ] @ Plus { Plus } !Pwa2Body >>
+
+[258][Pwa2]<< "prefix_with_ambiguity_2" [ Plus ] @ Plus { Plus } !Pwa2Body >>
+[RULE: 23][CLAUSE: 0]
+	rule: Plus -> [261][Pwa2]<< "prefix_with_ambiguity_2" [ Plus ] Plus @ { Plus } !Pwa2Body >>
+		+ DiscardValue()
+
+[259][Pwa2]<< "prefix_with_ambiguity_2" [ Plus ] @ Plus { Plus } !Pwa2Body >>
+[RULE: 23][CLAUSE: 0]
+	epsilon -> [258][Pwa2]<< "prefix_with_ambiguity_2" [ Plus ] @ Plus { Plus } !Pwa2Body >>
+
+[260][Pwa2]<< "prefix_with_ambiguity_2" [ Plus ] Plus @ { Plus } !Pwa2Body >>
+[RULE: 23][CLAUSE: 0]
+	epsilon -> [262][Pwa2]<< "prefix_with_ambiguity_2" [ Plus ] Plus { @ Plus } !Pwa2Body >>
+	epsilon -> [266][Pwa2]<< "prefix_with_ambiguity_2" [ Plus ] Plus { Plus } @ !Pwa2Body >>
+
+[261][Pwa2]<< "prefix_with_ambiguity_2" [ Plus ] Plus @ { Plus } !Pwa2Body >>
+[RULE: 23][CLAUSE: 0]
+	epsilon -> [260][Pwa2]<< "prefix_with_ambiguity_2" [ Plus ] Plus @ { Plus } !Pwa2Body >>
+
+[262][Pwa2]<< "prefix_with_ambiguity_2" [ Plus ] Plus { @ Plus } !Pwa2Body >>
+[RULE: 23][CLAUSE: 0]
+	rule: Plus -> [263][Pwa2]<< "prefix_with_ambiguity_2" [ Plus ] Plus { Plus @ } !Pwa2Body >>
+		+ Field(PbaFeature::tails)
+
+[263][Pwa2]<< "prefix_with_ambiguity_2" [ Plus ] Plus { Plus @ } !Pwa2Body >>
+[RULE: 23][CLAUSE: 0]
+	epsilon -> [262][Pwa2]<< "prefix_with_ambiguity_2" [ Plus ] Plus { @ Plus } !Pwa2Body >>
+	epsilon -> [266][Pwa2]<< "prefix_with_ambiguity_2" [ Plus ] Plus { Plus } @ !Pwa2Body >>
+
+[264][Pwa2]<< "prefix_with_ambiguity_2" [ Plus ] Plus { Plus } !Pwa2Body >> @[ENDING]
+[RULE: 23][CLAUSE: 0]
+
+[265][Pwa2]<< "prefix_with_ambiguity_2" [ Plus ] Plus { Plus } !Pwa2Body @ >>
+[RULE: 23][CLAUSE: 0]
+	epsilon -> [264][Pwa2]<< "prefix_with_ambiguity_2" [ Plus ] Plus { Plus } !Pwa2Body >> @[ENDING]
+		- EndObject()
+
+[266][Pwa2]<< "prefix_with_ambiguity_2" [ Plus ] Plus { Plus } @ !Pwa2Body >>
+[RULE: 23][CLAUSE: 0]
+	epsilon -> [267][Pwa2]<< "prefix_with_ambiguity_2" [ Plus ] Plus { Plus } @ !Pwa2Body >>
+
+[267][Pwa2]<< "prefix_with_ambiguity_2" [ Plus ] Plus { Plus } @ !Pwa2Body >>
+[RULE: 23][CLAUSE: 0]
+	rule: Pwa2Body -> [265][Pwa2]<< "prefix_with_ambiguity_2" [ Plus ] Plus { Plus } !Pwa2Body @ >>
+		+ ReopenObject()
+
+[268][Pwa2]<< @ "prefix_with_ambiguity_2" [ Plus ] Plus { Plus } !Pwa2Body >>
+[RULE: 23][CLAUSE: 0]
+	token: "prefix_with_ambiguity_2" -> [255][Pwa2]<< "prefix_with_ambiguity_2" @ [ Plus ] Plus { Plus } !Pwa2Body >>
+
+[269][Pwa2]@ << "prefix_with_ambiguity_2" [ Plus ] Plus { Plus } !Pwa2Body >>
+[RULE: 23][CLAUSE: 0]
+	epsilon -> [268][Pwa2]<< @ "prefix_with_ambiguity_2" [ Plus ] Plus { Plus } !Pwa2Body >>
+		- DelayFieldAssignment()
+
+[270][Pwl1_P]< @ Lt >
+[RULE: 24][CLAUSE: 0]
+	rule: Lt -> [272][Pwl1_P]< Lt @ >
+		+ Field(PwlFeature::one)
+
+[271][Pwl1_P]< Lt > @[ENDING]
+[RULE: 24][CLAUSE: 0]
+
+[272][Pwl1_P]< Lt @ >
+[RULE: 24][CLAUSE: 0]
+	epsilon -> [271][Pwl1_P]< Lt > @[ENDING]
+		- EndObject()
+
+[273][Pwl1_P]<< @ Plus !Pwl1_P >>
+[RULE: 24][CLAUSE: 1]
+	rule: Plus -> [276][Pwl1_P]<< Plus @ !Pwl1_P >>
+		+ Field(PwlFeature::prefix)
+
+[274][Pwl1_P]<< Plus !Pwl1_P >> @[ENDING]
+[RULE: 24][CLAUSE: 1]
+
+[275][Pwl1_P]<< Plus !Pwl1_P @ >>
+[RULE: 24][CLAUSE: 1]
+	epsilon -> [274][Pwl1_P]<< Plus !Pwl1_P >> @[ENDING]
+		- EndObject()
+
+[276][Pwl1_P]<< Plus @ !Pwl1_P >>
+[RULE: 24][CLAUSE: 1]
+	epsilon -> [277][Pwl1_P]<< Plus @ !Pwl1_P >>
+
+[277][Pwl1_P]<< Plus @ !Pwl1_P >>
+[RULE: 24][CLAUSE: 1]
+	rule: Pwl1_P -> [275][Pwl1_P]<< Plus !Pwl1_P @ >>
+		+ ReopenObject()
+
+[278][Pwl1_P]@ < Lt >
+[RULE: 24][CLAUSE: 0]
+	epsilon -> [270][Pwl1_P]< @ Lt >
+		- BeginObject(PwlFeature)
+
+[279][Pwl1_P]@ << Plus !Pwl1_P >>
+[RULE: 24][CLAUSE: 1]
+	epsilon -> [273][Pwl1_P]<< @ Plus !Pwl1_P >>
+		- DelayFieldAssignment()
+
+[280][Pwl1]< @ Pwl1 Lt >
+[RULE: 25][CLAUSE: 1]
+	rule: Pwl1 -> [281][Pwl1]< Pwl1 @ Lt >
+		+ Field(PwlFeature::prev)
+
+[281][Pwl1]< Pwl1 @ Lt >
+[RULE: 25][CLAUSE: 1]
+	epsilon -> [282][Pwl1]< Pwl1 @ Lt >
+
+[282][Pwl1]< Pwl1 @ Lt >
+[RULE: 25][CLAUSE: 1]
+	rule: Lt -> [284][Pwl1]< Pwl1 Lt @ >
+		+ Field(PwlFeature::one)
+
+[283][Pwl1]< Pwl1 Lt > @[ENDING]
+[RULE: 25][CLAUSE: 1]
+
+[284][Pwl1]< Pwl1 Lt @ >
+[RULE: 25][CLAUSE: 1]
+	epsilon -> [283][Pwl1]< Pwl1 Lt > @[ENDING]
+		- EndObject()
+
+[285][Pwl1]<< !Pwl1_P >> @[ENDING]
+[RULE: 25][CLAUSE: 0]
+
+[286][Pwl1]<< !Pwl1_P @ >>
+[RULE: 25][CLAUSE: 0]
+	epsilon -> [285][Pwl1]<< !Pwl1_P >> @[ENDING]
+		- EndObject()
+
+[287][Pwl1]<< @ !Pwl1_P >>
+[RULE: 25][CLAUSE: 0]
+	rule: Pwl1_P -> [286][Pwl1]<< !Pwl1_P @ >>
+		+ ReopenObject()
+
+[288][Pwl1]@ < Pwl1 Lt >
+[RULE: 25][CLAUSE: 1]
+	epsilon -> [280][Pwl1]< @ Pwl1 Lt >
+		- BeginObject(PwlFeature)
+
+[289][Pwl1]@ << !Pwl1_P >>
+[RULE: 25][CLAUSE: 0]
+	epsilon -> [287][Pwl1]<< @ !Pwl1_P >>
+		- DelayFieldAssignment()
+
+[290][Pwl2_P]< @ Lt >
+[RULE: 26][CLAUSE: 0]
+	rule: Lt -> [293][Pwl2_P]< Lt @ >
+		+ Field(PwlFeature::two)
+
+[291][Pwl2_P]< @ Pwl2_P Lt >
+[RULE: 26][CLAUSE: 1]
+	rule: Pwl2_P -> [294][Pwl2_P]< Pwl2_P @ Lt >
+		+ Field(PwlFeature::prev)
+
+[292][Pwl2_P]< Lt > @[ENDING]
+[RULE: 26][CLAUSE: 0]
+
+[293][Pwl2_P]< Lt @ >
+[RULE: 26][CLAUSE: 0]
+	epsilon -> [292][Pwl2_P]< Lt > @[ENDING]
+		- EndObject()
+
+[294][Pwl2_P]< Pwl2_P @ Lt >
+[RULE: 26][CLAUSE: 1]
+	epsilon -> [295][Pwl2_P]< Pwl2_P @ Lt >
+
+[295][Pwl2_P]< Pwl2_P @ Lt >
+[RULE: 26][CLAUSE: 1]
+	rule: Lt -> [297][Pwl2_P]< Pwl2_P Lt @ >
+		+ Field(PwlFeature::two)
+
+[296][Pwl2_P]< Pwl2_P Lt > @[ENDING]
+[RULE: 26][CLAUSE: 1]
+
+[297][Pwl2_P]< Pwl2_P Lt @ >
+[RULE: 26][CLAUSE: 1]
+	epsilon -> [296][Pwl2_P]< Pwl2_P Lt > @[ENDING]
+		- EndObject()
+
+[298][Pwl2_P]@ < Lt >
+[RULE: 26][CLAUSE: 0]
+	epsilon -> [290][Pwl2_P]< @ Lt >
+		- BeginObject(PwlFeature)
+
+[299][Pwl2_P]@ < Pwl2_P Lt >
+[RULE: 26][CLAUSE: 1]
+	epsilon -> [291][Pwl2_P]< @ Pwl2_P Lt >
+		- BeginObject(PwlFeature)
+
+[300][Pwl2]<< @ { Plus } !Pwl2_P >>
+[RULE: 27][CLAUSE: 0]
+	epsilon -> [301][Pwl2]<< { @ Plus } !Pwl2_P >>
+	epsilon -> [306][Pwl2]<< { Plus } @ !Pwl2_P >>
+
+[301][Pwl2]<< { @ Plus } !Pwl2_P >>
+[RULE: 27][CLAUSE: 0]
+	rule: Plus -> [302][Pwl2]<< { Plus @ } !Pwl2_P >>
+		+ Field(PwlFeature::prefix)
+
+[302][Pwl2]<< { Plus @ } !Pwl2_P >>
+[RULE: 27][CLAUSE: 0]
+	epsilon -> [301][Pwl2]<< { @ Plus } !Pwl2_P >>
+	epsilon -> [306][Pwl2]<< { Plus } @ !Pwl2_P >>
+
+[303][Pwl2]<< { Plus } !Pwl2_P >> @[ENDING]
+[RULE: 27][CLAUSE: 0]
+
+[304][Pwl2]<< { Plus } !Pwl2_P @ >>
+[RULE: 27][CLAUSE: 0]
+	epsilon -> [303][Pwl2]<< { Plus } !Pwl2_P >> @[ENDING]
+		- EndObject()
+
+[305][Pwl2]<< { Plus } @ !Pwl2_P >>
+[RULE: 27][CLAUSE: 0]
+	rule: Pwl2_P -> [304][Pwl2]<< { Plus } !Pwl2_P @ >>
+		+ ReopenObject()
+
+[306][Pwl2]<< { Plus } @ !Pwl2_P >>
+[RULE: 27][CLAUSE: 0]
+	epsilon -> [305][Pwl2]<< { Plus } @ !Pwl2_P >>
+
+[307][Pwl2]@ << { Plus } !Pwl2_P >>
+[RULE: 27][CLAUSE: 0]
+	epsilon -> [300][Pwl2]<< @ { Plus } !Pwl2_P >>
+		- DelayFieldAssignment()
+
+[308][FaPrefix]@ ID
+[RULE: 28][CLAUSE: 0]
+	token: ID="b" -> [309][FaPrefix]ID @
+
+[309][FaPrefix]ID @
+[RULE: 28][CLAUSE: 0]
+	epsilon -> [310][FaPrefix]ID @[ENDING]
+		- EnumItem(1)
+		- Field(FaFeature::fa)
+
+[310][FaPrefix]ID @[ENDING]
+[RULE: 28][CLAUSE: 0]
+
+[311][Fa]< @ [ FaPrefix ] ID >
+[RULE: 29][CLAUSE: 0]
+	epsilon -> [312][Fa]< [ @ FaPrefix ] ID >
+	epsilon -> [314][Fa]< [ FaPrefix ] @ ID >
+
+[312][Fa]< [ @ FaPrefix ] ID >
+[RULE: 29][CLAUSE: 0]
+	rule: FaPrefix -> [313][Fa]< [ FaPrefix @ ] ID >
+
+[313][Fa]< [ FaPrefix @ ] ID >
+[RULE: 29][CLAUSE: 0]
+	epsilon -> [314][Fa]< [ FaPrefix ] @ ID >
+
+[314][Fa]< [ FaPrefix ] @ ID >
+[RULE: 29][CLAUSE: 0]
+	epsilon -> [315][Fa]< [ FaPrefix ] @ ID >
+
+[315][Fa]< [ FaPrefix ] @ ID >
+[RULE: 29][CLAUSE: 0]
+	token: ID="a" -> [317][Fa]< [ FaPrefix ] ID @ >
+
+[316][Fa]< [ FaPrefix ] ID > @[ENDING]
+[RULE: 29][CLAUSE: 0]
+
+[317][Fa]< [ FaPrefix ] ID @ >
+[RULE: 29][CLAUSE: 0]
+	epsilon -> [318][Fa]< [ FaPrefix ] ID @ >
+		- EnumItem(0)
+		- FieldIfUnassigned(FaFeature::fa)
+
+[318][Fa]< [ FaPrefix ] ID @ >
+[RULE: 29][CLAUSE: 0]
+	epsilon -> [316][Fa]< [ FaPrefix ] ID > @[ENDING]
+		- EndObject()
+
+[319][Fa]@ < [ FaPrefix ] ID >
+[RULE: 29][CLAUSE: 0]
+	epsilon -> [311][Fa]< @ [ FaPrefix ] ID >
+		- BeginObject(FaFeature)
+
+[320][Module]< "conditional_literal" @ ID >
+[RULE: 30][CLAUSE: 16]
+	token: ID="b" -> [327][Module]< "conditional_literal" ID @ >
+		+ Token()
+		+ Field(ClFeature::id)
+
+[321][Module]< "conditional_literal" @ ID >
+[RULE: 30][CLAUSE: 16]
+	epsilon -> [320][Module]< "conditional_literal" @ ID >
+
+[322][Module]< "conditional_literal" @ ID >
+[RULE: 30][CLAUSE: 15]
+	epsilon -> [323][Module]< "conditional_literal" @ ID >
+
+[323][Module]< "conditional_literal" @ ID >
+[RULE: 30][CLAUSE: 15]
+	token: ID="a" -> [326][Module]< "conditional_literal" ID @ >
+		+ Token()
+		+ Field(ClFeature::id)
+
+[324][Module]< "conditional_literal" ID > @[ENDING]
+[RULE: 30][CLAUSE: 15]
+
+[325][Module]< "conditional_literal" ID > @[ENDING]
+[RULE: 30][CLAUSE: 16]
+
+[326][Module]< "conditional_literal" ID @ >
+[RULE: 30][CLAUSE: 15]
+	epsilon -> [324][Module]< "conditional_literal" ID > @[ENDING]
+		- EndObject()
+
+[327][Module]< "conditional_literal" ID @ >
+[RULE: 30][CLAUSE: 16]
+	epsilon -> [325][Module]< "conditional_literal" ID > @[ENDING]
+		- EndObject()
+
+[328][Module]< "entry_rule_priority" +[ @ Plus ] Plus { Plus } >
+[RULE: 30][CLAUSE: 7]
+	rule: Plus -> [329][Module]< "entry_rule_priority" +[ Plus @ ] Plus { Plus } >
+		+ Field(BranchedOptionalFeature::optional)
+
+[329][Module]< "entry_rule_priority" +[ Plus @ ] Plus { Plus } >
+[RULE: 30][CLAUSE: 7]
+	epsilon -> [331][Module]< "entry_rule_priority" +[ Plus ] @ Plus { Plus } >
+
+[330][Module]< "entry_rule_priority" +[ Plus ] @ Plus { Plus } >
+[RULE: 30][CLAUSE: 7]
+	rule: Plus -> [332][Module]< "entry_rule_priority" +[ Plus ] Plus @ { Plus } >
+		+ DiscardValue()
+
+[331][Module]< "entry_rule_priority" +[ Plus ] @ Plus { Plus } >
+[RULE: 30][CLAUSE: 7]
+	epsilon -> [330][Module]< "entry_rule_priority" +[ Plus ] @ Plus { Plus } >
+
+[332][Module]< "entry_rule_priority" +[ Plus ] Plus @ { Plus } >
+[RULE: 30][CLAUSE: 7]
+	epsilon -> [333][Module]< "entry_rule_priority" +[ Plus ] Plus @ { Plus } >
+
+[333][Module]< "entry_rule_priority" +[ Plus ] Plus @ { Plus } >
+[RULE: 30][CLAUSE: 7]
+	epsilon -> [334][Module]< "entry_rule_priority" +[ Plus ] Plus { @ Plus } >
+	epsilon -> [338][Module]< "entry_rule_priority" +[ Plus ] Plus { Plus } @ >
+
+[334][Module]< "entry_rule_priority" +[ Plus ] Plus { @ Plus } >
+[RULE: 30][CLAUSE: 7]
+	rule: Plus -> [335][Module]< "entry_rule_priority" +[ Plus ] Plus { Plus @ } >
+		+ Field(BranchedOptionalFeature::tails)
+
+[335][Module]< "entry_rule_priority" +[ Plus ] Plus { Plus @ } >
+[RULE: 30][CLAUSE: 7]
+	epsilon -> [334][Module]< "entry_rule_priority" +[ Plus ] Plus { @ Plus } >
+	epsilon -> [338][Module]< "entry_rule_priority" +[ Plus ] Plus { Plus } @ >
+
+[336][Module]< "entry_rule_priority" +[ Plus ] Plus { Plus } > @[ENDING]
+[RULE: 30][CLAUSE: 7]
+
+[337][Module]< "entry_rule_priority" +[ Plus ] Plus { Plus } @ >
+[RULE: 30][CLAUSE: 7]
+	epsilon -> [336][Module]< "entry_rule_priority" +[ Plus ] Plus { Plus } > @[ENDING]
+		- EndObject()
+
+[338][Module]< "entry_rule_priority" +[ Plus ] Plus { Plus } @ >
+[RULE: 30][CLAUSE: 7]
+	epsilon -> [337][Module]< "entry_rule_priority" +[ Plus ] Plus { Plus } @ >
+		- EnumItem(0)
+		- Field(BranchedOptionalFeature::type)
+
+[339][Module]< "entry_rule_priority" -[ @ Plus ] Plus { Plus } >
+[RULE: 30][CLAUSE: 8]
+	rule: Plus -> [340][Module]< "entry_rule_priority" -[ Plus @ ] Plus { Plus } >
+		+ Field(BranchedOptionalFeature::optional)
+
+[340][Module]< "entry_rule_priority" -[ Plus @ ] Plus { Plus } >
+[RULE: 30][CLAUSE: 8]
+	epsilon -> [341][Module]< "entry_rule_priority" -[ Plus ] @ Plus { Plus } >
+
+[341][Module]< "entry_rule_priority" -[ Plus ] @ Plus { Plus } >
+[RULE: 30][CLAUSE: 8]
+	epsilon -> [342][Module]< "entry_rule_priority" -[ Plus ] @ Plus { Plus } >
+
+[342][Module]< "entry_rule_priority" -[ Plus ] @ Plus { Plus } >
+[RULE: 30][CLAUSE: 8]
+	rule: Plus -> [344][Module]< "entry_rule_priority" -[ Plus ] Plus @ { Plus } >
+		+ DiscardValue()
+
+[343][Module]< "entry_rule_priority" -[ Plus ] Plus @ { Plus } >
+[RULE: 30][CLAUSE: 8]
+	epsilon -> [345][Module]< "entry_rule_priority" -[ Plus ] Plus { @ Plus } >
+	epsilon -> [349][Module]< "entry_rule_priority" -[ Plus ] Plus { Plus } @ >
+
+[344][Module]< "entry_rule_priority" -[ Plus ] Plus @ { Plus } >
+[RULE: 30][CLAUSE: 8]
+	epsilon -> [343][Module]< "entry_rule_priority" -[ Plus ] Plus @ { Plus } >
+
+[345][Module]< "entry_rule_priority" -[ Plus ] Plus { @ Plus } >
+[RULE: 30][CLAUSE: 8]
+	rule: Plus -> [346][Module]< "entry_rule_priority" -[ Plus ] Plus { Plus @ } >
+		+ Field(BranchedOptionalFeature::tails)
+
+[346][Module]< "entry_rule_priority" -[ Plus ] Plus { Plus @ } >
+[RULE: 30][CLAUSE: 8]
+	epsilon -> [345][Module]< "entry_rule_priority" -[ Plus ] Plus { @ Plus } >
+	epsilon -> [349][Module]< "entry_rule_priority" -[ Plus ] Plus { Plus } @ >
+
+[347][Module]< "entry_rule_priority" -[ Plus ] Plus { Plus } > @[ENDING]
+[RULE: 30][CLAUSE: 8]
+
+[348][Module]< "entry_rule_priority" -[ Plus ] Plus { Plus } @ >
+[RULE: 30][CLAUSE: 8]
+	epsilon -> [347][Module]< "entry_rule_priority" -[ Plus ] Plus { Plus } > @[ENDING]
+		- EndObject()
+
+[349][Module]< "entry_rule_priority" -[ Plus ] Plus { Plus } @ >
+[RULE: 30][CLAUSE: 8]
+	epsilon -> [348][Module]< "entry_rule_priority" -[ Plus ] Plus { Plus } @ >
+		- EnumItem(1)
+		- Field(BranchedOptionalFeature::type)
+
+[350][Module]< "entry_rule_priority" @ +[ Plus ] Plus { Plus } >
+[RULE: 30][CLAUSE: 7]
+	epsilon -> [351][Module]< "entry_rule_priority" @ +[ Plus ] Plus { Plus } >
+
+[351][Module]< "entry_rule_priority" @ +[ Plus ] Plus { Plus } >
+[RULE: 30][CLAUSE: 7]
+	epsilon -> [328][Module]< "entry_rule_priority" +[ @ Plus ] Plus { Plus } >
+	epsilon -> [331][Module]< "entry_rule_priority" +[ Plus ] @ Plus { Plus } >
+
+[352][Module]< "entry_rule_priority" @ -[ Plus ] Plus { Plus } >
+[RULE: 30][CLAUSE: 8]
+	epsilon -> [353][Module]< "entry_rule_priority" @ -[ Plus ] Plus { Plus } >
+
+[353][Module]< "entry_rule_priority" @ -[ Plus ] Plus { Plus } >
+[RULE: 30][CLAUSE: 8]
+	epsilon -> [339][Module]< "entry_rule_priority" -[ @ Plus ] Plus { Plus } >
+	epsilon -> [341][Module]< "entry_rule_priority" -[ Plus ] @ Plus { Plus } >
+
+[354][Module]< "entry_rule_priority" @ [ Plus ] Plus { Plus } >
+[RULE: 30][CLAUSE: 9]
+	epsilon -> [355][Module]< "entry_rule_priority" @ [ Plus ] Plus { Plus } >
+
+[355][Module]< "entry_rule_priority" @ [ Plus ] Plus { Plus } >
+[RULE: 30][CLAUSE: 9]
+	epsilon -> [356][Module]< "entry_rule_priority" [ @ Plus ] Plus { Plus } >
+	epsilon -> [358][Module]< "entry_rule_priority" [ Plus ] @ Plus { Plus } >
+
+[356][Module]< "entry_rule_priority" [ @ Plus ] Plus { Plus } >
+[RULE: 30][CLAUSE: 9]
+	rule: Plus -> [357][Module]< "entry_rule_priority" [ Plus @ ] Plus { Plus } >
+		+ Field(BranchedOptionalFeature::optional)
+
+[357][Module]< "entry_rule_priority" [ Plus @ ] Plus { Plus } >
+[RULE: 30][CLAUSE: 9]
+	epsilon -> [358][Module]< "entry_rule_priority" [ Plus ] @ Plus { Plus } >
+
+[358][Module]< "entry_rule_priority" [ Plus ] @ Plus { Plus } >
+[RULE: 30][CLAUSE: 9]
+	epsilon -> [359][Module]< "entry_rule_priority" [ Plus ] @ Plus { Plus } >
+
+[359][Module]< "entry_rule_priority" [ Plus ] @ Plus { Plus } >
+[RULE: 30][CLAUSE: 9]
+	rule: Plus -> [361][Module]< "entry_rule_priority" [ Plus ] Plus @ { Plus } >
+		+ DiscardValue()
+
+[360][Module]< "entry_rule_priority" [ Plus ] Plus @ { Plus } >
+[RULE: 30][CLAUSE: 9]
+	epsilon -> [362][Module]< "entry_rule_priority" [ Plus ] Plus { @ Plus } >
+	epsilon -> [365][Module]< "entry_rule_priority" [ Plus ] Plus { Plus } @ >
+
+[361][Module]< "entry_rule_priority" [ Plus ] Plus @ { Plus } >
+[RULE: 30][CLAUSE: 9]
+	epsilon -> [360][Module]< "entry_rule_priority" [ Plus ] Plus @ { Plus } >
+
+[362][Module]< "entry_rule_priority" [ Plus ] Plus { @ Plus } >
+[RULE: 30][CLAUSE: 9]
+	rule: Plus -> [363][Module]< "entry_rule_priority" [ Plus ] Plus { Plus @ } >
+		+ Field(BranchedOptionalFeature::tails)
+
+[363][Module]< "entry_rule_priority" [ Plus ] Plus { Plus @ } >
+[RULE: 30][CLAUSE: 9]
+	epsilon -> [362][Module]< "entry_rule_priority" [ Plus ] Plus { @ Plus } >
+	epsilon -> [365][Module]< "entry_rule_priority" [ Plus ] Plus { Plus } @ >
+
+[364][Module]< "entry_rule_priority" [ Plus ] Plus { Plus } > @[ENDING]
+[RULE: 30][CLAUSE: 9]
+
+[365][Module]< "entry_rule_priority" [ Plus ] Plus { Plus } @ >
+[RULE: 30][CLAUSE: 9]
+	epsilon -> [366][Module]< "entry_rule_priority" [ Plus ] Plus { Plus } @ >
+		- EnumItem(2)
+		- Field(BranchedOptionalFeature::type)
+
+[366][Module]< "entry_rule_priority" [ Plus ] Plus { Plus } @ >
+[RULE: 30][CLAUSE: 9]
+	epsilon -> [364][Module]< "entry_rule_priority" [ Plus ] Plus { Plus } > @[ENDING]
+		- EndObject()
+
+[367][Module]< @ "conditional_literal" ID >
+[RULE: 30][CLAUSE: 15]
+	token: "conditional_literal" -> [322][Module]< "conditional_literal" @ ID >
+
+[368][Module]< @ "conditional_literal" ID >
+[RULE: 30][CLAUSE: 16]
+	token: "conditional_literal" -> [321][Module]< "conditional_literal" @ ID >
+
+[369][Module]< @ "entry_rule_priority" +[ Plus ] Plus { Plus } >
+[RULE: 30][CLAUSE: 7]
+	token: "entry_rule_priority" -> [350][Module]< "entry_rule_priority" @ +[ Plus ] Plus { Plus } >
+
+[370][Module]< @ "entry_rule_priority" -[ Plus ] Plus { Plus } >
+[RULE: 30][CLAUSE: 8]
+	token: "entry_rule_priority" -> [352][Module]< "entry_rule_priority" @ -[ Plus ] Plus { Plus } >
+
+[371][Module]< @ "entry_rule_priority" [ Plus ] Plus { Plus } >
+[RULE: 30][CLAUSE: 9]
+	token: "entry_rule_priority" -> [354][Module]< "entry_rule_priority" @ [ Plus ] Plus { Plus } >
+
+[372][Module]<< !BranchedOptional >> @[ENDING]
+[RULE: 30][CLAUSE: 6]
+
+[373][Module]<< !BranchedOptional @ >>
+[RULE: 30][CLAUSE: 6]
+	epsilon -> [372][Module]<< !BranchedOptional >> @[ENDING]
+		- EndObject()
+
+[374][Module]<< !EqualOptional >> @[ENDING]
+[RULE: 30][CLAUSE: 0]
+
+[375][Module]<< !EqualOptional @ >>
+[RULE: 30][CLAUSE: 0]
+	epsilon -> [374][Module]<< !EqualOptional >> @[ENDING]
+		- EndObject()
+
+[376][Module]<< !NegativeOptional >> @[ENDING]
+[RULE: 30][CLAUSE: 2]
+
+[377][Module]<< !NegativeOptional @ >>
+[RULE: 30][CLAUSE: 2]
+	epsilon -> [376][Module]<< !NegativeOptional >> @[ENDING]
+		- EndObject()
+
+[378][Module]<< !NestedNegativeOptional >> @[ENDING]
+[RULE: 30][CLAUSE: 5]
+
+[379][Module]<< !NestedNegativeOptional @ >>
+[RULE: 30][CLAUSE: 5]
+	epsilon -> [378][Module]<< !NestedNegativeOptional >> @[ENDING]
+		- EndObject()
+
+[380][Module]<< !NestedOptional >> @[ENDING]
+[RULE: 30][CLAUSE: 3]
+
+[381][Module]<< !NestedOptional @ >>
+[RULE: 30][CLAUSE: 3]
+	epsilon -> [380][Module]<< !NestedOptional >> @[ENDING]
+		- EndObject()
+
+[382][Module]<< !NestedPositiveOptional >> @[ENDING]
+[RULE: 30][CLAUSE: 4]
+
+[383][Module]<< !NestedPositiveOptional @ >>
+[RULE: 30][CLAUSE: 4]
+	epsilon -> [382][Module]<< !NestedPositiveOptional >> @[ENDING]
+		- EndObject()
+
+[384][Module]<< !Pba >> @[ENDING]
+[RULE: 30][CLAUSE: 10]
+
+[385][Module]<< !Pba @ >>
+[RULE: 30][CLAUSE: 10]
+	epsilon -> [384][Module]<< !Pba >> @[ENDING]
+		- EndObject()
+
+[386][Module]<< !PositiveOptional >> @[ENDING]
+[RULE: 30][CLAUSE: 1]
+
+[387][Module]<< !PositiveOptional @ >>
+[RULE: 30][CLAUSE: 1]
+	epsilon -> [386][Module]<< !PositiveOptional >> @[ENDING]
+		- EndObject()
+
+[388][Module]<< !Pwa1 >> @[ENDING]
+[RULE: 30][CLAUSE: 11]
+
+[389][Module]<< !Pwa1 @ >>
+[RULE: 30][CLAUSE: 11]
+	epsilon -> [388][Module]<< !Pwa1 >> @[ENDING]
+		- EndObject()
+
+[390][Module]<< !Pwa2 >> @[ENDING]
+[RULE: 30][CLAUSE: 12]
+
+[391][Module]<< !Pwa2 @ >>
+[RULE: 30][CLAUSE: 12]
+	epsilon -> [390][Module]<< !Pwa2 >> @[ENDING]
+		- EndObject()
+
+[392][Module]<< "field_assignment" !Fa >> @[ENDING]
+[RULE: 30][CLAUSE: 17]
+
+[393][Module]<< "field_assignment" !Fa @ >>
+[RULE: 30][CLAUSE: 17]
+	epsilon -> [392][Module]<< "field_assignment" !Fa >> @[ENDING]
+		- EndObject()
+
+[394][Module]<< "field_assignment" @ !Fa >>
+[RULE: 30][CLAUSE: 17]
+	rule: Fa -> [393][Module]<< "field_assignment" !Fa @ >>
+		+ ReopenObject()
+
+[395][Module]<< "field_assignment" @ !Fa >>
+[RULE: 30][CLAUSE: 17]
+	epsilon -> [394][Module]<< "field_assignment" @ !Fa >>
+
+[396][Module]<< "prefix_with_leftrec" !Pwl1 >> @[ENDING]
+[RULE: 30][CLAUSE: 13]
+
+[397][Module]<< "prefix_with_leftrec" !Pwl1 @ >>
+[RULE: 30][CLAUSE: 13]
+	epsilon -> [396][Module]<< "prefix_with_leftrec" !Pwl1 >> @[ENDING]
+		- EndObject()
+
+[398][Module]<< "prefix_with_leftrec" !Pwl2 >> @[ENDING]
+[RULE: 30][CLAUSE: 14]
+
+[399][Module]<< "prefix_with_leftrec" !Pwl2 @ >>
+[RULE: 30][CLAUSE: 14]
+	epsilon -> [398][Module]<< "prefix_with_leftrec" !Pwl2 >> @[ENDING]
+		- EndObject()
+
+[400][Module]<< "prefix_with_leftrec" @ !Pwl1 >>
+[RULE: 30][CLAUSE: 13]
+	rule: Pwl1 -> [397][Module]<< "prefix_with_leftrec" !Pwl1 @ >>
+		+ ReopenObject()
+
+[401][Module]<< "prefix_with_leftrec" @ !Pwl1 >>
+[RULE: 30][CLAUSE: 13]
+	epsilon -> [400][Module]<< "prefix_with_leftrec" @ !Pwl1 >>
+
+[402][Module]<< "prefix_with_leftrec" @ !Pwl2 >>
+[RULE: 30][CLAUSE: 14]
+	epsilon -> [403][Module]<< "prefix_with_leftrec" @ !Pwl2 >>
+
+[403][Module]<< "prefix_with_leftrec" @ !Pwl2 >>
+[RULE: 30][CLAUSE: 14]
+	rule: Pwl2 -> [399][Module]<< "prefix_with_leftrec" !Pwl2 @ >>
+		+ ReopenObject()
+
+[404][Module]<< @ !BranchedOptional >>
+[RULE: 30][CLAUSE: 6]
+	rule: BranchedOptional -> [373][Module]<< !BranchedOptional @ >>
+		+ ReopenObject()
+
+[405][Module]<< @ !EqualOptional >>
+[RULE: 30][CLAUSE: 0]
+	rule: EqualOptional -> [375][Module]<< !EqualOptional @ >>
+		+ ReopenObject()
+
+[406][Module]<< @ !NegativeOptional >>
+[RULE: 30][CLAUSE: 2]
+	rule: NegativeOptional -> [377][Module]<< !NegativeOptional @ >>
+		+ ReopenObject()
+
+[407][Module]<< @ !NestedNegativeOptional >>
+[RULE: 30][CLAUSE: 5]
+	rule: NestedNegativeOptional -> [379][Module]<< !NestedNegativeOptional @ >>
+		+ ReopenObject()
+
+[408][Module]<< @ !NestedOptional >>
+[RULE: 30][CLAUSE: 3]
+	rule: NestedOptional -> [381][Module]<< !NestedOptional @ >>
+		+ ReopenObject()
+
+[409][Module]<< @ !NestedPositiveOptional >>
+[RULE: 30][CLAUSE: 4]
+	rule: NestedPositiveOptional -> [383][Module]<< !NestedPositiveOptional @ >>
+		+ ReopenObject()
+
+[410][Module]<< @ !Pba >>
+[RULE: 30][CLAUSE: 10]
+	rule: Pba -> [385][Module]<< !Pba @ >>
+		+ ReopenObject()
+
+[411][Module]<< @ !PositiveOptional >>
+[RULE: 30][CLAUSE: 1]
+	rule: PositiveOptional -> [387][Module]<< !PositiveOptional @ >>
+		+ ReopenObject()
+
+[412][Module]<< @ !Pwa1 >>
+[RULE: 30][CLAUSE: 11]
+	rule: Pwa1 -> [389][Module]<< !Pwa1 @ >>
+		+ ReopenObject()
+
+[413][Module]<< @ !Pwa2 >>
+[RULE: 30][CLAUSE: 12]
+	rule: Pwa2 -> [391][Module]<< !Pwa2 @ >>
+		+ ReopenObject()
+
+[414][Module]<< @ "field_assignment" !Fa >>
+[RULE: 30][CLAUSE: 17]
+	token: "field_assignment" -> [395][Module]<< "field_assignment" @ !Fa >>
+
+[415][Module]<< @ "prefix_with_leftrec" !Pwl1 >>
+[RULE: 30][CLAUSE: 13]
+	token: "prefix_with_leftrec" -> [401][Module]<< "prefix_with_leftrec" @ !Pwl1 >>
+
+[416][Module]<< @ "prefix_with_leftrec" !Pwl2 >>
+[RULE: 30][CLAUSE: 14]
+	token: "prefix_with_leftrec" -> [402][Module]<< "prefix_with_leftrec" @ !Pwl2 >>
+
+[417][Module]@ < "conditional_literal" ID >
+[RULE: 30][CLAUSE: 15]
+	epsilon -> [367][Module]< @ "conditional_literal" ID >
+		- BeginObject(ClFeature)
+
+[418][Module]@ < "conditional_literal" ID >
+[RULE: 30][CLAUSE: 16]
+	epsilon -> [368][Module]< @ "conditional_literal" ID >
+		- BeginObject(ClFeature)
+
+[419][Module]@ < "entry_rule_priority" +[ Plus ] Plus { Plus } >
+[RULE: 30][CLAUSE: 7]
+	epsilon -> [369][Module]< @ "entry_rule_priority" +[ Plus ] Plus { Plus } >
+		- BeginObject(BranchedOptionalFeature)
+
+[420][Module]@ < "entry_rule_priority" -[ Plus ] Plus { Plus } >
+[RULE: 30][CLAUSE: 8]
+	epsilon -> [370][Module]< @ "entry_rule_priority" -[ Plus ] Plus { Plus } >
+		- BeginObject(BranchedOptionalFeature)
+
+[421][Module]@ < "entry_rule_priority" [ Plus ] Plus { Plus } >
+[RULE: 30][CLAUSE: 9]
+	epsilon -> [371][Module]< @ "entry_rule_priority" [ Plus ] Plus { Plus } >
+		- BeginObject(BranchedOptionalFeature)
+
+[422][Module]@ << !BranchedOptional >>
+[RULE: 30][CLAUSE: 6]
+	epsilon -> [404][Module]<< @ !BranchedOptional >>
+		- DelayFieldAssignment()
+
+[423][Module]@ << !EqualOptional >>
+[RULE: 30][CLAUSE: 0]
+	epsilon -> [405][Module]<< @ !EqualOptional >>
+		- DelayFieldAssignment()
+
+[424][Module]@ << !NegativeOptional >>
+[RULE: 30][CLAUSE: 2]
+	epsilon -> [406][Module]<< @ !NegativeOptional >>
+		- DelayFieldAssignment()
+
+[425][Module]@ << !NestedNegativeOptional >>
+[RULE: 30][CLAUSE: 5]
+	epsilon -> [407][Module]<< @ !NestedNegativeOptional >>
+		- DelayFieldAssignment()
+
+[426][Module]@ << !NestedOptional >>
+[RULE: 30][CLAUSE: 3]
+	epsilon -> [408][Module]<< @ !NestedOptional >>
+		- DelayFieldAssignment()
+
+[427][Module]@ << !NestedPositiveOptional >>
+[RULE: 30][CLAUSE: 4]
+	epsilon -> [409][Module]<< @ !NestedPositiveOptional >>
+		- DelayFieldAssignment()
+
+[428][Module]@ << !Pba >>
+[RULE: 30][CLAUSE: 10]
+	epsilon -> [410][Module]<< @ !Pba >>
+		- DelayFieldAssignment()
+
+[429][Module]@ << !PositiveOptional >>
+[RULE: 30][CLAUSE: 1]
+	epsilon -> [411][Module]<< @ !PositiveOptional >>
+		- DelayFieldAssignment()
+
+[430][Module]@ << !Pwa1 >>
+[RULE: 30][CLAUSE: 11]
+	epsilon -> [412][Module]<< @ !Pwa1 >>
+		- DelayFieldAssignment()
+
+[431][Module]@ << !Pwa2 >>
+[RULE: 30][CLAUSE: 12]
+	epsilon -> [413][Module]<< @ !Pwa2 >>
+		- DelayFieldAssignment()
+
+[432][Module]@ << "field_assignment" !Fa >>
+[RULE: 30][CLAUSE: 17]
+	epsilon -> [414][Module]<< @ "field_assignment" !Fa >>
+		- DelayFieldAssignment()
+
+[433][Module]@ << "prefix_with_leftrec" !Pwl1 >>
+[RULE: 30][CLAUSE: 13]
+	epsilon -> [415][Module]<< @ "prefix_with_leftrec" !Pwl1 >>
+		- DelayFieldAssignment()
+
+[434][Module]@ << "prefix_with_leftrec" !Pwl2 >>
+[RULE: 30][CLAUSE: 14]
+	epsilon -> [416][Module]<< @ "prefix_with_leftrec" !Pwl2 >>
+		- DelayFieldAssignment()
+

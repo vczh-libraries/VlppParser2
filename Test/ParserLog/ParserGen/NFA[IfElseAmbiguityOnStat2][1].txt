@@ -1,0 +1,236 @@
+﻿[0][Do]< "do" ";" > @[ENDING]
+[RULE: 0][CLAUSE: 0]
+
+[1][Do]< "do" ";" @ >
+[RULE: 0][CLAUSE: 0]
+	epsilon -> [0][Do]< "do" ";" > @[ENDING]
+		- EndObject()
+
+[2][Do]< "do" @ ";" >
+[RULE: 0][CLAUSE: 0]
+	epsilon -> [3][Do]< "do" @ ";" >
+
+[3][Do]< "do" @ ";" >
+[RULE: 0][CLAUSE: 0]
+	token: ";" -> [1][Do]< "do" ";" @ >
+
+[4][Do]< @ "do" ";" >
+[RULE: 0][CLAUSE: 0]
+	token: "do" -> [2][Do]< "do" @ ";" >
+
+[5][Do]@ < "do" ";" >
+[RULE: 0][CLAUSE: 0]
+	epsilon -> [4][Do]< @ "do" ";" >
+		- BeginObject(DoStat)
+
+[6][Block]< "{" @ { Stat } "}" >
+[RULE: 1][CLAUSE: 0]
+	epsilon -> [8][Block]< "{" { @ Stat } "}" >
+	epsilon -> [12][Block]< "{" { Stat } @ "}" >
+
+[7][Block]< "{" @ { Stat } "}" >
+[RULE: 1][CLAUSE: 0]
+	epsilon -> [6][Block]< "{" @ { Stat } "}" >
+
+[8][Block]< "{" { @ Stat } "}" >
+[RULE: 1][CLAUSE: 0]
+	rule: Stat -> [9][Block]< "{" { Stat @ } "}" >
+		+ Field(BlockStat::stats)
+
+[9][Block]< "{" { Stat @ } "}" >
+[RULE: 1][CLAUSE: 0]
+	epsilon -> [8][Block]< "{" { @ Stat } "}" >
+	epsilon -> [12][Block]< "{" { Stat } @ "}" >
+
+[10][Block]< "{" { Stat } "}" > @[ENDING]
+[RULE: 1][CLAUSE: 0]
+
+[11][Block]< "{" { Stat } "}" @ >
+[RULE: 1][CLAUSE: 0]
+	epsilon -> [10][Block]< "{" { Stat } "}" > @[ENDING]
+		- EndObject()
+
+[12][Block]< "{" { Stat } @ "}" >
+[RULE: 1][CLAUSE: 0]
+	epsilon -> [13][Block]< "{" { Stat } @ "}" >
+
+[13][Block]< "{" { Stat } @ "}" >
+[RULE: 1][CLAUSE: 0]
+	token: "}" -> [11][Block]< "{" { Stat } "}" @ >
+
+[14][Block]< @ "{" { Stat } "}" >
+[RULE: 1][CLAUSE: 0]
+	token: "{" -> [7][Block]< "{" @ { Stat } "}" >
+
+[15][Block]@ < "{" { Stat } "}" >
+[RULE: 1][CLAUSE: 0]
+	epsilon -> [14][Block]< @ "{" { Stat } "}" >
+		- BeginObject(BlockStat)
+
+[16][IfThenStat]< "if" "cond" "then" @ Stat >
+[RULE: 2][CLAUSE: 0]
+	rule: Stat -> [19][IfThenStat]< "if" "cond" "then" Stat @ >
+		+ Field(IfStat::thenBranch)
+
+[17][IfThenStat]< "if" "cond" "then" @ Stat >
+[RULE: 2][CLAUSE: 0]
+	epsilon -> [16][IfThenStat]< "if" "cond" "then" @ Stat >
+
+[18][IfThenStat]< "if" "cond" "then" Stat > @[ENDING]
+[RULE: 2][CLAUSE: 0]
+
+[19][IfThenStat]< "if" "cond" "then" Stat @ >
+[RULE: 2][CLAUSE: 0]
+	epsilon -> [18][IfThenStat]< "if" "cond" "then" Stat > @[ENDING]
+		- EndObject()
+
+[20][IfThenStat]< "if" "cond" @ "then" Stat >
+[RULE: 2][CLAUSE: 0]
+	epsilon -> [21][IfThenStat]< "if" "cond" @ "then" Stat >
+
+[21][IfThenStat]< "if" "cond" @ "then" Stat >
+[RULE: 2][CLAUSE: 0]
+	token: "then" -> [17][IfThenStat]< "if" "cond" "then" @ Stat >
+
+[22][IfThenStat]< "if" @ "cond" "then" Stat >
+[RULE: 2][CLAUSE: 0]
+	epsilon -> [23][IfThenStat]< "if" @ "cond" "then" Stat >
+
+[23][IfThenStat]< "if" @ "cond" "then" Stat >
+[RULE: 2][CLAUSE: 0]
+	token: "cond" -> [20][IfThenStat]< "if" "cond" @ "then" Stat >
+
+[24][IfThenStat]< @ "if" "cond" "then" Stat >
+[RULE: 2][CLAUSE: 0]
+	token: "if" -> [22][IfThenStat]< "if" @ "cond" "then" Stat >
+
+[25][IfThenStat]@ < "if" "cond" "then" Stat >
+[RULE: 2][CLAUSE: 0]
+	epsilon -> [24][IfThenStat]< @ "if" "cond" "then" Stat >
+		- BeginObject(IfStat)
+
+[26][If]<< !IfThenStat "else" @ Stat >>
+[RULE: 3][CLAUSE: 0]
+	epsilon -> [27][If]<< !IfThenStat "else" @ Stat >>
+
+[27][If]<< !IfThenStat "else" @ Stat >>
+[RULE: 3][CLAUSE: 0]
+	rule: Stat -> [29][If]<< !IfThenStat "else" Stat @ >>
+		+ Field(IfStat::elseBranch)
+
+[28][If]<< !IfThenStat "else" Stat >> @[ENDING]
+[RULE: 3][CLAUSE: 0]
+
+[29][If]<< !IfThenStat "else" Stat @ >>
+[RULE: 3][CLAUSE: 0]
+	epsilon -> [28][If]<< !IfThenStat "else" Stat >> @[ENDING]
+		- EndObject()
+
+[30][If]<< !IfThenStat >> @[ENDING]
+[RULE: 3][CLAUSE: 1]
+
+[31][If]<< !IfThenStat @ "else" Stat >>
+[RULE: 3][CLAUSE: 0]
+	token: "else" -> [26][If]<< !IfThenStat "else" @ Stat >>
+
+[32][If]<< !IfThenStat @ "else" Stat >>
+[RULE: 3][CLAUSE: 0]
+	epsilon -> [31][If]<< !IfThenStat @ "else" Stat >>
+
+[33][If]<< !IfThenStat @ >>
+[RULE: 3][CLAUSE: 1]
+	epsilon -> [30][If]<< !IfThenStat >> @[ENDING]
+		- EndObject()
+
+[34][If]<< @ !IfThenStat "else" Stat >>
+[RULE: 3][CLAUSE: 0]
+	rule: IfThenStat -> [32][If]<< !IfThenStat @ "else" Stat >>
+		+ ReopenObject()
+
+[35][If]<< @ !IfThenStat >>
+[RULE: 3][CLAUSE: 1]
+	rule: IfThenStat -> [33][If]<< !IfThenStat @ >>
+		+ ReopenObject()
+
+[36][If]@ << !IfThenStat "else" Stat >>
+[RULE: 3][CLAUSE: 0]
+	epsilon -> [34][If]<< @ !IfThenStat "else" Stat >>
+		- DelayFieldAssignment()
+
+[37][If]@ << !IfThenStat >>
+[RULE: 3][CLAUSE: 1]
+	epsilon -> [35][If]<< @ !IfThenStat >>
+		- DelayFieldAssignment()
+
+[38][Stat]<< !Block >> @[ENDING]
+[RULE: 4][CLAUSE: 1]
+
+[39][Stat]<< !Block @ >>
+[RULE: 4][CLAUSE: 1]
+	epsilon -> [38][Stat]<< !Block >> @[ENDING]
+		- EndObject()
+
+[40][Stat]<< !Do >> @[ENDING]
+[RULE: 4][CLAUSE: 0]
+
+[41][Stat]<< !Do @ >>
+[RULE: 4][CLAUSE: 0]
+	epsilon -> [40][Stat]<< !Do >> @[ENDING]
+		- EndObject()
+
+[42][Stat]<< !If >> @[ENDING]
+[RULE: 4][CLAUSE: 2]
+
+[43][Stat]<< !If @ >>
+[RULE: 4][CLAUSE: 2]
+	epsilon -> [42][Stat]<< !If >> @[ENDING]
+		- EndObject()
+
+[44][Stat]<< @ !Block >>
+[RULE: 4][CLAUSE: 1]
+	rule: Block -> [39][Stat]<< !Block @ >>
+		+ ReopenObject()
+
+[45][Stat]<< @ !Do >>
+[RULE: 4][CLAUSE: 0]
+	rule: Do -> [41][Stat]<< !Do @ >>
+		+ ReopenObject()
+
+[46][Stat]<< @ !If >>
+[RULE: 4][CLAUSE: 2]
+	rule: If -> [43][Stat]<< !If @ >>
+		+ ReopenObject()
+
+[47][Stat]@ << !Block >>
+[RULE: 4][CLAUSE: 1]
+	epsilon -> [44][Stat]<< @ !Block >>
+		- DelayFieldAssignment()
+
+[48][Stat]@ << !Do >>
+[RULE: 4][CLAUSE: 0]
+	epsilon -> [45][Stat]<< @ !Do >>
+		- DelayFieldAssignment()
+
+[49][Stat]@ << !If >>
+[RULE: 4][CLAUSE: 2]
+	epsilon -> [46][Stat]<< @ !If >>
+		- DelayFieldAssignment()
+
+[50][Module]< @ Stat >
+[RULE: 5][CLAUSE: 0]
+	rule: Stat -> [52][Module]< Stat @ >
+		+ Field(Module::stat)
+
+[51][Module]< Stat > @[ENDING]
+[RULE: 5][CLAUSE: 0]
+
+[52][Module]< Stat @ >
+[RULE: 5][CLAUSE: 0]
+	epsilon -> [51][Module]< Stat > @[ENDING]
+		- EndObject()
+
+[53][Module]@ < Stat >
+[RULE: 5][CLAUSE: 0]
+	epsilon -> [50][Module]< @ Stat >
+		- BeginObject(Module)
+
