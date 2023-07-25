@@ -307,6 +307,48 @@ SyntaxSymbolManager::FixLeftRecursionInjectEdge
 					}
 				}
 
+				auto prepareLriEdgeInstructions = [&](vint placeholderIndex, vint returnEdgeCount, List<AstIns>& instructionPrefix)
+				{
+					auto placeholderEdge = placeholderEdges[placeholderIndex];
+					auto& endingStates = endingStatesArray[placeholderIndex];
+					auto& returnEdges = returnEdgesArray[placeholderIndex];
+
+					// search for all possible "LrPlaceholder {Ending} LeftRec Token" transitions
+					// for each transition, compact edges and put injectEdge properly in returnEdges
+					// here insBeforeInput has been ensured to be:
+					//   EndObject
+					//   LriStore
+					//   DelayFieldAssignment
+					//   placeholderEdge->insBeforeInput
+					//   LriFetch
+					//   loop {endingEdge->insBeforeInput returnEdge->insAfterInput}
+					//   --LeftRec--> ...
+
+					// EndObject is for the ReopenObject in the use rule transition before
+					// DelayFieldAssignment is for the ReopenObject in injectEdge->insAfterInput
+					// injectEdge is the last returnEdge
+
+					// there is no instruction in injectEdge->insBeforeInput
+					instructionPrefix.Add({ AstInsType::EndObject });
+					instructionPrefix.Add({ AstInsType::LriStore });
+					instructionPrefix.Add({ AstInsType::DelayFieldAssignment });
+					CopyFrom(instructionPrefix, placeholderEdge->insBeforeInput, true);
+					instructionPrefix.Add({ AstInsType::LriFetch });
+
+					// TODO: (enumerable) foreach:reversed
+					for (vint i = returnEdges.Count() - 1; i >= returnEdgeCount; i--)
+					{
+						auto endingState = endingStates[i];
+						auto returnEdge = returnEdges[i];
+						auto endingEdge = From(endingState->OutEdges())
+							.Where([](auto edge) { return edge->input.type == EdgeInputType::Ending; })
+							.First();
+
+						CopyFrom(instructionPrefix, endingEdge->insBeforeInput, true);
+						CopyFrom(instructionPrefix, returnEdge->insAfterInput, true);
+					}
+				};
+
 				// TODO: (enumerable) foreach on group
 				for (auto [input, inputIndex] : indexed(acceptableInputs.Keys()))
 				{
@@ -384,84 +426,31 @@ SyntaxSymbolManager::FixLeftRecursionInjectEdge
 					// convert reminaings
 					for (auto [placeholderIndex, lrEdge, tokenEdge] : placeholderRecords)
 					{
-						auto placeholderEdge = placeholderEdges[placeholderIndex];
-						auto& endingStates = endingStatesArray[placeholderIndex];
 						auto& returnEdges = returnEdgesArray[placeholderIndex];
 
-						// search for all possible "LrPlaceholder {Ending} LeftRec Token" transitions
-						// for each transition, compact edges and put injectEdge properly in returnEdges
-						// here insBeforeInput has been ensured to be:
-						//   EndObject
-						//   LriStore
-						//   DelayFieldAssignment
-						//   placeholderEdge->insBeforeInput
-						//   LriFetch
-						//   loop {endingEdge->insBeforeInput returnEdge->insAfterInput}
-						//   --LeftRec--> ...
+						auto newEdge = Ptr(new EdgeSymbol(injectEdge->From(), tokenEdge->To()));
+						edges.Add(newEdge);
+						newEdge->input = tokenEdge->input;
+						newEdge->importancy = tokenEdge->importancy;
 
-						// EndObject is for the ReopenObject in the use rule transition before
-						// DelayFieldAssignment is for the ReopenObject in injectEdge->insAfterInput
-						// injectEdge is the last returnEdge
-
-						List<AstIns> instructionPrefix;
-						// there is no instruction in injectEdge->insBeforeInput
-						instructionPrefix.Add({ AstInsType::EndObject });
-						instructionPrefix.Add({ AstInsType::LriStore });
-						instructionPrefix.Add({ AstInsType::DelayFieldAssignment });
-						CopyFrom(instructionPrefix, placeholderEdge->insBeforeInput, true);
-						instructionPrefix.Add({ AstInsType::LriFetch });
-
-						// TODO: (enumerable) foreach:reversed
-						for (vint i = returnEdges.Count() - 1; i >= returnEdgeCount; i--)
-						{
-							auto endingState = endingStates[i];
-							auto returnEdge = returnEdges[i];
-							auto endingEdge = From(endingState->OutEdges())
-								.Where([](auto edge) { return edge->input.type == EdgeInputType::Ending; })
-								.First();
-
-							CopyFrom(instructionPrefix, endingEdge->insBeforeInput, true);
-							CopyFrom(instructionPrefix, returnEdge->insAfterInput, true);
-						}
-
+						CopyFrom(newEdge->returnEdges, From(returnEdges).Take(returnEdgeCount), true);
+						CopyFrom(newEdge->returnEdges, tokenEdge->returnEdges, true);
+						prepareLriEdgeInstructions(placeholderIndex, returnEdgeCount, newEdge->insBeforeInput);
 						if (lrEdge)
 						{
-							auto newEdge = Ptr(new EdgeSymbol(injectEdge->From(), tokenEdge->To()));
-							edges.Add(newEdge);
-
-							newEdge->input = tokenEdge->input;
-							newEdge->importancy = tokenEdge->importancy;
-							CopyFrom(newEdge->returnEdges, From(returnEdges).Take(returnEdgeCount), true);
-							CopyFrom(newEdge->returnEdges, tokenEdge->returnEdges, true);
-
 							// newEdge consumes a token
 							// lrEdge->insAfterInput happens before consuming this token
 							// so it should be copied to newEdge->insBeforeInput
-							CopyFrom(newEdge->insBeforeInput, instructionPrefix, true);
 							CopyFrom(newEdge->insBeforeInput, lrEdge->insBeforeInput, true);
 							CopyFrom(newEdge->insBeforeInput, lrEdge->insAfterInput, true);
-							CopyFrom(newEdge->insBeforeInput, tokenEdge->insBeforeInput, true);
-
-							CopyFrom(newEdge->insAfterInput, tokenEdge->insAfterInput, true);
 						}
-						else
-						{
-							auto newEdge = Ptr(new EdgeSymbol(injectEdge->From(), tokenEdge->To()));
-							edges.Add(newEdge);
-
-							newEdge->input = tokenEdge->input;
-							newEdge->importancy = tokenEdge->importancy;
-							CopyFrom(newEdge->returnEdges, From(returnEdges).Take(returnEdgeCount), true);
-							CopyFrom(newEdge->returnEdges, tokenEdge->returnEdges, true);
-
-							// newEdge consumes a token
-							// lrEdge->insAfterInput happens before consuming this token
-							// so it should be copied to newEdge->insBeforeInput
-							CopyFrom(newEdge->insBeforeInput, instructionPrefix, true);
-							CopyFrom(newEdge->insBeforeInput, tokenEdge->insBeforeInput, true);
-							CopyFrom(newEdge->insAfterInput, tokenEdge->insAfterInput, true);
-						}
+						CopyFrom(newEdge->insBeforeInput, tokenEdge->insBeforeInput, true);
+						CopyFrom(newEdge->insAfterInput, tokenEdge->insAfterInput, true);
 					}
+				}
+
+				for (auto [placeholderIndex, endingEdgeAfterInject] : acceptableEndingInputs)
+				{
 				}
 
 				// report an error if nothing is created
