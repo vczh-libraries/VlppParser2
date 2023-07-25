@@ -10,10 +10,6 @@ _VarNewParanInit
   ::= "(" {_Expr_Argument:arguments ; ","} ")" as VarParanthesisInit
   ;
 
-_VarVarParanInit
-  ::= "(" _Expr_Argument:arguments {"," _Expr_Argument:arguments} ")" as VarParanthesisInit
-  ;
-
 _VarBraceInit
   ::= "{" {_Expr_Argument:arguments ; ","} "}" as VarBraceInit
   ;
@@ -25,7 +21,7 @@ _VarCtorInit
 
 _VarInit
   ::= !_VarValueInit
-  ::= !_VarVarParanInit
+  ::= !_VarNewParanInit
   ::= !_VarBraceInit
   ;
 

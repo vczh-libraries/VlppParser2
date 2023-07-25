@@ -3,7 +3,7 @@
 ## BuiltIn-Cpp
 
 - Progress
-  - Declaration unfinished.
+  - Generic Declaration unfinished.
 
 ## Next task
 
