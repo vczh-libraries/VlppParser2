@@ -6,13 +6,14 @@ namespace a::b
 namespace c
 {
 	using a::b::X;
-	using a::b::Y;
+	using ::a::b::Y;
 }
 namespace c
 {
 	struct Z : X
 	{
 		friend X;
+		friend struct X;
 		a::b::Y y1;
 		Y y3;
 	};
