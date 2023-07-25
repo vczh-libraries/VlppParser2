@@ -141,6 +141,18 @@ _ForEachParameter
   ;
 
 //////////////////////////////////////////////////////////////////
+// Typedef Compatible Variable Declarations
+//////////////////////////////////////////////////////////////////
+
+_MultiTypedefVarDeclVariablePart
+  ::= !_DeclaratorVariablePartWithoutInit ["," _MultiTypedefVarDeclVariablePart:nextVarPart]
+  ;
+
+_MultiTypedefVarsDeclWithoutKeyword
+  ::= _TypeBeforeDeclarator:type _MultiTypedefVarDeclVariablePart:firstVarPart as VariablesDeclaration
+  ;
+
+//////////////////////////////////////////////////////////////////
 // Multiple Variable Declarations
 //////////////////////////////////////////////////////////////////
 
