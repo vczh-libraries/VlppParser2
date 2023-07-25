@@ -543,12 +543,13 @@ TraceManager
 				Trace*										EnsureTraceWithValidStates(Trace* trace);
 				bool										AreTwoEndingInputTraceEqual(Trace* newTrace, Trace* candidate);
 				void										MergeTwoEndingInputTrace(Trace* newTrace, Trace* candidate);
+				void										TryMergeSurvivedTraces();
 
 				// Competition
 				void										AttendCompetition(Trace* trace, Ref<AttendingCompetitions>& newAttendingCompetitions, Ref<AttendingCompetitions>& newCarriedCompetitions, Ref<ReturnStack> returnStack, vint32_t ruleId, vint32_t clauseId, bool forHighPriority);
 				void										AttendCompetitionIfNecessary(Trace* trace, vint32_t currentTokenIndex, EdgeDesc& edgeDesc, Ref<AttendingCompetitions>& newAttendingCompetitions, Ref<AttendingCompetitions>& newCarriedCompetitions, Ref<ReturnStack>& newReturnStack);
 				void										CheckAttendingCompetitionsOnEndingEdge(Trace* trace, EdgeDesc& edgeDesc, Ref<AttendingCompetitions> acId, Ref<ReturnStack> returnStack);
-				void										CheckBackupTracesBeforeSwapping(vint32_t currentTokenIndex);
+				bool										CheckBackupTracesBeforeSwapping(vint32_t currentTokenIndex);
 
 				// ReturnStack
 				ReturnStackSuccessors*						GetCurrentSuccessorInReturnStack(Ref<ReturnStack> base, vint32_t currentTokenIndex);

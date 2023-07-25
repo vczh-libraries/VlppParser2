@@ -191,8 +191,9 @@ CheckAttendingCompetitionsOnEndingEdge
 CheckBackupTracesBeforeSwapping
 ***********************************************************************/
 
-			void TraceManager::CheckBackupTracesBeforeSwapping(vint32_t currentTokenIndex)
+			bool TraceManager::CheckBackupTracesBeforeSwapping(vint32_t currentTokenIndex)
 			{
+				bool closedCompetitions = false;
 				// try to find if any competition could be settled at this moment
 
 				{
@@ -304,6 +305,7 @@ CheckBackupTracesBeforeSwapping
 				for (vint i = 0; i < concurrentCount; i++)
 				{
 					auto trace = EnsureTraceWithValidStates(backupTraces->Get(i));
+					auto attendingCompetitions = trace->competitionRouting.attendingCompetitions;
 					auto* pnext = &trace->competitionRouting.attendingCompetitions;
 					while (*pnext != nullref)
 					{
@@ -317,7 +319,15 @@ CheckBackupTracesBeforeSwapping
 							pnext = &ac->nextActiveAC;
 						}
 					}
+
+					if (trace->competitionRouting.attendingCompetitions != attendingCompetitions)
+					{
+						// only check the head node since this could trigger merging
+						closedCompetitions = true;
+					}
 				}
+
+				return closedCompetitions;
 			}
 		}
 	}

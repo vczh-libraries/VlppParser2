@@ -81,6 +81,14 @@ MergeTwoEndingInputTrace
 					AddTraceToCollection(candidate, newTrace, &Trace::predecessors);
 				}
 			}
+
+/***********************************************************************
+TryMergeSurvivedTraces
+***********************************************************************/
+
+			void TraceManager::TryMergeSurvivedTraces()
+			{
+			}
 		}
 	}
 }

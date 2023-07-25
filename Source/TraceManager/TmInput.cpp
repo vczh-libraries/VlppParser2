@@ -100,7 +100,13 @@ Input
 
 				// if competitions happen between new surviving traces
 				// remove traces that known to have lost the competition
-				CheckBackupTracesBeforeSwapping(currentTokenIndex);
+				if (CheckBackupTracesBeforeSwapping(currentTokenIndex))
+				{
+					// after competition are closed
+					// different surviving traces might be mergable
+					// merge them and remove unnecessary traces
+					TryMergeSurvivedTraces();
+				}
 
 				EndSwap();
 
