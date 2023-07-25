@@ -96,18 +96,19 @@ TryMergeSurvivingTraces
 			void TraceManager::TryMergeSurvivingTraces()
 			{
 #define ERROR_MESSAGE_PREFIX L"vl::glr::automaton::TraceManager::TryMergeSurvivingTraces()#"
+				if (concurrentCount == 0) return;
 
-				struct EndingTraceData
+				struct EndingOrMergeTraceData
 				{
 					bool			surviving = true;			// becomes false when this trace does not survive anymore
 				};
 
-				vint32_t survivingTraceCount = concurrentCount;
-				Dictionary<Trace*, EndingTraceData> endingOrMergeTraces;
+				vint32_t removedTracesCount = 0;
+				Dictionary<Trace*, EndingOrMergeTraceData> endingOrMergeTraces;
 				Group<vint32_t, Trace*> endingOrMergeTracesByState;
 
 				// index surviving traces
-				for (vint i = 0; i < survivingTraceCount; i++)
+				for (vint32_t i = 0; i < concurrentCount; i++)
 				{
 					auto trace = backupTraces->Get(i);
 					endingOrMergeTraces.Add(trace, {});
@@ -124,7 +125,7 @@ TryMergeSurvivingTraces
 
 #if defined VCZH_MSVC && defined _DEBUG
 				// check assumptions
-				for (vint i = 0; i < survivingTraceCount; i++)
+				for (vint32_t i = 0; i < concurrentCount; i++)
 				{
 					auto trace = backupTraces->Get(i);
 					if (trace->state == -1)
@@ -145,14 +146,24 @@ TryMergeSurvivingTraces
 				}
 #endif
 
+				// unsurvive a trace
+				auto unsurviveTrace = [&](Trace* trace, EndingOrMergeTraceData& data)
+				{
+					if (data.surviving)
+					{
+						data.surviving = false;
+						removedTracesCount++;
+					}
+				};
+
 				// check if a trace survived
 				// if an Executable::EndingInput trace survived but its only predecessor does not
 				// it becomes not survived
-				auto ensureEndingTraceSurvived = [this, &endingOrMergeTraces](Trace* trace)
+				auto ensureEndingTraceSurvived = [&](Trace* trace)
 				{
 					if (trace == initialTrace) return true;
 
-					auto& data = const_cast<EndingTraceData&>(endingOrMergeTraces[trace]);
+					auto& data = const_cast<EndingOrMergeTraceData&>(endingOrMergeTraces[trace]);
 					if (!data.surviving) return false;
 
 					if (trace->state != -1)
@@ -163,7 +174,7 @@ TryMergeSurvivingTraces
 							auto predecessor = GetTrace(predecessorId);
 							if (!endingOrMergeTraces[predecessor].surviving)
 							{
-								data.surviving = false;
+								unsurviveTrace(trace, data);
 							}
 						}
 					}
@@ -171,7 +182,7 @@ TryMergeSurvivingTraces
 				};
 
 				// find surviving traces that merge
-				for (vint i = 0; i < survivingTraceCount; i++)
+				for (vint32_t i = 0; i < concurrentCount; i++)
 				{
 					// get the next surviving Executable::EndingInput trace
 					auto trace = backupTraces->Get(i);
@@ -215,9 +226,28 @@ TryMergeSurvivingTraces
 					}
 				}
 
-				// mark all unsurviving traces
+				if (removedTracesCount > 0)
+				{
+					// mark all unsurviving traces
+					for (vint32_t i = 0; i < concurrentCount; i++)
+					{
+						auto trace = backupTraces->Get(i);
+						vint index = endingOrMergeTraces.Keys().IndexOf(trace);
+						if (index == -1) continue;
+						if (endingOrMergeTraces.Values()[index].surviving) continue;
+						backupTraces->Set(i, nullptr);
+					}
 
-				// clean up surviving trace list
+					// clean up surviving trace list
+					vint writing = 0;
+					for (vint32_t i = 0; i < concurrentCount; i++)
+					{
+						auto trace = backupTraces->Get(i);
+						if (!trace) continue;
+						backupTraces->Set(writing++, trace);
+					}
+					concurrentCount -= removedTracesCount;
+				}
 
 #undef ERROR_MESSAGE_PREFIX
 			}
