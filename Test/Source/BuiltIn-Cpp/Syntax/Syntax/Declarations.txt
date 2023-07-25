@@ -9,25 +9,27 @@ _DeclSharedWithoutSemicolonAcceptKeyword
   ::= !_UsingValueDecl
   ::= !_UsingTypeDecl
   ::= !_EnumDecl
-  ::= !_EnumForwardDecl
   ::= !_ClassDecl
+  ;
+
+_DeclSharedWithoutSemicolonAcceptKeywordButFriend
+  ::= !_EnumForwardDecl
   ::= !_ClassForwardDecl
   ;
 
 _DeclSharedWithoutSemicolon
   ::= {_DeclarationKeyword:keywords} !_DeclSharedWithoutSemicolonAcceptKeyword
+  ::= [_DeclarationKeywordWithoutFriend:keywords {_DeclarationKeyword:keywords}] !_DeclSharedWithoutSemicolonAcceptKeywordButFriend
   ::= !_FriendTypeDecl
   ;
 
 _DeclNeedSemicolon
   ::= !_DeclSharedWithoutSemicolon
-  ::= !_FriendTypeDecl
   ::= !_MultiVarsOrFuncForwardDecl
   ;
 
 _DeclRejectSemicolon
   ::= !_DeclSharedWithoutSemicolon ";"
-  ::= !_FriendTypeDecl ";"
   ::= !_ExternDeclRejectSemicolon
   ::= !_MultiVarsOrFuncDecl
   ::= !_NsDecl

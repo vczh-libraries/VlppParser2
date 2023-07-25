@@ -25,8 +25,12 @@ _AdvancedTypeMember
   ::= _QualifiedName:argument "::" as AdvancedType {kind = Member}
   ;
 
-_DeclarationKeyword
+_DeclarationKeywordWithoutFriend
   ::= "extern":keyword [STRING] as DeclaratorKeyword
+  ;
+
+_DeclarationKeyword
+  ::= !_DeclarationKeywordWithoutFriend
   ::= "friend":keyword as DeclaratorKeyword
   ;
 
