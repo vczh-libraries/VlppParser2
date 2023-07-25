@@ -105,6 +105,11 @@ TEST_FILE
 		runParser(L"File", L"SimpleClass", [&]() { return GetCppParser().Parse_File(L"class X{};"); });
 	});
 
+	TEST_CASE(L"A X(B);")
+	{
+		runParser(L"File", L"AmbiguousFuncVar", [&]() { return GetCppParser().Parse_File(L"A X(B);"); });
+	});
+
 	GetCppParser().OnTraceProcessing.Remove(handlerOnTraceProcessing);
 	GetCppParser().OnReadyToExecute.Remove(handlerOnReadyToExecute);
 }
