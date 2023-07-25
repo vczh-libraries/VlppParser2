@@ -2,7 +2,7 @@
 // Declarations
 //////////////////////////////////////////////////////////////////
 
-_DeclWithoutVarsFuncSemicolon
+_DeclSharedWithoutSemicolon
   ::= !_StaticAssertDecl
   ::= !_TypedefDecl
   ::= !_UsingNsDecl
@@ -14,14 +14,15 @@ _DeclWithoutVarsFuncSemicolon
   ::= !_ClassForwardDecl
   ;
 
-_DeclInStat
-  ::= !_DeclWithoutVarsFuncSemicolon
+_DeclNeedSemicolon
+  ::= !_DeclSharedWithoutSemicolon
   ::= !_MultiVarsOrFuncForwardDecl
+  ::= !_ExternDeclNeedSemicolon
   ;
 
-_DeclWithSemicolon
-  ::= !_DeclWithoutVarsFuncSemicolon ";"
+_DeclRejectSemicolon
+  ::= !_DeclSharedWithoutSemicolon ";"
   ::= !_MultiVarsOrFuncDecl
-  ::= !_ExternDecl
+  ::= !_ExternDeclRejectSemicolon
   ::= !_NsDecl
   ;

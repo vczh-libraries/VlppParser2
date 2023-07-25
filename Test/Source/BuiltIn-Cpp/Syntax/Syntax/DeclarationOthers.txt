@@ -24,8 +24,13 @@ _TypedefDecl
 // Extern Declaration
 //////////////////////////////////////////////////////////////////
 
-_ExternDecl
-  ::= "extern" [STRING] "{" {_DeclWithSemicolon:decls} "}" as ExternDeclaration
+_ExternDeclNeedSemicolon
+  ::= "extern" [STRING] _DeclNeedSemicolon:decls as ExternDeclaration
+  ;
+
+_ExternDeclRejectSemicolon
+  ::= "extern" [STRING] "{" {_DeclRejectSemicolon:decls} "}" as ExternDeclaration
+  ::= "extern" [STRING] _DeclRejectSemicolon:decls as ExternDeclaration
   ;
   
 //////////////////////////////////////////////////////////////////
@@ -37,7 +42,7 @@ _NsName
   ;
 
 _NsDecl
-  ::= "namespace" {_NsName:names ; "::"} "{" {_DeclWithSemicolon:decls} "}" as NamespaceDeclaration
+  ::= "namespace" {_NsName:names ; "::"} "{" {_DeclRejectSemicolon:decls} "}" as NamespaceDeclaration
   ;
   
 //////////////////////////////////////////////////////////////////

@@ -907,13 +907,13 @@ _ClassInheritanceSecond : ClassInheritance
   ;
 
 _ClassMemberPartFirst_LRI_Original : ClassMemberPart
-  ::= _DeclWithSemicolon_LRI_Original:decls {_DeclWithSemicolon:decls} as ClassMemberPart {accessor = Default}
+  ::= _DeclRejectSemicolon_LRI_Original:decls {_DeclRejectSemicolon:decls} as ClassMemberPart {accessor = Default}
   ;
 
 _ClassMemberPartSecond : ClassMemberPart
-  ::= "private" ":" {_DeclWithSemicolon:decls} as ClassMemberPart {accessor = Private}
-  ::= "protected" ":" {_DeclWithSemicolon:decls} as ClassMemberPart {accessor = Protected}
-  ::= "public" ":" {_DeclWithSemicolon:decls} as ClassMemberPart {accessor = Public}
+  ::= "private" ":" {_DeclRejectSemicolon:decls} as ClassMemberPart {accessor = Private}
+  ::= "protected" ":" {_DeclRejectSemicolon:decls} as ClassMemberPart {accessor = Protected}
+  ::= "public" ":" {_DeclRejectSemicolon:decls} as ClassMemberPart {accessor = Public}
   ;
 
 _ClassBody : ClassBody
@@ -957,8 +957,13 @@ _TypedefDecl : TypedefDeclaration
   ::= "typedef" _TypedefCompatibleDecl:decl as TypedefDeclaration
   ;
 
-_ExternDecl : ExternDeclaration
-  ::= "extern" [STRING] "{" {_DeclWithSemicolon:decls} "}" as ExternDeclaration
+_ExternDeclNeedSemicolon : ExternDeclaration
+  ::= "extern" [STRING] _DeclNeedSemicolon:decls as ExternDeclaration
+  ;
+
+_ExternDeclRejectSemicolon : ExternDeclaration
+  ::= "extern" [STRING] "{" {_DeclRejectSemicolon:decls} "}" as ExternDeclaration
+  ::= "extern" [STRING] _DeclRejectSemicolon:decls as ExternDeclaration
   ;
 
 _NsName : NamespaceName
@@ -966,7 +971,7 @@ _NsName : NamespaceName
   ;
 
 _NsDecl : NamespaceDeclaration
-  ::= "namespace" {_NsName:names ; "::"} "{" {_DeclWithSemicolon:decls} "}" as NamespaceDeclaration
+  ::= "namespace" {_NsName:names ; "::"} "{" {_DeclRejectSemicolon:decls} "}" as NamespaceDeclaration
   ;
 
 _UsingNsDecl : UsingNamespaceDeclaration
@@ -999,7 +1004,7 @@ _EnumForwardDecl : EnumDeclaration
   ::= "enum" "class" ID:name [":" _Type:type] as EnumDeclaration {kind = EnumClass}
   ;
 
-_DeclWithoutVarsFuncSemicolon : Declaration
+_DeclSharedWithoutSemicolon : Declaration
   ::= !_StaticAssertDecl
   ::= !_TypedefDecl
   ::= !_UsingNsDecl
@@ -1011,39 +1016,44 @@ _DeclWithoutVarsFuncSemicolon : Declaration
   ::= !_ClassForwardDecl
   ;
 
-_DeclInStat_LRI_Isolated_0 : Declaration
-  ::= !_DeclWithoutVarsFuncSemicolon
+_DeclNeedSemicolon_LRI_Isolated_0 : Declaration
+  ::= !_DeclSharedWithoutSemicolon
   ;
 
-_DeclInStat_LRI_Original : Declaration
-  ::= left_recursion_placeholder(LRI__DeclInStat)
-  ::= !_DeclInStat_LRI_Isolated_0
+_DeclNeedSemicolon_LRI_Isolated_2 : ExternDeclaration
+  ::= !_ExternDeclNeedSemicolon
+  ;
+
+_DeclNeedSemicolon_LRI_Original : Declaration
+  ::= left_recursion_placeholder(LRI__DeclNeedSemicolon)
+  ::= !_DeclNeedSemicolon_LRI_Isolated_0
   ::= !_MultiVarsOrFuncForwardDecl_LRI_Original
+  ::= !_DeclNeedSemicolon_LRI_Isolated_2
   ;
 
-_DeclWithSemicolon_LRI_Isolated_0 : Declaration
-  ::= !_DeclWithoutVarsFuncSemicolon ";"
+_DeclRejectSemicolon_LRI_Isolated_0 : Declaration
+  ::= !_DeclSharedWithoutSemicolon ";"
   ;
 
-_DeclWithSemicolon_LRI_Isolated_2 : ExternDeclaration
-  ::= !_ExternDecl
+_DeclRejectSemicolon_LRI_Isolated_2 : ExternDeclaration
+  ::= !_ExternDeclRejectSemicolon
   ;
 
-_DeclWithSemicolon_LRI_Isolated_3 : NamespaceDeclaration
+_DeclRejectSemicolon_LRI_Isolated_3 : NamespaceDeclaration
   ::= !_NsDecl
   ;
 
-_DeclWithSemicolon_LRI_Original : Declaration
-  ::= left_recursion_placeholder(LRI__DeclWithSemicolon)
-  ::= !_DeclWithSemicolon_LRI_Isolated_0
+_DeclRejectSemicolon_LRI_Original : Declaration
+  ::= left_recursion_placeholder(LRI__DeclRejectSemicolon)
+  ::= !_DeclRejectSemicolon_LRI_Isolated_0
   ::= !_MultiVarsOrFuncDecl_LRI_Original
-  ::= !_DeclWithSemicolon_LRI_Isolated_2
-  ::= !_DeclWithSemicolon_LRI_Isolated_3
+  ::= !_DeclRejectSemicolon_LRI_Isolated_2
+  ::= !_DeclRejectSemicolon_LRI_Isolated_3
   ;
 
 _ExprStat_LRI_Original : Statement
   ::= _Expr_LRI_Original:expr ";" as ExprStat
-  ::= _DeclInStat_LRI_Original:decl ";" as DeclStat
+  ::= _DeclNeedSemicolon_LRI_Original:decl ";" as DeclStat
   ;
 
 _BlockStat : BlockStat
@@ -1188,7 +1198,7 @@ _TypeOrExpr_LRI_Original : TypeOrExpr
   ;
 
 _File_LRI_Original : File
-  ::= _DeclWithSemicolon_LRI_Original:decls {_DeclWithSemicolon:decls} as File
+  ::= _DeclRejectSemicolon_LRI_Original:decls {_DeclRejectSemicolon:decls} as File
   ;
 
 _GenericArgument : TypeOrExprOrOthers
@@ -1626,9 +1636,9 @@ _MultiVarsOrFuncDecl : VariablesDeclaration
 _ClassMemberPartFirst : ClassMemberPart
   ::= !_CallConstructibleTypeBeforeDeclarator_LRI_Isolated_1 left_recursion_inject(LRI__CallConstructibleTypeBeforeDeclarator) _ClassMemberPartFirst_LRI_Original
   ::= !_CallConstructibleTypeBeforeDeclarator_LRI_Isolated_2 left_recursion_inject(LRI__CallConstructibleTypeBeforeDeclarator) _ClassMemberPartFirst_LRI_Original
-  ::= !_DeclWithSemicolon_LRI_Isolated_0 left_recursion_inject(LRI__DeclWithSemicolon) _ClassMemberPartFirst_LRI_Original
-  ::= !_DeclWithSemicolon_LRI_Isolated_2 left_recursion_inject(LRI__DeclWithSemicolon) _ClassMemberPartFirst_LRI_Original
-  ::= !_DeclWithSemicolon_LRI_Isolated_3 left_recursion_inject(LRI__DeclWithSemicolon) _ClassMemberPartFirst_LRI_Original
+  ::= !_DeclRejectSemicolon_LRI_Isolated_0 left_recursion_inject(LRI__DeclRejectSemicolon) _ClassMemberPartFirst_LRI_Original
+  ::= !_DeclRejectSemicolon_LRI_Isolated_2 left_recursion_inject(LRI__DeclRejectSemicolon) _ClassMemberPartFirst_LRI_Original
+  ::= !_DeclRejectSemicolon_LRI_Isolated_3 left_recursion_inject(LRI__DeclRejectSemicolon) _ClassMemberPartFirst_LRI_Original
   ::= !_MultiVarsOrFuncDeclWithoutKeyword_LRI_Isolated_1 left_recursion_inject(LRI__MultiVarsOrFuncDeclWithoutKeyword) _ClassMemberPartFirst_LRI_Original
   ::= !_MultiVarsOrFuncDecl_LRI_Isolated_1 left_recursion_inject(LRI__MultiVarsOrFuncDecl) _ClassMemberPartFirst_LRI_Original
   ::= !_PrimitiveType left_recursion_inject(LRI__PM_PrimitiveType) _ClassMemberPartFirst_LRI_Original
@@ -1644,33 +1654,35 @@ _TypedefCompatibleDecl : Declaration
   ::= !_QualifiedName left_recursion_inject(LRI__PM_QualifiedName) _TypedefCompatibleDecl_LRI_Original
   ;
 
-_DeclInStat : Declaration
-  ::= !_DeclInStat_LRI_Isolated_0
+_DeclNeedSemicolon : Declaration
+  ::= !_DeclNeedSemicolon_LRI_Isolated_0
+  ::= !_DeclNeedSemicolon_LRI_Isolated_2
   ::= !_MultiVarsOrFuncForwardDeclWithoutKeyword_LRI_Isolated_1
   ::= !_MultiVarsOrFuncForwardDecl_LRI_Isolated_1
-  ::= !_CallConstructibleTypeBeforeDeclarator_LRI_Isolated_1 left_recursion_inject(LRI__CallConstructibleTypeBeforeDeclarator) _DeclInStat_LRI_Original
-  ::= !_CallConstructibleTypeBeforeDeclarator_LRI_Isolated_2 left_recursion_inject(LRI__CallConstructibleTypeBeforeDeclarator) _DeclInStat_LRI_Original
-  ::= !_PrimitiveType left_recursion_inject(LRI__PM_PrimitiveType) _DeclInStat_LRI_Original
-  ::= !_QualifiedName left_recursion_inject(LRI__PM_QualifiedName) _DeclInStat_LRI_Original
+  ::= !_CallConstructibleTypeBeforeDeclarator_LRI_Isolated_1 left_recursion_inject(LRI__CallConstructibleTypeBeforeDeclarator) _DeclNeedSemicolon_LRI_Original
+  ::= !_CallConstructibleTypeBeforeDeclarator_LRI_Isolated_2 left_recursion_inject(LRI__CallConstructibleTypeBeforeDeclarator) _DeclNeedSemicolon_LRI_Original
+  ::= !_PrimitiveType left_recursion_inject(LRI__PM_PrimitiveType) _DeclNeedSemicolon_LRI_Original
+  ::= !_QualifiedName left_recursion_inject(LRI__PM_QualifiedName) _DeclNeedSemicolon_LRI_Original
   ;
 
-_DeclWithSemicolon : Declaration
-  ::= !_DeclWithSemicolon_LRI_Isolated_0
-  ::= !_DeclWithSemicolon_LRI_Isolated_2
-  ::= !_DeclWithSemicolon_LRI_Isolated_3
+_DeclRejectSemicolon : Declaration
+  ::= !_DeclRejectSemicolon_LRI_Isolated_0
+  ::= !_DeclRejectSemicolon_LRI_Isolated_2
+  ::= !_DeclRejectSemicolon_LRI_Isolated_3
   ::= !_MultiVarsOrFuncDeclWithoutKeyword_LRI_Isolated_1
   ::= !_MultiVarsOrFuncDecl_LRI_Isolated_1
-  ::= !_CallConstructibleTypeBeforeDeclarator_LRI_Isolated_1 left_recursion_inject(LRI__CallConstructibleTypeBeforeDeclarator) _DeclWithSemicolon_LRI_Original
-  ::= !_CallConstructibleTypeBeforeDeclarator_LRI_Isolated_2 left_recursion_inject(LRI__CallConstructibleTypeBeforeDeclarator) _DeclWithSemicolon_LRI_Original
-  ::= !_PrimitiveType left_recursion_inject(LRI__PM_PrimitiveType) _DeclWithSemicolon_LRI_Original
-  ::= !_QualifiedName left_recursion_inject(LRI__PM_QualifiedName) _DeclWithSemicolon_LRI_Original
+  ::= !_CallConstructibleTypeBeforeDeclarator_LRI_Isolated_1 left_recursion_inject(LRI__CallConstructibleTypeBeforeDeclarator) _DeclRejectSemicolon_LRI_Original
+  ::= !_CallConstructibleTypeBeforeDeclarator_LRI_Isolated_2 left_recursion_inject(LRI__CallConstructibleTypeBeforeDeclarator) _DeclRejectSemicolon_LRI_Original
+  ::= !_PrimitiveType left_recursion_inject(LRI__PM_PrimitiveType) _DeclRejectSemicolon_LRI_Original
+  ::= !_QualifiedName left_recursion_inject(LRI__PM_QualifiedName) _DeclRejectSemicolon_LRI_Original
   ;
 
 _ExprStat : Statement
   ::= !_BExpr_NoComma_SWITCH_1allow_GT_LRI_Isolated_1 left_recursion_inject(LRI__BExpr_NoComma_SWITCH_1allow_GT) _ExprStat_LRI_Original
   ::= !_CallConstructibleTypeBeforeDeclarator_LRI_Isolated_1 left_recursion_inject_multiple(LRI__CallConstructibleTypeBeforeDeclarator) _ExprStat_LRI_Original
   ::= !_CallConstructibleTypeBeforeDeclarator_LRI_Isolated_2 left_recursion_inject_multiple(LRI__CallConstructibleTypeBeforeDeclarator) _ExprStat_LRI_Original
-  ::= !_DeclInStat_LRI_Isolated_0 left_recursion_inject(LRI__DeclInStat) _ExprStat_LRI_Original
+  ::= !_DeclNeedSemicolon_LRI_Isolated_0 left_recursion_inject(LRI__DeclNeedSemicolon) _ExprStat_LRI_Original
+  ::= !_DeclNeedSemicolon_LRI_Isolated_2 left_recursion_inject(LRI__DeclNeedSemicolon) _ExprStat_LRI_Original
   ::= !_MultiVarsOrFuncForwardDeclWithoutKeyword_LRI_Isolated_1 left_recursion_inject(LRI__MultiVarsOrFuncForwardDeclWithoutKeyword) _ExprStat_LRI_Original
   ::= !_MultiVarsOrFuncForwardDecl_LRI_Isolated_1 left_recursion_inject(LRI__MultiVarsOrFuncForwardDecl) _ExprStat_LRI_Original
   ::= !_PostfixUnaryExpr_LRI_Isolated_1 left_recursion_inject_multiple(LRI__PostfixUnaryExpr) _ExprStat_LRI_Original
@@ -1716,7 +1728,8 @@ _Stat : Statement
   ::= !_BExpr_NoComma_SWITCH_1allow_GT_LRI_Isolated_1 left_recursion_inject(LRI__BExpr_NoComma_SWITCH_1allow_GT) _Stat_LRI_Original
   ::= !_CallConstructibleTypeBeforeDeclarator_LRI_Isolated_1 left_recursion_inject_multiple(LRI__CallConstructibleTypeBeforeDeclarator) _Stat_LRI_Original
   ::= !_CallConstructibleTypeBeforeDeclarator_LRI_Isolated_2 left_recursion_inject_multiple(LRI__CallConstructibleTypeBeforeDeclarator) _Stat_LRI_Original
-  ::= !_DeclInStat_LRI_Isolated_0 left_recursion_inject(LRI__DeclInStat) _Stat_LRI_Original
+  ::= !_DeclNeedSemicolon_LRI_Isolated_0 left_recursion_inject(LRI__DeclNeedSemicolon) _Stat_LRI_Original
+  ::= !_DeclNeedSemicolon_LRI_Isolated_2 left_recursion_inject(LRI__DeclNeedSemicolon) _Stat_LRI_Original
   ::= !_MultiVarsOrFuncForwardDeclWithoutKeyword_LRI_Isolated_1 left_recursion_inject(LRI__MultiVarsOrFuncForwardDeclWithoutKeyword) _Stat_LRI_Original
   ::= !_MultiVarsOrFuncForwardDecl_LRI_Isolated_1 left_recursion_inject(LRI__MultiVarsOrFuncForwardDecl) _Stat_LRI_Original
   ::= !_PostfixUnaryExpr_LRI_Isolated_1 left_recursion_inject_multiple(LRI__PostfixUnaryExpr) _Stat_LRI_Original
@@ -1834,9 +1847,9 @@ _TypeOrExpr : TypeOrExpr
 _File : File
   ::= !_CallConstructibleTypeBeforeDeclarator_LRI_Isolated_1 left_recursion_inject(LRI__CallConstructibleTypeBeforeDeclarator) _File_LRI_Original
   ::= !_CallConstructibleTypeBeforeDeclarator_LRI_Isolated_2 left_recursion_inject(LRI__CallConstructibleTypeBeforeDeclarator) _File_LRI_Original
-  ::= !_DeclWithSemicolon_LRI_Isolated_0 left_recursion_inject(LRI__DeclWithSemicolon) _File_LRI_Original
-  ::= !_DeclWithSemicolon_LRI_Isolated_2 left_recursion_inject(LRI__DeclWithSemicolon) _File_LRI_Original
-  ::= !_DeclWithSemicolon_LRI_Isolated_3 left_recursion_inject(LRI__DeclWithSemicolon) _File_LRI_Original
+  ::= !_DeclRejectSemicolon_LRI_Isolated_0 left_recursion_inject(LRI__DeclRejectSemicolon) _File_LRI_Original
+  ::= !_DeclRejectSemicolon_LRI_Isolated_2 left_recursion_inject(LRI__DeclRejectSemicolon) _File_LRI_Original
+  ::= !_DeclRejectSemicolon_LRI_Isolated_3 left_recursion_inject(LRI__DeclRejectSemicolon) _File_LRI_Original
   ::= !_MultiVarsOrFuncDeclWithoutKeyword_LRI_Isolated_1 left_recursion_inject(LRI__MultiVarsOrFuncDeclWithoutKeyword) _File_LRI_Original
   ::= !_MultiVarsOrFuncDecl_LRI_Isolated_1 left_recursion_inject(LRI__MultiVarsOrFuncDecl) _File_LRI_Original
   ::= !_PrimitiveType left_recursion_inject(LRI__PM_PrimitiveType) _File_LRI_Original
