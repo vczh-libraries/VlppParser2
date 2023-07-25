@@ -551,6 +551,7 @@ _DeclaratorKeyword : DeclaratorKeyword
   ::= "static":keyword as DeclaratorKeyword
   ::= "mutable":keyword as DeclaratorKeyword
   ::= "thread_local":keyword as DeclaratorKeyword
+  ::= "register":keyword as DeclaratorKeyword
   ::= "virtual":keyword as DeclaratorKeyword
   ::= "explicit":keyword as DeclaratorKeyword
   ::= "abstract":keyword as DeclaratorKeyword
@@ -698,10 +699,6 @@ _VarNewParanInit : VarParanthesisInit
   ::= "(" {_Expr_Argument:arguments ; ","} ")" as VarParanthesisInit
   ;
 
-_VarVarParanInit : VarParanthesisInit
-  ::= "(" _Expr_Argument:arguments {"," _Expr_Argument:arguments} ")" as VarParanthesisInit
-  ;
-
 _VarBraceInit : VarBraceInit
   ::= "{" {_Expr_Argument:arguments ; ","} "}" as VarBraceInit
   ;
@@ -713,7 +710,7 @@ _VarCtorInit : VarInit
 
 _VarInit : VarInit
   ::= !_VarValueInit
-  ::= !_VarVarParanInit
+  ::= !_VarNewParanInit
   ::= !_VarBraceInit
   ;
 
@@ -879,9 +876,13 @@ _MultiVarsOrFuncForwardDecl_LRI_Original : VariablesDeclaration
   ::= !_MultiVarsOrFuncForwardDecl_LRI_Isolated_1
   ;
 
+_MultiVarsOrTypedFuncDeclVariablePartFollowing : DeclaratorVariablePart
+  ::= [_VarInit:init] ["," _MultiVarsDeclVariablePart:nextVarPart] ";" as partial DeclaratorVariablePart
+  ::= _VarStatInit:init as partial DeclaratorVariablePart
+  ;
+
 _MultiVarsOrTypedFuncDeclVariablePart : DeclaratorVariablePart
-  ::= !_DeclaratorVariablePartWithoutInit [_VarInit:init] ["," _MultiVarsDeclVariablePart:nextVarPart] ";"
-  ::= !_DeclaratorVariablePartWithoutInit _VarStatInit:init
+  ::= !_DeclaratorVariablePartWithoutInit _MultiVarsOrTypedFuncDeclVariablePartFollowing
   ;
 
 _MultiVarsOrTypedFuncDeclWithoutKeyword_LRI_Original : VariablesDeclaration
