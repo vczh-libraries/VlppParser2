@@ -102,7 +102,6 @@ FilePath LogSyntaxWithPath(
 					LogInstruction(ins, typeName, fieldName, writer);
 				}
 			}
-
 		}
 		writer.WriteLine(L"");
 	}

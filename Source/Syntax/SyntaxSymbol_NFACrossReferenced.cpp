@@ -196,14 +196,19 @@ SyntaxSymbolManager::FixLeftRecursionInjectEdge
 										.Where([](auto edge) { return edge->input.type == EdgeInputType::Ending; })
 										.IsEmpty())
 									{
-										// find if there is a state that looks like:
+										// find if there is a state in the same rule that looks like:
 										//      +-------------------(ending)---------------------+
 										//      |                                                |
 										//   S -+                                                +->E
 										//      |                                                |
-										//      +{ -(leftrec)-> X} -(lri:ThisEdge)-> T -(ending)-+
+										//      +-{-(leftrec)-> X} -(lri:ThisEdge)-> T -(ending)-+
+										// or
+										//      +-(same rule)-> Y -----------------(ending)------------------+
+										//      |                                                            |
+										//   S -+                                                            +->E
+										//      |                                                            |
+										//      +-(same rule)-{-(leftrec)-> X} -(lri:ThisEdge)-> T -(ending)-+
 
-										bool isSkippable = false;
 										List<StateSymbol*> visiting;
 										SortedList<StateSymbol*> visited;
 										visiting.Add(injectEdge->From());
@@ -219,20 +224,42 @@ SyntaxSymbolManager::FixLeftRecursionInjectEdge
 											{
 												if (siblingEdge->input.type == EdgeInputType::Ending)
 												{
-													isSkippable = true;
+													goto SKIP_SEARCHING;
 												}
 											}
 
 											for (auto commingEdge : visitingState->InEdges())
 											{
-												if (commingEdge->input.type == EdgeInputType::LeftRec)
+												if (commingEdge->From()->Rule() != injectEdge->From()->Rule()) continue;
+
+												switch (commingEdge->input.type)
 												{
+												case EdgeInputType::LeftRec:
 													visiting.Add(commingEdge->From());
+													break;
+												case EdgeInputType::Rule:
+													{
+														auto expectedReturnRule = commingEdge->input.rule;
+														for (auto siblingCommingEdge : commingEdge->From()->OutEdges())
+														{
+															if (siblingCommingEdge == commingEdge) continue;
+															if (siblingCommingEdge->input.type != EdgeInputType::Rule) continue;
+															if (siblingCommingEdge->input.rule != expectedReturnRule) continue;
+
+															if (!From(siblingCommingEdge->To()->OutEdges())
+																.Where([](auto edge) { return edge->input.type == EdgeInputType::Ending; })
+																.IsEmpty())
+															{
+																goto SKIP_SEARCHING;
+															}
+														}
+													}
+													break;
+												default:;
 												}
 											}
 										}
 
-										if (!isSkippable)
 										{
 											// if there is no such state
 											unittest::UnitTest::PrintMessage(L"Non skippable lr-inject edge found which should skip", unittest::UnitTest::MessageKind::Error);
@@ -240,6 +267,7 @@ SyntaxSymbolManager::FixLeftRecursionInjectEdge
 											unittest::UnitTest::PrintMessage(L"  FROM: " + injectEdge->From()->label, unittest::UnitTest::MessageKind::Error);
 											unittest::UnitTest::PrintMessage(L"  TO:   " + injectEdge->To()->label, unittest::UnitTest::MessageKind::Error);
 										}
+									SKIP_SEARCHING:;
 									}
 								}
 								break;
