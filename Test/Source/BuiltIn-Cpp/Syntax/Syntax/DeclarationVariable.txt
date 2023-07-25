@@ -191,9 +191,13 @@ _MultiVarsOrFuncForwardDecl
 // Multiple Variable or Function Forward/Impl Declarations
 //////////////////////////////////////////////////////////////////
 
+_MultiVarsOrTypedFuncDeclVariablePartFollowing
+  ::= [_VarInit:init] ["," _MultiVarsDeclVariablePart:nextVarPart] ";" as partial DeclaratorVariablePart
+  ::= _VarStatInit:init as partial DeclaratorVariablePart
+  ;
+
 _MultiVarsOrTypedFuncDeclVariablePart
-  ::= !_DeclaratorVariablePartWithoutInit [_VarInit:init] ["," _MultiVarsDeclVariablePart:nextVarPart] ";"
-  ::= !_DeclaratorVariablePartWithoutInit _VarStatInit:init
+  ::= !_DeclaratorVariablePartWithoutInit _MultiVarsOrTypedFuncDeclVariablePartFollowing
   ;
 
 _MultiVarsOrTypedFuncDeclWithoutKeyword
