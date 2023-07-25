@@ -542,7 +542,7 @@ TraceManager
 				// Ambiguity
 				Trace*										EnsureTraceWithValidStates(Trace* trace);
 				bool										AreTwoEndingInputTraceEqual(Trace* newTrace, Trace* candidate);
-				void										MergeTwoEndingInputTrace(Trace* newTrace, Trace* candidate);
+				Trace*										MergeTwoEndingInputTrace(Trace* newTrace, Trace* candidate);
 				void										TryMergeSurvivingTraces();
 
 				// Competition

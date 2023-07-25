@@ -6,6 +6,7 @@ namespace vl
 	{
 		namespace automaton
 		{
+			using namespace collections;
 
 /***********************************************************************
 EnsureTraceWithValidStates
@@ -50,7 +51,7 @@ AreTwoEndingInputTraceEqual
 MergeTwoEndingInputTrace
 ***********************************************************************/
 
-			void TraceManager::MergeTwoEndingInputTrace(Trace* newTrace, Trace* candidate)
+			Trace* TraceManager::MergeTwoEndingInputTrace(Trace* newTrace, Trace* candidate)
 			{
 				// goal of this function is to create a structure
 				// NEWTRACE ---+->AMBIGUITY
@@ -61,9 +62,14 @@ MergeTwoEndingInputTrace
 				// a former trace will copy CANDIDATE and insert before CANDIDATE
 				// and CANDIDATE will be initialized to an empty trace
 
+				// if a former trace is created to replace the candidate
+				// in which case the candidate becomes a merge trace
+				// the former trace is returned
+
 				if (candidate->state == -1)
 				{
 					AddTraceToCollection(candidate, newTrace, &Trace::predecessors);
+					return nullptr;
 				}
 				else
 				{
@@ -79,6 +85,7 @@ MergeTwoEndingInputTrace
 
 					AddTraceToCollection(candidate, formerTrace, &Trace::predecessors);
 					AddTraceToCollection(candidate, newTrace, &Trace::predecessors);
+					return formerTrace;
 				}
 			}
 
@@ -88,6 +95,124 @@ TryMergeSurvivingTraces
 
 			void TraceManager::TryMergeSurvivingTraces()
 			{
+#define ERROR_MESSAGE_PREFIX L"vl::glr::automaton::TraceManager::TryMergeSurvivingTraces()#"
+
+				struct EndingTraceData
+				{
+					bool			surviving = true;			// becomes false when this trace does not survive anymore
+				};
+
+				vint32_t survivingTraceCount = concurrentCount;
+				Dictionary<Trace*, EndingTraceData> endingTraces;
+				Group<vint32_t, Trace*> tracesByState;
+
+				// index surviving traces
+				for (vint i = 0; i < survivingTraceCount; i++)
+				{
+					auto trace = EnsureTraceWithValidStates(backupTraces->Get(i));
+					if (trace->state == -1)
+					{
+						tracesByState.Add(EnsureTraceWithValidStates(trace)->state, trace);
+					}
+					else if (trace->byInput == Executable::EndingInput)
+					{
+						endingTraces.Add(trace, {});
+						tracesByState.Add(trace->state, trace);
+					}
+				}
+
+#if defined VCZH_MSVC && defined _DEBUG
+				// check assumptions
+				for (vint i = 0; i < survivingTraceCount; i++)
+				{
+					auto trace = EnsureTraceWithValidStates(backupTraces->Get(i));
+					if (trace->state == -1)
+					{
+						auto predecessorId = trace->predecessors.first;
+						while (predecessorId != nullref)
+						{
+							auto predecessor = GetTrace(predecessorId);
+							predecessorId = predecessor->predecessors.siblingNext;
+
+							CHECK_ERROR(endingTraces.Keys().IndexOf(predecessor) == -1, ERROR_MESSAGE_PREFIX L"Internal error: Predecessors of a merge trace should not survive.");
+						}
+					}
+					else if (trace->byInput == Executable::EndingInput)
+					{
+						CHECK_ERROR(trace->predecessors.first == trace->predecessors.last, ERROR_MESSAGE_PREFIX L"Internal error: Executable::EndingInput trace could not have multiple predecessors.");
+					}
+				}
+#endif
+
+				// check if a trace survived
+				// if a trace survived but its only predecessor does not
+				// it becomes not survived
+				auto ensureEndingTraceSurvived = [this, &endingTraces](Trace* trace)
+				{
+					if (trace == initialTrace) return true;
+
+					auto& data = const_cast<EndingTraceData&>(endingTraces[trace]);
+					if (!data.surviving) return false;
+
+					auto predecessorId = trace->predecessors.first;
+					if (predecessorId != nullref)
+					{
+						auto predecessor = GetTrace(predecessorId);
+						vint index = endingTraces.Keys().IndexOf(predecessor);
+						if (index != -1 && !endingTraces.Values()[index].surviving)
+						{
+							data.surviving = false;
+						}
+					}
+					return data.surviving;
+				};
+
+				// find surviving traces that merge
+				for (vint i = 0; i < survivingTraceCount; i++)
+				{
+					// get the next surviving Executable::EndingInput trace
+					auto trace = EnsureTraceWithValidStates(backupTraces->Get(i));
+					if (trace->state != -1 && trace->byInput != Executable::EndingInput) continue;
+					if (!ensureEndingTraceSurvived(trace)) continue;
+					auto realTrace = EnsureTraceWithValidStates(trace);
+
+					// find all traces Executable::EndingInput traces with the same state that after it
+					auto&& candidates = tracesByState[trace->state];
+					vint index = candidates.IndexOf(trace);
+					for (vint j = index + 1; j < candidates.Count(); j++)
+					{
+						// ensure the candidate also survived
+						auto candidate = candidates[j];
+						if (!ensureEndingTraceSurvived(candidate)) continue;
+						auto realCandidate = EnsureTraceWithValidStates(candidate);
+
+						if (AreTwoEndingInputTraceEqual(realTrace, realCandidate))
+						{
+							// merge two traces
+							if (trace == realTrace)
+							{
+								if (candidate == realCandidate)
+								{
+								}
+								else
+								{
+								}
+							}
+							else
+							{
+								if (candidate == realCandidate)
+								{
+								}
+								else
+								{
+								}
+							}
+							CHECK_FAIL(L"Fuck");
+						}
+					}
+				}
+
+#undef ERROR_MESSAGE_PREFIX
 			}
 		}
 	}
