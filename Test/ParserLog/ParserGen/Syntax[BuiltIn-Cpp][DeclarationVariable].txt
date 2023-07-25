@@ -321,7 +321,37 @@
             },
             "type": "DeclaratorVariablePart"
         }],
-        "name": "_DeclaratorVariablePartOptionalInit",
+        "name": "_DeclaratorVariablePartOptionalInitFirst",
+        "type": ""
+    }, {
+        "$ast": "Rule",
+        "attParser": "",
+        "attPublic": "",
+        "clauses": [{
+            "$ast": "CreateClause",
+            "assignments": [],
+            "syntax": {
+                "$ast": "SequenceSyntax",
+                "first": {
+                    "$ast": "RefSyntax",
+                    "field": "declarator",
+                    "literal": "_InnerDeclaratorInnerRequiredName",
+                    "refType": "Id"
+                },
+                "second": {
+                    "$ast": "OptionalSyntax",
+                    "priority": "Equal",
+                    "syntax": {
+                        "$ast": "RefSyntax",
+                        "field": "init",
+                        "literal": "_VarInit",
+                        "refType": "Id"
+                    }
+                }
+            },
+            "type": "DeclaratorVariablePart"
+        }],
+        "name": "_DeclaratorVariablePartOptionalInitSecond",
         "type": ""
     }, {
         "$ast": "Rule",
@@ -1015,7 +1045,7 @@
                 "$ast": "SequenceSyntax",
                 "first": {
                     "$ast": "UseSyntax",
-                    "name": "_DeclaratorVariablePartOptionalInit"
+                    "name": "_DeclaratorVariablePartOptionalInitFirst"
                 },
                 "second": {
                     "$ast": "OptionalSyntax",
@@ -1031,14 +1061,50 @@
                         "second": {
                             "$ast": "RefSyntax",
                             "field": "nextVarPart",
-                            "literal": "_MultiVarsDeclVariablePart",
+                            "literal": "_MultiVarsDeclVariablePartSecond",
                             "refType": "Id"
                         }
                     }
                 }
             }
         }],
-        "name": "_MultiVarsDeclVariablePart",
+        "name": "_MultiVarsDeclVariablePartFirst",
+        "type": ""
+    }, {
+        "$ast": "Rule",
+        "attParser": "",
+        "attPublic": "",
+        "clauses": [{
+            "$ast": "ReuseClause",
+            "assignments": [],
+            "syntax": {
+                "$ast": "SequenceSyntax",
+                "first": {
+                    "$ast": "UseSyntax",
+                    "name": "_DeclaratorVariablePartOptionalInitSecond"
+                },
+                "second": {
+                    "$ast": "OptionalSyntax",
+                    "priority": "Equal",
+                    "syntax": {
+                        "$ast": "SequenceSyntax",
+                        "first": {
+                            "$ast": "RefSyntax",
+                            "field": "",
+                            "literal": "\",\"",
+                            "refType": "Literal"
+                        },
+                        "second": {
+                            "$ast": "RefSyntax",
+                            "field": "nextVarPart",
+                            "literal": "_MultiVarsDeclVariablePartSecond",
+                            "refType": "Id"
+                        }
+                    }
+                }
+            }
+        }],
+        "name": "_MultiVarsDeclVariablePartSecond",
         "type": ""
     }, {
         "$ast": "Rule",
@@ -1058,7 +1124,7 @@
                 "second": {
                     "$ast": "RefSyntax",
                     "field": "firstVarPart",
-                    "literal": "_MultiVarsDeclVariablePart",
+                    "literal": "_MultiVarsDeclVariablePartFirst",
                     "refType": "Id"
                 }
             },
@@ -1242,7 +1308,7 @@
                             "second": {
                                 "$ast": "RefSyntax",
                                 "field": "nextVarPart",
-                                "literal": "_MultiVarsDeclVariablePart",
+                                "literal": "_MultiVarsDeclVariablePartSecond",
                                 "refType": "Id"
                             }
                         }

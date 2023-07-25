@@ -730,8 +730,12 @@ _DeclaratorVariablePartWithoutInit : DeclaratorVariablePart
   ::= _DeclaratorRequiredName:declarator as DeclaratorVariablePart
   ;
 
-_DeclaratorVariablePartOptionalInit : DeclaratorVariablePart
+_DeclaratorVariablePartOptionalInitFirst : DeclaratorVariablePart
   ::= _DeclaratorRequiredName:declarator [_VarInit:init] as DeclaratorVariablePart
+  ;
+
+_DeclaratorVariablePartOptionalInitSecond : DeclaratorVariablePart
+  ::= _InnerDeclaratorInnerRequiredName:declarator [_VarInit:init] as DeclaratorVariablePart
   ;
 
 _DeclaratorVariablePartRequiredInit : DeclaratorVariablePart
@@ -830,12 +834,16 @@ _MultiTypedefVarsDeclWithoutKeyword_LRI_Original : VariablesDeclaration
   ::= _TypeBeforeDeclarator_LRI_Original:type _MultiTypedefVarDeclVariablePart:firstVarPart as VariablesDeclaration
   ;
 
-_MultiVarsDeclVariablePart : DeclaratorVariablePart
-  ::= !_DeclaratorVariablePartOptionalInit ["," _MultiVarsDeclVariablePart:nextVarPart]
+_MultiVarsDeclVariablePartFirst : DeclaratorVariablePart
+  ::= !_DeclaratorVariablePartOptionalInitFirst ["," _MultiVarsDeclVariablePartSecond:nextVarPart]
+  ;
+
+_MultiVarsDeclVariablePartSecond : DeclaratorVariablePart
+  ::= !_DeclaratorVariablePartOptionalInitSecond ["," _MultiVarsDeclVariablePartSecond:nextVarPart]
   ;
 
 _MultiVarsDeclWithoutKeyword_LRI_Original : VariablesDeclaration
-  ::= _TypeBeforeDeclarator_LRI_Original:type _MultiVarsDeclVariablePart:firstVarPart as VariablesDeclaration
+  ::= _TypeBeforeDeclarator_LRI_Original:type _MultiVarsDeclVariablePartFirst:firstVarPart as VariablesDeclaration
   ;
 
 _MultiVarsDecl_LRI_Isolated_1 : VariablesDeclaration
@@ -877,7 +885,7 @@ _MultiVarsOrFuncForwardDecl_LRI_Original : VariablesDeclaration
   ;
 
 _MultiVarsOrTypedFuncDeclVariablePartFollowing : DeclaratorVariablePart
-  ::= [_VarInit:init] ["," _MultiVarsDeclVariablePart:nextVarPart] ";" as partial DeclaratorVariablePart
+  ::= [_VarInit:init] ["," _MultiVarsDeclVariablePartSecond:nextVarPart] ";" as partial DeclaratorVariablePart
   ::= _VarStatInit:init as partial DeclaratorVariablePart
   ;
 
@@ -942,7 +950,7 @@ _ClassMemberPartSecond : ClassMemberPart
   ;
 
 _ClassBody : ClassBody
-  ::= [_ClassInheritanceFirst:inheritances] {_ClassInheritanceSecond:inheritances} "{" [_ClassMemberPartFirst:memberParts] {_ClassMemberPartSecond:memberParts} "}" [_MultiVarsDeclVariablePart:firstVarPart] as ClassBody
+  ::= [_ClassInheritanceFirst:inheritances] {_ClassInheritanceSecond:inheritances} "{" [_ClassMemberPartFirst:memberParts] {_ClassMemberPartSecond:memberParts} "}" [_MultiVarsDeclVariablePartSecond:firstVarPart] as ClassBody
   ;
 
 _ClassDeclPrefix : ClassDeclaration
@@ -1015,7 +1023,7 @@ _EnumItem : EnumItem
   ;
 
 _EnumBody : EnumBody
-  ::= "{" [_EnumItem:items {"," _EnumItem:items} [","]] "}" [_MultiVarsDeclVariablePart:firstVarPart] as EnumBody
+  ::= "{" [_EnumItem:items {"," _EnumItem:items} [","]] "}" [_MultiVarsDeclVariablePartSecond:firstVarPart] as EnumBody
   ;
 
 _EnumDecl : EnumDeclaration
