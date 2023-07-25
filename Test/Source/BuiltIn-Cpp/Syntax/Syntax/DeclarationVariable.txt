@@ -23,14 +23,26 @@ _VarCtorInit
   ::= !_VarBraceInit
   ;
 
-_VarStatInit
-  ::= _BlockStat:stat as VarStatInit
-  ;
-
 _VarInit
   ::= !_VarValueInit
   ::= !_VarVarParanInit
   ::= !_VarBraceInit
+  ;
+
+//////////////////////////////////////////////////////////////////
+// Function Initialization
+//////////////////////////////////////////////////////////////////
+
+_VarStatInitItemFirst
+  ::= ":" ID:name _VarCtorInit:init as VarStatInitItem
+  ;
+
+_VarStatInitItemSecond
+  ::= "," ID:name _VarCtorInit:init as VarStatInitItem
+  ;
+
+_VarStatInit
+  ::= [_VarStatInitItemFirst:initItems {_VarStatInitItemSecond:initItems}] _BlockStat:stat as VarStatInit
   ;
 
 //////////////////////////////////////////////////////////////////
