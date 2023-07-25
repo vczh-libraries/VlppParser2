@@ -315,9 +315,6 @@ namespace cpp_parser::json_visitor
 		BeginField(L"body");
 		Print(node->body.Obj());
 		EndField();
-		BeginField(L"friendToken");
-		WriteToken(node->friendToken);
-		EndField();
 		BeginField(L"kind");
 		switch (node->kind)
 		{
@@ -412,6 +409,16 @@ namespace cpp_parser::json_visitor
 	}
 	void AstVisitor::PrintFields(CppDeclaration* node)
 	{
+		BeginField(L"keywords");
+		BeginArray();
+		for (auto&& listItem : node->keywords)
+		{
+			BeginArrayItem();
+			Print(listItem.Obj());
+			EndArrayItem();
+		}
+		EndArray();
+		EndField();
 	}
 	void AstVisitor::PrintFields(CppDeclarator* node)
 	{
@@ -699,6 +706,12 @@ namespace cpp_parser::json_visitor
 		EndField();
 		BeginField(L"varsDecl");
 		Print(node->varsDecl.Obj());
+		EndField();
+	}
+	void AstVisitor::PrintFields(CppFriendTypeDeclaration* node)
+	{
+		BeginField(L"type");
+		Print(node->type.Obj());
 		EndField();
 	}
 	void AstVisitor::PrintFields(CppFunctionKeyword* node)
@@ -1821,8 +1834,27 @@ namespace cpp_parser::json_visitor
 	}
 	void AstVisitor::PrintFields(CppVarStatInit* node)
 	{
+		BeginField(L"initItems");
+		BeginArray();
+		for (auto&& listItem : node->initItems)
+		{
+			BeginArrayItem();
+			Print(listItem.Obj());
+			EndArrayItem();
+		}
+		EndArray();
+		EndField();
 		BeginField(L"stat");
 		Print(node->stat.Obj());
+		EndField();
+	}
+	void AstVisitor::PrintFields(CppVarStatInitItem* node)
+	{
+		BeginField(L"init");
+		Print(node->init.Obj());
+		EndField();
+		BeginField(L"name");
+		WriteToken(node->name);
 		EndField();
 	}
 	void AstVisitor::PrintFields(CppVarValueInit* node)
@@ -1835,16 +1867,6 @@ namespace cpp_parser::json_visitor
 	{
 		BeginField(L"firstVarPart");
 		Print(node->firstVarPart.Obj());
-		EndField();
-		BeginField(L"keywords");
-		BeginArray();
-		for (auto&& listItem : node->keywords)
-		{
-			BeginArrayItem();
-			Print(listItem.Obj());
-			EndArrayItem();
-		}
-		EndArray();
 		EndField();
 		BeginField(L"type");
 		Print(node->type.Obj());
@@ -2092,6 +2114,21 @@ namespace cpp_parser::json_visitor
 		PrintFields(static_cast<CppTypeOrExprOrOthers*>(node));
 		PrintFields(static_cast<CppDeclaration*>(node));
 		PrintFields(static_cast<CppUsingTypeDeclaration*>(node));
+		EndObject();
+	}
+
+	void AstVisitor::Visit(CppFriendTypeDeclaration* node)
+	{
+		if (!node)
+		{
+			WriteNull();
+			return;
+		}
+		BeginObject();
+		WriteType(L"FriendTypeDeclaration", node);
+		PrintFields(static_cast<CppTypeOrExprOrOthers*>(node));
+		PrintFields(static_cast<CppDeclaration*>(node));
+		PrintFields(static_cast<CppFriendTypeDeclaration*>(node));
 		EndObject();
 	}
 
@@ -3090,6 +3127,19 @@ namespace cpp_parser::json_visitor
 		BeginObject();
 		WriteType(L"Declarator", node);
 		PrintFields(static_cast<CppDeclarator*>(node));
+		EndObject();
+	}
+
+	void AstVisitor::Print(CppVarStatInitItem* node)
+	{
+		if (!node)
+		{
+			WriteNull();
+			return;
+		}
+		BeginObject();
+		WriteType(L"VarStatInitItem", node);
+		PrintFields(static_cast<CppVarStatInitItem*>(node));
 		EndObject();
 	}
 

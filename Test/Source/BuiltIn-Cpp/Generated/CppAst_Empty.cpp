@@ -83,6 +83,10 @@ DeclarationVisitor
 	{
 	}
 
+	void DeclarationVisitor::Visit(CppFriendTypeDeclaration* node)
+	{
+	}
+
 /***********************************************************************
 TypeOrExprVisitor
 ***********************************************************************/

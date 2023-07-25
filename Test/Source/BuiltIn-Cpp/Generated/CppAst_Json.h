@@ -62,6 +62,7 @@ namespace cpp_parser::json_visitor
 		virtual void PrintFields(CppForStatConditionPart* node);
 		virtual void PrintFields(CppForStatIterateCondition* node);
 		virtual void PrintFields(CppForStatLoopCondition* node);
+		virtual void PrintFields(CppFriendTypeDeclaration* node);
 		virtual void PrintFields(CppFunctionKeyword* node);
 		virtual void PrintFields(CppGenericArgument* node);
 		virtual void PrintFields(CppGenericArguments* node);
@@ -113,6 +114,7 @@ namespace cpp_parser::json_visitor
 		virtual void PrintFields(CppVarInit* node);
 		virtual void PrintFields(CppVarParanthesisInit* node);
 		virtual void PrintFields(CppVarStatInit* node);
+		virtual void PrintFields(CppVarStatInitItem* node);
 		virtual void PrintFields(CppVarValueInit* node);
 		virtual void PrintFields(CppVariablesDeclaration* node);
 		virtual void PrintFields(CppVariadicExpr* node);
@@ -138,6 +140,7 @@ namespace cpp_parser::json_visitor
 		void Visit(CppUsingNamespaceDeclaration* node) override;
 		void Visit(CppUsingValueDeclaration* node) override;
 		void Visit(CppUsingTypeDeclaration* node) override;
+		void Visit(CppFriendTypeDeclaration* node) override;
 
 		void Visit(CppTypeOrExprToResolve* node) override;
 		void Visit(CppExprOnly* node) override;
@@ -220,6 +223,7 @@ namespace cpp_parser::json_visitor
 		void Print(CppDeclaratorFunctionPart* node);
 		void Print(CppDeclaratorArrayPart* node);
 		void Print(CppDeclarator* node);
+		void Print(CppVarStatInitItem* node);
 		void Print(CppDeclaratorVariablePart* node);
 		void Print(CppClassInheritance* node);
 		void Print(CppClassMemberPart* node);

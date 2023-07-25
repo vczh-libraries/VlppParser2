@@ -239,19 +239,70 @@
             "$ast": "CreateClause",
             "assignments": [],
             "syntax": {
-                "$ast": "RefSyntax",
-                "field": "keyword",
-                "literal": "\"constexpr\"",
-                "refType": "Literal"
+                "$ast": "SequenceSyntax",
+                "first": {
+                    "$ast": "RefSyntax",
+                    "field": "keyword",
+                    "literal": "\"extern\"",
+                    "refType": "Literal"
+                },
+                "second": {
+                    "$ast": "OptionalSyntax",
+                    "priority": "Equal",
+                    "syntax": {
+                        "$ast": "RefSyntax",
+                        "field": "",
+                        "literal": "STRING",
+                        "refType": "Id"
+                    }
+                }
             },
             "type": "DeclaratorKeyword"
+        }],
+        "name": "_DeclarationKeywordWithoutFriend",
+        "type": ""
+    }, {
+        "$ast": "Rule",
+        "attParser": "",
+        "attPublic": "",
+        "clauses": [{
+            "$ast": "ReuseClause",
+            "assignments": [],
+            "syntax": {
+                "$ast": "UseSyntax",
+                "name": "_DeclarationKeywordWithoutFriend"
+            }
         }, {
             "$ast": "CreateClause",
             "assignments": [],
             "syntax": {
                 "$ast": "RefSyntax",
                 "field": "keyword",
-                "literal": "\"extern\"",
+                "literal": "\"friend\"",
+                "refType": "Literal"
+            },
+            "type": "DeclaratorKeyword"
+        }],
+        "name": "_DeclarationKeyword",
+        "type": ""
+    }, {
+        "$ast": "Rule",
+        "attParser": "",
+        "attPublic": "",
+        "clauses": [{
+            "$ast": "ReuseClause",
+            "assignments": [],
+            "syntax": {
+                "$ast": "UseSyntax",
+                "name": "_DeclarationKeyword"
+            }
+        }, {
+            "$ast": "CreateClause",
+            "assignments": [],
+            "syntax": {
+                "$ast": "RefSyntax",
+                "field": "keyword",
+                "literal": "\"constexpr\"",
                 "refType": "Literal"
             },
             "type": "DeclaratorKeyword"
@@ -302,16 +353,6 @@
                 "$ast": "RefSyntax",
                 "field": "keyword",
                 "literal": "\"explicit\"",
-                "refType": "Literal"
-            },
-            "type": "DeclaratorKeyword"
-        }, {
-            "$ast": "CreateClause",
-            "assignments": [],
-            "syntax": {
-                "$ast": "RefSyntax",
-                "field": "keyword",
-                "literal": "\"friend\"",
                 "refType": "Literal"
             },
             "type": "DeclaratorKeyword"

@@ -86,6 +86,8 @@ CppAstInsReceiver : public vl::glr::AstInsReceiverBase
 			return vl::Ptr(new cpp_parser::CppForStatIterateCondition);
 		case CppClasses::ForStatLoopCondition:
 			return vl::Ptr(new cpp_parser::CppForStatLoopCondition);
+		case CppClasses::FriendTypeDeclaration:
+			return vl::Ptr(new cpp_parser::CppFriendTypeDeclaration);
 		case CppClasses::FunctionKeyword:
 			return vl::Ptr(new cpp_parser::CppFunctionKeyword);
 		case CppClasses::GenericArgument:
@@ -176,6 +178,8 @@ CppAstInsReceiver : public vl::glr::AstInsReceiverBase
 			return vl::Ptr(new cpp_parser::CppVarParanthesisInit);
 		case CppClasses::VarStatInit:
 			return vl::Ptr(new cpp_parser::CppVarStatInit);
+		case CppClasses::VarStatInitItem:
+			return vl::Ptr(new cpp_parser::CppVarStatInitItem);
 		case CppClasses::VarValueInit:
 			return vl::Ptr(new cpp_parser::CppVarValueInit);
 		case CppClasses::VariablesDeclaration:
@@ -238,6 +242,8 @@ CppAstInsReceiver : public vl::glr::AstInsReceiverBase
 			return vl::glr::AssemblerSetObjectField(&cpp_parser::CppConstType::type, object, field, value, cppFieldName);
 		case CppFields::DeclStat_decl:
 			return vl::glr::AssemblerSetObjectField(&cpp_parser::CppDeclStat::decl, object, field, value, cppFieldName);
+		case CppFields::Declaration_keywords:
+			return vl::glr::AssemblerSetObjectField(&cpp_parser::CppDeclaration::keywords, object, field, value, cppFieldName);
 		case CppFields::Declarator_advancedTypes:
 			return vl::glr::AssemblerSetObjectField(&cpp_parser::CppDeclarator::advancedTypes, object, field, value, cppFieldName);
 		case CppFields::Declarator_arrayParts:
@@ -310,6 +316,8 @@ CppAstInsReceiver : public vl::glr::AstInsReceiverBase
 			return vl::glr::AssemblerSetObjectField(&cpp_parser::CppForStatLoopCondition::sideEffect, object, field, value, cppFieldName);
 		case CppFields::ForStatLoopCondition_varsDecl:
 			return vl::glr::AssemblerSetObjectField(&cpp_parser::CppForStatLoopCondition::varsDecl, object, field, value, cppFieldName);
+		case CppFields::FriendTypeDeclaration_type:
+			return vl::glr::AssemblerSetObjectField(&cpp_parser::CppFriendTypeDeclaration::type, object, field, value, cppFieldName);
 		case CppFields::FunctionKeyword_arguments:
 			return vl::glr::AssemblerSetObjectField(&cpp_parser::CppFunctionKeyword::arguments, object, field, value, cppFieldName);
 		case CppFields::GenericArgument_argument:
@@ -428,14 +436,16 @@ CppAstInsReceiver : public vl::glr::AstInsReceiverBase
 			return vl::glr::AssemblerSetObjectField(&cpp_parser::CppVarBraceInit::arguments, object, field, value, cppFieldName);
 		case CppFields::VarParanthesisInit_arguments:
 			return vl::glr::AssemblerSetObjectField(&cpp_parser::CppVarParanthesisInit::arguments, object, field, value, cppFieldName);
+		case CppFields::VarStatInit_initItems:
+			return vl::glr::AssemblerSetObjectField(&cpp_parser::CppVarStatInit::initItems, object, field, value, cppFieldName);
 		case CppFields::VarStatInit_stat:
 			return vl::glr::AssemblerSetObjectField(&cpp_parser::CppVarStatInit::stat, object, field, value, cppFieldName);
+		case CppFields::VarStatInitItem_init:
+			return vl::glr::AssemblerSetObjectField(&cpp_parser::CppVarStatInitItem::init, object, field, value, cppFieldName);
 		case CppFields::VarValueInit_expr:
 			return vl::glr::AssemblerSetObjectField(&cpp_parser::CppVarValueInit::expr, object, field, value, cppFieldName);
 		case CppFields::VariablesDeclaration_firstVarPart:
 			return vl::glr::AssemblerSetObjectField(&cpp_parser::CppVariablesDeclaration::firstVarPart, object, field, value, cppFieldName);
-		case CppFields::VariablesDeclaration_keywords:
-			return vl::glr::AssemblerSetObjectField(&cpp_parser::CppVariablesDeclaration::keywords, object, field, value, cppFieldName);
 		case CppFields::VariablesDeclaration_type:
 			return vl::glr::AssemblerSetObjectField(&cpp_parser::CppVariablesDeclaration::type, object, field, value, cppFieldName);
 		case CppFields::VariadicExpr_operand:
@@ -466,8 +476,6 @@ CppAstInsReceiver : public vl::glr::AstInsReceiverBase
 		{
 		case CppFields::CastExpr_keyword:
 			return vl::glr::AssemblerSetTokenField(&cpp_parser::CppCastExpr::keyword, object, field, token, tokenIndex, cppFieldName);
-		case CppFields::ClassDeclaration_friendToken:
-			return vl::glr::AssemblerSetTokenField(&cpp_parser::CppClassDeclaration::friendToken, object, field, token, tokenIndex, cppFieldName);
 		case CppFields::ClassDeclaration_name:
 			return vl::glr::AssemblerSetTokenField(&cpp_parser::CppClassDeclaration::name, object, field, token, tokenIndex, cppFieldName);
 		case CppFields::Declarator_variadic:
@@ -512,6 +520,8 @@ CppAstInsReceiver : public vl::glr::AstInsReceiverBase
 			return vl::glr::AssemblerSetTokenField(&cpp_parser::CppSysFuncExpr::variadic, object, field, token, tokenIndex, cppFieldName);
 		case CppFields::UsingTypeDeclaration_name:
 			return vl::glr::AssemblerSetTokenField(&cpp_parser::CppUsingTypeDeclaration::name, object, field, token, tokenIndex, cppFieldName);
+		case CppFields::VarStatInitItem_name:
+			return vl::glr::AssemblerSetTokenField(&cpp_parser::CppVarStatInitItem::name, object, field, token, tokenIndex, cppFieldName);
 		case CppFields::VariadicExpr_variadic:
 			return vl::glr::AssemblerSetTokenField(&cpp_parser::CppVariadicExpr::variadic, object, field, token, tokenIndex, cppFieldName);
 		default:
@@ -611,6 +621,7 @@ CppAstInsReceiver : public vl::glr::AstInsReceiverBase
 			L"ForStatConditionPart",
 			L"ForStatIterateCondition",
 			L"ForStatLoopCondition",
+			L"FriendTypeDeclaration",
 			L"FunctionKeyword",
 			L"GenericArgument",
 			L"GenericArguments",
@@ -662,6 +673,7 @@ CppAstInsReceiver : public vl::glr::AstInsReceiverBase
 			L"VarInit",
 			L"VarParanthesisInit",
 			L"VarStatInit",
+			L"VarStatInitItem",
 			L"VarValueInit",
 			L"VariablesDeclaration",
 			L"VariadicExpr",
@@ -671,7 +683,7 @@ CppAstInsReceiver : public vl::glr::AstInsReceiverBase
 			L"__TryStat",
 		};
 		vl::vint index = (vl::vint)type;
-		return 0 <= index && index < 95 ? results[index] : nullptr;
+		return 0 <= index && index < 97 ? results[index] : nullptr;
 	}
 
 	const wchar_t* CppCppTypeName(CppClasses type)
@@ -714,6 +726,7 @@ CppAstInsReceiver : public vl::glr::AstInsReceiverBase
 			L"cpp_parser::CppForStatConditionPart",
 			L"cpp_parser::CppForStatIterateCondition",
 			L"cpp_parser::CppForStatLoopCondition",
+			L"cpp_parser::CppFriendTypeDeclaration",
 			L"cpp_parser::CppFunctionKeyword",
 			L"cpp_parser::CppGenericArgument",
 			L"cpp_parser::CppGenericArguments",
@@ -765,6 +778,7 @@ CppAstInsReceiver : public vl::glr::AstInsReceiverBase
 			L"cpp_parser::CppVarInit",
 			L"cpp_parser::CppVarParanthesisInit",
 			L"cpp_parser::CppVarStatInit",
+			L"cpp_parser::CppVarStatInitItem",
 			L"cpp_parser::CppVarValueInit",
 			L"cpp_parser::CppVariablesDeclaration",
 			L"cpp_parser::CppVariadicExpr",
@@ -774,7 +788,7 @@ CppAstInsReceiver : public vl::glr::AstInsReceiverBase
 			L"cpp_parser::Cpp__TryStat",
 		};
 		vl::vint index = (vl::vint)type;
-		return 0 <= index && index < 95 ? results[index] : nullptr;
+		return 0 <= index && index < 97 ? results[index] : nullptr;
 	}
 
 	const wchar_t* CppFieldName(CppFields field)
@@ -799,7 +813,6 @@ CppAstInsReceiver : public vl::glr::AstInsReceiverBase
 			L"ClassBody::inheritances",
 			L"ClassBody::memberParts",
 			L"ClassDeclaration::body",
-			L"ClassDeclaration::friendToken",
 			L"ClassDeclaration::kind",
 			L"ClassDeclaration::name",
 			L"ClassInheritance::accessor",
@@ -808,6 +821,7 @@ CppAstInsReceiver : public vl::glr::AstInsReceiverBase
 			L"ClassMemberPart::decls",
 			L"ConstType::type",
 			L"DeclStat::decl",
+			L"Declaration::keywords",
 			L"Declarator::advancedTypes",
 			L"Declarator::arrayParts",
 			L"Declarator::bitfield",
@@ -852,6 +866,7 @@ CppAstInsReceiver : public vl::glr::AstInsReceiverBase
 			L"ForStatLoopCondition::condition",
 			L"ForStatLoopCondition::sideEffect",
 			L"ForStatLoopCondition::varsDecl",
+			L"FriendTypeDeclaration::type",
 			L"FunctionKeyword::arguments",
 			L"FunctionKeyword::keyword",
 			L"GenericArgument::argument",
@@ -939,10 +954,12 @@ CppAstInsReceiver : public vl::glr::AstInsReceiverBase
 			L"UsingValueDeclaration::name",
 			L"VarBraceInit::arguments",
 			L"VarParanthesisInit::arguments",
+			L"VarStatInit::initItems",
 			L"VarStatInit::stat",
+			L"VarStatInitItem::init",
+			L"VarStatInitItem::name",
 			L"VarValueInit::expr",
 			L"VariablesDeclaration::firstVarPart",
-			L"VariablesDeclaration::keywords",
 			L"VariablesDeclaration::type",
 			L"VariadicExpr::operand",
 			L"VariadicExpr::variadic",
@@ -955,7 +972,7 @@ CppAstInsReceiver : public vl::glr::AstInsReceiverBase
 			L"__TryStat::tryStat",
 		};
 		vl::vint index = (vl::vint)field;
-		return 0 <= index && index < 173 ? results[index] : nullptr;
+		return 0 <= index && index < 176 ? results[index] : nullptr;
 	}
 
 	const wchar_t* CppCppFieldName(CppFields field)
@@ -980,7 +997,6 @@ CppAstInsReceiver : public vl::glr::AstInsReceiverBase
 			L"cpp_parser::CppClassBody::inheritances",
 			L"cpp_parser::CppClassBody::memberParts",
 			L"cpp_parser::CppClassDeclaration::body",
-			L"cpp_parser::CppClassDeclaration::friendToken",
 			L"cpp_parser::CppClassDeclaration::kind",
 			L"cpp_parser::CppClassDeclaration::name",
 			L"cpp_parser::CppClassInheritance::accessor",
@@ -989,6 +1005,7 @@ CppAstInsReceiver : public vl::glr::AstInsReceiverBase
 			L"cpp_parser::CppClassMemberPart::decls",
 			L"cpp_parser::CppConstType::type",
 			L"cpp_parser::CppDeclStat::decl",
+			L"cpp_parser::CppDeclaration::keywords",
 			L"cpp_parser::CppDeclarator::advancedTypes",
 			L"cpp_parser::CppDeclarator::arrayParts",
 			L"cpp_parser::CppDeclarator::bitfield",
@@ -1033,6 +1050,7 @@ CppAstInsReceiver : public vl::glr::AstInsReceiverBase
 			L"cpp_parser::CppForStatLoopCondition::condition",
 			L"cpp_parser::CppForStatLoopCondition::sideEffect",
 			L"cpp_parser::CppForStatLoopCondition::varsDecl",
+			L"cpp_parser::CppFriendTypeDeclaration::type",
 			L"cpp_parser::CppFunctionKeyword::arguments",
 			L"cpp_parser::CppFunctionKeyword::keyword",
 			L"cpp_parser::CppGenericArgument::argument",
@@ -1120,10 +1138,12 @@ CppAstInsReceiver : public vl::glr::AstInsReceiverBase
 			L"cpp_parser::CppUsingValueDeclaration::name",
 			L"cpp_parser::CppVarBraceInit::arguments",
 			L"cpp_parser::CppVarParanthesisInit::arguments",
+			L"cpp_parser::CppVarStatInit::initItems",
 			L"cpp_parser::CppVarStatInit::stat",
+			L"cpp_parser::CppVarStatInitItem::init",
+			L"cpp_parser::CppVarStatInitItem::name",
 			L"cpp_parser::CppVarValueInit::expr",
 			L"cpp_parser::CppVariablesDeclaration::firstVarPart",
-			L"cpp_parser::CppVariablesDeclaration::keywords",
 			L"cpp_parser::CppVariablesDeclaration::type",
 			L"cpp_parser::CppVariadicExpr::operand",
 			L"cpp_parser::CppVariadicExpr::variadic",
@@ -1136,7 +1156,7 @@ CppAstInsReceiver : public vl::glr::AstInsReceiverBase
 			L"cpp_parser::Cpp__TryStat::tryStat",
 		};
 		vl::vint index = (vl::vint)field;
-		return 0 <= index && index < 173 ? results[index] : nullptr;
+		return 0 <= index && index < 176 ? results[index] : nullptr;
 	}
 
 	vl::Ptr<vl::glr::ParsingAstBase> CppAstInsReceiver::ResolveAmbiguity(vl::vint32_t type, vl::collections::Array<vl::Ptr<vl::glr::ParsingAstBase>>& candidates)
@@ -1188,6 +1208,8 @@ CppAstInsReceiver : public vl::glr::AstInsReceiverBase
 			return vl::glr::AssemblerResolveAmbiguity<cpp_parser::CppExternDeclaration, cpp_parser::CppTypeOrExprOrOthersToResolve>(type, candidates, cppTypeName);
 		case CppClasses::ForStat:
 			return vl::glr::AssemblerResolveAmbiguity<cpp_parser::CppForStat, cpp_parser::CppStatementToResolve>(type, candidates, cppTypeName);
+		case CppClasses::FriendTypeDeclaration:
+			return vl::glr::AssemblerResolveAmbiguity<cpp_parser::CppFriendTypeDeclaration, cpp_parser::CppTypeOrExprOrOthersToResolve>(type, candidates, cppTypeName);
 		case CppClasses::GenericArgument:
 			return vl::glr::AssemblerResolveAmbiguity<cpp_parser::CppGenericArgument, cpp_parser::CppTypeOrExprOrOthersToResolve>(type, candidates, cppTypeName);
 		case CppClasses::GotoStat:

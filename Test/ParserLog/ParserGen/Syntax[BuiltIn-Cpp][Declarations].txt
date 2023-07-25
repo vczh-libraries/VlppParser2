@@ -51,6 +51,20 @@
             "assignments": [],
             "syntax": {
                 "$ast": "UseSyntax",
+                "name": "_ClassDecl"
+            }
+        }],
+        "name": "_DeclSharedWithoutSemicolonAcceptKeyword",
+        "type": ""
+    }, {
+        "$ast": "Rule",
+        "attParser": "",
+        "attPublic": "",
+        "clauses": [{
+            "$ast": "ReuseClause",
+            "assignments": [],
+            "syntax": {
+                "$ast": "UseSyntax",
                 "name": "_EnumForwardDecl"
             }
         }, {
@@ -58,14 +72,74 @@
             "assignments": [],
             "syntax": {
                 "$ast": "UseSyntax",
-                "name": "_ClassDecl"
+                "name": "_ClassForwardDecl"
+            }
+        }],
+        "name": "_DeclSharedWithoutSemicolonAcceptKeywordButFriend",
+        "type": ""
+    }, {
+        "$ast": "Rule",
+        "attParser": "",
+        "attPublic": "",
+        "clauses": [{
+            "$ast": "ReuseClause",
+            "assignments": [],
+            "syntax": {
+                "$ast": "SequenceSyntax",
+                "first": {
+                    "$ast": "LoopSyntax",
+                    "delimiter": null,
+                    "syntax": {
+                        "$ast": "RefSyntax",
+                        "field": "keywords",
+                        "literal": "_DeclarationKeyword",
+                        "refType": "Id"
+                    }
+                },
+                "second": {
+                    "$ast": "UseSyntax",
+                    "name": "_DeclSharedWithoutSemicolonAcceptKeyword"
+                }
+            }
+        }, {
+            "$ast": "ReuseClause",
+            "assignments": [],
+            "syntax": {
+                "$ast": "SequenceSyntax",
+                "first": {
+                    "$ast": "OptionalSyntax",
+                    "priority": "Equal",
+                    "syntax": {
+                        "$ast": "SequenceSyntax",
+                        "first": {
+                            "$ast": "RefSyntax",
+                            "field": "keywords",
+                            "literal": "_DeclarationKeywordWithoutFriend",
+                            "refType": "Id"
+                        },
+                        "second": {
+                            "$ast": "LoopSyntax",
+                            "delimiter": null,
+                            "syntax": {
+                                "$ast": "RefSyntax",
+                                "field": "keywords",
+                                "literal": "_DeclarationKeyword",
+                                "refType": "Id"
+                            }
+                        }
+                    }
+                },
+                "second": {
+                    "$ast": "UseSyntax",
+                    "name": "_DeclSharedWithoutSemicolonAcceptKeywordButFriend"
+                }
             }
         }, {
             "$ast": "ReuseClause",
             "assignments": [],
             "syntax": {
                 "$ast": "UseSyntax",
-                "name": "_ClassForwardDecl"
+                "name": "_FriendTypeDecl"
             }
         }],
         "name": "_DeclSharedWithoutSemicolon",
@@ -87,13 +161,6 @@
             "syntax": {
                 "$ast": "UseSyntax",
                 "name": "_MultiVarsOrFuncForwardDecl"
-            }
-        }, {
-            "$ast": "ReuseClause",
-            "assignments": [],
-            "syntax": {
-                "$ast": "UseSyntax",
-                "name": "_ExternDeclNeedSemicolon"
             }
         }],
         "name": "_DeclNeedSemicolon",
@@ -123,14 +190,14 @@
             "assignments": [],
             "syntax": {
                 "$ast": "UseSyntax",
-                "name": "_MultiVarsOrFuncDecl"
+                "name": "_ExternDeclRejectSemicolon"
             }
         }, {
             "$ast": "ReuseClause",
             "assignments": [],
             "syntax": {
                 "$ast": "UseSyntax",
-                "name": "_ExternDeclRejectSemicolon"
+                "name": "_MultiVarsOrFuncDecl"
             }
         }, {
             "$ast": "ReuseClause",

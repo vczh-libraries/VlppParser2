@@ -49,6 +49,7 @@ namespace cpp_parser
 	class CppForStatConditionPart;
 	class CppForStatIterateCondition;
 	class CppForStatLoopCondition;
+	class CppFriendTypeDeclaration;
 	class CppFunctionKeyword;
 	class CppGenericArgument;
 	class CppGenericArguments;
@@ -100,6 +101,7 @@ namespace cpp_parser
 	class CppVarInit;
 	class CppVarParanthesisInit;
 	class CppVarStatInit;
+	class CppVarStatInitItem;
 	class CppVarValueInit;
 	class CppVariablesDeclaration;
 	class CppVariadicExpr;
@@ -329,10 +331,12 @@ namespace cpp_parser
 			virtual void Visit(CppUsingNamespaceDeclaration* node) = 0;
 			virtual void Visit(CppUsingValueDeclaration* node) = 0;
 			virtual void Visit(CppUsingTypeDeclaration* node) = 0;
+			virtual void Visit(CppFriendTypeDeclaration* node) = 0;
 		};
 
 		virtual void Accept(CppDeclaration::IVisitor* visitor) = 0;
 
+		vl::collections::List<vl::Ptr<CppDeclaratorKeyword>> keywords;
 
 		void Accept(CppTypeOrExprOrOthers::IVisitor* visitor) override;
 	};
@@ -808,9 +812,17 @@ namespace cpp_parser
 		void Accept(CppVarInit::IVisitor* visitor) override;
 	};
 
+	class CppVarStatInitItem : public vl::glr::ParsingAstBase, vl::reflection::Description<CppVarStatInitItem>
+	{
+	public:
+		vl::glr::ParsingToken name;
+		vl::Ptr<CppVarInit> init;
+	};
+
 	class CppVarStatInit : public CppVarInit, vl::reflection::Description<CppVarStatInit>
 	{
 	public:
+		vl::collections::List<vl::Ptr<CppVarStatInitItem>> initItems;
 		vl::Ptr<CppBlockStat> stat;
 
 		void Accept(CppVarInit::IVisitor* visitor) override;
@@ -827,7 +839,6 @@ namespace cpp_parser
 	class CppVariablesDeclaration : public CppDeclaration, vl::reflection::Description<CppVariablesDeclaration>
 	{
 	public:
-		vl::collections::List<vl::Ptr<CppDeclaratorKeyword>> keywords;
 		vl::Ptr<CppTypeOrExpr> type;
 		vl::Ptr<CppDeclaratorVariablePart> firstVarPart;
 
@@ -859,7 +870,6 @@ namespace cpp_parser
 	class CppClassDeclaration : public CppDeclaration, vl::reflection::Description<CppClassDeclaration>
 	{
 	public:
-		vl::glr::ParsingToken friendToken;
 		CppClassKind kind = CppClassKind::UNDEFINED_ENUM_ITEM_VALUE;
 		vl::glr::ParsingToken name;
 		vl::Ptr<CppClassBody> body;
@@ -953,6 +963,14 @@ namespace cpp_parser
 	public:
 		vl::glr::ParsingToken name;
 		vl::Ptr<CppTypeOrExpr> type;
+
+		void Accept(CppDeclaration::IVisitor* visitor) override;
+	};
+
+	class CppFriendTypeDeclaration : public CppDeclaration, vl::reflection::Description<CppFriendTypeDeclaration>
+	{
+	public:
+		vl::Ptr<CppQualifiedName> type;
 
 		void Accept(CppDeclaration::IVisitor* visitor) override;
 	};
@@ -1292,6 +1310,7 @@ namespace vl::reflection::description
 	DECL_TYPE_INFO(cpp_parser::CppVarValueInit)
 	DECL_TYPE_INFO(cpp_parser::CppVarParanthesisInit)
 	DECL_TYPE_INFO(cpp_parser::CppVarBraceInit)
+	DECL_TYPE_INFO(cpp_parser::CppVarStatInitItem)
 	DECL_TYPE_INFO(cpp_parser::CppVarStatInit)
 	DECL_TYPE_INFO(cpp_parser::CppDeclaratorVariablePart)
 	DECL_TYPE_INFO(cpp_parser::CppVariablesDeclaration)
@@ -1313,6 +1332,7 @@ namespace vl::reflection::description
 	DECL_TYPE_INFO(cpp_parser::CppUsingNamespaceDeclaration)
 	DECL_TYPE_INFO(cpp_parser::CppUsingValueDeclaration)
 	DECL_TYPE_INFO(cpp_parser::CppUsingTypeDeclaration)
+	DECL_TYPE_INFO(cpp_parser::CppFriendTypeDeclaration)
 	DECL_TYPE_INFO(cpp_parser::CppStatement)
 	DECL_TYPE_INFO(cpp_parser::CppStatement::IVisitor)
 	DECL_TYPE_INFO(cpp_parser::CppEmptyStat)
@@ -1421,6 +1441,11 @@ namespace vl::reflection::description
 		}
 
 		void Visit(cpp_parser::CppUsingTypeDeclaration* node) override
+		{
+			INVOKE_INTERFACE_PROXY(Visit, node);
+		}
+
+		void Visit(cpp_parser::CppFriendTypeDeclaration* node) override
 		{
 			INVOKE_INTERFACE_PROXY(Visit, node);
 		}

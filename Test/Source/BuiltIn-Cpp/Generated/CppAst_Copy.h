@@ -62,6 +62,7 @@ namespace cpp_parser::copy_visitor
 		void CopyFields(CppForStatConditionPart* from, CppForStatConditionPart* to);
 		void CopyFields(CppForStatIterateCondition* from, CppForStatIterateCondition* to);
 		void CopyFields(CppForStatLoopCondition* from, CppForStatLoopCondition* to);
+		void CopyFields(CppFriendTypeDeclaration* from, CppFriendTypeDeclaration* to);
 		void CopyFields(CppFunctionKeyword* from, CppFunctionKeyword* to);
 		void CopyFields(CppGenericArgument* from, CppGenericArgument* to);
 		void CopyFields(CppGenericArguments* from, CppGenericArguments* to);
@@ -113,6 +114,7 @@ namespace cpp_parser::copy_visitor
 		void CopyFields(CppVarInit* from, CppVarInit* to);
 		void CopyFields(CppVarParanthesisInit* from, CppVarParanthesisInit* to);
 		void CopyFields(CppVarStatInit* from, CppVarStatInit* to);
+		void CopyFields(CppVarStatInitItem* from, CppVarStatInitItem* to);
 		void CopyFields(CppVarValueInit* from, CppVarValueInit* to);
 		void CopyFields(CppVariablesDeclaration* from, CppVariablesDeclaration* to);
 		void CopyFields(CppVariadicExpr* from, CppVariadicExpr* to);
@@ -132,6 +134,7 @@ namespace cpp_parser::copy_visitor
 		virtual void Visit(CppDeclaratorFunctionPart* node);
 		virtual void Visit(CppDeclaratorArrayPart* node);
 		virtual void Visit(CppDeclarator* node);
+		virtual void Visit(CppVarStatInitItem* node);
 		virtual void Visit(CppDeclaratorVariablePart* node);
 		virtual void Visit(CppClassInheritance* node);
 		virtual void Visit(CppClassMemberPart* node);
@@ -158,6 +161,7 @@ namespace cpp_parser::copy_visitor
 		void Visit(CppUsingNamespaceDeclaration* node) override;
 		void Visit(CppUsingValueDeclaration* node) override;
 		void Visit(CppUsingTypeDeclaration* node) override;
+		void Visit(CppFriendTypeDeclaration* node) override;
 
 		void Visit(CppTypeOrExprToResolve* node) override;
 		void Visit(CppExprOnly* node) override;
@@ -238,6 +242,7 @@ namespace cpp_parser::copy_visitor
 		virtual vl::Ptr<CppDeclaratorFunctionPart> CopyNode(CppDeclaratorFunctionPart* node);
 		virtual vl::Ptr<CppDeclaratorArrayPart> CopyNode(CppDeclaratorArrayPart* node);
 		virtual vl::Ptr<CppDeclarator> CopyNode(CppDeclarator* node);
+		virtual vl::Ptr<CppVarStatInitItem> CopyNode(CppVarStatInitItem* node);
 		virtual vl::Ptr<CppDeclaratorVariablePart> CopyNode(CppDeclaratorVariablePart* node);
 		virtual vl::Ptr<CppClassInheritance> CopyNode(CppClassInheritance* node);
 		virtual vl::Ptr<CppClassMemberPart> CopyNode(CppClassMemberPart* node);
@@ -272,6 +277,7 @@ namespace cpp_parser::copy_visitor
 		vl::Ptr<CppForStat> CopyNode(CppForStat* node);
 		vl::Ptr<CppForStatIterateCondition> CopyNode(CppForStatIterateCondition* node);
 		vl::Ptr<CppForStatLoopCondition> CopyNode(CppForStatLoopCondition* node);
+		vl::Ptr<CppFriendTypeDeclaration> CopyNode(CppFriendTypeDeclaration* node);
 		vl::Ptr<CppGenericArgument> CopyNode(CppGenericArgument* node);
 		vl::Ptr<CppGotoStat> CopyNode(CppGotoStat* node);
 		vl::Ptr<CppIfElseStat> CopyNode(CppIfElseStat* node);

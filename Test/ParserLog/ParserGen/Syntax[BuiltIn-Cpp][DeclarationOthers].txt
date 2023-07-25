@@ -31,7 +31,7 @@
                         "second": {
                             "$ast": "RefSyntax",
                             "field": "expr",
-                            "literal": "_Expr",
+                            "literal": "_Expr_NoComma",
                             "refType": "Id"
                         }
                     },
@@ -49,7 +49,7 @@
                             "second": {
                                 "$ast": "RefSyntax",
                                 "field": "message",
-                                "literal": "_Expr",
+                                "literal": "_Expr_NoComma",
                                 "refType": "Id"
                             }
                         }
@@ -75,7 +75,7 @@
             "assignments": [],
             "syntax": {
                 "$ast": "UseSyntax",
-                "name": "_MultiVarsDeclWithoutKeyword"
+                "name": "_MultiTypedefVarsDeclWithoutKeyword"
             }
         }, {
             "$ast": "ReuseClause",
@@ -132,45 +132,6 @@
                 "first": {
                     "$ast": "SequenceSyntax",
                     "first": {
-                        "$ast": "RefSyntax",
-                        "field": "",
-                        "literal": "\"extern\"",
-                        "refType": "Literal"
-                    },
-                    "second": {
-                        "$ast": "OptionalSyntax",
-                        "priority": "Equal",
-                        "syntax": {
-                            "$ast": "RefSyntax",
-                            "field": "",
-                            "literal": "STRING",
-                            "refType": "Id"
-                        }
-                    }
-                },
-                "second": {
-                    "$ast": "RefSyntax",
-                    "field": "decls",
-                    "literal": "_DeclNeedSemicolon",
-                    "refType": "Id"
-                }
-            },
-            "type": "ExternDeclaration"
-        }],
-        "name": "_ExternDeclNeedSemicolon",
-        "type": ""
-    }, {
-        "$ast": "Rule",
-        "attParser": "",
-        "attPublic": "",
-        "clauses": [{
-            "$ast": "CreateClause",
-            "assignments": [],
-            "syntax": {
-                "$ast": "SequenceSyntax",
-                "first": {
-                    "$ast": "SequenceSyntax",
-                    "first": {
                         "$ast": "SequenceSyntax",
                         "first": {
                             "$ast": "SequenceSyntax",
@@ -214,38 +175,6 @@
                     "field": "",
                     "literal": "\"}\"",
                     "refType": "Literal"
-                }
-            },
-            "type": "ExternDeclaration"
-        }, {
-            "$ast": "CreateClause",
-            "assignments": [],
-            "syntax": {
-                "$ast": "SequenceSyntax",
-                "first": {
-                    "$ast": "SequenceSyntax",
-                    "first": {
-                        "$ast": "RefSyntax",
-                        "field": "",
-                        "literal": "\"extern\"",
-                        "refType": "Literal"
-                    },
-                    "second": {
-                        "$ast": "OptionalSyntax",
-                        "priority": "Equal",
-                        "syntax": {
-                            "$ast": "RefSyntax",
-                            "field": "",
-                            "literal": "STRING",
-                            "refType": "Id"
-                        }
-                    }
-                },
-                "second": {
-                    "$ast": "RefSyntax",
-                    "field": "decls",
-                    "literal": "_DeclRejectSemicolon",
-                    "refType": "Id"
                 }
             },
             "type": "ExternDeclaration"
@@ -461,6 +390,32 @@
             "type": "UsingTypeDeclaration"
         }],
         "name": "_UsingTypeDecl",
+        "type": ""
+    }, {
+        "$ast": "Rule",
+        "attParser": "",
+        "attPublic": "",
+        "clauses": [{
+            "$ast": "CreateClause",
+            "assignments": [],
+            "syntax": {
+                "$ast": "SequenceSyntax",
+                "first": {
+                    "$ast": "RefSyntax",
+                    "field": "",
+                    "literal": "\"friend\"",
+                    "refType": "Literal"
+                },
+                "second": {
+                    "$ast": "RefSyntax",
+                    "field": "type",
+                    "literal": "_QualifiedName",
+                    "refType": "Id"
+                }
+            },
+            "type": "FriendTypeDeclaration"
+        }],
+        "name": "_FriendTypeDecl",
         "type": ""
     }, {
         "$ast": "Rule",
