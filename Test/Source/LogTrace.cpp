@@ -526,6 +526,19 @@ void RenderTrace(
 		}
 
 		/***********************************************************************
+		Attending Competition
+		***********************************************************************/
+
+		if (trace->competitionRouting.attendingCompetitions != nullref)
+		{
+			writer.WriteString(L"[FIRST ATTENDING COMPETITION]:");
+			auto acId = trace->competitionRouting.attendingCompetitions;
+			auto ac = tm.GetAttendingCompetitions(acId);
+			auto cpt = tm.GetCompetition(ac->competition);
+			writer.WriteLine(L"  [" + itow(ac->allocatedIndex) + L"]");
+		}
+
+		/***********************************************************************
 		Carried Competition
 		***********************************************************************/
 
