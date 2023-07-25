@@ -543,7 +543,7 @@ TraceManager
 				Trace*										EnsureTraceWithValidStates(Trace* trace);
 				bool										AreTwoEndingInputTraceEqual(Trace* newTrace, Trace* candidate);
 				void										MergeTwoEndingInputTrace(Trace* newTrace, Trace* candidate);
-				void										TryMergeSurvivedTraces();
+				void										TryMergeSurvivingTraces();
 
 				// Competition
 				void										AttendCompetition(Trace* trace, Ref<AttendingCompetitions>& newAttendingCompetitions, Ref<AttendingCompetitions>& newCarriedCompetitions, Ref<ReturnStack> returnStack, vint32_t ruleId, vint32_t clauseId, bool forHighPriority);

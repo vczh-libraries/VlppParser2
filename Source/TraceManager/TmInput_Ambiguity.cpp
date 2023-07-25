@@ -83,10 +83,10 @@ MergeTwoEndingInputTrace
 			}
 
 /***********************************************************************
-TryMergeSurvivedTraces
+TryMergeSurvivingTraces
 ***********************************************************************/
 
-			void TraceManager::TryMergeSurvivedTraces()
+			void TraceManager::TryMergeSurvivingTraces()
 			{
 			}
 		}

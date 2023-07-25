@@ -105,7 +105,7 @@ Input
 					// after competition are closed
 					// different surviving traces might be mergable
 					// merge them and remove unnecessary traces
-					TryMergeSurvivedTraces();
+					TryMergeSurvivingTraces();
 				}
 
 				EndSwap();
