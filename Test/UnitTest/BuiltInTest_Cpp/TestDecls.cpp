@@ -5,7 +5,7 @@ TEST_FILE
 	const wchar_t* categories[] = {
 		L"Decls",
 		L"Members_Decls",
-		// L"Generic_Decls",
+		L"Generic_Decls",
 		// L"GenericMember_Decls",
 		// L"GenericPS_Decls",
 	};
