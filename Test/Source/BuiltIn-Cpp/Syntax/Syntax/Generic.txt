@@ -34,3 +34,16 @@ _GenericParameter
 _GenericHeader
   ::= "<" {_GenericParameter:parameters ; ","} ">" as GenericHeader
   ;
+
+//////////////////////////////////////////////////////////////////
+// Generic Argument
+//////////////////////////////////////////////////////////////////
+
+_GenericArgument
+  ::= !_TypeOrExpr_NoComma_NoGT
+  ::= _TypeOrExpr_NoComma_NoGT:argument "...":variadic as GenericArgument
+  ;
+
+_GenericArguments
+  ::= "<" {_GenericArgument:arguments ; ","} ">" as GenericArguments
+  ;

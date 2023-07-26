@@ -38,16 +38,22 @@ _DeclaratorInnerWithoutName
   ::= "(" _InnerDeclaratorWithoutName:innerDeclarator ")" as partial Declarator
   ;
 
+_DeclaratorName
+  ::= _DeclaratorId:id as partial Declarator
+  ::= _DeclaratorId:id ":" _Expr:bitfield as partial Declarator
+  ::= _DeclaratorId:id _GenericArguments:arguments as partial Declarator
+  ;
+
 _DeclaratorInnerOptionalName
   ::= "(" _InnerDeclaratorInnerOptionalName:innerDeclarator ")" as partial Declarator
-  ::=  _DeclaratorId:id [":" _Expr:bitfield] as partial Declarator
-  ::=  "...":variadic [_DeclaratorId:id [":" _Expr:bitfield]] as partial Declarator
+  ::=  _DeclaratorName as partial Declarator
+  ::=  "...":variadic [_DeclaratorName] as partial Declarator
   ;
 
 _DeclaratorInnerRequiredName
   ::= "(" _InnerDeclaratorInnerRequiredName:innerDeclarator ")" as partial Declarator
-  ::=  _DeclaratorId:id [":" _Expr:bitfield] as partial Declarator
-  ::=  "...":variadic _DeclaratorId:id [":" _Expr:bitfield] as partial Declarator
+  ::=  _DeclaratorName as partial Declarator
+  ::=  "...":variadic _DeclaratorName as partial Declarator
   ;
 
 //////////////////////////////////////////////////////////////////

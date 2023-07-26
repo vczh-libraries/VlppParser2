@@ -82,15 +82,6 @@ _Identifier
   ::= !_OperatorIdentifier
   ;
 
-_GenericArgument
-  ::= !_TypeOrExpr_NoComma_NoGT
-  ::= _TypeOrExpr_NoComma_NoGT:argument "...":variadic as GenericArgument
-  ;
-
-_GenericArguments
-  ::= "<" {_GenericArgument:arguments ; ","} ">" as GenericArguments
-  ;
-
 _QualifiedNameFragment
   ::= _Identifier:id [_GenericArguments:arguments] as partial QualifiedName
   ::= "template" _Identifier:id _GenericArguments:arguments as partial QualifiedName
