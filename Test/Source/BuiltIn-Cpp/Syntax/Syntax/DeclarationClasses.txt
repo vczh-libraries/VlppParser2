@@ -3,17 +3,17 @@
 //////////////////////////////////////////////////////////////////
 
 _ClassInheritanceFirst
-  ::= ":"             _Type:type as ClassInheritance {accessor = Default}
-  ::= ":" "private"   _Type:type as ClassInheritance {accessor = Private}
-  ::= ":" "protected" _Type:type as ClassInheritance {accessor = Protected}
-  ::= ":" "public"    _Type:type as ClassInheritance {accessor = Public}
+  ::= ":"             _Type:type ["...":variadic] as ClassInheritance {accessor = Default}
+  ::= ":" "private"   _Type:type ["...":variadic] as ClassInheritance {accessor = Private}
+  ::= ":" "protected" _Type:type ["...":variadic] as ClassInheritance {accessor = Protected}
+  ::= ":" "public"    _Type:type ["...":variadic] as ClassInheritance {accessor = Public}
   ;
 
 _ClassInheritanceSecond
-  ::= ","             _Type:type as ClassInheritance {accessor = Default}
-  ::= "," "private"   _Type:type as ClassInheritance {accessor = Private}
-  ::= "," "protected" _Type:type as ClassInheritance {accessor = Protected}
-  ::= "," "public"    _Type:type as ClassInheritance {accessor = Public}
+  ::= ","             _Type:type ["...":variadic] as ClassInheritance {accessor = Default}
+  ::= "," "private"   _Type:type ["...":variadic] as ClassInheritance {accessor = Private}
+  ::= "," "protected" _Type:type ["...":variadic] as ClassInheritance {accessor = Protected}
+  ::= "," "public"    _Type:type ["...":variadic] as ClassInheritance {accessor = Public}
   ;
 
 _ClassMemberPartFirst
@@ -21,9 +21,9 @@ _ClassMemberPartFirst
   ;
 
 _ClassMemberPartSecond
-  ::= "private"   ":"          {_DeclRejectSemicolon:decls} as ClassMemberPart {accessor = Private}
-  ::= "protected" ":"          {_DeclRejectSemicolon:decls} as ClassMemberPart {accessor = Protected}
-  ::= "public"    ":"          {_DeclRejectSemicolon:decls} as ClassMemberPart {accessor = Public}
+  ::= "private"   ":"            {_DeclRejectSemicolon:decls} as ClassMemberPart {accessor = Private}
+  ::= "protected" ":"            {_DeclRejectSemicolon:decls} as ClassMemberPart {accessor = Protected}
+  ::= "public"    ":"            {_DeclRejectSemicolon:decls} as ClassMemberPart {accessor = Public}
   ;
 
 _ClassBody
