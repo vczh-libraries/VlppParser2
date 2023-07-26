@@ -6,8 +6,8 @@ TEST_FILE
 		L"Decls",
 		L"Members_Decls",
 		L"Generic_Decls",
-		// L"GenericMember_Decls",
-		// L"GenericPS_Decls",
+		L"GenericMember_Decls",
+		L"GenericPS_Decls",
 	};
 
 	for (auto category : categories)
