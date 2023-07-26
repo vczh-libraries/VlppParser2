@@ -69,8 +69,8 @@ _PostfixUnaryExpr
   ::= _QualifiedName:operand "{" {_Expr_Argument:arguments ; ","} "}" as CallExpr {kind = Brace}
   ::= _CallConstructibleType:operand "{" {_Expr_Argument:arguments ; ","} "}" as CallExpr {kind = Brace}
   ::= _CallConstructibleType:operand "(" {_Expr_Argument:arguments ; ","} ")" as CallExpr {kind = Parenthesis}
-  ::= _PostfixUnaryExpr:left "." _MemberOperatorQualifiedName:right as BinaryExpr {op = Member}
-  ::= _PostfixUnaryExpr:left "->" _MemberOperatorQualifiedName:right as BinaryExpr {op = Pointer}
+  ::= _PostfixUnaryExpr:left "." _QualifiedName:right as BinaryExpr {op = Member}
+  ::= _PostfixUnaryExpr:left "->" _QualifiedName:right as BinaryExpr {op = Pointer}
   ::= _PostfixUnaryExpr:operand "++" as PostfixUnaryExpr {op = Increase}
   ::= _PostfixUnaryExpr:operand "--" as PostfixUnaryExpr {op = Decrease}
   ::= _PostfixUnaryExpr:operand "[" _Expr:index "]" as IndexExpr
@@ -146,10 +146,6 @@ _MemberOperatorIdentifier
   ::= !_NameIdentifier
   ::= !_DtorIdentifier
   ::= !_OperatorIdentifier
-  ;
-
-_MemberOperatorQualifiedName
-  ::= _Identifier:id [_GenericArguments:arguments] as QualifiedName {kind = Context}
   ;
 
 _BExpr0
