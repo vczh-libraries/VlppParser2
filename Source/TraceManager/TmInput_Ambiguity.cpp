@@ -217,7 +217,20 @@ TryMergeSurvivingTraces
 								else
 								{
 									// if candidate is a merge trace
-									CHECK_FAIL(L"Not Implemented!");
+									// turn trace into a merge trace
+									// give the rest of predecessors of candidate to trace
+									auto candidateHead = GetTrace(candidate->predecessors.first);
+									auto candidateNextId = candidateHead->predecessors.siblingNext;
+
+									candidateHead->predecessors.siblingNext = nullref;
+									auto formerTrace = MergeTwoEndingInputTrace(candidateHead, trace);
+									CHECK_ERROR(formerTrace != nullptr, ERROR_MESSAGE_PREFIX L"Internal error: formerTrace should not be null.");
+									realTrace = formerTrace;
+
+									candidateHead->predecessors.siblingNext = candidateNextId;
+									trace->predecessors.last = candidate->predecessors.last;
+									candidate->predecessors.first = nullref;
+									candidate->predecessors.last = nullref;
 								}
 							}
 							else
