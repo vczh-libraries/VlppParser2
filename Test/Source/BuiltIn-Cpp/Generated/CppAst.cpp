@@ -675,7 +675,6 @@ namespace vl::reflection::description
 		ENUM_NAMESPACE_ITEM(Context)
 		ENUM_NAMESPACE_ITEM(Auto)
 		ENUM_NAMESPACE_ITEM(Decltype)
-		ENUM_NAMESPACE_ITEM(DecltypeAuto)
 		ENUM_NAMESPACE_ITEM(Member)
 	END_ENUM_ITEM(cpp_parser::CppQualifiedNameKinds)
 
@@ -1071,6 +1070,7 @@ namespace vl::reflection::description
 		CLASS_MEMBER_FIELD(advancedTypes)
 		CLASS_MEMBER_FIELD(variadic)
 		CLASS_MEMBER_FIELD(id)
+		CLASS_MEMBER_FIELD(arguments)
 		CLASS_MEMBER_FIELD(bitfield)
 		CLASS_MEMBER_FIELD(innerDeclarator)
 		CLASS_MEMBER_FIELD(funcPart)
@@ -1179,6 +1179,7 @@ namespace vl::reflection::description
 		CLASS_MEMBER_CONSTRUCTOR(vl::Ptr<cpp_parser::CppClassInheritance>(), NO_PARAMETER)
 
 		CLASS_MEMBER_FIELD(accessor)
+		CLASS_MEMBER_FIELD(variadic)
 		CLASS_MEMBER_FIELD(type)
 	END_CLASS_MEMBER(cpp_parser::CppClassInheritance)
 
@@ -1208,6 +1209,7 @@ namespace vl::reflection::description
 
 		CLASS_MEMBER_FIELD(kind)
 		CLASS_MEMBER_FIELD(name)
+		CLASS_MEMBER_FIELD(arguments)
 		CLASS_MEMBER_FIELD(body)
 	END_CLASS_MEMBER(cpp_parser::CppClassDeclaration)
 
@@ -1310,6 +1312,7 @@ namespace vl::reflection::description
 
 		CLASS_MEMBER_CONSTRUCTOR(vl::Ptr<cpp_parser::CppUsingValueDeclaration>(), NO_PARAMETER)
 
+		CLASS_MEMBER_FIELD(typenameKeyword)
 		CLASS_MEMBER_FIELD(name)
 	END_CLASS_MEMBER(cpp_parser::CppUsingValueDeclaration)
 

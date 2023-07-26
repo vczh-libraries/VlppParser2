@@ -87,6 +87,7 @@ namespace cpp_parser::copy_visitor
 	void AstVisitor::CopyFields(CppClassDeclaration* from, CppClassDeclaration* to)
 	{
 		CopyFields(static_cast<CppDeclaration*>(from), static_cast<CppDeclaration*>(to));
+		to->arguments = CopyNode(from->arguments.Obj());
 		to->body = CopyNode(from->body.Obj());
 		to->kind = from->kind;
 		to->name = from->name;
@@ -96,6 +97,7 @@ namespace cpp_parser::copy_visitor
 	{
 		to->accessor = from->accessor;
 		to->type = CopyNode(from->type.Obj());
+		to->variadic = from->variadic;
 	}
 
 	void AstVisitor::CopyFields(CppClassMemberPart* from, CppClassMemberPart* to)
@@ -139,6 +141,7 @@ namespace cpp_parser::copy_visitor
 		{
 			to->advancedTypes.Add(CopyNode(listItem.Obj()));
 		}
+		to->arguments = CopyNode(from->arguments.Obj());
 		for (auto&& listItem : from->arrayParts)
 		{
 			to->arrayParts.Add(CopyNode(listItem.Obj()));
@@ -694,6 +697,7 @@ namespace cpp_parser::copy_visitor
 	{
 		CopyFields(static_cast<CppDeclaration*>(from), static_cast<CppDeclaration*>(to));
 		to->name = CopyNode(from->name.Obj());
+		to->typenameKeyword = from->typenameKeyword;
 	}
 
 	void AstVisitor::CopyFields(CppVarBraceInit* from, CppVarBraceInit* to)

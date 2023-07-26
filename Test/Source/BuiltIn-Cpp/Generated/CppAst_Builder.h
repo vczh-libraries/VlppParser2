@@ -72,6 +72,7 @@ namespace cpp_parser::builder
 	class MakeClassDeclaration : public vl::glr::ParsingAstBuilder<CppClassDeclaration>
 	{
 	public:
+		MakeClassDeclaration& arguments(const vl::Ptr<CppGenericArguments>& value);
 		MakeClassDeclaration& body(const vl::Ptr<CppClassBody>& value);
 		MakeClassDeclaration& kind(CppClassKind value);
 		MakeClassDeclaration& name(const vl::WString& value);
@@ -83,6 +84,7 @@ namespace cpp_parser::builder
 	public:
 		MakeClassInheritance& accessor(CppClassAccessor value);
 		MakeClassInheritance& type(const vl::Ptr<CppTypeOrExpr>& value);
+		MakeClassInheritance& variadic(const vl::WString& value);
 	};
 
 	class MakeClassMemberPart : public vl::glr::ParsingAstBuilder<CppClassMemberPart>
@@ -114,6 +116,7 @@ namespace cpp_parser::builder
 	{
 	public:
 		MakeDeclarator& advancedTypes(const vl::Ptr<CppAdvancedType>& value);
+		MakeDeclarator& arguments(const vl::Ptr<CppGenericArguments>& value);
 		MakeDeclarator& arrayParts(const vl::Ptr<CppDeclaratorArrayPart>& value);
 		MakeDeclarator& bitfield(const vl::Ptr<CppTypeOrExpr>& value);
 		MakeDeclarator& funcPart(const vl::Ptr<CppDeclaratorFunctionPartBase>& value);
@@ -393,7 +396,7 @@ namespace cpp_parser::builder
 	class MakeOperatorTypeIdentifier : public vl::glr::ParsingAstBuilder<CppOperatorTypeIdentifier>
 	{
 	public:
-		MakeOperatorTypeIdentifier& type(const vl::Ptr<CppTypeOrExpr>& value);
+		MakeOperatorTypeIdentifier& type(const vl::Ptr<CppTypeOrExprOrOthers>& value);
 	};
 
 	class MakeOrdinaryGenericParameter : public vl::glr::ParsingAstBuilder<CppOrdinaryGenericParameter>
@@ -571,6 +574,7 @@ namespace cpp_parser::builder
 	{
 	public:
 		MakeUsingValueDeclaration& name(const vl::Ptr<CppQualifiedName>& value);
+		MakeUsingValueDeclaration& typenameKeyword(const vl::WString& value);
 		MakeUsingValueDeclaration& keywords(const vl::Ptr<CppDeclaratorKeyword>& value);
 	};
 

@@ -153,6 +153,12 @@ MakeClassBody
 MakeClassDeclaration
 ***********************************************************************/
 
+	MakeClassDeclaration& MakeClassDeclaration::arguments(const vl::Ptr<CppGenericArguments>& value)
+	{
+		node->arguments = value;
+		return *this;
+	}
+
 	MakeClassDeclaration& MakeClassDeclaration::body(const vl::Ptr<CppClassBody>& value)
 	{
 		node->body = value;
@@ -190,6 +196,12 @@ MakeClassInheritance
 	MakeClassInheritance& MakeClassInheritance::type(const vl::Ptr<CppTypeOrExpr>& value)
 	{
 		node->type = value;
+		return *this;
+	}
+
+	MakeClassInheritance& MakeClassInheritance::variadic(const vl::WString& value)
+	{
+		node->variadic.value = value;
 		return *this;
 	}
 
@@ -246,6 +258,12 @@ MakeDeclarator
 	MakeDeclarator& MakeDeclarator::advancedTypes(const vl::Ptr<CppAdvancedType>& value)
 	{
 		node->advancedTypes.Add(value);
+		return *this;
+	}
+
+	MakeDeclarator& MakeDeclarator::arguments(const vl::Ptr<CppGenericArguments>& value)
+	{
+		node->arguments = value;
 		return *this;
 	}
 
@@ -935,7 +953,7 @@ MakeOperatorIdentifier
 MakeOperatorTypeIdentifier
 ***********************************************************************/
 
-	MakeOperatorTypeIdentifier& MakeOperatorTypeIdentifier::type(const vl::Ptr<CppTypeOrExpr>& value)
+	MakeOperatorTypeIdentifier& MakeOperatorTypeIdentifier::type(const vl::Ptr<CppTypeOrExprOrOthers>& value)
 	{
 		node->type = value;
 		return *this;
@@ -1350,6 +1368,12 @@ MakeUsingValueDeclaration
 	MakeUsingValueDeclaration& MakeUsingValueDeclaration::name(const vl::Ptr<CppQualifiedName>& value)
 	{
 		node->name = value;
+		return *this;
+	}
+
+	MakeUsingValueDeclaration& MakeUsingValueDeclaration::typenameKeyword(const vl::WString& value)
+	{
+		node->typenameKeyword.value = value;
 		return *this;
 	}
 

@@ -297,6 +297,7 @@ namespace cpp_parser::traverse_visitor
 		Traverse(static_cast<CppTypeOrExprOrOthers*>(node));
 		Traverse(static_cast<CppDeclaration*>(node));
 		Traverse(static_cast<CppClassDeclaration*>(node));
+		InspectInto(node->arguments.Obj());
 		InspectInto(node->body.Obj());
 		Traverse(node->name);
 		for (auto&& listItem : node->keywords)
@@ -460,6 +461,7 @@ namespace cpp_parser::traverse_visitor
 		Traverse(static_cast<CppDeclaration*>(node));
 		Traverse(static_cast<CppUsingValueDeclaration*>(node));
 		InspectInto(node->name.Obj());
+		Traverse(node->typenameKeyword);
 		for (auto&& listItem : node->keywords)
 		{
 			InspectInto(listItem.Obj());
@@ -1545,6 +1547,7 @@ namespace cpp_parser::traverse_visitor
 		{
 			InspectInto(listItem.Obj());
 		}
+		InspectInto(node->arguments.Obj());
 		for (auto&& listItem : node->arrayParts)
 		{
 			InspectInto(listItem.Obj());
@@ -1579,6 +1582,7 @@ namespace cpp_parser::traverse_visitor
 		Traverse(static_cast<vl::glr::ParsingAstBase*>(node));
 		Traverse(static_cast<CppClassInheritance*>(node));
 		InspectInto(node->type.Obj());
+		Traverse(node->variadic);
 		Finishing(static_cast<CppClassInheritance*>(node));
 		Finishing(static_cast<vl::glr::ParsingAstBase*>(node));
 	}

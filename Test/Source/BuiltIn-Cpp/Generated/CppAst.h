@@ -187,8 +187,7 @@ namespace cpp_parser
 		Context = 1,
 		Auto = 2,
 		Decltype = 3,
-		DecltypeAuto = 4,
-		Member = 5,
+		Member = 4,
 	};
 
 	enum class CppPrimitiveExprLiteralKinds
@@ -451,7 +450,7 @@ namespace cpp_parser
 	class CppOperatorTypeIdentifier : public CppIdentifier, vl::reflection::Description<CppOperatorTypeIdentifier>
 	{
 	public:
-		vl::Ptr<CppTypeOrExpr> type;
+		vl::Ptr<CppTypeOrExprOrOthers> type;
 
 		void Accept(CppIdentifier::IVisitor* visitor) override;
 	};
@@ -778,6 +777,7 @@ namespace cpp_parser
 		vl::collections::List<vl::Ptr<CppAdvancedType>> advancedTypes;
 		vl::glr::ParsingToken variadic;
 		vl::Ptr<CppIdentifier> id;
+		vl::Ptr<CppGenericArguments> arguments;
 		vl::Ptr<CppTypeOrExpr> bitfield;
 		vl::Ptr<CppDeclarator> innerDeclarator;
 		vl::Ptr<CppDeclaratorFunctionPartBase> funcPart;
@@ -887,6 +887,7 @@ namespace cpp_parser
 	{
 	public:
 		CppClassAccessor accessor = CppClassAccessor::UNDEFINED_ENUM_ITEM_VALUE;
+		vl::glr::ParsingToken variadic;
 		vl::Ptr<CppTypeOrExpr> type;
 	};
 
@@ -910,6 +911,7 @@ namespace cpp_parser
 	public:
 		CppClassKind kind = CppClassKind::UNDEFINED_ENUM_ITEM_VALUE;
 		vl::glr::ParsingToken name;
+		vl::Ptr<CppGenericArguments> arguments;
 		vl::Ptr<CppClassBody> body;
 
 		void Accept(CppDeclaration::IVisitor* visitor) override;
@@ -1000,6 +1002,7 @@ namespace cpp_parser
 	class CppUsingValueDeclaration : public CppDeclaration, vl::reflection::Description<CppUsingValueDeclaration>
 	{
 	public:
+		vl::glr::ParsingToken typenameKeyword;
 		vl::Ptr<CppQualifiedName> name;
 
 		void Accept(CppDeclaration::IVisitor* visitor) override;

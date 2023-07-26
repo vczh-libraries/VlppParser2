@@ -312,6 +312,9 @@ namespace cpp_parser::json_visitor
 	}
 	void AstVisitor::PrintFields(CppClassDeclaration* node)
 	{
+		BeginField(L"arguments");
+		Print(node->arguments.Obj());
+		EndField();
 		BeginField(L"body");
 		Print(node->body.Obj());
 		EndField();
@@ -358,6 +361,9 @@ namespace cpp_parser::json_visitor
 		EndField();
 		BeginField(L"type");
 		Print(node->type.Obj());
+		EndField();
+		BeginField(L"variadic");
+		WriteToken(node->variadic);
 		EndField();
 	}
 	void AstVisitor::PrintFields(CppClassMemberPart* node)
@@ -431,6 +437,9 @@ namespace cpp_parser::json_visitor
 			EndArrayItem();
 		}
 		EndArray();
+		EndField();
+		BeginField(L"arguments");
+		Print(node->arguments.Obj());
 		EndField();
 		BeginField(L"arrayParts");
 		BeginArray();
@@ -1625,9 +1634,6 @@ namespace cpp_parser::json_visitor
 		case cpp_parser::CppQualifiedNameKinds::Decltype:
 			WriteString(L"Decltype");
 			break;
-		case cpp_parser::CppQualifiedNameKinds::DecltypeAuto:
-			WriteString(L"DecltypeAuto");
-			break;
 		case cpp_parser::CppQualifiedNameKinds::Member:
 			WriteString(L"Member");
 			break;
@@ -1842,6 +1848,9 @@ namespace cpp_parser::json_visitor
 	{
 		BeginField(L"name");
 		Print(node->name.Obj());
+		EndField();
+		BeginField(L"typenameKeyword");
+		WriteToken(node->typenameKeyword);
 		EndField();
 	}
 	void AstVisitor::PrintFields(CppVarBraceInit* node)

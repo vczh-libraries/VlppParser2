@@ -69,22 +69,13 @@ _OperatorIdentifier : Identifier
   ;
 
 _OperatorTypeIdentifier : OperatorTypeIdentifier
-  ::= "operator" _TypeBeforeDeclarator:type as OperatorTypeIdentifier
+  ::= "operator" _TypeWithoutFuncVar:type as OperatorTypeIdentifier
   ;
 
 _Identifier : Identifier
   ::= !_NameIdentifier
   ::= !_TypeIdentifier
   ::= !_OperatorIdentifier
-  ;
-
-_GenericArgument_LRI_Original : TypeOrExprOrOthers
-  ::= !_TypeOrExpr_NoComma_NoGT_LRI_Original
-  ::= _TypeOrExpr_NoComma_NoGT_LRI_Original:argument "...":variadic as GenericArgument
-  ;
-
-_GenericArguments : GenericArguments
-  ::= "<" {_GenericArgument:arguments ; ","} ">" as GenericArguments
   ;
 
 _QualifiedNameFragment : QualifiedName
@@ -188,8 +179,8 @@ _PostfixUnaryExpr_LRI_Original : TypeOrExpr
   ::= !_PostfixUnaryExpr_LRI_Isolated_1
   ::= _CallConstructibleType_LRI_Original:operand "{" {_Expr_Argument:arguments ; ","} "}" as CallExpr {kind = Brace}
   ::= _CallConstructibleType_LRI_Original:operand "(" {_Expr_Argument:arguments ; ","} ")" as CallExpr {kind = Parenthesis}
-  ::= _PostfixUnaryExpr_LRI_Original:left "." _MemberOperatorQualifiedName:right as BinaryExpr {op = Member}
-  ::= _PostfixUnaryExpr_LRI_Original:left "->" _MemberOperatorQualifiedName:right as BinaryExpr {op = Pointer}
+  ::= _PostfixUnaryExpr_LRI_Original:left "." _QualifiedName:right as BinaryExpr {op = Member}
+  ::= _PostfixUnaryExpr_LRI_Original:left "->" _QualifiedName:right as BinaryExpr {op = Pointer}
   ::= _PostfixUnaryExpr_LRI_Original:operand "++" as PostfixUnaryExpr {op = Increase}
   ::= _PostfixUnaryExpr_LRI_Original:operand "--" as PostfixUnaryExpr {op = Decrease}
   ::= _PostfixUnaryExpr_LRI_Original:operand "[" _Expr:index "]" as IndexExpr
@@ -258,10 +249,6 @@ _MemberOperatorIdentifier : Identifier
   ::= !_NameIdentifier
   ::= !_DtorIdentifier
   ::= !_OperatorIdentifier
-  ;
-
-_MemberOperatorQualifiedName : QualifiedName
-  ::= _Identifier:id [_GenericArguments:arguments] as QualifiedName {kind = Context}
   ;
 
 _BExpr0_LRI_Original : TypeOrExpr
@@ -513,6 +500,11 @@ _TypeBeforeDeclarator_LRI_Original : TypeOrExpr
   ::= _TypeBeforeDeclarator_LRI_Original:type "volatile" as VolatileType
   ;
 
+_TypeWithoutFuncVar_LRI_Original : TypeOrExpr
+  ::= !_TypeBeforeDeclarator_LRI_Original
+  ::= _TypeBeforeDeclarator_LRI_Original:type _DeclaratorWithoutNameAndFuncVar:declarator as DeclaratorType
+  ;
+
 _ExprStat_LRI_Original : Statement
   ::= _Expr_LRI_Original:expr ";" as ExprStat
   ::= _DeclNeedSemicolon_LRI_Original:decl ";" as DeclStat
@@ -645,6 +637,15 @@ _GenericParameter_LRI_Original : TypeOrExprOrOthers
 
 _GenericHeader : GenericHeader
   ::= "<" {_GenericParameter:parameters ; ","} ">" as GenericHeader
+  ;
+
+_GenericArgument_LRI_Original : TypeOrExprOrOthers
+  ::= !_TypeOrExpr_NoComma_NoGT_LRI_Original
+  ::= _TypeOrExpr_NoComma_NoGT_LRI_Original:argument "...":variadic as GenericArgument
+  ;
+
+_GenericArguments : GenericArguments
+  ::= "<" {_GenericArgument:arguments ; ","} ">" as GenericArguments
   ;
 
 _AdvancedTypeNoCVNoMember : AdvancedType
@@ -792,16 +793,27 @@ _DeclaratorInnerWithoutName : Declarator
   ::= "(" _InnerDeclaratorWithoutName:innerDeclarator ")" as partial Declarator
   ;
 
+_DeclaratorName : Declarator
+  ::= _DeclaratorId:id as partial Declarator
+  ::= _DeclaratorId:id ":" _Expr:bitfield as partial Declarator
+  ::= _DeclaratorId:id _GenericArguments:arguments as partial Declarator
+  ;
+
 _DeclaratorInnerOptionalName : Declarator
   ::= "(" _InnerDeclaratorInnerOptionalName:innerDeclarator ")" as partial Declarator
-  ::= _DeclaratorId:id [":" _Expr:bitfield] as partial Declarator
-  ::= "...":variadic [_DeclaratorId:id [":" _Expr:bitfield]] as partial Declarator
+  ::= _DeclaratorName as partial Declarator
+  ::= "...":variadic [_DeclaratorName] as partial Declarator
   ;
 
 _DeclaratorInnerRequiredName : Declarator
   ::= "(" _InnerDeclaratorInnerRequiredName:innerDeclarator ")" as partial Declarator
-  ::= _DeclaratorId:id [":" _Expr:bitfield] as partial Declarator
-  ::= "...":variadic _DeclaratorId:id [":" _Expr:bitfield] as partial Declarator
+  ::= _DeclaratorName as partial Declarator
+  ::= "...":variadic _DeclaratorName as partial Declarator
+  ;
+
+_DeclaratorWithoutNameAndFuncVar : Declarator
+  ::= _DeclaratorBeforeInner [_DeclaratorInnerWithoutName] as Declarator
+  ::= _DeclaratorInnerWithoutName as Declarator
   ;
 
 _DeclaratorWithoutName : Declarator
@@ -1022,17 +1034,17 @@ _MultiVarsOrFuncDecl_LRI_Original : VariablesDeclaration
   ;
 
 _ClassInheritanceFirst : ClassInheritance
-  ::= ":" _Type:type as ClassInheritance {accessor = Default}
-  ::= ":" "private" _Type:type as ClassInheritance {accessor = Private}
-  ::= ":" "protected" _Type:type as ClassInheritance {accessor = Protected}
-  ::= ":" "public" _Type:type as ClassInheritance {accessor = Public}
+  ::= ":" _Type:type ["...":variadic] as ClassInheritance {accessor = Default}
+  ::= ":" "private" _Type:type ["...":variadic] as ClassInheritance {accessor = Private}
+  ::= ":" "protected" _Type:type ["...":variadic] as ClassInheritance {accessor = Protected}
+  ::= ":" "public" _Type:type ["...":variadic] as ClassInheritance {accessor = Public}
   ;
 
 _ClassInheritanceSecond : ClassInheritance
-  ::= "," _Type:type as ClassInheritance {accessor = Default}
-  ::= "," "private" _Type:type as ClassInheritance {accessor = Private}
-  ::= "," "protected" _Type:type as ClassInheritance {accessor = Protected}
-  ::= "," "public" _Type:type as ClassInheritance {accessor = Public}
+  ::= "," _Type:type ["...":variadic] as ClassInheritance {accessor = Default}
+  ::= "," "private" _Type:type ["...":variadic] as ClassInheritance {accessor = Private}
+  ::= "," "protected" _Type:type ["...":variadic] as ClassInheritance {accessor = Protected}
+  ::= "," "public" _Type:type ["...":variadic] as ClassInheritance {accessor = Public}
   ;
 
 _ClassMemberPartFirst_LRI_Original : ClassMemberPart
@@ -1056,11 +1068,11 @@ _ClassDeclPrefix : ClassDeclaration
   ;
 
 _ClassDecl : ClassDeclaration
-  ::= _ClassDeclPrefix [ID:name] _ClassBody:body as ClassDeclaration
+  ::= _ClassDeclPrefix [ID:name [_GenericArguments:arguments]] _ClassBody:body as ClassDeclaration
   ;
 
 _ClassForwardDecl : ClassDeclaration
-  ::= _ClassDeclPrefix ID:name as ClassDeclaration
+  ::= _ClassDeclPrefix ID:name [_GenericArguments:arguments] as ClassDeclaration
   ;
 
 _StaticAssertDecl : StaticAssertDeclaration
@@ -1103,7 +1115,7 @@ _UsingNsDecl : UsingNamespaceDeclaration
   ;
 
 _UsingValueDecl : UsingValueDeclaration
-  ::= "using" _QualifiedName:name as UsingValueDeclaration
+  ::= "using" ["typename":typenameKeyword] _QualifiedName:name as UsingValueDeclaration
   ;
 
 _UsingTypeDecl : UsingTypeDeclaration
@@ -1245,18 +1257,6 @@ _TypeOrExpr_LRI_Original : TypeOrExpr
 
 _File_LRI_Original : File
   ::= _DeclRejectSemicolon_LRI_Original:decls {_DeclRejectSemicolon:decls} as File
-  ;
-
-_GenericArgument : TypeOrExprOrOthers
-  ::= !_BExpr_NoComma_SWITCH_0allow_GT_LRI_Isolated_1 [left_recursion_inject_multiple(LRI__BExpr_NoComma_SWITCH_0allow_GT) _GenericArgument_LRI_Original]
-  ::= !_CallConstructibleTypeBeforeDeclarator_LRI_Isolated_1 [left_recursion_inject_multiple(LRI__CallConstructibleTypeBeforeDeclarator) _GenericArgument_LRI_Original]
-  ::= !_CallConstructibleTypeBeforeDeclarator_LRI_Isolated_2 [left_recursion_inject_multiple(LRI__CallConstructibleTypeBeforeDeclarator) _GenericArgument_LRI_Original]
-  ::= !_PostfixUnaryExpr_LRI_Isolated_1 [left_recursion_inject_multiple(LRI__PostfixUnaryExpr) _GenericArgument_LRI_Original]
-  ::= !_PrefixUnaryExpr_LRI_Isolated_1 [left_recursion_inject_multiple(LRI__PrefixUnaryExpr) _GenericArgument_LRI_Original]
-  ::= !_PrimitiveExpr [left_recursion_inject_multiple(LRI__QualifiedName_PrimitiveExpr) _GenericArgument_LRI_Original]
-  ::= !_PrimitiveType [left_recursion_inject_multiple(LRI__PM_PrimitiveType) _GenericArgument_LRI_Original]
-  ::= !_QualifiedName [left_recursion_inject_multiple(LRI__PM_QualifiedName, LRI__QualifiedName_PrimitiveExpr) _GenericArgument_LRI_Original]
-  ::= !_Type_LRI_Isolated_2 [left_recursion_inject_multiple(LRI__Type) _GenericArgument_LRI_Original]
   ;
 
 _QualifiedName_PrimitiveExpr : TypeOrExpr
@@ -1573,6 +1573,13 @@ _TypeBeforeDeclarator : TypeOrExpr
   ::= !_QualifiedName [left_recursion_inject(LRI__PM_QualifiedName) _TypeBeforeDeclarator_LRI_Original]
   ;
 
+_TypeWithoutFuncVar : TypeOrExpr
+  ::= !_CallConstructibleTypeBeforeDeclarator_LRI_Isolated_1 [left_recursion_inject_multiple(LRI__CallConstructibleTypeBeforeDeclarator) _TypeWithoutFuncVar_LRI_Original]
+  ::= !_CallConstructibleTypeBeforeDeclarator_LRI_Isolated_2 [left_recursion_inject_multiple(LRI__CallConstructibleTypeBeforeDeclarator) _TypeWithoutFuncVar_LRI_Original]
+  ::= !_PrimitiveType [left_recursion_inject_multiple(LRI__PM_PrimitiveType) _TypeWithoutFuncVar_LRI_Original]
+  ::= !_QualifiedName [left_recursion_inject_multiple(LRI__PM_QualifiedName) _TypeWithoutFuncVar_LRI_Original]
+  ;
+
 _ExprStat : Statement
   ::= !_BExpr_NoComma_SWITCH_1allow_GT_LRI_Isolated_1 left_recursion_inject(LRI__BExpr_NoComma_SWITCH_1allow_GT) _ExprStat_LRI_Original
   ::= !_CallConstructibleTypeBeforeDeclarator_LRI_Isolated_1 left_recursion_inject_multiple(LRI__CallConstructibleTypeBeforeDeclarator) _ExprStat_LRI_Original
@@ -1648,6 +1655,18 @@ _GenericParameter : TypeOrExprOrOthers
   ::= !_CallConstructibleTypeBeforeDeclarator_LRI_Isolated_2 [left_recursion_inject_multiple(LRI__CallConstructibleTypeBeforeDeclarator) _GenericParameter_LRI_Original]
   ::= !_PrimitiveType [left_recursion_inject_multiple(LRI__PM_PrimitiveType) _GenericParameter_LRI_Original]
   ::= !_QualifiedName [left_recursion_inject_multiple(LRI__PM_QualifiedName) _GenericParameter_LRI_Original]
+  ;
+
+_GenericArgument : TypeOrExprOrOthers
+  ::= !_BExpr_NoComma_SWITCH_0allow_GT_LRI_Isolated_1 [left_recursion_inject_multiple(LRI__BExpr_NoComma_SWITCH_0allow_GT) _GenericArgument_LRI_Original]
+  ::= !_CallConstructibleTypeBeforeDeclarator_LRI_Isolated_1 [left_recursion_inject_multiple(LRI__CallConstructibleTypeBeforeDeclarator) _GenericArgument_LRI_Original]
+  ::= !_CallConstructibleTypeBeforeDeclarator_LRI_Isolated_2 [left_recursion_inject_multiple(LRI__CallConstructibleTypeBeforeDeclarator) _GenericArgument_LRI_Original]
+  ::= !_PostfixUnaryExpr_LRI_Isolated_1 [left_recursion_inject_multiple(LRI__PostfixUnaryExpr) _GenericArgument_LRI_Original]
+  ::= !_PrefixUnaryExpr_LRI_Isolated_1 [left_recursion_inject_multiple(LRI__PrefixUnaryExpr) _GenericArgument_LRI_Original]
+  ::= !_PrimitiveExpr [left_recursion_inject_multiple(LRI__QualifiedName_PrimitiveExpr) _GenericArgument_LRI_Original]
+  ::= !_PrimitiveType [left_recursion_inject_multiple(LRI__PM_PrimitiveType) _GenericArgument_LRI_Original]
+  ::= !_QualifiedName [left_recursion_inject_multiple(LRI__PM_QualifiedName, LRI__QualifiedName_PrimitiveExpr) _GenericArgument_LRI_Original]
+  ::= !_Type_LRI_Isolated_2 [left_recursion_inject_multiple(LRI__Type) _GenericArgument_LRI_Original]
   ;
 
 _FunctionParameter : TypeOrExprOrOthers
