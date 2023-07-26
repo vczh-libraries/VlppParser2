@@ -222,6 +222,11 @@ Visitor Pattern Implementation
 		visitor->Visit(this);
 	}
 
+	void CppTemplateDeclaration::Accept(CppDeclaration::IVisitor* visitor)
+	{
+		visitor->Visit(this);
+	}
+
 	void CppStaticAssertDeclaration::Accept(CppDeclaration::IVisitor* visitor)
 	{
 		visitor->Visit(this);
@@ -483,6 +488,7 @@ namespace vl::reflection::description
 	IMPL_TYPE_INFO_RENAME(cpp_parser::CppEnumItem, cpp_parser::CppEnumItem)
 	IMPL_TYPE_INFO_RENAME(cpp_parser::CppEnumBody, cpp_parser::CppEnumBody)
 	IMPL_TYPE_INFO_RENAME(cpp_parser::CppEnumDeclaration, cpp_parser::CppEnumDeclaration)
+	IMPL_TYPE_INFO_RENAME(cpp_parser::CppTemplateDeclaration, cpp_parser::CppTemplateDeclaration)
 	IMPL_TYPE_INFO_RENAME(cpp_parser::CppStaticAssertDeclaration, cpp_parser::CppStaticAssertDeclaration)
 	IMPL_TYPE_INFO_RENAME(cpp_parser::CppTypedefDeclaration, cpp_parser::CppTypedefDeclaration)
 	IMPL_TYPE_INFO_RENAME(cpp_parser::CppExternDeclaration, cpp_parser::CppExternDeclaration)
@@ -1240,6 +1246,15 @@ namespace vl::reflection::description
 		CLASS_MEMBER_FIELD(body)
 	END_CLASS_MEMBER(cpp_parser::CppEnumDeclaration)
 
+	BEGIN_CLASS_MEMBER(cpp_parser::CppTemplateDeclaration)
+		CLASS_MEMBER_BASE(cpp_parser::CppDeclaration)
+
+		CLASS_MEMBER_CONSTRUCTOR(vl::Ptr<cpp_parser::CppTemplateDeclaration>(), NO_PARAMETER)
+
+		CLASS_MEMBER_FIELD(genericHeader)
+		CLASS_MEMBER_FIELD(decl)
+	END_CLASS_MEMBER(cpp_parser::CppTemplateDeclaration)
+
 	BEGIN_CLASS_MEMBER(cpp_parser::CppStaticAssertDeclaration)
 		CLASS_MEMBER_BASE(cpp_parser::CppDeclaration)
 
@@ -1574,6 +1589,7 @@ namespace vl::reflection::description
 		CLASS_MEMBER_METHOD_OVERLOAD(Visit, {L"node"}, void(cpp_parser::CppDeclaration::IVisitor::*)(cpp_parser::CppVariablesDeclaration* node))
 		CLASS_MEMBER_METHOD_OVERLOAD(Visit, {L"node"}, void(cpp_parser::CppDeclaration::IVisitor::*)(cpp_parser::CppClassDeclaration* node))
 		CLASS_MEMBER_METHOD_OVERLOAD(Visit, {L"node"}, void(cpp_parser::CppDeclaration::IVisitor::*)(cpp_parser::CppEnumDeclaration* node))
+		CLASS_MEMBER_METHOD_OVERLOAD(Visit, {L"node"}, void(cpp_parser::CppDeclaration::IVisitor::*)(cpp_parser::CppTemplateDeclaration* node))
 		CLASS_MEMBER_METHOD_OVERLOAD(Visit, {L"node"}, void(cpp_parser::CppDeclaration::IVisitor::*)(cpp_parser::CppStaticAssertDeclaration* node))
 		CLASS_MEMBER_METHOD_OVERLOAD(Visit, {L"node"}, void(cpp_parser::CppDeclaration::IVisitor::*)(cpp_parser::CppTypedefDeclaration* node))
 		CLASS_MEMBER_METHOD_OVERLOAD(Visit, {L"node"}, void(cpp_parser::CppDeclaration::IVisitor::*)(cpp_parser::CppExternDeclaration* node))
@@ -1766,6 +1782,7 @@ namespace vl::reflection::description
 			ADD_TYPE_INFO(cpp_parser::CppEnumItem)
 			ADD_TYPE_INFO(cpp_parser::CppEnumBody)
 			ADD_TYPE_INFO(cpp_parser::CppEnumDeclaration)
+			ADD_TYPE_INFO(cpp_parser::CppTemplateDeclaration)
 			ADD_TYPE_INFO(cpp_parser::CppStaticAssertDeclaration)
 			ADD_TYPE_INFO(cpp_parser::CppTypedefDeclaration)
 			ADD_TYPE_INFO(cpp_parser::CppExternDeclaration)

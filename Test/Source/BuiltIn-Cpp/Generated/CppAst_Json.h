@@ -104,6 +104,7 @@ namespace cpp_parser::json_visitor
 		virtual void PrintFields(CppStringLiteralFragment* node);
 		virtual void PrintFields(CppSwitchStat* node);
 		virtual void PrintFields(CppSysFuncExpr* node);
+		virtual void PrintFields(CppTemplateDeclaration* node);
 		virtual void PrintFields(CppThrowExpr* node);
 		virtual void PrintFields(CppTryStat* node);
 		virtual void PrintFields(CppTryStatCatchPart* node);
@@ -139,6 +140,7 @@ namespace cpp_parser::json_visitor
 		void Visit(CppVariablesDeclaration* node) override;
 		void Visit(CppClassDeclaration* node) override;
 		void Visit(CppEnumDeclaration* node) override;
+		void Visit(CppTemplateDeclaration* node) override;
 		void Visit(CppStaticAssertDeclaration* node) override;
 		void Visit(CppTypedefDeclaration* node) override;
 		void Visit(CppExternDeclaration* node) override;

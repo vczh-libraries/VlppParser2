@@ -106,6 +106,7 @@ namespace cpp_parser::traverse_visitor
 		virtual void Traverse(CppStringLiteralFragment* node);
 		virtual void Traverse(CppSwitchStat* node);
 		virtual void Traverse(CppSysFuncExpr* node);
+		virtual void Traverse(CppTemplateDeclaration* node);
 		virtual void Traverse(CppThrowExpr* node);
 		virtual void Traverse(CppTryStat* node);
 		virtual void Traverse(CppTryStatCatchPart* node);
@@ -210,6 +211,7 @@ namespace cpp_parser::traverse_visitor
 		virtual void Finishing(CppStringLiteralFragment* node);
 		virtual void Finishing(CppSwitchStat* node);
 		virtual void Finishing(CppSysFuncExpr* node);
+		virtual void Finishing(CppTemplateDeclaration* node);
 		virtual void Finishing(CppThrowExpr* node);
 		virtual void Finishing(CppTryStat* node);
 		virtual void Finishing(CppTryStatCatchPart* node);
@@ -245,6 +247,7 @@ namespace cpp_parser::traverse_visitor
 		void Visit(CppVariablesDeclaration* node) override;
 		void Visit(CppClassDeclaration* node) override;
 		void Visit(CppEnumDeclaration* node) override;
+		void Visit(CppTemplateDeclaration* node) override;
 		void Visit(CppStaticAssertDeclaration* node) override;
 		void Visit(CppTypedefDeclaration* node) override;
 		void Visit(CppExternDeclaration* node) override;

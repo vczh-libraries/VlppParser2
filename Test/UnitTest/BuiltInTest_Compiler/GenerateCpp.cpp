@@ -100,13 +100,14 @@ TEST_FILE
 	syntaxFileNames.Add(L"QualifiedName");
 	syntaxFileNames.Add(L"Expressions");
 	syntaxFileNames.Add(L"Types");
+	syntaxFileNames.Add(L"Statements");
+	syntaxFileNames.Add(L"Generic");
 	syntaxFileNames.Add(L"DeclaratorComponents");
 	syntaxFileNames.Add(L"DeclaratorConfigurations");
 	syntaxFileNames.Add(L"DeclarationVariable");
 	syntaxFileNames.Add(L"DeclarationClasses");
 	syntaxFileNames.Add(L"DeclarationOthers");
 	syntaxFileNames.Add(L"Declarations");
-	syntaxFileNames.Add(L"Statements");
 	syntaxFileNames.Add(L"API");
 	for (auto syntaxFileName : syntaxFileNames)
 	{

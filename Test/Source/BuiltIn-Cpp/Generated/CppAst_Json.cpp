@@ -1735,6 +1735,15 @@ namespace cpp_parser::json_visitor
 		WriteToken(node->variadic);
 		EndField();
 	}
+	void AstVisitor::PrintFields(CppTemplateDeclaration* node)
+	{
+		BeginField(L"decl");
+		Print(node->decl.Obj());
+		EndField();
+		BeginField(L"genericHeader");
+		Print(node->genericHeader.Obj());
+		EndField();
+	}
 	void AstVisitor::PrintFields(CppThrowExpr* node)
 	{
 		BeginField(L"argument");
@@ -2041,6 +2050,21 @@ namespace cpp_parser::json_visitor
 		PrintFields(static_cast<CppTypeOrExprOrOthers*>(node));
 		PrintFields(static_cast<CppDeclaration*>(node));
 		PrintFields(static_cast<CppEnumDeclaration*>(node));
+		EndObject();
+	}
+
+	void AstVisitor::Visit(CppTemplateDeclaration* node)
+	{
+		if (!node)
+		{
+			WriteNull();
+			return;
+		}
+		BeginObject();
+		WriteType(L"TemplateDeclaration", node);
+		PrintFields(static_cast<CppTypeOrExprOrOthers*>(node));
+		PrintFields(static_cast<CppDeclaration*>(node));
+		PrintFields(static_cast<CppTemplateDeclaration*>(node));
 		EndObject();
 	}
 

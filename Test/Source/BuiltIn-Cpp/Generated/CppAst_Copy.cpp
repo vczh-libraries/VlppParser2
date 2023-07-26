@@ -607,6 +607,13 @@ namespace cpp_parser::copy_visitor
 		to->variadic = from->variadic;
 	}
 
+	void AstVisitor::CopyFields(CppTemplateDeclaration* from, CppTemplateDeclaration* to)
+	{
+		CopyFields(static_cast<CppDeclaration*>(from), static_cast<CppDeclaration*>(to));
+		to->decl = CopyNode(from->decl.Obj());
+		to->genericHeader = CopyNode(from->genericHeader.Obj());
+	}
+
 	void AstVisitor::CopyFields(CppThrowExpr* from, CppThrowExpr* to)
 	{
 		CopyFields(static_cast<CppExprOnly*>(from), static_cast<CppExprOnly*>(to));
@@ -948,6 +955,13 @@ namespace cpp_parser::copy_visitor
 	void AstVisitor::Visit(CppEnumDeclaration* node)
 	{
 		auto newNode = vl::Ptr(new CppEnumDeclaration);
+		CopyFields(node, newNode.Obj());
+		this->result = newNode;
+	}
+
+	void AstVisitor::Visit(CppTemplateDeclaration* node)
+	{
+		auto newNode = vl::Ptr(new CppTemplateDeclaration);
 		CopyFields(node, newNode.Obj());
 		this->result = newNode;
 	}
@@ -1958,6 +1972,12 @@ namespace cpp_parser::copy_visitor
 	{
 		if (!node) return nullptr;
 		return CopyNode(static_cast<CppTypeOrExprOrOthers*>(node)).Cast<CppSysFuncExpr>();
+	}
+
+	vl::Ptr<CppTemplateDeclaration> AstVisitor::CopyNode(CppTemplateDeclaration* node)
+	{
+		if (!node) return nullptr;
+		return CopyNode(static_cast<CppTypeOrExprOrOthers*>(node)).Cast<CppTemplateDeclaration>();
 	}
 
 	vl::Ptr<CppThrowExpr> AstVisitor::CopyNode(CppThrowExpr* node)

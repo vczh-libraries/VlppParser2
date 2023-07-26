@@ -39,6 +39,7 @@ namespace cpp_parser::empty_visitor
 		void Visit(CppVariablesDeclaration* node) override;
 		void Visit(CppClassDeclaration* node) override;
 		void Visit(CppEnumDeclaration* node) override;
+		void Visit(CppTemplateDeclaration* node) override;
 		void Visit(CppStaticAssertDeclaration* node) override;
 		void Visit(CppTypedefDeclaration* node) override;
 		void Visit(CppExternDeclaration* node) override;

@@ -104,6 +104,7 @@ namespace cpp_parser::copy_visitor
 		void CopyFields(CppStringLiteralFragment* from, CppStringLiteralFragment* to);
 		void CopyFields(CppSwitchStat* from, CppSwitchStat* to);
 		void CopyFields(CppSysFuncExpr* from, CppSysFuncExpr* to);
+		void CopyFields(CppTemplateDeclaration* from, CppTemplateDeclaration* to);
 		void CopyFields(CppThrowExpr* from, CppThrowExpr* to);
 		void CopyFields(CppTryStat* from, CppTryStat* to);
 		void CopyFields(CppTryStatCatchPart* from, CppTryStatCatchPart* to);
@@ -158,6 +159,7 @@ namespace cpp_parser::copy_visitor
 		void Visit(CppVariablesDeclaration* node) override;
 		void Visit(CppClassDeclaration* node) override;
 		void Visit(CppEnumDeclaration* node) override;
+		void Visit(CppTemplateDeclaration* node) override;
 		void Visit(CppStaticAssertDeclaration* node) override;
 		void Visit(CppTypedefDeclaration* node) override;
 		void Visit(CppExternDeclaration* node) override;
@@ -319,6 +321,7 @@ namespace cpp_parser::copy_visitor
 		vl::Ptr<CppStringLiteral> CopyNode(CppStringLiteral* node);
 		vl::Ptr<CppSwitchStat> CopyNode(CppSwitchStat* node);
 		vl::Ptr<CppSysFuncExpr> CopyNode(CppSysFuncExpr* node);
+		vl::Ptr<CppTemplateDeclaration> CopyNode(CppTemplateDeclaration* node);
 		vl::Ptr<CppThrowExpr> CopyNode(CppThrowExpr* node);
 		vl::Ptr<CppTryStat> CopyNode(CppTryStat* node);
 		vl::Ptr<CppTypeOnly> CopyNode(CppTypeOnly* node);

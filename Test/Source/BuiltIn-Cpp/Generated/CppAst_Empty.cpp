@@ -55,6 +55,10 @@ DeclarationVisitor
 	{
 	}
 
+	void DeclarationVisitor::Visit(CppTemplateDeclaration* node)
+	{
+	}
+
 	void DeclarationVisitor::Visit(CppStaticAssertDeclaration* node)
 	{
 	}

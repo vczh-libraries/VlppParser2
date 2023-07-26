@@ -158,6 +158,8 @@ CppAstInsReceiver : public vl::glr::AstInsReceiverBase
 			return vl::Ptr(new cpp_parser::CppSwitchStat);
 		case CppClasses::SysFuncExpr:
 			return vl::Ptr(new cpp_parser::CppSysFuncExpr);
+		case CppClasses::TemplateDeclaration:
+			return vl::Ptr(new cpp_parser::CppTemplateDeclaration);
 		case CppClasses::ThrowExpr:
 			return vl::Ptr(new cpp_parser::CppThrowExpr);
 		case CppClasses::TryStat:
@@ -418,6 +420,10 @@ CppAstInsReceiver : public vl::glr::AstInsReceiverBase
 			return vl::glr::AssemblerSetObjectField(&cpp_parser::CppSwitchStat::stat, object, field, value, cppFieldName);
 		case CppFields::SysFuncExpr_argument:
 			return vl::glr::AssemblerSetObjectField(&cpp_parser::CppSysFuncExpr::argument, object, field, value, cppFieldName);
+		case CppFields::TemplateDeclaration_decl:
+			return vl::glr::AssemblerSetObjectField(&cpp_parser::CppTemplateDeclaration::decl, object, field, value, cppFieldName);
+		case CppFields::TemplateDeclaration_genericHeader:
+			return vl::glr::AssemblerSetObjectField(&cpp_parser::CppTemplateDeclaration::genericHeader, object, field, value, cppFieldName);
 		case CppFields::ThrowExpr_argument:
 			return vl::glr::AssemblerSetObjectField(&cpp_parser::CppThrowExpr::argument, object, field, value, cppFieldName);
 		case CppFields::TryStat_catchParts:
@@ -669,6 +675,7 @@ CppAstInsReceiver : public vl::glr::AstInsReceiverBase
 			L"StringLiteralFragment",
 			L"SwitchStat",
 			L"SysFuncExpr",
+			L"TemplateDeclaration",
 			L"ThrowExpr",
 			L"TryStat",
 			L"TryStatCatchPart",
@@ -695,7 +702,7 @@ CppAstInsReceiver : public vl::glr::AstInsReceiverBase
 			L"__TryStat",
 		};
 		vl::vint index = (vl::vint)type;
-		return 0 <= index && index < 101 ? results[index] : nullptr;
+		return 0 <= index && index < 102 ? results[index] : nullptr;
 	}
 
 	const wchar_t* CppCppTypeName(CppClasses type)
@@ -778,6 +785,7 @@ CppAstInsReceiver : public vl::glr::AstInsReceiverBase
 			L"cpp_parser::CppStringLiteralFragment",
 			L"cpp_parser::CppSwitchStat",
 			L"cpp_parser::CppSysFuncExpr",
+			L"cpp_parser::CppTemplateDeclaration",
 			L"cpp_parser::CppThrowExpr",
 			L"cpp_parser::CppTryStat",
 			L"cpp_parser::CppTryStatCatchPart",
@@ -804,7 +812,7 @@ CppAstInsReceiver : public vl::glr::AstInsReceiverBase
 			L"cpp_parser::Cpp__TryStat",
 		};
 		vl::vint index = (vl::vint)type;
-		return 0 <= index && index < 101 ? results[index] : nullptr;
+		return 0 <= index && index < 102 ? results[index] : nullptr;
 	}
 
 	const wchar_t* CppFieldName(CppFields field)
@@ -958,6 +966,8 @@ CppAstInsReceiver : public vl::glr::AstInsReceiverBase
 			L"SysFuncExpr::argument",
 			L"SysFuncExpr::keyword",
 			L"SysFuncExpr::variadic",
+			L"TemplateDeclaration::decl",
+			L"TemplateDeclaration::genericHeader",
 			L"ThrowExpr::argument",
 			L"TryStat::catchParts",
 			L"TryStat::tryStat",
@@ -990,7 +1000,7 @@ CppAstInsReceiver : public vl::glr::AstInsReceiverBase
 			L"__TryStat::tryStat",
 		};
 		vl::vint index = (vl::vint)field;
-		return 0 <= index && index < 178 ? results[index] : nullptr;
+		return 0 <= index && index < 180 ? results[index] : nullptr;
 	}
 
 	const wchar_t* CppCppFieldName(CppFields field)
@@ -1144,6 +1154,8 @@ CppAstInsReceiver : public vl::glr::AstInsReceiverBase
 			L"cpp_parser::CppSysFuncExpr::argument",
 			L"cpp_parser::CppSysFuncExpr::keyword",
 			L"cpp_parser::CppSysFuncExpr::variadic",
+			L"cpp_parser::CppTemplateDeclaration::decl",
+			L"cpp_parser::CppTemplateDeclaration::genericHeader",
 			L"cpp_parser::CppThrowExpr::argument",
 			L"cpp_parser::CppTryStat::catchParts",
 			L"cpp_parser::CppTryStat::tryStat",
@@ -1176,7 +1188,7 @@ CppAstInsReceiver : public vl::glr::AstInsReceiverBase
 			L"cpp_parser::Cpp__TryStat::tryStat",
 		};
 		vl::vint index = (vl::vint)field;
-		return 0 <= index && index < 178 ? results[index] : nullptr;
+		return 0 <= index && index < 180 ? results[index] : nullptr;
 	}
 
 	vl::Ptr<vl::glr::ParsingAstBase> CppAstInsReceiver::ResolveAmbiguity(vl::vint32_t type, vl::collections::Array<vl::Ptr<vl::glr::ParsingAstBase>>& candidates)
@@ -1292,6 +1304,8 @@ CppAstInsReceiver : public vl::glr::AstInsReceiverBase
 			return vl::glr::AssemblerResolveAmbiguity<cpp_parser::CppSwitchStat, cpp_parser::CppStatementToResolve>(type, candidates, cppTypeName);
 		case CppClasses::SysFuncExpr:
 			return vl::glr::AssemblerResolveAmbiguity<cpp_parser::CppSysFuncExpr, cpp_parser::CppTypeOrExprToResolve>(type, candidates, cppTypeName);
+		case CppClasses::TemplateDeclaration:
+			return vl::glr::AssemblerResolveAmbiguity<cpp_parser::CppTemplateDeclaration, cpp_parser::CppTypeOrExprOrOthersToResolve>(type, candidates, cppTypeName);
 		case CppClasses::ThrowExpr:
 			return vl::glr::AssemblerResolveAmbiguity<cpp_parser::CppThrowExpr, cpp_parser::CppTypeOrExprToResolve>(type, candidates, cppTypeName);
 		case CppClasses::TryStat:

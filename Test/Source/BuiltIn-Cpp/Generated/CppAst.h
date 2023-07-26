@@ -89,6 +89,7 @@ namespace cpp_parser
 	class CppStringLiteralFragment;
 	class CppSwitchStat;
 	class CppSysFuncExpr;
+	class CppTemplateDeclaration;
 	class CppThrowExpr;
 	class CppTryStat;
 	class CppTryStatCatchPart;
@@ -328,6 +329,7 @@ namespace cpp_parser
 			virtual void Visit(CppVariablesDeclaration* node) = 0;
 			virtual void Visit(CppClassDeclaration* node) = 0;
 			virtual void Visit(CppEnumDeclaration* node) = 0;
+			virtual void Visit(CppTemplateDeclaration* node) = 0;
 			virtual void Visit(CppStaticAssertDeclaration* node) = 0;
 			virtual void Visit(CppTypedefDeclaration* node) = 0;
 			virtual void Visit(CppExternDeclaration* node) = 0;
@@ -938,6 +940,15 @@ namespace cpp_parser
 		void Accept(CppDeclaration::IVisitor* visitor) override;
 	};
 
+	class CppTemplateDeclaration : public CppDeclaration, vl::reflection::Description<CppTemplateDeclaration>
+	{
+	public:
+		vl::Ptr<CppGenericHeader> genericHeader;
+		vl::Ptr<CppDeclaration> decl;
+
+		void Accept(CppDeclaration::IVisitor* visitor) override;
+	};
+
 	class CppStaticAssertDeclaration : public CppDeclaration, vl::reflection::Description<CppStaticAssertDeclaration>
 	{
 	public:
@@ -1380,6 +1391,7 @@ namespace vl::reflection::description
 	DECL_TYPE_INFO(cpp_parser::CppEnumItem)
 	DECL_TYPE_INFO(cpp_parser::CppEnumBody)
 	DECL_TYPE_INFO(cpp_parser::CppEnumDeclaration)
+	DECL_TYPE_INFO(cpp_parser::CppTemplateDeclaration)
 	DECL_TYPE_INFO(cpp_parser::CppStaticAssertDeclaration)
 	DECL_TYPE_INFO(cpp_parser::CppTypedefDeclaration)
 	DECL_TYPE_INFO(cpp_parser::CppExternDeclaration)
@@ -1464,6 +1476,11 @@ namespace vl::reflection::description
 		}
 
 		void Visit(cpp_parser::CppEnumDeclaration* node) override
+		{
+			INVOKE_INTERFACE_PROXY(Visit, node);
+		}
+
+		void Visit(cpp_parser::CppTemplateDeclaration* node) override
 		{
 			INVOKE_INTERFACE_PROXY(Visit, node);
 		}

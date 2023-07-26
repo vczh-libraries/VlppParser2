@@ -505,6 +505,14 @@ namespace cpp_parser::builder
 		MakeSysFuncExpr& variadic(const vl::WString& value);
 	};
 
+	class MakeTemplateDeclaration : public vl::glr::ParsingAstBuilder<CppTemplateDeclaration>
+	{
+	public:
+		MakeTemplateDeclaration& decl(const vl::Ptr<CppDeclaration>& value);
+		MakeTemplateDeclaration& genericHeader(const vl::Ptr<CppGenericHeader>& value);
+		MakeTemplateDeclaration& keywords(const vl::Ptr<CppDeclaratorKeyword>& value);
+	};
+
 	class MakeThrowExpr : public vl::glr::ParsingAstBuilder<CppThrowExpr>
 	{
 	public:

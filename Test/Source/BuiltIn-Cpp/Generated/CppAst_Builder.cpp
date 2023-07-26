@@ -1206,6 +1206,28 @@ MakeSysFuncExpr
 	}
 
 /***********************************************************************
+MakeTemplateDeclaration
+***********************************************************************/
+
+	MakeTemplateDeclaration& MakeTemplateDeclaration::decl(const vl::Ptr<CppDeclaration>& value)
+	{
+		node->decl = value;
+		return *this;
+	}
+
+	MakeTemplateDeclaration& MakeTemplateDeclaration::genericHeader(const vl::Ptr<CppGenericHeader>& value)
+	{
+		node->genericHeader = value;
+		return *this;
+	}
+
+	MakeTemplateDeclaration& MakeTemplateDeclaration::keywords(const vl::Ptr<CppDeclaratorKeyword>& value)
+	{
+		node->keywords.Add(value);
+		return *this;
+	}
+
+/***********************************************************************
 MakeThrowExpr
 ***********************************************************************/
 
