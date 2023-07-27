@@ -107,12 +107,27 @@ TEST_FILE
 
 	TEST_CASE(L"A X();")
 	{
-		runParser(L"File", L"AmbiguousFuncVarDecl", [&]() { return GetCppParser().Parse_File(L"A X();"); });
+		runParser(L"File", L"AmbiguousDecl", [&]() { return GetCppParser().Parse_File(L"A X();"); });
+	});
+
+	TEST_CASE(L"A::B::X(){}")
+	{
+		runParser(L"File", L"AmbiguousDecl2", [&]() { return GetCppParser().Parse_File(L"A::B::X(){}"); });
 	});
 
 	TEST_CASE(L"int main() {A X();}")
 	{
-		runParser(L"File", L"AmbiguousFuncVarStat", [&]() { return GetCppParser().Parse_File(L"int main() {A X();}"); });
+		runParser(L"File", L"AmbiguousStat", [&]() { return GetCppParser().Parse_File(L"int main() {A X();}"); });
+	});
+
+	TEST_CASE(L"template<typename T = X()> struct S{};")
+	{
+		runParser(L"File", L"AmbiguousGenericParameter", [&]() { return GetCppParser().Parse_File(L"template<typename T = X()> struct S{};"); });
+	});
+
+	TEST_CASE(L"template<> struct S<X()>{};")
+	{
+		runParser(L"File", L"AmbiguousGenericArgument", [&]() { return GetCppParser().Parse_File(L"template<> struct S<X()>{};"); });
 	});
 
 	GetCppParser().OnTraceProcessing.Remove(handlerOnTraceProcessing);
