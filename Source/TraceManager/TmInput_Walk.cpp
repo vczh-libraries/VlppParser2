@@ -127,25 +127,39 @@ TraceManager::WalkAlongEpsilonEdges
 				EdgeArray& edgeArray
 			)
 			{
-				// if there is no more token
-				// then it is not possible for more left recursions
-				if (!lookAhead) return;
-
 				for (vint32_t edgeRef = 0; edgeRef < edgeArray.count; edgeRef++)
 				{
 					vint32_t byEdge = edgeArray.start + edgeRef;
 					auto& edgeDesc = executable.edges[byEdge];
 
-					// see if the target state could consume that token
-					vint32_t lookAheadTransitionIndex = executable.GetTransitionIndex(edgeDesc.toState, Executable::TokenBegin + (vint32_t)lookAhead->token);
-					auto& lookAheadEdgeArray = executable.transitions[lookAheadTransitionIndex];
-					if (!IsQualifiedTokenForEdgeArray(lookAhead, lookAheadEdgeArray)) continue;
+					{
+						// see if the target state could consume EndingInput
+						vint32_t endingTransitionIndex = executable.GetTransitionIndex(edgeDesc.toState, Executable::EndingInput);
+						auto& endingEdgeArray = executable.transitions[endingTransitionIndex];
+						if (endingEdgeArray.count > 0)
+						{
+							goto EXECUTE_LEFTREC_EDGE;
+						}
+					}
 
-					// proceed only if it can
-					WalkAlongSingleEdge(currentTokenIndex, Executable::LeftrecInput, trace, byEdge, edgeDesc);
+					if (lookAhead)
+					{
+						// see if the target state could consume that token
+						vint32_t lookAheadTransitionIndex = executable.GetTransitionIndex(edgeDesc.toState, Executable::TokenBegin + (vint32_t)lookAhead->token);
+						auto& lookAheadEdgeArray = executable.transitions[lookAheadTransitionIndex];
+						if (IsQualifiedTokenForEdgeArray(lookAhead, lookAheadEdgeArray))
+						{
+							goto EXECUTE_LEFTREC_EDGE;
+						}
+					}
 
-					// A LeftrecInput transition points to a non ending state in another clause
-					// so there is no need to find other epsilon transitions after LeftrecInput
+					continue;
+				EXECUTE_LEFTREC_EDGE:
+					if (auto newTrace = WalkAlongSingleEdge(currentTokenIndex, Executable::LeftrecInput, trace, byEdge, edgeDesc))
+					{
+						// A LeftrecInput transition could point to an ending state in another clause by left recursion injection
+						WalkAlongEpsilonEdges(currentTokenIndex, lookAhead, newTrace);
+					}
 				}
 			}
 
@@ -155,61 +169,16 @@ TraceManager::WalkAlongEpsilonEdges
 				WalkingTrace trace
 			)
 			{
-				// if we could walk along multiple EndingInput transition
-				// but the last several transition will fail
-				// then creating them is wasting the performance
-				// so we count how many EndingInput transition we could walk along first
-
 				vint32_t endingCount = -1;
 
-				if (!lookAhead)
+				if (lookAhead)
 				{
-					// if there is no more tokens
-					// then we have to go all the way to the end anyway
-					vint32_t currentState = trace.stateTrace->state;
-					auto currentReturnStack = trace.stateTrace->returnStack;
+					// if we could walk along multiple EndingInput transition
+					// but the last several transition will fail
+					// then creating them is wasting the performance
+					// so we count how many EndingInput transition we could walk along first
+					// we check how many EndingInput transition we need to walk along
 
-					while (currentState != -1)
-					{
-						vint32_t transitionIndex = executable.GetTransitionIndex(currentState, Executable::EndingInput);
-						auto&& edgeArray = executable.transitions[transitionIndex];
-
-						// at most one EndingInput transition could exist from any state
-						CHECK_ERROR(edgeArray.count < 2, L"vl::glr::automaton::TraceManager::WalkAlongEpsilonEdges(vint32_t, vint32_t, Trace*)#Too many EndingInput transitions.");
-
-						if (edgeArray.count == 0)
-						{
-							// if there is no more EndingInput to go
-							// and the current state is not an ending state
-							// then we just give up
-
-							auto&& stateDesc = executable.states[currentState];
-							if (stateDesc.endingState)
-							{
-								currentState = -1;
-							}
-							else
-							{
-								return;
-							}
-						}
-						else if (currentReturnStack == nullref)
-						{
-							vint32_t byEdge = edgeArray.start;
-							auto& edgeDesc = executable.edges[byEdge];
-							currentState = edgeDesc.toState;
-						}
-						else
-						{
-							auto rs = GetReturnStack(currentReturnStack);
-							currentReturnStack = rs->previous;
-							currentState = executable.returns[rs->returnIndex].returnState;
-						}
-					}
-				}
-				else
-				{
-					// otherwise we see how many EndingInput transition we need to walk along
 					vint32_t currentCount = 0;
 					vint32_t currentState = trace.stateTrace->state;
 					auto currentReturnStack = trace.stateTrace->returnStack;
@@ -218,7 +187,7 @@ TraceManager::WalkAlongEpsilonEdges
 					{
 						currentCount++;
 
-						// try LeftrecInput + lookAhead
+						// try LeftrecInput + (lookAhead | EndingInput)
 						{
 							vint32_t transitionIndex = executable.GetTransitionIndex(currentState, Executable::LeftrecInput);
 							auto&& edgeArray = executable.transitions[transitionIndex];
@@ -226,14 +195,29 @@ TraceManager::WalkAlongEpsilonEdges
 							{
 								vint32_t byEdge = edgeArray.start + edgeRef;
 								auto& edgeDesc = executable.edges[byEdge];
-								vint32_t lookAheadTransitionIndex = executable.GetTransitionIndex(edgeDesc.toState, Executable::TokenBegin + (vint32_t)lookAhead->token);
-								auto& lookAheadEdgeArray = executable.transitions[lookAheadTransitionIndex];
 
-								// mark this EndingInput if any LeftrecInput + lookAhead transition exists
-								if (IsQualifiedTokenForEdgeArray(lookAhead, lookAheadEdgeArray))
+								// try EndingInput
 								{
-									endingCount = currentCount;
-									goto TRY_ENDING_INPUT;
+									vint32_t endingTransitionIndex = executable.GetTransitionIndex(edgeDesc.toState, Executable::EndingInput);
+									auto&& endingEdgeArray = executable.transitions[endingTransitionIndex];
+									if (endingEdgeArray.count > 0)
+									{
+										endingCount = currentCount;
+										goto TRY_ENDING_INPUT;
+									}
+								}
+
+								// try lookAhead
+								{
+									vint32_t lookAheadTransitionIndex = executable.GetTransitionIndex(edgeDesc.toState, Executable::TokenBegin + (vint32_t)lookAhead->token);
+									auto& lookAheadEdgeArray = executable.transitions[lookAheadTransitionIndex];
+
+									// mark this EndingInput if any LeftrecInput + lookAhead transition exists
+									if (IsQualifiedTokenForEdgeArray(lookAhead, lookAheadEdgeArray))
+									{
+										endingCount = currentCount;
+										goto TRY_ENDING_INPUT;
+									}
 								}
 							}
 						}
