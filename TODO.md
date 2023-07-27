@@ -4,6 +4,7 @@
 
 - Progress
   - When `lri` could end the current rule, `leftrec` into the deepest place instead of `ending` to the ending state of the current rule.
+  - Fix `File_AmbiguousDecl3` where a declarator `A::B::X` becomes `A:: B:: X` and `A::B:: X`, the first one should not exist.
   - Try to see if it is possible to
     - Remove `PushReturnStack` last argument.
     - Remove `ReturnDesc::ruleType`.
