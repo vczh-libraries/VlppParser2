@@ -8,11 +8,15 @@
     - Remove `PushReturnStack` last argument.
     - Remove `ReturnDesc::ruleType`.
     - Move `ReturnRuleType` from automaton to symbol.
-  - `@ambiguous class X { ... }` when X has members:
-    - Becomes `@ambiguous class XBase{}` and `class X : XBase{ ... }`.
-    - All `X` in field types in AST becomes `XBase`.
-    - Inheritance and syntax do not apply such change.
-    - If a rule is deducted to `X`, change to `XBase`.
+  - `@ambiguous class X : T { ... }` when X has members:
+    - Becomes `@ambiguous class X : T {}` and `class XCommon : X { ... }`.
+    - Ast:
+      - `class Y : X` -> `class Y : XCommon`.
+      - `var value : X` or `var value : X[]` unchanged.
+    - Syntax
+      - `as X` -> `as XCommon`.
+      - `as partial X` -> `as partial XCommon`.
+      - If a rule's type is `XCommon`, no matter it is specified or deducted, change it to `X`.
   - Generic Declaration unfinished.
 
 ## Next task
