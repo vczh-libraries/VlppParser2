@@ -705,6 +705,8 @@ RewriteSyntax
 				{
 					auto newRule = Ptr(new GlrRule);
 					newRule->codeRange = rule->codeRange;
+					newRule->attPublic = rule->attPublic;
+					newRule->attParser = rule->attParser;
 					newRule->name = rule->name;
 					newRule->name.value = name;
 					newRule->type = rule->type;
@@ -788,6 +790,8 @@ RewriteSyntax
 						// rules it references could be renamed
 						auto newRule = Ptr(new GlrRule);
 						newRule->codeRange = rule->codeRange;
+						newRule->attPublic = rule->attPublic;
+						newRule->attParser = rule->attParser;
 						newRule->name = rule->name;
 						newRule->type = rule->type;
 

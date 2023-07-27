@@ -355,6 +355,14 @@ void SyntaxAstToCode(
 	SyntaxAstToStringVisitor visitor(writer);
 	for (auto rule : file->rules)
 	{
+		if (rule->attPublic)
+		{
+			writer.WriteString(L"@public ");
+		}
+		if (rule->attParser)
+		{
+			writer.WriteString(L"@parser ");
+		}
 		writer.WriteString(rule->name.value);
 		if (rule->type)
 		{

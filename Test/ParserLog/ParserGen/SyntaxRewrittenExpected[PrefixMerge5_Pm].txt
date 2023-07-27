@@ -75,7 +75,7 @@ _Expr : TypeOrExpr
   ::= !_PrimitiveTypeOnly left_recursion_inject(LRI__LongType) _Expr_LRI_Original
   ;
 
-Module : TypeOrExpr
+@parser Module : TypeOrExpr
   ::= !_PrimitiveExprOnly [left_recursion_inject(LRI__Expr0) _Expr_LRI_Original]
   ::= !_PrimitiveShared [left_recursion_inject(LRI__Expr0, LRIP__Expr0__LongType) _Expr_LRI_Original]
   ::= !_PrimitiveShared left_recursion_inject(LRI__LongType) (_LongType_LRI_Original [left_recursion_inject(LRIP__Expr0__LongType) _Expr_LRI_Original])

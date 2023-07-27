@@ -1621,7 +1621,7 @@ _ForStatConditionPart : ForStatConditionPart
   ::= !_QualifiedName left_recursion_inject_multiple(LRI__PM_QualifiedName, LRI__QualifiedName_PrimitiveExpr) _ForStatConditionPart_LRI_Original
   ;
 
-_Stat : Statement
+@parser _Stat : Statement
   ::= !_Stat_LRI_Isolated_1
   ::= !_Stat_LRI_Isolated_2
   ::= !_Stat_LRI_Isolated_3
@@ -1813,7 +1813,7 @@ _DeclRejectSemicolon : Declaration
   ::= !_QualifiedName left_recursion_inject(LRI__PM_QualifiedName) _DeclRejectSemicolon_LRI_Original
   ;
 
-_Type : TypeOrExpr
+@parser _Type : TypeOrExpr
   ::= !_Type_LRI_Isolated_2
   ::= !_CallConstructibleTypeBeforeDeclarator_LRI_Isolated_1 [left_recursion_inject_multiple(LRI__CallConstructibleTypeBeforeDeclarator) _Type_LRI_Original]
   ::= !_CallConstructibleTypeBeforeDeclarator_LRI_Isolated_2 [left_recursion_inject_multiple(LRI__CallConstructibleTypeBeforeDeclarator) _Type_LRI_Original]
@@ -1832,7 +1832,7 @@ _Expr_NoComma : TypeOrExpr
   ::= !_QualifiedName [left_recursion_inject_multiple(LRI__PM_QualifiedName, LRI__QualifiedName_PrimitiveExpr) _Expr_NoComma_LRI_Original]
   ;
 
-_Expr : TypeOrExpr
+@parser _Expr : TypeOrExpr
   ::= !_BExpr_NoComma_SWITCH_1allow_GT_LRI_Isolated_1 [left_recursion_inject(LRI__BExpr_NoComma_SWITCH_1allow_GT) _Expr_LRI_Original]
   ::= !_CallConstructibleTypeBeforeDeclarator_LRI_Isolated_1 left_recursion_inject_multiple(LRI__CallConstructibleTypeBeforeDeclarator) _Expr_LRI_Original
   ::= !_CallConstructibleTypeBeforeDeclarator_LRI_Isolated_2 left_recursion_inject_multiple(LRI__CallConstructibleTypeBeforeDeclarator) _Expr_LRI_Original
@@ -1906,7 +1906,7 @@ _TypeOrExpr_NoComma_NoGT : TypeOrExpr
   ::= !_QualifiedName [left_recursion_inject_multiple(LRI__PM_QualifiedName, LRI__QualifiedName_PrimitiveExpr) _TypeOrExpr_NoComma_NoGT_LRI_Original]
   ;
 
-_TypeOrExpr : TypeOrExpr
+@parser _TypeOrExpr : TypeOrExpr
   ::= !_Type_LRI_Isolated_2
   ::= !_BExpr_NoComma_SWITCH_1allow_GT_LRI_Isolated_1 [left_recursion_inject(LRI__BExpr_NoComma_SWITCH_1allow_GT) _TypeOrExpr_LRI_Original]
   ::= !_CallConstructibleTypeBeforeDeclarator_LRI_Isolated_1 [left_recursion_inject_multiple(LRI__CallConstructibleTypeBeforeDeclarator) _TypeOrExpr_LRI_Original]
@@ -1918,7 +1918,7 @@ _TypeOrExpr : TypeOrExpr
   ::= !_QualifiedName [left_recursion_inject_multiple(LRI__PM_QualifiedName, LRI__QualifiedName_PrimitiveExpr) _TypeOrExpr_LRI_Original]
   ;
 
-_File : File
+@parser _File : File
   ::= !_CallConstructibleTypeBeforeDeclarator_LRI_Isolated_1 left_recursion_inject(LRI__CallConstructibleTypeBeforeDeclarator) _File_LRI_Original
   ::= !_CallConstructibleTypeBeforeDeclarator_LRI_Isolated_2 left_recursion_inject(LRI__CallConstructibleTypeBeforeDeclarator) _File_LRI_Original
   ::= !_DeclRejectSemicolon_LRI_Isolated_0 left_recursion_inject(LRI__DeclRejectSemicolon) _File_LRI_Original

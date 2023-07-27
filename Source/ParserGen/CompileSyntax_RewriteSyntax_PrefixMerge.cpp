@@ -266,8 +266,14 @@ CreateRewrittenRules
 						rewritten->rules.Add(lri);
 						rContext.lriRules.Add(ruleSymbol, lri.Obj());
 
+						lri->codeRange = originRule->codeRange;
+						lri->attPublic = originRule->attPublic;
+						lri->attParser = originRule->attParser;
 						lri->codeRange = originRule->name.codeRange;
 						lri->name = originRule->name;
+
+						originRule->attPublic = {};
+						originRule->attParser = {};
 						originRule->name.value += L"_LRI_Original";
 					}
 
