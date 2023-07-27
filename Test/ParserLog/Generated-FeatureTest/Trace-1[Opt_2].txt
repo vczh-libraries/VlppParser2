@@ -9,92 +9,92 @@
  +
  |
 [0]
-++================================================================++
-|| [1]: {OPTIONAL} optional                                       ||
-|| [11][EqualOptional]< "optional" @ [ Plus ] "+" { Plus } >      ||
-|| [AST-INSTRUCTIONS]:                                            ||
-||   - DelayFieldAssignment()                                     ||
-||   - BeginObject(OptionalFeature)                               ||
-|| [RETURN STACK]:                                                ||
-||   [0][0]: EqualOptional -> [170][Module]<< !EqualOptional @ >> ||
-|| [PREDECESSORS 0-0]: [0]                                        ||
-|| [SUCCESORS 2-4]: [2][4]                                        ||
-++================================================================++
+++=====================================================================++
+|| [1]: {OPTIONAL} optional                                            ||
+|| [11][EqualOptional]< "optional" @ [ Plus ] "+" { Plus } >           ||
+|| [AST-INSTRUCTIONS]:                                                 ||
+||   - DelayFieldAssignment()                                          ||
+||   - BeginObject(OptionalFeature)                                    ||
+|| [RETURN STACK]:                                                     ||
+||   [0][108][0]: EqualOptional -> [170][Module]<< !EqualOptional @ >> ||
+|| [PREDECESSORS 0-0]: [0]                                             ||
+|| [SUCCESORS 2-4]: [2][4]                                             ||
+++=====================================================================++
 [0/1]
  |
- +------------------------------------------------------------------------------------+
- |                                                                                    |
-[0]                                                                                  [1]
-++=============================================================================++    ++================================================================++
-|| [2]: {PLUS} +                                                               ||    || [4]: {PLUS} +                                                  ||
-|| [2][Plus]< "+" @ >                                                          ||    || [13][EqualOptional]< "optional" [ Plus ] "+" @ { Plus } >      ||
-|| [AST-INSTRUCTIONS]:                                                         ||    || [AST-INSTRUCTIONS]:                                            ||
-||   - BeginObject(Plus)                                                       ||    || [RETURN STACK]:                                                ||
-|| [RETURN STACK]:                                                             ||    ||   [0][0]: EqualOptional -> [170][Module]<< !EqualOptional @ >> ||
-||   [1][1]: Plus -> [12][EqualOptional]< "optional" [ Plus @ ] "+" { Plus } > ||    || [PREDECESSORS 1-1]: [1]                                        ||
-||   [0][0]: EqualOptional -> [170][Module]<< !EqualOptional @ >>              ||    || [SUCCESORS 9-9]: [9]                                           ||
-|| [PREDECESSORS 1-1]: [1]                                                     ||    ++================================================================++
-|| [SUCCESORS 3-3]: [3]                                                        ||    |
-++=============================================================================++    |
-|                                                                                    |
-+                                                                                    +
-|                                                                                    |
-+----------------------------------------------------------------+                   |
-| [3]: <Ending>                                                  |                   |
-| [12][EqualOptional]< "optional" [ Plus @ ] "+" { Plus } >      |                   |
-| [AST-INSTRUCTIONS]:                                            |                   |
-|   - EndObject()                                                |                   |
-|   > Field(OptionalFeature::optional)                           |                   |
-| [RETURN STACK]:                                                |                   |
-|   [0][0]: EqualOptional -> [170][Module]<< !EqualOptional @ >> |                   |
-| [PREDECESSORS 2-2]: [2]                                        |                   |
-| [SUCCESORS 6-6]: [6]                                           |                   |
-+----------------------------------------------------------------+                   |
-[0]                                                                                  [1]
- |                                                                                    |
- +                                                                       +------------+
- |                                                                       |
-[0]                                                                     [1]
-++================================================================++    ++=============================================================================++
-|| [6]: {PLUS} +                                                  ||    || [9]: {PLUS} +                                                               ||
-|| [13][EqualOptional]< "optional" [ Plus ] "+" @ { Plus } >      ||    || [2][Plus]< "+" @ >                                                          ||
-|| [AST-INSTRUCTIONS]:                                            ||    || [AST-INSTRUCTIONS]:                                                         ||
-|| [RETURN STACK]:                                                ||    ||   - BeginObject(Plus)                                                       ||
-||   [0][0]: EqualOptional -> [170][Module]<< !EqualOptional @ >> ||    || [RETURN STACK]:                                                             ||
-|| [PREDECESSORS 3-3]: [3]                                        ||    ||   [2][4]: Plus -> [14][EqualOptional]< "optional" [ Plus ] "+" { Plus @ } > ||
-|| [SUCCESORS 12-12]: [12]                                        ||    ||   [0][0]: EqualOptional -> [170][Module]<< !EqualOptional @ >>              ||
-++================================================================++    || [PREDECESSORS 4-4]: [4]                                                     ||
-|                                                                       || [SUCCESORS 10-10]: [10]                                                     ||
-|                                                                       ++=============================================================================++
-|                                                                       |
-+                                                                       +
-|                                                                       |
-+--------------------------------------+                                +----------------------------------------------------------------+
-| [12]: <Ending>                       |                                | [10]: <Ending>                                                 |
-| [170][Module]<< !EqualOptional @ >>  |                                | [14][EqualOptional]< "optional" [ Plus ] "+" { Plus @ } >      |
-| [AST-INSTRUCTIONS]:                  |                                | [AST-INSTRUCTIONS]:                                            |
-|   - EnumItem(0)                      |                                |   - EndObject()                                                |
-|   - Field(OptionalFeature::priority) |                                |   > Field(OptionalFeature::loop)                               |
-|   - EndObject()                      |                                | [RETURN STACK]:                                                |
-| [PREDECESSORS 6-6]: [6]              |                                |   [0][0]: EqualOptional -> [170][Module]<< !EqualOptional @ >> |
-| [SUCCESORS 7-7]: [7]                 |                                | [PREDECESSORS 9-9]: [9]                                        |
-+--------------------------------------+                                | [SUCCESORS 11-11]: [11]                                        |
-|                                                                       +----------------------------------------------------------------+
-|                                                                       |
-+                                                                       +
-|                                                                       |
-|                                                                       +--------------------------------------+
-|                                                                       | [11]: <Ending>                       |
-|                                                                       | [170][Module]<< !EqualOptional @ >>  |
-|                                                                       | [AST-INSTRUCTIONS]:                  |
-|                                                                       |   - EnumItem(0)                      |
-|                                                                       |   - Field(OptionalFeature::priority) |
-|                                                                       |   - EndObject()                      |
-|                                                                       | [PREDECESSORS 10-10]: [10]           |
-|                                                                       | [SUCCESORS 7-7]: [7]                 |
-|                                                                       +--------------------------------------+
-|                                                                       |
-+-----------------------------------------------------------------------+
+ +---------------------------------------------------------------------------------------+
+ |                                                                                       |
+[0]                                                                                     [1]
+++================================================================================++    ++=====================================================================++
+|| [2]: {PLUS} +                                                                  ||    || [4]: {PLUS} +                                                       ||
+|| [2][Plus]< "+" @ >                                                             ||    || [13][EqualOptional]< "optional" [ Plus ] "+" @ { Plus } >           ||
+|| [AST-INSTRUCTIONS]:                                                            ||    || [AST-INSTRUCTIONS]:                                                 ||
+||   - BeginObject(Plus)                                                          ||    || [RETURN STACK]:                                                     ||
+|| [RETURN STACK]:                                                                ||    ||   [0][108][0]: EqualOptional -> [170][Module]<< !EqualOptional @ >> ||
+||   [1][0][1]: Plus -> [12][EqualOptional]< "optional" [ Plus @ ] "+" { Plus } > ||    || [PREDECESSORS 1-1]: [1]                                             ||
+||   [0][108][0]: EqualOptional -> [170][Module]<< !EqualOptional @ >>            ||    || [SUCCESORS 9-9]: [9]                                                ||
+|| [PREDECESSORS 1-1]: [1]                                                        ||    ++=====================================================================++
+|| [SUCCESORS 3-3]: [3]                                                           ||    |
+++================================================================================++    |
+|                                                                                       |
++                                                                                       +
+|                                                                                       |
++---------------------------------------------------------------------+                 |
+| [3]: <Ending>                                                       |                 |
+| [12][EqualOptional]< "optional" [ Plus @ ] "+" { Plus } >           |                 |
+| [AST-INSTRUCTIONS]:                                                 |                 |
+|   - EndObject()                                                     |                 |
+|   > Field(OptionalFeature::optional)                                |                 |
+| [RETURN STACK]:                                                     |                 |
+|   [0][108][0]: EqualOptional -> [170][Module]<< !EqualOptional @ >> |                 |
+| [PREDECESSORS 2-2]: [2]                                             |                 |
+| [SUCCESORS 6-6]: [6]                                                |                 |
++---------------------------------------------------------------------+                 |
+[0]                                                                                     [1]
+ |                                                                                       |
+ +                                                                            +----------+
+ |                                                                            |
+[0]                                                                          [1]
+++=====================================================================++    ++================================================================================++
+|| [6]: {PLUS} +                                                       ||    || [9]: {PLUS} +                                                                  ||
+|| [13][EqualOptional]< "optional" [ Plus ] "+" @ { Plus } >           ||    || [2][Plus]< "+" @ >                                                             ||
+|| [AST-INSTRUCTIONS]:                                                 ||    || [AST-INSTRUCTIONS]:                                                            ||
+|| [RETURN STACK]:                                                     ||    ||   - BeginObject(Plus)                                                          ||
+||   [0][108][0]: EqualOptional -> [170][Module]<< !EqualOptional @ >> ||    || [RETURN STACK]:                                                                ||
+|| [PREDECESSORS 3-3]: [3]                                             ||    ||   [2][1][4]: Plus -> [14][EqualOptional]< "optional" [ Plus ] "+" { Plus @ } > ||
+|| [SUCCESORS 12-12]: [12]                                             ||    ||   [0][108][0]: EqualOptional -> [170][Module]<< !EqualOptional @ >>            ||
+++=====================================================================++    || [PREDECESSORS 4-4]: [4]                                                        ||
+|                                                                            || [SUCCESORS 10-10]: [10]                                                        ||
+|                                                                            ++================================================================================++
+|                                                                            |
++                                                                            +
+|                                                                            |
++--------------------------------------+                                     +---------------------------------------------------------------------+
+| [12]: <Ending>                       |                                     | [10]: <Ending>                                                      |
+| [170][Module]<< !EqualOptional @ >>  |                                     | [14][EqualOptional]< "optional" [ Plus ] "+" { Plus @ } >           |
+| [AST-INSTRUCTIONS]:                  |                                     | [AST-INSTRUCTIONS]:                                                 |
+|   - EnumItem(0)                      |                                     |   - EndObject()                                                     |
+|   - Field(OptionalFeature::priority) |                                     |   > Field(OptionalFeature::loop)                                    |
+|   - EndObject()                      |                                     | [RETURN STACK]:                                                     |
+| [PREDECESSORS 6-6]: [6]              |                                     |   [0][108][0]: EqualOptional -> [170][Module]<< !EqualOptional @ >> |
+| [SUCCESORS 7-7]: [7]                 |                                     | [PREDECESSORS 9-9]: [9]                                             |
++--------------------------------------+                                     | [SUCCESORS 11-11]: [11]                                             |
+|                                                                            +---------------------------------------------------------------------+
+|                                                                            |
++                                                                            +
+|                                                                            |
+|                                                                            +--------------------------------------+
+|                                                                            | [11]: <Ending>                       |
+|                                                                            | [170][Module]<< !EqualOptional @ >>  |
+|                                                                            | [AST-INSTRUCTIONS]:                  |
+|                                                                            |   - EnumItem(0)                      |
+|                                                                            |   - Field(OptionalFeature::priority) |
+|                                                                            |   - EndObject()                      |
+|                                                                            | [PREDECESSORS 10-10]: [10]           |
+|                                                                            | [SUCCESORS 7-7]: [7]                 |
+|                                                                            +--------------------------------------+
+|                                                                            |
++----------------------------------------------------------------------------+
 |
 +----------------+
 | [7]: <Merging> |

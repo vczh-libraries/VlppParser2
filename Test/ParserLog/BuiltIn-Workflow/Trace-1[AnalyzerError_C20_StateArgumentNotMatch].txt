@@ -27,1069 +27,1069 @@
  +
  |
 [0]
-++===================================================================++
-|| [2]: {NAME} test                                                  ||
-|| [816][_ModuleBody]NAME @ ";" { _UsingPath } { _Declaration }      ||
-|| [AST-INSTRUCTIONS]:                                               ||
-||   + Token()                                                       ||
-||   + Field(Module::name)                                           ||
-|| [RETURN STACK]:                                                   ||
-||   [0][1]: _ModuleBody -> [820][_Module]< "module" _ModuleBody @ > ||
-|| [PREDECESSORS 1-1]: [1]                                           ||
-|| [SUCCESORS 3-3]: [3]                                              ||
-++===================================================================++
+++========================================================================++
+|| [2]: {NAME} test                                                       ||
+|| [816][_ModuleBody]NAME @ ";" { _UsingPath } { _Declaration }           ||
+|| [AST-INSTRUCTIONS]:                                                    ||
+||   + Token()                                                            ||
+||   + Field(Module::name)                                                ||
+|| [RETURN STACK]:                                                        ||
+||   [0][258][1]: _ModuleBody -> [820][_Module]< "module" _ModuleBody @ > ||
+|| [PREDECESSORS 1-1]: [1]                                                ||
+|| [SUCCESORS 3-3]: [3]                                                   ||
+++========================================================================++
 [0]
  |
  +
  |
 [0]
-++===================================================================++
-|| [3]: {SEMICOLON} ;                                                ||
-|| [813][_ModuleBody]NAME ";" @ { _UsingPath } { _Declaration }      ||
-|| [AST-INSTRUCTIONS]:                                               ||
-|| [RETURN STACK]:                                                   ||
-||   [0][1]: _ModuleBody -> [820][_Module]< "module" _ModuleBody @ > ||
-|| [PREDECESSORS 2-2]: [2]                                           ||
-|| [SUCCESORS 5-5]: [5]                                              ||
-++===================================================================++
-[0]
- |
- +
- |
-[0]
-++======================================================================================++
-|| [5]: {KEYWORD_USING} using                                                           ||
-|| [806][_UsingPath]< "using" @ _UsingItem { "::" _UsingItem } ";" >                    ||
-|| [AST-INSTRUCTIONS]:                                                                  ||
-||   - BeginObject(ModuleUsingPath)                                                     ||
-|| [RETURN STACK]:                                                                      ||
-||   [1][3]: _UsingPath -> [814][_ModuleBody]NAME ";" { _UsingPath @ } { _Declaration } ||
-||   [0][1]: _ModuleBody -> [820][_Module]< "module" _ModuleBody @ >                    ||
-|| [PREDECESSORS 3-3]: [3]                                                              ||
-|| [SUCCESORS 6-6]: [6]                                                                 ||
-++======================================================================================++
+++========================================================================++
+|| [3]: {SEMICOLON} ;                                                     ||
+|| [813][_ModuleBody]NAME ";" @ { _UsingPath } { _Declaration }           ||
+|| [AST-INSTRUCTIONS]:                                                    ||
+|| [RETURN STACK]:                                                        ||
+||   [0][258][1]: _ModuleBody -> [820][_Module]< "module" _ModuleBody @ > ||
+|| [PREDECESSORS 2-2]: [2]                                                ||
+|| [SUCCESORS 5-5]: [5]                                                   ||
+++========================================================================++
 [0]
  |
  +
  |
 [0]
 ++===========================================================================================++
-|| [6]: {NAME} system                                                                        ||
-|| [799][_UsingFragment]< NAME @ >                                                           ||
+|| [5]: {KEYWORD_USING} using                                                                ||
+|| [806][_UsingPath]< "using" @ _UsingItem { "::" _UsingItem } ";" >                         ||
 || [AST-INSTRUCTIONS]:                                                                       ||
-||   - BeginObject(ModuleUsingItem)                                                          ||
-||   - BeginObject(ModuleUsingNameFragment)                                                  ||
-||   + Token()                                                                               ||
-||   + Field(ModuleUsingNameFragment::name)                                                  ||
+||   - BeginObject(ModuleUsingPath)                                                          ||
 || [RETURN STACK]:                                                                           ||
-||   [3][5]: _UsingFragment -> [802][_UsingItem]< _UsingFragment @ { _UsingFragment } >      ||
-||   [2][5]: _UsingItem -> [807][_UsingPath]< "using" _UsingItem @ { "::" _UsingItem } ";" > ||
-||   [1][3]: _UsingPath -> [814][_ModuleBody]NAME ";" { _UsingPath @ } { _Declaration }      ||
-||   [0][1]: _ModuleBody -> [820][_Module]< "module" _ModuleBody @ >                         ||
-|| [PREDECESSORS 5-5]: [5]                                                                   ||
-|| [SUCCESORS 7-7]: [7]                                                                      ||
+||   [1][254][3]: _UsingPath -> [814][_ModuleBody]NAME ";" { _UsingPath @ } { _Declaration } ||
+||   [0][258][1]: _ModuleBody -> [820][_Module]< "module" _ModuleBody @ >                    ||
+|| [PREDECESSORS 3-3]: [3]                                                                   ||
+|| [SUCCESORS 6-6]: [6]                                                                      ||
 ++===========================================================================================++
+[0]
+ |
+ +
+ |
+[0]
+++================================================================================================++
+|| [6]: {NAME} system                                                                             ||
+|| [799][_UsingFragment]< NAME @ >                                                                ||
+|| [AST-INSTRUCTIONS]:                                                                            ||
+||   - BeginObject(ModuleUsingItem)                                                               ||
+||   - BeginObject(ModuleUsingNameFragment)                                                       ||
+||   + Token()                                                                                    ||
+||   + Field(ModuleUsingNameFragment::name)                                                       ||
+|| [RETURN STACK]:                                                                                ||
+||   [3][248][5]: _UsingFragment -> [802][_UsingItem]< _UsingFragment @ { _UsingFragment } >      ||
+||   [2][251][5]: _UsingItem -> [807][_UsingPath]< "using" _UsingItem @ { "::" _UsingItem } ";" > ||
+||   [1][254][3]: _UsingPath -> [814][_ModuleBody]NAME ";" { _UsingPath @ } { _Declaration }      ||
+||   [0][258][1]: _ModuleBody -> [820][_Module]< "module" _ModuleBody @ >                         ||
+|| [PREDECESSORS 5-5]: [5]                                                                        ||
+|| [SUCCESORS 7-7]: [7]                                                                           ||
+++================================================================================================++
+|
++
+|
++------------------------------------------------------------------------------------------------+
+| [7]: <Ending>                                                                                  |
+| [802][_UsingItem]< _UsingFragment @ { _UsingFragment } >                                       |
+| [AST-INSTRUCTIONS]:                                                                            |
+|   - EndObject()                                                                                |
+|   > Field(ModuleUsingItem::fragments)                                                          |
+| [RETURN STACK]:                                                                                |
+|   [2][251][5]: _UsingItem -> [807][_UsingPath]< "using" _UsingItem @ { "::" _UsingItem } ";" > |
+|   [1][254][3]: _UsingPath -> [814][_ModuleBody]NAME ";" { _UsingPath @ } { _Declaration }      |
+|   [0][258][1]: _ModuleBody -> [820][_Module]< "module" _ModuleBody @ >                         |
+| [PREDECESSORS 6-6]: [6]                                                                        |
+| [SUCCESORS 8-8]: [8]                                                                           |
++------------------------------------------------------------------------------------------------+
 |
 +
 |
 +-------------------------------------------------------------------------------------------+
-| [7]: <Ending>                                                                             |
-| [802][_UsingItem]< _UsingFragment @ { _UsingFragment } >                                  |
+| [8]: <Ending>                                                                             |
+| [807][_UsingPath]< "using" _UsingItem @ { "::" _UsingItem } ";" >                         |
 | [AST-INSTRUCTIONS]:                                                                       |
 |   - EndObject()                                                                           |
-|   > Field(ModuleUsingItem::fragments)                                                     |
+|   > Field(ModuleUsingPath::items)                                                         |
 | [RETURN STACK]:                                                                           |
-|   [2][5]: _UsingItem -> [807][_UsingPath]< "using" _UsingItem @ { "::" _UsingItem } ";" > |
-|   [1][3]: _UsingPath -> [814][_ModuleBody]NAME ";" { _UsingPath @ } { _Declaration }      |
-|   [0][1]: _ModuleBody -> [820][_Module]< "module" _ModuleBody @ >                         |
-| [PREDECESSORS 6-6]: [6]                                                                   |
-| [SUCCESORS 8-8]: [8]                                                                      |
+|   [1][254][3]: _UsingPath -> [814][_ModuleBody]NAME ";" { _UsingPath @ } { _Declaration } |
+|   [0][258][1]: _ModuleBody -> [820][_Module]< "module" _ModuleBody @ >                    |
+| [PREDECESSORS 7-7]: [7]                                                                   |
+| [SUCCESORS 9-9]: [9]                                                                      |
 +-------------------------------------------------------------------------------------------+
-|
-+
-|
-+--------------------------------------------------------------------------------------+
-| [8]: <Ending>                                                                        |
-| [807][_UsingPath]< "using" _UsingItem @ { "::" _UsingItem } ";" >                    |
-| [AST-INSTRUCTIONS]:                                                                  |
-|   - EndObject()                                                                      |
-|   > Field(ModuleUsingPath::items)                                                    |
-| [RETURN STACK]:                                                                      |
-|   [1][3]: _UsingPath -> [814][_ModuleBody]NAME ";" { _UsingPath @ } { _Declaration } |
-|   [0][1]: _ModuleBody -> [820][_Module]< "module" _ModuleBody @ >                    |
-| [PREDECESSORS 7-7]: [7]                                                              |
-| [SUCCESORS 9-9]: [9]                                                                 |
-+--------------------------------------------------------------------------------------+
-[0]
- |
- +
- |
-[0]
-++======================================================================================++
-|| [9]: {SCOPE_DELIMITER} ::                                                            ||
-|| [808][_UsingPath]< "using" _UsingItem { "::" @ _UsingItem } ";" >                    ||
-|| [AST-INSTRUCTIONS]:                                                                  ||
-|| [RETURN STACK]:                                                                      ||
-||   [1][3]: _UsingPath -> [814][_ModuleBody]NAME ";" { _UsingPath @ } { _Declaration } ||
-||   [0][1]: _ModuleBody -> [820][_Module]< "module" _ModuleBody @ >                    ||
-|| [PREDECESSORS 8-8]: [8]                                                              ||
-|| [SUCCESORS 10-10]: [10]                                                              ||
-++======================================================================================++
 [0]
  |
  +
  |
 [0]
 ++===========================================================================================++
-|| [10]: {MUL} *                                                                             ||
-|| [798][_UsingFragment]< "*" @ >                                                            ||
+|| [9]: {SCOPE_DELIMITER} ::                                                                 ||
+|| [808][_UsingPath]< "using" _UsingItem { "::" @ _UsingItem } ";" >                         ||
 || [AST-INSTRUCTIONS]:                                                                       ||
-||   - BeginObject(ModuleUsingItem)                                                          ||
-||   - BeginObject(ModuleUsingWildCardFragment)                                              ||
 || [RETURN STACK]:                                                                           ||
-||   [5][9]: _UsingFragment -> [802][_UsingItem]< _UsingFragment @ { _UsingFragment } >      ||
-||   [4][9]: _UsingItem -> [809][_UsingPath]< "using" _UsingItem { "::" _UsingItem @ } ";" > ||
-||   [1][3]: _UsingPath -> [814][_ModuleBody]NAME ";" { _UsingPath @ } { _Declaration }      ||
-||   [0][1]: _ModuleBody -> [820][_Module]< "module" _ModuleBody @ >                         ||
-|| [PREDECESSORS 9-9]: [9]                                                                   ||
-|| [SUCCESORS 11-11]: [11]                                                                   ||
+||   [1][254][3]: _UsingPath -> [814][_ModuleBody]NAME ";" { _UsingPath @ } { _Declaration } ||
+||   [0][258][1]: _ModuleBody -> [820][_Module]< "module" _ModuleBody @ >                    ||
+|| [PREDECESSORS 8-8]: [8]                                                                   ||
+|| [SUCCESORS 10-10]: [10]                                                                   ||
 ++===========================================================================================++
+[0]
+ |
+ +
+ |
+[0]
+++================================================================================================++
+|| [10]: {MUL} *                                                                                  ||
+|| [798][_UsingFragment]< "*" @ >                                                                 ||
+|| [AST-INSTRUCTIONS]:                                                                            ||
+||   - BeginObject(ModuleUsingItem)                                                               ||
+||   - BeginObject(ModuleUsingWildCardFragment)                                                   ||
+|| [RETURN STACK]:                                                                                ||
+||   [5][248][9]: _UsingFragment -> [802][_UsingItem]< _UsingFragment @ { _UsingFragment } >      ||
+||   [4][252][9]: _UsingItem -> [809][_UsingPath]< "using" _UsingItem { "::" _UsingItem @ } ";" > ||
+||   [1][254][3]: _UsingPath -> [814][_ModuleBody]NAME ";" { _UsingPath @ } { _Declaration }      ||
+||   [0][258][1]: _ModuleBody -> [820][_Module]< "module" _ModuleBody @ >                         ||
+|| [PREDECESSORS 9-9]: [9]                                                                        ||
+|| [SUCCESORS 11-11]: [11]                                                                        ||
+++================================================================================================++
+|
++
+|
++------------------------------------------------------------------------------------------------+
+| [11]: <Ending>                                                                                 |
+| [802][_UsingItem]< _UsingFragment @ { _UsingFragment } >                                       |
+| [AST-INSTRUCTIONS]:                                                                            |
+|   - EndObject()                                                                                |
+|   > Field(ModuleUsingItem::fragments)                                                          |
+| [RETURN STACK]:                                                                                |
+|   [4][252][9]: _UsingItem -> [809][_UsingPath]< "using" _UsingItem { "::" _UsingItem @ } ";" > |
+|   [1][254][3]: _UsingPath -> [814][_ModuleBody]NAME ";" { _UsingPath @ } { _Declaration }      |
+|   [0][258][1]: _ModuleBody -> [820][_Module]< "module" _ModuleBody @ >                         |
+| [PREDECESSORS 10-10]: [10]                                                                     |
+| [SUCCESORS 12-12]: [12]                                                                        |
++------------------------------------------------------------------------------------------------+
 |
 +
 |
 +-------------------------------------------------------------------------------------------+
-| [11]: <Ending>                                                                            |
-| [802][_UsingItem]< _UsingFragment @ { _UsingFragment } >                                  |
+| [12]: <Ending>                                                                            |
+| [809][_UsingPath]< "using" _UsingItem { "::" _UsingItem @ } ";" >                         |
 | [AST-INSTRUCTIONS]:                                                                       |
 |   - EndObject()                                                                           |
-|   > Field(ModuleUsingItem::fragments)                                                     |
+|   > Field(ModuleUsingPath::items)                                                         |
 | [RETURN STACK]:                                                                           |
-|   [4][9]: _UsingItem -> [809][_UsingPath]< "using" _UsingItem { "::" _UsingItem @ } ";" > |
-|   [1][3]: _UsingPath -> [814][_ModuleBody]NAME ";" { _UsingPath @ } { _Declaration }      |
-|   [0][1]: _ModuleBody -> [820][_Module]< "module" _ModuleBody @ >                         |
-| [PREDECESSORS 10-10]: [10]                                                                |
-| [SUCCESORS 12-12]: [12]                                                                   |
+|   [1][254][3]: _UsingPath -> [814][_ModuleBody]NAME ";" { _UsingPath @ } { _Declaration } |
+|   [0][258][1]: _ModuleBody -> [820][_Module]< "module" _ModuleBody @ >                    |
+| [PREDECESSORS 11-11]: [11]                                                                |
+| [SUCCESORS 13-13]: [13]                                                                   |
 +-------------------------------------------------------------------------------------------+
+[0]
+ |
+ +
+ |
+[0]
+++===========================================================================================++
+|| [13]: {SEMICOLON} ;                                                                       ||
+|| [810][_UsingPath]< "using" _UsingItem { "::" _UsingItem } ";" @ >                         ||
+|| [AST-INSTRUCTIONS]:                                                                       ||
+|| [RETURN STACK]:                                                                           ||
+||   [1][254][3]: _UsingPath -> [814][_ModuleBody]NAME ";" { _UsingPath @ } { _Declaration } ||
+||   [0][258][1]: _ModuleBody -> [820][_Module]< "module" _ModuleBody @ >                    ||
+|| [PREDECESSORS 12-12]: [12]                                                                ||
+|| [SUCCESORS 14-14]: [14]                                                                   ||
+++===========================================================================================++
 |
 +
 |
-+--------------------------------------------------------------------------------------+
-| [12]: <Ending>                                                                       |
-| [809][_UsingPath]< "using" _UsingItem { "::" _UsingItem @ } ";" >                    |
-| [AST-INSTRUCTIONS]:                                                                  |
-|   - EndObject()                                                                      |
-|   > Field(ModuleUsingPath::items)                                                    |
-| [RETURN STACK]:                                                                      |
-|   [1][3]: _UsingPath -> [814][_ModuleBody]NAME ";" { _UsingPath @ } { _Declaration } |
-|   [0][1]: _ModuleBody -> [820][_Module]< "module" _ModuleBody @ >                    |
-| [PREDECESSORS 11-11]: [11]                                                           |
-| [SUCCESORS 13-13]: [13]                                                              |
-+--------------------------------------------------------------------------------------+
-[0]
- |
- +
- |
-[0]
-++======================================================================================++
-|| [13]: {SEMICOLON} ;                                                                  ||
-|| [810][_UsingPath]< "using" _UsingItem { "::" _UsingItem } ";" @ >                    ||
-|| [AST-INSTRUCTIONS]:                                                                  ||
-|| [RETURN STACK]:                                                                      ||
-||   [1][3]: _UsingPath -> [814][_ModuleBody]NAME ";" { _UsingPath @ } { _Declaration } ||
-||   [0][1]: _ModuleBody -> [820][_Module]< "module" _ModuleBody @ >                    ||
-|| [PREDECESSORS 12-12]: [12]                                                           ||
-|| [SUCCESORS 14-14]: [14]                                                              ||
-++======================================================================================++
-|
-+
-|
-+-------------------------------------------------------------------+
-| [14]: <Ending>                                                    |
-| [814][_ModuleBody]NAME ";" { _UsingPath @ } { _Declaration }      |
-| [AST-INSTRUCTIONS]:                                               |
-|   - EndObject()                                                   |
-|   > Field(Module::paths)                                          |
-| [RETURN STACK]:                                                   |
-|   [0][1]: _ModuleBody -> [820][_Module]< "module" _ModuleBody @ > |
-| [PREDECESSORS 13-13]: [13]                                        |
-| [SUCCESORS 16-16]: [16]                                           |
-+-------------------------------------------------------------------+
-[0]
- |
- +
- |
-[0]
-++========================================================================================================++
-|| [16]: {KEYWORD_CLASS} class                                                                            ||
-|| [676][_Class]< "class" @ NAME _ClassBody >                                                             ||
-|| [AST-INSTRUCTIONS]:                                                                                    ||
-||   - DelayFieldAssignment()                                                                             ||
-||   - DelayFieldAssignment()                                                                             ||
-||   - BeginObject(ClassDeclaration)                                                                      ||
-|| [RETURN STACK]:                                                                                        ||
-||   [8][14]: _Class -> [781][_DeclarationCandidates]<< !_Class @ >>                                      ||
-||   [7][14]: _DeclarationCandidates -> [795][_Declaration]<< { _Attribute } !_DeclarationCandidates @ >> ||
-||   [6][14]: _Declaration -> [815][_ModuleBody]NAME ";" { _UsingPath } { _Declaration @ }                ||
-||   [0][1]: _ModuleBody -> [820][_Module]< "module" _ModuleBody @ >                                      ||
-|| [PREDECESSORS 14-14]: [14]                                                                             ||
-|| [SUCCESORS 17-17]: [17]                                                                                ||
-++========================================================================================================++
-[0]
- |
- +
- |
-[0]
-++========================================================================================================++
-|| [17]: {NAME} SM                                                                                        ||
-|| [677][_Class]< "class" NAME @ _ClassBody >                                                             ||
-|| [AST-INSTRUCTIONS]:                                                                                    ||
-||   + Token()                                                                                            ||
-||   + Field(Declaration::name)                                                                           ||
-|| [RETURN STACK]:                                                                                        ||
-||   [8][14]: _Class -> [781][_DeclarationCandidates]<< !_Class @ >>                                      ||
-||   [7][14]: _DeclarationCandidates -> [795][_Declaration]<< { _Attribute } !_DeclarationCandidates @ >> ||
-||   [6][14]: _Declaration -> [815][_ModuleBody]NAME ";" { _UsingPath } { _Declaration @ }                ||
-||   [0][1]: _ModuleBody -> [820][_Module]< "module" _ModuleBody @ >                                      ||
-|| [PREDECESSORS 16-16]: [16]                                                                             ||
-|| [SUCCESORS 18-18]: [18]                                                                                ||
-++========================================================================================================++
-[0]
- |
- +
- |
-[0]
-++========================================================================================================++
-|| [18]: {COLON} :                                                                                        ||
-|| [667][_ClassBody][ ":" @ { _Type ; "," } ] "{" { _Declaration } [ _StateMachine ] "}"                  ||
-|| [AST-INSTRUCTIONS]:                                                                                    ||
-|| [RETURN STACK]:                                                                                        ||
-||   [9][17]: _ClassBody -> [678][_Class]< "class" NAME _ClassBody @ >                                    ||
-||   [8][14]: _Class -> [781][_DeclarationCandidates]<< !_Class @ >>                                      ||
-||   [7][14]: _DeclarationCandidates -> [795][_Declaration]<< { _Attribute } !_DeclarationCandidates @ >> ||
-||   [6][14]: _Declaration -> [815][_ModuleBody]NAME ";" { _UsingPath } { _Declaration @ }                ||
-||   [0][1]: _ModuleBody -> [820][_Module]< "module" _ModuleBody @ >                                      ||
-|| [PREDECESSORS 17-17]: [17]                                                                             ||
-|| [SUCCESORS 19-19]: [19]                                                                                ||
-++========================================================================================================++
++------------------------------------------------------------------------+
+| [14]: <Ending>                                                         |
+| [814][_ModuleBody]NAME ";" { _UsingPath @ } { _Declaration }           |
+| [AST-INSTRUCTIONS]:                                                    |
+|   - EndObject()                                                        |
+|   > Field(Module::paths)                                               |
+| [RETURN STACK]:                                                        |
+|   [0][258][1]: _ModuleBody -> [820][_Module]< "module" _ModuleBody @ > |
+| [PREDECESSORS 13-13]: [13]                                             |
+| [SUCCESORS 16-16]: [16]                                                |
++------------------------------------------------------------------------+
 [0]
  |
  +
  |
 [0]
 ++============================================================================================================++
-|| [19]: {NAME} StateMachine                                                                                  ||
-|| [30][_Type]< NAME @ >                                                                                      ||
+|| [16]: {KEYWORD_CLASS} class                                                                                ||
+|| [676][_Class]< "class" @ NAME _ClassBody >                                                                 ||
 || [AST-INSTRUCTIONS]:                                                                                        ||
-||   - BeginObject(ReferenceType)                                                                             ||
-||   + Token()                                                                                                ||
-||   + Field(ReferenceType::name)                                                                             ||
+||   - DelayFieldAssignment()                                                                                 ||
+||   - DelayFieldAssignment()                                                                                 ||
+||   - BeginObject(ClassDeclaration)                                                                          ||
 || [RETURN STACK]:                                                                                            ||
-||   [10][18]: _Type -> [673][_ClassBody][ ":" { _Type @ ; "," } ] "{" { _Declaration } [ _StateMachine ] "}" ||
-||   [9][17]: _ClassBody -> [678][_Class]< "class" NAME _ClassBody @ >                                        ||
-||   [8][14]: _Class -> [781][_DeclarationCandidates]<< !_Class @ >>                                          ||
-||   [7][14]: _DeclarationCandidates -> [795][_Declaration]<< { _Attribute } !_DeclarationCandidates @ >>     ||
-||   [6][14]: _Declaration -> [815][_ModuleBody]NAME ";" { _UsingPath } { _Declaration @ }                    ||
-||   [0][1]: _ModuleBody -> [820][_Module]< "module" _ModuleBody @ >                                          ||
-|| [PREDECESSORS 18-18]: [18]                                                                                 ||
-|| [SUCCESORS 21-21]: [21]                                                                                    ||
+||   [8][48][14]: _Class -> [781][_DeclarationCandidates]<< !_Class @ >>                                      ||
+||   [7][47][14]: _DeclarationCandidates -> [795][_Declaration]<< { _Attribute } !_DeclarationCandidates @ >> ||
+||   [6][255][14]: _Declaration -> [815][_ModuleBody]NAME ";" { _UsingPath } { _Declaration @ }               ||
+||   [0][258][1]: _ModuleBody -> [820][_Module]< "module" _ModuleBody @ >                                     ||
+|| [PREDECESSORS 14-14]: [14]                                                                                 ||
+|| [SUCCESORS 17-17]: [17]                                                                                    ||
+++============================================================================================================++
+[0]
+ |
+ +
+ |
+[0]
+++============================================================================================================++
+|| [17]: {NAME} SM                                                                                            ||
+|| [677][_Class]< "class" NAME @ _ClassBody >                                                                 ||
+|| [AST-INSTRUCTIONS]:                                                                                        ||
+||   + Token()                                                                                                ||
+||   + Field(Declaration::name)                                                                               ||
+|| [RETURN STACK]:                                                                                            ||
+||   [8][48][14]: _Class -> [781][_DeclarationCandidates]<< !_Class @ >>                                      ||
+||   [7][47][14]: _DeclarationCandidates -> [795][_Declaration]<< { _Attribute } !_DeclarationCandidates @ >> ||
+||   [6][255][14]: _Declaration -> [815][_ModuleBody]NAME ";" { _UsingPath } { _Declaration @ }               ||
+||   [0][258][1]: _ModuleBody -> [820][_Module]< "module" _ModuleBody @ >                                     ||
+|| [PREDECESSORS 16-16]: [16]                                                                                 ||
+|| [SUCCESORS 18-18]: [18]                                                                                    ||
+++============================================================================================================++
+[0]
+ |
+ +
+ |
+[0]
+++============================================================================================================++
+|| [18]: {COLON} :                                                                                            ||
+|| [667][_ClassBody][ ":" @ { _Type ; "," } ] "{" { _Declaration } [ _StateMachine ] "}"                      ||
+|| [AST-INSTRUCTIONS]:                                                                                        ||
+|| [RETURN STACK]:                                                                                            ||
+||   [9][217][17]: _ClassBody -> [678][_Class]< "class" NAME _ClassBody @ >                                   ||
+||   [8][48][14]: _Class -> [781][_DeclarationCandidates]<< !_Class @ >>                                      ||
+||   [7][47][14]: _DeclarationCandidates -> [795][_Declaration]<< { _Attribute } !_DeclarationCandidates @ >> ||
+||   [6][255][14]: _Declaration -> [815][_ModuleBody]NAME ";" { _UsingPath } { _Declaration @ }               ||
+||   [0][258][1]: _ModuleBody -> [820][_Module]< "module" _ModuleBody @ >                                     ||
+|| [PREDECESSORS 17-17]: [17]                                                                                 ||
+|| [SUCCESORS 19-19]: [19]                                                                                    ||
+++============================================================================================================++
+[0]
+ |
+ +
+ |
+[0]
+++=================================================================================================================++
+|| [19]: {NAME} StateMachine                                                                                       ||
+|| [30][_Type]< NAME @ >                                                                                           ||
+|| [AST-INSTRUCTIONS]:                                                                                             ||
+||   - BeginObject(ReferenceType)                                                                                  ||
+||   + Token()                                                                                                     ||
+||   + Field(ReferenceType::name)                                                                                  ||
+|| [RETURN STACK]:                                                                                                 ||
+||   [10][211][18]: _Type -> [673][_ClassBody][ ":" { _Type @ ; "," } ] "{" { _Declaration } [ _StateMachine ] "}" ||
+||   [9][217][17]: _ClassBody -> [678][_Class]< "class" NAME _ClassBody @ >                                        ||
+||   [8][48][14]: _Class -> [781][_DeclarationCandidates]<< !_Class @ >>                                           ||
+||   [7][47][14]: _DeclarationCandidates -> [795][_Declaration]<< { _Attribute } !_DeclarationCandidates @ >>      ||
+||   [6][255][14]: _Declaration -> [815][_ModuleBody]NAME ";" { _UsingPath } { _Declaration @ }                    ||
+||   [0][258][1]: _ModuleBody -> [820][_Module]< "module" _ModuleBody @ >                                          ||
+|| [PREDECESSORS 18-18]: [18]                                                                                      ||
+|| [SUCCESORS 21-21]: [21]                                                                                         ||
+++=================================================================================================================++
+|
++
+|
++------------------------------------------------------------------------------------------------------------+
+| [21]: <Ending>                                                                                             |
+| [673][_ClassBody][ ":" { _Type @ ; "," } ] "{" { _Declaration } [ _StateMachine ] "}"                      |
+| [AST-INSTRUCTIONS]:                                                                                        |
+|   - EndObject()                                                                                            |
+|   > Field(ClassDeclaration::baseTypes)                                                                     |
+| [RETURN STACK]:                                                                                            |
+|   [9][217][17]: _ClassBody -> [678][_Class]< "class" NAME _ClassBody @ >                                   |
+|   [8][48][14]: _Class -> [781][_DeclarationCandidates]<< !_Class @ >>                                      |
+|   [7][47][14]: _DeclarationCandidates -> [795][_Declaration]<< { _Attribute } !_DeclarationCandidates @ >> |
+|   [6][255][14]: _Declaration -> [815][_ModuleBody]NAME ";" { _UsingPath } { _Declaration @ }               |
+|   [0][258][1]: _ModuleBody -> [820][_Module]< "module" _ModuleBody @ >                                     |
+| [PREDECESSORS 19-19]: [19]                                                                                 |
+| [SUCCESORS 23-23]: [23]                                                                                    |
++------------------------------------------------------------------------------------------------------------+
+[0]
+ |
+ +
+ |
+[0]
+++============================================================================================================++
+|| [23]: {OPEN_BRACE} {                                                                                       ||
+|| [669][_ClassBody][ ":" { _Type ; "," } ] "{" @ { _Declaration } [ _StateMachine ] "}"                      ||
+|| [AST-INSTRUCTIONS]:                                                                                        ||
+|| [RETURN STACK]:                                                                                            ||
+||   [9][217][17]: _ClassBody -> [678][_Class]< "class" NAME _ClassBody @ >                                   ||
+||   [8][48][14]: _Class -> [781][_DeclarationCandidates]<< !_Class @ >>                                      ||
+||   [7][47][14]: _DeclarationCandidates -> [795][_Declaration]<< { _Attribute } !_DeclarationCandidates @ >> ||
+||   [6][255][14]: _Declaration -> [815][_ModuleBody]NAME ";" { _UsingPath } { _Declaration @ }               ||
+||   [0][258][1]: _ModuleBody -> [820][_Module]< "module" _ModuleBody @ >                                     ||
+|| [PREDECESSORS 21-21]: [21]                                                                                 ||
+|| [SUCCESORS 24-24]: [24]                                                                                    ||
+++============================================================================================================++
+[0]
+ |
+ +
+ |
+[0]
+++=========================================================================================================================++
+|| [24]: {STATE_MACHINE} $state_machine                                                                                    ||
+|| [545][_StateMachine]< "$state_machine" @ "{" { ( _StateInput | _StateDecl ) } "}" >                                     ||
+|| [AST-INSTRUCTIONS]:                                                                                                     ||
+||   - BeginObject(StateMachineDeclaration)                                                                                ||
+|| [RETURN STACK]:                                                                                                         ||
+||   [11][214][23]: _StateMachine -> [671][_ClassBody][ ":" { _Type ; "," } ] "{" { _Declaration } [ _StateMachine @ ] "}" ||
+||   [9][217][17]: _ClassBody -> [678][_Class]< "class" NAME _ClassBody @ >                                                ||
+||   [8][48][14]: _Class -> [781][_DeclarationCandidates]<< !_Class @ >>                                                   ||
+||   [7][47][14]: _DeclarationCandidates -> [795][_Declaration]<< { _Attribute } !_DeclarationCandidates @ >>              ||
+||   [6][255][14]: _Declaration -> [815][_ModuleBody]NAME ";" { _UsingPath } { _Declaration @ }                            ||
+||   [0][258][1]: _ModuleBody -> [820][_Module]< "module" _ModuleBody @ >                                                  ||
+|| [PREDECESSORS 23-23]: [23]                                                                                              ||
+|| [SUCCESORS 25-25]: [25]                                                                                                 ||
+++=========================================================================================================================++
+[0]
+ |
+ +
+ |
+[0]
+++=========================================================================================================================++
+|| [25]: {OPEN_BRACE} {                                                                                                    ||
+|| [541][_StateMachine]< "$state_machine" "{" @ { ( _StateInput | _StateDecl ) } "}" >                                     ||
+|| [AST-INSTRUCTIONS]:                                                                                                     ||
+|| [RETURN STACK]:                                                                                                         ||
+||   [11][214][23]: _StateMachine -> [671][_ClassBody][ ":" { _Type ; "," } ] "{" { _Declaration } [ _StateMachine @ ] "}" ||
+||   [9][217][17]: _ClassBody -> [678][_Class]< "class" NAME _ClassBody @ >                                                ||
+||   [8][48][14]: _Class -> [781][_DeclarationCandidates]<< !_Class @ >>                                                   ||
+||   [7][47][14]: _DeclarationCandidates -> [795][_Declaration]<< { _Attribute } !_DeclarationCandidates @ >>              ||
+||   [6][255][14]: _Declaration -> [815][_ModuleBody]NAME ";" { _UsingPath } { _Declaration @ }                            ||
+||   [0][258][1]: _ModuleBody -> [820][_Module]< "module" _ModuleBody @ >                                                  ||
+|| [PREDECESSORS 24-24]: [24]                                                                                              ||
+|| [SUCCESORS 26-26]: [26]                                                                                                 ||
+++=========================================================================================================================++
+[0]
+ |
+ +
+ |
+[0]
+++=========================================================================================================================++
+|| [26]: {STATE_DECL} $state                                                                                               ||
+|| [538][_StateDecl]< "$state" @ ( "default" | NAME ) "(" { _FunctionArgument ; "," } ")" _Block >                         ||
+|| [AST-INSTRUCTIONS]:                                                                                                     ||
+||   - BeginObject(StateDeclaration)                                                                                       ||
+|| [RETURN STACK]:                                                                                                         ||
+||   [12][174][25]: _StateDecl -> [544][_StateMachine]< "$state_machine" "{" { ( _StateInput | _StateDecl @ ) } "}" >      ||
+||   [11][214][23]: _StateMachine -> [671][_ClassBody][ ":" { _Type ; "," } ] "{" { _Declaration } [ _StateMachine @ ] "}" ||
+||   [9][217][17]: _ClassBody -> [678][_Class]< "class" NAME _ClassBody @ >                                                ||
+||   [8][48][14]: _Class -> [781][_DeclarationCandidates]<< !_Class @ >>                                                   ||
+||   [7][47][14]: _DeclarationCandidates -> [795][_Declaration]<< { _Attribute } !_DeclarationCandidates @ >>              ||
+||   [6][255][14]: _Declaration -> [815][_ModuleBody]NAME ";" { _UsingPath } { _Declaration @ }                            ||
+||   [0][258][1]: _ModuleBody -> [820][_Module]< "module" _ModuleBody @ >                                                  ||
+|| [PREDECESSORS 25-25]: [25]                                                                                              ||
+|| [SUCCESORS 27-27]: [27]                                                                                                 ||
+++=========================================================================================================================++
+[0]
+ |
+ +
+ |
+[0]
+++=========================================================================================================================++
+|| [27]: {NAME} A                                                                                                          ||
+|| [537][_StateDecl]< "$state" ( "default" | NAME @ ) "(" { _FunctionArgument ; "," } ")" _Block >                         ||
+|| [AST-INSTRUCTIONS]:                                                                                                     ||
+||   + Token()                                                                                                             ||
+||   + Field(StateDeclaration::name)                                                                                       ||
+|| [RETURN STACK]:                                                                                                         ||
+||   [12][174][25]: _StateDecl -> [544][_StateMachine]< "$state_machine" "{" { ( _StateInput | _StateDecl @ ) } "}" >      ||
+||   [11][214][23]: _StateMachine -> [671][_ClassBody][ ":" { _Type ; "," } ] "{" { _Declaration } [ _StateMachine @ ] "}" ||
+||   [9][217][17]: _ClassBody -> [678][_Class]< "class" NAME _ClassBody @ >                                                ||
+||   [8][48][14]: _Class -> [781][_DeclarationCandidates]<< !_Class @ >>                                                   ||
+||   [7][47][14]: _DeclarationCandidates -> [795][_Declaration]<< { _Attribute } !_DeclarationCandidates @ >>              ||
+||   [6][255][14]: _Declaration -> [815][_ModuleBody]NAME ";" { _UsingPath } { _Declaration @ }                            ||
+||   [0][258][1]: _ModuleBody -> [820][_Module]< "module" _ModuleBody @ >                                                  ||
+|| [PREDECESSORS 26-26]: [26]                                                                                              ||
+|| [SUCCESORS 28-28]: [28]                                                                                                 ||
+++=========================================================================================================================++
+[0]
+ |
+ +
+ |
+[0]
+++=========================================================================================================================++
+|| [28]: {OPEN_BRACKET} (                                                                                                  ||
+|| [532][_StateDecl]< "$state" ( "default" | NAME ) "(" @ { _FunctionArgument ; "," } ")" _Block >                         ||
+|| [AST-INSTRUCTIONS]:                                                                                                     ||
+|| [RETURN STACK]:                                                                                                         ||
+||   [12][174][25]: _StateDecl -> [544][_StateMachine]< "$state_machine" "{" { ( _StateInput | _StateDecl @ ) } "}" >      ||
+||   [11][214][23]: _StateMachine -> [671][_ClassBody][ ":" { _Type ; "," } ] "{" { _Declaration } [ _StateMachine @ ] "}" ||
+||   [9][217][17]: _ClassBody -> [678][_Class]< "class" NAME _ClassBody @ >                                                ||
+||   [8][48][14]: _Class -> [781][_DeclarationCandidates]<< !_Class @ >>                                                   ||
+||   [7][47][14]: _DeclarationCandidates -> [795][_Declaration]<< { _Attribute } !_DeclarationCandidates @ >>              ||
+||   [6][255][14]: _Declaration -> [815][_ModuleBody]NAME ";" { _UsingPath } { _Declaration @ }                            ||
+||   [0][258][1]: _ModuleBody -> [820][_Module]< "module" _ModuleBody @ >                                                  ||
+|| [PREDECESSORS 27-27]: [27]                                                                                              ||
+|| [SUCCESORS 29-29]: [29]                                                                                                 ||
+++=========================================================================================================================++
+[0]
+ |
+ +
+ |
+[0]
+++=======================================================================================================================================++
+|| [29]: {NAME} x                                                                                                                        ||
+|| [567][_FunctionArgument]< { _Attribute } NAME @ ":" _Type >                                                                           ||
+|| [AST-INSTRUCTIONS]:                                                                                                                   ||
+||   - BeginObject(FunctionArgument)                                                                                                     ||
+||   + Token()                                                                                                                           ||
+||   + Field(FunctionArgument::name)                                                                                                     ||
+|| [RETURN STACK]:                                                                                                                       ||
+||   [13][170][28]: _FunctionArgument -> [536][_StateDecl]< "$state" ( "default" | NAME ) "(" { _FunctionArgument @ ; "," } ")" _Block > ||
+||   [12][174][25]: _StateDecl -> [544][_StateMachine]< "$state_machine" "{" { ( _StateInput | _StateDecl @ ) } "}" >                    ||
+||   [11][214][23]: _StateMachine -> [671][_ClassBody][ ":" { _Type ; "," } ] "{" { _Declaration } [ _StateMachine @ ] "}"               ||
+||   [9][217][17]: _ClassBody -> [678][_Class]< "class" NAME _ClassBody @ >                                                              ||
+||   [8][48][14]: _Class -> [781][_DeclarationCandidates]<< !_Class @ >>                                                                 ||
+||   [7][47][14]: _DeclarationCandidates -> [795][_Declaration]<< { _Attribute } !_DeclarationCandidates @ >>                            ||
+||   [6][255][14]: _Declaration -> [815][_ModuleBody]NAME ";" { _UsingPath } { _Declaration @ }                                          ||
+||   [0][258][1]: _ModuleBody -> [820][_Module]< "module" _ModuleBody @ >                                                                ||
+|| [PREDECESSORS 28-28]: [28]                                                                                                            ||
+|| [SUCCESORS 30-30]: [30]                                                                                                               ||
+++=======================================================================================================================================++
+[0]
+ |
+ +
+ |
+[0]
+++=======================================================================================================================================++
+|| [30]: {COLON} :                                                                                                                       ||
+|| [565][_FunctionArgument]< { _Attribute } NAME ":" @ _Type >                                                                           ||
+|| [AST-INSTRUCTIONS]:                                                                                                                   ||
+|| [RETURN STACK]:                                                                                                                       ||
+||   [13][170][28]: _FunctionArgument -> [536][_StateDecl]< "$state" ( "default" | NAME ) "(" { _FunctionArgument @ ; "," } ")" _Block > ||
+||   [12][174][25]: _StateDecl -> [544][_StateMachine]< "$state_machine" "{" { ( _StateInput | _StateDecl @ ) } "}" >                    ||
+||   [11][214][23]: _StateMachine -> [671][_ClassBody][ ":" { _Type ; "," } ] "{" { _Declaration } [ _StateMachine @ ] "}"               ||
+||   [9][217][17]: _ClassBody -> [678][_Class]< "class" NAME _ClassBody @ >                                                              ||
+||   [8][48][14]: _Class -> [781][_DeclarationCandidates]<< !_Class @ >>                                                                 ||
+||   [7][47][14]: _DeclarationCandidates -> [795][_Declaration]<< { _Attribute } !_DeclarationCandidates @ >>                            ||
+||   [6][255][14]: _Declaration -> [815][_ModuleBody]NAME ";" { _UsingPath } { _Declaration @ }                                          ||
+||   [0][258][1]: _ModuleBody -> [820][_Module]< "module" _ModuleBody @ >                                                                ||
+|| [PREDECESSORS 29-29]: [29]                                                                                                            ||
+|| [SUCCESORS 31-31]: [31]                                                                                                               ||
+++=======================================================================================================================================++
+[0]
+ |
+ +
+ |
+[0]
+++=======================================================================================================================================++
+|| [31]: {TYPE_INT} int                                                                                                                  ||
+|| [20][_Type]< "int" @ >                                                                                                                ||
+|| [AST-INSTRUCTIONS]:                                                                                                                   ||
+||   - BeginObject(PredefinedType)                                                                                                       ||
+|| [RETURN STACK]:                                                                                                                       ||
+||   [14][183][30]: _Type -> [566][_FunctionArgument]< { _Attribute } NAME ":" _Type @ >                                                 ||
+||   [13][170][28]: _FunctionArgument -> [536][_StateDecl]< "$state" ( "default" | NAME ) "(" { _FunctionArgument @ ; "," } ")" _Block > ||
+||   [12][174][25]: _StateDecl -> [544][_StateMachine]< "$state_machine" "{" { ( _StateInput | _StateDecl @ ) } "}" >                    ||
+||   [11][214][23]: _StateMachine -> [671][_ClassBody][ ":" { _Type ; "," } ] "{" { _Declaration } [ _StateMachine @ ] "}"               ||
+||   [9][217][17]: _ClassBody -> [678][_Class]< "class" NAME _ClassBody @ >                                                              ||
+||   [8][48][14]: _Class -> [781][_DeclarationCandidates]<< !_Class @ >>                                                                 ||
+||   [7][47][14]: _DeclarationCandidates -> [795][_Declaration]<< { _Attribute } !_DeclarationCandidates @ >>                            ||
+||   [6][255][14]: _Declaration -> [815][_ModuleBody]NAME ";" { _UsingPath } { _Declaration @ }                                          ||
+||   [0][258][1]: _ModuleBody -> [820][_Module]< "module" _ModuleBody @ >                                                                ||
+|| [PREDECESSORS 30-30]: [30]                                                                                                            ||
+|| [SUCCESORS 32-32]: [32]                                                                                                               ||
+++=======================================================================================================================================++
+|
++
+|
++---------------------------------------------------------------------------------------------------------------------------------------+
+| [32]: <Ending>                                                                                                                        |
+| [566][_FunctionArgument]< { _Attribute } NAME ":" _Type @ >                                                                           |
+| [AST-INSTRUCTIONS]:                                                                                                                   |
+|   - EnumItem(3)                                                                                                                       |
+|   - Field(PredefinedType::name)                                                                                                       |
+|   - EndObject()                                                                                                                       |
+|   > Field(FunctionArgument::type)                                                                                                     |
+| [RETURN STACK]:                                                                                                                       |
+|   [13][170][28]: _FunctionArgument -> [536][_StateDecl]< "$state" ( "default" | NAME ) "(" { _FunctionArgument @ ; "," } ")" _Block > |
+|   [12][174][25]: _StateDecl -> [544][_StateMachine]< "$state_machine" "{" { ( _StateInput | _StateDecl @ ) } "}" >                    |
+|   [11][214][23]: _StateMachine -> [671][_ClassBody][ ":" { _Type ; "," } ] "{" { _Declaration } [ _StateMachine @ ] "}"               |
+|   [9][217][17]: _ClassBody -> [678][_Class]< "class" NAME _ClassBody @ >                                                              |
+|   [8][48][14]: _Class -> [781][_DeclarationCandidates]<< !_Class @ >>                                                                 |
+|   [7][47][14]: _DeclarationCandidates -> [795][_Declaration]<< { _Attribute } !_DeclarationCandidates @ >>                            |
+|   [6][255][14]: _Declaration -> [815][_ModuleBody]NAME ";" { _UsingPath } { _Declaration @ }                                          |
+|   [0][258][1]: _ModuleBody -> [820][_Module]< "module" _ModuleBody @ >                                                                |
+| [PREDECESSORS 31-31]: [31]                                                                                                            |
+| [SUCCESORS 33-33]: [33]                                                                                                               |
++---------------------------------------------------------------------------------------------------------------------------------------+
+|
++
+|
++-------------------------------------------------------------------------------------------------------------------------+
+| [33]: <Ending>                                                                                                          |
+| [536][_StateDecl]< "$state" ( "default" | NAME ) "(" { _FunctionArgument @ ; "," } ")" _Block >                         |
+| [AST-INSTRUCTIONS]:                                                                                                     |
+|   - EndObject()                                                                                                         |
+|   > Field(StateDeclaration::arguments)                                                                                  |
+| [RETURN STACK]:                                                                                                         |
+|   [12][174][25]: _StateDecl -> [544][_StateMachine]< "$state_machine" "{" { ( _StateInput | _StateDecl @ ) } "}" >      |
+|   [11][214][23]: _StateMachine -> [671][_ClassBody][ ":" { _Type ; "," } ] "{" { _Declaration } [ _StateMachine @ ] "}" |
+|   [9][217][17]: _ClassBody -> [678][_Class]< "class" NAME _ClassBody @ >                                                |
+|   [8][48][14]: _Class -> [781][_DeclarationCandidates]<< !_Class @ >>                                                   |
+|   [7][47][14]: _DeclarationCandidates -> [795][_Declaration]<< { _Attribute } !_DeclarationCandidates @ >>              |
+|   [6][255][14]: _Declaration -> [815][_ModuleBody]NAME ";" { _UsingPath } { _Declaration @ }                            |
+|   [0][258][1]: _ModuleBody -> [820][_Module]< "module" _ModuleBody @ >                                                  |
+| [PREDECESSORS 32-32]: [32]                                                                                              |
+| [SUCCESORS 34-34]: [34]                                                                                                 |
++-------------------------------------------------------------------------------------------------------------------------+
+[0]
+ |
+ +
+ |
+[0]
+++=========================================================================================================================++
+|| [34]: {CLOSE_BRACKET} )                                                                                                 ||
+|| [534][_StateDecl]< "$state" ( "default" | NAME ) "(" { _FunctionArgument ; "," } ")" @ _Block >                         ||
+|| [AST-INSTRUCTIONS]:                                                                                                     ||
+|| [RETURN STACK]:                                                                                                         ||
+||   [12][174][25]: _StateDecl -> [544][_StateMachine]< "$state_machine" "{" { ( _StateInput | _StateDecl @ ) } "}" >      ||
+||   [11][214][23]: _StateMachine -> [671][_ClassBody][ ":" { _Type ; "," } ] "{" { _Declaration } [ _StateMachine @ ] "}" ||
+||   [9][217][17]: _ClassBody -> [678][_Class]< "class" NAME _ClassBody @ >                                                ||
+||   [8][48][14]: _Class -> [781][_DeclarationCandidates]<< !_Class @ >>                                                   ||
+||   [7][47][14]: _DeclarationCandidates -> [795][_Declaration]<< { _Attribute } !_DeclarationCandidates @ >>              ||
+||   [6][255][14]: _Declaration -> [815][_ModuleBody]NAME ";" { _UsingPath } { _Declaration @ }                            ||
+||   [0][258][1]: _ModuleBody -> [820][_Module]< "module" _ModuleBody @ >                                                  ||
+|| [PREDECESSORS 33-33]: [33]                                                                                              ||
+|| [SUCCESORS 35-35]: [35]                                                                                                 ||
+++=========================================================================================================================++
+[0]
+ |
+ +
+ |
+[0]
+++============================================================================================================================++
+|| [35]: {OPEN_BRACE} {                                                                                                       ||
+|| [358][_Block]< "{" @ { _Statement } [ NAME ":" ";" ] "}" >                                                                 ||
+|| [AST-INSTRUCTIONS]:                                                                                                        ||
+||   - BeginObject(BlockStatement)                                                                                            ||
+|| [RETURN STACK]:                                                                                                            ||
+||   [15][172][34]: _Block -> [535][_StateDecl]< "$state" ( "default" | NAME ) "(" { _FunctionArgument ; "," } ")" _Block @ > ||
+||   [12][174][25]: _StateDecl -> [544][_StateMachine]< "$state_machine" "{" { ( _StateInput | _StateDecl @ ) } "}" >         ||
+||   [11][214][23]: _StateMachine -> [671][_ClassBody][ ":" { _Type ; "," } ] "{" { _Declaration } [ _StateMachine @ ] "}"    ||
+||   [9][217][17]: _ClassBody -> [678][_Class]< "class" NAME _ClassBody @ >                                                   ||
+||   [8][48][14]: _Class -> [781][_DeclarationCandidates]<< !_Class @ >>                                                      ||
+||   [7][47][14]: _DeclarationCandidates -> [795][_Declaration]<< { _Attribute } !_DeclarationCandidates @ >>                 ||
+||   [6][255][14]: _Declaration -> [815][_ModuleBody]NAME ";" { _UsingPath } { _Declaration @ }                               ||
+||   [0][258][1]: _ModuleBody -> [820][_Module]< "module" _ModuleBody @ >                                                     ||
+|| [PREDECESSORS 34-34]: [34]                                                                                                 ||
+|| [SUCCESORS 36-36]: [36]                                                                                                    ||
+++============================================================================================================================++
+[0]
+ |
+ +
+ |
+[0]
+++============================================================================================================================++
+|| [36]: {CLOSE_BRACE} }                                                                                                      ||
+|| [361][_Block]< "{" { _Statement } [ NAME ":" ";" ] "}" @ >                                                                 ||
+|| [AST-INSTRUCTIONS]:                                                                                                        ||
+|| [RETURN STACK]:                                                                                                            ||
+||   [15][172][34]: _Block -> [535][_StateDecl]< "$state" ( "default" | NAME ) "(" { _FunctionArgument ; "," } ")" _Block @ > ||
+||   [12][174][25]: _StateDecl -> [544][_StateMachine]< "$state_machine" "{" { ( _StateInput | _StateDecl @ ) } "}" >         ||
+||   [11][214][23]: _StateMachine -> [671][_ClassBody][ ":" { _Type ; "," } ] "{" { _Declaration } [ _StateMachine @ ] "}"    ||
+||   [9][217][17]: _ClassBody -> [678][_Class]< "class" NAME _ClassBody @ >                                                   ||
+||   [8][48][14]: _Class -> [781][_DeclarationCandidates]<< !_Class @ >>                                                      ||
+||   [7][47][14]: _DeclarationCandidates -> [795][_Declaration]<< { _Attribute } !_DeclarationCandidates @ >>                 ||
+||   [6][255][14]: _Declaration -> [815][_ModuleBody]NAME ";" { _UsingPath } { _Declaration @ }                               ||
+||   [0][258][1]: _ModuleBody -> [820][_Module]< "module" _ModuleBody @ >                                                     ||
+|| [PREDECESSORS 35-35]: [35]                                                                                                 ||
+|| [SUCCESORS 37-37]: [37]                                                                                                    ||
+++============================================================================================================================++
+|
++
+|
++-------------------------------------------------------------------------------------------------------------------------+
+| [37]: <Ending>                                                                                                          |
+| [535][_StateDecl]< "$state" ( "default" | NAME ) "(" { _FunctionArgument ; "," } ")" _Block @ >                         |
+| [AST-INSTRUCTIONS]:                                                                                                     |
+|   - EndObject()                                                                                                         |
+|   > Field(StateDeclaration::statement)                                                                                  |
+| [RETURN STACK]:                                                                                                         |
+|   [12][174][25]: _StateDecl -> [544][_StateMachine]< "$state_machine" "{" { ( _StateInput | _StateDecl @ ) } "}" >      |
+|   [11][214][23]: _StateMachine -> [671][_ClassBody][ ":" { _Type ; "," } ] "{" { _Declaration } [ _StateMachine @ ] "}" |
+|   [9][217][17]: _ClassBody -> [678][_Class]< "class" NAME _ClassBody @ >                                                |
+|   [8][48][14]: _Class -> [781][_DeclarationCandidates]<< !_Class @ >>                                                   |
+|   [7][47][14]: _DeclarationCandidates -> [795][_Declaration]<< { _Attribute } !_DeclarationCandidates @ >>              |
+|   [6][255][14]: _Declaration -> [815][_ModuleBody]NAME ";" { _UsingPath } { _Declaration @ }                            |
+|   [0][258][1]: _ModuleBody -> [820][_Module]< "module" _ModuleBody @ >                                                  |
+| [PREDECESSORS 36-36]: [36]                                                                                              |
+| [SUCCESORS 38-38]: [38]                                                                                                 |
++-------------------------------------------------------------------------------------------------------------------------+
+|
++
+|
++-------------------------------------------------------------------------------------------------------------------------+
+| [38]: <Ending>                                                                                                          |
+| [544][_StateMachine]< "$state_machine" "{" { ( _StateInput | _StateDecl @ ) } "}" >                                     |
+| [AST-INSTRUCTIONS]:                                                                                                     |
+|   - EndObject()                                                                                                         |
+|   > Field(StateMachineDeclaration::states)                                                                              |
+| [RETURN STACK]:                                                                                                         |
+|   [11][214][23]: _StateMachine -> [671][_ClassBody][ ":" { _Type ; "," } ] "{" { _Declaration } [ _StateMachine @ ] "}" |
+|   [9][217][17]: _ClassBody -> [678][_Class]< "class" NAME _ClassBody @ >                                                |
+|   [8][48][14]: _Class -> [781][_DeclarationCandidates]<< !_Class @ >>                                                   |
+|   [7][47][14]: _DeclarationCandidates -> [795][_Declaration]<< { _Attribute } !_DeclarationCandidates @ >>              |
+|   [6][255][14]: _Declaration -> [815][_ModuleBody]NAME ";" { _UsingPath } { _Declaration @ }                            |
+|   [0][258][1]: _ModuleBody -> [820][_Module]< "module" _ModuleBody @ >                                                  |
+| [PREDECESSORS 37-37]: [37]                                                                                              |
+| [SUCCESORS 39-39]: [39]                                                                                                 |
++-------------------------------------------------------------------------------------------------------------------------+
+[0]
+ |
+ +
+ |
+[0]
+++=========================================================================================================================++
+|| [39]: {STATE_DECL} $state                                                                                               ||
+|| [538][_StateDecl]< "$state" @ ( "default" | NAME ) "(" { _FunctionArgument ; "," } ")" _Block >                         ||
+|| [AST-INSTRUCTIONS]:                                                                                                     ||
+||   - BeginObject(StateDeclaration)                                                                                       ||
+|| [RETURN STACK]:                                                                                                         ||
+||   [16][178][38]: _StateDecl -> [544][_StateMachine]< "$state_machine" "{" { ( _StateInput | _StateDecl @ ) } "}" >      ||
+||   [11][214][23]: _StateMachine -> [671][_ClassBody][ ":" { _Type ; "," } ] "{" { _Declaration } [ _StateMachine @ ] "}" ||
+||   [9][217][17]: _ClassBody -> [678][_Class]< "class" NAME _ClassBody @ >                                                ||
+||   [8][48][14]: _Class -> [781][_DeclarationCandidates]<< !_Class @ >>                                                   ||
+||   [7][47][14]: _DeclarationCandidates -> [795][_Declaration]<< { _Attribute } !_DeclarationCandidates @ >>              ||
+||   [6][255][14]: _Declaration -> [815][_ModuleBody]NAME ";" { _UsingPath } { _Declaration @ }                            ||
+||   [0][258][1]: _ModuleBody -> [820][_Module]< "module" _ModuleBody @ >                                                  ||
+|| [PREDECESSORS 38-38]: [38]                                                                                              ||
+|| [SUCCESORS 40-40]: [40]                                                                                                 ||
+++=========================================================================================================================++
+[0]
+ |
+ +
+ |
+[0]
+++=========================================================================================================================++
+|| [40]: {KEYWORD_DEFAULT} default                                                                                         ||
+|| [531][_StateDecl]< "$state" ( "default" @ | NAME ) "(" { _FunctionArgument ; "," } ")" _Block >                         ||
+|| [AST-INSTRUCTIONS]:                                                                                                     ||
+|| [RETURN STACK]:                                                                                                         ||
+||   [16][178][38]: _StateDecl -> [544][_StateMachine]< "$state_machine" "{" { ( _StateInput | _StateDecl @ ) } "}" >      ||
+||   [11][214][23]: _StateMachine -> [671][_ClassBody][ ":" { _Type ; "," } ] "{" { _Declaration } [ _StateMachine @ ] "}" ||
+||   [9][217][17]: _ClassBody -> [678][_Class]< "class" NAME _ClassBody @ >                                                ||
+||   [8][48][14]: _Class -> [781][_DeclarationCandidates]<< !_Class @ >>                                                   ||
+||   [7][47][14]: _DeclarationCandidates -> [795][_Declaration]<< { _Attribute } !_DeclarationCandidates @ >>              ||
+||   [6][255][14]: _Declaration -> [815][_ModuleBody]NAME ";" { _UsingPath } { _Declaration @ }                            ||
+||   [0][258][1]: _ModuleBody -> [820][_Module]< "module" _ModuleBody @ >                                                  ||
+|| [PREDECESSORS 39-39]: [39]                                                                                              ||
+|| [SUCCESORS 41-41]: [41]                                                                                                 ||
+++=========================================================================================================================++
+[0]
+ |
+ +
+ |
+[0]
+++=========================================================================================================================++
+|| [41]: {OPEN_BRACKET} (                                                                                                  ||
+|| [532][_StateDecl]< "$state" ( "default" | NAME ) "(" @ { _FunctionArgument ; "," } ")" _Block >                         ||
+|| [AST-INSTRUCTIONS]:                                                                                                     ||
+|| [RETURN STACK]:                                                                                                         ||
+||   [16][178][38]: _StateDecl -> [544][_StateMachine]< "$state_machine" "{" { ( _StateInput | _StateDecl @ ) } "}" >      ||
+||   [11][214][23]: _StateMachine -> [671][_ClassBody][ ":" { _Type ; "," } ] "{" { _Declaration } [ _StateMachine @ ] "}" ||
+||   [9][217][17]: _ClassBody -> [678][_Class]< "class" NAME _ClassBody @ >                                                ||
+||   [8][48][14]: _Class -> [781][_DeclarationCandidates]<< !_Class @ >>                                                   ||
+||   [7][47][14]: _DeclarationCandidates -> [795][_Declaration]<< { _Attribute } !_DeclarationCandidates @ >>              ||
+||   [6][255][14]: _Declaration -> [815][_ModuleBody]NAME ";" { _UsingPath } { _Declaration @ }                            ||
+||   [0][258][1]: _ModuleBody -> [820][_Module]< "module" _ModuleBody @ >                                                  ||
+|| [PREDECESSORS 40-40]: [40]                                                                                              ||
+|| [SUCCESORS 42-42]: [42]                                                                                                 ||
+++=========================================================================================================================++
+[0]
+ |
+ +
+ |
+[0]
+++=========================================================================================================================++
+|| [42]: {CLOSE_BRACKET} )                                                                                                 ||
+|| [534][_StateDecl]< "$state" ( "default" | NAME ) "(" { _FunctionArgument ; "," } ")" @ _Block >                         ||
+|| [AST-INSTRUCTIONS]:                                                                                                     ||
+|| [RETURN STACK]:                                                                                                         ||
+||   [16][178][38]: _StateDecl -> [544][_StateMachine]< "$state_machine" "{" { ( _StateInput | _StateDecl @ ) } "}" >      ||
+||   [11][214][23]: _StateMachine -> [671][_ClassBody][ ":" { _Type ; "," } ] "{" { _Declaration } [ _StateMachine @ ] "}" ||
+||   [9][217][17]: _ClassBody -> [678][_Class]< "class" NAME _ClassBody @ >                                                ||
+||   [8][48][14]: _Class -> [781][_DeclarationCandidates]<< !_Class @ >>                                                   ||
+||   [7][47][14]: _DeclarationCandidates -> [795][_Declaration]<< { _Attribute } !_DeclarationCandidates @ >>              ||
+||   [6][255][14]: _Declaration -> [815][_ModuleBody]NAME ";" { _UsingPath } { _Declaration @ }                            ||
+||   [0][258][1]: _ModuleBody -> [820][_Module]< "module" _ModuleBody @ >                                                  ||
+|| [PREDECESSORS 41-41]: [41]                                                                                              ||
+|| [SUCCESORS 43-43]: [43]                                                                                                 ||
+++=========================================================================================================================++
+[0]
+ |
+ +
+ |
+[0]
+++============================================================================================================================++
+|| [43]: {OPEN_BRACE} {                                                                                                       ||
+|| [358][_Block]< "{" @ { _Statement } [ NAME ":" ";" ] "}" >                                                                 ||
+|| [AST-INSTRUCTIONS]:                                                                                                        ||
+||   - BeginObject(BlockStatement)                                                                                            ||
+|| [RETURN STACK]:                                                                                                            ||
+||   [17][172][42]: _Block -> [535][_StateDecl]< "$state" ( "default" | NAME ) "(" { _FunctionArgument ; "," } ")" _Block @ > ||
+||   [16][178][38]: _StateDecl -> [544][_StateMachine]< "$state_machine" "{" { ( _StateInput | _StateDecl @ ) } "}" >         ||
+||   [11][214][23]: _StateMachine -> [671][_ClassBody][ ":" { _Type ; "," } ] "{" { _Declaration } [ _StateMachine @ ] "}"    ||
+||   [9][217][17]: _ClassBody -> [678][_Class]< "class" NAME _ClassBody @ >                                                   ||
+||   [8][48][14]: _Class -> [781][_DeclarationCandidates]<< !_Class @ >>                                                      ||
+||   [7][47][14]: _DeclarationCandidates -> [795][_Declaration]<< { _Attribute } !_DeclarationCandidates @ >>                 ||
+||   [6][255][14]: _Declaration -> [815][_ModuleBody]NAME ";" { _UsingPath } { _Declaration @ }                               ||
+||   [0][258][1]: _ModuleBody -> [820][_Module]< "module" _ModuleBody @ >                                                     ||
+|| [PREDECESSORS 42-42]: [42]                                                                                                 ||
+|| [SUCCESORS 44-44]: [44]                                                                                                    ||
+++============================================================================================================================++
+[0]
+ |
+ +
+ |
+[0]
+++============================================================================================================================++
+|| [44]: {STATE_GOTO} $goto_state                                                                                             ||
+|| [462][_StateStatement]< "$goto_state" @ NAME "(" { _Expression ; "," } ")" ";" >                                           ||
+|| [AST-INSTRUCTIONS]:                                                                                                        ||
+||   - DelayFieldAssignment()                                                                                                 ||
+||   - BeginObject(StateInvokeStatement)                                                                                      ||
+|| [RETURN STACK]:                                                                                                            ||
+||   [19][128][43]: _StateStatement -> [518][_Statement]<< !_StateStatement @ >>                                              ||
+||   [18][121][43]: _Statement -> [359][_Block]< "{" { _Statement @ } [ NAME ":" ";" ] "}" >                                  ||
+||   [17][172][42]: _Block -> [535][_StateDecl]< "$state" ( "default" | NAME ) "(" { _FunctionArgument ; "," } ")" _Block @ > ||
+||   [16][178][38]: _StateDecl -> [544][_StateMachine]< "$state_machine" "{" { ( _StateInput | _StateDecl @ ) } "}" >         ||
+||   [11][214][23]: _StateMachine -> [671][_ClassBody][ ":" { _Type ; "," } ] "{" { _Declaration } [ _StateMachine @ ] "}"    ||
+||   [9][217][17]: _ClassBody -> [678][_Class]< "class" NAME _ClassBody @ >                                                   ||
+||   [8][48][14]: _Class -> [781][_DeclarationCandidates]<< !_Class @ >>                                                      ||
+||   [7][47][14]: _DeclarationCandidates -> [795][_Declaration]<< { _Attribute } !_DeclarationCandidates @ >>                 ||
+||   [6][255][14]: _Declaration -> [815][_ModuleBody]NAME ";" { _UsingPath } { _Declaration @ }                               ||
+||   [0][258][1]: _ModuleBody -> [820][_Module]< "module" _ModuleBody @ >                                                     ||
+|| [PREDECESSORS 43-43]: [43]                                                                                                 ||
+|| [SUCCESORS 45-45]: [45]                                                                                                    ||
+++============================================================================================================================++
+[0]
+ |
+ +
+ |
+[0]
+++============================================================================================================================++
+|| [45]: {NAME} A                                                                                                             ||
+|| [468][_StateStatement]< "$goto_state" NAME @ "(" { _Expression ; "," } ")" ";" >                                           ||
+|| [AST-INSTRUCTIONS]:                                                                                                        ||
+||   + Token()                                                                                                                ||
+||   + Field(StateInvokeStatement::name)                                                                                      ||
+|| [RETURN STACK]:                                                                                                            ||
+||   [19][128][43]: _StateStatement -> [518][_Statement]<< !_StateStatement @ >>                                              ||
+||   [18][121][43]: _Statement -> [359][_Block]< "{" { _Statement @ } [ NAME ":" ";" ] "}" >                                  ||
+||   [17][172][42]: _Block -> [535][_StateDecl]< "$state" ( "default" | NAME ) "(" { _FunctionArgument ; "," } ")" _Block @ > ||
+||   [16][178][38]: _StateDecl -> [544][_StateMachine]< "$state_machine" "{" { ( _StateInput | _StateDecl @ ) } "}" >         ||
+||   [11][214][23]: _StateMachine -> [671][_ClassBody][ ":" { _Type ; "," } ] "{" { _Declaration } [ _StateMachine @ ] "}"    ||
+||   [9][217][17]: _ClassBody -> [678][_Class]< "class" NAME _ClassBody @ >                                                   ||
+||   [8][48][14]: _Class -> [781][_DeclarationCandidates]<< !_Class @ >>                                                      ||
+||   [7][47][14]: _DeclarationCandidates -> [795][_Declaration]<< { _Attribute } !_DeclarationCandidates @ >>                 ||
+||   [6][255][14]: _Declaration -> [815][_ModuleBody]NAME ";" { _UsingPath } { _Declaration @ }                               ||
+||   [0][258][1]: _ModuleBody -> [820][_Module]< "module" _ModuleBody @ >                                                     ||
+|| [PREDECESSORS 44-44]: [44]                                                                                                 ||
+|| [SUCCESORS 46-46]: [46]                                                                                                    ||
+++============================================================================================================================++
+[0]
+ |
+ +
+ |
+[0]
+++============================================================================================================================++
+|| [46]: {OPEN_BRACKET} (                                                                                                     ||
+|| [463][_StateStatement]< "$goto_state" NAME "(" @ { _Expression ; "," } ")" ";" >                                           ||
+|| [AST-INSTRUCTIONS]:                                                                                                        ||
+|| [RETURN STACK]:                                                                                                            ||
+||   [19][128][43]: _StateStatement -> [518][_Statement]<< !_StateStatement @ >>                                              ||
+||   [18][121][43]: _Statement -> [359][_Block]< "{" { _Statement @ } [ NAME ":" ";" ] "}" >                                  ||
+||   [17][172][42]: _Block -> [535][_StateDecl]< "$state" ( "default" | NAME ) "(" { _FunctionArgument ; "," } ")" _Block @ > ||
+||   [16][178][38]: _StateDecl -> [544][_StateMachine]< "$state_machine" "{" { ( _StateInput | _StateDecl @ ) } "}" >         ||
+||   [11][214][23]: _StateMachine -> [671][_ClassBody][ ":" { _Type ; "," } ] "{" { _Declaration } [ _StateMachine @ ] "}"    ||
+||   [9][217][17]: _ClassBody -> [678][_Class]< "class" NAME _ClassBody @ >                                                   ||
+||   [8][48][14]: _Class -> [781][_DeclarationCandidates]<< !_Class @ >>                                                      ||
+||   [7][47][14]: _DeclarationCandidates -> [795][_Declaration]<< { _Attribute } !_DeclarationCandidates @ >>                 ||
+||   [6][255][14]: _Declaration -> [815][_ModuleBody]NAME ";" { _UsingPath } { _Declaration @ }                               ||
+||   [0][258][1]: _ModuleBody -> [820][_Module]< "module" _ModuleBody @ >                                                     ||
+|| [PREDECESSORS 45-45]: [45]                                                                                                 ||
+|| [SUCCESORS 47-47]: [47]                                                                                                    ||
+++============================================================================================================================++
+[0]
+ |
+ +
+ |
+[0]
+++============================================================================================================================++
+|| [47]: {CLOSE_BRACKET} )                                                                                                    ||
+|| [466][_StateStatement]< "$goto_state" NAME "(" { _Expression ; "," } ")" @ ";" >                                           ||
+|| [AST-INSTRUCTIONS]:                                                                                                        ||
+|| [RETURN STACK]:                                                                                                            ||
+||   [19][128][43]: _StateStatement -> [518][_Statement]<< !_StateStatement @ >>                                              ||
+||   [18][121][43]: _Statement -> [359][_Block]< "{" { _Statement @ } [ NAME ":" ";" ] "}" >                                  ||
+||   [17][172][42]: _Block -> [535][_StateDecl]< "$state" ( "default" | NAME ) "(" { _FunctionArgument ; "," } ")" _Block @ > ||
+||   [16][178][38]: _StateDecl -> [544][_StateMachine]< "$state_machine" "{" { ( _StateInput | _StateDecl @ ) } "}" >         ||
+||   [11][214][23]: _StateMachine -> [671][_ClassBody][ ":" { _Type ; "," } ] "{" { _Declaration } [ _StateMachine @ ] "}"    ||
+||   [9][217][17]: _ClassBody -> [678][_Class]< "class" NAME _ClassBody @ >                                                   ||
+||   [8][48][14]: _Class -> [781][_DeclarationCandidates]<< !_Class @ >>                                                      ||
+||   [7][47][14]: _DeclarationCandidates -> [795][_Declaration]<< { _Attribute } !_DeclarationCandidates @ >>                 ||
+||   [6][255][14]: _Declaration -> [815][_ModuleBody]NAME ";" { _UsingPath } { _Declaration @ }                               ||
+||   [0][258][1]: _ModuleBody -> [820][_Module]< "module" _ModuleBody @ >                                                     ||
+|| [PREDECESSORS 46-46]: [46]                                                                                                 ||
+|| [SUCCESORS 48-48]: [48]                                                                                                    ||
+++============================================================================================================================++
+[0]
+ |
+ +
+ |
+[0]
+++============================================================================================================================++
+|| [48]: {SEMICOLON} ;                                                                                                        ||
+|| [465][_StateStatement]< "$goto_state" NAME "(" { _Expression ; "," } ")" ";" @ >                                           ||
+|| [AST-INSTRUCTIONS]:                                                                                                        ||
+|| [RETURN STACK]:                                                                                                            ||
+||   [19][128][43]: _StateStatement -> [518][_Statement]<< !_StateStatement @ >>                                              ||
+||   [18][121][43]: _Statement -> [359][_Block]< "{" { _Statement @ } [ NAME ":" ";" ] "}" >                                  ||
+||   [17][172][42]: _Block -> [535][_StateDecl]< "$state" ( "default" | NAME ) "(" { _FunctionArgument ; "," } ")" _Block @ > ||
+||   [16][178][38]: _StateDecl -> [544][_StateMachine]< "$state_machine" "{" { ( _StateInput | _StateDecl @ ) } "}" >         ||
+||   [11][214][23]: _StateMachine -> [671][_ClassBody][ ":" { _Type ; "," } ] "{" { _Declaration } [ _StateMachine @ ] "}"    ||
+||   [9][217][17]: _ClassBody -> [678][_Class]< "class" NAME _ClassBody @ >                                                   ||
+||   [8][48][14]: _Class -> [781][_DeclarationCandidates]<< !_Class @ >>                                                      ||
+||   [7][47][14]: _DeclarationCandidates -> [795][_Declaration]<< { _Attribute } !_DeclarationCandidates @ >>                 ||
+||   [6][255][14]: _Declaration -> [815][_ModuleBody]NAME ";" { _UsingPath } { _Declaration @ }                               ||
+||   [0][258][1]: _ModuleBody -> [820][_Module]< "module" _ModuleBody @ >                                                     ||
+|| [PREDECESSORS 47-47]: [47]                                                                                                 ||
+|| [SUCCESORS 49-49]: [49]                                                                                                    ||
+++============================================================================================================================++
+|
++
+|
++----------------------------------------------------------------------------------------------------------------------------+
+| [49]: <Ending>                                                                                                             |
+| [518][_Statement]<< !_StateStatement @ >>                                                                                  |
+| [AST-INSTRUCTIONS]:                                                                                                        |
+|   - EnumItem(0)                                                                                                            |
+|   - Field(StateInvokeStatement::type)                                                                                      |
+|   - EndObject()                                                                                                            |
+| [RETURN STACK]:                                                                                                            |
+|   [18][121][43]: _Statement -> [359][_Block]< "{" { _Statement @ } [ NAME ":" ";" ] "}" >                                  |
+|   [17][172][42]: _Block -> [535][_StateDecl]< "$state" ( "default" | NAME ) "(" { _FunctionArgument ; "," } ")" _Block @ > |
+|   [16][178][38]: _StateDecl -> [544][_StateMachine]< "$state_machine" "{" { ( _StateInput | _StateDecl @ ) } "}" >         |
+|   [11][214][23]: _StateMachine -> [671][_ClassBody][ ":" { _Type ; "," } ] "{" { _Declaration } [ _StateMachine @ ] "}"    |
+|   [9][217][17]: _ClassBody -> [678][_Class]< "class" NAME _ClassBody @ >                                                   |
+|   [8][48][14]: _Class -> [781][_DeclarationCandidates]<< !_Class @ >>                                                      |
+|   [7][47][14]: _DeclarationCandidates -> [795][_Declaration]<< { _Attribute } !_DeclarationCandidates @ >>                 |
+|   [6][255][14]: _Declaration -> [815][_ModuleBody]NAME ";" { _UsingPath } { _Declaration @ }                               |
+|   [0][258][1]: _ModuleBody -> [820][_Module]< "module" _ModuleBody @ >                                                     |
+| [PREDECESSORS 48-48]: [48]                                                                                                 |
+| [SUCCESORS 50-50]: [50]                                                                                                    |
++----------------------------------------------------------------------------------------------------------------------------+
+|
++
+|
++----------------------------------------------------------------------------------------------------------------------------+
+| [50]: <Ending>                                                                                                             |
+| [359][_Block]< "{" { _Statement @ } [ NAME ":" ";" ] "}" >                                                                 |
+| [AST-INSTRUCTIONS]:                                                                                                        |
+|   - ReopenObject()                                                                                                         |
+|   - EndObject()                                                                                                            |
+|   > Field(BlockStatement::statements)                                                                                      |
+| [RETURN STACK]:                                                                                                            |
+|   [17][172][42]: _Block -> [535][_StateDecl]< "$state" ( "default" | NAME ) "(" { _FunctionArgument ; "," } ")" _Block @ > |
+|   [16][178][38]: _StateDecl -> [544][_StateMachine]< "$state_machine" "{" { ( _StateInput | _StateDecl @ ) } "}" >         |
+|   [11][214][23]: _StateMachine -> [671][_ClassBody][ ":" { _Type ; "," } ] "{" { _Declaration } [ _StateMachine @ ] "}"    |
+|   [9][217][17]: _ClassBody -> [678][_Class]< "class" NAME _ClassBody @ >                                                   |
+|   [8][48][14]: _Class -> [781][_DeclarationCandidates]<< !_Class @ >>                                                      |
+|   [7][47][14]: _DeclarationCandidates -> [795][_Declaration]<< { _Attribute } !_DeclarationCandidates @ >>                 |
+|   [6][255][14]: _Declaration -> [815][_ModuleBody]NAME ";" { _UsingPath } { _Declaration @ }                               |
+|   [0][258][1]: _ModuleBody -> [820][_Module]< "module" _ModuleBody @ >                                                     |
+| [PREDECESSORS 49-49]: [49]                                                                                                 |
+| [SUCCESORS 51-51]: [51]                                                                                                    |
++----------------------------------------------------------------------------------------------------------------------------+
+[0]
+ |
+ +
+ |
+[0]
+++============================================================================================================================++
+|| [51]: {CLOSE_BRACE} }                                                                                                      ||
+|| [361][_Block]< "{" { _Statement } [ NAME ":" ";" ] "}" @ >                                                                 ||
+|| [AST-INSTRUCTIONS]:                                                                                                        ||
+|| [RETURN STACK]:                                                                                                            ||
+||   [17][172][42]: _Block -> [535][_StateDecl]< "$state" ( "default" | NAME ) "(" { _FunctionArgument ; "," } ")" _Block @ > ||
+||   [16][178][38]: _StateDecl -> [544][_StateMachine]< "$state_machine" "{" { ( _StateInput | _StateDecl @ ) } "}" >         ||
+||   [11][214][23]: _StateMachine -> [671][_ClassBody][ ":" { _Type ; "," } ] "{" { _Declaration } [ _StateMachine @ ] "}"    ||
+||   [9][217][17]: _ClassBody -> [678][_Class]< "class" NAME _ClassBody @ >                                                   ||
+||   [8][48][14]: _Class -> [781][_DeclarationCandidates]<< !_Class @ >>                                                      ||
+||   [7][47][14]: _DeclarationCandidates -> [795][_Declaration]<< { _Attribute } !_DeclarationCandidates @ >>                 ||
+||   [6][255][14]: _Declaration -> [815][_ModuleBody]NAME ";" { _UsingPath } { _Declaration @ }                               ||
+||   [0][258][1]: _ModuleBody -> [820][_Module]< "module" _ModuleBody @ >                                                     ||
+|| [PREDECESSORS 50-50]: [50]                                                                                                 ||
+|| [SUCCESORS 52-52]: [52]                                                                                                    ||
+++============================================================================================================================++
+|
++
+|
++-------------------------------------------------------------------------------------------------------------------------+
+| [52]: <Ending>                                                                                                          |
+| [535][_StateDecl]< "$state" ( "default" | NAME ) "(" { _FunctionArgument ; "," } ")" _Block @ >                         |
+| [AST-INSTRUCTIONS]:                                                                                                     |
+|   - EndObject()                                                                                                         |
+|   > Field(StateDeclaration::statement)                                                                                  |
+| [RETURN STACK]:                                                                                                         |
+|   [16][178][38]: _StateDecl -> [544][_StateMachine]< "$state_machine" "{" { ( _StateInput | _StateDecl @ ) } "}" >      |
+|   [11][214][23]: _StateMachine -> [671][_ClassBody][ ":" { _Type ; "," } ] "{" { _Declaration } [ _StateMachine @ ] "}" |
+|   [9][217][17]: _ClassBody -> [678][_Class]< "class" NAME _ClassBody @ >                                                |
+|   [8][48][14]: _Class -> [781][_DeclarationCandidates]<< !_Class @ >>                                                   |
+|   [7][47][14]: _DeclarationCandidates -> [795][_Declaration]<< { _Attribute } !_DeclarationCandidates @ >>              |
+|   [6][255][14]: _Declaration -> [815][_ModuleBody]NAME ";" { _UsingPath } { _Declaration @ }                            |
+|   [0][258][1]: _ModuleBody -> [820][_Module]< "module" _ModuleBody @ >                                                  |
+| [PREDECESSORS 51-51]: [51]                                                                                              |
+| [SUCCESORS 53-53]: [53]                                                                                                 |
++-------------------------------------------------------------------------------------------------------------------------+
+|
++
+|
++-------------------------------------------------------------------------------------------------------------------------+
+| [53]: <Ending>                                                                                                          |
+| [544][_StateMachine]< "$state_machine" "{" { ( _StateInput | _StateDecl @ ) } "}" >                                     |
+| [AST-INSTRUCTIONS]:                                                                                                     |
+|   - EndObject()                                                                                                         |
+|   > Field(StateMachineDeclaration::states)                                                                              |
+| [RETURN STACK]:                                                                                                         |
+|   [11][214][23]: _StateMachine -> [671][_ClassBody][ ":" { _Type ; "," } ] "{" { _Declaration } [ _StateMachine @ ] "}" |
+|   [9][217][17]: _ClassBody -> [678][_Class]< "class" NAME _ClassBody @ >                                                |
+|   [8][48][14]: _Class -> [781][_DeclarationCandidates]<< !_Class @ >>                                                   |
+|   [7][47][14]: _DeclarationCandidates -> [795][_Declaration]<< { _Attribute } !_DeclarationCandidates @ >>              |
+|   [6][255][14]: _Declaration -> [815][_ModuleBody]NAME ";" { _UsingPath } { _Declaration @ }                            |
+|   [0][258][1]: _ModuleBody -> [820][_Module]< "module" _ModuleBody @ >                                                  |
+| [PREDECESSORS 52-52]: [52]                                                                                              |
+| [SUCCESORS 54-54]: [54]                                                                                                 |
++-------------------------------------------------------------------------------------------------------------------------+
+[0]
+ |
+ +
+ |
+[0]
+++=========================================================================================================================++
+|| [54]: {CLOSE_BRACE} }                                                                                                   ||
+|| [543][_StateMachine]< "$state_machine" "{" { ( _StateInput | _StateDecl ) } "}" @ >                                     ||
+|| [AST-INSTRUCTIONS]:                                                                                                     ||
+|| [RETURN STACK]:                                                                                                         ||
+||   [11][214][23]: _StateMachine -> [671][_ClassBody][ ":" { _Type ; "," } ] "{" { _Declaration } [ _StateMachine @ ] "}" ||
+||   [9][217][17]: _ClassBody -> [678][_Class]< "class" NAME _ClassBody @ >                                                ||
+||   [8][48][14]: _Class -> [781][_DeclarationCandidates]<< !_Class @ >>                                                   ||
+||   [7][47][14]: _DeclarationCandidates -> [795][_Declaration]<< { _Attribute } !_DeclarationCandidates @ >>              ||
+||   [6][255][14]: _Declaration -> [815][_ModuleBody]NAME ";" { _UsingPath } { _Declaration @ }                            ||
+||   [0][258][1]: _ModuleBody -> [820][_Module]< "module" _ModuleBody @ >                                                  ||
+|| [PREDECESSORS 53-53]: [53]                                                                                              ||
+|| [SUCCESORS 55-55]: [55]                                                                                                 ||
+++=========================================================================================================================++
+|
++
+|
++------------------------------------------------------------------------------------------------------------+
+| [55]: <Ending>                                                                                             |
+| [671][_ClassBody][ ":" { _Type ; "," } ] "{" { _Declaration } [ _StateMachine @ ] "}"                      |
+| [AST-INSTRUCTIONS]:                                                                                        |
+|   - EndObject()                                                                                            |
+|   > Field(ClassDeclaration::declarations)                                                                  |
+| [RETURN STACK]:                                                                                            |
+|   [9][217][17]: _ClassBody -> [678][_Class]< "class" NAME _ClassBody @ >                                   |
+|   [8][48][14]: _Class -> [781][_DeclarationCandidates]<< !_Class @ >>                                      |
+|   [7][47][14]: _DeclarationCandidates -> [795][_Declaration]<< { _Attribute } !_DeclarationCandidates @ >> |
+|   [6][255][14]: _Declaration -> [815][_ModuleBody]NAME ";" { _UsingPath } { _Declaration @ }               |
+|   [0][258][1]: _ModuleBody -> [820][_Module]< "module" _ModuleBody @ >                                     |
+| [PREDECESSORS 54-54]: [54]                                                                                 |
+| [SUCCESORS 56-56]: [56]                                                                                    |
++------------------------------------------------------------------------------------------------------------+
+[0]
+ |
+ +
+ |
+[0]
+++============================================================================================================++
+|| [56]: {CLOSE_BRACE} }                                                                                      ||
+|| [672][_ClassBody][ ":" { _Type ; "," } ] "{" { _Declaration } [ _StateMachine ] "}" @                      ||
+|| [AST-INSTRUCTIONS]:                                                                                        ||
+|| [RETURN STACK]:                                                                                            ||
+||   [9][217][17]: _ClassBody -> [678][_Class]< "class" NAME _ClassBody @ >                                   ||
+||   [8][48][14]: _Class -> [781][_DeclarationCandidates]<< !_Class @ >>                                      ||
+||   [7][47][14]: _DeclarationCandidates -> [795][_Declaration]<< { _Attribute } !_DeclarationCandidates @ >> ||
+||   [6][255][14]: _Declaration -> [815][_ModuleBody]NAME ";" { _UsingPath } { _Declaration @ }               ||
+||   [0][258][1]: _ModuleBody -> [820][_Module]< "module" _ModuleBody @ >                                     ||
+|| [PREDECESSORS 55-55]: [55]                                                                                 ||
+|| [SUCCESORS 57-57]: [57]                                                                                    ||
 ++============================================================================================================++
 |
 +
 |
-+--------------------------------------------------------------------------------------------------------+
-| [21]: <Ending>                                                                                         |
-| [673][_ClassBody][ ":" { _Type @ ; "," } ] "{" { _Declaration } [ _StateMachine ] "}"                  |
-| [AST-INSTRUCTIONS]:                                                                                    |
-|   - EndObject()                                                                                        |
-|   > Field(ClassDeclaration::baseTypes)                                                                 |
-| [RETURN STACK]:                                                                                        |
-|   [9][17]: _ClassBody -> [678][_Class]< "class" NAME _ClassBody @ >                                    |
-|   [8][14]: _Class -> [781][_DeclarationCandidates]<< !_Class @ >>                                      |
-|   [7][14]: _DeclarationCandidates -> [795][_Declaration]<< { _Attribute } !_DeclarationCandidates @ >> |
-|   [6][14]: _Declaration -> [815][_ModuleBody]NAME ";" { _UsingPath } { _Declaration @ }                |
-|   [0][1]: _ModuleBody -> [820][_Module]< "module" _ModuleBody @ >                                      |
-| [PREDECESSORS 19-19]: [19]                                                                             |
-| [SUCCESORS 23-23]: [23]                                                                                |
-+--------------------------------------------------------------------------------------------------------+
-[0]
- |
- +
- |
-[0]
-++========================================================================================================++
-|| [23]: {OPEN_BRACE} {                                                                                   ||
-|| [669][_ClassBody][ ":" { _Type ; "," } ] "{" @ { _Declaration } [ _StateMachine ] "}"                  ||
-|| [AST-INSTRUCTIONS]:                                                                                    ||
-|| [RETURN STACK]:                                                                                        ||
-||   [9][17]: _ClassBody -> [678][_Class]< "class" NAME _ClassBody @ >                                    ||
-||   [8][14]: _Class -> [781][_DeclarationCandidates]<< !_Class @ >>                                      ||
-||   [7][14]: _DeclarationCandidates -> [795][_Declaration]<< { _Attribute } !_DeclarationCandidates @ >> ||
-||   [6][14]: _Declaration -> [815][_ModuleBody]NAME ";" { _UsingPath } { _Declaration @ }                ||
-||   [0][1]: _ModuleBody -> [820][_Module]< "module" _ModuleBody @ >                                      ||
-|| [PREDECESSORS 21-21]: [21]                                                                             ||
-|| [SUCCESORS 24-24]: [24]                                                                                ||
-++========================================================================================================++
-[0]
- |
- +
- |
-[0]
-++====================================================================================================================++
-|| [24]: {STATE_MACHINE} $state_machine                                                                               ||
-|| [545][_StateMachine]< "$state_machine" @ "{" { ( _StateInput | _StateDecl ) } "}" >                                ||
-|| [AST-INSTRUCTIONS]:                                                                                                ||
-||   - BeginObject(StateMachineDeclaration)                                                                           ||
-|| [RETURN STACK]:                                                                                                    ||
-||   [11][23]: _StateMachine -> [671][_ClassBody][ ":" { _Type ; "," } ] "{" { _Declaration } [ _StateMachine @ ] "}" ||
-||   [9][17]: _ClassBody -> [678][_Class]< "class" NAME _ClassBody @ >                                                ||
-||   [8][14]: _Class -> [781][_DeclarationCandidates]<< !_Class @ >>                                                  ||
-||   [7][14]: _DeclarationCandidates -> [795][_Declaration]<< { _Attribute } !_DeclarationCandidates @ >>             ||
-||   [6][14]: _Declaration -> [815][_ModuleBody]NAME ";" { _UsingPath } { _Declaration @ }                            ||
-||   [0][1]: _ModuleBody -> [820][_Module]< "module" _ModuleBody @ >                                                  ||
-|| [PREDECESSORS 23-23]: [23]                                                                                         ||
-|| [SUCCESORS 25-25]: [25]                                                                                            ||
-++====================================================================================================================++
-[0]
- |
- +
- |
-[0]
-++====================================================================================================================++
-|| [25]: {OPEN_BRACE} {                                                                                               ||
-|| [541][_StateMachine]< "$state_machine" "{" @ { ( _StateInput | _StateDecl ) } "}" >                                ||
-|| [AST-INSTRUCTIONS]:                                                                                                ||
-|| [RETURN STACK]:                                                                                                    ||
-||   [11][23]: _StateMachine -> [671][_ClassBody][ ":" { _Type ; "," } ] "{" { _Declaration } [ _StateMachine @ ] "}" ||
-||   [9][17]: _ClassBody -> [678][_Class]< "class" NAME _ClassBody @ >                                                ||
-||   [8][14]: _Class -> [781][_DeclarationCandidates]<< !_Class @ >>                                                  ||
-||   [7][14]: _DeclarationCandidates -> [795][_Declaration]<< { _Attribute } !_DeclarationCandidates @ >>             ||
-||   [6][14]: _Declaration -> [815][_ModuleBody]NAME ";" { _UsingPath } { _Declaration @ }                            ||
-||   [0][1]: _ModuleBody -> [820][_Module]< "module" _ModuleBody @ >                                                  ||
-|| [PREDECESSORS 24-24]: [24]                                                                                         ||
-|| [SUCCESORS 26-26]: [26]                                                                                            ||
-++====================================================================================================================++
-[0]
- |
- +
- |
-[0]
-++====================================================================================================================++
-|| [26]: {STATE_DECL} $state                                                                                          ||
-|| [538][_StateDecl]< "$state" @ ( "default" | NAME ) "(" { _FunctionArgument ; "," } ")" _Block >                    ||
-|| [AST-INSTRUCTIONS]:                                                                                                ||
-||   - BeginObject(StateDeclaration)                                                                                  ||
-|| [RETURN STACK]:                                                                                                    ||
-||   [12][25]: _StateDecl -> [544][_StateMachine]< "$state_machine" "{" { ( _StateInput | _StateDecl @ ) } "}" >      ||
-||   [11][23]: _StateMachine -> [671][_ClassBody][ ":" { _Type ; "," } ] "{" { _Declaration } [ _StateMachine @ ] "}" ||
-||   [9][17]: _ClassBody -> [678][_Class]< "class" NAME _ClassBody @ >                                                ||
-||   [8][14]: _Class -> [781][_DeclarationCandidates]<< !_Class @ >>                                                  ||
-||   [7][14]: _DeclarationCandidates -> [795][_Declaration]<< { _Attribute } !_DeclarationCandidates @ >>             ||
-||   [6][14]: _Declaration -> [815][_ModuleBody]NAME ";" { _UsingPath } { _Declaration @ }                            ||
-||   [0][1]: _ModuleBody -> [820][_Module]< "module" _ModuleBody @ >                                                  ||
-|| [PREDECESSORS 25-25]: [25]                                                                                         ||
-|| [SUCCESORS 27-27]: [27]                                                                                            ||
-++====================================================================================================================++
-[0]
- |
- +
- |
-[0]
-++====================================================================================================================++
-|| [27]: {NAME} A                                                                                                     ||
-|| [537][_StateDecl]< "$state" ( "default" | NAME @ ) "(" { _FunctionArgument ; "," } ")" _Block >                    ||
-|| [AST-INSTRUCTIONS]:                                                                                                ||
-||   + Token()                                                                                                        ||
-||   + Field(StateDeclaration::name)                                                                                  ||
-|| [RETURN STACK]:                                                                                                    ||
-||   [12][25]: _StateDecl -> [544][_StateMachine]< "$state_machine" "{" { ( _StateInput | _StateDecl @ ) } "}" >      ||
-||   [11][23]: _StateMachine -> [671][_ClassBody][ ":" { _Type ; "," } ] "{" { _Declaration } [ _StateMachine @ ] "}" ||
-||   [9][17]: _ClassBody -> [678][_Class]< "class" NAME _ClassBody @ >                                                ||
-||   [8][14]: _Class -> [781][_DeclarationCandidates]<< !_Class @ >>                                                  ||
-||   [7][14]: _DeclarationCandidates -> [795][_Declaration]<< { _Attribute } !_DeclarationCandidates @ >>             ||
-||   [6][14]: _Declaration -> [815][_ModuleBody]NAME ";" { _UsingPath } { _Declaration @ }                            ||
-||   [0][1]: _ModuleBody -> [820][_Module]< "module" _ModuleBody @ >                                                  ||
-|| [PREDECESSORS 26-26]: [26]                                                                                         ||
-|| [SUCCESORS 28-28]: [28]                                                                                            ||
-++====================================================================================================================++
-[0]
- |
- +
- |
-[0]
-++====================================================================================================================++
-|| [28]: {OPEN_BRACKET} (                                                                                             ||
-|| [532][_StateDecl]< "$state" ( "default" | NAME ) "(" @ { _FunctionArgument ; "," } ")" _Block >                    ||
-|| [AST-INSTRUCTIONS]:                                                                                                ||
-|| [RETURN STACK]:                                                                                                    ||
-||   [12][25]: _StateDecl -> [544][_StateMachine]< "$state_machine" "{" { ( _StateInput | _StateDecl @ ) } "}" >      ||
-||   [11][23]: _StateMachine -> [671][_ClassBody][ ":" { _Type ; "," } ] "{" { _Declaration } [ _StateMachine @ ] "}" ||
-||   [9][17]: _ClassBody -> [678][_Class]< "class" NAME _ClassBody @ >                                                ||
-||   [8][14]: _Class -> [781][_DeclarationCandidates]<< !_Class @ >>                                                  ||
-||   [7][14]: _DeclarationCandidates -> [795][_Declaration]<< { _Attribute } !_DeclarationCandidates @ >>             ||
-||   [6][14]: _Declaration -> [815][_ModuleBody]NAME ";" { _UsingPath } { _Declaration @ }                            ||
-||   [0][1]: _ModuleBody -> [820][_Module]< "module" _ModuleBody @ >                                                  ||
-|| [PREDECESSORS 27-27]: [27]                                                                                         ||
-|| [SUCCESORS 29-29]: [29]                                                                                            ||
-++====================================================================================================================++
-[0]
- |
- +
- |
-[0]
-++==================================================================================================================================++
-|| [29]: {NAME} x                                                                                                                   ||
-|| [567][_FunctionArgument]< { _Attribute } NAME @ ":" _Type >                                                                      ||
-|| [AST-INSTRUCTIONS]:                                                                                                              ||
-||   - BeginObject(FunctionArgument)                                                                                                ||
-||   + Token()                                                                                                                      ||
-||   + Field(FunctionArgument::name)                                                                                                ||
-|| [RETURN STACK]:                                                                                                                  ||
-||   [13][28]: _FunctionArgument -> [536][_StateDecl]< "$state" ( "default" | NAME ) "(" { _FunctionArgument @ ; "," } ")" _Block > ||
-||   [12][25]: _StateDecl -> [544][_StateMachine]< "$state_machine" "{" { ( _StateInput | _StateDecl @ ) } "}" >                    ||
-||   [11][23]: _StateMachine -> [671][_ClassBody][ ":" { _Type ; "," } ] "{" { _Declaration } [ _StateMachine @ ] "}"               ||
-||   [9][17]: _ClassBody -> [678][_Class]< "class" NAME _ClassBody @ >                                                              ||
-||   [8][14]: _Class -> [781][_DeclarationCandidates]<< !_Class @ >>                                                                ||
-||   [7][14]: _DeclarationCandidates -> [795][_Declaration]<< { _Attribute } !_DeclarationCandidates @ >>                           ||
-||   [6][14]: _Declaration -> [815][_ModuleBody]NAME ";" { _UsingPath } { _Declaration @ }                                          ||
-||   [0][1]: _ModuleBody -> [820][_Module]< "module" _ModuleBody @ >                                                                ||
-|| [PREDECESSORS 28-28]: [28]                                                                                                       ||
-|| [SUCCESORS 30-30]: [30]                                                                                                          ||
-++==================================================================================================================================++
-[0]
- |
- +
- |
-[0]
-++==================================================================================================================================++
-|| [30]: {COLON} :                                                                                                                  ||
-|| [565][_FunctionArgument]< { _Attribute } NAME ":" @ _Type >                                                                      ||
-|| [AST-INSTRUCTIONS]:                                                                                                              ||
-|| [RETURN STACK]:                                                                                                                  ||
-||   [13][28]: _FunctionArgument -> [536][_StateDecl]< "$state" ( "default" | NAME ) "(" { _FunctionArgument @ ; "," } ")" _Block > ||
-||   [12][25]: _StateDecl -> [544][_StateMachine]< "$state_machine" "{" { ( _StateInput | _StateDecl @ ) } "}" >                    ||
-||   [11][23]: _StateMachine -> [671][_ClassBody][ ":" { _Type ; "," } ] "{" { _Declaration } [ _StateMachine @ ] "}"               ||
-||   [9][17]: _ClassBody -> [678][_Class]< "class" NAME _ClassBody @ >                                                              ||
-||   [8][14]: _Class -> [781][_DeclarationCandidates]<< !_Class @ >>                                                                ||
-||   [7][14]: _DeclarationCandidates -> [795][_Declaration]<< { _Attribute } !_DeclarationCandidates @ >>                           ||
-||   [6][14]: _Declaration -> [815][_ModuleBody]NAME ";" { _UsingPath } { _Declaration @ }                                          ||
-||   [0][1]: _ModuleBody -> [820][_Module]< "module" _ModuleBody @ >                                                                ||
-|| [PREDECESSORS 29-29]: [29]                                                                                                       ||
-|| [SUCCESORS 31-31]: [31]                                                                                                          ||
-++==================================================================================================================================++
-[0]
- |
- +
- |
-[0]
-++==================================================================================================================================++
-|| [31]: {TYPE_INT} int                                                                                                             ||
-|| [20][_Type]< "int" @ >                                                                                                           ||
-|| [AST-INSTRUCTIONS]:                                                                                                              ||
-||   - BeginObject(PredefinedType)                                                                                                  ||
-|| [RETURN STACK]:                                                                                                                  ||
-||   [14][30]: _Type -> [566][_FunctionArgument]< { _Attribute } NAME ":" _Type @ >                                                 ||
-||   [13][28]: _FunctionArgument -> [536][_StateDecl]< "$state" ( "default" | NAME ) "(" { _FunctionArgument @ ; "," } ")" _Block > ||
-||   [12][25]: _StateDecl -> [544][_StateMachine]< "$state_machine" "{" { ( _StateInput | _StateDecl @ ) } "}" >                    ||
-||   [11][23]: _StateMachine -> [671][_ClassBody][ ":" { _Type ; "," } ] "{" { _Declaration } [ _StateMachine @ ] "}"               ||
-||   [9][17]: _ClassBody -> [678][_Class]< "class" NAME _ClassBody @ >                                                              ||
-||   [8][14]: _Class -> [781][_DeclarationCandidates]<< !_Class @ >>                                                                ||
-||   [7][14]: _DeclarationCandidates -> [795][_Declaration]<< { _Attribute } !_DeclarationCandidates @ >>                           ||
-||   [6][14]: _Declaration -> [815][_ModuleBody]NAME ";" { _UsingPath } { _Declaration @ }                                          ||
-||   [0][1]: _ModuleBody -> [820][_Module]< "module" _ModuleBody @ >                                                                ||
-|| [PREDECESSORS 30-30]: [30]                                                                                                       ||
-|| [SUCCESORS 32-32]: [32]                                                                                                          ||
-++==================================================================================================================================++
++------------------------------------------------------------------------------------------------------------+
+| [57]: <Ending>                                                                                             |
+| [678][_Class]< "class" NAME _ClassBody @ >                                                                 |
+| [AST-INSTRUCTIONS]:                                                                                        |
+| [RETURN STACK]:                                                                                            |
+|   [8][48][14]: _Class -> [781][_DeclarationCandidates]<< !_Class @ >>                                      |
+|   [7][47][14]: _DeclarationCandidates -> [795][_Declaration]<< { _Attribute } !_DeclarationCandidates @ >> |
+|   [6][255][14]: _Declaration -> [815][_ModuleBody]NAME ";" { _UsingPath } { _Declaration @ }               |
+|   [0][258][1]: _ModuleBody -> [820][_Module]< "module" _ModuleBody @ >                                     |
+| [PREDECESSORS 56-56]: [56]                                                                                 |
+| [SUCCESORS 58-58]: [58]                                                                                    |
++------------------------------------------------------------------------------------------------------------+
 |
 +
 |
-+----------------------------------------------------------------------------------------------------------------------------------+
-| [32]: <Ending>                                                                                                                   |
-| [566][_FunctionArgument]< { _Attribute } NAME ":" _Type @ >                                                                      |
-| [AST-INSTRUCTIONS]:                                                                                                              |
-|   - EnumItem(3)                                                                                                                  |
-|   - Field(PredefinedType::name)                                                                                                  |
-|   - EndObject()                                                                                                                  |
-|   > Field(FunctionArgument::type)                                                                                                |
-| [RETURN STACK]:                                                                                                                  |
-|   [13][28]: _FunctionArgument -> [536][_StateDecl]< "$state" ( "default" | NAME ) "(" { _FunctionArgument @ ; "," } ")" _Block > |
-|   [12][25]: _StateDecl -> [544][_StateMachine]< "$state_machine" "{" { ( _StateInput | _StateDecl @ ) } "}" >                    |
-|   [11][23]: _StateMachine -> [671][_ClassBody][ ":" { _Type ; "," } ] "{" { _Declaration } [ _StateMachine @ ] "}"               |
-|   [9][17]: _ClassBody -> [678][_Class]< "class" NAME _ClassBody @ >                                                              |
-|   [8][14]: _Class -> [781][_DeclarationCandidates]<< !_Class @ >>                                                                |
-|   [7][14]: _DeclarationCandidates -> [795][_Declaration]<< { _Attribute } !_DeclarationCandidates @ >>                           |
-|   [6][14]: _Declaration -> [815][_ModuleBody]NAME ";" { _UsingPath } { _Declaration @ }                                          |
-|   [0][1]: _ModuleBody -> [820][_Module]< "module" _ModuleBody @ >                                                                |
-| [PREDECESSORS 31-31]: [31]                                                                                                       |
-| [SUCCESORS 33-33]: [33]                                                                                                          |
-+----------------------------------------------------------------------------------------------------------------------------------+
++------------------------------------------------------------------------------------------------------------+
+| [58]: <Ending>                                                                                             |
+| [781][_DeclarationCandidates]<< !_Class @ >>                                                               |
+| [AST-INSTRUCTIONS]:                                                                                        |
+|   - EnumItem(0)                                                                                            |
+|   - Field(ClassDeclaration::kind)                                                                          |
+|   - EnumItem(0)                                                                                            |
+|   - Field(ClassDeclaration::constructorType)                                                               |
+|   - EndObject()                                                                                            |
+| [RETURN STACK]:                                                                                            |
+|   [7][47][14]: _DeclarationCandidates -> [795][_Declaration]<< { _Attribute } !_DeclarationCandidates @ >> |
+|   [6][255][14]: _Declaration -> [815][_ModuleBody]NAME ";" { _UsingPath } { _Declaration @ }               |
+|   [0][258][1]: _ModuleBody -> [820][_Module]< "module" _ModuleBody @ >                                     |
+| [PREDECESSORS 57-57]: [57]                                                                                 |
+| [SUCCESORS 59-59]: [59]                                                                                    |
++------------------------------------------------------------------------------------------------------------+
 |
 +
 |
-+--------------------------------------------------------------------------------------------------------------------+
-| [33]: <Ending>                                                                                                     |
-| [536][_StateDecl]< "$state" ( "default" | NAME ) "(" { _FunctionArgument @ ; "," } ")" _Block >                    |
-| [AST-INSTRUCTIONS]:                                                                                                |
-|   - EndObject()                                                                                                    |
-|   > Field(StateDeclaration::arguments)                                                                             |
-| [RETURN STACK]:                                                                                                    |
-|   [12][25]: _StateDecl -> [544][_StateMachine]< "$state_machine" "{" { ( _StateInput | _StateDecl @ ) } "}" >      |
-|   [11][23]: _StateMachine -> [671][_ClassBody][ ":" { _Type ; "," } ] "{" { _Declaration } [ _StateMachine @ ] "}" |
-|   [9][17]: _ClassBody -> [678][_Class]< "class" NAME _ClassBody @ >                                                |
-|   [8][14]: _Class -> [781][_DeclarationCandidates]<< !_Class @ >>                                                  |
-|   [7][14]: _DeclarationCandidates -> [795][_Declaration]<< { _Attribute } !_DeclarationCandidates @ >>             |
-|   [6][14]: _Declaration -> [815][_ModuleBody]NAME ";" { _UsingPath } { _Declaration @ }                            |
-|   [0][1]: _ModuleBody -> [820][_Module]< "module" _ModuleBody @ >                                                  |
-| [PREDECESSORS 32-32]: [32]                                                                                         |
-| [SUCCESORS 34-34]: [34]                                                                                            |
-+--------------------------------------------------------------------------------------------------------------------+
-[0]
- |
- +
- |
-[0]
-++====================================================================================================================++
-|| [34]: {CLOSE_BRACKET} )                                                                                            ||
-|| [534][_StateDecl]< "$state" ( "default" | NAME ) "(" { _FunctionArgument ; "," } ")" @ _Block >                    ||
-|| [AST-INSTRUCTIONS]:                                                                                                ||
-|| [RETURN STACK]:                                                                                                    ||
-||   [12][25]: _StateDecl -> [544][_StateMachine]< "$state_machine" "{" { ( _StateInput | _StateDecl @ ) } "}" >      ||
-||   [11][23]: _StateMachine -> [671][_ClassBody][ ":" { _Type ; "," } ] "{" { _Declaration } [ _StateMachine @ ] "}" ||
-||   [9][17]: _ClassBody -> [678][_Class]< "class" NAME _ClassBody @ >                                                ||
-||   [8][14]: _Class -> [781][_DeclarationCandidates]<< !_Class @ >>                                                  ||
-||   [7][14]: _DeclarationCandidates -> [795][_Declaration]<< { _Attribute } !_DeclarationCandidates @ >>             ||
-||   [6][14]: _Declaration -> [815][_ModuleBody]NAME ";" { _UsingPath } { _Declaration @ }                            ||
-||   [0][1]: _ModuleBody -> [820][_Module]< "module" _ModuleBody @ >                                                  ||
-|| [PREDECESSORS 33-33]: [33]                                                                                         ||
-|| [SUCCESORS 35-35]: [35]                                                                                            ||
-++====================================================================================================================++
-[0]
- |
- +
- |
-[0]
-++=======================================================================================================================++
-|| [35]: {OPEN_BRACE} {                                                                                                  ||
-|| [358][_Block]< "{" @ { _Statement } [ NAME ":" ";" ] "}" >                                                            ||
-|| [AST-INSTRUCTIONS]:                                                                                                   ||
-||   - BeginObject(BlockStatement)                                                                                       ||
-|| [RETURN STACK]:                                                                                                       ||
-||   [15][34]: _Block -> [535][_StateDecl]< "$state" ( "default" | NAME ) "(" { _FunctionArgument ; "," } ")" _Block @ > ||
-||   [12][25]: _StateDecl -> [544][_StateMachine]< "$state_machine" "{" { ( _StateInput | _StateDecl @ ) } "}" >         ||
-||   [11][23]: _StateMachine -> [671][_ClassBody][ ":" { _Type ; "," } ] "{" { _Declaration } [ _StateMachine @ ] "}"    ||
-||   [9][17]: _ClassBody -> [678][_Class]< "class" NAME _ClassBody @ >                                                   ||
-||   [8][14]: _Class -> [781][_DeclarationCandidates]<< !_Class @ >>                                                     ||
-||   [7][14]: _DeclarationCandidates -> [795][_Declaration]<< { _Attribute } !_DeclarationCandidates @ >>                ||
-||   [6][14]: _Declaration -> [815][_ModuleBody]NAME ";" { _UsingPath } { _Declaration @ }                               ||
-||   [0][1]: _ModuleBody -> [820][_Module]< "module" _ModuleBody @ >                                                     ||
-|| [PREDECESSORS 34-34]: [34]                                                                                            ||
-|| [SUCCESORS 36-36]: [36]                                                                                               ||
-++=======================================================================================================================++
-[0]
- |
- +
- |
-[0]
-++=======================================================================================================================++
-|| [36]: {CLOSE_BRACE} }                                                                                                 ||
-|| [361][_Block]< "{" { _Statement } [ NAME ":" ";" ] "}" @ >                                                            ||
-|| [AST-INSTRUCTIONS]:                                                                                                   ||
-|| [RETURN STACK]:                                                                                                       ||
-||   [15][34]: _Block -> [535][_StateDecl]< "$state" ( "default" | NAME ) "(" { _FunctionArgument ; "," } ")" _Block @ > ||
-||   [12][25]: _StateDecl -> [544][_StateMachine]< "$state_machine" "{" { ( _StateInput | _StateDecl @ ) } "}" >         ||
-||   [11][23]: _StateMachine -> [671][_ClassBody][ ":" { _Type ; "," } ] "{" { _Declaration } [ _StateMachine @ ] "}"    ||
-||   [9][17]: _ClassBody -> [678][_Class]< "class" NAME _ClassBody @ >                                                   ||
-||   [8][14]: _Class -> [781][_DeclarationCandidates]<< !_Class @ >>                                                     ||
-||   [7][14]: _DeclarationCandidates -> [795][_Declaration]<< { _Attribute } !_DeclarationCandidates @ >>                ||
-||   [6][14]: _Declaration -> [815][_ModuleBody]NAME ";" { _UsingPath } { _Declaration @ }                               ||
-||   [0][1]: _ModuleBody -> [820][_Module]< "module" _ModuleBody @ >                                                     ||
-|| [PREDECESSORS 35-35]: [35]                                                                                            ||
-|| [SUCCESORS 37-37]: [37]                                                                                               ||
-++=======================================================================================================================++
++----------------------------------------------------------------------------------------------+
+| [59]: <Ending>                                                                               |
+| [795][_Declaration]<< { _Attribute } !_DeclarationCandidates @ >>                            |
+| [AST-INSTRUCTIONS]:                                                                          |
+|   - ReopenObject()                                                                           |
+|   - EndObject()                                                                              |
+|   > ReopenObject()                                                                           |
+| [RETURN STACK]:                                                                              |
+|   [6][255][14]: _Declaration -> [815][_ModuleBody]NAME ";" { _UsingPath } { _Declaration @ } |
+|   [0][258][1]: _ModuleBody -> [820][_Module]< "module" _ModuleBody @ >                       |
+| [PREDECESSORS 58-58]: [58]                                                                   |
+| [SUCCESORS 60-60]: [60]                                                                      |
++----------------------------------------------------------------------------------------------+
 |
 +
 |
-+--------------------------------------------------------------------------------------------------------------------+
-| [37]: <Ending>                                                                                                     |
-| [535][_StateDecl]< "$state" ( "default" | NAME ) "(" { _FunctionArgument ; "," } ")" _Block @ >                    |
-| [AST-INSTRUCTIONS]:                                                                                                |
-|   - EndObject()                                                                                                    |
-|   > Field(StateDeclaration::statement)                                                                             |
-| [RETURN STACK]:                                                                                                    |
-|   [12][25]: _StateDecl -> [544][_StateMachine]< "$state_machine" "{" { ( _StateInput | _StateDecl @ ) } "}" >      |
-|   [11][23]: _StateMachine -> [671][_ClassBody][ ":" { _Type ; "," } ] "{" { _Declaration } [ _StateMachine @ ] "}" |
-|   [9][17]: _ClassBody -> [678][_Class]< "class" NAME _ClassBody @ >                                                |
-|   [8][14]: _Class -> [781][_DeclarationCandidates]<< !_Class @ >>                                                  |
-|   [7][14]: _DeclarationCandidates -> [795][_Declaration]<< { _Attribute } !_DeclarationCandidates @ >>             |
-|   [6][14]: _Declaration -> [815][_ModuleBody]NAME ";" { _UsingPath } { _Declaration @ }                            |
-|   [0][1]: _ModuleBody -> [820][_Module]< "module" _ModuleBody @ >                                                  |
-| [PREDECESSORS 36-36]: [36]                                                                                         |
-| [SUCCESORS 38-38]: [38]                                                                                            |
-+--------------------------------------------------------------------------------------------------------------------+
-|
-+
-|
-+--------------------------------------------------------------------------------------------------------------------+
-| [38]: <Ending>                                                                                                     |
-| [544][_StateMachine]< "$state_machine" "{" { ( _StateInput | _StateDecl @ ) } "}" >                                |
-| [AST-INSTRUCTIONS]:                                                                                                |
-|   - EndObject()                                                                                                    |
-|   > Field(StateMachineDeclaration::states)                                                                         |
-| [RETURN STACK]:                                                                                                    |
-|   [11][23]: _StateMachine -> [671][_ClassBody][ ":" { _Type ; "," } ] "{" { _Declaration } [ _StateMachine @ ] "}" |
-|   [9][17]: _ClassBody -> [678][_Class]< "class" NAME _ClassBody @ >                                                |
-|   [8][14]: _Class -> [781][_DeclarationCandidates]<< !_Class @ >>                                                  |
-|   [7][14]: _DeclarationCandidates -> [795][_Declaration]<< { _Attribute } !_DeclarationCandidates @ >>             |
-|   [6][14]: _Declaration -> [815][_ModuleBody]NAME ";" { _UsingPath } { _Declaration @ }                            |
-|   [0][1]: _ModuleBody -> [820][_Module]< "module" _ModuleBody @ >                                                  |
-| [PREDECESSORS 37-37]: [37]                                                                                         |
-| [SUCCESORS 39-39]: [39]                                                                                            |
-+--------------------------------------------------------------------------------------------------------------------+
-[0]
- |
- +
- |
-[0]
-++====================================================================================================================++
-|| [39]: {STATE_DECL} $state                                                                                          ||
-|| [538][_StateDecl]< "$state" @ ( "default" | NAME ) "(" { _FunctionArgument ; "," } ")" _Block >                    ||
-|| [AST-INSTRUCTIONS]:                                                                                                ||
-||   - BeginObject(StateDeclaration)                                                                                  ||
-|| [RETURN STACK]:                                                                                                    ||
-||   [16][38]: _StateDecl -> [544][_StateMachine]< "$state_machine" "{" { ( _StateInput | _StateDecl @ ) } "}" >      ||
-||   [11][23]: _StateMachine -> [671][_ClassBody][ ":" { _Type ; "," } ] "{" { _Declaration } [ _StateMachine @ ] "}" ||
-||   [9][17]: _ClassBody -> [678][_Class]< "class" NAME _ClassBody @ >                                                ||
-||   [8][14]: _Class -> [781][_DeclarationCandidates]<< !_Class @ >>                                                  ||
-||   [7][14]: _DeclarationCandidates -> [795][_Declaration]<< { _Attribute } !_DeclarationCandidates @ >>             ||
-||   [6][14]: _Declaration -> [815][_ModuleBody]NAME ";" { _UsingPath } { _Declaration @ }                            ||
-||   [0][1]: _ModuleBody -> [820][_Module]< "module" _ModuleBody @ >                                                  ||
-|| [PREDECESSORS 38-38]: [38]                                                                                         ||
-|| [SUCCESORS 40-40]: [40]                                                                                            ||
-++====================================================================================================================++
-[0]
- |
- +
- |
-[0]
-++====================================================================================================================++
-|| [40]: {KEYWORD_DEFAULT} default                                                                                    ||
-|| [531][_StateDecl]< "$state" ( "default" @ | NAME ) "(" { _FunctionArgument ; "," } ")" _Block >                    ||
-|| [AST-INSTRUCTIONS]:                                                                                                ||
-|| [RETURN STACK]:                                                                                                    ||
-||   [16][38]: _StateDecl -> [544][_StateMachine]< "$state_machine" "{" { ( _StateInput | _StateDecl @ ) } "}" >      ||
-||   [11][23]: _StateMachine -> [671][_ClassBody][ ":" { _Type ; "," } ] "{" { _Declaration } [ _StateMachine @ ] "}" ||
-||   [9][17]: _ClassBody -> [678][_Class]< "class" NAME _ClassBody @ >                                                ||
-||   [8][14]: _Class -> [781][_DeclarationCandidates]<< !_Class @ >>                                                  ||
-||   [7][14]: _DeclarationCandidates -> [795][_Declaration]<< { _Attribute } !_DeclarationCandidates @ >>             ||
-||   [6][14]: _Declaration -> [815][_ModuleBody]NAME ";" { _UsingPath } { _Declaration @ }                            ||
-||   [0][1]: _ModuleBody -> [820][_Module]< "module" _ModuleBody @ >                                                  ||
-|| [PREDECESSORS 39-39]: [39]                                                                                         ||
-|| [SUCCESORS 41-41]: [41]                                                                                            ||
-++====================================================================================================================++
-[0]
- |
- +
- |
-[0]
-++====================================================================================================================++
-|| [41]: {OPEN_BRACKET} (                                                                                             ||
-|| [532][_StateDecl]< "$state" ( "default" | NAME ) "(" @ { _FunctionArgument ; "," } ")" _Block >                    ||
-|| [AST-INSTRUCTIONS]:                                                                                                ||
-|| [RETURN STACK]:                                                                                                    ||
-||   [16][38]: _StateDecl -> [544][_StateMachine]< "$state_machine" "{" { ( _StateInput | _StateDecl @ ) } "}" >      ||
-||   [11][23]: _StateMachine -> [671][_ClassBody][ ":" { _Type ; "," } ] "{" { _Declaration } [ _StateMachine @ ] "}" ||
-||   [9][17]: _ClassBody -> [678][_Class]< "class" NAME _ClassBody @ >                                                ||
-||   [8][14]: _Class -> [781][_DeclarationCandidates]<< !_Class @ >>                                                  ||
-||   [7][14]: _DeclarationCandidates -> [795][_Declaration]<< { _Attribute } !_DeclarationCandidates @ >>             ||
-||   [6][14]: _Declaration -> [815][_ModuleBody]NAME ";" { _UsingPath } { _Declaration @ }                            ||
-||   [0][1]: _ModuleBody -> [820][_Module]< "module" _ModuleBody @ >                                                  ||
-|| [PREDECESSORS 40-40]: [40]                                                                                         ||
-|| [SUCCESORS 42-42]: [42]                                                                                            ||
-++====================================================================================================================++
-[0]
- |
- +
- |
-[0]
-++====================================================================================================================++
-|| [42]: {CLOSE_BRACKET} )                                                                                            ||
-|| [534][_StateDecl]< "$state" ( "default" | NAME ) "(" { _FunctionArgument ; "," } ")" @ _Block >                    ||
-|| [AST-INSTRUCTIONS]:                                                                                                ||
-|| [RETURN STACK]:                                                                                                    ||
-||   [16][38]: _StateDecl -> [544][_StateMachine]< "$state_machine" "{" { ( _StateInput | _StateDecl @ ) } "}" >      ||
-||   [11][23]: _StateMachine -> [671][_ClassBody][ ":" { _Type ; "," } ] "{" { _Declaration } [ _StateMachine @ ] "}" ||
-||   [9][17]: _ClassBody -> [678][_Class]< "class" NAME _ClassBody @ >                                                ||
-||   [8][14]: _Class -> [781][_DeclarationCandidates]<< !_Class @ >>                                                  ||
-||   [7][14]: _DeclarationCandidates -> [795][_Declaration]<< { _Attribute } !_DeclarationCandidates @ >>             ||
-||   [6][14]: _Declaration -> [815][_ModuleBody]NAME ";" { _UsingPath } { _Declaration @ }                            ||
-||   [0][1]: _ModuleBody -> [820][_Module]< "module" _ModuleBody @ >                                                  ||
-|| [PREDECESSORS 41-41]: [41]                                                                                         ||
-|| [SUCCESORS 43-43]: [43]                                                                                            ||
-++====================================================================================================================++
-[0]
- |
- +
- |
-[0]
-++=======================================================================================================================++
-|| [43]: {OPEN_BRACE} {                                                                                                  ||
-|| [358][_Block]< "{" @ { _Statement } [ NAME ":" ";" ] "}" >                                                            ||
-|| [AST-INSTRUCTIONS]:                                                                                                   ||
-||   - BeginObject(BlockStatement)                                                                                       ||
-|| [RETURN STACK]:                                                                                                       ||
-||   [17][42]: _Block -> [535][_StateDecl]< "$state" ( "default" | NAME ) "(" { _FunctionArgument ; "," } ")" _Block @ > ||
-||   [16][38]: _StateDecl -> [544][_StateMachine]< "$state_machine" "{" { ( _StateInput | _StateDecl @ ) } "}" >         ||
-||   [11][23]: _StateMachine -> [671][_ClassBody][ ":" { _Type ; "," } ] "{" { _Declaration } [ _StateMachine @ ] "}"    ||
-||   [9][17]: _ClassBody -> [678][_Class]< "class" NAME _ClassBody @ >                                                   ||
-||   [8][14]: _Class -> [781][_DeclarationCandidates]<< !_Class @ >>                                                     ||
-||   [7][14]: _DeclarationCandidates -> [795][_Declaration]<< { _Attribute } !_DeclarationCandidates @ >>                ||
-||   [6][14]: _Declaration -> [815][_ModuleBody]NAME ";" { _UsingPath } { _Declaration @ }                               ||
-||   [0][1]: _ModuleBody -> [820][_Module]< "module" _ModuleBody @ >                                                     ||
-|| [PREDECESSORS 42-42]: [42]                                                                                            ||
-|| [SUCCESORS 44-44]: [44]                                                                                               ||
-++=======================================================================================================================++
-[0]
- |
- +
- |
-[0]
-++=======================================================================================================================++
-|| [44]: {STATE_GOTO} $goto_state                                                                                        ||
-|| [462][_StateStatement]< "$goto_state" @ NAME "(" { _Expression ; "," } ")" ";" >                                      ||
-|| [AST-INSTRUCTIONS]:                                                                                                   ||
-||   - DelayFieldAssignment()                                                                                            ||
-||   - BeginObject(StateInvokeStatement)                                                                                 ||
-|| [RETURN STACK]:                                                                                                       ||
-||   [19][43]: _StateStatement -> [518][_Statement]<< !_StateStatement @ >>                                              ||
-||   [18][43]: _Statement -> [359][_Block]< "{" { _Statement @ } [ NAME ":" ";" ] "}" >                                  ||
-||   [17][42]: _Block -> [535][_StateDecl]< "$state" ( "default" | NAME ) "(" { _FunctionArgument ; "," } ")" _Block @ > ||
-||   [16][38]: _StateDecl -> [544][_StateMachine]< "$state_machine" "{" { ( _StateInput | _StateDecl @ ) } "}" >         ||
-||   [11][23]: _StateMachine -> [671][_ClassBody][ ":" { _Type ; "," } ] "{" { _Declaration } [ _StateMachine @ ] "}"    ||
-||   [9][17]: _ClassBody -> [678][_Class]< "class" NAME _ClassBody @ >                                                   ||
-||   [8][14]: _Class -> [781][_DeclarationCandidates]<< !_Class @ >>                                                     ||
-||   [7][14]: _DeclarationCandidates -> [795][_Declaration]<< { _Attribute } !_DeclarationCandidates @ >>                ||
-||   [6][14]: _Declaration -> [815][_ModuleBody]NAME ";" { _UsingPath } { _Declaration @ }                               ||
-||   [0][1]: _ModuleBody -> [820][_Module]< "module" _ModuleBody @ >                                                     ||
-|| [PREDECESSORS 43-43]: [43]                                                                                            ||
-|| [SUCCESORS 45-45]: [45]                                                                                               ||
-++=======================================================================================================================++
-[0]
- |
- +
- |
-[0]
-++=======================================================================================================================++
-|| [45]: {NAME} A                                                                                                        ||
-|| [468][_StateStatement]< "$goto_state" NAME @ "(" { _Expression ; "," } ")" ";" >                                      ||
-|| [AST-INSTRUCTIONS]:                                                                                                   ||
-||   + Token()                                                                                                           ||
-||   + Field(StateInvokeStatement::name)                                                                                 ||
-|| [RETURN STACK]:                                                                                                       ||
-||   [19][43]: _StateStatement -> [518][_Statement]<< !_StateStatement @ >>                                              ||
-||   [18][43]: _Statement -> [359][_Block]< "{" { _Statement @ } [ NAME ":" ";" ] "}" >                                  ||
-||   [17][42]: _Block -> [535][_StateDecl]< "$state" ( "default" | NAME ) "(" { _FunctionArgument ; "," } ")" _Block @ > ||
-||   [16][38]: _StateDecl -> [544][_StateMachine]< "$state_machine" "{" { ( _StateInput | _StateDecl @ ) } "}" >         ||
-||   [11][23]: _StateMachine -> [671][_ClassBody][ ":" { _Type ; "," } ] "{" { _Declaration } [ _StateMachine @ ] "}"    ||
-||   [9][17]: _ClassBody -> [678][_Class]< "class" NAME _ClassBody @ >                                                   ||
-||   [8][14]: _Class -> [781][_DeclarationCandidates]<< !_Class @ >>                                                     ||
-||   [7][14]: _DeclarationCandidates -> [795][_Declaration]<< { _Attribute } !_DeclarationCandidates @ >>                ||
-||   [6][14]: _Declaration -> [815][_ModuleBody]NAME ";" { _UsingPath } { _Declaration @ }                               ||
-||   [0][1]: _ModuleBody -> [820][_Module]< "module" _ModuleBody @ >                                                     ||
-|| [PREDECESSORS 44-44]: [44]                                                                                            ||
-|| [SUCCESORS 46-46]: [46]                                                                                               ||
-++=======================================================================================================================++
-[0]
- |
- +
- |
-[0]
-++=======================================================================================================================++
-|| [46]: {OPEN_BRACKET} (                                                                                                ||
-|| [463][_StateStatement]< "$goto_state" NAME "(" @ { _Expression ; "," } ")" ";" >                                      ||
-|| [AST-INSTRUCTIONS]:                                                                                                   ||
-|| [RETURN STACK]:                                                                                                       ||
-||   [19][43]: _StateStatement -> [518][_Statement]<< !_StateStatement @ >>                                              ||
-||   [18][43]: _Statement -> [359][_Block]< "{" { _Statement @ } [ NAME ":" ";" ] "}" >                                  ||
-||   [17][42]: _Block -> [535][_StateDecl]< "$state" ( "default" | NAME ) "(" { _FunctionArgument ; "," } ")" _Block @ > ||
-||   [16][38]: _StateDecl -> [544][_StateMachine]< "$state_machine" "{" { ( _StateInput | _StateDecl @ ) } "}" >         ||
-||   [11][23]: _StateMachine -> [671][_ClassBody][ ":" { _Type ; "," } ] "{" { _Declaration } [ _StateMachine @ ] "}"    ||
-||   [9][17]: _ClassBody -> [678][_Class]< "class" NAME _ClassBody @ >                                                   ||
-||   [8][14]: _Class -> [781][_DeclarationCandidates]<< !_Class @ >>                                                     ||
-||   [7][14]: _DeclarationCandidates -> [795][_Declaration]<< { _Attribute } !_DeclarationCandidates @ >>                ||
-||   [6][14]: _Declaration -> [815][_ModuleBody]NAME ";" { _UsingPath } { _Declaration @ }                               ||
-||   [0][1]: _ModuleBody -> [820][_Module]< "module" _ModuleBody @ >                                                     ||
-|| [PREDECESSORS 45-45]: [45]                                                                                            ||
-|| [SUCCESORS 47-47]: [47]                                                                                               ||
-++=======================================================================================================================++
-[0]
- |
- +
- |
-[0]
-++=======================================================================================================================++
-|| [47]: {CLOSE_BRACKET} )                                                                                               ||
-|| [466][_StateStatement]< "$goto_state" NAME "(" { _Expression ; "," } ")" @ ";" >                                      ||
-|| [AST-INSTRUCTIONS]:                                                                                                   ||
-|| [RETURN STACK]:                                                                                                       ||
-||   [19][43]: _StateStatement -> [518][_Statement]<< !_StateStatement @ >>                                              ||
-||   [18][43]: _Statement -> [359][_Block]< "{" { _Statement @ } [ NAME ":" ";" ] "}" >                                  ||
-||   [17][42]: _Block -> [535][_StateDecl]< "$state" ( "default" | NAME ) "(" { _FunctionArgument ; "," } ")" _Block @ > ||
-||   [16][38]: _StateDecl -> [544][_StateMachine]< "$state_machine" "{" { ( _StateInput | _StateDecl @ ) } "}" >         ||
-||   [11][23]: _StateMachine -> [671][_ClassBody][ ":" { _Type ; "," } ] "{" { _Declaration } [ _StateMachine @ ] "}"    ||
-||   [9][17]: _ClassBody -> [678][_Class]< "class" NAME _ClassBody @ >                                                   ||
-||   [8][14]: _Class -> [781][_DeclarationCandidates]<< !_Class @ >>                                                     ||
-||   [7][14]: _DeclarationCandidates -> [795][_Declaration]<< { _Attribute } !_DeclarationCandidates @ >>                ||
-||   [6][14]: _Declaration -> [815][_ModuleBody]NAME ";" { _UsingPath } { _Declaration @ }                               ||
-||   [0][1]: _ModuleBody -> [820][_Module]< "module" _ModuleBody @ >                                                     ||
-|| [PREDECESSORS 46-46]: [46]                                                                                            ||
-|| [SUCCESORS 48-48]: [48]                                                                                               ||
-++=======================================================================================================================++
-[0]
- |
- +
- |
-[0]
-++=======================================================================================================================++
-|| [48]: {SEMICOLON} ;                                                                                                   ||
-|| [465][_StateStatement]< "$goto_state" NAME "(" { _Expression ; "," } ")" ";" @ >                                      ||
-|| [AST-INSTRUCTIONS]:                                                                                                   ||
-|| [RETURN STACK]:                                                                                                       ||
-||   [19][43]: _StateStatement -> [518][_Statement]<< !_StateStatement @ >>                                              ||
-||   [18][43]: _Statement -> [359][_Block]< "{" { _Statement @ } [ NAME ":" ";" ] "}" >                                  ||
-||   [17][42]: _Block -> [535][_StateDecl]< "$state" ( "default" | NAME ) "(" { _FunctionArgument ; "," } ")" _Block @ > ||
-||   [16][38]: _StateDecl -> [544][_StateMachine]< "$state_machine" "{" { ( _StateInput | _StateDecl @ ) } "}" >         ||
-||   [11][23]: _StateMachine -> [671][_ClassBody][ ":" { _Type ; "," } ] "{" { _Declaration } [ _StateMachine @ ] "}"    ||
-||   [9][17]: _ClassBody -> [678][_Class]< "class" NAME _ClassBody @ >                                                   ||
-||   [8][14]: _Class -> [781][_DeclarationCandidates]<< !_Class @ >>                                                     ||
-||   [7][14]: _DeclarationCandidates -> [795][_Declaration]<< { _Attribute } !_DeclarationCandidates @ >>                ||
-||   [6][14]: _Declaration -> [815][_ModuleBody]NAME ";" { _UsingPath } { _Declaration @ }                               ||
-||   [0][1]: _ModuleBody -> [820][_Module]< "module" _ModuleBody @ >                                                     ||
-|| [PREDECESSORS 47-47]: [47]                                                                                            ||
-|| [SUCCESORS 49-49]: [49]                                                                                               ||
-++=======================================================================================================================++
-|
-+
-|
-+-----------------------------------------------------------------------------------------------------------------------+
-| [49]: <Ending>                                                                                                        |
-| [518][_Statement]<< !_StateStatement @ >>                                                                             |
-| [AST-INSTRUCTIONS]:                                                                                                   |
-|   - EnumItem(0)                                                                                                       |
-|   - Field(StateInvokeStatement::type)                                                                                 |
-|   - EndObject()                                                                                                       |
-| [RETURN STACK]:                                                                                                       |
-|   [18][43]: _Statement -> [359][_Block]< "{" { _Statement @ } [ NAME ":" ";" ] "}" >                                  |
-|   [17][42]: _Block -> [535][_StateDecl]< "$state" ( "default" | NAME ) "(" { _FunctionArgument ; "," } ")" _Block @ > |
-|   [16][38]: _StateDecl -> [544][_StateMachine]< "$state_machine" "{" { ( _StateInput | _StateDecl @ ) } "}" >         |
-|   [11][23]: _StateMachine -> [671][_ClassBody][ ":" { _Type ; "," } ] "{" { _Declaration } [ _StateMachine @ ] "}"    |
-|   [9][17]: _ClassBody -> [678][_Class]< "class" NAME _ClassBody @ >                                                   |
-|   [8][14]: _Class -> [781][_DeclarationCandidates]<< !_Class @ >>                                                     |
-|   [7][14]: _DeclarationCandidates -> [795][_Declaration]<< { _Attribute } !_DeclarationCandidates @ >>                |
-|   [6][14]: _Declaration -> [815][_ModuleBody]NAME ";" { _UsingPath } { _Declaration @ }                               |
-|   [0][1]: _ModuleBody -> [820][_Module]< "module" _ModuleBody @ >                                                     |
-| [PREDECESSORS 48-48]: [48]                                                                                            |
-| [SUCCESORS 50-50]: [50]                                                                                               |
-+-----------------------------------------------------------------------------------------------------------------------+
-|
-+
-|
-+-----------------------------------------------------------------------------------------------------------------------+
-| [50]: <Ending>                                                                                                        |
-| [359][_Block]< "{" { _Statement @ } [ NAME ":" ";" ] "}" >                                                            |
-| [AST-INSTRUCTIONS]:                                                                                                   |
-|   - ReopenObject()                                                                                                    |
-|   - EndObject()                                                                                                       |
-|   > Field(BlockStatement::statements)                                                                                 |
-| [RETURN STACK]:                                                                                                       |
-|   [17][42]: _Block -> [535][_StateDecl]< "$state" ( "default" | NAME ) "(" { _FunctionArgument ; "," } ")" _Block @ > |
-|   [16][38]: _StateDecl -> [544][_StateMachine]< "$state_machine" "{" { ( _StateInput | _StateDecl @ ) } "}" >         |
-|   [11][23]: _StateMachine -> [671][_ClassBody][ ":" { _Type ; "," } ] "{" { _Declaration } [ _StateMachine @ ] "}"    |
-|   [9][17]: _ClassBody -> [678][_Class]< "class" NAME _ClassBody @ >                                                   |
-|   [8][14]: _Class -> [781][_DeclarationCandidates]<< !_Class @ >>                                                     |
-|   [7][14]: _DeclarationCandidates -> [795][_Declaration]<< { _Attribute } !_DeclarationCandidates @ >>                |
-|   [6][14]: _Declaration -> [815][_ModuleBody]NAME ";" { _UsingPath } { _Declaration @ }                               |
-|   [0][1]: _ModuleBody -> [820][_Module]< "module" _ModuleBody @ >                                                     |
-| [PREDECESSORS 49-49]: [49]                                                                                            |
-| [SUCCESORS 51-51]: [51]                                                                                               |
-+-----------------------------------------------------------------------------------------------------------------------+
-[0]
- |
- +
- |
-[0]
-++=======================================================================================================================++
-|| [51]: {CLOSE_BRACE} }                                                                                                 ||
-|| [361][_Block]< "{" { _Statement } [ NAME ":" ";" ] "}" @ >                                                            ||
-|| [AST-INSTRUCTIONS]:                                                                                                   ||
-|| [RETURN STACK]:                                                                                                       ||
-||   [17][42]: _Block -> [535][_StateDecl]< "$state" ( "default" | NAME ) "(" { _FunctionArgument ; "," } ")" _Block @ > ||
-||   [16][38]: _StateDecl -> [544][_StateMachine]< "$state_machine" "{" { ( _StateInput | _StateDecl @ ) } "}" >         ||
-||   [11][23]: _StateMachine -> [671][_ClassBody][ ":" { _Type ; "," } ] "{" { _Declaration } [ _StateMachine @ ] "}"    ||
-||   [9][17]: _ClassBody -> [678][_Class]< "class" NAME _ClassBody @ >                                                   ||
-||   [8][14]: _Class -> [781][_DeclarationCandidates]<< !_Class @ >>                                                     ||
-||   [7][14]: _DeclarationCandidates -> [795][_Declaration]<< { _Attribute } !_DeclarationCandidates @ >>                ||
-||   [6][14]: _Declaration -> [815][_ModuleBody]NAME ";" { _UsingPath } { _Declaration @ }                               ||
-||   [0][1]: _ModuleBody -> [820][_Module]< "module" _ModuleBody @ >                                                     ||
-|| [PREDECESSORS 50-50]: [50]                                                                                            ||
-|| [SUCCESORS 52-52]: [52]                                                                                               ||
-++=======================================================================================================================++
-|
-+
-|
-+--------------------------------------------------------------------------------------------------------------------+
-| [52]: <Ending>                                                                                                     |
-| [535][_StateDecl]< "$state" ( "default" | NAME ) "(" { _FunctionArgument ; "," } ")" _Block @ >                    |
-| [AST-INSTRUCTIONS]:                                                                                                |
-|   - EndObject()                                                                                                    |
-|   > Field(StateDeclaration::statement)                                                                             |
-| [RETURN STACK]:                                                                                                    |
-|   [16][38]: _StateDecl -> [544][_StateMachine]< "$state_machine" "{" { ( _StateInput | _StateDecl @ ) } "}" >      |
-|   [11][23]: _StateMachine -> [671][_ClassBody][ ":" { _Type ; "," } ] "{" { _Declaration } [ _StateMachine @ ] "}" |
-|   [9][17]: _ClassBody -> [678][_Class]< "class" NAME _ClassBody @ >                                                |
-|   [8][14]: _Class -> [781][_DeclarationCandidates]<< !_Class @ >>                                                  |
-|   [7][14]: _DeclarationCandidates -> [795][_Declaration]<< { _Attribute } !_DeclarationCandidates @ >>             |
-|   [6][14]: _Declaration -> [815][_ModuleBody]NAME ";" { _UsingPath } { _Declaration @ }                            |
-|   [0][1]: _ModuleBody -> [820][_Module]< "module" _ModuleBody @ >                                                  |
-| [PREDECESSORS 51-51]: [51]                                                                                         |
-| [SUCCESORS 53-53]: [53]                                                                                            |
-+--------------------------------------------------------------------------------------------------------------------+
-|
-+
-|
-+--------------------------------------------------------------------------------------------------------------------+
-| [53]: <Ending>                                                                                                     |
-| [544][_StateMachine]< "$state_machine" "{" { ( _StateInput | _StateDecl @ ) } "}" >                                |
-| [AST-INSTRUCTIONS]:                                                                                                |
-|   - EndObject()                                                                                                    |
-|   > Field(StateMachineDeclaration::states)                                                                         |
-| [RETURN STACK]:                                                                                                    |
-|   [11][23]: _StateMachine -> [671][_ClassBody][ ":" { _Type ; "," } ] "{" { _Declaration } [ _StateMachine @ ] "}" |
-|   [9][17]: _ClassBody -> [678][_Class]< "class" NAME _ClassBody @ >                                                |
-|   [8][14]: _Class -> [781][_DeclarationCandidates]<< !_Class @ >>                                                  |
-|   [7][14]: _DeclarationCandidates -> [795][_Declaration]<< { _Attribute } !_DeclarationCandidates @ >>             |
-|   [6][14]: _Declaration -> [815][_ModuleBody]NAME ";" { _UsingPath } { _Declaration @ }                            |
-|   [0][1]: _ModuleBody -> [820][_Module]< "module" _ModuleBody @ >                                                  |
-| [PREDECESSORS 52-52]: [52]                                                                                         |
-| [SUCCESORS 54-54]: [54]                                                                                            |
-+--------------------------------------------------------------------------------------------------------------------+
-[0]
- |
- +
- |
-[0]
-++====================================================================================================================++
-|| [54]: {CLOSE_BRACE} }                                                                                              ||
-|| [543][_StateMachine]< "$state_machine" "{" { ( _StateInput | _StateDecl ) } "}" @ >                                ||
-|| [AST-INSTRUCTIONS]:                                                                                                ||
-|| [RETURN STACK]:                                                                                                    ||
-||   [11][23]: _StateMachine -> [671][_ClassBody][ ":" { _Type ; "," } ] "{" { _Declaration } [ _StateMachine @ ] "}" ||
-||   [9][17]: _ClassBody -> [678][_Class]< "class" NAME _ClassBody @ >                                                ||
-||   [8][14]: _Class -> [781][_DeclarationCandidates]<< !_Class @ >>                                                  ||
-||   [7][14]: _DeclarationCandidates -> [795][_Declaration]<< { _Attribute } !_DeclarationCandidates @ >>             ||
-||   [6][14]: _Declaration -> [815][_ModuleBody]NAME ";" { _UsingPath } { _Declaration @ }                            ||
-||   [0][1]: _ModuleBody -> [820][_Module]< "module" _ModuleBody @ >                                                  ||
-|| [PREDECESSORS 53-53]: [53]                                                                                         ||
-|| [SUCCESORS 55-55]: [55]                                                                                            ||
-++====================================================================================================================++
-|
-+
-|
-+--------------------------------------------------------------------------------------------------------+
-| [55]: <Ending>                                                                                         |
-| [671][_ClassBody][ ":" { _Type ; "," } ] "{" { _Declaration } [ _StateMachine @ ] "}"                  |
-| [AST-INSTRUCTIONS]:                                                                                    |
-|   - EndObject()                                                                                        |
-|   > Field(ClassDeclaration::declarations)                                                              |
-| [RETURN STACK]:                                                                                        |
-|   [9][17]: _ClassBody -> [678][_Class]< "class" NAME _ClassBody @ >                                    |
-|   [8][14]: _Class -> [781][_DeclarationCandidates]<< !_Class @ >>                                      |
-|   [7][14]: _DeclarationCandidates -> [795][_Declaration]<< { _Attribute } !_DeclarationCandidates @ >> |
-|   [6][14]: _Declaration -> [815][_ModuleBody]NAME ";" { _UsingPath } { _Declaration @ }                |
-|   [0][1]: _ModuleBody -> [820][_Module]< "module" _ModuleBody @ >                                      |
-| [PREDECESSORS 54-54]: [54]                                                                             |
-| [SUCCESORS 56-56]: [56]                                                                                |
-+--------------------------------------------------------------------------------------------------------+
-[0]
- |
- +
- |
-[0]
-++========================================================================================================++
-|| [56]: {CLOSE_BRACE} }                                                                                  ||
-|| [672][_ClassBody][ ":" { _Type ; "," } ] "{" { _Declaration } [ _StateMachine ] "}" @                  ||
-|| [AST-INSTRUCTIONS]:                                                                                    ||
-|| [RETURN STACK]:                                                                                        ||
-||   [9][17]: _ClassBody -> [678][_Class]< "class" NAME _ClassBody @ >                                    ||
-||   [8][14]: _Class -> [781][_DeclarationCandidates]<< !_Class @ >>                                      ||
-||   [7][14]: _DeclarationCandidates -> [795][_Declaration]<< { _Attribute } !_DeclarationCandidates @ >> ||
-||   [6][14]: _Declaration -> [815][_ModuleBody]NAME ";" { _UsingPath } { _Declaration @ }                ||
-||   [0][1]: _ModuleBody -> [820][_Module]< "module" _ModuleBody @ >                                      ||
-|| [PREDECESSORS 55-55]: [55]                                                                             ||
-|| [SUCCESORS 57-57]: [57]                                                                                ||
-++========================================================================================================++
-|
-+
-|
-+--------------------------------------------------------------------------------------------------------+
-| [57]: <Ending>                                                                                         |
-| [678][_Class]< "class" NAME _ClassBody @ >                                                             |
-| [AST-INSTRUCTIONS]:                                                                                    |
-| [RETURN STACK]:                                                                                        |
-|   [8][14]: _Class -> [781][_DeclarationCandidates]<< !_Class @ >>                                      |
-|   [7][14]: _DeclarationCandidates -> [795][_Declaration]<< { _Attribute } !_DeclarationCandidates @ >> |
-|   [6][14]: _Declaration -> [815][_ModuleBody]NAME ";" { _UsingPath } { _Declaration @ }                |
-|   [0][1]: _ModuleBody -> [820][_Module]< "module" _ModuleBody @ >                                      |
-| [PREDECESSORS 56-56]: [56]                                                                             |
-| [SUCCESORS 58-58]: [58]                                                                                |
-+--------------------------------------------------------------------------------------------------------+
-|
-+
-|
-+--------------------------------------------------------------------------------------------------------+
-| [58]: <Ending>                                                                                         |
-| [781][_DeclarationCandidates]<< !_Class @ >>                                                           |
-| [AST-INSTRUCTIONS]:                                                                                    |
-|   - EnumItem(0)                                                                                        |
-|   - Field(ClassDeclaration::kind)                                                                      |
-|   - EnumItem(0)                                                                                        |
-|   - Field(ClassDeclaration::constructorType)                                                           |
-|   - EndObject()                                                                                        |
-| [RETURN STACK]:                                                                                        |
-|   [7][14]: _DeclarationCandidates -> [795][_Declaration]<< { _Attribute } !_DeclarationCandidates @ >> |
-|   [6][14]: _Declaration -> [815][_ModuleBody]NAME ";" { _UsingPath } { _Declaration @ }                |
-|   [0][1]: _ModuleBody -> [820][_Module]< "module" _ModuleBody @ >                                      |
-| [PREDECESSORS 57-57]: [57]                                                                             |
-| [SUCCESORS 59-59]: [59]                                                                                |
-+--------------------------------------------------------------------------------------------------------+
-|
-+
-|
-+-----------------------------------------------------------------------------------------+
-| [59]: <Ending>                                                                          |
-| [795][_Declaration]<< { _Attribute } !_DeclarationCandidates @ >>                       |
-| [AST-INSTRUCTIONS]:                                                                     |
-|   - ReopenObject()                                                                      |
-|   - EndObject()                                                                         |
-|   > ReopenObject()                                                                      |
-| [RETURN STACK]:                                                                         |
-|   [6][14]: _Declaration -> [815][_ModuleBody]NAME ";" { _UsingPath } { _Declaration @ } |
-|   [0][1]: _ModuleBody -> [820][_Module]< "module" _ModuleBody @ >                       |
-| [PREDECESSORS 58-58]: [58]                                                              |
-| [SUCCESORS 60-60]: [60]                                                                 |
-+-----------------------------------------------------------------------------------------+
-|
-+
-|
-+-------------------------------------------------------------------+
-| [60]: <Ending>                                                    |
-| [815][_ModuleBody]NAME ";" { _UsingPath } { _Declaration @ }      |
-| [AST-INSTRUCTIONS]:                                               |
-|   - EndObject()                                                   |
-|   > Field(Module::declarations)                                   |
-| [RETURN STACK]:                                                   |
-|   [0][1]: _ModuleBody -> [820][_Module]< "module" _ModuleBody @ > |
-| [PREDECESSORS 59-59]: [59]                                        |
-| [SUCCESORS 61-61]: [61]                                           |
-+-------------------------------------------------------------------+
++------------------------------------------------------------------------+
+| [60]: <Ending>                                                         |
+| [815][_ModuleBody]NAME ";" { _UsingPath } { _Declaration @ }           |
+| [AST-INSTRUCTIONS]:                                                    |
+|   - EndObject()                                                        |
+|   > Field(Module::declarations)                                        |
+| [RETURN STACK]:                                                        |
+|   [0][258][1]: _ModuleBody -> [820][_Module]< "module" _ModuleBody @ > |
+| [PREDECESSORS 59-59]: [59]                                             |
+| [SUCCESORS 61-61]: [61]                                                |
++------------------------------------------------------------------------+
 |
 +
 |

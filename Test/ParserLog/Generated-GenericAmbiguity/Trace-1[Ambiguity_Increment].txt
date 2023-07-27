@@ -9,142 +9,142 @@
  +
  |
 [0]
-++===========================================++
-|| [2]: {ID} a                               ||
-|| [7][Exp0]< ID @ >                         ||
-|| [AST-INSTRUCTIONS]:                       ||
-||   - BeginObject(Module)                   ||
-||   - DelayFieldAssignment()                ||
-||   - DelayFieldAssignment()                ||
-||   - DelayFieldAssignment()                ||
-||   - BeginObject(RefExpr)                  ||
-||   + Token()                               ||
-||   + Field(RefExpr::name)                  ||
-|| [RETURN STACK]:                           ||
-||   [6][0]: Exp0 -> [18][Exp1]<< !Exp0 @ >> ||
-||   [5][0]: Exp1 -> [31][Exp2]<< !Exp1 @ >> ||
-||   [4][0]: Exp2 -> [40][Exp]<< !Exp2 @ >>  ||
-||   [0][0]: Exp -> [43][Module]< Exp @ >    ||
-|| [PREDECESSORS 0-0]: [0]                   ||
-|| [SUCCESORS 3-3]: [3]                      ||
-++===========================================++
+++==============================================++
+|| [2]: {ID} a                                  ||
+|| [7][Exp0]< ID @ >                            ||
+|| [AST-INSTRUCTIONS]:                          ||
+||   - BeginObject(Module)                      ||
+||   - DelayFieldAssignment()                   ||
+||   - DelayFieldAssignment()                   ||
+||   - DelayFieldAssignment()                   ||
+||   - BeginObject(RefExpr)                     ||
+||   + Token()                                  ||
+||   + Field(RefExpr::name)                     ||
+|| [RETURN STACK]:                              ||
+||   [6][3][0]: Exp0 -> [18][Exp1]<< !Exp0 @ >> ||
+||   [5][2][0]: Exp1 -> [31][Exp2]<< !Exp1 @ >> ||
+||   [4][1][0]: Exp2 -> [40][Exp]<< !Exp2 @ >>  ||
+||   [0][10][0]: Exp -> [43][Module]< Exp @ >   ||
+|| [PREDECESSORS 0-0]: [0]                      ||
+|| [SUCCESORS 3-3]: [3]                         ||
+++==============================================++
 |
 +
 |
-+-------------------------------------------+
-| [3]: <Ending>                             |
-| [18][Exp1]<< !Exp0 @ >>                   |
-| [AST-INSTRUCTIONS]:                       |
-|   - EndObject()                           |
-|   > ReopenObject()                        |
-| [RETURN STACK]:                           |
-|   [5][0]: Exp1 -> [31][Exp2]<< !Exp1 @ >> |
-|   [4][0]: Exp2 -> [40][Exp]<< !Exp2 @ >>  |
-|   [0][0]: Exp -> [43][Module]< Exp @ >    |
-| [PREDECESSORS 2-2]: [2]                   |
-| [SUCCESORS 4-4]: [4]                      |
-+-------------------------------------------+
++----------------------------------------------+
+| [3]: <Ending>                                |
+| [18][Exp1]<< !Exp0 @ >>                      |
+| [AST-INSTRUCTIONS]:                          |
+|   - EndObject()                              |
+|   > ReopenObject()                           |
+| [RETURN STACK]:                              |
+|   [5][2][0]: Exp1 -> [31][Exp2]<< !Exp1 @ >> |
+|   [4][1][0]: Exp2 -> [40][Exp]<< !Exp2 @ >>  |
+|   [0][10][0]: Exp -> [43][Module]< Exp @ >   |
+| [PREDECESSORS 2-2]: [2]                      |
+| [SUCCESORS 4-4]: [4]                         |
++----------------------------------------------+
 |
 +
 |
-+------------------------------------------+
-| [4]: <Ending>                            |
-| [31][Exp2]<< !Exp1 @ >>                  |
-| [AST-INSTRUCTIONS]:                      |
-|   - EndObject()                          |
-|   > ReopenObject()                       |
-| [RETURN STACK]:                          |
-|   [4][0]: Exp2 -> [40][Exp]<< !Exp2 @ >> |
-|   [0][0]: Exp -> [43][Module]< Exp @ >   |
-| [PREDECESSORS 3-3]: [3]                  |
-| [SUCCESORS 5-6]: [5][6]                  |
-+------------------------------------------+
++---------------------------------------------+
+| [4]: <Ending>                               |
+| [31][Exp2]<< !Exp1 @ >>                     |
+| [AST-INSTRUCTIONS]:                         |
+|   - EndObject()                             |
+|   > ReopenObject()                          |
+| [RETURN STACK]:                             |
+|   [4][1][0]: Exp2 -> [40][Exp]<< !Exp2 @ >> |
+|   [0][10][0]: Exp -> [43][Module]< Exp @ >  |
+| [PREDECESSORS 3-3]: [3]                     |
+| [SUCCESORS 5-6]: [5][6]                     |
++---------------------------------------------+
 |
-+--------------------------------------------------+
-|                                                  |
-+------------------------------------------+       +------------------------------------------+
-| [5]: <Leftrec>                           |       | [6]: <Leftrec>                           |
-| [27][Exp2]< Exp2 @ "+" "+" >             |       | [28][Exp2]< Exp2 @ "+" >                 |
-| [AST-INSTRUCTIONS]:                      |       | [AST-INSTRUCTIONS]:                      |
-|   - EndObject()                          |       |   - EndObject()                          |
-|   - LriStore()                           |       |   - LriStore()                           |
-|   - BeginObject(PostfixExpr)             |       |   - BeginObject(PostfixExpr)             |
-|   - LriFetch()                           |       |   - LriFetch()                           |
-|   + Field(PostfixExpr::expr)             |       |   + Field(PostfixExpr::expr)             |
-| [RETURN STACK]:                          |       | [RETURN STACK]:                          |
-|   [4][0]: Exp2 -> [40][Exp]<< !Exp2 @ >> |       |   [4][0]: Exp2 -> [40][Exp]<< !Exp2 @ >> |
-|   [0][0]: Exp -> [43][Module]< Exp @ >   |       |   [0][0]: Exp -> [43][Module]< Exp @ >   |
-| [PREDECESSORS 4-4]: [4]                  |       | [PREDECESSORS 4-4]: [4]                  |
-| [SUCCESORS 8-8]: [8]                     |       | [SUCCESORS 9-9]: [9]                     |
-+------------------------------------------+       +------------------------------------------+
-[0]                                                [1]
- |                                                  |
- +                                                 ++
- |                                                 |
-[0]                                               [1]
-++==========================================++    ++==========================================++
-|| [8]: {ADD} +                             ||    || [9]: {ADD} +                             ||
-|| [22][Exp2]< Exp2 "+" @ "+" >             ||    || [23][Exp2]< Exp2 "+" @ >                 ||
-|| [AST-INSTRUCTIONS]:                      ||    || [AST-INSTRUCTIONS]:                      ||
-|| [RETURN STACK]:                          ||    || [RETURN STACK]:                          ||
-||   [4][0]: Exp2 -> [40][Exp]<< !Exp2 @ >> ||    ||   [4][0]: Exp2 -> [40][Exp]<< !Exp2 @ >> ||
-||   [0][0]: Exp -> [43][Module]< Exp @ >   ||    ||   [0][0]: Exp -> [43][Module]< Exp @ >   ||
-|| [PREDECESSORS 5-5]: [5]                  ||    || [PREDECESSORS 6-6]: [6]                  ||
-|| [SUCCESORS 13-13]: [13]                  ||    || [SUCCESORS 11-11]: [11]                  ||
-++==========================================++    ++==========================================++
-|                                                 |
-+                                                 +
-|                                                 |
-|                                                 +------------------------------------------+
-|                                                 | [11]: <Leftrec>                          |
-|                                                 | [28][Exp2]< Exp2 @ "+" >                 |
-|                                                 | [AST-INSTRUCTIONS]:                      |
-|                                                 |   - EnumItem(0)                          |
-|                                                 |   - Field(PostfixExpr::op)               |
-|                                                 |   - EndObject()                          |
-|                                                 |   - LriStore()                           |
-|                                                 |   - BeginObject(PostfixExpr)             |
-|                                                 |   - LriFetch()                           |
-|                                                 |   + Field(PostfixExpr::expr)             |
-|                                                 | [RETURN STACK]:                          |
-|                                                 |   [4][0]: Exp2 -> [40][Exp]<< !Exp2 @ >> |
-|                                                 |   [0][0]: Exp -> [43][Module]< Exp @ >   |
-|                                                 | [PREDECESSORS 9-9]: [9]                  |
-|                                                 | [SUCCESORS 18-18]: [18]                  |
-|                                                 +------------------------------------------+
-[0]                                               [1]
- |                                                 |
- +                                                 +
- |                                                 |
-[0]                                               [1]
-++==========================================++    ++==========================================++
-|| [13]: {ADD} +                            ||    || [18]: {ADD} +                            ||
-|| [21][Exp2]< Exp2 "+" "+" @ >             ||    || [23][Exp2]< Exp2 "+" @ >                 ||
-|| [AST-INSTRUCTIONS]:                      ||    || [AST-INSTRUCTIONS]:                      ||
-|| [RETURN STACK]:                          ||    || [RETURN STACK]:                          ||
-||   [4][0]: Exp2 -> [40][Exp]<< !Exp2 @ >> ||    ||   [4][0]: Exp2 -> [40][Exp]<< !Exp2 @ >> ||
-||   [0][0]: Exp -> [43][Module]< Exp @ >   ||    ||   [0][0]: Exp -> [43][Module]< Exp @ >   ||
-|| [PREDECESSORS 8-8]: [8]                  ||    || [PREDECESSORS 11-11]: [11]               ||
-|| [SUCCESORS 20-20]: [20]                  ||    || [SUCCESORS 19-19]: [19]                  ||
-++==========================================++    ++==========================================++
-|                                                 |
-+                                                 +
-|                                                 |
-+----------------------------------------+        +----------------------------------------+
-| [20]: <Ending>                         |        | [19]: <Ending>                         |
-| [40][Exp]<< !Exp2 @ >>                 |        | [40][Exp]<< !Exp2 @ >>                 |
-| [AST-INSTRUCTIONS]:                    |        | [AST-INSTRUCTIONS]:                    |
-|   - EnumItem(2)                        |        |   - EnumItem(0)                        |
-|   - Field(PostfixExpr::op)             |        |   - Field(PostfixExpr::op)             |
-|   - EndObject()                        |        |   - EndObject()                        |
-|   > ReopenObject()                     |        |   > ReopenObject()                     |
-| [RETURN STACK]:                        |        | [RETURN STACK]:                        |
-|   [0][0]: Exp -> [43][Module]< Exp @ > |        |   [0][0]: Exp -> [43][Module]< Exp @ > |
-| [PREDECESSORS 13-13]: [13]             |        | [PREDECESSORS 18-18]: [18]             |
-| [SUCCESORS 14-14]: [14]                |        | [SUCCESORS 14-14]: [14]                |
-+----------------------------------------+        +----------------------------------------+
-|                                                 |
-+-------------------------------------------------+
++-----------------------------------------------------+
+|                                                     |
++---------------------------------------------+       +---------------------------------------------+
+| [5]: <Leftrec>                              |       | [6]: <Leftrec>                              |
+| [27][Exp2]< Exp2 @ "+" "+" >                |       | [28][Exp2]< Exp2 @ "+" >                    |
+| [AST-INSTRUCTIONS]:                         |       | [AST-INSTRUCTIONS]:                         |
+|   - EndObject()                             |       |   - EndObject()                             |
+|   - LriStore()                              |       |   - LriStore()                              |
+|   - BeginObject(PostfixExpr)                |       |   - BeginObject(PostfixExpr)                |
+|   - LriFetch()                              |       |   - LriFetch()                              |
+|   + Field(PostfixExpr::expr)                |       |   + Field(PostfixExpr::expr)                |
+| [RETURN STACK]:                             |       | [RETURN STACK]:                             |
+|   [4][1][0]: Exp2 -> [40][Exp]<< !Exp2 @ >> |       |   [4][1][0]: Exp2 -> [40][Exp]<< !Exp2 @ >> |
+|   [0][10][0]: Exp -> [43][Module]< Exp @ >  |       |   [0][10][0]: Exp -> [43][Module]< Exp @ >  |
+| [PREDECESSORS 4-4]: [4]                     |       | [PREDECESSORS 4-4]: [4]                     |
+| [SUCCESORS 8-8]: [8]                        |       | [SUCCESORS 9-9]: [9]                        |
++---------------------------------------------+       +---------------------------------------------+
+[0]                                                   [1]
+ |                                                     |
+ +                                                    ++
+ |                                                    |
+[0]                                                  [1]
+++=============================================++    ++=============================================++
+|| [8]: {ADD} +                                ||    || [9]: {ADD} +                                ||
+|| [22][Exp2]< Exp2 "+" @ "+" >                ||    || [23][Exp2]< Exp2 "+" @ >                    ||
+|| [AST-INSTRUCTIONS]:                         ||    || [AST-INSTRUCTIONS]:                         ||
+|| [RETURN STACK]:                             ||    || [RETURN STACK]:                             ||
+||   [4][1][0]: Exp2 -> [40][Exp]<< !Exp2 @ >> ||    ||   [4][1][0]: Exp2 -> [40][Exp]<< !Exp2 @ >> ||
+||   [0][10][0]: Exp -> [43][Module]< Exp @ >  ||    ||   [0][10][0]: Exp -> [43][Module]< Exp @ >  ||
+|| [PREDECESSORS 5-5]: [5]                     ||    || [PREDECESSORS 6-6]: [6]                     ||
+|| [SUCCESORS 13-13]: [13]                     ||    || [SUCCESORS 11-11]: [11]                     ||
+++=============================================++    ++=============================================++
+|                                                    |
++                                                    +
+|                                                    |
+|                                                    +---------------------------------------------+
+|                                                    | [11]: <Leftrec>                             |
+|                                                    | [28][Exp2]< Exp2 @ "+" >                    |
+|                                                    | [AST-INSTRUCTIONS]:                         |
+|                                                    |   - EnumItem(0)                             |
+|                                                    |   - Field(PostfixExpr::op)                  |
+|                                                    |   - EndObject()                             |
+|                                                    |   - LriStore()                              |
+|                                                    |   - BeginObject(PostfixExpr)                |
+|                                                    |   - LriFetch()                              |
+|                                                    |   + Field(PostfixExpr::expr)                |
+|                                                    | [RETURN STACK]:                             |
+|                                                    |   [4][1][0]: Exp2 -> [40][Exp]<< !Exp2 @ >> |
+|                                                    |   [0][10][0]: Exp -> [43][Module]< Exp @ >  |
+|                                                    | [PREDECESSORS 9-9]: [9]                     |
+|                                                    | [SUCCESORS 18-18]: [18]                     |
+|                                                    +---------------------------------------------+
+[0]                                                  [1]
+ |                                                    |
+ +                                                    +
+ |                                                    |
+[0]                                                  [1]
+++=============================================++    ++=============================================++
+|| [13]: {ADD} +                               ||    || [18]: {ADD} +                               ||
+|| [21][Exp2]< Exp2 "+" "+" @ >                ||    || [23][Exp2]< Exp2 "+" @ >                    ||
+|| [AST-INSTRUCTIONS]:                         ||    || [AST-INSTRUCTIONS]:                         ||
+|| [RETURN STACK]:                             ||    || [RETURN STACK]:                             ||
+||   [4][1][0]: Exp2 -> [40][Exp]<< !Exp2 @ >> ||    ||   [4][1][0]: Exp2 -> [40][Exp]<< !Exp2 @ >> ||
+||   [0][10][0]: Exp -> [43][Module]< Exp @ >  ||    ||   [0][10][0]: Exp -> [43][Module]< Exp @ >  ||
+|| [PREDECESSORS 8-8]: [8]                     ||    || [PREDECESSORS 11-11]: [11]                  ||
+|| [SUCCESORS 20-20]: [20]                     ||    || [SUCCESORS 19-19]: [19]                     ||
+++=============================================++    ++=============================================++
+|                                                    |
++                                                    +
+|                                                    |
++--------------------------------------------+       +--------------------------------------------+
+| [20]: <Ending>                             |       | [19]: <Ending>                             |
+| [40][Exp]<< !Exp2 @ >>                     |       | [40][Exp]<< !Exp2 @ >>                     |
+| [AST-INSTRUCTIONS]:                        |       | [AST-INSTRUCTIONS]:                        |
+|   - EnumItem(2)                            |       |   - EnumItem(0)                            |
+|   - Field(PostfixExpr::op)                 |       |   - Field(PostfixExpr::op)                 |
+|   - EndObject()                            |       |   - EndObject()                            |
+|   > ReopenObject()                         |       |   > ReopenObject()                         |
+| [RETURN STACK]:                            |       | [RETURN STACK]:                            |
+|   [0][10][0]: Exp -> [43][Module]< Exp @ > |       |   [0][10][0]: Exp -> [43][Module]< Exp @ > |
+| [PREDECESSORS 13-13]: [13]                 |       | [PREDECESSORS 18-18]: [18]                 |
+| [SUCCESORS 14-14]: [14]                    |       | [SUCCESORS 14-14]: [14]                    |
++--------------------------------------------+       +--------------------------------------------+
+|                                                    |
++----------------------------------------------------+
 |
 +-----------------+
 | [14]: <Merging> |
