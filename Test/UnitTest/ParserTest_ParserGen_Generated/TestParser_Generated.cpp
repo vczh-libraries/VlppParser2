@@ -43,10 +43,8 @@
 extern WString GetTestParserInputPath(const WString& parserName);
 extern FilePath GetOutputDir(const WString& parserName);
 
-#define PAUSE_CASE L"PrefixMerge1_Lri"
-#define PAUSE_INPUT L"Type2"
-#undef PAUSE_CASE
-#undef PAUSE_INPUT
+// #define PAUSE_CASE L"PrefixMerge9_PmLoop"
+// #define PAUSE_INPUT L"Class"
 
 namespace TestParser_Generated_TestObjects
 {
