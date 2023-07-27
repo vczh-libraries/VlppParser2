@@ -24,7 +24,7 @@ _Item_LRI_Original : Item
   ::= _Item_LRI_Original:item "?" as QuestionItem
   ;
 
-Module_LRI_Original : File
+@parser Module : File
   ::= _Item_LRI_Original:items {_Item:items} as File
   ;
 
@@ -36,11 +36,5 @@ _Item : Item
   ::= !_Int left_recursion_inject_multiple(LRI__IntItem) _Item_LRI_Original
   ::= !_Item_LRI_Isolated_2 [left_recursion_inject(LRI__Item) _Item_LRI_Original]
   ::= !_Item_LRI_Isolated_3 [left_recursion_inject(LRI__Item) _Item_LRI_Original]
-  ;
-
-@parser Module : File
-  ::= !_Int left_recursion_inject_multiple(LRI__IntItem) Module_LRI_Original
-  ::= !_Item_LRI_Isolated_2 left_recursion_inject(LRI__Item) Module_LRI_Original
-  ::= !_Item_LRI_Isolated_3 left_recursion_inject(LRI__Item) Module_LRI_Original
   ;
 

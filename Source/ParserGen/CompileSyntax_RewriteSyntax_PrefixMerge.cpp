@@ -36,6 +36,7 @@ namespace vl
 				struct RewritingContext
 				{
 					List<RuleSymbol*>										pmRules;				// all rules that need to be rewritten
+					Dictionary<RuleSymbol*, GlrRule*>						skippedRules;			// skipped RuleSymbol -> GlrRule
 					Dictionary<RuleSymbol*, GlrRule*>						originRules;			// rewritten RuleSymbol -> GlrRule ends with _LRI_Original, which is the same GlrRule object before rewritten
 					Dictionary<RuleSymbol*, GlrRule*>						lriRules;				// rewritten RuleSymbol -> GlrRule containing left_recursion_inject clauses
 					Dictionary<RuleSymbol*, GlrRule*>						fixedAstRules;			// RuleSymbol -> GlrRule relationship after rewritten
@@ -179,6 +180,41 @@ CollectRewritingTargets
 						auto ruleSymbol = vContext.syntaxManager.Rules()[rule->name.value];
 						if (vContext.indirectPmClauses.Keys().Contains(ruleSymbol))
 						{
+							// when a rule has
+							//   no direct prefix_merge clause
+							//   only one clause which starts with prefix_merge clause
+							// skip rewriting it
+							if (!vContext.directPmClauses.Keys().Contains(ruleSymbol))
+							{
+								bool found = false;
+								for (auto clause : rule->clauses)
+								{
+									vint index = vContext.clauseToStartRules.Keys().IndexOf(clause.Obj());
+									if (index == -1) continue;
+							
+									auto&& startRules = vContext.clauseToStartRules.GetByIndex(index);
+									for (auto startRule : startRules)
+									{
+										if (vContext.indirectPmClauses.Keys().Contains(startRule))
+										{
+											if (!found)
+											{
+												found = true;
+											}
+											else
+											{
+												goto DO_NOT_SKIP;
+											}
+											break;
+										}
+									}
+								}
+
+								rContext.skippedRules.Add(ruleSymbol, rule.Obj());
+								continue;
+							DO_NOT_SKIP:;
+							}
+
 							rContext.pmRules.Add(ruleSymbol);
 
 							vint indexStart = vContext.directStartRules.Keys().IndexOf(ruleSymbol);
@@ -630,7 +666,12 @@ RewriteRules (AST Creation)
 					lriCont->flags.Add(lriContFlag);
 					lriContFlag->flag.value = flag;
 
-					auto lriContTarget = CreateLriClause(rContext.originRules[pmInjectRecord.injectIntoRule]->name.value);
+					vint injectIntoOriginIndex = rContext.originRules.Keys().IndexOf(pmInjectRecord.injectIntoRule);
+					auto lriContTargetName = injectIntoOriginIndex == -1
+						? pmInjectRecord.injectIntoRule->Name()
+						: rContext.originRules.Values()[injectIntoOriginIndex]->name.value
+						;
+					auto lriContTarget = CreateLriClause(lriContTargetName);
 					lriCont->injectionTargets.Add(lriContTarget);
 
 					return lriCont;
@@ -1238,7 +1279,7 @@ RenamePrefix
 
 				void RenamePrefix(RewritingContext& rContext, const SyntaxSymbolManager& syntaxManager)
 				{
-					for (auto [ruleSymbol, originRule] : rContext.originRules)
+					for (auto [ruleSymbol, originRule] : From(rContext.originRules).Concat(rContext.skippedRules))
 					{
 						RenamePrefixVisitor visitor(rContext, ruleSymbol, syntaxManager);
 						for (auto clause : originRule->clauses)

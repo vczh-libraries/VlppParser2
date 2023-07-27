@@ -156,333 +156,228 @@
 	epsilon -> [32][_Item]<< @ !_Item_LRI_Isolated_3 ( lri:(LRI__Item)->_Item_LRI_Original | lri:<skip> ) >>
 		- DelayFieldAssignment()
 
-[36][Module]<< !_Int ( @ lri:(LRI__IntItem)->Module_LRI_Original ) >>
+[36][Module]< @ _Item_LRI_Original { _Item } >
 [RULE: 3][CLAUSE: 0]
-	lr-inject: LRI__IntItem -> Module_LRI_Original -> [39][Module]<< !_Int ( lri:(LRI__IntItem)->Module_LRI_Original @ ) >>
-		+ ReopenObject()
+	rule: _Item_LRI_Original -> [38][Module]< _Item_LRI_Original @ { _Item } >
+		+ Field(File::items)
 
-[37][Module]<< !_Int ( lri:(LRI__IntItem)->Module_LRI_Original ) >> @[ENDING]
+[37][Module]< _Item_LRI_Original @ { _Item } >
+[RULE: 3][CLAUSE: 0]
+	epsilon -> [39][Module]< _Item_LRI_Original { @ _Item } >
+	epsilon -> [42][Module]< _Item_LRI_Original { _Item } @ >
+
+[38][Module]< _Item_LRI_Original @ { _Item } >
+[RULE: 3][CLAUSE: 0]
+	epsilon -> [37][Module]< _Item_LRI_Original @ { _Item } >
+
+[39][Module]< _Item_LRI_Original { @ _Item } >
+[RULE: 3][CLAUSE: 0]
+	rule: _Item -> [40][Module]< _Item_LRI_Original { _Item @ } >
+		+ Field(File::items)
+
+[40][Module]< _Item_LRI_Original { _Item @ } >
+[RULE: 3][CLAUSE: 0]
+	epsilon -> [39][Module]< _Item_LRI_Original { @ _Item } >
+	epsilon -> [42][Module]< _Item_LRI_Original { _Item } @ >
+
+[41][Module]< _Item_LRI_Original { _Item } > @[ENDING]
 [RULE: 3][CLAUSE: 0]
 
-[38][Module]<< !_Int ( lri:(LRI__IntItem)->Module_LRI_Original ) @ >>
+[42][Module]< _Item_LRI_Original { _Item } @ >
 [RULE: 3][CLAUSE: 0]
-	epsilon -> [37][Module]<< !_Int ( lri:(LRI__IntItem)->Module_LRI_Original ) >> @[ENDING]
+	epsilon -> [41][Module]< _Item_LRI_Original { _Item } > @[ENDING]
 		- EndObject()
 
-[39][Module]<< !_Int ( lri:(LRI__IntItem)->Module_LRI_Original @ ) >>
+[43][Module]@ < _Item_LRI_Original { _Item } >
 [RULE: 3][CLAUSE: 0]
-	epsilon -> [38][Module]<< !_Int ( lri:(LRI__IntItem)->Module_LRI_Original ) @ >>
+	epsilon -> [36][Module]< @ _Item_LRI_Original { _Item } >
+		- BeginObject(File)
 
-[40][Module]<< !_Int @ ( lri:(LRI__IntItem)->Module_LRI_Original ) >>
-[RULE: 3][CLAUSE: 0]
-	epsilon -> [36][Module]<< !_Int ( @ lri:(LRI__IntItem)->Module_LRI_Original ) >>
+[44][_Item_LRI_Isolated_2]< "class" > @[ENDING]
+[RULE: 4][CLAUSE: 0]
 
-[41][Module]<< !_Int @ ( lri:(LRI__IntItem)->Module_LRI_Original ) >>
-[RULE: 3][CLAUSE: 0]
-	epsilon -> [40][Module]<< !_Int @ ( lri:(LRI__IntItem)->Module_LRI_Original ) >>
-
-[42][Module]<< !_Item_LRI_Isolated_2 ( @ lri:(LRI__Item)->Module_LRI_Original ) >>
-[RULE: 3][CLAUSE: 1]
-	lr-inject: LRI__Item -> Module_LRI_Original -> [45][Module]<< !_Item_LRI_Isolated_2 ( lri:(LRI__Item)->Module_LRI_Original @ ) >>
-		+ ReopenObject()
-
-[43][Module]<< !_Item_LRI_Isolated_2 ( lri:(LRI__Item)->Module_LRI_Original ) >> @[ENDING]
-[RULE: 3][CLAUSE: 1]
-
-[44][Module]<< !_Item_LRI_Isolated_2 ( lri:(LRI__Item)->Module_LRI_Original ) @ >>
-[RULE: 3][CLAUSE: 1]
-	epsilon -> [43][Module]<< !_Item_LRI_Isolated_2 ( lri:(LRI__Item)->Module_LRI_Original ) >> @[ENDING]
+[45][_Item_LRI_Isolated_2]< "class" @ >
+[RULE: 4][CLAUSE: 0]
+	epsilon -> [44][_Item_LRI_Isolated_2]< "class" > @[ENDING]
 		- EndObject()
 
-[45][Module]<< !_Item_LRI_Isolated_2 ( lri:(LRI__Item)->Module_LRI_Original @ ) >>
-[RULE: 3][CLAUSE: 1]
-	epsilon -> [44][Module]<< !_Item_LRI_Isolated_2 ( lri:(LRI__Item)->Module_LRI_Original ) @ >>
-
-[46][Module]<< !_Item_LRI_Isolated_2 @ ( lri:(LRI__Item)->Module_LRI_Original ) >>
-[RULE: 3][CLAUSE: 1]
-	epsilon -> [47][Module]<< !_Item_LRI_Isolated_2 @ ( lri:(LRI__Item)->Module_LRI_Original ) >>
-
-[47][Module]<< !_Item_LRI_Isolated_2 @ ( lri:(LRI__Item)->Module_LRI_Original ) >>
-[RULE: 3][CLAUSE: 1]
-	epsilon -> [42][Module]<< !_Item_LRI_Isolated_2 ( @ lri:(LRI__Item)->Module_LRI_Original ) >>
-
-[48][Module]<< !_Item_LRI_Isolated_3 ( @ lri:(LRI__Item)->Module_LRI_Original ) >>
-[RULE: 3][CLAUSE: 2]
-	lr-inject: LRI__Item -> Module_LRI_Original -> [51][Module]<< !_Item_LRI_Isolated_3 ( lri:(LRI__Item)->Module_LRI_Original @ ) >>
-		+ ReopenObject()
-
-[49][Module]<< !_Item_LRI_Isolated_3 ( lri:(LRI__Item)->Module_LRI_Original ) >> @[ENDING]
-[RULE: 3][CLAUSE: 2]
-
-[50][Module]<< !_Item_LRI_Isolated_3 ( lri:(LRI__Item)->Module_LRI_Original ) @ >>
-[RULE: 3][CLAUSE: 2]
-	epsilon -> [49][Module]<< !_Item_LRI_Isolated_3 ( lri:(LRI__Item)->Module_LRI_Original ) >> @[ENDING]
-		- EndObject()
-
-[51][Module]<< !_Item_LRI_Isolated_3 ( lri:(LRI__Item)->Module_LRI_Original @ ) >>
-[RULE: 3][CLAUSE: 2]
-	epsilon -> [50][Module]<< !_Item_LRI_Isolated_3 ( lri:(LRI__Item)->Module_LRI_Original ) @ >>
-
-[52][Module]<< !_Item_LRI_Isolated_3 @ ( lri:(LRI__Item)->Module_LRI_Original ) >>
-[RULE: 3][CLAUSE: 2]
-	epsilon -> [53][Module]<< !_Item_LRI_Isolated_3 @ ( lri:(LRI__Item)->Module_LRI_Original ) >>
-
-[53][Module]<< !_Item_LRI_Isolated_3 @ ( lri:(LRI__Item)->Module_LRI_Original ) >>
-[RULE: 3][CLAUSE: 2]
-	epsilon -> [48][Module]<< !_Item_LRI_Isolated_3 ( @ lri:(LRI__Item)->Module_LRI_Original ) >>
-
-[54][Module]<< @ !_Int ( lri:(LRI__IntItem)->Module_LRI_Original ) >>
-[RULE: 3][CLAUSE: 0]
-	rule: _Int -> [41][Module]<< !_Int @ ( lri:(LRI__IntItem)->Module_LRI_Original ) >>
-		+ ReopenObject()
-
-[55][Module]<< @ !_Item_LRI_Isolated_2 ( lri:(LRI__Item)->Module_LRI_Original ) >>
-[RULE: 3][CLAUSE: 1]
-	rule: _Item_LRI_Isolated_2 -> [46][Module]<< !_Item_LRI_Isolated_2 @ ( lri:(LRI__Item)->Module_LRI_Original ) >>
-		+ ReopenObject()
-
-[56][Module]<< @ !_Item_LRI_Isolated_3 ( lri:(LRI__Item)->Module_LRI_Original ) >>
-[RULE: 3][CLAUSE: 2]
-	rule: _Item_LRI_Isolated_3 -> [52][Module]<< !_Item_LRI_Isolated_3 @ ( lri:(LRI__Item)->Module_LRI_Original ) >>
-		+ ReopenObject()
-
-[57][Module]@ << !_Int ( lri:(LRI__IntItem)->Module_LRI_Original ) >>
-[RULE: 3][CLAUSE: 0]
-	epsilon -> [54][Module]<< @ !_Int ( lri:(LRI__IntItem)->Module_LRI_Original ) >>
-		- DelayFieldAssignment()
-
-[58][Module]@ << !_Item_LRI_Isolated_2 ( lri:(LRI__Item)->Module_LRI_Original ) >>
-[RULE: 3][CLAUSE: 1]
-	epsilon -> [55][Module]<< @ !_Item_LRI_Isolated_2 ( lri:(LRI__Item)->Module_LRI_Original ) >>
-		- DelayFieldAssignment()
-
-[59][Module]@ << !_Item_LRI_Isolated_3 ( lri:(LRI__Item)->Module_LRI_Original ) >>
-[RULE: 3][CLAUSE: 2]
-	epsilon -> [56][Module]<< @ !_Item_LRI_Isolated_3 ( lri:(LRI__Item)->Module_LRI_Original ) >>
-		- DelayFieldAssignment()
-
-[60][_Item_LRI_Isolated_2]< "class" > @[ENDING]
+[46][_Item_LRI_Isolated_2]< @ "class" >
 [RULE: 4][CLAUSE: 0]
+	token: "class" -> [45][_Item_LRI_Isolated_2]< "class" @ >
 
-[61][_Item_LRI_Isolated_2]< "class" @ >
+[47][_Item_LRI_Isolated_2]@ < "class" >
 [RULE: 4][CLAUSE: 0]
-	epsilon -> [60][_Item_LRI_Isolated_2]< "class" > @[ENDING]
-		- EndObject()
-
-[62][_Item_LRI_Isolated_2]< @ "class" >
-[RULE: 4][CLAUSE: 0]
-	token: "class" -> [61][_Item_LRI_Isolated_2]< "class" @ >
-
-[63][_Item_LRI_Isolated_2]@ < "class" >
-[RULE: 4][CLAUSE: 0]
-	epsilon -> [62][_Item_LRI_Isolated_2]< @ "class" >
+	epsilon -> [46][_Item_LRI_Isolated_2]< @ "class" >
 		- BeginObject(ClassItem)
 
-[64][_Item_LRI_Isolated_3]< "class" "?" > @[ENDING]
+[48][_Item_LRI_Isolated_3]< "class" "?" > @[ENDING]
 [RULE: 5][CLAUSE: 0]
 
-[65][_Item_LRI_Isolated_3]< "class" "?" @ >
+[49][_Item_LRI_Isolated_3]< "class" "?" @ >
 [RULE: 5][CLAUSE: 0]
-	epsilon -> [64][_Item_LRI_Isolated_3]< "class" "?" > @[ENDING]
+	epsilon -> [48][_Item_LRI_Isolated_3]< "class" "?" > @[ENDING]
 		- EndObject()
 
-[66][_Item_LRI_Isolated_3]< "class" @ "?" >
+[50][_Item_LRI_Isolated_3]< "class" @ "?" >
 [RULE: 5][CLAUSE: 0]
-	epsilon -> [67][_Item_LRI_Isolated_3]< "class" @ "?" >
+	epsilon -> [51][_Item_LRI_Isolated_3]< "class" @ "?" >
 
-[67][_Item_LRI_Isolated_3]< "class" @ "?" >
+[51][_Item_LRI_Isolated_3]< "class" @ "?" >
 [RULE: 5][CLAUSE: 0]
-	token: "?" -> [65][_Item_LRI_Isolated_3]< "class" "?" @ >
+	token: "?" -> [49][_Item_LRI_Isolated_3]< "class" "?" @ >
 
-[68][_Item_LRI_Isolated_3]< @ "class" "?" >
+[52][_Item_LRI_Isolated_3]< @ "class" "?" >
 [RULE: 5][CLAUSE: 0]
-	token: "class" -> [66][_Item_LRI_Isolated_3]< "class" @ "?" >
+	token: "class" -> [50][_Item_LRI_Isolated_3]< "class" @ "?" >
 
-[69][_Item_LRI_Isolated_3]@ < "class" "?" >
+[53][_Item_LRI_Isolated_3]@ < "class" "?" >
 [RULE: 5][CLAUSE: 0]
-	epsilon -> [68][_Item_LRI_Isolated_3]< @ "class" "?" >
+	epsilon -> [52][_Item_LRI_Isolated_3]< @ "class" "?" >
 		- BeginObject(ClassQuestionItem)
 
-[70][_IntItem_LRI_Original]<< !_Int >> @[ENDING]
+[54][_IntItem_LRI_Original]<< !_Int >> @[ENDING]
 [RULE: 6][CLAUSE: 1]
 
-[71][_IntItem_LRI_Original]<< !_Int @ >>
+[55][_IntItem_LRI_Original]<< !_Int @ >>
 [RULE: 6][CLAUSE: 1]
-	epsilon -> [70][_IntItem_LRI_Original]<< !_Int >> @[ENDING]
+	epsilon -> [54][_IntItem_LRI_Original]<< !_Int >> @[ENDING]
 		- EndObject()
 
-[72][_IntItem_LRI_Original]<< @ !_Int >>
+[56][_IntItem_LRI_Original]<< @ !_Int >>
 [RULE: 6][CLAUSE: 1]
-	rule: _Int -> [71][_IntItem_LRI_Original]<< !_Int @ >>
+	rule: _Int -> [55][_IntItem_LRI_Original]<< !_Int @ >>
 		+ ReopenObject()
 
-[73][_IntItem_LRI_Original]@ << !_Int >>
+[57][_IntItem_LRI_Original]@ << !_Int >>
 [RULE: 6][CLAUSE: 1]
-	epsilon -> [72][_IntItem_LRI_Original]<< @ !_Int >>
+	epsilon -> [56][_IntItem_LRI_Original]<< @ !_Int >>
 		- DelayFieldAssignment()
 
-[74][_IntItem_LRI_Original]@ lrp:(LRI__IntItem)
+[58][_IntItem_LRI_Original]@ lrp:(LRI__IntItem)
 [RULE: 6][CLAUSE: 0]
-	lr-placeholder: LRI__IntItem -> [75][_IntItem_LRI_Original]lrp:(LRI__IntItem) @[ENDING]
+	lr-placeholder: LRI__IntItem -> [59][_IntItem_LRI_Original]lrp:(LRI__IntItem) @[ENDING]
 
-[75][_IntItem_LRI_Original]lrp:(LRI__IntItem) @[ENDING]
+[59][_IntItem_LRI_Original]lrp:(LRI__IntItem) @[ENDING]
 [RULE: 6][CLAUSE: 0]
 
-[76][_Item_LRI_Original]< @ _IntItem_LRI_Original "," >
+[60][_Item_LRI_Original]< @ _IntItem_LRI_Original "," >
 [RULE: 7][CLAUSE: 1]
-	rule: _IntItem_LRI_Original -> [84][_Item_LRI_Original]< _IntItem_LRI_Original @ "," >
+	rule: _IntItem_LRI_Original -> [68][_Item_LRI_Original]< _IntItem_LRI_Original @ "," >
 		+ DiscardValue()
 
-[77][_Item_LRI_Original]< @ _IntItem_LRI_Original "." >
+[61][_Item_LRI_Original]< @ _IntItem_LRI_Original "." >
 [RULE: 7][CLAUSE: 2]
-	rule: _IntItem_LRI_Original -> [86][_Item_LRI_Original]< _IntItem_LRI_Original @ "." >
+	rule: _IntItem_LRI_Original -> [70][_Item_LRI_Original]< _IntItem_LRI_Original @ "." >
 		+ DiscardValue()
 
-[78][_Item_LRI_Original]< @ _Item_LRI_Original "?" >
+[62][_Item_LRI_Original]< @ _Item_LRI_Original "?" >
 [RULE: 7][CLAUSE: 5]
-	rule: _Item_LRI_Original -> [90][_Item_LRI_Original]< _Item_LRI_Original @ "?" >
+	rule: _Item_LRI_Original -> [74][_Item_LRI_Original]< _Item_LRI_Original @ "?" >
 		+ Field(QuestionItem::item)
 
-[79][_Item_LRI_Original]< _IntItem_LRI_Original "," > @[ENDING]
+[63][_Item_LRI_Original]< _IntItem_LRI_Original "," > @[ENDING]
 [RULE: 7][CLAUSE: 1]
 
-[80][_Item_LRI_Original]< _IntItem_LRI_Original "," @ >
+[64][_Item_LRI_Original]< _IntItem_LRI_Original "," @ >
 [RULE: 7][CLAUSE: 1]
-	epsilon -> [79][_Item_LRI_Original]< _IntItem_LRI_Original "," > @[ENDING]
+	epsilon -> [63][_Item_LRI_Original]< _IntItem_LRI_Original "," > @[ENDING]
 		- EndObject()
 
-[81][_Item_LRI_Original]< _IntItem_LRI_Original "." > @[ENDING]
+[65][_Item_LRI_Original]< _IntItem_LRI_Original "." > @[ENDING]
 [RULE: 7][CLAUSE: 2]
 
-[82][_Item_LRI_Original]< _IntItem_LRI_Original "." @ >
+[66][_Item_LRI_Original]< _IntItem_LRI_Original "." @ >
 [RULE: 7][CLAUSE: 2]
-	epsilon -> [81][_Item_LRI_Original]< _IntItem_LRI_Original "." > @[ENDING]
+	epsilon -> [65][_Item_LRI_Original]< _IntItem_LRI_Original "." > @[ENDING]
 		- EndObject()
 
-[83][_Item_LRI_Original]< _IntItem_LRI_Original @ "," >
+[67][_Item_LRI_Original]< _IntItem_LRI_Original @ "," >
 [RULE: 7][CLAUSE: 1]
-	token: "," -> [80][_Item_LRI_Original]< _IntItem_LRI_Original "," @ >
+	token: "," -> [64][_Item_LRI_Original]< _IntItem_LRI_Original "," @ >
 
-[84][_Item_LRI_Original]< _IntItem_LRI_Original @ "," >
+[68][_Item_LRI_Original]< _IntItem_LRI_Original @ "," >
 [RULE: 7][CLAUSE: 1]
-	epsilon -> [83][_Item_LRI_Original]< _IntItem_LRI_Original @ "," >
+	epsilon -> [67][_Item_LRI_Original]< _IntItem_LRI_Original @ "," >
 
-[85][_Item_LRI_Original]< _IntItem_LRI_Original @ "." >
+[69][_Item_LRI_Original]< _IntItem_LRI_Original @ "." >
 [RULE: 7][CLAUSE: 2]
-	token: "." -> [82][_Item_LRI_Original]< _IntItem_LRI_Original "." @ >
+	token: "." -> [66][_Item_LRI_Original]< _IntItem_LRI_Original "." @ >
 
-[86][_Item_LRI_Original]< _IntItem_LRI_Original @ "." >
+[70][_Item_LRI_Original]< _IntItem_LRI_Original @ "." >
 [RULE: 7][CLAUSE: 2]
-	epsilon -> [85][_Item_LRI_Original]< _IntItem_LRI_Original @ "." >
+	epsilon -> [69][_Item_LRI_Original]< _IntItem_LRI_Original @ "." >
 
-[87][_Item_LRI_Original]< _Item_LRI_Original "?" > @[ENDING]
+[71][_Item_LRI_Original]< _Item_LRI_Original "?" > @[ENDING]
 [RULE: 7][CLAUSE: 5]
 
-[88][_Item_LRI_Original]< _Item_LRI_Original "?" @ >
+[72][_Item_LRI_Original]< _Item_LRI_Original "?" @ >
 [RULE: 7][CLAUSE: 5]
-	epsilon -> [87][_Item_LRI_Original]< _Item_LRI_Original "?" > @[ENDING]
+	epsilon -> [71][_Item_LRI_Original]< _Item_LRI_Original "?" > @[ENDING]
 		- EndObject()
 
-[89][_Item_LRI_Original]< _Item_LRI_Original @ "?" >
+[73][_Item_LRI_Original]< _Item_LRI_Original @ "?" >
 [RULE: 7][CLAUSE: 5]
-	token: "?" -> [88][_Item_LRI_Original]< _Item_LRI_Original "?" @ >
+	token: "?" -> [72][_Item_LRI_Original]< _Item_LRI_Original "?" @ >
 
-[90][_Item_LRI_Original]< _Item_LRI_Original @ "?" >
+[74][_Item_LRI_Original]< _Item_LRI_Original @ "?" >
 [RULE: 7][CLAUSE: 5]
-	epsilon -> [89][_Item_LRI_Original]< _Item_LRI_Original @ "?" >
+	epsilon -> [73][_Item_LRI_Original]< _Item_LRI_Original @ "?" >
 
-[91][_Item_LRI_Original]<< !_Item_LRI_Isolated_2 >> @[ENDING]
+[75][_Item_LRI_Original]<< !_Item_LRI_Isolated_2 >> @[ENDING]
 [RULE: 7][CLAUSE: 3]
 
-[92][_Item_LRI_Original]<< !_Item_LRI_Isolated_2 @ >>
+[76][_Item_LRI_Original]<< !_Item_LRI_Isolated_2 @ >>
 [RULE: 7][CLAUSE: 3]
-	epsilon -> [91][_Item_LRI_Original]<< !_Item_LRI_Isolated_2 >> @[ENDING]
+	epsilon -> [75][_Item_LRI_Original]<< !_Item_LRI_Isolated_2 >> @[ENDING]
 		- EndObject()
 
-[93][_Item_LRI_Original]<< !_Item_LRI_Isolated_3 >> @[ENDING]
+[77][_Item_LRI_Original]<< !_Item_LRI_Isolated_3 >> @[ENDING]
 [RULE: 7][CLAUSE: 4]
 
-[94][_Item_LRI_Original]<< !_Item_LRI_Isolated_3 @ >>
+[78][_Item_LRI_Original]<< !_Item_LRI_Isolated_3 @ >>
 [RULE: 7][CLAUSE: 4]
-	epsilon -> [93][_Item_LRI_Original]<< !_Item_LRI_Isolated_3 >> @[ENDING]
+	epsilon -> [77][_Item_LRI_Original]<< !_Item_LRI_Isolated_3 >> @[ENDING]
 		- EndObject()
 
-[95][_Item_LRI_Original]<< @ !_Item_LRI_Isolated_2 >>
+[79][_Item_LRI_Original]<< @ !_Item_LRI_Isolated_2 >>
 [RULE: 7][CLAUSE: 3]
-	rule: _Item_LRI_Isolated_2 -> [92][_Item_LRI_Original]<< !_Item_LRI_Isolated_2 @ >>
+	rule: _Item_LRI_Isolated_2 -> [76][_Item_LRI_Original]<< !_Item_LRI_Isolated_2 @ >>
 		+ ReopenObject()
 
-[96][_Item_LRI_Original]<< @ !_Item_LRI_Isolated_3 >>
+[80][_Item_LRI_Original]<< @ !_Item_LRI_Isolated_3 >>
 [RULE: 7][CLAUSE: 4]
-	rule: _Item_LRI_Isolated_3 -> [94][_Item_LRI_Original]<< !_Item_LRI_Isolated_3 @ >>
+	rule: _Item_LRI_Isolated_3 -> [78][_Item_LRI_Original]<< !_Item_LRI_Isolated_3 @ >>
 		+ ReopenObject()
 
-[97][_Item_LRI_Original]@ < _IntItem_LRI_Original "," >
+[81][_Item_LRI_Original]@ < _IntItem_LRI_Original "," >
 [RULE: 7][CLAUSE: 1]
-	epsilon -> [76][_Item_LRI_Original]< @ _IntItem_LRI_Original "," >
+	epsilon -> [60][_Item_LRI_Original]< @ _IntItem_LRI_Original "," >
 		- BeginObject(IntCommaItem)
 
-[98][_Item_LRI_Original]@ < _IntItem_LRI_Original "." >
+[82][_Item_LRI_Original]@ < _IntItem_LRI_Original "." >
 [RULE: 7][CLAUSE: 2]
-	epsilon -> [77][_Item_LRI_Original]< @ _IntItem_LRI_Original "." >
+	epsilon -> [61][_Item_LRI_Original]< @ _IntItem_LRI_Original "." >
 		- BeginObject(IntDotItem)
 
-[99][_Item_LRI_Original]@ < _Item_LRI_Original "?" >
+[83][_Item_LRI_Original]@ < _Item_LRI_Original "?" >
 [RULE: 7][CLAUSE: 5]
-	epsilon -> [78][_Item_LRI_Original]< @ _Item_LRI_Original "?" >
+	epsilon -> [62][_Item_LRI_Original]< @ _Item_LRI_Original "?" >
 		- BeginObject(QuestionItem)
 
-[100][_Item_LRI_Original]@ << !_Item_LRI_Isolated_2 >>
+[84][_Item_LRI_Original]@ << !_Item_LRI_Isolated_2 >>
 [RULE: 7][CLAUSE: 3]
-	epsilon -> [95][_Item_LRI_Original]<< @ !_Item_LRI_Isolated_2 >>
+	epsilon -> [79][_Item_LRI_Original]<< @ !_Item_LRI_Isolated_2 >>
 		- DelayFieldAssignment()
 
-[101][_Item_LRI_Original]@ << !_Item_LRI_Isolated_3 >>
+[85][_Item_LRI_Original]@ << !_Item_LRI_Isolated_3 >>
 [RULE: 7][CLAUSE: 4]
-	epsilon -> [96][_Item_LRI_Original]<< @ !_Item_LRI_Isolated_3 >>
+	epsilon -> [80][_Item_LRI_Original]<< @ !_Item_LRI_Isolated_3 >>
 		- DelayFieldAssignment()
 
-[102][_Item_LRI_Original]@ lrp:(LRI__Item)
+[86][_Item_LRI_Original]@ lrp:(LRI__Item)
 [RULE: 7][CLAUSE: 0]
-	lr-placeholder: LRI__Item -> [103][_Item_LRI_Original]lrp:(LRI__Item) @[ENDING]
+	lr-placeholder: LRI__Item -> [87][_Item_LRI_Original]lrp:(LRI__Item) @[ENDING]
 
-[103][_Item_LRI_Original]lrp:(LRI__Item) @[ENDING]
+[87][_Item_LRI_Original]lrp:(LRI__Item) @[ENDING]
 [RULE: 7][CLAUSE: 0]
-
-[104][Module_LRI_Original]< @ _Item_LRI_Original { _Item } >
-[RULE: 8][CLAUSE: 0]
-	rule: _Item_LRI_Original -> [106][Module_LRI_Original]< _Item_LRI_Original @ { _Item } >
-		+ Field(File::items)
-
-[105][Module_LRI_Original]< _Item_LRI_Original @ { _Item } >
-[RULE: 8][CLAUSE: 0]
-	epsilon -> [107][Module_LRI_Original]< _Item_LRI_Original { @ _Item } >
-	epsilon -> [110][Module_LRI_Original]< _Item_LRI_Original { _Item } @ >
-
-[106][Module_LRI_Original]< _Item_LRI_Original @ { _Item } >
-[RULE: 8][CLAUSE: 0]
-	epsilon -> [105][Module_LRI_Original]< _Item_LRI_Original @ { _Item } >
-
-[107][Module_LRI_Original]< _Item_LRI_Original { @ _Item } >
-[RULE: 8][CLAUSE: 0]
-	rule: _Item -> [108][Module_LRI_Original]< _Item_LRI_Original { _Item @ } >
-		+ Field(File::items)
-
-[108][Module_LRI_Original]< _Item_LRI_Original { _Item @ } >
-[RULE: 8][CLAUSE: 0]
-	epsilon -> [107][Module_LRI_Original]< _Item_LRI_Original { @ _Item } >
-	epsilon -> [110][Module_LRI_Original]< _Item_LRI_Original { _Item } @ >
-
-[109][Module_LRI_Original]< _Item_LRI_Original { _Item } > @[ENDING]
-[RULE: 8][CLAUSE: 0]
-
-[110][Module_LRI_Original]< _Item_LRI_Original { _Item } @ >
-[RULE: 8][CLAUSE: 0]
-	epsilon -> [109][Module_LRI_Original]< _Item_LRI_Original { _Item } > @[ENDING]
-		- EndObject()
-
-[111][Module_LRI_Original]@ < _Item_LRI_Original { _Item } >
-[RULE: 8][CLAUSE: 0]
-	epsilon -> [104][Module_LRI_Original]< @ _Item_LRI_Original { _Item } >
-		- BeginObject(File)
 

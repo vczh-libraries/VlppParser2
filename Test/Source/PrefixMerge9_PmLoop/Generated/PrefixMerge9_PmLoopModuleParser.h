@@ -18,11 +18,10 @@ namespace prefixmerge9_pmloop
 		_IntItem = 3,
 		_Item = 6,
 		Module = 14,
-		_Item_LRI_Isolated_2 = 22,
-		_Item_LRI_Isolated_3 = 25,
-		_IntItem_LRI_Original = 29,
-		_Item_LRI_Original = 33,
-		Module_LRI_Original = 44,
+		_Item_LRI_Isolated_2 = 18,
+		_Item_LRI_Isolated_3 = 21,
+		_IntItem_LRI_Original = 25,
+		_Item_LRI_Original = 29,
 	};
 
 	const wchar_t* ModuleParserRuleName(vl::vint index);
@@ -41,8 +40,6 @@ namespace prefixmerge9_pmloop
 
 		vl::Ptr<prefixmerge9_pmloop::File> ParseModule(const vl::WString& input, vl::vint codeIndex = -1) const;
 		vl::Ptr<prefixmerge9_pmloop::File> ParseModule(vl::collections::List<vl::regex::RegexToken>& tokens, vl::vint codeIndex = -1) const;
-		vl::Ptr<prefixmerge9_pmloop::File> ParseModule_LRI_Original(const vl::WString& input, vl::vint codeIndex = -1) const;
-		vl::Ptr<prefixmerge9_pmloop::File> ParseModule_LRI_Original(vl::collections::List<vl::regex::RegexToken>& tokens, vl::vint codeIndex = -1) const;
 	};
 }
 #endif

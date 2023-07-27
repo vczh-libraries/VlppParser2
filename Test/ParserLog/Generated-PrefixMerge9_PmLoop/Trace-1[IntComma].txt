@@ -1,5 +1,5 @@
 ﻿================ EXECUTION STEPS ================
-[0]: 0@0 - 6@0
+[0]: 0@0 - 9@0
 
 ==================== TRACES =====================
 
@@ -14,84 +14,83 @@
  +
  |
 [0]
-++============================================================================================++
-|| [1]: {INT} int                                                                             ||
-|| [2][_Int]< "int" @ >                                                                       ||
-|| [AST-INSTRUCTIONS]:                                                                        ||
-||   - DelayFieldAssignment()                                                                 ||
-||   - BeginObject(IntItem)                                                                   ||
-|| [RETURN STACK]:                                                                            ||
-||   [0][9][0]: _Int -> [17][Module]<< !_Int @ ( lri:(LRI__IntItem)->Module_LRI_Original ) >> ||
-|| [PREDECESSORS 0-0]: [0]                                                                    ||
-|| [SUCCESORS 2-2]: [2]                                                                       ||
-++============================================================================================++
+++================================================================================================++
+|| [1]: {INT} int                                                                                 ||
+|| [2][_Int]< "int" @ >                                                                           ||
+|| [AST-INSTRUCTIONS]:                                                                            ||
+||   - BeginObject(File)                                                                          ||
+||   - BeginObject(IntCommaItem)                                                                  ||
+||   - DelayFieldAssignment()                                                                     ||
+||   - BeginObject(IntItem)                                                                       ||
+|| [RETURN STACK]:                                                                                ||
+||   [2][11][0]: _Int -> [27][_IntItem_LRI_Original]<< !_Int @ >>                                 ||
+||   [1][10][0]: _IntItem_LRI_Original -> [33][_Item_LRI_Original]< _IntItem_LRI_Original @ "," > ||
+||   [0][7][0]: _Item_LRI_Original -> [16][Module]< _Item_LRI_Original @ { _Item } >              ||
+|| [PREDECESSORS 0-0]: [0]                                                                        ||
+|| [SUCCESORS 2-2]: [2]                                                                           ||
+++================================================================================================++
 |
 +
 |
-+-----------------------------------------------------------------------+
-| [2]: <Ending>                                                         |
-| [17][Module]<< !_Int @ ( lri:(LRI__IntItem)->Module_LRI_Original ) >> |
-| [AST-INSTRUCTIONS]:                                                   |
-|   - EndObject()                                                       |
-|   > ReopenObject()                                                    |
-| [PREDECESSORS 1-1]: [1]                                               |
-| [SUCCESORS 3-3]: [3]                                                  |
-+-----------------------------------------------------------------------+
++------------------------------------------------------------------------------------------------+
+| [2]: <Ending>                                                                                  |
+| [27][_IntItem_LRI_Original]<< !_Int @ >>                                                       |
+| [AST-INSTRUCTIONS]:                                                                            |
+|   - EndObject()                                                                                |
+| [RETURN STACK]:                                                                                |
+|   [1][10][0]: _IntItem_LRI_Original -> [33][_Item_LRI_Original]< _IntItem_LRI_Original @ "," > |
+|   [0][7][0]: _Item_LRI_Original -> [16][Module]< _Item_LRI_Original @ { _Item } >              |
+| [PREDECESSORS 1-1]: [1]                                                                        |
+| [SUCCESORS 3-3]: [3]                                                                           |
++------------------------------------------------------------------------------------------------+
+|
++
+|
++-----------------------------------------------------------------------------------+
+| [3]: <Ending>                                                                     |
+| [33][_Item_LRI_Original]< _IntItem_LRI_Original @ "," >                           |
+| [AST-INSTRUCTIONS]:                                                               |
+|   - ReopenObject()                                                                |
+|   - EndObject()                                                                   |
+|   > DiscardValue()                                                                |
+| [RETURN STACK]:                                                                   |
+|   [0][7][0]: _Item_LRI_Original -> [16][Module]< _Item_LRI_Original @ { _Item } > |
+| [PREDECESSORS 2-2]: [2]                                                           |
+| [SUCCESORS 7-7]: [7]                                                              |
++-----------------------------------------------------------------------------------+
 [0]
  |
  +
  |
 [0]
-++============================================================================================================++
-|| [3]: {COMMA} ,                                                                                             ||
-|| [35][_Item_LRI_Original]< _IntItem_LRI_Original "," @ >                                                    ||
-|| [AST-INSTRUCTIONS]:                                                                                        ||
-||   - EndObject()                                                                                            ||
-||   - LriStore()                                                                                             ||
-||   - DelayFieldAssignment()                                                                                 ||
-||   - BeginObject(File)                                                                                      ||
-||   - BeginObject(IntCommaItem)                                                                              ||
-||   - LriFetch()                                                                                             ||
-||   - DiscardValue()                                                                                         ||
-|| [RETURN STACK]:                                                                                            ||
-||   [2][11][2]: _Item_LRI_Original -> [46][Module_LRI_Original]< _Item_LRI_Original @ { _Item } >            ||
-||   [1][10][2]: Module_LRI_Original -> [16][Module]<< !_Int ( lri:(LRI__IntItem)->Module_LRI_Original @ ) >> ||
-|| [PREDECESSORS 2-2]: [2]                                                                                    ||
-|| [SUCCESORS 4-4]: [4]                                                                                       ||
-++============================================================================================================++
+++===================================================================================++
+|| [7]: {COMMA} ,                                                                    ||
+|| [31][_Item_LRI_Original]< _IntItem_LRI_Original "," @ >                           ||
+|| [AST-INSTRUCTIONS]:                                                               ||
+|| [RETURN STACK]:                                                                   ||
+||   [0][7][0]: _Item_LRI_Original -> [16][Module]< _Item_LRI_Original @ { _Item } > ||
+|| [PREDECESSORS 3-3]: [3]                                                           ||
+|| [SUCCESORS 8-8]: [8]                                                              ||
+++===================================================================================++
 |
 +
 |
-+------------------------------------------------------------------------------------------------------------+
-| [4]: <Ending>                                                                                              |
-| [46][Module_LRI_Original]< _Item_LRI_Original @ { _Item } >                                                |
-| [AST-INSTRUCTIONS]:                                                                                        |
-|   - EndObject()                                                                                            |
-|   > Field(File::items)                                                                                     |
-| [RETURN STACK]:                                                                                            |
-|   [1][10][2]: Module_LRI_Original -> [16][Module]<< !_Int ( lri:(LRI__IntItem)->Module_LRI_Original @ ) >> |
-| [PREDECESSORS 3-3]: [3]                                                                                    |
-| [SUCCESORS 5-5]: [5]                                                                                       |
-+------------------------------------------------------------------------------------------------------------+
-|
-+
-|
-+-----------------------------------------------------------------------+
-| [5]: <Ending>                                                         |
-| [16][Module]<< !_Int ( lri:(LRI__IntItem)->Module_LRI_Original @ ) >> |
-| [AST-INSTRUCTIONS]:                                                   |
-|   - EndObject()                                                       |
-|   > ReopenObject()                                                    |
-| [PREDECESSORS 4-4]: [4]                                               |
-| [SUCCESORS 6-6]: [6]                                                  |
-+-----------------------------------------------------------------------+
++------------------------------------------------+
+| [8]: <Ending>                                  |
+| [16][Module]< _Item_LRI_Original @ { _Item } > |
+| [AST-INSTRUCTIONS]:                            |
+|   - EndObject()                                |
+|   > Field(File::items)                         |
+| [PREDECESSORS 7-7]: [7]                        |
+| [SUCCESORS 9-9]: [9]                           |
++------------------------------------------------+
 |
 +
 |
 +---------------------------+
-| [6]: <Ending>             |
+| [9]: <Ending>             |
 | [15][Module] END [ENDING] |
 | [AST-INSTRUCTIONS]:       |
 |   - EndObject()           |
-| [PREDECESSORS 5-5]: [5]   |
+| [PREDECESSORS 8-8]: [8]   |
 +---------------------------+

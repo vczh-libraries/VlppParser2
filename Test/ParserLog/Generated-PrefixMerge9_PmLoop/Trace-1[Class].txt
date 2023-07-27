@@ -14,47 +14,45 @@
  +
  |
 [0]
-++=========================================================================================================================++
-|| [1]: {CLASS} class                                                                                                      ||
-|| [24][_Item_LRI_Isolated_2]< "class" @ >                                                                                 ||
-|| [AST-INSTRUCTIONS]:                                                                                                     ||
-||   - DelayFieldAssignment()                                                                                              ||
-||   - BeginObject(ClassItem)                                                                                              ||
-|| [RETURN STACK]:                                                                                                         ||
-||   [0][7][0]: _Item_LRI_Isolated_2 -> [19][Module]<< !_Item_LRI_Isolated_2 @ ( lri:(LRI__Item)->Module_LRI_Original ) >> ||
-|| [PREDECESSORS 0-0]: [0]                                                                                                 ||
-|| [SUCCESORS 2-2]: [2]                                                                                                    ||
-++=========================================================================================================================++
+++============================================================================================++
+|| [1]: {CLASS} class                                                                         ||
+|| [20][_Item_LRI_Isolated_2]< "class" @ >                                                    ||
+|| [AST-INSTRUCTIONS]:                                                                        ||
+||   - BeginObject(File)                                                                      ||
+||   - DelayFieldAssignment()                                                                 ||
+||   - BeginObject(ClassItem)                                                                 ||
+|| [RETURN STACK]:                                                                            ||
+||   [1][8][0]: _Item_LRI_Isolated_2 -> [37][_Item_LRI_Original]<< !_Item_LRI_Isolated_2 @ >> ||
+||   [0][7][0]: _Item_LRI_Original -> [16][Module]< _Item_LRI_Original @ { _Item } >          ||
+|| [PREDECESSORS 0-0]: [0]                                                                    ||
+|| [SUCCESORS 2-2]: [2]                                                                       ||
+++============================================================================================++
 |
 +
 |
-+------------------------------------------------------------------------------------+
-| [2]: <Ending>                                                                      |
-| [19][Module]<< !_Item_LRI_Isolated_2 @ ( lri:(LRI__Item)->Module_LRI_Original ) >> |
-| [AST-INSTRUCTIONS]:                                                                |
-|   - EndObject()                                                                    |
-|   > ReopenObject()                                                                 |
-| [PREDECESSORS 1-1]: [1]                                                            |
-| [SUCCESORS 3-3]: [3]                                                               |
-+------------------------------------------------------------------------------------+
++-----------------------------------------------------------------------------------+
+| [2]: <Ending>                                                                     |
+| [37][_Item_LRI_Original]<< !_Item_LRI_Isolated_2 @ >>                             |
+| [AST-INSTRUCTIONS]:                                                               |
+|   - EndObject()                                                                   |
+|   > ReopenObject()                                                                |
+| [RETURN STACK]:                                                                   |
+|   [0][7][0]: _Item_LRI_Original -> [16][Module]< _Item_LRI_Original @ { _Item } > |
+| [PREDECESSORS 1-1]: [1]                                                           |
+| [SUCCESORS 3-3]: [3]                                                              |
++-----------------------------------------------------------------------------------+
 |
 +
 |
-+------------------------------------------------------------------------------------+
-| [3]: <Leftrec>                                                                     |
-| [18][Module]<< !_Item_LRI_Isolated_2 ( lri:(LRI__Item)->Module_LRI_Original @ ) >> |
-| [AST-INSTRUCTIONS]:                                                                |
-|   - EndObject()                                                                    |
-|   - LriStore()                                                                     |
-|   - DelayFieldAssignment()                                                         |
-|   - BeginObject(File)                                                              |
-|   - LriFetch()                                                                     |
-|   - Field(File::items)                                                             |
-|   - EndObject()                                                                    |
-|   - ReopenObject()                                                                 |
-| [PREDECESSORS 2-2]: [2]                                                            |
-| [SUCCESORS 4-4]: [4]                                                               |
-+------------------------------------------------------------------------------------+
++------------------------------------------------+
+| [3]: <Ending>                                  |
+| [16][Module]< _Item_LRI_Original @ { _Item } > |
+| [AST-INSTRUCTIONS]:                            |
+|   - EndObject()                                |
+|   > Field(File::items)                         |
+| [PREDECESSORS 2-2]: [2]                        |
+| [SUCCESORS 4-4]: [4]                           |
++------------------------------------------------+
 |
 +
 |
