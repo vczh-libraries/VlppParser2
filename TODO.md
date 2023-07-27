@@ -3,6 +3,7 @@
 ## BuiltIn-Cpp
 
 - Progress
+  - When `lri` could end the current rule, `leftrec` into the deepest place instead of `ending` to the ending state of the current rule.
   - Try to see if it is possible to
     - Remove `PushReturnStack` last argument.
     - Remove `ReturnDesc::ruleType`.
