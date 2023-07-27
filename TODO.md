@@ -4,22 +4,21 @@
 
 - Progress
   - When `lri` could end the current rule, `leftrec` into the deepest place instead of `ending` to the ending state of the current rule.
-  - Try to see if it is possible to
-    - Remove `PushReturnStack` last argument.
-    - Remove `ReturnDesc::ruleType`.
-    - Move `ReturnRuleType` from automaton to symbol.
-  - `@ambiguous class X : T { ... }` when X has members:
-    - Becomes `@ambiguous class X : T {}` and `class XCommon : X { ... }`.
-    - Ast:
-      - `class Y : X` -> `class Y : XCommon`.
-      - `var value : X` or `var value : X[]` unchanged.
-    - Syntax
-      - `as X` -> `as XCommon`.
-      - `as partial X` -> `as partial XCommon`.
-      - If a rule's type deducted to `XCommon`, change it to `X`.
+    - Make a demo of ambiguous `PmLoop`.
+    - Do not rewrite a rule to LRI if there is only one clause without branches.
+    - Revert `FixLeftRecursionInjectEdge generate Token+LeftRec insead of Token+Ending` if no longer needed.
 
 ## Next task
 
+- `@ambiguous class X : T { ... }` when X has members:
+  - Becomes `@ambiguous class X : T {}` and `class XCommon : X { ... }`.
+  - Ast:
+    - `class Y : X` -> `class Y : XCommon`.
+    - `var value : X` or `var value : X[]` unchanged.
+  - Syntax
+    - `as X` -> `as XCommon`.
+    - `as partial X` -> `as partial XCommon`.
+    - If a rule's type deducted to `XCommon`, change it to `X`.
 - Add `extern` rule, non-`extern` rules can only be used inside the same syntax file.
 - Add `extern` type, non-`extern` types can only be used inside the same ast file.
   - AST uses classes from another AST file in dependency as fields.
@@ -87,6 +86,10 @@
 
 ## Experiments
 
+- Try to see if it is possible to
+  - Remove `PushReturnStack` last argument.
+  - Remove `ReturnDesc::ruleType`.
+  - Move `ReturnRuleType` from automaton to symbol.
 - Serializing
   - Escaping and Unescaping pairs (instead of only unescaping)
   - Calculate ambiguous **ToString** cases
