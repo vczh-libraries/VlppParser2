@@ -17,7 +17,6 @@
       - `as X` -> `as XCommon`.
       - `as partial X` -> `as partial XCommon`.
       - If a rule's type is `XCommon`, no matter it is specified or deducted, change it to `X`.
-  - Generic Declaration unfinished.
 
 ## Next task
 
