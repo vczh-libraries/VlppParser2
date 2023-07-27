@@ -22,15 +22,21 @@ namespace prefixmerge9_pmloop::copy_visitor
 		void CopyFields(IntCommaItem* from, IntCommaItem* to);
 		void CopyFields(IntDotItem* from, IntDotItem* to);
 		void CopyFields(IntItem* from, IntItem* to);
+		void CopyFields(IntQuestionItem* from, IntQuestionItem* to);
 		void CopyFields(Item* from, Item* to);
+		void CopyFields(ItemToResolve* from, ItemToResolve* to);
+		void CopyFields(QuestionItem* from, QuestionItem* to);
 
 	protected:
 		virtual void Visit(File* node);
 
+		void Visit(ItemToResolve* node) override;
 		void Visit(IntItem* node) override;
 		void Visit(IntCommaItem* node) override;
 		void Visit(IntDotItem* node) override;
+		void Visit(IntQuestionItem* node) override;
 		void Visit(ClassItem* node) override;
+		void Visit(QuestionItem* node) override;
 
 	public:
 		virtual vl::Ptr<Item> CopyNode(Item* node);
@@ -40,6 +46,9 @@ namespace prefixmerge9_pmloop::copy_visitor
 		vl::Ptr<IntCommaItem> CopyNode(IntCommaItem* node);
 		vl::Ptr<IntDotItem> CopyNode(IntDotItem* node);
 		vl::Ptr<IntItem> CopyNode(IntItem* node);
+		vl::Ptr<IntQuestionItem> CopyNode(IntQuestionItem* node);
+		vl::Ptr<ItemToResolve> CopyNode(ItemToResolve* node);
+		vl::Ptr<QuestionItem> CopyNode(QuestionItem* node);
 	};
 }
 #endif

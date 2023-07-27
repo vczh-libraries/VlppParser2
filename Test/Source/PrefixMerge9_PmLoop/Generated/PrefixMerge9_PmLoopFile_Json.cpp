@@ -33,8 +33,44 @@ namespace prefixmerge9_pmloop::json_visitor
 	void FileVisitor::PrintFields(IntItem* node)
 	{
 	}
+	void FileVisitor::PrintFields(IntQuestionItem* node)
+	{
+	}
 	void FileVisitor::PrintFields(Item* node)
 	{
+	}
+	void FileVisitor::PrintFields(ItemToResolve* node)
+	{
+		BeginField(L"candidates");
+		BeginArray();
+		for (auto&& listItem : node->candidates)
+		{
+			BeginArrayItem();
+			Print(listItem.Obj());
+			EndArrayItem();
+		}
+		EndArray();
+		EndField();
+	}
+	void FileVisitor::PrintFields(QuestionItem* node)
+	{
+		BeginField(L"item");
+		Print(node->item.Obj());
+		EndField();
+	}
+
+	void FileVisitor::Visit(ItemToResolve* node)
+	{
+		if (!node)
+		{
+			WriteNull();
+			return;
+		}
+		BeginObject();
+		WriteType(L"ItemToResolve", node);
+		PrintFields(static_cast<Item*>(node));
+		PrintFields(static_cast<ItemToResolve*>(node));
+		EndObject();
 	}
 
 	void FileVisitor::Visit(IntItem* node)
@@ -79,6 +115,20 @@ namespace prefixmerge9_pmloop::json_visitor
 		EndObject();
 	}
 
+	void FileVisitor::Visit(IntQuestionItem* node)
+	{
+		if (!node)
+		{
+			WriteNull();
+			return;
+		}
+		BeginObject();
+		WriteType(L"IntQuestionItem", node);
+		PrintFields(static_cast<Item*>(node));
+		PrintFields(static_cast<IntQuestionItem*>(node));
+		EndObject();
+	}
+
 	void FileVisitor::Visit(ClassItem* node)
 	{
 		if (!node)
@@ -90,6 +140,20 @@ namespace prefixmerge9_pmloop::json_visitor
 		WriteType(L"ClassItem", node);
 		PrintFields(static_cast<Item*>(node));
 		PrintFields(static_cast<ClassItem*>(node));
+		EndObject();
+	}
+
+	void FileVisitor::Visit(QuestionItem* node)
+	{
+		if (!node)
+		{
+			WriteNull();
+			return;
+		}
+		BeginObject();
+		WriteType(L"QuestionItem", node);
+		PrintFields(static_cast<Item*>(node));
+		PrintFields(static_cast<QuestionItem*>(node));
 		EndObject();
 	}
 

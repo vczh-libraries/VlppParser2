@@ -18,4 +18,24 @@ MakeFile
 		node->items.Add(value);
 		return *this;
 	}
+
+/***********************************************************************
+MakeItemToResolve
+***********************************************************************/
+
+	MakeItemToResolve& MakeItemToResolve::candidates(const vl::Ptr<Item>& value)
+	{
+		node->candidates.Add(value);
+		return *this;
+	}
+
+/***********************************************************************
+MakeQuestionItem
+***********************************************************************/
+
+	MakeQuestionItem& MakeQuestionItem::item(const vl::Ptr<Item>& value)
+	{
+		node->item = value;
+		return *this;
+	}
 }

@@ -15,6 +15,10 @@ ItemVisitor
 
 	// Visitor Members -----------------------------------
 
+	void ItemVisitor::Visit(ItemToResolve* node)
+	{
+	}
+
 	void ItemVisitor::Visit(IntItem* node)
 	{
 	}
@@ -27,7 +31,15 @@ ItemVisitor
 	{
 	}
 
+	void ItemVisitor::Visit(IntQuestionItem* node)
+	{
+	}
+
 	void ItemVisitor::Visit(ClassItem* node)
+	{
+	}
+
+	void ItemVisitor::Visit(QuestionItem* node)
 	{
 	}
 }

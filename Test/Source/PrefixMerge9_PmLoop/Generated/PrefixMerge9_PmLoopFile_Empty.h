@@ -19,10 +19,13 @@ namespace prefixmerge9_pmloop::empty_visitor
 
 	public:
 		// Visitor Members -----------------------------------
+		void Visit(ItemToResolve* node) override;
 		void Visit(IntItem* node) override;
 		void Visit(IntCommaItem* node) override;
 		void Visit(IntDotItem* node) override;
+		void Visit(IntQuestionItem* node) override;
 		void Visit(ClassItem* node) override;
+		void Visit(QuestionItem* node) override;
 	};
 
 }

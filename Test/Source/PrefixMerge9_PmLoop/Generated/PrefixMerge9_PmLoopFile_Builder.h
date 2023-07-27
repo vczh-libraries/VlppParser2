@@ -17,5 +17,17 @@ namespace prefixmerge9_pmloop::builder
 		MakeFile& items(const vl::Ptr<Item>& value);
 	};
 
+	class MakeItemToResolve : public vl::glr::ParsingAstBuilder<ItemToResolve>
+	{
+	public:
+		MakeItemToResolve& candidates(const vl::Ptr<Item>& value);
+	};
+
+	class MakeQuestionItem : public vl::glr::ParsingAstBuilder<QuestionItem>
+	{
+	public:
+		MakeQuestionItem& item(const vl::Ptr<Item>& value);
+	};
+
 }
 #endif

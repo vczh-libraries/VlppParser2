@@ -18,12 +18,17 @@ namespace prefixmerge9_pmloop
 		IntCommaItem = 2,
 		IntDotItem = 3,
 		IntItem = 4,
-		Item = 5,
+		IntQuestionItem = 5,
+		Item = 6,
+		ItemToResolve = 7,
+		QuestionItem = 8,
 	};
 
 	enum class PrefixMerge9_PmLoopFields : vl::vint32_t
 	{
 		File_items = 0,
+		ItemToResolve_candidates = 1,
+		QuestionItem_item = 2,
 	};
 
 	extern const wchar_t* PrefixMerge9_PmLoopTypeName(PrefixMerge9_PmLoopClasses type);

@@ -36,13 +36,40 @@ namespace prefixmerge9_pmloop::copy_visitor
 		CopyFields(static_cast<Item*>(from), static_cast<Item*>(to));
 	}
 
+	void FileVisitor::CopyFields(IntQuestionItem* from, IntQuestionItem* to)
+	{
+		CopyFields(static_cast<Item*>(from), static_cast<Item*>(to));
+	}
+
 	void FileVisitor::CopyFields(Item* from, Item* to)
 	{
+	}
+
+	void FileVisitor::CopyFields(ItemToResolve* from, ItemToResolve* to)
+	{
+		CopyFields(static_cast<Item*>(from), static_cast<Item*>(to));
+		for (auto&& listItem : from->candidates)
+		{
+			to->candidates.Add(CopyNode(listItem.Obj()));
+		}
+	}
+
+	void FileVisitor::CopyFields(QuestionItem* from, QuestionItem* to)
+	{
+		CopyFields(static_cast<Item*>(from), static_cast<Item*>(to));
+		to->item = CopyNode(from->item.Obj());
 	}
 
 	void FileVisitor::Visit(File* node)
 	{
 		auto newNode = vl::Ptr(new File);
+		CopyFields(node, newNode.Obj());
+		this->result = newNode;
+	}
+
+	void FileVisitor::Visit(ItemToResolve* node)
+	{
+		auto newNode = vl::Ptr(new ItemToResolve);
 		CopyFields(node, newNode.Obj());
 		this->result = newNode;
 	}
@@ -68,9 +95,23 @@ namespace prefixmerge9_pmloop::copy_visitor
 		this->result = newNode;
 	}
 
+	void FileVisitor::Visit(IntQuestionItem* node)
+	{
+		auto newNode = vl::Ptr(new IntQuestionItem);
+		CopyFields(node, newNode.Obj());
+		this->result = newNode;
+	}
+
 	void FileVisitor::Visit(ClassItem* node)
 	{
 		auto newNode = vl::Ptr(new ClassItem);
+		CopyFields(node, newNode.Obj());
+		this->result = newNode;
+	}
+
+	void FileVisitor::Visit(QuestionItem* node)
+	{
+		auto newNode = vl::Ptr(new QuestionItem);
 		CopyFields(node, newNode.Obj());
 		this->result = newNode;
 	}
@@ -113,6 +154,24 @@ namespace prefixmerge9_pmloop::copy_visitor
 	{
 		if (!node) return nullptr;
 		return CopyNode(static_cast<Item*>(node)).Cast<IntItem>();
+	}
+
+	vl::Ptr<IntQuestionItem> FileVisitor::CopyNode(IntQuestionItem* node)
+	{
+		if (!node) return nullptr;
+		return CopyNode(static_cast<Item*>(node)).Cast<IntQuestionItem>();
+	}
+
+	vl::Ptr<ItemToResolve> FileVisitor::CopyNode(ItemToResolve* node)
+	{
+		if (!node) return nullptr;
+		return CopyNode(static_cast<Item*>(node)).Cast<ItemToResolve>();
+	}
+
+	vl::Ptr<QuestionItem> FileVisitor::CopyNode(QuestionItem* node)
+	{
+		if (!node) return nullptr;
+		return CopyNode(static_cast<Item*>(node)).Cast<QuestionItem>();
 	}
 
 }

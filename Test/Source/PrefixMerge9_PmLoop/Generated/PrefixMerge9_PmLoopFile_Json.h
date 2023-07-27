@@ -22,13 +22,19 @@ namespace prefixmerge9_pmloop::json_visitor
 		virtual void PrintFields(IntCommaItem* node);
 		virtual void PrintFields(IntDotItem* node);
 		virtual void PrintFields(IntItem* node);
+		virtual void PrintFields(IntQuestionItem* node);
 		virtual void PrintFields(Item* node);
+		virtual void PrintFields(ItemToResolve* node);
+		virtual void PrintFields(QuestionItem* node);
 
 	protected:
+		void Visit(ItemToResolve* node) override;
 		void Visit(IntItem* node) override;
 		void Visit(IntCommaItem* node) override;
 		void Visit(IntDotItem* node) override;
+		void Visit(IntQuestionItem* node) override;
 		void Visit(ClassItem* node) override;
+		void Visit(QuestionItem* node) override;
 
 	public:
 		FileVisitor(vl::stream::StreamWriter& _writer);

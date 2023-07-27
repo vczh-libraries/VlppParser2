@@ -18,10 +18,11 @@ namespace prefixmerge9_pmloop
 		INT = 1,
 		COMMA = 2,
 		DOT = 3,
-		SPACE = 4,
+		QUESTION = 4,
+		SPACE = 5,
 	};
 
-	constexpr vl::vint PrefixMerge9_PmLoopTokenCount = 5;
+	constexpr vl::vint PrefixMerge9_PmLoopTokenCount = 6;
 	extern bool PrefixMerge9_PmLoopTokenDeleter(vl::vint token);
 	extern const wchar_t* PrefixMerge9_PmLoopTokenId(PrefixMerge9_PmLoopTokens token);
 	extern const wchar_t* PrefixMerge9_PmLoopTokenDisplayText(PrefixMerge9_PmLoopTokens token);

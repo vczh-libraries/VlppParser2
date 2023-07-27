@@ -24,7 +24,10 @@ namespace prefixmerge9_pmloop::traverse_visitor
 		virtual void Traverse(IntCommaItem* node);
 		virtual void Traverse(IntDotItem* node);
 		virtual void Traverse(IntItem* node);
+		virtual void Traverse(IntQuestionItem* node);
 		virtual void Traverse(Item* node);
+		virtual void Traverse(ItemToResolve* node);
+		virtual void Traverse(QuestionItem* node);
 
 	protected:
 		virtual void Finishing(vl::glr::ParsingAstBase* node);
@@ -33,13 +36,19 @@ namespace prefixmerge9_pmloop::traverse_visitor
 		virtual void Finishing(IntCommaItem* node);
 		virtual void Finishing(IntDotItem* node);
 		virtual void Finishing(IntItem* node);
+		virtual void Finishing(IntQuestionItem* node);
 		virtual void Finishing(Item* node);
+		virtual void Finishing(ItemToResolve* node);
+		virtual void Finishing(QuestionItem* node);
 
 	protected:
+		void Visit(ItemToResolve* node) override;
 		void Visit(IntItem* node) override;
 		void Visit(IntCommaItem* node) override;
 		void Visit(IntDotItem* node) override;
+		void Visit(IntQuestionItem* node) override;
 		void Visit(ClassItem* node) override;
+		void Visit(QuestionItem* node) override;
 
 	public:
 		void InspectInto(Item* node);

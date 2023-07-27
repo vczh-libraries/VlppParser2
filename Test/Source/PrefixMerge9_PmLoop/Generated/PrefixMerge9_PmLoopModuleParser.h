@@ -17,11 +17,11 @@ namespace prefixmerge9_pmloop
 		_Int = 0,
 		_IntItem = 3,
 		_Item = 6,
-		Module = 11,
-		_Item_LRI_Isolated_2 = 17,
-		_IntItem_LRI_Original = 20,
-		_Item_LRI_Original = 24,
-		Module_LRI_Original = 32,
+		Module = 12,
+		_Item_LRI_Isolated_3 = 18,
+		_IntItem_LRI_Original = 21,
+		_Item_LRI_Original = 25,
+		Module_LRI_Original = 37,
 	};
 
 	const wchar_t* ModuleParserRuleName(vl::vint index);

@@ -17,7 +17,10 @@ namespace prefixmerge9_pmloop
 	class IntCommaItem;
 	class IntDotItem;
 	class IntItem;
+	class IntQuestionItem;
 	class Item;
+	class ItemToResolve;
+	class QuestionItem;
 
 	class Item abstract : public vl::glr::ParsingAstBase, vl::reflection::Description<Item>
 	{
@@ -25,10 +28,13 @@ namespace prefixmerge9_pmloop
 		class IVisitor : public virtual vl::reflection::IDescriptable, vl::reflection::Description<IVisitor>
 		{
 		public:
+			virtual void Visit(ItemToResolve* node) = 0;
 			virtual void Visit(IntItem* node) = 0;
 			virtual void Visit(IntCommaItem* node) = 0;
 			virtual void Visit(IntDotItem* node) = 0;
+			virtual void Visit(IntQuestionItem* node) = 0;
 			virtual void Visit(ClassItem* node) = 0;
+			virtual void Visit(QuestionItem* node) = 0;
 		};
 
 		virtual void Accept(Item::IVisitor* visitor) = 0;
@@ -56,9 +62,24 @@ namespace prefixmerge9_pmloop
 		void Accept(Item::IVisitor* visitor) override;
 	};
 
+	class IntQuestionItem : public Item, vl::reflection::Description<IntQuestionItem>
+	{
+	public:
+
+		void Accept(Item::IVisitor* visitor) override;
+	};
+
 	class ClassItem : public Item, vl::reflection::Description<ClassItem>
 	{
 	public:
+
+		void Accept(Item::IVisitor* visitor) override;
+	};
+
+	class QuestionItem : public Item, vl::reflection::Description<QuestionItem>
+	{
+	public:
+		vl::Ptr<Item> item;
 
 		void Accept(Item::IVisitor* visitor) override;
 	};
@@ -67,6 +88,14 @@ namespace prefixmerge9_pmloop
 	{
 	public:
 		vl::collections::List<vl::Ptr<Item>> items;
+	};
+
+	class ItemToResolve : public Item, vl::reflection::Description<ItemToResolve>
+	{
+	public:
+		vl::collections::List<vl::Ptr<Item>> candidates;
+
+		void Accept(Item::IVisitor* visitor) override;
 	};
 }
 namespace vl::reflection::description
@@ -77,12 +106,20 @@ namespace vl::reflection::description
 	DECL_TYPE_INFO(prefixmerge9_pmloop::IntItem)
 	DECL_TYPE_INFO(prefixmerge9_pmloop::IntCommaItem)
 	DECL_TYPE_INFO(prefixmerge9_pmloop::IntDotItem)
+	DECL_TYPE_INFO(prefixmerge9_pmloop::IntQuestionItem)
 	DECL_TYPE_INFO(prefixmerge9_pmloop::ClassItem)
+	DECL_TYPE_INFO(prefixmerge9_pmloop::QuestionItem)
 	DECL_TYPE_INFO(prefixmerge9_pmloop::File)
+	DECL_TYPE_INFO(prefixmerge9_pmloop::ItemToResolve)
 
 #ifdef VCZH_DESCRIPTABLEOBJECT_WITH_METADATA
 
 	BEGIN_INTERFACE_PROXY_NOPARENT_SHAREDPTR(prefixmerge9_pmloop::Item::IVisitor)
+		void Visit(prefixmerge9_pmloop::ItemToResolve* node) override
+		{
+			INVOKE_INTERFACE_PROXY(Visit, node);
+		}
+
 		void Visit(prefixmerge9_pmloop::IntItem* node) override
 		{
 			INVOKE_INTERFACE_PROXY(Visit, node);
@@ -98,7 +135,17 @@ namespace vl::reflection::description
 			INVOKE_INTERFACE_PROXY(Visit, node);
 		}
 
+		void Visit(prefixmerge9_pmloop::IntQuestionItem* node) override
+		{
+			INVOKE_INTERFACE_PROXY(Visit, node);
+		}
+
 		void Visit(prefixmerge9_pmloop::ClassItem* node) override
+		{
+			INVOKE_INTERFACE_PROXY(Visit, node);
+		}
+
+		void Visit(prefixmerge9_pmloop::QuestionItem* node) override
 		{
 			INVOKE_INTERFACE_PROXY(Visit, node);
 		}
