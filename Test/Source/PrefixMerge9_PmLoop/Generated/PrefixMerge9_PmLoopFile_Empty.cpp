@@ -31,11 +31,11 @@ ItemVisitor
 	{
 	}
 
-	void ItemVisitor::Visit(IntQuestionItem* node)
+	void ItemVisitor::Visit(ClassItem* node)
 	{
 	}
 
-	void ItemVisitor::Visit(ClassItem* node)
+	void ItemVisitor::Visit(ClassQuestionItem* node)
 	{
 	}
 

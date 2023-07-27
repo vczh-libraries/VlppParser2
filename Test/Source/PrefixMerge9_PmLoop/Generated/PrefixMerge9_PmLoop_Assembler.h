@@ -14,11 +14,11 @@ namespace prefixmerge9_pmloop
 	enum class PrefixMerge9_PmLoopClasses : vl::vint32_t
 	{
 		ClassItem = 0,
-		File = 1,
-		IntCommaItem = 2,
-		IntDotItem = 3,
-		IntItem = 4,
-		IntQuestionItem = 5,
+		ClassQuestionItem = 1,
+		File = 2,
+		IntCommaItem = 3,
+		IntDotItem = 4,
+		IntItem = 5,
 		Item = 6,
 		ItemToResolve = 7,
 		QuestionItem = 8,

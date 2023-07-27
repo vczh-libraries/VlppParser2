@@ -23,8 +23,8 @@ namespace prefixmerge9_pmloop::empty_visitor
 		void Visit(IntItem* node) override;
 		void Visit(IntCommaItem* node) override;
 		void Visit(IntDotItem* node) override;
-		void Visit(IntQuestionItem* node) override;
 		void Visit(ClassItem* node) override;
+		void Visit(ClassQuestionItem* node) override;
 		void Visit(QuestionItem* node) override;
 	};
 

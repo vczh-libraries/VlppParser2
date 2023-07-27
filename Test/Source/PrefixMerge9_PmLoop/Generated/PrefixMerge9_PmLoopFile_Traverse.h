@@ -20,11 +20,11 @@ namespace prefixmerge9_pmloop::traverse_visitor
 		virtual void Traverse(vl::glr::ParsingToken& token);
 		virtual void Traverse(vl::glr::ParsingAstBase* node);
 		virtual void Traverse(ClassItem* node);
+		virtual void Traverse(ClassQuestionItem* node);
 		virtual void Traverse(File* node);
 		virtual void Traverse(IntCommaItem* node);
 		virtual void Traverse(IntDotItem* node);
 		virtual void Traverse(IntItem* node);
-		virtual void Traverse(IntQuestionItem* node);
 		virtual void Traverse(Item* node);
 		virtual void Traverse(ItemToResolve* node);
 		virtual void Traverse(QuestionItem* node);
@@ -32,11 +32,11 @@ namespace prefixmerge9_pmloop::traverse_visitor
 	protected:
 		virtual void Finishing(vl::glr::ParsingAstBase* node);
 		virtual void Finishing(ClassItem* node);
+		virtual void Finishing(ClassQuestionItem* node);
 		virtual void Finishing(File* node);
 		virtual void Finishing(IntCommaItem* node);
 		virtual void Finishing(IntDotItem* node);
 		virtual void Finishing(IntItem* node);
-		virtual void Finishing(IntQuestionItem* node);
 		virtual void Finishing(Item* node);
 		virtual void Finishing(ItemToResolve* node);
 		virtual void Finishing(QuestionItem* node);
@@ -46,8 +46,8 @@ namespace prefixmerge9_pmloop::traverse_visitor
 		void Visit(IntItem* node) override;
 		void Visit(IntCommaItem* node) override;
 		void Visit(IntDotItem* node) override;
-		void Visit(IntQuestionItem* node) override;
 		void Visit(ClassItem* node) override;
+		void Visit(ClassQuestionItem* node) override;
 		void Visit(QuestionItem* node) override;
 
 	public:

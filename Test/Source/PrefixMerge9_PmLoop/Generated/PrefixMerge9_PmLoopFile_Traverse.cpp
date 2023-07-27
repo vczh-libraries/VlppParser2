@@ -11,22 +11,22 @@ namespace prefixmerge9_pmloop::traverse_visitor
 	void FileVisitor::Traverse(vl::glr::ParsingToken& token) {}
 	void FileVisitor::Traverse(vl::glr::ParsingAstBase* node) {}
 	void FileVisitor::Traverse(ClassItem* node) {}
+	void FileVisitor::Traverse(ClassQuestionItem* node) {}
 	void FileVisitor::Traverse(File* node) {}
 	void FileVisitor::Traverse(IntCommaItem* node) {}
 	void FileVisitor::Traverse(IntDotItem* node) {}
 	void FileVisitor::Traverse(IntItem* node) {}
-	void FileVisitor::Traverse(IntQuestionItem* node) {}
 	void FileVisitor::Traverse(Item* node) {}
 	void FileVisitor::Traverse(ItemToResolve* node) {}
 	void FileVisitor::Traverse(QuestionItem* node) {}
 
 	void FileVisitor::Finishing(vl::glr::ParsingAstBase* node) {}
 	void FileVisitor::Finishing(ClassItem* node) {}
+	void FileVisitor::Finishing(ClassQuestionItem* node) {}
 	void FileVisitor::Finishing(File* node) {}
 	void FileVisitor::Finishing(IntCommaItem* node) {}
 	void FileVisitor::Finishing(IntDotItem* node) {}
 	void FileVisitor::Finishing(IntItem* node) {}
-	void FileVisitor::Finishing(IntQuestionItem* node) {}
 	void FileVisitor::Finishing(Item* node) {}
 	void FileVisitor::Finishing(ItemToResolve* node) {}
 	void FileVisitor::Finishing(QuestionItem* node) {}
@@ -79,17 +79,6 @@ namespace prefixmerge9_pmloop::traverse_visitor
 		Finishing(static_cast<vl::glr::ParsingAstBase*>(node));
 	}
 
-	void FileVisitor::Visit(IntQuestionItem* node)
-	{
-		if (!node) return;
-		Traverse(static_cast<vl::glr::ParsingAstBase*>(node));
-		Traverse(static_cast<Item*>(node));
-		Traverse(static_cast<IntQuestionItem*>(node));
-		Finishing(static_cast<IntQuestionItem*>(node));
-		Finishing(static_cast<Item*>(node));
-		Finishing(static_cast<vl::glr::ParsingAstBase*>(node));
-	}
-
 	void FileVisitor::Visit(ClassItem* node)
 	{
 		if (!node) return;
@@ -97,6 +86,17 @@ namespace prefixmerge9_pmloop::traverse_visitor
 		Traverse(static_cast<Item*>(node));
 		Traverse(static_cast<ClassItem*>(node));
 		Finishing(static_cast<ClassItem*>(node));
+		Finishing(static_cast<Item*>(node));
+		Finishing(static_cast<vl::glr::ParsingAstBase*>(node));
+	}
+
+	void FileVisitor::Visit(ClassQuestionItem* node)
+	{
+		if (!node) return;
+		Traverse(static_cast<vl::glr::ParsingAstBase*>(node));
+		Traverse(static_cast<Item*>(node));
+		Traverse(static_cast<ClassQuestionItem*>(node));
+		Finishing(static_cast<ClassQuestionItem*>(node));
 		Finishing(static_cast<Item*>(node));
 		Finishing(static_cast<vl::glr::ParsingAstBase*>(node));
 	}

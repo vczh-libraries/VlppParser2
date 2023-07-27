@@ -13,11 +13,11 @@ Licensed under https://github.com/vczh-libraries/License
 namespace prefixmerge9_pmloop
 {
 	class ClassItem;
+	class ClassQuestionItem;
 	class File;
 	class IntCommaItem;
 	class IntDotItem;
 	class IntItem;
-	class IntQuestionItem;
 	class Item;
 	class ItemToResolve;
 	class QuestionItem;
@@ -32,8 +32,8 @@ namespace prefixmerge9_pmloop
 			virtual void Visit(IntItem* node) = 0;
 			virtual void Visit(IntCommaItem* node) = 0;
 			virtual void Visit(IntDotItem* node) = 0;
-			virtual void Visit(IntQuestionItem* node) = 0;
 			virtual void Visit(ClassItem* node) = 0;
+			virtual void Visit(ClassQuestionItem* node) = 0;
 			virtual void Visit(QuestionItem* node) = 0;
 		};
 
@@ -62,14 +62,14 @@ namespace prefixmerge9_pmloop
 		void Accept(Item::IVisitor* visitor) override;
 	};
 
-	class IntQuestionItem : public Item, vl::reflection::Description<IntQuestionItem>
+	class ClassItem : public Item, vl::reflection::Description<ClassItem>
 	{
 	public:
 
 		void Accept(Item::IVisitor* visitor) override;
 	};
 
-	class ClassItem : public Item, vl::reflection::Description<ClassItem>
+	class ClassQuestionItem : public Item, vl::reflection::Description<ClassQuestionItem>
 	{
 	public:
 
@@ -106,8 +106,8 @@ namespace vl::reflection::description
 	DECL_TYPE_INFO(prefixmerge9_pmloop::IntItem)
 	DECL_TYPE_INFO(prefixmerge9_pmloop::IntCommaItem)
 	DECL_TYPE_INFO(prefixmerge9_pmloop::IntDotItem)
-	DECL_TYPE_INFO(prefixmerge9_pmloop::IntQuestionItem)
 	DECL_TYPE_INFO(prefixmerge9_pmloop::ClassItem)
+	DECL_TYPE_INFO(prefixmerge9_pmloop::ClassQuestionItem)
 	DECL_TYPE_INFO(prefixmerge9_pmloop::QuestionItem)
 	DECL_TYPE_INFO(prefixmerge9_pmloop::File)
 	DECL_TYPE_INFO(prefixmerge9_pmloop::ItemToResolve)
@@ -135,12 +135,12 @@ namespace vl::reflection::description
 			INVOKE_INTERFACE_PROXY(Visit, node);
 		}
 
-		void Visit(prefixmerge9_pmloop::IntQuestionItem* node) override
+		void Visit(prefixmerge9_pmloop::ClassItem* node) override
 		{
 			INVOKE_INTERFACE_PROXY(Visit, node);
 		}
 
-		void Visit(prefixmerge9_pmloop::ClassItem* node) override
+		void Visit(prefixmerge9_pmloop::ClassQuestionItem* node) override
 		{
 			INVOKE_INTERFACE_PROXY(Visit, node);
 		}

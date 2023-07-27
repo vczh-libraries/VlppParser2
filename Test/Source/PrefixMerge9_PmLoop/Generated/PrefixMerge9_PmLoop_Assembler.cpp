@@ -20,6 +20,8 @@ PrefixMerge9_PmLoopAstInsReceiver : public vl::glr::AstInsReceiverBase
 		{
 		case PrefixMerge9_PmLoopClasses::ClassItem:
 			return vl::Ptr(new prefixmerge9_pmloop::ClassItem);
+		case PrefixMerge9_PmLoopClasses::ClassQuestionItem:
+			return vl::Ptr(new prefixmerge9_pmloop::ClassQuestionItem);
 		case PrefixMerge9_PmLoopClasses::File:
 			return vl::Ptr(new prefixmerge9_pmloop::File);
 		case PrefixMerge9_PmLoopClasses::IntCommaItem:
@@ -28,8 +30,6 @@ PrefixMerge9_PmLoopAstInsReceiver : public vl::glr::AstInsReceiverBase
 			return vl::Ptr(new prefixmerge9_pmloop::IntDotItem);
 		case PrefixMerge9_PmLoopClasses::IntItem:
 			return vl::Ptr(new prefixmerge9_pmloop::IntItem);
-		case PrefixMerge9_PmLoopClasses::IntQuestionItem:
-			return vl::Ptr(new prefixmerge9_pmloop::IntQuestionItem);
 		case PrefixMerge9_PmLoopClasses::ItemToResolve:
 			return vl::Ptr(new prefixmerge9_pmloop::ItemToResolve);
 		case PrefixMerge9_PmLoopClasses::QuestionItem:
@@ -71,11 +71,11 @@ PrefixMerge9_PmLoopAstInsReceiver : public vl::glr::AstInsReceiverBase
 	{
 		const wchar_t* results[] = {
 			L"ClassItem",
+			L"ClassQuestionItem",
 			L"File",
 			L"IntCommaItem",
 			L"IntDotItem",
 			L"IntItem",
-			L"IntQuestionItem",
 			L"Item",
 			L"ItemToResolve",
 			L"QuestionItem",
@@ -88,11 +88,11 @@ PrefixMerge9_PmLoopAstInsReceiver : public vl::glr::AstInsReceiverBase
 	{
 		const wchar_t* results[] = {
 			L"prefixmerge9_pmloop::ClassItem",
+			L"prefixmerge9_pmloop::ClassQuestionItem",
 			L"prefixmerge9_pmloop::File",
 			L"prefixmerge9_pmloop::IntCommaItem",
 			L"prefixmerge9_pmloop::IntDotItem",
 			L"prefixmerge9_pmloop::IntItem",
-			L"prefixmerge9_pmloop::IntQuestionItem",
 			L"prefixmerge9_pmloop::Item",
 			L"prefixmerge9_pmloop::ItemToResolve",
 			L"prefixmerge9_pmloop::QuestionItem",
@@ -130,14 +130,14 @@ PrefixMerge9_PmLoopAstInsReceiver : public vl::glr::AstInsReceiverBase
 		{
 		case PrefixMerge9_PmLoopClasses::ClassItem:
 			return vl::glr::AssemblerResolveAmbiguity<prefixmerge9_pmloop::ClassItem, prefixmerge9_pmloop::ItemToResolve>(type, candidates, cppTypeName);
+		case PrefixMerge9_PmLoopClasses::ClassQuestionItem:
+			return vl::glr::AssemblerResolveAmbiguity<prefixmerge9_pmloop::ClassQuestionItem, prefixmerge9_pmloop::ItemToResolve>(type, candidates, cppTypeName);
 		case PrefixMerge9_PmLoopClasses::IntCommaItem:
 			return vl::glr::AssemblerResolveAmbiguity<prefixmerge9_pmloop::IntCommaItem, prefixmerge9_pmloop::ItemToResolve>(type, candidates, cppTypeName);
 		case PrefixMerge9_PmLoopClasses::IntDotItem:
 			return vl::glr::AssemblerResolveAmbiguity<prefixmerge9_pmloop::IntDotItem, prefixmerge9_pmloop::ItemToResolve>(type, candidates, cppTypeName);
 		case PrefixMerge9_PmLoopClasses::IntItem:
 			return vl::glr::AssemblerResolveAmbiguity<prefixmerge9_pmloop::IntItem, prefixmerge9_pmloop::ItemToResolve>(type, candidates, cppTypeName);
-		case PrefixMerge9_PmLoopClasses::IntQuestionItem:
-			return vl::glr::AssemblerResolveAmbiguity<prefixmerge9_pmloop::IntQuestionItem, prefixmerge9_pmloop::ItemToResolve>(type, candidates, cppTypeName);
 		case PrefixMerge9_PmLoopClasses::Item:
 			return vl::glr::AssemblerResolveAmbiguity<prefixmerge9_pmloop::Item, prefixmerge9_pmloop::ItemToResolve>(type, candidates, cppTypeName);
 		case PrefixMerge9_PmLoopClasses::ItemToResolve:
