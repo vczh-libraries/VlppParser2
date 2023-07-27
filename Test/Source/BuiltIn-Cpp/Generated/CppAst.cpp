@@ -12,7 +12,12 @@ namespace cpp_parser
 Visitor Pattern Implementation
 ***********************************************************************/
 
-	void CppDeclaration::Accept(CppTypeOrExprOrOthers::IVisitor* visitor)
+	void CppDeclarationBase::Accept(CppTypeOrExprOrOthers::IVisitor* visitor)
+	{
+		visitor->Visit(this);
+	}
+
+	void CppDeclaration::Accept(CppDeclarationBase::IVisitor* visitor)
 	{
 		visitor->Visit(this);
 	}
@@ -173,6 +178,11 @@ Visitor Pattern Implementation
 	}
 
 	void CppDeclaratorFunctionPart::Accept(CppDeclaratorFunctionPartBase::IVisitor* visitor)
+	{
+		visitor->Visit(this);
+	}
+
+	void CppDeclarator::Accept(CppDeclaratorBase::IVisitor* visitor)
 	{
 		visitor->Visit(this);
 	}
@@ -377,12 +387,22 @@ Visitor Pattern Implementation
 		visitor->Visit(this);
 	}
 
+	void CppDeclarationBaseToResolve::Accept(CppDeclarationBase::IVisitor* visitor)
+	{
+		visitor->Visit(this);
+	}
+
 	void CppTypeOrExprToResolve::Accept(CppTypeOrExpr::IVisitor* visitor)
 	{
 		visitor->Visit(this);
 	}
 
 	void CppDeclaratorFunctionPartBaseToResolve::Accept(CppDeclaratorFunctionPartBase::IVisitor* visitor)
+	{
+		visitor->Visit(this);
+	}
+
+	void CppDeclaratorBaseToResolve::Accept(CppDeclaratorBase::IVisitor* visitor)
 	{
 		visitor->Visit(this);
 	}
@@ -403,6 +423,8 @@ namespace vl::reflection::description
 
 	IMPL_TYPE_INFO_RENAME(cpp_parser::CppTypeOrExprOrOthers, cpp_parser::CppTypeOrExprOrOthers)
 	IMPL_TYPE_INFO_RENAME(cpp_parser::CppTypeOrExprOrOthers::IVisitor, cpp_parser::CppTypeOrExprOrOthers::IVisitor)
+	IMPL_TYPE_INFO_RENAME(cpp_parser::CppDeclarationBase, cpp_parser::CppDeclarationBase)
+	IMPL_TYPE_INFO_RENAME(cpp_parser::CppDeclarationBase::IVisitor, cpp_parser::CppDeclarationBase::IVisitor)
 	IMPL_TYPE_INFO_RENAME(cpp_parser::CppDeclaration, cpp_parser::CppDeclaration)
 	IMPL_TYPE_INFO_RENAME(cpp_parser::CppDeclaration::IVisitor, cpp_parser::CppDeclaration::IVisitor)
 	IMPL_TYPE_INFO_RENAME(cpp_parser::CppTypeOrExpr, cpp_parser::CppTypeOrExpr)
@@ -465,6 +487,8 @@ namespace vl::reflection::description
 	IMPL_TYPE_INFO_RENAME(cpp_parser::CppDeclaratorFunctionPartBase::IVisitor, cpp_parser::CppDeclaratorFunctionPartBase::IVisitor)
 	IMPL_TYPE_INFO_RENAME(cpp_parser::CppDeclaratorFunctionPart, cpp_parser::CppDeclaratorFunctionPart)
 	IMPL_TYPE_INFO_RENAME(cpp_parser::CppDeclaratorArrayPart, cpp_parser::CppDeclaratorArrayPart)
+	IMPL_TYPE_INFO_RENAME(cpp_parser::CppDeclaratorBase, cpp_parser::CppDeclaratorBase)
+	IMPL_TYPE_INFO_RENAME(cpp_parser::CppDeclaratorBase::IVisitor, cpp_parser::CppDeclaratorBase::IVisitor)
 	IMPL_TYPE_INFO_RENAME(cpp_parser::CppDeclarator, cpp_parser::CppDeclarator)
 	IMPL_TYPE_INFO_RENAME(cpp_parser::CppDeclaratorType, cpp_parser::CppDeclaratorType)
 	IMPL_TYPE_INFO_RENAME(cpp_parser::CppVarInit, cpp_parser::CppVarInit)
@@ -526,8 +550,10 @@ namespace vl::reflection::description
 	IMPL_TYPE_INFO_RENAME(cpp_parser::Cpp__TryStat, cpp_parser::Cpp__TryStat)
 	IMPL_TYPE_INFO_RENAME(cpp_parser::CppFile, cpp_parser::CppFile)
 	IMPL_TYPE_INFO_RENAME(cpp_parser::CppTypeOrExprOrOthersToResolve, cpp_parser::CppTypeOrExprOrOthersToResolve)
+	IMPL_TYPE_INFO_RENAME(cpp_parser::CppDeclarationBaseToResolve, cpp_parser::CppDeclarationBaseToResolve)
 	IMPL_TYPE_INFO_RENAME(cpp_parser::CppTypeOrExprToResolve, cpp_parser::CppTypeOrExprToResolve)
 	IMPL_TYPE_INFO_RENAME(cpp_parser::CppDeclaratorFunctionPartBaseToResolve, cpp_parser::CppDeclaratorFunctionPartBaseToResolve)
+	IMPL_TYPE_INFO_RENAME(cpp_parser::CppDeclaratorBaseToResolve, cpp_parser::CppDeclaratorBaseToResolve)
 	IMPL_TYPE_INFO_RENAME(cpp_parser::CppDeclaratorVariablePartBaseToResolve, cpp_parser::CppDeclaratorVariablePartBaseToResolve)
 	IMPL_TYPE_INFO_RENAME(cpp_parser::CppStatementToResolve, cpp_parser::CppStatementToResolve)
 
@@ -538,8 +564,13 @@ namespace vl::reflection::description
 
 	END_CLASS_MEMBER(cpp_parser::CppTypeOrExprOrOthers)
 
-	BEGIN_CLASS_MEMBER(cpp_parser::CppDeclaration)
+	BEGIN_CLASS_MEMBER(cpp_parser::CppDeclarationBase)
 		CLASS_MEMBER_BASE(cpp_parser::CppTypeOrExprOrOthers)
+
+	END_CLASS_MEMBER(cpp_parser::CppDeclarationBase)
+
+	BEGIN_CLASS_MEMBER(cpp_parser::CppDeclaration)
+		CLASS_MEMBER_BASE(cpp_parser::CppDeclarationBase)
 
 		CLASS_MEMBER_FIELD(keywords)
 	END_CLASS_MEMBER(cpp_parser::CppDeclaration)
@@ -1061,8 +1092,13 @@ namespace vl::reflection::description
 		CLASS_MEMBER_FIELD(argument)
 	END_CLASS_MEMBER(cpp_parser::CppDeclaratorArrayPart)
 
-	BEGIN_CLASS_MEMBER(cpp_parser::CppDeclarator)
+	BEGIN_CLASS_MEMBER(cpp_parser::CppDeclaratorBase)
 		CLASS_MEMBER_BASE(vl::glr::ParsingAstBase)
+
+	END_CLASS_MEMBER(cpp_parser::CppDeclaratorBase)
+
+	BEGIN_CLASS_MEMBER(cpp_parser::CppDeclarator)
+		CLASS_MEMBER_BASE(cpp_parser::CppDeclaratorBase)
 
 		CLASS_MEMBER_CONSTRUCTOR(vl::Ptr<cpp_parser::CppDeclarator>(), NO_PARAMETER)
 
@@ -1548,6 +1584,14 @@ namespace vl::reflection::description
 		CLASS_MEMBER_FIELD(candidates)
 	END_CLASS_MEMBER(cpp_parser::CppTypeOrExprOrOthersToResolve)
 
+	BEGIN_CLASS_MEMBER(cpp_parser::CppDeclarationBaseToResolve)
+		CLASS_MEMBER_BASE(cpp_parser::CppDeclarationBase)
+
+		CLASS_MEMBER_CONSTRUCTOR(vl::Ptr<cpp_parser::CppDeclarationBaseToResolve>(), NO_PARAMETER)
+
+		CLASS_MEMBER_FIELD(candidates)
+	END_CLASS_MEMBER(cpp_parser::CppDeclarationBaseToResolve)
+
 	BEGIN_CLASS_MEMBER(cpp_parser::CppTypeOrExprToResolve)
 		CLASS_MEMBER_BASE(cpp_parser::CppTypeOrExpr)
 
@@ -1563,6 +1607,14 @@ namespace vl::reflection::description
 
 		CLASS_MEMBER_FIELD(candidates)
 	END_CLASS_MEMBER(cpp_parser::CppDeclaratorFunctionPartBaseToResolve)
+
+	BEGIN_CLASS_MEMBER(cpp_parser::CppDeclaratorBaseToResolve)
+		CLASS_MEMBER_BASE(cpp_parser::CppDeclaratorBase)
+
+		CLASS_MEMBER_CONSTRUCTOR(vl::Ptr<cpp_parser::CppDeclaratorBaseToResolve>(), NO_PARAMETER)
+
+		CLASS_MEMBER_FIELD(candidates)
+	END_CLASS_MEMBER(cpp_parser::CppDeclaratorBaseToResolve)
 
 	BEGIN_CLASS_MEMBER(cpp_parser::CppDeclaratorVariablePartBaseToResolve)
 		CLASS_MEMBER_BASE(cpp_parser::CppDeclaratorVariablePartBase)
@@ -1582,11 +1634,16 @@ namespace vl::reflection::description
 
 	BEGIN_INTERFACE_MEMBER(cpp_parser::CppTypeOrExprOrOthers::IVisitor)
 		CLASS_MEMBER_METHOD_OVERLOAD(Visit, {L"node"}, void(cpp_parser::CppTypeOrExprOrOthers::IVisitor::*)(cpp_parser::CppTypeOrExprOrOthersToResolve* node))
-		CLASS_MEMBER_METHOD_OVERLOAD(Visit, {L"node"}, void(cpp_parser::CppTypeOrExprOrOthers::IVisitor::*)(cpp_parser::CppDeclaration* node))
+		CLASS_MEMBER_METHOD_OVERLOAD(Visit, {L"node"}, void(cpp_parser::CppTypeOrExprOrOthers::IVisitor::*)(cpp_parser::CppDeclarationBase* node))
 		CLASS_MEMBER_METHOD_OVERLOAD(Visit, {L"node"}, void(cpp_parser::CppTypeOrExprOrOthers::IVisitor::*)(cpp_parser::CppTypeOrExpr* node))
 		CLASS_MEMBER_METHOD_OVERLOAD(Visit, {L"node"}, void(cpp_parser::CppTypeOrExprOrOthers::IVisitor::*)(cpp_parser::CppGenericArgument* node))
 		CLASS_MEMBER_METHOD_OVERLOAD(Visit, {L"node"}, void(cpp_parser::CppTypeOrExprOrOthers::IVisitor::*)(cpp_parser::CppOrdinaryGenericParameter* node))
 	END_INTERFACE_MEMBER(cpp_parser::CppTypeOrExprOrOthers)
+
+	BEGIN_INTERFACE_MEMBER(cpp_parser::CppDeclarationBase::IVisitor)
+		CLASS_MEMBER_METHOD_OVERLOAD(Visit, {L"node"}, void(cpp_parser::CppDeclarationBase::IVisitor::*)(cpp_parser::CppDeclarationBaseToResolve* node))
+		CLASS_MEMBER_METHOD_OVERLOAD(Visit, {L"node"}, void(cpp_parser::CppDeclarationBase::IVisitor::*)(cpp_parser::CppDeclaration* node))
+	END_INTERFACE_MEMBER(cpp_parser::CppDeclarationBase)
 
 	BEGIN_INTERFACE_MEMBER(cpp_parser::CppDeclaration::IVisitor)
 		CLASS_MEMBER_METHOD_OVERLOAD(Visit, {L"node"}, void(cpp_parser::CppDeclaration::IVisitor::*)(cpp_parser::CppVariablesDeclaration* node))
@@ -1650,6 +1707,11 @@ namespace vl::reflection::description
 		CLASS_MEMBER_METHOD_OVERLOAD(Visit, {L"node"}, void(cpp_parser::CppDeclaratorFunctionPartBase::IVisitor::*)(cpp_parser::CppDeclaratorFunctionPart* node))
 	END_INTERFACE_MEMBER(cpp_parser::CppDeclaratorFunctionPartBase)
 
+	BEGIN_INTERFACE_MEMBER(cpp_parser::CppDeclaratorBase::IVisitor)
+		CLASS_MEMBER_METHOD_OVERLOAD(Visit, {L"node"}, void(cpp_parser::CppDeclaratorBase::IVisitor::*)(cpp_parser::CppDeclaratorBaseToResolve* node))
+		CLASS_MEMBER_METHOD_OVERLOAD(Visit, {L"node"}, void(cpp_parser::CppDeclaratorBase::IVisitor::*)(cpp_parser::CppDeclarator* node))
+	END_INTERFACE_MEMBER(cpp_parser::CppDeclaratorBase)
+
 	BEGIN_INTERFACE_MEMBER(cpp_parser::CppVarInit::IVisitor)
 		CLASS_MEMBER_METHOD_OVERLOAD(Visit, {L"node"}, void(cpp_parser::CppVarInit::IVisitor::*)(cpp_parser::CppVarValueInit* node))
 		CLASS_MEMBER_METHOD_OVERLOAD(Visit, {L"node"}, void(cpp_parser::CppVarInit::IVisitor::*)(cpp_parser::CppVarParanthesisInit* node))
@@ -1700,6 +1762,8 @@ namespace vl::reflection::description
 		{
 			ADD_TYPE_INFO(cpp_parser::CppTypeOrExprOrOthers)
 			ADD_TYPE_INFO(cpp_parser::CppTypeOrExprOrOthers::IVisitor)
+			ADD_TYPE_INFO(cpp_parser::CppDeclarationBase)
+			ADD_TYPE_INFO(cpp_parser::CppDeclarationBase::IVisitor)
 			ADD_TYPE_INFO(cpp_parser::CppDeclaration)
 			ADD_TYPE_INFO(cpp_parser::CppDeclaration::IVisitor)
 			ADD_TYPE_INFO(cpp_parser::CppTypeOrExpr)
@@ -1762,6 +1826,8 @@ namespace vl::reflection::description
 			ADD_TYPE_INFO(cpp_parser::CppDeclaratorFunctionPartBase::IVisitor)
 			ADD_TYPE_INFO(cpp_parser::CppDeclaratorFunctionPart)
 			ADD_TYPE_INFO(cpp_parser::CppDeclaratorArrayPart)
+			ADD_TYPE_INFO(cpp_parser::CppDeclaratorBase)
+			ADD_TYPE_INFO(cpp_parser::CppDeclaratorBase::IVisitor)
 			ADD_TYPE_INFO(cpp_parser::CppDeclarator)
 			ADD_TYPE_INFO(cpp_parser::CppDeclaratorType)
 			ADD_TYPE_INFO(cpp_parser::CppVarInit)
@@ -1823,8 +1889,10 @@ namespace vl::reflection::description
 			ADD_TYPE_INFO(cpp_parser::Cpp__TryStat)
 			ADD_TYPE_INFO(cpp_parser::CppFile)
 			ADD_TYPE_INFO(cpp_parser::CppTypeOrExprOrOthersToResolve)
+			ADD_TYPE_INFO(cpp_parser::CppDeclarationBaseToResolve)
 			ADD_TYPE_INFO(cpp_parser::CppTypeOrExprToResolve)
 			ADD_TYPE_INFO(cpp_parser::CppDeclaratorFunctionPartBaseToResolve)
+			ADD_TYPE_INFO(cpp_parser::CppDeclaratorBaseToResolve)
 			ADD_TYPE_INFO(cpp_parser::CppDeclaratorVariablePartBaseToResolve)
 			ADD_TYPE_INFO(cpp_parser::CppStatementToResolve)
 		}

@@ -15,12 +15,14 @@ namespace cpp_parser::json_visitor
 	class AstVisitor
 		: public vl::glr::JsonVisitorBase
 		, protected virtual CppTypeOrExprOrOthers::IVisitor
+		, protected virtual CppDeclarationBase::IVisitor
 		, protected virtual CppDeclaration::IVisitor
 		, protected virtual CppTypeOrExpr::IVisitor
 		, protected virtual CppExprOnly::IVisitor
 		, protected virtual CppTypeOnly::IVisitor
 		, protected virtual CppIdentifier::IVisitor
 		, protected virtual CppDeclaratorFunctionPartBase::IVisitor
+		, protected virtual CppDeclaratorBase::IVisitor
 		, protected virtual CppVarInit::IVisitor
 		, protected virtual CppDeclaratorVariablePartBase::IVisitor
 		, protected virtual CppStatement::IVisitor
@@ -43,8 +45,12 @@ namespace cpp_parser::json_visitor
 		virtual void PrintFields(CppContinueStat* node);
 		virtual void PrintFields(CppDeclStat* node);
 		virtual void PrintFields(CppDeclaration* node);
+		virtual void PrintFields(CppDeclarationBase* node);
+		virtual void PrintFields(CppDeclarationBaseToResolve* node);
 		virtual void PrintFields(CppDeclarator* node);
 		virtual void PrintFields(CppDeclaratorArrayPart* node);
+		virtual void PrintFields(CppDeclaratorBase* node);
+		virtual void PrintFields(CppDeclaratorBaseToResolve* node);
 		virtual void PrintFields(CppDeclaratorFunctionPart* node);
 		virtual void PrintFields(CppDeclaratorFunctionPartBase* node);
 		virtual void PrintFields(CppDeclaratorFunctionPartBaseToResolve* node);
@@ -132,10 +138,13 @@ namespace cpp_parser::json_visitor
 
 	protected:
 		void Visit(CppTypeOrExprOrOthersToResolve* node) override;
-		void Visit(CppDeclaration* node) override;
+		void Visit(CppDeclarationBase* node) override;
 		void Visit(CppTypeOrExpr* node) override;
 		void Visit(CppGenericArgument* node) override;
 		void Visit(CppOrdinaryGenericParameter* node) override;
+
+		void Visit(CppDeclarationBaseToResolve* node) override;
+		void Visit(CppDeclaration* node) override;
 
 		void Visit(CppVariablesDeclaration* node) override;
 		void Visit(CppClassDeclaration* node) override;
@@ -187,6 +196,9 @@ namespace cpp_parser::json_visitor
 		void Visit(CppDeclaratorFunctionPartBaseToResolve* node) override;
 		void Visit(CppDeclaratorFunctionPart* node) override;
 
+		void Visit(CppDeclaratorBaseToResolve* node) override;
+		void Visit(CppDeclarator* node) override;
+
 		void Visit(CppVarValueInit* node) override;
 		void Visit(CppVarParanthesisInit* node) override;
 		void Visit(CppVarBraceInit* node) override;
@@ -225,6 +237,7 @@ namespace cpp_parser::json_visitor
 		void Print(CppTypeOrExprOrOthers* node);
 		void Print(CppIdentifier* node);
 		void Print(CppDeclaratorFunctionPartBase* node);
+		void Print(CppDeclaratorBase* node);
 		void Print(CppVarInit* node);
 		void Print(CppDeclaratorVariablePartBase* node);
 		void Print(CppStatement* node);
@@ -237,7 +250,6 @@ namespace cpp_parser::json_visitor
 		void Print(CppDeclaratorKeyword* node);
 		void Print(CppFunctionKeyword* node);
 		void Print(CppDeclaratorArrayPart* node);
-		void Print(CppDeclarator* node);
 		void Print(CppVarStatInitItem* node);
 		void Print(CppClassInheritance* node);
 		void Print(CppClassMemberPart* node);

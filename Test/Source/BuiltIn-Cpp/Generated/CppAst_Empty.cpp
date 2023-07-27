@@ -19,7 +19,7 @@ TypeOrExprOrOthersVisitor
 	{
 	}
 
-	void TypeOrExprOrOthersVisitor::Visit(CppDeclaration* node)
+	void TypeOrExprOrOthersVisitor::Visit(CppDeclarationBase* node)
 	{
 		Dispatch(node);
 	}
@@ -35,6 +35,21 @@ TypeOrExprOrOthersVisitor
 
 	void TypeOrExprOrOthersVisitor::Visit(CppOrdinaryGenericParameter* node)
 	{
+	}
+
+/***********************************************************************
+DeclarationBaseVisitor
+***********************************************************************/
+
+	// Visitor Members -----------------------------------
+
+	void DeclarationBaseVisitor::Visit(CppDeclarationBaseToResolve* node)
+	{
+	}
+
+	void DeclarationBaseVisitor::Visit(CppDeclaration* node)
+	{
+		Dispatch(node);
 	}
 
 /***********************************************************************
@@ -248,6 +263,20 @@ DeclaratorFunctionPartBaseVisitor
 	}
 
 	void DeclaratorFunctionPartBaseVisitor::Visit(CppDeclaratorFunctionPart* node)
+	{
+	}
+
+/***********************************************************************
+DeclaratorBaseVisitor
+***********************************************************************/
+
+	// Visitor Members -----------------------------------
+
+	void DeclaratorBaseVisitor::Visit(CppDeclaratorBaseToResolve* node)
+	{
+	}
+
+	void DeclaratorBaseVisitor::Visit(CppDeclarator* node)
 	{
 	}
 
