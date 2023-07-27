@@ -445,7 +445,11 @@ class DeclaratorArrayPart
     var argument : TypeOrExpr;
 }
 
-class Declarator
+@ambiguous class DeclaratorBase
+{
+}
+
+class Declarator : DeclaratorBase
 {
     var keywords : DeclaratorKeyword[];
     var advancedTypes : AdvancedType[];
@@ -453,7 +457,7 @@ class Declarator
     var id : Identifier;
     var arguments : GenericArguments;
     var bitfield : TypeOrExpr;
-    var innerDeclarator : Declarator;
+    var innerDeclarator : DeclaratorBase;
     var funcPart : DeclaratorFunctionPartBase;
     var arrayParts : DeclaratorArrayPart[];
 }
@@ -462,7 +466,7 @@ class DeclaratorType : TypeOrExpr
 {
     var keywords : DeclaratorKeyword[];
     var type : TypeOrExpr;
-    var declarator : Declarator;
+    var declarator : DeclaratorBase;
 }
 
 //////////////////////////////////////////////////////////////////
@@ -506,7 +510,7 @@ class VarStatInit : VarInit
 
 class DeclaratorVariablePart : DeclaratorVariablePartBase
 {
-    var declarator : Declarator;
+    var declarator : DeclaratorBase;
     var init : VarInit;
     var nextVarPart : DeclaratorVariablePartBase;
 }
