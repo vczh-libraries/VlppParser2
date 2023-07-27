@@ -1812,67 +1812,83 @@
 |
 +
 |
-+-------------------------------------------------------------+
-| [265]: <Ending>                                             |
-|   TraceExec: [53]                                           |
-|   InsExec: [154:9]                                          |
-|   ForwardTrace: 208                                         |
-| [1634][_File] END [ENDING]                                  |
-| [AST-INSTRUCTIONS]:                                         |
-|     CSTop: [0] [0 -> -1]                                    |
-|     OSTop: []                                               |
-|     LriStored: []                                           |
-|   - EndObject()                                             |
-|       objRefs: 0                                            |
-|                                                             |
-|     CSTop: []                                               |
-|     OSTop: [0] [56 -> -1]                                   |
-|     LriStored: []                                           |
-|   - LriStore()                                              |
-|                                                             |
-|     CSTop: []                                               |
-|     OSTop: []                                               |
-|     LriStored: [0]                                          |
-|   - DelayFieldAssignment()                                  |
-|       objRefs: 8                                            |
-|       eoInsRefs: 265@8                                      |
-|                                                             |
-|     CSTop: [8] [42 -> -1]                                   |
-|     OSTop: []                                               |
-|     LriStored: [0]                                          |
-|   - BeginObject(File)                                       |
-|       obj:8, new:265@3, top:5@0 bottom:[265@8] dfas:[265@2] |
-|       eoInsRefs: 265@6                                      |
-|                                                             |
-|     CSTop: [8] [43 -> 42]                                   |
-|     OSTop: []                                               |
-|     LriStored: [0]                                          |
-|   - LriFetch()                                              |
-|                                                             |
-|     CSTop: [8] [43 -> 42]                                   |
-|     OSTop: [0] [57 -> -1]                                   |
-|     LriStored: []                                           |
-|   - Field(File::decls)                                      |
-|                                                             |
-|     CSTop: [8] [43 -> 42]                                   |
-|     OSTop: []                                               |
-|     LriStored: []                                           |
-|   - EndObject()                                             |
-|       objRefs: 8                                            |
-|                                                             |
-|     CSTop: [8] [42 -> -1]                                   |
-|     OSTop: [8] [58 -> -1]                                   |
-|     LriStored: []                                           |
-|   - ReopenObject()                                          |
-|                                                             |
-|     CSTop: [8] [42 -> -1]                                   |
-|     OSTop: []                                               |
-|     LriStored: []                                           |
-|   - EndObject()                                             |
-|       objRefs: 8                                            |
-|                                                             |
-|     CSTop: []                                               |
-|     OSTop: [8] [59 -> -1]                                   |
-|     LriStored: []                                           |
-| [PREDECESSORS 264-264]: [264]                               |
-+-------------------------------------------------------------+
++------------------------------------------------------------------------------------------------------------------+
+| [265]: <Leftrec>                                                                                                 |
+|   TraceExec: [53]                                                                                                |
+|   InsExec: [154:8]                                                                                               |
+|   ForwardTrace: 208                                                                                              |
+| [1639][_File]<< !_DeclRejectSemicolon_LRI_Isolated_0 ( lri:(LRI__DeclRejectSemicolon)->_File_LRI_Original @ ) >> |
+| [AST-INSTRUCTIONS]:                                                                                              |
+|     CSTop: [0] [0 -> -1]                                                                                         |
+|     OSTop: []                                                                                                    |
+|     LriStored: []                                                                                                |
+|   - EndObject()                                                                                                  |
+|       objRefs: 0                                                                                                 |
+|                                                                                                                  |
+|     CSTop: []                                                                                                    |
+|     OSTop: [0] [56 -> -1]                                                                                        |
+|     LriStored: []                                                                                                |
+|   - LriStore()                                                                                                   |
+|                                                                                                                  |
+|     CSTop: []                                                                                                    |
+|     OSTop: []                                                                                                    |
+|     LriStored: [0]                                                                                               |
+|   - DelayFieldAssignment()                                                                                       |
+|       objRefs: 8                                                                                                 |
+|       eoInsRefs: 266@0                                                                                           |
+|                                                                                                                  |
+|     CSTop: [8] [42 -> -1]                                                                                        |
+|     OSTop: []                                                                                                    |
+|     LriStored: [0]                                                                                               |
+|   - BeginObject(File)                                                                                            |
+|       obj:8, new:265@3, top:5@0 bottom:[266@0] dfas:[265@2]                                                      |
+|       eoInsRefs: 265@6                                                                                           |
+|                                                                                                                  |
+|     CSTop: [8] [43 -> 42]                                                                                        |
+|     OSTop: []                                                                                                    |
+|     LriStored: [0]                                                                                               |
+|   - LriFetch()                                                                                                   |
+|                                                                                                                  |
+|     CSTop: [8] [43 -> 42]                                                                                        |
+|     OSTop: [0] [57 -> -1]                                                                                        |
+|     LriStored: []                                                                                                |
+|   - Field(File::decls)                                                                                           |
+|                                                                                                                  |
+|     CSTop: [8] [43 -> 42]                                                                                        |
+|     OSTop: []                                                                                                    |
+|     LriStored: []                                                                                                |
+|   - EndObject()                                                                                                  |
+|       objRefs: 8                                                                                                 |
+|                                                                                                                  |
+|     CSTop: [8] [42 -> -1]                                                                                        |
+|     OSTop: [8] [58 -> -1]                                                                                        |
+|     LriStored: []                                                                                                |
+|   - ReopenObject()                                                                                               |
+|                                                                                                                  |
+|     CSTop: [8] [42 -> -1]                                                                                        |
+|     OSTop: []                                                                                                    |
+|     LriStored: []                                                                                                |
+| [PREDECESSORS 264-264]: [264]                                                                                    |
+| [SUCCESORS 266-266]: [266]                                                                                       |
++------------------------------------------------------------------------------------------------------------------+
+|
++
+|
++-------------------------------+
+| [266]: <Ending>               |
+|   TraceExec: [54]             |
+|   InsExec: [162:1]            |
+|   ForwardTrace: 208           |
+| [1634][_File] END [ENDING]    |
+| [AST-INSTRUCTIONS]:           |
+|     CSTop: [8] [42 -> -1]     |
+|     OSTop: []                 |
+|     LriStored: []             |
+|   - EndObject()               |
+|       objRefs: 8              |
+|                               |
+|     CSTop: []                 |
+|     OSTop: [8] [59 -> -1]     |
+|     LriStored: []             |
+| [PREDECESSORS 265-265]: [265] |
++-------------------------------+
