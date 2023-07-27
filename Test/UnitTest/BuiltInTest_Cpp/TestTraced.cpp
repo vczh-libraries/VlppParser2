@@ -125,9 +125,9 @@ TEST_FILE
 		runParser(L"File", L"AmbiguousGenericParameter", [&]() { return GetCppParser().Parse_File(L"template<typename T = X()> struct S{};"); });
 	});
 
-	TEST_CASE(L"template<> struct S<X()>{};")
+	TEST_CASE(L"struct S<X()>;")
 	{
-		runParser(L"File", L"AmbiguousGenericArgument", [&]() { return GetCppParser().Parse_File(L"template<> struct S<X()>{};"); });
+		runParser(L"File", L"AmbiguousGenericArgument", [&]() { return GetCppParser().Parse_File(L"struct S<X()>;"); });
 	});
 
 	GetCppParser().OnTraceProcessing.Remove(handlerOnTraceProcessing);
