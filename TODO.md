@@ -3,6 +3,15 @@
 ## BuiltIn-Cpp
 
 - Progress
+  - Try to see if it is possible to
+    - Remove `PushReturnStack` last argument.
+    - Remove `ReturnDesc::ruleType`.
+    - Move `ReturnRuleType` from automaton to symbol.
+  - `@ambiguous class X { ... }` when X has members:
+    - Becomes `@ambiguous class XBase{}` and `class X : XBase{ ... }`.
+    - All `X` in field types in AST becomes `XBase`.
+    - Inheritance and syntax do not apply such change.
+    - If a rule is deducted to `X`, change to `XBase`.
   - Generic Declaration unfinished.
 
 ## Next task
