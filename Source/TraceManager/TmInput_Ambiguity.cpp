@@ -32,7 +32,7 @@ AreTwoEndingInputTraceEqual
 			{
 				// two traces equal to each other if
 				//   1) they are in the same state
-				//   2) they have the same executedReturnStack (and therefore the same returnStack)
+				//   2) they have the same executedReturnStack and returnStack
 				//   3) they are attending same competitions
 				//   4) they have the same switchValues
 				//   5) the candidate has an ending input
