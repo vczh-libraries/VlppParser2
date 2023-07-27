@@ -100,6 +100,11 @@ TEST_FILE
 		runParser(L"TypeOrExpr", L"AmbiguousArgument", [&]() { return GetCppParser().Parse_TypeOrExpr(L"void(int(...))"); });
 	});
 
+	TEST_CASE(L"A<B>C;")
+	{
+		runParser(L"Stat", L"AmbiguousStat", [&]() { return GetCppParser().Parse_Stat(L"A<B>C;"); });
+	});
+
 	TEST_CASE(L"class X{};")
 	{
 		runParser(L"File", L"SimpleClass", [&]() { return GetCppParser().Parse_File(L"class X{};"); });
