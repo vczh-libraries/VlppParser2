@@ -148,18 +148,6 @@ namespace cpp_parser::empty_visitor
 	};
 
 	/// <summary>An empty visitor, overriding all abstract methods with empty implementations.</summary>
-	class DeclaratorBaseVisitor : public vl::Object, public CppDeclaratorBase::IVisitor
-	{
-	protected:
-		// Dispatch (virtual) --------------------------------
-
-	public:
-		// Visitor Members -----------------------------------
-		void Visit(CppDeclaratorBaseToResolve* node) override;
-		void Visit(CppDeclarator* node) override;
-	};
-
-	/// <summary>An empty visitor, overriding all abstract methods with empty implementations.</summary>
 	class VarInitVisitor : public vl::Object, public CppVarInit::IVisitor
 	{
 	protected:

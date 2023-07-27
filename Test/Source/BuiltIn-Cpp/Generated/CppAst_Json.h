@@ -22,7 +22,6 @@ namespace cpp_parser::json_visitor
 		, protected virtual CppTypeOnly::IVisitor
 		, protected virtual CppIdentifier::IVisitor
 		, protected virtual CppDeclaratorFunctionPartBase::IVisitor
-		, protected virtual CppDeclaratorBase::IVisitor
 		, protected virtual CppVarInit::IVisitor
 		, protected virtual CppDeclaratorVariablePartBase::IVisitor
 		, protected virtual CppStatement::IVisitor
@@ -49,8 +48,6 @@ namespace cpp_parser::json_visitor
 		virtual void PrintFields(CppDeclarationBaseToResolve* node);
 		virtual void PrintFields(CppDeclarator* node);
 		virtual void PrintFields(CppDeclaratorArrayPart* node);
-		virtual void PrintFields(CppDeclaratorBase* node);
-		virtual void PrintFields(CppDeclaratorBaseToResolve* node);
 		virtual void PrintFields(CppDeclaratorFunctionPart* node);
 		virtual void PrintFields(CppDeclaratorFunctionPartBase* node);
 		virtual void PrintFields(CppDeclaratorFunctionPartBaseToResolve* node);
@@ -196,9 +193,6 @@ namespace cpp_parser::json_visitor
 		void Visit(CppDeclaratorFunctionPartBaseToResolve* node) override;
 		void Visit(CppDeclaratorFunctionPart* node) override;
 
-		void Visit(CppDeclaratorBaseToResolve* node) override;
-		void Visit(CppDeclarator* node) override;
-
 		void Visit(CppVarValueInit* node) override;
 		void Visit(CppVarParanthesisInit* node) override;
 		void Visit(CppVarBraceInit* node) override;
@@ -237,7 +231,6 @@ namespace cpp_parser::json_visitor
 		void Print(CppTypeOrExprOrOthers* node);
 		void Print(CppIdentifier* node);
 		void Print(CppDeclaratorFunctionPartBase* node);
-		void Print(CppDeclaratorBase* node);
 		void Print(CppVarInit* node);
 		void Print(CppDeclaratorVariablePartBase* node);
 		void Print(CppStatement* node);
@@ -250,6 +243,7 @@ namespace cpp_parser::json_visitor
 		void Print(CppDeclaratorKeyword* node);
 		void Print(CppFunctionKeyword* node);
 		void Print(CppDeclaratorArrayPart* node);
+		void Print(CppDeclarator* node);
 		void Print(CppVarStatInitItem* node);
 		void Print(CppClassInheritance* node);
 		void Print(CppClassMemberPart* node);

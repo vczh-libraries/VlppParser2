@@ -301,7 +301,7 @@ MakeDeclarator
 		return *this;
 	}
 
-	MakeDeclarator& MakeDeclarator::innerDeclarator(const vl::Ptr<CppDeclaratorBase>& value)
+	MakeDeclarator& MakeDeclarator::innerDeclarator(const vl::Ptr<CppDeclarator>& value)
 	{
 		node->innerDeclarator = value;
 		return *this;
@@ -326,16 +326,6 @@ MakeDeclaratorArrayPart
 	MakeDeclaratorArrayPart& MakeDeclaratorArrayPart::argument(const vl::Ptr<CppTypeOrExpr>& value)
 	{
 		node->argument = value;
-		return *this;
-	}
-
-/***********************************************************************
-MakeDeclaratorBaseToResolve
-***********************************************************************/
-
-	MakeDeclaratorBaseToResolve& MakeDeclaratorBaseToResolve::candidates(const vl::Ptr<CppDeclaratorBase>& value)
-	{
-		node->candidates.Add(value);
 		return *this;
 	}
 
@@ -391,7 +381,7 @@ MakeDeclaratorKeyword
 MakeDeclaratorType
 ***********************************************************************/
 
-	MakeDeclaratorType& MakeDeclaratorType::declarator(const vl::Ptr<CppDeclaratorBase>& value)
+	MakeDeclaratorType& MakeDeclaratorType::declarator(const vl::Ptr<CppDeclarator>& value)
 	{
 		node->declarator = value;
 		return *this;
@@ -413,7 +403,7 @@ MakeDeclaratorType
 MakeDeclaratorVariablePart
 ***********************************************************************/
 
-	MakeDeclaratorVariablePart& MakeDeclaratorVariablePart::declarator(const vl::Ptr<CppDeclaratorBase>& value)
+	MakeDeclaratorVariablePart& MakeDeclaratorVariablePart::declarator(const vl::Ptr<CppDeclarator>& value)
 	{
 		node->declarator = value;
 		return *this;

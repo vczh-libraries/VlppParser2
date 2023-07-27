@@ -499,22 +499,6 @@ namespace cpp_parser::json_visitor
 		Print(node->argument.Obj());
 		EndField();
 	}
-	void AstVisitor::PrintFields(CppDeclaratorBase* node)
-	{
-	}
-	void AstVisitor::PrintFields(CppDeclaratorBaseToResolve* node)
-	{
-		BeginField(L"candidates");
-		BeginArray();
-		for (auto&& listItem : node->candidates)
-		{
-			BeginArrayItem();
-			Print(listItem.Obj());
-			EndArrayItem();
-		}
-		EndArray();
-		EndField();
-	}
 	void AstVisitor::PrintFields(CppDeclaratorFunctionPart* node)
 	{
 		BeginField(L"deferredType");
@@ -2738,34 +2722,6 @@ namespace cpp_parser::json_visitor
 		EndObject();
 	}
 
-	void AstVisitor::Visit(CppDeclaratorBaseToResolve* node)
-	{
-		if (!node)
-		{
-			WriteNull();
-			return;
-		}
-		BeginObject();
-		WriteType(L"DeclaratorBaseToResolve", node);
-		PrintFields(static_cast<CppDeclaratorBase*>(node));
-		PrintFields(static_cast<CppDeclaratorBaseToResolve*>(node));
-		EndObject();
-	}
-
-	void AstVisitor::Visit(CppDeclarator* node)
-	{
-		if (!node)
-		{
-			WriteNull();
-			return;
-		}
-		BeginObject();
-		WriteType(L"Declarator", node);
-		PrintFields(static_cast<CppDeclaratorBase*>(node));
-		PrintFields(static_cast<CppDeclarator*>(node));
-		EndObject();
-	}
-
 	void AstVisitor::Visit(CppVarValueInit* node)
 	{
 		if (!node)
@@ -3193,16 +3149,6 @@ namespace cpp_parser::json_visitor
 		node->Accept(static_cast<CppDeclaratorFunctionPartBase::IVisitor*>(this));
 	}
 
-	void AstVisitor::Print(CppDeclaratorBase* node)
-	{
-		if (!node)
-		{
-			WriteNull();
-			return;
-		}
-		node->Accept(static_cast<CppDeclaratorBase::IVisitor*>(this));
-	}
-
 	void AstVisitor::Print(CppVarInit* node)
 	{
 		if (!node)
@@ -3344,6 +3290,19 @@ namespace cpp_parser::json_visitor
 		BeginObject();
 		WriteType(L"DeclaratorArrayPart", node);
 		PrintFields(static_cast<CppDeclaratorArrayPart*>(node));
+		EndObject();
+	}
+
+	void AstVisitor::Print(CppDeclarator* node)
+	{
+		if (!node)
+		{
+			WriteNull();
+			return;
+		}
+		BeginObject();
+		WriteType(L"Declarator", node);
+		PrintFields(static_cast<CppDeclarator*>(node));
 		EndObject();
 	}
 

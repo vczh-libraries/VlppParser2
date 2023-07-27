@@ -267,20 +267,6 @@ DeclaratorFunctionPartBaseVisitor
 	}
 
 /***********************************************************************
-DeclaratorBaseVisitor
-***********************************************************************/
-
-	// Visitor Members -----------------------------------
-
-	void DeclaratorBaseVisitor::Visit(CppDeclaratorBaseToResolve* node)
-	{
-	}
-
-	void DeclaratorBaseVisitor::Visit(CppDeclarator* node)
-	{
-	}
-
-/***********************************************************************
 VarInitVisitor
 ***********************************************************************/
 
