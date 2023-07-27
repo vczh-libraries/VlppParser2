@@ -6,7 +6,11 @@
 {
 }
 
-class Declaration : TypeOrExprOrOthers
+@ambiguous class DeclarationBase : TypeOrExprOrOthers
+{
+}
+
+class Declaration : DeclarationBase
 {
     var keywords : DeclaratorKeyword[];
 }
@@ -550,7 +554,7 @@ class ClassInheritance
 class ClassMemberPart
 {
     var accessor : ClassAccessor;
-    var decls : Declaration[];
+    var decls : DeclarationBase[];
 }
 
 class ClassBody
@@ -605,7 +609,7 @@ class EnumDeclaration : Declaration
 class TemplateDeclaration : Declaration
 {
     var genericHeader : GenericHeader;
-    var decl : Declaration;
+    var decl : DeclarationBase;
 }
 
 //////////////////////////////////////////////////////////////////
@@ -620,12 +624,12 @@ class StaticAssertDeclaration : Declaration
 
 class TypedefDeclaration : Declaration
 {
-    var decl : Declaration;
+    var decl : DeclarationBase;
 }
 
 class ExternDeclaration : Declaration
 {
-    var decls : Declaration[];
+    var decls : DeclarationBase[];
 }
 
 class NamespaceName
@@ -636,7 +640,7 @@ class NamespaceName
 class NamespaceDeclaration : Declaration
 {
     var names : NamespaceName[];
-    var decls : Declaration[];
+    var decls : DeclarationBase[];
 }
 
 class UsingNamespaceDeclaration : Declaration
@@ -685,7 +689,7 @@ class ExprStat : Statement
 
 class DeclStat : Statement
 {
-    var decl : Declaration;
+    var decl : DeclarationBase;
 }
 
 class BreakStat : Statement
@@ -802,5 +806,5 @@ class __TryStat : Statement
 
 class File
 {
-    var decls : Declaration[];
+    var decls : DeclarationBase[];
 }
