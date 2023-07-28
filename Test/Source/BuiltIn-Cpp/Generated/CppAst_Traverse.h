@@ -16,6 +16,7 @@ namespace cpp_parser::traverse_visitor
 		: public vl::Object
 		, protected virtual CppTypeOrExprOrOthers::IVisitor
 		, protected virtual CppDeclaration::IVisitor
+		, protected virtual CppDeclarationCommon::IVisitor
 		, protected virtual CppTypeOrExpr::IVisitor
 		, protected virtual CppExprOnly::IVisitor
 		, protected virtual CppTypeOnly::IVisitor
@@ -250,6 +251,7 @@ namespace cpp_parser::traverse_visitor
 
 		void Visit(CppDeclarationToResolve* node) override;
 		void Visit(CppDeclarationCommon* node) override;
+
 		void Visit(CppVariablesDeclaration* node) override;
 		void Visit(CppClassDeclaration* node) override;
 		void Visit(CppEnumDeclaration* node) override;

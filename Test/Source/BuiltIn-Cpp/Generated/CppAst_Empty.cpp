@@ -49,53 +49,60 @@ DeclarationVisitor
 
 	void DeclarationVisitor::Visit(CppDeclarationCommon* node)
 	{
+		Dispatch(node);
 	}
 
-	void DeclarationVisitor::Visit(CppVariablesDeclaration* node)
+/***********************************************************************
+DeclarationCommonVisitor
+***********************************************************************/
+
+	// Visitor Members -----------------------------------
+
+	void DeclarationCommonVisitor::Visit(CppVariablesDeclaration* node)
 	{
 	}
 
-	void DeclarationVisitor::Visit(CppClassDeclaration* node)
+	void DeclarationCommonVisitor::Visit(CppClassDeclaration* node)
 	{
 	}
 
-	void DeclarationVisitor::Visit(CppEnumDeclaration* node)
+	void DeclarationCommonVisitor::Visit(CppEnumDeclaration* node)
 	{
 	}
 
-	void DeclarationVisitor::Visit(CppTemplateDeclaration* node)
+	void DeclarationCommonVisitor::Visit(CppTemplateDeclaration* node)
 	{
 	}
 
-	void DeclarationVisitor::Visit(CppStaticAssertDeclaration* node)
+	void DeclarationCommonVisitor::Visit(CppStaticAssertDeclaration* node)
 	{
 	}
 
-	void DeclarationVisitor::Visit(CppTypedefDeclaration* node)
+	void DeclarationCommonVisitor::Visit(CppTypedefDeclaration* node)
 	{
 	}
 
-	void DeclarationVisitor::Visit(CppExternDeclaration* node)
+	void DeclarationCommonVisitor::Visit(CppExternDeclaration* node)
 	{
 	}
 
-	void DeclarationVisitor::Visit(CppNamespaceDeclaration* node)
+	void DeclarationCommonVisitor::Visit(CppNamespaceDeclaration* node)
 	{
 	}
 
-	void DeclarationVisitor::Visit(CppUsingNamespaceDeclaration* node)
+	void DeclarationCommonVisitor::Visit(CppUsingNamespaceDeclaration* node)
 	{
 	}
 
-	void DeclarationVisitor::Visit(CppUsingValueDeclaration* node)
+	void DeclarationCommonVisitor::Visit(CppUsingValueDeclaration* node)
 	{
 	}
 
-	void DeclarationVisitor::Visit(CppUsingTypeDeclaration* node)
+	void DeclarationCommonVisitor::Visit(CppUsingTypeDeclaration* node)
 	{
 	}
 
-	void DeclarationVisitor::Visit(CppFriendTypeDeclaration* node)
+	void DeclarationCommonVisitor::Visit(CppFriendTypeDeclaration* node)
 	{
 	}
 

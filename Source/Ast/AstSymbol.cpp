@@ -138,6 +138,11 @@ AstClassSymbol
 					return false;
 				}
 
+				if (newBaseClass->derivedClass_Common)
+				{
+					newBaseClass = newBaseClass->derivedClass_Common;
+				}
+
 				List<AstClassSymbol*> visited;
 				visited.Add(newBaseClass);
 				// TODO: (enumerable) foreach:alterable

@@ -33,11 +33,22 @@ namespace cpp_parser::empty_visitor
 	{
 	protected:
 		// Dispatch (virtual) --------------------------------
+		virtual void Dispatch(CppDeclarationCommon* node) = 0;
 
 	public:
 		// Visitor Members -----------------------------------
 		void Visit(CppDeclarationToResolve* node) override;
 		void Visit(CppDeclarationCommon* node) override;
+	};
+
+	/// <summary>An empty visitor, overriding all abstract methods with empty implementations.</summary>
+	class DeclarationCommonVisitor : public vl::Object, public CppDeclarationCommon::IVisitor
+	{
+	protected:
+		// Dispatch (virtual) --------------------------------
+
+	public:
+		// Visitor Members -----------------------------------
 		void Visit(CppVariablesDeclaration* node) override;
 		void Visit(CppClassDeclaration* node) override;
 		void Visit(CppEnumDeclaration* node) override;

@@ -31,6 +31,15 @@ CompileAst
 				{
 					auto symbol = astDefFile->CreateClass(node->name.value, node->name.codeRange);
 					symbol->isPublic = node->attPublic;
+
+					if (node->attAmbiguous)
+					{
+						symbol->CreateDerivedClass_ToResolve(node->name.codeRange);
+						if (node->props.Count() > 0)
+						{
+							symbol->CreateDerivedClass_Common(node->name.codeRange);
+						}
+					}
 				}
 			};
 
@@ -87,15 +96,10 @@ CompileAst
 					auto classSymbol = dynamic_cast<AstClassSymbol*>(astDefFile->Symbols()[node->name.value]);
 					FillClassSymbolBaseClass(node, classSymbol);
 
-					if (node->attAmbiguous)
+					if (node->attAmbiguous && classSymbol->derivedClass_Common)
 					{
-						classSymbol->CreateDerivedClass_ToResolve(node->name.codeRange);
-						if (node->props.Count() > 0)
-						{
-							classSymbol = classSymbol->CreateDerivedClass_Common(node->name.codeRange);
-						}
+						classSymbol = classSymbol->derivedClass_Common;
 					}
-
 					FillClassSymbolProps(node, classSymbol);
 				}
 			};

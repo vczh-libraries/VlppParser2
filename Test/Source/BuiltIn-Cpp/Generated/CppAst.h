@@ -321,6 +321,14 @@ namespace cpp_parser
 
 	};
 
+	class CppTypeOrExprOrOthersToResolve : public CppTypeOrExprOrOthers, vl::reflection::Description<CppTypeOrExprOrOthersToResolve>
+	{
+	public:
+		vl::collections::List<vl::Ptr<CppTypeOrExprOrOthers>> candidates;
+
+		void Accept(CppTypeOrExprOrOthers::IVisitor* visitor) override;
+	};
+
 	class CppDeclaration abstract : public CppTypeOrExprOrOthers, vl::reflection::Description<CppDeclaration>
 	{
 	public:
@@ -329,6 +337,28 @@ namespace cpp_parser
 		public:
 			virtual void Visit(CppDeclarationToResolve* node) = 0;
 			virtual void Visit(CppDeclarationCommon* node) = 0;
+		};
+
+		virtual void Accept(CppDeclaration::IVisitor* visitor) = 0;
+
+
+		void Accept(CppTypeOrExprOrOthers::IVisitor* visitor) override;
+	};
+
+	class CppDeclarationToResolve : public CppDeclaration, vl::reflection::Description<CppDeclarationToResolve>
+	{
+	public:
+		vl::collections::List<vl::Ptr<CppDeclaration>> candidates;
+
+		void Accept(CppDeclaration::IVisitor* visitor) override;
+	};
+
+	class CppDeclarationCommon abstract : public CppDeclaration, vl::reflection::Description<CppDeclarationCommon>
+	{
+	public:
+		class IVisitor : public virtual vl::reflection::IDescriptable, vl::reflection::Description<IVisitor>
+		{
+		public:
 			virtual void Visit(CppVariablesDeclaration* node) = 0;
 			virtual void Visit(CppClassDeclaration* node) = 0;
 			virtual void Visit(CppEnumDeclaration* node) = 0;
@@ -343,10 +373,11 @@ namespace cpp_parser
 			virtual void Visit(CppFriendTypeDeclaration* node) = 0;
 		};
 
-		virtual void Accept(CppDeclaration::IVisitor* visitor) = 0;
+		virtual void Accept(CppDeclarationCommon::IVisitor* visitor) = 0;
 
+		vl::collections::List<vl::Ptr<CppDeclaratorKeyword>> keywords;
 
-		void Accept(CppTypeOrExprOrOthers::IVisitor* visitor) override;
+		void Accept(CppDeclaration::IVisitor* visitor) override;
 	};
 
 	class CppTypeOrExpr abstract : public CppTypeOrExprOrOthers, vl::reflection::Description<CppTypeOrExpr>
@@ -366,6 +397,14 @@ namespace cpp_parser
 
 
 		void Accept(CppTypeOrExprOrOthers::IVisitor* visitor) override;
+	};
+
+	class CppTypeOrExprToResolve : public CppTypeOrExpr, vl::reflection::Description<CppTypeOrExprToResolve>
+	{
+	public:
+		vl::collections::List<vl::Ptr<CppTypeOrExpr>> candidates;
+
+		void Accept(CppTypeOrExpr::IVisitor* visitor) override;
 	};
 
 	class CppExprOnly abstract : public CppTypeOrExpr, vl::reflection::Description<CppExprOnly>
@@ -756,6 +795,25 @@ namespace cpp_parser
 
 	};
 
+	class CppDeclaratorFunctionPartToResolve : public CppDeclaratorFunctionPart, vl::reflection::Description<CppDeclaratorFunctionPartToResolve>
+	{
+	public:
+		vl::collections::List<vl::Ptr<CppDeclaratorFunctionPart>> candidates;
+
+		void Accept(CppDeclaratorFunctionPart::IVisitor* visitor) override;
+	};
+
+	class CppDeclaratorFunctionPartCommon : public CppDeclaratorFunctionPart, vl::reflection::Description<CppDeclaratorFunctionPartCommon>
+	{
+	public:
+		vl::collections::List<vl::Ptr<CppTypeOrExprOrOthers>> parameters;
+		vl::glr::ParsingToken variadic;
+		vl::collections::List<vl::Ptr<CppFunctionKeyword>> keywords;
+		vl::Ptr<CppTypeOrExpr> deferredType;
+
+		void Accept(CppDeclaratorFunctionPart::IVisitor* visitor) override;
+	};
+
 	class CppDeclaratorArrayPart : public vl::glr::ParsingAstBase, vl::reflection::Description<CppDeclaratorArrayPart>
 	{
 	public:
@@ -856,13 +914,31 @@ namespace cpp_parser
 
 	};
 
-	class CppVariablesDeclaration : public CppDeclaration, vl::reflection::Description<CppVariablesDeclaration>
+	class CppDeclaratorVariablePartToResolve : public CppDeclaratorVariablePart, vl::reflection::Description<CppDeclaratorVariablePartToResolve>
+	{
+	public:
+		vl::collections::List<vl::Ptr<CppDeclaratorVariablePart>> candidates;
+
+		void Accept(CppDeclaratorVariablePart::IVisitor* visitor) override;
+	};
+
+	class CppDeclaratorVariablePartCommon : public CppDeclaratorVariablePart, vl::reflection::Description<CppDeclaratorVariablePartCommon>
+	{
+	public:
+		vl::Ptr<CppDeclarator> declarator;
+		vl::Ptr<CppVarInit> init;
+		vl::Ptr<CppDeclaratorVariablePart> nextVarPart;
+
+		void Accept(CppDeclaratorVariablePart::IVisitor* visitor) override;
+	};
+
+	class CppVariablesDeclaration : public CppDeclarationCommon, vl::reflection::Description<CppVariablesDeclaration>
 	{
 	public:
 		vl::Ptr<CppTypeOrExpr> type;
 		vl::Ptr<CppDeclaratorVariablePart> firstVarPart;
 
-		void Accept(CppDeclaration::IVisitor* visitor) override;
+		void Accept(CppDeclarationCommon::IVisitor* visitor) override;
 	};
 
 	class CppClassInheritance : public vl::glr::ParsingAstBase, vl::reflection::Description<CppClassInheritance>
@@ -888,7 +964,7 @@ namespace cpp_parser
 		vl::Ptr<CppDeclaratorVariablePart> firstVarPart;
 	};
 
-	class CppClassDeclaration : public CppDeclaration, vl::reflection::Description<CppClassDeclaration>
+	class CppClassDeclaration : public CppDeclarationCommon, vl::reflection::Description<CppClassDeclaration>
 	{
 	public:
 		CppClassKind kind = CppClassKind::UNDEFINED_ENUM_ITEM_VALUE;
@@ -896,7 +972,7 @@ namespace cpp_parser
 		vl::Ptr<CppGenericArguments> arguments;
 		vl::Ptr<CppClassBody> body;
 
-		void Accept(CppDeclaration::IVisitor* visitor) override;
+		void Accept(CppDeclarationCommon::IVisitor* visitor) override;
 	};
 
 	class CppEnumItem : public vl::glr::ParsingAstBase, vl::reflection::Description<CppEnumItem>
@@ -913,7 +989,7 @@ namespace cpp_parser
 		vl::Ptr<CppDeclaratorVariablePart> firstVarPart;
 	};
 
-	class CppEnumDeclaration : public CppDeclaration, vl::reflection::Description<CppEnumDeclaration>
+	class CppEnumDeclaration : public CppDeclarationCommon, vl::reflection::Description<CppEnumDeclaration>
 	{
 	public:
 		CppEnumKind kind = CppEnumKind::UNDEFINED_ENUM_ITEM_VALUE;
@@ -921,41 +997,41 @@ namespace cpp_parser
 		vl::Ptr<CppTypeOrExpr> type;
 		vl::Ptr<CppEnumBody> body;
 
-		void Accept(CppDeclaration::IVisitor* visitor) override;
+		void Accept(CppDeclarationCommon::IVisitor* visitor) override;
 	};
 
-	class CppTemplateDeclaration : public CppDeclaration, vl::reflection::Description<CppTemplateDeclaration>
+	class CppTemplateDeclaration : public CppDeclarationCommon, vl::reflection::Description<CppTemplateDeclaration>
 	{
 	public:
 		vl::Ptr<CppGenericHeader> genericHeader;
 		vl::Ptr<CppDeclaration> decl;
 
-		void Accept(CppDeclaration::IVisitor* visitor) override;
+		void Accept(CppDeclarationCommon::IVisitor* visitor) override;
 	};
 
-	class CppStaticAssertDeclaration : public CppDeclaration, vl::reflection::Description<CppStaticAssertDeclaration>
+	class CppStaticAssertDeclaration : public CppDeclarationCommon, vl::reflection::Description<CppStaticAssertDeclaration>
 	{
 	public:
 		vl::Ptr<CppTypeOrExpr> expr;
 		vl::Ptr<CppTypeOrExpr> message;
 
-		void Accept(CppDeclaration::IVisitor* visitor) override;
+		void Accept(CppDeclarationCommon::IVisitor* visitor) override;
 	};
 
-	class CppTypedefDeclaration : public CppDeclaration, vl::reflection::Description<CppTypedefDeclaration>
+	class CppTypedefDeclaration : public CppDeclarationCommon, vl::reflection::Description<CppTypedefDeclaration>
 	{
 	public:
 		vl::Ptr<CppDeclaration> decl;
 
-		void Accept(CppDeclaration::IVisitor* visitor) override;
+		void Accept(CppDeclarationCommon::IVisitor* visitor) override;
 	};
 
-	class CppExternDeclaration : public CppDeclaration, vl::reflection::Description<CppExternDeclaration>
+	class CppExternDeclaration : public CppDeclarationCommon, vl::reflection::Description<CppExternDeclaration>
 	{
 	public:
 		vl::collections::List<vl::Ptr<CppDeclaration>> decls;
 
-		void Accept(CppDeclaration::IVisitor* visitor) override;
+		void Accept(CppDeclarationCommon::IVisitor* visitor) override;
 	};
 
 	class CppNamespaceName : public vl::glr::ParsingAstBase, vl::reflection::Description<CppNamespaceName>
@@ -964,47 +1040,47 @@ namespace cpp_parser
 		vl::glr::ParsingToken name;
 	};
 
-	class CppNamespaceDeclaration : public CppDeclaration, vl::reflection::Description<CppNamespaceDeclaration>
+	class CppNamespaceDeclaration : public CppDeclarationCommon, vl::reflection::Description<CppNamespaceDeclaration>
 	{
 	public:
 		vl::collections::List<vl::Ptr<CppNamespaceName>> names;
 		vl::collections::List<vl::Ptr<CppDeclaration>> decls;
 
-		void Accept(CppDeclaration::IVisitor* visitor) override;
+		void Accept(CppDeclarationCommon::IVisitor* visitor) override;
 	};
 
-	class CppUsingNamespaceDeclaration : public CppDeclaration, vl::reflection::Description<CppUsingNamespaceDeclaration>
+	class CppUsingNamespaceDeclaration : public CppDeclarationCommon, vl::reflection::Description<CppUsingNamespaceDeclaration>
 	{
 	public:
 		vl::collections::List<vl::Ptr<CppNamespaceName>> names;
 
-		void Accept(CppDeclaration::IVisitor* visitor) override;
+		void Accept(CppDeclarationCommon::IVisitor* visitor) override;
 	};
 
-	class CppUsingValueDeclaration : public CppDeclaration, vl::reflection::Description<CppUsingValueDeclaration>
+	class CppUsingValueDeclaration : public CppDeclarationCommon, vl::reflection::Description<CppUsingValueDeclaration>
 	{
 	public:
 		vl::glr::ParsingToken typenameKeyword;
 		vl::Ptr<CppQualifiedName> name;
 
-		void Accept(CppDeclaration::IVisitor* visitor) override;
+		void Accept(CppDeclarationCommon::IVisitor* visitor) override;
 	};
 
-	class CppUsingTypeDeclaration : public CppDeclaration, vl::reflection::Description<CppUsingTypeDeclaration>
+	class CppUsingTypeDeclaration : public CppDeclarationCommon, vl::reflection::Description<CppUsingTypeDeclaration>
 	{
 	public:
 		vl::glr::ParsingToken name;
 		vl::Ptr<CppTypeOrExpr> type;
 
-		void Accept(CppDeclaration::IVisitor* visitor) override;
+		void Accept(CppDeclarationCommon::IVisitor* visitor) override;
 	};
 
-	class CppFriendTypeDeclaration : public CppDeclaration, vl::reflection::Description<CppFriendTypeDeclaration>
+	class CppFriendTypeDeclaration : public CppDeclarationCommon, vl::reflection::Description<CppFriendTypeDeclaration>
 	{
 	public:
 		vl::Ptr<CppQualifiedName> type;
 
-		void Accept(CppDeclaration::IVisitor* visitor) override;
+		void Accept(CppDeclarationCommon::IVisitor* visitor) override;
 	};
 
 	class CppStatement abstract : public vl::glr::ParsingAstBase, vl::reflection::Description<CppStatement>
@@ -1037,6 +1113,14 @@ namespace cpp_parser
 
 		virtual void Accept(CppStatement::IVisitor* visitor) = 0;
 
+	};
+
+	class CppStatementToResolve : public CppStatement, vl::reflection::Description<CppStatementToResolve>
+	{
+	public:
+		vl::collections::List<vl::Ptr<CppStatement>> candidates;
+
+		void Accept(CppStatement::IVisitor* visitor) override;
 	};
 
 	class CppEmptyStat : public CppStatement, vl::reflection::Description<CppEmptyStat>
@@ -1245,93 +1329,21 @@ namespace cpp_parser
 	public:
 		vl::collections::List<vl::Ptr<CppDeclaration>> decls;
 	};
-
-	class CppTypeOrExprOrOthersToResolve : public CppTypeOrExprOrOthers, vl::reflection::Description<CppTypeOrExprOrOthersToResolve>
-	{
-	public:
-		vl::collections::List<vl::Ptr<CppTypeOrExprOrOthers>> candidates;
-
-		void Accept(CppTypeOrExprOrOthers::IVisitor* visitor) override;
-	};
-
-	class CppDeclarationToResolve : public CppDeclaration, vl::reflection::Description<CppDeclarationToResolve>
-	{
-	public:
-		vl::collections::List<vl::Ptr<CppDeclaration>> candidates;
-
-		void Accept(CppDeclaration::IVisitor* visitor) override;
-	};
-
-	class CppDeclarationCommon : public CppDeclaration, vl::reflection::Description<CppDeclarationCommon>
-	{
-	public:
-		vl::collections::List<vl::Ptr<CppDeclaratorKeyword>> keywords;
-
-		void Accept(CppDeclaration::IVisitor* visitor) override;
-	};
-
-	class CppTypeOrExprToResolve : public CppTypeOrExpr, vl::reflection::Description<CppTypeOrExprToResolve>
-	{
-	public:
-		vl::collections::List<vl::Ptr<CppTypeOrExpr>> candidates;
-
-		void Accept(CppTypeOrExpr::IVisitor* visitor) override;
-	};
-
-	class CppDeclaratorFunctionPartToResolve : public CppDeclaratorFunctionPart, vl::reflection::Description<CppDeclaratorFunctionPartToResolve>
-	{
-	public:
-		vl::collections::List<vl::Ptr<CppDeclaratorFunctionPart>> candidates;
-
-		void Accept(CppDeclaratorFunctionPart::IVisitor* visitor) override;
-	};
-
-	class CppDeclaratorFunctionPartCommon : public CppDeclaratorFunctionPart, vl::reflection::Description<CppDeclaratorFunctionPartCommon>
-	{
-	public:
-		vl::collections::List<vl::Ptr<CppTypeOrExprOrOthers>> parameters;
-		vl::glr::ParsingToken variadic;
-		vl::collections::List<vl::Ptr<CppFunctionKeyword>> keywords;
-		vl::Ptr<CppTypeOrExpr> deferredType;
-
-		void Accept(CppDeclaratorFunctionPart::IVisitor* visitor) override;
-	};
-
-	class CppDeclaratorVariablePartToResolve : public CppDeclaratorVariablePart, vl::reflection::Description<CppDeclaratorVariablePartToResolve>
-	{
-	public:
-		vl::collections::List<vl::Ptr<CppDeclaratorVariablePart>> candidates;
-
-		void Accept(CppDeclaratorVariablePart::IVisitor* visitor) override;
-	};
-
-	class CppDeclaratorVariablePartCommon : public CppDeclaratorVariablePart, vl::reflection::Description<CppDeclaratorVariablePartCommon>
-	{
-	public:
-		vl::Ptr<CppDeclarator> declarator;
-		vl::Ptr<CppVarInit> init;
-		vl::Ptr<CppDeclaratorVariablePart> nextVarPart;
-
-		void Accept(CppDeclaratorVariablePart::IVisitor* visitor) override;
-	};
-
-	class CppStatementToResolve : public CppStatement, vl::reflection::Description<CppStatementToResolve>
-	{
-	public:
-		vl::collections::List<vl::Ptr<CppStatement>> candidates;
-
-		void Accept(CppStatement::IVisitor* visitor) override;
-	};
 }
 namespace vl::reflection::description
 {
 #ifndef VCZH_DEBUG_NO_REFLECTION
 	DECL_TYPE_INFO(cpp_parser::CppTypeOrExprOrOthers)
 	DECL_TYPE_INFO(cpp_parser::CppTypeOrExprOrOthers::IVisitor)
+	DECL_TYPE_INFO(cpp_parser::CppTypeOrExprOrOthersToResolve)
 	DECL_TYPE_INFO(cpp_parser::CppDeclaration)
 	DECL_TYPE_INFO(cpp_parser::CppDeclaration::IVisitor)
+	DECL_TYPE_INFO(cpp_parser::CppDeclarationToResolve)
+	DECL_TYPE_INFO(cpp_parser::CppDeclarationCommon)
+	DECL_TYPE_INFO(cpp_parser::CppDeclarationCommon::IVisitor)
 	DECL_TYPE_INFO(cpp_parser::CppTypeOrExpr)
 	DECL_TYPE_INFO(cpp_parser::CppTypeOrExpr::IVisitor)
+	DECL_TYPE_INFO(cpp_parser::CppTypeOrExprToResolve)
 	DECL_TYPE_INFO(cpp_parser::CppExprOnly)
 	DECL_TYPE_INFO(cpp_parser::CppExprOnly::IVisitor)
 	DECL_TYPE_INFO(cpp_parser::CppTypeOnly)
@@ -1388,6 +1400,8 @@ namespace vl::reflection::description
 	DECL_TYPE_INFO(cpp_parser::CppFunctionKeyword)
 	DECL_TYPE_INFO(cpp_parser::CppDeclaratorFunctionPart)
 	DECL_TYPE_INFO(cpp_parser::CppDeclaratorFunctionPart::IVisitor)
+	DECL_TYPE_INFO(cpp_parser::CppDeclaratorFunctionPartToResolve)
+	DECL_TYPE_INFO(cpp_parser::CppDeclaratorFunctionPartCommon)
 	DECL_TYPE_INFO(cpp_parser::CppDeclaratorArrayPart)
 	DECL_TYPE_INFO(cpp_parser::CppDeclarator)
 	DECL_TYPE_INFO(cpp_parser::CppDeclaratorType)
@@ -1400,6 +1414,8 @@ namespace vl::reflection::description
 	DECL_TYPE_INFO(cpp_parser::CppVarStatInit)
 	DECL_TYPE_INFO(cpp_parser::CppDeclaratorVariablePart)
 	DECL_TYPE_INFO(cpp_parser::CppDeclaratorVariablePart::IVisitor)
+	DECL_TYPE_INFO(cpp_parser::CppDeclaratorVariablePartToResolve)
+	DECL_TYPE_INFO(cpp_parser::CppDeclaratorVariablePartCommon)
 	DECL_TYPE_INFO(cpp_parser::CppVariablesDeclaration)
 	DECL_TYPE_INFO(cpp_parser::CppClassKind)
 	DECL_TYPE_INFO(cpp_parser::CppClassAccessor)
@@ -1423,6 +1439,7 @@ namespace vl::reflection::description
 	DECL_TYPE_INFO(cpp_parser::CppFriendTypeDeclaration)
 	DECL_TYPE_INFO(cpp_parser::CppStatement)
 	DECL_TYPE_INFO(cpp_parser::CppStatement::IVisitor)
+	DECL_TYPE_INFO(cpp_parser::CppStatementToResolve)
 	DECL_TYPE_INFO(cpp_parser::CppEmptyStat)
 	DECL_TYPE_INFO(cpp_parser::CppBlockStat)
 	DECL_TYPE_INFO(cpp_parser::CppExprStat)
@@ -1448,15 +1465,6 @@ namespace vl::reflection::description
 	DECL_TYPE_INFO(cpp_parser::CppTryStat)
 	DECL_TYPE_INFO(cpp_parser::Cpp__TryStat)
 	DECL_TYPE_INFO(cpp_parser::CppFile)
-	DECL_TYPE_INFO(cpp_parser::CppTypeOrExprOrOthersToResolve)
-	DECL_TYPE_INFO(cpp_parser::CppDeclarationToResolve)
-	DECL_TYPE_INFO(cpp_parser::CppDeclarationCommon)
-	DECL_TYPE_INFO(cpp_parser::CppTypeOrExprToResolve)
-	DECL_TYPE_INFO(cpp_parser::CppDeclaratorFunctionPartToResolve)
-	DECL_TYPE_INFO(cpp_parser::CppDeclaratorFunctionPartCommon)
-	DECL_TYPE_INFO(cpp_parser::CppDeclaratorVariablePartToResolve)
-	DECL_TYPE_INFO(cpp_parser::CppDeclaratorVariablePartCommon)
-	DECL_TYPE_INFO(cpp_parser::CppStatementToResolve)
 
 #ifdef VCZH_DESCRIPTABLEOBJECT_WITH_METADATA
 
@@ -1499,6 +1507,9 @@ namespace vl::reflection::description
 			INVOKE_INTERFACE_PROXY(Visit, node);
 		}
 
+	END_INTERFACE_PROXY(cpp_parser::CppDeclaration::IVisitor)
+
+	BEGIN_INTERFACE_PROXY_NOPARENT_SHAREDPTR(cpp_parser::CppDeclarationCommon::IVisitor)
 		void Visit(cpp_parser::CppVariablesDeclaration* node) override
 		{
 			INVOKE_INTERFACE_PROXY(Visit, node);
@@ -1559,7 +1570,7 @@ namespace vl::reflection::description
 			INVOKE_INTERFACE_PROXY(Visit, node);
 		}
 
-	END_INTERFACE_PROXY(cpp_parser::CppDeclaration::IVisitor)
+	END_INTERFACE_PROXY(cpp_parser::CppDeclarationCommon::IVisitor)
 
 	BEGIN_INTERFACE_PROXY_NOPARENT_SHAREDPTR(cpp_parser::CppTypeOrExpr::IVisitor)
 		void Visit(cpp_parser::CppTypeOrExprToResolve* node) override

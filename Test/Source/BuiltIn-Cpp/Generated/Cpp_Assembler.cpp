@@ -48,8 +48,6 @@ CppAstInsReceiver : public vl::glr::AstInsReceiverBase
 			return vl::Ptr(new cpp_parser::CppContinueStat);
 		case CppClasses::DeclStat:
 			return vl::Ptr(new cpp_parser::CppDeclStat);
-		case CppClasses::DeclarationCommon:
-			return vl::Ptr(new cpp_parser::CppDeclarationCommon);
 		case CppClasses::DeclarationToResolve:
 			return vl::Ptr(new cpp_parser::CppDeclarationToResolve);
 		case CppClasses::Declarator:
