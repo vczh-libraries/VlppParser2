@@ -183,6 +183,7 @@ CollectRewritingTargets
 							// when a rule has
 							//   no direct prefix_merge clause
 							//   only one clause which starts with prefix_merge clause
+							//   such clause is not a simple use clause
 							// skip rewriting it
 							if (!vContext.directPmClauses.Keys().Contains(ruleSymbol))
 							{
@@ -197,9 +198,15 @@ CollectRewritingTargets
 									{
 										if (vContext.indirectPmClauses.Keys().Contains(startRule))
 										{
+											if (vContext.simpleUseClauseToReferencedRules.Keys().Contains(clause.Obj()))
+											{
+												goto DO_NOT_SKIP;
+											}
+
 											if (!found)
 											{
 												found = true;
+												break;
 											}
 											else
 											{
