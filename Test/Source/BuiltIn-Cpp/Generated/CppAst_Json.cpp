@@ -415,6 +415,9 @@ namespace cpp_parser::json_visitor
 	}
 	void AstVisitor::PrintFields(CppDeclaration* node)
 	{
+	}
+	void AstVisitor::PrintFields(CppDeclarationCommon* node)
+	{
 		BeginField(L"keywords");
 		BeginArray();
 		for (auto&& listItem : node->keywords)
@@ -498,6 +501,9 @@ namespace cpp_parser::json_visitor
 	}
 	void AstVisitor::PrintFields(CppDeclaratorFunctionPart* node)
 	{
+	}
+	void AstVisitor::PrintFields(CppDeclaratorFunctionPartCommon* node)
+	{
 		BeginField(L"deferredType");
 		Print(node->deferredType.Obj());
 		EndField();
@@ -564,6 +570,9 @@ namespace cpp_parser::json_visitor
 		EndField();
 	}
 	void AstVisitor::PrintFields(CppDeclaratorVariablePart* node)
+	{
+	}
+	void AstVisitor::PrintFields(CppDeclaratorVariablePartCommon* node)
 	{
 		BeginField(L"declarator");
 		Print(node->declarator.Obj());
@@ -2039,6 +2048,21 @@ namespace cpp_parser::json_visitor
 		EndObject();
 	}
 
+	void AstVisitor::Visit(CppDeclarationCommon* node)
+	{
+		if (!node)
+		{
+			WriteNull();
+			return;
+		}
+		BeginObject();
+		WriteType(L"DeclarationCommon", node);
+		PrintFields(static_cast<CppTypeOrExprOrOthers*>(node));
+		PrintFields(static_cast<CppDeclaration*>(node));
+		PrintFields(static_cast<CppDeclarationCommon*>(node));
+		EndObject();
+	}
+
 	void AstVisitor::Visit(CppVariablesDeclaration* node)
 	{
 		if (!node)
@@ -2682,6 +2706,20 @@ namespace cpp_parser::json_visitor
 		EndObject();
 	}
 
+	void AstVisitor::Visit(CppDeclaratorFunctionPartCommon* node)
+	{
+		if (!node)
+		{
+			WriteNull();
+			return;
+		}
+		BeginObject();
+		WriteType(L"DeclaratorFunctionPartCommon", node);
+		PrintFields(static_cast<CppDeclaratorFunctionPart*>(node));
+		PrintFields(static_cast<CppDeclaratorFunctionPartCommon*>(node));
+		EndObject();
+	}
+
 	void AstVisitor::Visit(CppVarValueInit* node)
 	{
 		if (!node)
@@ -2749,6 +2787,20 @@ namespace cpp_parser::json_visitor
 		WriteType(L"DeclaratorVariablePartToResolve", node);
 		PrintFields(static_cast<CppDeclaratorVariablePart*>(node));
 		PrintFields(static_cast<CppDeclaratorVariablePartToResolve*>(node));
+		EndObject();
+	}
+
+	void AstVisitor::Visit(CppDeclaratorVariablePartCommon* node)
+	{
+		if (!node)
+		{
+			WriteNull();
+			return;
+		}
+		BeginObject();
+		WriteType(L"DeclaratorVariablePartCommon", node);
+		PrintFields(static_cast<CppDeclaratorVariablePart*>(node));
+		PrintFields(static_cast<CppDeclaratorVariablePartCommon*>(node));
 		EndObject();
 	}
 

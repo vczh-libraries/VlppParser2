@@ -37,6 +37,7 @@ namespace cpp_parser::empty_visitor
 	public:
 		// Visitor Members -----------------------------------
 		void Visit(CppDeclarationToResolve* node) override;
+		void Visit(CppDeclarationCommon* node) override;
 		void Visit(CppVariablesDeclaration* node) override;
 		void Visit(CppClassDeclaration* node) override;
 		void Visit(CppEnumDeclaration* node) override;
@@ -132,6 +133,7 @@ namespace cpp_parser::empty_visitor
 	public:
 		// Visitor Members -----------------------------------
 		void Visit(CppDeclaratorFunctionPartToResolve* node) override;
+		void Visit(CppDeclaratorFunctionPartCommon* node) override;
 	};
 
 	/// <summary>An empty visitor, overriding all abstract methods with empty implementations.</summary>
@@ -157,6 +159,7 @@ namespace cpp_parser::empty_visitor
 	public:
 		// Visitor Members -----------------------------------
 		void Visit(CppDeclaratorVariablePartToResolve* node) override;
+		void Visit(CppDeclaratorVariablePartCommon* node) override;
 	};
 
 	/// <summary>An empty visitor, overriding all abstract methods with empty implementations.</summary>

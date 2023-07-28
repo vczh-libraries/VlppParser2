@@ -142,7 +142,6 @@ TEST_FILE
 	GenerateAstFileNames(astManager, output);
 	GenerateSyntaxFileNames(syntaxManager, output);
 
-	Dictionary<WString, WString> files;
 	TEST_CASE(L"CompilerAst")
 	{
 		CompileAst(astManager, astDefFile, astFile);
@@ -151,7 +150,10 @@ TEST_FILE
 		Fill(astDefFile->cppNss, L"cpp_parser");
 		Fill(astDefFile->refNss, L"cpp_parser");
 		astDefFile->classPrefix = L"Cpp";
+
+		Dictionary<WString, WString> files;
 		WriteAstFiles(astManager, output, files);
+		WriteFilesIfChanged(dirGenerated, files);
 	});
 
 	TEST_CASE(L"CompilerLexer")
@@ -159,7 +161,10 @@ TEST_FILE
 		auto lexerInput = File(dirParser / L"Syntax/Lexer.txt").ReadAllTextByBom();
 		CompileLexer(lexerManager, lexerInput);
 		TEST_ASSERT(global.Errors().Count() == 0);
+
+		Dictionary<WString, WString> files;
 		WriteLexerFiles(lexerManager, output, files);
+		WriteFilesIfChanged(dirGenerated, files);
 	});
 
 	TEST_CASE(L"CompilerSyntax")
@@ -196,11 +201,9 @@ TEST_FILE
 			);
 
 		unittest::UnitTest::PrintMessage(L"WriteSyntaxFiles() ...", unittest::UnitTest::MessageKind::Info);
-		WriteSyntaxFiles(syntaxManager, executable, metadata, output, files);
-	});
 
-	if (global.Errors().Count() == 0)
-	{
+		Dictionary<WString, WString> files;
+		WriteSyntaxFiles(syntaxManager, executable, metadata, output, files);
 		WriteFilesIfChanged(dirGenerated, files);
-	}
+	});
 }

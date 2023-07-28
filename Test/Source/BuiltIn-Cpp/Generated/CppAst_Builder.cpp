@@ -177,12 +177,6 @@ MakeClassDeclaration
 		return *this;
 	}
 
-	MakeClassDeclaration& MakeClassDeclaration::keywords(const vl::Ptr<CppDeclaratorKeyword>& value)
-	{
-		node->keywords.Add(value);
-		return *this;
-	}
-
 /***********************************************************************
 MakeClassInheritance
 ***********************************************************************/
@@ -242,10 +236,10 @@ MakeDeclStat
 	}
 
 /***********************************************************************
-MakeDeclaration
+MakeDeclarationCommon
 ***********************************************************************/
 
-	MakeDeclaration& MakeDeclaration::keywords(const vl::Ptr<CppDeclaratorKeyword>& value)
+	MakeDeclarationCommon& MakeDeclarationCommon::keywords(const vl::Ptr<CppDeclaratorKeyword>& value)
 	{
 		node->keywords.Add(value);
 		return *this;
@@ -258,12 +252,6 @@ MakeDeclarationToResolve
 	MakeDeclarationToResolve& MakeDeclarationToResolve::candidates(const vl::Ptr<CppDeclaration>& value)
 	{
 		node->candidates.Add(value);
-		return *this;
-	}
-
-	MakeDeclarationToResolve& MakeDeclarationToResolve::keywords(const vl::Ptr<CppDeclaratorKeyword>& value)
-	{
-		node->keywords.Add(value);
 		return *this;
 	}
 
@@ -336,28 +324,28 @@ MakeDeclaratorArrayPart
 	}
 
 /***********************************************************************
-MakeDeclaratorFunctionPart
+MakeDeclaratorFunctionPartCommon
 ***********************************************************************/
 
-	MakeDeclaratorFunctionPart& MakeDeclaratorFunctionPart::deferredType(const vl::Ptr<CppTypeOrExpr>& value)
+	MakeDeclaratorFunctionPartCommon& MakeDeclaratorFunctionPartCommon::deferredType(const vl::Ptr<CppTypeOrExpr>& value)
 	{
 		node->deferredType = value;
 		return *this;
 	}
 
-	MakeDeclaratorFunctionPart& MakeDeclaratorFunctionPart::keywords(const vl::Ptr<CppFunctionKeyword>& value)
+	MakeDeclaratorFunctionPartCommon& MakeDeclaratorFunctionPartCommon::keywords(const vl::Ptr<CppFunctionKeyword>& value)
 	{
 		node->keywords.Add(value);
 		return *this;
 	}
 
-	MakeDeclaratorFunctionPart& MakeDeclaratorFunctionPart::parameters(const vl::Ptr<CppTypeOrExprOrOthers>& value)
+	MakeDeclaratorFunctionPartCommon& MakeDeclaratorFunctionPartCommon::parameters(const vl::Ptr<CppTypeOrExprOrOthers>& value)
 	{
 		node->parameters.Add(value);
 		return *this;
 	}
 
-	MakeDeclaratorFunctionPart& MakeDeclaratorFunctionPart::variadic(const vl::WString& value)
+	MakeDeclaratorFunctionPartCommon& MakeDeclaratorFunctionPartCommon::variadic(const vl::WString& value)
 	{
 		node->variadic.value = value;
 		return *this;
@@ -370,30 +358,6 @@ MakeDeclaratorFunctionPartToResolve
 	MakeDeclaratorFunctionPartToResolve& MakeDeclaratorFunctionPartToResolve::candidates(const vl::Ptr<CppDeclaratorFunctionPart>& value)
 	{
 		node->candidates.Add(value);
-		return *this;
-	}
-
-	MakeDeclaratorFunctionPartToResolve& MakeDeclaratorFunctionPartToResolve::deferredType(const vl::Ptr<CppTypeOrExpr>& value)
-	{
-		node->deferredType = value;
-		return *this;
-	}
-
-	MakeDeclaratorFunctionPartToResolve& MakeDeclaratorFunctionPartToResolve::keywords(const vl::Ptr<CppFunctionKeyword>& value)
-	{
-		node->keywords.Add(value);
-		return *this;
-	}
-
-	MakeDeclaratorFunctionPartToResolve& MakeDeclaratorFunctionPartToResolve::parameters(const vl::Ptr<CppTypeOrExprOrOthers>& value)
-	{
-		node->parameters.Add(value);
-		return *this;
-	}
-
-	MakeDeclaratorFunctionPartToResolve& MakeDeclaratorFunctionPartToResolve::variadic(const vl::WString& value)
-	{
-		node->variadic.value = value;
 		return *this;
 	}
 
@@ -430,22 +394,22 @@ MakeDeclaratorType
 	}
 
 /***********************************************************************
-MakeDeclaratorVariablePart
+MakeDeclaratorVariablePartCommon
 ***********************************************************************/
 
-	MakeDeclaratorVariablePart& MakeDeclaratorVariablePart::declarator(const vl::Ptr<CppDeclarator>& value)
+	MakeDeclaratorVariablePartCommon& MakeDeclaratorVariablePartCommon::declarator(const vl::Ptr<CppDeclarator>& value)
 	{
 		node->declarator = value;
 		return *this;
 	}
 
-	MakeDeclaratorVariablePart& MakeDeclaratorVariablePart::init(const vl::Ptr<CppVarInit>& value)
+	MakeDeclaratorVariablePartCommon& MakeDeclaratorVariablePartCommon::init(const vl::Ptr<CppVarInit>& value)
 	{
 		node->init = value;
 		return *this;
 	}
 
-	MakeDeclaratorVariablePart& MakeDeclaratorVariablePart::nextVarPart(const vl::Ptr<CppDeclaratorVariablePart>& value)
+	MakeDeclaratorVariablePartCommon& MakeDeclaratorVariablePartCommon::nextVarPart(const vl::Ptr<CppDeclaratorVariablePart>& value)
 	{
 		node->nextVarPart = value;
 		return *this;
@@ -458,24 +422,6 @@ MakeDeclaratorVariablePartToResolve
 	MakeDeclaratorVariablePartToResolve& MakeDeclaratorVariablePartToResolve::candidates(const vl::Ptr<CppDeclaratorVariablePart>& value)
 	{
 		node->candidates.Add(value);
-		return *this;
-	}
-
-	MakeDeclaratorVariablePartToResolve& MakeDeclaratorVariablePartToResolve::declarator(const vl::Ptr<CppDeclarator>& value)
-	{
-		node->declarator = value;
-		return *this;
-	}
-
-	MakeDeclaratorVariablePartToResolve& MakeDeclaratorVariablePartToResolve::init(const vl::Ptr<CppVarInit>& value)
-	{
-		node->init = value;
-		return *this;
-	}
-
-	MakeDeclaratorVariablePartToResolve& MakeDeclaratorVariablePartToResolve::nextVarPart(const vl::Ptr<CppDeclaratorVariablePart>& value)
-	{
-		node->nextVarPart = value;
 		return *this;
 	}
 
@@ -571,12 +517,6 @@ MakeEnumDeclaration
 		return *this;
 	}
 
-	MakeEnumDeclaration& MakeEnumDeclaration::keywords(const vl::Ptr<CppDeclaratorKeyword>& value)
-	{
-		node->keywords.Add(value);
-		return *this;
-	}
-
 /***********************************************************************
 MakeEnumItem
 ***********************************************************************/
@@ -610,12 +550,6 @@ MakeExternDeclaration
 	MakeExternDeclaration& MakeExternDeclaration::decls(const vl::Ptr<CppDeclaration>& value)
 	{
 		node->decls.Add(value);
-		return *this;
-	}
-
-	MakeExternDeclaration& MakeExternDeclaration::keywords(const vl::Ptr<CppDeclaratorKeyword>& value)
-	{
-		node->keywords.Add(value);
 		return *this;
 	}
 
@@ -690,12 +624,6 @@ MakeFriendTypeDeclaration
 	MakeFriendTypeDeclaration& MakeFriendTypeDeclaration::type(const vl::Ptr<CppQualifiedName>& value)
 	{
 		node->type = value;
-		return *this;
-	}
-
-	MakeFriendTypeDeclaration& MakeFriendTypeDeclaration::keywords(const vl::Ptr<CppDeclaratorKeyword>& value)
-	{
-		node->keywords.Add(value);
 		return *this;
 	}
 
@@ -928,12 +856,6 @@ MakeNamespaceDeclaration
 	MakeNamespaceDeclaration& MakeNamespaceDeclaration::names(const vl::Ptr<CppNamespaceName>& value)
 	{
 		node->names.Add(value);
-		return *this;
-	}
-
-	MakeNamespaceDeclaration& MakeNamespaceDeclaration::keywords(const vl::Ptr<CppDeclaratorKeyword>& value)
-	{
-		node->keywords.Add(value);
 		return *this;
 	}
 
@@ -1211,12 +1133,6 @@ MakeStaticAssertDeclaration
 		return *this;
 	}
 
-	MakeStaticAssertDeclaration& MakeStaticAssertDeclaration::keywords(const vl::Ptr<CppDeclaratorKeyword>& value)
-	{
-		node->keywords.Add(value);
-		return *this;
-	}
-
 /***********************************************************************
 MakeStringLiteral
 ***********************************************************************/
@@ -1297,12 +1213,6 @@ MakeTemplateDeclaration
 		return *this;
 	}
 
-	MakeTemplateDeclaration& MakeTemplateDeclaration::keywords(const vl::Ptr<CppDeclaratorKeyword>& value)
-	{
-		node->keywords.Add(value);
-		return *this;
-	}
-
 /***********************************************************************
 MakeThrowExpr
 ***********************************************************************/
@@ -1375,12 +1285,6 @@ MakeTypedefDeclaration
 		return *this;
 	}
 
-	MakeTypedefDeclaration& MakeTypedefDeclaration::keywords(const vl::Ptr<CppDeclaratorKeyword>& value)
-	{
-		node->keywords.Add(value);
-		return *this;
-	}
-
 /***********************************************************************
 MakeUsingNamespaceDeclaration
 ***********************************************************************/
@@ -1388,12 +1292,6 @@ MakeUsingNamespaceDeclaration
 	MakeUsingNamespaceDeclaration& MakeUsingNamespaceDeclaration::names(const vl::Ptr<CppNamespaceName>& value)
 	{
 		node->names.Add(value);
-		return *this;
-	}
-
-	MakeUsingNamespaceDeclaration& MakeUsingNamespaceDeclaration::keywords(const vl::Ptr<CppDeclaratorKeyword>& value)
-	{
-		node->keywords.Add(value);
 		return *this;
 	}
 
@@ -1413,12 +1311,6 @@ MakeUsingTypeDeclaration
 		return *this;
 	}
 
-	MakeUsingTypeDeclaration& MakeUsingTypeDeclaration::keywords(const vl::Ptr<CppDeclaratorKeyword>& value)
-	{
-		node->keywords.Add(value);
-		return *this;
-	}
-
 /***********************************************************************
 MakeUsingValueDeclaration
 ***********************************************************************/
@@ -1432,12 +1324,6 @@ MakeUsingValueDeclaration
 	MakeUsingValueDeclaration& MakeUsingValueDeclaration::typenameKeyword(const vl::WString& value)
 	{
 		node->typenameKeyword.value = value;
-		return *this;
-	}
-
-	MakeUsingValueDeclaration& MakeUsingValueDeclaration::keywords(const vl::Ptr<CppDeclaratorKeyword>& value)
-	{
-		node->keywords.Add(value);
 		return *this;
 	}
 
@@ -1516,12 +1402,6 @@ MakeVariablesDeclaration
 	MakeVariablesDeclaration& MakeVariablesDeclaration::type(const vl::Ptr<CppTypeOrExpr>& value)
 	{
 		node->type = value;
-		return *this;
-	}
-
-	MakeVariablesDeclaration& MakeVariablesDeclaration::keywords(const vl::Ptr<CppDeclaratorKeyword>& value)
-	{
-		node->keywords.Add(value);
 		return *this;
 	}
 

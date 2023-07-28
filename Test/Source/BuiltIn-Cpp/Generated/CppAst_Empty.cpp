@@ -47,6 +47,10 @@ DeclarationVisitor
 	{
 	}
 
+	void DeclarationVisitor::Visit(CppDeclarationCommon* node)
+	{
+	}
+
 	void DeclarationVisitor::Visit(CppVariablesDeclaration* node)
 	{
 	}
@@ -251,6 +255,10 @@ DeclaratorFunctionPartVisitor
 	{
 	}
 
+	void DeclaratorFunctionPartVisitor::Visit(CppDeclaratorFunctionPartCommon* node)
+	{
+	}
+
 /***********************************************************************
 VarInitVisitor
 ***********************************************************************/
@@ -280,6 +288,10 @@ DeclaratorVariablePartVisitor
 	// Visitor Members -----------------------------------
 
 	void DeclaratorVariablePartVisitor::Visit(CppDeclaratorVariablePartToResolve* node)
+	{
+	}
+
+	void DeclaratorVariablePartVisitor::Visit(CppDeclaratorVariablePartCommon* node)
 	{
 	}
 

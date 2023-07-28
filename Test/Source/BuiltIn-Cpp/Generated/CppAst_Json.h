@@ -43,14 +43,17 @@ namespace cpp_parser::json_visitor
 		virtual void PrintFields(CppContinueStat* node);
 		virtual void PrintFields(CppDeclStat* node);
 		virtual void PrintFields(CppDeclaration* node);
+		virtual void PrintFields(CppDeclarationCommon* node);
 		virtual void PrintFields(CppDeclarationToResolve* node);
 		virtual void PrintFields(CppDeclarator* node);
 		virtual void PrintFields(CppDeclaratorArrayPart* node);
 		virtual void PrintFields(CppDeclaratorFunctionPart* node);
+		virtual void PrintFields(CppDeclaratorFunctionPartCommon* node);
 		virtual void PrintFields(CppDeclaratorFunctionPartToResolve* node);
 		virtual void PrintFields(CppDeclaratorKeyword* node);
 		virtual void PrintFields(CppDeclaratorType* node);
 		virtual void PrintFields(CppDeclaratorVariablePart* node);
+		virtual void PrintFields(CppDeclaratorVariablePartCommon* node);
 		virtual void PrintFields(CppDeclaratorVariablePartToResolve* node);
 		virtual void PrintFields(CppDefaultStat* node);
 		virtual void PrintFields(CppDeleteExpr* node);
@@ -137,6 +140,7 @@ namespace cpp_parser::json_visitor
 		void Visit(CppOrdinaryGenericParameter* node) override;
 
 		void Visit(CppDeclarationToResolve* node) override;
+		void Visit(CppDeclarationCommon* node) override;
 		void Visit(CppVariablesDeclaration* node) override;
 		void Visit(CppClassDeclaration* node) override;
 		void Visit(CppEnumDeclaration* node) override;
@@ -185,6 +189,7 @@ namespace cpp_parser::json_visitor
 		void Visit(CppOperatorTypeIdentifier* node) override;
 
 		void Visit(CppDeclaratorFunctionPartToResolve* node) override;
+		void Visit(CppDeclaratorFunctionPartCommon* node) override;
 
 		void Visit(CppVarValueInit* node) override;
 		void Visit(CppVarParanthesisInit* node) override;
@@ -192,6 +197,7 @@ namespace cpp_parser::json_visitor
 		void Visit(CppVarStatInit* node) override;
 
 		void Visit(CppDeclaratorVariablePartToResolve* node) override;
+		void Visit(CppDeclaratorVariablePartCommon* node) override;
 
 		void Visit(CppStatementToResolve* node) override;
 		void Visit(CppEmptyStat* node) override;

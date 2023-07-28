@@ -419,9 +419,9 @@ WriteAstAssemblerCppFile
 								auto current = classSymbol;
 								while (current)
 								{
-									if (current->ambiguousDerivedClass)
+									if (current->derivedClass_ToResolve)
 									{
-										resolvables.Add(classSymbol, current->ambiguousDerivedClass);
+										resolvables.Add(classSymbol, current->derivedClass_ToResolve);
 										break;
 									}
 									current = current->baseClass;

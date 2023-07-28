@@ -53,17 +53,16 @@ CompileAst
 					}
 				}
 
-				void Visit(GlrClass* node) override
+				void FillClassSymbolBaseClass(GlrClass* node, AstClassSymbol* classSymbol)
 				{
-					auto classSymbol = dynamic_cast<AstClassSymbol*>(astDefFile->Symbols()[node->name.value]);
 					if (node->baseClass)
 					{
 						classSymbol->SetBaseClass(node->baseClass.value, node->baseClass.codeRange);
 					}
-					if (node->attAmbiguous)
-					{
-						classSymbol->CreateAmbiguousDerivedClass(node->name.codeRange);
-					}
+				}
+
+				void FillClassSymbolProps(GlrClass* node, AstClassSymbol* classSymbol)
+				{
 					for (auto prop : node->props)
 					{
 						auto propSymbol = classSymbol->CreateProp(prop->name.value, prop->name.codeRange);
@@ -81,6 +80,23 @@ CompileAst
 						default:;
 						}
 					}
+				}
+
+				void Visit(GlrClass* node) override
+				{
+					auto classSymbol = dynamic_cast<AstClassSymbol*>(astDefFile->Symbols()[node->name.value]);
+					FillClassSymbolBaseClass(node, classSymbol);
+
+					if (node->attAmbiguous)
+					{
+						classSymbol->CreateDerivedClass_ToResolve(node->name.codeRange);
+						if (node->props.Count() > 0)
+						{
+							classSymbol = classSymbol->CreateDerivedClass_Common(node->name.codeRange);
+						}
+					}
+
+					FillClassSymbolProps(node, classSymbol);
 				}
 			};
 

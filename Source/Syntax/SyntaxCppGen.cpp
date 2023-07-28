@@ -184,7 +184,7 @@ WriteSyntaxCppFile
 					if (
 						output->classIds.Count() == 0 ||
 						From(output->classIds.Keys())
-							.Where([](auto c) { return c->ambiguousDerivedClass != nullptr; })
+							.Where([](auto c) { return c->derivedClass_ToResolve != nullptr; })
 							.IsEmpty()
 						)
 					{

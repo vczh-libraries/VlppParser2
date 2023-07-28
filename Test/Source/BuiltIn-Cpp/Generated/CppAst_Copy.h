@@ -43,14 +43,17 @@ namespace cpp_parser::copy_visitor
 		void CopyFields(CppContinueStat* from, CppContinueStat* to);
 		void CopyFields(CppDeclStat* from, CppDeclStat* to);
 		void CopyFields(CppDeclaration* from, CppDeclaration* to);
+		void CopyFields(CppDeclarationCommon* from, CppDeclarationCommon* to);
 		void CopyFields(CppDeclarationToResolve* from, CppDeclarationToResolve* to);
 		void CopyFields(CppDeclarator* from, CppDeclarator* to);
 		void CopyFields(CppDeclaratorArrayPart* from, CppDeclaratorArrayPart* to);
 		void CopyFields(CppDeclaratorFunctionPart* from, CppDeclaratorFunctionPart* to);
+		void CopyFields(CppDeclaratorFunctionPartCommon* from, CppDeclaratorFunctionPartCommon* to);
 		void CopyFields(CppDeclaratorFunctionPartToResolve* from, CppDeclaratorFunctionPartToResolve* to);
 		void CopyFields(CppDeclaratorKeyword* from, CppDeclaratorKeyword* to);
 		void CopyFields(CppDeclaratorType* from, CppDeclaratorType* to);
 		void CopyFields(CppDeclaratorVariablePart* from, CppDeclaratorVariablePart* to);
+		void CopyFields(CppDeclaratorVariablePartCommon* from, CppDeclaratorVariablePartCommon* to);
 		void CopyFields(CppDeclaratorVariablePartToResolve* from, CppDeclaratorVariablePartToResolve* to);
 		void CopyFields(CppDefaultStat* from, CppDefaultStat* to);
 		void CopyFields(CppDeleteExpr* from, CppDeleteExpr* to);
@@ -156,6 +159,7 @@ namespace cpp_parser::copy_visitor
 		void Visit(CppOrdinaryGenericParameter* node) override;
 
 		void Visit(CppDeclarationToResolve* node) override;
+		void Visit(CppDeclarationCommon* node) override;
 		void Visit(CppVariablesDeclaration* node) override;
 		void Visit(CppClassDeclaration* node) override;
 		void Visit(CppEnumDeclaration* node) override;
@@ -204,6 +208,7 @@ namespace cpp_parser::copy_visitor
 		void Visit(CppOperatorTypeIdentifier* node) override;
 
 		void Visit(CppDeclaratorFunctionPartToResolve* node) override;
+		void Visit(CppDeclaratorFunctionPartCommon* node) override;
 
 		void Visit(CppVarValueInit* node) override;
 		void Visit(CppVarParanthesisInit* node) override;
@@ -211,6 +216,7 @@ namespace cpp_parser::copy_visitor
 		void Visit(CppVarStatInit* node) override;
 
 		void Visit(CppDeclaratorVariablePartToResolve* node) override;
+		void Visit(CppDeclaratorVariablePartCommon* node) override;
 
 		void Visit(CppStatementToResolve* node) override;
 		void Visit(CppEmptyStat* node) override;
@@ -275,9 +281,12 @@ namespace cpp_parser::copy_visitor
 		vl::Ptr<CppContinueStat> CopyNode(CppContinueStat* node);
 		vl::Ptr<CppDeclStat> CopyNode(CppDeclStat* node);
 		vl::Ptr<CppDeclaration> CopyNode(CppDeclaration* node);
+		vl::Ptr<CppDeclarationCommon> CopyNode(CppDeclarationCommon* node);
 		vl::Ptr<CppDeclarationToResolve> CopyNode(CppDeclarationToResolve* node);
+		vl::Ptr<CppDeclaratorFunctionPartCommon> CopyNode(CppDeclaratorFunctionPartCommon* node);
 		vl::Ptr<CppDeclaratorFunctionPartToResolve> CopyNode(CppDeclaratorFunctionPartToResolve* node);
 		vl::Ptr<CppDeclaratorType> CopyNode(CppDeclaratorType* node);
+		vl::Ptr<CppDeclaratorVariablePartCommon> CopyNode(CppDeclaratorVariablePartCommon* node);
 		vl::Ptr<CppDeclaratorVariablePartToResolve> CopyNode(CppDeclaratorVariablePartToResolve* node);
 		vl::Ptr<CppDefaultStat> CopyNode(CppDefaultStat* node);
 		vl::Ptr<CppDeleteExpr> CopyNode(CppDeleteExpr* node);

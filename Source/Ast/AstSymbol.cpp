@@ -166,11 +166,12 @@ AstClassSymbol
 				return true;
 			}
 
-			AstClassSymbol* AstClassSymbol::CreateAmbiguousDerivedClass(ParsingTextRange codeRange)
+			AstClassSymbol* AstClassSymbol::CreateDerivedClass_ToResolve(ParsingTextRange codeRange)
 			{
-				if (!ambiguousDerivedClass)
+				if (!derivedClass_ToResolve)
 				{
 					auto derived = ownerFile->CreateClass(name + L"ToResolve", codeRange);
+					derived->classType = AstClassType::Generated_ToResolve;
 					derived->baseClass = this;
 					derivedClasses.Add(derived);
 
@@ -178,9 +179,23 @@ AstClassSymbol
 					prop->propType = AstPropType::Array;
 					prop->propSymbol = this;
 
-					ambiguousDerivedClass = derived;
+					derivedClass_ToResolve = derived;
 				}
-				return ambiguousDerivedClass;
+				return derivedClass_ToResolve;
+			}
+
+			AstClassSymbol* AstClassSymbol::CreateDerivedClass_Common(ParsingTextRange codeRange)
+			{
+				if (!derivedClass_Common)
+				{
+					auto derived = ownerFile->CreateClass(name + L"Common", codeRange);
+					derived->classType = AstClassType::Generated_Common;
+					derived->baseClass = this;
+					derivedClasses.Add(derived);
+
+					derivedClass_Common = derived;
+				}
+				return derivedClass_Common;
 			}
 
 			AstClassPropSymbol* AstClassSymbol::CreateProp(const WString& propName, ParsingTextRange codeRange)
