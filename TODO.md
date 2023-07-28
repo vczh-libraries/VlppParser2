@@ -1,10 +1,5 @@
 # TODO
 
-## BuiltIn-Cpp
-
-- Progress
-  - Try delete `RuleDeductToPrefixMergeInNonSimpleUseClause`
-
 ## Next task
 
 - `@ambiguous class X : T { ... }` when X has members:
