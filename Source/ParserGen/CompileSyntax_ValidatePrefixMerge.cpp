@@ -188,19 +188,6 @@ ValidateDeducingPrefixMergeRuleVisitor
 				void ValidateClause(Ptr<GlrClause> clause)
 				{
 					clause->Accept(this);
-					if (result)
-					{
-						for (auto [refName, refRuleSymbol] : *result.Obj())
-						{
-							context.syntaxManager.AddError(
-								ParserErrorType::RuleDeductToPrefixMergeInNonSimpleUseClause,
-								clause->codeRange,
-								ruleSymbol->Name(),
-								refRuleSymbol->Name(),
-								refName->value
-								);
-						}
-					}
 				}
 
 			protected:

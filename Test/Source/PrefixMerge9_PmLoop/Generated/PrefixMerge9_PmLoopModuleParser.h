@@ -18,8 +18,8 @@ namespace prefixmerge9_pmloop
 		_IntItem = 3,
 		_Item = 6,
 		Module = 14,
-		_Item_LRI_Isolated_2 = 18,
-		_Item_LRI_Isolated_3 = 21,
+		_Item_LRI_Isolated_3 = 18,
+		_Item_LRI_Isolated_4 = 21,
 		_IntItem_LRI_Original = 25,
 		_Item_LRI_Original = 29,
 	};

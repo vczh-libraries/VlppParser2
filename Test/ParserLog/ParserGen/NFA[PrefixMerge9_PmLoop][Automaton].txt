@@ -29,32 +29,34 @@
 
 [6][_Item] BEGIN 
 [RULE: 2][CLAUSE: -1]
-	token: "class" -> [20][_Item_LRI_Isolated_2]< "class" @ >
+	token: "class" -> [20][_Item_LRI_Isolated_3]< "class" @ >
 		- DelayFieldAssignment()
 		- BeginObject(ClassItem)
-		> rule: _Item_LRI_Isolated_2 -> [11][_Item]<< !_Item_LRI_Isolated_2 @ ( lri:(LRI__Item)->_Item_LRI_Original | lri:<skip> ) >>
+		> rule: _Item_LRI_Isolated_3 -> [11][_Item]<< !_Item_LRI_Isolated_3 @ ( lri:(LRI__Item)->_Item_LRI_Original | lri:<skip> ) >>
 			+ ReopenObject()
-	token: "class" -> [24][_Item_LRI_Isolated_3]< "class" @ "?" >
+	token: "class" -> [24][_Item_LRI_Isolated_4]< "class" @ "?" >
 		- DelayFieldAssignment()
 		- BeginObject(ClassQuestionItem)
-		> rule: _Item_LRI_Isolated_3 -> [13][_Item]<< !_Item_LRI_Isolated_3 @ ( lri:(LRI__Item)->_Item_LRI_Original | lri:<skip> ) >>
+		> rule: _Item_LRI_Isolated_4 -> [13][_Item]<< !_Item_LRI_Isolated_4 @ ( lri:(LRI__Item)->_Item_LRI_Original | lri:<skip> ) >>
 			+ ReopenObject()
 	token: "int" -> [2][_Int]< "int" @ >
 		- DelayFieldAssignment()
 		- BeginObject(IntItem)
-		> rule: _Int -> [9][_Item]<< !_Int @ ( lri:(LRI__IntItem)->_Item_LRI_Original ) >>
+		> rule: _Int -> [9][_Item]<< !_Int @ ( lri:(LRI__IntItem)->_Item_LRI_Original | lri:<skip> ) >>
 			+ ReopenObject()
 
 [7][_Item] END [ENDING]
 [RULE: 2][CLAUSE: -1]
 
-[8][_Item]<< !_Int ( lri:(LRI__IntItem)->_Item_LRI_Original @ ) >>
+[8][_Item]<< !_Int ( lri:(LRI__IntItem)->_Item_LRI_Original @ | lri:<skip> ) >>
 [RULE: 2][CLAUSE: 0]
 	ending -> [7][_Item] END [ENDING]
 		- EndObject()
 
-[9][_Item]<< !_Int @ ( lri:(LRI__IntItem)->_Item_LRI_Original ) >>
+[9][_Item]<< !_Int @ ( lri:(LRI__IntItem)->_Item_LRI_Original | lri:<skip> ) >>
 [RULE: 2][CLAUSE: 0]
+	ending -> [7][_Item] END [ENDING]
+		- EndObject()
 	token: "," -> [31][_Item_LRI_Original]< _IntItem_LRI_Original "," @ >
 		- EndObject()
 		- LriStore()
@@ -62,7 +64,7 @@
 		- BeginObject(IntCommaItem)
 		- LriFetch()
 		- DiscardValue()
-		> rule: _Item_LRI_Original -> [8][_Item]<< !_Int ( lri:(LRI__IntItem)->_Item_LRI_Original @ ) >>
+		> rule: _Item_LRI_Original -> [8][_Item]<< !_Int ( lri:(LRI__IntItem)->_Item_LRI_Original @ | lri:<skip> ) >>
 			+ ReopenObject()
 	token: "." -> [32][_Item_LRI_Original]< _IntItem_LRI_Original "." @ >
 		- EndObject()
@@ -71,15 +73,29 @@
 		- BeginObject(IntDotItem)
 		- LriFetch()
 		- DiscardValue()
-		> rule: _Item_LRI_Original -> [8][_Item]<< !_Int ( lri:(LRI__IntItem)->_Item_LRI_Original @ ) >>
+		> rule: _Item_LRI_Original -> [8][_Item]<< !_Int ( lri:(LRI__IntItem)->_Item_LRI_Original @ | lri:<skip> ) >>
+			+ ReopenObject()
+	token: "?" -> [35][_Item_LRI_Original]< _Item_LRI_Original "?" @ >
+		- EndObject()
+		- LriStore()
+		- DelayFieldAssignment()
+		- DelayFieldAssignment()
+		- LriFetch()
+		- ReopenObject()
+		- EndObject()
+		- LriStore()
+		- BeginObject(QuestionItem)
+		- LriFetch()
+		- Field(QuestionItem::item)
+		> rule: _Item_LRI_Original -> [8][_Item]<< !_Int ( lri:(LRI__IntItem)->_Item_LRI_Original @ | lri:<skip> ) >>
 			+ ReopenObject()
 
-[10][_Item]<< !_Item_LRI_Isolated_2 ( lri:(LRI__Item)->_Item_LRI_Original @ | lri:<skip> ) >>
+[10][_Item]<< !_Item_LRI_Isolated_3 ( lri:(LRI__Item)->_Item_LRI_Original @ | lri:<skip> ) >>
 [RULE: 2][CLAUSE: 1]
 	ending -> [7][_Item] END [ENDING]
 		- EndObject()
 
-[11][_Item]<< !_Item_LRI_Isolated_2 @ ( lri:(LRI__Item)->_Item_LRI_Original | lri:<skip> ) >>
+[11][_Item]<< !_Item_LRI_Isolated_3 @ ( lri:(LRI__Item)->_Item_LRI_Original | lri:<skip> ) >>
 [RULE: 2][CLAUSE: 1]
 	ending -> [7][_Item] END [ENDING]
 		- EndObject()
@@ -92,15 +108,15 @@
 		- BeginObject(QuestionItem)
 		- LriFetch()
 		- Field(QuestionItem::item)
-		> rule: _Item_LRI_Original -> [10][_Item]<< !_Item_LRI_Isolated_2 ( lri:(LRI__Item)->_Item_LRI_Original @ | lri:<skip> ) >>
+		> rule: _Item_LRI_Original -> [10][_Item]<< !_Item_LRI_Isolated_3 ( lri:(LRI__Item)->_Item_LRI_Original @ | lri:<skip> ) >>
 			+ ReopenObject()
 
-[12][_Item]<< !_Item_LRI_Isolated_3 ( lri:(LRI__Item)->_Item_LRI_Original @ | lri:<skip> ) >>
+[12][_Item]<< !_Item_LRI_Isolated_4 ( lri:(LRI__Item)->_Item_LRI_Original @ | lri:<skip> ) >>
 [RULE: 2][CLAUSE: 2]
 	ending -> [7][_Item] END [ENDING]
 		- EndObject()
 
-[13][_Item]<< !_Item_LRI_Isolated_3 @ ( lri:(LRI__Item)->_Item_LRI_Original | lri:<skip> ) >>
+[13][_Item]<< !_Item_LRI_Isolated_4 @ ( lri:(LRI__Item)->_Item_LRI_Original | lri:<skip> ) >>
 [RULE: 2][CLAUSE: 2]
 	ending -> [7][_Item] END [ENDING]
 		- EndObject()
@@ -113,26 +129,26 @@
 		- BeginObject(QuestionItem)
 		- LriFetch()
 		- Field(QuestionItem::item)
-		> rule: _Item_LRI_Original -> [12][_Item]<< !_Item_LRI_Isolated_3 ( lri:(LRI__Item)->_Item_LRI_Original @ | lri:<skip> ) >>
+		> rule: _Item_LRI_Original -> [12][_Item]<< !_Item_LRI_Isolated_4 ( lri:(LRI__Item)->_Item_LRI_Original @ | lri:<skip> ) >>
 			+ ReopenObject()
 
 [14][Module] BEGIN 
 [RULE: 3][CLAUSE: -1]
-	token: "class" -> [20][_Item_LRI_Isolated_2]< "class" @ >
+	token: "class" -> [20][_Item_LRI_Isolated_3]< "class" @ >
 		- BeginObject(File)
 		- DelayFieldAssignment()
 		- BeginObject(ClassItem)
 		> rule: _Item_LRI_Original -> [16][Module]< _Item_LRI_Original @ { _Item } >
 			+ Field(File::items)
-		> rule: _Item_LRI_Isolated_2 -> [37][_Item_LRI_Original]<< !_Item_LRI_Isolated_2 @ >>
+		> rule: _Item_LRI_Isolated_3 -> [38][_Item_LRI_Original]<< !_Item_LRI_Isolated_3 @ >>
 			+ ReopenObject()
-	token: "class" -> [24][_Item_LRI_Isolated_3]< "class" @ "?" >
+	token: "class" -> [24][_Item_LRI_Isolated_4]< "class" @ "?" >
 		- BeginObject(File)
 		- DelayFieldAssignment()
 		- BeginObject(ClassQuestionItem)
 		> rule: _Item_LRI_Original -> [16][Module]< _Item_LRI_Original @ { _Item } >
 			+ Field(File::items)
-		> rule: _Item_LRI_Isolated_3 -> [38][_Item_LRI_Original]<< !_Item_LRI_Isolated_3 @ >>
+		> rule: _Item_LRI_Isolated_4 -> [39][_Item_LRI_Original]<< !_Item_LRI_Isolated_4 @ >>
 			+ ReopenObject()
 	token: "int" -> [2][_Int]< "int" @ >
 		- BeginObject(File)
@@ -154,6 +170,16 @@
 		> rule: _IntItem_LRI_Original -> [34][_Item_LRI_Original]< _IntItem_LRI_Original @ "." >
 			+ DiscardValue()
 		> rule: _Int -> [27][_IntItem_LRI_Original]<< !_Int @ >>
+	token: "int" -> [2][_Int]< "int" @ >
+		- BeginObject(File)
+		- DelayFieldAssignment()
+		- DelayFieldAssignment()
+		- BeginObject(IntItem)
+		> rule: _Item_LRI_Original -> [16][Module]< _Item_LRI_Original @ { _Item } >
+			+ Field(File::items)
+		> rule: _IntItem_LRI_Original -> [37][_Item_LRI_Original]<< !_IntItem_LRI_Original @ >>
+			+ ReopenObject()
+		> rule: _Int -> [27][_IntItem_LRI_Original]<< !_Int @ >>
 
 [15][Module] END [ENDING]
 [RULE: 3][CLAUSE: -1]
@@ -162,83 +188,83 @@
 [RULE: 3][CLAUSE: 0]
 	ending -> [15][Module] END [ENDING]
 		- EndObject()
-	token: "class" -> [20][_Item_LRI_Isolated_2]< "class" @ >
+	token: "class" -> [20][_Item_LRI_Isolated_3]< "class" @ >
 		- DelayFieldAssignment()
 		- BeginObject(ClassItem)
 		> rule: _Item -> [17][Module]< _Item_LRI_Original { _Item @ } >
 			+ Field(File::items)
-		> rule: _Item_LRI_Isolated_2 -> [11][_Item]<< !_Item_LRI_Isolated_2 @ ( lri:(LRI__Item)->_Item_LRI_Original | lri:<skip> ) >>
+		> rule: _Item_LRI_Isolated_3 -> [11][_Item]<< !_Item_LRI_Isolated_3 @ ( lri:(LRI__Item)->_Item_LRI_Original | lri:<skip> ) >>
 			+ ReopenObject()
-	token: "class" -> [24][_Item_LRI_Isolated_3]< "class" @ "?" >
+	token: "class" -> [24][_Item_LRI_Isolated_4]< "class" @ "?" >
 		- DelayFieldAssignment()
 		- BeginObject(ClassQuestionItem)
 		> rule: _Item -> [17][Module]< _Item_LRI_Original { _Item @ } >
 			+ Field(File::items)
-		> rule: _Item_LRI_Isolated_3 -> [13][_Item]<< !_Item_LRI_Isolated_3 @ ( lri:(LRI__Item)->_Item_LRI_Original | lri:<skip> ) >>
+		> rule: _Item_LRI_Isolated_4 -> [13][_Item]<< !_Item_LRI_Isolated_4 @ ( lri:(LRI__Item)->_Item_LRI_Original | lri:<skip> ) >>
 			+ ReopenObject()
 	token: "int" -> [2][_Int]< "int" @ >
 		- DelayFieldAssignment()
 		- BeginObject(IntItem)
 		> rule: _Item -> [17][Module]< _Item_LRI_Original { _Item @ } >
 			+ Field(File::items)
-		> rule: _Int -> [9][_Item]<< !_Int @ ( lri:(LRI__IntItem)->_Item_LRI_Original ) >>
+		> rule: _Int -> [9][_Item]<< !_Int @ ( lri:(LRI__IntItem)->_Item_LRI_Original | lri:<skip> ) >>
 			+ ReopenObject()
 
 [17][Module]< _Item_LRI_Original { _Item @ } >
 [RULE: 3][CLAUSE: 0]
 	ending -> [15][Module] END [ENDING]
 		- EndObject()
-	token: "class" -> [20][_Item_LRI_Isolated_2]< "class" @ >
+	token: "class" -> [20][_Item_LRI_Isolated_3]< "class" @ >
 		- DelayFieldAssignment()
 		- BeginObject(ClassItem)
 		> rule: _Item -> [17][Module]< _Item_LRI_Original { _Item @ } >
 			+ Field(File::items)
-		> rule: _Item_LRI_Isolated_2 -> [11][_Item]<< !_Item_LRI_Isolated_2 @ ( lri:(LRI__Item)->_Item_LRI_Original | lri:<skip> ) >>
+		> rule: _Item_LRI_Isolated_3 -> [11][_Item]<< !_Item_LRI_Isolated_3 @ ( lri:(LRI__Item)->_Item_LRI_Original | lri:<skip> ) >>
 			+ ReopenObject()
-	token: "class" -> [24][_Item_LRI_Isolated_3]< "class" @ "?" >
+	token: "class" -> [24][_Item_LRI_Isolated_4]< "class" @ "?" >
 		- DelayFieldAssignment()
 		- BeginObject(ClassQuestionItem)
 		> rule: _Item -> [17][Module]< _Item_LRI_Original { _Item @ } >
 			+ Field(File::items)
-		> rule: _Item_LRI_Isolated_3 -> [13][_Item]<< !_Item_LRI_Isolated_3 @ ( lri:(LRI__Item)->_Item_LRI_Original | lri:<skip> ) >>
+		> rule: _Item_LRI_Isolated_4 -> [13][_Item]<< !_Item_LRI_Isolated_4 @ ( lri:(LRI__Item)->_Item_LRI_Original | lri:<skip> ) >>
 			+ ReopenObject()
 	token: "int" -> [2][_Int]< "int" @ >
 		- DelayFieldAssignment()
 		- BeginObject(IntItem)
 		> rule: _Item -> [17][Module]< _Item_LRI_Original { _Item @ } >
 			+ Field(File::items)
-		> rule: _Int -> [9][_Item]<< !_Int @ ( lri:(LRI__IntItem)->_Item_LRI_Original ) >>
+		> rule: _Int -> [9][_Item]<< !_Int @ ( lri:(LRI__IntItem)->_Item_LRI_Original | lri:<skip> ) >>
 			+ ReopenObject()
 
-[18][_Item_LRI_Isolated_2] BEGIN 
+[18][_Item_LRI_Isolated_3] BEGIN 
 [RULE: 4][CLAUSE: -1]
-	token: "class" -> [20][_Item_LRI_Isolated_2]< "class" @ >
+	token: "class" -> [20][_Item_LRI_Isolated_3]< "class" @ >
 		- BeginObject(ClassItem)
 
-[19][_Item_LRI_Isolated_2] END [ENDING]
+[19][_Item_LRI_Isolated_3] END [ENDING]
 [RULE: 4][CLAUSE: -1]
 
-[20][_Item_LRI_Isolated_2]< "class" @ >
+[20][_Item_LRI_Isolated_3]< "class" @ >
 [RULE: 4][CLAUSE: 0]
-	ending -> [19][_Item_LRI_Isolated_2] END [ENDING]
+	ending -> [19][_Item_LRI_Isolated_3] END [ENDING]
 		- EndObject()
 
-[21][_Item_LRI_Isolated_3] BEGIN 
+[21][_Item_LRI_Isolated_4] BEGIN 
 [RULE: 5][CLAUSE: -1]
-	token: "class" -> [24][_Item_LRI_Isolated_3]< "class" @ "?" >
+	token: "class" -> [24][_Item_LRI_Isolated_4]< "class" @ "?" >
 		- BeginObject(ClassQuestionItem)
 
-[22][_Item_LRI_Isolated_3] END [ENDING]
+[22][_Item_LRI_Isolated_4] END [ENDING]
 [RULE: 5][CLAUSE: -1]
 
-[23][_Item_LRI_Isolated_3]< "class" "?" @ >
+[23][_Item_LRI_Isolated_4]< "class" "?" @ >
 [RULE: 5][CLAUSE: 0]
-	ending -> [22][_Item_LRI_Isolated_3] END [ENDING]
+	ending -> [22][_Item_LRI_Isolated_4] END [ENDING]
 		- EndObject()
 
-[24][_Item_LRI_Isolated_3]< "class" @ "?" >
+[24][_Item_LRI_Isolated_4]< "class" @ "?" >
 [RULE: 5][CLAUSE: 0]
-	token: "?" -> [23][_Item_LRI_Isolated_3]< "class" "?" @ >
+	token: "?" -> [23][_Item_LRI_Isolated_4]< "class" "?" @ >
 
 [25][_IntItem_LRI_Original] BEGIN 
 [RULE: 6][CLAUSE: -1]
@@ -262,15 +288,15 @@
 
 [29][_Item_LRI_Original] BEGIN 
 [RULE: 7][CLAUSE: -1]
-	token: "class" -> [20][_Item_LRI_Isolated_2]< "class" @ >
+	token: "class" -> [20][_Item_LRI_Isolated_3]< "class" @ >
 		- DelayFieldAssignment()
 		- BeginObject(ClassItem)
-		> rule: _Item_LRI_Isolated_2 -> [37][_Item_LRI_Original]<< !_Item_LRI_Isolated_2 @ >>
+		> rule: _Item_LRI_Isolated_3 -> [38][_Item_LRI_Original]<< !_Item_LRI_Isolated_3 @ >>
 			+ ReopenObject()
-	token: "class" -> [24][_Item_LRI_Isolated_3]< "class" @ "?" >
+	token: "class" -> [24][_Item_LRI_Isolated_4]< "class" @ "?" >
 		- DelayFieldAssignment()
 		- BeginObject(ClassQuestionItem)
-		> rule: _Item_LRI_Isolated_3 -> [38][_Item_LRI_Original]<< !_Item_LRI_Isolated_3 @ >>
+		> rule: _Item_LRI_Isolated_4 -> [39][_Item_LRI_Original]<< !_Item_LRI_Isolated_4 @ >>
 			+ ReopenObject()
 	token: "int" -> [2][_Int]< "int" @ >
 		- BeginObject(IntCommaItem)
@@ -286,12 +312,19 @@
 		> rule: _IntItem_LRI_Original -> [34][_Item_LRI_Original]< _IntItem_LRI_Original @ "." >
 			+ DiscardValue()
 		> rule: _Int -> [27][_IntItem_LRI_Original]<< !_Int @ >>
+	token: "int" -> [2][_Int]< "int" @ >
+		- DelayFieldAssignment()
+		- DelayFieldAssignment()
+		- BeginObject(IntItem)
+		> rule: _IntItem_LRI_Original -> [37][_Item_LRI_Original]<< !_IntItem_LRI_Original @ >>
+			+ ReopenObject()
+		> rule: _Int -> [27][_IntItem_LRI_Original]<< !_Int @ >>
 
 [30][_Item_LRI_Original] END [ENDING]
 [RULE: 7][CLAUSE: -1]
 
 [31][_Item_LRI_Original]< _IntItem_LRI_Original "," @ >
-[RULE: 7][CLAUSE: 1]
+[RULE: 7][CLAUSE: 2]
 	ending -> [30][_Item_LRI_Original] END [ENDING]
 		- EndObject()
 	leftrec -> [36][_Item_LRI_Original]< _Item_LRI_Original @ "?" >
@@ -302,7 +335,7 @@
 		+ Field(QuestionItem::item)
 
 [32][_Item_LRI_Original]< _IntItem_LRI_Original "." @ >
-[RULE: 7][CLAUSE: 2]
+[RULE: 7][CLAUSE: 3]
 	ending -> [30][_Item_LRI_Original] END [ENDING]
 		- EndObject()
 	leftrec -> [36][_Item_LRI_Original]< _Item_LRI_Original @ "?" >
@@ -313,15 +346,15 @@
 		+ Field(QuestionItem::item)
 
 [33][_Item_LRI_Original]< _IntItem_LRI_Original @ "," >
-[RULE: 7][CLAUSE: 1]
+[RULE: 7][CLAUSE: 2]
 	token: "," -> [31][_Item_LRI_Original]< _IntItem_LRI_Original "," @ >
 
 [34][_Item_LRI_Original]< _IntItem_LRI_Original @ "." >
-[RULE: 7][CLAUSE: 2]
+[RULE: 7][CLAUSE: 3]
 	token: "." -> [32][_Item_LRI_Original]< _IntItem_LRI_Original "." @ >
 
 [35][_Item_LRI_Original]< _Item_LRI_Original "?" @ >
-[RULE: 7][CLAUSE: 5]
+[RULE: 7][CLAUSE: 6]
 	ending -> [30][_Item_LRI_Original] END [ENDING]
 		- EndObject()
 	leftrec -> [36][_Item_LRI_Original]< _Item_LRI_Original @ "?" >
@@ -332,11 +365,11 @@
 		+ Field(QuestionItem::item)
 
 [36][_Item_LRI_Original]< _Item_LRI_Original @ "?" >
-[RULE: 7][CLAUSE: 5]
+[RULE: 7][CLAUSE: 6]
 	token: "?" -> [35][_Item_LRI_Original]< _Item_LRI_Original "?" @ >
 
-[37][_Item_LRI_Original]<< !_Item_LRI_Isolated_2 @ >>
-[RULE: 7][CLAUSE: 3]
+[37][_Item_LRI_Original]<< !_IntItem_LRI_Original @ >>
+[RULE: 7][CLAUSE: 1]
 	ending -> [30][_Item_LRI_Original] END [ENDING]
 		- EndObject()
 	leftrec -> [36][_Item_LRI_Original]< _Item_LRI_Original @ "?" >
@@ -357,7 +390,18 @@
 		- LriFetch()
 		+ Field(QuestionItem::item)
 
-[39][_Item_LRI_Original]lrp:(LRI__Item) @
+[39][_Item_LRI_Original]<< !_Item_LRI_Isolated_4 @ >>
+[RULE: 7][CLAUSE: 5]
+	ending -> [30][_Item_LRI_Original] END [ENDING]
+		- EndObject()
+	leftrec -> [36][_Item_LRI_Original]< _Item_LRI_Original @ "?" >
+		- EndObject()
+		- LriStore()
+		- BeginObject(QuestionItem)
+		- LriFetch()
+		+ Field(QuestionItem::item)
+
+[40][_Item_LRI_Original]lrp:(LRI__Item) @
 [RULE: 7][CLAUSE: 0]
 	ending -> [30][_Item_LRI_Original] END [ENDING]
 	leftrec -> [36][_Item_LRI_Original]< _Item_LRI_Original @ "?" >
