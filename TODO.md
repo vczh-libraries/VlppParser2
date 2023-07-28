@@ -3,9 +3,6 @@
 ## BuiltIn-Cpp
 
 - Progress
-  - When `lri` could end the current rule, `leftrec` into the deepest place instead of `ending` to the ending state of the current rule.
-    - Do not rewrite a rule to LRI if there is only one clause without branches.
-    - Revert `FixLeftRecursionInjectEdge generate Token+LeftRec insead of Token+Ending` if no longer needed.
   - Try delete `RuleDeductToPrefixMergeInNonSimpleUseClause`
 
 ## Next task
