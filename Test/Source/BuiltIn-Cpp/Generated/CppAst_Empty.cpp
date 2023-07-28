@@ -19,7 +19,7 @@ TypeOrExprOrOthersVisitor
 	{
 	}
 
-	void TypeOrExprOrOthersVisitor::Visit(CppDeclarationBase* node)
+	void TypeOrExprOrOthersVisitor::Visit(CppDeclaration* node)
 	{
 		Dispatch(node);
 	}
@@ -38,25 +38,14 @@ TypeOrExprOrOthersVisitor
 	}
 
 /***********************************************************************
-DeclarationBaseVisitor
-***********************************************************************/
-
-	// Visitor Members -----------------------------------
-
-	void DeclarationBaseVisitor::Visit(CppDeclarationBaseToResolve* node)
-	{
-	}
-
-	void DeclarationBaseVisitor::Visit(CppDeclaration* node)
-	{
-		Dispatch(node);
-	}
-
-/***********************************************************************
 DeclarationVisitor
 ***********************************************************************/
 
 	// Visitor Members -----------------------------------
+
+	void DeclarationVisitor::Visit(CppDeclarationToResolve* node)
+	{
+	}
 
 	void DeclarationVisitor::Visit(CppVariablesDeclaration* node)
 	{
@@ -253,16 +242,12 @@ IdentifierVisitor
 	}
 
 /***********************************************************************
-DeclaratorFunctionPartBaseVisitor
+DeclaratorFunctionPartVisitor
 ***********************************************************************/
 
 	// Visitor Members -----------------------------------
 
-	void DeclaratorFunctionPartBaseVisitor::Visit(CppDeclaratorFunctionPartBaseToResolve* node)
-	{
-	}
-
-	void DeclaratorFunctionPartBaseVisitor::Visit(CppDeclaratorFunctionPart* node)
+	void DeclaratorFunctionPartVisitor::Visit(CppDeclaratorFunctionPartToResolve* node)
 	{
 	}
 
@@ -289,16 +274,12 @@ VarInitVisitor
 	}
 
 /***********************************************************************
-DeclaratorVariablePartBaseVisitor
+DeclaratorVariablePartVisitor
 ***********************************************************************/
 
 	// Visitor Members -----------------------------------
 
-	void DeclaratorVariablePartBaseVisitor::Visit(CppDeclaratorVariablePartBaseToResolve* node)
-	{
-	}
-
-	void DeclaratorVariablePartBaseVisitor::Visit(CppDeclaratorVariablePart* node)
+	void DeclaratorVariablePartVisitor::Visit(CppDeclaratorVariablePartToResolve* node)
 	{
 	}
 

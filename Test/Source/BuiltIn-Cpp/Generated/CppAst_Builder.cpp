@@ -131,7 +131,7 @@ MakeCastExpr
 MakeClassBody
 ***********************************************************************/
 
-	MakeClassBody& MakeClassBody::firstVarPart(const vl::Ptr<CppDeclaratorVariablePartBase>& value)
+	MakeClassBody& MakeClassBody::firstVarPart(const vl::Ptr<CppDeclaratorVariablePart>& value)
 	{
 		node->firstVarPart = value;
 		return *this;
@@ -215,7 +215,7 @@ MakeClassMemberPart
 		return *this;
 	}
 
-	MakeClassMemberPart& MakeClassMemberPart::decls(const vl::Ptr<CppDeclarationBase>& value)
+	MakeClassMemberPart& MakeClassMemberPart::decls(const vl::Ptr<CppDeclaration>& value)
 	{
 		node->decls.Add(value);
 		return *this;
@@ -235,7 +235,7 @@ MakeConstType
 MakeDeclStat
 ***********************************************************************/
 
-	MakeDeclStat& MakeDeclStat::decl(const vl::Ptr<CppDeclarationBase>& value)
+	MakeDeclStat& MakeDeclStat::decl(const vl::Ptr<CppDeclaration>& value)
 	{
 		node->decl = value;
 		return *this;
@@ -252,12 +252,18 @@ MakeDeclaration
 	}
 
 /***********************************************************************
-MakeDeclarationBaseToResolve
+MakeDeclarationToResolve
 ***********************************************************************/
 
-	MakeDeclarationBaseToResolve& MakeDeclarationBaseToResolve::candidates(const vl::Ptr<CppDeclarationBase>& value)
+	MakeDeclarationToResolve& MakeDeclarationToResolve::candidates(const vl::Ptr<CppDeclaration>& value)
 	{
 		node->candidates.Add(value);
+		return *this;
+	}
+
+	MakeDeclarationToResolve& MakeDeclarationToResolve::keywords(const vl::Ptr<CppDeclaratorKeyword>& value)
+	{
+		node->keywords.Add(value);
 		return *this;
 	}
 
@@ -289,7 +295,7 @@ MakeDeclarator
 		return *this;
 	}
 
-	MakeDeclarator& MakeDeclarator::funcPart(const vl::Ptr<CppDeclaratorFunctionPartBase>& value)
+	MakeDeclarator& MakeDeclarator::funcPart(const vl::Ptr<CppDeclaratorFunctionPart>& value)
 	{
 		node->funcPart = value;
 		return *this;
@@ -358,12 +364,36 @@ MakeDeclaratorFunctionPart
 	}
 
 /***********************************************************************
-MakeDeclaratorFunctionPartBaseToResolve
+MakeDeclaratorFunctionPartToResolve
 ***********************************************************************/
 
-	MakeDeclaratorFunctionPartBaseToResolve& MakeDeclaratorFunctionPartBaseToResolve::candidates(const vl::Ptr<CppDeclaratorFunctionPartBase>& value)
+	MakeDeclaratorFunctionPartToResolve& MakeDeclaratorFunctionPartToResolve::candidates(const vl::Ptr<CppDeclaratorFunctionPart>& value)
 	{
 		node->candidates.Add(value);
+		return *this;
+	}
+
+	MakeDeclaratorFunctionPartToResolve& MakeDeclaratorFunctionPartToResolve::deferredType(const vl::Ptr<CppTypeOrExpr>& value)
+	{
+		node->deferredType = value;
+		return *this;
+	}
+
+	MakeDeclaratorFunctionPartToResolve& MakeDeclaratorFunctionPartToResolve::keywords(const vl::Ptr<CppFunctionKeyword>& value)
+	{
+		node->keywords.Add(value);
+		return *this;
+	}
+
+	MakeDeclaratorFunctionPartToResolve& MakeDeclaratorFunctionPartToResolve::parameters(const vl::Ptr<CppTypeOrExprOrOthers>& value)
+	{
+		node->parameters.Add(value);
+		return *this;
+	}
+
+	MakeDeclaratorFunctionPartToResolve& MakeDeclaratorFunctionPartToResolve::variadic(const vl::WString& value)
+	{
+		node->variadic.value = value;
 		return *this;
 	}
 
@@ -415,19 +445,37 @@ MakeDeclaratorVariablePart
 		return *this;
 	}
 
-	MakeDeclaratorVariablePart& MakeDeclaratorVariablePart::nextVarPart(const vl::Ptr<CppDeclaratorVariablePartBase>& value)
+	MakeDeclaratorVariablePart& MakeDeclaratorVariablePart::nextVarPart(const vl::Ptr<CppDeclaratorVariablePart>& value)
 	{
 		node->nextVarPart = value;
 		return *this;
 	}
 
 /***********************************************************************
-MakeDeclaratorVariablePartBaseToResolve
+MakeDeclaratorVariablePartToResolve
 ***********************************************************************/
 
-	MakeDeclaratorVariablePartBaseToResolve& MakeDeclaratorVariablePartBaseToResolve::candidates(const vl::Ptr<CppDeclaratorVariablePartBase>& value)
+	MakeDeclaratorVariablePartToResolve& MakeDeclaratorVariablePartToResolve::candidates(const vl::Ptr<CppDeclaratorVariablePart>& value)
 	{
 		node->candidates.Add(value);
+		return *this;
+	}
+
+	MakeDeclaratorVariablePartToResolve& MakeDeclaratorVariablePartToResolve::declarator(const vl::Ptr<CppDeclarator>& value)
+	{
+		node->declarator = value;
+		return *this;
+	}
+
+	MakeDeclaratorVariablePartToResolve& MakeDeclaratorVariablePartToResolve::init(const vl::Ptr<CppVarInit>& value)
+	{
+		node->init = value;
+		return *this;
+	}
+
+	MakeDeclaratorVariablePartToResolve& MakeDeclaratorVariablePartToResolve::nextVarPart(const vl::Ptr<CppDeclaratorVariablePart>& value)
+	{
+		node->nextVarPart = value;
 		return *this;
 	}
 
@@ -483,7 +531,7 @@ MakeDoWhileStat
 MakeEnumBody
 ***********************************************************************/
 
-	MakeEnumBody& MakeEnumBody::firstVarPart(const vl::Ptr<CppDeclaratorVariablePartBase>& value)
+	MakeEnumBody& MakeEnumBody::firstVarPart(const vl::Ptr<CppDeclaratorVariablePart>& value)
 	{
 		node->firstVarPart = value;
 		return *this;
@@ -559,7 +607,7 @@ MakeExprStat
 MakeExternDeclaration
 ***********************************************************************/
 
-	MakeExternDeclaration& MakeExternDeclaration::decls(const vl::Ptr<CppDeclarationBase>& value)
+	MakeExternDeclaration& MakeExternDeclaration::decls(const vl::Ptr<CppDeclaration>& value)
 	{
 		node->decls.Add(value);
 		return *this;
@@ -575,7 +623,7 @@ MakeExternDeclaration
 MakeFile
 ***********************************************************************/
 
-	MakeFile& MakeFile::decls(const vl::Ptr<CppDeclarationBase>& value)
+	MakeFile& MakeFile::decls(const vl::Ptr<CppDeclaration>& value)
 	{
 		node->decls.Add(value);
 		return *this;
@@ -833,7 +881,7 @@ MakeLambdaExpr
 		return *this;
 	}
 
-	MakeLambdaExpr& MakeLambdaExpr::functionHeader(const vl::Ptr<CppDeclaratorFunctionPartBase>& value)
+	MakeLambdaExpr& MakeLambdaExpr::functionHeader(const vl::Ptr<CppDeclaratorFunctionPart>& value)
 	{
 		node->functionHeader = value;
 		return *this;
@@ -871,7 +919,7 @@ MakeNameIdentifier
 MakeNamespaceDeclaration
 ***********************************************************************/
 
-	MakeNamespaceDeclaration& MakeNamespaceDeclaration::decls(const vl::Ptr<CppDeclarationBase>& value)
+	MakeNamespaceDeclaration& MakeNamespaceDeclaration::decls(const vl::Ptr<CppDeclaration>& value)
 	{
 		node->decls.Add(value);
 		return *this;
@@ -1237,7 +1285,7 @@ MakeSysFuncExpr
 MakeTemplateDeclaration
 ***********************************************************************/
 
-	MakeTemplateDeclaration& MakeTemplateDeclaration::decl(const vl::Ptr<CppDeclarationBase>& value)
+	MakeTemplateDeclaration& MakeTemplateDeclaration::decl(const vl::Ptr<CppDeclaration>& value)
 	{
 		node->decl = value;
 		return *this;
@@ -1321,7 +1369,7 @@ MakeTypeOrExprToResolve
 MakeTypedefDeclaration
 ***********************************************************************/
 
-	MakeTypedefDeclaration& MakeTypedefDeclaration::decl(const vl::Ptr<CppDeclarationBase>& value)
+	MakeTypedefDeclaration& MakeTypedefDeclaration::decl(const vl::Ptr<CppDeclaration>& value)
 	{
 		node->decl = value;
 		return *this;
@@ -1459,7 +1507,7 @@ MakeVarValueInit
 MakeVariablesDeclaration
 ***********************************************************************/
 
-	MakeVariablesDeclaration& MakeVariablesDeclaration::firstVarPart(const vl::Ptr<CppDeclaratorVariablePartBase>& value)
+	MakeVariablesDeclaration& MakeVariablesDeclaration::firstVarPart(const vl::Ptr<CppDeclaratorVariablePart>& value)
 	{
 		node->firstVarPart = value;
 		return *this;

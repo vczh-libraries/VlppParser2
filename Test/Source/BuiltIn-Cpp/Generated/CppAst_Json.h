@@ -15,15 +15,14 @@ namespace cpp_parser::json_visitor
 	class AstVisitor
 		: public vl::glr::JsonVisitorBase
 		, protected virtual CppTypeOrExprOrOthers::IVisitor
-		, protected virtual CppDeclarationBase::IVisitor
 		, protected virtual CppDeclaration::IVisitor
 		, protected virtual CppTypeOrExpr::IVisitor
 		, protected virtual CppExprOnly::IVisitor
 		, protected virtual CppTypeOnly::IVisitor
 		, protected virtual CppIdentifier::IVisitor
-		, protected virtual CppDeclaratorFunctionPartBase::IVisitor
+		, protected virtual CppDeclaratorFunctionPart::IVisitor
 		, protected virtual CppVarInit::IVisitor
-		, protected virtual CppDeclaratorVariablePartBase::IVisitor
+		, protected virtual CppDeclaratorVariablePart::IVisitor
 		, protected virtual CppStatement::IVisitor
 		, protected virtual CppForStatConditionPart::IVisitor
 	{
@@ -44,18 +43,15 @@ namespace cpp_parser::json_visitor
 		virtual void PrintFields(CppContinueStat* node);
 		virtual void PrintFields(CppDeclStat* node);
 		virtual void PrintFields(CppDeclaration* node);
-		virtual void PrintFields(CppDeclarationBase* node);
-		virtual void PrintFields(CppDeclarationBaseToResolve* node);
+		virtual void PrintFields(CppDeclarationToResolve* node);
 		virtual void PrintFields(CppDeclarator* node);
 		virtual void PrintFields(CppDeclaratorArrayPart* node);
 		virtual void PrintFields(CppDeclaratorFunctionPart* node);
-		virtual void PrintFields(CppDeclaratorFunctionPartBase* node);
-		virtual void PrintFields(CppDeclaratorFunctionPartBaseToResolve* node);
+		virtual void PrintFields(CppDeclaratorFunctionPartToResolve* node);
 		virtual void PrintFields(CppDeclaratorKeyword* node);
 		virtual void PrintFields(CppDeclaratorType* node);
 		virtual void PrintFields(CppDeclaratorVariablePart* node);
-		virtual void PrintFields(CppDeclaratorVariablePartBase* node);
-		virtual void PrintFields(CppDeclaratorVariablePartBaseToResolve* node);
+		virtual void PrintFields(CppDeclaratorVariablePartToResolve* node);
 		virtual void PrintFields(CppDefaultStat* node);
 		virtual void PrintFields(CppDeleteExpr* node);
 		virtual void PrintFields(CppDoWhileStat* node);
@@ -135,14 +131,12 @@ namespace cpp_parser::json_visitor
 
 	protected:
 		void Visit(CppTypeOrExprOrOthersToResolve* node) override;
-		void Visit(CppDeclarationBase* node) override;
+		void Visit(CppDeclaration* node) override;
 		void Visit(CppTypeOrExpr* node) override;
 		void Visit(CppGenericArgument* node) override;
 		void Visit(CppOrdinaryGenericParameter* node) override;
 
-		void Visit(CppDeclarationBaseToResolve* node) override;
-		void Visit(CppDeclaration* node) override;
-
+		void Visit(CppDeclarationToResolve* node) override;
 		void Visit(CppVariablesDeclaration* node) override;
 		void Visit(CppClassDeclaration* node) override;
 		void Visit(CppEnumDeclaration* node) override;
@@ -190,16 +184,14 @@ namespace cpp_parser::json_visitor
 		void Visit(CppOperatorIdentifier* node) override;
 		void Visit(CppOperatorTypeIdentifier* node) override;
 
-		void Visit(CppDeclaratorFunctionPartBaseToResolve* node) override;
-		void Visit(CppDeclaratorFunctionPart* node) override;
+		void Visit(CppDeclaratorFunctionPartToResolve* node) override;
 
 		void Visit(CppVarValueInit* node) override;
 		void Visit(CppVarParanthesisInit* node) override;
 		void Visit(CppVarBraceInit* node) override;
 		void Visit(CppVarStatInit* node) override;
 
-		void Visit(CppDeclaratorVariablePartBaseToResolve* node) override;
-		void Visit(CppDeclaratorVariablePart* node) override;
+		void Visit(CppDeclaratorVariablePartToResolve* node) override;
 
 		void Visit(CppStatementToResolve* node) override;
 		void Visit(CppEmptyStat* node) override;
@@ -230,9 +222,9 @@ namespace cpp_parser::json_visitor
 
 		void Print(CppTypeOrExprOrOthers* node);
 		void Print(CppIdentifier* node);
-		void Print(CppDeclaratorFunctionPartBase* node);
+		void Print(CppDeclaratorFunctionPart* node);
 		void Print(CppVarInit* node);
-		void Print(CppDeclaratorVariablePartBase* node);
+		void Print(CppDeclaratorVariablePart* node);
 		void Print(CppStatement* node);
 		void Print(CppForStatConditionPart* node);
 		void Print(CppGenericArguments* node);

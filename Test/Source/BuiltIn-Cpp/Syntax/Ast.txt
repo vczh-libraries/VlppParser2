@@ -6,11 +6,7 @@
 {
 }
 
-@ambiguous class DeclarationBase : TypeOrExprOrOthers
-{
-}
-
-class Declaration : DeclarationBase
+@ambiguous class Declaration : TypeOrExprOrOthers
 {
     var keywords : DeclaratorKeyword[];
 }
@@ -242,7 +238,7 @@ class LambdaExpr : ExprOnly
 {
     var captures : LambdaCapture[];
     var genericHeader : GenericHeader;
-    var functionHeader : DeclaratorFunctionPartBase;
+    var functionHeader : DeclaratorFunctionPart;
     var stat : Statement;
 }
 
@@ -432,11 +428,7 @@ class FunctionKeyword
     var arguments : TypeOrExpr[];
 }
 
-@ambiguous class DeclaratorFunctionPartBase
-{
-}
-
-class DeclaratorFunctionPart : DeclaratorFunctionPartBase
+@ambiguous class DeclaratorFunctionPart
 {
     var parameters : TypeOrExprOrOthers[];
     var variadic : token;
@@ -458,7 +450,7 @@ class Declarator
     var arguments : GenericArguments;
     var bitfield : TypeOrExpr;
     var innerDeclarator : Declarator;
-    var funcPart : DeclaratorFunctionPartBase;
+    var funcPart : DeclaratorFunctionPart;
     var arrayParts : DeclaratorArrayPart[];
 }
 
@@ -504,21 +496,17 @@ class VarStatInit : VarInit
     var stat : BlockStat;
 }
 
-@ambiguous class DeclaratorVariablePartBase
-{
-}
-
-class DeclaratorVariablePart : DeclaratorVariablePartBase
+@ambiguous class DeclaratorVariablePart
 {
     var declarator : Declarator;
     var init : VarInit;
-    var nextVarPart : DeclaratorVariablePartBase;
+    var nextVarPart : DeclaratorVariablePart;
 }
 
 class VariablesDeclaration : Declaration
 {
     var type : TypeOrExpr;
-    var firstVarPart : DeclaratorVariablePartBase;
+    var firstVarPart : DeclaratorVariablePart;
 }
 
 //////////////////////////////////////////////////////////////////
@@ -550,14 +538,14 @@ class ClassInheritance
 class ClassMemberPart
 {
     var accessor : ClassAccessor;
-    var decls : DeclarationBase[];
+    var decls : Declaration[];
 }
 
 class ClassBody
 {
     var inheritances : ClassInheritance[];
     var memberParts : ClassMemberPart[];
-    var firstVarPart : DeclaratorVariablePartBase;
+    var firstVarPart : DeclaratorVariablePart;
 }
 
 class ClassDeclaration : Declaration
@@ -587,7 +575,7 @@ class EnumItem
 class EnumBody
 {
     var items : EnumItem[];
-    var firstVarPart : DeclaratorVariablePartBase;
+    var firstVarPart : DeclaratorVariablePart;
 }
 
 class EnumDeclaration : Declaration
@@ -605,7 +593,7 @@ class EnumDeclaration : Declaration
 class TemplateDeclaration : Declaration
 {
     var genericHeader : GenericHeader;
-    var decl : DeclarationBase;
+    var decl : Declaration;
 }
 
 //////////////////////////////////////////////////////////////////
@@ -620,12 +608,12 @@ class StaticAssertDeclaration : Declaration
 
 class TypedefDeclaration : Declaration
 {
-    var decl : DeclarationBase;
+    var decl : Declaration;
 }
 
 class ExternDeclaration : Declaration
 {
-    var decls : DeclarationBase[];
+    var decls : Declaration[];
 }
 
 class NamespaceName
@@ -636,7 +624,7 @@ class NamespaceName
 class NamespaceDeclaration : Declaration
 {
     var names : NamespaceName[];
-    var decls : DeclarationBase[];
+    var decls : Declaration[];
 }
 
 class UsingNamespaceDeclaration : Declaration
@@ -685,7 +673,7 @@ class ExprStat : Statement
 
 class DeclStat : Statement
 {
-    var decl : DeclarationBase;
+    var decl : Declaration;
 }
 
 class BreakStat : Statement
@@ -802,5 +790,5 @@ class __TryStat : Statement
 
 class File
 {
-    var decls : DeclarationBase[];
+    var decls : Declaration[];
 }
