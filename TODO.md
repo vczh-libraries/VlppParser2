@@ -2,15 +2,6 @@
 
 ## Next task
 
-- `@ambiguous class X : T { ... }` when X has members:
-  - Becomes `@ambiguous class X : T {}` and `class XCommon : X { ... }`.
-  - Ast:
-    - `class Y : X` -> `class Y : XCommon`.
-    - `var value : X` or `var value : X[]` unchanged.
-  - Syntax
-    - `as X` -> `as XCommon`.
-    - `as partial X` -> `as partial XCommon`.
-    - If a rule's type deducted to `XCommon`, change it to `X`.
 - Add `extern` rule, non-`extern` rules can only be used inside the same syntax file.
 - Add `extern` type, non-`extern` types can only be used inside the same ast file.
   - AST uses classes from another AST file in dependency as fields.
