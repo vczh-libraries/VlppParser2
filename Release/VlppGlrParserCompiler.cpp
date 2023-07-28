@@ -5547,6 +5547,7 @@ namespace vl
 				struct RewritingContext
 				{
 					List<RuleSymbol*>										pmRules;				// all rules that need to be rewritten
+					Dictionary<RuleSymbol*, GlrRule*>						skippedRules;			// skipped RuleSymbol -> GlrRule
 					Dictionary<RuleSymbol*, GlrRule*>						originRules;			// rewritten RuleSymbol -> GlrRule ends with _LRI_Original, which is the same GlrRule object before rewritten
 					Dictionary<RuleSymbol*, GlrRule*>						lriRules;				// rewritten RuleSymbol -> GlrRule containing left_recursion_inject clauses
 					Dictionary<RuleSymbol*, GlrRule*>						fixedAstRules;			// RuleSymbol -> GlrRule relationship after rewritten
@@ -5690,6 +5691,48 @@ CollectRewritingTargets
 						auto ruleSymbol = vContext.syntaxManager.Rules()[rule->name.value];
 						if (vContext.indirectPmClauses.Keys().Contains(ruleSymbol))
 						{
+							// when a rule has
+							//   no direct prefix_merge clause
+							//   only one clause which starts with prefix_merge clause
+							//   such clause is not a simple use clause
+							// skip rewriting it
+							if (!vContext.directPmClauses.Keys().Contains(ruleSymbol))
+							{
+								bool found = false;
+								for (auto clause : rule->clauses)
+								{
+									vint index = vContext.clauseToStartRules.Keys().IndexOf(clause.Obj());
+									if (index == -1) continue;
+							
+									auto&& startRules = vContext.clauseToStartRules.GetByIndex(index);
+									for (auto startRule : startRules)
+									{
+										if (vContext.indirectPmClauses.Keys().Contains(startRule))
+										{
+											if (vContext.simpleUseClauseToReferencedRules.Keys().Contains(clause.Obj()))
+											{
+												goto DO_NOT_SKIP;
+											}
+
+											if (!found)
+											{
+												found = true;
+												break;
+											}
+											else
+											{
+												goto DO_NOT_SKIP;
+											}
+											break;
+										}
+									}
+								}
+
+								rContext.skippedRules.Add(ruleSymbol, rule.Obj());
+								continue;
+							DO_NOT_SKIP:;
+							}
+
 							rContext.pmRules.Add(ruleSymbol);
 
 							vint indexStart = vContext.directStartRules.Keys().IndexOf(ruleSymbol);
@@ -5777,8 +5820,14 @@ CreateRewrittenRules
 						rewritten->rules.Add(lri);
 						rContext.lriRules.Add(ruleSymbol, lri.Obj());
 
+						lri->codeRange = originRule->codeRange;
+						lri->attPublic = originRule->attPublic;
+						lri->attParser = originRule->attParser;
 						lri->codeRange = originRule->name.codeRange;
 						lri->name = originRule->name;
+
+						originRule->attPublic = {};
+						originRule->attParser = {};
 						originRule->name.value += L"_LRI_Original";
 					}
 
@@ -6135,7 +6184,12 @@ RewriteRules (AST Creation)
 					lriCont->flags.Add(lriContFlag);
 					lriContFlag->flag.value = flag;
 
-					auto lriContTarget = CreateLriClause(rContext.originRules[pmInjectRecord.injectIntoRule]->name.value);
+					vint injectIntoOriginIndex = rContext.originRules.Keys().IndexOf(pmInjectRecord.injectIntoRule);
+					auto lriContTargetName = injectIntoOriginIndex == -1
+						? pmInjectRecord.injectIntoRule->Name()
+						: rContext.originRules.Values()[injectIntoOriginIndex]->name.value
+						;
+					auto lriContTarget = CreateLriClause(lriContTargetName);
 					lriCont->injectionTargets.Add(lriContTarget);
 
 					return lriCont;
@@ -6743,7 +6797,7 @@ RenamePrefix
 
 				void RenamePrefix(RewritingContext& rContext, const SyntaxSymbolManager& syntaxManager)
 				{
-					for (auto [ruleSymbol, originRule] : rContext.originRules)
+					for (auto [ruleSymbol, originRule] : From(rContext.originRules).Concat(rContext.skippedRules))
 					{
 						RenamePrefixVisitor visitor(rContext, ruleSymbol, syntaxManager);
 						for (auto clause : originRule->clauses)
@@ -7512,6 +7566,8 @@ RewriteSyntax
 				{
 					auto newRule = Ptr(new GlrRule);
 					newRule->codeRange = rule->codeRange;
+					newRule->attPublic = rule->attPublic;
+					newRule->attParser = rule->attParser;
 					newRule->name = rule->name;
 					newRule->name.value = name;
 					newRule->type = rule->type;
@@ -7595,6 +7651,8 @@ RewriteSyntax
 						// rules it references could be renamed
 						auto newRule = Ptr(new GlrRule);
 						newRule->codeRange = rule->codeRange;
+						newRule->attPublic = rule->attPublic;
+						newRule->attParser = rule->attParser;
 						newRule->name = rule->name;
 						newRule->type = rule->type;
 
@@ -7991,19 +8049,6 @@ ValidateDeducingPrefixMergeRuleVisitor
 				void ValidateClause(Ptr<GlrClause> clause)
 				{
 					clause->Accept(this);
-					if (result)
-					{
-						for (auto [refName, refRuleSymbol] : *result.Obj())
-						{
-							context.syntaxManager.AddError(
-								ParserErrorType::RuleDeductToPrefixMergeInNonSimpleUseClause,
-								clause->codeRange,
-								ruleSymbol->Name(),
-								refRuleSymbol->Name(),
-								refName->value
-								);
-						}
-					}
 				}
 
 			protected:
@@ -17089,7 +17134,7 @@ SyntaxSymbolManager::FixLeftRecursionInjectEdge
 					return;
 				}
 
-				// calculate all acceptable input from inject edge
+				// calculate all acceptable Token input from inject edge
 				// key:
 				//   token
 				//   the number of return edges carried into this edge, at least 1
@@ -17100,6 +17145,13 @@ SyntaxSymbolManager::FixLeftRecursionInjectEdge
 				using InputKey = Pair<vint32_t, vint>;
 				using InputValue = Tuple<vint, EdgeSymbol*, EdgeSymbol*>;
 				Group<InputKey, InputValue> acceptableInputs;
+
+				// calculate all acceptable Ending input from inject edge
+				// value:
+				//   index of placeholder edge
+				//   the additional Ending edge
+				using EndingInputValue = Pair<vint, EdgeSymbol*>;
+				List<EndingInputValue> acceptableEndingInputs;
 
 				for(auto [placeholderEdge, index] : indexed(placeholderEdges))
 				{
@@ -17119,6 +17171,92 @@ SyntaxSymbolManager::FixLeftRecursionInjectEdge
 							{
 							case EdgeInputType::Ending:
 								endingEdge = outEdge;
+								if (returnEdge == injectEdge)
+								{
+									// all possible Ending input are comsumed
+									// an ending edge should be created if
+									//   the injection edge cannot be skipped
+									//   the injection edge to state has Ending input
+									// an optional injection can be skipped
+									// a non-optional injection can be skipped by surrounding syntax
+
+									auto endingEdgeAfterInject = From(injectEdge->To()->OutEdges())
+										.Where([](auto edge) { return edge->input.type == EdgeInputType::Ending; })
+										.First(nullptr);
+									if (endingEdgeAfterInject)
+									{
+										// find if there is a state in the same rule that looks like:
+										//      +-------------------(ending)---------------------+
+										//      |                                                |
+										//   S -+                                                +->E
+										//      |                                                |
+										//      +-{-(leftrec)-> X} -(lri:ThisEdge)-> T -(ending)-+
+										// or
+										//      +-(same rule)-> Y -----------------(ending)------------------+
+										//      |                                                            |
+										//   S -+                                                            +->E
+										//      |                                                            |
+										//      +-(same rule)-{-(leftrec)-> X} -(lri:ThisEdge)-> T -(ending)-+
+
+										List<StateSymbol*> visiting;
+										SortedList<StateSymbol*> visited;
+										visiting.Add(injectEdge->From());
+
+										// TODO: (enumerable) visiting/visited
+										for (vint i = 0; i < visiting.Count(); i++)
+										{
+											auto visitingState = visiting[i];
+											if (visited.Contains(visitingState)) continue;
+											visited.Add(visitingState);
+
+											for (auto siblingEdge : visitingState->OutEdges())
+											{
+												if (siblingEdge->input.type == EdgeInputType::Ending)
+												{
+													goto SKIP_SEARCHING;
+												}
+											}
+
+											for (auto commingEdge : visitingState->InEdges())
+											{
+												if (commingEdge->From()->Rule() != injectEdge->From()->Rule()) continue;
+
+												switch (commingEdge->input.type)
+												{
+												case EdgeInputType::LeftRec:
+													visiting.Add(commingEdge->From());
+													break;
+												case EdgeInputType::Rule:
+													{
+														auto expectedReturnRule = commingEdge->input.rule;
+														for (auto siblingCommingEdge : commingEdge->From()->OutEdges())
+														{
+															if (siblingCommingEdge == commingEdge) continue;
+															if (siblingCommingEdge->input.type != EdgeInputType::Rule) continue;
+															if (siblingCommingEdge->input.rule != expectedReturnRule) continue;
+
+															if (!From(siblingCommingEdge->To()->OutEdges())
+																.Where([](auto edge) { return edge->input.type == EdgeInputType::Ending; })
+																.IsEmpty())
+															{
+																goto SKIP_SEARCHING;
+															}
+														}
+													}
+													break;
+												default:;
+												}
+											}
+										}
+
+										{
+											// if there is no such state
+											// an Ending edge is needed
+											acceptableEndingInputs.Add({ index,endingEdgeAfterInject });
+										}
+									SKIP_SEARCHING:;
+									}
+								}
 								break;
 							// find if there is any LeftRec from this state
 							case EdgeInputType::LeftRec:
@@ -17143,10 +17281,65 @@ SyntaxSymbolManager::FixLeftRecursionInjectEdge
 
 						if (!endingEdge)
 						{
-							// stop searching if any Token edge are found
+							// stop searching if there is no Ending input
+							// since there will be no more {Ending} Token edge to compact
 							break;
 						}
 					}
+				}
+
+				auto prepareLriEdgeInstructions = [&](vint placeholderIndex, vint returnEdgeCount, List<AstIns>& instructionPrefix)
+				{
+					auto placeholderEdge = placeholderEdges[placeholderIndex];
+					auto& endingStates = endingStatesArray[placeholderIndex];
+					auto& returnEdges = returnEdgesArray[placeholderIndex];
+
+					// search for all possible "LrPlaceholder {Ending} LeftRec Token" transitions
+					// for each transition, compact edges and put injectEdge properly in returnEdges
+					// here insBeforeInput has been ensured to be:
+					//   EndObject
+					//   LriStore
+					//   DelayFieldAssignment
+					//   placeholderEdge->insBeforeInput
+					//   LriFetch
+					//   loop {endingEdge->insBeforeInput returnEdge->insAfterInput}
+					//   --LeftRec--> ...
+
+					// EndObject is for the ReopenObject in the use rule transition before
+					// DelayFieldAssignment is for the ReopenObject in injectEdge->insAfterInput
+					// injectEdge is the last returnEdge
+
+					// there is no instruction in injectEdge->insBeforeInput
+					instructionPrefix.Add({ AstInsType::EndObject });
+					instructionPrefix.Add({ AstInsType::LriStore });
+					instructionPrefix.Add({ AstInsType::DelayFieldAssignment });
+					CopyFrom(instructionPrefix, placeholderEdge->insBeforeInput, true);
+					instructionPrefix.Add({ AstInsType::LriFetch });
+
+					// TODO: (enumerable) foreach:reversed
+					for (vint i = returnEdges.Count() - 1; i >= returnEdgeCount; i--)
+					{
+						auto endingState = endingStates[i];
+						auto returnEdge = returnEdges[i];
+						auto endingEdge = From(endingState->OutEdges())
+							.Where([](auto edge) { return edge->input.type == EdgeInputType::Ending; })
+							.First();
+
+						CopyFrom(instructionPrefix, endingEdge->insBeforeInput, true);
+						CopyFrom(instructionPrefix, returnEdge->insAfterInput, true);
+					}
+				};
+
+				for (auto [placeholderIndex, endingEdgeAfterInject] : acceptableEndingInputs)
+				{
+					auto newEdge = Ptr(new EdgeSymbol(injectEdge->From(), endingEdgeAfterInject->To()));
+					edges.Add(newEdge);
+					newEdge->input = endingEdgeAfterInject->input;
+					newEdge->importancy = endingEdgeAfterInject->importancy;
+
+					prepareLriEdgeInstructions(placeholderIndex, 0, newEdge->insBeforeInput);
+					CopyFrom(newEdge->insBeforeInput, endingEdgeAfterInject->insBeforeInput, true);
+					CopyFrom(newEdge->insBeforeInput, endingEdgeAfterInject->insAfterInput, true);
 				}
 
 				// TODO: (enumerable) foreach on group
@@ -17226,88 +17419,29 @@ SyntaxSymbolManager::FixLeftRecursionInjectEdge
 					// convert reminaings
 					for (auto [placeholderIndex, lrEdge, tokenEdge] : placeholderRecords)
 					{
-						auto placeholderEdge = placeholderEdges[placeholderIndex];
-						auto& endingStates = endingStatesArray[placeholderIndex];
-						auto& returnEdges = returnEdgesArray[placeholderIndex];
+						auto newEdge = Ptr(new EdgeSymbol(injectEdge->From(), tokenEdge->To()));
+						edges.Add(newEdge);
+						newEdge->input = tokenEdge->input;
+						newEdge->importancy = tokenEdge->importancy;
 
-						// search for all possible "LrPlaceholder {Ending} LeftRec Token" transitions
-						// for each transition, compact edges and put injectEdge properly in returnEdges
-						// here insBeforeInput has been ensured to be:
-						//   EndObject
-						//   LriStore
-						//   DelayFieldAssignment
-						//   placeholderEdge->insBeforeInput
-						//   LriFetch
-						//   loop {endingEdge->insBeforeInput returnEdge->insAfterInput}
-						//   --LeftRec--> ...
-
-						// EndObject is for the ReopenObject in the use rule transition before
-						// DelayFieldAssignment is for the ReopenObject in injectEdge->insAfterInput
-						// injectEdge is the last returnEdge
-
-						List<AstIns> instructionPrefix;
-						// there is no instruction in injectEdge->insBeforeInput
-						instructionPrefix.Add({ AstInsType::EndObject });
-						instructionPrefix.Add({ AstInsType::LriStore });
-						instructionPrefix.Add({ AstInsType::DelayFieldAssignment });
-						CopyFrom(instructionPrefix, placeholderEdge->insBeforeInput, true);
-						instructionPrefix.Add({ AstInsType::LriFetch });
-
-						// TODO: (enumerable) foreach:reversed
-						for (vint i = returnEdges.Count() - 1; i >= returnEdgeCount; i--)
-						{
-							auto endingState = endingStates[i];
-							auto returnEdge = returnEdges[i];
-							auto endingEdge = From(endingState->OutEdges())
-								.Where([](auto edge) { return edge->input.type == EdgeInputType::Ending; })
-								.First();
-
-							CopyFrom(instructionPrefix, endingEdge->insBeforeInput, true);
-							CopyFrom(instructionPrefix, returnEdge->insAfterInput, true);
-						}
-
+						CopyFrom(newEdge->returnEdges, From(returnEdgesArray[placeholderIndex]).Take(returnEdgeCount), true);
+						CopyFrom(newEdge->returnEdges, tokenEdge->returnEdges, true);
+						prepareLriEdgeInstructions(placeholderIndex, returnEdgeCount, newEdge->insBeforeInput);
 						if (lrEdge)
 						{
-							auto newEdge = Ptr(new EdgeSymbol(injectEdge->From(), tokenEdge->To()));
-							edges.Add(newEdge);
-
-							newEdge->input = tokenEdge->input;
-							newEdge->importancy = tokenEdge->importancy;
-							CopyFrom(newEdge->returnEdges, From(returnEdges).Take(returnEdgeCount), true);
-							CopyFrom(newEdge->returnEdges, tokenEdge->returnEdges, true);
-
 							// newEdge consumes a token
 							// lrEdge->insAfterInput happens before consuming this token
 							// so it should be copied to newEdge->insBeforeInput
-							CopyFrom(newEdge->insBeforeInput, instructionPrefix, true);
 							CopyFrom(newEdge->insBeforeInput, lrEdge->insBeforeInput, true);
 							CopyFrom(newEdge->insBeforeInput, lrEdge->insAfterInput, true);
-							CopyFrom(newEdge->insBeforeInput, tokenEdge->insBeforeInput, true);
-
-							CopyFrom(newEdge->insAfterInput, tokenEdge->insAfterInput, true);
 						}
-						else
-						{
-							auto newEdge = Ptr(new EdgeSymbol(injectEdge->From(), tokenEdge->To()));
-							edges.Add(newEdge);
-
-							newEdge->input = tokenEdge->input;
-							newEdge->importancy = tokenEdge->importancy;
-							CopyFrom(newEdge->returnEdges, From(returnEdges).Take(returnEdgeCount), true);
-							CopyFrom(newEdge->returnEdges, tokenEdge->returnEdges, true);
-
-							// newEdge consumes a token
-							// lrEdge->insAfterInput happens before consuming this token
-							// so it should be copied to newEdge->insBeforeInput
-							CopyFrom(newEdge->insBeforeInput, instructionPrefix, true);
-							CopyFrom(newEdge->insBeforeInput, tokenEdge->insBeforeInput, true);
-							CopyFrom(newEdge->insAfterInput, tokenEdge->insAfterInput, true);
-						}
+						CopyFrom(newEdge->insBeforeInput, tokenEdge->insBeforeInput, true);
+						CopyFrom(newEdge->insAfterInput, tokenEdge->insAfterInput, true);
 					}
 				}
 
 				// report an error if nothing is created
-				if (acceptableInputs.Count() == 0)
+				if (acceptableInputs.Count() == 0 && acceptableEndingInputs.Count() == 0)
 				{
 					AddError(
 						ParserErrorType::LeftRecursionInjectHasNoContinuation,
