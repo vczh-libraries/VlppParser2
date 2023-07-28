@@ -12,12 +12,22 @@ namespace prefixmerge8_pmvariadic
 Visitor Pattern Implementation
 ***********************************************************************/
 
+	void TypeOrExprOrOthersToResolve::Accept(TypeOrExprOrOthers::IVisitor* visitor)
+	{
+		visitor->Visit(this);
+	}
+
 	void VariadicArgument::Accept(TypeOrExprOrOthers::IVisitor* visitor)
 	{
 		visitor->Visit(this);
 	}
 
 	void TypeOrExpr::Accept(TypeOrExprOrOthers::IVisitor* visitor)
+	{
+		visitor->Visit(this);
+	}
+
+	void TypeOrExprToResolve::Accept(TypeOrExpr::IVisitor* visitor)
 	{
 		visitor->Visit(this);
 	}
@@ -81,16 +91,6 @@ Visitor Pattern Implementation
 	{
 		visitor->Visit(this);
 	}
-
-	void TypeOrExprOrOthersToResolve::Accept(TypeOrExprOrOthers::IVisitor* visitor)
-	{
-		visitor->Visit(this);
-	}
-
-	void TypeOrExprToResolve::Accept(TypeOrExpr::IVisitor* visitor)
-	{
-		visitor->Visit(this);
-	}
 }
 namespace vl::reflection::description
 {
@@ -98,9 +98,11 @@ namespace vl::reflection::description
 
 	IMPL_TYPE_INFO_RENAME(prefixmerge8_pmvariadic::TypeOrExprOrOthers, prefixmerge8_pmvariadic::TypeOrExprOrOthers)
 	IMPL_TYPE_INFO_RENAME(prefixmerge8_pmvariadic::TypeOrExprOrOthers::IVisitor, prefixmerge8_pmvariadic::TypeOrExprOrOthers::IVisitor)
+	IMPL_TYPE_INFO_RENAME(prefixmerge8_pmvariadic::TypeOrExprOrOthersToResolve, prefixmerge8_pmvariadic::TypeOrExprOrOthersToResolve)
 	IMPL_TYPE_INFO_RENAME(prefixmerge8_pmvariadic::VariadicArgument, prefixmerge8_pmvariadic::VariadicArgument)
 	IMPL_TYPE_INFO_RENAME(prefixmerge8_pmvariadic::TypeOrExpr, prefixmerge8_pmvariadic::TypeOrExpr)
 	IMPL_TYPE_INFO_RENAME(prefixmerge8_pmvariadic::TypeOrExpr::IVisitor, prefixmerge8_pmvariadic::TypeOrExpr::IVisitor)
+	IMPL_TYPE_INFO_RENAME(prefixmerge8_pmvariadic::TypeOrExprToResolve, prefixmerge8_pmvariadic::TypeOrExprToResolve)
 	IMPL_TYPE_INFO_RENAME(prefixmerge8_pmvariadic::QualifiedName, prefixmerge8_pmvariadic::QualifiedName)
 	IMPL_TYPE_INFO_RENAME(prefixmerge8_pmvariadic::QualifiedName::IVisitor, prefixmerge8_pmvariadic::QualifiedName::IVisitor)
 	IMPL_TYPE_INFO_RENAME(prefixmerge8_pmvariadic::Name, prefixmerge8_pmvariadic::Name)
@@ -115,8 +117,6 @@ namespace vl::reflection::description
 	IMPL_TYPE_INFO_RENAME(prefixmerge8_pmvariadic::ConstType, prefixmerge8_pmvariadic::ConstType)
 	IMPL_TYPE_INFO_RENAME(prefixmerge8_pmvariadic::PointerType, prefixmerge8_pmvariadic::PointerType)
 	IMPL_TYPE_INFO_RENAME(prefixmerge8_pmvariadic::FunctionType, prefixmerge8_pmvariadic::FunctionType)
-	IMPL_TYPE_INFO_RENAME(prefixmerge8_pmvariadic::TypeOrExprOrOthersToResolve, prefixmerge8_pmvariadic::TypeOrExprOrOthersToResolve)
-	IMPL_TYPE_INFO_RENAME(prefixmerge8_pmvariadic::TypeOrExprToResolve, prefixmerge8_pmvariadic::TypeOrExprToResolve)
 
 #ifdef VCZH_DESCRIPTABLEOBJECT_WITH_METADATA
 
@@ -124,6 +124,14 @@ namespace vl::reflection::description
 		CLASS_MEMBER_BASE(vl::glr::ParsingAstBase)
 
 	END_CLASS_MEMBER(prefixmerge8_pmvariadic::TypeOrExprOrOthers)
+
+	BEGIN_CLASS_MEMBER(prefixmerge8_pmvariadic::TypeOrExprOrOthersToResolve)
+		CLASS_MEMBER_BASE(prefixmerge8_pmvariadic::TypeOrExprOrOthers)
+
+		CLASS_MEMBER_CONSTRUCTOR(vl::Ptr<prefixmerge8_pmvariadic::TypeOrExprOrOthersToResolve>(), NO_PARAMETER)
+
+		CLASS_MEMBER_FIELD(candidates)
+	END_CLASS_MEMBER(prefixmerge8_pmvariadic::TypeOrExprOrOthersToResolve)
 
 	BEGIN_CLASS_MEMBER(prefixmerge8_pmvariadic::VariadicArgument)
 		CLASS_MEMBER_BASE(prefixmerge8_pmvariadic::TypeOrExprOrOthers)
@@ -137,6 +145,14 @@ namespace vl::reflection::description
 		CLASS_MEMBER_BASE(prefixmerge8_pmvariadic::TypeOrExprOrOthers)
 
 	END_CLASS_MEMBER(prefixmerge8_pmvariadic::TypeOrExpr)
+
+	BEGIN_CLASS_MEMBER(prefixmerge8_pmvariadic::TypeOrExprToResolve)
+		CLASS_MEMBER_BASE(prefixmerge8_pmvariadic::TypeOrExpr)
+
+		CLASS_MEMBER_CONSTRUCTOR(vl::Ptr<prefixmerge8_pmvariadic::TypeOrExprToResolve>(), NO_PARAMETER)
+
+		CLASS_MEMBER_FIELD(candidates)
+	END_CLASS_MEMBER(prefixmerge8_pmvariadic::TypeOrExprToResolve)
 
 	BEGIN_CLASS_MEMBER(prefixmerge8_pmvariadic::QualifiedName)
 		CLASS_MEMBER_BASE(prefixmerge8_pmvariadic::TypeOrExpr)
@@ -235,22 +251,6 @@ namespace vl::reflection::description
 		CLASS_MEMBER_FIELD(args)
 	END_CLASS_MEMBER(prefixmerge8_pmvariadic::FunctionType)
 
-	BEGIN_CLASS_MEMBER(prefixmerge8_pmvariadic::TypeOrExprOrOthersToResolve)
-		CLASS_MEMBER_BASE(prefixmerge8_pmvariadic::TypeOrExprOrOthers)
-
-		CLASS_MEMBER_CONSTRUCTOR(vl::Ptr<prefixmerge8_pmvariadic::TypeOrExprOrOthersToResolve>(), NO_PARAMETER)
-
-		CLASS_MEMBER_FIELD(candidates)
-	END_CLASS_MEMBER(prefixmerge8_pmvariadic::TypeOrExprOrOthersToResolve)
-
-	BEGIN_CLASS_MEMBER(prefixmerge8_pmvariadic::TypeOrExprToResolve)
-		CLASS_MEMBER_BASE(prefixmerge8_pmvariadic::TypeOrExpr)
-
-		CLASS_MEMBER_CONSTRUCTOR(vl::Ptr<prefixmerge8_pmvariadic::TypeOrExprToResolve>(), NO_PARAMETER)
-
-		CLASS_MEMBER_FIELD(candidates)
-	END_CLASS_MEMBER(prefixmerge8_pmvariadic::TypeOrExprToResolve)
-
 	BEGIN_INTERFACE_MEMBER(prefixmerge8_pmvariadic::TypeOrExprOrOthers::IVisitor)
 		CLASS_MEMBER_METHOD_OVERLOAD(Visit, {L"node"}, void(prefixmerge8_pmvariadic::TypeOrExprOrOthers::IVisitor::*)(prefixmerge8_pmvariadic::TypeOrExprOrOthersToResolve* node))
 		CLASS_MEMBER_METHOD_OVERLOAD(Visit, {L"node"}, void(prefixmerge8_pmvariadic::TypeOrExprOrOthers::IVisitor::*)(prefixmerge8_pmvariadic::VariadicArgument* node))
@@ -289,9 +289,11 @@ namespace vl::reflection::description
 		{
 			ADD_TYPE_INFO(prefixmerge8_pmvariadic::TypeOrExprOrOthers)
 			ADD_TYPE_INFO(prefixmerge8_pmvariadic::TypeOrExprOrOthers::IVisitor)
+			ADD_TYPE_INFO(prefixmerge8_pmvariadic::TypeOrExprOrOthersToResolve)
 			ADD_TYPE_INFO(prefixmerge8_pmvariadic::VariadicArgument)
 			ADD_TYPE_INFO(prefixmerge8_pmvariadic::TypeOrExpr)
 			ADD_TYPE_INFO(prefixmerge8_pmvariadic::TypeOrExpr::IVisitor)
+			ADD_TYPE_INFO(prefixmerge8_pmvariadic::TypeOrExprToResolve)
 			ADD_TYPE_INFO(prefixmerge8_pmvariadic::QualifiedName)
 			ADD_TYPE_INFO(prefixmerge8_pmvariadic::QualifiedName::IVisitor)
 			ADD_TYPE_INFO(prefixmerge8_pmvariadic::Name)
@@ -306,8 +308,6 @@ namespace vl::reflection::description
 			ADD_TYPE_INFO(prefixmerge8_pmvariadic::ConstType)
 			ADD_TYPE_INFO(prefixmerge8_pmvariadic::PointerType)
 			ADD_TYPE_INFO(prefixmerge8_pmvariadic::FunctionType)
-			ADD_TYPE_INFO(prefixmerge8_pmvariadic::TypeOrExprOrOthersToResolve)
-			ADD_TYPE_INFO(prefixmerge8_pmvariadic::TypeOrExprToResolve)
 		}
 
 		void Unload(ITypeManager* manager)

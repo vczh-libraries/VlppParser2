@@ -44,6 +44,14 @@ namespace prefixmerge4_lrimultiple
 
 	};
 
+	class TypeOrExprToResolve : public TypeOrExpr, vl::reflection::Description<TypeOrExprToResolve>
+	{
+	public:
+		vl::collections::List<vl::Ptr<TypeOrExpr>> candidates;
+
+		void Accept(TypeOrExpr::IVisitor* visitor) override;
+	};
+
 	class QualifiedName abstract : public TypeOrExpr, vl::reflection::Description<QualifiedName>
 	{
 	public:
@@ -128,20 +136,13 @@ namespace prefixmerge4_lrimultiple
 
 		void Accept(TypeOrExpr::IVisitor* visitor) override;
 	};
-
-	class TypeOrExprToResolve : public TypeOrExpr, vl::reflection::Description<TypeOrExprToResolve>
-	{
-	public:
-		vl::collections::List<vl::Ptr<TypeOrExpr>> candidates;
-
-		void Accept(TypeOrExpr::IVisitor* visitor) override;
-	};
 }
 namespace vl::reflection::description
 {
 #ifndef VCZH_DEBUG_NO_REFLECTION
 	DECL_TYPE_INFO(prefixmerge4_lrimultiple::TypeOrExpr)
 	DECL_TYPE_INFO(prefixmerge4_lrimultiple::TypeOrExpr::IVisitor)
+	DECL_TYPE_INFO(prefixmerge4_lrimultiple::TypeOrExprToResolve)
 	DECL_TYPE_INFO(prefixmerge4_lrimultiple::QualifiedName)
 	DECL_TYPE_INFO(prefixmerge4_lrimultiple::QualifiedName::IVisitor)
 	DECL_TYPE_INFO(prefixmerge4_lrimultiple::Name)
@@ -152,7 +153,6 @@ namespace vl::reflection::description
 	DECL_TYPE_INFO(prefixmerge4_lrimultiple::ConstType)
 	DECL_TYPE_INFO(prefixmerge4_lrimultiple::PointerType)
 	DECL_TYPE_INFO(prefixmerge4_lrimultiple::FunctionType)
-	DECL_TYPE_INFO(prefixmerge4_lrimultiple::TypeOrExprToResolve)
 
 #ifdef VCZH_DESCRIPTABLEOBJECT_WITH_METADATA
 

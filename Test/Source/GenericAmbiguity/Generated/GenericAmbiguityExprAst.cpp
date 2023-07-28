@@ -12,6 +12,11 @@ namespace genericambiguity
 Visitor Pattern Implementation
 ***********************************************************************/
 
+	void ExprToResolve::Accept(Expr::IVisitor* visitor)
+	{
+		visitor->Visit(this);
+	}
+
 	void RefExpr::Accept(Expr::IVisitor* visitor)
 	{
 		visitor->Visit(this);
@@ -41,11 +46,6 @@ Visitor Pattern Implementation
 	{
 		visitor->Visit(this);
 	}
-
-	void ExprToResolve::Accept(Expr::IVisitor* visitor)
-	{
-		visitor->Visit(this);
-	}
 }
 namespace vl::reflection::description
 {
@@ -53,6 +53,7 @@ namespace vl::reflection::description
 
 	IMPL_TYPE_INFO_RENAME(genericambiguity::Expr, genericambiguity::Expr)
 	IMPL_TYPE_INFO_RENAME(genericambiguity::Expr::IVisitor, genericambiguity::Expr::IVisitor)
+	IMPL_TYPE_INFO_RENAME(genericambiguity::ExprToResolve, genericambiguity::ExprToResolve)
 	IMPL_TYPE_INFO_RENAME(genericambiguity::RefExpr, genericambiguity::RefExpr)
 	IMPL_TYPE_INFO_RENAME(genericambiguity::GenericExpr, genericambiguity::GenericExpr)
 	IMPL_TYPE_INFO_RENAME(genericambiguity::CallExpr, genericambiguity::CallExpr)
@@ -62,7 +63,6 @@ namespace vl::reflection::description
 	IMPL_TYPE_INFO_RENAME(genericambiguity::BinaryOp, genericambiguity::BinaryOp)
 	IMPL_TYPE_INFO_RENAME(genericambiguity::BinaryExpr, genericambiguity::BinaryExpr)
 	IMPL_TYPE_INFO_RENAME(genericambiguity::Module, genericambiguity::Module)
-	IMPL_TYPE_INFO_RENAME(genericambiguity::ExprToResolve, genericambiguity::ExprToResolve)
 
 #ifdef VCZH_DESCRIPTABLEOBJECT_WITH_METADATA
 
@@ -70,6 +70,14 @@ namespace vl::reflection::description
 		CLASS_MEMBER_BASE(vl::glr::ParsingAstBase)
 
 	END_CLASS_MEMBER(genericambiguity::Expr)
+
+	BEGIN_CLASS_MEMBER(genericambiguity::ExprToResolve)
+		CLASS_MEMBER_BASE(genericambiguity::Expr)
+
+		CLASS_MEMBER_CONSTRUCTOR(vl::Ptr<genericambiguity::ExprToResolve>(), NO_PARAMETER)
+
+		CLASS_MEMBER_FIELD(candidates)
+	END_CLASS_MEMBER(genericambiguity::ExprToResolve)
 
 	BEGIN_CLASS_MEMBER(genericambiguity::RefExpr)
 		CLASS_MEMBER_BASE(genericambiguity::Expr)
@@ -145,14 +153,6 @@ namespace vl::reflection::description
 		CLASS_MEMBER_FIELD(expr)
 	END_CLASS_MEMBER(genericambiguity::Module)
 
-	BEGIN_CLASS_MEMBER(genericambiguity::ExprToResolve)
-		CLASS_MEMBER_BASE(genericambiguity::Expr)
-
-		CLASS_MEMBER_CONSTRUCTOR(vl::Ptr<genericambiguity::ExprToResolve>(), NO_PARAMETER)
-
-		CLASS_MEMBER_FIELD(candidates)
-	END_CLASS_MEMBER(genericambiguity::ExprToResolve)
-
 	BEGIN_INTERFACE_MEMBER(genericambiguity::Expr::IVisitor)
 		CLASS_MEMBER_METHOD_OVERLOAD(Visit, {L"node"}, void(genericambiguity::Expr::IVisitor::*)(genericambiguity::ExprToResolve* node))
 		CLASS_MEMBER_METHOD_OVERLOAD(Visit, {L"node"}, void(genericambiguity::Expr::IVisitor::*)(genericambiguity::RefExpr* node))
@@ -173,6 +173,7 @@ namespace vl::reflection::description
 		{
 			ADD_TYPE_INFO(genericambiguity::Expr)
 			ADD_TYPE_INFO(genericambiguity::Expr::IVisitor)
+			ADD_TYPE_INFO(genericambiguity::ExprToResolve)
 			ADD_TYPE_INFO(genericambiguity::RefExpr)
 			ADD_TYPE_INFO(genericambiguity::GenericExpr)
 			ADD_TYPE_INFO(genericambiguity::CallExpr)
@@ -182,7 +183,6 @@ namespace vl::reflection::description
 			ADD_TYPE_INFO(genericambiguity::BinaryOp)
 			ADD_TYPE_INFO(genericambiguity::BinaryExpr)
 			ADD_TYPE_INFO(genericambiguity::Module)
-			ADD_TYPE_INFO(genericambiguity::ExprToResolve)
 		}
 
 		void Unload(ITypeManager* manager)

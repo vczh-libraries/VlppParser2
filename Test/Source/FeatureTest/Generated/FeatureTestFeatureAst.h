@@ -85,6 +85,14 @@ namespace featuretest
 
 	};
 
+	class FeatureToResolve : public Feature, vl::reflection::Description<FeatureToResolve>
+	{
+	public:
+		vl::collections::List<vl::Ptr<Feature>> candidates;
+
+		void Accept(Feature::IVisitor* visitor) override;
+	};
+
 	class OptionalFeature : public Feature, vl::reflection::Description<OptionalFeature>
 	{
 	public:
@@ -165,14 +173,6 @@ namespace featuretest
 
 		void Accept(Feature::IVisitor* visitor) override;
 	};
-
-	class FeatureToResolve : public Feature, vl::reflection::Description<FeatureToResolve>
-	{
-	public:
-		vl::collections::List<vl::Ptr<Feature>> candidates;
-
-		void Accept(Feature::IVisitor* visitor) override;
-	};
 }
 namespace vl::reflection::description
 {
@@ -182,6 +182,7 @@ namespace vl::reflection::description
 	DECL_TYPE_INFO(featuretest::Gt)
 	DECL_TYPE_INFO(featuretest::Feature)
 	DECL_TYPE_INFO(featuretest::Feature::IVisitor)
+	DECL_TYPE_INFO(featuretest::FeatureToResolve)
 	DECL_TYPE_INFO(featuretest::OptionalProprity)
 	DECL_TYPE_INFO(featuretest::OptionalFeature)
 	DECL_TYPE_INFO(featuretest::NestedOptionalFeature)
@@ -193,7 +194,6 @@ namespace vl::reflection::description
 	DECL_TYPE_INFO(featuretest::ClFeature)
 	DECL_TYPE_INFO(featuretest::FieldAssignment)
 	DECL_TYPE_INFO(featuretest::FaFeature)
-	DECL_TYPE_INFO(featuretest::FeatureToResolve)
 
 #ifdef VCZH_DESCRIPTABLEOBJECT_WITH_METADATA
 

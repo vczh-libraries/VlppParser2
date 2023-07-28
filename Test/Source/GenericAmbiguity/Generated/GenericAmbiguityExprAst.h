@@ -56,6 +56,14 @@ namespace genericambiguity
 
 	};
 
+	class ExprToResolve : public Expr, vl::reflection::Description<ExprToResolve>
+	{
+	public:
+		vl::collections::List<vl::Ptr<Expr>> candidates;
+
+		void Accept(Expr::IVisitor* visitor) override;
+	};
+
 	class RefExpr : public Expr, vl::reflection::Description<RefExpr>
 	{
 	public:
@@ -114,20 +122,13 @@ namespace genericambiguity
 	public:
 		vl::Ptr<Expr> expr;
 	};
-
-	class ExprToResolve : public Expr, vl::reflection::Description<ExprToResolve>
-	{
-	public:
-		vl::collections::List<vl::Ptr<Expr>> candidates;
-
-		void Accept(Expr::IVisitor* visitor) override;
-	};
 }
 namespace vl::reflection::description
 {
 #ifndef VCZH_DEBUG_NO_REFLECTION
 	DECL_TYPE_INFO(genericambiguity::Expr)
 	DECL_TYPE_INFO(genericambiguity::Expr::IVisitor)
+	DECL_TYPE_INFO(genericambiguity::ExprToResolve)
 	DECL_TYPE_INFO(genericambiguity::RefExpr)
 	DECL_TYPE_INFO(genericambiguity::GenericExpr)
 	DECL_TYPE_INFO(genericambiguity::CallExpr)
@@ -137,7 +138,6 @@ namespace vl::reflection::description
 	DECL_TYPE_INFO(genericambiguity::BinaryOp)
 	DECL_TYPE_INFO(genericambiguity::BinaryExpr)
 	DECL_TYPE_INFO(genericambiguity::Module)
-	DECL_TYPE_INFO(genericambiguity::ExprToResolve)
 
 #ifdef VCZH_DESCRIPTABLEOBJECT_WITH_METADATA
 

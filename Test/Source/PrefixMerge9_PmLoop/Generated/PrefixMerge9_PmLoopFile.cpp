@@ -12,6 +12,11 @@ namespace prefixmerge9_pmloop
 Visitor Pattern Implementation
 ***********************************************************************/
 
+	void ItemToResolve::Accept(Item::IVisitor* visitor)
+	{
+		visitor->Visit(this);
+	}
+
 	void IntItem::Accept(Item::IVisitor* visitor)
 	{
 		visitor->Visit(this);
@@ -46,11 +51,6 @@ Visitor Pattern Implementation
 	{
 		visitor->Visit(this);
 	}
-
-	void ItemToResolve::Accept(Item::IVisitor* visitor)
-	{
-		visitor->Visit(this);
-	}
 }
 namespace vl::reflection::description
 {
@@ -58,6 +58,7 @@ namespace vl::reflection::description
 
 	IMPL_TYPE_INFO_RENAME(prefixmerge9_pmloop::Item, prefixmerge9_pmloop::Item)
 	IMPL_TYPE_INFO_RENAME(prefixmerge9_pmloop::Item::IVisitor, prefixmerge9_pmloop::Item::IVisitor)
+	IMPL_TYPE_INFO_RENAME(prefixmerge9_pmloop::ItemToResolve, prefixmerge9_pmloop::ItemToResolve)
 	IMPL_TYPE_INFO_RENAME(prefixmerge9_pmloop::IntItem, prefixmerge9_pmloop::IntItem)
 	IMPL_TYPE_INFO_RENAME(prefixmerge9_pmloop::IntCommaItem, prefixmerge9_pmloop::IntCommaItem)
 	IMPL_TYPE_INFO_RENAME(prefixmerge9_pmloop::IntDotItem, prefixmerge9_pmloop::IntDotItem)
@@ -66,7 +67,6 @@ namespace vl::reflection::description
 	IMPL_TYPE_INFO_RENAME(prefixmerge9_pmloop::ClassQuestionItem, prefixmerge9_pmloop::ClassQuestionItem)
 	IMPL_TYPE_INFO_RENAME(prefixmerge9_pmloop::QuestionItem, prefixmerge9_pmloop::QuestionItem)
 	IMPL_TYPE_INFO_RENAME(prefixmerge9_pmloop::File, prefixmerge9_pmloop::File)
-	IMPL_TYPE_INFO_RENAME(prefixmerge9_pmloop::ItemToResolve, prefixmerge9_pmloop::ItemToResolve)
 
 #ifdef VCZH_DESCRIPTABLEOBJECT_WITH_METADATA
 
@@ -74,6 +74,14 @@ namespace vl::reflection::description
 		CLASS_MEMBER_BASE(vl::glr::ParsingAstBase)
 
 	END_CLASS_MEMBER(prefixmerge9_pmloop::Item)
+
+	BEGIN_CLASS_MEMBER(prefixmerge9_pmloop::ItemToResolve)
+		CLASS_MEMBER_BASE(prefixmerge9_pmloop::Item)
+
+		CLASS_MEMBER_CONSTRUCTOR(vl::Ptr<prefixmerge9_pmloop::ItemToResolve>(), NO_PARAMETER)
+
+		CLASS_MEMBER_FIELD(candidates)
+	END_CLASS_MEMBER(prefixmerge9_pmloop::ItemToResolve)
 
 	BEGIN_CLASS_MEMBER(prefixmerge9_pmloop::IntItem)
 		CLASS_MEMBER_BASE(prefixmerge9_pmloop::Item)
@@ -133,14 +141,6 @@ namespace vl::reflection::description
 		CLASS_MEMBER_FIELD(items)
 	END_CLASS_MEMBER(prefixmerge9_pmloop::File)
 
-	BEGIN_CLASS_MEMBER(prefixmerge9_pmloop::ItemToResolve)
-		CLASS_MEMBER_BASE(prefixmerge9_pmloop::Item)
-
-		CLASS_MEMBER_CONSTRUCTOR(vl::Ptr<prefixmerge9_pmloop::ItemToResolve>(), NO_PARAMETER)
-
-		CLASS_MEMBER_FIELD(candidates)
-	END_CLASS_MEMBER(prefixmerge9_pmloop::ItemToResolve)
-
 	BEGIN_INTERFACE_MEMBER(prefixmerge9_pmloop::Item::IVisitor)
 		CLASS_MEMBER_METHOD_OVERLOAD(Visit, {L"node"}, void(prefixmerge9_pmloop::Item::IVisitor::*)(prefixmerge9_pmloop::ItemToResolve* node))
 		CLASS_MEMBER_METHOD_OVERLOAD(Visit, {L"node"}, void(prefixmerge9_pmloop::Item::IVisitor::*)(prefixmerge9_pmloop::IntItem* node))
@@ -162,6 +162,7 @@ namespace vl::reflection::description
 		{
 			ADD_TYPE_INFO(prefixmerge9_pmloop::Item)
 			ADD_TYPE_INFO(prefixmerge9_pmloop::Item::IVisitor)
+			ADD_TYPE_INFO(prefixmerge9_pmloop::ItemToResolve)
 			ADD_TYPE_INFO(prefixmerge9_pmloop::IntItem)
 			ADD_TYPE_INFO(prefixmerge9_pmloop::IntCommaItem)
 			ADD_TYPE_INFO(prefixmerge9_pmloop::IntDotItem)
@@ -170,7 +171,6 @@ namespace vl::reflection::description
 			ADD_TYPE_INFO(prefixmerge9_pmloop::ClassQuestionItem)
 			ADD_TYPE_INFO(prefixmerge9_pmloop::QuestionItem)
 			ADD_TYPE_INFO(prefixmerge9_pmloop::File)
-			ADD_TYPE_INFO(prefixmerge9_pmloop::ItemToResolve)
 		}
 
 		void Unload(ITypeManager* manager)

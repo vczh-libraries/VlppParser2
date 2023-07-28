@@ -45,6 +45,14 @@ namespace prefixmerge8_pmvariadic
 
 	};
 
+	class TypeOrExprOrOthersToResolve : public TypeOrExprOrOthers, vl::reflection::Description<TypeOrExprOrOthersToResolve>
+	{
+	public:
+		vl::collections::List<vl::Ptr<TypeOrExprOrOthers>> candidates;
+
+		void Accept(TypeOrExprOrOthers::IVisitor* visitor) override;
+	};
+
 	class VariadicArgument : public TypeOrExprOrOthers, vl::reflection::Description<VariadicArgument>
 	{
 	public:
@@ -73,6 +81,14 @@ namespace prefixmerge8_pmvariadic
 
 
 		void Accept(TypeOrExprOrOthers::IVisitor* visitor) override;
+	};
+
+	class TypeOrExprToResolve : public TypeOrExpr, vl::reflection::Description<TypeOrExprToResolve>
+	{
+	public:
+		vl::collections::List<vl::Ptr<TypeOrExpr>> candidates;
+
+		void Accept(TypeOrExpr::IVisitor* visitor) override;
 	};
 
 	class QualifiedName abstract : public TypeOrExpr, vl::reflection::Description<QualifiedName>
@@ -194,31 +210,17 @@ namespace prefixmerge8_pmvariadic
 
 		void Accept(TypeOrExpr::IVisitor* visitor) override;
 	};
-
-	class TypeOrExprOrOthersToResolve : public TypeOrExprOrOthers, vl::reflection::Description<TypeOrExprOrOthersToResolve>
-	{
-	public:
-		vl::collections::List<vl::Ptr<TypeOrExprOrOthers>> candidates;
-
-		void Accept(TypeOrExprOrOthers::IVisitor* visitor) override;
-	};
-
-	class TypeOrExprToResolve : public TypeOrExpr, vl::reflection::Description<TypeOrExprToResolve>
-	{
-	public:
-		vl::collections::List<vl::Ptr<TypeOrExpr>> candidates;
-
-		void Accept(TypeOrExpr::IVisitor* visitor) override;
-	};
 }
 namespace vl::reflection::description
 {
 #ifndef VCZH_DEBUG_NO_REFLECTION
 	DECL_TYPE_INFO(prefixmerge8_pmvariadic::TypeOrExprOrOthers)
 	DECL_TYPE_INFO(prefixmerge8_pmvariadic::TypeOrExprOrOthers::IVisitor)
+	DECL_TYPE_INFO(prefixmerge8_pmvariadic::TypeOrExprOrOthersToResolve)
 	DECL_TYPE_INFO(prefixmerge8_pmvariadic::VariadicArgument)
 	DECL_TYPE_INFO(prefixmerge8_pmvariadic::TypeOrExpr)
 	DECL_TYPE_INFO(prefixmerge8_pmvariadic::TypeOrExpr::IVisitor)
+	DECL_TYPE_INFO(prefixmerge8_pmvariadic::TypeOrExprToResolve)
 	DECL_TYPE_INFO(prefixmerge8_pmvariadic::QualifiedName)
 	DECL_TYPE_INFO(prefixmerge8_pmvariadic::QualifiedName::IVisitor)
 	DECL_TYPE_INFO(prefixmerge8_pmvariadic::Name)
@@ -233,8 +235,6 @@ namespace vl::reflection::description
 	DECL_TYPE_INFO(prefixmerge8_pmvariadic::ConstType)
 	DECL_TYPE_INFO(prefixmerge8_pmvariadic::PointerType)
 	DECL_TYPE_INFO(prefixmerge8_pmvariadic::FunctionType)
-	DECL_TYPE_INFO(prefixmerge8_pmvariadic::TypeOrExprOrOthersToResolve)
-	DECL_TYPE_INFO(prefixmerge8_pmvariadic::TypeOrExprToResolve)
 
 #ifdef VCZH_DESCRIPTABLEOBJECT_WITH_METADATA
 

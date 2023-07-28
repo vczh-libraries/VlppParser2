@@ -12,6 +12,11 @@ namespace ifelseambiguityonstat2
 Visitor Pattern Implementation
 ***********************************************************************/
 
+	void StatToResolve::Accept(Stat::IVisitor* visitor)
+	{
+		visitor->Visit(this);
+	}
+
 	void DoStat::Accept(Stat::IVisitor* visitor)
 	{
 		visitor->Visit(this);
@@ -26,11 +31,6 @@ Visitor Pattern Implementation
 	{
 		visitor->Visit(this);
 	}
-
-	void StatToResolve::Accept(Stat::IVisitor* visitor)
-	{
-		visitor->Visit(this);
-	}
 }
 namespace vl::reflection::description
 {
@@ -38,11 +38,11 @@ namespace vl::reflection::description
 
 	IMPL_TYPE_INFO_RENAME(ifelseambiguityonstat2::Stat, ifelseambiguityonstat2::Stat)
 	IMPL_TYPE_INFO_RENAME(ifelseambiguityonstat2::Stat::IVisitor, ifelseambiguityonstat2::Stat::IVisitor)
+	IMPL_TYPE_INFO_RENAME(ifelseambiguityonstat2::StatToResolve, ifelseambiguityonstat2::StatToResolve)
 	IMPL_TYPE_INFO_RENAME(ifelseambiguityonstat2::DoStat, ifelseambiguityonstat2::DoStat)
 	IMPL_TYPE_INFO_RENAME(ifelseambiguityonstat2::IfStat, ifelseambiguityonstat2::IfStat)
 	IMPL_TYPE_INFO_RENAME(ifelseambiguityonstat2::BlockStat, ifelseambiguityonstat2::BlockStat)
 	IMPL_TYPE_INFO_RENAME(ifelseambiguityonstat2::Module, ifelseambiguityonstat2::Module)
-	IMPL_TYPE_INFO_RENAME(ifelseambiguityonstat2::StatToResolve, ifelseambiguityonstat2::StatToResolve)
 
 #ifdef VCZH_DESCRIPTABLEOBJECT_WITH_METADATA
 
@@ -50,6 +50,14 @@ namespace vl::reflection::description
 		CLASS_MEMBER_BASE(vl::glr::ParsingAstBase)
 
 	END_CLASS_MEMBER(ifelseambiguityonstat2::Stat)
+
+	BEGIN_CLASS_MEMBER(ifelseambiguityonstat2::StatToResolve)
+		CLASS_MEMBER_BASE(ifelseambiguityonstat2::Stat)
+
+		CLASS_MEMBER_CONSTRUCTOR(vl::Ptr<ifelseambiguityonstat2::StatToResolve>(), NO_PARAMETER)
+
+		CLASS_MEMBER_FIELD(candidates)
+	END_CLASS_MEMBER(ifelseambiguityonstat2::StatToResolve)
 
 	BEGIN_CLASS_MEMBER(ifelseambiguityonstat2::DoStat)
 		CLASS_MEMBER_BASE(ifelseambiguityonstat2::Stat)
@@ -83,14 +91,6 @@ namespace vl::reflection::description
 		CLASS_MEMBER_FIELD(stat)
 	END_CLASS_MEMBER(ifelseambiguityonstat2::Module)
 
-	BEGIN_CLASS_MEMBER(ifelseambiguityonstat2::StatToResolve)
-		CLASS_MEMBER_BASE(ifelseambiguityonstat2::Stat)
-
-		CLASS_MEMBER_CONSTRUCTOR(vl::Ptr<ifelseambiguityonstat2::StatToResolve>(), NO_PARAMETER)
-
-		CLASS_MEMBER_FIELD(candidates)
-	END_CLASS_MEMBER(ifelseambiguityonstat2::StatToResolve)
-
 	BEGIN_INTERFACE_MEMBER(ifelseambiguityonstat2::Stat::IVisitor)
 		CLASS_MEMBER_METHOD_OVERLOAD(Visit, {L"node"}, void(ifelseambiguityonstat2::Stat::IVisitor::*)(ifelseambiguityonstat2::StatToResolve* node))
 		CLASS_MEMBER_METHOD_OVERLOAD(Visit, {L"node"}, void(ifelseambiguityonstat2::Stat::IVisitor::*)(ifelseambiguityonstat2::DoStat* node))
@@ -108,11 +108,11 @@ namespace vl::reflection::description
 		{
 			ADD_TYPE_INFO(ifelseambiguityonstat2::Stat)
 			ADD_TYPE_INFO(ifelseambiguityonstat2::Stat::IVisitor)
+			ADD_TYPE_INFO(ifelseambiguityonstat2::StatToResolve)
 			ADD_TYPE_INFO(ifelseambiguityonstat2::DoStat)
 			ADD_TYPE_INFO(ifelseambiguityonstat2::IfStat)
 			ADD_TYPE_INFO(ifelseambiguityonstat2::BlockStat)
 			ADD_TYPE_INFO(ifelseambiguityonstat2::Module)
-			ADD_TYPE_INFO(ifelseambiguityonstat2::StatToResolve)
 		}
 
 		void Unload(ITypeManager* manager)

@@ -12,6 +12,11 @@ namespace prefixmerge4_lrimultiple
 Visitor Pattern Implementation
 ***********************************************************************/
 
+	void TypeOrExprToResolve::Accept(TypeOrExpr::IVisitor* visitor)
+	{
+		visitor->Visit(this);
+	}
+
 	void QualifiedName::Accept(TypeOrExpr::IVisitor* visitor)
 	{
 		visitor->Visit(this);
@@ -56,11 +61,6 @@ Visitor Pattern Implementation
 	{
 		visitor->Visit(this);
 	}
-
-	void TypeOrExprToResolve::Accept(TypeOrExpr::IVisitor* visitor)
-	{
-		visitor->Visit(this);
-	}
 }
 namespace vl::reflection::description
 {
@@ -68,6 +68,7 @@ namespace vl::reflection::description
 
 	IMPL_TYPE_INFO_RENAME(prefixmerge4_lrimultiple::TypeOrExpr, prefixmerge4_lrimultiple::TypeOrExpr)
 	IMPL_TYPE_INFO_RENAME(prefixmerge4_lrimultiple::TypeOrExpr::IVisitor, prefixmerge4_lrimultiple::TypeOrExpr::IVisitor)
+	IMPL_TYPE_INFO_RENAME(prefixmerge4_lrimultiple::TypeOrExprToResolve, prefixmerge4_lrimultiple::TypeOrExprToResolve)
 	IMPL_TYPE_INFO_RENAME(prefixmerge4_lrimultiple::QualifiedName, prefixmerge4_lrimultiple::QualifiedName)
 	IMPL_TYPE_INFO_RENAME(prefixmerge4_lrimultiple::QualifiedName::IVisitor, prefixmerge4_lrimultiple::QualifiedName::IVisitor)
 	IMPL_TYPE_INFO_RENAME(prefixmerge4_lrimultiple::Name, prefixmerge4_lrimultiple::Name)
@@ -78,7 +79,6 @@ namespace vl::reflection::description
 	IMPL_TYPE_INFO_RENAME(prefixmerge4_lrimultiple::ConstType, prefixmerge4_lrimultiple::ConstType)
 	IMPL_TYPE_INFO_RENAME(prefixmerge4_lrimultiple::PointerType, prefixmerge4_lrimultiple::PointerType)
 	IMPL_TYPE_INFO_RENAME(prefixmerge4_lrimultiple::FunctionType, prefixmerge4_lrimultiple::FunctionType)
-	IMPL_TYPE_INFO_RENAME(prefixmerge4_lrimultiple::TypeOrExprToResolve, prefixmerge4_lrimultiple::TypeOrExprToResolve)
 
 #ifdef VCZH_DESCRIPTABLEOBJECT_WITH_METADATA
 
@@ -86,6 +86,14 @@ namespace vl::reflection::description
 		CLASS_MEMBER_BASE(vl::glr::ParsingAstBase)
 
 	END_CLASS_MEMBER(prefixmerge4_lrimultiple::TypeOrExpr)
+
+	BEGIN_CLASS_MEMBER(prefixmerge4_lrimultiple::TypeOrExprToResolve)
+		CLASS_MEMBER_BASE(prefixmerge4_lrimultiple::TypeOrExpr)
+
+		CLASS_MEMBER_CONSTRUCTOR(vl::Ptr<prefixmerge4_lrimultiple::TypeOrExprToResolve>(), NO_PARAMETER)
+
+		CLASS_MEMBER_FIELD(candidates)
+	END_CLASS_MEMBER(prefixmerge4_lrimultiple::TypeOrExprToResolve)
 
 	BEGIN_CLASS_MEMBER(prefixmerge4_lrimultiple::QualifiedName)
 		CLASS_MEMBER_BASE(prefixmerge4_lrimultiple::TypeOrExpr)
@@ -161,14 +169,6 @@ namespace vl::reflection::description
 		CLASS_MEMBER_FIELD(args)
 	END_CLASS_MEMBER(prefixmerge4_lrimultiple::FunctionType)
 
-	BEGIN_CLASS_MEMBER(prefixmerge4_lrimultiple::TypeOrExprToResolve)
-		CLASS_MEMBER_BASE(prefixmerge4_lrimultiple::TypeOrExpr)
-
-		CLASS_MEMBER_CONSTRUCTOR(vl::Ptr<prefixmerge4_lrimultiple::TypeOrExprToResolve>(), NO_PARAMETER)
-
-		CLASS_MEMBER_FIELD(candidates)
-	END_CLASS_MEMBER(prefixmerge4_lrimultiple::TypeOrExprToResolve)
-
 	BEGIN_INTERFACE_MEMBER(prefixmerge4_lrimultiple::TypeOrExpr::IVisitor)
 		CLASS_MEMBER_METHOD_OVERLOAD(Visit, {L"node"}, void(prefixmerge4_lrimultiple::TypeOrExpr::IVisitor::*)(prefixmerge4_lrimultiple::TypeOrExprToResolve* node))
 		CLASS_MEMBER_METHOD_OVERLOAD(Visit, {L"node"}, void(prefixmerge4_lrimultiple::TypeOrExpr::IVisitor::*)(prefixmerge4_lrimultiple::QualifiedName* node))
@@ -195,6 +195,7 @@ namespace vl::reflection::description
 		{
 			ADD_TYPE_INFO(prefixmerge4_lrimultiple::TypeOrExpr)
 			ADD_TYPE_INFO(prefixmerge4_lrimultiple::TypeOrExpr::IVisitor)
+			ADD_TYPE_INFO(prefixmerge4_lrimultiple::TypeOrExprToResolve)
 			ADD_TYPE_INFO(prefixmerge4_lrimultiple::QualifiedName)
 			ADD_TYPE_INFO(prefixmerge4_lrimultiple::QualifiedName::IVisitor)
 			ADD_TYPE_INFO(prefixmerge4_lrimultiple::Name)
@@ -205,7 +206,6 @@ namespace vl::reflection::description
 			ADD_TYPE_INFO(prefixmerge4_lrimultiple::ConstType)
 			ADD_TYPE_INFO(prefixmerge4_lrimultiple::PointerType)
 			ADD_TYPE_INFO(prefixmerge4_lrimultiple::FunctionType)
-			ADD_TYPE_INFO(prefixmerge4_lrimultiple::TypeOrExprToResolve)
 		}
 
 		void Unload(ITypeManager* manager)

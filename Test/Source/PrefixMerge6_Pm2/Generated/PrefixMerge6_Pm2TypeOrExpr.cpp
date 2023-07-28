@@ -12,6 +12,11 @@ namespace prefixmerge6_pm2
 Visitor Pattern Implementation
 ***********************************************************************/
 
+	void TypeOrExprToResolve::Accept(TypeOrExpr::IVisitor* visitor)
+	{
+		visitor->Visit(this);
+	}
+
 	void QualifiedName::Accept(TypeOrExpr::IVisitor* visitor)
 	{
 		visitor->Visit(this);
@@ -66,11 +71,6 @@ Visitor Pattern Implementation
 	{
 		visitor->Visit(this);
 	}
-
-	void TypeOrExprToResolve::Accept(TypeOrExpr::IVisitor* visitor)
-	{
-		visitor->Visit(this);
-	}
 }
 namespace vl::reflection::description
 {
@@ -78,6 +78,7 @@ namespace vl::reflection::description
 
 	IMPL_TYPE_INFO_RENAME(prefixmerge6_pm2::TypeOrExpr, prefixmerge6_pm2::TypeOrExpr)
 	IMPL_TYPE_INFO_RENAME(prefixmerge6_pm2::TypeOrExpr::IVisitor, prefixmerge6_pm2::TypeOrExpr::IVisitor)
+	IMPL_TYPE_INFO_RENAME(prefixmerge6_pm2::TypeOrExprToResolve, prefixmerge6_pm2::TypeOrExprToResolve)
 	IMPL_TYPE_INFO_RENAME(prefixmerge6_pm2::QualifiedName, prefixmerge6_pm2::QualifiedName)
 	IMPL_TYPE_INFO_RENAME(prefixmerge6_pm2::QualifiedName::IVisitor, prefixmerge6_pm2::QualifiedName::IVisitor)
 	IMPL_TYPE_INFO_RENAME(prefixmerge6_pm2::Name, prefixmerge6_pm2::Name)
@@ -90,7 +91,6 @@ namespace vl::reflection::description
 	IMPL_TYPE_INFO_RENAME(prefixmerge6_pm2::ConstType, prefixmerge6_pm2::ConstType)
 	IMPL_TYPE_INFO_RENAME(prefixmerge6_pm2::PointerType, prefixmerge6_pm2::PointerType)
 	IMPL_TYPE_INFO_RENAME(prefixmerge6_pm2::FunctionType, prefixmerge6_pm2::FunctionType)
-	IMPL_TYPE_INFO_RENAME(prefixmerge6_pm2::TypeOrExprToResolve, prefixmerge6_pm2::TypeOrExprToResolve)
 
 #ifdef VCZH_DESCRIPTABLEOBJECT_WITH_METADATA
 
@@ -98,6 +98,14 @@ namespace vl::reflection::description
 		CLASS_MEMBER_BASE(vl::glr::ParsingAstBase)
 
 	END_CLASS_MEMBER(prefixmerge6_pm2::TypeOrExpr)
+
+	BEGIN_CLASS_MEMBER(prefixmerge6_pm2::TypeOrExprToResolve)
+		CLASS_MEMBER_BASE(prefixmerge6_pm2::TypeOrExpr)
+
+		CLASS_MEMBER_CONSTRUCTOR(vl::Ptr<prefixmerge6_pm2::TypeOrExprToResolve>(), NO_PARAMETER)
+
+		CLASS_MEMBER_FIELD(candidates)
+	END_CLASS_MEMBER(prefixmerge6_pm2::TypeOrExprToResolve)
 
 	BEGIN_CLASS_MEMBER(prefixmerge6_pm2::QualifiedName)
 		CLASS_MEMBER_BASE(prefixmerge6_pm2::TypeOrExpr)
@@ -190,14 +198,6 @@ namespace vl::reflection::description
 		CLASS_MEMBER_FIELD(args)
 	END_CLASS_MEMBER(prefixmerge6_pm2::FunctionType)
 
-	BEGIN_CLASS_MEMBER(prefixmerge6_pm2::TypeOrExprToResolve)
-		CLASS_MEMBER_BASE(prefixmerge6_pm2::TypeOrExpr)
-
-		CLASS_MEMBER_CONSTRUCTOR(vl::Ptr<prefixmerge6_pm2::TypeOrExprToResolve>(), NO_PARAMETER)
-
-		CLASS_MEMBER_FIELD(candidates)
-	END_CLASS_MEMBER(prefixmerge6_pm2::TypeOrExprToResolve)
-
 	BEGIN_INTERFACE_MEMBER(prefixmerge6_pm2::TypeOrExpr::IVisitor)
 		CLASS_MEMBER_METHOD_OVERLOAD(Visit, {L"node"}, void(prefixmerge6_pm2::TypeOrExpr::IVisitor::*)(prefixmerge6_pm2::TypeOrExprToResolve* node))
 		CLASS_MEMBER_METHOD_OVERLOAD(Visit, {L"node"}, void(prefixmerge6_pm2::TypeOrExpr::IVisitor::*)(prefixmerge6_pm2::QualifiedName* node))
@@ -226,6 +226,7 @@ namespace vl::reflection::description
 		{
 			ADD_TYPE_INFO(prefixmerge6_pm2::TypeOrExpr)
 			ADD_TYPE_INFO(prefixmerge6_pm2::TypeOrExpr::IVisitor)
+			ADD_TYPE_INFO(prefixmerge6_pm2::TypeOrExprToResolve)
 			ADD_TYPE_INFO(prefixmerge6_pm2::QualifiedName)
 			ADD_TYPE_INFO(prefixmerge6_pm2::QualifiedName::IVisitor)
 			ADD_TYPE_INFO(prefixmerge6_pm2::Name)
@@ -238,7 +239,6 @@ namespace vl::reflection::description
 			ADD_TYPE_INFO(prefixmerge6_pm2::ConstType)
 			ADD_TYPE_INFO(prefixmerge6_pm2::PointerType)
 			ADD_TYPE_INFO(prefixmerge6_pm2::FunctionType)
-			ADD_TYPE_INFO(prefixmerge6_pm2::TypeOrExprToResolve)
 		}
 
 		void Unload(ITypeManager* manager)

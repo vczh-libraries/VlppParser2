@@ -57,6 +57,14 @@ namespace ifelseambiguity2
 
 	};
 
+	class IfContentToResolve : public IfContent, vl::reflection::Description<IfContentToResolve>
+	{
+	public:
+		vl::collections::List<vl::Ptr<IfContent>> candidates;
+
+		void Accept(IfContent::IVisitor* visitor) override;
+	};
+
 	class IfContentCandidate : public IfContent, vl::reflection::Description<IfContentCandidate>
 	{
 	public:
@@ -87,14 +95,6 @@ namespace ifelseambiguity2
 	public:
 		vl::Ptr<Stat> stat;
 	};
-
-	class IfContentToResolve : public IfContent, vl::reflection::Description<IfContentToResolve>
-	{
-	public:
-		vl::collections::List<vl::Ptr<IfContent>> candidates;
-
-		void Accept(IfContent::IVisitor* visitor) override;
-	};
 }
 namespace vl::reflection::description
 {
@@ -104,11 +104,11 @@ namespace vl::reflection::description
 	DECL_TYPE_INFO(ifelseambiguity2::DoStat)
 	DECL_TYPE_INFO(ifelseambiguity2::IfContent)
 	DECL_TYPE_INFO(ifelseambiguity2::IfContent::IVisitor)
+	DECL_TYPE_INFO(ifelseambiguity2::IfContentToResolve)
 	DECL_TYPE_INFO(ifelseambiguity2::IfContentCandidate)
 	DECL_TYPE_INFO(ifelseambiguity2::IfStat)
 	DECL_TYPE_INFO(ifelseambiguity2::BlockStat)
 	DECL_TYPE_INFO(ifelseambiguity2::Module)
-	DECL_TYPE_INFO(ifelseambiguity2::IfContentToResolve)
 
 #ifdef VCZH_DESCRIPTABLEOBJECT_WITH_METADATA
 

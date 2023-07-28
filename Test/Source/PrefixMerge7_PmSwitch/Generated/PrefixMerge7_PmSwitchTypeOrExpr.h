@@ -55,6 +55,14 @@ namespace prefixmerge7_pmswitch
 
 	};
 
+	class TypeOrExprToResolve : public TypeOrExpr, vl::reflection::Description<TypeOrExprToResolve>
+	{
+	public:
+		vl::collections::List<vl::Ptr<TypeOrExpr>> candidates;
+
+		void Accept(TypeOrExpr::IVisitor* visitor) override;
+	};
+
 	class QualifiedName abstract : public TypeOrExpr, vl::reflection::Description<QualifiedName>
 	{
 	public:
@@ -209,20 +217,13 @@ namespace prefixmerge7_pmswitch
 
 		void Accept(TypeOrExpr::IVisitor* visitor) override;
 	};
-
-	class TypeOrExprToResolve : public TypeOrExpr, vl::reflection::Description<TypeOrExprToResolve>
-	{
-	public:
-		vl::collections::List<vl::Ptr<TypeOrExpr>> candidates;
-
-		void Accept(TypeOrExpr::IVisitor* visitor) override;
-	};
 }
 namespace vl::reflection::description
 {
 #ifndef VCZH_DEBUG_NO_REFLECTION
 	DECL_TYPE_INFO(prefixmerge7_pmswitch::TypeOrExpr)
 	DECL_TYPE_INFO(prefixmerge7_pmswitch::TypeOrExpr::IVisitor)
+	DECL_TYPE_INFO(prefixmerge7_pmswitch::TypeOrExprToResolve)
 	DECL_TYPE_INFO(prefixmerge7_pmswitch::QualifiedName)
 	DECL_TYPE_INFO(prefixmerge7_pmswitch::QualifiedName::IVisitor)
 	DECL_TYPE_INFO(prefixmerge7_pmswitch::Name)
@@ -241,7 +242,6 @@ namespace vl::reflection::description
 	DECL_TYPE_INFO(prefixmerge7_pmswitch::ConstType)
 	DECL_TYPE_INFO(prefixmerge7_pmswitch::PointerType)
 	DECL_TYPE_INFO(prefixmerge7_pmswitch::FunctionType)
-	DECL_TYPE_INFO(prefixmerge7_pmswitch::TypeOrExprToResolve)
 
 #ifdef VCZH_DESCRIPTABLEOBJECT_WITH_METADATA
 

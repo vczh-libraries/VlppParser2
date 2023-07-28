@@ -12,6 +12,11 @@ namespace prefixmerge7_pmswitch
 Visitor Pattern Implementation
 ***********************************************************************/
 
+	void TypeOrExprToResolve::Accept(TypeOrExpr::IVisitor* visitor)
+	{
+		visitor->Visit(this);
+	}
+
 	void QualifiedName::Accept(TypeOrExpr::IVisitor* visitor)
 	{
 		visitor->Visit(this);
@@ -91,11 +96,6 @@ Visitor Pattern Implementation
 	{
 		visitor->Visit(this);
 	}
-
-	void TypeOrExprToResolve::Accept(TypeOrExpr::IVisitor* visitor)
-	{
-		visitor->Visit(this);
-	}
 }
 namespace vl::reflection::description
 {
@@ -103,6 +103,7 @@ namespace vl::reflection::description
 
 	IMPL_TYPE_INFO_RENAME(prefixmerge7_pmswitch::TypeOrExpr, prefixmerge7_pmswitch::TypeOrExpr)
 	IMPL_TYPE_INFO_RENAME(prefixmerge7_pmswitch::TypeOrExpr::IVisitor, prefixmerge7_pmswitch::TypeOrExpr::IVisitor)
+	IMPL_TYPE_INFO_RENAME(prefixmerge7_pmswitch::TypeOrExprToResolve, prefixmerge7_pmswitch::TypeOrExprToResolve)
 	IMPL_TYPE_INFO_RENAME(prefixmerge7_pmswitch::QualifiedName, prefixmerge7_pmswitch::QualifiedName)
 	IMPL_TYPE_INFO_RENAME(prefixmerge7_pmswitch::QualifiedName::IVisitor, prefixmerge7_pmswitch::QualifiedName::IVisitor)
 	IMPL_TYPE_INFO_RENAME(prefixmerge7_pmswitch::Name, prefixmerge7_pmswitch::Name)
@@ -121,7 +122,6 @@ namespace vl::reflection::description
 	IMPL_TYPE_INFO_RENAME(prefixmerge7_pmswitch::ConstType, prefixmerge7_pmswitch::ConstType)
 	IMPL_TYPE_INFO_RENAME(prefixmerge7_pmswitch::PointerType, prefixmerge7_pmswitch::PointerType)
 	IMPL_TYPE_INFO_RENAME(prefixmerge7_pmswitch::FunctionType, prefixmerge7_pmswitch::FunctionType)
-	IMPL_TYPE_INFO_RENAME(prefixmerge7_pmswitch::TypeOrExprToResolve, prefixmerge7_pmswitch::TypeOrExprToResolve)
 
 #ifdef VCZH_DESCRIPTABLEOBJECT_WITH_METADATA
 
@@ -129,6 +129,14 @@ namespace vl::reflection::description
 		CLASS_MEMBER_BASE(vl::glr::ParsingAstBase)
 
 	END_CLASS_MEMBER(prefixmerge7_pmswitch::TypeOrExpr)
+
+	BEGIN_CLASS_MEMBER(prefixmerge7_pmswitch::TypeOrExprToResolve)
+		CLASS_MEMBER_BASE(prefixmerge7_pmswitch::TypeOrExpr)
+
+		CLASS_MEMBER_CONSTRUCTOR(vl::Ptr<prefixmerge7_pmswitch::TypeOrExprToResolve>(), NO_PARAMETER)
+
+		CLASS_MEMBER_FIELD(candidates)
+	END_CLASS_MEMBER(prefixmerge7_pmswitch::TypeOrExprToResolve)
 
 	BEGIN_CLASS_MEMBER(prefixmerge7_pmswitch::QualifiedName)
 		CLASS_MEMBER_BASE(prefixmerge7_pmswitch::TypeOrExpr)
@@ -262,14 +270,6 @@ namespace vl::reflection::description
 		CLASS_MEMBER_FIELD(args)
 	END_CLASS_MEMBER(prefixmerge7_pmswitch::FunctionType)
 
-	BEGIN_CLASS_MEMBER(prefixmerge7_pmswitch::TypeOrExprToResolve)
-		CLASS_MEMBER_BASE(prefixmerge7_pmswitch::TypeOrExpr)
-
-		CLASS_MEMBER_CONSTRUCTOR(vl::Ptr<prefixmerge7_pmswitch::TypeOrExprToResolve>(), NO_PARAMETER)
-
-		CLASS_MEMBER_FIELD(candidates)
-	END_CLASS_MEMBER(prefixmerge7_pmswitch::TypeOrExprToResolve)
-
 	BEGIN_INTERFACE_MEMBER(prefixmerge7_pmswitch::TypeOrExpr::IVisitor)
 		CLASS_MEMBER_METHOD_OVERLOAD(Visit, {L"node"}, void(prefixmerge7_pmswitch::TypeOrExpr::IVisitor::*)(prefixmerge7_pmswitch::TypeOrExprToResolve* node))
 		CLASS_MEMBER_METHOD_OVERLOAD(Visit, {L"node"}, void(prefixmerge7_pmswitch::TypeOrExpr::IVisitor::*)(prefixmerge7_pmswitch::QualifiedName* node))
@@ -306,6 +306,7 @@ namespace vl::reflection::description
 		{
 			ADD_TYPE_INFO(prefixmerge7_pmswitch::TypeOrExpr)
 			ADD_TYPE_INFO(prefixmerge7_pmswitch::TypeOrExpr::IVisitor)
+			ADD_TYPE_INFO(prefixmerge7_pmswitch::TypeOrExprToResolve)
 			ADD_TYPE_INFO(prefixmerge7_pmswitch::QualifiedName)
 			ADD_TYPE_INFO(prefixmerge7_pmswitch::QualifiedName::IVisitor)
 			ADD_TYPE_INFO(prefixmerge7_pmswitch::Name)
@@ -324,7 +325,6 @@ namespace vl::reflection::description
 			ADD_TYPE_INFO(prefixmerge7_pmswitch::ConstType)
 			ADD_TYPE_INFO(prefixmerge7_pmswitch::PointerType)
 			ADD_TYPE_INFO(prefixmerge7_pmswitch::FunctionType)
-			ADD_TYPE_INFO(prefixmerge7_pmswitch::TypeOrExprToResolve)
 		}
 
 		void Unload(ITypeManager* manager)

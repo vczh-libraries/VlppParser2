@@ -12,6 +12,11 @@ namespace featuretest
 Visitor Pattern Implementation
 ***********************************************************************/
 
+	void FeatureToResolve::Accept(Feature::IVisitor* visitor)
+	{
+		visitor->Visit(this);
+	}
+
 	void OptionalFeature::Accept(Feature::IVisitor* visitor)
 	{
 		visitor->Visit(this);
@@ -51,11 +56,6 @@ Visitor Pattern Implementation
 	{
 		visitor->Visit(this);
 	}
-
-	void FeatureToResolve::Accept(Feature::IVisitor* visitor)
-	{
-		visitor->Visit(this);
-	}
 }
 namespace vl::reflection::description
 {
@@ -66,6 +66,7 @@ namespace vl::reflection::description
 	IMPL_TYPE_INFO_RENAME(featuretest::Gt, featuretest::Gt)
 	IMPL_TYPE_INFO_RENAME(featuretest::Feature, featuretest::Feature)
 	IMPL_TYPE_INFO_RENAME(featuretest::Feature::IVisitor, featuretest::Feature::IVisitor)
+	IMPL_TYPE_INFO_RENAME(featuretest::FeatureToResolve, featuretest::FeatureToResolve)
 	IMPL_TYPE_INFO_RENAME(featuretest::OptionalProprity, featuretest::OptionalProprity)
 	IMPL_TYPE_INFO_RENAME(featuretest::OptionalFeature, featuretest::OptionalFeature)
 	IMPL_TYPE_INFO_RENAME(featuretest::NestedOptionalFeature, featuretest::NestedOptionalFeature)
@@ -77,7 +78,6 @@ namespace vl::reflection::description
 	IMPL_TYPE_INFO_RENAME(featuretest::ClFeature, featuretest::ClFeature)
 	IMPL_TYPE_INFO_RENAME(featuretest::FieldAssignment, featuretest::FieldAssignment)
 	IMPL_TYPE_INFO_RENAME(featuretest::FaFeature, featuretest::FaFeature)
-	IMPL_TYPE_INFO_RENAME(featuretest::FeatureToResolve, featuretest::FeatureToResolve)
 
 #ifdef VCZH_DESCRIPTABLEOBJECT_WITH_METADATA
 
@@ -106,6 +106,14 @@ namespace vl::reflection::description
 		CLASS_MEMBER_BASE(vl::glr::ParsingAstBase)
 
 	END_CLASS_MEMBER(featuretest::Feature)
+
+	BEGIN_CLASS_MEMBER(featuretest::FeatureToResolve)
+		CLASS_MEMBER_BASE(featuretest::Feature)
+
+		CLASS_MEMBER_CONSTRUCTOR(vl::Ptr<featuretest::FeatureToResolve>(), NO_PARAMETER)
+
+		CLASS_MEMBER_FIELD(candidates)
+	END_CLASS_MEMBER(featuretest::FeatureToResolve)
 
 	BEGIN_ENUM_ITEM(featuretest::OptionalProprity)
 		ENUM_ITEM_NAMESPACE(featuretest::OptionalProprity)
@@ -208,14 +216,6 @@ namespace vl::reflection::description
 		CLASS_MEMBER_FIELD(fa)
 	END_CLASS_MEMBER(featuretest::FaFeature)
 
-	BEGIN_CLASS_MEMBER(featuretest::FeatureToResolve)
-		CLASS_MEMBER_BASE(featuretest::Feature)
-
-		CLASS_MEMBER_CONSTRUCTOR(vl::Ptr<featuretest::FeatureToResolve>(), NO_PARAMETER)
-
-		CLASS_MEMBER_FIELD(candidates)
-	END_CLASS_MEMBER(featuretest::FeatureToResolve)
-
 	BEGIN_INTERFACE_MEMBER(featuretest::Feature::IVisitor)
 		CLASS_MEMBER_METHOD_OVERLOAD(Visit, {L"node"}, void(featuretest::Feature::IVisitor::*)(featuretest::FeatureToResolve* node))
 		CLASS_MEMBER_METHOD_OVERLOAD(Visit, {L"node"}, void(featuretest::Feature::IVisitor::*)(featuretest::OptionalFeature* node))
@@ -241,6 +241,7 @@ namespace vl::reflection::description
 			ADD_TYPE_INFO(featuretest::Gt)
 			ADD_TYPE_INFO(featuretest::Feature)
 			ADD_TYPE_INFO(featuretest::Feature::IVisitor)
+			ADD_TYPE_INFO(featuretest::FeatureToResolve)
 			ADD_TYPE_INFO(featuretest::OptionalProprity)
 			ADD_TYPE_INFO(featuretest::OptionalFeature)
 			ADD_TYPE_INFO(featuretest::NestedOptionalFeature)
@@ -252,7 +253,6 @@ namespace vl::reflection::description
 			ADD_TYPE_INFO(featuretest::ClFeature)
 			ADD_TYPE_INFO(featuretest::FieldAssignment)
 			ADD_TYPE_INFO(featuretest::FaFeature)
-			ADD_TYPE_INFO(featuretest::FeatureToResolve)
 		}
 
 		void Unload(ITypeManager* manager)

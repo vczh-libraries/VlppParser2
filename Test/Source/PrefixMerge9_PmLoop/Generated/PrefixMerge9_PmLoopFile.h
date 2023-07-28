@@ -43,6 +43,14 @@ namespace prefixmerge9_pmloop
 
 	};
 
+	class ItemToResolve : public Item, vl::reflection::Description<ItemToResolve>
+	{
+	public:
+		vl::collections::List<vl::Ptr<Item>> candidates;
+
+		void Accept(Item::IVisitor* visitor) override;
+	};
+
 	class IntItem : public Item, vl::reflection::Description<IntItem>
 	{
 	public:
@@ -98,20 +106,13 @@ namespace prefixmerge9_pmloop
 	public:
 		vl::collections::List<vl::Ptr<Item>> items;
 	};
-
-	class ItemToResolve : public Item, vl::reflection::Description<ItemToResolve>
-	{
-	public:
-		vl::collections::List<vl::Ptr<Item>> candidates;
-
-		void Accept(Item::IVisitor* visitor) override;
-	};
 }
 namespace vl::reflection::description
 {
 #ifndef VCZH_DEBUG_NO_REFLECTION
 	DECL_TYPE_INFO(prefixmerge9_pmloop::Item)
 	DECL_TYPE_INFO(prefixmerge9_pmloop::Item::IVisitor)
+	DECL_TYPE_INFO(prefixmerge9_pmloop::ItemToResolve)
 	DECL_TYPE_INFO(prefixmerge9_pmloop::IntItem)
 	DECL_TYPE_INFO(prefixmerge9_pmloop::IntCommaItem)
 	DECL_TYPE_INFO(prefixmerge9_pmloop::IntDotItem)
@@ -120,7 +121,6 @@ namespace vl::reflection::description
 	DECL_TYPE_INFO(prefixmerge9_pmloop::ClassQuestionItem)
 	DECL_TYPE_INFO(prefixmerge9_pmloop::QuestionItem)
 	DECL_TYPE_INFO(prefixmerge9_pmloop::File)
-	DECL_TYPE_INFO(prefixmerge9_pmloop::ItemToResolve)
 
 #ifdef VCZH_DESCRIPTABLEOBJECT_WITH_METADATA
 

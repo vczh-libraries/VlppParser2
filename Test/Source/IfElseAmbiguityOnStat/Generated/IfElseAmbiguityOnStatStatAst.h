@@ -35,6 +35,14 @@ namespace ifelseambiguityonstat
 
 	};
 
+	class StatToResolve : public Stat, vl::reflection::Description<StatToResolve>
+	{
+	public:
+		vl::collections::List<vl::Ptr<Stat>> candidates;
+
+		void Accept(Stat::IVisitor* visitor) override;
+	};
+
 	class DoStat : public Stat, vl::reflection::Description<DoStat>
 	{
 	public:
@@ -64,25 +72,17 @@ namespace ifelseambiguityonstat
 	public:
 		vl::Ptr<Stat> stat;
 	};
-
-	class StatToResolve : public Stat, vl::reflection::Description<StatToResolve>
-	{
-	public:
-		vl::collections::List<vl::Ptr<Stat>> candidates;
-
-		void Accept(Stat::IVisitor* visitor) override;
-	};
 }
 namespace vl::reflection::description
 {
 #ifndef VCZH_DEBUG_NO_REFLECTION
 	DECL_TYPE_INFO(ifelseambiguityonstat::Stat)
 	DECL_TYPE_INFO(ifelseambiguityonstat::Stat::IVisitor)
+	DECL_TYPE_INFO(ifelseambiguityonstat::StatToResolve)
 	DECL_TYPE_INFO(ifelseambiguityonstat::DoStat)
 	DECL_TYPE_INFO(ifelseambiguityonstat::IfStat)
 	DECL_TYPE_INFO(ifelseambiguityonstat::BlockStat)
 	DECL_TYPE_INFO(ifelseambiguityonstat::Module)
-	DECL_TYPE_INFO(ifelseambiguityonstat::StatToResolve)
 
 #ifdef VCZH_DESCRIPTABLEOBJECT_WITH_METADATA
 
