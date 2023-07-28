@@ -50,7 +50,7 @@
 
 - `::a::b::c::*`
   - Ambiguity
-  - It should be invalid, instead of being `::a(::b::c::*)` and `::a::b(::c::*)`
+  - It should be invalid, because `::a::b::c` are always parsed as one QualifiedName, instead of being `::a(::b::c::*)` and `::a::b(::c::*)`
 - Compiler crashes:
   - `_DeclOrExpr ::= !_BExpr ::= {_DeclaratorKeyword:keywords} _TypeBeforeDeclarator:type _DeclaratorRequiredName:declarator as DeclaratorType ;`
   - `workingSwitchValues` is nullptr in `ExpandClauseVisitor::FixRuleName`
