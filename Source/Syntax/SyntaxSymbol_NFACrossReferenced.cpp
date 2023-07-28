@@ -351,10 +351,14 @@ SyntaxSymbolManager::FixLeftRecursionInjectEdge
 
 				for (auto [placeholderIndex, endingEdgeAfterInject] : acceptableEndingInputs)
 				{
-					auto newEdge = Ptr(new EdgeSymbol(injectEdge->From(), endingEdgeAfterInject->From()));
+					auto newEdge = Ptr(new EdgeSymbol(injectEdge->From(), endingEdgeAfterInject->To()));
 					edges.Add(newEdge);
-					newEdge->input.type = EdgeInputType::LeftRec;
+					newEdge->input = endingEdgeAfterInject->input;
+					newEdge->importancy = endingEdgeAfterInject->importancy;
+
 					prepareLriEdgeInstructions(placeholderIndex, 0, newEdge->insBeforeInput);
+					CopyFrom(newEdge->insBeforeInput, endingEdgeAfterInject->insBeforeInput, true);
+					CopyFrom(newEdge->insBeforeInput, endingEdgeAfterInject->insAfterInput, true);
 				}
 
 				// TODO: (enumerable) foreach on group
@@ -509,7 +513,7 @@ SyntaxSymbolManager::BuildCrossReferencedNFAInternal
 					}
 				}
 
-				// convert LrInject to Token and LeftRec
+				// convert LrInject to Token
 				for (auto state : states)
 				{
 					vint index = orderedEdges.Keys().IndexOf(state);
