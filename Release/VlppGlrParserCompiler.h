@@ -349,6 +349,13 @@ AstClassSymbol
 				bool								SetPropType(AstPropType _type, const WString& typeName = WString::Empty, ParsingTextRange codeRange = {});
 			};
 
+			enum class AstClassType
+			{
+				Defined,
+				Generated_ToResolve,
+				Generated_Common,
+			};
+
 			class AstClassSymbol : public AstSymbol
 			{
 				friend class AstDefFile;
@@ -357,12 +364,16 @@ AstClassSymbol
 
 				AstClassSymbol(AstDefFile* _file, const WString& _name);
 			public:
+				AstClassType						classType = AstClassType::Defined;
 				AstClassSymbol*						baseClass = nullptr;
-				AstClassSymbol*						ambiguousDerivedClass = nullptr;
 				collections::List<AstClassSymbol*>	derivedClasses;
+				
+				AstClassSymbol*						derivedClass_ToResolve = nullptr;
+				AstClassSymbol*						derivedClass_Common = nullptr;
 
 				bool								SetBaseClass(const WString& typeName, ParsingTextRange codeRange = {});
-				AstClassSymbol*						CreateAmbiguousDerivedClass(ParsingTextRange codeRange);
+				AstClassSymbol*						CreateDerivedClass_ToResolve(ParsingTextRange codeRange);
+				AstClassSymbol*						CreateDerivedClass_Common(ParsingTextRange codeRange);
 				AstClassPropSymbol*					CreateProp(const WString& propName, ParsingTextRange codeRange = {});
 				const auto&							Props() { return props.map; }
 				const auto&							PropOrder() { return props.order; }

@@ -831,9 +831,9 @@ WriteAstAssemblerCppFile
 								auto current = classSymbol;
 								while (current)
 								{
-									if (current->ambiguousDerivedClass)
+									if (current->derivedClass_ToResolve)
 									{
-										resolvables.Add(classSymbol, current->ambiguousDerivedClass);
+										resolvables.Add(classSymbol, current->derivedClass_ToResolve);
 										break;
 									}
 									current = current->baseClass;
@@ -2642,6 +2642,11 @@ AstClassSymbol
 					return false;
 				}
 
+				if (newBaseClass->derivedClass_Common)
+				{
+					newBaseClass = newBaseClass->derivedClass_Common;
+				}
+
 				List<AstClassSymbol*> visited;
 				visited.Add(newBaseClass);
 				// TODO: (enumerable) foreach:alterable
@@ -2670,11 +2675,12 @@ AstClassSymbol
 				return true;
 			}
 
-			AstClassSymbol* AstClassSymbol::CreateAmbiguousDerivedClass(ParsingTextRange codeRange)
+			AstClassSymbol* AstClassSymbol::CreateDerivedClass_ToResolve(ParsingTextRange codeRange)
 			{
-				if (!ambiguousDerivedClass)
+				if (!derivedClass_ToResolve)
 				{
 					auto derived = ownerFile->CreateClass(name + L"ToResolve", codeRange);
+					derived->classType = AstClassType::Generated_ToResolve;
 					derived->baseClass = this;
 					derivedClasses.Add(derived);
 
@@ -2682,9 +2688,23 @@ AstClassSymbol
 					prop->propType = AstPropType::Array;
 					prop->propSymbol = this;
 
-					ambiguousDerivedClass = derived;
+					derivedClass_ToResolve = derived;
 				}
-				return ambiguousDerivedClass;
+				return derivedClass_ToResolve;
+			}
+
+			AstClassSymbol* AstClassSymbol::CreateDerivedClass_Common(ParsingTextRange codeRange)
+			{
+				if (!derivedClass_Common)
+				{
+					auto derived = ownerFile->CreateClass(name + L"Common", codeRange);
+					derived->classType = AstClassType::Generated_Common;
+					derived->baseClass = this;
+					derivedClasses.Add(derived);
+
+					derivedClass_Common = derived;
+				}
+				return derivedClass_Common;
 			}
 
 			AstClassPropSymbol* AstClassSymbol::CreateProp(const WString& propName, ParsingTextRange codeRange)
@@ -3612,6 +3632,15 @@ CompileAst
 				{
 					auto symbol = astDefFile->CreateClass(node->name.value, node->name.codeRange);
 					symbol->isPublic = node->attPublic;
+
+					if (node->attAmbiguous)
+					{
+						symbol->CreateDerivedClass_ToResolve(node->name.codeRange);
+						if (node->props.Count() > 0)
+						{
+							symbol->CreateDerivedClass_Common(node->name.codeRange);
+						}
+					}
 				}
 			};
 
@@ -3634,17 +3663,16 @@ CompileAst
 					}
 				}
 
-				void Visit(GlrClass* node) override
+				void FillClassSymbolBaseClass(GlrClass* node, AstClassSymbol* classSymbol)
 				{
-					auto classSymbol = dynamic_cast<AstClassSymbol*>(astDefFile->Symbols()[node->name.value]);
 					if (node->baseClass)
 					{
 						classSymbol->SetBaseClass(node->baseClass.value, node->baseClass.codeRange);
 					}
-					if (node->attAmbiguous)
-					{
-						classSymbol->CreateAmbiguousDerivedClass(node->name.codeRange);
-					}
+				}
+
+				void FillClassSymbolProps(GlrClass* node, AstClassSymbol* classSymbol)
+				{
 					for (auto prop : node->props)
 					{
 						auto propSymbol = classSymbol->CreateProp(prop->name.value, prop->name.codeRange);
@@ -3662,6 +3690,18 @@ CompileAst
 						default:;
 						}
 					}
+				}
+
+				void Visit(GlrClass* node) override
+				{
+					auto classSymbol = dynamic_cast<AstClassSymbol*>(astDefFile->Symbols()[node->name.value]);
+					FillClassSymbolBaseClass(node, classSymbol);
+
+					if (node->attAmbiguous && classSymbol->derivedClass_Common)
+					{
+						classSymbol = classSymbol->derivedClass_Common;
+					}
+					FillClassSymbolProps(node, classSymbol);
 				}
 			};
 
@@ -4453,6 +4493,7 @@ CalculateRuleAndClauseTypes
 				auto updateRuleType = [&context, &explicitlyTypedRules](RuleSymbol* rule, AstClassSymbol* newClauseType, bool promptIfNull, bool* ruleTypeChanged = nullptr)
 				{
 					auto newRuleType = FindCommonBaseClass(rule->ruleType, newClauseType);
+
 					if (explicitlyTypedRules.Contains(rule))
 					{
 						if (rule->ruleType != newRuleType)
@@ -5051,6 +5092,11 @@ ResolveNameVisitor
 							ruleSymbol->Name(),
 							typeName.value
 							);
+					}
+
+					if (classSymbol->derivedClass_Common)
+					{
+						classSymbol = classSymbol->derivedClass_Common;
 					}
 					return classSymbol;
 				}
@@ -15061,7 +15107,7 @@ WriteSyntaxCppFile
 					if (
 						output->classIds.Count() == 0 ||
 						From(output->classIds.Keys())
-							.Where([](auto c) { return c->ambiguousDerivedClass != nullptr; })
+							.Where([](auto c) { return c->derivedClass_ToResolve != nullptr; })
 							.IsEmpty()
 						)
 					{
