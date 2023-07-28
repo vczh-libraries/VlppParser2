@@ -40,7 +40,7 @@ ResolveNameVisitor
 				{
 				}
 
-				AstClassSymbol* GetRuleClass(ParsingToken& typeName, bool forCreateObject)
+				AstClassSymbol* GetRuleClass(ParsingToken& typeName)
 				{
 					vint index = context.astManager.Symbols().Keys().IndexOf(typeName.value);
 					if (index == -1)
@@ -65,12 +65,9 @@ ResolveNameVisitor
 							);
 					}
 
-					if (forCreateObject)
+					if (classSymbol->derivedClass_Common)
 					{
-						if (classSymbol->derivedClass_Common)
-						{
-							classSymbol = classSymbol->derivedClass_Common;
-						}
+						classSymbol = classSymbol->derivedClass_Common;
 					}
 					return classSymbol;
 				}
@@ -331,7 +328,7 @@ ResolveNameVisitor
 
 				void Visit(GlrCreateClause* node) override
 				{
-					if (auto classSymbol = GetRuleClass(node->type, true))
+					if (auto classSymbol = GetRuleClass(node->type))
 					{
 						context.ruleKnownTypes.Add(ruleSymbol, classSymbol);
 						context.clauseTypes.Add(node, classSymbol);
@@ -341,7 +338,7 @@ ResolveNameVisitor
 
 				void Visit(GlrPartialClause* node) override
 				{
-					if (auto classSymbol = GetRuleClass(node->type, true))
+					if (auto classSymbol = GetRuleClass(node->type))
 					{
 						context.ruleKnownTypes.Add(ruleSymbol, classSymbol);
 						context.clauseTypes.Add(node, classSymbol);
@@ -450,7 +447,7 @@ ResolveName
 					ResolveNameVisitor visitor(context, sContext, accessedSwitches, ruleSymbol);
 					if (rule->type)
 					{
-						ruleSymbol->ruleType = visitor.GetRuleClass(rule->type, false);
+						ruleSymbol->ruleType = visitor.GetRuleClass(rule->type);
 					}
 					for (auto clause : rule->clauses)
 					{
