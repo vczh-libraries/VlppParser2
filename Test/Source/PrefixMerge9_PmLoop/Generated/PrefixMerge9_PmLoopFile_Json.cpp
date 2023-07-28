@@ -36,6 +36,9 @@ namespace prefixmerge9_pmloop::json_visitor
 	void FileVisitor::PrintFields(IntItem* node)
 	{
 	}
+	void FileVisitor::PrintFields(IntQuestionItem* node)
+	{
+	}
 	void FileVisitor::PrintFields(Item* node)
 	{
 	}
@@ -112,6 +115,20 @@ namespace prefixmerge9_pmloop::json_visitor
 		WriteType(L"IntDotItem", node);
 		PrintFields(static_cast<Item*>(node));
 		PrintFields(static_cast<IntDotItem*>(node));
+		EndObject();
+	}
+
+	void FileVisitor::Visit(IntQuestionItem* node)
+	{
+		if (!node)
+		{
+			WriteNull();
+			return;
+		}
+		BeginObject();
+		WriteType(L"IntQuestionItem", node);
+		PrintFields(static_cast<Item*>(node));
+		PrintFields(static_cast<IntQuestionItem*>(node));
 		EndObject();
 	}
 

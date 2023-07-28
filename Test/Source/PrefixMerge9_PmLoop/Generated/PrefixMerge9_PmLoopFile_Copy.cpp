@@ -41,6 +41,11 @@ namespace prefixmerge9_pmloop::copy_visitor
 		CopyFields(static_cast<Item*>(from), static_cast<Item*>(to));
 	}
 
+	void FileVisitor::CopyFields(IntQuestionItem* from, IntQuestionItem* to)
+	{
+		CopyFields(static_cast<Item*>(from), static_cast<Item*>(to));
+	}
+
 	void FileVisitor::CopyFields(Item* from, Item* to)
 	{
 	}
@@ -91,6 +96,13 @@ namespace prefixmerge9_pmloop::copy_visitor
 	void FileVisitor::Visit(IntDotItem* node)
 	{
 		auto newNode = vl::Ptr(new IntDotItem);
+		CopyFields(node, newNode.Obj());
+		this->result = newNode;
+	}
+
+	void FileVisitor::Visit(IntQuestionItem* node)
+	{
+		auto newNode = vl::Ptr(new IntQuestionItem);
 		CopyFields(node, newNode.Obj());
 		this->result = newNode;
 	}
@@ -160,6 +172,12 @@ namespace prefixmerge9_pmloop::copy_visitor
 	{
 		if (!node) return nullptr;
 		return CopyNode(static_cast<Item*>(node)).Cast<IntItem>();
+	}
+
+	vl::Ptr<IntQuestionItem> FileVisitor::CopyNode(IntQuestionItem* node)
+	{
+		if (!node) return nullptr;
+		return CopyNode(static_cast<Item*>(node)).Cast<IntQuestionItem>();
 	}
 
 	vl::Ptr<ItemToResolve> FileVisitor::CopyNode(ItemToResolve* node)

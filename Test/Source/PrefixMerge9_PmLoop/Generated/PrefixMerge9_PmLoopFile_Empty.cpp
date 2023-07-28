@@ -31,6 +31,10 @@ ItemVisitor
 	{
 	}
 
+	void ItemVisitor::Visit(IntQuestionItem* node)
+	{
+	}
+
 	void ItemVisitor::Visit(ClassItem* node)
 	{
 	}

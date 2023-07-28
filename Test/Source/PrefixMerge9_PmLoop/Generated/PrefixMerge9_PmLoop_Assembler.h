@@ -19,9 +19,10 @@ namespace prefixmerge9_pmloop
 		IntCommaItem = 3,
 		IntDotItem = 4,
 		IntItem = 5,
-		Item = 6,
-		ItemToResolve = 7,
-		QuestionItem = 8,
+		IntQuestionItem = 6,
+		Item = 7,
+		ItemToResolve = 8,
+		QuestionItem = 9,
 	};
 
 	enum class PrefixMerge9_PmLoopFields : vl::vint32_t

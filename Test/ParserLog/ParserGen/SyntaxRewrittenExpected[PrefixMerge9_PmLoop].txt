@@ -7,11 +7,11 @@ _IntItem_LRI_Original : IntItem
   ::= !_Int
   ;
 
-_Item_LRI_Isolated_3 : ClassItem
+_Item_LRI_Isolated_4 : ClassItem
   ::= "class" as ClassItem
   ;
 
-_Item_LRI_Isolated_4 : ClassQuestionItem
+_Item_LRI_Isolated_5 : ClassQuestionItem
   ::= "class" "?" as ClassQuestionItem
   ;
 
@@ -20,8 +20,9 @@ _Item_LRI_Original : Item
   ::= !_IntItem_LRI_Original
   ::= _IntItem_LRI_Original "," as IntCommaItem
   ::= _IntItem_LRI_Original "." as IntDotItem
-  ::= !_Item_LRI_Isolated_3
+  ::= _IntItem_LRI_Original "?" as IntQuestionItem
   ::= !_Item_LRI_Isolated_4
+  ::= !_Item_LRI_Isolated_5
   ::= _Item_LRI_Original:item "?" as QuestionItem
   ;
 
@@ -35,7 +36,7 @@ _IntItem : IntItem
 
 _Item : Item
   ::= !_Int [left_recursion_inject_multiple(LRI__IntItem) _Item_LRI_Original]
-  ::= !_Item_LRI_Isolated_3 [left_recursion_inject(LRI__Item) _Item_LRI_Original]
   ::= !_Item_LRI_Isolated_4 [left_recursion_inject(LRI__Item) _Item_LRI_Original]
+  ::= !_Item_LRI_Isolated_5 [left_recursion_inject(LRI__Item) _Item_LRI_Original]
   ;
 

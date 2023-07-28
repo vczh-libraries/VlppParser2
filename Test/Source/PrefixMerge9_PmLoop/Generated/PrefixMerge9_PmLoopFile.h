@@ -18,6 +18,7 @@ namespace prefixmerge9_pmloop
 	class IntCommaItem;
 	class IntDotItem;
 	class IntItem;
+	class IntQuestionItem;
 	class Item;
 	class ItemToResolve;
 	class QuestionItem;
@@ -32,6 +33,7 @@ namespace prefixmerge9_pmloop
 			virtual void Visit(IntItem* node) = 0;
 			virtual void Visit(IntCommaItem* node) = 0;
 			virtual void Visit(IntDotItem* node) = 0;
+			virtual void Visit(IntQuestionItem* node) = 0;
 			virtual void Visit(ClassItem* node) = 0;
 			virtual void Visit(ClassQuestionItem* node) = 0;
 			virtual void Visit(QuestionItem* node) = 0;
@@ -56,6 +58,13 @@ namespace prefixmerge9_pmloop
 	};
 
 	class IntDotItem : public Item, vl::reflection::Description<IntDotItem>
+	{
+	public:
+
+		void Accept(Item::IVisitor* visitor) override;
+	};
+
+	class IntQuestionItem : public Item, vl::reflection::Description<IntQuestionItem>
 	{
 	public:
 
@@ -106,6 +115,7 @@ namespace vl::reflection::description
 	DECL_TYPE_INFO(prefixmerge9_pmloop::IntItem)
 	DECL_TYPE_INFO(prefixmerge9_pmloop::IntCommaItem)
 	DECL_TYPE_INFO(prefixmerge9_pmloop::IntDotItem)
+	DECL_TYPE_INFO(prefixmerge9_pmloop::IntQuestionItem)
 	DECL_TYPE_INFO(prefixmerge9_pmloop::ClassItem)
 	DECL_TYPE_INFO(prefixmerge9_pmloop::ClassQuestionItem)
 	DECL_TYPE_INFO(prefixmerge9_pmloop::QuestionItem)
@@ -131,6 +141,11 @@ namespace vl::reflection::description
 		}
 
 		void Visit(prefixmerge9_pmloop::IntDotItem* node) override
+		{
+			INVOKE_INTERFACE_PROXY(Visit, node);
+		}
+
+		void Visit(prefixmerge9_pmloop::IntQuestionItem* node) override
 		{
 			INVOKE_INTERFACE_PROXY(Visit, node);
 		}

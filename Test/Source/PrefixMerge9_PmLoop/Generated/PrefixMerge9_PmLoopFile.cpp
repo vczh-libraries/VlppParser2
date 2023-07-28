@@ -27,6 +27,11 @@ Visitor Pattern Implementation
 		visitor->Visit(this);
 	}
 
+	void IntQuestionItem::Accept(Item::IVisitor* visitor)
+	{
+		visitor->Visit(this);
+	}
+
 	void ClassItem::Accept(Item::IVisitor* visitor)
 	{
 		visitor->Visit(this);
@@ -56,6 +61,7 @@ namespace vl::reflection::description
 	IMPL_TYPE_INFO_RENAME(prefixmerge9_pmloop::IntItem, prefixmerge9_pmloop::IntItem)
 	IMPL_TYPE_INFO_RENAME(prefixmerge9_pmloop::IntCommaItem, prefixmerge9_pmloop::IntCommaItem)
 	IMPL_TYPE_INFO_RENAME(prefixmerge9_pmloop::IntDotItem, prefixmerge9_pmloop::IntDotItem)
+	IMPL_TYPE_INFO_RENAME(prefixmerge9_pmloop::IntQuestionItem, prefixmerge9_pmloop::IntQuestionItem)
 	IMPL_TYPE_INFO_RENAME(prefixmerge9_pmloop::ClassItem, prefixmerge9_pmloop::ClassItem)
 	IMPL_TYPE_INFO_RENAME(prefixmerge9_pmloop::ClassQuestionItem, prefixmerge9_pmloop::ClassQuestionItem)
 	IMPL_TYPE_INFO_RENAME(prefixmerge9_pmloop::QuestionItem, prefixmerge9_pmloop::QuestionItem)
@@ -89,6 +95,13 @@ namespace vl::reflection::description
 		CLASS_MEMBER_CONSTRUCTOR(vl::Ptr<prefixmerge9_pmloop::IntDotItem>(), NO_PARAMETER)
 
 	END_CLASS_MEMBER(prefixmerge9_pmloop::IntDotItem)
+
+	BEGIN_CLASS_MEMBER(prefixmerge9_pmloop::IntQuestionItem)
+		CLASS_MEMBER_BASE(prefixmerge9_pmloop::Item)
+
+		CLASS_MEMBER_CONSTRUCTOR(vl::Ptr<prefixmerge9_pmloop::IntQuestionItem>(), NO_PARAMETER)
+
+	END_CLASS_MEMBER(prefixmerge9_pmloop::IntQuestionItem)
 
 	BEGIN_CLASS_MEMBER(prefixmerge9_pmloop::ClassItem)
 		CLASS_MEMBER_BASE(prefixmerge9_pmloop::Item)
@@ -133,6 +146,7 @@ namespace vl::reflection::description
 		CLASS_MEMBER_METHOD_OVERLOAD(Visit, {L"node"}, void(prefixmerge9_pmloop::Item::IVisitor::*)(prefixmerge9_pmloop::IntItem* node))
 		CLASS_MEMBER_METHOD_OVERLOAD(Visit, {L"node"}, void(prefixmerge9_pmloop::Item::IVisitor::*)(prefixmerge9_pmloop::IntCommaItem* node))
 		CLASS_MEMBER_METHOD_OVERLOAD(Visit, {L"node"}, void(prefixmerge9_pmloop::Item::IVisitor::*)(prefixmerge9_pmloop::IntDotItem* node))
+		CLASS_MEMBER_METHOD_OVERLOAD(Visit, {L"node"}, void(prefixmerge9_pmloop::Item::IVisitor::*)(prefixmerge9_pmloop::IntQuestionItem* node))
 		CLASS_MEMBER_METHOD_OVERLOAD(Visit, {L"node"}, void(prefixmerge9_pmloop::Item::IVisitor::*)(prefixmerge9_pmloop::ClassItem* node))
 		CLASS_MEMBER_METHOD_OVERLOAD(Visit, {L"node"}, void(prefixmerge9_pmloop::Item::IVisitor::*)(prefixmerge9_pmloop::ClassQuestionItem* node))
 		CLASS_MEMBER_METHOD_OVERLOAD(Visit, {L"node"}, void(prefixmerge9_pmloop::Item::IVisitor::*)(prefixmerge9_pmloop::QuestionItem* node))
@@ -151,6 +165,7 @@ namespace vl::reflection::description
 			ADD_TYPE_INFO(prefixmerge9_pmloop::IntItem)
 			ADD_TYPE_INFO(prefixmerge9_pmloop::IntCommaItem)
 			ADD_TYPE_INFO(prefixmerge9_pmloop::IntDotItem)
+			ADD_TYPE_INFO(prefixmerge9_pmloop::IntQuestionItem)
 			ADD_TYPE_INFO(prefixmerge9_pmloop::ClassItem)
 			ADD_TYPE_INFO(prefixmerge9_pmloop::ClassQuestionItem)
 			ADD_TYPE_INFO(prefixmerge9_pmloop::QuestionItem)
