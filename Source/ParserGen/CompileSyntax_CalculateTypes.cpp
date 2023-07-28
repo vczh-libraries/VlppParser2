@@ -126,6 +126,7 @@ CalculateRuleAndClauseTypes
 				auto updateRuleType = [&context, &explicitlyTypedRules](RuleSymbol* rule, AstClassSymbol* newClauseType, bool promptIfNull, bool* ruleTypeChanged = nullptr)
 				{
 					auto newRuleType = FindCommonBaseClass(rule->ruleType, newClauseType);
+
 					if (explicitlyTypedRules.Contains(rule))
 					{
 						if (rule->ruleType != newRuleType)
