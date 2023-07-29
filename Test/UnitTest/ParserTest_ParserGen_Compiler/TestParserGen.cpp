@@ -153,9 +153,7 @@ TEST_FILE
 						);
 				};
 
-				List<Ptr<GlrSyntaxFile>> syntaxFiles;
-				syntaxFiles.Add(syntaxFile);
-				auto syntaxRewrittenActual = CompileSyntax(astManager, lexerManager, syntaxManager, output, syntaxFiles);
+				auto syntaxRewrittenActual = CompileSyntax(astManager, lexerManager, syntaxManager, output, syntaxFile);
 				if (syntaxRewrittenActual)
 				{
 					formattedActual = GenerateToStream([&](TextWriter& writer) { SyntaxAstToCode(syntaxRewrittenActual, writer); });

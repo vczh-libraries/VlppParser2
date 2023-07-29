@@ -155,6 +155,13 @@ CompileSyntax
 			FINISHED_COMPILING:
 				return rawSyntaxFile == syntaxFile ? nullptr : syntaxFile;
 			}
+
+			Ptr<GlrSyntaxFile> CompileSyntax(AstSymbolManager& astManager, LexerSymbolManager& lexerManager, SyntaxSymbolManager& syntaxManager, Ptr<CppParserGenOutput> output, Ptr<GlrSyntaxFile> file)
+			{
+				List<Ptr<GlrSyntaxFile>> files;
+				files.Add(file);
+				return CompileSyntax(astManager, lexerManager, syntaxManager, output, files);
+			}
 		}
 	}
 }

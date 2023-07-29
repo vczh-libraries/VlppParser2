@@ -143,9 +143,11 @@ Compiler
 ***********************************************************************/
 
 			extern WString						UnescapeLiteral(const WString& literal, wchar_t quot);
+			extern void							CompileAst(AstSymbolManager& astManager, collections::List<collections::Pair<AstDefFile*, Ptr<GlrAstFile>>>& files);
 			extern void							CompileAst(AstSymbolManager& astManager, AstDefFile* astDefFile, Ptr<GlrAstFile> file);
 			extern void							CompileLexer(LexerSymbolManager& lexerManager, const WString& input);
 			extern Ptr<GlrSyntaxFile>			CompileSyntax(AstSymbolManager& astManager, LexerSymbolManager& lexerManager, SyntaxSymbolManager& syntaxManager, Ptr<CppParserGenOutput> output, collections::List<Ptr<GlrSyntaxFile>>& files);
+			extern Ptr<GlrSyntaxFile>			CompileSyntax(AstSymbolManager& astManager, LexerSymbolManager& lexerManager, SyntaxSymbolManager& syntaxManager, Ptr<CppParserGenOutput> output, Ptr<GlrSyntaxFile> file);
 		}
 	}
 }

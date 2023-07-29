@@ -65,9 +65,12 @@ ResolveNameVisitor
 							);
 					}
 
-					if (classSymbol->derivedClass_Common)
+					if (classSymbol)
 					{
-						classSymbol = classSymbol->derivedClass_Common;
+						if (classSymbol->derivedClass_Common)
+						{
+							classSymbol = classSymbol->derivedClass_Common;
+						}
 					}
 					return classSymbol;
 				}

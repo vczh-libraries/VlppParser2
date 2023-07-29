@@ -85,9 +85,7 @@ TEST_FILE
 
 	TEST_CASE(L"CompilerSyntax")
 	{
-		List<Ptr<GlrSyntaxFile>> syntaxFiles;
-		syntaxFiles.Add(syntaxFile);
-		CompileSyntax(astManager, lexerManager, syntaxManager, output, syntaxFiles);
+		CompileSyntax(astManager, lexerManager, syntaxManager, output, syntaxFile);
 		TEST_ASSERT(global.Errors().Count() == 0);
 	
 		syntaxManager.BuildCompactNFA();

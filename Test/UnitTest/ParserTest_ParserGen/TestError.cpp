@@ -33,9 +33,8 @@ namespace TestError_Syntax_TestObjects
 		CompileLexer(lexerManager, lexerCode);
 		TEST_ASSERT(global.Errors().Count() == 0);
 
-		List<Ptr<GlrSyntaxFile>> syntaxFiles;
-		syntaxFiles.Add(ruleParser.ParseFile(syntaxCode));
-		CompileSyntax(astManager, lexerManager, syntaxManager, output, syntaxFiles);
+		auto syntaxFile = ruleParser.ParseFile(syntaxCode);
+		CompileSyntax(astManager, lexerManager, syntaxManager, output, syntaxFile);
 
 		Executable executable;
 		Metadata metadata;

@@ -6,6 +6,7 @@ namespace vl
 	{
 		namespace parsergen
 		{
+			using namespace collections;
 
 /***********************************************************************
 CompileAst
@@ -104,8 +105,9 @@ CompileAst
 				}
 			};
 
-			void CompileAst(AstSymbolManager& astManager, AstDefFile* astDefFile, Ptr<GlrAstFile> file)
+			void CompileAst(AstSymbolManager& astManager, collections::List<collections::Pair<AstDefFile*, Ptr<GlrAstFile>>>& files)
 			{
+				for (auto [astDefFile, file] : files)
 				{
 					CreateAstSymbolVisitor visitor(astDefFile);
 					for (auto type : file->types)
@@ -115,12 +117,22 @@ CompileAst
 				}
 				if (astManager.Global().Errors().Count() == 0)
 				{
-					FillAstSymbolVisitor visitor(astDefFile);
-					for (auto type : file->types)
+					for (auto [astDefFile, file] : files)
 					{
-						type->Accept(&visitor);
+						FillAstSymbolVisitor visitor(astDefFile);
+						for (auto type : file->types)
+						{
+							type->Accept(&visitor);
+						}
 					}
 				}
+			}
+
+			void CompileAst(AstSymbolManager& astManager, AstDefFile* astDefFile, Ptr<GlrAstFile> file)
+			{
+				List<Pair<AstDefFile*, Ptr<GlrAstFile>>> files;
+				files.Add({ astDefFile,file });
+				CompileAst(astManager, files);
 			}
 		}
 	}
