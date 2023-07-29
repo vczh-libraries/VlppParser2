@@ -20,11 +20,11 @@ namespace cpp_parser::traverse_visitor
 		, protected virtual CppTypeOrExpr::IVisitor
 		, protected virtual CppExprOnly::IVisitor
 		, protected virtual CppTypeOnly::IVisitor
+		, protected virtual CppStatement::IVisitor
 		, protected virtual CppIdentifier::IVisitor
 		, protected virtual CppDeclaratorFunctionPart::IVisitor
 		, protected virtual CppVarInit::IVisitor
 		, protected virtual CppDeclaratorVariablePart::IVisitor
-		, protected virtual CppStatement::IVisitor
 		, protected virtual CppForStatConditionPart::IVisitor
 	{
 	protected:
@@ -295,21 +295,6 @@ namespace cpp_parser::traverse_visitor
 		void Visit(CppConstType* node) override;
 		void Visit(CppVolatileType* node) override;
 
-		void Visit(CppNameIdentifier* node) override;
-		void Visit(CppOperatorIdentifier* node) override;
-		void Visit(CppOperatorTypeIdentifier* node) override;
-
-		void Visit(CppDeclaratorFunctionPartToResolve* node) override;
-		void Visit(CppDeclaratorFunctionPartCommon* node) override;
-
-		void Visit(CppVarValueInit* node) override;
-		void Visit(CppVarParanthesisInit* node) override;
-		void Visit(CppVarBraceInit* node) override;
-		void Visit(CppVarStatInit* node) override;
-
-		void Visit(CppDeclaratorVariablePartToResolve* node) override;
-		void Visit(CppDeclaratorVariablePartCommon* node) override;
-
 		void Visit(CppStatementToResolve* node) override;
 		void Visit(CppEmptyStat* node) override;
 		void Visit(CppBlockStat* node) override;
@@ -331,16 +316,31 @@ namespace cpp_parser::traverse_visitor
 		void Visit(CppTryStat* node) override;
 		void Visit(Cpp__TryStat* node) override;
 
+		void Visit(CppNameIdentifier* node) override;
+		void Visit(CppOperatorIdentifier* node) override;
+		void Visit(CppOperatorTypeIdentifier* node) override;
+
+		void Visit(CppDeclaratorFunctionPartToResolve* node) override;
+		void Visit(CppDeclaratorFunctionPartCommon* node) override;
+
+		void Visit(CppVarValueInit* node) override;
+		void Visit(CppVarParanthesisInit* node) override;
+		void Visit(CppVarBraceInit* node) override;
+		void Visit(CppVarStatInit* node) override;
+
+		void Visit(CppDeclaratorVariablePartToResolve* node) override;
+		void Visit(CppDeclaratorVariablePartCommon* node) override;
+
 		void Visit(CppForStatLoopCondition* node) override;
 		void Visit(CppForStatIterateCondition* node) override;
 
 	public:
 		void InspectInto(CppTypeOrExprOrOthers* node);
+		void InspectInto(CppStatement* node);
 		void InspectInto(CppIdentifier* node);
 		void InspectInto(CppDeclaratorFunctionPart* node);
 		void InspectInto(CppVarInit* node);
 		void InspectInto(CppDeclaratorVariablePart* node);
-		void InspectInto(CppStatement* node);
 		void InspectInto(CppForStatConditionPart* node);
 		void InspectInto(CppGenericArguments* node);
 		void InspectInto(CppGenericHeader* node);

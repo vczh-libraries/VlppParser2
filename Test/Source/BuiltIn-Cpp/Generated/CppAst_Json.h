@@ -20,11 +20,11 @@ namespace cpp_parser::json_visitor
 		, protected virtual CppTypeOrExpr::IVisitor
 		, protected virtual CppExprOnly::IVisitor
 		, protected virtual CppTypeOnly::IVisitor
+		, protected virtual CppStatement::IVisitor
 		, protected virtual CppIdentifier::IVisitor
 		, protected virtual CppDeclaratorFunctionPart::IVisitor
 		, protected virtual CppVarInit::IVisitor
 		, protected virtual CppDeclaratorVariablePart::IVisitor
-		, protected virtual CppStatement::IVisitor
 		, protected virtual CppForStatConditionPart::IVisitor
 	{
 	protected:
@@ -186,21 +186,6 @@ namespace cpp_parser::json_visitor
 		void Visit(CppConstType* node) override;
 		void Visit(CppVolatileType* node) override;
 
-		void Visit(CppNameIdentifier* node) override;
-		void Visit(CppOperatorIdentifier* node) override;
-		void Visit(CppOperatorTypeIdentifier* node) override;
-
-		void Visit(CppDeclaratorFunctionPartToResolve* node) override;
-		void Visit(CppDeclaratorFunctionPartCommon* node) override;
-
-		void Visit(CppVarValueInit* node) override;
-		void Visit(CppVarParanthesisInit* node) override;
-		void Visit(CppVarBraceInit* node) override;
-		void Visit(CppVarStatInit* node) override;
-
-		void Visit(CppDeclaratorVariablePartToResolve* node) override;
-		void Visit(CppDeclaratorVariablePartCommon* node) override;
-
 		void Visit(CppStatementToResolve* node) override;
 		void Visit(CppEmptyStat* node) override;
 		void Visit(CppBlockStat* node) override;
@@ -222,6 +207,21 @@ namespace cpp_parser::json_visitor
 		void Visit(CppTryStat* node) override;
 		void Visit(Cpp__TryStat* node) override;
 
+		void Visit(CppNameIdentifier* node) override;
+		void Visit(CppOperatorIdentifier* node) override;
+		void Visit(CppOperatorTypeIdentifier* node) override;
+
+		void Visit(CppDeclaratorFunctionPartToResolve* node) override;
+		void Visit(CppDeclaratorFunctionPartCommon* node) override;
+
+		void Visit(CppVarValueInit* node) override;
+		void Visit(CppVarParanthesisInit* node) override;
+		void Visit(CppVarBraceInit* node) override;
+		void Visit(CppVarStatInit* node) override;
+
+		void Visit(CppDeclaratorVariablePartToResolve* node) override;
+		void Visit(CppDeclaratorVariablePartCommon* node) override;
+
 		void Visit(CppForStatLoopCondition* node) override;
 		void Visit(CppForStatIterateCondition* node) override;
 
@@ -229,11 +229,11 @@ namespace cpp_parser::json_visitor
 		AstVisitor(vl::stream::StreamWriter& _writer);
 
 		void Print(CppTypeOrExprOrOthers* node);
+		void Print(CppStatement* node);
 		void Print(CppIdentifier* node);
 		void Print(CppDeclaratorFunctionPart* node);
 		void Print(CppVarInit* node);
 		void Print(CppDeclaratorVariablePart* node);
-		void Print(CppStatement* node);
 		void Print(CppForStatConditionPart* node);
 		void Print(CppGenericArguments* node);
 		void Print(CppGenericHeader* node);

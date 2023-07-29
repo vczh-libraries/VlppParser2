@@ -1,21 +1,25 @@
-﻿@ambiguous class TypeOrExprOrOthers
+﻿@public @ambiguous class TypeOrExprOrOthers
 {
 }
 
-@ambiguous class Declaration : TypeOrExprOrOthers
+@public @ambiguous class Declaration : TypeOrExprOrOthers
 {
   var keywords : DeclaratorKeyword[];
 }
 
-@ambiguous class TypeOrExpr : TypeOrExprOrOthers
+@public @ambiguous class TypeOrExpr : TypeOrExprOrOthers
 {
 }
 
-class ExprOnly : TypeOrExpr
+@public class ExprOnly : TypeOrExpr
 {
 }
 
-class TypeOnly : TypeOrExpr
+@public class TypeOnly : TypeOrExpr
+{
+}
+
+@public @ambiguous class Statement
 {
 }
 
@@ -31,7 +35,7 @@ enum NameKinds
   UserDefinedLiteral,
 }
 
-class Identifier
+@public class Identifier
 {
 }
 
@@ -41,7 +45,7 @@ class NameIdentifier : Identifier
   var name : token;
 }
 
-enum Operators
+@public enum Operators
 {
   New,
   NewArray,
@@ -108,7 +112,7 @@ class GenericArgument : TypeOrExprOrOthers
   var variadic : token;
 }
 
-class GenericArguments
+@public class GenericArguments
 {
   var arguments : TypeOrExprOrOthers[];
 }
@@ -122,7 +126,7 @@ enum QualifiedNameKinds
   Member,
 }
 
-class QualifiedName : TypeOrExpr
+@public class QualifiedName : TypeOrExpr
 {
   var kind : QualifiedNameKinds;
   var expr : TypeOrExpr;
@@ -140,7 +144,7 @@ class OrdinaryGenericParameter : TypeOrExprOrOthers
   var init : TypeOrExpr;
 }
 
-class GenericHeader
+@public class GenericHeader
 {
   var parameters : TypeOrExprOrOthers[];
 }
@@ -391,7 +395,7 @@ class FunctionKeyword
   var arguments : TypeOrExpr[];
 }
 
-@ambiguous class DeclaratorFunctionPart
+@public @ambiguous class DeclaratorFunctionPart
 {
   var parameters : TypeOrExprOrOthers[];
   var variadic : token;
@@ -424,7 +428,7 @@ class DeclaratorType : TypeOrExpr
   var declarator : Declarator;
 }
 
-class VarInit
+@public class VarInit
 {
 }
 
@@ -455,14 +459,14 @@ class VarStatInit : VarInit
   var stat : BlockStat;
 }
 
-@ambiguous class DeclaratorVariablePart
+@public @ambiguous class DeclaratorVariablePart
 {
   var declarator : Declarator;
   var init : VarInit;
   var nextVarPart : DeclaratorVariablePart;
 }
 
-class VariablesDeclaration : Declaration
+@public class VariablesDeclaration : Declaration
 {
   var type : TypeOrExpr;
   var firstVarPart : DeclaratorVariablePart;
@@ -592,10 +596,6 @@ class FriendTypeDeclaration : Declaration
   var type : QualifiedName;
 }
 
-@ambiguous class Statement
-{
-}
-
 class EmptyStat : Statement
 {
 }
@@ -723,7 +723,7 @@ class __TryStat : Statement
   var filter : TypeOrExpr;
 }
 
-class File
+@public class File
 {
   var decls : Declaration[];
 }

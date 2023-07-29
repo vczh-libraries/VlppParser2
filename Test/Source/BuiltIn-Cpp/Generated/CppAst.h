@@ -457,6 +457,46 @@ namespace cpp_parser
 		void Accept(CppTypeOrExpr::IVisitor* visitor) override;
 	};
 
+	class CppStatement abstract : public vl::glr::ParsingAstBase, vl::reflection::Description<CppStatement>
+	{
+	public:
+		class IVisitor : public virtual vl::reflection::IDescriptable, vl::reflection::Description<IVisitor>
+		{
+		public:
+			virtual void Visit(CppStatementToResolve* node) = 0;
+			virtual void Visit(CppEmptyStat* node) = 0;
+			virtual void Visit(CppBlockStat* node) = 0;
+			virtual void Visit(CppExprStat* node) = 0;
+			virtual void Visit(CppDeclStat* node) = 0;
+			virtual void Visit(CppBreakStat* node) = 0;
+			virtual void Visit(CppContinueStat* node) = 0;
+			virtual void Visit(CppReturnStat* node) = 0;
+			virtual void Visit(CppLabelStat* node) = 0;
+			virtual void Visit(CppGotoStat* node) = 0;
+			virtual void Visit(CppCaseStat* node) = 0;
+			virtual void Visit(CppDefaultStat* node) = 0;
+			virtual void Visit(Cpp__LeaveStat* node) = 0;
+			virtual void Visit(CppWhileStat* node) = 0;
+			virtual void Visit(CppDoWhileStat* node) = 0;
+			virtual void Visit(CppIfElseStat* node) = 0;
+			virtual void Visit(CppForStat* node) = 0;
+			virtual void Visit(CppSwitchStat* node) = 0;
+			virtual void Visit(CppTryStat* node) = 0;
+			virtual void Visit(Cpp__TryStat* node) = 0;
+		};
+
+		virtual void Accept(CppStatement::IVisitor* visitor) = 0;
+
+	};
+
+	class CppStatementToResolve : public CppStatement, vl::reflection::Description<CppStatementToResolve>
+	{
+	public:
+		vl::collections::List<vl::Ptr<CppStatement>> candidates;
+
+		void Accept(CppStatement::IVisitor* visitor) override;
+	};
+
 	class CppIdentifier abstract : public vl::glr::ParsingAstBase, vl::reflection::Description<CppIdentifier>
 	{
 	public:
@@ -1083,46 +1123,6 @@ namespace cpp_parser
 		void Accept(CppDeclarationCommon::IVisitor* visitor) override;
 	};
 
-	class CppStatement abstract : public vl::glr::ParsingAstBase, vl::reflection::Description<CppStatement>
-	{
-	public:
-		class IVisitor : public virtual vl::reflection::IDescriptable, vl::reflection::Description<IVisitor>
-		{
-		public:
-			virtual void Visit(CppStatementToResolve* node) = 0;
-			virtual void Visit(CppEmptyStat* node) = 0;
-			virtual void Visit(CppBlockStat* node) = 0;
-			virtual void Visit(CppExprStat* node) = 0;
-			virtual void Visit(CppDeclStat* node) = 0;
-			virtual void Visit(CppBreakStat* node) = 0;
-			virtual void Visit(CppContinueStat* node) = 0;
-			virtual void Visit(CppReturnStat* node) = 0;
-			virtual void Visit(CppLabelStat* node) = 0;
-			virtual void Visit(CppGotoStat* node) = 0;
-			virtual void Visit(CppCaseStat* node) = 0;
-			virtual void Visit(CppDefaultStat* node) = 0;
-			virtual void Visit(Cpp__LeaveStat* node) = 0;
-			virtual void Visit(CppWhileStat* node) = 0;
-			virtual void Visit(CppDoWhileStat* node) = 0;
-			virtual void Visit(CppIfElseStat* node) = 0;
-			virtual void Visit(CppForStat* node) = 0;
-			virtual void Visit(CppSwitchStat* node) = 0;
-			virtual void Visit(CppTryStat* node) = 0;
-			virtual void Visit(Cpp__TryStat* node) = 0;
-		};
-
-		virtual void Accept(CppStatement::IVisitor* visitor) = 0;
-
-	};
-
-	class CppStatementToResolve : public CppStatement, vl::reflection::Description<CppStatementToResolve>
-	{
-	public:
-		vl::collections::List<vl::Ptr<CppStatement>> candidates;
-
-		void Accept(CppStatement::IVisitor* visitor) override;
-	};
-
 	class CppEmptyStat : public CppStatement, vl::reflection::Description<CppEmptyStat>
 	{
 	public:
@@ -1348,6 +1348,9 @@ namespace vl::reflection::description
 	DECL_TYPE_INFO(cpp_parser::CppExprOnly::IVisitor)
 	DECL_TYPE_INFO(cpp_parser::CppTypeOnly)
 	DECL_TYPE_INFO(cpp_parser::CppTypeOnly::IVisitor)
+	DECL_TYPE_INFO(cpp_parser::CppStatement)
+	DECL_TYPE_INFO(cpp_parser::CppStatement::IVisitor)
+	DECL_TYPE_INFO(cpp_parser::CppStatementToResolve)
 	DECL_TYPE_INFO(cpp_parser::CppNameKinds)
 	DECL_TYPE_INFO(cpp_parser::CppIdentifier)
 	DECL_TYPE_INFO(cpp_parser::CppIdentifier::IVisitor)
@@ -1437,9 +1440,6 @@ namespace vl::reflection::description
 	DECL_TYPE_INFO(cpp_parser::CppUsingValueDeclaration)
 	DECL_TYPE_INFO(cpp_parser::CppUsingTypeDeclaration)
 	DECL_TYPE_INFO(cpp_parser::CppFriendTypeDeclaration)
-	DECL_TYPE_INFO(cpp_parser::CppStatement)
-	DECL_TYPE_INFO(cpp_parser::CppStatement::IVisitor)
-	DECL_TYPE_INFO(cpp_parser::CppStatementToResolve)
 	DECL_TYPE_INFO(cpp_parser::CppEmptyStat)
 	DECL_TYPE_INFO(cpp_parser::CppBlockStat)
 	DECL_TYPE_INFO(cpp_parser::CppExprStat)
@@ -1716,73 +1716,6 @@ namespace vl::reflection::description
 
 	END_INTERFACE_PROXY(cpp_parser::CppTypeOnly::IVisitor)
 
-	BEGIN_INTERFACE_PROXY_NOPARENT_SHAREDPTR(cpp_parser::CppIdentifier::IVisitor)
-		void Visit(cpp_parser::CppNameIdentifier* node) override
-		{
-			INVOKE_INTERFACE_PROXY(Visit, node);
-		}
-
-		void Visit(cpp_parser::CppOperatorIdentifier* node) override
-		{
-			INVOKE_INTERFACE_PROXY(Visit, node);
-		}
-
-		void Visit(cpp_parser::CppOperatorTypeIdentifier* node) override
-		{
-			INVOKE_INTERFACE_PROXY(Visit, node);
-		}
-
-	END_INTERFACE_PROXY(cpp_parser::CppIdentifier::IVisitor)
-
-	BEGIN_INTERFACE_PROXY_NOPARENT_SHAREDPTR(cpp_parser::CppDeclaratorFunctionPart::IVisitor)
-		void Visit(cpp_parser::CppDeclaratorFunctionPartToResolve* node) override
-		{
-			INVOKE_INTERFACE_PROXY(Visit, node);
-		}
-
-		void Visit(cpp_parser::CppDeclaratorFunctionPartCommon* node) override
-		{
-			INVOKE_INTERFACE_PROXY(Visit, node);
-		}
-
-	END_INTERFACE_PROXY(cpp_parser::CppDeclaratorFunctionPart::IVisitor)
-
-	BEGIN_INTERFACE_PROXY_NOPARENT_SHAREDPTR(cpp_parser::CppVarInit::IVisitor)
-		void Visit(cpp_parser::CppVarValueInit* node) override
-		{
-			INVOKE_INTERFACE_PROXY(Visit, node);
-		}
-
-		void Visit(cpp_parser::CppVarParanthesisInit* node) override
-		{
-			INVOKE_INTERFACE_PROXY(Visit, node);
-		}
-
-		void Visit(cpp_parser::CppVarBraceInit* node) override
-		{
-			INVOKE_INTERFACE_PROXY(Visit, node);
-		}
-
-		void Visit(cpp_parser::CppVarStatInit* node) override
-		{
-			INVOKE_INTERFACE_PROXY(Visit, node);
-		}
-
-	END_INTERFACE_PROXY(cpp_parser::CppVarInit::IVisitor)
-
-	BEGIN_INTERFACE_PROXY_NOPARENT_SHAREDPTR(cpp_parser::CppDeclaratorVariablePart::IVisitor)
-		void Visit(cpp_parser::CppDeclaratorVariablePartToResolve* node) override
-		{
-			INVOKE_INTERFACE_PROXY(Visit, node);
-		}
-
-		void Visit(cpp_parser::CppDeclaratorVariablePartCommon* node) override
-		{
-			INVOKE_INTERFACE_PROXY(Visit, node);
-		}
-
-	END_INTERFACE_PROXY(cpp_parser::CppDeclaratorVariablePart::IVisitor)
-
 	BEGIN_INTERFACE_PROXY_NOPARENT_SHAREDPTR(cpp_parser::CppStatement::IVisitor)
 		void Visit(cpp_parser::CppStatementToResolve* node) override
 		{
@@ -1885,6 +1818,73 @@ namespace vl::reflection::description
 		}
 
 	END_INTERFACE_PROXY(cpp_parser::CppStatement::IVisitor)
+
+	BEGIN_INTERFACE_PROXY_NOPARENT_SHAREDPTR(cpp_parser::CppIdentifier::IVisitor)
+		void Visit(cpp_parser::CppNameIdentifier* node) override
+		{
+			INVOKE_INTERFACE_PROXY(Visit, node);
+		}
+
+		void Visit(cpp_parser::CppOperatorIdentifier* node) override
+		{
+			INVOKE_INTERFACE_PROXY(Visit, node);
+		}
+
+		void Visit(cpp_parser::CppOperatorTypeIdentifier* node) override
+		{
+			INVOKE_INTERFACE_PROXY(Visit, node);
+		}
+
+	END_INTERFACE_PROXY(cpp_parser::CppIdentifier::IVisitor)
+
+	BEGIN_INTERFACE_PROXY_NOPARENT_SHAREDPTR(cpp_parser::CppDeclaratorFunctionPart::IVisitor)
+		void Visit(cpp_parser::CppDeclaratorFunctionPartToResolve* node) override
+		{
+			INVOKE_INTERFACE_PROXY(Visit, node);
+		}
+
+		void Visit(cpp_parser::CppDeclaratorFunctionPartCommon* node) override
+		{
+			INVOKE_INTERFACE_PROXY(Visit, node);
+		}
+
+	END_INTERFACE_PROXY(cpp_parser::CppDeclaratorFunctionPart::IVisitor)
+
+	BEGIN_INTERFACE_PROXY_NOPARENT_SHAREDPTR(cpp_parser::CppVarInit::IVisitor)
+		void Visit(cpp_parser::CppVarValueInit* node) override
+		{
+			INVOKE_INTERFACE_PROXY(Visit, node);
+		}
+
+		void Visit(cpp_parser::CppVarParanthesisInit* node) override
+		{
+			INVOKE_INTERFACE_PROXY(Visit, node);
+		}
+
+		void Visit(cpp_parser::CppVarBraceInit* node) override
+		{
+			INVOKE_INTERFACE_PROXY(Visit, node);
+		}
+
+		void Visit(cpp_parser::CppVarStatInit* node) override
+		{
+			INVOKE_INTERFACE_PROXY(Visit, node);
+		}
+
+	END_INTERFACE_PROXY(cpp_parser::CppVarInit::IVisitor)
+
+	BEGIN_INTERFACE_PROXY_NOPARENT_SHAREDPTR(cpp_parser::CppDeclaratorVariablePart::IVisitor)
+		void Visit(cpp_parser::CppDeclaratorVariablePartToResolve* node) override
+		{
+			INVOKE_INTERFACE_PROXY(Visit, node);
+		}
+
+		void Visit(cpp_parser::CppDeclaratorVariablePartCommon* node) override
+		{
+			INVOKE_INTERFACE_PROXY(Visit, node);
+		}
+
+	END_INTERFACE_PROXY(cpp_parser::CppDeclaratorVariablePart::IVisitor)
 
 	BEGIN_INTERFACE_PROXY_NOPARENT_SHAREDPTR(cpp_parser::CppForStatConditionPart::IVisitor)
 		void Visit(cpp_parser::CppForStatLoopCondition* node) override

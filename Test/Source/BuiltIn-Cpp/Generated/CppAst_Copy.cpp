@@ -1237,83 +1237,6 @@ namespace cpp_parser::copy_visitor
 		this->result = newNode;
 	}
 
-	void AstVisitor::Visit(CppNameIdentifier* node)
-	{
-		auto newNode = vl::Ptr(new CppNameIdentifier);
-		CopyFields(node, newNode.Obj());
-		this->result = newNode;
-	}
-
-	void AstVisitor::Visit(CppOperatorIdentifier* node)
-	{
-		auto newNode = vl::Ptr(new CppOperatorIdentifier);
-		CopyFields(node, newNode.Obj());
-		this->result = newNode;
-	}
-
-	void AstVisitor::Visit(CppOperatorTypeIdentifier* node)
-	{
-		auto newNode = vl::Ptr(new CppOperatorTypeIdentifier);
-		CopyFields(node, newNode.Obj());
-		this->result = newNode;
-	}
-
-	void AstVisitor::Visit(CppDeclaratorFunctionPartToResolve* node)
-	{
-		auto newNode = vl::Ptr(new CppDeclaratorFunctionPartToResolve);
-		CopyFields(node, newNode.Obj());
-		this->result = newNode;
-	}
-
-	void AstVisitor::Visit(CppDeclaratorFunctionPartCommon* node)
-	{
-		auto newNode = vl::Ptr(new CppDeclaratorFunctionPartCommon);
-		CopyFields(node, newNode.Obj());
-		this->result = newNode;
-	}
-
-	void AstVisitor::Visit(CppVarValueInit* node)
-	{
-		auto newNode = vl::Ptr(new CppVarValueInit);
-		CopyFields(node, newNode.Obj());
-		this->result = newNode;
-	}
-
-	void AstVisitor::Visit(CppVarParanthesisInit* node)
-	{
-		auto newNode = vl::Ptr(new CppVarParanthesisInit);
-		CopyFields(node, newNode.Obj());
-		this->result = newNode;
-	}
-
-	void AstVisitor::Visit(CppVarBraceInit* node)
-	{
-		auto newNode = vl::Ptr(new CppVarBraceInit);
-		CopyFields(node, newNode.Obj());
-		this->result = newNode;
-	}
-
-	void AstVisitor::Visit(CppVarStatInit* node)
-	{
-		auto newNode = vl::Ptr(new CppVarStatInit);
-		CopyFields(node, newNode.Obj());
-		this->result = newNode;
-	}
-
-	void AstVisitor::Visit(CppDeclaratorVariablePartToResolve* node)
-	{
-		auto newNode = vl::Ptr(new CppDeclaratorVariablePartToResolve);
-		CopyFields(node, newNode.Obj());
-		this->result = newNode;
-	}
-
-	void AstVisitor::Visit(CppDeclaratorVariablePartCommon* node)
-	{
-		auto newNode = vl::Ptr(new CppDeclaratorVariablePartCommon);
-		CopyFields(node, newNode.Obj());
-		this->result = newNode;
-	}
-
 	void AstVisitor::Visit(CppStatementToResolve* node)
 	{
 		auto newNode = vl::Ptr(new CppStatementToResolve);
@@ -1454,6 +1377,83 @@ namespace cpp_parser::copy_visitor
 		this->result = newNode;
 	}
 
+	void AstVisitor::Visit(CppNameIdentifier* node)
+	{
+		auto newNode = vl::Ptr(new CppNameIdentifier);
+		CopyFields(node, newNode.Obj());
+		this->result = newNode;
+	}
+
+	void AstVisitor::Visit(CppOperatorIdentifier* node)
+	{
+		auto newNode = vl::Ptr(new CppOperatorIdentifier);
+		CopyFields(node, newNode.Obj());
+		this->result = newNode;
+	}
+
+	void AstVisitor::Visit(CppOperatorTypeIdentifier* node)
+	{
+		auto newNode = vl::Ptr(new CppOperatorTypeIdentifier);
+		CopyFields(node, newNode.Obj());
+		this->result = newNode;
+	}
+
+	void AstVisitor::Visit(CppDeclaratorFunctionPartToResolve* node)
+	{
+		auto newNode = vl::Ptr(new CppDeclaratorFunctionPartToResolve);
+		CopyFields(node, newNode.Obj());
+		this->result = newNode;
+	}
+
+	void AstVisitor::Visit(CppDeclaratorFunctionPartCommon* node)
+	{
+		auto newNode = vl::Ptr(new CppDeclaratorFunctionPartCommon);
+		CopyFields(node, newNode.Obj());
+		this->result = newNode;
+	}
+
+	void AstVisitor::Visit(CppVarValueInit* node)
+	{
+		auto newNode = vl::Ptr(new CppVarValueInit);
+		CopyFields(node, newNode.Obj());
+		this->result = newNode;
+	}
+
+	void AstVisitor::Visit(CppVarParanthesisInit* node)
+	{
+		auto newNode = vl::Ptr(new CppVarParanthesisInit);
+		CopyFields(node, newNode.Obj());
+		this->result = newNode;
+	}
+
+	void AstVisitor::Visit(CppVarBraceInit* node)
+	{
+		auto newNode = vl::Ptr(new CppVarBraceInit);
+		CopyFields(node, newNode.Obj());
+		this->result = newNode;
+	}
+
+	void AstVisitor::Visit(CppVarStatInit* node)
+	{
+		auto newNode = vl::Ptr(new CppVarStatInit);
+		CopyFields(node, newNode.Obj());
+		this->result = newNode;
+	}
+
+	void AstVisitor::Visit(CppDeclaratorVariablePartToResolve* node)
+	{
+		auto newNode = vl::Ptr(new CppDeclaratorVariablePartToResolve);
+		CopyFields(node, newNode.Obj());
+		this->result = newNode;
+	}
+
+	void AstVisitor::Visit(CppDeclaratorVariablePartCommon* node)
+	{
+		auto newNode = vl::Ptr(new CppDeclaratorVariablePartCommon);
+		CopyFields(node, newNode.Obj());
+		this->result = newNode;
+	}
+
 	void AstVisitor::Visit(CppForStatLoopCondition* node)
 	{
 		auto newNode = vl::Ptr(new CppForStatLoopCondition);
@@ -1474,6 +1474,14 @@ namespace cpp_parser::copy_visitor
 		node->Accept(static_cast<CppTypeOrExprOrOthers::IVisitor*>(this));
 		this->result->codeRange = node->codeRange;
 		return this->result.Cast<CppTypeOrExprOrOthers>();
+	}
+
+	vl::Ptr<CppStatement> AstVisitor::CopyNode(CppStatement* node)
+	{
+		if (!node) return nullptr;
+		node->Accept(static_cast<CppStatement::IVisitor*>(this));
+		this->result->codeRange = node->codeRange;
+		return this->result.Cast<CppStatement>();
 	}
 
 	vl::Ptr<CppIdentifier> AstVisitor::CopyNode(CppIdentifier* node)
@@ -1506,14 +1514,6 @@ namespace cpp_parser::copy_visitor
 		node->Accept(static_cast<CppDeclaratorVariablePart::IVisitor*>(this));
 		this->result->codeRange = node->codeRange;
 		return this->result.Cast<CppDeclaratorVariablePart>();
-	}
-
-	vl::Ptr<CppStatement> AstVisitor::CopyNode(CppStatement* node)
-	{
-		if (!node) return nullptr;
-		node->Accept(static_cast<CppStatement::IVisitor*>(this));
-		this->result->codeRange = node->codeRange;
-		return this->result.Cast<CppStatement>();
 	}
 
 	vl::Ptr<CppForStatConditionPart> AstVisitor::CopyNode(CppForStatConditionPart* node)

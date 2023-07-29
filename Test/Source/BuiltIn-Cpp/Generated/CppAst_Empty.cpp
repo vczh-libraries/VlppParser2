@@ -235,74 +235,6 @@ TypeOnlyVisitor
 	}
 
 /***********************************************************************
-IdentifierVisitor
-***********************************************************************/
-
-	// Visitor Members -----------------------------------
-
-	void IdentifierVisitor::Visit(CppNameIdentifier* node)
-	{
-	}
-
-	void IdentifierVisitor::Visit(CppOperatorIdentifier* node)
-	{
-	}
-
-	void IdentifierVisitor::Visit(CppOperatorTypeIdentifier* node)
-	{
-	}
-
-/***********************************************************************
-DeclaratorFunctionPartVisitor
-***********************************************************************/
-
-	// Visitor Members -----------------------------------
-
-	void DeclaratorFunctionPartVisitor::Visit(CppDeclaratorFunctionPartToResolve* node)
-	{
-	}
-
-	void DeclaratorFunctionPartVisitor::Visit(CppDeclaratorFunctionPartCommon* node)
-	{
-	}
-
-/***********************************************************************
-VarInitVisitor
-***********************************************************************/
-
-	// Visitor Members -----------------------------------
-
-	void VarInitVisitor::Visit(CppVarValueInit* node)
-	{
-	}
-
-	void VarInitVisitor::Visit(CppVarParanthesisInit* node)
-	{
-	}
-
-	void VarInitVisitor::Visit(CppVarBraceInit* node)
-	{
-	}
-
-	void VarInitVisitor::Visit(CppVarStatInit* node)
-	{
-	}
-
-/***********************************************************************
-DeclaratorVariablePartVisitor
-***********************************************************************/
-
-	// Visitor Members -----------------------------------
-
-	void DeclaratorVariablePartVisitor::Visit(CppDeclaratorVariablePartToResolve* node)
-	{
-	}
-
-	void DeclaratorVariablePartVisitor::Visit(CppDeclaratorVariablePartCommon* node)
-	{
-	}
-
-/***********************************************************************
 StatementVisitor
 ***********************************************************************/
 
@@ -385,6 +317,74 @@ StatementVisitor
 	}
 
 	void StatementVisitor::Visit(Cpp__TryStat* node)
+	{
+	}
+
+/***********************************************************************
+IdentifierVisitor
+***********************************************************************/
+
+	// Visitor Members -----------------------------------
+
+	void IdentifierVisitor::Visit(CppNameIdentifier* node)
+	{
+	}
+
+	void IdentifierVisitor::Visit(CppOperatorIdentifier* node)
+	{
+	}
+
+	void IdentifierVisitor::Visit(CppOperatorTypeIdentifier* node)
+	{
+	}
+
+/***********************************************************************
+DeclaratorFunctionPartVisitor
+***********************************************************************/
+
+	// Visitor Members -----------------------------------
+
+	void DeclaratorFunctionPartVisitor::Visit(CppDeclaratorFunctionPartToResolve* node)
+	{
+	}
+
+	void DeclaratorFunctionPartVisitor::Visit(CppDeclaratorFunctionPartCommon* node)
+	{
+	}
+
+/***********************************************************************
+VarInitVisitor
+***********************************************************************/
+
+	// Visitor Members -----------------------------------
+
+	void VarInitVisitor::Visit(CppVarValueInit* node)
+	{
+	}
+
+	void VarInitVisitor::Visit(CppVarParanthesisInit* node)
+	{
+	}
+
+	void VarInitVisitor::Visit(CppVarBraceInit* node)
+	{
+	}
+
+	void VarInitVisitor::Visit(CppVarStatInit* node)
+	{
+	}
+
+/***********************************************************************
+DeclaratorVariablePartVisitor
+***********************************************************************/
+
+	// Visitor Members -----------------------------------
+
+	void DeclaratorVariablePartVisitor::Visit(CppDeclaratorVariablePartToResolve* node)
+	{
+	}
+
+	void DeclaratorVariablePartVisitor::Visit(CppDeclaratorVariablePartCommon* node)
 	{
 	}
 
