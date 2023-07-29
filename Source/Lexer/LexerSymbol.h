@@ -7,7 +7,7 @@ Licensed under https://github.com/vczh-libraries/License
 #define VCZH_PARSER2_LEXER_LEXERSYMBOL
 
 #include <VlppRegex.h>
-#include "../ParserGen/ParserSymbol.h"
+#include "../ParserGen_Global/ParserSymbol.h"
 
 namespace vl
 {

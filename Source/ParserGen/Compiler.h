@@ -11,7 +11,7 @@ Licensed under https://github.com/vczh-libraries/License
 #include "../Ast/AstSymbol.h"
 #include "../Lexer/LexerSymbol.h"
 #include "../Syntax/SyntaxSymbol.h"
-#include "../ParserGen/ParserCppGen.h"
+#include "../ParserGen_Global/ParserCppGen.h"
 
 namespace vl
 {

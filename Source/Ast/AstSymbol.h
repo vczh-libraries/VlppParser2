@@ -6,7 +6,7 @@ Licensed under https://github.com/vczh-libraries/License
 #ifndef VCZH_PARSER2_AST_ASTSYMBOL
 #define VCZH_PARSER2_AST_ASTSYMBOL
 
-#include "../ParserGen/ParserSymbol.h"
+#include "../ParserGen_Global/ParserSymbol.h"
 
 namespace vl
 {

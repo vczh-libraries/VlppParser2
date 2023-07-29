@@ -7,7 +7,7 @@ Licensed under https://github.com/vczh-libraries/License
 #define VCZH_PARSER2_SYNTAX_SYNTAXCPPGEN
 
 #include <VlppOS.h>
-#include "../ParserGen/ParserCppGen.h"
+#include "../ParserGen_Global/ParserCppGen.h"
 #include "SyntaxSymbol.h"
 
 namespace vl

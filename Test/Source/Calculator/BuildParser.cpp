@@ -1,4 +1,4 @@
-#include "../../../Source/ParserGen/ParserSymbol.h"
+#include "../../../Source/ParserGen_Global/ParserSymbol.h"
 
 using namespace vl;
 using namespace vl::glr::parsergen;
