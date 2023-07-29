@@ -174,4 +174,27 @@ LR"AST(
 )AST";
 		ExpectError(parser, input, { ParserErrorType::FieldTypeNotClass,L"Ast",L"B",L"a" });
 	});
+
+	TEST_CASE(L"BaseClassNotPublic")
+	{
+		TEST_ASSERT(false);
+	});
+
+	TEST_CASE(L"FieldTypeNotPublic")
+	{
+		TEST_ASSERT(false);
+	});
+
+	TEST_CATEGORY(L"AST Rewriting")
+	{
+		TEST_CASE(L"Single AST file")
+		{
+			TEST_ASSERT(false);
+		});
+
+		TEST_CASE(L"Multiple AST files")
+		{
+			TEST_ASSERT(false);
+		});
+	});
 }

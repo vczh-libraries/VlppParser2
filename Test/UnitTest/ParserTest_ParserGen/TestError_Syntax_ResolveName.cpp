@@ -109,6 +109,11 @@ Exp1 ::= !Exp;
 		);
 	});
 
+	TEST_CASE(L"RuleNotPublicInRule")
+	{
+		TEST_ASSERT(false);
+	});
+
 	TEST_CASE(L"LiteralNotValidToken 1")
 	{
 		const wchar_t* syntaxCode =

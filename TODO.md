@@ -2,9 +2,8 @@
 
 ## Next task
 
-- Add `extern` rule, non-`extern` rules can only be used inside the same syntax file.
-- Add `extern` type, non-`extern` types can only be used inside the same ast file.
-  - AST uses classes from another AST file in dependency as fields.
+- Add `public` rule, non-`public` rules can only be used inside the same syntax file.
+- Add `public` type, non-`public` types can only be used inside the same ast file.
 - Rewrite and remove switch before removing PrefixMerge.
   - Rename `LeftRecursionPlaceholderMixedWithSwitches`
 - Multiple LRI following one Target

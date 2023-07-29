@@ -75,9 +75,11 @@ ParserSymbolManager
 			ERROR_ITEM(DuplicatedEnumItem,																			fileName, enumName, propName)\
 			ERROR_ITEM(BaseClassNotExists,																			fileName, className, typeName)\
 			ERROR_ITEM(BaseClassNotClass,																			fileName, className, typeName)\
+			ERROR_ITEM(BaseClassNotPublic,																			fileName, className, typeName)\
 			ERROR_ITEM(BaseClassCyclicDependency,																	fileName, className)\
 			ERROR_ITEM(FieldTypeNotExists,																			fileName, className, propName)\
 			ERROR_ITEM(FieldTypeNotClass,																			fileName, className, propName)\
+			ERROR_ITEM(FieldTypeNotPublic,																			fileName, className, propName)\
 			/* LexerSymbolManager */\
 			ERROR_ITEM(InvalidTokenDefinition,																		code)\
 			ERROR_ITEM(DuplicatedToken,																				tokenName)\
@@ -96,6 +98,7 @@ ParserSymbolManager
 			ERROR_ITEM(TypeNotExistsInRule,																			ruleName, name)\
 			ERROR_ITEM(TypeNotClassInRule,																			ruleName, name)\
 			ERROR_ITEM(TokenOrRuleNotExistsInRule,																	ruleName, name)\
+			ERROR_ITEM(RuleNotPublicInRule,																			ruleName, name)\
 			ERROR_ITEM(LiteralNotValidToken,																		ruleName, name)\
 			ERROR_ITEM(LiteralIsDiscardedToken,																		ruleName, name)\
 			ERROR_ITEM(ConditionalLiteralNotValidToken,																ruleName, name)\
