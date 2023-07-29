@@ -122,6 +122,9 @@ TEST_FILE
 				CompileAst(astManager, astDefFile, astFile);
 				TEST_ASSERT(global.Errors().Count() == 0);
 
+				auto formattedAst = GenerateToStream([&](TextWriter& writer) { TypeAstToCode(astFile, writer); });
+				File(dirOutput / (L"AstRewrittenActual[" + parserName + L"].txt")).WriteAllText(formattedAst, true, BomEncoder::Utf8);
+
 				astDefFile->cppNss.Add(wlower(parserName));
 				astDefFile->refNss.Add(wlower(parserName));
 				astDefFile->classPrefix = L"";
