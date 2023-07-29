@@ -1,0 +1,57 @@
+﻿@ambiguous class Expr
+{
+}
+
+class RefExpr : Expr
+{
+  var name : token;
+}
+
+class GenericExpr : Expr
+{
+  var name : token;
+  var args : Expr[];
+}
+
+class CallExpr : Expr
+{
+  var func : Expr;
+  var args : Expr[];
+}
+
+enum PostfixOp
+{
+  Add,
+  Sub,
+  Increment,
+}
+
+class PostfixExpr : Expr
+{
+  var op : PostfixOp;
+  var expr : Expr;
+}
+
+class DecrementExpr : Expr
+{
+  var expr : Expr;
+}
+
+enum BinaryOp
+{
+  LT,
+  GT,
+}
+
+class BinaryExpr : Expr
+{
+  var op : BinaryOp;
+  var left : Expr;
+  var right : Expr;
+}
+
+class Module
+{
+  var expr : Expr;
+}
+

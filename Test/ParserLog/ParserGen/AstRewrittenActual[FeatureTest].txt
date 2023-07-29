@@ -1,0 +1,93 @@
+﻿class Plus
+{
+}
+
+class Lt
+{
+}
+
+class Gt
+{
+}
+
+@ambiguous class Feature
+{
+}
+
+enum OptionalProprity
+{
+  Equal,
+  PreferTake,
+  PreferSkip,
+}
+
+class OptionalFeature : Feature
+{
+  var priority : OptionalProprity;
+  var optional : Plus;
+  var loop : Plus[];
+}
+
+class NestedOptionalFeature : Feature
+{
+  var optional : Plus;
+  var tail1 : Plus;
+  var tail2 : Plus;
+  var tail3 : Plus;
+  var tails : Plus[];
+}
+
+enum BranchType
+{
+  Plus,
+  Minus,
+  NoCompetition,
+}
+
+class BranchedOptionalFeature : Feature
+{
+  var type : BranchType;
+  var optional : Plus;
+  var tails : Plus[];
+}
+
+class PbaFeature : Feature
+{
+  var lts : Lt[];
+  var gts : Gt[];
+  var optional : Plus;
+  var tail : Plus;
+  var tails : Plus[];
+}
+
+class Pwa1Feature : Feature
+{
+  var pba : Feature;
+  var lts : Lt[];
+  var gts : Gt[];
+}
+
+class PwlFeature : Feature
+{
+  var prefix : Plus[];
+  var one : Lt[];
+  var two : Lt[];
+  var prev : PwlFeature;
+}
+
+class ClFeature : Feature
+{
+  var id : token;
+}
+
+enum FieldAssignment
+{
+  A,
+  B,
+}
+
+class FaFeature : Feature
+{
+  var fa : FieldAssignment;
+}
+

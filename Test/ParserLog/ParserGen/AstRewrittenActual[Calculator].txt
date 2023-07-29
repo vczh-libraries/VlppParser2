@@ -1,0 +1,95 @@
+﻿class Expr
+{
+}
+
+class NumExpr : Expr
+{
+  var value : token;
+}
+
+class Ref : Expr
+{
+  var name : token;
+}
+
+class True : Expr
+{
+}
+
+class False : Expr
+{
+}
+
+class Arg
+{
+  var name : token;
+}
+
+class Func : Expr
+{
+  var args : Arg[];
+  var value : Expr;
+}
+
+class Call : Expr
+{
+  var func : Expr;
+  var args : Expr[];
+}
+
+class Expandable : Expr
+{
+  var expanded : Expr;
+}
+
+class LetExpr : Expandable
+{
+  var name : token;
+  var value : Expr;
+  var result : Expr;
+}
+
+enum UnaryOp
+{
+  Positive,
+  Negative,
+}
+
+class Unary : Expandable
+{
+  var op : UnaryOp;
+  var operand : Expr;
+}
+
+enum BinaryOp
+{
+  Add,
+  Minus,
+  Multiply,
+  Divid,
+  GT,
+  GE,
+  LT,
+  LE,
+  EQ,
+  NE,
+}
+
+class Binary : Expandable
+{
+  var op : BinaryOp;
+  var left : Expr;
+  var right : Expr;
+}
+
+class Import
+{
+  var name : token;
+}
+
+class Module
+{
+  var imports : Import[];
+  var exported : Expr;
+}
+

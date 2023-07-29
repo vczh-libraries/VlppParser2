@@ -1,0 +1,78 @@
+﻿@ambiguous class TypeOrExprOrOthers
+{
+}
+
+class VariadicArgument : TypeOrExprOrOthers
+{
+  var operand : TypeOrExpr;
+}
+
+@ambiguous class TypeOrExpr : TypeOrExprOrOthers
+{
+}
+
+class QualifiedName : TypeOrExpr
+{
+}
+
+class Name : QualifiedName
+{
+  var name : token;
+}
+
+class MemberName : QualifiedName
+{
+  var parent : QualifiedName;
+  var member : token;
+}
+
+class GenericQualifiedName : QualifiedName
+{
+  var args : TypeOrExprOrOthers[];
+}
+
+class GenericName : GenericQualifiedName
+{
+  var name : token;
+}
+
+class GenericMemberName : GenericQualifiedName
+{
+  var parent : QualifiedName;
+  var member : token;
+}
+
+class CallExpr : TypeOrExpr
+{
+  var func : TypeOrExpr;
+  var args : TypeOrExprOrOthers[];
+}
+
+class CtorExpr : TypeOrExpr
+{
+  var type : TypeOrExpr;
+  var args : TypeOrExprOrOthers[];
+}
+
+class MulExpr : TypeOrExpr
+{
+  var first : TypeOrExpr;
+  var second : TypeOrExpr;
+}
+
+class ConstType : TypeOrExpr
+{
+  var type : TypeOrExpr;
+}
+
+class PointerType : TypeOrExpr
+{
+  var type : TypeOrExpr;
+}
+
+class FunctionType : TypeOrExpr
+{
+  var returnType : TypeOrExpr;
+  var args : TypeOrExprOrOthers[];
+}
+
