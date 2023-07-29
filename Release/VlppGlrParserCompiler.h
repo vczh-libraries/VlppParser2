@@ -9,7 +9,7 @@ DEVELOPER: Zihan Chen(vczh)
 #include "VlppRegex.h"
 
 /***********************************************************************
-.\PARSERGEN\PARSERSYMBOL.H
+.\PARSERGEN_GLOBAL\PARSERSYMBOL.H
 ***********************************************************************/
 /***********************************************************************
 Author: Zihan Chen (vczh)
@@ -531,7 +531,7 @@ LexerSymbolManager
 #endif
 
 /***********************************************************************
-.\PARSERGEN\PARSERCPPGEN.H
+.\PARSERGEN_GLOBAL\PARSERCPPGEN.H
 ***********************************************************************/
 /***********************************************************************
 Author: Zihan Chen (vczh)
@@ -2452,6 +2452,23 @@ namespace vl::glr::parsergen
 		vl::Ptr<vl::glr::parsergen::GlrAstFile> ParseFile(vl::collections::List<vl::regex::RegexToken>& tokens, vl::vint codeIndex = -1) const;
 	};
 }
+#endif
+
+/***********************************************************************
+.\PARSERGEN_PRINTER\ASTTOCODE.H
+***********************************************************************/
+#ifndef VCZH_PARSER2_PARSERGEN_ASTTOCODE
+#define VCZH_PARSER2_PARSERGEN_ASTTOCODE
+
+
+namespace vl::glr::parsergen
+{
+	extern void SyntaxAstToCode(
+		Ptr<GlrSyntaxFile> file,
+		stream::TextWriter& writer
+	);
+}
+
 #endif
 
 /***********************************************************************
