@@ -2,13 +2,32 @@
 {
 }
 
+class TypeOrExprOrOthersToResolve : TypeOrExprOrOthers
+{
+  var candidates : TypeOrExprOrOthers[];
+}
+
 @public @ambiguous class Declaration : TypeOrExprOrOthers
+{
+}
+
+class DeclarationToResolve : Declaration
+{
+  var candidates : Declaration[];
+}
+
+class DeclarationCommon : Declaration
 {
   var keywords : DeclaratorKeyword[];
 }
 
 @public @ambiguous class TypeOrExpr : TypeOrExprOrOthers
 {
+}
+
+class TypeOrExprToResolve : TypeOrExpr
+{
+  var candidates : TypeOrExpr[];
 }
 
 @public class ExprOnly : TypeOrExpr
@@ -21,6 +40,11 @@
 
 @public @ambiguous class Statement
 {
+}
+
+class StatementToResolve : Statement
+{
+  var candidates : Statement[];
 }
 
 enum NameKinds
@@ -397,6 +421,15 @@ class FunctionKeyword
 
 @public @ambiguous class DeclaratorFunctionPart
 {
+}
+
+class DeclaratorFunctionPartToResolve : DeclaratorFunctionPart
+{
+  var candidates : DeclaratorFunctionPart[];
+}
+
+class DeclaratorFunctionPartCommon : DeclaratorFunctionPart
+{
   var parameters : TypeOrExprOrOthers[];
   var variadic : token;
   var keywords : FunctionKeyword[];
@@ -461,12 +494,21 @@ class VarStatInit : VarInit
 
 @public @ambiguous class DeclaratorVariablePart
 {
+}
+
+class DeclaratorVariablePartToResolve : DeclaratorVariablePart
+{
+  var candidates : DeclaratorVariablePart[];
+}
+
+class DeclaratorVariablePartCommon : DeclaratorVariablePart
+{
   var declarator : Declarator;
   var init : VarInit;
   var nextVarPart : DeclaratorVariablePart;
 }
 
-@public class VariablesDeclaration : Declaration
+@public class VariablesDeclaration : DeclarationCommon
 {
   var type : TypeOrExpr;
   var firstVarPart : DeclaratorVariablePart;
@@ -507,7 +549,7 @@ class ClassBody
   var firstVarPart : DeclaratorVariablePart;
 }
 
-class ClassDeclaration : Declaration
+class ClassDeclaration : DeclarationCommon
 {
   var kind : ClassKind;
   var name : token;
@@ -533,7 +575,7 @@ class EnumBody
   var firstVarPart : DeclaratorVariablePart;
 }
 
-class EnumDeclaration : Declaration
+class EnumDeclaration : DeclarationCommon
 {
   var kind : EnumKind;
   var name : token;
@@ -541,24 +583,24 @@ class EnumDeclaration : Declaration
   var body : EnumBody;
 }
 
-class TemplateDeclaration : Declaration
+class TemplateDeclaration : DeclarationCommon
 {
   var genericHeader : GenericHeader;
   var decl : Declaration;
 }
 
-class StaticAssertDeclaration : Declaration
+class StaticAssertDeclaration : DeclarationCommon
 {
   var expr : TypeOrExpr;
   var message : TypeOrExpr;
 }
 
-class TypedefDeclaration : Declaration
+class TypedefDeclaration : DeclarationCommon
 {
   var decl : Declaration;
 }
 
-class ExternDeclaration : Declaration
+class ExternDeclaration : DeclarationCommon
 {
   var decls : Declaration[];
 }
@@ -568,30 +610,30 @@ class NamespaceName
   var name : token;
 }
 
-class NamespaceDeclaration : Declaration
+class NamespaceDeclaration : DeclarationCommon
 {
   var names : NamespaceName[];
   var decls : Declaration[];
 }
 
-class UsingNamespaceDeclaration : Declaration
+class UsingNamespaceDeclaration : DeclarationCommon
 {
   var names : NamespaceName[];
 }
 
-class UsingValueDeclaration : Declaration
+class UsingValueDeclaration : DeclarationCommon
 {
   var typenameKeyword : token;
   var name : QualifiedName;
 }
 
-class UsingTypeDeclaration : Declaration
+class UsingTypeDeclaration : DeclarationCommon
 {
   var name : token;
   var type : TypeOrExpr;
 }
 
-class FriendTypeDeclaration : Declaration
+class FriendTypeDeclaration : DeclarationCommon
 {
   var type : QualifiedName;
 }

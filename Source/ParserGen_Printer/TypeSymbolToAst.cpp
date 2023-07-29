@@ -64,6 +64,10 @@ namespace vl::glr::parsergen
 						}
 					}
 
+					if (!createGeneratedTypes && classSymbol->derivedClass_Common)
+					{
+						classSymbol = classSymbol->derivedClass_Common;
+					}
 					for (auto propName : classSymbol->PropOrder())
 					{
 						auto propSymbol = classSymbol->Props()[propName];
