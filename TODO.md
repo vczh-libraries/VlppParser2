@@ -35,6 +35,7 @@
 - Extensible tokens, for example, recognize `R"[^\s(]\(` and invoke a callback function to determine the end of the string.
   - Offer two options: using (rich regex | C++) to search for complete token.
 - Add union type and remove `TypeOrExprOrOthers` in C++.
+  - Consider what does `@ambiguous union` mean.
 
 ## Issues (BuiltIn-Cpp)
 
@@ -72,18 +73,20 @@
   - Remove `PushReturnStack` last argument.
   - Remove `ReturnDesc::ruleType`.
   - Move `ReturnRuleType` from automaton to symbol.
+  - Share traces in different branches.
+    - From a given state and a few tokens, the trace graph could be copied directly if:
+      - none of state.returnStacks is reduced
+      - competitions created before the first token are not attended
+      - completitions created after the first token are closed
+    - Do not copy, share it.
 - Serializing
   - Escaping and Unescaping pairs (instead of only unescaping)
   - Calculate ambiguous **ToString** cases
   - Generate **ToString** algorithm
 - Loop priority
-- Document the algorithm in a markdown file
-- From a given state and a few tokens, the trace graph could be copied directly if:
-  - none of state.returnStacks is reduced
-  - competitions created before the first token are not attended
-  - completitions created after the first token are closed
 - Generate LL parser if possible (print error if failed but forced to do)
 - Generate SLR parser if possible (print error if failed but forced to do)
+- Document the algorithm in a markdown file
 
 ## Work Items (enhancement)
 
