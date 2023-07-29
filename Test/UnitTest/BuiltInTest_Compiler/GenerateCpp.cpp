@@ -76,25 +76,9 @@ void PrintError(const ParserError& error)
 
 TEST_FILE
 {
-	FilePath dirParser = GetTestParserInputPath(L"BuiltIn-Cpp");
-	FilePath dirOutput = GetOutputDir(L"ParserGen");
-	FilePath dirGenerated = dirParser / L"Generated";
-	if (!Folder(dirGenerated).Exists())
-	{
-		Folder(dirGenerated).Create(true);
-	}
 
-	Ptr<GlrAstFile> astFile;
-	List<Ptr<GlrSyntaxFile>> syntaxFiles;
-
-	TEST_CASE(L"Parse Ast.txt")
-	{
-		TypeParser typeParser;
-		auto input = File(dirParser / L"Syntax/Ast.txt").ReadAllTextByBom();
-		astFile = typeParser.ParseFile(input);
-		auto actualJson = PrintAstJson<json_visitor::TypeAstVisitor>(astFile);
-		File(dirOutput / (L"Ast[BuiltIn-Cpp].txt")).WriteAllText(actualJson, true, BomEncoder::Utf8);
-	});
+	List<WString> astFileNames;
+	astFileNames.Add(L"Ast");
 
 	List<WString> syntaxFileNames;
 	syntaxFileNames.Add(L"QualifiedName");
@@ -109,18 +93,43 @@ TEST_FILE
 	syntaxFileNames.Add(L"DeclarationOthers");
 	syntaxFileNames.Add(L"Declarations");
 	syntaxFileNames.Add(L"API");
+
+	FilePath dirParser = GetTestParserInputPath(L"BuiltIn-Cpp");
+	FilePath dirOutput = GetOutputDir(L"ParserGen");
+	FilePath dirGenerated = dirParser / L"Generated";
+	if (!Folder(dirGenerated).Exists())
+	{
+		Folder(dirGenerated).Create(true);
+	}
+
+	List<Pair<WString, Ptr<GlrAstFile>>> astNamedFiles;
+	List<Ptr<GlrSyntaxFile>> syntaxFiles;
+
+	for (auto astFileName : astFileNames)
+	{
+		TypeParser typeParser;
+		TEST_CASE(L"Parse AST: " + astFileName + L".txt")
+		{
+			auto input = File(dirParser / L"Syntax" / L"Ast" / (astFileName + L".txt")).ReadAllTextByBom();
+			auto astFile = typeParser.ParseFile(input);
+			astNamedFiles.Add({ astFileName,astFile });
+
+			auto actualJson = PrintAstJson<json_visitor::TypeAstVisitor>(astFile);
+			File(dirOutput / (L"Ast[BuiltIn-Cpp][" + astFileName + L"].txt")).WriteAllText(actualJson, true, BomEncoder::Utf8);
+		});
+	}
+
 	for (auto syntaxFileName : syntaxFileNames)
 	{
-		TEST_CASE(L"Parse " + syntaxFileName + L".txt")
+		RuleParser ruleParser;
+		TEST_CASE(L"Parse Syntax: " + syntaxFileName + L".txt")
 		{
-			RuleParser ruleParser;
-			{
-				auto input = File(dirParser / L"Syntax" / L"Syntax" / (syntaxFileName + L".txt")).ReadAllTextByBom();
-				auto syntaxFile = ruleParser.ParseFile(input);
-				syntaxFiles.Add(syntaxFile);
-				auto actualJson = PrintAstJson<json_visitor::RuleAstVisitor>(syntaxFile);
-				File(dirOutput / (L"Syntax[BuiltIn-Cpp][" + syntaxFileName + L"].txt")).WriteAllText(actualJson, true, BomEncoder::Utf8);
-			}
+			auto input = File(dirParser / L"Syntax" / L"Syntax" / (syntaxFileName + L".txt")).ReadAllTextByBom();
+			auto syntaxFile = ruleParser.ParseFile(input);
+			syntaxFiles.Add(syntaxFile);
+
+			auto actualJson = PrintAstJson<json_visitor::RuleAstVisitor>(syntaxFile);
+			File(dirOutput / (L"Syntax[BuiltIn-Cpp][" + syntaxFileName + L"].txt")).WriteAllText(actualJson, true, BomEncoder::Utf8);
 		});
 	}
 
@@ -137,23 +146,31 @@ TEST_FILE
 	global.headerGuard = L"VCZH_PARSER2_BUILTIN_CPP";
 	syntaxManager.name = L"Parser";
 
-	auto astDefFile = astManager.CreateFile(L"Ast");
+	List<Pair<AstDefFile*, Ptr<GlrAstFile>>> astFiles;
+	for (auto [name, file] : astNamedFiles)
+	{
+		astFiles.Add({ astManager.CreateFile(name),file });
+	}
+
 	auto output = GenerateParserFileNames(global);
 	GenerateAstFileNames(astManager, output);
 	GenerateSyntaxFileNames(syntaxManager, output);
 
 	TEST_CASE(L"CompilerAst")
 	{
-		CompileAst(astManager, astDefFile, astFile);
+		CompileAst(astManager, astFiles);
 		TEST_ASSERT(global.Errors().Count() == 0);
 
 		auto rewrittenAst = TypeSymbolToAst(astManager, true);
 		auto formattedAst = GenerateToStream([&](TextWriter& writer) { TypeAstToCode(rewrittenAst, writer); });
 		File(dirOutput / (L"AstRewrittenActual[BuiltIn-Cpp].txt")).WriteAllText(formattedAst, true, BomEncoder::Utf8);
 
-		Fill(astDefFile->cppNss, L"cpp_parser");
-		Fill(astDefFile->refNss, L"cpp_parser");
-		astDefFile->classPrefix = L"Cpp";
+		for (auto [astDefFile, astFile] : astFiles)
+		{
+			Fill(astDefFile->cppNss, L"cpp_parser");
+			Fill(astDefFile->refNss, L"cpp_parser");
+			astDefFile->classPrefix = L"Cpp";
+		}
 
 		Dictionary<WString, WString> files;
 		WriteAstFiles(astManager, output, files);
