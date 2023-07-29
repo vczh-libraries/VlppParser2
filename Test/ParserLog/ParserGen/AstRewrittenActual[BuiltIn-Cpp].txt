@@ -1,0 +1,730 @@
+﻿@ambiguous class TypeOrExprOrOthers
+{
+}
+
+@ambiguous class Declaration : TypeOrExprOrOthers
+{
+  var keywords : DeclaratorKeyword[];
+}
+
+@ambiguous class TypeOrExpr : TypeOrExprOrOthers
+{
+}
+
+class ExprOnly : TypeOrExpr
+{
+}
+
+class TypeOnly : TypeOrExpr
+{
+}
+
+enum NameKinds
+{
+  Normal,
+  Enum,
+  EnumClass,
+  Class,
+  Struct,
+  Union,
+  Dtor,
+  UserDefinedLiteral,
+}
+
+class Identifier
+{
+}
+
+class NameIdentifier : Identifier
+{
+  var kind : NameKinds;
+  var name : token;
+}
+
+enum Operators
+{
+  New,
+  NewArray,
+  Delete,
+  DeleteArray,
+  Comma,
+  RoundBracket,
+  Parantheses,
+  Bracket,
+  PointerDeref,
+  Pointer,
+  MemberDeref,
+  Member,
+  Compare,
+  EQ,
+  NE,
+  LT,
+  LE,
+  GT,
+  GE,
+  Not,
+  Revert,
+  Xor,
+  And,
+  BitwiseAnd,
+  Or,
+  BitwiseOr,
+  Mul,
+  Div,
+  Mod,
+  Plus,
+  Increase,
+  Minus,
+  Decrease,
+  LeftShift,
+  RightShift,
+  Assign,
+  RevertAssign,
+  XorAssign,
+  AndAssign,
+  OrAssign,
+  MulAssign,
+  DivAssign,
+  ModAssign,
+  PlusAssign,
+  MinusAssign,
+  LeftShiftAssign,
+  RightShiftAssign,
+}
+
+class OperatorIdentifier : Identifier
+{
+  var op : Operators;
+}
+
+class OperatorTypeIdentifier : Identifier
+{
+  var type : TypeOrExprOrOthers;
+}
+
+class GenericArgument : TypeOrExprOrOthers
+{
+  var argument : TypeOrExpr;
+  var variadic : token;
+}
+
+class GenericArguments
+{
+  var arguments : TypeOrExprOrOthers[];
+}
+
+enum QualifiedNameKinds
+{
+  Root,
+  Context,
+  Auto,
+  Decltype,
+  Member,
+}
+
+class QualifiedName : TypeOrExpr
+{
+  var kind : QualifiedNameKinds;
+  var expr : TypeOrExpr;
+  var parent : QualifiedName;
+  var id : Identifier;
+  var arguments : GenericArguments;
+}
+
+class OrdinaryGenericParameter : TypeOrExprOrOthers
+{
+  var genericHeader : GenericHeader;
+  var typenameToken : token;
+  var variadic : token;
+  var id : Identifier;
+  var init : TypeOrExpr;
+}
+
+class GenericHeader
+{
+  var parameters : TypeOrExprOrOthers[];
+}
+
+enum PrimitiveExprLiteralKinds
+{
+  True,
+  False,
+  Nullptr,
+  This,
+  __Nullptr,
+}
+
+class PrimitiveExprLiteral : ExprOnly
+{
+  var kind : PrimitiveExprLiteralKinds;
+}
+
+enum NumericExprLiteralKinds
+{
+  Integer,
+  Hex,
+  Binary,
+  Float,
+  FloatHex,
+  Char,
+}
+
+class NumericExprLiteral : ExprOnly
+{
+  var kind : NumericExprLiteralKinds;
+  var literal : token;
+}
+
+enum StringLiteralKinds
+{
+  String,
+  Macro_LPREFIX,
+}
+
+class StringLiteralFragment
+{
+  var kind : StringLiteralKinds;
+  var literal : token;
+}
+
+class StringLiteral : ExprOnly
+{
+  var fragments : StringLiteralFragment[];
+}
+
+enum LambdaCaptureObjectKinds
+{
+  Default,
+  This,
+  Id,
+  PackId,
+  PackInit,
+}
+
+enum LambdaCaptureRefeferenceKinds
+{
+  Ref,
+  Copy,
+}
+
+class LambdaCapture
+{
+  var objKind : LambdaCaptureObjectKinds;
+  var refKind : LambdaCaptureRefeferenceKinds;
+  var id : Identifier;
+  var init : VarInit;
+}
+
+class LambdaExpr : ExprOnly
+{
+  var captures : LambdaCapture[];
+  var genericHeader : GenericHeader;
+  var functionHeader : DeclaratorFunctionPart;
+  var stat : Statement;
+}
+
+class ParenthesisExpr : ExprOnly
+{
+  var expr : TypeOrExpr;
+}
+
+class BraceExpr : ExprOnly
+{
+  var arguments : TypeOrExpr[];
+}
+
+class CastExpr : ExprOnly
+{
+  var keyword : token;
+  var type : TypeOrExpr;
+  var expr : TypeOrExpr;
+}
+
+class SysFuncExpr : ExprOnly
+{
+  var keyword : token;
+  var variadic : token;
+  var argument : TypeOrExpr;
+}
+
+enum OperatorScope
+{
+  Root,
+  Context,
+}
+
+class SizeofExpr : ExprOnly
+{
+  var argument : TypeOrExpr;
+  var variadic : token;
+}
+
+enum OperatorArray
+{
+  Array,
+  NotArray,
+}
+
+class DeleteExpr : ExprOnly
+{
+  var scope : OperatorScope;
+  var array : OperatorArray;
+  var argument : TypeOrExpr;
+}
+
+class NewExpr : ExprOnly
+{
+  var scope : OperatorScope;
+  var type : TypeOrExpr[];
+  var placementArguments : TypeOrExpr[];
+  var arrayArguments : TypeOrExpr[];
+  var init : VarInit;
+}
+
+class PrefixUnaryExpr : ExprOnly
+{
+  var op : Operators;
+  var operand : TypeOrExpr;
+}
+
+class PostfixUnaryExpr : ExprOnly
+{
+  var op : Operators;
+  var operand : TypeOrExpr;
+}
+
+class IndexExpr : ExprOnly
+{
+  var operand : TypeOrExpr;
+  var index : TypeOrExpr;
+}
+
+enum CallKinds
+{
+  Parenthesis,
+  Brace,
+}
+
+class CallExpr : ExprOnly
+{
+  var kind : CallKinds;
+  var operand : TypeOrExpr;
+  var arguments : TypeOrExpr[];
+}
+
+class BinaryExpr : ExprOnly
+{
+  var op : Operators;
+  var left : TypeOrExpr;
+  var right : TypeOrExpr;
+}
+
+class IfExpr : ExprOnly
+{
+  var condition : TypeOrExpr;
+  var trueBranch : TypeOrExpr;
+  var falseBranch : TypeOrExpr;
+}
+
+class ThrowExpr : ExprOnly
+{
+  var argument : TypeOrExpr;
+}
+
+class VariadicExpr : ExprOnly
+{
+  var operand : TypeOrExpr;
+  var variadic : token;
+}
+
+enum PrimitiveTypeKinds
+{
+  Neutral,
+  Signed,
+  Unsigned,
+}
+
+class PrimitiveType : TypeOnly
+{
+  var kind : PrimitiveTypeKinds;
+  var literal1 : token;
+  var literal2 : token;
+}
+
+class ConstType : TypeOnly
+{
+  var type : TypeOrExpr;
+}
+
+class VolatileType : TypeOnly
+{
+  var type : TypeOrExpr;
+}
+
+enum AdvancedTypeKinds
+{
+  LRef,
+  RRef,
+  Const,
+  Volatile,
+  Pointer,
+  Pointer32,
+  Pointer64,
+  Member,
+  AlignAs,
+}
+
+class AdvancedType
+{
+  var kind : AdvancedTypeKinds;
+  var argument : TypeOrExpr;
+}
+
+class DeclaratorKeyword
+{
+  var keyword : token;
+}
+
+class FunctionKeyword
+{
+  var keyword : token;
+  var arguments : TypeOrExpr[];
+}
+
+@ambiguous class DeclaratorFunctionPart
+{
+  var parameters : TypeOrExprOrOthers[];
+  var variadic : token;
+  var keywords : FunctionKeyword[];
+  var deferredType : TypeOrExpr;
+}
+
+class DeclaratorArrayPart
+{
+  var argument : TypeOrExpr;
+}
+
+class Declarator
+{
+  var keywords : DeclaratorKeyword[];
+  var advancedTypes : AdvancedType[];
+  var variadic : token;
+  var id : Identifier;
+  var arguments : GenericArguments;
+  var bitfield : TypeOrExpr;
+  var innerDeclarator : Declarator;
+  var funcPart : DeclaratorFunctionPart;
+  var arrayParts : DeclaratorArrayPart[];
+}
+
+class DeclaratorType : TypeOrExpr
+{
+  var keywords : DeclaratorKeyword[];
+  var type : TypeOrExpr;
+  var declarator : Declarator;
+}
+
+class VarInit
+{
+}
+
+class VarValueInit : VarInit
+{
+  var expr : TypeOrExpr;
+}
+
+class VarParanthesisInit : VarInit
+{
+  var arguments : TypeOrExpr[];
+}
+
+class VarBraceInit : VarInit
+{
+  var arguments : TypeOrExpr[];
+}
+
+class VarStatInitItem
+{
+  var name : token;
+  var init : VarInit;
+}
+
+class VarStatInit : VarInit
+{
+  var initItems : VarStatInitItem[];
+  var stat : BlockStat;
+}
+
+@ambiguous class DeclaratorVariablePart
+{
+  var declarator : Declarator;
+  var init : VarInit;
+  var nextVarPart : DeclaratorVariablePart;
+}
+
+class VariablesDeclaration : Declaration
+{
+  var type : TypeOrExpr;
+  var firstVarPart : DeclaratorVariablePart;
+}
+
+enum ClassKind
+{
+  Class,
+  Struct,
+  Union,
+}
+
+enum ClassAccessor
+{
+  Default,
+  Private,
+  Protected,
+  Public,
+}
+
+class ClassInheritance
+{
+  var accessor : ClassAccessor;
+  var variadic : token;
+  var type : TypeOrExpr;
+}
+
+class ClassMemberPart
+{
+  var accessor : ClassAccessor;
+  var decls : Declaration[];
+}
+
+class ClassBody
+{
+  var inheritances : ClassInheritance[];
+  var memberParts : ClassMemberPart[];
+  var firstVarPart : DeclaratorVariablePart;
+}
+
+class ClassDeclaration : Declaration
+{
+  var kind : ClassKind;
+  var name : token;
+  var arguments : GenericArguments;
+  var body : ClassBody;
+}
+
+enum EnumKind
+{
+  Enum,
+  EnumClass,
+}
+
+class EnumItem
+{
+  var name : token;
+  var expr : TypeOrExpr;
+}
+
+class EnumBody
+{
+  var items : EnumItem[];
+  var firstVarPart : DeclaratorVariablePart;
+}
+
+class EnumDeclaration : Declaration
+{
+  var kind : EnumKind;
+  var name : token;
+  var type : TypeOrExpr;
+  var body : EnumBody;
+}
+
+class TemplateDeclaration : Declaration
+{
+  var genericHeader : GenericHeader;
+  var decl : Declaration;
+}
+
+class StaticAssertDeclaration : Declaration
+{
+  var expr : TypeOrExpr;
+  var message : TypeOrExpr;
+}
+
+class TypedefDeclaration : Declaration
+{
+  var decl : Declaration;
+}
+
+class ExternDeclaration : Declaration
+{
+  var decls : Declaration[];
+}
+
+class NamespaceName
+{
+  var name : token;
+}
+
+class NamespaceDeclaration : Declaration
+{
+  var names : NamespaceName[];
+  var decls : Declaration[];
+}
+
+class UsingNamespaceDeclaration : Declaration
+{
+  var names : NamespaceName[];
+}
+
+class UsingValueDeclaration : Declaration
+{
+  var typenameKeyword : token;
+  var name : QualifiedName;
+}
+
+class UsingTypeDeclaration : Declaration
+{
+  var name : token;
+  var type : TypeOrExpr;
+}
+
+class FriendTypeDeclaration : Declaration
+{
+  var type : QualifiedName;
+}
+
+@ambiguous class Statement
+{
+}
+
+class EmptyStat : Statement
+{
+}
+
+class BlockStat : Statement
+{
+  var statements : Statement[];
+}
+
+class ExprStat : Statement
+{
+  var expr : TypeOrExpr;
+}
+
+class DeclStat : Statement
+{
+  var decl : Declaration;
+}
+
+class BreakStat : Statement
+{
+}
+
+class ContinueStat : Statement
+{
+}
+
+class ReturnStat : Statement
+{
+  var expr : TypeOrExpr;
+}
+
+class LabelStat : Statement
+{
+  var label : token;
+  var stat : Statement;
+}
+
+class GotoStat : Statement
+{
+  var label : token;
+}
+
+class CaseStat : Statement
+{
+  var expr : TypeOrExpr;
+  var stat : Statement;
+}
+
+class DefaultStat : Statement
+{
+  var stat : Statement;
+}
+
+class __LeaveStat : Statement
+{
+}
+
+class WhileStat : Statement
+{
+  var condition : TypeOrExprOrOthers;
+  var stat : Statement;
+}
+
+class DoWhileStat : Statement
+{
+  var condition : TypeOrExpr;
+  var stat : Statement;
+}
+
+class IfElseStat : Statement
+{
+  var varsDecl : VariablesDeclaration;
+  var condition : TypeOrExprOrOthers;
+  var trueStat : Statement;
+  var falseStat : Statement;
+}
+
+class ForStatConditionPart
+{
+}
+
+class ForStatLoopCondition : ForStatConditionPart
+{
+  var varsDecl : TypeOrExprOrOthers;
+  var condition : TypeOrExpr;
+  var sideEffect : TypeOrExpr;
+}
+
+class ForStatIterateCondition : ForStatConditionPart
+{
+  var decl : VariablesDeclaration;
+  var collection : TypeOrExpr;
+}
+
+class ForStat : Statement
+{
+  var conditionPart : ForStatConditionPart;
+  var stat : Statement;
+}
+
+class SwitchStat : Statement
+{
+  var condition : TypeOrExprOrOthers;
+  var stat : Statement;
+}
+
+class TryStatCatchPart
+{
+  var decl : TypeOrExprOrOthers;
+  var stat : Statement;
+}
+
+class TryStat : Statement
+{
+  var tryStat : Statement;
+  var catchParts : TryStatCatchPart[];
+}
+
+class __TryStat : Statement
+{
+  var tryStat : Statement;
+  var exceptStat : Statement;
+  var finallyStat : Statement;
+  var filter : TypeOrExpr;
+}
+
+class File
+{
+  var decls : Declaration[];
+}
+
