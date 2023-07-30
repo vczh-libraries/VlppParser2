@@ -28,9 +28,9 @@ GenerateSyntaxFileNames
 			{
 				return GenerateToStream([&](StreamWriter& writer)
 				{
-					WriteNssName(astType->Owner()->cppNss, writer);
+					WriteNssName(astType->Owner()->Owner()->cppNss, writer);
 					writer.WriteString(L"::");
-					writer.WriteString(astType->Owner()->classPrefix);
+					writer.WriteString(astType->Owner()->Owner()->classPrefix);
 					writer.WriteString(astType->Name());
 				});
 			}

@@ -50,9 +50,9 @@ void GenerateCalculatorSyntax(AstSymbolManager& ast, SyntaxSymbolManager& manage
 	auto _module = createRule(L"Module");
 
 	_exp->isParser = true;
-	_exp->ruleType = dynamic_cast<AstClassSymbol*>(ast.Symbols()[L"Expr"]);
+	_exp->ruleType = dynamic_cast<AstClassSymbol*>(ast.Symbols()[L"Expr"][0]);
 	_module->isParser = true;
-	_module->ruleType = dynamic_cast<AstClassSymbol*>(ast.Symbols()[L"Module"]);
+	_module->ruleType = dynamic_cast<AstClassSymbol*>(ast.Symbols()[L"Module"][0]);
 
 	using T = CalculatorTokens;
 	using C = CalculatorClasses;

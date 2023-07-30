@@ -41,7 +41,7 @@ CreateParserGenTypeSyntax
 				_classBody->isPartial = true;
 
 				_file->isParser = true;
-				_file->ruleType = dynamic_cast<AstClassSymbol*>(ast.Symbols()[L"AstFile"]);
+				_file->ruleType = dynamic_cast<AstClassSymbol*>(ast.Symbols()[L"AstFile"][0]);
 
 				using T = ParserGenTokens;
 				using C = ParserGenClasses;

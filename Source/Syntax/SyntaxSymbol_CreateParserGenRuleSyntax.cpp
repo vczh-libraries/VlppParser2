@@ -61,7 +61,7 @@ CreateParserGenRuleSyntax
 				_lriContinuationBody->isPartial = true;
 
 				_file->isParser = true;
-				_file->ruleType = dynamic_cast<AstClassSymbol*>(ast.Symbols()[L"SyntaxFile"]);
+				_file->ruleType = dynamic_cast<AstClassSymbol*>(ast.Symbols()[L"SyntaxFile"][0]);
 
 				using T = ParserGenTokens;
 				using C = ParserGenClasses;
