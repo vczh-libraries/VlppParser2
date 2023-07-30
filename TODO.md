@@ -3,6 +3,8 @@
 ## Next task
 
 - In BuiltIn-Cpp log all actually happened ambiguous types during parsing.
+- Support multiple ast/syntax files in GlrParserGen.
+  - Separate Workflow ast/syntax to multiple files.
 - Rewrite and remove switch before removing PrefixMerge.
   - Rename `LeftRecursionPlaceholderMixedWithSwitches`
 - Multiple LRI following one Target
