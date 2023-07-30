@@ -10,13 +10,13 @@ namespace vl
 			using namespace stream;
 
 			extern void PrintCppType(AstDefFile* fileContext, AstSymbol* propSymbol, stream::StreamWriter& writer);
-			extern void CollectVisitorsAndConcreteClasses(AstDefFile* file, List<AstClassSymbol*>& visitors, List<AstClassSymbol*>& concreteClasses);
+			extern void CollectVisitorsAndConcreteClasses(AstDefFileGroup* group, List<AstClassSymbol*>& visitors, List<AstClassSymbol*>& concreteClasses);
 
 /***********************************************************************
 WriteVisitFieldFunctionBody
 ***********************************************************************/
 
-			void WriteVisitFieldFunctionBody(AstDefFile* file, AstClassSymbol* fieldSymbol, const WString& prefix, stream::StreamWriter& writer)
+			void WriteVisitFieldFunctionBody(AstDefFileGroup* group, AstClassSymbol* fieldSymbol, const WString& prefix, stream::StreamWriter& writer)
 			{
 				writer.WriteLine(prefix + L"\tif (!node) return;");
 				List<AstClassSymbol*> order;
@@ -79,7 +79,7 @@ WriteVisitFieldFunctionBody
 WriteTraverseVisitorHeaderFile
 ***********************************************************************/
 
-			void WriteTraverseVisitorHeaderFile(AstDefFile* file, Ptr<CppAstGenOutput> output, stream::StreamWriter& writer)
+			void WriteTraverseVisitorHeaderFile(AstDefFileGroup* group, Ptr<CppAstGenOutput> output, stream::StreamWriter& writer)
 			{
 				WriteAstUtilityHeaderFile(file, output, L"traverse_visitor", writer, [&](const WString& prefix)
 				{
@@ -155,7 +155,7 @@ WriteTraverseVisitorHeaderFile
 WriteTraverseVisitorCppFile
 ***********************************************************************/
 
-			void WriteTraverseVisitorCppFile(AstDefFile* file, Ptr<CppAstGenOutput> output, stream::StreamWriter& writer)
+			void WriteTraverseVisitorCppFile(AstDefFileGroup* group, Ptr<CppAstGenOutput> output, stream::StreamWriter& writer)
 			{
 				WriteAstUtilityCppFile(file, output->traverseH, L"traverse_visitor", writer, [&](const WString& prefix)
 				{

@@ -16,7 +16,7 @@ namespace vl
 WriteVisitFieldFunctionBody
 ***********************************************************************/
 
-			void WritePrintFieldsFunctionBody(AstDefFile* file, AstClassSymbol* fieldSymbol, const WString& prefix, stream::StreamWriter& writer)
+			void WritePrintFieldsFunctionBody(AstDefFileGroup* group, AstClassSymbol* fieldSymbol, const WString& prefix, stream::StreamWriter& writer)
 			{
 				for (auto propSymbol : fieldSymbol->Props().Values())
 				{
@@ -72,7 +72,7 @@ WriteVisitFieldFunctionBody
 				writer.WriteLine(prefix + L"\t}");
 			}
 
-			void WriteVisitFunctionBody(AstDefFile* file, AstClassSymbol* fieldSymbol, const WString& prefix, stream::StreamWriter& writer)
+			void WriteVisitFunctionBody(AstDefFileGroup* group, AstClassSymbol* fieldSymbol, const WString& prefix, stream::StreamWriter& writer)
 			{
 				WriteNullAndReturn(prefix, writer);
 				List<AstClassSymbol*> order;
@@ -100,7 +100,7 @@ WriteVisitFieldFunctionBody
 WriteJsonVisitorHeaderFile
 ***********************************************************************/
 
-			void WriteJsonVisitorHeaderFile(AstDefFile* file, Ptr<CppAstGenOutput> output, stream::StreamWriter& writer)
+			void WriteJsonVisitorHeaderFile(AstDefFileGroup* group, Ptr<CppAstGenOutput> output, stream::StreamWriter& writer)
 			{
 				WriteAstUtilityHeaderFile(file, output, L"json_visitor", writer, [&](const WString& prefix)
 				{
@@ -163,7 +163,7 @@ WriteJsonVisitorHeaderFile
 WriteJsonVisitorCppFile
 ***********************************************************************/
 
-			void WriteJsonVisitorCppFile(AstDefFile* file, Ptr<CppAstGenOutput> output, stream::StreamWriter& writer)
+			void WriteJsonVisitorCppFile(AstDefFileGroup* group, Ptr<CppAstGenOutput> output, stream::StreamWriter& writer)
 			{
 				WriteAstUtilityCppFile(file, output->jsonH, L"json_visitor", writer, [&](const WString& prefix)
 				{

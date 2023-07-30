@@ -15,7 +15,7 @@ namespace vl
 WriteAstBuilderHeaderFile
 ***********************************************************************/
 
-			void WriteAstBuilderHeaderFile(AstDefFile* file, Ptr<CppAstGenOutput> output, stream::StreamWriter& writer)
+			void WriteAstBuilderHeaderFile(AstDefFileGroup* group, Ptr<CppAstGenOutput> output, stream::StreamWriter& writer)
 			{
 				WriteAstUtilityHeaderFile(file, output, L"builder", writer, [&](const WString& prefix)
 				{
@@ -72,7 +72,7 @@ WriteAstBuilderHeaderFile
 WriteAstBuilderCppFile
 ***********************************************************************/
 
-			void WriteAstBuilderCppFile(AstDefFile* file, Ptr<CppAstGenOutput> output, stream::StreamWriter& writer)
+			void WriteAstBuilderCppFile(AstDefFileGroup* group, Ptr<CppAstGenOutput> output, stream::StreamWriter& writer)
 			{
 				WriteAstUtilityCppFile(file, output->builderH, L"builder", writer, [&](const WString& prefix)
 				{

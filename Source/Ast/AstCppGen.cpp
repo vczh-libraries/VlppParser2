@@ -38,7 +38,7 @@ GenerateAstFileNames
 Utility
 ***********************************************************************/
 
-			void CollectVisitorsAndConcreteClasses(AstDefFile* file, List<AstClassSymbol*>& visitors, List<AstClassSymbol*>& concreteClasses)
+			void CollectVisitorsAndConcreteClasses(AstDefFileGroup* group, List<AstClassSymbol*>& visitors, List<AstClassSymbol*>& concreteClasses)
 			{
 				for (auto name : file->SymbolOrder())
 				{
@@ -60,17 +60,17 @@ Utility
 Forward Declarations
 ***********************************************************************/
 
-			extern void		WriteTypeForwardDefinitions(AstDefFile* file, const WString& prefix, stream::StreamWriter& writer);
-			extern void		WriteTypeDefinitions(AstDefFile* file, const WString& prefix, stream::StreamWriter& writer);
-			extern void		WriteVisitorImpl(AstDefFile* file, const WString& prefix, stream::StreamWriter& writer);
-			extern void		WriteTypeReflectionDeclaration(AstDefFile* file, const WString& prefix, stream::StreamWriter& writer);
-			extern void		WriteTypeReflectionImplementation(AstDefFile* file, const WString& prefix, stream::StreamWriter& writer);
+			extern void		WriteTypeForwardDefinitions(AstDefFileGroup* group, const WString& prefix, stream::StreamWriter& writer);
+			extern void		WriteTypeDefinitions(AstDefFileGroup* group, const WString& prefix, stream::StreamWriter& writer);
+			extern void		WriteVisitorImpl(AstDefFileGroup* group, const WString& prefix, stream::StreamWriter& writer);
+			extern void		WriteTypeReflectionDeclaration(AstDefFileGroup* group, const WString& prefix, stream::StreamWriter& writer);
+			extern void		WriteTypeReflectionImplementation(AstDefFileGroup* group, const WString& prefix, stream::StreamWriter& writer);
 
 /***********************************************************************
 WriteAstHeaderFile
 ***********************************************************************/
 
-			void WriteAstHeaderFile(AstDefFile* file, stream::StreamWriter& writer)
+			void WriteAstHeaderFile(AstDefFileGroup* group, stream::StreamWriter& writer)
 			{
 				WriteFileComment(file->Name(), writer);
 				auto&& headerGuard = file->Owner()->Global().headerGuard;
@@ -125,7 +125,7 @@ WriteAstHeaderFile
 WriteAstCppFile
 ***********************************************************************/
 
-			void WriteAstCppFile(AstDefFile* file, const WString& astHeaderName, stream::StreamWriter& writer)
+			void WriteAstCppFile(AstDefFileGroup* group, const WString& astHeaderName, stream::StreamWriter& writer)
 			{
 				WriteFileComment(file->Name(), writer);
 				writer.WriteLine(L"#include \"" + astHeaderName + L"\"");
@@ -154,7 +154,7 @@ WriteAstUtilityHeaderFile
 ***********************************************************************/
 
 			void WriteAstUtilityHeaderFile(
-				AstDefFile* file,
+				AstDefFileGroup* group,
 				Ptr<CppAstGenOutput> output,
 				const WString& extraNss,
 				stream::StreamWriter& writer,
@@ -196,7 +196,7 @@ WriteAstUtilityCppFile
 ***********************************************************************/
 
 			void WriteAstUtilityCppFile(
-				AstDefFile* file,
+				AstDefFileGroup* group,
 				const WString& utilityHeaderFile,
 				const WString& extraNss,
 				stream::StreamWriter& writer,
@@ -281,7 +281,7 @@ WriteParserUtilityCppFile
 WriteAstFiles
 ***********************************************************************/
 
-			void WriteAstFiles(AstDefFile* file, Ptr<CppAstGenOutput> output, collections::Dictionary<WString, WString>& files)
+			void WriteAstFiles(AstDefFileGroup* group, Ptr<CppAstGenOutput> output, collections::Dictionary<WString, WString>& files)
 			{
 				{
 					WString fileH = GenerateToStream([&](StreamWriter& writer)

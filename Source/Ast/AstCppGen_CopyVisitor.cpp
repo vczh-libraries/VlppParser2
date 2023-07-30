@@ -10,13 +10,13 @@ namespace vl
 			using namespace stream;
 
 			extern void PrintCppType(AstDefFile* fileContext, AstSymbol* propSymbol, stream::StreamWriter& writer);
-			extern void CollectVisitorsAndConcreteClasses(AstDefFile* file, List<AstClassSymbol*>& visitors, List<AstClassSymbol*>& concreteClasses);
+			extern void CollectVisitorsAndConcreteClasses(AstDefFileGroup* group, List<AstClassSymbol*>& visitors, List<AstClassSymbol*>& concreteClasses);
 
 /***********************************************************************
 WriteCopyFieldFunctionBody
 ***********************************************************************/
 
-			void WriteCopyFieldFunctionBody(AstDefFile* file, AstClassSymbol* fieldSymbol, const WString& prefix, stream::StreamWriter& writer)
+			void WriteCopyFieldFunctionBody(AstDefFileGroup* group, AstClassSymbol* fieldSymbol, const WString& prefix, stream::StreamWriter& writer)
 			{
 				if (fieldSymbol->baseClass)
 				{
@@ -58,7 +58,7 @@ WriteCopyFieldFunctionBody
 WriteCopyVisitorHeaderFile
 ***********************************************************************/
 
-			void WriteCopyVisitorHeaderFile(AstDefFile* file, Ptr<CppAstGenOutput> output, stream::StreamWriter& writer)
+			void WriteCopyVisitorHeaderFile(AstDefFileGroup* group, Ptr<CppAstGenOutput> output, stream::StreamWriter& writer)
 			{
 				WriteAstUtilityHeaderFile(file, output, L"copy_visitor", writer, [&](const WString& prefix)
 				{
@@ -144,7 +144,7 @@ WriteCopyVisitorHeaderFile
 WriteCopyVisitorCppFile
 ***********************************************************************/
 
-			void WriteCopyVisitorCppFile(AstDefFile* file, Ptr<CppAstGenOutput> output, stream::StreamWriter& writer)
+			void WriteCopyVisitorCppFile(AstDefFileGroup* group, Ptr<CppAstGenOutput> output, stream::StreamWriter& writer)
 			{
 				WriteAstUtilityCppFile(file, output->copyH, L"copy_visitor", writer, [&](const WString& prefix)
 				{

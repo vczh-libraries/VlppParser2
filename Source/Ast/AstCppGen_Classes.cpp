@@ -104,7 +104,7 @@ PrintCppType
 WriteTypeDefinitions
 ***********************************************************************/
 
-			void WriteTypeDefinitions(AstDefFile* file, const WString& prefix, stream::StreamWriter& writer)
+			void WriteTypeDefinitions(AstDefFileGroup* group, const WString& prefix, stream::StreamWriter& writer)
 			{
 				for (auto name : file->SymbolOrder())
 				{
@@ -236,7 +236,7 @@ WriteTypeDefinitions
 WriteVisitorImpl
 ***********************************************************************/
 
-			void WriteVisitorImpl(AstDefFile* file, const WString& prefix, stream::StreamWriter& writer)
+			void WriteVisitorImpl(AstDefFileGroup* group, const WString& prefix, stream::StreamWriter& writer)
 			{
 				for (auto name : file->SymbolOrder())
 				{
@@ -266,7 +266,7 @@ WriteVisitorImpl
 WriteTypeReflectionDeclaration
 ***********************************************************************/
 
-			void WriteTypeReflectionDeclaration(AstDefFile* file, const WString& prefix, stream::StreamWriter& writer)
+			void WriteTypeReflectionDeclaration(AstDefFileGroup* group, const WString& prefix, stream::StreamWriter& writer)
 			{
 				writer.WriteLine(L"#ifndef VCZH_DEBUG_NO_REFLECTION");
 
@@ -347,7 +347,7 @@ WriteTypeReflectionDeclaration
 WriteTypeReflectionImplementation
 ***********************************************************************/
 
-			void WriteTypeReflectionImplementation(AstDefFile* file, const WString& prefix, stream::StreamWriter& writer)
+			void WriteTypeReflectionImplementation(AstDefFileGroup* group, const WString& prefix, stream::StreamWriter& writer)
 			{
 				writer.WriteLine(L"#ifndef VCZH_DEBUG_NO_REFLECTION");
 
