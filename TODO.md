@@ -8,7 +8,7 @@
   - An AST file only sees:
     - Types defined in this file.
     - `@public` types defined in the same file group.
-    - `@extern` types defined in different file groups.
+    - `@extern` types defined in different file groups **as field type only**.
   - C++ codegen are created per groups.
     - Only AST classes `#include` depended files groups, visitors do not.
     - When a visitor need to call types in different file groups, leave it abstract.
