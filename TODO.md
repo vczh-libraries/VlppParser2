@@ -2,8 +2,6 @@
 
 ## Next task
 
-- Add `public` rule, non-`public` rules can only be used inside the same syntax file.
-- Add `public` type, non-`public` types can only be used inside the same ast file.
 - Rewrite and remove switch before removing PrefixMerge.
   - Rename `LeftRecursionPlaceholderMixedWithSwitches`
 - Multiple LRI following one Target
