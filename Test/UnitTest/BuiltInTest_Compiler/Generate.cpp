@@ -112,7 +112,7 @@ void GenerateParser(
 		}
 	});
 
-	TEST_CATEGORY(L"Compile C++ Parser")
+	TEST_CATEGORY(L"Generate Parser")
 	{
 		auto output = GenerateParserFileNames(global);
 		GenerateAstFileNames(astManager, output);
@@ -164,14 +164,15 @@ void GenerateParser(
 			}
 			TEST_ASSERT(global.Errors().Count() == 0);
 
-			unittest::UnitTest::PrintMessage(L"BuildAutomaton() ...", unittest::UnitTest::MessageKind::Info);
-
+			unittest::UnitTest::PrintMessage(L"BuildCompactNFA() ...", unittest::UnitTest::MessageKind::Info);
 			syntaxManager.BuildCompactNFA();
 			TEST_ASSERT(global.Errors().Count() == 0);
 
+			unittest::UnitTest::PrintMessage(L"BuildCrossReferencedNFA() ...", unittest::UnitTest::MessageKind::Info);
 			syntaxManager.BuildCrossReferencedNFA();
 			TEST_ASSERT(global.Errors().Count() == 0);
 
+			unittest::UnitTest::PrintMessage(L"BuildAutomaton() ...", unittest::UnitTest::MessageKind::Info);
 			Executable executable;
 			Metadata metadata;
 			syntaxManager.BuildAutomaton(lexerManager.Tokens().Count(), executable, metadata);
@@ -188,7 +189,6 @@ void GenerateParser(
 				);
 
 			unittest::UnitTest::PrintMessage(L"WriteSyntaxFiles() ...", unittest::UnitTest::MessageKind::Info);
-
 			Dictionary<WString, WString> files;
 			WriteSyntaxFiles(syntaxManager, executable, metadata, output, files);
 			WriteFilesIfChanged(dirGenerated, files);
