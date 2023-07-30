@@ -58,7 +58,12 @@ TEST_FILE
 	global.headerGuard = L"VCZH_PARSER2_BUILTIN_JSON";
 	syntaxManager.name = L"Parser";
 
-	auto astDefFile = astManager.CreateFile(L"Ast");
+	auto astDefFileGroup = astManager.CreateFileGroup(L"Ast");
+	Fill(astDefFileGroup->cppNss, L"vl", L"glr", L"json");
+	Fill(astDefFileGroup->refNss, L"system");
+	astDefFileGroup->classPrefix = L"Json";
+
+	auto astDefFile = astDefFileGroup->CreateFile(L"Ast");
 	auto output = GenerateParserFileNames(global);
 	GenerateAstFileNames(astManager, output);
 	GenerateSyntaxFileNames(syntaxManager, output);
@@ -68,10 +73,6 @@ TEST_FILE
 	{
 		CompileAst(astManager, astDefFile, astFile);
 		TEST_ASSERT(global.Errors().Count() == 0);
-
-		Fill(astDefFile->cppNss, L"vl", L"glr", L"json");
-		Fill(astDefFile->refNss, L"system");
-		astDefFile->classPrefix = L"Json";
 		WriteAstFiles(astManager, output, files);
 	});
 
