@@ -14,12 +14,12 @@ _VarBraceInit
   ::= "{" {_Expr_Argument:arguments ; ","} "}" as VarBraceInit
   ;
 
-_VarCtorInit
+@public _VarCtorInit
   ::= !_VarNewParanInit
   ::= !_VarBraceInit
   ;
 
-_VarInit
+@public _VarInit
   ::= !_VarValueInit
   ::= !_VarNewParanInit
   ::= !_VarBraceInit
@@ -70,7 +70,7 @@ _FunctionParameterVariablePart
   ::= _DeclaratorOptionalName:declarator [_VarValueInit:init] as DeclaratorVariablePart
   ;
 
-_FunctionParameter
+@public _FunctionParameter
   ::= !_TypeBeforeDeclarator
   ::= _TypeBeforeDeclarator:type _FunctionParameterVariablePart:firstVarPart as VariablesDeclaration
   ::= _DeclaratorKeyword:keywords {_DeclaratorKeyword:keywords}
@@ -85,21 +85,21 @@ _CatchParameterVariablePart
   ::= _DeclaratorOptionalName:declarator as DeclaratorVariablePart
   ;
 
-_CatchParameter
+@public _CatchParameter
   ::= !_TypeBeforeDeclarator
   ::= _TypeBeforeDeclarator:type _CatchParameterVariablePart:firstVarPart as VariablesDeclaration
   ::= _DeclaratorKeyword:keywords {_DeclaratorKeyword:keywords}
       _TypeBeforeDeclarator:type _CatchParameterVariablePart:firstVarPart as VariablesDeclaration
   ;
 
-_ExprOrVarCondition
+@public _ExprOrVarCondition
   ::= !_Expr
   ::= _TypeBeforeDeclarator:type _DeclaratorVariablePartRequiredInit:firstVarPart as VariablesDeclaration
   ::= _DeclaratorKeyword:keywords {_DeclaratorKeyword:keywords}
       _TypeBeforeDeclarator:type _DeclaratorVariablePartRequiredInit:firstVarPart as VariablesDeclaration
   ;
 
-_ForEachParameter
+@public _ForEachParameter
   ::= _TypeBeforeDeclarator:type _DeclaratorVariablePartWithoutInit:firstVarPart as VariablesDeclaration
   ;
 
@@ -111,7 +111,7 @@ _MultiTypedefVarDeclVariablePart
   ::= !_DeclaratorVariablePartWithoutInit ["," _MultiTypedefVarDeclVariablePart:nextVarPart]
   ;
 
-_MultiTypedefVarsDeclWithoutKeyword
+@public _MultiTypedefVarsDeclWithoutKeyword
   ::= _TypeBeforeDeclarator:type _MultiTypedefVarDeclVariablePart:firstVarPart as VariablesDeclaration
   ;
 
@@ -123,7 +123,7 @@ _MultiVarsDeclVariablePartFirst
   ::= !_DeclaratorVariablePartOptionalInitFirst ["," _MultiVarsDeclVariablePartSecond:nextVarPart]
   ;
 
-_MultiVarsDeclVariablePartSecond
+@public _MultiVarsDeclVariablePartSecond
   ::= !_DeclaratorVariablePartOptionalInitSecond ["," _MultiVarsDeclVariablePartSecond:nextVarPart]
   ;
 
@@ -131,7 +131,7 @@ _MultiVarsDeclWithoutKeyword
   ::= _TypeBeforeDeclarator:type _MultiVarsDeclVariablePartFirst:firstVarPart as VariablesDeclaration
   ;
 
-_MultiVarsDecl
+@public _MultiVarsDecl
   ::= !_MultiVarsDeclWithoutKeyword
   ::= _DeclaratorKeyword:keywords {_DeclaratorKeyword:keywords} !_MultiVarsDeclWithoutKeyword
   ;
@@ -153,7 +153,7 @@ _MultiVarsOrFuncForwardDeclWithoutKeyword
   ::= !_UntypedFuncForwardDeclWithoutKeyword
   ;
 
-_MultiVarsOrFuncForwardDecl
+@public _MultiVarsOrFuncForwardDecl
   ::= !_MultiVarsOrFuncForwardDeclWithoutKeyword
   ::= _DeclaratorKeyword:keywords {_DeclaratorKeyword:keywords} !_MultiVarsOrFuncForwardDeclWithoutKeyword
   ;
@@ -188,7 +188,7 @@ _MultiVarsOrFuncDeclWithoutKeyword
   ::= !_UntypedFuncDeclWithoutKeyword
   ;
 
-_MultiVarsOrFuncDecl
+@public _MultiVarsOrFuncDecl
   ::= !_MultiVarsOrFuncDeclWithoutKeyword
   ::= _DeclaratorKeyword:keywords {_DeclaratorKeyword:keywords} !_MultiVarsOrFuncDeclWithoutKeyword
   ;

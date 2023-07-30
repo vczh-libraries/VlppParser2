@@ -2,7 +2,7 @@
 // Static Assert Declaration
 //////////////////////////////////////////////////////////////////
 
-_StaticAssertDecl
+@public _StaticAssertDecl
   ::= "static_assert" "(" _Expr_NoComma:expr ["," _Expr_NoComma:message] ")" as StaticAssertDeclaration
   ;
   
@@ -16,7 +16,7 @@ _TypedefCompatibleDecl
   ::= !_EnumDecl
   ;
 
-_TypedefDecl
+@public _TypedefDecl
   ::= "typedef" _TypedefCompatibleDecl:decl as TypedefDeclaration
   ;
   
@@ -24,7 +24,7 @@ _TypedefDecl
 // Extern Declaration
 //////////////////////////////////////////////////////////////////
 
-_ExternDeclRejectSemicolon
+@public _ExternDeclRejectSemicolon
   ::= "extern" [STRING] "{" {_DeclRejectSemicolon:decls} "}" as ExternDeclaration
   ;
   
@@ -36,7 +36,7 @@ _NsName
   ::= ID:name as NamespaceName
   ;
 
-_NsDecl
+@public _NsDecl
   ::= "namespace" {_NsName:names ; "::"} "{" {_DeclRejectSemicolon:decls} "}" as NamespaceDeclaration
   ;
   
@@ -44,15 +44,15 @@ _NsDecl
 // Using Declaration
 //////////////////////////////////////////////////////////////////
 
-_UsingNsDecl
+@public _UsingNsDecl
   ::= "using" "namespace" _NsName:names {"::" _NsName:names} as UsingNamespaceDeclaration
   ;
 
-_UsingValueDecl
+@public _UsingValueDecl
   ::= "using" ["typename":typenameKeyword] _QualifiedName:name as UsingValueDeclaration
   ;
 
-_UsingTypeDecl
+@public _UsingTypeDecl
   ::= "using" ID:name "=" _Type:type as UsingTypeDeclaration
   ;
   
@@ -60,7 +60,7 @@ _UsingTypeDecl
 // Friend Declaration
 //////////////////////////////////////////////////////////////////
 
-_FriendTypeDecl
+@public _FriendTypeDecl
   ::= "friend" _QualifiedName:type as FriendTypeDeclaration
   ;
 
@@ -76,12 +76,12 @@ _EnumBody
   ::= "{" [_EnumItem:items {"," _EnumItem:items} [","]] "}" [_MultiVarsDeclVariablePartSecond:firstVarPart] as EnumBody
   ;
 
-_EnumDecl
+@public _EnumDecl
   ::= "enum" [ID:name] [":" _Type:type] _EnumBody:body as EnumDeclaration {kind = Enum}
   ::= "enum" "class" ID:name [":" _Type:type] _EnumBody:body as EnumDeclaration {kind = EnumClass}
   ;
 
-_EnumForwardDecl
+@public _EnumForwardDecl
   ::= "enum" ID:name [":" _Type:type] as EnumDeclaration {kind = Enum}
   ::= "enum" "class" ID:name [":" _Type:type] as EnumDeclaration {kind = EnumClass}
   ;

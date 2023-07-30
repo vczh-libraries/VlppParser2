@@ -2,11 +2,11 @@
 // QualifiedName
 //////////////////////////////////////////////////////////////////
 
-_NameIdentifier
+@public _NameIdentifier
   ::= ID:name                       as NameIdentifier {kind = Normal}
   ;
 
-_DtorIdentifier
+@public _DtorIdentifier
   ::= "~" ID:name                   as NameIdentifier {kind = Dtor}
   ;
 
@@ -26,7 +26,7 @@ _OperatorIdentifierDeleteArray
   ::= "[" "]" as partial OperatorIdentifier {op = DeleteArray}
   ;
 
-_OperatorIdentifier
+@public _OperatorIdentifier
   ::= "operator" "new"    +[_OperatorIdentifierNewArray]    as OperatorIdentifier {op ?= New}
   ::= "operator" "delete" +[_OperatorIdentifierDeleteArray] as OperatorIdentifier {op ?= Delete}
   ::= "operator" '""' ID:name       as NameIdentifier {kind = UserDefinedLiteral}
@@ -72,7 +72,7 @@ _OperatorIdentifier
   ::= "operator" ">"                as OperatorIdentifier {op = GT}
   ;
 
-_OperatorTypeIdentifier
+@public _OperatorTypeIdentifier
   ::= "operator" _TypeWithoutFuncVar:type as OperatorTypeIdentifier
   ;
 
@@ -104,12 +104,12 @@ _NextLevelQualifiedName
   ::= "::" _MemberQualifiedNameFragment as partial QualifiedName {kind = Member}
   ;
 
-_QualifiedName
+@public _QualifiedName
   ::= !_SingleLevelQualifiedName
   ::= _QualifiedName:parent _NextLevelQualifiedName as QualifiedName
   ;
 
-_QualifiedNameAfterTypename
+@public _QualifiedNameAfterTypename
   ::= _SingleLevelQualifiedName:parent _NextLevelQualifiedName as QualifiedName
   ::= _QualifiedNameAfterTypename:parent _NextLevelQualifiedName as QualifiedName
   ;

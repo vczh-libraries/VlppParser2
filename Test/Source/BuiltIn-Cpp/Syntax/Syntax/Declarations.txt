@@ -23,13 +23,13 @@ _DeclSharedWithoutSemicolon
   ::= !_FriendTypeDecl
   ;
 
-_DeclNeedSemicolon
+@public _DeclNeedSemicolon
   ::= !_DeclSharedWithoutSemicolon
   ::= !_MultiVarsOrFuncForwardDecl
   ::= "template" _GenericHeader:genericHeader _DeclNeedSemicolon:decl as TemplateDeclaration
   ;
 
-_DeclRejectSemicolon
+@public _DeclRejectSemicolon
   ::= !_DeclSharedWithoutSemicolon ";"
   ::= !_ExternDeclRejectSemicolon
   ::= !_MultiVarsOrFuncDecl

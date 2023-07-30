@@ -221,7 +221,7 @@ _ThrowExpr
   ::= "throw" [_BExpr10:argument] as ThrowExpr
   ;
 
-_BExpr_NoComma
+@public _BExpr_NoComma
   ::= !_BExpr11
   ::= !_ThrowExpr
   ::= _BExpr11:condition "?" _Expr:trueBranch ":" _BExpr_NoComma:falseBranch as IfExpr
@@ -238,7 +238,7 @@ _BExpr_NoComma
   ::= _BExpr11:left "^=" _BExpr_NoComma:right as BinaryExpr {op = XorAssign}
   ;
 
-_BExpr
+@public _BExpr
   ::= !_BExpr_NoComma
   ::= _BExpr:left "," _BExpr_NoComma:right as BinaryExpr {op = Comma}
   ;
@@ -247,10 +247,10 @@ _BExpr
 // _Expr
 //////////////////////////////////////////////////////////////////
 
-_Expr_NoComma_Raw
+@public _Expr_NoComma_Raw
   ::= !_BExpr_NoComma
   ;
 
-_Expr_Raw
+@public _Expr_Raw
   ::= !_BExpr
   ;

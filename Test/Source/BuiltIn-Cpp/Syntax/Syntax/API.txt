@@ -4,7 +4,7 @@ switch allow_GT;
 // Type
 //////////////////////////////////////////////////////////////////
 
-@parser _Type
+@public @parser _Type
   ::= !_TypeBeforeDeclarator
   ::= _TypeBeforeDeclarator:type _DeclaratorWithoutName:declarator as DeclaratorType
   ::= _DeclaratorKeyword:keywords {_DeclaratorKeyword:keywords} _TypeBeforeDeclarator:type [_DeclaratorWithoutName:declarator] as DeclaratorType
@@ -14,10 +14,10 @@ switch allow_GT;
 // Expr
 //////////////////////////////////////////////////////////////////
 
-_Expr_NoComma            ::= !( allow_GT; !_Expr_NoComma_Raw);
-@parser _Expr            ::= !( allow_GT; !_Expr_Raw);
+@public _Expr_NoComma            ::= !( allow_GT; !_Expr_NoComma_Raw);
+@public @parser _Expr            ::= !( allow_GT; !_Expr_Raw);
 
-_Expr_Argument
+@public _Expr_Argument
   ::= !_Expr_NoComma
   ::= _Expr_NoComma:operand "...":variadic as VariadicExpr
   ;
@@ -26,18 +26,18 @@ _Expr_Argument
 // _TypeOrExpr
 //////////////////////////////////////////////////////////////////
 
-_TypeOrExpr_NoComma_Raw
+@public _TypeOrExpr_NoComma_Raw
   ::= !_BExpr_NoComma
   ::= !_Type
   ;
 
-_TypeOrExpr_Raw
+@public _TypeOrExpr_Raw
   ::= !_BExpr
   ::= !_Type
   ;
 
-_TypeOrExpr_NoComma_NoGT ::= !(!allow_GT; !_TypeOrExpr_NoComma_Raw);
-@parser _TypeOrExpr      ::= !( allow_GT; !_TypeOrExpr_Raw);
+@public _TypeOrExpr_NoComma_NoGT ::= !(!allow_GT; !_TypeOrExpr_NoComma_Raw);
+@public @parser _TypeOrExpr      ::= !( allow_GT; !_TypeOrExpr_Raw);
 
 //////////////////////////////////////////////////////////////////
 // SYNTAX

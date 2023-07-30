@@ -50,7 +50,7 @@ _ShortTypeBeforeDeclarator : TypeOrExpr
   ::= !_CallConstructibleTypeBeforeDeclarator
   ;
 
-_CallConstructibleType
+@public _CallConstructibleType
   ::= !_CallConstructibleTypeBeforeDeclarator
   ::= _PM_QualifiedName:type "const" as ConstType
   ::= _PM_QualifiedName:type "volatile" as VolatileType
@@ -58,13 +58,13 @@ _CallConstructibleType
   ::= _CallConstructibleType:type "volatile" as VolatileType
   ;
 
-_TypeBeforeDeclarator
+@public _TypeBeforeDeclarator
   ::= !_ShortTypeBeforeDeclarator
   ::= _TypeBeforeDeclarator:type "const" as ConstType
   ::= _TypeBeforeDeclarator:type "volatile" as VolatileType
   ;
 
-_TypeWithoutFuncVar
+@public _TypeWithoutFuncVar
   ::= !_TypeBeforeDeclarator
   ::= _TypeBeforeDeclarator:type _DeclaratorWithoutNameAndFuncVar:declarator as DeclaratorType
   ;
