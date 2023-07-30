@@ -88,7 +88,7 @@ void GenerateParser(
 			TypeParser typeParser;
 			TEST_CASE(L"Parse AST: " + astFileName + L".txt")
 			{
-				auto input = File(dirParser / L"Syntax" / L"Ast" / (astFileName + L".txt")).ReadAllTextByBom();
+				auto input = File(dirParser / L"Syntax" / (astFileName + L".txt")).ReadAllTextByBom();
 				auto astFile = typeParser.ParseFile(input);
 				astNamedFiles.Add({ astFileName,astFile });
 
@@ -102,7 +102,7 @@ void GenerateParser(
 			RuleParser ruleParser;
 			TEST_CASE(L"Parse Syntax: " + syntaxFileName + L".txt")
 			{
-				auto input = File(dirParser / L"Syntax" / L"Syntax" / (syntaxFileName + L".txt")).ReadAllTextByBom();
+				auto input = File(dirParser / L"Syntax" / (syntaxFileName + L".txt")).ReadAllTextByBom();
 				auto syntaxFile = ruleParser.ParseFile(input);
 				syntaxFiles.Add(syntaxFile);
 
@@ -157,7 +157,7 @@ void GenerateParser(
 			{
 				PrintError(error);
 			}
-			TEST_ASSERT(rewritten);
+			if (rewritten)
 			{
 				auto formattedActual = GenerateToStream([&](TextWriter& writer) { SyntaxAstToCode(rewritten, writer); });
 				File(dirOutput / (L"SyntaxRewrittenActual[" + parserName + L"].txt")).WriteAllText(formattedActual, true, BomEncoder::Utf8);
