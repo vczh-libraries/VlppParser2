@@ -28,6 +28,38 @@ SPACE ::= NUM:value as NumExpr;
 			);
 	});
 
+	TEST_CASE(L"TypeNotUniqueInRule 1")
+	{
+		const wchar_t* syntaxCode =
+LR"SYNTAX(
+Exp0 : NotUnique ::= NUM:value as NumExpr;
+)SYNTAX";
+		ExpectError(
+			typeParser,
+			ruleParser,
+			astCode,
+			lexerCode,
+			syntaxCode,
+			{ ParserErrorType::TypeNotUniqueInRule,L"Exp0",L"Unknown" }
+		);
+	});
+
+	TEST_CASE(L"TypeNotUniqueInRule 2")
+	{
+		const wchar_t* syntaxCode =
+LR"SYNTAX(
+Exp0 ::= NUM:value as NotUnique;
+)SYNTAX";
+		ExpectError(
+			typeParser,
+			ruleParser,
+			astCode,
+			lexerCode,
+			syntaxCode,
+			{ ParserErrorType::TypeNotUniqueInRule,L"Exp0",L"Unknown" }
+		);
+	});
+
 	TEST_CASE(L"TypeNotExistsInRule 1")
 	{
 		const wchar_t* syntaxCode =

@@ -8,10 +8,11 @@ namespace TestError_Ast_TestObjects
 		ParserSymbolManager global;
 		AstSymbolManager astManager(global);
 		List<Pair<AstDefFile*, Ptr<GlrAstFile>>> astFiles;
+		auto astDefFileGroup = astManager.CreateFileGroup(WString::Unmanaged(L"FileGroup"));
 		for (auto [astCode, index] : indexed(From(astCodes)))
 		{
 			auto astFile = parser.ParseFile(WString::Unmanaged(astCode));
-			auto astDefFile = astManager.CreateFile(WString::Unmanaged(L"Ast") + itow(index));
+			auto astDefFile = astDefFileGroup->CreateFile(WString::Unmanaged(L"Ast") + itow(index));
 			astFiles.Add({ astDefFile,astFile });
 		}
 		CompileAst(astManager, astFiles);
@@ -30,35 +31,45 @@ TEST_FILE
 {
 	TypeParser parser;
 
+	TEST_CASE(L"DuplicatedFileGroup")
+	{
+		ParserSymbolManager global;
+		AstSymbolManager astManager(global);
+		astManager.CreateFileGroup(L"FileGroup");
+		astManager.CreateFileGroup(L"FileGroup");
+		AssertError(global, { ParserErrorType::DuplicatedFile,L"FileGroup" });
+	});
+
 	TEST_CASE(L"DuplicatedFile")
 	{
 		ParserSymbolManager global;
 		AstSymbolManager astManager(global);
-		astManager.CreateFile(L"Ast");
-		astManager.CreateFile(L"Ast");
+		auto group = astManager.CreateFileGroup(L"FileGroup");
+		group->CreateFile(L"Ast");
+		group->CreateFile(L"Ast");
 		AssertError(global, { ParserErrorType::DuplicatedFile,L"Ast" });
 	});
 
-	TEST_CASE(L"FileDependencyNotExists")
+	TEST_CASE(L"FileGroupDependencyNotExists")
 	{
 		ParserSymbolManager global;
 		AstSymbolManager astManager(global);
-		astManager.CreateFile(L"Ast")->AddDependency(L"Random");
-		AssertError(global, { ParserErrorType::FileDependencyNotExists,L"Ast",L"Random"});
+		astManager.CreateFileGroup(L"FileGroup")->AddDependency(L"Random");
+		AssertError(global, { ParserErrorType::FileGroupDependencyNotExists,L"FileGroup",L"Random"});
 	});
 
-	TEST_CASE(L"FileCyclicDependency")
+	TEST_CASE(L"FileGroupCyclicDependency")
 	{
 		ParserSymbolManager global;
 		AstSymbolManager astManager(global);
-		auto f1 = astManager.CreateFile(L"A");
-		auto f2 = astManager.CreateFile(L"B");
-		f1->AddDependency(L"B");
-		f2->AddDependency(L"A");
-		AssertError(global, { ParserErrorType::FileCyclicDependency,L"B",L"A" });
+		auto g1 = astManager.CreateFileGroup(L"A");
+		auto g2 = astManager.CreateFileGroup(L"B");
+		g1->AddDependency(L"B");
+		g2->AddDependency(L"A");
+		AssertError(global, { ParserErrorType::FileGroupCyclicDependency,L"B",L"A" });
 	});
 
-	TEST_CASE(L"DuplicatedSymbol")
+	TEST_CASE(L"DuplicatedSymbolInFile")
 	{
 		const wchar_t* inputs[] = {
 LR"AST(
@@ -75,11 +86,11 @@ LR"AST(
 )AST" };
 		for (auto input : inputs)
 		{
-			ExpectError(parser, input, { ParserErrorType::DuplicatedSymbol,L"Ast0",L"A" });
+			ExpectError(parser, input, { ParserErrorType::DuplicatedSymbolInFile,L"Ast0",L"A" });
 		}
 	});
 
-	TEST_CASE(L"DuplicatedSymbolGlobally")
+	TEST_CASE(L"DuplicatedSymbolInFileGroup")
 	{
 		const wchar_t* inputs[] = {
 LR"AST(
@@ -93,7 +104,7 @@ LR"AST(
 			for (auto input2 : inputs)
 			{
 				const wchar_t* combinedInputs[] = { input1,input2 };
-				ExpectError(parser, combinedInputs, { ParserErrorType::DuplicatedSymbolGlobally,L"Ast1",L"A",L"Ast0" });
+				ExpectError(parser, combinedInputs, { ParserErrorType::DuplicatedSymbolInFileGroup,L"Ast1",L"A",L"Ast0" });
 			}
 		}
 	});
@@ -278,7 +289,8 @@ LR"AST(
 					WString::Unmanaged(inputs[1]) +
 					WString::Unmanaged(inputs[2])
 				);
-				auto astDefFile = astManager.CreateFile(WString::Unmanaged(L"Ast"));
+				auto astDefFileGroup = astManager.CreateFileGroup(WString::Unmanaged(L"FileGroup"));
+				auto astDefFile = astDefFileGroup->CreateFile(WString::Unmanaged(L"Ast"));
 				CompileAst(astManager, astDefFile, astFile);
 			});
 		});
@@ -288,10 +300,11 @@ LR"AST(
 			assertResult([&](AstSymbolManager& astManager)
 			{
 				List<Pair<AstDefFile*, Ptr<GlrAstFile>>> astFiles;
+				auto astDefFileGroup = astManager.CreateFileGroup(WString::Unmanaged(L"FileGroup"));
 				for (auto [input, index] : indexed(From(inputs)))
 				{
 					auto astFile = parser.ParseFile(WString::Unmanaged(input));
-					auto astDefFile = astManager.CreateFile(WString::Unmanaged(L"Ast") + itow(index));
+					auto astDefFile = astDefFileGroup->CreateFile(WString::Unmanaged(L"Ast") + itow(index));
 					astFiles.Add({ astDefFile,astFile });
 				}
 				CompileAst(astManager, astFiles);

@@ -54,7 +54,19 @@ ResolveNameVisitor
 						return nullptr;
 					}
 
-					auto classSymbol = dynamic_cast<AstClassSymbol*>(context.astManager.Symbols().Values()[index]);
+					auto&& resolvedSymbols = context.astManager.Symbols().GetByIndex(index);
+					if (resolvedSymbols.Count() > 1)
+					{
+						context.syntaxManager.AddError(
+							ParserErrorType::TypeNotUniqueInRule,
+							typeName.codeRange,
+							ruleSymbol->Name(),
+							typeName.value
+							);
+						return nullptr;
+					}
+
+					auto classSymbol = dynamic_cast<AstClassSymbol*>(resolvedSymbols[0]);
 					if (!classSymbol)
 					{
 						context.syntaxManager.AddError(
@@ -63,14 +75,12 @@ ResolveNameVisitor
 							ruleSymbol->Name(),
 							typeName.value
 							);
+						return nullptr;
 					}
 
-					if (classSymbol)
+					if (classSymbol->derivedClass_Common)
 					{
-						if (classSymbol->derivedClass_Common)
-						{
-							classSymbol = classSymbol->derivedClass_Common;
-						}
+						classSymbol = classSymbol->derivedClass_Common;
 					}
 					return classSymbol;
 				}

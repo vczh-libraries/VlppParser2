@@ -12,12 +12,12 @@ namespace vl::glr::parsergen
 	)
 	{
 		auto generated = Ptr(new GlrAstFile);
-		for (auto fileName : manager.FileOrder())
+		for (auto groupName : manager.FileGroupOrder())
 		{
-			auto file = manager.Files()[fileName];
-			for (auto typeName : file->SymbolOrder())
+			auto group = manager.Files()[groupName];
+			for (auto typeName : group->SymbolOrder())
 			{
-				auto symbol = file->Symbols()[typeName];
+				auto symbol = group->Symbols()[typeName];
 
 				if (auto enumSymbol = dynamic_cast<AstEnumSymbol*>(symbol))
 				{

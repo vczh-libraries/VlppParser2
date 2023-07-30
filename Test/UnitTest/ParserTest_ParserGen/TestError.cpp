@@ -21,7 +21,8 @@ namespace TestError_Syntax_TestObjects
 		SyntaxSymbolManager syntaxManager(global);
 
 		auto astFile = typeParser.ParseFile(WString::Unmanaged(astCode));
-		auto astDefFile = astManager.CreateFile(WString::Unmanaged(L"Ast"));
+		auto astDefFileGroup = astManager.CreateFileGroup(WString::Unmanaged(L"FileGroup"));
+		auto astDefFile = astDefFileGroup->CreateFile(WString::Unmanaged(L"Ast"));
 		CompileAst(astManager, astDefFile, astFile);
 		TEST_ASSERT(global.Errors().Count() == 0);
 
