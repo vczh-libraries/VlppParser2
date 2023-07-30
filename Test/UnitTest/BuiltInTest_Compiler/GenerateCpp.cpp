@@ -144,24 +144,6 @@ TEST_FILE
 		}
 	});
 
-	TEST_CASE(L"CompilerAst (multiple files, test only)")
-	{
-		ParserSymbolManager global;
-		AstSymbolManager astManager(global);
-		List<Pair<AstDefFile*, Ptr<GlrAstFile>>> astFiles;
-		for (auto [name, file] : astNamedFiles)
-		{
-			astFiles.Add({ astManager.CreateFile(name),file });
-		}
-		CompileAst(astManager, astFiles);
-		TEST_ASSERT(global.Errors().Count() == 0);
-
-		combinedAstFile = TypeSymbolToAst(astManager, false);
-		auto rewrittenAst = TypeSymbolToAst(astManager, true);
-		auto formattedAst = GenerateToStream([&](TextWriter& writer) { TypeAstToCode(rewrittenAst, writer); });
-		File(dirOutput / (L"AstRewrittenActual[BuiltIn-Cpp].txt")).WriteAllText(formattedAst, true, BomEncoder::Utf8);
-	});
-
 	TEST_CATEGORY(L"Compile C++ Parser")
 	{
 		ParserSymbolManager global;
@@ -177,19 +159,29 @@ TEST_FILE
 		global.headerGuard = L"VCZH_PARSER2_BUILTIN_CPP";
 		syntaxManager.name = L"Parser";
 
-		auto astDefFile = astManager.CreateFile(L"Ast");
+		auto astDefFileGroup = astManager.CreateFileGroup(L"Ast");
+		Fill(astDefFileGroup->cppNss, L"cpp_parser");
+		Fill(astDefFileGroup->refNss, L"cpp_parser");
+		astDefFileGroup->classPrefix = L"Cpp";
+
 		auto output = GenerateParserFileNames(global);
 		GenerateAstFileNames(astManager, output);
 		GenerateSyntaxFileNames(syntaxManager, output);
 
 		TEST_CASE(L"CompilerAst")
 		{
-			CompileAst(astManager, astDefFile, combinedAstFile);
+			List<Pair<AstDefFile*, Ptr<GlrAstFile>>> astFiles;
+			for (auto [name, file] : astNamedFiles)
+			{
+				astFiles.Add({ astDefFileGroup->CreateFile(name),file });
+			}
+			CompileAst(astManager, astFiles);
 			TEST_ASSERT(global.Errors().Count() == 0);
 
-			Fill(astDefFile->cppNss, L"cpp_parser");
-			Fill(astDefFile->refNss, L"cpp_parser");
-			astDefFile->classPrefix = L"Cpp";
+			combinedAstFile = TypeSymbolToAst(astManager, false);
+			auto rewrittenAst = TypeSymbolToAst(astManager, true);
+			auto formattedAst = GenerateToStream([&](TextWriter& writer) { TypeAstToCode(rewrittenAst, writer); });
+			File(dirOutput / (L"AstRewrittenActual[BuiltIn-Cpp].txt")).WriteAllText(formattedAst, true, BomEncoder::Utf8);
 
 			Dictionary<WString, WString> files;
 			WriteAstFiles(astManager, output, files);
