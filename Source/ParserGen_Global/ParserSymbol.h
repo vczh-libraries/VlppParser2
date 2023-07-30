@@ -176,6 +176,7 @@ ParserSymbolManager
 
 			enum class ParserDefFileType
 			{
+				AstGroup,
 				Ast,
 				Lexer,
 				Syntax,

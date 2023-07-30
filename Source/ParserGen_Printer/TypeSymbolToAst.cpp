@@ -14,7 +14,7 @@ namespace vl::glr::parsergen
 		auto generated = Ptr(new GlrAstFile);
 		for (auto groupName : manager.FileGroupOrder())
 		{
-			auto group = manager.Files()[groupName];
+			auto group = manager.FileGroups()[groupName];
 			for (auto typeName : group->SymbolOrder())
 			{
 				auto symbol = group->Symbols()[typeName];

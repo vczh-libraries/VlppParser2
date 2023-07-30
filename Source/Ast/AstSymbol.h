@@ -248,7 +248,7 @@ AddError
 			void AstDefFileGroup::AddError(ParserErrorType type, ParsingTextRange codeRange, TArgs&&... args)
 			{
 				auto&& global = const_cast<ParserSymbolManager&>(ownerManager->Global());
-				global.AddError(type, { ParserDefFileType::Ast,name,codeRange }, std::forward<TArgs&&>(args)...);
+				global.AddError(type, { ParserDefFileType::AstGroup,name,codeRange }, std::forward<TArgs&&>(args)...);
 			}
 		}
 	}

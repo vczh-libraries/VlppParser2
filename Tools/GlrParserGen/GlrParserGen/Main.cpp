@@ -113,6 +113,9 @@ void PrintCompileErrors(ParserSymbolManager& global)
 	{
 		switch (error.location.type)
 		{
+		case ParserDefFileType::AstGroup:
+			Console::Write(L"[AstGroup:" + error.location.name + L"]");
+			break;
 		case ParserDefFileType::Ast:
 			Console::Write(L"[Ast:" + error.location.name + L"]");
 			break;

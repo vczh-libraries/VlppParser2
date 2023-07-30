@@ -453,7 +453,8 @@ AstSymbolManager
 				{
 					global.AddError(
 						ParserErrorType::DuplicatedFileGroup,
-						{ ParserDefFileType::Ast,name }
+						{ ParserDefFileType::AstGroup,name },
+						name
 						);
 				}
 				return fileGroup;

@@ -37,7 +37,7 @@ TEST_FILE
 		AstSymbolManager astManager(global);
 		astManager.CreateFileGroup(L"FileGroup");
 		astManager.CreateFileGroup(L"FileGroup");
-		AssertError(global, { ParserErrorType::DuplicatedFile,L"FileGroup" });
+		AssertError(global, { ParserErrorType::DuplicatedFileGroup,L"FileGroup" });
 	});
 
 	TEST_CASE(L"DuplicatedFile")
