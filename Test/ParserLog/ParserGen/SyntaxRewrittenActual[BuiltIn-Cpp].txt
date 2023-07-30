@@ -135,7 +135,7 @@ _LambdaExpr : LambdaExpr
   ::= "[" {_LambdaCapture:captures ; ","} "]" [_GenericHeader:genericHeader] [_DeclaratorFunctionPartOptionalParameters:functionHeader] _BlockStat:stat as LambdaExpr
   ;
 
-_PrimitiveExpr : TypeOrExpr
+@public _PrimitiveExpr : TypeOrExpr
   ::= "true" as PrimitiveExprLiteral {kind = True}
   ::= "false" as PrimitiveExprLiteral {kind = False}
   ::= "nullptr" as PrimitiveExprLiteral {kind = Nullptr}
@@ -444,7 +444,7 @@ _PrimitiveTypeLiteral : PrimitiveType
   ::= "long":literal1 "long":literal2 as partial PrimitiveType
   ;
 
-_PrimitiveType : TypeOrExpr
+@public _PrimitiveType : TypeOrExpr
   ::= "signed" [_PrimitiveTypeLiteral] as PrimitiveType {kind = Signed}
   ::= "unsigned" [_PrimitiveTypeLiteral] as PrimitiveType {kind = Unsigned}
   ::= "void":literal1 as PrimitiveType {kind = Neutral}

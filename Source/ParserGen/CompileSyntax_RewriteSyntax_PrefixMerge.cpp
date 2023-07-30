@@ -134,7 +134,7 @@ FillMissingPrefixMergeClauses
 						auto newRuleSymbol = syntaxManager.CreateRule(
 							newRule->name.value,
 							ruleSymbol->fileIndex,
-							ruleSymbol->isPublic,
+							true,
 							ruleSymbol->isParser,
 							ruleRaw->name.codeRange
 							);
