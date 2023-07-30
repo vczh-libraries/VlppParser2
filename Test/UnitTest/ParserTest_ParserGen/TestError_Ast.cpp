@@ -2,19 +2,28 @@
 
 namespace TestError_Ast_TestObjects
 {
-	AstDefFile* CompileAstCode(TypeParser& parser, AstSymbolManager& astManager, const WString& astName, const WString& astCode)
+	void ExpectError(TypeParser& parser, List<Pair<WString, WString>>& astCodes, ParserErrorWithoutLocation expectedError)
 	{
-		auto astFile = parser.ParseFile(astCode);
-		auto astDefFile = astManager.CreateFile(astName);
-		CompileAst(astManager, astDefFile, astFile);
-		return astDefFile;
+		ParserSymbolManager global;
+		AstSymbolManager astManager(global);
+		List<Pair<AstDefFile*, Ptr<GlrAstFile>>> astFiles;
+		for (auto [astName, astCode] : astCodes)
+		{
+			auto astFile = parser.ParseFile(astCode);
+			auto astDefFile = astManager.CreateFile(astName);
+			astFiles.Add({ astDefFile,astFile });
+		}
+		CompileAst(astManager, astFiles);
+		AssertError(global, expectedError);
 	}
 
 	void ExpectError(TypeParser& parser, const WString& astCode, ParserErrorWithoutLocation expectedError)
 	{
 		ParserSymbolManager global;
 		AstSymbolManager astManager(global);
-		CompileAstCode(parser, astManager, L"Ast", astCode);
+		auto astFile = parser.ParseFile(astCode);
+		auto astDefFile = astManager.CreateFile(L"Ast");
+		CompileAst(astManager, astDefFile, astFile);
 		AssertError(global, expectedError);
 	}
 }
@@ -86,11 +95,10 @@ LR"AST(
 		{
 			for (auto input2 : inputs)
 			{
-				ParserSymbolManager global;
-				AstSymbolManager astManager(global);
-				CompileAstCode(parser, astManager, L"Ast1", input1);
-				CompileAstCode(parser, astManager, L"Ast2", input2);
-				AssertError(global, { ParserErrorType::DuplicatedSymbolGlobally,L"Ast2",L"A",L"Ast1" });
+				List<Pair<WString, WString>> astCodes;
+				astCodes.Add({ L"AstA",inputs[0] });
+				astCodes.Add({ L"AstB",inputs[1] });
+				ExpectError(parser, astCodes, { ParserErrorType::DuplicatedSymbolGlobally,L"AstB",L"A",L"AstA" });
 			}
 		}
 	});
