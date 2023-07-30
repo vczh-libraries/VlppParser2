@@ -13,15 +13,15 @@ namespace TestError_Syntax_TestObjects
 		TEST_ASSERT(error.arg4 == (expectedError.arg4 ? expectedError.arg4 : L""));
 	}
 
-	void ExpectError(TypeParser& typeParser, RuleParser& ruleParser, const WString& astCode, const WString& lexerCode, const WString& syntaxCode, ParserErrorWithoutLocation expectedError)
+	void ExpectError(TypeParser& typeParser, RuleParser& ruleParser, const wchar_t* astCode, const wchar_t* lexerCode, List< const wchar_t*>& syntaxCodes, ParserErrorWithoutLocation expectedError)
 	{
 		ParserSymbolManager global;
 		AstSymbolManager astManager(global);
 		LexerSymbolManager lexerManager(global);
 		SyntaxSymbolManager syntaxManager(global);
 
-		auto astFile = typeParser.ParseFile(astCode);
-		auto astDefFile = astManager.CreateFile(L"Ast");
+		auto astFile = typeParser.ParseFile(WString::Unmanaged(astCode));
+		auto astDefFile = astManager.CreateFile(WString::Unmanaged(L"Ast"));
 		CompileAst(astManager, astDefFile, astFile);
 		TEST_ASSERT(global.Errors().Count() == 0);
 
@@ -30,11 +30,16 @@ namespace TestError_Syntax_TestObjects
 		GenerateAstFileNames(astManager, output);
 		WriteAstFiles(astManager, output, files);
 
-		CompileLexer(lexerManager, lexerCode);
+		CompileLexer(lexerManager, WString::Unmanaged(lexerCode));
 		TEST_ASSERT(global.Errors().Count() == 0);
 
-		auto syntaxFile = ruleParser.ParseFile(syntaxCode);
-		CompileSyntax(astManager, lexerManager, syntaxManager, output, syntaxFile);
+		List<Ptr<GlrSyntaxFile>> syntaxFiles;
+		for (auto syntaxCode : syntaxCodes)
+		{
+			auto syntaxFile = ruleParser.ParseFile(WString::Unmanaged(syntaxCode));
+			syntaxFiles.Add(syntaxFile);
+		}
+		CompileSyntax(astManager, lexerManager, syntaxManager, output, syntaxFiles);
 
 		Executable executable;
 		Metadata metadata;
@@ -43,5 +48,12 @@ namespace TestError_Syntax_TestObjects
 		if (global.Errors().Count() == 0) syntaxManager.BuildAutomaton(lexerManager.TokenOrder().Count(), executable, metadata);
 
 		AssertError(global, expectedError);
+	}
+
+	void ExpectError(TypeParser& typeParser, RuleParser& ruleParser, const wchar_t* astCode, const wchar_t* lexerCode, const wchar_t* syntaxCode, ParserErrorWithoutLocation expectedError)
+	{
+		List<const wchar_t*> syntaxCodes;
+		syntaxCodes.Add(syntaxCode);
+		ExpectError(typeParser, ruleParser, astCode, lexerCode, syntaxCodes, expectedError);
 	}
 }

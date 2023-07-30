@@ -26,7 +26,16 @@ namespace TestError_Syntax_TestObjects
 	};
 
 	extern void AssertError(ParserSymbolManager& global, ParserErrorWithoutLocation expectedError);
-	extern void ExpectError(TypeParser& typeParser, RuleParser& ruleParser, const WString& astCode, const WString& lexerCode, const WString& syntaxCode, ParserErrorWithoutLocation expectedError);
+	extern void ExpectError(TypeParser& typeParser, RuleParser& ruleParser, const wchar_t* astCode, const wchar_t* lexerCode, List<const wchar_t*>& syntaxCodes, ParserErrorWithoutLocation expectedError);
+	extern void ExpectError(TypeParser& typeParser, RuleParser& ruleParser, const wchar_t* astCode, const wchar_t* lexerCode, const wchar_t* syntaxCode, ParserErrorWithoutLocation expectedError);
+
+	template<vint Count>
+	void ExpectError(TypeParser& typeParser, RuleParser& ruleParser, const wchar_t* astCode, const wchar_t* lexerCode, const wchar_t* (&astCodeArray)[Count], ParserErrorWithoutLocation expectedError)
+	{
+		List<const wchar_t*> astCodes;
+		CopyFrom(astCodes, astCodeArray);
+		ExpectError(typeParser, ruleParser, astCode, lexerCode, astCodes, expectedError);
+	}
 }
 using namespace TestError_Syntax_TestObjects;
 

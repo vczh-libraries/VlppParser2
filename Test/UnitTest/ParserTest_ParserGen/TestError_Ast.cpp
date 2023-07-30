@@ -2,16 +2,6 @@
 
 namespace TestError_Ast_TestObjects
 {
-	void ExpectError(TypeParser& parser, const wchar_t* astCode, ParserErrorWithoutLocation expectedError)
-	{
-		ParserSymbolManager global;
-		AstSymbolManager astManager(global);
-		auto astFile = parser.ParseFile(WString::Unmanaged(astCode));
-		auto astDefFile = astManager.CreateFile(WString::Unmanaged(L"Ast"));
-		CompileAst(astManager, astDefFile, astFile);
-		AssertError(global, expectedError);
-	}
-
 	template<vint Count>
 	void ExpectError(TypeParser& parser, const wchar_t* (&astCodes)[Count], ParserErrorWithoutLocation expectedError)
 	{
@@ -26,6 +16,12 @@ namespace TestError_Ast_TestObjects
 		}
 		CompileAst(astManager, astFiles);
 		AssertError(global, expectedError);
+	}
+
+	void ExpectError(TypeParser& parser, const wchar_t* astCode, ParserErrorWithoutLocation expectedError)
+	{
+		const wchar_t* astCodes[] = { astCode };
+		ExpectError(parser, astCodes, expectedError);
 	}
 }
 using namespace TestError_Ast_TestObjects;
@@ -79,7 +75,7 @@ LR"AST(
 )AST" };
 		for (auto input : inputs)
 		{
-			ExpectError(parser, input, { ParserErrorType::DuplicatedSymbol,L"Ast",L"A" });
+			ExpectError(parser, input, { ParserErrorType::DuplicatedSymbol,L"Ast0",L"A" });
 		}
 	});
 
@@ -112,7 +108,7 @@ LR"AST(
 				var a : token;
 			}
 )AST";
-		ExpectError(parser, input, { ParserErrorType::DuplicatedClassProp,L"Ast",L"A",L"a" });
+		ExpectError(parser, input, { ParserErrorType::DuplicatedClassProp,L"Ast0",L"A",L"a" });
 	});
 
 	TEST_CASE(L"DuplicatedEnumItem")
@@ -125,7 +121,7 @@ LR"AST(
 				a,
 			}
 )AST";
-		ExpectError(parser, input, { ParserErrorType::DuplicatedEnumItem,L"Ast",L"A",L"a" });
+		ExpectError(parser, input, { ParserErrorType::DuplicatedEnumItem,L"Ast0",L"A",L"a" });
 	});
 
 	TEST_CASE(L"BaseClassNotExists")
@@ -134,7 +130,7 @@ LR"AST(
 LR"AST(
 			class A : B {}
 )AST";
-		ExpectError(parser, input, { ParserErrorType::BaseClassNotExists,L"Ast",L"A",L"B" });
+		ExpectError(parser, input, { ParserErrorType::BaseClassNotExists,L"Ast0",L"A",L"B" });
 	});
 
 	TEST_CASE(L"BaseClassNotClass")
@@ -144,7 +140,7 @@ LR"AST(
 			enum A {}
 			class B : A {}
 )AST";
-		ExpectError(parser, input, { ParserErrorType::BaseClassNotClass,L"Ast",L"B",L"A" });
+		ExpectError(parser, input, { ParserErrorType::BaseClassNotClass,L"Ast0",L"B",L"A" });
 	});
 
 	TEST_CASE(L"BaseClassCyclicDependency")
@@ -154,7 +150,7 @@ LR"AST(
 			class A : B {}
 			class B : A {}
 )AST";
-		ExpectError(parser, input, { ParserErrorType::BaseClassCyclicDependency,L"Ast",L"B" });
+		ExpectError(parser, input, { ParserErrorType::BaseClassCyclicDependency,L"Ast0",L"B" });
 	});
 
 	TEST_CASE(L"FieldTypeNotExists")
@@ -166,7 +162,7 @@ LR"AST(
 				var b : B;
 			}
 )AST";
-		ExpectError(parser, input, { ParserErrorType::FieldTypeNotExists,L"Ast",L"A",L"b" });
+		ExpectError(parser, input, { ParserErrorType::FieldTypeNotExists,L"Ast0",L"A",L"b" });
 	});
 
 	TEST_CASE(L"FieldTypeNotClass")
@@ -179,7 +175,7 @@ LR"AST(
 				var a : A[];
 			}
 )AST";
-		ExpectError(parser, input, { ParserErrorType::FieldTypeNotClass,L"Ast",L"B",L"a" });
+		ExpectError(parser, input, { ParserErrorType::FieldTypeNotClass,L"Ast0",L"B",L"a" });
 	});
 
 	TEST_CASE(L"BaseClassNotPublic")
@@ -191,7 +187,7 @@ LR"AST(
 LR"AST(
 			class B : A {}
 )AST" };
-		//ExpectError(parser, inputs, { ParserErrorType::BaseClassNotPublic,L"Ast1",L"B",L"A" });
+		ExpectError(parser, inputs, { ParserErrorType::BaseClassNotPublic,L"Ast1",L"B",L"A" });
 	});
 
 	TEST_CASE(L"FieldTypeNotPublic")
@@ -206,7 +202,7 @@ LR"AST(
 				var f : A;
 			}
 )AST" };
-		//ExpectError(parser, inputs, { ParserErrorType::BaseClassNotPublic,L"Ast1",L"B",L"a" });
+		ExpectError(parser, inputs, { ParserErrorType::BaseClassNotPublic,L"Ast1",L"B",L"a" });
 	});
 
 	TEST_CATEGORY(L"AST Rewriting (single file)")
