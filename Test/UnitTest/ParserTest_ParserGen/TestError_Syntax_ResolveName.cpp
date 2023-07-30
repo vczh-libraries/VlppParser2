@@ -109,7 +109,25 @@ Exp1 ::= !Exp;
 		);
 	});
 
-	TEST_CASE(L"RuleNotPublicInRule")
+	TEST_CASE(L"ReferencedRuleNotPublicInRuleOfDifferentFile 1")
+	{
+		const wchar_t* syntaxCodes[] = {
+LR"SYNTAX(
+Exp0 ::= NUM:value as NumExpr;
+)SYNTAX",LR"SYNTAX(
+Exp1 ::= Exp0:func as CallExpr;
+)SYNTAX" };
+		ExpectError(
+			typeParser,
+			ruleParser,
+			astCode,
+			lexerCode,
+			syntaxCodes,
+			{ ParserErrorType::ReferencedRuleNotPublicInRuleOfDifferentFile,L"Exp1",L"Exp0" }
+		);
+	});
+
+	TEST_CASE(L"ReferencedRuleNotPublicInRuleOfDifferentFile 2")
 	{
 		const wchar_t* syntaxCodes[] = {
 LR"SYNTAX(
@@ -123,7 +141,46 @@ Exp1 ::= !Exp0;
 			astCode,
 			lexerCode,
 			syntaxCodes,
-			{ ParserErrorType::TokenOrRuleNotExistsInRule,L"Exp1",L"Exp0" }
+			{ ParserErrorType::ReferencedRuleNotPublicInRuleOfDifferentFile,L"Exp1",L"Exp0" }
+		);
+	});
+
+	TEST_CASE(L"ReferencedRuleNotPublicInRuleOfDifferentFile 3")
+	{
+		const wchar_t* syntaxCodes[] = {
+LR"SYNTAX(
+Exp0 ::= NUM:value as NumExpr;
+Exp1 ::= left_recursion_placeholder(Expression)
+     ::= !Exp0;
+Exp2 ::= !Exp1 "+";
+)SYNTAX",LR"SYNTAX(
+Exp3 ::= !Exp0 left_recursion_inject(Expression) Exp2;
+)SYNTAX" };
+		ExpectError(
+			typeParser,
+			ruleParser,
+			astCode,
+			lexerCode,
+			syntaxCodes,
+			{ ParserErrorType::ReferencedRuleNotPublicInRuleOfDifferentFile,L"Exp3",L"Exp0" }
+		);
+	});
+
+	TEST_CASE(L"ReferencedRuleNotPublicInRuleOfDifferentFile 4")
+	{
+		const wchar_t* syntaxCodes[] = {
+LR"SYNTAX(
+Exp0 ::= NUM:value as NumExpr;
+)SYNTAX",LR"SYNTAX(
+Exp1 ::= !prefix_merge(Exp0);
+)SYNTAX" };
+		ExpectError(
+			typeParser,
+			ruleParser,
+			astCode,
+			lexerCode,
+			syntaxCodes,
+			{ ParserErrorType::ReferencedRuleNotPublicInRuleOfDifferentFile,L"Exp1",L"Exp0" }
 		);
 	});
 
