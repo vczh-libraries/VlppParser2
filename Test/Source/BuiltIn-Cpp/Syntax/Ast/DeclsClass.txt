@@ -1,0 +1,46 @@
+//////////////////////////////////////////////////////////////////
+// Class Declaration
+//////////////////////////////////////////////////////////////////
+
+enum ClassKind
+{
+    Class,
+    Struct,
+    Union,
+}
+
+enum ClassAccessor
+{
+    Default,
+    Private,
+    Protected,
+    Public,
+}
+
+class ClassInheritance
+{
+    var accessor : ClassAccessor;
+    var variadic : token;
+    var type : TypeOrExpr;
+}
+
+class ClassMemberPart
+{
+    var accessor : ClassAccessor;
+    var decls : Declaration[];
+}
+
+class ClassBody
+{
+    var inheritances : ClassInheritance[];
+    var memberParts : ClassMemberPart[];
+    var firstVarPart : DeclaratorVariablePart;
+}
+
+class ClassDeclaration : Declaration
+{
+    var kind : ClassKind;
+    var name : token;
+    var arguments : GenericArguments;
+    var body : ClassBody;
+}

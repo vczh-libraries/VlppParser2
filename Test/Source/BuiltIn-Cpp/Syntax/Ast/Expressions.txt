@@ -1,0 +1,207 @@
+//////////////////////////////////////////////////////////////////
+// PrimitiveExpr
+//////////////////////////////////////////////////////////////////
+
+enum PrimitiveExprLiteralKinds
+{
+    True,
+    False,
+    Nullptr,
+    This,
+    __Nullptr,
+}
+
+class PrimitiveExprLiteral : ExprOnly
+{
+    var kind : PrimitiveExprLiteralKinds;
+}
+
+enum NumericExprLiteralKinds
+{
+    Integer,
+    Hex,
+    Binary,
+    Float,
+    FloatHex,
+    Char,
+}
+
+class NumericExprLiteral : ExprOnly
+{
+    var kind : NumericExprLiteralKinds;
+    var literal : token;
+}
+
+enum StringLiteralKinds
+{
+    String,
+    Macro_LPREFIX,
+}
+
+class StringLiteralFragment
+{
+    var kind : StringLiteralKinds;
+    var literal : token;
+}
+
+class StringLiteral : ExprOnly
+{
+    var fragments : StringLiteralFragment[];
+}
+
+//////////////////////////////////////////////////////////////////
+// PrimitiveExpr (lambda)
+//////////////////////////////////////////////////////////////////
+
+enum LambdaCaptureObjectKinds
+{
+    Default,
+    This,
+    Id,
+    PackId,
+    PackInit,
+}
+
+enum LambdaCaptureRefeferenceKinds
+{
+    Ref,
+    Copy,
+}
+
+class LambdaCapture
+{
+    var objKind : LambdaCaptureObjectKinds;
+    var refKind : LambdaCaptureRefeferenceKinds;
+    var id : Identifier;
+    var init : VarInit;
+}
+
+class LambdaExpr : ExprOnly
+{
+    var captures : LambdaCapture[];
+    var genericHeader : GenericHeader;
+    var functionHeader : DeclaratorFunctionPart;
+    var stat : Statement;
+}
+
+//////////////////////////////////////////////////////////////////
+// PrimitiveExpr (Composable)
+//////////////////////////////////////////////////////////////////
+
+class ParenthesisExpr : ExprOnly
+{
+    var expr : TypeOrExpr;
+}
+
+class BraceExpr : ExprOnly
+{
+    var arguments : TypeOrExpr[];
+}
+
+class CastExpr : ExprOnly
+{
+    var keyword : token;
+    var type : TypeOrExpr;
+    var expr : TypeOrExpr;
+}
+
+class SysFuncExpr : ExprOnly
+{
+    var keyword : token;
+    var variadic : token;
+    var argument : TypeOrExpr;
+}
+
+enum OperatorScope
+{
+    Root,
+    Context,
+}
+
+class SizeofExpr : ExprOnly
+{
+    var argument : TypeOrExpr;
+    var variadic : token;
+}
+
+enum OperatorArray
+{
+    Array,
+    NotArray,
+}
+
+class DeleteExpr : ExprOnly
+{
+    var scope : OperatorScope;
+    var array : OperatorArray;
+    var argument : TypeOrExpr;
+}
+
+class NewExpr : ExprOnly
+{
+    var scope : OperatorScope;
+    var type : TypeOrExpr[];
+    var placementArguments : TypeOrExpr[];
+    var arrayArguments : TypeOrExpr[];
+    var init : VarInit;
+}
+
+//////////////////////////////////////////////////////////////////
+// OperatorExpr
+//////////////////////////////////////////////////////////////////
+
+class PrefixUnaryExpr : ExprOnly
+{
+    var op : Operators;
+    var operand : TypeOrExpr;
+}
+
+class PostfixUnaryExpr : ExprOnly
+{
+    var op : Operators;
+    var operand : TypeOrExpr;
+}
+
+class IndexExpr : ExprOnly
+{
+    var operand : TypeOrExpr;
+    var index : TypeOrExpr;
+}
+
+enum CallKinds
+{
+    Parenthesis,
+    Brace,
+}
+
+class CallExpr : ExprOnly
+{
+    var kind : CallKinds;
+    var operand : TypeOrExpr;
+    var arguments : TypeOrExpr[];
+}
+
+class BinaryExpr : ExprOnly
+{
+    var op : Operators;
+    var left : TypeOrExpr;
+    var right : TypeOrExpr;
+}
+
+class IfExpr : ExprOnly
+{
+    var condition : TypeOrExpr;
+    var trueBranch : TypeOrExpr;
+    var falseBranch : TypeOrExpr;
+}
+
+class ThrowExpr : ExprOnly
+{
+    var argument : TypeOrExpr;
+}
+
+class VariadicExpr : ExprOnly
+{
+    var operand : TypeOrExpr;
+    var variadic : token;
+}

@@ -79,6 +79,14 @@ TEST_FILE
 
 	List<WString> astFileNames;
 	astFileNames.Add(L"Ast");
+	astFileNames.Add(L"QualifiedName");
+	astFileNames.Add(L"Expressions");
+	astFileNames.Add(L"Types");
+	astFileNames.Add(L"DeclsFuncVar");
+	astFileNames.Add(L"DeclsClass");
+	astFileNames.Add(L"DeclsEnum");
+	astFileNames.Add(L"Decls");
+	astFileNames.Add(L"Statements");
 
 	List<WString> syntaxFileNames;
 	syntaxFileNames.Add(L"QualifiedName");

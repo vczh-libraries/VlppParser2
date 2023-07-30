@@ -1,0 +1,96 @@
+//////////////////////////////////////////////////////////////////
+// PrimitiveType
+//////////////////////////////////////////////////////////////////
+
+enum PrimitiveTypeKinds
+{
+    Neutral,
+    Signed,
+    Unsigned,
+}
+
+class PrimitiveType : TypeOnly
+{
+    var kind : PrimitiveTypeKinds;
+    var literal1 : token;
+    var literal2 : token;
+}
+
+class ConstType : TypeOnly
+{
+    // QualifiedName, PrimitiveType, ConstType, VolatileType
+    var type : TypeOrExpr;
+}
+
+class VolatileType : TypeOnly
+{
+    // QualifiedName, PrimitiveType, ConstType, VolatileType
+    var type : TypeOrExpr;
+}
+
+//////////////////////////////////////////////////////////////////
+// Declarator
+//////////////////////////////////////////////////////////////////
+
+enum AdvancedTypeKinds
+{
+    LRef,
+    RRef,
+    Const,
+    Volatile,
+    Pointer,
+    Pointer32,
+    Pointer64,
+    Member,
+    AlignAs,
+}
+
+class AdvancedType
+{
+    var kind : AdvancedTypeKinds;
+    var argument : TypeOrExpr;
+}
+
+@public class DeclaratorKeyword
+{
+    var keyword : token;
+}
+
+class FunctionKeyword
+{
+    var keyword : token;
+    var arguments : TypeOrExpr[];
+}
+
+@public @ambiguous class DeclaratorFunctionPart
+{
+    var parameters : TypeOrExprOrOthers[];
+    var variadic : token;
+    var keywords : FunctionKeyword[];
+    var deferredType : TypeOrExpr;
+}
+
+class DeclaratorArrayPart
+{
+    var argument : TypeOrExpr;
+}
+
+@public class Declarator
+{
+    var keywords : DeclaratorKeyword[];
+    var advancedTypes : AdvancedType[];
+    var variadic : token;
+    var id : Identifier;
+    var arguments : GenericArguments;
+    var bitfield : TypeOrExpr;
+    var innerDeclarator : Declarator;
+    var funcPart : DeclaratorFunctionPart;
+    var arrayParts : DeclaratorArrayPart[];
+}
+
+class DeclaratorType : TypeOrExpr
+{
+    var keywords : DeclaratorKeyword[];
+    var type : TypeOrExpr;
+    var declarator : Declarator;
+}

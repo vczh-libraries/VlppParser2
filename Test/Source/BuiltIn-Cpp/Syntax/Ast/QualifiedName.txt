@@ -1,0 +1,114 @@
+//////////////////////////////////////////////////////////////////
+// QualifiedName
+//////////////////////////////////////////////////////////////////
+
+enum NameKinds
+{
+    Normal,
+    Enum,
+    EnumClass,
+    Class,
+    Struct,
+    Union,
+    Dtor,
+    UserDefinedLiteral,
+}
+
+@public class Identifier
+{
+}
+
+class NameIdentifier : Identifier
+{
+    var kind : NameKinds;
+    var name : token;
+}
+
+@public enum Operators
+{
+    New,
+    NewArray,
+    Delete,
+    DeleteArray,
+
+    Comma,
+    RoundBracket,
+    Parantheses,
+    Bracket,
+    PointerDeref,
+    Pointer,
+    MemberDeref,
+    Member,
+
+    Compare,
+    EQ, NE, LT, LE, GT, GE,
+    Not,
+    Revert,
+    Xor,
+
+    And,
+    BitwiseAnd,
+    Or,
+    BitwiseOr,
+    Mul,
+    Div,
+    Mod,
+    Plus,
+    Increase,
+    Minus,
+    Decrease,
+    LeftShift,
+    RightShift,
+
+    Assign,
+    RevertAssign,
+    XorAssign,
+    AndAssign,
+    OrAssign,
+    MulAssign,
+    DivAssign,
+    ModAssign,
+    PlusAssign,
+    MinusAssign,
+    LeftShiftAssign,
+    RightShiftAssign,
+}
+
+class OperatorIdentifier : Identifier
+{
+    var op : Operators;
+}
+
+class OperatorTypeIdentifier : Identifier
+{
+    var type : TypeOrExprOrOthers;
+}
+
+class GenericArgument : TypeOrExprOrOthers
+{
+    var argument : TypeOrExpr;
+    var variadic : token;
+}
+
+@public class GenericArguments
+{
+    var arguments : TypeOrExprOrOthers[];
+}
+
+enum QualifiedNameKinds
+{
+    Root,
+    Context,
+    Auto,
+    Decltype,
+    Member,
+}
+
+@public class QualifiedName : TypeOrExpr
+{
+    var kind : QualifiedNameKinds;
+    var expr : TypeOrExpr;
+    var parent : QualifiedName;
+    var id : Identifier;
+    var arguments : GenericArguments;
+}

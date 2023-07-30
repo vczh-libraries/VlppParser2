@@ -47,6 +47,25 @@ class StatementToResolve : Statement
   var candidates : Statement[];
 }
 
+class OrdinaryGenericParameter : TypeOrExprOrOthers
+{
+  var genericHeader : GenericHeader;
+  var typenameToken : token;
+  var variadic : token;
+  var id : Identifier;
+  var init : TypeOrExpr;
+}
+
+@public class GenericHeader
+{
+  var parameters : TypeOrExprOrOthers[];
+}
+
+@public class File
+{
+  var decls : Declaration[];
+}
+
 enum NameKinds
 {
   Normal,
@@ -157,20 +176,6 @@ enum QualifiedNameKinds
   var parent : QualifiedName;
   var id : Identifier;
   var arguments : GenericArguments;
-}
-
-class OrdinaryGenericParameter : TypeOrExprOrOthers
-{
-  var genericHeader : GenericHeader;
-  var typenameToken : token;
-  var variadic : token;
-  var id : Identifier;
-  var init : TypeOrExpr;
-}
-
-@public class GenericHeader
-{
-  var parameters : TypeOrExprOrOthers[];
 }
 
 enum PrimitiveExprLiteralKinds
@@ -408,7 +413,7 @@ class AdvancedType
   var argument : TypeOrExpr;
 }
 
-class DeclaratorKeyword
+@public class DeclaratorKeyword
 {
   var keyword : token;
 }
@@ -441,7 +446,7 @@ class DeclaratorArrayPart
   var argument : TypeOrExpr;
 }
 
-class Declarator
+@public class Declarator
 {
   var keywords : DeclaratorKeyword[];
   var advancedTypes : AdvancedType[];
@@ -642,7 +647,7 @@ class EmptyStat : Statement
 {
 }
 
-class BlockStat : Statement
+@public class BlockStat : Statement
 {
   var statements : Statement[];
 }
@@ -763,10 +768,5 @@ class __TryStat : Statement
   var exceptStat : Statement;
   var finallyStat : Statement;
   var filter : TypeOrExpr;
-}
-
-@public class File
-{
-  var decls : Declaration[];
 }
 

@@ -1,0 +1,62 @@
+//////////////////////////////////////////////////////////////////
+// Template Declaration
+//////////////////////////////////////////////////////////////////
+
+class TemplateDeclaration : Declaration
+{
+    var genericHeader : GenericHeader;
+    var decl : Declaration;
+}
+
+//////////////////////////////////////////////////////////////////
+// Other Declaration
+//////////////////////////////////////////////////////////////////
+
+class StaticAssertDeclaration : Declaration
+{
+    var expr : TypeOrExpr;
+    var message : TypeOrExpr;
+}
+
+class TypedefDeclaration : Declaration
+{
+    var decl : Declaration;
+}
+
+class ExternDeclaration : Declaration
+{
+    var decls : Declaration[];
+}
+
+class NamespaceName
+{
+    var name : token;
+}
+
+class NamespaceDeclaration : Declaration
+{
+    var names : NamespaceName[];
+    var decls : Declaration[];
+}
+
+class UsingNamespaceDeclaration : Declaration
+{
+    var names : NamespaceName[];
+}
+
+class UsingValueDeclaration : Declaration
+{
+    var typenameKeyword : token;
+    var name : QualifiedName;
+}
+
+class UsingTypeDeclaration : Declaration
+{
+    var name : token;
+    var type : TypeOrExpr;
+}
+
+class FriendTypeDeclaration : Declaration
+{
+    var type : QualifiedName;
+}
