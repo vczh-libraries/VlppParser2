@@ -2,6 +2,7 @@
 
 ## Next task
 
+- In BuiltIn-Cpp log all actually happened ambiguous types during parsing.
 - Rewrite and remove switch before removing PrefixMerge.
   - Rename `LeftRecursionPlaceholderMixedWithSwitches`
 - Multiple LRI following one Target
