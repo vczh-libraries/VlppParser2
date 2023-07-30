@@ -15,14 +15,12 @@ extern WString		GetSourcePath();
 extern WString		GetTestParserInputPath(const WString& parserName);
 extern FilePath		GetOutputDir(const WString& parserName);
 extern void			WriteFilesIfChanged(FilePath outputDir, Dictionary<WString, WString>& files);
-extern void			PrintError(const ParserError& error);
 
 extern void GenerateParser(
 	WString parserName,
 	List<WString>& astFileNames,
 	List<WString>& syntaxFileNames,
 	FilePath dirParser,
-	FilePath dirOutput,
 	ParserSymbolManager& global,
 	AstSymbolManager& astManager,
 	LexerSymbolManager& lexerManager,

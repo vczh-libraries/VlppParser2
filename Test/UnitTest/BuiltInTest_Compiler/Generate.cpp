@@ -64,7 +64,6 @@ void GenerateParser(
 	List<WString>& astFileNames,
 	List<WString>& syntaxFileNames,
 	FilePath dirParser,
-	FilePath dirOutput,
 	ParserSymbolManager& global,
 	AstSymbolManager& astManager,
 	LexerSymbolManager& lexerManager,
@@ -72,6 +71,7 @@ void GenerateParser(
 	AstDefFileGroup* astDefFileGroup
 )
 {
+	FilePath dirOutput = GetOutputDir(L"ParserGen");
 	FilePath dirGenerated = dirParser / L"Generated";
 	if (!Folder(dirGenerated).Exists())
 	{
