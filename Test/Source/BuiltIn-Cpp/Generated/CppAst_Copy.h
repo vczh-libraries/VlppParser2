@@ -134,8 +134,9 @@ namespace cpp_parser::copy_visitor
 		void CopyFields(Cpp__TryStat* from, Cpp__TryStat* to);
 
 	protected:
-		virtual void Visit(CppGenericArguments* node);
 		virtual void Visit(CppGenericHeader* node);
+		virtual void Visit(CppFile* node);
+		virtual void Visit(CppGenericArguments* node);
 		virtual void Visit(CppStringLiteralFragment* node);
 		virtual void Visit(CppLambdaCapture* node);
 		virtual void Visit(CppAdvancedType* node);
@@ -151,13 +152,12 @@ namespace cpp_parser::copy_visitor
 		virtual void Visit(CppEnumBody* node);
 		virtual void Visit(CppNamespaceName* node);
 		virtual void Visit(CppTryStatCatchPart* node);
-		virtual void Visit(CppFile* node);
 
 		void Visit(CppTypeOrExprOrOthersToResolve* node) override;
 		void Visit(CppDeclaration* node) override;
 		void Visit(CppTypeOrExpr* node) override;
-		void Visit(CppGenericArgument* node) override;
 		void Visit(CppOrdinaryGenericParameter* node) override;
+		void Visit(CppGenericArgument* node) override;
 
 		void Visit(CppDeclarationToResolve* node) override;
 		void Visit(CppDeclarationCommon* node) override;
@@ -252,8 +252,9 @@ namespace cpp_parser::copy_visitor
 		virtual vl::Ptr<CppVarInit> CopyNode(CppVarInit* node);
 		virtual vl::Ptr<CppDeclaratorVariablePart> CopyNode(CppDeclaratorVariablePart* node);
 		virtual vl::Ptr<CppForStatConditionPart> CopyNode(CppForStatConditionPart* node);
-		virtual vl::Ptr<CppGenericArguments> CopyNode(CppGenericArguments* node);
 		virtual vl::Ptr<CppGenericHeader> CopyNode(CppGenericHeader* node);
+		virtual vl::Ptr<CppFile> CopyNode(CppFile* node);
+		virtual vl::Ptr<CppGenericArguments> CopyNode(CppGenericArguments* node);
 		virtual vl::Ptr<CppStringLiteralFragment> CopyNode(CppStringLiteralFragment* node);
 		virtual vl::Ptr<CppLambdaCapture> CopyNode(CppLambdaCapture* node);
 		virtual vl::Ptr<CppAdvancedType> CopyNode(CppAdvancedType* node);
@@ -269,7 +270,6 @@ namespace cpp_parser::copy_visitor
 		virtual vl::Ptr<CppEnumBody> CopyNode(CppEnumBody* node);
 		virtual vl::Ptr<CppNamespaceName> CopyNode(CppNamespaceName* node);
 		virtual vl::Ptr<CppTryStatCatchPart> CopyNode(CppTryStatCatchPart* node);
-		virtual vl::Ptr<CppFile> CopyNode(CppFile* node);
 
 		vl::Ptr<CppBinaryExpr> CopyNode(CppBinaryExpr* node);
 		vl::Ptr<CppBlockStat> CopyNode(CppBlockStat* node);

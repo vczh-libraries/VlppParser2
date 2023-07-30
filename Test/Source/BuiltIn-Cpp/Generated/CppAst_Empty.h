@@ -24,8 +24,8 @@ namespace cpp_parser::empty_visitor
 		void Visit(CppTypeOrExprOrOthersToResolve* node) override;
 		void Visit(CppDeclaration* node) override;
 		void Visit(CppTypeOrExpr* node) override;
-		void Visit(CppGenericArgument* node) override;
 		void Visit(CppOrdinaryGenericParameter* node) override;
+		void Visit(CppGenericArgument* node) override;
 	};
 
 	/// <summary>An empty visitor, overriding all abstract methods with empty implementations.</summary>

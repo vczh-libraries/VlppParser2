@@ -313,8 +313,8 @@ namespace cpp_parser
 			virtual void Visit(CppTypeOrExprOrOthersToResolve* node) = 0;
 			virtual void Visit(CppDeclaration* node) = 0;
 			virtual void Visit(CppTypeOrExpr* node) = 0;
-			virtual void Visit(CppGenericArgument* node) = 0;
 			virtual void Visit(CppOrdinaryGenericParameter* node) = 0;
+			virtual void Visit(CppGenericArgument* node) = 0;
 		};
 
 		virtual void Accept(CppTypeOrExprOrOthers::IVisitor* visitor) = 0;
@@ -497,6 +497,30 @@ namespace cpp_parser
 		void Accept(CppStatement::IVisitor* visitor) override;
 	};
 
+	class CppOrdinaryGenericParameter : public CppTypeOrExprOrOthers, vl::reflection::Description<CppOrdinaryGenericParameter>
+	{
+	public:
+		vl::Ptr<CppGenericHeader> genericHeader;
+		vl::glr::ParsingToken typenameToken;
+		vl::glr::ParsingToken variadic;
+		vl::Ptr<CppIdentifier> id;
+		vl::Ptr<CppTypeOrExpr> init;
+
+		void Accept(CppTypeOrExprOrOthers::IVisitor* visitor) override;
+	};
+
+	class CppGenericHeader : public vl::glr::ParsingAstBase, vl::reflection::Description<CppGenericHeader>
+	{
+	public:
+		vl::collections::List<vl::Ptr<CppTypeOrExprOrOthers>> parameters;
+	};
+
+	class CppFile : public vl::glr::ParsingAstBase, vl::reflection::Description<CppFile>
+	{
+	public:
+		vl::collections::List<vl::Ptr<CppDeclaration>> decls;
+	};
+
 	class CppIdentifier abstract : public vl::glr::ParsingAstBase, vl::reflection::Description<CppIdentifier>
 	{
 	public:
@@ -562,24 +586,6 @@ namespace cpp_parser
 		vl::Ptr<CppGenericArguments> arguments;
 
 		void Accept(CppTypeOrExpr::IVisitor* visitor) override;
-	};
-
-	class CppOrdinaryGenericParameter : public CppTypeOrExprOrOthers, vl::reflection::Description<CppOrdinaryGenericParameter>
-	{
-	public:
-		vl::Ptr<CppGenericHeader> genericHeader;
-		vl::glr::ParsingToken typenameToken;
-		vl::glr::ParsingToken variadic;
-		vl::Ptr<CppIdentifier> id;
-		vl::Ptr<CppTypeOrExpr> init;
-
-		void Accept(CppTypeOrExprOrOthers::IVisitor* visitor) override;
-	};
-
-	class CppGenericHeader : public vl::glr::ParsingAstBase, vl::reflection::Description<CppGenericHeader>
-	{
-	public:
-		vl::collections::List<vl::Ptr<CppTypeOrExprOrOthers>> parameters;
 	};
 
 	class CppPrimitiveExprLiteral : public CppExprOnly, vl::reflection::Description<CppPrimitiveExprLiteral>
@@ -1323,12 +1329,6 @@ namespace cpp_parser
 
 		void Accept(CppStatement::IVisitor* visitor) override;
 	};
-
-	class CppFile : public vl::glr::ParsingAstBase, vl::reflection::Description<CppFile>
-	{
-	public:
-		vl::collections::List<vl::Ptr<CppDeclaration>> decls;
-	};
 }
 namespace vl::reflection::description
 {
@@ -1351,6 +1351,9 @@ namespace vl::reflection::description
 	DECL_TYPE_INFO(cpp_parser::CppStatement)
 	DECL_TYPE_INFO(cpp_parser::CppStatement::IVisitor)
 	DECL_TYPE_INFO(cpp_parser::CppStatementToResolve)
+	DECL_TYPE_INFO(cpp_parser::CppOrdinaryGenericParameter)
+	DECL_TYPE_INFO(cpp_parser::CppGenericHeader)
+	DECL_TYPE_INFO(cpp_parser::CppFile)
 	DECL_TYPE_INFO(cpp_parser::CppNameKinds)
 	DECL_TYPE_INFO(cpp_parser::CppIdentifier)
 	DECL_TYPE_INFO(cpp_parser::CppIdentifier::IVisitor)
@@ -1362,8 +1365,6 @@ namespace vl::reflection::description
 	DECL_TYPE_INFO(cpp_parser::CppGenericArguments)
 	DECL_TYPE_INFO(cpp_parser::CppQualifiedNameKinds)
 	DECL_TYPE_INFO(cpp_parser::CppQualifiedName)
-	DECL_TYPE_INFO(cpp_parser::CppOrdinaryGenericParameter)
-	DECL_TYPE_INFO(cpp_parser::CppGenericHeader)
 	DECL_TYPE_INFO(cpp_parser::CppPrimitiveExprLiteralKinds)
 	DECL_TYPE_INFO(cpp_parser::CppPrimitiveExprLiteral)
 	DECL_TYPE_INFO(cpp_parser::CppNumericExprLiteralKinds)
@@ -1464,7 +1465,6 @@ namespace vl::reflection::description
 	DECL_TYPE_INFO(cpp_parser::CppTryStatCatchPart)
 	DECL_TYPE_INFO(cpp_parser::CppTryStat)
 	DECL_TYPE_INFO(cpp_parser::Cpp__TryStat)
-	DECL_TYPE_INFO(cpp_parser::CppFile)
 
 #ifdef VCZH_DESCRIPTABLEOBJECT_WITH_METADATA
 
@@ -1484,12 +1484,12 @@ namespace vl::reflection::description
 			INVOKE_INTERFACE_PROXY(Visit, node);
 		}
 
-		void Visit(cpp_parser::CppGenericArgument* node) override
+		void Visit(cpp_parser::CppOrdinaryGenericParameter* node) override
 		{
 			INVOKE_INTERFACE_PROXY(Visit, node);
 		}
 
-		void Visit(cpp_parser::CppOrdinaryGenericParameter* node) override
+		void Visit(cpp_parser::CppGenericArgument* node) override
 		{
 			INVOKE_INTERFACE_PROXY(Visit, node);
 		}

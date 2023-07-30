@@ -29,11 +29,11 @@ TypeOrExprOrOthersVisitor
 		Dispatch(node);
 	}
 
-	void TypeOrExprOrOthersVisitor::Visit(CppGenericArgument* node)
+	void TypeOrExprOrOthersVisitor::Visit(CppOrdinaryGenericParameter* node)
 	{
 	}
 
-	void TypeOrExprOrOthersVisitor::Visit(CppOrdinaryGenericParameter* node)
+	void TypeOrExprOrOthersVisitor::Visit(CppGenericArgument* node)
 	{
 	}
 

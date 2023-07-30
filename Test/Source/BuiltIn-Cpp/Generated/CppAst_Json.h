@@ -137,8 +137,8 @@ namespace cpp_parser::json_visitor
 		void Visit(CppTypeOrExprOrOthersToResolve* node) override;
 		void Visit(CppDeclaration* node) override;
 		void Visit(CppTypeOrExpr* node) override;
-		void Visit(CppGenericArgument* node) override;
 		void Visit(CppOrdinaryGenericParameter* node) override;
+		void Visit(CppGenericArgument* node) override;
 
 		void Visit(CppDeclarationToResolve* node) override;
 		void Visit(CppDeclarationCommon* node) override;
@@ -235,8 +235,9 @@ namespace cpp_parser::json_visitor
 		void Print(CppVarInit* node);
 		void Print(CppDeclaratorVariablePart* node);
 		void Print(CppForStatConditionPart* node);
-		void Print(CppGenericArguments* node);
 		void Print(CppGenericHeader* node);
+		void Print(CppFile* node);
+		void Print(CppGenericArguments* node);
 		void Print(CppStringLiteralFragment* node);
 		void Print(CppLambdaCapture* node);
 		void Print(CppAdvancedType* node);
@@ -252,7 +253,6 @@ namespace cpp_parser::json_visitor
 		void Print(CppEnumBody* node);
 		void Print(CppNamespaceName* node);
 		void Print(CppTryStatCatchPart* node);
-		void Print(CppFile* node);
 	};
 }
 #endif

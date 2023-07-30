@@ -2005,20 +2005,6 @@ namespace cpp_parser::json_visitor
 		node->Accept(static_cast<CppTypeOrExpr::IVisitor*>(this));
 	}
 
-	void AstVisitor::Visit(CppGenericArgument* node)
-	{
-		if (!node)
-		{
-			WriteNull();
-			return;
-		}
-		BeginObject();
-		WriteType(L"GenericArgument", node);
-		PrintFields(static_cast<CppTypeOrExprOrOthers*>(node));
-		PrintFields(static_cast<CppGenericArgument*>(node));
-		EndObject();
-	}
-
 	void AstVisitor::Visit(CppOrdinaryGenericParameter* node)
 	{
 		if (!node)
@@ -2030,6 +2016,20 @@ namespace cpp_parser::json_visitor
 		WriteType(L"OrdinaryGenericParameter", node);
 		PrintFields(static_cast<CppTypeOrExprOrOthers*>(node));
 		PrintFields(static_cast<CppOrdinaryGenericParameter*>(node));
+		EndObject();
+	}
+
+	void AstVisitor::Visit(CppGenericArgument* node)
+	{
+		if (!node)
+		{
+			WriteNull();
+			return;
+		}
+		BeginObject();
+		WriteType(L"GenericArgument", node);
+		PrintFields(static_cast<CppTypeOrExprOrOthers*>(node));
+		PrintFields(static_cast<CppGenericArgument*>(node));
 		EndObject();
 	}
 
@@ -3189,19 +3189,6 @@ namespace cpp_parser::json_visitor
 		node->Accept(static_cast<CppForStatConditionPart::IVisitor*>(this));
 	}
 
-	void AstVisitor::Print(CppGenericArguments* node)
-	{
-		if (!node)
-		{
-			WriteNull();
-			return;
-		}
-		BeginObject();
-		WriteType(L"GenericArguments", node);
-		PrintFields(static_cast<CppGenericArguments*>(node));
-		EndObject();
-	}
-
 	void AstVisitor::Print(CppGenericHeader* node)
 	{
 		if (!node)
@@ -3212,6 +3199,32 @@ namespace cpp_parser::json_visitor
 		BeginObject();
 		WriteType(L"GenericHeader", node);
 		PrintFields(static_cast<CppGenericHeader*>(node));
+		EndObject();
+	}
+
+	void AstVisitor::Print(CppFile* node)
+	{
+		if (!node)
+		{
+			WriteNull();
+			return;
+		}
+		BeginObject();
+		WriteType(L"File", node);
+		PrintFields(static_cast<CppFile*>(node));
+		EndObject();
+	}
+
+	void AstVisitor::Print(CppGenericArguments* node)
+	{
+		if (!node)
+		{
+			WriteNull();
+			return;
+		}
+		BeginObject();
+		WriteType(L"GenericArguments", node);
+		PrintFields(static_cast<CppGenericArguments*>(node));
 		EndObject();
 	}
 
@@ -3407,19 +3420,6 @@ namespace cpp_parser::json_visitor
 		BeginObject();
 		WriteType(L"TryStatCatchPart", node);
 		PrintFields(static_cast<CppTryStatCatchPart*>(node));
-		EndObject();
-	}
-
-	void AstVisitor::Print(CppFile* node)
-	{
-		if (!node)
-		{
-			WriteNull();
-			return;
-		}
-		BeginObject();
-		WriteType(L"File", node);
-		PrintFields(static_cast<CppFile*>(node));
 		EndObject();
 	}
 

@@ -246,8 +246,8 @@ namespace cpp_parser::traverse_visitor
 		void Visit(CppTypeOrExprOrOthersToResolve* node) override;
 		void Visit(CppDeclaration* node) override;
 		void Visit(CppTypeOrExpr* node) override;
-		void Visit(CppGenericArgument* node) override;
 		void Visit(CppOrdinaryGenericParameter* node) override;
+		void Visit(CppGenericArgument* node) override;
 
 		void Visit(CppDeclarationToResolve* node) override;
 		void Visit(CppDeclarationCommon* node) override;
@@ -342,8 +342,9 @@ namespace cpp_parser::traverse_visitor
 		void InspectInto(CppVarInit* node);
 		void InspectInto(CppDeclaratorVariablePart* node);
 		void InspectInto(CppForStatConditionPart* node);
-		void InspectInto(CppGenericArguments* node);
 		void InspectInto(CppGenericHeader* node);
+		void InspectInto(CppFile* node);
+		void InspectInto(CppGenericArguments* node);
 		void InspectInto(CppStringLiteralFragment* node);
 		void InspectInto(CppLambdaCapture* node);
 		void InspectInto(CppAdvancedType* node);
@@ -359,7 +360,6 @@ namespace cpp_parser::traverse_visitor
 		void InspectInto(CppEnumBody* node);
 		void InspectInto(CppNamespaceName* node);
 		void InspectInto(CppTryStatCatchPart* node);
-		void InspectInto(CppFile* node);
 	};
 }
 #endif

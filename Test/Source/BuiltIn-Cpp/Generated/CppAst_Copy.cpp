@@ -799,16 +799,23 @@ namespace cpp_parser::copy_visitor
 		to->tryStat = CopyNode(from->tryStat.Obj());
 	}
 
-	void AstVisitor::Visit(CppGenericArguments* node)
+	void AstVisitor::Visit(CppGenericHeader* node)
 	{
-		auto newNode = vl::Ptr(new CppGenericArguments);
+		auto newNode = vl::Ptr(new CppGenericHeader);
 		CopyFields(node, newNode.Obj());
 		this->result = newNode;
 	}
 
-	void AstVisitor::Visit(CppGenericHeader* node)
+	void AstVisitor::Visit(CppFile* node)
 	{
-		auto newNode = vl::Ptr(new CppGenericHeader);
+		auto newNode = vl::Ptr(new CppFile);
+		CopyFields(node, newNode.Obj());
+		this->result = newNode;
+	}
+
+	void AstVisitor::Visit(CppGenericArguments* node)
+	{
+		auto newNode = vl::Ptr(new CppGenericArguments);
 		CopyFields(node, newNode.Obj());
 		this->result = newNode;
 	}
@@ -918,13 +925,6 @@ namespace cpp_parser::copy_visitor
 		this->result = newNode;
 	}
 
-	void AstVisitor::Visit(CppFile* node)
-	{
-		auto newNode = vl::Ptr(new CppFile);
-		CopyFields(node, newNode.Obj());
-		this->result = newNode;
-	}
-
 	void AstVisitor::Visit(CppTypeOrExprOrOthersToResolve* node)
 	{
 		auto newNode = vl::Ptr(new CppTypeOrExprOrOthersToResolve);
@@ -942,16 +942,16 @@ namespace cpp_parser::copy_visitor
 		node->Accept(static_cast<CppTypeOrExpr::IVisitor*>(this));
 	}
 
-	void AstVisitor::Visit(CppGenericArgument* node)
+	void AstVisitor::Visit(CppOrdinaryGenericParameter* node)
 	{
-		auto newNode = vl::Ptr(new CppGenericArgument);
+		auto newNode = vl::Ptr(new CppOrdinaryGenericParameter);
 		CopyFields(node, newNode.Obj());
 		this->result = newNode;
 	}
 
-	void AstVisitor::Visit(CppOrdinaryGenericParameter* node)
+	void AstVisitor::Visit(CppGenericArgument* node)
 	{
-		auto newNode = vl::Ptr(new CppOrdinaryGenericParameter);
+		auto newNode = vl::Ptr(new CppGenericArgument);
 		CopyFields(node, newNode.Obj());
 		this->result = newNode;
 	}
@@ -1524,20 +1524,28 @@ namespace cpp_parser::copy_visitor
 		return this->result.Cast<CppForStatConditionPart>();
 	}
 
-	vl::Ptr<CppGenericArguments> AstVisitor::CopyNode(CppGenericArguments* node)
-	{
-		if (!node) return nullptr;
-		Visit(node);
-		this->result->codeRange = node->codeRange;
-		return this->result.Cast<CppGenericArguments>();
-	}
-
 	vl::Ptr<CppGenericHeader> AstVisitor::CopyNode(CppGenericHeader* node)
 	{
 		if (!node) return nullptr;
 		Visit(node);
 		this->result->codeRange = node->codeRange;
 		return this->result.Cast<CppGenericHeader>();
+	}
+
+	vl::Ptr<CppFile> AstVisitor::CopyNode(CppFile* node)
+	{
+		if (!node) return nullptr;
+		Visit(node);
+		this->result->codeRange = node->codeRange;
+		return this->result.Cast<CppFile>();
+	}
+
+	vl::Ptr<CppGenericArguments> AstVisitor::CopyNode(CppGenericArguments* node)
+	{
+		if (!node) return nullptr;
+		Visit(node);
+		this->result->codeRange = node->codeRange;
+		return this->result.Cast<CppGenericArguments>();
 	}
 
 	vl::Ptr<CppStringLiteralFragment> AstVisitor::CopyNode(CppStringLiteralFragment* node)
@@ -1658,14 +1666,6 @@ namespace cpp_parser::copy_visitor
 		Visit(node);
 		this->result->codeRange = node->codeRange;
 		return this->result.Cast<CppTryStatCatchPart>();
-	}
-
-	vl::Ptr<CppFile> AstVisitor::CopyNode(CppFile* node)
-	{
-		if (!node) return nullptr;
-		Visit(node);
-		this->result->codeRange = node->codeRange;
-		return this->result.Cast<CppFile>();
 	}
 
 	vl::Ptr<CppBinaryExpr> AstVisitor::CopyNode(CppBinaryExpr* node)
