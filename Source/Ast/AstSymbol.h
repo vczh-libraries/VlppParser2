@@ -171,26 +171,33 @@ AstDefFileGroup
 				using StringItems = collections::List<WString>;
 				using SymbolMap = collections::Dictionary<WString, AstSymbol*>;
 			protected:
-				AstSymbolManager*			ownerManager = nullptr;
-				WString						name;
-				MappedOwning<AstDefFile>	files;
-				SymbolMap					symbolMap;
+				AstSymbolManager*				ownerManager = nullptr;
+				WString							name;
+				MappedOwning<AstDefFile>		files;
+				SymbolMap						symbolMap;
 
 				AstDefFileGroup(AstSymbolManager* _ownerManager, const WString& _name);
 			public:
-				DependenciesList			dependencies;
-				StringItems					cppNss;
-				StringItems					refNss;
-				WString						classPrefix;
+				DependenciesList				dependencies;
+				StringItems						cppNss;
+				StringItems						refNss;
+				WString							classPrefix;
 
-				AstSymbolManager*			Owner() const { return ownerManager; }
-				const WString&				Name() const { return name; }
-				bool						AddDependency(const WString& dependency, ParsingTextRange codeRange = {});
-				AstDefFile*					CreateFile(const WString& name);
+				AstSymbolManager*				Owner() const { return ownerManager; }
+				const WString&					Name() const { return name; }
+				bool							AddDependency(const WString& dependency, ParsingTextRange codeRange = {});
+				AstDefFile*						CreateFile(const WString& name);
 
-				const auto&					Files() const { return files.map; }
-				const auto&					FileOrder() const { return files.order; }
-				const auto&					Symbols() const { return symbolMap; }
+				const auto&						Files() const { return files.map; }
+				const auto&						FileOrder() const { return files.order; }
+				const auto&						Symbols() const { return symbolMap; }
+				collections::LazyList<WString>	SymbolOrder()
+				{
+					return From(files.order)
+						.Select([this](const WString& fileName) { return files.map[fileName]; })
+						.SelectMany([](AstDefFile* file) { return From(file->SymbolOrder()); })
+						;
+				}
 
 				template<typename ...TArgs>
 				void AddError(ParserErrorType type, ParsingTextRange codeRange, TArgs&&... args);

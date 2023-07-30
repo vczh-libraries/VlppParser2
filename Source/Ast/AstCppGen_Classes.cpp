@@ -13,15 +13,15 @@ namespace vl
 WriteTypeForwardDefinitions
 ***********************************************************************/
 
-			void WriteTypeForwardDefinitions(AstDefFile* file, const WString& prefix, stream::StreamWriter& writer)
+			void WriteTypeForwardDefinitions(AstDefFileGroup* group, const WString& prefix, stream::StreamWriter& writer)
 			{
-				for (auto [name, index] : indexed(file->Symbols().Keys()))
+				for (auto [name, index] : indexed(group->Symbols().Keys()))
 				{
-					if (dynamic_cast<AstClassSymbol*>(file->Symbols().Values()[index]))
+					if (dynamic_cast<AstClassSymbol*>(group->Symbols().Values()[index]))
 					{
 						writer.WriteString(prefix);
 						writer.WriteString(L"class ");
-						writer.WriteString(file->classPrefix);
+						writer.WriteString(group->classPrefix);
 						writer.WriteString(name);
 						writer.WriteLine(L";");
 					}
@@ -65,19 +65,19 @@ PrintCppType
 					writer.WriteString(L"vl::Ptr<");
 				}
 
-				auto file = propSymbol->Owner();
+				auto group = propSymbol->Owner()->Owner();
 				if (purpose == PrintTypePurpose::ReflectionName)
 				{
-					PrintNss(file->refNss, writer);
+					PrintNss(group->refNss, writer);
 				}
 				else
 				{
-					if (fileContext != file)
+					if (fileGroupContext != group)
 					{
-						PrintNss(file->cppNss, writer);
+						PrintNss(group->cppNss, writer);
 					}
 				}
-				writer.WriteString(file->classPrefix);
+				writer.WriteString(group->classPrefix);
 				writer.WriteString(propSymbol->Name());
 
 				if (propType == AstPropType::Array)
@@ -92,7 +92,7 @@ PrintCppType
 
 			void PrintFieldType(AstDefFileGroup* fileGroupContext, AstPropType propType, AstSymbol* propSymbol, stream::StreamWriter& writer)
 			{
-				PrintAstType(fileContext, propType, propSymbol, PrintTypePurpose::Value, writer);
+				PrintAstType(fileGroupContext, propType, propSymbol, PrintTypePurpose::Value, writer);
 			}
 
 			void PrintCppType(AstDefFileGroup* fileGroupContext, AstSymbol* propSymbol, stream::StreamWriter& writer)
@@ -106,15 +106,15 @@ WriteTypeDefinitions
 
 			void WriteTypeDefinitions(AstDefFileGroup* group, const WString& prefix, stream::StreamWriter& writer)
 			{
-				for (auto name : file->SymbolOrder())
+				for (auto name : group->SymbolOrder())
 				{
-					auto typeSymbol = file->Symbols()[name];
+					auto typeSymbol = group->Symbols()[name];
 					if (auto enumSymbol = dynamic_cast<AstEnumSymbol*>(typeSymbol))
 					{
 						writer.WriteLine(L"");
 						writer.WriteString(prefix);
 						writer.WriteString(L"enum class ");
-						writer.WriteString(file->classPrefix);
+						writer.WriteString(group->classPrefix);
 						writer.WriteLine(name);
 						writer.WriteString(prefix);
 						writer.WriteLine(L"{");
@@ -140,15 +140,15 @@ WriteTypeDefinitions
 					}
 				}
 
-				for (auto name : file->SymbolOrder())
+				for (auto name : group->SymbolOrder())
 				{
-					auto typeSymbol = file->Symbols()[name];
+					auto typeSymbol = group->Symbols()[name];
 					if (auto classSymbol = dynamic_cast<AstClassSymbol*>(typeSymbol))
 					{
 						writer.WriteLine(L"");
 						writer.WriteString(prefix);
 						writer.WriteString(L"class ");
-						writer.WriteString(file->classPrefix);
+						writer.WriteString(group->classPrefix);
 						writer.WriteString(name);
 						if (classSymbol->derivedClasses.Count() > 0)
 						{
@@ -157,14 +157,14 @@ WriteTypeDefinitions
 						writer.WriteString(L" : public ");
 						if (classSymbol->baseClass)
 						{
-							PrintCppType(file, classSymbol->baseClass, writer);
+							PrintCppType(group, classSymbol->baseClass, writer);
 						}
 						else
 						{
 							writer.WriteString(L"vl::glr::ParsingAstBase");
 						}
 						writer.WriteString(L", vl::reflection::Description<");
-						writer.WriteString(file->classPrefix);
+						writer.WriteString(group->classPrefix);
 						writer.WriteString(name);
 						writer.WriteLine(L">");
 
@@ -186,7 +186,7 @@ WriteTypeDefinitions
 							{
 								writer.WriteString(prefix);
 								writer.WriteString(L"\t\tvirtual void Visit(");
-								PrintCppType(file, childSymbol, writer);
+								PrintCppType(group, childSymbol, writer);
 								writer.WriteLine(L"* node) = 0;");
 							}
 
@@ -195,7 +195,7 @@ WriteTypeDefinitions
 							writer.WriteLine(L"");
 							writer.WriteString(prefix);
 							writer.WriteString(L"\tvirtual void Accept(");
-							PrintCppType(file, classSymbol, writer);
+							PrintCppType(group, classSymbol, writer);
 							writer.WriteLine(L"::IVisitor* visitor) = 0;");
 							writer.WriteLine(L"");
 						}
@@ -205,13 +205,13 @@ WriteTypeDefinitions
 							auto propSymbol = classSymbol->Props()[propName];
 							writer.WriteString(prefix);
 							writer.WriteString(L"\t");
-							PrintFieldType(file, propSymbol->propType, propSymbol->propSymbol, writer);
+							PrintFieldType(group, propSymbol->propType, propSymbol->propSymbol, writer);
 							writer.WriteString(L" ");
 							writer.WriteString(propName);
 							if (dynamic_cast<AstEnumSymbol*>(propSymbol->propSymbol))
 							{
 								writer.WriteString(L" = ");
-								PrintCppType(file, propSymbol->propSymbol, writer);
+								PrintCppType(group, propSymbol->propSymbol, writer);
 								writer.WriteString(L"::UNDEFINED_ENUM_ITEM_VALUE");
 							}
 							writer.WriteLine(L";");
@@ -222,7 +222,7 @@ WriteTypeDefinitions
 							writer.WriteLine(L"");
 							writer.WriteString(prefix);
 							writer.WriteString(L"\tvoid Accept(");
-							PrintCppType(file, classSymbol->baseClass, writer);
+							PrintCppType(group, classSymbol->baseClass, writer);
 							writer.WriteLine(L"::IVisitor* visitor) override;");
 						}
 
@@ -238,18 +238,18 @@ WriteVisitorImpl
 
 			void WriteVisitorImpl(AstDefFileGroup* group, const WString& prefix, stream::StreamWriter& writer)
 			{
-				for (auto name : file->SymbolOrder())
+				for (auto name : group->SymbolOrder())
 				{
-					if (auto classSymbol = dynamic_cast<AstClassSymbol*>(file->Symbols()[name]))
+					if (auto classSymbol = dynamic_cast<AstClassSymbol*>(group->Symbols()[name]))
 					{
 						if (classSymbol->baseClass)
 						{
 							writer.WriteLine(L"");
 							writer.WriteString(prefix);
 							writer.WriteString(L"void ");
-							PrintCppType(file, classSymbol, writer);
+							PrintCppType(group, classSymbol, writer);
 							writer.WriteString(L"::Accept(");
-							PrintCppType(file, classSymbol->baseClass, writer);
+							PrintCppType(group, classSymbol->baseClass, writer);
 							writer.WriteLine(L"::IVisitor* visitor)");
 							writer.WriteString(prefix);
 							writer.WriteLine(L"{");
@@ -270,9 +270,9 @@ WriteTypeReflectionDeclaration
 			{
 				writer.WriteLine(L"#ifndef VCZH_DEBUG_NO_REFLECTION");
 
-				for (auto&& name : file->SymbolOrder())
+				for (auto&& name : group->SymbolOrder())
 				{
-					auto typeSymbol = file->Symbols()[name];
+					auto typeSymbol = group->Symbols()[name];
 					writer.WriteString(prefix);
 					writer.WriteString(L"DECL_TYPE_INFO(");
 					PrintCppType(nullptr, typeSymbol, writer);
@@ -293,9 +293,9 @@ WriteTypeReflectionDeclaration
 				writer.WriteLine(L"");
 				writer.WriteLine(L"#ifdef VCZH_DESCRIPTABLEOBJECT_WITH_METADATA");
 				writer.WriteLine(L"");
-				for (auto&& name : file->SymbolOrder())
+				for (auto&& name : group->SymbolOrder())
 				{
-					if (auto classSymbol = dynamic_cast<AstClassSymbol*>(file->Symbols()[name]))
+					if (auto classSymbol = dynamic_cast<AstClassSymbol*>(group->Symbols()[name]))
 					{
 						if (classSymbol->derivedClasses.Count() > 0)
 						{
@@ -338,8 +338,8 @@ WriteTypeReflectionDeclaration
 
 				writer.WriteString(prefix);
 				writer.WriteString(L"extern bool ");
-				writer.WriteString(file->Owner()->Global().name);
-				writer.WriteString(file->Name());
+				writer.WriteString(group->Owner()->Global().name);
+				writer.WriteString(group->Name());
 				writer.WriteLine(L"LoadTypes();");
 			}
 
@@ -353,9 +353,9 @@ WriteTypeReflectionImplementation
 
 				writer.WriteLine(L"");
 
-				for (auto&& name : file->SymbolOrder())
+				for (auto&& name : group->SymbolOrder())
 				{
-					auto typeSymbol = file->Symbols()[name];
+					auto typeSymbol = group->Symbols()[name];
 					writer.WriteString(prefix);
 					writer.WriteString(L"IMPL_TYPE_INFO_RENAME(");
 					PrintCppType(nullptr, typeSymbol, writer);
@@ -381,9 +381,9 @@ WriteTypeReflectionImplementation
 				writer.WriteLine(L"");
 				writer.WriteLine(L"#ifdef VCZH_DESCRIPTABLEOBJECT_WITH_METADATA");
 
-				for (auto&& name : file->SymbolOrder())
+				for (auto&& name : group->SymbolOrder())
 				{
-					auto typeSymbol = file->Symbols()[name];
+					auto typeSymbol = group->Symbols()[name];
 					writer.WriteLine(L"");
 
 					if (auto enumSymbol = dynamic_cast<AstEnumSymbol*>(typeSymbol))
@@ -457,9 +457,9 @@ WriteTypeReflectionImplementation
 					}
 				}
 
-				for (auto&& name : file->SymbolOrder())
+				for (auto&& name : group->SymbolOrder())
 				{
-					if (auto classSymbol = dynamic_cast<AstClassSymbol*>(file->Symbols()[name]))
+					if (auto classSymbol = dynamic_cast<AstClassSymbol*>(group->Symbols()[name]))
 					{
 						if (classSymbol->derivedClasses.Count() > 0)
 						{
@@ -494,8 +494,8 @@ WriteTypeReflectionImplementation
 				writer.WriteLine(L"#ifdef VCZH_DESCRIPTABLEOBJECT_WITH_METADATA");
 				writer.WriteString(prefix);
 				writer.WriteString(L"class ");
-				writer.WriteString(file->Owner()->Global().name);
-				writer.WriteString(file->Name());
+				writer.WriteString(group->Owner()->Global().name);
+				writer.WriteString(group->Name());
 				writer.WriteLine(L"TypeLoader : public vl::Object, public ITypeLoader");
 				writer.WriteString(prefix);
 				writer.WriteLine(L"{");
@@ -507,9 +507,9 @@ WriteTypeReflectionImplementation
 				writer.WriteString(prefix);
 				writer.WriteLine(L"\t{");
 
-				for (auto&& name : file->SymbolOrder())
+				for (auto&& name : group->SymbolOrder())
 				{
-					auto typeSymbol = file->Symbols()[name];
+					auto typeSymbol = group->Symbols()[name];
 					writer.WriteString(prefix);
 					writer.WriteString(L"\t\tADD_TYPE_INFO(");
 					PrintCppType(nullptr, typeSymbol, writer);
@@ -547,8 +547,8 @@ WriteTypeReflectionImplementation
 				writer.WriteLine(L"");
 				writer.WriteString(prefix);
 				writer.WriteString(L"bool ");
-				writer.WriteString(file->Owner()->Global().name);
-				writer.WriteString(file->Name());
+				writer.WriteString(group->Owner()->Global().name);
+				writer.WriteString(group->Name());
 				writer.WriteLine(L"LoadTypes()");
 				writer.WriteString(prefix);
 				writer.WriteLine(L"{");
@@ -560,8 +560,8 @@ WriteTypeReflectionImplementation
 				writer.WriteLine(L"\t{");
 				writer.WriteString(prefix);
 				writer.WriteString(L"\t\tauto loader = Ptr(new ");
-				writer.WriteString(file->Owner()->Global().name);
-				writer.WriteString(file->Name());
+				writer.WriteString(group->Owner()->Global().name);
+				writer.WriteString(group->Name());
 				writer.WriteLine(L"TypeLoader);");
 				writer.WriteString(prefix);
 				writer.WriteLine(L"\t\treturn manager->AddTypeLoader(loader);");
