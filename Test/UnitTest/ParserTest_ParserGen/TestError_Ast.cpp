@@ -96,7 +96,8 @@ LR"AST(
 		{
 			for (auto input2 : inputs)
 			{
-				ExpectError(parser, inputs, { ParserErrorType::DuplicatedSymbolGlobally,L"Ast1",L"A",L"Ast0" });
+				const wchar_t* combinedInputs[] = { input1,input2 };
+				ExpectError(parser, combinedInputs, { ParserErrorType::DuplicatedSymbolGlobally,L"Ast1",L"A",L"Ast0" });
 			}
 		}
 	});
@@ -183,24 +184,122 @@ LR"AST(
 
 	TEST_CASE(L"BaseClassNotPublic")
 	{
-		TEST_ASSERT(false);
+		const wchar_t* inputs[] = {
+LR"AST(
+			enum A {}
+)AST",
+LR"AST(
+			class B : A {}
+)AST" };
+		//ExpectError(parser, inputs, { ParserErrorType::BaseClassNotPublic,L"Ast1",L"B",L"A" });
 	});
 
 	TEST_CASE(L"FieldTypeNotPublic")
 	{
-		TEST_ASSERT(false);
+		const wchar_t* inputs[] = {
+LR"AST(
+			enum A {}
+)AST",
+LR"AST(
+			class B
+			{
+				var f : A;
+			}
+)AST" };
+		//ExpectError(parser, inputs, { ParserErrorType::BaseClassNotPublic,L"Ast1",L"B",L"a" });
 	});
 
-	TEST_CATEGORY(L"AST Rewriting")
+	TEST_CATEGORY(L"AST Rewriting (single file)")
 	{
-		TEST_CASE(L"Single AST file")
+		const wchar_t* inputs[] = {
+LR"AST(
+			@public	@ambiguous	class Expr							{							}
+			@public	@ambiguous	class Decl							{ var name : token;			}
+)AST",
+LR"AST(
+								class IdExpr		: Expr			{ var id : token;			}
+								class CompExpr		: Expr			{ var expr : Expr;			}
+								class NsDecl		: Decl			{ var decls : Decl[];		}
+								class ExprDecl		: Decl			{ var expr : Expr;			}
+)AST",
+LR"AST(
+								class File							{ var delcs : Decl[];		}
+)AST" };
+
+		const wchar_t* outputOrigin =
+LR"AST(
+			@public	@ambiguous	class Expr							{							}
+			@public	@ambiguous	class Decl							{ var name : token;			}
+								class IdExpr		: Expr			{ var id : token;			}
+								class CompExpr		: Expr			{ var expr : Expr;			}
+								class NsDecl		: Decl			{ var decls : Decl[];		}
+								class ExprDecl		: Decl			{ var expr : Expr;			}
+								class File							{ var delcs : Decl[];		}
+)AST";
+
+		const wchar_t* outputGenerated =
+LR"AST(
+			@public	@ambiguous	class Expr							{							}
+								class ExprToResolve	: Expr			{ var candidates : Expr[];	}
+			@public	@ambiguous	class Decl							{							}
+								class DeclToResolve	: Decl			{ var candidates : Decl[];	}
+			@public				class DeclCommon	: Decl			{ var name : token;			}
+								class IdExpr		: Expr			{ var id : token;			}
+								class CompExpr		: Expr			{ var expr : Expr;			}
+								class NsDecl		: DeclCommon	{ var decls : Decl[];		}
+								class ExprDecl		: DeclCommon	{ var expr : Expr;			}
+								class File							{ var delcs : Decl[];		}
+)AST";
+
+		auto assertResult = [&]<typename TCallback>(TCallback&& callback)
 		{
-			TEST_ASSERT(false);
+			ParserSymbolManager global;
+			AstSymbolManager astManager(global);
+			callback(astManager);
+			TEST_ASSERT(global.Errors().Count() == 0);
+			{
+				auto astActual = TypeSymbolToAst(astManager, false);
+				auto astExpected = parser.ParseFile(WString::Unmanaged(outputOrigin));
+				auto formattedActual = GenerateToStream([&](TextWriter& writer) { TypeAstToCode(astActual, writer); });
+				auto formattedExpected = GenerateToStream([&](TextWriter& writer) { TypeAstToCode(astExpected, writer); });
+				TEST_ASSERT(formattedActual == formattedExpected);
+			}
+			{
+				auto astActual = TypeSymbolToAst(astManager, true);
+				auto astExpected = parser.ParseFile(WString::Unmanaged(outputGenerated));
+				auto formattedActual = GenerateToStream([&](TextWriter& writer) { TypeAstToCode(astActual, writer); });
+				auto formattedExpected = GenerateToStream([&](TextWriter& writer) { TypeAstToCode(astExpected, writer); });
+				TEST_ASSERT(formattedActual == formattedExpected);
+			}
+		};
+
+		TEST_CASE(L"Single File")
+		{
+			assertResult([&](AstSymbolManager& astManager)
+			{
+				auto astFile = parser.ParseFile(
+					WString::Unmanaged(inputs[0]) +
+					WString::Unmanaged(inputs[1]) +
+					WString::Unmanaged(inputs[2])
+				);
+				auto astDefFile = astManager.CreateFile(WString::Unmanaged(L"Ast"));
+				CompileAst(astManager, astDefFile, astFile);
+			});
 		});
 
-		TEST_CASE(L"Multiple AST files")
+		TEST_CASE(L"Multiple Files")
 		{
-			TEST_ASSERT(false);
+			assertResult([&](AstSymbolManager& astManager)
+			{
+				List<Pair<AstDefFile*, Ptr<GlrAstFile>>> astFiles;
+				for (auto [input, index] : indexed(From(inputs)))
+				{
+					auto astFile = parser.ParseFile(WString::Unmanaged(input));
+					auto astDefFile = astManager.CreateFile(WString::Unmanaged(L"Ast") + itow(index));
+					astFiles.Add({ astDefFile,astFile });
+				}
+				CompileAst(astManager, astFiles);
+			});
 		});
 	});
 }
