@@ -26,8 +26,40 @@ namespace TestError_Syntax_TestObjects
 	};
 
 	extern void AssertError(ParserSymbolManager& global, ParserErrorWithoutLocation expectedError);
-	extern void ExpectError(TypeParser& typeParser, RuleParser& ruleParser, const wchar_t* astCode, const wchar_t* lexerCode, List<const wchar_t*>& syntaxCodes, ParserErrorWithoutLocation expectedError);
-	extern void ExpectError(TypeParser& typeParser, RuleParser& ruleParser, const wchar_t* astCode, const wchar_t* lexerCode, const wchar_t* syntaxCode, ParserErrorWithoutLocation expectedError);
+	extern void ExpectError(
+		TypeParser& typeParser,
+		RuleParser& ruleParser,
+		const wchar_t* astCode,
+		const wchar_t* additionalAstCode,
+		const wchar_t* lexerCode,
+		List<const wchar_t*>& syntaxCodes,
+		ParserErrorWithoutLocation expectedError
+		);
+	extern void ExpectError(
+		TypeParser& typeParser,
+		RuleParser& ruleParser,
+		const wchar_t* astCode,
+		const wchar_t* lexerCode,
+		List<const wchar_t*>& syntaxCodes,
+		ParserErrorWithoutLocation expectedError
+		);
+	extern void ExpectError(
+		TypeParser& typeParser,
+		RuleParser& ruleParser,
+		const wchar_t* astCode,
+		const wchar_t* additionalAstCode,
+		const wchar_t* lexerCode,
+		const wchar_t* syntaxCode,
+		ParserErrorWithoutLocation expectedError
+		);
+	extern void ExpectError(
+		TypeParser& typeParser,
+		RuleParser& ruleParser,
+		const wchar_t* astCode,
+		const wchar_t* lexerCode,
+		const wchar_t* syntaxCode,
+		ParserErrorWithoutLocation expectedError
+		);
 
 	template<vint Count>
 	void ExpectError(TypeParser& typeParser, RuleParser& ruleParser, const wchar_t* astCode, const wchar_t* lexerCode, const wchar_t* (&astCodeArray)[Count], ParserErrorWithoutLocation expectedError)

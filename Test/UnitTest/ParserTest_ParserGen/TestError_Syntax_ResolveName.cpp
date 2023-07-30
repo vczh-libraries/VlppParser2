@@ -3,6 +3,7 @@
 namespace TestError_CalculatorAstAndLexer
 {
 	extern const wchar_t* astCode;
+	extern const wchar_t* additionalAstCode;
 	extern const wchar_t* lexerCode;
 }
 using namespace TestError_CalculatorAstAndLexer;
@@ -38,9 +39,10 @@ Exp0 : NotUnique ::= NUM:value as NumExpr;
 			typeParser,
 			ruleParser,
 			astCode,
+			additionalAstCode,
 			lexerCode,
 			syntaxCode,
-			{ ParserErrorType::TypeNotUniqueInRule,L"Exp0",L"Unknown" }
+			{ ParserErrorType::TypeNotUniqueInRule,L"Exp0",L"NotUnique" }
 		);
 	});
 
@@ -54,9 +56,10 @@ Exp0 ::= NUM:value as NotUnique;
 			typeParser,
 			ruleParser,
 			astCode,
+			additionalAstCode,
 			lexerCode,
 			syntaxCode,
-			{ ParserErrorType::TypeNotUniqueInRule,L"Exp0",L"Unknown" }
+			{ ParserErrorType::TypeNotUniqueInRule,L"Exp0",L"NotUnique" }
 		);
 	});
 

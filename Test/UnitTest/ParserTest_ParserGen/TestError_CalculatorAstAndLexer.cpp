@@ -41,6 +41,18 @@ class Module
 {
 	var export : Expr;
 }
+
+class NotUnique
+{
+}
+)AST";
+
+	const wchar_t* additionalAstCode =
+LR"AST(
+
+class NotUnique
+{
+}
 )AST";
 
 	const wchar_t* lexerCode =
