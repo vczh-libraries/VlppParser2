@@ -143,6 +143,18 @@ LR"AST(
 		ExpectError(parser, input, { ParserErrorType::BaseClassNotClass,L"Ast0",L"B",L"A" });
 	});
 
+	TEST_CASE(L"BaseClassNotPublic")
+	{
+		const wchar_t* inputs[] = {
+LR"AST(
+			class A {}
+)AST",
+LR"AST(
+			class B : A {}
+)AST" };
+		ExpectError(parser, inputs, { ParserErrorType::BaseClassNotPublic,L"Ast1",L"B",L"A" });
+	});
+
 	TEST_CASE(L"BaseClassCyclicDependency")
 	{
 		const wchar_t* input =
@@ -178,23 +190,11 @@ LR"AST(
 		ExpectError(parser, input, { ParserErrorType::FieldTypeNotClass,L"Ast0",L"B",L"a" });
 	});
 
-	TEST_CASE(L"BaseClassNotPublic")
-	{
-		const wchar_t* inputs[] = {
-LR"AST(
-			enum A {}
-)AST",
-LR"AST(
-			class B : A {}
-)AST" };
-		ExpectError(parser, inputs, { ParserErrorType::BaseClassNotPublic,L"Ast1",L"B",L"A" });
-	});
-
 	TEST_CASE(L"FieldTypeNotPublic")
 	{
 		const wchar_t* inputs[] = {
 LR"AST(
-			enum A {}
+			class A {}
 )AST",
 LR"AST(
 			class B
@@ -202,7 +202,7 @@ LR"AST(
 				var f : A;
 			}
 )AST" };
-		ExpectError(parser, inputs, { ParserErrorType::BaseClassNotPublic,L"Ast1",L"B",L"a" });
+		ExpectError(parser, inputs, { ParserErrorType::FieldTypeNotPublic,L"Ast1",L"B",L"f" });
 	});
 
 	TEST_CATEGORY(L"AST Rewriting (single file)")

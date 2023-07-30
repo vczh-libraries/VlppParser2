@@ -69,7 +69,7 @@ AstClassPropSymbol
 				propType = _type;
 				if (_type == AstPropType::Token) return true;
 
-				auto& symbols = parent->Owner()->Symbols();
+				auto& symbols = parent->Owner()->Owner()->Symbols();
 				vint index = symbols.Keys().IndexOf(typeName);
 				if (index == -1)
 				{
@@ -84,6 +84,19 @@ AstClassPropSymbol
 				}
 
 				propSymbol = symbols.Values()[index];
+
+				if (parent->Owner() != propSymbol->Owner() && !propSymbol->isPublic)
+				{
+					ownerFile->AddError(
+						ParserErrorType::FieldTypeNotPublic,
+						codeRange,
+						ownerFile->Name(),
+						parent->Name(),
+						name
+						);
+					return false;
+				}
+
 				if (_type == AstPropType::Type) return true;
 
 				if (!dynamic_cast<AstClassSymbol*>(propSymbol))
@@ -111,7 +124,7 @@ AstClassSymbol
 
 			bool AstClassSymbol::SetBaseClass(const WString& typeName, ParsingTextRange codeRange)
 			{
-				auto& symbols = ownerFile->Symbols();
+				auto& symbols = ownerFile->Owner()->Symbols();
 				vint index = symbols.Keys().IndexOf(typeName);
 				if (index == -1)
 				{
@@ -130,6 +143,17 @@ AstClassSymbol
 				{
 					ownerFile->AddError(
 						ParserErrorType::BaseClassNotClass,
+						codeRange,
+						ownerFile->Name(),
+						name,
+						typeName
+						);
+					return false;
+				}
+				else if (ownerFile != newBaseClass->Owner() && !newBaseClass->isPublic)
+				{
+					ownerFile->AddError(
+						ParserErrorType::BaseClassNotPublic,
 						codeRange,
 						ownerFile->Name(),
 						name,
