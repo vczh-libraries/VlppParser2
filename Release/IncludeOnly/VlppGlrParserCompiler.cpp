@@ -50,6 +50,8 @@ DEVELOPER: Zihan Chen(vczh)
 #include "..\..\Source\ParserGen_Generated\ParserGen_Assembler.cpp"
 #include "..\..\Source\ParserGen_Generated\ParserGen_Lexer.cpp"
 #include "..\..\Source\ParserGen_Printer\SyntaxAstToCode.cpp"
+#include "..\..\Source\ParserGen_Printer\TypeAstToCode.cpp"
+#include "..\..\Source\ParserGen_Printer\TypeSymbolToAst.cpp"
 #include "..\..\Source\Syntax\SyntaxCppGen.cpp"
 #include "..\..\Source\Syntax\SyntaxSymbol.cpp"
 #include "..\..\Source\Syntax\SyntaxSymbolWriter.cpp"
