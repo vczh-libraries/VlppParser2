@@ -2,28 +2,29 @@
 
 namespace TestError_Ast_TestObjects
 {
-	void ExpectError(TypeParser& parser, List<Pair<WString, WString>>& astCodes, ParserErrorWithoutLocation expectedError)
+	void ExpectError(TypeParser& parser, const wchar_t* astCode, ParserErrorWithoutLocation expectedError)
+	{
+		ParserSymbolManager global;
+		AstSymbolManager astManager(global);
+		auto astFile = parser.ParseFile(WString::Unmanaged(astCode));
+		auto astDefFile = astManager.CreateFile(WString::Unmanaged(L"Ast"));
+		CompileAst(astManager, astDefFile, astFile);
+		AssertError(global, expectedError);
+	}
+
+	template<vint Count>
+	void ExpectError(TypeParser& parser, const wchar_t* (&astCodes)[Count], ParserErrorWithoutLocation expectedError)
 	{
 		ParserSymbolManager global;
 		AstSymbolManager astManager(global);
 		List<Pair<AstDefFile*, Ptr<GlrAstFile>>> astFiles;
-		for (auto [astName, astCode] : astCodes)
+		for (auto [astCode, index] : indexed(From(astCodes)))
 		{
-			auto astFile = parser.ParseFile(astCode);
-			auto astDefFile = astManager.CreateFile(astName);
+			auto astFile = parser.ParseFile(WString::Unmanaged(astCode));
+			auto astDefFile = astManager.CreateFile(WString::Unmanaged(L"Ast") + itow(index));
 			astFiles.Add({ astDefFile,astFile });
 		}
 		CompileAst(astManager, astFiles);
-		AssertError(global, expectedError);
-	}
-
-	void ExpectError(TypeParser& parser, const WString& astCode, ParserErrorWithoutLocation expectedError)
-	{
-		ParserSymbolManager global;
-		AstSymbolManager astManager(global);
-		auto astFile = parser.ParseFile(astCode);
-		auto astDefFile = astManager.CreateFile(L"Ast");
-		CompileAst(astManager, astDefFile, astFile);
 		AssertError(global, expectedError);
 	}
 }
@@ -95,10 +96,7 @@ LR"AST(
 		{
 			for (auto input2 : inputs)
 			{
-				List<Pair<WString, WString>> astCodes;
-				astCodes.Add({ L"AstA",inputs[0] });
-				astCodes.Add({ L"AstB",inputs[1] });
-				ExpectError(parser, astCodes, { ParserErrorType::DuplicatedSymbolGlobally,L"AstB",L"A",L"AstA" });
+				ExpectError(parser, inputs, { ParserErrorType::DuplicatedSymbolGlobally,L"Ast1",L"A",L"Ast0" });
 			}
 		}
 	});
