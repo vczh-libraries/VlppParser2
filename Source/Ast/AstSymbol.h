@@ -154,8 +154,8 @@ AstDefFile
 				AstSymbolManager*			Owner() { return ownerManager; }
 				const WString&				Name() { return name; }
 				bool						AddDependency(const WString& dependency, ParsingTextRange codeRange = {});
-				AstEnumSymbol*				CreateEnum(const WString& symbolName, ParsingTextRange codeRange = {});
-				AstClassSymbol*				CreateClass(const WString& symbolName, ParsingTextRange codeRange = {});
+				AstEnumSymbol*				CreateEnum(const WString& symbolName, bool isPublic = false, ParsingTextRange codeRange = {});
+				AstClassSymbol*				CreateClass(const WString& symbolName, bool isPublic = false, ParsingTextRange codeRange = {});
 				const auto&					Symbols() { return symbols.map; }
 				const auto&					SymbolOrder() { return symbols.order; }
 

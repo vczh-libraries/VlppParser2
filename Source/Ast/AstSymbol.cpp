@@ -199,7 +199,7 @@ AstClassSymbol
 			{
 				if (!derivedClass_ToResolve)
 				{
-					auto derived = ownerFile->CreateClass(name + L"ToResolve", codeRange);
+					auto derived = ownerFile->CreateClass(name + L"ToResolve", false, codeRange);
 					derived->classType = AstClassType::Generated_ToResolve;
 					derived->baseClass = this;
 					derivedClasses.Add(derived);
@@ -217,9 +217,8 @@ AstClassSymbol
 			{
 				if (!derivedClass_Common)
 				{
-					auto derived = ownerFile->CreateClass(name + L"Common", codeRange);
+					auto derived = ownerFile->CreateClass(name + L"Common", isPublic, codeRange);
 					derived->classType = AstClassType::Generated_Common;
-					derived->isPublic = isPublic;
 					derived->baseClass = this;
 					derivedClasses.Add(derived);
 
@@ -400,14 +399,18 @@ AstDefFile
 				return true;
 			}
 
-			AstEnumSymbol* AstDefFile::CreateEnum(const WString& symbolName, ParsingTextRange codeRange)
+			AstEnumSymbol* AstDefFile::CreateEnum(const WString& symbolName, bool isPublic, ParsingTextRange codeRange)
 			{
-				return CreateSymbol<AstEnumSymbol>(symbolName, codeRange);
+				auto symbol = CreateSymbol<AstEnumSymbol>(symbolName, codeRange);
+				symbol->isPublic = isPublic;
+				return symbol;
 			}
 
-			AstClassSymbol* AstDefFile::CreateClass(const WString& symbolName, ParsingTextRange codeRange)
+			AstClassSymbol* AstDefFile::CreateClass(const WString& symbolName, bool isPublic, ParsingTextRange codeRange)
 			{
-				return CreateSymbol<AstClassSymbol>(symbolName, codeRange);
+				auto symbol = CreateSymbol<AstClassSymbol>(symbolName, codeRange);
+				symbol->isPublic = isPublic;
+				return symbol;
 			}
 
 /***********************************************************************
