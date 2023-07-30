@@ -15,7 +15,7 @@ namespace vl
 	{
 		namespace parsergen
 		{
-			class AstDefFile;
+			class AstDefFileGroup;
 			class AstClassPropSymbol;
 			class AstClassSymbol;
 			class TokenSymbol;
@@ -53,7 +53,7 @@ Output
 				WString																	assemblyCpp;
 				WString																	lexerH;
 				WString																	lexerCpp;
-				collections::Dictionary<AstDefFile*, Ptr<CppAstGenOutput>>				astOutputs;
+				collections::Dictionary<AstDefFileGroup*, Ptr<CppAstGenOutput>>			astOutputs;
 				collections::Dictionary<SyntaxSymbolManager*, Ptr<CppSyntaxGenOutput>>	syntaxOutputs;
 
 				collections::Dictionary<AstClassSymbol*, vint32_t>						classIds;

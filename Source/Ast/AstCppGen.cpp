@@ -15,22 +15,23 @@ GenerateAstFileNames
 
 			void GenerateAstFileNames(AstSymbolManager& manager, Ptr<CppParserGenOutput> parserOutput)
 			{
-				for (auto file : manager.Files().Values())
+				auto globalName = manager.Global().name;
+				for (auto group : manager.FileGroups().Values())
 				{
 					auto astOutput = Ptr(new CppAstGenOutput);
-					astOutput->astH			= file->Owner()->Global().name + file->Name() + L".h";
-					astOutput->astCpp		= file->Owner()->Global().name + file->Name() + L".cpp";
-					astOutput->builderH		= file->Owner()->Global().name + file->Name() + L"_Builder.h";
-					astOutput->builderCpp	= file->Owner()->Global().name + file->Name() + L"_Builder.cpp";
-					astOutput->emptyH		= file->Owner()->Global().name + file->Name() + L"_Empty.h";
-					astOutput->emptyCpp		= file->Owner()->Global().name + file->Name() + L"_Empty.cpp";
-					astOutput->copyH		= file->Owner()->Global().name + file->Name() + L"_Copy.h";
-					astOutput->copyCpp		= file->Owner()->Global().name + file->Name() + L"_Copy.cpp";
-					astOutput->traverseH	= file->Owner()->Global().name + file->Name() + L"_Traverse.h";
-					astOutput->traverseCpp	= file->Owner()->Global().name + file->Name() + L"_Traverse.cpp";
-					astOutput->jsonH		= file->Owner()->Global().name + file->Name() + L"_Json.h";
-					astOutput->jsonCpp		= file->Owner()->Global().name + file->Name() + L"_Json.cpp";
-					parserOutput->astOutputs.Add(file, astOutput);
+					astOutput->astH			= globalName + group->Name() + L".h";
+					astOutput->astCpp		= globalName + group->Name() + L".cpp";
+					astOutput->builderH		= globalName + group->Name() + L"_Builder.h";
+					astOutput->builderCpp	= globalName + group->Name() + L"_Builder.cpp";
+					astOutput->emptyH		= globalName + group->Name() + L"_Empty.h";
+					astOutput->emptyCpp		= globalName + group->Name() + L"_Empty.cpp";
+					astOutput->copyH		= globalName + group->Name() + L"_Copy.h";
+					astOutput->copyCpp		= globalName + group->Name() + L"_Copy.cpp";
+					astOutput->traverseH	= globalName + group->Name() + L"_Traverse.h";
+					astOutput->traverseCpp	= globalName + group->Name() + L"_Traverse.cpp";
+					astOutput->jsonH		= globalName + group->Name() + L"_Json.h";
+					astOutput->jsonCpp		= globalName + group->Name() + L"_Json.cpp";
+					parserOutput->astOutputs.Add(group, astOutput);
 				}
 			}
 
@@ -40,9 +41,9 @@ Utility
 
 			void CollectVisitorsAndConcreteClasses(AstDefFileGroup* group, List<AstClassSymbol*>& visitors, List<AstClassSymbol*>& concreteClasses)
 			{
-				for (auto name : file->SymbolOrder())
+				for (auto name : group->SymbolOrder())
 				{
-					if (auto classSymbol = dynamic_cast<AstClassSymbol*>(file->Symbols()[name]))
+					if (auto classSymbol = dynamic_cast<AstClassSymbol*>(group->Symbols()[name]))
 					{
 						if (classSymbol->derivedClasses.Count() > 0)
 						{
@@ -72,21 +73,21 @@ WriteAstHeaderFile
 
 			void WriteAstHeaderFile(AstDefFileGroup* group, stream::StreamWriter& writer)
 			{
-				WriteFileComment(file->Name(), writer);
-				auto&& headerGuard = file->Owner()->Global().headerGuard;
+				WriteFileComment(group->Name(), writer);
+				auto&& headerGuard = group->Owner()->Global().headerGuard;
 				if (headerGuard != L"")
 				{
 					writer.WriteString(L"#ifndef ");
-					writer.WriteLine(headerGuard + L"_" + wupper(file->Name()) + L"_AST");
+					writer.WriteLine(headerGuard + L"_" + wupper(group->Name()) + L"_AST");
 					writer.WriteString(L"#define ");
-					writer.WriteLine(headerGuard + L"_" + wupper(file->Name()) + L"_AST");
+					writer.WriteLine(headerGuard + L"_" + wupper(group->Name()) + L"_AST");
 				}
 				else
 				{
 					writer.WriteLine(L"#pragma once");
 				}
 				writer.WriteLine(L"");
-				for (auto include : file->Owner()->Global().includes)
+				for (auto include : group->Owner()->Global().includes)
 				{
 					if (include.Length() > 0 && include[0] == L'<')
 					{
@@ -100,10 +101,10 @@ WriteAstHeaderFile
 				writer.WriteLine(L"");
 
 				{
-					WString prefix = WriteNssBegin(file->cppNss, writer);
-					WriteTypeForwardDefinitions(file, prefix, writer);
-					WriteTypeDefinitions(file, prefix, writer);
-					WriteNssEnd(file->cppNss, writer);
+					WString prefix = WriteNssBegin(group->cppNss, writer);
+					WriteTypeForwardDefinitions(group, prefix, writer);
+					WriteTypeDefinitions(group, prefix, writer);
+					WriteNssEnd(group->cppNss, writer);
 				}
 				{
 					List<WString> refNss;
@@ -111,7 +112,7 @@ WriteAstHeaderFile
 					refNss.Add(L"reflection");
 					refNss.Add(L"description");
 					WString prefix = WriteNssBegin(refNss, writer);
-					WriteTypeReflectionDeclaration(file, prefix, writer);
+					WriteTypeReflectionDeclaration(group, prefix, writer);
 					WriteNssEnd(refNss, writer);
 				}
 
@@ -127,16 +128,16 @@ WriteAstCppFile
 
 			void WriteAstCppFile(AstDefFileGroup* group, const WString& astHeaderName, stream::StreamWriter& writer)
 			{
-				WriteFileComment(file->Name(), writer);
+				WriteFileComment(group->Name(), writer);
 				writer.WriteLine(L"#include \"" + astHeaderName + L"\"");
 				writer.WriteLine(L"");
 				{
-					WString prefix = WriteNssBegin(file->cppNss, writer);
+					WString prefix = WriteNssBegin(group->cppNss, writer);
 					writer.WriteLine(L"/***********************************************************************");
 					writer.WriteLine(L"Visitor Pattern Implementation");
 					writer.WriteLine(L"***********************************************************************/");
-					WriteVisitorImpl(file, prefix, writer);
-					WriteNssEnd(file->cppNss, writer);
+					WriteVisitorImpl(group, prefix, writer);
+					WriteNssEnd(group->cppNss, writer);
 				}
 				{
 					List<WString> refNss;
@@ -144,7 +145,7 @@ WriteAstCppFile
 					refNss.Add(L"reflection");
 					refNss.Add(L"description");
 					WString prefix = WriteNssBegin(refNss, writer);
-					WriteTypeReflectionImplementation(file, prefix, writer);
+					WriteTypeReflectionImplementation(group, prefix, writer);
 					WriteNssEnd(refNss, writer);
 				}
 			}
@@ -161,14 +162,14 @@ WriteAstUtilityHeaderFile
 				Func<void(const WString&)> callback
 			)
 			{
-				WriteFileComment(file->Name(), writer);
-				auto&& headerGuard = file->Owner()->Global().headerGuard;
+				WriteFileComment(group->Name(), writer);
+				auto&& headerGuard = group->Owner()->Global().headerGuard;
 				if (headerGuard != L"")
 				{
 					writer.WriteString(L"#ifndef ");
-					writer.WriteLine(headerGuard + L"_" + wupper(file->Name()) + L"_AST_" + wupper(extraNss));
+					writer.WriteLine(headerGuard + L"_" + wupper(group->Name()) + L"_AST_" + wupper(extraNss));
 					writer.WriteString(L"#define ");
-					writer.WriteLine(headerGuard + L"_" + wupper(file->Name()) + L"_AST_" + wupper(extraNss));
+					writer.WriteLine(headerGuard + L"_" + wupper(group->Name()) + L"_AST_" + wupper(extraNss));
 				}
 				else
 				{
@@ -179,7 +180,7 @@ WriteAstUtilityHeaderFile
 				writer.WriteLine(L"");
 				{
 					List<WString> cppNss;
-					CopyFrom(cppNss, file->cppNss);
+					CopyFrom(cppNss, group->cppNss);
 					cppNss.Add(extraNss);
 					WString prefix = WriteNssBegin(cppNss, writer);
 					callback(prefix);
@@ -203,12 +204,12 @@ WriteAstUtilityCppFile
 				Func<void(const WString&)> callback
 			)
 			{
-				WriteFileComment(file->Name(), writer);
+				WriteFileComment(group->Name(), writer);
 				writer.WriteLine(L"#include \"" + utilityHeaderFile + L"\"");
 				writer.WriteLine(L"");
 				{
 					List<WString> cppNss;
-					CopyFrom(cppNss, file->cppNss);
+					CopyFrom(cppNss, group->cppNss);
 					cppNss.Add(extraNss);
 					WString prefix = WriteNssBegin(cppNss, writer);
 					callback(prefix);
@@ -242,9 +243,9 @@ WriteParserUtilityHeaderFile
 				}
 
 				writer.WriteLine(L"");
-				for (auto file : manager.Files().Values())
+				for (auto group : manager.FileGroups().Values())
 				{
-					writer.WriteLine(L"#include \"" + output->astOutputs[file]->astH + L"\"");
+					writer.WriteLine(L"#include \"" + output->astOutputs[group]->astH + L"\"");
 				}
 
 				writer.WriteLine(L"");
@@ -286,12 +287,12 @@ WriteAstFiles
 				{
 					WString fileH = GenerateToStream([&](StreamWriter& writer)
 					{
-						WriteAstHeaderFile(file, writer);
+						WriteAstHeaderFile(group, writer);
 					});
 
 					WString fileCpp = GenerateToStream([&](StreamWriter& writer)
 					{
-						WriteAstCppFile(file, output->astH, writer);
+						WriteAstCppFile(group, output->astH, writer);
 					});
 
 					files.Add(output->astH, fileH);
@@ -301,12 +302,12 @@ WriteAstFiles
 				{
 					WString fileH = GenerateToStream([&](StreamWriter& writer)
 					{
-						WriteAstBuilderHeaderFile(file, output, writer);
+						WriteAstBuilderHeaderFile(group, output, writer);
 					});
 
 					WString fileCpp = GenerateToStream([&](StreamWriter& writer)
 					{
-						WriteAstBuilderCppFile(file, output, writer);
+						WriteAstBuilderCppFile(group, output, writer);
 					});
 
 					files.Add(output->builderH, fileH);
@@ -316,12 +317,12 @@ WriteAstFiles
 				{
 					WString fileH = GenerateToStream([&](StreamWriter& writer)
 					{
-						WriteEmptyVisitorHeaderFile(file, output, writer);
+						WriteEmptyVisitorHeaderFile(group, output, writer);
 					});
 
 					WString fileCpp = GenerateToStream([&](StreamWriter& writer)
 					{
-						WriteEmptyVisitorCppFile(file, output, writer);
+						WriteEmptyVisitorCppFile(group, output, writer);
 					});
 
 					files.Add(output->emptyH, fileH);
@@ -331,12 +332,12 @@ WriteAstFiles
 				{
 					WString fileH = GenerateToStream([&](StreamWriter& writer)
 					{
-						WriteCopyVisitorHeaderFile(file, output, writer);
+						WriteCopyVisitorHeaderFile(group, output, writer);
 					});
 
 					WString fileCpp = GenerateToStream([&](StreamWriter& writer)
 					{
-						WriteCopyVisitorCppFile(file, output, writer);
+						WriteCopyVisitorCppFile(group, output, writer);
 					});
 
 					files.Add(output->copyH, fileH);
@@ -346,12 +347,12 @@ WriteAstFiles
 				{
 					WString fileH = GenerateToStream([&](StreamWriter& writer)
 					{
-						WriteTraverseVisitorHeaderFile(file, output, writer);
+						WriteTraverseVisitorHeaderFile(group, output, writer);
 					});
 
 					WString fileCpp = GenerateToStream([&](StreamWriter& writer)
 					{
-						WriteTraverseVisitorCppFile(file, output, writer);
+						WriteTraverseVisitorCppFile(group, output, writer);
 					});
 
 					files.Add(output->traverseH, fileH);
@@ -361,12 +362,12 @@ WriteAstFiles
 				{
 					WString fileH = GenerateToStream([&](StreamWriter& writer)
 					{
-						WriteJsonVisitorHeaderFile(file, output, writer);
+						WriteJsonVisitorHeaderFile(group, output, writer);
 					});
 
 					WString fileCpp = GenerateToStream([&](StreamWriter& writer)
 					{
-						WriteJsonVisitorCppFile(file, output, writer);
+						WriteJsonVisitorCppFile(group, output, writer);
 					});
 
 					files.Add(output->jsonH, fileH);
@@ -376,9 +377,9 @@ WriteAstFiles
 
 			void WriteAstFiles(AstSymbolManager& manager, Ptr<CppParserGenOutput> output, collections::Dictionary<WString, WString>& files)
 			{
-				for (auto file : manager.Files().Values())
+				for (auto group : manager.FileGroups().Values())
 				{
-					WriteAstFiles(file, output->astOutputs[file], files);
+					WriteAstFiles(group, output->astOutputs[group], files);
 				}
 
 				{
