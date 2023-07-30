@@ -14,10 +14,11 @@ CreateParserGenTypeAst
 
 			AstDefFile* CreateParserGenTypeAst(AstSymbolManager& manager)
 			{
-				auto _ast = manager.CreateFile(L"TypeAst");
-				Fill(_ast->cppNss, L"vl", L"glr", L"parsergen");
-				Fill(_ast->refNss, L"glr", L"parsergen");
-				_ast->classPrefix = L"Glr";
+				auto _group = manager.CreateFileGroup(L"TypeAst");
+				auto _ast = _group->CreateFile(L"Ast");
+				Fill(_group->cppNss, L"vl", L"glr", L"parsergen");
+				Fill(_group->refNss, L"glr", L"parsergen");
+				_group->classPrefix = L"Glr";
 
 				auto _type = _ast->CreateClass(L"Type");
 				_type->CreateProp(L"attPublic")->SetPropType(AstPropType::Token);

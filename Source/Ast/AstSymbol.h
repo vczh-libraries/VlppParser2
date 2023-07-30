@@ -147,11 +147,6 @@ AstDefFile
 
 				AstDefFile(AstDefFileGroup* _ownerGroup, const WString& _name);
 			public:
-				DependenciesList			dependencies;
-				StringItems					cppNss;
-				StringItems					refNss;
-				WString						classPrefix;
-
 				AstDefFileGroup*			Owner() const { return ownerGroup; }
 				const WString&				Name() const { return name; }
 				AstEnumSymbol*				CreateEnum(const WString& symbolName, bool isPublic = false, ParsingTextRange codeRange = {});
