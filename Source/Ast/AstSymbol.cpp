@@ -195,6 +195,7 @@ AstClassSymbol
 				{
 					auto derived = ownerFile->CreateClass(name + L"Common", codeRange);
 					derived->classType = AstClassType::Generated_Common;
+					derived->isPublic = isPublic;
 					derived->baseClass = this;
 					derivedClasses.Add(derived);
 
