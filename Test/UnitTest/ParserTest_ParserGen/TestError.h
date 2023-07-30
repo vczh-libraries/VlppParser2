@@ -33,7 +33,7 @@ namespace TestError_Syntax_TestObjects
 	void ExpectError(TypeParser& typeParser, RuleParser& ruleParser, const wchar_t* astCode, const wchar_t* lexerCode, const wchar_t* (&astCodeArray)[Count], ParserErrorWithoutLocation expectedError)
 	{
 		List<const wchar_t*> astCodes;
-		CopyFrom(astCodes, astCodeArray);
+		CopyFrom(astCodes, From(astCodeArray));
 		ExpectError(typeParser, ruleParser, astCode, lexerCode, astCodes, expectedError);
 	}
 }

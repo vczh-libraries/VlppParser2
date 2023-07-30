@@ -111,7 +111,20 @@ Exp1 ::= !Exp;
 
 	TEST_CASE(L"RuleNotPublicInRule")
 	{
-		TEST_ASSERT(false);
+		const wchar_t* syntaxCodes[] = {
+LR"SYNTAX(
+Exp0 ::= NUM:value as NumExpr;
+)SYNTAX",LR"SYNTAX(
+Exp1 ::= !Exp0;
+)SYNTAX" };
+		ExpectError(
+			typeParser,
+			ruleParser,
+			astCode,
+			lexerCode,
+			syntaxCodes,
+			{ ParserErrorType::TokenOrRuleNotExistsInRule,L"Exp1",L"Exp0" }
+		);
 	});
 
 	TEST_CASE(L"LiteralNotValidToken 1")
