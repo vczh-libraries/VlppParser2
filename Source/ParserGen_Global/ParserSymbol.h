@@ -98,7 +98,7 @@ ParserSymbolManager
 			ERROR_ITEM(TypeNotExistsInRule,																			ruleName, name)\
 			ERROR_ITEM(TypeNotClassInRule,																			ruleName, name)\
 			ERROR_ITEM(TokenOrRuleNotExistsInRule,																	ruleName, name)\
-			ERROR_ITEM(RuleNotPublicInRule,																			ruleName, name)\
+			ERROR_ITEM(ReferencedRuleNotPublicInRuleOfDifferentFile,												ruleName, name)\
 			ERROR_ITEM(LiteralNotValidToken,																		ruleName, name)\
 			ERROR_ITEM(LiteralIsDiscardedToken,																		ruleName, name)\
 			ERROR_ITEM(ConditionalLiteralNotValidToken,																ruleName, name)\

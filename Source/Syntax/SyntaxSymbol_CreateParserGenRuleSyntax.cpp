@@ -21,32 +21,37 @@ CreateParserGenRuleSyntax
 
 			void CreateParserGenRuleSyntax(AstSymbolManager& ast, SyntaxSymbolManager& manager)
 			{
+				auto createRule = [&](const wchar_t* ruleName)
+				{
+					return manager.CreateRule(WString::Unmanaged(ruleName), -1, false, false);
+				};
+
 				manager.name = L"RuleParser";
 
-				auto _cond0 = manager.CreateRule(L"Cond0");
-				auto _cond1 = manager.CreateRule(L"Cond1");
-				auto _cond2 = manager.CreateRule(L"Cond2");
-				auto _cond = manager.CreateRule(L"Cond");
-				auto _switchItem = manager.CreateRule(L"SwitchItem");
-				auto _switches = manager.CreateRule(L"Switches");
-				auto _optionalBody = manager.CreateRule(L"OptionalBody");
-				auto _testBranch = manager.CreateRule(L"TestBranch");
-				auto _token = manager.CreateRule(L"Token");
-				auto _syntax0 = manager.CreateRule(L"Syntax0");
-				auto _syntax1 = manager.CreateRule(L"Syntax1");
-				auto _syntax2 = manager.CreateRule(L"Syntax2");
-				auto _syntax = manager.CreateRule(L"Syntax");
-				auto _assignmentOp = manager.CreateRule(L"AssignmentOp");
-				auto _assignment = manager.CreateRule(L"Assignment");
-				auto _clause = manager.CreateRule(L"Clause");
-				auto _placeholder = manager.CreateRule(L"Placeholder");
-				auto _ruleName = manager.CreateRule(L"RuleName");
-				auto _lriConfig = manager.CreateRule(L"LriConfig");
-				auto _lriContinuationBody = manager.CreateRule(L"LriContinuationBody");
-				auto _lriContinuation = manager.CreateRule(L"LriContinuation");
-				auto _lriTarget = manager.CreateRule(L"LriTarget");
-				auto _rule = manager.CreateRule(L"Rule");
-				auto _file = manager.CreateRule(L"File");
+				auto _cond0 = createRule(L"Cond0");
+				auto _cond1 = createRule(L"Cond1");
+				auto _cond2 = createRule(L"Cond2");
+				auto _cond = createRule(L"Cond");
+				auto _switchItem = createRule(L"SwitchItem");
+				auto _switches = createRule(L"Switches");
+				auto _optionalBody = createRule(L"OptionalBody");
+				auto _testBranch = createRule(L"TestBranch");
+				auto _token = createRule(L"Token");
+				auto _syntax0 = createRule(L"Syntax0");
+				auto _syntax1 = createRule(L"Syntax1");
+				auto _syntax2 = createRule(L"Syntax2");
+				auto _syntax = createRule(L"Syntax");
+				auto _assignmentOp = createRule(L"AssignmentOp");
+				auto _assignment = createRule(L"Assignment");
+				auto _clause = createRule(L"Clause");
+				auto _placeholder = createRule(L"Placeholder");
+				auto _ruleName = createRule(L"RuleName");
+				auto _lriConfig = createRule(L"LriConfig");
+				auto _lriContinuationBody = createRule(L"LriContinuationBody");
+				auto _lriContinuation = createRule(L"LriContinuation");
+				auto _lriTarget = createRule(L"LriTarget");
+				auto _rule = createRule(L"Rule");
+				auto _file = createRule(L"File");
 
 				_switches->isPartial = true;
 				_optionalBody->isPartial = true;

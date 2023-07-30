@@ -76,9 +76,10 @@ EdgeSymbol
 RuleSymbol
 ***********************************************************************/
 
-			RuleSymbol::RuleSymbol(SyntaxSymbolManager* _ownerManager, const WString& _name)
+			RuleSymbol::RuleSymbol(SyntaxSymbolManager* _ownerManager, const WString& _name, vint _fileIndex)
 				: ownerManager(_ownerManager)
 				, name(_name)
+				, fileIndex(_fileIndex)
 			{
 			}
 
@@ -91,10 +92,10 @@ SyntaxSymbolManager
 			{
 			}
 
-			RuleSymbol* SyntaxSymbolManager::CreateRule(const WString& name, ParsingTextRange codeRange)
+			RuleSymbol* SyntaxSymbolManager::CreateRule(const WString& name, vint fileIndex, bool isPublic, bool isParser, ParsingTextRange codeRange)
 			{
 				CHECK_ERROR(states.Count() + edges.Count() == 0, L"vl::gre::parsergen::SyntaxSymbolManager::CreateRule(const WString&)#Cannot create new rules after building the automaton.");
-				auto rule = new RuleSymbol(this, name);
+				auto rule = new RuleSymbol(this, name, fileIndex);
 				if (!rules.Add(name, rule))
 				{
 					AddError(
@@ -103,6 +104,8 @@ SyntaxSymbolManager
 						name
 						);
 				}
+				rule->isPublic = isPublic;
+				rule->isParser = isParser;
 				return rule;
 			}
 

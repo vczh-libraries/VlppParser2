@@ -104,6 +104,19 @@ ResolveNameVisitor
 									node->literal.value
 									);
 							}
+							else if (ruleIndex != -1)
+							{
+								auto refRuleSymbol = context.syntaxManager.Rules().Values()[ruleIndex];
+								if (ruleSymbol->fileIndex != refRuleSymbol->fileIndex && !refRuleSymbol->isPublic)
+								{
+									context.syntaxManager.AddError(
+										ParserErrorType::ReferencedRuleNotPublicInRuleOfDifferentFile,
+										node->codeRange,
+										ruleSymbol->Name(),
+										node->literal.value
+										);
+								}
+							}
 						}
 						break;
 					case GlrRefType::Literal:
@@ -201,6 +214,16 @@ ResolveNameVisitor
 					else
 					{
 						auto usedRuleSymbol = context.syntaxManager.Rules().Values()[ruleIndex];
+						if (ruleSymbol->fileIndex != usedRuleSymbol->fileIndex && !usedRuleSymbol->isPublic)
+						{
+							context.syntaxManager.AddError(
+								ParserErrorType::ReferencedRuleNotPublicInRuleOfDifferentFile,
+								name.codeRange,
+								ruleSymbol->Name(),
+								name.value
+								);
+						}
+
 						if (addRuleReuseDependency)
 						{
 							if (!context.ruleReuseDependencies.Contains(ruleSymbol, usedRuleSymbol))

@@ -31,18 +31,23 @@ auto tok(CalculatorTokens id, CalculatorFields field)
 
 void GenerateCalculatorSyntax(AstSymbolManager& ast, SyntaxSymbolManager& manager)
 {
+	auto createRule = [&](const wchar_t* ruleName)
+	{
+		return manager.CreateRule(WString::Unmanaged(ruleName), -1, false, false);
+	};
+
 	manager.name = L"ModuleParser";
 
-	auto _arg = manager.CreateRule(L"Arg");
-	auto _exp0 = manager.CreateRule(L"Exp0");
-	auto _exp1 = manager.CreateRule(L"Exp1");
-	auto _exp2 = manager.CreateRule(L"Exp2");
-	auto _exp3 = manager.CreateRule(L"Exp3");
-	auto _exp4 = manager.CreateRule(L"Exp4");
-	auto _exp5 = manager.CreateRule(L"Exp5");
-	auto _exp = manager.CreateRule(L"Exp");
-	auto _import = manager.CreateRule(L"Import");
-	auto _module = manager.CreateRule(L"Module");
+	auto _arg = createRule(L"Arg");
+	auto _exp0 = createRule(L"Exp0");
+	auto _exp1 = createRule(L"Exp1");
+	auto _exp2 = createRule(L"Exp2");
+	auto _exp3 = createRule(L"Exp3");
+	auto _exp4 = createRule(L"Exp4");
+	auto _exp5 = createRule(L"Exp5");
+	auto _exp = createRule(L"Exp");
+	auto _import = createRule(L"Import");
+	auto _module = createRule(L"Module");
 
 	_exp->isParser = true;
 	_exp->ruleType = dynamic_cast<AstClassSymbol*>(ast.Symbols()[L"Expr"]);

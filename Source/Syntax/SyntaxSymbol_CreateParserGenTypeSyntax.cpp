@@ -21,16 +21,21 @@ CreateParserGenTypeSyntax
 
 			void CreateParserGenTypeSyntax(AstSymbolManager& ast, SyntaxSymbolManager& manager)
 			{
+				auto createRule = [&](const wchar_t* ruleName)
+				{
+					return manager.CreateRule(WString::Unmanaged(ruleName), -1, false, false);
+				};
+
 				manager.name = L"TypeParser";
 
-				auto _enumItem = manager.CreateRule(L"EnumItem");
-				auto _enum = manager.CreateRule(L"Enum");
-				auto _classPropType = manager.CreateRule(L"ClassPropType");
-				auto _classProp = manager.CreateRule(L"classProp");
-				auto _classBody = manager.CreateRule(L"ClassBody");
-				auto _class = manager.CreateRule(L"Class");
-				auto _type = manager.CreateRule(L"Type");
-				auto _file = manager.CreateRule(L"File");
+				auto _enumItem = createRule(L"EnumItem");
+				auto _enum = createRule(L"Enum");
+				auto _classPropType = createRule(L"ClassPropType");
+				auto _classProp = createRule(L"classProp");
+				auto _classBody = createRule(L"ClassBody");
+				auto _class = createRule(L"Class");
+				auto _type = createRule(L"Type");
+				auto _file = createRule(L"File");
 
 				_classPropType->isPartial = true;
 				_classBody->isPartial = true;

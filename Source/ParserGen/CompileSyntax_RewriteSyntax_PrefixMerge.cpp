@@ -131,9 +131,13 @@ FillMissingPrefixMergeClauses
 						RemoveDirectReferences(vContext.directSimpleUseRules, ruleSymbol, clause.Obj());
 
 						// fix rule and clause symbols
-						auto newRuleSymbol = syntaxManager.CreateRule(newRule->name.value, ruleRaw->name.codeRange);
-						newRuleSymbol->isPublic = ruleSymbol->isPublic;
-						newRuleSymbol->isParser = ruleSymbol->isParser;
+						auto newRuleSymbol = syntaxManager.CreateRule(
+							newRule->name.value,
+							ruleSymbol->fileIndex,
+							ruleSymbol->isPublic,
+							ruleSymbol->isParser,
+							ruleRaw->name.codeRange
+							);
 						newRuleSymbol->isPartial = ruleSymbol->isPartial;
 						newRuleSymbol->ruleType = vContext.clauseTypes[clause.Obj()];
 						vContext.astRules.Add(newRuleSymbol, newRule.Obj());
@@ -353,10 +357,14 @@ FixRuleTypes
 					{
 						auto originRule = rContext.originRules[ruleSymbol];
 						auto lriRule = rContext.lriRules[ruleSymbol];
-						auto originSymbol = syntaxManager.CreateRule(originRule->name.value, originRule->codeRange);
+						auto originSymbol = syntaxManager.CreateRule(
+							originRule->name.value,
+							ruleSymbol->fileIndex,
+							ruleSymbol->isPublic,
+							ruleSymbol->isParser,
+							originRule->codeRange
+							);
 
-						originSymbol->isPublic = ruleSymbol->isPublic;
-						originSymbol->isParser = ruleSymbol->isParser;
 						originSymbol->isPartial = ruleSymbol->isPartial;
 						originSymbol->ruleType = ruleSymbol->ruleType;
 						rContext.fixedAstRules.Set(originSymbol, originRule);
@@ -366,7 +374,13 @@ FixRuleTypes
 					for (auto [pair, epRule] : rContext.extractedPrefixRules)
 					{
 						auto originRule = rContext.originRules[pair.key];
-						auto epRuleSymbol = syntaxManager.CreateRule(epRule->name.value, originRule->codeRange);
+						auto epRuleSymbol = syntaxManager.CreateRule(
+							epRule->name.value,
+							pair.key->fileIndex,
+							false,
+							false,
+							originRule->codeRange
+							);
 						epRuleSymbol->ruleType = pair.value->ruleType;
 						rContext.fixedAstRules.Add(epRuleSymbol, epRule);
 					}

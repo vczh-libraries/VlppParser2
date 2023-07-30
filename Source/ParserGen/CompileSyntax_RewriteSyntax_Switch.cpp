@@ -744,6 +744,9 @@ RewriteSyntax
 						{
 							auto newRuleSymbol = syntaxManager.CreateRule(
 								rule->name.value,
+								ruleSymbol->fileIndex,
+								ruleSymbol->isPublic,
+								false,
 								rule->name.codeRange
 							);
 						}

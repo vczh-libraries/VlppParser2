@@ -145,9 +145,10 @@ RuleSymbol
 				WString						name;
 				vint32_t					currentClauseId = -1;
 
-				RuleSymbol(SyntaxSymbolManager* _ownerManager, const WString& _name);
+				RuleSymbol(SyntaxSymbolManager* _ownerManager, const WString& _name, vint _fileIndex);
 			public:
 				StateList					startStates;
+				vint						fileIndex = -1;
 				bool						isPublic = false;
 				bool						isParser = false;
 				bool						isPartial = false;
@@ -209,7 +210,7 @@ SyntaxSymbolManager
 				WString						name;
 				LrpFlagList					lrpFlags;
 
-				RuleSymbol*					CreateRule(const WString& name, ParsingTextRange codeRange = {});
+				RuleSymbol*					CreateRule(const WString& name, vint fileIndex, bool isPublic, bool isParser, ParsingTextRange codeRange = {});
 				void						RemoveRule(const WString& name);
 
 				StateSymbol*				CreateState(RuleSymbol* rule, vint32_t clauseId);

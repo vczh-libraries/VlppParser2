@@ -40,7 +40,7 @@ CompileSyntax
 					.IsEmpty();
 			}
 
-			void CreateSyntaxSymbols(LexerSymbolManager& lexerManager, SyntaxSymbolManager& syntaxManager, Ptr<GlrSyntaxFile> syntaxFile)
+			void CreateSyntaxSymbols(LexerSymbolManager& lexerManager, SyntaxSymbolManager& syntaxManager, vint fileIndex, Ptr<GlrSyntaxFile> syntaxFile)
 			{
 				for (auto rule : syntaxFile->rules)
 				{
@@ -54,9 +54,13 @@ CompileSyntax
 					}
 					else
 					{
-						auto ruleSymbol = syntaxManager.CreateRule(rule->name.value, rule->codeRange);
-						ruleSymbol->isPublic = rule->attPublic;
-						ruleSymbol->isParser = rule->attParser;
+						auto ruleSymbol = syntaxManager.CreateRule(
+							rule->name.value,
+							fileIndex,
+							rule->attPublic,
+							rule->attParser,
+							rule->codeRange
+							);
 					}
 
 					for (auto clause : rule->clauses)
@@ -113,15 +117,14 @@ CompileSyntax
 			{
 				// merge files to single syntax file
 				auto syntaxFile = Ptr(new GlrSyntaxFile);
-				for (auto file : files)
+				for (auto [file, index] : indexed(files))
 				{
 					CopyFrom(syntaxFile->switches, file->switches, true);
 					CopyFrom(syntaxFile->rules, file->rules, true);
+					CreateSyntaxSymbols(lexerManager, syntaxManager, index, file);
 				}
 
 				auto rawSyntaxFile = syntaxFile;
-
-				CreateSyntaxSymbols(lexerManager, syntaxManager, syntaxFile);
 				if (syntaxManager.Global().Errors().Count() > 0) goto FINISHED_COMPILING;
 
 				if (NeedRewritten_Switch(syntaxFile))
