@@ -1,18 +1,4 @@
-#include "../../../Source/ParserGen_Generated/ParserGenTypeAst_Json.h"
-#include "../../../Source/ParserGen_Generated/ParserGenRuleAst_Json.h"
-#include "../../../Source/ParserGen_Generated/ParserGenTypeParser.h"
-#include "../../../Source/ParserGen_Generated/ParserGenRuleParser.h"
-#include "../../../Source/ParserGen/Compiler.h"
-#include "../../../Source/Ast/AstCppGen.h"
-#include "../../../Source/Lexer/LexerCppGen.h"
-#include "../../../Source/Syntax/SyntaxCppGen.h"
-#include "../../Source/LogAutomaton.h"
-
-using namespace vl::glr::parsergen;
-
-extern WString GetSourcePath();
-extern FilePath GetOutputDir(const WString& parserName);
-extern void WriteFilesIfChanged(FilePath outputDir, Dictionary<WString, WString>& files);
+#include "Generate.h"
 
 TEST_FILE
 {
