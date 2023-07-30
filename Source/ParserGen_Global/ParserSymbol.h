@@ -66,11 +66,12 @@ ParserSymbolManager
 
 #define GLR_PARSER_ERROR_LIST(ERROR_ITEM)\
 			/* AstSymbolManager */\
+			ERROR_ITEM(DuplicatedFileGroup,																			fileGroupName)\
 			ERROR_ITEM(DuplicatedFile,																				fileName)\
-			ERROR_ITEM(FileDependencyNotExists,																		fileName, dependency)\
-			ERROR_ITEM(FileCyclicDependency,																		fileName, dependency)\
-			ERROR_ITEM(DuplicatedSymbol,																			fileName, symbolName)\
-			ERROR_ITEM(DuplicatedSymbolGlobally,																	fileName, symbolName, anotherFileName)\
+			ERROR_ITEM(FileGroupDependencyNotExists,																fileGroupName, dependency)\
+			ERROR_ITEM(FileGroupCyclicDependency,																	fileGroupName, dependency)\
+			ERROR_ITEM(DuplicatedSymbolInFile,																		fileName, symbolName)\
+			ERROR_ITEM(DuplicatedSymbolInFileGroup,																	fileName, symbolName, anotherFileName)\
 			ERROR_ITEM(DuplicatedClassProp,																			fileName, className, propName)\
 			ERROR_ITEM(DuplicatedEnumItem,																			fileName, enumName, propName)\
 			ERROR_ITEM(BaseClassNotExists,																			fileName, className, typeName)\
@@ -95,6 +96,7 @@ ParserSymbolManager
 			ERROR_ITEM(LeftRecursionInjectHasNoContinuation,														ruleName, placeholder, targetRuleName)\
 			/* SyntaxAst(ResolveName) */\
 			ERROR_ITEM(RuleNameConflictedWithToken,																	ruleName)\
+			ERROR_ITEM(TypeNotUniqueInRule,																			ruleName, name)\
 			ERROR_ITEM(TypeNotExistsInRule,																			ruleName, name)\
 			ERROR_ITEM(TypeNotClassInRule,																			ruleName, name)\
 			ERROR_ITEM(TokenOrRuleNotExistsInRule,																	ruleName, name)\

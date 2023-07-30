@@ -322,81 +322,35 @@ AstDefFile
 				if (!symbols.Add(symbolName, symbol))
 				{
 					AddError(
-						ParserErrorType::DuplicatedSymbol,
+						ParserErrorType::DuplicatedSymbolInFile,
 						codeRange,
 						name,
 						symbolName
 						);
 				}
-				else if (!ownerManager->symbolMap.Keys().Contains(symbolName))
-				{
-					ownerManager->symbolMap.Add(symbolName, symbol);
-				}
-				else
+				else if (ownerGroup->symbolMap.Keys().Contains(symbolName))
 				{
 					AddError(
-						ParserErrorType::DuplicatedSymbolGlobally,
+						ParserErrorType::DuplicatedSymbolInFileGroup,
 						codeRange,
 						name,
 						symbolName,
-						ownerManager->symbolMap[symbolName]->Owner()->name
+						ownerGroup->symbolMap[symbolName]->Owner()->name
 						);
+				}
+				else
+				{
+					ownerGroup->symbolMap.Add(symbolName, symbol);
+					ownerGroup->ownerManager->symbolGroup.Add(symbolName, symbol);
 				}
 
 				return symbol;
 			}
 
-			AstDefFile::AstDefFile(ParserSymbolManager* _global, AstSymbolManager* _ownerManager, const WString& _name)
-				: global(_global)
-				, ownerManager(_ownerManager)
+			AstDefFile::AstDefFile(AstDefFileGroup* _ownerGroup, const WString& _name)
+				: ownerGroup(_ownerGroup)
 				, name(_name)
 			{
-			}
-
-			bool AstDefFile::AddDependency(const WString& dependency, ParsingTextRange codeRange)
-			{
-				if (dependencies.Contains(dependency)) return true;
-				if (!ownerManager->Files().Keys().Contains(dependency))
-				{
-					AddError(
-						ParserErrorType::FileDependencyNotExists,
-						codeRange,
-						name,
-						dependency
-						);
-					return false;
-				}
-
-				List<WString> visited;
-				visited.Add(dependency);
-				// TODO: (enumerable) foreach
-				for (vint i = 0; i < visited.Count(); i++)
-				{
-					auto currentName = visited[i];
-					if (currentName == name)
-					{
-						AddError(
-							ParserErrorType::FileCyclicDependency,
-							codeRange,
-							name,
-							dependency
-							);
-						return false;
-					}
-					auto current = ownerManager->Files()[currentName];
-					// TODO: (enumerable) foreach
-					for (vint j = 0; j < current->dependencies.Count(); j++)
-					{
-						auto dep = current->dependencies[j];
-						if (!visited.Contains(dep))
-						{
-							visited.Add(dep);
-						}
-					}
-				}
-
-				dependencies.Add(dependency);
-				return true;
 			}
 
 			AstEnumSymbol* AstDefFile::CreateEnum(const WString& symbolName, bool isPublic, ParsingTextRange codeRange)
@@ -414,6 +368,76 @@ AstDefFile
 			}
 
 /***********************************************************************
+AstDefFileGroup
+***********************************************************************/
+
+			AstDefFileGroup::AstDefFileGroup(AstSymbolManager* _ownerManager, const WString& _name)
+				: ownerManager(_ownerManager)
+				, name(_name)
+			{
+			}
+
+			bool AstDefFileGroup::AddDependency(const WString& dependency, ParsingTextRange codeRange)
+			{
+				if (dependencies.Contains(dependency)) return true;
+				if (!ownerManager->FileGroups().Keys().Contains(dependency))
+				{
+					AddError(
+						ParserErrorType::FileGroupDependencyNotExists,
+						codeRange,
+						name,
+						dependency
+						);
+					return false;
+				}
+
+				List<WString> visited;
+				visited.Add(dependency);
+				// TODO: (enumerable) foreach
+				for (vint i = 0; i < visited.Count(); i++)
+				{
+					auto currentName = visited[i];
+					if (currentName == name)
+					{
+						AddError(
+							ParserErrorType::FileGroupCyclicDependency,
+							codeRange,
+							name,
+							dependency
+							);
+						return false;
+					}
+					auto current = ownerManager->FileGroups()[currentName];
+					// TODO: (enumerable) foreach
+					for (vint j = 0; j < current->dependencies.Count(); j++)
+					{
+						auto dep = current->dependencies[j];
+						if (!visited.Contains(dep))
+						{
+							visited.Add(dep);
+						}
+					}
+				}
+
+				dependencies.Add(dependency);
+				return true;
+			}
+
+			AstDefFile* AstDefFileGroup::CreateFile(const WString& name)
+			{
+				auto file = new AstDefFile(this, name);
+				if (!files.Add(name, file))
+				{
+					AddError(
+						ParserErrorType::DuplicatedFile,
+						{},
+						name
+						);
+				}
+				return file;
+			}
+
+/***********************************************************************
 AstSymbolManager
 ***********************************************************************/
 
@@ -422,18 +446,17 @@ AstSymbolManager
 			{
 			}
 
-			AstDefFile* AstSymbolManager::CreateFile(const WString& name)
+			AstDefFileGroup* AstSymbolManager::CreateFileGroup(const WString& name)
 			{
-				auto file = new AstDefFile(&global, this, name);
-				if (!files.Add(name, file))
+				auto fileGroup = new AstDefFileGroup(this, name);
+				if (!fileGroups.Add(name, fileGroup))
 				{
-					file->AddError(
-						ParserErrorType::DuplicatedFile,
-						{},
-						name
+					global.AddError(
+						ParserErrorType::DuplicatedFileGroup,
+						{ ParserDefFileType::Ast,name }
 						);
 				}
-				return file;
+				return fileGroup;
 			}
 		}
 	}
