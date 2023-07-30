@@ -111,7 +111,12 @@ TEST_FILE
 			global.headerGuard = L"VCZH_PARSER2_UNITTEST_" + wupper(parserName);
 			syntaxManager.name = ruleName + L"Parser";
 
-			auto astDefFile = astManager.CreateFile(astName);
+			auto astDefFileGroup = astManager.CreateFileGroup(astName);
+			astDefFileGroup->cppNss.Add(wlower(parserName));
+			astDefFileGroup->refNss.Add(wlower(parserName));
+			astDefFileGroup->classPrefix = L"";
+
+			auto astDefFile = astDefFileGroup->CreateFile(astName);
 			auto output = GenerateParserFileNames(global);
 			GenerateAstFileNames(astManager, output);
 			GenerateSyntaxFileNames(syntaxManager, output);
@@ -126,9 +131,6 @@ TEST_FILE
 				auto formattedAst = GenerateToStream([&](TextWriter& writer) { TypeAstToCode(rewrittenAst, writer); });
 				File(dirOutput / (L"AstRewrittenActual[" + parserName + L"].txt")).WriteAllText(formattedAst, true, BomEncoder::Utf8);
 
-				astDefFile->cppNss.Add(wlower(parserName));
-				astDefFile->refNss.Add(wlower(parserName));
-				astDefFile->classPrefix = L"";
 				WriteAstFiles(astManager, output, files);
 			});
 
