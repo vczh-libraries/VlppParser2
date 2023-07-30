@@ -11,6 +11,13 @@ namespace vl
 
 			extern void PrintCppType(AstDefFileGroup* fileGroupContext, AstSymbol* propSymbol, stream::StreamWriter& writer);
 
+			LazyList<AstSymbol*> GetAllSymbols(AstSymbolManager& manager)
+			{
+				return Range<vint>(0, manager.Symbols().Count())
+					.SelectMany([&manager](vint index) { return From(manager.Symbols().GetByIndex(index)); })
+					;
+			}
+
 /***********************************************************************
 WriteAstAssemblerHeaderFile
 ***********************************************************************/
@@ -23,7 +30,7 @@ WriteAstAssemblerHeaderFile
 						vint index = 0;
 						writer.WriteLine(prefix + L"enum class " + manager.Global().name + L"Classes : vl::vint32_t");
 						writer.WriteLine(prefix + L"{");
-						for (auto typeSymbol : manager.Symbols().Values())
+						for (auto typeSymbol : GetAllSymbols(manager))
 						{
 							if (auto classSymbol = dynamic_cast<AstClassSymbol*>(typeSymbol))
 							{
@@ -39,7 +46,7 @@ WriteAstAssemblerHeaderFile
 						writer.WriteLine(L"");
 						writer.WriteLine(prefix + L"enum class " + manager.Global().name + L"Fields : vl::vint32_t");
 						writer.WriteLine(prefix + L"{");
-						for (auto typeSymbol : manager.Symbols().Values())
+						for (auto typeSymbol : GetAllSymbols(manager))
 						{
 							if (auto classSymbol = dynamic_cast<AstClassSymbol*>(typeSymbol))
 							{
@@ -99,7 +106,7 @@ WriteAstAssemblerCppFile
 						writer.WriteLine(prefix + L"\tauto cppTypeName = " + manager.Global().name + L"CppTypeName((" + manager.Global().name + L"Classes)type);");
 						writer.WriteLine(prefix + L"\tswitch((" + manager.Global().name + L"Classes)type)");
 						writer.WriteLine(prefix + L"\t{");
-						for (auto typeSymbol : manager.Symbols().Values())
+						for (auto typeSymbol : GetAllSymbols(manager))
 						{
 							if (auto classSymbol = dynamic_cast<AstClassSymbol*>(typeSymbol))
 							{
@@ -129,7 +136,7 @@ WriteAstAssemblerCppFile
 						writer.WriteLine(prefix + L"\tauto cppFieldName = " + manager.Global().name + L"CppFieldName((" + manager.Global().name + L"Fields)field);");
 
 						List<AstClassPropSymbol*> props;
-						for (auto typeSymbol : manager.Symbols().Values())
+						for (auto typeSymbol : GetAllSymbols(manager))
 						{
 							if (auto classSymbol = dynamic_cast<AstClassSymbol*>(typeSymbol))
 							{
@@ -182,7 +189,7 @@ WriteAstAssemblerCppFile
 						writer.WriteLine(prefix + L"\tauto cppFieldName = " + manager.Global().name + L"CppFieldName((" + manager.Global().name + L"Fields)field);");
 
 						List<AstClassPropSymbol*> props;
-						for (auto typeSymbol : manager.Symbols().Values())
+						for (auto typeSymbol : GetAllSymbols(manager))
 						{
 							if (auto classSymbol = dynamic_cast<AstClassSymbol*>(typeSymbol))
 							{
@@ -232,7 +239,7 @@ WriteAstAssemblerCppFile
 						writer.WriteLine(prefix + L"\tauto cppFieldName = " + manager.Global().name + L"CppFieldName((" + manager.Global().name + L"Fields)field);");
 
 						List<AstClassPropSymbol*> props;
-						for (auto typeSymbol : manager.Symbols().Values())
+						for (auto typeSymbol : GetAllSymbols(manager))
 						{
 							if (auto classSymbol = dynamic_cast<AstClassSymbol*>(typeSymbol))
 							{
@@ -412,7 +419,7 @@ WriteAstAssemblerCppFile
 						writer.WriteLine(prefix + L"\tauto cppTypeName = " + manager.Global().name + L"CppTypeName((" + manager.Global().name + L"Classes)type);");
 
 						Dictionary<AstClassSymbol*, AstClassSymbol*> resolvables;
-						for (auto typeSymbol : manager.Symbols().Values())
+						for (auto typeSymbol : GetAllSymbols(manager))
 						{
 							if (auto classSymbol = dynamic_cast<AstClassSymbol*>(typeSymbol))
 							{
@@ -434,7 +441,7 @@ WriteAstAssemblerCppFile
 							writer.WriteLine(prefix + L"\tswitch((" + manager.Global().name + L"Classes)type)");
 							writer.WriteLine(prefix + L"\t{");
 
-							for (auto typeSymbol : manager.Symbols().Values())
+							for (auto typeSymbol : GetAllSymbols(manager))
 							{
 								if (auto classSymbol = dynamic_cast<AstClassSymbol*>(typeSymbol))
 								{
