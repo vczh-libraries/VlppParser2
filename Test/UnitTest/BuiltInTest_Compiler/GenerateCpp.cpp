@@ -109,7 +109,6 @@ TEST_FILE
 		Folder(dirGenerated).Create(true);
 	}
 
-	Ptr<GlrAstFile> combinedAstFile;
 	List<Pair<WString, Ptr<GlrAstFile>>> astNamedFiles;
 	List<Ptr<GlrSyntaxFile>> syntaxFiles;
 
@@ -178,7 +177,7 @@ TEST_FILE
 			CompileAst(astManager, astFiles);
 			TEST_ASSERT(global.Errors().Count() == 0);
 
-			combinedAstFile = TypeSymbolToAst(astManager, false);
+			auto combinedAstFile = TypeSymbolToAst(astManager, false);
 			auto rewrittenAst = TypeSymbolToAst(astManager, true);
 			auto formattedAst = GenerateToStream([&](TextWriter& writer) { TypeAstToCode(rewrittenAst, writer); });
 			File(dirOutput / (L"AstRewrittenActual[BuiltIn-Cpp].txt")).WriteAllText(formattedAst, true, BomEncoder::Utf8);
