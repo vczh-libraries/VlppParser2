@@ -9,7 +9,7 @@ namespace vl
 			using namespace collections;
 			using namespace stream;
 
-			extern void PrintCppType(AstDefFile* fileContext, AstSymbol* propSymbol, stream::StreamWriter& writer);
+			extern void PrintCppType(AstDefFileGroup* fileGroupContext, AstSymbol* propSymbol, stream::StreamWriter& writer);
 
 /***********************************************************************
 WriteEmptyVisitorHeaderFile
@@ -17,17 +17,17 @@ WriteEmptyVisitorHeaderFile
 
 			void WriteEmptyVisitorHeaderFile(AstDefFileGroup* group, Ptr<CppAstGenOutput> output, stream::StreamWriter& writer)
 			{
-				WriteAstUtilityHeaderFile(file, output, L"empty_visitor", writer, [&](const WString& prefix)
+				WriteAstUtilityHeaderFile(group, output, L"empty_visitor", writer, [&](const WString& prefix)
 				{
-					for (auto name : file->SymbolOrder())
+					for (auto name : group->SymbolOrder())
 					{
-						if (auto classSymbol = dynamic_cast<AstClassSymbol*>(file->Symbols()[name]))
+						if (auto classSymbol = dynamic_cast<AstClassSymbol*>(group->Symbols()[name]))
 						{
 							if (classSymbol->derivedClasses.Count() > 0)
 							{
 								writer.WriteLine(prefix + L"/// <summary>An empty visitor, overriding all abstract methods with empty implementations.</summary>");
 								writer.WriteString(prefix + L"class " + name + L"Visitor : public vl::Object, public ");
-								PrintCppType(file, classSymbol, writer);
+								PrintCppType(group, classSymbol, writer);
 								writer.WriteLine(L"::IVisitor");
 								writer.WriteLine(prefix + L"{");
 
@@ -38,7 +38,7 @@ WriteEmptyVisitorHeaderFile
 									if (childSymbol->derivedClasses.Count() > 0)
 									{
 										writer.WriteString(prefix + L"\tvirtual void Dispatch(");
-										PrintCppType(file, childSymbol, writer);
+										PrintCppType(group, childSymbol, writer);
 										writer.WriteLine(L"* node) = 0;");
 									}
 								}
@@ -49,7 +49,7 @@ WriteEmptyVisitorHeaderFile
 								for (auto childSymbol : classSymbol->derivedClasses)
 								{
 									writer.WriteString(prefix + L"\tvoid Visit(");
-									PrintCppType(file, childSymbol, writer);
+									PrintCppType(group, childSymbol, writer);
 									writer.WriteLine(L"* node) override;");
 								}
 
@@ -67,11 +67,11 @@ WriteEmptyVisitorCppFile
 
 			void WriteEmptyVisitorCppFile(AstDefFileGroup* group, Ptr<CppAstGenOutput> output, stream::StreamWriter& writer)
 			{
-				WriteAstUtilityCppFile(file, output->emptyH, L"empty_visitor", writer, [&](const WString& prefix)
+				WriteAstUtilityCppFile(group, output->emptyH, L"empty_visitor", writer, [&](const WString& prefix)
 				{
-					for (auto name : file->SymbolOrder())
+					for (auto name : group->SymbolOrder())
 					{
-						if (auto classSymbol = dynamic_cast<AstClassSymbol*>(file->Symbols()[name]))
+						if (auto classSymbol = dynamic_cast<AstClassSymbol*>(group->Symbols()[name]))
 						{
 							if (classSymbol->derivedClasses.Count() > 0)
 							{
@@ -86,7 +86,7 @@ WriteEmptyVisitorCppFile
 								{
 									writer.WriteLine(L"");
 									writer.WriteString(prefix + L"void " + classSymbol->Name() + L"Visitor::Visit(");
-									PrintCppType(file, childSymbol, writer);
+									PrintCppType(group, childSymbol, writer);
 									writer.WriteLine(L"* node)");
 									writer.WriteLine(prefix + L"{");
 									if (childSymbol->derivedClasses.Count() > 0)

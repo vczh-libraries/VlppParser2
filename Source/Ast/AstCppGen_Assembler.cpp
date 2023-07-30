@@ -9,7 +9,7 @@ namespace vl
 			using namespace collections;
 			using namespace stream;
 
-			extern void PrintCppType(AstDefFile* fileContext, AstSymbol* propSymbol, stream::StreamWriter& writer);
+			extern void PrintCppType(AstDefFileGroup* fileGroupContext, AstSymbol* propSymbol, stream::StreamWriter& writer);
 
 /***********************************************************************
 WriteAstAssemblerHeaderFile

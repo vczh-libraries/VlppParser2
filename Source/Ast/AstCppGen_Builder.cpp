@@ -9,7 +9,7 @@ namespace vl
 			using namespace collections;
 			using namespace stream;
 
-			extern void PrintCppType(AstDefFile* fileContext, AstSymbol* propSymbol, stream::StreamWriter& writer);
+			extern void PrintCppType(AstDefFileGroup* fileGroupContext, AstSymbol* propSymbol, stream::StreamWriter& writer);
 
 /***********************************************************************
 WriteAstBuilderHeaderFile
@@ -17,9 +17,9 @@ WriteAstBuilderHeaderFile
 
 			void WriteAstBuilderHeaderFile(AstDefFileGroup* group, Ptr<CppAstGenOutput> output, stream::StreamWriter& writer)
 			{
-				WriteAstUtilityHeaderFile(file, output, L"builder", writer, [&](const WString& prefix)
+				WriteAstUtilityHeaderFile(group, output, L"builder", writer, [&](const WString& prefix)
 				{
-					for(auto typeSymbol : file->Symbols().Values())
+					for(auto typeSymbol : group->Symbols().Values())
 					{
 						if (auto classSymbol = dynamic_cast<AstClassSymbol*>(typeSymbol))
 						{
@@ -28,7 +28,7 @@ WriteAstBuilderHeaderFile
 								WString className = L"Make" + classSymbol->Name();
 								writer.WriteString(prefix + L"class " + className);
 								writer.WriteString(L" : public vl::glr::ParsingAstBuilder<");
-								PrintCppType(file, classSymbol, writer);
+								PrintCppType(group, classSymbol, writer);
 								writer.WriteLine(L">");
 								writer.WriteLine(prefix + L"{");
 								writer.WriteLine(prefix + L"public:");
@@ -47,13 +47,13 @@ WriteAstBuilderHeaderFile
 											if (dynamic_cast<AstEnumSymbol*>(propSymbol->propSymbol))
 											{
 												writer.WriteString(prefix + L"\t" + className + L"& " + propSymbol->Name() + L"(");
-												PrintCppType(file, propSymbol->propSymbol, writer);
+												PrintCppType(group, propSymbol->propSymbol, writer);
 												writer.WriteLine(L" value);");
 												break;
 											}
 										case AstPropType::Array:
 											writer.WriteString(prefix + L"\t" + className + L"& " + propSymbol->Name() + L"(const vl::Ptr<");
-											PrintCppType(file, propSymbol->propSymbol, writer);
+											PrintCppType(group, propSymbol->propSymbol, writer);
 											writer.WriteLine(L">& value);");
 											break;
 										}
@@ -74,9 +74,9 @@ WriteAstBuilderCppFile
 
 			void WriteAstBuilderCppFile(AstDefFileGroup* group, Ptr<CppAstGenOutput> output, stream::StreamWriter& writer)
 			{
-				WriteAstUtilityCppFile(file, output->builderH, L"builder", writer, [&](const WString& prefix)
+				WriteAstUtilityCppFile(group, output->builderH, L"builder", writer, [&](const WString& prefix)
 				{
-					for (auto typeSymbol : file->Symbols().Values())
+					for (auto typeSymbol : group->Symbols().Values())
 					{
 						if (auto classSymbol = dynamic_cast<AstClassSymbol*>(typeSymbol))
 						{
@@ -107,13 +107,13 @@ WriteAstBuilderCppFile
 											if (dynamic_cast<AstEnumSymbol*>(propSymbol->propSymbol))
 											{
 												writer.WriteString(prefix + className + L"& " + className + L"::" + propSymbol->Name() + L"(");
-												PrintCppType(file, propSymbol->propSymbol, writer);
+												PrintCppType(group, propSymbol->propSymbol, writer);
 												writer.WriteLine(L" value)");
 											}
 											if (dynamic_cast<AstClassSymbol*>(propSymbol->propSymbol))
 											{
 												writer.WriteString(prefix + className + L"& " + className + L"::" + propSymbol->Name() + L"(const vl::Ptr<");
-												PrintCppType(file, propSymbol->propSymbol, writer);
+												PrintCppType(group, propSymbol->propSymbol, writer);
 												writer.WriteLine(L">& value)");
 											}
 											writer.WriteLine(prefix + L"{");
@@ -123,7 +123,7 @@ WriteAstBuilderCppFile
 											break;
 										case AstPropType::Array:
 											writer.WriteString(prefix + className + L"& " + className + L"::" + propSymbol->Name() + L"(const vl::Ptr<");
-											PrintCppType(file, propSymbol->propSymbol, writer);
+											PrintCppType(group, propSymbol->propSymbol, writer);
 											writer.WriteLine(L">& value)");
 											writer.WriteLine(prefix + L"{");
 											writer.WriteLine(prefix + L"\tnode->" + propSymbol->Name() + L".Add(value);");

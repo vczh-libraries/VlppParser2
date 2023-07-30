@@ -48,7 +48,7 @@ PrintCppType
 				Value,
 			};
 
-			void PrintAstType(AstDefFile* fileContext, AstPropType propType, AstSymbol* propSymbol, PrintTypePurpose purpose, stream::StreamWriter& writer)
+			void PrintAstType(AstDefFileGroup* fileGroupContext, AstPropType propType, AstSymbol* propSymbol, PrintTypePurpose purpose, stream::StreamWriter& writer)
 			{
 				if (propType == AstPropType::Token)
 				{
@@ -90,14 +90,14 @@ PrintCppType
 				}
 			}
 
-			void PrintFieldType(AstDefFile* fileContext, AstPropType propType, AstSymbol* propSymbol, stream::StreamWriter& writer)
+			void PrintFieldType(AstDefFileGroup* fileGroupContext, AstPropType propType, AstSymbol* propSymbol, stream::StreamWriter& writer)
 			{
 				PrintAstType(fileContext, propType, propSymbol, PrintTypePurpose::Value, writer);
 			}
 
-			void PrintCppType(AstDefFile* fileContext, AstSymbol* propSymbol, stream::StreamWriter& writer)
+			void PrintCppType(AstDefFileGroup* fileGroupContext, AstSymbol* propSymbol, stream::StreamWriter& writer)
 			{
-				PrintAstType(fileContext, AstPropType::Type, propSymbol, PrintTypePurpose::TypeName, writer);
+				PrintAstType(fileGroupContext, AstPropType::Type, propSymbol, PrintTypePurpose::TypeName, writer);
 			}
 
 /***********************************************************************
