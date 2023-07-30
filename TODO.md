@@ -2,10 +2,16 @@
 
 ## Next task
 
-- AST file groups
-  - File groups has non-cyclic dependencies
-  - A file group could have multiple AST files
-  - C++ codegen are created per groups
+- AST file groups.
+  - File groups has non-cyclic dependencies.
+  - A file group could have multiple AST files.
+  - An AST file only sees:
+    - Types defined in this file.
+    - `@public` types defined in the same file group.
+    - `@extern` types defined in different file groups.
+  - C++ codegen are created per groups.
+    - Only AST classes `#include` depended files groups, visitors do not.
+    - When a visitor need to call types in different file groups, leave it abstract.
   - Support multiple ast/syntax files in GlrParserGen.
     - Separate Workflow ast/syntax to multiple files.
 - Rewrite and remove switch before removing PrefixMerge.
