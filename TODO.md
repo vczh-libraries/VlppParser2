@@ -2,8 +2,8 @@
 
 ## Next task
 
-- Support multiple ast/syntax files in GlrParserGen.
-  - Separate Workflow ast/syntax to multiple files.
+- Separate Workflow ast/syntax to multiple files.
+  - Port to Workflow repo.
 - Rewrite and remove switch before removing PrefixMerge.
   - Rename `LeftRecursionPlaceholderMixedWithSwitches`
 - Multiple LRI following one Target
@@ -40,7 +40,7 @@
   - An AST file only sees:
     - Types defined in this file.
     - `@public` types defined in the same file group.
-    - `@extern` types defined in different file groups **as field type only**.
+    - `@extern` types defined in different **depended** file groups **as field type only**.
   - C++ codegen are created per groups.
     - Only AST classes `#include` depended files groups, visitors do not.
     - When a visitor need to call types in different file groups, leave it abstract.
@@ -71,6 +71,7 @@
 - `X ::= ([a] | [b]) c` fails because multiple optional syntax create multiple epsilon transition between the same pair of states.
   - Possible solution: if multiple combinations of consecutive epsilon transitions makes an epsilon transition between two states, treat them as one single epsilon transition.
     - Merge conditions in these epsilon transitions properly.
+  - Or one more phase before generationg automaton for optimization to merge states and edges.
 - Optimize `CrossReferencedNFA` to merge prefix (two states can be merged if their `InEdges` are identical, `FromState` in `InEdges` are replaced by merged states).
 - `JsonEscapeString` `JsonUnescapeString` handle surrogate pairs correctly.
 - Review all comments.
@@ -91,7 +92,6 @@
   - Escaping and Unescaping pairs (instead of only unescaping)
   - Calculate ambiguous **ToString** cases
   - Generate **ToString** algorithm
-- Loop priority
 - Generate LL parser if possible (print error if failed but forced to do)
 - Generate SLR parser if possible (print error if failed but forced to do)
 - Document the algorithm in a markdown file
@@ -105,6 +105,7 @@
 - New priority syntax
   - Priority in alternative syntax, but all branches must not consume empty input series (add compile error)
   - Priority in left recursive transition (which clause starts this competition?)
+  - Priority in loop
 - Custom error in syntax.
 - Error recovering.
 - Escaping and unescaping functions
