@@ -104,7 +104,6 @@ ParserSymbolManager
 			/* SyntaxSymbolManager */\
 			ERROR_ITEM(DuplicatedRule,																				ruleName)\
 			ERROR_ITEM(RuleIsIndirectlyLeftRecursive,																ruleName)													/* Indirect left recursion must be resolved before */\
-			ERROR_ITEM(LeftRecursionPlaceholderMixedWithSwitches,													ruleName, placeholder, targetRuleName)\
 			ERROR_ITEM(LeftRecursionInjectHasNoContinuation,														ruleName, placeholder, targetRuleName)\
 			/* SyntaxAst(ResolveName) */\
 			ERROR_ITEM(RuleNameConflictedWithToken,																	ruleName)\
@@ -136,7 +135,6 @@ ParserSymbolManager
 			ERROR_ITEM(PushedSwitchIsNotTested,																		ruleName, switchName)\
 			ERROR_ITEM(PrefixMergeAffectedBySwitches,																ruleName, prefixMergeRule, switchName)\
 			/* SyntaxAst(RewriteSyntax_Switch, condition) */\
-			ERROR_ITEM(NoSwitchUnaffectedRule)\
 			ERROR_ITEM(SwitchUnaffectedRuleExpandedToNoClause,														ruleName)\
 			ERROR_ITEM(SwitchAffectedRuleExpandedToNoClause,														ruleName, expandedRuleName)\
 			/* SyntaxAst(ValidateTypes) */\

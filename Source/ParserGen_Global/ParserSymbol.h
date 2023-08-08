@@ -91,7 +91,7 @@ ParserSymbolManager
 			ERROR_ITEM(TokenFragmentNotExists,																		fragmentName)\
 			/* SyntaxSymbolManager */\
 			ERROR_ITEM(DuplicatedRule,																				ruleName)\
-			ERROR_ITEM(RuleIsIndirectlyLeftRecursive,																ruleName)\
+			ERROR_ITEM(RuleIsIndirectlyLeftRecursive,																ruleName)													/* Indirect left recursion must be resolved before */\
 			ERROR_ITEM(LeftRecursionInjectHasNoContinuation,														ruleName, placeholder, targetRuleName)\
 			/* SyntaxAst(ResolveName) */\
 			ERROR_ITEM(RuleNameConflictedWithToken,																	ruleName)\
