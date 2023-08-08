@@ -124,7 +124,6 @@ ParserSymbolManager
 			ERROR_ITEM(PushedSwitchIsNotTested,																		ruleName, switchName)\
 			ERROR_ITEM(PrefixMergeAffectedBySwitches,																ruleName, prefixMergeRule, switchName)\
 			/* SyntaxAst(RewriteSyntax_Switch, condition) */\
-			ERROR_ITEM(NoSwitchUnaffectedRule)\
 			ERROR_ITEM(SwitchUnaffectedRuleExpandedToNoClause,														ruleName)\
 			ERROR_ITEM(SwitchAffectedRuleExpandedToNoClause,														ruleName, expandedRuleName)\
 			/* SyntaxAst(ValidateTypes) */\

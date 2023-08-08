@@ -12,7 +12,7 @@ TEST_FILE
 	TypeParser typeParser;
 	RuleParser ruleParser;
 
-	TEST_CASE(L"TypeNotExistsInRule 1")
+	TEST_CASE(L"TokenOrRuleNotExistsInRule 1")
 	{
 		const wchar_t* syntaxCode =
 LR"SYNTAX(
@@ -32,7 +32,7 @@ Exp1
 		);
 	});
 
-	TEST_CASE(L"TypeNotExistsInRule 2")
+	TEST_CASE(L"TokenOrRuleNotExistsInRule 2")
 	{
 		const wchar_t* syntaxCode =
 LR"SYNTAX(
@@ -52,7 +52,7 @@ Exp1
 		);
 	});
 
-	TEST_CASE(L"TypeNotExistsInRule 3")
+	TEST_CASE(L"TokenOrRuleNotExistsInRule 3")
 	{
 		const wchar_t* syntaxCode =
 LR"SYNTAX(
@@ -72,7 +72,7 @@ Exp1
 		);
 	});
 
-	TEST_CASE(L"TypeNotExistsInRule 4")
+	TEST_CASE(L"TokenOrRuleNotExistsInRule 4")
 	{
 		const wchar_t* syntaxCode =
 LR"SYNTAX(
@@ -92,7 +92,7 @@ Exp1
 		);
 	});
 
-	TEST_CASE(L"TypeNotExistsInRule 5")
+	TEST_CASE(L"TokenOrRuleNotExistsInRule 5")
 	{
 		const wchar_t* syntaxCode =
 LR"SYNTAX(
@@ -114,7 +114,7 @@ Exp1
 		);
 	});
 
-	TEST_CASE(L"TypeNotExistsInRule 6")
+	TEST_CASE(L"TokenOrRuleNotExistsInRule 6")
 	{
 		const wchar_t* syntaxCode =
 LR"SYNTAX(

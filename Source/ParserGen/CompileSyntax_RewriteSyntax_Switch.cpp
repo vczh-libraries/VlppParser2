@@ -760,11 +760,7 @@ RewriteSyntax
 
 				if (sContext.ruleAffectedSwitches.Count() == syntaxManager.Rules().Count())
 				{
-					syntaxManager.AddError(
-						ParserErrorType::NoSwitchUnaffectedRule,
-						{}
-						);
-					return nullptr;
+					CHECK_FAIL(L"vl::glr::parsergen::RewriteSyntax_Switch(...)#Internal error: This function should not be called when there is no switch used in any rule.");
 				}
 
 				RewritingContext rewritingContext;

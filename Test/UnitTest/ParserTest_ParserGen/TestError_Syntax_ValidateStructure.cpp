@@ -225,6 +225,63 @@ Exp1
 			);
 	});
 
+	TEST_CASE(L"NegativeOptionalEndsAClause 1")
+	{
+		const wchar_t* syntaxCode =
+LR"SYNTAX(
+Exp0
+  ::= NUM:value -[NUM:value] as NumExpr
+  ;
+)SYNTAX";
+		ExpectError(
+			typeParser,
+			ruleParser,
+			astCode,
+			lexerCode,
+			syntaxCode,
+			{ ParserErrorType::NegativeOptionalEndsAClause,L"Exp0" }
+			);
+	});
+
+	TEST_CASE(L"NegativeOptionalEndsAClause 2")
+	{
+		const wchar_t* syntaxCode =
+LR"SYNTAX(
+Exp0
+  ::= NUM:value -[NUM:value] [NUM:value] as NumExpr
+  ;
+)SYNTAX";
+		ExpectError(
+			typeParser,
+			ruleParser,
+			astCode,
+			lexerCode,
+			syntaxCode,
+			{ ParserErrorType::NegativeOptionalEndsAClause,L"Exp0" }
+			);
+	});
+
+	TEST_CASE(L"NegativeOptionalEndsAClause 3")
+	{
+		const wchar_t* syntaxCode =
+LR"SYNTAX(
+Exp0
+  ::= NUM:value as NumExpr
+  ;
+Exp1
+  ::= Exp0:func -[Exp0] {Exp0:args} as CallExpr
+  ;
+)SYNTAX";
+		ExpectError(
+			typeParser,
+			ruleParser,
+			astCode,
+			lexerCode,
+			syntaxCode,
+			{ ParserErrorType::NegativeOptionalEndsAClause,L"Exp1" }
+			);
+	});
+
 	TEST_CASE(L"FieldAssignedMoreThanOnce 1")
 	{
 		const wchar_t* syntaxCode =

@@ -153,6 +153,29 @@ Exp1
 			);
 	});
 
+	TEST_CASE(L"CyclicDependedRuleTypeIncompatible")
+	{
+		const wchar_t* syntaxCode =
+LR"SYNTAX(
+Exp0
+  ::= NUM:value as NumExpr
+  ::= "+" !Exp1
+  ;
+Exp1
+  ::= "*" as Module
+  ::= "+" !Exp0
+  ;
+)SYNTAX";
+		ExpectError(
+			typeParser,
+			ruleParser,
+			astCode,
+			lexerCode,
+			syntaxCode,
+			{ ParserErrorType::CyclicDependedRuleTypeIncompatible,L"Exp1",L"Module, NumExpr"}
+			);
+	});
+
 	TEST_CASE(L"ReuseClauseCannotResolveToDeterministicType")
 	{
 		const wchar_t* syntaxCode =

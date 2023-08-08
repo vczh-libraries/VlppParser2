@@ -5,7 +5,8 @@
 - Separate Workflow ast/syntax to multiple files.
   - Port to Workflow repo.
 - Rewrite and remove switch before removing PrefixMerge.
-  - Rename `LeftRecursionPlaceholderMixedWithSwitches`
+  - Rename and test `LeftRecursionPlaceholderMixedWithSwitches`
+  - Test `LeftRecursionInjectHasNoContinuation`
 - Multiple LRI following one Target
 - Generate multiple level of LRI from prefix_merge
   - Remove `PrefixExtractionAffectedRuleReferencedAnother`

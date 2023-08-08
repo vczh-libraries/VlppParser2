@@ -14,7 +14,7 @@ using namespace TestError_Lexer_TestObjects;
 
 TEST_FILE
 {
-	TEST_CASE(L"DuplicatedClassProp 1")
+	TEST_CASE(L"InvalidTokenDefinition 1")
 	{
 		const wchar_t* input =
 LR"LEXER(
@@ -23,7 +23,7 @@ discard
 		ExpectError(input, { ParserErrorType::InvalidTokenDefinition,L"discard" });
 	});
 
-	TEST_CASE(L"DuplicatedClassProp 2")
+	TEST_CASE(L"InvalidTokenDefinition 2")
 	{
 		const wchar_t* input =
 LR"LEXER(
@@ -32,7 +32,7 @@ ID
 		ExpectError(input, { ParserErrorType::InvalidTokenDefinition,L"ID" });
 	});
 
-	TEST_CASE(L"DuplicatedClassProp 3")
+	TEST_CASE(L"InvalidTokenDefinition 3")
 	{
 		const wchar_t* input =
 LR"LEXER(
@@ -77,5 +77,24 @@ LR"LEXER(
 ID:(<capture>something)
 )LEXER";
 		ExpectError(input, { ParserErrorType::TokenRegexNotPure,L"ID" });
+	});
+
+	TEST_CASE(L"DuplicatedTokenFragment")
+	{
+		const wchar_t* input =
+LR"LEXER(
+$ID:/w+
+$ID:/w+
+)LEXER";
+		ExpectError(input, { ParserErrorType::DuplicatedTokenFragment,L"$ID" });
+	});
+
+	TEST_CASE(L"TokenFragmentNotExists")
+	{
+		const wchar_t* input =
+LR"LEXER(
+ID:\d{$Unexisting}\d
+)LEXER";
+		ExpectError(input, { ParserErrorType::TokenFragmentNotExists,L"$Unexisting" });
 	});
 }
