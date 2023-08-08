@@ -1614,3 +1614,84 @@
 		> rule: _LongType -> [105][Module]<< !_PrimitiveTypeOnly ( lri:(Type)->_Expr | lri:(Type)->_LongType @ ( lri:(Type)->_Expr | lri:<skip> ) | lri:<skip> ) >>
 			+ ReopenObject()
 
+[107][ExprModule] BEGIN 
+[RULE: 14][CLAUSE: -1]
+	token: "(" -> [19][_PrimitiveExprOnly]<< "(" @ !_Expr_Raw ")" >>
+		- DelayFieldAssignment()
+		- DelayFieldAssignment()
+		- DelayFieldAssignment()
+		> rule: _Expr_Raw -> [109][ExprModule]<< !_Expr_Raw @ >>
+		> rule: _PrimitiveExprOnly -> [86][_Expr_Raw]<< !_PrimitiveExprOnly @ ( lri:(Expr)->_Expr | lri:<skip> ) >>
+			+ ReopenObject()
+	token: "const" -> [11][_PrimitiveTypeOnly]< "const" @ _PrimitiveShared >
+		- DelayFieldAssignment()
+		- DelayFieldAssignment()
+		- BeginObject(ConstType)
+		> rule: _Expr_Raw -> [109][ExprModule]<< !_Expr_Raw @ >>
+		> rule: _PrimitiveTypeOnly -> [94][_Expr_Raw]<< !_PrimitiveTypeOnly @ ( lri:(Type)->_Expr | lri:(Type)->_LongType ( lri:(Type)->_Expr ) ) >>
+			+ ReopenObject()
+	token: "const" -> [12][_PrimitiveTypeOnly]< "const" @ _PrimitiveTypeOnly >
+		- DelayFieldAssignment()
+		- DelayFieldAssignment()
+		- BeginObject(ConstType)
+		> rule: _Expr_Raw -> [109][ExprModule]<< !_Expr_Raw @ >>
+		> rule: _PrimitiveTypeOnly -> [94][_Expr_Raw]<< !_PrimitiveTypeOnly @ ( lri:(Type)->_Expr | lri:(Type)->_LongType ( lri:(Type)->_Expr ) ) >>
+			+ ReopenObject()
+	token: ID -> [2][_Name]< ID @ >
+		- DelayFieldAssignment()
+		- DelayFieldAssignment()
+		- DelayFieldAssignment()
+		- BeginObject(Name)
+		+ Token()
+		+ Field(Name::name)
+		> rule: _Expr_Raw -> [109][ExprModule]<< !_Expr_Raw @ >>
+		> rule: _PrimitiveShared -> [90][_Expr_Raw]<< !_PrimitiveShared @ ( lri:(Shared)->_Expr | lri:(Shared)->_LongType ( lri:(Type)->_Expr ) | lri:<skip> ) >>
+			+ ReopenObject()
+		> rule: _Name -> [8][_PrimitiveShared]<< !_Name @ >>
+
+[108][ExprModule] END [ENDING]
+[RULE: 14][CLAUSE: -1]
+
+[109][ExprModule]<< !_Expr_Raw @ >>
+[RULE: 14][CLAUSE: 0]
+	ending -> [108][ExprModule] END [ENDING]
+		- ReopenObject()
+		- EndObject()
+
+[110][TypeModule] BEGIN 
+[RULE: 15][CLAUSE: -1]
+	token: "const" -> [11][_PrimitiveTypeOnly]< "const" @ _PrimitiveShared >
+		- DelayFieldAssignment()
+		- DelayFieldAssignment()
+		- BeginObject(ConstType)
+		> rule: _LongType -> [112][TypeModule]<< !_LongType @ >>
+		> rule: _PrimitiveTypeOnly -> [32][_LongType]<< !_PrimitiveTypeOnly @ >>
+			+ ReopenObject()
+	token: "const" -> [12][_PrimitiveTypeOnly]< "const" @ _PrimitiveTypeOnly >
+		- DelayFieldAssignment()
+		- DelayFieldAssignment()
+		- BeginObject(ConstType)
+		> rule: _LongType -> [112][TypeModule]<< !_LongType @ >>
+		> rule: _PrimitiveTypeOnly -> [32][_LongType]<< !_PrimitiveTypeOnly @ >>
+			+ ReopenObject()
+	token: ID -> [2][_Name]< ID @ >
+		- DelayFieldAssignment()
+		- DelayFieldAssignment()
+		- DelayFieldAssignment()
+		- BeginObject(Name)
+		+ Token()
+		+ Field(Name::name)
+		> rule: _LongType -> [112][TypeModule]<< !_LongType @ >>
+		> rule: _PrimitiveShared -> [31][_LongType]<< !_PrimitiveShared @ >>
+			+ ReopenObject()
+		> rule: _Name -> [8][_PrimitiveShared]<< !_Name @ >>
+
+[111][TypeModule] END [ENDING]
+[RULE: 15][CLAUSE: -1]
+
+[112][TypeModule]<< !_LongType @ >>
+[RULE: 15][CLAUSE: 0]
+	ending -> [111][TypeModule] END [ENDING]
+		- ReopenObject()
+		- EndObject()
+

@@ -472,3 +472,31 @@
 	leftrec -> [63][Module]<< !_PrimitiveTypeOnly @ ( lri:(Type)->_LongType ) >>
 		+ ReopenObject()
 
+[65][ExprModule] BEGIN 
+[RULE: 9][CLAUSE: -1]
+	rule: _Expr -> [67][ExprModule]<< !_Expr @ >>
+		- DelayFieldAssignment()
+
+[66][ExprModule] END [ENDING]
+[RULE: 9][CLAUSE: -1]
+
+[67][ExprModule]<< !_Expr @ >>
+[RULE: 9][CLAUSE: 0]
+	ending -> [66][ExprModule] END [ENDING]
+		- ReopenObject()
+		- EndObject()
+
+[68][TypeModule] BEGIN 
+[RULE: 10][CLAUSE: -1]
+	rule: _LongType -> [70][TypeModule]<< !_LongType @ >>
+		- DelayFieldAssignment()
+
+[69][TypeModule] END [ENDING]
+[RULE: 10][CLAUSE: -1]
+
+[70][TypeModule]<< !_LongType @ >>
+[RULE: 10][CLAUSE: 0]
+	ending -> [69][TypeModule] END [ENDING]
+		- ReopenObject()
+		- EndObject()
+

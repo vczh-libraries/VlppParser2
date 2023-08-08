@@ -1182,3 +1182,39 @@
 	epsilon -> [266][Module]<< @ !_PrimitiveTypeOnly ( lri:(Type)->_Expr | lri:(Type)->_LongType ( lri:(Type)->_Expr | lri:<skip> ) | lri:<skip> ) >>
 		- DelayFieldAssignment()
 
+[270][ExprModule]<< !_Expr_Raw >> @[ENDING]
+[RULE: 14][CLAUSE: 0]
+
+[271][ExprModule]<< !_Expr_Raw @ >>
+[RULE: 14][CLAUSE: 0]
+	epsilon -> [270][ExprModule]<< !_Expr_Raw >> @[ENDING]
+		- EndObject()
+
+[272][ExprModule]<< @ !_Expr_Raw >>
+[RULE: 14][CLAUSE: 0]
+	rule: _Expr_Raw -> [271][ExprModule]<< !_Expr_Raw @ >>
+		+ ReopenObject()
+
+[273][ExprModule]@ << !_Expr_Raw >>
+[RULE: 14][CLAUSE: 0]
+	epsilon -> [272][ExprModule]<< @ !_Expr_Raw >>
+		- DelayFieldAssignment()
+
+[274][TypeModule]<< !_LongType >> @[ENDING]
+[RULE: 15][CLAUSE: 0]
+
+[275][TypeModule]<< !_LongType @ >>
+[RULE: 15][CLAUSE: 0]
+	epsilon -> [274][TypeModule]<< !_LongType >> @[ENDING]
+		- EndObject()
+
+[276][TypeModule]<< @ !_LongType >>
+[RULE: 15][CLAUSE: 0]
+	rule: _LongType -> [275][TypeModule]<< !_LongType @ >>
+		+ ReopenObject()
+
+[277][TypeModule]@ << !_LongType >>
+[RULE: 15][CLAUSE: 0]
+	epsilon -> [276][TypeModule]<< @ !_LongType >>
+		- DelayFieldAssignment()
+

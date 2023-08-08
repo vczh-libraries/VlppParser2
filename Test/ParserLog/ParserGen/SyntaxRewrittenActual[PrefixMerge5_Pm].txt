@@ -52,6 +52,14 @@ Module_LRI_Original : TypeOrExpr
   ::= !_LongType_LRI_Original
   ;
 
+ExprModule_LRI_Original : TypeOrExpr
+  ::= !_Expr_LRI_Original
+  ;
+
+TypeModule_LRI_Original : TypeOrExpr
+  ::= !_LongType_LRI_Original
+  ;
+
 _LongType : TypeOrExpr
   ::= !_PrimitiveShared [left_recursion_inject(LRI__LongType) _LongType_LRI_Original]
   ::= !_PrimitiveTypeOnly [left_recursion_inject(LRI__LongType) _LongType_LRI_Original]
@@ -81,5 +89,16 @@ _Expr : TypeOrExpr
   ::= !_PrimitiveShared left_recursion_inject(LRI__LongType) (_LongType_LRI_Original [left_recursion_inject(LRIP__Expr0__LongType) _Expr_LRI_Original])
   ::= !_PrimitiveTypeOnly left_recursion_inject(LRIP__Expr0__LongType) _Expr_LRI_Original
   ::= !_PrimitiveTypeOnly [left_recursion_inject(LRI__LongType) (_LongType_LRI_Original [left_recursion_inject(LRIP__Expr0__LongType) _Expr_LRI_Original])]
+  ;
+
+@parser ExprModule : TypeOrExpr
+  ::= !_PrimitiveExprOnly [left_recursion_inject(LRI__Expr0) ExprModule_LRI_Original]
+  ::= !_PrimitiveShared [left_recursion_inject(LRI__Expr0, LRI__LongType) ExprModule_LRI_Original]
+  ::= !_PrimitiveTypeOnly left_recursion_inject(LRI__LongType) ExprModule_LRI_Original
+  ;
+
+@parser TypeModule : TypeOrExpr
+  ::= !_PrimitiveShared [left_recursion_inject(LRI__LongType) TypeModule_LRI_Original]
+  ::= !_PrimitiveTypeOnly [left_recursion_inject(LRI__LongType) TypeModule_LRI_Original]
   ;
 

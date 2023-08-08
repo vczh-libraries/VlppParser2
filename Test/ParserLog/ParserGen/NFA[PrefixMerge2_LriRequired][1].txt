@@ -657,3 +657,39 @@
 	epsilon -> [143][Module]<< @ !_PrimitiveTypeOnly >>
 		- DelayFieldAssignment()
 
+[150][ExprModule]<< !_Expr >> @[ENDING]
+[RULE: 9][CLAUSE: 0]
+
+[151][ExprModule]<< !_Expr @ >>
+[RULE: 9][CLAUSE: 0]
+	epsilon -> [150][ExprModule]<< !_Expr >> @[ENDING]
+		- EndObject()
+
+[152][ExprModule]<< @ !_Expr >>
+[RULE: 9][CLAUSE: 0]
+	rule: _Expr -> [151][ExprModule]<< !_Expr @ >>
+		+ ReopenObject()
+
+[153][ExprModule]@ << !_Expr >>
+[RULE: 9][CLAUSE: 0]
+	epsilon -> [152][ExprModule]<< @ !_Expr >>
+		- DelayFieldAssignment()
+
+[154][TypeModule]<< !_LongType >> @[ENDING]
+[RULE: 10][CLAUSE: 0]
+
+[155][TypeModule]<< !_LongType @ >>
+[RULE: 10][CLAUSE: 0]
+	epsilon -> [154][TypeModule]<< !_LongType >> @[ENDING]
+		- EndObject()
+
+[156][TypeModule]<< @ !_LongType >>
+[RULE: 10][CLAUSE: 0]
+	rule: _LongType -> [155][TypeModule]<< !_LongType @ >>
+		+ ReopenObject()
+
+[157][TypeModule]@ << !_LongType >>
+[RULE: 10][CLAUSE: 0]
+	epsilon -> [156][TypeModule]<< @ !_LongType >>
+		- DelayFieldAssignment()
+

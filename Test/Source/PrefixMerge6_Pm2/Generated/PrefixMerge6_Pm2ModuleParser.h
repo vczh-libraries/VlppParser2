@@ -25,15 +25,19 @@ namespace prefixmerge6_pm2
 		_ExprNoComma = 49,
 		_Expr = 58,
 		Module = 68,
-		_ExprNoComma_LRI_Isolated_1 = 84,
-		_LongType_LRI_Original = 88,
-		_Expr0_LRI_Original = 102,
-		_Expr1_LRI_Original = 112,
-		_Expr2_LRI_Original = 120,
-		_ExprNoComma_LRI_Original = 126,
-		_Expr_LRI_Original = 131,
-		Module_LRI_Original = 137,
-		_Expr0__LongType_LRI_Prefix = 141,
+		ExprModule = 84,
+		TypeModule = 94,
+		_ExprNoComma_LRI_Isolated_1 = 100,
+		_LongType_LRI_Original = 104,
+		_Expr0_LRI_Original = 118,
+		_Expr1_LRI_Original = 128,
+		_Expr2_LRI_Original = 136,
+		_ExprNoComma_LRI_Original = 142,
+		_Expr_LRI_Original = 147,
+		Module_LRI_Original = 153,
+		ExprModule_LRI_Original = 157,
+		TypeModule_LRI_Original = 160,
+		_Expr0__LongType_LRI_Prefix = 163,
 	};
 
 	const wchar_t* ModuleParserRuleName(vl::vint index);
@@ -52,8 +56,16 @@ namespace prefixmerge6_pm2
 
 		vl::Ptr<prefixmerge6_pm2::TypeOrExpr> ParseModule(const vl::WString& input, vl::vint codeIndex = -1) const;
 		vl::Ptr<prefixmerge6_pm2::TypeOrExpr> ParseModule(vl::collections::List<vl::regex::RegexToken>& tokens, vl::vint codeIndex = -1) const;
+		vl::Ptr<prefixmerge6_pm2::TypeOrExpr> ParseExprModule(const vl::WString& input, vl::vint codeIndex = -1) const;
+		vl::Ptr<prefixmerge6_pm2::TypeOrExpr> ParseExprModule(vl::collections::List<vl::regex::RegexToken>& tokens, vl::vint codeIndex = -1) const;
+		vl::Ptr<prefixmerge6_pm2::TypeOrExpr> ParseTypeModule(const vl::WString& input, vl::vint codeIndex = -1) const;
+		vl::Ptr<prefixmerge6_pm2::TypeOrExpr> ParseTypeModule(vl::collections::List<vl::regex::RegexToken>& tokens, vl::vint codeIndex = -1) const;
 		vl::Ptr<prefixmerge6_pm2::TypeOrExpr> ParseModule_LRI_Original(const vl::WString& input, vl::vint codeIndex = -1) const;
 		vl::Ptr<prefixmerge6_pm2::TypeOrExpr> ParseModule_LRI_Original(vl::collections::List<vl::regex::RegexToken>& tokens, vl::vint codeIndex = -1) const;
+		vl::Ptr<prefixmerge6_pm2::TypeOrExpr> ParseExprModule_LRI_Original(const vl::WString& input, vl::vint codeIndex = -1) const;
+		vl::Ptr<prefixmerge6_pm2::TypeOrExpr> ParseExprModule_LRI_Original(vl::collections::List<vl::regex::RegexToken>& tokens, vl::vint codeIndex = -1) const;
+		vl::Ptr<prefixmerge6_pm2::TypeOrExpr> ParseTypeModule_LRI_Original(const vl::WString& input, vl::vint codeIndex = -1) const;
+		vl::Ptr<prefixmerge6_pm2::TypeOrExpr> ParseTypeModule_LRI_Original(vl::collections::List<vl::regex::RegexToken>& tokens, vl::vint codeIndex = -1) const;
 	};
 }
 #endif

@@ -509,452 +509,580 @@
 	lr-inject: LRI__LongType -> _LongType_LRI_Original -> [81][Module]<< !_PrimitiveTypeOnly ( lri:(LRI__LongType)->_LongType_LRI_Original @ ( lri:(LRIP__Expr0__LongType)->_Expr_LRI_Original | lri:<skip> ) | lri:<skip> ) >>
 		+ ReopenObject()
 
-[84][_ExprNoComma_LRI_Isolated_1] BEGIN 
+[84][ExprModule] BEGIN 
 [RULE: 11][CLAUSE: -1]
-	token: "throw" -> [86][_ExprNoComma_LRI_Isolated_1]< "throw" @ [ _Expr2 ] >
+	rule: _PrimitiveShared -> [91][ExprModule]<< !_PrimitiveShared @ ( lri:(LRI__Expr0,LRI__LongType)->ExprModule_LRI_Original | lri:<skip> ) >>
+		- DelayFieldAssignment()
+		+ ReopenObject()
+	rule: _PrimitiveTypeOnly -> [93][ExprModule]<< !_PrimitiveTypeOnly @ ( lri:(LRI__LongType)->ExprModule_LRI_Original ) >>
+		- DelayFieldAssignment()
+		+ ReopenObject()
+	rule: _PrimitiveExprOnly -> [89][ExprModule]<< !_PrimitiveExprOnly @ ( lri:(LRI__Expr0)->ExprModule_LRI_Original | lri:<skip> ) >>
+		- DelayFieldAssignment()
+		+ ReopenObject()
+	rule: _ExprNoComma_LRI_Isolated_1 -> [87][ExprModule]<< !_ExprNoComma_LRI_Isolated_1 @ ( lri:(LRI__ExprNoComma)->ExprModule_LRI_Original | lri:<skip> ) >>
+		- DelayFieldAssignment()
+		+ ReopenObject()
+
+[85][ExprModule] END [ENDING]
+[RULE: 11][CLAUSE: -1]
+
+[86][ExprModule]<< !_ExprNoComma_LRI_Isolated_1 ( lri:(LRI__ExprNoComma)->ExprModule_LRI_Original @ | lri:<skip> ) >>
+[RULE: 11][CLAUSE: 0]
+	ending -> [85][ExprModule] END [ENDING]
+		- EndObject()
+
+[87][ExprModule]<< !_ExprNoComma_LRI_Isolated_1 @ ( lri:(LRI__ExprNoComma)->ExprModule_LRI_Original | lri:<skip> ) >>
+[RULE: 11][CLAUSE: 0]
+	ending -> [85][ExprModule] END [ENDING]
+		- EndObject()
+	lr-inject: LRI__ExprNoComma -> ExprModule_LRI_Original -> [86][ExprModule]<< !_ExprNoComma_LRI_Isolated_1 ( lri:(LRI__ExprNoComma)->ExprModule_LRI_Original @ | lri:<skip> ) >>
+		+ ReopenObject()
+
+[88][ExprModule]<< !_PrimitiveExprOnly ( lri:(LRI__Expr0)->ExprModule_LRI_Original @ | lri:<skip> ) >>
+[RULE: 11][CLAUSE: 1]
+	ending -> [85][ExprModule] END [ENDING]
+		- EndObject()
+
+[89][ExprModule]<< !_PrimitiveExprOnly @ ( lri:(LRI__Expr0)->ExprModule_LRI_Original | lri:<skip> ) >>
+[RULE: 11][CLAUSE: 1]
+	ending -> [85][ExprModule] END [ENDING]
+		- EndObject()
+	lr-inject: LRI__Expr0 -> ExprModule_LRI_Original -> [88][ExprModule]<< !_PrimitiveExprOnly ( lri:(LRI__Expr0)->ExprModule_LRI_Original @ | lri:<skip> ) >>
+		+ ReopenObject()
+
+[90][ExprModule]<< !_PrimitiveShared ( lri:(LRI__Expr0,LRI__LongType)->ExprModule_LRI_Original @ | lri:<skip> ) >>
+[RULE: 11][CLAUSE: 2]
+	ending -> [85][ExprModule] END [ENDING]
+		- EndObject()
+
+[91][ExprModule]<< !_PrimitiveShared @ ( lri:(LRI__Expr0,LRI__LongType)->ExprModule_LRI_Original | lri:<skip> ) >>
+[RULE: 11][CLAUSE: 2]
+	ending -> [85][ExprModule] END [ENDING]
+		- EndObject()
+	lr-inject: LRI__Expr0,LRI__LongType -> ExprModule_LRI_Original -> [90][ExprModule]<< !_PrimitiveShared ( lri:(LRI__Expr0,LRI__LongType)->ExprModule_LRI_Original @ | lri:<skip> ) >>
+		+ ReopenObject()
+
+[92][ExprModule]<< !_PrimitiveTypeOnly ( lri:(LRI__LongType)->ExprModule_LRI_Original @ ) >>
+[RULE: 11][CLAUSE: 3]
+	ending -> [85][ExprModule] END [ENDING]
+		- EndObject()
+
+[93][ExprModule]<< !_PrimitiveTypeOnly @ ( lri:(LRI__LongType)->ExprModule_LRI_Original ) >>
+[RULE: 11][CLAUSE: 3]
+	lr-inject: LRI__LongType -> ExprModule_LRI_Original -> [92][ExprModule]<< !_PrimitiveTypeOnly ( lri:(LRI__LongType)->ExprModule_LRI_Original @ ) >>
+		+ ReopenObject()
+
+[94][TypeModule] BEGIN 
+[RULE: 12][CLAUSE: -1]
+	rule: _PrimitiveShared -> [97][TypeModule]<< !_PrimitiveShared @ ( lri:(LRI__LongType)->TypeModule_LRI_Original | lri:<skip> ) >>
+		- DelayFieldAssignment()
+		+ ReopenObject()
+	rule: _PrimitiveTypeOnly -> [99][TypeModule]<< !_PrimitiveTypeOnly @ ( lri:(LRI__LongType)->TypeModule_LRI_Original | lri:<skip> ) >>
+		- DelayFieldAssignment()
+		+ ReopenObject()
+
+[95][TypeModule] END [ENDING]
+[RULE: 12][CLAUSE: -1]
+
+[96][TypeModule]<< !_PrimitiveShared ( lri:(LRI__LongType)->TypeModule_LRI_Original @ | lri:<skip> ) >>
+[RULE: 12][CLAUSE: 0]
+	ending -> [95][TypeModule] END [ENDING]
+		- EndObject()
+
+[97][TypeModule]<< !_PrimitiveShared @ ( lri:(LRI__LongType)->TypeModule_LRI_Original | lri:<skip> ) >>
+[RULE: 12][CLAUSE: 0]
+	ending -> [95][TypeModule] END [ENDING]
+		- EndObject()
+	lr-inject: LRI__LongType -> TypeModule_LRI_Original -> [96][TypeModule]<< !_PrimitiveShared ( lri:(LRI__LongType)->TypeModule_LRI_Original @ | lri:<skip> ) >>
+		+ ReopenObject()
+
+[98][TypeModule]<< !_PrimitiveTypeOnly ( lri:(LRI__LongType)->TypeModule_LRI_Original @ | lri:<skip> ) >>
+[RULE: 12][CLAUSE: 1]
+	ending -> [95][TypeModule] END [ENDING]
+		- EndObject()
+
+[99][TypeModule]<< !_PrimitiveTypeOnly @ ( lri:(LRI__LongType)->TypeModule_LRI_Original | lri:<skip> ) >>
+[RULE: 12][CLAUSE: 1]
+	ending -> [95][TypeModule] END [ENDING]
+		- EndObject()
+	lr-inject: LRI__LongType -> TypeModule_LRI_Original -> [98][TypeModule]<< !_PrimitiveTypeOnly ( lri:(LRI__LongType)->TypeModule_LRI_Original @ | lri:<skip> ) >>
+		+ ReopenObject()
+
+[100][_ExprNoComma_LRI_Isolated_1] BEGIN 
+[RULE: 13][CLAUSE: -1]
+	token: "throw" -> [102][_ExprNoComma_LRI_Isolated_1]< "throw" @ [ _Expr2 ] >
 		- BeginObject(ThrowExpr)
 
-[85][_ExprNoComma_LRI_Isolated_1] END [ENDING]
-[RULE: 11][CLAUSE: -1]
+[101][_ExprNoComma_LRI_Isolated_1] END [ENDING]
+[RULE: 13][CLAUSE: -1]
 
-[86][_ExprNoComma_LRI_Isolated_1]< "throw" @ [ _Expr2 ] >
-[RULE: 11][CLAUSE: 0]
-	ending -> [85][_ExprNoComma_LRI_Isolated_1] END [ENDING]
+[102][_ExprNoComma_LRI_Isolated_1]< "throw" @ [ _Expr2 ] >
+[RULE: 13][CLAUSE: 0]
+	ending -> [101][_ExprNoComma_LRI_Isolated_1] END [ENDING]
 		- EndObject()
-	rule: _Expr2 -> [87][_ExprNoComma_LRI_Isolated_1]< "throw" [ _Expr2 @ ] >
+	rule: _Expr2 -> [103][_ExprNoComma_LRI_Isolated_1]< "throw" [ _Expr2 @ ] >
 		+ Field(ThrowExpr::arg)
 
-[87][_ExprNoComma_LRI_Isolated_1]< "throw" [ _Expr2 @ ] >
-[RULE: 11][CLAUSE: 0]
-	ending -> [85][_ExprNoComma_LRI_Isolated_1] END [ENDING]
+[103][_ExprNoComma_LRI_Isolated_1]< "throw" [ _Expr2 @ ] >
+[RULE: 13][CLAUSE: 0]
+	ending -> [101][_ExprNoComma_LRI_Isolated_1] END [ENDING]
 		- EndObject()
 
-[88][_LongType_LRI_Original] BEGIN 
-[RULE: 12][CLAUSE: -1]
-	rule: _PrimitiveShared -> [99][_LongType_LRI_Original]<< !_PrimitiveShared @ >>
+[104][_LongType_LRI_Original] BEGIN 
+[RULE: 14][CLAUSE: -1]
+	rule: _PrimitiveShared -> [115][_LongType_LRI_Original]<< !_PrimitiveShared @ >>
 		- DelayFieldAssignment()
 		+ ReopenObject()
-	rule: _PrimitiveTypeOnly -> [100][_LongType_LRI_Original]<< !_PrimitiveTypeOnly @ >>
+	rule: _PrimitiveTypeOnly -> [116][_LongType_LRI_Original]<< !_PrimitiveTypeOnly @ >>
 		- DelayFieldAssignment()
 		+ ReopenObject()
-	lr-placeholder: LRI__LongType -> [101][_LongType_LRI_Original]lrp:(LRI__LongType) @
+	lr-placeholder: LRI__LongType -> [117][_LongType_LRI_Original]lrp:(LRI__LongType) @
 
-[89][_LongType_LRI_Original] END [ENDING]
-[RULE: 12][CLAUSE: -1]
+[105][_LongType_LRI_Original] END [ENDING]
+[RULE: 14][CLAUSE: -1]
 
-[90][_LongType_LRI_Original]< _LongType_LRI_Original "(" @ { _LongType ; "," } ")" >
-[RULE: 12][CLAUSE: 5]
-	token: ")" -> [92][_LongType_LRI_Original]< _LongType_LRI_Original "(" { _LongType ; "," } ")" @ >
-	rule: _LongType -> [93][_LongType_LRI_Original]< _LongType_LRI_Original "(" { _LongType @ ; "," } ")" >
+[106][_LongType_LRI_Original]< _LongType_LRI_Original "(" @ { _LongType ; "," } ")" >
+[RULE: 14][CLAUSE: 5]
+	token: ")" -> [108][_LongType_LRI_Original]< _LongType_LRI_Original "(" { _LongType ; "," } ")" @ >
+	rule: _LongType -> [109][_LongType_LRI_Original]< _LongType_LRI_Original "(" { _LongType @ ; "," } ")" >
 		+ Field(FunctionType::args)
 
-[91][_LongType_LRI_Original]< _LongType_LRI_Original "(" { _LongType ; "," @ } ")" >
-[RULE: 12][CLAUSE: 5]
-	rule: _LongType -> [93][_LongType_LRI_Original]< _LongType_LRI_Original "(" { _LongType @ ; "," } ")" >
+[107][_LongType_LRI_Original]< _LongType_LRI_Original "(" { _LongType ; "," @ } ")" >
+[RULE: 14][CLAUSE: 5]
+	rule: _LongType -> [109][_LongType_LRI_Original]< _LongType_LRI_Original "(" { _LongType @ ; "," } ")" >
 		+ Field(FunctionType::args)
 
-[92][_LongType_LRI_Original]< _LongType_LRI_Original "(" { _LongType ; "," } ")" @ >
-[RULE: 12][CLAUSE: 5]
-	ending -> [89][_LongType_LRI_Original] END [ENDING]
+[108][_LongType_LRI_Original]< _LongType_LRI_Original "(" { _LongType ; "," } ")" @ >
+[RULE: 14][CLAUSE: 5]
+	ending -> [105][_LongType_LRI_Original] END [ENDING]
 		- EndObject()
-	leftrec -> [96][_LongType_LRI_Original]< _LongType_LRI_Original @ "(" { _LongType ; "," } ")" >
+	leftrec -> [112][_LongType_LRI_Original]< _LongType_LRI_Original @ "(" { _LongType ; "," } ")" >
 		- EndObject()
 		- LriStore()
 		- BeginObject(FunctionType)
 		- LriFetch()
 		+ Field(FunctionType::returnType)
-	leftrec -> [97][_LongType_LRI_Original]< _LongType_LRI_Original @ "*" >
+	leftrec -> [113][_LongType_LRI_Original]< _LongType_LRI_Original @ "*" >
 		- EndObject()
 		- LriStore()
 		- BeginObject(PointerType)
 		- LriFetch()
 		+ Field(PointerType::type)
-	leftrec -> [98][_LongType_LRI_Original]< _LongType_LRI_Original @ "const" >
+	leftrec -> [114][_LongType_LRI_Original]< _LongType_LRI_Original @ "const" >
 		- EndObject()
 		- LriStore()
 		- BeginObject(ConstType)
 		- LriFetch()
 		+ Field(ConstType::type)
 
-[93][_LongType_LRI_Original]< _LongType_LRI_Original "(" { _LongType @ ; "," } ")" >
-[RULE: 12][CLAUSE: 5]
-	token: ")" -> [92][_LongType_LRI_Original]< _LongType_LRI_Original "(" { _LongType ; "," } ")" @ >
-	token: "," -> [91][_LongType_LRI_Original]< _LongType_LRI_Original "(" { _LongType ; "," @ } ")" >
+[109][_LongType_LRI_Original]< _LongType_LRI_Original "(" { _LongType @ ; "," } ")" >
+[RULE: 14][CLAUSE: 5]
+	token: ")" -> [108][_LongType_LRI_Original]< _LongType_LRI_Original "(" { _LongType ; "," } ")" @ >
+	token: "," -> [107][_LongType_LRI_Original]< _LongType_LRI_Original "(" { _LongType ; "," @ } ")" >
 
-[94][_LongType_LRI_Original]< _LongType_LRI_Original "*" @ >
-[RULE: 12][CLAUSE: 4]
-	ending -> [89][_LongType_LRI_Original] END [ENDING]
+[110][_LongType_LRI_Original]< _LongType_LRI_Original "*" @ >
+[RULE: 14][CLAUSE: 4]
+	ending -> [105][_LongType_LRI_Original] END [ENDING]
 		- EndObject()
-	leftrec -> [96][_LongType_LRI_Original]< _LongType_LRI_Original @ "(" { _LongType ; "," } ")" >
+	leftrec -> [112][_LongType_LRI_Original]< _LongType_LRI_Original @ "(" { _LongType ; "," } ")" >
 		- EndObject()
 		- LriStore()
 		- BeginObject(FunctionType)
 		- LriFetch()
 		+ Field(FunctionType::returnType)
-	leftrec -> [97][_LongType_LRI_Original]< _LongType_LRI_Original @ "*" >
+	leftrec -> [113][_LongType_LRI_Original]< _LongType_LRI_Original @ "*" >
 		- EndObject()
 		- LriStore()
 		- BeginObject(PointerType)
 		- LriFetch()
 		+ Field(PointerType::type)
-	leftrec -> [98][_LongType_LRI_Original]< _LongType_LRI_Original @ "const" >
+	leftrec -> [114][_LongType_LRI_Original]< _LongType_LRI_Original @ "const" >
 		- EndObject()
 		- LriStore()
 		- BeginObject(ConstType)
 		- LriFetch()
 		+ Field(ConstType::type)
 
-[95][_LongType_LRI_Original]< _LongType_LRI_Original "const" @ >
-[RULE: 12][CLAUSE: 3]
-	ending -> [89][_LongType_LRI_Original] END [ENDING]
+[111][_LongType_LRI_Original]< _LongType_LRI_Original "const" @ >
+[RULE: 14][CLAUSE: 3]
+	ending -> [105][_LongType_LRI_Original] END [ENDING]
 		- EndObject()
-	leftrec -> [96][_LongType_LRI_Original]< _LongType_LRI_Original @ "(" { _LongType ; "," } ")" >
+	leftrec -> [112][_LongType_LRI_Original]< _LongType_LRI_Original @ "(" { _LongType ; "," } ")" >
 		- EndObject()
 		- LriStore()
 		- BeginObject(FunctionType)
 		- LriFetch()
 		+ Field(FunctionType::returnType)
-	leftrec -> [97][_LongType_LRI_Original]< _LongType_LRI_Original @ "*" >
+	leftrec -> [113][_LongType_LRI_Original]< _LongType_LRI_Original @ "*" >
 		- EndObject()
 		- LriStore()
 		- BeginObject(PointerType)
 		- LriFetch()
 		+ Field(PointerType::type)
-	leftrec -> [98][_LongType_LRI_Original]< _LongType_LRI_Original @ "const" >
+	leftrec -> [114][_LongType_LRI_Original]< _LongType_LRI_Original @ "const" >
 		- EndObject()
 		- LriStore()
 		- BeginObject(ConstType)
 		- LriFetch()
 		+ Field(ConstType::type)
 
-[96][_LongType_LRI_Original]< _LongType_LRI_Original @ "(" { _LongType ; "," } ")" >
-[RULE: 12][CLAUSE: 5]
-	token: "(" -> [90][_LongType_LRI_Original]< _LongType_LRI_Original "(" @ { _LongType ; "," } ")" >
+[112][_LongType_LRI_Original]< _LongType_LRI_Original @ "(" { _LongType ; "," } ")" >
+[RULE: 14][CLAUSE: 5]
+	token: "(" -> [106][_LongType_LRI_Original]< _LongType_LRI_Original "(" @ { _LongType ; "," } ")" >
 
-[97][_LongType_LRI_Original]< _LongType_LRI_Original @ "*" >
-[RULE: 12][CLAUSE: 4]
-	token: "*" -> [94][_LongType_LRI_Original]< _LongType_LRI_Original "*" @ >
+[113][_LongType_LRI_Original]< _LongType_LRI_Original @ "*" >
+[RULE: 14][CLAUSE: 4]
+	token: "*" -> [110][_LongType_LRI_Original]< _LongType_LRI_Original "*" @ >
 
-[98][_LongType_LRI_Original]< _LongType_LRI_Original @ "const" >
-[RULE: 12][CLAUSE: 3]
-	token: "const" -> [95][_LongType_LRI_Original]< _LongType_LRI_Original "const" @ >
+[114][_LongType_LRI_Original]< _LongType_LRI_Original @ "const" >
+[RULE: 14][CLAUSE: 3]
+	token: "const" -> [111][_LongType_LRI_Original]< _LongType_LRI_Original "const" @ >
 
-[99][_LongType_LRI_Original]<< !_PrimitiveShared @ >>
-[RULE: 12][CLAUSE: 1]
-	ending -> [89][_LongType_LRI_Original] END [ENDING]
+[115][_LongType_LRI_Original]<< !_PrimitiveShared @ >>
+[RULE: 14][CLAUSE: 1]
+	ending -> [105][_LongType_LRI_Original] END [ENDING]
 		- EndObject()
-	leftrec -> [96][_LongType_LRI_Original]< _LongType_LRI_Original @ "(" { _LongType ; "," } ")" >
+	leftrec -> [112][_LongType_LRI_Original]< _LongType_LRI_Original @ "(" { _LongType ; "," } ")" >
 		- EndObject()
 		- LriStore()
 		- BeginObject(FunctionType)
 		- LriFetch()
 		+ Field(FunctionType::returnType)
-	leftrec -> [97][_LongType_LRI_Original]< _LongType_LRI_Original @ "*" >
+	leftrec -> [113][_LongType_LRI_Original]< _LongType_LRI_Original @ "*" >
 		- EndObject()
 		- LriStore()
 		- BeginObject(PointerType)
 		- LriFetch()
 		+ Field(PointerType::type)
-	leftrec -> [98][_LongType_LRI_Original]< _LongType_LRI_Original @ "const" >
+	leftrec -> [114][_LongType_LRI_Original]< _LongType_LRI_Original @ "const" >
 		- EndObject()
 		- LriStore()
 		- BeginObject(ConstType)
 		- LriFetch()
 		+ Field(ConstType::type)
 
-[100][_LongType_LRI_Original]<< !_PrimitiveTypeOnly @ >>
-[RULE: 12][CLAUSE: 2]
-	ending -> [89][_LongType_LRI_Original] END [ENDING]
+[116][_LongType_LRI_Original]<< !_PrimitiveTypeOnly @ >>
+[RULE: 14][CLAUSE: 2]
+	ending -> [105][_LongType_LRI_Original] END [ENDING]
 		- EndObject()
-	leftrec -> [96][_LongType_LRI_Original]< _LongType_LRI_Original @ "(" { _LongType ; "," } ")" >
+	leftrec -> [112][_LongType_LRI_Original]< _LongType_LRI_Original @ "(" { _LongType ; "," } ")" >
 		- EndObject()
 		- LriStore()
 		- BeginObject(FunctionType)
 		- LriFetch()
 		+ Field(FunctionType::returnType)
-	leftrec -> [97][_LongType_LRI_Original]< _LongType_LRI_Original @ "*" >
+	leftrec -> [113][_LongType_LRI_Original]< _LongType_LRI_Original @ "*" >
 		- EndObject()
 		- LriStore()
 		- BeginObject(PointerType)
 		- LriFetch()
 		+ Field(PointerType::type)
-	leftrec -> [98][_LongType_LRI_Original]< _LongType_LRI_Original @ "const" >
+	leftrec -> [114][_LongType_LRI_Original]< _LongType_LRI_Original @ "const" >
 		- EndObject()
 		- LriStore()
 		- BeginObject(ConstType)
 		- LriFetch()
 		+ Field(ConstType::type)
 
-[101][_LongType_LRI_Original]lrp:(LRI__LongType) @
-[RULE: 12][CLAUSE: 0]
-	ending -> [89][_LongType_LRI_Original] END [ENDING]
-	leftrec -> [96][_LongType_LRI_Original]< _LongType_LRI_Original @ "(" { _LongType ; "," } ")" >
+[117][_LongType_LRI_Original]lrp:(LRI__LongType) @
+[RULE: 14][CLAUSE: 0]
+	ending -> [105][_LongType_LRI_Original] END [ENDING]
+	leftrec -> [112][_LongType_LRI_Original]< _LongType_LRI_Original @ "(" { _LongType ; "," } ")" >
 		- LriStore()
 		- BeginObject(FunctionType)
 		- LriFetch()
 		+ Field(FunctionType::returnType)
-	leftrec -> [97][_LongType_LRI_Original]< _LongType_LRI_Original @ "*" >
+	leftrec -> [113][_LongType_LRI_Original]< _LongType_LRI_Original @ "*" >
 		- LriStore()
 		- BeginObject(PointerType)
 		- LriFetch()
 		+ Field(PointerType::type)
-	leftrec -> [98][_LongType_LRI_Original]< _LongType_LRI_Original @ "const" >
+	leftrec -> [114][_LongType_LRI_Original]< _LongType_LRI_Original @ "const" >
 		- LriStore()
 		- BeginObject(ConstType)
 		- LriFetch()
 		+ Field(ConstType::type)
 
-[102][_Expr0_LRI_Original] BEGIN 
-[RULE: 13][CLAUSE: -1]
-	rule: _PrimitiveShared -> [110][_Expr0_LRI_Original]<< !_PrimitiveShared @ >>
+[118][_Expr0_LRI_Original] BEGIN 
+[RULE: 15][CLAUSE: -1]
+	rule: _PrimitiveShared -> [126][_Expr0_LRI_Original]<< !_PrimitiveShared @ >>
 		- DelayFieldAssignment()
-	rule: _PrimitiveExprOnly -> [109][_Expr0_LRI_Original]<< !_PrimitiveExprOnly @ >>
+	rule: _PrimitiveExprOnly -> [125][_Expr0_LRI_Original]<< !_PrimitiveExprOnly @ >>
 		- DelayFieldAssignment()
-	rule: _Expr0__LongType_LRI_Prefix -> [108][_Expr0_LRI_Original]< _Expr0__LongType_LRI_Prefix @ "{" { _ExprNoComma ; "," } "}" >
+	rule: _Expr0__LongType_LRI_Prefix -> [124][_Expr0_LRI_Original]< _Expr0__LongType_LRI_Prefix @ "{" { _ExprNoComma ; "," } "}" >
 		- BeginObject(CtorExpr)
 		+ Field(CtorExpr::type)
-	lr-placeholder: LRI__Expr0 -> [111][_Expr0_LRI_Original]lrp:(LRI__Expr0) @
+	lr-placeholder: LRI__Expr0 -> [127][_Expr0_LRI_Original]lrp:(LRI__Expr0) @
 
-[103][_Expr0_LRI_Original] END [ENDING]
-[RULE: 13][CLAUSE: -1]
+[119][_Expr0_LRI_Original] END [ENDING]
+[RULE: 15][CLAUSE: -1]
 
-[104][_Expr0_LRI_Original]< _Expr0__LongType_LRI_Prefix "{" @ { _ExprNoComma ; "," } "}" >
-[RULE: 13][CLAUSE: 3]
-	token: "}" -> [106][_Expr0_LRI_Original]< _Expr0__LongType_LRI_Prefix "{" { _ExprNoComma ; "," } "}" @ >
-	rule: _ExprNoComma -> [107][_Expr0_LRI_Original]< _Expr0__LongType_LRI_Prefix "{" { _ExprNoComma @ ; "," } "}" >
+[120][_Expr0_LRI_Original]< _Expr0__LongType_LRI_Prefix "{" @ { _ExprNoComma ; "," } "}" >
+[RULE: 15][CLAUSE: 3]
+	token: "}" -> [122][_Expr0_LRI_Original]< _Expr0__LongType_LRI_Prefix "{" { _ExprNoComma ; "," } "}" @ >
+	rule: _ExprNoComma -> [123][_Expr0_LRI_Original]< _Expr0__LongType_LRI_Prefix "{" { _ExprNoComma @ ; "," } "}" >
 		+ Field(CtorExpr::args)
 
-[105][_Expr0_LRI_Original]< _Expr0__LongType_LRI_Prefix "{" { _ExprNoComma ; "," @ } "}" >
-[RULE: 13][CLAUSE: 3]
-	rule: _ExprNoComma -> [107][_Expr0_LRI_Original]< _Expr0__LongType_LRI_Prefix "{" { _ExprNoComma @ ; "," } "}" >
+[121][_Expr0_LRI_Original]< _Expr0__LongType_LRI_Prefix "{" { _ExprNoComma ; "," @ } "}" >
+[RULE: 15][CLAUSE: 3]
+	rule: _ExprNoComma -> [123][_Expr0_LRI_Original]< _Expr0__LongType_LRI_Prefix "{" { _ExprNoComma @ ; "," } "}" >
 		+ Field(CtorExpr::args)
 
-[106][_Expr0_LRI_Original]< _Expr0__LongType_LRI_Prefix "{" { _ExprNoComma ; "," } "}" @ >
-[RULE: 13][CLAUSE: 3]
-	ending -> [103][_Expr0_LRI_Original] END [ENDING]
+[122][_Expr0_LRI_Original]< _Expr0__LongType_LRI_Prefix "{" { _ExprNoComma ; "," } "}" @ >
+[RULE: 15][CLAUSE: 3]
+	ending -> [119][_Expr0_LRI_Original] END [ENDING]
 		- EndObject()
 
-[107][_Expr0_LRI_Original]< _Expr0__LongType_LRI_Prefix "{" { _ExprNoComma @ ; "," } "}" >
-[RULE: 13][CLAUSE: 3]
-	token: "}" -> [106][_Expr0_LRI_Original]< _Expr0__LongType_LRI_Prefix "{" { _ExprNoComma ; "," } "}" @ >
-	token: "," -> [105][_Expr0_LRI_Original]< _Expr0__LongType_LRI_Prefix "{" { _ExprNoComma ; "," @ } "}" >
+[123][_Expr0_LRI_Original]< _Expr0__LongType_LRI_Prefix "{" { _ExprNoComma @ ; "," } "}" >
+[RULE: 15][CLAUSE: 3]
+	token: "}" -> [122][_Expr0_LRI_Original]< _Expr0__LongType_LRI_Prefix "{" { _ExprNoComma ; "," } "}" @ >
+	token: "," -> [121][_Expr0_LRI_Original]< _Expr0__LongType_LRI_Prefix "{" { _ExprNoComma ; "," @ } "}" >
 
-[108][_Expr0_LRI_Original]< _Expr0__LongType_LRI_Prefix @ "{" { _ExprNoComma ; "," } "}" >
-[RULE: 13][CLAUSE: 3]
-	token: "{" -> [104][_Expr0_LRI_Original]< _Expr0__LongType_LRI_Prefix "{" @ { _ExprNoComma ; "," } "}" >
+[124][_Expr0_LRI_Original]< _Expr0__LongType_LRI_Prefix @ "{" { _ExprNoComma ; "," } "}" >
+[RULE: 15][CLAUSE: 3]
+	token: "{" -> [120][_Expr0_LRI_Original]< _Expr0__LongType_LRI_Prefix "{" @ { _ExprNoComma ; "," } "}" >
 
-[109][_Expr0_LRI_Original]<< !_PrimitiveExprOnly @ >>
-[RULE: 13][CLAUSE: 2]
-	ending -> [103][_Expr0_LRI_Original] END [ENDING]
+[125][_Expr0_LRI_Original]<< !_PrimitiveExprOnly @ >>
+[RULE: 15][CLAUSE: 2]
+	ending -> [119][_Expr0_LRI_Original] END [ENDING]
 		- ReopenObject()
 		- EndObject()
 
-[110][_Expr0_LRI_Original]<< !_PrimitiveShared @ >>
-[RULE: 13][CLAUSE: 1]
-	ending -> [103][_Expr0_LRI_Original] END [ENDING]
-		- ReopenObject()
-		- EndObject()
-
-[111][_Expr0_LRI_Original]lrp:(LRI__Expr0) @
-[RULE: 13][CLAUSE: 0]
-	ending -> [103][_Expr0_LRI_Original] END [ENDING]
-
-[112][_Expr1_LRI_Original] BEGIN 
-[RULE: 14][CLAUSE: -1]
-	rule: _Expr0_LRI_Original -> [119][_Expr1_LRI_Original]<< !_Expr0_LRI_Original @ >>
-		- DelayFieldAssignment()
-		+ ReopenObject()
-
-[113][_Expr1_LRI_Original] END [ENDING]
-[RULE: 14][CLAUSE: -1]
-
-[114][_Expr1_LRI_Original]< _Expr1_LRI_Original "(" @ { _ExprNoComma ; "," } ")" >
-[RULE: 14][CLAUSE: 1]
-	token: ")" -> [116][_Expr1_LRI_Original]< _Expr1_LRI_Original "(" { _ExprNoComma ; "," } ")" @ >
-	rule: _ExprNoComma -> [117][_Expr1_LRI_Original]< _Expr1_LRI_Original "(" { _ExprNoComma @ ; "," } ")" >
-		+ Field(CallExpr::args)
-
-[115][_Expr1_LRI_Original]< _Expr1_LRI_Original "(" { _ExprNoComma ; "," @ } ")" >
-[RULE: 14][CLAUSE: 1]
-	rule: _ExprNoComma -> [117][_Expr1_LRI_Original]< _Expr1_LRI_Original "(" { _ExprNoComma @ ; "," } ")" >
-		+ Field(CallExpr::args)
-
-[116][_Expr1_LRI_Original]< _Expr1_LRI_Original "(" { _ExprNoComma ; "," } ")" @ >
-[RULE: 14][CLAUSE: 1]
-	ending -> [113][_Expr1_LRI_Original] END [ENDING]
-		- EndObject()
-	leftrec -> [118][_Expr1_LRI_Original]< _Expr1_LRI_Original @ "(" { _ExprNoComma ; "," } ")" >
-		- EndObject()
-		- LriStore()
-		- BeginObject(CallExpr)
-		- LriFetch()
-		+ Field(CallExpr::func)
-
-[117][_Expr1_LRI_Original]< _Expr1_LRI_Original "(" { _ExprNoComma @ ; "," } ")" >
-[RULE: 14][CLAUSE: 1]
-	token: ")" -> [116][_Expr1_LRI_Original]< _Expr1_LRI_Original "(" { _ExprNoComma ; "," } ")" @ >
-	token: "," -> [115][_Expr1_LRI_Original]< _Expr1_LRI_Original "(" { _ExprNoComma ; "," @ } ")" >
-
-[118][_Expr1_LRI_Original]< _Expr1_LRI_Original @ "(" { _ExprNoComma ; "," } ")" >
-[RULE: 14][CLAUSE: 1]
-	token: "(" -> [114][_Expr1_LRI_Original]< _Expr1_LRI_Original "(" @ { _ExprNoComma ; "," } ")" >
-
-[119][_Expr1_LRI_Original]<< !_Expr0_LRI_Original @ >>
-[RULE: 14][CLAUSE: 0]
-	ending -> [113][_Expr1_LRI_Original] END [ENDING]
-		- EndObject()
-	leftrec -> [118][_Expr1_LRI_Original]< _Expr1_LRI_Original @ "(" { _ExprNoComma ; "," } ")" >
-		- EndObject()
-		- LriStore()
-		- BeginObject(CallExpr)
-		- LriFetch()
-		+ Field(CallExpr::func)
-
-[120][_Expr2_LRI_Original] BEGIN 
-[RULE: 15][CLAUSE: -1]
-	rule: _Expr1_LRI_Original -> [125][_Expr2_LRI_Original]<< !_Expr1_LRI_Original @ >>
-		- DelayFieldAssignment()
-		+ ReopenObject()
-
-[121][_Expr2_LRI_Original] END [ENDING]
-[RULE: 15][CLAUSE: -1]
-
-[122][_Expr2_LRI_Original]< _Expr2_LRI_Original "*" @ _Expr1 >
+[126][_Expr0_LRI_Original]<< !_PrimitiveShared @ >>
 [RULE: 15][CLAUSE: 1]
-	rule: _Expr1 -> [123][_Expr2_LRI_Original]< _Expr2_LRI_Original "*" _Expr1 @ >
+	ending -> [119][_Expr0_LRI_Original] END [ENDING]
+		- ReopenObject()
+		- EndObject()
+
+[127][_Expr0_LRI_Original]lrp:(LRI__Expr0) @
+[RULE: 15][CLAUSE: 0]
+	ending -> [119][_Expr0_LRI_Original] END [ENDING]
+
+[128][_Expr1_LRI_Original] BEGIN 
+[RULE: 16][CLAUSE: -1]
+	rule: _Expr0_LRI_Original -> [135][_Expr1_LRI_Original]<< !_Expr0_LRI_Original @ >>
+		- DelayFieldAssignment()
+		+ ReopenObject()
+
+[129][_Expr1_LRI_Original] END [ENDING]
+[RULE: 16][CLAUSE: -1]
+
+[130][_Expr1_LRI_Original]< _Expr1_LRI_Original "(" @ { _ExprNoComma ; "," } ")" >
+[RULE: 16][CLAUSE: 1]
+	token: ")" -> [132][_Expr1_LRI_Original]< _Expr1_LRI_Original "(" { _ExprNoComma ; "," } ")" @ >
+	rule: _ExprNoComma -> [133][_Expr1_LRI_Original]< _Expr1_LRI_Original "(" { _ExprNoComma @ ; "," } ")" >
+		+ Field(CallExpr::args)
+
+[131][_Expr1_LRI_Original]< _Expr1_LRI_Original "(" { _ExprNoComma ; "," @ } ")" >
+[RULE: 16][CLAUSE: 1]
+	rule: _ExprNoComma -> [133][_Expr1_LRI_Original]< _Expr1_LRI_Original "(" { _ExprNoComma @ ; "," } ")" >
+		+ Field(CallExpr::args)
+
+[132][_Expr1_LRI_Original]< _Expr1_LRI_Original "(" { _ExprNoComma ; "," } ")" @ >
+[RULE: 16][CLAUSE: 1]
+	ending -> [129][_Expr1_LRI_Original] END [ENDING]
+		- EndObject()
+	leftrec -> [134][_Expr1_LRI_Original]< _Expr1_LRI_Original @ "(" { _ExprNoComma ; "," } ")" >
+		- EndObject()
+		- LriStore()
+		- BeginObject(CallExpr)
+		- LriFetch()
+		+ Field(CallExpr::func)
+
+[133][_Expr1_LRI_Original]< _Expr1_LRI_Original "(" { _ExprNoComma @ ; "," } ")" >
+[RULE: 16][CLAUSE: 1]
+	token: ")" -> [132][_Expr1_LRI_Original]< _Expr1_LRI_Original "(" { _ExprNoComma ; "," } ")" @ >
+	token: "," -> [131][_Expr1_LRI_Original]< _Expr1_LRI_Original "(" { _ExprNoComma ; "," @ } ")" >
+
+[134][_Expr1_LRI_Original]< _Expr1_LRI_Original @ "(" { _ExprNoComma ; "," } ")" >
+[RULE: 16][CLAUSE: 1]
+	token: "(" -> [130][_Expr1_LRI_Original]< _Expr1_LRI_Original "(" @ { _ExprNoComma ; "," } ")" >
+
+[135][_Expr1_LRI_Original]<< !_Expr0_LRI_Original @ >>
+[RULE: 16][CLAUSE: 0]
+	ending -> [129][_Expr1_LRI_Original] END [ENDING]
+		- EndObject()
+	leftrec -> [134][_Expr1_LRI_Original]< _Expr1_LRI_Original @ "(" { _ExprNoComma ; "," } ")" >
+		- EndObject()
+		- LriStore()
+		- BeginObject(CallExpr)
+		- LriFetch()
+		+ Field(CallExpr::func)
+
+[136][_Expr2_LRI_Original] BEGIN 
+[RULE: 17][CLAUSE: -1]
+	rule: _Expr1_LRI_Original -> [141][_Expr2_LRI_Original]<< !_Expr1_LRI_Original @ >>
+		- DelayFieldAssignment()
+		+ ReopenObject()
+
+[137][_Expr2_LRI_Original] END [ENDING]
+[RULE: 17][CLAUSE: -1]
+
+[138][_Expr2_LRI_Original]< _Expr2_LRI_Original "*" @ _Expr1 >
+[RULE: 17][CLAUSE: 1]
+	rule: _Expr1 -> [139][_Expr2_LRI_Original]< _Expr2_LRI_Original "*" _Expr1 @ >
 		+ Field(MulExpr::second)
 
-[123][_Expr2_LRI_Original]< _Expr2_LRI_Original "*" _Expr1 @ >
-[RULE: 15][CLAUSE: 1]
-	ending -> [121][_Expr2_LRI_Original] END [ENDING]
+[139][_Expr2_LRI_Original]< _Expr2_LRI_Original "*" _Expr1 @ >
+[RULE: 17][CLAUSE: 1]
+	ending -> [137][_Expr2_LRI_Original] END [ENDING]
 		- EndObject()
-	leftrec -> [124][_Expr2_LRI_Original]< _Expr2_LRI_Original @ "*" _Expr1 >
-		- EndObject()
-		- LriStore()
-		- BeginObject(MulExpr)
-		- LriFetch()
-		+ Field(MulExpr::first)
-
-[124][_Expr2_LRI_Original]< _Expr2_LRI_Original @ "*" _Expr1 >
-[RULE: 15][CLAUSE: 1]
-	token: "*" -> [122][_Expr2_LRI_Original]< _Expr2_LRI_Original "*" @ _Expr1 >
-
-[125][_Expr2_LRI_Original]<< !_Expr1_LRI_Original @ >>
-[RULE: 15][CLAUSE: 0]
-	ending -> [121][_Expr2_LRI_Original] END [ENDING]
-		- EndObject()
-	leftrec -> [124][_Expr2_LRI_Original]< _Expr2_LRI_Original @ "*" _Expr1 >
+	leftrec -> [140][_Expr2_LRI_Original]< _Expr2_LRI_Original @ "*" _Expr1 >
 		- EndObject()
 		- LriStore()
 		- BeginObject(MulExpr)
 		- LriFetch()
 		+ Field(MulExpr::first)
 
-[126][_ExprNoComma_LRI_Original] BEGIN 
-[RULE: 16][CLAUSE: -1]
-	rule: _ExprNoComma_LRI_Isolated_1 -> [129][_ExprNoComma_LRI_Original]<< !_ExprNoComma_LRI_Isolated_1 @ >>
-		- DelayFieldAssignment()
-	rule: _Expr2_LRI_Original -> [128][_ExprNoComma_LRI_Original]<< !_Expr2_LRI_Original @ >>
-		- DelayFieldAssignment()
-	lr-placeholder: LRI__ExprNoComma -> [130][_ExprNoComma_LRI_Original]lrp:(LRI__ExprNoComma) @
+[140][_Expr2_LRI_Original]< _Expr2_LRI_Original @ "*" _Expr1 >
+[RULE: 17][CLAUSE: 1]
+	token: "*" -> [138][_Expr2_LRI_Original]< _Expr2_LRI_Original "*" @ _Expr1 >
 
-[127][_ExprNoComma_LRI_Original] END [ENDING]
-[RULE: 16][CLAUSE: -1]
+[141][_Expr2_LRI_Original]<< !_Expr1_LRI_Original @ >>
+[RULE: 17][CLAUSE: 0]
+	ending -> [137][_Expr2_LRI_Original] END [ENDING]
+		- EndObject()
+	leftrec -> [140][_Expr2_LRI_Original]< _Expr2_LRI_Original @ "*" _Expr1 >
+		- EndObject()
+		- LriStore()
+		- BeginObject(MulExpr)
+		- LriFetch()
+		+ Field(MulExpr::first)
 
-[128][_ExprNoComma_LRI_Original]<< !_Expr2_LRI_Original @ >>
-[RULE: 16][CLAUSE: 1]
-	ending -> [127][_ExprNoComma_LRI_Original] END [ENDING]
+[142][_ExprNoComma_LRI_Original] BEGIN 
+[RULE: 18][CLAUSE: -1]
+	rule: _ExprNoComma_LRI_Isolated_1 -> [145][_ExprNoComma_LRI_Original]<< !_ExprNoComma_LRI_Isolated_1 @ >>
+		- DelayFieldAssignment()
+	rule: _Expr2_LRI_Original -> [144][_ExprNoComma_LRI_Original]<< !_Expr2_LRI_Original @ >>
+		- DelayFieldAssignment()
+	lr-placeholder: LRI__ExprNoComma -> [146][_ExprNoComma_LRI_Original]lrp:(LRI__ExprNoComma) @
+
+[143][_ExprNoComma_LRI_Original] END [ENDING]
+[RULE: 18][CLAUSE: -1]
+
+[144][_ExprNoComma_LRI_Original]<< !_Expr2_LRI_Original @ >>
+[RULE: 18][CLAUSE: 1]
+	ending -> [143][_ExprNoComma_LRI_Original] END [ENDING]
 		- ReopenObject()
 		- EndObject()
 
-[129][_ExprNoComma_LRI_Original]<< !_ExprNoComma_LRI_Isolated_1 @ >>
-[RULE: 16][CLAUSE: 2]
-	ending -> [127][_ExprNoComma_LRI_Original] END [ENDING]
+[145][_ExprNoComma_LRI_Original]<< !_ExprNoComma_LRI_Isolated_1 @ >>
+[RULE: 18][CLAUSE: 2]
+	ending -> [143][_ExprNoComma_LRI_Original] END [ENDING]
 		- ReopenObject()
 		- EndObject()
 
-[130][_ExprNoComma_LRI_Original]lrp:(LRI__ExprNoComma) @
-[RULE: 16][CLAUSE: 0]
-	ending -> [127][_ExprNoComma_LRI_Original] END [ENDING]
+[146][_ExprNoComma_LRI_Original]lrp:(LRI__ExprNoComma) @
+[RULE: 18][CLAUSE: 0]
+	ending -> [143][_ExprNoComma_LRI_Original] END [ENDING]
 
-[131][_Expr_LRI_Original] BEGIN 
-[RULE: 17][CLAUSE: -1]
-	rule: _ExprNoComma_LRI_Original -> [136][_Expr_LRI_Original]<< !_ExprNoComma_LRI_Original @ >>
+[147][_Expr_LRI_Original] BEGIN 
+[RULE: 19][CLAUSE: -1]
+	rule: _ExprNoComma_LRI_Original -> [152][_Expr_LRI_Original]<< !_ExprNoComma_LRI_Original @ >>
 		- DelayFieldAssignment()
 		+ ReopenObject()
 
-[132][_Expr_LRI_Original] END [ENDING]
-[RULE: 17][CLAUSE: -1]
+[148][_Expr_LRI_Original] END [ENDING]
+[RULE: 19][CLAUSE: -1]
 
-[133][_Expr_LRI_Original]< _Expr_LRI_Original "," @ _ExprNoComma >
-[RULE: 17][CLAUSE: 1]
-	rule: _ExprNoComma -> [134][_Expr_LRI_Original]< _Expr_LRI_Original "," _ExprNoComma @ >
+[149][_Expr_LRI_Original]< _Expr_LRI_Original "," @ _ExprNoComma >
+[RULE: 19][CLAUSE: 1]
+	rule: _ExprNoComma -> [150][_Expr_LRI_Original]< _Expr_LRI_Original "," _ExprNoComma @ >
 		+ Field(CommaExpr::second)
 
-[134][_Expr_LRI_Original]< _Expr_LRI_Original "," _ExprNoComma @ >
-[RULE: 17][CLAUSE: 1]
-	ending -> [132][_Expr_LRI_Original] END [ENDING]
-		- EndObject()
-	leftrec -> [135][_Expr_LRI_Original]< _Expr_LRI_Original @ "," _ExprNoComma >
-		- EndObject()
-		- LriStore()
-		- BeginObject(CommaExpr)
-		- LriFetch()
-		+ Field(CommaExpr::first)
-
-[135][_Expr_LRI_Original]< _Expr_LRI_Original @ "," _ExprNoComma >
-[RULE: 17][CLAUSE: 1]
-	token: "," -> [133][_Expr_LRI_Original]< _Expr_LRI_Original "," @ _ExprNoComma >
-
-[136][_Expr_LRI_Original]<< !_ExprNoComma_LRI_Original @ >>
-[RULE: 17][CLAUSE: 0]
-	ending -> [132][_Expr_LRI_Original] END [ENDING]
-		- EndObject()
-	leftrec -> [135][_Expr_LRI_Original]< _Expr_LRI_Original @ "," _ExprNoComma >
-		- EndObject()
-		- LriStore()
-		- BeginObject(CommaExpr)
-		- LriFetch()
-		+ Field(CommaExpr::first)
-
-[137][Module_LRI_Original] BEGIN 
-[RULE: 18][CLAUSE: -1]
-	rule: _LongType_LRI_Original -> [140][Module_LRI_Original]<< !_LongType_LRI_Original @ >>
-		- DelayFieldAssignment()
-	rule: _Expr_LRI_Original -> [139][Module_LRI_Original]<< !_Expr_LRI_Original @ >>
-		- DelayFieldAssignment()
-
-[138][Module_LRI_Original] END [ENDING]
-[RULE: 18][CLAUSE: -1]
-
-[139][Module_LRI_Original]<< !_Expr_LRI_Original @ >>
-[RULE: 18][CLAUSE: 0]
-	ending -> [138][Module_LRI_Original] END [ENDING]
-		- ReopenObject()
-		- EndObject()
-
-[140][Module_LRI_Original]<< !_LongType_LRI_Original @ >>
-[RULE: 18][CLAUSE: 1]
-	ending -> [138][Module_LRI_Original] END [ENDING]
-		- ReopenObject()
-		- EndObject()
-
-[141][_Expr0__LongType_LRI_Prefix] BEGIN 
-[RULE: 19][CLAUSE: -1]
-	rule: _LongType_LRI_Original -> [143][_Expr0__LongType_LRI_Prefix]<< !_LongType_LRI_Original @ >>
-		- DelayFieldAssignment()
-	lr-placeholder: LRIP__Expr0__LongType -> [144][_Expr0__LongType_LRI_Prefix]lrp:(LRIP__Expr0__LongType) @
-
-[142][_Expr0__LongType_LRI_Prefix] END [ENDING]
-[RULE: 19][CLAUSE: -1]
-
-[143][_Expr0__LongType_LRI_Prefix]<< !_LongType_LRI_Original @ >>
+[150][_Expr_LRI_Original]< _Expr_LRI_Original "," _ExprNoComma @ >
 [RULE: 19][CLAUSE: 1]
-	ending -> [142][_Expr0__LongType_LRI_Prefix] END [ENDING]
+	ending -> [148][_Expr_LRI_Original] END [ENDING]
+		- EndObject()
+	leftrec -> [151][_Expr_LRI_Original]< _Expr_LRI_Original @ "," _ExprNoComma >
+		- EndObject()
+		- LriStore()
+		- BeginObject(CommaExpr)
+		- LriFetch()
+		+ Field(CommaExpr::first)
+
+[151][_Expr_LRI_Original]< _Expr_LRI_Original @ "," _ExprNoComma >
+[RULE: 19][CLAUSE: 1]
+	token: "," -> [149][_Expr_LRI_Original]< _Expr_LRI_Original "," @ _ExprNoComma >
+
+[152][_Expr_LRI_Original]<< !_ExprNoComma_LRI_Original @ >>
+[RULE: 19][CLAUSE: 0]
+	ending -> [148][_Expr_LRI_Original] END [ENDING]
+		- EndObject()
+	leftrec -> [151][_Expr_LRI_Original]< _Expr_LRI_Original @ "," _ExprNoComma >
+		- EndObject()
+		- LriStore()
+		- BeginObject(CommaExpr)
+		- LriFetch()
+		+ Field(CommaExpr::first)
+
+[153][Module_LRI_Original] BEGIN 
+[RULE: 20][CLAUSE: -1]
+	rule: _LongType_LRI_Original -> [156][Module_LRI_Original]<< !_LongType_LRI_Original @ >>
+		- DelayFieldAssignment()
+	rule: _Expr_LRI_Original -> [155][Module_LRI_Original]<< !_Expr_LRI_Original @ >>
+		- DelayFieldAssignment()
+
+[154][Module_LRI_Original] END [ENDING]
+[RULE: 20][CLAUSE: -1]
+
+[155][Module_LRI_Original]<< !_Expr_LRI_Original @ >>
+[RULE: 20][CLAUSE: 0]
+	ending -> [154][Module_LRI_Original] END [ENDING]
 		- ReopenObject()
 		- EndObject()
 
-[144][_Expr0__LongType_LRI_Prefix]lrp:(LRIP__Expr0__LongType) @
-[RULE: 19][CLAUSE: 0]
-	ending -> [142][_Expr0__LongType_LRI_Prefix] END [ENDING]
+[156][Module_LRI_Original]<< !_LongType_LRI_Original @ >>
+[RULE: 20][CLAUSE: 1]
+	ending -> [154][Module_LRI_Original] END [ENDING]
+		- ReopenObject()
+		- EndObject()
+
+[157][ExprModule_LRI_Original] BEGIN 
+[RULE: 21][CLAUSE: -1]
+	rule: _Expr_LRI_Original -> [159][ExprModule_LRI_Original]<< !_Expr_LRI_Original @ >>
+		- DelayFieldAssignment()
+
+[158][ExprModule_LRI_Original] END [ENDING]
+[RULE: 21][CLAUSE: -1]
+
+[159][ExprModule_LRI_Original]<< !_Expr_LRI_Original @ >>
+[RULE: 21][CLAUSE: 0]
+	ending -> [158][ExprModule_LRI_Original] END [ENDING]
+		- ReopenObject()
+		- EndObject()
+
+[160][TypeModule_LRI_Original] BEGIN 
+[RULE: 22][CLAUSE: -1]
+	rule: _LongType_LRI_Original -> [162][TypeModule_LRI_Original]<< !_LongType_LRI_Original @ >>
+		- DelayFieldAssignment()
+
+[161][TypeModule_LRI_Original] END [ENDING]
+[RULE: 22][CLAUSE: -1]
+
+[162][TypeModule_LRI_Original]<< !_LongType_LRI_Original @ >>
+[RULE: 22][CLAUSE: 0]
+	ending -> [161][TypeModule_LRI_Original] END [ENDING]
+		- ReopenObject()
+		- EndObject()
+
+[163][_Expr0__LongType_LRI_Prefix] BEGIN 
+[RULE: 23][CLAUSE: -1]
+	rule: _LongType_LRI_Original -> [165][_Expr0__LongType_LRI_Prefix]<< !_LongType_LRI_Original @ >>
+		- DelayFieldAssignment()
+	lr-placeholder: LRIP__Expr0__LongType -> [166][_Expr0__LongType_LRI_Prefix]lrp:(LRIP__Expr0__LongType) @
+
+[164][_Expr0__LongType_LRI_Prefix] END [ENDING]
+[RULE: 23][CLAUSE: -1]
+
+[165][_Expr0__LongType_LRI_Prefix]<< !_LongType_LRI_Original @ >>
+[RULE: 23][CLAUSE: 1]
+	ending -> [164][_Expr0__LongType_LRI_Prefix] END [ENDING]
+		- ReopenObject()
+		- EndObject()
+
+[166][_Expr0__LongType_LRI_Prefix]lrp:(LRIP__Expr0__LongType) @
+[RULE: 23][CLAUSE: 0]
+	ending -> [164][_Expr0__LongType_LRI_Prefix] END [ENDING]
 

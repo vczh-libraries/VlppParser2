@@ -28,6 +28,8 @@ namespace prefixmerge3_lrinested
 		_Expr1_Raw = 71,
 		_Expr_Raw = 83,
 		Module = 95,
+		ExprModule = 107,
+		TypeModule = 110,
 	};
 
 	const wchar_t* ModuleParserRuleName(vl::vint index);
@@ -46,6 +48,10 @@ namespace prefixmerge3_lrinested
 
 		vl::Ptr<prefixmerge3_lrinested::TypeOrExpr> ParseModule(const vl::WString& input, vl::vint codeIndex = -1) const;
 		vl::Ptr<prefixmerge3_lrinested::TypeOrExpr> ParseModule(vl::collections::List<vl::regex::RegexToken>& tokens, vl::vint codeIndex = -1) const;
+		vl::Ptr<prefixmerge3_lrinested::TypeOrExpr> ParseExprModule(const vl::WString& input, vl::vint codeIndex = -1) const;
+		vl::Ptr<prefixmerge3_lrinested::TypeOrExpr> ParseExprModule(vl::collections::List<vl::regex::RegexToken>& tokens, vl::vint codeIndex = -1) const;
+		vl::Ptr<prefixmerge3_lrinested::TypeOrExpr> ParseTypeModule(const vl::WString& input, vl::vint codeIndex = -1) const;
+		vl::Ptr<prefixmerge3_lrinested::TypeOrExpr> ParseTypeModule(vl::collections::List<vl::regex::RegexToken>& tokens, vl::vint codeIndex = -1) const;
 	};
 }
 #endif

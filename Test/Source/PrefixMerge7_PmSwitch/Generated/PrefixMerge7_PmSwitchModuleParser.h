@@ -28,28 +28,32 @@ namespace prefixmerge7_pmswitch
 		_Expr = 79,
 		Module = 89,
 		Module_NoGT_NoComma = 105,
-		_Expr3_SWITCH_COMBINED = 120,
-		_Expr3_SWITCH_0allow_gt = 128,
-		_Expr3_SWITCH_1allow_gt = 136,
-		_Expr4_SWITCH_0allow_gt = 144,
-		_Expr4_SWITCH_1allow_gt = 153,
-		_Expr4_SWITCH_0allow_gt_LRI_Isolated_1 = 162,
-		_Expr4_SWITCH_1allow_gt_LRI_Isolated_1 = 166,
-		_LongType_LRI_Original = 170,
-		_Expr0_LRI_Original = 184,
-		_Expr1_LRI_Original = 194,
-		_Expr2_LRI_Original = 202,
-		_Expr3_SWITCH_COMBINED_LRI_Original = 208,
-		_Expr3_SWITCH_0allow_gt_LRI_Original = 211,
-		_Expr3_SWITCH_1allow_gt_LRI_Original = 217,
-		_Expr4_SWITCH_0allow_gt_LRI_Original = 226,
-		_Expr4_SWITCH_1allow_gt_LRI_Original = 231,
-		_Expr_NoComma_LRI_Original = 236,
-		_Expr_NoGT_NoComma_LRI_Original = 239,
-		_Expr_LRI_Original = 242,
-		Module_LRI_Original = 248,
-		Module_NoGT_NoComma_LRI_Original = 252,
-		_Expr0__LongType_LRI_Prefix = 256,
+		ExprModule = 120,
+		TypeModule = 130,
+		_Expr3_SWITCH_COMBINED = 136,
+		_Expr3_SWITCH_0allow_gt = 144,
+		_Expr3_SWITCH_1allow_gt = 152,
+		_Expr4_SWITCH_0allow_gt = 160,
+		_Expr4_SWITCH_1allow_gt = 169,
+		_Expr4_SWITCH_0allow_gt_LRI_Isolated_1 = 178,
+		_Expr4_SWITCH_1allow_gt_LRI_Isolated_1 = 182,
+		_LongType_LRI_Original = 186,
+		_Expr0_LRI_Original = 200,
+		_Expr1_LRI_Original = 210,
+		_Expr2_LRI_Original = 218,
+		_Expr3_SWITCH_COMBINED_LRI_Original = 224,
+		_Expr3_SWITCH_0allow_gt_LRI_Original = 227,
+		_Expr3_SWITCH_1allow_gt_LRI_Original = 233,
+		_Expr4_SWITCH_0allow_gt_LRI_Original = 242,
+		_Expr4_SWITCH_1allow_gt_LRI_Original = 247,
+		_Expr_NoComma_LRI_Original = 252,
+		_Expr_NoGT_NoComma_LRI_Original = 255,
+		_Expr_LRI_Original = 258,
+		Module_LRI_Original = 264,
+		Module_NoGT_NoComma_LRI_Original = 268,
+		ExprModule_LRI_Original = 272,
+		TypeModule_LRI_Original = 275,
+		_Expr0__LongType_LRI_Prefix = 278,
 	};
 
 	const wchar_t* ModuleParserRuleName(vl::vint index);
@@ -68,8 +72,16 @@ namespace prefixmerge7_pmswitch
 
 		vl::Ptr<prefixmerge7_pmswitch::TypeOrExpr> ParseModule(const vl::WString& input, vl::vint codeIndex = -1) const;
 		vl::Ptr<prefixmerge7_pmswitch::TypeOrExpr> ParseModule(vl::collections::List<vl::regex::RegexToken>& tokens, vl::vint codeIndex = -1) const;
+		vl::Ptr<prefixmerge7_pmswitch::TypeOrExpr> ParseExprModule(const vl::WString& input, vl::vint codeIndex = -1) const;
+		vl::Ptr<prefixmerge7_pmswitch::TypeOrExpr> ParseExprModule(vl::collections::List<vl::regex::RegexToken>& tokens, vl::vint codeIndex = -1) const;
+		vl::Ptr<prefixmerge7_pmswitch::TypeOrExpr> ParseTypeModule(const vl::WString& input, vl::vint codeIndex = -1) const;
+		vl::Ptr<prefixmerge7_pmswitch::TypeOrExpr> ParseTypeModule(vl::collections::List<vl::regex::RegexToken>& tokens, vl::vint codeIndex = -1) const;
 		vl::Ptr<prefixmerge7_pmswitch::TypeOrExpr> ParseModule_LRI_Original(const vl::WString& input, vl::vint codeIndex = -1) const;
 		vl::Ptr<prefixmerge7_pmswitch::TypeOrExpr> ParseModule_LRI_Original(vl::collections::List<vl::regex::RegexToken>& tokens, vl::vint codeIndex = -1) const;
+		vl::Ptr<prefixmerge7_pmswitch::TypeOrExpr> ParseExprModule_LRI_Original(const vl::WString& input, vl::vint codeIndex = -1) const;
+		vl::Ptr<prefixmerge7_pmswitch::TypeOrExpr> ParseExprModule_LRI_Original(vl::collections::List<vl::regex::RegexToken>& tokens, vl::vint codeIndex = -1) const;
+		vl::Ptr<prefixmerge7_pmswitch::TypeOrExpr> ParseTypeModule_LRI_Original(const vl::WString& input, vl::vint codeIndex = -1) const;
+		vl::Ptr<prefixmerge7_pmswitch::TypeOrExpr> ParseTypeModule_LRI_Original(vl::collections::List<vl::regex::RegexToken>& tokens, vl::vint codeIndex = -1) const;
 	};
 }
 #endif

@@ -25,6 +25,8 @@ namespace prefixmerge4_lrimultiple
 		_Expr1_Raw = 58,
 		_Expr_Raw = 66,
 		Module = 74,
+		ExprModule = 84,
+		TypeModule = 87,
 	};
 
 	const wchar_t* ModuleParserRuleName(vl::vint index);
@@ -43,6 +45,10 @@ namespace prefixmerge4_lrimultiple
 
 		vl::Ptr<prefixmerge4_lrimultiple::TypeOrExpr> ParseModule(const vl::WString& input, vl::vint codeIndex = -1) const;
 		vl::Ptr<prefixmerge4_lrimultiple::TypeOrExpr> ParseModule(vl::collections::List<vl::regex::RegexToken>& tokens, vl::vint codeIndex = -1) const;
+		vl::Ptr<prefixmerge4_lrimultiple::TypeOrExpr> ParseExprModule(const vl::WString& input, vl::vint codeIndex = -1) const;
+		vl::Ptr<prefixmerge4_lrimultiple::TypeOrExpr> ParseExprModule(vl::collections::List<vl::regex::RegexToken>& tokens, vl::vint codeIndex = -1) const;
+		vl::Ptr<prefixmerge4_lrimultiple::TypeOrExpr> ParseTypeModule(const vl::WString& input, vl::vint codeIndex = -1) const;
+		vl::Ptr<prefixmerge4_lrimultiple::TypeOrExpr> ParseTypeModule(vl::collections::List<vl::regex::RegexToken>& tokens, vl::vint codeIndex = -1) const;
 	};
 }
 #endif
