@@ -2,9 +2,17 @@
 
 ## Next task
 
+- `PrefixMerge` 1-8 add test cases to parse expr and type separately.
+  - Add `ExprModule` for expr
+  - Add `TypeModule` for type
+  - Add `TestCppParser` in `TestParser_Generated.cpp` which
+    - Call `ExprModule` and match `Output/Expr`
+    - Call `TypeModule` and match `Output/Type`
+    - In each folder there is a `TestList.txt` which contains a regex to match file names (no path no extension)
+    - If `File.json` exists then the output should match the content, otherwise it should match one in the `Output` folder
+
 ## Test Cases
 
-- `PrefixMerge` 1-7 add test cases to parse expr and type separately.
 - Create test cases that only rewrite syntax without generating C++ code for:
   - `DeductEmptySyntaxVisitor`
   - Invalid combined clauses during expanding switches
