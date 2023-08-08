@@ -2,9 +2,6 @@
 
 ## Next task
 
-- Separate Workflow ast/syntax to multiple files.
-  - Port to Workflow repo.
-
 ## Test Cases
 
 - `PrefixMerge` 1-7 add test cases to parse expr and type separately.
