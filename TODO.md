@@ -4,8 +4,6 @@
 
 - Separate Workflow ast/syntax to multiple files.
   - Port to Workflow repo.
-- Rewrite and remove switch before removing PrefixMerge.
-  - Test `LeftRecursionInjectHasNoContinuation`
 
 ## Test Cases
 
