@@ -3,7 +3,19 @@
 TEST_FILE
 {
 	List<WString> astFileNames;
-	astFileNames.Add(L"Ast");
+	astFileNames.Add(L"Ast/Ast");
+	astFileNames.Add(L"Ast/Types");
+	astFileNames.Add(L"Ast/Decls");
+	astFileNames.Add(L"Ast/DeclsClass");
+	astFileNames.Add(L"Ast/DeclsEnum");
+	astFileNames.Add(L"Ast/DeclsStruct");
+	astFileNames.Add(L"Ast/DeclsVirtual");
+	astFileNames.Add(L"Ast/Statements");
+	astFileNames.Add(L"Ast/StatementsVirtual");
+	astFileNames.Add(L"Ast/StatementsCoroutine");
+	astFileNames.Add(L"Ast/Expressions");
+	astFileNames.Add(L"Ast/ExpressionsVirtual");
+	astFileNames.Add(L"Ast/Module");
 
 	List<WString> syntaxFileNames;
 	syntaxFileNames.Add(L"Syntax");

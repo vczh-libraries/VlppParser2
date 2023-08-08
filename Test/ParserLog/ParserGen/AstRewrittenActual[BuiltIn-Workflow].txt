@@ -1,29 +1,29 @@
-﻿class Type
+﻿@public class Type
 {
 }
 
-class Expression
+@public class Expression
 {
 }
 
-class Statement
+@public class Statement
 {
 }
 
-class Attribute
+@public class Attribute
 {
   var category : token;
   var name : token;
   var value : Expression;
 }
 
-class Declaration
+@public class Declaration
 {
   var attributes : Attribute[];
   var name : token;
 }
 
-enum FunctionKind
+@public enum FunctionKind
 {
   Static,
   Override,
@@ -114,7 +114,7 @@ class NamespaceDeclaration : Declaration
   var declarations : Declaration[];
 }
 
-class FunctionArgument
+@public class FunctionArgument
 {
   var attributes : Attribute[];
   var name : token;
@@ -127,7 +127,7 @@ enum FunctionAnonymity
   Anonymous,
 }
 
-class FunctionDeclaration : Declaration
+@public class FunctionDeclaration : Declaration
 {
   var functionKind : FunctionKind;
   var anonymity : FunctionAnonymity;
@@ -136,7 +136,7 @@ class FunctionDeclaration : Declaration
   var statement : Statement;
 }
 
-class VariableDeclaration : Declaration
+@public class VariableDeclaration : Declaration
 {
   var type : Type;
   var expression : Expression;
@@ -637,7 +637,7 @@ class InferExpression : Expression
   var type : Type;
 }
 
-enum TypeCastingStrategy
+@public enum TypeCastingStrategy
 {
   Strong,
   Weak,
