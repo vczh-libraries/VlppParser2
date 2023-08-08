@@ -18,7 +18,11 @@ TEST_FILE
 	astFileNames.Add(L"Ast/Module");
 
 	List<WString> syntaxFileNames;
-	syntaxFileNames.Add(L"Syntax");
+	syntaxFileNames.Add(L"Syntax/Types");
+	syntaxFileNames.Add(L"Syntax/Expressions");
+	syntaxFileNames.Add(L"Syntax/Statements");
+	syntaxFileNames.Add(L"Syntax/Decls");
+	syntaxFileNames.Add(L"Syntax/Module");
 
 	FilePath dirParser = GetTestParserInputPath(L"BuiltIn-Workflow");
 
