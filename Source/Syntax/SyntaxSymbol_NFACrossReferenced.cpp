@@ -80,6 +80,7 @@ SyntaxSymbolManager::FixLeftRecursionInjectEdge
 
 			void SyntaxSymbolManager::FixLeftRecursionInjectEdge(StateSymbol* startState, EdgeSymbol* injectEdge)
 			{
+#define ERROR_MESSAGE_PREFIX L"vl::glr::parsergen::SyntaxSymbolManager::FixLeftRecursionInjectEdge(StateSymbol*, EdgeSymbol*)#"
 				// search for all qualified placeholder edge starts from inject targets
 				List<EdgeSymbol*> placeholderEdges;
 				for (auto outEdge : startState->OutEdges())
@@ -114,7 +115,9 @@ SyntaxSymbolManager::FixLeftRecursionInjectEdge
 					// check if placeholderEdge does nothing more than using rules
 					if (placeholderEdge->insAfterInput.Count() > 0)
 					{
-						goto FAILED_INSTRUCTION_CHECKING;
+						// EdgeInputType::LrPlaceholder is created from a left_recursion_placeholder clause
+						// This is ensured by the semantic
+						CHECK_FAIL(ERROR_MESSAGE_PREFIX L"Internal error: EdgeInputType::LrPlaceholder edge should have empty insAfterInput.");
 					}
 
 					for (vint i = 0; i <= placeholderEdge->returnEdges.Count(); i++)
@@ -134,23 +137,15 @@ SyntaxSymbolManager::FixLeftRecursionInjectEdge
 						{
 							if (outEdge->input.type == EdgeInputType::Ending && outEdge->insAfterInput.Count() > 0)
 							{
-								goto FAILED_INSTRUCTION_CHECKING;
+								// EdgeInputType::Ending is created from accumulating multiple EdgeInputType::Epsilon edges leading to an ending state
+								// EdgeInputType::Epsilon always have empty insAfterInput
+								CHECK_FAIL(ERROR_MESSAGE_PREFIX L"Internal error: EdgeInputType::Ending edge should have empty insAfterInput.");
 							}
 						}
 
 						returnEdges.Add(returnEdge);
 						endingStates.Add(endingState);
 					}
-					continue;
-				FAILED_INSTRUCTION_CHECKING:
-					AddError(
-						ParserErrorType::LeftRecursionPlaceholderMixedWithSwitches,
-						{},
-						injectEdge->fromState->Rule()->Name(),
-						lrpFlags[injectEdge->input.flags[0]],
-						startState->Rule()->Name()
-						);
-					return;
 				}
 
 				// calculate all acceptable Token input from inject edge
@@ -470,6 +465,7 @@ SyntaxSymbolManager::FixLeftRecursionInjectEdge
 						startState->Rule()->Name()
 						);
 				}
+#undef ERROR_MESSAGE_PREFIX
 			}
 
 /***********************************************************************

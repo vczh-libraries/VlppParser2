@@ -5,14 +5,7 @@
 - Separate Workflow ast/syntax to multiple files.
   - Port to Workflow repo.
 - Rewrite and remove switch before removing PrefixMerge.
-  - Rename and test `LeftRecursionPlaceholderMixedWithSwitches`
   - Test `LeftRecursionInjectHasNoContinuation`
-- Multiple LRI following one Target
-- Generate multiple level of LRI from prefix_merge
-  - Remove `PrefixExtractionAffectedRuleReferencedAnother`
-  - Currently it generates an error if 3 levels are required
-  - Allow one prefix followed by multiple continuations
-    - Optional applies to all continuations as a whole
 
 ## Test Cases
 
@@ -35,8 +28,6 @@
 
 - Extensible tokens, for example, recognize `R"[^\s(]\(` and invoke a callback function to determine the end of the string.
   - Offer two options: using (rich regex | C++) to search for complete token.
-- Add union type and remove `TypeOrExprOrOthers` in C++.
-  - Consider what does `@ambiguous union` mean.
 - AST file groups.
   - An AST file only sees:
     - Types defined in this file.
@@ -45,6 +36,12 @@
   - C++ codegen are created per groups.
     - Only AST classes `#include` depended files groups, visitors do not.
     - When a visitor need to call types in different file groups, leave it abstract.
+- Multiple LRI following one Target
+- Generate multiple level of LRI from prefix_merge
+  - Remove `PrefixExtractionAffectedRuleReferencedAnother`
+  - Currently it generates an error if 3 levels are required
+  - Allow one prefix followed by multiple continuations
+    - Optional applies to all continuations as a whole
 
 ## Issues (BuiltIn-Cpp)
 
@@ -79,6 +76,8 @@
 
 ## Experiments
 
+- Add union type and remove `TypeOrExprOrOthers` in C++.
+  - Consider what does `@ambiguous union` mean.
 - Try to see if it is possible to
   - Remove `PushReturnStack` last argument.
   - Remove `ReturnDesc::ruleType`.
