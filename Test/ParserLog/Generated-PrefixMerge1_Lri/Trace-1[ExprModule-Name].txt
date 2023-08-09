@@ -1,0 +1,121 @@
+﻿================ EXECUTION STEPS ================
+[0]: 0@0 - 7@1
+
+==================== TRACES =====================
+
++-------------------------+
+| [0]: <Start>            |
+| [62][ExprModule] BEGIN  |
+| [AST-INSTRUCTIONS]:     |
+| [SUCCESORS 1-1]: [1]    |
++-------------------------+
+[0]
+ |
+ +
+ |
+[0]
+++========================================================================++
+|| [1]: {ID} Name                                                         ||
+|| [2][_Name]< ID @ >                                                     ||
+|| [AST-INSTRUCTIONS]:                                                    ||
+||   - DelayFieldAssignment()                                             ||
+||   - DelayFieldAssignment()                                             ||
+||   - DelayFieldAssignment()                                             ||
+||   - DelayFieldAssignment()                                             ||
+||   - DelayFieldAssignment()                                             ||
+||   - BeginObject(Name)                                                  ||
+||   + Token()                                                            ||
+||   + Field(Name::name)                                                  ||
+|| [RETURN STACK]:                                                        ||
+||   [4][0][0]: _Name -> [8][_PrimitiveShared]<< !_Name @ >>              ||
+||   [3][7][0]: _PrimitiveShared -> [37][_Expr0]<< !_PrimitiveShared @ >> ||
+||   [2][5][0]: _Expr0 -> [46][_Expr1]<< !_Expr0 @ >>                     ||
+||   [1][4][0]: _Expr1 -> [52][_Expr]<< !_Expr1 @ >>                      ||
+||   [0][22][0]: _Expr -> [64][ExprModule]<< !_Expr @ >>                  ||
+|| [PREDECESSORS 0-0]: [0]                                                ||
+|| [SUCCESORS 2-2]: [2]                                                   ||
+++========================================================================++
+|
++
+|
++------------------------------------------------------------------------+
+| [2]: <Ending>                                                          |
+| [8][_PrimitiveShared]<< !_Name @ >>                                    |
+| [AST-INSTRUCTIONS]:                                                    |
+|   - EndObject()                                                        |
+| [RETURN STACK]:                                                        |
+|   [3][7][0]: _PrimitiveShared -> [37][_Expr0]<< !_PrimitiveShared @ >> |
+|   [2][5][0]: _Expr0 -> [46][_Expr1]<< !_Expr0 @ >>                     |
+|   [1][4][0]: _Expr1 -> [52][_Expr]<< !_Expr1 @ >>                      |
+|   [0][22][0]: _Expr -> [64][ExprModule]<< !_Expr @ >>                  |
+| [PREDECESSORS 1-1]: [1]                                                |
+| [SUCCESORS 3-3]: [3]                                                   |
++------------------------------------------------------------------------+
+|
++
+|
++-------------------------------------------------------+
+| [3]: <Ending>                                         |
+| [37][_Expr0]<< !_PrimitiveShared @ >>                 |
+| [AST-INSTRUCTIONS]:                                   |
+|   - ReopenObject()                                    |
+|   - EndObject()                                       |
+| [RETURN STACK]:                                       |
+|   [2][5][0]: _Expr0 -> [46][_Expr1]<< !_Expr0 @ >>    |
+|   [1][4][0]: _Expr1 -> [52][_Expr]<< !_Expr1 @ >>     |
+|   [0][22][0]: _Expr -> [64][ExprModule]<< !_Expr @ >> |
+| [PREDECESSORS 2-2]: [2]                               |
+| [SUCCESORS 4-4]: [4]                                  |
++-------------------------------------------------------+
+|
++
+|
++-------------------------------------------------------+
+| [4]: <Ending>                                         |
+| [46][_Expr1]<< !_Expr0 @ >>                           |
+| [AST-INSTRUCTIONS]:                                   |
+|   - ReopenObject()                                    |
+|   - EndObject()                                       |
+|   > ReopenObject()                                    |
+| [RETURN STACK]:                                       |
+|   [1][4][0]: _Expr1 -> [52][_Expr]<< !_Expr1 @ >>     |
+|   [0][22][0]: _Expr -> [64][ExprModule]<< !_Expr @ >> |
+| [PREDECESSORS 3-3]: [3]                               |
+| [SUCCESORS 5-5]: [5]                                  |
++-------------------------------------------------------+
+|
++
+|
++-------------------------------------------------------+
+| [5]: <Ending>                                         |
+| [52][_Expr]<< !_Expr1 @ >>                            |
+| [AST-INSTRUCTIONS]:                                   |
+|   - EndObject()                                       |
+|   > ReopenObject()                                    |
+| [RETURN STACK]:                                       |
+|   [0][22][0]: _Expr -> [64][ExprModule]<< !_Expr @ >> |
+| [PREDECESSORS 4-4]: [4]                               |
+| [SUCCESORS 6-6]: [6]                                  |
++-------------------------------------------------------+
+|
++
+|
++--------------------------------+
+| [6]: <Ending>                  |
+| [64][ExprModule]<< !_Expr @ >> |
+| [AST-INSTRUCTIONS]:            |
+|   - EndObject()                |
+| [PREDECESSORS 5-5]: [5]        |
+| [SUCCESORS 7-7]: [7]           |
++--------------------------------+
+|
++
+|
++-------------------------------+
+| [7]: <Ending>                 |
+| [63][ExprModule] END [ENDING] |
+| [AST-INSTRUCTIONS]:           |
+|   - ReopenObject()            |
+|   - EndObject()               |
+| [PREDECESSORS 6-6]: [6]       |
++-------------------------------+
