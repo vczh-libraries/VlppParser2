@@ -101,7 +101,7 @@ namespace TestParser_Generated_TestObjects
 		List<File> inputFiles;
 		dirInput.GetFiles(inputFiles);
 
-		auto executeTestCases = [&](List<WString>& executedCaseNames, auto&& parserCallback, const WString& caseModule = WString::Empty, Regex* regexFilter = nullptr)
+		auto executeTestCases = [&](List<WString>& executedCaseNames, auto&& parserCallback, const WString& caseModule = WString::Empty, Regex* regexFilter = nullptr, FilePath additionalOutput = {})
 		{
 			for (auto&& inputFile : inputFiles)
 			{
@@ -125,17 +125,30 @@ namespace TestParser_Generated_TestObjects
 
 					auto input = inputFile.ReadAllTextByBom();
 					auto ast = parserCallback(input);
+					parsedSuccessfully++;
+
 					auto actualJson = PrintAstJson<TJsonVisitor>(ast);
 					File(dirOutput / (L"Output[" + caseName + L"]" + caseModule + L".json")).WriteAllText(actualJson, true, BomEncoder::Utf8);
-	
-					auto expectedJsonFile = File(dirBaseline / (caseName + L".json"));
-					parsedSuccessfully++;
-					if (!expectedJsonFile.Exists()) return;
-					comparedWithBaseline++;
-	
-					TEST_PRINT(L"Compared with expectedJson");
-					auto expectedJson = expectedJsonFile.ReadAllTextByBom();
-					AssertLines(expectedJson, actualJson);
+
+					File expectedJsonFile;
+					if (!additionalOutput.IsRoot())
+					{
+						File jsonFile = additionalOutput / (caseName + L".json");
+						if (jsonFile.Exists()) expectedJsonFile = jsonFile;
+					}
+					if (expectedJsonFile.GetFilePath().IsRoot())
+					{
+						File jsonFile = dirBaseline / (caseName + L".json");
+						if (jsonFile.Exists()) expectedJsonFile = jsonFile;
+					}
+
+					if (!expectedJsonFile.GetFilePath().IsRoot())
+					{
+						comparedWithBaseline++;
+						TEST_PRINT(L"Compared with: " + dirBaseline.GetRelativePathFor(expectedJsonFile.GetFilePath()));
+						auto expectedJson = expectedJsonFile.ReadAllTextByBom();
+						AssertLines(expectedJson, actualJson);
+					}
 				});
 			}
 		};
@@ -173,7 +186,8 @@ namespace TestParser_Generated_TestObjects
 						filteredCaseNames,
 						[&](auto&& input) { return parser.ParseExprModule(input); },
 						WString::Unmanaged(L"ExprModule-"),
-						&regexFilter
+						&regexFilter,
+						dirBaseline / L"Expr"
 						);
 				});
 			}
@@ -187,7 +201,8 @@ namespace TestParser_Generated_TestObjects
 						filteredCaseNames,
 						[&](auto&& input) { return parser.ParseTypeModule(input); },
 						WString::Unmanaged(L"TypeModule-"),
-						&regexFilter
+						&regexFilter,
+						dirBaseline / L"Type"
 						);
 				});
 			}
