@@ -518,7 +518,6 @@ TEST_FILE
 		L"TestCase_Cpp/Basic",
 		L"TestCase_Cpp/Ambiguous2",
 		L"TestCase_Cpp/CtorExpr",
-		L"TestCase_Cpp/Generic",
 		L"TestCase_Cpp/Variadic"
 		);
 	TestParser<prefixmerge9_pmloop::ModuleParser, prefixmerge9_pmloop::json_visitor::FileVisitor>(
