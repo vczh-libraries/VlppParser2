@@ -101,7 +101,7 @@ namespace TestParser_Generated_TestObjects
 		List<File> inputFiles;
 		dirInput.GetFiles(inputFiles);
 
-		auto executeTestCases = [&](List<WString>& executedCaseNames, const WString& caseModule = WString::Empty, Regex* regexFilter = nullptr)
+		auto executeTestCases = [&](List<WString>& executedCaseNames, auto&& parserCallback, const WString& caseModule = WString::Empty, Regex* regexFilter = nullptr)
 		{
 			for (auto&& inputFile : inputFiles)
 			{
@@ -124,7 +124,7 @@ namespace TestParser_Generated_TestObjects
 					inputDiscovered++;
 
 					auto input = inputFile.ReadAllTextByBom();
-					auto ast = parser.ParseModule(input);
+					auto ast = parserCallback(input);
 					auto actualJson = PrintAstJson<TJsonVisitor>(ast);
 					File(dirOutput / (L"Output[" + caseName + L"]" + caseModule + L".json")).WriteAllText(actualJson, true, BomEncoder::Utf8);
 	
@@ -157,7 +157,11 @@ namespace TestParser_Generated_TestObjects
 			List<WString> allCaseNames, filteredCaseNames;
 			TEST_CATEGORY(L"ParseModule")
 			{
-				executeTestCases(allCaseNames, WString::Unmanaged(L"Module-"));
+				executeTestCases(
+					allCaseNames,
+					[&](auto&& input) { return parser.ParseModule(input); },
+					WString::Unmanaged(L"Module-")
+					);
 			});
 
 			if (contentExprList != L"")
@@ -165,7 +169,12 @@ namespace TestParser_Generated_TestObjects
 				TEST_CATEGORY(L"ParseExprModule")
 				{
 					Regex regexFilter(contentExprList);
-					executeTestCases(filteredCaseNames, WString::Unmanaged(L"ExprModule-"), &regexFilter);
+					executeTestCases(
+						filteredCaseNames,
+						[&](auto&& input) { return parser.ParseExprModule(input); },
+						WString::Unmanaged(L"ExprModule-"),
+						&regexFilter
+						);
 				});
 			}
 
@@ -174,7 +183,12 @@ namespace TestParser_Generated_TestObjects
 				TEST_CATEGORY(L"ParseTypeModule")
 				{
 					Regex regexFilter(contentTypeList);
-					executeTestCases(filteredCaseNames, WString::Unmanaged(L"TypeModule-"), &regexFilter);
+					executeTestCases(
+						filteredCaseNames,
+						[&](auto&& input) { return parser.ParseTypeModule(input); },
+						WString::Unmanaged(L"TypeModule-"),
+						&regexFilter
+						);
 				});
 			}
 
@@ -188,7 +202,10 @@ namespace TestParser_Generated_TestObjects
 		else
 		{
 			List<WString> caseNames;
-			executeTestCases(caseNames);
+			executeTestCases(
+				caseNames,
+				[&](auto&& input) { return parser.ParseModule(input); }
+				);
 		}
 	}
 
