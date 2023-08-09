@@ -101,13 +101,19 @@ namespace TestParser_Generated_TestObjects
 		List<File> inputFiles;
 		dirInput.GetFiles(inputFiles);
 
-		auto executeTestCases = [&](const WString& caseModule = WString::Empty)
+		auto executeTestCases = [&](List<WString>& executedCaseNames, const WString& caseModule = WString::Empty, Regex* regexFilter = nullptr)
 		{
 			for (auto&& inputFile : inputFiles)
 			{
 				auto caseName = inputFile.GetFilePath().GetName();
 				if (caseName.Length() < 4 || caseName.Right(4) != L".txt") continue;
 				caseName = caseName.Left(caseName.Length() - 4);
+				if (regexFilter)
+				{
+					auto match = regexFilter->MatchHead(caseName);
+					if (!match || match->Result().Length() != caseName.Length()) continue;
+				}
+				executedCaseNames.Add(caseName);
 #ifdef PAUSE_INPUT
 				if (caseName != PAUSE_INPUT || caseModule != PAUSE_MODULE ) continue;
 #endif
@@ -141,14 +147,48 @@ namespace TestParser_Generated_TestObjects
 
 		if constexpr (HasExtraFeatures)
 		{
+			File fileExprList = FilePath(inputPath) / L"ListExpr.txt";
+			File fileTypeList = FilePath(inputPath) / L"ListType.txt";
+			TEST_CASE_ASSERT(fileExprList.Exists());
+			TEST_CASE_ASSERT(fileTypeList.Exists());
+			WString contentExprList = fileExprList.ReadAllTextByBom();
+			WString contentTypeList = fileTypeList.ReadAllTextByBom();
+
+			List<WString> allCaseNames, filteredCaseNames;
 			TEST_CATEGORY(L"ParseModule")
 			{
-				executeTestCases(WString::Unmanaged(L"Module-"));
+				executeTestCases(allCaseNames, WString::Unmanaged(L"Module-"));
 			});
+
+			if (contentExprList != L"")
+			{
+				TEST_CATEGORY(L"ParseExprModule")
+				{
+					Regex regexFilter(contentExprList);
+					executeTestCases(filteredCaseNames, WString::Unmanaged(L"ExprModule-"), &regexFilter);
+				});
+			}
+
+			if (contentTypeList != L"")
+			{
+				TEST_CATEGORY(L"ParseTypeModule")
+				{
+					Regex regexFilter(contentTypeList);
+					executeTestCases(filteredCaseNames, WString::Unmanaged(L"TypeModule-"), &regexFilter);
+				});
+			}
+
+			TEST_CASE_ASSERT(
+				CompareEnumerable(
+					From(allCaseNames).OrderBySelf(),
+					From(filteredCaseNames).Distinct().OrderBySelf()
+				) == 0
+			);
 		}
 		else
 		{
-			executeTestCases();
+			List<WString> caseNames;
+			executeTestCases(caseNames);
 		}
 	}
 
@@ -365,7 +405,7 @@ TEST_FILE
 		&prefixmerge1_lri::PrefixMerge1_LriTokenId,
 		&prefixmerge1_lri::ModuleParserRuleName,
 		&prefixmerge1_lri::ModuleParserStateLabel,
-		L"TestCase_Cpp/Basic"
+		L"TestCase_Cpp/Basic",
 		L"TestCase_Cpp/Ambiguous1"
 		);
 	TestParser<prefixmerge2_lrirequired::ModuleParser, prefixmerge2_lrirequired::json_visitor::TypeOrExprVisitor>(
@@ -375,7 +415,7 @@ TEST_FILE
 		&prefixmerge2_lrirequired::PrefixMerge2_LriRequiredTokenId,
 		&prefixmerge2_lrirequired::ModuleParserRuleName,
 		&prefixmerge2_lrirequired::ModuleParserStateLabel,
-		L"TestCase_Cpp/Basic"
+		L"TestCase_Cpp/Basic",
 		L"TestCase_Cpp/Ambiguous1"
 		);
 	TestParser<prefixmerge3_lrinested::ModuleParser, prefixmerge3_lrinested::json_visitor::TypeOrExprVisitor>(
@@ -385,7 +425,7 @@ TEST_FILE
 		&prefixmerge3_lrinested::PrefixMerge3_LriNestedTokenId,
 		&prefixmerge3_lrinested::ModuleParserRuleName,
 		&prefixmerge3_lrinested::ModuleParserStateLabel,
-		L"TestCase_Cpp/Basic"
+		L"TestCase_Cpp/Basic",
 		L"TestCase_Cpp/Ambiguous1",
 		L"TestCase_Cpp/CtorExpr"
 		);
@@ -396,7 +436,7 @@ TEST_FILE
 		&prefixmerge4_lrimultiple::PrefixMerge4_LriMultipleTokenId,
 		&prefixmerge4_lrimultiple::ModuleParserRuleName,
 		&prefixmerge4_lrimultiple::ModuleParserStateLabel,
-		L"TestCase_Cpp/Basic"
+		L"TestCase_Cpp/Basic",
 		L"TestCase_Cpp/Ambiguous1",
 		L"TestCase_Cpp/CtorExpr"
 		);
@@ -407,7 +447,7 @@ TEST_FILE
 		&prefixmerge5_pm::PrefixMerge5_PmTokenId,
 		&prefixmerge5_pm::ModuleParserRuleName,
 		&prefixmerge5_pm::ModuleParserStateLabel,
-		L"TestCase_Cpp/Basic"
+		L"TestCase_Cpp/Basic",
 		L"TestCase_Cpp/Ambiguous2",
 		L"TestCase_Cpp/CtorExpr"
 		);
@@ -418,7 +458,7 @@ TEST_FILE
 		&prefixmerge6_pm2::PrefixMerge6_Pm2TokenId,
 		&prefixmerge6_pm2::ModuleParserRuleName,
 		&prefixmerge6_pm2::ModuleParserStateLabel,
-		L"TestCase_Cpp/Basic"
+		L"TestCase_Cpp/Basic",
 		L"TestCase_Cpp/Ambiguous2",
 		L"TestCase_Cpp/CtorExpr",
 		L"TestCase_Cpp/ThrowComma"
@@ -430,7 +470,7 @@ TEST_FILE
 		&prefixmerge7_pmswitch::PrefixMerge7_PmSwitchTokenId,
 		&prefixmerge7_pmswitch::ModuleParserRuleName,
 		&prefixmerge7_pmswitch::ModuleParserStateLabel,
-		L"TestCase_Cpp/Basic"
+		L"TestCase_Cpp/Basic",
 		L"TestCase_Cpp/Ambiguous2",
 		L"TestCase_Cpp/CtorExpr",
 		L"TestCase_Cpp/ThrowComma",
@@ -443,7 +483,7 @@ TEST_FILE
 		&prefixmerge8_pmvariadic::PrefixMerge8_PmVariadicTokenId,
 		&prefixmerge8_pmvariadic::ModuleParserRuleName,
 		&prefixmerge8_pmvariadic::ModuleParserStateLabel,
-		L"TestCase_Cpp/Basic"
+		L"TestCase_Cpp/Basic",
 		L"TestCase_Cpp/Ambiguous2",
 		L"TestCase_Cpp/CtorExpr",
 		L"TestCase_Cpp/Variadic"
