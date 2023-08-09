@@ -45,12 +45,39 @@ extern FilePath GetOutputDir(const WString& parserName);
 
 // #define PAUSE_CASE L"PrefixMerge9_PmLoop"
 // #define PAUSE_INPUT L"Class"
+// #define PAUSE_MODULE L"Module-"
 
 namespace TestParser_Generated_TestObjects
 {
 	vint inputDiscovered = 0;
 	vint parsedSuccessfully = 0;
 	vint comparedWithBaseline = 0;
+
+
+	namespace parser_features
+	{
+		void TestExprModule(...);
+
+		template<typename TParser>
+		auto TestExprModule(TParser& parser) -> decltype(parser.ParseExprModule(std::declval<const WString&>(), std::declval<vint>()));
+
+		template<typename TParser, typename = void>
+		struct HasExprModule
+		{
+			static constexpr bool Value = !std::is_same_v<void, decltype(TestExprModule(std::declval<TParser&>()))>;
+		};
+
+		void TestTypeModule(...);
+
+		template<typename TParser>
+		auto TestTypeModule(TParser& parser) -> decltype(parser.ParseTypeModule(std::declval<const WString&>(), std::declval<vint>()));
+
+		template<typename TParser>
+		struct HasTypeModule
+		{
+			static constexpr bool Value = !std::is_same_v<void, decltype(TestTypeModule(std::declval<TParser&>()))>;
+		};
+	}
 
 	template<
 		typename TParser,
@@ -60,7 +87,7 @@ namespace TestParser_Generated_TestObjects
 			TParser& parser,
 			const WString& parserName,
 			const WString& testFolder,
-			WString& caseName,
+			WString& displayCaseName,
 			FilePath dirOutput
 		)
 	{
@@ -73,32 +100,55 @@ namespace TestParser_Generated_TestObjects
 
 		List<File> inputFiles;
 		dirInput.GetFiles(inputFiles);
-		for (auto&& inputFile : inputFiles)
+
+		auto executeTestCases = [&](const WString& caseModule = WString::Empty)
 		{
-			caseName = inputFile.GetFilePath().GetName();
-			if (caseName.Length() < 4 || caseName.Right(4) != L".txt") continue;
-			caseName = caseName.Left(caseName.Length() - 4);
-#ifdef PAUSE_INPUT
-			if (caseName != PAUSE_INPUT) continue;
-#endif
-
-			TEST_CASE(caseName)
+			for (auto&& inputFile : inputFiles)
 			{
-				inputDiscovered++;
-				auto input = inputFile.ReadAllTextByBom();
-				auto ast = parser.ParseModule(input);
-				auto actualJson = PrintAstJson<TJsonVisitor>(ast);
-				File(dirOutput / (L"Output[" + caseName + L"].json")).WriteAllText(actualJson, true, BomEncoder::Utf8);
+				auto caseName = inputFile.GetFilePath().GetName();
+				if (caseName.Length() < 4 || caseName.Right(4) != L".txt") continue;
+				caseName = caseName.Left(caseName.Length() - 4);
+#ifdef PAUSE_INPUT
+				if (caseName != PAUSE_INPUT || caseModule != PAUSE_MODULE ) continue;
+#endif
+	
+				TEST_CASE(caseName)
+				{
+					displayCaseName = caseModule + caseName;
+					inputDiscovered++;
 
-				auto expectedJsonFile = File(dirBaseline / (caseName + L".json"));
-				parsedSuccessfully++;
-				if (!expectedJsonFile.Exists()) return;
-				comparedWithBaseline++;
+					auto input = inputFile.ReadAllTextByBom();
+					auto ast = parser.ParseModule(input);
+					auto actualJson = PrintAstJson<TJsonVisitor>(ast);
+					File(dirOutput / (L"Output[" + caseName + L"]" + caseModule + L".json")).WriteAllText(actualJson, true, BomEncoder::Utf8);
+	
+					auto expectedJsonFile = File(dirBaseline / (caseName + L".json"));
+					parsedSuccessfully++;
+					if (!expectedJsonFile.Exists()) return;
+					comparedWithBaseline++;
+	
+					TEST_PRINT(L"Compared with expectedJson");
+					auto expectedJson = expectedJsonFile.ReadAllTextByBom();
+					AssertLines(expectedJson, actualJson);
+				});
+			}
+		};
 
-				TEST_PRINT(L"Compared with expectedJson");
-				auto expectedJson = expectedJsonFile.ReadAllTextByBom();
-				AssertLines(expectedJson, actualJson);
+		constexpr bool HasExprModule = parser_features::HasExprModule<TParser>::Value;
+		constexpr bool HasTypeModule = parser_features::HasTypeModule<TParser>::Value;
+		constexpr bool HasExtraFeatures = HasExprModule || HasTypeModule;
+		static_assert(HasExprModule == HasTypeModule);
+
+		if constexpr (HasExtraFeatures)
+		{
+			TEST_CATEGORY(L"ParseModule")
+			{
+				executeTestCases(WString::Unmanaged(L"Module-"));
 			});
+		}
+		else
+		{
+			executeTestCases();
 		}
 	}
 
@@ -109,7 +159,7 @@ namespace TestParser_Generated_TestObjects
 		void RunParser(
 			TParser& parser,
 			const WString& parserName,
-			WString& caseName,
+			WString& displayCaseName,
 			const Array<WString>& testFolders
 		)
 	{
@@ -118,7 +168,7 @@ namespace TestParser_Generated_TestObjects
 			FilePath dirOutput = GetOutputDir(L"Generated-" + parserName);
 			if (testFolders.Count() == 0)
 			{
-				RunParserSingleTestFolder<TParser, TJsonVisitor>(parser, parserName, parserName, caseName, dirOutput);
+				RunParserSingleTestFolder<TParser, TJsonVisitor>(parser, parserName, parserName, displayCaseName, dirOutput);
 			}
 			else
 			{
@@ -126,7 +176,7 @@ namespace TestParser_Generated_TestObjects
 				{
 					TEST_CATEGORY(testFolder)
 					{
-						RunParserSingleTestFolder<TParser, TJsonVisitor>(parser, parserName, testFolder, caseName, dirOutput);
+						RunParserSingleTestFolder<TParser, TJsonVisitor>(parser, parserName, testFolder, displayCaseName, dirOutput);
 					});
 				}
 			}
@@ -153,7 +203,7 @@ namespace TestParser_Generated_TestObjects
 	{
 		auto parserName = WString::Unmanaged(parserNameRaw);
 		TParser parser;
-		WString caseName;
+		WString displayCaseName;
 
 		parser.OnError.Add(
 			[&](ErrorArgs& args)
@@ -167,7 +217,7 @@ namespace TestParser_Generated_TestObjects
 				auto& traceManager = *dynamic_cast<TraceManager*>(args.executor);
 				LogTraceManager(
 					L"Generated-" + parserName,
-					caseName,
+					displayCaseName,
 					args.executable,
 					traceManager,
 					args.phase,
@@ -186,7 +236,7 @@ namespace TestParser_Generated_TestObjects
 				auto& traceManager = *dynamic_cast<TraceManager*>(args.executor);
 				LogTraceExecution(
 					L"Generated-" + parserName,
-					caseName,
+					displayCaseName,
 					[=](vint32_t type) { return WString::Unmanaged(typeName((TClasses)type)); },
 					[=](vint32_t field) { return WString::Unmanaged(fieldName((TFields)field)); },
 					[=](vint32_t token) { return WString::Unmanaged(tokenId((TTokens)token)); },
@@ -206,7 +256,7 @@ namespace TestParser_Generated_TestObjects
 				testFolderArray[i] =  WString::Unmanaged(testFolderRawArray[i]);
 			}
 		}
-		RunParser<TParser, TJsonVisitor>(parser, parserName, caseName, testFolderArray);
+		RunParser<TParser, TJsonVisitor>(parser, parserName, displayCaseName, testFolderArray);
 	}
 }
 using namespace TestParser_Generated_TestObjects;
