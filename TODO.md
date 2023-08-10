@@ -8,9 +8,15 @@
   - `DeductEmptySyntaxVisitor`
   - Invalid combined clauses during expanding switches
   - everything else that is needed
-- In Linux, combine `ParserTest_ParserGen(_Compiler)?` into one project to read the complete code coverage.
-- TODO(s) in `RewriteRules_GenerateAffectedLRIClausesSubgroup`.
-- TODO(s) in `CalculateObjectFirstInstruction` and `InjectFirstInstruction`.
+- Code Coverage
+  - Test alternative syntax in `CompileSyntax`.
+  - Test all conditions in `EvaluateConditionVisitor`
+  - TODO(s) in `RewriteRules_GenerateAffectedLRIClausesSubgroup`.
+  - TODO(s) in `CalculateObjectFirstInstruction` and `InjectFirstInstruction`.
+  - `FixPrefixMergeClauses` in `if (ruleSymbol->isPartial)`.
+  - `TraceManager::TryMergeSurvivingTraces` in `// if trace is a merge trace`.
+  - `TraceManager::BuildStepTree` in which are not covered.
+  - `TraceManager::AddTraceToCollection` in `else if (collection == &Trace::predecessors)`
 - Make a test case to test `prefix_merge` generates `left_recursion_inject_multiple`.
 - Create ambiguity test case caused by only one clause with alternative syntax.
 - Test when an object get LriFetch to multiple branches following a ReopenObject.
