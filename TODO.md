@@ -8,6 +8,7 @@
   - `DeductEmptySyntaxVisitor`
   - Invalid combined clauses during expanding switches
   - everything else that is needed
+- In Linux, combine `ParserTest_ParserGen(_Compiler)?` into one project to read the complete code coverage.
 - TODO(s) in `RewriteRules_GenerateAffectedLRIClausesSubgroup`.
 - TODO(s) in `CalculateObjectFirstInstruction` and `InjectFirstInstruction`.
 - Make a test case to test `prefix_merge` generates `left_recursion_inject_multiple`.
