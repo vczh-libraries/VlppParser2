@@ -87,6 +87,7 @@ namespace vl::glr::parsergen
 						writer.WriteString(prop->propTypeName.value);
 						writer.WriteString(L"[]");
 						break;
+					default:;
 					}
 					writer.WriteLine(L";");
 				}

@@ -2,7 +2,7 @@
 #define VCZH_VLPPPARSER2_UNITTEST_LOGPARSER
 
 #include "LogAutomaton.h"
-#include "../../../Source/Syntax/SyntaxSymbol.h"
+#include "../../Source/Syntax/SyntaxSymbol.h"
 
 using namespace vl::glr::parsergen;
 
