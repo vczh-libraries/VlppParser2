@@ -2,6 +2,8 @@
 
 ## Next task
 
+- `ExprModule` and `TypeModule` don't generate LRI clauses in `Pm5-8`.
+
 ## Test Cases
 
 - Create test cases that only rewrite syntax without generating C++ code for:
@@ -9,14 +11,25 @@
   - Invalid combined clauses during expanding switches
   - everything else that is needed
 - Code Coverage
-  - Test alternative syntax in `CompileSyntax`.
-  - Test all conditions in `EvaluateConditionVisitor`
-  - TODO(s) in `RewriteRules_GenerateAffectedLRIClausesSubgroup`.
-  - TODO(s) in `CalculateObjectFirstInstruction` and `InjectFirstInstruction`.
-  - `FixPrefixMergeClauses` in `if (ruleSymbol->isPartial)`.
-  - `TraceManager::TryMergeSurvivingTraces` in `// if trace is a merge trace`.
-  - `TraceManager::BuildStepTree` in which are not covered.
-  - `TraceManager::AddTraceToCollection` in `else if (collection == &Trace::predecessors)`
+  - Compiler
+    - `CompileSyntaxVisitor::Visit(GlrAlternativeSyntax*)`
+    - `ResolveNameVisitor::Visit(GlrOrCondition*)`
+    - Switch: add expand and compare test cases in `ParserGen`, not just try to cover everything in `Compiler`
+      - `EvaluateConditionVisitor::Visit(Glr(Not|And|Or)Condition*)`
+      - `ExpandClauseVisitor` in which are not covered
+    - `ValidateDeducingPrefixMergeRuleVisitor`
+      - `Visit(GlrSequenceSyntax*)` both empty
+      - `Visit(GlrAlternativeSyntax*)` exactly one empty
+    - `ValidateStructureRelationshipVisitor`
+      - `LinkPair::CutAfter` last two else
+    - `ValidateTypeVisitor::Visit(GlrReuseClause*)` visit assignment
+    - TODO(s) in `RewriteRules_GenerateAffectedLRIClausesSubgroup`.
+    - TODO(s) in `CalculateObjectFirstInstruction` and `InjectFirstInstruction`.
+    - `FixPrefixMergeClauses` in `if (ruleSymbol->isPartial)`.
+  - Runtime
+    - `TraceManager::TryMergeSurvivingTraces` in `// if trace is a merge trace`.
+    - `TraceManager::BuildStepTree` in which are not covered.
+    - `TraceManager::AddTraceToCollection` in `else if (collection == &Trace::predecessors)`
 - Make a test case to test `prefix_merge` generates `left_recursion_inject_multiple`.
 - Create ambiguity test case caused by only one clause with alternative syntax.
 - Test when an object get LriFetch to multiple branches following a ReopenObject.
@@ -49,6 +62,7 @@
 - `::a::b::c::*`
   - Ambiguity
   - It should be invalid, because `::a::b::c` are always parsed as one QualifiedName, instead of being `::a(::b::c::*)` and `::a::b(::c::*)`
+  - Refer to `Priority in left recursive transition`
 - Compiler crashes:
   - `_DeclOrExpr ::= !_BExpr ::= {_DeclaratorKeyword:keywords} _TypeBeforeDeclarator:type _DeclaratorRequiredName:declarator as DeclaratorType ;`
   - `workingSwitchValues` is nullptr in `ExpandClauseVisitor::FixRuleName`
