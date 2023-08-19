@@ -466,7 +466,7 @@ ValidateStructureRelationshipVisitor
 						else if (secondAvailable)
 						{
 							AddFieldCounter(secondCounters.Keys()[secondIndex], secondCounters.Values()[secondIndex]);
-							firstIndex++;
+							secondIndex++;
 						}
 						else
 						{
