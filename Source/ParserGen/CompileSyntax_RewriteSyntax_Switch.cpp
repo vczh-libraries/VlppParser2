@@ -394,6 +394,7 @@ ExpandClauseVisitor
 						{
 							// make it optional if necessary
 							auto opt = Ptr(new GlrOptionalSyntax);
+							opt->priority = GlrOptionalPriority::Equal;
 							opt->syntax = result.Cast<GlrSyntax>();
 							result = opt;
 						}
@@ -440,25 +441,25 @@ ExpandClauseVisitor
 
 						if (syntax && delimiter)
 						{
-							auto loopSyntax = Ptr(new GlrLoopSyntax);
-							loopSyntax->codeRange = node->codeRange;
-							loopSyntax->syntax = syntax;
-							loopSyntax->delimiter = delimiter;
-							result = loopSyntax;
+							auto loop = Ptr(new GlrLoopSyntax);
+							loop->codeRange = node->codeRange;
+							loop->syntax = syntax;
+							loop->delimiter = delimiter;
+							result = loop;
 						}
 						else if (syntax)
 						{
-							auto loopSyntax = Ptr(new GlrLoopSyntax);
-							loopSyntax->codeRange = syntax->codeRange;
-							loopSyntax->syntax = syntax;
-							result = loopSyntax;
+							auto loop = Ptr(new GlrLoopSyntax);
+							loop->codeRange = syntax->codeRange;
+							loop->syntax = syntax;
+							result = loop;
 						}
 						else if (delimiter)
 						{
-							auto loopSyntax = Ptr(new GlrLoopSyntax);
-							loopSyntax->codeRange = delimiter->codeRange;
-							loopSyntax->syntax = delimiter;
-							result = loopSyntax;
+							auto loop = Ptr(new GlrLoopSyntax);
+							loop->codeRange = delimiter->codeRange;
+							loop->syntax = delimiter;
+							result = loop;
 						}
 						else
 						{
@@ -653,6 +654,7 @@ DeductEmptySyntaxVisitor
 						{
 							// if only first is not empty, it is [first]
 							auto opt = Ptr(new GlrOptionalSyntax);
+							opt->priority = GlrOptionalPriority::Equal;
 							opt->syntax = node->first;
 							result = opt;
 						}
@@ -660,6 +662,7 @@ DeductEmptySyntaxVisitor
 						{
 							// if only second is not empty, it is [second]
 							auto opt = Ptr(new GlrOptionalSyntax);
+							opt->priority = GlrOptionalPriority::Equal;
 							opt->syntax = node->second;
 							result = opt;
 						}

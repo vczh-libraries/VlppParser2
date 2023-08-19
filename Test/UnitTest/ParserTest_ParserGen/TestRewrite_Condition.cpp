@@ -454,9 +454,9 @@ Exp1 ::= !Test_SWITCH_0s;
 LR"SYNTAX(
 switch s;
 Test
-  ::=  [?(s:"a":id) | ?(s:"a":id)] "b" as IdNode
-  ::= +[?(s:"a":id) | ?(s:"a":id)] "b" as IdNode
-  ::= -[?(s:"a":id) | ?(s:"a":id)] "b" as IdNode
+  ::=  [?(s:"a":id | s:;)] "b" as IdNode
+  ::= +[?(s:"a":id | s:;)] "b" as IdNode
+  ::= -[?(s:"a":id | s:;)] "b" as IdNode
   ;
 Exp0 ::= !( s; !Test);
 Exp1 ::= !(!s; !Test);
@@ -470,9 +470,9 @@ Test_SWITCH_0s : IdNode
   ::= "b" as IdNode
   ;
 Test_SWITCH_1s : IdNode
-  ::=  ["a":id | "a":id] "b" as IdNode
-  ::= +["a":id | "a":id] "b" as IdNode
-  ::= -["a":id | "a":id] "b" as IdNode
+  ::=  [["a":id]] "b" as IdNode
+  ::= +[["a":id]] "b" as IdNode
+  ::= -[["a":id]] "b" as IdNode
   ;
 Exp0 ::= !Test_SWITCH_1s;
 Exp1 ::= !Test_SWITCH_0s;

@@ -103,13 +103,16 @@ namespace TestError_Syntax_TestObjects
 
 		auto syntaxFile = ruleParser.ParseFile(WString::Unmanaged(syntaxCode));
 		auto actualRewrittenFile = CompileSyntax(astManager, lexerManager, syntaxManager, output, syntaxFile);
-		TEST_ASSERT(global.Errors().Count() == 0);
-		TEST_ASSERT(actualRewrittenFile);
-
 		auto expectedRewrittenFile = ruleParser.ParseFile(WString::Unmanaged(rewrittenCode));
 
-		auto expectedRewrittenCode = GenerateToStream([&](TextWriter& writer) { SyntaxAstToCode(expectedRewrittenFile, writer); });
+		if (!actualRewrittenFile)
+		{
+			TEST_ASSERT(global.Errors().Count() == 0);
+			TEST_ASSERT(false);
+		}
+
 		auto actualRewrittenCode = GenerateToStream([&](TextWriter& writer) { SyntaxAstToCode(actualRewrittenFile, writer); });
+		auto expectedRewrittenCode = GenerateToStream([&](TextWriter& writer) { SyntaxAstToCode(expectedRewrittenFile, writer); });
 		TEST_ASSERT(expectedRewrittenCode == actualRewrittenCode);
 	}
 }
