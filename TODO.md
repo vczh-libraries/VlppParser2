@@ -8,11 +8,9 @@
 
 - Code Coverage
   - Compiler
-    - `RewriteSyntax_Switch` in which are not covered.
     - `ValidateDeducingPrefixMergeRuleVisitor`
       - `Visit(GlrSequenceSyntax*)` both empty
       - `Visit(GlrAlternativeSyntax*)` exactly one empty
-    - `ValidateTypesVisitor::Visit(GlrReuseClause*)` visit assignment
     - TODO(s) in `RewriteRules_GenerateAffectedLRIClausesSubgroup`.
     - TODO(s) in `CalculateObjectFirstInstruction` and `InjectFirstInstruction`.
     - `FixPrefixMergeClauses` in `if (ruleSymbol->isPartial)`.
