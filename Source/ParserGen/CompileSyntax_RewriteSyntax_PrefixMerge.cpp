@@ -137,7 +137,7 @@ FillMissingPrefixMergeClauses
 							true,
 							ruleSymbol->isParser,
 							ruleRaw->name.codeRange
-							);
+						);
 						newRuleSymbol->isPartial = ruleSymbol->isPartial;
 						newRuleSymbol->ruleType = vContext.clauseTypes[clause.Obj()];
 						vContext.astRules.Add(newRuleSymbol, newRule.Obj());
@@ -174,10 +174,10 @@ FillMissingPrefixMergeClauses
 				}
 
 /***********************************************************************
-CollectRewritingTargets
+CollectSkippedTargets
 ***********************************************************************/
 
-				void CollectRewritingTargets(const VisitorContext& vContext, RewritingContext& rContext, Ptr<GlrSyntaxFile> rewritten)
+				void CollectSkippedTargets(const VisitorContext& vContext, RewritingContext& rContext, Ptr<GlrSyntaxFile> rewritten)
 				{
 					for (auto rule : rewritten->rules)
 					{
@@ -187,7 +187,7 @@ CollectRewritingTargets
 							// when a rule has
 							//   no direct prefix_merge clause
 							//   only one clause which starts with prefix_merge clause
-							//   such clause is not a simple use clause
+							//   such clause is not a simple use clause, or a simple use clause referencing a skipped rule
 							// skip rewriting it
 							if (!vContext.directPmClauses.Keys().Contains(ruleSymbol))
 							{
@@ -225,7 +225,25 @@ CollectRewritingTargets
 								continue;
 							DO_NOT_SKIP:;
 							}
+						}
+					}
+				}
 
+/***********************************************************************
+CollectRewritingTargets
+***********************************************************************/
+
+				void CollectRewritingTargets(const VisitorContext& vContext, RewritingContext& rContext, Ptr<GlrSyntaxFile> rewritten)
+				{
+					for (auto rule : rewritten->rules)
+					{
+						auto ruleSymbol = vContext.syntaxManager.Rules()[rule->name.value];
+						if (vContext.indirectPmClauses.Keys().Contains(ruleSymbol))
+						{
+							if (rContext.skippedRules.Keys().Contains(ruleSymbol))
+							{
+								continue;
+							}
 							rContext.pmRules.Add(ruleSymbol);
 
 							vint indexStart = vContext.directStartRules.Keys().IndexOf(ruleSymbol);
@@ -1336,6 +1354,7 @@ RewriteSyntax
 
 				// find rules that need to be rewritten using left_recursion_inject
 				RewritingContext rewritingContext;
+				CollectSkippedTargets(context, rewritingContext, rewritten);
 				CollectRewritingTargets(context, rewritingContext, rewritten);
 
 				// create rewritten rules, rename origin rules
