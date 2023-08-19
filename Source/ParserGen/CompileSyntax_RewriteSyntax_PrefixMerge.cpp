@@ -179,6 +179,7 @@ CollectSkippedTargets
 
 				void CollectSkippedTargets(const VisitorContext& vContext, RewritingContext& rContext, Ptr<GlrSyntaxFile> rewritten)
 				{
+					Group<RuleSymbol*, RuleSymbol*> candidates;
 					for (auto rule : rewritten->rules)
 					{
 						auto ruleSymbol = vContext.syntaxManager.Rules()[rule->name.value];
@@ -191,7 +192,7 @@ CollectSkippedTargets
 							// skip rewriting it
 							if (!vContext.directPmClauses.Keys().Contains(ruleSymbol))
 							{
-								bool found = false;
+								GlrClause* uniqueQualifiedClause = nullptr;
 								for (auto clause : rule->clauses)
 								{
 									vint index = vContext.clauseToStartRules.Keys().IndexOf(clause.Obj());
@@ -202,14 +203,9 @@ CollectSkippedTargets
 									{
 										if (vContext.indirectPmClauses.Keys().Contains(startRule))
 										{
-											if (vContext.simpleUseClauseToReferencedRules.Keys().Contains(clause.Obj()))
+											if (!uniqueQualifiedClause)
 											{
-												goto DO_NOT_SKIP;
-											}
-
-											if (!found)
-											{
-												found = true;
+												uniqueQualifiedClause = clause.Obj();
 												break;
 											}
 											else
@@ -221,8 +217,18 @@ CollectSkippedTargets
 									}
 								}
 
-								rContext.skippedRules.Add(ruleSymbol, rule.Obj());
-								continue;
+								if (uniqueQualifiedClause)
+								{
+									vint index = vContext.simpleUseClauseToReferencedRules.Keys().IndexOf(uniqueQualifiedClause);
+									if (index == -1)
+									{
+										rContext.skippedRules.Add(ruleSymbol, rule.Obj());
+									}
+									else
+									{
+										candidates.Add(vContext.simpleUseClauseToReferencedRules.Values()[index], ruleSymbol);
+									}
+								}
 							DO_NOT_SKIP:;
 							}
 						}
