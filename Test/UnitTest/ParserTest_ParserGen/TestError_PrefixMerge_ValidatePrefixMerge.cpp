@@ -16,7 +16,7 @@ TEST_FILE
 	// RuleMixedPrefixMergeWithClauseNotSyntacticallyBeginWithARule
 	//////////////////////////////////////////////////////
 
-	TEST_CASE(L"RuleMixedPrefixMergeWithClauseNotSyntacticallyBeginWithARule")
+	TEST_CASE(L"RuleMixedPrefixMergeWithClauseNotSyntacticallyBeginWithARule 1")
 	{
 		const wchar_t* syntaxCode =
 LR"SYNTAX(
@@ -25,7 +25,76 @@ Exp0
   ;
 Exp1
   ::= !prefix_merge(Exp0)
-  ::= [Exp0] !Exp0
+  ::= "+" !Exp0
+  ::= Exp1:left "+" Exp0:right as BinaryExpr
+  ;
+)SYNTAX";
+		ExpectError(
+			typeParser,
+			ruleParser,
+			astCode,
+			lexerCode,
+			syntaxCode,
+			{ ParserErrorType::RuleMixedPrefixMergeWithClauseNotSyntacticallyBeginWithARule,L"Exp1" }
+			);
+	});
+
+	TEST_CASE(L"RuleMixedPrefixMergeWithClauseNotSyntacticallyBeginWithARule 2")
+	{
+		const wchar_t* syntaxCode =
+LR"SYNTAX(
+Exp0
+  ::= NUM:value as NumExpr
+  ;
+Exp1
+  ::= !prefix_merge(Exp0)
+  ::= '0' !Exp0
+  ::= Exp1:left "+" Exp0:right as BinaryExpr
+  ;
+)SYNTAX";
+		ExpectError(
+			typeParser,
+			ruleParser,
+			astCode,
+			lexerCode,
+			syntaxCode,
+			{ ParserErrorType::RuleMixedPrefixMergeWithClauseNotSyntacticallyBeginWithARule,L"Exp1" }
+			);
+	});
+
+	TEST_CASE(L"RuleMixedPrefixMergeWithClauseNotSyntacticallyBeginWithARule 3")
+	{
+		const wchar_t* syntaxCode =
+LR"SYNTAX(
+Exp0
+  ::= NUM:value as NumExpr
+  ;
+Exp1
+  ::= !prefix_merge(Exp0)
+  ::= {Exp0} Exp0 as BinaryExpr
+  ::= Exp1:left "+" Exp0:right as BinaryExpr
+  ;
+)SYNTAX";
+		ExpectError(
+			typeParser,
+			ruleParser,
+			astCode,
+			lexerCode,
+			syntaxCode,
+			{ ParserErrorType::RuleMixedPrefixMergeWithClauseNotSyntacticallyBeginWithARule,L"Exp1" }
+			);
+	});
+
+	TEST_CASE(L"RuleMixedPrefixMergeWithClauseNotSyntacticallyBeginWithARule 4")
+	{
+		const wchar_t* syntaxCode =
+LR"SYNTAX(
+Exp0
+  ::= NUM:value as NumExpr
+  ;
+Exp1
+  ::= !prefix_merge(Exp0)
+  ::= [Exp0] Exp0 as BinaryExpr
   ::= Exp1:left "+" Exp0:right as BinaryExpr
   ;
 )SYNTAX";

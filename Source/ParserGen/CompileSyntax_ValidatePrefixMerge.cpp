@@ -299,15 +299,13 @@ ValidateDeducingPrefixMergeRuleVisitor
 					auto secondResult = result;
 					auto secondEmpty = couldBeEmpty;
 
-					if (firstEmpty || secondEmpty)
+					couldBeEmpty = firstEmpty || secondEmpty;
+					if (couldBeEmpty)
 					{
 						VisitPotentialEmptySyntax();
 					}
 					else
 					{
-						result = nullptr;
-						couldBeEmpty = true;
-
 						if (firstResult && secondResult)
 						{
 							CopyFrom(*firstResult.Obj(), *secondResult.Obj(), true);
@@ -320,6 +318,10 @@ ValidateDeducingPrefixMergeRuleVisitor
 						else if (secondResult)
 						{
 							result = secondResult;
+						}
+						else
+						{
+							result = nullptr;
 						}
 					}
 				}
