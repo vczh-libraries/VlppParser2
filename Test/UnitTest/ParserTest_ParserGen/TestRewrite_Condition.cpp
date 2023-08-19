@@ -276,7 +276,7 @@ LR"SYNTAX(
 switch s;
 Test
   ::= [?(s:"a":id)] "b" as IdNode
-  ::= "c" [?(!s:"d":id)] as IdNode
+  ::= "c" ("c" | [?(!s:"d":id)]) as IdNode
   ;
 Exp0 ::= !( s; !Test);
 Exp1 ::= !(!s; !Test);
@@ -286,11 +286,11 @@ Exp1 ::= !(!s; !Test);
 LR"SYNTAX(
 Test_SWITCH_0s : IdNode
   ::= "b" as IdNode
-  ::= "c" ["d":id] as IdNode
+  ::= "c" ("c" | ["d":id]) as IdNode
   ;
 Test_SWITCH_1s : IdNode
   ::= ["a":id] "b" as IdNode
-  ::= "c" as IdNode
+  ::= "c" ["c"] as IdNode
   ;
 Exp0 ::= !Test_SWITCH_1s;
 Exp1 ::= !Test_SWITCH_0s;
@@ -305,7 +305,7 @@ Exp1 ::= !Test_SWITCH_0s;
 LR"SYNTAX(
 switch s;
 Test
-  ::= -[?(s:"a":id)] "b" as IdNode
+  ::= ("a" (-[?(s:"a":id)] | "b")) "b" as IdNode
   ::= "c" +[?(!s:"d":id)] as IdNode
   ;
 Exp0 ::= !( s; !Test);
@@ -315,11 +315,11 @@ Exp1 ::= !(!s; !Test);
 		const wchar_t* rewrittenCode =
 LR"SYNTAX(
 Test_SWITCH_0s : IdNode
-  ::= "b" as IdNode
+  ::= ("a" ["b"]) "b" as IdNode
   ::= "c" +["d":id] as IdNode
   ;
 Test_SWITCH_1s : IdNode
-  ::= -["a":id] "b" as IdNode
+  ::= ("a" (-["a":id] | "b")) "b" as IdNode
   ::= "c" as IdNode
   ;
 Exp0 ::= !Test_SWITCH_1s;
@@ -329,14 +329,13 @@ Exp1 ::= !Test_SWITCH_0s;
 		TestRewrite(typeParser, ruleParser, astCode, lexerCode, syntaxCode, rewrittenCode);
 	});
 
-	TEST_CASE(L"Test deduce to empty (loop)")
+	TEST_CASE(L"Test deduce to empty (?loop)")
 	{
 		const wchar_t* syntaxCode =
 LR"SYNTAX(
 switch s;
 Test
   ::= {?(s:"a")} "b":id as IdNode
-  ::= "c":id {?(!s:"d")} as IdNode
   ;
 Exp0 ::= !( s; !Test);
 Exp1 ::= !(!s; !Test);
@@ -346,11 +345,9 @@ Exp1 ::= !(!s; !Test);
 LR"SYNTAX(
 Test_SWITCH_0s : IdNode
   ::= "b":id as IdNode
-  ::= "c":id {"d"} as IdNode
   ;
 Test_SWITCH_1s : IdNode
   ::= {"a"} "b":id as IdNode
-  ::= "c":id as IdNode
   ;
 Exp0 ::= !Test_SWITCH_1s;
 Exp1 ::= !Test_SWITCH_0s;
@@ -359,14 +356,67 @@ Exp1 ::= !Test_SWITCH_0s;
 		TestRewrite(typeParser, ruleParser, astCode, lexerCode, syntaxCode, rewrittenCode);
 	});
 
-	TEST_CASE(L"Test deduce to empty (loop with separator)")
+	TEST_CASE(L"Test deduce to empty (?loop with separator)")
 	{
 		const wchar_t* syntaxCode =
 LR"SYNTAX(
 switch s;
 Test
-  ::= {"b";?(s:"a")} "b":id as IdNode
-  ::= "c":id {"c";?(!s:"d")} as IdNode
+  ::= {?(s:"a");"b"} "b":id as IdNode
+  ;
+Exp0 ::= !( s; !Test);
+Exp1 ::= !(!s; !Test);
+)SYNTAX";
+	
+		const wchar_t* rewrittenCode =
+LR"SYNTAX(
+Test_SWITCH_0s : IdNode
+  ::= {"b"} "b":id as IdNode
+  ;
+Test_SWITCH_1s : IdNode
+  ::= {"a";"b"} "b":id as IdNode
+  ;
+Exp0 ::= !Test_SWITCH_1s;
+Exp1 ::= !Test_SWITCH_0s;
+)SYNTAX";
+	
+		TestRewrite(typeParser, ruleParser, astCode, lexerCode, syntaxCode, rewrittenCode);
+	});
+
+	TEST_CASE(L"Test deduce to empty (loop with ?separator)")
+	{
+		const wchar_t* syntaxCode =
+LR"SYNTAX(
+switch s;
+Test
+  ::= {"a";?(s:"b")} "b":id as IdNode
+  ;
+Exp0 ::= !( s; !Test);
+Exp1 ::= !(!s; !Test);
+)SYNTAX";
+	
+		const wchar_t* rewrittenCode =
+LR"SYNTAX(
+Test_SWITCH_0s : IdNode
+  ::= {"a"} "b":id as IdNode
+  ;
+Test_SWITCH_1s : IdNode
+  ::= {"a";"b"} "b":id as IdNode
+  ;
+Exp0 ::= !Test_SWITCH_1s;
+Exp1 ::= !Test_SWITCH_0s;
+)SYNTAX";
+	
+		TestRewrite(typeParser, ruleParser, astCode, lexerCode, syntaxCode, rewrittenCode);
+	});
+
+	TEST_CASE(L"Test deduce to empty (?loop with ?separator)")
+	{
+		const wchar_t* syntaxCode =
+LR"SYNTAX(
+switch s;
+Test
+  ::= {?(s:"a");?(s:"b")} "b":id as IdNode
   ;
 Exp0 ::= !( s; !Test);
 Exp1 ::= !(!s; !Test);
@@ -376,11 +426,9 @@ Exp1 ::= !(!s; !Test);
 LR"SYNTAX(
 Test_SWITCH_0s : IdNode
   ::= "b":id as IdNode
-  ::= "c":id {"c";"d"} as IdNode
   ;
 Test_SWITCH_1s : IdNode
-  ::= {"b";"a"} "b":id as IdNode
-  ::= "c":id as IdNode
+  ::= {"a";"b"} "b":id as IdNode
   ;
 Exp0 ::= !Test_SWITCH_1s;
 Exp1 ::= !Test_SWITCH_0s;
