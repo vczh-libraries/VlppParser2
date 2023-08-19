@@ -102,7 +102,7 @@ Exp2 ::= !(first, second; !Exp1);
 		);
 	});
 
-	TEST_CASE(L"PushedSwitchIsNotTested 5")
+	TEST_CASE(L"PushedSwitchIsNotTested 6")
 	{
 		const wchar_t* syntaxCode =
 LR"SYNTAX(

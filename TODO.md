@@ -12,7 +12,6 @@
   - everything else that is needed
 - Code Coverage
   - Compiler
-    - `ResolveNameVisitor::Visit(GlrOrCondition*)`
     - Switch: add expand and compare test cases in `ParserGen`, not just try to cover everything in `Compiler`
       - `EvaluateConditionVisitor::Visit(Glr(Not|And|Or)Condition*)`
       - `ExpandClauseVisitor` in which are not covered
