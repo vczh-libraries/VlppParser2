@@ -103,29 +103,29 @@
 
 [23][IfTail] BEGIN 
 [RULE: 4][CLAUSE: -1]
-	rule: HalfIf -> [28][IfTail]HalfIf @
-	rule: CompleteStat -> [25][IfTail]CompleteStat @ [ "else" Stat ]
+	rule: HalfIf -> [28][IfTail]( CompleteStat [ "else" Stat ] | HalfIf @ )
+	rule: CompleteStat -> [25][IfTail]( CompleteStat @ [ "else" Stat ] | HalfIf )
 		+ Field(IfStat::thenBranch)
 
 [24][IfTail] END [ENDING]
 [RULE: 4][CLAUSE: -1]
 
-[25][IfTail]CompleteStat @ [ "else" Stat ]
+[25][IfTail]( CompleteStat @ [ "else" Stat ] | HalfIf )
 [RULE: 4][CLAUSE: 0]
 	ending -> [24][IfTail] END [ENDING]
-	token: "else" -> [26][IfTail]CompleteStat [ "else" @ Stat ]
+	token: "else" -> [26][IfTail]( CompleteStat [ "else" @ Stat ] | HalfIf )
 
-[26][IfTail]CompleteStat [ "else" @ Stat ]
+[26][IfTail]( CompleteStat [ "else" @ Stat ] | HalfIf )
 [RULE: 4][CLAUSE: 0]
-	rule: Stat -> [27][IfTail]CompleteStat [ "else" Stat @ ]
+	rule: Stat -> [27][IfTail]( CompleteStat [ "else" Stat @ ] | HalfIf )
 		+ Field(IfStat::elseBranch)
 
-[27][IfTail]CompleteStat [ "else" Stat @ ]
+[27][IfTail]( CompleteStat [ "else" Stat @ ] | HalfIf )
 [RULE: 4][CLAUSE: 0]
 	ending -> [24][IfTail] END [ENDING]
 
-[28][IfTail]HalfIf @
-[RULE: 4][CLAUSE: 1]
+[28][IfTail]( CompleteStat [ "else" Stat ] | HalfIf @ )
+[RULE: 4][CLAUSE: 0]
 	ending -> [24][IfTail] END [ENDING]
 		- Field(IfStat::thenBranch)
 
@@ -156,21 +156,21 @@
 
 [35][OtherStat] BEGIN 
 [RULE: 6][CLAUSE: -1]
-	rule: Do -> [38][OtherStat]<< !Do @ >>
+	rule: Do -> [37][OtherStat]<< ( !Do @ | !Block ) >>
 		- DelayFieldAssignment()
-	rule: Block -> [37][OtherStat]<< !Block @ >>
+	rule: Block -> [38][OtherStat]<< ( !Do | !Block @ ) >>
 		- DelayFieldAssignment()
 
 [36][OtherStat] END [ENDING]
 [RULE: 6][CLAUSE: -1]
 
-[37][OtherStat]<< !Block @ >>
-[RULE: 6][CLAUSE: 1]
+[37][OtherStat]<< ( !Do @ | !Block ) >>
+[RULE: 6][CLAUSE: 0]
 	ending -> [36][OtherStat] END [ENDING]
 		- ReopenObject()
 		- EndObject()
 
-[38][OtherStat]<< !Do @ >>
+[38][OtherStat]<< ( !Do | !Block @ ) >>
 [RULE: 6][CLAUSE: 0]
 	ending -> [36][OtherStat] END [ENDING]
 		- ReopenObject()
@@ -178,21 +178,21 @@
 
 [39][CompleteStat] BEGIN 
 [RULE: 7][CLAUSE: -1]
-	rule: CompleteIf -> [41][CompleteStat]<< !CompleteIf @ >>
+	rule: CompleteIf -> [42][CompleteStat]<< ( !OtherStat | !CompleteIf @ ) >>
 		- DelayFieldAssignment()
-	rule: OtherStat -> [42][CompleteStat]<< !OtherStat @ >>
+	rule: OtherStat -> [41][CompleteStat]<< ( !OtherStat @ | !CompleteIf ) >>
 		- DelayFieldAssignment()
 
 [40][CompleteStat] END [ENDING]
 [RULE: 7][CLAUSE: -1]
 
-[41][CompleteStat]<< !CompleteIf @ >>
-[RULE: 7][CLAUSE: 1]
+[41][CompleteStat]<< ( !OtherStat @ | !CompleteIf ) >>
+[RULE: 7][CLAUSE: 0]
 	ending -> [40][CompleteStat] END [ENDING]
 		- ReopenObject()
 		- EndObject()
 
-[42][CompleteStat]<< !OtherStat @ >>
+[42][CompleteStat]<< ( !OtherStat | !CompleteIf @ ) >>
 [RULE: 7][CLAUSE: 0]
 	ending -> [40][CompleteStat] END [ENDING]
 		- ReopenObject()
@@ -200,21 +200,21 @@
 
 [43][Stat] BEGIN 
 [RULE: 8][CLAUSE: -1]
-	rule: If -> [45][Stat]<< !If @ >>
+	rule: If -> [46][Stat]<< ( !OtherStat | !If @ ) >>
 		- DelayFieldAssignment()
-	rule: OtherStat -> [46][Stat]<< !OtherStat @ >>
+	rule: OtherStat -> [45][Stat]<< ( !OtherStat @ | !If ) >>
 		- DelayFieldAssignment()
 
 [44][Stat] END [ENDING]
 [RULE: 8][CLAUSE: -1]
 
-[45][Stat]<< !If @ >>
-[RULE: 8][CLAUSE: 1]
+[45][Stat]<< ( !OtherStat @ | !If ) >>
+[RULE: 8][CLAUSE: 0]
 	ending -> [44][Stat] END [ENDING]
 		- ReopenObject()
 		- EndObject()
 
-[46][Stat]<< !OtherStat @ >>
+[46][Stat]<< ( !OtherStat | !If @ ) >>
 [RULE: 8][CLAUSE: 0]
 	ending -> [44][Stat] END [ENDING]
 		- ReopenObject()

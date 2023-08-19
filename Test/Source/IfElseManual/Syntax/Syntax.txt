@@ -15,8 +15,7 @@ CompleteIf
   ;
 
 IfTail
-  ::= CompleteStat:thenBranch ["else" Stat:elseBranch] as partial IfStat
-  ::= HalfIf:thenBranch as partial IfStat
+  ::= (CompleteStat:thenBranch ["else" Stat:elseBranch] | HalfIf:thenBranch) as partial IfStat
   ;
 
 If
@@ -24,18 +23,15 @@ If
   ;
 
 OtherStat
-  ::= !Do
-  ::= !Block
+  ::= (!Do | !Block)
   ;
 
 CompleteStat
-  ::= !OtherStat
-  ::= !CompleteIf
+  ::= (!OtherStat | !CompleteIf)
   ;
 
 Stat
-  ::= !OtherStat
-  ::= !If
+  ::= (!OtherStat | !If)
   ;
 
 @parser Module

@@ -179,42 +179,41 @@
             "$ast": "PartialClause",
             "assignments": [],
             "syntax": {
-                "$ast": "SequenceSyntax",
+                "$ast": "AlternativeSyntax",
                 "first": {
-                    "$ast": "RefSyntax",
-                    "field": "thenBranch",
-                    "literal": "CompleteStat",
-                    "refType": "Id"
-                },
-                "second": {
-                    "$ast": "OptionalSyntax",
-                    "priority": "Equal",
-                    "syntax": {
-                        "$ast": "SequenceSyntax",
-                        "first": {
-                            "$ast": "RefSyntax",
-                            "field": "",
-                            "literal": "\"else\"",
-                            "refType": "Literal"
-                        },
-                        "second": {
-                            "$ast": "RefSyntax",
-                            "field": "elseBranch",
-                            "literal": "Stat",
-                            "refType": "Id"
+                    "$ast": "SequenceSyntax",
+                    "first": {
+                        "$ast": "RefSyntax",
+                        "field": "thenBranch",
+                        "literal": "CompleteStat",
+                        "refType": "Id"
+                    },
+                    "second": {
+                        "$ast": "OptionalSyntax",
+                        "priority": "Equal",
+                        "syntax": {
+                            "$ast": "SequenceSyntax",
+                            "first": {
+                                "$ast": "RefSyntax",
+                                "field": "",
+                                "literal": "\"else\"",
+                                "refType": "Literal"
+                            },
+                            "second": {
+                                "$ast": "RefSyntax",
+                                "field": "elseBranch",
+                                "literal": "Stat",
+                                "refType": "Id"
+                            }
                         }
                     }
+                },
+                "second": {
+                    "$ast": "RefSyntax",
+                    "field": "thenBranch",
+                    "literal": "HalfIf",
+                    "refType": "Id"
                 }
-            },
-            "type": "IfStat"
-        }, {
-            "$ast": "PartialClause",
-            "assignments": [],
-            "syntax": {
-                "$ast": "RefSyntax",
-                "field": "thenBranch",
-                "literal": "HalfIf",
-                "refType": "Id"
             },
             "type": "IfStat"
         }],
@@ -272,15 +271,15 @@
             "$ast": "ReuseClause",
             "assignments": [],
             "syntax": {
-                "$ast": "UseSyntax",
-                "name": "Do"
-            }
-        }, {
-            "$ast": "ReuseClause",
-            "assignments": [],
-            "syntax": {
-                "$ast": "UseSyntax",
-                "name": "Block"
+                "$ast": "AlternativeSyntax",
+                "first": {
+                    "$ast": "UseSyntax",
+                    "name": "Do"
+                },
+                "second": {
+                    "$ast": "UseSyntax",
+                    "name": "Block"
+                }
             }
         }],
         "name": "OtherStat",
@@ -293,15 +292,15 @@
             "$ast": "ReuseClause",
             "assignments": [],
             "syntax": {
-                "$ast": "UseSyntax",
-                "name": "OtherStat"
-            }
-        }, {
-            "$ast": "ReuseClause",
-            "assignments": [],
-            "syntax": {
-                "$ast": "UseSyntax",
-                "name": "CompleteIf"
+                "$ast": "AlternativeSyntax",
+                "first": {
+                    "$ast": "UseSyntax",
+                    "name": "OtherStat"
+                },
+                "second": {
+                    "$ast": "UseSyntax",
+                    "name": "CompleteIf"
+                }
             }
         }],
         "name": "CompleteStat",
@@ -314,15 +313,15 @@
             "$ast": "ReuseClause",
             "assignments": [],
             "syntax": {
-                "$ast": "UseSyntax",
-                "name": "OtherStat"
-            }
-        }, {
-            "$ast": "ReuseClause",
-            "assignments": [],
-            "syntax": {
-                "$ast": "UseSyntax",
-                "name": "If"
+                "$ast": "AlternativeSyntax",
+                "first": {
+                    "$ast": "UseSyntax",
+                    "name": "OtherStat"
+                },
+                "second": {
+                    "$ast": "UseSyntax",
+                    "name": "If"
+                }
             }
         }],
         "name": "Stat",

@@ -168,212 +168,222 @@
 	epsilon -> [38][CompleteIf]< @ "if" "cond" "then" CompleteStat "else" Stat >
 		- BeginObject(IfStat)
 
-[40][IfTail]@ CompleteStat [ "else" Stat ]
+[40][IfTail]( @ CompleteStat [ "else" Stat ] | HalfIf )
 [RULE: 4][CLAUSE: 0]
-	rule: CompleteStat -> [43][IfTail]CompleteStat @ [ "else" Stat ]
+	rule: CompleteStat -> [42][IfTail]( CompleteStat @ [ "else" Stat ] | HalfIf )
 		+ Field(IfStat::thenBranch)
 
-[41][IfTail]@ HalfIf
-[RULE: 4][CLAUSE: 1]
-	rule: HalfIf -> [49][IfTail]HalfIf @[ENDING]
-		+ Field(IfStat::thenBranch)
-
-[42][IfTail]CompleteStat @ [ "else" Stat ]
+[41][IfTail]( CompleteStat @ [ "else" Stat ] | HalfIf )
 [RULE: 4][CLAUSE: 0]
-	epsilon -> [47][IfTail]CompleteStat [ "else" Stat ] @[ENDING]
-	epsilon -> [48][IfTail]CompleteStat [ @ "else" Stat ]
+	epsilon -> [46][IfTail]( CompleteStat [ "else" Stat ] @ | HalfIf )
+	epsilon -> [50][IfTail]( CompleteStat [ @ "else" Stat ] | HalfIf )
 
-[43][IfTail]CompleteStat @ [ "else" Stat ]
+[42][IfTail]( CompleteStat @ [ "else" Stat ] | HalfIf )
 [RULE: 4][CLAUSE: 0]
-	epsilon -> [42][IfTail]CompleteStat @ [ "else" Stat ]
+	epsilon -> [41][IfTail]( CompleteStat @ [ "else" Stat ] | HalfIf )
 
-[44][IfTail]CompleteStat [ "else" @ Stat ]
+[43][IfTail]( CompleteStat [ "else" @ Stat ] | HalfIf )
 [RULE: 4][CLAUSE: 0]
-	rule: Stat -> [46][IfTail]CompleteStat [ "else" Stat @ ]
+	epsilon -> [44][IfTail]( CompleteStat [ "else" @ Stat ] | HalfIf )
+
+[44][IfTail]( CompleteStat [ "else" @ Stat ] | HalfIf )
+[RULE: 4][CLAUSE: 0]
+	rule: Stat -> [45][IfTail]( CompleteStat [ "else" Stat @ ] | HalfIf )
 		+ Field(IfStat::elseBranch)
 
-[45][IfTail]CompleteStat [ "else" @ Stat ]
+[45][IfTail]( CompleteStat [ "else" Stat @ ] | HalfIf )
 [RULE: 4][CLAUSE: 0]
-	epsilon -> [44][IfTail]CompleteStat [ "else" @ Stat ]
+	epsilon -> [46][IfTail]( CompleteStat [ "else" Stat ] @ | HalfIf )
 
-[46][IfTail]CompleteStat [ "else" Stat @ ]
+[46][IfTail]( CompleteStat [ "else" Stat ] @ | HalfIf )
 [RULE: 4][CLAUSE: 0]
-	epsilon -> [47][IfTail]CompleteStat [ "else" Stat ] @[ENDING]
+	epsilon -> [48][IfTail]( CompleteStat [ "else" Stat ] | HalfIf ) @[ENDING]
 
-[47][IfTail]CompleteStat [ "else" Stat ] @[ENDING]
+[47][IfTail]( CompleteStat [ "else" Stat ] | @ HalfIf )
+[RULE: 4][CLAUSE: 0]
+	rule: HalfIf -> [49][IfTail]( CompleteStat [ "else" Stat ] | HalfIf @ )
+		+ Field(IfStat::thenBranch)
+
+[48][IfTail]( CompleteStat [ "else" Stat ] | HalfIf ) @[ENDING]
 [RULE: 4][CLAUSE: 0]
 
-[48][IfTail]CompleteStat [ @ "else" Stat ]
+[49][IfTail]( CompleteStat [ "else" Stat ] | HalfIf @ )
 [RULE: 4][CLAUSE: 0]
-	token: "else" -> [45][IfTail]CompleteStat [ "else" @ Stat ]
+	epsilon -> [48][IfTail]( CompleteStat [ "else" Stat ] | HalfIf ) @[ENDING]
 
-[49][IfTail]HalfIf @[ENDING]
-[RULE: 4][CLAUSE: 1]
+[50][IfTail]( CompleteStat [ @ "else" Stat ] | HalfIf )
+[RULE: 4][CLAUSE: 0]
+	token: "else" -> [43][IfTail]( CompleteStat [ "else" @ Stat ] | HalfIf )
 
-[50][If]< "if" "cond" "then" @ IfTail >
+[51][IfTail]@ ( CompleteStat [ "else" Stat ] | HalfIf )
+[RULE: 4][CLAUSE: 0]
+	epsilon -> [40][IfTail]( @ CompleteStat [ "else" Stat ] | HalfIf )
+	epsilon -> [47][IfTail]( CompleteStat [ "else" Stat ] | @ HalfIf )
+
+[52][If]< "if" "cond" "then" @ IfTail >
 [RULE: 5][CLAUSE: 0]
-	rule: IfTail -> [53][If]< "if" "cond" "then" IfTail @ >
+	rule: IfTail -> [55][If]< "if" "cond" "then" IfTail @ >
 
-[51][If]< "if" "cond" "then" @ IfTail >
+[53][If]< "if" "cond" "then" @ IfTail >
 [RULE: 5][CLAUSE: 0]
-	epsilon -> [50][If]< "if" "cond" "then" @ IfTail >
+	epsilon -> [52][If]< "if" "cond" "then" @ IfTail >
 
-[52][If]< "if" "cond" "then" IfTail > @[ENDING]
+[54][If]< "if" "cond" "then" IfTail > @[ENDING]
 [RULE: 5][CLAUSE: 0]
 
-[53][If]< "if" "cond" "then" IfTail @ >
+[55][If]< "if" "cond" "then" IfTail @ >
 [RULE: 5][CLAUSE: 0]
-	epsilon -> [52][If]< "if" "cond" "then" IfTail > @[ENDING]
+	epsilon -> [54][If]< "if" "cond" "then" IfTail > @[ENDING]
 		- EndObject()
 
-[54][If]< "if" "cond" @ "then" IfTail >
+[56][If]< "if" "cond" @ "then" IfTail >
 [RULE: 5][CLAUSE: 0]
-	epsilon -> [55][If]< "if" "cond" @ "then" IfTail >
+	epsilon -> [57][If]< "if" "cond" @ "then" IfTail >
 
-[55][If]< "if" "cond" @ "then" IfTail >
+[57][If]< "if" "cond" @ "then" IfTail >
 [RULE: 5][CLAUSE: 0]
-	token: "then" -> [51][If]< "if" "cond" "then" @ IfTail >
+	token: "then" -> [53][If]< "if" "cond" "then" @ IfTail >
 
-[56][If]< "if" @ "cond" "then" IfTail >
+[58][If]< "if" @ "cond" "then" IfTail >
 [RULE: 5][CLAUSE: 0]
-	epsilon -> [57][If]< "if" @ "cond" "then" IfTail >
+	epsilon -> [59][If]< "if" @ "cond" "then" IfTail >
 
-[57][If]< "if" @ "cond" "then" IfTail >
+[59][If]< "if" @ "cond" "then" IfTail >
 [RULE: 5][CLAUSE: 0]
-	token: "cond" -> [54][If]< "if" "cond" @ "then" IfTail >
+	token: "cond" -> [56][If]< "if" "cond" @ "then" IfTail >
 
-[58][If]< @ "if" "cond" "then" IfTail >
+[60][If]< @ "if" "cond" "then" IfTail >
 [RULE: 5][CLAUSE: 0]
-	token: "if" -> [56][If]< "if" @ "cond" "then" IfTail >
+	token: "if" -> [58][If]< "if" @ "cond" "then" IfTail >
 
-[59][If]@ < "if" "cond" "then" IfTail >
+[61][If]@ < "if" "cond" "then" IfTail >
 [RULE: 5][CLAUSE: 0]
-	epsilon -> [58][If]< @ "if" "cond" "then" IfTail >
+	epsilon -> [60][If]< @ "if" "cond" "then" IfTail >
 		- BeginObject(IfStat)
 
-[60][OtherStat]<< !Block >> @[ENDING]
-[RULE: 6][CLAUSE: 1]
+[62][OtherStat]<< ( !Do @ | !Block ) >>
+[RULE: 6][CLAUSE: 0]
+	epsilon -> [64][OtherStat]<< ( !Do | !Block ) @ >>
 
-[61][OtherStat]<< !Block @ >>
-[RULE: 6][CLAUSE: 1]
-	epsilon -> [60][OtherStat]<< !Block >> @[ENDING]
-		- EndObject()
-
-[62][OtherStat]<< !Do >> @[ENDING]
+[63][OtherStat]<< ( !Do | !Block ) >> @[ENDING]
 [RULE: 6][CLAUSE: 0]
 
-[63][OtherStat]<< !Do @ >>
+[64][OtherStat]<< ( !Do | !Block ) @ >>
 [RULE: 6][CLAUSE: 0]
-	epsilon -> [62][OtherStat]<< !Do >> @[ENDING]
+	epsilon -> [63][OtherStat]<< ( !Do | !Block ) >> @[ENDING]
 		- EndObject()
 
-[64][OtherStat]<< @ !Block >>
-[RULE: 6][CLAUSE: 1]
-	rule: Block -> [61][OtherStat]<< !Block @ >>
-		+ ReopenObject()
-
-[65][OtherStat]<< @ !Do >>
+[65][OtherStat]<< ( !Do | !Block @ ) >>
 [RULE: 6][CLAUSE: 0]
-	rule: Do -> [63][OtherStat]<< !Do @ >>
-		+ ReopenObject()
+	epsilon -> [64][OtherStat]<< ( !Do | !Block ) @ >>
 
-[66][OtherStat]@ << !Block >>
-[RULE: 6][CLAUSE: 1]
-	epsilon -> [64][OtherStat]<< @ !Block >>
-		- DelayFieldAssignment()
-
-[67][OtherStat]@ << !Do >>
+[66][OtherStat]<< ( !Do | @ !Block ) >>
 [RULE: 6][CLAUSE: 0]
-	epsilon -> [65][OtherStat]<< @ !Do >>
-		- DelayFieldAssignment()
-
-[68][CompleteStat]<< !CompleteIf >> @[ENDING]
-[RULE: 7][CLAUSE: 1]
-
-[69][CompleteStat]<< !CompleteIf @ >>
-[RULE: 7][CLAUSE: 1]
-	epsilon -> [68][CompleteStat]<< !CompleteIf >> @[ENDING]
-		- EndObject()
-
-[70][CompleteStat]<< !OtherStat >> @[ENDING]
-[RULE: 7][CLAUSE: 0]
-
-[71][CompleteStat]<< !OtherStat @ >>
-[RULE: 7][CLAUSE: 0]
-	epsilon -> [70][CompleteStat]<< !OtherStat >> @[ENDING]
-		- EndObject()
-
-[72][CompleteStat]<< @ !CompleteIf >>
-[RULE: 7][CLAUSE: 1]
-	rule: CompleteIf -> [69][CompleteStat]<< !CompleteIf @ >>
+	rule: Block -> [65][OtherStat]<< ( !Do | !Block @ ) >>
 		+ ReopenObject()
 
-[73][CompleteStat]<< @ !OtherStat >>
-[RULE: 7][CLAUSE: 0]
-	rule: OtherStat -> [71][CompleteStat]<< !OtherStat @ >>
+[67][OtherStat]<< ( @ !Do | !Block ) >>
+[RULE: 6][CLAUSE: 0]
+	rule: Do -> [62][OtherStat]<< ( !Do @ | !Block ) >>
 		+ ReopenObject()
 
-[74][CompleteStat]@ << !CompleteIf >>
-[RULE: 7][CLAUSE: 1]
-	epsilon -> [72][CompleteStat]<< @ !CompleteIf >>
+[68][OtherStat]<< @ ( !Do | !Block ) >>
+[RULE: 6][CLAUSE: 0]
+	epsilon -> [66][OtherStat]<< ( !Do | @ !Block ) >>
+	epsilon -> [67][OtherStat]<< ( @ !Do | !Block ) >>
+
+[69][OtherStat]@ << ( !Do | !Block ) >>
+[RULE: 6][CLAUSE: 0]
+	epsilon -> [68][OtherStat]<< @ ( !Do | !Block ) >>
 		- DelayFieldAssignment()
 
-[75][CompleteStat]@ << !OtherStat >>
+[70][CompleteStat]<< ( !OtherStat @ | !CompleteIf ) >>
 [RULE: 7][CLAUSE: 0]
-	epsilon -> [73][CompleteStat]<< @ !OtherStat >>
-		- DelayFieldAssignment()
+	epsilon -> [72][CompleteStat]<< ( !OtherStat | !CompleteIf ) @ >>
 
-[76][Stat]<< !If >> @[ENDING]
-[RULE: 8][CLAUSE: 1]
+[71][CompleteStat]<< ( !OtherStat | !CompleteIf ) >> @[ENDING]
+[RULE: 7][CLAUSE: 0]
 
-[77][Stat]<< !If @ >>
-[RULE: 8][CLAUSE: 1]
-	epsilon -> [76][Stat]<< !If >> @[ENDING]
+[72][CompleteStat]<< ( !OtherStat | !CompleteIf ) @ >>
+[RULE: 7][CLAUSE: 0]
+	epsilon -> [71][CompleteStat]<< ( !OtherStat | !CompleteIf ) >> @[ENDING]
 		- EndObject()
 
-[78][Stat]<< !OtherStat >> @[ENDING]
+[73][CompleteStat]<< ( !OtherStat | !CompleteIf @ ) >>
+[RULE: 7][CLAUSE: 0]
+	epsilon -> [72][CompleteStat]<< ( !OtherStat | !CompleteIf ) @ >>
+
+[74][CompleteStat]<< ( !OtherStat | @ !CompleteIf ) >>
+[RULE: 7][CLAUSE: 0]
+	rule: CompleteIf -> [73][CompleteStat]<< ( !OtherStat | !CompleteIf @ ) >>
+		+ ReopenObject()
+
+[75][CompleteStat]<< ( @ !OtherStat | !CompleteIf ) >>
+[RULE: 7][CLAUSE: 0]
+	rule: OtherStat -> [70][CompleteStat]<< ( !OtherStat @ | !CompleteIf ) >>
+		+ ReopenObject()
+
+[76][CompleteStat]<< @ ( !OtherStat | !CompleteIf ) >>
+[RULE: 7][CLAUSE: 0]
+	epsilon -> [74][CompleteStat]<< ( !OtherStat | @ !CompleteIf ) >>
+	epsilon -> [75][CompleteStat]<< ( @ !OtherStat | !CompleteIf ) >>
+
+[77][CompleteStat]@ << ( !OtherStat | !CompleteIf ) >>
+[RULE: 7][CLAUSE: 0]
+	epsilon -> [76][CompleteStat]<< @ ( !OtherStat | !CompleteIf ) >>
+		- DelayFieldAssignment()
+
+[78][Stat]<< ( !OtherStat @ | !If ) >>
+[RULE: 8][CLAUSE: 0]
+	epsilon -> [80][Stat]<< ( !OtherStat | !If ) @ >>
+
+[79][Stat]<< ( !OtherStat | !If ) >> @[ENDING]
 [RULE: 8][CLAUSE: 0]
 
-[79][Stat]<< !OtherStat @ >>
+[80][Stat]<< ( !OtherStat | !If ) @ >>
 [RULE: 8][CLAUSE: 0]
-	epsilon -> [78][Stat]<< !OtherStat >> @[ENDING]
+	epsilon -> [79][Stat]<< ( !OtherStat | !If ) >> @[ENDING]
 		- EndObject()
 
-[80][Stat]<< @ !If >>
-[RULE: 8][CLAUSE: 1]
-	rule: If -> [77][Stat]<< !If @ >>
+[81][Stat]<< ( !OtherStat | !If @ ) >>
+[RULE: 8][CLAUSE: 0]
+	epsilon -> [80][Stat]<< ( !OtherStat | !If ) @ >>
+
+[82][Stat]<< ( !OtherStat | @ !If ) >>
+[RULE: 8][CLAUSE: 0]
+	rule: If -> [81][Stat]<< ( !OtherStat | !If @ ) >>
 		+ ReopenObject()
 
-[81][Stat]<< @ !OtherStat >>
+[83][Stat]<< ( @ !OtherStat | !If ) >>
 [RULE: 8][CLAUSE: 0]
-	rule: OtherStat -> [79][Stat]<< !OtherStat @ >>
+	rule: OtherStat -> [78][Stat]<< ( !OtherStat @ | !If ) >>
 		+ ReopenObject()
 
-[82][Stat]@ << !If >>
-[RULE: 8][CLAUSE: 1]
-	epsilon -> [80][Stat]<< @ !If >>
-		- DelayFieldAssignment()
-
-[83][Stat]@ << !OtherStat >>
+[84][Stat]<< @ ( !OtherStat | !If ) >>
 [RULE: 8][CLAUSE: 0]
-	epsilon -> [81][Stat]<< @ !OtherStat >>
+	epsilon -> [82][Stat]<< ( !OtherStat | @ !If ) >>
+	epsilon -> [83][Stat]<< ( @ !OtherStat | !If ) >>
+
+[85][Stat]@ << ( !OtherStat | !If ) >>
+[RULE: 8][CLAUSE: 0]
+	epsilon -> [84][Stat]<< @ ( !OtherStat | !If ) >>
 		- DelayFieldAssignment()
 
-[84][Module]< @ Stat >
+[86][Module]< @ Stat >
 [RULE: 9][CLAUSE: 0]
-	rule: Stat -> [86][Module]< Stat @ >
+	rule: Stat -> [88][Module]< Stat @ >
 		+ Field(Module::stat)
 
-[85][Module]< Stat > @[ENDING]
+[87][Module]< Stat > @[ENDING]
 [RULE: 9][CLAUSE: 0]
 
-[86][Module]< Stat @ >
+[88][Module]< Stat @ >
 [RULE: 9][CLAUSE: 0]
-	epsilon -> [85][Module]< Stat > @[ENDING]
+	epsilon -> [87][Module]< Stat > @[ENDING]
 		- EndObject()
 
-[87][Module]@ < Stat >
+[89][Module]@ < Stat >
 [RULE: 9][CLAUSE: 0]
-	epsilon -> [84][Module]< @ Stat >
+	epsilon -> [86][Module]< @ Stat >
 		- BeginObject(Module)
 

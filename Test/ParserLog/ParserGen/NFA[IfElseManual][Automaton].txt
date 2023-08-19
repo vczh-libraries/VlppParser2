@@ -31,23 +31,23 @@
 		- BeginObject(BlockStat)
 		> rule: Stat -> [7][Block]< "{" { Stat @ } "}" >
 			+ Field(BlockStat::stats)
-		> rule: OtherStat -> [46][Stat]<< !OtherStat @ >>
-		> rule: Block -> [37][OtherStat]<< !Block @ >>
+		> rule: OtherStat -> [45][Stat]<< ( !OtherStat @ | !If ) >>
+		> rule: Block -> [38][OtherStat]<< ( !Do | !Block @ ) >>
 	token: "}" -> [8][Block]< "{" { Stat } "}" @ >
 	token: "if" -> [34][If]< "if" @ "cond" "then" IfTail >
 		- DelayFieldAssignment()
 		- BeginObject(IfStat)
 		> rule: Stat -> [7][Block]< "{" { Stat @ } "}" >
 			+ Field(BlockStat::stats)
-		> rule: If -> [45][Stat]<< !If @ >>
+		> rule: If -> [46][Stat]<< ( !OtherStat | !If @ ) >>
 	token: "do" -> [3][Do]< "do" @ ";" >
 		- DelayFieldAssignment()
 		- DelayFieldAssignment()
 		- BeginObject(DoStat)
 		> rule: Stat -> [7][Block]< "{" { Stat @ } "}" >
 			+ Field(BlockStat::stats)
-		> rule: OtherStat -> [46][Stat]<< !OtherStat @ >>
-		> rule: Do -> [38][OtherStat]<< !Do @ >>
+		> rule: OtherStat -> [45][Stat]<< ( !OtherStat @ | !If ) >>
+		> rule: Do -> [37][OtherStat]<< ( !Do @ | !Block ) >>
 
 [7][Block]< "{" { Stat @ } "}" >
 [RULE: 1][CLAUSE: 0]
@@ -57,23 +57,23 @@
 		- BeginObject(BlockStat)
 		> rule: Stat -> [7][Block]< "{" { Stat @ } "}" >
 			+ Field(BlockStat::stats)
-		> rule: OtherStat -> [46][Stat]<< !OtherStat @ >>
-		> rule: Block -> [37][OtherStat]<< !Block @ >>
+		> rule: OtherStat -> [45][Stat]<< ( !OtherStat @ | !If ) >>
+		> rule: Block -> [38][OtherStat]<< ( !Do | !Block @ ) >>
 	token: "}" -> [8][Block]< "{" { Stat } "}" @ >
 	token: "if" -> [34][If]< "if" @ "cond" "then" IfTail >
 		- DelayFieldAssignment()
 		- BeginObject(IfStat)
 		> rule: Stat -> [7][Block]< "{" { Stat @ } "}" >
 			+ Field(BlockStat::stats)
-		> rule: If -> [45][Stat]<< !If @ >>
+		> rule: If -> [46][Stat]<< ( !OtherStat | !If @ ) >>
 	token: "do" -> [3][Do]< "do" @ ";" >
 		- DelayFieldAssignment()
 		- DelayFieldAssignment()
 		- BeginObject(DoStat)
 		> rule: Stat -> [7][Block]< "{" { Stat @ } "}" >
 			+ Field(BlockStat::stats)
-		> rule: OtherStat -> [46][Stat]<< !OtherStat @ >>
-		> rule: Do -> [38][OtherStat]<< !Do @ >>
+		> rule: OtherStat -> [45][Stat]<< ( !OtherStat @ | !If ) >>
+		> rule: Do -> [37][OtherStat]<< ( !Do @ | !Block ) >>
 
 [8][Block]< "{" { Stat } "}" @ >
 [RULE: 1][CLAUSE: 0]
@@ -96,22 +96,22 @@
 		- BeginObject(BlockStat)
 		> rule: Stat -> [12][HalfIf]< "if" "cond" "then" Stat @ >
 			+ Field(IfStat::thenBranch)
-		> rule: OtherStat -> [46][Stat]<< !OtherStat @ >>
-		> rule: Block -> [37][OtherStat]<< !Block @ >>
+		> rule: OtherStat -> [45][Stat]<< ( !OtherStat @ | !If ) >>
+		> rule: Block -> [38][OtherStat]<< ( !Do | !Block @ ) >>
 	token: "if" -> [34][If]< "if" @ "cond" "then" IfTail >
 		- DelayFieldAssignment()
 		- BeginObject(IfStat)
 		> rule: Stat -> [12][HalfIf]< "if" "cond" "then" Stat @ >
 			+ Field(IfStat::thenBranch)
-		> rule: If -> [45][Stat]<< !If @ >>
+		> rule: If -> [46][Stat]<< ( !OtherStat | !If @ ) >>
 	token: "do" -> [3][Do]< "do" @ ";" >
 		- DelayFieldAssignment()
 		- DelayFieldAssignment()
 		- BeginObject(DoStat)
 		> rule: Stat -> [12][HalfIf]< "if" "cond" "then" Stat @ >
 			+ Field(IfStat::thenBranch)
-		> rule: OtherStat -> [46][Stat]<< !OtherStat @ >>
-		> rule: Do -> [38][OtherStat]<< !Do @ >>
+		> rule: OtherStat -> [45][Stat]<< ( !OtherStat @ | !If ) >>
+		> rule: Do -> [37][OtherStat]<< ( !Do @ | !Block ) >>
 
 [12][HalfIf]< "if" "cond" "then" Stat @ >
 [RULE: 2][CLAUSE: 0]
@@ -142,22 +142,22 @@
 		- BeginObject(BlockStat)
 		> rule: CompleteStat -> [20][CompleteIf]< "if" "cond" "then" CompleteStat @ "else" Stat >
 			+ Field(IfStat::thenBranch)
-		> rule: OtherStat -> [42][CompleteStat]<< !OtherStat @ >>
-		> rule: Block -> [37][OtherStat]<< !Block @ >>
+		> rule: OtherStat -> [41][CompleteStat]<< ( !OtherStat @ | !CompleteIf ) >>
+		> rule: Block -> [38][OtherStat]<< ( !Do | !Block @ ) >>
 	token: "if" -> [22][CompleteIf]< "if" @ "cond" "then" CompleteStat "else" Stat >
 		- DelayFieldAssignment()
 		- BeginObject(IfStat)
 		> rule: CompleteStat -> [20][CompleteIf]< "if" "cond" "then" CompleteStat @ "else" Stat >
 			+ Field(IfStat::thenBranch)
-		> rule: CompleteIf -> [41][CompleteStat]<< !CompleteIf @ >>
+		> rule: CompleteIf -> [42][CompleteStat]<< ( !OtherStat | !CompleteIf @ ) >>
 	token: "do" -> [3][Do]< "do" @ ";" >
 		- DelayFieldAssignment()
 		- DelayFieldAssignment()
 		- BeginObject(DoStat)
 		> rule: CompleteStat -> [20][CompleteIf]< "if" "cond" "then" CompleteStat @ "else" Stat >
 			+ Field(IfStat::thenBranch)
-		> rule: OtherStat -> [42][CompleteStat]<< !OtherStat @ >>
-		> rule: Do -> [38][OtherStat]<< !Do @ >>
+		> rule: OtherStat -> [41][CompleteStat]<< ( !OtherStat @ | !CompleteIf ) >>
+		> rule: Do -> [37][OtherStat]<< ( !Do @ | !Block ) >>
 
 [18][CompleteIf]< "if" "cond" "then" CompleteStat "else" @ Stat >
 [RULE: 3][CLAUSE: 0]
@@ -167,22 +167,22 @@
 		- BeginObject(BlockStat)
 		> rule: Stat -> [19][CompleteIf]< "if" "cond" "then" CompleteStat "else" Stat @ >
 			+ Field(IfStat::elseBranch)
-		> rule: OtherStat -> [46][Stat]<< !OtherStat @ >>
-		> rule: Block -> [37][OtherStat]<< !Block @ >>
+		> rule: OtherStat -> [45][Stat]<< ( !OtherStat @ | !If ) >>
+		> rule: Block -> [38][OtherStat]<< ( !Do | !Block @ ) >>
 	token: "if" -> [34][If]< "if" @ "cond" "then" IfTail >
 		- DelayFieldAssignment()
 		- BeginObject(IfStat)
 		> rule: Stat -> [19][CompleteIf]< "if" "cond" "then" CompleteStat "else" Stat @ >
 			+ Field(IfStat::elseBranch)
-		> rule: If -> [45][Stat]<< !If @ >>
+		> rule: If -> [46][Stat]<< ( !OtherStat | !If @ ) >>
 	token: "do" -> [3][Do]< "do" @ ";" >
 		- DelayFieldAssignment()
 		- DelayFieldAssignment()
 		- BeginObject(DoStat)
 		> rule: Stat -> [19][CompleteIf]< "if" "cond" "then" CompleteStat "else" Stat @ >
 			+ Field(IfStat::elseBranch)
-		> rule: OtherStat -> [46][Stat]<< !OtherStat @ >>
-		> rule: Do -> [38][OtherStat]<< !Do @ >>
+		> rule: OtherStat -> [45][Stat]<< ( !OtherStat @ | !If ) >>
+		> rule: Do -> [37][OtherStat]<< ( !Do @ | !Block ) >>
 
 [19][CompleteIf]< "if" "cond" "then" CompleteStat "else" Stat @ >
 [RULE: 3][CLAUSE: 0]
@@ -207,67 +207,67 @@
 		- DelayFieldAssignment()
 		- DelayFieldAssignment()
 		- BeginObject(BlockStat)
-		> rule: CompleteStat -> [25][IfTail]CompleteStat @ [ "else" Stat ]
+		> rule: CompleteStat -> [25][IfTail]( CompleteStat @ [ "else" Stat ] | HalfIf )
 			+ Field(IfStat::thenBranch)
-		> rule: OtherStat -> [42][CompleteStat]<< !OtherStat @ >>
-		> rule: Block -> [37][OtherStat]<< !Block @ >>
+		> rule: OtherStat -> [41][CompleteStat]<< ( !OtherStat @ | !CompleteIf ) >>
+		> rule: Block -> [38][OtherStat]<< ( !Do | !Block @ ) >>
 	token: "if" -> [14][HalfIf]< "if" @ "cond" "then" Stat >
 		- BeginObject(IfStat)
-		> rule: HalfIf -> [28][IfTail]HalfIf @
+		> rule: HalfIf -> [28][IfTail]( CompleteStat [ "else" Stat ] | HalfIf @ )
 	token: "if" -> [22][CompleteIf]< "if" @ "cond" "then" CompleteStat "else" Stat >
 		- DelayFieldAssignment()
 		- BeginObject(IfStat)
-		> rule: CompleteStat -> [25][IfTail]CompleteStat @ [ "else" Stat ]
+		> rule: CompleteStat -> [25][IfTail]( CompleteStat @ [ "else" Stat ] | HalfIf )
 			+ Field(IfStat::thenBranch)
-		> rule: CompleteIf -> [41][CompleteStat]<< !CompleteIf @ >>
+		> rule: CompleteIf -> [42][CompleteStat]<< ( !OtherStat | !CompleteIf @ ) >>
 	token: "do" -> [3][Do]< "do" @ ";" >
 		- DelayFieldAssignment()
 		- DelayFieldAssignment()
 		- BeginObject(DoStat)
-		> rule: CompleteStat -> [25][IfTail]CompleteStat @ [ "else" Stat ]
+		> rule: CompleteStat -> [25][IfTail]( CompleteStat @ [ "else" Stat ] | HalfIf )
 			+ Field(IfStat::thenBranch)
-		> rule: OtherStat -> [42][CompleteStat]<< !OtherStat @ >>
-		> rule: Do -> [38][OtherStat]<< !Do @ >>
+		> rule: OtherStat -> [41][CompleteStat]<< ( !OtherStat @ | !CompleteIf ) >>
+		> rule: Do -> [37][OtherStat]<< ( !Do @ | !Block ) >>
 
 [24][IfTail] END [ENDING]
 [RULE: 4][CLAUSE: -1]
 
-[25][IfTail]CompleteStat @ [ "else" Stat ]
+[25][IfTail]( CompleteStat @ [ "else" Stat ] | HalfIf )
 [RULE: 4][CLAUSE: 0]
 	ending -> [24][IfTail] END [ENDING]
-	token: "else" -> [26][IfTail]CompleteStat [ "else" @ Stat ]
+	token: "else" -> [26][IfTail]( CompleteStat [ "else" @ Stat ] | HalfIf )
 
-[26][IfTail]CompleteStat [ "else" @ Stat ]
+[26][IfTail]( CompleteStat [ "else" @ Stat ] | HalfIf )
 [RULE: 4][CLAUSE: 0]
 	token: "{" -> [6][Block]< "{" @ { Stat } "}" >
 		- DelayFieldAssignment()
 		- DelayFieldAssignment()
 		- BeginObject(BlockStat)
-		> rule: Stat -> [27][IfTail]CompleteStat [ "else" Stat @ ]
+		> rule: Stat -> [27][IfTail]( CompleteStat [ "else" Stat @ ] | HalfIf )
 			+ Field(IfStat::elseBranch)
-		> rule: OtherStat -> [46][Stat]<< !OtherStat @ >>
-		> rule: Block -> [37][OtherStat]<< !Block @ >>
+		> rule: OtherStat -> [45][Stat]<< ( !OtherStat @ | !If ) >>
+		> rule: Block -> [38][OtherStat]<< ( !Do | !Block @ ) >>
 	token: "if" -> [34][If]< "if" @ "cond" "then" IfTail >
 		- DelayFieldAssignment()
 		- BeginObject(IfStat)
-		> rule: Stat -> [27][IfTail]CompleteStat [ "else" Stat @ ]
+		> rule: Stat -> [27][IfTail]( CompleteStat [ "else" Stat @ ] | HalfIf )
 			+ Field(IfStat::elseBranch)
-		> rule: If -> [45][Stat]<< !If @ >>
+		> rule: If -> [46][Stat]<< ( !OtherStat | !If @ ) >>
 	token: "do" -> [3][Do]< "do" @ ";" >
 		- DelayFieldAssignment()
 		- DelayFieldAssignment()
 		- BeginObject(DoStat)
-		> rule: Stat -> [27][IfTail]CompleteStat [ "else" Stat @ ]
+		> rule: Stat -> [27][IfTail]( CompleteStat [ "else" Stat @ ] | HalfIf )
 			+ Field(IfStat::elseBranch)
-		> rule: OtherStat -> [46][Stat]<< !OtherStat @ >>
-		> rule: Do -> [38][OtherStat]<< !Do @ >>
+		> rule: OtherStat -> [45][Stat]<< ( !OtherStat @ | !If ) >>
+		> rule: Do -> [37][OtherStat]<< ( !Do @ | !Block ) >>
 
-[27][IfTail]CompleteStat [ "else" Stat @ ]
+[27][IfTail]( CompleteStat [ "else" Stat @ ] | HalfIf )
 [RULE: 4][CLAUSE: 0]
 	ending -> [24][IfTail] END [ENDING]
 
-[28][IfTail]HalfIf @
-[RULE: 4][CLAUSE: 1]
+[28][IfTail]( CompleteStat [ "else" Stat ] | HalfIf @ )
+[RULE: 4][CLAUSE: 0]
 	ending -> [24][IfTail] END [ENDING]
 		- Field(IfStat::thenBranch)
 
@@ -286,30 +286,30 @@
 		- DelayFieldAssignment()
 		- BeginObject(BlockStat)
 		> rule: IfTail -> [32][If]< "if" "cond" "then" IfTail @ >
-		> rule: CompleteStat -> [25][IfTail]CompleteStat @ [ "else" Stat ]
+		> rule: CompleteStat -> [25][IfTail]( CompleteStat @ [ "else" Stat ] | HalfIf )
 			+ Field(IfStat::thenBranch)
-		> rule: OtherStat -> [42][CompleteStat]<< !OtherStat @ >>
-		> rule: Block -> [37][OtherStat]<< !Block @ >>
+		> rule: OtherStat -> [41][CompleteStat]<< ( !OtherStat @ | !CompleteIf ) >>
+		> rule: Block -> [38][OtherStat]<< ( !Do | !Block @ ) >>
 	token: "if" -> [14][HalfIf]< "if" @ "cond" "then" Stat >
 		- BeginObject(IfStat)
 		> rule: IfTail -> [32][If]< "if" "cond" "then" IfTail @ >
-		> rule: HalfIf -> [28][IfTail]HalfIf @
+		> rule: HalfIf -> [28][IfTail]( CompleteStat [ "else" Stat ] | HalfIf @ )
 	token: "if" -> [22][CompleteIf]< "if" @ "cond" "then" CompleteStat "else" Stat >
 		- DelayFieldAssignment()
 		- BeginObject(IfStat)
 		> rule: IfTail -> [32][If]< "if" "cond" "then" IfTail @ >
-		> rule: CompleteStat -> [25][IfTail]CompleteStat @ [ "else" Stat ]
+		> rule: CompleteStat -> [25][IfTail]( CompleteStat @ [ "else" Stat ] | HalfIf )
 			+ Field(IfStat::thenBranch)
-		> rule: CompleteIf -> [41][CompleteStat]<< !CompleteIf @ >>
+		> rule: CompleteIf -> [42][CompleteStat]<< ( !OtherStat | !CompleteIf @ ) >>
 	token: "do" -> [3][Do]< "do" @ ";" >
 		- DelayFieldAssignment()
 		- DelayFieldAssignment()
 		- BeginObject(DoStat)
 		> rule: IfTail -> [32][If]< "if" "cond" "then" IfTail @ >
-		> rule: CompleteStat -> [25][IfTail]CompleteStat @ [ "else" Stat ]
+		> rule: CompleteStat -> [25][IfTail]( CompleteStat @ [ "else" Stat ] | HalfIf )
 			+ Field(IfStat::thenBranch)
-		> rule: OtherStat -> [42][CompleteStat]<< !OtherStat @ >>
-		> rule: Do -> [38][OtherStat]<< !Do @ >>
+		> rule: OtherStat -> [41][CompleteStat]<< ( !OtherStat @ | !CompleteIf ) >>
+		> rule: Do -> [37][OtherStat]<< ( !Do @ | !Block ) >>
 
 [32][If]< "if" "cond" "then" IfTail @ >
 [RULE: 5][CLAUSE: 0]
@@ -329,22 +329,22 @@
 	token: "{" -> [6][Block]< "{" @ { Stat } "}" >
 		- DelayFieldAssignment()
 		- BeginObject(BlockStat)
-		> rule: Block -> [37][OtherStat]<< !Block @ >>
+		> rule: Block -> [38][OtherStat]<< ( !Do | !Block @ ) >>
 	token: "do" -> [3][Do]< "do" @ ";" >
 		- DelayFieldAssignment()
 		- BeginObject(DoStat)
-		> rule: Do -> [38][OtherStat]<< !Do @ >>
+		> rule: Do -> [37][OtherStat]<< ( !Do @ | !Block ) >>
 
 [36][OtherStat] END [ENDING]
 [RULE: 6][CLAUSE: -1]
 
-[37][OtherStat]<< !Block @ >>
-[RULE: 6][CLAUSE: 1]
+[37][OtherStat]<< ( !Do @ | !Block ) >>
+[RULE: 6][CLAUSE: 0]
 	ending -> [36][OtherStat] END [ENDING]
 		- ReopenObject()
 		- EndObject()
 
-[38][OtherStat]<< !Do @ >>
+[38][OtherStat]<< ( !Do | !Block @ ) >>
 [RULE: 6][CLAUSE: 0]
 	ending -> [36][OtherStat] END [ENDING]
 		- ReopenObject()
@@ -356,29 +356,29 @@
 		- DelayFieldAssignment()
 		- DelayFieldAssignment()
 		- BeginObject(BlockStat)
-		> rule: OtherStat -> [42][CompleteStat]<< !OtherStat @ >>
-		> rule: Block -> [37][OtherStat]<< !Block @ >>
+		> rule: OtherStat -> [41][CompleteStat]<< ( !OtherStat @ | !CompleteIf ) >>
+		> rule: Block -> [38][OtherStat]<< ( !Do | !Block @ ) >>
 	token: "if" -> [22][CompleteIf]< "if" @ "cond" "then" CompleteStat "else" Stat >
 		- DelayFieldAssignment()
 		- BeginObject(IfStat)
-		> rule: CompleteIf -> [41][CompleteStat]<< !CompleteIf @ >>
+		> rule: CompleteIf -> [42][CompleteStat]<< ( !OtherStat | !CompleteIf @ ) >>
 	token: "do" -> [3][Do]< "do" @ ";" >
 		- DelayFieldAssignment()
 		- DelayFieldAssignment()
 		- BeginObject(DoStat)
-		> rule: OtherStat -> [42][CompleteStat]<< !OtherStat @ >>
-		> rule: Do -> [38][OtherStat]<< !Do @ >>
+		> rule: OtherStat -> [41][CompleteStat]<< ( !OtherStat @ | !CompleteIf ) >>
+		> rule: Do -> [37][OtherStat]<< ( !Do @ | !Block ) >>
 
 [40][CompleteStat] END [ENDING]
 [RULE: 7][CLAUSE: -1]
 
-[41][CompleteStat]<< !CompleteIf @ >>
-[RULE: 7][CLAUSE: 1]
+[41][CompleteStat]<< ( !OtherStat @ | !CompleteIf ) >>
+[RULE: 7][CLAUSE: 0]
 	ending -> [40][CompleteStat] END [ENDING]
 		- ReopenObject()
 		- EndObject()
 
-[42][CompleteStat]<< !OtherStat @ >>
+[42][CompleteStat]<< ( !OtherStat | !CompleteIf @ ) >>
 [RULE: 7][CLAUSE: 0]
 	ending -> [40][CompleteStat] END [ENDING]
 		- ReopenObject()
@@ -390,29 +390,29 @@
 		- DelayFieldAssignment()
 		- DelayFieldAssignment()
 		- BeginObject(BlockStat)
-		> rule: OtherStat -> [46][Stat]<< !OtherStat @ >>
-		> rule: Block -> [37][OtherStat]<< !Block @ >>
+		> rule: OtherStat -> [45][Stat]<< ( !OtherStat @ | !If ) >>
+		> rule: Block -> [38][OtherStat]<< ( !Do | !Block @ ) >>
 	token: "if" -> [34][If]< "if" @ "cond" "then" IfTail >
 		- DelayFieldAssignment()
 		- BeginObject(IfStat)
-		> rule: If -> [45][Stat]<< !If @ >>
+		> rule: If -> [46][Stat]<< ( !OtherStat | !If @ ) >>
 	token: "do" -> [3][Do]< "do" @ ";" >
 		- DelayFieldAssignment()
 		- DelayFieldAssignment()
 		- BeginObject(DoStat)
-		> rule: OtherStat -> [46][Stat]<< !OtherStat @ >>
-		> rule: Do -> [38][OtherStat]<< !Do @ >>
+		> rule: OtherStat -> [45][Stat]<< ( !OtherStat @ | !If ) >>
+		> rule: Do -> [37][OtherStat]<< ( !Do @ | !Block ) >>
 
 [44][Stat] END [ENDING]
 [RULE: 8][CLAUSE: -1]
 
-[45][Stat]<< !If @ >>
-[RULE: 8][CLAUSE: 1]
+[45][Stat]<< ( !OtherStat @ | !If ) >>
+[RULE: 8][CLAUSE: 0]
 	ending -> [44][Stat] END [ENDING]
 		- ReopenObject()
 		- EndObject()
 
-[46][Stat]<< !OtherStat @ >>
+[46][Stat]<< ( !OtherStat | !If @ ) >>
 [RULE: 8][CLAUSE: 0]
 	ending -> [44][Stat] END [ENDING]
 		- ReopenObject()
@@ -426,22 +426,22 @@
 		- DelayFieldAssignment()
 		- BeginObject(BlockStat)
 		> rule: Stat -> [49][Module]< Stat @ >
-		> rule: OtherStat -> [46][Stat]<< !OtherStat @ >>
-		> rule: Block -> [37][OtherStat]<< !Block @ >>
+		> rule: OtherStat -> [45][Stat]<< ( !OtherStat @ | !If ) >>
+		> rule: Block -> [38][OtherStat]<< ( !Do | !Block @ ) >>
 	token: "if" -> [34][If]< "if" @ "cond" "then" IfTail >
 		- BeginObject(Module)
 		- DelayFieldAssignment()
 		- BeginObject(IfStat)
 		> rule: Stat -> [49][Module]< Stat @ >
-		> rule: If -> [45][Stat]<< !If @ >>
+		> rule: If -> [46][Stat]<< ( !OtherStat | !If @ ) >>
 	token: "do" -> [3][Do]< "do" @ ";" >
 		- BeginObject(Module)
 		- DelayFieldAssignment()
 		- DelayFieldAssignment()
 		- BeginObject(DoStat)
 		> rule: Stat -> [49][Module]< Stat @ >
-		> rule: OtherStat -> [46][Stat]<< !OtherStat @ >>
-		> rule: Do -> [38][OtherStat]<< !Do @ >>
+		> rule: OtherStat -> [45][Stat]<< ( !OtherStat @ | !If ) >>
+		> rule: Do -> [37][OtherStat]<< ( !Do @ | !Block ) >>
 
 [48][Module] END [ENDING]
 [RULE: 9][CLAUSE: -1]
