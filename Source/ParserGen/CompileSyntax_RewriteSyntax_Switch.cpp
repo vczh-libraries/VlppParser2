@@ -586,14 +586,27 @@ DeductEmptySyntaxVisitor
 						node->delimiter = CopyNodeSafe(node->delimiter);
 						result = Ptr(node);
 
-						if (node->syntax.Cast<EmptySyntax>())
+						bool syntax = !node->syntax.Cast<EmptySyntax>();
+						bool delimiter = !node->delimiter.Cast<EmptySyntax>();
+						if (syntax && delimiter)
 						{
-							// if the loop body is empty, it is empty
-							result = node->syntax;
+							// if both are not empty, nothing need to worry
 						}
-						else if (node->delimiter.Cast<EmptySyntax>())
+						else if (syntax)
 						{
+							// if only syntax is not empty, it is {syntax}
 							node->delimiter = nullptr;
+						}
+						else if (delimiter)
+						{
+							// if only delimiter is empty, it is {delimiter}
+							node->syntax = node->delimiter;
+							node->delimiter = nullptr;
+						}
+						else
+						{
+							// if both are empty, it is empty
+							result = node->syntax;
 						}
 					}
 
