@@ -42,6 +42,22 @@ TEST_FILE
 		const wchar_t* syntaxCode =
 LR"SYNTAX(
 switch s;
+Exp0 ::= !(!s; ?(s?: "a":id | !s?: "b":id)) as IdNode;
+)SYNTAX";
+
+		const wchar_t* rewrittenCode =
+LR"SYNTAX(
+Exp0 ::= "b":id as IdNode;
+)SYNTAX";
+
+		TestRewrite(typeParser, ruleParser, astCode, lexerCode, syntaxCode, rewrittenCode);
+	});
+
+	TEST_CASE(L"Test in Push (single switch) true")
+	{
+		const wchar_t* syntaxCode =
+LR"SYNTAX(
+switch s;
 Exp0 ::= !(s; ?(s?: "a":id | !s?: "b":id)) as IdNode;
 )SYNTAX";
 
