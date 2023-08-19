@@ -13,6 +13,27 @@ TEST_FILE
 	RuleParser ruleParser;
 
 	//////////////////////////////////////////////////////
+	// SwitchUnaffectedRuleNotExist
+	//////////////////////////////////////////////////////
+
+	TEST_CASE(L"SwitchUnaffectedRuleNotExist")
+	{
+		const wchar_t* syntaxCode =
+LR"SYNTAX(
+switch first;
+Exp0 ::= ?(first: NUM:value) as NumExpr;
+)SYNTAX";
+		ExpectError(
+			typeParser,
+			ruleParser,
+			astCode,
+			lexerCode,
+			syntaxCode,
+			{ ParserErrorType::SwitchUnaffectedRuleNotExist }
+		);
+	});
+
+	//////////////////////////////////////////////////////
 	// SwitchUnaffectedRuleExpandedToNoClause
 	//////////////////////////////////////////////////////
 

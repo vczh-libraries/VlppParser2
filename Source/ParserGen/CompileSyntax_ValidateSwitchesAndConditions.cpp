@@ -339,6 +339,14 @@ ValidateSwitchesAndConditions
 					VerifySwitchesAndConditionsVisitor visitor(context, sContext);
 					visitor.ValidateRule(rule);
 				}
+
+				if (sContext.ruleAffectedSwitches.Count() == context.syntaxManager.Rules().Count())
+				{
+					context.syntaxManager.AddError(
+						ParserErrorType::SwitchUnaffectedRuleNotExist,
+						syntaxFile->codeRange
+						);
+				}
 			}
 		}
 	}

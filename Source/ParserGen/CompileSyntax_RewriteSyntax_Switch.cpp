@@ -778,12 +778,15 @@ RewriteSyntax
 					return ruleName;
 				}
 
-				Ptr<GlrRule> CreateRule(RuleSymbol* ruleSymbol, Ptr<GlrRule> rule, const WString& name)
+				Ptr<GlrRule> CreateRule(RuleSymbol* ruleSymbol, Ptr<GlrRule> rule, const WString& name, bool applyAttributes)
 				{
 					auto newRule = Ptr(new GlrRule);
 					newRule->codeRange = rule->codeRange;
-					newRule->attPublic = rule->attPublic;
-					newRule->attParser = rule->attParser;
+					if (applyAttributes)
+					{
+						newRule->attPublic = rule->attPublic;
+						newRule->attParser = rule->attParser;
+					}
 					newRule->name = rule->name;
 					newRule->name.value = name;
 					newRule->type = rule->type;
@@ -793,7 +796,7 @@ RewriteSyntax
 
 				Ptr<GlrRule> CreateRule(RuleSymbol* ruleSymbol, Ptr<GlrRule> rule, const wchar_t* tag, Dictionary<WString, bool>& switchValues)
 				{
-					return CreateRule(ruleSymbol, rule, CreateRuleName(rule, tag, switchValues));
+					return CreateRule(ruleSymbol, rule, CreateRuleName(rule, tag, switchValues), true);
 				}
 
 				void AddRules(RuleSymbol* ruleSymbol, Ptr<GlrSyntaxFile> rewritten, Group<RuleSymbol*, Ptr<GlrRule>>& expandedRules)
@@ -823,7 +826,7 @@ RewriteSyntax
 								rule->name.value,
 								ruleSymbol->fileIndex,
 								ruleSymbol->isPublic,
-								false,
+								ruleSymbol->isParser,
 								rule->name.codeRange
 							);
 						}
@@ -967,7 +970,7 @@ RewriteSyntax
 												vint ruleIndex = rewritingContext.combinedRulesByName.Keys().IndexOf(combinedRuleName);
 												if (ruleIndex == -1)
 												{
-													combinedRule = CreateRule(ruleSymbol, rule, combinedRuleName);
+													combinedRule = CreateRule(ruleSymbol, rule, combinedRuleName, false);
 													rewritingContext.expandedCombinedRules.Add(ruleSymbol, combinedRule);
 													rewritingContext.combinedRulesByName.Add(combinedRuleName, combinedRule);
 												}
