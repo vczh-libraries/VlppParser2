@@ -445,4 +445,104 @@ Exp1 ::= !Test_SWITCH_0s;
 			TestRewrite(typeParser, ruleParser, astCode, lexerCode, syntaxCode, rewrittenCode);
 		});
 	});
+
+	TEST_CATEGORY(L"Test deduce to empty")
+	{
+		TEST_CASE(L"opt")
+		{
+			const wchar_t* syntaxCode =
+LR"SYNTAX(
+switch s;
+Test
+  ::=  [?(s:"a":id) | ?(s:"a":id)] "b" as IdNode
+  ::= +[?(s:"a":id) | ?(s:"a":id)] "b" as IdNode
+  ::= -[?(s:"a":id) | ?(s:"a":id)] "b" as IdNode
+  ;
+Exp0 ::= !( s; !Test);
+Exp1 ::= !(!s; !Test);
+)SYNTAX";
+
+			const wchar_t* rewrittenCode =
+LR"SYNTAX(
+Test_SWITCH_0s : IdNode
+  ::= "b" as IdNode
+  ::= "b" as IdNode
+  ::= "b" as IdNode
+  ;
+Test_SWITCH_1s : IdNode
+  ::=  ["a":id | "a":id] "b" as IdNode
+  ::= +["a":id | "a":id] "b" as IdNode
+  ::= -["a":id | "a":id] "b" as IdNode
+  ;
+Exp0 ::= !Test_SWITCH_1s;
+Exp1 ::= !Test_SWITCH_0s;
+)SYNTAX";
+
+			TestRewrite(typeParser, ruleParser, astCode, lexerCode, syntaxCode, rewrittenCode);
+		});
+
+		TEST_CASE(L"loop")
+		{
+			const wchar_t* syntaxCode =
+LR"SYNTAX(
+switch s;
+Test
+  ::= {?(s:"a") | ?(s:"a")} "b":id as IdNode
+  ;
+Exp0 ::= !( s; !Test);
+Exp1 ::= !(!s; !Test);
+)SYNTAX";
+
+			const wchar_t* rewrittenCode =
+LR"SYNTAX(
+Test_SWITCH_0s : IdNode
+  ::= "b":id as IdNode
+  ;
+Test_SWITCH_1s : IdNode
+  ::= {"a" | "a"} "b":id as IdNode
+  ;
+Exp0 ::= !Test_SWITCH_1s;
+Exp1 ::= !Test_SWITCH_0s;
+)SYNTAX";
+
+			TestRewrite(typeParser, ruleParser, astCode, lexerCode, syntaxCode, rewrittenCode);
+		});
+
+		TEST_CASE(L"loop with delimiter")
+		{
+			const wchar_t* syntaxCode =
+LR"SYNTAX(
+switch s,t;
+Test
+  ::= {?(s:"a") | ?(s:"a") ; ?(t:"b") | ?(t:"b")} "b":id as IdNode
+  ;
+Exp0 ::= !( s, t; !Test);
+Exp1 ::= !( s,!t; !Test);
+Exp2 ::= !(!s, t; !Test);
+Exp3 ::= !(!s,!t; !Test);
+)SYNTAX";
+
+			const wchar_t* rewrittenCode =
+LR"SYNTAX(
+Test_SWITCH_0s_0t : IdNode
+  ::= "b":id as IdNode
+  ;
+Test_SWITCH_0s_1t : IdNode
+  ::= {"b" | "b"} "b":id as IdNode
+  ;
+Test_SWITCH_1s_0t : IdNode
+  ::= {"a" | "a"} "b":id as IdNode
+  ;
+Test_SWITCH_1s_1t : IdNode
+  ::= {"a" | "a" ; "b" | "b"} "b":id as IdNode
+  ;
+Exp0 ::= !Test_SWITCH_1s_1t;
+Exp1 ::= !Test_SWITCH_1s_0t;
+Exp2 ::= !Test_SWITCH_0s_1t;
+Exp3 ::= !Test_SWITCH_0s_0t;
+)SYNTAX";
+
+			TestRewrite(typeParser, ruleParser, astCode, lexerCode, syntaxCode, rewrittenCode);
+		});
+	});
 }
