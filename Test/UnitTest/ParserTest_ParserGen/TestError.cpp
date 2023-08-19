@@ -78,4 +78,38 @@ namespace TestError_Syntax_TestObjects
 	{
 		ExpectError(typeParser, ruleParser, astCode, nullptr, lexerCode, syntaxCode, expectedError);
 	}
+
+	void TestRewrite(TypeParser& typeParser, RuleParser& ruleParser, const wchar_t* astCode, const wchar_t* lexerCode, const wchar_t* syntaxCode, const wchar_t* rewrittenCode)
+	{
+		ParserSymbolManager global;
+		AstSymbolManager astManager(global);
+		LexerSymbolManager lexerManager(global);
+		SyntaxSymbolManager syntaxManager(global);
+
+		auto astDefFileGroup = astManager.CreateFileGroup(WString::Unmanaged(L"FileGroup"));
+		auto astDefFile = astDefFileGroup->CreateFile(WString::Unmanaged(L"Ast"));
+		auto astFile = typeParser.ParseFile(WString::Unmanaged(astCode));
+
+		CompileAst(astManager, astDefFile, astFile);
+		TEST_ASSERT(global.Errors().Count() == 0);
+
+		Dictionary<WString, WString> files;
+		auto output = GenerateParserFileNames(global);
+		GenerateAstFileNames(astManager, output);
+		WriteAstFiles(astManager, output, files);
+
+		CompileLexer(lexerManager, WString::Unmanaged(lexerCode));
+		TEST_ASSERT(global.Errors().Count() == 0);
+
+		auto syntaxFile = ruleParser.ParseFile(WString::Unmanaged(syntaxCode));
+		auto actualRewrittenFile = CompileSyntax(astManager, lexerManager, syntaxManager, output, syntaxFile);
+		TEST_ASSERT(global.Errors().Count() == 0);
+		TEST_ASSERT(actualRewrittenFile);
+
+		auto expectedRewrittenFile = ruleParser.ParseFile(WString::Unmanaged(rewrittenCode));
+
+		auto expectedRewrittenCode = GenerateToStream([&](TextWriter& writer) { SyntaxAstToCode(expectedRewrittenFile, writer); });
+		auto actualRewrittenCode = GenerateToStream([&](TextWriter& writer) { SyntaxAstToCode(actualRewrittenFile, writer); });
+		TEST_ASSERT(expectedRewrittenCode == actualRewrittenCode);
+	}
 }

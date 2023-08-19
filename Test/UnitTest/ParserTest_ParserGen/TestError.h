@@ -68,6 +68,8 @@ namespace TestError_Syntax_TestObjects
 		CopyFrom(astCodes, From(astCodeArray));
 		ExpectError(typeParser, ruleParser, astCode, lexerCode, astCodes, expectedError);
 	}
+
+	extern void TestRewrite(TypeParser& typeParser, RuleParser& ruleParser, const wchar_t* astCode, const wchar_t* lexerCode, const wchar_t* syntaxCode, const wchar_t* rewrittenCode);
 }
 using namespace TestError_Syntax_TestObjects;
 
