@@ -268,4 +268,124 @@ Exp1 ::= !Test_SWITCH_0s;
 	
 		TestRewrite(typeParser, ruleParser, astCode, lexerCode, syntaxCode, rewrittenCode);
 	});
+
+	TEST_CASE(L"Test deduce to empty (opt)")
+	{
+		const wchar_t* syntaxCode =
+LR"SYNTAX(
+switch s;
+Test
+  ::= [?(s:"a":id)] "b" as IdNode
+  ::= "c" [?(!s:"d":id)] as IdNode
+  ;
+Exp0 ::= !( s; !Test);
+Exp1 ::= !(!s; !Test);
+)SYNTAX";
+	
+		const wchar_t* rewrittenCode =
+LR"SYNTAX(
+Test_SWITCH_0s : IdNode
+  ::= "b" as IdNode
+  ::= "c" ["d":id] as IdNode
+  ;
+Test_SWITCH_1s : IdNode
+  ::= ["a":id] "b" as IdNode
+  ::= "c" as IdNode
+  ;
+Exp0 ::= !Test_SWITCH_1s;
+Exp1 ::= !Test_SWITCH_0s;
+)SYNTAX";
+	
+		TestRewrite(typeParser, ruleParser, astCode, lexerCode, syntaxCode, rewrittenCode);
+	});
+
+	TEST_CASE(L"Test deduce to empty (opt with priority)")
+	{
+		const wchar_t* syntaxCode =
+LR"SYNTAX(
+switch s;
+Test
+  ::= -[?(s:"a":id)] "b" as IdNode
+  ::= "c" +[?(!s:"d":id)] as IdNode
+  ;
+Exp0 ::= !( s; !Test);
+Exp1 ::= !(!s; !Test);
+)SYNTAX";
+	
+		const wchar_t* rewrittenCode =
+LR"SYNTAX(
+Test_SWITCH_0s : IdNode
+  ::= "b" as IdNode
+  ::= "c" +["d":id] as IdNode
+  ;
+Test_SWITCH_1s : IdNode
+  ::= -["a":id] "b" as IdNode
+  ::= "c" as IdNode
+  ;
+Exp0 ::= !Test_SWITCH_1s;
+Exp1 ::= !Test_SWITCH_0s;
+)SYNTAX";
+	
+		TestRewrite(typeParser, ruleParser, astCode, lexerCode, syntaxCode, rewrittenCode);
+	});
+
+	TEST_CASE(L"Test deduce to empty (loop)")
+	{
+		const wchar_t* syntaxCode =
+LR"SYNTAX(
+switch s;
+Test
+  ::= {?(s:"a")} "b":id as IdNode
+  ::= "c":id {?(!s:"d")} as IdNode
+  ;
+Exp0 ::= !( s; !Test);
+Exp1 ::= !(!s; !Test);
+)SYNTAX";
+	
+		const wchar_t* rewrittenCode =
+LR"SYNTAX(
+Test_SWITCH_0s : IdNode
+  ::= "b":id as IdNode
+  ::= "c":id {"d"} as IdNode
+  ;
+Test_SWITCH_1s : IdNode
+  ::= {"a"} "b":id as IdNode
+  ::= "c":id as IdNode
+  ;
+Exp0 ::= !Test_SWITCH_1s;
+Exp1 ::= !Test_SWITCH_0s;
+)SYNTAX";
+	
+		TestRewrite(typeParser, ruleParser, astCode, lexerCode, syntaxCode, rewrittenCode);
+	});
+
+	TEST_CASE(L"Test deduce to empty (loop with separator)")
+	{
+		const wchar_t* syntaxCode =
+LR"SYNTAX(
+switch s;
+Test
+  ::= {"b";?(s:"a")} "b":id as IdNode
+  ::= "c":id {"c";?(!s:"d")} as IdNode
+  ;
+Exp0 ::= !( s; !Test);
+Exp1 ::= !(!s; !Test);
+)SYNTAX";
+	
+		const wchar_t* rewrittenCode =
+LR"SYNTAX(
+Test_SWITCH_0s : IdNode
+  ::= "b":id as IdNode
+  ::= "c":id {"c";"d"} as IdNode
+  ;
+Test_SWITCH_1s : IdNode
+  ::= {"b";"a"} "b":id as IdNode
+  ::= "c":id as IdNode
+  ;
+Exp0 ::= !Test_SWITCH_1s;
+Exp1 ::= !Test_SWITCH_0s;
+)SYNTAX";
+	
+		TestRewrite(typeParser, ruleParser, astCode, lexerCode, syntaxCode, rewrittenCode);
+	});
 }
