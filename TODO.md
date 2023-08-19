@@ -13,8 +13,8 @@
 - Code Coverage
   - Compiler
     - Switch: add expand and compare test cases in `ParserGen`, not just try to cover everything in `Compiler`
-      - `EvaluateConditionVisitor::Visit(Glr(Not|And|Or)Condition*)`
       - `ExpandClauseVisitor` in which are not covered
+        - Test if a clause is removed because some deep syntax node is invalid under the condition
     - `ValidateDeducingPrefixMergeRuleVisitor`
       - `Visit(GlrSequenceSyntax*)` both empty
       - `Visit(GlrAlternativeSyntax*)` exactly one empty
