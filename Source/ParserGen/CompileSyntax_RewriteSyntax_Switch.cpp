@@ -424,7 +424,7 @@ ExpandClauseVisitor
 
 						try
 						{
-							auto syntax = CopyNode(node->syntax.Obj());
+							syntax = CopyNode(node->syntax.Obj());
 						}
 						catch (CancelBranch)
 						{
@@ -432,7 +432,7 @@ ExpandClauseVisitor
 
 						try
 						{
-							auto delimiter = CopyNode(node->delimiter.Obj());
+							delimiter = CopyNode(node->delimiter.Obj());
 						}
 						catch (CancelBranch)
 						{
