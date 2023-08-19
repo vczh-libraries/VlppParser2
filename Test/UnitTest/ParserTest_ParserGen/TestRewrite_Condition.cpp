@@ -238,4 +238,34 @@ Exp1 ::= !Test_SWITCH_0s;
 	
 		TestRewrite(typeParser, ruleParser, astCode, lexerCode, syntaxCode, rewrittenCode);
 	});
+
+	TEST_CASE(L"Test deduce to empty (alt)")
+	{
+		const wchar_t* syntaxCode =
+LR"SYNTAX(
+switch s;
+Test
+  ::= ?(s:"a":id) | "b":id as IdNode
+  ::= "c":id | ?(!s:"d":id) as IdNode
+  ;
+Exp0 ::= !( s; !Test);
+Exp1 ::= !(!s; !Test);
+)SYNTAX";
+	
+		const wchar_t* rewrittenCode =
+LR"SYNTAX(
+Test_SWITCH_0s : IdNode
+  ::= "b":id as IdNode
+  ::= "c":id | "d":id as IdNode
+  ;
+Test_SWITCH_1s : IdNode
+  ::= "a":id | "b":id as IdNode
+  ::= "c":id as IdNode
+  ;
+Exp0 ::= !Test_SWITCH_1s;
+Exp1 ::= !Test_SWITCH_0s;
+)SYNTAX";
+	
+		TestRewrite(typeParser, ruleParser, astCode, lexerCode, syntaxCode, rewrittenCode);
+	});
 }
