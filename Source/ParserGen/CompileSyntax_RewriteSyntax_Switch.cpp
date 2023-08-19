@@ -418,6 +418,66 @@ ExpandClauseVisitor
 						FixRuleName(result.Cast<GlrUseSyntax>()->name);
 					}
 
+					void Visit(GlrLoopSyntax* node) override
+					{
+						Ptr<GlrSyntax> syntax, delimiter;
+
+						try
+						{
+							auto syntax = CopyNode(node->syntax.Obj());
+						}
+						catch (CancelBranch)
+						{
+						}
+
+						try
+						{
+							auto delimiter = CopyNode(node->delimiter.Obj());
+						}
+						catch (CancelBranch)
+						{
+						}
+
+						if (syntax && delimiter)
+						{
+							auto loopSyntax = Ptr(new GlrLoopSyntax);
+							loopSyntax->codeRange = node->codeRange;
+							loopSyntax->syntax = syntax;
+							loopSyntax->delimiter = delimiter;
+							result = loopSyntax;
+						}
+						else if (syntax)
+						{
+							auto loopSyntax = Ptr(new GlrLoopSyntax);
+							loopSyntax->codeRange = syntax->codeRange;
+							loopSyntax->syntax = syntax;
+							result = loopSyntax;
+						}
+						else if (delimiter)
+						{
+							auto loopSyntax = Ptr(new GlrLoopSyntax);
+							loopSyntax->codeRange = delimiter->codeRange;
+							loopSyntax->syntax = delimiter;
+							result = loopSyntax;
+						}
+						else
+						{
+							result = Ptr(new EmptySyntax);
+						}
+					}
+
+					void Visit(GlrOptionalSyntax* node) override
+					{
+						try
+						{
+							copy_visitor::RuleAstVisitor::Visit(node);
+						}
+						catch (CancelBranch)
+						{
+							result = Ptr(new EmptySyntax);
+						}
+					}
+
 					void Visit(GlrAlternativeSyntax* node) override
 					{
 						// alternative syntax converts to alternative syntax
