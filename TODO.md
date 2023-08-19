@@ -8,9 +8,6 @@
 
 - Code Coverage
   - Compiler
-    - `ValidateDeducingPrefixMergeRuleVisitor`
-      - `Visit(GlrSequenceSyntax*)` both empty
-      - `Visit(GlrAlternativeSyntax*)` exactly one empty
     - TODO(s) in `RewriteRules_GenerateAffectedLRIClausesSubgroup`.
     - TODO(s) in `CalculateObjectFirstInstruction` and `InjectFirstInstruction`.
     - `FixPrefixMergeClauses` in `if (ruleSymbol->isPartial)`.
