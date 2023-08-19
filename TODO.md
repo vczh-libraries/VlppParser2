@@ -2,8 +2,6 @@
 
 ## Next task
 
-- `ExprModule` and `TypeModule` don't generate LRI clauses in `Pm5-8`.
-
 ## Test Cases
 
 - Code Coverage
