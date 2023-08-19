@@ -101,4 +101,23 @@ Exp2 ::= !(first, second; !Exp1);
 			{ ParserErrorType::PushedSwitchIsNotTested,L"Exp2",L"second"}
 		);
 	});
+
+	TEST_CASE(L"PushedSwitchIsNotTested 5")
+	{
+		const wchar_t* syntaxCode =
+LR"SYNTAX(
+switch first, second;
+Exp0 ::= ?(first || second: NUM:value) as NumExpr;
+Exp1 ::= !(!second; !Exp0);
+Exp2 ::= !(first, second; !Exp1);
+)SYNTAX";
+		ExpectError(
+			typeParser,
+			ruleParser,
+			astCode,
+			lexerCode,
+			syntaxCode,
+			{ ParserErrorType::PushedSwitchIsNotTested,L"Exp2",L"second"}
+		);
+	});
 }
