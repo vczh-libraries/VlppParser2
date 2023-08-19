@@ -37,6 +37,7 @@ namespace vl
 				{
 					List<RuleSymbol*>										pmRules;				// all rules that need to be rewritten
 					Dictionary<RuleSymbol*, GlrRule*>						skippedRules;			// skipped RuleSymbol -> GlrRule
+					SortedList<GlrClause*>									protectedSkippedClause;	// a simple use clause that belongs to one of the skipped rules
 					Dictionary<RuleSymbol*, GlrRule*>						originRules;			// rewritten RuleSymbol -> GlrRule ends with _LRI_Original, which is the same GlrRule object before rewritten
 					Dictionary<RuleSymbol*, GlrRule*>						lriRules;				// rewritten RuleSymbol -> GlrRule containing left_recursion_inject clauses
 					Dictionary<RuleSymbol*, GlrRule*>						fixedAstRules;			// RuleSymbol -> GlrRule relationship after rewritten
@@ -179,17 +180,22 @@ CollectSkippedTargets
 
 				void CollectSkippedTargets(const VisitorContext& vContext, RewritingContext& rContext, Ptr<GlrSyntaxFile> rewritten)
 				{
-					Group<RuleSymbol*, RuleSymbol*> candidates;
+					// when a rule
+					//   is not a prefix of a rewritten rule
+					//   has no direct prefix_merge clause
+					//   has only one clause which starts with prefix_merge clause
+					// skip rewriting it
+					// if the only clause of a skipped rule is a simple use clause referencing a rule to be rewritten
+					// the name it referenced should not be changed in RenamePrefix
+
+					List<RuleSymbol*> lastRemovedCandidates;
+					Dictionary<RuleSymbol*, GlrClause*> candidateProtectedClauses;
+
 					for (auto rule : rewritten->rules)
 					{
 						auto ruleSymbol = vContext.syntaxManager.Rules()[rule->name.value];
 						if (vContext.indirectPmClauses.Keys().Contains(ruleSymbol))
 						{
-							// when a rule has
-							//   no direct prefix_merge clause
-							//   only one clause which starts with prefix_merge clause
-							//   such clause is not a simple use clause, or a simple use clause referencing a skipped rule
-							// skip rewriting it
 							if (!vContext.directPmClauses.Keys().Contains(ruleSymbol))
 							{
 								GlrClause* uniqueQualifiedClause = nullptr;
@@ -219,18 +225,46 @@ CollectSkippedTargets
 
 								if (uniqueQualifiedClause)
 								{
-									vint index = vContext.simpleUseClauseToReferencedRules.Keys().IndexOf(uniqueQualifiedClause);
-									if (index == -1)
+									rContext.skippedRules.Add(ruleSymbol, rule.Obj());
+									if (vContext.simpleUseClauseToReferencedRules.Keys().Contains(uniqueQualifiedClause))
 									{
-										rContext.skippedRules.Add(ruleSymbol, rule.Obj());
-									}
-									else
-									{
-										candidates.Add(vContext.simpleUseClauseToReferencedRules.Values()[index], ruleSymbol);
+										candidateProtectedClauses.Add(ruleSymbol, uniqueQualifiedClause);
 									}
 								}
-							DO_NOT_SKIP:;
+								continue;
+							DO_NOT_SKIP:
+								lastRemovedCandidates.Add(ruleSymbol);
 							}
+						}
+					}
+
+					while (lastRemovedCandidates.Count() > 0)
+					{
+						List<RuleSymbol*> newRemovedCandidates;
+						for (auto ruleSymbol : lastRemovedCandidates)
+						{
+							vint indexStart = vContext.directStartRules.Keys().IndexOf(ruleSymbol);
+							if (indexStart != -1)
+							{
+								for (auto startRuleSymbol : vContext.directStartRules.GetByIndex(indexStart))
+								{
+									if (rContext.skippedRules.Keys().Contains(startRuleSymbol.ruleSymbol))
+									{
+										rContext.skippedRules.Remove(startRuleSymbol.ruleSymbol);
+										newRemovedCandidates.Add(startRuleSymbol.ruleSymbol);
+									}
+								}
+							}
+						}
+						CopyFrom(lastRemovedCandidates, newRemovedCandidates);
+					}
+
+					for (auto [ruleSymbol, rule] : rContext.skippedRules)
+					{
+						vint index = candidateProtectedClauses.Keys().IndexOf(ruleSymbol);
+						if (index != -1)
+						{
+							rContext.protectedSkippedClause.Add(candidateProtectedClauses.Values()[index]);
 						}
 					}
 				}
@@ -1329,6 +1363,11 @@ RenamePrefix
 						RenamePrefixVisitor visitor(rContext, ruleSymbol, syntaxManager);
 						for (auto clause : originRule->clauses)
 						{
+							if (rContext.protectedSkippedClause.Contains(clause.Obj()))
+							{
+								continue;
+							}
+
 							// !(a; b) should be moved from rule X_LRI_Original to left_recursion_inject clauses in rule X
 							if (auto reuseClause = clause.Cast<GlrReuseClause>())
 							{
