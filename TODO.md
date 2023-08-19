@@ -6,15 +6,9 @@
 
 ## Test Cases
 
-- Create test cases that only rewrite syntax without generating C++ code for:
-  - `DeductEmptySyntaxVisitor`
-  - Invalid combined clauses during expanding switches
-  - everything else that is needed
 - Code Coverage
   - Compiler
-    - Switch: add expand and compare test cases in `ParserGen`, not just try to cover everything in `Compiler`
-      - `ExpandClauseVisitor` in which are not covered
-        - Test if a clause is removed because some deep syntax node is invalid under the condition
+    - `RewriteSyntax_Switch` in which are not covered.
     - `ValidateDeducingPrefixMergeRuleVisitor`
       - `Visit(GlrSequenceSyntax*)` both empty
       - `Visit(GlrAlternativeSyntax*)` exactly one empty
