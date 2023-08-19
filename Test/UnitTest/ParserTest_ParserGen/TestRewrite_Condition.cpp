@@ -37,41 +37,43 @@ TEST_FILE
 	TypeParser typeParser;
 	RuleParser ruleParser;
 
-	TEST_CASE(L"Test in Push (single switch) false")
+	TEST_CATEGORY(L"Test in Push")
 	{
-		const wchar_t* syntaxCode =
+		TEST_CASE(L"single switch false")
+		{
+			const wchar_t* syntaxCode =
 LR"SYNTAX(
 switch s;
 Exp0 ::= !(!s; ?(s?: "a":id | !s?: "b":id)) as IdNode;
 )SYNTAX";
 
-		const wchar_t* rewrittenCode =
+			const wchar_t* rewrittenCode =
 LR"SYNTAX(
 Exp0 ::= "b":id as IdNode;
 )SYNTAX";
 
-		TestRewrite(typeParser, ruleParser, astCode, lexerCode, syntaxCode, rewrittenCode);
-	});
+			TestRewrite(typeParser, ruleParser, astCode, lexerCode, syntaxCode, rewrittenCode);
+		});
 
-	TEST_CASE(L"Test in Push (single switch) true")
-	{
-		const wchar_t* syntaxCode =
-LR"SYNTAX(
+		TEST_CASE(L"single switch true")
+		{
+			const wchar_t* syntaxCode =
+				LR"SYNTAX(
 switch s;
 Exp0 ::= !(s; ?(s?: "a":id | !s?: "b":id)) as IdNode;
 )SYNTAX";
 
-		const wchar_t* rewrittenCode =
+			const wchar_t* rewrittenCode =
 LR"SYNTAX(
 Exp0 ::= "a":id as IdNode;
 )SYNTAX";
 
-		TestRewrite(typeParser, ruleParser, astCode, lexerCode, syntaxCode, rewrittenCode);
-	});
+			TestRewrite(typeParser, ruleParser, astCode, lexerCode, syntaxCode, rewrittenCode);
+		});
 
-	TEST_CASE(L"Test in Push (and)")
-	{
-		const wchar_t* syntaxCode =
+		TEST_CASE(L"and")
+		{
+			const wchar_t* syntaxCode =
 LR"SYNTAX(
 switch s,t;
 Exp0 ::= !( s, t; ?(s&&t?: "a":id | s&&!t?: "b":id | !s&&t?: "c":id | !s&&!t?: "d":id)) as IdNode;
@@ -79,21 +81,21 @@ Exp1 ::= !( s,!t; ?(s&&t?: "a":id | s&&!t?: "b":id | !s&&t?: "c":id | !s&&!t?: "
 Exp2 ::= !(!s, t; ?(s&&t?: "a":id | s&&!t?: "b":id | !s&&t?: "c":id | !s&&!t?: "d":id)) as IdNode;
 Exp3 ::= !(!s,!t; ?(s&&t?: "a":id | s&&!t?: "b":id | !s&&t?: "c":id | !s&&!t?: "d":id)) as IdNode;
 )SYNTAX";
-	
-		const wchar_t* rewrittenCode =
+
+			const wchar_t* rewrittenCode =
 LR"SYNTAX(
 Exp0 ::= "a":id as IdNode;
 Exp1 ::= "b":id as IdNode;
 Exp2 ::= "c":id as IdNode;
 Exp3 ::= "d":id as IdNode;
 )SYNTAX";
-	
-		TestRewrite(typeParser, ruleParser, astCode, lexerCode, syntaxCode, rewrittenCode);
-	});
 
-	TEST_CASE(L"Test in Push (or)")
-	{
-		const wchar_t* syntaxCode =
+			TestRewrite(typeParser, ruleParser, astCode, lexerCode, syntaxCode, rewrittenCode);
+		});
+
+		TEST_CASE(L"or")
+		{
+			const wchar_t* syntaxCode =
 LR"SYNTAX(
 switch s,t;
 Exp0 ::= !( s, t; ?(s||t?: "a":id | s||!t?: "b":id | !s||t?: "c":id | !s||!t?: "d":id)) as IdNode;
@@ -101,21 +103,24 @@ Exp1 ::= !( s,!t; ?(s||t?: "a":id | s||!t?: "b":id | !s||t?: "c":id | !s||!t?: "
 Exp2 ::= !(!s, t; ?(s||t?: "a":id | s||!t?: "b":id | !s||t?: "c":id | !s||!t?: "d":id)) as IdNode;
 Exp3 ::= !(!s,!t; ?(s||t?: "a":id | s||!t?: "b":id | !s||t?: "c":id | !s||!t?: "d":id)) as IdNode;
 )SYNTAX";
-	
-		const wchar_t* rewrittenCode =
+
+			const wchar_t* rewrittenCode =
 LR"SYNTAX(
 Exp0 ::= "a":id | "b":id | "c":id as IdNode;
 Exp1 ::= "a":id | "b":id | "d":id as IdNode;
 Exp2 ::= "a":id | "c":id | "d":id as IdNode;
 Exp3 ::= "b":id | "c":id | "d":id as IdNode;
 )SYNTAX";
-	
-		TestRewrite(typeParser, ruleParser, astCode, lexerCode, syntaxCode, rewrittenCode);
+
+			TestRewrite(typeParser, ruleParser, astCode, lexerCode, syntaxCode, rewrittenCode);
+		});
 	});
 
-	TEST_CASE(L"Test called by Push (and)")
+	TEST_CATEGORY(L"Test called by Push")
 	{
-		const wchar_t* syntaxCode =
+		TEST_CASE(L"and")
+		{
+			const wchar_t* syntaxCode =
 LR"SYNTAX(
 switch s,t;
 Switches
@@ -129,8 +134,8 @@ Exp1 ::= !( s,!t; !Switches);
 Exp2 ::= !(!s, t; !Switches);
 Exp3 ::= !(!s,!t; !Switches);
 )SYNTAX";
-	
-		const wchar_t* rewrittenCode =
+
+			const wchar_t* rewrittenCode =
 LR"SYNTAX(
 Switches_SWITCH_0s_0t:IdNode ::= "d":id as IdNode;
 Switches_SWITCH_0s_1t:IdNode ::= "c":id as IdNode;
@@ -141,13 +146,13 @@ Exp1 ::= !Switches_SWITCH_1s_0t;
 Exp2 ::= !Switches_SWITCH_0s_1t;
 Exp3 ::= !Switches_SWITCH_0s_0t;
 )SYNTAX";
-	
-		TestRewrite(typeParser, ruleParser, astCode, lexerCode, syntaxCode, rewrittenCode);
-	});
 
-	TEST_CASE(L"Test called by Push (or)")
-	{
-		const wchar_t* syntaxCode =
+			TestRewrite(typeParser, ruleParser, astCode, lexerCode, syntaxCode, rewrittenCode);
+		});
+
+		TEST_CASE(L"or")
+		{
+			const wchar_t* syntaxCode =
 LR"SYNTAX(
 switch s,t;
 Switches
@@ -161,8 +166,8 @@ Exp1 ::= !( s,!t; !Switches);
 Exp2 ::= !(!s, t; !Switches);
 Exp3 ::= !(!s,!t; !Switches);
 )SYNTAX";
-	
-		const wchar_t* rewrittenCode =
+
+			const wchar_t* rewrittenCode =
 LR"SYNTAX(
 Switches_SWITCH_0s_0t:IdNode ::= "b":id as IdNode ::= "c":id as IdNode ::= "d":id as IdNode;
 Switches_SWITCH_0s_1t:IdNode ::= "a":id as IdNode ::= "c":id as IdNode ::= "d":id as IdNode;
@@ -173,13 +178,13 @@ Exp1 ::= !Switches_SWITCH_1s_0t;
 Exp2 ::= !Switches_SWITCH_0s_1t;
 Exp3 ::= !Switches_SWITCH_0s_0t;
 )SYNTAX";
-	
-		TestRewrite(typeParser, ruleParser, astCode, lexerCode, syntaxCode, rewrittenCode);
-	});
 
-	TEST_CASE(L"Test called by Push (partial)")
-	{
-		const wchar_t* syntaxCode =
+			TestRewrite(typeParser, ruleParser, astCode, lexerCode, syntaxCode, rewrittenCode);
+		});
+
+		TEST_CASE(L"partial")
+		{
+			const wchar_t* syntaxCode =
 LR"SYNTAX(
 switch s,t;
 SwitchesAnd
@@ -199,8 +204,8 @@ Exp1 ::= !( s,!t; !SwitchesAnd);
 Exp2 ::= !(!s, t; !SwitchesOr);
 Exp3 ::= !(!s,!t; !SwitchesOr);
 )SYNTAX";
-	
-		const wchar_t* rewrittenCode =
+
+			const wchar_t* rewrittenCode =
 LR"SYNTAX(
 SwitchesAnd_SWITCH_1s_0t:IdNode ::= "b":id as IdNode;
 SwitchesAnd_SWITCH_1s_1t:IdNode ::= "a":id as IdNode;
@@ -211,13 +216,16 @@ Exp1 ::= !SwitchesAnd_SWITCH_1s_0t;
 Exp2 ::= !SwitchesOr_SWITCH_0s_1t;
 Exp3 ::= !SwitchesOr_SWITCH_0s_0t;
 )SYNTAX";
-	
-		TestRewrite(typeParser, ruleParser, astCode, lexerCode, syntaxCode, rewrittenCode);
+
+			TestRewrite(typeParser, ruleParser, astCode, lexerCode, syntaxCode, rewrittenCode);
+		});
 	});
 
-	TEST_CASE(L"Test deduce to empty (seq)")
+	TEST_CATEGORY(L"Test deduce to cancel")
 	{
-		const wchar_t* syntaxCode =
+		TEST_CASE(L"seq")
+		{
+			const wchar_t* syntaxCode =
 LR"SYNTAX(
 switch s;
 Test
@@ -227,21 +235,21 @@ Test
 Exp0 ::= !( s; !Test);
 Exp1 ::= !(!s; !Test);
 )SYNTAX";
-	
-		const wchar_t* rewrittenCode =
+
+			const wchar_t* rewrittenCode =
 LR"SYNTAX(
 Test_SWITCH_0s : IdNode ::= "c" "d":id as IdNode;
 Test_SWITCH_1s : IdNode ::= "a":id "b" as IdNode;
 Exp0 ::= !Test_SWITCH_1s;
 Exp1 ::= !Test_SWITCH_0s;
 )SYNTAX";
-	
-		TestRewrite(typeParser, ruleParser, astCode, lexerCode, syntaxCode, rewrittenCode);
-	});
 
-	TEST_CASE(L"Test deduce to empty (alt)")
-	{
-		const wchar_t* syntaxCode =
+			TestRewrite(typeParser, ruleParser, astCode, lexerCode, syntaxCode, rewrittenCode);
+		});
+
+		TEST_CASE(L"alt")
+		{
+			const wchar_t* syntaxCode =
 LR"SYNTAX(
 switch s;
 Test
@@ -251,8 +259,8 @@ Test
 Exp0 ::= !( s; !Test);
 Exp1 ::= !(!s; !Test);
 )SYNTAX";
-	
-		const wchar_t* rewrittenCode =
+
+			const wchar_t* rewrittenCode =
 LR"SYNTAX(
 Test_SWITCH_0s : IdNode
   ::= "b":id as IdNode
@@ -265,13 +273,13 @@ Test_SWITCH_1s : IdNode
 Exp0 ::= !Test_SWITCH_1s;
 Exp1 ::= !Test_SWITCH_0s;
 )SYNTAX";
-	
-		TestRewrite(typeParser, ruleParser, astCode, lexerCode, syntaxCode, rewrittenCode);
-	});
 
-	TEST_CASE(L"Test deduce to empty (opt)")
-	{
-		const wchar_t* syntaxCode =
+			TestRewrite(typeParser, ruleParser, astCode, lexerCode, syntaxCode, rewrittenCode);
+		});
+
+		TEST_CASE(L"opt")
+		{
+			const wchar_t* syntaxCode =
 LR"SYNTAX(
 switch s;
 Test
@@ -281,8 +289,8 @@ Test
 Exp0 ::= !( s; !Test);
 Exp1 ::= !(!s; !Test);
 )SYNTAX";
-	
-		const wchar_t* rewrittenCode =
+
+			const wchar_t* rewrittenCode =
 LR"SYNTAX(
 Test_SWITCH_0s : IdNode
   ::= "b" as IdNode
@@ -295,13 +303,13 @@ Test_SWITCH_1s : IdNode
 Exp0 ::= !Test_SWITCH_1s;
 Exp1 ::= !Test_SWITCH_0s;
 )SYNTAX";
-	
-		TestRewrite(typeParser, ruleParser, astCode, lexerCode, syntaxCode, rewrittenCode);
-	});
 
-	TEST_CASE(L"Test deduce to empty (opt with priority)")
-	{
-		const wchar_t* syntaxCode =
+			TestRewrite(typeParser, ruleParser, astCode, lexerCode, syntaxCode, rewrittenCode);
+		});
+
+		TEST_CASE(L"opt with priority")
+		{
+			const wchar_t* syntaxCode =
 LR"SYNTAX(
 switch s;
 Test
@@ -311,8 +319,8 @@ Test
 Exp0 ::= !( s; !Test);
 Exp1 ::= !(!s; !Test);
 )SYNTAX";
-	
-		const wchar_t* rewrittenCode =
+
+			const wchar_t* rewrittenCode =
 LR"SYNTAX(
 Test_SWITCH_0s : IdNode
   ::= ("a" ["b"]) "b" as IdNode
@@ -325,13 +333,13 @@ Test_SWITCH_1s : IdNode
 Exp0 ::= !Test_SWITCH_1s;
 Exp1 ::= !Test_SWITCH_0s;
 )SYNTAX";
-	
-		TestRewrite(typeParser, ruleParser, astCode, lexerCode, syntaxCode, rewrittenCode);
-	});
 
-	TEST_CASE(L"Test deduce to empty (?loop)")
-	{
-		const wchar_t* syntaxCode =
+			TestRewrite(typeParser, ruleParser, astCode, lexerCode, syntaxCode, rewrittenCode);
+		});
+
+		TEST_CASE(L"?loop")
+		{
+			const wchar_t* syntaxCode =
 LR"SYNTAX(
 switch s;
 Test
@@ -340,8 +348,8 @@ Test
 Exp0 ::= !( s; !Test);
 Exp1 ::= !(!s; !Test);
 )SYNTAX";
-	
-		const wchar_t* rewrittenCode =
+
+			const wchar_t* rewrittenCode =
 LR"SYNTAX(
 Test_SWITCH_0s : IdNode
   ::= "b":id as IdNode
@@ -352,13 +360,13 @@ Test_SWITCH_1s : IdNode
 Exp0 ::= !Test_SWITCH_1s;
 Exp1 ::= !Test_SWITCH_0s;
 )SYNTAX";
-	
-		TestRewrite(typeParser, ruleParser, astCode, lexerCode, syntaxCode, rewrittenCode);
-	});
 
-	TEST_CASE(L"Test deduce to empty (?loop with separator)")
-	{
-		const wchar_t* syntaxCode =
+			TestRewrite(typeParser, ruleParser, astCode, lexerCode, syntaxCode, rewrittenCode);
+		});
+
+		TEST_CASE(L"?loop with separator")
+		{
+			const wchar_t* syntaxCode =
 LR"SYNTAX(
 switch s;
 Test
@@ -367,8 +375,8 @@ Test
 Exp0 ::= !( s; !Test);
 Exp1 ::= !(!s; !Test);
 )SYNTAX";
-	
-		const wchar_t* rewrittenCode =
+
+			const wchar_t* rewrittenCode =
 LR"SYNTAX(
 Test_SWITCH_0s : IdNode
   ::= {"b"} "b":id as IdNode
@@ -379,13 +387,13 @@ Test_SWITCH_1s : IdNode
 Exp0 ::= !Test_SWITCH_1s;
 Exp1 ::= !Test_SWITCH_0s;
 )SYNTAX";
-	
-		TestRewrite(typeParser, ruleParser, astCode, lexerCode, syntaxCode, rewrittenCode);
-	});
 
-	TEST_CASE(L"Test deduce to empty (loop with ?separator)")
-	{
-		const wchar_t* syntaxCode =
+			TestRewrite(typeParser, ruleParser, astCode, lexerCode, syntaxCode, rewrittenCode);
+		});
+
+		TEST_CASE(L"loop with ?separator")
+		{
+			const wchar_t* syntaxCode =
 LR"SYNTAX(
 switch s;
 Test
@@ -394,8 +402,8 @@ Test
 Exp0 ::= !( s; !Test);
 Exp1 ::= !(!s; !Test);
 )SYNTAX";
-	
-		const wchar_t* rewrittenCode =
+
+			const wchar_t* rewrittenCode =
 LR"SYNTAX(
 Test_SWITCH_0s : IdNode
   ::= {"a"} "b":id as IdNode
@@ -407,12 +415,12 @@ Exp0 ::= !Test_SWITCH_1s;
 Exp1 ::= !Test_SWITCH_0s;
 )SYNTAX";
 	
-		TestRewrite(typeParser, ruleParser, astCode, lexerCode, syntaxCode, rewrittenCode);
-	});
+			TestRewrite(typeParser, ruleParser, astCode, lexerCode, syntaxCode, rewrittenCode);
+		});
 
-	TEST_CASE(L"Test deduce to empty (?loop with ?separator)")
-	{
-		const wchar_t* syntaxCode =
+		TEST_CASE(L"?loop with ?separator")
+		{
+			const wchar_t* syntaxCode =
 LR"SYNTAX(
 switch s;
 Test
@@ -421,8 +429,8 @@ Test
 Exp0 ::= !( s; !Test);
 Exp1 ::= !(!s; !Test);
 )SYNTAX";
-	
-		const wchar_t* rewrittenCode =
+
+			const wchar_t* rewrittenCode =
 LR"SYNTAX(
 Test_SWITCH_0s : IdNode
   ::= "b":id as IdNode
@@ -433,7 +441,8 @@ Test_SWITCH_1s : IdNode
 Exp0 ::= !Test_SWITCH_1s;
 Exp1 ::= !Test_SWITCH_0s;
 )SYNTAX";
-	
-		TestRewrite(typeParser, ruleParser, astCode, lexerCode, syntaxCode, rewrittenCode);
+
+			TestRewrite(typeParser, ruleParser, astCode, lexerCode, syntaxCode, rewrittenCode);
+		});
 	});
 }
