@@ -239,10 +239,15 @@ Exp3 ::= !(!s,!t; !Switches);
 
 			const wchar_t* rewrittenCode =
 LR"SYNTAX(
-Switches_SWITCH_COMBINED_1s : IdNode ::= "c":id as IdNode ;
-Switches_SWITCH_COMBINED_1t : IdNode ::= "d":id as IdNode ;
-Switches_SWITCH_0s_0t : IdNode ::= !Switches_SWITCH_COMBINED_1t ;
-Switches_SWITCH_0s_1t : IdNode ::= !Switches_SWITCH_COMBINED_1t ;
+Switches_SWITCH_COMBINED_1s : IdNode ::= "c":id as IdNode;
+Switches_SWITCH_COMBINED_1t : IdNode ::= "d":id as IdNode;
+
+Switches_SWITCH_0s_0t : IdNode
+  ::= !Switches_SWITCH_COMBINED_1t
+  ;
+Switches_SWITCH_0s_1t : IdNode
+  ::= !Switches_SWITCH_COMBINED_1t
+  ;
 Switches_SWITCH_1s_0t : IdNode
   ::= "b":id as IdNode
   ::= !Switches_SWITCH_COMBINED_1s
@@ -252,6 +257,7 @@ Switches_SWITCH_1s_1t : IdNode
   ::= !Switches_SWITCH_COMBINED_1s
   ::= !Switches_SWITCH_COMBINED_1t
   ;
+
 Exp0 ::= !Switches_SWITCH_1s_1t;
 Exp1 ::= !Switches_SWITCH_1s_0t;
 Exp2 ::= !Switches_SWITCH_0s_1t;
