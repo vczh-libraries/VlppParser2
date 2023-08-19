@@ -20,8 +20,6 @@
     - `ValidateDeducingPrefixMergeRuleVisitor`
       - `Visit(GlrSequenceSyntax*)` both empty
       - `Visit(GlrAlternativeSyntax*)` exactly one empty
-    - `ValidateStructureRelationshipVisitor`
-      - `LinkPair::CutAfter` last two else
     - `ValidateTypeVisitor::Visit(GlrReuseClause*)` visit assignment
     - TODO(s) in `RewriteRules_GenerateAffectedLRIClausesSubgroup`.
     - TODO(s) in `CalculateObjectFirstInstruction` and `InjectFirstInstruction`.
