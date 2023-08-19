@@ -276,6 +276,10 @@ Exp0 ::= !( s, t; !Switches);
 Exp1 ::= !( s,!t; !Switches);
 Exp2 ::= !(!s, t; !Switches);
 Exp3 ::= !(!s,!t; !Switches);
+Exp0_2 ::= !( s, t; !Switches);
+Exp1_2 ::= !( s,!t; !Switches);
+Exp2_2 ::= !(!s, t; !Switches);
+Exp3_2 ::= !(!s,!t; !Switches);
 )SYNTAX";
 
 			const wchar_t* rewrittenCode =
@@ -307,6 +311,11 @@ Exp0 ::= !Switches_SWITCH_1s_1t;
 Exp1 ::= !Switches_SWITCH_1s_0t;
 Exp2 ::= !Switches_SWITCH_0s_1t;
 Exp3 ::= !Switches_SWITCH_0s_0t;
+
+Exp0_2 ::= !Switches_SWITCH_1s_1t;
+Exp1_2 ::= !Switches_SWITCH_1s_0t;
+Exp2_2 ::= !Switches_SWITCH_0s_1t;
+Exp3_2 ::= !Switches_SWITCH_0s_0t;
 )SYNTAX";
 
 			TestRewrite(typeParser, ruleParser, astCode, lexerCode, syntaxCode, rewrittenCode);
