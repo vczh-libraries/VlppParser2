@@ -144,4 +144,36 @@ Exp3 ::= !Switches_SWITCH_0s_0t;
 	
 		TestRewrite(typeParser, ruleParser, astCode, lexerCode, syntaxCode, rewrittenCode);
 	});
+
+	TEST_CASE(L"Test calls Push (or)")
+	{
+		const wchar_t* syntaxCode =
+LR"SYNTAX(
+switch s,t;
+Switches
+  ::=  ?( s|| t?: "a":id) as IdNode
+  ::=  ?( s||!t?: "b":id) as IdNode
+  ::=  ?(!s|| t?: "c":id) as IdNode
+  ::=  ?(!s||!t?: "d":id) as IdNode
+  ;
+Exp0 ::= !( s, t; !Switches);
+Exp1 ::= !( s,!t; !Switches);
+Exp2 ::= !(!s, t; !Switches);
+Exp3 ::= !(!s,!t; !Switches);
+)SYNTAX";
+	
+		const wchar_t* rewrittenCode =
+LR"SYNTAX(
+Switches_SWITCH_0s_0t:IdNode ::= "b":id as IdNode ::= "c":id as IdNode ::= "d":id as IdNode;
+Switches_SWITCH_0s_1t:IdNode ::= "a":id as IdNode ::= "c":id as IdNode ::= "d":id as IdNode;
+Switches_SWITCH_1s_0t:IdNode ::= "a":id as IdNode ::= "b":id as IdNode ::= "d":id as IdNode;
+Switches_SWITCH_1s_1t:IdNode ::= "a":id as IdNode ::= "b":id as IdNode ::= "c":id as IdNode;
+Exp0 ::= !Switches_SWITCH_1s_1t;
+Exp1 ::= !Switches_SWITCH_1s_0t;
+Exp2 ::= !Switches_SWITCH_0s_1t;
+Exp3 ::= !Switches_SWITCH_0s_0t;
+)SYNTAX";
+	
+		TestRewrite(typeParser, ruleParser, astCode, lexerCode, syntaxCode, rewrittenCode);
+	});
 }
