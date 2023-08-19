@@ -214,4 +214,28 @@ Exp3 ::= !SwitchesOr_SWITCH_0s_0t;
 	
 		TestRewrite(typeParser, ruleParser, astCode, lexerCode, syntaxCode, rewrittenCode);
 	});
+
+	TEST_CASE(L"Test deduce to empty (seq)")
+	{
+		const wchar_t* syntaxCode =
+LR"SYNTAX(
+switch s;
+Test
+  ::= ?(s:"a":id) "b" as IdNode
+  ::= "c" ?(!s:"d":id) as IdNode
+  ;
+Exp0 ::= !( s; !Test);
+Exp1 ::= !(!s; !Test);
+)SYNTAX";
+	
+		const wchar_t* rewrittenCode =
+LR"SYNTAX(
+Test_SWITCH_0s : IdNode ::= "c" "d":id as IdNode;
+Test_SWITCH_1s : IdNode ::= "a":id "b" as IdNode;
+Exp0 ::= !Test_SWITCH_1s;
+Exp1 ::= !Test_SWITCH_0s;
+)SYNTAX";
+	
+		TestRewrite(typeParser, ruleParser, astCode, lexerCode, syntaxCode, rewrittenCode);
+	});
 }
