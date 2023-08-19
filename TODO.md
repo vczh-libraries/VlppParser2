@@ -9,9 +9,9 @@
 - Code Coverage
   - Compiler
     - TODO(s) in `RewriteRules_GenerateAffectedLRIClausesSubgroup`.
-    - TODO(s) in `CalculateObjectFirstInstruction` and `InjectFirstInstruction`.
     - `FixPrefixMergeClauses` in `if (ruleSymbol->isPartial)`.
   - Runtime
+    - TODO(s) in `CalculateObjectFirstInstruction` and `InjectFirstInstruction`.
     - `TraceManager::TryMergeSurvivingTraces` in `// if trace is a merge trace`.
     - `TraceManager::BuildStepTree` in which are not covered.
     - `TraceManager::AddTraceToCollection` in `else if (collection == &Trace::predecessors)`
