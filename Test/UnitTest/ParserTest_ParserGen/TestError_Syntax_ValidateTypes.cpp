@@ -288,7 +288,7 @@ Exp0
 			);
 	});
 
-	TEST_CASE(L"EnumItemMismatchedToField")
+	TEST_CASE(L"EnumItemMismatchedToField 1")
 	{
 		const wchar_t* syntaxCode =
 LR"SYNTAX(
@@ -303,6 +303,45 @@ Exp0
 			lexerCode,
 			syntaxCode,
 			{ ParserErrorType::EnumItemMismatchedToField,L"Exp0",L"BinaryExpr",L"op",L"unknown" }
+			);
+	});
+
+	TEST_CASE(L"EnumItemMismatchedToField 2")
+	{
+		const wchar_t* syntaxCode =
+LR"SYNTAX(
+Exp0
+  ::= "+" as partial BinaryExpr {op = unknown}
+  ;
+)SYNTAX";
+		ExpectError(
+			typeParser,
+			ruleParser,
+			astCode,
+			lexerCode,
+			syntaxCode,
+			{ ParserErrorType::EnumItemMismatchedToField,L"Exp0",L"BinaryExpr",L"op",L"unknown" }
+			);
+	});
+
+	TEST_CASE(L"EnumItemMismatchedToField 3")
+	{
+		const wchar_t* syntaxCode =
+LR"SYNTAX(
+Exp0
+  ::= "+" as BinaryExpr
+  ;
+Exp1
+  ::= !Exp0 {op = unknown}
+  ;
+)SYNTAX";
+		ExpectError(
+			typeParser,
+			ruleParser,
+			astCode,
+			lexerCode,
+			syntaxCode,
+			{ ParserErrorType::EnumItemMismatchedToField,L"Exp1",L"BinaryExpr",L"op",L"unknown" }
 			);
 	});
 
