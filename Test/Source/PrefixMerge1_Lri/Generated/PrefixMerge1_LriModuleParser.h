@@ -17,14 +17,14 @@ namespace prefixmerge1_lri
 		_Name = 0,
 		_PrimitiveShared = 6,
 		_PrimitiveTypeOnly = 9,
-		_PrimitiveExprOnly = 15,
-		_LongType = 20,
-		_Expr0 = 34,
-		_Expr1 = 39,
-		_Expr = 47,
-		Module = 53,
-		ExprModule = 62,
-		TypeModule = 65,
+		_PrimitiveExprOnly = 14,
+		_LongType = 19,
+		_Expr0 = 33,
+		_Expr1 = 38,
+		_Expr = 46,
+		Module = 52,
+		ExprModule = 61,
+		TypeModule = 64,
 	};
 
 	const wchar_t* ModuleParserRuleName(vl::vint index);

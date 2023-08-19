@@ -1,11 +1,11 @@
 ﻿================ EXECUTION STEPS ================
-[0]: 0@0 - 8@1
+[0]: 0@0 - 7@1
 
 ==================== TRACES =====================
 
 +-------------------------+
 | [0]: <Start>            |
-| [65][TypeModule] BEGIN  |
+| [64][TypeModule] BEGIN  |
 | [AST-INSTRUCTIONS]:     |
 | [SUCCESORS 1-1]: [1]    |
 +-------------------------+
@@ -14,104 +14,104 @@
  +
  |
 [0]
-++===============================================================================++
-|| [1]: {CONST} const                                                            ||
-|| [11][_PrimitiveTypeOnly]< "const" @ _PrimitiveShared >                        ||
-|| [AST-INSTRUCTIONS]:                                                           ||
-||   - DelayFieldAssignment()                                                    ||
-||   - DelayFieldAssignment()                                                    ||
-||   - BeginObject(ConstType)                                                    ||
-|| [RETURN STACK]:                                                               ||
-||   [1][8][0]: _PrimitiveTypeOnly -> [32][_LongType]<< !_PrimitiveTypeOnly @ >> ||
-||   [0][23][0]: _LongType -> [67][TypeModule]<< !_LongType @ >>                 ||
-|| [PREDECESSORS 0-0]: [0]                                                       ||
-|| [SUCCESORS 3-3]: [3]                                                          ||
-++===============================================================================++
+++=================================================================================++
+|| [1]: {CONST} const                                                              ||
+|| [13][_PrimitiveTypeOnly]< "const" @ ( _PrimitiveShared | _PrimitiveTypeOnly ) > ||
+|| [AST-INSTRUCTIONS]:                                                             ||
+||   - DelayFieldAssignment()                                                      ||
+||   - DelayFieldAssignment()                                                      ||
+||   - BeginObject(ConstType)                                                      ||
+|| [RETURN STACK]:                                                                 ||
+||   [1][8][0]: _PrimitiveTypeOnly -> [31][_LongType]<< !_PrimitiveTypeOnly @ >>   ||
+||   [0][23][0]: _LongType -> [66][TypeModule]<< !_LongType @ >>                   ||
+|| [PREDECESSORS 0-0]: [0]                                                         ||
+|| [SUCCESORS 2-2]: [2]                                                            ||
+++=================================================================================++
 [0]
  |
  +
  |
 [0]
-++=========================================================================================++
-|| [3]: {ID} A                                                                             ||
-|| [2][_Name]< ID @ >                                                                      ||
-|| [AST-INSTRUCTIONS]:                                                                     ||
-||   - DelayFieldAssignment()                                                              ||
-||   - BeginObject(Name)                                                                   ||
-||   + Token()                                                                             ||
-||   + Field(Name::name)                                                                   ||
-|| [RETURN STACK]:                                                                         ||
-||   [5][0][1]: _Name -> [8][_PrimitiveShared]<< !_Name @ >>                               ||
-||   [4][1][1]: _PrimitiveShared -> [13][_PrimitiveTypeOnly]< "const" _PrimitiveShared @ > ||
-||   [1][8][0]: _PrimitiveTypeOnly -> [32][_LongType]<< !_PrimitiveTypeOnly @ >>           ||
-||   [0][23][0]: _LongType -> [67][TypeModule]<< !_LongType @ >>                           ||
-|| [PREDECESSORS 1-1]: [1]                                                                 ||
-|| [SUCCESORS 4-4]: [4]                                                                    ||
-++=========================================================================================++
+++==================================================================================================================++
+|| [2]: {ID} A                                                                                                      ||
+|| [2][_Name]< ID @ >                                                                                               ||
+|| [AST-INSTRUCTIONS]:                                                                                              ||
+||   - DelayFieldAssignment()                                                                                       ||
+||   - BeginObject(Name)                                                                                            ||
+||   + Token()                                                                                                      ||
+||   + Field(Name::name)                                                                                            ||
+|| [RETURN STACK]:                                                                                                  ||
+||   [3][0][1]: _Name -> [8][_PrimitiveShared]<< !_Name @ >>                                                        ||
+||   [2][2][1]: _PrimitiveShared -> [11][_PrimitiveTypeOnly]< "const" ( _PrimitiveShared @ | _PrimitiveTypeOnly ) > ||
+||   [1][8][0]: _PrimitiveTypeOnly -> [31][_LongType]<< !_PrimitiveTypeOnly @ >>                                    ||
+||   [0][23][0]: _LongType -> [66][TypeModule]<< !_LongType @ >>                                                    ||
+|| [PREDECESSORS 1-1]: [1]                                                                                          ||
+|| [SUCCESORS 3-3]: [3]                                                                                             ||
+++==================================================================================================================++
 |
 +
 |
-+-----------------------------------------------------------------------------------------+
-| [4]: <Ending>                                                                           |
-| [8][_PrimitiveShared]<< !_Name @ >>                                                     |
-| [AST-INSTRUCTIONS]:                                                                     |
-|   - EndObject()                                                                         |
-| [RETURN STACK]:                                                                         |
-|   [4][1][1]: _PrimitiveShared -> [13][_PrimitiveTypeOnly]< "const" _PrimitiveShared @ > |
-|   [1][8][0]: _PrimitiveTypeOnly -> [32][_LongType]<< !_PrimitiveTypeOnly @ >>           |
-|   [0][23][0]: _LongType -> [67][TypeModule]<< !_LongType @ >>                           |
-| [PREDECESSORS 3-3]: [3]                                                                 |
-| [SUCCESORS 5-5]: [5]                                                                    |
-+-----------------------------------------------------------------------------------------+
++------------------------------------------------------------------------------------------------------------------+
+| [3]: <Ending>                                                                                                    |
+| [8][_PrimitiveShared]<< !_Name @ >>                                                                              |
+| [AST-INSTRUCTIONS]:                                                                                              |
+|   - EndObject()                                                                                                  |
+| [RETURN STACK]:                                                                                                  |
+|   [2][2][1]: _PrimitiveShared -> [11][_PrimitiveTypeOnly]< "const" ( _PrimitiveShared @ | _PrimitiveTypeOnly ) > |
+|   [1][8][0]: _PrimitiveTypeOnly -> [31][_LongType]<< !_PrimitiveTypeOnly @ >>                                    |
+|   [0][23][0]: _LongType -> [66][TypeModule]<< !_LongType @ >>                                                    |
+| [PREDECESSORS 2-2]: [2]                                                                                          |
+| [SUCCESORS 4-4]: [4]                                                                                             |
++------------------------------------------------------------------------------------------------------------------+
 |
 +
 |
-+-------------------------------------------------------------------------------+
-| [5]: <Ending>                                                                 |
-| [13][_PrimitiveTypeOnly]< "const" _PrimitiveShared @ >                        |
-| [AST-INSTRUCTIONS]:                                                           |
-|   - ReopenObject()                                                            |
-|   - EndObject()                                                               |
-|   > Field(ConstType::type)                                                    |
-| [RETURN STACK]:                                                               |
-|   [1][8][0]: _PrimitiveTypeOnly -> [32][_LongType]<< !_PrimitiveTypeOnly @ >> |
-|   [0][23][0]: _LongType -> [67][TypeModule]<< !_LongType @ >>                 |
-| [PREDECESSORS 4-4]: [4]                                                       |
-| [SUCCESORS 6-6]: [6]                                                          |
-+-------------------------------------------------------------------------------+
++---------------------------------------------------------------------------------+
+| [4]: <Ending>                                                                   |
+| [11][_PrimitiveTypeOnly]< "const" ( _PrimitiveShared @ | _PrimitiveTypeOnly ) > |
+| [AST-INSTRUCTIONS]:                                                             |
+|   - ReopenObject()                                                              |
+|   - EndObject()                                                                 |
+|   > Field(ConstType::type)                                                      |
+| [RETURN STACK]:                                                                 |
+|   [1][8][0]: _PrimitiveTypeOnly -> [31][_LongType]<< !_PrimitiveTypeOnly @ >>   |
+|   [0][23][0]: _LongType -> [66][TypeModule]<< !_LongType @ >>                   |
+| [PREDECESSORS 3-3]: [3]                                                         |
+| [SUCCESORS 5-5]: [5]                                                            |
++---------------------------------------------------------------------------------+
 |
 +
 |
 +---------------------------------------------------------------+
-| [6]: <Ending>                                                 |
-| [32][_LongType]<< !_PrimitiveTypeOnly @ >>                    |
+| [5]: <Ending>                                                 |
+| [31][_LongType]<< !_PrimitiveTypeOnly @ >>                    |
 | [AST-INSTRUCTIONS]:                                           |
 |   - EndObject()                                               |
 |   > ReopenObject()                                            |
 | [RETURN STACK]:                                               |
-|   [0][23][0]: _LongType -> [67][TypeModule]<< !_LongType @ >> |
-| [PREDECESSORS 5-5]: [5]                                       |
-| [SUCCESORS 7-7]: [7]                                          |
+|   [0][23][0]: _LongType -> [66][TypeModule]<< !_LongType @ >> |
+| [PREDECESSORS 4-4]: [4]                                       |
+| [SUCCESORS 6-6]: [6]                                          |
 +---------------------------------------------------------------+
 |
 +
 |
 +------------------------------------+
-| [7]: <Ending>                      |
-| [67][TypeModule]<< !_LongType @ >> |
+| [6]: <Ending>                      |
+| [66][TypeModule]<< !_LongType @ >> |
 | [AST-INSTRUCTIONS]:                |
 |   - EndObject()                    |
-| [PREDECESSORS 6-6]: [6]            |
-| [SUCCESORS 8-8]: [8]               |
+| [PREDECESSORS 5-5]: [5]            |
+| [SUCCESORS 7-7]: [7]               |
 +------------------------------------+
 |
 +
 |
 +-------------------------------+
-| [8]: <Ending>                 |
-| [66][TypeModule] END [ENDING] |
+| [7]: <Ending>                 |
+| [65][TypeModule] END [ENDING] |
 | [AST-INSTRUCTIONS]:           |
 |   - ReopenObject()            |
 |   - EndObject()               |
-| [PREDECESSORS 7-7]: [7]       |
+| [PREDECESSORS 6-6]: [6]       |
 +-------------------------------+

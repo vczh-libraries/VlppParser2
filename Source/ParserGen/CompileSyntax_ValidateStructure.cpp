@@ -344,107 +344,12 @@ ValidateStructureRelationshipVisitor
 				, protected virtual GlrSyntax::IVisitor
 				, protected virtual GlrClause::IVisitor
 			{
-				struct Link
-				{
-					GlrRefSyntax*			ref = nullptr;
-					Link*					prev = nullptr;
-					Link*					next = nullptr;
-
-					Link(GlrRefSyntax* _ref) : ref(_ref) {}
-				};
-
-				struct LinkPair
-				{
-					Link*					first = nullptr;
-					Link*					last = nullptr;
-
-					void EnsureComplete()
-					{
-						CHECK_ERROR(!first || !first->prev, L"Illegal Operation!");
-						CHECK_ERROR(!last || !last->next, L"Illegal Operation!");
-					}
-
-					LinkPair Append(Link* link)
-					{
-						EnsureComplete();
-						if (first)
-						{
-							link->prev = last;
-							last->next = link;
-							return { first,link };
-						}
-						else
-						{
-							return { link,link };
-						}
-					}
-
-					LinkPair Connect(LinkPair pair)
-					{
-						EnsureComplete();
-						pair.EnsureComplete();
-						if (!first && !pair.first)
-						{
-							return {};
-						}
-						else if (!first)
-						{
-							return pair;
-						}
-						else if (!pair.first)
-						{
-							return *this;
-						}
-						else
-						{
-							last->next = pair.first;
-							pair.first->prev = last;
-							return { first,pair.last };
-						}
-					}
-
-					void CutAfter(Link* link, LinkPair& l1, LinkPair& l2)
-					{
-						EnsureComplete();
-						if (!first)
-						{
-							CHECK_ERROR(!link, L"Illegal Operation!");
-							l1 = {};
-							l2 = {};
-						}
-						else if (!link)
-						{
-							l2 = *this;
-							l1 = {};
-						}
-						else if (link == last)
-						{
-							l1 = *this;
-							l2 = {};
-						}
-						else
-						{
-							auto a = first;
-							auto b = last;
-							l1 = { a,link };
-							l2 = { link->next,b };
-							l1.last->next = nullptr;
-							l2.first->prev = nullptr;
-						}
-					}
-
-					operator bool() const
-					{
-						return last;
-					}
-				};
 			protected:
 				VisitorContext&				context;
 				RuleSymbol*					ruleSymbol;
 				GlrClause*					clause = nullptr;
+				Dictionary<WString, vint>	fieldCounters;
 
-				LinkPair					existingFields;
-				LinkPair					existingPartials;
 			public:
 				ValidateStructureRelationshipVisitor(
 					VisitorContext& _context,
@@ -455,34 +360,25 @@ ValidateStructureRelationshipVisitor
 				{
 				}
 
-				~ValidateStructureRelationshipVisitor()
-				{
-					{
-						auto c = existingFields.first;
-						while (c)
-						{
-							auto n = c->next;
-							delete c;
-							c = n;
-						}
-					}
-					{
-						auto c = existingPartials.first;
-						while (c)
-						{
-							auto n = c->next;
-							delete c;
-							c = n;
-						}
-					}
-				}
-
 				void ValidateClause(Ptr<GlrClause> clause)
 				{
 					clause->Accept(this);
 				}
 
 			protected:
+
+				void AddFieldCounter(const WString& name, vint counter)
+				{
+					vint index = fieldCounters.Keys().IndexOf(name);
+					if (index == -1)
+					{
+						fieldCounters.Add(name, counter);
+					}
+					else
+					{
+						const_cast<List<vint>&>(fieldCounters.Values())[index] += counter;
+					}
+				}
 
 				////////////////////////////////////////////////////////////////////////
 				// GlrSyntax::IVisitor
@@ -492,20 +388,7 @@ ValidateStructureRelationshipVisitor
 				{
 					if (node->field)
 					{
-						existingFields = existingFields.Append(new Link(node));
-					}
-
-					if (node->refType == GlrRefType::Id)
-					{
-						vint ruleIndex = context.syntaxManager.Rules().Keys().IndexOf(node->literal.value);
-						if (ruleIndex != -1)
-						{
-							auto fieldRule = context.syntaxManager.Rules().Values()[ruleIndex];
-							if (fieldRule->isPartial)
-							{
-								existingPartials = existingPartials.Append(new Link(node));
-							}
-						}
+						AddFieldCounter(node->field.value, 1);
 					}
 				}
 
@@ -535,19 +418,61 @@ ValidateStructureRelationshipVisitor
 
 				void Visit(GlrAlternativeSyntax* node) override
 				{
-					auto currentFields = existingFields;
-					auto currentPartials = existingPartials;
+					Dictionary<WString, vint> currentCounters(std::move(fieldCounters));
 
 					node->first->Accept(this);
-
-					LinkPair firstFields, firstPartials;
-					existingFields.CutAfter(currentFields.last, existingFields, firstFields);
-					existingPartials.CutAfter(currentPartials.last, existingPartials, firstPartials);
+					Dictionary<WString, vint> firstCounters(std::move(fieldCounters));
 
 					node->second->Accept(this);
+					Dictionary<WString, vint> secondCounters(std::move(fieldCounters));
 
-					existingFields = existingFields.Connect(firstFields);
-					existingPartials = existingPartials.Connect(firstPartials);
+					vint firstIndex = 0;
+					vint secondIndex = 0;
+					fieldCounters = std::move(currentCounters);
+					while (true)
+					{
+						bool firstAvailable = firstIndex < firstCounters.Count();
+						bool secondAvailable = secondIndex < secondCounters.Count();
+
+						if (firstAvailable && secondAvailable)
+						{
+							auto firstKey = firstCounters.Keys()[firstIndex];
+							auto secondKey = secondCounters.Keys()[secondIndex];
+							auto compare = firstKey <=> secondKey;
+
+							if (compare == std::strong_ordering::less)
+							{
+								secondAvailable = false;
+							}
+							else if (compare == std::strong_ordering::greater)
+							{
+								firstAvailable = false;
+							}
+						}
+
+						if (firstAvailable && secondAvailable)
+						{
+							vint firstValue = firstCounters.Values()[firstIndex];
+							vint secondValue = secondCounters.Values()[secondIndex];
+							AddFieldCounter(firstCounters.Keys()[firstIndex], (firstValue > secondValue ? firstValue : secondValue));
+							firstIndex++;
+							secondIndex++;
+						}
+						else if (firstAvailable)
+						{
+							AddFieldCounter(firstCounters.Keys()[firstIndex], firstCounters.Values()[firstIndex]);
+							firstIndex++;
+						}
+						else if (secondAvailable)
+						{
+							AddFieldCounter(secondCounters.Keys()[secondIndex], secondCounters.Values()[secondIndex]);
+							firstIndex++;
+						}
+						else
+						{
+							break;
+						}
+					}
 				}
 
 				void Visit(GlrPushConditionSyntax* node) override
@@ -566,25 +491,8 @@ ValidateStructureRelationshipVisitor
 
 				void CheckAfterClause(GlrClause* node)
 				{
-					Dictionary<WString, vint> counters;
-					auto c = existingFields.first;
-					while (c)
-					{
-						auto fieldName = c->ref->field.value;
-						vint index = counters.Keys().IndexOf(fieldName);
-						if (index == -1)
-						{
-							counters.Add(fieldName, 1);
-						}
-						else
-						{
-							counters.Set(fieldName, counters.Values()[index] + 1);
-						}
-						c = c->next;
-					}
-
 					auto clauseType = context.clauseTypes[clause];
-					for (auto [key, value] : counters)
+					for (auto [key, value] : fieldCounters)
 					{
 						auto prop = FindPropSymbol(clauseType, key);
 						if (prop->propType != AstPropType::Array && value > 1)
