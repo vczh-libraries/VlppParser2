@@ -113,7 +113,7 @@ Exp3 ::= "b":id | "c":id | "d":id as IdNode;
 		TestRewrite(typeParser, ruleParser, astCode, lexerCode, syntaxCode, rewrittenCode);
 	});
 
-	TEST_CASE(L"Test calls Push (and)")
+	TEST_CASE(L"Test called by Push (and)")
 	{
 		const wchar_t* syntaxCode =
 LR"SYNTAX(
@@ -145,7 +145,7 @@ Exp3 ::= !Switches_SWITCH_0s_0t;
 		TestRewrite(typeParser, ruleParser, astCode, lexerCode, syntaxCode, rewrittenCode);
 	});
 
-	TEST_CASE(L"Test calls Push (or)")
+	TEST_CASE(L"Test called by Push (or)")
 	{
 		const wchar_t* syntaxCode =
 LR"SYNTAX(
