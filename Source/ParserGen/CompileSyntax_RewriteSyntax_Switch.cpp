@@ -333,7 +333,8 @@ ExpandClauseVisitor
 						name.value += L"_SWITCH";
 						for (auto&& switchName : switchNames)
 						{
-							auto value = workingSwitchValues->Get(switchName);
+							vint index = workingSwitchValues->Keys().IndexOf(switchName);
+							auto value = index == -1 ? sContext.switches[switchName].key : workingSwitchValues->Values()[index];
 							name.value += (value ? L"_1" : L"_0") + switchName;
 						}
 					}

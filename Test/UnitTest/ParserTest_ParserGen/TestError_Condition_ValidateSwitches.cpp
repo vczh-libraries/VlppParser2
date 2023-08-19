@@ -12,6 +12,23 @@ TEST_FILE
 	TypeParser typeParser;
 	RuleParser ruleParser;
 
+	TEST_CASE(L"?")
+	{
+		const wchar_t* syntaxCode =
+LR"SYNTAX(
+switch first;
+Exp0 ::= ?(first: NUM:value) as NumExpr;
+)SYNTAX";
+		ExpectError(
+			typeParser,
+			ruleParser,
+			astCode,
+			lexerCode,
+			syntaxCode,
+			{ ParserErrorType::PushedSwitchIsNotTested,L"Exp0",L"first"}
+		);
+	});
+
 	TEST_CASE(L"PushedSwitchIsNotTested 1")
 	{
 		const wchar_t* syntaxCode =

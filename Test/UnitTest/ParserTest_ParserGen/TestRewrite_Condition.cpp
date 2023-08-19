@@ -37,6 +37,26 @@ TEST_FILE
 	TypeParser typeParser;
 	RuleParser ruleParser;
 
+	TEST_CASE(L"Default Switch Value")
+	{
+		const wchar_t* syntaxCode =
+LR"SYNTAX(
+switch s,t;
+Exp0 ::= ?(t: ?(s?: "a":id | !s?: "b":id)) as IdNode;
+Exp1 ::= !(t; !Exp0);
+Exp2 ::= !(s,t; !Exp0);
+)SYNTAX";
+
+		const wchar_t* rewrittenCode =
+LR"SYNTAX(
+Exp0_SWITCH_1s_1t : IdNode ::= "a":id as IdNode;
+Exp1 ::= !Exp0_SWITCH_1s_1t;
+Exp2 ::= !Exp0_SWITCH_1s_1t;
+)SYNTAX";
+
+		TestRewrite(typeParser, ruleParser, astCode, lexerCode, syntaxCode, rewrittenCode);
+	});
+
 	TEST_CATEGORY(L"Test in Push")
 	{
 		TEST_CASE(L"single switch false")
