@@ -2,6 +2,9 @@
 
 ## Next task
 
+- Try remove `beforeIns`.
+- Try remove all LRJ syntax, build LRJ structure from state machine instead.
+
 ## Test Cases
 
 - Code Coverage
