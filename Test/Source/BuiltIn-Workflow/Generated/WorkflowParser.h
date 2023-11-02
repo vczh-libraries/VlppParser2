@@ -106,6 +106,8 @@ namespace vl::glr::workflow
 		vl::Ptr<vl::glr::workflow::WfType> Parse_Type(vl::collections::List<vl::regex::RegexToken>& tokens, vl::vint codeIndex = -1) const;
 		vl::Ptr<vl::glr::workflow::WfExpression> Parse_Expression(const vl::WString& input, vl::vint codeIndex = -1) const;
 		vl::Ptr<vl::glr::workflow::WfExpression> Parse_Expression(vl::collections::List<vl::regex::RegexToken>& tokens, vl::vint codeIndex = -1) const;
+		vl::Ptr<vl::glr::workflow::WfCoProviderStatement> Parse_CoProvider(const vl::WString& input, vl::vint codeIndex = -1) const;
+		vl::Ptr<vl::glr::workflow::WfCoProviderStatement> Parse_CoProvider(vl::collections::List<vl::regex::RegexToken>& tokens, vl::vint codeIndex = -1) const;
 		vl::Ptr<vl::glr::workflow::WfStatement> Parse_Statement(const vl::WString& input, vl::vint codeIndex = -1) const;
 		vl::Ptr<vl::glr::workflow::WfStatement> Parse_Statement(vl::collections::List<vl::regex::RegexToken>& tokens, vl::vint codeIndex = -1) const;
 		vl::Ptr<vl::glr::workflow::WfDeclaration> Parse_Declaration(const vl::WString& input, vl::vint codeIndex = -1) const;

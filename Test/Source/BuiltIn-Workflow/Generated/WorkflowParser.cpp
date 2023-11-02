@@ -1688,6 +1688,16 @@ namespace vl::glr::workflow
 		 return ParseWithTokens<vl::glr::workflow::WfExpression, ParserStates::_Expression>(tokens, this, codeIndex);
 	}
 
+	vl::Ptr<vl::glr::workflow::WfCoProviderStatement> Parser::Parse_CoProvider(const vl::WString& input, vl::vint codeIndex) const
+	{
+		 return ParseWithString<vl::glr::workflow::WfCoProviderStatement, ParserStates::_CoProvider>(input, this, codeIndex);
+	}
+
+	vl::Ptr<vl::glr::workflow::WfCoProviderStatement> Parser::Parse_CoProvider(vl::collections::List<vl::regex::RegexToken>& tokens, vl::vint codeIndex) const
+	{
+		 return ParseWithTokens<vl::glr::workflow::WfCoProviderStatement, ParserStates::_CoProvider>(tokens, this, codeIndex);
+	}
+
 	vl::Ptr<vl::glr::workflow::WfStatement> Parser::Parse_Statement(const vl::WString& input, vl::vint codeIndex) const
 	{
 		 return ParseWithString<vl::glr::workflow::WfStatement, ParserStates::_Statement>(input, this, codeIndex);
