@@ -4,6 +4,7 @@
 
 - Try remove `beforeIns`.
 - Try remove all LRJ syntax, build LRJ structure from state machine instead.
+- Calling `JsonVisitorBase::BeginField/WriteToken/WriteType/WriteString` with `WString::Unmanaged` if necessary in C++ and generated code.
 
 ## Test Cases
 
@@ -30,9 +31,9 @@
   - Offer two options: using (rich regex | C++) to search for complete token.
 - AST file groups.
   - An AST file only sees:
-    - Types defined in this file.
-    - `@public` types defined in the same file group.
-    - `@extern` types defined in different **depended** file groups **as field type only**.
+    - [x] Types defined in this file.
+    - [x] `@public` types defined in the same file group.
+    - [ ] `@extern` types defined in different **depended** file groups **as field type only**.
   - C++ codegen are created per groups.
     - Only AST classes `#include` depended files groups, visitors do not.
     - When a visitor need to call types in different file groups, leave it abstract.
