@@ -9,10 +9,6 @@ namespace vl
 			using namespace glr;
 			using namespace glr::automaton;
 
-			SERIALIZE_ENUM(AstInsType)
-			SERIALIZE_ENUM(EdgePriority)
-			SERIALIZE_ENUM(ReturnRuleType)
-
 			BEGIN_SERIALIZATION(AstIns)
 				SERIALIZE(type)
 				SERIALIZE(param)
