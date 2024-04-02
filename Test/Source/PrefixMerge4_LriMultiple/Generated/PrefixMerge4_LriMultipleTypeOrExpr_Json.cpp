@@ -10,7 +10,7 @@ namespace prefixmerge4_lrimultiple::json_visitor
 {
 	void TypeOrExprVisitor::PrintFields(CallExpr* node)
 	{
-		BeginField(L"args");
+		BeginField(vl::WString::Unmanaged(L"args"));
 		BeginArray();
 		for (auto&& listItem : node->args)
 		{
@@ -20,19 +20,19 @@ namespace prefixmerge4_lrimultiple::json_visitor
 		}
 		EndArray();
 		EndField();
-		BeginField(L"func");
+		BeginField(vl::WString::Unmanaged(L"func"));
 		Print(node->func.Obj());
 		EndField();
 	}
 	void TypeOrExprVisitor::PrintFields(ConstType* node)
 	{
-		BeginField(L"type");
+		BeginField(vl::WString::Unmanaged(L"type"));
 		Print(node->type.Obj());
 		EndField();
 	}
 	void TypeOrExprVisitor::PrintFields(CtorExpr* node)
 	{
-		BeginField(L"args");
+		BeginField(vl::WString::Unmanaged(L"args"));
 		BeginArray();
 		for (auto&& listItem : node->args)
 		{
@@ -42,13 +42,13 @@ namespace prefixmerge4_lrimultiple::json_visitor
 		}
 		EndArray();
 		EndField();
-		BeginField(L"type");
+		BeginField(vl::WString::Unmanaged(L"type"));
 		Print(node->type.Obj());
 		EndField();
 	}
 	void TypeOrExprVisitor::PrintFields(FunctionType* node)
 	{
-		BeginField(L"args");
+		BeginField(vl::WString::Unmanaged(L"args"));
 		BeginArray();
 		for (auto&& listItem : node->args)
 		{
@@ -58,37 +58,37 @@ namespace prefixmerge4_lrimultiple::json_visitor
 		}
 		EndArray();
 		EndField();
-		BeginField(L"returnType");
+		BeginField(vl::WString::Unmanaged(L"returnType"));
 		Print(node->returnType.Obj());
 		EndField();
 	}
 	void TypeOrExprVisitor::PrintFields(MemberName* node)
 	{
-		BeginField(L"member");
+		BeginField(vl::WString::Unmanaged(L"member"));
 		WriteToken(node->member);
 		EndField();
-		BeginField(L"parent");
+		BeginField(vl::WString::Unmanaged(L"parent"));
 		Print(node->parent.Obj());
 		EndField();
 	}
 	void TypeOrExprVisitor::PrintFields(MulExpr* node)
 	{
-		BeginField(L"first");
+		BeginField(vl::WString::Unmanaged(L"first"));
 		Print(node->first.Obj());
 		EndField();
-		BeginField(L"second");
+		BeginField(vl::WString::Unmanaged(L"second"));
 		Print(node->second.Obj());
 		EndField();
 	}
 	void TypeOrExprVisitor::PrintFields(Name* node)
 	{
-		BeginField(L"name");
+		BeginField(vl::WString::Unmanaged(L"name"));
 		WriteToken(node->name);
 		EndField();
 	}
 	void TypeOrExprVisitor::PrintFields(PointerType* node)
 	{
-		BeginField(L"type");
+		BeginField(vl::WString::Unmanaged(L"type"));
 		Print(node->type.Obj());
 		EndField();
 	}
@@ -100,7 +100,7 @@ namespace prefixmerge4_lrimultiple::json_visitor
 	}
 	void TypeOrExprVisitor::PrintFields(TypeOrExprToResolve* node)
 	{
-		BeginField(L"candidates");
+		BeginField(vl::WString::Unmanaged(L"candidates"));
 		BeginArray();
 		for (auto&& listItem : node->candidates)
 		{
@@ -120,7 +120,7 @@ namespace prefixmerge4_lrimultiple::json_visitor
 			return;
 		}
 		BeginObject();
-		WriteType(L"TypeOrExprToResolve", node);
+		WriteType(vl::WString::Unmanaged(L"TypeOrExprToResolve"), node);
 		PrintFields(static_cast<TypeOrExpr*>(node));
 		PrintFields(static_cast<TypeOrExprToResolve*>(node));
 		EndObject();
@@ -139,7 +139,7 @@ namespace prefixmerge4_lrimultiple::json_visitor
 			return;
 		}
 		BeginObject();
-		WriteType(L"CallExpr", node);
+		WriteType(vl::WString::Unmanaged(L"CallExpr"), node);
 		PrintFields(static_cast<TypeOrExpr*>(node));
 		PrintFields(static_cast<CallExpr*>(node));
 		EndObject();
@@ -153,7 +153,7 @@ namespace prefixmerge4_lrimultiple::json_visitor
 			return;
 		}
 		BeginObject();
-		WriteType(L"CtorExpr", node);
+		WriteType(vl::WString::Unmanaged(L"CtorExpr"), node);
 		PrintFields(static_cast<TypeOrExpr*>(node));
 		PrintFields(static_cast<CtorExpr*>(node));
 		EndObject();
@@ -167,7 +167,7 @@ namespace prefixmerge4_lrimultiple::json_visitor
 			return;
 		}
 		BeginObject();
-		WriteType(L"MulExpr", node);
+		WriteType(vl::WString::Unmanaged(L"MulExpr"), node);
 		PrintFields(static_cast<TypeOrExpr*>(node));
 		PrintFields(static_cast<MulExpr*>(node));
 		EndObject();
@@ -181,7 +181,7 @@ namespace prefixmerge4_lrimultiple::json_visitor
 			return;
 		}
 		BeginObject();
-		WriteType(L"ConstType", node);
+		WriteType(vl::WString::Unmanaged(L"ConstType"), node);
 		PrintFields(static_cast<TypeOrExpr*>(node));
 		PrintFields(static_cast<ConstType*>(node));
 		EndObject();
@@ -195,7 +195,7 @@ namespace prefixmerge4_lrimultiple::json_visitor
 			return;
 		}
 		BeginObject();
-		WriteType(L"PointerType", node);
+		WriteType(vl::WString::Unmanaged(L"PointerType"), node);
 		PrintFields(static_cast<TypeOrExpr*>(node));
 		PrintFields(static_cast<PointerType*>(node));
 		EndObject();
@@ -209,7 +209,7 @@ namespace prefixmerge4_lrimultiple::json_visitor
 			return;
 		}
 		BeginObject();
-		WriteType(L"FunctionType", node);
+		WriteType(vl::WString::Unmanaged(L"FunctionType"), node);
 		PrintFields(static_cast<TypeOrExpr*>(node));
 		PrintFields(static_cast<FunctionType*>(node));
 		EndObject();
@@ -223,7 +223,7 @@ namespace prefixmerge4_lrimultiple::json_visitor
 			return;
 		}
 		BeginObject();
-		WriteType(L"Name", node);
+		WriteType(vl::WString::Unmanaged(L"Name"), node);
 		PrintFields(static_cast<TypeOrExpr*>(node));
 		PrintFields(static_cast<QualifiedName*>(node));
 		PrintFields(static_cast<Name*>(node));
@@ -238,7 +238,7 @@ namespace prefixmerge4_lrimultiple::json_visitor
 			return;
 		}
 		BeginObject();
-		WriteType(L"MemberName", node);
+		WriteType(vl::WString::Unmanaged(L"MemberName"), node);
 		PrintFields(static_cast<TypeOrExpr*>(node));
 		PrintFields(static_cast<QualifiedName*>(node));
 		PrintFields(static_cast<MemberName*>(node));

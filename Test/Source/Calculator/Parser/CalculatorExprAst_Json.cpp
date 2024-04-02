@@ -10,59 +10,59 @@ namespace calculator::json_visitor
 {
 	void ExprAstVisitor::PrintFields(Arg* node)
 	{
-		BeginField(L"name");
+		BeginField(vl::WString::Unmanaged(L"name"));
 		WriteToken(node->name);
 		EndField();
 	}
 	void ExprAstVisitor::PrintFields(Binary* node)
 	{
-		BeginField(L"left");
+		BeginField(vl::WString::Unmanaged(L"left"));
 		Print(node->left.Obj());
 		EndField();
-		BeginField(L"op");
+		BeginField(vl::WString::Unmanaged(L"op"));
 		switch (node->op)
 		{
 		case calculator::BinaryOp::Add:
-			WriteString(L"Add");
+			WriteString(vl::WString::Unmanaged(L"Add"));
 			break;
 		case calculator::BinaryOp::Divid:
-			WriteString(L"Divid");
+			WriteString(vl::WString::Unmanaged(L"Divid"));
 			break;
 		case calculator::BinaryOp::EQ:
-			WriteString(L"EQ");
+			WriteString(vl::WString::Unmanaged(L"EQ"));
 			break;
 		case calculator::BinaryOp::GE:
-			WriteString(L"GE");
+			WriteString(vl::WString::Unmanaged(L"GE"));
 			break;
 		case calculator::BinaryOp::GT:
-			WriteString(L"GT");
+			WriteString(vl::WString::Unmanaged(L"GT"));
 			break;
 		case calculator::BinaryOp::LE:
-			WriteString(L"LE");
+			WriteString(vl::WString::Unmanaged(L"LE"));
 			break;
 		case calculator::BinaryOp::LT:
-			WriteString(L"LT");
+			WriteString(vl::WString::Unmanaged(L"LT"));
 			break;
 		case calculator::BinaryOp::Minus:
-			WriteString(L"Minus");
+			WriteString(vl::WString::Unmanaged(L"Minus"));
 			break;
 		case calculator::BinaryOp::Multiply:
-			WriteString(L"Multiply");
+			WriteString(vl::WString::Unmanaged(L"Multiply"));
 			break;
 		case calculator::BinaryOp::NE:
-			WriteString(L"NE");
+			WriteString(vl::WString::Unmanaged(L"NE"));
 			break;
 		default:
 			WriteNull();
 		}
 		EndField();
-		BeginField(L"right");
+		BeginField(vl::WString::Unmanaged(L"right"));
 		Print(node->right.Obj());
 		EndField();
 	}
 	void ExprAstVisitor::PrintFields(Call* node)
 	{
-		BeginField(L"args");
+		BeginField(vl::WString::Unmanaged(L"args"));
 		BeginArray();
 		for (auto&& listItem : node->args)
 		{
@@ -72,13 +72,13 @@ namespace calculator::json_visitor
 		}
 		EndArray();
 		EndField();
-		BeginField(L"func");
+		BeginField(vl::WString::Unmanaged(L"func"));
 		Print(node->func.Obj());
 		EndField();
 	}
 	void ExprAstVisitor::PrintFields(Expandable* node)
 	{
-		BeginField(L"expanded");
+		BeginField(vl::WString::Unmanaged(L"expanded"));
 		Print(node->expanded.Obj());
 		EndField();
 	}
@@ -90,7 +90,7 @@ namespace calculator::json_visitor
 	}
 	void ExprAstVisitor::PrintFields(Func* node)
 	{
-		BeginField(L"args");
+		BeginField(vl::WString::Unmanaged(L"args"));
 		BeginArray();
 		for (auto&& listItem : node->args)
 		{
@@ -100,34 +100,34 @@ namespace calculator::json_visitor
 		}
 		EndArray();
 		EndField();
-		BeginField(L"value");
+		BeginField(vl::WString::Unmanaged(L"value"));
 		Print(node->value.Obj());
 		EndField();
 	}
 	void ExprAstVisitor::PrintFields(Import* node)
 	{
-		BeginField(L"name");
+		BeginField(vl::WString::Unmanaged(L"name"));
 		WriteToken(node->name);
 		EndField();
 	}
 	void ExprAstVisitor::PrintFields(LetExpr* node)
 	{
-		BeginField(L"name");
+		BeginField(vl::WString::Unmanaged(L"name"));
 		WriteToken(node->name);
 		EndField();
-		BeginField(L"result");
+		BeginField(vl::WString::Unmanaged(L"result"));
 		Print(node->result.Obj());
 		EndField();
-		BeginField(L"value");
+		BeginField(vl::WString::Unmanaged(L"value"));
 		Print(node->value.Obj());
 		EndField();
 	}
 	void ExprAstVisitor::PrintFields(Module* node)
 	{
-		BeginField(L"exported");
+		BeginField(vl::WString::Unmanaged(L"exported"));
 		Print(node->exported.Obj());
 		EndField();
-		BeginField(L"imports");
+		BeginField(vl::WString::Unmanaged(L"imports"));
 		BeginArray();
 		for (auto&& listItem : node->imports)
 		{
@@ -140,13 +140,13 @@ namespace calculator::json_visitor
 	}
 	void ExprAstVisitor::PrintFields(NumExpr* node)
 	{
-		BeginField(L"value");
+		BeginField(vl::WString::Unmanaged(L"value"));
 		WriteToken(node->value);
 		EndField();
 	}
 	void ExprAstVisitor::PrintFields(Ref* node)
 	{
-		BeginField(L"name");
+		BeginField(vl::WString::Unmanaged(L"name"));
 		WriteToken(node->name);
 		EndField();
 	}
@@ -155,20 +155,20 @@ namespace calculator::json_visitor
 	}
 	void ExprAstVisitor::PrintFields(Unary* node)
 	{
-		BeginField(L"op");
+		BeginField(vl::WString::Unmanaged(L"op"));
 		switch (node->op)
 		{
 		case calculator::UnaryOp::Negative:
-			WriteString(L"Negative");
+			WriteString(vl::WString::Unmanaged(L"Negative"));
 			break;
 		case calculator::UnaryOp::Positive:
-			WriteString(L"Positive");
+			WriteString(vl::WString::Unmanaged(L"Positive"));
 			break;
 		default:
 			WriteNull();
 		}
 		EndField();
-		BeginField(L"operand");
+		BeginField(vl::WString::Unmanaged(L"operand"));
 		Print(node->operand.Obj());
 		EndField();
 	}
@@ -181,7 +181,7 @@ namespace calculator::json_visitor
 			return;
 		}
 		BeginObject();
-		WriteType(L"NumExpr", node);
+		WriteType(vl::WString::Unmanaged(L"NumExpr"), node);
 		PrintFields(static_cast<Expr*>(node));
 		PrintFields(static_cast<NumExpr*>(node));
 		EndObject();
@@ -195,7 +195,7 @@ namespace calculator::json_visitor
 			return;
 		}
 		BeginObject();
-		WriteType(L"Ref", node);
+		WriteType(vl::WString::Unmanaged(L"Ref"), node);
 		PrintFields(static_cast<Expr*>(node));
 		PrintFields(static_cast<Ref*>(node));
 		EndObject();
@@ -209,7 +209,7 @@ namespace calculator::json_visitor
 			return;
 		}
 		BeginObject();
-		WriteType(L"True", node);
+		WriteType(vl::WString::Unmanaged(L"True"), node);
 		PrintFields(static_cast<Expr*>(node));
 		PrintFields(static_cast<True*>(node));
 		EndObject();
@@ -223,7 +223,7 @@ namespace calculator::json_visitor
 			return;
 		}
 		BeginObject();
-		WriteType(L"False", node);
+		WriteType(vl::WString::Unmanaged(L"False"), node);
 		PrintFields(static_cast<Expr*>(node));
 		PrintFields(static_cast<False*>(node));
 		EndObject();
@@ -237,7 +237,7 @@ namespace calculator::json_visitor
 			return;
 		}
 		BeginObject();
-		WriteType(L"Func", node);
+		WriteType(vl::WString::Unmanaged(L"Func"), node);
 		PrintFields(static_cast<Expr*>(node));
 		PrintFields(static_cast<Func*>(node));
 		EndObject();
@@ -251,7 +251,7 @@ namespace calculator::json_visitor
 			return;
 		}
 		BeginObject();
-		WriteType(L"Call", node);
+		WriteType(vl::WString::Unmanaged(L"Call"), node);
 		PrintFields(static_cast<Expr*>(node));
 		PrintFields(static_cast<Call*>(node));
 		EndObject();
@@ -270,7 +270,7 @@ namespace calculator::json_visitor
 			return;
 		}
 		BeginObject();
-		WriteType(L"LetExpr", node);
+		WriteType(vl::WString::Unmanaged(L"LetExpr"), node);
 		PrintFields(static_cast<Expr*>(node));
 		PrintFields(static_cast<Expandable*>(node));
 		PrintFields(static_cast<LetExpr*>(node));
@@ -285,7 +285,7 @@ namespace calculator::json_visitor
 			return;
 		}
 		BeginObject();
-		WriteType(L"Unary", node);
+		WriteType(vl::WString::Unmanaged(L"Unary"), node);
 		PrintFields(static_cast<Expr*>(node));
 		PrintFields(static_cast<Expandable*>(node));
 		PrintFields(static_cast<Unary*>(node));
@@ -300,7 +300,7 @@ namespace calculator::json_visitor
 			return;
 		}
 		BeginObject();
-		WriteType(L"Binary", node);
+		WriteType(vl::WString::Unmanaged(L"Binary"), node);
 		PrintFields(static_cast<Expr*>(node));
 		PrintFields(static_cast<Expandable*>(node));
 		PrintFields(static_cast<Binary*>(node));
@@ -330,7 +330,7 @@ namespace calculator::json_visitor
 			return;
 		}
 		BeginObject();
-		WriteType(L"Arg", node);
+		WriteType(vl::WString::Unmanaged(L"Arg"), node);
 		PrintFields(static_cast<Arg*>(node));
 		EndObject();
 	}
@@ -343,7 +343,7 @@ namespace calculator::json_visitor
 			return;
 		}
 		BeginObject();
-		WriteType(L"Import", node);
+		WriteType(vl::WString::Unmanaged(L"Import"), node);
 		PrintFields(static_cast<Import*>(node));
 		EndObject();
 	}
@@ -356,7 +356,7 @@ namespace calculator::json_visitor
 			return;
 		}
 		BeginObject();
-		WriteType(L"Module", node);
+		WriteType(vl::WString::Unmanaged(L"Module"), node);
 		PrintFields(static_cast<Module*>(node));
 		EndObject();
 	}

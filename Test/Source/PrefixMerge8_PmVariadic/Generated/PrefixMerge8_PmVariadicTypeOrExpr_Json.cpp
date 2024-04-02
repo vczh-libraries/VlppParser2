@@ -10,7 +10,7 @@ namespace prefixmerge8_pmvariadic::json_visitor
 {
 	void TypeOrExprVisitor::PrintFields(CallExpr* node)
 	{
-		BeginField(L"args");
+		BeginField(vl::WString::Unmanaged(L"args"));
 		BeginArray();
 		for (auto&& listItem : node->args)
 		{
@@ -20,19 +20,19 @@ namespace prefixmerge8_pmvariadic::json_visitor
 		}
 		EndArray();
 		EndField();
-		BeginField(L"func");
+		BeginField(vl::WString::Unmanaged(L"func"));
 		Print(node->func.Obj());
 		EndField();
 	}
 	void TypeOrExprVisitor::PrintFields(ConstType* node)
 	{
-		BeginField(L"type");
+		BeginField(vl::WString::Unmanaged(L"type"));
 		Print(node->type.Obj());
 		EndField();
 	}
 	void TypeOrExprVisitor::PrintFields(CtorExpr* node)
 	{
-		BeginField(L"args");
+		BeginField(vl::WString::Unmanaged(L"args"));
 		BeginArray();
 		for (auto&& listItem : node->args)
 		{
@@ -42,13 +42,13 @@ namespace prefixmerge8_pmvariadic::json_visitor
 		}
 		EndArray();
 		EndField();
-		BeginField(L"type");
+		BeginField(vl::WString::Unmanaged(L"type"));
 		Print(node->type.Obj());
 		EndField();
 	}
 	void TypeOrExprVisitor::PrintFields(FunctionType* node)
 	{
-		BeginField(L"args");
+		BeginField(vl::WString::Unmanaged(L"args"));
 		BeginArray();
 		for (auto&& listItem : node->args)
 		{
@@ -58,28 +58,28 @@ namespace prefixmerge8_pmvariadic::json_visitor
 		}
 		EndArray();
 		EndField();
-		BeginField(L"returnType");
+		BeginField(vl::WString::Unmanaged(L"returnType"));
 		Print(node->returnType.Obj());
 		EndField();
 	}
 	void TypeOrExprVisitor::PrintFields(GenericMemberName* node)
 	{
-		BeginField(L"member");
+		BeginField(vl::WString::Unmanaged(L"member"));
 		WriteToken(node->member);
 		EndField();
-		BeginField(L"parent");
+		BeginField(vl::WString::Unmanaged(L"parent"));
 		Print(node->parent.Obj());
 		EndField();
 	}
 	void TypeOrExprVisitor::PrintFields(GenericName* node)
 	{
-		BeginField(L"name");
+		BeginField(vl::WString::Unmanaged(L"name"));
 		WriteToken(node->name);
 		EndField();
 	}
 	void TypeOrExprVisitor::PrintFields(GenericQualifiedName* node)
 	{
-		BeginField(L"args");
+		BeginField(vl::WString::Unmanaged(L"args"));
 		BeginArray();
 		for (auto&& listItem : node->args)
 		{
@@ -92,31 +92,31 @@ namespace prefixmerge8_pmvariadic::json_visitor
 	}
 	void TypeOrExprVisitor::PrintFields(MemberName* node)
 	{
-		BeginField(L"member");
+		BeginField(vl::WString::Unmanaged(L"member"));
 		WriteToken(node->member);
 		EndField();
-		BeginField(L"parent");
+		BeginField(vl::WString::Unmanaged(L"parent"));
 		Print(node->parent.Obj());
 		EndField();
 	}
 	void TypeOrExprVisitor::PrintFields(MulExpr* node)
 	{
-		BeginField(L"first");
+		BeginField(vl::WString::Unmanaged(L"first"));
 		Print(node->first.Obj());
 		EndField();
-		BeginField(L"second");
+		BeginField(vl::WString::Unmanaged(L"second"));
 		Print(node->second.Obj());
 		EndField();
 	}
 	void TypeOrExprVisitor::PrintFields(Name* node)
 	{
-		BeginField(L"name");
+		BeginField(vl::WString::Unmanaged(L"name"));
 		WriteToken(node->name);
 		EndField();
 	}
 	void TypeOrExprVisitor::PrintFields(PointerType* node)
 	{
-		BeginField(L"type");
+		BeginField(vl::WString::Unmanaged(L"type"));
 		Print(node->type.Obj());
 		EndField();
 	}
@@ -131,7 +131,7 @@ namespace prefixmerge8_pmvariadic::json_visitor
 	}
 	void TypeOrExprVisitor::PrintFields(TypeOrExprOrOthersToResolve* node)
 	{
-		BeginField(L"candidates");
+		BeginField(vl::WString::Unmanaged(L"candidates"));
 		BeginArray();
 		for (auto&& listItem : node->candidates)
 		{
@@ -144,7 +144,7 @@ namespace prefixmerge8_pmvariadic::json_visitor
 	}
 	void TypeOrExprVisitor::PrintFields(TypeOrExprToResolve* node)
 	{
-		BeginField(L"candidates");
+		BeginField(vl::WString::Unmanaged(L"candidates"));
 		BeginArray();
 		for (auto&& listItem : node->candidates)
 		{
@@ -157,7 +157,7 @@ namespace prefixmerge8_pmvariadic::json_visitor
 	}
 	void TypeOrExprVisitor::PrintFields(VariadicArgument* node)
 	{
-		BeginField(L"operand");
+		BeginField(vl::WString::Unmanaged(L"operand"));
 		Print(node->operand.Obj());
 		EndField();
 	}
@@ -170,7 +170,7 @@ namespace prefixmerge8_pmvariadic::json_visitor
 			return;
 		}
 		BeginObject();
-		WriteType(L"TypeOrExprOrOthersToResolve", node);
+		WriteType(vl::WString::Unmanaged(L"TypeOrExprOrOthersToResolve"), node);
 		PrintFields(static_cast<TypeOrExprOrOthers*>(node));
 		PrintFields(static_cast<TypeOrExprOrOthersToResolve*>(node));
 		EndObject();
@@ -184,7 +184,7 @@ namespace prefixmerge8_pmvariadic::json_visitor
 			return;
 		}
 		BeginObject();
-		WriteType(L"VariadicArgument", node);
+		WriteType(vl::WString::Unmanaged(L"VariadicArgument"), node);
 		PrintFields(static_cast<TypeOrExprOrOthers*>(node));
 		PrintFields(static_cast<VariadicArgument*>(node));
 		EndObject();
@@ -203,7 +203,7 @@ namespace prefixmerge8_pmvariadic::json_visitor
 			return;
 		}
 		BeginObject();
-		WriteType(L"TypeOrExprToResolve", node);
+		WriteType(vl::WString::Unmanaged(L"TypeOrExprToResolve"), node);
 		PrintFields(static_cast<TypeOrExprOrOthers*>(node));
 		PrintFields(static_cast<TypeOrExpr*>(node));
 		PrintFields(static_cast<TypeOrExprToResolve*>(node));
@@ -223,7 +223,7 @@ namespace prefixmerge8_pmvariadic::json_visitor
 			return;
 		}
 		BeginObject();
-		WriteType(L"CallExpr", node);
+		WriteType(vl::WString::Unmanaged(L"CallExpr"), node);
 		PrintFields(static_cast<TypeOrExprOrOthers*>(node));
 		PrintFields(static_cast<TypeOrExpr*>(node));
 		PrintFields(static_cast<CallExpr*>(node));
@@ -238,7 +238,7 @@ namespace prefixmerge8_pmvariadic::json_visitor
 			return;
 		}
 		BeginObject();
-		WriteType(L"CtorExpr", node);
+		WriteType(vl::WString::Unmanaged(L"CtorExpr"), node);
 		PrintFields(static_cast<TypeOrExprOrOthers*>(node));
 		PrintFields(static_cast<TypeOrExpr*>(node));
 		PrintFields(static_cast<CtorExpr*>(node));
@@ -253,7 +253,7 @@ namespace prefixmerge8_pmvariadic::json_visitor
 			return;
 		}
 		BeginObject();
-		WriteType(L"MulExpr", node);
+		WriteType(vl::WString::Unmanaged(L"MulExpr"), node);
 		PrintFields(static_cast<TypeOrExprOrOthers*>(node));
 		PrintFields(static_cast<TypeOrExpr*>(node));
 		PrintFields(static_cast<MulExpr*>(node));
@@ -268,7 +268,7 @@ namespace prefixmerge8_pmvariadic::json_visitor
 			return;
 		}
 		BeginObject();
-		WriteType(L"ConstType", node);
+		WriteType(vl::WString::Unmanaged(L"ConstType"), node);
 		PrintFields(static_cast<TypeOrExprOrOthers*>(node));
 		PrintFields(static_cast<TypeOrExpr*>(node));
 		PrintFields(static_cast<ConstType*>(node));
@@ -283,7 +283,7 @@ namespace prefixmerge8_pmvariadic::json_visitor
 			return;
 		}
 		BeginObject();
-		WriteType(L"PointerType", node);
+		WriteType(vl::WString::Unmanaged(L"PointerType"), node);
 		PrintFields(static_cast<TypeOrExprOrOthers*>(node));
 		PrintFields(static_cast<TypeOrExpr*>(node));
 		PrintFields(static_cast<PointerType*>(node));
@@ -298,7 +298,7 @@ namespace prefixmerge8_pmvariadic::json_visitor
 			return;
 		}
 		BeginObject();
-		WriteType(L"FunctionType", node);
+		WriteType(vl::WString::Unmanaged(L"FunctionType"), node);
 		PrintFields(static_cast<TypeOrExprOrOthers*>(node));
 		PrintFields(static_cast<TypeOrExpr*>(node));
 		PrintFields(static_cast<FunctionType*>(node));
@@ -313,7 +313,7 @@ namespace prefixmerge8_pmvariadic::json_visitor
 			return;
 		}
 		BeginObject();
-		WriteType(L"Name", node);
+		WriteType(vl::WString::Unmanaged(L"Name"), node);
 		PrintFields(static_cast<TypeOrExprOrOthers*>(node));
 		PrintFields(static_cast<TypeOrExpr*>(node));
 		PrintFields(static_cast<QualifiedName*>(node));
@@ -329,7 +329,7 @@ namespace prefixmerge8_pmvariadic::json_visitor
 			return;
 		}
 		BeginObject();
-		WriteType(L"MemberName", node);
+		WriteType(vl::WString::Unmanaged(L"MemberName"), node);
 		PrintFields(static_cast<TypeOrExprOrOthers*>(node));
 		PrintFields(static_cast<TypeOrExpr*>(node));
 		PrintFields(static_cast<QualifiedName*>(node));
@@ -350,7 +350,7 @@ namespace prefixmerge8_pmvariadic::json_visitor
 			return;
 		}
 		BeginObject();
-		WriteType(L"GenericName", node);
+		WriteType(vl::WString::Unmanaged(L"GenericName"), node);
 		PrintFields(static_cast<TypeOrExprOrOthers*>(node));
 		PrintFields(static_cast<TypeOrExpr*>(node));
 		PrintFields(static_cast<QualifiedName*>(node));
@@ -367,7 +367,7 @@ namespace prefixmerge8_pmvariadic::json_visitor
 			return;
 		}
 		BeginObject();
-		WriteType(L"GenericMemberName", node);
+		WriteType(vl::WString::Unmanaged(L"GenericMemberName"), node);
 		PrintFields(static_cast<TypeOrExprOrOthers*>(node));
 		PrintFields(static_cast<TypeOrExpr*>(node));
 		PrintFields(static_cast<QualifiedName*>(node));

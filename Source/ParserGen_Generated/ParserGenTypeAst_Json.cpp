@@ -10,7 +10,7 @@ namespace vl::glr::parsergen::json_visitor
 {
 	void TypeAstVisitor::PrintFields(GlrAstFile* node)
 	{
-		BeginField(L"types");
+		BeginField(vl::WString::Unmanaged(L"types"));
 		BeginArray();
 		for (auto&& listItem : node->types)
 		{
@@ -23,13 +23,13 @@ namespace vl::glr::parsergen::json_visitor
 	}
 	void TypeAstVisitor::PrintFields(GlrClass* node)
 	{
-		BeginField(L"attAmbiguous");
+		BeginField(vl::WString::Unmanaged(L"attAmbiguous"));
 		WriteToken(node->attAmbiguous);
 		EndField();
-		BeginField(L"baseClass");
+		BeginField(vl::WString::Unmanaged(L"baseClass"));
 		WriteToken(node->baseClass);
 		EndField();
-		BeginField(L"props");
+		BeginField(vl::WString::Unmanaged(L"props"));
 		BeginArray();
 		for (auto&& listItem : node->props)
 		{
@@ -42,32 +42,32 @@ namespace vl::glr::parsergen::json_visitor
 	}
 	void TypeAstVisitor::PrintFields(GlrClassProp* node)
 	{
-		BeginField(L"name");
+		BeginField(vl::WString::Unmanaged(L"name"));
 		WriteToken(node->name);
 		EndField();
-		BeginField(L"propType");
+		BeginField(vl::WString::Unmanaged(L"propType"));
 		switch (node->propType)
 		{
 		case vl::glr::parsergen::GlrPropType::Array:
-			WriteString(L"Array");
+			WriteString(vl::WString::Unmanaged(L"Array"));
 			break;
 		case vl::glr::parsergen::GlrPropType::Token:
-			WriteString(L"Token");
+			WriteString(vl::WString::Unmanaged(L"Token"));
 			break;
 		case vl::glr::parsergen::GlrPropType::Type:
-			WriteString(L"Type");
+			WriteString(vl::WString::Unmanaged(L"Type"));
 			break;
 		default:
 			WriteNull();
 		}
 		EndField();
-		BeginField(L"propTypeName");
+		BeginField(vl::WString::Unmanaged(L"propTypeName"));
 		WriteToken(node->propTypeName);
 		EndField();
 	}
 	void TypeAstVisitor::PrintFields(GlrEnum* node)
 	{
-		BeginField(L"items");
+		BeginField(vl::WString::Unmanaged(L"items"));
 		BeginArray();
 		for (auto&& listItem : node->items)
 		{
@@ -80,16 +80,16 @@ namespace vl::glr::parsergen::json_visitor
 	}
 	void TypeAstVisitor::PrintFields(GlrEnumItem* node)
 	{
-		BeginField(L"name");
+		BeginField(vl::WString::Unmanaged(L"name"));
 		WriteToken(node->name);
 		EndField();
 	}
 	void TypeAstVisitor::PrintFields(GlrType* node)
 	{
-		BeginField(L"attPublic");
+		BeginField(vl::WString::Unmanaged(L"attPublic"));
 		WriteToken(node->attPublic);
 		EndField();
-		BeginField(L"name");
+		BeginField(vl::WString::Unmanaged(L"name"));
 		WriteToken(node->name);
 		EndField();
 	}
@@ -102,7 +102,7 @@ namespace vl::glr::parsergen::json_visitor
 			return;
 		}
 		BeginObject();
-		WriteType(L"Enum", node);
+		WriteType(vl::WString::Unmanaged(L"Enum"), node);
 		PrintFields(static_cast<GlrType*>(node));
 		PrintFields(static_cast<GlrEnum*>(node));
 		EndObject();
@@ -116,7 +116,7 @@ namespace vl::glr::parsergen::json_visitor
 			return;
 		}
 		BeginObject();
-		WriteType(L"Class", node);
+		WriteType(vl::WString::Unmanaged(L"Class"), node);
 		PrintFields(static_cast<GlrType*>(node));
 		PrintFields(static_cast<GlrClass*>(node));
 		EndObject();
@@ -145,7 +145,7 @@ namespace vl::glr::parsergen::json_visitor
 			return;
 		}
 		BeginObject();
-		WriteType(L"EnumItem", node);
+		WriteType(vl::WString::Unmanaged(L"EnumItem"), node);
 		PrintFields(static_cast<GlrEnumItem*>(node));
 		EndObject();
 	}
@@ -158,7 +158,7 @@ namespace vl::glr::parsergen::json_visitor
 			return;
 		}
 		BeginObject();
-		WriteType(L"ClassProp", node);
+		WriteType(vl::WString::Unmanaged(L"ClassProp"), node);
 		PrintFields(static_cast<GlrClassProp*>(node));
 		EndObject();
 	}
@@ -171,7 +171,7 @@ namespace vl::glr::parsergen::json_visitor
 			return;
 		}
 		BeginObject();
-		WriteType(L"AstFile", node);
+		WriteType(vl::WString::Unmanaged(L"AstFile"), node);
 		PrintFields(static_cast<GlrAstFile*>(node));
 		EndObject();
 	}

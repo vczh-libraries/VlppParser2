@@ -10,35 +10,35 @@ namespace binaryop::json_visitor
 {
 	void ExprAstVisitor::PrintFields(BinaryExpr* node)
 	{
-		BeginField(L"left");
+		BeginField(vl::WString::Unmanaged(L"left"));
 		Print(node->left.Obj());
 		EndField();
-		BeginField(L"op");
+		BeginField(vl::WString::Unmanaged(L"op"));
 		switch (node->op)
 		{
 		case binaryop::BinaryOp::Add:
-			WriteString(L"Add");
+			WriteString(vl::WString::Unmanaged(L"Add"));
 			break;
 		case binaryop::BinaryOp::Assign:
-			WriteString(L"Assign");
+			WriteString(vl::WString::Unmanaged(L"Assign"));
 			break;
 		case binaryop::BinaryOp::Dollar:
-			WriteString(L"Dollar");
+			WriteString(vl::WString::Unmanaged(L"Dollar"));
 			break;
 		case binaryop::BinaryOp::Exp:
-			WriteString(L"Exp");
+			WriteString(vl::WString::Unmanaged(L"Exp"));
 			break;
 		case binaryop::BinaryOp::Mul:
-			WriteString(L"Mul");
+			WriteString(vl::WString::Unmanaged(L"Mul"));
 			break;
 		case binaryop::BinaryOp::Try:
-			WriteString(L"Try");
+			WriteString(vl::WString::Unmanaged(L"Try"));
 			break;
 		default:
 			WriteNull();
 		}
 		EndField();
-		BeginField(L"right");
+		BeginField(vl::WString::Unmanaged(L"right"));
 		Print(node->right.Obj());
 		EndField();
 	}
@@ -47,7 +47,7 @@ namespace binaryop::json_visitor
 	}
 	void ExprAstVisitor::PrintFields(RefExpr* node)
 	{
-		BeginField(L"name");
+		BeginField(vl::WString::Unmanaged(L"name"));
 		WriteToken(node->name);
 		EndField();
 	}
@@ -60,7 +60,7 @@ namespace binaryop::json_visitor
 			return;
 		}
 		BeginObject();
-		WriteType(L"RefExpr", node);
+		WriteType(vl::WString::Unmanaged(L"RefExpr"), node);
 		PrintFields(static_cast<Expr*>(node));
 		PrintFields(static_cast<RefExpr*>(node));
 		EndObject();
@@ -74,7 +74,7 @@ namespace binaryop::json_visitor
 			return;
 		}
 		BeginObject();
-		WriteType(L"BinaryExpr", node);
+		WriteType(vl::WString::Unmanaged(L"BinaryExpr"), node);
 		PrintFields(static_cast<Expr*>(node));
 		PrintFields(static_cast<BinaryExpr*>(node));
 		EndObject();

@@ -4,7 +4,6 @@
 
 - Try remove `beforeIns`.
 - Try remove all LRJ syntax, build LRJ structure from state machine instead.
-- Calling `JsonVisitorBase::BeginField/WriteToken/WriteType/WriteString` with `WString::Unmanaged` if necessary in C++ and generated code.
 
 ## Test Cases
 

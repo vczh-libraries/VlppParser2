@@ -10,41 +10,41 @@ namespace vl::glr::parsergen::json_visitor
 {
 	void RuleAstVisitor::PrintFields(GlrAlternativeSyntax* node)
 	{
-		BeginField(L"first");
+		BeginField(vl::WString::Unmanaged(L"first"));
 		Print(node->first.Obj());
 		EndField();
-		BeginField(L"second");
+		BeginField(vl::WString::Unmanaged(L"second"));
 		Print(node->second.Obj());
 		EndField();
 	}
 	void RuleAstVisitor::PrintFields(GlrAndCondition* node)
 	{
-		BeginField(L"first");
+		BeginField(vl::WString::Unmanaged(L"first"));
 		Print(node->first.Obj());
 		EndField();
-		BeginField(L"second");
+		BeginField(vl::WString::Unmanaged(L"second"));
 		Print(node->second.Obj());
 		EndField();
 	}
 	void RuleAstVisitor::PrintFields(GlrAssignment* node)
 	{
-		BeginField(L"field");
+		BeginField(vl::WString::Unmanaged(L"field"));
 		WriteToken(node->field);
 		EndField();
-		BeginField(L"type");
+		BeginField(vl::WString::Unmanaged(L"type"));
 		switch (node->type)
 		{
 		case vl::glr::parsergen::GlrAssignmentType::Strong:
-			WriteString(L"Strong");
+			WriteString(vl::WString::Unmanaged(L"Strong"));
 			break;
 		case vl::glr::parsergen::GlrAssignmentType::Weak:
-			WriteString(L"Weak");
+			WriteString(vl::WString::Unmanaged(L"Weak"));
 			break;
 		default:
 			WriteNull();
 		}
 		EndField();
-		BeginField(L"value");
+		BeginField(vl::WString::Unmanaged(L"value"));
 		WriteToken(node->value);
 		EndField();
 	}
@@ -56,7 +56,7 @@ namespace vl::glr::parsergen::json_visitor
 	}
 	void RuleAstVisitor::PrintFields(GlrCreateClause* node)
 	{
-		BeginField(L"assignments");
+		BeginField(vl::WString::Unmanaged(L"assignments"));
 		BeginArray();
 		for (auto&& listItem : node->assignments)
 		{
@@ -66,38 +66,38 @@ namespace vl::glr::parsergen::json_visitor
 		}
 		EndArray();
 		EndField();
-		BeginField(L"syntax");
+		BeginField(vl::WString::Unmanaged(L"syntax"));
 		Print(node->syntax.Obj());
 		EndField();
-		BeginField(L"type");
+		BeginField(vl::WString::Unmanaged(L"type"));
 		WriteToken(node->type);
 		EndField();
 	}
 	void RuleAstVisitor::PrintFields(GlrLeftRecursionInjectClause* node)
 	{
-		BeginField(L"continuation");
+		BeginField(vl::WString::Unmanaged(L"continuation"));
 		Print(node->continuation.Obj());
 		EndField();
-		BeginField(L"rule");
+		BeginField(vl::WString::Unmanaged(L"rule"));
 		Print(node->rule.Obj());
 		EndField();
 	}
 	void RuleAstVisitor::PrintFields(GlrLeftRecursionInjectContinuation* node)
 	{
-		BeginField(L"configuration");
+		BeginField(vl::WString::Unmanaged(L"configuration"));
 		switch (node->configuration)
 		{
 		case vl::glr::parsergen::GlrLeftRecursionConfiguration::Multiple:
-			WriteString(L"Multiple");
+			WriteString(vl::WString::Unmanaged(L"Multiple"));
 			break;
 		case vl::glr::parsergen::GlrLeftRecursionConfiguration::Single:
-			WriteString(L"Single");
+			WriteString(vl::WString::Unmanaged(L"Single"));
 			break;
 		default:
 			WriteNull();
 		}
 		EndField();
-		BeginField(L"flags");
+		BeginField(vl::WString::Unmanaged(L"flags"));
 		BeginArray();
 		for (auto&& listItem : node->flags)
 		{
@@ -107,7 +107,7 @@ namespace vl::glr::parsergen::json_visitor
 		}
 		EndArray();
 		EndField();
-		BeginField(L"injectionTargets");
+		BeginField(vl::WString::Unmanaged(L"injectionTargets"));
 		BeginArray();
 		for (auto&& listItem : node->injectionTargets)
 		{
@@ -117,14 +117,14 @@ namespace vl::glr::parsergen::json_visitor
 		}
 		EndArray();
 		EndField();
-		BeginField(L"type");
+		BeginField(vl::WString::Unmanaged(L"type"));
 		switch (node->type)
 		{
 		case vl::glr::parsergen::GlrLeftRecursionInjectContinuationType::Optional:
-			WriteString(L"Optional");
+			WriteString(vl::WString::Unmanaged(L"Optional"));
 			break;
 		case vl::glr::parsergen::GlrLeftRecursionInjectContinuationType::Required:
-			WriteString(L"Required");
+			WriteString(vl::WString::Unmanaged(L"Required"));
 			break;
 		default:
 			WriteNull();
@@ -133,13 +133,13 @@ namespace vl::glr::parsergen::json_visitor
 	}
 	void RuleAstVisitor::PrintFields(GlrLeftRecursionPlaceholder* node)
 	{
-		BeginField(L"flag");
+		BeginField(vl::WString::Unmanaged(L"flag"));
 		WriteToken(node->flag);
 		EndField();
 	}
 	void RuleAstVisitor::PrintFields(GlrLeftRecursionPlaceholderClause* node)
 	{
-		BeginField(L"flags");
+		BeginField(vl::WString::Unmanaged(L"flags"));
 		BeginArray();
 		for (auto&& listItem : node->flags)
 		{
@@ -152,53 +152,53 @@ namespace vl::glr::parsergen::json_visitor
 	}
 	void RuleAstVisitor::PrintFields(GlrLoopSyntax* node)
 	{
-		BeginField(L"delimiter");
+		BeginField(vl::WString::Unmanaged(L"delimiter"));
 		Print(node->delimiter.Obj());
 		EndField();
-		BeginField(L"syntax");
+		BeginField(vl::WString::Unmanaged(L"syntax"));
 		Print(node->syntax.Obj());
 		EndField();
 	}
 	void RuleAstVisitor::PrintFields(GlrNotCondition* node)
 	{
-		BeginField(L"condition");
+		BeginField(vl::WString::Unmanaged(L"condition"));
 		Print(node->condition.Obj());
 		EndField();
 	}
 	void RuleAstVisitor::PrintFields(GlrOptionalSyntax* node)
 	{
-		BeginField(L"priority");
+		BeginField(vl::WString::Unmanaged(L"priority"));
 		switch (node->priority)
 		{
 		case vl::glr::parsergen::GlrOptionalPriority::Equal:
-			WriteString(L"Equal");
+			WriteString(vl::WString::Unmanaged(L"Equal"));
 			break;
 		case vl::glr::parsergen::GlrOptionalPriority::PreferSkip:
-			WriteString(L"PreferSkip");
+			WriteString(vl::WString::Unmanaged(L"PreferSkip"));
 			break;
 		case vl::glr::parsergen::GlrOptionalPriority::PreferTake:
-			WriteString(L"PreferTake");
+			WriteString(vl::WString::Unmanaged(L"PreferTake"));
 			break;
 		default:
 			WriteNull();
 		}
 		EndField();
-		BeginField(L"syntax");
+		BeginField(vl::WString::Unmanaged(L"syntax"));
 		Print(node->syntax.Obj());
 		EndField();
 	}
 	void RuleAstVisitor::PrintFields(GlrOrCondition* node)
 	{
-		BeginField(L"first");
+		BeginField(vl::WString::Unmanaged(L"first"));
 		Print(node->first.Obj());
 		EndField();
-		BeginField(L"second");
+		BeginField(vl::WString::Unmanaged(L"second"));
 		Print(node->second.Obj());
 		EndField();
 	}
 	void RuleAstVisitor::PrintFields(GlrPartialClause* node)
 	{
-		BeginField(L"assignments");
+		BeginField(vl::WString::Unmanaged(L"assignments"));
 		BeginArray();
 		for (auto&& listItem : node->assignments)
 		{
@@ -208,22 +208,22 @@ namespace vl::glr::parsergen::json_visitor
 		}
 		EndArray();
 		EndField();
-		BeginField(L"syntax");
+		BeginField(vl::WString::Unmanaged(L"syntax"));
 		Print(node->syntax.Obj());
 		EndField();
-		BeginField(L"type");
+		BeginField(vl::WString::Unmanaged(L"type"));
 		WriteToken(node->type);
 		EndField();
 	}
 	void RuleAstVisitor::PrintFields(GlrPrefixMergeClause* node)
 	{
-		BeginField(L"rule");
+		BeginField(vl::WString::Unmanaged(L"rule"));
 		Print(node->rule.Obj());
 		EndField();
 	}
 	void RuleAstVisitor::PrintFields(GlrPushConditionSyntax* node)
 	{
-		BeginField(L"switches");
+		BeginField(vl::WString::Unmanaged(L"switches"));
 		BeginArray();
 		for (auto&& listItem : node->switches)
 		{
@@ -233,35 +233,35 @@ namespace vl::glr::parsergen::json_visitor
 		}
 		EndArray();
 		EndField();
-		BeginField(L"syntax");
+		BeginField(vl::WString::Unmanaged(L"syntax"));
 		Print(node->syntax.Obj());
 		EndField();
 	}
 	void RuleAstVisitor::PrintFields(GlrRefCondition* node)
 	{
-		BeginField(L"name");
+		BeginField(vl::WString::Unmanaged(L"name"));
 		WriteToken(node->name);
 		EndField();
 	}
 	void RuleAstVisitor::PrintFields(GlrRefSyntax* node)
 	{
-		BeginField(L"field");
+		BeginField(vl::WString::Unmanaged(L"field"));
 		WriteToken(node->field);
 		EndField();
-		BeginField(L"literal");
+		BeginField(vl::WString::Unmanaged(L"literal"));
 		WriteToken(node->literal);
 		EndField();
-		BeginField(L"refType");
+		BeginField(vl::WString::Unmanaged(L"refType"));
 		switch (node->refType)
 		{
 		case vl::glr::parsergen::GlrRefType::ConditionalLiteral:
-			WriteString(L"ConditionalLiteral");
+			WriteString(vl::WString::Unmanaged(L"ConditionalLiteral"));
 			break;
 		case vl::glr::parsergen::GlrRefType::Id:
-			WriteString(L"Id");
+			WriteString(vl::WString::Unmanaged(L"Id"));
 			break;
 		case vl::glr::parsergen::GlrRefType::Literal:
-			WriteString(L"Literal");
+			WriteString(vl::WString::Unmanaged(L"Literal"));
 			break;
 		default:
 			WriteNull();
@@ -270,7 +270,7 @@ namespace vl::glr::parsergen::json_visitor
 	}
 	void RuleAstVisitor::PrintFields(GlrReuseClause* node)
 	{
-		BeginField(L"assignments");
+		BeginField(vl::WString::Unmanaged(L"assignments"));
 		BeginArray();
 		for (auto&& listItem : node->assignments)
 		{
@@ -280,19 +280,19 @@ namespace vl::glr::parsergen::json_visitor
 		}
 		EndArray();
 		EndField();
-		BeginField(L"syntax");
+		BeginField(vl::WString::Unmanaged(L"syntax"));
 		Print(node->syntax.Obj());
 		EndField();
 	}
 	void RuleAstVisitor::PrintFields(GlrRule* node)
 	{
-		BeginField(L"attParser");
+		BeginField(vl::WString::Unmanaged(L"attParser"));
 		WriteToken(node->attParser);
 		EndField();
-		BeginField(L"attPublic");
+		BeginField(vl::WString::Unmanaged(L"attPublic"));
 		WriteToken(node->attPublic);
 		EndField();
-		BeginField(L"clauses");
+		BeginField(vl::WString::Unmanaged(L"clauses"));
 		BeginArray();
 		for (auto&& listItem : node->clauses)
 		{
@@ -302,35 +302,35 @@ namespace vl::glr::parsergen::json_visitor
 		}
 		EndArray();
 		EndField();
-		BeginField(L"name");
+		BeginField(vl::WString::Unmanaged(L"name"));
 		WriteToken(node->name);
 		EndField();
-		BeginField(L"type");
+		BeginField(vl::WString::Unmanaged(L"type"));
 		WriteToken(node->type);
 		EndField();
 	}
 	void RuleAstVisitor::PrintFields(GlrSequenceSyntax* node)
 	{
-		BeginField(L"first");
+		BeginField(vl::WString::Unmanaged(L"first"));
 		Print(node->first.Obj());
 		EndField();
-		BeginField(L"second");
+		BeginField(vl::WString::Unmanaged(L"second"));
 		Print(node->second.Obj());
 		EndField();
 	}
 	void RuleAstVisitor::PrintFields(GlrSwitchItem* node)
 	{
-		BeginField(L"name");
+		BeginField(vl::WString::Unmanaged(L"name"));
 		WriteToken(node->name);
 		EndField();
-		BeginField(L"value");
+		BeginField(vl::WString::Unmanaged(L"value"));
 		switch (node->value)
 		{
 		case vl::glr::parsergen::GlrSwitchValue::False:
-			WriteString(L"False");
+			WriteString(vl::WString::Unmanaged(L"False"));
 			break;
 		case vl::glr::parsergen::GlrSwitchValue::True:
-			WriteString(L"True");
+			WriteString(vl::WString::Unmanaged(L"True"));
 			break;
 		default:
 			WriteNull();
@@ -342,7 +342,7 @@ namespace vl::glr::parsergen::json_visitor
 	}
 	void RuleAstVisitor::PrintFields(GlrSyntaxFile* node)
 	{
-		BeginField(L"rules");
+		BeginField(vl::WString::Unmanaged(L"rules"));
 		BeginArray();
 		for (auto&& listItem : node->rules)
 		{
@@ -352,7 +352,7 @@ namespace vl::glr::parsergen::json_visitor
 		}
 		EndArray();
 		EndField();
-		BeginField(L"switches");
+		BeginField(vl::WString::Unmanaged(L"switches"));
 		BeginArray();
 		for (auto&& listItem : node->switches)
 		{
@@ -365,16 +365,16 @@ namespace vl::glr::parsergen::json_visitor
 	}
 	void RuleAstVisitor::PrintFields(GlrTestConditionBranch* node)
 	{
-		BeginField(L"condition");
+		BeginField(vl::WString::Unmanaged(L"condition"));
 		Print(node->condition.Obj());
 		EndField();
-		BeginField(L"syntax");
+		BeginField(vl::WString::Unmanaged(L"syntax"));
 		Print(node->syntax.Obj());
 		EndField();
 	}
 	void RuleAstVisitor::PrintFields(GlrTestConditionSyntax* node)
 	{
-		BeginField(L"branches");
+		BeginField(vl::WString::Unmanaged(L"branches"));
 		BeginArray();
 		for (auto&& listItem : node->branches)
 		{
@@ -387,7 +387,7 @@ namespace vl::glr::parsergen::json_visitor
 	}
 	void RuleAstVisitor::PrintFields(GlrUseSyntax* node)
 	{
-		BeginField(L"name");
+		BeginField(vl::WString::Unmanaged(L"name"));
 		WriteToken(node->name);
 		EndField();
 	}
@@ -400,7 +400,7 @@ namespace vl::glr::parsergen::json_visitor
 			return;
 		}
 		BeginObject();
-		WriteType(L"RefCondition", node);
+		WriteType(vl::WString::Unmanaged(L"RefCondition"), node);
 		PrintFields(static_cast<GlrCondition*>(node));
 		PrintFields(static_cast<GlrRefCondition*>(node));
 		EndObject();
@@ -414,7 +414,7 @@ namespace vl::glr::parsergen::json_visitor
 			return;
 		}
 		BeginObject();
-		WriteType(L"NotCondition", node);
+		WriteType(vl::WString::Unmanaged(L"NotCondition"), node);
 		PrintFields(static_cast<GlrCondition*>(node));
 		PrintFields(static_cast<GlrNotCondition*>(node));
 		EndObject();
@@ -428,7 +428,7 @@ namespace vl::glr::parsergen::json_visitor
 			return;
 		}
 		BeginObject();
-		WriteType(L"AndCondition", node);
+		WriteType(vl::WString::Unmanaged(L"AndCondition"), node);
 		PrintFields(static_cast<GlrCondition*>(node));
 		PrintFields(static_cast<GlrAndCondition*>(node));
 		EndObject();
@@ -442,7 +442,7 @@ namespace vl::glr::parsergen::json_visitor
 			return;
 		}
 		BeginObject();
-		WriteType(L"OrCondition", node);
+		WriteType(vl::WString::Unmanaged(L"OrCondition"), node);
 		PrintFields(static_cast<GlrCondition*>(node));
 		PrintFields(static_cast<GlrOrCondition*>(node));
 		EndObject();
@@ -456,7 +456,7 @@ namespace vl::glr::parsergen::json_visitor
 			return;
 		}
 		BeginObject();
-		WriteType(L"RefSyntax", node);
+		WriteType(vl::WString::Unmanaged(L"RefSyntax"), node);
 		PrintFields(static_cast<GlrSyntax*>(node));
 		PrintFields(static_cast<GlrRefSyntax*>(node));
 		EndObject();
@@ -470,7 +470,7 @@ namespace vl::glr::parsergen::json_visitor
 			return;
 		}
 		BeginObject();
-		WriteType(L"UseSyntax", node);
+		WriteType(vl::WString::Unmanaged(L"UseSyntax"), node);
 		PrintFields(static_cast<GlrSyntax*>(node));
 		PrintFields(static_cast<GlrUseSyntax*>(node));
 		EndObject();
@@ -484,7 +484,7 @@ namespace vl::glr::parsergen::json_visitor
 			return;
 		}
 		BeginObject();
-		WriteType(L"LoopSyntax", node);
+		WriteType(vl::WString::Unmanaged(L"LoopSyntax"), node);
 		PrintFields(static_cast<GlrSyntax*>(node));
 		PrintFields(static_cast<GlrLoopSyntax*>(node));
 		EndObject();
@@ -498,7 +498,7 @@ namespace vl::glr::parsergen::json_visitor
 			return;
 		}
 		BeginObject();
-		WriteType(L"OptionalSyntax", node);
+		WriteType(vl::WString::Unmanaged(L"OptionalSyntax"), node);
 		PrintFields(static_cast<GlrSyntax*>(node));
 		PrintFields(static_cast<GlrOptionalSyntax*>(node));
 		EndObject();
@@ -512,7 +512,7 @@ namespace vl::glr::parsergen::json_visitor
 			return;
 		}
 		BeginObject();
-		WriteType(L"SequenceSyntax", node);
+		WriteType(vl::WString::Unmanaged(L"SequenceSyntax"), node);
 		PrintFields(static_cast<GlrSyntax*>(node));
 		PrintFields(static_cast<GlrSequenceSyntax*>(node));
 		EndObject();
@@ -526,7 +526,7 @@ namespace vl::glr::parsergen::json_visitor
 			return;
 		}
 		BeginObject();
-		WriteType(L"AlternativeSyntax", node);
+		WriteType(vl::WString::Unmanaged(L"AlternativeSyntax"), node);
 		PrintFields(static_cast<GlrSyntax*>(node));
 		PrintFields(static_cast<GlrAlternativeSyntax*>(node));
 		EndObject();
@@ -540,7 +540,7 @@ namespace vl::glr::parsergen::json_visitor
 			return;
 		}
 		BeginObject();
-		WriteType(L"PushConditionSyntax", node);
+		WriteType(vl::WString::Unmanaged(L"PushConditionSyntax"), node);
 		PrintFields(static_cast<GlrSyntax*>(node));
 		PrintFields(static_cast<GlrPushConditionSyntax*>(node));
 		EndObject();
@@ -554,7 +554,7 @@ namespace vl::glr::parsergen::json_visitor
 			return;
 		}
 		BeginObject();
-		WriteType(L"TestConditionSyntax", node);
+		WriteType(vl::WString::Unmanaged(L"TestConditionSyntax"), node);
 		PrintFields(static_cast<GlrSyntax*>(node));
 		PrintFields(static_cast<GlrTestConditionSyntax*>(node));
 		EndObject();
@@ -568,7 +568,7 @@ namespace vl::glr::parsergen::json_visitor
 			return;
 		}
 		BeginObject();
-		WriteType(L"CreateClause", node);
+		WriteType(vl::WString::Unmanaged(L"CreateClause"), node);
 		PrintFields(static_cast<GlrClause*>(node));
 		PrintFields(static_cast<GlrCreateClause*>(node));
 		EndObject();
@@ -582,7 +582,7 @@ namespace vl::glr::parsergen::json_visitor
 			return;
 		}
 		BeginObject();
-		WriteType(L"PartialClause", node);
+		WriteType(vl::WString::Unmanaged(L"PartialClause"), node);
 		PrintFields(static_cast<GlrClause*>(node));
 		PrintFields(static_cast<GlrPartialClause*>(node));
 		EndObject();
@@ -596,7 +596,7 @@ namespace vl::glr::parsergen::json_visitor
 			return;
 		}
 		BeginObject();
-		WriteType(L"ReuseClause", node);
+		WriteType(vl::WString::Unmanaged(L"ReuseClause"), node);
 		PrintFields(static_cast<GlrClause*>(node));
 		PrintFields(static_cast<GlrReuseClause*>(node));
 		EndObject();
@@ -610,7 +610,7 @@ namespace vl::glr::parsergen::json_visitor
 			return;
 		}
 		BeginObject();
-		WriteType(L"LeftRecursionPlaceholderClause", node);
+		WriteType(vl::WString::Unmanaged(L"LeftRecursionPlaceholderClause"), node);
 		PrintFields(static_cast<GlrClause*>(node));
 		PrintFields(static_cast<GlrLeftRecursionPlaceholderClause*>(node));
 		EndObject();
@@ -624,7 +624,7 @@ namespace vl::glr::parsergen::json_visitor
 			return;
 		}
 		BeginObject();
-		WriteType(L"LeftRecursionInjectClause", node);
+		WriteType(vl::WString::Unmanaged(L"LeftRecursionInjectClause"), node);
 		PrintFields(static_cast<GlrClause*>(node));
 		PrintFields(static_cast<GlrLeftRecursionInjectClause*>(node));
 		EndObject();
@@ -638,7 +638,7 @@ namespace vl::glr::parsergen::json_visitor
 			return;
 		}
 		BeginObject();
-		WriteType(L"PrefixMergeClause", node);
+		WriteType(vl::WString::Unmanaged(L"PrefixMergeClause"), node);
 		PrintFields(static_cast<GlrClause*>(node));
 		PrintFields(static_cast<GlrPrefixMergeClause*>(node));
 		EndObject();
@@ -687,7 +687,7 @@ namespace vl::glr::parsergen::json_visitor
 			return;
 		}
 		BeginObject();
-		WriteType(L"SwitchItem", node);
+		WriteType(vl::WString::Unmanaged(L"SwitchItem"), node);
 		PrintFields(static_cast<GlrSwitchItem*>(node));
 		EndObject();
 	}
@@ -700,7 +700,7 @@ namespace vl::glr::parsergen::json_visitor
 			return;
 		}
 		BeginObject();
-		WriteType(L"TestConditionBranch", node);
+		WriteType(vl::WString::Unmanaged(L"TestConditionBranch"), node);
 		PrintFields(static_cast<GlrTestConditionBranch*>(node));
 		EndObject();
 	}
@@ -713,7 +713,7 @@ namespace vl::glr::parsergen::json_visitor
 			return;
 		}
 		BeginObject();
-		WriteType(L"Assignment", node);
+		WriteType(vl::WString::Unmanaged(L"Assignment"), node);
 		PrintFields(static_cast<GlrAssignment*>(node));
 		EndObject();
 	}
@@ -726,7 +726,7 @@ namespace vl::glr::parsergen::json_visitor
 			return;
 		}
 		BeginObject();
-		WriteType(L"LeftRecursionPlaceholder", node);
+		WriteType(vl::WString::Unmanaged(L"LeftRecursionPlaceholder"), node);
 		PrintFields(static_cast<GlrLeftRecursionPlaceholder*>(node));
 		EndObject();
 	}
@@ -739,7 +739,7 @@ namespace vl::glr::parsergen::json_visitor
 			return;
 		}
 		BeginObject();
-		WriteType(L"LeftRecursionInjectContinuation", node);
+		WriteType(vl::WString::Unmanaged(L"LeftRecursionInjectContinuation"), node);
 		PrintFields(static_cast<GlrLeftRecursionInjectContinuation*>(node));
 		EndObject();
 	}
@@ -752,7 +752,7 @@ namespace vl::glr::parsergen::json_visitor
 			return;
 		}
 		BeginObject();
-		WriteType(L"Rule", node);
+		WriteType(vl::WString::Unmanaged(L"Rule"), node);
 		PrintFields(static_cast<GlrRule*>(node));
 		EndObject();
 	}
@@ -765,7 +765,7 @@ namespace vl::glr::parsergen::json_visitor
 			return;
 		}
 		BeginObject();
-		WriteType(L"SyntaxFile", node);
+		WriteType(vl::WString::Unmanaged(L"SyntaxFile"), node);
 		PrintFields(static_cast<GlrSyntaxFile*>(node));
 		EndObject();
 	}

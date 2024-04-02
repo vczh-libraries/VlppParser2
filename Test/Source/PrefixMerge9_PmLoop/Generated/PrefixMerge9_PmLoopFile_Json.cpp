@@ -16,7 +16,7 @@ namespace prefixmerge9_pmloop::json_visitor
 	}
 	void FileVisitor::PrintFields(File* node)
 	{
-		BeginField(L"items");
+		BeginField(vl::WString::Unmanaged(L"items"));
 		BeginArray();
 		for (auto&& listItem : node->items)
 		{
@@ -44,7 +44,7 @@ namespace prefixmerge9_pmloop::json_visitor
 	}
 	void FileVisitor::PrintFields(ItemToResolve* node)
 	{
-		BeginField(L"candidates");
+		BeginField(vl::WString::Unmanaged(L"candidates"));
 		BeginArray();
 		for (auto&& listItem : node->candidates)
 		{
@@ -57,7 +57,7 @@ namespace prefixmerge9_pmloop::json_visitor
 	}
 	void FileVisitor::PrintFields(QuestionItem* node)
 	{
-		BeginField(L"item");
+		BeginField(vl::WString::Unmanaged(L"item"));
 		Print(node->item.Obj());
 		EndField();
 	}
@@ -70,7 +70,7 @@ namespace prefixmerge9_pmloop::json_visitor
 			return;
 		}
 		BeginObject();
-		WriteType(L"ItemToResolve", node);
+		WriteType(vl::WString::Unmanaged(L"ItemToResolve"), node);
 		PrintFields(static_cast<Item*>(node));
 		PrintFields(static_cast<ItemToResolve*>(node));
 		EndObject();
@@ -84,7 +84,7 @@ namespace prefixmerge9_pmloop::json_visitor
 			return;
 		}
 		BeginObject();
-		WriteType(L"IntItem", node);
+		WriteType(vl::WString::Unmanaged(L"IntItem"), node);
 		PrintFields(static_cast<Item*>(node));
 		PrintFields(static_cast<IntItem*>(node));
 		EndObject();
@@ -98,7 +98,7 @@ namespace prefixmerge9_pmloop::json_visitor
 			return;
 		}
 		BeginObject();
-		WriteType(L"IntCommaItem", node);
+		WriteType(vl::WString::Unmanaged(L"IntCommaItem"), node);
 		PrintFields(static_cast<Item*>(node));
 		PrintFields(static_cast<IntCommaItem*>(node));
 		EndObject();
@@ -112,7 +112,7 @@ namespace prefixmerge9_pmloop::json_visitor
 			return;
 		}
 		BeginObject();
-		WriteType(L"IntDotItem", node);
+		WriteType(vl::WString::Unmanaged(L"IntDotItem"), node);
 		PrintFields(static_cast<Item*>(node));
 		PrintFields(static_cast<IntDotItem*>(node));
 		EndObject();
@@ -126,7 +126,7 @@ namespace prefixmerge9_pmloop::json_visitor
 			return;
 		}
 		BeginObject();
-		WriteType(L"IntQuestionItem", node);
+		WriteType(vl::WString::Unmanaged(L"IntQuestionItem"), node);
 		PrintFields(static_cast<Item*>(node));
 		PrintFields(static_cast<IntQuestionItem*>(node));
 		EndObject();
@@ -140,7 +140,7 @@ namespace prefixmerge9_pmloop::json_visitor
 			return;
 		}
 		BeginObject();
-		WriteType(L"ClassItem", node);
+		WriteType(vl::WString::Unmanaged(L"ClassItem"), node);
 		PrintFields(static_cast<Item*>(node));
 		PrintFields(static_cast<ClassItem*>(node));
 		EndObject();
@@ -154,7 +154,7 @@ namespace prefixmerge9_pmloop::json_visitor
 			return;
 		}
 		BeginObject();
-		WriteType(L"ClassQuestionItem", node);
+		WriteType(vl::WString::Unmanaged(L"ClassQuestionItem"), node);
 		PrintFields(static_cast<Item*>(node));
 		PrintFields(static_cast<ClassQuestionItem*>(node));
 		EndObject();
@@ -168,7 +168,7 @@ namespace prefixmerge9_pmloop::json_visitor
 			return;
 		}
 		BeginObject();
-		WriteType(L"QuestionItem", node);
+		WriteType(vl::WString::Unmanaged(L"QuestionItem"), node);
 		PrintFields(static_cast<Item*>(node));
 		PrintFields(static_cast<QuestionItem*>(node));
 		EndObject();
@@ -197,7 +197,7 @@ namespace prefixmerge9_pmloop::json_visitor
 			return;
 		}
 		BeginObject();
-		WriteType(L"File", node);
+		WriteType(vl::WString::Unmanaged(L"File"), node);
 		PrintFields(static_cast<File*>(node));
 		EndObject();
 	}

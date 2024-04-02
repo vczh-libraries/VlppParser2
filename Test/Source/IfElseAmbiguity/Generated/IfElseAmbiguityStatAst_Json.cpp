@@ -10,7 +10,7 @@ namespace ifelseambiguity::json_visitor
 {
 	void StatAstVisitor::PrintFields(BlockStat* node)
 	{
-		BeginField(L"stats");
+		BeginField(vl::WString::Unmanaged(L"stats"));
 		BeginArray();
 		for (auto&& listItem : node->stats)
 		{
@@ -29,16 +29,16 @@ namespace ifelseambiguity::json_visitor
 	}
 	void StatAstVisitor::PrintFields(IfContentCandidate* node)
 	{
-		BeginField(L"elseBranch");
+		BeginField(vl::WString::Unmanaged(L"elseBranch"));
 		Print(node->elseBranch.Obj());
 		EndField();
-		BeginField(L"thenBranch");
+		BeginField(vl::WString::Unmanaged(L"thenBranch"));
 		Print(node->thenBranch.Obj());
 		EndField();
 	}
 	void StatAstVisitor::PrintFields(IfContentToResolve* node)
 	{
-		BeginField(L"candidates");
+		BeginField(vl::WString::Unmanaged(L"candidates"));
 		BeginArray();
 		for (auto&& listItem : node->candidates)
 		{
@@ -51,13 +51,13 @@ namespace ifelseambiguity::json_visitor
 	}
 	void StatAstVisitor::PrintFields(IfStat* node)
 	{
-		BeginField(L"content");
+		BeginField(vl::WString::Unmanaged(L"content"));
 		Print(node->content.Obj());
 		EndField();
 	}
 	void StatAstVisitor::PrintFields(Module* node)
 	{
-		BeginField(L"stat");
+		BeginField(vl::WString::Unmanaged(L"stat"));
 		Print(node->stat.Obj());
 		EndField();
 	}
@@ -73,7 +73,7 @@ namespace ifelseambiguity::json_visitor
 			return;
 		}
 		BeginObject();
-		WriteType(L"DoStat", node);
+		WriteType(vl::WString::Unmanaged(L"DoStat"), node);
 		PrintFields(static_cast<Stat*>(node));
 		PrintFields(static_cast<DoStat*>(node));
 		EndObject();
@@ -87,7 +87,7 @@ namespace ifelseambiguity::json_visitor
 			return;
 		}
 		BeginObject();
-		WriteType(L"IfStat", node);
+		WriteType(vl::WString::Unmanaged(L"IfStat"), node);
 		PrintFields(static_cast<Stat*>(node));
 		PrintFields(static_cast<IfStat*>(node));
 		EndObject();
@@ -101,7 +101,7 @@ namespace ifelseambiguity::json_visitor
 			return;
 		}
 		BeginObject();
-		WriteType(L"BlockStat", node);
+		WriteType(vl::WString::Unmanaged(L"BlockStat"), node);
 		PrintFields(static_cast<Stat*>(node));
 		PrintFields(static_cast<BlockStat*>(node));
 		EndObject();
@@ -115,7 +115,7 @@ namespace ifelseambiguity::json_visitor
 			return;
 		}
 		BeginObject();
-		WriteType(L"IfContentToResolve", node);
+		WriteType(vl::WString::Unmanaged(L"IfContentToResolve"), node);
 		PrintFields(static_cast<IfContent*>(node));
 		PrintFields(static_cast<IfContentToResolve*>(node));
 		EndObject();
@@ -129,7 +129,7 @@ namespace ifelseambiguity::json_visitor
 			return;
 		}
 		BeginObject();
-		WriteType(L"IfContentCandidate", node);
+		WriteType(vl::WString::Unmanaged(L"IfContentCandidate"), node);
 		PrintFields(static_cast<IfContent*>(node));
 		PrintFields(static_cast<IfContentCandidate*>(node));
 		EndObject();
@@ -168,7 +168,7 @@ namespace ifelseambiguity::json_visitor
 			return;
 		}
 		BeginObject();
-		WriteType(L"Module", node);
+		WriteType(vl::WString::Unmanaged(L"Module"), node);
 		PrintFields(static_cast<Module*>(node));
 		EndObject();
 	}

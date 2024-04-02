@@ -10,7 +10,7 @@ namespace vl::glr::json::json_visitor
 {
 	void AstVisitor::PrintFields(JsonArray* node)
 	{
-		BeginField(L"items");
+		BeginField(vl::WString::Unmanaged(L"items"));
 		BeginArray();
 		for (auto&& listItem : node->items)
 		{
@@ -23,17 +23,17 @@ namespace vl::glr::json::json_visitor
 	}
 	void AstVisitor::PrintFields(JsonLiteral* node)
 	{
-		BeginField(L"value");
+		BeginField(vl::WString::Unmanaged(L"value"));
 		switch (node->value)
 		{
 		case vl::glr::json::JsonLiteralValue::False:
-			WriteString(L"False");
+			WriteString(vl::WString::Unmanaged(L"False"));
 			break;
 		case vl::glr::json::JsonLiteralValue::Null:
-			WriteString(L"Null");
+			WriteString(vl::WString::Unmanaged(L"Null"));
 			break;
 		case vl::glr::json::JsonLiteralValue::True:
-			WriteString(L"True");
+			WriteString(vl::WString::Unmanaged(L"True"));
 			break;
 		default:
 			WriteNull();
@@ -45,13 +45,13 @@ namespace vl::glr::json::json_visitor
 	}
 	void AstVisitor::PrintFields(JsonNumber* node)
 	{
-		BeginField(L"content");
+		BeginField(vl::WString::Unmanaged(L"content"));
 		WriteToken(node->content);
 		EndField();
 	}
 	void AstVisitor::PrintFields(JsonObject* node)
 	{
-		BeginField(L"fields");
+		BeginField(vl::WString::Unmanaged(L"fields"));
 		BeginArray();
 		for (auto&& listItem : node->fields)
 		{
@@ -64,16 +64,16 @@ namespace vl::glr::json::json_visitor
 	}
 	void AstVisitor::PrintFields(JsonObjectField* node)
 	{
-		BeginField(L"name");
+		BeginField(vl::WString::Unmanaged(L"name"));
 		WriteToken(node->name);
 		EndField();
-		BeginField(L"value");
+		BeginField(vl::WString::Unmanaged(L"value"));
 		Print(node->value.Obj());
 		EndField();
 	}
 	void AstVisitor::PrintFields(JsonString* node)
 	{
-		BeginField(L"content");
+		BeginField(vl::WString::Unmanaged(L"content"));
 		WriteToken(node->content);
 		EndField();
 	}
@@ -86,7 +86,7 @@ namespace vl::glr::json::json_visitor
 			return;
 		}
 		BeginObject();
-		WriteType(L"Literal", node);
+		WriteType(vl::WString::Unmanaged(L"Literal"), node);
 		PrintFields(static_cast<JsonNode*>(node));
 		PrintFields(static_cast<JsonLiteral*>(node));
 		EndObject();
@@ -100,7 +100,7 @@ namespace vl::glr::json::json_visitor
 			return;
 		}
 		BeginObject();
-		WriteType(L"String", node);
+		WriteType(vl::WString::Unmanaged(L"String"), node);
 		PrintFields(static_cast<JsonNode*>(node));
 		PrintFields(static_cast<JsonString*>(node));
 		EndObject();
@@ -114,7 +114,7 @@ namespace vl::glr::json::json_visitor
 			return;
 		}
 		BeginObject();
-		WriteType(L"Number", node);
+		WriteType(vl::WString::Unmanaged(L"Number"), node);
 		PrintFields(static_cast<JsonNode*>(node));
 		PrintFields(static_cast<JsonNumber*>(node));
 		EndObject();
@@ -128,7 +128,7 @@ namespace vl::glr::json::json_visitor
 			return;
 		}
 		BeginObject();
-		WriteType(L"Array", node);
+		WriteType(vl::WString::Unmanaged(L"Array"), node);
 		PrintFields(static_cast<JsonNode*>(node));
 		PrintFields(static_cast<JsonArray*>(node));
 		EndObject();
@@ -142,7 +142,7 @@ namespace vl::glr::json::json_visitor
 			return;
 		}
 		BeginObject();
-		WriteType(L"Object", node);
+		WriteType(vl::WString::Unmanaged(L"Object"), node);
 		PrintFields(static_cast<JsonNode*>(node));
 		PrintFields(static_cast<JsonObject*>(node));
 		EndObject();
@@ -171,7 +171,7 @@ namespace vl::glr::json::json_visitor
 			return;
 		}
 		BeginObject();
-		WriteType(L"ObjectField", node);
+		WriteType(vl::WString::Unmanaged(L"ObjectField"), node);
 		PrintFields(static_cast<JsonObjectField*>(node));
 		EndObject();
 	}

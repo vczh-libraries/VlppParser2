@@ -10,28 +10,28 @@ namespace vl::glr::xml::json_visitor
 {
 	void AstVisitor::PrintFields(XmlAttribute* node)
 	{
-		BeginField(L"name");
+		BeginField(vl::WString::Unmanaged(L"name"));
 		WriteToken(node->name);
 		EndField();
-		BeginField(L"value");
+		BeginField(vl::WString::Unmanaged(L"value"));
 		WriteToken(node->value);
 		EndField();
 	}
 	void AstVisitor::PrintFields(XmlCData* node)
 	{
-		BeginField(L"content");
+		BeginField(vl::WString::Unmanaged(L"content"));
 		WriteToken(node->content);
 		EndField();
 	}
 	void AstVisitor::PrintFields(XmlComment* node)
 	{
-		BeginField(L"content");
+		BeginField(vl::WString::Unmanaged(L"content"));
 		WriteToken(node->content);
 		EndField();
 	}
 	void AstVisitor::PrintFields(XmlDocument* node)
 	{
-		BeginField(L"prologs");
+		BeginField(vl::WString::Unmanaged(L"prologs"));
 		BeginArray();
 		for (auto&& listItem : node->prologs)
 		{
@@ -41,13 +41,13 @@ namespace vl::glr::xml::json_visitor
 		}
 		EndArray();
 		EndField();
-		BeginField(L"rootElement");
+		BeginField(vl::WString::Unmanaged(L"rootElement"));
 		Print(node->rootElement.Obj());
 		EndField();
 	}
 	void AstVisitor::PrintFields(XmlElement* node)
 	{
-		BeginField(L"attributes");
+		BeginField(vl::WString::Unmanaged(L"attributes"));
 		BeginArray();
 		for (auto&& listItem : node->attributes)
 		{
@@ -57,13 +57,13 @@ namespace vl::glr::xml::json_visitor
 		}
 		EndArray();
 		EndField();
-		BeginField(L"closingName");
+		BeginField(vl::WString::Unmanaged(L"closingName"));
 		WriteToken(node->closingName);
 		EndField();
-		BeginField(L"name");
+		BeginField(vl::WString::Unmanaged(L"name"));
 		WriteToken(node->name);
 		EndField();
-		BeginField(L"subNodes");
+		BeginField(vl::WString::Unmanaged(L"subNodes"));
 		BeginArray();
 		for (auto&& listItem : node->subNodes)
 		{
@@ -76,7 +76,7 @@ namespace vl::glr::xml::json_visitor
 	}
 	void AstVisitor::PrintFields(XmlInstruction* node)
 	{
-		BeginField(L"attributes");
+		BeginField(vl::WString::Unmanaged(L"attributes"));
 		BeginArray();
 		for (auto&& listItem : node->attributes)
 		{
@@ -86,7 +86,7 @@ namespace vl::glr::xml::json_visitor
 		}
 		EndArray();
 		EndField();
-		BeginField(L"name");
+		BeginField(vl::WString::Unmanaged(L"name"));
 		WriteToken(node->name);
 		EndField();
 	}
@@ -95,7 +95,7 @@ namespace vl::glr::xml::json_visitor
 	}
 	void AstVisitor::PrintFields(XmlText* node)
 	{
-		BeginField(L"content");
+		BeginField(vl::WString::Unmanaged(L"content"));
 		WriteToken(node->content);
 		EndField();
 	}
@@ -108,7 +108,7 @@ namespace vl::glr::xml::json_visitor
 			return;
 		}
 		BeginObject();
-		WriteType(L"Text", node);
+		WriteType(vl::WString::Unmanaged(L"Text"), node);
 		PrintFields(static_cast<XmlNode*>(node));
 		PrintFields(static_cast<XmlText*>(node));
 		EndObject();
@@ -122,7 +122,7 @@ namespace vl::glr::xml::json_visitor
 			return;
 		}
 		BeginObject();
-		WriteType(L"CData", node);
+		WriteType(vl::WString::Unmanaged(L"CData"), node);
 		PrintFields(static_cast<XmlNode*>(node));
 		PrintFields(static_cast<XmlCData*>(node));
 		EndObject();
@@ -136,7 +136,7 @@ namespace vl::glr::xml::json_visitor
 			return;
 		}
 		BeginObject();
-		WriteType(L"Comment", node);
+		WriteType(vl::WString::Unmanaged(L"Comment"), node);
 		PrintFields(static_cast<XmlNode*>(node));
 		PrintFields(static_cast<XmlComment*>(node));
 		EndObject();
@@ -150,7 +150,7 @@ namespace vl::glr::xml::json_visitor
 			return;
 		}
 		BeginObject();
-		WriteType(L"Element", node);
+		WriteType(vl::WString::Unmanaged(L"Element"), node);
 		PrintFields(static_cast<XmlNode*>(node));
 		PrintFields(static_cast<XmlElement*>(node));
 		EndObject();
@@ -164,7 +164,7 @@ namespace vl::glr::xml::json_visitor
 			return;
 		}
 		BeginObject();
-		WriteType(L"Instruction", node);
+		WriteType(vl::WString::Unmanaged(L"Instruction"), node);
 		PrintFields(static_cast<XmlNode*>(node));
 		PrintFields(static_cast<XmlInstruction*>(node));
 		EndObject();
@@ -178,7 +178,7 @@ namespace vl::glr::xml::json_visitor
 			return;
 		}
 		BeginObject();
-		WriteType(L"Document", node);
+		WriteType(vl::WString::Unmanaged(L"Document"), node);
 		PrintFields(static_cast<XmlNode*>(node));
 		PrintFields(static_cast<XmlDocument*>(node));
 		EndObject();
@@ -207,7 +207,7 @@ namespace vl::glr::xml::json_visitor
 			return;
 		}
 		BeginObject();
-		WriteType(L"Attribute", node);
+		WriteType(vl::WString::Unmanaged(L"Attribute"), node);
 		PrintFields(static_cast<XmlAttribute*>(node));
 		EndObject();
 	}

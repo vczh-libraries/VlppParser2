@@ -20,7 +20,7 @@ WriteVisitFieldFunctionBody
 			{
 				for (auto propSymbol : fieldSymbol->Props().Values())
 				{
-					writer.WriteLine(prefix + L"\tBeginField(L\"" + propSymbol->Name() + L"\");");
+					writer.WriteLine(prefix + L"\tBeginField(vl::WString::Unmanaged(L\"" + propSymbol->Name() + L"\"));");
 					switch (propSymbol->propType)
 					{
 					case AstPropType::Token:
@@ -46,7 +46,7 @@ WriteVisitFieldFunctionBody
 								writer.WriteString(prefix + L"\tcase ");
 								PrintCppType(nullptr, enumPropSymbol, writer);
 								writer.WriteLine(L"::" + enumItemSymbol->Name() + L":");
-								writer.WriteLine(prefix + L"\t\tWriteString(L\"" + enumItemSymbol->Name() + L"\");");
+								writer.WriteLine(prefix + L"\t\tWriteString(vl::WString::Unmanaged(L\"" + enumItemSymbol->Name() + L"\"));");
 								writer.WriteLine(prefix + L"\t\tbreak;");
 							}
 							writer.WriteLine(prefix + L"\tdefault:");
@@ -86,7 +86,7 @@ WriteVisitFieldFunctionBody
 				}
 
 				writer.WriteLine(prefix + L"\tBeginObject();");
-				writer.WriteLine(prefix + L"\tWriteType(L\"" + fieldSymbol->Name() + L"\", node);");
+				writer.WriteLine(prefix + L"\tWriteType(vl::WString::Unmanaged(L\"" + fieldSymbol->Name() + L"\"), node);");
 				for (auto classSymbol : From(order).Reverse())
 				{
 					writer.WriteString(prefix + L"\tPrintFields(static_cast<");

@@ -10,10 +10,10 @@ namespace featuretest::json_visitor
 {
 	void FeatureAstVisitor::PrintFields(BranchedOptionalFeature* node)
 	{
-		BeginField(L"optional");
+		BeginField(vl::WString::Unmanaged(L"optional"));
 		Print(node->optional.Obj());
 		EndField();
-		BeginField(L"tails");
+		BeginField(vl::WString::Unmanaged(L"tails"));
 		BeginArray();
 		for (auto&& listItem : node->tails)
 		{
@@ -23,17 +23,17 @@ namespace featuretest::json_visitor
 		}
 		EndArray();
 		EndField();
-		BeginField(L"type");
+		BeginField(vl::WString::Unmanaged(L"type"));
 		switch (node->type)
 		{
 		case featuretest::BranchType::Minus:
-			WriteString(L"Minus");
+			WriteString(vl::WString::Unmanaged(L"Minus"));
 			break;
 		case featuretest::BranchType::NoCompetition:
-			WriteString(L"NoCompetition");
+			WriteString(vl::WString::Unmanaged(L"NoCompetition"));
 			break;
 		case featuretest::BranchType::Plus:
-			WriteString(L"Plus");
+			WriteString(vl::WString::Unmanaged(L"Plus"));
 			break;
 		default:
 			WriteNull();
@@ -42,20 +42,20 @@ namespace featuretest::json_visitor
 	}
 	void FeatureAstVisitor::PrintFields(ClFeature* node)
 	{
-		BeginField(L"id");
+		BeginField(vl::WString::Unmanaged(L"id"));
 		WriteToken(node->id);
 		EndField();
 	}
 	void FeatureAstVisitor::PrintFields(FaFeature* node)
 	{
-		BeginField(L"fa");
+		BeginField(vl::WString::Unmanaged(L"fa"));
 		switch (node->fa)
 		{
 		case featuretest::FieldAssignment::A:
-			WriteString(L"A");
+			WriteString(vl::WString::Unmanaged(L"A"));
 			break;
 		case featuretest::FieldAssignment::B:
-			WriteString(L"B");
+			WriteString(vl::WString::Unmanaged(L"B"));
 			break;
 		default:
 			WriteNull();
@@ -67,7 +67,7 @@ namespace featuretest::json_visitor
 	}
 	void FeatureAstVisitor::PrintFields(FeatureToResolve* node)
 	{
-		BeginField(L"candidates");
+		BeginField(vl::WString::Unmanaged(L"candidates"));
 		BeginArray();
 		for (auto&& listItem : node->candidates)
 		{
@@ -86,19 +86,19 @@ namespace featuretest::json_visitor
 	}
 	void FeatureAstVisitor::PrintFields(NestedOptionalFeature* node)
 	{
-		BeginField(L"optional");
+		BeginField(vl::WString::Unmanaged(L"optional"));
 		Print(node->optional.Obj());
 		EndField();
-		BeginField(L"tail1");
+		BeginField(vl::WString::Unmanaged(L"tail1"));
 		Print(node->tail1.Obj());
 		EndField();
-		BeginField(L"tail2");
+		BeginField(vl::WString::Unmanaged(L"tail2"));
 		Print(node->tail2.Obj());
 		EndField();
-		BeginField(L"tail3");
+		BeginField(vl::WString::Unmanaged(L"tail3"));
 		Print(node->tail3.Obj());
 		EndField();
-		BeginField(L"tails");
+		BeginField(vl::WString::Unmanaged(L"tails"));
 		BeginArray();
 		for (auto&& listItem : node->tails)
 		{
@@ -111,7 +111,7 @@ namespace featuretest::json_visitor
 	}
 	void FeatureAstVisitor::PrintFields(OptionalFeature* node)
 	{
-		BeginField(L"loop");
+		BeginField(vl::WString::Unmanaged(L"loop"));
 		BeginArray();
 		for (auto&& listItem : node->loop)
 		{
@@ -121,20 +121,20 @@ namespace featuretest::json_visitor
 		}
 		EndArray();
 		EndField();
-		BeginField(L"optional");
+		BeginField(vl::WString::Unmanaged(L"optional"));
 		Print(node->optional.Obj());
 		EndField();
-		BeginField(L"priority");
+		BeginField(vl::WString::Unmanaged(L"priority"));
 		switch (node->priority)
 		{
 		case featuretest::OptionalProprity::Equal:
-			WriteString(L"Equal");
+			WriteString(vl::WString::Unmanaged(L"Equal"));
 			break;
 		case featuretest::OptionalProprity::PreferSkip:
-			WriteString(L"PreferSkip");
+			WriteString(vl::WString::Unmanaged(L"PreferSkip"));
 			break;
 		case featuretest::OptionalProprity::PreferTake:
-			WriteString(L"PreferTake");
+			WriteString(vl::WString::Unmanaged(L"PreferTake"));
 			break;
 		default:
 			WriteNull();
@@ -143,7 +143,7 @@ namespace featuretest::json_visitor
 	}
 	void FeatureAstVisitor::PrintFields(PbaFeature* node)
 	{
-		BeginField(L"gts");
+		BeginField(vl::WString::Unmanaged(L"gts"));
 		BeginArray();
 		for (auto&& listItem : node->gts)
 		{
@@ -153,7 +153,7 @@ namespace featuretest::json_visitor
 		}
 		EndArray();
 		EndField();
-		BeginField(L"lts");
+		BeginField(vl::WString::Unmanaged(L"lts"));
 		BeginArray();
 		for (auto&& listItem : node->lts)
 		{
@@ -163,13 +163,13 @@ namespace featuretest::json_visitor
 		}
 		EndArray();
 		EndField();
-		BeginField(L"optional");
+		BeginField(vl::WString::Unmanaged(L"optional"));
 		Print(node->optional.Obj());
 		EndField();
-		BeginField(L"tail");
+		BeginField(vl::WString::Unmanaged(L"tail"));
 		Print(node->tail.Obj());
 		EndField();
-		BeginField(L"tails");
+		BeginField(vl::WString::Unmanaged(L"tails"));
 		BeginArray();
 		for (auto&& listItem : node->tails)
 		{
@@ -185,7 +185,7 @@ namespace featuretest::json_visitor
 	}
 	void FeatureAstVisitor::PrintFields(Pwa1Feature* node)
 	{
-		BeginField(L"gts");
+		BeginField(vl::WString::Unmanaged(L"gts"));
 		BeginArray();
 		for (auto&& listItem : node->gts)
 		{
@@ -195,7 +195,7 @@ namespace featuretest::json_visitor
 		}
 		EndArray();
 		EndField();
-		BeginField(L"lts");
+		BeginField(vl::WString::Unmanaged(L"lts"));
 		BeginArray();
 		for (auto&& listItem : node->lts)
 		{
@@ -205,13 +205,13 @@ namespace featuretest::json_visitor
 		}
 		EndArray();
 		EndField();
-		BeginField(L"pba");
+		BeginField(vl::WString::Unmanaged(L"pba"));
 		Print(node->pba.Obj());
 		EndField();
 	}
 	void FeatureAstVisitor::PrintFields(PwlFeature* node)
 	{
-		BeginField(L"one");
+		BeginField(vl::WString::Unmanaged(L"one"));
 		BeginArray();
 		for (auto&& listItem : node->one)
 		{
@@ -221,7 +221,7 @@ namespace featuretest::json_visitor
 		}
 		EndArray();
 		EndField();
-		BeginField(L"prefix");
+		BeginField(vl::WString::Unmanaged(L"prefix"));
 		BeginArray();
 		for (auto&& listItem : node->prefix)
 		{
@@ -231,10 +231,10 @@ namespace featuretest::json_visitor
 		}
 		EndArray();
 		EndField();
-		BeginField(L"prev");
+		BeginField(vl::WString::Unmanaged(L"prev"));
 		Print(node->prev.Obj());
 		EndField();
-		BeginField(L"two");
+		BeginField(vl::WString::Unmanaged(L"two"));
 		BeginArray();
 		for (auto&& listItem : node->two)
 		{
@@ -254,7 +254,7 @@ namespace featuretest::json_visitor
 			return;
 		}
 		BeginObject();
-		WriteType(L"FeatureToResolve", node);
+		WriteType(vl::WString::Unmanaged(L"FeatureToResolve"), node);
 		PrintFields(static_cast<Feature*>(node));
 		PrintFields(static_cast<FeatureToResolve*>(node));
 		EndObject();
@@ -268,7 +268,7 @@ namespace featuretest::json_visitor
 			return;
 		}
 		BeginObject();
-		WriteType(L"OptionalFeature", node);
+		WriteType(vl::WString::Unmanaged(L"OptionalFeature"), node);
 		PrintFields(static_cast<Feature*>(node));
 		PrintFields(static_cast<OptionalFeature*>(node));
 		EndObject();
@@ -282,7 +282,7 @@ namespace featuretest::json_visitor
 			return;
 		}
 		BeginObject();
-		WriteType(L"NestedOptionalFeature", node);
+		WriteType(vl::WString::Unmanaged(L"NestedOptionalFeature"), node);
 		PrintFields(static_cast<Feature*>(node));
 		PrintFields(static_cast<NestedOptionalFeature*>(node));
 		EndObject();
@@ -296,7 +296,7 @@ namespace featuretest::json_visitor
 			return;
 		}
 		BeginObject();
-		WriteType(L"BranchedOptionalFeature", node);
+		WriteType(vl::WString::Unmanaged(L"BranchedOptionalFeature"), node);
 		PrintFields(static_cast<Feature*>(node));
 		PrintFields(static_cast<BranchedOptionalFeature*>(node));
 		EndObject();
@@ -310,7 +310,7 @@ namespace featuretest::json_visitor
 			return;
 		}
 		BeginObject();
-		WriteType(L"PbaFeature", node);
+		WriteType(vl::WString::Unmanaged(L"PbaFeature"), node);
 		PrintFields(static_cast<Feature*>(node));
 		PrintFields(static_cast<PbaFeature*>(node));
 		EndObject();
@@ -324,7 +324,7 @@ namespace featuretest::json_visitor
 			return;
 		}
 		BeginObject();
-		WriteType(L"Pwa1Feature", node);
+		WriteType(vl::WString::Unmanaged(L"Pwa1Feature"), node);
 		PrintFields(static_cast<Feature*>(node));
 		PrintFields(static_cast<Pwa1Feature*>(node));
 		EndObject();
@@ -338,7 +338,7 @@ namespace featuretest::json_visitor
 			return;
 		}
 		BeginObject();
-		WriteType(L"PwlFeature", node);
+		WriteType(vl::WString::Unmanaged(L"PwlFeature"), node);
 		PrintFields(static_cast<Feature*>(node));
 		PrintFields(static_cast<PwlFeature*>(node));
 		EndObject();
@@ -352,7 +352,7 @@ namespace featuretest::json_visitor
 			return;
 		}
 		BeginObject();
-		WriteType(L"ClFeature", node);
+		WriteType(vl::WString::Unmanaged(L"ClFeature"), node);
 		PrintFields(static_cast<Feature*>(node));
 		PrintFields(static_cast<ClFeature*>(node));
 		EndObject();
@@ -366,7 +366,7 @@ namespace featuretest::json_visitor
 			return;
 		}
 		BeginObject();
-		WriteType(L"FaFeature", node);
+		WriteType(vl::WString::Unmanaged(L"FaFeature"), node);
 		PrintFields(static_cast<Feature*>(node));
 		PrintFields(static_cast<FaFeature*>(node));
 		EndObject();
@@ -395,7 +395,7 @@ namespace featuretest::json_visitor
 			return;
 		}
 		BeginObject();
-		WriteType(L"Plus", node);
+		WriteType(vl::WString::Unmanaged(L"Plus"), node);
 		PrintFields(static_cast<Plus*>(node));
 		EndObject();
 	}
@@ -408,7 +408,7 @@ namespace featuretest::json_visitor
 			return;
 		}
 		BeginObject();
-		WriteType(L"Lt", node);
+		WriteType(vl::WString::Unmanaged(L"Lt"), node);
 		PrintFields(static_cast<Lt*>(node));
 		EndObject();
 	}
@@ -421,7 +421,7 @@ namespace featuretest::json_visitor
 			return;
 		}
 		BeginObject();
-		WriteType(L"Gt", node);
+		WriteType(vl::WString::Unmanaged(L"Gt"), node);
 		PrintFields(static_cast<Gt*>(node));
 		EndObject();
 	}

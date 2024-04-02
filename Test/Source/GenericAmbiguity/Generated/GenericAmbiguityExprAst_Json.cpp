@@ -10,29 +10,29 @@ namespace genericambiguity::json_visitor
 {
 	void ExprAstVisitor::PrintFields(BinaryExpr* node)
 	{
-		BeginField(L"left");
+		BeginField(vl::WString::Unmanaged(L"left"));
 		Print(node->left.Obj());
 		EndField();
-		BeginField(L"op");
+		BeginField(vl::WString::Unmanaged(L"op"));
 		switch (node->op)
 		{
 		case genericambiguity::BinaryOp::GT:
-			WriteString(L"GT");
+			WriteString(vl::WString::Unmanaged(L"GT"));
 			break;
 		case genericambiguity::BinaryOp::LT:
-			WriteString(L"LT");
+			WriteString(vl::WString::Unmanaged(L"LT"));
 			break;
 		default:
 			WriteNull();
 		}
 		EndField();
-		BeginField(L"right");
+		BeginField(vl::WString::Unmanaged(L"right"));
 		Print(node->right.Obj());
 		EndField();
 	}
 	void ExprAstVisitor::PrintFields(CallExpr* node)
 	{
-		BeginField(L"args");
+		BeginField(vl::WString::Unmanaged(L"args"));
 		BeginArray();
 		for (auto&& listItem : node->args)
 		{
@@ -42,13 +42,13 @@ namespace genericambiguity::json_visitor
 		}
 		EndArray();
 		EndField();
-		BeginField(L"func");
+		BeginField(vl::WString::Unmanaged(L"func"));
 		Print(node->func.Obj());
 		EndField();
 	}
 	void ExprAstVisitor::PrintFields(DecrementExpr* node)
 	{
-		BeginField(L"expr");
+		BeginField(vl::WString::Unmanaged(L"expr"));
 		Print(node->expr.Obj());
 		EndField();
 	}
@@ -57,7 +57,7 @@ namespace genericambiguity::json_visitor
 	}
 	void ExprAstVisitor::PrintFields(ExprToResolve* node)
 	{
-		BeginField(L"candidates");
+		BeginField(vl::WString::Unmanaged(L"candidates"));
 		BeginArray();
 		for (auto&& listItem : node->candidates)
 		{
@@ -70,7 +70,7 @@ namespace genericambiguity::json_visitor
 	}
 	void ExprAstVisitor::PrintFields(GenericExpr* node)
 	{
-		BeginField(L"args");
+		BeginField(vl::WString::Unmanaged(L"args"));
 		BeginArray();
 		for (auto&& listItem : node->args)
 		{
@@ -80,32 +80,32 @@ namespace genericambiguity::json_visitor
 		}
 		EndArray();
 		EndField();
-		BeginField(L"name");
+		BeginField(vl::WString::Unmanaged(L"name"));
 		WriteToken(node->name);
 		EndField();
 	}
 	void ExprAstVisitor::PrintFields(Module* node)
 	{
-		BeginField(L"expr");
+		BeginField(vl::WString::Unmanaged(L"expr"));
 		Print(node->expr.Obj());
 		EndField();
 	}
 	void ExprAstVisitor::PrintFields(PostfixExpr* node)
 	{
-		BeginField(L"expr");
+		BeginField(vl::WString::Unmanaged(L"expr"));
 		Print(node->expr.Obj());
 		EndField();
-		BeginField(L"op");
+		BeginField(vl::WString::Unmanaged(L"op"));
 		switch (node->op)
 		{
 		case genericambiguity::PostfixOp::Add:
-			WriteString(L"Add");
+			WriteString(vl::WString::Unmanaged(L"Add"));
 			break;
 		case genericambiguity::PostfixOp::Increment:
-			WriteString(L"Increment");
+			WriteString(vl::WString::Unmanaged(L"Increment"));
 			break;
 		case genericambiguity::PostfixOp::Sub:
-			WriteString(L"Sub");
+			WriteString(vl::WString::Unmanaged(L"Sub"));
 			break;
 		default:
 			WriteNull();
@@ -114,7 +114,7 @@ namespace genericambiguity::json_visitor
 	}
 	void ExprAstVisitor::PrintFields(RefExpr* node)
 	{
-		BeginField(L"name");
+		BeginField(vl::WString::Unmanaged(L"name"));
 		WriteToken(node->name);
 		EndField();
 	}
@@ -127,7 +127,7 @@ namespace genericambiguity::json_visitor
 			return;
 		}
 		BeginObject();
-		WriteType(L"ExprToResolve", node);
+		WriteType(vl::WString::Unmanaged(L"ExprToResolve"), node);
 		PrintFields(static_cast<Expr*>(node));
 		PrintFields(static_cast<ExprToResolve*>(node));
 		EndObject();
@@ -141,7 +141,7 @@ namespace genericambiguity::json_visitor
 			return;
 		}
 		BeginObject();
-		WriteType(L"RefExpr", node);
+		WriteType(vl::WString::Unmanaged(L"RefExpr"), node);
 		PrintFields(static_cast<Expr*>(node));
 		PrintFields(static_cast<RefExpr*>(node));
 		EndObject();
@@ -155,7 +155,7 @@ namespace genericambiguity::json_visitor
 			return;
 		}
 		BeginObject();
-		WriteType(L"GenericExpr", node);
+		WriteType(vl::WString::Unmanaged(L"GenericExpr"), node);
 		PrintFields(static_cast<Expr*>(node));
 		PrintFields(static_cast<GenericExpr*>(node));
 		EndObject();
@@ -169,7 +169,7 @@ namespace genericambiguity::json_visitor
 			return;
 		}
 		BeginObject();
-		WriteType(L"CallExpr", node);
+		WriteType(vl::WString::Unmanaged(L"CallExpr"), node);
 		PrintFields(static_cast<Expr*>(node));
 		PrintFields(static_cast<CallExpr*>(node));
 		EndObject();
@@ -183,7 +183,7 @@ namespace genericambiguity::json_visitor
 			return;
 		}
 		BeginObject();
-		WriteType(L"PostfixExpr", node);
+		WriteType(vl::WString::Unmanaged(L"PostfixExpr"), node);
 		PrintFields(static_cast<Expr*>(node));
 		PrintFields(static_cast<PostfixExpr*>(node));
 		EndObject();
@@ -197,7 +197,7 @@ namespace genericambiguity::json_visitor
 			return;
 		}
 		BeginObject();
-		WriteType(L"DecrementExpr", node);
+		WriteType(vl::WString::Unmanaged(L"DecrementExpr"), node);
 		PrintFields(static_cast<Expr*>(node));
 		PrintFields(static_cast<DecrementExpr*>(node));
 		EndObject();
@@ -211,7 +211,7 @@ namespace genericambiguity::json_visitor
 			return;
 		}
 		BeginObject();
-		WriteType(L"BinaryExpr", node);
+		WriteType(vl::WString::Unmanaged(L"BinaryExpr"), node);
 		PrintFields(static_cast<Expr*>(node));
 		PrintFields(static_cast<BinaryExpr*>(node));
 		EndObject();
@@ -240,7 +240,7 @@ namespace genericambiguity::json_visitor
 			return;
 		}
 		BeginObject();
-		WriteType(L"Module", node);
+		WriteType(vl::WString::Unmanaged(L"Module"), node);
 		PrintFields(static_cast<Module*>(node));
 		EndObject();
 	}

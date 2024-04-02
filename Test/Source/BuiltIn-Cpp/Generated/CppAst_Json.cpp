@@ -10,38 +10,38 @@ namespace cpp_parser::json_visitor
 {
 	void AstVisitor::PrintFields(CppAdvancedType* node)
 	{
-		BeginField(L"argument");
+		BeginField(vl::WString::Unmanaged(L"argument"));
 		Print(node->argument.Obj());
 		EndField();
-		BeginField(L"kind");
+		BeginField(vl::WString::Unmanaged(L"kind"));
 		switch (node->kind)
 		{
 		case cpp_parser::CppAdvancedTypeKinds::AlignAs:
-			WriteString(L"AlignAs");
+			WriteString(vl::WString::Unmanaged(L"AlignAs"));
 			break;
 		case cpp_parser::CppAdvancedTypeKinds::Const:
-			WriteString(L"Const");
+			WriteString(vl::WString::Unmanaged(L"Const"));
 			break;
 		case cpp_parser::CppAdvancedTypeKinds::LRef:
-			WriteString(L"LRef");
+			WriteString(vl::WString::Unmanaged(L"LRef"));
 			break;
 		case cpp_parser::CppAdvancedTypeKinds::Member:
-			WriteString(L"Member");
+			WriteString(vl::WString::Unmanaged(L"Member"));
 			break;
 		case cpp_parser::CppAdvancedTypeKinds::Pointer:
-			WriteString(L"Pointer");
+			WriteString(vl::WString::Unmanaged(L"Pointer"));
 			break;
 		case cpp_parser::CppAdvancedTypeKinds::Pointer32:
-			WriteString(L"Pointer32");
+			WriteString(vl::WString::Unmanaged(L"Pointer32"));
 			break;
 		case cpp_parser::CppAdvancedTypeKinds::Pointer64:
-			WriteString(L"Pointer64");
+			WriteString(vl::WString::Unmanaged(L"Pointer64"));
 			break;
 		case cpp_parser::CppAdvancedTypeKinds::RRef:
-			WriteString(L"RRef");
+			WriteString(vl::WString::Unmanaged(L"RRef"));
 			break;
 		case cpp_parser::CppAdvancedTypeKinds::Volatile:
-			WriteString(L"Volatile");
+			WriteString(vl::WString::Unmanaged(L"Volatile"));
 			break;
 		default:
 			WriteNull();
@@ -50,164 +50,164 @@ namespace cpp_parser::json_visitor
 	}
 	void AstVisitor::PrintFields(CppBinaryExpr* node)
 	{
-		BeginField(L"left");
+		BeginField(vl::WString::Unmanaged(L"left"));
 		Print(node->left.Obj());
 		EndField();
-		BeginField(L"op");
+		BeginField(vl::WString::Unmanaged(L"op"));
 		switch (node->op)
 		{
 		case cpp_parser::CppOperators::And:
-			WriteString(L"And");
+			WriteString(vl::WString::Unmanaged(L"And"));
 			break;
 		case cpp_parser::CppOperators::AndAssign:
-			WriteString(L"AndAssign");
+			WriteString(vl::WString::Unmanaged(L"AndAssign"));
 			break;
 		case cpp_parser::CppOperators::Assign:
-			WriteString(L"Assign");
+			WriteString(vl::WString::Unmanaged(L"Assign"));
 			break;
 		case cpp_parser::CppOperators::BitwiseAnd:
-			WriteString(L"BitwiseAnd");
+			WriteString(vl::WString::Unmanaged(L"BitwiseAnd"));
 			break;
 		case cpp_parser::CppOperators::BitwiseOr:
-			WriteString(L"BitwiseOr");
+			WriteString(vl::WString::Unmanaged(L"BitwiseOr"));
 			break;
 		case cpp_parser::CppOperators::Bracket:
-			WriteString(L"Bracket");
+			WriteString(vl::WString::Unmanaged(L"Bracket"));
 			break;
 		case cpp_parser::CppOperators::Comma:
-			WriteString(L"Comma");
+			WriteString(vl::WString::Unmanaged(L"Comma"));
 			break;
 		case cpp_parser::CppOperators::Compare:
-			WriteString(L"Compare");
+			WriteString(vl::WString::Unmanaged(L"Compare"));
 			break;
 		case cpp_parser::CppOperators::Decrease:
-			WriteString(L"Decrease");
+			WriteString(vl::WString::Unmanaged(L"Decrease"));
 			break;
 		case cpp_parser::CppOperators::Delete:
-			WriteString(L"Delete");
+			WriteString(vl::WString::Unmanaged(L"Delete"));
 			break;
 		case cpp_parser::CppOperators::DeleteArray:
-			WriteString(L"DeleteArray");
+			WriteString(vl::WString::Unmanaged(L"DeleteArray"));
 			break;
 		case cpp_parser::CppOperators::Div:
-			WriteString(L"Div");
+			WriteString(vl::WString::Unmanaged(L"Div"));
 			break;
 		case cpp_parser::CppOperators::DivAssign:
-			WriteString(L"DivAssign");
+			WriteString(vl::WString::Unmanaged(L"DivAssign"));
 			break;
 		case cpp_parser::CppOperators::EQ:
-			WriteString(L"EQ");
+			WriteString(vl::WString::Unmanaged(L"EQ"));
 			break;
 		case cpp_parser::CppOperators::GE:
-			WriteString(L"GE");
+			WriteString(vl::WString::Unmanaged(L"GE"));
 			break;
 		case cpp_parser::CppOperators::GT:
-			WriteString(L"GT");
+			WriteString(vl::WString::Unmanaged(L"GT"));
 			break;
 		case cpp_parser::CppOperators::Increase:
-			WriteString(L"Increase");
+			WriteString(vl::WString::Unmanaged(L"Increase"));
 			break;
 		case cpp_parser::CppOperators::LE:
-			WriteString(L"LE");
+			WriteString(vl::WString::Unmanaged(L"LE"));
 			break;
 		case cpp_parser::CppOperators::LT:
-			WriteString(L"LT");
+			WriteString(vl::WString::Unmanaged(L"LT"));
 			break;
 		case cpp_parser::CppOperators::LeftShift:
-			WriteString(L"LeftShift");
+			WriteString(vl::WString::Unmanaged(L"LeftShift"));
 			break;
 		case cpp_parser::CppOperators::LeftShiftAssign:
-			WriteString(L"LeftShiftAssign");
+			WriteString(vl::WString::Unmanaged(L"LeftShiftAssign"));
 			break;
 		case cpp_parser::CppOperators::Member:
-			WriteString(L"Member");
+			WriteString(vl::WString::Unmanaged(L"Member"));
 			break;
 		case cpp_parser::CppOperators::MemberDeref:
-			WriteString(L"MemberDeref");
+			WriteString(vl::WString::Unmanaged(L"MemberDeref"));
 			break;
 		case cpp_parser::CppOperators::Minus:
-			WriteString(L"Minus");
+			WriteString(vl::WString::Unmanaged(L"Minus"));
 			break;
 		case cpp_parser::CppOperators::MinusAssign:
-			WriteString(L"MinusAssign");
+			WriteString(vl::WString::Unmanaged(L"MinusAssign"));
 			break;
 		case cpp_parser::CppOperators::Mod:
-			WriteString(L"Mod");
+			WriteString(vl::WString::Unmanaged(L"Mod"));
 			break;
 		case cpp_parser::CppOperators::ModAssign:
-			WriteString(L"ModAssign");
+			WriteString(vl::WString::Unmanaged(L"ModAssign"));
 			break;
 		case cpp_parser::CppOperators::Mul:
-			WriteString(L"Mul");
+			WriteString(vl::WString::Unmanaged(L"Mul"));
 			break;
 		case cpp_parser::CppOperators::MulAssign:
-			WriteString(L"MulAssign");
+			WriteString(vl::WString::Unmanaged(L"MulAssign"));
 			break;
 		case cpp_parser::CppOperators::NE:
-			WriteString(L"NE");
+			WriteString(vl::WString::Unmanaged(L"NE"));
 			break;
 		case cpp_parser::CppOperators::New:
-			WriteString(L"New");
+			WriteString(vl::WString::Unmanaged(L"New"));
 			break;
 		case cpp_parser::CppOperators::NewArray:
-			WriteString(L"NewArray");
+			WriteString(vl::WString::Unmanaged(L"NewArray"));
 			break;
 		case cpp_parser::CppOperators::Not:
-			WriteString(L"Not");
+			WriteString(vl::WString::Unmanaged(L"Not"));
 			break;
 		case cpp_parser::CppOperators::Or:
-			WriteString(L"Or");
+			WriteString(vl::WString::Unmanaged(L"Or"));
 			break;
 		case cpp_parser::CppOperators::OrAssign:
-			WriteString(L"OrAssign");
+			WriteString(vl::WString::Unmanaged(L"OrAssign"));
 			break;
 		case cpp_parser::CppOperators::Parantheses:
-			WriteString(L"Parantheses");
+			WriteString(vl::WString::Unmanaged(L"Parantheses"));
 			break;
 		case cpp_parser::CppOperators::Plus:
-			WriteString(L"Plus");
+			WriteString(vl::WString::Unmanaged(L"Plus"));
 			break;
 		case cpp_parser::CppOperators::PlusAssign:
-			WriteString(L"PlusAssign");
+			WriteString(vl::WString::Unmanaged(L"PlusAssign"));
 			break;
 		case cpp_parser::CppOperators::Pointer:
-			WriteString(L"Pointer");
+			WriteString(vl::WString::Unmanaged(L"Pointer"));
 			break;
 		case cpp_parser::CppOperators::PointerDeref:
-			WriteString(L"PointerDeref");
+			WriteString(vl::WString::Unmanaged(L"PointerDeref"));
 			break;
 		case cpp_parser::CppOperators::Revert:
-			WriteString(L"Revert");
+			WriteString(vl::WString::Unmanaged(L"Revert"));
 			break;
 		case cpp_parser::CppOperators::RevertAssign:
-			WriteString(L"RevertAssign");
+			WriteString(vl::WString::Unmanaged(L"RevertAssign"));
 			break;
 		case cpp_parser::CppOperators::RightShift:
-			WriteString(L"RightShift");
+			WriteString(vl::WString::Unmanaged(L"RightShift"));
 			break;
 		case cpp_parser::CppOperators::RightShiftAssign:
-			WriteString(L"RightShiftAssign");
+			WriteString(vl::WString::Unmanaged(L"RightShiftAssign"));
 			break;
 		case cpp_parser::CppOperators::RoundBracket:
-			WriteString(L"RoundBracket");
+			WriteString(vl::WString::Unmanaged(L"RoundBracket"));
 			break;
 		case cpp_parser::CppOperators::Xor:
-			WriteString(L"Xor");
+			WriteString(vl::WString::Unmanaged(L"Xor"));
 			break;
 		case cpp_parser::CppOperators::XorAssign:
-			WriteString(L"XorAssign");
+			WriteString(vl::WString::Unmanaged(L"XorAssign"));
 			break;
 		default:
 			WriteNull();
 		}
 		EndField();
-		BeginField(L"right");
+		BeginField(vl::WString::Unmanaged(L"right"));
 		Print(node->right.Obj());
 		EndField();
 	}
 	void AstVisitor::PrintFields(CppBlockStat* node)
 	{
-		BeginField(L"statements");
+		BeginField(vl::WString::Unmanaged(L"statements"));
 		BeginArray();
 		for (auto&& listItem : node->statements)
 		{
@@ -220,7 +220,7 @@ namespace cpp_parser::json_visitor
 	}
 	void AstVisitor::PrintFields(CppBraceExpr* node)
 	{
-		BeginField(L"arguments");
+		BeginField(vl::WString::Unmanaged(L"arguments"));
 		BeginArray();
 		for (auto&& listItem : node->arguments)
 		{
@@ -236,7 +236,7 @@ namespace cpp_parser::json_visitor
 	}
 	void AstVisitor::PrintFields(CppCallExpr* node)
 	{
-		BeginField(L"arguments");
+		BeginField(vl::WString::Unmanaged(L"arguments"));
 		BeginArray();
 		for (auto&& listItem : node->arguments)
 		{
@@ -246,50 +246,50 @@ namespace cpp_parser::json_visitor
 		}
 		EndArray();
 		EndField();
-		BeginField(L"kind");
+		BeginField(vl::WString::Unmanaged(L"kind"));
 		switch (node->kind)
 		{
 		case cpp_parser::CppCallKinds::Brace:
-			WriteString(L"Brace");
+			WriteString(vl::WString::Unmanaged(L"Brace"));
 			break;
 		case cpp_parser::CppCallKinds::Parenthesis:
-			WriteString(L"Parenthesis");
+			WriteString(vl::WString::Unmanaged(L"Parenthesis"));
 			break;
 		default:
 			WriteNull();
 		}
 		EndField();
-		BeginField(L"operand");
+		BeginField(vl::WString::Unmanaged(L"operand"));
 		Print(node->operand.Obj());
 		EndField();
 	}
 	void AstVisitor::PrintFields(CppCaseStat* node)
 	{
-		BeginField(L"expr");
+		BeginField(vl::WString::Unmanaged(L"expr"));
 		Print(node->expr.Obj());
 		EndField();
-		BeginField(L"stat");
+		BeginField(vl::WString::Unmanaged(L"stat"));
 		Print(node->stat.Obj());
 		EndField();
 	}
 	void AstVisitor::PrintFields(CppCastExpr* node)
 	{
-		BeginField(L"expr");
+		BeginField(vl::WString::Unmanaged(L"expr"));
 		Print(node->expr.Obj());
 		EndField();
-		BeginField(L"keyword");
+		BeginField(vl::WString::Unmanaged(L"keyword"));
 		WriteToken(node->keyword);
 		EndField();
-		BeginField(L"type");
+		BeginField(vl::WString::Unmanaged(L"type"));
 		Print(node->type.Obj());
 		EndField();
 	}
 	void AstVisitor::PrintFields(CppClassBody* node)
 	{
-		BeginField(L"firstVarPart");
+		BeginField(vl::WString::Unmanaged(L"firstVarPart"));
 		Print(node->firstVarPart.Obj());
 		EndField();
-		BeginField(L"inheritances");
+		BeginField(vl::WString::Unmanaged(L"inheritances"));
 		BeginArray();
 		for (auto&& listItem : node->inheritances)
 		{
@@ -299,7 +299,7 @@ namespace cpp_parser::json_visitor
 		}
 		EndArray();
 		EndField();
-		BeginField(L"memberParts");
+		BeginField(vl::WString::Unmanaged(L"memberParts"));
 		BeginArray();
 		for (auto&& listItem : node->memberParts)
 		{
@@ -312,82 +312,82 @@ namespace cpp_parser::json_visitor
 	}
 	void AstVisitor::PrintFields(CppClassDeclaration* node)
 	{
-		BeginField(L"arguments");
+		BeginField(vl::WString::Unmanaged(L"arguments"));
 		Print(node->arguments.Obj());
 		EndField();
-		BeginField(L"body");
+		BeginField(vl::WString::Unmanaged(L"body"));
 		Print(node->body.Obj());
 		EndField();
-		BeginField(L"kind");
+		BeginField(vl::WString::Unmanaged(L"kind"));
 		switch (node->kind)
 		{
 		case cpp_parser::CppClassKind::Class:
-			WriteString(L"Class");
+			WriteString(vl::WString::Unmanaged(L"Class"));
 			break;
 		case cpp_parser::CppClassKind::Struct:
-			WriteString(L"Struct");
+			WriteString(vl::WString::Unmanaged(L"Struct"));
 			break;
 		case cpp_parser::CppClassKind::Union:
-			WriteString(L"Union");
+			WriteString(vl::WString::Unmanaged(L"Union"));
 			break;
 		default:
 			WriteNull();
 		}
 		EndField();
-		BeginField(L"name");
+		BeginField(vl::WString::Unmanaged(L"name"));
 		WriteToken(node->name);
 		EndField();
 	}
 	void AstVisitor::PrintFields(CppClassInheritance* node)
 	{
-		BeginField(L"accessor");
+		BeginField(vl::WString::Unmanaged(L"accessor"));
 		switch (node->accessor)
 		{
 		case cpp_parser::CppClassAccessor::Default:
-			WriteString(L"Default");
+			WriteString(vl::WString::Unmanaged(L"Default"));
 			break;
 		case cpp_parser::CppClassAccessor::Private:
-			WriteString(L"Private");
+			WriteString(vl::WString::Unmanaged(L"Private"));
 			break;
 		case cpp_parser::CppClassAccessor::Protected:
-			WriteString(L"Protected");
+			WriteString(vl::WString::Unmanaged(L"Protected"));
 			break;
 		case cpp_parser::CppClassAccessor::Public:
-			WriteString(L"Public");
+			WriteString(vl::WString::Unmanaged(L"Public"));
 			break;
 		default:
 			WriteNull();
 		}
 		EndField();
-		BeginField(L"type");
+		BeginField(vl::WString::Unmanaged(L"type"));
 		Print(node->type.Obj());
 		EndField();
-		BeginField(L"variadic");
+		BeginField(vl::WString::Unmanaged(L"variadic"));
 		WriteToken(node->variadic);
 		EndField();
 	}
 	void AstVisitor::PrintFields(CppClassMemberPart* node)
 	{
-		BeginField(L"accessor");
+		BeginField(vl::WString::Unmanaged(L"accessor"));
 		switch (node->accessor)
 		{
 		case cpp_parser::CppClassAccessor::Default:
-			WriteString(L"Default");
+			WriteString(vl::WString::Unmanaged(L"Default"));
 			break;
 		case cpp_parser::CppClassAccessor::Private:
-			WriteString(L"Private");
+			WriteString(vl::WString::Unmanaged(L"Private"));
 			break;
 		case cpp_parser::CppClassAccessor::Protected:
-			WriteString(L"Protected");
+			WriteString(vl::WString::Unmanaged(L"Protected"));
 			break;
 		case cpp_parser::CppClassAccessor::Public:
-			WriteString(L"Public");
+			WriteString(vl::WString::Unmanaged(L"Public"));
 			break;
 		default:
 			WriteNull();
 		}
 		EndField();
-		BeginField(L"decls");
+		BeginField(vl::WString::Unmanaged(L"decls"));
 		BeginArray();
 		for (auto&& listItem : node->decls)
 		{
@@ -400,7 +400,7 @@ namespace cpp_parser::json_visitor
 	}
 	void AstVisitor::PrintFields(CppConstType* node)
 	{
-		BeginField(L"type");
+		BeginField(vl::WString::Unmanaged(L"type"));
 		Print(node->type.Obj());
 		EndField();
 	}
@@ -409,7 +409,7 @@ namespace cpp_parser::json_visitor
 	}
 	void AstVisitor::PrintFields(CppDeclStat* node)
 	{
-		BeginField(L"decl");
+		BeginField(vl::WString::Unmanaged(L"decl"));
 		Print(node->decl.Obj());
 		EndField();
 	}
@@ -418,7 +418,7 @@ namespace cpp_parser::json_visitor
 	}
 	void AstVisitor::PrintFields(CppDeclarationCommon* node)
 	{
-		BeginField(L"keywords");
+		BeginField(vl::WString::Unmanaged(L"keywords"));
 		BeginArray();
 		for (auto&& listItem : node->keywords)
 		{
@@ -431,7 +431,7 @@ namespace cpp_parser::json_visitor
 	}
 	void AstVisitor::PrintFields(CppDeclarationToResolve* node)
 	{
-		BeginField(L"candidates");
+		BeginField(vl::WString::Unmanaged(L"candidates"));
 		BeginArray();
 		for (auto&& listItem : node->candidates)
 		{
@@ -444,7 +444,7 @@ namespace cpp_parser::json_visitor
 	}
 	void AstVisitor::PrintFields(CppDeclarator* node)
 	{
-		BeginField(L"advancedTypes");
+		BeginField(vl::WString::Unmanaged(L"advancedTypes"));
 		BeginArray();
 		for (auto&& listItem : node->advancedTypes)
 		{
@@ -454,10 +454,10 @@ namespace cpp_parser::json_visitor
 		}
 		EndArray();
 		EndField();
-		BeginField(L"arguments");
+		BeginField(vl::WString::Unmanaged(L"arguments"));
 		Print(node->arguments.Obj());
 		EndField();
-		BeginField(L"arrayParts");
+		BeginField(vl::WString::Unmanaged(L"arrayParts"));
 		BeginArray();
 		for (auto&& listItem : node->arrayParts)
 		{
@@ -467,19 +467,19 @@ namespace cpp_parser::json_visitor
 		}
 		EndArray();
 		EndField();
-		BeginField(L"bitfield");
+		BeginField(vl::WString::Unmanaged(L"bitfield"));
 		Print(node->bitfield.Obj());
 		EndField();
-		BeginField(L"funcPart");
+		BeginField(vl::WString::Unmanaged(L"funcPart"));
 		Print(node->funcPart.Obj());
 		EndField();
-		BeginField(L"id");
+		BeginField(vl::WString::Unmanaged(L"id"));
 		Print(node->id.Obj());
 		EndField();
-		BeginField(L"innerDeclarator");
+		BeginField(vl::WString::Unmanaged(L"innerDeclarator"));
 		Print(node->innerDeclarator.Obj());
 		EndField();
-		BeginField(L"keywords");
+		BeginField(vl::WString::Unmanaged(L"keywords"));
 		BeginArray();
 		for (auto&& listItem : node->keywords)
 		{
@@ -489,13 +489,13 @@ namespace cpp_parser::json_visitor
 		}
 		EndArray();
 		EndField();
-		BeginField(L"variadic");
+		BeginField(vl::WString::Unmanaged(L"variadic"));
 		WriteToken(node->variadic);
 		EndField();
 	}
 	void AstVisitor::PrintFields(CppDeclaratorArrayPart* node)
 	{
-		BeginField(L"argument");
+		BeginField(vl::WString::Unmanaged(L"argument"));
 		Print(node->argument.Obj());
 		EndField();
 	}
@@ -504,10 +504,10 @@ namespace cpp_parser::json_visitor
 	}
 	void AstVisitor::PrintFields(CppDeclaratorFunctionPartCommon* node)
 	{
-		BeginField(L"deferredType");
+		BeginField(vl::WString::Unmanaged(L"deferredType"));
 		Print(node->deferredType.Obj());
 		EndField();
-		BeginField(L"keywords");
+		BeginField(vl::WString::Unmanaged(L"keywords"));
 		BeginArray();
 		for (auto&& listItem : node->keywords)
 		{
@@ -517,7 +517,7 @@ namespace cpp_parser::json_visitor
 		}
 		EndArray();
 		EndField();
-		BeginField(L"parameters");
+		BeginField(vl::WString::Unmanaged(L"parameters"));
 		BeginArray();
 		for (auto&& listItem : node->parameters)
 		{
@@ -527,13 +527,13 @@ namespace cpp_parser::json_visitor
 		}
 		EndArray();
 		EndField();
-		BeginField(L"variadic");
+		BeginField(vl::WString::Unmanaged(L"variadic"));
 		WriteToken(node->variadic);
 		EndField();
 	}
 	void AstVisitor::PrintFields(CppDeclaratorFunctionPartToResolve* node)
 	{
-		BeginField(L"candidates");
+		BeginField(vl::WString::Unmanaged(L"candidates"));
 		BeginArray();
 		for (auto&& listItem : node->candidates)
 		{
@@ -546,16 +546,16 @@ namespace cpp_parser::json_visitor
 	}
 	void AstVisitor::PrintFields(CppDeclaratorKeyword* node)
 	{
-		BeginField(L"keyword");
+		BeginField(vl::WString::Unmanaged(L"keyword"));
 		WriteToken(node->keyword);
 		EndField();
 	}
 	void AstVisitor::PrintFields(CppDeclaratorType* node)
 	{
-		BeginField(L"declarator");
+		BeginField(vl::WString::Unmanaged(L"declarator"));
 		Print(node->declarator.Obj());
 		EndField();
-		BeginField(L"keywords");
+		BeginField(vl::WString::Unmanaged(L"keywords"));
 		BeginArray();
 		for (auto&& listItem : node->keywords)
 		{
@@ -565,7 +565,7 @@ namespace cpp_parser::json_visitor
 		}
 		EndArray();
 		EndField();
-		BeginField(L"type");
+		BeginField(vl::WString::Unmanaged(L"type"));
 		Print(node->type.Obj());
 		EndField();
 	}
@@ -574,19 +574,19 @@ namespace cpp_parser::json_visitor
 	}
 	void AstVisitor::PrintFields(CppDeclaratorVariablePartCommon* node)
 	{
-		BeginField(L"declarator");
+		BeginField(vl::WString::Unmanaged(L"declarator"));
 		Print(node->declarator.Obj());
 		EndField();
-		BeginField(L"init");
+		BeginField(vl::WString::Unmanaged(L"init"));
 		Print(node->init.Obj());
 		EndField();
-		BeginField(L"nextVarPart");
+		BeginField(vl::WString::Unmanaged(L"nextVarPart"));
 		Print(node->nextVarPart.Obj());
 		EndField();
 	}
 	void AstVisitor::PrintFields(CppDeclaratorVariablePartToResolve* node)
 	{
-		BeginField(L"candidates");
+		BeginField(vl::WString::Unmanaged(L"candidates"));
 		BeginArray();
 		for (auto&& listItem : node->candidates)
 		{
@@ -599,36 +599,36 @@ namespace cpp_parser::json_visitor
 	}
 	void AstVisitor::PrintFields(CppDefaultStat* node)
 	{
-		BeginField(L"stat");
+		BeginField(vl::WString::Unmanaged(L"stat"));
 		Print(node->stat.Obj());
 		EndField();
 	}
 	void AstVisitor::PrintFields(CppDeleteExpr* node)
 	{
-		BeginField(L"argument");
+		BeginField(vl::WString::Unmanaged(L"argument"));
 		Print(node->argument.Obj());
 		EndField();
-		BeginField(L"array");
+		BeginField(vl::WString::Unmanaged(L"array"));
 		switch (node->array)
 		{
 		case cpp_parser::CppOperatorArray::Array:
-			WriteString(L"Array");
+			WriteString(vl::WString::Unmanaged(L"Array"));
 			break;
 		case cpp_parser::CppOperatorArray::NotArray:
-			WriteString(L"NotArray");
+			WriteString(vl::WString::Unmanaged(L"NotArray"));
 			break;
 		default:
 			WriteNull();
 		}
 		EndField();
-		BeginField(L"scope");
+		BeginField(vl::WString::Unmanaged(L"scope"));
 		switch (node->scope)
 		{
 		case cpp_parser::CppOperatorScope::Context:
-			WriteString(L"Context");
+			WriteString(vl::WString::Unmanaged(L"Context"));
 			break;
 		case cpp_parser::CppOperatorScope::Root:
-			WriteString(L"Root");
+			WriteString(vl::WString::Unmanaged(L"Root"));
 			break;
 		default:
 			WriteNull();
@@ -637,10 +637,10 @@ namespace cpp_parser::json_visitor
 	}
 	void AstVisitor::PrintFields(CppDoWhileStat* node)
 	{
-		BeginField(L"condition");
+		BeginField(vl::WString::Unmanaged(L"condition"));
 		Print(node->condition.Obj());
 		EndField();
-		BeginField(L"stat");
+		BeginField(vl::WString::Unmanaged(L"stat"));
 		Print(node->stat.Obj());
 		EndField();
 	}
@@ -649,10 +649,10 @@ namespace cpp_parser::json_visitor
 	}
 	void AstVisitor::PrintFields(CppEnumBody* node)
 	{
-		BeginField(L"firstVarPart");
+		BeginField(vl::WString::Unmanaged(L"firstVarPart"));
 		Print(node->firstVarPart.Obj());
 		EndField();
-		BeginField(L"items");
+		BeginField(vl::WString::Unmanaged(L"items"));
 		BeginArray();
 		for (auto&& listItem : node->items)
 		{
@@ -665,35 +665,35 @@ namespace cpp_parser::json_visitor
 	}
 	void AstVisitor::PrintFields(CppEnumDeclaration* node)
 	{
-		BeginField(L"body");
+		BeginField(vl::WString::Unmanaged(L"body"));
 		Print(node->body.Obj());
 		EndField();
-		BeginField(L"kind");
+		BeginField(vl::WString::Unmanaged(L"kind"));
 		switch (node->kind)
 		{
 		case cpp_parser::CppEnumKind::Enum:
-			WriteString(L"Enum");
+			WriteString(vl::WString::Unmanaged(L"Enum"));
 			break;
 		case cpp_parser::CppEnumKind::EnumClass:
-			WriteString(L"EnumClass");
+			WriteString(vl::WString::Unmanaged(L"EnumClass"));
 			break;
 		default:
 			WriteNull();
 		}
 		EndField();
-		BeginField(L"name");
+		BeginField(vl::WString::Unmanaged(L"name"));
 		WriteToken(node->name);
 		EndField();
-		BeginField(L"type");
+		BeginField(vl::WString::Unmanaged(L"type"));
 		Print(node->type.Obj());
 		EndField();
 	}
 	void AstVisitor::PrintFields(CppEnumItem* node)
 	{
-		BeginField(L"expr");
+		BeginField(vl::WString::Unmanaged(L"expr"));
 		Print(node->expr.Obj());
 		EndField();
-		BeginField(L"name");
+		BeginField(vl::WString::Unmanaged(L"name"));
 		WriteToken(node->name);
 		EndField();
 	}
@@ -702,13 +702,13 @@ namespace cpp_parser::json_visitor
 	}
 	void AstVisitor::PrintFields(CppExprStat* node)
 	{
-		BeginField(L"expr");
+		BeginField(vl::WString::Unmanaged(L"expr"));
 		Print(node->expr.Obj());
 		EndField();
 	}
 	void AstVisitor::PrintFields(CppExternDeclaration* node)
 	{
-		BeginField(L"decls");
+		BeginField(vl::WString::Unmanaged(L"decls"));
 		BeginArray();
 		for (auto&& listItem : node->decls)
 		{
@@ -721,7 +721,7 @@ namespace cpp_parser::json_visitor
 	}
 	void AstVisitor::PrintFields(CppFile* node)
 	{
-		BeginField(L"decls");
+		BeginField(vl::WString::Unmanaged(L"decls"));
 		BeginArray();
 		for (auto&& listItem : node->decls)
 		{
@@ -734,10 +734,10 @@ namespace cpp_parser::json_visitor
 	}
 	void AstVisitor::PrintFields(CppForStat* node)
 	{
-		BeginField(L"conditionPart");
+		BeginField(vl::WString::Unmanaged(L"conditionPart"));
 		Print(node->conditionPart.Obj());
 		EndField();
-		BeginField(L"stat");
+		BeginField(vl::WString::Unmanaged(L"stat"));
 		Print(node->stat.Obj());
 		EndField();
 	}
@@ -746,34 +746,34 @@ namespace cpp_parser::json_visitor
 	}
 	void AstVisitor::PrintFields(CppForStatIterateCondition* node)
 	{
-		BeginField(L"collection");
+		BeginField(vl::WString::Unmanaged(L"collection"));
 		Print(node->collection.Obj());
 		EndField();
-		BeginField(L"decl");
+		BeginField(vl::WString::Unmanaged(L"decl"));
 		Print(node->decl.Obj());
 		EndField();
 	}
 	void AstVisitor::PrintFields(CppForStatLoopCondition* node)
 	{
-		BeginField(L"condition");
+		BeginField(vl::WString::Unmanaged(L"condition"));
 		Print(node->condition.Obj());
 		EndField();
-		BeginField(L"sideEffect");
+		BeginField(vl::WString::Unmanaged(L"sideEffect"));
 		Print(node->sideEffect.Obj());
 		EndField();
-		BeginField(L"varsDecl");
+		BeginField(vl::WString::Unmanaged(L"varsDecl"));
 		Print(node->varsDecl.Obj());
 		EndField();
 	}
 	void AstVisitor::PrintFields(CppFriendTypeDeclaration* node)
 	{
-		BeginField(L"type");
+		BeginField(vl::WString::Unmanaged(L"type"));
 		Print(node->type.Obj());
 		EndField();
 	}
 	void AstVisitor::PrintFields(CppFunctionKeyword* node)
 	{
-		BeginField(L"arguments");
+		BeginField(vl::WString::Unmanaged(L"arguments"));
 		BeginArray();
 		for (auto&& listItem : node->arguments)
 		{
@@ -783,22 +783,22 @@ namespace cpp_parser::json_visitor
 		}
 		EndArray();
 		EndField();
-		BeginField(L"keyword");
+		BeginField(vl::WString::Unmanaged(L"keyword"));
 		WriteToken(node->keyword);
 		EndField();
 	}
 	void AstVisitor::PrintFields(CppGenericArgument* node)
 	{
-		BeginField(L"argument");
+		BeginField(vl::WString::Unmanaged(L"argument"));
 		Print(node->argument.Obj());
 		EndField();
-		BeginField(L"variadic");
+		BeginField(vl::WString::Unmanaged(L"variadic"));
 		WriteToken(node->variadic);
 		EndField();
 	}
 	void AstVisitor::PrintFields(CppGenericArguments* node)
 	{
-		BeginField(L"arguments");
+		BeginField(vl::WString::Unmanaged(L"arguments"));
 		BeginArray();
 		for (auto&& listItem : node->arguments)
 		{
@@ -811,7 +811,7 @@ namespace cpp_parser::json_visitor
 	}
 	void AstVisitor::PrintFields(CppGenericHeader* node)
 	{
-		BeginField(L"parameters");
+		BeginField(vl::WString::Unmanaged(L"parameters"));
 		BeginArray();
 		for (auto&& listItem : node->parameters)
 		{
@@ -824,7 +824,7 @@ namespace cpp_parser::json_visitor
 	}
 	void AstVisitor::PrintFields(CppGotoStat* node)
 	{
-		BeginField(L"label");
+		BeginField(vl::WString::Unmanaged(L"label"));
 		WriteToken(node->label);
 		EndField();
 	}
@@ -833,87 +833,87 @@ namespace cpp_parser::json_visitor
 	}
 	void AstVisitor::PrintFields(CppIfElseStat* node)
 	{
-		BeginField(L"condition");
+		BeginField(vl::WString::Unmanaged(L"condition"));
 		Print(node->condition.Obj());
 		EndField();
-		BeginField(L"falseStat");
+		BeginField(vl::WString::Unmanaged(L"falseStat"));
 		Print(node->falseStat.Obj());
 		EndField();
-		BeginField(L"trueStat");
+		BeginField(vl::WString::Unmanaged(L"trueStat"));
 		Print(node->trueStat.Obj());
 		EndField();
-		BeginField(L"varsDecl");
+		BeginField(vl::WString::Unmanaged(L"varsDecl"));
 		Print(node->varsDecl.Obj());
 		EndField();
 	}
 	void AstVisitor::PrintFields(CppIfExpr* node)
 	{
-		BeginField(L"condition");
+		BeginField(vl::WString::Unmanaged(L"condition"));
 		Print(node->condition.Obj());
 		EndField();
-		BeginField(L"falseBranch");
+		BeginField(vl::WString::Unmanaged(L"falseBranch"));
 		Print(node->falseBranch.Obj());
 		EndField();
-		BeginField(L"trueBranch");
+		BeginField(vl::WString::Unmanaged(L"trueBranch"));
 		Print(node->trueBranch.Obj());
 		EndField();
 	}
 	void AstVisitor::PrintFields(CppIndexExpr* node)
 	{
-		BeginField(L"index");
+		BeginField(vl::WString::Unmanaged(L"index"));
 		Print(node->index.Obj());
 		EndField();
-		BeginField(L"operand");
+		BeginField(vl::WString::Unmanaged(L"operand"));
 		Print(node->operand.Obj());
 		EndField();
 	}
 	void AstVisitor::PrintFields(CppLabelStat* node)
 	{
-		BeginField(L"label");
+		BeginField(vl::WString::Unmanaged(L"label"));
 		WriteToken(node->label);
 		EndField();
-		BeginField(L"stat");
+		BeginField(vl::WString::Unmanaged(L"stat"));
 		Print(node->stat.Obj());
 		EndField();
 	}
 	void AstVisitor::PrintFields(CppLambdaCapture* node)
 	{
-		BeginField(L"id");
+		BeginField(vl::WString::Unmanaged(L"id"));
 		Print(node->id.Obj());
 		EndField();
-		BeginField(L"init");
+		BeginField(vl::WString::Unmanaged(L"init"));
 		Print(node->init.Obj());
 		EndField();
-		BeginField(L"objKind");
+		BeginField(vl::WString::Unmanaged(L"objKind"));
 		switch (node->objKind)
 		{
 		case cpp_parser::CppLambdaCaptureObjectKinds::Default:
-			WriteString(L"Default");
+			WriteString(vl::WString::Unmanaged(L"Default"));
 			break;
 		case cpp_parser::CppLambdaCaptureObjectKinds::Id:
-			WriteString(L"Id");
+			WriteString(vl::WString::Unmanaged(L"Id"));
 			break;
 		case cpp_parser::CppLambdaCaptureObjectKinds::PackId:
-			WriteString(L"PackId");
+			WriteString(vl::WString::Unmanaged(L"PackId"));
 			break;
 		case cpp_parser::CppLambdaCaptureObjectKinds::PackInit:
-			WriteString(L"PackInit");
+			WriteString(vl::WString::Unmanaged(L"PackInit"));
 			break;
 		case cpp_parser::CppLambdaCaptureObjectKinds::This:
-			WriteString(L"This");
+			WriteString(vl::WString::Unmanaged(L"This"));
 			break;
 		default:
 			WriteNull();
 		}
 		EndField();
-		BeginField(L"refKind");
+		BeginField(vl::WString::Unmanaged(L"refKind"));
 		switch (node->refKind)
 		{
 		case cpp_parser::CppLambdaCaptureRefeferenceKinds::Copy:
-			WriteString(L"Copy");
+			WriteString(vl::WString::Unmanaged(L"Copy"));
 			break;
 		case cpp_parser::CppLambdaCaptureRefeferenceKinds::Ref:
-			WriteString(L"Ref");
+			WriteString(vl::WString::Unmanaged(L"Ref"));
 			break;
 		default:
 			WriteNull();
@@ -922,7 +922,7 @@ namespace cpp_parser::json_visitor
 	}
 	void AstVisitor::PrintFields(CppLambdaExpr* node)
 	{
-		BeginField(L"captures");
+		BeginField(vl::WString::Unmanaged(L"captures"));
 		BeginArray();
 		for (auto&& listItem : node->captures)
 		{
@@ -932,56 +932,56 @@ namespace cpp_parser::json_visitor
 		}
 		EndArray();
 		EndField();
-		BeginField(L"functionHeader");
+		BeginField(vl::WString::Unmanaged(L"functionHeader"));
 		Print(node->functionHeader.Obj());
 		EndField();
-		BeginField(L"genericHeader");
+		BeginField(vl::WString::Unmanaged(L"genericHeader"));
 		Print(node->genericHeader.Obj());
 		EndField();
-		BeginField(L"stat");
+		BeginField(vl::WString::Unmanaged(L"stat"));
 		Print(node->stat.Obj());
 		EndField();
 	}
 	void AstVisitor::PrintFields(CppNameIdentifier* node)
 	{
-		BeginField(L"kind");
+		BeginField(vl::WString::Unmanaged(L"kind"));
 		switch (node->kind)
 		{
 		case cpp_parser::CppNameKinds::Class:
-			WriteString(L"Class");
+			WriteString(vl::WString::Unmanaged(L"Class"));
 			break;
 		case cpp_parser::CppNameKinds::Dtor:
-			WriteString(L"Dtor");
+			WriteString(vl::WString::Unmanaged(L"Dtor"));
 			break;
 		case cpp_parser::CppNameKinds::Enum:
-			WriteString(L"Enum");
+			WriteString(vl::WString::Unmanaged(L"Enum"));
 			break;
 		case cpp_parser::CppNameKinds::EnumClass:
-			WriteString(L"EnumClass");
+			WriteString(vl::WString::Unmanaged(L"EnumClass"));
 			break;
 		case cpp_parser::CppNameKinds::Normal:
-			WriteString(L"Normal");
+			WriteString(vl::WString::Unmanaged(L"Normal"));
 			break;
 		case cpp_parser::CppNameKinds::Struct:
-			WriteString(L"Struct");
+			WriteString(vl::WString::Unmanaged(L"Struct"));
 			break;
 		case cpp_parser::CppNameKinds::Union:
-			WriteString(L"Union");
+			WriteString(vl::WString::Unmanaged(L"Union"));
 			break;
 		case cpp_parser::CppNameKinds::UserDefinedLiteral:
-			WriteString(L"UserDefinedLiteral");
+			WriteString(vl::WString::Unmanaged(L"UserDefinedLiteral"));
 			break;
 		default:
 			WriteNull();
 		}
 		EndField();
-		BeginField(L"name");
+		BeginField(vl::WString::Unmanaged(L"name"));
 		WriteToken(node->name);
 		EndField();
 	}
 	void AstVisitor::PrintFields(CppNamespaceDeclaration* node)
 	{
-		BeginField(L"decls");
+		BeginField(vl::WString::Unmanaged(L"decls"));
 		BeginArray();
 		for (auto&& listItem : node->decls)
 		{
@@ -991,7 +991,7 @@ namespace cpp_parser::json_visitor
 		}
 		EndArray();
 		EndField();
-		BeginField(L"names");
+		BeginField(vl::WString::Unmanaged(L"names"));
 		BeginArray();
 		for (auto&& listItem : node->names)
 		{
@@ -1004,13 +1004,13 @@ namespace cpp_parser::json_visitor
 	}
 	void AstVisitor::PrintFields(CppNamespaceName* node)
 	{
-		BeginField(L"name");
+		BeginField(vl::WString::Unmanaged(L"name"));
 		WriteToken(node->name);
 		EndField();
 	}
 	void AstVisitor::PrintFields(CppNewExpr* node)
 	{
-		BeginField(L"arrayArguments");
+		BeginField(vl::WString::Unmanaged(L"arrayArguments"));
 		BeginArray();
 		for (auto&& listItem : node->arrayArguments)
 		{
@@ -1020,10 +1020,10 @@ namespace cpp_parser::json_visitor
 		}
 		EndArray();
 		EndField();
-		BeginField(L"init");
+		BeginField(vl::WString::Unmanaged(L"init"));
 		Print(node->init.Obj());
 		EndField();
-		BeginField(L"placementArguments");
+		BeginField(vl::WString::Unmanaged(L"placementArguments"));
 		BeginArray();
 		for (auto&& listItem : node->placementArguments)
 		{
@@ -1033,20 +1033,20 @@ namespace cpp_parser::json_visitor
 		}
 		EndArray();
 		EndField();
-		BeginField(L"scope");
+		BeginField(vl::WString::Unmanaged(L"scope"));
 		switch (node->scope)
 		{
 		case cpp_parser::CppOperatorScope::Context:
-			WriteString(L"Context");
+			WriteString(vl::WString::Unmanaged(L"Context"));
 			break;
 		case cpp_parser::CppOperatorScope::Root:
-			WriteString(L"Root");
+			WriteString(vl::WString::Unmanaged(L"Root"));
 			break;
 		default:
 			WriteNull();
 		}
 		EndField();
-		BeginField(L"type");
+		BeginField(vl::WString::Unmanaged(L"type"));
 		BeginArray();
 		for (auto&& listItem : node->type)
 		{
@@ -1059,180 +1059,180 @@ namespace cpp_parser::json_visitor
 	}
 	void AstVisitor::PrintFields(CppNumericExprLiteral* node)
 	{
-		BeginField(L"kind");
+		BeginField(vl::WString::Unmanaged(L"kind"));
 		switch (node->kind)
 		{
 		case cpp_parser::CppNumericExprLiteralKinds::Binary:
-			WriteString(L"Binary");
+			WriteString(vl::WString::Unmanaged(L"Binary"));
 			break;
 		case cpp_parser::CppNumericExprLiteralKinds::Char:
-			WriteString(L"Char");
+			WriteString(vl::WString::Unmanaged(L"Char"));
 			break;
 		case cpp_parser::CppNumericExprLiteralKinds::Float:
-			WriteString(L"Float");
+			WriteString(vl::WString::Unmanaged(L"Float"));
 			break;
 		case cpp_parser::CppNumericExprLiteralKinds::FloatHex:
-			WriteString(L"FloatHex");
+			WriteString(vl::WString::Unmanaged(L"FloatHex"));
 			break;
 		case cpp_parser::CppNumericExprLiteralKinds::Hex:
-			WriteString(L"Hex");
+			WriteString(vl::WString::Unmanaged(L"Hex"));
 			break;
 		case cpp_parser::CppNumericExprLiteralKinds::Integer:
-			WriteString(L"Integer");
+			WriteString(vl::WString::Unmanaged(L"Integer"));
 			break;
 		default:
 			WriteNull();
 		}
 		EndField();
-		BeginField(L"literal");
+		BeginField(vl::WString::Unmanaged(L"literal"));
 		WriteToken(node->literal);
 		EndField();
 	}
 	void AstVisitor::PrintFields(CppOperatorIdentifier* node)
 	{
-		BeginField(L"op");
+		BeginField(vl::WString::Unmanaged(L"op"));
 		switch (node->op)
 		{
 		case cpp_parser::CppOperators::And:
-			WriteString(L"And");
+			WriteString(vl::WString::Unmanaged(L"And"));
 			break;
 		case cpp_parser::CppOperators::AndAssign:
-			WriteString(L"AndAssign");
+			WriteString(vl::WString::Unmanaged(L"AndAssign"));
 			break;
 		case cpp_parser::CppOperators::Assign:
-			WriteString(L"Assign");
+			WriteString(vl::WString::Unmanaged(L"Assign"));
 			break;
 		case cpp_parser::CppOperators::BitwiseAnd:
-			WriteString(L"BitwiseAnd");
+			WriteString(vl::WString::Unmanaged(L"BitwiseAnd"));
 			break;
 		case cpp_parser::CppOperators::BitwiseOr:
-			WriteString(L"BitwiseOr");
+			WriteString(vl::WString::Unmanaged(L"BitwiseOr"));
 			break;
 		case cpp_parser::CppOperators::Bracket:
-			WriteString(L"Bracket");
+			WriteString(vl::WString::Unmanaged(L"Bracket"));
 			break;
 		case cpp_parser::CppOperators::Comma:
-			WriteString(L"Comma");
+			WriteString(vl::WString::Unmanaged(L"Comma"));
 			break;
 		case cpp_parser::CppOperators::Compare:
-			WriteString(L"Compare");
+			WriteString(vl::WString::Unmanaged(L"Compare"));
 			break;
 		case cpp_parser::CppOperators::Decrease:
-			WriteString(L"Decrease");
+			WriteString(vl::WString::Unmanaged(L"Decrease"));
 			break;
 		case cpp_parser::CppOperators::Delete:
-			WriteString(L"Delete");
+			WriteString(vl::WString::Unmanaged(L"Delete"));
 			break;
 		case cpp_parser::CppOperators::DeleteArray:
-			WriteString(L"DeleteArray");
+			WriteString(vl::WString::Unmanaged(L"DeleteArray"));
 			break;
 		case cpp_parser::CppOperators::Div:
-			WriteString(L"Div");
+			WriteString(vl::WString::Unmanaged(L"Div"));
 			break;
 		case cpp_parser::CppOperators::DivAssign:
-			WriteString(L"DivAssign");
+			WriteString(vl::WString::Unmanaged(L"DivAssign"));
 			break;
 		case cpp_parser::CppOperators::EQ:
-			WriteString(L"EQ");
+			WriteString(vl::WString::Unmanaged(L"EQ"));
 			break;
 		case cpp_parser::CppOperators::GE:
-			WriteString(L"GE");
+			WriteString(vl::WString::Unmanaged(L"GE"));
 			break;
 		case cpp_parser::CppOperators::GT:
-			WriteString(L"GT");
+			WriteString(vl::WString::Unmanaged(L"GT"));
 			break;
 		case cpp_parser::CppOperators::Increase:
-			WriteString(L"Increase");
+			WriteString(vl::WString::Unmanaged(L"Increase"));
 			break;
 		case cpp_parser::CppOperators::LE:
-			WriteString(L"LE");
+			WriteString(vl::WString::Unmanaged(L"LE"));
 			break;
 		case cpp_parser::CppOperators::LT:
-			WriteString(L"LT");
+			WriteString(vl::WString::Unmanaged(L"LT"));
 			break;
 		case cpp_parser::CppOperators::LeftShift:
-			WriteString(L"LeftShift");
+			WriteString(vl::WString::Unmanaged(L"LeftShift"));
 			break;
 		case cpp_parser::CppOperators::LeftShiftAssign:
-			WriteString(L"LeftShiftAssign");
+			WriteString(vl::WString::Unmanaged(L"LeftShiftAssign"));
 			break;
 		case cpp_parser::CppOperators::Member:
-			WriteString(L"Member");
+			WriteString(vl::WString::Unmanaged(L"Member"));
 			break;
 		case cpp_parser::CppOperators::MemberDeref:
-			WriteString(L"MemberDeref");
+			WriteString(vl::WString::Unmanaged(L"MemberDeref"));
 			break;
 		case cpp_parser::CppOperators::Minus:
-			WriteString(L"Minus");
+			WriteString(vl::WString::Unmanaged(L"Minus"));
 			break;
 		case cpp_parser::CppOperators::MinusAssign:
-			WriteString(L"MinusAssign");
+			WriteString(vl::WString::Unmanaged(L"MinusAssign"));
 			break;
 		case cpp_parser::CppOperators::Mod:
-			WriteString(L"Mod");
+			WriteString(vl::WString::Unmanaged(L"Mod"));
 			break;
 		case cpp_parser::CppOperators::ModAssign:
-			WriteString(L"ModAssign");
+			WriteString(vl::WString::Unmanaged(L"ModAssign"));
 			break;
 		case cpp_parser::CppOperators::Mul:
-			WriteString(L"Mul");
+			WriteString(vl::WString::Unmanaged(L"Mul"));
 			break;
 		case cpp_parser::CppOperators::MulAssign:
-			WriteString(L"MulAssign");
+			WriteString(vl::WString::Unmanaged(L"MulAssign"));
 			break;
 		case cpp_parser::CppOperators::NE:
-			WriteString(L"NE");
+			WriteString(vl::WString::Unmanaged(L"NE"));
 			break;
 		case cpp_parser::CppOperators::New:
-			WriteString(L"New");
+			WriteString(vl::WString::Unmanaged(L"New"));
 			break;
 		case cpp_parser::CppOperators::NewArray:
-			WriteString(L"NewArray");
+			WriteString(vl::WString::Unmanaged(L"NewArray"));
 			break;
 		case cpp_parser::CppOperators::Not:
-			WriteString(L"Not");
+			WriteString(vl::WString::Unmanaged(L"Not"));
 			break;
 		case cpp_parser::CppOperators::Or:
-			WriteString(L"Or");
+			WriteString(vl::WString::Unmanaged(L"Or"));
 			break;
 		case cpp_parser::CppOperators::OrAssign:
-			WriteString(L"OrAssign");
+			WriteString(vl::WString::Unmanaged(L"OrAssign"));
 			break;
 		case cpp_parser::CppOperators::Parantheses:
-			WriteString(L"Parantheses");
+			WriteString(vl::WString::Unmanaged(L"Parantheses"));
 			break;
 		case cpp_parser::CppOperators::Plus:
-			WriteString(L"Plus");
+			WriteString(vl::WString::Unmanaged(L"Plus"));
 			break;
 		case cpp_parser::CppOperators::PlusAssign:
-			WriteString(L"PlusAssign");
+			WriteString(vl::WString::Unmanaged(L"PlusAssign"));
 			break;
 		case cpp_parser::CppOperators::Pointer:
-			WriteString(L"Pointer");
+			WriteString(vl::WString::Unmanaged(L"Pointer"));
 			break;
 		case cpp_parser::CppOperators::PointerDeref:
-			WriteString(L"PointerDeref");
+			WriteString(vl::WString::Unmanaged(L"PointerDeref"));
 			break;
 		case cpp_parser::CppOperators::Revert:
-			WriteString(L"Revert");
+			WriteString(vl::WString::Unmanaged(L"Revert"));
 			break;
 		case cpp_parser::CppOperators::RevertAssign:
-			WriteString(L"RevertAssign");
+			WriteString(vl::WString::Unmanaged(L"RevertAssign"));
 			break;
 		case cpp_parser::CppOperators::RightShift:
-			WriteString(L"RightShift");
+			WriteString(vl::WString::Unmanaged(L"RightShift"));
 			break;
 		case cpp_parser::CppOperators::RightShiftAssign:
-			WriteString(L"RightShiftAssign");
+			WriteString(vl::WString::Unmanaged(L"RightShiftAssign"));
 			break;
 		case cpp_parser::CppOperators::RoundBracket:
-			WriteString(L"RoundBracket");
+			WriteString(vl::WString::Unmanaged(L"RoundBracket"));
 			break;
 		case cpp_parser::CppOperators::Xor:
-			WriteString(L"Xor");
+			WriteString(vl::WString::Unmanaged(L"Xor"));
 			break;
 		case cpp_parser::CppOperators::XorAssign:
-			WriteString(L"XorAssign");
+			WriteString(vl::WString::Unmanaged(L"XorAssign"));
 			break;
 		default:
 			WriteNull();
@@ -1241,361 +1241,361 @@ namespace cpp_parser::json_visitor
 	}
 	void AstVisitor::PrintFields(CppOperatorTypeIdentifier* node)
 	{
-		BeginField(L"type");
+		BeginField(vl::WString::Unmanaged(L"type"));
 		Print(node->type.Obj());
 		EndField();
 	}
 	void AstVisitor::PrintFields(CppOrdinaryGenericParameter* node)
 	{
-		BeginField(L"genericHeader");
+		BeginField(vl::WString::Unmanaged(L"genericHeader"));
 		Print(node->genericHeader.Obj());
 		EndField();
-		BeginField(L"id");
+		BeginField(vl::WString::Unmanaged(L"id"));
 		Print(node->id.Obj());
 		EndField();
-		BeginField(L"init");
+		BeginField(vl::WString::Unmanaged(L"init"));
 		Print(node->init.Obj());
 		EndField();
-		BeginField(L"typenameToken");
+		BeginField(vl::WString::Unmanaged(L"typenameToken"));
 		WriteToken(node->typenameToken);
 		EndField();
-		BeginField(L"variadic");
+		BeginField(vl::WString::Unmanaged(L"variadic"));
 		WriteToken(node->variadic);
 		EndField();
 	}
 	void AstVisitor::PrintFields(CppParenthesisExpr* node)
 	{
-		BeginField(L"expr");
+		BeginField(vl::WString::Unmanaged(L"expr"));
 		Print(node->expr.Obj());
 		EndField();
 	}
 	void AstVisitor::PrintFields(CppPostfixUnaryExpr* node)
 	{
-		BeginField(L"op");
+		BeginField(vl::WString::Unmanaged(L"op"));
 		switch (node->op)
 		{
 		case cpp_parser::CppOperators::And:
-			WriteString(L"And");
+			WriteString(vl::WString::Unmanaged(L"And"));
 			break;
 		case cpp_parser::CppOperators::AndAssign:
-			WriteString(L"AndAssign");
+			WriteString(vl::WString::Unmanaged(L"AndAssign"));
 			break;
 		case cpp_parser::CppOperators::Assign:
-			WriteString(L"Assign");
+			WriteString(vl::WString::Unmanaged(L"Assign"));
 			break;
 		case cpp_parser::CppOperators::BitwiseAnd:
-			WriteString(L"BitwiseAnd");
+			WriteString(vl::WString::Unmanaged(L"BitwiseAnd"));
 			break;
 		case cpp_parser::CppOperators::BitwiseOr:
-			WriteString(L"BitwiseOr");
+			WriteString(vl::WString::Unmanaged(L"BitwiseOr"));
 			break;
 		case cpp_parser::CppOperators::Bracket:
-			WriteString(L"Bracket");
+			WriteString(vl::WString::Unmanaged(L"Bracket"));
 			break;
 		case cpp_parser::CppOperators::Comma:
-			WriteString(L"Comma");
+			WriteString(vl::WString::Unmanaged(L"Comma"));
 			break;
 		case cpp_parser::CppOperators::Compare:
-			WriteString(L"Compare");
+			WriteString(vl::WString::Unmanaged(L"Compare"));
 			break;
 		case cpp_parser::CppOperators::Decrease:
-			WriteString(L"Decrease");
+			WriteString(vl::WString::Unmanaged(L"Decrease"));
 			break;
 		case cpp_parser::CppOperators::Delete:
-			WriteString(L"Delete");
+			WriteString(vl::WString::Unmanaged(L"Delete"));
 			break;
 		case cpp_parser::CppOperators::DeleteArray:
-			WriteString(L"DeleteArray");
+			WriteString(vl::WString::Unmanaged(L"DeleteArray"));
 			break;
 		case cpp_parser::CppOperators::Div:
-			WriteString(L"Div");
+			WriteString(vl::WString::Unmanaged(L"Div"));
 			break;
 		case cpp_parser::CppOperators::DivAssign:
-			WriteString(L"DivAssign");
+			WriteString(vl::WString::Unmanaged(L"DivAssign"));
 			break;
 		case cpp_parser::CppOperators::EQ:
-			WriteString(L"EQ");
+			WriteString(vl::WString::Unmanaged(L"EQ"));
 			break;
 		case cpp_parser::CppOperators::GE:
-			WriteString(L"GE");
+			WriteString(vl::WString::Unmanaged(L"GE"));
 			break;
 		case cpp_parser::CppOperators::GT:
-			WriteString(L"GT");
+			WriteString(vl::WString::Unmanaged(L"GT"));
 			break;
 		case cpp_parser::CppOperators::Increase:
-			WriteString(L"Increase");
+			WriteString(vl::WString::Unmanaged(L"Increase"));
 			break;
 		case cpp_parser::CppOperators::LE:
-			WriteString(L"LE");
+			WriteString(vl::WString::Unmanaged(L"LE"));
 			break;
 		case cpp_parser::CppOperators::LT:
-			WriteString(L"LT");
+			WriteString(vl::WString::Unmanaged(L"LT"));
 			break;
 		case cpp_parser::CppOperators::LeftShift:
-			WriteString(L"LeftShift");
+			WriteString(vl::WString::Unmanaged(L"LeftShift"));
 			break;
 		case cpp_parser::CppOperators::LeftShiftAssign:
-			WriteString(L"LeftShiftAssign");
+			WriteString(vl::WString::Unmanaged(L"LeftShiftAssign"));
 			break;
 		case cpp_parser::CppOperators::Member:
-			WriteString(L"Member");
+			WriteString(vl::WString::Unmanaged(L"Member"));
 			break;
 		case cpp_parser::CppOperators::MemberDeref:
-			WriteString(L"MemberDeref");
+			WriteString(vl::WString::Unmanaged(L"MemberDeref"));
 			break;
 		case cpp_parser::CppOperators::Minus:
-			WriteString(L"Minus");
+			WriteString(vl::WString::Unmanaged(L"Minus"));
 			break;
 		case cpp_parser::CppOperators::MinusAssign:
-			WriteString(L"MinusAssign");
+			WriteString(vl::WString::Unmanaged(L"MinusAssign"));
 			break;
 		case cpp_parser::CppOperators::Mod:
-			WriteString(L"Mod");
+			WriteString(vl::WString::Unmanaged(L"Mod"));
 			break;
 		case cpp_parser::CppOperators::ModAssign:
-			WriteString(L"ModAssign");
+			WriteString(vl::WString::Unmanaged(L"ModAssign"));
 			break;
 		case cpp_parser::CppOperators::Mul:
-			WriteString(L"Mul");
+			WriteString(vl::WString::Unmanaged(L"Mul"));
 			break;
 		case cpp_parser::CppOperators::MulAssign:
-			WriteString(L"MulAssign");
+			WriteString(vl::WString::Unmanaged(L"MulAssign"));
 			break;
 		case cpp_parser::CppOperators::NE:
-			WriteString(L"NE");
+			WriteString(vl::WString::Unmanaged(L"NE"));
 			break;
 		case cpp_parser::CppOperators::New:
-			WriteString(L"New");
+			WriteString(vl::WString::Unmanaged(L"New"));
 			break;
 		case cpp_parser::CppOperators::NewArray:
-			WriteString(L"NewArray");
+			WriteString(vl::WString::Unmanaged(L"NewArray"));
 			break;
 		case cpp_parser::CppOperators::Not:
-			WriteString(L"Not");
+			WriteString(vl::WString::Unmanaged(L"Not"));
 			break;
 		case cpp_parser::CppOperators::Or:
-			WriteString(L"Or");
+			WriteString(vl::WString::Unmanaged(L"Or"));
 			break;
 		case cpp_parser::CppOperators::OrAssign:
-			WriteString(L"OrAssign");
+			WriteString(vl::WString::Unmanaged(L"OrAssign"));
 			break;
 		case cpp_parser::CppOperators::Parantheses:
-			WriteString(L"Parantheses");
+			WriteString(vl::WString::Unmanaged(L"Parantheses"));
 			break;
 		case cpp_parser::CppOperators::Plus:
-			WriteString(L"Plus");
+			WriteString(vl::WString::Unmanaged(L"Plus"));
 			break;
 		case cpp_parser::CppOperators::PlusAssign:
-			WriteString(L"PlusAssign");
+			WriteString(vl::WString::Unmanaged(L"PlusAssign"));
 			break;
 		case cpp_parser::CppOperators::Pointer:
-			WriteString(L"Pointer");
+			WriteString(vl::WString::Unmanaged(L"Pointer"));
 			break;
 		case cpp_parser::CppOperators::PointerDeref:
-			WriteString(L"PointerDeref");
+			WriteString(vl::WString::Unmanaged(L"PointerDeref"));
 			break;
 		case cpp_parser::CppOperators::Revert:
-			WriteString(L"Revert");
+			WriteString(vl::WString::Unmanaged(L"Revert"));
 			break;
 		case cpp_parser::CppOperators::RevertAssign:
-			WriteString(L"RevertAssign");
+			WriteString(vl::WString::Unmanaged(L"RevertAssign"));
 			break;
 		case cpp_parser::CppOperators::RightShift:
-			WriteString(L"RightShift");
+			WriteString(vl::WString::Unmanaged(L"RightShift"));
 			break;
 		case cpp_parser::CppOperators::RightShiftAssign:
-			WriteString(L"RightShiftAssign");
+			WriteString(vl::WString::Unmanaged(L"RightShiftAssign"));
 			break;
 		case cpp_parser::CppOperators::RoundBracket:
-			WriteString(L"RoundBracket");
+			WriteString(vl::WString::Unmanaged(L"RoundBracket"));
 			break;
 		case cpp_parser::CppOperators::Xor:
-			WriteString(L"Xor");
+			WriteString(vl::WString::Unmanaged(L"Xor"));
 			break;
 		case cpp_parser::CppOperators::XorAssign:
-			WriteString(L"XorAssign");
+			WriteString(vl::WString::Unmanaged(L"XorAssign"));
 			break;
 		default:
 			WriteNull();
 		}
 		EndField();
-		BeginField(L"operand");
+		BeginField(vl::WString::Unmanaged(L"operand"));
 		Print(node->operand.Obj());
 		EndField();
 	}
 	void AstVisitor::PrintFields(CppPrefixUnaryExpr* node)
 	{
-		BeginField(L"op");
+		BeginField(vl::WString::Unmanaged(L"op"));
 		switch (node->op)
 		{
 		case cpp_parser::CppOperators::And:
-			WriteString(L"And");
+			WriteString(vl::WString::Unmanaged(L"And"));
 			break;
 		case cpp_parser::CppOperators::AndAssign:
-			WriteString(L"AndAssign");
+			WriteString(vl::WString::Unmanaged(L"AndAssign"));
 			break;
 		case cpp_parser::CppOperators::Assign:
-			WriteString(L"Assign");
+			WriteString(vl::WString::Unmanaged(L"Assign"));
 			break;
 		case cpp_parser::CppOperators::BitwiseAnd:
-			WriteString(L"BitwiseAnd");
+			WriteString(vl::WString::Unmanaged(L"BitwiseAnd"));
 			break;
 		case cpp_parser::CppOperators::BitwiseOr:
-			WriteString(L"BitwiseOr");
+			WriteString(vl::WString::Unmanaged(L"BitwiseOr"));
 			break;
 		case cpp_parser::CppOperators::Bracket:
-			WriteString(L"Bracket");
+			WriteString(vl::WString::Unmanaged(L"Bracket"));
 			break;
 		case cpp_parser::CppOperators::Comma:
-			WriteString(L"Comma");
+			WriteString(vl::WString::Unmanaged(L"Comma"));
 			break;
 		case cpp_parser::CppOperators::Compare:
-			WriteString(L"Compare");
+			WriteString(vl::WString::Unmanaged(L"Compare"));
 			break;
 		case cpp_parser::CppOperators::Decrease:
-			WriteString(L"Decrease");
+			WriteString(vl::WString::Unmanaged(L"Decrease"));
 			break;
 		case cpp_parser::CppOperators::Delete:
-			WriteString(L"Delete");
+			WriteString(vl::WString::Unmanaged(L"Delete"));
 			break;
 		case cpp_parser::CppOperators::DeleteArray:
-			WriteString(L"DeleteArray");
+			WriteString(vl::WString::Unmanaged(L"DeleteArray"));
 			break;
 		case cpp_parser::CppOperators::Div:
-			WriteString(L"Div");
+			WriteString(vl::WString::Unmanaged(L"Div"));
 			break;
 		case cpp_parser::CppOperators::DivAssign:
-			WriteString(L"DivAssign");
+			WriteString(vl::WString::Unmanaged(L"DivAssign"));
 			break;
 		case cpp_parser::CppOperators::EQ:
-			WriteString(L"EQ");
+			WriteString(vl::WString::Unmanaged(L"EQ"));
 			break;
 		case cpp_parser::CppOperators::GE:
-			WriteString(L"GE");
+			WriteString(vl::WString::Unmanaged(L"GE"));
 			break;
 		case cpp_parser::CppOperators::GT:
-			WriteString(L"GT");
+			WriteString(vl::WString::Unmanaged(L"GT"));
 			break;
 		case cpp_parser::CppOperators::Increase:
-			WriteString(L"Increase");
+			WriteString(vl::WString::Unmanaged(L"Increase"));
 			break;
 		case cpp_parser::CppOperators::LE:
-			WriteString(L"LE");
+			WriteString(vl::WString::Unmanaged(L"LE"));
 			break;
 		case cpp_parser::CppOperators::LT:
-			WriteString(L"LT");
+			WriteString(vl::WString::Unmanaged(L"LT"));
 			break;
 		case cpp_parser::CppOperators::LeftShift:
-			WriteString(L"LeftShift");
+			WriteString(vl::WString::Unmanaged(L"LeftShift"));
 			break;
 		case cpp_parser::CppOperators::LeftShiftAssign:
-			WriteString(L"LeftShiftAssign");
+			WriteString(vl::WString::Unmanaged(L"LeftShiftAssign"));
 			break;
 		case cpp_parser::CppOperators::Member:
-			WriteString(L"Member");
+			WriteString(vl::WString::Unmanaged(L"Member"));
 			break;
 		case cpp_parser::CppOperators::MemberDeref:
-			WriteString(L"MemberDeref");
+			WriteString(vl::WString::Unmanaged(L"MemberDeref"));
 			break;
 		case cpp_parser::CppOperators::Minus:
-			WriteString(L"Minus");
+			WriteString(vl::WString::Unmanaged(L"Minus"));
 			break;
 		case cpp_parser::CppOperators::MinusAssign:
-			WriteString(L"MinusAssign");
+			WriteString(vl::WString::Unmanaged(L"MinusAssign"));
 			break;
 		case cpp_parser::CppOperators::Mod:
-			WriteString(L"Mod");
+			WriteString(vl::WString::Unmanaged(L"Mod"));
 			break;
 		case cpp_parser::CppOperators::ModAssign:
-			WriteString(L"ModAssign");
+			WriteString(vl::WString::Unmanaged(L"ModAssign"));
 			break;
 		case cpp_parser::CppOperators::Mul:
-			WriteString(L"Mul");
+			WriteString(vl::WString::Unmanaged(L"Mul"));
 			break;
 		case cpp_parser::CppOperators::MulAssign:
-			WriteString(L"MulAssign");
+			WriteString(vl::WString::Unmanaged(L"MulAssign"));
 			break;
 		case cpp_parser::CppOperators::NE:
-			WriteString(L"NE");
+			WriteString(vl::WString::Unmanaged(L"NE"));
 			break;
 		case cpp_parser::CppOperators::New:
-			WriteString(L"New");
+			WriteString(vl::WString::Unmanaged(L"New"));
 			break;
 		case cpp_parser::CppOperators::NewArray:
-			WriteString(L"NewArray");
+			WriteString(vl::WString::Unmanaged(L"NewArray"));
 			break;
 		case cpp_parser::CppOperators::Not:
-			WriteString(L"Not");
+			WriteString(vl::WString::Unmanaged(L"Not"));
 			break;
 		case cpp_parser::CppOperators::Or:
-			WriteString(L"Or");
+			WriteString(vl::WString::Unmanaged(L"Or"));
 			break;
 		case cpp_parser::CppOperators::OrAssign:
-			WriteString(L"OrAssign");
+			WriteString(vl::WString::Unmanaged(L"OrAssign"));
 			break;
 		case cpp_parser::CppOperators::Parantheses:
-			WriteString(L"Parantheses");
+			WriteString(vl::WString::Unmanaged(L"Parantheses"));
 			break;
 		case cpp_parser::CppOperators::Plus:
-			WriteString(L"Plus");
+			WriteString(vl::WString::Unmanaged(L"Plus"));
 			break;
 		case cpp_parser::CppOperators::PlusAssign:
-			WriteString(L"PlusAssign");
+			WriteString(vl::WString::Unmanaged(L"PlusAssign"));
 			break;
 		case cpp_parser::CppOperators::Pointer:
-			WriteString(L"Pointer");
+			WriteString(vl::WString::Unmanaged(L"Pointer"));
 			break;
 		case cpp_parser::CppOperators::PointerDeref:
-			WriteString(L"PointerDeref");
+			WriteString(vl::WString::Unmanaged(L"PointerDeref"));
 			break;
 		case cpp_parser::CppOperators::Revert:
-			WriteString(L"Revert");
+			WriteString(vl::WString::Unmanaged(L"Revert"));
 			break;
 		case cpp_parser::CppOperators::RevertAssign:
-			WriteString(L"RevertAssign");
+			WriteString(vl::WString::Unmanaged(L"RevertAssign"));
 			break;
 		case cpp_parser::CppOperators::RightShift:
-			WriteString(L"RightShift");
+			WriteString(vl::WString::Unmanaged(L"RightShift"));
 			break;
 		case cpp_parser::CppOperators::RightShiftAssign:
-			WriteString(L"RightShiftAssign");
+			WriteString(vl::WString::Unmanaged(L"RightShiftAssign"));
 			break;
 		case cpp_parser::CppOperators::RoundBracket:
-			WriteString(L"RoundBracket");
+			WriteString(vl::WString::Unmanaged(L"RoundBracket"));
 			break;
 		case cpp_parser::CppOperators::Xor:
-			WriteString(L"Xor");
+			WriteString(vl::WString::Unmanaged(L"Xor"));
 			break;
 		case cpp_parser::CppOperators::XorAssign:
-			WriteString(L"XorAssign");
+			WriteString(vl::WString::Unmanaged(L"XorAssign"));
 			break;
 		default:
 			WriteNull();
 		}
 		EndField();
-		BeginField(L"operand");
+		BeginField(vl::WString::Unmanaged(L"operand"));
 		Print(node->operand.Obj());
 		EndField();
 	}
 	void AstVisitor::PrintFields(CppPrimitiveExprLiteral* node)
 	{
-		BeginField(L"kind");
+		BeginField(vl::WString::Unmanaged(L"kind"));
 		switch (node->kind)
 		{
 		case cpp_parser::CppPrimitiveExprLiteralKinds::False:
-			WriteString(L"False");
+			WriteString(vl::WString::Unmanaged(L"False"));
 			break;
 		case cpp_parser::CppPrimitiveExprLiteralKinds::Nullptr:
-			WriteString(L"Nullptr");
+			WriteString(vl::WString::Unmanaged(L"Nullptr"));
 			break;
 		case cpp_parser::CppPrimitiveExprLiteralKinds::This:
-			WriteString(L"This");
+			WriteString(vl::WString::Unmanaged(L"This"));
 			break;
 		case cpp_parser::CppPrimitiveExprLiteralKinds::True:
-			WriteString(L"True");
+			WriteString(vl::WString::Unmanaged(L"True"));
 			break;
 		case cpp_parser::CppPrimitiveExprLiteralKinds::__Nullptr:
-			WriteString(L"__Nullptr");
+			WriteString(vl::WString::Unmanaged(L"__Nullptr"));
 			break;
 		default:
 			WriteNull();
@@ -1604,78 +1604,78 @@ namespace cpp_parser::json_visitor
 	}
 	void AstVisitor::PrintFields(CppPrimitiveType* node)
 	{
-		BeginField(L"kind");
+		BeginField(vl::WString::Unmanaged(L"kind"));
 		switch (node->kind)
 		{
 		case cpp_parser::CppPrimitiveTypeKinds::Neutral:
-			WriteString(L"Neutral");
+			WriteString(vl::WString::Unmanaged(L"Neutral"));
 			break;
 		case cpp_parser::CppPrimitiveTypeKinds::Signed:
-			WriteString(L"Signed");
+			WriteString(vl::WString::Unmanaged(L"Signed"));
 			break;
 		case cpp_parser::CppPrimitiveTypeKinds::Unsigned:
-			WriteString(L"Unsigned");
+			WriteString(vl::WString::Unmanaged(L"Unsigned"));
 			break;
 		default:
 			WriteNull();
 		}
 		EndField();
-		BeginField(L"literal1");
+		BeginField(vl::WString::Unmanaged(L"literal1"));
 		WriteToken(node->literal1);
 		EndField();
-		BeginField(L"literal2");
+		BeginField(vl::WString::Unmanaged(L"literal2"));
 		WriteToken(node->literal2);
 		EndField();
 	}
 	void AstVisitor::PrintFields(CppQualifiedName* node)
 	{
-		BeginField(L"arguments");
+		BeginField(vl::WString::Unmanaged(L"arguments"));
 		Print(node->arguments.Obj());
 		EndField();
-		BeginField(L"expr");
+		BeginField(vl::WString::Unmanaged(L"expr"));
 		Print(node->expr.Obj());
 		EndField();
-		BeginField(L"id");
+		BeginField(vl::WString::Unmanaged(L"id"));
 		Print(node->id.Obj());
 		EndField();
-		BeginField(L"kind");
+		BeginField(vl::WString::Unmanaged(L"kind"));
 		switch (node->kind)
 		{
 		case cpp_parser::CppQualifiedNameKinds::Auto:
-			WriteString(L"Auto");
+			WriteString(vl::WString::Unmanaged(L"Auto"));
 			break;
 		case cpp_parser::CppQualifiedNameKinds::Context:
-			WriteString(L"Context");
+			WriteString(vl::WString::Unmanaged(L"Context"));
 			break;
 		case cpp_parser::CppQualifiedNameKinds::Decltype:
-			WriteString(L"Decltype");
+			WriteString(vl::WString::Unmanaged(L"Decltype"));
 			break;
 		case cpp_parser::CppQualifiedNameKinds::Member:
-			WriteString(L"Member");
+			WriteString(vl::WString::Unmanaged(L"Member"));
 			break;
 		case cpp_parser::CppQualifiedNameKinds::Root:
-			WriteString(L"Root");
+			WriteString(vl::WString::Unmanaged(L"Root"));
 			break;
 		default:
 			WriteNull();
 		}
 		EndField();
-		BeginField(L"parent");
+		BeginField(vl::WString::Unmanaged(L"parent"));
 		Print(node->parent.Obj());
 		EndField();
 	}
 	void AstVisitor::PrintFields(CppReturnStat* node)
 	{
-		BeginField(L"expr");
+		BeginField(vl::WString::Unmanaged(L"expr"));
 		Print(node->expr.Obj());
 		EndField();
 	}
 	void AstVisitor::PrintFields(CppSizeofExpr* node)
 	{
-		BeginField(L"argument");
+		BeginField(vl::WString::Unmanaged(L"argument"));
 		Print(node->argument.Obj());
 		EndField();
-		BeginField(L"variadic");
+		BeginField(vl::WString::Unmanaged(L"variadic"));
 		WriteToken(node->variadic);
 		EndField();
 	}
@@ -1684,7 +1684,7 @@ namespace cpp_parser::json_visitor
 	}
 	void AstVisitor::PrintFields(CppStatementToResolve* node)
 	{
-		BeginField(L"candidates");
+		BeginField(vl::WString::Unmanaged(L"candidates"));
 		BeginArray();
 		for (auto&& listItem : node->candidates)
 		{
@@ -1697,16 +1697,16 @@ namespace cpp_parser::json_visitor
 	}
 	void AstVisitor::PrintFields(CppStaticAssertDeclaration* node)
 	{
-		BeginField(L"expr");
+		BeginField(vl::WString::Unmanaged(L"expr"));
 		Print(node->expr.Obj());
 		EndField();
-		BeginField(L"message");
+		BeginField(vl::WString::Unmanaged(L"message"));
 		Print(node->message.Obj());
 		EndField();
 	}
 	void AstVisitor::PrintFields(CppStringLiteral* node)
 	{
-		BeginField(L"fragments");
+		BeginField(vl::WString::Unmanaged(L"fragments"));
 		BeginArray();
 		for (auto&& listItem : node->fragments)
 		{
@@ -1719,62 +1719,62 @@ namespace cpp_parser::json_visitor
 	}
 	void AstVisitor::PrintFields(CppStringLiteralFragment* node)
 	{
-		BeginField(L"kind");
+		BeginField(vl::WString::Unmanaged(L"kind"));
 		switch (node->kind)
 		{
 		case cpp_parser::CppStringLiteralKinds::Macro_LPREFIX:
-			WriteString(L"Macro_LPREFIX");
+			WriteString(vl::WString::Unmanaged(L"Macro_LPREFIX"));
 			break;
 		case cpp_parser::CppStringLiteralKinds::String:
-			WriteString(L"String");
+			WriteString(vl::WString::Unmanaged(L"String"));
 			break;
 		default:
 			WriteNull();
 		}
 		EndField();
-		BeginField(L"literal");
+		BeginField(vl::WString::Unmanaged(L"literal"));
 		WriteToken(node->literal);
 		EndField();
 	}
 	void AstVisitor::PrintFields(CppSwitchStat* node)
 	{
-		BeginField(L"condition");
+		BeginField(vl::WString::Unmanaged(L"condition"));
 		Print(node->condition.Obj());
 		EndField();
-		BeginField(L"stat");
+		BeginField(vl::WString::Unmanaged(L"stat"));
 		Print(node->stat.Obj());
 		EndField();
 	}
 	void AstVisitor::PrintFields(CppSysFuncExpr* node)
 	{
-		BeginField(L"argument");
+		BeginField(vl::WString::Unmanaged(L"argument"));
 		Print(node->argument.Obj());
 		EndField();
-		BeginField(L"keyword");
+		BeginField(vl::WString::Unmanaged(L"keyword"));
 		WriteToken(node->keyword);
 		EndField();
-		BeginField(L"variadic");
+		BeginField(vl::WString::Unmanaged(L"variadic"));
 		WriteToken(node->variadic);
 		EndField();
 	}
 	void AstVisitor::PrintFields(CppTemplateDeclaration* node)
 	{
-		BeginField(L"decl");
+		BeginField(vl::WString::Unmanaged(L"decl"));
 		Print(node->decl.Obj());
 		EndField();
-		BeginField(L"genericHeader");
+		BeginField(vl::WString::Unmanaged(L"genericHeader"));
 		Print(node->genericHeader.Obj());
 		EndField();
 	}
 	void AstVisitor::PrintFields(CppThrowExpr* node)
 	{
-		BeginField(L"argument");
+		BeginField(vl::WString::Unmanaged(L"argument"));
 		Print(node->argument.Obj());
 		EndField();
 	}
 	void AstVisitor::PrintFields(CppTryStat* node)
 	{
-		BeginField(L"catchParts");
+		BeginField(vl::WString::Unmanaged(L"catchParts"));
 		BeginArray();
 		for (auto&& listItem : node->catchParts)
 		{
@@ -1784,16 +1784,16 @@ namespace cpp_parser::json_visitor
 		}
 		EndArray();
 		EndField();
-		BeginField(L"tryStat");
+		BeginField(vl::WString::Unmanaged(L"tryStat"));
 		Print(node->tryStat.Obj());
 		EndField();
 	}
 	void AstVisitor::PrintFields(CppTryStatCatchPart* node)
 	{
-		BeginField(L"decl");
+		BeginField(vl::WString::Unmanaged(L"decl"));
 		Print(node->decl.Obj());
 		EndField();
-		BeginField(L"stat");
+		BeginField(vl::WString::Unmanaged(L"stat"));
 		Print(node->stat.Obj());
 		EndField();
 	}
@@ -1808,7 +1808,7 @@ namespace cpp_parser::json_visitor
 	}
 	void AstVisitor::PrintFields(CppTypeOrExprOrOthersToResolve* node)
 	{
-		BeginField(L"candidates");
+		BeginField(vl::WString::Unmanaged(L"candidates"));
 		BeginArray();
 		for (auto&& listItem : node->candidates)
 		{
@@ -1821,7 +1821,7 @@ namespace cpp_parser::json_visitor
 	}
 	void AstVisitor::PrintFields(CppTypeOrExprToResolve* node)
 	{
-		BeginField(L"candidates");
+		BeginField(vl::WString::Unmanaged(L"candidates"));
 		BeginArray();
 		for (auto&& listItem : node->candidates)
 		{
@@ -1834,13 +1834,13 @@ namespace cpp_parser::json_visitor
 	}
 	void AstVisitor::PrintFields(CppTypedefDeclaration* node)
 	{
-		BeginField(L"decl");
+		BeginField(vl::WString::Unmanaged(L"decl"));
 		Print(node->decl.Obj());
 		EndField();
 	}
 	void AstVisitor::PrintFields(CppUsingNamespaceDeclaration* node)
 	{
-		BeginField(L"names");
+		BeginField(vl::WString::Unmanaged(L"names"));
 		BeginArray();
 		for (auto&& listItem : node->names)
 		{
@@ -1853,25 +1853,25 @@ namespace cpp_parser::json_visitor
 	}
 	void AstVisitor::PrintFields(CppUsingTypeDeclaration* node)
 	{
-		BeginField(L"name");
+		BeginField(vl::WString::Unmanaged(L"name"));
 		WriteToken(node->name);
 		EndField();
-		BeginField(L"type");
+		BeginField(vl::WString::Unmanaged(L"type"));
 		Print(node->type.Obj());
 		EndField();
 	}
 	void AstVisitor::PrintFields(CppUsingValueDeclaration* node)
 	{
-		BeginField(L"name");
+		BeginField(vl::WString::Unmanaged(L"name"));
 		Print(node->name.Obj());
 		EndField();
-		BeginField(L"typenameKeyword");
+		BeginField(vl::WString::Unmanaged(L"typenameKeyword"));
 		WriteToken(node->typenameKeyword);
 		EndField();
 	}
 	void AstVisitor::PrintFields(CppVarBraceInit* node)
 	{
-		BeginField(L"arguments");
+		BeginField(vl::WString::Unmanaged(L"arguments"));
 		BeginArray();
 		for (auto&& listItem : node->arguments)
 		{
@@ -1887,7 +1887,7 @@ namespace cpp_parser::json_visitor
 	}
 	void AstVisitor::PrintFields(CppVarParanthesisInit* node)
 	{
-		BeginField(L"arguments");
+		BeginField(vl::WString::Unmanaged(L"arguments"));
 		BeginArray();
 		for (auto&& listItem : node->arguments)
 		{
@@ -1900,7 +1900,7 @@ namespace cpp_parser::json_visitor
 	}
 	void AstVisitor::PrintFields(CppVarStatInit* node)
 	{
-		BeginField(L"initItems");
+		BeginField(vl::WString::Unmanaged(L"initItems"));
 		BeginArray();
 		for (auto&& listItem : node->initItems)
 		{
@@ -1910,55 +1910,55 @@ namespace cpp_parser::json_visitor
 		}
 		EndArray();
 		EndField();
-		BeginField(L"stat");
+		BeginField(vl::WString::Unmanaged(L"stat"));
 		Print(node->stat.Obj());
 		EndField();
 	}
 	void AstVisitor::PrintFields(CppVarStatInitItem* node)
 	{
-		BeginField(L"init");
+		BeginField(vl::WString::Unmanaged(L"init"));
 		Print(node->init.Obj());
 		EndField();
-		BeginField(L"name");
+		BeginField(vl::WString::Unmanaged(L"name"));
 		WriteToken(node->name);
 		EndField();
 	}
 	void AstVisitor::PrintFields(CppVarValueInit* node)
 	{
-		BeginField(L"expr");
+		BeginField(vl::WString::Unmanaged(L"expr"));
 		Print(node->expr.Obj());
 		EndField();
 	}
 	void AstVisitor::PrintFields(CppVariablesDeclaration* node)
 	{
-		BeginField(L"firstVarPart");
+		BeginField(vl::WString::Unmanaged(L"firstVarPart"));
 		Print(node->firstVarPart.Obj());
 		EndField();
-		BeginField(L"type");
+		BeginField(vl::WString::Unmanaged(L"type"));
 		Print(node->type.Obj());
 		EndField();
 	}
 	void AstVisitor::PrintFields(CppVariadicExpr* node)
 	{
-		BeginField(L"operand");
+		BeginField(vl::WString::Unmanaged(L"operand"));
 		Print(node->operand.Obj());
 		EndField();
-		BeginField(L"variadic");
+		BeginField(vl::WString::Unmanaged(L"variadic"));
 		WriteToken(node->variadic);
 		EndField();
 	}
 	void AstVisitor::PrintFields(CppVolatileType* node)
 	{
-		BeginField(L"type");
+		BeginField(vl::WString::Unmanaged(L"type"));
 		Print(node->type.Obj());
 		EndField();
 	}
 	void AstVisitor::PrintFields(CppWhileStat* node)
 	{
-		BeginField(L"condition");
+		BeginField(vl::WString::Unmanaged(L"condition"));
 		Print(node->condition.Obj());
 		EndField();
-		BeginField(L"stat");
+		BeginField(vl::WString::Unmanaged(L"stat"));
 		Print(node->stat.Obj());
 		EndField();
 	}
@@ -1967,16 +1967,16 @@ namespace cpp_parser::json_visitor
 	}
 	void AstVisitor::PrintFields(Cpp__TryStat* node)
 	{
-		BeginField(L"exceptStat");
+		BeginField(vl::WString::Unmanaged(L"exceptStat"));
 		Print(node->exceptStat.Obj());
 		EndField();
-		BeginField(L"filter");
+		BeginField(vl::WString::Unmanaged(L"filter"));
 		Print(node->filter.Obj());
 		EndField();
-		BeginField(L"finallyStat");
+		BeginField(vl::WString::Unmanaged(L"finallyStat"));
 		Print(node->finallyStat.Obj());
 		EndField();
-		BeginField(L"tryStat");
+		BeginField(vl::WString::Unmanaged(L"tryStat"));
 		Print(node->tryStat.Obj());
 		EndField();
 	}
@@ -1989,7 +1989,7 @@ namespace cpp_parser::json_visitor
 			return;
 		}
 		BeginObject();
-		WriteType(L"TypeOrExprOrOthersToResolve", node);
+		WriteType(vl::WString::Unmanaged(L"TypeOrExprOrOthersToResolve"), node);
 		PrintFields(static_cast<CppTypeOrExprOrOthers*>(node));
 		PrintFields(static_cast<CppTypeOrExprOrOthersToResolve*>(node));
 		EndObject();
@@ -2013,7 +2013,7 @@ namespace cpp_parser::json_visitor
 			return;
 		}
 		BeginObject();
-		WriteType(L"OrdinaryGenericParameter", node);
+		WriteType(vl::WString::Unmanaged(L"OrdinaryGenericParameter"), node);
 		PrintFields(static_cast<CppTypeOrExprOrOthers*>(node));
 		PrintFields(static_cast<CppOrdinaryGenericParameter*>(node));
 		EndObject();
@@ -2027,7 +2027,7 @@ namespace cpp_parser::json_visitor
 			return;
 		}
 		BeginObject();
-		WriteType(L"GenericArgument", node);
+		WriteType(vl::WString::Unmanaged(L"GenericArgument"), node);
 		PrintFields(static_cast<CppTypeOrExprOrOthers*>(node));
 		PrintFields(static_cast<CppGenericArgument*>(node));
 		EndObject();
@@ -2041,7 +2041,7 @@ namespace cpp_parser::json_visitor
 			return;
 		}
 		BeginObject();
-		WriteType(L"DeclarationToResolve", node);
+		WriteType(vl::WString::Unmanaged(L"DeclarationToResolve"), node);
 		PrintFields(static_cast<CppTypeOrExprOrOthers*>(node));
 		PrintFields(static_cast<CppDeclaration*>(node));
 		PrintFields(static_cast<CppDeclarationToResolve*>(node));
@@ -2061,7 +2061,7 @@ namespace cpp_parser::json_visitor
 			return;
 		}
 		BeginObject();
-		WriteType(L"VariablesDeclaration", node);
+		WriteType(vl::WString::Unmanaged(L"VariablesDeclaration"), node);
 		PrintFields(static_cast<CppTypeOrExprOrOthers*>(node));
 		PrintFields(static_cast<CppDeclaration*>(node));
 		PrintFields(static_cast<CppDeclarationCommon*>(node));
@@ -2077,7 +2077,7 @@ namespace cpp_parser::json_visitor
 			return;
 		}
 		BeginObject();
-		WriteType(L"ClassDeclaration", node);
+		WriteType(vl::WString::Unmanaged(L"ClassDeclaration"), node);
 		PrintFields(static_cast<CppTypeOrExprOrOthers*>(node));
 		PrintFields(static_cast<CppDeclaration*>(node));
 		PrintFields(static_cast<CppDeclarationCommon*>(node));
@@ -2093,7 +2093,7 @@ namespace cpp_parser::json_visitor
 			return;
 		}
 		BeginObject();
-		WriteType(L"EnumDeclaration", node);
+		WriteType(vl::WString::Unmanaged(L"EnumDeclaration"), node);
 		PrintFields(static_cast<CppTypeOrExprOrOthers*>(node));
 		PrintFields(static_cast<CppDeclaration*>(node));
 		PrintFields(static_cast<CppDeclarationCommon*>(node));
@@ -2109,7 +2109,7 @@ namespace cpp_parser::json_visitor
 			return;
 		}
 		BeginObject();
-		WriteType(L"TemplateDeclaration", node);
+		WriteType(vl::WString::Unmanaged(L"TemplateDeclaration"), node);
 		PrintFields(static_cast<CppTypeOrExprOrOthers*>(node));
 		PrintFields(static_cast<CppDeclaration*>(node));
 		PrintFields(static_cast<CppDeclarationCommon*>(node));
@@ -2125,7 +2125,7 @@ namespace cpp_parser::json_visitor
 			return;
 		}
 		BeginObject();
-		WriteType(L"StaticAssertDeclaration", node);
+		WriteType(vl::WString::Unmanaged(L"StaticAssertDeclaration"), node);
 		PrintFields(static_cast<CppTypeOrExprOrOthers*>(node));
 		PrintFields(static_cast<CppDeclaration*>(node));
 		PrintFields(static_cast<CppDeclarationCommon*>(node));
@@ -2141,7 +2141,7 @@ namespace cpp_parser::json_visitor
 			return;
 		}
 		BeginObject();
-		WriteType(L"TypedefDeclaration", node);
+		WriteType(vl::WString::Unmanaged(L"TypedefDeclaration"), node);
 		PrintFields(static_cast<CppTypeOrExprOrOthers*>(node));
 		PrintFields(static_cast<CppDeclaration*>(node));
 		PrintFields(static_cast<CppDeclarationCommon*>(node));
@@ -2157,7 +2157,7 @@ namespace cpp_parser::json_visitor
 			return;
 		}
 		BeginObject();
-		WriteType(L"ExternDeclaration", node);
+		WriteType(vl::WString::Unmanaged(L"ExternDeclaration"), node);
 		PrintFields(static_cast<CppTypeOrExprOrOthers*>(node));
 		PrintFields(static_cast<CppDeclaration*>(node));
 		PrintFields(static_cast<CppDeclarationCommon*>(node));
@@ -2173,7 +2173,7 @@ namespace cpp_parser::json_visitor
 			return;
 		}
 		BeginObject();
-		WriteType(L"NamespaceDeclaration", node);
+		WriteType(vl::WString::Unmanaged(L"NamespaceDeclaration"), node);
 		PrintFields(static_cast<CppTypeOrExprOrOthers*>(node));
 		PrintFields(static_cast<CppDeclaration*>(node));
 		PrintFields(static_cast<CppDeclarationCommon*>(node));
@@ -2189,7 +2189,7 @@ namespace cpp_parser::json_visitor
 			return;
 		}
 		BeginObject();
-		WriteType(L"UsingNamespaceDeclaration", node);
+		WriteType(vl::WString::Unmanaged(L"UsingNamespaceDeclaration"), node);
 		PrintFields(static_cast<CppTypeOrExprOrOthers*>(node));
 		PrintFields(static_cast<CppDeclaration*>(node));
 		PrintFields(static_cast<CppDeclarationCommon*>(node));
@@ -2205,7 +2205,7 @@ namespace cpp_parser::json_visitor
 			return;
 		}
 		BeginObject();
-		WriteType(L"UsingValueDeclaration", node);
+		WriteType(vl::WString::Unmanaged(L"UsingValueDeclaration"), node);
 		PrintFields(static_cast<CppTypeOrExprOrOthers*>(node));
 		PrintFields(static_cast<CppDeclaration*>(node));
 		PrintFields(static_cast<CppDeclarationCommon*>(node));
@@ -2221,7 +2221,7 @@ namespace cpp_parser::json_visitor
 			return;
 		}
 		BeginObject();
-		WriteType(L"UsingTypeDeclaration", node);
+		WriteType(vl::WString::Unmanaged(L"UsingTypeDeclaration"), node);
 		PrintFields(static_cast<CppTypeOrExprOrOthers*>(node));
 		PrintFields(static_cast<CppDeclaration*>(node));
 		PrintFields(static_cast<CppDeclarationCommon*>(node));
@@ -2237,7 +2237,7 @@ namespace cpp_parser::json_visitor
 			return;
 		}
 		BeginObject();
-		WriteType(L"FriendTypeDeclaration", node);
+		WriteType(vl::WString::Unmanaged(L"FriendTypeDeclaration"), node);
 		PrintFields(static_cast<CppTypeOrExprOrOthers*>(node));
 		PrintFields(static_cast<CppDeclaration*>(node));
 		PrintFields(static_cast<CppDeclarationCommon*>(node));
@@ -2253,7 +2253,7 @@ namespace cpp_parser::json_visitor
 			return;
 		}
 		BeginObject();
-		WriteType(L"TypeOrExprToResolve", node);
+		WriteType(vl::WString::Unmanaged(L"TypeOrExprToResolve"), node);
 		PrintFields(static_cast<CppTypeOrExprOrOthers*>(node));
 		PrintFields(static_cast<CppTypeOrExpr*>(node));
 		PrintFields(static_cast<CppTypeOrExprToResolve*>(node));
@@ -2278,7 +2278,7 @@ namespace cpp_parser::json_visitor
 			return;
 		}
 		BeginObject();
-		WriteType(L"QualifiedName", node);
+		WriteType(vl::WString::Unmanaged(L"QualifiedName"), node);
 		PrintFields(static_cast<CppTypeOrExprOrOthers*>(node));
 		PrintFields(static_cast<CppTypeOrExpr*>(node));
 		PrintFields(static_cast<CppQualifiedName*>(node));
@@ -2293,7 +2293,7 @@ namespace cpp_parser::json_visitor
 			return;
 		}
 		BeginObject();
-		WriteType(L"DeclaratorType", node);
+		WriteType(vl::WString::Unmanaged(L"DeclaratorType"), node);
 		PrintFields(static_cast<CppTypeOrExprOrOthers*>(node));
 		PrintFields(static_cast<CppTypeOrExpr*>(node));
 		PrintFields(static_cast<CppDeclaratorType*>(node));
@@ -2308,7 +2308,7 @@ namespace cpp_parser::json_visitor
 			return;
 		}
 		BeginObject();
-		WriteType(L"PrimitiveExprLiteral", node);
+		WriteType(vl::WString::Unmanaged(L"PrimitiveExprLiteral"), node);
 		PrintFields(static_cast<CppTypeOrExprOrOthers*>(node));
 		PrintFields(static_cast<CppTypeOrExpr*>(node));
 		PrintFields(static_cast<CppExprOnly*>(node));
@@ -2324,7 +2324,7 @@ namespace cpp_parser::json_visitor
 			return;
 		}
 		BeginObject();
-		WriteType(L"NumericExprLiteral", node);
+		WriteType(vl::WString::Unmanaged(L"NumericExprLiteral"), node);
 		PrintFields(static_cast<CppTypeOrExprOrOthers*>(node));
 		PrintFields(static_cast<CppTypeOrExpr*>(node));
 		PrintFields(static_cast<CppExprOnly*>(node));
@@ -2340,7 +2340,7 @@ namespace cpp_parser::json_visitor
 			return;
 		}
 		BeginObject();
-		WriteType(L"StringLiteral", node);
+		WriteType(vl::WString::Unmanaged(L"StringLiteral"), node);
 		PrintFields(static_cast<CppTypeOrExprOrOthers*>(node));
 		PrintFields(static_cast<CppTypeOrExpr*>(node));
 		PrintFields(static_cast<CppExprOnly*>(node));
@@ -2356,7 +2356,7 @@ namespace cpp_parser::json_visitor
 			return;
 		}
 		BeginObject();
-		WriteType(L"LambdaExpr", node);
+		WriteType(vl::WString::Unmanaged(L"LambdaExpr"), node);
 		PrintFields(static_cast<CppTypeOrExprOrOthers*>(node));
 		PrintFields(static_cast<CppTypeOrExpr*>(node));
 		PrintFields(static_cast<CppExprOnly*>(node));
@@ -2372,7 +2372,7 @@ namespace cpp_parser::json_visitor
 			return;
 		}
 		BeginObject();
-		WriteType(L"ParenthesisExpr", node);
+		WriteType(vl::WString::Unmanaged(L"ParenthesisExpr"), node);
 		PrintFields(static_cast<CppTypeOrExprOrOthers*>(node));
 		PrintFields(static_cast<CppTypeOrExpr*>(node));
 		PrintFields(static_cast<CppExprOnly*>(node));
@@ -2388,7 +2388,7 @@ namespace cpp_parser::json_visitor
 			return;
 		}
 		BeginObject();
-		WriteType(L"BraceExpr", node);
+		WriteType(vl::WString::Unmanaged(L"BraceExpr"), node);
 		PrintFields(static_cast<CppTypeOrExprOrOthers*>(node));
 		PrintFields(static_cast<CppTypeOrExpr*>(node));
 		PrintFields(static_cast<CppExprOnly*>(node));
@@ -2404,7 +2404,7 @@ namespace cpp_parser::json_visitor
 			return;
 		}
 		BeginObject();
-		WriteType(L"CastExpr", node);
+		WriteType(vl::WString::Unmanaged(L"CastExpr"), node);
 		PrintFields(static_cast<CppTypeOrExprOrOthers*>(node));
 		PrintFields(static_cast<CppTypeOrExpr*>(node));
 		PrintFields(static_cast<CppExprOnly*>(node));
@@ -2420,7 +2420,7 @@ namespace cpp_parser::json_visitor
 			return;
 		}
 		BeginObject();
-		WriteType(L"SysFuncExpr", node);
+		WriteType(vl::WString::Unmanaged(L"SysFuncExpr"), node);
 		PrintFields(static_cast<CppTypeOrExprOrOthers*>(node));
 		PrintFields(static_cast<CppTypeOrExpr*>(node));
 		PrintFields(static_cast<CppExprOnly*>(node));
@@ -2436,7 +2436,7 @@ namespace cpp_parser::json_visitor
 			return;
 		}
 		BeginObject();
-		WriteType(L"SizeofExpr", node);
+		WriteType(vl::WString::Unmanaged(L"SizeofExpr"), node);
 		PrintFields(static_cast<CppTypeOrExprOrOthers*>(node));
 		PrintFields(static_cast<CppTypeOrExpr*>(node));
 		PrintFields(static_cast<CppExprOnly*>(node));
@@ -2452,7 +2452,7 @@ namespace cpp_parser::json_visitor
 			return;
 		}
 		BeginObject();
-		WriteType(L"DeleteExpr", node);
+		WriteType(vl::WString::Unmanaged(L"DeleteExpr"), node);
 		PrintFields(static_cast<CppTypeOrExprOrOthers*>(node));
 		PrintFields(static_cast<CppTypeOrExpr*>(node));
 		PrintFields(static_cast<CppExprOnly*>(node));
@@ -2468,7 +2468,7 @@ namespace cpp_parser::json_visitor
 			return;
 		}
 		BeginObject();
-		WriteType(L"NewExpr", node);
+		WriteType(vl::WString::Unmanaged(L"NewExpr"), node);
 		PrintFields(static_cast<CppTypeOrExprOrOthers*>(node));
 		PrintFields(static_cast<CppTypeOrExpr*>(node));
 		PrintFields(static_cast<CppExprOnly*>(node));
@@ -2484,7 +2484,7 @@ namespace cpp_parser::json_visitor
 			return;
 		}
 		BeginObject();
-		WriteType(L"PrefixUnaryExpr", node);
+		WriteType(vl::WString::Unmanaged(L"PrefixUnaryExpr"), node);
 		PrintFields(static_cast<CppTypeOrExprOrOthers*>(node));
 		PrintFields(static_cast<CppTypeOrExpr*>(node));
 		PrintFields(static_cast<CppExprOnly*>(node));
@@ -2500,7 +2500,7 @@ namespace cpp_parser::json_visitor
 			return;
 		}
 		BeginObject();
-		WriteType(L"PostfixUnaryExpr", node);
+		WriteType(vl::WString::Unmanaged(L"PostfixUnaryExpr"), node);
 		PrintFields(static_cast<CppTypeOrExprOrOthers*>(node));
 		PrintFields(static_cast<CppTypeOrExpr*>(node));
 		PrintFields(static_cast<CppExprOnly*>(node));
@@ -2516,7 +2516,7 @@ namespace cpp_parser::json_visitor
 			return;
 		}
 		BeginObject();
-		WriteType(L"IndexExpr", node);
+		WriteType(vl::WString::Unmanaged(L"IndexExpr"), node);
 		PrintFields(static_cast<CppTypeOrExprOrOthers*>(node));
 		PrintFields(static_cast<CppTypeOrExpr*>(node));
 		PrintFields(static_cast<CppExprOnly*>(node));
@@ -2532,7 +2532,7 @@ namespace cpp_parser::json_visitor
 			return;
 		}
 		BeginObject();
-		WriteType(L"CallExpr", node);
+		WriteType(vl::WString::Unmanaged(L"CallExpr"), node);
 		PrintFields(static_cast<CppTypeOrExprOrOthers*>(node));
 		PrintFields(static_cast<CppTypeOrExpr*>(node));
 		PrintFields(static_cast<CppExprOnly*>(node));
@@ -2548,7 +2548,7 @@ namespace cpp_parser::json_visitor
 			return;
 		}
 		BeginObject();
-		WriteType(L"BinaryExpr", node);
+		WriteType(vl::WString::Unmanaged(L"BinaryExpr"), node);
 		PrintFields(static_cast<CppTypeOrExprOrOthers*>(node));
 		PrintFields(static_cast<CppTypeOrExpr*>(node));
 		PrintFields(static_cast<CppExprOnly*>(node));
@@ -2564,7 +2564,7 @@ namespace cpp_parser::json_visitor
 			return;
 		}
 		BeginObject();
-		WriteType(L"IfExpr", node);
+		WriteType(vl::WString::Unmanaged(L"IfExpr"), node);
 		PrintFields(static_cast<CppTypeOrExprOrOthers*>(node));
 		PrintFields(static_cast<CppTypeOrExpr*>(node));
 		PrintFields(static_cast<CppExprOnly*>(node));
@@ -2580,7 +2580,7 @@ namespace cpp_parser::json_visitor
 			return;
 		}
 		BeginObject();
-		WriteType(L"ThrowExpr", node);
+		WriteType(vl::WString::Unmanaged(L"ThrowExpr"), node);
 		PrintFields(static_cast<CppTypeOrExprOrOthers*>(node));
 		PrintFields(static_cast<CppTypeOrExpr*>(node));
 		PrintFields(static_cast<CppExprOnly*>(node));
@@ -2596,7 +2596,7 @@ namespace cpp_parser::json_visitor
 			return;
 		}
 		BeginObject();
-		WriteType(L"VariadicExpr", node);
+		WriteType(vl::WString::Unmanaged(L"VariadicExpr"), node);
 		PrintFields(static_cast<CppTypeOrExprOrOthers*>(node));
 		PrintFields(static_cast<CppTypeOrExpr*>(node));
 		PrintFields(static_cast<CppExprOnly*>(node));
@@ -2612,7 +2612,7 @@ namespace cpp_parser::json_visitor
 			return;
 		}
 		BeginObject();
-		WriteType(L"PrimitiveType", node);
+		WriteType(vl::WString::Unmanaged(L"PrimitiveType"), node);
 		PrintFields(static_cast<CppTypeOrExprOrOthers*>(node));
 		PrintFields(static_cast<CppTypeOrExpr*>(node));
 		PrintFields(static_cast<CppTypeOnly*>(node));
@@ -2628,7 +2628,7 @@ namespace cpp_parser::json_visitor
 			return;
 		}
 		BeginObject();
-		WriteType(L"ConstType", node);
+		WriteType(vl::WString::Unmanaged(L"ConstType"), node);
 		PrintFields(static_cast<CppTypeOrExprOrOthers*>(node));
 		PrintFields(static_cast<CppTypeOrExpr*>(node));
 		PrintFields(static_cast<CppTypeOnly*>(node));
@@ -2644,7 +2644,7 @@ namespace cpp_parser::json_visitor
 			return;
 		}
 		BeginObject();
-		WriteType(L"VolatileType", node);
+		WriteType(vl::WString::Unmanaged(L"VolatileType"), node);
 		PrintFields(static_cast<CppTypeOrExprOrOthers*>(node));
 		PrintFields(static_cast<CppTypeOrExpr*>(node));
 		PrintFields(static_cast<CppTypeOnly*>(node));
@@ -2660,7 +2660,7 @@ namespace cpp_parser::json_visitor
 			return;
 		}
 		BeginObject();
-		WriteType(L"StatementToResolve", node);
+		WriteType(vl::WString::Unmanaged(L"StatementToResolve"), node);
 		PrintFields(static_cast<CppStatement*>(node));
 		PrintFields(static_cast<CppStatementToResolve*>(node));
 		EndObject();
@@ -2674,7 +2674,7 @@ namespace cpp_parser::json_visitor
 			return;
 		}
 		BeginObject();
-		WriteType(L"EmptyStat", node);
+		WriteType(vl::WString::Unmanaged(L"EmptyStat"), node);
 		PrintFields(static_cast<CppStatement*>(node));
 		PrintFields(static_cast<CppEmptyStat*>(node));
 		EndObject();
@@ -2688,7 +2688,7 @@ namespace cpp_parser::json_visitor
 			return;
 		}
 		BeginObject();
-		WriteType(L"BlockStat", node);
+		WriteType(vl::WString::Unmanaged(L"BlockStat"), node);
 		PrintFields(static_cast<CppStatement*>(node));
 		PrintFields(static_cast<CppBlockStat*>(node));
 		EndObject();
@@ -2702,7 +2702,7 @@ namespace cpp_parser::json_visitor
 			return;
 		}
 		BeginObject();
-		WriteType(L"ExprStat", node);
+		WriteType(vl::WString::Unmanaged(L"ExprStat"), node);
 		PrintFields(static_cast<CppStatement*>(node));
 		PrintFields(static_cast<CppExprStat*>(node));
 		EndObject();
@@ -2716,7 +2716,7 @@ namespace cpp_parser::json_visitor
 			return;
 		}
 		BeginObject();
-		WriteType(L"DeclStat", node);
+		WriteType(vl::WString::Unmanaged(L"DeclStat"), node);
 		PrintFields(static_cast<CppStatement*>(node));
 		PrintFields(static_cast<CppDeclStat*>(node));
 		EndObject();
@@ -2730,7 +2730,7 @@ namespace cpp_parser::json_visitor
 			return;
 		}
 		BeginObject();
-		WriteType(L"BreakStat", node);
+		WriteType(vl::WString::Unmanaged(L"BreakStat"), node);
 		PrintFields(static_cast<CppStatement*>(node));
 		PrintFields(static_cast<CppBreakStat*>(node));
 		EndObject();
@@ -2744,7 +2744,7 @@ namespace cpp_parser::json_visitor
 			return;
 		}
 		BeginObject();
-		WriteType(L"ContinueStat", node);
+		WriteType(vl::WString::Unmanaged(L"ContinueStat"), node);
 		PrintFields(static_cast<CppStatement*>(node));
 		PrintFields(static_cast<CppContinueStat*>(node));
 		EndObject();
@@ -2758,7 +2758,7 @@ namespace cpp_parser::json_visitor
 			return;
 		}
 		BeginObject();
-		WriteType(L"ReturnStat", node);
+		WriteType(vl::WString::Unmanaged(L"ReturnStat"), node);
 		PrintFields(static_cast<CppStatement*>(node));
 		PrintFields(static_cast<CppReturnStat*>(node));
 		EndObject();
@@ -2772,7 +2772,7 @@ namespace cpp_parser::json_visitor
 			return;
 		}
 		BeginObject();
-		WriteType(L"LabelStat", node);
+		WriteType(vl::WString::Unmanaged(L"LabelStat"), node);
 		PrintFields(static_cast<CppStatement*>(node));
 		PrintFields(static_cast<CppLabelStat*>(node));
 		EndObject();
@@ -2786,7 +2786,7 @@ namespace cpp_parser::json_visitor
 			return;
 		}
 		BeginObject();
-		WriteType(L"GotoStat", node);
+		WriteType(vl::WString::Unmanaged(L"GotoStat"), node);
 		PrintFields(static_cast<CppStatement*>(node));
 		PrintFields(static_cast<CppGotoStat*>(node));
 		EndObject();
@@ -2800,7 +2800,7 @@ namespace cpp_parser::json_visitor
 			return;
 		}
 		BeginObject();
-		WriteType(L"CaseStat", node);
+		WriteType(vl::WString::Unmanaged(L"CaseStat"), node);
 		PrintFields(static_cast<CppStatement*>(node));
 		PrintFields(static_cast<CppCaseStat*>(node));
 		EndObject();
@@ -2814,7 +2814,7 @@ namespace cpp_parser::json_visitor
 			return;
 		}
 		BeginObject();
-		WriteType(L"DefaultStat", node);
+		WriteType(vl::WString::Unmanaged(L"DefaultStat"), node);
 		PrintFields(static_cast<CppStatement*>(node));
 		PrintFields(static_cast<CppDefaultStat*>(node));
 		EndObject();
@@ -2828,7 +2828,7 @@ namespace cpp_parser::json_visitor
 			return;
 		}
 		BeginObject();
-		WriteType(L"__LeaveStat", node);
+		WriteType(vl::WString::Unmanaged(L"__LeaveStat"), node);
 		PrintFields(static_cast<CppStatement*>(node));
 		PrintFields(static_cast<Cpp__LeaveStat*>(node));
 		EndObject();
@@ -2842,7 +2842,7 @@ namespace cpp_parser::json_visitor
 			return;
 		}
 		BeginObject();
-		WriteType(L"WhileStat", node);
+		WriteType(vl::WString::Unmanaged(L"WhileStat"), node);
 		PrintFields(static_cast<CppStatement*>(node));
 		PrintFields(static_cast<CppWhileStat*>(node));
 		EndObject();
@@ -2856,7 +2856,7 @@ namespace cpp_parser::json_visitor
 			return;
 		}
 		BeginObject();
-		WriteType(L"DoWhileStat", node);
+		WriteType(vl::WString::Unmanaged(L"DoWhileStat"), node);
 		PrintFields(static_cast<CppStatement*>(node));
 		PrintFields(static_cast<CppDoWhileStat*>(node));
 		EndObject();
@@ -2870,7 +2870,7 @@ namespace cpp_parser::json_visitor
 			return;
 		}
 		BeginObject();
-		WriteType(L"IfElseStat", node);
+		WriteType(vl::WString::Unmanaged(L"IfElseStat"), node);
 		PrintFields(static_cast<CppStatement*>(node));
 		PrintFields(static_cast<CppIfElseStat*>(node));
 		EndObject();
@@ -2884,7 +2884,7 @@ namespace cpp_parser::json_visitor
 			return;
 		}
 		BeginObject();
-		WriteType(L"ForStat", node);
+		WriteType(vl::WString::Unmanaged(L"ForStat"), node);
 		PrintFields(static_cast<CppStatement*>(node));
 		PrintFields(static_cast<CppForStat*>(node));
 		EndObject();
@@ -2898,7 +2898,7 @@ namespace cpp_parser::json_visitor
 			return;
 		}
 		BeginObject();
-		WriteType(L"SwitchStat", node);
+		WriteType(vl::WString::Unmanaged(L"SwitchStat"), node);
 		PrintFields(static_cast<CppStatement*>(node));
 		PrintFields(static_cast<CppSwitchStat*>(node));
 		EndObject();
@@ -2912,7 +2912,7 @@ namespace cpp_parser::json_visitor
 			return;
 		}
 		BeginObject();
-		WriteType(L"TryStat", node);
+		WriteType(vl::WString::Unmanaged(L"TryStat"), node);
 		PrintFields(static_cast<CppStatement*>(node));
 		PrintFields(static_cast<CppTryStat*>(node));
 		EndObject();
@@ -2926,7 +2926,7 @@ namespace cpp_parser::json_visitor
 			return;
 		}
 		BeginObject();
-		WriteType(L"__TryStat", node);
+		WriteType(vl::WString::Unmanaged(L"__TryStat"), node);
 		PrintFields(static_cast<CppStatement*>(node));
 		PrintFields(static_cast<Cpp__TryStat*>(node));
 		EndObject();
@@ -2940,7 +2940,7 @@ namespace cpp_parser::json_visitor
 			return;
 		}
 		BeginObject();
-		WriteType(L"NameIdentifier", node);
+		WriteType(vl::WString::Unmanaged(L"NameIdentifier"), node);
 		PrintFields(static_cast<CppIdentifier*>(node));
 		PrintFields(static_cast<CppNameIdentifier*>(node));
 		EndObject();
@@ -2954,7 +2954,7 @@ namespace cpp_parser::json_visitor
 			return;
 		}
 		BeginObject();
-		WriteType(L"OperatorIdentifier", node);
+		WriteType(vl::WString::Unmanaged(L"OperatorIdentifier"), node);
 		PrintFields(static_cast<CppIdentifier*>(node));
 		PrintFields(static_cast<CppOperatorIdentifier*>(node));
 		EndObject();
@@ -2968,7 +2968,7 @@ namespace cpp_parser::json_visitor
 			return;
 		}
 		BeginObject();
-		WriteType(L"OperatorTypeIdentifier", node);
+		WriteType(vl::WString::Unmanaged(L"OperatorTypeIdentifier"), node);
 		PrintFields(static_cast<CppIdentifier*>(node));
 		PrintFields(static_cast<CppOperatorTypeIdentifier*>(node));
 		EndObject();
@@ -2982,7 +2982,7 @@ namespace cpp_parser::json_visitor
 			return;
 		}
 		BeginObject();
-		WriteType(L"DeclaratorFunctionPartToResolve", node);
+		WriteType(vl::WString::Unmanaged(L"DeclaratorFunctionPartToResolve"), node);
 		PrintFields(static_cast<CppDeclaratorFunctionPart*>(node));
 		PrintFields(static_cast<CppDeclaratorFunctionPartToResolve*>(node));
 		EndObject();
@@ -2996,7 +2996,7 @@ namespace cpp_parser::json_visitor
 			return;
 		}
 		BeginObject();
-		WriteType(L"DeclaratorFunctionPartCommon", node);
+		WriteType(vl::WString::Unmanaged(L"DeclaratorFunctionPartCommon"), node);
 		PrintFields(static_cast<CppDeclaratorFunctionPart*>(node));
 		PrintFields(static_cast<CppDeclaratorFunctionPartCommon*>(node));
 		EndObject();
@@ -3010,7 +3010,7 @@ namespace cpp_parser::json_visitor
 			return;
 		}
 		BeginObject();
-		WriteType(L"VarValueInit", node);
+		WriteType(vl::WString::Unmanaged(L"VarValueInit"), node);
 		PrintFields(static_cast<CppVarInit*>(node));
 		PrintFields(static_cast<CppVarValueInit*>(node));
 		EndObject();
@@ -3024,7 +3024,7 @@ namespace cpp_parser::json_visitor
 			return;
 		}
 		BeginObject();
-		WriteType(L"VarParanthesisInit", node);
+		WriteType(vl::WString::Unmanaged(L"VarParanthesisInit"), node);
 		PrintFields(static_cast<CppVarInit*>(node));
 		PrintFields(static_cast<CppVarParanthesisInit*>(node));
 		EndObject();
@@ -3038,7 +3038,7 @@ namespace cpp_parser::json_visitor
 			return;
 		}
 		BeginObject();
-		WriteType(L"VarBraceInit", node);
+		WriteType(vl::WString::Unmanaged(L"VarBraceInit"), node);
 		PrintFields(static_cast<CppVarInit*>(node));
 		PrintFields(static_cast<CppVarBraceInit*>(node));
 		EndObject();
@@ -3052,7 +3052,7 @@ namespace cpp_parser::json_visitor
 			return;
 		}
 		BeginObject();
-		WriteType(L"VarStatInit", node);
+		WriteType(vl::WString::Unmanaged(L"VarStatInit"), node);
 		PrintFields(static_cast<CppVarInit*>(node));
 		PrintFields(static_cast<CppVarStatInit*>(node));
 		EndObject();
@@ -3066,7 +3066,7 @@ namespace cpp_parser::json_visitor
 			return;
 		}
 		BeginObject();
-		WriteType(L"DeclaratorVariablePartToResolve", node);
+		WriteType(vl::WString::Unmanaged(L"DeclaratorVariablePartToResolve"), node);
 		PrintFields(static_cast<CppDeclaratorVariablePart*>(node));
 		PrintFields(static_cast<CppDeclaratorVariablePartToResolve*>(node));
 		EndObject();
@@ -3080,7 +3080,7 @@ namespace cpp_parser::json_visitor
 			return;
 		}
 		BeginObject();
-		WriteType(L"DeclaratorVariablePartCommon", node);
+		WriteType(vl::WString::Unmanaged(L"DeclaratorVariablePartCommon"), node);
 		PrintFields(static_cast<CppDeclaratorVariablePart*>(node));
 		PrintFields(static_cast<CppDeclaratorVariablePartCommon*>(node));
 		EndObject();
@@ -3094,7 +3094,7 @@ namespace cpp_parser::json_visitor
 			return;
 		}
 		BeginObject();
-		WriteType(L"ForStatLoopCondition", node);
+		WriteType(vl::WString::Unmanaged(L"ForStatLoopCondition"), node);
 		PrintFields(static_cast<CppForStatConditionPart*>(node));
 		PrintFields(static_cast<CppForStatLoopCondition*>(node));
 		EndObject();
@@ -3108,7 +3108,7 @@ namespace cpp_parser::json_visitor
 			return;
 		}
 		BeginObject();
-		WriteType(L"ForStatIterateCondition", node);
+		WriteType(vl::WString::Unmanaged(L"ForStatIterateCondition"), node);
 		PrintFields(static_cast<CppForStatConditionPart*>(node));
 		PrintFields(static_cast<CppForStatIterateCondition*>(node));
 		EndObject();
@@ -3197,7 +3197,7 @@ namespace cpp_parser::json_visitor
 			return;
 		}
 		BeginObject();
-		WriteType(L"GenericHeader", node);
+		WriteType(vl::WString::Unmanaged(L"GenericHeader"), node);
 		PrintFields(static_cast<CppGenericHeader*>(node));
 		EndObject();
 	}
@@ -3210,7 +3210,7 @@ namespace cpp_parser::json_visitor
 			return;
 		}
 		BeginObject();
-		WriteType(L"File", node);
+		WriteType(vl::WString::Unmanaged(L"File"), node);
 		PrintFields(static_cast<CppFile*>(node));
 		EndObject();
 	}
@@ -3223,7 +3223,7 @@ namespace cpp_parser::json_visitor
 			return;
 		}
 		BeginObject();
-		WriteType(L"GenericArguments", node);
+		WriteType(vl::WString::Unmanaged(L"GenericArguments"), node);
 		PrintFields(static_cast<CppGenericArguments*>(node));
 		EndObject();
 	}
@@ -3236,7 +3236,7 @@ namespace cpp_parser::json_visitor
 			return;
 		}
 		BeginObject();
-		WriteType(L"StringLiteralFragment", node);
+		WriteType(vl::WString::Unmanaged(L"StringLiteralFragment"), node);
 		PrintFields(static_cast<CppStringLiteralFragment*>(node));
 		EndObject();
 	}
@@ -3249,7 +3249,7 @@ namespace cpp_parser::json_visitor
 			return;
 		}
 		BeginObject();
-		WriteType(L"LambdaCapture", node);
+		WriteType(vl::WString::Unmanaged(L"LambdaCapture"), node);
 		PrintFields(static_cast<CppLambdaCapture*>(node));
 		EndObject();
 	}
@@ -3262,7 +3262,7 @@ namespace cpp_parser::json_visitor
 			return;
 		}
 		BeginObject();
-		WriteType(L"AdvancedType", node);
+		WriteType(vl::WString::Unmanaged(L"AdvancedType"), node);
 		PrintFields(static_cast<CppAdvancedType*>(node));
 		EndObject();
 	}
@@ -3275,7 +3275,7 @@ namespace cpp_parser::json_visitor
 			return;
 		}
 		BeginObject();
-		WriteType(L"DeclaratorKeyword", node);
+		WriteType(vl::WString::Unmanaged(L"DeclaratorKeyword"), node);
 		PrintFields(static_cast<CppDeclaratorKeyword*>(node));
 		EndObject();
 	}
@@ -3288,7 +3288,7 @@ namespace cpp_parser::json_visitor
 			return;
 		}
 		BeginObject();
-		WriteType(L"FunctionKeyword", node);
+		WriteType(vl::WString::Unmanaged(L"FunctionKeyword"), node);
 		PrintFields(static_cast<CppFunctionKeyword*>(node));
 		EndObject();
 	}
@@ -3301,7 +3301,7 @@ namespace cpp_parser::json_visitor
 			return;
 		}
 		BeginObject();
-		WriteType(L"DeclaratorArrayPart", node);
+		WriteType(vl::WString::Unmanaged(L"DeclaratorArrayPart"), node);
 		PrintFields(static_cast<CppDeclaratorArrayPart*>(node));
 		EndObject();
 	}
@@ -3314,7 +3314,7 @@ namespace cpp_parser::json_visitor
 			return;
 		}
 		BeginObject();
-		WriteType(L"Declarator", node);
+		WriteType(vl::WString::Unmanaged(L"Declarator"), node);
 		PrintFields(static_cast<CppDeclarator*>(node));
 		EndObject();
 	}
@@ -3327,7 +3327,7 @@ namespace cpp_parser::json_visitor
 			return;
 		}
 		BeginObject();
-		WriteType(L"VarStatInitItem", node);
+		WriteType(vl::WString::Unmanaged(L"VarStatInitItem"), node);
 		PrintFields(static_cast<CppVarStatInitItem*>(node));
 		EndObject();
 	}
@@ -3340,7 +3340,7 @@ namespace cpp_parser::json_visitor
 			return;
 		}
 		BeginObject();
-		WriteType(L"ClassInheritance", node);
+		WriteType(vl::WString::Unmanaged(L"ClassInheritance"), node);
 		PrintFields(static_cast<CppClassInheritance*>(node));
 		EndObject();
 	}
@@ -3353,7 +3353,7 @@ namespace cpp_parser::json_visitor
 			return;
 		}
 		BeginObject();
-		WriteType(L"ClassMemberPart", node);
+		WriteType(vl::WString::Unmanaged(L"ClassMemberPart"), node);
 		PrintFields(static_cast<CppClassMemberPart*>(node));
 		EndObject();
 	}
@@ -3366,7 +3366,7 @@ namespace cpp_parser::json_visitor
 			return;
 		}
 		BeginObject();
-		WriteType(L"ClassBody", node);
+		WriteType(vl::WString::Unmanaged(L"ClassBody"), node);
 		PrintFields(static_cast<CppClassBody*>(node));
 		EndObject();
 	}
@@ -3379,7 +3379,7 @@ namespace cpp_parser::json_visitor
 			return;
 		}
 		BeginObject();
-		WriteType(L"EnumItem", node);
+		WriteType(vl::WString::Unmanaged(L"EnumItem"), node);
 		PrintFields(static_cast<CppEnumItem*>(node));
 		EndObject();
 	}
@@ -3392,7 +3392,7 @@ namespace cpp_parser::json_visitor
 			return;
 		}
 		BeginObject();
-		WriteType(L"EnumBody", node);
+		WriteType(vl::WString::Unmanaged(L"EnumBody"), node);
 		PrintFields(static_cast<CppEnumBody*>(node));
 		EndObject();
 	}
@@ -3405,7 +3405,7 @@ namespace cpp_parser::json_visitor
 			return;
 		}
 		BeginObject();
-		WriteType(L"NamespaceName", node);
+		WriteType(vl::WString::Unmanaged(L"NamespaceName"), node);
 		PrintFields(static_cast<CppNamespaceName*>(node));
 		EndObject();
 	}
@@ -3418,7 +3418,7 @@ namespace cpp_parser::json_visitor
 			return;
 		}
 		BeginObject();
-		WriteType(L"TryStatCatchPart", node);
+		WriteType(vl::WString::Unmanaged(L"TryStatCatchPart"), node);
 		PrintFields(static_cast<CppTryStatCatchPart*>(node));
 		EndObject();
 	}
