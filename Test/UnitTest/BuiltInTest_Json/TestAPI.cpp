@@ -57,21 +57,24 @@ TEST_FILE
 		Parser parser;
 		for (auto [input, i] : indexed(From(inputs)))
 		{
-			TEST_CASE(outputPlain[i])
+			TEST_CATEGORY(outputPlain[i])
 			{
 				auto ast = JsonParse(WString::Unmanaged(input), parser);
+				TEST_CASE(L"Plain")
 				{
 					auto json = JsonToString(ast);
 					TEST_ASSERT(json == outputPlain[i]);
-				}
+				});
+				TEST_CASE(L"Crlf")
 				{
 					auto json = JsonToString(ast, formatCrlf);
 					TEST_ASSERT(json == outputCrlf[i]);
-				}
+				});
+				TEST_CASE(L"Compact")
 				{
 					auto json = JsonToString(ast, formatCompact);
 					TEST_ASSERT(json == outputCompact[i]);
-				}
+				});
 			});
 		}
 	});

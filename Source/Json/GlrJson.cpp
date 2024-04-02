@@ -53,6 +53,74 @@ JsonFormatting
 			}
 
 /***********************************************************************
+JsonIsCompactVisitor
+***********************************************************************/
+
+			class JsonIsCompactVisitorBase : public Object, public JsonNode::IVisitor
+			{
+			public:
+				bool						result = true;
+
+				void Visit(JsonLiteral* node) override
+				{
+				}
+
+				void Visit(JsonString* node) override
+				{
+				}
+
+				void Visit(JsonNumber* node) override
+				{
+				}
+			};
+
+			class JsonIsCompactFieldVisitor : public JsonIsCompactVisitorBase
+			{
+			public:
+				void Visit(JsonArray* node) override
+				{
+					result = node->items.Count() == 0;
+				}
+
+				void Visit(JsonObject* node) override
+				{
+					result = node->fields.Count() == 0;
+				}
+			};
+
+			class JsonIsCompactVisitor : public JsonIsCompactVisitorBase
+			{
+			public:
+				void Visit(JsonArray* node) override
+				{
+					for (auto item : node->items)
+					{
+						JsonIsCompactFieldVisitor visitor;
+						item->Accept(&visitor);
+						if (!visitor.result)
+						{
+							result = false;
+							break;
+						}
+					}
+				}
+
+				void Visit(JsonObject* node) override
+				{
+					for (auto field : node->fields)
+					{
+						JsonIsCompactFieldVisitor visitor;
+						field->value->Accept(&visitor);
+						if (!visitor.result)
+						{
+							result = false;
+							break;
+						}
+					}
+				}
+			};
+
+/***********************************************************************
 JsonPrintVisitor
 ***********************************************************************/
 
@@ -61,11 +129,27 @@ JsonPrintVisitor
 			public:
 				JsonFormatting				formatting;
 				TextWriter&					writer;
+				vint						indent = 0;
 
 				JsonPrintVisitor(JsonFormatting _formatting, TextWriter& _writer)
 					: formatting(_formatting)
 					, writer(_writer)
 				{
+				}
+
+				void WriteIndentation()
+				{
+					for (vint i = 0; i < indent; i++)
+					{
+						writer.WriteString(formatting.indentation);
+					}
+				}
+
+				bool IsCompact(JsonNode* node)
+				{
+					JsonIsCompactVisitor visitor;
+					node->Accept(&visitor);
+					return visitor.result;
 				}
 
 				void Visit(JsonLiteral* node) override
@@ -97,13 +181,59 @@ JsonPrintVisitor
 					writer.WriteString(node->content.value);
 				}
 
+				void AfterOpeningObject(bool insertCrlf)
+				{
+					if (insertCrlf)
+					{
+						writer.WriteString(L"\r\n");
+						indent++;
+					}
+				}
+
+				void BeforeClosingObject(bool insertCrlf)
+				{
+					if (insertCrlf)
+					{
+						writer.WriteString(L"\r\n");
+						indent--;
+					}
+				}
+
+				void BeforeChildNode(bool insertCrlf)
+				{
+					if (insertCrlf) WriteIndentation();
+				}
+
+				void AfterChildNode(bool insertCrlf, bool lastNode)
+				{
+					if (!lastNode)
+					{
+						if (formatting.crlf)
+						{
+							writer.WriteString(L", ");
+						}
+						else
+						{
+							writer.WriteChar(L',');
+						}
+					}
+					if (insertCrlf) writer.WriteString(L"\r\n");
+				}
+
 				void Visit(JsonArray* node) override
 				{
 					writer.WriteChar(L'[');
-					for (auto [item, i] : indexed(node->items))
+					if (node->items.Count() > 0)
 					{
-						if(i>0) writer.WriteChar(L',');
-						item->Accept(this);
+						bool insertCrlf = formatting.crlf && !(formatting.compact && IsCompact(node));
+						AfterOpeningObject(insertCrlf);
+						for (auto [item, i] : indexed(node->items))
+						{
+							BeforeChildNode(insertCrlf);
+							item->Accept(this);
+							AfterChildNode(insertCrlf, i == node->items.Count() - 1);
+						}
+						BeforeClosingObject(insertCrlf);
 					}
 					writer.WriteChar(L']');
 				}
@@ -111,13 +241,20 @@ JsonPrintVisitor
 				void Visit(JsonObject* node) override
 				{
 					writer.WriteChar(L'{');
-					for (auto [field, i] : indexed(node->fields))
+					if (node->fields.Count() > 0)
 					{
-						if(i>0) writer.WriteChar(L',');
-						writer.WriteChar(L'\"');
-						JsonEscapeString(field->name.value, writer);
-						writer.WriteString(L"\":");
-						field->value->Accept(this);
+						bool insertCrlf = formatting.crlf && !(formatting.compact && IsCompact(node));
+						AfterOpeningObject(insertCrlf);
+						for (auto [field, i] : indexed(node->fields))
+						{
+							BeforeChildNode(insertCrlf);
+							writer.WriteChar(L'\"');
+							JsonEscapeString(field->name.value, writer);
+							writer.WriteString(L"\":");
+							field->value->Accept(this);
+							AfterChildNode(insertCrlf, i == node->fields.Count() - 1);
+						}
+						BeforeClosingObject(insertCrlf);
 					}
 					writer.WriteChar(L'}');
 				}
