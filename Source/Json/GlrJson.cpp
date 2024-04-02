@@ -195,6 +195,7 @@ JsonPrintVisitor
 					if (insertCrlf)
 					{
 						indent--;
+						WriteIndentation();
 					}
 				}
 

@@ -39,7 +39,21 @@ TEST_FILE
 			L"[\r\n\t1,\r\n\t2\r\n]",
 			L"[\r\n\ttrue,\r\n\tfalse,\r\n\tnull,\r\n\t1,\r\n\t\"abc\"\r\n]",
 			L"[\r\n\t\"\\b\\f\\n\\r\\t\\\\\\\"abcA9\"\r\n]",
-			L"{\"name\":\"vczh\",\"scores\":[100,90,80,{\"a\":\"b\"}],\"IDE\":{\"VC++\":\"Microsoft\"}}",
+
+			L"{"										L"\r\n"
+			L"\t\"name\":\"vczh\","						L"\r\n"
+			L"\t\"scores\":["							L"\r\n"
+			L"\t\t100,"									L"\r\n"
+			L"\t\t90,"									L"\r\n"
+			L"\t\t80,"									L"\r\n"
+			L"\t\t{"									L"\r\n"
+			L"\t\t\t\"a\":\"b\""						L"\r\n"
+			L"\t\t}"									L"\r\n"
+			L"\t],"										L"\r\n"
+			L"\t\"IDE\":{"								L"\r\n"
+			L"\t\t\"VC++\":\"Microsoft\""				L"\r\n"
+			L"\t}"										L"\r\n"
+			L"}"
 		};
 
 		JsonFormatting formatCompact = { true, true, L"  " };
@@ -51,7 +65,17 @@ TEST_FILE
 			L"[1, 2]",
 			L"[true, false, null, 1, \"abc\"]",
 			L"[\"\\b\\f\\n\\r\\t\\\\\\\"abcA9\"]",
-			L"{\"name\":\"vczh\",\"scores\":[100,90,80,{\"a\":\"b\"}],\"IDE\":{\"VC++\":\"Microsoft\"}}",
+
+			L"{"										L"\r\n"
+			L"  \"name\":\"vczh\","						L"\r\n"
+			L"  \"scores\":["							L"\r\n"
+			L"    100,"									L"\r\n"
+			L"    90,"									L"\r\n"
+			L"    80,"									L"\r\n"
+			L"    {\"a\":\"b\"}"						L"\r\n"
+			L"  ],"										L"\r\n"
+			L"  \"IDE\":{\"VC++\":\"Microsoft\"}"		L"\r\n"
+			L"}"
 		};
 
 		Parser parser;
