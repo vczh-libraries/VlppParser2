@@ -37,16 +37,34 @@ JsonUnescapeVisitor
 			};
 
 /***********************************************************************
+JsonFormatting
+***********************************************************************/
+
+			JsonFormatting::JsonFormatting()
+				: indentation(L"  ")
+			{
+			}
+
+			JsonFormatting::JsonFormatting(bool _crlf, bool _compact, const wchar_t* _indentation)
+				: crlf(_crlf)
+				, compact(_compact)
+				, indentation(_indentation)
+			{
+			}
+
+/***********************************************************************
 JsonPrintVisitor
 ***********************************************************************/
 
 			class JsonPrintVisitor : public Object, public JsonNode::IVisitor
 			{
 			public:
+				JsonFormatting				formatting;
 				TextWriter&					writer;
 
-				JsonPrintVisitor(TextWriter& _writer)
-					:writer(_writer)
+				JsonPrintVisitor(JsonFormatting _formatting, TextWriter& _writer)
+					: formatting(_formatting)
+					, writer(_writer)
 				{
 				}
 
@@ -116,17 +134,17 @@ API
 				return ast;
 			}
 
-			void JsonPrint(Ptr<JsonNode> node, stream::TextWriter& writer)
+			void JsonPrint(Ptr<JsonNode> node, stream::TextWriter& writer, JsonFormatting formatting)
 			{
-				JsonPrintVisitor visitor(writer);
+				JsonPrintVisitor visitor(formatting, writer);
 				node->Accept(&visitor);
 			}
 
-			WString JsonToString(Ptr<JsonNode> node)
+			WString JsonToString(Ptr<JsonNode> node, JsonFormatting formatting)
 			{
 				return GenerateToStream([&](StreamWriter& writer)
 				{
-					JsonPrint(node, writer);
+					JsonPrint(node, writer, formatting);
 				});
 			}
 		}
