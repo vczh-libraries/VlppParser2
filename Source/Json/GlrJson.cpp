@@ -194,7 +194,6 @@ JsonPrintVisitor
 				{
 					if (insertCrlf)
 					{
-						writer.WriteString(L"\r\n");
 						indent--;
 					}
 				}
@@ -208,7 +207,7 @@ JsonPrintVisitor
 				{
 					if (!lastNode)
 					{
-						if (formatting.crlf)
+						if (!insertCrlf && formatting.crlf)
 						{
 							writer.WriteString(L", ");
 						}

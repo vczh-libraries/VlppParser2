@@ -35,10 +35,10 @@ TEST_FILE
 		{
 			L"{}",
 			L"[]",
-			L"[1]",
-			L"[1,2]",
-			L"[true,false,null,1,\"abc\"]",
-			L"[\"\\b\\f\\n\\r\\t\\\\\\\"abcA9\"]",
+			L"[\r\n\t1\r\n]",
+			L"[\r\n\t1,\r\n\t2\r\n]",
+			L"[\r\n\ttrue,\r\n\tfalse,\r\n\tnull,\r\n\t1,\r\n\t\"abc\"\r\n]",
+			L"[\r\n\t\"\\b\\f\\n\\r\\t\\\\\\\"abcA9\"\r\n]",
 			L"{\"name\":\"vczh\",\"scores\":[100,90,80,{\"a\":\"b\"}],\"IDE\":{\"VC++\":\"Microsoft\"}}",
 		};
 
@@ -48,8 +48,8 @@ TEST_FILE
 			L"{}",
 			L"[]",
 			L"[1]",
-			L"[1,2]",
-			L"[true,false,null,1,\"abc\"]",
+			L"[1, 2]",
+			L"[true, false, null, 1, \"abc\"]",
 			L"[\"\\b\\f\\n\\r\\t\\\\\\\"abcA9\"]",
 			L"{\"name\":\"vczh\",\"scores\":[100,90,80,{\"a\":\"b\"}],\"IDE\":{\"VC++\":\"Microsoft\"}}",
 		};
