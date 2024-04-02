@@ -24,12 +24,13 @@ namespace vl
 
 			struct JsonFormatting
 			{
+				bool				spaceAfterColon = false;
+				bool				spaceAfterComma = false;
 				bool				crlf = false;
-				bool				compact = false;
-				const wchar_t*		indentation = nullptr;
+				bool				compact = false;		// available when crlf == true
+				const wchar_t*		indentation = nullptr;	// available when crlf == true;
 
 				JsonFormatting();
-				JsonFormatting(bool _crlf, bool _compact, const wchar_t* _indentation);
 				JsonFormatting(const JsonFormatting&) = default;
 				JsonFormatting(JsonFormatting&&) = default;
 				JsonFormatting& operator=(const JsonFormatting&) = default;

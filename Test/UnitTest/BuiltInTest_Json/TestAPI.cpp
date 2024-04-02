@@ -30,7 +30,24 @@ TEST_FILE
 			L"{\"name\":\"vczh\",\"scores\":[100,90,80,{\"a\":\"b\"}],\"IDE\":{\"VC++\":\"Microsoft\"}}",
 		};
 
-		JsonFormatting formatCrlf = { true, false, L"\t"};
+		JsonFormatting formatPretty;
+		formatPretty.spaceAfterColon = true;
+		formatPretty.spaceAfterComma = true;
+		const wchar_t* outputPretty[] =
+		{
+			L"{}",
+			L"[]",
+			L"[1]",
+			L"[1, 2]",
+			L"[true, false, null, 1, \"abc\"]",
+			L"[\"\\b\\f\\n\\r\\t\\\\\\\"abcA9\"]",
+			L"{\"name\": \"vczh\", \"scores\": [100, 90, 80, {\"a\": \"b\"}], \"IDE\": {\"VC++\": \"Microsoft\"}}",
+		};
+
+		JsonFormatting formatCrlf;
+		formatCrlf.spaceAfterColon = true;
+		formatCrlf.crlf = true;
+		formatCrlf.indentation = L"\t";
 		const wchar_t* outputCrlf[] =
 		{
 			L"{}",
@@ -41,22 +58,25 @@ TEST_FILE
 			L"[\r\n\t\"\\b\\f\\n\\r\\t\\\\\\\"abcA9\"\r\n]",
 
 			L"{"										L"\r\n"
-			L"\t\"name\":\"vczh\","						L"\r\n"
-			L"\t\"scores\":["							L"\r\n"
+			L"\t\"name\": \"vczh\","					L"\r\n"
+			L"\t\"scores\": ["							L"\r\n"
 			L"\t\t100,"									L"\r\n"
 			L"\t\t90,"									L"\r\n"
 			L"\t\t80,"									L"\r\n"
 			L"\t\t{"									L"\r\n"
-			L"\t\t\t\"a\":\"b\""						L"\r\n"
+			L"\t\t\t\"a\": \"b\""						L"\r\n"
 			L"\t\t}"									L"\r\n"
 			L"\t],"										L"\r\n"
-			L"\t\"IDE\":{"								L"\r\n"
-			L"\t\t\"VC++\":\"Microsoft\""				L"\r\n"
+			L"\t\"IDE\": {"								L"\r\n"
+			L"\t\t\"VC++\": \"Microsoft\""				L"\r\n"
 			L"\t}"										L"\r\n"
 			L"}"
 		};
 
-		JsonFormatting formatCompact = { true, true, L"  " };
+		JsonFormatting formatCompact;
+		formatCompact.spaceAfterComma = true;
+		formatCompact.crlf = true;
+		formatCompact.compact = true;
 		const wchar_t* outputCompact[] =
 		{
 			L"{}",
@@ -88,6 +108,11 @@ TEST_FILE
 				{
 					auto json = JsonToString(ast);
 					TEST_ASSERT(json == outputPlain[i]);
+				});
+				TEST_CASE(L"Pretty")
+				{
+					auto json = JsonToString(ast, formatPretty);
+					TEST_ASSERT(json == outputPretty[i]);
 				});
 				TEST_CASE(L"Crlf")
 				{

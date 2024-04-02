@@ -45,13 +45,6 @@ JsonFormatting
 			{
 			}
 
-			JsonFormatting::JsonFormatting(bool _crlf, bool _compact, const wchar_t* _indentation)
-				: crlf(_crlf)
-				, compact(_compact)
-				, indentation(_indentation)
-			{
-			}
-
 /***********************************************************************
 JsonIsCompactVisitor
 ***********************************************************************/
@@ -208,7 +201,7 @@ JsonPrintVisitor
 				{
 					if (!lastNode)
 					{
-						if (!insertCrlf && formatting.crlf)
+						if ((!insertCrlf || !formatting.crlf) && formatting.spaceAfterComma)
 						{
 							writer.WriteString(L", ");
 						}
@@ -250,7 +243,14 @@ JsonPrintVisitor
 							BeforeChildNode(insertCrlf);
 							writer.WriteChar(L'\"');
 							JsonEscapeString(field->name.value, writer);
-							writer.WriteString(L"\":");
+							if (formatting.spaceAfterColon)
+							{
+								writer.WriteString(L"\": ");
+							}
+							else
+							{
+								writer.WriteString(L"\":");
+							}
 							field->value->Accept(this);
 							AfterChildNode(insertCrlf, i == node->fields.Count() - 1);
 						}
