@@ -402,7 +402,7 @@ CheckMergeTrace
 					else
 					{
 						// otherwise find all objRefs of EndObject
-						auto succeeded = CheckAmbiguityResolution(ta, visitingIds, [=, &visitingIds](auto&& callback)
+						auto succeeded = CheckAmbiguityResolution(ta, visitingIds, [=, this, &visitingIds](auto&& callback)
 						{
 							auto predecessorId = trace->predecessors.first;
 							while (predecessorId != nullref)
