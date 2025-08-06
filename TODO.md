@@ -52,6 +52,8 @@
 - Compiler crashes:
   - `_DeclOrExpr ::= !_BExpr ::= {_DeclaratorKeyword:keywords} _TypeBeforeDeclarator:type _DeclaratorRequiredName:declarator as DeclaratorType ;`
   - `workingSwitchValues` is nullptr in `ExpandClauseVisitor::FixRuleName`
+- Write a powershell script to generate all `.i` files from `.cpp` and `.h` in every `Source` folder, collect them in a central place to create test cases.
+  - `Release\IncludeOnly` will be useful to resolve cross-repo dependencies.
 
 ## Issues (Glr)
 
