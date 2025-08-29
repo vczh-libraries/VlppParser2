@@ -23,6 +23,7 @@
 - Windows and Linux test output inconsistency on
   - the order of ambiguous candidates.
   - `\r\n` or `\n` serialized into `<![CDATA[]]>`.
+  - We can force `\r\n` in unit test, normalizing all inputs.
 
 ## Features to Add
 
