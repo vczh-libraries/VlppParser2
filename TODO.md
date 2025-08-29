@@ -28,6 +28,8 @@
 
 - Extensible tokens, for example, recognize `R"[^\s(]\(` and invoke a callback function to determine the end of the string.
   - `RegexTokenizer`
+  - New syntax for tokenizers for such extensible tokens.
+  - We can try `/***/` with extensible tokens.
 - AST file groups.
   - An AST file only sees:
     - [x] Types defined in this file.
