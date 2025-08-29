@@ -27,7 +27,7 @@
 ## Features to Add
 
 - Extensible tokens, for example, recognize `R"[^\s(]\(` and invoke a callback function to determine the end of the string.
-  - Offer two options: using (rich regex | C++) to search for complete token.
+  - `RegexTokenizer`
 - AST file groups.
   - An AST file only sees:
     - [x] Types defined in this file.
