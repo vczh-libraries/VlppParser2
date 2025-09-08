@@ -4,6 +4,8 @@
 
 - Try remove `beforeIns`.
 - Try remove all LRJ syntax, build LRJ structure from state machine instead.
+- Try to make large AST not causing stack overflow while disposing.
+  - Generate code to collect all nodes in any destructor and mark (to tell all sub nodes they are processed)?
 
 ## Test Cases
 
