@@ -12,6 +12,8 @@ You are welcome to contribute to this repo by opening pull requests.
 
 ## Document
 
+[![Ask DeepWiki](https://deepwiki.com/badge.svg)](https://deepwiki.com/vczh-libraries/VlppParser2)
+
 (editing)
 
 ## Unit Test
