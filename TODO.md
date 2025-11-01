@@ -3,6 +3,9 @@
 ## Next task
 
 - Try remove `beforeIns`.
+  - Is it possible to only handle object type in EndObject instead of BeginObject?
+  - We may need to store raw field id, and when reaches EndObject, translate raw field id to field id for the specific object type.
+  - Completely remove `beforeIns`.
 - Try remove all LRJ syntax, build LRJ structure from state machine instead.
 - Try to make large AST not causing stack overflow while disposing.
   - Generate code to collect all nodes in any destructor and mark (to tell all sub nodes they are processed)?
