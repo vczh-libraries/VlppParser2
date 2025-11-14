@@ -10,6 +10,11 @@
 - Try to make large AST not causing stack overflow while disposing.
   - Generate code to collect all nodes in any destructor and mark (to tell all sub nodes they are processed)?
 
+## Big Design Change
+
+- What about no field assignment instructions generated until EndObject
+  - Keep the prefix clean so that no leftrec and high level structures are needed
+
 ## Test Cases
 
 - Code Coverage
