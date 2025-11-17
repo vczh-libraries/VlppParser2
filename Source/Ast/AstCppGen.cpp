@@ -87,7 +87,7 @@ WriteAstHeaderFile
 					writer.WriteLine(L"#pragma once");
 				}
 				writer.WriteLine(L"");
-				for (auto include : group->Owner()->Global().includes)
+				for (auto include : group->Owner()->Global().astIncludes)
 				{
 					if (include.Length() > 0 && include[0] == L'<')
 					{

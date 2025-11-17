@@ -8,7 +8,6 @@ Licensed under https://github.com/vczh-libraries/License
 #define VCZH_PARSER2_BUILTIN_JSON_LEXER
 
 #include "../../AstBase.h"
-#include "../../SyntaxBase.h"
 
 namespace vl::glr::json
 {

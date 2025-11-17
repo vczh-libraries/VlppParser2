@@ -8,7 +8,6 @@ Licensed under https://github.com/vczh-libraries/License
 #define VCZH_PARSER2_UNITTEST_PREFIXMERGE9_PMLOOP_FILE_AST
 
 #include "../../../../Source/AstBase.h"
-#include "../../../../Source/SyntaxBase.h"
 
 namespace prefixmerge9_pmloop
 {

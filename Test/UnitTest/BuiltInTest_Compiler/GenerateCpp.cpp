@@ -35,7 +35,8 @@ TEST_FILE
 	SyntaxSymbolManager syntaxManager(global);
 
 	global.name = L"Cpp";
-	Fill(global.includes, L"../../../../Source/AstBase.h", L"../../../../Source/SyntaxBase.h");
+	Fill(global.astIncludes, L"../../../../Source/AstBase.h");
+	Fill(global.syntaxIncludes, L"../../../../Source/SyntaxBase.h");
 	Fill(global.cppNss, L"cpp_parser");
 	global.headerGuard = L"VCZH_PARSER2_BUILTIN_CPP";
 	syntaxManager.name = L"Parser";

@@ -7,6 +7,7 @@ Licensed under https://github.com/vczh-libraries/License
 #ifndef VCZH_PARSER2_UNITTEST_PREFIXMERGE7_PMSWITCH_MODULEPARSER_SYNTAX
 #define VCZH_PARSER2_UNITTEST_PREFIXMERGE7_PMSWITCH_MODULEPARSER_SYNTAX
 
+#include "../../../../Source/SyntaxBase.h"
 #include "PrefixMerge7_PmSwitch_Assembler.h"
 #include "PrefixMerge7_PmSwitch_Lexer.h"
 

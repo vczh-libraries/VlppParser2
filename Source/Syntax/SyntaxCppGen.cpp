@@ -54,8 +54,19 @@ WriteSyntaxHeaderFile
 					writer.WriteLine(L"#pragma once");
 				}
 				writer.WriteLine(L"");
+				for (auto include : manager.Global().syntaxIncludes)
+				{
+					if (include.Length() > 0 && include[0] == L'<')
+					{
+						writer.WriteLine(L"#include " + include);
+					}
+					else
+					{
+						writer.WriteLine(L"#include \"" + include + L"\"");
+					}
+				}
 				writer.WriteLine(L"#include \"" + output->assemblyH + L"\"");
-				writer.WriteLine(L"#include \"" + output->lexerH +L"\"");
+				writer.WriteLine(L"#include \"" + output->lexerH + L"\"");
 				writer.WriteLine(L"");
 
 				WString prefix = WriteNssBegin(manager.Global().cppNss, writer);

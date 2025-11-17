@@ -29,7 +29,7 @@ WriteLexerHeaderFile
 					writer.WriteLine(L"#pragma once");
 				}
 				writer.WriteLine(L"");
-				for (auto include : manager.Global().includes)
+				for (auto include : manager.Global().astIncludes)
 				{
 					if (include.Length() > 0 && include[0] == L'<')
 					{

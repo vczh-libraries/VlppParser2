@@ -7,6 +7,7 @@ Licensed under https://github.com/vczh-libraries/License
 #ifndef VCZH_PARSER2_BUILTIN_XML_PARSER_SYNTAX
 #define VCZH_PARSER2_BUILTIN_XML_PARSER_SYNTAX
 
+#include "../../SyntaxBase.h"
 #include "Xml_Assembler.h"
 #include "Xml_Lexer.h"
 

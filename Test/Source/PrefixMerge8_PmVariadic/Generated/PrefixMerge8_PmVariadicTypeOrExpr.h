@@ -8,7 +8,6 @@ Licensed under https://github.com/vczh-libraries/License
 #define VCZH_PARSER2_UNITTEST_PREFIXMERGE8_PMVARIADIC_TYPEOREXPR_AST
 
 #include "../../../../Source/AstBase.h"
-#include "../../../../Source/SyntaxBase.h"
 
 namespace prefixmerge8_pmvariadic
 {

@@ -7,6 +7,7 @@ Licensed under https://github.com/vczh-libraries/License
 #ifndef VCZH_PARSER2_BUILTIN_WORKFLOW_PARSER_SYNTAX
 #define VCZH_PARSER2_BUILTIN_WORKFLOW_PARSER_SYNTAX
 
+#include "../../../../Source/SyntaxBase.h"
 #include "Workflow_Assembler.h"
 #include "Workflow_Lexer.h"
 

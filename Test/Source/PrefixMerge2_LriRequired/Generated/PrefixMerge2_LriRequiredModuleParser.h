@@ -7,6 +7,7 @@ Licensed under https://github.com/vczh-libraries/License
 #ifndef VCZH_PARSER2_UNITTEST_PREFIXMERGE2_LRIREQUIRED_MODULEPARSER_SYNTAX
 #define VCZH_PARSER2_UNITTEST_PREFIXMERGE2_LRIREQUIRED_MODULEPARSER_SYNTAX
 
+#include "../../../../Source/SyntaxBase.h"
 #include "PrefixMerge2_LriRequired_Assembler.h"
 #include "PrefixMerge2_LriRequired_Lexer.h"
 
