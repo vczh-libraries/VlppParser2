@@ -270,21 +270,15 @@ Instructions
 
 		enum class AstInsType
 		{
-			Token,										// Token()							: Push the current token as a value.
-			EnumItem,									// EnumItem(Value)					: Push an enum item.
-			BeginObject,								// BeginObject(Type)				: Begin creating an AST node.
-			DelayFieldAssignment,						// DelayFieldAssignment()			: An object will be created later by ReopenObject, delay future field assignments to this object before ReopenObject.
-			ReopenObject,								// ReopenObject()					: Move the last pushed object back to creating status.
-			EndObject,									// EndObject()						: Finish creating an AST node, all objects pushed after BeginObject are supposed to be its fields.
-			DiscardValue,								// DiscardValue()					: Remove a pushed value.
-			LriStore,									// LriStore()						: Take the top object away and store to a register temporarily.
-			LriFetch,									// LriFetch()						: Clear the register and put it back as a top object.
-			Field,										// Field(Field)						: Associate a field name with the top object.
-			FieldIfUnassigned,							// FieldIfUnassigned(Field)			: Like Field(Field) but only take effect if such field has never been assigned.
-			ResolveAmbiguity,							// ResolveAmbiguity(Type, Count)	: Combine several top objects to one using an ambiguity node. Type is the type of each top object.
-
-			AccumulatedDfa,								// AccumulatedDfa(Count)			: Multiple DelayFieldAssignment
-			AccumulatedEoRo,							// AccumulatedEoRo(Count)			: Multiple EndObject + ReopenObject
+			Token,										// Token(Value, Count)				: Put the current token in the Count-th slot.
+			EnumItem,									// EnumItem(Value, Count)			: Put an enum item in the Count-th slot.
+			StackBegin,									// StackBegin()						: Begin a new stack frame.
+			StackSlot,									// StackSlot(Count)					: Assign the just created object to the Count-th slot. Reset the creating object.
+			CreateObject,								// CreateObject(Type)				: Create an AST node, it becomes the creating object. Error if the previous creating object has not been reset.
+			Field,										// Field(Count, Field)				: Associate a field name of the creating object with the value in the Count-th slot. Ignored if the Count-th slot is empty.
+			FieldIfUnassigned,							// FieldIfUnassigned(Count, Field)	: Like Field(Field) but only take effect if such field has never been assigned.
+			StackEnd,									// StackEnd()						: End the current stack frame. Leave the creating object as is.
+			ResolveAmbiguity,							// ResolveAmbiguity(Type)			: Combine several values in the 0-th slot to one using an ambiguity node. Type is the type of each value.
 		};
 
 		struct AstIns
@@ -313,28 +307,20 @@ Instructions
 			UnknownType,								// UnknownType(Type)					: The type id does not exist.
 			UnknownField,								// UnknownField(Field)					: The field id does not exist.
 			UnsupportedAbstractType,					// UnsupportedAbstractType(Type)		: Unable to create abstract class.
-			UnsupportedAmbiguityType,					// UnsupportedAmbiguityType(Type)		: The type is not configured to allow ambiguity.
-			UnexpectedAmbiguousCandidate,				// UnexpectedAmbiguousCandidate(Type)	: The type of the ambiguous candidate is not compatible to the required type.
 			FieldNotExistsInType,						// FieldNotExistsInType(Field)			: The type doesn't have such field.
 			FieldReassigned,							// FieldReassigned(Field)				: An object is assigned to a field but this field has already been assigned.
 			FieldWeakAssignmentOnNonEnum,				// FieldWeakAssignmentOnNonEnum(Field)	: Weak assignment only available for field of enum type.
 			ObjectTypeMismatchedToField,				// ObjectTypeMismatchedToField(Field)	: Unable to assign an object to a field because the type does not match.
 
-			NoRootObject,								// NoRootObject()						: There is no created objects.
-			NoRootObjectAfterDfa,						// NoRootObjectAfterDfa()				: There is no created objects after DelayFieldAssignment.
-			TooManyUnassignedValues,					// LeavingUnassignedValues()			: The value to reopen is not the only unassigned value.
-			MissingDfaBeforeReopen,						// MissingDfaBeforeReopen()				: DelayFieldAssignment is not submitted before ReopenObject.
-			MissingValueToReopen,						// MissingValueToReopen()				: There is no pushed value to reopen.
-			ReopenedValueIsNotObject,					// ReopenedValueIsNotObject()			: The pushed value to reopen is not an object.
-			MissingValueToDiscard,						// MissingValueToDiscard()				: There is no pushed value to discard.
-			MissingValueToLriStore,						// MissingValueToLriStore()				: There is no pushed value to run LriStore.
-			LriStoredValueIsNotObject,					// LriStoredValueIsNotObject()			: The value to run LriStore is not an object.
-			LriStoredValueNotCleared,					// LriStoredValueNotCleared()			: LriFetch is not executed before the next LriStore.
-			LriStoredValueNotExists,					// LriStoredValueNotExists()			: LriStore is not executed before the next LriFetch.
-			LeavingUnassignedValues,					// LeavingUnassignedValues()			: There are still values to assign to fields before finishing an object.
-			MissingFieldValue,							// MissingFieldValue()					: There is no pushed value to be assigned to a field.
-			MissingAmbiguityCandidate,					// MissingAmbiguityCandidate()			: There are not enough candidates to create an ambiguity node.
+			UnsupportedAmbiguityType,					// UnsupportedAmbiguityType(Type)		: The type is not configured to allow ambiguity.
+			UnexpectedAmbiguousCandidate,				// UnexpectedAmbiguousCandidate(Type)	: The type of the ambiguous candidate is not compatible to the required type.
+			MissingAmbiguityCandidate,					// MissingAmbiguityCandidate()			: There are less than two candidates to create an ambiguity node.
 			AmbiguityCandidateIsNotObject,				// AmbiguityCandidateIsNotObject()		: Tokens or enum items cannot be ambiguity candidates.
+
+			NoCreatingObjectForField,					// NoCreatingObject()					: There is no creating object to assign to a slot.
+			NoCreatingObjectForStackEnd,				// NoCreatingObjectForStackEnd()		: StackEnd leaving no creating object.
+			CreatingObjectNotReset,						// CreatingObjectNotReset()				: The previous creating object has not been reset.
+
 			InstructionNotComplete,						// InstructionNotComplete()				: No more instruction but the root object has not been completed yet.
 			Corrupted,									// Corrupted()							: An exception has been thrown therefore this receiver cannot be used anymore.
 			Finished,									// Finished()							: The finished instruction has been executed therefore this receiver cannot be used anymore.
