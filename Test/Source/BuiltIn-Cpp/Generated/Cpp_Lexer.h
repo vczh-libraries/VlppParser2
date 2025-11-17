@@ -8,7 +8,6 @@ Licensed under https://github.com/vczh-libraries/License
 #define VCZH_PARSER2_BUILTIN_CPP_LEXER
 
 #include "../../../../Source/AstBase.h"
-#include "../../../../Source/SyntaxBase.h"
 
 namespace cpp_parser
 {

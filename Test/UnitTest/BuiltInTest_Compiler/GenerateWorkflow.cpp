@@ -32,7 +32,8 @@ TEST_FILE
 	SyntaxSymbolManager syntaxManager(global);
 
 	global.name = L"Workflow";
-	Fill(global.includes, L"../../../../Source/AstBase.h", L"../../../../Source/SyntaxBase.h");
+	Fill(global.astIncludes, L"../../../../Source/AstBase.h");
+	Fill(global.syntaxIncludes, L"../../../../Source/SyntaxBase.h");
 	Fill(global.cppNss, L"vl", L"glr", L"workflow");
 	global.headerGuard = L"VCZH_PARSER2_BUILTIN_WORKFLOW";
 	syntaxManager.name = L"Parser";

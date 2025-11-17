@@ -7,6 +7,7 @@ Licensed under https://github.com/vczh-libraries/License
 #ifndef VCZH_PARSER2_PARSERGEN_RULEPARSER_SYNTAX
 #define VCZH_PARSER2_PARSERGEN_RULEPARSER_SYNTAX
 
+#include "../SyntaxBase.h"
 #include "ParserGen_Assembler.h"
 #include "ParserGen_Lexer.h"
 

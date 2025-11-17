@@ -7,6 +7,7 @@ Licensed under https://github.com/vczh-libraries/License
 #ifndef VCZH_PARSER2_UNITTEST_BINARYOP_MODULEPARSER_SYNTAX
 #define VCZH_PARSER2_UNITTEST_BINARYOP_MODULEPARSER_SYNTAX
 
+#include "../../../../Source/SyntaxBase.h"
 #include "BinaryOp_Assembler.h"
 #include "BinaryOp_Lexer.h"
 

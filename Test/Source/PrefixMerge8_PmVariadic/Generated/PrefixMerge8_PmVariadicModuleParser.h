@@ -7,6 +7,7 @@ Licensed under https://github.com/vczh-libraries/License
 #ifndef VCZH_PARSER2_UNITTEST_PREFIXMERGE8_PMVARIADIC_MODULEPARSER_SYNTAX
 #define VCZH_PARSER2_UNITTEST_PREFIXMERGE8_PMVARIADIC_MODULEPARSER_SYNTAX
 
+#include "../../../../Source/SyntaxBase.h"
 #include "PrefixMerge8_PmVariadic_Assembler.h"
 #include "PrefixMerge8_PmVariadic_Lexer.h"
 

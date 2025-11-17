@@ -7,6 +7,7 @@ Licensed under https://github.com/vczh-libraries/License
 #ifndef VCZH_PARSER2_UNITTEST_FEATURETEST_MODULEPARSER_SYNTAX
 #define VCZH_PARSER2_UNITTEST_FEATURETEST_MODULEPARSER_SYNTAX
 
+#include "../../../../Source/SyntaxBase.h"
 #include "FeatureTest_Assembler.h"
 #include "FeatureTest_Lexer.h"
 

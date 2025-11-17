@@ -106,7 +106,8 @@ TEST_FILE
 			Metadata metadata;
 
 			global.name = parserName;
-			Fill(global.includes, L"../../../../Source/AstBase.h", L"../../../../Source/SyntaxBase.h");
+			Fill(global.astIncludes, L"../../../../Source/AstBase.h");
+			Fill(global.syntaxIncludes, L"../../../../Source/SyntaxBase.h");
 			global.cppNss.Add(wlower(parserName));
 			global.headerGuard = L"VCZH_PARSER2_UNITTEST_" + wupper(parserName);
 			syntaxManager.name = ruleName + L"Parser";

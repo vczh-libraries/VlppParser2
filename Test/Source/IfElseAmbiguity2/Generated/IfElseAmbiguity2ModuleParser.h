@@ -7,6 +7,7 @@ Licensed under https://github.com/vczh-libraries/License
 #ifndef VCZH_PARSER2_UNITTEST_IFELSEAMBIGUITY2_MODULEPARSER_SYNTAX
 #define VCZH_PARSER2_UNITTEST_IFELSEAMBIGUITY2_MODULEPARSER_SYNTAX
 
+#include "../../../../Source/SyntaxBase.h"
 #include "IfElseAmbiguity2_Assembler.h"
 #include "IfElseAmbiguity2_Lexer.h"
 

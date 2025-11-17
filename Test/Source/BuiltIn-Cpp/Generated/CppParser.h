@@ -7,6 +7,7 @@ Licensed under https://github.com/vczh-libraries/License
 #ifndef VCZH_PARSER2_BUILTIN_CPP_PARSER_SYNTAX
 #define VCZH_PARSER2_BUILTIN_CPP_PARSER_SYNTAX
 
+#include "../../../../Source/SyntaxBase.h"
 #include "Cpp_Assembler.h"
 #include "Cpp_Lexer.h"
 

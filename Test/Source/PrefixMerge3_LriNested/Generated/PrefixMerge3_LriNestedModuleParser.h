@@ -7,6 +7,7 @@ Licensed under https://github.com/vczh-libraries/License
 #ifndef VCZH_PARSER2_UNITTEST_PREFIXMERGE3_LRINESTED_MODULEPARSER_SYNTAX
 #define VCZH_PARSER2_UNITTEST_PREFIXMERGE3_LRINESTED_MODULEPARSER_SYNTAX
 
+#include "../../../../Source/SyntaxBase.h"
 #include "PrefixMerge3_LriNested_Assembler.h"
 #include "PrefixMerge3_LriNested_Lexer.h"
 

@@ -7,6 +7,7 @@ Licensed under https://github.com/vczh-libraries/License
 #ifndef VCZH_PARSER2_UNITTEST_PREFIXMERGE4_LRIMULTIPLE_MODULEPARSER_SYNTAX
 #define VCZH_PARSER2_UNITTEST_PREFIXMERGE4_LRIMULTIPLE_MODULEPARSER_SYNTAX
 
+#include "../../../../Source/SyntaxBase.h"
 #include "PrefixMerge4_LriMultiple_Assembler.h"
 #include "PrefixMerge4_LriMultiple_Lexer.h"
 

@@ -16,7 +16,8 @@ TEST_FILE
 	SyntaxSymbolManager syntaxManager(global);
 
 	global.name = L"Json";
-	Fill(global.includes, L"../../AstBase.h", L"../../SyntaxBase.h");
+	Fill(global.astIncludes, L"../../AstBase.h");
+	Fill(global.syntaxIncludes, L"../../SyntaxBase.h");
 	Fill(global.cppNss, L"vl", L"glr", L"json");
 	global.headerGuard = L"VCZH_PARSER2_BUILTIN_JSON";
 	syntaxManager.name = L"Parser";

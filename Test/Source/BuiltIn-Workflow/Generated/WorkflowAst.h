@@ -8,7 +8,6 @@ Licensed under https://github.com/vczh-libraries/License
 #define VCZH_PARSER2_BUILTIN_WORKFLOW_AST_AST
 
 #include "../../../../Source/AstBase.h"
-#include "../../../../Source/SyntaxBase.h"
 
 namespace vl::glr::workflow
 {

@@ -8,7 +8,6 @@ Licensed under https://github.com/vczh-libraries/License
 #define VCZH_PARSER2_UNITTEST_PREFIXMERGE6_PM2_LEXER
 
 #include "../../../../Source/AstBase.h"
-#include "../../../../Source/SyntaxBase.h"
 
 namespace prefixmerge6_pm2
 {
