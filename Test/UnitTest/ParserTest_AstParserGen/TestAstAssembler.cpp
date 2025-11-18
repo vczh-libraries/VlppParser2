@@ -10,34 +10,31 @@ extern void GenerateCalculatorLexer(LexerSymbolManager& manager);
 
 namespace
 {
-	void BuildNumExprToSlot(CalculatorAstInsReceiver& receiver, List<RegexToken>& tokens, vint tokenIndex, vint slotIndex)
+	void BuildNumExpr(CalculatorAstInsReceiver& receiver, List<RegexToken>& tokens, vint tokenIndex)
 	{
 		receiver.Execute({ AstInsType::StackBegin }, tokens[tokenIndex], tokenIndex);
 		receiver.Execute({ AstInsType::Token, -1, 0 }, tokens[tokenIndex], tokenIndex);
 		receiver.Execute({ AstInsType::CreateObject, (vint32_t)CalculatorClasses::NumExpr }, tokens[tokenIndex], tokenIndex);
 		receiver.Execute({ AstInsType::Field, (vint32_t)CalculatorFields::NumExpr_value, 0 }, tokens[tokenIndex], tokenIndex);
 		receiver.Execute({ AstInsType::StackEnd }, tokens[tokenIndex], tokenIndex);
-		receiver.Execute({ AstInsType::StackSlot, -1, slotIndex }, tokens[tokenIndex], tokenIndex);
 	}
 
-	void BuildImportToSlot(CalculatorAstInsReceiver& receiver, List<RegexToken>& tokens, vint tokenIndex, vint slotIndex)
+	void BuildImport(CalculatorAstInsReceiver& receiver, List<RegexToken>& tokens, vint tokenIndex)
 	{
 		receiver.Execute({ AstInsType::StackBegin }, tokens[tokenIndex], tokenIndex);
 		receiver.Execute({ AstInsType::Token, -1, 0 }, tokens[tokenIndex], tokenIndex);
 		receiver.Execute({ AstInsType::CreateObject, (vint32_t)CalculatorClasses::Import }, tokens[tokenIndex], tokenIndex);
 		receiver.Execute({ AstInsType::Field, (vint32_t)CalculatorFields::Import_name, 0 }, tokens[tokenIndex], tokenIndex);
 		receiver.Execute({ AstInsType::StackEnd }, tokens[tokenIndex], tokenIndex);
-		receiver.Execute({ AstInsType::StackSlot, -1, slotIndex }, tokens[tokenIndex], tokenIndex);
 	}
 
-	void BuildRefToSlot(CalculatorAstInsReceiver& receiver, List<RegexToken>& tokens, vint tokenIndex, vint slotIndex)
+	void BuildRef(CalculatorAstInsReceiver& receiver, List<RegexToken>& tokens, vint tokenIndex)
 	{
 		receiver.Execute({ AstInsType::StackBegin }, tokens[tokenIndex], tokenIndex);
 		receiver.Execute({ AstInsType::Token, -1, 0 }, tokens[tokenIndex], tokenIndex);
 		receiver.Execute({ AstInsType::CreateObject, (vint32_t)CalculatorClasses::Ref }, tokens[tokenIndex], tokenIndex);
 		receiver.Execute({ AstInsType::Field, (vint32_t)CalculatorFields::Ref_name, 0 }, tokens[tokenIndex], tokenIndex);
 		receiver.Execute({ AstInsType::StackEnd }, tokens[tokenIndex], tokenIndex);
-		receiver.Execute({ AstInsType::StackSlot, -1, slotIndex }, tokens[tokenIndex], tokenIndex);
 	}
 }
 
@@ -67,38 +64,11 @@ export 1
 		CalculatorAstInsReceiver receiver;
 		{
 			receiver.Execute({ AstInsType::StackBegin }, tokens[0], 0);
-			BuildNumExprToSlot(receiver, tokens, 1, 0);
+			receiver.Execute({ AstInsType::Token, -1, 0 }, tokens[0], 0);
+			BuildNumExpr(receiver, tokens, 1);
+			receiver.Execute({ AstInsType::StackSlot, -1, 1 }, tokens[1], 1);
 			receiver.Execute({ AstInsType::CreateObject, (vint32_t)CalculatorClasses::Module }, tokens[0], 0);
-			receiver.Execute({ AstInsType::Field, (vint32_t)CalculatorFields::Module_exported, 0 }, tokens[1], 1);
-			receiver.Execute({ AstInsType::StackEnd }, tokens[1], 1);
-		}
-		auto node = receiver.Finished();
-		auto ast = node.Cast<Module>();
-		TEST_ASSERT(ast);
-		AssertAst<json_visitor::ExprAstVisitor>(ast, LR"({
-    "$ast": "Module",
-    "exported": {
-        "$ast": "NumExpr",
-        "value": "1"
-    },
-    "imports": []
-})");
-	});
-
-	TEST_CASE(L"export 1 <DiscardObject>")
-	{
-		WString input = LR"(
-export 1
-)";
-		LEXER(input, tokens);
-		TEST_ASSERT(tokens.Count() == 2);
-		CalculatorAstInsReceiver receiver;
-		{
-			receiver.Execute({ AstInsType::StackBegin }, tokens[0], 0);
-			BuildNumExprToSlot(receiver, tokens, 1, 1);
-			BuildNumExprToSlot(receiver, tokens, 1, 0);
-			receiver.Execute({ AstInsType::CreateObject, (vint32_t)CalculatorClasses::Module }, tokens[0], 0);
-			receiver.Execute({ AstInsType::Field, (vint32_t)CalculatorFields::Module_exported, 0 }, tokens[1], 1);
+			receiver.Execute({ AstInsType::Field, (vint32_t)CalculatorFields::Module_exported, 1 }, tokens[1], 1);
 			receiver.Execute({ AstInsType::StackEnd }, tokens[1], 1);
 		}
 		auto node = receiver.Finished();
@@ -123,16 +93,17 @@ export (1)
 		TEST_ASSERT(tokens.Count() == 4);
 		CalculatorAstInsReceiver receiver;
 		{
-			receiver.Execute({ AstInsType::StackBegin }, tokens[2], 2);
-			receiver.Execute({ AstInsType::Token, -1, 0 }, tokens[2], 2);
-			receiver.Execute({ AstInsType::CreateObject, (vint32_t)CalculatorClasses::NumExpr }, tokens[2], 2);
-			receiver.Execute({ AstInsType::Field, (vint32_t)CalculatorFields::NumExpr_value, 0 }, tokens[2], 2);
-			receiver.Execute({ AstInsType::StackEnd }, tokens[2], 2);
 			receiver.Execute({ AstInsType::StackBegin }, tokens[0], 0);
-			receiver.Execute({ AstInsType::StackSlot, -1, 0 }, tokens[2], 2);
+			receiver.Execute({ AstInsType::Token, -1, 0 }, tokens[0], 0); // export
+			receiver.Execute({ AstInsType::StackBegin }, tokens[1], 1);
+			receiver.Execute({ AstInsType::Token, -1, 0 }, tokens[1], 1); // (
+			BuildNumExpr(receiver, tokens, 2); // 1
+			receiver.Execute({ AstInsType::Token, -1, 2 }, tokens[3], 3); // )
+			receiver.Execute({ AstInsType::StackEnd }, tokens[3], 3);
+			receiver.Execute({ AstInsType::StackSlot, -1, 1 }, tokens[3], 3);
 			receiver.Execute({ AstInsType::CreateObject, (vint32_t)CalculatorClasses::Module }, tokens[0], 0);
-			receiver.Execute({ AstInsType::Field, (vint32_t)CalculatorFields::Module_exported, 0 }, tokens[2], 2);
-			receiver.Execute({ AstInsType::StackEnd }, tokens[2], 2);
+			receiver.Execute({ AstInsType::Field, (vint32_t)CalculatorFields::Module_exported, 1 }, tokens[3], 3);
+			receiver.Execute({ AstInsType::StackEnd }, tokens[3], 3);
 		}
 		auto node = receiver.Finished();
 		auto ast = node.Cast<Module>();
@@ -157,18 +128,22 @@ export 1 + 2
 		CalculatorAstInsReceiver receiver;
 		{
 			receiver.Execute({ AstInsType::StackBegin }, tokens[0], 0);
+			receiver.Execute({ AstInsType::Token, -1, 0 }, tokens[0], 0);
 			receiver.Execute({ AstInsType::StackBegin }, tokens[1], 1);
-			BuildNumExprToSlot(receiver, tokens, 1, 0);
-			BuildNumExprToSlot(receiver, tokens, 3, 1);
+			BuildNumExpr(receiver, tokens, 1);
+			receiver.Execute({ AstInsType::StackSlot, -1, 0 }, tokens[1], 1);
+			receiver.Execute({ AstInsType::Token, -1, 2 }, tokens[2], 2);
+			BuildNumExpr(receiver, tokens, 3);
+			receiver.Execute({ AstInsType::StackSlot, -1, 1 }, tokens[3], 3);
 			receiver.Execute({ AstInsType::EnumItem, (vint32_t)BinaryOp::Add, 2 }, tokens[2], 2);
 			receiver.Execute({ AstInsType::CreateObject, (vint32_t)CalculatorClasses::Binary }, tokens[1], 1);
 			receiver.Execute({ AstInsType::Field, (vint32_t)CalculatorFields::Binary_left, 0 }, tokens[1], 1);
 			receiver.Execute({ AstInsType::Field, (vint32_t)CalculatorFields::Binary_right, 1 }, tokens[3], 3);
 			receiver.Execute({ AstInsType::Field, (vint32_t)CalculatorFields::Binary_op, 2 }, tokens[2], 2);
 			receiver.Execute({ AstInsType::StackEnd }, tokens[3], 3);
-			receiver.Execute({ AstInsType::StackSlot, -1, 0 }, tokens[3], 3);
+			receiver.Execute({ AstInsType::StackSlot, -1, 1 }, tokens[3], 3);
 			receiver.Execute({ AstInsType::CreateObject, (vint32_t)CalculatorClasses::Module }, tokens[0], 0);
-			receiver.Execute({ AstInsType::Field, (vint32_t)CalculatorFields::Module_exported, 0 }, tokens[3], 3);
+			receiver.Execute({ AstInsType::Field, (vint32_t)CalculatorFields::Module_exported, 1 }, tokens[3], 3);
 			receiver.Execute({ AstInsType::StackEnd }, tokens[3], 3);
 		}
 		auto node = receiver.Finished();
@@ -203,18 +178,22 @@ export 1 + 2
 		CalculatorAstInsReceiver receiver;
 		{
 			receiver.Execute({ AstInsType::StackBegin }, tokens[0], 0);
+			receiver.Execute({ AstInsType::Token, -1, 0 }, tokens[0], 0);
 			receiver.Execute({ AstInsType::StackBegin }, tokens[1], 1);
-			BuildNumExprToSlot(receiver, tokens, 1, 0);
-			BuildNumExprToSlot(receiver, tokens, 3, 1);
+			BuildNumExpr(receiver, tokens, 1);
+			receiver.Execute({ AstInsType::StackSlot, -1, 0 }, tokens[1], 1);
+			receiver.Execute({ AstInsType::Token, -1, 2 }, tokens[2], 2);
+			BuildNumExpr(receiver, tokens, 3);
+			receiver.Execute({ AstInsType::StackSlot, -1, 1 }, tokens[3], 3);
 			receiver.Execute({ AstInsType::EnumItem, (vint32_t)BinaryOp::Add, 2 }, tokens[2], 2);
 			receiver.Execute({ AstInsType::CreateObject, (vint32_t)CalculatorClasses::Binary }, tokens[1], 1);
 			receiver.Execute({ AstInsType::Field, (vint32_t)CalculatorFields::Binary_left, 0 }, tokens[1], 1);
 			receiver.Execute({ AstInsType::Field, (vint32_t)CalculatorFields::Binary_right, 1 }, tokens[3], 3);
 			receiver.Execute({ AstInsType::FieldIfUnassigned, (vint32_t)CalculatorFields::Binary_op, 2 }, tokens[2], 2);
 			receiver.Execute({ AstInsType::StackEnd }, tokens[3], 3);
-			receiver.Execute({ AstInsType::StackSlot, -1, 0 }, tokens[3], 3);
+			receiver.Execute({ AstInsType::StackSlot, -1, 1 }, tokens[3], 3);
 			receiver.Execute({ AstInsType::CreateObject, (vint32_t)CalculatorClasses::Module }, tokens[0], 0);
-			receiver.Execute({ AstInsType::Field, (vint32_t)CalculatorFields::Module_exported, 0 }, tokens[3], 3);
+			receiver.Execute({ AstInsType::Field, (vint32_t)CalculatorFields::Module_exported, 1 }, tokens[3], 3);
 			receiver.Execute({ AstInsType::StackEnd }, tokens[3], 3);
 		}
 		auto node = receiver.Finished();
@@ -249,9 +228,13 @@ export 1 + 2
 		CalculatorAstInsReceiver receiver;
 		{
 			receiver.Execute({ AstInsType::StackBegin }, tokens[0], 0);
+			receiver.Execute({ AstInsType::Token, -1, 0 }, tokens[0], 0);
 			receiver.Execute({ AstInsType::StackBegin }, tokens[1], 1);
-			BuildNumExprToSlot(receiver, tokens, 1, 0);
-			BuildNumExprToSlot(receiver, tokens, 3, 1);
+			BuildNumExpr(receiver, tokens, 1);
+			receiver.Execute({ AstInsType::StackSlot, -1, 0 }, tokens[1], 1);
+			receiver.Execute({ AstInsType::Token, -1, 2 }, tokens[2], 2);
+			BuildNumExpr(receiver, tokens, 3);
+			receiver.Execute({ AstInsType::StackSlot, -1, 1 }, tokens[3], 3);
 			receiver.Execute({ AstInsType::EnumItem, (vint32_t)BinaryOp::Add, 2 }, tokens[2], 2);
 			receiver.Execute({ AstInsType::CreateObject, (vint32_t)CalculatorClasses::Binary }, tokens[1], 1);
 			receiver.Execute({ AstInsType::Field, (vint32_t)CalculatorFields::Binary_left, 0 }, tokens[1], 1);
@@ -260,9 +243,9 @@ export 1 + 2
 			receiver.Execute({ AstInsType::EnumItem, (vint32_t)BinaryOp::Multiply, 3 }, tokens[3], 3);
 			receiver.Execute({ AstInsType::FieldIfUnassigned, (vint32_t)CalculatorFields::Binary_op, 3 }, tokens[3], 3);
 			receiver.Execute({ AstInsType::StackEnd }, tokens[3], 3);
-			receiver.Execute({ AstInsType::StackSlot, -1, 0 }, tokens[3], 3);
+			receiver.Execute({ AstInsType::StackSlot, -1, 1 }, tokens[3], 3);
 			receiver.Execute({ AstInsType::CreateObject, (vint32_t)CalculatorClasses::Module }, tokens[0], 0);
-			receiver.Execute({ AstInsType::Field, (vint32_t)CalculatorFields::Module_exported, 0 }, tokens[3], 3);
+			receiver.Execute({ AstInsType::Field, (vint32_t)CalculatorFields::Module_exported, 1 }, tokens[3], 3);
 			receiver.Execute({ AstInsType::StackEnd }, tokens[3], 3);
 		}
 		auto node = receiver.Finished();
@@ -297,6 +280,7 @@ export 1 + 2
 		CalculatorAstInsReceiver receiver;
 		{
 			receiver.Execute({ AstInsType::StackBegin }, tokens[0], 0);
+			receiver.Execute({ AstInsType::Token, -1, 0 }, tokens[0], 0);
 			receiver.Execute({ AstInsType::StackBegin }, tokens[1], 1);
 			receiver.Execute({ AstInsType::Token, -1, 0 }, tokens[1], 1);
 			receiver.Execute({ AstInsType::CreateObject, (vint32_t)CalculatorClasses::NumExpr }, tokens[1], 1);
@@ -304,16 +288,18 @@ export 1 + 2
 			receiver.Execute({ AstInsType::StackEnd }, tokens[1], 1);
 			receiver.Execute({ AstInsType::StackBegin }, tokens[2], 2);
 			receiver.Execute({ AstInsType::StackSlot, -1, 0 }, tokens[1], 1);
-			BuildNumExprToSlot(receiver, tokens, 3, 1);
+			receiver.Execute({ AstInsType::Token, -1, 2 }, tokens[2], 2);
+			BuildNumExpr(receiver, tokens, 3);
+			receiver.Execute({ AstInsType::StackSlot, -1, 1 }, tokens[3], 3);
 			receiver.Execute({ AstInsType::EnumItem, (vint32_t)BinaryOp::Add, 2 }, tokens[2], 2);
 			receiver.Execute({ AstInsType::CreateObject, (vint32_t)CalculatorClasses::Binary }, tokens[2], 2);
 			receiver.Execute({ AstInsType::Field, (vint32_t)CalculatorFields::Binary_left, 0 }, tokens[1], 1);
 			receiver.Execute({ AstInsType::Field, (vint32_t)CalculatorFields::Binary_right, 1 }, tokens[3], 3);
 			receiver.Execute({ AstInsType::FieldIfUnassigned, (vint32_t)CalculatorFields::Binary_op, 2 }, tokens[2], 2);
 			receiver.Execute({ AstInsType::StackEnd }, tokens[3], 3);
-			receiver.Execute({ AstInsType::StackSlot, -1, 0 }, tokens[3], 3);
+			receiver.Execute({ AstInsType::StackSlot, -1, 1 }, tokens[3], 3);
 			receiver.Execute({ AstInsType::CreateObject, (vint32_t)CalculatorClasses::Module }, tokens[0], 0);
-			receiver.Execute({ AstInsType::Field, (vint32_t)CalculatorFields::Module_exported, 0 }, tokens[3], 3);
+			receiver.Execute({ AstInsType::Field, (vint32_t)CalculatorFields::Module_exported, 1 }, tokens[3], 3);
 			receiver.Execute({ AstInsType::StackEnd }, tokens[3], 3);
 		}
 		auto node = receiver.Finished();
@@ -348,6 +334,7 @@ export 1 + 2
 		CalculatorAstInsReceiver receiver;
 		{
 			receiver.Execute({ AstInsType::StackBegin }, tokens[0], 0);
+			receiver.Execute({ AstInsType::Token, -1, 0 }, tokens[0], 0);
 			receiver.Execute({ AstInsType::StackBegin }, tokens[1], 1);
 			receiver.Execute({ AstInsType::Token, -1, 0 }, tokens[1], 1);
 			receiver.Execute({ AstInsType::CreateObject, (vint32_t)CalculatorClasses::NumExpr }, tokens[1], 1);
@@ -355,7 +342,9 @@ export 1 + 2
 			receiver.Execute({ AstInsType::StackEnd }, tokens[1], 1);
 			receiver.Execute({ AstInsType::StackBegin }, tokens[2], 2);
 			receiver.Execute({ AstInsType::StackSlot, -1, 0 }, tokens[1], 1);
-			BuildNumExprToSlot(receiver, tokens, 3, 1);
+			receiver.Execute({ AstInsType::Token, -1, 2 }, tokens[2], 2);
+			BuildNumExpr(receiver, tokens, 3);
+			receiver.Execute({ AstInsType::StackSlot, -1, 1 }, tokens[3], 3);
 			receiver.Execute({ AstInsType::EnumItem, (vint32_t)BinaryOp::Add, 2 }, tokens[2], 2);
 			receiver.Execute({ AstInsType::CreateObject, (vint32_t)CalculatorClasses::Binary }, tokens[2], 2);
 			receiver.Execute({ AstInsType::Field, (vint32_t)CalculatorFields::Binary_left, 0 }, tokens[1], 1);
@@ -364,9 +353,9 @@ export 1 + 2
 			receiver.Execute({ AstInsType::EnumItem, (vint32_t)BinaryOp::Multiply, 3 }, tokens[3], 3);
 			receiver.Execute({ AstInsType::FieldIfUnassigned, (vint32_t)CalculatorFields::Binary_op, 3 }, tokens[3], 3);
 			receiver.Execute({ AstInsType::StackEnd }, tokens[3], 3);
-			receiver.Execute({ AstInsType::StackSlot, -1, 0 }, tokens[3], 3);
+			receiver.Execute({ AstInsType::StackSlot, -1, 1 }, tokens[3], 3);
 			receiver.Execute({ AstInsType::CreateObject, (vint32_t)CalculatorClasses::Module }, tokens[0], 0);
-			receiver.Execute({ AstInsType::Field, (vint32_t)CalculatorFields::Module_exported, 0 }, tokens[3], 3);
+			receiver.Execute({ AstInsType::Field, (vint32_t)CalculatorFields::Module_exported, 1 }, tokens[3], 3);
 			receiver.Execute({ AstInsType::StackEnd }, tokens[3], 3);
 		}
 		auto node = receiver.Finished();
@@ -407,7 +396,9 @@ export 1 + 2
 			receiver.Execute({ AstInsType::StackEnd }, tokens[1], 1);
 			receiver.Execute({ AstInsType::StackBegin }, tokens[2], 2);
 			receiver.Execute({ AstInsType::StackSlot, -1, 0 }, tokens[1], 1);
-			BuildNumExprToSlot(receiver, tokens, 3, 1);
+			receiver.Execute({ AstInsType::Token, -1, 2 }, tokens[2], 2);
+			BuildNumExpr(receiver, tokens, 3);
+			receiver.Execute({ AstInsType::StackSlot, -1, 1 }, tokens[3], 3);
 			receiver.Execute({ AstInsType::EnumItem, (vint32_t)BinaryOp::Add, 2 }, tokens[2], 2);
 			receiver.Execute({ AstInsType::CreateObject, (vint32_t)CalculatorClasses::Binary }, tokens[2], 2);
 			receiver.Execute({ AstInsType::Field, (vint32_t)CalculatorFields::Binary_left, 0 }, tokens[1], 1);
@@ -415,9 +406,10 @@ export 1 + 2
 			receiver.Execute({ AstInsType::Field, (vint32_t)CalculatorFields::Binary_op, 2 }, tokens[2], 2);
 			receiver.Execute({ AstInsType::StackEnd }, tokens[3], 3);
 			receiver.Execute({ AstInsType::StackBegin }, tokens[0], 0);
-			receiver.Execute({ AstInsType::StackSlot, -1, 0 }, tokens[3], 3);
+			receiver.Execute({ AstInsType::Token, -1, 0 }, tokens[0], 0);
+			receiver.Execute({ AstInsType::StackSlot, -1, 1 }, tokens[3], 3);
 			receiver.Execute({ AstInsType::CreateObject, (vint32_t)CalculatorClasses::Module }, tokens[0], 0);
-			receiver.Execute({ AstInsType::Field, (vint32_t)CalculatorFields::Module_exported, 0 }, tokens[3], 3);
+			receiver.Execute({ AstInsType::Field, (vint32_t)CalculatorFields::Module_exported, 1 }, tokens[3], 3);
 			receiver.Execute({ AstInsType::StackEnd }, tokens[3], 3);
 		}
 		auto node = receiver.Finished();
@@ -466,6 +458,7 @@ export 1 + 2
 			receiver.Execute({ AstInsType::StackEnd }, tokens[3], 3);
 			receiver.Execute({ AstInsType::StackSlot, -1, 1 }, tokens[3], 3);
 			receiver.Execute({ AstInsType::StackEnd }, tokens[3], 3);
+			receiver.Execute({ AstInsType::Token, -1, 2 }, tokens[2], 2);
 			receiver.Execute({ AstInsType::EnumItem, (vint32_t)BinaryOp::Add, 2 }, tokens[2], 2);
 			receiver.Execute({ AstInsType::CreateObject, (vint32_t)CalculatorClasses::Binary }, tokens[2], 2);
 			receiver.Execute({ AstInsType::Field, (vint32_t)CalculatorFields::Binary_left, 0 }, tokens[1], 1);
@@ -473,9 +466,10 @@ export 1 + 2
 			receiver.Execute({ AstInsType::Field, (vint32_t)CalculatorFields::Binary_op, 2 }, tokens[2], 2);
 			receiver.Execute({ AstInsType::StackEnd }, tokens[3], 3);
 			receiver.Execute({ AstInsType::StackBegin }, tokens[0], 0);
-			receiver.Execute({ AstInsType::StackSlot, -1, 0 }, tokens[3], 3);
+			receiver.Execute({ AstInsType::Token, -1, 0 }, tokens[0], 0);
+			receiver.Execute({ AstInsType::StackSlot, -1, 1 }, tokens[3], 3);
 			receiver.Execute({ AstInsType::CreateObject, (vint32_t)CalculatorClasses::Module }, tokens[0], 0);
-			receiver.Execute({ AstInsType::Field, (vint32_t)CalculatorFields::Module_exported, 0 }, tokens[3], 3);
+			receiver.Execute({ AstInsType::Field, (vint32_t)CalculatorFields::Module_exported, 1 }, tokens[3], 3);
 			receiver.Execute({ AstInsType::StackEnd }, tokens[3], 3);
 		}
 		auto node = receiver.Finished();
@@ -512,34 +506,52 @@ export sum(1, 2, max(3, 4))
 		CalculatorAstInsReceiver receiver;
 		{
 			receiver.Execute({ AstInsType::StackBegin }, tokens[0], 0);
-			BuildImportToSlot(receiver, tokens, 1, 0);
-			receiver.Execute({ AstInsType::Field, (vint32_t)CalculatorFields::Module_imports, 0 }, tokens[1], 1);
-			BuildImportToSlot(receiver, tokens, 3, 1);
-			receiver.Execute({ AstInsType::Field, (vint32_t)CalculatorFields::Module_imports, 1 }, tokens[3], 3);
+			receiver.Execute({ AstInsType::Token, -1, 0 }, tokens[0], 0);
+			BuildImport(receiver, tokens, 1);
+			receiver.Execute({ AstInsType::StackSlot, -1, 1 }, tokens[1], 1);
+			receiver.Execute({ AstInsType::Token, -1, 0 }, tokens[2], 2);
+			BuildImport(receiver, tokens, 3);
+			receiver.Execute({ AstInsType::StackSlot, -1, 1 }, tokens[3], 3);
+			receiver.Execute({ AstInsType::Token, -1, 0 }, tokens[4], 4);
+
 			receiver.Execute({ AstInsType::StackBegin }, tokens[5], 5);
-			BuildRefToSlot(receiver, tokens, 5, 0);
-			BuildNumExprToSlot(receiver, tokens, 7, 1);
-			BuildNumExprToSlot(receiver, tokens, 9, 2);
+			BuildRef(receiver, tokens, 5);
+			receiver.Execute({ AstInsType::StackSlot, -1, 0 }, tokens[5], 5);
+			receiver.Execute({ AstInsType::Token, -1, 3 }, tokens[6], 6);
+			BuildNumExpr(receiver, tokens, 7);
+			receiver.Execute({ AstInsType::StackSlot, -1, 1 }, tokens[7], 7);
+			receiver.Execute({ AstInsType::Token, -1, 3 }, tokens[8], 8);
+			BuildNumExpr(receiver, tokens, 9);
+			receiver.Execute({ AstInsType::StackSlot, -1, 1 }, tokens[9], 9);
+			receiver.Execute({ AstInsType::Token, -1, 3 }, tokens[10], 10);
+
 			receiver.Execute({ AstInsType::StackBegin }, tokens[11], 11);
-			BuildRefToSlot(receiver, tokens, 11, 0);
-			BuildNumExprToSlot(receiver, tokens, 13, 1);
-			BuildNumExprToSlot(receiver, tokens, 15, 2);
+			BuildRef(receiver, tokens, 11);
+			receiver.Execute({ AstInsType::StackSlot, -1, 0 }, tokens[11], 11);
+			receiver.Execute({ AstInsType::Token, -1, 3 }, tokens[12], 12);
+			BuildNumExpr(receiver, tokens, 13);
+			receiver.Execute({ AstInsType::StackSlot, -1, 1 }, tokens[13], 13);
+			receiver.Execute({ AstInsType::Token, -1, 3 }, tokens[14], 14);
+			BuildNumExpr(receiver, tokens, 15);
+			receiver.Execute({ AstInsType::StackSlot, -1, 1 }, tokens[15], 15);
+			receiver.Execute({ AstInsType::Token, -1, 3 }, tokens[16], 16);
 			receiver.Execute({ AstInsType::CreateObject, (vint32_t)CalculatorClasses::Call }, tokens[11], 11);
 			receiver.Execute({ AstInsType::Field, (vint32_t)CalculatorFields::Call_func, 0 }, tokens[11], 11);
-			receiver.Execute({ AstInsType::Field, (vint32_t)CalculatorFields::Call_args, 1 }, tokens[13], 13);
-			receiver.Execute({ AstInsType::Field, (vint32_t)CalculatorFields::Call_args, 2 }, tokens[15], 15);
+			receiver.Execute({ AstInsType::Field, (vint32_t)CalculatorFields::Call_args, 1 }, tokens[15], 15);
 			receiver.Execute({ AstInsType::StackEnd }, tokens[16], 16);
-			receiver.Execute({ AstInsType::StackSlot, -1, 3 }, tokens[16], 16);
+			receiver.Execute({ AstInsType::StackSlot, -1, 1 }, tokens[16], 16);
+
+			receiver.Execute({ AstInsType::Token, -1, 3 }, tokens[17], 17);
 			receiver.Execute({ AstInsType::CreateObject, (vint32_t)CalculatorClasses::Call }, tokens[5], 5);
 			receiver.Execute({ AstInsType::Field, (vint32_t)CalculatorFields::Call_func, 0 }, tokens[5], 5);
-			receiver.Execute({ AstInsType::Field, (vint32_t)CalculatorFields::Call_args, 1 }, tokens[7], 7);
-			receiver.Execute({ AstInsType::Field, (vint32_t)CalculatorFields::Call_args, 2 }, tokens[9], 9);
-			receiver.Execute({ AstInsType::Field, (vint32_t)CalculatorFields::Call_args, 3 }, tokens[16], 16);
+			receiver.Execute({ AstInsType::Field, (vint32_t)CalculatorFields::Call_args, 1 }, tokens[17], 17);
 			receiver.Execute({ AstInsType::StackEnd }, tokens[17], 17);
 			receiver.Execute({ AstInsType::StackSlot, -1, 2 }, tokens[17], 17);
+
 			receiver.Execute({ AstInsType::CreateObject, (vint32_t)CalculatorClasses::Module }, tokens[0], 0);
+			receiver.Execute({ AstInsType::Field, (vint32_t)CalculatorFields::Module_imports, 1 }, tokens[3], 3);
 			receiver.Execute({ AstInsType::Field, (vint32_t)CalculatorFields::Module_exported, 2 }, tokens[17], 17);
-			receiver.Execute({ AstInsType::StackEnd }, tokens[1], 1);
+			receiver.Execute({ AstInsType::StackEnd }, tokens[17], 17);
 		}
 		auto node = receiver.Finished();
 		auto ast = node.Cast<Module>();
