@@ -270,7 +270,7 @@ export 1 + 2
 })");
 	});
 
-	TEST_CASE(L"export 1 + 2 <DelayFieldAssignment + FieldIfUnassigned>")
+	TEST_CASE(L"export 1 + 2 <LeftRecursion + FieldIfUnassigned>")
 	{
 		WString input = LR"(
 export 1 + 2
@@ -324,7 +324,7 @@ export 1 + 2
 })");
 	});
 
-	TEST_CASE(L"export 1 + 2 <DelayFieldAssignment + FieldIfUnassigned (canceled)>")
+	TEST_CASE(L"export 1 + 2 <LeftRecursion + FieldIfUnassigned (canceled)>")
 	{
 		WString input = LR"(
 export 1 + 2
@@ -380,7 +380,7 @@ export 1 + 2
 })");
 	});
 
-	TEST_CASE(L"export 1 + 2 (left recursively)")
+	TEST_CASE(L"export 1 + 2 <LeftRecursion>")
 	{
 		WString input = LR"(
 export 1 + 2
@@ -434,7 +434,7 @@ export 1 + 2
 })");
 	});
 
-	TEST_CASE(L"export 1 + 2 (left recursion injection)")
+	TEST_CASE(L"export 1 + 2 <LeftRecursion injection>")
 	{
 		WString input = LR"(
 export 1 + 2
