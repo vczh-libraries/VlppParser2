@@ -133,6 +133,9 @@ export 1
 		LEXER(input, tokens);
 		CalculatorAstInsReceiver receiver;
 		BuildMinimalModule(receiver, tokens);
+		receiver.Execute({ AstInsType::StackBegin }, tokens[0], 0);
+		receiver.Execute({ AstInsType::CreateObject, (vint32_t)CalculatorClasses::Module }, tokens[0], 0);
+		receiver.Execute({ AstInsType::StackEnd }, tokens[1], 1),
 		receiver.Finished();
 		TEST_EXCEPTION(
 			receiver.Finished(),
@@ -149,6 +152,9 @@ export 1
 		LEXER(input, tokens);
 		CalculatorAstInsReceiver receiver;
 		BuildMinimalModule(receiver, tokens);
+		receiver.Execute({ AstInsType::StackBegin }, tokens[0], 0);
+		receiver.Execute({ AstInsType::CreateObject, (vint32_t)CalculatorClasses::Module }, tokens[0], 0);
+		receiver.Execute({ AstInsType::StackEnd }, tokens[1], 1),
 		receiver.Finished();
 		TEST_EXCEPTION(
 			receiver.Execute({ AstInsType::StackBegin }, tokens[0], 0),
@@ -236,7 +242,6 @@ export 1
 		receiver.Execute({ AstInsType::Token, -1, 0 }, tokens[1], 1);
 		receiver.Execute({ AstInsType::CreateObject, (vint32_t)CalculatorClasses::NumExpr }, tokens[1], 1);
 		receiver.Execute({ AstInsType::Field, (vint32_t)CalculatorFields::NumExpr_value, 0 }, tokens[1], 1);
-		receiver.Execute({ AstInsType::Token, -1, 0 }, tokens[1], 1);
 		TEST_EXCEPTION(
 			receiver.Execute({ AstInsType::Field, (vint32_t)CalculatorFields::NumExpr_value, 0 }, tokens[1], 1),
 			AstInsException,
@@ -364,9 +369,9 @@ export 1
 		CalculatorAstInsReceiver receiver;
 		receiver.Execute({ AstInsType::StackBegin }, tokens[0], 0);
 		BuildNumExprToSlot(receiver, tokens, 1, 0);
-		BuildNumExprToSlot(receiver, tokens, 1, 1);
+		BuildNumExprToSlot(receiver, tokens, 1, 0);
 		TEST_EXCEPTION(
-			receiver.Execute({ AstInsType::ResolveAmbiguity, (vint32_t)CalculatorClasses::Expr, 2 }, tokens[1], 1),
+			receiver.Execute({ AstInsType::ResolveAmbiguity, (vint32_t)CalculatorClasses::NumExpr, 0 }, tokens[1], 1),
 			AstInsException,
 			[](const AstInsException& e) { TEST_ASSERT(e.error == AstInsErrorType::UnsupportedAmbiguityType); }
 			);
@@ -377,7 +382,22 @@ export 1
 		TEST_ASSERT(false);
 	});
 
-	TEST_CASE(L"MissingAmbiguityCandidate")
+	TEST_CASE(L"MissingAmbiguityCandidate (0)")
+	{
+		WString input = LR"(
+export 1
+)";
+		LEXER(input, tokens);
+		CalculatorAstInsReceiver receiver;
+		receiver.Execute({ AstInsType::StackBegin }, tokens[0], 0);
+		TEST_EXCEPTION(
+			receiver.Execute({ AstInsType::ResolveAmbiguity, (vint32_t)CalculatorClasses::Expr, 0 }, tokens[1], 1),
+			AstInsException,
+			[](const AstInsException& e) { TEST_ASSERT(e.error == AstInsErrorType::MissingAmbiguityCandidate); }
+		);
+	});
+
+	TEST_CASE(L"MissingAmbiguityCandidate (1)")
 	{
 		WString input = LR"(
 export 1
@@ -387,7 +407,7 @@ export 1
 		receiver.Execute({ AstInsType::StackBegin }, tokens[0], 0);
 		BuildNumExprToSlot(receiver, tokens, 1, 0);
 		TEST_EXCEPTION(
-			receiver.Execute({ AstInsType::ResolveAmbiguity, (vint32_t)CalculatorClasses::Expr, 2 }, tokens[1], 1),
+			receiver.Execute({ AstInsType::ResolveAmbiguity, (vint32_t)CalculatorClasses::Expr, 0 }, tokens[1], 1),
 			AstInsException,
 			[](const AstInsException& e) { TEST_ASSERT(e.error == AstInsErrorType::MissingAmbiguityCandidate); }
 			);
@@ -402,9 +422,9 @@ export 1
 		CalculatorAstInsReceiver receiver;
 		receiver.Execute({ AstInsType::StackBegin }, tokens[0], 0);
 		receiver.Execute({ AstInsType::Token, -1, 0 }, tokens[1], 1);
-		receiver.Execute({ AstInsType::Token, -1, 1 }, tokens[1], 1);
+		receiver.Execute({ AstInsType::Token, -1, 0 }, tokens[1], 1);
 		TEST_EXCEPTION(
-			receiver.Execute({ AstInsType::ResolveAmbiguity, (vint32_t)CalculatorClasses::Expr, 2 }, tokens[1], 1),
+			receiver.Execute({ AstInsType::ResolveAmbiguity, (vint32_t)CalculatorClasses::Expr, 0 }, tokens[1], 1),
 			AstInsException,
 			[](const AstInsException& e) { TEST_ASSERT(e.error == AstInsErrorType::AmbiguityCandidateIsNotObject); }
 			);
@@ -419,9 +439,9 @@ export 1
 		CalculatorAstInsReceiver receiver;
 		receiver.Execute({ AstInsType::StackBegin }, tokens[0], 0);
 		receiver.Execute({ AstInsType::EnumItem, 0, 0 }, tokens[1], 1);
-		receiver.Execute({ AstInsType::EnumItem, 1, 1 }, tokens[1], 1);
+		receiver.Execute({ AstInsType::EnumItem, 1, 0 }, tokens[1], 1);
 		TEST_EXCEPTION(
-			receiver.Execute({ AstInsType::ResolveAmbiguity, (vint32_t)CalculatorClasses::Expr, 2 }, tokens[1], 1),
+			receiver.Execute({ AstInsType::ResolveAmbiguity, (vint32_t)CalculatorClasses::Expr, 0 }, tokens[1], 1),
 			AstInsException,
 			[](const AstInsException& e) { TEST_ASSERT(e.error == AstInsErrorType::AmbiguityCandidateIsNotObject); }
 			);
