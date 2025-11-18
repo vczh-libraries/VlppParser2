@@ -12,7 +12,7 @@ extern void GenerateCalculatorLexer(LexerSymbolManager& manager);
 
 namespace
 {
-	void BuildNumExprToSlot(CalculatorAstInsReceiver& receiver, List<RegexToken>& tokens, vint tokenIndex, vint slotIndex)
+	void BuildNumExprToSlot(CalculatorAstInsReceiver& receiver, List<RegexToken>& tokens, vint32_t tokenIndex, vint slotIndex)
 	{
 		receiver.Execute({ AstInsType::StackBegin }, tokens[tokenIndex], tokenIndex);
 		receiver.Execute({ AstInsType::Token, -1, 0 }, tokens[tokenIndex], tokenIndex);
@@ -22,7 +22,7 @@ namespace
 		receiver.Execute({ AstInsType::StackSlot, -1, slotIndex }, tokens[tokenIndex], tokenIndex);
 	}
 
-	void BuildTrueToSlot(CalculatorAstInsReceiver& receiver, List<RegexToken>& tokens, vint tokenIndex, vint slotIndex)
+	void BuildTrueToSlot(CalculatorAstInsReceiver& receiver, List<RegexToken>& tokens, vint32_t tokenIndex, vint slotIndex)
 	{
 		receiver.Execute({ AstInsType::StackBegin }, tokens[tokenIndex], tokenIndex);
 		receiver.Execute({ AstInsType::CreateObject, (vint32_t)CalculatorClasses::True }, tokens[tokenIndex], tokenIndex);
