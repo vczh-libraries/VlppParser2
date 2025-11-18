@@ -133,9 +133,6 @@ export 1
 		LEXER(input, tokens);
 		CalculatorAstInsReceiver receiver;
 		BuildMinimalModule(receiver, tokens);
-		receiver.Execute({ AstInsType::StackBegin }, tokens[0], 0);
-		receiver.Execute({ AstInsType::CreateObject, (vint32_t)CalculatorClasses::Module }, tokens[0], 0);
-		receiver.Execute({ AstInsType::StackEnd }, tokens[1], 1),
 		receiver.Finished();
 		TEST_EXCEPTION(
 			receiver.Finished(),
@@ -152,9 +149,6 @@ export 1
 		LEXER(input, tokens);
 		CalculatorAstInsReceiver receiver;
 		BuildMinimalModule(receiver, tokens);
-		receiver.Execute({ AstInsType::StackBegin }, tokens[0], 0);
-		receiver.Execute({ AstInsType::CreateObject, (vint32_t)CalculatorClasses::Module }, tokens[0], 0);
-		receiver.Execute({ AstInsType::StackEnd }, tokens[1], 1),
 		receiver.Finished();
 		TEST_EXCEPTION(
 			receiver.Execute({ AstInsType::StackBegin }, tokens[0], 0),
