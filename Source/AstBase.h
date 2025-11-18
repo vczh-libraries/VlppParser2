@@ -270,13 +270,13 @@ Instructions
 
 		enum class AstInsType
 		{
-			Token,										// Token(Value, Count)				: Put the current token in the Count-th slot.
+			Token,										// Token(Count)						: Put the current token in the Count-th slot.
 			EnumItem,									// EnumItem(Value, Count)			: Put an enum item in the Count-th slot.
 			StackBegin,									// StackBegin()						: Begin a new stack frame.
 			StackSlot,									// StackSlot(Count)					: Assign the just created object to the Count-th slot. Reset the creating object.
 			CreateObject,								// CreateObject(Type)				: Create an AST node, it becomes the creating object. Error if the previous creating object has not been reset.
-			Field,										// Field(Count, Field)				: Associate a field name of the creating object with the value in the Count-th slot. Ignored if the Count-th slot is empty.
-			FieldIfUnassigned,							// FieldIfUnassigned(Count, Field)	: Like Field(Field) but only take effect if such field has never been assigned.
+			Field,										// Field(Field, Count)				: Associate a field name of the creating object with the value in the Count-th slot. Ignored if the Count-th slot is empty.
+			FieldIfUnassigned,							// FieldIfUnassigned(Field, Count)	: Like Field(Field) but only take effect if such field has never been assigned.
 			StackEnd,									// StackEnd()						: End the current stack frame. Leave the creating object as is.
 			ResolveAmbiguity,							// ResolveAmbiguity(Type)			: Combine several values in the 0-th slot to one using an ambiguity node. Type is the type of each value.
 		};

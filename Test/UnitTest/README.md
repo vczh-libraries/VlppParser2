@@ -3,17 +3,18 @@
 Run the following projects in order.
 
 - `ParserTest_AstGen`
-  - Generate Calculator AST types from manual definitions.
-  - Generate Parser AST types from manual definitions.
+  - Generate Calculator AST C++ types from manual definitions.
+  - Generate Parser AST C++ types from manual definitions.
 - `ParserTest_AstParserGen`
+  - Run Calculator lexer from manual definitions.
   - Assembly to AST Building.
-  - Generate Calculator lexer types from manual definitions.
-  - Generate Parser lexer types from manual definitions.
+  - Generate Calculator lexer C++ types from manual definitions.
+  - Generate Parser lexer C++ types from manual definitions.
 - `ParserTest_LexerAndParser`
   - Run generated Calculator lexer types from previous projects.
   - Run Calculator parser from manual definitions.
-  - Generate Calculator parser types from manual definitions.
-  - Generate Parser parser types from manual definitions.
+  - Generate Calculator parser C++ types from manual definitions.
+  - Generate Parser parser C++ types from manual definitions.
 - `ParserTest_ParserGen`
   - ParserGen error detection.
 - `ParserTest_ParserGen_Compiler`
