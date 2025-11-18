@@ -10,7 +10,7 @@ extern void GenerateCalculatorLexer(LexerSymbolManager& manager);
 
 namespace
 {
-	void BuildNumExpr(CalculatorAstInsReceiver& receiver, List<RegexToken>& tokens, vint tokenIndex)
+	void BuildNumExpr(CalculatorAstInsReceiver& receiver, List<RegexToken>& tokens, vint32_t tokenIndex)
 	{
 		receiver.Execute({ AstInsType::StackBegin }, tokens[tokenIndex], tokenIndex);
 		receiver.Execute({ AstInsType::Token, -1, 0 }, tokens[tokenIndex], tokenIndex);
@@ -19,7 +19,7 @@ namespace
 		receiver.Execute({ AstInsType::StackEnd }, tokens[tokenIndex + 1], tokenIndex + 1);
 	}
 
-	void BuildImport(CalculatorAstInsReceiver& receiver, List<RegexToken>& tokens, vint tokenIndex)
+	void BuildImport(CalculatorAstInsReceiver& receiver, List<RegexToken>& tokens, vint32_t tokenIndex)
 	{
 		receiver.Execute({ AstInsType::StackBegin }, tokens[tokenIndex], tokenIndex);
 		receiver.Execute({ AstInsType::Token, -1, 0 }, tokens[tokenIndex], tokenIndex);
@@ -28,7 +28,7 @@ namespace
 		receiver.Execute({ AstInsType::StackEnd }, tokens[tokenIndex + 1], tokenIndex + 1);
 	}
 
-	void BuildRef(CalculatorAstInsReceiver& receiver, List<RegexToken>& tokens, vint tokenIndex)
+	void BuildRef(CalculatorAstInsReceiver& receiver, List<RegexToken>& tokens, vint32_t tokenIndex)
 	{
 		receiver.Execute({ AstInsType::StackBegin }, tokens[tokenIndex], tokenIndex);
 		receiver.Execute({ AstInsType::Token, -1, 0 }, tokens[tokenIndex], tokenIndex);
