@@ -488,50 +488,50 @@ export sum(1, 2, max(3, 4))
 		CalculatorAstInsReceiver receiver;
 		{
 			receiver.Execute({ AstInsType::StackBegin }, tokens[0], 0);
-			receiver.Execute({ AstInsType::Token, -1, 0 }, tokens[0], 0);
+			receiver.Execute({ AstInsType::Token, -1, 0 }, tokens[0], 0); // import
 			BuildImport(receiver, tokens, 1);
 			receiver.Execute({ AstInsType::StackSlot, -1, 1 }, tokens[1], 1);
-			receiver.Execute({ AstInsType::Token, -1, 0 }, tokens[2], 2);
+			receiver.Execute({ AstInsType::Token, -1, 0 }, tokens[2], 2); // import
 			BuildImport(receiver, tokens, 3);
 			receiver.Execute({ AstInsType::StackSlot, -1, 1 }, tokens[3], 3);
-			receiver.Execute({ AstInsType::Token, -1, 0 }, tokens[4], 4);
 
 			receiver.Execute({ AstInsType::StackBegin }, tokens[5], 5);
+			receiver.Execute({ AstInsType::Token, -1, 0 }, tokens[4], 4); // export
 			BuildRef(receiver, tokens, 5);
 			receiver.Execute({ AstInsType::StackSlot, -1, 0 }, tokens[5], 5);
-			receiver.Execute({ AstInsType::Token, -1, 3 }, tokens[6], 6);
+			receiver.Execute({ AstInsType::Token, -1, 3 }, tokens[6], 6); // '('
 			BuildNumExpr(receiver, tokens, 7);
 			receiver.Execute({ AstInsType::StackSlot, -1, 1 }, tokens[7], 7);
-			receiver.Execute({ AstInsType::Token, -1, 3 }, tokens[8], 8);
+			receiver.Execute({ AstInsType::Token, -1, 3 }, tokens[8], 8); // ','
 			BuildNumExpr(receiver, tokens, 9);
 			receiver.Execute({ AstInsType::StackSlot, -1, 1 }, tokens[9], 9);
-			receiver.Execute({ AstInsType::Token, -1, 3 }, tokens[10], 10);
+			receiver.Execute({ AstInsType::Token, -1, 3 }, tokens[10], 10); // ','
 
 			receiver.Execute({ AstInsType::StackBegin }, tokens[11], 11);
 			BuildRef(receiver, tokens, 11);
 			receiver.Execute({ AstInsType::StackSlot, -1, 0 }, tokens[11], 11);
-			receiver.Execute({ AstInsType::Token, -1, 3 }, tokens[12], 12);
+			receiver.Execute({ AstInsType::Token, -1, 3 }, tokens[12], 12); // '('
 			BuildNumExpr(receiver, tokens, 13);
 			receiver.Execute({ AstInsType::StackSlot, -1, 1 }, tokens[13], 13);
-			receiver.Execute({ AstInsType::Token, -1, 3 }, tokens[14], 14);
+			receiver.Execute({ AstInsType::Token, -1, 3 }, tokens[14], 14); // ','
 			BuildNumExpr(receiver, tokens, 15);
 			receiver.Execute({ AstInsType::StackSlot, -1, 1 }, tokens[15], 15);
-			receiver.Execute({ AstInsType::Token, -1, 3 }, tokens[16], 16);
-			receiver.Execute({ AstInsType::CreateObject, (vint32_t)CalculatorClasses::Call }, tokens[11], 11);
-			receiver.Execute({ AstInsType::Field, (vint32_t)CalculatorFields::Call_func, 0 }, tokens[11], 11);
-			receiver.Execute({ AstInsType::Field, (vint32_t)CalculatorFields::Call_args, 1 }, tokens[15], 15);
+			receiver.Execute({ AstInsType::Token, -1, 3 }, tokens[16], 16); // ')'
+			receiver.Execute({ AstInsType::CreateObject, (vint32_t)CalculatorClasses::Call }, tokens[16], 16);
+			receiver.Execute({ AstInsType::Field, (vint32_t)CalculatorFields::Call_func, 0 }, tokens[16], 16);
+			receiver.Execute({ AstInsType::Field, (vint32_t)CalculatorFields::Call_args, 1 }, tokens[16], 16);
 			receiver.Execute({ AstInsType::StackEnd }, tokens[16], 16);
 			receiver.Execute({ AstInsType::StackSlot, -1, 1 }, tokens[16], 16);
 
-			receiver.Execute({ AstInsType::Token, -1, 3 }, tokens[17], 17);
-			receiver.Execute({ AstInsType::CreateObject, (vint32_t)CalculatorClasses::Call }, tokens[5], 5);
-			receiver.Execute({ AstInsType::Field, (vint32_t)CalculatorFields::Call_func, 0 }, tokens[5], 5);
+			receiver.Execute({ AstInsType::Token, -1, 3 }, tokens[17], 17); // ')'
+			receiver.Execute({ AstInsType::CreateObject, (vint32_t)CalculatorClasses::Call }, tokens[17], 17);
+			receiver.Execute({ AstInsType::Field, (vint32_t)CalculatorFields::Call_func, 0 }, tokens[17], 17);
 			receiver.Execute({ AstInsType::Field, (vint32_t)CalculatorFields::Call_args, 1 }, tokens[17], 17);
 			receiver.Execute({ AstInsType::StackEnd }, tokens[17], 17);
 			receiver.Execute({ AstInsType::StackSlot, -1, 2 }, tokens[17], 17);
 
-			receiver.Execute({ AstInsType::CreateObject, (vint32_t)CalculatorClasses::Module }, tokens[3], 3);
-			receiver.Execute({ AstInsType::Field, (vint32_t)CalculatorFields::Module_imports, 1 }, tokens[3], 3);
+			receiver.Execute({ AstInsType::CreateObject, (vint32_t)CalculatorClasses::Module }, tokens[17], 17);
+			receiver.Execute({ AstInsType::Field, (vint32_t)CalculatorFields::Module_imports, 1 }, tokens[17], 17);
 			receiver.Execute({ AstInsType::Field, (vint32_t)CalculatorFields::Module_exported, 2 }, tokens[17], 17);
 			receiver.Execute({ AstInsType::StackEnd }, tokens[17], 17);
 		}
