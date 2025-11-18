@@ -10,6 +10,36 @@ using namespace calculator;
 
 extern void GenerateCalculatorLexer(LexerSymbolManager& manager);
 
+namespace
+{
+	void BuildNumExprToSlot(CalculatorAstInsReceiver& receiver, List<RegexToken>& tokens, vint tokenIndex, vint slotIndex)
+	{
+		receiver.Execute({ AstInsType::StackBegin }, tokens[tokenIndex], tokenIndex);
+		receiver.Execute({ AstInsType::Token, -1, 0 }, tokens[tokenIndex], tokenIndex);
+		receiver.Execute({ AstInsType::CreateObject, (vint32_t)CalculatorClasses::NumExpr }, tokens[tokenIndex], tokenIndex);
+		receiver.Execute({ AstInsType::Field, (vint32_t)CalculatorFields::NumExpr_value, 0 }, tokens[tokenIndex], tokenIndex);
+		receiver.Execute({ AstInsType::StackEnd }, tokens[tokenIndex], tokenIndex);
+		receiver.Execute({ AstInsType::StackSlot, -1, slotIndex }, tokens[tokenIndex], tokenIndex);
+	}
+
+	void BuildTrueToSlot(CalculatorAstInsReceiver& receiver, List<RegexToken>& tokens, vint tokenIndex, vint slotIndex)
+	{
+		receiver.Execute({ AstInsType::StackBegin }, tokens[tokenIndex], tokenIndex);
+		receiver.Execute({ AstInsType::CreateObject, (vint32_t)CalculatorClasses::True }, tokens[tokenIndex], tokenIndex);
+		receiver.Execute({ AstInsType::StackEnd }, tokens[tokenIndex], tokenIndex);
+		receiver.Execute({ AstInsType::StackSlot, -1, slotIndex }, tokens[tokenIndex], tokenIndex);
+	}
+
+	void BuildMinimalModule(CalculatorAstInsReceiver& receiver, List<RegexToken>& tokens)
+	{
+		receiver.Execute({ AstInsType::StackBegin }, tokens[0], 0);
+		BuildNumExprToSlot(receiver, tokens, 1, 0);
+		receiver.Execute({ AstInsType::CreateObject, (vint32_t)CalculatorClasses::Module }, tokens[0], 0);
+		receiver.Execute({ AstInsType::Field, (vint32_t)CalculatorFields::Module_exported, 0 }, tokens[1], 1);
+		receiver.Execute({ AstInsType::StackEnd }, tokens[1], 1);
+	}
+}
+
 TEST_FILE
 {
 	ParserSymbolManager global;
@@ -52,7 +82,8 @@ export 1
 )";
 		LEXER(input, tokens);
 		CalculatorAstInsReceiver receiver;
-		receiver.Execute({ AstInsType::BeginObject, (vint32_t)CalculatorClasses::Module }, tokens[0], 0);
+		receiver.Execute({ AstInsType::StackBegin }, tokens[0], 0);
+		receiver.Execute({ AstInsType::CreateObject, (vint32_t)CalculatorClasses::Module }, tokens[0], 0);
 		TEST_EXCEPTION(
 			receiver.Finished(),
 			AstInsException,
@@ -67,7 +98,8 @@ export 1
 )";
 		LEXER(input, tokens);
 		CalculatorAstInsReceiver receiver;
-		receiver.Execute({ AstInsType::BeginObject, (vint32_t)CalculatorClasses::Module }, tokens[0], 0);
+		receiver.Execute({ AstInsType::StackBegin }, tokens[0], 0);
+		receiver.Execute({ AstInsType::CreateObject, (vint32_t)CalculatorClasses::Module }, tokens[0], 0);
 		try { receiver.Finished(); } catch (...) {}
 		TEST_EXCEPTION(
 			receiver.Finished(),
@@ -83,10 +115,11 @@ export 1
 )";
 		LEXER(input, tokens);
 		CalculatorAstInsReceiver receiver;
-		receiver.Execute({ AstInsType::BeginObject, (vint32_t)CalculatorClasses::Module }, tokens[0], 0);
+		receiver.Execute({ AstInsType::StackBegin }, tokens[0], 0);
+		receiver.Execute({ AstInsType::CreateObject, (vint32_t)CalculatorClasses::Module }, tokens[0], 0);
 		try { receiver.Finished(); } catch (...) {}
 		TEST_EXCEPTION(
-			receiver.Execute({ AstInsType::EndObject }, tokens[1], 1),
+			receiver.Execute({ AstInsType::StackEnd }, tokens[1], 1),
 			AstInsException,
 			[](const AstInsException& e) { TEST_ASSERT(e.error == AstInsErrorType::Corrupted); }
 			);
@@ -99,8 +132,7 @@ export 1
 )";
 		LEXER(input, tokens);
 		CalculatorAstInsReceiver receiver;
-		receiver.Execute({ AstInsType::BeginObject, (vint32_t)CalculatorClasses::Module }, tokens[0], 0);
-		receiver.Execute({ AstInsType::EndObject }, tokens[1], 1);
+		BuildMinimalModule(receiver, tokens);
 		receiver.Finished();
 		TEST_EXCEPTION(
 			receiver.Finished(),
@@ -116,11 +148,10 @@ export 1
 )";
 		LEXER(input, tokens);
 		CalculatorAstInsReceiver receiver;
-		receiver.Execute({ AstInsType::BeginObject, (vint32_t)CalculatorClasses::Module }, tokens[0], 0);
-		receiver.Execute({ AstInsType::EndObject }, tokens[1], 1);
+		BuildMinimalModule(receiver, tokens);
 		receiver.Finished();
 		TEST_EXCEPTION(
-			receiver.Execute({ AstInsType::EndObject }, tokens[1], 1),
+			receiver.Execute({ AstInsType::StackBegin }, tokens[0], 0),
 			AstInsException,
 			[](const AstInsException& e) { TEST_ASSERT(e.error == AstInsErrorType::Finished); }
 			);
@@ -137,8 +168,9 @@ export 1
 )";
 		LEXER(input, tokens);
 		CalculatorAstInsReceiver receiver;
+		receiver.Execute({ AstInsType::StackBegin }, tokens[0], 0);
 		TEST_EXCEPTION(
-			receiver.Execute({ AstInsType::BeginObject, 0xFFFF }, tokens[1], 1),
+			receiver.Execute({ AstInsType::CreateObject, 0xFFFF }, tokens[0], 0),
 			AstInsException,
 			[](const AstInsException& e) { TEST_ASSERT(e.error == AstInsErrorType::UnknownType); }
 			);
@@ -151,11 +183,11 @@ export 1
 )";
 		LEXER(input, tokens);
 		CalculatorAstInsReceiver receiver;
-		receiver.Execute({ AstInsType::BeginObject, (vint32_t)CalculatorClasses::Module }, tokens[0], 0);
-		receiver.Execute({ AstInsType::BeginObject, (vint32_t)CalculatorClasses::NumExpr }, tokens[1], 1);
-		receiver.Execute({ AstInsType::Token }, tokens[1], 1);
+		receiver.Execute({ AstInsType::StackBegin }, tokens[0], 0);
+		receiver.Execute({ AstInsType::Token, -1, 0 }, tokens[1], 1);
+		receiver.Execute({ AstInsType::CreateObject, (vint32_t)CalculatorClasses::Module }, tokens[0], 0);
 		TEST_EXCEPTION(
-			receiver.Execute({ AstInsType::Field, 0xFFFF }, tokens[1], 1),
+			receiver.Execute({ AstInsType::Field, 0xFFFF, 0 }, tokens[1], 1),
 			AstInsException,
 			[](const AstInsException& e) { TEST_ASSERT(e.error == AstInsErrorType::UnknownField); }
 			);
@@ -168,8 +200,9 @@ export 1
 )";
 		LEXER(input, tokens);
 		CalculatorAstInsReceiver receiver;
+		receiver.Execute({ AstInsType::StackBegin }, tokens[0], 0);
 		TEST_EXCEPTION(
-			receiver.Execute({ AstInsType::BeginObject, (vint32_t)CalculatorClasses::Expr }, tokens[1], 1),
+			receiver.Execute({ AstInsType::CreateObject, (vint32_t)CalculatorClasses::Expr }, tokens[0], 0),
 			AstInsException,
 			[](const AstInsException& e) { TEST_ASSERT(e.error == AstInsErrorType::UnsupportedAbstractType); }
 			);
@@ -182,11 +215,11 @@ export 1
 )";
 		LEXER(input, tokens);
 		CalculatorAstInsReceiver receiver;
-		receiver.Execute({ AstInsType::BeginObject, (vint32_t)CalculatorClasses::Module }, tokens[0], 0);
-		receiver.Execute({ AstInsType::BeginObject, (vint32_t)CalculatorClasses::NumExpr }, tokens[1], 1);
-		receiver.Execute({ AstInsType::EnumItem, 0 }, tokens[1], 1);
+		receiver.Execute({ AstInsType::StackBegin }, tokens[0], 0);
+		receiver.Execute({ AstInsType::EnumItem, 0, 0 }, tokens[1], 1);
+		receiver.Execute({ AstInsType::CreateObject, (vint32_t)CalculatorClasses::Module }, tokens[0], 0);
 		TEST_EXCEPTION(
-			receiver.Execute({ AstInsType::Field, (vint32_t)CalculatorFields::Unary_op }, tokens[1], 1),
+			receiver.Execute({ AstInsType::Field, (vint32_t)CalculatorFields::Unary_op, 0 }, tokens[1], 1),
 			AstInsException,
 			[](const AstInsException& e) { TEST_ASSERT(e.error == AstInsErrorType::FieldNotExistsInType); }
 			);
@@ -199,13 +232,13 @@ export 1
 )";
 		LEXER(input, tokens);
 		CalculatorAstInsReceiver receiver;
-		receiver.Execute({ AstInsType::BeginObject, (vint32_t)CalculatorClasses::Module }, tokens[0], 0);
-		receiver.Execute({ AstInsType::BeginObject, (vint32_t)CalculatorClasses::NumExpr }, tokens[1], 1);
-		receiver.Execute({ AstInsType::Token }, tokens[1], 1);
-		receiver.Execute({ AstInsType::Field, (vint32_t)CalculatorFields::NumExpr_value }, tokens[1], 1);
-		receiver.Execute({ AstInsType::Token }, tokens[1], 1);
+		receiver.Execute({ AstInsType::StackBegin }, tokens[0], 0);
+		receiver.Execute({ AstInsType::Token, -1, 0 }, tokens[1], 1);
+		receiver.Execute({ AstInsType::CreateObject, (vint32_t)CalculatorClasses::NumExpr }, tokens[1], 1);
+		receiver.Execute({ AstInsType::Field, (vint32_t)CalculatorFields::NumExpr_value, 0 }, tokens[1], 1);
+		receiver.Execute({ AstInsType::Token, -1, 0 }, tokens[1], 1);
 		TEST_EXCEPTION(
-			receiver.Execute({ AstInsType::Field, (vint32_t)CalculatorFields::NumExpr_value }, tokens[1], 1),
+			receiver.Execute({ AstInsType::Field, (vint32_t)CalculatorFields::NumExpr_value, 0 }, tokens[1], 1),
 			AstInsException,
 			[](const AstInsException& e) { TEST_ASSERT(e.error == AstInsErrorType::FieldReassigned); }
 			);
@@ -223,11 +256,11 @@ export 1
 )";
 		LEXER(input, tokens);
 		CalculatorAstInsReceiver receiver;
-		receiver.Execute({ AstInsType::BeginObject, (vint32_t)CalculatorClasses::Module }, tokens[0], 0);
-		receiver.Execute({ AstInsType::BeginObject, (vint32_t)CalculatorClasses::NumExpr }, tokens[1], 1);
-		receiver.Execute({ AstInsType::EnumItem, 0 }, tokens[1], 1);
+		receiver.Execute({ AstInsType::StackBegin }, tokens[0], 0);
+		receiver.Execute({ AstInsType::EnumItem, 0, 0 }, tokens[1], 1);
+		receiver.Execute({ AstInsType::CreateObject, (vint32_t)CalculatorClasses::NumExpr }, tokens[1], 1);
 		TEST_EXCEPTION(
-			receiver.Execute({ AstInsType::Field, (vint32_t)CalculatorFields::NumExpr_value }, tokens[1], 1),
+			receiver.Execute({ AstInsType::Field, (vint32_t)CalculatorFields::NumExpr_value, 0 }, tokens[1], 1),
 			AstInsException,
 			[](const AstInsException& e) { TEST_ASSERT(e.error == AstInsErrorType::ObjectTypeMismatchedToField); }
 			);
@@ -240,12 +273,11 @@ export 1
 )";
 		LEXER(input, tokens);
 		CalculatorAstInsReceiver receiver;
-		receiver.Execute({ AstInsType::BeginObject, (vint32_t)CalculatorClasses::Module }, tokens[0], 0);
-		receiver.Execute({ AstInsType::BeginObject, (vint32_t)CalculatorClasses::NumExpr }, tokens[1], 1);
-		receiver.Execute({ AstInsType::BeginObject, (vint32_t)CalculatorClasses::NumExpr }, tokens[1], 1);
-		receiver.Execute({ AstInsType::EndObject }, tokens[1], 1);
+		receiver.Execute({ AstInsType::StackBegin }, tokens[0], 0);
+		BuildTrueToSlot(receiver, tokens, 1, 0);
+		receiver.Execute({ AstInsType::CreateObject, (vint32_t)CalculatorClasses::NumExpr }, tokens[1], 1);
 		TEST_EXCEPTION(
-			receiver.Execute({ AstInsType::Field, (vint32_t)CalculatorFields::NumExpr_value }, tokens[1], 1),
+			receiver.Execute({ AstInsType::Field, (vint32_t)CalculatorFields::NumExpr_value, 0 }, tokens[1], 1),
 			AstInsException,
 			[](const AstInsException& e) { TEST_ASSERT(e.error == AstInsErrorType::ObjectTypeMismatchedToField); }
 			);
@@ -258,11 +290,11 @@ export 1
 )";
 		LEXER(input, tokens);
 		CalculatorAstInsReceiver receiver;
-		receiver.Execute({ AstInsType::BeginObject, (vint32_t)CalculatorClasses::Module }, tokens[0], 0);
-		receiver.Execute({ AstInsType::BeginObject, (vint32_t)CalculatorClasses::Unary }, tokens[1], 1);
-		receiver.Execute({ AstInsType::Token }, tokens[1], 1);
+		receiver.Execute({ AstInsType::StackBegin }, tokens[0], 0);
+		receiver.Execute({ AstInsType::Token, -1, 0 }, tokens[1], 1);
+		receiver.Execute({ AstInsType::CreateObject, (vint32_t)CalculatorClasses::Unary }, tokens[1], 1);
 		TEST_EXCEPTION(
-			receiver.Execute({ AstInsType::Field, (vint32_t)CalculatorFields::Unary_op }, tokens[1], 1),
+			receiver.Execute({ AstInsType::Field, (vint32_t)CalculatorFields::Unary_op, 0 }, tokens[1], 1),
 			AstInsException,
 			[](const AstInsException& e) { TEST_ASSERT(e.error == AstInsErrorType::ObjectTypeMismatchedToField); }
 			);
@@ -275,12 +307,11 @@ export 1
 )";
 		LEXER(input, tokens);
 		CalculatorAstInsReceiver receiver;
-		receiver.Execute({ AstInsType::BeginObject, (vint32_t)CalculatorClasses::Module }, tokens[0], 0);
-		receiver.Execute({ AstInsType::BeginObject, (vint32_t)CalculatorClasses::Unary }, tokens[1], 1);
-		receiver.Execute({ AstInsType::BeginObject, (vint32_t)CalculatorClasses::NumExpr }, tokens[1], 1);
-		receiver.Execute({ AstInsType::EndObject }, tokens[1], 1);
+		receiver.Execute({ AstInsType::StackBegin }, tokens[0], 0);
+		BuildTrueToSlot(receiver, tokens, 1, 0);
+		receiver.Execute({ AstInsType::CreateObject, (vint32_t)CalculatorClasses::Unary }, tokens[1], 1);
 		TEST_EXCEPTION(
-			receiver.Execute({ AstInsType::Field, (vint32_t)CalculatorFields::Unary_op }, tokens[1], 1),
+			receiver.Execute({ AstInsType::Field, (vint32_t)CalculatorFields::Unary_op, 0 }, tokens[1], 1),
 			AstInsException,
 			[](const AstInsException& e) { TEST_ASSERT(e.error == AstInsErrorType::ObjectTypeMismatchedToField); }
 			);
@@ -293,11 +324,11 @@ export 1
 )";
 		LEXER(input, tokens);
 		CalculatorAstInsReceiver receiver;
-		receiver.Execute({ AstInsType::BeginObject, (vint32_t)CalculatorClasses::Module }, tokens[0], 0);
-		receiver.Execute({ AstInsType::BeginObject, (vint32_t)CalculatorClasses::Call }, tokens[1], 1);
-		receiver.Execute({ AstInsType::Token }, tokens[1], 1);
+		receiver.Execute({ AstInsType::StackBegin }, tokens[0], 0);
+		receiver.Execute({ AstInsType::Token, -1, 0 }, tokens[1], 1);
+		receiver.Execute({ AstInsType::CreateObject, (vint32_t)CalculatorClasses::Call }, tokens[1], 1);
 		TEST_EXCEPTION(
-			receiver.Execute({ AstInsType::Field, (vint32_t)CalculatorFields::Call_func }, tokens[1], 1),
+			receiver.Execute({ AstInsType::Field, (vint32_t)CalculatorFields::Call_func, 0 }, tokens[1], 1),
 			AstInsException,
 			[](const AstInsException& e) { TEST_ASSERT(e.error == AstInsErrorType::ObjectTypeMismatchedToField); }
 			);
@@ -310,11 +341,11 @@ export 1
 )";
 		LEXER(input, tokens);
 		CalculatorAstInsReceiver receiver;
-		receiver.Execute({ AstInsType::BeginObject, (vint32_t)CalculatorClasses::Module }, tokens[0], 0);
-		receiver.Execute({ AstInsType::BeginObject, (vint32_t)CalculatorClasses::Call }, tokens[1], 1);
-		receiver.Execute({ AstInsType::EnumItem, 0 }, tokens[1], 1);
+		receiver.Execute({ AstInsType::StackBegin }, tokens[0], 0);
+		receiver.Execute({ AstInsType::EnumItem, 0, 0 }, tokens[1], 1);
+		receiver.Execute({ AstInsType::CreateObject, (vint32_t)CalculatorClasses::Call }, tokens[1], 1);
 		TEST_EXCEPTION(
-			receiver.Execute({ AstInsType::Field, (vint32_t)CalculatorFields::Call_func }, tokens[1], 1),
+			receiver.Execute({ AstInsType::Field, (vint32_t)CalculatorFields::Call_func, 0 }, tokens[1], 1),
 			AstInsException,
 			[](const AstInsException& e) { TEST_ASSERT(e.error == AstInsErrorType::ObjectTypeMismatchedToField); }
 			);
@@ -331,11 +362,9 @@ export 1
 )";
 		LEXER(input, tokens);
 		CalculatorAstInsReceiver receiver;
-		receiver.Execute({ AstInsType::BeginObject, (vint32_t)CalculatorClasses::Module }, tokens[0], 0);
-		receiver.Execute({ AstInsType::BeginObject, (vint32_t)CalculatorClasses::NumExpr }, tokens[1], 1);
-		receiver.Execute({ AstInsType::EndObject }, tokens[1], 1);
-		receiver.Execute({ AstInsType::BeginObject, (vint32_t)CalculatorClasses::NumExpr }, tokens[1], 1);
-		receiver.Execute({ AstInsType::EndObject }, tokens[1], 1);
+		receiver.Execute({ AstInsType::StackBegin }, tokens[0], 0);
+		BuildNumExprToSlot(receiver, tokens, 1, 0);
+		BuildNumExprToSlot(receiver, tokens, 1, 1);
 		TEST_EXCEPTION(
 			receiver.Execute({ AstInsType::ResolveAmbiguity, (vint32_t)CalculatorClasses::Expr, 2 }, tokens[1], 1),
 			AstInsException,
@@ -355,10 +384,10 @@ export 1
 )";
 		LEXER(input, tokens);
 		CalculatorAstInsReceiver receiver;
-		receiver.Execute({ AstInsType::BeginObject, (vint32_t)CalculatorClasses::Module }, tokens[0], 0);
-		receiver.Execute({ AstInsType::Token }, tokens[1], 1);
+		receiver.Execute({ AstInsType::StackBegin }, tokens[0], 0);
+		BuildNumExprToSlot(receiver, tokens, 1, 0);
 		TEST_EXCEPTION(
-			receiver.Execute({ AstInsType::ResolveAmbiguity, -1, 2 }, tokens[1], 1),
+			receiver.Execute({ AstInsType::ResolveAmbiguity, (vint32_t)CalculatorClasses::Expr, 2 }, tokens[1], 1),
 			AstInsException,
 			[](const AstInsException& e) { TEST_ASSERT(e.error == AstInsErrorType::MissingAmbiguityCandidate); }
 			);
@@ -371,11 +400,11 @@ export 1
 )";
 		LEXER(input, tokens);
 		CalculatorAstInsReceiver receiver;
-		receiver.Execute({ AstInsType::BeginObject, (vint32_t)CalculatorClasses::Module }, tokens[0], 0);
-		receiver.Execute({ AstInsType::Token }, tokens[1], 1);
-		receiver.Execute({ AstInsType::Token }, tokens[1], 1);
+		receiver.Execute({ AstInsType::StackBegin }, tokens[0], 0);
+		receiver.Execute({ AstInsType::Token, -1, 0 }, tokens[1], 1);
+		receiver.Execute({ AstInsType::Token, -1, 1 }, tokens[1], 1);
 		TEST_EXCEPTION(
-			receiver.Execute({ AstInsType::ResolveAmbiguity, -1, 2 }, tokens[1], 1),
+			receiver.Execute({ AstInsType::ResolveAmbiguity, (vint32_t)CalculatorClasses::Expr, 2 }, tokens[1], 1),
 			AstInsException,
 			[](const AstInsException& e) { TEST_ASSERT(e.error == AstInsErrorType::AmbiguityCandidateIsNotObject); }
 			);
@@ -388,11 +417,11 @@ export 1
 )";
 		LEXER(input, tokens);
 		CalculatorAstInsReceiver receiver;
-		receiver.Execute({ AstInsType::BeginObject, (vint32_t)CalculatorClasses::Module }, tokens[0], 0);
-		receiver.Execute({ AstInsType::EnumItem, 0 }, tokens[1], 1);
-		receiver.Execute({ AstInsType::EnumItem, 1 }, tokens[1], 1);
+		receiver.Execute({ AstInsType::StackBegin }, tokens[0], 0);
+		receiver.Execute({ AstInsType::EnumItem, 0, 0 }, tokens[1], 1);
+		receiver.Execute({ AstInsType::EnumItem, 1, 1 }, tokens[1], 1);
 		TEST_EXCEPTION(
-			receiver.Execute({ AstInsType::ResolveAmbiguity, -1, 2 }, tokens[1], 1),
+			receiver.Execute({ AstInsType::ResolveAmbiguity, (vint32_t)CalculatorClasses::Expr, 2 }, tokens[1], 1),
 			AstInsException,
 			[](const AstInsException& e) { TEST_ASSERT(e.error == AstInsErrorType::AmbiguityCandidateIsNotObject); }
 			);
