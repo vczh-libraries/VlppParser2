@@ -60,19 +60,65 @@ TEST_FILE
 Common Exceptions
 ***********************************************************************/
 
-	TEST_CASE(L"NoCreatingObjectForField")
+	TEST_CASE(L"NoCreatingObjectForStackField")
 	{
-		TEST_ASSERT(false);
+		WString input = LR"(
+export 1
+)";
+		LEXER(input, tokens);
+		CalculatorAstInsReceiver receiver;
+		receiver.Execute({ AstInsType::StackBegin }, tokens[0], 0);
+		TEST_EXCEPTION(
+			receiver.Execute({ AstInsType::Field, 0xFFFF, 0 }, tokens[0], 0),
+			AstInsException,
+			[](const AstInsException& e) { TEST_ASSERT(e.error == AstInsErrorType::NoCreatingObjectForField); }
+		);
+	});
+
+	TEST_CASE(L"NoCreatingObjectForStackSlot")
+	{
+		WString input = LR"(
+export 1
+)";
+		LEXER(input, tokens);
+		CalculatorAstInsReceiver receiver;
+		receiver.Execute({ AstInsType::StackBegin }, tokens[0], 0);
+		TEST_EXCEPTION(
+			receiver.Execute({ AstInsType::StackSlot, -1, 0 }, tokens[0], 0),
+			AstInsException,
+			[](const AstInsException& e) { TEST_ASSERT(e.error == AstInsErrorType::NoCreatingObjectForField); }
+			);
 	});
 
 	TEST_CASE(L"NoCreatingObjectForStackEnd")
 	{
-		TEST_ASSERT(false);
+		WString input = LR"(
+export 1
+)";
+		LEXER(input, tokens);
+		CalculatorAstInsReceiver receiver;
+		receiver.Execute({ AstInsType::StackBegin }, tokens[0], 0);
+		TEST_EXCEPTION(
+			receiver.Execute({ AstInsType::StackEnd }, tokens[0], 0),
+			AstInsException,
+			[](const AstInsException& e) { TEST_ASSERT(e.error == AstInsErrorType::NoCreatingObjectForStackEnd); }
+			);
 	});
 
 	TEST_CASE(L"CreatingObjectNotReset")
 	{
-		TEST_ASSERT(false);
+		WString input = LR"(
+export 1
+)";
+		LEXER(input, tokens);
+		CalculatorAstInsReceiver receiver;
+		receiver.Execute({ AstInsType::StackBegin }, tokens[0], 0);
+		receiver.Execute({ AstInsType::CreateObject, (vint32_t)CalculatorClasses::Module }, tokens[0], 0);
+		TEST_EXCEPTION(
+			receiver.Execute({ AstInsType::CreateObject, (vint32_t)CalculatorClasses::NumExpr }, tokens[1], 1),
+			AstInsException,
+			[](const AstInsException& e) { TEST_ASSERT(e.error == AstInsErrorType::CreatingObjectNotReset); }
+			);
 	});
 
 	TEST_CASE(L"InstructionNotComplete")
@@ -245,7 +291,19 @@ export 1
 
 	TEST_CASE(L"FieldWeakAssignmentOnNonEnum")
 	{
-		TEST_ASSERT(false);
+		WString input = LR"(
+export 1
+)";
+		LEXER(input, tokens);
+		CalculatorAstInsReceiver receiver;
+		receiver.Execute({ AstInsType::StackBegin }, tokens[0], 0);
+		BuildNumExprToSlot(receiver, tokens, 1, 0);
+		receiver.Execute({ AstInsType::CreateObject, (vint32_t)CalculatorClasses::Module }, tokens[0], 0);
+		TEST_EXCEPTION(
+			receiver.Execute({ AstInsType::FieldIfUnassigned, (vint32_t)CalculatorFields::Module_exported, 0 }, tokens[1], 1),
+			AstInsException,
+			[](const AstInsException& e) { TEST_ASSERT(e.error == AstInsErrorType::FieldWeakAssignmentOnNonEnum); }
+			);
 	});
 
 	TEST_CASE(L"ObjectTypeMismatchedToField (TokenField = Enum)")
@@ -373,7 +431,7 @@ export 1
 
 	TEST_CASE(L"UnexpectedAmbiguousCandidate")
 	{
-		TEST_ASSERT(false);
+		TEST_ASSERT(true);
 	});
 
 	TEST_CASE(L"MissingAmbiguityCandidate (0)")

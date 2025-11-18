@@ -317,8 +317,9 @@ Instructions
 			MissingAmbiguityCandidate,					// MissingAmbiguityCandidate()			: There are less than two candidates to create an ambiguity node.
 			AmbiguityCandidateIsNotObject,				// AmbiguityCandidateIsNotObject()		: Tokens or enum items cannot be ambiguity candidates.
 
-			NoCreatingObjectForField,					// NoCreatingObject()					: There is no creating object to assign to a slot.
-			NoCreatingObjectForStackEnd,				// NoCreatingObjectForStackEnd()		: StackEnd leaving no creating object.
+			NoCreatingObjectForField,					// NoCreatingObjectForField()			: Field when no creating object.
+			NoCreatingObjectForStackSlot,				// NoCreatingObjectForStackSlot()		: StackSlot when no creating object.
+			NoCreatingObjectForStackEnd,				// NoCreatingObjectForStackEnd()		: StackEnd when no creating object.
 			CreatingObjectNotReset,						// CreatingObjectNotReset()				: The previous creating object has not been reset.
 
 			InstructionNotComplete,						// InstructionNotComplete()				: No more instruction but the root object has not been completed yet.
