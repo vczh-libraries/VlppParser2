@@ -60,7 +60,7 @@ TEST_FILE
 Common Exceptions
 ***********************************************************************/
 
-	TEST_CASE(L"NoCreatingObjectForStackField")
+		TEST_CASE(L"NoCreatingObjectForStackField")
 	{
 		WString input = LR"(
 export 1
@@ -75,6 +75,20 @@ export 1
 		);
 	});
 
+	TEST_CASE(L"NoStackFrameForToken")
+	{
+		WString input = LR"(
+export 1
+)";
+		LEXER(input, tokens);
+		CalculatorAstInsReceiver receiver;
+		TEST_EXCEPTION(
+			receiver.Execute({ AstInsType::Token, -1, 0 }, tokens[0], 0),
+			AstInsException,
+			[](const AstInsException& e) { TEST_ASSERT(e.error == AstInsErrorType::NoStackFrame); }
+		);
+	});
+
 	TEST_CASE(L"NoCreatingObjectForStackSlot")
 	{
 		WString input = LR"(
@@ -86,7 +100,7 @@ export 1
 		TEST_EXCEPTION(
 			receiver.Execute({ AstInsType::StackSlot, -1, 0 }, tokens[0], 0),
 			AstInsException,
-			[](const AstInsException& e) { TEST_ASSERT(e.error == AstInsErrorType::NoCreatingObjectForField); }
+			[](const AstInsException& e) { TEST_ASSERT(e.error == AstInsErrorType::NoCreatingObjectForStackSlot); }
 			);
 	});
 
@@ -103,6 +117,49 @@ export 1
 			AstInsException,
 			[](const AstInsException& e) { TEST_ASSERT(e.error == AstInsErrorType::NoCreatingObjectForStackEnd); }
 			);
+	});
+
+	TEST_CASE(L"NoStackFrameForStackEnd")
+	{
+		WString input = LR"(
+export 1
+)";
+		LEXER(input, tokens);
+		CalculatorAstInsReceiver receiver;
+		TEST_EXCEPTION(
+			receiver.Execute({ AstInsType::StackEnd }, tokens[0], 0),
+			AstInsException,
+			[](const AstInsException& e) { TEST_ASSERT(e.error == AstInsErrorType::NoStackFrameForStackEnd); }
+			);
+	});
+
+	TEST_CASE(L"NoStackFrameForField")
+	{
+		WString input = LR"(
+export 1
+)";
+		LEXER(input, tokens);
+		CalculatorAstInsReceiver receiver;
+		receiver.Execute({ AstInsType::CreateObject, (vint32_t)CalculatorClasses::Module }, tokens[0], 0);
+		TEST_EXCEPTION(
+			receiver.Execute({ AstInsType::Field, (vint32_t)CalculatorFields::Module_exported, 0 }, tokens[0], 0),
+			AstInsException,
+			[](const AstInsException& e) { TEST_ASSERT(e.error == AstInsErrorType::NoStackFrame); }
+		);
+	});
+
+	TEST_CASE(L"NoStackFrameForResolveAmbiguity")
+	{
+		WString input = LR"(
+export 1
+)";
+		LEXER(input, tokens);
+		CalculatorAstInsReceiver receiver;
+		TEST_EXCEPTION(
+			receiver.Execute({ AstInsType::ResolveAmbiguity, (vint32_t)CalculatorClasses::Expr, 0 }, tokens[0], 0),
+			AstInsException,
+			[](const AstInsException& e) { TEST_ASSERT(e.error == AstInsErrorType::NoStackFrame); }
+		);
 	});
 
 	TEST_CASE(L"CreatingObjectNotReset")

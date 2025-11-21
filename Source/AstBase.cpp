@@ -310,87 +310,64 @@ AstInsReceiverBase
 				{
 				case AstInsType::Token:
 				case AstInsType::EnumItem:
+				case AstInsType::StackSlot:
 					{
-						CHECK_ERROR(
-							stackFrames.Count() > 0,
-							L"vl::glr::AstInsReceiverBase::Execute(AstIns, const regex::RegexToken&)#StackBegin must be executed before storing slot values."
-						);
+						if (stackFrames.Count() == 0)
+						{
+							throw AstInsException(
+								L"There is no stack frame to store slot values.",
+								AstInsErrorType::NoStackFrame
+							);
+						}
 						auto frame = stackFrames[stackFrames.Count() - 1];
-						CHECK_ERROR(
-							frame,
-							L"vl::glr::AstInsReceiverBase::Execute(AstIns, const regex::RegexToken&)#Internal error: stack frame is null."
-						);
 
-						const vint32_t slotIndex = (vint32_t)instruction.count;
-						SlotValue slotValue = instruction.type == AstInsType::Token
-							? SlotValue(TokenSlot{ token,tokenIndex })
-							: SlotValue(EnumItemSlot{ instruction.param });
+						SlotValue slotValue;
+						switch (instruction.type)
+						{
+						case AstInsType::Token:
+							slotValue = SlotValue(TokenSlot{ token,tokenIndex });
+							break;
+						case AstInsType::EnumItem:
+							slotValue = SlotValue(EnumItemSlot{ instruction.param });
+							break;
+						case AstInsType::StackSlot:
+							{
+								if (!creatingObject)
+								{
+									throw AstInsException(
+										L"There is no creating object to store in a stack slot.",
+										AstInsErrorType::NoCreatingObjectForStackSlot
+									);
+								}
+								auto value = creatingObject.Value().object;
+								creatingObject.Reset();
+								slotValue = SlotValue(value);
+							}
+							break;
+						default:;
+						}
 
-						auto keyIndex = frame->slots.Keys().IndexOf(slotIndex);
+						auto keyIndex = frame->slots.Keys().IndexOf(instruction.count);
 						if (keyIndex == -1)
 						{
 							SlotStorage storage;
 							storage.value = slotValue;
-							frame->slots.Add(slotIndex, storage);
+							frame->slots.Add(instruction.count, storage);
 						}
 						else
 						{
-							auto storage = frame->slots.Get(slotIndex);
+							auto&& storage = const_cast<SlotStorage&>(frame->slots.Get(instruction.count));
 							if (!storage.additionalValues)
 							{
 								storage.additionalValues = Ptr(new List<SlotValue>);
 							}
 							storage.additionalValues->Add(slotValue);
-							frame->slots.Set(slotIndex, storage);
 						}
 					}
 					break;
 				case AstInsType::StackBegin:
 					{
 						stackFrames.Add(Ptr(new StackFrame));
-					}
-					break;
-				case AstInsType::StackSlot:
-					{
-						if (!creatingObject)
-						{
-							throw AstInsException(
-								L"There is no creating object to store in a stack slot.",
-								AstInsErrorType::NoCreatingObjectForField
-							);
-						}
-
-						CHECK_ERROR(
-							stackFrames.Count() > 0,
-							L"vl::glr::AstInsReceiverBase::Execute(AstIns, const regex::RegexToken&)#StackBegin must be executed before assigning slot values."
-						);
-						auto frame = stackFrames[stackFrames.Count() - 1];
-						CHECK_ERROR(
-							frame,
-							L"vl::glr::AstInsReceiverBase::Execute(AstIns, const regex::RegexToken&)#Internal error: stack frame is null."
-						);
-
-						const vint32_t slotIndex = (vint32_t)instruction.count;
-						SlotValue slotValue = creatingObject.Value().object;
-						creatingObject.Reset();
-
-						auto keyIndex = frame->slots.Keys().IndexOf(slotIndex);
-						if (keyIndex == -1)
-						{
-							SlotStorage storage;
-							storage.value = slotValue;
-							frame->slots.Add(slotIndex, storage);
-						}
-						else
-						{
-							auto storage = frame->slots.Get(slotIndex);
-							if (!storage.additionalValues)
-							{
-								storage.additionalValues = Ptr(new List<SlotValue>);
-							}
-							storage.additionalValues->Add(slotValue);
-							frame->slots.Set(slotIndex, storage);
-						}
 					}
 					break;
 				case AstInsType::CreateObject:
@@ -405,10 +382,6 @@ AstInsReceiverBase
 						}
 
 						auto value = CreateAstNode(instruction.param);
-						CHECK_ERROR(
-							value,
-							L"vl::glr::AstInsReceiverBase::Execute(AstIns, const regex::RegexToken&)#CreateAstNode returned null."
-						);
 						value->codeRange = { &token,&token };
 
 						CreatingObject info;
@@ -429,29 +402,23 @@ AstInsReceiverBase
 							);
 						}
 
-						CHECK_ERROR(
-							stackFrames.Count() > 0,
-							L"vl::glr::AstInsReceiverBase::Execute(AstIns, const regex::RegexToken&)#StackBegin must be executed before assigning fields."
-						);
+						if (stackFrames.Count() == 0)
+						{
+							throw AstInsException(
+								L"There is no stack frame to provide values for field assignment.",
+								AstInsErrorType::NoStackFrame
+							);
+						}
 						auto frame = stackFrames[stackFrames.Count() - 1];
-						CHECK_ERROR(
-							frame,
-							L"vl::glr::AstInsReceiverBase::Execute(AstIns, const regex::RegexToken&)#Internal error: stack frame is null."
-						);
 
-						const vint32_t slotIndex = (vint32_t)instruction.count;
-						auto slotKeyIndex = frame->slots.Keys().IndexOf(slotIndex);
+						auto slotKeyIndex = frame->slots.Keys().IndexOf(instruction.count);
 						if (slotKeyIndex == -1)
 						{
 							break;
 						}
 
-						auto storage = frame->slots.Get(slotIndex);
+						auto storage = frame->slots.Get(instruction.count);
 						auto object = creatingObject.Value().object.Obj();
-						CHECK_ERROR(
-							object,
-							L"vl::glr::AstInsReceiverBase::Execute(AstIns, const regex::RegexToken&)#Internal error: creating object is null."
-						);
 
 						const bool weakAssignment = instruction.type == AstInsType::FieldIfUnassigned;
 						auto assignValue = [&](const SlotValue& slotValue)
@@ -459,16 +426,16 @@ AstInsReceiverBase
 							SetField(object, instruction.param, slotValue, weakAssignment);
 						};
 
-						assignValue(storage.value);
+						SetField(object, instruction.param, storage.value, weakAssignment);
 						if (storage.additionalValues)
 						{
-							for (vint i = 0; i < storage.additionalValues->Count(); i++)
+							for (auto&& additionalValue : *storage.additionalValues.Obj())
 							{
-								assignValue(storage.additionalValues->Get(i));
+								SetField(object, instruction.param, additionalValue, weakAssignment);
 							}
 						}
 
-						frame->slots.Remove(slotIndex);
+						frame->slots.Remove(instruction.count);
 					}
 					break;
 				case AstInsType::StackEnd:
@@ -481,24 +448,26 @@ AstInsReceiverBase
 							);
 						}
 
-						CHECK_ERROR(
-							stackFrames.Count() > 0,
-							L"vl::glr::AstInsReceiverBase::Execute(AstIns, const regex::RegexToken&)#StackEnd executed without StackBegin."
-						);
+						if (stackFrames.Count() == 0)
+						{
+							throw AstInsException(
+								L"There is no stack frame to end.",
+								AstInsErrorType::NoStackFrameForStackEnd
+							);
+						}
 						stackFrames.RemoveAt(stackFrames.Count() - 1);
 					}
 					break;
 				case AstInsType::ResolveAmbiguity:
 					{
-						CHECK_ERROR(
-							stackFrames.Count() > 0,
-							L"vl::glr::AstInsReceiverBase::Execute(AstIns, const regex::RegexToken&)#StackBegin must be executed before resolving ambiguity."
-						);
+						if (stackFrames.Count() == 0)
+						{
+							throw AstInsException(
+								L"There is no stack frame to resolve ambiguity.",
+								AstInsErrorType::NoStackFrame
+							);
+						}
 						auto frame = stackFrames[stackFrames.Count() - 1];
-						CHECK_ERROR(
-							frame,
-							L"vl::glr::AstInsReceiverBase::Execute(AstIns, const regex::RegexToken&)#Internal error: stack frame is null."
-						);
 
 						const vint32_t slotIndex = 0;
 						auto slotKeyIndex = frame->slots.Keys().IndexOf(slotIndex);
@@ -568,10 +537,6 @@ AstInsReceiverBase
 						}
 
 						auto resolved = ResolveAmbiguity(instruction.param, candidates);
-						CHECK_ERROR(
-							resolved,
-							L"vl::glr::AstInsReceiverBase::Execute(AstIns, const regex::RegexToken&)#ResolveAmbiguity returned null."
-						);
 
 						SlotStorage resolvedStorage;
 						resolvedStorage.value = SlotValue(resolved);

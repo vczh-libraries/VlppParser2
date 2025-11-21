@@ -317,6 +317,8 @@ Instructions
 			MissingAmbiguityCandidate,					// MissingAmbiguityCandidate()			: There are less than two candidates to create an ambiguity node.
 			AmbiguityCandidateIsNotObject,				// AmbiguityCandidateIsNotObject()		: Tokens or enum items cannot be ambiguity candidates.
 
+			NoStackFrame,								// NoStackFrame()						: Stack operations are executed while no stack frame exists.
+			NoStackFrameForStackEnd,					// NoStackFrameForStackEnd()			: StackEnd when no stack frame exists.
 			NoCreatingObjectForField,					// NoCreatingObjectForField()			: Field when no creating object.
 			NoCreatingObjectForStackSlot,				// NoCreatingObjectForStackSlot()		: StackSlot when no creating object.
 			NoCreatingObjectForStackEnd,				// NoCreatingObjectForStackEnd()		: StackEnd when no creating object.
