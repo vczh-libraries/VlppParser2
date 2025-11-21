@@ -11,10 +11,11 @@ Run the following projects in order.
   - Generate Calculator lexer C++ types from manual definitions.
   - Generate Parser lexer C++ types from manual definitions.
 - `ParserTest_LexerAndParser`
-  - Run generated Calculator lexer types from previous projects.
-  - Run Calculator parser from manual definitions.
   - Generate Calculator parser C++ types from manual definitions.
   - Generate Parser parser C++ types from manual definitions.
+- `ParserTest_LexerAndParser_Generated`
+  - Run generated Calculator lexer types from previous projects.
+  - Run Calculator parser from manual definitions.
 - `ParserTest_ParserGen`
   - ParserGen error detection.
 - `ParserTest_ParserGen_Compiler`
