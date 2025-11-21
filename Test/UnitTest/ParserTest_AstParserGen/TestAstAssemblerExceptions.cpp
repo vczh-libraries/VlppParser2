@@ -162,7 +162,7 @@ export 1
 		);
 	});
 
-	TEST_CASE(L"CreatingObjectNotReset")
+	TEST_CASE(L"CreatingObjectNotReset (CreateObject)")
 	{
 		WString input = LR"(
 export 1
@@ -176,6 +176,20 @@ export 1
 			AstInsException,
 			[](const AstInsException& e) { TEST_ASSERT(e.error == AstInsErrorType::CreatingObjectNotReset); }
 			);
+	});
+
+	TEST_CASE(L"CreatingObjectNotReset (ResolveAmbiguity)")
+	{
+		WString input = LR"(
+export 1
+)";
+		LEXER(input, tokens);
+		CalculatorAstInsReceiver receiver;
+		TEST_EXCEPTION(
+			receiver.Execute({ AstInsType::ResolveAmbiguity, (vint32_t)CalculatorClasses::NumExpr }, tokens[0], 0),
+			AstInsException,
+			[](const AstInsException& e) { TEST_ASSERT(e.error == AstInsErrorType::CreatingObjectNotReset); }
+		);
 	});
 
 	TEST_CASE(L"InstructionNotComplete")
