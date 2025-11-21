@@ -17,46 +17,31 @@ void LogInstruction(
 	switch (ins.type)
 	{
 	case AstInsType::Token:
-		writer.WriteLine(L"Token()");
+		writer.WriteLine(L"Token(" + itow(ins.count) + L")");
 		break;
 	case AstInsType::EnumItem:
-		writer.WriteLine(L"EnumItem(" + itow(ins.param) + L")");
+		writer.WriteLine(L"EnumItem(" + itow(ins.param) + L", " + itow(ins.count) + L")");
 		break;
-	case AstInsType::BeginObject:
-		writer.WriteLine(L"BeginObject(" + typeName(ins.param) + L")");
+	case AstInsType::StackBegin:
+		writer.WriteLine(L"StackBegin()");
 		break;
-	case AstInsType::DelayFieldAssignment:
-		writer.WriteLine(L"DelayFieldAssignment()");
+	case AstInsType::StackSlot:
+		writer.WriteLine(L"StackSlot(" + itow(ins.count) + L")");
 		break;
-	case AstInsType::ReopenObject:
-		writer.WriteLine(L"ReopenObject()");
-		break;
-	case AstInsType::EndObject:
-		writer.WriteLine(L"EndObject()");
-		break;
-	case AstInsType::DiscardValue:
-		writer.WriteLine(L"DiscardValue()");
-		break;
-	case AstInsType::LriStore:
-		writer.WriteLine(L"LriStore()");
-		break;
-	case AstInsType::LriFetch:
-		writer.WriteLine(L"LriFetch()");
+	case AstInsType::CreateObject:
+		writer.WriteLine(L"CreateObject(" + typeName(ins.param) + L")");
 		break;
 	case AstInsType::Field:
-		writer.WriteLine(L"Field(" + fieldName(ins.param) + L")");
+		writer.WriteLine(L"Field(" + fieldName(ins.param) + L", " + itow(ins.count) + L")");
 		break;
 	case AstInsType::FieldIfUnassigned:
-		writer.WriteLine(L"FieldIfUnassigned(" + fieldName(ins.param) + L")");
+		writer.WriteLine(L"FieldIfUnassigned(" + fieldName(ins.param) + L", " + itow(ins.count) + L")");
+		break;
+	case AstInsType::StackEnd:
+		writer.WriteLine(L"StackEnd()");
 		break;
 	case AstInsType::ResolveAmbiguity:
 		writer.WriteLine(L"ResolveAmbiguity(" + typeName(ins.param) + L", " + itow(ins.count) + L")");
-		break;
-	case AstInsType::AccumulatedDfa:
-		writer.WriteLine(L"AccumulatedDfa(" + itow(ins.count) + L")");
-		break;
-	case AstInsType::AccumulatedEoRo:
-		writer.WriteLine(L"AccumulatedEoRo(" + itow(ins.count) + L")");
 		break;
 	default:
 		writer.WriteLine(L"<UNKNOWN-INSTRUCTION>");
