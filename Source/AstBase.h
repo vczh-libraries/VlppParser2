@@ -355,61 +355,52 @@ IAstInsReceiver
 		class AstInsReceiverBase : public Object, public virtual IAstInsReceiver
 		{
 		private:
-			struct ObjectOrToken
+			struct TokenSlot
+			{
+				regex::RegexToken						token;
+				vint32_t								index = -1;
+
+				auto operator<=>(const TokenSlot&) const = default;
+			};
+
+			struct EnumItemSlot
+			{
+				vint32_t								value = -1;
+
+				auto operator<=>(const EnumItemSlot&) const = default;
+			};
+
+			using SlotValue = Variant<TokenSlot, EnumItemSlot, Ptr<ParsingAstBase>>;
+
+			struct SlotStorage
+			{
+				SlotValue								value;
+				Ptr<collections::List<SlotValue>>		additionalValues;
+
+				auto operator<=>(const SlotStorage&) const = default;
+			};
+			using SlotMap = collections::Dictionary<vint32_t, SlotStorage>;
+
+			struct StackFrame
+			{
+				SlotMap									slots;
+			};
+			using StackFrameList = collections::List<Ptr<StackFrame>>;
+
+			struct CreatingObject
 			{
 				Ptr<ParsingAstBase>						object;
-				vint32_t								enumItem = -1;
-				regex::RegexToken						token = {};
-				vint32_t								tokenIndex = -1;
-
-				explicit ObjectOrToken(Ptr<ParsingAstBase> _object) : object(_object) {}
-				explicit ObjectOrToken(vint32_t _enumItem) : enumItem(_enumItem) {}
-				explicit ObjectOrToken(const regex::RegexToken& _token, vint32_t _tokenIndex) : token(_token), tokenIndex(_tokenIndex) {}
+				vint32_t								type = -1;
 			};
 
-			struct FieldAssignment
-			{
-				ObjectOrToken							value;
-				vint32_t								field = -1;
-				bool									weakAssignment = false;
-			};
-
-			struct CreatedObject
-			{
-				Ptr<ParsingAstBase>						object;
-				vint									pushedCount;
-
-				regex::RegexToken						delayedToken;
-				collections::List<FieldAssignment>		delayedFieldAssignments;
-				vint									extraEmptyDfaBelow = 0;
-
-				CreatedObject(Ptr<ParsingAstBase> _object, vint _pushedCount)
-					: object(_object)
-					, pushedCount(_pushedCount)
-				{
-				}
-
-				CreatedObject(Ptr<ParsingAstBase> _object, vint _pushedCount, const regex::RegexToken& _delayedToken)
-					: object(_object)
-					, pushedCount(_pushedCount)
-					, delayedToken(_delayedToken)
-				{
-				}
-			};
-
-			collections::List<CreatedObject>			created;
-			collections::List<ObjectOrToken>			pushed;
-			Ptr<ParsingAstBase>							lriStoredObject;
+			Nullable<CreatingObject>					creatingObject;
+			StackFrameList								stackFrames;
 			bool										finished = false;
 			bool										corrupted = false;
 
 			void										EnsureContinuable();
-			void										SetField(ParsingAstBase* object, vint32_t field, const ObjectOrToken& value, bool weakAssignment);
+			void										SetField(ParsingAstBase* object, vint32_t field, const SlotValue& value, bool weakAssignment);
 
-			CreatedObject&								PushCreated(CreatedObject&& createdObject);
-			const CreatedObject&						TopCreated();
-			void										PopCreated();
-			void										DelayAssign(FieldAssignment&& fa);
 		protected:
 			virtual Ptr<ParsingAstBase>					CreateAstNode(vint32_t type) = 0;
 			virtual void								SetField(ParsingAstBase* object, vint32_t field, Ptr<ParsingAstBase> value) = 0;

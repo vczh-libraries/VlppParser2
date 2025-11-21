@@ -267,88 +267,38 @@ AstInsReceiverBase
 			}
 		}
 
-		void AstInsReceiverBase::SetField(ParsingAstBase* object, vint32_t field, const ObjectOrToken& value, bool weakAssignment)
+		void AstInsReceiverBase::SetField(ParsingAstBase* object, vint32_t field, const SlotValue& value, bool weakAssignment)
 		{
-			if (value.object)
-			{
-				if (weakAssignment)
+			value.Apply(Overloading(
+				[&](const TokenSlot& tokenSlot)
 				{
-					throw AstInsException(
-						L"Weak assignment only available for field of enum type",
-						AstInsErrorType::FieldWeakAssignmentOnNonEnum,
-						field
+					if (weakAssignment)
+					{
+						throw AstInsException(
+							L"Weak assignment only available for field of enum type",
+							AstInsErrorType::FieldWeakAssignmentOnNonEnum,
+							field
 						);
-				}
-				SetField(object, field, value.object);
-			}
-			else if (value.enumItem != -1)
-			{
-				SetField(object, field, value.enumItem, weakAssignment);
-			}
-			else
-			{
-				if (weakAssignment)
+					}
+					SetField(object, field, tokenSlot.token, tokenSlot.index);
+				},
+				[&](const EnumItemSlot& enumItemSlot)
 				{
-					throw AstInsException(
-						L"Weak assignment only available for field of enum type",
-						AstInsErrorType::FieldWeakAssignmentOnNonEnum,
-						field
+					SetField(object, field, enumItemSlot.value, weakAssignment);
+				},
+				[&](const Ptr< ParsingAstBase>& objectSlot)
+				{
+					if (weakAssignment)
+					{
+						throw AstInsException(
+							L"Weak assignment only available for field of enum type",
+							AstInsErrorType::FieldWeakAssignmentOnNonEnum,
+							field
 						);
+					}
+					SetField(object, field, objectSlot);
 				}
-				SetField(object, field, value.token, value.tokenIndex);
-			}
-		}
-
-		AstInsReceiverBase::CreatedObject& AstInsReceiverBase::PushCreated(CreatedObject&& createdObject)
-		{
-			if (created.Count() == 0)
-			{
-				created.Add(std::move(createdObject));
-			}
-			else
-			{
-				auto& top = created[created.Count() - 1];
-				if (
-					!top.object &&
-					top.pushedCount == createdObject.pushedCount &&
-					top.delayedToken.reading == createdObject.delayedToken.reading &&
-					top.delayedFieldAssignments.Count() == 0
-					)
-				{
-					top.object = createdObject.object;
-					top.extraEmptyDfaBelow++;
-				}
-				else
-				{
-					created.Add(std::move(createdObject));
-				}
-			}
-			return created[created.Count() - 1];
-		}
-
-		const AstInsReceiverBase::CreatedObject& AstInsReceiverBase::TopCreated()
-		{
-			return created[created.Count() - 1];
-		}
-
-		void AstInsReceiverBase::PopCreated()
-		{
-			auto& top = created[created.Count() - 1];
-			if (top.extraEmptyDfaBelow == 0)
-			{
-				created.RemoveAt(created.Count() - 1);
-			}
-			else if (top.object)
-			{
-				top.object = nullptr;
-				top.delayedFieldAssignments.Clear();
-				top.extraEmptyDfaBelow--;
-			}
-		}
-
-		void AstInsReceiverBase::DelayAssign(FieldAssignment&& fa)
-		{
-			created[created.Count() - 1].delayedFieldAssignments.Add(std::move(fa));
+			));
 		}
 
 		void AstInsReceiverBase::Execute(AstIns instruction, const regex::RegexToken& token, vint32_t tokenIndex)
