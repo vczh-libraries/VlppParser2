@@ -440,19 +440,18 @@ AstInsReceiverBase
 					break;
 				case AstInsType::StackEnd:
 					{
-						if (!creatingObject)
-						{
-							throw AstInsException(
-								L"There is no creating object when ending the current stack frame.",
-								AstInsErrorType::NoCreatingObjectForStackEnd
-							);
-						}
-
 						if (stackFrames.Count() == 0)
 						{
 							throw AstInsException(
 								L"There is no stack frame to end.",
 								AstInsErrorType::NoStackFrameForStackEnd
+							);
+						}
+						if (!creatingObject)
+						{
+							throw AstInsException(
+								L"There is no creating object when ending the current stack frame.",
+								AstInsErrorType::NoCreatingObjectForStackEnd
 							);
 						}
 						stackFrames.RemoveAt(stackFrames.Count() - 1);

@@ -185,6 +185,7 @@ export 1
 )";
 		LEXER(input, tokens);
 		CalculatorAstInsReceiver receiver;
+		receiver.Execute({ AstInsType::CreateObject, (vint32_t)CalculatorClasses::Module }, tokens[0], 0);
 		TEST_EXCEPTION(
 			receiver.Execute({ AstInsType::ResolveAmbiguity, (vint32_t)CalculatorClasses::NumExpr }, tokens[0], 0),
 			AstInsException,
