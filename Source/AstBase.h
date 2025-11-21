@@ -381,13 +381,13 @@ IAstInsReceiver
 
 				auto operator<=>(const SlotStorage&) const = default;
 			};
-			using SlotMap = collections::Dictionary<vint32_t, SlotStorage>;
+			using SlotMap = collections::Dictionary<vint, SlotStorage>;
 
 			struct StackFrame
 			{
 				SlotMap									slots;
 			};
-			using StackFrameList = collections::List<Ptr<StackFrame>>;
+			using StackFrameList = collections::List<StackFrame>;
 
 			struct CreatingObject
 			{

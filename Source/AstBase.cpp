@@ -319,7 +319,7 @@ AstInsReceiverBase
 								AstInsErrorType::NoStackFrame
 							);
 						}
-						auto frame = stackFrames[stackFrames.Count() - 1];
+						auto&& frame = stackFrames[stackFrames.Count() - 1];
 
 						SlotValue slotValue;
 						switch (instruction.type)
@@ -347,16 +347,16 @@ AstInsReceiverBase
 						default:;
 						}
 
-						auto keyIndex = frame->slots.Keys().IndexOf(instruction.count);
+						auto keyIndex = frame.slots.Keys().IndexOf(instruction.count);
 						if (keyIndex == -1)
 						{
 							SlotStorage storage;
 							storage.value = slotValue;
-							frame->slots.Add(instruction.count, storage);
+							frame.slots.Add(instruction.count, storage);
 						}
 						else
 						{
-							auto&& storage = const_cast<SlotStorage&>(frame->slots.Get(instruction.count));
+							auto&& storage = const_cast<SlotStorage&>(frame.slots.Get(instruction.count));
 							if (!storage.additionalValues)
 							{
 								storage.additionalValues = Ptr(new List<SlotValue>);
@@ -367,7 +367,7 @@ AstInsReceiverBase
 					break;
 				case AstInsType::StackBegin:
 					{
-						stackFrames.Add(Ptr(new StackFrame));
+						stackFrames.Add({});
 					}
 					break;
 				case AstInsType::CreateObject:
@@ -409,15 +409,15 @@ AstInsReceiverBase
 								AstInsErrorType::NoStackFrame
 							);
 						}
-						auto frame = stackFrames[stackFrames.Count() - 1];
+						auto&& frame = stackFrames[stackFrames.Count() - 1];
 
-						auto slotKeyIndex = frame->slots.Keys().IndexOf(instruction.count);
+						auto slotKeyIndex = frame.slots.Keys().IndexOf(instruction.count);
 						if (slotKeyIndex == -1)
 						{
 							break;
 						}
 
-						auto storage = frame->slots.Get(instruction.count);
+						auto storage = frame.slots.Get(instruction.count);
 						auto object = creatingObject.Value().object.Obj();
 
 						const bool weakAssignment = instruction.type == AstInsType::FieldIfUnassigned;
@@ -435,7 +435,7 @@ AstInsReceiverBase
 							}
 						}
 
-						frame->slots.Remove(instruction.count);
+						frame.slots.Remove(instruction.count);
 					}
 					break;
 				case AstInsType::StackEnd:
@@ -467,10 +467,10 @@ AstInsReceiverBase
 								AstInsErrorType::NoStackFrame
 							);
 						}
-						auto frame = stackFrames[stackFrames.Count() - 1];
+						auto&& frame = stackFrames[stackFrames.Count() - 1];
 
 						const vint32_t slotIndex = 0;
-						auto slotKeyIndex = frame->slots.Keys().IndexOf(slotIndex);
+						auto slotKeyIndex = frame.slots.Keys().IndexOf(slotIndex);
 						if (slotKeyIndex == -1)
 						{
 							throw AstInsException(
@@ -479,7 +479,7 @@ AstInsReceiverBase
 							);
 						}
 
-						auto storage = frame->slots.Get(slotIndex);
+						auto storage = frame.slots.Get(slotIndex);
 						vint candidateCount = 1;
 						if (storage.additionalValues)
 						{
@@ -540,7 +540,7 @@ AstInsReceiverBase
 
 						SlotStorage resolvedStorage;
 						resolvedStorage.value = SlotValue(resolved);
-						frame->slots.Set(slotIndex, resolvedStorage);
+						frame.slots.Set(slotIndex, resolvedStorage);
 					}
 					break;
 				}
@@ -557,7 +557,7 @@ AstInsReceiverBase
 			EnsureContinuable();
 			try
 			{
-				if (created.Count() > 0 || pushed.Count() > 1)
+				if (stackFrames.Count() > 0 || !creatingObject)
 				{
 					throw AstInsException(
 						L"No more instruction but the root object has not been completed yet.",
@@ -565,16 +565,8 @@ AstInsReceiverBase
 						);
 				}
 
-				auto object = pushed[0].object;
-				if (!object)
-				{
-					throw AstInsException(
-						L"No more instruction but the root object has not been completed yet.",
-						AstInsErrorType::InstructionNotComplete
-						);
-				}
-				pushed.Clear();
-				finished = true;
+				auto object = creatingObject.Value().object;
+				creatingObject.Reset();
 				return object;
 			}
 			catch (const AstInsException&)
