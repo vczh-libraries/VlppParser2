@@ -434,8 +434,6 @@ AstInsReceiverBase
 								SetField(object, instruction.param, additionalValue, weakAssignment);
 							}
 						}
-
-						frame.slots.Remove(instruction.count);
 					}
 					break;
 				case AstInsType::StackEnd:
