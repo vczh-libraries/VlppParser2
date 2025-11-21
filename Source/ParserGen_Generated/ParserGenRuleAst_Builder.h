@@ -41,34 +41,6 @@ namespace vl::glr::parsergen::builder
 		MakeCreateClause& type(const vl::WString& value);
 	};
 
-	class MakeLeftRecursionInjectClause : public vl::glr::ParsingAstBuilder<GlrLeftRecursionInjectClause>
-	{
-	public:
-		MakeLeftRecursionInjectClause& continuation(const vl::Ptr<GlrLeftRecursionInjectContinuation>& value);
-		MakeLeftRecursionInjectClause& rule(const vl::Ptr<GlrRefSyntax>& value);
-	};
-
-	class MakeLeftRecursionInjectContinuation : public vl::glr::ParsingAstBuilder<GlrLeftRecursionInjectContinuation>
-	{
-	public:
-		MakeLeftRecursionInjectContinuation& configuration(GlrLeftRecursionConfiguration value);
-		MakeLeftRecursionInjectContinuation& flags(const vl::Ptr<GlrLeftRecursionPlaceholder>& value);
-		MakeLeftRecursionInjectContinuation& injectionTargets(const vl::Ptr<GlrLeftRecursionInjectClause>& value);
-		MakeLeftRecursionInjectContinuation& type(GlrLeftRecursionInjectContinuationType value);
-	};
-
-	class MakeLeftRecursionPlaceholder : public vl::glr::ParsingAstBuilder<GlrLeftRecursionPlaceholder>
-	{
-	public:
-		MakeLeftRecursionPlaceholder& flag(const vl::WString& value);
-	};
-
-	class MakeLeftRecursionPlaceholderClause : public vl::glr::ParsingAstBuilder<GlrLeftRecursionPlaceholderClause>
-	{
-	public:
-		MakeLeftRecursionPlaceholderClause& flags(const vl::Ptr<GlrLeftRecursionPlaceholder>& value);
-	};
-
 	class MakeLoopSyntax : public vl::glr::ParsingAstBuilder<GlrLoopSyntax>
 	{
 	public:
@@ -102,12 +74,6 @@ namespace vl::glr::parsergen::builder
 		MakePartialClause& assignments(const vl::Ptr<GlrAssignment>& value);
 		MakePartialClause& syntax(const vl::Ptr<GlrSyntax>& value);
 		MakePartialClause& type(const vl::WString& value);
-	};
-
-	class MakePrefixMergeClause : public vl::glr::ParsingAstBuilder<GlrPrefixMergeClause>
-	{
-	public:
-		MakePrefixMergeClause& rule(const vl::Ptr<GlrRefSyntax>& value);
 	};
 
 	class MakePushConditionSyntax : public vl::glr::ParsingAstBuilder<GlrPushConditionSyntax>

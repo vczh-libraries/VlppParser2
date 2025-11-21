@@ -27,16 +27,11 @@ namespace vl::glr::parsergen::traverse_visitor
 		virtual void Traverse(GlrClause* node);
 		virtual void Traverse(GlrCondition* node);
 		virtual void Traverse(GlrCreateClause* node);
-		virtual void Traverse(GlrLeftRecursionInjectClause* node);
-		virtual void Traverse(GlrLeftRecursionInjectContinuation* node);
-		virtual void Traverse(GlrLeftRecursionPlaceholder* node);
-		virtual void Traverse(GlrLeftRecursionPlaceholderClause* node);
 		virtual void Traverse(GlrLoopSyntax* node);
 		virtual void Traverse(GlrNotCondition* node);
 		virtual void Traverse(GlrOptionalSyntax* node);
 		virtual void Traverse(GlrOrCondition* node);
 		virtual void Traverse(GlrPartialClause* node);
-		virtual void Traverse(GlrPrefixMergeClause* node);
 		virtual void Traverse(GlrPushConditionSyntax* node);
 		virtual void Traverse(GlrRefCondition* node);
 		virtual void Traverse(GlrRefSyntax* node);
@@ -58,16 +53,11 @@ namespace vl::glr::parsergen::traverse_visitor
 		virtual void Finishing(GlrClause* node);
 		virtual void Finishing(GlrCondition* node);
 		virtual void Finishing(GlrCreateClause* node);
-		virtual void Finishing(GlrLeftRecursionInjectClause* node);
-		virtual void Finishing(GlrLeftRecursionInjectContinuation* node);
-		virtual void Finishing(GlrLeftRecursionPlaceholder* node);
-		virtual void Finishing(GlrLeftRecursionPlaceholderClause* node);
 		virtual void Finishing(GlrLoopSyntax* node);
 		virtual void Finishing(GlrNotCondition* node);
 		virtual void Finishing(GlrOptionalSyntax* node);
 		virtual void Finishing(GlrOrCondition* node);
 		virtual void Finishing(GlrPartialClause* node);
-		virtual void Finishing(GlrPrefixMergeClause* node);
 		virtual void Finishing(GlrPushConditionSyntax* node);
 		virtual void Finishing(GlrRefCondition* node);
 		virtual void Finishing(GlrRefSyntax* node);
@@ -99,9 +89,6 @@ namespace vl::glr::parsergen::traverse_visitor
 		void Visit(GlrCreateClause* node) override;
 		void Visit(GlrPartialClause* node) override;
 		void Visit(GlrReuseClause* node) override;
-		void Visit(GlrLeftRecursionPlaceholderClause* node) override;
-		void Visit(GlrLeftRecursionInjectClause* node) override;
-		void Visit(GlrPrefixMergeClause* node) override;
 
 	public:
 		void InspectInto(GlrCondition* node);
@@ -110,8 +97,6 @@ namespace vl::glr::parsergen::traverse_visitor
 		void InspectInto(GlrSwitchItem* node);
 		void InspectInto(GlrTestConditionBranch* node);
 		void InspectInto(GlrAssignment* node);
-		void InspectInto(GlrLeftRecursionPlaceholder* node);
-		void InspectInto(GlrLeftRecursionInjectContinuation* node);
 		void InspectInto(GlrRule* node);
 		void InspectInto(GlrSyntaxFile* node);
 	};

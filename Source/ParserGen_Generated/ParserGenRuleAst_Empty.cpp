@@ -86,16 +86,4 @@ ClauseVisitor
 	void ClauseVisitor::Visit(GlrReuseClause* node)
 	{
 	}
-
-	void ClauseVisitor::Visit(GlrLeftRecursionPlaceholderClause* node)
-	{
-	}
-
-	void ClauseVisitor::Visit(GlrLeftRecursionInjectClause* node)
-	{
-	}
-
-	void ClauseVisitor::Visit(GlrPrefixMergeClause* node)
-	{
-	}
 }

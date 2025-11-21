@@ -44,12 +44,6 @@ CreateParserGenRuleSyntax
 				auto _assignmentOp = createRule(L"AssignmentOp");
 				auto _assignment = createRule(L"Assignment");
 				auto _clause = createRule(L"Clause");
-				auto _placeholder = createRule(L"Placeholder");
-				auto _ruleName = createRule(L"RuleName");
-				auto _lriConfig = createRule(L"LriConfig");
-				auto _lriContinuationBody = createRule(L"LriContinuationBody");
-				auto _lriContinuation = createRule(L"LriContinuation");
-				auto _lriTarget = createRule(L"LriTarget");
 				auto _rule = createRule(L"Rule");
 				auto _file = createRule(L"File");
 
@@ -57,8 +51,6 @@ CreateParserGenRuleSyntax
 				_optionalBody->isPartial = true;
 				_token->isPartial = true;
 				_assignmentOp->isPartial = true;
-				_lriConfig->isPartial = true;
-				_lriContinuationBody->isPartial = true;
 
 				_file->isParser = true;
 				_file->ruleType = dynamic_cast<AstClassSymbol*>(ast.Symbols()[L"SyntaxFile"][0]);
@@ -198,58 +190,6 @@ CreateParserGenRuleSyntax
 
 				// Syntax:syntax ["{" {Assignment:assignments ; ","} "}"] as ReuseClause
 				Clause{ _clause } = create(rule(_syntax, F::ReuseClause_syntax) + opt(tok(T::OPEN_CURLY) + loop(rule(_assignment, F::ReuseClause_assignments), tok(T::COMMA)) + tok(T::CLOSE_CURLY)), C::ReuseClause);
-
-				///////////////////////////////////////////////////////////////////////////////////
-				// Clause (left recursive)
-				///////////////////////////////////////////////////////////////////////////////////
-
-				// ID:flag as LeftRecursionPlaceholder
-				Clause{ _placeholder } = create(tok(T::ID, F::LeftRecursionPlaceholder_flag), C::LeftRecursionPlaceholder);
-
-				// ID:literal as RefSyntax {refType = ID}
-				Clause{ _ruleName } = create(tok(T::ID, F::RefSyntax_literal), C::RefSyntax).with(F::RefSyntax_refType, GlrRefType::Id);
-
-				// "left_recursion_placeholder" "(" RuleName:flags {"," ruleName:flags} ")" as LeftRecursionPlaceholderClause
-				Clause{ _clause } = create(
-						tok(T::LS_PH) + tok(T::OPEN_ROUND)
-						+ rule(_placeholder, F::LeftRecursionPlaceholderClause_flags)
-						+ loop(tok(T::COMMA) + rule(_placeholder, F::LeftRecursionPlaceholderClause_flags))
-						+ tok(T::CLOSE_ROUND),
-					C::LeftRecursionPlaceholderClause);
-
-				// "left_recursion_inject" as partial LeftRecursionInjectContinuation {configuration = Single}
-				Clause{ _lriConfig } = partial(tok(T::LS_I)).with(F::LeftRecursionInjectContinuation_configuration, GlrLeftRecursionConfiguration::Single);
-
-				// "left_recursion_inject_multiple" as partial LeftRecursionInjectContinuation {configuration = Multiple}
-				Clause{ _lriConfig } = partial(tok(T::LS_IM)).with(F::LeftRecursionInjectContinuation_configuration, GlrLeftRecursionConfiguration::Multiple);
-
-				// LriConfig "(" Placeholder:flag {"," Placeholder:flag} ")" LriTarget:injectionTargets {"|" LriTarget:injectionTargets} as partial LeftRecursionInjectContinuation
-				Clause{ _lriContinuationBody } = partial(
-					prule(_lriConfig) + tok(T::OPEN_ROUND)
-					+ rule(_placeholder, F::LeftRecursionInjectContinuation_flags)
-					+ loop(tok(T::COMMA) + rule(_placeholder, F::LeftRecursionInjectContinuation_flags))
-					+ tok(T::CLOSE_ROUND)
-					+ rule(_lriTarget, F::LeftRecursionInjectContinuation_injectionTargets)
-					+ loop(tok(T::ALTERNATIVE) + rule(_lriTarget, F::LeftRecursionInjectContinuation_injectionTargets))
-					);
-
-				// LriContinuationBody as LeftRecursionInjectionContinuation {type = Required}
-				Clause{ _lriContinuation } = create(prule(_lriContinuationBody), C::LeftRecursionInjectContinuation).with(F::LeftRecursionInjectContinuation_type, GlrLeftRecursionInjectContinuationType::Required);
-
-				// "[" LriContinuationBody as LeftRecursionInjectionContinuation "]" {type = Optional}
-				Clause{ _lriContinuation } = create(tok(T::OPEN_SQUARE) + prule(_lriContinuationBody) + tok(T::CLOSE_SQUARE), C::LeftRecursionInjectContinuation).with(F::LeftRecursionInjectContinuation_type, GlrLeftRecursionInjectContinuationType::Optional);
-
-				// RuleName:rule as LeftRecursionInjectClause
-				Clause{ _lriTarget } = create(rule(_ruleName, F::LeftRecursionInjectClause_rule), C::LeftRecursionInjectClause);
-
-				// "(" RuleName:rule LriContinuation:continuation ")" as LeftRecursionInjectClause
-				Clause{ _lriTarget } = create(tok(T::OPEN_ROUND) + rule(_ruleName, F::LeftRecursionInjectClause_rule) + rule(_lriContinuation, F::LeftRecursionInjectClause_continuation) + tok(T::CLOSE_ROUND), C::LeftRecursionInjectClause);
-
-				// "!" RuleName:rule LriContinuation:continuation as LeftRecursionInjectClause
-				Clause{ _clause } = create(tok(T::USE) + rule(_ruleName, F::LeftRecursionInjectClause_rule) + rule(_lriContinuation, F::LeftRecursionInjectClause_continuation), C::LeftRecursionInjectClause);
-
-				// "!" "prefix_merge" "(" RuleName:rule ")" as PrefixMergeClause
-				Clause{ _clause } = create(tok(T::USE) + tok(T::LS_PM) + tok(T::OPEN_ROUND) + rule(_ruleName, F::PrefixMergeClause_rule) + tok(T::CLOSE_ROUND), C::PrefixMergeClause);
 
 				///////////////////////////////////////////////////////////////////////////////////
 				// File

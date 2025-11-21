@@ -48,41 +48,6 @@ namespace vl::glr::parsergen::copy_visitor
 		to->type = from->type;
 	}
 
-	void RuleAstVisitor::CopyFields(GlrLeftRecursionInjectClause* from, GlrLeftRecursionInjectClause* to)
-	{
-		CopyFields(static_cast<GlrClause*>(from), static_cast<GlrClause*>(to));
-		to->continuation = CopyNode(from->continuation.Obj());
-		to->rule = CopyNode(from->rule.Obj());
-	}
-
-	void RuleAstVisitor::CopyFields(GlrLeftRecursionInjectContinuation* from, GlrLeftRecursionInjectContinuation* to)
-	{
-		to->configuration = from->configuration;
-		for (auto&& listItem : from->flags)
-		{
-			to->flags.Add(CopyNode(listItem.Obj()));
-		}
-		for (auto&& listItem : from->injectionTargets)
-		{
-			to->injectionTargets.Add(CopyNode(listItem.Obj()));
-		}
-		to->type = from->type;
-	}
-
-	void RuleAstVisitor::CopyFields(GlrLeftRecursionPlaceholder* from, GlrLeftRecursionPlaceholder* to)
-	{
-		to->flag = from->flag;
-	}
-
-	void RuleAstVisitor::CopyFields(GlrLeftRecursionPlaceholderClause* from, GlrLeftRecursionPlaceholderClause* to)
-	{
-		CopyFields(static_cast<GlrClause*>(from), static_cast<GlrClause*>(to));
-		for (auto&& listItem : from->flags)
-		{
-			to->flags.Add(CopyNode(listItem.Obj()));
-		}
-	}
-
 	void RuleAstVisitor::CopyFields(GlrLoopSyntax* from, GlrLoopSyntax* to)
 	{
 		CopyFields(static_cast<GlrSyntax*>(from), static_cast<GlrSyntax*>(to));
@@ -119,12 +84,6 @@ namespace vl::glr::parsergen::copy_visitor
 		}
 		to->syntax = CopyNode(from->syntax.Obj());
 		to->type = from->type;
-	}
-
-	void RuleAstVisitor::CopyFields(GlrPrefixMergeClause* from, GlrPrefixMergeClause* to)
-	{
-		CopyFields(static_cast<GlrClause*>(from), static_cast<GlrClause*>(to));
-		to->rule = CopyNode(from->rule.Obj());
 	}
 
 	void RuleAstVisitor::CopyFields(GlrPushConditionSyntax* from, GlrPushConditionSyntax* to)
@@ -240,20 +199,6 @@ namespace vl::glr::parsergen::copy_visitor
 	void RuleAstVisitor::Visit(GlrAssignment* node)
 	{
 		auto newNode = vl::Ptr(new GlrAssignment);
-		CopyFields(node, newNode.Obj());
-		this->result = newNode;
-	}
-
-	void RuleAstVisitor::Visit(GlrLeftRecursionPlaceholder* node)
-	{
-		auto newNode = vl::Ptr(new GlrLeftRecursionPlaceholder);
-		CopyFields(node, newNode.Obj());
-		this->result = newNode;
-	}
-
-	void RuleAstVisitor::Visit(GlrLeftRecursionInjectContinuation* node)
-	{
-		auto newNode = vl::Ptr(new GlrLeftRecursionInjectContinuation);
 		CopyFields(node, newNode.Obj());
 		this->result = newNode;
 	}
@@ -377,27 +322,6 @@ namespace vl::glr::parsergen::copy_visitor
 		this->result = newNode;
 	}
 
-	void RuleAstVisitor::Visit(GlrLeftRecursionPlaceholderClause* node)
-	{
-		auto newNode = vl::Ptr(new GlrLeftRecursionPlaceholderClause);
-		CopyFields(node, newNode.Obj());
-		this->result = newNode;
-	}
-
-	void RuleAstVisitor::Visit(GlrLeftRecursionInjectClause* node)
-	{
-		auto newNode = vl::Ptr(new GlrLeftRecursionInjectClause);
-		CopyFields(node, newNode.Obj());
-		this->result = newNode;
-	}
-
-	void RuleAstVisitor::Visit(GlrPrefixMergeClause* node)
-	{
-		auto newNode = vl::Ptr(new GlrPrefixMergeClause);
-		CopyFields(node, newNode.Obj());
-		this->result = newNode;
-	}
-
 	vl::Ptr<GlrCondition> RuleAstVisitor::CopyNode(GlrCondition* node)
 	{
 		if (!node) return nullptr;
@@ -446,22 +370,6 @@ namespace vl::glr::parsergen::copy_visitor
 		return this->result.Cast<GlrAssignment>();
 	}
 
-	vl::Ptr<GlrLeftRecursionPlaceholder> RuleAstVisitor::CopyNode(GlrLeftRecursionPlaceholder* node)
-	{
-		if (!node) return nullptr;
-		Visit(node);
-		this->result->codeRange = node->codeRange;
-		return this->result.Cast<GlrLeftRecursionPlaceholder>();
-	}
-
-	vl::Ptr<GlrLeftRecursionInjectContinuation> RuleAstVisitor::CopyNode(GlrLeftRecursionInjectContinuation* node)
-	{
-		if (!node) return nullptr;
-		Visit(node);
-		this->result->codeRange = node->codeRange;
-		return this->result.Cast<GlrLeftRecursionInjectContinuation>();
-	}
-
 	vl::Ptr<GlrRule> RuleAstVisitor::CopyNode(GlrRule* node)
 	{
 		if (!node) return nullptr;
@@ -496,18 +404,6 @@ namespace vl::glr::parsergen::copy_visitor
 		return CopyNode(static_cast<GlrClause*>(node)).Cast<GlrCreateClause>();
 	}
 
-	vl::Ptr<GlrLeftRecursionInjectClause> RuleAstVisitor::CopyNode(GlrLeftRecursionInjectClause* node)
-	{
-		if (!node) return nullptr;
-		return CopyNode(static_cast<GlrClause*>(node)).Cast<GlrLeftRecursionInjectClause>();
-	}
-
-	vl::Ptr<GlrLeftRecursionPlaceholderClause> RuleAstVisitor::CopyNode(GlrLeftRecursionPlaceholderClause* node)
-	{
-		if (!node) return nullptr;
-		return CopyNode(static_cast<GlrClause*>(node)).Cast<GlrLeftRecursionPlaceholderClause>();
-	}
-
 	vl::Ptr<GlrLoopSyntax> RuleAstVisitor::CopyNode(GlrLoopSyntax* node)
 	{
 		if (!node) return nullptr;
@@ -536,12 +432,6 @@ namespace vl::glr::parsergen::copy_visitor
 	{
 		if (!node) return nullptr;
 		return CopyNode(static_cast<GlrClause*>(node)).Cast<GlrPartialClause>();
-	}
-
-	vl::Ptr<GlrPrefixMergeClause> RuleAstVisitor::CopyNode(GlrPrefixMergeClause* node)
-	{
-		if (!node) return nullptr;
-		return CopyNode(static_cast<GlrClause*>(node)).Cast<GlrPrefixMergeClause>();
 	}
 
 	vl::Ptr<GlrPushConditionSyntax> RuleAstVisitor::CopyNode(GlrPushConditionSyntax* node)
