@@ -356,7 +356,7 @@ AstInsReceiverBase
 						}
 						else
 						{
-							auto&& storage = const_cast<SlotStorage&>(frame.slots.Get(instruction.count));
+							auto&& storage = const_cast<SlotStorage&>(frame.slots.Values()[keyIndex]);
 							if (!storage.additionalValues)
 							{
 								storage.additionalValues = Ptr(new List<SlotValue>);
@@ -417,7 +417,7 @@ AstInsReceiverBase
 							break;
 						}
 
-						auto storage = frame.slots.Get(instruction.count);
+						auto storage = frame.slots.Values()[slotKeyIndex];
 						auto object = creatingObject.Value().object.Obj();
 
 						const bool weakAssignment = instruction.type == AstInsType::FieldIfUnassigned;
@@ -460,6 +460,15 @@ AstInsReceiverBase
 					break;
 				case AstInsType::ResolveAmbiguity:
 					{
+						if (creatingObject)
+						{
+							throw AstInsException(
+								L"The previous creating object has not been reset.",
+								AstInsErrorType::CreatingObjectNotReset,
+								creatingObject.Value().type
+							);
+						}
+
 						if (stackFrames.Count() == 0)
 						{
 							throw AstInsException(
@@ -469,8 +478,7 @@ AstInsReceiverBase
 						}
 						auto&& frame = stackFrames[stackFrames.Count() - 1];
 
-						const vint32_t slotIndex = 0;
-						auto slotKeyIndex = frame.slots.Keys().IndexOf(slotIndex);
+						auto slotKeyIndex = frame.slots.Keys().IndexOf(0);
 						if (slotKeyIndex == -1)
 						{
 							throw AstInsException(
@@ -479,7 +487,7 @@ AstInsReceiverBase
 							);
 						}
 
-						auto storage = frame.slots.Get(slotIndex);
+						auto storage = frame.slots.Values()[slotKeyIndex];
 						vint candidateCount = 1;
 						if (storage.additionalValues)
 						{
@@ -496,7 +504,6 @@ AstInsReceiverBase
 						Array<Ptr<ParsingAstBase>> candidates(candidateCount);
 						auto readCandidate = [&](const SlotValue& slotValue, vint index)
 						{
-							Ptr<ParsingAstBase> candidate;
 							slotValue.Apply(Overloading(
 								[&](const TokenSlot&)
 								{
@@ -514,17 +521,9 @@ AstInsReceiverBase
 								},
 								[&](const Ptr<ParsingAstBase>& objectSlot)
 								{
-									candidate = objectSlot;
+									candidates[index] = objectSlot;
 								}
 							));
-							if (!candidate)
-							{
-								throw AstInsException(
-									L"Ambiguity candidates must be objects.",
-									AstInsErrorType::AmbiguityCandidateIsNotObject
-								);
-							}
-							candidates[index] = candidate;
 						};
 
 						readCandidate(storage.value, 0);
@@ -537,10 +536,10 @@ AstInsReceiverBase
 						}
 
 						auto resolved = ResolveAmbiguity(instruction.param, candidates);
-
-						SlotStorage resolvedStorage;
-						resolvedStorage.value = SlotValue(resolved);
-						frame.slots.Set(slotIndex, resolvedStorage);
+						CreatingObject info;
+						info.object = resolved;
+						info.type = instruction.param;
+						creatingObject = info;
 					}
 					break;
 				}
