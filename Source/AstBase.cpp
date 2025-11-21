@@ -306,6 +306,46 @@ AstInsReceiverBase
 			EnsureContinuable();
 			try
 			{
+				switch (instruction.type)
+				{
+				case AstInsType::Token:
+					{
+					}
+					break;
+				case AstInsType::EnumItem:
+					{
+					}
+					break;
+				case AstInsType::StackBegin:
+					{
+					}
+					break;
+				case AstInsType::StackSlot:
+					{
+					}
+					break;
+				case AstInsType::CreateObject:
+					{
+					}
+					break;
+				case AstInsType::Field:
+					{
+					}
+					break;
+				case AstInsType::FieldIfUnassigned:
+					{
+					}
+					break;
+				case AstInsType::StackEnd:
+					{
+					}
+					break;
+				case AstInsType::ResolveAmbiguity:
+					{
+					}
+					break;
+				}
+
 				if (created.Count() == 0 && instruction.type != AstInsType::BeginObject)
 				{
 					switch (instruction.type)
