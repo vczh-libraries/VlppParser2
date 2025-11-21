@@ -565,6 +565,7 @@ AstInsReceiverBase
 
 				auto object = creatingObject.Value().object;
 				creatingObject.Reset();
+				finished = true;
 				return object;
 			}
 			catch (const AstInsException&)
