@@ -14,27 +14,27 @@ namespace
 	{
 		receiver.Execute({ AstInsType::StackBegin }, tokens[tokenIndex], tokenIndex);
 		receiver.Execute({ AstInsType::Token, -1, 0 }, tokens[tokenIndex], tokenIndex);
-		receiver.Execute({ AstInsType::CreateObject, (vint32_t)CalculatorClasses::NumExpr }, tokens[tokenIndex + 1], tokenIndex + 1);
-		receiver.Execute({ AstInsType::Field, (vint32_t)CalculatorFields::NumExpr_value, 0 }, tokens[tokenIndex + 1], tokenIndex + 1);
-		receiver.Execute({ AstInsType::StackEnd }, tokens[tokenIndex + 1], tokenIndex + 1);
+		receiver.Execute({ AstInsType::CreateObject, (vint32_t)CalculatorClasses::NumExpr }, tokens[tokenIndex], tokenIndex);
+		receiver.Execute({ AstInsType::Field, (vint32_t)CalculatorFields::NumExpr_value, 0 }, tokens[tokenIndex], tokenIndex);
+		receiver.Execute({ AstInsType::StackEnd }, tokens[tokenIndex], tokenIndex);
 	}
 
 	void BuildImport(CalculatorAstInsReceiver& receiver, List<RegexToken>& tokens, vint32_t tokenIndex)
 	{
 		receiver.Execute({ AstInsType::StackBegin }, tokens[tokenIndex], tokenIndex);
 		receiver.Execute({ AstInsType::Token, -1, 0 }, tokens[tokenIndex], tokenIndex);
-		receiver.Execute({ AstInsType::CreateObject, (vint32_t)CalculatorClasses::Import }, tokens[tokenIndex + 1], tokenIndex + 1);
-		receiver.Execute({ AstInsType::Field, (vint32_t)CalculatorFields::Import_name, 0 }, tokens[tokenIndex + 1], tokenIndex + 1);
-		receiver.Execute({ AstInsType::StackEnd }, tokens[tokenIndex + 1], tokenIndex + 1);
+		receiver.Execute({ AstInsType::CreateObject, (vint32_t)CalculatorClasses::Import }, tokens[tokenIndex], tokenIndex);
+		receiver.Execute({ AstInsType::Field, (vint32_t)CalculatorFields::Import_name, 0 }, tokens[tokenIndex], tokenIndex);
+		receiver.Execute({ AstInsType::StackEnd }, tokens[tokenIndex], tokenIndex);
 	}
 
 	void BuildRef(CalculatorAstInsReceiver& receiver, List<RegexToken>& tokens, vint32_t tokenIndex)
 	{
 		receiver.Execute({ AstInsType::StackBegin }, tokens[tokenIndex], tokenIndex);
 		receiver.Execute({ AstInsType::Token, -1, 0 }, tokens[tokenIndex], tokenIndex);
-		receiver.Execute({ AstInsType::CreateObject, (vint32_t)CalculatorClasses::Ref }, tokens[tokenIndex + 1], tokenIndex + 1);
-		receiver.Execute({ AstInsType::Field, (vint32_t)CalculatorFields::Ref_name, 0 }, tokens[tokenIndex + 1], tokenIndex + 1);
-		receiver.Execute({ AstInsType::StackEnd }, tokens[tokenIndex + 1], tokenIndex + 1);
+		receiver.Execute({ AstInsType::CreateObject, (vint32_t)CalculatorClasses::Ref }, tokens[tokenIndex], tokenIndex);
+		receiver.Execute({ AstInsType::Field, (vint32_t)CalculatorFields::Ref_name, 0 }, tokens[tokenIndex], tokenIndex);
+		receiver.Execute({ AstInsType::StackEnd }, tokens[tokenIndex], tokenIndex);
 	}
 }
 

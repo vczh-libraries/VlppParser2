@@ -43,18 +43,14 @@ namespace vl::glr::parsergen
 		WEAK_ASSIGN = 27,
 		POSITIVE = 28,
 		NEGATIVE = 29,
-		LS_PH = 30,
-		LS_I = 31,
-		LS_IM = 32,
-		LS_PM = 33,
-		ID = 34,
-		STRING = 35,
-		CONDITIONAL_LITERAL = 36,
-		SPACE = 37,
-		COMMENT = 38,
+		ID = 30,
+		STRING = 31,
+		CONDITIONAL_LITERAL = 32,
+		SPACE = 33,
+		COMMENT = 34,
 	};
 
-	constexpr vl::vint ParserGenTokenCount = 39;
+	constexpr vl::vint ParserGenTokenCount = 35;
 	extern bool ParserGenTokenDeleter(vl::vint token);
 	extern const wchar_t* ParserGenTokenId(ParserGenTokens token);
 	extern const wchar_t* ParserGenTokenDisplayText(ParserGenTokens token);
