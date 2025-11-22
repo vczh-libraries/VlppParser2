@@ -43,18 +43,10 @@
 ## Test Cases
 
 - Code Coverage
-  - Compiler
-    - TODO(s) in `RewriteRules_GenerateAffectedLRIClausesSubgroup`.
-    - `FixPrefixMergeClauses` in `if (ruleSymbol->isPartial)`.
-  - Runtime
-    - TODO(s) in `CalculateObjectFirstInstruction` and `InjectFirstInstruction`.
-    - `TraceManager::TryMergeSurvivingTraces` in `// if trace is a merge trace`.
-    - `TraceManager::BuildStepTree` in which are not covered.
-    - `TraceManager::AddTraceToCollection` in `else if (collection == &Trace::predecessors)`
-- Make a test case to test `prefix_merge` generates `left_recursion_inject_multiple`.
-- Create ambiguity test case caused by only one clause with alternative syntax.
-- Test when an object get LriFetch to multiple branches following a ReopenObject.
-- Deny `X ::= Y LRI ...` when `X` is or a prefix of `Y`.
+  - Collect uncovered code again by break points in executator (trace manager).
+- Reconsider in new implementation:
+  - Make a test case to test `prefix_merge` generates `left_recursion_inject_multiple`.
+  - Create ambiguity test case caused by only one clause with alternative syntax.
 - Windows and Linux test output inconsistency on
   - the order of ambiguous candidates.
   - `\r\n` or `\n` serialized into `<![CDATA[]]>`.
@@ -74,12 +66,6 @@
   - C++ codegen are created per groups.
     - Only AST classes `#include` depended files groups, visitors do not.
     - When a visitor need to call types in different file groups, leave it abstract.
-- Multiple LRI following one Target
-- Generate multiple level of LRI from prefix_merge
-  - Remove `PrefixExtractionAffectedRuleReferencedAnother`
-  - Currently it generates an error if 3 levels are required
-  - Allow one prefix followed by multiple continuations
-    - Optional applies to all continuations as a whole
 
 ## Issues (BuiltIn-Cpp)
 
