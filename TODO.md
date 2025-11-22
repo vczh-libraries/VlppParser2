@@ -2,11 +2,6 @@
 
 ## Next task
 
-- Try remove `beforeIns`.
-  - Is it possible to only handle object type in EndObject instead of BeginObject?
-  - We may need to store raw field id, and when reaches EndObject, translate raw field id to field id for the specific object type.
-  - Completely remove `beforeIns`.
-- Try remove all LRJ syntax, build LRJ structure from state machine instead.
 - Try to make large AST not causing stack overflow while disposing.
   - Generate code to collect all nodes in any destructor and mark (to tell all sub nodes they are processed)?
 
@@ -33,6 +28,17 @@
   - Be careful of slot assignment and schema building.
 - Must check if any sub class overrides any field in any base class.
 - Allow indirect left recursion as it doesn't matter anymore for left recursion or non-left recursion.
+
+### Notes
+
+- left_recursion and prefix_merge are technically the same thing but:
+  - LM is found by detecting dead-loop starting from a rule.
+    - LM transition starts from ending states of a rule, appear during building NFA.
+  - PM is found by detecting clause level prefix starting from a rule.
+    - PM transition starts from anywhere, appear during building NFA.
+  - In NFA, such transitions already can jump to states in a different rule, pushing a list of rule transitions in NFA to the stack.
+    - Other transations push rule transitions only in CompressedNFA.
+  - In the original implementation LM transitions marked "leftrec" but it may be unnecessary now.
 
 ## Test Cases
 
