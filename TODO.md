@@ -33,11 +33,11 @@
 
 - left_recursion and prefix_merge are technically the same thing but:
   - LM is found by detecting dead-loop starting from a rule.
-    - LM transition starts from ending states of a rule, appear during building NFA.
+    - LM transition starts from ending states of a rule, appear during building CompressedNFA.
   - PM is found by detecting clause level prefix starting from a rule.
-    - PM transition starts from anywhere, appear during building NFA.
-  - In NFA, such transitions already can jump to states in a different rule, pushing a list of rule transitions in NFA to the stack.
-    - Other transations push rule transitions only in CompressedNFA.
+    - PM transition starts from anywhere, appear during building CompressedNFA.
+  - In CompressedNFA, such transitions already can jump to states in a different rule, pushing a list of rule transitions in NFA to the stack.
+    - Other transations push rule transitions only in CrossReferencedNFA.
   - In the original implementation LM transitions marked "leftrec" but it may be unnecessary now.
 
 ## Test Cases
