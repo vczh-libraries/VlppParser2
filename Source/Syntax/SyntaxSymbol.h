@@ -198,7 +198,6 @@ SyntaxSymbolManager
 				void						BuildCompactNFAInternal();
 
 				void						FixCrossReferencedRuleEdge(StateSymbol* startState, collections::Group<StateSymbol*, EdgeSymbol*>& orderedEdges, collections::List<EdgeSymbol*>& accumulatedEdges);
-				void						FixLeftRecursionInjectEdge(StateSymbol* startState, EdgeSymbol* injectEdge);
 				void						BuildCrossReferencedNFAInternal();
 			public:
 				SyntaxSymbolManager(ParserSymbolManager& _global);
