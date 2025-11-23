@@ -33,10 +33,12 @@ AutomatonBuilder (Syntax)
 					edge->input.type = EdgeInputType::Token;
 					edge->input.token = tokenId;
 					edge->input.condition = condition;
+
+					vint count = fieldIns.Count();
+					edge->insAfterInput.Add({ AstInsType::Token,-1,count });
 					if (field != -1)
 					{
-						edge->insAfterInput.Add({ AstInsType::Token });
-						edge->insAfterInput.Add({ AstInsType::Field,field });
+						fieldIns.Add({ AstInsType::Field,field,count });
 					}
 				}
 
@@ -59,22 +61,23 @@ AutomatonBuilder (Syntax)
 					edge->input.rule = rule;
 					edge->input.ruleType = ruleType;
 
+					vint count = fieldIns.Count();
 					switch (ruleType)
 					{
 					case automaton::ReturnRuleType::Field:
 						CHECK_ERROR(field != -1, ERROR_MESSAGE_PREFIX L"Field must set for ReturnRuleType::Field.");
-						edge->insAfterInput.Add({ AstInsType::Field,field });
+						edge->insAfterInput.Add({ AstInsType::StackSlot,-1,count });
+						fieldIns.Add({ AstInsType::Field,field,count });
 						break;
 					case automaton::ReturnRuleType::Partial:
 						CHECK_ERROR(field == -1, ERROR_MESSAGE_PREFIX L"Field must not set for ReturnRuleType::Partial.");
 						break;
 					case automaton::ReturnRuleType::Discard:
 						CHECK_ERROR(field == -1, ERROR_MESSAGE_PREFIX L"Field must not set for ReturnRuleType::Discard.");
-						edge->insAfterInput.Add({ AstInsType::DiscardValue });
+						edge->insAfterInput.Add({ AstInsType::StackSlot,-1,count });
 						break;
 					case automaton::ReturnRuleType::Reuse:
 						CHECK_ERROR(field == -1, ERROR_MESSAGE_PREFIX L"Field must not set for ReturnRuleType::Reuse.");
-						edge->insAfterInput.Add({ AstInsType::ReopenObject });
 						break;
 					}
 				}
@@ -260,6 +263,7 @@ AutomatonBuilder (Clause)
 
 			AutomatonBuilder::StatePair AutomatonBuilder::BuildClause(const StateBuilder& compileSyntax)
 			{
+				fieldIns.Clear();
 				ruleSymbol->NewClause();
 				clauseDisplayText = L"";
 				startPoses.Clear();
@@ -287,8 +291,9 @@ AutomatonBuilder (Clause)
 			{
 				auto withState = CreateState();
 				auto edge = CreateEdge(pair.end, withState);
-				edge->insBeforeInput.Add({ AstInsType::EnumItem,enumItem });
-				edge->insBeforeInput.Add({ (weakAssignment ? AstInsType::FieldIfUnassigned : AstInsType::Field),field});
+				vint count = fieldIns.Count();
+				edge->insAfterInput.Add({ AstInsType::EnumItem,enumItem,count });
+				fieldIns.Add({ (weakAssignment ? AstInsType::FieldIfUnassigned : AstInsType::Field),field,count});
 				endPoses.Add(withState, clauseDisplayText.Length());
 				return { pair.begin,withState };
 			}
@@ -305,11 +310,13 @@ AutomatonBuilder (Clause)
 				clauseDisplayText += L" >";
 				{
 					auto edge = CreateEdge(pair.begin, bodyPair.begin);
-					edge->insBeforeInput.Add({ AstInsType::BeginObject,classId });
+					edge->insAfterInput.Add({ AstInsType::StackBegin });
 				}
 				{
 					auto edge = CreateEdge(bodyPair.end, pair.end);
-					edge->insBeforeInput.Add({ AstInsType::EndObject });
+					edge->insAfterInput.Add({ AstInsType::CreateObject,classId });
+					CopyFrom(edge->insAfterInput, fieldIns, true);
+					edge->insAfterInput.Add({ AstInsType::StackEnd });
 				}
 				endPoses.Add(pair.end, clauseDisplayText.Length());
 				return pair;
@@ -317,7 +324,20 @@ AutomatonBuilder (Clause)
 
 			AutomatonBuilder::StatePair AutomatonBuilder::BuildPartialClause(const StateBuilder& compileSyntax)
 			{
-				return compileSyntax();
+				// TODO: Need to adjust slot IDs
+				clauseDisplayText += L"<! ";
+				auto bodyPair = compileSyntax();
+				clauseDisplayText += L" !>";
+
+				StatePair pair;
+				pair.begin = bodyPair.begin;
+				pair.end = CreateState();
+				{
+					auto edge = CreateEdge(bodyPair.end, pair.end);
+					CopyFrom(edge->insAfterInput, fieldIns, true);
+				}
+				endPoses.Add(pair.end, clauseDisplayText.Length());
+				return pair;
 			}
 
 			AutomatonBuilder::StatePair AutomatonBuilder::BuildReuseClause(const StateBuilder& compileSyntax)
@@ -327,16 +347,17 @@ AutomatonBuilder (Clause)
 				pair.end = CreateState();
 				startPoses.Add(pair.begin, clauseDisplayText.Length());
 
-				clauseDisplayText += L"<< ";
+				clauseDisplayText += L"<! ";
 				auto bodyPair = compileSyntax();
-				clauseDisplayText += L" >>";
+				clauseDisplayText += L" !>";
 				{
 					auto edge = CreateEdge(pair.begin, bodyPair.begin);
-					edge->insBeforeInput.Add({ AstInsType::DelayFieldAssignment });
+					edge->insAfterInput.Add({ AstInsType::StackBegin });
 				}
 				{
 					auto edge = CreateEdge(bodyPair.end, pair.end);
-					edge->insBeforeInput.Add({ AstInsType::EndObject });
+					CopyFrom(edge->insAfterInput, fieldIns, true);
+					edge->insAfterInput.Add({ AstInsType::StackEnd });
 				}
 				endPoses.Add(pair.end, clauseDisplayText.Length());
 				return pair;

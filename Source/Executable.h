@@ -72,7 +72,6 @@ Executable
 				vint32_t							toState = -1;
 				StringLiteral						condition;
 				EdgePriority						priority = EdgePriority::NoCompetition;
-				InstructionArray					insBeforeInput;
 				InstructionArray					insAfterInput;
 				ReturnIndexArray					returnIndices;
 			};

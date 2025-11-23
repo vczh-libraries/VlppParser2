@@ -48,7 +48,6 @@ namespace vl
 				SERIALIZE(toState)
 				SERIALIZE(condition)
 				SERIALIZE(priority)
-				SERIALIZE(insBeforeInput)
 				SERIALIZE(insAfterInput)
 				SERIALIZE(returnIndices)
 			END_SERIALIZATION

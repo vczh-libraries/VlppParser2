@@ -119,7 +119,6 @@ EdgeSymbol
 				EdgeImportancy				importancy = EdgeImportancy::NoCompetition;		// important -> HighPriority, !important with important sibling -> LowPriority.
 																							// (filled by BuildCompactNFA)
 																							// If any important edge forms a cross referenced NFA edge, it becomes important too.
-				InsList						insBeforeInput;									// Instructions to execute before pushing the value from a token or a reduced rule.
 				InsList						insAfterInput;									// Instructions to execute after pushing the value from a token or a reduced rule.
 				EdgeList					returnEdges;									// Edges of rule reduction.
 																							// InsBeforeInput will be copied to a cross-referenced edge.

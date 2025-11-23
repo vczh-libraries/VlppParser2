@@ -59,12 +59,6 @@ FilePath LogAutomatonWithPath(
 				}
 				writer.WriteLine(L" -> " + metadata.stateLabels[edge.toState]);
 
-				for (vint insRef = 0; insRef < edge.insBeforeInput.count; insRef++)
-				{
-					writer.WriteString(L"\t\t- ");
-					LogInstruction(executable.astInstructions[edge.insBeforeInput.start + insRef], typeName, fieldName, writer);
-				}
-
 				for (vint insRef = 0; insRef < edge.insAfterInput.count; insRef++)
 				{
 					writer.WriteString(L"\t\t+ ");

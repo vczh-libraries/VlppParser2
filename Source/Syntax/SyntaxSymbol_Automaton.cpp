@@ -144,10 +144,6 @@ SyntaxSymbolManager::BuildAutomaton
 					default:;
 					}
 
-					edgeDesc.insBeforeInput.start = (vint32_t)astInsInOrder.Count();
-					CopyFrom(astInsInOrder, edge->insBeforeInput, true);
-					edgeDesc.insBeforeInput.count = (vint32_t)astInsInOrder.Count() - edgeDesc.insBeforeInput.start;
-
 					edgeDesc.insAfterInput.start = (vint32_t)astInsInOrder.Count();
 					CopyFrom(astInsInOrder, edge->insAfterInput, true);
 					edgeDesc.insAfterInput.count = (vint32_t)astInsInOrder.Count() - edgeDesc.insAfterInput.start;
@@ -164,7 +160,6 @@ SyntaxSymbolManager::BuildAutomaton
 					}
 					edgeDesc.returnIndices.count = (vint32_t)returnIndicesInOrder.Count() - edgeDesc.returnIndices.start;
 
-					if (edgeDesc.insBeforeInput.count == 0) edgeDesc.insBeforeInput.start = -1;
 					if (edgeDesc.insAfterInput.count == 0) edgeDesc.insAfterInput.start = -1;
 					if (edgeDesc.returnIndices.count == 0) edgeDesc.returnIndices.start = -1;
 				}

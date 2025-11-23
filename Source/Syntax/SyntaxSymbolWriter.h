@@ -34,6 +34,7 @@ AutomatonBuilder
 				using AssignmentBuilder = Func<StatePair(StatePair)>;
 
 			protected:
+				collections::List<AstIns>	fieldIns;
 				RuleSymbol*					ruleSymbol;
 
 				WString						clauseDisplayText;
