@@ -508,8 +508,6 @@ TraceManager
 				}
 			};
 
-			struct TraceManagerSubmitter;
-
 			class TraceManager : public Object, public virtual IExecutor
 			{
 			protected:
@@ -713,8 +711,8 @@ TraceManager
 				void							ResolveAmbiguity() override;
 
 			protected:
-				void							ExecuteSingleTrace(TraceManagerSubmitter& submitter, Trace* trace, vint32_t firstIns, vint32_t lastIns, TraceInsLists& insLists, collections::List<regex::RegexToken>& tokens);
-				void							ExecuteSingleStep(TraceManagerSubmitter& submitter, ExecutionStep* step, collections::List<regex::RegexToken>& tokens);
+				void							ExecuteSingleTrace(IAstInsReceiver& receiver, Trace* trace, vint32_t firstIns, vint32_t lastIns, TraceInsLists& insLists, collections::List<regex::RegexToken>& tokens);
+				void							ExecuteSingleStep(IAstInsReceiver& receiver, ExecutionStep* step, collections::List<regex::RegexToken>& tokens);
 			public:
 				Ptr<ParsingAstBase>				ExecuteTrace(IAstInsReceiver& receiver, collections::List<regex::RegexToken>& tokens) override;
 			};
