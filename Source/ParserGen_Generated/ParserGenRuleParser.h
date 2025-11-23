@@ -31,14 +31,8 @@ namespace vl::glr::parsergen
 		AssignmentOp = 95,
 		Assignment = 99,
 		Clause = 104,
-		Placeholder = 140,
-		RuleName = 143,
-		LriConfig = 146,
-		LriContinuationBody = 150,
-		LriContinuation = 161,
-		LriTarget = 167,
-		Rule = 174,
-		File = 184,
+		Rule = 126,
+		File = 136,
 	};
 
 	const wchar_t* RuleParserRuleName(vl::vint index);

@@ -12,13 +12,6 @@ using namespace vl::regex;
 using namespace vl::glr;
 using namespace vl::glr::automaton;
 
-extern void LogInstruction(
-	AstIns ins,
-	const Func<WString(vint32_t)>& typeName,
-	const Func<WString(vint32_t)>& fieldName,
-	StreamWriter& writer
-	);
-
 FilePath LogTraceExecution(
 	const WString& parserName,
 	const WString& caseName,

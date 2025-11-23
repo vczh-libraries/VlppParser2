@@ -4,6 +4,51 @@ extern WString GetTestOutputPath();
 extern FilePath GetOutputDir(const WString& parserName);
 
 /***********************************************************************
+LogInstruction (AstIns)
+***********************************************************************/
+
+void LogInstruction(
+	AstIns ins,
+	const Func<WString(vint32_t)>& typeName,
+	const Func<WString(vint32_t)>& fieldName,
+	StreamWriter& writer
+)
+{
+	switch (ins.type)
+	{
+	case AstInsType::Token:
+		writer.WriteLine(L"Token(" + itow(ins.count) + L")");
+		break;
+	case AstInsType::EnumItem:
+		writer.WriteLine(L"EnumItem(" + itow(ins.param) + L", " + itow(ins.count) + L")");
+		break;
+	case AstInsType::StackBegin:
+		writer.WriteLine(L"StackBegin()");
+		break;
+	case AstInsType::StackSlot:
+		writer.WriteLine(L"StackSlot(" + itow(ins.count) + L")");
+		break;
+	case AstInsType::CreateObject:
+		writer.WriteLine(L"CreateObject(" + typeName(ins.param) + L")");
+		break;
+	case AstInsType::Field:
+		writer.WriteLine(L"Field(" + fieldName(ins.param) + L", " + itow(ins.count) + L")");
+		break;
+	case AstInsType::FieldIfUnassigned:
+		writer.WriteLine(L"FieldIfUnassigned(" + fieldName(ins.param) + L", " + itow(ins.count) + L")");
+		break;
+	case AstInsType::StackEnd:
+		writer.WriteLine(L"StackEnd()");
+		break;
+	case AstInsType::ResolveAmbiguity:
+		writer.WriteLine(L"ResolveAmbiguity(" + typeName(ins.param) + L", " + itow(ins.count) + L")");
+		break;
+	default:
+		writer.WriteLine(L"<UNKNOWN-INSTRUCTION>");
+	}
+}
+
+/***********************************************************************
 LogAutomaton
 ***********************************************************************/
 

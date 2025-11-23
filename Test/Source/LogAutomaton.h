@@ -1,7 +1,7 @@
 #ifndef VCZH_VLPPPARSER2_UNITTEST_LOGAUTOMATON
 #define VCZH_VLPPPARSER2_UNITTEST_LOGAUTOMATON
 
-#include "LogTrace.h"
+#include "../../Source/SyntaxBase.h"
 
 using namespace vl;
 using namespace vl::collections;
@@ -10,6 +10,13 @@ using namespace vl::filesystem;
 using namespace vl::regex;
 using namespace vl::glr;
 using namespace vl::glr::automaton;
+
+extern void LogInstruction(
+	AstIns ins,
+	const Func<WString(vint32_t)>& typeName,
+	const Func<WString(vint32_t)>& fieldName,
+	StreamWriter& writer
+	);
 
 extern FilePath LogAutomatonWithPath(
 	const FilePath& outputFile,
