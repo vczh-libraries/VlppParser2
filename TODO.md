@@ -2,11 +2,6 @@
 
 ## Next task
 
-- Try remove `beforeIns`.
-  - Is it possible to only handle object type in EndObject instead of BeginObject?
-  - We may need to store raw field id, and when reaches EndObject, translate raw field id to field id for the specific object type.
-  - Completely remove `beforeIns`.
-- Try remove all LRJ syntax, build LRJ structure from state machine instead.
 - Try to make large AST not causing stack overflow while disposing.
   - Generate code to collect all nodes in any destructor and mark (to tell all sub nodes they are processed)?
 
@@ -34,21 +29,24 @@
 - Must check if any sub class overrides any field in any base class.
 - Allow indirect left recursion as it doesn't matter anymore for left recursion or non-left recursion.
 
+### Notes
+
+- left_recursion and prefix_merge are technically the same thing but:
+  - LM is found by detecting dead-loop starting from a rule.
+    - LM transition starts from ending states of a rule, appear during building NFA.
+  - PM is found by detecting clause level prefix starting from a rule.
+    - PM transition starts from anywhere, appear during building NFA.
+  - In NFA, such transitions already can jump to states in a different rule, pushing a list of rule transitions in NFA to the stack.
+    - Other transations push rule transitions only in CompressedNFA.
+  - In the original implementation LM transitions marked "leftrec" but it may be unnecessary now.
+
 ## Test Cases
 
 - Code Coverage
-  - Compiler
-    - TODO(s) in `RewriteRules_GenerateAffectedLRIClausesSubgroup`.
-    - `FixPrefixMergeClauses` in `if (ruleSymbol->isPartial)`.
-  - Runtime
-    - TODO(s) in `CalculateObjectFirstInstruction` and `InjectFirstInstruction`.
-    - `TraceManager::TryMergeSurvivingTraces` in `// if trace is a merge trace`.
-    - `TraceManager::BuildStepTree` in which are not covered.
-    - `TraceManager::AddTraceToCollection` in `else if (collection == &Trace::predecessors)`
-- Make a test case to test `prefix_merge` generates `left_recursion_inject_multiple`.
-- Create ambiguity test case caused by only one clause with alternative syntax.
-- Test when an object get LriFetch to multiple branches following a ReopenObject.
-- Deny `X ::= Y LRI ...` when `X` is or a prefix of `Y`.
+  - Collect uncovered code again by break points in executator (trace manager).
+- Reconsider in new implementation:
+  - Make a test case to test `prefix_merge` generates `left_recursion_inject_multiple`.
+  - Create ambiguity test case caused by only one clause with alternative syntax.
 - Windows and Linux test output inconsistency on
   - the order of ambiguous candidates.
   - `\r\n` or `\n` serialized into `<![CDATA[]]>`.
@@ -68,12 +66,6 @@
   - C++ codegen are created per groups.
     - Only AST classes `#include` depended files groups, visitors do not.
     - When a visitor need to call types in different file groups, leave it abstract.
-- Multiple LRI following one Target
-- Generate multiple level of LRI from prefix_merge
-  - Remove `PrefixExtractionAffectedRuleReferencedAnother`
-  - Currently it generates an error if 3 levels are required
-  - Allow one prefix followed by multiple continuations
-    - Optional applies to all continuations as a whole
 
 ## Issues (BuiltIn-Cpp)
 
