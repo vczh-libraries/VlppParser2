@@ -69,11 +69,6 @@ AutomatonBuilder
 				StatePair					BuildCreateClause(vint32_t classId, const StateBuilder& compileSyntax);
 				StatePair					BuildPartialClause(const StateBuilder& compileSyntax);
 				StatePair					BuildReuseClause(const StateBuilder& compileSyntax);
-
-				StatePair					BuildLrpClause(collections::SortedList<vint32_t>& flags, const Func<WString(vint32_t)>& flagName);
-				StatePair					BuildLriSyntax(collections::SortedList<vint32_t>& flags, RuleSymbol* rule, const Func<WString(vint32_t)>& flagName);
-				StatePair					BuildLriSkip();
-				StatePair					BuildLriClauseSyntax(StateBuilder useOrLriSyntax, bool optional, collections::List<StateBuilder>&& continuations);
 			};
 
 			namespace syntax_writer
