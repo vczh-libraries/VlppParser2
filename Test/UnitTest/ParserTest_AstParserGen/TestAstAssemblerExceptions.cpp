@@ -162,37 +162,6 @@ export 1
 		);
 	});
 
-	TEST_CASE(L"CreatingObjectNotReset (CreateObject)")
-	{
-		WString input = LR"(
-export 1
-)";
-		LEXER(input, tokens);
-		CalculatorAstInsReceiver receiver;
-		receiver.Execute({ AstInsType::StackBegin }, tokens[0], 0);
-		receiver.Execute({ AstInsType::CreateObject, (vint32_t)CalculatorClasses::Module }, tokens[0], 0);
-		TEST_EXCEPTION(
-			receiver.Execute({ AstInsType::CreateObject, (vint32_t)CalculatorClasses::NumExpr }, tokens[1], 1),
-			AstInsException,
-			[](const AstInsException& e) { TEST_ASSERT(e.error == AstInsErrorType::CreatingObjectNotReset); }
-			);
-	});
-
-	TEST_CASE(L"CreatingObjectNotReset (ResolveAmbiguity)")
-	{
-		WString input = LR"(
-export 1
-)";
-		LEXER(input, tokens);
-		CalculatorAstInsReceiver receiver;
-		receiver.Execute({ AstInsType::CreateObject, (vint32_t)CalculatorClasses::Module }, tokens[0], 0);
-		TEST_EXCEPTION(
-			receiver.Execute({ AstInsType::ResolveAmbiguity, (vint32_t)CalculatorClasses::NumExpr }, tokens[0], 0),
-			AstInsException,
-			[](const AstInsException& e) { TEST_ASSERT(e.error == AstInsErrorType::CreatingObjectNotReset); }
-		);
-	});
-
 	TEST_CASE(L"InstructionNotComplete")
 	{
 		WString input = LR"(

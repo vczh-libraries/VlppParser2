@@ -332,15 +332,15 @@ AstInsReceiverBase
 							break;
 						case AstInsType::StackSlot:
 							{
-								if (!creatingObject)
+								if (creatingObjects.Count() == 0)
 								{
 									throw AstInsException(
 										L"There is no creating object to store in a stack slot.",
 										AstInsErrorType::NoCreatingObjectForStackSlot
 									);
 								}
-								auto value = creatingObject.Value().object;
-								creatingObject.Reset();
+								auto value = creatingObjects[creatingObjects.Count() - 1].object;
+								creatingObjects.RemoveAt(creatingObjects.Count() - 1);
 								slotValue = SlotValue(value);
 							}
 							break;
@@ -372,28 +372,19 @@ AstInsReceiverBase
 					break;
 				case AstInsType::CreateObject:
 					{
-						if (creatingObject)
-						{
-							throw AstInsException(
-								L"The previous creating object has not been reset.",
-								AstInsErrorType::CreatingObjectNotReset,
-								creatingObject.Value().type
-							);
-						}
-
 						auto value = CreateAstNode(instruction.param);
 						value->codeRange = { &token,&token };
 
 						CreatingObject info;
 						info.object = value;
 						info.type = instruction.param;
-						creatingObject = info;
+						creatingObjects.Add(info);
 					}
 					break;
 				case AstInsType::Field:
 				case AstInsType::FieldIfUnassigned:
 					{
-						if (!creatingObject)
+						if (creatingObjects.Count() == 0)
 						{
 							throw AstInsException(
 								L"There is no creating object to assign fields.",
@@ -418,7 +409,7 @@ AstInsReceiverBase
 						}
 
 						auto storage = frame.slots.Values()[slotKeyIndex];
-						auto object = creatingObject.Value().object.Obj();
+						auto object = creatingObjects[creatingObjects.Count() - 1].object.Obj();
 
 						const bool weakAssignment = instruction.type == AstInsType::FieldIfUnassigned;
 						auto assignValue = [&](const SlotValue& slotValue)
@@ -445,7 +436,7 @@ AstInsReceiverBase
 								AstInsErrorType::NoStackFrameForStackEnd
 							);
 						}
-						if (!creatingObject)
+						if (creatingObjects.Count() == 0)
 						{
 							throw AstInsException(
 								L"There is no creating object when ending the current stack frame.",
@@ -457,15 +448,6 @@ AstInsReceiverBase
 					break;
 				case AstInsType::ResolveAmbiguity:
 					{
-						if (creatingObject)
-						{
-							throw AstInsException(
-								L"The previous creating object has not been reset.",
-								AstInsErrorType::CreatingObjectNotReset,
-								creatingObject.Value().type
-							);
-						}
-
 						if (stackFrames.Count() == 0)
 						{
 							throw AstInsException(
@@ -536,7 +518,7 @@ AstInsReceiverBase
 						CreatingObject info;
 						info.object = resolved;
 						info.type = instruction.param;
-						creatingObject = info;
+						creatingObjects.Add(info);
 					}
 					break;
 				}
@@ -553,7 +535,7 @@ AstInsReceiverBase
 			EnsureContinuable();
 			try
 			{
-				if (stackFrames.Count() > 0 || !creatingObject)
+				if (stackFrames.Count() > 0 || creatingObjects.Count() != 1)
 				{
 					throw AstInsException(
 						L"No more instruction but the root object has not been completed yet.",
@@ -561,8 +543,8 @@ AstInsReceiverBase
 						);
 				}
 
-				auto object = creatingObject.Value().object;
-				creatingObject.Reset();
+				auto object = creatingObjects[0].object;
+				creatingObjects.RemoveAt(0);
 				finished = true;
 				return object;
 			}

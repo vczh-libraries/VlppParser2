@@ -322,8 +322,7 @@ Instructions
 			NoCreatingObjectForField,					// NoCreatingObjectForField()			: Field when no creating object.
 			NoCreatingObjectForStackSlot,				// NoCreatingObjectForStackSlot()		: StackSlot when no creating object.
 			NoCreatingObjectForStackEnd,				// NoCreatingObjectForStackEnd()		: StackEnd when no creating object.
-			CreatingObjectNotReset,						// CreatingObjectNotReset()				: The previous creating object has not been reset.
-
+			
 			InstructionNotComplete,						// InstructionNotComplete()				: No more instruction but the root object has not been completed yet.
 			Corrupted,									// Corrupted()							: An exception has been thrown therefore this receiver cannot be used anymore.
 			Finished,									// Finished()							: The finished instruction has been executed therefore this receiver cannot be used anymore.
@@ -394,8 +393,9 @@ IAstInsReceiver
 				Ptr<ParsingAstBase>						object;
 				vint32_t								type = -1;
 			};
+			using CreatingObjectList = collections::List<CreatingObject>;
 
-			Nullable<CreatingObject>					creatingObject;
+			CreatingObjectList							creatingObjects;
 			StackFrameList								stackFrames;
 			bool										finished = false;
 			bool										corrupted = false;

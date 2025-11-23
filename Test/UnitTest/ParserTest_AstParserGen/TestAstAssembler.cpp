@@ -1,7 +1,7 @@
 #include "../../../Source/Lexer/LexerCppGen.h"
 #include "../../Source/Calculator/Parser/CalculatorExprAst_Json.h"
 #include "../../Source/Calculator/Parser/Calculator_Assembler.h"
-#include "../../Source/LogParser.h"
+#include "../../Source/LogTrace.h"
 
 using namespace vl::glr::parsergen;
 using namespace calculator;
