@@ -31,6 +31,7 @@
 
 ### Notes
 
+- During building CompressedNFA, the StackBegin instruction (aka in all epsilon transitions from the begin state) will be moved to all immediate transition's beginning of insAfterInput.
 - left_recursion and prefix_merge are technically the same thing but:
   - LM is found by detecting dead-loop starting from a rule.
     - LM transition starts from ending states of a rule, appear during building CompressedNFA.
