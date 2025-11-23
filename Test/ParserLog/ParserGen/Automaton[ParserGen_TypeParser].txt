@@ -77,45 +77,45 @@
 
 [12][ClassPropType] BEGIN 
 [RULE: 2][CLAUSE: -1]
-	token: "token" -> [14][ClassPropType]<! "token" @ !>
+	token: "token" -> [14][ClassPropType]<# "token" @ #>
 		+ Token(0)
-	token: ID -> [17][ClassPropType]<! ID @ !>
+	token: ID -> [17][ClassPropType]<# ID @ "[" "]" #>
 		+ Token(0)
-	token: ID -> [18][ClassPropType]<! ID @ "[" "]" !>
+	token: ID -> [18][ClassPropType]<# ID @ #>
 		+ Token(0)
 
 [13][ClassPropType] END [ENDING]
 [RULE: 2][CLAUSE: -1]
 
-[14][ClassPropType]<! "token" @ !>
+[14][ClassPropType]<# "token" @ #>
 [RULE: 2][CLAUSE: 0]
 	ending -> [13][ClassPropType] END [ENDING]
 		+ EnumItem(0, 0)
 		+ Field(ClassProp::propType, 0)
 
-[15][ClassPropType]<! ID "[" "]" @ !>
+[15][ClassPropType]<# ID "[" "]" @ #>
 [RULE: 2][CLAUSE: 2]
 	ending -> [13][ClassPropType] END [ENDING]
 		+ EnumItem(2, 1)
 		+ Field(ClassProp::propTypeName, 0)
 		+ Field(ClassProp::propType, 1)
 
-[16][ClassPropType]<! ID "[" @ "]" !>
+[16][ClassPropType]<# ID "[" @ "]" #>
 [RULE: 2][CLAUSE: 2]
-	token: "]" -> [15][ClassPropType]<! ID "[" "]" @ !>
+	token: "]" -> [15][ClassPropType]<# ID "[" "]" @ #>
 		+ Token(1)
 
-[17][ClassPropType]<! ID @ !>
+[17][ClassPropType]<# ID @ "[" "]" #>
+[RULE: 2][CLAUSE: 2]
+	token: "[" -> [16][ClassPropType]<# ID "[" @ "]" #>
+		+ Token(1)
+
+[18][ClassPropType]<# ID @ #>
 [RULE: 2][CLAUSE: 1]
 	ending -> [13][ClassPropType] END [ENDING]
 		+ EnumItem(1, 1)
 		+ Field(ClassProp::propTypeName, 0)
 		+ Field(ClassProp::propType, 1)
-
-[18][ClassPropType]<! ID @ "[" "]" !>
-[RULE: 2][CLAUSE: 2]
-	token: "[" -> [16][ClassPropType]<! ID "[" @ "]" !>
-		+ Token(1)
 
 [19][classProp] BEGIN 
 [RULE: 3][CLAUSE: -1]
@@ -133,13 +133,13 @@
 
 [22][classProp]< "var" ID ":" @ ClassPropType ";" >
 [RULE: 3][CLAUSE: 0]
-	token: "token" -> [14][ClassPropType]<! "token" @ !>
+	token: "token" -> [14][ClassPropType]<# "token" @ #>
 		+ Token(0)
 		> rule: ClassPropType -> [24][classProp]< "var" ID ":" ClassPropType @ ";" >
-	token: ID -> [17][ClassPropType]<! ID @ !>
+	token: ID -> [17][ClassPropType]<# ID @ "[" "]" #>
 		+ Token(0)
 		> rule: ClassPropType -> [24][classProp]< "var" ID ":" ClassPropType @ ";" >
-	token: ID -> [18][ClassPropType]<! ID @ "[" "]" !>
+	token: ID -> [18][ClassPropType]<# ID @ #>
 		+ Token(0)
 		> rule: ClassPropType -> [24][classProp]< "var" ID ":" ClassPropType @ ";" >
 
@@ -162,50 +162,50 @@
 
 [26][ClassBody] BEGIN 
 [RULE: 4][CLAUSE: -1]
-	token: ID -> [28][ClassBody]<! ID @ [ ":" ID ] "{" { classProp } "}" !>
+	token: ID -> [28][ClassBody]<# ID @ [ ":" ID ] "{" { classProp } "}" #>
 		+ Token(0)
 
 [27][ClassBody] END [ENDING]
 [RULE: 4][CLAUSE: -1]
 
-[28][ClassBody]<! ID @ [ ":" ID ] "{" { classProp } "}" !>
+[28][ClassBody]<# ID @ [ ":" ID ] "{" { classProp } "}" #>
 [RULE: 4][CLAUSE: 0]
-	token: "{" -> [31][ClassBody]<! ID [ ":" ID ] "{" @ { classProp } "}" !>
+	token: "{" -> [31][ClassBody]<# ID [ ":" ID ] "{" @ { classProp } "}" #>
 		+ Token(2)
-	token: ":" -> [29][ClassBody]<! ID [ ":" @ ID ] "{" { classProp } "}" !>
+	token: ":" -> [29][ClassBody]<# ID [ ":" @ ID ] "{" { classProp } "}" #>
 		+ Token(1)
 
-[29][ClassBody]<! ID [ ":" @ ID ] "{" { classProp } "}" !>
+[29][ClassBody]<# ID [ ":" @ ID ] "{" { classProp } "}" #>
 [RULE: 4][CLAUSE: 0]
-	token: ID -> [30][ClassBody]<! ID [ ":" ID @ ] "{" { classProp } "}" !>
+	token: ID -> [30][ClassBody]<# ID [ ":" ID @ ] "{" { classProp } "}" #>
 		+ Token(1)
 
-[30][ClassBody]<! ID [ ":" ID @ ] "{" { classProp } "}" !>
+[30][ClassBody]<# ID [ ":" ID @ ] "{" { classProp } "}" #>
 [RULE: 4][CLAUSE: 0]
-	token: "{" -> [31][ClassBody]<! ID [ ":" ID ] "{" @ { classProp } "}" !>
+	token: "{" -> [31][ClassBody]<# ID [ ":" ID ] "{" @ { classProp } "}" #>
 		+ Token(2)
 
-[31][ClassBody]<! ID [ ":" ID ] "{" @ { classProp } "}" !>
+[31][ClassBody]<# ID [ ":" ID ] "{" @ { classProp } "}" #>
 [RULE: 4][CLAUSE: 0]
 	token: "var" -> [21][classProp]< "var" @ ID ":" ClassPropType ";" >
 		+ StackBegin()
 		+ Token(0)
-		> rule: classProp -> [32][ClassBody]<! ID [ ":" ID ] "{" { classProp @ } "}" !>
+		> rule: classProp -> [32][ClassBody]<# ID [ ":" ID ] "{" { classProp @ } "}" #>
 			+ StackSlot(2)
-	token: "}" -> [33][ClassBody]<! ID [ ":" ID ] "{" { classProp } "}" @ !>
+	token: "}" -> [33][ClassBody]<# ID [ ":" ID ] "{" { classProp } "}" @ #>
 		+ Token(3)
 
-[32][ClassBody]<! ID [ ":" ID ] "{" { classProp @ } "}" !>
+[32][ClassBody]<# ID [ ":" ID ] "{" { classProp @ } "}" #>
 [RULE: 4][CLAUSE: 0]
 	token: "var" -> [21][classProp]< "var" @ ID ":" ClassPropType ";" >
 		+ StackBegin()
 		+ Token(0)
-		> rule: classProp -> [32][ClassBody]<! ID [ ":" ID ] "{" { classProp @ } "}" !>
+		> rule: classProp -> [32][ClassBody]<# ID [ ":" ID ] "{" { classProp @ } "}" #>
 			+ StackSlot(2)
-	token: "}" -> [33][ClassBody]<! ID [ ":" ID ] "{" { classProp } "}" @ !>
+	token: "}" -> [33][ClassBody]<# ID [ ":" ID ] "{" { classProp } "}" @ #>
 		+ Token(3)
 
-[33][ClassBody]<! ID [ ":" ID ] "{" { classProp } "}" @ !>
+[33][ClassBody]<# ID [ ":" ID ] "{" { classProp } "}" @ #>
 [RULE: 4][CLAUSE: 0]
 	ending -> [27][ClassBody] END [ENDING]
 		+ Field(Type::name, 0)
@@ -241,7 +241,7 @@
 
 [38][Class]< [ "@public" ] [ "@ambiguous" ] "class" @ ClassBody >
 [RULE: 5][CLAUSE: 0]
-	token: ID -> [28][ClassBody]<! ID @ [ ":" ID ] "{" { classProp } "}" !>
+	token: ID -> [28][ClassBody]<# ID @ [ ":" ID ] "{" { classProp } "}" #>
 		+ Token(0)
 		> rule: ClassBody -> [39][Class]< [ "@public" ] [ "@ambiguous" ] "class" ClassBody @ >
 

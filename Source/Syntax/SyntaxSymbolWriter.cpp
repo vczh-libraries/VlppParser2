@@ -325,9 +325,9 @@ AutomatonBuilder (Clause)
 			AutomatonBuilder::StatePair AutomatonBuilder::BuildPartialClause(const StateBuilder& compileSyntax)
 			{
 				// TODO: Need to adjust slot IDs
-				clauseDisplayText += L"<! ";
+				clauseDisplayText += L"<# ";
 				auto bodyPair = compileSyntax();
-				clauseDisplayText += L" !>";
+				clauseDisplayText += L" #>";
 
 				StatePair pair;
 				pair.begin = bodyPair.begin;
