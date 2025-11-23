@@ -5,6 +5,7 @@
 #include "../../Source/Calculator/Parser/Calculator_Assembler.h"
 #include "../../Source/Calculator/Parser/Calculator_Lexer.h"
 #include "../../Source/LogParser.h"
+#include "../../Source/LogTrace.h"
 #include "../../../Source/Ast/AstSymbol.h"
 
 using namespace calculator;

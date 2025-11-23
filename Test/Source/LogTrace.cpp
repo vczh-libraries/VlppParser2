@@ -1,4 +1,5 @@
 #include "LogTrace.h"
+#include "LogAutomaton.h"
 
 extern WString GetTestOutputPath();
 extern FilePath GetOutputDir(const WString& parserName);
@@ -332,22 +333,21 @@ void RenderTrace(
 		***********************************************************************/
 
 		writer.WriteLine(L"[AST-INSTRUCTIONS]:");
-		vint32_t c1 = 0, c2 = 0, c3 = 0;
+		vint32_t c1 = 0, c2 = 0;
 		if (trace->byEdge != -1)
 		{
 			auto& edgeDesc = executable.edges[trace->byEdge];
-			c1 = edgeDesc.insBeforeInput.count;
-			c2 = c1 + edgeDesc.insAfterInput.count;
-			c3 = c2;
+			c1 = edgeDesc.insAfterInput.count;
+			c2 = c1;
 		}
 		if (trace->executedReturnStack != nullref)
 		{
 			auto returnStack = tm.GetReturnStack(trace->executedReturnStack);
 			auto& returnDesc = executable.returns[returnStack->returnIndex];
-			c3 = c2 + returnDesc.insAfterInput.count;
+			c2 = c1 + returnDesc.insAfterInput.count;
 		}
 
-		for (vint32_t i = 0; i < c3; i++)
+		for (vint32_t i = 0; i < c2; i++)
 		{
 			if (trace->traceExecRef != nullref)
 			{
@@ -358,12 +358,6 @@ void RenderTrace(
 
 			AstIns ins;
 			if (i < c1)
-			{
-				auto& edgeDesc = executable.edges[trace->byEdge];
-				ins = executable.astInstructions[edgeDesc.insBeforeInput.start + i];
-				writer.WriteString(L"  - ");
-			}
-			else if (i < c2)
 			{
 				auto& edgeDesc = executable.edges[trace->byEdge];
 				ins = executable.astInstructions[edgeDesc.insAfterInput.start + (i - c1)];

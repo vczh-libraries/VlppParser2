@@ -373,12 +373,10 @@ TraceManager (Data Structures -- PrepareTraceRoute/ResolveAmbiguity)
 
 			struct TraceInsLists
 			{
-				InstructionArray					edgeInsBeforeInput;
 				InstructionArray					edgeInsAfterInput;
 				InstructionArray					returnInsAfterInput;
-				vint32_t							c1;
-				vint32_t							c2;
-				vint32_t							c3;
+				vint32_t							countAfterInput;
+				vint32_t							countAll;
 			};
 
 			struct TraceBranchData : WithMagicCounter
