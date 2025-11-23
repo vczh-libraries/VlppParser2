@@ -117,8 +117,6 @@ CompactSyntaxBuilder
 						{
 						case EdgeInputType::Token:
 						case EdgeInputType::Rule:
-						case EdgeInputType::LrPlaceholder:
-						case EdgeInputType::LrInject:
 							{
 								// a new edge is created, accumulating multiple epsilon edges, ending with such edge
 								auto targetNewState = CreateCompactState(edge->To());
@@ -132,7 +130,6 @@ CompactSyntaxBuilder
 								newEdge->important |= edge->important;
 								for (auto accumulatedEdge : accumulatedEdges)
 								{
-									CopyFrom(newEdge->insBeforeInput, accumulatedEdge->insBeforeInput, true);
 									CopyFrom(newEdge->insAfterInput, accumulatedEdge->insAfterInput, true);
 									newEdge->important |= accumulatedEdge->important;
 								}
@@ -161,7 +158,6 @@ CompactSyntaxBuilder
 						newEdge->input.type = EdgeInputType::Ending;
 						for (auto accumulatedEdge : accumulatedEdges)
 						{
-							CopyFrom(newEdge->insBeforeInput, accumulatedEdge->insBeforeInput, true);
 							CopyFrom(newEdge->insAfterInput, accumulatedEdge->insAfterInput, true);
 							newEdge->important |= accumulatedEdge->important;
 						}
@@ -170,9 +166,7 @@ CompactSyntaxBuilder
 						{
 							if (endingEdge != newEdge && endingEdge->input.type == EdgeInputType::Ending)
 							{
-								if (
-									CompareEnumerable(endingEdge->insBeforeInput, newEdge->insBeforeInput) == 0 &&
-									CompareEnumerable(endingEdge->insAfterInput, newEdge->insAfterInput) == 0)
+								if (CompareEnumerable(endingEdge->insAfterInput, newEdge->insAfterInput) == 0)
 								{
 									CHECK_ERROR(newEdge->important == endingEdge->important, L"It is not possible to have two equal ending edges with different priority.");
 									newState->outEdges.Remove(newEdge.Obj());
@@ -232,29 +226,8 @@ SyntaxSymbolManager::BuildLeftRecEdge
 				newEdge->important |= lrecPrefixEdge->important;
 
 				newEdge->input.type = EdgeInputType::LeftRec;
-				CopyFrom(newEdge->insBeforeInput, endingEdge->insBeforeInput, true);
 				CopyFrom(newEdge->insAfterInput, endingEdge->insAfterInput, true);
-				CopyFrom(newEdge->insBeforeInput, lrecPrefixEdge->insBeforeInput, true);
 				CopyFrom(newEdge->insAfterInput, lrecPrefixEdge->insAfterInput, true);
-
-				// TODO: (enumerable) foreach:indexed(alterable(reversed))
-				for (vint i = newEdge->insBeforeInput.Count() - 1; i >= 0; i--)
-				{
-					if (newEdge->insBeforeInput[i].type == AstInsType::BeginObject)
-					{
-						newEdge->insBeforeInput.Insert(i, { AstInsType::LriStore });
-						newEdge->insBeforeInput.Insert(i + 2, { AstInsType::LriFetch });
-					}
-				}
-				// TODO: (enumerable) foreach:indexed(alterable(reversed))
-				for (vint i = newEdge->insAfterInput.Count() - 1; i >= 0; i--)
-				{
-					if (newEdge->insAfterInput[i].type == AstInsType::BeginObject)
-					{
-						newEdge->insBeforeInput.Insert(i, { AstInsType::LriStore });
-						newEdge->insBeforeInput.Insert(i + 2, { AstInsType::LriFetch });
-					}
-				}
 			}
 
 /***********************************************************************
@@ -310,185 +283,6 @@ SyntaxSymbolManager::EliminateLeftRecursion
 					lrecEdge->From()->outEdges.Remove(lrecEdge);
 					lrecEdge->To()->inEdges.Remove(lrecEdge);
 					newEdges.Remove(lrecEdge);
-				}
-			}
-
-/***********************************************************************
-SyntaxSymbolManager::EliminateSingleRulePrefix
-***********************************************************************/
-
-			void SyntaxSymbolManager::EliminateSingleRulePrefix(RuleSymbol* rule, StateSymbol* startState, StateSymbol* endState, StateList& newStates, EdgeList& newEdges)
-			{
-				/*
-				* Move the single rule prefix from the rule begin state
-				* if there is any single rule clause consist of the same rule
-				*
-				* [BEFORE]
-				*    +-(x)-> A --------(ending)-+
-				*    |                          |
-				* S -+-(x)-> ... -> B -(ending)-+-> E
-				*    |                          |
-				*    +-(x)-> ... -> C -(ending)-+
-				*
-				* [AFTER]
-				*            +-(leftrec)-> ... -> B -(ending)---+
-				*            |                                  v
-				* S-(x)-> A -+-----------------------(ending)-> E
-				*            |                                  ^
-				*            +-(leftrec)-> ... -> C -(ending)---+
-				*/
-
-				Group<RuleSymbol*, EdgeSymbol*> prefixEdges;
-				List<EdgeSymbol*> continuationEdges, eliminatedEdges;
-
-				// identify prefix edge and continuation edge
-				// prefix edges are clauses (x)
-				// continuation edges are all qualified clauses with prefix (x) except prefix edges
-				for (auto edge : startState->OutEdges())
-				{
-					if (edge->input.type != EdgeInputType::Rule) continue;
-					if (edge->input.rule == rule) continue;
-					auto state = edge->To();
-					if (state->InEdges().Count() > 1) continue;
-
-					if (state->OutEdges().Count() == 1 && state->OutEdges()[0]->input.type == EdgeInputType::Ending)
-					{
-						prefixEdges.Add(edge->input.rule, edge);
-					}
-					else
-					{
-						continuationEdges.Add(edge);
-					}
-				}
-
-				// TODO: (enumerable) foreach on group
-				for (auto [ruleSymbol, prefixIndex] : indexed(prefixEdges.Keys()))
-				{
-					auto&& prefixEdgesOfRule = prefixEdges.GetByIndex(prefixIndex);
-					CHECK_ERROR(prefixEdgesOfRule.Count() == 1, L"<EliminateSingleRulePrefix>Multiple prefix edges under the same rule is not supported yet.");
-
-					// TODO:
-					// prefixEdge means the clause could consume only one rule
-					// multiple prefixEdge could be
-					//   the rule has multiple such clauses
-					//   there is one clause but it looks like "([a] | [b]) c"
-					//     where both [a] and [b] create an epsilon edge to c
-					//     and after removing epsilon edges they become both edge consuming c
-					// in this case we need to create a prefix edges to replace all others
-					// it also means unresolvable ambiguity
-					// maybe a better solution is to define it as a kind of invalid syntax
-				}
-
-				// for all prefixEdge and continuationEdge under the same rule
-				// if their insBeforeInput are different
-				// move prefixEdge's insBeforeInput to insAfterInput with help from LriStore and LriFetch
-				SortedList<RuleSymbol*> compatibleInsBeforeInputPrefixRules;
-				// TODO: (enumerable) foreach on group
-				for (auto [ruleSymbol, prefixIndex] : indexed(prefixEdges.Keys()))
-				{
-					// see if all prefixEdges are compatible
-					auto&& prefixEdgesOfRule = prefixEdges.GetByIndex(prefixIndex);
-					auto prefixEdge = prefixEdgesOfRule[0];
-					for (auto otherPrefixEdge : From(prefixEdgesOfRule).Skip(1))
-					{
-						if (CompareEnumerable(prefixEdge->insBeforeInput, otherPrefixEdge->insBeforeInput) != 0)
-						{
-							goto INCOMPATIBLE;
-						}
-					}
-
-					// see if all continuationEdges are compatible
-					for (auto continuationEdge : continuationEdges)
-					{
-						if (continuationEdge->input.rule == prefixEdge->input.rule)
-						{
-							if (CompareEnumerable(prefixEdge->insBeforeInput, continuationEdge->insBeforeInput) != 0)
-							{
-								goto INCOMPATIBLE;
-							}
-						}
-					}
-
-					compatibleInsBeforeInputPrefixRules.Add(ruleSymbol);
-				INCOMPATIBLE:;
-				}
-
-				// for all prefixEdge that fails the above test
-				// combine insBeforeInput with insAfterInput with the help from LriStore and LriFetch
-				// properly move instructions from prefixEdge to endingEdge
-				// TODO: (enumerable) foreach on group
-				for (auto [ruleSymbol, prefixIndex] : indexed(prefixEdges.Keys()))
-				{
-					bool compatible = compatibleInsBeforeInputPrefixRules.Contains(ruleSymbol);
-					for (auto prefixEdge : prefixEdges.GetByIndex(prefixIndex))
-					{
-						List<AstIns> ins;
-						if (!compatible && prefixEdge->insBeforeInput.Count() > 0)
-						{
-							ins.Add({ AstInsType::LriStore });
-							CopyFrom(ins, prefixEdge->insBeforeInput, true);
-							ins.Add({ AstInsType::LriFetch });
-							prefixEdge->insBeforeInput.Clear();
-						}
-						CopyFrom(ins, prefixEdge->insAfterInput, true);
-						prefixEdge->insAfterInput.Clear();
-
-						auto endingEdge = prefixEdge->To()->OutEdges()[0];
-						CopyFrom(ins, endingEdge->insBeforeInput, true);
-						CopyFrom(endingEdge->insBeforeInput, ins);
-					}
-				}
-
-				// for all qualified continuationEdge
-				// create a new edge to run continuationEdge's instruction properly after prefixEdge
-				// remove continuationEdge
-				for (auto continuationEdge : continuationEdges)
-				{
-					vint prefixIndex = prefixEdges.Keys().IndexOf(continuationEdge->input.rule);
-					if (prefixIndex == -1) continue;
-
-					bool compatible = compatibleInsBeforeInputPrefixRules.Contains(continuationEdge->input.rule);
-					bool eliminated = false;
-					for (auto prefixEdge : prefixEdges.GetByIndex(prefixIndex))
-					{
-						// important and insSwitch happen before shifting into the rule
-						if (continuationEdge->important != prefixEdge->important) continue;
-
-						eliminated = true;
-						auto state = prefixEdge->To();
-						auto newEdge = Ptr(new EdgeSymbol(state, continuationEdge->To()));
-						newEdges.Add(newEdge);
-
-						newEdge->input.type = EdgeInputType::LeftRec;
-						newEdge->important = continuationEdge->important;
-						if (compatible)
-						{
-							CopyFrom(newEdge->insAfterInput, continuationEdge->insAfterInput);
-						}
-						else if (continuationEdge->insBeforeInput.Count() > 0)
-						{
-							// for incompatible continuationEdge
-							// combine insBeforeInput with insAfterInput with the help from LriStore and LriFetch
-							newEdge->insAfterInput.Add({ AstInsType::LriStore });
-							CopyFrom(newEdge->insAfterInput, continuationEdge->insBeforeInput, true);
-							newEdge->insAfterInput.Add({ AstInsType::LriFetch });
-							CopyFrom(newEdge->insAfterInput, continuationEdge->insAfterInput, true);
-						}
-					}
-
-					if (eliminated)
-					{
-						eliminatedEdges.Add(continuationEdge);
-					}
-				}
-
-				for (auto eliminatedEdge : eliminatedEdges)
-				{
-					vint prefixIndex = prefixEdges.Keys().IndexOf(eliminatedEdge->input.rule);
-					if (prefixIndex == -1) continue;
-					eliminatedEdge->From()->outEdges.Remove(eliminatedEdge);
-					eliminatedEdge->To()->inEdges.Remove(eliminatedEdge);
-					newEdges.Remove(eliminatedEdge);
 				}
 			}
 
@@ -550,7 +344,6 @@ SyntaxSymbolManager::EliminateEpsilonEdges
 
 				// optimize
 				EliminateLeftRecursion(rule, compactStartState, compactEndState.Obj(), newStates, newEdges);
-				EliminateSingleRulePrefix(rule, compactStartState, compactEndState.Obj(), newStates, newEdges);
 
 				return compactStartState;
 			}

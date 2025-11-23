@@ -66,8 +66,6 @@ EdgeSymbol
 				LeftRec,		// An epsilon edge that reduces the current rule, which is the first input of one of its left recursive clause.
 				Token,			// An token is read to execute this edge.
 				Rule,			// A rule is reduced to execute this edge.
-				LrPlaceholder,	// A left recursion placeholder is consumed to execute this edge. EdgeInput::token is the index of SyntaxSymbolManager::lrpFlags.
-				LrInject,		// A left recursion injection.
 			};
 
 			struct EdgeInput
@@ -196,7 +194,6 @@ SyntaxSymbolManager
 
 				void						BuildLeftRecEdge(EdgeSymbol* newEdge, EdgeSymbol* endingEdge, EdgeSymbol* lrecPrefixEdge);
 				void						EliminateLeftRecursion(RuleSymbol* rule, StateSymbol* startState, StateSymbol* endState, StateList& newStates, EdgeList& newEdges);
-				void						EliminateSingleRulePrefix(RuleSymbol* rule, StateSymbol* startState, StateSymbol* endState, StateList& newStates, EdgeList& newEdges);
 				StateSymbol*				EliminateEpsilonEdges(RuleSymbol* rule, StateList& newStates, EdgeList& newEdges);
 				void						BuildCompactNFAInternal();
 
