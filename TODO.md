@@ -7,27 +7,18 @@
 
 ## Big Design Change
 
-- What about no field assignment instructions generated until EndObject
-  - Keep the prefix clean so that no leftrec and high level structures are needed
-- Rule begins on one rule instead of statements in a rule.
-- The StackBegin(n) instruction is used after the first consumption.
-  - Saying that the currect finished object is stored in the n-th slot in the previous stack.
-- The StackEnd(schema) instruction is used at the ending of a rule.
-  - Offer an object type and a mapping from slot to field.
-  - A stack will be implemented as a linked list so there is no need to specify if it will be stored in an array field.
-- The StackSlot(n) is like StackBegin(n) but it doesn't start a new stack.
-- A rule will create a NFA and it will aggresively perform prefix merge.
-  - There will be no need to specify leftrec manually.
-  - There will be no beed to specify like Expr and Type begins with an identifier, this should be calculated/discovered.
-- There will be no need for beforeIns as all instructions happen after an edge.
-- There will be no need for rule rewriting.
-- For inline rule:
-  - No StackBegin or StackEnd generated.
-  - The created NFA becomes a template.
-  - The created NFA will be copied recursively all the way to the actual rule.
-  - Be careful of slot assignment and schema building.
-- Must check if any sub class overrides any field in any base class.
 - Allow indirect left recursion as it doesn't matter anymore for left recursion or non-left recursion.
+
+### New Instructions
+
+- StackBegin() and StackEnd() manage a separated storage of slots.
+- CreateObject(type) pushes a new creating object.
+- StackSlot(n) pops a creating object and store it to the n-th slot.
+- StackBegin() and StackEnd() do not affect the creating object stack.
+- Token(n) and EnumItem(v, n) store a value directly to the n-th slot.
+- Field(f, n) assign all values in the n-th slot to a field.
+- If the first input in a clause is a rule, StackBegin() + optional(StackSlot(n)) is generated after existing the rule.
+- If the first input in a clause is a token, StackBegin() is generated before Token(n).
 
 ### Notes
 
