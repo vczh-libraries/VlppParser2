@@ -37,6 +37,7 @@
 - Prefix merging 2nd
   - Performed at the beginning of CrossReferencedNFA.
   - Calculating prefix_merge transition.
+  - This can happen in any branch in a rule, not just the beginning.
 - In the original implementation LM transitions marked "leftrec" but it may be unnecessary now.
 
 ## Test Cases
