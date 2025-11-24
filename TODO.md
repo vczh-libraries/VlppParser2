@@ -25,6 +25,8 @@
 - During building CompressedNFA, the StackBegin instruction (aka in all epsilon transitions from the begin state) will be moved to all immediate transition's beginning of insAfterInput.
 - Remove NFA for partial rules, they will be copied.
   - Remove builder functions for partial rules.
+  - Since partial rule cannot create object, clauses can be merged with | operator into one clause.
+    - Do this in all partial rules, and then the clause can be copied easily embedding into other clauses.
 - left_recursion transition:
   - Found by detecting dead-loop starting from a rule.
   - Starts from ending states of a rule, appears in CompressedNFA.
