@@ -17,12 +17,10 @@ namespace vl::glr::parsergen
 	{
 		EnumItem = 0,
 		Enum = 4,
-		ClassPropType = 12,
-		classProp = 19,
-		ClassBody = 26,
-		Class = 34,
-		Type = 40,
-		File = 44,
+		classProp = 12,
+		Class = 23,
+		Type = 34,
+		File = 38,
 	};
 
 	const wchar_t* TypeParserRuleName(vl::vint index);

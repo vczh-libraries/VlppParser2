@@ -57,7 +57,6 @@ AutomatonBuilder
 
 				StatePair					BuildTokenSyntax(vint32_t tokenId, const WString& displayText, Nullable<WString> condition, vint32_t field);
 				StatePair					BuildFieldRuleSyntax(RuleSymbol* rule, vint32_t field);
-				StatePair					BuildPartialRuleSyntax(RuleSymbol* rule);
 				StatePair					BuildDiscardRuleSyntax(RuleSymbol* rule);
 				StatePair					BuildUseSyntax(RuleSymbol* rule);
 				StatePair					BuildLoopSyntax(const StateBuilder& loopBody, const StateBuilder& loopDelimiter, bool hasDelimiter);
@@ -68,7 +67,6 @@ AutomatonBuilder
 				StatePair					BuildClause(const StateBuilder& compileSyntax);
 				StatePair					BuildAssignment(StatePair pair, vint32_t enumItem, vint32_t field, bool weakAssignment);
 				StatePair					BuildCreateClause(vint32_t classId, const StateBuilder& compileSyntax);
-				StatePair					BuildPartialClause(const StateBuilder& compileSyntax);
 				StatePair					BuildReuseClause(const StateBuilder& compileSyntax);
 			};
 
@@ -88,7 +86,6 @@ Clause
 
 				struct Rule
 				{
-					static const vint		Partial = -2;
 					static const vint		Discard = -1;
 
 					RuleSymbol*				rule;
@@ -133,6 +130,12 @@ Clause
 					U						second;
 				};
 
+				struct WithConfig
+				{
+					vint32_t				field;
+					vint32_t				enumItem;
+				};
+
 				template<typename T>
 				struct With
 				{
@@ -151,18 +154,6 @@ Clause
 					Create<With<T>> with(F field, E enumItem)
 					{
 						return { { body,(vint32_t)field,(vint32_t)enumItem }, type };
-					}
-				};
-
-				template<typename T>
-				struct Partial
-				{
-					T						body;
-
-					template<typename F, typename E>
-					Partial<With<T>> with(F field, E enumItem)
-					{
-						return { { body,(vint32_t)field,(vint32_t)enumItem } };
 					}
 				};
 
@@ -216,9 +207,6 @@ Verification
 				struct IsClause_<Create<T>> { static constexpr bool Value = IsClause_<T>::Value; };
 
 				template<typename T>
-				struct IsClause_<Partial<T>> { static constexpr bool Value = IsClause_<T>::Value; };
-
-				template<typename T>
 				struct IsClause_<Reuse<T>> { static constexpr bool Value = IsClause_<T>::Value; };
 
 				template<typename T>
@@ -244,12 +232,6 @@ Operators
 				{
 					CHECK_ERROR(!r->isPartial, L"vl::glr::parsergen::syntax_writer::drule(RuleSymbol*)#Rule should not be a partial rule.");
 					return { r,Rule::Discard };
-				}
-
-				inline Rule prule(RuleSymbol* r)
-				{
-					CHECK_ERROR(r->isPartial, L"vl::glr::parsergen::syntax_writer::prule(RuleSymbol*)#Rule should be a partial rule.");
-					return { r,Rule::Partial };
 				}
 
 				template<typename F>
@@ -295,16 +277,22 @@ Operators
 					return { c1,c2 };
 				}
 
+				template<typename F, typename E>
+				inline WithConfig with(F field, E enumItem)
+				{
+					return { (vint32_t)field,(vint32_t)enumItem };
+				}
+
+				template<typename C1>
+				inline std::enable_if_t<IsClause<C1>, With<C1>> operator&&(const C1& c1, const WithConfig& with)
+				{
+					return { c1,with.field,with.enumItem };
+				}
+
 				template<typename C, typename T>
 				inline std::enable_if_t<IsClause<C>, Create<C>> create(const C& clause, T type)
 				{
 					return { clause,(vint32_t)type };
-				}
-
-				template<typename C>
-				inline std::enable_if_t<IsClause<C>, Partial<C>> partial(const C& clause)
-				{
-					return { clause };
 				}
 
 				template<typename C>
@@ -330,13 +318,12 @@ Builder
 
 					StatePair Build(const Rule& clause)
 					{
-						switch (clause.field)
+						if (clause.field == Rule::Discard)
 						{
-						case Rule::Partial:
-							return builder.BuildPartialRuleSyntax(clause.rule);
-						case Rule::Discard:
 							return builder.BuildDiscardRuleSyntax(clause.rule);
-						default:
+						}
+						else
+						{
 							return builder.BuildFieldRuleSyntax(clause.rule, clause.field);
 						}
 					}
@@ -434,14 +421,6 @@ Builder
 					}
 
 					template<typename C>
-					StatePair Build(const Partial<C>& clause)
-					{
-						return builder.BuildPartialClause(
-							[this, &clause]() { return Build(clause.body); }
-							);
-					}
-
-					template<typename C>
 					StatePair Build(const Reuse<C>& clause)
 					{
 						return builder.BuildReuseClause(
@@ -461,13 +440,6 @@ Builder
 
 					template<typename C>
 					Clause& operator=(const Create<C>& clause)
-					{
-						Assign(clause);
-						return *this;
-					}
-
-					template<typename C>
-					Clause& operator=(const Partial<C>& clause)
 					{
 						Assign(clause);
 						return *this;

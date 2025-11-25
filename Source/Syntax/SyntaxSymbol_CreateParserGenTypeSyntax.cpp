@@ -30,15 +30,10 @@ CreateParserGenTypeSyntax
 
 				auto _enumItem = createRule(L"EnumItem");
 				auto _enum = createRule(L"Enum");
-				auto _classPropType = createRule(L"ClassPropType");
 				auto _classProp = createRule(L"classProp");
-				auto _classBody = createRule(L"ClassBody");
 				auto _class = createRule(L"Class");
 				auto _type = createRule(L"Type");
 				auto _file = createRule(L"File");
-
-				_classPropType->isPartial = true;
-				_classBody->isPartial = true;
 
 				_file->isParser = true;
 				_file->ruleType = dynamic_cast<AstClassSymbol*>(ast.Symbols()[L"AstFile"][0]);
@@ -54,22 +49,21 @@ CreateParserGenTypeSyntax
 				Clause{ _enum } = create(opt(tok(T::ATT_PUBLIC, F::Type_attPublic)) + tok(T::ENUM) + tok(T::ID, F::Type_name) + tok(T::OPEN_CURLY) + loop(rule(_enumItem, F::Enum_items)) + tok(T::CLOSE_CURLY), C::Enum);
 
 				// "token" as partial ClassProp {propType = "Token"}
-				Clause{ _classPropType } = partial(tok(T::TOKEN)).with(F::ClassProp_propType, GlrPropType::Token);
-
 				// ID:propTypeName as partial ClassProp {propType = "Type"}
-				Clause{ _classPropType } = partial(tok(T::ID, F::ClassProp_propTypeName)).with(F::ClassProp_propType, GlrPropType::Type);
-
 				// ID:propTypeName "[" "]" as partial ClassProp {propType = "Array"}
-				Clause{ _classPropType } = partial(tok(T::ID, F::ClassProp_propTypeName) + tok(T::OPEN_SQUARE) + tok(T::CLOSE_SQUARE)).with(F::ClassProp_propType, GlrPropType::Array);
+				auto _classPropType_Token = tok(T::TOKEN) && with(F::ClassProp_propType, GlrPropType::Token);
+				auto _classPropType_Type = (tok(T::ID, F::ClassProp_propTypeName)) && with(F::ClassProp_propType, GlrPropType::Type);
+				auto _classPropType_Array = (tok(T::ID, F::ClassProp_propTypeName) + tok(T::OPEN_SQUARE) + tok(T::CLOSE_SQUARE)) && with(F::ClassProp_propType, GlrPropType::Array);
+				auto _classPropType = _classPropType_Token | _classPropType_Type | _classPropType_Array;
 
 				// "var" ID:name ":" ClassPropType ";" as ClassProp
-				Clause{ _classProp } = create(tok(T::VAR) + tok(T::ID, F::ClassProp_name) + tok(T::COLON) + prule(_classPropType) + tok(T::SEMICOLON), C::ClassProp);
+				Clause{ _classProp } = create(tok(T::VAR) + tok(T::ID, F::ClassProp_name) + tok(T::COLON) + _classPropType + tok(T::SEMICOLON), C::ClassProp);
 
 				// ID:name [":" ID:baseClass] "{" {ClassProp} "}" as partial Class
-				Clause{ _classBody } = partial(tok(T::ID, F::Type_name) + opt(tok(T::COLON) + tok(T::ID, F::Class_baseClass)) + tok(T::OPEN_CURLY) + loop(rule(_classProp, F::Class_props)) + tok(T::CLOSE_CURLY));
+				auto _classBody = (tok(T::ID, F::Type_name) + opt(tok(T::COLON) + tok(T::ID, F::Class_baseClass)) + tok(T::OPEN_CURLY) + loop(rule(_classProp, F::Class_props)) + tok(T::CLOSE_CURLY));
 
 				// ["@public"] ["@ambiguous"] "class" ClassBody {ambiguity = Yes}
-				Clause{ _class } = create(opt(tok(T::ATT_PUBLIC, F::Type_attPublic)) + opt(tok(T::ATT_AMBIGUOUS, F::Class_attAmbiguous)) + tok(T::CLASS) + prule(_classBody), C::Class);
+				Clause{ _class } = create(opt(tok(T::ATT_PUBLIC, F::Type_attPublic)) + opt(tok(T::ATT_AMBIGUOUS, F::Class_attAmbiguous)) + tok(T::CLASS) + _classBody, C::Class);
 
 				// !Class | !Enum
 				Clause{ _type } = use(_enum) | use(_class);

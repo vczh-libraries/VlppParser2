@@ -101,11 +101,6 @@ AutomatonBuilder (Syntax)
 				return BuildRuleSyntaxInternal(rule, field, automaton::ReturnRuleType::Field);
 			}
 
-			AutomatonBuilder::StatePair AutomatonBuilder::BuildPartialRuleSyntax(RuleSymbol* rule)
-			{
-				return BuildRuleSyntaxInternal(rule, -1, automaton::ReturnRuleType::Partial);
-			}
-
 			AutomatonBuilder::StatePair AutomatonBuilder::BuildDiscardRuleSyntax(RuleSymbol* rule)
 			{
 				return BuildRuleSyntaxInternal(rule, -1, automaton::ReturnRuleType::Discard);
@@ -317,24 +312,6 @@ AutomatonBuilder (Clause)
 					edge->insAfterInput.Add({ AstInsType::CreateObject,classId });
 					CopyFrom(edge->insAfterInput, fieldIns, true);
 					edge->insAfterInput.Add({ AstInsType::StackEnd });
-				}
-				endPoses.Add(pair.end, clauseDisplayText.Length());
-				return pair;
-			}
-
-			AutomatonBuilder::StatePair AutomatonBuilder::BuildPartialClause(const StateBuilder& compileSyntax)
-			{
-				// TODO: Need to adjust slot IDs
-				clauseDisplayText += L"<# ";
-				auto bodyPair = compileSyntax();
-				clauseDisplayText += L" #>";
-
-				StatePair pair;
-				pair.begin = bodyPair.begin;
-				pair.end = CreateState();
-				{
-					auto edge = CreateEdge(bodyPair.end, pair.end);
-					CopyFrom(edge->insAfterInput, fieldIns, true);
 				}
 				endPoses.Add(pair.end, clauseDisplayText.Length());
 				return pair;
