@@ -625,11 +625,6 @@ TraceManager
 				Trace*										StepForward(Trace* trace);
 				void										BuildAmbiguityStructures();
 
-#if defined VCZH_MSVC && defined _DEBUG
-				// phase: DebugCheckTraceExecData
-				void										DebugCheckTraceExecData();
-#endif
-
 			protected:
 				// ResolveAmbiguity
 				Ref<Trace>									firstBranchTrace;

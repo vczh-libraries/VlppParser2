@@ -351,8 +351,8 @@ CheckMergeTrace
 
 				{
 					// [CONDITION]
-					// the first predecessor must has a EndObject instruction
-					// count the number of instructions after EndObject
+					// the first predecessor must has a StackEnd instruction
+					// count the number of instructions after StackEnd
 					// these instructions are the postfix
 					vint32_t postfix = -1;
 					auto firstTrace = GetTrace(trace->predecessors.first);
@@ -360,7 +360,7 @@ CheckMergeTrace
 					for (vint32_t i = firstTraceExec->insLists.countAll - 1; i >= 0; i--)
 					{
 						auto&& ins = ReadInstruction(i, firstTraceExec->insLists);
-						if (ins.type == AstInsType::EndObject)
+						if (ins.type == AstInsType::StackEnd)
 						{
 							postfix = firstTraceExec->insLists.countAll - i - 1;
 							break;
@@ -372,7 +372,7 @@ CheckMergeTrace
 					}
 
 					// [CONDITION]
-					// all predecessor must have a EndObject instruction
+					// all predecessor must have a StackEnd instruction
 					// posftix of all predecessors must be the same
 					{
 						auto predecessorId = trace->predecessors.last;
@@ -387,10 +387,10 @@ CheckMergeTrace
 						}
 					}
 
-					// check if all EndObject ended objects are the result of ambiguity
+					// check if all StackEnd ended objects are the result of ambiguity
 					if (postfix == 0)
 					{
-						// if EndObject is the last instruction of predecessors
+						// if StackEnd is the last instruction of predecessors
 						// then their objRefs has been written to the top object stack
 						auto ieOSTop = GetInsExec_ObjectStack(traceExec->context.objectStack);
 						auto succeeded = CheckAmbiguityResolution(ta, visitingIds, [=](auto&& callback)
@@ -401,7 +401,7 @@ CheckMergeTrace
 					}
 					else
 					{
-						// otherwise find all objRefs of EndObject
+						// otherwise find all objRefs of StackEnd
 						auto succeeded = CheckAmbiguityResolution(ta, visitingIds, [=, this, &visitingIds](auto&& callback)
 						{
 							auto predecessorId = trace->predecessors.first;
