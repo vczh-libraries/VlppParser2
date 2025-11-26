@@ -1,9 +1,5 @@
 #include "TraceManager.h"
 
-#if defined VCZH_MSVC && defined _DEBUG
-#define VCZH_DO_DEBUG_CHECK
-#endif
-
 namespace vl
 {
 	namespace glr

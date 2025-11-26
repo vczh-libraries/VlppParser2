@@ -510,40 +510,6 @@ CheckTraceAmbiguity
 			}
 
 /***********************************************************************
-DebugCheckTraceAmbiguityInSameTrace
-***********************************************************************/
-
-#ifdef VCZH_DO_DEBUG_CHECK
-			void TraceManager::DebugCheckTraceAmbiguitiesInSameTrace(Trace* trace, TraceExec* traceExec)
-			{
-#define ERROR_MESSAGE_PREFIX L"vl::glr::automaton::TraceManager::DebugCheckTraceAmbiguityInSameTrace(Trace*, TraceExec*)#"
-
-				// if there are multiple ambiguityBegins
-				// first ambiguity instructions must all be in successors
-				vint faiInBranch = 0;
-				vint faiInSuccessor = 0;
-				auto taLinkRef = traceExec->ambiguityBegins;
-				while (taLinkRef != nullref)
-				{
-					auto taLink = GetTraceAmbiguityLink(taLinkRef);
-					taLinkRef = taLink->previous;
-
-					auto ta = GetTraceAmbiguity(taLink->ambiguity);
-					if (ta->prefix >= traceExec->insLists.countAll)
-					{
-						faiInSuccessor++;
-					}
-					else
-					{
-						faiInBranch++;
-					}
-				}
-				CHECK_ERROR((faiInBranch == 1 && faiInSuccessor == 0) || faiInBranch == 0, ERROR_MESSAGE_PREFIX L"Incompatible TraceAmbiguity has been assigned at the same place.");
-#undef ERROR_MESSAGE_PREFIX
-			}
-#endif
-
-/***********************************************************************
 CategorizeTraceAmbiguities
 ***********************************************************************/
 
@@ -669,9 +635,6 @@ CheckMergeTraces
 
 						if (traceExec->ambiguityBegins != nullref)
 						{
-#ifdef VCZH_DO_DEBUG_CHECK
-							DebugCheckTraceAmbiguitiesInSameTrace(trace, traceExec);
-#endif
 							CategorizeTraceAmbiguities(trace, traceExec);
 						}
 					}

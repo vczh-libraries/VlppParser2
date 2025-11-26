@@ -647,9 +647,6 @@ TraceManager
 				bool										CheckMergeTrace(TraceAmbiguity* ta, Trace* trace, TraceExec* traceExec, collections::List<Ref<InsExec_ObjRefLink>>& visitingIds);
 				void										LinkAmbiguityCriticalTrace(Ref<Trace> traceId);
 				void										CheckTraceAmbiguity(TraceAmbiguity* ta);
-#if defined VCZH_MSVC && defined _DEBUG
-				void										DebugCheckTraceAmbiguitiesInSameTrace(Trace* trace, TraceExec* traceExec);
-#endif
 				void										MarkAmbiguityCoveredForward(Trace* currentTrace, TraceAmbiguity* ta, Trace* firstTrace, TraceExec* firstTraceExec);
 				void										CategorizeTraceAmbiguities(Trace* trace, TraceExec* traceExec);
 				void										CheckMergeTraces();

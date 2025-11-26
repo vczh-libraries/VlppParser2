@@ -1,10 +1,6 @@
 #include "TraceManager.h"
 #include "TraceManager_Common.h"
 
-#if defined VCZH_MSVC && defined _DEBUG
-#define VCZH_DO_DEBUG_CHECK
-#endif
-
 namespace vl
 {
 	namespace glr
@@ -28,7 +24,3 @@ PrepareTraceRoute
 		}
 	}
 }
-
-#if defined VCZH_MSVC && defined _DEBUG
-#undef VCZH_DO_DEBUG_CHECK
-#endif
