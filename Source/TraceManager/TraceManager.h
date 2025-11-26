@@ -315,7 +315,6 @@ TraceManager (Data Structures -- PrepareTraceRoute/ResolveAmbiguity)
 			{
 				Ref<InsExec_ObjectStack>			objectStack;			// InsExec_ObjectStack after executing instructions
 				Ref<InsExec_CreateStack>			createStack;			// InsExec_CreateStack after executing instructions
-				Ref<InsExec_ObjRefLink>				lriStoredObjects;		// LriStore stored InsExec_ObjRefLink after executing instructions
 			};
 
 			struct InsExec : WithMagicCounter

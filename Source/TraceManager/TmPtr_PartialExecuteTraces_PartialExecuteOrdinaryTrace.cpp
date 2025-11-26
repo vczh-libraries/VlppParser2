@@ -213,92 +213,6 @@ PartialExecuteOrdinaryTrace
 							insExec->createdObjectId = ieObject;
 						}
 						break;
-					case AstInsType::DelayFieldAssignment:
-						{
-							// new create stack
-							auto ieCSTop = PushCreateStack(context);
-							PushInsRefLink(ieCSTop->createInsRefs, { trace, insRef });
-							ieCSTop->stackBase = GetStackTop(context);
-						}
-						break;
-					case AstInsType::ReopenObject:
-						{
-							CHECK_ERROR(GetStackTop(context) - GetStackBase(context) >= 1, ERROR_MESSAGE_PREFIX L"Pushed values not enough.");
-							CHECK_ERROR(context.createStack != nullref, ERROR_MESSAGE_PREFIX L"There is no created object.");
-
-							// pop an object
-							auto ieOSTop = GetInsExec_ObjectStack(context.objectStack);
-							context.objectStack = ieOSTop->previous;
-
-							auto ieCSTop = GetInsExec_CreateStack(context.createStack);
-
-							// InsExec_Object::assignedToObjectIds
-							PushAssignedToObjectIdsMultipleWithMagic(ieCSTop->reverseAssignedToObjectIds, ieCSTop->objectIds);
-
-							// reopen an object
-							// ReopenObject in different branches could write to the same InsExec_CreateStack
-							// this happens when ambiguity happens in the !Rule syntax
-							// but the same InsExec_CreateStack means the clause of !Rule does not have ambiguity
-							// so ambiguity should also be resolved here
-							// and such ReopenObject will be the last instruction in a trace
-							// this means it is impossible to continue with InsExec_CreateStack polluted by sibling traces
-							// therefore adding multiple objects to the same InsExec_CreateStack in multiple branches is fine
-							// the successor trace will be a merge trace taking all of the information
-							NEW_MERGE_STACK_MAGIC_COUNTER;
-							{
-								auto magicReopen = MergeStack_MagicCounter;
-								{
-									auto ref = ieCSTop->objectIds;
-									while (ref != nullref)
-									{
-										auto link = GetInsExec_ObjRefLink(ref);
-										auto ieObject = GetInsExec_Object(link->id);
-										ieObject->mergeCounter = magicReopen;
-										ref = link->previous;
-									}
-								}
-								{
-									auto ref = ieOSTop->objectIds;
-									while (ref != nullref)
-									{
-										auto link = GetInsExec_ObjRefLink(ref);
-										auto ieObject = GetInsExec_Object(link->id);
-										if (ieObject->mergeCounter != magicReopen)
-										{
-											ieObject->mergeCounter = magicReopen;
-											PushObjRefLink(ieCSTop->objectIds, link->id);
-										}
-										ref = link->previous;
-									}
-								}
-							}
-
-							auto insRefLinkId = ieCSTop->createInsRefs;
-							while(insRefLinkId != nullref)
-							{
-								auto insRefLink = GetInsExec_InsRefLink(insRefLinkId);
-								insRefLinkId = insRefLink->previous;
-
-								// check if the top create stack is from DFA
-								auto traceCSTop = GetTrace(insRefLink->insRef.trace);
-								auto traceExecCSTop = GetTraceExec(traceCSTop->traceExecRef);
-								CHECK_ERROR(ReadInstruction(insRefLink->insRef.ins, traceExecCSTop->insLists).type == AstInsType::DelayFieldAssignment, ERROR_MESSAGE_PREFIX L"DelayFieldAssignment is not submitted before ReopenObject.");
-
-								auto insExecDfa = GetInsExec(traceExecCSTop->insExecRefs.start + insRefLink->insRef.ins);
-								auto ref = ieOSTop->objectIds;
-								while (ref != nullref)
-								{
-									auto link = GetInsExec_ObjRefLink(ref);
-									auto ieObject = GetInsExec_Object(link->id);
-									// InsExec_Object::dfaInsRefs
-									PushInsRefLink(ieObject->dfaInsRefs, insRefLink->insRef);
-									// InsExec::objRefs
-									PushObjRefLink(insExecDfa->objRefs, ieObject);
-									ref = link->previous;
-								}
-							}
-						}
-						break;
 					case AstInsType::EndObject:
 						{
 							CHECK_ERROR(context.createStack != nullref, ERROR_MESSAGE_PREFIX L"There is no created object.");
@@ -328,7 +242,10 @@ PartialExecuteOrdinaryTrace
 							}
 						}
 						break;
-					case AstInsType::DiscardValue:
+					case AstInsType::StackBegin:
+					case AstInsType::StackEnd:
+					case AstInsType::StackSlot:
+						break;
 					case AstInsType::Field:
 					case AstInsType::FieldIfUnassigned:
 						{
@@ -352,35 +269,11 @@ PartialExecuteOrdinaryTrace
 							}
 						}
 						break;
-					case AstInsType::LriStore:
-						{
-							CHECK_ERROR(GetStackTop(context) - GetStackBase(context) >= 1, ERROR_MESSAGE_PREFIX L"Pushed values not enough.");
-							CHECK_ERROR(context.lriStoredObjects == nullref, ERROR_MESSAGE_PREFIX L"LriFetch is not executed before the next LriStore.");
-
-							auto ieObjTop = GetInsExec_ObjectStack(context.objectStack);
-							context.objectStack = ieObjTop->previous;
-							context.lriStoredObjects = ieObjTop->objectIds;
-						}
-						break;
-					case AstInsType::LriFetch:
-						{
-							CHECK_ERROR(context.lriStoredObjects != nullref, ERROR_MESSAGE_PREFIX L"LriStore is not executed before the next LriFetch.");
-							PushObjectStackMultiple(context, context.lriStoredObjects);
-							context.lriStoredObjects = nullref;
-						}
-						break;
 					case AstInsType::Token:
 					case AstInsType::EnumItem:
-						{
-							PushObjectStackSingle(context, Ref<InsExec_Object>(InsExec_Object::TokenOrEnumItemObjectId));
-						}
 						break;
 					case AstInsType::ResolveAmbiguity:
 						CHECK_FAIL(ERROR_MESSAGE_PREFIX L"ResolveAmbiguity should not appear in traces.");
-					case AstInsType::AccumulatedDfa:
-						CHECK_FAIL(ERROR_MESSAGE_PREFIX L"AccumulatedDfa should not appear in traces.");
-					case AstInsType::AccumulatedEoRo:
-						CHECK_FAIL(ERROR_MESSAGE_PREFIX L"AccumulatedEoRo should not appear in traces.");
 					default:;
 						CHECK_FAIL(ERROR_MESSAGE_PREFIX L"Unrecognizabled instruction.");
 					}
