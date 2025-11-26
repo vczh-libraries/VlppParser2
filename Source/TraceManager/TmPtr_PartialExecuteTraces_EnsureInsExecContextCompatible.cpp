@@ -20,9 +20,6 @@ EnsureInsExecContextCompatible
 					CHECK_FAIL(ERROR_MESSAGE_PREFIX L"Execution results of traces to merge are different.");
 				};
 
-				// check if the two lriStored be both empty or non-empty
-				if ((contextBaseline.lriStoredObjects == nullref) != (contextComming.lriStoredObjects == nullref)) error();
-
 				// check if the two objectStack have the same depth
 				if ((contextBaseline.objectStack == nullref) != (contextComming.objectStack == nullref)) error();
 				if (contextBaseline.objectStack != nullref)

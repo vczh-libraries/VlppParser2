@@ -162,9 +162,6 @@ MergeInsExecContext
 					auto predecessor = GetTrace(predecessorId);
 					predecessorId = predecessor->predecessors.siblingNext;
 					auto predecessorTraceExec = GetTraceExec(predecessor->traceExecRef);
-
-					// do not visit the same object repeatly
-					PushObjRefLinkWithCounter(traceExec->context.lriStoredObjects, predecessorTraceExec->context.lriStoredObjects);
 				}
 			}
 

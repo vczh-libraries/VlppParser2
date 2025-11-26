@@ -181,16 +181,6 @@ void RenderTrace(
 			}
 
 			writer.WriteString(indentation);
-			if (context.lriStoredObjects == nullref)
-			{
-				writer.WriteLine(L"LriStored: []");
-			}
-			else
-			{
-				writer.WriteString(L"LriStored: [");
-				logObjRefLink(context.lriStoredObjects);
-				writer.WriteLine(L"]");
-			}
 		};
 
 		/***********************************************************************

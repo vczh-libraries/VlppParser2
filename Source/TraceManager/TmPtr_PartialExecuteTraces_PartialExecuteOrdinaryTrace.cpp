@@ -189,7 +189,7 @@ PartialExecuteOrdinaryTrace
 				}
 
 				auto traceExec = GetTraceExec(trace->traceExecRef);
-				for (vint32_t insRef = 0; insRef < traceExec->insLists.c3; insRef++)
+				for (vint32_t insRef = 0; insRef < traceExec->insLists.countAll; insRef++)
 				{
 					auto&& ins = ReadInstruction(insRef, traceExec->insLists);
 					auto insExec = GetInsExec(traceExec->insExecRefs.start + insRef);
@@ -197,23 +197,29 @@ PartialExecuteOrdinaryTrace
 
 					switch (ins.type)
 					{
-					case AstInsType::BeginObject:
+					case AstInsType::CreateObject:
 						{
 							// new object
 							auto ieObject = NewObject();
 							ieObject->createInsRef = { trace,insRef };
 
-							// new create stack
-							auto ieCSTop = PushCreateStack(context);
-							PushInsRefLink(ieCSTop->createInsRefs, ieObject->createInsRef);
-							ieCSTop->stackBase = GetStackTop(context);
+							// associate to current create stack
+							auto ieCSTop = GetInsExec_CreateStack(context.createStack);
 							PushObjRefLink(ieCSTop->objectIds, ieObject);
 
 							// InsExec::createdObjectId
 							insExec->createdObjectId = ieObject;
 						}
 						break;
-					case AstInsType::EndObject:
+					case AstInsType::StackBegin:
+						{
+							// new create stack
+							auto ieCSTop = PushCreateStack(context);
+							PushInsRefLink(ieCSTop->createInsRefs, { trace, insRef });
+							ieCSTop->stackBase = GetStackTop(context);
+						}
+						break;
+					case AstInsType::StackEnd:
 						{
 							CHECK_ERROR(context.createStack != nullref, ERROR_MESSAGE_PREFIX L"There is no created object.");
 
@@ -242,12 +248,7 @@ PartialExecuteOrdinaryTrace
 							}
 						}
 						break;
-					case AstInsType::StackBegin:
-					case AstInsType::StackEnd:
 					case AstInsType::StackSlot:
-						break;
-					case AstInsType::Field:
-					case AstInsType::FieldIfUnassigned:
 						{
 							CHECK_ERROR(GetStackTop(context) - GetStackBase(context) >= 1, ERROR_MESSAGE_PREFIX L"Pushed values not enough.");
 
@@ -269,6 +270,8 @@ PartialExecuteOrdinaryTrace
 							}
 						}
 						break;
+					case AstInsType::Field:
+					case AstInsType::FieldIfUnassigned:
 					case AstInsType::Token:
 					case AstInsType::EnumItem:
 						break;
