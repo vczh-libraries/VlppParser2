@@ -134,15 +134,6 @@ CalculateObjectLastInstruction
 									PushInsRefLink(ieObject->bottomInsRefs, bottomInsRef);
 								}
 							}
-
-#ifdef VCZH_DO_DEBUG_CHECK
-							{
-								auto eoTrace = GetTrace(bottomInsRef.trace);
-								auto traceExec = GetTraceExec(eoTrace->traceExecRef);
-								auto&& ins = ReadInstruction(bottomInsRef.ins, traceExec->insLists);
-								CHECK_ERROR(ins.type == AstInsType::EndObject, ERROR_MESSAGE_PREFIX L"The found instruction is not a EndObject instruction.");
-							}
-#endif
 						}
 
 						CHECK_ERROR(ieObject->bottomInsRefs != nullref, ERROR_MESSAGE_PREFIX L"Cannot found bottom instructions for an object.");

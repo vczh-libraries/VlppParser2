@@ -101,15 +101,6 @@ CalculateObjectFirstInstruction
 						auto magicInjection = MergeStack_MagicCounter;
 						ieObject->mergeCounter = magicInjection;
 						InjectFirstInstruction(ieObject->topInsRef, ieObject->assignedToObjectIds, magicInjection);
-
-#ifdef VCZH_DO_DEBUG_CHECK
-						{
-							auto createTrace = GetTrace(ieObject->topInsRef.trace);
-							auto traceExec = GetTraceExec(createTrace->traceExecRef);
-							auto&& ins = ReadInstruction(ieObject->topInsRef.ins, traceExec->insLists);
-							CHECK_ERROR(ins.type == AstInsType::BeginObject || ins.type == AstInsType::DelayFieldAssignment, ERROR_MESSAGE_PREFIX L"The found instruction is not a BeginObject or DelayFieldAssignment instruction.");
-						}
-#endif
 					}
 				}
 #undef ERROR_MESSAGE_PREFIX
