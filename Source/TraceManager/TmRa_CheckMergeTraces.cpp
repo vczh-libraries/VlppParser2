@@ -58,7 +58,7 @@ CheckMergeTrace
 
 			bool TraceManager::ComparePrefix(TraceExec* baselineTraceExec, TraceExec* commingTraceExec, vint32_t prefix)
 			{
-				if (commingTraceExec->insLists.c3 < prefix) return false;
+				if (commingTraceExec->insLists.countAll < prefix) return false;
 				for (vint32_t i = 0; i < prefix; i++)
 				{
 					auto&& insBaseline = ReadInstruction(i, baselineTraceExec->insLists);
@@ -71,11 +71,11 @@ CheckMergeTrace
 
 			bool TraceManager::ComparePostfix(TraceExec* baselineTraceExec, TraceExec* commingTraceExec, vint32_t postfix)
 			{
-				if (commingTraceExec->insLists.c3 < postfix) return false;
+				if (commingTraceExec->insLists.countAll < postfix) return false;
 				for (vint32_t i = 0; i < postfix; i++)
 				{
-					auto&& insBaseline = ReadInstruction(baselineTraceExec->insLists.c3 - i - 1, baselineTraceExec->insLists);
-					auto&& insComming = ReadInstruction(baselineTraceExec->insLists.c3 - i - 1, baselineTraceExec->insLists);
+					auto&& insBaseline = ReadInstruction(baselineTraceExec->insLists.countAll - i - 1, baselineTraceExec->insLists);
+					auto&& insComming = ReadInstruction(baselineTraceExec->insLists.countAll - i - 1, baselineTraceExec->insLists);
 					if (insBaseline != insComming) return false;
 				}
 
@@ -164,7 +164,7 @@ CheckMergeTrace
 							return EnumerateBottomInstructions(ieObject, [&](Trace* eoTrace, vint32_t eoIns)
 							{
 								auto eoTraceExec = GetTraceExec(eoTrace->traceExecRef);
-								InsRef insRef{ eoTrace,eoTraceExec->insLists.c3 - eoIns - 1 };
+								InsRef insRef{ eoTrace,eoTraceExec->insLists.countAll - eoIns - 1 };
 								postfixesAtSelf.Add(eoTrace, insRef);
 
 								Trace* successorTrace = nullptr;
@@ -274,7 +274,7 @@ CheckMergeTrace
 					auto first = GetTrace(GetTrace(ta->firstTrace)->predecessors.first);
 					auto traceExec = GetTraceExec(first->traceExecRef);
 					ta->firstTrace = first;
-					ta->prefix += traceExec->insLists.c3;
+					ta->prefix += traceExec->insLists.countAll;
 				}
 
 				// fix postfix if necessary
@@ -357,12 +357,12 @@ CheckMergeTrace
 					vint32_t postfix = -1;
 					auto firstTrace = GetTrace(trace->predecessors.first);
 					auto firstTraceExec = GetTraceExec(firstTrace->traceExecRef);
-					for (vint32_t i = firstTraceExec->insLists.c3 - 1; i >= 0; i--)
+					for (vint32_t i = firstTraceExec->insLists.countAll - 1; i >= 0; i--)
 					{
 						auto&& ins = ReadInstruction(i, firstTraceExec->insLists);
 						if (ins.type == AstInsType::EndObject)
 						{
-							postfix = firstTraceExec->insLists.c3 - i - 1;
+							postfix = firstTraceExec->insLists.countAll - i - 1;
 							break;
 						}
 					}
@@ -412,7 +412,7 @@ CheckMergeTrace
 
 								// search for the object it ends
 								auto predecessorTraceExec = GetTraceExec(predecessor->traceExecRef);
-								auto indexEO = predecessorTraceExec->insLists.c3 - postfix - 1;
+								auto indexEO = predecessorTraceExec->insLists.countAll - postfix - 1;
 								auto insExecEO = GetInsExec(predecessorTraceExec->insExecRefs.start + indexEO);
 								if (!callback(insExecEO->objRefs)) return false;
 							}
@@ -529,7 +529,7 @@ DebugCheckTraceAmbiguityInSameTrace
 					taLinkRef = taLink->previous;
 
 					auto ta = GetTraceAmbiguity(taLink->ambiguity);
-					if (ta->prefix >= traceExec->insLists.c3)
+					if (ta->prefix >= traceExec->insLists.countAll)
 					{
 						faiInSuccessor++;
 					}
@@ -599,7 +599,7 @@ CategorizeTraceAmbiguities
 					taLinkRef = taLink->previous;
 
 					auto ta = GetTraceAmbiguity(taLink->ambiguity);
-					if (ta->prefix >= traceExec->insLists.c3)
+					if (ta->prefix >= traceExec->insLists.countAll)
 					{
 						// mark ambiguityCoveredInForward
 						MarkAmbiguityCoveredForward(GetTrace(ta->lastTrace), ta, trace, traceExec);

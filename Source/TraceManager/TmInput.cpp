@@ -262,7 +262,7 @@ EndOfInput
 					step->et_i.startTrace = initialTrace->allocatedIndex;
 					step->et_i.startIns = 0;
 					step->et_i.endTrace = lastTrace->allocatedIndex;
-					step->et_i.endIns = insList.c3 - 1;
+					step->et_i.endIns = insList.countAll - 1;
 				}
 				return initialTrace;
 			}

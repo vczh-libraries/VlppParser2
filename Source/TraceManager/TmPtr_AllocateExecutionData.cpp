@@ -28,11 +28,11 @@ AllocateExecutionData
 					auto traceExec = GetTraceExec(trace->traceExecRef);
 					traceExec->traceId = trace;
 					ReadInstructionList(trace, traceExec->insLists);
-					if (traceExec->insLists.c3 > 0)
+					if (traceExec->insLists.countAll > 0)
 					{
 						traceExec->insExecRefs.start = insExecCount;
-						traceExec->insExecRefs.count = traceExec->insLists.c3;
-						insExecCount += traceExec->insLists.c3;
+						traceExec->insExecRefs.count = traceExec->insLists.countAll;
+						insExecCount += traceExec->insLists.countAll;
 					}
 
 					// fill branch trace linked list

@@ -58,27 +58,27 @@ AppendStepsBeforeAmbiguity
 				if ( taFirst->traceExecRef > startTrace->traceExecRef ||
 					(taFirst->traceExecRef == startTrace->traceExecRef && ta->prefix > startIns))
 				{
-					if (ta->prefix > taFirstExec->insLists.c3)
+					if (ta->prefix > taFirstExec->insLists.countAll)
 					{
 						// if the first ambiguous instruction is in successors of the branch trace
 						// execution from the current position to the end of the prefix
-						if (startTrace != taFirst || startIns < taFirstExec->insLists.c3)
+						if (startTrace != taFirst || startIns < taFirstExec->insLists.countAll)
 						{
 							auto step = GetExecutionStep(executionSteps.Allocate());
 							step->et_i.startTrace = startTrace->allocatedIndex;
 							step->et_i.startIns = startIns;
 							step->et_i.endTrace = taFirst->allocatedIndex;
-							step->et_i.endIns = taFirstExec->insLists.c3 - 1;
+							step->et_i.endIns = taFirstExec->insLists.countAll - 1;
 							AppendStepLink(step, step, false, PASS_EXECUTION_STEP_CONTEXT);
 						}
-						if (ta->prefix > taFirstExec->insLists.c3)
+						if (ta->prefix > taFirstExec->insLists.countAll)
 						{
 							auto prefixTrace = GetTrace(taFirst->successors.first);
 							auto step = GetExecutionStep(executionSteps.Allocate());
 							step->et_i.startTrace = prefixTrace->allocatedIndex;
 							step->et_i.startIns = 0;
 							step->et_i.endTrace = prefixTrace->allocatedIndex;
-							step->et_i.endIns = ta->prefix - taFirstExec->insLists.c3 - 1;
+							step->et_i.endIns = ta->prefix - taFirstExec->insLists.countAll - 1;
 							AppendStepLink(step, step, false, PASS_EXECUTION_STEP_CONTEXT);
 						}
 					}
@@ -106,7 +106,7 @@ AppendStepsAfterAmbiguity
 			{
 				auto taLast = GetTrace(ta->lastTrace);
 				auto taLastExec = GetTraceExec(taLast->traceExecRef);
-				if (ta->postfix > taLastExec->insLists.c3)
+				if (ta->postfix > taLastExec->insLists.countAll)
 				{
 					// if the last ambiguous instruction is in predecessors of the merge trace
 					// execute the postfix
@@ -115,9 +115,9 @@ AppendStepsAfterAmbiguity
 					{
 						auto step = GetExecutionStep(executionSteps.Allocate());
 						step->et_i.startTrace = postfixTrace->allocatedIndex;
-						step->et_i.startIns = postfixTraceExec->insLists.c3 - (ta->postfix - taLastExec->insLists.c3);
+						step->et_i.startIns = postfixTraceExec->insLists.countAll - (ta->postfix - taLastExec->insLists.countAll);
 						step->et_i.endTrace = postfixTrace->allocatedIndex;
-						step->et_i.endIns = postfixTraceExec->insLists.c3 - 1;
+						step->et_i.endIns = postfixTraceExec->insLists.countAll - 1;
 						AppendStepLink(step, step, false, PASS_EXECUTION_STEP_CONTEXT);
 					}
 
@@ -129,7 +129,7 @@ AppendStepsAfterAmbiguity
 				{
 					// otherwise set the current position to the instruction after the last ambiguous instruction
 					startTrace = taLast;
-					startIns = GetTraceExec(startTrace->traceExecRef)->insLists.c3 - ta->postfix;
+					startIns = GetTraceExec(startTrace->traceExecRef)->insLists.countAll - ta->postfix;
 				}
 			}
 
@@ -152,13 +152,13 @@ AppendStepsBeforeBranch
 			void TraceManager::AppendStepsBeforeBranch(Trace* startTrace, vint32_t startIns, Trace* branchTrace, TraceExec* branchTraceExec, DEFINE_EXECUTION_STEP_CONTEXT)
 			{
 				if (startTrace->traceExecRef < branchTrace->traceExecRef ||
-					(startTrace->traceExecRef == branchTrace->traceExecRef && startIns < branchTraceExec->insLists.c3))
+					(startTrace->traceExecRef == branchTrace->traceExecRef && startIns < branchTraceExec->insLists.countAll))
 				{
 					auto step = GetExecutionStep(executionSteps.Allocate());
 					step->et_i.startTrace = startTrace->allocatedIndex;
 					step->et_i.startIns = startIns;
 					step->et_i.endTrace = branchTrace->allocatedIndex;
-					step->et_i.endIns = branchTraceExec->insLists.c3 - 1;
+					step->et_i.endIns = branchTraceExec->insLists.countAll - 1;
 					AppendStepLink(step, step, false, PASS_EXECUTION_STEP_CONTEXT);
 				}
 			}
@@ -325,7 +325,7 @@ BuildStepTree
 							{
 								// fix endTrace and endIns
 								endTrace = critical;
-								endIns = criticalExec->insLists.c3 + endIns;
+								endIns = criticalExec->insLists.countAll + endIns;
 								break;
 							}
 							else
@@ -482,7 +482,7 @@ BuildAmbiguousStepLink
 				ExecutionStep* firstLeaf = nullptr;
 				ExecutionStep* currentLeaf = nullptr;
 
-				if (ta->prefix < taFirstExec->insLists.c3)
+				if (ta->prefix < taFirstExec->insLists.countAll)
 				{
 					// if the first ambiguous instruction is in taFirst
 
@@ -503,12 +503,12 @@ BuildAmbiguousStepLink
 						first->et_i.startTrace = taFirst->allocatedIndex;
 						first->et_i.startIns = ta->prefix;
 						first->et_i.endTrace = taFirst->allocatedIndex;
-						first->et_i.endIns = taFirstExec->insLists.c3 - 1;
+						first->et_i.endIns = taFirstExec->insLists.countAll - 1;
 
 						// run from successor to the end
 						BuildStepTree(
 							successor, 0,
-							taLast, taLastExec->insLists.c3 - ta->postfix - 1,
+							taLast, taLastExec->insLists.countAll - ta->postfix - 1,
 							root, firstLeaf, first, currentLeaf
 							);
 					}
@@ -530,8 +530,8 @@ BuildAmbiguousStepLink
 
 						// run from the first ambiguous instruction to the last
 						BuildStepTree(
-							successor, ta->prefix - taFirstExec->insLists.c3,
-							taLast, taLastExec->insLists.c3 - ta->postfix - 1,
+							successor, ta->prefix - taFirstExec->insLists.countAll,
+							taLast, taLastExec->insLists.countAll - ta->postfix - 1,
 							root, firstLeaf, root, currentLeaf
 							);
 					}
@@ -618,7 +618,7 @@ BuildExecutionOrder
 				auto startTrace = initialTrace;
 				vint32_t startIns = 0;
 				auto endTrace = concurrentTraces->Get(0);
-				vint32_t endIns = GetTraceExec(endTrace->traceExecRef)->insLists.c3 - 1;
+				vint32_t endIns = GetTraceExec(endTrace->traceExecRef)->insLists.countAll - 1;
 
 				// build step tree
 				ExecutionStep* root = nullptr;
