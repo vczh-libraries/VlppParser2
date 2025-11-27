@@ -339,9 +339,14 @@ AstInsReceiverBase
 										AstInsErrorType::NoCreatingObjectForStackSlot
 									);
 								}
-								auto value = creatingObjects[creatingObjects.Count() - 1].object;
+								auto astNode = creatingObjects[creatingObjects.Count() - 1].object;
 								creatingObjects.RemoveAt(creatingObjects.Count() - 1);
-								slotValue = SlotValue(value);
+								slotValue = SlotValue(astNode);
+
+								if (frame.codeRangeStart > astNode->codeRange.start)
+								{
+									frame.codeRangeStart = astNode->codeRange.start;
+								}
 							}
 							break;
 						default:;
@@ -367,16 +372,29 @@ AstInsReceiverBase
 					break;
 				case AstInsType::StackBegin:
 					{
-						stackFrames.Add({});
+						stackFrames.Add({ {},ParsingTextPos::Start(&token) });
 					}
 					break;
 				case AstInsType::CreateObject:
 					{
-						auto value = CreateAstNode(instruction.param);
-						value->codeRange = { &token,&token };
+						if (stackFrames.Count() == 0)
+						{
+							throw AstInsException(
+								L"There is no stack frame to store slot values.",
+								AstInsErrorType::NoStackFrame
+							);
+						}
+						auto&& frame = stackFrames[stackFrames.Count() - 1];
+
+						auto astNode = CreateAstNode(instruction.param);
+						astNode->codeRange = { &token,&token };
+						if (astNode->codeRange.start > frame.codeRangeStart)
+						{
+							astNode->codeRange.start = frame.codeRangeStart;
+						}
 
 						CreatingObject info;
-						info.object = value;
+						info.object = astNode;
 						info.type = instruction.param;
 						creatingObjects.Add(info);
 					}
@@ -443,6 +461,21 @@ AstInsReceiverBase
 								AstInsErrorType::NoCreatingObjectForStackEnd
 							);
 						}
+
+						auto&& frame = stackFrames[stackFrames.Count() - 1];
+						auto astNode = creatingObjects[creatingObjects.Count() - 1].object.Obj();
+
+						if (astNode->codeRange.start > frame.codeRangeStart)
+						{
+							astNode->codeRange.start = frame.codeRangeStart;
+						}
+
+						auto codeRangeEnd = ParsingTextPos::End(&token);
+						if (astNode->codeRange.end < codeRangeEnd)
+						{
+							astNode->codeRange.end = codeRangeEnd;
+						}
+
 						stackFrames.RemoveAt(stackFrames.Count() - 1);
 					}
 					break;

@@ -385,6 +385,7 @@ IAstInsReceiver
 			struct StackFrame
 			{
 				SlotMap									slots;
+				ParsingTextPos							codeRangeStart;
 			};
 			using StackFrameList = collections::List<StackFrame>;
 
