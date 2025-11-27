@@ -1,0 +1,743 @@
+﻿[0][Exp0] BEGIN 
+[RULE: 0][CLAUSE: -1]
+	token: "(" -> [10][Exp0]<! "(" @ !Exp ")" !>
+		+ StackBegin()
+		+ Token(6)
+	token: ID -> [6][Exp0]< ID @ "<" { Exp ; "," } ">" >
+		+ StackBegin()
+		+ Token(1)
+	token: ID -> [7][Exp0]< ID @ >
+		+ StackBegin()
+		+ Token(0)
+
+[1][Exp0] END [ENDING]
+[RULE: 0][CLAUSE: -1]
+
+[2][Exp0]< ID "<" @ { Exp ; "," } ">" >
+[RULE: 0][CLAUSE: 1]
+	token: "(" -> [10][Exp0]<! "(" @ !Exp ")" !>
+		+ StackBegin()
+		+ Token(6)
+		> rule: Exp -> [5][Exp0]< ID "<" { Exp @ ; "," } ">" >
+			+ StackSlot(3)
+		> rule: Exp2 -> [40][Exp]<! !Exp2 @ !>
+			+ StackBegin()
+		> rule: Exp1 -> [31][Exp2]<! !Exp1 @ !>
+			+ StackBegin()
+		> rule: Exp0 -> [18][Exp1]<! !Exp0 @ !>
+			+ StackBegin()
+	token: ">" -> [4][Exp0]< ID "<" { Exp ; "," } ">" @ >
+		+ Token(5)
+	token: ID -> [6][Exp0]< ID @ "<" { Exp ; "," } ">" >
+		+ StackBegin()
+		+ Token(1)
+		> rule: Exp -> [5][Exp0]< ID "<" { Exp @ ; "," } ">" >
+			+ StackSlot(3)
+		> rule: Exp2 -> [40][Exp]<! !Exp2 @ !>
+			+ StackBegin()
+		> rule: Exp1 -> [31][Exp2]<! !Exp1 @ !>
+			+ StackBegin()
+		> rule: Exp0 -> [18][Exp1]<! !Exp0 @ !>
+			+ StackBegin()
+	token: ID -> [7][Exp0]< ID @ >
+		+ StackBegin()
+		+ Token(0)
+		> rule: Exp -> [5][Exp0]< ID "<" { Exp @ ; "," } ">" >
+			+ StackSlot(3)
+		> rule: Exp2 -> [40][Exp]<! !Exp2 @ !>
+			+ StackBegin()
+		> rule: Exp1 -> [31][Exp2]<! !Exp1 @ !>
+			+ StackBegin()
+		> rule: Exp0 -> [18][Exp1]<! !Exp0 @ !>
+			+ StackBegin()
+
+[3][Exp0]< ID "<" { Exp ; "," @ } ">" >
+[RULE: 0][CLAUSE: 1]
+	token: "(" -> [10][Exp0]<! "(" @ !Exp ")" !>
+		+ StackBegin()
+		+ Token(6)
+		> rule: Exp -> [5][Exp0]< ID "<" { Exp @ ; "," } ">" >
+			+ StackSlot(3)
+		> rule: Exp2 -> [40][Exp]<! !Exp2 @ !>
+			+ StackBegin()
+		> rule: Exp1 -> [31][Exp2]<! !Exp1 @ !>
+			+ StackBegin()
+		> rule: Exp0 -> [18][Exp1]<! !Exp0 @ !>
+			+ StackBegin()
+	token: ID -> [6][Exp0]< ID @ "<" { Exp ; "," } ">" >
+		+ StackBegin()
+		+ Token(1)
+		> rule: Exp -> [5][Exp0]< ID "<" { Exp @ ; "," } ">" >
+			+ StackSlot(3)
+		> rule: Exp2 -> [40][Exp]<! !Exp2 @ !>
+			+ StackBegin()
+		> rule: Exp1 -> [31][Exp2]<! !Exp1 @ !>
+			+ StackBegin()
+		> rule: Exp0 -> [18][Exp1]<! !Exp0 @ !>
+			+ StackBegin()
+	token: ID -> [7][Exp0]< ID @ >
+		+ StackBegin()
+		+ Token(0)
+		> rule: Exp -> [5][Exp0]< ID "<" { Exp @ ; "," } ">" >
+			+ StackSlot(3)
+		> rule: Exp2 -> [40][Exp]<! !Exp2 @ !>
+			+ StackBegin()
+		> rule: Exp1 -> [31][Exp2]<! !Exp1 @ !>
+			+ StackBegin()
+		> rule: Exp0 -> [18][Exp1]<! !Exp0 @ !>
+			+ StackBegin()
+
+[4][Exp0]< ID "<" { Exp ; "," } ">" @ >
+[RULE: 0][CLAUSE: 1]
+	ending -> [1][Exp0] END [ENDING]
+		+ CreateObject(GenericExpr)
+		+ Field(GenericExpr::name, 1)
+		+ Field(GenericExpr::args, 3)
+		+ StackEnd()
+
+[5][Exp0]< ID "<" { Exp @ ; "," } ">" >
+[RULE: 0][CLAUSE: 1]
+	token: ">" -> [4][Exp0]< ID "<" { Exp ; "," } ">" @ >
+		+ Token(5)
+	token: "," -> [3][Exp0]< ID "<" { Exp ; "," @ } ">" >
+		+ Token(4)
+
+[6][Exp0]< ID @ "<" { Exp ; "," } ">" >
+[RULE: 0][CLAUSE: 1]
+	token: "<" -> [2][Exp0]< ID "<" @ { Exp ; "," } ">" >
+		+ Token(2)
+
+[7][Exp0]< ID @ >
+[RULE: 0][CLAUSE: 0]
+	ending -> [1][Exp0] END [ENDING]
+		+ CreateObject(RefExpr)
+		+ Field(RefExpr::name, 0)
+		+ StackEnd()
+
+[8][Exp0]<! "(" !Exp ")" @ !>
+[RULE: 0][CLAUSE: 2]
+	ending -> [1][Exp0] END [ENDING]
+		+ StackEnd()
+
+[9][Exp0]<! "(" !Exp @ ")" !>
+[RULE: 0][CLAUSE: 2]
+	token: ")" -> [8][Exp0]<! "(" !Exp ")" @ !>
+		+ Token(8)
+
+[10][Exp0]<! "(" @ !Exp ")" !>
+[RULE: 0][CLAUSE: 2]
+	token: "(" -> [10][Exp0]<! "(" @ !Exp ")" !>
+		+ StackBegin()
+		+ Token(6)
+		> rule: Exp -> [9][Exp0]<! "(" !Exp @ ")" !>
+		> rule: Exp2 -> [40][Exp]<! !Exp2 @ !>
+			+ StackBegin()
+		> rule: Exp1 -> [31][Exp2]<! !Exp1 @ !>
+			+ StackBegin()
+		> rule: Exp0 -> [18][Exp1]<! !Exp0 @ !>
+			+ StackBegin()
+	token: ID -> [6][Exp0]< ID @ "<" { Exp ; "," } ">" >
+		+ StackBegin()
+		+ Token(1)
+		> rule: Exp -> [9][Exp0]<! "(" !Exp @ ")" !>
+		> rule: Exp2 -> [40][Exp]<! !Exp2 @ !>
+			+ StackBegin()
+		> rule: Exp1 -> [31][Exp2]<! !Exp1 @ !>
+			+ StackBegin()
+		> rule: Exp0 -> [18][Exp1]<! !Exp0 @ !>
+			+ StackBegin()
+	token: ID -> [7][Exp0]< ID @ >
+		+ StackBegin()
+		+ Token(0)
+		> rule: Exp -> [9][Exp0]<! "(" !Exp @ ")" !>
+		> rule: Exp2 -> [40][Exp]<! !Exp2 @ !>
+			+ StackBegin()
+		> rule: Exp1 -> [31][Exp2]<! !Exp1 @ !>
+			+ StackBegin()
+		> rule: Exp0 -> [18][Exp1]<! !Exp0 @ !>
+			+ StackBegin()
+
+[11][Exp1] BEGIN 
+[RULE: 1][CLAUSE: -1]
+	token: "(" -> [10][Exp0]<! "(" @ !Exp ")" !>
+		+ StackBegin()
+		+ Token(6)
+		> rule: Exp0 -> [18][Exp1]<! !Exp0 @ !>
+			+ StackBegin()
+	token: ID -> [6][Exp0]< ID @ "<" { Exp ; "," } ">" >
+		+ StackBegin()
+		+ Token(1)
+		> rule: Exp0 -> [18][Exp1]<! !Exp0 @ !>
+			+ StackBegin()
+	token: ID -> [7][Exp0]< ID @ >
+		+ StackBegin()
+		+ Token(0)
+		> rule: Exp0 -> [18][Exp1]<! !Exp0 @ !>
+			+ StackBegin()
+
+[12][Exp1] END [ENDING]
+[RULE: 1][CLAUSE: -1]
+
+[13][Exp1]< Exp1 "(" @ { Exp ; "," } ")" >
+[RULE: 1][CLAUSE: 1]
+	token: "(" -> [10][Exp0]<! "(" @ !Exp ")" !>
+		+ StackBegin()
+		+ Token(6)
+		> rule: Exp -> [16][Exp1]< Exp1 "(" { Exp @ ; "," } ")" >
+			+ StackSlot(3)
+		> rule: Exp2 -> [40][Exp]<! !Exp2 @ !>
+			+ StackBegin()
+		> rule: Exp1 -> [31][Exp2]<! !Exp1 @ !>
+			+ StackBegin()
+		> rule: Exp0 -> [18][Exp1]<! !Exp0 @ !>
+			+ StackBegin()
+	token: ")" -> [15][Exp1]< Exp1 "(" { Exp ; "," } ")" @ >
+		+ Token(5)
+	token: ID -> [6][Exp0]< ID @ "<" { Exp ; "," } ">" >
+		+ StackBegin()
+		+ Token(1)
+		> rule: Exp -> [16][Exp1]< Exp1 "(" { Exp @ ; "," } ")" >
+			+ StackSlot(3)
+		> rule: Exp2 -> [40][Exp]<! !Exp2 @ !>
+			+ StackBegin()
+		> rule: Exp1 -> [31][Exp2]<! !Exp1 @ !>
+			+ StackBegin()
+		> rule: Exp0 -> [18][Exp1]<! !Exp0 @ !>
+			+ StackBegin()
+	token: ID -> [7][Exp0]< ID @ >
+		+ StackBegin()
+		+ Token(0)
+		> rule: Exp -> [16][Exp1]< Exp1 "(" { Exp @ ; "," } ")" >
+			+ StackSlot(3)
+		> rule: Exp2 -> [40][Exp]<! !Exp2 @ !>
+			+ StackBegin()
+		> rule: Exp1 -> [31][Exp2]<! !Exp1 @ !>
+			+ StackBegin()
+		> rule: Exp0 -> [18][Exp1]<! !Exp0 @ !>
+			+ StackBegin()
+
+[14][Exp1]< Exp1 "(" { Exp ; "," @ } ")" >
+[RULE: 1][CLAUSE: 1]
+	token: "(" -> [10][Exp0]<! "(" @ !Exp ")" !>
+		+ StackBegin()
+		+ Token(6)
+		> rule: Exp -> [16][Exp1]< Exp1 "(" { Exp @ ; "," } ")" >
+			+ StackSlot(3)
+		> rule: Exp2 -> [40][Exp]<! !Exp2 @ !>
+			+ StackBegin()
+		> rule: Exp1 -> [31][Exp2]<! !Exp1 @ !>
+			+ StackBegin()
+		> rule: Exp0 -> [18][Exp1]<! !Exp0 @ !>
+			+ StackBegin()
+	token: ID -> [6][Exp0]< ID @ "<" { Exp ; "," } ">" >
+		+ StackBegin()
+		+ Token(1)
+		> rule: Exp -> [16][Exp1]< Exp1 "(" { Exp @ ; "," } ")" >
+			+ StackSlot(3)
+		> rule: Exp2 -> [40][Exp]<! !Exp2 @ !>
+			+ StackBegin()
+		> rule: Exp1 -> [31][Exp2]<! !Exp1 @ !>
+			+ StackBegin()
+		> rule: Exp0 -> [18][Exp1]<! !Exp0 @ !>
+			+ StackBegin()
+	token: ID -> [7][Exp0]< ID @ >
+		+ StackBegin()
+		+ Token(0)
+		> rule: Exp -> [16][Exp1]< Exp1 "(" { Exp @ ; "," } ")" >
+			+ StackSlot(3)
+		> rule: Exp2 -> [40][Exp]<! !Exp2 @ !>
+			+ StackBegin()
+		> rule: Exp1 -> [31][Exp2]<! !Exp1 @ !>
+			+ StackBegin()
+		> rule: Exp0 -> [18][Exp1]<! !Exp0 @ !>
+			+ StackBegin()
+
+[15][Exp1]< Exp1 "(" { Exp ; "," } ")" @ >
+[RULE: 1][CLAUSE: 1]
+	ending -> [12][Exp1] END [ENDING]
+		+ CreateObject(CallExpr)
+		+ Field(CallExpr::func, 1)
+		+ Field(CallExpr::args, 3)
+		+ StackEnd()
+	leftrec -> [17][Exp1]< Exp1 @ "(" { Exp ; "," } ")" >
+		+ CreateObject(CallExpr)
+		+ Field(CallExpr::func, 1)
+		+ Field(CallExpr::args, 3)
+		+ StackEnd()
+		+ StackBegin()
+		+ StackSlot(1)
+
+[16][Exp1]< Exp1 "(" { Exp @ ; "," } ")" >
+[RULE: 1][CLAUSE: 1]
+	token: ")" -> [15][Exp1]< Exp1 "(" { Exp ; "," } ")" @ >
+		+ Token(5)
+	token: "," -> [14][Exp1]< Exp1 "(" { Exp ; "," @ } ")" >
+		+ Token(4)
+
+[17][Exp1]< Exp1 @ "(" { Exp ; "," } ")" >
+[RULE: 1][CLAUSE: 1]
+	token: "(" -> [13][Exp1]< Exp1 "(" @ { Exp ; "," } ")" >
+		+ Token(2)
+
+[18][Exp1]<! !Exp0 @ !>
+[RULE: 1][CLAUSE: 0]
+	ending -> [12][Exp1] END [ENDING]
+		+ StackEnd()
+	leftrec -> [17][Exp1]< Exp1 @ "(" { Exp ; "," } ")" >
+		+ StackEnd()
+		+ StackBegin()
+		+ StackSlot(1)
+
+[19][Exp2] BEGIN 
+[RULE: 2][CLAUSE: -1]
+	token: "(" -> [10][Exp0]<! "(" @ !Exp ")" !>
+		+ StackBegin()
+		+ Token(6)
+		> rule: Exp1 -> [31][Exp2]<! !Exp1 @ !>
+			+ StackBegin()
+		> rule: Exp0 -> [18][Exp1]<! !Exp0 @ !>
+			+ StackBegin()
+	token: ID -> [6][Exp0]< ID @ "<" { Exp ; "," } ">" >
+		+ StackBegin()
+		+ Token(1)
+		> rule: Exp1 -> [31][Exp2]<! !Exp1 @ !>
+			+ StackBegin()
+		> rule: Exp0 -> [18][Exp1]<! !Exp0 @ !>
+			+ StackBegin()
+	token: ID -> [7][Exp0]< ID @ >
+		+ StackBegin()
+		+ Token(0)
+		> rule: Exp1 -> [31][Exp2]<! !Exp1 @ !>
+			+ StackBegin()
+		> rule: Exp0 -> [18][Exp1]<! !Exp0 @ !>
+			+ StackBegin()
+
+[20][Exp2] END [ENDING]
+[RULE: 2][CLAUSE: -1]
+
+[21][Exp2]< Exp2 "+" "+" @ >
+[RULE: 2][CLAUSE: 2]
+	ending -> [20][Exp2] END [ENDING]
+		+ EnumItem(2, 7)
+		+ CreateObject(PostfixExpr)
+		+ Field(PostfixExpr::expr, 4)
+		+ Field(PostfixExpr::op, 7)
+		+ StackEnd()
+	leftrec -> [27][Exp2]< Exp2 @ "+" "+" >
+		+ EnumItem(2, 7)
+		+ CreateObject(PostfixExpr)
+		+ Field(PostfixExpr::expr, 4)
+		+ Field(PostfixExpr::op, 7)
+		+ StackEnd()
+		+ StackBegin()
+		+ StackSlot(4)
+	leftrec -> [28][Exp2]< Exp2 @ "+" >
+		+ EnumItem(2, 7)
+		+ CreateObject(PostfixExpr)
+		+ Field(PostfixExpr::expr, 4)
+		+ Field(PostfixExpr::op, 7)
+		+ StackEnd()
+		+ StackBegin()
+		+ StackSlot(1)
+	leftrec -> [29][Exp2]< Exp2 @ "-" "-" >
+		+ EnumItem(2, 7)
+		+ CreateObject(PostfixExpr)
+		+ Field(PostfixExpr::expr, 4)
+		+ Field(PostfixExpr::op, 7)
+		+ StackEnd()
+		+ StackBegin()
+		+ StackSlot(11)
+	leftrec -> [30][Exp2]< Exp2 @ "-" >
+		+ EnumItem(2, 7)
+		+ CreateObject(PostfixExpr)
+		+ Field(PostfixExpr::expr, 4)
+		+ Field(PostfixExpr::op, 7)
+		+ StackEnd()
+		+ StackBegin()
+		+ StackSlot(8)
+
+[22][Exp2]< Exp2 "+" @ "+" >
+[RULE: 2][CLAUSE: 2]
+	token: "+" -> [21][Exp2]< Exp2 "+" "+" @ >
+		+ Token(6)
+
+[23][Exp2]< Exp2 "+" @ >
+[RULE: 2][CLAUSE: 1]
+	ending -> [20][Exp2] END [ENDING]
+		+ EnumItem(0, 3)
+		+ CreateObject(PostfixExpr)
+		+ Field(PostfixExpr::expr, 1)
+		+ Field(PostfixExpr::op, 3)
+		+ StackEnd()
+	leftrec -> [27][Exp2]< Exp2 @ "+" "+" >
+		+ EnumItem(0, 3)
+		+ CreateObject(PostfixExpr)
+		+ Field(PostfixExpr::expr, 1)
+		+ Field(PostfixExpr::op, 3)
+		+ StackEnd()
+		+ StackBegin()
+		+ StackSlot(4)
+	leftrec -> [28][Exp2]< Exp2 @ "+" >
+		+ EnumItem(0, 3)
+		+ CreateObject(PostfixExpr)
+		+ Field(PostfixExpr::expr, 1)
+		+ Field(PostfixExpr::op, 3)
+		+ StackEnd()
+		+ StackBegin()
+		+ StackSlot(1)
+	leftrec -> [29][Exp2]< Exp2 @ "-" "-" >
+		+ EnumItem(0, 3)
+		+ CreateObject(PostfixExpr)
+		+ Field(PostfixExpr::expr, 1)
+		+ Field(PostfixExpr::op, 3)
+		+ StackEnd()
+		+ StackBegin()
+		+ StackSlot(11)
+	leftrec -> [30][Exp2]< Exp2 @ "-" >
+		+ EnumItem(0, 3)
+		+ CreateObject(PostfixExpr)
+		+ Field(PostfixExpr::expr, 1)
+		+ Field(PostfixExpr::op, 3)
+		+ StackEnd()
+		+ StackBegin()
+		+ StackSlot(8)
+
+[24][Exp2]< Exp2 "-" "-" @ >
+[RULE: 2][CLAUSE: 4]
+	ending -> [20][Exp2] END [ENDING]
+		+ CreateObject(DecrementExpr)
+		+ Field(DecrementExpr::expr, 11)
+		+ StackEnd()
+	leftrec -> [27][Exp2]< Exp2 @ "+" "+" >
+		+ CreateObject(DecrementExpr)
+		+ Field(DecrementExpr::expr, 11)
+		+ StackEnd()
+		+ StackBegin()
+		+ StackSlot(4)
+	leftrec -> [28][Exp2]< Exp2 @ "+" >
+		+ CreateObject(DecrementExpr)
+		+ Field(DecrementExpr::expr, 11)
+		+ StackEnd()
+		+ StackBegin()
+		+ StackSlot(1)
+	leftrec -> [29][Exp2]< Exp2 @ "-" "-" >
+		+ CreateObject(DecrementExpr)
+		+ Field(DecrementExpr::expr, 11)
+		+ StackEnd()
+		+ StackBegin()
+		+ StackSlot(11)
+	leftrec -> [30][Exp2]< Exp2 @ "-" >
+		+ CreateObject(DecrementExpr)
+		+ Field(DecrementExpr::expr, 11)
+		+ StackEnd()
+		+ StackBegin()
+		+ StackSlot(8)
+
+[25][Exp2]< Exp2 "-" @ "-" >
+[RULE: 2][CLAUSE: 4]
+	token: "-" -> [24][Exp2]< Exp2 "-" "-" @ >
+		+ Token(13)
+
+[26][Exp2]< Exp2 "-" @ >
+[RULE: 2][CLAUSE: 3]
+	ending -> [20][Exp2] END [ENDING]
+		+ EnumItem(1, 10)
+		+ CreateObject(PostfixExpr)
+		+ Field(PostfixExpr::expr, 8)
+		+ Field(PostfixExpr::op, 10)
+		+ StackEnd()
+	leftrec -> [27][Exp2]< Exp2 @ "+" "+" >
+		+ EnumItem(1, 10)
+		+ CreateObject(PostfixExpr)
+		+ Field(PostfixExpr::expr, 8)
+		+ Field(PostfixExpr::op, 10)
+		+ StackEnd()
+		+ StackBegin()
+		+ StackSlot(4)
+	leftrec -> [28][Exp2]< Exp2 @ "+" >
+		+ EnumItem(1, 10)
+		+ CreateObject(PostfixExpr)
+		+ Field(PostfixExpr::expr, 8)
+		+ Field(PostfixExpr::op, 10)
+		+ StackEnd()
+		+ StackBegin()
+		+ StackSlot(1)
+	leftrec -> [29][Exp2]< Exp2 @ "-" "-" >
+		+ EnumItem(1, 10)
+		+ CreateObject(PostfixExpr)
+		+ Field(PostfixExpr::expr, 8)
+		+ Field(PostfixExpr::op, 10)
+		+ StackEnd()
+		+ StackBegin()
+		+ StackSlot(11)
+	leftrec -> [30][Exp2]< Exp2 @ "-" >
+		+ EnumItem(1, 10)
+		+ CreateObject(PostfixExpr)
+		+ Field(PostfixExpr::expr, 8)
+		+ Field(PostfixExpr::op, 10)
+		+ StackEnd()
+		+ StackBegin()
+		+ StackSlot(8)
+
+[27][Exp2]< Exp2 @ "+" "+" >
+[RULE: 2][CLAUSE: 2]
+	token: "+" -> [22][Exp2]< Exp2 "+" @ "+" >
+		+ Token(5)
+
+[28][Exp2]< Exp2 @ "+" >
+[RULE: 2][CLAUSE: 1]
+	token: "+" -> [23][Exp2]< Exp2 "+" @ >
+		+ Token(2)
+
+[29][Exp2]< Exp2 @ "-" "-" >
+[RULE: 2][CLAUSE: 4]
+	token: "-" -> [25][Exp2]< Exp2 "-" @ "-" >
+		+ Token(12)
+
+[30][Exp2]< Exp2 @ "-" >
+[RULE: 2][CLAUSE: 3]
+	token: "-" -> [26][Exp2]< Exp2 "-" @ >
+		+ Token(9)
+
+[31][Exp2]<! !Exp1 @ !>
+[RULE: 2][CLAUSE: 0]
+	ending -> [20][Exp2] END [ENDING]
+		+ StackEnd()
+	leftrec -> [27][Exp2]< Exp2 @ "+" "+" >
+		+ StackEnd()
+		+ StackBegin()
+		+ StackSlot(4)
+	leftrec -> [28][Exp2]< Exp2 @ "+" >
+		+ StackEnd()
+		+ StackBegin()
+		+ StackSlot(1)
+	leftrec -> [29][Exp2]< Exp2 @ "-" "-" >
+		+ StackEnd()
+		+ StackBegin()
+		+ StackSlot(11)
+	leftrec -> [30][Exp2]< Exp2 @ "-" >
+		+ StackEnd()
+		+ StackBegin()
+		+ StackSlot(8)
+
+[32][Exp] BEGIN 
+[RULE: 3][CLAUSE: -1]
+	token: "(" -> [10][Exp0]<! "(" @ !Exp ")" !>
+		+ StackBegin()
+		+ Token(6)
+		> rule: Exp2 -> [40][Exp]<! !Exp2 @ !>
+			+ StackBegin()
+		> rule: Exp1 -> [31][Exp2]<! !Exp1 @ !>
+			+ StackBegin()
+		> rule: Exp0 -> [18][Exp1]<! !Exp0 @ !>
+			+ StackBegin()
+	token: ID -> [6][Exp0]< ID @ "<" { Exp ; "," } ">" >
+		+ StackBegin()
+		+ Token(1)
+		> rule: Exp2 -> [40][Exp]<! !Exp2 @ !>
+			+ StackBegin()
+		> rule: Exp1 -> [31][Exp2]<! !Exp1 @ !>
+			+ StackBegin()
+		> rule: Exp0 -> [18][Exp1]<! !Exp0 @ !>
+			+ StackBegin()
+	token: ID -> [7][Exp0]< ID @ >
+		+ StackBegin()
+		+ Token(0)
+		> rule: Exp2 -> [40][Exp]<! !Exp2 @ !>
+			+ StackBegin()
+		> rule: Exp1 -> [31][Exp2]<! !Exp1 @ !>
+			+ StackBegin()
+		> rule: Exp0 -> [18][Exp1]<! !Exp0 @ !>
+			+ StackBegin()
+
+[33][Exp] END [ENDING]
+[RULE: 3][CLAUSE: -1]
+
+[34][Exp]< Exp "<" @ Exp2 >
+[RULE: 3][CLAUSE: 1]
+	token: "(" -> [10][Exp0]<! "(" @ !Exp ")" !>
+		+ StackBegin()
+		+ Token(6)
+		> rule: Exp2 -> [35][Exp]< Exp "<" Exp2 @ >
+			+ StackSlot(3)
+		> rule: Exp1 -> [31][Exp2]<! !Exp1 @ !>
+			+ StackBegin()
+		> rule: Exp0 -> [18][Exp1]<! !Exp0 @ !>
+			+ StackBegin()
+	token: ID -> [6][Exp0]< ID @ "<" { Exp ; "," } ">" >
+		+ StackBegin()
+		+ Token(1)
+		> rule: Exp2 -> [35][Exp]< Exp "<" Exp2 @ >
+			+ StackSlot(3)
+		> rule: Exp1 -> [31][Exp2]<! !Exp1 @ !>
+			+ StackBegin()
+		> rule: Exp0 -> [18][Exp1]<! !Exp0 @ !>
+			+ StackBegin()
+	token: ID -> [7][Exp0]< ID @ >
+		+ StackBegin()
+		+ Token(0)
+		> rule: Exp2 -> [35][Exp]< Exp "<" Exp2 @ >
+			+ StackSlot(3)
+		> rule: Exp1 -> [31][Exp2]<! !Exp1 @ !>
+			+ StackBegin()
+		> rule: Exp0 -> [18][Exp1]<! !Exp0 @ !>
+			+ StackBegin()
+
+[35][Exp]< Exp "<" Exp2 @ >
+[RULE: 3][CLAUSE: 1]
+	ending -> [33][Exp] END [ENDING]
+		+ EnumItem(0, 4)
+		+ CreateObject(BinaryExpr)
+		+ Field(BinaryExpr::left, 1)
+		+ Field(BinaryExpr::right, 3)
+		+ Field(BinaryExpr::op, 4)
+		+ StackEnd()
+	leftrec -> [38][Exp]< Exp @ "<" Exp2 >
+		+ EnumItem(0, 4)
+		+ CreateObject(BinaryExpr)
+		+ Field(BinaryExpr::left, 1)
+		+ Field(BinaryExpr::right, 3)
+		+ Field(BinaryExpr::op, 4)
+		+ StackEnd()
+		+ StackBegin()
+		+ StackSlot(1)
+	leftrec -> [39][Exp]< Exp @ ">" Exp2 >
+		+ EnumItem(0, 4)
+		+ CreateObject(BinaryExpr)
+		+ Field(BinaryExpr::left, 1)
+		+ Field(BinaryExpr::right, 3)
+		+ Field(BinaryExpr::op, 4)
+		+ StackEnd()
+		+ StackBegin()
+		+ StackSlot(5)
+
+[36][Exp]< Exp ">" @ Exp2 >
+[RULE: 3][CLAUSE: 2]
+	token: "(" -> [10][Exp0]<! "(" @ !Exp ")" !>
+		+ StackBegin()
+		+ Token(6)
+		> rule: Exp2 -> [37][Exp]< Exp ">" Exp2 @ >
+			+ StackSlot(7)
+		> rule: Exp1 -> [31][Exp2]<! !Exp1 @ !>
+			+ StackBegin()
+		> rule: Exp0 -> [18][Exp1]<! !Exp0 @ !>
+			+ StackBegin()
+	token: ID -> [6][Exp0]< ID @ "<" { Exp ; "," } ">" >
+		+ StackBegin()
+		+ Token(1)
+		> rule: Exp2 -> [37][Exp]< Exp ">" Exp2 @ >
+			+ StackSlot(7)
+		> rule: Exp1 -> [31][Exp2]<! !Exp1 @ !>
+			+ StackBegin()
+		> rule: Exp0 -> [18][Exp1]<! !Exp0 @ !>
+			+ StackBegin()
+	token: ID -> [7][Exp0]< ID @ >
+		+ StackBegin()
+		+ Token(0)
+		> rule: Exp2 -> [37][Exp]< Exp ">" Exp2 @ >
+			+ StackSlot(7)
+		> rule: Exp1 -> [31][Exp2]<! !Exp1 @ !>
+			+ StackBegin()
+		> rule: Exp0 -> [18][Exp1]<! !Exp0 @ !>
+			+ StackBegin()
+
+[37][Exp]< Exp ">" Exp2 @ >
+[RULE: 3][CLAUSE: 2]
+	ending -> [33][Exp] END [ENDING]
+		+ EnumItem(1, 8)
+		+ CreateObject(BinaryExpr)
+		+ Field(BinaryExpr::left, 5)
+		+ Field(BinaryExpr::right, 7)
+		+ Field(BinaryExpr::op, 8)
+		+ StackEnd()
+	leftrec -> [38][Exp]< Exp @ "<" Exp2 >
+		+ EnumItem(1, 8)
+		+ CreateObject(BinaryExpr)
+		+ Field(BinaryExpr::left, 5)
+		+ Field(BinaryExpr::right, 7)
+		+ Field(BinaryExpr::op, 8)
+		+ StackEnd()
+		+ StackBegin()
+		+ StackSlot(1)
+	leftrec -> [39][Exp]< Exp @ ">" Exp2 >
+		+ EnumItem(1, 8)
+		+ CreateObject(BinaryExpr)
+		+ Field(BinaryExpr::left, 5)
+		+ Field(BinaryExpr::right, 7)
+		+ Field(BinaryExpr::op, 8)
+		+ StackEnd()
+		+ StackBegin()
+		+ StackSlot(5)
+
+[38][Exp]< Exp @ "<" Exp2 >
+[RULE: 3][CLAUSE: 1]
+	token: "<" -> [34][Exp]< Exp "<" @ Exp2 >
+		+ Token(2)
+
+[39][Exp]< Exp @ ">" Exp2 >
+[RULE: 3][CLAUSE: 2]
+	token: ">" -> [36][Exp]< Exp ">" @ Exp2 >
+		+ Token(6)
+
+[40][Exp]<! !Exp2 @ !>
+[RULE: 3][CLAUSE: 0]
+	ending -> [33][Exp] END [ENDING]
+		+ StackEnd()
+	leftrec -> [38][Exp]< Exp @ "<" Exp2 >
+		+ StackEnd()
+		+ StackBegin()
+		+ StackSlot(1)
+	leftrec -> [39][Exp]< Exp @ ">" Exp2 >
+		+ StackEnd()
+		+ StackBegin()
+		+ StackSlot(5)
+
+[41][Module] BEGIN 
+[RULE: 4][CLAUSE: -1]
+	token: "(" -> [10][Exp0]<! "(" @ !Exp ")" !>
+		+ StackBegin()
+		+ Token(6)
+		> rule: Exp -> [43][Module]< Exp @ >
+			+ StackBegin()
+			+ StackSlot(0)
+		> rule: Exp2 -> [40][Exp]<! !Exp2 @ !>
+			+ StackBegin()
+		> rule: Exp1 -> [31][Exp2]<! !Exp1 @ !>
+			+ StackBegin()
+		> rule: Exp0 -> [18][Exp1]<! !Exp0 @ !>
+			+ StackBegin()
+	token: ID -> [6][Exp0]< ID @ "<" { Exp ; "," } ">" >
+		+ StackBegin()
+		+ Token(1)
+		> rule: Exp -> [43][Module]< Exp @ >
+			+ StackBegin()
+			+ StackSlot(0)
+		> rule: Exp2 -> [40][Exp]<! !Exp2 @ !>
+			+ StackBegin()
+		> rule: Exp1 -> [31][Exp2]<! !Exp1 @ !>
+			+ StackBegin()
+		> rule: Exp0 -> [18][Exp1]<! !Exp0 @ !>
+			+ StackBegin()
+	token: ID -> [7][Exp0]< ID @ >
+		+ StackBegin()
+		+ Token(0)
+		> rule: Exp -> [43][Module]< Exp @ >
+			+ StackBegin()
+			+ StackSlot(0)
+		> rule: Exp2 -> [40][Exp]<! !Exp2 @ !>
+			+ StackBegin()
+		> rule: Exp1 -> [31][Exp2]<! !Exp1 @ !>
+			+ StackBegin()
+		> rule: Exp0 -> [18][Exp1]<! !Exp0 @ !>
+			+ StackBegin()
+
+[42][Module] END [ENDING]
+[RULE: 4][CLAUSE: -1]
+
+[43][Module]< Exp @ >
+[RULE: 4][CLAUSE: 0]
+	ending -> [42][Module] END [ENDING]
+		+ CreateObject(Module)
+		+ Field(Module::expr, 0)
+		+ StackEnd()
+
