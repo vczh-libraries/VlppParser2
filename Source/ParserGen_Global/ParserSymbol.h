@@ -108,8 +108,6 @@ ParserSymbolManager
 			ERROR_ITEM(UnusedSwitch,																				switchName)\
 			ERROR_ITEM(SwitchNotExists,																				ruleName, switchName)\
 			ERROR_ITEM(SyntaxInvolvesSwitchWithIllegalRuleName,														ruleName)													/* A syntax uses switch should not use rule name that has _SWITCH/SWITCH_ */\
-			ERROR_ITEM(SyntaxInvolvesPrefixMergeWithIllegalRuleName,												ruleName)													/* A syntax uses prefix_merge should not use rule name that has _LRI/_LRIP/LRI_/LRIP_ */\
-			ERROR_ITEM(SyntaxInvolvesPrefixMergeWithIllegalPlaceholderName,											ruleName, placeholderName)									/* A syntax uses prefix_merge should not use placeholder name that has _LRI/_LRIP/LRI_/LRIP_ */\
 			/* SyntaxAst(CalculateTypes) */\
 			ERROR_ITEM(RuleMixedPartialClauseWithOtherClause,														ruleName)\
 			ERROR_ITEM(RuleWithDifferentPartialTypes,																ruleName, ruleType, newType)\
@@ -120,7 +118,6 @@ ParserSymbolManager
 			ERROR_ITEM(ReuseClauseContainsNoUseRule,																ruleName)													/* A reuse clause contains no use rule therefore the type cannot be determined */\
 			/* SyntaxAst(ValidateSwitchesAndConditions, condition) */\
 			ERROR_ITEM(PushedSwitchIsNotTested,																		ruleName, switchName)\
-			ERROR_ITEM(PrefixMergeAffectedBySwitches,																ruleName, prefixMergeRule, switchName)\
 			ERROR_ITEM(SwitchUnaffectedRuleNotExist)\
 			/* SyntaxAst(RewriteSyntax_Switch, condition) */\
 			ERROR_ITEM(SwitchUnaffectedRuleExpandedToNoClause,														ruleName)\
