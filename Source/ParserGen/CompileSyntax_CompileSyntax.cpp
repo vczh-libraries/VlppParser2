@@ -90,7 +90,7 @@ CompileSyntaxVisitor
 								auto rule = context.syntaxManager.Rules().Values()[index];
 								if (rule->isPartial)
 								{
-									result = automatonBuilder.BuildPartialRuleSyntax(rule);
+									CHECK_FAIL(L"Not Implemented!");
 								}
 								else if (field == -1)
 								{
@@ -219,13 +219,7 @@ CompileSyntaxVisitor
 
 				void Visit(GlrPartialClause* node) override
 				{
-					clauseType = context.clauseTypes[node];
-					result = automatonBuilder.BuildClause([this, node]()
-					{
-						return automatonBuilder.BuildPartialClause(
-							[this, node]() { return BuildAssignments(Build(node->syntax), node->assignments); }
-							);
-					});
+					CHECK_FAIL(L"Not Implemented!");
 				}
 
 				void Visit(GlrReuseClause* node) override
