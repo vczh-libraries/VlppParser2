@@ -34,7 +34,7 @@ AutomatonBuilder (Syntax)
 					edge->input.token = tokenId;
 					edge->input.condition = condition;
 
-					vint count = fieldIns.Count();
+					vint count = usedFieldIds++;
 					edge->insAfterInput.Add({ AstInsType::Token,-1,count });
 					if (field != -1)
 					{
@@ -61,7 +61,7 @@ AutomatonBuilder (Syntax)
 					edge->input.rule = rule;
 					edge->input.ruleType = ruleType;
 
-					vint count = fieldIns.Count();
+					vint count = usedFieldIds++;
 					switch (ruleType)
 					{
 					case automaton::ReturnRuleType::Field:
@@ -286,7 +286,7 @@ AutomatonBuilder (Clause)
 			{
 				auto withState = CreateState();
 				auto edge = CreateEdge(pair.end, withState);
-				vint count = fieldIns.Count();
+				vint count = usedFieldIds++;
 				edge->insAfterInput.Add({ AstInsType::EnumItem,enumItem,count });
 				fieldIns.Add({ (weakAssignment ? AstInsType::FieldIfUnassigned : AstInsType::Field),field,count});
 				endPoses.Add(withState, clauseDisplayText.Length());

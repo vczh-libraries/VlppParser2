@@ -91,7 +91,7 @@
 [19][Exp0]<! "(" !Exp @ ")" !>
 [RULE: 1][CLAUSE: 4]
 	token: ")" -> [17][Exp0]<! "(" !Exp ")" @ !>
-		+ Token(0)
+		+ Token(2)
 
 [20][Exp0]<! "(" @ !Exp ")" !>
 [RULE: 1][CLAUSE: 4]
@@ -134,7 +134,7 @@
 [28][Exp1]< "+" @ Exp1 >
 [RULE: 2][CLAUSE: 1]
 	rule: Exp1 -> [31][Exp1]< "+" Exp1 @ >
-		+ StackSlot(0)
+		+ StackSlot(1)
 
 [29][Exp1]< "+" @ Exp1 >
 [RULE: 2][CLAUSE: 1]
@@ -146,14 +146,14 @@
 [31][Exp1]< "+" Exp1 @ >
 [RULE: 2][CLAUSE: 1]
 	epsilon -> [32][Exp1]< "+" Exp1 @ >
-		+ EnumItem(0, 1)
+		+ EnumItem(0, 2)
 
 [32][Exp1]< "+" Exp1 @ >
 [RULE: 2][CLAUSE: 1]
 	epsilon -> [30][Exp1]< "+" Exp1 > @[ENDING]
 		+ CreateObject(Unary)
-		+ Field(Unary::operand, 0)
-		+ Field(Unary::op, 1)
+		+ Field(Unary::operand, 1)
+		+ Field(Unary::op, 2)
 		+ StackEnd()
 
 [33][Exp1]< "-" @ Exp1 >
@@ -163,7 +163,7 @@
 [34][Exp1]< "-" @ Exp1 >
 [RULE: 2][CLAUSE: 2]
 	rule: Exp1 -> [37][Exp1]< "-" Exp1 @ >
-		+ StackSlot(0)
+		+ StackSlot(1)
 
 [35][Exp1]< "-" Exp1 > @[ENDING]
 [RULE: 2][CLAUSE: 2]
@@ -172,14 +172,14 @@
 [RULE: 2][CLAUSE: 2]
 	epsilon -> [35][Exp1]< "-" Exp1 > @[ENDING]
 		+ CreateObject(Unary)
-		+ Field(Unary::operand, 0)
-		+ Field(Unary::op, 1)
+		+ Field(Unary::operand, 1)
+		+ Field(Unary::op, 2)
 		+ StackEnd()
 
 [37][Exp1]< "-" Exp1 @ >
 [RULE: 2][CLAUSE: 2]
 	epsilon -> [36][Exp1]< "-" Exp1 @ >
-		+ EnumItem(1, 1)
+		+ EnumItem(1, 2)
 
 [38][Exp1]< @ "+" Exp1 >
 [RULE: 2][CLAUSE: 1]
@@ -208,7 +208,7 @@
 [43][Exp1]< Exp1 "(" { @ Exp ; "," } ")" >
 [RULE: 2][CLAUSE: 3]
 	rule: Exp -> [50][Exp1]< Exp1 "(" { Exp @ ; "," } ")" >
-		+ StackSlot(1)
+		+ StackSlot(2)
 
 [44][Exp1]< Exp1 "(" { Exp ; "," @ } ")" >
 [RULE: 2][CLAUSE: 3]
@@ -222,7 +222,7 @@
 	epsilon -> [45][Exp1]< Exp1 "(" { Exp ; "," } ")" > @[ENDING]
 		+ CreateObject(Call)
 		+ Field(Call::func, 0)
-		+ Field(Call::args, 1)
+		+ Field(Call::args, 2)
 		+ StackEnd()
 
 [47][Exp1]< Exp1 "(" { Exp ; "," } @ ")" >
@@ -232,12 +232,12 @@
 [48][Exp1]< Exp1 "(" { Exp ; "," } @ ")" >
 [RULE: 2][CLAUSE: 3]
 	token: ")" -> [46][Exp1]< Exp1 "(" { Exp ; "," } ")" @ >
-		+ Token(2)
+		+ Token(4)
 
 [49][Exp1]< Exp1 "(" { Exp ; @ "," } ")" >
 [RULE: 2][CLAUSE: 3]
 	token: "," -> [44][Exp1]< Exp1 "(" { Exp ; "," @ } ")" >
-		+ Token(2)
+		+ Token(3)
 
 [50][Exp1]< Exp1 "(" { Exp @ ; "," } ")" >
 [RULE: 2][CLAUSE: 3]
@@ -298,7 +298,7 @@
 [62][Exp2]< Exp2 "*" @ Exp1 >
 [RULE: 3][CLAUSE: 1]
 	rule: Exp1 -> [66][Exp2]< Exp2 "*" Exp1 @ >
-		+ StackSlot(1)
+		+ StackSlot(2)
 
 [63][Exp2]< Exp2 "*" @ Exp1 >
 [RULE: 3][CLAUSE: 1]
@@ -312,14 +312,14 @@
 	epsilon -> [64][Exp2]< Exp2 "*" Exp1 > @[ENDING]
 		+ CreateObject(Binary)
 		+ Field(Binary::left, 0)
-		+ Field(Binary::right, 1)
-		+ Field(Binary::op, 2)
+		+ Field(Binary::right, 2)
+		+ Field(Binary::op, 3)
 		+ StackEnd()
 
 [66][Exp2]< Exp2 "*" Exp1 @ >
 [RULE: 3][CLAUSE: 1]
 	epsilon -> [65][Exp2]< Exp2 "*" Exp1 @ >
-		+ EnumItem(2, 2)
+		+ EnumItem(2, 3)
 
 [67][Exp2]< Exp2 "/" @ Exp1 >
 [RULE: 3][CLAUSE: 2]
@@ -328,7 +328,7 @@
 [68][Exp2]< Exp2 "/" @ Exp1 >
 [RULE: 3][CLAUSE: 2]
 	rule: Exp1 -> [71][Exp2]< Exp2 "/" Exp1 @ >
-		+ StackSlot(1)
+		+ StackSlot(2)
 
 [69][Exp2]< Exp2 "/" Exp1 > @[ENDING]
 [RULE: 3][CLAUSE: 2]
@@ -338,14 +338,14 @@
 	epsilon -> [69][Exp2]< Exp2 "/" Exp1 > @[ENDING]
 		+ CreateObject(Binary)
 		+ Field(Binary::left, 0)
-		+ Field(Binary::right, 1)
-		+ Field(Binary::op, 2)
+		+ Field(Binary::right, 2)
+		+ Field(Binary::op, 3)
 		+ StackEnd()
 
 [71][Exp2]< Exp2 "/" Exp1 @ >
 [RULE: 3][CLAUSE: 2]
 	epsilon -> [70][Exp2]< Exp2 "/" Exp1 @ >
-		+ EnumItem(3, 2)
+		+ EnumItem(3, 3)
 
 [72][Exp2]< Exp2 @ "*" Exp1 >
 [RULE: 3][CLAUSE: 1]
@@ -405,7 +405,7 @@
 [84][Exp3]< Exp3 "+" @ Exp2 >
 [RULE: 4][CLAUSE: 1]
 	rule: Exp2 -> [88][Exp3]< Exp3 "+" Exp2 @ >
-		+ StackSlot(1)
+		+ StackSlot(2)
 
 [85][Exp3]< Exp3 "+" @ Exp2 >
 [RULE: 4][CLAUSE: 1]
@@ -419,14 +419,14 @@
 	epsilon -> [86][Exp3]< Exp3 "+" Exp2 > @[ENDING]
 		+ CreateObject(Binary)
 		+ Field(Binary::left, 0)
-		+ Field(Binary::right, 1)
-		+ Field(Binary::op, 2)
+		+ Field(Binary::right, 2)
+		+ Field(Binary::op, 3)
 		+ StackEnd()
 
 [88][Exp3]< Exp3 "+" Exp2 @ >
 [RULE: 4][CLAUSE: 1]
 	epsilon -> [87][Exp3]< Exp3 "+" Exp2 @ >
-		+ EnumItem(0, 2)
+		+ EnumItem(0, 3)
 
 [89][Exp3]< Exp3 "-" @ Exp2 >
 [RULE: 4][CLAUSE: 2]
@@ -435,7 +435,7 @@
 [90][Exp3]< Exp3 "-" @ Exp2 >
 [RULE: 4][CLAUSE: 2]
 	rule: Exp2 -> [93][Exp3]< Exp3 "-" Exp2 @ >
-		+ StackSlot(1)
+		+ StackSlot(2)
 
 [91][Exp3]< Exp3 "-" Exp2 > @[ENDING]
 [RULE: 4][CLAUSE: 2]
@@ -445,14 +445,14 @@
 	epsilon -> [91][Exp3]< Exp3 "-" Exp2 > @[ENDING]
 		+ CreateObject(Binary)
 		+ Field(Binary::left, 0)
-		+ Field(Binary::right, 1)
-		+ Field(Binary::op, 2)
+		+ Field(Binary::right, 2)
+		+ Field(Binary::op, 3)
 		+ StackEnd()
 
 [93][Exp3]< Exp3 "-" Exp2 @ >
 [RULE: 4][CLAUSE: 2]
 	epsilon -> [92][Exp3]< Exp3 "-" Exp2 @ >
-		+ EnumItem(1, 2)
+		+ EnumItem(1, 3)
 
 [94][Exp3]< Exp3 @ "+" Exp2 >
 [RULE: 4][CLAUSE: 1]
@@ -522,7 +522,7 @@
 [108][Exp4]< Exp4 "<" @ Exp3 >
 [RULE: 5][CLAUSE: 1]
 	rule: Exp3 -> [111][Exp4]< Exp4 "<" Exp3 @ >
-		+ StackSlot(1)
+		+ StackSlot(2)
 
 [109][Exp4]< Exp4 "<" @ Exp3 >
 [RULE: 5][CLAUSE: 1]
@@ -534,15 +534,15 @@
 [111][Exp4]< Exp4 "<" Exp3 @ >
 [RULE: 5][CLAUSE: 1]
 	epsilon -> [112][Exp4]< Exp4 "<" Exp3 @ >
-		+ EnumItem(6, 2)
+		+ EnumItem(6, 3)
 
 [112][Exp4]< Exp4 "<" Exp3 @ >
 [RULE: 5][CLAUSE: 1]
 	epsilon -> [110][Exp4]< Exp4 "<" Exp3 > @[ENDING]
 		+ CreateObject(Binary)
 		+ Field(Binary::left, 0)
-		+ Field(Binary::right, 1)
-		+ Field(Binary::op, 2)
+		+ Field(Binary::right, 2)
+		+ Field(Binary::op, 3)
 		+ StackEnd()
 
 [113][Exp4]< Exp4 "<=" @ Exp3 >
@@ -552,7 +552,7 @@
 [114][Exp4]< Exp4 "<=" @ Exp3 >
 [RULE: 5][CLAUSE: 2]
 	rule: Exp3 -> [116][Exp4]< Exp4 "<=" Exp3 @ >
-		+ StackSlot(1)
+		+ StackSlot(2)
 
 [115][Exp4]< Exp4 "<=" Exp3 > @[ENDING]
 [RULE: 5][CLAUSE: 2]
@@ -560,15 +560,15 @@
 [116][Exp4]< Exp4 "<=" Exp3 @ >
 [RULE: 5][CLAUSE: 2]
 	epsilon -> [117][Exp4]< Exp4 "<=" Exp3 @ >
-		+ EnumItem(7, 2)
+		+ EnumItem(7, 3)
 
 [117][Exp4]< Exp4 "<=" Exp3 @ >
 [RULE: 5][CLAUSE: 2]
 	epsilon -> [115][Exp4]< Exp4 "<=" Exp3 > @[ENDING]
 		+ CreateObject(Binary)
 		+ Field(Binary::left, 0)
-		+ Field(Binary::right, 1)
-		+ Field(Binary::op, 2)
+		+ Field(Binary::right, 2)
+		+ Field(Binary::op, 3)
 		+ StackEnd()
 
 [118][Exp4]< Exp4 ">" @ Exp3 >
@@ -578,7 +578,7 @@
 [119][Exp4]< Exp4 ">" @ Exp3 >
 [RULE: 5][CLAUSE: 3]
 	rule: Exp3 -> [122][Exp4]< Exp4 ">" Exp3 @ >
-		+ StackSlot(1)
+		+ StackSlot(2)
 
 [120][Exp4]< Exp4 ">" Exp3 > @[ENDING]
 [RULE: 5][CLAUSE: 3]
@@ -588,14 +588,14 @@
 	epsilon -> [120][Exp4]< Exp4 ">" Exp3 > @[ENDING]
 		+ CreateObject(Binary)
 		+ Field(Binary::left, 0)
-		+ Field(Binary::right, 1)
-		+ Field(Binary::op, 2)
+		+ Field(Binary::right, 2)
+		+ Field(Binary::op, 3)
 		+ StackEnd()
 
 [122][Exp4]< Exp4 ">" Exp3 @ >
 [RULE: 5][CLAUSE: 3]
 	epsilon -> [121][Exp4]< Exp4 ">" Exp3 @ >
-		+ EnumItem(4, 2)
+		+ EnumItem(4, 3)
 
 [123][Exp4]< Exp4 ">=" @ Exp3 >
 [RULE: 5][CLAUSE: 4]
@@ -604,7 +604,7 @@
 [124][Exp4]< Exp4 ">=" @ Exp3 >
 [RULE: 5][CLAUSE: 4]
 	rule: Exp3 -> [127][Exp4]< Exp4 ">=" Exp3 @ >
-		+ StackSlot(1)
+		+ StackSlot(2)
 
 [125][Exp4]< Exp4 ">=" Exp3 > @[ENDING]
 [RULE: 5][CLAUSE: 4]
@@ -614,14 +614,14 @@
 	epsilon -> [125][Exp4]< Exp4 ">=" Exp3 > @[ENDING]
 		+ CreateObject(Binary)
 		+ Field(Binary::left, 0)
-		+ Field(Binary::right, 1)
-		+ Field(Binary::op, 2)
+		+ Field(Binary::right, 2)
+		+ Field(Binary::op, 3)
 		+ StackEnd()
 
 [127][Exp4]< Exp4 ">=" Exp3 @ >
 [RULE: 5][CLAUSE: 4]
 	epsilon -> [126][Exp4]< Exp4 ">=" Exp3 @ >
-		+ EnumItem(5, 2)
+		+ EnumItem(5, 3)
 
 [128][Exp4]< Exp4 @ "<" Exp3 >
 [RULE: 5][CLAUSE: 1]
@@ -713,7 +713,7 @@
 [147][Exp5]< Exp5 "!=" @ Exp4 >
 [RULE: 6][CLAUSE: 2]
 	rule: Exp4 -> [150][Exp5]< Exp5 "!=" Exp4 @ >
-		+ StackSlot(1)
+		+ StackSlot(2)
 
 [148][Exp5]< Exp5 "!=" Exp4 > @[ENDING]
 [RULE: 6][CLAUSE: 2]
@@ -723,19 +723,19 @@
 	epsilon -> [148][Exp5]< Exp5 "!=" Exp4 > @[ENDING]
 		+ CreateObject(Binary)
 		+ Field(Binary::left, 0)
-		+ Field(Binary::right, 1)
-		+ Field(Binary::op, 2)
+		+ Field(Binary::right, 2)
+		+ Field(Binary::op, 3)
 		+ StackEnd()
 
 [150][Exp5]< Exp5 "!=" Exp4 @ >
 [RULE: 6][CLAUSE: 2]
 	epsilon -> [149][Exp5]< Exp5 "!=" Exp4 @ >
-		+ EnumItem(9, 2)
+		+ EnumItem(9, 3)
 
 [151][Exp5]< Exp5 "==" @ Exp4 >
 [RULE: 6][CLAUSE: 1]
 	rule: Exp4 -> [154][Exp5]< Exp5 "==" Exp4 @ >
-		+ StackSlot(1)
+		+ StackSlot(2)
 
 [152][Exp5]< Exp5 "==" @ Exp4 >
 [RULE: 6][CLAUSE: 1]
@@ -747,15 +747,15 @@
 [154][Exp5]< Exp5 "==" Exp4 @ >
 [RULE: 6][CLAUSE: 1]
 	epsilon -> [155][Exp5]< Exp5 "==" Exp4 @ >
-		+ EnumItem(8, 2)
+		+ EnumItem(8, 3)
 
 [155][Exp5]< Exp5 "==" Exp4 @ >
 [RULE: 6][CLAUSE: 1]
 	epsilon -> [153][Exp5]< Exp5 "==" Exp4 > @[ENDING]
 		+ CreateObject(Binary)
 		+ Field(Binary::left, 0)
-		+ Field(Binary::right, 1)
-		+ Field(Binary::op, 2)
+		+ Field(Binary::right, 2)
+		+ Field(Binary::op, 3)
 		+ StackEnd()
 
 [156][Exp5]< Exp5 @ "!=" Exp4 >
@@ -815,7 +815,7 @@
 [168][Exp]< "(" { @ Arg ; "," } ")" "->" Exp >
 [RULE: 7][CLAUSE: 1]
 	rule: Arg -> [179][Exp]< "(" { Arg @ ; "," } ")" "->" Exp >
-		+ StackSlot(0)
+		+ StackSlot(1)
 
 [169][Exp]< "(" { Arg ; "," @ } ")" "->" Exp >
 [RULE: 7][CLAUSE: 1]
@@ -828,7 +828,7 @@
 [171][Exp]< "(" { Arg ; "," } ")" "->" @ Exp >
 [RULE: 7][CLAUSE: 1]
 	rule: Exp -> [173][Exp]< "(" { Arg ; "," } ")" "->" Exp @ >
-		+ StackSlot(1)
+		+ StackSlot(5)
 
 [172][Exp]< "(" { Arg ; "," } ")" "->" Exp > @[ENDING]
 [RULE: 7][CLAUSE: 1]
@@ -837,14 +837,14 @@
 [RULE: 7][CLAUSE: 1]
 	epsilon -> [172][Exp]< "(" { Arg ; "," } ")" "->" Exp > @[ENDING]
 		+ CreateObject(Func)
-		+ Field(Func::args, 0)
-		+ Field(Func::value, 1)
+		+ Field(Func::args, 1)
+		+ Field(Func::value, 5)
 		+ StackEnd()
 
 [174][Exp]< "(" { Arg ; "," } ")" @ "->" Exp >
 [RULE: 7][CLAUSE: 1]
 	token: "->" -> [170][Exp]< "(" { Arg ; "," } ")" "->" @ Exp >
-		+ Token(1)
+		+ Token(4)
 
 [175][Exp]< "(" { Arg ; "," } ")" @ "->" Exp >
 [RULE: 7][CLAUSE: 1]
@@ -857,12 +857,12 @@
 [177][Exp]< "(" { Arg ; "," } @ ")" "->" Exp >
 [RULE: 7][CLAUSE: 1]
 	token: ")" -> [175][Exp]< "(" { Arg ; "," } ")" @ "->" Exp >
-		+ Token(1)
+		+ Token(3)
 
 [178][Exp]< "(" { Arg ; @ "," } ")" "->" Exp >
 [RULE: 7][CLAUSE: 1]
 	token: "," -> [169][Exp]< "(" { Arg ; "," @ } ")" "->" Exp >
-		+ Token(1)
+		+ Token(2)
 
 [179][Exp]< "(" { Arg @ ; "," } ")" "->" Exp >
 [RULE: 7][CLAUSE: 1]
@@ -872,7 +872,7 @@
 [180][Exp]< "let" @ ID "<-" Exp "in" Exp >
 [RULE: 7][CLAUSE: 2]
 	token: ID -> [190][Exp]< "let" ID @ "<-" Exp "in" Exp >
-		+ Token(0)
+		+ Token(1)
 
 [181][Exp]< "let" @ ID "<-" Exp "in" Exp >
 [RULE: 7][CLAUSE: 2]
@@ -881,7 +881,7 @@
 [182][Exp]< "let" ID "<-" @ Exp "in" Exp >
 [RULE: 7][CLAUSE: 2]
 	rule: Exp -> [189][Exp]< "let" ID "<-" Exp @ "in" Exp >
-		+ StackSlot(1)
+		+ StackSlot(3)
 
 [183][Exp]< "let" ID "<-" @ Exp "in" Exp >
 [RULE: 7][CLAUSE: 2]
@@ -894,7 +894,7 @@
 [185][Exp]< "let" ID "<-" Exp "in" @ Exp >
 [RULE: 7][CLAUSE: 2]
 	rule: Exp -> [187][Exp]< "let" ID "<-" Exp "in" Exp @ >
-		+ StackSlot(2)
+		+ StackSlot(5)
 
 [186][Exp]< "let" ID "<-" Exp "in" Exp > @[ENDING]
 [RULE: 7][CLAUSE: 2]
@@ -903,15 +903,15 @@
 [RULE: 7][CLAUSE: 2]
 	epsilon -> [186][Exp]< "let" ID "<-" Exp "in" Exp > @[ENDING]
 		+ CreateObject(LetExpr)
-		+ Field(LetExpr::name, 0)
-		+ Field(LetExpr::value, 1)
-		+ Field(LetExpr::result, 2)
+		+ Field(LetExpr::name, 1)
+		+ Field(LetExpr::value, 3)
+		+ Field(LetExpr::result, 5)
 		+ StackEnd()
 
 [188][Exp]< "let" ID "<-" Exp @ "in" Exp >
 [RULE: 7][CLAUSE: 2]
 	token: "in" -> [184][Exp]< "let" ID "<-" Exp "in" @ Exp >
-		+ Token(2)
+		+ Token(4)
 
 [189][Exp]< "let" ID "<-" Exp @ "in" Exp >
 [RULE: 7][CLAUSE: 2]
@@ -924,7 +924,7 @@
 [191][Exp]< "let" ID @ "<-" Exp "in" Exp >
 [RULE: 7][CLAUSE: 2]
 	token: "<-" -> [183][Exp]< "let" ID "<-" @ Exp "in" Exp >
-		+ Token(1)
+		+ Token(2)
 
 [192][Exp]< @ "(" { Arg ; "," } ")" "->" Exp >
 [RULE: 7][CLAUSE: 1]
@@ -966,7 +966,7 @@
 [200][Import]< "import" @ ID >
 [RULE: 8][CLAUSE: 0]
 	token: ID -> [203][Import]< "import" ID @ >
-		+ Token(0)
+		+ Token(1)
 
 [201][Import]< "import" @ ID >
 [RULE: 8][CLAUSE: 0]
@@ -979,7 +979,7 @@
 [RULE: 8][CLAUSE: 0]
 	epsilon -> [202][Import]< "import" ID > @[ENDING]
 		+ CreateObject(Import)
-		+ Field(Import::name, 0)
+		+ Field(Import::name, 1)
 		+ StackEnd()
 
 [204][Import]< @ "import" ID >
@@ -1014,7 +1014,7 @@
 [210][Module]< { Import } "export" @ Exp >
 [RULE: 9][CLAUSE: 0]
 	rule: Exp -> [212][Module]< { Import } "export" Exp @ >
-		+ StackSlot(1)
+		+ StackSlot(2)
 
 [211][Module]< { Import } "export" Exp > @[ENDING]
 [RULE: 9][CLAUSE: 0]
@@ -1024,7 +1024,7 @@
 	epsilon -> [211][Module]< { Import } "export" Exp > @[ENDING]
 		+ CreateObject(Module)
 		+ Field(Module::imports, 0)
-		+ Field(Module::exported, 1)
+		+ Field(Module::exported, 2)
 		+ StackEnd()
 
 [213][Module]< { Import } @ "export" Exp >

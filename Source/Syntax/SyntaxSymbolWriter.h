@@ -34,6 +34,7 @@ AutomatonBuilder
 				using AssignmentBuilder = Func<StatePair(StatePair)>;
 
 			protected:
+				vint						usedFieldIds = 0;
 				collections::List<AstIns>	fieldIns;
 				RuleSymbol*					ruleSymbol;
 
