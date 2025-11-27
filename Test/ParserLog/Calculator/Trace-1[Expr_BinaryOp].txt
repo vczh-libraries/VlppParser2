@@ -18,8 +18,8 @@
 || [1]: {IMPORT} import                                              ||
 || [83][Import]< "import" @ ID >                                     ||
 || [AST-INSTRUCTIONS]:                                               ||
-||   + Field(Import::name, 1)                                        ||
-||   + StackEnd()                                                    ||
+||   + StackBegin()                                                  ||
+||   + Token(0)                                                      ||
 || [RETURN STACK]:                                                   ||
 ||   [0][26][0]: Import -> [87][Module]< { Import @ } "export" Exp > ||
 || [PREDECESSORS 0-0]: [0]                                           ||
@@ -34,7 +34,7 @@
 || [2]: {ID} max                                                     ||
 || [84][Import]< "import" ID @ >                                     ||
 || [AST-INSTRUCTIONS]:                                               ||
-||   + Token(0)                                                      ||
+||   + Token(1)                                                      ||
 || [RETURN STACK]:                                                   ||
 ||   [0][26][0]: Import -> [87][Module]< { Import @ } "export" Exp > ||
 || [PREDECESSORS 1-1]: [1]                                           ||
@@ -47,11 +47,11 @@
 | [3]: <Ending>                             |
 | [87][Module]< { Import @ } "export" Exp > |
 | [AST-INSTRUCTIONS]:                       |
-|   + StackBegin()                          |
-|   + Token(0)                              |
-|   + Token(1)                              |
-|   > StackSlot(3)                          |
-|   > StackSlot(5)                          |
+|   + CreateObject(Import)                  |
+|   + Field(Import::name, 1)                |
+|   + StackEnd()                            |
+|   > StackBegin()                          |
+|   > StackSlot(0)                          |
 | [PREDECESSORS 2-2]: [2]                   |
 | [SUCCESORS 4-4]: [4]                      |
 +-------------------------------------------+
@@ -64,7 +64,7 @@
 || [4]: {EXPORT} export                      ||
 || [88][Module]< { Import } "export" @ Exp > ||
 || [AST-INSTRUCTIONS]:                       ||
-||   + Token(0)                              ||
+||   + Token(1)                              ||
 || [PREDECESSORS 3-3]: [3]                   ||
 || [SUCCESORS 5-5]: [5]                      ||
 ++===========================================++
@@ -97,8 +97,8 @@
 | [6]: <Ending>                                                  |
 | [23][Exp1]<! !Exp0 @ !>                                        |
 | [AST-INSTRUCTIONS]:                                            |
-|   + StackEnd()                                                 |
-|   + CreateObject(True)                                         |
+|   + CreateObject(Ref)                                          |
+|   + Field(Ref::name, 0)                                        |
 |   + StackEnd()                                                 |
 |   > StackBegin()                                               |
 | [RETURN STACK]:                                                |
@@ -118,9 +118,9 @@
 | [7]: <Leftrec>                                                 |
 | [22][Exp1]< Exp1 @ "(" { Exp ; "," } ")" >                     |
 | [AST-INSTRUCTIONS]:                                            |
-|   + Token(3)                                                   |
-|   + Token(1)                                                   |
 |   + StackEnd()                                                 |
+|   + StackBegin()                                               |
+|   + StackSlot(0)                                               |
 | [RETURN STACK]:                                                |
 |   [6][5][4]: Exp1 -> [32][Exp2]<! !Exp1 @ !>                   |
 |   [5][4][4]: Exp2 -> [41][Exp3]<! !Exp2 @ !>                   |
@@ -140,7 +140,7 @@
 || [9]: {OPEN_BRACE} (                                            ||
 || [18][Exp1]< Exp1 "(" @ { Exp ; "," } ")" >                     ||
 || [AST-INSTRUCTIONS]:                                            ||
-||   + Token(3)                                                   ||
+||   + Token(1)                                                   ||
 || [RETURN STACK]:                                                ||
 ||   [6][5][4]: Exp1 -> [32][Exp2]<! !Exp1 @ !>                   ||
 ||   [5][4][4]: Exp2 -> [41][Exp3]<! !Exp2 @ !>                   ||
@@ -186,8 +186,8 @@
 | [11]: <Ending>                                                 |
 | [23][Exp1]<! !Exp0 @ !>                                        |
 | [AST-INSTRUCTIONS]:                                            |
-|   + CreateObject(Ref)                                          |
-|   + Field(Ref::name, 0)                                        |
+|   + CreateObject(NumExpr)                                      |
+|   + Field(NumExpr::value, 0)                                   |
 |   + StackEnd()                                                 |
 |   > StackBegin()                                               |
 | [RETURN STACK]:                                                |
@@ -213,7 +213,7 @@
 | [12]: <Ending>                                                 |
 | [32][Exp2]<! !Exp1 @ !>                                        |
 | [AST-INSTRUCTIONS]:                                            |
-|   + Token(1)                                                   |
+|   + StackEnd()                                                 |
 |   > StackBegin()                                               |
 | [RETURN STACK]:                                                |
 |   [12][4][9]: Exp2 -> [41][Exp3]<! !Exp2 @ !>                  |
@@ -237,7 +237,7 @@
 | [13]: <Ending>                                                 |
 | [41][Exp3]<! !Exp2 @ !>                                        |
 | [AST-INSTRUCTIONS]:                                            |
-|   + Token(1)                                                   |
+|   + StackEnd()                                                 |
 |   > StackBegin()                                               |
 | [RETURN STACK]:                                                |
 |   [11][3][9]: Exp3 -> [56][Exp4]<! !Exp3 @ !>                  |
@@ -260,9 +260,9 @@
 | [14]: <Leftrec>                                                |
 | [39][Exp3]< Exp3 @ "+" Exp2 >                                  |
 | [AST-INSTRUCTIONS]:                                            |
-|   + Token(1)                                                   |
-|   + Token(1)                                                   |
 |   + StackEnd()                                                 |
+|   + StackBegin()                                               |
+|   + StackSlot(0)                                               |
 | [RETURN STACK]:                                                |
 |   [11][3][9]: Exp3 -> [56][Exp4]<! !Exp3 @ !>                  |
 |   [10][2][9]: Exp4 -> [65][Exp5]<! !Exp4 @ !>                  |
@@ -286,7 +286,7 @@
 || [16]: {ADD} +                                                  ||
 || [35][Exp3]< Exp3 "+" @ Exp2 >                                  ||
 || [AST-INSTRUCTIONS]:                                            ||
-||   + StackSlot(0)                                               ||
+||   + Token(1)                                                   ||
 || [RETURN STACK]:                                                ||
 ||   [11][3][9]: Exp3 -> [56][Exp4]<! !Exp3 @ !>                  ||
 ||   [10][2][9]: Exp4 -> [65][Exp5]<! !Exp4 @ !>                  ||
@@ -336,8 +336,8 @@
 | [18]: <Ending>                                                 |
 | [23][Exp1]<! !Exp0 @ !>                                        |
 | [AST-INSTRUCTIONS]:                                            |
-|   + CreateObject(Ref)                                          |
-|   + Field(Ref::name, 0)                                        |
+|   + CreateObject(NumExpr)                                      |
+|   + Field(NumExpr::value, 0)                                   |
 |   + StackEnd()                                                 |
 |   > StackBegin()                                               |
 | [RETURN STACK]:                                                |
@@ -363,7 +363,7 @@
 | [19]: <Ending>                                                 |
 | [32][Exp2]<! !Exp1 @ !>                                        |
 | [AST-INSTRUCTIONS]:                                            |
-|   + Token(1)                                                   |
+|   + StackEnd()                                                 |
 |   > StackBegin()                                               |
 | [RETURN STACK]:                                                |
 |   [15][13][16]: Exp2 -> [36][Exp3]< Exp3 "+" Exp2 @ >          |
@@ -387,9 +387,9 @@
 | [20]: <Leftrec>                                                |
 | [30][Exp2]< Exp2 @ "*" Exp1 >                                  |
 | [AST-INSTRUCTIONS]:                                            |
-|   + Token(1)                                                   |
-|   + Token(1)                                                   |
 |   + StackEnd()                                                 |
+|   + StackBegin()                                               |
+|   + StackSlot(0)                                               |
 | [RETURN STACK]:                                                |
 |   [15][13][16]: Exp2 -> [36][Exp3]< Exp3 "+" Exp2 @ >          |
 |   [11][3][9]: Exp3 -> [56][Exp4]<! !Exp3 @ !>                  |
@@ -414,7 +414,7 @@
 || [22]: {MUL} *                                                  ||
 || [26][Exp2]< Exp2 "*" @ Exp1 >                                  ||
 || [AST-INSTRUCTIONS]:                                            ||
-||   + StackSlot(0)                                               ||
+||   + Token(1)                                                   ||
 || [RETURN STACK]:                                                ||
 ||   [15][13][16]: Exp2 -> [36][Exp3]< Exp3 "+" Exp2 @ >          ||
 ||   [11][3][9]: Exp3 -> [56][Exp4]<! !Exp3 @ !>                  ||
@@ -465,8 +465,8 @@
 | [24]: <Ending>                                                 |
 | [23][Exp1]<! !Exp0 @ !>                                        |
 | [AST-INSTRUCTIONS]:                                            |
-|   + CreateObject(Ref)                                          |
-|   + Field(Ref::name, 0)                                        |
+|   + CreateObject(NumExpr)                                      |
+|   + Field(NumExpr::value, 0)                                   |
 |   + StackEnd()                                                 |
 |   > StackBegin()                                               |
 | [RETURN STACK]:                                                |
@@ -492,7 +492,7 @@
 | [25]: <Ending>                                                 |
 | [27][Exp2]< Exp2 "*" Exp1 @ >                                  |
 | [AST-INSTRUCTIONS]:                                            |
-|   + Token(1)                                                   |
+|   + StackEnd()                                                 |
 |   > StackSlot(2)                                               |
 | [RETURN STACK]:                                                |
 |   [15][13][16]: Exp2 -> [36][Exp3]< Exp3 "+" Exp2 @ >          |
@@ -516,12 +516,12 @@
 | [26]: <Ending>                                                 |
 | [36][Exp3]< Exp3 "+" Exp2 @ >                                  |
 | [AST-INSTRUCTIONS]:                                            |
-|   + StackBegin()                                               |
-|   + Token(0)                                                   |
-|   + StackBegin()                                               |
-|   + Token(0)                                                   |
-|   + StackBegin()                                               |
-|   + Token(0)                                                   |
+|   + EnumItem(2, 3)                                             |
+|   + CreateObject(Binary)                                       |
+|   + Field(Binary::left, 0)                                     |
+|   + Field(Binary::right, 2)                                    |
+|   + Field(Binary::op, 3)                                       |
+|   + StackEnd()                                                 |
 |   > StackSlot(2)                                               |
 | [RETURN STACK]:                                                |
 |   [11][3][9]: Exp3 -> [56][Exp4]<! !Exp3 @ !>                  |
@@ -544,14 +544,14 @@
 | [27]: <Leftrec>                                                |
 | [39][Exp3]< Exp3 @ "+" Exp2 >                                  |
 | [AST-INSTRUCTIONS]:                                            |
-|   + StackBegin()                                               |
-|   + Token(0)                                                   |
 |   + EnumItem(0, 3)                                             |
 |   + CreateObject(Binary)                                       |
 |   + Field(Binary::left, 0)                                     |
 |   + Field(Binary::right, 2)                                    |
 |   + Field(Binary::op, 3)                                       |
 |   + StackEnd()                                                 |
+|   + StackBegin()                                               |
+|   + StackSlot(0)                                               |
 | [RETURN STACK]:                                                |
 |   [11][3][9]: Exp3 -> [56][Exp4]<! !Exp3 @ !>                  |
 |   [10][2][9]: Exp4 -> [65][Exp5]<! !Exp4 @ !>                  |
@@ -575,7 +575,7 @@
 || [29]: {ADD} +                                                  ||
 || [35][Exp3]< Exp3 "+" @ Exp2 >                                  ||
 || [AST-INSTRUCTIONS]:                                            ||
-||   + StackSlot(0)                                               ||
+||   + Token(1)                                                   ||
 || [RETURN STACK]:                                                ||
 ||   [11][3][9]: Exp3 -> [56][Exp4]<! !Exp3 @ !>                  ||
 ||   [10][2][9]: Exp4 -> [65][Exp5]<! !Exp4 @ !>                  ||
@@ -625,8 +625,8 @@
 | [31]: <Ending>                                                 |
 | [23][Exp1]<! !Exp0 @ !>                                        |
 | [AST-INSTRUCTIONS]:                                            |
-|   + CreateObject(Ref)                                          |
-|   + Field(Ref::name, 0)                                        |
+|   + CreateObject(NumExpr)                                      |
+|   + Field(NumExpr::value, 0)                                   |
 |   + StackEnd()                                                 |
 |   > StackBegin()                                               |
 | [RETURN STACK]:                                                |
@@ -652,7 +652,7 @@
 | [32]: <Ending>                                                 |
 | [32][Exp2]<! !Exp1 @ !>                                        |
 | [AST-INSTRUCTIONS]:                                            |
-|   + Token(1)                                                   |
+|   + StackEnd()                                                 |
 |   > StackBegin()                                               |
 | [RETURN STACK]:                                                |
 |   [20][13][29]: Exp2 -> [36][Exp3]< Exp3 "+" Exp2 @ >          |
@@ -676,7 +676,7 @@
 | [33]: <Ending>                                                 |
 | [36][Exp3]< Exp3 "+" Exp2 @ >                                  |
 | [AST-INSTRUCTIONS]:                                            |
-|   + Token(1)                                                   |
+|   + StackEnd()                                                 |
 |   > StackSlot(2)                                               |
 | [RETURN STACK]:                                                |
 |   [11][3][9]: Exp3 -> [56][Exp4]<! !Exp3 @ !>                  |
@@ -699,12 +699,12 @@
 | [34]: <Ending>                                                 |
 | [56][Exp4]<! !Exp3 @ !>                                        |
 | [AST-INSTRUCTIONS]:                                            |
-|   + StackBegin()                                               |
-|   + Token(0)                                                   |
-|   + StackBegin()                                               |
-|   + Token(0)                                                   |
-|   + StackBegin()                                               |
-|   + Token(0)                                                   |
+|   + EnumItem(0, 3)                                             |
+|   + CreateObject(Binary)                                       |
+|   + Field(Binary::left, 0)                                     |
+|   + Field(Binary::right, 2)                                    |
+|   + Field(Binary::op, 3)                                       |
+|   + StackEnd()                                                 |
 |   > StackBegin()                                               |
 | [RETURN STACK]:                                                |
 |   [10][2][9]: Exp4 -> [65][Exp5]<! !Exp4 @ !>                  |
@@ -726,7 +726,7 @@
 | [35]: <Ending>                                                 |
 | [65][Exp5]<! !Exp4 @ !>                                        |
 | [AST-INSTRUCTIONS]:                                            |
-|   + Token(1)                                                   |
+|   + StackEnd()                                                 |
 |   > StackBegin()                                               |
 | [RETURN STACK]:                                                |
 |   [9][1][9]: Exp5 -> [80][Exp]<! !Exp5 @ !>                    |
@@ -747,8 +747,8 @@
 | [36]: <Ending>                                                 |
 | [80][Exp]<! !Exp5 @ !>                                         |
 | [AST-INSTRUCTIONS]:                                            |
-|   + Token(1)                                                   |
-|   > StackEnd()                                                 |
+|   + StackEnd()                                                 |
+|   > StackBegin()                                               |
 | [RETURN STACK]:                                                |
 |   [8][9][9]: Exp -> [21][Exp1]< Exp1 "(" { Exp @ ; "," } ")" > |
 |   [6][5][4]: Exp1 -> [32][Exp2]<! !Exp1 @ !>                   |
@@ -767,8 +767,8 @@
 | [37]: <Ending>                                                 |
 | [21][Exp1]< Exp1 "(" { Exp @ ; "," } ")" >                     |
 | [AST-INSTRUCTIONS]:                                            |
-|   + Token(2)                                                   |
-|   > StackSlot(1)                                               |
+|   + StackEnd()                                                 |
+|   > StackSlot(2)                                               |
 | [RETURN STACK]:                                                |
 |   [6][5][4]: Exp1 -> [32][Exp2]<! !Exp1 @ !>                   |
 |   [5][4][4]: Exp2 -> [41][Exp3]<! !Exp2 @ !>                   |
@@ -788,7 +788,7 @@
 || [38]: {COMMA} ,                                                ||
 || [19][Exp1]< Exp1 "(" { Exp ; "," @ } ")" >                     ||
 || [AST-INSTRUCTIONS]:                                            ||
-||   + Token(4)                                                   ||
+||   + Token(3)                                                   ||
 || [RETURN STACK]:                                                ||
 ||   [6][5][4]: Exp1 -> [32][Exp2]<! !Exp1 @ !>                   ||
 ||   [5][4][4]: Exp2 -> [41][Exp3]<! !Exp2 @ !>                   ||
@@ -834,8 +834,8 @@
 | [40]: <Ending>                                                    |
 | [23][Exp1]<! !Exp0 @ !>                                           |
 | [AST-INSTRUCTIONS]:                                               |
-|   + CreateObject(Ref)                                             |
-|   + Field(Ref::name, 0)                                           |
+|   + CreateObject(NumExpr)                                         |
+|   + Field(NumExpr::value, 0)                                      |
 |   + StackEnd()                                                    |
 |   > StackBegin()                                                  |
 | [RETURN STACK]:                                                   |
@@ -861,7 +861,7 @@
 | [41]: <Ending>                                                    |
 | [32][Exp2]<! !Exp1 @ !>                                           |
 | [AST-INSTRUCTIONS]:                                               |
-|   + Token(1)                                                      |
+|   + StackEnd()                                                    |
 |   > StackBegin()                                                  |
 | [RETURN STACK]:                                                   |
 |   [27][4][38]: Exp2 -> [41][Exp3]<! !Exp2 @ !>                    |
@@ -885,7 +885,7 @@
 | [42]: <Ending>                                                    |
 | [41][Exp3]<! !Exp2 @ !>                                           |
 | [AST-INSTRUCTIONS]:                                               |
-|   + Token(1)                                                      |
+|   + StackEnd()                                                    |
 |   > StackBegin()                                                  |
 | [RETURN STACK]:                                                   |
 |   [26][3][38]: Exp3 -> [56][Exp4]<! !Exp3 @ !>                    |
@@ -908,7 +908,7 @@
 | [43]: <Ending>                                                    |
 | [56][Exp4]<! !Exp3 @ !>                                           |
 | [AST-INSTRUCTIONS]:                                               |
-|   + Token(1)                                                      |
+|   + StackEnd()                                                    |
 |   > StackBegin()                                                  |
 | [RETURN STACK]:                                                   |
 |   [25][2][38]: Exp4 -> [65][Exp5]<! !Exp4 @ !>                    |
@@ -930,9 +930,9 @@
 | [44]: <Leftrec>                                                   |
 | [52][Exp4]< Exp4 @ "<" Exp3 >                                     |
 | [AST-INSTRUCTIONS]:                                               |
-|   + Token(1)                                                      |
-|   + Token(1)                                                      |
 |   + StackEnd()                                                    |
+|   + StackBegin()                                                  |
+|   + StackSlot(0)                                                  |
 | [RETURN STACK]:                                                   |
 |   [25][2][38]: Exp4 -> [65][Exp5]<! !Exp4 @ !>                    |
 |   [24][1][38]: Exp5 -> [80][Exp]<! !Exp5 @ !>                     |
@@ -955,7 +955,7 @@
 || [46]: {LT} <                                                      ||
 || [44][Exp4]< Exp4 "<" @ Exp3 >                                     ||
 || [AST-INSTRUCTIONS]:                                               ||
-||   + StackSlot(0)                                                  ||
+||   + Token(1)                                                      ||
 || [RETURN STACK]:                                                   ||
 ||   [25][2][38]: Exp4 -> [65][Exp5]<! !Exp4 @ !>                    ||
 ||   [24][1][38]: Exp5 -> [80][Exp]<! !Exp5 @ !>                     ||
@@ -1004,8 +1004,8 @@
 | [48]: <Ending>                                                    |
 | [23][Exp1]<! !Exp0 @ !>                                           |
 | [AST-INSTRUCTIONS]:                                               |
-|   + CreateObject(Ref)                                             |
-|   + Field(Ref::name, 0)                                           |
+|   + CreateObject(NumExpr)                                         |
+|   + Field(NumExpr::value, 0)                                      |
 |   + StackEnd()                                                    |
 |   > StackBegin()                                                  |
 | [RETURN STACK]:                                                   |
@@ -1031,7 +1031,7 @@
 | [49]: <Ending>                                                    |
 | [32][Exp2]<! !Exp1 @ !>                                           |
 | [AST-INSTRUCTIONS]:                                               |
-|   + Token(1)                                                      |
+|   + StackEnd()                                                    |
 |   > StackBegin()                                                  |
 | [RETURN STACK]:                                                   |
 |   [31][4][46]: Exp2 -> [41][Exp3]<! !Exp2 @ !>                    |
@@ -1055,7 +1055,7 @@
 | [50]: <Ending>                                                    |
 | [41][Exp3]<! !Exp2 @ !>                                           |
 | [AST-INSTRUCTIONS]:                                               |
-|   + Token(1)                                                      |
+|   + StackEnd()                                                    |
 |   > StackBegin()                                                  |
 | [RETURN STACK]:                                                   |
 |   [30][15][46]: Exp3 -> [45][Exp4]< Exp4 "<" Exp3 @ >             |
@@ -1078,7 +1078,7 @@
 | [51]: <Ending>                                                    |
 | [45][Exp4]< Exp4 "<" Exp3 @ >                                     |
 | [AST-INSTRUCTIONS]:                                               |
-|   + Token(1)                                                      |
+|   + StackEnd()                                                    |
 |   > StackSlot(2)                                                  |
 | [RETURN STACK]:                                                   |
 |   [25][2][38]: Exp4 -> [65][Exp5]<! !Exp4 @ !>                    |
@@ -1100,12 +1100,12 @@
 | [52]: <Ending>                                                    |
 | [65][Exp5]<! !Exp4 @ !>                                           |
 | [AST-INSTRUCTIONS]:                                               |
-|   + StackBegin()                                                  |
-|   + Token(0)                                                      |
-|   + StackBegin()                                                  |
-|   + Token(0)                                                      |
-|   + StackBegin()                                                  |
-|   + Token(0)                                                      |
+|   + EnumItem(6, 3)                                                |
+|   + CreateObject(Binary)                                          |
+|   + Field(Binary::left, 0)                                        |
+|   + Field(Binary::right, 2)                                       |
+|   + Field(Binary::op, 3)                                          |
+|   + StackEnd()                                                    |
 |   > StackBegin()                                                  |
 | [RETURN STACK]:                                                   |
 |   [24][1][38]: Exp5 -> [80][Exp]<! !Exp5 @ !>                     |
@@ -1198,8 +1198,8 @@
 | [57]: <Ending>                                                    |
 | [23][Exp1]<! !Exp0 @ !>                                           |
 | [AST-INSTRUCTIONS]:                                               |
-|   + CreateObject(Ref)                                             |
-|   + Field(Ref::name, 0)                                           |
+|   + CreateObject(NumExpr)                                         |
+|   + Field(NumExpr::value, 0)                                      |
 |   + StackEnd()                                                    |
 |   > StackBegin()                                                  |
 | [RETURN STACK]:                                                   |
@@ -1225,7 +1225,7 @@
 | [58]: <Ending>                                                    |
 | [32][Exp2]<! !Exp1 @ !>                                           |
 | [AST-INSTRUCTIONS]:                                               |
-|   + Token(1)                                                      |
+|   + StackEnd()                                                    |
 |   > StackBegin()                                                  |
 | [RETURN STACK]:                                                   |
 |   [36][4][55]: Exp2 -> [41][Exp3]<! !Exp2 @ !>                    |
@@ -1249,7 +1249,7 @@
 | [59]: <Ending>                                                    |
 | [41][Exp3]<! !Exp2 @ !>                                           |
 | [AST-INSTRUCTIONS]:                                               |
-|   + Token(1)                                                      |
+|   + StackEnd()                                                    |
 |   > StackBegin()                                                  |
 | [RETURN STACK]:                                                   |
 |   [35][3][55]: Exp3 -> [56][Exp4]<! !Exp3 @ !>                    |
@@ -1272,7 +1272,7 @@
 | [60]: <Ending>                                                    |
 | [56][Exp4]<! !Exp3 @ !>                                           |
 | [AST-INSTRUCTIONS]:                                               |
-|   + Token(1)                                                      |
+|   + StackEnd()                                                    |
 |   > StackBegin()                                                  |
 | [RETURN STACK]:                                                   |
 |   [34][20][55]: Exp4 -> [62][Exp5]< Exp5 "==" Exp4 @ >            |
@@ -1368,8 +1368,8 @@
 | [65]: <Ending>                                                    |
 | [23][Exp1]<! !Exp0 @ !>                                           |
 | [AST-INSTRUCTIONS]:                                               |
-|   + CreateObject(Ref)                                             |
-|   + Field(Ref::name, 0)                                           |
+|   + CreateObject(NumExpr)                                         |
+|   + Field(NumExpr::value, 0)                                      |
 |   + StackEnd()                                                    |
 |   > StackBegin()                                                  |
 | [RETURN STACK]:                                                   |
@@ -1395,7 +1395,7 @@
 | [66]: <Ending>                                                    |
 | [32][Exp2]<! !Exp1 @ !>                                           |
 | [AST-INSTRUCTIONS]:                                               |
-|   + Token(1)                                                      |
+|   + StackEnd()                                                    |
 |   > StackBegin()                                                  |
 | [RETURN STACK]:                                                   |
 |   [40][4][63]: Exp2 -> [41][Exp3]<! !Exp2 @ !>                    |
@@ -1419,7 +1419,7 @@
 | [67]: <Ending>                                                    |
 | [41][Exp3]<! !Exp2 @ !>                                           |
 | [AST-INSTRUCTIONS]:                                               |
-|   + Token(1)                                                      |
+|   + StackEnd()                                                    |
 |   > StackBegin()                                                  |
 | [RETURN STACK]:                                                   |
 |   [39][17][63]: Exp3 -> [49][Exp4]< Exp4 ">" Exp3 @ >             |
@@ -1442,7 +1442,7 @@
 | [68]: <Ending>                                                    |
 | [49][Exp4]< Exp4 ">" Exp3 @ >                                     |
 | [AST-INSTRUCTIONS]:                                               |
-|   + Token(1)                                                      |
+|   + StackEnd()                                                    |
 |   > StackSlot(2)                                                  |
 | [RETURN STACK]:                                                   |
 |   [34][20][55]: Exp4 -> [62][Exp5]< Exp5 "==" Exp4 @ >            |
@@ -1464,12 +1464,12 @@
 | [69]: <Ending>                                                    |
 | [62][Exp5]< Exp5 "==" Exp4 @ >                                    |
 | [AST-INSTRUCTIONS]:                                               |
-|   + StackBegin()                                                  |
-|   + Token(0)                                                      |
-|   + StackBegin()                                                  |
-|   + Token(0)                                                      |
-|   + StackBegin()                                                  |
-|   + Token(0)                                                      |
+|   + EnumItem(4, 3)                                                |
+|   + CreateObject(Binary)                                          |
+|   + Field(Binary::left, 0)                                        |
+|   + Field(Binary::right, 2)                                       |
+|   + Field(Binary::op, 3)                                          |
+|   + StackEnd()                                                    |
 |   > StackSlot(2)                                                  |
 | [RETURN STACK]:                                                   |
 |   [24][1][38]: Exp5 -> [80][Exp]<! !Exp5 @ !>                     |
@@ -1490,13 +1490,13 @@
 | [70]: <Ending>                                                    |
 | [80][Exp]<! !Exp5 @ !>                                            |
 | [AST-INSTRUCTIONS]:                                               |
-|   + StackBegin()                                                  |
-|   + Token(0)                                                      |
-|   + StackBegin()                                                  |
-|   + Token(0)                                                      |
-|   + StackBegin()                                                  |
-|   + Token(0)                                                      |
-|   > StackEnd()                                                    |
+|   + EnumItem(8, 3)                                                |
+|   + CreateObject(Binary)                                          |
+|   + Field(Binary::left, 0)                                        |
+|   + Field(Binary::right, 2)                                       |
+|   + Field(Binary::op, 3)                                          |
+|   + StackEnd()                                                    |
+|   > StackBegin()                                                  |
 | [RETURN STACK]:                                                   |
 |   [23][10][38]: Exp -> [21][Exp1]< Exp1 "(" { Exp @ ; "," } ")" > |
 |   [6][5][4]: Exp1 -> [32][Exp2]<! !Exp1 @ !>                      |
@@ -1515,7 +1515,7 @@
 | [71]: <Ending>                                                 |
 | [21][Exp1]< Exp1 "(" { Exp @ ; "," } ")" >                     |
 | [AST-INSTRUCTIONS]:                                            |
-|   + Token(2)                                                   |
+|   + StackEnd()                                                 |
 |   > StackSlot(2)                                               |
 | [RETURN STACK]:                                                |
 |   [6][5][4]: Exp1 -> [32][Exp2]<! !Exp1 @ !>                   |
@@ -1536,7 +1536,7 @@
 || [72]: {CLOSE_BRACE} )                                          ||
 || [20][Exp1]< Exp1 "(" { Exp ; "," } ")" @ >                     ||
 || [AST-INSTRUCTIONS]:                                            ||
-||   + StackSlot(0)                                               ||
+||   + Token(4)                                                   ||
 || [RETURN STACK]:                                                ||
 ||   [6][5][4]: Exp1 -> [32][Exp2]<! !Exp1 @ !>                   ||
 ||   [5][4][4]: Exp2 -> [41][Exp3]<! !Exp2 @ !>                   ||
@@ -1554,10 +1554,10 @@
 | [73]: <Ending>                                                 |
 | [32][Exp2]<! !Exp1 @ !>                                        |
 | [AST-INSTRUCTIONS]:                                            |
-|   + StackBegin()                                               |
-|   + Token(0)                                                   |
-|   + StackBegin()                                               |
-|   + Token(0)                                                   |
+|   + CreateObject(Call)                                         |
+|   + Field(Call::func, 0)                                       |
+|   + Field(Call::args, 2)                                       |
+|   + StackEnd()                                                 |
 |   > StackBegin()                                               |
 | [RETURN STACK]:                                                |
 |   [5][4][4]: Exp2 -> [41][Exp3]<! !Exp2 @ !>                   |
@@ -1575,7 +1575,7 @@
 | [74]: <Ending>                                                 |
 | [41][Exp3]<! !Exp2 @ !>                                        |
 | [AST-INSTRUCTIONS]:                                            |
-|   + Token(1)                                                   |
+|   + StackEnd()                                                 |
 |   > StackBegin()                                               |
 | [RETURN STACK]:                                                |
 |   [4][3][4]: Exp3 -> [56][Exp4]<! !Exp3 @ !>                   |
@@ -1592,7 +1592,7 @@
 | [75]: <Ending>                                                 |
 | [56][Exp4]<! !Exp3 @ !>                                        |
 | [AST-INSTRUCTIONS]:                                            |
-|   + Token(1)                                                   |
+|   + StackEnd()                                                 |
 |   > StackBegin()                                               |
 | [RETURN STACK]:                                                |
 |   [3][2][4]: Exp4 -> [65][Exp5]<! !Exp4 @ !>                   |
@@ -1608,7 +1608,7 @@
 | [76]: <Ending>                                                 |
 | [65][Exp5]<! !Exp4 @ !>                                        |
 | [AST-INSTRUCTIONS]:                                            |
-|   + Token(1)                                                   |
+|   + StackEnd()                                                 |
 |   > StackBegin()                                               |
 | [RETURN STACK]:                                                |
 |   [2][1][4]: Exp5 -> [80][Exp]<! !Exp5 @ !>                    |
@@ -1623,8 +1623,8 @@
 | [77]: <Ending>                                                 |
 | [80][Exp]<! !Exp5 @ !>                                         |
 | [AST-INSTRUCTIONS]:                                            |
-|   + Token(1)                                                   |
-|   > StackEnd()                                                 |
+|   + StackEnd()                                                 |
+|   > StackBegin()                                               |
 | [RETURN STACK]:                                                |
 |   [1][28][4]: Exp -> [89][Module]< { Import } "export" Exp @ > |
 | [PREDECESSORS 76-76]: [76]                                     |
@@ -1637,21 +1637,21 @@
 | [78]: <Ending>                            |
 | [89][Module]< { Import } "export" Exp @ > |
 | [AST-INSTRUCTIONS]:                       |
-|   + Token(2)                              |
-|   > StackSlot(0)                          |
+|   + StackEnd()                            |
+|   > StackSlot(2)                          |
 | [PREDECESSORS 77-77]: [77]                |
 | [SUCCESORS 79-79]: [79]                   |
 +-------------------------------------------+
 |
 +
 |
-+----------------------------+
-| [79]: <Ending>             |
-| [86][Module] END [ENDING]  |
-| [AST-INSTRUCTIONS]:        |
-|   + StackBegin()           |
-|   + Token(0)               |
-|   + StackBegin()           |
-|   + Token(0)               |
-| [PREDECESSORS 78-78]: [78] |
-+----------------------------+
++--------------------------------+
+| [79]: <Ending>                 |
+| [86][Module] END [ENDING]      |
+| [AST-INSTRUCTIONS]:            |
+|   + CreateObject(Module)       |
+|   + Field(Module::imports, 0)  |
+|   + Field(Module::exported, 2) |
+|   + StackEnd()                 |
+| [PREDECESSORS 78-78]: [78]     |
++--------------------------------+

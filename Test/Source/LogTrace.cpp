@@ -350,14 +350,14 @@ void RenderTrace(
 			if (i < c1)
 			{
 				auto& edgeDesc = executable.edges[trace->byEdge];
-				ins = executable.astInstructions[edgeDesc.insAfterInput.start + (i - c1)];
+				ins = executable.astInstructions[edgeDesc.insAfterInput.start + i];
 				writer.WriteString(L"  + ");
 			}
 			else
 			{
 				auto returnStack = tm.GetReturnStack(trace->executedReturnStack);
 				auto& returnDesc = executable.returns[returnStack->returnIndex];
-				ins = executable.astInstructions[returnDesc.insAfterInput.start + (i - c2)];
+				ins = executable.astInstructions[returnDesc.insAfterInput.start + (i - c1)];
 				writer.WriteString(L"  > ");
 			}
 
