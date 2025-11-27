@@ -42,6 +42,10 @@
   - This can happen in any branch in a rule, not just the beginning.
 - In the original implementation LM transitions marked "leftrec" but it may be unnecessary now.
 
+### Optimization ToDo
+
+- Consecutive StackBegin/StackEnd can be omitted.
+
 ## Test Cases
 
 - Code Coverage
