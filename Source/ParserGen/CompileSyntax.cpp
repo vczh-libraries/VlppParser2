@@ -17,10 +17,8 @@ namespace vl
 			extern void					CalculateFirstSet(VisitorContext& context, Ptr<GlrSyntaxFile> syntaxFile);
 			extern void					ValidateTypes(VisitorContext& context, Ptr<GlrSyntaxFile> syntaxFile);
 			extern void					ValidateStructure(VisitorContext& context, Ptr<GlrSyntaxFile> syntaxFile);
-			extern void					ValidatePrefixMerge(VisitorContext& context, Ptr<GlrSyntaxFile> syntaxFile);
 
 			extern Ptr<GlrSyntaxFile>	RewriteSyntax_Switch(VisitorContext& context, VisitorSwitchContext& sContext, SyntaxSymbolManager& syntaxManager, Ptr<GlrSyntaxFile> syntaxFile);
-			extern Ptr<GlrSyntaxFile>	RewriteSyntax_PrefixMerge(VisitorContext& context, SyntaxSymbolManager& syntaxManager, Ptr<GlrSyntaxFile> syntaxFile);
 			extern void					CompileSyntax(VisitorContext& context, Ptr<CppParserGenOutput> output, Ptr<GlrSyntaxFile> syntaxFile);
 
 /***********************************************************************
@@ -30,14 +28,6 @@ CompileSyntax
 			bool NeedRewritten_Switch(Ptr<GlrSyntaxFile> syntaxFile)
 			{
 				return syntaxFile->switches.Count() > 0;
-			}
-
-			bool NeedRewritten_PrefixMerge(Ptr<GlrSyntaxFile> syntaxFile)
-			{
-				return !From(syntaxFile->rules)
-					.SelectMany([](auto rule) { return From(rule->clauses); })
-					.FindType<GlrPrefixMergeClause>()
-					.IsEmpty();
 			}
 
 			void CreateSyntaxSymbols(LexerSymbolManager& lexerManager, SyntaxSymbolManager& syntaxManager, vint fileIndex, Ptr<GlrSyntaxFile> syntaxFile)
@@ -61,20 +51,6 @@ CompileSyntax
 							rule->attParser,
 							rule->codeRange
 							);
-					}
-
-					for (auto clause : rule->clauses)
-					{
-						if (auto lrpClause = clause.Cast<GlrLeftRecursionPlaceholderClause>())
-						{
-							for (auto flag : lrpClause->flags)
-							{
-								if (!syntaxManager.lrpFlags.Contains(flag->flag.value))
-								{
-									syntaxManager.lrpFlags.Add(flag->flag.value);
-								}
-							}
-						}
 					}
 				}
 			}
@@ -107,9 +83,6 @@ CompileSyntax
 				ValidateStructure(context, syntaxFile);
 				if (context.syntaxManager.Global().Errors().Count() > 0) return false;
 
-				ValidatePrefixMerge(context, syntaxFile);
-				if (context.syntaxManager.Global().Errors().Count() > 0) return false;
-
 				return true;
 			}
 
@@ -134,17 +107,6 @@ CompileSyntax
 					if (!VerifySyntax_UntilSwitch(context, sContext, syntaxFile)) goto FINISHED_COMPILING;
 
 					syntaxFile = RewriteSyntax_Switch(context, sContext, syntaxManager, syntaxFile);
-					if (context.syntaxManager.Global().Errors().Count() > 0) goto FINISHED_COMPILING;
-				}
-
-				if (NeedRewritten_PrefixMerge(syntaxFile))
-				{
-					VisitorContext context(astManager, lexerManager, syntaxManager);
-					VisitorSwitchContext sContext;
-					if (!VerifySyntax_UntilSwitch(context, sContext, syntaxFile)) goto FINISHED_COMPILING;
-					if (!VerifySyntax_UntilPrefixMerge(context, syntaxFile)) goto FINISHED_COMPILING;
-
-					syntaxFile = RewriteSyntax_PrefixMerge(context, syntaxManager, syntaxFile);
 					if (context.syntaxManager.Global().Errors().Count() > 0) goto FINISHED_COMPILING;
 				}
 

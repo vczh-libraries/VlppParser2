@@ -49,17 +49,6 @@ namespace vl
 				using ClauseReuseDependencies = collections::Group<GlrReuseClause*, RuleSymbol*>;
 				using ClauseTypeMap = collections::Dictionary<GlrClause*, AstClassSymbol*>;
 
-				using LeftRecursiveClauseMap = collections::Group<RuleSymbol*, GlrClause*>;
-				using LeftRecursionInjectClauseMap = collections::Group<RuleSymbol*, GlrLeftRecursionInjectClause*>;
-				using LeftRecursionPlaceholderClauseMap = collections::Group<RuleSymbol*, GlrLeftRecursionPlaceholderClause*>;
-				using PrefixMergeClauseMap = collections::Group<RuleSymbol*, GlrPrefixMergeClause*>;
-				using ClauseToRuleMap = collections::Dictionary<GlrClause*, RuleSymbol*>;
-				using ClauseToRuleGroup = collections::Group<GlrClause*, RuleSymbol*>;
-				using RuleToLiteralMap = collections::Group<RuleSymbol*, ParsingToken>;
-				using ClauseToLiteralMap = collections::Group<GlrClause*, ParsingToken>;
-				using RulePathDependencies = collections::Group<RuleSymbol*, RuleClausePath>;
-				using PathToLastRuleMap = collections::Group<RuleSymbolPair, RuleClausePath>;
-
 				using ClauseList = collections::List<GlrClause*>;
 
 				struct VisitorContext
@@ -76,31 +65,7 @@ namespace vl
 					RuleKnownTypes						ruleKnownTypes;										// RuleSymbol -> explicitly declared object type in clauses
 					ClauseReuseDependencies				clauseReuseDependencies;							// GlrReuseClause -> !rule in that clause
 					ClauseTypeMap						clauseTypes;										// GlrClause -> type
-					ClauseToRuleMap						clauseToRules;										// GlrClause -> RuleSymbol that contain this clause
 					Ptr<regex::RegexLexer>				cachedLexer;
-
-					LeftRecursiveClauseMap				leftRecursiveClauses;								// RuleSymbol -> all clauses begins with that rule
-					LeftRecursionInjectClauseMap		directLriClauses, indirectLriClauses;				// RuleSymbol -> contained left_recursion_injection clauses
-																											// RuleSymbol -> reachable left_recursion_injection clauses
-					LeftRecursionPlaceholderClauseMap	directLrpClauses, indirectLrpClauses;				// RuleSymbol -> contained left_recursion_placeholder clauses
-																											// RuleSymbol -> reachable left_recursion_placeholder clauses
-					PrefixMergeClauseMap				directPmClauses, indirectPmClauses;					// RuleSymbol -> contained prefix_merge clauses
-																											// RuleSymbol -> reachable prefix_merge clauses
-
-					ClauseToRuleMap						simpleUseClauseToReferencedRules;					// GlrClause -> RuleSymbol when this clause is !RuleSymbol
-					ClauseToRuleGroup					clauseToStartRules;									// GlrClause -> RuleSymbol when this clause begins with RuleSymbol
-					RuleToLiteralMap					ruleBeginsWithLiteral;								// RuleSymbol that begins with any literal
-					ClauseToLiteralMap					clauseBeginsWithLiteral;							// GlrClause that begins with any literal
-
-					RulePathDependencies				directStartRules, indirectStartRules;				// RuleSymbol -> {rule, clause begins with the rule}
-																											// RuleSymbol -> {rule, reachable clause begins with the rule}
-					RulePathDependencies				directSimpleUseRules, indirectSimpleUseRules;		// RuleSymbol -> {rule, clause that is !rule}
-																											// RuleSymbol -> {rule, reachable clause that is !rule}
-					PathToLastRuleMap					indirectStartPathToLastRules;						// {r1, r3} -> {r2, clause}, where r1 --(indirect)--> r2 --(direct)--> {r3, clause begins with r3 contained in r2}
-					PathToLastRuleMap					indirectSimpleUsePathToLastRules;					// {r1, r3} -> {r2, clause}, where r1 (indirect)::= !r2 (direct)::= {r3, clause that is !r3 contained in r2}
-
-					// ValidateStructure
-					ClauseList							clauseToConvertedToPrefixMerge;						// GlrClause when it should be converted to a prefix_merge clause
 
 					VisitorContext(
 						const AstSymbolManager& _astManager,

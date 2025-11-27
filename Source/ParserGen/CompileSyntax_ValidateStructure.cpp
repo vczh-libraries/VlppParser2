@@ -22,7 +22,6 @@ ValidateStructureCountingVisitor
 				VisitorContext&							context;
 				RuleSymbol*								ruleSymbol;
 				GlrClause*								clause = nullptr;
-				GlrLeftRecursionPlaceholderClause*		lrpClause = nullptr;
 
 				vint									optionalCounter = 0;
 				vint									loopCounter = 0;
@@ -309,30 +308,6 @@ ValidateStructureCountingVisitor
 					node->syntax->Accept(this);
 					CheckAfterClause(node, true);
 				}
-
-				void Visit(GlrLeftRecursionPlaceholderClause* node) override
-				{
-					if (!lrpClause)
-					{
-						lrpClause = node;
-					}
-					else
-					{
-						context.syntaxManager.AddError(
-							ParserErrorType::TooManyLeftRecursionPlaceholderClauses,
-							node->codeRange,
-							ruleSymbol->Name()
-							);
-					}
-				}
-
-				void Visit(GlrLeftRecursionInjectClause* node) override
-				{
-				}
-
-				void Visit(GlrPrefixMergeClause* node) override
-				{
-				}
 			};
 
 /***********************************************************************
@@ -527,18 +502,6 @@ ValidateStructureRelationshipVisitor
 					clause = node;
 					node->syntax->Accept(this);
 					CheckAfterClause(node);
-				}
-
-				void Visit(GlrLeftRecursionPlaceholderClause* node) override
-				{
-				}
-
-				void Visit(GlrLeftRecursionInjectClause* node) override
-				{
-				}
-
-				void Visit(GlrPrefixMergeClause* node) override
-				{
 				}
 			};
 
