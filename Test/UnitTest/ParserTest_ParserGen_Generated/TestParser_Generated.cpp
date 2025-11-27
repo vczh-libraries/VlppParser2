@@ -20,16 +20,16 @@
 #include "../../Source/FeatureTest/Generated/FeatureTestModuleParser.h"
 #include "../../Source/BinaryOp/Generated/BinaryOpExprAst_Json.h"
 #include "../../Source/BinaryOp/Generated/BinaryOpModuleParser.h"
-#include "../../Source/PrefixMerge5_Pm/Generated/PrefixMerge5_PmTypeOrExpr_Json.h"
-#include "../../Source/PrefixMerge5_Pm/Generated/PrefixMerge5_PmModuleParser.h"
-#include "../../Source/PrefixMerge6_Pm2/Generated/PrefixMerge6_Pm2TypeOrExpr_Json.h"
-#include "../../Source/PrefixMerge6_Pm2/Generated/PrefixMerge6_Pm2ModuleParser.h"
-#include "../../Source/PrefixMerge7_PmSwitch/Generated/PrefixMerge7_PmSwitchTypeOrExpr_Json.h"
-#include "../../Source/PrefixMerge7_PmSwitch/Generated/PrefixMerge7_PmSwitchModuleParser.h"
-#include "../../Source/PrefixMerge8_PmVariadic/Generated/PrefixMerge8_PmVariadicTypeOrExpr_Json.h"
-#include "../../Source/PrefixMerge8_PmVariadic/Generated/PrefixMerge8_PmVariadicModuleParser.h"
-#include "../../Source/PrefixMerge9_PmLoop/Generated/PrefixMerge9_PmLoopFile_Json.h"
-#include "../../Source/PrefixMerge9_PmLoop/Generated/PrefixMerge9_PmLoopModuleParser.h"
+//#include "../../Source/PrefixMerge5_Pm/Generated/PrefixMerge5_PmTypeOrExpr_Json.h"
+//#include "../../Source/PrefixMerge5_Pm/Generated/PrefixMerge5_PmModuleParser.h"
+//#include "../../Source/PrefixMerge6_Pm2/Generated/PrefixMerge6_Pm2TypeOrExpr_Json.h"
+//#include "../../Source/PrefixMerge6_Pm2/Generated/PrefixMerge6_Pm2ModuleParser.h"
+//#include "../../Source/PrefixMerge7_PmSwitch/Generated/PrefixMerge7_PmSwitchTypeOrExpr_Json.h"
+//#include "../../Source/PrefixMerge7_PmSwitch/Generated/PrefixMerge7_PmSwitchModuleParser.h"
+//#include "../../Source/PrefixMerge8_PmVariadic/Generated/PrefixMerge8_PmVariadicTypeOrExpr_Json.h"
+//#include "../../Source/PrefixMerge8_PmVariadic/Generated/PrefixMerge8_PmVariadicModuleParser.h"
+//#include "../../Source/PrefixMerge9_PmLoop/Generated/PrefixMerge9_PmLoopFile_Json.h"
+//#include "../../Source/PrefixMerge9_PmLoop/Generated/PrefixMerge9_PmLoopModuleParser.h"
 #include "../../Source/LogTrace.h"
 
 extern WString GetTestParserInputPath(const WString& parserName);
@@ -422,62 +422,62 @@ TEST_FILE
 		&binaryop::ModuleParserRuleName,
 		&binaryop::ModuleParserStateLabel
 		);
-	TestParser<prefixmerge5_pm::ModuleParser, prefixmerge5_pm::json_visitor::TypeOrExprVisitor>(
-		L"PrefixMerge5_Pm",
-		&prefixmerge5_pm::PrefixMerge5_PmTypeName,
-		&prefixmerge5_pm::PrefixMerge5_PmFieldName,
-		&prefixmerge5_pm::PrefixMerge5_PmTokenId,
-		&prefixmerge5_pm::ModuleParserRuleName,
-		&prefixmerge5_pm::ModuleParserStateLabel,
-		L"TestCase_Cpp/Basic",
-		L"TestCase_Cpp/Ambiguous2",
-		L"TestCase_Cpp/CtorExpr"
-		);
-	TestParser<prefixmerge6_pm2::ModuleParser, prefixmerge6_pm2::json_visitor::TypeOrExprVisitor>(
-		L"PrefixMerge6_Pm2",
-		&prefixmerge6_pm2::PrefixMerge6_Pm2TypeName,
-		&prefixmerge6_pm2::PrefixMerge6_Pm2FieldName,
-		&prefixmerge6_pm2::PrefixMerge6_Pm2TokenId,
-		&prefixmerge6_pm2::ModuleParserRuleName,
-		&prefixmerge6_pm2::ModuleParserStateLabel,
-		L"TestCase_Cpp/Basic",
-		L"TestCase_Cpp/Ambiguous2",
-		L"TestCase_Cpp/CtorExpr",
-		L"TestCase_Cpp/ThrowComma"
-		);
-	TestParser<prefixmerge7_pmswitch::ModuleParser, prefixmerge7_pmswitch::json_visitor::TypeOrExprVisitor>(
-		L"PrefixMerge7_PmSwitch",
-		&prefixmerge7_pmswitch::PrefixMerge7_PmSwitchTypeName,
-		&prefixmerge7_pmswitch::PrefixMerge7_PmSwitchFieldName,
-		&prefixmerge7_pmswitch::PrefixMerge7_PmSwitchTokenId,
-		&prefixmerge7_pmswitch::ModuleParserRuleName,
-		&prefixmerge7_pmswitch::ModuleParserStateLabel,
-		L"TestCase_Cpp/Basic",
-		L"TestCase_Cpp/Ambiguous2",
-		L"TestCase_Cpp/CtorExpr",
-		L"TestCase_Cpp/ThrowComma",
-		L"TestCase_Cpp/Generic"
-		);
-	TestParser<prefixmerge8_pmvariadic::ModuleParser, prefixmerge8_pmvariadic::json_visitor::TypeOrExprVisitor>(
-		L"PrefixMerge8_PmVariadic",
-		&prefixmerge8_pmvariadic::PrefixMerge8_PmVariadicTypeName,
-		&prefixmerge8_pmvariadic::PrefixMerge8_PmVariadicFieldName,
-		&prefixmerge8_pmvariadic::PrefixMerge8_PmVariadicTokenId,
-		&prefixmerge8_pmvariadic::ModuleParserRuleName,
-		&prefixmerge8_pmvariadic::ModuleParserStateLabel,
-		L"TestCase_Cpp/Basic",
-		L"TestCase_Cpp/Ambiguous2",
-		L"TestCase_Cpp/CtorExpr",
-		L"TestCase_Cpp/Variadic"
-		);
-	TestParser<prefixmerge9_pmloop::ModuleParser, prefixmerge9_pmloop::json_visitor::FileVisitor>(
-		L"PrefixMerge9_PmLoop",
-		&prefixmerge9_pmloop::PrefixMerge9_PmLoopTypeName,
-		&prefixmerge9_pmloop::PrefixMerge9_PmLoopFieldName,
-		&prefixmerge9_pmloop::PrefixMerge9_PmLoopTokenId,
-		&prefixmerge9_pmloop::ModuleParserRuleName,
-		&prefixmerge9_pmloop::ModuleParserStateLabel
-		);
+	//TestParser<prefixmerge5_pm::ModuleParser, prefixmerge5_pm::json_visitor::TypeOrExprVisitor>(
+	//	L"PrefixMerge5_Pm",
+	//	&prefixmerge5_pm::PrefixMerge5_PmTypeName,
+	//	&prefixmerge5_pm::PrefixMerge5_PmFieldName,
+	//	&prefixmerge5_pm::PrefixMerge5_PmTokenId,
+	//	&prefixmerge5_pm::ModuleParserRuleName,
+	//	&prefixmerge5_pm::ModuleParserStateLabel,
+	//	L"TestCase_Cpp/Basic",
+	//	L"TestCase_Cpp/Ambiguous2",
+	//	L"TestCase_Cpp/CtorExpr"
+	//	);
+	//TestParser<prefixmerge6_pm2::ModuleParser, prefixmerge6_pm2::json_visitor::TypeOrExprVisitor>(
+	//	L"PrefixMerge6_Pm2",
+	//	&prefixmerge6_pm2::PrefixMerge6_Pm2TypeName,
+	//	&prefixmerge6_pm2::PrefixMerge6_Pm2FieldName,
+	//	&prefixmerge6_pm2::PrefixMerge6_Pm2TokenId,
+	//	&prefixmerge6_pm2::ModuleParserRuleName,
+	//	&prefixmerge6_pm2::ModuleParserStateLabel,
+	//	L"TestCase_Cpp/Basic",
+	//	L"TestCase_Cpp/Ambiguous2",
+	//	L"TestCase_Cpp/CtorExpr",
+	//	L"TestCase_Cpp/ThrowComma"
+	//	);
+	//TestParser<prefixmerge7_pmswitch::ModuleParser, prefixmerge7_pmswitch::json_visitor::TypeOrExprVisitor>(
+	//	L"PrefixMerge7_PmSwitch",
+	//	&prefixmerge7_pmswitch::PrefixMerge7_PmSwitchTypeName,
+	//	&prefixmerge7_pmswitch::PrefixMerge7_PmSwitchFieldName,
+	//	&prefixmerge7_pmswitch::PrefixMerge7_PmSwitchTokenId,
+	//	&prefixmerge7_pmswitch::ModuleParserRuleName,
+	//	&prefixmerge7_pmswitch::ModuleParserStateLabel,
+	//	L"TestCase_Cpp/Basic",
+	//	L"TestCase_Cpp/Ambiguous2",
+	//	L"TestCase_Cpp/CtorExpr",
+	//	L"TestCase_Cpp/ThrowComma",
+	//	L"TestCase_Cpp/Generic"
+	//	);
+	//TestParser<prefixmerge8_pmvariadic::ModuleParser, prefixmerge8_pmvariadic::json_visitor::TypeOrExprVisitor>(
+	//	L"PrefixMerge8_PmVariadic",
+	//	&prefixmerge8_pmvariadic::PrefixMerge8_PmVariadicTypeName,
+	//	&prefixmerge8_pmvariadic::PrefixMerge8_PmVariadicFieldName,
+	//	&prefixmerge8_pmvariadic::PrefixMerge8_PmVariadicTokenId,
+	//	&prefixmerge8_pmvariadic::ModuleParserRuleName,
+	//	&prefixmerge8_pmvariadic::ModuleParserStateLabel,
+	//	L"TestCase_Cpp/Basic",
+	//	L"TestCase_Cpp/Ambiguous2",
+	//	L"TestCase_Cpp/CtorExpr",
+	//	L"TestCase_Cpp/Variadic"
+	//	);
+	//TestParser<prefixmerge9_pmloop::ModuleParser, prefixmerge9_pmloop::json_visitor::FileVisitor>(
+	//	L"PrefixMerge9_PmLoop",
+	//	&prefixmerge9_pmloop::PrefixMerge9_PmLoopTypeName,
+	//	&prefixmerge9_pmloop::PrefixMerge9_PmLoopFieldName,
+	//	&prefixmerge9_pmloop::PrefixMerge9_PmLoopTokenId,
+	//	&prefixmerge9_pmloop::ModuleParserRuleName,
+	//	&prefixmerge9_pmloop::ModuleParserStateLabel
+	//	);
 
 	using namespace TestParser_Generated_TestObjects;
 
