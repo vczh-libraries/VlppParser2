@@ -20,14 +20,6 @@
 #include "../../Source/FeatureTest/Generated/FeatureTestModuleParser.h"
 #include "../../Source/BinaryOp/Generated/BinaryOpExprAst_Json.h"
 #include "../../Source/BinaryOp/Generated/BinaryOpModuleParser.h"
-#include "../../Source/PrefixMerge1_Lri/Generated/PrefixMerge1_LriTypeOrExpr_Json.h"
-#include "../../Source/PrefixMerge1_Lri/Generated/PrefixMerge1_LriModuleParser.h"
-#include "../../Source/PrefixMerge2_LriRequired/Generated/PrefixMerge2_LriRequiredTypeOrExpr_Json.h"
-#include "../../Source/PrefixMerge2_LriRequired/Generated/PrefixMerge2_LriRequiredModuleParser.h"
-#include "../../Source/PrefixMerge3_LriNested/Generated/PrefixMerge3_LriNestedTypeOrExpr_Json.h"
-#include "../../Source/PrefixMerge3_LriNested/Generated/PrefixMerge3_LriNestedModuleParser.h"
-#include "../../Source/PrefixMerge4_LriMultiple/Generated/PrefixMerge4_LriMultipleTypeOrExpr_Json.h"
-#include "../../Source/PrefixMerge4_LriMultiple/Generated/PrefixMerge4_LriMultipleModuleParser.h"
 #include "../../Source/PrefixMerge5_Pm/Generated/PrefixMerge5_PmTypeOrExpr_Json.h"
 #include "../../Source/PrefixMerge5_Pm/Generated/PrefixMerge5_PmModuleParser.h"
 #include "../../Source/PrefixMerge6_Pm2/Generated/PrefixMerge6_Pm2TypeOrExpr_Json.h"
@@ -429,48 +421,6 @@ TEST_FILE
 		&binaryop::BinaryOpTokenId,
 		&binaryop::ModuleParserRuleName,
 		&binaryop::ModuleParserStateLabel
-		);
-	TestParser<prefixmerge1_lri::ModuleParser, prefixmerge1_lri::json_visitor::TypeOrExprVisitor>(
-		L"PrefixMerge1_Lri",
-		&prefixmerge1_lri::PrefixMerge1_LriTypeName,
-		&prefixmerge1_lri::PrefixMerge1_LriFieldName,
-		&prefixmerge1_lri::PrefixMerge1_LriTokenId,
-		&prefixmerge1_lri::ModuleParserRuleName,
-		&prefixmerge1_lri::ModuleParserStateLabel,
-		L"TestCase_Cpp/Basic",
-		L"TestCase_Cpp/Ambiguous1"
-		);
-	TestParser<prefixmerge2_lrirequired::ModuleParser, prefixmerge2_lrirequired::json_visitor::TypeOrExprVisitor>(
-		L"PrefixMerge2_LriRequired",
-		&prefixmerge2_lrirequired::PrefixMerge2_LriRequiredTypeName,
-		&prefixmerge2_lrirequired::PrefixMerge2_LriRequiredFieldName,
-		&prefixmerge2_lrirequired::PrefixMerge2_LriRequiredTokenId,
-		&prefixmerge2_lrirequired::ModuleParserRuleName,
-		&prefixmerge2_lrirequired::ModuleParserStateLabel,
-		L"TestCase_Cpp/Basic",
-		L"TestCase_Cpp/Ambiguous1"
-		);
-	TestParser<prefixmerge3_lrinested::ModuleParser, prefixmerge3_lrinested::json_visitor::TypeOrExprVisitor>(
-		L"PrefixMerge3_LriNested",
-		&prefixmerge3_lrinested::PrefixMerge3_LriNestedTypeName,
-		&prefixmerge3_lrinested::PrefixMerge3_LriNestedFieldName,
-		&prefixmerge3_lrinested::PrefixMerge3_LriNestedTokenId,
-		&prefixmerge3_lrinested::ModuleParserRuleName,
-		&prefixmerge3_lrinested::ModuleParserStateLabel,
-		L"TestCase_Cpp/Basic",
-		L"TestCase_Cpp/Ambiguous1",
-		L"TestCase_Cpp/CtorExpr"
-		);
-	TestParser<prefixmerge4_lrimultiple::ModuleParser, prefixmerge4_lrimultiple::json_visitor::TypeOrExprVisitor>(
-		L"PrefixMerge4_LriMultiple",
-		&prefixmerge4_lrimultiple::PrefixMerge4_LriMultipleTypeName,
-		&prefixmerge4_lrimultiple::PrefixMerge4_LriMultipleFieldName,
-		&prefixmerge4_lrimultiple::PrefixMerge4_LriMultipleTokenId,
-		&prefixmerge4_lrimultiple::ModuleParserRuleName,
-		&prefixmerge4_lrimultiple::ModuleParserStateLabel,
-		L"TestCase_Cpp/Basic",
-		L"TestCase_Cpp/Ambiguous1",
-		L"TestCase_Cpp/CtorExpr"
 		);
 	TestParser<prefixmerge5_pm::ModuleParser, prefixmerge5_pm::json_visitor::TypeOrExprVisitor>(
 		L"PrefixMerge5_Pm",

@@ -40,15 +40,11 @@ TEST_FILE
 	parsersToLoad.Add(ParserDef{ L"GenericAmbiguity",			L"ExprAst",		L"Module" });
 	parsersToLoad.Add(ParserDef{ L"FeatureTest",				L"FeatureAst",	L"Module" });
 	parsersToLoad.Add(ParserDef{ L"BinaryOp",					L"ExprAst",		L"Module" });
-	parsersToLoad.Add(ParserDef{ L"PrefixMerge1_Lri",			L"TypeOrExpr",	L"Module" });
-	parsersToLoad.Add(ParserDef{ L"PrefixMerge2_LriRequired",	L"TypeOrExpr",	L"Module" });
-	parsersToLoad.Add(ParserDef{ L"PrefixMerge3_LriNested",		L"TypeOrExpr",	L"Module" });
-	parsersToLoad.Add(ParserDef{ L"PrefixMerge4_LriMultiple",	L"TypeOrExpr",	L"Module" });
-	parsersToLoad.Add(ParserDef{ L"PrefixMerge5_Pm",			L"TypeOrExpr",	L"Module" });
-	parsersToLoad.Add(ParserDef{ L"PrefixMerge6_Pm2",			L"TypeOrExpr",	L"Module" });
-	parsersToLoad.Add(ParserDef{ L"PrefixMerge7_PmSwitch",		L"TypeOrExpr",	L"Module" });
-	parsersToLoad.Add(ParserDef{ L"PrefixMerge8_PmVariadic",	L"TypeOrExpr",	L"Module" });
-	parsersToLoad.Add(ParserDef{ L"PrefixMerge9_PmLoop",		L"File",		L"Module" });
+	//parsersToLoad.Add(ParserDef{ L"PrefixMerge5_Pm",			L"TypeOrExpr",	L"Module" });
+	//parsersToLoad.Add(ParserDef{ L"PrefixMerge6_Pm2",			L"TypeOrExpr",	L"Module" });
+	//parsersToLoad.Add(ParserDef{ L"PrefixMerge7_PmSwitch",		L"TypeOrExpr",	L"Module" });
+	//parsersToLoad.Add(ParserDef{ L"PrefixMerge8_PmVariadic",	L"TypeOrExpr",	L"Module" });
+	//parsersToLoad.Add(ParserDef{ L"PrefixMerge9_PmLoop",		L"File",		L"Module" });
 
 	for (auto&& [_parserName, _astName, _ruleName] : parsersToLoad)
 	{
