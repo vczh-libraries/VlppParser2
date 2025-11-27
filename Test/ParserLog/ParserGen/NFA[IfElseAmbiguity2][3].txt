@@ -45,7 +45,7 @@
 			+ StackSlot(1)
 		> rule: IfContent -> [23][Stat]< IfContent @ >
 			+ StackBegin()
-			+ StackSlot(2)
+			+ StackSlot(0)
 		> rule: IfThenStat -> [20][IfContent]<! !IfThenStat @ "else" Stat !>
 			+ StackBegin()
 	token: "if" -> [14][IfThenStat]< "if" @ "cond" "then" Stat >
@@ -55,7 +55,7 @@
 			+ StackSlot(1)
 		> rule: IfContent -> [23][Stat]< IfContent @ >
 			+ StackBegin()
-			+ StackSlot(2)
+			+ StackSlot(0)
 		> rule: IfThenStat -> [19][IfContent]<! !IfThenStat @ !>
 			+ StackBegin()
 	token: "do" -> [3][Do]< "do" @ ";" >
@@ -84,7 +84,7 @@
 			+ StackSlot(1)
 		> rule: IfContent -> [23][Stat]< IfContent @ >
 			+ StackBegin()
-			+ StackSlot(2)
+			+ StackSlot(0)
 		> rule: IfThenStat -> [20][IfContent]<! !IfThenStat @ "else" Stat !>
 			+ StackBegin()
 	token: "if" -> [14][IfThenStat]< "if" @ "cond" "then" Stat >
@@ -94,7 +94,7 @@
 			+ StackSlot(1)
 		> rule: IfContent -> [23][Stat]< IfContent @ >
 			+ StackBegin()
-			+ StackSlot(2)
+			+ StackSlot(0)
 		> rule: IfThenStat -> [19][IfContent]<! !IfThenStat @ !>
 			+ StackBegin()
 	token: "do" -> [3][Do]< "do" @ ";" >
@@ -137,7 +137,7 @@
 			+ StackSlot(3)
 		> rule: IfContent -> [23][Stat]< IfContent @ >
 			+ StackBegin()
-			+ StackSlot(2)
+			+ StackSlot(0)
 		> rule: IfThenStat -> [20][IfContent]<! !IfThenStat @ "else" Stat !>
 			+ StackBegin()
 	token: "if" -> [14][IfThenStat]< "if" @ "cond" "then" Stat >
@@ -147,7 +147,7 @@
 			+ StackSlot(3)
 		> rule: IfContent -> [23][Stat]< IfContent @ >
 			+ StackBegin()
-			+ StackSlot(2)
+			+ StackSlot(0)
 		> rule: IfThenStat -> [19][IfContent]<! !IfThenStat @ !>
 			+ StackBegin()
 	token: "do" -> [3][Do]< "do" @ ";" >
@@ -197,41 +197,41 @@
 		+ StackBegin()
 		+ Token(0)
 		> rule: Stat -> [18][IfContent]<! !IfThenStat "else" Stat @ !>
-			+ StackSlot(3)
+			+ StackSlot(2)
 		> rule: Block -> [24][Stat]<! !Block @ !>
 			+ StackBegin()
 	token: "if" -> [14][IfThenStat]< "if" @ "cond" "then" Stat >
 		+ StackBegin()
 		+ Token(0)
 		> rule: Stat -> [18][IfContent]<! !IfThenStat "else" Stat @ !>
-			+ StackSlot(3)
+			+ StackSlot(2)
 		> rule: IfContent -> [23][Stat]< IfContent @ >
 			+ StackBegin()
-			+ StackSlot(2)
+			+ StackSlot(0)
 		> rule: IfThenStat -> [20][IfContent]<! !IfThenStat @ "else" Stat !>
 			+ StackBegin()
 	token: "if" -> [14][IfThenStat]< "if" @ "cond" "then" Stat >
 		+ StackBegin()
 		+ Token(0)
 		> rule: Stat -> [18][IfContent]<! !IfThenStat "else" Stat @ !>
-			+ StackSlot(3)
+			+ StackSlot(2)
 		> rule: IfContent -> [23][Stat]< IfContent @ >
 			+ StackBegin()
-			+ StackSlot(2)
+			+ StackSlot(0)
 		> rule: IfThenStat -> [19][IfContent]<! !IfThenStat @ !>
 			+ StackBegin()
 	token: "do" -> [3][Do]< "do" @ ";" >
 		+ StackBegin()
 		+ Token(0)
 		> rule: Stat -> [18][IfContent]<! !IfThenStat "else" Stat @ !>
-			+ StackSlot(3)
+			+ StackSlot(2)
 		> rule: Do -> [25][Stat]<! !Do @ !>
 			+ StackBegin()
 
 [18][IfContent]<! !IfThenStat "else" Stat @ !>
 [RULE: 3][CLAUSE: 1]
 	ending -> [16][IfContent] END [ENDING]
-		+ Field(IfContentCandidate::elseBranch, 3)
+		+ Field(IfContentCandidate::elseBranch, 2)
 		+ StackEnd()
 
 [19][IfContent]<! !IfThenStat @ !>
@@ -242,7 +242,7 @@
 [20][IfContent]<! !IfThenStat @ "else" Stat !>
 [RULE: 3][CLAUSE: 1]
 	token: "else" -> [17][IfContent]<! !IfThenStat "else" @ Stat !>
-		+ Token(2)
+		+ Token(1)
 
 [21][Stat] BEGIN 
 [RULE: 4][CLAUSE: -1]
@@ -256,7 +256,7 @@
 		+ Token(0)
 		> rule: IfContent -> [23][Stat]< IfContent @ >
 			+ StackBegin()
-			+ StackSlot(2)
+			+ StackSlot(0)
 		> rule: IfThenStat -> [19][IfContent]<! !IfThenStat @ !>
 			+ StackBegin()
 	token: "if" -> [14][IfThenStat]< "if" @ "cond" "then" Stat >
@@ -264,7 +264,7 @@
 		+ Token(0)
 		> rule: IfContent -> [23][Stat]< IfContent @ >
 			+ StackBegin()
-			+ StackSlot(2)
+			+ StackSlot(0)
 		> rule: IfThenStat -> [20][IfContent]<! !IfThenStat @ "else" Stat !>
 			+ StackBegin()
 	token: "do" -> [3][Do]< "do" @ ";" >
@@ -280,7 +280,7 @@
 [RULE: 4][CLAUSE: 2]
 	ending -> [22][Stat] END [ENDING]
 		+ CreateObject(IfStat)
-		+ Field(IfStat::content, 2)
+		+ Field(IfStat::content, 0)
 		+ StackEnd()
 
 [24][Stat]<! !Block @ !>
@@ -311,7 +311,7 @@
 			+ StackSlot(0)
 		> rule: IfContent -> [23][Stat]< IfContent @ >
 			+ StackBegin()
-			+ StackSlot(2)
+			+ StackSlot(0)
 		> rule: IfThenStat -> [20][IfContent]<! !IfThenStat @ "else" Stat !>
 			+ StackBegin()
 	token: "if" -> [14][IfThenStat]< "if" @ "cond" "then" Stat >
@@ -322,7 +322,7 @@
 			+ StackSlot(0)
 		> rule: IfContent -> [23][Stat]< IfContent @ >
 			+ StackBegin()
-			+ StackSlot(2)
+			+ StackSlot(0)
 		> rule: IfThenStat -> [19][IfContent]<! !IfThenStat @ !>
 			+ StackBegin()
 	token: "do" -> [3][Do]< "do" @ ";" >

@@ -131,7 +131,7 @@
 [28][IfContent]<! !IfThenStat "else" @ Stat !>
 [RULE: 3][CLAUSE: 1]
 	rule: Stat -> [30][IfContent]<! !IfThenStat "else" Stat @ !>
-		+ StackSlot(3)
+		+ StackSlot(2)
 
 [29][IfContent]<! !IfThenStat "else" Stat !> @[ENDING]
 [RULE: 3][CLAUSE: 1]
@@ -139,7 +139,7 @@
 [30][IfContent]<! !IfThenStat "else" Stat @ !>
 [RULE: 3][CLAUSE: 1]
 	epsilon -> [29][IfContent]<! !IfThenStat "else" Stat !> @[ENDING]
-		+ Field(IfContentCandidate::elseBranch, 3)
+		+ Field(IfContentCandidate::elseBranch, 2)
 		+ StackEnd()
 
 [31][IfContent]<! !IfThenStat @ !>
@@ -154,7 +154,7 @@
 [33][IfContent]<! !IfThenStat @ "else" Stat !>
 [RULE: 3][CLAUSE: 1]
 	token: "else" -> [27][IfContent]<! !IfThenStat "else" @ Stat !>
-		+ Token(2)
+		+ Token(1)
 
 [34][IfContent]<! @ !IfThenStat !>
 [RULE: 3][CLAUSE: 0]
@@ -177,7 +177,7 @@
 [38][Stat]< @ IfContent >
 [RULE: 4][CLAUSE: 2]
 	rule: IfContent -> [40][Stat]< IfContent @ >
-		+ StackSlot(2)
+		+ StackSlot(0)
 
 [39][Stat]< IfContent > @[ENDING]
 [RULE: 4][CLAUSE: 2]
@@ -186,7 +186,7 @@
 [RULE: 4][CLAUSE: 2]
 	epsilon -> [39][Stat]< IfContent > @[ENDING]
 		+ CreateObject(IfStat)
-		+ Field(IfStat::content, 2)
+		+ Field(IfStat::content, 0)
 		+ StackEnd()
 
 [41][Stat]<! !Block !> @[ENDING]

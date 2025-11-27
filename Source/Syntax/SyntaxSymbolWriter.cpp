@@ -258,6 +258,7 @@ AutomatonBuilder (Clause)
 
 			AutomatonBuilder::StatePair AutomatonBuilder::BuildClause(const StateBuilder& compileSyntax)
 			{
+				usedFieldIds = 0;
 				fieldIns.Clear();
 				ruleSymbol->NewClause();
 				clauseDisplayText = L"";
