@@ -41,6 +41,12 @@
   - Calculating prefix_merge transition.
   - This can happen in any branch in a rule, not just the beginning.
 - In the original implementation LM transitions marked "leftrec" but it may be unnecessary now.
+- Redign TmPtr(Partial Trace Resolve) and TmRa(Resolve Ambiguity)
+  - Make StackBegin and StackEnd mapping to each other
+  - Make each StackBegin link to previous StackBegin if it is StackSlot-ed
+  - Make each object knows its parent
+  - Leverage these information and decide where to begin and end ambiguity
+  - Fix all non-ambiguous test cases first, and then rework this part.
 
 ### Optimization ToDo
 
