@@ -203,7 +203,6 @@ SyntaxSymbolManager
 				SyntaxSymbolManager(ParserSymbolManager& _global);
 
 				WString						name;
-				LrpFlagList					lrpFlags;
 
 				RuleSymbol*					CreateRule(const WString& name, vint fileIndex, bool isPublic, bool isParser, ParsingTextRange codeRange = {});
 				void						RemoveRule(const WString& name);
