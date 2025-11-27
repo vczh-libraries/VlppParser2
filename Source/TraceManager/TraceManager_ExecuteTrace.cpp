@@ -12,6 +12,57 @@ TraceManager::ExecuteTrace
 
 #define ERROR_MESSAGE_PREFIX L"vl::glr::automaton::TraceManager::ExecuteTrace(Trace*, IAstInsReceiver&, List<RegexToken>&)#"
 
+			class AstInsOptimizer : public Object, public virtual IAstInsReceiver
+			{
+			protected:
+				IAstInsReceiver&				receiver;
+
+				bool							cachedStackBegin = false;
+				const regex::RegexToken*		cachedStackBeginToken = nullptr;
+				vint32_t						cachedStackBeginTokenIndex = -1;
+
+			public:
+				AstInsOptimizer(IAstInsReceiver& _receiver)
+					:receiver(_receiver)
+				{
+				}
+
+				void Execute(AstIns instruction, const regex::RegexToken& token, vint32_t tokenIndex) override
+				{
+					if (cachedStackBegin)
+					{
+						if (instruction.type == AstInsType::StackEnd)
+						{
+							cachedStackBegin = false;
+							return;
+						}
+
+						receiver.Execute({ AstInsType::StackBegin }, *cachedStackBeginToken, cachedStackBeginTokenIndex);
+						cachedStackBegin = false;
+					}
+
+					if (instruction.type == AstInsType::StackBegin)
+					{
+						cachedStackBegin = true;
+						cachedStackBeginToken = &token;
+						cachedStackBeginTokenIndex = tokenIndex;
+						return;
+					}
+
+					receiver.Execute(instruction, token, tokenIndex);
+				}
+
+				Ptr<ParsingAstBase> Finished() override
+				{
+					if (cachedStackBegin)
+					{
+						receiver.Execute({ AstInsType::StackBegin }, *cachedStackBeginToken, cachedStackBeginTokenIndex);
+						cachedStackBegin = false;
+					}
+					return receiver.Finished();
+				}
+			};
+
 			void TraceManager::ExecuteSingleTrace(IAstInsReceiver& receiver, Trace* trace, vint32_t firstIns, vint32_t lastIns, TraceInsLists& insLists, collections::List<regex::RegexToken>& tokens)
 			{
 				for (vint32_t i = firstIns; i <= lastIns; i++)
@@ -107,18 +158,19 @@ TraceManager::ExecuteTrace
 				CHECK_ERROR(state == TraceManagerState::ResolvedAmbiguity, ERROR_MESSAGE_PREFIX L"Wrong timing to call this function.");
 
 				// execute from the first step
+				AstInsOptimizer optimizedReceiver(receiver);
 				auto step = GetInitialExecutionStep();
 				CHECK_ERROR(step != nullptr, L"Internal error: execution steps not built!");
 				while (step)
 				{
 					// execute step
-					ExecuteSingleStep(receiver, step, tokens);
+					ExecuteSingleStep(optimizedReceiver, step, tokens);
 
 					// find the next step
 					step = step->next == nullref ? nullptr : GetExecutionStep(step->next);
 				}
 
-				return receiver.Finished();
+				return optimizedReceiver.Finished();
 			}
 #undef ERROR_MESSAGE_PREFIX
 		}

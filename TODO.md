@@ -44,8 +44,6 @@
 
 ### Optimization ToDo
 
-- Consecutive StackBegin/StackEnd can be omitted.
-
 ## Test Cases
 
 - Code Coverage
