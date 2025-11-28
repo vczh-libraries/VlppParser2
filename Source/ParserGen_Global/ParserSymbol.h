@@ -145,6 +145,7 @@ ParserSymbolManager
 			ERROR_ITEM(MultiplePrioritySyntaxInAClause,																ruleName)\
 			/* SyntaxAst(ValidateStructure, relationship) */\
 			ERROR_ITEM(FieldAssignedMoreThanOnce,																	ruleName, clauseType, fieldName)\
+			ERROR_ITEM(PartialRuleIsRecursive,																		ruleName)\
 			
 			enum class ParserErrorType
 			{
