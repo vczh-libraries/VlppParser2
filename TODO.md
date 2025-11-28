@@ -48,19 +48,25 @@
   - Leverage these information and decide where to begin and end ambiguity
   - Fix all non-ambiguous test cases first, and then rework this part.
 
+### Progressing
+
+- Non-ambiguous test cases
+- Ambiguous test cases
+- Sub branch to rewrite TmPtr and TmRa
+- prefix_merge test cases
+- Built-in parsers:
+  - Json
+  - Xml
+  - Workflow
+  - C++
+- build.ps1
+- Finish `## Features to Add`
+- Document design principal, algorithm and syntax
+- build.ps1
+
 ### Optimization ToDo
 
-## Test Cases
-
-- Code Coverage
-  - Collect uncovered code again by break points in executator (trace manager).
-- Reconsider in new implementation:
-  - Make a test case to test `prefix_merge` generates `left_recursion_inject_multiple`.
-  - Create ambiguity test case caused by only one clause with alternative syntax.
-- Windows and Linux test output inconsistency on
-  - the order of ambiguous candidates.
-  - `\r\n` or `\n` serialized into `<![CDATA[]]>`.
-  - We can force `\r\n` in unit test, normalizing all inputs.
+- In (A | B), both A and B should start with the same slot number, but it may cause another issue if they are assigned to different fields.
 
 ## Features to Add
 
@@ -76,6 +82,18 @@
   - C++ codegen are created per groups.
     - Only AST classes `#include` depended files groups, visitors do not.
     - When a visitor need to call types in different file groups, leave it abstract.
+
+## Test Cases
+
+- Code Coverage
+  - Collect uncovered code again by break points in executator (trace manager).
+- Reconsider in new implementation:
+  - Make a test case to test `prefix_merge` generates `left_recursion_inject_multiple`.
+  - Create ambiguity test case caused by only one clause with alternative syntax.
+- Windows and Linux test output inconsistency on
+  - the order of ambiguous candidates.
+  - `\r\n` or `\n` serialized into `<![CDATA[]]>`.
+  - We can force `\r\n` in unit test, normalizing all inputs.
 
 ## Issues (BuiltIn-Cpp)
 
