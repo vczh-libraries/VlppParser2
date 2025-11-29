@@ -335,42 +335,42 @@ TEST_FILE
 		&calculator::ModuleParserRuleName,
 		&calculator::ModuleParserStateLabel
 		);
-	//TestParser<ifelseambiguity::ModuleParser, ifelseambiguity::json_visitor::StatAstVisitor>(
-	//	L"IfElseAmbiguity",
-	//	&ifelseambiguity::IfElseAmbiguityTypeName,
-	//	&ifelseambiguity::IfElseAmbiguityFieldName,
-	//	&ifelseambiguity::IfElseAmbiguityTokenId,
-	//	&ifelseambiguity::ModuleParserRuleName,
-	//	&ifelseambiguity::ModuleParserStateLabel,
-	//	L"TestCase_IfElseAmbiguity"
-	//	);
-	//TestParser<ifelseambiguity2::ModuleParser, ifelseambiguity2::json_visitor::StatAstVisitor>(
-	//	L"IfElseAmbiguity2",
-	//	&ifelseambiguity2::IfElseAmbiguity2TypeName,
-	//	&ifelseambiguity2::IfElseAmbiguity2FieldName,
-	//	&ifelseambiguity2::IfElseAmbiguity2TokenId,
-	//	&ifelseambiguity2::ModuleParserRuleName,
-	//	&ifelseambiguity2::ModuleParserStateLabel,
-	//	L"TestCase_IfElseAmbiguity"
-	//	);
-	//TestParser<ifelseambiguityonstat::ModuleParser, ifelseambiguityonstat::json_visitor::StatAstVisitor>(
-	//	L"IfElseAmbiguityOnStat",
-	//	&ifelseambiguityonstat::IfElseAmbiguityOnStatTypeName,
-	//	&ifelseambiguityonstat::IfElseAmbiguityOnStatFieldName,
-	//	&ifelseambiguityonstat::IfElseAmbiguityOnStatTokenId,
-	//	&ifelseambiguityonstat::ModuleParserRuleName,
-	//	&ifelseambiguityonstat::ModuleParserStateLabel,
-	//	L"TestCase_IfElseAmbiguityOnStat"
-	//	);
-	//TestParser<ifelseambiguityonstat2::ModuleParser, ifelseambiguityonstat2::json_visitor::StatAstVisitor>(
-	//	L"IfElseAmbiguityOnStat2",
-	//	&ifelseambiguityonstat2::IfElseAmbiguityOnStat2TypeName,
-	//	&ifelseambiguityonstat2::IfElseAmbiguityOnStat2FieldName,
-	//	&ifelseambiguityonstat2::IfElseAmbiguityOnStat2TokenId,
-	//	&ifelseambiguityonstat2::ModuleParserRuleName,
-	//	&ifelseambiguityonstat2::ModuleParserStateLabel,
-	//	L"TestCase_IfElseAmbiguityOnStat"
-	//	);
+	TestParser<ifelseambiguity::ModuleParser, ifelseambiguity::json_visitor::StatAstVisitor>(
+		L"IfElseAmbiguity",
+		&ifelseambiguity::IfElseAmbiguityTypeName,
+		&ifelseambiguity::IfElseAmbiguityFieldName,
+		&ifelseambiguity::IfElseAmbiguityTokenId,
+		&ifelseambiguity::ModuleParserRuleName,
+		&ifelseambiguity::ModuleParserStateLabel,
+		L"TestCase_IfElseAmbiguity"
+		);
+	TestParser<ifelseambiguity2::ModuleParser, ifelseambiguity2::json_visitor::StatAstVisitor>(
+		L"IfElseAmbiguity2",
+		&ifelseambiguity2::IfElseAmbiguity2TypeName,
+		&ifelseambiguity2::IfElseAmbiguity2FieldName,
+		&ifelseambiguity2::IfElseAmbiguity2TokenId,
+		&ifelseambiguity2::ModuleParserRuleName,
+		&ifelseambiguity2::ModuleParserStateLabel,
+		L"TestCase_IfElseAmbiguity"
+		);
+	TestParser<ifelseambiguityonstat::ModuleParser, ifelseambiguityonstat::json_visitor::StatAstVisitor>(
+		L"IfElseAmbiguityOnStat",
+		&ifelseambiguityonstat::IfElseAmbiguityOnStatTypeName,
+		&ifelseambiguityonstat::IfElseAmbiguityOnStatFieldName,
+		&ifelseambiguityonstat::IfElseAmbiguityOnStatTokenId,
+		&ifelseambiguityonstat::ModuleParserRuleName,
+		&ifelseambiguityonstat::ModuleParserStateLabel,
+		L"TestCase_IfElseAmbiguityOnStat"
+		);
+	TestParser<ifelseambiguityonstat2::ModuleParser, ifelseambiguityonstat2::json_visitor::StatAstVisitor>(
+		L"IfElseAmbiguityOnStat2",
+		&ifelseambiguityonstat2::IfElseAmbiguityOnStat2TypeName,
+		&ifelseambiguityonstat2::IfElseAmbiguityOnStat2FieldName,
+		&ifelseambiguityonstat2::IfElseAmbiguityOnStat2TokenId,
+		&ifelseambiguityonstat2::ModuleParserRuleName,
+		&ifelseambiguityonstat2::ModuleParserStateLabel,
+		L"TestCase_IfElseAmbiguityOnStat"
+		);
 	TestParser<ifelsepriority::ModuleParser, ifelsepriority::json_visitor::StatAstVisitor>(
 		L"IfElsePriority",
 		&ifelsepriority::IfElsePriorityTypeName,
@@ -398,22 +398,22 @@ TEST_FILE
 		&ifelseswitch::ModuleParserStateLabel,
 		L"TestCase_IfElse"
 		);
-	//TestParser<genericambiguity::ModuleParser, genericambiguity::json_visitor::ExprAstVisitor>(
-	//	L"GenericAmbiguity",
-	//	&genericambiguity::GenericAmbiguityTypeName,
-	//	&genericambiguity::GenericAmbiguityFieldName,
-	//	&genericambiguity::GenericAmbiguityTokenId,
-	//	&genericambiguity::ModuleParserRuleName,
-	//	&genericambiguity::ModuleParserStateLabel
-	//	);
-	//TestParser<featuretest::ModuleParser, featuretest::json_visitor::FeatureAstVisitor>(
-	//	L"FeatureTest",
-	//	&featuretest::FeatureTestTypeName,
-	//	&featuretest::FeatureTestFieldName,
-	//	&featuretest::FeatureTestTokenId,
-	//	&featuretest::ModuleParserRuleName,
-	//	&featuretest::ModuleParserStateLabel
-	//	);
+	TestParser<genericambiguity::ModuleParser, genericambiguity::json_visitor::ExprAstVisitor>(
+		L"GenericAmbiguity",
+		&genericambiguity::GenericAmbiguityTypeName,
+		&genericambiguity::GenericAmbiguityFieldName,
+		&genericambiguity::GenericAmbiguityTokenId,
+		&genericambiguity::ModuleParserRuleName,
+		&genericambiguity::ModuleParserStateLabel
+		);
+	TestParser<featuretest::ModuleParser, featuretest::json_visitor::FeatureAstVisitor>(
+		L"FeatureTest",
+		&featuretest::FeatureTestTypeName,
+		&featuretest::FeatureTestFieldName,
+		&featuretest::FeatureTestTokenId,
+		&featuretest::ModuleParserRuleName,
+		&featuretest::ModuleParserStateLabel
+		);
 	TestParser<binaryop::ModuleParser, binaryop::json_visitor::ExprAstVisitor>(
 		L"BinaryOp",
 		&binaryop::BinaryOpTypeName,

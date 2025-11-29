@@ -1,0 +1,69 @@
+﻿================ EXECUTION STEPS ================
+[0]: 0@0 - 5@0
+
+==================== TRACES =====================
+
++----------------------+
+| [0]: <Start>         |
+| [127][Module] BEGIN  |
+| [AST-INSTRUCTIONS]:  |
+| [SUCCESORS 1-1]: [1] |
++----------------------+
+[0]
+ |
+ +
+ |
+[0]
+++=====================================================================++
+|| [1]: {OPTIONAL} optional                                            ||
+|| [11][EqualOptional]< "optional" @ [ Plus ] "+" { Plus } >           ||
+|| [AST-INSTRUCTIONS]:                                                 ||
+||   + StackBegin()                                                    ||
+||   + Token(0)                                                        ||
+|| [RETURN STACK]:                                                     ||
+||   [0][101][0]: EqualOptional -> [146][Module]<! !EqualOptional @ !> ||
+|| [PREDECESSORS 0-0]: [0]                                             ||
+|| [SUCCESORS 3-3]: [3]                                                ||
+++=====================================================================++
+[0]
+ |
+ +
+ |
+[0]
+++=====================================================================++
+|| [3]: {PLUS} +                                                       ||
+|| [13][EqualOptional]< "optional" [ Plus ] "+" @ { Plus } >           ||
+|| [AST-INSTRUCTIONS]:                                                 ||
+||   + Token(2)                                                        ||
+|| [RETURN STACK]:                                                     ||
+||   [0][101][0]: EqualOptional -> [146][Module]<! !EqualOptional @ !> ||
+|| [PREDECESSORS 1-1]: [1]                                             ||
+|| [SUCCESORS 4-4]: [4]                                                ||
+++=====================================================================++
+|
++
+|
++-----------------------------------------+
+| [4]: <Ending>                           |
+| [146][Module]<! !EqualOptional @ !>     |
+| [AST-INSTRUCTIONS]:                     |
+|   + EnumItem(0, 4)                      |
+|   + CreateObject(OptionalFeature)       |
+|   + Field(OptionalFeature::optional, 1) |
+|   + Field(OptionalFeature::loop, 3)     |
+|   + Field(OptionalFeature::priority, 4) |
+|   + StackEnd()                          |
+|   > StackBegin()                        |
+| [PREDECESSORS 3-3]: [3]                 |
+| [SUCCESORS 5-5]: [5]                    |
++-----------------------------------------+
+|
++
+|
++----------------------------+
+| [5]: <Ending>              |
+| [128][Module] END [ENDING] |
+| [AST-INSTRUCTIONS]:        |
+|   + StackEnd()             |
+| [PREDECESSORS 4-4]: [4]    |
++----------------------------+
