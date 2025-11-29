@@ -285,6 +285,7 @@ TraceManager (Data Structures -- PrepareTraceRoute)
 			{
 				// previous allocated object
 				Ref<InsExec_Stack>					previous;
+				vint32_t							stackBase = -1;			// the number of objects in InsExec_Context::objectStack when this stack is created
 
 				// owner-field relationships
 				Ref<InsExec_StackRefLink>			fieldStacks;
@@ -617,8 +618,6 @@ TraceManager
 
 				// phase: PartialExecuteTraces - PartialExecuteOrdinaryTrace
 				InsExec_Stack*								NewStack();
-				vint32_t									GetStackBase(InsExec_Context& context);
-				vint32_t									GetStackTop(InsExec_Context& context);
 				void										PushInsRefLink(Ref<InsExec_InsRefLink>& link, InsRef insRef);
 				void										PushStackRefLink(Ref<InsExec_StackRefLink>& link, Ref<InsExec_Stack> id);
 				Ref<InsExec_InsRefLink>						JoinInsRefLink(Ref<InsExec_InsRefLink> first, Ref<InsExec_InsRefLink> second);

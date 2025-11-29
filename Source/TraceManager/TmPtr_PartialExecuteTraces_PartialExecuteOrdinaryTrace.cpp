@@ -20,30 +20,6 @@ PartialExecuteOrdinaryTrace
 				return ieStack;
 			}
 
-			vint32_t TraceManager::GetStackBase(InsExec_Context& context)
-			{
-				if (context.createStack == nullref)
-				{
-					return 0;
-				}
-				else
-				{
-					return GetInsExec_CreateStack(context.createStack)->stackBase;
-				}
-			}
-
-			vint32_t TraceManager::GetStackTop(InsExec_Context& context)
-			{
-				if (context.objectStack == nullref)
-				{
-					return 0;
-				}
-				else
-				{
-					return GetInsExec_ObjectStack(context.objectStack)->pushedCount;
-				}
-			}
-
 			void TraceManager::PushInsRefLink(Ref<InsExec_InsRefLink>& link, InsRef insRef)
 			{
 				auto newLink = GetInsExec_InsRefLink(insExec_InsRefLinks.Allocate());
