@@ -88,13 +88,13 @@ CheckMergeTrace
 #define ERROR_MESSAGE_PREFIX L"vl::glr::automaton::TraceManager::CheckAmbiguityResolution(TraceAmbiguity&, List<vint32_t>&, TCallback&&)#"
 				// following conditions need to be satisfies if multiple objects could be the result of ambiguity
 				//
-				// BO/DFA that create objects must be
+				// StackBegin that create objects must be
 				//   the same instruction in the same trace
 				//   in different trace
 				//     these traces share the same predecessor
 				//     prefix in these traces are the same
 				//
-				// EO that ed objects must be
+				// StackEnd that end objects must be
 				//   the same instruction in the same trace
 				//   in different trace
 				//     these traces share the same successor

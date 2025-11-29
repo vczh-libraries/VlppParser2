@@ -91,15 +91,15 @@ CalculateObjectLastInstruction
 						auto ieObject = GetInsExec_Object(objRef);
 						objRef = ieObject->previous;
 
-						// all EndObject ending a BO/DFA are considered
-						// there is no "bottom EndObject"
-						// each EndObject should be in different branches
+						// all StackEnd ending a StackBegin are considered
+						// there is no "bottom StackEnd"
+						// each StackEnd should be in different branches
 						auto topLocalTrace = GetTrace(ieObject->topLocalInsRef.trace);
 						auto topLocalTraceExec = GetTraceExec(topLocalTrace->traceExecRef);
 						auto insExec = GetInsExec(topLocalTraceExec->insExecRefs.start + ieObject->topLocalInsRef.ins);
 						auto insRefLinkId = insExec->eoInsRefs;
 
-						// get the branch where BO stays
+						// get the branch where StackBegin stays
 						auto createTrace = GetTrace(ieObject->createInsRef.trace);
 						auto createTraceExec = GetTraceExec(createTrace->traceExecRef);
 						auto createTraceForward = GetTrace(createTraceExec->branchData.forwardTrace);

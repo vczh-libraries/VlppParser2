@@ -189,6 +189,21 @@ TraceManager (Data Structures)
 
 /***********************************************************************
 TraceManager (Data Structures -- Input/EndOfInput)
+
+For a trace like:
+  A
+ / \
+B   C
+ \ /
+  D
+
+A.successors.(first .. last) = {B,C}
+B.successors.siblingNext = C
+C.successors.siblingPrev = B
+(B, C).successors.(first .. last) = {D}
+
+predecessors are for reverse relationships.
+Such data structure makes many-to-many relationships impossible to represent.
 ***********************************************************************/
 
 			struct TraceCollection
@@ -206,7 +221,7 @@ TraceManager (Data Structures -- Input/EndOfInput)
 				Ref<AttendingCompetitions>	attendingCompetitions;		// a linked list containing all AttendingCompetitions that this trace is attending
 																		// predecessors could share and modify the same linked list
 																		// if a competition is over, node could be removed from the linked list
-																		// one competition only creates two AttendingCompetitions, traces with the same bet share the object
+																		// one competition only creates two AttendingCompetitions, traces with the same bet sharing the object
 
 				Ref<AttendingCompetitions>	carriedCompetitions;		// all attended competitions regardless of the status of the competition
 			};
@@ -238,7 +253,7 @@ TraceManager (Data Structures -- Input/EndOfInput)
 			};
 
 /***********************************************************************
-TraceManager (Data Structures -- PrepareTraceRoute/ResolveAmbiguity)
+TraceManager (Data Structures -- PrepareTraceRoute)
 ***********************************************************************/
 
 			struct InsRef
@@ -338,6 +353,37 @@ TraceManager (Data Structures -- PrepareTraceRoute/ResolveAmbiguity)
 				InsExec_Context						contextBeforeExecution;
 			};
 
+/***********************************************************************
+TraceManager (Data Structures -- ResolveAmbiguity)
+
+A branch begins from:
+  The initial trace
+  Successors of a branch trace (a trace with multiple successors)
+  A merge trace (a trace with multiple predecessors)
+branchData.forwardTrace points to the nearest beginning of a trace.
+
+Here a demos of which traces are beginnings:
+  A*
+  |
+  B
+ / \
+C*  D*
+|   |
+E   F
+ \ /
+  G*(cfb->B)
+  |
+  H
+
+For any merge trace, its branchData.commonForwardBranch points to the latest forwardTrace that all comming branches share.
+It does not necessary equal to branchData.forwardTrace of all predecessors as their values might be different.
+
+All branch traces can be found beginning from TraceManager::firstBranchTrace following nextBranchTrace.
+All merge traces can be found beginning from TraceManager::firstMergeTrace following nextMergeTrace.
+Traversing through branchData.forwardTrace and branchData.commonForwardBranch will skip all branches going forward.
+***********************************************************************/
+
+			// TraceAmbiguity describes where an ambiguity resolving begins and ends
 			struct TraceAmbiguity : Allocatable<TraceAmbiguity>
 			{
 				// all objects to merge
@@ -348,17 +394,17 @@ TraceManager (Data Structures -- PrepareTraceRoute/ResolveAmbiguity)
 				Ref<TraceAmbiguity>					overridedAmbiguity;
 
 				// the trace where ambiguity resolution begins
-				// prefix is the number of instructions before BO/DFA
+				// prefix is the number of instructions before SB
 				// if prefix + 1 is larger than instructions in firstTrace
-				// then BO/DFA is in all successors
+				// then StackBegin is in all successors
 				// these instructions create topObjectIds
 				Ref<Trace>							firstTrace;
 				vint32_t							prefix = -1;
 
 				// the trace when ambiguity resolution ends
-				// postfix is the number of instructions after EO
+				// postfix is the number of instructions after SE
 				// if lastTrace is a merge trace
-				// then EO is in all predecessors
+				// then StackEnd is in all predecessors
 				// these instructions end bottomObjectIds
 				Ref<Trace>							lastTrace;
 				vint32_t							postfix = -1;
@@ -391,14 +437,15 @@ TraceManager (Data Structures -- PrepareTraceRoute/ResolveAmbiguity)
 				Ref<Trace>							commonForwardBranch;
 			};
 
+			// TraceExec stores all ambiguity awared data for a trace
 			struct TraceExec : Allocatable<TraceExec>
 			{
 				Ref<Trace>							traceId;
 				TraceInsLists						insLists;				// instruction list of this trace
 				InstructionArray					insExecRefs;			// allocated InsExec for instructions
 
-				InsExec_Context						context;
-				TraceBranchData						branchData;
+				InsExec_Context						context;				// context after executing all instructions
+				TraceBranchData						branchData;				// branch shapes
 
 				// linked list of branch traces, in a global depth-first order, from TraceManager::firstBranchTrace
 				Ref<Trace>							nextBranchTrace;
@@ -406,9 +453,9 @@ TraceManager (Data Structures -- PrepareTraceRoute/ResolveAmbiguity)
 				// linked list of merge traces, in a global depth-first order, from TraceManager::firstMergeTrace
 				Ref<Trace>							nextMergeTrace;
 
-				// linked list of ambiguity critical trace (order by trace id ascending)
-				// the linked list begins from a trace whose forwardTrace is itself
-				// record all traces that is
+				// linked list of ambiguity critical trace
+				// it is stored in a trace whose forwardTrace is itself
+				// record all traces with the same forwardTrace value, order by trace id ascending
 				//   a branch trace
 				//   a predecessor of a merge trace
 				//   a trace pointed by TraceAmbiguity::firstTrace
@@ -416,14 +463,20 @@ TraceManager (Data Structures -- PrepareTraceRoute/ResolveAmbiguity)
 
 				// TraceAmbiguity associated to the trace
 				// it could be associated to
-				//   firstTrace (order by prefix ascending)
-				//   lastTrace  (order by postfix ascending)
+				//   TraceAmbiguity::firstTrace (order by prefix ascending)
+				//   TraceAmbiguity::lastTrace  (order by postfix ascending)
 				//   the merge trace that create this TraceAmbiguity
 				// ambiguityBegins will contain multiple TraceAmbiguity when
 				//   multiple ambiguity begins in different group of successors
 				//   there is also a possibility when all ambiguities don't cover all successors
-				Ref<TraceAmbiguity>					ambiguityDetected;
-				Ref<TraceAmbiguityLink>				ambiguityBegins;
+
+				Ref<TraceAmbiguity>					ambiguityDetected;		// The TraceAmbiguity whose lastTrace is this trace
+																			// Referring to the last StackEnd of all predecessors
+																			// Or the opening object at the end of the trace
+
+				Ref<TraceAmbiguityLink>				ambiguityBegins;		// All TraceAmbiguity whose firstTrace is this trace
+																			// All TraceAmbiguity in this list are grouped by lastTrace (using TraceAmbiguity::overridedAmbiguity)
+																			// To traverse all of them, begins from each TraceAmbiguity in this list, and go through TraceAmbiguity::overridedAmbiguity
 
 				// when this trace is a successor of a branch trace
 				// and such branch trace has non-empty ambiguityBegins
