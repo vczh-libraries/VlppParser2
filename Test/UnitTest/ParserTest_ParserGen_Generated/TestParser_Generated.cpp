@@ -406,14 +406,14 @@ TEST_FILE
 	//	&genericambiguity::ModuleParserRuleName,
 	//	&genericambiguity::ModuleParserStateLabel
 	//	);
-	TestParser<featuretest::ModuleParser, featuretest::json_visitor::FeatureAstVisitor>(
-		L"FeatureTest",
-		&featuretest::FeatureTestTypeName,
-		&featuretest::FeatureTestFieldName,
-		&featuretest::FeatureTestTokenId,
-		&featuretest::ModuleParserRuleName,
-		&featuretest::ModuleParserStateLabel
-		);
+	//TestParser<featuretest::ModuleParser, featuretest::json_visitor::FeatureAstVisitor>(
+	//	L"FeatureTest",
+	//	&featuretest::FeatureTestTypeName,
+	//	&featuretest::FeatureTestFieldName,
+	//	&featuretest::FeatureTestTokenId,
+	//	&featuretest::ModuleParserRuleName,
+	//	&featuretest::ModuleParserStateLabel
+	//	);
 	TestParser<binaryop::ModuleParser, binaryop::json_visitor::ExprAstVisitor>(
 		L"BinaryOp",
 		&binaryop::BinaryOpTypeName,

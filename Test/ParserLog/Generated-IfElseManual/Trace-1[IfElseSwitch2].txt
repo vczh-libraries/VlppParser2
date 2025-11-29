@@ -1,0 +1,1440 @@
+﻿================ EXECUTION STEPS ================
+[0]: 0@0 - 102@2
+
+==================== TRACES =====================
+
++----------------------+
+| [0]: <Start>         |
+| [44][Module] BEGIN   |
+| [AST-INSTRUCTIONS]:  |
+| [SUCCESORS 1-1]: [1] |
++----------------------+
+[0]
+ |
+ +
+ |
+[0]
+++==================================================================++
+|| [1]: {OPEN_BRACE} {                                              ||
+|| [6][Block]< "{" @ { Stat } "}" >                                 ||
+|| [AST-INSTRUCTIONS]:                                              ||
+||   + StackBegin()                                                 ||
+||   + Token(0)                                                     ||
+|| [RETURN STACK]:                                                  ||
+||   [2][2][0]: Block -> [35][OtherStat]<! ( !Do | !Block @ ) !>    ||
+||   [1][1][0]: OtherStat -> [42][Stat]<! ( !OtherStat @ | !If ) !> ||
+||   [0][14][0]: Stat -> [46][Module]< Stat @ >                     ||
+|| [PREDECESSORS 0-0]: [0]                                          ||
+|| [SUCCESORS 2-2]: [2]                                             ||
+++==================================================================++
+[0]
+ |
+ +
+ |
+[0]
+++================================================================================++
+|| [2]: {IF} if                                                                   ||
+|| [31][If]< "if" @ "cond" "then" ( ( CompleteStat [ "else" Stat ] | HalfIf ) ) > ||
+|| [AST-INSTRUCTIONS]:                                                            ||
+||   + StackBegin()                                                               ||
+||   + Token(0)                                                                   ||
+|| [RETURN STACK]:                                                                ||
+||   [4][3][1]: If -> [43][Stat]<! ( !OtherStat | !If @ ) !>                      ||
+||   [3][0][1]: Stat -> [7][Block]< "{" { Stat @ } "}" >                          ||
+||   [2][2][0]: Block -> [35][OtherStat]<! ( !Do | !Block @ ) !>                  ||
+||   [1][1][0]: OtherStat -> [42][Stat]<! ( !OtherStat @ | !If ) !>               ||
+||   [0][14][0]: Stat -> [46][Module]< Stat @ >                                   ||
+|| [PREDECESSORS 1-1]: [1]                                                        ||
+|| [SUCCESORS 3-3]: [3]                                                           ||
+++================================================================================++
+[0]
+ |
+ +
+ |
+[0]
+++================================================================================++
+|| [3]: {CONDITION} cond                                                          ||
+|| [30][If]< "if" "cond" @ "then" ( ( CompleteStat [ "else" Stat ] | HalfIf ) ) > ||
+|| [AST-INSTRUCTIONS]:                                                            ||
+||   + Token(1)                                                                   ||
+|| [RETURN STACK]:                                                                ||
+||   [4][3][1]: If -> [43][Stat]<! ( !OtherStat | !If @ ) !>                      ||
+||   [3][0][1]: Stat -> [7][Block]< "{" { Stat @ } "}" >                          ||
+||   [2][2][0]: Block -> [35][OtherStat]<! ( !Do | !Block @ ) !>                  ||
+||   [1][1][0]: OtherStat -> [42][Stat]<! ( !OtherStat @ | !If ) !>               ||
+||   [0][14][0]: Stat -> [46][Module]< Stat @ >                                   ||
+|| [PREDECESSORS 2-2]: [2]                                                        ||
+|| [SUCCESORS 4-4]: [4]                                                           ||
+++================================================================================++
+[0]
+ |
+ +
+ |
+[0]
+++================================================================================++
+|| [4]: {THEN} then                                                               ||
+|| [29][If]< "if" "cond" "then" @ ( ( CompleteStat [ "else" Stat ] | HalfIf ) ) > ||
+|| [AST-INSTRUCTIONS]:                                                            ||
+||   + Token(2)                                                                   ||
+|| [RETURN STACK]:                                                                ||
+||   [4][3][1]: If -> [43][Stat]<! ( !OtherStat | !If @ ) !>                      ||
+||   [3][0][1]: Stat -> [7][Block]< "{" { Stat @ } "}" >                          ||
+||   [2][2][0]: Block -> [35][OtherStat]<! ( !Do | !Block @ ) !>                  ||
+||   [1][1][0]: OtherStat -> [42][Stat]<! ( !OtherStat @ | !If ) !>               ||
+||   [0][14][0]: Stat -> [46][Module]< Stat @ >                                   ||
+|| [PREDECESSORS 3-3]: [3]                                                        ||
+|| [SUCCESORS 6-6]: [6]                                                           ||
+++================================================================================++
+[0]
+ |
+ +
+ |
+[0]
+++==============================================================================================================++
+|| [6]: {IF} if                                                                                                 ||
+|| [22][CompleteIf]< "if" @ "cond" "then" CompleteStat "else" Stat >                                            ||
+|| [AST-INSTRUCTIONS]:                                                                                          ||
+||   + StackBegin()                                                                                             ||
+||   + Token(0)                                                                                                 ||
+|| [RETURN STACK]:                                                                                              ||
+||   [7][9][4]: CompleteIf -> [39][CompleteStat]<! ( !OtherStat | !CompleteIf @ ) !>                            ||
+||   [6][12][4]: CompleteStat -> [25][If]< "if" "cond" "then" ( ( CompleteStat @ [ "else" Stat ] | HalfIf ) ) > ||
+||   [4][3][1]: If -> [43][Stat]<! ( !OtherStat | !If @ ) !>                                                    ||
+||   [3][0][1]: Stat -> [7][Block]< "{" { Stat @ } "}" >                                                        ||
+||   [2][2][0]: Block -> [35][OtherStat]<! ( !Do | !Block @ ) !>                                                ||
+||   [1][1][0]: OtherStat -> [42][Stat]<! ( !OtherStat @ | !If ) !>                                             ||
+||   [0][14][0]: Stat -> [46][Module]< Stat @ >                                                                 ||
+|| [PREDECESSORS 4-4]: [4]                                                                                      ||
+|| [SUCCESORS 8-8]: [8]                                                                                         ||
+++==============================================================================================================++
+[0]
+ |
+ +
+ |
+[0]
+++==============================================================================================================++
+|| [8]: {CONDITION} cond                                                                                        ||
+|| [21][CompleteIf]< "if" "cond" @ "then" CompleteStat "else" Stat >                                            ||
+|| [AST-INSTRUCTIONS]:                                                                                          ||
+||   + Token(1)                                                                                                 ||
+|| [RETURN STACK]:                                                                                              ||
+||   [7][9][4]: CompleteIf -> [39][CompleteStat]<! ( !OtherStat | !CompleteIf @ ) !>                            ||
+||   [6][12][4]: CompleteStat -> [25][If]< "if" "cond" "then" ( ( CompleteStat @ [ "else" Stat ] | HalfIf ) ) > ||
+||   [4][3][1]: If -> [43][Stat]<! ( !OtherStat | !If @ ) !>                                                    ||
+||   [3][0][1]: Stat -> [7][Block]< "{" { Stat @ } "}" >                                                        ||
+||   [2][2][0]: Block -> [35][OtherStat]<! ( !Do | !Block @ ) !>                                                ||
+||   [1][1][0]: OtherStat -> [42][Stat]<! ( !OtherStat @ | !If ) !>                                             ||
+||   [0][14][0]: Stat -> [46][Module]< Stat @ >                                                                 ||
+|| [PREDECESSORS 6-6]: [6]                                                                                      ||
+|| [SUCCESORS 10-10]: [10]                                                                                      ||
+++==============================================================================================================++
+[0]
+ |
+ +
+ |
+[0]
+++==============================================================================================================++
+|| [10]: {THEN} then                                                                                            ||
+|| [17][CompleteIf]< "if" "cond" "then" @ CompleteStat "else" Stat >                                            ||
+|| [AST-INSTRUCTIONS]:                                                                                          ||
+||   + Token(2)                                                                                                 ||
+|| [RETURN STACK]:                                                                                              ||
+||   [7][9][4]: CompleteIf -> [39][CompleteStat]<! ( !OtherStat | !CompleteIf @ ) !>                            ||
+||   [6][12][4]: CompleteStat -> [25][If]< "if" "cond" "then" ( ( CompleteStat @ [ "else" Stat ] | HalfIf ) ) > ||
+||   [4][3][1]: If -> [43][Stat]<! ( !OtherStat | !If @ ) !>                                                    ||
+||   [3][0][1]: Stat -> [7][Block]< "{" { Stat @ } "}" >                                                        ||
+||   [2][2][0]: Block -> [35][OtherStat]<! ( !Do | !Block @ ) !>                                                ||
+||   [1][1][0]: OtherStat -> [42][Stat]<! ( !OtherStat @ | !If ) !>                                             ||
+||   [0][14][0]: Stat -> [46][Module]< Stat @ >                                                                 ||
+|| [PREDECESSORS 8-8]: [8]                                                                                      ||
+|| [SUCCESORS 12-12]: [12]                                                                                      ||
+++==============================================================================================================++
+[0]
+ |
+ +
+ |
+[0]
+++==============================================================================================================++
+|| [12]: {DO} do                                                                                                ||
+|| [3][Do]< "do" @ ";" >                                                                                        ||
+|| [AST-INSTRUCTIONS]:                                                                                          ||
+||   + StackBegin()                                                                                             ||
+||   + Token(0)                                                                                                 ||
+|| [RETURN STACK]:                                                                                              ||
+||   [13][4][10]: Do -> [34][OtherStat]<! ( !Do @ | !Block ) !>                                                 ||
+||   [12][8][10]: OtherStat -> [38][CompleteStat]<! ( !OtherStat @ | !CompleteIf ) !>                           ||
+||   [11][7][10]: CompleteStat -> [20][CompleteIf]< "if" "cond" "then" CompleteStat @ "else" Stat >             ||
+||   [7][9][4]: CompleteIf -> [39][CompleteStat]<! ( !OtherStat | !CompleteIf @ ) !>                            ||
+||   [6][12][4]: CompleteStat -> [25][If]< "if" "cond" "then" ( ( CompleteStat @ [ "else" Stat ] | HalfIf ) ) > ||
+||   [4][3][1]: If -> [43][Stat]<! ( !OtherStat | !If @ ) !>                                                    ||
+||   [3][0][1]: Stat -> [7][Block]< "{" { Stat @ } "}" >                                                        ||
+||   [2][2][0]: Block -> [35][OtherStat]<! ( !Do | !Block @ ) !>                                                ||
+||   [1][1][0]: OtherStat -> [42][Stat]<! ( !OtherStat @ | !If ) !>                                             ||
+||   [0][14][0]: Stat -> [46][Module]< Stat @ >                                                                 ||
+|| [PREDECESSORS 10-10]: [10]                                                                                   ||
+|| [SUCCESORS 20-20]: [20]                                                                                      ||
+++==============================================================================================================++
+[0]
+ |
+ +
+ |
+[0]
+++==============================================================================================================++
+|| [20]: {SEMICOLON} ;                                                                                          ||
+|| [2][Do]< "do" ";" @ >                                                                                        ||
+|| [AST-INSTRUCTIONS]:                                                                                          ||
+||   + Token(1)                                                                                                 ||
+|| [RETURN STACK]:                                                                                              ||
+||   [13][4][10]: Do -> [34][OtherStat]<! ( !Do @ | !Block ) !>                                                 ||
+||   [12][8][10]: OtherStat -> [38][CompleteStat]<! ( !OtherStat @ | !CompleteIf ) !>                           ||
+||   [11][7][10]: CompleteStat -> [20][CompleteIf]< "if" "cond" "then" CompleteStat @ "else" Stat >             ||
+||   [7][9][4]: CompleteIf -> [39][CompleteStat]<! ( !OtherStat | !CompleteIf @ ) !>                            ||
+||   [6][12][4]: CompleteStat -> [25][If]< "if" "cond" "then" ( ( CompleteStat @ [ "else" Stat ] | HalfIf ) ) > ||
+||   [4][3][1]: If -> [43][Stat]<! ( !OtherStat | !If @ ) !>                                                    ||
+||   [3][0][1]: Stat -> [7][Block]< "{" { Stat @ } "}" >                                                        ||
+||   [2][2][0]: Block -> [35][OtherStat]<! ( !Do | !Block @ ) !>                                                ||
+||   [1][1][0]: OtherStat -> [42][Stat]<! ( !OtherStat @ | !If ) !>                                             ||
+||   [0][14][0]: Stat -> [46][Module]< Stat @ >                                                                 ||
+|| [PREDECESSORS 12-12]: [12]                                                                                   ||
+|| [SUCCESORS 21-21]: [21]                                                                                      ||
+++==============================================================================================================++
+|
++
+|
++--------------------------------------------------------------------------------------------------------------+
+| [21]: <Ending>                                                                                               |
+| [34][OtherStat]<! ( !Do @ | !Block ) !>                                                                      |
+| [AST-INSTRUCTIONS]:                                                                                          |
+|   + CreateObject(DoStat)                                                                                     |
+|   + StackEnd()                                                                                               |
+|   > StackBegin()                                                                                             |
+| [RETURN STACK]:                                                                                              |
+|   [12][8][10]: OtherStat -> [38][CompleteStat]<! ( !OtherStat @ | !CompleteIf ) !>                           |
+|   [11][7][10]: CompleteStat -> [20][CompleteIf]< "if" "cond" "then" CompleteStat @ "else" Stat >             |
+|   [7][9][4]: CompleteIf -> [39][CompleteStat]<! ( !OtherStat | !CompleteIf @ ) !>                            |
+|   [6][12][4]: CompleteStat -> [25][If]< "if" "cond" "then" ( ( CompleteStat @ [ "else" Stat ] | HalfIf ) ) > |
+|   [4][3][1]: If -> [43][Stat]<! ( !OtherStat | !If @ ) !>                                                    |
+|   [3][0][1]: Stat -> [7][Block]< "{" { Stat @ } "}" >                                                        |
+|   [2][2][0]: Block -> [35][OtherStat]<! ( !Do | !Block @ ) !>                                                |
+|   [1][1][0]: OtherStat -> [42][Stat]<! ( !OtherStat @ | !If ) !>                                             |
+|   [0][14][0]: Stat -> [46][Module]< Stat @ >                                                                 |
+| [PREDECESSORS 20-20]: [20]                                                                                   |
+| [SUCCESORS 22-22]: [22]                                                                                      |
++--------------------------------------------------------------------------------------------------------------+
+|
++
+|
++--------------------------------------------------------------------------------------------------------------+
+| [22]: <Ending>                                                                                               |
+| [38][CompleteStat]<! ( !OtherStat @ | !CompleteIf ) !>                                                       |
+| [AST-INSTRUCTIONS]:                                                                                          |
+|   + StackEnd()                                                                                               |
+|   > StackBegin()                                                                                             |
+| [RETURN STACK]:                                                                                              |
+|   [11][7][10]: CompleteStat -> [20][CompleteIf]< "if" "cond" "then" CompleteStat @ "else" Stat >             |
+|   [7][9][4]: CompleteIf -> [39][CompleteStat]<! ( !OtherStat | !CompleteIf @ ) !>                            |
+|   [6][12][4]: CompleteStat -> [25][If]< "if" "cond" "then" ( ( CompleteStat @ [ "else" Stat ] | HalfIf ) ) > |
+|   [4][3][1]: If -> [43][Stat]<! ( !OtherStat | !If @ ) !>                                                    |
+|   [3][0][1]: Stat -> [7][Block]< "{" { Stat @ } "}" >                                                        |
+|   [2][2][0]: Block -> [35][OtherStat]<! ( !Do | !Block @ ) !>                                                |
+|   [1][1][0]: OtherStat -> [42][Stat]<! ( !OtherStat @ | !If ) !>                                             |
+|   [0][14][0]: Stat -> [46][Module]< Stat @ >                                                                 |
+| [PREDECESSORS 21-21]: [21]                                                                                   |
+| [SUCCESORS 23-23]: [23]                                                                                      |
++--------------------------------------------------------------------------------------------------------------+
+|
++
+|
++--------------------------------------------------------------------------------------------------------------+
+| [23]: <Ending>                                                                                               |
+| [20][CompleteIf]< "if" "cond" "then" CompleteStat @ "else" Stat >                                            |
+| [AST-INSTRUCTIONS]:                                                                                          |
+|   + StackEnd()                                                                                               |
+|   > StackSlot(3)                                                                                             |
+| [RETURN STACK]:                                                                                              |
+|   [7][9][4]: CompleteIf -> [39][CompleteStat]<! ( !OtherStat | !CompleteIf @ ) !>                            |
+|   [6][12][4]: CompleteStat -> [25][If]< "if" "cond" "then" ( ( CompleteStat @ [ "else" Stat ] | HalfIf ) ) > |
+|   [4][3][1]: If -> [43][Stat]<! ( !OtherStat | !If @ ) !>                                                    |
+|   [3][0][1]: Stat -> [7][Block]< "{" { Stat @ } "}" >                                                        |
+|   [2][2][0]: Block -> [35][OtherStat]<! ( !Do | !Block @ ) !>                                                |
+|   [1][1][0]: OtherStat -> [42][Stat]<! ( !OtherStat @ | !If ) !>                                             |
+|   [0][14][0]: Stat -> [46][Module]< Stat @ >                                                                 |
+| [PREDECESSORS 22-22]: [22]                                                                                   |
+| [SUCCESORS 24-24]: [24]                                                                                      |
++--------------------------------------------------------------------------------------------------------------+
+[0]
+ |
+ +
+ |
+[0]
+++==============================================================================================================++
+|| [24]: {ELSE} else                                                                                            ||
+|| [18][CompleteIf]< "if" "cond" "then" CompleteStat "else" @ Stat >                                            ||
+|| [AST-INSTRUCTIONS]:                                                                                          ||
+||   + Token(4)                                                                                                 ||
+|| [RETURN STACK]:                                                                                              ||
+||   [7][9][4]: CompleteIf -> [39][CompleteStat]<! ( !OtherStat | !CompleteIf @ ) !>                            ||
+||   [6][12][4]: CompleteStat -> [25][If]< "if" "cond" "then" ( ( CompleteStat @ [ "else" Stat ] | HalfIf ) ) > ||
+||   [4][3][1]: If -> [43][Stat]<! ( !OtherStat | !If @ ) !>                                                    ||
+||   [3][0][1]: Stat -> [7][Block]< "{" { Stat @ } "}" >                                                        ||
+||   [2][2][0]: Block -> [35][OtherStat]<! ( !Do | !Block @ ) !>                                                ||
+||   [1][1][0]: OtherStat -> [42][Stat]<! ( !OtherStat @ | !If ) !>                                             ||
+||   [0][14][0]: Stat -> [46][Module]< Stat @ >                                                                 ||
+|| [PREDECESSORS 23-23]: [23]                                                                                   ||
+|| [SUCCESORS 25-25]: [25]                                                                                      ||
+++==============================================================================================================++
+[0]
+ |
+ +
+ |
+[0]
+++==============================================================================================================++
+|| [25]: {DO} do                                                                                                ||
+|| [3][Do]< "do" @ ";" >                                                                                        ||
+|| [AST-INSTRUCTIONS]:                                                                                          ||
+||   + StackBegin()                                                                                             ||
+||   + Token(0)                                                                                                 ||
+|| [RETURN STACK]:                                                                                              ||
+||   [16][4][24]: Do -> [34][OtherStat]<! ( !Do @ | !Block ) !>                                                 ||
+||   [15][1][24]: OtherStat -> [42][Stat]<! ( !OtherStat @ | !If ) !>                                           ||
+||   [14][10][24]: Stat -> [19][CompleteIf]< "if" "cond" "then" CompleteStat "else" Stat @ >                    ||
+||   [7][9][4]: CompleteIf -> [39][CompleteStat]<! ( !OtherStat | !CompleteIf @ ) !>                            ||
+||   [6][12][4]: CompleteStat -> [25][If]< "if" "cond" "then" ( ( CompleteStat @ [ "else" Stat ] | HalfIf ) ) > ||
+||   [4][3][1]: If -> [43][Stat]<! ( !OtherStat | !If @ ) !>                                                    ||
+||   [3][0][1]: Stat -> [7][Block]< "{" { Stat @ } "}" >                                                        ||
+||   [2][2][0]: Block -> [35][OtherStat]<! ( !Do | !Block @ ) !>                                                ||
+||   [1][1][0]: OtherStat -> [42][Stat]<! ( !OtherStat @ | !If ) !>                                             ||
+||   [0][14][0]: Stat -> [46][Module]< Stat @ >                                                                 ||
+|| [PREDECESSORS 24-24]: [24]                                                                                   ||
+|| [SUCCESORS 26-26]: [26]                                                                                      ||
+++==============================================================================================================++
+[0]
+ |
+ +
+ |
+[0]
+++==============================================================================================================++
+|| [26]: {SEMICOLON} ;                                                                                          ||
+|| [2][Do]< "do" ";" @ >                                                                                        ||
+|| [AST-INSTRUCTIONS]:                                                                                          ||
+||   + Token(1)                                                                                                 ||
+|| [RETURN STACK]:                                                                                              ||
+||   [16][4][24]: Do -> [34][OtherStat]<! ( !Do @ | !Block ) !>                                                 ||
+||   [15][1][24]: OtherStat -> [42][Stat]<! ( !OtherStat @ | !If ) !>                                           ||
+||   [14][10][24]: Stat -> [19][CompleteIf]< "if" "cond" "then" CompleteStat "else" Stat @ >                    ||
+||   [7][9][4]: CompleteIf -> [39][CompleteStat]<! ( !OtherStat | !CompleteIf @ ) !>                            ||
+||   [6][12][4]: CompleteStat -> [25][If]< "if" "cond" "then" ( ( CompleteStat @ [ "else" Stat ] | HalfIf ) ) > ||
+||   [4][3][1]: If -> [43][Stat]<! ( !OtherStat | !If @ ) !>                                                    ||
+||   [3][0][1]: Stat -> [7][Block]< "{" { Stat @ } "}" >                                                        ||
+||   [2][2][0]: Block -> [35][OtherStat]<! ( !Do | !Block @ ) !>                                                ||
+||   [1][1][0]: OtherStat -> [42][Stat]<! ( !OtherStat @ | !If ) !>                                             ||
+||   [0][14][0]: Stat -> [46][Module]< Stat @ >                                                                 ||
+|| [PREDECESSORS 25-25]: [25]                                                                                   ||
+|| [SUCCESORS 27-27]: [27]                                                                                      ||
+++==============================================================================================================++
+|
++
+|
++--------------------------------------------------------------------------------------------------------------+
+| [27]: <Ending>                                                                                               |
+| [34][OtherStat]<! ( !Do @ | !Block ) !>                                                                      |
+| [AST-INSTRUCTIONS]:                                                                                          |
+|   + CreateObject(DoStat)                                                                                     |
+|   + StackEnd()                                                                                               |
+|   > StackBegin()                                                                                             |
+| [RETURN STACK]:                                                                                              |
+|   [15][1][24]: OtherStat -> [42][Stat]<! ( !OtherStat @ | !If ) !>                                           |
+|   [14][10][24]: Stat -> [19][CompleteIf]< "if" "cond" "then" CompleteStat "else" Stat @ >                    |
+|   [7][9][4]: CompleteIf -> [39][CompleteStat]<! ( !OtherStat | !CompleteIf @ ) !>                            |
+|   [6][12][4]: CompleteStat -> [25][If]< "if" "cond" "then" ( ( CompleteStat @ [ "else" Stat ] | HalfIf ) ) > |
+|   [4][3][1]: If -> [43][Stat]<! ( !OtherStat | !If @ ) !>                                                    |
+|   [3][0][1]: Stat -> [7][Block]< "{" { Stat @ } "}" >                                                        |
+|   [2][2][0]: Block -> [35][OtherStat]<! ( !Do | !Block @ ) !>                                                |
+|   [1][1][0]: OtherStat -> [42][Stat]<! ( !OtherStat @ | !If ) !>                                             |
+|   [0][14][0]: Stat -> [46][Module]< Stat @ >                                                                 |
+| [PREDECESSORS 26-26]: [26]                                                                                   |
+| [SUCCESORS 28-28]: [28]                                                                                      |
++--------------------------------------------------------------------------------------------------------------+
+|
++
+|
++--------------------------------------------------------------------------------------------------------------+
+| [28]: <Ending>                                                                                               |
+| [42][Stat]<! ( !OtherStat @ | !If ) !>                                                                       |
+| [AST-INSTRUCTIONS]:                                                                                          |
+|   + StackEnd()                                                                                               |
+|   > StackBegin()                                                                                             |
+| [RETURN STACK]:                                                                                              |
+|   [14][10][24]: Stat -> [19][CompleteIf]< "if" "cond" "then" CompleteStat "else" Stat @ >                    |
+|   [7][9][4]: CompleteIf -> [39][CompleteStat]<! ( !OtherStat | !CompleteIf @ ) !>                            |
+|   [6][12][4]: CompleteStat -> [25][If]< "if" "cond" "then" ( ( CompleteStat @ [ "else" Stat ] | HalfIf ) ) > |
+|   [4][3][1]: If -> [43][Stat]<! ( !OtherStat | !If @ ) !>                                                    |
+|   [3][0][1]: Stat -> [7][Block]< "{" { Stat @ } "}" >                                                        |
+|   [2][2][0]: Block -> [35][OtherStat]<! ( !Do | !Block @ ) !>                                                |
+|   [1][1][0]: OtherStat -> [42][Stat]<! ( !OtherStat @ | !If ) !>                                             |
+|   [0][14][0]: Stat -> [46][Module]< Stat @ >                                                                 |
+| [PREDECESSORS 27-27]: [27]                                                                                   |
+| [SUCCESORS 29-29]: [29]                                                                                      |
++--------------------------------------------------------------------------------------------------------------+
+|
++
+|
++--------------------------------------------------------------------------------------------------------------+
+| [29]: <Ending>                                                                                               |
+| [19][CompleteIf]< "if" "cond" "then" CompleteStat "else" Stat @ >                                            |
+| [AST-INSTRUCTIONS]:                                                                                          |
+|   + StackEnd()                                                                                               |
+|   > StackSlot(5)                                                                                             |
+| [RETURN STACK]:                                                                                              |
+|   [7][9][4]: CompleteIf -> [39][CompleteStat]<! ( !OtherStat | !CompleteIf @ ) !>                            |
+|   [6][12][4]: CompleteStat -> [25][If]< "if" "cond" "then" ( ( CompleteStat @ [ "else" Stat ] | HalfIf ) ) > |
+|   [4][3][1]: If -> [43][Stat]<! ( !OtherStat | !If @ ) !>                                                    |
+|   [3][0][1]: Stat -> [7][Block]< "{" { Stat @ } "}" >                                                        |
+|   [2][2][0]: Block -> [35][OtherStat]<! ( !Do | !Block @ ) !>                                                |
+|   [1][1][0]: OtherStat -> [42][Stat]<! ( !OtherStat @ | !If ) !>                                             |
+|   [0][14][0]: Stat -> [46][Module]< Stat @ >                                                                 |
+| [PREDECESSORS 28-28]: [28]                                                                                   |
+| [SUCCESORS 30-30]: [30]                                                                                      |
++--------------------------------------------------------------------------------------------------------------+
+|
++
+|
++--------------------------------------------------------------------------------------------------------------+
+| [30]: <Ending>                                                                                               |
+| [39][CompleteStat]<! ( !OtherStat | !CompleteIf @ ) !>                                                       |
+| [AST-INSTRUCTIONS]:                                                                                          |
+|   + CreateObject(IfStat)                                                                                     |
+|   + Field(IfStat::thenBranch, 3)                                                                             |
+|   + Field(IfStat::elseBranch, 5)                                                                             |
+|   + StackEnd()                                                                                               |
+|   > StackBegin()                                                                                             |
+| [RETURN STACK]:                                                                                              |
+|   [6][12][4]: CompleteStat -> [25][If]< "if" "cond" "then" ( ( CompleteStat @ [ "else" Stat ] | HalfIf ) ) > |
+|   [4][3][1]: If -> [43][Stat]<! ( !OtherStat | !If @ ) !>                                                    |
+|   [3][0][1]: Stat -> [7][Block]< "{" { Stat @ } "}" >                                                        |
+|   [2][2][0]: Block -> [35][OtherStat]<! ( !Do | !Block @ ) !>                                                |
+|   [1][1][0]: OtherStat -> [42][Stat]<! ( !OtherStat @ | !If ) !>                                             |
+|   [0][14][0]: Stat -> [46][Module]< Stat @ >                                                                 |
+| [PREDECESSORS 29-29]: [29]                                                                                   |
+| [SUCCESORS 31-31]: [31]                                                                                      |
++--------------------------------------------------------------------------------------------------------------+
+|
++
+|
++--------------------------------------------------------------------------------+
+| [31]: <Ending>                                                                 |
+| [25][If]< "if" "cond" "then" ( ( CompleteStat @ [ "else" Stat ] | HalfIf ) ) > |
+| [AST-INSTRUCTIONS]:                                                            |
+|   + StackEnd()                                                                 |
+|   > StackSlot(3)                                                               |
+| [RETURN STACK]:                                                                |
+|   [4][3][1]: If -> [43][Stat]<! ( !OtherStat | !If @ ) !>                      |
+|   [3][0][1]: Stat -> [7][Block]< "{" { Stat @ } "}" >                          |
+|   [2][2][0]: Block -> [35][OtherStat]<! ( !Do | !Block @ ) !>                  |
+|   [1][1][0]: OtherStat -> [42][Stat]<! ( !OtherStat @ | !If ) !>               |
+|   [0][14][0]: Stat -> [46][Module]< Stat @ >                                   |
+| [PREDECESSORS 30-30]: [30]                                                     |
+| [SUCCESORS 32-32]: [32]                                                        |
++--------------------------------------------------------------------------------+
+|
++
+|
++------------------------------------------------------------------+
+| [32]: <Ending>                                                   |
+| [43][Stat]<! ( !OtherStat | !If @ ) !>                           |
+| [AST-INSTRUCTIONS]:                                              |
+|   + CreateObject(IfStat)                                         |
+|   + Field(IfStat::thenBranch, 3)                                 |
+|   + Field(IfStat::elseBranch, 5)                                 |
+|   + Field(IfStat::thenBranch, 6)                                 |
+|   + StackEnd()                                                   |
+|   > StackBegin()                                                 |
+| [RETURN STACK]:                                                  |
+|   [3][0][1]: Stat -> [7][Block]< "{" { Stat @ } "}" >            |
+|   [2][2][0]: Block -> [35][OtherStat]<! ( !Do | !Block @ ) !>    |
+|   [1][1][0]: OtherStat -> [42][Stat]<! ( !OtherStat @ | !If ) !> |
+|   [0][14][0]: Stat -> [46][Module]< Stat @ >                     |
+| [PREDECESSORS 31-31]: [31]                                       |
+| [SUCCESORS 33-33]: [33]                                          |
++------------------------------------------------------------------+
+|
++
+|
++------------------------------------------------------------------+
+| [33]: <Ending>                                                   |
+| [7][Block]< "{" { Stat @ } "}" >                                 |
+| [AST-INSTRUCTIONS]:                                              |
+|   + StackEnd()                                                   |
+|   > StackSlot(1)                                                 |
+| [RETURN STACK]:                                                  |
+|   [2][2][0]: Block -> [35][OtherStat]<! ( !Do | !Block @ ) !>    |
+|   [1][1][0]: OtherStat -> [42][Stat]<! ( !OtherStat @ | !If ) !> |
+|   [0][14][0]: Stat -> [46][Module]< Stat @ >                     |
+| [PREDECESSORS 32-32]: [32]                                       |
+| [SUCCESORS 34-34]: [34]                                          |
++------------------------------------------------------------------+
+[0]
+ |
+ +
+ |
+[0]
+++================================================================================++
+|| [34]: {IF} if                                                                  ||
+|| [31][If]< "if" @ "cond" "then" ( ( CompleteStat [ "else" Stat ] | HalfIf ) ) > ||
+|| [AST-INSTRUCTIONS]:                                                            ||
+||   + StackBegin()                                                               ||
+||   + Token(0)                                                                   ||
+|| [RETURN STACK]:                                                                ||
+||   [18][3][33]: If -> [43][Stat]<! ( !OtherStat | !If @ ) !>                    ||
+||   [17][5][33]: Stat -> [7][Block]< "{" { Stat @ } "}" >                        ||
+||   [2][2][0]: Block -> [35][OtherStat]<! ( !Do | !Block @ ) !>                  ||
+||   [1][1][0]: OtherStat -> [42][Stat]<! ( !OtherStat @ | !If ) !>               ||
+||   [0][14][0]: Stat -> [46][Module]< Stat @ >                                   ||
+|| [PREDECESSORS 33-33]: [33]                                                     ||
+|| [SUCCESORS 35-35]: [35]                                                        ||
+++================================================================================++
+[0]
+ |
+ +
+ |
+[0]
+++================================================================================++
+|| [35]: {CONDITION} cond                                                         ||
+|| [30][If]< "if" "cond" @ "then" ( ( CompleteStat [ "else" Stat ] | HalfIf ) ) > ||
+|| [AST-INSTRUCTIONS]:                                                            ||
+||   + Token(1)                                                                   ||
+|| [RETURN STACK]:                                                                ||
+||   [18][3][33]: If -> [43][Stat]<! ( !OtherStat | !If @ ) !>                    ||
+||   [17][5][33]: Stat -> [7][Block]< "{" { Stat @ } "}" >                        ||
+||   [2][2][0]: Block -> [35][OtherStat]<! ( !Do | !Block @ ) !>                  ||
+||   [1][1][0]: OtherStat -> [42][Stat]<! ( !OtherStat @ | !If ) !>               ||
+||   [0][14][0]: Stat -> [46][Module]< Stat @ >                                   ||
+|| [PREDECESSORS 34-34]: [34]                                                     ||
+|| [SUCCESORS 36-36]: [36]                                                        ||
+++================================================================================++
+[0]
+ |
+ +
+ |
+[0]
+++================================================================================++
+|| [36]: {THEN} then                                                              ||
+|| [29][If]< "if" "cond" "then" @ ( ( CompleteStat [ "else" Stat ] | HalfIf ) ) > ||
+|| [AST-INSTRUCTIONS]:                                                            ||
+||   + Token(2)                                                                   ||
+|| [RETURN STACK]:                                                                ||
+||   [18][3][33]: If -> [43][Stat]<! ( !OtherStat | !If @ ) !>                    ||
+||   [17][5][33]: Stat -> [7][Block]< "{" { Stat @ } "}" >                        ||
+||   [2][2][0]: Block -> [35][OtherStat]<! ( !Do | !Block @ ) !>                  ||
+||   [1][1][0]: OtherStat -> [42][Stat]<! ( !OtherStat @ | !If ) !>               ||
+||   [0][14][0]: Stat -> [46][Module]< Stat @ >                                   ||
+|| [PREDECESSORS 35-35]: [35]                                                     ||
+|| [SUCCESORS 38-38]: [38]                                                        ||
+++================================================================================++
+[0]
+ |
+ +
+ |
+[0]
+++================================================================================================================++
+|| [38]: {IF} if                                                                                                  ||
+|| [22][CompleteIf]< "if" @ "cond" "then" CompleteStat "else" Stat >                                              ||
+|| [AST-INSTRUCTIONS]:                                                                                            ||
+||   + StackBegin()                                                                                               ||
+||   + Token(0)                                                                                                   ||
+|| [RETURN STACK]:                                                                                                ||
+||   [21][9][36]: CompleteIf -> [39][CompleteStat]<! ( !OtherStat | !CompleteIf @ ) !>                            ||
+||   [20][12][36]: CompleteStat -> [25][If]< "if" "cond" "then" ( ( CompleteStat @ [ "else" Stat ] | HalfIf ) ) > ||
+||   [18][3][33]: If -> [43][Stat]<! ( !OtherStat | !If @ ) !>                                                    ||
+||   [17][5][33]: Stat -> [7][Block]< "{" { Stat @ } "}" >                                                        ||
+||   [2][2][0]: Block -> [35][OtherStat]<! ( !Do | !Block @ ) !>                                                  ||
+||   [1][1][0]: OtherStat -> [42][Stat]<! ( !OtherStat @ | !If ) !>                                               ||
+||   [0][14][0]: Stat -> [46][Module]< Stat @ >                                                                   ||
+|| [PREDECESSORS 36-36]: [36]                                                                                     ||
+|| [SUCCESORS 40-40]: [40]                                                                                        ||
+++================================================================================================================++
+[0]
+ |
+ +
+ |
+[0]
+++================================================================================================================++
+|| [40]: {CONDITION} cond                                                                                         ||
+|| [21][CompleteIf]< "if" "cond" @ "then" CompleteStat "else" Stat >                                              ||
+|| [AST-INSTRUCTIONS]:                                                                                            ||
+||   + Token(1)                                                                                                   ||
+|| [RETURN STACK]:                                                                                                ||
+||   [21][9][36]: CompleteIf -> [39][CompleteStat]<! ( !OtherStat | !CompleteIf @ ) !>                            ||
+||   [20][12][36]: CompleteStat -> [25][If]< "if" "cond" "then" ( ( CompleteStat @ [ "else" Stat ] | HalfIf ) ) > ||
+||   [18][3][33]: If -> [43][Stat]<! ( !OtherStat | !If @ ) !>                                                    ||
+||   [17][5][33]: Stat -> [7][Block]< "{" { Stat @ } "}" >                                                        ||
+||   [2][2][0]: Block -> [35][OtherStat]<! ( !Do | !Block @ ) !>                                                  ||
+||   [1][1][0]: OtherStat -> [42][Stat]<! ( !OtherStat @ | !If ) !>                                               ||
+||   [0][14][0]: Stat -> [46][Module]< Stat @ >                                                                   ||
+|| [PREDECESSORS 38-38]: [38]                                                                                     ||
+|| [SUCCESORS 42-42]: [42]                                                                                        ||
+++================================================================================================================++
+[0]
+ |
+ +
+ |
+[0]
+++================================================================================================================++
+|| [42]: {THEN} then                                                                                              ||
+|| [17][CompleteIf]< "if" "cond" "then" @ CompleteStat "else" Stat >                                              ||
+|| [AST-INSTRUCTIONS]:                                                                                            ||
+||   + Token(2)                                                                                                   ||
+|| [RETURN STACK]:                                                                                                ||
+||   [21][9][36]: CompleteIf -> [39][CompleteStat]<! ( !OtherStat | !CompleteIf @ ) !>                            ||
+||   [20][12][36]: CompleteStat -> [25][If]< "if" "cond" "then" ( ( CompleteStat @ [ "else" Stat ] | HalfIf ) ) > ||
+||   [18][3][33]: If -> [43][Stat]<! ( !OtherStat | !If @ ) !>                                                    ||
+||   [17][5][33]: Stat -> [7][Block]< "{" { Stat @ } "}" >                                                        ||
+||   [2][2][0]: Block -> [35][OtherStat]<! ( !Do | !Block @ ) !>                                                  ||
+||   [1][1][0]: OtherStat -> [42][Stat]<! ( !OtherStat @ | !If ) !>                                               ||
+||   [0][14][0]: Stat -> [46][Module]< Stat @ >                                                                   ||
+|| [PREDECESSORS 40-40]: [40]                                                                                     ||
+|| [SUCCESORS 44-44]: [44]                                                                                        ||
+++================================================================================================================++
+[0]
+ |
+ +
+ |
+[0]
+++================================================================================================================++
+|| [44]: {DO} do                                                                                                  ||
+|| [3][Do]< "do" @ ";" >                                                                                          ||
+|| [AST-INSTRUCTIONS]:                                                                                            ||
+||   + StackBegin()                                                                                               ||
+||   + Token(0)                                                                                                   ||
+|| [RETURN STACK]:                                                                                                ||
+||   [27][4][42]: Do -> [34][OtherStat]<! ( !Do @ | !Block ) !>                                                   ||
+||   [26][8][42]: OtherStat -> [38][CompleteStat]<! ( !OtherStat @ | !CompleteIf ) !>                             ||
+||   [25][7][42]: CompleteStat -> [20][CompleteIf]< "if" "cond" "then" CompleteStat @ "else" Stat >               ||
+||   [21][9][36]: CompleteIf -> [39][CompleteStat]<! ( !OtherStat | !CompleteIf @ ) !>                            ||
+||   [20][12][36]: CompleteStat -> [25][If]< "if" "cond" "then" ( ( CompleteStat @ [ "else" Stat ] | HalfIf ) ) > ||
+||   [18][3][33]: If -> [43][Stat]<! ( !OtherStat | !If @ ) !>                                                    ||
+||   [17][5][33]: Stat -> [7][Block]< "{" { Stat @ } "}" >                                                        ||
+||   [2][2][0]: Block -> [35][OtherStat]<! ( !Do | !Block @ ) !>                                                  ||
+||   [1][1][0]: OtherStat -> [42][Stat]<! ( !OtherStat @ | !If ) !>                                               ||
+||   [0][14][0]: Stat -> [46][Module]< Stat @ >                                                                   ||
+|| [PREDECESSORS 42-42]: [42]                                                                                     ||
+|| [SUCCESORS 52-52]: [52]                                                                                        ||
+++================================================================================================================++
+[0]
+ |
+ +
+ |
+[0]
+++================================================================================================================++
+|| [52]: {SEMICOLON} ;                                                                                            ||
+|| [2][Do]< "do" ";" @ >                                                                                          ||
+|| [AST-INSTRUCTIONS]:                                                                                            ||
+||   + Token(1)                                                                                                   ||
+|| [RETURN STACK]:                                                                                                ||
+||   [27][4][42]: Do -> [34][OtherStat]<! ( !Do @ | !Block ) !>                                                   ||
+||   [26][8][42]: OtherStat -> [38][CompleteStat]<! ( !OtherStat @ | !CompleteIf ) !>                             ||
+||   [25][7][42]: CompleteStat -> [20][CompleteIf]< "if" "cond" "then" CompleteStat @ "else" Stat >               ||
+||   [21][9][36]: CompleteIf -> [39][CompleteStat]<! ( !OtherStat | !CompleteIf @ ) !>                            ||
+||   [20][12][36]: CompleteStat -> [25][If]< "if" "cond" "then" ( ( CompleteStat @ [ "else" Stat ] | HalfIf ) ) > ||
+||   [18][3][33]: If -> [43][Stat]<! ( !OtherStat | !If @ ) !>                                                    ||
+||   [17][5][33]: Stat -> [7][Block]< "{" { Stat @ } "}" >                                                        ||
+||   [2][2][0]: Block -> [35][OtherStat]<! ( !Do | !Block @ ) !>                                                  ||
+||   [1][1][0]: OtherStat -> [42][Stat]<! ( !OtherStat @ | !If ) !>                                               ||
+||   [0][14][0]: Stat -> [46][Module]< Stat @ >                                                                   ||
+|| [PREDECESSORS 44-44]: [44]                                                                                     ||
+|| [SUCCESORS 53-53]: [53]                                                                                        ||
+++================================================================================================================++
+|
++
+|
++----------------------------------------------------------------------------------------------------------------+
+| [53]: <Ending>                                                                                                 |
+| [34][OtherStat]<! ( !Do @ | !Block ) !>                                                                        |
+| [AST-INSTRUCTIONS]:                                                                                            |
+|   + CreateObject(DoStat)                                                                                       |
+|   + StackEnd()                                                                                                 |
+|   > StackBegin()                                                                                               |
+| [RETURN STACK]:                                                                                                |
+|   [26][8][42]: OtherStat -> [38][CompleteStat]<! ( !OtherStat @ | !CompleteIf ) !>                             |
+|   [25][7][42]: CompleteStat -> [20][CompleteIf]< "if" "cond" "then" CompleteStat @ "else" Stat >               |
+|   [21][9][36]: CompleteIf -> [39][CompleteStat]<! ( !OtherStat | !CompleteIf @ ) !>                            |
+|   [20][12][36]: CompleteStat -> [25][If]< "if" "cond" "then" ( ( CompleteStat @ [ "else" Stat ] | HalfIf ) ) > |
+|   [18][3][33]: If -> [43][Stat]<! ( !OtherStat | !If @ ) !>                                                    |
+|   [17][5][33]: Stat -> [7][Block]< "{" { Stat @ } "}" >                                                        |
+|   [2][2][0]: Block -> [35][OtherStat]<! ( !Do | !Block @ ) !>                                                  |
+|   [1][1][0]: OtherStat -> [42][Stat]<! ( !OtherStat @ | !If ) !>                                               |
+|   [0][14][0]: Stat -> [46][Module]< Stat @ >                                                                   |
+| [PREDECESSORS 52-52]: [52]                                                                                     |
+| [SUCCESORS 54-54]: [54]                                                                                        |
++----------------------------------------------------------------------------------------------------------------+
+|
++
+|
++----------------------------------------------------------------------------------------------------------------+
+| [54]: <Ending>                                                                                                 |
+| [38][CompleteStat]<! ( !OtherStat @ | !CompleteIf ) !>                                                         |
+| [AST-INSTRUCTIONS]:                                                                                            |
+|   + StackEnd()                                                                                                 |
+|   > StackBegin()                                                                                               |
+| [RETURN STACK]:                                                                                                |
+|   [25][7][42]: CompleteStat -> [20][CompleteIf]< "if" "cond" "then" CompleteStat @ "else" Stat >               |
+|   [21][9][36]: CompleteIf -> [39][CompleteStat]<! ( !OtherStat | !CompleteIf @ ) !>                            |
+|   [20][12][36]: CompleteStat -> [25][If]< "if" "cond" "then" ( ( CompleteStat @ [ "else" Stat ] | HalfIf ) ) > |
+|   [18][3][33]: If -> [43][Stat]<! ( !OtherStat | !If @ ) !>                                                    |
+|   [17][5][33]: Stat -> [7][Block]< "{" { Stat @ } "}" >                                                        |
+|   [2][2][0]: Block -> [35][OtherStat]<! ( !Do | !Block @ ) !>                                                  |
+|   [1][1][0]: OtherStat -> [42][Stat]<! ( !OtherStat @ | !If ) !>                                               |
+|   [0][14][0]: Stat -> [46][Module]< Stat @ >                                                                   |
+| [PREDECESSORS 53-53]: [53]                                                                                     |
+| [SUCCESORS 55-55]: [55]                                                                                        |
++----------------------------------------------------------------------------------------------------------------+
+|
++
+|
++----------------------------------------------------------------------------------------------------------------+
+| [55]: <Ending>                                                                                                 |
+| [20][CompleteIf]< "if" "cond" "then" CompleteStat @ "else" Stat >                                              |
+| [AST-INSTRUCTIONS]:                                                                                            |
+|   + StackEnd()                                                                                                 |
+|   > StackSlot(3)                                                                                               |
+| [RETURN STACK]:                                                                                                |
+|   [21][9][36]: CompleteIf -> [39][CompleteStat]<! ( !OtherStat | !CompleteIf @ ) !>                            |
+|   [20][12][36]: CompleteStat -> [25][If]< "if" "cond" "then" ( ( CompleteStat @ [ "else" Stat ] | HalfIf ) ) > |
+|   [18][3][33]: If -> [43][Stat]<! ( !OtherStat | !If @ ) !>                                                    |
+|   [17][5][33]: Stat -> [7][Block]< "{" { Stat @ } "}" >                                                        |
+|   [2][2][0]: Block -> [35][OtherStat]<! ( !Do | !Block @ ) !>                                                  |
+|   [1][1][0]: OtherStat -> [42][Stat]<! ( !OtherStat @ | !If ) !>                                               |
+|   [0][14][0]: Stat -> [46][Module]< Stat @ >                                                                   |
+| [PREDECESSORS 54-54]: [54]                                                                                     |
+| [SUCCESORS 56-56]: [56]                                                                                        |
++----------------------------------------------------------------------------------------------------------------+
+[0]
+ |
+ +
+ |
+[0]
+++================================================================================================================++
+|| [56]: {ELSE} else                                                                                              ||
+|| [18][CompleteIf]< "if" "cond" "then" CompleteStat "else" @ Stat >                                              ||
+|| [AST-INSTRUCTIONS]:                                                                                            ||
+||   + Token(4)                                                                                                   ||
+|| [RETURN STACK]:                                                                                                ||
+||   [21][9][36]: CompleteIf -> [39][CompleteStat]<! ( !OtherStat | !CompleteIf @ ) !>                            ||
+||   [20][12][36]: CompleteStat -> [25][If]< "if" "cond" "then" ( ( CompleteStat @ [ "else" Stat ] | HalfIf ) ) > ||
+||   [18][3][33]: If -> [43][Stat]<! ( !OtherStat | !If @ ) !>                                                    ||
+||   [17][5][33]: Stat -> [7][Block]< "{" { Stat @ } "}" >                                                        ||
+||   [2][2][0]: Block -> [35][OtherStat]<! ( !Do | !Block @ ) !>                                                  ||
+||   [1][1][0]: OtherStat -> [42][Stat]<! ( !OtherStat @ | !If ) !>                                               ||
+||   [0][14][0]: Stat -> [46][Module]< Stat @ >                                                                   ||
+|| [PREDECESSORS 55-55]: [55]                                                                                     ||
+|| [SUCCESORS 57-57]: [57]                                                                                        ||
+++================================================================================================================++
+[0]
+ |
+ +
+ |
+[0]
+++================================================================================================================++
+|| [57]: {DO} do                                                                                                  ||
+|| [3][Do]< "do" @ ";" >                                                                                          ||
+|| [AST-INSTRUCTIONS]:                                                                                            ||
+||   + StackBegin()                                                                                               ||
+||   + Token(0)                                                                                                   ||
+|| [RETURN STACK]:                                                                                                ||
+||   [30][4][56]: Do -> [34][OtherStat]<! ( !Do @ | !Block ) !>                                                   ||
+||   [29][1][56]: OtherStat -> [42][Stat]<! ( !OtherStat @ | !If ) !>                                             ||
+||   [28][10][56]: Stat -> [19][CompleteIf]< "if" "cond" "then" CompleteStat "else" Stat @ >                      ||
+||   [21][9][36]: CompleteIf -> [39][CompleteStat]<! ( !OtherStat | !CompleteIf @ ) !>                            ||
+||   [20][12][36]: CompleteStat -> [25][If]< "if" "cond" "then" ( ( CompleteStat @ [ "else" Stat ] | HalfIf ) ) > ||
+||   [18][3][33]: If -> [43][Stat]<! ( !OtherStat | !If @ ) !>                                                    ||
+||   [17][5][33]: Stat -> [7][Block]< "{" { Stat @ } "}" >                                                        ||
+||   [2][2][0]: Block -> [35][OtherStat]<! ( !Do | !Block @ ) !>                                                  ||
+||   [1][1][0]: OtherStat -> [42][Stat]<! ( !OtherStat @ | !If ) !>                                               ||
+||   [0][14][0]: Stat -> [46][Module]< Stat @ >                                                                   ||
+|| [PREDECESSORS 56-56]: [56]                                                                                     ||
+|| [SUCCESORS 58-58]: [58]                                                                                        ||
+++================================================================================================================++
+[0]
+ |
+ +
+ |
+[0]
+++================================================================================================================++
+|| [58]: {SEMICOLON} ;                                                                                            ||
+|| [2][Do]< "do" ";" @ >                                                                                          ||
+|| [AST-INSTRUCTIONS]:                                                                                            ||
+||   + Token(1)                                                                                                   ||
+|| [RETURN STACK]:                                                                                                ||
+||   [30][4][56]: Do -> [34][OtherStat]<! ( !Do @ | !Block ) !>                                                   ||
+||   [29][1][56]: OtherStat -> [42][Stat]<! ( !OtherStat @ | !If ) !>                                             ||
+||   [28][10][56]: Stat -> [19][CompleteIf]< "if" "cond" "then" CompleteStat "else" Stat @ >                      ||
+||   [21][9][36]: CompleteIf -> [39][CompleteStat]<! ( !OtherStat | !CompleteIf @ ) !>                            ||
+||   [20][12][36]: CompleteStat -> [25][If]< "if" "cond" "then" ( ( CompleteStat @ [ "else" Stat ] | HalfIf ) ) > ||
+||   [18][3][33]: If -> [43][Stat]<! ( !OtherStat | !If @ ) !>                                                    ||
+||   [17][5][33]: Stat -> [7][Block]< "{" { Stat @ } "}" >                                                        ||
+||   [2][2][0]: Block -> [35][OtherStat]<! ( !Do | !Block @ ) !>                                                  ||
+||   [1][1][0]: OtherStat -> [42][Stat]<! ( !OtherStat @ | !If ) !>                                               ||
+||   [0][14][0]: Stat -> [46][Module]< Stat @ >                                                                   ||
+|| [PREDECESSORS 57-57]: [57]                                                                                     ||
+|| [SUCCESORS 59-59]: [59]                                                                                        ||
+++================================================================================================================++
+|
++
+|
++----------------------------------------------------------------------------------------------------------------+
+| [59]: <Ending>                                                                                                 |
+| [34][OtherStat]<! ( !Do @ | !Block ) !>                                                                        |
+| [AST-INSTRUCTIONS]:                                                                                            |
+|   + CreateObject(DoStat)                                                                                       |
+|   + StackEnd()                                                                                                 |
+|   > StackBegin()                                                                                               |
+| [RETURN STACK]:                                                                                                |
+|   [29][1][56]: OtherStat -> [42][Stat]<! ( !OtherStat @ | !If ) !>                                             |
+|   [28][10][56]: Stat -> [19][CompleteIf]< "if" "cond" "then" CompleteStat "else" Stat @ >                      |
+|   [21][9][36]: CompleteIf -> [39][CompleteStat]<! ( !OtherStat | !CompleteIf @ ) !>                            |
+|   [20][12][36]: CompleteStat -> [25][If]< "if" "cond" "then" ( ( CompleteStat @ [ "else" Stat ] | HalfIf ) ) > |
+|   [18][3][33]: If -> [43][Stat]<! ( !OtherStat | !If @ ) !>                                                    |
+|   [17][5][33]: Stat -> [7][Block]< "{" { Stat @ } "}" >                                                        |
+|   [2][2][0]: Block -> [35][OtherStat]<! ( !Do | !Block @ ) !>                                                  |
+|   [1][1][0]: OtherStat -> [42][Stat]<! ( !OtherStat @ | !If ) !>                                               |
+|   [0][14][0]: Stat -> [46][Module]< Stat @ >                                                                   |
+| [PREDECESSORS 58-58]: [58]                                                                                     |
+| [SUCCESORS 60-60]: [60]                                                                                        |
++----------------------------------------------------------------------------------------------------------------+
+|
++
+|
++----------------------------------------------------------------------------------------------------------------+
+| [60]: <Ending>                                                                                                 |
+| [42][Stat]<! ( !OtherStat @ | !If ) !>                                                                         |
+| [AST-INSTRUCTIONS]:                                                                                            |
+|   + StackEnd()                                                                                                 |
+|   > StackBegin()                                                                                               |
+| [RETURN STACK]:                                                                                                |
+|   [28][10][56]: Stat -> [19][CompleteIf]< "if" "cond" "then" CompleteStat "else" Stat @ >                      |
+|   [21][9][36]: CompleteIf -> [39][CompleteStat]<! ( !OtherStat | !CompleteIf @ ) !>                            |
+|   [20][12][36]: CompleteStat -> [25][If]< "if" "cond" "then" ( ( CompleteStat @ [ "else" Stat ] | HalfIf ) ) > |
+|   [18][3][33]: If -> [43][Stat]<! ( !OtherStat | !If @ ) !>                                                    |
+|   [17][5][33]: Stat -> [7][Block]< "{" { Stat @ } "}" >                                                        |
+|   [2][2][0]: Block -> [35][OtherStat]<! ( !Do | !Block @ ) !>                                                  |
+|   [1][1][0]: OtherStat -> [42][Stat]<! ( !OtherStat @ | !If ) !>                                               |
+|   [0][14][0]: Stat -> [46][Module]< Stat @ >                                                                   |
+| [PREDECESSORS 59-59]: [59]                                                                                     |
+| [SUCCESORS 61-61]: [61]                                                                                        |
++----------------------------------------------------------------------------------------------------------------+
+|
++
+|
++----------------------------------------------------------------------------------------------------------------+
+| [61]: <Ending>                                                                                                 |
+| [19][CompleteIf]< "if" "cond" "then" CompleteStat "else" Stat @ >                                              |
+| [AST-INSTRUCTIONS]:                                                                                            |
+|   + StackEnd()                                                                                                 |
+|   > StackSlot(5)                                                                                               |
+| [RETURN STACK]:                                                                                                |
+|   [21][9][36]: CompleteIf -> [39][CompleteStat]<! ( !OtherStat | !CompleteIf @ ) !>                            |
+|   [20][12][36]: CompleteStat -> [25][If]< "if" "cond" "then" ( ( CompleteStat @ [ "else" Stat ] | HalfIf ) ) > |
+|   [18][3][33]: If -> [43][Stat]<! ( !OtherStat | !If @ ) !>                                                    |
+|   [17][5][33]: Stat -> [7][Block]< "{" { Stat @ } "}" >                                                        |
+|   [2][2][0]: Block -> [35][OtherStat]<! ( !Do | !Block @ ) !>                                                  |
+|   [1][1][0]: OtherStat -> [42][Stat]<! ( !OtherStat @ | !If ) !>                                               |
+|   [0][14][0]: Stat -> [46][Module]< Stat @ >                                                                   |
+| [PREDECESSORS 60-60]: [60]                                                                                     |
+| [SUCCESORS 62-62]: [62]                                                                                        |
++----------------------------------------------------------------------------------------------------------------+
+|
++
+|
++----------------------------------------------------------------------------------------------------------------+
+| [62]: <Ending>                                                                                                 |
+| [39][CompleteStat]<! ( !OtherStat | !CompleteIf @ ) !>                                                         |
+| [AST-INSTRUCTIONS]:                                                                                            |
+|   + CreateObject(IfStat)                                                                                       |
+|   + Field(IfStat::thenBranch, 3)                                                                               |
+|   + Field(IfStat::elseBranch, 5)                                                                               |
+|   + StackEnd()                                                                                                 |
+|   > StackBegin()                                                                                               |
+| [RETURN STACK]:                                                                                                |
+|   [20][12][36]: CompleteStat -> [25][If]< "if" "cond" "then" ( ( CompleteStat @ [ "else" Stat ] | HalfIf ) ) > |
+|   [18][3][33]: If -> [43][Stat]<! ( !OtherStat | !If @ ) !>                                                    |
+|   [17][5][33]: Stat -> [7][Block]< "{" { Stat @ } "}" >                                                        |
+|   [2][2][0]: Block -> [35][OtherStat]<! ( !Do | !Block @ ) !>                                                  |
+|   [1][1][0]: OtherStat -> [42][Stat]<! ( !OtherStat @ | !If ) !>                                               |
+|   [0][14][0]: Stat -> [46][Module]< Stat @ >                                                                   |
+| [PREDECESSORS 61-61]: [61]                                                                                     |
+| [SUCCESORS 63-63]: [63]                                                                                        |
++----------------------------------------------------------------------------------------------------------------+
+|
++
+|
++--------------------------------------------------------------------------------+
+| [63]: <Ending>                                                                 |
+| [25][If]< "if" "cond" "then" ( ( CompleteStat @ [ "else" Stat ] | HalfIf ) ) > |
+| [AST-INSTRUCTIONS]:                                                            |
+|   + StackEnd()                                                                 |
+|   > StackSlot(3)                                                               |
+| [RETURN STACK]:                                                                |
+|   [18][3][33]: If -> [43][Stat]<! ( !OtherStat | !If @ ) !>                    |
+|   [17][5][33]: Stat -> [7][Block]< "{" { Stat @ } "}" >                        |
+|   [2][2][0]: Block -> [35][OtherStat]<! ( !Do | !Block @ ) !>                  |
+|   [1][1][0]: OtherStat -> [42][Stat]<! ( !OtherStat @ | !If ) !>               |
+|   [0][14][0]: Stat -> [46][Module]< Stat @ >                                   |
+| [PREDECESSORS 62-62]: [62]                                                     |
+| [SUCCESORS 64-64]: [64]                                                        |
++--------------------------------------------------------------------------------+
+|
++
+|
++------------------------------------------------------------------+
+| [64]: <Ending>                                                   |
+| [43][Stat]<! ( !OtherStat | !If @ ) !>                           |
+| [AST-INSTRUCTIONS]:                                              |
+|   + CreateObject(IfStat)                                         |
+|   + Field(IfStat::thenBranch, 3)                                 |
+|   + Field(IfStat::elseBranch, 5)                                 |
+|   + Field(IfStat::thenBranch, 6)                                 |
+|   + StackEnd()                                                   |
+|   > StackBegin()                                                 |
+| [RETURN STACK]:                                                  |
+|   [17][5][33]: Stat -> [7][Block]< "{" { Stat @ } "}" >          |
+|   [2][2][0]: Block -> [35][OtherStat]<! ( !Do | !Block @ ) !>    |
+|   [1][1][0]: OtherStat -> [42][Stat]<! ( !OtherStat @ | !If ) !> |
+|   [0][14][0]: Stat -> [46][Module]< Stat @ >                     |
+| [PREDECESSORS 63-63]: [63]                                       |
+| [SUCCESORS 65-65]: [65]                                          |
++------------------------------------------------------------------+
+|
++
+|
++------------------------------------------------------------------+
+| [65]: <Ending>                                                   |
+| [7][Block]< "{" { Stat @ } "}" >                                 |
+| [AST-INSTRUCTIONS]:                                              |
+|   + StackEnd()                                                   |
+|   > StackSlot(1)                                                 |
+| [RETURN STACK]:                                                  |
+|   [2][2][0]: Block -> [35][OtherStat]<! ( !Do | !Block @ ) !>    |
+|   [1][1][0]: OtherStat -> [42][Stat]<! ( !OtherStat @ | !If ) !> |
+|   [0][14][0]: Stat -> [46][Module]< Stat @ >                     |
+| [PREDECESSORS 64-64]: [64]                                       |
+| [SUCCESORS 66-66]: [66]                                          |
++------------------------------------------------------------------+
+[0]
+ |
+ +
+ |
+[0]
+++================================================================================++
+|| [66]: {IF} if                                                                  ||
+|| [31][If]< "if" @ "cond" "then" ( ( CompleteStat [ "else" Stat ] | HalfIf ) ) > ||
+|| [AST-INSTRUCTIONS]:                                                            ||
+||   + StackBegin()                                                               ||
+||   + Token(0)                                                                   ||
+|| [RETURN STACK]:                                                                ||
+||   [32][3][65]: If -> [43][Stat]<! ( !OtherStat | !If @ ) !>                    ||
+||   [31][5][65]: Stat -> [7][Block]< "{" { Stat @ } "}" >                        ||
+||   [2][2][0]: Block -> [35][OtherStat]<! ( !Do | !Block @ ) !>                  ||
+||   [1][1][0]: OtherStat -> [42][Stat]<! ( !OtherStat @ | !If ) !>               ||
+||   [0][14][0]: Stat -> [46][Module]< Stat @ >                                   ||
+|| [PREDECESSORS 65-65]: [65]                                                     ||
+|| [SUCCESORS 67-67]: [67]                                                        ||
+++================================================================================++
+[0]
+ |
+ +
+ |
+[0]
+++================================================================================++
+|| [67]: {CONDITION} cond                                                         ||
+|| [30][If]< "if" "cond" @ "then" ( ( CompleteStat [ "else" Stat ] | HalfIf ) ) > ||
+|| [AST-INSTRUCTIONS]:                                                            ||
+||   + Token(1)                                                                   ||
+|| [RETURN STACK]:                                                                ||
+||   [32][3][65]: If -> [43][Stat]<! ( !OtherStat | !If @ ) !>                    ||
+||   [31][5][65]: Stat -> [7][Block]< "{" { Stat @ } "}" >                        ||
+||   [2][2][0]: Block -> [35][OtherStat]<! ( !Do | !Block @ ) !>                  ||
+||   [1][1][0]: OtherStat -> [42][Stat]<! ( !OtherStat @ | !If ) !>               ||
+||   [0][14][0]: Stat -> [46][Module]< Stat @ >                                   ||
+|| [PREDECESSORS 66-66]: [66]                                                     ||
+|| [SUCCESORS 68-68]: [68]                                                        ||
+++================================================================================++
+[0]
+ |
+ +
+ |
+[0]
+++================================================================================++
+|| [68]: {THEN} then                                                              ||
+|| [29][If]< "if" "cond" "then" @ ( ( CompleteStat [ "else" Stat ] | HalfIf ) ) > ||
+|| [AST-INSTRUCTIONS]:                                                            ||
+||   + Token(2)                                                                   ||
+|| [RETURN STACK]:                                                                ||
+||   [32][3][65]: If -> [43][Stat]<! ( !OtherStat | !If @ ) !>                    ||
+||   [31][5][65]: Stat -> [7][Block]< "{" { Stat @ } "}" >                        ||
+||   [2][2][0]: Block -> [35][OtherStat]<! ( !Do | !Block @ ) !>                  ||
+||   [1][1][0]: OtherStat -> [42][Stat]<! ( !OtherStat @ | !If ) !>               ||
+||   [0][14][0]: Stat -> [46][Module]< Stat @ >                                   ||
+|| [PREDECESSORS 67-67]: [67]                                                     ||
+|| [SUCCESORS 70-70]: [70]                                                        ||
+++================================================================================++
+[0]
+ |
+ +
+ |
+[0]
+++================================================================================================================++
+|| [70]: {IF} if                                                                                                  ||
+|| [22][CompleteIf]< "if" @ "cond" "then" CompleteStat "else" Stat >                                              ||
+|| [AST-INSTRUCTIONS]:                                                                                            ||
+||   + StackBegin()                                                                                               ||
+||   + Token(0)                                                                                                   ||
+|| [RETURN STACK]:                                                                                                ||
+||   [35][9][68]: CompleteIf -> [39][CompleteStat]<! ( !OtherStat | !CompleteIf @ ) !>                            ||
+||   [34][12][68]: CompleteStat -> [25][If]< "if" "cond" "then" ( ( CompleteStat @ [ "else" Stat ] | HalfIf ) ) > ||
+||   [32][3][65]: If -> [43][Stat]<! ( !OtherStat | !If @ ) !>                                                    ||
+||   [31][5][65]: Stat -> [7][Block]< "{" { Stat @ } "}" >                                                        ||
+||   [2][2][0]: Block -> [35][OtherStat]<! ( !Do | !Block @ ) !>                                                  ||
+||   [1][1][0]: OtherStat -> [42][Stat]<! ( !OtherStat @ | !If ) !>                                               ||
+||   [0][14][0]: Stat -> [46][Module]< Stat @ >                                                                   ||
+|| [PREDECESSORS 68-68]: [68]                                                                                     ||
+|| [SUCCESORS 72-72]: [72]                                                                                        ||
+++================================================================================================================++
+[0]
+ |
+ +
+ |
+[0]
+++================================================================================================================++
+|| [72]: {CONDITION} cond                                                                                         ||
+|| [21][CompleteIf]< "if" "cond" @ "then" CompleteStat "else" Stat >                                              ||
+|| [AST-INSTRUCTIONS]:                                                                                            ||
+||   + Token(1)                                                                                                   ||
+|| [RETURN STACK]:                                                                                                ||
+||   [35][9][68]: CompleteIf -> [39][CompleteStat]<! ( !OtherStat | !CompleteIf @ ) !>                            ||
+||   [34][12][68]: CompleteStat -> [25][If]< "if" "cond" "then" ( ( CompleteStat @ [ "else" Stat ] | HalfIf ) ) > ||
+||   [32][3][65]: If -> [43][Stat]<! ( !OtherStat | !If @ ) !>                                                    ||
+||   [31][5][65]: Stat -> [7][Block]< "{" { Stat @ } "}" >                                                        ||
+||   [2][2][0]: Block -> [35][OtherStat]<! ( !Do | !Block @ ) !>                                                  ||
+||   [1][1][0]: OtherStat -> [42][Stat]<! ( !OtherStat @ | !If ) !>                                               ||
+||   [0][14][0]: Stat -> [46][Module]< Stat @ >                                                                   ||
+|| [PREDECESSORS 70-70]: [70]                                                                                     ||
+|| [SUCCESORS 74-74]: [74]                                                                                        ||
+++================================================================================================================++
+[0]
+ |
+ +
+ |
+[0]
+++================================================================================================================++
+|| [74]: {THEN} then                                                                                              ||
+|| [17][CompleteIf]< "if" "cond" "then" @ CompleteStat "else" Stat >                                              ||
+|| [AST-INSTRUCTIONS]:                                                                                            ||
+||   + Token(2)                                                                                                   ||
+|| [RETURN STACK]:                                                                                                ||
+||   [35][9][68]: CompleteIf -> [39][CompleteStat]<! ( !OtherStat | !CompleteIf @ ) !>                            ||
+||   [34][12][68]: CompleteStat -> [25][If]< "if" "cond" "then" ( ( CompleteStat @ [ "else" Stat ] | HalfIf ) ) > ||
+||   [32][3][65]: If -> [43][Stat]<! ( !OtherStat | !If @ ) !>                                                    ||
+||   [31][5][65]: Stat -> [7][Block]< "{" { Stat @ } "}" >                                                        ||
+||   [2][2][0]: Block -> [35][OtherStat]<! ( !Do | !Block @ ) !>                                                  ||
+||   [1][1][0]: OtherStat -> [42][Stat]<! ( !OtherStat @ | !If ) !>                                               ||
+||   [0][14][0]: Stat -> [46][Module]< Stat @ >                                                                   ||
+|| [PREDECESSORS 72-72]: [72]                                                                                     ||
+|| [SUCCESORS 76-76]: [76]                                                                                        ||
+++================================================================================================================++
+[0]
+ |
+ +
+ |
+[0]
+++================================================================================================================++
+|| [76]: {DO} do                                                                                                  ||
+|| [3][Do]< "do" @ ";" >                                                                                          ||
+|| [AST-INSTRUCTIONS]:                                                                                            ||
+||   + StackBegin()                                                                                               ||
+||   + Token(0)                                                                                                   ||
+|| [RETURN STACK]:                                                                                                ||
+||   [41][4][74]: Do -> [34][OtherStat]<! ( !Do @ | !Block ) !>                                                   ||
+||   [40][8][74]: OtherStat -> [38][CompleteStat]<! ( !OtherStat @ | !CompleteIf ) !>                             ||
+||   [39][7][74]: CompleteStat -> [20][CompleteIf]< "if" "cond" "then" CompleteStat @ "else" Stat >               ||
+||   [35][9][68]: CompleteIf -> [39][CompleteStat]<! ( !OtherStat | !CompleteIf @ ) !>                            ||
+||   [34][12][68]: CompleteStat -> [25][If]< "if" "cond" "then" ( ( CompleteStat @ [ "else" Stat ] | HalfIf ) ) > ||
+||   [32][3][65]: If -> [43][Stat]<! ( !OtherStat | !If @ ) !>                                                    ||
+||   [31][5][65]: Stat -> [7][Block]< "{" { Stat @ } "}" >                                                        ||
+||   [2][2][0]: Block -> [35][OtherStat]<! ( !Do | !Block @ ) !>                                                  ||
+||   [1][1][0]: OtherStat -> [42][Stat]<! ( !OtherStat @ | !If ) !>                                               ||
+||   [0][14][0]: Stat -> [46][Module]< Stat @ >                                                                   ||
+|| [PREDECESSORS 74-74]: [74]                                                                                     ||
+|| [SUCCESORS 84-84]: [84]                                                                                        ||
+++================================================================================================================++
+[0]
+ |
+ +
+ |
+[0]
+++================================================================================================================++
+|| [84]: {SEMICOLON} ;                                                                                            ||
+|| [2][Do]< "do" ";" @ >                                                                                          ||
+|| [AST-INSTRUCTIONS]:                                                                                            ||
+||   + Token(1)                                                                                                   ||
+|| [RETURN STACK]:                                                                                                ||
+||   [41][4][74]: Do -> [34][OtherStat]<! ( !Do @ | !Block ) !>                                                   ||
+||   [40][8][74]: OtherStat -> [38][CompleteStat]<! ( !OtherStat @ | !CompleteIf ) !>                             ||
+||   [39][7][74]: CompleteStat -> [20][CompleteIf]< "if" "cond" "then" CompleteStat @ "else" Stat >               ||
+||   [35][9][68]: CompleteIf -> [39][CompleteStat]<! ( !OtherStat | !CompleteIf @ ) !>                            ||
+||   [34][12][68]: CompleteStat -> [25][If]< "if" "cond" "then" ( ( CompleteStat @ [ "else" Stat ] | HalfIf ) ) > ||
+||   [32][3][65]: If -> [43][Stat]<! ( !OtherStat | !If @ ) !>                                                    ||
+||   [31][5][65]: Stat -> [7][Block]< "{" { Stat @ } "}" >                                                        ||
+||   [2][2][0]: Block -> [35][OtherStat]<! ( !Do | !Block @ ) !>                                                  ||
+||   [1][1][0]: OtherStat -> [42][Stat]<! ( !OtherStat @ | !If ) !>                                               ||
+||   [0][14][0]: Stat -> [46][Module]< Stat @ >                                                                   ||
+|| [PREDECESSORS 76-76]: [76]                                                                                     ||
+|| [SUCCESORS 85-85]: [85]                                                                                        ||
+++================================================================================================================++
+|
++
+|
++----------------------------------------------------------------------------------------------------------------+
+| [85]: <Ending>                                                                                                 |
+| [34][OtherStat]<! ( !Do @ | !Block ) !>                                                                        |
+| [AST-INSTRUCTIONS]:                                                                                            |
+|   + CreateObject(DoStat)                                                                                       |
+|   + StackEnd()                                                                                                 |
+|   > StackBegin()                                                                                               |
+| [RETURN STACK]:                                                                                                |
+|   [40][8][74]: OtherStat -> [38][CompleteStat]<! ( !OtherStat @ | !CompleteIf ) !>                             |
+|   [39][7][74]: CompleteStat -> [20][CompleteIf]< "if" "cond" "then" CompleteStat @ "else" Stat >               |
+|   [35][9][68]: CompleteIf -> [39][CompleteStat]<! ( !OtherStat | !CompleteIf @ ) !>                            |
+|   [34][12][68]: CompleteStat -> [25][If]< "if" "cond" "then" ( ( CompleteStat @ [ "else" Stat ] | HalfIf ) ) > |
+|   [32][3][65]: If -> [43][Stat]<! ( !OtherStat | !If @ ) !>                                                    |
+|   [31][5][65]: Stat -> [7][Block]< "{" { Stat @ } "}" >                                                        |
+|   [2][2][0]: Block -> [35][OtherStat]<! ( !Do | !Block @ ) !>                                                  |
+|   [1][1][0]: OtherStat -> [42][Stat]<! ( !OtherStat @ | !If ) !>                                               |
+|   [0][14][0]: Stat -> [46][Module]< Stat @ >                                                                   |
+| [PREDECESSORS 84-84]: [84]                                                                                     |
+| [SUCCESORS 86-86]: [86]                                                                                        |
++----------------------------------------------------------------------------------------------------------------+
+|
++
+|
++----------------------------------------------------------------------------------------------------------------+
+| [86]: <Ending>                                                                                                 |
+| [38][CompleteStat]<! ( !OtherStat @ | !CompleteIf ) !>                                                         |
+| [AST-INSTRUCTIONS]:                                                                                            |
+|   + StackEnd()                                                                                                 |
+|   > StackBegin()                                                                                               |
+| [RETURN STACK]:                                                                                                |
+|   [39][7][74]: CompleteStat -> [20][CompleteIf]< "if" "cond" "then" CompleteStat @ "else" Stat >               |
+|   [35][9][68]: CompleteIf -> [39][CompleteStat]<! ( !OtherStat | !CompleteIf @ ) !>                            |
+|   [34][12][68]: CompleteStat -> [25][If]< "if" "cond" "then" ( ( CompleteStat @ [ "else" Stat ] | HalfIf ) ) > |
+|   [32][3][65]: If -> [43][Stat]<! ( !OtherStat | !If @ ) !>                                                    |
+|   [31][5][65]: Stat -> [7][Block]< "{" { Stat @ } "}" >                                                        |
+|   [2][2][0]: Block -> [35][OtherStat]<! ( !Do | !Block @ ) !>                                                  |
+|   [1][1][0]: OtherStat -> [42][Stat]<! ( !OtherStat @ | !If ) !>                                               |
+|   [0][14][0]: Stat -> [46][Module]< Stat @ >                                                                   |
+| [PREDECESSORS 85-85]: [85]                                                                                     |
+| [SUCCESORS 87-87]: [87]                                                                                        |
++----------------------------------------------------------------------------------------------------------------+
+|
++
+|
++----------------------------------------------------------------------------------------------------------------+
+| [87]: <Ending>                                                                                                 |
+| [20][CompleteIf]< "if" "cond" "then" CompleteStat @ "else" Stat >                                              |
+| [AST-INSTRUCTIONS]:                                                                                            |
+|   + StackEnd()                                                                                                 |
+|   > StackSlot(3)                                                                                               |
+| [RETURN STACK]:                                                                                                |
+|   [35][9][68]: CompleteIf -> [39][CompleteStat]<! ( !OtherStat | !CompleteIf @ ) !>                            |
+|   [34][12][68]: CompleteStat -> [25][If]< "if" "cond" "then" ( ( CompleteStat @ [ "else" Stat ] | HalfIf ) ) > |
+|   [32][3][65]: If -> [43][Stat]<! ( !OtherStat | !If @ ) !>                                                    |
+|   [31][5][65]: Stat -> [7][Block]< "{" { Stat @ } "}" >                                                        |
+|   [2][2][0]: Block -> [35][OtherStat]<! ( !Do | !Block @ ) !>                                                  |
+|   [1][1][0]: OtherStat -> [42][Stat]<! ( !OtherStat @ | !If ) !>                                               |
+|   [0][14][0]: Stat -> [46][Module]< Stat @ >                                                                   |
+| [PREDECESSORS 86-86]: [86]                                                                                     |
+| [SUCCESORS 88-88]: [88]                                                                                        |
++----------------------------------------------------------------------------------------------------------------+
+[0]
+ |
+ +
+ |
+[0]
+++================================================================================================================++
+|| [88]: {ELSE} else                                                                                              ||
+|| [18][CompleteIf]< "if" "cond" "then" CompleteStat "else" @ Stat >                                              ||
+|| [AST-INSTRUCTIONS]:                                                                                            ||
+||   + Token(4)                                                                                                   ||
+|| [RETURN STACK]:                                                                                                ||
+||   [35][9][68]: CompleteIf -> [39][CompleteStat]<! ( !OtherStat | !CompleteIf @ ) !>                            ||
+||   [34][12][68]: CompleteStat -> [25][If]< "if" "cond" "then" ( ( CompleteStat @ [ "else" Stat ] | HalfIf ) ) > ||
+||   [32][3][65]: If -> [43][Stat]<! ( !OtherStat | !If @ ) !>                                                    ||
+||   [31][5][65]: Stat -> [7][Block]< "{" { Stat @ } "}" >                                                        ||
+||   [2][2][0]: Block -> [35][OtherStat]<! ( !Do | !Block @ ) !>                                                  ||
+||   [1][1][0]: OtherStat -> [42][Stat]<! ( !OtherStat @ | !If ) !>                                               ||
+||   [0][14][0]: Stat -> [46][Module]< Stat @ >                                                                   ||
+|| [PREDECESSORS 87-87]: [87]                                                                                     ||
+|| [SUCCESORS 89-89]: [89]                                                                                        ||
+++================================================================================================================++
+[0]
+ |
+ +
+ |
+[0]
+++================================================================================================================++
+|| [89]: {DO} do                                                                                                  ||
+|| [3][Do]< "do" @ ";" >                                                                                          ||
+|| [AST-INSTRUCTIONS]:                                                                                            ||
+||   + StackBegin()                                                                                               ||
+||   + Token(0)                                                                                                   ||
+|| [RETURN STACK]:                                                                                                ||
+||   [44][4][88]: Do -> [34][OtherStat]<! ( !Do @ | !Block ) !>                                                   ||
+||   [43][1][88]: OtherStat -> [42][Stat]<! ( !OtherStat @ | !If ) !>                                             ||
+||   [42][10][88]: Stat -> [19][CompleteIf]< "if" "cond" "then" CompleteStat "else" Stat @ >                      ||
+||   [35][9][68]: CompleteIf -> [39][CompleteStat]<! ( !OtherStat | !CompleteIf @ ) !>                            ||
+||   [34][12][68]: CompleteStat -> [25][If]< "if" "cond" "then" ( ( CompleteStat @ [ "else" Stat ] | HalfIf ) ) > ||
+||   [32][3][65]: If -> [43][Stat]<! ( !OtherStat | !If @ ) !>                                                    ||
+||   [31][5][65]: Stat -> [7][Block]< "{" { Stat @ } "}" >                                                        ||
+||   [2][2][0]: Block -> [35][OtherStat]<! ( !Do | !Block @ ) !>                                                  ||
+||   [1][1][0]: OtherStat -> [42][Stat]<! ( !OtherStat @ | !If ) !>                                               ||
+||   [0][14][0]: Stat -> [46][Module]< Stat @ >                                                                   ||
+|| [PREDECESSORS 88-88]: [88]                                                                                     ||
+|| [SUCCESORS 90-90]: [90]                                                                                        ||
+++================================================================================================================++
+[0]
+ |
+ +
+ |
+[0]
+++================================================================================================================++
+|| [90]: {SEMICOLON} ;                                                                                            ||
+|| [2][Do]< "do" ";" @ >                                                                                          ||
+|| [AST-INSTRUCTIONS]:                                                                                            ||
+||   + Token(1)                                                                                                   ||
+|| [RETURN STACK]:                                                                                                ||
+||   [44][4][88]: Do -> [34][OtherStat]<! ( !Do @ | !Block ) !>                                                   ||
+||   [43][1][88]: OtherStat -> [42][Stat]<! ( !OtherStat @ | !If ) !>                                             ||
+||   [42][10][88]: Stat -> [19][CompleteIf]< "if" "cond" "then" CompleteStat "else" Stat @ >                      ||
+||   [35][9][68]: CompleteIf -> [39][CompleteStat]<! ( !OtherStat | !CompleteIf @ ) !>                            ||
+||   [34][12][68]: CompleteStat -> [25][If]< "if" "cond" "then" ( ( CompleteStat @ [ "else" Stat ] | HalfIf ) ) > ||
+||   [32][3][65]: If -> [43][Stat]<! ( !OtherStat | !If @ ) !>                                                    ||
+||   [31][5][65]: Stat -> [7][Block]< "{" { Stat @ } "}" >                                                        ||
+||   [2][2][0]: Block -> [35][OtherStat]<! ( !Do | !Block @ ) !>                                                  ||
+||   [1][1][0]: OtherStat -> [42][Stat]<! ( !OtherStat @ | !If ) !>                                               ||
+||   [0][14][0]: Stat -> [46][Module]< Stat @ >                                                                   ||
+|| [PREDECESSORS 89-89]: [89]                                                                                     ||
+|| [SUCCESORS 91-91]: [91]                                                                                        ||
+++================================================================================================================++
+|
++
+|
++----------------------------------------------------------------------------------------------------------------+
+| [91]: <Ending>                                                                                                 |
+| [34][OtherStat]<! ( !Do @ | !Block ) !>                                                                        |
+| [AST-INSTRUCTIONS]:                                                                                            |
+|   + CreateObject(DoStat)                                                                                       |
+|   + StackEnd()                                                                                                 |
+|   > StackBegin()                                                                                               |
+| [RETURN STACK]:                                                                                                |
+|   [43][1][88]: OtherStat -> [42][Stat]<! ( !OtherStat @ | !If ) !>                                             |
+|   [42][10][88]: Stat -> [19][CompleteIf]< "if" "cond" "then" CompleteStat "else" Stat @ >                      |
+|   [35][9][68]: CompleteIf -> [39][CompleteStat]<! ( !OtherStat | !CompleteIf @ ) !>                            |
+|   [34][12][68]: CompleteStat -> [25][If]< "if" "cond" "then" ( ( CompleteStat @ [ "else" Stat ] | HalfIf ) ) > |
+|   [32][3][65]: If -> [43][Stat]<! ( !OtherStat | !If @ ) !>                                                    |
+|   [31][5][65]: Stat -> [7][Block]< "{" { Stat @ } "}" >                                                        |
+|   [2][2][0]: Block -> [35][OtherStat]<! ( !Do | !Block @ ) !>                                                  |
+|   [1][1][0]: OtherStat -> [42][Stat]<! ( !OtherStat @ | !If ) !>                                               |
+|   [0][14][0]: Stat -> [46][Module]< Stat @ >                                                                   |
+| [PREDECESSORS 90-90]: [90]                                                                                     |
+| [SUCCESORS 92-92]: [92]                                                                                        |
++----------------------------------------------------------------------------------------------------------------+
+|
++
+|
++----------------------------------------------------------------------------------------------------------------+
+| [92]: <Ending>                                                                                                 |
+| [42][Stat]<! ( !OtherStat @ | !If ) !>                                                                         |
+| [AST-INSTRUCTIONS]:                                                                                            |
+|   + StackEnd()                                                                                                 |
+|   > StackBegin()                                                                                               |
+| [RETURN STACK]:                                                                                                |
+|   [42][10][88]: Stat -> [19][CompleteIf]< "if" "cond" "then" CompleteStat "else" Stat @ >                      |
+|   [35][9][68]: CompleteIf -> [39][CompleteStat]<! ( !OtherStat | !CompleteIf @ ) !>                            |
+|   [34][12][68]: CompleteStat -> [25][If]< "if" "cond" "then" ( ( CompleteStat @ [ "else" Stat ] | HalfIf ) ) > |
+|   [32][3][65]: If -> [43][Stat]<! ( !OtherStat | !If @ ) !>                                                    |
+|   [31][5][65]: Stat -> [7][Block]< "{" { Stat @ } "}" >                                                        |
+|   [2][2][0]: Block -> [35][OtherStat]<! ( !Do | !Block @ ) !>                                                  |
+|   [1][1][0]: OtherStat -> [42][Stat]<! ( !OtherStat @ | !If ) !>                                               |
+|   [0][14][0]: Stat -> [46][Module]< Stat @ >                                                                   |
+| [PREDECESSORS 91-91]: [91]                                                                                     |
+| [SUCCESORS 93-93]: [93]                                                                                        |
++----------------------------------------------------------------------------------------------------------------+
+|
++
+|
++----------------------------------------------------------------------------------------------------------------+
+| [93]: <Ending>                                                                                                 |
+| [19][CompleteIf]< "if" "cond" "then" CompleteStat "else" Stat @ >                                              |
+| [AST-INSTRUCTIONS]:                                                                                            |
+|   + StackEnd()                                                                                                 |
+|   > StackSlot(5)                                                                                               |
+| [RETURN STACK]:                                                                                                |
+|   [35][9][68]: CompleteIf -> [39][CompleteStat]<! ( !OtherStat | !CompleteIf @ ) !>                            |
+|   [34][12][68]: CompleteStat -> [25][If]< "if" "cond" "then" ( ( CompleteStat @ [ "else" Stat ] | HalfIf ) ) > |
+|   [32][3][65]: If -> [43][Stat]<! ( !OtherStat | !If @ ) !>                                                    |
+|   [31][5][65]: Stat -> [7][Block]< "{" { Stat @ } "}" >                                                        |
+|   [2][2][0]: Block -> [35][OtherStat]<! ( !Do | !Block @ ) !>                                                  |
+|   [1][1][0]: OtherStat -> [42][Stat]<! ( !OtherStat @ | !If ) !>                                               |
+|   [0][14][0]: Stat -> [46][Module]< Stat @ >                                                                   |
+| [PREDECESSORS 92-92]: [92]                                                                                     |
+| [SUCCESORS 94-94]: [94]                                                                                        |
++----------------------------------------------------------------------------------------------------------------+
+|
++
+|
++----------------------------------------------------------------------------------------------------------------+
+| [94]: <Ending>                                                                                                 |
+| [39][CompleteStat]<! ( !OtherStat | !CompleteIf @ ) !>                                                         |
+| [AST-INSTRUCTIONS]:                                                                                            |
+|   + CreateObject(IfStat)                                                                                       |
+|   + Field(IfStat::thenBranch, 3)                                                                               |
+|   + Field(IfStat::elseBranch, 5)                                                                               |
+|   + StackEnd()                                                                                                 |
+|   > StackBegin()                                                                                               |
+| [RETURN STACK]:                                                                                                |
+|   [34][12][68]: CompleteStat -> [25][If]< "if" "cond" "then" ( ( CompleteStat @ [ "else" Stat ] | HalfIf ) ) > |
+|   [32][3][65]: If -> [43][Stat]<! ( !OtherStat | !If @ ) !>                                                    |
+|   [31][5][65]: Stat -> [7][Block]< "{" { Stat @ } "}" >                                                        |
+|   [2][2][0]: Block -> [35][OtherStat]<! ( !Do | !Block @ ) !>                                                  |
+|   [1][1][0]: OtherStat -> [42][Stat]<! ( !OtherStat @ | !If ) !>                                               |
+|   [0][14][0]: Stat -> [46][Module]< Stat @ >                                                                   |
+| [PREDECESSORS 93-93]: [93]                                                                                     |
+| [SUCCESORS 95-95]: [95]                                                                                        |
++----------------------------------------------------------------------------------------------------------------+
+|
++
+|
++--------------------------------------------------------------------------------+
+| [95]: <Ending>                                                                 |
+| [25][If]< "if" "cond" "then" ( ( CompleteStat @ [ "else" Stat ] | HalfIf ) ) > |
+| [AST-INSTRUCTIONS]:                                                            |
+|   + StackEnd()                                                                 |
+|   > StackSlot(3)                                                               |
+| [RETURN STACK]:                                                                |
+|   [32][3][65]: If -> [43][Stat]<! ( !OtherStat | !If @ ) !>                    |
+|   [31][5][65]: Stat -> [7][Block]< "{" { Stat @ } "}" >                        |
+|   [2][2][0]: Block -> [35][OtherStat]<! ( !Do | !Block @ ) !>                  |
+|   [1][1][0]: OtherStat -> [42][Stat]<! ( !OtherStat @ | !If ) !>               |
+|   [0][14][0]: Stat -> [46][Module]< Stat @ >                                   |
+| [PREDECESSORS 94-94]: [94]                                                     |
+| [SUCCESORS 96-96]: [96]                                                        |
++--------------------------------------------------------------------------------+
+|
++
+|
++------------------------------------------------------------------+
+| [96]: <Ending>                                                   |
+| [43][Stat]<! ( !OtherStat | !If @ ) !>                           |
+| [AST-INSTRUCTIONS]:                                              |
+|   + CreateObject(IfStat)                                         |
+|   + Field(IfStat::thenBranch, 3)                                 |
+|   + Field(IfStat::elseBranch, 5)                                 |
+|   + Field(IfStat::thenBranch, 6)                                 |
+|   + StackEnd()                                                   |
+|   > StackBegin()                                                 |
+| [RETURN STACK]:                                                  |
+|   [31][5][65]: Stat -> [7][Block]< "{" { Stat @ } "}" >          |
+|   [2][2][0]: Block -> [35][OtherStat]<! ( !Do | !Block @ ) !>    |
+|   [1][1][0]: OtherStat -> [42][Stat]<! ( !OtherStat @ | !If ) !> |
+|   [0][14][0]: Stat -> [46][Module]< Stat @ >                     |
+| [PREDECESSORS 95-95]: [95]                                       |
+| [SUCCESORS 97-97]: [97]                                          |
++------------------------------------------------------------------+
+|
++
+|
++------------------------------------------------------------------+
+| [97]: <Ending>                                                   |
+| [7][Block]< "{" { Stat @ } "}" >                                 |
+| [AST-INSTRUCTIONS]:                                              |
+|   + StackEnd()                                                   |
+|   > StackSlot(1)                                                 |
+| [RETURN STACK]:                                                  |
+|   [2][2][0]: Block -> [35][OtherStat]<! ( !Do | !Block @ ) !>    |
+|   [1][1][0]: OtherStat -> [42][Stat]<! ( !OtherStat @ | !If ) !> |
+|   [0][14][0]: Stat -> [46][Module]< Stat @ >                     |
+| [PREDECESSORS 96-96]: [96]                                       |
+| [SUCCESORS 98-98]: [98]                                          |
++------------------------------------------------------------------+
+[0]
+ |
+ +
+ |
+[0]
+++==================================================================++
+|| [98]: {CLOSE_BRACE} }                                            ||
+|| [8][Block]< "{" { Stat } "}" @ >                                 ||
+|| [AST-INSTRUCTIONS]:                                              ||
+||   + Token(2)                                                     ||
+|| [RETURN STACK]:                                                  ||
+||   [2][2][0]: Block -> [35][OtherStat]<! ( !Do | !Block @ ) !>    ||
+||   [1][1][0]: OtherStat -> [42][Stat]<! ( !OtherStat @ | !If ) !> ||
+||   [0][14][0]: Stat -> [46][Module]< Stat @ >                     ||
+|| [PREDECESSORS 97-97]: [97]                                       ||
+|| [SUCCESORS 99-99]: [99]                                          ||
+++==================================================================++
+|
++
+|
++------------------------------------------------------------------+
+| [99]: <Ending>                                                   |
+| [35][OtherStat]<! ( !Do | !Block @ ) !>                          |
+| [AST-INSTRUCTIONS]:                                              |
+|   + CreateObject(BlockStat)                                      |
+|   + Field(BlockStat::stats, 1)                                   |
+|   + StackEnd()                                                   |
+|   > StackBegin()                                                 |
+| [RETURN STACK]:                                                  |
+|   [1][1][0]: OtherStat -> [42][Stat]<! ( !OtherStat @ | !If ) !> |
+|   [0][14][0]: Stat -> [46][Module]< Stat @ >                     |
+| [PREDECESSORS 98-98]: [98]                                       |
+| [SUCCESORS 100-100]: [100]                                       |
++------------------------------------------------------------------+
+|
++
+|
++----------------------------------------------+
+| [100]: <Ending>                              |
+| [42][Stat]<! ( !OtherStat @ | !If ) !>       |
+| [AST-INSTRUCTIONS]:                          |
+|   + StackEnd()                               |
+|   > StackBegin()                             |
+| [RETURN STACK]:                              |
+|   [0][14][0]: Stat -> [46][Module]< Stat @ > |
+| [PREDECESSORS 99-99]: [99]                   |
+| [SUCCESORS 101-101]: [101]                   |
++----------------------------------------------+
+|
++
+|
++-------------------------------+
+| [101]: <Ending>               |
+| [46][Module]< Stat @ >        |
+| [AST-INSTRUCTIONS]:           |
+|   + StackEnd()                |
+|   > StackBegin()              |
+|   > StackSlot(0)              |
+| [PREDECESSORS 100-100]: [100] |
+| [SUCCESORS 102-102]: [102]    |
++-------------------------------+
+|
++
+|
++-------------------------------+
+| [102]: <Ending>               |
+| [45][Module] END [ENDING]     |
+| [AST-INSTRUCTIONS]:           |
+|   + CreateObject(Module)      |
+|   + Field(Module::stat, 0)    |
+|   + StackEnd()                |
+| [PREDECESSORS 101-101]: [101] |
++-------------------------------+
