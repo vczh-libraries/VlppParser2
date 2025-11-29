@@ -31,14 +31,14 @@ CalculateObjectFirstInstruction
 				}
 			}
 
-			void TraceManager::InjectFirstInstruction(InsRef insRef, Ref<InsExec_ObjRefLink> injectTargets, vuint64_t magicInjection)
+			void TraceManager::InjectFirstInstruction(InsRef insRef, Ref<InsExec_StackRefLink> injectTargets, vuint64_t magicInjection)
 			{
 				auto objLinkRef = injectTargets;
 				while (objLinkRef != nullref)
 				{
-					auto objLink = GetInsExec_ObjRefLink(objLinkRef);
+					auto objLink = GetInsExec_StackRefLink(objLinkRef);
 					objLinkRef = objLink->previous;
-					auto ieObject = GetInsExec_Object(objLink->id);
+					auto ieObject = GetInsExec_Stack(objLink->id);
 
 					if (ieObject->mergeCounter == magicInjection) continue;
 					ieObject->mergeCounter = magicInjection;

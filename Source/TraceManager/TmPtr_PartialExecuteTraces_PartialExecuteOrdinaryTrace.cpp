@@ -12,12 +12,12 @@ namespace vl
 PartialExecuteOrdinaryTrace
 ***********************************************************************/
 
-			InsExec_Object* TraceManager::NewObject()
+			InsExec_Stack* TraceManager::NewStack()
 			{
-				auto ieObject = GetInsExec_Object(insExec_Objects.Allocate());
-				ieObject->previous = firstObject;
-				firstObject = ieObject;
-				return ieObject;
+				auto ieStack = GetInsExec_Stack(insExec_Stacks.Allocate());
+				ieStack->previous = firstStack;
+				firstStack = ieStack;
+				return ieStack;
 			}
 
 			vint32_t TraceManager::GetStackBase(InsExec_Context& context)
@@ -52,9 +52,9 @@ PartialExecuteOrdinaryTrace
 				link = newLink;
 			}
 
-			void TraceManager::PushObjRefLink(Ref<InsExec_ObjRefLink>& link, Ref<InsExec_Object> id)
+			void TraceManager::PushStackRefLink(Ref<InsExec_StackRefLink>& link, Ref<InsExec_Stack> id)
 			{
-				auto newLink = GetInsExec_ObjRefLink(insExec_ObjRefLinks.Allocate());
+				auto newLink = GetInsExec_StackRefLink(insExec_StackRefLinks.Allocate());
 				newLink->previous = link;
 				newLink->id = id;
 				link = newLink;
@@ -84,94 +84,80 @@ PartialExecuteOrdinaryTrace
 				return newStack;
 			}
 
-			Ref<InsExec_ObjRefLink> TraceManager::JoinObjRefLink(Ref<InsExec_ObjRefLink> first, Ref<InsExec_ObjRefLink> second)
+			Ref<InsExec_StackRefLink> TraceManager::JoinStackRefLink(Ref<InsExec_StackRefLink> first, Ref<InsExec_StackRefLink> second)
 			{
 				if (first == nullref) return second;
 				if (second == nullref) return first;
 
-				Ref<InsExec_ObjRefLink> newStack;
+				Ref<InsExec_StackRefLink> newStack;
 
 				while (first != nullref)
 				{
-					auto stack = GetInsExec_ObjRefLink(first);
+					auto stack = GetInsExec_StackRefLink(first);
 					first = stack->previous;
-					PushObjRefLink(newStack, stack->id);
+					PushStackRefLink(newStack, stack->id);
 				}
 
 				while (second != nullref)
 				{
-					auto stack = GetInsExec_ObjRefLink(second);
+					auto stack = GetInsExec_StackRefLink(second);
 					second = stack->previous;
-					PushObjRefLink(newStack, stack->id);
+					PushStackRefLink(newStack, stack->id);
 				}
 
 				return newStack;
 			}
 
-			void TraceManager::PushAssignedToObjectIdsSingleWithMagic(Ref<InsExec_ObjRefLink> fieldObjectIds, Ref<InsExec_Object> assignedToTarget)
+			void TraceManager::PushOwnerStack_WithNewMagicCounter(Ref<InsExec_StackRefLink> fieldStacks, Ref<InsExec_Stack> ownerStack)
 			{
 				NEW_MERGE_STACK_MAGIC_COUNTER;
 				auto magicFieldObject = MergeStack_MagicCounter;
 
-				auto linkRef = fieldObjectIds;
+				auto linkRef = fieldStacks;
 				while (linkRef != nullref)
 				{
-					auto link = GetInsExec_ObjRefLink(linkRef);
+					auto link = GetInsExec_StackRefLink(linkRef);
 					linkRef = link->previous;
 
-					if (link->id.handle == InsExec_Object::TokenOrEnumItemObjectId)
-					{
-						continue;
-					}
-					auto ieFieldObject = GetInsExec_Object(link->id);
+					auto ieFieldObject = GetInsExec_Stack(link->id);
 					if (ieFieldObject->mergeCounter == magicFieldObject) continue;
+
 					ieFieldObject->mergeCounter = magicFieldObject;
-					PushObjRefLink(ieFieldObject->assignedToObjectIds, assignedToTarget);
+					PushStackRefLink(ieFieldObject->ownerStacks, ownerStack);
 				}
 			}
 
-			void TraceManager::PushAssignedToObjectIdsMultipleWithMagic(Ref<InsExec_ObjRefLink> fieldObjectIds, Ref<InsExec_ObjRefLink> assignedToTarget)
+			void TraceManager::PushOwnerStackMultiple_WithNewMagicCounter(Ref<InsExec_StackRefLink> fieldStacks, Ref<InsExec_StackRefLink> ownerStacks)
 			{
 				NEW_MERGE_STACK_MAGIC_COUNTER;
 				auto magicElement = MergeStack_MagicCounter;
 
-				auto linkRef = assignedToTarget;
+				auto linkRef = ownerStacks;
 				while (linkRef != nullref)
 				{
-					auto link = GetInsExec_ObjRefLink(linkRef);
+					auto link = GetInsExec_StackRefLink(linkRef);
 					linkRef = link->previous;
 
-					auto ieAssignedToObject = GetInsExec_Object(link->id);
+					auto ieAssignedToObject = GetInsExec_Stack(link->id);
 					if (ieAssignedToObject->mergeCounter == magicElement) return;
 					ieAssignedToObject->mergeCounter = magicElement;
 
-					PushAssignedToObjectIdsSingleWithMagic(fieldObjectIds, link->id);
+					PushOwnerStack_WithNewMagicCounter(ieAssignedToObject->ownerStacks, link->id);
 				}
 			}
 
-			InsExec_ObjectStack* TraceManager::PushObjectStackSingle(InsExec_Context& context, Ref<InsExec_Object> objectId)
+			InsExec_StackArrayRefLink* TraceManager::PushObjectStack(InsExec_Context& context, Ref<InsExec_StackRefLink> linkId)
 			{
-				auto ie = GetInsExec_ObjectStack(insExec_ObjectStacks.Allocate());
+				auto ie = GetInsExec_StackArrayRefLink(insExec_StackArrayRefLinks.Allocate());
 				ie->previous = context.objectStack;
-				PushObjRefLink(ie->objectIds, objectId);
-				ie->pushedCount = GetStackTop(context) + 1;
+				ie->ids = JoinStackRefLink(ie->ids, linkId);
 				context.objectStack = ie;
 				return ie;
 			}
 
-			InsExec_ObjectStack* TraceManager::PushObjectStackMultiple(InsExec_Context& context, Ref<InsExec_ObjRefLink> linkId)
+			InsExec_StackRefLink* TraceManager::PushCreateStack(InsExec_Context& context)
 			{
-				auto ie = GetInsExec_ObjectStack(insExec_ObjectStacks.Allocate());
-				ie->previous = context.objectStack;
-				ie->objectIds = JoinObjRefLink(ie->objectIds, linkId);
-				ie->pushedCount = GetStackTop(context) + 1;
-				context.objectStack = ie;
-				return ie;
-			}
-
-			InsExec_CreateStack* TraceManager::PushCreateStack(InsExec_Context& context)
-			{
-				auto ie = GetInsExec_CreateStack(insExec_CreateStacks.Allocate());
+				auto ie = GetInsExec_StackRefLink(insExec_StackRefLinks.Allocate());
 				ie->previous = context.createStack;
 				context.createStack = ie;
 				return ie;

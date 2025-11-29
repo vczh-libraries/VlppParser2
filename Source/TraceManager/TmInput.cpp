@@ -35,15 +35,14 @@ Initialize
 
 				traceExecs.Clear();
 				insExecs.Resize(0);
-				insExec_Objects.Clear();
+				insExec_Stacks.Clear();
 				insExec_InsRefLinks.Clear();
-				insExec_ObjRefLinks.Clear();
-				insExec_ObjectStacks.Clear();
-				insExec_CreateStacks.Clear();
+				insExec_StackRefLinks.Clear();
+				insExec_StackArrayRefLinks.Clear();
 
 				firstBranchTrace = nullref;
 				firstMergeTrace = nullref;
-				firstObject = nullref;
+				firstStack = nullref;
 				firstStep = nullref;
 				traceAmbiguities.Clear();
 				traceAmbiguityLinks.Clear();

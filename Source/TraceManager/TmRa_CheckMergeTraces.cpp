@@ -19,16 +19,16 @@ CheckMergeTrace
 ***********************************************************************/
 
 			template<typename TCallback>
-			bool TraceManager::EnumerateObjects(Ref<InsExec_ObjRefLink> objRefLinkStartSet, bool withCounter, TCallback&& callback)
+			bool TraceManager::EnumerateObjects(Ref<InsExec_StackRefLink> stackRefLinkStartSet, bool withCounter, TCallback&& callback)
 			{
 				// check every object in the link
 				auto magicIterating = MergeStack_MagicCounter;
-				auto linkId = objRefLinkStartSet;
+				auto linkId = stackRefLinkStartSet;
 				while (linkId != nullref)
 				{
-					auto objRefLink = GetInsExec_ObjRefLink(linkId);
-					linkId = objRefLink->previous;
-					auto ieObject = GetInsExec_Object(objRefLink->id);
+					auto stackRefLink = GetInsExec_StackRefLink(linkId);
+					linkId = stackRefLink->previous;
+					auto ieObject = GetInsExec_Object(stackRefLink->id);
 
 					if (withCounter)
 					{
@@ -44,9 +44,9 @@ CheckMergeTrace
 			}
 
 			template<typename TCallback>
-			bool TraceManager::EnumerateBottomInstructions(InsExec_Object* ieObject, TCallback&& callback)
+			bool TraceManager::EnumerateBottomInstructions(InsExec_Stack* ieObject, TCallback&& callback)
 			{
-				auto insRefLinkId = ieObject->bottomInsRefs;
+				auto insRefLinkId = ieObject->endInsRefs;
 				while (insRefLinkId != nullref)
 				{
 					auto insRefLink = GetInsExec_InsRefLink(insRefLinkId);
@@ -83,7 +83,7 @@ CheckMergeTrace
 			}
 
 			template<typename TCallback>
-			bool TraceManager::CheckAmbiguityResolution(TraceAmbiguity* ta, collections::List<Ref<InsExec_ObjRefLink>>& visitingIds, TCallback&& callback)
+			bool TraceManager::CheckAmbiguityResolution(TraceAmbiguity* ta, collections::List<Ref<InsExec_StackRefLink>>& visitingIds, TCallback&& callback)
 			{
 #define ERROR_MESSAGE_PREFIX L"vl::glr::automaton::TraceManager::CheckAmbiguityResolution(TraceAmbiguity&, List<vint32_t>&, TCallback&&)#"
 				// following conditions need to be satisfies if multiple objects could be the result of ambiguity
@@ -327,7 +327,7 @@ CheckMergeTrace
 #undef ERROR_MESSAGE_PREFIX
 			}
 
-			bool TraceManager::CheckMergeTrace(TraceAmbiguity* ta, Trace* trace, TraceExec* traceExec, collections::List<Ref<InsExec_ObjRefLink>>& visitingIds)
+			bool TraceManager::CheckMergeTrace(TraceAmbiguity* ta, Trace* trace, TraceExec* traceExec, collections::List<Ref<InsExec_StackRefLink>>& visitingIds)
 			{
 				// when a merge trace is the surviving trace
 				// objects in the top object stack are the result of ambiguity

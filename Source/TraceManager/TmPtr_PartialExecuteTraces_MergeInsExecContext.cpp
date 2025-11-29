@@ -14,7 +14,7 @@ namespace vl
 MergeInsExecContext
 ***********************************************************************/
 
-			void TraceManager::PushInsRefLinkWithCounter(Ref<InsExec_InsRefLink>& link, Ref<InsExec_InsRefLink> comming)
+			void TraceManager::PushInsRefLink_WithCurrentMagicCounter(Ref<InsExec_InsRefLink>& link, Ref<InsExec_InsRefLink> comming)
 			{
 				auto magicPush = MergeStack_MagicCounter;
 				while (comming != nullref)
@@ -32,19 +32,19 @@ MergeInsExecContext
 				}
 			}
 
-			void TraceManager::PushObjRefLinkWithCounter(Ref<InsExec_ObjRefLink>& link, Ref<InsExec_ObjRefLink> comming)
+			void TraceManager::PushStackRefLink_WithCurrentMagicCounter(Ref<InsExec_StackRefLink>& link, Ref<InsExec_StackRefLink> comming)
 			{
 				auto magicPush = MergeStack_MagicCounter;
 				while (comming != nullref)
 				{
-					auto commingStack = GetInsExec_ObjRefLink(comming);
+					auto commingStack = GetInsExec_StackRefLink(comming);
 					comming = commingStack->previous;
 
-					auto ieObject = GetInsExec_Object(commingStack->id);
+					auto ieObject = GetInsExec_Stack(commingStack->id);
 					if (ieObject->mergeCounter == magicPush) continue;
 
 					ieObject->mergeCounter = magicPush;
-					PushObjRefLink(link, ieObject);
+					PushStackRefLink(link, ieObject);
 				}
 			}
 
