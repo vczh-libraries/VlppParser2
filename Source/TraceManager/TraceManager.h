@@ -400,10 +400,10 @@ TraceManager (Data Structures -- PrepareTraceRoute/ResolveAmbiguity)
 				InsExec_Context						context;
 				TraceBranchData						branchData;
 
-				// linked list of branch traces, in a global depth-first order
+				// linked list of branch traces, in a global depth-first order, from TraceManager::firstBranchTrace
 				Ref<Trace>							nextBranchTrace;
 
-				// linked list of merge traces, in a global depth-first order
+				// linked list of merge traces, in a global depth-first order, from TraceManager::firstMergeTrace
 				Ref<Trace>							nextMergeTrace;
 
 				// linked list of ambiguity critical trace (order by trace id ascending)
