@@ -50,19 +50,20 @@
 
 ### Progressing
 
-- Non-ambiguous test cases
-- Ambiguous test cases
-- Sub branch to rewrite TmPtr and TmRa
-- prefix_merge test cases
-- Built-in parsers:
-  - Json
-  - Xml
-  - Workflow
-  - C++
-- build.ps1
-- Finish `## Features to Add`
-- Document design principal, algorithm and syntax
-- build.ps1
+- [x] Non-ambiguous test cases
+- [ ] Ambiguous test cases
+- [ ] Sub branch to rewrite TmPtr and TmRa
+- [ ] Built-in parsers:
+  - [ ] Json
+  - [ ] Xml
+  - [ ] Workflow
+- [ ] prefix_merge test cases
+- [ ] Built-in parsers:
+  - [ ] C++
+- [ ] build.ps1
+- [ ] Finish `## Features to Add`
+- [ ] Document design principal, algorithm and syntax
+- [ ] build.ps1
 
 ### Optimization ToDo
 
