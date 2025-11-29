@@ -38,6 +38,19 @@ CompileSyntaxVisitor
 					node->Accept(this);
 					return result;
 				}
+
+				StatePair BuildAssignments(StatePair pair, List<Ptr<GlrAssignment>>& assignments)
+				{
+					for (auto node : assignments)
+					{
+						auto propSymbol = FindPropSymbol(clauseType, node->field.value);
+						auto enumSymbol = dynamic_cast<AstEnumSymbol*>(propSymbol->propSymbol);
+						auto enumItem = (vint32_t)enumSymbol->ItemOrder().IndexOf(node->value.value);
+						auto field = output->fieldIds[propSymbol];
+						pair = automatonBuilder.BuildAssignment(pair, enumItem, field, (node->type == GlrAssignmentType::Weak));
+					}
+					return pair;
+				}
 			public:
 				CompileSyntaxVisitor(
 					VisitorContext& _context,
@@ -90,7 +103,17 @@ CompileSyntaxVisitor
 								auto rule = context.syntaxManager.Rules().Values()[index];
 								if (rule->isPartial)
 								{
-									CHECK_FAIL(L"Not Implemented!");
+									auto astRule = context.astRules[rule];
+									List<Func<StatePair()>> elements;
+									for (auto clause : astRule->clauses)
+									{
+										auto partialClause = clause.Cast<GlrPartialClause>();
+										elements.Add([this, partialClause]()
+										{
+											return BuildAssignments(Build(partialClause->syntax), partialClause->assignments);
+										});
+									}
+									result = automatonBuilder.BuildAlternativeSyntax(elements);
 								}
 								else if (field == -1)
 								{
@@ -192,19 +215,6 @@ CompileSyntaxVisitor
 				// GlrClause::IVisitor
 				////////////////////////////////////////////////////////////////////////
 
-				StatePair BuildAssignments(StatePair pair, List<Ptr<GlrAssignment>>& assignments)
-				{
-					for (auto node : assignments)
-					{
-						auto propSymbol = FindPropSymbol(clauseType, node->field.value);
-						auto enumSymbol = dynamic_cast<AstEnumSymbol*>(propSymbol->propSymbol);
-						auto enumItem = (vint32_t)enumSymbol->ItemOrder().IndexOf(node->value.value);
-						auto field = output->fieldIds[propSymbol];
-						pair = automatonBuilder.BuildAssignment(pair, enumItem, field, (node->type == GlrAssignmentType::Weak));
-					}
-					return pair;
-				}
-
 				void Visit(GlrCreateClause* node) override
 				{
 					clauseType = context.clauseTypes[node];
@@ -219,7 +229,7 @@ CompileSyntaxVisitor
 
 				void Visit(GlrPartialClause* node) override
 				{
-					CHECK_FAIL(L"Not Implemented!");
+					// Content of partial clauses are embedded in the caller side
 				}
 
 				void Visit(GlrReuseClause* node) override

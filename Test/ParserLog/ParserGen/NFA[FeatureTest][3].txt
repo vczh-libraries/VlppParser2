@@ -1,0 +1,1670 @@
+﻿[0][Plus] BEGIN 
+[RULE: 0][CLAUSE: -1]
+	token: "+" -> [2][Plus]< "+" @ >
+		+ StackBegin()
+		+ Token(0)
+
+[1][Plus] END [ENDING]
+[RULE: 0][CLAUSE: -1]
+
+[2][Plus]< "+" @ >
+[RULE: 0][CLAUSE: 0]
+	ending -> [1][Plus] END [ENDING]
+		+ CreateObject(Plus)
+		+ StackEnd()
+
+[3][Lt] BEGIN 
+[RULE: 1][CLAUSE: -1]
+	token: "<" -> [5][Lt]< "<" @ >
+		+ StackBegin()
+		+ Token(0)
+
+[4][Lt] END [ENDING]
+[RULE: 1][CLAUSE: -1]
+
+[5][Lt]< "<" @ >
+[RULE: 1][CLAUSE: 0]
+	ending -> [4][Lt] END [ENDING]
+		+ CreateObject(Lt)
+		+ StackEnd()
+
+[6][Gt] BEGIN 
+[RULE: 2][CLAUSE: -1]
+	token: ">" -> [8][Gt]< ">" @ >
+		+ StackBegin()
+		+ Token(0)
+
+[7][Gt] END [ENDING]
+[RULE: 2][CLAUSE: -1]
+
+[8][Gt]< ">" @ >
+[RULE: 2][CLAUSE: 0]
+	ending -> [7][Gt] END [ENDING]
+		+ CreateObject(Gt)
+		+ StackEnd()
+
+[9][EqualOptional] BEGIN 
+[RULE: 3][CLAUSE: -1]
+	token: "optional" -> [11][EqualOptional]< "optional" @ [ Plus ] "+" { Plus } >
+		+ StackBegin()
+		+ Token(0)
+
+[10][EqualOptional] END [ENDING]
+[RULE: 3][CLAUSE: -1]
+
+[11][EqualOptional]< "optional" @ [ Plus ] "+" { Plus } >
+[RULE: 3][CLAUSE: 0]
+	token: "+" -> [2][Plus]< "+" @ >
+		+ StackBegin()
+		+ Token(0)
+		> rule: Plus -> [12][EqualOptional]< "optional" [ Plus @ ] "+" { Plus } >
+			+ StackSlot(1)
+	token: "+" -> [13][EqualOptional]< "optional" [ Plus ] "+" @ { Plus } >
+		+ Token(2)
+
+[12][EqualOptional]< "optional" [ Plus @ ] "+" { Plus } >
+[RULE: 3][CLAUSE: 0]
+	token: "+" -> [13][EqualOptional]< "optional" [ Plus ] "+" @ { Plus } >
+		+ Token(2)
+
+[13][EqualOptional]< "optional" [ Plus ] "+" @ { Plus } >
+[RULE: 3][CLAUSE: 0]
+	ending -> [10][EqualOptional] END [ENDING]
+		+ EnumItem(0, 4)
+		+ CreateObject(OptionalFeature)
+		+ Field(OptionalFeature::optional, 1)
+		+ Field(OptionalFeature::loop, 3)
+		+ Field(OptionalFeature::priority, 4)
+		+ StackEnd()
+	token: "+" -> [2][Plus]< "+" @ >
+		+ StackBegin()
+		+ Token(0)
+		> rule: Plus -> [14][EqualOptional]< "optional" [ Plus ] "+" { Plus @ } >
+			+ StackSlot(3)
+
+[14][EqualOptional]< "optional" [ Plus ] "+" { Plus @ } >
+[RULE: 3][CLAUSE: 0]
+	ending -> [10][EqualOptional] END [ENDING]
+		+ EnumItem(0, 4)
+		+ CreateObject(OptionalFeature)
+		+ Field(OptionalFeature::optional, 1)
+		+ Field(OptionalFeature::loop, 3)
+		+ Field(OptionalFeature::priority, 4)
+		+ StackEnd()
+	token: "+" -> [2][Plus]< "+" @ >
+		+ StackBegin()
+		+ Token(0)
+		> rule: Plus -> [14][EqualOptional]< "optional" [ Plus ] "+" { Plus @ } >
+			+ StackSlot(3)
+
+[15][PositiveOptional] BEGIN 
+[RULE: 4][CLAUSE: -1]
+	token: "positive_optional" -> [20][PositiveOptional]< "positive_optional" @ +[ Plus ] "+" { Plus } >
+		+ StackBegin()
+		+ Token(0)
+
+[16][PositiveOptional] END [ENDING]
+[RULE: 4][CLAUSE: -1]
+
+[17][PositiveOptional]< "positive_optional" +[ Plus @ ] "+" { Plus } >
+[RULE: 4][CLAUSE: 0]
+	token: "+" -> [18][PositiveOptional]< "positive_optional" +[ Plus ] "+" @ { Plus } >
+		+ Token(2)
+
+[18][PositiveOptional]< "positive_optional" +[ Plus ] "+" @ { Plus } >
+[RULE: 4][CLAUSE: 0]
+	ending -> [16][PositiveOptional] END [ENDING]
+		+ EnumItem(1, 4)
+		+ CreateObject(OptionalFeature)
+		+ Field(OptionalFeature::optional, 1)
+		+ Field(OptionalFeature::loop, 3)
+		+ Field(OptionalFeature::priority, 4)
+		+ StackEnd()
+	token: "+" -> [2][Plus]< "+" @ >
+		+ StackBegin()
+		+ Token(0)
+		> rule: Plus -> [19][PositiveOptional]< "positive_optional" +[ Plus ] "+" { Plus @ } >
+			+ StackSlot(3)
+
+[19][PositiveOptional]< "positive_optional" +[ Plus ] "+" { Plus @ } >
+[RULE: 4][CLAUSE: 0]
+	ending -> [16][PositiveOptional] END [ENDING]
+		+ EnumItem(1, 4)
+		+ CreateObject(OptionalFeature)
+		+ Field(OptionalFeature::optional, 1)
+		+ Field(OptionalFeature::loop, 3)
+		+ Field(OptionalFeature::priority, 4)
+		+ StackEnd()
+	token: "+" -> [2][Plus]< "+" @ >
+		+ StackBegin()
+		+ Token(0)
+		> rule: Plus -> [19][PositiveOptional]< "positive_optional" +[ Plus ] "+" { Plus @ } >
+			+ StackSlot(3)
+
+[20][PositiveOptional]< "positive_optional" @ +[ Plus ] "+" { Plus } >
+[RULE: 4][CLAUSE: 0]
+	token: "+" -> [2][Plus]< "+" @ >
+		+ StackBegin()
+		+ Token(0)
+		> rule: Plus -> [17][PositiveOptional]< "positive_optional" +[ Plus @ ] "+" { Plus } >
+			+ StackSlot(1)
+	token: "+" -> [18][PositiveOptional]< "positive_optional" +[ Plus ] "+" @ { Plus } >
+		+ Token(2)
+
+[21][NegativeOptional] BEGIN 
+[RULE: 5][CLAUSE: -1]
+	token: "negative_optional" -> [26][NegativeOptional]< "negative_optional" @ -[ Plus ] "+" { Plus } >
+		+ StackBegin()
+		+ Token(0)
+
+[22][NegativeOptional] END [ENDING]
+[RULE: 5][CLAUSE: -1]
+
+[23][NegativeOptional]< "negative_optional" -[ Plus @ ] "+" { Plus } >
+[RULE: 5][CLAUSE: 0]
+	token: "+" -> [24][NegativeOptional]< "negative_optional" -[ Plus ] "+" @ { Plus } >
+		+ Token(2)
+
+[24][NegativeOptional]< "negative_optional" -[ Plus ] "+" @ { Plus } >
+[RULE: 5][CLAUSE: 0]
+	ending -> [22][NegativeOptional] END [ENDING]
+		+ EnumItem(2, 4)
+		+ CreateObject(OptionalFeature)
+		+ Field(OptionalFeature::optional, 1)
+		+ Field(OptionalFeature::loop, 3)
+		+ Field(OptionalFeature::priority, 4)
+		+ StackEnd()
+	token: "+" -> [2][Plus]< "+" @ >
+		+ StackBegin()
+		+ Token(0)
+		> rule: Plus -> [25][NegativeOptional]< "negative_optional" -[ Plus ] "+" { Plus @ } >
+			+ StackSlot(3)
+
+[25][NegativeOptional]< "negative_optional" -[ Plus ] "+" { Plus @ } >
+[RULE: 5][CLAUSE: 0]
+	ending -> [22][NegativeOptional] END [ENDING]
+		+ EnumItem(2, 4)
+		+ CreateObject(OptionalFeature)
+		+ Field(OptionalFeature::optional, 1)
+		+ Field(OptionalFeature::loop, 3)
+		+ Field(OptionalFeature::priority, 4)
+		+ StackEnd()
+	token: "+" -> [2][Plus]< "+" @ >
+		+ StackBegin()
+		+ Token(0)
+		> rule: Plus -> [25][NegativeOptional]< "negative_optional" -[ Plus ] "+" { Plus @ } >
+			+ StackSlot(3)
+
+[26][NegativeOptional]< "negative_optional" @ -[ Plus ] "+" { Plus } >
+[RULE: 5][CLAUSE: 0]
+	token: "+" -> [2][Plus]< "+" @ >
+		+ StackBegin()
+		+ Token(0)
+		> rule: Plus -> [23][NegativeOptional]< "negative_optional" -[ Plus @ ] "+" { Plus } >
+			+ StackSlot(1)
+	token: "+" -> [24][NegativeOptional]< "negative_optional" -[ Plus ] "+" @ { Plus } >
+		+ Token(2)
+
+[27][NestedOptional] BEGIN 
+[RULE: 12][CLAUSE: -1]
+	token: "nested_optional" -> [29][NestedOptional]< "nested_optional" @ [ ( [ ( [ Plus ] Plus ) ] Plus ) ] Plus { Plus } >
+		+ StackBegin()
+		+ Token(0)
+
+[28][NestedOptional] END [ENDING]
+[RULE: 12][CLAUSE: -1]
+
+[29][NestedOptional]< "nested_optional" @ [ ( [ ( [ Plus ] Plus ) ] Plus ) ] Plus { Plus } >
+[RULE: 12][CLAUSE: 0]
+	token: "+" -> [2][Plus]< "+" @ >
+		+ StackBegin()
+		+ Token(0)
+		> rule: Plus -> [34][NestedOptional]< "nested_optional" [ ( [ ( [ Plus ] Plus @ ) ] Plus ) ] Plus { Plus } >
+			+ StackSlot(2)
+	token: "+" -> [2][Plus]< "+" @ >
+		+ StackBegin()
+		+ Token(0)
+		> rule: Plus -> [33][NestedOptional]< "nested_optional" [ ( [ ( [ Plus ] Plus ) ] Plus @ ) ] Plus { Plus } >
+			+ StackSlot(3)
+	token: "+" -> [2][Plus]< "+" @ >
+		+ StackBegin()
+		+ Token(0)
+		> rule: Plus -> [31][NestedOptional]< "nested_optional" [ ( [ ( [ Plus ] Plus ) ] Plus ) ] Plus @ { Plus } >
+			+ StackSlot(4)
+	token: "+" -> [2][Plus]< "+" @ >
+		+ StackBegin()
+		+ Token(0)
+		> rule: Plus -> [30][NestedOptional]< "nested_optional" [ ( [ ( [ Plus @ ] Plus ) ] Plus ) ] Plus { Plus } >
+			+ StackSlot(1)
+
+[30][NestedOptional]< "nested_optional" [ ( [ ( [ Plus @ ] Plus ) ] Plus ) ] Plus { Plus } >
+[RULE: 12][CLAUSE: 0]
+	token: "+" -> [2][Plus]< "+" @ >
+		+ StackBegin()
+		+ Token(0)
+		> rule: Plus -> [34][NestedOptional]< "nested_optional" [ ( [ ( [ Plus ] Plus @ ) ] Plus ) ] Plus { Plus } >
+			+ StackSlot(2)
+
+[31][NestedOptional]< "nested_optional" [ ( [ ( [ Plus ] Plus ) ] Plus ) ] Plus @ { Plus } >
+[RULE: 12][CLAUSE: 0]
+	ending -> [28][NestedOptional] END [ENDING]
+		+ CreateObject(NestedOptionalFeature)
+		+ Field(NestedOptionalFeature::optional, 1)
+		+ Field(NestedOptionalFeature::tail1, 2)
+		+ Field(NestedOptionalFeature::tail2, 3)
+		+ Field(NestedOptionalFeature::tail3, 4)
+		+ Field(NestedOptionalFeature::tails, 5)
+		+ StackEnd()
+	token: "+" -> [2][Plus]< "+" @ >
+		+ StackBegin()
+		+ Token(0)
+		> rule: Plus -> [32][NestedOptional]< "nested_optional" [ ( [ ( [ Plus ] Plus ) ] Plus ) ] Plus { Plus @ } >
+			+ StackSlot(5)
+
+[32][NestedOptional]< "nested_optional" [ ( [ ( [ Plus ] Plus ) ] Plus ) ] Plus { Plus @ } >
+[RULE: 12][CLAUSE: 0]
+	ending -> [28][NestedOptional] END [ENDING]
+		+ CreateObject(NestedOptionalFeature)
+		+ Field(NestedOptionalFeature::optional, 1)
+		+ Field(NestedOptionalFeature::tail1, 2)
+		+ Field(NestedOptionalFeature::tail2, 3)
+		+ Field(NestedOptionalFeature::tail3, 4)
+		+ Field(NestedOptionalFeature::tails, 5)
+		+ StackEnd()
+	token: "+" -> [2][Plus]< "+" @ >
+		+ StackBegin()
+		+ Token(0)
+		> rule: Plus -> [32][NestedOptional]< "nested_optional" [ ( [ ( [ Plus ] Plus ) ] Plus ) ] Plus { Plus @ } >
+			+ StackSlot(5)
+
+[33][NestedOptional]< "nested_optional" [ ( [ ( [ Plus ] Plus ) ] Plus @ ) ] Plus { Plus } >
+[RULE: 12][CLAUSE: 0]
+	token: "+" -> [2][Plus]< "+" @ >
+		+ StackBegin()
+		+ Token(0)
+		> rule: Plus -> [31][NestedOptional]< "nested_optional" [ ( [ ( [ Plus ] Plus ) ] Plus ) ] Plus @ { Plus } >
+			+ StackSlot(4)
+
+[34][NestedOptional]< "nested_optional" [ ( [ ( [ Plus ] Plus @ ) ] Plus ) ] Plus { Plus } >
+[RULE: 12][CLAUSE: 0]
+	token: "+" -> [2][Plus]< "+" @ >
+		+ StackBegin()
+		+ Token(0)
+		> rule: Plus -> [33][NestedOptional]< "nested_optional" [ ( [ ( [ Plus ] Plus ) ] Plus @ ) ] Plus { Plus } >
+			+ StackSlot(3)
+
+[35][NestedPositiveOptional] BEGIN 
+[RULE: 13][CLAUSE: -1]
+	token: "nested_positive_optional" -> [42][NestedPositiveOptional]< "nested_positive_optional" @ +[ ( +[ ( +[ Plus ] Plus ) ] Plus ) ] Plus { Plus } >
+		+ StackBegin()
+		+ Token(0)
+
+[36][NestedPositiveOptional] END [ENDING]
+[RULE: 13][CLAUSE: -1]
+
+[37][NestedPositiveOptional]< "nested_positive_optional" +[ ( +[ ( +[ Plus @ ] Plus ) ] Plus ) ] Plus { Plus } >
+[RULE: 13][CLAUSE: 0]
+	token: "+" -> [2][Plus]< "+" @ >
+		+ StackBegin()
+		+ Token(0)
+		> rule: Plus -> [41][NestedPositiveOptional]< "nested_positive_optional" +[ ( +[ ( +[ Plus ] Plus @ ) ] Plus ) ] Plus { Plus } >
+			+ StackSlot(2)
+
+[38][NestedPositiveOptional]< "nested_positive_optional" +[ ( +[ ( +[ Plus ] Plus ) ] Plus ) ] Plus @ { Plus } >
+[RULE: 13][CLAUSE: 0]
+	ending -> [36][NestedPositiveOptional] END [ENDING]
+		+ CreateObject(NestedOptionalFeature)
+		+ Field(NestedOptionalFeature::optional, 1)
+		+ Field(NestedOptionalFeature::tail1, 2)
+		+ Field(NestedOptionalFeature::tail2, 3)
+		+ Field(NestedOptionalFeature::tail3, 4)
+		+ Field(NestedOptionalFeature::tails, 5)
+		+ StackEnd()
+	token: "+" -> [2][Plus]< "+" @ >
+		+ StackBegin()
+		+ Token(0)
+		> rule: Plus -> [39][NestedPositiveOptional]< "nested_positive_optional" +[ ( +[ ( +[ Plus ] Plus ) ] Plus ) ] Plus { Plus @ } >
+			+ StackSlot(5)
+
+[39][NestedPositiveOptional]< "nested_positive_optional" +[ ( +[ ( +[ Plus ] Plus ) ] Plus ) ] Plus { Plus @ } >
+[RULE: 13][CLAUSE: 0]
+	ending -> [36][NestedPositiveOptional] END [ENDING]
+		+ CreateObject(NestedOptionalFeature)
+		+ Field(NestedOptionalFeature::optional, 1)
+		+ Field(NestedOptionalFeature::tail1, 2)
+		+ Field(NestedOptionalFeature::tail2, 3)
+		+ Field(NestedOptionalFeature::tail3, 4)
+		+ Field(NestedOptionalFeature::tails, 5)
+		+ StackEnd()
+	token: "+" -> [2][Plus]< "+" @ >
+		+ StackBegin()
+		+ Token(0)
+		> rule: Plus -> [39][NestedPositiveOptional]< "nested_positive_optional" +[ ( +[ ( +[ Plus ] Plus ) ] Plus ) ] Plus { Plus @ } >
+			+ StackSlot(5)
+
+[40][NestedPositiveOptional]< "nested_positive_optional" +[ ( +[ ( +[ Plus ] Plus ) ] Plus @ ) ] Plus { Plus } >
+[RULE: 13][CLAUSE: 0]
+	token: "+" -> [2][Plus]< "+" @ >
+		+ StackBegin()
+		+ Token(0)
+		> rule: Plus -> [38][NestedPositiveOptional]< "nested_positive_optional" +[ ( +[ ( +[ Plus ] Plus ) ] Plus ) ] Plus @ { Plus } >
+			+ StackSlot(4)
+
+[41][NestedPositiveOptional]< "nested_positive_optional" +[ ( +[ ( +[ Plus ] Plus @ ) ] Plus ) ] Plus { Plus } >
+[RULE: 13][CLAUSE: 0]
+	token: "+" -> [2][Plus]< "+" @ >
+		+ StackBegin()
+		+ Token(0)
+		> rule: Plus -> [40][NestedPositiveOptional]< "nested_positive_optional" +[ ( +[ ( +[ Plus ] Plus ) ] Plus @ ) ] Plus { Plus } >
+			+ StackSlot(3)
+
+[42][NestedPositiveOptional]< "nested_positive_optional" @ +[ ( +[ ( +[ Plus ] Plus ) ] Plus ) ] Plus { Plus } >
+[RULE: 13][CLAUSE: 0]
+	token: "+" -> [2][Plus]< "+" @ >
+		+ StackBegin()
+		+ Token(0)
+		> rule: Plus -> [41][NestedPositiveOptional]< "nested_positive_optional" +[ ( +[ ( +[ Plus ] Plus @ ) ] Plus ) ] Plus { Plus } >
+			+ StackSlot(2)
+	token: "+" -> [2][Plus]< "+" @ >
+		+ StackBegin()
+		+ Token(0)
+		> rule: Plus -> [40][NestedPositiveOptional]< "nested_positive_optional" +[ ( +[ ( +[ Plus ] Plus ) ] Plus @ ) ] Plus { Plus } >
+			+ StackSlot(3)
+	token: "+" -> [2][Plus]< "+" @ >
+		+ StackBegin()
+		+ Token(0)
+		> rule: Plus -> [38][NestedPositiveOptional]< "nested_positive_optional" +[ ( +[ ( +[ Plus ] Plus ) ] Plus ) ] Plus @ { Plus } >
+			+ StackSlot(4)
+	token: "+" -> [2][Plus]< "+" @ >
+		+ StackBegin()
+		+ Token(0)
+		> rule: Plus -> [37][NestedPositiveOptional]< "nested_positive_optional" +[ ( +[ ( +[ Plus @ ] Plus ) ] Plus ) ] Plus { Plus } >
+			+ StackSlot(1)
+
+[43][NestedNegativeOptional] BEGIN 
+[RULE: 14][CLAUSE: -1]
+	token: "nested_negative_optional" -> [50][NestedNegativeOptional]< "nested_negative_optional" @ -[ ( -[ ( -[ Plus ] Plus ) ] Plus ) ] Plus { Plus } >
+		+ StackBegin()
+		+ Token(0)
+
+[44][NestedNegativeOptional] END [ENDING]
+[RULE: 14][CLAUSE: -1]
+
+[45][NestedNegativeOptional]< "nested_negative_optional" -[ ( -[ ( -[ Plus @ ] Plus ) ] Plus ) ] Plus { Plus } >
+[RULE: 14][CLAUSE: 0]
+	token: "+" -> [2][Plus]< "+" @ >
+		+ StackBegin()
+		+ Token(0)
+		> rule: Plus -> [49][NestedNegativeOptional]< "nested_negative_optional" -[ ( -[ ( -[ Plus ] Plus @ ) ] Plus ) ] Plus { Plus } >
+			+ StackSlot(2)
+
+[46][NestedNegativeOptional]< "nested_negative_optional" -[ ( -[ ( -[ Plus ] Plus ) ] Plus ) ] Plus @ { Plus } >
+[RULE: 14][CLAUSE: 0]
+	ending -> [44][NestedNegativeOptional] END [ENDING]
+		+ CreateObject(NestedOptionalFeature)
+		+ Field(NestedOptionalFeature::optional, 1)
+		+ Field(NestedOptionalFeature::tail1, 2)
+		+ Field(NestedOptionalFeature::tail2, 3)
+		+ Field(NestedOptionalFeature::tail3, 4)
+		+ Field(NestedOptionalFeature::tails, 5)
+		+ StackEnd()
+	token: "+" -> [2][Plus]< "+" @ >
+		+ StackBegin()
+		+ Token(0)
+		> rule: Plus -> [47][NestedNegativeOptional]< "nested_negative_optional" -[ ( -[ ( -[ Plus ] Plus ) ] Plus ) ] Plus { Plus @ } >
+			+ StackSlot(5)
+
+[47][NestedNegativeOptional]< "nested_negative_optional" -[ ( -[ ( -[ Plus ] Plus ) ] Plus ) ] Plus { Plus @ } >
+[RULE: 14][CLAUSE: 0]
+	ending -> [44][NestedNegativeOptional] END [ENDING]
+		+ CreateObject(NestedOptionalFeature)
+		+ Field(NestedOptionalFeature::optional, 1)
+		+ Field(NestedOptionalFeature::tail1, 2)
+		+ Field(NestedOptionalFeature::tail2, 3)
+		+ Field(NestedOptionalFeature::tail3, 4)
+		+ Field(NestedOptionalFeature::tails, 5)
+		+ StackEnd()
+	token: "+" -> [2][Plus]< "+" @ >
+		+ StackBegin()
+		+ Token(0)
+		> rule: Plus -> [47][NestedNegativeOptional]< "nested_negative_optional" -[ ( -[ ( -[ Plus ] Plus ) ] Plus ) ] Plus { Plus @ } >
+			+ StackSlot(5)
+
+[48][NestedNegativeOptional]< "nested_negative_optional" -[ ( -[ ( -[ Plus ] Plus ) ] Plus @ ) ] Plus { Plus } >
+[RULE: 14][CLAUSE: 0]
+	token: "+" -> [2][Plus]< "+" @ >
+		+ StackBegin()
+		+ Token(0)
+		> rule: Plus -> [46][NestedNegativeOptional]< "nested_negative_optional" -[ ( -[ ( -[ Plus ] Plus ) ] Plus ) ] Plus @ { Plus } >
+			+ StackSlot(4)
+
+[49][NestedNegativeOptional]< "nested_negative_optional" -[ ( -[ ( -[ Plus ] Plus @ ) ] Plus ) ] Plus { Plus } >
+[RULE: 14][CLAUSE: 0]
+	token: "+" -> [2][Plus]< "+" @ >
+		+ StackBegin()
+		+ Token(0)
+		> rule: Plus -> [48][NestedNegativeOptional]< "nested_negative_optional" -[ ( -[ ( -[ Plus ] Plus ) ] Plus @ ) ] Plus { Plus } >
+			+ StackSlot(3)
+
+[50][NestedNegativeOptional]< "nested_negative_optional" @ -[ ( -[ ( -[ Plus ] Plus ) ] Plus ) ] Plus { Plus } >
+[RULE: 14][CLAUSE: 0]
+	token: "+" -> [2][Plus]< "+" @ >
+		+ StackBegin()
+		+ Token(0)
+		> rule: Plus -> [49][NestedNegativeOptional]< "nested_negative_optional" -[ ( -[ ( -[ Plus ] Plus @ ) ] Plus ) ] Plus { Plus } >
+			+ StackSlot(2)
+	token: "+" -> [2][Plus]< "+" @ >
+		+ StackBegin()
+		+ Token(0)
+		> rule: Plus -> [48][NestedNegativeOptional]< "nested_negative_optional" -[ ( -[ ( -[ Plus ] Plus ) ] Plus @ ) ] Plus { Plus } >
+			+ StackSlot(3)
+	token: "+" -> [2][Plus]< "+" @ >
+		+ StackBegin()
+		+ Token(0)
+		> rule: Plus -> [46][NestedNegativeOptional]< "nested_negative_optional" -[ ( -[ ( -[ Plus ] Plus ) ] Plus ) ] Plus @ { Plus } >
+			+ StackSlot(4)
+	token: "+" -> [2][Plus]< "+" @ >
+		+ StackBegin()
+		+ Token(0)
+		> rule: Plus -> [45][NestedNegativeOptional]< "nested_negative_optional" -[ ( -[ ( -[ Plus @ ] Plus ) ] Plus ) ] Plus { Plus } >
+			+ StackSlot(1)
+
+[51][BranchedOptional] BEGIN 
+[RULE: 15][CLAUSE: -1]
+	token: "branched_optional" -> [59][BranchedOptional]< "branched_optional" @ +[ Plus ] Plus { Plus } >
+		+ StackBegin()
+		+ Token(0)
+	token: "branched_optional" -> [60][BranchedOptional]< "branched_optional" @ -[ Plus ] Plus { Plus } >
+		+ StackBegin()
+		+ Token(0)
+	token: "branched_optional" -> [61][BranchedOptional]< "branched_optional" @ [ Plus ] Plus { Plus } >
+		+ StackBegin()
+		+ Token(0)
+
+[52][BranchedOptional] END [ENDING]
+[RULE: 15][CLAUSE: -1]
+
+[53][BranchedOptional]< "branched_optional" +[ Plus @ ] Plus { Plus } >
+[RULE: 15][CLAUSE: 0]
+	token: "+" -> [2][Plus]< "+" @ >
+		+ StackBegin()
+		+ Token(0)
+		> rule: Plus -> [54][BranchedOptional]< "branched_optional" +[ Plus ] Plus @ { Plus } >
+			+ StackSlot(2)
+
+[54][BranchedOptional]< "branched_optional" +[ Plus ] Plus @ { Plus } >
+[RULE: 15][CLAUSE: 0]
+	ending -> [52][BranchedOptional] END [ENDING]
+		+ EnumItem(0, 4)
+		+ CreateObject(BranchedOptionalFeature)
+		+ Field(BranchedOptionalFeature::optional, 1)
+		+ Field(BranchedOptionalFeature::tails, 3)
+		+ Field(BranchedOptionalFeature::type, 4)
+		+ StackEnd()
+	token: "+" -> [2][Plus]< "+" @ >
+		+ StackBegin()
+		+ Token(0)
+		> rule: Plus -> [55][BranchedOptional]< "branched_optional" +[ Plus ] Plus { Plus @ } >
+			+ StackSlot(3)
+
+[55][BranchedOptional]< "branched_optional" +[ Plus ] Plus { Plus @ } >
+[RULE: 15][CLAUSE: 0]
+	ending -> [52][BranchedOptional] END [ENDING]
+		+ EnumItem(0, 4)
+		+ CreateObject(BranchedOptionalFeature)
+		+ Field(BranchedOptionalFeature::optional, 1)
+		+ Field(BranchedOptionalFeature::tails, 3)
+		+ Field(BranchedOptionalFeature::type, 4)
+		+ StackEnd()
+	token: "+" -> [2][Plus]< "+" @ >
+		+ StackBegin()
+		+ Token(0)
+		> rule: Plus -> [55][BranchedOptional]< "branched_optional" +[ Plus ] Plus { Plus @ } >
+			+ StackSlot(3)
+
+[56][BranchedOptional]< "branched_optional" -[ Plus @ ] Plus { Plus } >
+[RULE: 15][CLAUSE: 1]
+	token: "+" -> [2][Plus]< "+" @ >
+		+ StackBegin()
+		+ Token(0)
+		> rule: Plus -> [57][BranchedOptional]< "branched_optional" -[ Plus ] Plus @ { Plus } >
+			+ StackSlot(2)
+
+[57][BranchedOptional]< "branched_optional" -[ Plus ] Plus @ { Plus } >
+[RULE: 15][CLAUSE: 1]
+	ending -> [52][BranchedOptional] END [ENDING]
+		+ EnumItem(1, 4)
+		+ CreateObject(BranchedOptionalFeature)
+		+ Field(BranchedOptionalFeature::optional, 1)
+		+ Field(BranchedOptionalFeature::tails, 3)
+		+ Field(BranchedOptionalFeature::type, 4)
+		+ StackEnd()
+	token: "+" -> [2][Plus]< "+" @ >
+		+ StackBegin()
+		+ Token(0)
+		> rule: Plus -> [58][BranchedOptional]< "branched_optional" -[ Plus ] Plus { Plus @ } >
+			+ StackSlot(3)
+
+[58][BranchedOptional]< "branched_optional" -[ Plus ] Plus { Plus @ } >
+[RULE: 15][CLAUSE: 1]
+	ending -> [52][BranchedOptional] END [ENDING]
+		+ EnumItem(1, 4)
+		+ CreateObject(BranchedOptionalFeature)
+		+ Field(BranchedOptionalFeature::optional, 1)
+		+ Field(BranchedOptionalFeature::tails, 3)
+		+ Field(BranchedOptionalFeature::type, 4)
+		+ StackEnd()
+	token: "+" -> [2][Plus]< "+" @ >
+		+ StackBegin()
+		+ Token(0)
+		> rule: Plus -> [58][BranchedOptional]< "branched_optional" -[ Plus ] Plus { Plus @ } >
+			+ StackSlot(3)
+
+[59][BranchedOptional]< "branched_optional" @ +[ Plus ] Plus { Plus } >
+[RULE: 15][CLAUSE: 0]
+	token: "+" -> [2][Plus]< "+" @ >
+		+ StackBegin()
+		+ Token(0)
+		> rule: Plus -> [54][BranchedOptional]< "branched_optional" +[ Plus ] Plus @ { Plus } >
+			+ StackSlot(2)
+	token: "+" -> [2][Plus]< "+" @ >
+		+ StackBegin()
+		+ Token(0)
+		> rule: Plus -> [53][BranchedOptional]< "branched_optional" +[ Plus @ ] Plus { Plus } >
+			+ StackSlot(1)
+
+[60][BranchedOptional]< "branched_optional" @ -[ Plus ] Plus { Plus } >
+[RULE: 15][CLAUSE: 1]
+	token: "+" -> [2][Plus]< "+" @ >
+		+ StackBegin()
+		+ Token(0)
+		> rule: Plus -> [57][BranchedOptional]< "branched_optional" -[ Plus ] Plus @ { Plus } >
+			+ StackSlot(2)
+	token: "+" -> [2][Plus]< "+" @ >
+		+ StackBegin()
+		+ Token(0)
+		> rule: Plus -> [56][BranchedOptional]< "branched_optional" -[ Plus @ ] Plus { Plus } >
+			+ StackSlot(1)
+
+[61][BranchedOptional]< "branched_optional" @ [ Plus ] Plus { Plus } >
+[RULE: 15][CLAUSE: 2]
+	token: "+" -> [2][Plus]< "+" @ >
+		+ StackBegin()
+		+ Token(0)
+		> rule: Plus -> [63][BranchedOptional]< "branched_optional" [ Plus ] Plus @ { Plus } >
+			+ StackSlot(2)
+	token: "+" -> [2][Plus]< "+" @ >
+		+ StackBegin()
+		+ Token(0)
+		> rule: Plus -> [62][BranchedOptional]< "branched_optional" [ Plus @ ] Plus { Plus } >
+			+ StackSlot(1)
+
+[62][BranchedOptional]< "branched_optional" [ Plus @ ] Plus { Plus } >
+[RULE: 15][CLAUSE: 2]
+	token: "+" -> [2][Plus]< "+" @ >
+		+ StackBegin()
+		+ Token(0)
+		> rule: Plus -> [63][BranchedOptional]< "branched_optional" [ Plus ] Plus @ { Plus } >
+			+ StackSlot(2)
+
+[63][BranchedOptional]< "branched_optional" [ Plus ] Plus @ { Plus } >
+[RULE: 15][CLAUSE: 2]
+	ending -> [52][BranchedOptional] END [ENDING]
+		+ EnumItem(2, 4)
+		+ CreateObject(BranchedOptionalFeature)
+		+ Field(BranchedOptionalFeature::optional, 1)
+		+ Field(BranchedOptionalFeature::tails, 3)
+		+ Field(BranchedOptionalFeature::type, 4)
+		+ StackEnd()
+	token: "+" -> [2][Plus]< "+" @ >
+		+ StackBegin()
+		+ Token(0)
+		> rule: Plus -> [64][BranchedOptional]< "branched_optional" [ Plus ] Plus { Plus @ } >
+			+ StackSlot(3)
+
+[64][BranchedOptional]< "branched_optional" [ Plus ] Plus { Plus @ } >
+[RULE: 15][CLAUSE: 2]
+	ending -> [52][BranchedOptional] END [ENDING]
+		+ EnumItem(2, 4)
+		+ CreateObject(BranchedOptionalFeature)
+		+ Field(BranchedOptionalFeature::optional, 1)
+		+ Field(BranchedOptionalFeature::tails, 3)
+		+ Field(BranchedOptionalFeature::type, 4)
+		+ StackEnd()
+	token: "+" -> [2][Plus]< "+" @ >
+		+ StackBegin()
+		+ Token(0)
+		> rule: Plus -> [64][BranchedOptional]< "branched_optional" [ Plus ] Plus { Plus @ } >
+			+ StackSlot(3)
+
+[65][PbaBody] BEGIN 
+[RULE: 17][CLAUSE: -1]
+	token: "+" -> [2][Plus]< "+" @ >
+		+ StackBegin()
+		+ Token(0)
+		> rule: Plus -> [68][PbaBody]< [ Plus ] Plus @ { Plus } >
+			+ StackBegin()
+			+ StackSlot(1)
+	token: "+" -> [2][Plus]< "+" @ >
+		+ StackBegin()
+		+ Token(0)
+		> rule: Plus -> [67][PbaBody]< [ Plus @ ] Plus { Plus } >
+			+ StackBegin()
+			+ StackSlot(0)
+
+[66][PbaBody] END [ENDING]
+[RULE: 17][CLAUSE: -1]
+
+[67][PbaBody]< [ Plus @ ] Plus { Plus } >
+[RULE: 17][CLAUSE: 0]
+	token: "+" -> [2][Plus]< "+" @ >
+		+ StackBegin()
+		+ Token(0)
+		> rule: Plus -> [68][PbaBody]< [ Plus ] Plus @ { Plus } >
+			+ StackSlot(1)
+
+[68][PbaBody]< [ Plus ] Plus @ { Plus } >
+[RULE: 17][CLAUSE: 0]
+	ending -> [66][PbaBody] END [ENDING]
+		+ CreateObject(PbaFeature)
+		+ Field(PbaFeature::optional, 0)
+		+ Field(PbaFeature::tails, 2)
+		+ StackEnd()
+	token: "+" -> [2][Plus]< "+" @ >
+		+ StackBegin()
+		+ Token(0)
+		> rule: Plus -> [69][PbaBody]< [ Plus ] Plus { Plus @ } >
+			+ StackSlot(2)
+
+[69][PbaBody]< [ Plus ] Plus { Plus @ } >
+[RULE: 17][CLAUSE: 0]
+	ending -> [66][PbaBody] END [ENDING]
+		+ CreateObject(PbaFeature)
+		+ Field(PbaFeature::optional, 0)
+		+ Field(PbaFeature::tails, 2)
+		+ StackEnd()
+	token: "+" -> [2][Plus]< "+" @ >
+		+ StackBegin()
+		+ Token(0)
+		> rule: Plus -> [69][PbaBody]< [ Plus ] Plus { Plus @ } >
+			+ StackSlot(2)
+
+[70][Pba] BEGIN 
+[RULE: 18][CLAUSE: -1]
+	token: "prefix_before_ambiguity" -> [72][Pba]<! "prefix_before_ambiguity" @ { Lt } ( Gt { Gt } ) !PbaBody !>
+		+ StackBegin()
+		+ Token(0)
+
+[71][Pba] END [ENDING]
+[RULE: 18][CLAUSE: -1]
+
+[72][Pba]<! "prefix_before_ambiguity" @ { Lt } ( Gt { Gt } ) !PbaBody !>
+[RULE: 18][CLAUSE: 0]
+	token: "<" -> [5][Lt]< "<" @ >
+		+ StackBegin()
+		+ Token(0)
+		> rule: Lt -> [73][Pba]<! "prefix_before_ambiguity" { Lt @ } ( Gt { Gt } ) !PbaBody !>
+			+ StackSlot(1)
+	token: ">" -> [8][Gt]< ">" @ >
+		+ StackBegin()
+		+ Token(0)
+		> rule: Gt -> [74][Pba]<! "prefix_before_ambiguity" { Lt } ( Gt @ { Gt } ) !PbaBody !>
+			+ StackSlot(2)
+
+[73][Pba]<! "prefix_before_ambiguity" { Lt @ } ( Gt { Gt } ) !PbaBody !>
+[RULE: 18][CLAUSE: 0]
+	token: "<" -> [5][Lt]< "<" @ >
+		+ StackBegin()
+		+ Token(0)
+		> rule: Lt -> [73][Pba]<! "prefix_before_ambiguity" { Lt @ } ( Gt { Gt } ) !PbaBody !>
+			+ StackSlot(1)
+	token: ">" -> [8][Gt]< ">" @ >
+		+ StackBegin()
+		+ Token(0)
+		> rule: Gt -> [74][Pba]<! "prefix_before_ambiguity" { Lt } ( Gt @ { Gt } ) !PbaBody !>
+			+ StackSlot(2)
+
+[74][Pba]<! "prefix_before_ambiguity" { Lt } ( Gt @ { Gt } ) !PbaBody !>
+[RULE: 18][CLAUSE: 0]
+	token: "+" -> [2][Plus]< "+" @ >
+		+ StackBegin()
+		+ Token(0)
+		> rule: PbaBody -> [76][Pba]<! "prefix_before_ambiguity" { Lt } ( Gt { Gt } ) !PbaBody @ !>
+		> rule: Plus -> [68][PbaBody]< [ Plus ] Plus @ { Plus } >
+			+ StackBegin()
+			+ StackSlot(1)
+	token: "+" -> [2][Plus]< "+" @ >
+		+ StackBegin()
+		+ Token(0)
+		> rule: PbaBody -> [76][Pba]<! "prefix_before_ambiguity" { Lt } ( Gt { Gt } ) !PbaBody @ !>
+		> rule: Plus -> [67][PbaBody]< [ Plus @ ] Plus { Plus } >
+			+ StackBegin()
+			+ StackSlot(0)
+	token: ">" -> [8][Gt]< ">" @ >
+		+ StackBegin()
+		+ Token(0)
+		> rule: Gt -> [75][Pba]<! "prefix_before_ambiguity" { Lt } ( Gt { Gt @ } ) !PbaBody !>
+			+ StackSlot(3)
+
+[75][Pba]<! "prefix_before_ambiguity" { Lt } ( Gt { Gt @ } ) !PbaBody !>
+[RULE: 18][CLAUSE: 0]
+	token: "+" -> [2][Plus]< "+" @ >
+		+ StackBegin()
+		+ Token(0)
+		> rule: PbaBody -> [76][Pba]<! "prefix_before_ambiguity" { Lt } ( Gt { Gt } ) !PbaBody @ !>
+		> rule: Plus -> [68][PbaBody]< [ Plus ] Plus @ { Plus } >
+			+ StackBegin()
+			+ StackSlot(1)
+	token: "+" -> [2][Plus]< "+" @ >
+		+ StackBegin()
+		+ Token(0)
+		> rule: PbaBody -> [76][Pba]<! "prefix_before_ambiguity" { Lt } ( Gt { Gt } ) !PbaBody @ !>
+		> rule: Plus -> [67][PbaBody]< [ Plus @ ] Plus { Plus } >
+			+ StackBegin()
+			+ StackSlot(0)
+	token: ">" -> [8][Gt]< ">" @ >
+		+ StackBegin()
+		+ Token(0)
+		> rule: Gt -> [75][Pba]<! "prefix_before_ambiguity" { Lt } ( Gt { Gt @ } ) !PbaBody !>
+			+ StackSlot(3)
+
+[76][Pba]<! "prefix_before_ambiguity" { Lt } ( Gt { Gt } ) !PbaBody @ !>
+[RULE: 18][CLAUSE: 0]
+	ending -> [71][Pba] END [ENDING]
+		+ Field(PbaFeature::lts, 1)
+		+ Field(PbaFeature::gts, 2)
+		+ Field(PbaFeature::gts, 3)
+		+ StackEnd()
+
+[77][Pwa1Prefix] BEGIN 
+[RULE: 19][CLAUSE: -1]
+	token: "+" -> [2][Plus]< "+" @ >
+		+ StackBegin()
+		+ Token(0)
+		> rule: Plus -> [80][Pwa1Prefix]< [ Plus ] Plus @ { Plus } >
+			+ StackBegin()
+			+ StackSlot(1)
+	token: "+" -> [2][Plus]< "+" @ >
+		+ StackBegin()
+		+ Token(0)
+		> rule: Plus -> [79][Pwa1Prefix]< [ Plus @ ] Plus { Plus } >
+			+ StackBegin()
+			+ StackSlot(0)
+
+[78][Pwa1Prefix] END [ENDING]
+[RULE: 19][CLAUSE: -1]
+
+[79][Pwa1Prefix]< [ Plus @ ] Plus { Plus } >
+[RULE: 19][CLAUSE: 0]
+	token: "+" -> [2][Plus]< "+" @ >
+		+ StackBegin()
+		+ Token(0)
+		> rule: Plus -> [80][Pwa1Prefix]< [ Plus ] Plus @ { Plus } >
+			+ StackSlot(1)
+
+[80][Pwa1Prefix]< [ Plus ] Plus @ { Plus } >
+[RULE: 19][CLAUSE: 0]
+	ending -> [78][Pwa1Prefix] END [ENDING]
+		+ CreateObject(PbaFeature)
+		+ Field(PbaFeature::optional, 0)
+		+ Field(PbaFeature::tails, 2)
+		+ StackEnd()
+	token: "+" -> [2][Plus]< "+" @ >
+		+ StackBegin()
+		+ Token(0)
+		> rule: Plus -> [81][Pwa1Prefix]< [ Plus ] Plus { Plus @ } >
+			+ StackSlot(2)
+
+[81][Pwa1Prefix]< [ Plus ] Plus { Plus @ } >
+[RULE: 19][CLAUSE: 0]
+	ending -> [78][Pwa1Prefix] END [ENDING]
+		+ CreateObject(PbaFeature)
+		+ Field(PbaFeature::optional, 0)
+		+ Field(PbaFeature::tails, 2)
+		+ StackEnd()
+	token: "+" -> [2][Plus]< "+" @ >
+		+ StackBegin()
+		+ Token(0)
+		> rule: Plus -> [81][Pwa1Prefix]< [ Plus ] Plus { Plus @ } >
+			+ StackSlot(2)
+
+[82][Pwa1Body] BEGIN 
+[RULE: 20][CLAUSE: -1]
+	token: "<" -> [5][Lt]< "<" @ >
+		+ StackBegin()
+		+ Token(0)
+		> rule: Lt -> [84][Pwa1Body]< Lt @ { Lt } { Gt } >
+			+ StackBegin()
+			+ StackSlot(0)
+
+[83][Pwa1Body] END [ENDING]
+[RULE: 20][CLAUSE: -1]
+
+[84][Pwa1Body]< Lt @ { Lt } { Gt } >
+[RULE: 20][CLAUSE: 0]
+	ending -> [83][Pwa1Body] END [ENDING]
+		+ CreateObject(Pwa1Feature)
+		+ Field(Pwa1Feature::lts, 0)
+		+ Field(Pwa1Feature::lts, 1)
+		+ Field(Pwa1Feature::gts, 2)
+		+ StackEnd()
+	token: "<" -> [5][Lt]< "<" @ >
+		+ StackBegin()
+		+ Token(0)
+		> rule: Lt -> [85][Pwa1Body]< Lt { Lt @ } { Gt } >
+			+ StackSlot(1)
+	token: ">" -> [8][Gt]< ">" @ >
+		+ StackBegin()
+		+ Token(0)
+		> rule: Gt -> [86][Pwa1Body]< Lt { Lt } { Gt @ } >
+			+ StackSlot(2)
+
+[85][Pwa1Body]< Lt { Lt @ } { Gt } >
+[RULE: 20][CLAUSE: 0]
+	ending -> [83][Pwa1Body] END [ENDING]
+		+ CreateObject(Pwa1Feature)
+		+ Field(Pwa1Feature::lts, 0)
+		+ Field(Pwa1Feature::lts, 1)
+		+ Field(Pwa1Feature::gts, 2)
+		+ StackEnd()
+	token: "<" -> [5][Lt]< "<" @ >
+		+ StackBegin()
+		+ Token(0)
+		> rule: Lt -> [85][Pwa1Body]< Lt { Lt @ } { Gt } >
+			+ StackSlot(1)
+	token: ">" -> [8][Gt]< ">" @ >
+		+ StackBegin()
+		+ Token(0)
+		> rule: Gt -> [86][Pwa1Body]< Lt { Lt } { Gt @ } >
+			+ StackSlot(2)
+
+[86][Pwa1Body]< Lt { Lt } { Gt @ } >
+[RULE: 20][CLAUSE: 0]
+	ending -> [83][Pwa1Body] END [ENDING]
+		+ CreateObject(Pwa1Feature)
+		+ Field(Pwa1Feature::lts, 0)
+		+ Field(Pwa1Feature::lts, 1)
+		+ Field(Pwa1Feature::gts, 2)
+		+ StackEnd()
+	token: ">" -> [8][Gt]< ">" @ >
+		+ StackBegin()
+		+ Token(0)
+		> rule: Gt -> [86][Pwa1Body]< Lt { Lt } { Gt @ } >
+			+ StackSlot(2)
+
+[87][Pwa1] BEGIN 
+[RULE: 21][CLAUSE: -1]
+	token: "prefix_with_ambiguity_1" -> [89][Pwa1]<! "prefix_with_ambiguity_1" @ Pwa1Prefix !Pwa1Body !>
+		+ StackBegin()
+		+ Token(0)
+
+[88][Pwa1] END [ENDING]
+[RULE: 21][CLAUSE: -1]
+
+[89][Pwa1]<! "prefix_with_ambiguity_1" @ Pwa1Prefix !Pwa1Body !>
+[RULE: 21][CLAUSE: 0]
+	token: "+" -> [2][Plus]< "+" @ >
+		+ StackBegin()
+		+ Token(0)
+		> rule: Pwa1Prefix -> [91][Pwa1]<! "prefix_with_ambiguity_1" Pwa1Prefix @ !Pwa1Body !>
+			+ StackSlot(1)
+		> rule: Plus -> [80][Pwa1Prefix]< [ Plus ] Plus @ { Plus } >
+			+ StackBegin()
+			+ StackSlot(1)
+	token: "+" -> [2][Plus]< "+" @ >
+		+ StackBegin()
+		+ Token(0)
+		> rule: Pwa1Prefix -> [91][Pwa1]<! "prefix_with_ambiguity_1" Pwa1Prefix @ !Pwa1Body !>
+			+ StackSlot(1)
+		> rule: Plus -> [79][Pwa1Prefix]< [ Plus @ ] Plus { Plus } >
+			+ StackBegin()
+			+ StackSlot(0)
+
+[90][Pwa1]<! "prefix_with_ambiguity_1" Pwa1Prefix !Pwa1Body @ !>
+[RULE: 21][CLAUSE: 0]
+	ending -> [88][Pwa1] END [ENDING]
+		+ Field(Pwa1Feature::pba, 1)
+		+ StackEnd()
+
+[91][Pwa1]<! "prefix_with_ambiguity_1" Pwa1Prefix @ !Pwa1Body !>
+[RULE: 21][CLAUSE: 0]
+	token: "<" -> [5][Lt]< "<" @ >
+		+ StackBegin()
+		+ Token(0)
+		> rule: Pwa1Body -> [90][Pwa1]<! "prefix_with_ambiguity_1" Pwa1Prefix !Pwa1Body @ !>
+		> rule: Lt -> [84][Pwa1Body]< Lt @ { Lt } { Gt } >
+			+ StackBegin()
+			+ StackSlot(0)
+
+[92][Pwa2Body] BEGIN 
+[RULE: 22][CLAUSE: -1]
+	token: "<" -> [5][Lt]< "<" @ >
+		+ StackBegin()
+		+ Token(0)
+		> rule: Lt -> [94][Pwa2Body]< Lt @ { Lt } { Gt } >
+			+ StackBegin()
+			+ StackSlot(0)
+
+[93][Pwa2Body] END [ENDING]
+[RULE: 22][CLAUSE: -1]
+
+[94][Pwa2Body]< Lt @ { Lt } { Gt } >
+[RULE: 22][CLAUSE: 0]
+	ending -> [93][Pwa2Body] END [ENDING]
+		+ CreateObject(PbaFeature)
+		+ Field(PbaFeature::lts, 0)
+		+ Field(PbaFeature::lts, 1)
+		+ Field(PbaFeature::gts, 2)
+		+ StackEnd()
+	token: "<" -> [5][Lt]< "<" @ >
+		+ StackBegin()
+		+ Token(0)
+		> rule: Lt -> [95][Pwa2Body]< Lt { Lt @ } { Gt } >
+			+ StackSlot(1)
+	token: ">" -> [8][Gt]< ">" @ >
+		+ StackBegin()
+		+ Token(0)
+		> rule: Gt -> [96][Pwa2Body]< Lt { Lt } { Gt @ } >
+			+ StackSlot(2)
+
+[95][Pwa2Body]< Lt { Lt @ } { Gt } >
+[RULE: 22][CLAUSE: 0]
+	ending -> [93][Pwa2Body] END [ENDING]
+		+ CreateObject(PbaFeature)
+		+ Field(PbaFeature::lts, 0)
+		+ Field(PbaFeature::lts, 1)
+		+ Field(PbaFeature::gts, 2)
+		+ StackEnd()
+	token: "<" -> [5][Lt]< "<" @ >
+		+ StackBegin()
+		+ Token(0)
+		> rule: Lt -> [95][Pwa2Body]< Lt { Lt @ } { Gt } >
+			+ StackSlot(1)
+	token: ">" -> [8][Gt]< ">" @ >
+		+ StackBegin()
+		+ Token(0)
+		> rule: Gt -> [96][Pwa2Body]< Lt { Lt } { Gt @ } >
+			+ StackSlot(2)
+
+[96][Pwa2Body]< Lt { Lt } { Gt @ } >
+[RULE: 22][CLAUSE: 0]
+	ending -> [93][Pwa2Body] END [ENDING]
+		+ CreateObject(PbaFeature)
+		+ Field(PbaFeature::lts, 0)
+		+ Field(PbaFeature::lts, 1)
+		+ Field(PbaFeature::gts, 2)
+		+ StackEnd()
+	token: ">" -> [8][Gt]< ">" @ >
+		+ StackBegin()
+		+ Token(0)
+		> rule: Gt -> [96][Pwa2Body]< Lt { Lt } { Gt @ } >
+			+ StackSlot(2)
+
+[97][Pwa2] BEGIN 
+[RULE: 23][CLAUSE: -1]
+	token: "prefix_with_ambiguity_2" -> [99][Pwa2]<! "prefix_with_ambiguity_2" @ [ Plus ] Plus { Plus } !Pwa2Body !>
+		+ StackBegin()
+		+ Token(0)
+
+[98][Pwa2] END [ENDING]
+[RULE: 23][CLAUSE: -1]
+
+[99][Pwa2]<! "prefix_with_ambiguity_2" @ [ Plus ] Plus { Plus } !Pwa2Body !>
+[RULE: 23][CLAUSE: 0]
+	token: "+" -> [2][Plus]< "+" @ >
+		+ StackBegin()
+		+ Token(0)
+		> rule: Plus -> [101][Pwa2]<! "prefix_with_ambiguity_2" [ Plus ] Plus @ { Plus } !Pwa2Body !>
+			+ StackSlot(2)
+	token: "+" -> [2][Plus]< "+" @ >
+		+ StackBegin()
+		+ Token(0)
+		> rule: Plus -> [100][Pwa2]<! "prefix_with_ambiguity_2" [ Plus @ ] Plus { Plus } !Pwa2Body !>
+			+ StackSlot(1)
+
+[100][Pwa2]<! "prefix_with_ambiguity_2" [ Plus @ ] Plus { Plus } !Pwa2Body !>
+[RULE: 23][CLAUSE: 0]
+	token: "+" -> [2][Plus]< "+" @ >
+		+ StackBegin()
+		+ Token(0)
+		> rule: Plus -> [101][Pwa2]<! "prefix_with_ambiguity_2" [ Plus ] Plus @ { Plus } !Pwa2Body !>
+			+ StackSlot(2)
+
+[101][Pwa2]<! "prefix_with_ambiguity_2" [ Plus ] Plus @ { Plus } !Pwa2Body !>
+[RULE: 23][CLAUSE: 0]
+	token: "+" -> [2][Plus]< "+" @ >
+		+ StackBegin()
+		+ Token(0)
+		> rule: Plus -> [102][Pwa2]<! "prefix_with_ambiguity_2" [ Plus ] Plus { Plus @ } !Pwa2Body !>
+			+ StackSlot(3)
+	token: "<" -> [5][Lt]< "<" @ >
+		+ StackBegin()
+		+ Token(0)
+		> rule: Pwa2Body -> [103][Pwa2]<! "prefix_with_ambiguity_2" [ Plus ] Plus { Plus } !Pwa2Body @ !>
+		> rule: Lt -> [94][Pwa2Body]< Lt @ { Lt } { Gt } >
+			+ StackBegin()
+			+ StackSlot(0)
+
+[102][Pwa2]<! "prefix_with_ambiguity_2" [ Plus ] Plus { Plus @ } !Pwa2Body !>
+[RULE: 23][CLAUSE: 0]
+	token: "+" -> [2][Plus]< "+" @ >
+		+ StackBegin()
+		+ Token(0)
+		> rule: Plus -> [102][Pwa2]<! "prefix_with_ambiguity_2" [ Plus ] Plus { Plus @ } !Pwa2Body !>
+			+ StackSlot(3)
+	token: "<" -> [5][Lt]< "<" @ >
+		+ StackBegin()
+		+ Token(0)
+		> rule: Pwa2Body -> [103][Pwa2]<! "prefix_with_ambiguity_2" [ Plus ] Plus { Plus } !Pwa2Body @ !>
+		> rule: Lt -> [94][Pwa2Body]< Lt @ { Lt } { Gt } >
+			+ StackBegin()
+			+ StackSlot(0)
+
+[103][Pwa2]<! "prefix_with_ambiguity_2" [ Plus ] Plus { Plus } !Pwa2Body @ !>
+[RULE: 23][CLAUSE: 0]
+	ending -> [98][Pwa2] END [ENDING]
+		+ Field(PbaFeature::optional, 1)
+		+ Field(PbaFeature::tails, 3)
+		+ StackEnd()
+
+[104][Pwl1_P] BEGIN 
+[RULE: 24][CLAUSE: -1]
+	token: "+" -> [2][Plus]< "+" @ >
+		+ StackBegin()
+		+ Token(0)
+		> rule: Plus -> [108][Pwl1_P]<! Plus @ !Pwl1_P !>
+			+ StackBegin()
+			+ StackSlot(0)
+	token: "<" -> [5][Lt]< "<" @ >
+		+ StackBegin()
+		+ Token(0)
+		> rule: Lt -> [106][Pwl1_P]< Lt @ >
+			+ StackBegin()
+			+ StackSlot(0)
+
+[105][Pwl1_P] END [ENDING]
+[RULE: 24][CLAUSE: -1]
+
+[106][Pwl1_P]< Lt @ >
+[RULE: 24][CLAUSE: 0]
+	ending -> [105][Pwl1_P] END [ENDING]
+		+ CreateObject(PwlFeature)
+		+ Field(PwlFeature::one, 0)
+		+ StackEnd()
+
+[107][Pwl1_P]<! Plus !Pwl1_P @ !>
+[RULE: 24][CLAUSE: 1]
+	ending -> [105][Pwl1_P] END [ENDING]
+		+ Field(PwlFeature::prefix, 0)
+		+ StackEnd()
+
+[108][Pwl1_P]<! Plus @ !Pwl1_P !>
+[RULE: 24][CLAUSE: 1]
+	token: "+" -> [2][Plus]< "+" @ >
+		+ StackBegin()
+		+ Token(0)
+		> rule: Pwl1_P -> [107][Pwl1_P]<! Plus !Pwl1_P @ !>
+		> rule: Plus -> [108][Pwl1_P]<! Plus @ !Pwl1_P !>
+			+ StackBegin()
+			+ StackSlot(0)
+	token: "<" -> [5][Lt]< "<" @ >
+		+ StackBegin()
+		+ Token(0)
+		> rule: Pwl1_P -> [107][Pwl1_P]<! Plus !Pwl1_P @ !>
+		> rule: Lt -> [106][Pwl1_P]< Lt @ >
+			+ StackBegin()
+			+ StackSlot(0)
+
+[109][Pwl1] BEGIN 
+[RULE: 25][CLAUSE: -1]
+	token: "+" -> [2][Plus]< "+" @ >
+		+ StackBegin()
+		+ Token(0)
+		> rule: Pwl1_P -> [113][Pwl1]<! !Pwl1_P @ !>
+			+ StackBegin()
+		> rule: Plus -> [108][Pwl1_P]<! Plus @ !Pwl1_P !>
+			+ StackBegin()
+			+ StackSlot(0)
+	token: "<" -> [5][Lt]< "<" @ >
+		+ StackBegin()
+		+ Token(0)
+		> rule: Pwl1_P -> [113][Pwl1]<! !Pwl1_P @ !>
+			+ StackBegin()
+		> rule: Lt -> [106][Pwl1_P]< Lt @ >
+			+ StackBegin()
+			+ StackSlot(0)
+
+[110][Pwl1] END [ENDING]
+[RULE: 25][CLAUSE: -1]
+
+[111][Pwl1]< Pwl1 @ Lt >
+[RULE: 25][CLAUSE: 1]
+	token: "<" -> [5][Lt]< "<" @ >
+		+ StackBegin()
+		+ Token(0)
+		> rule: Lt -> [112][Pwl1]< Pwl1 Lt @ >
+			+ StackSlot(1)
+
+[112][Pwl1]< Pwl1 Lt @ >
+[RULE: 25][CLAUSE: 1]
+	ending -> [110][Pwl1] END [ENDING]
+		+ CreateObject(PwlFeature)
+		+ Field(PwlFeature::prev, 0)
+		+ Field(PwlFeature::one, 1)
+		+ StackEnd()
+	leftrec -> [111][Pwl1]< Pwl1 @ Lt >
+		+ CreateObject(PwlFeature)
+		+ Field(PwlFeature::prev, 0)
+		+ Field(PwlFeature::one, 1)
+		+ StackEnd()
+		+ StackBegin()
+		+ StackSlot(0)
+
+[113][Pwl1]<! !Pwl1_P @ !>
+[RULE: 25][CLAUSE: 0]
+	ending -> [110][Pwl1] END [ENDING]
+		+ StackEnd()
+	leftrec -> [111][Pwl1]< Pwl1 @ Lt >
+		+ StackEnd()
+		+ StackBegin()
+		+ StackSlot(0)
+
+[114][Pwl2_P] BEGIN 
+[RULE: 26][CLAUSE: -1]
+	token: "<" -> [5][Lt]< "<" @ >
+		+ StackBegin()
+		+ Token(0)
+		> rule: Lt -> [116][Pwl2_P]< Lt @ >
+			+ StackBegin()
+			+ StackSlot(0)
+
+[115][Pwl2_P] END [ENDING]
+[RULE: 26][CLAUSE: -1]
+
+[116][Pwl2_P]< Lt @ >
+[RULE: 26][CLAUSE: 0]
+	ending -> [115][Pwl2_P] END [ENDING]
+		+ CreateObject(PwlFeature)
+		+ Field(PwlFeature::two, 0)
+		+ StackEnd()
+	leftrec -> [117][Pwl2_P]< Pwl2_P @ Lt >
+		+ CreateObject(PwlFeature)
+		+ Field(PwlFeature::two, 0)
+		+ StackEnd()
+		+ StackBegin()
+		+ StackSlot(0)
+
+[117][Pwl2_P]< Pwl2_P @ Lt >
+[RULE: 26][CLAUSE: 1]
+	token: "<" -> [5][Lt]< "<" @ >
+		+ StackBegin()
+		+ Token(0)
+		> rule: Lt -> [118][Pwl2_P]< Pwl2_P Lt @ >
+			+ StackSlot(1)
+
+[118][Pwl2_P]< Pwl2_P Lt @ >
+[RULE: 26][CLAUSE: 1]
+	ending -> [115][Pwl2_P] END [ENDING]
+		+ CreateObject(PwlFeature)
+		+ Field(PwlFeature::prev, 0)
+		+ Field(PwlFeature::two, 1)
+		+ StackEnd()
+	leftrec -> [117][Pwl2_P]< Pwl2_P @ Lt >
+		+ CreateObject(PwlFeature)
+		+ Field(PwlFeature::prev, 0)
+		+ Field(PwlFeature::two, 1)
+		+ StackEnd()
+		+ StackBegin()
+		+ StackSlot(0)
+
+[119][Pwl2] BEGIN 
+[RULE: 27][CLAUSE: -1]
+	token: "+" -> [2][Plus]< "+" @ >
+		+ StackBegin()
+		+ Token(0)
+		> rule: Plus -> [121][Pwl2]<! { Plus @ } !Pwl2_P !>
+			+ StackBegin()
+			+ StackSlot(0)
+	token: "<" -> [5][Lt]< "<" @ >
+		+ StackBegin()
+		+ Token(0)
+		> rule: Pwl2_P -> [122][Pwl2]<! { Plus } !Pwl2_P @ !>
+			+ StackBegin()
+		> rule: Lt -> [116][Pwl2_P]< Lt @ >
+			+ StackBegin()
+			+ StackSlot(0)
+
+[120][Pwl2] END [ENDING]
+[RULE: 27][CLAUSE: -1]
+
+[121][Pwl2]<! { Plus @ } !Pwl2_P !>
+[RULE: 27][CLAUSE: 0]
+	token: "+" -> [2][Plus]< "+" @ >
+		+ StackBegin()
+		+ Token(0)
+		> rule: Plus -> [121][Pwl2]<! { Plus @ } !Pwl2_P !>
+			+ StackSlot(0)
+	token: "<" -> [5][Lt]< "<" @ >
+		+ StackBegin()
+		+ Token(0)
+		> rule: Pwl2_P -> [122][Pwl2]<! { Plus } !Pwl2_P @ !>
+		> rule: Lt -> [116][Pwl2_P]< Lt @ >
+			+ StackBegin()
+			+ StackSlot(0)
+
+[122][Pwl2]<! { Plus } !Pwl2_P @ !>
+[RULE: 27][CLAUSE: 0]
+	ending -> [120][Pwl2] END [ENDING]
+		+ Field(PwlFeature::prefix, 0)
+		+ StackEnd()
+
+[123][Fa] BEGIN 
+[RULE: 29][CLAUSE: -1]
+	token: ID="a" -> [125][Fa]< [ ( ID ) ] ID @ >
+		+ StackBegin()
+		+ Token(2)
+	token: ID="b" -> [126][Fa]< [ ( ID @ ) ] ID >
+		+ StackBegin()
+		+ Token(0)
+
+[124][Fa] END [ENDING]
+[RULE: 29][CLAUSE: -1]
+
+[125][Fa]< [ ( ID ) ] ID @ >
+[RULE: 29][CLAUSE: 0]
+	ending -> [124][Fa] END [ENDING]
+		+ EnumItem(0, 3)
+		+ CreateObject(FaFeature)
+		+ Field(FaFeature::fa, 1)
+		+ FieldIfUnassigned(FaFeature::fa, 3)
+		+ StackEnd()
+
+[126][Fa]< [ ( ID @ ) ] ID >
+[RULE: 29][CLAUSE: 0]
+	token: ID="a" -> [125][Fa]< [ ( ID ) ] ID @ >
+		+ EnumItem(1, 1)
+		+ Token(2)
+
+[127][Module] BEGIN 
+[RULE: 30][CLAUSE: -1]
+	token: "optional" -> [11][EqualOptional]< "optional" @ [ Plus ] "+" { Plus } >
+		+ StackBegin()
+		+ Token(0)
+		> rule: EqualOptional -> [146][Module]<! !EqualOptional @ !>
+			+ StackBegin()
+	token: "positive_optional" -> [20][PositiveOptional]< "positive_optional" @ +[ Plus ] "+" { Plus } >
+		+ StackBegin()
+		+ Token(0)
+		> rule: PositiveOptional -> [152][Module]<! !PositiveOptional @ !>
+			+ StackBegin()
+	token: "negative_optional" -> [26][NegativeOptional]< "negative_optional" @ -[ Plus ] "+" { Plus } >
+		+ StackBegin()
+		+ Token(0)
+		> rule: NegativeOptional -> [147][Module]<! !NegativeOptional @ !>
+			+ StackBegin()
+	token: "nested_optional" -> [29][NestedOptional]< "nested_optional" @ [ ( [ ( [ Plus ] Plus ) ] Plus ) ] Plus { Plus } >
+		+ StackBegin()
+		+ Token(0)
+		> rule: NestedOptional -> [149][Module]<! !NestedOptional @ !>
+			+ StackBegin()
+	token: "nested_positive_optional" -> [42][NestedPositiveOptional]< "nested_positive_optional" @ +[ ( +[ ( +[ Plus ] Plus ) ] Plus ) ] Plus { Plus } >
+		+ StackBegin()
+		+ Token(0)
+		> rule: NestedPositiveOptional -> [150][Module]<! !NestedPositiveOptional @ !>
+			+ StackBegin()
+	token: "nested_negative_optional" -> [50][NestedNegativeOptional]< "nested_negative_optional" @ -[ ( -[ ( -[ Plus ] Plus ) ] Plus ) ] Plus { Plus } >
+		+ StackBegin()
+		+ Token(0)
+		> rule: NestedNegativeOptional -> [148][Module]<! !NestedNegativeOptional @ !>
+			+ StackBegin()
+	token: "branched_optional" -> [59][BranchedOptional]< "branched_optional" @ +[ Plus ] Plus { Plus } >
+		+ StackBegin()
+		+ Token(0)
+		> rule: BranchedOptional -> [145][Module]<! !BranchedOptional @ !>
+			+ StackBegin()
+	token: "branched_optional" -> [60][BranchedOptional]< "branched_optional" @ -[ Plus ] Plus { Plus } >
+		+ StackBegin()
+		+ Token(0)
+		> rule: BranchedOptional -> [145][Module]<! !BranchedOptional @ !>
+			+ StackBegin()
+	token: "branched_optional" -> [61][BranchedOptional]< "branched_optional" @ [ Plus ] Plus { Plus } >
+		+ StackBegin()
+		+ Token(0)
+		> rule: BranchedOptional -> [145][Module]<! !BranchedOptional @ !>
+			+ StackBegin()
+	token: "entry_rule_priority" -> [139][Module]< "entry_rule_priority" @ +[ Plus ] Plus { Plus } >
+		+ StackBegin()
+		+ Token(0)
+	token: "entry_rule_priority" -> [140][Module]< "entry_rule_priority" @ -[ Plus ] Plus { Plus } >
+		+ StackBegin()
+		+ Token(0)
+	token: "entry_rule_priority" -> [141][Module]< "entry_rule_priority" @ [ Plus ] Plus { Plus } >
+		+ StackBegin()
+		+ Token(0)
+	token: "prefix_before_ambiguity" -> [72][Pba]<! "prefix_before_ambiguity" @ { Lt } ( Gt { Gt } ) !PbaBody !>
+		+ StackBegin()
+		+ Token(0)
+		> rule: Pba -> [151][Module]<! !Pba @ !>
+			+ StackBegin()
+	token: "prefix_with_ambiguity_1" -> [89][Pwa1]<! "prefix_with_ambiguity_1" @ Pwa1Prefix !Pwa1Body !>
+		+ StackBegin()
+		+ Token(0)
+		> rule: Pwa1 -> [153][Module]<! !Pwa1 @ !>
+			+ StackBegin()
+	token: "prefix_with_ambiguity_2" -> [99][Pwa2]<! "prefix_with_ambiguity_2" @ [ Plus ] Plus { Plus } !Pwa2Body !>
+		+ StackBegin()
+		+ Token(0)
+		> rule: Pwa2 -> [154][Module]<! !Pwa2 @ !>
+			+ StackBegin()
+	token: "prefix_with_leftrec" -> [159][Module]<! "prefix_with_leftrec" @ !Pwl1 !>
+		+ StackBegin()
+		+ Token(0)
+	token: "prefix_with_leftrec" -> [160][Module]<! "prefix_with_leftrec" @ !Pwl2 !>
+		+ StackBegin()
+		+ Token(0)
+	token: "conditional_literal" -> [129][Module]< "conditional_literal" @ ID >
+		+ StackBegin()
+		+ Token(0)
+	token: "conditional_literal" -> [130][Module]< "conditional_literal" @ ID >
+		+ StackBegin()
+		+ Token(0)
+	token: "field_assignment" -> [156][Module]<! "field_assignment" @ !Fa !>
+		+ StackBegin()
+		+ Token(0)
+
+[128][Module] END [ENDING]
+[RULE: 30][CLAUSE: -1]
+
+[129][Module]< "conditional_literal" @ ID >
+[RULE: 30][CLAUSE: 15]
+	token: ID="a" -> [132][Module]< "conditional_literal" ID @ >
+		+ Token(1)
+
+[130][Module]< "conditional_literal" @ ID >
+[RULE: 30][CLAUSE: 16]
+	token: ID="b" -> [131][Module]< "conditional_literal" ID @ >
+		+ Token(1)
+
+[131][Module]< "conditional_literal" ID @ >
+[RULE: 30][CLAUSE: 16]
+	ending -> [128][Module] END [ENDING]
+		+ CreateObject(ClFeature)
+		+ Field(ClFeature::id, 1)
+		+ StackEnd()
+
+[132][Module]< "conditional_literal" ID @ >
+[RULE: 30][CLAUSE: 15]
+	ending -> [128][Module] END [ENDING]
+		+ CreateObject(ClFeature)
+		+ Field(ClFeature::id, 1)
+		+ StackEnd()
+
+[133][Module]< "entry_rule_priority" +[ Plus @ ] Plus { Plus } >
+[RULE: 30][CLAUSE: 7]
+	token: "+" -> [2][Plus]< "+" @ >
+		+ StackBegin()
+		+ Token(0)
+		> rule: Plus -> [134][Module]< "entry_rule_priority" +[ Plus ] Plus @ { Plus } >
+			+ StackSlot(2)
+
+[134][Module]< "entry_rule_priority" +[ Plus ] Plus @ { Plus } >
+[RULE: 30][CLAUSE: 7]
+	ending -> [128][Module] END [ENDING]
+		+ EnumItem(0, 4)
+		+ CreateObject(BranchedOptionalFeature)
+		+ Field(BranchedOptionalFeature::optional, 1)
+		+ Field(BranchedOptionalFeature::tails, 3)
+		+ Field(BranchedOptionalFeature::type, 4)
+		+ StackEnd()
+	token: "+" -> [2][Plus]< "+" @ >
+		+ StackBegin()
+		+ Token(0)
+		> rule: Plus -> [135][Module]< "entry_rule_priority" +[ Plus ] Plus { Plus @ } >
+			+ StackSlot(3)
+
+[135][Module]< "entry_rule_priority" +[ Plus ] Plus { Plus @ } >
+[RULE: 30][CLAUSE: 7]
+	ending -> [128][Module] END [ENDING]
+		+ EnumItem(0, 4)
+		+ CreateObject(BranchedOptionalFeature)
+		+ Field(BranchedOptionalFeature::optional, 1)
+		+ Field(BranchedOptionalFeature::tails, 3)
+		+ Field(BranchedOptionalFeature::type, 4)
+		+ StackEnd()
+	token: "+" -> [2][Plus]< "+" @ >
+		+ StackBegin()
+		+ Token(0)
+		> rule: Plus -> [135][Module]< "entry_rule_priority" +[ Plus ] Plus { Plus @ } >
+			+ StackSlot(3)
+
+[136][Module]< "entry_rule_priority" -[ Plus @ ] Plus { Plus } >
+[RULE: 30][CLAUSE: 8]
+	token: "+" -> [2][Plus]< "+" @ >
+		+ StackBegin()
+		+ Token(0)
+		> rule: Plus -> [137][Module]< "entry_rule_priority" -[ Plus ] Plus @ { Plus } >
+			+ StackSlot(2)
+
+[137][Module]< "entry_rule_priority" -[ Plus ] Plus @ { Plus } >
+[RULE: 30][CLAUSE: 8]
+	ending -> [128][Module] END [ENDING]
+		+ EnumItem(1, 4)
+		+ CreateObject(BranchedOptionalFeature)
+		+ Field(BranchedOptionalFeature::optional, 1)
+		+ Field(BranchedOptionalFeature::tails, 3)
+		+ Field(BranchedOptionalFeature::type, 4)
+		+ StackEnd()
+	token: "+" -> [2][Plus]< "+" @ >
+		+ StackBegin()
+		+ Token(0)
+		> rule: Plus -> [138][Module]< "entry_rule_priority" -[ Plus ] Plus { Plus @ } >
+			+ StackSlot(3)
+
+[138][Module]< "entry_rule_priority" -[ Plus ] Plus { Plus @ } >
+[RULE: 30][CLAUSE: 8]
+	ending -> [128][Module] END [ENDING]
+		+ EnumItem(1, 4)
+		+ CreateObject(BranchedOptionalFeature)
+		+ Field(BranchedOptionalFeature::optional, 1)
+		+ Field(BranchedOptionalFeature::tails, 3)
+		+ Field(BranchedOptionalFeature::type, 4)
+		+ StackEnd()
+	token: "+" -> [2][Plus]< "+" @ >
+		+ StackBegin()
+		+ Token(0)
+		> rule: Plus -> [138][Module]< "entry_rule_priority" -[ Plus ] Plus { Plus @ } >
+			+ StackSlot(3)
+
+[139][Module]< "entry_rule_priority" @ +[ Plus ] Plus { Plus } >
+[RULE: 30][CLAUSE: 7]
+	token: "+" -> [2][Plus]< "+" @ >
+		+ StackBegin()
+		+ Token(0)
+		> rule: Plus -> [134][Module]< "entry_rule_priority" +[ Plus ] Plus @ { Plus } >
+			+ StackSlot(2)
+	token: "+" -> [2][Plus]< "+" @ >
+		+ StackBegin()
+		+ Token(0)
+		> rule: Plus -> [133][Module]< "entry_rule_priority" +[ Plus @ ] Plus { Plus } >
+			+ StackSlot(1)
+
+[140][Module]< "entry_rule_priority" @ -[ Plus ] Plus { Plus } >
+[RULE: 30][CLAUSE: 8]
+	token: "+" -> [2][Plus]< "+" @ >
+		+ StackBegin()
+		+ Token(0)
+		> rule: Plus -> [137][Module]< "entry_rule_priority" -[ Plus ] Plus @ { Plus } >
+			+ StackSlot(2)
+	token: "+" -> [2][Plus]< "+" @ >
+		+ StackBegin()
+		+ Token(0)
+		> rule: Plus -> [136][Module]< "entry_rule_priority" -[ Plus @ ] Plus { Plus } >
+			+ StackSlot(1)
+
+[141][Module]< "entry_rule_priority" @ [ Plus ] Plus { Plus } >
+[RULE: 30][CLAUSE: 9]
+	token: "+" -> [2][Plus]< "+" @ >
+		+ StackBegin()
+		+ Token(0)
+		> rule: Plus -> [143][Module]< "entry_rule_priority" [ Plus ] Plus @ { Plus } >
+			+ StackSlot(2)
+	token: "+" -> [2][Plus]< "+" @ >
+		+ StackBegin()
+		+ Token(0)
+		> rule: Plus -> [142][Module]< "entry_rule_priority" [ Plus @ ] Plus { Plus } >
+			+ StackSlot(1)
+
+[142][Module]< "entry_rule_priority" [ Plus @ ] Plus { Plus } >
+[RULE: 30][CLAUSE: 9]
+	token: "+" -> [2][Plus]< "+" @ >
+		+ StackBegin()
+		+ Token(0)
+		> rule: Plus -> [143][Module]< "entry_rule_priority" [ Plus ] Plus @ { Plus } >
+			+ StackSlot(2)
+
+[143][Module]< "entry_rule_priority" [ Plus ] Plus @ { Plus } >
+[RULE: 30][CLAUSE: 9]
+	ending -> [128][Module] END [ENDING]
+		+ EnumItem(2, 4)
+		+ CreateObject(BranchedOptionalFeature)
+		+ Field(BranchedOptionalFeature::optional, 1)
+		+ Field(BranchedOptionalFeature::tails, 3)
+		+ Field(BranchedOptionalFeature::type, 4)
+		+ StackEnd()
+	token: "+" -> [2][Plus]< "+" @ >
+		+ StackBegin()
+		+ Token(0)
+		> rule: Plus -> [144][Module]< "entry_rule_priority" [ Plus ] Plus { Plus @ } >
+			+ StackSlot(3)
+
+[144][Module]< "entry_rule_priority" [ Plus ] Plus { Plus @ } >
+[RULE: 30][CLAUSE: 9]
+	ending -> [128][Module] END [ENDING]
+		+ EnumItem(2, 4)
+		+ CreateObject(BranchedOptionalFeature)
+		+ Field(BranchedOptionalFeature::optional, 1)
+		+ Field(BranchedOptionalFeature::tails, 3)
+		+ Field(BranchedOptionalFeature::type, 4)
+		+ StackEnd()
+	token: "+" -> [2][Plus]< "+" @ >
+		+ StackBegin()
+		+ Token(0)
+		> rule: Plus -> [144][Module]< "entry_rule_priority" [ Plus ] Plus { Plus @ } >
+			+ StackSlot(3)
+
+[145][Module]<! !BranchedOptional @ !>
+[RULE: 30][CLAUSE: 6]
+	ending -> [128][Module] END [ENDING]
+		+ StackEnd()
+
+[146][Module]<! !EqualOptional @ !>
+[RULE: 30][CLAUSE: 0]
+	ending -> [128][Module] END [ENDING]
+		+ StackEnd()
+
+[147][Module]<! !NegativeOptional @ !>
+[RULE: 30][CLAUSE: 2]
+	ending -> [128][Module] END [ENDING]
+		+ StackEnd()
+
+[148][Module]<! !NestedNegativeOptional @ !>
+[RULE: 30][CLAUSE: 5]
+	ending -> [128][Module] END [ENDING]
+		+ StackEnd()
+
+[149][Module]<! !NestedOptional @ !>
+[RULE: 30][CLAUSE: 3]
+	ending -> [128][Module] END [ENDING]
+		+ StackEnd()
+
+[150][Module]<! !NestedPositiveOptional @ !>
+[RULE: 30][CLAUSE: 4]
+	ending -> [128][Module] END [ENDING]
+		+ StackEnd()
+
+[151][Module]<! !Pba @ !>
+[RULE: 30][CLAUSE: 10]
+	ending -> [128][Module] END [ENDING]
+		+ StackEnd()
+
+[152][Module]<! !PositiveOptional @ !>
+[RULE: 30][CLAUSE: 1]
+	ending -> [128][Module] END [ENDING]
+		+ StackEnd()
+
+[153][Module]<! !Pwa1 @ !>
+[RULE: 30][CLAUSE: 11]
+	ending -> [128][Module] END [ENDING]
+		+ StackEnd()
+
+[154][Module]<! !Pwa2 @ !>
+[RULE: 30][CLAUSE: 12]
+	ending -> [128][Module] END [ENDING]
+		+ StackEnd()
+
+[155][Module]<! "field_assignment" !Fa @ !>
+[RULE: 30][CLAUSE: 17]
+	ending -> [128][Module] END [ENDING]
+		+ StackEnd()
+
+[156][Module]<! "field_assignment" @ !Fa !>
+[RULE: 30][CLAUSE: 17]
+	token: ID="a" -> [125][Fa]< [ ( ID ) ] ID @ >
+		+ StackBegin()
+		+ Token(2)
+		> rule: Fa -> [155][Module]<! "field_assignment" !Fa @ !>
+	token: ID="b" -> [126][Fa]< [ ( ID @ ) ] ID >
+		+ StackBegin()
+		+ Token(0)
+		> rule: Fa -> [155][Module]<! "field_assignment" !Fa @ !>
+
+[157][Module]<! "prefix_with_leftrec" !Pwl1 @ !>
+[RULE: 30][CLAUSE: 13]
+	ending -> [128][Module] END [ENDING]
+		+ StackEnd()
+
+[158][Module]<! "prefix_with_leftrec" !Pwl2 @ !>
+[RULE: 30][CLAUSE: 14]
+	ending -> [128][Module] END [ENDING]
+		+ StackEnd()
+
+[159][Module]<! "prefix_with_leftrec" @ !Pwl1 !>
+[RULE: 30][CLAUSE: 13]
+	token: "+" -> [2][Plus]< "+" @ >
+		+ StackBegin()
+		+ Token(0)
+		> rule: Pwl1 -> [157][Module]<! "prefix_with_leftrec" !Pwl1 @ !>
+		> rule: Pwl1_P -> [113][Pwl1]<! !Pwl1_P @ !>
+			+ StackBegin()
+		> rule: Plus -> [108][Pwl1_P]<! Plus @ !Pwl1_P !>
+			+ StackBegin()
+			+ StackSlot(0)
+	token: "<" -> [5][Lt]< "<" @ >
+		+ StackBegin()
+		+ Token(0)
+		> rule: Pwl1 -> [157][Module]<! "prefix_with_leftrec" !Pwl1 @ !>
+		> rule: Pwl1_P -> [113][Pwl1]<! !Pwl1_P @ !>
+			+ StackBegin()
+		> rule: Lt -> [106][Pwl1_P]< Lt @ >
+			+ StackBegin()
+			+ StackSlot(0)
+
+[160][Module]<! "prefix_with_leftrec" @ !Pwl2 !>
+[RULE: 30][CLAUSE: 14]
+	token: "+" -> [2][Plus]< "+" @ >
+		+ StackBegin()
+		+ Token(0)
+		> rule: Pwl2 -> [158][Module]<! "prefix_with_leftrec" !Pwl2 @ !>
+		> rule: Plus -> [121][Pwl2]<! { Plus @ } !Pwl2_P !>
+			+ StackBegin()
+			+ StackSlot(0)
+	token: "<" -> [5][Lt]< "<" @ >
+		+ StackBegin()
+		+ Token(0)
+		> rule: Pwl2 -> [158][Module]<! "prefix_with_leftrec" !Pwl2 @ !>
+		> rule: Pwl2_P -> [122][Pwl2]<! { Plus } !Pwl2_P @ !>
+			+ StackBegin()
+		> rule: Lt -> [116][Pwl2_P]< Lt @ >
+			+ StackBegin()
+			+ StackSlot(0)
+

@@ -1,0 +1,478 @@
+﻿[0][Do] BEGIN 
+[RULE: 0][CLAUSE: -1]
+	token: "do" -> [3][Do]< "do" @ ";" >
+		+ StackBegin()
+		+ Token(0)
+
+[1][Do] END [ENDING]
+[RULE: 0][CLAUSE: -1]
+
+[2][Do]< "do" ";" @ >
+[RULE: 0][CLAUSE: 0]
+	ending -> [1][Do] END [ENDING]
+		+ CreateObject(DoStat)
+		+ StackEnd()
+
+[3][Do]< "do" @ ";" >
+[RULE: 0][CLAUSE: 0]
+	token: ";" -> [2][Do]< "do" ";" @ >
+		+ Token(1)
+
+[4][Block] BEGIN 
+[RULE: 1][CLAUSE: -1]
+	token: "{" -> [6][Block]< "{" @ { Stat } "}" >
+		+ StackBegin()
+		+ Token(0)
+
+[5][Block] END [ENDING]
+[RULE: 1][CLAUSE: -1]
+
+[6][Block]< "{" @ { Stat } "}" >
+[RULE: 1][CLAUSE: 0]
+	token: "{" -> [6][Block]< "{" @ { Stat } "}" >
+		+ StackBegin()
+		+ Token(0)
+		> rule: Stat -> [7][Block]< "{" { Stat @ } "}" >
+			+ StackSlot(1)
+		> rule: OtherStat -> [16][Stat]<! !OtherStat @ !>
+			+ StackBegin()
+		> rule: Block -> [11][OtherStat]<! !Block @ !>
+			+ StackBegin()
+	token: "}" -> [8][Block]< "{" { Stat } "}" @ >
+		+ Token(2)
+	token: "if" -> [31][If_SWITCH_1allow_half_if]< "if" @ "cond" "then" ( OtherStat [ "else" Stat ] | If_SWITCH_1allow_half_if | ( If_SWITCH_0allow_half_if "else" Stat ) ) >
+		+ StackBegin()
+		+ Token(0)
+		> rule: Stat -> [7][Block]< "{" { Stat @ } "}" >
+			+ StackSlot(1)
+		> rule: If_SWITCH_1allow_half_if -> [15][Stat]<! !If_SWITCH_1allow_half_if @ !>
+			+ StackBegin()
+	token: "do" -> [3][Do]< "do" @ ";" >
+		+ StackBegin()
+		+ Token(0)
+		> rule: Stat -> [7][Block]< "{" { Stat @ } "}" >
+			+ StackSlot(1)
+		> rule: OtherStat -> [16][Stat]<! !OtherStat @ !>
+			+ StackBegin()
+		> rule: Do -> [12][OtherStat]<! !Do @ !>
+			+ StackBegin()
+
+[7][Block]< "{" { Stat @ } "}" >
+[RULE: 1][CLAUSE: 0]
+	token: "{" -> [6][Block]< "{" @ { Stat } "}" >
+		+ StackBegin()
+		+ Token(0)
+		> rule: Stat -> [7][Block]< "{" { Stat @ } "}" >
+			+ StackSlot(1)
+		> rule: OtherStat -> [16][Stat]<! !OtherStat @ !>
+			+ StackBegin()
+		> rule: Block -> [11][OtherStat]<! !Block @ !>
+			+ StackBegin()
+	token: "}" -> [8][Block]< "{" { Stat } "}" @ >
+		+ Token(2)
+	token: "if" -> [31][If_SWITCH_1allow_half_if]< "if" @ "cond" "then" ( OtherStat [ "else" Stat ] | If_SWITCH_1allow_half_if | ( If_SWITCH_0allow_half_if "else" Stat ) ) >
+		+ StackBegin()
+		+ Token(0)
+		> rule: Stat -> [7][Block]< "{" { Stat @ } "}" >
+			+ StackSlot(1)
+		> rule: If_SWITCH_1allow_half_if -> [15][Stat]<! !If_SWITCH_1allow_half_if @ !>
+			+ StackBegin()
+	token: "do" -> [3][Do]< "do" @ ";" >
+		+ StackBegin()
+		+ Token(0)
+		> rule: Stat -> [7][Block]< "{" { Stat @ } "}" >
+			+ StackSlot(1)
+		> rule: OtherStat -> [16][Stat]<! !OtherStat @ !>
+			+ StackBegin()
+		> rule: Do -> [12][OtherStat]<! !Do @ !>
+			+ StackBegin()
+
+[8][Block]< "{" { Stat } "}" @ >
+[RULE: 1][CLAUSE: 0]
+	ending -> [5][Block] END [ENDING]
+		+ CreateObject(BlockStat)
+		+ Field(BlockStat::stats, 1)
+		+ StackEnd()
+
+[9][OtherStat] BEGIN 
+[RULE: 2][CLAUSE: -1]
+	token: "{" -> [6][Block]< "{" @ { Stat } "}" >
+		+ StackBegin()
+		+ Token(0)
+		> rule: Block -> [11][OtherStat]<! !Block @ !>
+			+ StackBegin()
+	token: "do" -> [3][Do]< "do" @ ";" >
+		+ StackBegin()
+		+ Token(0)
+		> rule: Do -> [12][OtherStat]<! !Do @ !>
+			+ StackBegin()
+
+[10][OtherStat] END [ENDING]
+[RULE: 2][CLAUSE: -1]
+
+[11][OtherStat]<! !Block @ !>
+[RULE: 2][CLAUSE: 1]
+	ending -> [10][OtherStat] END [ENDING]
+		+ StackEnd()
+
+[12][OtherStat]<! !Do @ !>
+[RULE: 2][CLAUSE: 0]
+	ending -> [10][OtherStat] END [ENDING]
+		+ StackEnd()
+
+[13][Stat] BEGIN 
+[RULE: 3][CLAUSE: -1]
+	token: "{" -> [6][Block]< "{" @ { Stat } "}" >
+		+ StackBegin()
+		+ Token(0)
+		> rule: OtherStat -> [16][Stat]<! !OtherStat @ !>
+			+ StackBegin()
+		> rule: Block -> [11][OtherStat]<! !Block @ !>
+			+ StackBegin()
+	token: "if" -> [31][If_SWITCH_1allow_half_if]< "if" @ "cond" "then" ( OtherStat [ "else" Stat ] | If_SWITCH_1allow_half_if | ( If_SWITCH_0allow_half_if "else" Stat ) ) >
+		+ StackBegin()
+		+ Token(0)
+		> rule: If_SWITCH_1allow_half_if -> [15][Stat]<! !If_SWITCH_1allow_half_if @ !>
+			+ StackBegin()
+	token: "do" -> [3][Do]< "do" @ ";" >
+		+ StackBegin()
+		+ Token(0)
+		> rule: OtherStat -> [16][Stat]<! !OtherStat @ !>
+			+ StackBegin()
+		> rule: Do -> [12][OtherStat]<! !Do @ !>
+			+ StackBegin()
+
+[14][Stat] END [ENDING]
+[RULE: 3][CLAUSE: -1]
+
+[15][Stat]<! !If_SWITCH_1allow_half_if @ !>
+[RULE: 3][CLAUSE: 1]
+	ending -> [14][Stat] END [ENDING]
+		+ StackEnd()
+
+[16][Stat]<! !OtherStat @ !>
+[RULE: 3][CLAUSE: 0]
+	ending -> [14][Stat] END [ENDING]
+		+ StackEnd()
+
+[17][Module] BEGIN 
+[RULE: 4][CLAUSE: -1]
+	token: "{" -> [6][Block]< "{" @ { Stat } "}" >
+		+ StackBegin()
+		+ Token(0)
+		> rule: Stat -> [19][Module]< Stat @ >
+			+ StackBegin()
+			+ StackSlot(0)
+		> rule: OtherStat -> [16][Stat]<! !OtherStat @ !>
+			+ StackBegin()
+		> rule: Block -> [11][OtherStat]<! !Block @ !>
+			+ StackBegin()
+	token: "if" -> [31][If_SWITCH_1allow_half_if]< "if" @ "cond" "then" ( OtherStat [ "else" Stat ] | If_SWITCH_1allow_half_if | ( If_SWITCH_0allow_half_if "else" Stat ) ) >
+		+ StackBegin()
+		+ Token(0)
+		> rule: Stat -> [19][Module]< Stat @ >
+			+ StackBegin()
+			+ StackSlot(0)
+		> rule: If_SWITCH_1allow_half_if -> [15][Stat]<! !If_SWITCH_1allow_half_if @ !>
+			+ StackBegin()
+	token: "do" -> [3][Do]< "do" @ ";" >
+		+ StackBegin()
+		+ Token(0)
+		> rule: Stat -> [19][Module]< Stat @ >
+			+ StackBegin()
+			+ StackSlot(0)
+		> rule: OtherStat -> [16][Stat]<! !OtherStat @ !>
+			+ StackBegin()
+		> rule: Do -> [12][OtherStat]<! !Do @ !>
+			+ StackBegin()
+
+[18][Module] END [ENDING]
+[RULE: 4][CLAUSE: -1]
+
+[19][Module]< Stat @ >
+[RULE: 4][CLAUSE: 0]
+	ending -> [18][Module] END [ENDING]
+		+ CreateObject(Module)
+		+ Field(Module::stat, 0)
+		+ StackEnd()
+
+[20][If_SWITCH_1allow_half_if] BEGIN 
+[RULE: 6][CLAUSE: -1]
+	token: "if" -> [31][If_SWITCH_1allow_half_if]< "if" @ "cond" "then" ( OtherStat [ "else" Stat ] | If_SWITCH_1allow_half_if | ( If_SWITCH_0allow_half_if "else" Stat ) ) >
+		+ StackBegin()
+		+ Token(0)
+
+[21][If_SWITCH_1allow_half_if] END [ENDING]
+[RULE: 6][CLAUSE: -1]
+
+[22][If_SWITCH_1allow_half_if]< "if" "cond" "then" ( OtherStat @ [ "else" Stat ] | If_SWITCH_1allow_half_if | ( If_SWITCH_0allow_half_if "else" Stat ) ) >
+[RULE: 6][CLAUSE: 0]
+	ending -> [21][If_SWITCH_1allow_half_if] END [ENDING]
+		+ CreateObject(IfStat)
+		+ Field(IfStat::thenBranch, 3)
+		+ Field(IfStat::elseBranch, 5)
+		+ Field(IfStat::thenBranch, 6)
+		+ Field(IfStat::thenBranch, 7)
+		+ Field(IfStat::elseBranch, 9)
+		+ StackEnd()
+	token: "else" -> [23][If_SWITCH_1allow_half_if]< "if" "cond" "then" ( OtherStat [ "else" @ Stat ] | If_SWITCH_1allow_half_if | ( If_SWITCH_0allow_half_if "else" Stat ) ) >
+		+ Token(4)
+
+[23][If_SWITCH_1allow_half_if]< "if" "cond" "then" ( OtherStat [ "else" @ Stat ] | If_SWITCH_1allow_half_if | ( If_SWITCH_0allow_half_if "else" Stat ) ) >
+[RULE: 6][CLAUSE: 0]
+	token: "{" -> [6][Block]< "{" @ { Stat } "}" >
+		+ StackBegin()
+		+ Token(0)
+		> rule: Stat -> [24][If_SWITCH_1allow_half_if]< "if" "cond" "then" ( OtherStat [ "else" Stat @ ] | If_SWITCH_1allow_half_if | ( If_SWITCH_0allow_half_if "else" Stat ) ) >
+			+ StackSlot(5)
+		> rule: OtherStat -> [16][Stat]<! !OtherStat @ !>
+			+ StackBegin()
+		> rule: Block -> [11][OtherStat]<! !Block @ !>
+			+ StackBegin()
+	token: "if" -> [31][If_SWITCH_1allow_half_if]< "if" @ "cond" "then" ( OtherStat [ "else" Stat ] | If_SWITCH_1allow_half_if | ( If_SWITCH_0allow_half_if "else" Stat ) ) >
+		+ StackBegin()
+		+ Token(0)
+		> rule: Stat -> [24][If_SWITCH_1allow_half_if]< "if" "cond" "then" ( OtherStat [ "else" Stat @ ] | If_SWITCH_1allow_half_if | ( If_SWITCH_0allow_half_if "else" Stat ) ) >
+			+ StackSlot(5)
+		> rule: If_SWITCH_1allow_half_if -> [15][Stat]<! !If_SWITCH_1allow_half_if @ !>
+			+ StackBegin()
+	token: "do" -> [3][Do]< "do" @ ";" >
+		+ StackBegin()
+		+ Token(0)
+		> rule: Stat -> [24][If_SWITCH_1allow_half_if]< "if" "cond" "then" ( OtherStat [ "else" Stat @ ] | If_SWITCH_1allow_half_if | ( If_SWITCH_0allow_half_if "else" Stat ) ) >
+			+ StackSlot(5)
+		> rule: OtherStat -> [16][Stat]<! !OtherStat @ !>
+			+ StackBegin()
+		> rule: Do -> [12][OtherStat]<! !Do @ !>
+			+ StackBegin()
+
+[24][If_SWITCH_1allow_half_if]< "if" "cond" "then" ( OtherStat [ "else" Stat @ ] | If_SWITCH_1allow_half_if | ( If_SWITCH_0allow_half_if "else" Stat ) ) >
+[RULE: 6][CLAUSE: 0]
+	ending -> [21][If_SWITCH_1allow_half_if] END [ENDING]
+		+ CreateObject(IfStat)
+		+ Field(IfStat::thenBranch, 3)
+		+ Field(IfStat::elseBranch, 5)
+		+ Field(IfStat::thenBranch, 6)
+		+ Field(IfStat::thenBranch, 7)
+		+ Field(IfStat::elseBranch, 9)
+		+ StackEnd()
+
+[25][If_SWITCH_1allow_half_if]< "if" "cond" "then" ( OtherStat [ "else" Stat ] | If_SWITCH_1allow_half_if @ | ( If_SWITCH_0allow_half_if "else" Stat ) ) >
+[RULE: 6][CLAUSE: 0]
+	ending -> [21][If_SWITCH_1allow_half_if] END [ENDING]
+		+ CreateObject(IfStat)
+		+ Field(IfStat::thenBranch, 3)
+		+ Field(IfStat::elseBranch, 5)
+		+ Field(IfStat::thenBranch, 6)
+		+ Field(IfStat::thenBranch, 7)
+		+ Field(IfStat::elseBranch, 9)
+		+ StackEnd()
+
+[26][If_SWITCH_1allow_half_if]< "if" "cond" "then" ( OtherStat [ "else" Stat ] | If_SWITCH_1allow_half_if | ( If_SWITCH_0allow_half_if "else" @ Stat ) ) >
+[RULE: 6][CLAUSE: 0]
+	token: "{" -> [6][Block]< "{" @ { Stat } "}" >
+		+ StackBegin()
+		+ Token(0)
+		> rule: Stat -> [27][If_SWITCH_1allow_half_if]< "if" "cond" "then" ( OtherStat [ "else" Stat ] | If_SWITCH_1allow_half_if | ( If_SWITCH_0allow_half_if "else" Stat @ ) ) >
+			+ StackSlot(9)
+		> rule: OtherStat -> [16][Stat]<! !OtherStat @ !>
+			+ StackBegin()
+		> rule: Block -> [11][OtherStat]<! !Block @ !>
+			+ StackBegin()
+	token: "if" -> [31][If_SWITCH_1allow_half_if]< "if" @ "cond" "then" ( OtherStat [ "else" Stat ] | If_SWITCH_1allow_half_if | ( If_SWITCH_0allow_half_if "else" Stat ) ) >
+		+ StackBegin()
+		+ Token(0)
+		> rule: Stat -> [27][If_SWITCH_1allow_half_if]< "if" "cond" "then" ( OtherStat [ "else" Stat ] | If_SWITCH_1allow_half_if | ( If_SWITCH_0allow_half_if "else" Stat @ ) ) >
+			+ StackSlot(9)
+		> rule: If_SWITCH_1allow_half_if -> [15][Stat]<! !If_SWITCH_1allow_half_if @ !>
+			+ StackBegin()
+	token: "do" -> [3][Do]< "do" @ ";" >
+		+ StackBegin()
+		+ Token(0)
+		> rule: Stat -> [27][If_SWITCH_1allow_half_if]< "if" "cond" "then" ( OtherStat [ "else" Stat ] | If_SWITCH_1allow_half_if | ( If_SWITCH_0allow_half_if "else" Stat @ ) ) >
+			+ StackSlot(9)
+		> rule: OtherStat -> [16][Stat]<! !OtherStat @ !>
+			+ StackBegin()
+		> rule: Do -> [12][OtherStat]<! !Do @ !>
+			+ StackBegin()
+
+[27][If_SWITCH_1allow_half_if]< "if" "cond" "then" ( OtherStat [ "else" Stat ] | If_SWITCH_1allow_half_if | ( If_SWITCH_0allow_half_if "else" Stat @ ) ) >
+[RULE: 6][CLAUSE: 0]
+	ending -> [21][If_SWITCH_1allow_half_if] END [ENDING]
+		+ CreateObject(IfStat)
+		+ Field(IfStat::thenBranch, 3)
+		+ Field(IfStat::elseBranch, 5)
+		+ Field(IfStat::thenBranch, 6)
+		+ Field(IfStat::thenBranch, 7)
+		+ Field(IfStat::elseBranch, 9)
+		+ StackEnd()
+
+[28][If_SWITCH_1allow_half_if]< "if" "cond" "then" ( OtherStat [ "else" Stat ] | If_SWITCH_1allow_half_if | ( If_SWITCH_0allow_half_if @ "else" Stat ) ) >
+[RULE: 6][CLAUSE: 0]
+	token: "else" -> [26][If_SWITCH_1allow_half_if]< "if" "cond" "then" ( OtherStat [ "else" Stat ] | If_SWITCH_1allow_half_if | ( If_SWITCH_0allow_half_if "else" @ Stat ) ) >
+		+ Token(8)
+
+[29][If_SWITCH_1allow_half_if]< "if" "cond" "then" @ ( OtherStat [ "else" Stat ] | If_SWITCH_1allow_half_if | ( If_SWITCH_0allow_half_if "else" Stat ) ) >
+[RULE: 6][CLAUSE: 0]
+	token: "{" -> [6][Block]< "{" @ { Stat } "}" >
+		+ StackBegin()
+		+ Token(0)
+		> rule: OtherStat -> [22][If_SWITCH_1allow_half_if]< "if" "cond" "then" ( OtherStat @ [ "else" Stat ] | If_SWITCH_1allow_half_if | ( If_SWITCH_0allow_half_if "else" Stat ) ) >
+			+ StackSlot(3)
+		> rule: Block -> [11][OtherStat]<! !Block @ !>
+			+ StackBegin()
+	token: "if" -> [31][If_SWITCH_1allow_half_if]< "if" @ "cond" "then" ( OtherStat [ "else" Stat ] | If_SWITCH_1allow_half_if | ( If_SWITCH_0allow_half_if "else" Stat ) ) >
+		+ StackBegin()
+		+ Token(0)
+		> rule: If_SWITCH_1allow_half_if -> [25][If_SWITCH_1allow_half_if]< "if" "cond" "then" ( OtherStat [ "else" Stat ] | If_SWITCH_1allow_half_if @ | ( If_SWITCH_0allow_half_if "else" Stat ) ) >
+			+ StackSlot(6)
+	token: "if" -> [42][If_SWITCH_0allow_half_if]< "if" @ "cond" "then" ( OtherStat "else" Stat | ( If_SWITCH_0allow_half_if "else" Stat ) ) >
+		+ StackBegin()
+		+ Token(0)
+		> rule: If_SWITCH_0allow_half_if -> [28][If_SWITCH_1allow_half_if]< "if" "cond" "then" ( OtherStat [ "else" Stat ] | If_SWITCH_1allow_half_if | ( If_SWITCH_0allow_half_if @ "else" Stat ) ) >
+			+ StackSlot(7)
+	token: "do" -> [3][Do]< "do" @ ";" >
+		+ StackBegin()
+		+ Token(0)
+		> rule: OtherStat -> [22][If_SWITCH_1allow_half_if]< "if" "cond" "then" ( OtherStat @ [ "else" Stat ] | If_SWITCH_1allow_half_if | ( If_SWITCH_0allow_half_if "else" Stat ) ) >
+			+ StackSlot(3)
+		> rule: Do -> [12][OtherStat]<! !Do @ !>
+			+ StackBegin()
+
+[30][If_SWITCH_1allow_half_if]< "if" "cond" @ "then" ( OtherStat [ "else" Stat ] | If_SWITCH_1allow_half_if | ( If_SWITCH_0allow_half_if "else" Stat ) ) >
+[RULE: 6][CLAUSE: 0]
+	token: "then" -> [29][If_SWITCH_1allow_half_if]< "if" "cond" "then" @ ( OtherStat [ "else" Stat ] | If_SWITCH_1allow_half_if | ( If_SWITCH_0allow_half_if "else" Stat ) ) >
+		+ Token(2)
+
+[31][If_SWITCH_1allow_half_if]< "if" @ "cond" "then" ( OtherStat [ "else" Stat ] | If_SWITCH_1allow_half_if | ( If_SWITCH_0allow_half_if "else" Stat ) ) >
+[RULE: 6][CLAUSE: 0]
+	token: "cond" -> [30][If_SWITCH_1allow_half_if]< "if" "cond" @ "then" ( OtherStat [ "else" Stat ] | If_SWITCH_1allow_half_if | ( If_SWITCH_0allow_half_if "else" Stat ) ) >
+		+ Token(1)
+
+[32][If_SWITCH_0allow_half_if] BEGIN 
+[RULE: 7][CLAUSE: -1]
+	token: "if" -> [42][If_SWITCH_0allow_half_if]< "if" @ "cond" "then" ( OtherStat "else" Stat | ( If_SWITCH_0allow_half_if "else" Stat ) ) >
+		+ StackBegin()
+		+ Token(0)
+
+[33][If_SWITCH_0allow_half_if] END [ENDING]
+[RULE: 7][CLAUSE: -1]
+
+[34][If_SWITCH_0allow_half_if]< "if" "cond" "then" ( OtherStat "else" @ Stat | ( If_SWITCH_0allow_half_if "else" Stat ) ) >
+[RULE: 7][CLAUSE: 0]
+	token: "{" -> [6][Block]< "{" @ { Stat } "}" >
+		+ StackBegin()
+		+ Token(0)
+		> rule: Stat -> [35][If_SWITCH_0allow_half_if]< "if" "cond" "then" ( OtherStat "else" Stat @ | ( If_SWITCH_0allow_half_if "else" Stat ) ) >
+			+ StackSlot(5)
+		> rule: OtherStat -> [16][Stat]<! !OtherStat @ !>
+			+ StackBegin()
+		> rule: Block -> [11][OtherStat]<! !Block @ !>
+			+ StackBegin()
+	token: "if" -> [31][If_SWITCH_1allow_half_if]< "if" @ "cond" "then" ( OtherStat [ "else" Stat ] | If_SWITCH_1allow_half_if | ( If_SWITCH_0allow_half_if "else" Stat ) ) >
+		+ StackBegin()
+		+ Token(0)
+		> rule: Stat -> [35][If_SWITCH_0allow_half_if]< "if" "cond" "then" ( OtherStat "else" Stat @ | ( If_SWITCH_0allow_half_if "else" Stat ) ) >
+			+ StackSlot(5)
+		> rule: If_SWITCH_1allow_half_if -> [15][Stat]<! !If_SWITCH_1allow_half_if @ !>
+			+ StackBegin()
+	token: "do" -> [3][Do]< "do" @ ";" >
+		+ StackBegin()
+		+ Token(0)
+		> rule: Stat -> [35][If_SWITCH_0allow_half_if]< "if" "cond" "then" ( OtherStat "else" Stat @ | ( If_SWITCH_0allow_half_if "else" Stat ) ) >
+			+ StackSlot(5)
+		> rule: OtherStat -> [16][Stat]<! !OtherStat @ !>
+			+ StackBegin()
+		> rule: Do -> [12][OtherStat]<! !Do @ !>
+			+ StackBegin()
+
+[35][If_SWITCH_0allow_half_if]< "if" "cond" "then" ( OtherStat "else" Stat @ | ( If_SWITCH_0allow_half_if "else" Stat ) ) >
+[RULE: 7][CLAUSE: 0]
+	ending -> [33][If_SWITCH_0allow_half_if] END [ENDING]
+		+ CreateObject(IfStat)
+		+ Field(IfStat::thenBranch, 3)
+		+ Field(IfStat::elseBranch, 5)
+		+ Field(IfStat::thenBranch, 6)
+		+ Field(IfStat::elseBranch, 8)
+		+ StackEnd()
+
+[36][If_SWITCH_0allow_half_if]< "if" "cond" "then" ( OtherStat "else" Stat | ( If_SWITCH_0allow_half_if "else" @ Stat ) ) >
+[RULE: 7][CLAUSE: 0]
+	token: "{" -> [6][Block]< "{" @ { Stat } "}" >
+		+ StackBegin()
+		+ Token(0)
+		> rule: Stat -> [37][If_SWITCH_0allow_half_if]< "if" "cond" "then" ( OtherStat "else" Stat | ( If_SWITCH_0allow_half_if "else" Stat @ ) ) >
+			+ StackSlot(8)
+		> rule: OtherStat -> [16][Stat]<! !OtherStat @ !>
+			+ StackBegin()
+		> rule: Block -> [11][OtherStat]<! !Block @ !>
+			+ StackBegin()
+	token: "if" -> [31][If_SWITCH_1allow_half_if]< "if" @ "cond" "then" ( OtherStat [ "else" Stat ] | If_SWITCH_1allow_half_if | ( If_SWITCH_0allow_half_if "else" Stat ) ) >
+		+ StackBegin()
+		+ Token(0)
+		> rule: Stat -> [37][If_SWITCH_0allow_half_if]< "if" "cond" "then" ( OtherStat "else" Stat | ( If_SWITCH_0allow_half_if "else" Stat @ ) ) >
+			+ StackSlot(8)
+		> rule: If_SWITCH_1allow_half_if -> [15][Stat]<! !If_SWITCH_1allow_half_if @ !>
+			+ StackBegin()
+	token: "do" -> [3][Do]< "do" @ ";" >
+		+ StackBegin()
+		+ Token(0)
+		> rule: Stat -> [37][If_SWITCH_0allow_half_if]< "if" "cond" "then" ( OtherStat "else" Stat | ( If_SWITCH_0allow_half_if "else" Stat @ ) ) >
+			+ StackSlot(8)
+		> rule: OtherStat -> [16][Stat]<! !OtherStat @ !>
+			+ StackBegin()
+		> rule: Do -> [12][OtherStat]<! !Do @ !>
+			+ StackBegin()
+
+[37][If_SWITCH_0allow_half_if]< "if" "cond" "then" ( OtherStat "else" Stat | ( If_SWITCH_0allow_half_if "else" Stat @ ) ) >
+[RULE: 7][CLAUSE: 0]
+	ending -> [33][If_SWITCH_0allow_half_if] END [ENDING]
+		+ CreateObject(IfStat)
+		+ Field(IfStat::thenBranch, 3)
+		+ Field(IfStat::elseBranch, 5)
+		+ Field(IfStat::thenBranch, 6)
+		+ Field(IfStat::elseBranch, 8)
+		+ StackEnd()
+
+[38][If_SWITCH_0allow_half_if]< "if" "cond" "then" ( OtherStat "else" Stat | ( If_SWITCH_0allow_half_if @ "else" Stat ) ) >
+[RULE: 7][CLAUSE: 0]
+	token: "else" -> [36][If_SWITCH_0allow_half_if]< "if" "cond" "then" ( OtherStat "else" Stat | ( If_SWITCH_0allow_half_if "else" @ Stat ) ) >
+		+ Token(7)
+
+[39][If_SWITCH_0allow_half_if]< "if" "cond" "then" ( OtherStat @ "else" Stat | ( If_SWITCH_0allow_half_if "else" Stat ) ) >
+[RULE: 7][CLAUSE: 0]
+	token: "else" -> [34][If_SWITCH_0allow_half_if]< "if" "cond" "then" ( OtherStat "else" @ Stat | ( If_SWITCH_0allow_half_if "else" Stat ) ) >
+		+ Token(4)
+
+[40][If_SWITCH_0allow_half_if]< "if" "cond" "then" @ ( OtherStat "else" Stat | ( If_SWITCH_0allow_half_if "else" Stat ) ) >
+[RULE: 7][CLAUSE: 0]
+	token: "{" -> [6][Block]< "{" @ { Stat } "}" >
+		+ StackBegin()
+		+ Token(0)
+		> rule: OtherStat -> [39][If_SWITCH_0allow_half_if]< "if" "cond" "then" ( OtherStat @ "else" Stat | ( If_SWITCH_0allow_half_if "else" Stat ) ) >
+			+ StackSlot(3)
+		> rule: Block -> [11][OtherStat]<! !Block @ !>
+			+ StackBegin()
+	token: "if" -> [42][If_SWITCH_0allow_half_if]< "if" @ "cond" "then" ( OtherStat "else" Stat | ( If_SWITCH_0allow_half_if "else" Stat ) ) >
+		+ StackBegin()
+		+ Token(0)
+		> rule: If_SWITCH_0allow_half_if -> [38][If_SWITCH_0allow_half_if]< "if" "cond" "then" ( OtherStat "else" Stat | ( If_SWITCH_0allow_half_if @ "else" Stat ) ) >
+			+ StackSlot(6)
+	token: "do" -> [3][Do]< "do" @ ";" >
+		+ StackBegin()
+		+ Token(0)
+		> rule: OtherStat -> [39][If_SWITCH_0allow_half_if]< "if" "cond" "then" ( OtherStat @ "else" Stat | ( If_SWITCH_0allow_half_if "else" Stat ) ) >
+			+ StackSlot(3)
+		> rule: Do -> [12][OtherStat]<! !Do @ !>
+			+ StackBegin()
+
+[41][If_SWITCH_0allow_half_if]< "if" "cond" @ "then" ( OtherStat "else" Stat | ( If_SWITCH_0allow_half_if "else" Stat ) ) >
+[RULE: 7][CLAUSE: 0]
+	token: "then" -> [40][If_SWITCH_0allow_half_if]< "if" "cond" "then" @ ( OtherStat "else" Stat | ( If_SWITCH_0allow_half_if "else" Stat ) ) >
+		+ Token(2)
+
+[42][If_SWITCH_0allow_half_if]< "if" @ "cond" "then" ( OtherStat "else" Stat | ( If_SWITCH_0allow_half_if "else" Stat ) ) >
+[RULE: 7][CLAUSE: 0]
+	token: "cond" -> [41][If_SWITCH_0allow_half_if]< "if" "cond" @ "then" ( OtherStat "else" Stat | ( If_SWITCH_0allow_half_if "else" Stat ) ) >
+		+ Token(1)
+

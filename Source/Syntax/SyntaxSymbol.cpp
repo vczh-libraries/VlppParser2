@@ -182,6 +182,7 @@ SyntaxSymbolManager
 					for (auto ruleName : rules.order)
 					{
 						auto ruleSymbol = rules.map[ruleName];
+						if (ruleSymbol->isPartial) continue;
 						auto orderedStates = From(groupedStates[ruleSymbol])
 							.OrderByKey([](StateSymbol* s)
 							{
