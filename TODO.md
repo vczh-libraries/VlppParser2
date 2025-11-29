@@ -52,7 +52,17 @@
 
 - [x] Non-ambiguous test cases
 - [ ] Ambiguous test cases
-- [ ] Sub branch to rewrite TmPtr and TmRa
+  - When the created object is passing through to the next stack, the ieCSTop->objectIds is null since no CreateObject happens.
+  - StackSlot trying to mark objects becoming other objects' field, it suffers from this.
+  - Figure out why the field information is needed.
+    - It is probably because we need to figure out the first instruction due to left recursion.
+    - Left recursion makes an object another object's field but the field stack happens before the owner stack.
+    - Try track the instruction directly.
+    - Remove ExecutionStep::ETRA::count since it is not needed. This might helping removing the whole InsExec_CreateStack and InsExec_ObjectStack design.
+      - We might still need something like InsExec_CreateStack to remember the instruction mapping.
+      - Two stacks are maintained, StackBegin/StackEnd/StackSlot operates them.
+      - When StackSlot happens, we will check if the field object happens eariler than the owner object. Track it.
+      - Therefore no InsExec_ObjectStack is needed.
 - [ ] Built-in parsers:
   - [ ] Json
   - [ ] Xml
