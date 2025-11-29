@@ -45,7 +45,6 @@ namespace vl
 				using GlrRuleMap = collections::Dictionary<RuleSymbol*, GlrRule*>;
 				using LiteralTokenMap = collections::Dictionary<GlrRefSyntax*, vint32_t>;
 				using RuleDependencies = collections::Group<RuleSymbol*, RuleSymbol*>;
-				using RuleKnownTypes = collections::Group<RuleSymbol*, AstClassSymbol*>;
 				using ClauseReuseDependencies = collections::Group<GlrReuseClause*, RuleSymbol*>;
 				using ClauseTypeMap = collections::Dictionary<GlrClause*, AstClassSymbol*>;
 
@@ -62,10 +61,12 @@ namespace vl
 					GlrRuleMap							astRules;											// RuleSymbol -> GlrRule
 					LiteralTokenMap						literalTokens;
 					RuleDependencies					ruleReuseDependencies;								// RuleSymbol -> !rule in that rule
-					RuleKnownTypes						ruleKnownTypes;										// RuleSymbol -> explicitly declared object type in clauses
 					ClauseReuseDependencies				clauseReuseDependencies;							// GlrReuseClause -> !rule in that clause
 					ClauseTypeMap						clauseTypes;										// GlrClause -> type
 					Ptr<regex::RegexLexer>				cachedLexer;
+
+					// ValidateStructure
+					RuleDependencies					partialRuleDependencies;							// RuleSymbol -> direct referenced partial rule in that partial rule
 
 					VisitorContext(
 						const AstSymbolManager& _astManager,

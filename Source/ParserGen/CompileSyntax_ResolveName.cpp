@@ -365,7 +365,6 @@ ResolveNameVisitor
 				{
 					if (auto classSymbol = GetRuleClass(node->type))
 					{
-						context.ruleKnownTypes.Add(ruleSymbol, classSymbol);
 						context.clauseTypes.Add(node, classSymbol);
 					}
 					node->syntax->Accept(this);
@@ -375,7 +374,6 @@ ResolveNameVisitor
 				{
 					if (auto classSymbol = GetRuleClass(node->type))
 					{
-						context.ruleKnownTypes.Add(ruleSymbol, classSymbol);
 						context.clauseTypes.Add(node, classSymbol);
 					}
 					node->syntax->Accept(this);

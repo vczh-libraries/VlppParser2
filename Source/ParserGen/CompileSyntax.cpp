@@ -72,7 +72,7 @@ CompileSyntax
 				return true;
 			}
 
-			bool VerifySyntax_UntilPrefixMerge(VisitorContext& context, Ptr<GlrSyntaxFile> syntaxFile)
+			bool VerifySyntax_UntilCompile(VisitorContext& context, Ptr<GlrSyntaxFile> syntaxFile)
 			{
 				CalculateFirstSet(context, syntaxFile);
 				if (context.syntaxManager.Global().Errors().Count() > 0) return false;
@@ -114,7 +114,7 @@ CompileSyntax
 					VisitorContext context(astManager, lexerManager, syntaxManager);
 					VisitorSwitchContext sContext;
 					if (!VerifySyntax_UntilSwitch(context, sContext, syntaxFile)) goto FINISHED_COMPILING;
-					if (!VerifySyntax_UntilPrefixMerge(context, syntaxFile)) goto FINISHED_COMPILING;
+					if (!VerifySyntax_UntilCompile(context, syntaxFile)) goto FINISHED_COMPILING;
 					CompileSyntax(context, output, syntaxFile);
 				}
 			FINISHED_COMPILING:

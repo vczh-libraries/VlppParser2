@@ -365,6 +365,19 @@ ValidateStructureRelationshipVisitor
 					{
 						AddFieldCounter(node->field.value, 1);
 					}
+
+					if (ruleSymbol->isPartial && node->refType == GlrRefType::Id)
+					{
+						vint ruleIndex = context.syntaxManager.Rules().Keys().IndexOf(node->literal.value);
+						if (ruleIndex != -1)
+						{
+							auto refRuleSymbol = context.syntaxManager.Rules().Values()[ruleIndex];
+							if (refRuleSymbol->isPartial && !context.partialRuleDependencies.Contains(ruleSymbol, refRuleSymbol))
+							{
+								context.partialRuleDependencies.Add(ruleSymbol, refRuleSymbol);
+							}
+						}
+					}
 				}
 
 				void Visit(GlrUseSyntax* node) override
@@ -520,6 +533,45 @@ ValidateStructure
 						ValidateStructureRelationshipVisitor visitor2(context, ruleSymbol);
 						visitor1.ValidateClause(clause);
 						visitor2.ValidateClause(clause);
+					}
+				}
+
+				PartialOrderingProcessor pop;
+				List<RuleSymbol*> partialRules;
+				CopyFrom(partialRules,
+					From(context.syntaxManager.Rules().Values())
+						.Where([&](RuleSymbol* rule) { return rule->isPartial; })
+					);
+				pop.InitWithGroup(partialRules, context.partialRuleDependencies);
+				pop.Sort();
+
+				for (vint i = 0; i < context.partialRuleDependencies.Count(); i++)
+				{
+					auto partialRule = context.partialRuleDependencies.Keys()[i];
+					if (context.partialRuleDependencies.GetByIndex(i).Contains(partialRule))
+					{
+						context.syntaxManager.AddError(
+							ParserErrorType::PartialRuleIsRecursive,
+							context.astRules[partialRule]->codeRange,
+							partialRule->Name()
+							);
+					}
+				}
+
+				for (auto&& component : pop.components)
+				{
+					if (component.nodeCount > 1)
+					{
+						for (auto partialRule : From(FromPointer(component.firstNode, component.firstNode + component.nodeCount))
+							.Select([&](vint index) { return partialRules[index]; })
+							.OrderByKey([](auto partialRule) { return partialRule->Name(); }))
+						{
+							context.syntaxManager.AddError(
+								ParserErrorType::PartialRuleIsRecursive,
+								context.astRules[partialRule]->codeRange,
+								partialRule->Name()
+								);
+						}
 					}
 				}
 			}
