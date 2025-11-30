@@ -622,6 +622,10 @@ TraceManager
 				// phase: AllocateExecutionData
 				void										AllocateExecutionData();
 
+				// phase: BuildAmbiguityStructures
+				Trace* StepForward(Trace* trace);
+				void										BuildAmbiguityStructures();
+
 				// phase: PartialExecuteTraces - PartialExecuteOrdinaryTrace
 				InsExec_Stack*								NewStack();
 				InsExec_ObjectInstance*						NewObjectInstance();
@@ -651,10 +655,6 @@ TraceManager
 
 				// phase: PartialExecuteTraces
 				void										PartialExecuteTraces();
-
-				// phase: BuildAmbiguityStructures
-				Trace*										StepForward(Trace* trace);
-				void										BuildAmbiguityStructures();
 
 			protected:
 				// ResolveAmbiguity
