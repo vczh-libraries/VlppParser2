@@ -96,6 +96,35 @@ SummarizeObjectInstances
 
 			void TraceManager::SummarizeObjectInstances()
 			{
+				// traverse through all object instances
+				auto currentObjectRef = firstObjectInstance;
+				while (currentObjectRef != nullref)
+				{
+					auto currentObject = GetInsExec_ObjectInstance(currentObjectRef);
+					currentObjectRef = currentObject->previous;
+
+					// summarize from associatedStacks
+					SortedList<InsRef> endInsRefs;
+					auto currentStackRefLink = currentObject->associatedStacks;
+					while (currentStackRefLink != nullref)
+					{
+						auto stackRefLink = GetInsExec_StackRefLink(currentStackRefLink);
+						currentStackRefLink = stackRefLink->previous;
+
+						// beginInsRef
+						auto stack = GetInsExec_Stack(stackRefLink->id);
+						UpdateTopTrace(currentObject->beginInsRef, stack->beginInsRef);
+
+						// endInsRefs
+						CollectInsRefs(endInsRefs, stack->endWithCreateInsRefs);
+						CollectInsRefs(endInsRefs, stack->endWithReuseInsRefs);
+					}
+
+					for (auto insRef : endInsRefs)
+					{
+						PushInsRefLink(currentObject->endInsRefs, insRef);
+					}
+				}
 			}
 
 /***********************************************************************
@@ -109,6 +138,38 @@ SummarizeEarilestInsRefs
 /***********************************************************************
 SummarizeInstructionRange
 ***********************************************************************/
+
+			bool TraceManager::UpdateTopTrace(InsRef& topInsRef, InsRef newInsRef)
+			{
+				if (
+					topInsRef.trace == nullref ||
+					topInsRef.trace > newInsRef.trace ||
+					(topInsRef.trace == newInsRef.trace && topInsRef.ins > newInsRef.ins)
+					)
+				{
+					topInsRef = newInsRef;
+					return true;
+				}
+				else
+				{
+					return false;
+				}
+			}
+
+			void TraceManager::CollectInsRefs(collections::SortedList<InsRef>& insRefs, Ref<InsExec_InsRefLink> link)
+			{
+				auto currentInsRefLink = link;
+				while (currentInsRefLink != nullref)
+				{
+					auto insRefLink = GetInsExec_InsRefLink(currentInsRefLink);
+					currentInsRefLink = insRefLink->previous;
+
+					if (!insRefs.Contains(insRefLink->insRef))
+					{
+						insRefs.Add(insRefLink->insRef);
+					}
+				}
+			}
 
 			void TraceManager::SummarizeInstructionRange()
 			{
