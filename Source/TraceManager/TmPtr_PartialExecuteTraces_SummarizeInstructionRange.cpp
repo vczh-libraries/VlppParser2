@@ -231,13 +231,68 @@ CalculateObjectLastInstruction
 			}
 
 /***********************************************************************
+SummarizeIndirectCreateObjectInsRefs
+***********************************************************************/
+
+			void TraceManager::SummarizeIndirectCreateObjectInsRefs()
+			{
+				NEW_MERGE_STACK_MAGIC_COUNTER;
+				auto stackMagicCounter = MergeStack_MagicCounter;
+
+				// traverse through all stacks
+				auto currentStackRef = firstStack;
+				while (currentStackRef != nullref)
+				{
+					auto currentStack = GetInsExec_Stack(currentStackRef);
+					currentStackRef = currentStack->previous;
+					if (currentStack->mergeCounter == stackMagicCounter) continue;
+					currentStack->mergeCounter = stackMagicCounter;
+
+					List<InsExec_Stack*> indirectStacks;
+					indirectStacks.Add(currentStack);
+
+					// list all untouched useFromStacks in order, skipped processed ones
+					for (vint i = 0; i < indirectStacks.Count(); i++)
+					{
+						auto stack = indirectStacks[i];
+						auto currentInsRefLink = stack->useFromStacks;
+						while (currentInsRefLink != nullref)
+						{
+							auto insRefLink = GetInsExec_StackRefLink(currentInsRefLink);
+							currentInsRefLink = insRefLink->previous;
+
+							auto useFromStack = GetInsExec_Stack(insRefLink->id);
+							if (useFromStack->mergeCounter == stackMagicCounter) continue;
+							useFromStack->mergeCounter = stackMagicCounter;
+							indirectStacks.Add(useFromStack);
+						}
+					}
+
+					// process all listed stacks
+					for (vint i = indirectStacks.Count() - 1; i >= 0; i--)
+					{
+						auto stack = indirectStacks[i];
+						auto currentInsRefLink = stack->useFromStacks;
+						while (currentInsRefLink != nullref)
+						{
+							auto insRefLink = GetInsExec_StackRefLink(currentInsRefLink);
+							currentInsRefLink = insRefLink->previous;
+
+							auto useFromStack = GetInsExec_Stack(insRefLink->id);
+							stack->indirectCreateObjectInsRefs = JoinInsRefLink(stack->indirectCreateObjectInsRefs, useFromStack->indirectCreateObjectInsRefs);
+						}
+						stack->indirectCreateObjectInsRefs = JoinInsRefLink(stack->indirectCreateObjectInsRefs, stack->createObjectInsRefs);
+					}
+				}
+			}
+
+/***********************************************************************
 SummarizeInstructionRange
 ***********************************************************************/
 
 			void TraceManager::SummarizeInstructionRange()
 			{
-				CalculateObjectFirstInstruction();
-				CalculateObjectLastInstruction();
+				SummarizeIndirectCreateObjectInsRefs();
 			}
 
 #undef NEW_MERGE_STACK_MAGIC_COUNTER

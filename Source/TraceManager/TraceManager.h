@@ -38,9 +38,8 @@ AllocateOnly<T>
 				explicit Ref(vint32_t _handle) :handle(_handle) {}
 
 				__forceinline bool operator==(NullRef) const { return handle == -1; }
-
-				__forceinline std::strong_ordering operator<=>(const Ref<T>& ref) const { return handle <=> ref.handle; }
 				__forceinline bool operator==(const Ref<T>& ref) const { return handle == ref.handle; }
+				__forceinline std::strong_ordering operator<=>(const Ref<T>& ref) const = default;
 
 				__forceinline Ref& operator=(const Ref<T>& ref) { handle = ref.handle; return *this; }
 				__forceinline Ref& operator=(T* obj) { handle = obj == nullptr ? -1 : obj->allocatedIndex; return *this; }
@@ -261,6 +260,8 @@ TraceManager (Data Structures -- PrepareTraceRoute)
 			{
 				Ref<Trace>							trace;
 				vint32_t							ins = -1;
+
+				__forceinline std::strong_ordering operator<=>(const InsRef& ref) const = default;
 			};
 
 			struct InsExec_InsRefLink : Allocatable<InsExec_InsRefLink>
@@ -293,8 +294,8 @@ TraceManager (Data Structures -- PrepareTraceRoute)
 				// previous allocated object
 				Ref<InsExec_ObjectInstance>			previous;
 
-				// The stack whose CreateObject instruction created this object
-				Ref<InsExec_Stack>					createdByStack;
+				// All stacks which directly or indirectly created this object
+				Ref<InsExec_StackRefLink>			associatedStacks;
 
 				// The top StackBegin instruction for this object
 				InsRef								beginInsRef;
@@ -322,6 +323,9 @@ TraceManager (Data Structures -- PrepareTraceRoute)
 				Ref<InsExec_InsRefLink>				createObjectInsRefs;
 				Ref<InsExec_InsRefLink>				endWithCreateInsRefs;
 				Ref<InsExec_InsRefLink>				endWithReuseInsRefs;
+
+				// All createObjectInsRef including in useFromStacks
+				Ref<InsExec_InsRefLink>				indirectCreateObjectInsRefs;
 			};
 
 			struct InsExec_Context
@@ -633,6 +637,7 @@ TraceManager
 				void										PushStackRefLink(Ref<InsExec_StackRefLink>& link, Ref<InsExec_Stack> id);
 				void										PushStackArrayRefLink(Ref<InsExec_StackArrayRefLink>& arrayLink, Ref<InsExec_Stack> id);
 				void										PushStackArrayRefLink(Ref<InsExec_StackArrayRefLink>& arrayLink, Ref<InsExec_StackRefLink> link);
+				Ref<InsExec_InsRefLink>						JoinInsRefLink(Ref<InsExec_InsRefLink> first, Ref<InsExec_InsRefLink> second);
 				Ref<InsExec_StackRefLink>					JoinStackRefLink(Ref<InsExec_StackRefLink> first, Ref<InsExec_StackRefLink> second);
 				void										PartialExecuteOrdinaryTrace(Trace* trace);
 
@@ -657,6 +662,7 @@ TraceManager
 				void										PartialExecuteTraces();
 
 				// phase: SummarizeInstructionRange
+				void										SummarizeIndirectCreateObjectInsRefs();
 				void										SummarizeInstructionRange();
 
 			protected:

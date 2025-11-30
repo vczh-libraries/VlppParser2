@@ -68,6 +68,30 @@ PartialExecuteOrdinaryTrace
 				arrayLink = newArrayLink;
 			}
 
+			Ref<InsExec_InsRefLink> TraceManager::JoinInsRefLink(Ref<InsExec_InsRefLink> first, Ref<InsExec_InsRefLink> second)
+			{
+				if (first == nullref) return second;
+				if (second == nullref) return first;
+
+				Ref<InsExec_InsRefLink> newInsRef;
+
+				while (first != nullref)
+				{
+					auto insRef = GetInsExec_InsRefLink(first);
+					first = insRef->previous;
+					PushInsRefLink(newInsRef, insRef->insRef);
+				}
+
+				while (second != nullref)
+				{
+					auto insRef = GetInsExec_InsRefLink(second);
+					second = insRef->previous;
+					PushInsRefLink(newInsRef, insRef->insRef);
+				}
+
+				return newInsRef;
+			}
+
 			Ref<InsExec_StackRefLink> TraceManager::JoinStackRefLink(Ref<InsExec_StackRefLink> first, Ref<InsExec_StackRefLink> second)
 			{
 				if (first == nullref) return second;
