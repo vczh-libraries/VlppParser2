@@ -46,10 +46,9 @@ PartialExecuteOrdinaryTrace
 
 			void TraceManager::PushStackArrayRefLink(Ref<InsExec_StackArrayRefLink>& arrayLink, Ref<InsExec_Stack> id)
 			{
-				auto newArrayLink = GetInsExec_StackArrayRefLink(insExec_StackArrayRefLinks.Allocate());
-				newArrayLink->previous = arrayLink;
-				PushStackRefLink(newArrayLink->ids, id);
-				arrayLink = newArrayLink;
+				Ref<InsExec_StackRefLink> link;
+				PushStackRefLink(link, id);
+				PushStackArrayRefLink(arrayLink, link);
 			}
 
 			void TraceManager::PushStackArrayRefLink(Ref<InsExec_StackArrayRefLink>& arrayLink, Ref<InsExec_StackRefLink> link)
@@ -57,6 +56,15 @@ PartialExecuteOrdinaryTrace
 				auto newArrayLink = GetInsExec_StackArrayRefLink(insExec_StackArrayRefLinks.Allocate());
 				newArrayLink->previous = arrayLink;
 				newArrayLink->ids = link;
+
+				if (arrayLink == nullref)
+				{
+					newArrayLink->currentDepth = 0;
+				}
+				else
+				{
+					newArrayLink->currentDepth = GetInsExec_StackArrayRefLink(arrayLink)->currentDepth + 1;
+				}
 				arrayLink = newArrayLink;
 			}
 
@@ -130,23 +138,19 @@ PartialExecuteOrdinaryTrace
 					case AstInsType::StackBegin:
 						{
 							auto newTopStack = NewStack();
-							if (context.createStack != nullref)
-							{
-								ForEachStack(context.createStack, [=](InsExec_Stack* topStack)
-								{
-									if (newTopStack->stackBase == 0)
-									{
-										newTopStack->stackBase = topStack->stackBase;
-									}
-									else
-									{
-										CHECK_ERROR(newTopStack->stackBase == topStack->stackBase, ERROR_MESSAGE_PREFIX L"[StackBegin] Mismatched stackBase values.");
-									}
-								});
-							}
 							PushStackArrayRefLink(context.createStack, newTopStack);
 							newTopStack->beginInsRef = { trace, insRef };
 							PushStackRefLink(insExec->operatingStacks, newTopStack);
+
+							auto newStackTop = GetInsExec_StackArrayRefLink(context.createStack);
+							if (context.objectStack == nullref)
+							{
+								newStackTop->objectStackDepthForCreateStack = 0;
+							}
+							else
+							{
+								newStackTop->objectStackDepthForCreateStack = GetInsExec_StackArrayRefLink(context.objectStack)->currentDepth;
+							}
 						}
 						break;
 					case AstInsType::StackEnd:

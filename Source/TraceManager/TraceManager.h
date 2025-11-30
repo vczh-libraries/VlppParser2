@@ -279,6 +279,13 @@ TraceManager (Data Structures -- PrepareTraceRoute)
 			{
 				Ref<InsExec_StackArrayRefLink>		previous;
 				Ref<InsExec_StackRefLink>			ids;
+
+				// The current depth of the link. The first one is 0.
+				vint								currentDepth = -1;
+
+				// Available when the link is in InsExec_Context::createStack
+				// It records the InsExec_Context::objectStack depth when the link is created.
+				vint								objectStackDepthForCreateStack = -1;
 			};
 
 			struct InsExec_ObjectInstance : Allocatable<InsExec_ObjectInstance>
@@ -303,7 +310,6 @@ TraceManager (Data Structures -- PrepareTraceRoute)
 			{
 				// previous allocated object
 				Ref<InsExec_Stack>					previous;
-				vint32_t							stackBase = 0;			// the number of objects in InsExec_Context::objectStack when this stack is created
 
 				// owner-field relationships
 				Ref<InsExec_StackRefLink>			fieldStacks;

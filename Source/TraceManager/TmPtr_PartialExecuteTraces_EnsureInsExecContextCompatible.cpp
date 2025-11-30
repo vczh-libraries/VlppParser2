@@ -24,26 +24,26 @@ EnsureInsExecContextCompatible
 				if ((contextBaseline.objectStack == nullref) != (contextComming.objectStack == nullref)) error();
 				if (contextBaseline.objectStack != nullref)
 				{
-					auto stackBaseline = GetInsExec_ObjectStack(contextBaseline.objectStack);
-					auto stackComming = GetInsExec_ObjectStack(contextComming.objectStack);
-					if (stackBaseline->pushedCount != stackComming->pushedCount) error();
+					auto objectStackBaseline = GetInsExec_StackArrayRefLink(contextBaseline.objectStack);
+					auto objectStackComming = GetInsExec_StackArrayRefLink(contextComming.objectStack);
+					if (objectStackBaseline->currentDepth != objectStackComming->currentDepth) error();
 				}
 
 				// check if the two createStack have the same depth
 				// check each corresponding createStack have the same stackBase
-				auto stack1 = contextBaseline.createStack;
-				auto stack2 = contextComming.createStack;
-				while (stack1 != stack2)
+				auto stackBaseline = contextBaseline.createStack;
+				auto stackComming = contextComming.createStack;
+				while (stackBaseline != stackComming)
 				{
-					if (stack1 == nullref || stack2 == nullref) error();
+					if (stackBaseline == nullref || stackComming == nullref) error();
 
-					auto stackObj1 = GetInsExec_CreateStack(stack1);
-					auto stackObj2 = GetInsExec_CreateStack(stack2);
+					auto stackObjBaseline = GetInsExec_StackArrayRefLink(stackBaseline);
+					auto stackObjComming = GetInsExec_StackArrayRefLink(stackComming);
 
-					if (stackObj1->stackBase != stackObj2->stackBase) error();
+					if (stackObjBaseline->objectStackDepthForCreateStack != stackObjComming->objectStackDepthForCreateStack) error();
 
-					stack1 = stackObj1->previous;
-					stack2 = stackObj2->previous;
+					stackBaseline = stackObjBaseline->previous;
+					stackComming = stackObjComming->previous;
 				}
 #undef ERROR_MESSAGE_PREFIX
 			}
