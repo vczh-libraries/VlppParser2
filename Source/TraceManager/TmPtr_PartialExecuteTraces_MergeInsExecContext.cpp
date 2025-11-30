@@ -14,10 +14,10 @@ namespace vl
 MergeInsExecContext
 ***********************************************************************/
 
-			template<typename T, T* (TraceManager::* get)(Ref<T>), Ref<T> (InsExec_Context::* stack), typename TMerge>
-			Ref<T> TraceManager::MergeStack(Trace* mergeTrace, AllocateOnly<T>& allocator, TMerge&& merge)
+			template<Ref<InsExec_StackArrayRefLink> (InsExec_Context::* stack), typename TMerge>
+			Ref<InsExec_StackArrayRefLink> TraceManager::MergeStack(Trace* mergeTrace, TMerge&& merge)
 			{
-				Array<T*> stacks(mergeTrace->predecessorCount);
+				Array<InsExec_StackArrayRefLink*> stacks(mergeTrace->predecessorCount);
 
 				// fill the first level of stacks objects
 				{
@@ -29,13 +29,13 @@ MergeInsExecContext
 						auto traceExec = GetTraceExec(predecessor->traceExecRef);
 
 						auto stackId = traceExec->context.*stack;
-						stacks[index++] = stackId == nullref ? nullptr : (this->*get)(stackId);
+						stacks[index++] = stackId == nullref ? nullptr : GetInsExec_StackArrayRefLink(stackId);
 						predecessorId = predecessor->predecessors.siblingNext;
 					}
 				}
 
-				Ref<T> stackTop;
-				Ref<T>* pStackPrevious = &stackTop;
+				Ref<InsExec_StackArrayRefLink> stackTop;
+				auto pStackPrevious = &stackTop;
 				while (stacks[0])
 				{
 					// check if all stack objects are the same
@@ -58,7 +58,7 @@ MergeInsExecContext
 					}
 
 					// otherwise, create a new stack object to merge all
-					auto newStack = (this->*get)(allocator.Allocate());
+					auto newStack = GetInsExec_StackArrayRefLink(insExec_StackArrayRefLinks.Allocate());
 					*pStackPrevious = newStack;
 					pStackPrevious = &(newStack->previous);
 
@@ -75,7 +75,16 @@ MergeInsExecContext
 							merge(newStack, stacks[index]);
 
 							// do not visit the same object repeatly
-							PushObjRefLinkWithCounter(newStack->objectIds, stacks[index]->objectIds);
+							auto currentLinkRef = stacks[index]->ids;
+							while (currentLinkRef != nullref)
+							{
+								auto currentLink = GetInsExec_StackRefLink(currentLinkRef);
+								currentLinkRef = currentLink->previous;
+								auto currentStack = GetInsExec_Stack(currentLink->id);
+								if (currentStack->mergeCounter == magicPush) continue;
+								currentStack->mergeCounter = magicPush;
+								PushStackRefLink(newStack->ids, currentStack);
+							}
 						}
 					}
 
@@ -83,7 +92,7 @@ MergeInsExecContext
 					for (vint index = 0; index < stacks.Count(); index++)
 					{
 						auto stackId = stacks[index]->previous;
-						stacks[index] = stackId == nullref ? nullptr : (this->*get)(stackId);
+						stacks[index] = stackId == nullref ? nullptr : GetInsExec_StackArrayRefLink(stackId);
 					}
 				}
 				return stackTop;
@@ -95,30 +104,22 @@ MergeInsExecContext
 				auto traceExec = GetTraceExec(mergeTrace->traceExecRef);
 
 				traceExec->context.objectStack = MergeStack<
-					InsExec_ObjectStack,
-					&TraceManager::GetInsExec_ObjectStack,
 					&InsExec_Context::objectStack
 				>(
 					mergeTrace,
-					insExec_ObjectStacks,
-					[this](InsExec_ObjectStack* newStack, InsExec_ObjectStack* commingStack)
+					[this](InsExec_StackArrayRefLink* newStack, InsExec_StackArrayRefLink* commingStack)
 					{
-						// all commingStack->pushedCount are ensured to be the same
-						newStack->pushedCount = commingStack->pushedCount;
+						newStack->currentDepth = commingStack->currentDepth;
 					});
 
 				traceExec->context.createStack = MergeStack<
-					InsExec_CreateStack,
-					&TraceManager::GetInsExec_CreateStack,
 					&InsExec_Context::createStack
 				>(
 					mergeTrace,
-					insExec_CreateStacks,
-					[this](InsExec_CreateStack* newStack, InsExec_CreateStack* commingStack)
+					[this](InsExec_StackArrayRefLink* newStack, InsExec_StackArrayRefLink* commingStack)
 					{
-						// all commingStack->stackBase are ensured to be the same
-						newStack->stackBase = commingStack->stackBase;
-						PushInsRefLinkWithCounter(newStack->createInsRefs, commingStack->createInsRefs);
+						newStack->currentDepth = commingStack->currentDepth;
+						newStack->objectStackDepthForCreateStack = commingStack->objectStackDepthForCreateStack;
 					});
 
 				NEW_MERGE_STACK_MAGIC_COUNTER;

@@ -275,7 +275,7 @@ TraceManager (Data Structures -- PrepareTraceRoute)
 				Ref<InsExec_Stack>					id;
 			};
 
-			struct InsExec_StackArrayRefLink : Allocatable<InsExec_StackArrayRefLink>
+			struct InsExec_StackArrayRefLink : Allocatable<InsExec_StackArrayRefLink>, WithMagicCounter
 			{
 				Ref<InsExec_StackArrayRefLink>		previous;
 				Ref<InsExec_StackRefLink>			ids;
@@ -636,8 +636,8 @@ TraceManager
 				void										EnsureInsExecContextCompatible(Trace* baselineTrace, Trace* commingTrace);
 
 				// phase: PartialExecuteTraces - MergeInsExecContext
-				template<typename T, T* (TraceManager::*get)(Ref<T>), Ref<T> (InsExec_Context::*stack), typename TMerge>
-				Ref<T>										MergeStack(Trace* mergeTrace, AllocateOnly<T>& allocator, TMerge&& merge);
+				template<Ref<InsExec_StackArrayRefLink> (InsExec_Context::*stack), typename TMerge>
+				Ref<InsExec_StackArrayRefLink>				MergeStack(Trace* mergeTrace, TMerge&& merge);
 				void										MergeInsExecContext(Trace* mergeTrace);
 
 				// phase: PartialExecuteTraces - CalculateObjectFirstInstruction
