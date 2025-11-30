@@ -649,20 +649,13 @@ TraceManager
 				Ref<InsExec_StackArrayRefLink>				MergeStack(Trace* mergeTrace, TMerge&& merge);
 				void										MergeInsExecContext(Trace* mergeTrace);
 
-				// phase: PartialExecuteTraces - CalculateObjectFirstInstruction
-				bool										UpdateTopTrace(InsRef& topInsRef, InsRef newInsRef);
-				void										InjectFirstInstruction(InsRef insRef, Ref<InsExec_StackRefLink> injectTargets, vuint64_t magicInjection);
-				void										CalculateObjectFirstInstruction();
-
-				// phase: PartialExecuteTraces - CalculateObjectLastInstruction
-				bool										IsInTheSameBranch(Trace* forward, Trace* targetForwardAtFront);
-				void										CalculateObjectLastInstruction();
-
 				// phase: PartialExecuteTraces
 				void										PartialExecuteTraces();
 
 				// phase: SummarizeInstructionRange
 				void										SummarizeIndirectCreateObjectInsRefs();
+				void										SummarizeObjectInstances();
+				void										SummarizeEarilestInsRefs();
 				void										SummarizeInstructionRange();
 
 			protected:
