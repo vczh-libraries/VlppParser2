@@ -302,9 +302,6 @@ TraceManager (Data Structures -- PrepareTraceRoute)
 
 				// The bottom StackEnd instructions for this object
 				Ref<InsExec_InsRefLink>				endInsRefs;
-
-				// The earliest StackBegin instructions including all fields
-				InsRef								earliestInsRef;
 			};
 
 			struct InsExec_Stack : Allocatable<InsExec_Stack>, WithMagicCounter
@@ -326,6 +323,9 @@ TraceManager (Data Structures -- PrepareTraceRoute)
 
 				// All createObjectInsRef including in useFromStacks
 				Ref<InsExec_InsRefLink>				indirectCreateObjectInsRefs;
+
+				// The earliest StackBegin instructions including all fields
+				InsRef								earliestInsRef;
 			};
 
 			struct InsExec_Context
@@ -653,6 +653,8 @@ TraceManager
 				void										PartialExecuteTraces();
 
 				// phase: SummarizeInstructionRange
+				template<typename TCallback>
+				void										IterateStackWithDependency(Ref<InsExec_StackRefLink>(InsExec_Stack::* dependencies), TCallback&& callback);
 				bool										UpdateTopTrace(InsRef& topInsRef, InsRef newInsRef);
 				void										CollectInsRefs(collections::SortedList<InsRef>& insRefs, Ref<InsExec_InsRefLink> link);
 				void										SummarizeIndirectCreateObjectInsRefs();
