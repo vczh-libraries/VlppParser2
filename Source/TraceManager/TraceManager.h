@@ -289,7 +289,7 @@ TraceManager (Data Structures -- PrepareTraceRoute)
 				vint								objectStackDepthForCreateStack = -1;
 			};
 
-			struct InsExec_ObjectInstance : Allocatable<InsExec_ObjectInstance>
+			struct InsExec_ObjectInstance : Allocatable<InsExec_ObjectInstance>, WithMagicCounter
 			{
 				// previous allocated object
 				Ref<InsExec_ObjectInstance>			previous;

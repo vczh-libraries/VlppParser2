@@ -272,16 +272,40 @@ SummarizeIndirectCreateObjectInsRefs
 					for (vint i = indirectStacks.Count() - 1; i >= 0; i--)
 					{
 						auto stack = indirectStacks[i];
-						auto currentInsRefLink = stack->useFromStacks;
+						Ref<InsExec_InsRefLink> potentialInsRefs;
+
+						// accumulate all createObjectInsRefs from useFromStacks
+						auto currentStackRefLink = stack->useFromStacks;
+						while (currentStackRefLink != nullref)
+						{
+							auto stackRefLink = GetInsExec_StackRefLink(currentStackRefLink);
+							currentStackRefLink = stackRefLink->previous;
+
+							auto useFromStack = GetInsExec_Stack(stackRefLink->id);
+							potentialInsRefs = JoinInsRefLink(potentialInsRefs, useFromStack->indirectCreateObjectInsRefs);
+						}
+						potentialInsRefs = JoinInsRefLink(potentialInsRefs, stack->createObjectInsRefs);
+
+						// make sure InsExec_Stack::indirectCreateObjectInsRefs maps to InsExec_ObjectInstance::associatedStacks without duplication
+						NEW_MERGE_STACK_MAGIC_COUNTER;
+						auto objectMagicCounter = MergeStack_MagicCounter;
+
+						auto currentInsRefLink = potentialInsRefs;
 						while (currentInsRefLink != nullref)
 						{
-							auto insRefLink = GetInsExec_StackRefLink(currentInsRefLink);
+							auto insRefLink = GetInsExec_InsRefLink(currentInsRefLink);
 							currentInsRefLink = insRefLink->previous;
 
-							auto useFromStack = GetInsExec_Stack(insRefLink->id);
-							stack->indirectCreateObjectInsRefs = JoinInsRefLink(stack->indirectCreateObjectInsRefs, useFromStack->indirectCreateObjectInsRefs);
+							auto insTrace = GetTrace(insRefLink->insRef.trace);
+							auto insTraceExec = GetTraceExec(insTrace->traceExecRef);
+							auto insExec = GetInsExec(insTraceExec->insExecRefs.start + insRefLink->insRef.ins);
+							auto insObject = GetInsExec_ObjectInstance(insExec->createdObject);
+							if (insObject->mergeCounter == objectMagicCounter) continue;
+							insObject->mergeCounter = objectMagicCounter;
+
+							PushInsRefLink(stack->indirectCreateObjectInsRefs, insRefLink->insRef);
+							PushStackRefLink(insObject->associatedStacks, stack);
 						}
-						stack->indirectCreateObjectInsRefs = JoinInsRefLink(stack->indirectCreateObjectInsRefs, stack->createObjectInsRefs);
 					}
 				}
 			}
