@@ -333,10 +333,10 @@ CheckMergeTrace
 				// objects in the top object stack are the result of ambiguity
 				if (trace->successorCount == 0)
 				{
-					auto ieOSTop = GetInsExec_ObjectStack(traceExec->context.objectStack);
+					auto ieOSTop = GetInsExec_StackArrayRefLink(traceExec->context.objectStack);
 					return CheckAmbiguityResolution(ta, visitingIds, [=](auto&& callback)
 					{
-						return callback(ieOSTop->objectIds);
+						return callback(ieOSTop->ids);
 					});
 				}
 
@@ -392,10 +392,10 @@ CheckMergeTrace
 					{
 						// if StackEnd is the last instruction of predecessors
 						// then their objRefs has been written to the top object stack
-						auto ieOSTop = GetInsExec_ObjectStack(traceExec->context.objectStack);
+						auto ieOSTop = GetInsExec_StackArrayRefLink(traceExec->context.objectStack);
 						auto succeeded = CheckAmbiguityResolution(ta, visitingIds, [=](auto&& callback)
 						{
-							return callback(ieOSTop->objectIds);
+							return callback(ieOSTop->ids);
 						});
 						if (succeeded) return true;
 					}
@@ -422,10 +422,10 @@ CheckMergeTrace
 					}
 				}
 			CHECK_OBJECTS_IN_TOP_CREATE_STACK:
-				auto ieCSTop = GetInsExec_CreateStack(traceExec->context.createStack);
+				auto ieCSTop = GetInsExec_StackArrayRefLink(traceExec->context.createStack);
 				return CheckAmbiguityResolution(ta, visitingIds, [=](auto&& callback)
 				{
-					return callback(ieCSTop->objectIds);
+					return callback(ieCSTop->ids);
 				});
 			}
 
