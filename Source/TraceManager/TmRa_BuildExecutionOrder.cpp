@@ -553,17 +553,17 @@ BuildAmbiguousStepLink
 				}
 				{
 					CHECK_ERROR(typeCallback != nullptr, ERROR_MESSAGE_PREFIX L"Missing ITypeCallback to resolve the type from multiple objects.");
-					auto linkRef = ta->bottomObjectIds;
-					while (linkRef != nullref)
+					auto currentStackLinkRef = ta->bottomCreateObjectStacks;
+					while (currentStackLinkRef != nullref)
 					{
-						auto link = GetInsExec_ObjRefLink(linkRef);
-						linkRef = link->previous;
+						auto currentStackLink = GetInsExec_StackRefLink(currentStackLinkRef);
+						currentStackLinkRef = currentStackLink->previous;
 
-						auto ieObject = GetInsExec_Object(link->id);
-						auto ieTrace = GetTrace(ieObject->createInsRef.trace);
+						auto ieObject = GetInsExec_Stack(currentStackLink->id);
+						auto ieTrace = GetTrace(ieObject->earliestInsRef.trace);
 						auto ieTraceExec = GetTraceExec(ieTrace->traceExecRef);
 
-						auto&& ins = ReadInstruction(ieObject->createInsRef.ins, ieTraceExec->insLists);
+						auto&& ins = ReadInstruction(ieObject->earliestInsRef.ins, ieTraceExec->insLists);
 						if (stepRA->et_ra.type == -1)
 						{
 							stepRA->et_ra.type = ins.param;
