@@ -281,6 +281,21 @@ TraceManager (Data Structures -- PrepareTraceRoute)
 				Ref<InsExec_StackRefLink>			ids;
 			};
 
+			struct InsExec_ObjectInstance : Allocatable<InsExec_ObjectInstance>
+			{
+				// The stack whose CreateObject instruction created this object
+				Ref<InsExec_Stack>					createdByStack;
+
+				// The top StackBegin instruction for this object
+				InsRef								beginInsRef;
+
+				// The bottom StackEnd instructions for this object
+				Ref<InsExec_InsRefLink>				endInsRefs;
+
+				// The earliest StackBegin instructions including all fields
+				InsRef								earliestInsRef;
+			};
+
 			struct InsExec_Stack : Allocatable<InsExec_Stack>, WithMagicCounter
 			{
 				// previous allocated object
@@ -289,19 +304,13 @@ TraceManager (Data Structures -- PrepareTraceRoute)
 
 				// owner-field relationships
 				Ref<InsExec_StackRefLink>			fieldStacks;
-				Ref<InsExec_StackRefLink>			ownerStacks;
 
 				// useFrom-useBy relationships
 				Ref<InsExec_StackRefLink>			useFromStacks;
-				Ref<InsExec_StackRefLink>			useByStacks;
 
-				// The StackBegin instruction that creates this object
+				// Key instructions in this stack
 				InsRef								beginInsRef;
-
-				// All CreateObject instructions in the stack
 				Ref<InsExec_InsRefLink>				createObjectInsRefs;
-
-				// All StackEnd instructions that close this object
 				Ref<InsExec_InsRefLink>				endInsRefs;
 
 				// The object with the earliest beginInsRef in all fieldStacks or useFromStacks recursively
@@ -320,18 +329,7 @@ TraceManager (Data Structures -- PrepareTraceRoute)
 
 			struct InsExec : WithMagicCounter
 			{
-				// StackBegin/CreateObject
-				Ref<InsExec_Stack>					createdStack;
-
-				// StackEnd
-				Ref<InsExec_StackRefLink>			closedStacks;
-
-				// StackBegin:
-				//   StackEnd instructions that close objects or create stack created by the current instruction
-				Ref<InsExec_InsRefLink>				endInsRefs;
-
-				// context before executing the current instruction
-				InsExec_Context						contextBeforeExecution;
+				Ref<InsExec_StackRefLink>			operatingStacks;
 			};
 
 /***********************************************************************
@@ -608,6 +606,7 @@ TraceManager
 				// PrepareTraceRoute
 				AllocateOnly<TraceExec>						traceExecs;
 				collections::Array<InsExec>					insExecs;
+				AllocateOnly<InsExec_ObjectInstance>		insExec_ObjectInstances;
 				AllocateOnly<InsExec_Stack>					insExec_Stacks;
 				AllocateOnly<InsExec_InsRefLink>			insExec_InsRefLinks;
 				AllocateOnly<InsExec_StackRefLink>			insExec_StackRefLinks;
@@ -711,6 +710,7 @@ TraceManager
 				AttendingCompetitions*			AllocateAttendingCompetitions();
 
 				InsExec*						GetInsExec(vint32_t index);
+				InsExec_ObjectInstance*			GetInsExec_ObjectInstance(Ref<InsExec_ObjectInstance> index);
 				InsExec_Stack*					GetInsExec_Stack(Ref<InsExec_Stack> index);
 				InsExec_InsRefLink*				GetInsExec_InsRefLink(Ref<InsExec_InsRefLink> index);
 				InsExec_StackRefLink*			GetInsExec_StackRefLink(Ref<InsExec_StackRefLink> index);
