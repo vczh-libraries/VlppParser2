@@ -230,6 +230,16 @@ CalculateObjectLastInstruction
 #undef ERROR_MESSAGE_PREFIX
 			}
 
+/***********************************************************************
+SummarizeInstructionRange
+***********************************************************************/
+
+			void TraceManager::SummarizeInstructionRange()
+			{
+				CalculateObjectFirstInstruction();
+				CalculateObjectLastInstruction();
+			}
+
 #undef NEW_MERGE_STACK_MAGIC_COUNTER
 		}
 	}

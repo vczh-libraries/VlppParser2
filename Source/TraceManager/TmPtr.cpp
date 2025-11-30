@@ -20,6 +20,7 @@ PrepareTraceRoute
 				AllocateExecutionData();
 				BuildAmbiguityStructures();
 				PartialExecuteTraces();
+				SummarizeInstructionRange();
 			}
 		}
 	}

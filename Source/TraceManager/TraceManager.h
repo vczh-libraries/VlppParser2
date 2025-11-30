@@ -656,6 +656,9 @@ TraceManager
 				// phase: PartialExecuteTraces
 				void										PartialExecuteTraces();
 
+				// phase: SummarizeInstructionRange
+				void										SummarizeInstructionRange();
+
 			protected:
 				// ResolveAmbiguity
 				Ref<Trace>									firstBranchTrace;
