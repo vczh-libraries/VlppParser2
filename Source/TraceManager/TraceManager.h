@@ -283,6 +283,9 @@ TraceManager (Data Structures -- PrepareTraceRoute)
 
 			struct InsExec_ObjectInstance : Allocatable<InsExec_ObjectInstance>
 			{
+				// previous allocated object
+				Ref<InsExec_ObjectInstance>			previous;
+
 				// The stack whose CreateObject instruction created this object
 				Ref<InsExec_Stack>					createdByStack;
 
@@ -617,6 +620,7 @@ TraceManager
 
 				// phase: PartialExecuteTraces - PartialExecuteOrdinaryTrace
 				InsExec_Stack*								NewStack();
+				InsExec_ObjectInstance*						NewObjectInstance();
 				void										PushInsRefLink(Ref<InsExec_InsRefLink>& link, InsRef insRef);
 				void										PushStackRefLink(Ref<InsExec_StackRefLink>& link, Ref<InsExec_Stack> id);
 				Ref<InsExec_InsRefLink>						JoinInsRefLink(Ref<InsExec_InsRefLink> first, Ref<InsExec_InsRefLink> second);
@@ -657,6 +661,7 @@ TraceManager
 				// ResolveAmbiguity
 				Ref<Trace>									firstBranchTrace;
 				Ref<Trace>									firstMergeTrace;
+				Ref<InsExec_ObjectInstance>					firstObjectInstance;
 				Ref<InsExec_Stack>							firstStack;
 				Ref<ExecutionStep>							firstStep;
 				AllocateOnly<TraceAmbiguity>				traceAmbiguities;

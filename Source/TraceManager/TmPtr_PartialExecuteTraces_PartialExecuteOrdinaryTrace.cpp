@@ -20,6 +20,14 @@ PartialExecuteOrdinaryTrace
 				return ieStack;
 			}
 
+			InsExec_ObjectInstance* TraceManager::NewObjectInstance()
+			{
+				auto ieObject = GetInsExec_ObjectInstance(insExec_ObjectInstances.Allocate());
+				ieObject->previous = firstObjectInstance;
+				firstObjectInstance = ieObject;
+				return ieObject;
+			}
+
 			void TraceManager::PushInsRefLink(Ref<InsExec_InsRefLink>& link, InsRef insRef)
 			{
 				auto newLink = GetInsExec_InsRefLink(insExec_InsRefLinks.Allocate());
