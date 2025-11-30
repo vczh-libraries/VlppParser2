@@ -303,7 +303,7 @@ TraceManager (Data Structures -- PrepareTraceRoute)
 			{
 				// previous allocated object
 				Ref<InsExec_Stack>					previous;
-				vint32_t							stackBase = -1;			// the number of objects in InsExec_Context::objectStack when this stack is created
+				vint32_t							stackBase = 0;			// the number of objects in InsExec_Context::objectStack when this stack is created
 
 				// owner-field relationships
 				Ref<InsExec_StackRefLink>			fieldStacks;
@@ -314,25 +314,23 @@ TraceManager (Data Structures -- PrepareTraceRoute)
 				// Key instructions in this stack
 				InsRef								beginInsRef;
 				Ref<InsExec_InsRefLink>				createObjectInsRefs;
-				Ref<InsExec_InsRefLink>				endInsRefs;
-
-				// The object with the earliest beginInsRef in all fieldStacks or useFromStacks recursively
-				Ref<InsExec_Stack>					earliestStack;
-
-				// All objects with the earliest beginInsRef in all useFromStacks recursively
-				// Such stack has a valid createObjectInsRef
-				Ref<InsExec_StackRefLink>			createObjectStacks;
+				Ref<InsExec_InsRefLink>				endWithCreateInsRefs;
+				Ref<InsExec_InsRefLink>				endWithReuseInsRefs;
 			};
 
 			struct InsExec_Context
 			{
 				Ref<InsExec_StackArrayRefLink>		objectStack;			// Stack of created objects
-				Ref<InsExec_StackRefLink>			createStack;			// Stack of opening objects
+				Ref<InsExec_StackArrayRefLink>		createStack;			// Stack of opening objects
 			};
 
 			struct InsExec : WithMagicCounter
 			{
+				// Stack operated by StackBegin/StackEnd/CreateObject
 				Ref<InsExec_StackRefLink>			operatingStacks;
+
+				// ObjectInstance created by CreateObject
+				Ref<InsExec_ObjectInstance>			createdObject;
 			};
 
 /***********************************************************************
@@ -623,20 +621,15 @@ TraceManager
 				InsExec_ObjectInstance*						NewObjectInstance();
 				void										PushInsRefLink(Ref<InsExec_InsRefLink>& link, InsRef insRef);
 				void										PushStackRefLink(Ref<InsExec_StackRefLink>& link, Ref<InsExec_Stack> id);
-				Ref<InsExec_InsRefLink>						JoinInsRefLink(Ref<InsExec_InsRefLink> first, Ref<InsExec_InsRefLink> second);
+				void										PushStackArrayRefLink(Ref<InsExec_StackArrayRefLink>& arrayLink, Ref<InsExec_Stack> id);
+				void										PushStackArrayRefLink(Ref<InsExec_StackArrayRefLink>& arrayLink, Ref<InsExec_StackRefLink> link);
 				Ref<InsExec_StackRefLink>					JoinStackRefLink(Ref<InsExec_StackRefLink> first, Ref<InsExec_StackRefLink> second);
-				void										PushOwnerStack_WithNewMagicCounter(Ref<InsExec_StackRefLink> fieldStacks, Ref<InsExec_Stack> ownerStack);
-				void										PushOwnerStackMultiple_WithNewMagicCounter(Ref<InsExec_StackRefLink> fieldStacks, Ref<InsExec_StackRefLink> ownerStacks);
-				InsExec_StackArrayRefLink*					PushObjectStack(InsExec_Context& context, Ref<InsExec_StackRefLink> linkId);
-				InsExec_StackRefLink*						PushCreateStack(InsExec_Context& context);
 				void										PartialExecuteOrdinaryTrace(Trace* trace);
 
 				// phase: PartialExecuteTraces - EnsureInsExecContextCompatible
 				void										EnsureInsExecContextCompatible(Trace* baselineTrace, Trace* commingTrace);
 
 				// phase: PartialExecuteTraces - MergeInsExecContext
-				void										PushInsRefLink_WithCurrentMagicCounter(Ref<InsExec_InsRefLink>& link, Ref<InsExec_InsRefLink> comming);
-				void										PushStackRefLink_WithCurrentMagicCounter(Ref<InsExec_StackRefLink>& link, Ref<InsExec_StackRefLink> comming);
 				template<typename T, T* (TraceManager::*get)(Ref<T>), Ref<T> (InsExec_Context::*stack), typename TMerge>
 				Ref<T>										MergeStack(Trace* mergeTrace, AllocateOnly<T>& allocator, TMerge&& merge);
 				void										MergeInsExecContext(Trace* mergeTrace);

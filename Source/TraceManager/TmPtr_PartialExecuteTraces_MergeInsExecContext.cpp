@@ -14,40 +14,6 @@ namespace vl
 MergeInsExecContext
 ***********************************************************************/
 
-			void TraceManager::PushInsRefLink_WithCurrentMagicCounter(Ref<InsExec_InsRefLink>& link, Ref<InsExec_InsRefLink> comming)
-			{
-				auto magicPush = MergeStack_MagicCounter;
-				while (comming != nullref)
-				{
-					auto commingStack = GetInsExec_InsRefLink(comming);
-					comming = commingStack->previous;
-
-					auto insTrace = GetTrace(commingStack->insRef.trace);
-					auto insTraceExec = GetTraceExec(insTrace->traceExecRef);
-					auto insExec = GetInsExec(insTraceExec->insExecRefs.start + commingStack->insRef.ins);
-					if (insExec->mergeCounter == magicPush) continue;
-
-					insExec->mergeCounter = magicPush;
-					PushInsRefLink(link, commingStack->insRef);
-				}
-			}
-
-			void TraceManager::PushStackRefLink_WithCurrentMagicCounter(Ref<InsExec_StackRefLink>& link, Ref<InsExec_StackRefLink> comming)
-			{
-				auto magicPush = MergeStack_MagicCounter;
-				while (comming != nullref)
-				{
-					auto commingStack = GetInsExec_StackRefLink(comming);
-					comming = commingStack->previous;
-
-					auto ieObject = GetInsExec_Stack(commingStack->id);
-					if (ieObject->mergeCounter == magicPush) continue;
-
-					ieObject->mergeCounter = magicPush;
-					PushStackRefLink(link, ieObject);
-				}
-			}
-
 			template<typename T, T* (TraceManager::* get)(Ref<T>), Ref<T> (InsExec_Context::* stack), typename TMerge>
 			Ref<T> TraceManager::MergeStack(Trace* mergeTrace, AllocateOnly<T>& allocator, TMerge&& merge)
 			{
