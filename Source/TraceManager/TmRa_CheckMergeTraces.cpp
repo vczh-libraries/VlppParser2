@@ -94,7 +94,6 @@ CheckMergeTrace
 			template<typename TCallback>
 			bool TraceManager::CheckAmbiguityResolution(TraceAmbiguity* ta, collections::List<Ref<InsExec_StackRefLink>>& visitingIds, TCallback&& callback)
 			{
-#define ERROR_MESSAGE_PREFIX L"vl::glr::automaton::TraceManager::CheckAmbiguityResolution(TraceAmbiguity&, List<vint32_t>&, TCallback&&)#"
 				// following conditions need to be satisfies if multiple objects could be the result of ambiguity
 				//
 				// StackBegin that create objects must be
@@ -333,7 +332,6 @@ CheckMergeTrace
 					}
 				}
 				return false;
-#undef ERROR_MESSAGE_PREFIX
 			}
 
 			bool TraceManager::CheckMergeTrace(TraceAmbiguity* ta, Trace* trace, TraceExec* traceExec, collections::List<Ref<InsExec_StackRefLink>>& visitingIds)
