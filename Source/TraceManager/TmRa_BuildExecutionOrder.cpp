@@ -560,32 +560,57 @@ BuildAmbiguousStepLink
 						currentStackLinkRef = currentStackLink->previous;
 
 						auto ieObject = GetInsExec_Stack(currentStackLink->id);
-						auto ieTrace = GetTrace(ieObject->summarizing.earliestInsRef.trace);
-						auto ieTraceExec = GetTraceExec(ieTrace->traceExecRef);
 
-						auto&& ins = ReadInstruction(ieObject->summarizing.earliestInsRef.ins, ieTraceExec->insLists);
-						if (stepRA->et_ra.type == -1)
+						// find the first StackBegin instruction
+						auto ieInsRefLocal = ieObject->summarizing.earliestLocalInsRef;
+						auto ieLocalTrace = GetTrace(ieInsRefLocal.trace);
+						auto ieLocalTraceExec = GetTraceExec(ieLocalTrace->traceExecRef);
+						auto ieLocal = GetInsExec(ieLocalTraceExec->insExecRefs.start + ieInsRefLocal.ins);
+
+						// find the stack of that StackBegin instruction
+						auto&& ieInsRef = ReadInstruction(ieInsRefLocal.ins, ieLocalTraceExec->insLists);
+						CHECK_ERROR(ieInsRef.type == AstInsType::StackBegin, ERROR_MESSAGE_PREFIX L"earliestLocalInsRef should be StackBegin.");
+						CHECK_ERROR(ieLocal->operatingStacks != nullref, ERROR_MESSAGE_PREFIX L"StackBegin should produce exactly one operatingStacks.");
+						auto ieOSRefLink = GetInsExec_StackRefLink(ieLocal->operatingStacks);
+						CHECK_ERROR(ieOSRefLink->previous == nullref, ERROR_MESSAGE_PREFIX L"StackBegin should produce exactly one operatingStacks.");
+						auto ieLocalObject = GetInsExec_Stack(ieOSRefLink->id);
+
+						// find all CreateObject instructions in that stack
+						CHECK_ERROR(ieLocalObject->createObjectInsRefs != nullref, ERROR_MESSAGE_PREFIX L"Stack from earliestLocalInsRef should have CreateObject executed.");
+						auto coInsRefLink = ieLocalObject->createObjectInsRefs;
+						while (coInsRefLink != nullref)
 						{
-							stepRA->et_ra.type = ins.param;
-						}
-						else if (stepRA->et_ra.type != ins.param)
-						{
-							vint32_t baseClass = typeCallback->FindCommonBaseClass(stepRA->et_ra.type, ins.param);
-							if (baseClass == -1)
+							auto coInsRef = GetInsExec_InsRefLink(coInsRefLink);
+							coInsRefLink = coInsRef->previous;
+
+							auto coTrace = GetTrace(coInsRef->insRef.trace);
+							auto coTraceExec = GetTraceExec(coTrace->traceExecRef);
+							auto&& coIns = ReadInstruction(coInsRef->insRef.ins, coTraceExec->insLists);
+							CHECK_ERROR(coIns.type == AstInsType::CreateObject && coIns.param != -1, ERROR_MESSAGE_PREFIX L"createObjectInsRefs points to an unexpected instruction.");
+
+							if (stepRA->et_ra.type == -1)
 							{
-								throw UnableToResolveAmbiguityException(
-									WString::Unmanaged(L"Unable to resolve ambiguity from ") +
-									typeCallback->GetClassName(stepRA->et_ra.type) +
-									WString::Unmanaged(L" and ") +
-									typeCallback->GetClassName(ins.param) +
-									WString::Unmanaged(L"."),
-									stepRA->et_ra.type,
-									ins.param,
-									EnsureTraceWithValidStates(taFirst)->currentTokenIndex,
-									EnsureTraceWithValidStates(taLast)->currentTokenIndex
-									);
+								stepRA->et_ra.type = coIns.param;
 							}
-							stepRA->et_ra.type = baseClass;
+							else if (stepRA->et_ra.type != coIns.param)
+							{
+								vint32_t baseClass = typeCallback->FindCommonBaseClass(stepRA->et_ra.type, coIns.param);
+								if (baseClass == -1)
+								{
+									throw UnableToResolveAmbiguityException(
+										WString::Unmanaged(L"Unable to resolve ambiguity type from ") +
+										typeCallback->GetClassName(stepRA->et_ra.type) +
+										WString::Unmanaged(L" and ") +
+										typeCallback->GetClassName(coIns.param) +
+										WString::Unmanaged(L"."),
+										stepRA->et_ra.type,
+										coIns.param,
+										EnsureTraceWithValidStates(taFirst)->currentTokenIndex,
+										EnsureTraceWithValidStates(taLast)->currentTokenIndex
+									);
+								}
+								stepRA->et_ra.type = baseClass;
+							}
 						}
 					}
 				}
