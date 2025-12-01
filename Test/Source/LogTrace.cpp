@@ -355,7 +355,7 @@ void RenderTrace(
 			LogInstruction(ins, typeName, fieldName, writer);
 			if (trace->traceExecRef != nullref)
 			{
-				writer.WriteString(L"   ");
+				writer.WriteString(L"    [BEFORE]:");
 				auto traceExec = tm.GetTraceExec(trace->traceExecRef);
 				auto insExec = tm.GetInsExec(traceExec->insExecRefs.start + i);
 				logContext(insExec->contextBeforeExecution);
@@ -433,7 +433,7 @@ void RenderTrace(
 
 		if (trace->traceExecRef != nullref)
 		{
-			writer.WriteString(L"[CONTEXT]:");
+			writer.WriteString(L"  [AFTER]:");
 			auto traceExec = tm.GetTraceExec(trace->traceExecRef);
 			logContext(traceExec->context);
 		}
