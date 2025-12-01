@@ -170,7 +170,7 @@ AppendStepsBeforeBranch
 BuildStepTree
 ***********************************************************************/
 
-			void TraceManager::BuildStepTree(Trace* startTrace, vint32_t startIns, Trace* endTrace, vint32_t endIns, ExecutionStep*& root, ExecutionStep*& firstLeaf, ExecutionStep* currentStep, ExecutionStep*& currentLeaf)
+			void TraceManager::BuildStepTree(Trace* startTrace, vint32_t startIns, Trace* endTrace, vint32_t endIns, ExecutionStep*& root, ExecutionStep*& firstLeaf, ExecutionStep* currentStep, ExecutionStep*& currentLeaf, bool ambiguityBranch)
 			{
 				// find the next critical trace record which is or after startTrace
 				auto critical = GetTrace(GetTraceExec(startTrace->traceExecRef)->branchData.forwardTrace);
@@ -283,7 +283,7 @@ BuildStepTree
 									AppendStepsBeforeAmbiguity(branchStartTrace, branchStartIns, ta, PASS_BRANCH_STEP_CONTEXT);
 									AppendStepsForAmbiguity(ta, true, PASS_BRANCH_STEP_CONTEXT);
 									AppendStepsAfterAmbiguity(branchStartTrace, branchStartIns, ta, PASS_BRANCH_STEP_CONTEXT);
-									BuildStepTree(branchStartTrace, branchStartIns, endTrace, endIns, PASS_BRANCH_STEP_CONTEXT);
+									BuildStepTree(branchStartTrace, branchStartIns, endTrace, endIns, PASS_BRANCH_STEP_CONTEXT, ambiguityBranch);
 #undef PASS_BRANCH_STEP_CONTEXT
 								}
 
@@ -297,7 +297,7 @@ BuildStepTree
 									successorId = successor->successors.siblingNext;
 									if (GetTraceExec(successor->traceExecRef)->ambiguityCoveredInForward == nullref)
 									{
-										BuildStepTree(successor, 0, endTrace, endIns, PASS_EXECUTION_STEP_CONTEXT);
+										BuildStepTree(successor, 0, endTrace, endIns, PASS_EXECUTION_STEP_CONTEXT, true);
 									}
 								}
 								return;
@@ -316,7 +316,7 @@ BuildStepTree
 							{
 								auto successor = GetTrace(successorId);
 								successorId = successor->successors.siblingNext;
-								BuildStepTree(successor, 0, endTrace, endIns, PASS_EXECUTION_STEP_CONTEXT);
+								BuildStepTree(successor, 0, endTrace, endIns, PASS_EXECUTION_STEP_CONTEXT, true);
 							}
 							return;
 						}
@@ -358,12 +358,18 @@ BuildStepTree
 					step->et_i.endTrace = endTrace->allocatedIndex;
 					step->et_i.endIns = endIns;
 					AppendStepLink(step, step, PASS_EXECUTION_STEP_CONTEXT);
-					MarkNewLeafStep(currentStep, firstLeaf, currentLeaf);
 				}
-				else
+
+				if (ambiguityBranch)
 				{
-					MarkNewLeafStep(currentStep, firstLeaf, currentLeaf);
+					auto step = GetExecutionStep(executionSteps.Allocate());
+					step->type = ExecutionType::RA_Branch;
+					step->et_ra.trace = startTrace->allocatedIndex;
+					step->et_ra.type = -1;
+					step->et_ra.count = -1;
+					AppendStepLink(step, step, PASS_EXECUTION_STEP_CONTEXT);
 				}
+				MarkNewLeafStep(currentStep, firstLeaf, currentLeaf);
 			}
 
 /***********************************************************************
@@ -513,7 +519,8 @@ BuildAmbiguousStepLink
 						BuildStepTree(
 							successor, 0,
 							taLast, taLastExec->insLists.countAll - ta->postfix - 1,
-							root, firstLeaf, first, currentLeaf
+							root, firstLeaf, first, currentLeaf,
+							true
 							);
 					}
 				}
@@ -536,7 +543,8 @@ BuildAmbiguousStepLink
 						BuildStepTree(
 							successor, ta->prefix - taFirstExec->insLists.countAll,
 							taLast, taLastExec->insLists.countAll - ta->postfix - 1,
-							root, firstLeaf, root, currentLeaf
+							root, firstLeaf, root, currentLeaf,
+							true
 							);
 					}
 				}
@@ -653,7 +661,7 @@ BuildExecutionOrder
 				ExecutionStep* root = nullptr;
 				ExecutionStep* firstLeaf = nullptr;
 				ExecutionStep* currentLeaf = nullptr;
-				BuildStepTree(startTrace, startIns, endTrace, endIns, root, firstLeaf, nullptr, currentLeaf);
+				BuildStepTree(startTrace, startIns, endTrace, endIns, root, firstLeaf, nullptr, currentLeaf, false);
 
 				// BuildAmbiguousStepLink should have merged a tree to a link
 				CHECK_ERROR(firstLeaf != nullptr, ERROR_MESSAGE_PREFIX L"Ambiguity is not fully identified.");
