@@ -1,0 +1,379 @@
+﻿[0][Plus]< "+" > @[ENDING]
+[RULE: 0][CLAUSE: 0]
+
+[1][Plus]< "+" @ >
+[RULE: 0][CLAUSE: 0]
+	epsilon -> [0][Plus]< "+" > @[ENDING]
+		+ CreateObject(Plus)
+		+ StackEnd()
+
+[2][Plus]< @ "+" >
+[RULE: 0][CLAUSE: 0]
+	token: "+" -> [1][Plus]< "+" @ >
+		+ Token(0)
+
+[3][Plus]@ < "+" >
+[RULE: 0][CLAUSE: 0]
+	epsilon -> [2][Plus]< @ "+" >
+		+ StackBegin()
+
+[4][Lt]< "<" > @[ENDING]
+[RULE: 1][CLAUSE: 0]
+
+[5][Lt]< "<" @ >
+[RULE: 1][CLAUSE: 0]
+	epsilon -> [4][Lt]< "<" > @[ENDING]
+		+ CreateObject(Lt)
+		+ StackEnd()
+
+[6][Lt]< @ "<" >
+[RULE: 1][CLAUSE: 0]
+	token: "<" -> [5][Lt]< "<" @ >
+		+ Token(0)
+
+[7][Lt]@ < "<" >
+[RULE: 1][CLAUSE: 0]
+	epsilon -> [6][Lt]< @ "<" >
+		+ StackBegin()
+
+[8][Gt]< ">" > @[ENDING]
+[RULE: 2][CLAUSE: 0]
+
+[9][Gt]< ">" @ >
+[RULE: 2][CLAUSE: 0]
+	epsilon -> [8][Gt]< ">" > @[ENDING]
+		+ CreateObject(Gt)
+		+ StackEnd()
+
+[10][Gt]< @ ">" >
+[RULE: 2][CLAUSE: 0]
+	token: ">" -> [9][Gt]< ">" @ >
+		+ Token(0)
+
+[11][Gt]@ < ">" >
+[RULE: 2][CLAUSE: 0]
+	epsilon -> [10][Gt]< @ ">" >
+		+ StackBegin()
+
+[12][Pwa1Prefix]< @ [ Plus ] Plus { Plus } >
+[RULE: 3][CLAUSE: 0]
+	epsilon -> [13][Pwa1Prefix]< [ @ Plus ] Plus { Plus } >
+	epsilon -> [15][Pwa1Prefix]< [ Plus ] @ Plus { Plus } >
+
+[13][Pwa1Prefix]< [ @ Plus ] Plus { Plus } >
+[RULE: 3][CLAUSE: 0]
+	rule: Plus -> [14][Pwa1Prefix]< [ Plus @ ] Plus { Plus } >
+		+ StackSlot(0)
+
+[14][Pwa1Prefix]< [ Plus @ ] Plus { Plus } >
+[RULE: 3][CLAUSE: 0]
+	epsilon -> [15][Pwa1Prefix]< [ Plus ] @ Plus { Plus } >
+
+[15][Pwa1Prefix]< [ Plus ] @ Plus { Plus } >
+[RULE: 3][CLAUSE: 0]
+	epsilon -> [16][Pwa1Prefix]< [ Plus ] @ Plus { Plus } >
+
+[16][Pwa1Prefix]< [ Plus ] @ Plus { Plus } >
+[RULE: 3][CLAUSE: 0]
+	rule: Plus -> [18][Pwa1Prefix]< [ Plus ] Plus @ { Plus } >
+		+ StackSlot(1)
+
+[17][Pwa1Prefix]< [ Plus ] Plus @ { Plus } >
+[RULE: 3][CLAUSE: 0]
+	epsilon -> [19][Pwa1Prefix]< [ Plus ] Plus { @ Plus } >
+	epsilon -> [22][Pwa1Prefix]< [ Plus ] Plus { Plus } @ >
+
+[18][Pwa1Prefix]< [ Plus ] Plus @ { Plus } >
+[RULE: 3][CLAUSE: 0]
+	epsilon -> [17][Pwa1Prefix]< [ Plus ] Plus @ { Plus } >
+
+[19][Pwa1Prefix]< [ Plus ] Plus { @ Plus } >
+[RULE: 3][CLAUSE: 0]
+	rule: Plus -> [20][Pwa1Prefix]< [ Plus ] Plus { Plus @ } >
+		+ StackSlot(2)
+
+[20][Pwa1Prefix]< [ Plus ] Plus { Plus @ } >
+[RULE: 3][CLAUSE: 0]
+	epsilon -> [19][Pwa1Prefix]< [ Plus ] Plus { @ Plus } >
+	epsilon -> [22][Pwa1Prefix]< [ Plus ] Plus { Plus } @ >
+
+[21][Pwa1Prefix]< [ Plus ] Plus { Plus } > @[ENDING]
+[RULE: 3][CLAUSE: 0]
+
+[22][Pwa1Prefix]< [ Plus ] Plus { Plus } @ >
+[RULE: 3][CLAUSE: 0]
+	epsilon -> [21][Pwa1Prefix]< [ Plus ] Plus { Plus } > @[ENDING]
+		+ CreateObject(PbaFeature)
+		+ Field(PbaFeature::optional, 0)
+		+ Field(PbaFeature::tails, 2)
+		+ StackEnd()
+
+[23][Pwa1Prefix]@ < [ Plus ] Plus { Plus } >
+[RULE: 3][CLAUSE: 0]
+	epsilon -> [12][Pwa1Prefix]< @ [ Plus ] Plus { Plus } >
+		+ StackBegin()
+
+[24][Pwa1Body]< @ Lt { Lt } { Gt } >
+[RULE: 4][CLAUSE: 0]
+	rule: Lt -> [26][Pwa1Body]< Lt @ { Lt } { Gt } >
+		+ StackSlot(0)
+
+[25][Pwa1Body]< Lt @ { Lt } { Gt } >
+[RULE: 4][CLAUSE: 0]
+	epsilon -> [27][Pwa1Body]< Lt { @ Lt } { Gt } >
+	epsilon -> [29][Pwa1Body]< Lt { Lt } @ { Gt } >
+
+[26][Pwa1Body]< Lt @ { Lt } { Gt } >
+[RULE: 4][CLAUSE: 0]
+	epsilon -> [25][Pwa1Body]< Lt @ { Lt } { Gt } >
+
+[27][Pwa1Body]< Lt { @ Lt } { Gt } >
+[RULE: 4][CLAUSE: 0]
+	rule: Lt -> [28][Pwa1Body]< Lt { Lt @ } { Gt } >
+		+ StackSlot(1)
+
+[28][Pwa1Body]< Lt { Lt @ } { Gt } >
+[RULE: 4][CLAUSE: 0]
+	epsilon -> [27][Pwa1Body]< Lt { @ Lt } { Gt } >
+	epsilon -> [29][Pwa1Body]< Lt { Lt } @ { Gt } >
+
+[29][Pwa1Body]< Lt { Lt } @ { Gt } >
+[RULE: 4][CLAUSE: 0]
+	epsilon -> [30][Pwa1Body]< Lt { Lt } @ { Gt } >
+
+[30][Pwa1Body]< Lt { Lt } @ { Gt } >
+[RULE: 4][CLAUSE: 0]
+	epsilon -> [31][Pwa1Body]< Lt { Lt } { @ Gt } >
+	epsilon -> [34][Pwa1Body]< Lt { Lt } { Gt } @ >
+
+[31][Pwa1Body]< Lt { Lt } { @ Gt } >
+[RULE: 4][CLAUSE: 0]
+	rule: Gt -> [32][Pwa1Body]< Lt { Lt } { Gt @ } >
+		+ StackSlot(2)
+
+[32][Pwa1Body]< Lt { Lt } { Gt @ } >
+[RULE: 4][CLAUSE: 0]
+	epsilon -> [31][Pwa1Body]< Lt { Lt } { @ Gt } >
+	epsilon -> [34][Pwa1Body]< Lt { Lt } { Gt } @ >
+
+[33][Pwa1Body]< Lt { Lt } { Gt } > @[ENDING]
+[RULE: 4][CLAUSE: 0]
+
+[34][Pwa1Body]< Lt { Lt } { Gt } @ >
+[RULE: 4][CLAUSE: 0]
+	epsilon -> [33][Pwa1Body]< Lt { Lt } { Gt } > @[ENDING]
+		+ CreateObject(Pwa1Feature)
+		+ Field(Pwa1Feature::lts, 0)
+		+ Field(Pwa1Feature::lts, 1)
+		+ Field(Pwa1Feature::gts, 2)
+		+ StackEnd()
+
+[35][Pwa1Body]@ < Lt { Lt } { Gt } >
+[RULE: 4][CLAUSE: 0]
+	epsilon -> [24][Pwa1Body]< @ Lt { Lt } { Gt } >
+		+ StackBegin()
+
+[36][Pwa1]<! "prefix_with_ambiguity_1" @ Pwa1Prefix !Pwa1Body !>
+[RULE: 5][CLAUSE: 0]
+	rule: Pwa1Prefix -> [40][Pwa1]<! "prefix_with_ambiguity_1" Pwa1Prefix @ !Pwa1Body !>
+		+ StackSlot(1)
+
+[37][Pwa1]<! "prefix_with_ambiguity_1" @ Pwa1Prefix !Pwa1Body !>
+[RULE: 5][CLAUSE: 0]
+	epsilon -> [36][Pwa1]<! "prefix_with_ambiguity_1" @ Pwa1Prefix !Pwa1Body !>
+
+[38][Pwa1]<! "prefix_with_ambiguity_1" Pwa1Prefix !Pwa1Body !> @[ENDING]
+[RULE: 5][CLAUSE: 0]
+
+[39][Pwa1]<! "prefix_with_ambiguity_1" Pwa1Prefix !Pwa1Body @ !>
+[RULE: 5][CLAUSE: 0]
+	epsilon -> [38][Pwa1]<! "prefix_with_ambiguity_1" Pwa1Prefix !Pwa1Body !> @[ENDING]
+		+ Field(Pwa1Feature::pba, 1)
+		+ StackEnd()
+
+[40][Pwa1]<! "prefix_with_ambiguity_1" Pwa1Prefix @ !Pwa1Body !>
+[RULE: 5][CLAUSE: 0]
+	epsilon -> [41][Pwa1]<! "prefix_with_ambiguity_1" Pwa1Prefix @ !Pwa1Body !>
+
+[41][Pwa1]<! "prefix_with_ambiguity_1" Pwa1Prefix @ !Pwa1Body !>
+[RULE: 5][CLAUSE: 0]
+	rule: Pwa1Body -> [39][Pwa1]<! "prefix_with_ambiguity_1" Pwa1Prefix !Pwa1Body @ !>
+
+[42][Pwa1]<! @ "prefix_with_ambiguity_1" Pwa1Prefix !Pwa1Body !>
+[RULE: 5][CLAUSE: 0]
+	token: "prefix_with_ambiguity_1" -> [37][Pwa1]<! "prefix_with_ambiguity_1" @ Pwa1Prefix !Pwa1Body !>
+		+ Token(0)
+
+[43][Pwa1]@ <! "prefix_with_ambiguity_1" Pwa1Prefix !Pwa1Body !>
+[RULE: 5][CLAUSE: 0]
+	epsilon -> [42][Pwa1]<! @ "prefix_with_ambiguity_1" Pwa1Prefix !Pwa1Body !>
+		+ StackBegin()
+
+[44][Pwa2Body]< @ Lt { Lt } { Gt } >
+[RULE: 6][CLAUSE: 0]
+	rule: Lt -> [46][Pwa2Body]< Lt @ { Lt } { Gt } >
+		+ StackSlot(0)
+
+[45][Pwa2Body]< Lt @ { Lt } { Gt } >
+[RULE: 6][CLAUSE: 0]
+	epsilon -> [47][Pwa2Body]< Lt { @ Lt } { Gt } >
+	epsilon -> [49][Pwa2Body]< Lt { Lt } @ { Gt } >
+
+[46][Pwa2Body]< Lt @ { Lt } { Gt } >
+[RULE: 6][CLAUSE: 0]
+	epsilon -> [45][Pwa2Body]< Lt @ { Lt } { Gt } >
+
+[47][Pwa2Body]< Lt { @ Lt } { Gt } >
+[RULE: 6][CLAUSE: 0]
+	rule: Lt -> [48][Pwa2Body]< Lt { Lt @ } { Gt } >
+		+ StackSlot(1)
+
+[48][Pwa2Body]< Lt { Lt @ } { Gt } >
+[RULE: 6][CLAUSE: 0]
+	epsilon -> [47][Pwa2Body]< Lt { @ Lt } { Gt } >
+	epsilon -> [49][Pwa2Body]< Lt { Lt } @ { Gt } >
+
+[49][Pwa2Body]< Lt { Lt } @ { Gt } >
+[RULE: 6][CLAUSE: 0]
+	epsilon -> [50][Pwa2Body]< Lt { Lt } @ { Gt } >
+
+[50][Pwa2Body]< Lt { Lt } @ { Gt } >
+[RULE: 6][CLAUSE: 0]
+	epsilon -> [51][Pwa2Body]< Lt { Lt } { @ Gt } >
+	epsilon -> [54][Pwa2Body]< Lt { Lt } { Gt } @ >
+
+[51][Pwa2Body]< Lt { Lt } { @ Gt } >
+[RULE: 6][CLAUSE: 0]
+	rule: Gt -> [52][Pwa2Body]< Lt { Lt } { Gt @ } >
+		+ StackSlot(2)
+
+[52][Pwa2Body]< Lt { Lt } { Gt @ } >
+[RULE: 6][CLAUSE: 0]
+	epsilon -> [51][Pwa2Body]< Lt { Lt } { @ Gt } >
+	epsilon -> [54][Pwa2Body]< Lt { Lt } { Gt } @ >
+
+[53][Pwa2Body]< Lt { Lt } { Gt } > @[ENDING]
+[RULE: 6][CLAUSE: 0]
+
+[54][Pwa2Body]< Lt { Lt } { Gt } @ >
+[RULE: 6][CLAUSE: 0]
+	epsilon -> [53][Pwa2Body]< Lt { Lt } { Gt } > @[ENDING]
+		+ CreateObject(PbaFeature)
+		+ Field(PbaFeature::lts, 0)
+		+ Field(PbaFeature::lts, 1)
+		+ Field(PbaFeature::gts, 2)
+		+ StackEnd()
+
+[55][Pwa2Body]@ < Lt { Lt } { Gt } >
+[RULE: 6][CLAUSE: 0]
+	epsilon -> [44][Pwa2Body]< @ Lt { Lt } { Gt } >
+		+ StackBegin()
+
+[56][Pwa2]<! "prefix_with_ambiguity_2" @ [ Plus ] Plus { Plus } !Pwa2Body !>
+[RULE: 7][CLAUSE: 0]
+	epsilon -> [58][Pwa2]<! "prefix_with_ambiguity_2" [ @ Plus ] Plus { Plus } !Pwa2Body !>
+	epsilon -> [61][Pwa2]<! "prefix_with_ambiguity_2" [ Plus ] @ Plus { Plus } !Pwa2Body !>
+
+[57][Pwa2]<! "prefix_with_ambiguity_2" @ [ Plus ] Plus { Plus } !Pwa2Body !>
+[RULE: 7][CLAUSE: 0]
+	epsilon -> [56][Pwa2]<! "prefix_with_ambiguity_2" @ [ Plus ] Plus { Plus } !Pwa2Body !>
+
+[58][Pwa2]<! "prefix_with_ambiguity_2" [ @ Plus ] Plus { Plus } !Pwa2Body !>
+[RULE: 7][CLAUSE: 0]
+	rule: Plus -> [59][Pwa2]<! "prefix_with_ambiguity_2" [ Plus @ ] Plus { Plus } !Pwa2Body !>
+		+ StackSlot(1)
+
+[59][Pwa2]<! "prefix_with_ambiguity_2" [ Plus @ ] Plus { Plus } !Pwa2Body !>
+[RULE: 7][CLAUSE: 0]
+	epsilon -> [61][Pwa2]<! "prefix_with_ambiguity_2" [ Plus ] @ Plus { Plus } !Pwa2Body !>
+
+[60][Pwa2]<! "prefix_with_ambiguity_2" [ Plus ] @ Plus { Plus } !Pwa2Body !>
+[RULE: 7][CLAUSE: 0]
+	rule: Plus -> [63][Pwa2]<! "prefix_with_ambiguity_2" [ Plus ] Plus @ { Plus } !Pwa2Body !>
+		+ StackSlot(2)
+
+[61][Pwa2]<! "prefix_with_ambiguity_2" [ Plus ] @ Plus { Plus } !Pwa2Body !>
+[RULE: 7][CLAUSE: 0]
+	epsilon -> [60][Pwa2]<! "prefix_with_ambiguity_2" [ Plus ] @ Plus { Plus } !Pwa2Body !>
+
+[62][Pwa2]<! "prefix_with_ambiguity_2" [ Plus ] Plus @ { Plus } !Pwa2Body !>
+[RULE: 7][CLAUSE: 0]
+	epsilon -> [64][Pwa2]<! "prefix_with_ambiguity_2" [ Plus ] Plus { @ Plus } !Pwa2Body !>
+	epsilon -> [68][Pwa2]<! "prefix_with_ambiguity_2" [ Plus ] Plus { Plus } @ !Pwa2Body !>
+
+[63][Pwa2]<! "prefix_with_ambiguity_2" [ Plus ] Plus @ { Plus } !Pwa2Body !>
+[RULE: 7][CLAUSE: 0]
+	epsilon -> [62][Pwa2]<! "prefix_with_ambiguity_2" [ Plus ] Plus @ { Plus } !Pwa2Body !>
+
+[64][Pwa2]<! "prefix_with_ambiguity_2" [ Plus ] Plus { @ Plus } !Pwa2Body !>
+[RULE: 7][CLAUSE: 0]
+	rule: Plus -> [65][Pwa2]<! "prefix_with_ambiguity_2" [ Plus ] Plus { Plus @ } !Pwa2Body !>
+		+ StackSlot(3)
+
+[65][Pwa2]<! "prefix_with_ambiguity_2" [ Plus ] Plus { Plus @ } !Pwa2Body !>
+[RULE: 7][CLAUSE: 0]
+	epsilon -> [64][Pwa2]<! "prefix_with_ambiguity_2" [ Plus ] Plus { @ Plus } !Pwa2Body !>
+	epsilon -> [68][Pwa2]<! "prefix_with_ambiguity_2" [ Plus ] Plus { Plus } @ !Pwa2Body !>
+
+[66][Pwa2]<! "prefix_with_ambiguity_2" [ Plus ] Plus { Plus } !Pwa2Body !> @[ENDING]
+[RULE: 7][CLAUSE: 0]
+
+[67][Pwa2]<! "prefix_with_ambiguity_2" [ Plus ] Plus { Plus } !Pwa2Body @ !>
+[RULE: 7][CLAUSE: 0]
+	epsilon -> [66][Pwa2]<! "prefix_with_ambiguity_2" [ Plus ] Plus { Plus } !Pwa2Body !> @[ENDING]
+		+ Field(PbaFeature::optional, 1)
+		+ Field(PbaFeature::tails, 3)
+		+ StackEnd()
+
+[68][Pwa2]<! "prefix_with_ambiguity_2" [ Plus ] Plus { Plus } @ !Pwa2Body !>
+[RULE: 7][CLAUSE: 0]
+	epsilon -> [69][Pwa2]<! "prefix_with_ambiguity_2" [ Plus ] Plus { Plus } @ !Pwa2Body !>
+
+[69][Pwa2]<! "prefix_with_ambiguity_2" [ Plus ] Plus { Plus } @ !Pwa2Body !>
+[RULE: 7][CLAUSE: 0]
+	rule: Pwa2Body -> [67][Pwa2]<! "prefix_with_ambiguity_2" [ Plus ] Plus { Plus } !Pwa2Body @ !>
+
+[70][Pwa2]<! @ "prefix_with_ambiguity_2" [ Plus ] Plus { Plus } !Pwa2Body !>
+[RULE: 7][CLAUSE: 0]
+	token: "prefix_with_ambiguity_2" -> [57][Pwa2]<! "prefix_with_ambiguity_2" @ [ Plus ] Plus { Plus } !Pwa2Body !>
+		+ Token(0)
+
+[71][Pwa2]@ <! "prefix_with_ambiguity_2" [ Plus ] Plus { Plus } !Pwa2Body !>
+[RULE: 7][CLAUSE: 0]
+	epsilon -> [70][Pwa2]<! @ "prefix_with_ambiguity_2" [ Plus ] Plus { Plus } !Pwa2Body !>
+		+ StackBegin()
+
+[72][Module]<! !Pwa1 !> @[ENDING]
+[RULE: 8][CLAUSE: 0]
+
+[73][Module]<! !Pwa1 @ !>
+[RULE: 8][CLAUSE: 0]
+	epsilon -> [72][Module]<! !Pwa1 !> @[ENDING]
+		+ StackEnd()
+
+[74][Module]<! !Pwa2 !> @[ENDING]
+[RULE: 8][CLAUSE: 1]
+
+[75][Module]<! !Pwa2 @ !>
+[RULE: 8][CLAUSE: 1]
+	epsilon -> [74][Module]<! !Pwa2 !> @[ENDING]
+		+ StackEnd()
+
+[76][Module]<! @ !Pwa1 !>
+[RULE: 8][CLAUSE: 0]
+	rule: Pwa1 -> [73][Module]<! !Pwa1 @ !>
+
+[77][Module]<! @ !Pwa2 !>
+[RULE: 8][CLAUSE: 1]
+	rule: Pwa2 -> [75][Module]<! !Pwa2 @ !>
+
+[78][Module]@ <! !Pwa1 !>
+[RULE: 8][CLAUSE: 0]
+	epsilon -> [76][Module]<! @ !Pwa1 !>
+		+ StackBegin()
+
+[79][Module]@ <! !Pwa2 !>
+[RULE: 8][CLAUSE: 1]
+	epsilon -> [77][Module]<! @ !Pwa2 !>
+		+ StackBegin()
+

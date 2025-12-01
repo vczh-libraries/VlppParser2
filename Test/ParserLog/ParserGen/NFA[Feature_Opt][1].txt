@@ -1,0 +1,109 @@
+﻿[0][Plus]< "+" > @[ENDING]
+[RULE: 0][CLAUSE: 0]
+
+[1][Plus]< "+" @ >
+[RULE: 0][CLAUSE: 0]
+	epsilon -> [0][Plus]< "+" > @[ENDING]
+		+ CreateObject(Plus)
+		+ StackEnd()
+
+[2][Plus]< @ "+" >
+[RULE: 0][CLAUSE: 0]
+	token: "+" -> [1][Plus]< "+" @ >
+		+ Token(0)
+
+[3][Plus]@ < "+" >
+[RULE: 0][CLAUSE: 0]
+	epsilon -> [2][Plus]< @ "+" >
+		+ StackBegin()
+
+[4][EqualOptional]< "optional" @ [ Plus ] "+" { Plus } >
+[RULE: 1][CLAUSE: 0]
+	epsilon -> [6][EqualOptional]< "optional" [ @ Plus ] "+" { Plus } >
+	epsilon -> [15][EqualOptional]< "optional" [ Plus ] @ "+" { Plus } >
+
+[5][EqualOptional]< "optional" @ [ Plus ] "+" { Plus } >
+[RULE: 1][CLAUSE: 0]
+	epsilon -> [4][EqualOptional]< "optional" @ [ Plus ] "+" { Plus } >
+
+[6][EqualOptional]< "optional" [ @ Plus ] "+" { Plus } >
+[RULE: 1][CLAUSE: 0]
+	rule: Plus -> [7][EqualOptional]< "optional" [ Plus @ ] "+" { Plus } >
+		+ StackSlot(1)
+
+[7][EqualOptional]< "optional" [ Plus @ ] "+" { Plus } >
+[RULE: 1][CLAUSE: 0]
+	epsilon -> [15][EqualOptional]< "optional" [ Plus ] @ "+" { Plus } >
+
+[8][EqualOptional]< "optional" [ Plus ] "+" @ { Plus } >
+[RULE: 1][CLAUSE: 0]
+	epsilon -> [9][EqualOptional]< "optional" [ Plus ] "+" @ { Plus } >
+
+[9][EqualOptional]< "optional" [ Plus ] "+" @ { Plus } >
+[RULE: 1][CLAUSE: 0]
+	epsilon -> [10][EqualOptional]< "optional" [ Plus ] "+" { @ Plus } >
+	epsilon -> [14][EqualOptional]< "optional" [ Plus ] "+" { Plus } @ >
+
+[10][EqualOptional]< "optional" [ Plus ] "+" { @ Plus } >
+[RULE: 1][CLAUSE: 0]
+	rule: Plus -> [11][EqualOptional]< "optional" [ Plus ] "+" { Plus @ } >
+		+ StackSlot(3)
+
+[11][EqualOptional]< "optional" [ Plus ] "+" { Plus @ } >
+[RULE: 1][CLAUSE: 0]
+	epsilon -> [10][EqualOptional]< "optional" [ Plus ] "+" { @ Plus } >
+	epsilon -> [14][EqualOptional]< "optional" [ Plus ] "+" { Plus } @ >
+
+[12][EqualOptional]< "optional" [ Plus ] "+" { Plus } > @[ENDING]
+[RULE: 1][CLAUSE: 0]
+
+[13][EqualOptional]< "optional" [ Plus ] "+" { Plus } @ >
+[RULE: 1][CLAUSE: 0]
+	epsilon -> [12][EqualOptional]< "optional" [ Plus ] "+" { Plus } > @[ENDING]
+		+ CreateObject(OptionalFeature)
+		+ Field(OptionalFeature::optional, 1)
+		+ Field(OptionalFeature::loop, 3)
+		+ Field(OptionalFeature::priority, 4)
+		+ StackEnd()
+
+[14][EqualOptional]< "optional" [ Plus ] "+" { Plus } @ >
+[RULE: 1][CLAUSE: 0]
+	epsilon -> [13][EqualOptional]< "optional" [ Plus ] "+" { Plus } @ >
+		+ EnumItem(0, 4)
+
+[15][EqualOptional]< "optional" [ Plus ] @ "+" { Plus } >
+[RULE: 1][CLAUSE: 0]
+	epsilon -> [16][EqualOptional]< "optional" [ Plus ] @ "+" { Plus } >
+
+[16][EqualOptional]< "optional" [ Plus ] @ "+" { Plus } >
+[RULE: 1][CLAUSE: 0]
+	token: "+" -> [8][EqualOptional]< "optional" [ Plus ] "+" @ { Plus } >
+		+ Token(2)
+
+[17][EqualOptional]< @ "optional" [ Plus ] "+" { Plus } >
+[RULE: 1][CLAUSE: 0]
+	token: "optional" -> [5][EqualOptional]< "optional" @ [ Plus ] "+" { Plus } >
+		+ Token(0)
+
+[18][EqualOptional]@ < "optional" [ Plus ] "+" { Plus } >
+[RULE: 1][CLAUSE: 0]
+	epsilon -> [17][EqualOptional]< @ "optional" [ Plus ] "+" { Plus } >
+		+ StackBegin()
+
+[19][Module]<! !EqualOptional !> @[ENDING]
+[RULE: 2][CLAUSE: 0]
+
+[20][Module]<! !EqualOptional @ !>
+[RULE: 2][CLAUSE: 0]
+	epsilon -> [19][Module]<! !EqualOptional !> @[ENDING]
+		+ StackEnd()
+
+[21][Module]<! @ !EqualOptional !>
+[RULE: 2][CLAUSE: 0]
+	rule: EqualOptional -> [20][Module]<! !EqualOptional @ !>
+
+[22][Module]@ <! !EqualOptional !>
+[RULE: 2][CLAUSE: 0]
+	epsilon -> [21][Module]<! @ !EqualOptional !>
+		+ StackBegin()
+

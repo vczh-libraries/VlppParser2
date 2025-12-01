@@ -1,0 +1,73 @@
+﻿[0][Plus] BEGIN 
+[RULE: 0][CLAUSE: -1]
+	token: "+" -> [2][Plus]< "+" @ >
+		+ StackBegin()
+		+ Token(0)
+
+[1][Plus] END [ENDING]
+[RULE: 0][CLAUSE: -1]
+
+[2][Plus]< "+" @ >
+[RULE: 0][CLAUSE: 0]
+	ending -> [1][Plus] END [ENDING]
+		+ CreateObject(Plus)
+		+ StackEnd()
+
+[3][EqualOptional] BEGIN 
+[RULE: 1][CLAUSE: -1]
+	token: "optional" -> [5][EqualOptional]< "optional" @ [ Plus ] "+" { Plus } >
+		+ StackBegin()
+		+ Token(0)
+
+[4][EqualOptional] END [ENDING]
+[RULE: 1][CLAUSE: -1]
+
+[5][EqualOptional]< "optional" @ [ Plus ] "+" { Plus } >
+[RULE: 1][CLAUSE: 0]
+	token: "+" -> [7][EqualOptional]< "optional" [ Plus ] "+" @ { Plus } >
+		+ Token(2)
+	rule: Plus -> [6][EqualOptional]< "optional" [ Plus @ ] "+" { Plus } >
+		+ StackSlot(1)
+
+[6][EqualOptional]< "optional" [ Plus @ ] "+" { Plus } >
+[RULE: 1][CLAUSE: 0]
+	token: "+" -> [7][EqualOptional]< "optional" [ Plus ] "+" @ { Plus } >
+		+ Token(2)
+
+[7][EqualOptional]< "optional" [ Plus ] "+" @ { Plus } >
+[RULE: 1][CLAUSE: 0]
+	ending -> [4][EqualOptional] END [ENDING]
+		+ EnumItem(0, 4)
+		+ CreateObject(OptionalFeature)
+		+ Field(OptionalFeature::optional, 1)
+		+ Field(OptionalFeature::loop, 3)
+		+ Field(OptionalFeature::priority, 4)
+		+ StackEnd()
+	rule: Plus -> [8][EqualOptional]< "optional" [ Plus ] "+" { Plus @ } >
+		+ StackSlot(3)
+
+[8][EqualOptional]< "optional" [ Plus ] "+" { Plus @ } >
+[RULE: 1][CLAUSE: 0]
+	ending -> [4][EqualOptional] END [ENDING]
+		+ EnumItem(0, 4)
+		+ CreateObject(OptionalFeature)
+		+ Field(OptionalFeature::optional, 1)
+		+ Field(OptionalFeature::loop, 3)
+		+ Field(OptionalFeature::priority, 4)
+		+ StackEnd()
+	rule: Plus -> [8][EqualOptional]< "optional" [ Plus ] "+" { Plus @ } >
+		+ StackSlot(3)
+
+[9][Module] BEGIN 
+[RULE: 2][CLAUSE: -1]
+	rule: EqualOptional -> [11][Module]<! !EqualOptional @ !>
+		+ StackBegin()
+
+[10][Module] END [ENDING]
+[RULE: 2][CLAUSE: -1]
+
+[11][Module]<! !EqualOptional @ !>
+[RULE: 2][CLAUSE: 0]
+	ending -> [10][Module] END [ENDING]
+		+ StackEnd()
+

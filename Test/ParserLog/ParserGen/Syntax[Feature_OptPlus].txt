@@ -1,0 +1,93 @@
+﻿{
+    "$ast": "SyntaxFile",
+    "rules": [{
+        "$ast": "Rule",
+        "attParser": "",
+        "attPublic": "",
+        "clauses": [{
+            "$ast": "CreateClause",
+            "assignments": [],
+            "syntax": {
+                "$ast": "RefSyntax",
+                "field": "",
+                "literal": "\"+\"",
+                "refType": "Literal"
+            },
+            "type": "Plus"
+        }],
+        "name": "Plus",
+        "type": ""
+    }, {
+        "$ast": "Rule",
+        "attParser": "",
+        "attPublic": "",
+        "clauses": [{
+            "$ast": "CreateClause",
+            "assignments": [{
+                "$ast": "Assignment",
+                "field": "priority",
+                "type": "Strong",
+                "value": "PreferTake"
+            }],
+            "syntax": {
+                "$ast": "SequenceSyntax",
+                "first": {
+                    "$ast": "SequenceSyntax",
+                    "first": {
+                        "$ast": "SequenceSyntax",
+                        "first": {
+                            "$ast": "RefSyntax",
+                            "field": "",
+                            "literal": "\"positive_optional\"",
+                            "refType": "Literal"
+                        },
+                        "second": {
+                            "$ast": "OptionalSyntax",
+                            "priority": "PreferTake",
+                            "syntax": {
+                                "$ast": "RefSyntax",
+                                "field": "optional",
+                                "literal": "Plus",
+                                "refType": "Id"
+                            }
+                        }
+                    },
+                    "second": {
+                        "$ast": "RefSyntax",
+                        "field": "",
+                        "literal": "\"+\"",
+                        "refType": "Literal"
+                    }
+                },
+                "second": {
+                    "$ast": "LoopSyntax",
+                    "delimiter": null,
+                    "syntax": {
+                        "$ast": "RefSyntax",
+                        "field": "loop",
+                        "literal": "Plus",
+                        "refType": "Id"
+                    }
+                }
+            },
+            "type": "OptionalFeature"
+        }],
+        "name": "PositiveOptional",
+        "type": ""
+    }, {
+        "$ast": "Rule",
+        "attParser": "@parser",
+        "attPublic": "",
+        "clauses": [{
+            "$ast": "ReuseClause",
+            "assignments": [],
+            "syntax": {
+                "$ast": "UseSyntax",
+                "name": "PositiveOptional"
+            }
+        }],
+        "name": "Module",
+        "type": ""
+    }],
+    "switches": []
+}

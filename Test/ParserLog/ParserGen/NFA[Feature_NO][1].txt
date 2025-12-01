@@ -1,0 +1,158 @@
+﻿[0][Plus]< "+" > @[ENDING]
+[RULE: 0][CLAUSE: 0]
+
+[1][Plus]< "+" @ >
+[RULE: 0][CLAUSE: 0]
+	epsilon -> [0][Plus]< "+" > @[ENDING]
+		+ CreateObject(Plus)
+		+ StackEnd()
+
+[2][Plus]< @ "+" >
+[RULE: 0][CLAUSE: 0]
+	token: "+" -> [1][Plus]< "+" @ >
+		+ Token(0)
+
+[3][Plus]@ < "+" >
+[RULE: 0][CLAUSE: 0]
+	epsilon -> [2][Plus]< @ "+" >
+		+ StackBegin()
+
+[4][NestedOptional]< "nested_optional" @ [ ( [ ( [ Plus ] Plus ) ] Plus ) ] Plus { Plus } >
+[RULE: 3][CLAUSE: 0]
+	epsilon -> [5][NestedOptional]< "nested_optional" @ [ ( [ ( [ Plus ] Plus ) ] Plus ) ] Plus { Plus } >
+
+[5][NestedOptional]< "nested_optional" @ [ ( [ ( [ Plus ] Plus ) ] Plus ) ] Plus { Plus } >
+[RULE: 3][CLAUSE: 0]
+	epsilon -> [16][NestedOptional]< "nested_optional" [ ( [ ( [ Plus ] Plus ) ] Plus ) ] @ Plus { Plus } >
+	epsilon -> [27][NestedOptional]< "nested_optional" [ @ ( [ ( [ Plus ] Plus ) ] Plus ) ] Plus { Plus } >
+
+[6][NestedOptional]< "nested_optional" [ ( @ [ ( [ Plus ] Plus ) ] Plus ) ] Plus { Plus } >
+[RULE: 3][CLAUSE: 0]
+	epsilon -> [13][NestedOptional]< "nested_optional" [ ( [ ( [ Plus ] Plus ) ] @ Plus ) ] Plus { Plus } >
+	epsilon -> [26][NestedOptional]< "nested_optional" [ ( [ @ ( [ Plus ] Plus ) ] Plus ) ] Plus { Plus } >
+
+[7][NestedOptional]< "nested_optional" [ ( [ ( @ [ Plus ] Plus ) ] Plus ) ] Plus { Plus } >
+[RULE: 3][CLAUSE: 0]
+	epsilon -> [8][NestedOptional]< "nested_optional" [ ( [ ( [ @ Plus ] Plus ) ] Plus ) ] Plus { Plus } >
+	epsilon -> [10][NestedOptional]< "nested_optional" [ ( [ ( [ Plus ] @ Plus ) ] Plus ) ] Plus { Plus } >
+
+[8][NestedOptional]< "nested_optional" [ ( [ ( [ @ Plus ] Plus ) ] Plus ) ] Plus { Plus } >
+[RULE: 3][CLAUSE: 0]
+	rule: Plus -> [9][NestedOptional]< "nested_optional" [ ( [ ( [ Plus @ ] Plus ) ] Plus ) ] Plus { Plus } >
+		+ StackSlot(1)
+
+[9][NestedOptional]< "nested_optional" [ ( [ ( [ Plus @ ] Plus ) ] Plus ) ] Plus { Plus } >
+[RULE: 3][CLAUSE: 0]
+	epsilon -> [10][NestedOptional]< "nested_optional" [ ( [ ( [ Plus ] @ Plus ) ] Plus ) ] Plus { Plus } >
+
+[10][NestedOptional]< "nested_optional" [ ( [ ( [ Plus ] @ Plus ) ] Plus ) ] Plus { Plus } >
+[RULE: 3][CLAUSE: 0]
+	epsilon -> [11][NestedOptional]< "nested_optional" [ ( [ ( [ Plus ] @ Plus ) ] Plus ) ] Plus { Plus } >
+
+[11][NestedOptional]< "nested_optional" [ ( [ ( [ Plus ] @ Plus ) ] Plus ) ] Plus { Plus } >
+[RULE: 3][CLAUSE: 0]
+	rule: Plus -> [25][NestedOptional]< "nested_optional" [ ( [ ( [ Plus ] Plus @ ) ] Plus ) ] Plus { Plus } >
+		+ StackSlot(2)
+
+[12][NestedOptional]< "nested_optional" [ ( [ ( [ Plus ] Plus ) @ ] Plus ) ] Plus { Plus } >
+[RULE: 3][CLAUSE: 0]
+	epsilon -> [13][NestedOptional]< "nested_optional" [ ( [ ( [ Plus ] Plus ) ] @ Plus ) ] Plus { Plus } >
+
+[13][NestedOptional]< "nested_optional" [ ( [ ( [ Plus ] Plus ) ] @ Plus ) ] Plus { Plus } >
+[RULE: 3][CLAUSE: 0]
+	epsilon -> [14][NestedOptional]< "nested_optional" [ ( [ ( [ Plus ] Plus ) ] @ Plus ) ] Plus { Plus } >
+
+[14][NestedOptional]< "nested_optional" [ ( [ ( [ Plus ] Plus ) ] @ Plus ) ] Plus { Plus } >
+[RULE: 3][CLAUSE: 0]
+	rule: Plus -> [24][NestedOptional]< "nested_optional" [ ( [ ( [ Plus ] Plus ) ] Plus @ ) ] Plus { Plus } >
+		+ StackSlot(3)
+
+[15][NestedOptional]< "nested_optional" [ ( [ ( [ Plus ] Plus ) ] Plus ) @ ] Plus { Plus } >
+[RULE: 3][CLAUSE: 0]
+	epsilon -> [16][NestedOptional]< "nested_optional" [ ( [ ( [ Plus ] Plus ) ] Plus ) ] @ Plus { Plus } >
+
+[16][NestedOptional]< "nested_optional" [ ( [ ( [ Plus ] Plus ) ] Plus ) ] @ Plus { Plus } >
+[RULE: 3][CLAUSE: 0]
+	epsilon -> [17][NestedOptional]< "nested_optional" [ ( [ ( [ Plus ] Plus ) ] Plus ) ] @ Plus { Plus } >
+
+[17][NestedOptional]< "nested_optional" [ ( [ ( [ Plus ] Plus ) ] Plus ) ] @ Plus { Plus } >
+[RULE: 3][CLAUSE: 0]
+	rule: Plus -> [19][NestedOptional]< "nested_optional" [ ( [ ( [ Plus ] Plus ) ] Plus ) ] Plus @ { Plus } >
+		+ StackSlot(4)
+
+[18][NestedOptional]< "nested_optional" [ ( [ ( [ Plus ] Plus ) ] Plus ) ] Plus @ { Plus } >
+[RULE: 3][CLAUSE: 0]
+	epsilon -> [20][NestedOptional]< "nested_optional" [ ( [ ( [ Plus ] Plus ) ] Plus ) ] Plus { @ Plus } >
+	epsilon -> [23][NestedOptional]< "nested_optional" [ ( [ ( [ Plus ] Plus ) ] Plus ) ] Plus { Plus } @ >
+
+[19][NestedOptional]< "nested_optional" [ ( [ ( [ Plus ] Plus ) ] Plus ) ] Plus @ { Plus } >
+[RULE: 3][CLAUSE: 0]
+	epsilon -> [18][NestedOptional]< "nested_optional" [ ( [ ( [ Plus ] Plus ) ] Plus ) ] Plus @ { Plus } >
+
+[20][NestedOptional]< "nested_optional" [ ( [ ( [ Plus ] Plus ) ] Plus ) ] Plus { @ Plus } >
+[RULE: 3][CLAUSE: 0]
+	rule: Plus -> [21][NestedOptional]< "nested_optional" [ ( [ ( [ Plus ] Plus ) ] Plus ) ] Plus { Plus @ } >
+		+ StackSlot(5)
+
+[21][NestedOptional]< "nested_optional" [ ( [ ( [ Plus ] Plus ) ] Plus ) ] Plus { Plus @ } >
+[RULE: 3][CLAUSE: 0]
+	epsilon -> [20][NestedOptional]< "nested_optional" [ ( [ ( [ Plus ] Plus ) ] Plus ) ] Plus { @ Plus } >
+	epsilon -> [23][NestedOptional]< "nested_optional" [ ( [ ( [ Plus ] Plus ) ] Plus ) ] Plus { Plus } @ >
+
+[22][NestedOptional]< "nested_optional" [ ( [ ( [ Plus ] Plus ) ] Plus ) ] Plus { Plus } > @[ENDING]
+[RULE: 3][CLAUSE: 0]
+
+[23][NestedOptional]< "nested_optional" [ ( [ ( [ Plus ] Plus ) ] Plus ) ] Plus { Plus } @ >
+[RULE: 3][CLAUSE: 0]
+	epsilon -> [22][NestedOptional]< "nested_optional" [ ( [ ( [ Plus ] Plus ) ] Plus ) ] Plus { Plus } > @[ENDING]
+		+ CreateObject(NestedOptionalFeature)
+		+ Field(NestedOptionalFeature::optional, 1)
+		+ Field(NestedOptionalFeature::tail1, 2)
+		+ Field(NestedOptionalFeature::tail2, 3)
+		+ Field(NestedOptionalFeature::tail3, 4)
+		+ Field(NestedOptionalFeature::tails, 5)
+		+ StackEnd()
+
+[24][NestedOptional]< "nested_optional" [ ( [ ( [ Plus ] Plus ) ] Plus @ ) ] Plus { Plus } >
+[RULE: 3][CLAUSE: 0]
+	epsilon -> [15][NestedOptional]< "nested_optional" [ ( [ ( [ Plus ] Plus ) ] Plus ) @ ] Plus { Plus } >
+
+[25][NestedOptional]< "nested_optional" [ ( [ ( [ Plus ] Plus @ ) ] Plus ) ] Plus { Plus } >
+[RULE: 3][CLAUSE: 0]
+	epsilon -> [12][NestedOptional]< "nested_optional" [ ( [ ( [ Plus ] Plus ) @ ] Plus ) ] Plus { Plus } >
+
+[26][NestedOptional]< "nested_optional" [ ( [ @ ( [ Plus ] Plus ) ] Plus ) ] Plus { Plus } >
+[RULE: 3][CLAUSE: 0]
+	epsilon -> [7][NestedOptional]< "nested_optional" [ ( [ ( @ [ Plus ] Plus ) ] Plus ) ] Plus { Plus } >
+
+[27][NestedOptional]< "nested_optional" [ @ ( [ ( [ Plus ] Plus ) ] Plus ) ] Plus { Plus } >
+[RULE: 3][CLAUSE: 0]
+	epsilon -> [6][NestedOptional]< "nested_optional" [ ( @ [ ( [ Plus ] Plus ) ] Plus ) ] Plus { Plus } >
+
+[28][NestedOptional]< @ "nested_optional" [ ( [ ( [ Plus ] Plus ) ] Plus ) ] Plus { Plus } >
+[RULE: 3][CLAUSE: 0]
+	token: "nested_optional" -> [4][NestedOptional]< "nested_optional" @ [ ( [ ( [ Plus ] Plus ) ] Plus ) ] Plus { Plus } >
+		+ Token(0)
+
+[29][NestedOptional]@ < "nested_optional" [ ( [ ( [ Plus ] Plus ) ] Plus ) ] Plus { Plus } >
+[RULE: 3][CLAUSE: 0]
+	epsilon -> [28][NestedOptional]< @ "nested_optional" [ ( [ ( [ Plus ] Plus ) ] Plus ) ] Plus { Plus } >
+		+ StackBegin()
+
+[30][Module]<! !NestedOptional !> @[ENDING]
+[RULE: 4][CLAUSE: 0]
+
+[31][Module]<! !NestedOptional @ !>
+[RULE: 4][CLAUSE: 0]
+	epsilon -> [30][Module]<! !NestedOptional !> @[ENDING]
+		+ StackEnd()
+
+[32][Module]<! @ !NestedOptional !>
+[RULE: 4][CLAUSE: 0]
+	rule: NestedOptional -> [31][Module]<! !NestedOptional @ !>
+
+[33][Module]@ <! !NestedOptional !>
+[RULE: 4][CLAUSE: 0]
+	epsilon -> [32][Module]<! @ !NestedOptional !>
+		+ StackBegin()
+

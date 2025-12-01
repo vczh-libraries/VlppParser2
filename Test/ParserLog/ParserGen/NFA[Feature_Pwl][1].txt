@@ -1,0 +1,271 @@
+﻿[0][Plus]< "+" > @[ENDING]
+[RULE: 0][CLAUSE: 0]
+
+[1][Plus]< "+" @ >
+[RULE: 0][CLAUSE: 0]
+	epsilon -> [0][Plus]< "+" > @[ENDING]
+		+ CreateObject(Plus)
+		+ StackEnd()
+
+[2][Plus]< @ "+" >
+[RULE: 0][CLAUSE: 0]
+	token: "+" -> [1][Plus]< "+" @ >
+		+ Token(0)
+
+[3][Plus]@ < "+" >
+[RULE: 0][CLAUSE: 0]
+	epsilon -> [2][Plus]< @ "+" >
+		+ StackBegin()
+
+[4][Lt]< "<" > @[ENDING]
+[RULE: 1][CLAUSE: 0]
+
+[5][Lt]< "<" @ >
+[RULE: 1][CLAUSE: 0]
+	epsilon -> [4][Lt]< "<" > @[ENDING]
+		+ CreateObject(Lt)
+		+ StackEnd()
+
+[6][Lt]< @ "<" >
+[RULE: 1][CLAUSE: 0]
+	token: "<" -> [5][Lt]< "<" @ >
+		+ Token(0)
+
+[7][Lt]@ < "<" >
+[RULE: 1][CLAUSE: 0]
+	epsilon -> [6][Lt]< @ "<" >
+		+ StackBegin()
+
+[8][Pwl1_P]< @ Lt >
+[RULE: 2][CLAUSE: 0]
+	rule: Lt -> [10][Pwl1_P]< Lt @ >
+		+ StackSlot(0)
+
+[9][Pwl1_P]< Lt > @[ENDING]
+[RULE: 2][CLAUSE: 0]
+
+[10][Pwl1_P]< Lt @ >
+[RULE: 2][CLAUSE: 0]
+	epsilon -> [9][Pwl1_P]< Lt > @[ENDING]
+		+ CreateObject(PwlFeature)
+		+ Field(PwlFeature::one, 0)
+		+ StackEnd()
+
+[11][Pwl1_P]<! @ Plus !Pwl1_P !>
+[RULE: 2][CLAUSE: 1]
+	rule: Plus -> [14][Pwl1_P]<! Plus @ !Pwl1_P !>
+		+ StackSlot(0)
+
+[12][Pwl1_P]<! Plus !Pwl1_P !> @[ENDING]
+[RULE: 2][CLAUSE: 1]
+
+[13][Pwl1_P]<! Plus !Pwl1_P @ !>
+[RULE: 2][CLAUSE: 1]
+	epsilon -> [12][Pwl1_P]<! Plus !Pwl1_P !> @[ENDING]
+		+ Field(PwlFeature::prefix, 0)
+		+ StackEnd()
+
+[14][Pwl1_P]<! Plus @ !Pwl1_P !>
+[RULE: 2][CLAUSE: 1]
+	epsilon -> [15][Pwl1_P]<! Plus @ !Pwl1_P !>
+
+[15][Pwl1_P]<! Plus @ !Pwl1_P !>
+[RULE: 2][CLAUSE: 1]
+	rule: Pwl1_P -> [13][Pwl1_P]<! Plus !Pwl1_P @ !>
+
+[16][Pwl1_P]@ < Lt >
+[RULE: 2][CLAUSE: 0]
+	epsilon -> [8][Pwl1_P]< @ Lt >
+		+ StackBegin()
+
+[17][Pwl1_P]@ <! Plus !Pwl1_P !>
+[RULE: 2][CLAUSE: 1]
+	epsilon -> [11][Pwl1_P]<! @ Plus !Pwl1_P !>
+		+ StackBegin()
+
+[18][Pwl1]< @ Pwl1 Lt >
+[RULE: 3][CLAUSE: 1]
+	rule: Pwl1 -> [19][Pwl1]< Pwl1 @ Lt >
+		+ StackSlot(0)
+
+[19][Pwl1]< Pwl1 @ Lt >
+[RULE: 3][CLAUSE: 1]
+	epsilon -> [20][Pwl1]< Pwl1 @ Lt >
+
+[20][Pwl1]< Pwl1 @ Lt >
+[RULE: 3][CLAUSE: 1]
+	rule: Lt -> [22][Pwl1]< Pwl1 Lt @ >
+		+ StackSlot(1)
+
+[21][Pwl1]< Pwl1 Lt > @[ENDING]
+[RULE: 3][CLAUSE: 1]
+
+[22][Pwl1]< Pwl1 Lt @ >
+[RULE: 3][CLAUSE: 1]
+	epsilon -> [21][Pwl1]< Pwl1 Lt > @[ENDING]
+		+ CreateObject(PwlFeature)
+		+ Field(PwlFeature::prev, 0)
+		+ Field(PwlFeature::one, 1)
+		+ StackEnd()
+
+[23][Pwl1]<! !Pwl1_P !> @[ENDING]
+[RULE: 3][CLAUSE: 0]
+
+[24][Pwl1]<! !Pwl1_P @ !>
+[RULE: 3][CLAUSE: 0]
+	epsilon -> [23][Pwl1]<! !Pwl1_P !> @[ENDING]
+		+ StackEnd()
+
+[25][Pwl1]<! @ !Pwl1_P !>
+[RULE: 3][CLAUSE: 0]
+	rule: Pwl1_P -> [24][Pwl1]<! !Pwl1_P @ !>
+
+[26][Pwl1]@ < Pwl1 Lt >
+[RULE: 3][CLAUSE: 1]
+	epsilon -> [18][Pwl1]< @ Pwl1 Lt >
+		+ StackBegin()
+
+[27][Pwl1]@ <! !Pwl1_P !>
+[RULE: 3][CLAUSE: 0]
+	epsilon -> [25][Pwl1]<! @ !Pwl1_P !>
+		+ StackBegin()
+
+[28][Pwl2_P]< @ Lt >
+[RULE: 4][CLAUSE: 0]
+	rule: Lt -> [31][Pwl2_P]< Lt @ >
+		+ StackSlot(0)
+
+[29][Pwl2_P]< @ Pwl2_P Lt >
+[RULE: 4][CLAUSE: 1]
+	rule: Pwl2_P -> [32][Pwl2_P]< Pwl2_P @ Lt >
+		+ StackSlot(0)
+
+[30][Pwl2_P]< Lt > @[ENDING]
+[RULE: 4][CLAUSE: 0]
+
+[31][Pwl2_P]< Lt @ >
+[RULE: 4][CLAUSE: 0]
+	epsilon -> [30][Pwl2_P]< Lt > @[ENDING]
+		+ CreateObject(PwlFeature)
+		+ Field(PwlFeature::two, 0)
+		+ StackEnd()
+
+[32][Pwl2_P]< Pwl2_P @ Lt >
+[RULE: 4][CLAUSE: 1]
+	epsilon -> [33][Pwl2_P]< Pwl2_P @ Lt >
+
+[33][Pwl2_P]< Pwl2_P @ Lt >
+[RULE: 4][CLAUSE: 1]
+	rule: Lt -> [35][Pwl2_P]< Pwl2_P Lt @ >
+		+ StackSlot(1)
+
+[34][Pwl2_P]< Pwl2_P Lt > @[ENDING]
+[RULE: 4][CLAUSE: 1]
+
+[35][Pwl2_P]< Pwl2_P Lt @ >
+[RULE: 4][CLAUSE: 1]
+	epsilon -> [34][Pwl2_P]< Pwl2_P Lt > @[ENDING]
+		+ CreateObject(PwlFeature)
+		+ Field(PwlFeature::prev, 0)
+		+ Field(PwlFeature::two, 1)
+		+ StackEnd()
+
+[36][Pwl2_P]@ < Lt >
+[RULE: 4][CLAUSE: 0]
+	epsilon -> [28][Pwl2_P]< @ Lt >
+		+ StackBegin()
+
+[37][Pwl2_P]@ < Pwl2_P Lt >
+[RULE: 4][CLAUSE: 1]
+	epsilon -> [29][Pwl2_P]< @ Pwl2_P Lt >
+		+ StackBegin()
+
+[38][Pwl2]<! @ { Plus } !Pwl2_P !>
+[RULE: 5][CLAUSE: 0]
+	epsilon -> [39][Pwl2]<! { @ Plus } !Pwl2_P !>
+	epsilon -> [44][Pwl2]<! { Plus } @ !Pwl2_P !>
+
+[39][Pwl2]<! { @ Plus } !Pwl2_P !>
+[RULE: 5][CLAUSE: 0]
+	rule: Plus -> [40][Pwl2]<! { Plus @ } !Pwl2_P !>
+		+ StackSlot(0)
+
+[40][Pwl2]<! { Plus @ } !Pwl2_P !>
+[RULE: 5][CLAUSE: 0]
+	epsilon -> [39][Pwl2]<! { @ Plus } !Pwl2_P !>
+	epsilon -> [44][Pwl2]<! { Plus } @ !Pwl2_P !>
+
+[41][Pwl2]<! { Plus } !Pwl2_P !> @[ENDING]
+[RULE: 5][CLAUSE: 0]
+
+[42][Pwl2]<! { Plus } !Pwl2_P @ !>
+[RULE: 5][CLAUSE: 0]
+	epsilon -> [41][Pwl2]<! { Plus } !Pwl2_P !> @[ENDING]
+		+ Field(PwlFeature::prefix, 0)
+		+ StackEnd()
+
+[43][Pwl2]<! { Plus } @ !Pwl2_P !>
+[RULE: 5][CLAUSE: 0]
+	rule: Pwl2_P -> [42][Pwl2]<! { Plus } !Pwl2_P @ !>
+
+[44][Pwl2]<! { Plus } @ !Pwl2_P !>
+[RULE: 5][CLAUSE: 0]
+	epsilon -> [43][Pwl2]<! { Plus } @ !Pwl2_P !>
+
+[45][Pwl2]@ <! { Plus } !Pwl2_P !>
+[RULE: 5][CLAUSE: 0]
+	epsilon -> [38][Pwl2]<! @ { Plus } !Pwl2_P !>
+		+ StackBegin()
+
+[46][Module]<! "prefix_with_leftrec" !Pwl1 !> @[ENDING]
+[RULE: 6][CLAUSE: 0]
+
+[47][Module]<! "prefix_with_leftrec" !Pwl1 @ !>
+[RULE: 6][CLAUSE: 0]
+	epsilon -> [46][Module]<! "prefix_with_leftrec" !Pwl1 !> @[ENDING]
+		+ StackEnd()
+
+[48][Module]<! "prefix_with_leftrec" !Pwl2 !> @[ENDING]
+[RULE: 6][CLAUSE: 1]
+
+[49][Module]<! "prefix_with_leftrec" !Pwl2 @ !>
+[RULE: 6][CLAUSE: 1]
+	epsilon -> [48][Module]<! "prefix_with_leftrec" !Pwl2 !> @[ENDING]
+		+ StackEnd()
+
+[50][Module]<! "prefix_with_leftrec" @ !Pwl1 !>
+[RULE: 6][CLAUSE: 0]
+	epsilon -> [51][Module]<! "prefix_with_leftrec" @ !Pwl1 !>
+
+[51][Module]<! "prefix_with_leftrec" @ !Pwl1 !>
+[RULE: 6][CLAUSE: 0]
+	rule: Pwl1 -> [47][Module]<! "prefix_with_leftrec" !Pwl1 @ !>
+
+[52][Module]<! "prefix_with_leftrec" @ !Pwl2 !>
+[RULE: 6][CLAUSE: 1]
+	rule: Pwl2 -> [49][Module]<! "prefix_with_leftrec" !Pwl2 @ !>
+
+[53][Module]<! "prefix_with_leftrec" @ !Pwl2 !>
+[RULE: 6][CLAUSE: 1]
+	epsilon -> [52][Module]<! "prefix_with_leftrec" @ !Pwl2 !>
+
+[54][Module]<! @ "prefix_with_leftrec" !Pwl1 !>
+[RULE: 6][CLAUSE: 0]
+	token: "prefix_with_leftrec" -> [50][Module]<! "prefix_with_leftrec" @ !Pwl1 !>
+		+ Token(0)
+
+[55][Module]<! @ "prefix_with_leftrec" !Pwl2 !>
+[RULE: 6][CLAUSE: 1]
+	token: "prefix_with_leftrec" -> [53][Module]<! "prefix_with_leftrec" @ !Pwl2 !>
+		+ Token(0)
+
+[56][Module]@ <! "prefix_with_leftrec" !Pwl1 !>
+[RULE: 6][CLAUSE: 0]
+	epsilon -> [54][Module]<! @ "prefix_with_leftrec" !Pwl1 !>
+		+ StackBegin()
+
+[57][Module]@ <! "prefix_with_leftrec" !Pwl2 !>
+[RULE: 6][CLAUSE: 1]
+	epsilon -> [55][Module]<! @ "prefix_with_leftrec" !Pwl2 !>
+		+ StackBegin()
+

@@ -1,0 +1,73 @@
+﻿[0][Plus] BEGIN 
+[RULE: 0][CLAUSE: -1]
+	token: "+" -> [2][Plus]< "+" @ >
+		+ StackBegin()
+		+ Token(0)
+
+[1][Plus] END [ENDING]
+[RULE: 0][CLAUSE: -1]
+
+[2][Plus]< "+" @ >
+[RULE: 0][CLAUSE: 0]
+	ending -> [1][Plus] END [ENDING]
+		+ CreateObject(Plus)
+		+ StackEnd()
+
+[3][PositiveOptional] BEGIN 
+[RULE: 1][CLAUSE: -1]
+	token: "positive_optional" -> [8][PositiveOptional]< "positive_optional" @ +[ Plus ] "+" { Plus } >
+		+ StackBegin()
+		+ Token(0)
+
+[4][PositiveOptional] END [ENDING]
+[RULE: 1][CLAUSE: -1]
+
+[5][PositiveOptional]< "positive_optional" +[ Plus @ ] "+" { Plus } >
+[RULE: 1][CLAUSE: 0]
+	token: "+" -> [6][PositiveOptional]< "positive_optional" +[ Plus ] "+" @ { Plus } >
+		+ Token(2)
+
+[6][PositiveOptional]< "positive_optional" +[ Plus ] "+" @ { Plus } >
+[RULE: 1][CLAUSE: 0]
+	ending -> [4][PositiveOptional] END [ENDING]
+		+ EnumItem(1, 4)
+		+ CreateObject(OptionalFeature)
+		+ Field(OptionalFeature::optional, 1)
+		+ Field(OptionalFeature::loop, 3)
+		+ Field(OptionalFeature::priority, 4)
+		+ StackEnd()
+	rule: Plus -> [7][PositiveOptional]< "positive_optional" +[ Plus ] "+" { Plus @ } >
+		+ StackSlot(3)
+
+[7][PositiveOptional]< "positive_optional" +[ Plus ] "+" { Plus @ } >
+[RULE: 1][CLAUSE: 0]
+	ending -> [4][PositiveOptional] END [ENDING]
+		+ EnumItem(1, 4)
+		+ CreateObject(OptionalFeature)
+		+ Field(OptionalFeature::optional, 1)
+		+ Field(OptionalFeature::loop, 3)
+		+ Field(OptionalFeature::priority, 4)
+		+ StackEnd()
+	rule: Plus -> [7][PositiveOptional]< "positive_optional" +[ Plus ] "+" { Plus @ } >
+		+ StackSlot(3)
+
+[8][PositiveOptional]< "positive_optional" @ +[ Plus ] "+" { Plus } >
+[RULE: 1][CLAUSE: 0]
+	token: "+" -> [6][PositiveOptional]< "positive_optional" +[ Plus ] "+" @ { Plus } >
+		+ Token(2)
+	rule: Plus -> [5][PositiveOptional]< "positive_optional" +[ Plus @ ] "+" { Plus } >
+		+ StackSlot(1)
+
+[9][Module] BEGIN 
+[RULE: 2][CLAUSE: -1]
+	rule: PositiveOptional -> [11][Module]<! !PositiveOptional @ !>
+		+ StackBegin()
+
+[10][Module] END [ENDING]
+[RULE: 2][CLAUSE: -1]
+
+[11][Module]<! !PositiveOptional @ !>
+[RULE: 2][CLAUSE: 0]
+	ending -> [10][Module] END [ENDING]
+		+ StackEnd()
+

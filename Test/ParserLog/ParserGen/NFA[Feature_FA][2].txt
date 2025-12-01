@@ -1,0 +1,45 @@
+﻿[0][Fa] BEGIN 
+[RULE: 1][CLAUSE: -1]
+	token: ID="a" -> [2][Fa]< [ ( ID ) ] ID @ >
+		+ StackBegin()
+		+ Token(2)
+	token: ID="b" -> [3][Fa]< [ ( ID @ ) ] ID >
+		+ StackBegin()
+		+ Token(0)
+
+[1][Fa] END [ENDING]
+[RULE: 1][CLAUSE: -1]
+
+[2][Fa]< [ ( ID ) ] ID @ >
+[RULE: 1][CLAUSE: 0]
+	ending -> [1][Fa] END [ENDING]
+		+ EnumItem(0, 3)
+		+ CreateObject(FaFeature)
+		+ Field(FaFeature::fa, 1)
+		+ FieldIfUnassigned(FaFeature::fa, 3)
+		+ StackEnd()
+
+[3][Fa]< [ ( ID @ ) ] ID >
+[RULE: 1][CLAUSE: 0]
+	token: ID="a" -> [2][Fa]< [ ( ID ) ] ID @ >
+		+ EnumItem(1, 1)
+		+ Token(2)
+
+[4][Module] BEGIN 
+[RULE: 2][CLAUSE: -1]
+	token: "field_assignment" -> [7][Module]<! "field_assignment" @ !Fa !>
+		+ StackBegin()
+		+ Token(0)
+
+[5][Module] END [ENDING]
+[RULE: 2][CLAUSE: -1]
+
+[6][Module]<! "field_assignment" !Fa @ !>
+[RULE: 2][CLAUSE: 0]
+	ending -> [5][Module] END [ENDING]
+		+ StackEnd()
+
+[7][Module]<! "field_assignment" @ !Fa !>
+[RULE: 2][CLAUSE: 0]
+	rule: Fa -> [6][Module]<! "field_assignment" !Fa @ !>
+

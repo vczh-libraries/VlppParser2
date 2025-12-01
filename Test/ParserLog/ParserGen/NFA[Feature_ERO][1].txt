@@ -1,0 +1,238 @@
+﻿[0][Plus]< "+" > @[ENDING]
+[RULE: 0][CLAUSE: 0]
+
+[1][Plus]< "+" @ >
+[RULE: 0][CLAUSE: 0]
+	epsilon -> [0][Plus]< "+" > @[ENDING]
+		+ CreateObject(Plus)
+		+ StackEnd()
+
+[2][Plus]< @ "+" >
+[RULE: 0][CLAUSE: 0]
+	token: "+" -> [1][Plus]< "+" @ >
+		+ Token(0)
+
+[3][Plus]@ < "+" >
+[RULE: 0][CLAUSE: 0]
+	epsilon -> [2][Plus]< @ "+" >
+		+ StackBegin()
+
+[4][Module]< "entry_rule_priority" +[ @ Plus ] Plus { Plus } >
+[RULE: 1][CLAUSE: 0]
+	rule: Plus -> [5][Module]< "entry_rule_priority" +[ Plus @ ] Plus { Plus } >
+		+ StackSlot(1)
+
+[5][Module]< "entry_rule_priority" +[ Plus @ ] Plus { Plus } >
+[RULE: 1][CLAUSE: 0]
+	epsilon -> [7][Module]< "entry_rule_priority" +[ Plus ] @ Plus { Plus } >
+
+[6][Module]< "entry_rule_priority" +[ Plus ] @ Plus { Plus } >
+[RULE: 1][CLAUSE: 0]
+	rule: Plus -> [9][Module]< "entry_rule_priority" +[ Plus ] Plus @ { Plus } >
+		+ StackSlot(2)
+
+[7][Module]< "entry_rule_priority" +[ Plus ] @ Plus { Plus } >
+[RULE: 1][CLAUSE: 0]
+	epsilon -> [6][Module]< "entry_rule_priority" +[ Plus ] @ Plus { Plus } >
+
+[8][Module]< "entry_rule_priority" +[ Plus ] Plus @ { Plus } >
+[RULE: 1][CLAUSE: 0]
+	epsilon -> [10][Module]< "entry_rule_priority" +[ Plus ] Plus { @ Plus } >
+	epsilon -> [13][Module]< "entry_rule_priority" +[ Plus ] Plus { Plus } @ >
+
+[9][Module]< "entry_rule_priority" +[ Plus ] Plus @ { Plus } >
+[RULE: 1][CLAUSE: 0]
+	epsilon -> [8][Module]< "entry_rule_priority" +[ Plus ] Plus @ { Plus } >
+
+[10][Module]< "entry_rule_priority" +[ Plus ] Plus { @ Plus } >
+[RULE: 1][CLAUSE: 0]
+	rule: Plus -> [11][Module]< "entry_rule_priority" +[ Plus ] Plus { Plus @ } >
+		+ StackSlot(3)
+
+[11][Module]< "entry_rule_priority" +[ Plus ] Plus { Plus @ } >
+[RULE: 1][CLAUSE: 0]
+	epsilon -> [10][Module]< "entry_rule_priority" +[ Plus ] Plus { @ Plus } >
+	epsilon -> [13][Module]< "entry_rule_priority" +[ Plus ] Plus { Plus } @ >
+
+[12][Module]< "entry_rule_priority" +[ Plus ] Plus { Plus } > @[ENDING]
+[RULE: 1][CLAUSE: 0]
+
+[13][Module]< "entry_rule_priority" +[ Plus ] Plus { Plus } @ >
+[RULE: 1][CLAUSE: 0]
+	epsilon -> [14][Module]< "entry_rule_priority" +[ Plus ] Plus { Plus } @ >
+		+ EnumItem(0, 4)
+
+[14][Module]< "entry_rule_priority" +[ Plus ] Plus { Plus } @ >
+[RULE: 1][CLAUSE: 0]
+	epsilon -> [12][Module]< "entry_rule_priority" +[ Plus ] Plus { Plus } > @[ENDING]
+		+ CreateObject(BranchedOptionalFeature)
+		+ Field(BranchedOptionalFeature::optional, 1)
+		+ Field(BranchedOptionalFeature::tails, 3)
+		+ Field(BranchedOptionalFeature::type, 4)
+		+ StackEnd()
+
+[15][Module]< "entry_rule_priority" -[ @ Plus ] Plus { Plus } >
+[RULE: 1][CLAUSE: 1]
+	rule: Plus -> [16][Module]< "entry_rule_priority" -[ Plus @ ] Plus { Plus } >
+		+ StackSlot(1)
+
+[16][Module]< "entry_rule_priority" -[ Plus @ ] Plus { Plus } >
+[RULE: 1][CLAUSE: 1]
+	epsilon -> [18][Module]< "entry_rule_priority" -[ Plus ] @ Plus { Plus } >
+
+[17][Module]< "entry_rule_priority" -[ Plus ] @ Plus { Plus } >
+[RULE: 1][CLAUSE: 1]
+	rule: Plus -> [19][Module]< "entry_rule_priority" -[ Plus ] Plus @ { Plus } >
+		+ StackSlot(2)
+
+[18][Module]< "entry_rule_priority" -[ Plus ] @ Plus { Plus } >
+[RULE: 1][CLAUSE: 1]
+	epsilon -> [17][Module]< "entry_rule_priority" -[ Plus ] @ Plus { Plus } >
+
+[19][Module]< "entry_rule_priority" -[ Plus ] Plus @ { Plus } >
+[RULE: 1][CLAUSE: 1]
+	epsilon -> [20][Module]< "entry_rule_priority" -[ Plus ] Plus @ { Plus } >
+
+[20][Module]< "entry_rule_priority" -[ Plus ] Plus @ { Plus } >
+[RULE: 1][CLAUSE: 1]
+	epsilon -> [21][Module]< "entry_rule_priority" -[ Plus ] Plus { @ Plus } >
+	epsilon -> [24][Module]< "entry_rule_priority" -[ Plus ] Plus { Plus } @ >
+
+[21][Module]< "entry_rule_priority" -[ Plus ] Plus { @ Plus } >
+[RULE: 1][CLAUSE: 1]
+	rule: Plus -> [22][Module]< "entry_rule_priority" -[ Plus ] Plus { Plus @ } >
+		+ StackSlot(3)
+
+[22][Module]< "entry_rule_priority" -[ Plus ] Plus { Plus @ } >
+[RULE: 1][CLAUSE: 1]
+	epsilon -> [21][Module]< "entry_rule_priority" -[ Plus ] Plus { @ Plus } >
+	epsilon -> [24][Module]< "entry_rule_priority" -[ Plus ] Plus { Plus } @ >
+
+[23][Module]< "entry_rule_priority" -[ Plus ] Plus { Plus } > @[ENDING]
+[RULE: 1][CLAUSE: 1]
+
+[24][Module]< "entry_rule_priority" -[ Plus ] Plus { Plus } @ >
+[RULE: 1][CLAUSE: 1]
+	epsilon -> [25][Module]< "entry_rule_priority" -[ Plus ] Plus { Plus } @ >
+		+ EnumItem(1, 4)
+
+[25][Module]< "entry_rule_priority" -[ Plus ] Plus { Plus } @ >
+[RULE: 1][CLAUSE: 1]
+	epsilon -> [23][Module]< "entry_rule_priority" -[ Plus ] Plus { Plus } > @[ENDING]
+		+ CreateObject(BranchedOptionalFeature)
+		+ Field(BranchedOptionalFeature::optional, 1)
+		+ Field(BranchedOptionalFeature::tails, 3)
+		+ Field(BranchedOptionalFeature::type, 4)
+		+ StackEnd()
+
+[26][Module]< "entry_rule_priority" @ +[ Plus ] Plus { Plus } >
+[RULE: 1][CLAUSE: 0]
+	epsilon -> [27][Module]< "entry_rule_priority" @ +[ Plus ] Plus { Plus } >
+
+[27][Module]< "entry_rule_priority" @ +[ Plus ] Plus { Plus } >
+[RULE: 1][CLAUSE: 0]
+	epsilon -> [4][Module]< "entry_rule_priority" +[ @ Plus ] Plus { Plus } >
+	epsilon -> [7][Module]< "entry_rule_priority" +[ Plus ] @ Plus { Plus } >
+
+[28][Module]< "entry_rule_priority" @ -[ Plus ] Plus { Plus } >
+[RULE: 1][CLAUSE: 1]
+	epsilon -> [29][Module]< "entry_rule_priority" @ -[ Plus ] Plus { Plus } >
+
+[29][Module]< "entry_rule_priority" @ -[ Plus ] Plus { Plus } >
+[RULE: 1][CLAUSE: 1]
+	epsilon -> [15][Module]< "entry_rule_priority" -[ @ Plus ] Plus { Plus } >
+	epsilon -> [18][Module]< "entry_rule_priority" -[ Plus ] @ Plus { Plus } >
+
+[30][Module]< "entry_rule_priority" @ [ Plus ] Plus { Plus } >
+[RULE: 1][CLAUSE: 2]
+	epsilon -> [31][Module]< "entry_rule_priority" @ [ Plus ] Plus { Plus } >
+
+[31][Module]< "entry_rule_priority" @ [ Plus ] Plus { Plus } >
+[RULE: 1][CLAUSE: 2]
+	epsilon -> [32][Module]< "entry_rule_priority" [ @ Plus ] Plus { Plus } >
+	epsilon -> [35][Module]< "entry_rule_priority" [ Plus ] @ Plus { Plus } >
+
+[32][Module]< "entry_rule_priority" [ @ Plus ] Plus { Plus } >
+[RULE: 1][CLAUSE: 2]
+	rule: Plus -> [33][Module]< "entry_rule_priority" [ Plus @ ] Plus { Plus } >
+		+ StackSlot(1)
+
+[33][Module]< "entry_rule_priority" [ Plus @ ] Plus { Plus } >
+[RULE: 1][CLAUSE: 2]
+	epsilon -> [35][Module]< "entry_rule_priority" [ Plus ] @ Plus { Plus } >
+
+[34][Module]< "entry_rule_priority" [ Plus ] @ Plus { Plus } >
+[RULE: 1][CLAUSE: 2]
+	rule: Plus -> [36][Module]< "entry_rule_priority" [ Plus ] Plus @ { Plus } >
+		+ StackSlot(2)
+
+[35][Module]< "entry_rule_priority" [ Plus ] @ Plus { Plus } >
+[RULE: 1][CLAUSE: 2]
+	epsilon -> [34][Module]< "entry_rule_priority" [ Plus ] @ Plus { Plus } >
+
+[36][Module]< "entry_rule_priority" [ Plus ] Plus @ { Plus } >
+[RULE: 1][CLAUSE: 2]
+	epsilon -> [37][Module]< "entry_rule_priority" [ Plus ] Plus @ { Plus } >
+
+[37][Module]< "entry_rule_priority" [ Plus ] Plus @ { Plus } >
+[RULE: 1][CLAUSE: 2]
+	epsilon -> [38][Module]< "entry_rule_priority" [ Plus ] Plus { @ Plus } >
+	epsilon -> [41][Module]< "entry_rule_priority" [ Plus ] Plus { Plus } @ >
+
+[38][Module]< "entry_rule_priority" [ Plus ] Plus { @ Plus } >
+[RULE: 1][CLAUSE: 2]
+	rule: Plus -> [39][Module]< "entry_rule_priority" [ Plus ] Plus { Plus @ } >
+		+ StackSlot(3)
+
+[39][Module]< "entry_rule_priority" [ Plus ] Plus { Plus @ } >
+[RULE: 1][CLAUSE: 2]
+	epsilon -> [38][Module]< "entry_rule_priority" [ Plus ] Plus { @ Plus } >
+	epsilon -> [41][Module]< "entry_rule_priority" [ Plus ] Plus { Plus } @ >
+
+[40][Module]< "entry_rule_priority" [ Plus ] Plus { Plus } > @[ENDING]
+[RULE: 1][CLAUSE: 2]
+
+[41][Module]< "entry_rule_priority" [ Plus ] Plus { Plus } @ >
+[RULE: 1][CLAUSE: 2]
+	epsilon -> [42][Module]< "entry_rule_priority" [ Plus ] Plus { Plus } @ >
+		+ EnumItem(2, 4)
+
+[42][Module]< "entry_rule_priority" [ Plus ] Plus { Plus } @ >
+[RULE: 1][CLAUSE: 2]
+	epsilon -> [40][Module]< "entry_rule_priority" [ Plus ] Plus { Plus } > @[ENDING]
+		+ CreateObject(BranchedOptionalFeature)
+		+ Field(BranchedOptionalFeature::optional, 1)
+		+ Field(BranchedOptionalFeature::tails, 3)
+		+ Field(BranchedOptionalFeature::type, 4)
+		+ StackEnd()
+
+[43][Module]< @ "entry_rule_priority" +[ Plus ] Plus { Plus } >
+[RULE: 1][CLAUSE: 0]
+	token: "entry_rule_priority" -> [26][Module]< "entry_rule_priority" @ +[ Plus ] Plus { Plus } >
+		+ Token(0)
+
+[44][Module]< @ "entry_rule_priority" -[ Plus ] Plus { Plus } >
+[RULE: 1][CLAUSE: 1]
+	token: "entry_rule_priority" -> [28][Module]< "entry_rule_priority" @ -[ Plus ] Plus { Plus } >
+		+ Token(0)
+
+[45][Module]< @ "entry_rule_priority" [ Plus ] Plus { Plus } >
+[RULE: 1][CLAUSE: 2]
+	token: "entry_rule_priority" -> [30][Module]< "entry_rule_priority" @ [ Plus ] Plus { Plus } >
+		+ Token(0)
+
+[46][Module]@ < "entry_rule_priority" +[ Plus ] Plus { Plus } >
+[RULE: 1][CLAUSE: 0]
+	epsilon -> [43][Module]< @ "entry_rule_priority" +[ Plus ] Plus { Plus } >
+		+ StackBegin()
+
+[47][Module]@ < "entry_rule_priority" -[ Plus ] Plus { Plus } >
+[RULE: 1][CLAUSE: 1]
+	epsilon -> [44][Module]< @ "entry_rule_priority" -[ Plus ] Plus { Plus } >
+		+ StackBegin()
+
+[48][Module]@ < "entry_rule_priority" [ Plus ] Plus { Plus } >
+[RULE: 1][CLAUSE: 2]
+	epsilon -> [45][Module]< @ "entry_rule_priority" [ Plus ] Plus { Plus } >
+		+ StackBegin()
+

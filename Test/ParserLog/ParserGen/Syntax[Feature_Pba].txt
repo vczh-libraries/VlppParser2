@@ -1,0 +1,188 @@
+﻿{
+    "$ast": "SyntaxFile",
+    "rules": [{
+        "$ast": "Rule",
+        "attParser": "",
+        "attPublic": "",
+        "clauses": [{
+            "$ast": "CreateClause",
+            "assignments": [],
+            "syntax": {
+                "$ast": "RefSyntax",
+                "field": "",
+                "literal": "\"+\"",
+                "refType": "Literal"
+            },
+            "type": "Plus"
+        }],
+        "name": "Plus",
+        "type": ""
+    }, {
+        "$ast": "Rule",
+        "attParser": "",
+        "attPublic": "",
+        "clauses": [{
+            "$ast": "CreateClause",
+            "assignments": [],
+            "syntax": {
+                "$ast": "RefSyntax",
+                "field": "",
+                "literal": "\"<\"",
+                "refType": "Literal"
+            },
+            "type": "Lt"
+        }],
+        "name": "Lt",
+        "type": ""
+    }, {
+        "$ast": "Rule",
+        "attParser": "",
+        "attPublic": "",
+        "clauses": [{
+            "$ast": "CreateClause",
+            "assignments": [],
+            "syntax": {
+                "$ast": "RefSyntax",
+                "field": "",
+                "literal": "\">\"",
+                "refType": "Literal"
+            },
+            "type": "Gt"
+        }],
+        "name": "Gt",
+        "type": ""
+    }, {
+        "$ast": "Rule",
+        "attParser": "",
+        "attPublic": "",
+        "clauses": [{
+            "$ast": "PartialClause",
+            "assignments": [],
+            "syntax": {
+                "$ast": "SequenceSyntax",
+                "first": {
+                    "$ast": "RefSyntax",
+                    "field": "gts",
+                    "literal": "Gt",
+                    "refType": "Id"
+                },
+                "second": {
+                    "$ast": "LoopSyntax",
+                    "delimiter": null,
+                    "syntax": {
+                        "$ast": "RefSyntax",
+                        "field": "gts",
+                        "literal": "Gt",
+                        "refType": "Id"
+                    }
+                }
+            },
+            "type": "PbaFeature"
+        }],
+        "name": "PbaGts",
+        "type": ""
+    }, {
+        "$ast": "Rule",
+        "attParser": "",
+        "attPublic": "",
+        "clauses": [{
+            "$ast": "CreateClause",
+            "assignments": [],
+            "syntax": {
+                "$ast": "SequenceSyntax",
+                "first": {
+                    "$ast": "SequenceSyntax",
+                    "first": {
+                        "$ast": "OptionalSyntax",
+                        "priority": "Equal",
+                        "syntax": {
+                            "$ast": "RefSyntax",
+                            "field": "optional",
+                            "literal": "Plus",
+                            "refType": "Id"
+                        }
+                    },
+                    "second": {
+                        "$ast": "RefSyntax",
+                        "field": "",
+                        "literal": "Plus",
+                        "refType": "Id"
+                    }
+                },
+                "second": {
+                    "$ast": "LoopSyntax",
+                    "delimiter": null,
+                    "syntax": {
+                        "$ast": "RefSyntax",
+                        "field": "tails",
+                        "literal": "Plus",
+                        "refType": "Id"
+                    }
+                }
+            },
+            "type": "PbaFeature"
+        }],
+        "name": "PbaBody",
+        "type": ""
+    }, {
+        "$ast": "Rule",
+        "attParser": "",
+        "attPublic": "",
+        "clauses": [{
+            "$ast": "ReuseClause",
+            "assignments": [],
+            "syntax": {
+                "$ast": "SequenceSyntax",
+                "first": {
+                    "$ast": "SequenceSyntax",
+                    "first": {
+                        "$ast": "SequenceSyntax",
+                        "first": {
+                            "$ast": "RefSyntax",
+                            "field": "",
+                            "literal": "\"prefix_before_ambiguity\"",
+                            "refType": "Literal"
+                        },
+                        "second": {
+                            "$ast": "LoopSyntax",
+                            "delimiter": null,
+                            "syntax": {
+                                "$ast": "RefSyntax",
+                                "field": "lts",
+                                "literal": "Lt",
+                                "refType": "Id"
+                            }
+                        }
+                    },
+                    "second": {
+                        "$ast": "RefSyntax",
+                        "field": "",
+                        "literal": "PbaGts",
+                        "refType": "Id"
+                    }
+                },
+                "second": {
+                    "$ast": "UseSyntax",
+                    "name": "PbaBody"
+                }
+            }
+        }],
+        "name": "Pba",
+        "type": ""
+    }, {
+        "$ast": "Rule",
+        "attParser": "@parser",
+        "attPublic": "",
+        "clauses": [{
+            "$ast": "ReuseClause",
+            "assignments": [],
+            "syntax": {
+                "$ast": "UseSyntax",
+                "name": "Pba"
+            }
+        }],
+        "name": "Module",
+        "type": ""
+    }],
+    "switches": []
+}

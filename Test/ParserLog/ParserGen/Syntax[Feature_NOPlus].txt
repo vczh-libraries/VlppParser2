@@ -1,0 +1,148 @@
+﻿{
+    "$ast": "SyntaxFile",
+    "rules": [{
+        "$ast": "Rule",
+        "attParser": "",
+        "attPublic": "",
+        "clauses": [{
+            "$ast": "CreateClause",
+            "assignments": [],
+            "syntax": {
+                "$ast": "RefSyntax",
+                "field": "",
+                "literal": "\"+\"",
+                "refType": "Literal"
+            },
+            "type": "Plus"
+        }],
+        "name": "Plus",
+        "type": ""
+    }, {
+        "$ast": "Rule",
+        "attParser": "",
+        "attPublic": "",
+        "clauses": [{
+            "$ast": "PartialClause",
+            "assignments": [],
+            "syntax": {
+                "$ast": "SequenceSyntax",
+                "first": {
+                    "$ast": "OptionalSyntax",
+                    "priority": "PreferTake",
+                    "syntax": {
+                        "$ast": "RefSyntax",
+                        "field": "optional",
+                        "literal": "Plus",
+                        "refType": "Id"
+                    }
+                },
+                "second": {
+                    "$ast": "RefSyntax",
+                    "field": "tail1",
+                    "literal": "Plus",
+                    "refType": "Id"
+                }
+            },
+            "type": "NestedOptionalFeature"
+        }],
+        "name": "PositiveNO1",
+        "type": ""
+    }, {
+        "$ast": "Rule",
+        "attParser": "",
+        "attPublic": "",
+        "clauses": [{
+            "$ast": "PartialClause",
+            "assignments": [],
+            "syntax": {
+                "$ast": "SequenceSyntax",
+                "first": {
+                    "$ast": "OptionalSyntax",
+                    "priority": "PreferTake",
+                    "syntax": {
+                        "$ast": "RefSyntax",
+                        "field": "",
+                        "literal": "PositiveNO1",
+                        "refType": "Id"
+                    }
+                },
+                "second": {
+                    "$ast": "RefSyntax",
+                    "field": "tail2",
+                    "literal": "Plus",
+                    "refType": "Id"
+                }
+            },
+            "type": "NestedOptionalFeature"
+        }],
+        "name": "PositiveNO2",
+        "type": ""
+    }, {
+        "$ast": "Rule",
+        "attParser": "",
+        "attPublic": "",
+        "clauses": [{
+            "$ast": "CreateClause",
+            "assignments": [],
+            "syntax": {
+                "$ast": "SequenceSyntax",
+                "first": {
+                    "$ast": "SequenceSyntax",
+                    "first": {
+                        "$ast": "SequenceSyntax",
+                        "first": {
+                            "$ast": "RefSyntax",
+                            "field": "",
+                            "literal": "\"nested_positive_optional\"",
+                            "refType": "Literal"
+                        },
+                        "second": {
+                            "$ast": "OptionalSyntax",
+                            "priority": "PreferTake",
+                            "syntax": {
+                                "$ast": "RefSyntax",
+                                "field": "",
+                                "literal": "PositiveNO2",
+                                "refType": "Id"
+                            }
+                        }
+                    },
+                    "second": {
+                        "$ast": "RefSyntax",
+                        "field": "tail3",
+                        "literal": "Plus",
+                        "refType": "Id"
+                    }
+                },
+                "second": {
+                    "$ast": "LoopSyntax",
+                    "delimiter": null,
+                    "syntax": {
+                        "$ast": "RefSyntax",
+                        "field": "tails",
+                        "literal": "Plus",
+                        "refType": "Id"
+                    }
+                }
+            },
+            "type": "NestedOptionalFeature"
+        }],
+        "name": "NestedPositiveOptional",
+        "type": ""
+    }, {
+        "$ast": "Rule",
+        "attParser": "@parser",
+        "attPublic": "",
+        "clauses": [{
+            "$ast": "ReuseClause",
+            "assignments": [],
+            "syntax": {
+                "$ast": "UseSyntax",
+                "name": "NestedPositiveOptional"
+            }
+        }],
+        "name": "Module",
+        "type": ""
+    }],
+    "switches": []
+}

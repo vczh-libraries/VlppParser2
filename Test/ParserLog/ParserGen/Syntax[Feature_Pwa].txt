@@ -1,0 +1,296 @@
+﻿{
+    "$ast": "SyntaxFile",
+    "rules": [{
+        "$ast": "Rule",
+        "attParser": "",
+        "attPublic": "",
+        "clauses": [{
+            "$ast": "CreateClause",
+            "assignments": [],
+            "syntax": {
+                "$ast": "RefSyntax",
+                "field": "",
+                "literal": "\"+\"",
+                "refType": "Literal"
+            },
+            "type": "Plus"
+        }],
+        "name": "Plus",
+        "type": ""
+    }, {
+        "$ast": "Rule",
+        "attParser": "",
+        "attPublic": "",
+        "clauses": [{
+            "$ast": "CreateClause",
+            "assignments": [],
+            "syntax": {
+                "$ast": "RefSyntax",
+                "field": "",
+                "literal": "\"<\"",
+                "refType": "Literal"
+            },
+            "type": "Lt"
+        }],
+        "name": "Lt",
+        "type": ""
+    }, {
+        "$ast": "Rule",
+        "attParser": "",
+        "attPublic": "",
+        "clauses": [{
+            "$ast": "CreateClause",
+            "assignments": [],
+            "syntax": {
+                "$ast": "RefSyntax",
+                "field": "",
+                "literal": "\">\"",
+                "refType": "Literal"
+            },
+            "type": "Gt"
+        }],
+        "name": "Gt",
+        "type": ""
+    }, {
+        "$ast": "Rule",
+        "attParser": "",
+        "attPublic": "",
+        "clauses": [{
+            "$ast": "CreateClause",
+            "assignments": [],
+            "syntax": {
+                "$ast": "SequenceSyntax",
+                "first": {
+                    "$ast": "SequenceSyntax",
+                    "first": {
+                        "$ast": "OptionalSyntax",
+                        "priority": "Equal",
+                        "syntax": {
+                            "$ast": "RefSyntax",
+                            "field": "optional",
+                            "literal": "Plus",
+                            "refType": "Id"
+                        }
+                    },
+                    "second": {
+                        "$ast": "RefSyntax",
+                        "field": "",
+                        "literal": "Plus",
+                        "refType": "Id"
+                    }
+                },
+                "second": {
+                    "$ast": "LoopSyntax",
+                    "delimiter": null,
+                    "syntax": {
+                        "$ast": "RefSyntax",
+                        "field": "tails",
+                        "literal": "Plus",
+                        "refType": "Id"
+                    }
+                }
+            },
+            "type": "PbaFeature"
+        }],
+        "name": "Pwa1Prefix",
+        "type": ""
+    }, {
+        "$ast": "Rule",
+        "attParser": "",
+        "attPublic": "",
+        "clauses": [{
+            "$ast": "CreateClause",
+            "assignments": [],
+            "syntax": {
+                "$ast": "SequenceSyntax",
+                "first": {
+                    "$ast": "SequenceSyntax",
+                    "first": {
+                        "$ast": "RefSyntax",
+                        "field": "lts",
+                        "literal": "Lt",
+                        "refType": "Id"
+                    },
+                    "second": {
+                        "$ast": "LoopSyntax",
+                        "delimiter": null,
+                        "syntax": {
+                            "$ast": "RefSyntax",
+                            "field": "lts",
+                            "literal": "Lt",
+                            "refType": "Id"
+                        }
+                    }
+                },
+                "second": {
+                    "$ast": "LoopSyntax",
+                    "delimiter": null,
+                    "syntax": {
+                        "$ast": "RefSyntax",
+                        "field": "gts",
+                        "literal": "Gt",
+                        "refType": "Id"
+                    }
+                }
+            },
+            "type": "Pwa1Feature"
+        }],
+        "name": "Pwa1Body",
+        "type": ""
+    }, {
+        "$ast": "Rule",
+        "attParser": "",
+        "attPublic": "",
+        "clauses": [{
+            "$ast": "ReuseClause",
+            "assignments": [],
+            "syntax": {
+                "$ast": "SequenceSyntax",
+                "first": {
+                    "$ast": "SequenceSyntax",
+                    "first": {
+                        "$ast": "RefSyntax",
+                        "field": "",
+                        "literal": "\"prefix_with_ambiguity_1\"",
+                        "refType": "Literal"
+                    },
+                    "second": {
+                        "$ast": "RefSyntax",
+                        "field": "pba",
+                        "literal": "Pwa1Prefix",
+                        "refType": "Id"
+                    }
+                },
+                "second": {
+                    "$ast": "UseSyntax",
+                    "name": "Pwa1Body"
+                }
+            }
+        }],
+        "name": "Pwa1",
+        "type": ""
+    }, {
+        "$ast": "Rule",
+        "attParser": "",
+        "attPublic": "",
+        "clauses": [{
+            "$ast": "CreateClause",
+            "assignments": [],
+            "syntax": {
+                "$ast": "SequenceSyntax",
+                "first": {
+                    "$ast": "SequenceSyntax",
+                    "first": {
+                        "$ast": "RefSyntax",
+                        "field": "lts",
+                        "literal": "Lt",
+                        "refType": "Id"
+                    },
+                    "second": {
+                        "$ast": "LoopSyntax",
+                        "delimiter": null,
+                        "syntax": {
+                            "$ast": "RefSyntax",
+                            "field": "lts",
+                            "literal": "Lt",
+                            "refType": "Id"
+                        }
+                    }
+                },
+                "second": {
+                    "$ast": "LoopSyntax",
+                    "delimiter": null,
+                    "syntax": {
+                        "$ast": "RefSyntax",
+                        "field": "gts",
+                        "literal": "Gt",
+                        "refType": "Id"
+                    }
+                }
+            },
+            "type": "PbaFeature"
+        }],
+        "name": "Pwa2Body",
+        "type": ""
+    }, {
+        "$ast": "Rule",
+        "attParser": "",
+        "attPublic": "",
+        "clauses": [{
+            "$ast": "ReuseClause",
+            "assignments": [],
+            "syntax": {
+                "$ast": "SequenceSyntax",
+                "first": {
+                    "$ast": "SequenceSyntax",
+                    "first": {
+                        "$ast": "SequenceSyntax",
+                        "first": {
+                            "$ast": "SequenceSyntax",
+                            "first": {
+                                "$ast": "RefSyntax",
+                                "field": "",
+                                "literal": "\"prefix_with_ambiguity_2\"",
+                                "refType": "Literal"
+                            },
+                            "second": {
+                                "$ast": "OptionalSyntax",
+                                "priority": "Equal",
+                                "syntax": {
+                                    "$ast": "RefSyntax",
+                                    "field": "optional",
+                                    "literal": "Plus",
+                                    "refType": "Id"
+                                }
+                            }
+                        },
+                        "second": {
+                            "$ast": "RefSyntax",
+                            "field": "",
+                            "literal": "Plus",
+                            "refType": "Id"
+                        }
+                    },
+                    "second": {
+                        "$ast": "LoopSyntax",
+                        "delimiter": null,
+                        "syntax": {
+                            "$ast": "RefSyntax",
+                            "field": "tails",
+                            "literal": "Plus",
+                            "refType": "Id"
+                        }
+                    }
+                },
+                "second": {
+                    "$ast": "UseSyntax",
+                    "name": "Pwa2Body"
+                }
+            }
+        }],
+        "name": "Pwa2",
+        "type": ""
+    }, {
+        "$ast": "Rule",
+        "attParser": "@parser",
+        "attPublic": "",
+        "clauses": [{
+            "$ast": "ReuseClause",
+            "assignments": [],
+            "syntax": {
+                "$ast": "UseSyntax",
+                "name": "Pwa1"
+            }
+        }, {
+            "$ast": "ReuseClause",
+            "assignments": [],
+            "syntax": {
+                "$ast": "UseSyntax",
+                "name": "Pwa2"
+            }
+        }],
+        "name": "Module",
+        "type": ""
+    }],
+    "switches": []
+}
