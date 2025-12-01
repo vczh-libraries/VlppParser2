@@ -1,0 +1,129 @@
+﻿Plus
+  ::= "+" as Plus
+  ;
+
+Lt
+  ::= "<" as Lt
+  ;
+
+Gt
+  ::= ">" as Gt
+  ;
+
+EqualOptional
+  ::= "optional" [Plus:optional] "+" {Plus:loop} as OptionalFeature {priority = Equal}
+  ;
+
+PositiveOptional
+  ::= "positive_optional" +[Plus:optional] "+" {Plus:loop} as OptionalFeature {priority = PreferTake}
+  ;
+
+NegativeOptional
+  ::= "negative_optional" -[Plus:optional] "+" {Plus:loop} as OptionalFeature {priority = PreferSkip}
+  ;
+
+NO1
+  ::= [Plus:optional] Plus:tail1 as partial NestedOptionalFeature
+  ;
+
+PositiveNO1
+  ::= +[Plus:optional] Plus:tail1 as partial NestedOptionalFeature
+  ;
+
+NegativeNO1
+  ::= -[Plus:optional] Plus:tail1 as partial NestedOptionalFeature
+  ;
+
+NO2
+  ::= [NO1] Plus:tail2 as partial NestedOptionalFeature
+  ;
+
+PositiveNO2
+  ::= +[PositiveNO1] Plus:tail2 as partial NestedOptionalFeature
+  ;
+
+NegativeNO2
+  ::= -[NegativeNO1] Plus:tail2 as partial NestedOptionalFeature
+  ;
+
+NestedOptional
+  ::= "nested_optional" [NO2] Plus:tail3 {Plus:tails} as NestedOptionalFeature
+  ;
+
+NestedPositiveOptional
+  ::= "nested_positive_optional" +[PositiveNO2] Plus:tail3 {Plus:tails} as NestedOptionalFeature
+  ;
+
+NestedNegativeOptional
+  ::= "nested_negative_optional" -[NegativeNO2] Plus:tail3 {Plus:tails} as NestedOptionalFeature
+  ;
+
+BranchedOptional
+  ::= "branched_optional" +[Plus:optional] Plus {Plus:tails} as BranchedOptionalFeature {type = Plus}
+  ::= "branched_optional" -[Plus:optional] Plus {Plus:tails} as BranchedOptionalFeature {type = Minus}
+  ::= "branched_optional" [Plus:optional] Plus {Plus:tails} as BranchedOptionalFeature {type = NoCompetition}
+  ;
+
+PbaGts
+  ::= Gt:gts {Gt:gts} as partial PbaFeature
+  ;
+
+PbaBody
+  ::= [Plus:optional] Plus {Plus:tails} as PbaFeature
+  ;
+
+Pba
+  ::= "prefix_before_ambiguity" {Lt:lts} PbaGts !PbaBody
+  ;
+
+Pwa1Prefix
+  ::= [Plus:optional] Plus {Plus:tails} as PbaFeature
+  ;
+
+Pwa1Body
+  ::= Lt:lts {Lt:lts} {Gt:gts} as Pwa1Feature
+  ;
+
+Pwa1
+  ::= "prefix_with_ambiguity_1" Pwa1Prefix:pba !Pwa1Body
+  ;
+
+Pwa2Body
+  ::= Lt:lts {Lt:lts} {Gt:gts} as PbaFeature
+  ;
+
+Pwa2
+  ::= "prefix_with_ambiguity_2" [Plus:optional] Plus {Plus:tails} !Pwa2Body
+  ;
+
+Pwl1_P
+  ::= Lt:one as PwlFeature
+  ::= Plus:prefix !Pwl1_P
+  ;
+
+Pwl1
+  ::= !Pwl1_P
+  ::= Pwl1:prev Lt:one as PwlFeature
+  ;
+
+Pwl2_P
+  ::= Lt:two as PwlFeature
+  ::= Pwl2_P:prev Lt:two as PwlFeature
+  ;
+
+Pwl2
+  ::= {Plus:prefix} !Pwl2_P
+  ;
+
+FaPrefix
+  ::= 'b' as partial FaFeature {fa = B}
+  ;
+
+Fa
+  ::= [FaPrefix] 'a' as FaFeature {fa ?= A}
+  ;
+
+@parser Module
+  ::= "prefix_with_leftrec" !Pwl1
+  ::= "prefix_with_leftrec" !Pwl2
+  ;
