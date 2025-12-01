@@ -330,6 +330,13 @@ void RenderTrace(
 
 		for (vint32_t i = 0; i < c2; i++)
 		{
+			if (trace->traceExecRef != nullref)
+			{
+				writer.WriteString(L"  @");
+				auto traceExec = tm.GetTraceExec(trace->traceExecRef);
+				auto insExec = tm.GetInsExec(traceExec->insExecRefs.start + i);
+				logContext(insExec->contextBeforeExecution);
+			}
 
 			AstIns ins;
 			if (i < c1)
@@ -345,15 +352,7 @@ void RenderTrace(
 				ins = executable.astInstructions[returnDesc.insAfterInput.start + (i - c1)];
 				writer.WriteString(L"  > ");
 			}
-
 			LogInstruction(ins, typeName, fieldName, writer);
-			if (trace->traceExecRef != nullref)
-			{
-				writer.WriteString(L"    [BEFORE]:");
-				auto traceExec = tm.GetTraceExec(trace->traceExecRef);
-				auto insExec = tm.GetInsExec(traceExec->insExecRefs.start + i);
-				logContext(insExec->contextBeforeExecution);
-			}
 
 			if (trace->traceExecRef != nullref)
 			{
@@ -427,7 +426,7 @@ void RenderTrace(
 
 		if (trace->traceExecRef != nullref)
 		{
-			writer.WriteString(L"  [AFTER]:");
+			writer.WriteString(L"  @");
 			auto traceExec = tm.GetTraceExec(trace->traceExecRef);
 			logContext(traceExec->context);
 		}
