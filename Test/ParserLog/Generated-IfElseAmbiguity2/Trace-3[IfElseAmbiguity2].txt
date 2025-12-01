@@ -1,7 +1,37 @@
-﻿+----------------------+
+﻿================ EXECUTION STEPS ================
+[0]: 0@0 - 1@1
+[1]: RA_Begin
+[3]: 2@0 - 66@0
+[4]: RA_Branch
+[5]: 3@0 - 65@1
+[6]: RA_Branch
+[7]: RA_End(2, IfContentCandidate)
+[9]: 66@1 - 66@2
+[10]: 60@0 - 61@3
+[11]: RA_Begin
+[13]: 73@0 - 137@0
+[14]: RA_Branch
+[15]: 74@0 - 136@1
+[16]: RA_Branch
+[17]: RA_End(2, IfContentCandidate)
+[19]: 137@1 - 137@2
+[20]: 131@0 - 132@3
+[21]: RA_Begin
+[23]: 144@0 - 208@0
+[24]: RA_Branch
+[25]: 145@0 - 207@1
+[26]: RA_Branch
+[27]: RA_End(2, IfContentCandidate)
+[29]: 208@1 - 208@2
+[30]: 202@0 - 218@2
+
+==================== TRACES =====================
+
++----------------------+
 | [0]: <Start>         |
 |   TraceExec: [0]     |
 |   ForwardTrace: 0    |
+|   NextACT: 1         |
 | [26][Module] BEGIN   |
 | [AST-INSTRUCTIONS]:  |
 |   @                  |
@@ -17,6 +47,7 @@
 ||   TraceExec: [1]                               ||
 ||   InsExec: [0:2]                               ||
 ||   ForwardTrace: 0                              ||
+||   AmbiguityBegins: [0]                         ||
 || [6][Block]< "{" @ { Stat } "}" >               ||
 || [AST-INSTRUCTIONS]:                            ||
 ||   @                                            ||
@@ -43,6 +74,8 @@
 ||   TraceExec: [2]                                              ||    ||   TraceExec: [22]                                                         ||
 ||   InsExec: [2:2]                                              ||    ||   InsExec: [46:2]                                                         ||
 ||   ForwardTrace: 2                                             ||    ||   ForwardTrace: 3                                                         ||
+||   NextACT: 66                                                 ||    ||   NextACT: 65                                                             ||
+||   AmbiguityCoveredInForward: [0]                              ||    ||   AmbiguityCoveredInForward: [0]                                          ||
 || [14][IfThenStat]< "if" @ "cond" "then" Stat >                 ||    || [14][IfThenStat]< "if" @ "cond" "then" Stat >                             ||
 || [AST-INSTRUCTIONS]:                                           ||    || [AST-INSTRUCTIONS]:                                                       ||
 ||   @ CS(0 -> -1) : [0]                                         ||    ||   @ CS(0 -> -1) : [0]                                                     ||
@@ -761,6 +794,11 @@
 |   TraceExec: [42]                    |
 |   ForwardTrace: 60                   |
 |   CommonForwardTrace: 0              |
+|   NextACT: 61                        |
+| [AMBIGUITY-RESOLVING]: [0]           |
+|   objs: [17, 9]                      |
+|   first: 1 prefix: 2                 |
+|   last: 60 postfix: 2                |
 | [CONTEXT]: CS(39 -> 0) : [20, 10][0] |
 +--------------------------------------+
 |
@@ -771,6 +809,7 @@
 |   TraceExec: [43]                                                                 |
 |   InsExec: [90:4]                                                                 |
 |   ForwardTrace: 60                                                                |
+|   AmbiguityBegins: [1]                                                            |
 | [7][Block]< "{" { Stat @ } "}" >                                                  |
 | [AST-INSTRUCTIONS]:                                                               |
 |   @ CS(39 -> 0) : [20, 10][0]                                                     |
@@ -805,6 +844,8 @@
 ||   TraceExec: [44]                                               ||    ||   TraceExec: [64]                                                           ||
 ||   InsExec: [94:2]                                               ||    ||   InsExec: [138:2]                                                          ||
 ||   ForwardTrace: 73                                              ||    ||   ForwardTrace: 74                                                          ||
+||   NextACT: 137                                                  ||    ||   NextACT: 136                                                              ||
+||   AmbiguityCoveredInForward: [1]                                ||    ||   AmbiguityCoveredInForward: [1]                                            ||
 || [14][IfThenStat]< "if" @ "cond" "then" Stat >                   ||    || [14][IfThenStat]< "if" @ "cond" "then" Stat >                               ||
 || [AST-INSTRUCTIONS]:                                             ||    || [AST-INSTRUCTIONS]:                                                         ||
 ||   @ CS(0 -> -1) : [0]                                           ||    ||   @ CS(0 -> -1) : [0]                                                       ||
@@ -1523,6 +1564,11 @@
 |   TraceExec: [84]                    |
 |   ForwardTrace: 131                  |
 |   CommonForwardTrace: 60             |
+|   NextACT: 132                       |
+| [AMBIGUITY-RESOLVING]: [1]           |
+|   objs: [37, 29]                     |
+|   first: 61 prefix: 4                |
+|   last: 131 postfix: 2               |
 | [CONTEXT]: CS(79 -> 0) : [40, 30][0] |
 +--------------------------------------+
 |
@@ -1533,6 +1579,7 @@
 |   TraceExec: [85]                                                                      |
 |   InsExec: [182:4]                                                                     |
 |   ForwardTrace: 131                                                                    |
+|   AmbiguityBegins: [2]                                                                 |
 | [7][Block]< "{" { Stat @ } "}" >                                                       |
 | [AST-INSTRUCTIONS]:                                                                    |
 |   @ CS(79 -> 0) : [40, 30][0]                                                          |
@@ -1567,6 +1614,8 @@
 ||   TraceExec: [86]                                                ||    ||   TraceExec: [106]                                                           ||
 ||   InsExec: [186:2]                                               ||    ||   InsExec: [230:2]                                                           ||
 ||   ForwardTrace: 144                                              ||    ||   ForwardTrace: 145                                                          ||
+||   NextACT: 208                                                   ||    ||   NextACT: 207                                                               ||
+||   AmbiguityCoveredInForward: [2]                                 ||    ||   AmbiguityCoveredInForward: [2]                                             ||
 || [14][IfThenStat]< "if" @ "cond" "then" Stat >                    ||    || [14][IfThenStat]< "if" @ "cond" "then" Stat >                                ||
 || [AST-INSTRUCTIONS]:                                              ||    || [AST-INSTRUCTIONS]:                                                          ||
 ||   @ CS(0 -> -1) : [0]                                            ||    ||   @ CS(0 -> -1) : [0]                                                        ||
@@ -2285,6 +2334,10 @@
 |   TraceExec: [126]                    |
 |   ForwardTrace: 202                   |
 |   CommonForwardTrace: 131             |
+| [AMBIGUITY-RESOLVING]: [2]            |
+|   objs: [57, 49]                      |
+|   first: 132 prefix: 4                |
+|   last: 202 postfix: 2                |
 | [CONTEXT]: CS(119 -> 0) : [60, 50][0] |
 +---------------------------------------+
 |

@@ -202,6 +202,7 @@ PartialExecuteOrdinaryTrace
 							{
 								CHECK_ERROR(context.objectStack != nullref, ERROR_MESSAGE_PREFIX L"[StackEnd] context.objectStack is empty.");
 								auto topObjects = GetInsExec_StackArrayRefLink(context.objectStack);
+								context.objectStack = topObjects->previous;
 								ForEachStack(context.createStack, [&](InsExec_Stack* topStack)
 								{
 									topStack->useFromStacks = JoinStackRefLink(topStack->useFromStacks, topObjects->ids);

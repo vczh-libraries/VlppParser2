@@ -299,10 +299,10 @@
 |   + StackEnd()                                                                    |
 |     obj:4, begin:10@2, top:8@0, use:[3], end!:[11@0]                              |
 |                                                                                   |
-|   @ CS(2 -> 1) : [2][1][0] OS(6 -> 4) : [4][3]                                    |
+|   @ CS(2 -> 1) : [2][1][0] OS(6 -> -1) : [4]                                      |
 |   > StackSlot(3)                                                                  |
 |                                                                                   |
-|   @ CS(2 -> 1) : [2][1][0] OS(4 -> -1) : [3]                                      |
+|   @ CS(2 -> 1) : [2][1][0]                                                        |
 | [RETURN STACK]:                                                                   |
 |   [5][2][4]: IfContent -> [19][Stat]< IfContent @ >                               |
 |   [4][5][4]: Stat -> [12][IfContent]< "if" "cond" "then" Stat @ [ "else" Stat ] > |
@@ -323,28 +323,28 @@
 |                                                                                          |   ForwardTrace: 12                                                                 |
 |                                                                                          | [19][Stat]< IfContent @ >                                                          |
 |                                                                                          | [AST-INSTRUCTIONS]:                                                                |
-|                                                                                          |   @ CS(2 -> 1) : [2][1][0] OS(4 -> -1) : [3]                                       |
+|                                                                                          |   @ CS(2 -> 1) : [2][1][0]                                                         |
 |                                                                                          |   + CreateObject(IfContentCandidate)                                               |
 |                                                                                          |     objs: 2                                                                        |
 |                                                                                          |                                                                                    |
-|                                                                                          |   @ CS(2 -> 1) : [2][1][0] OS(4 -> -1) : [3]                                       |
+|                                                                                          |   @ CS(2 -> 1) : [2][1][0]                                                         |
 |                                                                                          |   + Field(IfContentCandidate::thenBranch, 3)                                       |
 |                                                                                          |                                                                                    |
-|                                                                                          |   @ CS(2 -> 1) : [2][1][0] OS(4 -> -1) : [3]                                       |
+|                                                                                          |   @ CS(2 -> 1) : [2][1][0]                                                         |
 |                                                                                          |   + Field(IfContentCandidate::elseBranch, 5)                                       |
 |                                                                                          |                                                                                    |
-|                                                                                          |   @ CS(2 -> 1) : [2][1][0] OS(4 -> -1) : [3]                                       |
+|                                                                                          |   @ CS(2 -> 1) : [2][1][0]                                                         |
 |                                                                                          |   + StackEnd()                                                                     |
 |                                                                                          |     obj:2, begin:5@0, top:5@0, field:[6, 4], create:[12@0, 22@0], end:[12@3, 22@3] |
 |                                                                                          |                                                                                    |
-|                                                                                          |   @ CS(1 -> 0) : [1][0] OS(16 -> 4) : [2][3]                                       |
+|                                                                                          |   @ CS(1 -> 0) : [1][0] OS(16 -> -1) : [2]                                         |
 |                                                                                          |   > StackBegin()                                                                   |
 |                                                                                          |     objs: 9                                                                        |
 |                                                                                          |                                                                                    |
-|                                                                                          |   @ CS(17 -> 1) : [9][1][0] OS(16 -> 4) : [2][3]                                   |
+|                                                                                          |   @ CS(17 -> 1) : [9][1][0] OS(16 -> -1) : [2]                                     |
 |                                                                                          |   > StackSlot(0)                                                                   |
 |                                                                                          |                                                                                    |
-|                                                                                          |   @ CS(17 -> 1) : [9][1][0] OS(4 -> -1) : [3]                                      |
+|                                                                                          |   @ CS(17 -> 1) : [9][1][0]                                                        |
 |                                                                                          | [RETURN STACK]:                                                                    |
 |                                                                                          |   [4][5][4]: Stat -> [12][IfContent]< "if" "cond" "then" Stat @ [ "else" Stat ] >  |
 |                                                                                          |   [3][2][1]: IfContent -> [19][Stat]< IfContent @ >                                |
@@ -364,21 +364,21 @@
 |                                                                                          |   ForwardTrace: 12                                                              |
 |                                                                                          | [12][IfContent]< "if" "cond" "then" Stat @ [ "else" Stat ] >                    |
 |                                                                                          | [AST-INSTRUCTIONS]:                                                             |
-|                                                                                          |   @ CS(17 -> 1) : [9][1][0] OS(4 -> -1) : [3]                                   |
+|                                                                                          |   @ CS(17 -> 1) : [9][1][0]                                                     |
 |                                                                                          |   + CreateObject(IfStat)                                                        |
 |                                                                                          |     objs: 9                                                                     |
 |                                                                                          |                                                                                 |
-|                                                                                          |   @ CS(17 -> 1) : [9][1][0] OS(4 -> -1) : [3]                                   |
+|                                                                                          |   @ CS(17 -> 1) : [9][1][0]                                                     |
 |                                                                                          |   + Field(IfStat::content, 0)                                                   |
 |                                                                                          |                                                                                 |
-|                                                                                          |   @ CS(17 -> 1) : [9][1][0] OS(4 -> -1) : [3]                                   |
+|                                                                                          |   @ CS(17 -> 1) : [9][1][0]                                                     |
 |                                                                                          |   + StackEnd()                                                                  |
 |                                                                                          |     obj:9, begin:12@4, top:12@4, lrec:5@0, field:[2], create:[13@0], end:[13@2] |
 |                                                                                          |                                                                                 |
-|                                                                                          |   @ CS(1 -> 0) : [1][0] OS(18 -> 4) : [9][3]                                    |
+|                                                                                          |   @ CS(1 -> 0) : [1][0] OS(18 -> -1) : [9]                                      |
 |                                                                                          |   > StackSlot(3)                                                                |
 |                                                                                          |                                                                                 |
-|                                                                                          |   @ CS(1 -> 0) : [1][0] OS(4 -> -1) : [3]                                       |
+|                                                                                          |   @ CS(1 -> 0) : [1][0]                                                         |
 |                                                                                          | [RETURN STACK]:                                                                 |
 |                                                                                          |   [3][2][1]: IfContent -> [19][Stat]< IfContent @ >                             |
 |                                                                                          |   [2][0][1]: Stat -> [7][Block]< "{" { Stat @ } "}" >                           |
@@ -399,10 +399,10 @@
 ||   ForwardTrace: 15                                                                ||    ||   ForwardTrace: 12                                           ||
 || [13][IfContent]< "if" "cond" "then" Stat [ "else" @ Stat ] >                      ||    || [13][IfContent]< "if" "cond" "then" Stat [ "else" @ Stat ] > ||
 || [AST-INSTRUCTIONS]:                                                               ||    || [AST-INSTRUCTIONS]:                                          ||
-||   @ CS(2 -> 1) : [2][1][0] OS(4 -> -1) : [3]                                      ||    ||   @ CS(1 -> 0) : [1][0] OS(4 -> -1) : [3]                    ||
+||   @ CS(2 -> 1) : [2][1][0]                                                        ||    ||   @ CS(1 -> 0) : [1][0]                                      ||
 ||   + Token(4)                                                                      ||    ||   + Token(4)                                                 ||
 ||                                                                                   ||    ||                                                              ||
-||   @ CS(2 -> 1) : [2][1][0] OS(4 -> -1) : [3]                                      ||    ||   @ CS(1 -> 0) : [1][0] OS(4 -> -1) : [3]                    ||
+||   @ CS(2 -> 1) : [2][1][0]                                                        ||    ||   @ CS(1 -> 0) : [1][0]                                      ||
 || [RETURN STACK]:                                                                   ||    || [RETURN STACK]:                                              ||
 ||   [5][2][4]: IfContent -> [19][Stat]< IfContent @ >                               ||    ||   [3][2][1]: IfContent -> [19][Stat]< IfContent @ >          ||
 ||   [4][5][4]: Stat -> [12][IfContent]< "if" "cond" "then" Stat @ [ "else" Stat ] > ||    ||   [2][0][1]: Stat -> [7][Block]< "{" { Stat @ } "}" >        ||
@@ -425,14 +425,14 @@
 ||   ForwardTrace: 15                                                                 ||    ||   ForwardTrace: 12                                                                  ||
 || [3][Do]< "do" @ ";" >                                                              ||    || [3][Do]< "do" @ ";" >                                                               ||
 || [AST-INSTRUCTIONS]:                                                                ||    || [AST-INSTRUCTIONS]:                                                                 ||
-||   @ CS(2 -> 1) : [2][1][0] OS(4 -> -1) : [3]                                       ||    ||   @ CS(1 -> 0) : [1][0] OS(4 -> -1) : [3]                                           ||
+||   @ CS(2 -> 1) : [2][1][0]                                                         ||    ||   @ CS(1 -> 0) : [1][0]                                                             ||
 ||   + StackBegin()                                                                   ||    ||   + StackBegin()                                                                    ||
 ||     objs: 5                                                                        ||    ||     objs: 10                                                                        ||
 ||                                                                                    ||    ||                                                                                     ||
-||   @ CS(7 -> 2) : [5][2][1][0] OS(4 -> -1) : [3]                                    ||    ||   @ CS(19 -> 1) : [10][1][0] OS(4 -> -1) : [3]                                      ||
+||   @ CS(7 -> 2) : [5][2][1][0]                                                      ||    ||   @ CS(19 -> 1) : [10][1][0]                                                        ||
 ||   + Token(0)                                                                       ||    ||   + Token(0)                                                                        ||
 ||                                                                                    ||    ||                                                                                     ||
-||   @ CS(7 -> 2) : [5][2][1][0] OS(4 -> -1) : [3]                                    ||    ||   @ CS(19 -> 1) : [10][1][0] OS(4 -> -1) : [3]                                      ||
+||   @ CS(7 -> 2) : [5][2][1][0]                                                      ||    ||   @ CS(19 -> 1) : [10][1][0]                                                        ||
 || [RETURN STACK]:                                                                    ||    || [RETURN STACK]:                                                                     ||
 ||   [9][3][15]: Do -> [21][Stat]<! !Do @ !>                                          ||    ||   [11][3][16]: Do -> [21][Stat]<! !Do @ !>                                          ||
 ||   [8][6][15]: Stat -> [14][IfContent]< "if" "cond" "then" Stat [ "else" Stat @ ] > ||    ||   [10][6][16]: Stat -> [14][IfContent]< "if" "cond" "then" Stat [ "else" Stat @ ] > ||
@@ -457,10 +457,10 @@
 ||   ForwardTrace: 15                                                                 ||      ||   ForwardTrace: 12                                                                  ||
 || [2][Do]< "do" ";" @ >                                                              ||      || [2][Do]< "do" ";" @ >                                                               ||
 || [AST-INSTRUCTIONS]:                                                                ||      || [AST-INSTRUCTIONS]:                                                                 ||
-||   @ CS(7 -> 2) : [5][2][1][0] OS(4 -> -1) : [3]                                    ||      ||   @ CS(19 -> 1) : [10][1][0] OS(4 -> -1) : [3]                                      ||
+||   @ CS(7 -> 2) : [5][2][1][0]                                                      ||      ||   @ CS(19 -> 1) : [10][1][0]                                                        ||
 ||   + Token(1)                                                                       ||      ||   + Token(1)                                                                        ||
 ||                                                                                    ||      ||                                                                                     ||
-||   @ CS(7 -> 2) : [5][2][1][0] OS(4 -> -1) : [3]                                    ||      ||   @ CS(19 -> 1) : [10][1][0] OS(4 -> -1) : [3]                                      ||
+||   @ CS(7 -> 2) : [5][2][1][0]                                                      ||      ||   @ CS(19 -> 1) : [10][1][0]                                                        ||
 || [RETURN STACK]:                                                                    ||      || [RETURN STACK]:                                                                     ||
 ||   [9][3][15]: Do -> [21][Stat]<! !Do @ !>                                          ||      ||   [11][3][16]: Do -> [21][Stat]<! !Do @ !>                                          ||
 ||   [8][6][15]: Stat -> [14][IfContent]< "if" "cond" "then" Stat [ "else" Stat @ ] > ||      ||   [10][6][16]: Stat -> [14][IfContent]< "if" "cond" "then" Stat [ "else" Stat @ ] > ||
@@ -483,19 +483,19 @@
 |   ForwardTrace: 15                                                                 |        |   ForwardTrace: 12                                                                  |
 | [21][Stat]<! !Do @ !>                                                              |        | [21][Stat]<! !Do @ !>                                                               |
 | [AST-INSTRUCTIONS]:                                                                |        | [AST-INSTRUCTIONS]:                                                                 |
-|   @ CS(7 -> 2) : [5][2][1][0] OS(4 -> -1) : [3]                                    |        |   @ CS(19 -> 1) : [10][1][0] OS(4 -> -1) : [3]                                      |
+|   @ CS(7 -> 2) : [5][2][1][0]                                                      |        |   @ CS(19 -> 1) : [10][1][0]                                                        |
 |   + CreateObject(DoStat)                                                           |        |   + CreateObject(DoStat)                                                            |
 |     objs: 5                                                                        |        |     objs: 10                                                                        |
 |                                                                                    |        |                                                                                     |
-|   @ CS(7 -> 2) : [5][2][1][0] OS(4 -> -1) : [3]                                    |        |   @ CS(19 -> 1) : [10][1][0] OS(4 -> -1) : [3]                                      |
+|   @ CS(7 -> 2) : [5][2][1][0]                                                      |        |   @ CS(19 -> 1) : [10][1][0]                                                        |
 |   + StackEnd()                                                                     |        |   + StackEnd()                                                                      |
 |     obj:5, begin:17@0, top:17@0, create:[20@0], end:[20@1]                         |        |     obj:10, begin:18@0, top:18@0, create:[27@0], end:[27@1]                         |
 |                                                                                    |        |                                                                                     |
-|   @ CS(2 -> 1) : [2][1][0] OS(8 -> 4) : [5][3]                                     |        |   @ CS(1 -> 0) : [1][0] OS(20 -> 4) : [10][3]                                       |
+|   @ CS(2 -> 1) : [2][1][0] OS(8 -> -1) : [5]                                       |        |   @ CS(1 -> 0) : [1][0] OS(20 -> -1) : [10]                                         |
 |   > StackBegin()                                                                   |        |   > StackBegin()                                                                    |
 |     objs: 6                                                                        |        |     objs: 11                                                                        |
 |                                                                                    |        |                                                                                     |
-|   @ CS(9 -> 2) : [6][2][1][0] OS(8 -> 4) : [5][3]                                  |        |   @ CS(21 -> 1) : [11][1][0] OS(20 -> 4) : [10][3]                                  |
+|   @ CS(9 -> 2) : [6][2][1][0] OS(8 -> -1) : [5]                                    |        |   @ CS(21 -> 1) : [11][1][0] OS(20 -> -1) : [10]                                    |
 | [RETURN STACK]:                                                                    |        | [RETURN STACK]:                                                                     |
 |   [8][6][15]: Stat -> [14][IfContent]< "if" "cond" "then" Stat [ "else" Stat @ ] > |        |   [10][6][16]: Stat -> [14][IfContent]< "if" "cond" "then" Stat [ "else" Stat @ ] > |
 |   [5][2][4]: IfContent -> [19][Stat]< IfContent @ >                                |        |   [3][2][1]: IfContent -> [19][Stat]< IfContent @ >                                 |
@@ -517,14 +517,14 @@
 |   ForwardTrace: 15                                                                |         |   ForwardTrace: 12                                           |
 | [14][IfContent]< "if" "cond" "then" Stat [ "else" Stat @ ] >                      |         | [14][IfContent]< "if" "cond" "then" Stat [ "else" Stat @ ] > |
 | [AST-INSTRUCTIONS]:                                                               |         | [AST-INSTRUCTIONS]:                                          |
-|   @ CS(9 -> 2) : [6][2][1][0] OS(8 -> 4) : [5][3]                                 |         |   @ CS(21 -> 1) : [11][1][0] OS(20 -> 4) : [10][3]           |
+|   @ CS(9 -> 2) : [6][2][1][0] OS(8 -> -1) : [5]                                   |         |   @ CS(21 -> 1) : [11][1][0] OS(20 -> -1) : [10]             |
 |   + StackEnd()                                                                    |         |   + StackEnd()                                               |
 |     obj:6, begin:20@2, top:17@0, use:[5], end!:[21@0]                             |         |     obj:11, begin:27@2, top:18@0, use:[10], end!:[28@0]      |
 |                                                                                   |         |                                                              |
-|   @ CS(2 -> 1) : [2][1][0] OS(10 -> 8) : [6][5][3]                                |         |   @ CS(1 -> 0) : [1][0] OS(22 -> 20) : [11][10][3]           |
+|   @ CS(2 -> 1) : [2][1][0] OS(10 -> -1) : [6]                                     |         |   @ CS(1 -> 0) : [1][0] OS(22 -> -1) : [11]                  |
 |   > StackSlot(5)                                                                  |         |   > StackSlot(5)                                             |
 |                                                                                   |         |                                                              |
-|   @ CS(2 -> 1) : [2][1][0] OS(8 -> 4) : [5][3]                                    |         |   @ CS(1 -> 0) : [1][0] OS(20 -> 4) : [10][3]                |
+|   @ CS(2 -> 1) : [2][1][0]                                                        |         |   @ CS(1 -> 0) : [1][0]                                      |
 | [RETURN STACK]:                                                                   |         | [RETURN STACK]:                                              |
 |   [5][2][4]: IfContent -> [19][Stat]< IfContent @ >                               |         |   [3][2][1]: IfContent -> [19][Stat]< IfContent @ >          |
 |   [4][5][4]: Stat -> [12][IfContent]< "if" "cond" "then" Stat @ [ "else" Stat ] > |         |   [2][0][1]: Stat -> [7][Block]< "{" { Stat @ } "}" >        |
@@ -545,28 +545,28 @@
 |   ForwardTrace: 15                                                                 |        |   ForwardTrace: 12                                                                     |
 | [19][Stat]< IfContent @ >                                                          |        | [19][Stat]< IfContent @ >                                                              |
 | [AST-INSTRUCTIONS]:                                                                |        | [AST-INSTRUCTIONS]:                                                                    |
-|   @ CS(2 -> 1) : [2][1][0] OS(8 -> 4) : [5][3]                                     |        |   @ CS(1 -> 0) : [1][0] OS(20 -> 4) : [10][3]                                          |
+|   @ CS(2 -> 1) : [2][1][0]                                                         |        |   @ CS(1 -> 0) : [1][0]                                                                |
 |   + CreateObject(IfContentCandidate)                                               |        |   + CreateObject(IfContentCandidate)                                                   |
 |     objs: 2                                                                        |        |     objs: 1                                                                            |
 |                                                                                    |        |                                                                                        |
-|   @ CS(2 -> 1) : [2][1][0] OS(8 -> 4) : [5][3]                                     |        |   @ CS(1 -> 0) : [1][0] OS(20 -> 4) : [10][3]                                          |
+|   @ CS(2 -> 1) : [2][1][0]                                                         |        |   @ CS(1 -> 0) : [1][0]                                                                |
 |   + Field(IfContentCandidate::thenBranch, 3)                                       |        |   + Field(IfContentCandidate::thenBranch, 3)                                           |
 |                                                                                    |        |                                                                                        |
-|   @ CS(2 -> 1) : [2][1][0] OS(8 -> 4) : [5][3]                                     |        |   @ CS(1 -> 0) : [1][0] OS(20 -> 4) : [10][3]                                          |
+|   @ CS(2 -> 1) : [2][1][0]                                                         |        |   @ CS(1 -> 0) : [1][0]                                                                |
 |   + Field(IfContentCandidate::elseBranch, 5)                                       |        |   + Field(IfContentCandidate::elseBranch, 5)                                           |
 |                                                                                    |        |                                                                                        |
-|   @ CS(2 -> 1) : [2][1][0] OS(8 -> 4) : [5][3]                                     |        |   @ CS(1 -> 0) : [1][0] OS(20 -> 4) : [10][3]                                          |
+|   @ CS(2 -> 1) : [2][1][0]                                                         |        |   @ CS(1 -> 0) : [1][0]                                                                |
 |   + StackEnd()                                                                     |        |   + StackEnd()                                                                         |
 |     obj:2, begin:5@0, top:5@0, field:[6, 4], create:[12@0, 22@0], end:[12@3, 22@3] |        |     obj:1, begin:2@0, top:2@0, field:[11, 7, 9], create:[29@0, 30@0], end:[29@3, 30@3] |
 |                                                                                    |        |                                                                                        |
-|   @ CS(1 -> 0) : [1][0] OS(11 -> 8) : [2][5][3]                                    |        |   @ CS(0 -> -1) : [0] OS(23 -> 20) : [1][10][3]                                        |
+|   @ CS(1 -> 0) : [1][0] OS(11 -> -1) : [2]                                         |        |   @ CS(0 -> -1) : [0] OS(23 -> -1) : [1]                                               |
 |   > StackBegin()                                                                   |        |   > StackBegin()                                                                       |
 |     objs: 7                                                                        |        |     objs: 12                                                                           |
 |                                                                                    |        |                                                                                        |
-|   @ CS(12 -> 1) : [7][1][0] OS(11 -> 8) : [2][5][3]                                |        |   @ CS(24 -> 0) : [12][0] OS(23 -> 20) : [1][10][3]                                    |
+|   @ CS(12 -> 1) : [7][1][0] OS(11 -> -1) : [2]                                     |        |   @ CS(24 -> 0) : [12][0] OS(23 -> -1) : [1]                                           |
 |   > StackSlot(0)                                                                   |        |   > StackSlot(0)                                                                       |
 |                                                                                    |        |                                                                                        |
-|   @ CS(12 -> 1) : [7][1][0] OS(8 -> 4) : [5][3]                                    |        |   @ CS(24 -> 0) : [12][0] OS(20 -> 4) : [10][3]                                        |
+|   @ CS(12 -> 1) : [7][1][0]                                                        |        |   @ CS(24 -> 0) : [12][0]                                                              |
 | [RETURN STACK]:                                                                    |        | [RETURN STACK]:                                                                        |
 |   [4][5][4]: Stat -> [12][IfContent]< "if" "cond" "then" Stat @ [ "else" Stat ] >  |        |   [2][0][1]: Stat -> [7][Block]< "{" { Stat @ } "}" >                                  |
 |   [3][2][1]: IfContent -> [19][Stat]< IfContent @ >                                |        |   [1][1][0]: Block -> [20][Stat]<! !Block @ !>                                         |
@@ -586,21 +586,21 @@
 |   ForwardTrace: 15                                                              |           |
 | [12][IfContent]< "if" "cond" "then" Stat @ [ "else" Stat ] >                    |           |
 | [AST-INSTRUCTIONS]:                                                             |           |
-|   @ CS(12 -> 1) : [7][1][0] OS(8 -> 4) : [5][3]                                 |           |
+|   @ CS(12 -> 1) : [7][1][0]                                                     |           |
 |   + CreateObject(IfStat)                                                        |           |
 |     objs: 7                                                                     |           |
 |                                                                                 |           |
-|   @ CS(12 -> 1) : [7][1][0] OS(8 -> 4) : [5][3]                                 |           |
+|   @ CS(12 -> 1) : [7][1][0]                                                     |           |
 |   + Field(IfStat::content, 0)                                                   |           |
 |                                                                                 |           |
-|   @ CS(12 -> 1) : [7][1][0] OS(8 -> 4) : [5][3]                                 |           |
+|   @ CS(12 -> 1) : [7][1][0]                                                     |           |
 |   + StackEnd()                                                                  |           |
 |     obj:7, begin:22@4, top:22@4, lrec:5@0, field:[2], create:[23@0], end:[23@2] |           |
 |                                                                                 |           |
-|   @ CS(1 -> 0) : [1][0] OS(13 -> 8) : [7][5][3]                                 |           |
+|   @ CS(1 -> 0) : [1][0] OS(13 -> -1) : [7]                                      |           |
 |   > StackSlot(3)                                                                |           |
 |                                                                                 |           |
-|   @ CS(1 -> 0) : [1][0] OS(8 -> 4) : [5][3]                                     |           |
+|   @ CS(1 -> 0) : [1][0]                                                         |           |
 | [RETURN STACK]:                                                                 |           |
 |   [3][2][1]: IfContent -> [19][Stat]< IfContent @ >                             |           |
 |   [2][0][1]: Stat -> [7][Block]< "{" { Stat @ } "}" >                           |           |
@@ -619,28 +619,28 @@
 |   ForwardTrace: 15                                                                     |    |
 | [19][Stat]< IfContent @ >                                                              |    |
 | [AST-INSTRUCTIONS]:                                                                    |    |
-|   @ CS(1 -> 0) : [1][0] OS(8 -> 4) : [5][3]                                            |    |
+|   @ CS(1 -> 0) : [1][0]                                                                |    |
 |   + CreateObject(IfContentCandidate)                                                   |    |
 |     objs: 1                                                                            |    |
 |                                                                                        |    |
-|   @ CS(1 -> 0) : [1][0] OS(8 -> 4) : [5][3]                                            |    |
+|   @ CS(1 -> 0) : [1][0]                                                                |    |
 |   + Field(IfContentCandidate::thenBranch, 3)                                           |    |
 |                                                                                        |    |
-|   @ CS(1 -> 0) : [1][0] OS(8 -> 4) : [5][3]                                            |    |
+|   @ CS(1 -> 0) : [1][0]                                                                |    |
 |   + Field(IfContentCandidate::elseBranch, 5)                                           |    |
 |                                                                                        |    |
-|   @ CS(1 -> 0) : [1][0] OS(8 -> 4) : [5][3]                                            |    |
+|   @ CS(1 -> 0) : [1][0]                                                                |    |
 |   + StackEnd()                                                                         |    |
 |     obj:1, begin:2@0, top:2@0, field:[11, 7, 9], create:[29@0, 30@0], end:[29@3, 30@3] |    |
 |                                                                                        |    |
-|   @ CS(0 -> -1) : [0] OS(14 -> 8) : [1][5][3]                                          |    |
+|   @ CS(0 -> -1) : [0] OS(14 -> -1) : [1]                                               |    |
 |   > StackBegin()                                                                       |    |
 |     objs: 8                                                                            |    |
 |                                                                                        |    |
-|   @ CS(15 -> 0) : [8][0] OS(14 -> 8) : [1][5][3]                                       |    |
+|   @ CS(15 -> 0) : [8][0] OS(14 -> -1) : [1]                                            |    |
 |   > StackSlot(0)                                                                       |    |
 |                                                                                        |    |
-|   @ CS(15 -> 0) : [8][0] OS(8 -> 4) : [5][3]                                           |    |
+|   @ CS(15 -> 0) : [8][0]                                                               |    |
 | [RETURN STACK]:                                                                        |    |
 |   [2][0][1]: Stat -> [7][Block]< "{" { Stat @ } "}" >                                  |    |
 |   [1][1][0]: Block -> [20][Stat]<! !Block @ !>                                         |    |
@@ -651,14 +651,14 @@
 |                                                                                             |
 +---------------------------------------------------------------------------------------------+
 |
-+--------------------------------------------------------------+
-| [24]: <Merging>                                              |
-| <Start>                                                      |
-|   TraceExec: [28]                                            |
-|   ForwardTrace: 24                                           |
-|   CommonForwardTrace: 0                                      |
-| [CONTEXT]: CS(26 -> 0) : [12, 8][0] OS(25 -> 4) : [10, 5][3] |
-+--------------------------------------------------------------+
++-------------------------------------+
+| [24]: <Merging>                     |
+| <Start>                             |
+|   TraceExec: [28]                   |
+|   ForwardTrace: 24                  |
+|   CommonForwardTrace: 0             |
+| [CONTEXT]: CS(25 -> 0) : [12, 8][0] |
++-------------------------------------+
 |
 +
 |
@@ -669,22 +669,22 @@
 |   ForwardTrace: 24                                                               |
 | [7][Block]< "{" { Stat @ } "}" >                                                 |
 | [AST-INSTRUCTIONS]:                                                              |
-|   @ CS(26 -> 0) : [12, 8][0] OS(25 -> 4) : [10, 5][3]                            |
+|   @ CS(25 -> 0) : [12, 8][0]                                                     |
 |   + CreateObject(IfStat)                                                         |
 |     objs: 8, 12                                                                  |
 |                                                                                  |
-|   @ CS(26 -> 0) : [12, 8][0] OS(25 -> 4) : [10, 5][3]                            |
+|   @ CS(25 -> 0) : [12, 8][0]                                                     |
 |   + Field(IfStat::content, 0)                                                    |
 |                                                                                  |
-|   @ CS(26 -> 0) : [12, 8][0] OS(25 -> 4) : [10, 5][3]                            |
+|   @ CS(25 -> 0) : [12, 8][0]                                                     |
 |   + StackEnd()                                                                   |
 |     obj:8, begin:30@4, top:30@4, lrec:2@0, field:[1], create:[25@0], end:[25@2]  |
 |     obj:12, begin:29@4, top:29@4, lrec:2@0, field:[1], create:[25@0], end:[25@2] |
 |                                                                                  |
-|   @ CS(0 -> -1) : [0] OS(27 -> 25) : [12, 8][10, 5][3]                           |
+|   @ CS(0 -> -1) : [0] OS(26 -> -1) : [12, 8]                                     |
 |   > StackSlot(1)                                                                 |
 |                                                                                  |
-|   @ CS(0 -> -1) : [0] OS(25 -> 4) : [10, 5][3]                                   |
+|   @ CS(0 -> -1) : [0]                                                            |
 | [RETURN STACK]:                                                                  |
 |   [1][1][0]: Block -> [20][Stat]<! !Block @ !>                                   |
 |   [0][7][0]: Stat -> [24][Module]< Stat @ >                                      |
@@ -703,14 +703,14 @@
 ||   ForwardTrace: 24                                           ||
 || [16][IfContent]< "if" @ "cond" "then" Stat [ "else" Stat ] > ||
 || [AST-INSTRUCTIONS]:                                          ||
-||   @ CS(0 -> -1) : [0] OS(25 -> 4) : [10, 5][3]               ||
+||   @ CS(0 -> -1) : [0]                                        ||
 ||   + StackBegin()                                             ||
 ||     objs: 13                                                 ||
 ||                                                              ||
-||   @ CS(28 -> 0) : [13][0] OS(25 -> 4) : [10, 5][3]           ||
+||   @ CS(27 -> 0) : [13][0]                                    ||
 ||   + Token(0)                                                 ||
 ||                                                              ||
-||   @ CS(28 -> 0) : [13][0] OS(25 -> 4) : [10, 5][3]           ||
+||   @ CS(27 -> 0) : [13][0]                                    ||
 || [RETURN STACK]:                                              ||
 ||   [13][2][25]: IfContent -> [19][Stat]< IfContent @ >        ||
 ||   [12][4][25]: Stat -> [7][Block]< "{" { Stat @ } "}" >      ||
@@ -731,10 +731,10 @@
 ||   ForwardTrace: 24                                           ||
 || [15][IfContent]< "if" "cond" @ "then" Stat [ "else" Stat ] > ||
 || [AST-INSTRUCTIONS]:                                          ||
-||   @ CS(28 -> 0) : [13][0] OS(25 -> 4) : [10, 5][3]           ||
+||   @ CS(27 -> 0) : [13][0]                                    ||
 ||   + Token(1)                                                 ||
 ||                                                              ||
-||   @ CS(28 -> 0) : [13][0] OS(25 -> 4) : [10, 5][3]           ||
+||   @ CS(27 -> 0) : [13][0]                                    ||
 || [RETURN STACK]:                                              ||
 ||   [13][2][25]: IfContent -> [19][Stat]< IfContent @ >        ||
 ||   [12][4][25]: Stat -> [7][Block]< "{" { Stat @ } "}" >      ||
@@ -755,10 +755,10 @@
 ||   ForwardTrace: 24                                           ||
 || [11][IfContent]< "if" "cond" "then" @ Stat [ "else" Stat ] > ||
 || [AST-INSTRUCTIONS]:                                          ||
-||   @ CS(28 -> 0) : [13][0] OS(25 -> 4) : [10, 5][3]           ||
+||   @ CS(27 -> 0) : [13][0]                                    ||
 ||   + Token(2)                                                 ||
 ||                                                              ||
-||   @ CS(28 -> 0) : [13][0] OS(25 -> 4) : [10, 5][3]           ||
+||   @ CS(27 -> 0) : [13][0]                                    ||
 || [RETURN STACK]:                                              ||
 ||   [13][2][25]: IfContent -> [19][Stat]< IfContent @ >        ||
 ||   [12][4][25]: Stat -> [7][Block]< "{" { Stat @ } "}" >      ||
@@ -779,14 +779,14 @@
 ||   ForwardTrace: 24                                                                  ||
 || [16][IfContent]< "if" @ "cond" "then" Stat [ "else" Stat ] >                        ||
 || [AST-INSTRUCTIONS]:                                                                 ||
-||   @ CS(28 -> 0) : [13][0] OS(25 -> 4) : [10, 5][3]                                  ||
+||   @ CS(27 -> 0) : [13][0]                                                           ||
 ||   + StackBegin()                                                                    ||
 ||     objs: 14                                                                        ||
 ||                                                                                     ||
-||   @ CS(29 -> 28) : [14][13][0] OS(25 -> 4) : [10, 5][3]                             ||
+||   @ CS(28 -> 27) : [14][13][0]                                                      ||
 ||   + Token(0)                                                                        ||
 ||                                                                                     ||
-||   @ CS(29 -> 28) : [14][13][0] OS(25 -> 4) : [10, 5][3]                             ||
+||   @ CS(28 -> 27) : [14][13][0]                                                      ||
 || [RETURN STACK]:                                                                     ||
 ||   [15][2][33]: IfContent -> [19][Stat]< IfContent @ >                               ||
 ||   [14][5][33]: Stat -> [12][IfContent]< "if" "cond" "then" Stat @ [ "else" Stat ] > ||
@@ -809,10 +809,10 @@
 ||   ForwardTrace: 24                                                                  ||
 || [15][IfContent]< "if" "cond" @ "then" Stat [ "else" Stat ] >                        ||
 || [AST-INSTRUCTIONS]:                                                                 ||
-||   @ CS(29 -> 28) : [14][13][0] OS(25 -> 4) : [10, 5][3]                             ||
+||   @ CS(28 -> 27) : [14][13][0]                                                      ||
 ||   + Token(1)                                                                        ||
 ||                                                                                     ||
-||   @ CS(29 -> 28) : [14][13][0] OS(25 -> 4) : [10, 5][3]                             ||
+||   @ CS(28 -> 27) : [14][13][0]                                                      ||
 || [RETURN STACK]:                                                                     ||
 ||   [15][2][33]: IfContent -> [19][Stat]< IfContent @ >                               ||
 ||   [14][5][33]: Stat -> [12][IfContent]< "if" "cond" "then" Stat @ [ "else" Stat ] > ||
@@ -835,10 +835,10 @@
 ||   ForwardTrace: 24                                                                  ||
 || [11][IfContent]< "if" "cond" "then" @ Stat [ "else" Stat ] >                        ||
 || [AST-INSTRUCTIONS]:                                                                 ||
-||   @ CS(29 -> 28) : [14][13][0] OS(25 -> 4) : [10, 5][3]                             ||
+||   @ CS(28 -> 27) : [14][13][0]                                                      ||
 ||   + Token(2)                                                                        ||
 ||                                                                                     ||
-||   @ CS(29 -> 28) : [14][13][0] OS(25 -> 4) : [10, 5][3]                             ||
+||   @ CS(28 -> 27) : [14][13][0]                                                      ||
 || [RETURN STACK]:                                                                     ||
 ||   [15][2][33]: IfContent -> [19][Stat]< IfContent @ >                               ||
 ||   [14][5][33]: Stat -> [12][IfContent]< "if" "cond" "then" Stat @ [ "else" Stat ] > ||
@@ -861,14 +861,14 @@
 ||   ForwardTrace: 24                                                                  ||
 || [3][Do]< "do" @ ";" >                                                               ||
 || [AST-INSTRUCTIONS]:                                                                 ||
-||   @ CS(29 -> 28) : [14][13][0] OS(25 -> 4) : [10, 5][3]                             ||
+||   @ CS(28 -> 27) : [14][13][0]                                                      ||
 ||   + StackBegin()                                                                    ||
 ||     objs: 15                                                                        ||
 ||                                                                                     ||
-||   @ CS(30 -> 29) : [15][14][13][0] OS(25 -> 4) : [10, 5][3]                         ||
+||   @ CS(29 -> 28) : [15][14][13][0]                                                  ||
 ||   + Token(0)                                                                        ||
 ||                                                                                     ||
-||   @ CS(30 -> 29) : [15][14][13][0] OS(25 -> 4) : [10, 5][3]                         ||
+||   @ CS(29 -> 28) : [15][14][13][0]                                                  ||
 || [RETURN STACK]:                                                                     ||
 ||   [17][3][36]: Do -> [21][Stat]<! !Do @ !>                                          ||
 ||   [16][5][36]: Stat -> [12][IfContent]< "if" "cond" "then" Stat @ [ "else" Stat ] > ||
@@ -893,10 +893,10 @@
 ||   ForwardTrace: 24                                                                  ||
 || [2][Do]< "do" ";" @ >                                                               ||
 || [AST-INSTRUCTIONS]:                                                                 ||
-||   @ CS(30 -> 29) : [15][14][13][0] OS(25 -> 4) : [10, 5][3]                         ||
+||   @ CS(29 -> 28) : [15][14][13][0]                                                  ||
 ||   + Token(1)                                                                        ||
 ||                                                                                     ||
-||   @ CS(30 -> 29) : [15][14][13][0] OS(25 -> 4) : [10, 5][3]                         ||
+||   @ CS(29 -> 28) : [15][14][13][0]                                                  ||
 || [RETURN STACK]:                                                                     ||
 ||   [17][3][36]: Do -> [21][Stat]<! !Do @ !>                                          ||
 ||   [16][5][36]: Stat -> [12][IfContent]< "if" "cond" "then" Stat @ [ "else" Stat ] > ||
@@ -919,19 +919,19 @@
 |   ForwardTrace: 24                                                                  |
 | [21][Stat]<! !Do @ !>                                                               |
 | [AST-INSTRUCTIONS]:                                                                 |
-|   @ CS(30 -> 29) : [15][14][13][0] OS(25 -> 4) : [10, 5][3]                         |
+|   @ CS(29 -> 28) : [15][14][13][0]                                                  |
 |   + CreateObject(DoStat)                                                            |
 |     objs: 15                                                                        |
 |                                                                                     |
-|   @ CS(30 -> 29) : [15][14][13][0] OS(25 -> 4) : [10, 5][3]                         |
+|   @ CS(29 -> 28) : [15][14][13][0]                                                  |
 |   + StackEnd()                                                                      |
 |     obj:15, begin:37@0, top:37@0, create:[39@0], end:[39@1]                         |
 |                                                                                     |
-|   @ CS(29 -> 28) : [14][13][0] OS(31 -> 25) : [15][10, 5][3]                        |
+|   @ CS(28 -> 27) : [14][13][0] OS(30 -> -1) : [15]                                  |
 |   > StackBegin()                                                                    |
 |     objs: 16                                                                        |
 |                                                                                     |
-|   @ CS(32 -> 29) : [16][14][13][0] OS(31 -> 25) : [15][10, 5][3]                    |
+|   @ CS(31 -> 28) : [16][14][13][0] OS(30 -> -1) : [15]                              |
 | [RETURN STACK]:                                                                     |
 |   [16][5][36]: Stat -> [12][IfContent]< "if" "cond" "then" Stat @ [ "else" Stat ] > |
 |   [15][2][33]: IfContent -> [19][Stat]< IfContent @ >                               |
@@ -953,14 +953,14 @@
 |   ForwardTrace: 24                                                                  |
 | [12][IfContent]< "if" "cond" "then" Stat @ [ "else" Stat ] >                        |
 | [AST-INSTRUCTIONS]:                                                                 |
-|   @ CS(32 -> 29) : [16][14][13][0] OS(31 -> 25) : [15][10, 5][3]                    |
+|   @ CS(31 -> 28) : [16][14][13][0] OS(30 -> -1) : [15]                              |
 |   + StackEnd()                                                                      |
 |     obj:16, begin:39@2, top:37@0, use:[15], end!:[40@0]                             |
 |                                                                                     |
-|   @ CS(29 -> 28) : [14][13][0] OS(33 -> 31) : [16][15][10, 5][3]                    |
+|   @ CS(28 -> 27) : [14][13][0] OS(32 -> -1) : [16]                                  |
 |   > StackSlot(3)                                                                    |
 |                                                                                     |
-|   @ CS(29 -> 28) : [14][13][0] OS(31 -> 25) : [15][10, 5][3]                        |
+|   @ CS(28 -> 27) : [14][13][0]                                                      |
 | [RETURN STACK]:                                                                     |
 |   [15][2][33]: IfContent -> [19][Stat]< IfContent @ >                               |
 |   [14][5][33]: Stat -> [12][IfContent]< "if" "cond" "then" Stat @ [ "else" Stat ] > |
@@ -981,28 +981,28 @@
 |                                                                                            |   ForwardTrace: 41                                                                      |
 |                                                                                            | [19][Stat]< IfContent @ >                                                               |
 |                                                                                            | [AST-INSTRUCTIONS]:                                                                     |
-|                                                                                            |   @ CS(29 -> 28) : [14][13][0] OS(31 -> 25) : [15][10, 5][3]                            |
+|                                                                                            |   @ CS(28 -> 27) : [14][13][0]                                                          |
 |                                                                                            |   + CreateObject(IfContentCandidate)                                                    |
 |                                                                                            |     objs: 14                                                                            |
 |                                                                                            |                                                                                         |
-|                                                                                            |   @ CS(29 -> 28) : [14][13][0] OS(31 -> 25) : [15][10, 5][3]                            |
+|                                                                                            |   @ CS(28 -> 27) : [14][13][0]                                                          |
 |                                                                                            |   + Field(IfContentCandidate::thenBranch, 3)                                            |
 |                                                                                            |                                                                                         |
-|                                                                                            |   @ CS(29 -> 28) : [14][13][0] OS(31 -> 25) : [15][10, 5][3]                            |
+|                                                                                            |   @ CS(28 -> 27) : [14][13][0]                                                          |
 |                                                                                            |   + Field(IfContentCandidate::elseBranch, 5)                                            |
 |                                                                                            |                                                                                         |
-|                                                                                            |   @ CS(29 -> 28) : [14][13][0] OS(31 -> 25) : [15][10, 5][3]                            |
+|                                                                                            |   @ CS(28 -> 27) : [14][13][0]                                                          |
 |                                                                                            |   + StackEnd()                                                                          |
 |                                                                                            |     obj:14, begin:34@0, top:34@0, field:[18, 16], create:[41@0, 51@0], end:[41@3, 51@3] |
 |                                                                                            |                                                                                         |
-|                                                                                            |   @ CS(28 -> 0) : [13][0] OS(43 -> 31) : [14][15][10, 5][3]                             |
+|                                                                                            |   @ CS(27 -> 0) : [13][0] OS(42 -> -1) : [14]                                           |
 |                                                                                            |   > StackBegin()                                                                        |
 |                                                                                            |     objs: 21                                                                            |
 |                                                                                            |                                                                                         |
-|                                                                                            |   @ CS(44 -> 28) : [21][13][0] OS(43 -> 31) : [14][15][10, 5][3]                        |
+|                                                                                            |   @ CS(43 -> 27) : [21][13][0] OS(42 -> -1) : [14]                                      |
 |                                                                                            |   > StackSlot(0)                                                                        |
 |                                                                                            |                                                                                         |
-|                                                                                            |   @ CS(44 -> 28) : [21][13][0] OS(31 -> 25) : [15][10, 5][3]                            |
+|                                                                                            |   @ CS(43 -> 27) : [21][13][0]                                                          |
 |                                                                                            | [RETURN STACK]:                                                                         |
 |                                                                                            |   [14][5][33]: Stat -> [12][IfContent]< "if" "cond" "then" Stat @ [ "else" Stat ] >     |
 |                                                                                            |   [13][2][25]: IfContent -> [19][Stat]< IfContent @ >                                   |
@@ -1022,21 +1022,21 @@
 |                                                                                            |   ForwardTrace: 41                                                                 |
 |                                                                                            | [12][IfContent]< "if" "cond" "then" Stat @ [ "else" Stat ] >                       |
 |                                                                                            | [AST-INSTRUCTIONS]:                                                                |
-|                                                                                            |   @ CS(44 -> 28) : [21][13][0] OS(31 -> 25) : [15][10, 5][3]                       |
+|                                                                                            |   @ CS(43 -> 27) : [21][13][0]                                                     |
 |                                                                                            |   + CreateObject(IfStat)                                                           |
 |                                                                                            |     objs: 21                                                                       |
 |                                                                                            |                                                                                    |
-|                                                                                            |   @ CS(44 -> 28) : [21][13][0] OS(31 -> 25) : [15][10, 5][3]                       |
+|                                                                                            |   @ CS(43 -> 27) : [21][13][0]                                                     |
 |                                                                                            |   + Field(IfStat::content, 0)                                                      |
 |                                                                                            |                                                                                    |
-|                                                                                            |   @ CS(44 -> 28) : [21][13][0] OS(31 -> 25) : [15][10, 5][3]                       |
+|                                                                                            |   @ CS(43 -> 27) : [21][13][0]                                                     |
 |                                                                                            |   + StackEnd()                                                                     |
 |                                                                                            |     obj:21, begin:41@4, top:41@4, lrec:34@0, field:[14], create:[42@0], end:[42@2] |
 |                                                                                            |                                                                                    |
-|                                                                                            |   @ CS(28 -> 0) : [13][0] OS(45 -> 31) : [21][15][10, 5][3]                        |
+|                                                                                            |   @ CS(27 -> 0) : [13][0] OS(44 -> -1) : [21]                                      |
 |                                                                                            |   > StackSlot(3)                                                                   |
 |                                                                                            |                                                                                    |
-|                                                                                            |   @ CS(28 -> 0) : [13][0] OS(31 -> 25) : [15][10, 5][3]                            |
+|                                                                                            |   @ CS(27 -> 0) : [13][0]                                                          |
 |                                                                                            | [RETURN STACK]:                                                                    |
 |                                                                                            |   [13][2][25]: IfContent -> [19][Stat]< IfContent @ >                              |
 |                                                                                            |   [12][4][25]: Stat -> [7][Block]< "{" { Stat @ } "}" >                            |
@@ -1057,10 +1057,10 @@
 ||   ForwardTrace: 44                                                                  ||    ||   ForwardTrace: 41                                           ||
 || [13][IfContent]< "if" "cond" "then" Stat [ "else" @ Stat ] >                        ||    || [13][IfContent]< "if" "cond" "then" Stat [ "else" @ Stat ] > ||
 || [AST-INSTRUCTIONS]:                                                                 ||    || [AST-INSTRUCTIONS]:                                          ||
-||   @ CS(29 -> 28) : [14][13][0] OS(31 -> 25) : [15][10, 5][3]                        ||    ||   @ CS(28 -> 0) : [13][0] OS(31 -> 25) : [15][10, 5][3]      ||
+||   @ CS(28 -> 27) : [14][13][0]                                                      ||    ||   @ CS(27 -> 0) : [13][0]                                    ||
 ||   + Token(4)                                                                        ||    ||   + Token(4)                                                 ||
 ||                                                                                     ||    ||                                                              ||
-||   @ CS(29 -> 28) : [14][13][0] OS(31 -> 25) : [15][10, 5][3]                        ||    ||   @ CS(28 -> 0) : [13][0] OS(31 -> 25) : [15][10, 5][3]      ||
+||   @ CS(28 -> 27) : [14][13][0]                                                      ||    ||   @ CS(27 -> 0) : [13][0]                                    ||
 || [RETURN STACK]:                                                                     ||    || [RETURN STACK]:                                              ||
 ||   [15][2][33]: IfContent -> [19][Stat]< IfContent @ >                               ||    ||   [13][2][25]: IfContent -> [19][Stat]< IfContent @ >        ||
 ||   [14][5][33]: Stat -> [12][IfContent]< "if" "cond" "then" Stat @ [ "else" Stat ] > ||    ||   [12][4][25]: Stat -> [7][Block]< "{" { Stat @ } "}" >      ||
@@ -1083,14 +1083,14 @@
 ||   ForwardTrace: 44                                                                  ||    ||   ForwardTrace: 41                                                                  ||
 || [3][Do]< "do" @ ";" >                                                               ||    || [3][Do]< "do" @ ";" >                                                               ||
 || [AST-INSTRUCTIONS]:                                                                 ||    || [AST-INSTRUCTIONS]:                                                                 ||
-||   @ CS(29 -> 28) : [14][13][0] OS(31 -> 25) : [15][10, 5][3]                        ||    ||   @ CS(28 -> 0) : [13][0] OS(31 -> 25) : [15][10, 5][3]                             ||
+||   @ CS(28 -> 27) : [14][13][0]                                                      ||    ||   @ CS(27 -> 0) : [13][0]                                                           ||
 ||   + StackBegin()                                                                    ||    ||   + StackBegin()                                                                    ||
 ||     objs: 17                                                                        ||    ||     objs: 22                                                                        ||
 ||                                                                                     ||    ||                                                                                     ||
-||   @ CS(34 -> 29) : [17][14][13][0] OS(31 -> 25) : [15][10, 5][3]                    ||    ||   @ CS(46 -> 28) : [22][13][0] OS(31 -> 25) : [15][10, 5][3]                        ||
+||   @ CS(33 -> 28) : [17][14][13][0]                                                  ||    ||   @ CS(45 -> 27) : [22][13][0]                                                      ||
 ||   + Token(0)                                                                        ||    ||   + Token(0)                                                                        ||
 ||                                                                                     ||    ||                                                                                     ||
-||   @ CS(34 -> 29) : [17][14][13][0] OS(31 -> 25) : [15][10, 5][3]                    ||    ||   @ CS(46 -> 28) : [22][13][0] OS(31 -> 25) : [15][10, 5][3]                        ||
+||   @ CS(33 -> 28) : [17][14][13][0]                                                  ||    ||   @ CS(45 -> 27) : [22][13][0]                                                      ||
 || [RETURN STACK]:                                                                     ||    || [RETURN STACK]:                                                                     ||
 ||   [19][3][44]: Do -> [21][Stat]<! !Do @ !>                                          ||    ||   [21][3][45]: Do -> [21][Stat]<! !Do @ !>                                          ||
 ||   [18][6][44]: Stat -> [14][IfContent]< "if" "cond" "then" Stat [ "else" Stat @ ] > ||    ||   [20][6][45]: Stat -> [14][IfContent]< "if" "cond" "then" Stat [ "else" Stat @ ] > ||
@@ -1115,10 +1115,10 @@
 ||   ForwardTrace: 44                                                                  ||          ||   ForwardTrace: 41                                                                  ||
 || [2][Do]< "do" ";" @ >                                                               ||          || [2][Do]< "do" ";" @ >                                                               ||
 || [AST-INSTRUCTIONS]:                                                                 ||          || [AST-INSTRUCTIONS]:                                                                 ||
-||   @ CS(34 -> 29) : [17][14][13][0] OS(31 -> 25) : [15][10, 5][3]                    ||          ||   @ CS(46 -> 28) : [22][13][0] OS(31 -> 25) : [15][10, 5][3]                        ||
+||   @ CS(33 -> 28) : [17][14][13][0]                                                  ||          ||   @ CS(45 -> 27) : [22][13][0]                                                      ||
 ||   + Token(1)                                                                        ||          ||   + Token(1)                                                                        ||
 ||                                                                                     ||          ||                                                                                     ||
-||   @ CS(34 -> 29) : [17][14][13][0] OS(31 -> 25) : [15][10, 5][3]                    ||          ||   @ CS(46 -> 28) : [22][13][0] OS(31 -> 25) : [15][10, 5][3]                        ||
+||   @ CS(33 -> 28) : [17][14][13][0]                                                  ||          ||   @ CS(45 -> 27) : [22][13][0]                                                      ||
 || [RETURN STACK]:                                                                     ||          || [RETURN STACK]:                                                                     ||
 ||   [19][3][44]: Do -> [21][Stat]<! !Do @ !>                                          ||          ||   [21][3][45]: Do -> [21][Stat]<! !Do @ !>                                          ||
 ||   [18][6][44]: Stat -> [14][IfContent]< "if" "cond" "then" Stat [ "else" Stat @ ] > ||          ||   [20][6][45]: Stat -> [14][IfContent]< "if" "cond" "then" Stat [ "else" Stat @ ] > ||
@@ -1141,19 +1141,19 @@
 |   ForwardTrace: 44                                                                  |            |   ForwardTrace: 41                                                                  |
 | [21][Stat]<! !Do @ !>                                                               |            | [21][Stat]<! !Do @ !>                                                               |
 | [AST-INSTRUCTIONS]:                                                                 |            | [AST-INSTRUCTIONS]:                                                                 |
-|   @ CS(34 -> 29) : [17][14][13][0] OS(31 -> 25) : [15][10, 5][3]                    |            |   @ CS(46 -> 28) : [22][13][0] OS(31 -> 25) : [15][10, 5][3]                        |
+|   @ CS(33 -> 28) : [17][14][13][0]                                                  |            |   @ CS(45 -> 27) : [22][13][0]                                                      |
 |   + CreateObject(DoStat)                                                            |            |   + CreateObject(DoStat)                                                            |
 |     objs: 17                                                                        |            |     objs: 22                                                                        |
 |                                                                                     |            |                                                                                     |
-|   @ CS(34 -> 29) : [17][14][13][0] OS(31 -> 25) : [15][10, 5][3]                    |            |   @ CS(46 -> 28) : [22][13][0] OS(31 -> 25) : [15][10, 5][3]                        |
+|   @ CS(33 -> 28) : [17][14][13][0]                                                  |            |   @ CS(45 -> 27) : [22][13][0]                                                      |
 |   + StackEnd()                                                                      |            |   + StackEnd()                                                                      |
 |     obj:17, begin:46@0, top:46@0, create:[49@0], end:[49@1]                         |            |     obj:22, begin:47@0, top:47@0, create:[56@0], end:[56@1]                         |
 |                                                                                     |            |                                                                                     |
-|   @ CS(29 -> 28) : [14][13][0] OS(35 -> 31) : [17][15][10, 5][3]                    |            |   @ CS(28 -> 0) : [13][0] OS(47 -> 31) : [22][15][10, 5][3]                         |
+|   @ CS(28 -> 27) : [14][13][0] OS(34 -> -1) : [17]                                  |            |   @ CS(27 -> 0) : [13][0] OS(46 -> -1) : [22]                                       |
 |   > StackBegin()                                                                    |            |   > StackBegin()                                                                    |
 |     objs: 18                                                                        |            |     objs: 23                                                                        |
 |                                                                                     |            |                                                                                     |
-|   @ CS(36 -> 29) : [18][14][13][0] OS(35 -> 31) : [17][15][10, 5][3]                |            |   @ CS(48 -> 28) : [23][13][0] OS(47 -> 31) : [22][15][10, 5][3]                    |
+|   @ CS(35 -> 28) : [18][14][13][0] OS(34 -> -1) : [17]                              |            |   @ CS(47 -> 27) : [23][13][0] OS(46 -> -1) : [22]                                  |
 | [RETURN STACK]:                                                                     |            | [RETURN STACK]:                                                                     |
 |   [18][6][44]: Stat -> [14][IfContent]< "if" "cond" "then" Stat [ "else" Stat @ ] > |            |   [20][6][45]: Stat -> [14][IfContent]< "if" "cond" "then" Stat [ "else" Stat @ ] > |
 |   [15][2][33]: IfContent -> [19][Stat]< IfContent @ >                               |            |   [13][2][25]: IfContent -> [19][Stat]< IfContent @ >                               |
@@ -1168,29 +1168,29 @@
 |                                                                                                  |
 +                                                                                                  +
 |                                                                                                  |
-+-------------------------------------------------------------------------------------+            +------------------------------------------------------------------+
-| [50]: <Ending>                                                                      |            | [57]: <Ending>                                                   |
-|   TraceExec: [44]                                                                   |            |   TraceExec: [54]                                                |
-|   InsExec: [95:2]                                                                   |            |   InsExec: [130:2]                                               |
-|   ForwardTrace: 44                                                                  |            |   ForwardTrace: 41                                               |
-| [14][IfContent]< "if" "cond" "then" Stat [ "else" Stat @ ] >                        |            | [14][IfContent]< "if" "cond" "then" Stat [ "else" Stat @ ] >     |
-| [AST-INSTRUCTIONS]:                                                                 |            | [AST-INSTRUCTIONS]:                                              |
-|   @ CS(36 -> 29) : [18][14][13][0] OS(35 -> 31) : [17][15][10, 5][3]                |            |   @ CS(48 -> 28) : [23][13][0] OS(47 -> 31) : [22][15][10, 5][3] |
-|   + StackEnd()                                                                      |            |   + StackEnd()                                                   |
-|     obj:18, begin:49@2, top:46@0, use:[17], end!:[50@0]                             |            |     obj:23, begin:56@2, top:47@0, use:[22], end!:[57@0]          |
-|                                                                                     |            |                                                                  |
-|   @ CS(29 -> 28) : [14][13][0] OS(37 -> 35) : [18][17][15][10, 5][3]                |            |   @ CS(28 -> 0) : [13][0] OS(49 -> 47) : [23][22][15][10, 5][3]  |
-|   > StackSlot(5)                                                                    |            |   > StackSlot(5)                                                 |
-|                                                                                     |            |                                                                  |
-|   @ CS(29 -> 28) : [14][13][0] OS(35 -> 31) : [17][15][10, 5][3]                    |            |   @ CS(28 -> 0) : [13][0] OS(47 -> 31) : [22][15][10, 5][3]      |
-| [RETURN STACK]:                                                                     |            | [RETURN STACK]:                                                  |
-|   [15][2][33]: IfContent -> [19][Stat]< IfContent @ >                               |            |   [13][2][25]: IfContent -> [19][Stat]< IfContent @ >            |
-|   [14][5][33]: Stat -> [12][IfContent]< "if" "cond" "then" Stat @ [ "else" Stat ] > |            |   [12][4][25]: Stat -> [7][Block]< "{" { Stat @ } "}" >          |
-|   [13][2][25]: IfContent -> [19][Stat]< IfContent @ >                               |            |   [1][1][0]: Block -> [20][Stat]<! !Block @ !>                   |
-|   [12][4][25]: Stat -> [7][Block]< "{" { Stat @ } "}" >                             |            |   [0][7][0]: Stat -> [24][Module]< Stat @ >                      |
-|   [1][1][0]: Block -> [20][Stat]<! !Block @ !>                                      |            | [PREDECESSORS 56-56]: [56]                                       |
-|   [0][7][0]: Stat -> [24][Module]< Stat @ >                                         |            | [SUCCESORS 58-58]: [58]                                          |
-| [PREDECESSORS 49-49]: [49]                                                          |            +------------------------------------------------------------------+
++-------------------------------------------------------------------------------------+            +--------------------------------------------------------------+
+| [50]: <Ending>                                                                      |            | [57]: <Ending>                                               |
+|   TraceExec: [44]                                                                   |            |   TraceExec: [54]                                            |
+|   InsExec: [95:2]                                                                   |            |   InsExec: [130:2]                                           |
+|   ForwardTrace: 44                                                                  |            |   ForwardTrace: 41                                           |
+| [14][IfContent]< "if" "cond" "then" Stat [ "else" Stat @ ] >                        |            | [14][IfContent]< "if" "cond" "then" Stat [ "else" Stat @ ] > |
+| [AST-INSTRUCTIONS]:                                                                 |            | [AST-INSTRUCTIONS]:                                          |
+|   @ CS(35 -> 28) : [18][14][13][0] OS(34 -> -1) : [17]                              |            |   @ CS(47 -> 27) : [23][13][0] OS(46 -> -1) : [22]           |
+|   + StackEnd()                                                                      |            |   + StackEnd()                                               |
+|     obj:18, begin:49@2, top:46@0, use:[17], end!:[50@0]                             |            |     obj:23, begin:56@2, top:47@0, use:[22], end!:[57@0]      |
+|                                                                                     |            |                                                              |
+|   @ CS(28 -> 27) : [14][13][0] OS(36 -> -1) : [18]                                  |            |   @ CS(27 -> 0) : [13][0] OS(48 -> -1) : [23]                |
+|   > StackSlot(5)                                                                    |            |   > StackSlot(5)                                             |
+|                                                                                     |            |                                                              |
+|   @ CS(28 -> 27) : [14][13][0]                                                      |            |   @ CS(27 -> 0) : [13][0]                                    |
+| [RETURN STACK]:                                                                     |            | [RETURN STACK]:                                              |
+|   [15][2][33]: IfContent -> [19][Stat]< IfContent @ >                               |            |   [13][2][25]: IfContent -> [19][Stat]< IfContent @ >        |
+|   [14][5][33]: Stat -> [12][IfContent]< "if" "cond" "then" Stat @ [ "else" Stat ] > |            |   [12][4][25]: Stat -> [7][Block]< "{" { Stat @ } "}" >      |
+|   [13][2][25]: IfContent -> [19][Stat]< IfContent @ >                               |            |   [1][1][0]: Block -> [20][Stat]<! !Block @ !>               |
+|   [12][4][25]: Stat -> [7][Block]< "{" { Stat @ } "}" >                             |            |   [0][7][0]: Stat -> [24][Module]< Stat @ >                  |
+|   [1][1][0]: Block -> [20][Stat]<! !Block @ !>                                      |            | [PREDECESSORS 56-56]: [56]                                   |
+|   [0][7][0]: Stat -> [24][Module]< Stat @ >                                         |            | [SUCCESORS 58-58]: [58]                                      |
+| [PREDECESSORS 49-49]: [49]                                                          |            +--------------------------------------------------------------+
 | [SUCCESORS 51-51]: [51]                                                             |            |
 +-------------------------------------------------------------------------------------+            |
 |                                                                                                  |
@@ -1203,28 +1203,28 @@
 |   ForwardTrace: 44                                                                      |        |   ForwardTrace: 41                                                                          |
 | [19][Stat]< IfContent @ >                                                               |        | [19][Stat]< IfContent @ >                                                                   |
 | [AST-INSTRUCTIONS]:                                                                     |        | [AST-INSTRUCTIONS]:                                                                         |
-|   @ CS(29 -> 28) : [14][13][0] OS(35 -> 31) : [17][15][10, 5][3]                        |        |   @ CS(28 -> 0) : [13][0] OS(47 -> 31) : [22][15][10, 5][3]                                 |
+|   @ CS(28 -> 27) : [14][13][0]                                                          |        |   @ CS(27 -> 0) : [13][0]                                                                   |
 |   + CreateObject(IfContentCandidate)                                                    |        |   + CreateObject(IfContentCandidate)                                                        |
 |     objs: 14                                                                            |        |     objs: 13                                                                                |
 |                                                                                         |        |                                                                                             |
-|   @ CS(29 -> 28) : [14][13][0] OS(35 -> 31) : [17][15][10, 5][3]                        |        |   @ CS(28 -> 0) : [13][0] OS(47 -> 31) : [22][15][10, 5][3]                                 |
+|   @ CS(28 -> 27) : [14][13][0]                                                          |        |   @ CS(27 -> 0) : [13][0]                                                                   |
 |   + Field(IfContentCandidate::thenBranch, 3)                                            |        |   + Field(IfContentCandidate::thenBranch, 3)                                                |
 |                                                                                         |        |                                                                                             |
-|   @ CS(29 -> 28) : [14][13][0] OS(35 -> 31) : [17][15][10, 5][3]                        |        |   @ CS(28 -> 0) : [13][0] OS(47 -> 31) : [22][15][10, 5][3]                                 |
+|   @ CS(28 -> 27) : [14][13][0]                                                          |        |   @ CS(27 -> 0) : [13][0]                                                                   |
 |   + Field(IfContentCandidate::elseBranch, 5)                                            |        |   + Field(IfContentCandidate::elseBranch, 5)                                                |
 |                                                                                         |        |                                                                                             |
-|   @ CS(29 -> 28) : [14][13][0] OS(35 -> 31) : [17][15][10, 5][3]                        |        |   @ CS(28 -> 0) : [13][0] OS(47 -> 31) : [22][15][10, 5][3]                                 |
+|   @ CS(28 -> 27) : [14][13][0]                                                          |        |   @ CS(27 -> 0) : [13][0]                                                                   |
 |   + StackEnd()                                                                          |        |   + StackEnd()                                                                              |
 |     obj:14, begin:34@0, top:34@0, field:[18, 16], create:[41@0, 51@0], end:[41@3, 51@3] |        |     obj:13, begin:31@0, top:31@0, field:[23, 19, 21], create:[58@0, 59@0], end:[58@3, 59@3] |
 |                                                                                         |        |                                                                                             |
-|   @ CS(28 -> 0) : [13][0] OS(38 -> 35) : [14][17][15][10, 5][3]                         |        |   @ CS(0 -> -1) : [0] OS(50 -> 47) : [13][22][15][10, 5][3]                                 |
+|   @ CS(27 -> 0) : [13][0] OS(37 -> -1) : [14]                                           |        |   @ CS(0 -> -1) : [0] OS(49 -> -1) : [13]                                                   |
 |   > StackBegin()                                                                        |        |   > StackBegin()                                                                            |
 |     objs: 19                                                                            |        |     objs: 24                                                                                |
 |                                                                                         |        |                                                                                             |
-|   @ CS(39 -> 28) : [19][13][0] OS(38 -> 35) : [14][17][15][10, 5][3]                    |        |   @ CS(51 -> 0) : [24][0] OS(50 -> 47) : [13][22][15][10, 5][3]                             |
+|   @ CS(38 -> 27) : [19][13][0] OS(37 -> -1) : [14]                                      |        |   @ CS(50 -> 0) : [24][0] OS(49 -> -1) : [13]                                               |
 |   > StackSlot(0)                                                                        |        |   > StackSlot(0)                                                                            |
 |                                                                                         |        |                                                                                             |
-|   @ CS(39 -> 28) : [19][13][0] OS(35 -> 31) : [17][15][10, 5][3]                        |        |   @ CS(51 -> 0) : [24][0] OS(47 -> 31) : [22][15][10, 5][3]                                 |
+|   @ CS(38 -> 27) : [19][13][0]                                                          |        |   @ CS(50 -> 0) : [24][0]                                                                   |
 | [RETURN STACK]:                                                                         |        | [RETURN STACK]:                                                                             |
 |   [14][5][33]: Stat -> [12][IfContent]< "if" "cond" "then" Stat @ [ "else" Stat ] >     |        |   [12][4][25]: Stat -> [7][Block]< "{" { Stat @ } "}" >                                     |
 |   [13][2][25]: IfContent -> [19][Stat]< IfContent @ >                                   |        |   [1][1][0]: Block -> [20][Stat]<! !Block @ !>                                              |
@@ -1244,21 +1244,21 @@
 |   ForwardTrace: 44                                                                 |             |
 | [12][IfContent]< "if" "cond" "then" Stat @ [ "else" Stat ] >                       |             |
 | [AST-INSTRUCTIONS]:                                                                |             |
-|   @ CS(39 -> 28) : [19][13][0] OS(35 -> 31) : [17][15][10, 5][3]                   |             |
+|   @ CS(38 -> 27) : [19][13][0]                                                     |             |
 |   + CreateObject(IfStat)                                                           |             |
 |     objs: 19                                                                       |             |
 |                                                                                    |             |
-|   @ CS(39 -> 28) : [19][13][0] OS(35 -> 31) : [17][15][10, 5][3]                   |             |
+|   @ CS(38 -> 27) : [19][13][0]                                                     |             |
 |   + Field(IfStat::content, 0)                                                      |             |
 |                                                                                    |             |
-|   @ CS(39 -> 28) : [19][13][0] OS(35 -> 31) : [17][15][10, 5][3]                   |             |
+|   @ CS(38 -> 27) : [19][13][0]                                                     |             |
 |   + StackEnd()                                                                     |             |
 |     obj:19, begin:51@4, top:51@4, lrec:34@0, field:[14], create:[52@0], end:[52@2] |             |
 |                                                                                    |             |
-|   @ CS(28 -> 0) : [13][0] OS(40 -> 35) : [19][17][15][10, 5][3]                    |             |
+|   @ CS(27 -> 0) : [13][0] OS(39 -> -1) : [19]                                      |             |
 |   > StackSlot(3)                                                                   |             |
 |                                                                                    |             |
-|   @ CS(28 -> 0) : [13][0] OS(35 -> 31) : [17][15][10, 5][3]                        |             |
+|   @ CS(27 -> 0) : [13][0]                                                          |             |
 | [RETURN STACK]:                                                                    |             |
 |   [13][2][25]: IfContent -> [19][Stat]< IfContent @ >                              |             |
 |   [12][4][25]: Stat -> [7][Block]< "{" { Stat @ } "}" >                            |             |
@@ -1277,28 +1277,28 @@
 |   ForwardTrace: 44                                                                          |    |
 | [19][Stat]< IfContent @ >                                                                   |    |
 | [AST-INSTRUCTIONS]:                                                                         |    |
-|   @ CS(28 -> 0) : [13][0] OS(35 -> 31) : [17][15][10, 5][3]                                 |    |
+|   @ CS(27 -> 0) : [13][0]                                                                   |    |
 |   + CreateObject(IfContentCandidate)                                                        |    |
 |     objs: 13                                                                                |    |
 |                                                                                             |    |
-|   @ CS(28 -> 0) : [13][0] OS(35 -> 31) : [17][15][10, 5][3]                                 |    |
+|   @ CS(27 -> 0) : [13][0]                                                                   |    |
 |   + Field(IfContentCandidate::thenBranch, 3)                                                |    |
 |                                                                                             |    |
-|   @ CS(28 -> 0) : [13][0] OS(35 -> 31) : [17][15][10, 5][3]                                 |    |
+|   @ CS(27 -> 0) : [13][0]                                                                   |    |
 |   + Field(IfContentCandidate::elseBranch, 5)                                                |    |
 |                                                                                             |    |
-|   @ CS(28 -> 0) : [13][0] OS(35 -> 31) : [17][15][10, 5][3]                                 |    |
+|   @ CS(27 -> 0) : [13][0]                                                                   |    |
 |   + StackEnd()                                                                              |    |
 |     obj:13, begin:31@0, top:31@0, field:[23, 19, 21], create:[58@0, 59@0], end:[58@3, 59@3] |    |
 |                                                                                             |    |
-|   @ CS(0 -> -1) : [0] OS(41 -> 35) : [13][17][15][10, 5][3]                                 |    |
+|   @ CS(0 -> -1) : [0] OS(40 -> -1) : [13]                                                   |    |
 |   > StackBegin()                                                                            |    |
 |     objs: 20                                                                                |    |
 |                                                                                             |    |
-|   @ CS(42 -> 0) : [20][0] OS(41 -> 35) : [13][17][15][10, 5][3]                             |    |
+|   @ CS(41 -> 0) : [20][0] OS(40 -> -1) : [13]                                               |    |
 |   > StackSlot(0)                                                                            |    |
 |                                                                                             |    |
-|   @ CS(42 -> 0) : [20][0] OS(35 -> 31) : [17][15][10, 5][3]                                 |    |
+|   @ CS(41 -> 0) : [20][0]                                                                   |    |
 | [RETURN STACK]:                                                                             |    |
 |   [12][4][25]: Stat -> [7][Block]< "{" { Stat @ } "}" >                                     |    |
 |   [1][1][0]: Block -> [20][Stat]<! !Block @ !>                                              |    |
@@ -1309,14 +1309,14 @@
 |                                                                                                  |
 +--------------------------------------------------------------------------------------------------+
 |
-+----------------------------------------------------------------------------+
-| [53]: <Merging>                                                            |
-| <Start>                                                                    |
-|   TraceExec: [56]                                                          |
-|   ForwardTrace: 53                                                         |
-|   CommonForwardTrace: 24                                                   |
-| [CONTEXT]: CS(53 -> 0) : [24, 20][0] OS(52 -> 31) : [22, 17][15][10, 5][3] |
-+----------------------------------------------------------------------------+
++--------------------------------------+
+| [53]: <Merging>                      |
+| <Start>                              |
+|   TraceExec: [56]                    |
+|   ForwardTrace: 53                   |
+|   CommonForwardTrace: 24             |
+| [CONTEXT]: CS(51 -> 0) : [24, 20][0] |
++--------------------------------------+
 |
 +
 |
@@ -1327,22 +1327,22 @@
 |   ForwardTrace: 53                                                                 |
 | [7][Block]< "{" { Stat @ } "}" >                                                   |
 | [AST-INSTRUCTIONS]:                                                                |
-|   @ CS(53 -> 0) : [24, 20][0] OS(52 -> 31) : [22, 17][15][10, 5][3]                |
+|   @ CS(51 -> 0) : [24, 20][0]                                                      |
 |   + CreateObject(IfStat)                                                           |
 |     objs: 20, 24                                                                   |
 |                                                                                    |
-|   @ CS(53 -> 0) : [24, 20][0] OS(52 -> 31) : [22, 17][15][10, 5][3]                |
+|   @ CS(51 -> 0) : [24, 20][0]                                                      |
 |   + Field(IfStat::content, 0)                                                      |
 |                                                                                    |
-|   @ CS(53 -> 0) : [24, 20][0] OS(52 -> 31) : [22, 17][15][10, 5][3]                |
+|   @ CS(51 -> 0) : [24, 20][0]                                                      |
 |   + StackEnd()                                                                     |
 |     obj:20, begin:59@4, top:59@4, lrec:31@0, field:[13], create:[54@0], end:[54@2] |
 |     obj:24, begin:58@4, top:58@4, lrec:31@0, field:[13], create:[54@0], end:[54@2] |
 |                                                                                    |
-|   @ CS(0 -> -1) : [0] OS(54 -> 52) : [24, 20][22, 17][15][10, 5][3]                |
+|   @ CS(0 -> -1) : [0] OS(52 -> -1) : [24, 20]                                      |
 |   > StackSlot(1)                                                                   |
 |                                                                                    |
-|   @ CS(0 -> -1) : [0] OS(52 -> 31) : [22, 17][15][10, 5][3]                        |
+|   @ CS(0 -> -1) : [0]                                                              |
 | [RETURN STACK]:                                                                    |
 |   [1][1][0]: Block -> [20][Stat]<! !Block @ !>                                     |
 |   [0][7][0]: Stat -> [24][Module]< Stat @ >                                        |
@@ -1354,77 +1354,77 @@
  +
  |
 [0]
-++=================================================================++
-|| [60]: {IF} if                                                   ||
-||   TraceExec: [58]                                               ||
-||   InsExec: [142:2]                                              ||
-||   ForwardTrace: 53                                              ||
-|| [16][IfContent]< "if" @ "cond" "then" Stat [ "else" Stat ] >    ||
-|| [AST-INSTRUCTIONS]:                                             ||
-||   @ CS(0 -> -1) : [0] OS(52 -> 31) : [22, 17][15][10, 5][3]     ||
-||   + StackBegin()                                                ||
-||     objs: 25                                                    ||
-||                                                                 ||
-||   @ CS(55 -> 0) : [25][0] OS(52 -> 31) : [22, 17][15][10, 5][3] ||
-||   + Token(0)                                                    ||
-||                                                                 ||
-||   @ CS(55 -> 0) : [25][0] OS(52 -> 31) : [22, 17][15][10, 5][3] ||
-|| [RETURN STACK]:                                                 ||
-||   [23][2][54]: IfContent -> [19][Stat]< IfContent @ >           ||
-||   [22][4][54]: Stat -> [7][Block]< "{" { Stat @ } "}" >         ||
-||   [1][1][0]: Block -> [20][Stat]<! !Block @ !>                  ||
-||   [0][7][0]: Stat -> [24][Module]< Stat @ >                     ||
-|| [PREDECESSORS 54-54]: [54]                                      ||
-|| [SUCCESORS 61-61]: [61]                                         ||
-++=================================================================++
+++==============================================================++
+|| [60]: {IF} if                                                ||
+||   TraceExec: [58]                                            ||
+||   InsExec: [142:2]                                           ||
+||   ForwardTrace: 53                                           ||
+|| [16][IfContent]< "if" @ "cond" "then" Stat [ "else" Stat ] > ||
+|| [AST-INSTRUCTIONS]:                                          ||
+||   @ CS(0 -> -1) : [0]                                        ||
+||   + StackBegin()                                             ||
+||     objs: 25                                                 ||
+||                                                              ||
+||   @ CS(53 -> 0) : [25][0]                                    ||
+||   + Token(0)                                                 ||
+||                                                              ||
+||   @ CS(53 -> 0) : [25][0]                                    ||
+|| [RETURN STACK]:                                              ||
+||   [23][2][54]: IfContent -> [19][Stat]< IfContent @ >        ||
+||   [22][4][54]: Stat -> [7][Block]< "{" { Stat @ } "}" >      ||
+||   [1][1][0]: Block -> [20][Stat]<! !Block @ !>               ||
+||   [0][7][0]: Stat -> [24][Module]< Stat @ >                  ||
+|| [PREDECESSORS 54-54]: [54]                                   ||
+|| [SUCCESORS 61-61]: [61]                                      ||
+++==============================================================++
 [0]
  |
  +
  |
 [0]
-++=================================================================++
-|| [61]: {CONDITION} cond                                          ||
-||   TraceExec: [59]                                               ||
-||   InsExec: [144:1]                                              ||
-||   ForwardTrace: 53                                              ||
-|| [15][IfContent]< "if" "cond" @ "then" Stat [ "else" Stat ] >    ||
-|| [AST-INSTRUCTIONS]:                                             ||
-||   @ CS(55 -> 0) : [25][0] OS(52 -> 31) : [22, 17][15][10, 5][3] ||
-||   + Token(1)                                                    ||
-||                                                                 ||
-||   @ CS(55 -> 0) : [25][0] OS(52 -> 31) : [22, 17][15][10, 5][3] ||
-|| [RETURN STACK]:                                                 ||
-||   [23][2][54]: IfContent -> [19][Stat]< IfContent @ >           ||
-||   [22][4][54]: Stat -> [7][Block]< "{" { Stat @ } "}" >         ||
-||   [1][1][0]: Block -> [20][Stat]<! !Block @ !>                  ||
-||   [0][7][0]: Stat -> [24][Module]< Stat @ >                     ||
-|| [PREDECESSORS 60-60]: [60]                                      ||
-|| [SUCCESORS 62-62]: [62]                                         ||
-++=================================================================++
+++==============================================================++
+|| [61]: {CONDITION} cond                                       ||
+||   TraceExec: [59]                                            ||
+||   InsExec: [144:1]                                           ||
+||   ForwardTrace: 53                                           ||
+|| [15][IfContent]< "if" "cond" @ "then" Stat [ "else" Stat ] > ||
+|| [AST-INSTRUCTIONS]:                                          ||
+||   @ CS(53 -> 0) : [25][0]                                    ||
+||   + Token(1)                                                 ||
+||                                                              ||
+||   @ CS(53 -> 0) : [25][0]                                    ||
+|| [RETURN STACK]:                                              ||
+||   [23][2][54]: IfContent -> [19][Stat]< IfContent @ >        ||
+||   [22][4][54]: Stat -> [7][Block]< "{" { Stat @ } "}" >      ||
+||   [1][1][0]: Block -> [20][Stat]<! !Block @ !>               ||
+||   [0][7][0]: Stat -> [24][Module]< Stat @ >                  ||
+|| [PREDECESSORS 60-60]: [60]                                   ||
+|| [SUCCESORS 62-62]: [62]                                      ||
+++==============================================================++
 [0]
  |
  +
  |
 [0]
-++=================================================================++
-|| [62]: {THEN} then                                               ||
-||   TraceExec: [60]                                               ||
-||   InsExec: [145:1]                                              ||
-||   ForwardTrace: 53                                              ||
-|| [11][IfContent]< "if" "cond" "then" @ Stat [ "else" Stat ] >    ||
-|| [AST-INSTRUCTIONS]:                                             ||
-||   @ CS(55 -> 0) : [25][0] OS(52 -> 31) : [22, 17][15][10, 5][3] ||
-||   + Token(2)                                                    ||
-||                                                                 ||
-||   @ CS(55 -> 0) : [25][0] OS(52 -> 31) : [22, 17][15][10, 5][3] ||
-|| [RETURN STACK]:                                                 ||
-||   [23][2][54]: IfContent -> [19][Stat]< IfContent @ >           ||
-||   [22][4][54]: Stat -> [7][Block]< "{" { Stat @ } "}" >         ||
-||   [1][1][0]: Block -> [20][Stat]<! !Block @ !>                  ||
-||   [0][7][0]: Stat -> [24][Module]< Stat @ >                     ||
-|| [PREDECESSORS 61-61]: [61]                                      ||
-|| [SUCCESORS 63-63]: [63]                                         ||
-++=================================================================++
+++==============================================================++
+|| [62]: {THEN} then                                            ||
+||   TraceExec: [60]                                            ||
+||   InsExec: [145:1]                                           ||
+||   ForwardTrace: 53                                           ||
+|| [11][IfContent]< "if" "cond" "then" @ Stat [ "else" Stat ] > ||
+|| [AST-INSTRUCTIONS]:                                          ||
+||   @ CS(53 -> 0) : [25][0]                                    ||
+||   + Token(2)                                                 ||
+||                                                              ||
+||   @ CS(53 -> 0) : [25][0]                                    ||
+|| [RETURN STACK]:                                              ||
+||   [23][2][54]: IfContent -> [19][Stat]< IfContent @ >        ||
+||   [22][4][54]: Stat -> [7][Block]< "{" { Stat @ } "}" >      ||
+||   [1][1][0]: Block -> [20][Stat]<! !Block @ !>               ||
+||   [0][7][0]: Stat -> [24][Module]< Stat @ >                  ||
+|| [PREDECESSORS 61-61]: [61]                                   ||
+|| [SUCCESORS 63-63]: [63]                                      ||
+++==============================================================++
 [0]
  |
  +
@@ -1437,14 +1437,14 @@
 ||   ForwardTrace: 53                                                                  ||
 || [16][IfContent]< "if" @ "cond" "then" Stat [ "else" Stat ] >                        ||
 || [AST-INSTRUCTIONS]:                                                                 ||
-||   @ CS(55 -> 0) : [25][0] OS(52 -> 31) : [22, 17][15][10, 5][3]                     ||
+||   @ CS(53 -> 0) : [25][0]                                                           ||
 ||   + StackBegin()                                                                    ||
 ||     objs: 26                                                                        ||
 ||                                                                                     ||
-||   @ CS(56 -> 55) : [26][25][0] OS(52 -> 31) : [22, 17][15][10, 5][3]                ||
+||   @ CS(54 -> 53) : [26][25][0]                                                      ||
 ||   + Token(0)                                                                        ||
 ||                                                                                     ||
-||   @ CS(56 -> 55) : [26][25][0] OS(52 -> 31) : [22, 17][15][10, 5][3]                ||
+||   @ CS(54 -> 53) : [26][25][0]                                                      ||
 || [RETURN STACK]:                                                                     ||
 ||   [25][2][62]: IfContent -> [19][Stat]< IfContent @ >                               ||
 ||   [24][5][62]: Stat -> [12][IfContent]< "if" "cond" "then" Stat @ [ "else" Stat ] > ||
@@ -1467,10 +1467,10 @@
 ||   ForwardTrace: 53                                                                  ||
 || [15][IfContent]< "if" "cond" @ "then" Stat [ "else" Stat ] >                        ||
 || [AST-INSTRUCTIONS]:                                                                 ||
-||   @ CS(56 -> 55) : [26][25][0] OS(52 -> 31) : [22, 17][15][10, 5][3]                ||
+||   @ CS(54 -> 53) : [26][25][0]                                                      ||
 ||   + Token(1)                                                                        ||
 ||                                                                                     ||
-||   @ CS(56 -> 55) : [26][25][0] OS(52 -> 31) : [22, 17][15][10, 5][3]                ||
+||   @ CS(54 -> 53) : [26][25][0]                                                      ||
 || [RETURN STACK]:                                                                     ||
 ||   [25][2][62]: IfContent -> [19][Stat]< IfContent @ >                               ||
 ||   [24][5][62]: Stat -> [12][IfContent]< "if" "cond" "then" Stat @ [ "else" Stat ] > ||
@@ -1493,10 +1493,10 @@
 ||   ForwardTrace: 53                                                                  ||
 || [11][IfContent]< "if" "cond" "then" @ Stat [ "else" Stat ] >                        ||
 || [AST-INSTRUCTIONS]:                                                                 ||
-||   @ CS(56 -> 55) : [26][25][0] OS(52 -> 31) : [22, 17][15][10, 5][3]                ||
+||   @ CS(54 -> 53) : [26][25][0]                                                      ||
 ||   + Token(2)                                                                        ||
 ||                                                                                     ||
-||   @ CS(56 -> 55) : [26][25][0] OS(52 -> 31) : [22, 17][15][10, 5][3]                ||
+||   @ CS(54 -> 53) : [26][25][0]                                                      ||
 || [RETURN STACK]:                                                                     ||
 ||   [25][2][62]: IfContent -> [19][Stat]< IfContent @ >                               ||
 ||   [24][5][62]: Stat -> [12][IfContent]< "if" "cond" "then" Stat @ [ "else" Stat ] > ||
@@ -1519,14 +1519,14 @@
 ||   ForwardTrace: 53                                                                  ||
 || [3][Do]< "do" @ ";" >                                                               ||
 || [AST-INSTRUCTIONS]:                                                                 ||
-||   @ CS(56 -> 55) : [26][25][0] OS(52 -> 31) : [22, 17][15][10, 5][3]                ||
+||   @ CS(54 -> 53) : [26][25][0]                                                      ||
 ||   + StackBegin()                                                                    ||
 ||     objs: 27                                                                        ||
 ||                                                                                     ||
-||   @ CS(57 -> 56) : [27][26][25][0] OS(52 -> 31) : [22, 17][15][10, 5][3]            ||
+||   @ CS(55 -> 54) : [27][26][25][0]                                                  ||
 ||   + Token(0)                                                                        ||
 ||                                                                                     ||
-||   @ CS(57 -> 56) : [27][26][25][0] OS(52 -> 31) : [22, 17][15][10, 5][3]            ||
+||   @ CS(55 -> 54) : [27][26][25][0]                                                  ||
 || [RETURN STACK]:                                                                     ||
 ||   [27][3][65]: Do -> [21][Stat]<! !Do @ !>                                          ||
 ||   [26][5][65]: Stat -> [12][IfContent]< "if" "cond" "then" Stat @ [ "else" Stat ] > ||
@@ -1551,10 +1551,10 @@
 ||   ForwardTrace: 53                                                                  ||
 || [2][Do]< "do" ";" @ >                                                               ||
 || [AST-INSTRUCTIONS]:                                                                 ||
-||   @ CS(57 -> 56) : [27][26][25][0] OS(52 -> 31) : [22, 17][15][10, 5][3]            ||
+||   @ CS(55 -> 54) : [27][26][25][0]                                                  ||
 ||   + Token(1)                                                                        ||
 ||                                                                                     ||
-||   @ CS(57 -> 56) : [27][26][25][0] OS(52 -> 31) : [22, 17][15][10, 5][3]            ||
+||   @ CS(55 -> 54) : [27][26][25][0]                                                  ||
 || [RETURN STACK]:                                                                     ||
 ||   [27][3][65]: Do -> [21][Stat]<! !Do @ !>                                          ||
 ||   [26][5][65]: Stat -> [12][IfContent]< "if" "cond" "then" Stat @ [ "else" Stat ] > ||
@@ -1577,19 +1577,19 @@
 |   ForwardTrace: 53                                                                  |
 | [21][Stat]<! !Do @ !>                                                               |
 | [AST-INSTRUCTIONS]:                                                                 |
-|   @ CS(57 -> 56) : [27][26][25][0] OS(52 -> 31) : [22, 17][15][10, 5][3]            |
+|   @ CS(55 -> 54) : [27][26][25][0]                                                  |
 |   + CreateObject(DoStat)                                                            |
 |     objs: 27                                                                        |
 |                                                                                     |
-|   @ CS(57 -> 56) : [27][26][25][0] OS(52 -> 31) : [22, 17][15][10, 5][3]            |
+|   @ CS(55 -> 54) : [27][26][25][0]                                                  |
 |   + StackEnd()                                                                      |
 |     obj:27, begin:66@0, top:66@0, create:[68@0], end:[68@1]                         |
 |                                                                                     |
-|   @ CS(56 -> 55) : [26][25][0] OS(58 -> 52) : [27][22, 17][15][10, 5][3]            |
+|   @ CS(54 -> 53) : [26][25][0] OS(56 -> -1) : [27]                                  |
 |   > StackBegin()                                                                    |
 |     objs: 28                                                                        |
 |                                                                                     |
-|   @ CS(59 -> 56) : [28][26][25][0] OS(58 -> 52) : [27][22, 17][15][10, 5][3]        |
+|   @ CS(57 -> 54) : [28][26][25][0] OS(56 -> -1) : [27]                              |
 | [RETURN STACK]:                                                                     |
 |   [26][5][65]: Stat -> [12][IfContent]< "if" "cond" "then" Stat @ [ "else" Stat ] > |
 |   [25][2][62]: IfContent -> [19][Stat]< IfContent @ >                               |
@@ -1611,14 +1611,14 @@
 |   ForwardTrace: 53                                                                  |
 | [12][IfContent]< "if" "cond" "then" Stat @ [ "else" Stat ] >                        |
 | [AST-INSTRUCTIONS]:                                                                 |
-|   @ CS(59 -> 56) : [28][26][25][0] OS(58 -> 52) : [27][22, 17][15][10, 5][3]        |
+|   @ CS(57 -> 54) : [28][26][25][0] OS(56 -> -1) : [27]                              |
 |   + StackEnd()                                                                      |
 |     obj:28, begin:68@2, top:66@0, use:[27], end!:[69@0]                             |
 |                                                                                     |
-|   @ CS(56 -> 55) : [26][25][0] OS(60 -> 58) : [28][27][22, 17][15][10, 5][3]        |
+|   @ CS(54 -> 53) : [26][25][0] OS(58 -> -1) : [28]                                  |
 |   > StackSlot(3)                                                                    |
 |                                                                                     |
-|   @ CS(56 -> 55) : [26][25][0] OS(58 -> 52) : [27][22, 17][15][10, 5][3]            |
+|   @ CS(54 -> 53) : [26][25][0]                                                      |
 | [RETURN STACK]:                                                                     |
 |   [25][2][62]: IfContent -> [19][Stat]< IfContent @ >                               |
 |   [24][5][62]: Stat -> [12][IfContent]< "if" "cond" "then" Stat @ [ "else" Stat ] > |
@@ -1639,28 +1639,28 @@
 |                                                                                            |   ForwardTrace: 70                                                                      |
 |                                                                                            | [19][Stat]< IfContent @ >                                                               |
 |                                                                                            | [AST-INSTRUCTIONS]:                                                                     |
-|                                                                                            |   @ CS(56 -> 55) : [26][25][0] OS(58 -> 52) : [27][22, 17][15][10, 5][3]                |
+|                                                                                            |   @ CS(54 -> 53) : [26][25][0]                                                          |
 |                                                                                            |   + CreateObject(IfContentCandidate)                                                    |
 |                                                                                            |     objs: 26                                                                            |
 |                                                                                            |                                                                                         |
-|                                                                                            |   @ CS(56 -> 55) : [26][25][0] OS(58 -> 52) : [27][22, 17][15][10, 5][3]                |
+|                                                                                            |   @ CS(54 -> 53) : [26][25][0]                                                          |
 |                                                                                            |   + Field(IfContentCandidate::thenBranch, 3)                                            |
 |                                                                                            |                                                                                         |
-|                                                                                            |   @ CS(56 -> 55) : [26][25][0] OS(58 -> 52) : [27][22, 17][15][10, 5][3]                |
+|                                                                                            |   @ CS(54 -> 53) : [26][25][0]                                                          |
 |                                                                                            |   + Field(IfContentCandidate::elseBranch, 5)                                            |
 |                                                                                            |                                                                                         |
-|                                                                                            |   @ CS(56 -> 55) : [26][25][0] OS(58 -> 52) : [27][22, 17][15][10, 5][3]                |
+|                                                                                            |   @ CS(54 -> 53) : [26][25][0]                                                          |
 |                                                                                            |   + StackEnd()                                                                          |
 |                                                                                            |     obj:26, begin:63@0, top:63@0, field:[30, 28], create:[70@0, 80@0], end:[70@3, 80@3] |
 |                                                                                            |                                                                                         |
-|                                                                                            |   @ CS(55 -> 0) : [25][0] OS(70 -> 58) : [26][27][22, 17][15][10, 5][3]                 |
+|                                                                                            |   @ CS(53 -> 0) : [25][0] OS(68 -> -1) : [26]                                           |
 |                                                                                            |   > StackBegin()                                                                        |
 |                                                                                            |     objs: 33                                                                            |
 |                                                                                            |                                                                                         |
-|                                                                                            |   @ CS(71 -> 55) : [33][25][0] OS(70 -> 58) : [26][27][22, 17][15][10, 5][3]            |
+|                                                                                            |   @ CS(69 -> 53) : [33][25][0] OS(68 -> -1) : [26]                                      |
 |                                                                                            |   > StackSlot(0)                                                                        |
 |                                                                                            |                                                                                         |
-|                                                                                            |   @ CS(71 -> 55) : [33][25][0] OS(58 -> 52) : [27][22, 17][15][10, 5][3]                |
+|                                                                                            |   @ CS(69 -> 53) : [33][25][0]                                                          |
 |                                                                                            | [RETURN STACK]:                                                                         |
 |                                                                                            |   [24][5][62]: Stat -> [12][IfContent]< "if" "cond" "then" Stat @ [ "else" Stat ] >     |
 |                                                                                            |   [23][2][54]: IfContent -> [19][Stat]< IfContent @ >                                   |
@@ -1680,21 +1680,21 @@
 |                                                                                            |   ForwardTrace: 70                                                                 |
 |                                                                                            | [12][IfContent]< "if" "cond" "then" Stat @ [ "else" Stat ] >                       |
 |                                                                                            | [AST-INSTRUCTIONS]:                                                                |
-|                                                                                            |   @ CS(71 -> 55) : [33][25][0] OS(58 -> 52) : [27][22, 17][15][10, 5][3]           |
+|                                                                                            |   @ CS(69 -> 53) : [33][25][0]                                                     |
 |                                                                                            |   + CreateObject(IfStat)                                                           |
 |                                                                                            |     objs: 33                                                                       |
 |                                                                                            |                                                                                    |
-|                                                                                            |   @ CS(71 -> 55) : [33][25][0] OS(58 -> 52) : [27][22, 17][15][10, 5][3]           |
+|                                                                                            |   @ CS(69 -> 53) : [33][25][0]                                                     |
 |                                                                                            |   + Field(IfStat::content, 0)                                                      |
 |                                                                                            |                                                                                    |
-|                                                                                            |   @ CS(71 -> 55) : [33][25][0] OS(58 -> 52) : [27][22, 17][15][10, 5][3]           |
+|                                                                                            |   @ CS(69 -> 53) : [33][25][0]                                                     |
 |                                                                                            |   + StackEnd()                                                                     |
 |                                                                                            |     obj:33, begin:70@4, top:70@4, lrec:63@0, field:[26], create:[71@0], end:[71@2] |
 |                                                                                            |                                                                                    |
-|                                                                                            |   @ CS(55 -> 0) : [25][0] OS(72 -> 58) : [33][27][22, 17][15][10, 5][3]            |
+|                                                                                            |   @ CS(53 -> 0) : [25][0] OS(70 -> -1) : [33]                                      |
 |                                                                                            |   > StackSlot(3)                                                                   |
 |                                                                                            |                                                                                    |
-|                                                                                            |   @ CS(55 -> 0) : [25][0] OS(58 -> 52) : [27][22, 17][15][10, 5][3]                |
+|                                                                                            |   @ CS(53 -> 0) : [25][0]                                                          |
 |                                                                                            | [RETURN STACK]:                                                                    |
 |                                                                                            |   [23][2][54]: IfContent -> [19][Stat]< IfContent @ >                              |
 |                                                                                            |   [22][4][54]: Stat -> [7][Block]< "{" { Stat @ } "}" >                            |
@@ -1708,25 +1708,25 @@
  +                                                                                            +
  |                                                                                            |
 [0]                                                                                          [1]
-++=====================================================================================++    ++=====================================================================++
-|| [73]: {ELSE} else                                                                   ||    || [74]: {ELSE} else                                                   ||
-||   TraceExec: [68]                                                                   ||    ||   TraceExec: [78]                                                   ||
-||   InsExec: [158:1]                                                                  ||    ||   InsExec: [193:1]                                                  ||
-||   ForwardTrace: 73                                                                  ||    ||   ForwardTrace: 70                                                  ||
-|| [13][IfContent]< "if" "cond" "then" Stat [ "else" @ Stat ] >                        ||    || [13][IfContent]< "if" "cond" "then" Stat [ "else" @ Stat ] >        ||
-|| [AST-INSTRUCTIONS]:                                                                 ||    || [AST-INSTRUCTIONS]:                                                 ||
-||   @ CS(56 -> 55) : [26][25][0] OS(58 -> 52) : [27][22, 17][15][10, 5][3]            ||    ||   @ CS(55 -> 0) : [25][0] OS(58 -> 52) : [27][22, 17][15][10, 5][3] ||
-||   + Token(4)                                                                        ||    ||   + Token(4)                                                        ||
-||                                                                                     ||    ||                                                                     ||
-||   @ CS(56 -> 55) : [26][25][0] OS(58 -> 52) : [27][22, 17][15][10, 5][3]            ||    ||   @ CS(55 -> 0) : [25][0] OS(58 -> 52) : [27][22, 17][15][10, 5][3] ||
-|| [RETURN STACK]:                                                                     ||    || [RETURN STACK]:                                                     ||
-||   [25][2][62]: IfContent -> [19][Stat]< IfContent @ >                               ||    ||   [23][2][54]: IfContent -> [19][Stat]< IfContent @ >               ||
-||   [24][5][62]: Stat -> [12][IfContent]< "if" "cond" "then" Stat @ [ "else" Stat ] > ||    ||   [22][4][54]: Stat -> [7][Block]< "{" { Stat @ } "}" >             ||
-||   [23][2][54]: IfContent -> [19][Stat]< IfContent @ >                               ||    ||   [1][1][0]: Block -> [20][Stat]<! !Block @ !>                      ||
-||   [22][4][54]: Stat -> [7][Block]< "{" { Stat @ } "}" >                             ||    ||   [0][7][0]: Stat -> [24][Module]< Stat @ >                         ||
-||   [1][1][0]: Block -> [20][Stat]<! !Block @ !>                                      ||    || [PREDECESSORS 71-71]: [71]                                          ||
-||   [0][7][0]: Stat -> [24][Module]< Stat @ >                                         ||    || [SUCCESORS 76-76]: [76]                                             ||
-|| [PREDECESSORS 69-69]: [69]                                                          ||    ++=====================================================================++
+++=====================================================================================++    ++==============================================================++
+|| [73]: {ELSE} else                                                                   ||    || [74]: {ELSE} else                                            ||
+||   TraceExec: [68]                                                                   ||    ||   TraceExec: [78]                                            ||
+||   InsExec: [158:1]                                                                  ||    ||   InsExec: [193:1]                                           ||
+||   ForwardTrace: 73                                                                  ||    ||   ForwardTrace: 70                                           ||
+|| [13][IfContent]< "if" "cond" "then" Stat [ "else" @ Stat ] >                        ||    || [13][IfContent]< "if" "cond" "then" Stat [ "else" @ Stat ] > ||
+|| [AST-INSTRUCTIONS]:                                                                 ||    || [AST-INSTRUCTIONS]:                                          ||
+||   @ CS(54 -> 53) : [26][25][0]                                                      ||    ||   @ CS(53 -> 0) : [25][0]                                    ||
+||   + Token(4)                                                                        ||    ||   + Token(4)                                                 ||
+||                                                                                     ||    ||                                                              ||
+||   @ CS(54 -> 53) : [26][25][0]                                                      ||    ||   @ CS(53 -> 0) : [25][0]                                    ||
+|| [RETURN STACK]:                                                                     ||    || [RETURN STACK]:                                              ||
+||   [25][2][62]: IfContent -> [19][Stat]< IfContent @ >                               ||    ||   [23][2][54]: IfContent -> [19][Stat]< IfContent @ >        ||
+||   [24][5][62]: Stat -> [12][IfContent]< "if" "cond" "then" Stat @ [ "else" Stat ] > ||    ||   [22][4][54]: Stat -> [7][Block]< "{" { Stat @ } "}" >      ||
+||   [23][2][54]: IfContent -> [19][Stat]< IfContent @ >                               ||    ||   [1][1][0]: Block -> [20][Stat]<! !Block @ !>               ||
+||   [22][4][54]: Stat -> [7][Block]< "{" { Stat @ } "}" >                             ||    ||   [0][7][0]: Stat -> [24][Module]< Stat @ >                  ||
+||   [1][1][0]: Block -> [20][Stat]<! !Block @ !>                                      ||    || [PREDECESSORS 71-71]: [71]                                   ||
+||   [0][7][0]: Stat -> [24][Module]< Stat @ >                                         ||    || [SUCCESORS 76-76]: [76]                                      ||
+|| [PREDECESSORS 69-69]: [69]                                                          ||    ++==============================================================++
 || [SUCCESORS 75-75]: [75]                                                             ||    |
 ++=====================================================================================++    |
 [0]                                                                                          [1]
@@ -1741,14 +1741,14 @@
 ||   ForwardTrace: 73                                                                  ||    ||   ForwardTrace: 70                                                                  ||
 || [3][Do]< "do" @ ";" >                                                               ||    || [3][Do]< "do" @ ";" >                                                               ||
 || [AST-INSTRUCTIONS]:                                                                 ||    || [AST-INSTRUCTIONS]:                                                                 ||
-||   @ CS(56 -> 55) : [26][25][0] OS(58 -> 52) : [27][22, 17][15][10, 5][3]            ||    ||   @ CS(55 -> 0) : [25][0] OS(58 -> 52) : [27][22, 17][15][10, 5][3]                 ||
+||   @ CS(54 -> 53) : [26][25][0]                                                      ||    ||   @ CS(53 -> 0) : [25][0]                                                           ||
 ||   + StackBegin()                                                                    ||    ||   + StackBegin()                                                                    ||
 ||     objs: 29                                                                        ||    ||     objs: 34                                                                        ||
 ||                                                                                     ||    ||                                                                                     ||
-||   @ CS(61 -> 56) : [29][26][25][0] OS(58 -> 52) : [27][22, 17][15][10, 5][3]        ||    ||   @ CS(73 -> 55) : [34][25][0] OS(58 -> 52) : [27][22, 17][15][10, 5][3]            ||
+||   @ CS(59 -> 54) : [29][26][25][0]                                                  ||    ||   @ CS(71 -> 53) : [34][25][0]                                                      ||
 ||   + Token(0)                                                                        ||    ||   + Token(0)                                                                        ||
 ||                                                                                     ||    ||                                                                                     ||
-||   @ CS(61 -> 56) : [29][26][25][0] OS(58 -> 52) : [27][22, 17][15][10, 5][3]        ||    ||   @ CS(73 -> 55) : [34][25][0] OS(58 -> 52) : [27][22, 17][15][10, 5][3]            ||
+||   @ CS(59 -> 54) : [29][26][25][0]                                                  ||    ||   @ CS(71 -> 53) : [34][25][0]                                                      ||
 || [RETURN STACK]:                                                                     ||    || [RETURN STACK]:                                                                     ||
 ||   [29][3][73]: Do -> [21][Stat]<! !Do @ !>                                          ||    ||   [31][3][74]: Do -> [21][Stat]<! !Do @ !>                                          ||
 ||   [28][6][73]: Stat -> [14][IfContent]< "if" "cond" "then" Stat [ "else" Stat @ ] > ||    ||   [30][6][74]: Stat -> [14][IfContent]< "if" "cond" "then" Stat [ "else" Stat @ ] > ||
@@ -1773,10 +1773,10 @@
 ||   ForwardTrace: 73                                                                  ||          ||   ForwardTrace: 70                                                                  ||
 || [2][Do]< "do" ";" @ >                                                               ||          || [2][Do]< "do" ";" @ >                                                               ||
 || [AST-INSTRUCTIONS]:                                                                 ||          || [AST-INSTRUCTIONS]:                                                                 ||
-||   @ CS(61 -> 56) : [29][26][25][0] OS(58 -> 52) : [27][22, 17][15][10, 5][3]        ||          ||   @ CS(73 -> 55) : [34][25][0] OS(58 -> 52) : [27][22, 17][15][10, 5][3]            ||
+||   @ CS(59 -> 54) : [29][26][25][0]                                                  ||          ||   @ CS(71 -> 53) : [34][25][0]                                                      ||
 ||   + Token(1)                                                                        ||          ||   + Token(1)                                                                        ||
 ||                                                                                     ||          ||                                                                                     ||
-||   @ CS(61 -> 56) : [29][26][25][0] OS(58 -> 52) : [27][22, 17][15][10, 5][3]        ||          ||   @ CS(73 -> 55) : [34][25][0] OS(58 -> 52) : [27][22, 17][15][10, 5][3]            ||
+||   @ CS(59 -> 54) : [29][26][25][0]                                                  ||          ||   @ CS(71 -> 53) : [34][25][0]                                                      ||
 || [RETURN STACK]:                                                                     ||          || [RETURN STACK]:                                                                     ||
 ||   [29][3][73]: Do -> [21][Stat]<! !Do @ !>                                          ||          ||   [31][3][74]: Do -> [21][Stat]<! !Do @ !>                                          ||
 ||   [28][6][73]: Stat -> [14][IfContent]< "if" "cond" "then" Stat [ "else" Stat @ ] > ||          ||   [30][6][74]: Stat -> [14][IfContent]< "if" "cond" "then" Stat [ "else" Stat @ ] > ||
@@ -1799,19 +1799,19 @@
 |   ForwardTrace: 73                                                                  |            |   ForwardTrace: 70                                                                  |
 | [21][Stat]<! !Do @ !>                                                               |            | [21][Stat]<! !Do @ !>                                                               |
 | [AST-INSTRUCTIONS]:                                                                 |            | [AST-INSTRUCTIONS]:                                                                 |
-|   @ CS(61 -> 56) : [29][26][25][0] OS(58 -> 52) : [27][22, 17][15][10, 5][3]        |            |   @ CS(73 -> 55) : [34][25][0] OS(58 -> 52) : [27][22, 17][15][10, 5][3]            |
+|   @ CS(59 -> 54) : [29][26][25][0]                                                  |            |   @ CS(71 -> 53) : [34][25][0]                                                      |
 |   + CreateObject(DoStat)                                                            |            |   + CreateObject(DoStat)                                                            |
 |     objs: 29                                                                        |            |     objs: 34                                                                        |
 |                                                                                     |            |                                                                                     |
-|   @ CS(61 -> 56) : [29][26][25][0] OS(58 -> 52) : [27][22, 17][15][10, 5][3]        |            |   @ CS(73 -> 55) : [34][25][0] OS(58 -> 52) : [27][22, 17][15][10, 5][3]            |
+|   @ CS(59 -> 54) : [29][26][25][0]                                                  |            |   @ CS(71 -> 53) : [34][25][0]                                                      |
 |   + StackEnd()                                                                      |            |   + StackEnd()                                                                      |
 |     obj:29, begin:75@0, top:75@0, create:[78@0], end:[78@1]                         |            |     obj:34, begin:76@0, top:76@0, create:[85@0], end:[85@1]                         |
 |                                                                                     |            |                                                                                     |
-|   @ CS(56 -> 55) : [26][25][0] OS(62 -> 58) : [29][27][22, 17][15][10, 5][3]        |            |   @ CS(55 -> 0) : [25][0] OS(74 -> 58) : [34][27][22, 17][15][10, 5][3]             |
+|   @ CS(54 -> 53) : [26][25][0] OS(60 -> -1) : [29]                                  |            |   @ CS(53 -> 0) : [25][0] OS(72 -> -1) : [34]                                       |
 |   > StackBegin()                                                                    |            |   > StackBegin()                                                                    |
 |     objs: 30                                                                        |            |     objs: 35                                                                        |
 |                                                                                     |            |                                                                                     |
-|   @ CS(63 -> 56) : [30][26][25][0] OS(62 -> 58) : [29][27][22, 17][15][10, 5][3]    |            |   @ CS(75 -> 55) : [35][25][0] OS(74 -> 58) : [34][27][22, 17][15][10, 5][3]        |
+|   @ CS(61 -> 54) : [30][26][25][0] OS(60 -> -1) : [29]                              |            |   @ CS(73 -> 53) : [35][25][0] OS(72 -> -1) : [34]                                  |
 | [RETURN STACK]:                                                                     |            | [RETURN STACK]:                                                                     |
 |   [28][6][73]: Stat -> [14][IfContent]< "if" "cond" "then" Stat [ "else" Stat @ ] > |            |   [30][6][74]: Stat -> [14][IfContent]< "if" "cond" "then" Stat [ "else" Stat @ ] > |
 |   [25][2][62]: IfContent -> [19][Stat]< IfContent @ >                               |            |   [23][2][54]: IfContent -> [19][Stat]< IfContent @ >                               |
@@ -1826,29 +1826,29 @@
 |                                                                                                  |
 +                                                                                                  +
 |                                                                                                  |
-+-------------------------------------------------------------------------------------+            +------------------------------------------------------------------------------+
-| [79]: <Ending>                                                                      |            | [86]: <Ending>                                                               |
-|   TraceExec: [72]                                                                   |            |   TraceExec: [82]                                                            |
-|   InsExec: [165:2]                                                                  |            |   InsExec: [200:2]                                                           |
-|   ForwardTrace: 73                                                                  |            |   ForwardTrace: 70                                                           |
-| [14][IfContent]< "if" "cond" "then" Stat [ "else" Stat @ ] >                        |            | [14][IfContent]< "if" "cond" "then" Stat [ "else" Stat @ ] >                 |
-| [AST-INSTRUCTIONS]:                                                                 |            | [AST-INSTRUCTIONS]:                                                          |
-|   @ CS(63 -> 56) : [30][26][25][0] OS(62 -> 58) : [29][27][22, 17][15][10, 5][3]    |            |   @ CS(75 -> 55) : [35][25][0] OS(74 -> 58) : [34][27][22, 17][15][10, 5][3] |
-|   + StackEnd()                                                                      |            |   + StackEnd()                                                               |
-|     obj:30, begin:78@2, top:75@0, use:[29], end!:[79@0]                             |            |     obj:35, begin:85@2, top:76@0, use:[34], end!:[86@0]                      |
-|                                                                                     |            |                                                                              |
-|   @ CS(56 -> 55) : [26][25][0] OS(64 -> 62) : [30][29][27][22, 17][15][10, 5][3]    |            |   @ CS(55 -> 0) : [25][0] OS(76 -> 74) : [35][34][27][22, 17][15][10, 5][3]  |
-|   > StackSlot(5)                                                                    |            |   > StackSlot(5)                                                             |
-|                                                                                     |            |                                                                              |
-|   @ CS(56 -> 55) : [26][25][0] OS(62 -> 58) : [29][27][22, 17][15][10, 5][3]        |            |   @ CS(55 -> 0) : [25][0] OS(74 -> 58) : [34][27][22, 17][15][10, 5][3]      |
-| [RETURN STACK]:                                                                     |            | [RETURN STACK]:                                                              |
-|   [25][2][62]: IfContent -> [19][Stat]< IfContent @ >                               |            |   [23][2][54]: IfContent -> [19][Stat]< IfContent @ >                        |
-|   [24][5][62]: Stat -> [12][IfContent]< "if" "cond" "then" Stat @ [ "else" Stat ] > |            |   [22][4][54]: Stat -> [7][Block]< "{" { Stat @ } "}" >                      |
-|   [23][2][54]: IfContent -> [19][Stat]< IfContent @ >                               |            |   [1][1][0]: Block -> [20][Stat]<! !Block @ !>                               |
-|   [22][4][54]: Stat -> [7][Block]< "{" { Stat @ } "}" >                             |            |   [0][7][0]: Stat -> [24][Module]< Stat @ >                                  |
-|   [1][1][0]: Block -> [20][Stat]<! !Block @ !>                                      |            | [PREDECESSORS 85-85]: [85]                                                   |
-|   [0][7][0]: Stat -> [24][Module]< Stat @ >                                         |            | [SUCCESORS 87-87]: [87]                                                      |
-| [PREDECESSORS 78-78]: [78]                                                          |            +------------------------------------------------------------------------------+
++-------------------------------------------------------------------------------------+            +--------------------------------------------------------------+
+| [79]: <Ending>                                                                      |            | [86]: <Ending>                                               |
+|   TraceExec: [72]                                                                   |            |   TraceExec: [82]                                            |
+|   InsExec: [165:2]                                                                  |            |   InsExec: [200:2]                                           |
+|   ForwardTrace: 73                                                                  |            |   ForwardTrace: 70                                           |
+| [14][IfContent]< "if" "cond" "then" Stat [ "else" Stat @ ] >                        |            | [14][IfContent]< "if" "cond" "then" Stat [ "else" Stat @ ] > |
+| [AST-INSTRUCTIONS]:                                                                 |            | [AST-INSTRUCTIONS]:                                          |
+|   @ CS(61 -> 54) : [30][26][25][0] OS(60 -> -1) : [29]                              |            |   @ CS(73 -> 53) : [35][25][0] OS(72 -> -1) : [34]           |
+|   + StackEnd()                                                                      |            |   + StackEnd()                                               |
+|     obj:30, begin:78@2, top:75@0, use:[29], end!:[79@0]                             |            |     obj:35, begin:85@2, top:76@0, use:[34], end!:[86@0]      |
+|                                                                                     |            |                                                              |
+|   @ CS(54 -> 53) : [26][25][0] OS(62 -> -1) : [30]                                  |            |   @ CS(53 -> 0) : [25][0] OS(74 -> -1) : [35]                |
+|   > StackSlot(5)                                                                    |            |   > StackSlot(5)                                             |
+|                                                                                     |            |                                                              |
+|   @ CS(54 -> 53) : [26][25][0]                                                      |            |   @ CS(53 -> 0) : [25][0]                                    |
+| [RETURN STACK]:                                                                     |            | [RETURN STACK]:                                              |
+|   [25][2][62]: IfContent -> [19][Stat]< IfContent @ >                               |            |   [23][2][54]: IfContent -> [19][Stat]< IfContent @ >        |
+|   [24][5][62]: Stat -> [12][IfContent]< "if" "cond" "then" Stat @ [ "else" Stat ] > |            |   [22][4][54]: Stat -> [7][Block]< "{" { Stat @ } "}" >      |
+|   [23][2][54]: IfContent -> [19][Stat]< IfContent @ >                               |            |   [1][1][0]: Block -> [20][Stat]<! !Block @ !>               |
+|   [22][4][54]: Stat -> [7][Block]< "{" { Stat @ } "}" >                             |            |   [0][7][0]: Stat -> [24][Module]< Stat @ >                  |
+|   [1][1][0]: Block -> [20][Stat]<! !Block @ !>                                      |            | [PREDECESSORS 85-85]: [85]                                   |
+|   [0][7][0]: Stat -> [24][Module]< Stat @ >                                         |            | [SUCCESORS 87-87]: [87]                                      |
+| [PREDECESSORS 78-78]: [78]                                                          |            +--------------------------------------------------------------+
 | [SUCCESORS 80-80]: [80]                                                             |            |
 +-------------------------------------------------------------------------------------+            |
 |                                                                                                  |
@@ -1861,28 +1861,28 @@
 |   ForwardTrace: 73                                                                      |        |   ForwardTrace: 70                                                                          |
 | [19][Stat]< IfContent @ >                                                               |        | [19][Stat]< IfContent @ >                                                                   |
 | [AST-INSTRUCTIONS]:                                                                     |        | [AST-INSTRUCTIONS]:                                                                         |
-|   @ CS(56 -> 55) : [26][25][0] OS(62 -> 58) : [29][27][22, 17][15][10, 5][3]            |        |   @ CS(55 -> 0) : [25][0] OS(74 -> 58) : [34][27][22, 17][15][10, 5][3]                     |
+|   @ CS(54 -> 53) : [26][25][0]                                                          |        |   @ CS(53 -> 0) : [25][0]                                                                   |
 |   + CreateObject(IfContentCandidate)                                                    |        |   + CreateObject(IfContentCandidate)                                                        |
 |     objs: 26                                                                            |        |     objs: 25                                                                                |
 |                                                                                         |        |                                                                                             |
-|   @ CS(56 -> 55) : [26][25][0] OS(62 -> 58) : [29][27][22, 17][15][10, 5][3]            |        |   @ CS(55 -> 0) : [25][0] OS(74 -> 58) : [34][27][22, 17][15][10, 5][3]                     |
+|   @ CS(54 -> 53) : [26][25][0]                                                          |        |   @ CS(53 -> 0) : [25][0]                                                                   |
 |   + Field(IfContentCandidate::thenBranch, 3)                                            |        |   + Field(IfContentCandidate::thenBranch, 3)                                                |
 |                                                                                         |        |                                                                                             |
-|   @ CS(56 -> 55) : [26][25][0] OS(62 -> 58) : [29][27][22, 17][15][10, 5][3]            |        |   @ CS(55 -> 0) : [25][0] OS(74 -> 58) : [34][27][22, 17][15][10, 5][3]                     |
+|   @ CS(54 -> 53) : [26][25][0]                                                          |        |   @ CS(53 -> 0) : [25][0]                                                                   |
 |   + Field(IfContentCandidate::elseBranch, 5)                                            |        |   + Field(IfContentCandidate::elseBranch, 5)                                                |
 |                                                                                         |        |                                                                                             |
-|   @ CS(56 -> 55) : [26][25][0] OS(62 -> 58) : [29][27][22, 17][15][10, 5][3]            |        |   @ CS(55 -> 0) : [25][0] OS(74 -> 58) : [34][27][22, 17][15][10, 5][3]                     |
+|   @ CS(54 -> 53) : [26][25][0]                                                          |        |   @ CS(53 -> 0) : [25][0]                                                                   |
 |   + StackEnd()                                                                          |        |   + StackEnd()                                                                              |
 |     obj:26, begin:63@0, top:63@0, field:[30, 28], create:[70@0, 80@0], end:[70@3, 80@3] |        |     obj:25, begin:60@0, top:60@0, field:[35, 31, 33], create:[87@0, 88@0], end:[87@3, 88@3] |
 |                                                                                         |        |                                                                                             |
-|   @ CS(55 -> 0) : [25][0] OS(65 -> 62) : [26][29][27][22, 17][15][10, 5][3]             |        |   @ CS(0 -> -1) : [0] OS(77 -> 74) : [25][34][27][22, 17][15][10, 5][3]                     |
+|   @ CS(53 -> 0) : [25][0] OS(63 -> -1) : [26]                                           |        |   @ CS(0 -> -1) : [0] OS(75 -> -1) : [25]                                                   |
 |   > StackBegin()                                                                        |        |   > StackBegin()                                                                            |
 |     objs: 31                                                                            |        |     objs: 36                                                                                |
 |                                                                                         |        |                                                                                             |
-|   @ CS(66 -> 55) : [31][25][0] OS(65 -> 62) : [26][29][27][22, 17][15][10, 5][3]        |        |   @ CS(78 -> 0) : [36][0] OS(77 -> 74) : [25][34][27][22, 17][15][10, 5][3]                 |
+|   @ CS(64 -> 53) : [31][25][0] OS(63 -> -1) : [26]                                      |        |   @ CS(76 -> 0) : [36][0] OS(75 -> -1) : [25]                                               |
 |   > StackSlot(0)                                                                        |        |   > StackSlot(0)                                                                            |
 |                                                                                         |        |                                                                                             |
-|   @ CS(66 -> 55) : [31][25][0] OS(62 -> 58) : [29][27][22, 17][15][10, 5][3]            |        |   @ CS(78 -> 0) : [36][0] OS(74 -> 58) : [34][27][22, 17][15][10, 5][3]                     |
+|   @ CS(64 -> 53) : [31][25][0]                                                          |        |   @ CS(76 -> 0) : [36][0]                                                                   |
 | [RETURN STACK]:                                                                         |        | [RETURN STACK]:                                                                             |
 |   [24][5][62]: Stat -> [12][IfContent]< "if" "cond" "then" Stat @ [ "else" Stat ] >     |        |   [22][4][54]: Stat -> [7][Block]< "{" { Stat @ } "}" >                                     |
 |   [23][2][54]: IfContent -> [19][Stat]< IfContent @ >                                   |        |   [1][1][0]: Block -> [20][Stat]<! !Block @ !>                                              |
@@ -1902,21 +1902,21 @@
 |   ForwardTrace: 73                                                                 |             |
 | [12][IfContent]< "if" "cond" "then" Stat @ [ "else" Stat ] >                       |             |
 | [AST-INSTRUCTIONS]:                                                                |             |
-|   @ CS(66 -> 55) : [31][25][0] OS(62 -> 58) : [29][27][22, 17][15][10, 5][3]       |             |
+|   @ CS(64 -> 53) : [31][25][0]                                                     |             |
 |   + CreateObject(IfStat)                                                           |             |
 |     objs: 31                                                                       |             |
 |                                                                                    |             |
-|   @ CS(66 -> 55) : [31][25][0] OS(62 -> 58) : [29][27][22, 17][15][10, 5][3]       |             |
+|   @ CS(64 -> 53) : [31][25][0]                                                     |             |
 |   + Field(IfStat::content, 0)                                                      |             |
 |                                                                                    |             |
-|   @ CS(66 -> 55) : [31][25][0] OS(62 -> 58) : [29][27][22, 17][15][10, 5][3]       |             |
+|   @ CS(64 -> 53) : [31][25][0]                                                     |             |
 |   + StackEnd()                                                                     |             |
 |     obj:31, begin:80@4, top:80@4, lrec:63@0, field:[26], create:[81@0], end:[81@2] |             |
 |                                                                                    |             |
-|   @ CS(55 -> 0) : [25][0] OS(67 -> 62) : [31][29][27][22, 17][15][10, 5][3]        |             |
+|   @ CS(53 -> 0) : [25][0] OS(65 -> -1) : [31]                                      |             |
 |   > StackSlot(3)                                                                   |             |
 |                                                                                    |             |
-|   @ CS(55 -> 0) : [25][0] OS(62 -> 58) : [29][27][22, 17][15][10, 5][3]            |             |
+|   @ CS(53 -> 0) : [25][0]                                                          |             |
 | [RETURN STACK]:                                                                    |             |
 |   [23][2][54]: IfContent -> [19][Stat]< IfContent @ >                              |             |
 |   [22][4][54]: Stat -> [7][Block]< "{" { Stat @ } "}" >                            |             |
@@ -1935,28 +1935,28 @@
 |   ForwardTrace: 73                                                                          |    |
 | [19][Stat]< IfContent @ >                                                                   |    |
 | [AST-INSTRUCTIONS]:                                                                         |    |
-|   @ CS(55 -> 0) : [25][0] OS(62 -> 58) : [29][27][22, 17][15][10, 5][3]                     |    |
+|   @ CS(53 -> 0) : [25][0]                                                                   |    |
 |   + CreateObject(IfContentCandidate)                                                        |    |
 |     objs: 25                                                                                |    |
 |                                                                                             |    |
-|   @ CS(55 -> 0) : [25][0] OS(62 -> 58) : [29][27][22, 17][15][10, 5][3]                     |    |
+|   @ CS(53 -> 0) : [25][0]                                                                   |    |
 |   + Field(IfContentCandidate::thenBranch, 3)                                                |    |
 |                                                                                             |    |
-|   @ CS(55 -> 0) : [25][0] OS(62 -> 58) : [29][27][22, 17][15][10, 5][3]                     |    |
+|   @ CS(53 -> 0) : [25][0]                                                                   |    |
 |   + Field(IfContentCandidate::elseBranch, 5)                                                |    |
 |                                                                                             |    |
-|   @ CS(55 -> 0) : [25][0] OS(62 -> 58) : [29][27][22, 17][15][10, 5][3]                     |    |
+|   @ CS(53 -> 0) : [25][0]                                                                   |    |
 |   + StackEnd()                                                                              |    |
 |     obj:25, begin:60@0, top:60@0, field:[35, 31, 33], create:[87@0, 88@0], end:[87@3, 88@3] |    |
 |                                                                                             |    |
-|   @ CS(0 -> -1) : [0] OS(68 -> 62) : [25][29][27][22, 17][15][10, 5][3]                     |    |
+|   @ CS(0 -> -1) : [0] OS(66 -> -1) : [25]                                                   |    |
 |   > StackBegin()                                                                            |    |
 |     objs: 32                                                                                |    |
 |                                                                                             |    |
-|   @ CS(69 -> 0) : [32][0] OS(68 -> 62) : [25][29][27][22, 17][15][10, 5][3]                 |    |
+|   @ CS(67 -> 0) : [32][0] OS(66 -> -1) : [25]                                               |    |
 |   > StackSlot(0)                                                                            |    |
 |                                                                                             |    |
-|   @ CS(69 -> 0) : [32][0] OS(62 -> 58) : [29][27][22, 17][15][10, 5][3]                     |    |
+|   @ CS(67 -> 0) : [32][0]                                                                   |    |
 | [RETURN STACK]:                                                                             |    |
 |   [22][4][54]: Stat -> [7][Block]< "{" { Stat @ } "}" >                                     |    |
 |   [1][1][0]: Block -> [20][Stat]<! !Block @ !>                                              |    |
@@ -1967,14 +1967,14 @@
 |                                                                                                  |
 +--------------------------------------------------------------------------------------------------+
 |
-+----------------------------------------------------------------------------------------+
-| [82]: <Merging>                                                                        |
-| <Start>                                                                                |
-|   TraceExec: [84]                                                                      |
-|   ForwardTrace: 82                                                                     |
-|   CommonForwardTrace: 53                                                               |
-| [CONTEXT]: CS(80 -> 0) : [36, 32][0] OS(79 -> 58) : [34, 29][27][22, 17][15][10, 5][3] |
-+----------------------------------------------------------------------------------------+
++--------------------------------------+
+| [82]: <Merging>                      |
+| <Start>                              |
+|   TraceExec: [84]                    |
+|   ForwardTrace: 82                   |
+|   CommonForwardTrace: 53             |
+| [CONTEXT]: CS(77 -> 0) : [36, 32][0] |
++--------------------------------------+
 |
 +
 |
@@ -1985,22 +1985,22 @@
 |   ForwardTrace: 82                                                                 |
 | [7][Block]< "{" { Stat @ } "}" >                                                   |
 | [AST-INSTRUCTIONS]:                                                                |
-|   @ CS(80 -> 0) : [36, 32][0] OS(79 -> 58) : [34, 29][27][22, 17][15][10, 5][3]    |
+|   @ CS(77 -> 0) : [36, 32][0]                                                      |
 |   + CreateObject(IfStat)                                                           |
 |     objs: 32, 36                                                                   |
 |                                                                                    |
-|   @ CS(80 -> 0) : [36, 32][0] OS(79 -> 58) : [34, 29][27][22, 17][15][10, 5][3]    |
+|   @ CS(77 -> 0) : [36, 32][0]                                                      |
 |   + Field(IfStat::content, 0)                                                      |
 |                                                                                    |
-|   @ CS(80 -> 0) : [36, 32][0] OS(79 -> 58) : [34, 29][27][22, 17][15][10, 5][3]    |
+|   @ CS(77 -> 0) : [36, 32][0]                                                      |
 |   + StackEnd()                                                                     |
 |     obj:32, begin:88@4, top:88@4, lrec:60@0, field:[25], create:[83@0], end:[83@2] |
 |     obj:36, begin:87@4, top:87@4, lrec:60@0, field:[25], create:[83@0], end:[83@2] |
 |                                                                                    |
-|   @ CS(0 -> -1) : [0] OS(81 -> 79) : [36, 32][34, 29][27][22, 17][15][10, 5][3]    |
+|   @ CS(0 -> -1) : [0] OS(78 -> -1) : [36, 32]                                      |
 |   > StackSlot(1)                                                                   |
 |                                                                                    |
-|   @ CS(0 -> -1) : [0] OS(79 -> 58) : [34, 29][27][22, 17][15][10, 5][3]            |
+|   @ CS(0 -> -1) : [0]                                                              |
 | [RETURN STACK]:                                                                    |
 |   [1][1][0]: Block -> [20][Stat]<! !Block @ !>                                     |
 |   [0][7][0]: Stat -> [24][Module]< Stat @ >                                        |
@@ -2012,23 +2012,23 @@
  +
  |
 [0]
-++=========================================================================++
-|| [89]: {CLOSE_BRACE} }                                                   ||
-||   TraceExec: [86]                                                       ||
-||   InsExec: [212:1]                                                      ||
-||   ForwardTrace: 82                                                      ||
-|| [8][Block]< "{" { Stat } "}" @ >                                        ||
-|| [AST-INSTRUCTIONS]:                                                     ||
-||   @ CS(0 -> -1) : [0] OS(79 -> 58) : [34, 29][27][22, 17][15][10, 5][3] ||
-||   + Token(2)                                                            ||
-||                                                                         ||
-||   @ CS(0 -> -1) : [0] OS(79 -> 58) : [34, 29][27][22, 17][15][10, 5][3] ||
-|| [RETURN STACK]:                                                         ||
-||   [1][1][0]: Block -> [20][Stat]<! !Block @ !>                          ||
-||   [0][7][0]: Stat -> [24][Module]< Stat @ >                             ||
-|| [PREDECESSORS 83-83]: [83]                                              ||
-|| [SUCCESORS 90-90]: [90]                                                 ||
-++=========================================================================++
+++================================================++
+|| [89]: {CLOSE_BRACE} }                          ||
+||   TraceExec: [86]                              ||
+||   InsExec: [212:1]                             ||
+||   ForwardTrace: 82                             ||
+|| [8][Block]< "{" { Stat } "}" @ >               ||
+|| [AST-INSTRUCTIONS]:                            ||
+||   @ CS(0 -> -1) : [0]                          ||
+||   + Token(2)                                   ||
+||                                                ||
+||   @ CS(0 -> -1) : [0]                          ||
+|| [RETURN STACK]:                                ||
+||   [1][1][0]: Block -> [20][Stat]<! !Block @ !> ||
+||   [0][7][0]: Stat -> [24][Module]< Stat @ >    ||
+|| [PREDECESSORS 83-83]: [83]                     ||
+|| [SUCCESORS 90-90]: [90]                        ||
+++================================================++
 |
 +
 |
@@ -2039,22 +2039,22 @@
 |   ForwardTrace: 82                                                                      |
 | [20][Stat]<! !Block @ !>                                                                |
 | [AST-INSTRUCTIONS]:                                                                     |
-|   @ CS(0 -> -1) : [0] OS(79 -> 58) : [34, 29][27][22, 17][15][10, 5][3]                 |
+|   @ CS(0 -> -1) : [0]                                                                   |
 |   + CreateObject(BlockStat)                                                             |
 |     objs: 0                                                                             |
 |                                                                                         |
-|   @ CS(0 -> -1) : [0] OS(79 -> 58) : [34, 29][27][22, 17][15][10, 5][3]                 |
+|   @ CS(0 -> -1) : [0]                                                                   |
 |   + Field(BlockStat::stats, 1)                                                          |
 |                                                                                         |
-|   @ CS(0 -> -1) : [0] OS(79 -> 58) : [34, 29][27][22, 17][15][10, 5][3]                 |
+|   @ CS(0 -> -1) : [0]                                                                   |
 |   + StackEnd()                                                                          |
 |     obj:0, begin:1@0, top:1@0, field:[32, 36, 12, 8, 24, 20], create:[90@0], end:[90@2] |
 |                                                                                         |
-|   @ OS(82 -> 79) : [0][34, 29][27][22, 17][15][10, 5][3]                                |
+|   @ OS(79 -> -1) : [0]                                                                  |
 |   > StackBegin()                                                                        |
 |     objs: 37                                                                            |
 |                                                                                         |
-|   @ CS(83 -> -1) : [37] OS(82 -> 79) : [0][34, 29][27][22, 17][15][10, 5][3]            |
+|   @ CS(80 -> -1) : [37] OS(79 -> -1) : [0]                                              |
 | [RETURN STACK]:                                                                         |
 |   [0][7][0]: Stat -> [24][Module]< Stat @ >                                             |
 | [PREDECESSORS 89-89]: [89]                                                              |
@@ -2063,28 +2063,28 @@
 |
 +
 |
-+----------------------------------------------------------------------------------+
-| [91]: <Ending>                                                                   |
-|   TraceExec: [88]                                                                |
-|   InsExec: [217:3]                                                               |
-|   ForwardTrace: 82                                                               |
-| [24][Module]< Stat @ >                                                           |
-| [AST-INSTRUCTIONS]:                                                              |
-|   @ CS(83 -> -1) : [37] OS(82 -> 79) : [0][34, 29][27][22, 17][15][10, 5][3]     |
-|   + StackEnd()                                                                   |
-|     obj:37, begin:90@3, top:1@0, use:[0], end!:[91@0]                            |
-|                                                                                  |
-|   @ OS(84 -> 82) : [37][0][34, 29][27][22, 17][15][10, 5][3]                     |
-|   > StackBegin()                                                                 |
-|     objs: 38                                                                     |
-|                                                                                  |
-|   @ CS(85 -> -1) : [38] OS(84 -> 82) : [37][0][34, 29][27][22, 17][15][10, 5][3] |
-|   > StackSlot(0)                                                                 |
-|                                                                                  |
-|   @ CS(85 -> -1) : [38] OS(82 -> 79) : [0][34, 29][27][22, 17][15][10, 5][3]     |
-| [PREDECESSORS 90-90]: [90]                                                       |
-| [SUCCESORS 92-92]: [92]                                                          |
-+----------------------------------------------------------------------------------+
++-------------------------------------------------------+
+| [91]: <Ending>                                        |
+|   TraceExec: [88]                                     |
+|   InsExec: [217:3]                                    |
+|   ForwardTrace: 82                                    |
+| [24][Module]< Stat @ >                                |
+| [AST-INSTRUCTIONS]:                                   |
+|   @ CS(80 -> -1) : [37] OS(79 -> -1) : [0]            |
+|   + StackEnd()                                        |
+|     obj:37, begin:90@3, top:1@0, use:[0], end!:[91@0] |
+|                                                       |
+|   @ OS(81 -> -1) : [37]                               |
+|   > StackBegin()                                      |
+|     objs: 38                                          |
+|                                                       |
+|   @ CS(82 -> -1) : [38] OS(81 -> -1) : [37]           |
+|   > StackSlot(0)                                      |
+|                                                       |
+|   @ CS(82 -> -1) : [38]                               |
+| [PREDECESSORS 90-90]: [90]                            |
+| [SUCCESORS 92-92]: [92]                               |
++-------------------------------------------------------+
 |
 +
 |
@@ -2095,17 +2095,17 @@
 |   ForwardTrace: 82                                                                |
 | [23][Module] END [ENDING]                                                         |
 | [AST-INSTRUCTIONS]:                                                               |
-|   @ CS(85 -> -1) : [38] OS(82 -> 79) : [0][34, 29][27][22, 17][15][10, 5][3]      |
+|   @ CS(82 -> -1) : [38]                                                           |
 |   + CreateObject(Module)                                                          |
 |     objs: 38                                                                      |
 |                                                                                   |
-|   @ CS(85 -> -1) : [38] OS(82 -> 79) : [0][34, 29][27][22, 17][15][10, 5][3]      |
+|   @ CS(82 -> -1) : [38]                                                           |
 |   + Field(Module::stat, 0)                                                        |
 |                                                                                   |
-|   @ CS(85 -> -1) : [38] OS(82 -> 79) : [0][34, 29][27][22, 17][15][10, 5][3]      |
+|   @ CS(82 -> -1) : [38]                                                           |
 |   + StackEnd()                                                                    |
 |     obj:38, begin:91@1, top:91@1, lrec:1@0, field:[37], create:[92@0], end:[92@2] |
 |                                                                                   |
-|   @ OS(86 -> 82) : [38][0][34, 29][27][22, 17][15][10, 5][3]                      |
+|   @ OS(83 -> -1) : [38]                                                           |
 | [PREDECESSORS 91-91]: [91]                                                        |
 +-----------------------------------------------------------------------------------+

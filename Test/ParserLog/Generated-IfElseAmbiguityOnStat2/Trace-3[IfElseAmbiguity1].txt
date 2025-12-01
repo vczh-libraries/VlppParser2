@@ -1,7 +1,20 @@
-﻿+-------------------------+
+﻿================ EXECUTION STEPS ================
+[0]: RA_Begin
+[2]: 1@0 - 68@0
+[3]: RA_Branch
+[4]: 2@0 - 67@0
+[5]: RA_Branch
+[6]: RA_End(2, IfStat)
+[8]: 68@1 - 68@2
+[9]: 61@0 - 62@2
+
+==================== TRACES =====================
+
++-------------------------+
 | [0]: <Start>            |
 |   TraceExec: [0]        |
 |   ForwardTrace: 0       |
+|   AmbiguityBegins: [0]  |
 | [26][Module] BEGIN      |
 | [AST-INSTRUCTIONS]:     |
 |   @                     |
@@ -17,6 +30,8 @@
 ||   TraceExec: [1]                                       ||    ||   TraceExec: [22]                                                  ||
 ||   InsExec: [0:2]                                       ||    ||   InsExec: [43:2]                                                  ||
 ||   ForwardTrace: 1                                      ||    ||   ForwardTrace: 2                                                  ||
+||   NextACT: 68                                          ||    ||   NextACT: 67                                                      ||
+||   AmbiguityCoveredInForward: [0]                       ||    ||   AmbiguityCoveredInForward: [0]                                   ||
 || [14][IfThenStat]< "if" @ "cond" "then" Stat >          ||    || [14][IfThenStat]< "if" @ "cond" "then" Stat >                      ||
 || [AST-INSTRUCTIONS]:                                    ||    || [AST-INSTRUCTIONS]:                                                ||
 ||   @                                                    ||    ||   @                                                                ||
@@ -691,6 +706,10 @@
 |   TraceExec: [43]                  |
 |   ForwardTrace: 61                 |
 |   CommonForwardTrace: 0            |
+| [AMBIGUITY-RESOLVING]: [0]         |
+|   objs: [20, 9]                    |
+|   first: 0 prefix: 0               |
+|   last: 61 postfix: 2              |
 | [CONTEXT]: CS(42 -> -1) : [21, 10] |
 +------------------------------------+
 |

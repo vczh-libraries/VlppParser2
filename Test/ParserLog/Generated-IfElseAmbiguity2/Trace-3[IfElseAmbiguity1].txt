@@ -1,7 +1,20 @@
-﻿+-------------------------+
+﻿================ EXECUTION STEPS ================
+[0]: RA_Begin
+[2]: 1@0 - 67@0
+[3]: RA_Branch
+[4]: 2@0 - 66@1
+[5]: RA_Branch
+[6]: RA_End(2, IfContentCandidate)
+[8]: 67@1 - 67@2
+[9]: 60@0 - 62@2
+
+==================== TRACES =====================
+
++-------------------------+
 | [0]: <Start>            |
 |   TraceExec: [0]        |
 |   ForwardTrace: 0       |
+|   AmbiguityBegins: [0]  |
 | [26][Module] BEGIN      |
 | [AST-INSTRUCTIONS]:     |
 |   @                     |
@@ -17,6 +30,8 @@
 ||   TraceExec: [1]                                              ||    ||   TraceExec: [21]                                                         ||
 ||   InsExec: [0:2]                                              ||    ||   InsExec: [44:2]                                                         ||
 ||   ForwardTrace: 1                                             ||    ||   ForwardTrace: 2                                                         ||
+||   NextACT: 67                                                 ||    ||   NextACT: 66                                                             ||
+||   AmbiguityCoveredInForward: [0]                              ||    ||   AmbiguityCoveredInForward: [0]                                          ||
 || [14][IfThenStat]< "if" @ "cond" "then" Stat >                 ||    || [14][IfThenStat]< "if" @ "cond" "then" Stat >                             ||
 || [AST-INSTRUCTIONS]:                                           ||    || [AST-INSTRUCTIONS]:                                                       ||
 ||   @                                                           ||    ||   @                                                                       ||
@@ -689,6 +704,10 @@
 |   TraceExec: [41]                 |
 |   ForwardTrace: 60                |
 |   CommonForwardTrace: 0           |
+| [AMBIGUITY-RESOLVING]: [0]        |
+|   objs: [16, 8]                   |
+|   first: 0 prefix: 0              |
+|   last: 60 postfix: 2             |
 | [CONTEXT]: CS(38 -> -1) : [19, 9] |
 +-----------------------------------+
 |
