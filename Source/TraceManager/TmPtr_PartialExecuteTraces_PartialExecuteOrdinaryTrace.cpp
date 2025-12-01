@@ -143,7 +143,7 @@ PartialExecuteOrdinaryTrace
 					{
 					case AstInsType::CreateObject:
 						{
-							CHECK_ERROR(context.createStack != nullref, ERROR_MESSAGE_PREFIX L"[CreateObject] context.createStack is empty.");
+							CHECK_ERROR(context.createStack != nullref, ERROR_MESSAGE_PREFIX L"Internal error: [CreateObject] context.createStack is empty.");
 							ForEachStack(context.createStack, [=](InsExec_Stack* topStack)
 							{
 								PushInsRefLink(topStack->createObjectInsRefs, { trace, insRef });
@@ -171,7 +171,7 @@ PartialExecuteOrdinaryTrace
 						break;
 					case AstInsType::StackEnd:
 						{
-							CHECK_ERROR(context.createStack != nullref, ERROR_MESSAGE_PREFIX L"[StackEnd] context.createStack is empty.");
+							CHECK_ERROR(context.createStack != nullref, ERROR_MESSAGE_PREFIX L"Internal error: [StackEnd] context.createStack is empty.");
 							bool endWithCreate = false;
 							bool endWithReuse = false;
 							ForEachStack(context.createStack, [&](InsExec_Stack* topStack)
@@ -196,11 +196,11 @@ PartialExecuteOrdinaryTrace
 
 								PushStackRefLink(insExec->operatingStacks, topStack);
 							});
-							CHECK_ERROR(endWithCreate ^ endWithReuse, ERROR_MESSAGE_PREFIX L"[StackEnd] Connected CreateObject and StackEnd should always be in the same trace.");
+							CHECK_ERROR(endWithCreate ^ endWithReuse, ERROR_MESSAGE_PREFIX L"Internal error: [StackEnd] Connected CreateObject and StackEnd should always be in the same trace.");
 
 							if (endWithReuse)
 							{
-								CHECK_ERROR(context.objectStack != nullref, ERROR_MESSAGE_PREFIX L"[StackEnd] context.objectStack is empty.");
+								CHECK_ERROR(context.objectStack != nullref, ERROR_MESSAGE_PREFIX L"Internal error: [StackEnd] context.objectStack is empty.");
 								auto topObjects = GetInsExec_StackArrayRefLink(context.objectStack);
 								context.objectStack = topObjects->previous;
 								ForEachStack(context.createStack, [&](InsExec_Stack* topStack)
@@ -216,8 +216,8 @@ PartialExecuteOrdinaryTrace
 						break;
 					case AstInsType::StackSlot:
 						{
-							CHECK_ERROR(context.createStack != nullref, ERROR_MESSAGE_PREFIX L"[StackSlot] context.createStack is empty.");
-							CHECK_ERROR(context.objectStack != nullref, ERROR_MESSAGE_PREFIX L"[StackSlot] context.objectStack is empty.");
+							CHECK_ERROR(context.createStack != nullref, ERROR_MESSAGE_PREFIX L"Internal error: [StackSlot] context.createStack is empty.");
+							CHECK_ERROR(context.objectStack != nullref, ERROR_MESSAGE_PREFIX L"Internal error: [StackSlot] context.objectStack is empty.");
 							auto topObjects = GetInsExec_StackArrayRefLink(context.objectStack);
 							context.objectStack = topObjects->previous;
 							ForEachStack(context.createStack, [&](InsExec_Stack* topStack)
@@ -232,9 +232,9 @@ PartialExecuteOrdinaryTrace
 					case AstInsType::EnumItem:
 						break;
 					case AstInsType::ResolveAmbiguity:
-						CHECK_FAIL(ERROR_MESSAGE_PREFIX L"ResolveAmbiguity should not appear in traces.");
+						CHECK_FAIL(ERROR_MESSAGE_PREFIX L"Internal error: ResolveAmbiguity should not appear in traces.");
 					default:;
-						CHECK_FAIL(ERROR_MESSAGE_PREFIX L"Unrecognizabled instruction.");
+						CHECK_FAIL(ERROR_MESSAGE_PREFIX L"Internal error: Unrecognizabled instruction.");
 					}
 				}
 				traceExec->context = context;

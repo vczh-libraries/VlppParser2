@@ -67,7 +67,7 @@ BuildAmbiguityStructures
 						}
 						else
 						{
-							CHECK_ERROR(predecessor->state != -1, ERROR_MESSAGE_PREFIX L"Predecessor trace of a merge trace cannot be a merge trace.");
+							CHECK_ERROR(predecessor->state != -1, ERROR_MESSAGE_PREFIX L"Internal error: Predecessor trace of a merge trace cannot be a merge trace.");
 
 							if (visitCount == 1)
 							{
@@ -99,7 +99,7 @@ BuildAmbiguityStructures
 									}
 									currentTrace = StepForward(currentTrace);
 								}
-								CHECK_ERROR(currentTrace != nullptr, ERROR_MESSAGE_PREFIX L"Cannot determine commonForwardBranch of a merge trace.");
+								CHECK_ERROR(currentTrace != nullptr, ERROR_MESSAGE_PREFIX L"Internal error: Cannot determine commonForwardBranch of a merge trace.");
 								traceExec->branchData.commonForwardBranch = currentTrace;
 							}
 						}
