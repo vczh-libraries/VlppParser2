@@ -96,6 +96,14 @@ AppendStepsBeforeAmbiguity
 						}
 					}
 				}
+				{
+					auto step = GetExecutionStep(executionSteps.Allocate());
+					step->type = ExecutionType::RA_Begin;
+					step->et_ra.trace = startTrace->allocatedIndex;
+					step->et_ra.type = -1;
+					step->et_ra.count = -1;
+					AppendStepLink(step, step, false, PASS_EXECUTION_STEP_CONTEXT);
+				}
 			}
 
 /***********************************************************************
