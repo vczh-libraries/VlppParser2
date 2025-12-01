@@ -1,12 +1,12 @@
-﻿+------------------------------+
-| [0]: <Start>                 |
-|   TraceExec: [0]             |
-|   ForwardTrace: 0            |
-| [22][Module] BEGIN           |
-| [AST-INSTRUCTIONS]:          |
-|   [AFTER]: {CS: []} {OS: []} |
-| [SUCCESORS 1-1]: [1]         |
-+------------------------------+
+﻿+----------------------+
+| [0]: <Start>         |
+|   TraceExec: [0]     |
+|   ForwardTrace: 0    |
+| [22][Module] BEGIN   |
+| [AST-INSTRUCTIONS]:  |
+|   [AFTER]:           |
+| [SUCCESORS 1-1]: [1] |
++----------------------+
 [0]
  |
  +
@@ -20,13 +20,13 @@
 || [6][Block]< "{" @ { Stat } "}" >               ||
 || [AST-INSTRUCTIONS]:                            ||
 ||   + StackBegin()                               ||
-||     [BEFORE]: {CS: []} {OS: []}                ||
+||     [BEFORE]:                                  ||
 ||     objs: 0                                    ||
 ||                                                ||
 ||   + Token(0)                                   ||
-||     [BEFORE]: {CS: [0] [0 -> -1]} {OS: []}     ||
+||     [BEFORE]: CS(0 -> -1) : [0]                ||
 ||                                                ||
-||   [AFTER]: {CS: [0] [0 -> -1]} {OS: []}        ||
+||   [AFTER]: CS(0 -> -1) : [0]                   ||
 || [RETURN STACK]:                                ||
 ||   [1][1][0]: Block -> [20][Stat]<! !Block @ !> ||
 ||   [0][7][0]: Stat -> [24][Module]< Stat @ >    ||
@@ -46,13 +46,13 @@
 || [16][IfContent]< "if" @ "cond" "then" Stat [ "else" Stat ] > ||
 || [AST-INSTRUCTIONS]:                                          ||
 ||   + StackBegin()                                             ||
-||     [BEFORE]: {CS: [0] [0 -> -1]} {OS: []}                   ||
+||     [BEFORE]: CS(0 -> -1) : [0]                              ||
 ||     objs: 1                                                  ||
 ||                                                              ||
 ||   + Token(0)                                                 ||
-||     [BEFORE]: {CS: [1] [1 -> 0]} {OS: []}                    ||
+||     [BEFORE]: CS(1 -> 0) : [1]                               ||
 ||                                                              ||
-||   [AFTER]: {CS: [1] [1 -> 0]} {OS: []}                       ||
+||   [AFTER]: CS(1 -> 0) : [1]                                  ||
 || [RETURN STACK]:                                              ||
 ||   [3][2][1]: IfContent -> [19][Stat]< IfContent @ >          ||
 ||   [2][0][1]: Stat -> [7][Block]< "{" { Stat @ } "}" >        ||
@@ -74,9 +74,9 @@
 || [15][IfContent]< "if" "cond" @ "then" Stat [ "else" Stat ] > ||
 || [AST-INSTRUCTIONS]:                                          ||
 ||   + Token(1)                                                 ||
-||     [BEFORE]: {CS: [1] [1 -> 0]} {OS: []}                    ||
+||     [BEFORE]: CS(1 -> 0) : [1]                               ||
 ||                                                              ||
-||   [AFTER]: {CS: [1] [1 -> 0]} {OS: []}                       ||
+||   [AFTER]: CS(1 -> 0) : [1]                                  ||
 || [RETURN STACK]:                                              ||
 ||   [3][2][1]: IfContent -> [19][Stat]< IfContent @ >          ||
 ||   [2][0][1]: Stat -> [7][Block]< "{" { Stat @ } "}" >        ||
@@ -98,9 +98,9 @@
 || [11][IfContent]< "if" "cond" "then" @ Stat [ "else" Stat ] > ||
 || [AST-INSTRUCTIONS]:                                          ||
 ||   + Token(2)                                                 ||
-||     [BEFORE]: {CS: [1] [1 -> 0]} {OS: []}                    ||
+||     [BEFORE]: CS(1 -> 0) : [1]                               ||
 ||                                                              ||
-||   [AFTER]: {CS: [1] [1 -> 0]} {OS: []}                       ||
+||   [AFTER]: CS(1 -> 0) : [1]                                  ||
 || [RETURN STACK]:                                              ||
 ||   [3][2][1]: IfContent -> [19][Stat]< IfContent @ >          ||
 ||   [2][0][1]: Stat -> [7][Block]< "{" { Stat @ } "}" >        ||
@@ -122,13 +122,13 @@
 || [16][IfContent]< "if" @ "cond" "then" Stat [ "else" Stat ] >                      ||
 || [AST-INSTRUCTIONS]:                                                               ||
 ||   + StackBegin()                                                                  ||
-||     [BEFORE]: {CS: [1] [1 -> 0]} {OS: []}                                         ||
+||     [BEFORE]: CS(1 -> 0) : [1]                                                    ||
 ||     objs: 2                                                                       ||
 ||                                                                                   ||
 ||   + Token(0)                                                                      ||
-||     [BEFORE]: {CS: [2] [2 -> 1]} {OS: []}                                         ||
+||     [BEFORE]: CS(2 -> 1) : [2]                                                    ||
 ||                                                                                   ||
-||   [AFTER]: {CS: [2] [2 -> 1]} {OS: []}                                            ||
+||   [AFTER]: CS(2 -> 1) : [2]                                                       ||
 || [RETURN STACK]:                                                                   ||
 ||   [5][2][4]: IfContent -> [19][Stat]< IfContent @ >                               ||
 ||   [4][5][4]: Stat -> [12][IfContent]< "if" "cond" "then" Stat @ [ "else" Stat ] > ||
@@ -152,9 +152,9 @@
 || [15][IfContent]< "if" "cond" @ "then" Stat [ "else" Stat ] >                      ||
 || [AST-INSTRUCTIONS]:                                                               ||
 ||   + Token(1)                                                                      ||
-||     [BEFORE]: {CS: [2] [2 -> 1]} {OS: []}                                         ||
+||     [BEFORE]: CS(2 -> 1) : [2]                                                    ||
 ||                                                                                   ||
-||   [AFTER]: {CS: [2] [2 -> 1]} {OS: []}                                            ||
+||   [AFTER]: CS(2 -> 1) : [2]                                                       ||
 || [RETURN STACK]:                                                                   ||
 ||   [5][2][4]: IfContent -> [19][Stat]< IfContent @ >                               ||
 ||   [4][5][4]: Stat -> [12][IfContent]< "if" "cond" "then" Stat @ [ "else" Stat ] > ||
@@ -178,9 +178,9 @@
 || [11][IfContent]< "if" "cond" "then" @ Stat [ "else" Stat ] >                      ||
 || [AST-INSTRUCTIONS]:                                                               ||
 ||   + Token(2)                                                                      ||
-||     [BEFORE]: {CS: [2] [2 -> 1]} {OS: []}                                         ||
+||     [BEFORE]: CS(2 -> 1) : [2]                                                    ||
 ||                                                                                   ||
-||   [AFTER]: {CS: [2] [2 -> 1]} {OS: []}                                            ||
+||   [AFTER]: CS(2 -> 1) : [2]                                                       ||
 || [RETURN STACK]:                                                                   ||
 ||   [5][2][4]: IfContent -> [19][Stat]< IfContent @ >                               ||
 ||   [4][5][4]: Stat -> [12][IfContent]< "if" "cond" "then" Stat @ [ "else" Stat ] > ||
@@ -204,13 +204,13 @@
 || [3][Do]< "do" @ ";" >                                                             ||
 || [AST-INSTRUCTIONS]:                                                               ||
 ||   + StackBegin()                                                                  ||
-||     [BEFORE]: {CS: [2] [2 -> 1]} {OS: []}                                         ||
+||     [BEFORE]: CS(2 -> 1) : [2]                                                    ||
 ||     objs: 3                                                                       ||
 ||                                                                                   ||
 ||   + Token(0)                                                                      ||
-||     [BEFORE]: {CS: [3] [3 -> 2]} {OS: []}                                         ||
+||     [BEFORE]: CS(3 -> 2) : [3]                                                    ||
 ||                                                                                   ||
-||   [AFTER]: {CS: [3] [3 -> 2]} {OS: []}                                            ||
+||   [AFTER]: CS(3 -> 2) : [3]                                                       ||
 || [RETURN STACK]:                                                                   ||
 ||   [7][3][7]: Do -> [21][Stat]<! !Do @ !>                                          ||
 ||   [6][5][7]: Stat -> [12][IfContent]< "if" "cond" "then" Stat @ [ "else" Stat ] > ||
@@ -236,9 +236,9 @@
 || [2][Do]< "do" ";" @ >                                                             ||
 || [AST-INSTRUCTIONS]:                                                               ||
 ||   + Token(1)                                                                      ||
-||     [BEFORE]: {CS: [3] [3 -> 2]} {OS: []}                                         ||
+||     [BEFORE]: CS(3 -> 2) : [3]                                                    ||
 ||                                                                                   ||
-||   [AFTER]: {CS: [3] [3 -> 2]} {OS: []}                                            ||
+||   [AFTER]: CS(3 -> 2) : [3]                                                       ||
 || [RETURN STACK]:                                                                   ||
 ||   [7][3][7]: Do -> [21][Stat]<! !Do @ !>                                          ||
 ||   [6][5][7]: Stat -> [12][IfContent]< "if" "cond" "then" Stat @ [ "else" Stat ] > ||
@@ -262,17 +262,17 @@
 | [21][Stat]<! !Do @ !>                                                             |
 | [AST-INSTRUCTIONS]:                                                               |
 |   + CreateObject(DoStat)                                                          |
-|     [BEFORE]: {CS: [3] [3 -> 2]} {OS: []}                                         |
+|     [BEFORE]: CS(3 -> 2) : [3]                                                    |
 |     objs: 3                                                                       |
 |                                                                                   |
 |   + StackEnd()                                                                    |
-|     [BEFORE]: {CS: [3] [3 -> 2]} {OS: []}                                         |
+|     [BEFORE]: CS(3 -> 2) : [3]                                                    |
 |                                                                                   |
 |   > StackBegin()                                                                  |
-|     [BEFORE]: {CS: [2] [2 -> 1]} {OS: [3] [4 -> -1]}                              |
+|     [BEFORE]: CS(2 -> 1) : [2] OS(4 -> -1) : [3]                                  |
 |     objs: 4                                                                       |
 |                                                                                   |
-|   [AFTER]: {CS: [4] [5 -> 2]} {OS: [3] [4 -> -1]}                                 |
+|   [AFTER]: CS(5 -> 2) : [4] OS(4 -> -1) : [3]                                     |
 | [RETURN STACK]:                                                                   |
 |   [6][5][7]: Stat -> [12][IfContent]< "if" "cond" "then" Stat @ [ "else" Stat ] > |
 |   [5][2][4]: IfContent -> [19][Stat]< IfContent @ >                               |
@@ -295,12 +295,12 @@
 | [12][IfContent]< "if" "cond" "then" Stat @ [ "else" Stat ] >                      |
 | [AST-INSTRUCTIONS]:                                                               |
 |   + StackEnd()                                                                    |
-|     [BEFORE]: {CS: [4] [5 -> 2]} {OS: [3] [4 -> -1]}                              |
+|     [BEFORE]: CS(5 -> 2) : [4] OS(4 -> -1) : [3]                                  |
 |                                                                                   |
 |   > StackSlot(3)                                                                  |
-|     [BEFORE]: {CS: [4] [5 -> 2]} {OS: [3] [4 -> -1]}                              |
+|     [BEFORE]: CS(5 -> 2) : [4] OS(4 -> -1) : [3]                                  |
 |                                                                                   |
-|   [AFTER]: {CS: [4] [5 -> 2]} {OS: [3] [4 -> -1]}                                 |
+|   [AFTER]: CS(5 -> 2) : [4] OS(4 -> -1) : [3]                                     |
 | [RETURN STACK]:                                                                   |
 |   [5][2][4]: IfContent -> [19][Stat]< IfContent @ >                               |
 |   [4][5][4]: Stat -> [12][IfContent]< "if" "cond" "then" Stat @ [ "else" Stat ] > |
@@ -322,26 +322,26 @@
 |                                                                                          | [19][Stat]< IfContent @ >                                                         |
 |                                                                                          | [AST-INSTRUCTIONS]:                                                               |
 |                                                                                          |   + CreateObject(IfContentCandidate)                                              |
-|                                                                                          |     [BEFORE]: {CS: [4] [5 -> 2]} {OS: [3] [4 -> -1]}                              |
+|                                                                                          |     [BEFORE]: CS(5 -> 2) : [4] OS(4 -> -1) : [3]                                  |
 |                                                                                          |     objs: 4                                                                       |
 |                                                                                          |                                                                                   |
 |                                                                                          |   + Field(IfContentCandidate::thenBranch, 3)                                      |
-|                                                                                          |     [BEFORE]: {CS: [4] [5 -> 2]} {OS: [3] [4 -> -1]}                              |
+|                                                                                          |     [BEFORE]: CS(5 -> 2) : [4] OS(4 -> -1) : [3]                                  |
 |                                                                                          |                                                                                   |
 |                                                                                          |   + Field(IfContentCandidate::elseBranch, 5)                                      |
-|                                                                                          |     [BEFORE]: {CS: [4] [5 -> 2]} {OS: [3] [4 -> -1]}                              |
+|                                                                                          |     [BEFORE]: CS(5 -> 2) : [4] OS(4 -> -1) : [3]                                  |
 |                                                                                          |                                                                                   |
 |                                                                                          |   + StackEnd()                                                                    |
-|                                                                                          |     [BEFORE]: {CS: [4] [5 -> 2]} {OS: [3] [4 -> -1]}                              |
+|                                                                                          |     [BEFORE]: CS(5 -> 2) : [4] OS(4 -> -1) : [3]                                  |
 |                                                                                          |                                                                                   |
 |                                                                                          |   > StackBegin()                                                                  |
-|                                                                                          |     [BEFORE]: {CS: [2] [2 -> 1]} {OS: [4] [14 -> 4]}                              |
+|                                                                                          |     [BEFORE]: CS(2 -> 1) : [2] OS(14 -> 4) : [4]                                  |
 |                                                                                          |     objs: 9                                                                       |
 |                                                                                          |                                                                                   |
 |                                                                                          |   > StackSlot(0)                                                                  |
-|                                                                                          |     [BEFORE]: {CS: [9] [15 -> 2]} {OS: [4] [14 -> 4]}                             |
+|                                                                                          |     [BEFORE]: CS(15 -> 2) : [9] OS(14 -> 4) : [4]                                 |
 |                                                                                          |                                                                                   |
-|                                                                                          |   [AFTER]: {CS: [9] [15 -> 2]} {OS: [4] [14 -> 4]}                                |
+|                                                                                          |   [AFTER]: CS(15 -> 2) : [9] OS(14 -> 4) : [4]                                    |
 |                                                                                          | [RETURN STACK]:                                                                   |
 |                                                                                          |   [4][5][4]: Stat -> [12][IfContent]< "if" "cond" "then" Stat @ [ "else" Stat ] > |
 |                                                                                          |   [3][2][1]: IfContent -> [19][Stat]< IfContent @ >                               |
@@ -362,19 +362,19 @@
 |                                                                                          | [12][IfContent]< "if" "cond" "then" Stat @ [ "else" Stat ] > |
 |                                                                                          | [AST-INSTRUCTIONS]:                                          |
 |                                                                                          |   + CreateObject(IfStat)                                     |
-|                                                                                          |     [BEFORE]: {CS: [9] [15 -> 2]} {OS: [4] [14 -> 4]}        |
+|                                                                                          |     [BEFORE]: CS(15 -> 2) : [9] OS(14 -> 4) : [4]            |
 |                                                                                          |     objs: 9                                                  |
 |                                                                                          |                                                              |
 |                                                                                          |   + Field(IfStat::content, 0)                                |
-|                                                                                          |     [BEFORE]: {CS: [9] [15 -> 2]} {OS: [4] [14 -> 4]}        |
+|                                                                                          |     [BEFORE]: CS(15 -> 2) : [9] OS(14 -> 4) : [4]            |
 |                                                                                          |                                                              |
 |                                                                                          |   + StackEnd()                                               |
-|                                                                                          |     [BEFORE]: {CS: [9] [15 -> 2]} {OS: [4] [14 -> 4]}        |
+|                                                                                          |     [BEFORE]: CS(15 -> 2) : [9] OS(14 -> 4) : [4]            |
 |                                                                                          |                                                              |
 |                                                                                          |   > StackSlot(3)                                             |
-|                                                                                          |     [BEFORE]: {CS: [2] [2 -> 1]} {OS: [9] [16 -> 14]}        |
+|                                                                                          |     [BEFORE]: CS(2 -> 1) : [2] OS(16 -> 14) : [9]            |
 |                                                                                          |                                                              |
-|                                                                                          |   [AFTER]: {CS: [2] [2 -> 1]} {OS: [9] [16 -> 14]}           |
+|                                                                                          |   [AFTER]: CS(2 -> 1) : [2] OS(16 -> 14) : [9]               |
 |                                                                                          | [RETURN STACK]:                                              |
 |                                                                                          |   [3][2][1]: IfContent -> [19][Stat]< IfContent @ >          |
 |                                                                                          |   [2][0][1]: Stat -> [7][Block]< "{" { Stat @ } "}" >        |
@@ -396,9 +396,9 @@
 || [13][IfContent]< "if" "cond" "then" Stat [ "else" @ Stat ] >                      ||    || [13][IfContent]< "if" "cond" "then" Stat [ "else" @ Stat ] > ||
 || [AST-INSTRUCTIONS]:                                                               ||    || [AST-INSTRUCTIONS]:                                          ||
 ||   + Token(4)                                                                      ||    ||   + Token(4)                                                 ||
-||     [BEFORE]: {CS: [4] [5 -> 2]} {OS: [3] [4 -> -1]}                              ||    ||     [BEFORE]: {CS: [2] [2 -> 1]} {OS: [9] [16 -> 14]}        ||
+||     [BEFORE]: CS(5 -> 2) : [4] OS(4 -> -1) : [3]                                  ||    ||     [BEFORE]: CS(2 -> 1) : [2] OS(16 -> 14) : [9]            ||
 ||                                                                                   ||    ||                                                              ||
-||   [AFTER]: {CS: [4] [5 -> 2]} {OS: [3] [4 -> -1]}                                 ||    ||   [AFTER]: {CS: [2] [2 -> 1]} {OS: [9] [16 -> 14]}           ||
+||   [AFTER]: CS(5 -> 2) : [4] OS(4 -> -1) : [3]                                     ||    ||   [AFTER]: CS(2 -> 1) : [2] OS(16 -> 14) : [9]               ||
 || [RETURN STACK]:                                                                   ||    || [RETURN STACK]:                                              ||
 ||   [5][2][4]: IfContent -> [19][Stat]< IfContent @ >                               ||    ||   [3][2][1]: IfContent -> [19][Stat]< IfContent @ >          ||
 ||   [4][5][4]: Stat -> [12][IfContent]< "if" "cond" "then" Stat @ [ "else" Stat ] > ||    ||   [2][0][1]: Stat -> [7][Block]< "{" { Stat @ } "}" >        ||
@@ -422,13 +422,13 @@
 || [3][Do]< "do" @ ";" >                                                              ||    || [3][Do]< "do" @ ";" >                                                               ||
 || [AST-INSTRUCTIONS]:                                                                ||    || [AST-INSTRUCTIONS]:                                                                 ||
 ||   + StackBegin()                                                                   ||    ||   + StackBegin()                                                                    ||
-||     [BEFORE]: {CS: [4] [5 -> 2]} {OS: [3] [4 -> -1]}                               ||    ||     [BEFORE]: {CS: [2] [2 -> 1]} {OS: [9] [16 -> 14]}                               ||
+||     [BEFORE]: CS(5 -> 2) : [4] OS(4 -> -1) : [3]                                   ||    ||     [BEFORE]: CS(2 -> 1) : [2] OS(16 -> 14) : [9]                                   ||
 ||     objs: 5                                                                        ||    ||     objs: 10                                                                        ||
 ||                                                                                    ||    ||                                                                                     ||
 ||   + Token(0)                                                                       ||    ||   + Token(0)                                                                        ||
-||     [BEFORE]: {CS: [5] [6 -> 5]} {OS: [3] [4 -> -1]}                               ||    ||     [BEFORE]: {CS: [10] [17 -> 2]} {OS: [9] [16 -> 14]}                             ||
+||     [BEFORE]: CS(6 -> 5) : [5] OS(4 -> -1) : [3]                                   ||    ||     [BEFORE]: CS(17 -> 2) : [10] OS(16 -> 14) : [9]                                 ||
 ||                                                                                    ||    ||                                                                                     ||
-||   [AFTER]: {CS: [5] [6 -> 5]} {OS: [3] [4 -> -1]}                                  ||    ||   [AFTER]: {CS: [10] [17 -> 2]} {OS: [9] [16 -> 14]}                                ||
+||   [AFTER]: CS(6 -> 5) : [5] OS(4 -> -1) : [3]                                      ||    ||   [AFTER]: CS(17 -> 2) : [10] OS(16 -> 14) : [9]                                    ||
 || [RETURN STACK]:                                                                    ||    || [RETURN STACK]:                                                                     ||
 ||   [9][3][15]: Do -> [21][Stat]<! !Do @ !>                                          ||    ||   [11][3][16]: Do -> [21][Stat]<! !Do @ !>                                          ||
 ||   [8][6][15]: Stat -> [14][IfContent]< "if" "cond" "then" Stat [ "else" Stat @ ] > ||    ||   [10][6][16]: Stat -> [14][IfContent]< "if" "cond" "then" Stat [ "else" Stat @ ] > ||
@@ -454,9 +454,9 @@
 || [2][Do]< "do" ";" @ >                                                              ||    || [2][Do]< "do" ";" @ >                                                               ||
 || [AST-INSTRUCTIONS]:                                                                ||    || [AST-INSTRUCTIONS]:                                                                 ||
 ||   + Token(1)                                                                       ||    ||   + Token(1)                                                                        ||
-||     [BEFORE]: {CS: [5] [6 -> 5]} {OS: [3] [4 -> -1]}                               ||    ||     [BEFORE]: {CS: [10] [17 -> 2]} {OS: [9] [16 -> 14]}                             ||
+||     [BEFORE]: CS(6 -> 5) : [5] OS(4 -> -1) : [3]                                   ||    ||     [BEFORE]: CS(17 -> 2) : [10] OS(16 -> 14) : [9]                                 ||
 ||                                                                                    ||    ||                                                                                     ||
-||   [AFTER]: {CS: [5] [6 -> 5]} {OS: [3] [4 -> -1]}                                  ||    ||   [AFTER]: {CS: [10] [17 -> 2]} {OS: [9] [16 -> 14]}                                ||
+||   [AFTER]: CS(6 -> 5) : [5] OS(4 -> -1) : [3]                                      ||    ||   [AFTER]: CS(17 -> 2) : [10] OS(16 -> 14) : [9]                                    ||
 || [RETURN STACK]:                                                                    ||    || [RETURN STACK]:                                                                     ||
 ||   [9][3][15]: Do -> [21][Stat]<! !Do @ !>                                          ||    ||   [11][3][16]: Do -> [21][Stat]<! !Do @ !>                                          ||
 ||   [8][6][15]: Stat -> [14][IfContent]< "if" "cond" "then" Stat [ "else" Stat @ ] > ||    ||   [10][6][16]: Stat -> [14][IfContent]< "if" "cond" "then" Stat [ "else" Stat @ ] > ||
@@ -480,17 +480,17 @@
 | [21][Stat]<! !Do @ !>                                                              |      | [21][Stat]<! !Do @ !>                                                               |
 | [AST-INSTRUCTIONS]:                                                                |      | [AST-INSTRUCTIONS]:                                                                 |
 |   + CreateObject(DoStat)                                                           |      |   + CreateObject(DoStat)                                                            |
-|     [BEFORE]: {CS: [5] [6 -> 5]} {OS: [3] [4 -> -1]}                               |      |     [BEFORE]: {CS: [10] [17 -> 2]} {OS: [9] [16 -> 14]}                             |
+|     [BEFORE]: CS(6 -> 5) : [5] OS(4 -> -1) : [3]                                   |      |     [BEFORE]: CS(17 -> 2) : [10] OS(16 -> 14) : [9]                                 |
 |     objs: 5                                                                        |      |     objs: 10                                                                        |
 |                                                                                    |      |                                                                                     |
 |   + StackEnd()                                                                     |      |   + StackEnd()                                                                      |
-|     [BEFORE]: {CS: [5] [6 -> 5]} {OS: [3] [4 -> -1]}                               |      |     [BEFORE]: {CS: [10] [17 -> 2]} {OS: [9] [16 -> 14]}                             |
+|     [BEFORE]: CS(6 -> 5) : [5] OS(4 -> -1) : [3]                                   |      |     [BEFORE]: CS(17 -> 2) : [10] OS(16 -> 14) : [9]                                 |
 |                                                                                    |      |                                                                                     |
 |   > StackBegin()                                                                   |      |   > StackBegin()                                                                    |
-|     [BEFORE]: {CS: [4] [5 -> 2]} {OS: [5] [7 -> 4]}                                |      |     [BEFORE]: {CS: [2] [2 -> 1]} {OS: [10] [18 -> 16]}                              |
+|     [BEFORE]: CS(5 -> 2) : [4] OS(7 -> 4) : [5]                                    |      |     [BEFORE]: CS(2 -> 1) : [2] OS(18 -> 16) : [10]                                  |
 |     objs: 6                                                                        |      |     objs: 11                                                                        |
 |                                                                                    |      |                                                                                     |
-|   [AFTER]: {CS: [6] [8 -> 5]} {OS: [5] [7 -> 4]}                                   |      |   [AFTER]: {CS: [11] [19 -> 2]} {OS: [10] [18 -> 16]}                               |
+|   [AFTER]: CS(8 -> 5) : [6] OS(7 -> 4) : [5]                                       |      |   [AFTER]: CS(19 -> 2) : [11] OS(18 -> 16) : [10]                                   |
 | [RETURN STACK]:                                                                    |      | [RETURN STACK]:                                                                     |
 |   [8][6][15]: Stat -> [14][IfContent]< "if" "cond" "then" Stat [ "else" Stat @ ] > |      |   [10][6][16]: Stat -> [14][IfContent]< "if" "cond" "then" Stat [ "else" Stat @ ] > |
 |   [5][2][4]: IfContent -> [19][Stat]< IfContent @ >                                |      |   [3][2][1]: IfContent -> [19][Stat]< IfContent @ >                                 |
@@ -513,12 +513,12 @@
 | [14][IfContent]< "if" "cond" "then" Stat [ "else" Stat @ ] >                      |       | [14][IfContent]< "if" "cond" "then" Stat [ "else" Stat @ ] > |
 | [AST-INSTRUCTIONS]:                                                               |       | [AST-INSTRUCTIONS]:                                          |
 |   + StackEnd()                                                                    |       |   + StackEnd()                                               |
-|     [BEFORE]: {CS: [6] [8 -> 5]} {OS: [5] [7 -> 4]}                               |       |     [BEFORE]: {CS: [11] [19 -> 2]} {OS: [10] [18 -> 16]}     |
+|     [BEFORE]: CS(8 -> 5) : [6] OS(7 -> 4) : [5]                                   |       |     [BEFORE]: CS(19 -> 2) : [11] OS(18 -> 16) : [10]         |
 |                                                                                   |       |                                                              |
 |   > StackSlot(5)                                                                  |       |   > StackSlot(5)                                             |
-|     [BEFORE]: {CS: [6] [8 -> 5]} {OS: [5] [7 -> 4]}                               |       |     [BEFORE]: {CS: [11] [19 -> 2]} {OS: [10] [18 -> 16]}     |
+|     [BEFORE]: CS(8 -> 5) : [6] OS(7 -> 4) : [5]                                   |       |     [BEFORE]: CS(19 -> 2) : [11] OS(18 -> 16) : [10]         |
 |                                                                                   |       |                                                              |
-|   [AFTER]: {CS: [6] [8 -> 5]} {OS: [5] [7 -> 4]}                                  |       |   [AFTER]: {CS: [11] [19 -> 2]} {OS: [10] [18 -> 16]}        |
+|   [AFTER]: CS(8 -> 5) : [6] OS(7 -> 4) : [5]                                      |       |   [AFTER]: CS(19 -> 2) : [11] OS(18 -> 16) : [10]            |
 | [RETURN STACK]:                                                                   |       | [RETURN STACK]:                                              |
 |   [5][2][4]: IfContent -> [19][Stat]< IfContent @ >                               |       |   [3][2][1]: IfContent -> [19][Stat]< IfContent @ >          |
 |   [4][5][4]: Stat -> [12][IfContent]< "if" "cond" "then" Stat @ [ "else" Stat ] > |       |   [2][0][1]: Stat -> [7][Block]< "{" { Stat @ } "}" >        |
@@ -532,41 +532,41 @@
 |                                                                                           |
 +                                                                                           +
 |                                                                                           |
-+-----------------------------------------------------------------------------------+       +----------------------------------------------------------+
-| [22]: <Ending>                                                                    |       | [29]: <Ending>                                           |
-|   TraceExec: [17]                                                                 |       |   TraceExec: [27]                                        |
-|   InsExec: [27:6]                                                                 |       |   InsExec: [62:6]                                        |
-|   ForwardTrace: 15                                                                |       |   ForwardTrace: 12                                       |
-| [19][Stat]< IfContent @ >                                                         |       | [19][Stat]< IfContent @ >                                |
-| [AST-INSTRUCTIONS]:                                                               |       | [AST-INSTRUCTIONS]:                                      |
-|   + CreateObject(IfContentCandidate)                                              |       |   + CreateObject(IfContentCandidate)                     |
-|     [BEFORE]: {CS: [6] [8 -> 5]} {OS: [5] [7 -> 4]}                               |       |     [BEFORE]: {CS: [11] [19 -> 2]} {OS: [10] [18 -> 16]} |
-|     objs: 6                                                                       |       |     objs: 11                                             |
-|                                                                                   |       |                                                          |
-|   + Field(IfContentCandidate::thenBranch, 3)                                      |       |   + Field(IfContentCandidate::thenBranch, 3)             |
-|     [BEFORE]: {CS: [6] [8 -> 5]} {OS: [5] [7 -> 4]}                               |       |     [BEFORE]: {CS: [11] [19 -> 2]} {OS: [10] [18 -> 16]} |
-|                                                                                   |       |                                                          |
-|   + Field(IfContentCandidate::elseBranch, 5)                                      |       |   + Field(IfContentCandidate::elseBranch, 5)             |
-|     [BEFORE]: {CS: [6] [8 -> 5]} {OS: [5] [7 -> 4]}                               |       |     [BEFORE]: {CS: [11] [19 -> 2]} {OS: [10] [18 -> 16]} |
-|                                                                                   |       |                                                          |
-|   + StackEnd()                                                                    |       |   + StackEnd()                                           |
-|     [BEFORE]: {CS: [6] [8 -> 5]} {OS: [5] [7 -> 4]}                               |       |     [BEFORE]: {CS: [11] [19 -> 2]} {OS: [10] [18 -> 16]} |
-|                                                                                   |       |                                                          |
-|   > StackBegin()                                                                  |       |   > StackBegin()                                         |
-|     [BEFORE]: {CS: [4] [5 -> 2]} {OS: [6] [9 -> 7]}                               |       |     [BEFORE]: {CS: [2] [2 -> 1]} {OS: [11] [20 -> 18]}   |
-|     objs: 7                                                                       |       |     objs: 12                                             |
-|                                                                                   |       |                                                          |
-|   > StackSlot(0)                                                                  |       |   > StackSlot(0)                                         |
-|     [BEFORE]: {CS: [7] [10 -> 5]} {OS: [6] [9 -> 7]}                              |       |     [BEFORE]: {CS: [12] [21 -> 2]} {OS: [11] [20 -> 18]} |
-|                                                                                   |       |                                                          |
-|   [AFTER]: {CS: [7] [10 -> 5]} {OS: [6] [9 -> 7]}                                 |       |   [AFTER]: {CS: [12] [21 -> 2]} {OS: [11] [20 -> 18]}    |
-| [RETURN STACK]:                                                                   |       | [RETURN STACK]:                                          |
-|   [4][5][4]: Stat -> [12][IfContent]< "if" "cond" "then" Stat @ [ "else" Stat ] > |       |   [2][0][1]: Stat -> [7][Block]< "{" { Stat @ } "}" >    |
-|   [3][2][1]: IfContent -> [19][Stat]< IfContent @ >                               |       |   [1][1][0]: Block -> [20][Stat]<! !Block @ !>           |
-|   [2][0][1]: Stat -> [7][Block]< "{" { Stat @ } "}" >                             |       |   [0][7][0]: Stat -> [24][Module]< Stat @ >              |
-|   [1][1][0]: Block -> [20][Stat]<! !Block @ !>                                    |       | [PREDECESSORS 28-28]: [28]                               |
-|   [0][7][0]: Stat -> [24][Module]< Stat @ >                                       |       | [SUCCESORS 24-24]: [24]                                  |
-| [PREDECESSORS 21-21]: [21]                                                        |       +----------------------------------------------------------+
++-----------------------------------------------------------------------------------+       +-------------------------------------------------------+
+| [22]: <Ending>                                                                    |       | [29]: <Ending>                                        |
+|   TraceExec: [17]                                                                 |       |   TraceExec: [27]                                     |
+|   InsExec: [27:6]                                                                 |       |   InsExec: [62:6]                                     |
+|   ForwardTrace: 15                                                                |       |   ForwardTrace: 12                                    |
+| [19][Stat]< IfContent @ >                                                         |       | [19][Stat]< IfContent @ >                             |
+| [AST-INSTRUCTIONS]:                                                               |       | [AST-INSTRUCTIONS]:                                   |
+|   + CreateObject(IfContentCandidate)                                              |       |   + CreateObject(IfContentCandidate)                  |
+|     [BEFORE]: CS(8 -> 5) : [6] OS(7 -> 4) : [5]                                   |       |     [BEFORE]: CS(19 -> 2) : [11] OS(18 -> 16) : [10]  |
+|     objs: 6                                                                       |       |     objs: 11                                          |
+|                                                                                   |       |                                                       |
+|   + Field(IfContentCandidate::thenBranch, 3)                                      |       |   + Field(IfContentCandidate::thenBranch, 3)          |
+|     [BEFORE]: CS(8 -> 5) : [6] OS(7 -> 4) : [5]                                   |       |     [BEFORE]: CS(19 -> 2) : [11] OS(18 -> 16) : [10]  |
+|                                                                                   |       |                                                       |
+|   + Field(IfContentCandidate::elseBranch, 5)                                      |       |   + Field(IfContentCandidate::elseBranch, 5)          |
+|     [BEFORE]: CS(8 -> 5) : [6] OS(7 -> 4) : [5]                                   |       |     [BEFORE]: CS(19 -> 2) : [11] OS(18 -> 16) : [10]  |
+|                                                                                   |       |                                                       |
+|   + StackEnd()                                                                    |       |   + StackEnd()                                        |
+|     [BEFORE]: CS(8 -> 5) : [6] OS(7 -> 4) : [5]                                   |       |     [BEFORE]: CS(19 -> 2) : [11] OS(18 -> 16) : [10]  |
+|                                                                                   |       |                                                       |
+|   > StackBegin()                                                                  |       |   > StackBegin()                                      |
+|     [BEFORE]: CS(5 -> 2) : [4] OS(9 -> 7) : [6]                                   |       |     [BEFORE]: CS(2 -> 1) : [2] OS(20 -> 18) : [11]    |
+|     objs: 7                                                                       |       |     objs: 12                                          |
+|                                                                                   |       |                                                       |
+|   > StackSlot(0)                                                                  |       |   > StackSlot(0)                                      |
+|     [BEFORE]: CS(10 -> 5) : [7] OS(9 -> 7) : [6]                                  |       |     [BEFORE]: CS(21 -> 2) : [12] OS(20 -> 18) : [11]  |
+|                                                                                   |       |                                                       |
+|   [AFTER]: CS(10 -> 5) : [7] OS(9 -> 7) : [6]                                     |       |   [AFTER]: CS(21 -> 2) : [12] OS(20 -> 18) : [11]     |
+| [RETURN STACK]:                                                                   |       | [RETURN STACK]:                                       |
+|   [4][5][4]: Stat -> [12][IfContent]< "if" "cond" "then" Stat @ [ "else" Stat ] > |       |   [2][0][1]: Stat -> [7][Block]< "{" { Stat @ } "}" > |
+|   [3][2][1]: IfContent -> [19][Stat]< IfContent @ >                               |       |   [1][1][0]: Block -> [20][Stat]<! !Block @ !>        |
+|   [2][0][1]: Stat -> [7][Block]< "{" { Stat @ } "}" >                             |       |   [0][7][0]: Stat -> [24][Module]< Stat @ >           |
+|   [1][1][0]: Block -> [20][Stat]<! !Block @ !>                                    |       | [PREDECESSORS 28-28]: [28]                            |
+|   [0][7][0]: Stat -> [24][Module]< Stat @ >                                       |       | [SUCCESORS 24-24]: [24]                               |
+| [PREDECESSORS 21-21]: [21]                                                        |       +-------------------------------------------------------+
 | [SUCCESORS 23-23]: [23]                                                           |       |
 +-----------------------------------------------------------------------------------+       |
 |                                                                                           |
@@ -580,19 +580,19 @@
 | [12][IfContent]< "if" "cond" "then" Stat @ [ "else" Stat ] > |                            |
 | [AST-INSTRUCTIONS]:                                          |                            |
 |   + CreateObject(IfStat)                                     |                            |
-|     [BEFORE]: {CS: [7] [10 -> 5]} {OS: [6] [9 -> 7]}         |                            |
+|     [BEFORE]: CS(10 -> 5) : [7] OS(9 -> 7) : [6]             |                            |
 |     objs: 7                                                  |                            |
 |                                                              |                            |
 |   + Field(IfStat::content, 0)                                |                            |
-|     [BEFORE]: {CS: [7] [10 -> 5]} {OS: [6] [9 -> 7]}         |                            |
+|     [BEFORE]: CS(10 -> 5) : [7] OS(9 -> 7) : [6]             |                            |
 |                                                              |                            |
 |   + StackEnd()                                               |                            |
-|     [BEFORE]: {CS: [7] [10 -> 5]} {OS: [6] [9 -> 7]}         |                            |
+|     [BEFORE]: CS(10 -> 5) : [7] OS(9 -> 7) : [6]             |                            |
 |                                                              |                            |
 |   > StackSlot(3)                                             |                            |
-|     [BEFORE]: {CS: [4] [5 -> 2]} {OS: [7] [11 -> 9]}         |                            |
+|     [BEFORE]: CS(5 -> 2) : [4] OS(11 -> 9) : [7]             |                            |
 |                                                              |                            |
-|   [AFTER]: {CS: [4] [5 -> 2]} {OS: [7] [11 -> 9]}            |                            |
+|   [AFTER]: CS(5 -> 2) : [4] OS(11 -> 9) : [7]                |                            |
 | [RETURN STACK]:                                              |                            |
 |   [3][2][1]: IfContent -> [19][Stat]< IfContent @ >          |                            |
 |   [2][0][1]: Stat -> [7][Block]< "{" { Stat @ } "}" >        |                            |
@@ -604,82 +604,82 @@
 |                                                                                           |
 +                                                                                           |
 |                                                                                           |
-+--------------------------------------------------------+                                  |
-| [30]: <Ending>                                         |                                  |
-|   TraceExec: [19]                                      |                                  |
-|   InsExec: [37:6]                                      |                                  |
-|   ForwardTrace: 15                                     |                                  |
-| [19][Stat]< IfContent @ >                              |                                  |
-| [AST-INSTRUCTIONS]:                                    |                                  |
-|   + CreateObject(IfContentCandidate)                   |                                  |
-|     [BEFORE]: {CS: [4] [5 -> 2]} {OS: [7] [11 -> 9]}   |                                  |
-|     objs: 4                                            |                                  |
-|                                                        |                                  |
-|   + Field(IfContentCandidate::thenBranch, 3)           |                                  |
-|     [BEFORE]: {CS: [4] [5 -> 2]} {OS: [7] [11 -> 9]}   |                                  |
-|                                                        |                                  |
-|   + Field(IfContentCandidate::elseBranch, 5)           |                                  |
-|     [BEFORE]: {CS: [4] [5 -> 2]} {OS: [7] [11 -> 9]}   |                                  |
-|                                                        |                                  |
-|   + StackEnd()                                         |                                  |
-|     [BEFORE]: {CS: [4] [5 -> 2]} {OS: [7] [11 -> 9]}   |                                  |
-|                                                        |                                  |
-|   > StackBegin()                                       |                                  |
-|     [BEFORE]: {CS: [2] [2 -> 1]} {OS: [4] [12 -> 11]}  |                                  |
-|     objs: 8                                            |                                  |
-|                                                        |                                  |
-|   > StackSlot(0)                                       |                                  |
-|     [BEFORE]: {CS: [8] [13 -> 2]} {OS: [4] [12 -> 11]} |                                  |
-|                                                        |                                  |
-|   [AFTER]: {CS: [8] [13 -> 2]} {OS: [4] [12 -> 11]}    |                                  |
-| [RETURN STACK]:                                        |                                  |
-|   [2][0][1]: Stat -> [7][Block]< "{" { Stat @ } "}" >  |                                  |
-|   [1][1][0]: Block -> [20][Stat]<! !Block @ !>         |                                  |
-|   [0][7][0]: Stat -> [24][Module]< Stat @ >            |                                  |
-| [PREDECESSORS 23-23]: [23]                             |                                  |
-| [SUCCESORS 24-24]: [24]                                |                                  |
-+--------------------------------------------------------+                                  |
++-------------------------------------------------------+                                   |
+| [30]: <Ending>                                        |                                   |
+|   TraceExec: [19]                                     |                                   |
+|   InsExec: [37:6]                                     |                                   |
+|   ForwardTrace: 15                                    |                                   |
+| [19][Stat]< IfContent @ >                             |                                   |
+| [AST-INSTRUCTIONS]:                                   |                                   |
+|   + CreateObject(IfContentCandidate)                  |                                   |
+|     [BEFORE]: CS(5 -> 2) : [4] OS(11 -> 9) : [7]      |                                   |
+|     objs: 4                                           |                                   |
+|                                                       |                                   |
+|   + Field(IfContentCandidate::thenBranch, 3)          |                                   |
+|     [BEFORE]: CS(5 -> 2) : [4] OS(11 -> 9) : [7]      |                                   |
+|                                                       |                                   |
+|   + Field(IfContentCandidate::elseBranch, 5)          |                                   |
+|     [BEFORE]: CS(5 -> 2) : [4] OS(11 -> 9) : [7]      |                                   |
+|                                                       |                                   |
+|   + StackEnd()                                        |                                   |
+|     [BEFORE]: CS(5 -> 2) : [4] OS(11 -> 9) : [7]      |                                   |
+|                                                       |                                   |
+|   > StackBegin()                                      |                                   |
+|     [BEFORE]: CS(2 -> 1) : [2] OS(12 -> 11) : [4]     |                                   |
+|     objs: 8                                           |                                   |
+|                                                       |                                   |
+|   > StackSlot(0)                                      |                                   |
+|     [BEFORE]: CS(13 -> 2) : [8] OS(12 -> 11) : [4]    |                                   |
+|                                                       |                                   |
+|   [AFTER]: CS(13 -> 2) : [8] OS(12 -> 11) : [4]       |                                   |
+| [RETURN STACK]:                                       |                                   |
+|   [2][0][1]: Stat -> [7][Block]< "{" { Stat @ } "}" > |                                   |
+|   [1][1][0]: Block -> [20][Stat]<! !Block @ !>        |                                   |
+|   [0][7][0]: Stat -> [24][Module]< Stat @ >           |                                   |
+| [PREDECESSORS 23-23]: [23]                            |                                   |
+| [SUCCESORS 24-24]: [24]                               |                                   |
++-------------------------------------------------------+                                   |
 |                                                                                           |
 +-------------------------------------------------------------------------------------------+
 |
-+-------------------------------------------------------------+
-| [24]: <Merging>                                             |
-| <Start>                                                     |
-|   TraceExec: [28]                                           |
-|   ForwardTrace: 24                                          |
-|   CommonForwardTrace: 0                                     |
-| [CONTEXT]: {CS: [12, 8] [26 -> 2]} {OS: [11, 4] [22 -> 23]} |
-+-------------------------------------------------------------+
++---------------------------------------------------------+
+| [24]: <Merging>                                         |
+| <Start>                                                 |
+|   TraceExec: [28]                                       |
+|   ForwardTrace: 24                                      |
+|   CommonForwardTrace: 0                                 |
+| [CONTEXT]: CS(26 -> 2) : [12, 8] OS(22 -> 23) : [11, 4] |
++---------------------------------------------------------+
 |
 +
 |
-+----------------------------------------------------------------+
-| [25]: <Ending>                                                 |
-|   TraceExec: [29]                                              |
-|   InsExec: [68:4]                                              |
-|   ForwardTrace: 24                                             |
-| [7][Block]< "{" { Stat @ } "}" >                               |
-| [AST-INSTRUCTIONS]:                                            |
-|   + CreateObject(IfStat)                                       |
-|     [BEFORE]: {CS: [12, 8] [26 -> 2]} {OS: [11, 4] [22 -> 23]} |
-|     objs: 8, 12                                                |
-|                                                                |
-|   + Field(IfStat::content, 0)                                  |
-|     [BEFORE]: {CS: [12, 8] [26 -> 2]} {OS: [11, 4] [22 -> 23]} |
-|                                                                |
-|   + StackEnd()                                                 |
-|     [BEFORE]: {CS: [12, 8] [26 -> 2]} {OS: [11, 4] [22 -> 23]} |
-|                                                                |
-|   > StackSlot(1)                                               |
-|     [BEFORE]: {CS: [2] [2 -> 1]} {OS: [12, 8] [27 -> 22]}      |
-|                                                                |
-|   [AFTER]: {CS: [2] [2 -> 1]} {OS: [12, 8] [27 -> 22]}         |
-| [RETURN STACK]:                                                |
-|   [1][1][0]: Block -> [20][Stat]<! !Block @ !>                 |
-|   [0][7][0]: Stat -> [24][Module]< Stat @ >                    |
-| [PREDECESSORS 24-24]: [24]                                     |
-| [SUCCESORS 31-31]: [31]                                        |
-+----------------------------------------------------------------+
++------------------------------------------------------------+
+| [25]: <Ending>                                             |
+|   TraceExec: [29]                                          |
+|   InsExec: [68:4]                                          |
+|   ForwardTrace: 24                                         |
+| [7][Block]< "{" { Stat @ } "}" >                           |
+| [AST-INSTRUCTIONS]:                                        |
+|   + CreateObject(IfStat)                                   |
+|     [BEFORE]: CS(26 -> 2) : [12, 8] OS(22 -> 23) : [11, 4] |
+|     objs: 8, 12                                            |
+|                                                            |
+|   + Field(IfStat::content, 0)                              |
+|     [BEFORE]: CS(26 -> 2) : [12, 8] OS(22 -> 23) : [11, 4] |
+|                                                            |
+|   + StackEnd()                                             |
+|     [BEFORE]: CS(26 -> 2) : [12, 8] OS(22 -> 23) : [11, 4] |
+|                                                            |
+|   > StackSlot(1)                                           |
+|     [BEFORE]: CS(2 -> 1) : [2] OS(27 -> 22) : [12, 8]      |
+|                                                            |
+|   [AFTER]: CS(2 -> 1) : [2] OS(27 -> 22) : [12, 8]         |
+| [RETURN STACK]:                                            |
+|   [1][1][0]: Block -> [20][Stat]<! !Block @ !>             |
+|   [0][7][0]: Stat -> [24][Module]< Stat @ >                |
+| [PREDECESSORS 24-24]: [24]                                 |
+| [SUCCESORS 31-31]: [31]                                    |
++------------------------------------------------------------+
 [0/0]
  |
  +
@@ -693,13 +693,13 @@
 || [16][IfContent]< "if" @ "cond" "then" Stat [ "else" Stat ] > ||
 || [AST-INSTRUCTIONS]:                                          ||
 ||   + StackBegin()                                             ||
-||     [BEFORE]: {CS: [2] [2 -> 1]} {OS: [12, 8] [27 -> 22]}    ||
+||     [BEFORE]: CS(2 -> 1) : [2] OS(27 -> 22) : [12, 8]        ||
 ||     objs: 13                                                 ||
 ||                                                              ||
 ||   + Token(0)                                                 ||
-||     [BEFORE]: {CS: [13] [28 -> 2]} {OS: [12, 8] [27 -> 22]}  ||
+||     [BEFORE]: CS(28 -> 2) : [13] OS(27 -> 22) : [12, 8]      ||
 ||                                                              ||
-||   [AFTER]: {CS: [13] [28 -> 2]} {OS: [12, 8] [27 -> 22]}     ||
+||   [AFTER]: CS(28 -> 2) : [13] OS(27 -> 22) : [12, 8]         ||
 || [RETURN STACK]:                                              ||
 ||   [13][2][25]: IfContent -> [19][Stat]< IfContent @ >        ||
 ||   [12][4][25]: Stat -> [7][Block]< "{" { Stat @ } "}" >      ||
@@ -721,9 +721,9 @@
 || [15][IfContent]< "if" "cond" @ "then" Stat [ "else" Stat ] > ||
 || [AST-INSTRUCTIONS]:                                          ||
 ||   + Token(1)                                                 ||
-||     [BEFORE]: {CS: [13] [28 -> 2]} {OS: [12, 8] [27 -> 22]}  ||
+||     [BEFORE]: CS(28 -> 2) : [13] OS(27 -> 22) : [12, 8]      ||
 ||                                                              ||
-||   [AFTER]: {CS: [13] [28 -> 2]} {OS: [12, 8] [27 -> 22]}     ||
+||   [AFTER]: CS(28 -> 2) : [13] OS(27 -> 22) : [12, 8]         ||
 || [RETURN STACK]:                                              ||
 ||   [13][2][25]: IfContent -> [19][Stat]< IfContent @ >        ||
 ||   [12][4][25]: Stat -> [7][Block]< "{" { Stat @ } "}" >      ||
@@ -745,9 +745,9 @@
 || [11][IfContent]< "if" "cond" "then" @ Stat [ "else" Stat ] > ||
 || [AST-INSTRUCTIONS]:                                          ||
 ||   + Token(2)                                                 ||
-||     [BEFORE]: {CS: [13] [28 -> 2]} {OS: [12, 8] [27 -> 22]}  ||
+||     [BEFORE]: CS(28 -> 2) : [13] OS(27 -> 22) : [12, 8]      ||
 ||                                                              ||
-||   [AFTER]: {CS: [13] [28 -> 2]} {OS: [12, 8] [27 -> 22]}     ||
+||   [AFTER]: CS(28 -> 2) : [13] OS(27 -> 22) : [12, 8]         ||
 || [RETURN STACK]:                                              ||
 ||   [13][2][25]: IfContent -> [19][Stat]< IfContent @ >        ||
 ||   [12][4][25]: Stat -> [7][Block]< "{" { Stat @ } "}" >      ||
@@ -769,13 +769,13 @@
 || [16][IfContent]< "if" @ "cond" "then" Stat [ "else" Stat ] >                        ||
 || [AST-INSTRUCTIONS]:                                                                 ||
 ||   + StackBegin()                                                                    ||
-||     [BEFORE]: {CS: [13] [28 -> 2]} {OS: [12, 8] [27 -> 22]}                         ||
+||     [BEFORE]: CS(28 -> 2) : [13] OS(27 -> 22) : [12, 8]                             ||
 ||     objs: 14                                                                        ||
 ||                                                                                     ||
 ||   + Token(0)                                                                        ||
-||     [BEFORE]: {CS: [14] [29 -> 28]} {OS: [12, 8] [27 -> 22]}                        ||
+||     [BEFORE]: CS(29 -> 28) : [14] OS(27 -> 22) : [12, 8]                            ||
 ||                                                                                     ||
-||   [AFTER]: {CS: [14] [29 -> 28]} {OS: [12, 8] [27 -> 22]}                           ||
+||   [AFTER]: CS(29 -> 28) : [14] OS(27 -> 22) : [12, 8]                               ||
 || [RETURN STACK]:                                                                     ||
 ||   [15][2][33]: IfContent -> [19][Stat]< IfContent @ >                               ||
 ||   [14][5][33]: Stat -> [12][IfContent]< "if" "cond" "then" Stat @ [ "else" Stat ] > ||
@@ -799,9 +799,9 @@
 || [15][IfContent]< "if" "cond" @ "then" Stat [ "else" Stat ] >                        ||
 || [AST-INSTRUCTIONS]:                                                                 ||
 ||   + Token(1)                                                                        ||
-||     [BEFORE]: {CS: [14] [29 -> 28]} {OS: [12, 8] [27 -> 22]}                        ||
+||     [BEFORE]: CS(29 -> 28) : [14] OS(27 -> 22) : [12, 8]                            ||
 ||                                                                                     ||
-||   [AFTER]: {CS: [14] [29 -> 28]} {OS: [12, 8] [27 -> 22]}                           ||
+||   [AFTER]: CS(29 -> 28) : [14] OS(27 -> 22) : [12, 8]                               ||
 || [RETURN STACK]:                                                                     ||
 ||   [15][2][33]: IfContent -> [19][Stat]< IfContent @ >                               ||
 ||   [14][5][33]: Stat -> [12][IfContent]< "if" "cond" "then" Stat @ [ "else" Stat ] > ||
@@ -825,9 +825,9 @@
 || [11][IfContent]< "if" "cond" "then" @ Stat [ "else" Stat ] >                        ||
 || [AST-INSTRUCTIONS]:                                                                 ||
 ||   + Token(2)                                                                        ||
-||     [BEFORE]: {CS: [14] [29 -> 28]} {OS: [12, 8] [27 -> 22]}                        ||
+||     [BEFORE]: CS(29 -> 28) : [14] OS(27 -> 22) : [12, 8]                            ||
 ||                                                                                     ||
-||   [AFTER]: {CS: [14] [29 -> 28]} {OS: [12, 8] [27 -> 22]}                           ||
+||   [AFTER]: CS(29 -> 28) : [14] OS(27 -> 22) : [12, 8]                               ||
 || [RETURN STACK]:                                                                     ||
 ||   [15][2][33]: IfContent -> [19][Stat]< IfContent @ >                               ||
 ||   [14][5][33]: Stat -> [12][IfContent]< "if" "cond" "then" Stat @ [ "else" Stat ] > ||
@@ -851,13 +851,13 @@
 || [3][Do]< "do" @ ";" >                                                               ||
 || [AST-INSTRUCTIONS]:                                                                 ||
 ||   + StackBegin()                                                                    ||
-||     [BEFORE]: {CS: [14] [29 -> 28]} {OS: [12, 8] [27 -> 22]}                        ||
+||     [BEFORE]: CS(29 -> 28) : [14] OS(27 -> 22) : [12, 8]                            ||
 ||     objs: 15                                                                        ||
 ||                                                                                     ||
 ||   + Token(0)                                                                        ||
-||     [BEFORE]: {CS: [15] [30 -> 29]} {OS: [12, 8] [27 -> 22]}                        ||
+||     [BEFORE]: CS(30 -> 29) : [15] OS(27 -> 22) : [12, 8]                            ||
 ||                                                                                     ||
-||   [AFTER]: {CS: [15] [30 -> 29]} {OS: [12, 8] [27 -> 22]}                           ||
+||   [AFTER]: CS(30 -> 29) : [15] OS(27 -> 22) : [12, 8]                               ||
 || [RETURN STACK]:                                                                     ||
 ||   [17][3][36]: Do -> [21][Stat]<! !Do @ !>                                          ||
 ||   [16][5][36]: Stat -> [12][IfContent]< "if" "cond" "then" Stat @ [ "else" Stat ] > ||
@@ -883,9 +883,9 @@
 || [2][Do]< "do" ";" @ >                                                               ||
 || [AST-INSTRUCTIONS]:                                                                 ||
 ||   + Token(1)                                                                        ||
-||     [BEFORE]: {CS: [15] [30 -> 29]} {OS: [12, 8] [27 -> 22]}                        ||
+||     [BEFORE]: CS(30 -> 29) : [15] OS(27 -> 22) : [12, 8]                            ||
 ||                                                                                     ||
-||   [AFTER]: {CS: [15] [30 -> 29]} {OS: [12, 8] [27 -> 22]}                           ||
+||   [AFTER]: CS(30 -> 29) : [15] OS(27 -> 22) : [12, 8]                               ||
 || [RETURN STACK]:                                                                     ||
 ||   [17][3][36]: Do -> [21][Stat]<! !Do @ !>                                          ||
 ||   [16][5][36]: Stat -> [12][IfContent]< "if" "cond" "then" Stat @ [ "else" Stat ] > ||
@@ -909,17 +909,17 @@
 | [21][Stat]<! !Do @ !>                                                               |
 | [AST-INSTRUCTIONS]:                                                                 |
 |   + CreateObject(DoStat)                                                            |
-|     [BEFORE]: {CS: [15] [30 -> 29]} {OS: [12, 8] [27 -> 22]}                        |
+|     [BEFORE]: CS(30 -> 29) : [15] OS(27 -> 22) : [12, 8]                            |
 |     objs: 15                                                                        |
 |                                                                                     |
 |   + StackEnd()                                                                      |
-|     [BEFORE]: {CS: [15] [30 -> 29]} {OS: [12, 8] [27 -> 22]}                        |
+|     [BEFORE]: CS(30 -> 29) : [15] OS(27 -> 22) : [12, 8]                            |
 |                                                                                     |
 |   > StackBegin()                                                                    |
-|     [BEFORE]: {CS: [14] [29 -> 28]} {OS: [15] [31 -> 27]}                           |
+|     [BEFORE]: CS(29 -> 28) : [14] OS(31 -> 27) : [15]                               |
 |     objs: 16                                                                        |
 |                                                                                     |
-|   [AFTER]: {CS: [16] [32 -> 29]} {OS: [15] [31 -> 27]}                              |
+|   [AFTER]: CS(32 -> 29) : [16] OS(31 -> 27) : [15]                                  |
 | [RETURN STACK]:                                                                     |
 |   [16][5][36]: Stat -> [12][IfContent]< "if" "cond" "then" Stat @ [ "else" Stat ] > |
 |   [15][2][33]: IfContent -> [19][Stat]< IfContent @ >                               |
@@ -942,12 +942,12 @@
 | [12][IfContent]< "if" "cond" "then" Stat @ [ "else" Stat ] >                        |
 | [AST-INSTRUCTIONS]:                                                                 |
 |   + StackEnd()                                                                      |
-|     [BEFORE]: {CS: [16] [32 -> 29]} {OS: [15] [31 -> 27]}                           |
+|     [BEFORE]: CS(32 -> 29) : [16] OS(31 -> 27) : [15]                               |
 |                                                                                     |
 |   > StackSlot(3)                                                                    |
-|     [BEFORE]: {CS: [16] [32 -> 29]} {OS: [15] [31 -> 27]}                           |
+|     [BEFORE]: CS(32 -> 29) : [16] OS(31 -> 27) : [15]                               |
 |                                                                                     |
-|   [AFTER]: {CS: [16] [32 -> 29]} {OS: [15] [31 -> 27]}                              |
+|   [AFTER]: CS(32 -> 29) : [16] OS(31 -> 27) : [15]                                  |
 | [RETURN STACK]:                                                                     |
 |   [15][2][33]: IfContent -> [19][Stat]< IfContent @ >                               |
 |   [14][5][33]: Stat -> [12][IfContent]< "if" "cond" "then" Stat @ [ "else" Stat ] > |
@@ -969,26 +969,26 @@
 |                                                                                            | [19][Stat]< IfContent @ >                                                           |
 |                                                                                            | [AST-INSTRUCTIONS]:                                                                 |
 |                                                                                            |   + CreateObject(IfContentCandidate)                                                |
-|                                                                                            |     [BEFORE]: {CS: [16] [32 -> 29]} {OS: [15] [31 -> 27]}                           |
+|                                                                                            |     [BEFORE]: CS(32 -> 29) : [16] OS(31 -> 27) : [15]                               |
 |                                                                                            |     objs: 16                                                                        |
 |                                                                                            |                                                                                     |
 |                                                                                            |   + Field(IfContentCandidate::thenBranch, 3)                                        |
-|                                                                                            |     [BEFORE]: {CS: [16] [32 -> 29]} {OS: [15] [31 -> 27]}                           |
+|                                                                                            |     [BEFORE]: CS(32 -> 29) : [16] OS(31 -> 27) : [15]                               |
 |                                                                                            |                                                                                     |
 |                                                                                            |   + Field(IfContentCandidate::elseBranch, 5)                                        |
-|                                                                                            |     [BEFORE]: {CS: [16] [32 -> 29]} {OS: [15] [31 -> 27]}                           |
+|                                                                                            |     [BEFORE]: CS(32 -> 29) : [16] OS(31 -> 27) : [15]                               |
 |                                                                                            |                                                                                     |
 |                                                                                            |   + StackEnd()                                                                      |
-|                                                                                            |     [BEFORE]: {CS: [16] [32 -> 29]} {OS: [15] [31 -> 27]}                           |
+|                                                                                            |     [BEFORE]: CS(32 -> 29) : [16] OS(31 -> 27) : [15]                               |
 |                                                                                            |                                                                                     |
 |                                                                                            |   > StackBegin()                                                                    |
-|                                                                                            |     [BEFORE]: {CS: [14] [29 -> 28]} {OS: [16] [41 -> 31]}                           |
+|                                                                                            |     [BEFORE]: CS(29 -> 28) : [14] OS(41 -> 31) : [16]                               |
 |                                                                                            |     objs: 21                                                                        |
 |                                                                                            |                                                                                     |
 |                                                                                            |   > StackSlot(0)                                                                    |
-|                                                                                            |     [BEFORE]: {CS: [21] [42 -> 29]} {OS: [16] [41 -> 31]}                           |
+|                                                                                            |     [BEFORE]: CS(42 -> 29) : [21] OS(41 -> 31) : [16]                               |
 |                                                                                            |                                                                                     |
-|                                                                                            |   [AFTER]: {CS: [21] [42 -> 29]} {OS: [16] [41 -> 31]}                              |
+|                                                                                            |   [AFTER]: CS(42 -> 29) : [21] OS(41 -> 31) : [16]                                  |
 |                                                                                            | [RETURN STACK]:                                                                     |
 |                                                                                            |   [14][5][33]: Stat -> [12][IfContent]< "if" "cond" "then" Stat @ [ "else" Stat ] > |
 |                                                                                            |   [13][2][25]: IfContent -> [19][Stat]< IfContent @ >                               |
@@ -1009,19 +1009,19 @@
 |                                                                                            | [12][IfContent]< "if" "cond" "then" Stat @ [ "else" Stat ] > |
 |                                                                                            | [AST-INSTRUCTIONS]:                                          |
 |                                                                                            |   + CreateObject(IfStat)                                     |
-|                                                                                            |     [BEFORE]: {CS: [21] [42 -> 29]} {OS: [16] [41 -> 31]}    |
+|                                                                                            |     [BEFORE]: CS(42 -> 29) : [21] OS(41 -> 31) : [16]        |
 |                                                                                            |     objs: 21                                                 |
 |                                                                                            |                                                              |
 |                                                                                            |   + Field(IfStat::content, 0)                                |
-|                                                                                            |     [BEFORE]: {CS: [21] [42 -> 29]} {OS: [16] [41 -> 31]}    |
+|                                                                                            |     [BEFORE]: CS(42 -> 29) : [21] OS(41 -> 31) : [16]        |
 |                                                                                            |                                                              |
 |                                                                                            |   + StackEnd()                                               |
-|                                                                                            |     [BEFORE]: {CS: [21] [42 -> 29]} {OS: [16] [41 -> 31]}    |
+|                                                                                            |     [BEFORE]: CS(42 -> 29) : [21] OS(41 -> 31) : [16]        |
 |                                                                                            |                                                              |
 |                                                                                            |   > StackSlot(3)                                             |
-|                                                                                            |     [BEFORE]: {CS: [14] [29 -> 28]} {OS: [21] [43 -> 41]}    |
+|                                                                                            |     [BEFORE]: CS(29 -> 28) : [14] OS(43 -> 41) : [21]        |
 |                                                                                            |                                                              |
-|                                                                                            |   [AFTER]: {CS: [14] [29 -> 28]} {OS: [21] [43 -> 41]}       |
+|                                                                                            |   [AFTER]: CS(29 -> 28) : [14] OS(43 -> 41) : [21]           |
 |                                                                                            | [RETURN STACK]:                                              |
 |                                                                                            |   [13][2][25]: IfContent -> [19][Stat]< IfContent @ >        |
 |                                                                                            |   [12][4][25]: Stat -> [7][Block]< "{" { Stat @ } "}" >      |
@@ -1043,9 +1043,9 @@
 || [13][IfContent]< "if" "cond" "then" Stat [ "else" @ Stat ] >                        ||    || [13][IfContent]< "if" "cond" "then" Stat [ "else" @ Stat ] > ||
 || [AST-INSTRUCTIONS]:                                                                 ||    || [AST-INSTRUCTIONS]:                                          ||
 ||   + Token(4)                                                                        ||    ||   + Token(4)                                                 ||
-||     [BEFORE]: {CS: [16] [32 -> 29]} {OS: [15] [31 -> 27]}                           ||    ||     [BEFORE]: {CS: [14] [29 -> 28]} {OS: [21] [43 -> 41]}    ||
+||     [BEFORE]: CS(32 -> 29) : [16] OS(31 -> 27) : [15]                               ||    ||     [BEFORE]: CS(29 -> 28) : [14] OS(43 -> 41) : [21]        ||
 ||                                                                                     ||    ||                                                              ||
-||   [AFTER]: {CS: [16] [32 -> 29]} {OS: [15] [31 -> 27]}                              ||    ||   [AFTER]: {CS: [14] [29 -> 28]} {OS: [21] [43 -> 41]}       ||
+||   [AFTER]: CS(32 -> 29) : [16] OS(31 -> 27) : [15]                                  ||    ||   [AFTER]: CS(29 -> 28) : [14] OS(43 -> 41) : [21]           ||
 || [RETURN STACK]:                                                                     ||    || [RETURN STACK]:                                              ||
 ||   [15][2][33]: IfContent -> [19][Stat]< IfContent @ >                               ||    ||   [13][2][25]: IfContent -> [19][Stat]< IfContent @ >        ||
 ||   [14][5][33]: Stat -> [12][IfContent]< "if" "cond" "then" Stat @ [ "else" Stat ] > ||    ||   [12][4][25]: Stat -> [7][Block]< "{" { Stat @ } "}" >      ||
@@ -1069,13 +1069,13 @@
 || [3][Do]< "do" @ ";" >                                                               ||    || [3][Do]< "do" @ ";" >                                                               ||
 || [AST-INSTRUCTIONS]:                                                                 ||    || [AST-INSTRUCTIONS]:                                                                 ||
 ||   + StackBegin()                                                                    ||    ||   + StackBegin()                                                                    ||
-||     [BEFORE]: {CS: [16] [32 -> 29]} {OS: [15] [31 -> 27]}                           ||    ||     [BEFORE]: {CS: [14] [29 -> 28]} {OS: [21] [43 -> 41]}                           ||
+||     [BEFORE]: CS(32 -> 29) : [16] OS(31 -> 27) : [15]                               ||    ||     [BEFORE]: CS(29 -> 28) : [14] OS(43 -> 41) : [21]                               ||
 ||     objs: 17                                                                        ||    ||     objs: 22                                                                        ||
 ||                                                                                     ||    ||                                                                                     ||
 ||   + Token(0)                                                                        ||    ||   + Token(0)                                                                        ||
-||     [BEFORE]: {CS: [17] [33 -> 32]} {OS: [15] [31 -> 27]}                           ||    ||     [BEFORE]: {CS: [22] [44 -> 29]} {OS: [21] [43 -> 41]}                           ||
+||     [BEFORE]: CS(33 -> 32) : [17] OS(31 -> 27) : [15]                               ||    ||     [BEFORE]: CS(44 -> 29) : [22] OS(43 -> 41) : [21]                               ||
 ||                                                                                     ||    ||                                                                                     ||
-||   [AFTER]: {CS: [17] [33 -> 32]} {OS: [15] [31 -> 27]}                              ||    ||   [AFTER]: {CS: [22] [44 -> 29]} {OS: [21] [43 -> 41]}                              ||
+||   [AFTER]: CS(33 -> 32) : [17] OS(31 -> 27) : [15]                                  ||    ||   [AFTER]: CS(44 -> 29) : [22] OS(43 -> 41) : [21]                                  ||
 || [RETURN STACK]:                                                                     ||    || [RETURN STACK]:                                                                     ||
 ||   [19][3][44]: Do -> [21][Stat]<! !Do @ !>                                          ||    ||   [21][3][45]: Do -> [21][Stat]<! !Do @ !>                                          ||
 ||   [18][6][44]: Stat -> [14][IfContent]< "if" "cond" "then" Stat [ "else" Stat @ ] > ||    ||   [20][6][45]: Stat -> [14][IfContent]< "if" "cond" "then" Stat [ "else" Stat @ ] > ||
@@ -1101,9 +1101,9 @@
 || [2][Do]< "do" ";" @ >                                                               ||    || [2][Do]< "do" ";" @ >                                                               ||
 || [AST-INSTRUCTIONS]:                                                                 ||    || [AST-INSTRUCTIONS]:                                                                 ||
 ||   + Token(1)                                                                        ||    ||   + Token(1)                                                                        ||
-||     [BEFORE]: {CS: [17] [33 -> 32]} {OS: [15] [31 -> 27]}                           ||    ||     [BEFORE]: {CS: [22] [44 -> 29]} {OS: [21] [43 -> 41]}                           ||
+||     [BEFORE]: CS(33 -> 32) : [17] OS(31 -> 27) : [15]                               ||    ||     [BEFORE]: CS(44 -> 29) : [22] OS(43 -> 41) : [21]                               ||
 ||                                                                                     ||    ||                                                                                     ||
-||   [AFTER]: {CS: [17] [33 -> 32]} {OS: [15] [31 -> 27]}                              ||    ||   [AFTER]: {CS: [22] [44 -> 29]} {OS: [21] [43 -> 41]}                              ||
+||   [AFTER]: CS(33 -> 32) : [17] OS(31 -> 27) : [15]                                  ||    ||   [AFTER]: CS(44 -> 29) : [22] OS(43 -> 41) : [21]                                  ||
 || [RETURN STACK]:                                                                     ||    || [RETURN STACK]:                                                                     ||
 ||   [19][3][44]: Do -> [21][Stat]<! !Do @ !>                                          ||    ||   [21][3][45]: Do -> [21][Stat]<! !Do @ !>                                          ||
 ||   [18][6][44]: Stat -> [14][IfContent]< "if" "cond" "then" Stat [ "else" Stat @ ] > ||    ||   [20][6][45]: Stat -> [14][IfContent]< "if" "cond" "then" Stat [ "else" Stat @ ] > ||
@@ -1127,17 +1127,17 @@
 | [21][Stat]<! !Do @ !>                                                               |      | [21][Stat]<! !Do @ !>                                                               |
 | [AST-INSTRUCTIONS]:                                                                 |      | [AST-INSTRUCTIONS]:                                                                 |
 |   + CreateObject(DoStat)                                                            |      |   + CreateObject(DoStat)                                                            |
-|     [BEFORE]: {CS: [17] [33 -> 32]} {OS: [15] [31 -> 27]}                           |      |     [BEFORE]: {CS: [22] [44 -> 29]} {OS: [21] [43 -> 41]}                           |
+|     [BEFORE]: CS(33 -> 32) : [17] OS(31 -> 27) : [15]                               |      |     [BEFORE]: CS(44 -> 29) : [22] OS(43 -> 41) : [21]                               |
 |     objs: 17                                                                        |      |     objs: 22                                                                        |
 |                                                                                     |      |                                                                                     |
 |   + StackEnd()                                                                      |      |   + StackEnd()                                                                      |
-|     [BEFORE]: {CS: [17] [33 -> 32]} {OS: [15] [31 -> 27]}                           |      |     [BEFORE]: {CS: [22] [44 -> 29]} {OS: [21] [43 -> 41]}                           |
+|     [BEFORE]: CS(33 -> 32) : [17] OS(31 -> 27) : [15]                               |      |     [BEFORE]: CS(44 -> 29) : [22] OS(43 -> 41) : [21]                               |
 |                                                                                     |      |                                                                                     |
 |   > StackBegin()                                                                    |      |   > StackBegin()                                                                    |
-|     [BEFORE]: {CS: [16] [32 -> 29]} {OS: [17] [34 -> 31]}                           |      |     [BEFORE]: {CS: [14] [29 -> 28]} {OS: [22] [45 -> 43]}                           |
+|     [BEFORE]: CS(32 -> 29) : [16] OS(34 -> 31) : [17]                               |      |     [BEFORE]: CS(29 -> 28) : [14] OS(45 -> 43) : [22]                               |
 |     objs: 18                                                                        |      |     objs: 23                                                                        |
 |                                                                                     |      |                                                                                     |
-|   [AFTER]: {CS: [18] [35 -> 32]} {OS: [17] [34 -> 31]}                              |      |   [AFTER]: {CS: [23] [46 -> 29]} {OS: [22] [45 -> 43]}                              |
+|   [AFTER]: CS(35 -> 32) : [18] OS(34 -> 31) : [17]                                  |      |   [AFTER]: CS(46 -> 29) : [23] OS(45 -> 43) : [22]                                  |
 | [RETURN STACK]:                                                                     |      | [RETURN STACK]:                                                                     |
 |   [18][6][44]: Stat -> [14][IfContent]< "if" "cond" "then" Stat [ "else" Stat @ ] > |      |   [20][6][45]: Stat -> [14][IfContent]< "if" "cond" "then" Stat [ "else" Stat @ ] > |
 |   [15][2][33]: IfContent -> [19][Stat]< IfContent @ >                               |      |   [13][2][25]: IfContent -> [19][Stat]< IfContent @ >                               |
@@ -1160,12 +1160,12 @@
 | [14][IfContent]< "if" "cond" "then" Stat [ "else" Stat @ ] >                        |      | [14][IfContent]< "if" "cond" "then" Stat [ "else" Stat @ ] > |
 | [AST-INSTRUCTIONS]:                                                                 |      | [AST-INSTRUCTIONS]:                                          |
 |   + StackEnd()                                                                      |      |   + StackEnd()                                               |
-|     [BEFORE]: {CS: [18] [35 -> 32]} {OS: [17] [34 -> 31]}                           |      |     [BEFORE]: {CS: [23] [46 -> 29]} {OS: [22] [45 -> 43]}    |
+|     [BEFORE]: CS(35 -> 32) : [18] OS(34 -> 31) : [17]                               |      |     [BEFORE]: CS(46 -> 29) : [23] OS(45 -> 43) : [22]        |
 |                                                                                     |      |                                                              |
 |   > StackSlot(5)                                                                    |      |   > StackSlot(5)                                             |
-|     [BEFORE]: {CS: [18] [35 -> 32]} {OS: [17] [34 -> 31]}                           |      |     [BEFORE]: {CS: [23] [46 -> 29]} {OS: [22] [45 -> 43]}    |
+|     [BEFORE]: CS(35 -> 32) : [18] OS(34 -> 31) : [17]                               |      |     [BEFORE]: CS(46 -> 29) : [23] OS(45 -> 43) : [22]        |
 |                                                                                     |      |                                                              |
-|   [AFTER]: {CS: [18] [35 -> 32]} {OS: [17] [34 -> 31]}                              |      |   [AFTER]: {CS: [23] [46 -> 29]} {OS: [22] [45 -> 43]}       |
+|   [AFTER]: CS(35 -> 32) : [18] OS(34 -> 31) : [17]                                  |      |   [AFTER]: CS(46 -> 29) : [23] OS(45 -> 43) : [22]           |
 | [RETURN STACK]:                                                                     |      | [RETURN STACK]:                                              |
 |   [15][2][33]: IfContent -> [19][Stat]< IfContent @ >                               |      |   [13][2][25]: IfContent -> [19][Stat]< IfContent @ >        |
 |   [14][5][33]: Stat -> [12][IfContent]< "if" "cond" "then" Stat @ [ "else" Stat ] > |      |   [12][4][25]: Stat -> [7][Block]< "{" { Stat @ } "}" >      |
@@ -1179,41 +1179,41 @@
 |                                                                                            |
 +                                                                                            +
 |                                                                                            |
-+-------------------------------------------------------------------------------------+      +-----------------------------------------------------------+
-| [51]: <Ending>                                                                      |      | [58]: <Ending>                                            |
-|   TraceExec: [45]                                                                   |      |   TraceExec: [55]                                         |
-|   InsExec: [97:6]                                                                   |      |   InsExec: [132:6]                                        |
-|   ForwardTrace: 44                                                                  |      |   ForwardTrace: 41                                        |
-| [19][Stat]< IfContent @ >                                                           |      | [19][Stat]< IfContent @ >                                 |
-| [AST-INSTRUCTIONS]:                                                                 |      | [AST-INSTRUCTIONS]:                                       |
-|   + CreateObject(IfContentCandidate)                                                |      |   + CreateObject(IfContentCandidate)                      |
-|     [BEFORE]: {CS: [18] [35 -> 32]} {OS: [17] [34 -> 31]}                           |      |     [BEFORE]: {CS: [23] [46 -> 29]} {OS: [22] [45 -> 43]} |
-|     objs: 18                                                                        |      |     objs: 23                                              |
-|                                                                                     |      |                                                           |
-|   + Field(IfContentCandidate::thenBranch, 3)                                        |      |   + Field(IfContentCandidate::thenBranch, 3)              |
-|     [BEFORE]: {CS: [18] [35 -> 32]} {OS: [17] [34 -> 31]}                           |      |     [BEFORE]: {CS: [23] [46 -> 29]} {OS: [22] [45 -> 43]} |
-|                                                                                     |      |                                                           |
-|   + Field(IfContentCandidate::elseBranch, 5)                                        |      |   + Field(IfContentCandidate::elseBranch, 5)              |
-|     [BEFORE]: {CS: [18] [35 -> 32]} {OS: [17] [34 -> 31]}                           |      |     [BEFORE]: {CS: [23] [46 -> 29]} {OS: [22] [45 -> 43]} |
-|                                                                                     |      |                                                           |
-|   + StackEnd()                                                                      |      |   + StackEnd()                                            |
-|     [BEFORE]: {CS: [18] [35 -> 32]} {OS: [17] [34 -> 31]}                           |      |     [BEFORE]: {CS: [23] [46 -> 29]} {OS: [22] [45 -> 43]} |
-|                                                                                     |      |                                                           |
-|   > StackBegin()                                                                    |      |   > StackBegin()                                          |
-|     [BEFORE]: {CS: [16] [32 -> 29]} {OS: [18] [36 -> 34]}                           |      |     [BEFORE]: {CS: [14] [29 -> 28]} {OS: [23] [47 -> 45]} |
-|     objs: 19                                                                        |      |     objs: 24                                              |
-|                                                                                     |      |                                                           |
-|   > StackSlot(0)                                                                    |      |   > StackSlot(0)                                          |
-|     [BEFORE]: {CS: [19] [37 -> 32]} {OS: [18] [36 -> 34]}                           |      |     [BEFORE]: {CS: [24] [48 -> 29]} {OS: [23] [47 -> 45]} |
-|                                                                                     |      |                                                           |
-|   [AFTER]: {CS: [19] [37 -> 32]} {OS: [18] [36 -> 34]}                              |      |   [AFTER]: {CS: [24] [48 -> 29]} {OS: [23] [47 -> 45]}    |
-| [RETURN STACK]:                                                                     |      | [RETURN STACK]:                                           |
-|   [14][5][33]: Stat -> [12][IfContent]< "if" "cond" "then" Stat @ [ "else" Stat ] > |      |   [12][4][25]: Stat -> [7][Block]< "{" { Stat @ } "}" >   |
-|   [13][2][25]: IfContent -> [19][Stat]< IfContent @ >                               |      |   [1][1][0]: Block -> [20][Stat]<! !Block @ !>            |
-|   [12][4][25]: Stat -> [7][Block]< "{" { Stat @ } "}" >                             |      |   [0][7][0]: Stat -> [24][Module]< Stat @ >               |
-|   [1][1][0]: Block -> [20][Stat]<! !Block @ !>                                      |      | [PREDECESSORS 57-57]: [57]                                |
-|   [0][7][0]: Stat -> [24][Module]< Stat @ >                                         |      | [SUCCESORS 53-53]: [53]                                   |
-| [PREDECESSORS 50-50]: [50]                                                          |      +-----------------------------------------------------------+
++-------------------------------------------------------------------------------------+      +---------------------------------------------------------+
+| [51]: <Ending>                                                                      |      | [58]: <Ending>                                          |
+|   TraceExec: [45]                                                                   |      |   TraceExec: [55]                                       |
+|   InsExec: [97:6]                                                                   |      |   InsExec: [132:6]                                      |
+|   ForwardTrace: 44                                                                  |      |   ForwardTrace: 41                                      |
+| [19][Stat]< IfContent @ >                                                           |      | [19][Stat]< IfContent @ >                               |
+| [AST-INSTRUCTIONS]:                                                                 |      | [AST-INSTRUCTIONS]:                                     |
+|   + CreateObject(IfContentCandidate)                                                |      |   + CreateObject(IfContentCandidate)                    |
+|     [BEFORE]: CS(35 -> 32) : [18] OS(34 -> 31) : [17]                               |      |     [BEFORE]: CS(46 -> 29) : [23] OS(45 -> 43) : [22]   |
+|     objs: 18                                                                        |      |     objs: 23                                            |
+|                                                                                     |      |                                                         |
+|   + Field(IfContentCandidate::thenBranch, 3)                                        |      |   + Field(IfContentCandidate::thenBranch, 3)            |
+|     [BEFORE]: CS(35 -> 32) : [18] OS(34 -> 31) : [17]                               |      |     [BEFORE]: CS(46 -> 29) : [23] OS(45 -> 43) : [22]   |
+|                                                                                     |      |                                                         |
+|   + Field(IfContentCandidate::elseBranch, 5)                                        |      |   + Field(IfContentCandidate::elseBranch, 5)            |
+|     [BEFORE]: CS(35 -> 32) : [18] OS(34 -> 31) : [17]                               |      |     [BEFORE]: CS(46 -> 29) : [23] OS(45 -> 43) : [22]   |
+|                                                                                     |      |                                                         |
+|   + StackEnd()                                                                      |      |   + StackEnd()                                          |
+|     [BEFORE]: CS(35 -> 32) : [18] OS(34 -> 31) : [17]                               |      |     [BEFORE]: CS(46 -> 29) : [23] OS(45 -> 43) : [22]   |
+|                                                                                     |      |                                                         |
+|   > StackBegin()                                                                    |      |   > StackBegin()                                        |
+|     [BEFORE]: CS(32 -> 29) : [16] OS(36 -> 34) : [18]                               |      |     [BEFORE]: CS(29 -> 28) : [14] OS(47 -> 45) : [23]   |
+|     objs: 19                                                                        |      |     objs: 24                                            |
+|                                                                                     |      |                                                         |
+|   > StackSlot(0)                                                                    |      |   > StackSlot(0)                                        |
+|     [BEFORE]: CS(37 -> 32) : [19] OS(36 -> 34) : [18]                               |      |     [BEFORE]: CS(48 -> 29) : [24] OS(47 -> 45) : [23]   |
+|                                                                                     |      |                                                         |
+|   [AFTER]: CS(37 -> 32) : [19] OS(36 -> 34) : [18]                                  |      |   [AFTER]: CS(48 -> 29) : [24] OS(47 -> 45) : [23]      |
+| [RETURN STACK]:                                                                     |      | [RETURN STACK]:                                         |
+|   [14][5][33]: Stat -> [12][IfContent]< "if" "cond" "then" Stat @ [ "else" Stat ] > |      |   [12][4][25]: Stat -> [7][Block]< "{" { Stat @ } "}" > |
+|   [13][2][25]: IfContent -> [19][Stat]< IfContent @ >                               |      |   [1][1][0]: Block -> [20][Stat]<! !Block @ !>          |
+|   [12][4][25]: Stat -> [7][Block]< "{" { Stat @ } "}" >                             |      |   [0][7][0]: Stat -> [24][Module]< Stat @ >             |
+|   [1][1][0]: Block -> [20][Stat]<! !Block @ !>                                      |      | [PREDECESSORS 57-57]: [57]                              |
+|   [0][7][0]: Stat -> [24][Module]< Stat @ >                                         |      | [SUCCESORS 53-53]: [53]                                 |
+| [PREDECESSORS 50-50]: [50]                                                          |      +---------------------------------------------------------+
 | [SUCCESORS 52-52]: [52]                                                             |      |
 +-------------------------------------------------------------------------------------+      |
 |                                                                                            |
@@ -1227,19 +1227,19 @@
 | [12][IfContent]< "if" "cond" "then" Stat @ [ "else" Stat ] > |                             |
 | [AST-INSTRUCTIONS]:                                          |                             |
 |   + CreateObject(IfStat)                                     |                             |
-|     [BEFORE]: {CS: [19] [37 -> 32]} {OS: [18] [36 -> 34]}    |                             |
+|     [BEFORE]: CS(37 -> 32) : [19] OS(36 -> 34) : [18]        |                             |
 |     objs: 19                                                 |                             |
 |                                                              |                             |
 |   + Field(IfStat::content, 0)                                |                             |
-|     [BEFORE]: {CS: [19] [37 -> 32]} {OS: [18] [36 -> 34]}    |                             |
+|     [BEFORE]: CS(37 -> 32) : [19] OS(36 -> 34) : [18]        |                             |
 |                                                              |                             |
 |   + StackEnd()                                               |                             |
-|     [BEFORE]: {CS: [19] [37 -> 32]} {OS: [18] [36 -> 34]}    |                             |
+|     [BEFORE]: CS(37 -> 32) : [19] OS(36 -> 34) : [18]        |                             |
 |                                                              |                             |
 |   > StackSlot(3)                                             |                             |
-|     [BEFORE]: {CS: [16] [32 -> 29]} {OS: [19] [38 -> 36]}    |                             |
+|     [BEFORE]: CS(32 -> 29) : [16] OS(38 -> 36) : [19]        |                             |
 |                                                              |                             |
-|   [AFTER]: {CS: [16] [32 -> 29]} {OS: [19] [38 -> 36]}       |                             |
+|   [AFTER]: CS(32 -> 29) : [16] OS(38 -> 36) : [19]           |                             |
 | [RETURN STACK]:                                              |                             |
 |   [13][2][25]: IfContent -> [19][Stat]< IfContent @ >        |                             |
 |   [12][4][25]: Stat -> [7][Block]< "{" { Stat @ } "}" >      |                             |
@@ -1251,158 +1251,158 @@
 |                                                                                            |
 +                                                                                            |
 |                                                                                            |
-+-----------------------------------------------------------+                                |
-| [59]: <Ending>                                            |                                |
-|   TraceExec: [47]                                         |                                |
-|   InsExec: [107:6]                                        |                                |
-|   ForwardTrace: 44                                        |                                |
-| [19][Stat]< IfContent @ >                                 |                                |
-| [AST-INSTRUCTIONS]:                                       |                                |
-|   + CreateObject(IfContentCandidate)                      |                                |
-|     [BEFORE]: {CS: [16] [32 -> 29]} {OS: [19] [38 -> 36]} |                                |
-|     objs: 16                                              |                                |
-|                                                           |                                |
-|   + Field(IfContentCandidate::thenBranch, 3)              |                                |
-|     [BEFORE]: {CS: [16] [32 -> 29]} {OS: [19] [38 -> 36]} |                                |
-|                                                           |                                |
-|   + Field(IfContentCandidate::elseBranch, 5)              |                                |
-|     [BEFORE]: {CS: [16] [32 -> 29]} {OS: [19] [38 -> 36]} |                                |
-|                                                           |                                |
-|   + StackEnd()                                            |                                |
-|     [BEFORE]: {CS: [16] [32 -> 29]} {OS: [19] [38 -> 36]} |                                |
-|                                                           |                                |
-|   > StackBegin()                                          |                                |
-|     [BEFORE]: {CS: [14] [29 -> 28]} {OS: [16] [39 -> 38]} |                                |
-|     objs: 20                                              |                                |
-|                                                           |                                |
-|   > StackSlot(0)                                          |                                |
-|     [BEFORE]: {CS: [20] [40 -> 29]} {OS: [16] [39 -> 38]} |                                |
-|                                                           |                                |
-|   [AFTER]: {CS: [20] [40 -> 29]} {OS: [16] [39 -> 38]}    |                                |
-| [RETURN STACK]:                                           |                                |
-|   [12][4][25]: Stat -> [7][Block]< "{" { Stat @ } "}" >   |                                |
-|   [1][1][0]: Block -> [20][Stat]<! !Block @ !>            |                                |
-|   [0][7][0]: Stat -> [24][Module]< Stat @ >               |                                |
-| [PREDECESSORS 52-52]: [52]                                |                                |
-| [SUCCESORS 53-53]: [53]                                   |                                |
-+-----------------------------------------------------------+                                |
++---------------------------------------------------------+                                  |
+| [59]: <Ending>                                          |                                  |
+|   TraceExec: [47]                                       |                                  |
+|   InsExec: [107:6]                                      |                                  |
+|   ForwardTrace: 44                                      |                                  |
+| [19][Stat]< IfContent @ >                               |                                  |
+| [AST-INSTRUCTIONS]:                                     |                                  |
+|   + CreateObject(IfContentCandidate)                    |                                  |
+|     [BEFORE]: CS(32 -> 29) : [16] OS(38 -> 36) : [19]   |                                  |
+|     objs: 16                                            |                                  |
+|                                                         |                                  |
+|   + Field(IfContentCandidate::thenBranch, 3)            |                                  |
+|     [BEFORE]: CS(32 -> 29) : [16] OS(38 -> 36) : [19]   |                                  |
+|                                                         |                                  |
+|   + Field(IfContentCandidate::elseBranch, 5)            |                                  |
+|     [BEFORE]: CS(32 -> 29) : [16] OS(38 -> 36) : [19]   |                                  |
+|                                                         |                                  |
+|   + StackEnd()                                          |                                  |
+|     [BEFORE]: CS(32 -> 29) : [16] OS(38 -> 36) : [19]   |                                  |
+|                                                         |                                  |
+|   > StackBegin()                                        |                                  |
+|     [BEFORE]: CS(29 -> 28) : [14] OS(39 -> 38) : [16]   |                                  |
+|     objs: 20                                            |                                  |
+|                                                         |                                  |
+|   > StackSlot(0)                                        |                                  |
+|     [BEFORE]: CS(40 -> 29) : [20] OS(39 -> 38) : [16]   |                                  |
+|                                                         |                                  |
+|   [AFTER]: CS(40 -> 29) : [20] OS(39 -> 38) : [16]      |                                  |
+| [RETURN STACK]:                                         |                                  |
+|   [12][4][25]: Stat -> [7][Block]< "{" { Stat @ } "}" > |                                  |
+|   [1][1][0]: Block -> [20][Stat]<! !Block @ !>          |                                  |
+|   [0][7][0]: Stat -> [24][Module]< Stat @ >             |                                  |
+| [PREDECESSORS 52-52]: [52]                              |                                  |
+| [SUCCESORS 53-53]: [53]                                 |                                  |
++---------------------------------------------------------+                                  |
 |                                                                                            |
 +--------------------------------------------------------------------------------------------+
 |
-+----------------------------------------------------------------+
-| [53]: <Merging>                                                |
-| <Start>                                                        |
-|   TraceExec: [56]                                              |
-|   ForwardTrace: 53                                             |
-|   CommonForwardTrace: 24                                       |
-| [CONTEXT]: {CS: [24, 20] [53 -> 29]} {OS: [23, 16] [49 -> 50]} |
-+----------------------------------------------------------------+
++------------------------------------------------------------+
+| [53]: <Merging>                                            |
+| <Start>                                                    |
+|   TraceExec: [56]                                          |
+|   ForwardTrace: 53                                         |
+|   CommonForwardTrace: 24                                   |
+| [CONTEXT]: CS(53 -> 29) : [24, 20] OS(49 -> 50) : [23, 16] |
++------------------------------------------------------------+
 |
 +
 |
-+-------------------------------------------------------------------+
-| [54]: <Ending>                                                    |
-|   TraceExec: [57]                                                 |
-|   InsExec: [138:4]                                                |
-|   ForwardTrace: 53                                                |
-| [7][Block]< "{" { Stat @ } "}" >                                  |
-| [AST-INSTRUCTIONS]:                                               |
-|   + CreateObject(IfStat)                                          |
-|     [BEFORE]: {CS: [24, 20] [53 -> 29]} {OS: [23, 16] [49 -> 50]} |
-|     objs: 20, 24                                                  |
-|                                                                   |
-|   + Field(IfStat::content, 0)                                     |
-|     [BEFORE]: {CS: [24, 20] [53 -> 29]} {OS: [23, 16] [49 -> 50]} |
-|                                                                   |
-|   + StackEnd()                                                    |
-|     [BEFORE]: {CS: [24, 20] [53 -> 29]} {OS: [23, 16] [49 -> 50]} |
-|                                                                   |
-|   > StackSlot(1)                                                  |
-|     [BEFORE]: {CS: [14] [29 -> 28]} {OS: [24, 20] [54 -> 49]}     |
-|                                                                   |
-|   [AFTER]: {CS: [14] [29 -> 28]} {OS: [24, 20] [54 -> 49]}        |
-| [RETURN STACK]:                                                   |
-|   [1][1][0]: Block -> [20][Stat]<! !Block @ !>                    |
-|   [0][7][0]: Stat -> [24][Module]< Stat @ >                       |
-| [PREDECESSORS 53-53]: [53]                                        |
-| [SUCCESORS 60-60]: [60]                                           |
-+-------------------------------------------------------------------+
++---------------------------------------------------------------+
+| [54]: <Ending>                                                |
+|   TraceExec: [57]                                             |
+|   InsExec: [138:4]                                            |
+|   ForwardTrace: 53                                            |
+| [7][Block]< "{" { Stat @ } "}" >                              |
+| [AST-INSTRUCTIONS]:                                           |
+|   + CreateObject(IfStat)                                      |
+|     [BEFORE]: CS(53 -> 29) : [24, 20] OS(49 -> 50) : [23, 16] |
+|     objs: 20, 24                                              |
+|                                                               |
+|   + Field(IfStat::content, 0)                                 |
+|     [BEFORE]: CS(53 -> 29) : [24, 20] OS(49 -> 50) : [23, 16] |
+|                                                               |
+|   + StackEnd()                                                |
+|     [BEFORE]: CS(53 -> 29) : [24, 20] OS(49 -> 50) : [23, 16] |
+|                                                               |
+|   > StackSlot(1)                                              |
+|     [BEFORE]: CS(29 -> 28) : [14] OS(54 -> 49) : [24, 20]     |
+|                                                               |
+|   [AFTER]: CS(29 -> 28) : [14] OS(54 -> 49) : [24, 20]        |
+| [RETURN STACK]:                                               |
+|   [1][1][0]: Block -> [20][Stat]<! !Block @ !>                |
+|   [0][7][0]: Stat -> [24][Module]< Stat @ >                   |
+| [PREDECESSORS 53-53]: [53]                                    |
+| [SUCCESORS 60-60]: [60]                                       |
++---------------------------------------------------------------+
 [0/0]
  |
  +
  |
 [0]
-++===============================================================++
-|| [60]: {IF} if                                                 ||
-||   TraceExec: [58]                                             ||
-||   InsExec: [142:2]                                            ||
-||   ForwardTrace: 53                                            ||
-|| [16][IfContent]< "if" @ "cond" "then" Stat [ "else" Stat ] >  ||
-|| [AST-INSTRUCTIONS]:                                           ||
-||   + StackBegin()                                              ||
-||     [BEFORE]: {CS: [14] [29 -> 28]} {OS: [24, 20] [54 -> 49]} ||
-||     objs: 25                                                  ||
-||                                                               ||
-||   + Token(0)                                                  ||
-||     [BEFORE]: {CS: [25] [55 -> 29]} {OS: [24, 20] [54 -> 49]} ||
-||                                                               ||
-||   [AFTER]: {CS: [25] [55 -> 29]} {OS: [24, 20] [54 -> 49]}    ||
-|| [RETURN STACK]:                                               ||
-||   [23][2][54]: IfContent -> [19][Stat]< IfContent @ >         ||
-||   [22][4][54]: Stat -> [7][Block]< "{" { Stat @ } "}" >       ||
-||   [1][1][0]: Block -> [20][Stat]<! !Block @ !>                ||
-||   [0][7][0]: Stat -> [24][Module]< Stat @ >                   ||
-|| [PREDECESSORS 54-54]: [54]                                    ||
-|| [SUCCESORS 61-61]: [61]                                       ||
-++===============================================================++
+++==============================================================++
+|| [60]: {IF} if                                                ||
+||   TraceExec: [58]                                            ||
+||   InsExec: [142:2]                                           ||
+||   ForwardTrace: 53                                           ||
+|| [16][IfContent]< "if" @ "cond" "then" Stat [ "else" Stat ] > ||
+|| [AST-INSTRUCTIONS]:                                          ||
+||   + StackBegin()                                             ||
+||     [BEFORE]: CS(29 -> 28) : [14] OS(54 -> 49) : [24, 20]    ||
+||     objs: 25                                                 ||
+||                                                              ||
+||   + Token(0)                                                 ||
+||     [BEFORE]: CS(55 -> 29) : [25] OS(54 -> 49) : [24, 20]    ||
+||                                                              ||
+||   [AFTER]: CS(55 -> 29) : [25] OS(54 -> 49) : [24, 20]       ||
+|| [RETURN STACK]:                                              ||
+||   [23][2][54]: IfContent -> [19][Stat]< IfContent @ >        ||
+||   [22][4][54]: Stat -> [7][Block]< "{" { Stat @ } "}" >      ||
+||   [1][1][0]: Block -> [20][Stat]<! !Block @ !>               ||
+||   [0][7][0]: Stat -> [24][Module]< Stat @ >                  ||
+|| [PREDECESSORS 54-54]: [54]                                   ||
+|| [SUCCESORS 61-61]: [61]                                      ||
+++==============================================================++
 [0]
  |
  +
  |
 [0]
-++===============================================================++
-|| [61]: {CONDITION} cond                                        ||
-||   TraceExec: [59]                                             ||
-||   InsExec: [144:1]                                            ||
-||   ForwardTrace: 53                                            ||
-|| [15][IfContent]< "if" "cond" @ "then" Stat [ "else" Stat ] >  ||
-|| [AST-INSTRUCTIONS]:                                           ||
-||   + Token(1)                                                  ||
-||     [BEFORE]: {CS: [25] [55 -> 29]} {OS: [24, 20] [54 -> 49]} ||
-||                                                               ||
-||   [AFTER]: {CS: [25] [55 -> 29]} {OS: [24, 20] [54 -> 49]}    ||
-|| [RETURN STACK]:                                               ||
-||   [23][2][54]: IfContent -> [19][Stat]< IfContent @ >         ||
-||   [22][4][54]: Stat -> [7][Block]< "{" { Stat @ } "}" >       ||
-||   [1][1][0]: Block -> [20][Stat]<! !Block @ !>                ||
-||   [0][7][0]: Stat -> [24][Module]< Stat @ >                   ||
-|| [PREDECESSORS 60-60]: [60]                                    ||
-|| [SUCCESORS 62-62]: [62]                                       ||
-++===============================================================++
+++==============================================================++
+|| [61]: {CONDITION} cond                                       ||
+||   TraceExec: [59]                                            ||
+||   InsExec: [144:1]                                           ||
+||   ForwardTrace: 53                                           ||
+|| [15][IfContent]< "if" "cond" @ "then" Stat [ "else" Stat ] > ||
+|| [AST-INSTRUCTIONS]:                                          ||
+||   + Token(1)                                                 ||
+||     [BEFORE]: CS(55 -> 29) : [25] OS(54 -> 49) : [24, 20]    ||
+||                                                              ||
+||   [AFTER]: CS(55 -> 29) : [25] OS(54 -> 49) : [24, 20]       ||
+|| [RETURN STACK]:                                              ||
+||   [23][2][54]: IfContent -> [19][Stat]< IfContent @ >        ||
+||   [22][4][54]: Stat -> [7][Block]< "{" { Stat @ } "}" >      ||
+||   [1][1][0]: Block -> [20][Stat]<! !Block @ !>               ||
+||   [0][7][0]: Stat -> [24][Module]< Stat @ >                  ||
+|| [PREDECESSORS 60-60]: [60]                                   ||
+|| [SUCCESORS 62-62]: [62]                                      ||
+++==============================================================++
 [0]
  |
  +
  |
 [0]
-++===============================================================++
-|| [62]: {THEN} then                                             ||
-||   TraceExec: [60]                                             ||
-||   InsExec: [145:1]                                            ||
-||   ForwardTrace: 53                                            ||
-|| [11][IfContent]< "if" "cond" "then" @ Stat [ "else" Stat ] >  ||
-|| [AST-INSTRUCTIONS]:                                           ||
-||   + Token(2)                                                  ||
-||     [BEFORE]: {CS: [25] [55 -> 29]} {OS: [24, 20] [54 -> 49]} ||
-||                                                               ||
-||   [AFTER]: {CS: [25] [55 -> 29]} {OS: [24, 20] [54 -> 49]}    ||
-|| [RETURN STACK]:                                               ||
-||   [23][2][54]: IfContent -> [19][Stat]< IfContent @ >         ||
-||   [22][4][54]: Stat -> [7][Block]< "{" { Stat @ } "}" >       ||
-||   [1][1][0]: Block -> [20][Stat]<! !Block @ !>                ||
-||   [0][7][0]: Stat -> [24][Module]< Stat @ >                   ||
-|| [PREDECESSORS 61-61]: [61]                                    ||
-|| [SUCCESORS 63-63]: [63]                                       ||
-++===============================================================++
+++==============================================================++
+|| [62]: {THEN} then                                            ||
+||   TraceExec: [60]                                            ||
+||   InsExec: [145:1]                                           ||
+||   ForwardTrace: 53                                           ||
+|| [11][IfContent]< "if" "cond" "then" @ Stat [ "else" Stat ] > ||
+|| [AST-INSTRUCTIONS]:                                          ||
+||   + Token(2)                                                 ||
+||     [BEFORE]: CS(55 -> 29) : [25] OS(54 -> 49) : [24, 20]    ||
+||                                                              ||
+||   [AFTER]: CS(55 -> 29) : [25] OS(54 -> 49) : [24, 20]       ||
+|| [RETURN STACK]:                                              ||
+||   [23][2][54]: IfContent -> [19][Stat]< IfContent @ >        ||
+||   [22][4][54]: Stat -> [7][Block]< "{" { Stat @ } "}" >      ||
+||   [1][1][0]: Block -> [20][Stat]<! !Block @ !>               ||
+||   [0][7][0]: Stat -> [24][Module]< Stat @ >                  ||
+|| [PREDECESSORS 61-61]: [61]                                   ||
+|| [SUCCESORS 63-63]: [63]                                      ||
+++==============================================================++
 [0]
  |
  +
@@ -1416,13 +1416,13 @@
 || [16][IfContent]< "if" @ "cond" "then" Stat [ "else" Stat ] >                        ||
 || [AST-INSTRUCTIONS]:                                                                 ||
 ||   + StackBegin()                                                                    ||
-||     [BEFORE]: {CS: [25] [55 -> 29]} {OS: [24, 20] [54 -> 49]}                       ||
+||     [BEFORE]: CS(55 -> 29) : [25] OS(54 -> 49) : [24, 20]                           ||
 ||     objs: 26                                                                        ||
 ||                                                                                     ||
 ||   + Token(0)                                                                        ||
-||     [BEFORE]: {CS: [26] [56 -> 55]} {OS: [24, 20] [54 -> 49]}                       ||
+||     [BEFORE]: CS(56 -> 55) : [26] OS(54 -> 49) : [24, 20]                           ||
 ||                                                                                     ||
-||   [AFTER]: {CS: [26] [56 -> 55]} {OS: [24, 20] [54 -> 49]}                          ||
+||   [AFTER]: CS(56 -> 55) : [26] OS(54 -> 49) : [24, 20]                              ||
 || [RETURN STACK]:                                                                     ||
 ||   [25][2][62]: IfContent -> [19][Stat]< IfContent @ >                               ||
 ||   [24][5][62]: Stat -> [12][IfContent]< "if" "cond" "then" Stat @ [ "else" Stat ] > ||
@@ -1446,9 +1446,9 @@
 || [15][IfContent]< "if" "cond" @ "then" Stat [ "else" Stat ] >                        ||
 || [AST-INSTRUCTIONS]:                                                                 ||
 ||   + Token(1)                                                                        ||
-||     [BEFORE]: {CS: [26] [56 -> 55]} {OS: [24, 20] [54 -> 49]}                       ||
+||     [BEFORE]: CS(56 -> 55) : [26] OS(54 -> 49) : [24, 20]                           ||
 ||                                                                                     ||
-||   [AFTER]: {CS: [26] [56 -> 55]} {OS: [24, 20] [54 -> 49]}                          ||
+||   [AFTER]: CS(56 -> 55) : [26] OS(54 -> 49) : [24, 20]                              ||
 || [RETURN STACK]:                                                                     ||
 ||   [25][2][62]: IfContent -> [19][Stat]< IfContent @ >                               ||
 ||   [24][5][62]: Stat -> [12][IfContent]< "if" "cond" "then" Stat @ [ "else" Stat ] > ||
@@ -1472,9 +1472,9 @@
 || [11][IfContent]< "if" "cond" "then" @ Stat [ "else" Stat ] >                        ||
 || [AST-INSTRUCTIONS]:                                                                 ||
 ||   + Token(2)                                                                        ||
-||     [BEFORE]: {CS: [26] [56 -> 55]} {OS: [24, 20] [54 -> 49]}                       ||
+||     [BEFORE]: CS(56 -> 55) : [26] OS(54 -> 49) : [24, 20]                           ||
 ||                                                                                     ||
-||   [AFTER]: {CS: [26] [56 -> 55]} {OS: [24, 20] [54 -> 49]}                          ||
+||   [AFTER]: CS(56 -> 55) : [26] OS(54 -> 49) : [24, 20]                              ||
 || [RETURN STACK]:                                                                     ||
 ||   [25][2][62]: IfContent -> [19][Stat]< IfContent @ >                               ||
 ||   [24][5][62]: Stat -> [12][IfContent]< "if" "cond" "then" Stat @ [ "else" Stat ] > ||
@@ -1498,13 +1498,13 @@
 || [3][Do]< "do" @ ";" >                                                               ||
 || [AST-INSTRUCTIONS]:                                                                 ||
 ||   + StackBegin()                                                                    ||
-||     [BEFORE]: {CS: [26] [56 -> 55]} {OS: [24, 20] [54 -> 49]}                       ||
+||     [BEFORE]: CS(56 -> 55) : [26] OS(54 -> 49) : [24, 20]                           ||
 ||     objs: 27                                                                        ||
 ||                                                                                     ||
 ||   + Token(0)                                                                        ||
-||     [BEFORE]: {CS: [27] [57 -> 56]} {OS: [24, 20] [54 -> 49]}                       ||
+||     [BEFORE]: CS(57 -> 56) : [27] OS(54 -> 49) : [24, 20]                           ||
 ||                                                                                     ||
-||   [AFTER]: {CS: [27] [57 -> 56]} {OS: [24, 20] [54 -> 49]}                          ||
+||   [AFTER]: CS(57 -> 56) : [27] OS(54 -> 49) : [24, 20]                              ||
 || [RETURN STACK]:                                                                     ||
 ||   [27][3][65]: Do -> [21][Stat]<! !Do @ !>                                          ||
 ||   [26][5][65]: Stat -> [12][IfContent]< "if" "cond" "then" Stat @ [ "else" Stat ] > ||
@@ -1530,9 +1530,9 @@
 || [2][Do]< "do" ";" @ >                                                               ||
 || [AST-INSTRUCTIONS]:                                                                 ||
 ||   + Token(1)                                                                        ||
-||     [BEFORE]: {CS: [27] [57 -> 56]} {OS: [24, 20] [54 -> 49]}                       ||
+||     [BEFORE]: CS(57 -> 56) : [27] OS(54 -> 49) : [24, 20]                           ||
 ||                                                                                     ||
-||   [AFTER]: {CS: [27] [57 -> 56]} {OS: [24, 20] [54 -> 49]}                          ||
+||   [AFTER]: CS(57 -> 56) : [27] OS(54 -> 49) : [24, 20]                              ||
 || [RETURN STACK]:                                                                     ||
 ||   [27][3][65]: Do -> [21][Stat]<! !Do @ !>                                          ||
 ||   [26][5][65]: Stat -> [12][IfContent]< "if" "cond" "then" Stat @ [ "else" Stat ] > ||
@@ -1556,17 +1556,17 @@
 | [21][Stat]<! !Do @ !>                                                               |
 | [AST-INSTRUCTIONS]:                                                                 |
 |   + CreateObject(DoStat)                                                            |
-|     [BEFORE]: {CS: [27] [57 -> 56]} {OS: [24, 20] [54 -> 49]}                       |
+|     [BEFORE]: CS(57 -> 56) : [27] OS(54 -> 49) : [24, 20]                           |
 |     objs: 27                                                                        |
 |                                                                                     |
 |   + StackEnd()                                                                      |
-|     [BEFORE]: {CS: [27] [57 -> 56]} {OS: [24, 20] [54 -> 49]}                       |
+|     [BEFORE]: CS(57 -> 56) : [27] OS(54 -> 49) : [24, 20]                           |
 |                                                                                     |
 |   > StackBegin()                                                                    |
-|     [BEFORE]: {CS: [26] [56 -> 55]} {OS: [27] [58 -> 54]}                           |
+|     [BEFORE]: CS(56 -> 55) : [26] OS(58 -> 54) : [27]                               |
 |     objs: 28                                                                        |
 |                                                                                     |
-|   [AFTER]: {CS: [28] [59 -> 56]} {OS: [27] [58 -> 54]}                              |
+|   [AFTER]: CS(59 -> 56) : [28] OS(58 -> 54) : [27]                                  |
 | [RETURN STACK]:                                                                     |
 |   [26][5][65]: Stat -> [12][IfContent]< "if" "cond" "then" Stat @ [ "else" Stat ] > |
 |   [25][2][62]: IfContent -> [19][Stat]< IfContent @ >                               |
@@ -1589,12 +1589,12 @@
 | [12][IfContent]< "if" "cond" "then" Stat @ [ "else" Stat ] >                        |
 | [AST-INSTRUCTIONS]:                                                                 |
 |   + StackEnd()                                                                      |
-|     [BEFORE]: {CS: [28] [59 -> 56]} {OS: [27] [58 -> 54]}                           |
+|     [BEFORE]: CS(59 -> 56) : [28] OS(58 -> 54) : [27]                               |
 |                                                                                     |
 |   > StackSlot(3)                                                                    |
-|     [BEFORE]: {CS: [28] [59 -> 56]} {OS: [27] [58 -> 54]}                           |
+|     [BEFORE]: CS(59 -> 56) : [28] OS(58 -> 54) : [27]                               |
 |                                                                                     |
-|   [AFTER]: {CS: [28] [59 -> 56]} {OS: [27] [58 -> 54]}                              |
+|   [AFTER]: CS(59 -> 56) : [28] OS(58 -> 54) : [27]                                  |
 | [RETURN STACK]:                                                                     |
 |   [25][2][62]: IfContent -> [19][Stat]< IfContent @ >                               |
 |   [24][5][62]: Stat -> [12][IfContent]< "if" "cond" "then" Stat @ [ "else" Stat ] > |
@@ -1616,26 +1616,26 @@
 |                                                                                            | [19][Stat]< IfContent @ >                                                           |
 |                                                                                            | [AST-INSTRUCTIONS]:                                                                 |
 |                                                                                            |   + CreateObject(IfContentCandidate)                                                |
-|                                                                                            |     [BEFORE]: {CS: [28] [59 -> 56]} {OS: [27] [58 -> 54]}                           |
+|                                                                                            |     [BEFORE]: CS(59 -> 56) : [28] OS(58 -> 54) : [27]                               |
 |                                                                                            |     objs: 28                                                                        |
 |                                                                                            |                                                                                     |
 |                                                                                            |   + Field(IfContentCandidate::thenBranch, 3)                                        |
-|                                                                                            |     [BEFORE]: {CS: [28] [59 -> 56]} {OS: [27] [58 -> 54]}                           |
+|                                                                                            |     [BEFORE]: CS(59 -> 56) : [28] OS(58 -> 54) : [27]                               |
 |                                                                                            |                                                                                     |
 |                                                                                            |   + Field(IfContentCandidate::elseBranch, 5)                                        |
-|                                                                                            |     [BEFORE]: {CS: [28] [59 -> 56]} {OS: [27] [58 -> 54]}                           |
+|                                                                                            |     [BEFORE]: CS(59 -> 56) : [28] OS(58 -> 54) : [27]                               |
 |                                                                                            |                                                                                     |
 |                                                                                            |   + StackEnd()                                                                      |
-|                                                                                            |     [BEFORE]: {CS: [28] [59 -> 56]} {OS: [27] [58 -> 54]}                           |
+|                                                                                            |     [BEFORE]: CS(59 -> 56) : [28] OS(58 -> 54) : [27]                               |
 |                                                                                            |                                                                                     |
 |                                                                                            |   > StackBegin()                                                                    |
-|                                                                                            |     [BEFORE]: {CS: [26] [56 -> 55]} {OS: [28] [68 -> 58]}                           |
+|                                                                                            |     [BEFORE]: CS(56 -> 55) : [26] OS(68 -> 58) : [28]                               |
 |                                                                                            |     objs: 33                                                                        |
 |                                                                                            |                                                                                     |
 |                                                                                            |   > StackSlot(0)                                                                    |
-|                                                                                            |     [BEFORE]: {CS: [33] [69 -> 56]} {OS: [28] [68 -> 58]}                           |
+|                                                                                            |     [BEFORE]: CS(69 -> 56) : [33] OS(68 -> 58) : [28]                               |
 |                                                                                            |                                                                                     |
-|                                                                                            |   [AFTER]: {CS: [33] [69 -> 56]} {OS: [28] [68 -> 58]}                              |
+|                                                                                            |   [AFTER]: CS(69 -> 56) : [33] OS(68 -> 58) : [28]                                  |
 |                                                                                            | [RETURN STACK]:                                                                     |
 |                                                                                            |   [24][5][62]: Stat -> [12][IfContent]< "if" "cond" "then" Stat @ [ "else" Stat ] > |
 |                                                                                            |   [23][2][54]: IfContent -> [19][Stat]< IfContent @ >                               |
@@ -1656,19 +1656,19 @@
 |                                                                                            | [12][IfContent]< "if" "cond" "then" Stat @ [ "else" Stat ] > |
 |                                                                                            | [AST-INSTRUCTIONS]:                                          |
 |                                                                                            |   + CreateObject(IfStat)                                     |
-|                                                                                            |     [BEFORE]: {CS: [33] [69 -> 56]} {OS: [28] [68 -> 58]}    |
+|                                                                                            |     [BEFORE]: CS(69 -> 56) : [33] OS(68 -> 58) : [28]        |
 |                                                                                            |     objs: 33                                                 |
 |                                                                                            |                                                              |
 |                                                                                            |   + Field(IfStat::content, 0)                                |
-|                                                                                            |     [BEFORE]: {CS: [33] [69 -> 56]} {OS: [28] [68 -> 58]}    |
+|                                                                                            |     [BEFORE]: CS(69 -> 56) : [33] OS(68 -> 58) : [28]        |
 |                                                                                            |                                                              |
 |                                                                                            |   + StackEnd()                                               |
-|                                                                                            |     [BEFORE]: {CS: [33] [69 -> 56]} {OS: [28] [68 -> 58]}    |
+|                                                                                            |     [BEFORE]: CS(69 -> 56) : [33] OS(68 -> 58) : [28]        |
 |                                                                                            |                                                              |
 |                                                                                            |   > StackSlot(3)                                             |
-|                                                                                            |     [BEFORE]: {CS: [26] [56 -> 55]} {OS: [33] [70 -> 68]}    |
+|                                                                                            |     [BEFORE]: CS(56 -> 55) : [26] OS(70 -> 68) : [33]        |
 |                                                                                            |                                                              |
-|                                                                                            |   [AFTER]: {CS: [26] [56 -> 55]} {OS: [33] [70 -> 68]}       |
+|                                                                                            |   [AFTER]: CS(56 -> 55) : [26] OS(70 -> 68) : [33]           |
 |                                                                                            | [RETURN STACK]:                                              |
 |                                                                                            |   [23][2][54]: IfContent -> [19][Stat]< IfContent @ >        |
 |                                                                                            |   [22][4][54]: Stat -> [7][Block]< "{" { Stat @ } "}" >      |
@@ -1690,9 +1690,9 @@
 || [13][IfContent]< "if" "cond" "then" Stat [ "else" @ Stat ] >                        ||    || [13][IfContent]< "if" "cond" "then" Stat [ "else" @ Stat ] > ||
 || [AST-INSTRUCTIONS]:                                                                 ||    || [AST-INSTRUCTIONS]:                                          ||
 ||   + Token(4)                                                                        ||    ||   + Token(4)                                                 ||
-||     [BEFORE]: {CS: [28] [59 -> 56]} {OS: [27] [58 -> 54]}                           ||    ||     [BEFORE]: {CS: [26] [56 -> 55]} {OS: [33] [70 -> 68]}    ||
+||     [BEFORE]: CS(59 -> 56) : [28] OS(58 -> 54) : [27]                               ||    ||     [BEFORE]: CS(56 -> 55) : [26] OS(70 -> 68) : [33]        ||
 ||                                                                                     ||    ||                                                              ||
-||   [AFTER]: {CS: [28] [59 -> 56]} {OS: [27] [58 -> 54]}                              ||    ||   [AFTER]: {CS: [26] [56 -> 55]} {OS: [33] [70 -> 68]}       ||
+||   [AFTER]: CS(59 -> 56) : [28] OS(58 -> 54) : [27]                                  ||    ||   [AFTER]: CS(56 -> 55) : [26] OS(70 -> 68) : [33]           ||
 || [RETURN STACK]:                                                                     ||    || [RETURN STACK]:                                              ||
 ||   [25][2][62]: IfContent -> [19][Stat]< IfContent @ >                               ||    ||   [23][2][54]: IfContent -> [19][Stat]< IfContent @ >        ||
 ||   [24][5][62]: Stat -> [12][IfContent]< "if" "cond" "then" Stat @ [ "else" Stat ] > ||    ||   [22][4][54]: Stat -> [7][Block]< "{" { Stat @ } "}" >      ||
@@ -1716,13 +1716,13 @@
 || [3][Do]< "do" @ ";" >                                                               ||    || [3][Do]< "do" @ ";" >                                                               ||
 || [AST-INSTRUCTIONS]:                                                                 ||    || [AST-INSTRUCTIONS]:                                                                 ||
 ||   + StackBegin()                                                                    ||    ||   + StackBegin()                                                                    ||
-||     [BEFORE]: {CS: [28] [59 -> 56]} {OS: [27] [58 -> 54]}                           ||    ||     [BEFORE]: {CS: [26] [56 -> 55]} {OS: [33] [70 -> 68]}                           ||
+||     [BEFORE]: CS(59 -> 56) : [28] OS(58 -> 54) : [27]                               ||    ||     [BEFORE]: CS(56 -> 55) : [26] OS(70 -> 68) : [33]                               ||
 ||     objs: 29                                                                        ||    ||     objs: 34                                                                        ||
 ||                                                                                     ||    ||                                                                                     ||
 ||   + Token(0)                                                                        ||    ||   + Token(0)                                                                        ||
-||     [BEFORE]: {CS: [29] [60 -> 59]} {OS: [27] [58 -> 54]}                           ||    ||     [BEFORE]: {CS: [34] [71 -> 56]} {OS: [33] [70 -> 68]}                           ||
+||     [BEFORE]: CS(60 -> 59) : [29] OS(58 -> 54) : [27]                               ||    ||     [BEFORE]: CS(71 -> 56) : [34] OS(70 -> 68) : [33]                               ||
 ||                                                                                     ||    ||                                                                                     ||
-||   [AFTER]: {CS: [29] [60 -> 59]} {OS: [27] [58 -> 54]}                              ||    ||   [AFTER]: {CS: [34] [71 -> 56]} {OS: [33] [70 -> 68]}                              ||
+||   [AFTER]: CS(60 -> 59) : [29] OS(58 -> 54) : [27]                                  ||    ||   [AFTER]: CS(71 -> 56) : [34] OS(70 -> 68) : [33]                                  ||
 || [RETURN STACK]:                                                                     ||    || [RETURN STACK]:                                                                     ||
 ||   [29][3][73]: Do -> [21][Stat]<! !Do @ !>                                          ||    ||   [31][3][74]: Do -> [21][Stat]<! !Do @ !>                                          ||
 ||   [28][6][73]: Stat -> [14][IfContent]< "if" "cond" "then" Stat [ "else" Stat @ ] > ||    ||   [30][6][74]: Stat -> [14][IfContent]< "if" "cond" "then" Stat [ "else" Stat @ ] > ||
@@ -1748,9 +1748,9 @@
 || [2][Do]< "do" ";" @ >                                                               ||    || [2][Do]< "do" ";" @ >                                                               ||
 || [AST-INSTRUCTIONS]:                                                                 ||    || [AST-INSTRUCTIONS]:                                                                 ||
 ||   + Token(1)                                                                        ||    ||   + Token(1)                                                                        ||
-||     [BEFORE]: {CS: [29] [60 -> 59]} {OS: [27] [58 -> 54]}                           ||    ||     [BEFORE]: {CS: [34] [71 -> 56]} {OS: [33] [70 -> 68]}                           ||
+||     [BEFORE]: CS(60 -> 59) : [29] OS(58 -> 54) : [27]                               ||    ||     [BEFORE]: CS(71 -> 56) : [34] OS(70 -> 68) : [33]                               ||
 ||                                                                                     ||    ||                                                                                     ||
-||   [AFTER]: {CS: [29] [60 -> 59]} {OS: [27] [58 -> 54]}                              ||    ||   [AFTER]: {CS: [34] [71 -> 56]} {OS: [33] [70 -> 68]}                              ||
+||   [AFTER]: CS(60 -> 59) : [29] OS(58 -> 54) : [27]                                  ||    ||   [AFTER]: CS(71 -> 56) : [34] OS(70 -> 68) : [33]                                  ||
 || [RETURN STACK]:                                                                     ||    || [RETURN STACK]:                                                                     ||
 ||   [29][3][73]: Do -> [21][Stat]<! !Do @ !>                                          ||    ||   [31][3][74]: Do -> [21][Stat]<! !Do @ !>                                          ||
 ||   [28][6][73]: Stat -> [14][IfContent]< "if" "cond" "then" Stat [ "else" Stat @ ] > ||    ||   [30][6][74]: Stat -> [14][IfContent]< "if" "cond" "then" Stat [ "else" Stat @ ] > ||
@@ -1774,17 +1774,17 @@
 | [21][Stat]<! !Do @ !>                                                               |      | [21][Stat]<! !Do @ !>                                                               |
 | [AST-INSTRUCTIONS]:                                                                 |      | [AST-INSTRUCTIONS]:                                                                 |
 |   + CreateObject(DoStat)                                                            |      |   + CreateObject(DoStat)                                                            |
-|     [BEFORE]: {CS: [29] [60 -> 59]} {OS: [27] [58 -> 54]}                           |      |     [BEFORE]: {CS: [34] [71 -> 56]} {OS: [33] [70 -> 68]}                           |
+|     [BEFORE]: CS(60 -> 59) : [29] OS(58 -> 54) : [27]                               |      |     [BEFORE]: CS(71 -> 56) : [34] OS(70 -> 68) : [33]                               |
 |     objs: 29                                                                        |      |     objs: 34                                                                        |
 |                                                                                     |      |                                                                                     |
 |   + StackEnd()                                                                      |      |   + StackEnd()                                                                      |
-|     [BEFORE]: {CS: [29] [60 -> 59]} {OS: [27] [58 -> 54]}                           |      |     [BEFORE]: {CS: [34] [71 -> 56]} {OS: [33] [70 -> 68]}                           |
+|     [BEFORE]: CS(60 -> 59) : [29] OS(58 -> 54) : [27]                               |      |     [BEFORE]: CS(71 -> 56) : [34] OS(70 -> 68) : [33]                               |
 |                                                                                     |      |                                                                                     |
 |   > StackBegin()                                                                    |      |   > StackBegin()                                                                    |
-|     [BEFORE]: {CS: [28] [59 -> 56]} {OS: [29] [61 -> 58]}                           |      |     [BEFORE]: {CS: [26] [56 -> 55]} {OS: [34] [72 -> 70]}                           |
+|     [BEFORE]: CS(59 -> 56) : [28] OS(61 -> 58) : [29]                               |      |     [BEFORE]: CS(56 -> 55) : [26] OS(72 -> 70) : [34]                               |
 |     objs: 30                                                                        |      |     objs: 35                                                                        |
 |                                                                                     |      |                                                                                     |
-|   [AFTER]: {CS: [30] [62 -> 59]} {OS: [29] [61 -> 58]}                              |      |   [AFTER]: {CS: [35] [73 -> 56]} {OS: [34] [72 -> 70]}                              |
+|   [AFTER]: CS(62 -> 59) : [30] OS(61 -> 58) : [29]                                  |      |   [AFTER]: CS(73 -> 56) : [35] OS(72 -> 70) : [34]                                  |
 | [RETURN STACK]:                                                                     |      | [RETURN STACK]:                                                                     |
 |   [28][6][73]: Stat -> [14][IfContent]< "if" "cond" "then" Stat [ "else" Stat @ ] > |      |   [30][6][74]: Stat -> [14][IfContent]< "if" "cond" "then" Stat [ "else" Stat @ ] > |
 |   [25][2][62]: IfContent -> [19][Stat]< IfContent @ >                               |      |   [23][2][54]: IfContent -> [19][Stat]< IfContent @ >                               |
@@ -1807,12 +1807,12 @@
 | [14][IfContent]< "if" "cond" "then" Stat [ "else" Stat @ ] >                        |      | [14][IfContent]< "if" "cond" "then" Stat [ "else" Stat @ ] > |
 | [AST-INSTRUCTIONS]:                                                                 |      | [AST-INSTRUCTIONS]:                                          |
 |   + StackEnd()                                                                      |      |   + StackEnd()                                               |
-|     [BEFORE]: {CS: [30] [62 -> 59]} {OS: [29] [61 -> 58]}                           |      |     [BEFORE]: {CS: [35] [73 -> 56]} {OS: [34] [72 -> 70]}    |
+|     [BEFORE]: CS(62 -> 59) : [30] OS(61 -> 58) : [29]                               |      |     [BEFORE]: CS(73 -> 56) : [35] OS(72 -> 70) : [34]        |
 |                                                                                     |      |                                                              |
 |   > StackSlot(5)                                                                    |      |   > StackSlot(5)                                             |
-|     [BEFORE]: {CS: [30] [62 -> 59]} {OS: [29] [61 -> 58]}                           |      |     [BEFORE]: {CS: [35] [73 -> 56]} {OS: [34] [72 -> 70]}    |
+|     [BEFORE]: CS(62 -> 59) : [30] OS(61 -> 58) : [29]                               |      |     [BEFORE]: CS(73 -> 56) : [35] OS(72 -> 70) : [34]        |
 |                                                                                     |      |                                                              |
-|   [AFTER]: {CS: [30] [62 -> 59]} {OS: [29] [61 -> 58]}                              |      |   [AFTER]: {CS: [35] [73 -> 56]} {OS: [34] [72 -> 70]}       |
+|   [AFTER]: CS(62 -> 59) : [30] OS(61 -> 58) : [29]                                  |      |   [AFTER]: CS(73 -> 56) : [35] OS(72 -> 70) : [34]           |
 | [RETURN STACK]:                                                                     |      | [RETURN STACK]:                                              |
 |   [25][2][62]: IfContent -> [19][Stat]< IfContent @ >                               |      |   [23][2][54]: IfContent -> [19][Stat]< IfContent @ >        |
 |   [24][5][62]: Stat -> [12][IfContent]< "if" "cond" "then" Stat @ [ "else" Stat ] > |      |   [22][4][54]: Stat -> [7][Block]< "{" { Stat @ } "}" >      |
@@ -1826,41 +1826,41 @@
 |                                                                                            |
 +                                                                                            +
 |                                                                                            |
-+-------------------------------------------------------------------------------------+      +-----------------------------------------------------------+
-| [80]: <Ending>                                                                      |      | [87]: <Ending>                                            |
-|   TraceExec: [73]                                                                   |      |   TraceExec: [83]                                         |
-|   InsExec: [167:6]                                                                  |      |   InsExec: [202:6]                                        |
-|   ForwardTrace: 73                                                                  |      |   ForwardTrace: 70                                        |
-| [19][Stat]< IfContent @ >                                                           |      | [19][Stat]< IfContent @ >                                 |
-| [AST-INSTRUCTIONS]:                                                                 |      | [AST-INSTRUCTIONS]:                                       |
-|   + CreateObject(IfContentCandidate)                                                |      |   + CreateObject(IfContentCandidate)                      |
-|     [BEFORE]: {CS: [30] [62 -> 59]} {OS: [29] [61 -> 58]}                           |      |     [BEFORE]: {CS: [35] [73 -> 56]} {OS: [34] [72 -> 70]} |
-|     objs: 30                                                                        |      |     objs: 35                                              |
-|                                                                                     |      |                                                           |
-|   + Field(IfContentCandidate::thenBranch, 3)                                        |      |   + Field(IfContentCandidate::thenBranch, 3)              |
-|     [BEFORE]: {CS: [30] [62 -> 59]} {OS: [29] [61 -> 58]}                           |      |     [BEFORE]: {CS: [35] [73 -> 56]} {OS: [34] [72 -> 70]} |
-|                                                                                     |      |                                                           |
-|   + Field(IfContentCandidate::elseBranch, 5)                                        |      |   + Field(IfContentCandidate::elseBranch, 5)              |
-|     [BEFORE]: {CS: [30] [62 -> 59]} {OS: [29] [61 -> 58]}                           |      |     [BEFORE]: {CS: [35] [73 -> 56]} {OS: [34] [72 -> 70]} |
-|                                                                                     |      |                                                           |
-|   + StackEnd()                                                                      |      |   + StackEnd()                                            |
-|     [BEFORE]: {CS: [30] [62 -> 59]} {OS: [29] [61 -> 58]}                           |      |     [BEFORE]: {CS: [35] [73 -> 56]} {OS: [34] [72 -> 70]} |
-|                                                                                     |      |                                                           |
-|   > StackBegin()                                                                    |      |   > StackBegin()                                          |
-|     [BEFORE]: {CS: [28] [59 -> 56]} {OS: [30] [63 -> 61]}                           |      |     [BEFORE]: {CS: [26] [56 -> 55]} {OS: [35] [74 -> 72]} |
-|     objs: 31                                                                        |      |     objs: 36                                              |
-|                                                                                     |      |                                                           |
-|   > StackSlot(0)                                                                    |      |   > StackSlot(0)                                          |
-|     [BEFORE]: {CS: [31] [64 -> 59]} {OS: [30] [63 -> 61]}                           |      |     [BEFORE]: {CS: [36] [75 -> 56]} {OS: [35] [74 -> 72]} |
-|                                                                                     |      |                                                           |
-|   [AFTER]: {CS: [31] [64 -> 59]} {OS: [30] [63 -> 61]}                              |      |   [AFTER]: {CS: [36] [75 -> 56]} {OS: [35] [74 -> 72]}    |
-| [RETURN STACK]:                                                                     |      | [RETURN STACK]:                                           |
-|   [24][5][62]: Stat -> [12][IfContent]< "if" "cond" "then" Stat @ [ "else" Stat ] > |      |   [22][4][54]: Stat -> [7][Block]< "{" { Stat @ } "}" >   |
-|   [23][2][54]: IfContent -> [19][Stat]< IfContent @ >                               |      |   [1][1][0]: Block -> [20][Stat]<! !Block @ !>            |
-|   [22][4][54]: Stat -> [7][Block]< "{" { Stat @ } "}" >                             |      |   [0][7][0]: Stat -> [24][Module]< Stat @ >               |
-|   [1][1][0]: Block -> [20][Stat]<! !Block @ !>                                      |      | [PREDECESSORS 86-86]: [86]                                |
-|   [0][7][0]: Stat -> [24][Module]< Stat @ >                                         |      | [SUCCESORS 82-82]: [82]                                   |
-| [PREDECESSORS 79-79]: [79]                                                          |      +-----------------------------------------------------------+
++-------------------------------------------------------------------------------------+      +---------------------------------------------------------+
+| [80]: <Ending>                                                                      |      | [87]: <Ending>                                          |
+|   TraceExec: [73]                                                                   |      |   TraceExec: [83]                                       |
+|   InsExec: [167:6]                                                                  |      |   InsExec: [202:6]                                      |
+|   ForwardTrace: 73                                                                  |      |   ForwardTrace: 70                                      |
+| [19][Stat]< IfContent @ >                                                           |      | [19][Stat]< IfContent @ >                               |
+| [AST-INSTRUCTIONS]:                                                                 |      | [AST-INSTRUCTIONS]:                                     |
+|   + CreateObject(IfContentCandidate)                                                |      |   + CreateObject(IfContentCandidate)                    |
+|     [BEFORE]: CS(62 -> 59) : [30] OS(61 -> 58) : [29]                               |      |     [BEFORE]: CS(73 -> 56) : [35] OS(72 -> 70) : [34]   |
+|     objs: 30                                                                        |      |     objs: 35                                            |
+|                                                                                     |      |                                                         |
+|   + Field(IfContentCandidate::thenBranch, 3)                                        |      |   + Field(IfContentCandidate::thenBranch, 3)            |
+|     [BEFORE]: CS(62 -> 59) : [30] OS(61 -> 58) : [29]                               |      |     [BEFORE]: CS(73 -> 56) : [35] OS(72 -> 70) : [34]   |
+|                                                                                     |      |                                                         |
+|   + Field(IfContentCandidate::elseBranch, 5)                                        |      |   + Field(IfContentCandidate::elseBranch, 5)            |
+|     [BEFORE]: CS(62 -> 59) : [30] OS(61 -> 58) : [29]                               |      |     [BEFORE]: CS(73 -> 56) : [35] OS(72 -> 70) : [34]   |
+|                                                                                     |      |                                                         |
+|   + StackEnd()                                                                      |      |   + StackEnd()                                          |
+|     [BEFORE]: CS(62 -> 59) : [30] OS(61 -> 58) : [29]                               |      |     [BEFORE]: CS(73 -> 56) : [35] OS(72 -> 70) : [34]   |
+|                                                                                     |      |                                                         |
+|   > StackBegin()                                                                    |      |   > StackBegin()                                        |
+|     [BEFORE]: CS(59 -> 56) : [28] OS(63 -> 61) : [30]                               |      |     [BEFORE]: CS(56 -> 55) : [26] OS(74 -> 72) : [35]   |
+|     objs: 31                                                                        |      |     objs: 36                                            |
+|                                                                                     |      |                                                         |
+|   > StackSlot(0)                                                                    |      |   > StackSlot(0)                                        |
+|     [BEFORE]: CS(64 -> 59) : [31] OS(63 -> 61) : [30]                               |      |     [BEFORE]: CS(75 -> 56) : [36] OS(74 -> 72) : [35]   |
+|                                                                                     |      |                                                         |
+|   [AFTER]: CS(64 -> 59) : [31] OS(63 -> 61) : [30]                                  |      |   [AFTER]: CS(75 -> 56) : [36] OS(74 -> 72) : [35]      |
+| [RETURN STACK]:                                                                     |      | [RETURN STACK]:                                         |
+|   [24][5][62]: Stat -> [12][IfContent]< "if" "cond" "then" Stat @ [ "else" Stat ] > |      |   [22][4][54]: Stat -> [7][Block]< "{" { Stat @ } "}" > |
+|   [23][2][54]: IfContent -> [19][Stat]< IfContent @ >                               |      |   [1][1][0]: Block -> [20][Stat]<! !Block @ !>          |
+|   [22][4][54]: Stat -> [7][Block]< "{" { Stat @ } "}" >                             |      |   [0][7][0]: Stat -> [24][Module]< Stat @ >             |
+|   [1][1][0]: Block -> [20][Stat]<! !Block @ !>                                      |      | [PREDECESSORS 86-86]: [86]                              |
+|   [0][7][0]: Stat -> [24][Module]< Stat @ >                                         |      | [SUCCESORS 82-82]: [82]                                 |
+| [PREDECESSORS 79-79]: [79]                                                          |      +---------------------------------------------------------+
 | [SUCCESORS 81-81]: [81]                                                             |      |
 +-------------------------------------------------------------------------------------+      |
 |                                                                                            |
@@ -1874,19 +1874,19 @@
 | [12][IfContent]< "if" "cond" "then" Stat @ [ "else" Stat ] > |                             |
 | [AST-INSTRUCTIONS]:                                          |                             |
 |   + CreateObject(IfStat)                                     |                             |
-|     [BEFORE]: {CS: [31] [64 -> 59]} {OS: [30] [63 -> 61]}    |                             |
+|     [BEFORE]: CS(64 -> 59) : [31] OS(63 -> 61) : [30]        |                             |
 |     objs: 31                                                 |                             |
 |                                                              |                             |
 |   + Field(IfStat::content, 0)                                |                             |
-|     [BEFORE]: {CS: [31] [64 -> 59]} {OS: [30] [63 -> 61]}    |                             |
+|     [BEFORE]: CS(64 -> 59) : [31] OS(63 -> 61) : [30]        |                             |
 |                                                              |                             |
 |   + StackEnd()                                               |                             |
-|     [BEFORE]: {CS: [31] [64 -> 59]} {OS: [30] [63 -> 61]}    |                             |
+|     [BEFORE]: CS(64 -> 59) : [31] OS(63 -> 61) : [30]        |                             |
 |                                                              |                             |
 |   > StackSlot(3)                                             |                             |
-|     [BEFORE]: {CS: [28] [59 -> 56]} {OS: [31] [65 -> 63]}    |                             |
+|     [BEFORE]: CS(59 -> 56) : [28] OS(65 -> 63) : [31]        |                             |
 |                                                              |                             |
-|   [AFTER]: {CS: [28] [59 -> 56]} {OS: [31] [65 -> 63]}       |                             |
+|   [AFTER]: CS(59 -> 56) : [28] OS(65 -> 63) : [31]           |                             |
 | [RETURN STACK]:                                              |                             |
 |   [23][2][54]: IfContent -> [19][Stat]< IfContent @ >        |                             |
 |   [22][4][54]: Stat -> [7][Block]< "{" { Stat @ } "}" >      |                             |
@@ -1898,178 +1898,178 @@
 |                                                                                            |
 +                                                                                            |
 |                                                                                            |
-+-----------------------------------------------------------+                                |
-| [88]: <Ending>                                            |                                |
-|   TraceExec: [75]                                         |                                |
-|   InsExec: [177:6]                                        |                                |
-|   ForwardTrace: 73                                        |                                |
-| [19][Stat]< IfContent @ >                                 |                                |
-| [AST-INSTRUCTIONS]:                                       |                                |
-|   + CreateObject(IfContentCandidate)                      |                                |
-|     [BEFORE]: {CS: [28] [59 -> 56]} {OS: [31] [65 -> 63]} |                                |
-|     objs: 28                                              |                                |
-|                                                           |                                |
-|   + Field(IfContentCandidate::thenBranch, 3)              |                                |
-|     [BEFORE]: {CS: [28] [59 -> 56]} {OS: [31] [65 -> 63]} |                                |
-|                                                           |                                |
-|   + Field(IfContentCandidate::elseBranch, 5)              |                                |
-|     [BEFORE]: {CS: [28] [59 -> 56]} {OS: [31] [65 -> 63]} |                                |
-|                                                           |                                |
-|   + StackEnd()                                            |                                |
-|     [BEFORE]: {CS: [28] [59 -> 56]} {OS: [31] [65 -> 63]} |                                |
-|                                                           |                                |
-|   > StackBegin()                                          |                                |
-|     [BEFORE]: {CS: [26] [56 -> 55]} {OS: [28] [66 -> 65]} |                                |
-|     objs: 32                                              |                                |
-|                                                           |                                |
-|   > StackSlot(0)                                          |                                |
-|     [BEFORE]: {CS: [32] [67 -> 56]} {OS: [28] [66 -> 65]} |                                |
-|                                                           |                                |
-|   [AFTER]: {CS: [32] [67 -> 56]} {OS: [28] [66 -> 65]}    |                                |
-| [RETURN STACK]:                                           |                                |
-|   [22][4][54]: Stat -> [7][Block]< "{" { Stat @ } "}" >   |                                |
-|   [1][1][0]: Block -> [20][Stat]<! !Block @ !>            |                                |
-|   [0][7][0]: Stat -> [24][Module]< Stat @ >               |                                |
-| [PREDECESSORS 81-81]: [81]                                |                                |
-| [SUCCESORS 82-82]: [82]                                   |                                |
-+-----------------------------------------------------------+                                |
++---------------------------------------------------------+                                  |
+| [88]: <Ending>                                          |                                  |
+|   TraceExec: [75]                                       |                                  |
+|   InsExec: [177:6]                                      |                                  |
+|   ForwardTrace: 73                                      |                                  |
+| [19][Stat]< IfContent @ >                               |                                  |
+| [AST-INSTRUCTIONS]:                                     |                                  |
+|   + CreateObject(IfContentCandidate)                    |                                  |
+|     [BEFORE]: CS(59 -> 56) : [28] OS(65 -> 63) : [31]   |                                  |
+|     objs: 28                                            |                                  |
+|                                                         |                                  |
+|   + Field(IfContentCandidate::thenBranch, 3)            |                                  |
+|     [BEFORE]: CS(59 -> 56) : [28] OS(65 -> 63) : [31]   |                                  |
+|                                                         |                                  |
+|   + Field(IfContentCandidate::elseBranch, 5)            |                                  |
+|     [BEFORE]: CS(59 -> 56) : [28] OS(65 -> 63) : [31]   |                                  |
+|                                                         |                                  |
+|   + StackEnd()                                          |                                  |
+|     [BEFORE]: CS(59 -> 56) : [28] OS(65 -> 63) : [31]   |                                  |
+|                                                         |                                  |
+|   > StackBegin()                                        |                                  |
+|     [BEFORE]: CS(56 -> 55) : [26] OS(66 -> 65) : [28]   |                                  |
+|     objs: 32                                            |                                  |
+|                                                         |                                  |
+|   > StackSlot(0)                                        |                                  |
+|     [BEFORE]: CS(67 -> 56) : [32] OS(66 -> 65) : [28]   |                                  |
+|                                                         |                                  |
+|   [AFTER]: CS(67 -> 56) : [32] OS(66 -> 65) : [28]      |                                  |
+| [RETURN STACK]:                                         |                                  |
+|   [22][4][54]: Stat -> [7][Block]< "{" { Stat @ } "}" > |                                  |
+|   [1][1][0]: Block -> [20][Stat]<! !Block @ !>          |                                  |
+|   [0][7][0]: Stat -> [24][Module]< Stat @ >             |                                  |
+| [PREDECESSORS 81-81]: [81]                              |                                  |
+| [SUCCESORS 82-82]: [82]                                 |                                  |
++---------------------------------------------------------+                                  |
 |                                                                                            |
 +--------------------------------------------------------------------------------------------+
 |
-+----------------------------------------------------------------+
-| [82]: <Merging>                                                |
-| <Start>                                                        |
-|   TraceExec: [84]                                              |
-|   ForwardTrace: 82                                             |
-|   CommonForwardTrace: 53                                       |
-| [CONTEXT]: {CS: [36, 32] [80 -> 56]} {OS: [35, 28] [76 -> 77]} |
-+----------------------------------------------------------------+
++------------------------------------------------------------+
+| [82]: <Merging>                                            |
+| <Start>                                                    |
+|   TraceExec: [84]                                          |
+|   ForwardTrace: 82                                         |
+|   CommonForwardTrace: 53                                   |
+| [CONTEXT]: CS(80 -> 56) : [36, 32] OS(76 -> 77) : [35, 28] |
++------------------------------------------------------------+
 |
 +
 |
-+-------------------------------------------------------------------+
-| [83]: <Ending>                                                    |
-|   TraceExec: [85]                                                 |
-|   InsExec: [208:4]                                                |
-|   ForwardTrace: 82                                                |
-| [7][Block]< "{" { Stat @ } "}" >                                  |
-| [AST-INSTRUCTIONS]:                                               |
-|   + CreateObject(IfStat)                                          |
-|     [BEFORE]: {CS: [36, 32] [80 -> 56]} {OS: [35, 28] [76 -> 77]} |
-|     objs: 32, 36                                                  |
-|                                                                   |
-|   + Field(IfStat::content, 0)                                     |
-|     [BEFORE]: {CS: [36, 32] [80 -> 56]} {OS: [35, 28] [76 -> 77]} |
-|                                                                   |
-|   + StackEnd()                                                    |
-|     [BEFORE]: {CS: [36, 32] [80 -> 56]} {OS: [35, 28] [76 -> 77]} |
-|                                                                   |
-|   > StackSlot(1)                                                  |
-|     [BEFORE]: {CS: [26] [56 -> 55]} {OS: [36, 32] [81 -> 76]}     |
-|                                                                   |
-|   [AFTER]: {CS: [26] [56 -> 55]} {OS: [36, 32] [81 -> 76]}        |
-| [RETURN STACK]:                                                   |
-|   [1][1][0]: Block -> [20][Stat]<! !Block @ !>                    |
-|   [0][7][0]: Stat -> [24][Module]< Stat @ >                       |
-| [PREDECESSORS 82-82]: [82]                                        |
-| [SUCCESORS 89-89]: [89]                                           |
-+-------------------------------------------------------------------+
++---------------------------------------------------------------+
+| [83]: <Ending>                                                |
+|   TraceExec: [85]                                             |
+|   InsExec: [208:4]                                            |
+|   ForwardTrace: 82                                            |
+| [7][Block]< "{" { Stat @ } "}" >                              |
+| [AST-INSTRUCTIONS]:                                           |
+|   + CreateObject(IfStat)                                      |
+|     [BEFORE]: CS(80 -> 56) : [36, 32] OS(76 -> 77) : [35, 28] |
+|     objs: 32, 36                                              |
+|                                                               |
+|   + Field(IfStat::content, 0)                                 |
+|     [BEFORE]: CS(80 -> 56) : [36, 32] OS(76 -> 77) : [35, 28] |
+|                                                               |
+|   + StackEnd()                                                |
+|     [BEFORE]: CS(80 -> 56) : [36, 32] OS(76 -> 77) : [35, 28] |
+|                                                               |
+|   > StackSlot(1)                                              |
+|     [BEFORE]: CS(56 -> 55) : [26] OS(81 -> 76) : [36, 32]     |
+|                                                               |
+|   [AFTER]: CS(56 -> 55) : [26] OS(81 -> 76) : [36, 32]        |
+| [RETURN STACK]:                                               |
+|   [1][1][0]: Block -> [20][Stat]<! !Block @ !>                |
+|   [0][7][0]: Stat -> [24][Module]< Stat @ >                   |
+| [PREDECESSORS 82-82]: [82]                                    |
+| [SUCCESORS 89-89]: [89]                                       |
++---------------------------------------------------------------+
 [0/0]
  |
  +
  |
 [0]
-++===============================================================++
-|| [89]: {CLOSE_BRACE} }                                         ||
-||   TraceExec: [86]                                             ||
-||   InsExec: [212:1]                                            ||
-||   ForwardTrace: 82                                            ||
-|| [8][Block]< "{" { Stat } "}" @ >                              ||
-|| [AST-INSTRUCTIONS]:                                           ||
-||   + Token(2)                                                  ||
-||     [BEFORE]: {CS: [26] [56 -> 55]} {OS: [36, 32] [81 -> 76]} ||
-||                                                               ||
-||   [AFTER]: {CS: [26] [56 -> 55]} {OS: [36, 32] [81 -> 76]}    ||
-|| [RETURN STACK]:                                               ||
-||   [1][1][0]: Block -> [20][Stat]<! !Block @ !>                ||
-||   [0][7][0]: Stat -> [24][Module]< Stat @ >                   ||
-|| [PREDECESSORS 83-83]: [83]                                    ||
-|| [SUCCESORS 90-90]: [90]                                       ||
-++===============================================================++
-|
-+
-|
-+---------------------------------------------------------------+
-| [90]: <Ending>                                                |
-|   TraceExec: [87]                                             |
-|   InsExec: [213:4]                                            |
-|   ForwardTrace: 82                                            |
-| [20][Stat]<! !Block @ !>                                      |
-| [AST-INSTRUCTIONS]:                                           |
-|   + CreateObject(BlockStat)                                   |
-|     [BEFORE]: {CS: [26] [56 -> 55]} {OS: [36, 32] [81 -> 76]} |
-|     objs: 26                                                  |
-|                                                               |
-|   + Field(BlockStat::stats, 1)                                |
-|     [BEFORE]: {CS: [26] [56 -> 55]} {OS: [36, 32] [81 -> 76]} |
-|                                                               |
-|   + StackEnd()                                                |
-|     [BEFORE]: {CS: [26] [56 -> 55]} {OS: [36, 32] [81 -> 76]} |
-|                                                               |
-|   > StackBegin()                                              |
-|     [BEFORE]: {CS: [25] [55 -> 29]} {OS: [26] [82 -> 81]}     |
-|     objs: 37                                                  |
-|                                                               |
-|   [AFTER]: {CS: [37] [83 -> 55]} {OS: [26] [82 -> 81]}        |
-| [RETURN STACK]:                                               |
-|   [0][7][0]: Stat -> [24][Module]< Stat @ >                   |
-| [PREDECESSORS 89-89]: [89]                                    |
-| [SUCCESORS 91-91]: [91]                                       |
-+---------------------------------------------------------------+
+++===========================================================++
+|| [89]: {CLOSE_BRACE} }                                     ||
+||   TraceExec: [86]                                         ||
+||   InsExec: [212:1]                                        ||
+||   ForwardTrace: 82                                        ||
+|| [8][Block]< "{" { Stat } "}" @ >                          ||
+|| [AST-INSTRUCTIONS]:                                       ||
+||   + Token(2)                                              ||
+||     [BEFORE]: CS(56 -> 55) : [26] OS(81 -> 76) : [36, 32] ||
+||                                                           ||
+||   [AFTER]: CS(56 -> 55) : [26] OS(81 -> 76) : [36, 32]    ||
+|| [RETURN STACK]:                                           ||
+||   [1][1][0]: Block -> [20][Stat]<! !Block @ !>            ||
+||   [0][7][0]: Stat -> [24][Module]< Stat @ >               ||
+|| [PREDECESSORS 83-83]: [83]                                ||
+|| [SUCCESORS 90-90]: [90]                                   ||
+++===========================================================++
 |
 +
 |
 +-----------------------------------------------------------+
-| [91]: <Ending>                                            |
-|   TraceExec: [88]                                         |
-|   InsExec: [217:3]                                        |
+| [90]: <Ending>                                            |
+|   TraceExec: [87]                                         |
+|   InsExec: [213:4]                                        |
 |   ForwardTrace: 82                                        |
-| [24][Module]< Stat @ >                                    |
+| [20][Stat]<! !Block @ !>                                  |
 | [AST-INSTRUCTIONS]:                                       |
+|   + CreateObject(BlockStat)                               |
+|     [BEFORE]: CS(56 -> 55) : [26] OS(81 -> 76) : [36, 32] |
+|     objs: 26                                              |
+|                                                           |
+|   + Field(BlockStat::stats, 1)                            |
+|     [BEFORE]: CS(56 -> 55) : [26] OS(81 -> 76) : [36, 32] |
+|                                                           |
 |   + StackEnd()                                            |
-|     [BEFORE]: {CS: [37] [83 -> 55]} {OS: [26] [82 -> 81]} |
+|     [BEFORE]: CS(56 -> 55) : [26] OS(81 -> 76) : [36, 32] |
 |                                                           |
 |   > StackBegin()                                          |
-|     [BEFORE]: {CS: [37] [83 -> 55]} {OS: [26] [82 -> 81]} |
-|     objs: 38                                              |
+|     [BEFORE]: CS(55 -> 29) : [25] OS(82 -> 81) : [26]     |
+|     objs: 37                                              |
 |                                                           |
-|   > StackSlot(0)                                          |
-|     [BEFORE]: {CS: [38] [84 -> 83]} {OS: [26] [82 -> 81]} |
-|                                                           |
-|   [AFTER]: {CS: [38] [84 -> 83]} {OS: [26] [82 -> 81]}    |
-| [PREDECESSORS 90-90]: [90]                                |
-| [SUCCESORS 92-92]: [92]                                   |
+|   [AFTER]: CS(83 -> 55) : [37] OS(82 -> 81) : [26]        |
+| [RETURN STACK]:                                           |
+|   [0][7][0]: Stat -> [24][Module]< Stat @ >               |
+| [PREDECESSORS 89-89]: [89]                                |
+| [SUCCESORS 91-91]: [91]                                   |
 +-----------------------------------------------------------+
 |
 +
 |
-+-----------------------------------------------------------+
-| [92]: <Ending>                                            |
-|   TraceExec: [89]                                         |
-|   InsExec: [220:3]                                        |
-|   ForwardTrace: 82                                        |
-| [23][Module] END [ENDING]                                 |
-| [AST-INSTRUCTIONS]:                                       |
-|   + CreateObject(Module)                                  |
-|     [BEFORE]: {CS: [38] [84 -> 83]} {OS: [26] [82 -> 81]} |
-|     objs: 38                                              |
-|                                                           |
-|   + Field(Module::stat, 0)                                |
-|     [BEFORE]: {CS: [38] [84 -> 83]} {OS: [26] [82 -> 81]} |
-|                                                           |
-|   + StackEnd()                                            |
-|     [BEFORE]: {CS: [38] [84 -> 83]} {OS: [26] [82 -> 81]} |
-|                                                           |
-|   [AFTER]: {CS: [37] [83 -> 55]} {OS: [38] [85 -> 82]}    |
-| [PREDECESSORS 91-91]: [91]                                |
-+-----------------------------------------------------------+
++-------------------------------------------------------+
+| [91]: <Ending>                                        |
+|   TraceExec: [88]                                     |
+|   InsExec: [217:3]                                    |
+|   ForwardTrace: 82                                    |
+| [24][Module]< Stat @ >                                |
+| [AST-INSTRUCTIONS]:                                   |
+|   + StackEnd()                                        |
+|     [BEFORE]: CS(83 -> 55) : [37] OS(82 -> 81) : [26] |
+|                                                       |
+|   > StackBegin()                                      |
+|     [BEFORE]: CS(83 -> 55) : [37] OS(82 -> 81) : [26] |
+|     objs: 38                                          |
+|                                                       |
+|   > StackSlot(0)                                      |
+|     [BEFORE]: CS(84 -> 83) : [38] OS(82 -> 81) : [26] |
+|                                                       |
+|   [AFTER]: CS(84 -> 83) : [38] OS(82 -> 81) : [26]    |
+| [PREDECESSORS 90-90]: [90]                            |
+| [SUCCESORS 92-92]: [92]                               |
++-------------------------------------------------------+
+|
++
+|
++-------------------------------------------------------+
+| [92]: <Ending>                                        |
+|   TraceExec: [89]                                     |
+|   InsExec: [220:3]                                    |
+|   ForwardTrace: 82                                    |
+| [23][Module] END [ENDING]                             |
+| [AST-INSTRUCTIONS]:                                   |
+|   + CreateObject(Module)                              |
+|     [BEFORE]: CS(84 -> 83) : [38] OS(82 -> 81) : [26] |
+|     objs: 38                                          |
+|                                                       |
+|   + Field(Module::stat, 0)                            |
+|     [BEFORE]: CS(84 -> 83) : [38] OS(82 -> 81) : [26] |
+|                                                       |
+|   + StackEnd()                                        |
+|     [BEFORE]: CS(84 -> 83) : [38] OS(82 -> 81) : [26] |
+|                                                       |
+|   [AFTER]: CS(83 -> 55) : [37] OS(85 -> 82) : [38]    |
+| [PREDECESSORS 91-91]: [91]                            |
++-------------------------------------------------------+

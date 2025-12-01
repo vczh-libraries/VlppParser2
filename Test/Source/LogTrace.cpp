@@ -144,38 +144,32 @@ void RenderTrace(
 
 		auto logContext = [&tm, &writer, &logStackRefLink](InsExec_Context& context)
 		{
-			if (context.createStack == nullref)
-			{
-				writer.WriteString(L" {CS: []}");
-			}
-			else
+			if (context.createStack != nullref)
 			{
 				auto ieCSTop = tm.GetInsExec_StackArrayRefLink(context.createStack);
-				writer.WriteString(L" {CS: [");
-				logStackRefLink(ieCSTop->ids);
 				writer.WriteString(
-					L"] [" +
+					L" CS(" + 
 					itow(ieCSTop->allocatedIndex) +
 					L" -> " +
 					itow(ieCSTop->previous.handle) +
-					L"]}");
+					L") : [");
+				logStackRefLink(ieCSTop->ids);
+				writer.WriteString(
+					L"]");
 			}
 
-			if (context.objectStack == nullref)
-			{
-				writer.WriteString(L" {OS: []}");
-			}
-			else
+			if (context.objectStack != nullref)
 			{
 				auto ieOSTop = tm.GetInsExec_StackArrayRefLink(context.objectStack);
-				writer.WriteString(L" {OS: [");
-				logStackRefLink(ieOSTop->ids);
 				writer.WriteString(
-					L"] [" +
+					L" OS(" +
 					itow(ieOSTop->allocatedIndex) +
 					L" -> " +
 					itow(ieOSTop->previous.handle) +
-					L"]}");
+					L") : [");
+				logStackRefLink(ieOSTop->ids);
+				writer.WriteString(
+					L"]");
 			}
 			writer.WriteLine(L"");
 		};
