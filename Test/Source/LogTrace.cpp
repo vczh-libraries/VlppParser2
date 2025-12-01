@@ -171,10 +171,15 @@ void RenderTrace(
 					itow(ieOSTop->allocatedIndex) +
 					L" -> " +
 					itow(ieOSTop->previous.handle) +
-					L") : [");
-				logStackRefLink(ieOSTop->ids);
-				writer.WriteString(
-					L"]");
+					L") : ");
+
+				while (ieOSTop)
+				{
+					writer.WriteString(L"[");
+					logStackRefLink(ieOSTop->ids);
+					writer.WriteString(L"]");
+					ieOSTop = ieOSTop->previous == nullref ? nullptr : tm.GetInsExec_StackArrayRefLink(ieOSTop->previous);
+				}
 			}
 			writer.WriteLine(L"");
 		};

@@ -218,9 +218,10 @@ PartialExecuteOrdinaryTrace
 							CHECK_ERROR(context.createStack != nullref, ERROR_MESSAGE_PREFIX L"[StackSlot] context.createStack is empty.");
 							CHECK_ERROR(context.objectStack != nullref, ERROR_MESSAGE_PREFIX L"[StackSlot] context.objectStack is empty.");
 							auto topObjects = GetInsExec_StackArrayRefLink(context.objectStack);
+							context.objectStack = topObjects->previous;
 							ForEachStack(context.createStack, [&](InsExec_Stack* topStack)
 							{
-								topStack->useFromStacks = JoinStackRefLink(topStack->fieldStacks, topObjects->ids);
+								topStack->fieldStacks = JoinStackRefLink(topStack->fieldStacks, topObjects->ids);
 							});
 						}
 						break;
