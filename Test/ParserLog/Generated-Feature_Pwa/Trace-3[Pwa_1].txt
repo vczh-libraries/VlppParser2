@@ -1,0 +1,677 @@
+﻿================ EXECUTION STEPS ================
+[0]: 0@0 - 1@1
+[1]: RA_Begin
+[3]: 2@0 - 20@3
+[4]: RA_Branch
+[5]: 4@0 - 19@3
+[6]: RA_Branch
+[7]: RA_End(2, PbaFeature)
+[9]: 20@4 - 20@4
+[10]: 16@0 - 40@0
+
+==================== TRACES =====================
+
++----------------------+
+| [0]: <Start>         |
+|   TraceExec: [0]     |
+|   ForwardTrace: 0    |
+|   NextACT: 1         |
+| [36][Module] BEGIN   |
+| [AST-INSTRUCTIONS]:  |
+|   @                  |
+| [SUCCESORS 1-1]: [1] |
++----------------------+
+[0]
+ |
+ +
+ |
+[0]
+++==================================================================++
+|| [1]: {PREFIX_WITH_AMBIGUITY_1} prefix_with_ambiguity_1           ||
+||   TraceExec: [1]                                                 ||
+||   InsExec: [0:2]                                                 ||
+||   ForwardTrace: 0                                                ||
+||   AmbiguityBegins: [0]                                           ||
+|| [21][Pwa1]<! "prefix_with_ambiguity_1" @ Pwa1Prefix !Pwa1Body !> ||
+|| [AST-INSTRUCTIONS]:                                              ||
+||   @                                                              ||
+||   + StackBegin()                                                 ||
+||     objs: 0                                                      ||
+||                                                                  ||
+||   @ CS(0 -> -1) : [0]                                            ||
+||   + Token(0)                                                     ||
+||                                                                  ||
+||   @ CS(0 -> -1) : [0]                                            ||
+|| [RETURN STACK]:                                                  ||
+||   [0][26][0]: Pwa1 -> [38][Module]<! !Pwa1 @ !>                  ||
+|| [PREDECESSORS 0-0]: [0]                                          ||
+|| [SUCCESORS 2-4]: [2][4]                                          ||
+++==================================================================++
+[0/1]
+ |
+ +-----------------------------------------------------------------------------------------------------+
+ |                                                                                                     |
+[0]                                                                                                   [1]
+++==============================================================================================++    ++==============================================================================================++
+|| [2]: {PLUS} +                                                                                ||    || [4]: {PLUS} +                                                                                ||
+||   TraceExec: [2]                                                                             ||    ||   TraceExec: [9]                                                                             ||
+||   InsExec: [2:2]                                                                             ||    ||   InsExec: [23:2]                                                                            ||
+||   ForwardTrace: 2                                                                            ||    ||   ForwardTrace: 4                                                                            ||
+||   NextACT: 20                                                                                ||    ||   NextACT: 19                                                                                ||
+||   AmbiguityCoveredInForward: [0]                                                             ||    ||   AmbiguityCoveredInForward: [0]                                                             ||
+|| [2][Plus]< "+" @ >                                                                           ||    || [2][Plus]< "+" @ >                                                                           ||
+|| [AST-INSTRUCTIONS]:                                                                          ||    || [AST-INSTRUCTIONS]:                                                                          ||
+||   @ CS(0 -> -1) : [0]                                                                        ||    ||   @ CS(0 -> -1) : [0]                                                                        ||
+||   + StackBegin()                                                                             ||    ||   + StackBegin()                                                                             ||
+||     objs: 1                                                                                  ||    ||     objs: 5                                                                                  ||
+||                                                                                              ||    ||                                                                                              ||
+||   @ CS(1 -> 0) : [1][0]                                                                      ||    ||   @ CS(9 -> 0) : [5][0]                                                                      ||
+||   + Token(0)                                                                                 ||    ||   + Token(0)                                                                                 ||
+||                                                                                              ||    ||                                                                                              ||
+||   @ CS(1 -> 0) : [1][0]                                                                      ||    ||   @ CS(9 -> 0) : [5][0]                                                                      ||
+|| [RETURN STACK]:                                                                              ||    || [RETURN STACK]:                                                                              ||
+||   [2][0][1]: Plus -> [11][Pwa1Prefix]< [ Plus @ ] Plus { Plus } >                            ||    ||   [3][1][1]: Plus -> [12][Pwa1Prefix]< [ Plus ] Plus @ { Plus } >                            ||
+||   [1][11][1]: Pwa1Prefix -> [23][Pwa1]<! "prefix_with_ambiguity_1" Pwa1Prefix @ !Pwa1Body !> ||    ||   [1][11][1]: Pwa1Prefix -> [23][Pwa1]<! "prefix_with_ambiguity_1" Pwa1Prefix @ !Pwa1Body !> ||
+||   [0][26][0]: Pwa1 -> [38][Module]<! !Pwa1 @ !>                                              ||    ||   [0][26][0]: Pwa1 -> [38][Module]<! !Pwa1 @ !>                                              ||
+|| [PREDECESSORS 1-1]: [1]                                                                      ||    || [PREDECESSORS 1-1]: [1]                                                                      ||
+|| [SUCCESORS 3-3]: [3]                                                                         ||    || [SUCCESORS 5-5]: [5]                                                                         ||
+++==============================================================================================++    ++==============================================================================================++
+|                                                                                                     |
++                                                                                                     +
+|                                                                                                     |
++----------------------------------------------------------------------------------------------+      +----------------------------------------------------------------------------------------------+
+| [3]: <Ending>                                                                                |      | [5]: <Ending>                                                                                |
+|   TraceExec: [3]                                                                             |      |   TraceExec: [10]                                                                            |
+|   InsExec: [4:4]                                                                             |      |   InsExec: [25:4]                                                                            |
+|   ForwardTrace: 2                                                                            |      |   ForwardTrace: 4                                                                            |
+| [11][Pwa1Prefix]< [ Plus @ ] Plus { Plus } >                                                 |      | [12][Pwa1Prefix]< [ Plus ] Plus @ { Plus } >                                                 |
+| [AST-INSTRUCTIONS]:                                                                          |      | [AST-INSTRUCTIONS]:                                                                          |
+|   @ CS(1 -> 0) : [1][0]                                                                      |      |   @ CS(9 -> 0) : [5][0]                                                                      |
+|   + CreateObject(Plus)                                                                       |      |   + CreateObject(Plus)                                                                       |
+|     objs: 1                                                                                  |      |     objs: 5                                                                                  |
+|                                                                                              |      |                                                                                              |
+|   @ CS(1 -> 0) : [1][0]                                                                      |      |   @ CS(9 -> 0) : [5][0]                                                                      |
+|   + StackEnd()                                                                               |      |   + StackEnd()                                                                               |
+|     obj:1, begin:2@0, top:2@0, create:[3@0], end:[3@1]                                       |      |     obj:5, begin:4@0, top:4@0, create:[5@0], end:[5@1]                                       |
+|                                                                                              |      |                                                                                              |
+|   @ CS(0 -> -1) : [0] OS(2 -> -1) : [1]                                                      |      |   @ CS(0 -> -1) : [0] OS(10 -> -1) : [5]                                                     |
+|   > StackBegin()                                                                             |      |   > StackBegin()                                                                             |
+|     objs: 2                                                                                  |      |     objs: 6                                                                                  |
+|                                                                                              |      |                                                                                              |
+|   @ CS(3 -> 0) : [2][0] OS(2 -> -1) : [1]                                                    |      |   @ CS(11 -> 0) : [6][0] OS(10 -> -1) : [5]                                                  |
+|   > StackSlot(0)                                                                             |      |   > StackSlot(1)                                                                             |
+|                                                                                              |      |                                                                                              |
+|   @ CS(3 -> 0) : [2][0]                                                                      |      |   @ CS(11 -> 0) : [6][0]                                                                     |
+| [RETURN STACK]:                                                                              |      | [RETURN STACK]:                                                                              |
+|   [1][11][1]: Pwa1Prefix -> [23][Pwa1]<! "prefix_with_ambiguity_1" Pwa1Prefix @ !Pwa1Body !> |      |   [1][11][1]: Pwa1Prefix -> [23][Pwa1]<! "prefix_with_ambiguity_1" Pwa1Prefix @ !Pwa1Body !> |
+|   [0][26][0]: Pwa1 -> [38][Module]<! !Pwa1 @ !>                                              |      |   [0][26][0]: Pwa1 -> [38][Module]<! !Pwa1 @ !>                                              |
+| [PREDECESSORS 2-2]: [2]                                                                      |      | [PREDECESSORS 4-4]: [4]                                                                      |
+| [SUCCESORS 7-7]: [7]                                                                         |      | [SUCCESORS 10-10]: [10]                                                                      |
++----------------------------------------------------------------------------------------------+      +----------------------------------------------------------------------------------------------+
+[0]                                                                                                   [1]
+ |                                                                                                     |
+ +                                                                                                     +
+ |                                                                                                     |
+[0]                                                                                                   [1]
+++==============================================================================================++    ++==============================================================================================++
+|| [7]: {PLUS} +                                                                                ||    || [10]: {PLUS} +                                                                               ||
+||   TraceExec: [4]                                                                             ||    ||   TraceExec: [11]                                                                            ||
+||   InsExec: [8:2]                                                                             ||    ||   InsExec: [29:2]                                                                            ||
+||   ForwardTrace: 2                                                                            ||    ||   ForwardTrace: 4                                                                            ||
+|| [2][Plus]< "+" @ >                                                                           ||    || [2][Plus]< "+" @ >                                                                           ||
+|| [AST-INSTRUCTIONS]:                                                                          ||    || [AST-INSTRUCTIONS]:                                                                          ||
+||   @ CS(3 -> 0) : [2][0]                                                                      ||    ||   @ CS(11 -> 0) : [6][0]                                                                     ||
+||   + StackBegin()                                                                             ||    ||   + StackBegin()                                                                             ||
+||     objs: 3                                                                                  ||    ||     objs: 7                                                                                  ||
+||                                                                                              ||    ||                                                                                              ||
+||   @ CS(4 -> 3) : [3][2][0]                                                                   ||    ||   @ CS(12 -> 11) : [7][6][0]                                                                 ||
+||   + Token(0)                                                                                 ||    ||   + Token(0)                                                                                 ||
+||                                                                                              ||    ||                                                                                              ||
+||   @ CS(4 -> 3) : [3][2][0]                                                                   ||    ||   @ CS(12 -> 11) : [7][6][0]                                                                 ||
+|| [RETURN STACK]:                                                                              ||    || [RETURN STACK]:                                                                              ||
+||   [4][2][3]: Plus -> [12][Pwa1Prefix]< [ Plus ] Plus @ { Plus } >                            ||    ||   [5][3][5]: Plus -> [13][Pwa1Prefix]< [ Plus ] Plus { Plus @ } >                            ||
+||   [1][11][1]: Pwa1Prefix -> [23][Pwa1]<! "prefix_with_ambiguity_1" Pwa1Prefix @ !Pwa1Body !> ||    ||   [1][11][1]: Pwa1Prefix -> [23][Pwa1]<! "prefix_with_ambiguity_1" Pwa1Prefix @ !Pwa1Body !> ||
+||   [0][26][0]: Pwa1 -> [38][Module]<! !Pwa1 @ !>                                              ||    ||   [0][26][0]: Pwa1 -> [38][Module]<! !Pwa1 @ !>                                              ||
+|| [PREDECESSORS 3-3]: [3]                                                                      ||    || [PREDECESSORS 5-5]: [5]                                                                      ||
+|| [SUCCESORS 8-8]: [8]                                                                         ||    || [SUCCESORS 11-11]: [11]                                                                      ||
+++==============================================================================================++    ++==============================================================================================++
+|                                                                                                     |
++                                                                                                     +
+|                                                                                                     |
++----------------------------------------------------------------------------------------------+      +----------------------------------------------------------------------------------------------+
+| [8]: <Ending>                                                                                |      | [11]: <Ending>                                                                               |
+|   TraceExec: [5]                                                                             |      |   TraceExec: [12]                                                                            |
+|   InsExec: [10:3]                                                                            |      |   InsExec: [31:3]                                                                            |
+|   ForwardTrace: 2                                                                            |      |   ForwardTrace: 4                                                                            |
+| [12][Pwa1Prefix]< [ Plus ] Plus @ { Plus } >                                                 |      | [13][Pwa1Prefix]< [ Plus ] Plus { Plus @ } >                                                 |
+| [AST-INSTRUCTIONS]:                                                                          |      | [AST-INSTRUCTIONS]:                                                                          |
+|   @ CS(4 -> 3) : [3][2][0]                                                                   |      |   @ CS(12 -> 11) : [7][6][0]                                                                 |
+|   + CreateObject(Plus)                                                                       |      |   + CreateObject(Plus)                                                                       |
+|     objs: 3                                                                                  |      |     objs: 7                                                                                  |
+|                                                                                              |      |                                                                                              |
+|   @ CS(4 -> 3) : [3][2][0]                                                                   |      |   @ CS(12 -> 11) : [7][6][0]                                                                 |
+|   + StackEnd()                                                                               |      |   + StackEnd()                                                                               |
+|     obj:3, begin:7@0, top:7@0, create:[8@0], end:[8@1]                                       |      |     obj:7, begin:10@0, top:10@0, create:[11@0], end:[11@1]                                   |
+|                                                                                              |      |                                                                                              |
+|   @ CS(3 -> 0) : [2][0] OS(5 -> -1) : [3]                                                    |      |   @ CS(11 -> 0) : [6][0] OS(13 -> -1) : [7]                                                  |
+|   > StackSlot(1)                                                                             |      |   > StackSlot(2)                                                                             |
+|                                                                                              |      |                                                                                              |
+|   @ CS(3 -> 0) : [2][0]                                                                      |      |   @ CS(11 -> 0) : [6][0]                                                                     |
+| [RETURN STACK]:                                                                              |      | [RETURN STACK]:                                                                              |
+|   [1][11][1]: Pwa1Prefix -> [23][Pwa1]<! "prefix_with_ambiguity_1" Pwa1Prefix @ !Pwa1Body !> |      |   [1][11][1]: Pwa1Prefix -> [23][Pwa1]<! "prefix_with_ambiguity_1" Pwa1Prefix @ !Pwa1Body !> |
+|   [0][26][0]: Pwa1 -> [38][Module]<! !Pwa1 @ !>                                              |      |   [0][26][0]: Pwa1 -> [38][Module]<! !Pwa1 @ !>                                              |
+| [PREDECESSORS 7-7]: [7]                                                                      |      | [PREDECESSORS 10-10]: [10]                                                                   |
+| [SUCCESORS 14-14]: [14]                                                                      |      | [SUCCESORS 17-17]: [17]                                                                      |
++----------------------------------------------------------------------------------------------+      +----------------------------------------------------------------------------------------------+
+[0]                                                                                                   [1]
+ |                                                                                                     |
+ +                                                                                                     +
+ |                                                                                                     |
+[0]                                                                                                   [1]
+++==============================================================================================++    ++==============================================================================================++
+|| [14]: {PLUS} +                                                                               ||    || [17]: {PLUS} +                                                                               ||
+||   TraceExec: [6]                                                                             ||    ||   TraceExec: [13]                                                                            ||
+||   InsExec: [13:2]                                                                            ||    ||   InsExec: [34:2]                                                                            ||
+||   ForwardTrace: 2                                                                            ||    ||   ForwardTrace: 4                                                                            ||
+|| [2][Plus]< "+" @ >                                                                           ||    || [2][Plus]< "+" @ >                                                                           ||
+|| [AST-INSTRUCTIONS]:                                                                          ||    || [AST-INSTRUCTIONS]:                                                                          ||
+||   @ CS(3 -> 0) : [2][0]                                                                      ||    ||   @ CS(11 -> 0) : [6][0]                                                                     ||
+||   + StackBegin()                                                                             ||    ||   + StackBegin()                                                                             ||
+||     objs: 4                                                                                  ||    ||     objs: 8                                                                                  ||
+||                                                                                              ||    ||                                                                                              ||
+||   @ CS(6 -> 3) : [4][2][0]                                                                   ||    ||   @ CS(14 -> 11) : [8][6][0]                                                                 ||
+||   + Token(0)                                                                                 ||    ||   + Token(0)                                                                                 ||
+||                                                                                              ||    ||                                                                                              ||
+||   @ CS(6 -> 3) : [4][2][0]                                                                   ||    ||   @ CS(14 -> 11) : [8][6][0]                                                                 ||
+|| [RETURN STACK]:                                                                              ||    || [RETURN STACK]:                                                                              ||
+||   [6][3][8]: Plus -> [13][Pwa1Prefix]< [ Plus ] Plus { Plus @ } >                            ||    ||   [7][4][11]: Plus -> [13][Pwa1Prefix]< [ Plus ] Plus { Plus @ } >                           ||
+||   [1][11][1]: Pwa1Prefix -> [23][Pwa1]<! "prefix_with_ambiguity_1" Pwa1Prefix @ !Pwa1Body !> ||    ||   [1][11][1]: Pwa1Prefix -> [23][Pwa1]<! "prefix_with_ambiguity_1" Pwa1Prefix @ !Pwa1Body !> ||
+||   [0][26][0]: Pwa1 -> [38][Module]<! !Pwa1 @ !>                                              ||    ||   [0][26][0]: Pwa1 -> [38][Module]<! !Pwa1 @ !>                                              ||
+|| [PREDECESSORS 8-8]: [8]                                                                      ||    || [PREDECESSORS 11-11]: [11]                                                                   ||
+|| [SUCCESORS 15-15]: [15]                                                                      ||    || [SUCCESORS 18-18]: [18]                                                                      ||
+++==============================================================================================++    ++==============================================================================================++
+|                                                                                                     |
++                                                                                                     +
+|                                                                                                     |
++----------------------------------------------------------------------------------------------+      +----------------------------------------------------------------------------------------------+
+| [15]: <Ending>                                                                               |      | [18]: <Ending>                                                                               |
+|   TraceExec: [7]                                                                             |      |   TraceExec: [14]                                                                            |
+|   InsExec: [15:3]                                                                            |      |   InsExec: [36:3]                                                                            |
+|   ForwardTrace: 2                                                                            |      |   ForwardTrace: 4                                                                            |
+| [13][Pwa1Prefix]< [ Plus ] Plus { Plus @ } >                                                 |      | [13][Pwa1Prefix]< [ Plus ] Plus { Plus @ } >                                                 |
+| [AST-INSTRUCTIONS]:                                                                          |      | [AST-INSTRUCTIONS]:                                                                          |
+|   @ CS(6 -> 3) : [4][2][0]                                                                   |      |   @ CS(14 -> 11) : [8][6][0]                                                                 |
+|   + CreateObject(Plus)                                                                       |      |   + CreateObject(Plus)                                                                       |
+|     objs: 4                                                                                  |      |     objs: 8                                                                                  |
+|                                                                                              |      |                                                                                              |
+|   @ CS(6 -> 3) : [4][2][0]                                                                   |      |   @ CS(14 -> 11) : [8][6][0]                                                                 |
+|   + StackEnd()                                                                               |      |   + StackEnd()                                                                               |
+|     obj:4, begin:14@0, top:14@0, create:[15@0], end:[15@1]                                   |      |     obj:8, begin:17@0, top:17@0, create:[18@0], end:[18@1]                                   |
+|                                                                                              |      |                                                                                              |
+|   @ CS(3 -> 0) : [2][0] OS(7 -> -1) : [4]                                                    |      |   @ CS(11 -> 0) : [6][0] OS(15 -> -1) : [8]                                                  |
+|   > StackSlot(2)                                                                             |      |   > StackSlot(2)                                                                             |
+|                                                                                              |      |                                                                                              |
+|   @ CS(3 -> 0) : [2][0]                                                                      |      |   @ CS(11 -> 0) : [6][0]                                                                     |
+| [RETURN STACK]:                                                                              |      | [RETURN STACK]:                                                                              |
+|   [1][11][1]: Pwa1Prefix -> [23][Pwa1]<! "prefix_with_ambiguity_1" Pwa1Prefix @ !Pwa1Body !> |      |   [1][11][1]: Pwa1Prefix -> [23][Pwa1]<! "prefix_with_ambiguity_1" Pwa1Prefix @ !Pwa1Body !> |
+|   [0][26][0]: Pwa1 -> [38][Module]<! !Pwa1 @ !>                                              |      |   [0][26][0]: Pwa1 -> [38][Module]<! !Pwa1 @ !>                                              |
+| [PREDECESSORS 14-14]: [14]                                                                   |      | [PREDECESSORS 17-17]: [17]                                                                   |
+| [SUCCESORS 20-20]: [20]                                                                      |      | [SUCCESORS 19-19]: [19]                                                                      |
++----------------------------------------------------------------------------------------------+      +----------------------------------------------------------------------------------------------+
+|                                                                                                     |
++                                                                                                     +
+|                                                                                                     |
++-------------------------------------------------------------------------------------+               +-------------------------------------------------------------------------------------+
+| [20]: <Ending>                                                                      |               | [19]: <Ending>                                                                      |
+|   TraceExec: [8]                                                                    |               |   TraceExec: [15]                                                                   |
+|   InsExec: [18:5]                                                                   |               |   InsExec: [39:5]                                                                   |
+|   ForwardTrace: 2                                                                   |               |   ForwardTrace: 4                                                                   |
+| [23][Pwa1]<! "prefix_with_ambiguity_1" Pwa1Prefix @ !Pwa1Body !>                    |               | [23][Pwa1]<! "prefix_with_ambiguity_1" Pwa1Prefix @ !Pwa1Body !>                    |
+| [AST-INSTRUCTIONS]:                                                                 |               | [AST-INSTRUCTIONS]:                                                                 |
+|   @ CS(3 -> 0) : [2][0]                                                             |               |   @ CS(11 -> 0) : [6][0]                                                            |
+|   + CreateObject(PbaFeature)                                                        |               |   + CreateObject(PbaFeature)                                                        |
+|     objs: 2                                                                         |               |     objs: 6                                                                         |
+|                                                                                     |               |                                                                                     |
+|   @ CS(3 -> 0) : [2][0]                                                             |               |   @ CS(11 -> 0) : [6][0]                                                            |
+|   + Field(PbaFeature::optional, 0)                                                  |               |   + Field(PbaFeature::optional, 0)                                                  |
+|                                                                                     |               |                                                                                     |
+|   @ CS(3 -> 0) : [2][0]                                                             |               |   @ CS(11 -> 0) : [6][0]                                                            |
+|   + Field(PbaFeature::tails, 2)                                                     |               |   + Field(PbaFeature::tails, 2)                                                     |
+|                                                                                     |               |                                                                                     |
+|   @ CS(3 -> 0) : [2][0]                                                             |               |   @ CS(11 -> 0) : [6][0]                                                            |
+|   + StackEnd()                                                                      |               |   + StackEnd()                                                                      |
+|     obj:2, begin:3@2, top:3@2, lrec:2@0, field:[4, 1, 3], create:[20@0], end:[20@3] |               |     obj:6, begin:5@2, top:5@2, lrec:4@0, field:[8, 5, 7], create:[19@0], end:[19@3] |
+|                                                                                     |               |                                                                                     |
+|   @ CS(0 -> -1) : [0] OS(8 -> -1) : [2]                                             |               |   @ CS(0 -> -1) : [0] OS(16 -> -1) : [6]                                            |
+|   > StackSlot(1)                                                                    |               |   > StackSlot(1)                                                                    |
+|                                                                                     |               |                                                                                     |
+|   @ CS(0 -> -1) : [0]                                                               |               |   @ CS(0 -> -1) : [0]                                                               |
+| [RETURN STACK]:                                                                     |               | [RETURN STACK]:                                                                     |
+|   [0][26][0]: Pwa1 -> [38][Module]<! !Pwa1 @ !>                                     |               |   [0][26][0]: Pwa1 -> [38][Module]<! !Pwa1 @ !>                                     |
+| [PREDECESSORS 15-15]: [15]                                                          |               | [PREDECESSORS 18-18]: [18]                                                          |
+| [SUCCESORS 16-16]: [16]                                                             |               | [SUCCESORS 16-16]: [16]                                                             |
++-------------------------------------------------------------------------------------+               +-------------------------------------------------------------------------------------+
+|                                                                                                     |
++-----------------------------------------------------------------------------------------------------+
+|
++------------------------------+
+| [16]: <Merging>              |
+| <Start>                      |
+|   TraceExec: [16]            |
+|   ForwardTrace: 16           |
+|   CommonForwardTrace: 0      |
+| [AMBIGUITY-RESOLVING]: [0]   |
+|   objs: [6, 2]               |
+|   first: 1 prefix: 2         |
+|   last: 16 postfix: 1        |
+| [CONTEXT]: CS(0 -> -1) : [0] |
++------------------------------+
+[0/0]
+ |
+ +
+ |
+[0]
+++=============================================================================================++
+|| [21]: {LT} <                                                                                ||
+||   TraceExec: [17]                                                                           ||
+||   InsExec: [44:2]                                                                           ||
+||   ForwardTrace: 16                                                                          ||
+|| [5][Lt]< "<" @ >                                                                            ||
+|| [AST-INSTRUCTIONS]:                                                                         ||
+||   @ CS(0 -> -1) : [0]                                                                       ||
+||   + StackBegin()                                                                            ||
+||     objs: 9                                                                                 ||
+||                                                                                             ||
+||   @ CS(17 -> 0) : [9][0]                                                                    ||
+||   + Token(0)                                                                                ||
+||                                                                                             ||
+||   @ CS(17 -> 0) : [9][0]                                                                    ||
+|| [RETURN STACK]:                                                                             ||
+||   [9][5][20]: Lt -> [16][Pwa1Body]< Lt @ { Lt } { Gt } >                                    ||
+||   [8][12][20]: Pwa1Body -> [22][Pwa1]<! "prefix_with_ambiguity_1" Pwa1Prefix !Pwa1Body @ !> ||
+||   [0][26][0]: Pwa1 -> [38][Module]<! !Pwa1 @ !>                                             ||
+|| [PREDECESSORS 16-16]: [16]                                                                  ||
+|| [SUCCESORS 22-22]: [22]                                                                     ||
+++=============================================================================================++
+|
++
+|
++---------------------------------------------------------------------------------------------+
+| [22]: <Ending>                                                                              |
+|   TraceExec: [18]                                                                           |
+|   InsExec: [46:4]                                                                           |
+|   ForwardTrace: 16                                                                          |
+| [16][Pwa1Body]< Lt @ { Lt } { Gt } >                                                        |
+| [AST-INSTRUCTIONS]:                                                                         |
+|   @ CS(17 -> 0) : [9][0]                                                                    |
+|   + CreateObject(Lt)                                                                        |
+|     objs: 9                                                                                 |
+|                                                                                             |
+|   @ CS(17 -> 0) : [9][0]                                                                    |
+|   + StackEnd()                                                                              |
+|     obj:9, begin:21@0, top:21@0, create:[22@0], end:[22@1]                                  |
+|                                                                                             |
+|   @ CS(0 -> -1) : [0] OS(18 -> -1) : [9]                                                    |
+|   > StackBegin()                                                                            |
+|     objs: 10                                                                                |
+|                                                                                             |
+|   @ CS(19 -> 0) : [10][0] OS(18 -> -1) : [9]                                                |
+|   > StackSlot(0)                                                                            |
+|                                                                                             |
+|   @ CS(19 -> 0) : [10][0]                                                                   |
+| [RETURN STACK]:                                                                             |
+|   [8][12][20]: Pwa1Body -> [22][Pwa1]<! "prefix_with_ambiguity_1" Pwa1Prefix !Pwa1Body @ !> |
+|   [0][26][0]: Pwa1 -> [38][Module]<! !Pwa1 @ !>                                             |
+| [PREDECESSORS 21-21]: [21]                                                                  |
+| [SUCCESORS 24-24]: [24]                                                                     |
++---------------------------------------------------------------------------------------------+
+[0]
+ |
+ +
+ |
+[0]
+++=============================================================================================++
+|| [24]: {LT} <                                                                                ||
+||   TraceExec: [19]                                                                           ||
+||   InsExec: [50:2]                                                                           ||
+||   ForwardTrace: 16                                                                          ||
+|| [5][Lt]< "<" @ >                                                                            ||
+|| [AST-INSTRUCTIONS]:                                                                         ||
+||   @ CS(19 -> 0) : [10][0]                                                                   ||
+||   + StackBegin()                                                                            ||
+||     objs: 11                                                                                ||
+||                                                                                             ||
+||   @ CS(20 -> 19) : [11][10][0]                                                              ||
+||   + Token(0)                                                                                ||
+||                                                                                             ||
+||   @ CS(20 -> 19) : [11][10][0]                                                              ||
+|| [RETURN STACK]:                                                                             ||
+||   [10][6][22]: Lt -> [17][Pwa1Body]< Lt { Lt @ } { Gt } >                                   ||
+||   [8][12][20]: Pwa1Body -> [22][Pwa1]<! "prefix_with_ambiguity_1" Pwa1Prefix !Pwa1Body @ !> ||
+||   [0][26][0]: Pwa1 -> [38][Module]<! !Pwa1 @ !>                                             ||
+|| [PREDECESSORS 22-22]: [22]                                                                  ||
+|| [SUCCESORS 25-25]: [25]                                                                     ||
+++=============================================================================================++
+|
++
+|
++---------------------------------------------------------------------------------------------+
+| [25]: <Ending>                                                                              |
+|   TraceExec: [20]                                                                           |
+|   InsExec: [52:3]                                                                           |
+|   ForwardTrace: 16                                                                          |
+| [17][Pwa1Body]< Lt { Lt @ } { Gt } >                                                        |
+| [AST-INSTRUCTIONS]:                                                                         |
+|   @ CS(20 -> 19) : [11][10][0]                                                              |
+|   + CreateObject(Lt)                                                                        |
+|     objs: 11                                                                                |
+|                                                                                             |
+|   @ CS(20 -> 19) : [11][10][0]                                                              |
+|   + StackEnd()                                                                              |
+|     obj:11, begin:24@0, top:24@0, create:[25@0], end:[25@1]                                 |
+|                                                                                             |
+|   @ CS(19 -> 0) : [10][0] OS(21 -> -1) : [11]                                               |
+|   > StackSlot(1)                                                                            |
+|                                                                                             |
+|   @ CS(19 -> 0) : [10][0]                                                                   |
+| [RETURN STACK]:                                                                             |
+|   [8][12][20]: Pwa1Body -> [22][Pwa1]<! "prefix_with_ambiguity_1" Pwa1Prefix !Pwa1Body @ !> |
+|   [0][26][0]: Pwa1 -> [38][Module]<! !Pwa1 @ !>                                             |
+| [PREDECESSORS 24-24]: [24]                                                                  |
+| [SUCCESORS 27-27]: [27]                                                                     |
++---------------------------------------------------------------------------------------------+
+[0]
+ |
+ +
+ |
+[0]
+++=============================================================================================++
+|| [27]: {LT} <                                                                                ||
+||   TraceExec: [21]                                                                           ||
+||   InsExec: [55:2]                                                                           ||
+||   ForwardTrace: 16                                                                          ||
+|| [5][Lt]< "<" @ >                                                                            ||
+|| [AST-INSTRUCTIONS]:                                                                         ||
+||   @ CS(19 -> 0) : [10][0]                                                                   ||
+||   + StackBegin()                                                                            ||
+||     objs: 12                                                                                ||
+||                                                                                             ||
+||   @ CS(22 -> 19) : [12][10][0]                                                              ||
+||   + Token(0)                                                                                ||
+||                                                                                             ||
+||   @ CS(22 -> 19) : [12][10][0]                                                              ||
+|| [RETURN STACK]:                                                                             ||
+||   [11][8][25]: Lt -> [17][Pwa1Body]< Lt { Lt @ } { Gt } >                                   ||
+||   [8][12][20]: Pwa1Body -> [22][Pwa1]<! "prefix_with_ambiguity_1" Pwa1Prefix !Pwa1Body @ !> ||
+||   [0][26][0]: Pwa1 -> [38][Module]<! !Pwa1 @ !>                                             ||
+|| [PREDECESSORS 25-25]: [25]                                                                  ||
+|| [SUCCESORS 28-28]: [28]                                                                     ||
+++=============================================================================================++
+|
++
+|
++---------------------------------------------------------------------------------------------+
+| [28]: <Ending>                                                                              |
+|   TraceExec: [22]                                                                           |
+|   InsExec: [57:3]                                                                           |
+|   ForwardTrace: 16                                                                          |
+| [17][Pwa1Body]< Lt { Lt @ } { Gt } >                                                        |
+| [AST-INSTRUCTIONS]:                                                                         |
+|   @ CS(22 -> 19) : [12][10][0]                                                              |
+|   + CreateObject(Lt)                                                                        |
+|     objs: 12                                                                                |
+|                                                                                             |
+|   @ CS(22 -> 19) : [12][10][0]                                                              |
+|   + StackEnd()                                                                              |
+|     obj:12, begin:27@0, top:27@0, create:[28@0], end:[28@1]                                 |
+|                                                                                             |
+|   @ CS(19 -> 0) : [10][0] OS(23 -> -1) : [12]                                               |
+|   > StackSlot(1)                                                                            |
+|                                                                                             |
+|   @ CS(19 -> 0) : [10][0]                                                                   |
+| [RETURN STACK]:                                                                             |
+|   [8][12][20]: Pwa1Body -> [22][Pwa1]<! "prefix_with_ambiguity_1" Pwa1Prefix !Pwa1Body @ !> |
+|   [0][26][0]: Pwa1 -> [38][Module]<! !Pwa1 @ !>                                             |
+| [PREDECESSORS 27-27]: [27]                                                                  |
+| [SUCCESORS 30-30]: [30]                                                                     |
++---------------------------------------------------------------------------------------------+
+[0]
+ |
+ +
+ |
+[0]
+++=============================================================================================++
+|| [30]: {GT} >                                                                                ||
+||   TraceExec: [23]                                                                           ||
+||   InsExec: [60:2]                                                                           ||
+||   ForwardTrace: 16                                                                          ||
+|| [8][Gt]< ">" @ >                                                                            ||
+|| [AST-INSTRUCTIONS]:                                                                         ||
+||   @ CS(19 -> 0) : [10][0]                                                                   ||
+||   + StackBegin()                                                                            ||
+||     objs: 13                                                                                ||
+||                                                                                             ||
+||   @ CS(24 -> 19) : [13][10][0]                                                              ||
+||   + Token(0)                                                                                ||
+||                                                                                             ||
+||   @ CS(24 -> 19) : [13][10][0]                                                              ||
+|| [RETURN STACK]:                                                                             ||
+||   [12][9][28]: Gt -> [18][Pwa1Body]< Lt { Lt } { Gt @ } >                                   ||
+||   [8][12][20]: Pwa1Body -> [22][Pwa1]<! "prefix_with_ambiguity_1" Pwa1Prefix !Pwa1Body @ !> ||
+||   [0][26][0]: Pwa1 -> [38][Module]<! !Pwa1 @ !>                                             ||
+|| [PREDECESSORS 28-28]: [28]                                                                  ||
+|| [SUCCESORS 31-31]: [31]                                                                     ||
+++=============================================================================================++
+|
++
+|
++---------------------------------------------------------------------------------------------+
+| [31]: <Ending>                                                                              |
+|   TraceExec: [24]                                                                           |
+|   InsExec: [62:3]                                                                           |
+|   ForwardTrace: 16                                                                          |
+| [18][Pwa1Body]< Lt { Lt } { Gt @ } >                                                        |
+| [AST-INSTRUCTIONS]:                                                                         |
+|   @ CS(24 -> 19) : [13][10][0]                                                              |
+|   + CreateObject(Gt)                                                                        |
+|     objs: 13                                                                                |
+|                                                                                             |
+|   @ CS(24 -> 19) : [13][10][0]                                                              |
+|   + StackEnd()                                                                              |
+|     obj:13, begin:30@0, top:30@0, create:[31@0], end:[31@1]                                 |
+|                                                                                             |
+|   @ CS(19 -> 0) : [10][0] OS(25 -> -1) : [13]                                               |
+|   > StackSlot(2)                                                                            |
+|                                                                                             |
+|   @ CS(19 -> 0) : [10][0]                                                                   |
+| [RETURN STACK]:                                                                             |
+|   [8][12][20]: Pwa1Body -> [22][Pwa1]<! "prefix_with_ambiguity_1" Pwa1Prefix !Pwa1Body @ !> |
+|   [0][26][0]: Pwa1 -> [38][Module]<! !Pwa1 @ !>                                             |
+| [PREDECESSORS 30-30]: [30]                                                                  |
+| [SUCCESORS 33-33]: [33]                                                                     |
++---------------------------------------------------------------------------------------------+
+[0]
+ |
+ +
+ |
+[0]
+++=============================================================================================++
+|| [33]: {GT} >                                                                                ||
+||   TraceExec: [25]                                                                           ||
+||   InsExec: [65:2]                                                                           ||
+||   ForwardTrace: 16                                                                          ||
+|| [8][Gt]< ">" @ >                                                                            ||
+|| [AST-INSTRUCTIONS]:                                                                         ||
+||   @ CS(19 -> 0) : [10][0]                                                                   ||
+||   + StackBegin()                                                                            ||
+||     objs: 14                                                                                ||
+||                                                                                             ||
+||   @ CS(26 -> 19) : [14][10][0]                                                              ||
+||   + Token(0)                                                                                ||
+||                                                                                             ||
+||   @ CS(26 -> 19) : [14][10][0]                                                              ||
+|| [RETURN STACK]:                                                                             ||
+||   [13][10][31]: Gt -> [18][Pwa1Body]< Lt { Lt } { Gt @ } >                                  ||
+||   [8][12][20]: Pwa1Body -> [22][Pwa1]<! "prefix_with_ambiguity_1" Pwa1Prefix !Pwa1Body @ !> ||
+||   [0][26][0]: Pwa1 -> [38][Module]<! !Pwa1 @ !>                                             ||
+|| [PREDECESSORS 31-31]: [31]                                                                  ||
+|| [SUCCESORS 34-34]: [34]                                                                     ||
+++=============================================================================================++
+|
++
+|
++---------------------------------------------------------------------------------------------+
+| [34]: <Ending>                                                                              |
+|   TraceExec: [26]                                                                           |
+|   InsExec: [67:3]                                                                           |
+|   ForwardTrace: 16                                                                          |
+| [18][Pwa1Body]< Lt { Lt } { Gt @ } >                                                        |
+| [AST-INSTRUCTIONS]:                                                                         |
+|   @ CS(26 -> 19) : [14][10][0]                                                              |
+|   + CreateObject(Gt)                                                                        |
+|     objs: 14                                                                                |
+|                                                                                             |
+|   @ CS(26 -> 19) : [14][10][0]                                                              |
+|   + StackEnd()                                                                              |
+|     obj:14, begin:33@0, top:33@0, create:[34@0], end:[34@1]                                 |
+|                                                                                             |
+|   @ CS(19 -> 0) : [10][0] OS(27 -> -1) : [14]                                               |
+|   > StackSlot(2)                                                                            |
+|                                                                                             |
+|   @ CS(19 -> 0) : [10][0]                                                                   |
+| [RETURN STACK]:                                                                             |
+|   [8][12][20]: Pwa1Body -> [22][Pwa1]<! "prefix_with_ambiguity_1" Pwa1Prefix !Pwa1Body @ !> |
+|   [0][26][0]: Pwa1 -> [38][Module]<! !Pwa1 @ !>                                             |
+| [PREDECESSORS 33-33]: [33]                                                                  |
+| [SUCCESORS 36-36]: [36]                                                                     |
++---------------------------------------------------------------------------------------------+
+[0]
+ |
+ +
+ |
+[0]
+++=============================================================================================++
+|| [36]: {GT} >                                                                                ||
+||   TraceExec: [27]                                                                           ||
+||   InsExec: [70:2]                                                                           ||
+||   ForwardTrace: 16                                                                          ||
+|| [8][Gt]< ">" @ >                                                                            ||
+|| [AST-INSTRUCTIONS]:                                                                         ||
+||   @ CS(19 -> 0) : [10][0]                                                                   ||
+||   + StackBegin()                                                                            ||
+||     objs: 15                                                                                ||
+||                                                                                             ||
+||   @ CS(28 -> 19) : [15][10][0]                                                              ||
+||   + Token(0)                                                                                ||
+||                                                                                             ||
+||   @ CS(28 -> 19) : [15][10][0]                                                              ||
+|| [RETURN STACK]:                                                                             ||
+||   [14][10][34]: Gt -> [18][Pwa1Body]< Lt { Lt } { Gt @ } >                                  ||
+||   [8][12][20]: Pwa1Body -> [22][Pwa1]<! "prefix_with_ambiguity_1" Pwa1Prefix !Pwa1Body @ !> ||
+||   [0][26][0]: Pwa1 -> [38][Module]<! !Pwa1 @ !>                                             ||
+|| [PREDECESSORS 34-34]: [34]                                                                  ||
+|| [SUCCESORS 37-37]: [37]                                                                     ||
+++=============================================================================================++
+|
++
+|
++---------------------------------------------------------------------------------------------+
+| [37]: <Ending>                                                                              |
+|   TraceExec: [28]                                                                           |
+|   InsExec: [72:3]                                                                           |
+|   ForwardTrace: 16                                                                          |
+| [18][Pwa1Body]< Lt { Lt } { Gt @ } >                                                        |
+| [AST-INSTRUCTIONS]:                                                                         |
+|   @ CS(28 -> 19) : [15][10][0]                                                              |
+|   + CreateObject(Gt)                                                                        |
+|     objs: 15                                                                                |
+|                                                                                             |
+|   @ CS(28 -> 19) : [15][10][0]                                                              |
+|   + StackEnd()                                                                              |
+|     obj:15, begin:36@0, top:36@0, create:[37@0], end:[37@1]                                 |
+|                                                                                             |
+|   @ CS(19 -> 0) : [10][0] OS(29 -> -1) : [15]                                               |
+|   > StackSlot(2)                                                                            |
+|                                                                                             |
+|   @ CS(19 -> 0) : [10][0]                                                                   |
+| [RETURN STACK]:                                                                             |
+|   [8][12][20]: Pwa1Body -> [22][Pwa1]<! "prefix_with_ambiguity_1" Pwa1Prefix !Pwa1Body @ !> |
+|   [0][26][0]: Pwa1 -> [38][Module]<! !Pwa1 @ !>                                             |
+| [PREDECESSORS 36-36]: [36]                                                                  |
+| [SUCCESORS 38-38]: [38]                                                                     |
++---------------------------------------------------------------------------------------------+
+|
++
+|
++-------------------------------------------------------------------------------------------------------+
+| [38]: <Ending>                                                                                        |
+|   TraceExec: [29]                                                                                     |
+|   InsExec: [75:5]                                                                                     |
+|   ForwardTrace: 16                                                                                    |
+| [22][Pwa1]<! "prefix_with_ambiguity_1" Pwa1Prefix !Pwa1Body @ !>                                      |
+| [AST-INSTRUCTIONS]:                                                                                   |
+|   @ CS(19 -> 0) : [10][0]                                                                             |
+|   + CreateObject(Pwa1Feature)                                                                         |
+|     objs: 10                                                                                          |
+|                                                                                                       |
+|   @ CS(19 -> 0) : [10][0]                                                                             |
+|   + Field(Pwa1Feature::lts, 0)                                                                        |
+|                                                                                                       |
+|   @ CS(19 -> 0) : [10][0]                                                                             |
+|   + Field(Pwa1Feature::lts, 1)                                                                        |
+|                                                                                                       |
+|   @ CS(19 -> 0) : [10][0]                                                                             |
+|   + Field(Pwa1Feature::gts, 2)                                                                        |
+|                                                                                                       |
+|   @ CS(19 -> 0) : [10][0]                                                                             |
+|   + StackEnd()                                                                                        |
+|     obj:10, begin:22@2, top:22@2, lrec:21@0, field:[15, 13, 11, 9, 12, 14], create:[38@0], end:[38@4] |
+|                                                                                                       |
+|   @ CS(0 -> -1) : [0] OS(30 -> -1) : [10]                                                             |
+| [RETURN STACK]:                                                                                       |
+|   [0][26][0]: Pwa1 -> [38][Module]<! !Pwa1 @ !>                                                       |
+| [PREDECESSORS 37-37]: [37]                                                                            |
+| [SUCCESORS 39-39]: [39]                                                                               |
++-------------------------------------------------------------------------------------------------------+
+|
++
+|
++--------------------------------------------------------------------+
+| [39]: <Ending>                                                     |
+|   TraceExec: [30]                                                  |
+|   InsExec: [80:3]                                                  |
+|   ForwardTrace: 16                                                 |
+| [38][Module]<! !Pwa1 @ !>                                          |
+| [AST-INSTRUCTIONS]:                                                |
+|   @ CS(0 -> -1) : [0] OS(30 -> -1) : [10]                          |
+|   + Field(Pwa1Feature::pba, 1)                                     |
+|                                                                    |
+|   @ CS(0 -> -1) : [0] OS(30 -> -1) : [10]                          |
+|   + StackEnd()                                                     |
+|     obj:0, begin:1@0, top:1@0, use:[10], field:[6, 2], end!:[39@1] |
+|                                                                    |
+|   @ OS(31 -> -1) : [0]                                             |
+|   > StackBegin()                                                   |
+|     objs: 16                                                       |
+|                                                                    |
+|   @ CS(32 -> -1) : [16] OS(31 -> -1) : [0]                         |
+| [PREDECESSORS 38-38]: [38]                                         |
+| [SUCCESORS 40-40]: [40]                                            |
++--------------------------------------------------------------------+
+|
++
+|
++-------------------------------------------------------+
+| [40]: <Ending>                                        |
+|   TraceExec: [31]                                     |
+|   InsExec: [83:1]                                     |
+|   ForwardTrace: 16                                    |
+| [37][Module] END [ENDING]                             |
+| [AST-INSTRUCTIONS]:                                   |
+|   @ CS(32 -> -1) : [16] OS(31 -> -1) : [0]            |
+|   + StackEnd()                                        |
+|     obj:16, begin:39@2, top:1@0, use:[0], end!:[40@0] |
+|                                                       |
+|   @ OS(33 -> -1) : [16]                               |
+| [PREDECESSORS 39-39]: [39]                            |
++-------------------------------------------------------+

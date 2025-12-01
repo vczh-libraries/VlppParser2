@@ -1,0 +1,152 @@
+﻿+----------------------+
+| [0]: <Start>         |
+| [9][Module] BEGIN    |
+| [AST-INSTRUCTIONS]:  |
+| [SUCCESORS 1-1]: [1] |
++----------------------+
+[0]
+ |
+ +
+ |
+[0]
+++==================================================================++
+|| [1]: {OPTIONAL} optional                                         ||
+|| [5][EqualOptional]< "optional" @ [ Plus ] "+" { Plus } >         ||
+|| [AST-INSTRUCTIONS]:                                              ||
+||   + StackBegin()                                                 ||
+||   + Token(0)                                                     ||
+|| [RETURN STACK]:                                                  ||
+||   [0][3][0]: EqualOptional -> [11][Module]<! !EqualOptional @ !> ||
+|| [PREDECESSORS 0-0]: [0]                                          ||
+|| [SUCCESORS 2-4]: [2][4]                                          ||
+++==================================================================++
+[0/1]
+ |
+ +--------------------------------------------------------------------------------------+
+ |                                                                                      |
+[0]                                                                                    [1]
+++===============================================================================++    ++==================================================================++
+|| [2]: {PLUS} +                                                                 ||    || [4]: {PLUS} +                                                    ||
+|| [2][Plus]< "+" @ >                                                            ||    || [7][EqualOptional]< "optional" [ Plus ] "+" @ { Plus } >         ||
+|| [AST-INSTRUCTIONS]:                                                           ||    || [AST-INSTRUCTIONS]:                                              ||
+||   + StackBegin()                                                              ||    ||   + Token(2)                                                     ||
+||   + Token(0)                                                                  ||    || [RETURN STACK]:                                                  ||
+|| [RETURN STACK]:                                                               ||    ||   [0][3][0]: EqualOptional -> [11][Module]<! !EqualOptional @ !> ||
+||   [1][0][1]: Plus -> [6][EqualOptional]< "optional" [ Plus @ ] "+" { Plus } > ||    || [PREDECESSORS 1-1]: [1]                                          ||
+||   [0][3][0]: EqualOptional -> [11][Module]<! !EqualOptional @ !>              ||    || [SUCCESORS 8-8]: [8]                                             ||
+|| [PREDECESSORS 1-1]: [1]                                                       ||    ++==================================================================++
+|| [SUCCESORS 3-3]: [3]                                                          ||    |
+++===============================================================================++    |
+|                                                                                      |
++                                                                                      +
+|                                                                                      |
++------------------------------------------------------------------+                   |
+| [3]: <Ending>                                                    |                   |
+| [6][EqualOptional]< "optional" [ Plus @ ] "+" { Plus } >         |                   |
+| [AST-INSTRUCTIONS]:                                              |                   |
+|   + CreateObject(Plus)                                           |                   |
+|   + StackEnd()                                                   |                   |
+|   > StackSlot(1)                                                 |                   |
+| [RETURN STACK]:                                                  |                   |
+|   [0][3][0]: EqualOptional -> [11][Module]<! !EqualOptional @ !> |                   |
+| [PREDECESSORS 2-2]: [2]                                          |                   |
+| [SUCCESORS 6-6]: [6]                                             |                   |
++------------------------------------------------------------------+                   |
+[0]                                                                                    [1]
+ |                                                                                      |
+ +                                                                         +------------+
+ |                                                                         |
+[0]                                                                       [1]
+++==================================================================++    ++===============================================================================++
+|| [6]: {PLUS} +                                                    ||    || [8]: {PLUS} +                                                                 ||
+|| [7][EqualOptional]< "optional" [ Plus ] "+" @ { Plus } >         ||    || [2][Plus]< "+" @ >                                                            ||
+|| [AST-INSTRUCTIONS]:                                              ||    || [AST-INSTRUCTIONS]:                                                           ||
+||   + Token(2)                                                     ||    ||   + StackBegin()                                                              ||
+|| [RETURN STACK]:                                                  ||    ||   + Token(0)                                                                  ||
+||   [0][3][0]: EqualOptional -> [11][Module]<! !EqualOptional @ !> ||    || [RETURN STACK]:                                                               ||
+|| [PREDECESSORS 3-3]: [3]                                          ||    ||   [2][1][4]: Plus -> [8][EqualOptional]< "optional" [ Plus ] "+" { Plus @ } > ||
+|| [SUCCESORS 12-12]: [12]                                          ||    ||   [0][3][0]: EqualOptional -> [11][Module]<! !EqualOptional @ !>              ||
+++==================================================================++    || [PREDECESSORS 4-4]: [4]                                                       ||
+|                                                                         || [SUCCESORS 9-9]: [9]                                                          ||
+|                                                                         ++===============================================================================++
+|                                                                         |
++                                                                         +
+|                                                                         |
+|                                                                         +------------------------------------------------------------------+
+|                                                                         | [9]: <Ending>                                                    |
+|                                                                         | [8][EqualOptional]< "optional" [ Plus ] "+" { Plus @ } >         |
+|                                                                         | [AST-INSTRUCTIONS]:                                              |
+|                                                                         |   + CreateObject(Plus)                                           |
+|                                                                         |   + StackEnd()                                                   |
+|                                                                         |   > StackSlot(3)                                                 |
+|                                                                         | [RETURN STACK]:                                                  |
+|                                                                         |   [0][3][0]: EqualOptional -> [11][Module]<! !EqualOptional @ !> |
+|                                                                         | [PREDECESSORS 8-8]: [8]                                          |
+|                                                                         | [SUCCESORS 16-16]: [16]                                          |
+|                                                                         +------------------------------------------------------------------+
+[0]                                                                       [1]
+ |                                                                         |
+ +                                                                         +------------+
+ |                                                                                      |
+[0]                                                                                    [1]
+++===============================================================================++    ++===============================================================================++
+|| [12]: {PLUS} +                                                                ||    || [16]: {PLUS} +                                                                ||
+|| [2][Plus]< "+" @ >                                                            ||    || [2][Plus]< "+" @ >                                                            ||
+|| [AST-INSTRUCTIONS]:                                                           ||    || [AST-INSTRUCTIONS]:                                                           ||
+||   + StackBegin()                                                              ||    ||   + StackBegin()                                                              ||
+||   + Token(0)                                                                  ||    ||   + Token(0)                                                                  ||
+|| [RETURN STACK]:                                                               ||    || [RETURN STACK]:                                                               ||
+||   [3][1][6]: Plus -> [8][EqualOptional]< "optional" [ Plus ] "+" { Plus @ } > ||    ||   [4][2][9]: Plus -> [8][EqualOptional]< "optional" [ Plus ] "+" { Plus @ } > ||
+||   [0][3][0]: EqualOptional -> [11][Module]<! !EqualOptional @ !>              ||    ||   [0][3][0]: EqualOptional -> [11][Module]<! !EqualOptional @ !>              ||
+|| [PREDECESSORS 6-6]: [6]                                                       ||    || [PREDECESSORS 9-9]: [9]                                                       ||
+|| [SUCCESORS 13-13]: [13]                                                       ||    || [SUCCESORS 17-17]: [17]                                                       ||
+++===============================================================================++    ++===============================================================================++
+|                                                                                      |
++                                                                                      +
+|                                                                                      |
++------------------------------------------------------------------+                   +------------------------------------------------------------------+
+| [13]: <Ending>                                                   |                   | [17]: <Ending>                                                   |
+| [8][EqualOptional]< "optional" [ Plus ] "+" { Plus @ } >         |                   | [8][EqualOptional]< "optional" [ Plus ] "+" { Plus @ } >         |
+| [AST-INSTRUCTIONS]:                                              |                   | [AST-INSTRUCTIONS]:                                              |
+|   + CreateObject(Plus)                                           |                   |   + CreateObject(Plus)                                           |
+|   + StackEnd()                                                   |                   |   + StackEnd()                                                   |
+|   > StackSlot(3)                                                 |                   |   > StackSlot(3)                                                 |
+| [RETURN STACK]:                                                  |                   | [RETURN STACK]:                                                  |
+|   [0][3][0]: EqualOptional -> [11][Module]<! !EqualOptional @ !> |                   |   [0][3][0]: EqualOptional -> [11][Module]<! !EqualOptional @ !> |
+| [PREDECESSORS 12-12]: [12]                                       |                   | [PREDECESSORS 16-16]: [16]                                       |
+| [SUCCESORS 19-19]: [19]                                          |                   | [SUCCESORS 18-18]: [18]                                          |
++------------------------------------------------------------------+                   +------------------------------------------------------------------+
+|                                                                                      |
++                                                                                      +
+|                                                                                      |
++-----------------------------------------+                                            +-----------------------------------------+
+| [19]: <Ending>                          |                                            | [18]: <Ending>                          |
+| [11][Module]<! !EqualOptional @ !>      |                                            | [11][Module]<! !EqualOptional @ !>      |
+| [AST-INSTRUCTIONS]:                     |                                            | [AST-INSTRUCTIONS]:                     |
+|   + EnumItem(0, 4)                      |                                            |   + EnumItem(0, 4)                      |
+|   + CreateObject(OptionalFeature)       |                                            |   + CreateObject(OptionalFeature)       |
+|   + Field(OptionalFeature::optional, 1) |                                            |   + Field(OptionalFeature::optional, 1) |
+|   + Field(OptionalFeature::loop, 3)     |                                            |   + Field(OptionalFeature::loop, 3)     |
+|   + Field(OptionalFeature::priority, 4) |                                            |   + Field(OptionalFeature::priority, 4) |
+|   + StackEnd()                          |                                            |   + StackEnd()                          |
+|   > StackBegin()                        |                                            |   > StackBegin()                        |
+| [PREDECESSORS 13-13]: [13]              |                                            | [PREDECESSORS 17-17]: [17]              |
+| [SUCCESORS 14-14]: [14]                 |                                            | [SUCCESORS 14-14]: [14]                 |
++-----------------------------------------+                                            +-----------------------------------------+
+|                                                                                      |
++--------------------------------------------------------------------------------------+
+|
++-----------------+
+| [14]: <Merging> |
+| <Start>         |
++-----------------+
+|
++
+|
++----------------------------+
+| [15]: <Ending>             |
+| [10][Module] END [ENDING]  |
+| [AST-INSTRUCTIONS]:        |
+|   + StackEnd()             |
+| [PREDECESSORS 14-14]: [14] |
++----------------------------+

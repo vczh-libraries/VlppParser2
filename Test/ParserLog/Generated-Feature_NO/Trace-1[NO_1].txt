@@ -1,0 +1,87 @@
+﻿================ EXECUTION STEPS ================
+[0]: 0@0 - 6@0
+
+==================== TRACES =====================
+
++----------------------+
+| [0]: <Start>         |
+| [11][Module] BEGIN   |
+| [AST-INSTRUCTIONS]:  |
+| [SUCCESORS 1-1]: [1] |
++----------------------+
+[0]
+ |
+ +
+ |
+[0]
+++=============================================================================================++
+|| [1]: {NESTED_OPTIONAL} nested_optional                                                      ||
+|| [5][NestedOptional]< "nested_optional" @ [ ( [ ( [ Plus ] Plus ) ] Plus ) ] Plus { Plus } > ||
+|| [AST-INSTRUCTIONS]:                                                                         ||
+||   + StackBegin()                                                                            ||
+||   + Token(0)                                                                                ||
+|| [RETURN STACK]:                                                                             ||
+||   [0][9][0]: NestedOptional -> [13][Module]<! !NestedOptional @ !>                          ||
+|| [PREDECESSORS 0-0]: [0]                                                                     ||
+|| [SUCCESORS 3-3]: [3]                                                                        ||
+++=============================================================================================++
+[0]
+ |
+ +
+ |
+[0]
+++==================================================================================================================++
+|| [3]: {PLUS} +                                                                                                    ||
+|| [2][Plus]< "+" @ >                                                                                               ||
+|| [AST-INSTRUCTIONS]:                                                                                              ||
+||   + StackBegin()                                                                                                 ||
+||   + Token(0)                                                                                                     ||
+|| [RETURN STACK]:                                                                                                  ||
+||   [2][1][1]: Plus -> [7][NestedOptional]< "nested_optional" [ ( [ ( [ Plus ] Plus ) ] Plus ) ] Plus @ { Plus } > ||
+||   [0][9][0]: NestedOptional -> [13][Module]<! !NestedOptional @ !>                                               ||
+|| [PREDECESSORS 1-1]: [1]                                                                                          ||
+|| [SUCCESORS 4-4]: [4]                                                                                             ||
+++==================================================================================================================++
+|
++
+|
++---------------------------------------------------------------------------------------------+
+| [4]: <Ending>                                                                               |
+| [7][NestedOptional]< "nested_optional" [ ( [ ( [ Plus ] Plus ) ] Plus ) ] Plus @ { Plus } > |
+| [AST-INSTRUCTIONS]:                                                                         |
+|   + CreateObject(Plus)                                                                      |
+|   + StackEnd()                                                                              |
+|   > StackSlot(4)                                                                            |
+| [RETURN STACK]:                                                                             |
+|   [0][9][0]: NestedOptional -> [13][Module]<! !NestedOptional @ !>                          |
+| [PREDECESSORS 3-3]: [3]                                                                     |
+| [SUCCESORS 5-5]: [5]                                                                        |
++---------------------------------------------------------------------------------------------+
+|
++
+|
++-----------------------------------------------+
+| [5]: <Ending>                                 |
+| [13][Module]<! !NestedOptional @ !>           |
+| [AST-INSTRUCTIONS]:                           |
+|   + CreateObject(NestedOptionalFeature)       |
+|   + Field(NestedOptionalFeature::optional, 1) |
+|   + Field(NestedOptionalFeature::tail1, 2)    |
+|   + Field(NestedOptionalFeature::tail2, 3)    |
+|   + Field(NestedOptionalFeature::tail3, 4)    |
+|   + Field(NestedOptionalFeature::tails, 5)    |
+|   + StackEnd()                                |
+|   > StackBegin()                              |
+| [PREDECESSORS 4-4]: [4]                       |
+| [SUCCESORS 6-6]: [6]                          |
++-----------------------------------------------+
+|
++
+|
++---------------------------+
+| [6]: <Ending>             |
+| [12][Module] END [ENDING] |
+| [AST-INSTRUCTIONS]:       |
+|   + StackEnd()            |
+| [PREDECESSORS 5-5]: [5]   |
++---------------------------+

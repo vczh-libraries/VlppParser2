@@ -1,0 +1,149 @@
+﻿================ EXECUTION STEPS ================
+[0]: 0@0 - 12@0
+
+==================== TRACES =====================
+
++----------------------+
+| [0]: <Start>         |
+| [9][Module] BEGIN    |
+| [AST-INSTRUCTIONS]:  |
+| [SUCCESORS 1-1]: [1] |
++----------------------+
+[0]
+ |
+ +
+ |
+[0]
+++========================================================================++
+|| [1]: {NEGATIVE_OPTIONAL} negative_optional                             ||
+|| [8][NegativeOptional]< "negative_optional" @ -[ Plus ] "+" { Plus } >  ||
+|| [HOLDING COMPETITION]:                                                 ||
+||   [0][HIGH PRIORITY WIN][RULE: 1][CLAUSE: 0]                           ||
+|| [AST-INSTRUCTIONS]:                                                    ||
+||   + StackBegin()                                                       ||
+||   + Token(0)                                                           ||
+|| [RETURN STACK]:                                                        ||
+||   [0][3][0]: NegativeOptional -> [11][Module]<! !NegativeOptional @ !> ||
+|| [PREDECESSORS 0-0]: [0]                                                ||
+|| [SUCCESORS 4-4]: [4]                                                   ||
+++========================================================================++
+[0]
+ |
+ +
+ |
+[0]
+++========================================================================++
+|| [4]: {PLUS} +                                                          ||
+|| [6][NegativeOptional]< "negative_optional" -[ Plus ] "+" @ { Plus } >  ||
+|| [AST-INSTRUCTIONS]:                                                    ||
+||   + Token(2)                                                           ||
+|| [RETURN STACK]:                                                        ||
+||   [0][3][0]: NegativeOptional -> [11][Module]<! !NegativeOptional @ !> ||
+|| [CARRIED COMPETITION]:                                                 ||
+||   [1]: competition[0][RS: 0] high                                      ||
+|| [PREDECESSORS 1-1]: [1]                                                ||
+|| [SUCCESORS 6-6]: [6]                                                   ||
+++========================================================================++
+[0]
+ |
+ +
+ |
+[0]
+++============================================================================================++
+|| [6]: {PLUS} +                                                                              ||
+|| [2][Plus]< "+" @ >                                                                         ||
+|| [AST-INSTRUCTIONS]:                                                                        ||
+||   + StackBegin()                                                                           ||
+||   + Token(0)                                                                               ||
+|| [RETURN STACK]:                                                                            ||
+||   [2][0][4]: Plus -> [7][NegativeOptional]< "negative_optional" -[ Plus ] "+" { Plus @ } > ||
+||   [0][3][0]: NegativeOptional -> [11][Module]<! !NegativeOptional @ !>                     ||
+|| [CARRIED COMPETITION]:                                                                     ||
+||   [1]: competition[0][RS: 0] high                                                          ||
+|| [PREDECESSORS 4-4]: [4]                                                                    ||
+|| [SUCCESORS 7-7]: [7]                                                                       ||
+++============================================================================================++
+|
++
+|
++------------------------------------------------------------------------+
+| [7]: <Ending>                                                          |
+| [7][NegativeOptional]< "negative_optional" -[ Plus ] "+" { Plus @ } >  |
+| [AST-INSTRUCTIONS]:                                                    |
+|   + CreateObject(Plus)                                                 |
+|   + StackEnd()                                                         |
+|   > StackSlot(3)                                                       |
+| [RETURN STACK]:                                                        |
+|   [0][3][0]: NegativeOptional -> [11][Module]<! !NegativeOptional @ !> |
+| [CARRIED COMPETITION]:                                                 |
+|   [1]: competition[0][RS: 0] high                                      |
+| [PREDECESSORS 6-6]: [6]                                                |
+| [SUCCESORS 9-9]: [9]                                                   |
++------------------------------------------------------------------------+
+[0]
+ |
+ +
+ |
+[0]
+++============================================================================================++
+|| [9]: {PLUS} +                                                                              ||
+|| [2][Plus]< "+" @ >                                                                         ||
+|| [AST-INSTRUCTIONS]:                                                                        ||
+||   + StackBegin()                                                                           ||
+||   + Token(0)                                                                               ||
+|| [RETURN STACK]:                                                                            ||
+||   [3][1][7]: Plus -> [7][NegativeOptional]< "negative_optional" -[ Plus ] "+" { Plus @ } > ||
+||   [0][3][0]: NegativeOptional -> [11][Module]<! !NegativeOptional @ !>                     ||
+|| [CARRIED COMPETITION]:                                                                     ||
+||   [1]: competition[0][RS: 0] high                                                          ||
+|| [PREDECESSORS 7-7]: [7]                                                                    ||
+|| [SUCCESORS 10-10]: [10]                                                                    ||
+++============================================================================================++
+|
++
+|
++------------------------------------------------------------------------+
+| [10]: <Ending>                                                         |
+| [7][NegativeOptional]< "negative_optional" -[ Plus ] "+" { Plus @ } >  |
+| [AST-INSTRUCTIONS]:                                                    |
+|   + CreateObject(Plus)                                                 |
+|   + StackEnd()                                                         |
+|   > StackSlot(3)                                                       |
+| [RETURN STACK]:                                                        |
+|   [0][3][0]: NegativeOptional -> [11][Module]<! !NegativeOptional @ !> |
+| [CARRIED COMPETITION]:                                                 |
+|   [1]: competition[0][RS: 0] high                                      |
+| [PREDECESSORS 9-9]: [9]                                                |
+| [SUCCESORS 11-11]: [11]                                                |
++------------------------------------------------------------------------+
+|
++
+|
++-----------------------------------------+
+| [11]: <Ending>                          |
+| [11][Module]<! !NegativeOptional @ !>   |
+| [AST-INSTRUCTIONS]:                     |
+|   + EnumItem(2, 4)                      |
+|   + CreateObject(OptionalFeature)       |
+|   + Field(OptionalFeature::optional, 1) |
+|   + Field(OptionalFeature::loop, 3)     |
+|   + Field(OptionalFeature::priority, 4) |
+|   + StackEnd()                          |
+|   > StackBegin()                        |
+| [CARRIED COMPETITION]:                  |
+|   [1]: competition[0][RS: 0] high       |
+| [PREDECESSORS 10-10]: [10]              |
+| [SUCCESORS 12-12]: [12]                 |
++-----------------------------------------+
+|
++
+|
++-----------------------------------+
+| [12]: <Ending>                    |
+| [10][Module] END [ENDING]         |
+| [AST-INSTRUCTIONS]:               |
+|   + StackEnd()                    |
+| [CARRIED COMPETITION]:            |
+|   [1]: competition[0][RS: 0] high |
+| [PREDECESSORS 11-11]: [11]        |
++-----------------------------------+
