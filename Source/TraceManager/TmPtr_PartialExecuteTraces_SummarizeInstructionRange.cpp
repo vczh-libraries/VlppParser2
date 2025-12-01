@@ -85,7 +85,7 @@ SummarizeEarilestInsRefs
 
 			void TraceManager::SummarizeEarilestInsRefs()
 			{
-				IterateStackWithDependency(&InsExec_Stack::useFromStacks, [this](InsExec_Stack* stack)
+				IterateStackWithDependency(&InsExec_Stack::fieldStacks, [this](InsExec_Stack* stack)
 				{
 					auto currentStackRefLink = stack->fieldStacks;
 					while (currentStackRefLink != nullref)

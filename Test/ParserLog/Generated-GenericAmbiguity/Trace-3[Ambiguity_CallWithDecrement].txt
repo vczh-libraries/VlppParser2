@@ -1,7 +1,37 @@
-﻿+----------------------+
+﻿================ EXECUTION STEPS ================
+[0]: 0@0 - 8@-1
+[1]: RA_Begin
+[11]: 8@0 - 8@1
+[12]: 9@0 - 10@1
+[5]: 11@0 - 25@2
+[6]: RA_Branch
+[3]: 8@0 - 8@1
+[4]: 9@0 - 10@1
+[7]: 12@0 - 24@4
+[8]: RA_Branch
+[9]: RA_End(2, Expr)
+[13]: 25@3 - 25@3
+[14]: 20@0 - 28@-1
+[15]: RA_Begin
+[25]: 28@0 - 28@1
+[26]: 29@0 - 30@1
+[19]: 31@0 - 45@2
+[20]: RA_Branch
+[17]: 28@0 - 28@1
+[18]: 29@0 - 30@1
+[21]: 32@0 - 44@4
+[22]: RA_Branch
+[23]: RA_End(2, Expr)
+[27]: 45@3 - 45@3
+[28]: 40@0 - 50@2
+
+==================== TRACES =====================
+
++----------------------+
 | [0]: <Start>         |
 |   TraceExec: [0]     |
 |   ForwardTrace: 0    |
+|   NextACT: 8         |
 | [41][Module] BEGIN   |
 | [AST-INSTRUCTIONS]:  |
 |   @                  |
@@ -130,6 +160,8 @@
 ||   TraceExec: [5]                                               ||
 ||   InsExec: [10:2]                                              ||
 ||   ForwardTrace: 0                                              ||
+||   NextACT: 10                                                  ||
+||   AmbiguityBegins: [0]                                         ||
 || [7][Exp0]< ID @ >                                              ||
 || [AST-INSTRUCTIONS]:                                            ||
 ||   @ CS(4 -> -1) : [2] OS(1 -> -1) : [0]                        ||
@@ -223,6 +255,7 @@
 |   TraceExec: [8]                                               |      |   TraceExec: [12]                                              |
 |   InsExec: [18:3]                                              |      |   InsExec: [27:3]                                              |
 |   ForwardTrace: 11                                             |      |   ForwardTrace: 12                                             |
+|   NextACT: 25                                                  |      |   NextACT: 24                                                  |
 | [29][Exp2]< Exp2 @ "-" "-" >                                   |      | [30][Exp2]< Exp2 @ "-" >                                       |
 | [AST-INSTRUCTIONS]:                                            |      | [AST-INSTRUCTIONS]:                                            |
 |   @ CS(9 -> 4) : [5][2] OS(8 -> 6) : [4][3][0]                 |      |   @ CS(9 -> 4) : [5][2] OS(8 -> 6) : [4][3][0]                 |
@@ -389,6 +422,11 @@
 |   TraceExec: [17]                                                 |
 |   ForwardTrace: 20                                                |
 |   CommonForwardTrace: 0                                           |
+|   NextACT: 28                                                     |
+| [AMBIGUITY-RESOLVING]: [0]                                        |
+|   objs: [9, 6]                                                    |
+|   first: 8 prefix: 0                                              |
+|   last: 20 postfix: 1                                             |
 | [CONTEXT]: CS(21 -> 4) : [10, 7][2] OS(20 -> 8) : [9, 6][4][3][0] |
 +-------------------------------------------------------------------+
 |
@@ -450,6 +488,8 @@
 ||   TraceExec: [20]                                                ||
 ||   InsExec: [48:2]                                                ||
 ||   ForwardTrace: 20                                               ||
+||   NextACT: 30                                                    ||
+||   AmbiguityBegins: [1]                                           ||
 || [7][Exp0]< ID @ >                                                ||
 || [AST-INSTRUCTIONS]:                                              ||
 ||   @ CS(4 -> -1) : [2] OS(20 -> 8) : [9, 6][4][3][0]              ||
@@ -543,6 +583,7 @@
 |   TraceExec: [23]                                                    |    |   TraceExec: [27]                                                    |
 |   InsExec: [56:3]                                                    |    |   InsExec: [65:3]                                                    |
 |   ForwardTrace: 31                                                   |    |   ForwardTrace: 32                                                   |
+|   NextACT: 45                                                        |    |   NextACT: 44                                                        |
 | [29][Exp2]< Exp2 @ "-" "-" >                                         |    | [30][Exp2]< Exp2 @ "-" >                                             |
 | [AST-INSTRUCTIONS]:                                                  |    | [AST-INSTRUCTIONS]:                                                  |
 |   @ CS(27 -> 4) : [13][2] OS(26 -> 24) : [12][11][9, 6][4][3][0]     |    |   @ CS(27 -> 4) : [13][2] OS(26 -> 24) : [12][11][9, 6][4][3][0]     |
@@ -709,6 +750,10 @@
 |   TraceExec: [32]                                                                   |
 |   ForwardTrace: 40                                                                  |
 |   CommonForwardTrace: 20                                                            |
+| [AMBIGUITY-RESOLVING]: [1]                                                          |
+|   objs: [17, 14]                                                                    |
+|   first: 28 prefix: 0                                                               |
+|   last: 40 postfix: 1                                                               |
 | [CONTEXT]: CS(39 -> 4) : [18, 15][2] OS(38 -> 26) : [17, 14][12][11][9, 6][4][3][0] |
 +-------------------------------------------------------------------------------------+
 |
