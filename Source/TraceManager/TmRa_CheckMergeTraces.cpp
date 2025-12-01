@@ -28,7 +28,7 @@ CheckMergeTrace
 				{
 					auto stackRefLink = GetInsExec_StackRefLink(linkId);
 					linkId = stackRefLink->previous;
-					auto ieObject = GetInsExec_Object(stackRefLink->id);
+					auto ieObject = GetInsExec_Stack(stackRefLink->id);
 
 					if (withCounter)
 					{
@@ -46,13 +46,22 @@ CheckMergeTrace
 			template<typename TCallback>
 			bool TraceManager::EnumerateBottomInstructions(InsExec_Stack* ieObject, TCallback&& callback)
 			{
-				auto insRefLinkId = ieObject->endInsRefs;
+				auto insRefLinkId = ieObject->endWithCreateInsRefs;
 				while (insRefLinkId != nullref)
 				{
 					auto insRefLink = GetInsExec_InsRefLink(insRefLinkId);
 					insRefLinkId = insRefLink->previous;
 					if (!callback(GetTrace(insRefLink->insRef.trace), insRefLink->insRef.ins)) return false;
 				}
+
+				insRefLinkId = ieObject->endWithReuseInsRefs;
+				while (insRefLinkId != nullref)
+				{
+					auto insRefLink = GetInsExec_InsRefLink(insRefLinkId);
+					insRefLinkId = insRefLink->previous;
+					if (!callback(GetTrace(insRefLink->insRef.trace), insRefLink->insRef.ins)) return false;
+				}
+
 				return true;
 			}
 
@@ -112,22 +121,22 @@ CheckMergeTrace
 				bool succeeded = false;
 
 				// iterate all top objects
-				succeeded = callback([&](Ref<InsExec_ObjRefLink> objRefLink)
+				succeeded = callback([&](Ref<InsExec_StackRefLink> objRefLink)
 				{
-					return EnumerateObjects(objRefLink, false, [&](InsExec_Object* ieObject)
+					return EnumerateObjects(objRefLink, false, [&](InsExec_Stack* ieObject)
 					{
-						auto createTrace = GetTrace(ieObject->topInsRef.trace);
+						auto createTrace = GetTrace(ieObject->earliestInsRef.trace);
 						if (!first)
 						{
 							first = createTrace;
 							firstTraceExec = GetTraceExec(first->traceExecRef);
 							ta->firstTrace = createTrace;
-							ta->prefix = ieObject->topInsRef.ins;
+							ta->prefix = ieObject->earliestInsRef.ins;
 						}
 						else if (first == createTrace)
 						{
 							// check if two instruction is the same
-							if (ta->prefix != ieObject->topInsRef.ins) return false;
+							if (ta->prefix != ieObject->earliestInsRef.ins) return false;
 							foundBeginSame = true;
 						}
 						else
@@ -154,11 +163,11 @@ CheckMergeTrace
 					Group<Trace*, InsRef> postfixesAtSelf, postfixesAtSuccessor;
 
 					NEW_MERGE_STACK_MAGIC_COUNTER;
-					callback([&](Ref<InsExec_ObjRefLink> objRefLink)
+					callback([&](Ref<InsExec_StackRefLink> objRefLink)
 					{
-						return EnumerateObjects(objRefLink, true, [&](InsExec_Object* ieObject)
+						return EnumerateObjects(objRefLink, true, [&](InsExec_Stack* ieObject)
 						{
-							PushObjRefLink(ta->bottomObjectIds, ieObject);
+							PushStackRefLink(ta->bottomCreateObjectStacks, ieObject);
 
 							// check if EO satisfies the condition
 							return EnumerateBottomInstructions(ieObject, [&](Trace* eoTrace, vint32_t eoIns)
@@ -414,7 +423,7 @@ CheckMergeTrace
 								auto predecessorTraceExec = GetTraceExec(predecessor->traceExecRef);
 								auto indexEO = predecessorTraceExec->insLists.countAll - postfix - 1;
 								auto insExecEO = GetInsExec(predecessorTraceExec->insExecRefs.start + indexEO);
-								if (!callback(insExecEO->objRefs)) return false;
+								if (!callback(insExecEO->operatingStacks)) return false;
 							}
 							return true;
 						});
@@ -607,7 +616,7 @@ CheckMergeTraces
 				}
 
 				// iterating TraceMergeExec
-				List<Ref<InsExec_ObjRefLink>> visitingIds;
+				List<Ref<InsExec_StackRefLink>> visitingIds;
 				auto traceId = firstMergeTrace;
 				while (traceId != nullref)
 				{
