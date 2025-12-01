@@ -142,45 +142,42 @@ void RenderTrace(
 			}
 		};
 
-		auto logContext = [&tm, &writer, &logStackRefLink](InsExec_Context& context, const wchar_t* indentation)
+		auto logContext = [&tm, &writer, &logStackRefLink](InsExec_Context& context)
 		{
-			writer.WriteString(indentation);
 			if (context.createStack == nullref)
 			{
-				writer.WriteLine(L"Creates: []");
+				writer.WriteString(L" {CS: []}");
 			}
 			else
 			{
 				auto ieCSTop = tm.GetInsExec_StackArrayRefLink(context.createStack);
-				writer.WriteString(L"Creates: [");
+				writer.WriteString(L" {CS: [");
 				logStackRefLink(ieCSTop->ids);
-				writer.WriteLine(
+				writer.WriteString(
 					L"] [" +
 					itow(ieCSTop->allocatedIndex) +
 					L" -> " +
 					itow(ieCSTop->previous.handle) +
-					L"]");
+					L"]}");
 			}
 
-			writer.WriteString(indentation);
 			if (context.objectStack == nullref)
 			{
-				writer.WriteLine(L"Pushes: []");
+				writer.WriteString(L" {OS: []}");
 			}
 			else
 			{
 				auto ieOSTop = tm.GetInsExec_StackArrayRefLink(context.objectStack);
-				writer.WriteString(L"Pushes: [");
+				writer.WriteString(L" {OS: [");
 				logStackRefLink(ieOSTop->ids);
-				writer.WriteLine(
+				writer.WriteString(
 					L"] [" +
 					itow(ieOSTop->allocatedIndex) +
 					L" -> " +
 					itow(ieOSTop->previous.handle) +
-					L"]");
+					L"]}");
 			}
-
-			writer.WriteString(indentation);
+			writer.WriteLine(L"");
 		};
 
 		/***********************************************************************
@@ -278,9 +275,9 @@ void RenderTrace(
 		{
 			if (trace->traceExecRef != nullref)
 			{
-				writer.WriteLine(L"[CONTEXT]");
+				writer.WriteString(L"[CONTEXT]:");
 				auto traceExec = tm.GetTraceExec(trace->traceExecRef);
-				logContext(traceExec->context, L"  ");
+				logContext(traceExec->context);
 			}
 			return;
 		}
@@ -339,12 +336,6 @@ void RenderTrace(
 
 		for (vint32_t i = 0; i < c2; i++)
 		{
-			if (trace->traceExecRef != nullref)
-			{
-				auto traceExec = tm.GetTraceExec(trace->traceExecRef);
-				auto insExec = tm.GetInsExec(traceExec->insExecRefs.start + i);
-				logContext(insExec->contextBeforeExecution, L"    ");
-			}
 
 			AstIns ins;
 			if (i < c1)
@@ -362,6 +353,13 @@ void RenderTrace(
 			}
 
 			LogInstruction(ins, typeName, fieldName, writer);
+			if (trace->traceExecRef != nullref)
+			{
+				writer.WriteString(L"   ");
+				auto traceExec = tm.GetTraceExec(trace->traceExecRef);
+				auto insExec = tm.GetInsExec(traceExec->insExecRefs.start + i);
+				logContext(insExec->contextBeforeExecution);
+			}
 
 			if (trace->traceExecRef != nullref)
 			{
@@ -378,7 +376,7 @@ void RenderTrace(
 
 						auto ieObject = tm.GetInsExec_Stack(stackRefLink->id);
 						writer.WriteString(
-							L"      obj:" + itow(ieObject->allocatedIndex)
+							L"    obj:" + itow(ieObject->allocatedIndex)
 						);
 
 						writer.WriteString(
@@ -424,7 +422,7 @@ void RenderTrace(
 				}
 				else if (insExec->operatingStacks != nullref)
 				{
-					writer.WriteString(L"      operatingStacks: ");
+					writer.WriteString(L"    objs: ");
 					logStackRefLink(insExec->operatingStacks);
 					writer.WriteLine(L"");
 				}
@@ -435,8 +433,9 @@ void RenderTrace(
 
 		if (trace->traceExecRef != nullref)
 		{
+			writer.WriteString(L"[CONTEXT]:");
 			auto traceExec = tm.GetTraceExec(trace->traceExecRef);
-			logContext(traceExec->context, L"    ");
+			logContext(traceExec->context);
 		}
 
 		/***********************************************************************

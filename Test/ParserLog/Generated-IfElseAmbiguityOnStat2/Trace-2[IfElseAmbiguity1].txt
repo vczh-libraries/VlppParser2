@@ -1,13 +1,12 @@
-﻿+-----------------------------+
-| [0]: <Start>                |
-|   TraceExec: [0]            |
-|   ForwardTrace: 0           |
-| [26][Module] BEGIN          |
-| [AST-INSTRUCTIONS]:         |
-|     Creates: []             |
-|     Pushes: []              |
-|     [SUCCESORS 1-2]: [1][2] |
-+-----------------------------+
+﻿+------------------------------+
+| [0]: <Start>                 |
+|   TraceExec: [0]             |
+|   ForwardTrace: 0            |
+| [26][Module] BEGIN           |
+| [AST-INSTRUCTIONS]:          |
+| [CONTEXT]: {CS: []} {OS: []} |
+| [SUCCESORS 1-2]: [1][2]      |
++------------------------------+
 [0/1]
  |
  +---------------------------------------------------------------+
@@ -20,18 +19,15 @@
 ||   ForwardTrace: 1                                      ||    ||   ForwardTrace: 2                                                  ||
 || [14][IfThenStat]< "if" @ "cond" "then" Stat >          ||    || [14][IfThenStat]< "if" @ "cond" "then" Stat >                      ||
 || [AST-INSTRUCTIONS]:                                    ||    || [AST-INSTRUCTIONS]:                                                ||
-||     Creates: []                                        ||    ||     Creates: []                                                    ||
-||     Pushes: []                                         ||    ||     Pushes: []                                                     ||
-||       + StackBegin()                                   ||    ||       + StackBegin()                                               ||
-||       operatingStacks: 0                               ||    ||       operatingStacks: 11                                          ||
+||   + StackBegin()                                       ||    ||   + StackBegin()                                                   ||
+||     {CS: []} {OS: []}                                  ||    ||     {CS: []} {OS: []}                                              ||
+||     objs: 0                                            ||    ||     objs: 11                                                       ||
 ||                                                        ||    ||                                                                    ||
-||     Creates: [0] [0 -> -1]                             ||    ||     Creates: [11] [15 -> -1]                                       ||
-||     Pushes: []                                         ||    ||     Pushes: []                                                     ||
-||       + Token(0)                                       ||    ||       + Token(0)                                                   ||
+||   + Token(0)                                           ||    ||   + Token(0)                                                       ||
+||     {CS: [0] [0 -> -1]} {OS: []}                       ||    ||     {CS: [11] [15 -> -1]} {OS: []}                                 ||
 ||                                                        ||    ||                                                                    ||
-||     Creates: [0] [0 -> -1]                             ||    ||     Creates: [11] [15 -> -1]                                       ||
-||     Pushes: []                                         ||    ||     Pushes: []                                                     ||
-||     [RETURN STACK]:                                    ||    ||     [RETURN STACK]:                                                ||
+|| [CONTEXT]: {CS: [0] [0 -> -1]} {OS: []}                ||    || [CONTEXT]: {CS: [11] [15 -> -1]} {OS: []}                          ||
+|| [RETURN STACK]:                                        ||    || [RETURN STACK]:                                                    ||
 ||   [2][3][0]: IfThenStat -> [19][If]<! !IfThenStat @ !> ||    ||   [4][4][0]: IfThenStat -> [20][If]<! !IfThenStat @ "else" Stat !> ||
 ||   [1][2][0]: If -> [25][Stat]<! !If @ !>               ||    ||   [3][2][0]: If -> [25][Stat]<! !If @ !>                           ||
 ||   [0][9][0]: Stat -> [28][Module]< Stat @ >            ||    ||   [0][9][0]: Stat -> [28][Module]< Stat @ >                        ||
@@ -50,13 +46,11 @@
 ||   ForwardTrace: 1                                      ||    ||   ForwardTrace: 2                                                  ||
 || [13][IfThenStat]< "if" "cond" @ "then" Stat >          ||    || [13][IfThenStat]< "if" "cond" @ "then" Stat >                      ||
 || [AST-INSTRUCTIONS]:                                    ||    || [AST-INSTRUCTIONS]:                                                ||
-||     Creates: [0] [0 -> -1]                             ||    ||     Creates: [11] [15 -> -1]                                       ||
-||     Pushes: []                                         ||    ||     Pushes: []                                                     ||
-||       + Token(1)                                       ||    ||       + Token(1)                                                   ||
+||   + Token(1)                                           ||    ||   + Token(1)                                                       ||
+||     {CS: [0] [0 -> -1]} {OS: []}                       ||    ||     {CS: [11] [15 -> -1]} {OS: []}                                 ||
 ||                                                        ||    ||                                                                    ||
-||     Creates: [0] [0 -> -1]                             ||    ||     Creates: [11] [15 -> -1]                                       ||
-||     Pushes: []                                         ||    ||     Pushes: []                                                     ||
-||     [RETURN STACK]:                                    ||    ||     [RETURN STACK]:                                                ||
+|| [CONTEXT]: {CS: [0] [0 -> -1]} {OS: []}                ||    || [CONTEXT]: {CS: [11] [15 -> -1]} {OS: []}                          ||
+|| [RETURN STACK]:                                        ||    || [RETURN STACK]:                                                    ||
 ||   [2][3][0]: IfThenStat -> [19][If]<! !IfThenStat @ !> ||    ||   [4][4][0]: IfThenStat -> [20][If]<! !IfThenStat @ "else" Stat !> ||
 ||   [1][2][0]: If -> [25][Stat]<! !If @ !>               ||    ||   [3][2][0]: If -> [25][Stat]<! !If @ !>                           ||
 ||   [0][9][0]: Stat -> [28][Module]< Stat @ >            ||    ||   [0][9][0]: Stat -> [28][Module]< Stat @ >                        ||
@@ -75,13 +69,11 @@
 ||   ForwardTrace: 1                                      ||    ||   ForwardTrace: 2                                                  ||
 || [11][IfThenStat]< "if" "cond" "then" @ Stat >          ||    || [11][IfThenStat]< "if" "cond" "then" @ Stat >                      ||
 || [AST-INSTRUCTIONS]:                                    ||    || [AST-INSTRUCTIONS]:                                                ||
-||     Creates: [0] [0 -> -1]                             ||    ||     Creates: [11] [15 -> -1]                                       ||
-||     Pushes: []                                         ||    ||     Pushes: []                                                     ||
-||       + Token(2)                                       ||    ||       + Token(2)                                                   ||
+||   + Token(2)                                           ||    ||   + Token(2)                                                       ||
+||     {CS: [0] [0 -> -1]} {OS: []}                       ||    ||     {CS: [11] [15 -> -1]} {OS: []}                                 ||
 ||                                                        ||    ||                                                                    ||
-||     Creates: [0] [0 -> -1]                             ||    ||     Creates: [11] [15 -> -1]                                       ||
-||     Pushes: []                                         ||    ||     Pushes: []                                                     ||
-||     [RETURN STACK]:                                    ||    ||     [RETURN STACK]:                                                ||
+|| [CONTEXT]: {CS: [0] [0 -> -1]} {OS: []}                ||    || [CONTEXT]: {CS: [11] [15 -> -1]} {OS: []}                          ||
+|| [RETURN STACK]:                                        ||    || [RETURN STACK]:                                                    ||
 ||   [2][3][0]: IfThenStat -> [19][If]<! !IfThenStat @ !> ||    ||   [4][4][0]: IfThenStat -> [20][If]<! !IfThenStat @ "else" Stat !> ||
 ||   [1][2][0]: If -> [25][Stat]<! !If @ !>               ||    ||   [3][2][0]: If -> [25][Stat]<! !If @ !>                           ||
 ||   [0][9][0]: Stat -> [28][Module]< Stat @ >            ||    ||   [0][9][0]: Stat -> [28][Module]< Stat @ >                        ||
@@ -100,18 +92,15 @@
 ||   ForwardTrace: 1                                                  ||    ||   ForwardTrace: 2                                                   ||
 || [14][IfThenStat]< "if" @ "cond" "then" Stat >                      ||    || [14][IfThenStat]< "if" @ "cond" "then" Stat >                       ||
 || [AST-INSTRUCTIONS]:                                                ||    || [AST-INSTRUCTIONS]:                                                 ||
-||     Creates: [0] [0 -> -1]                                         ||    ||     Creates: [11] [15 -> -1]                                        ||
-||     Pushes: []                                                     ||    ||     Pushes: []                                                      ||
-||       + StackBegin()                                               ||    ||       + StackBegin()                                                ||
-||       operatingStacks: 1                                           ||    ||       operatingStacks: 12                                           ||
+||   + StackBegin()                                                   ||    ||   + StackBegin()                                                    ||
+||     {CS: [0] [0 -> -1]} {OS: []}                                   ||    ||     {CS: [11] [15 -> -1]} {OS: []}                                  ||
+||     objs: 1                                                        ||    ||     objs: 12                                                        ||
 ||                                                                    ||    ||                                                                     ||
-||     Creates: [1] [1 -> 0]                                          ||    ||     Creates: [12] [16 -> 15]                                        ||
-||     Pushes: []                                                     ||    ||     Pushes: []                                                      ||
-||       + Token(0)                                                   ||    ||       + Token(0)                                                    ||
+||   + Token(0)                                                       ||    ||   + Token(0)                                                        ||
+||     {CS: [1] [1 -> 0]} {OS: []}                                    ||    ||     {CS: [12] [16 -> 15]} {OS: []}                                  ||
 ||                                                                    ||    ||                                                                     ||
-||     Creates: [1] [1 -> 0]                                          ||    ||     Creates: [12] [16 -> 15]                                        ||
-||     Pushes: []                                                     ||    ||     Pushes: []                                                      ||
-||     [RETURN STACK]:                                                ||    ||     [RETURN STACK]:                                                 ||
+|| [CONTEXT]: {CS: [1] [1 -> 0]} {OS: []}                             ||    || [CONTEXT]: {CS: [12] [16 -> 15]} {OS: []}                           ||
+|| [RETURN STACK]:                                                    ||    || [RETURN STACK]:                                                     ||
 ||   [9][4][5]: IfThenStat -> [20][If]<! !IfThenStat @ "else" Stat !> ||    ||   [12][3][6]: IfThenStat -> [19][If]<! !IfThenStat @ !>             ||
 ||   [8][2][5]: If -> [25][Stat]<! !If @ !>                           ||    ||   [11][2][6]: If -> [25][Stat]<! !If @ !>                           ||
 ||   [5][7][5]: Stat -> [12][IfThenStat]< "if" "cond" "then" Stat @ > ||    ||   [10][7][6]: Stat -> [12][IfThenStat]< "if" "cond" "then" Stat @ > ||
@@ -133,13 +122,11 @@
 ||   ForwardTrace: 1                                                  ||    ||   ForwardTrace: 2                                                   ||
 || [13][IfThenStat]< "if" "cond" @ "then" Stat >                      ||    || [13][IfThenStat]< "if" "cond" @ "then" Stat >                       ||
 || [AST-INSTRUCTIONS]:                                                ||    || [AST-INSTRUCTIONS]:                                                 ||
-||     Creates: [1] [1 -> 0]                                          ||    ||     Creates: [12] [16 -> 15]                                        ||
-||     Pushes: []                                                     ||    ||     Pushes: []                                                      ||
-||       + Token(1)                                                   ||    ||       + Token(1)                                                    ||
+||   + Token(1)                                                       ||    ||   + Token(1)                                                        ||
+||     {CS: [1] [1 -> 0]} {OS: []}                                    ||    ||     {CS: [12] [16 -> 15]} {OS: []}                                  ||
 ||                                                                    ||    ||                                                                     ||
-||     Creates: [1] [1 -> 0]                                          ||    ||     Creates: [12] [16 -> 15]                                        ||
-||     Pushes: []                                                     ||    ||     Pushes: []                                                      ||
-||     [RETURN STACK]:                                                ||    ||     [RETURN STACK]:                                                 ||
+|| [CONTEXT]: {CS: [1] [1 -> 0]} {OS: []}                             ||    || [CONTEXT]: {CS: [12] [16 -> 15]} {OS: []}                           ||
+|| [RETURN STACK]:                                                    ||    || [RETURN STACK]:                                                     ||
 ||   [9][4][5]: IfThenStat -> [20][If]<! !IfThenStat @ "else" Stat !> ||    ||   [12][3][6]: IfThenStat -> [19][If]<! !IfThenStat @ !>             ||
 ||   [8][2][5]: If -> [25][Stat]<! !If @ !>                           ||    ||   [11][2][6]: If -> [25][Stat]<! !If @ !>                           ||
 ||   [5][7][5]: Stat -> [12][IfThenStat]< "if" "cond" "then" Stat @ > ||    ||   [10][7][6]: Stat -> [12][IfThenStat]< "if" "cond" "then" Stat @ > ||
@@ -161,13 +148,11 @@
 ||   ForwardTrace: 1                                                  ||    ||   ForwardTrace: 2                                                   ||
 || [11][IfThenStat]< "if" "cond" "then" @ Stat >                      ||    || [11][IfThenStat]< "if" "cond" "then" @ Stat >                       ||
 || [AST-INSTRUCTIONS]:                                                ||    || [AST-INSTRUCTIONS]:                                                 ||
-||     Creates: [1] [1 -> 0]                                          ||    ||     Creates: [12] [16 -> 15]                                        ||
-||     Pushes: []                                                     ||    ||     Pushes: []                                                      ||
-||       + Token(2)                                                   ||    ||       + Token(2)                                                    ||
+||   + Token(2)                                                       ||    ||   + Token(2)                                                        ||
+||     {CS: [1] [1 -> 0]} {OS: []}                                    ||    ||     {CS: [12] [16 -> 15]} {OS: []}                                  ||
 ||                                                                    ||    ||                                                                     ||
-||     Creates: [1] [1 -> 0]                                          ||    ||     Creates: [12] [16 -> 15]                                        ||
-||     Pushes: []                                                     ||    ||     Pushes: []                                                      ||
-||     [RETURN STACK]:                                                ||    ||     [RETURN STACK]:                                                 ||
+|| [CONTEXT]: {CS: [1] [1 -> 0]} {OS: []}                             ||    || [CONTEXT]: {CS: [12] [16 -> 15]} {OS: []}                           ||
+|| [RETURN STACK]:                                                    ||    || [RETURN STACK]:                                                     ||
 ||   [9][4][5]: IfThenStat -> [20][If]<! !IfThenStat @ "else" Stat !> ||    ||   [12][3][6]: IfThenStat -> [19][If]<! !IfThenStat @ !>             ||
 ||   [8][2][5]: If -> [25][Stat]<! !If @ !>                           ||    ||   [11][2][6]: If -> [25][Stat]<! !If @ !>                           ||
 ||   [5][7][5]: Stat -> [12][IfThenStat]< "if" "cond" "then" Stat @ > ||    ||   [10][7][6]: Stat -> [12][IfThenStat]< "if" "cond" "then" Stat @ > ||
@@ -189,18 +174,15 @@
 ||   ForwardTrace: 1                                                    ||    ||   ForwardTrace: 2                                                    ||
 || [3][Do]< "do" @ ";" >                                                ||    || [3][Do]< "do" @ ";" >                                                ||
 || [AST-INSTRUCTIONS]:                                                  ||    || [AST-INSTRUCTIONS]:                                                  ||
-||     Creates: [1] [1 -> 0]                                            ||    ||     Creates: [12] [16 -> 15]                                         ||
-||     Pushes: []                                                       ||    ||     Pushes: []                                                       ||
-||       + StackBegin()                                                 ||    ||       + StackBegin()                                                 ||
-||       operatingStacks: 2                                             ||    ||       operatingStacks: 13                                            ||
+||   + StackBegin()                                                     ||    ||   + StackBegin()                                                     ||
+||     {CS: [1] [1 -> 0]} {OS: []}                                      ||    ||     {CS: [12] [16 -> 15]} {OS: []}                                   ||
+||     objs: 2                                                          ||    ||     objs: 13                                                         ||
 ||                                                                      ||    ||                                                                      ||
-||     Creates: [2] [2 -> 1]                                            ||    ||     Creates: [13] [17 -> 16]                                         ||
-||     Pushes: []                                                       ||    ||     Pushes: []                                                       ||
-||       + Token(0)                                                     ||    ||       + Token(0)                                                     ||
+||   + Token(0)                                                         ||    ||   + Token(0)                                                         ||
+||     {CS: [2] [2 -> 1]} {OS: []}                                      ||    ||     {CS: [13] [17 -> 16]} {OS: []}                                   ||
 ||                                                                      ||    ||                                                                      ||
-||     Creates: [2] [2 -> 1]                                            ||    ||     Creates: [13] [17 -> 16]                                         ||
-||     Pushes: []                                                       ||    ||     Pushes: []                                                       ||
-||     [RETURN STACK]:                                                  ||    ||     [RETURN STACK]:                                                  ||
+|| [CONTEXT]: {CS: [2] [2 -> 1]} {OS: []}                               ||    || [CONTEXT]: {CS: [13] [17 -> 16]} {OS: []}                            ||
+|| [RETURN STACK]:                                                      ||    || [RETURN STACK]:                                                      ||
 ||   [18][5][16]: Do -> [24][Stat]<! !Do @ !>                           ||    ||   [20][5][17]: Do -> [24][Stat]<! !Do @ !>                           ||
 ||   [17][7][16]: Stat -> [12][IfThenStat]< "if" "cond" "then" Stat @ > ||    ||   [19][7][17]: Stat -> [12][IfThenStat]< "if" "cond" "then" Stat @ > ||
 ||   [9][4][5]: IfThenStat -> [20][If]<! !IfThenStat @ "else" Stat !>   ||    ||   [12][3][6]: IfThenStat -> [19][If]<! !IfThenStat @ !>              ||
@@ -224,13 +206,11 @@
 ||   ForwardTrace: 1                                                    ||    ||   ForwardTrace: 2                                                    ||
 || [2][Do]< "do" ";" @ >                                                ||    || [2][Do]< "do" ";" @ >                                                ||
 || [AST-INSTRUCTIONS]:                                                  ||    || [AST-INSTRUCTIONS]:                                                  ||
-||     Creates: [2] [2 -> 1]                                            ||    ||     Creates: [13] [17 -> 16]                                         ||
-||     Pushes: []                                                       ||    ||     Pushes: []                                                       ||
-||       + Token(1)                                                     ||    ||       + Token(1)                                                     ||
+||   + Token(1)                                                         ||    ||   + Token(1)                                                         ||
+||     {CS: [2] [2 -> 1]} {OS: []}                                      ||    ||     {CS: [13] [17 -> 16]} {OS: []}                                   ||
 ||                                                                      ||    ||                                                                      ||
-||     Creates: [2] [2 -> 1]                                            ||    ||     Creates: [13] [17 -> 16]                                         ||
-||     Pushes: []                                                       ||    ||     Pushes: []                                                       ||
-||     [RETURN STACK]:                                                  ||    ||     [RETURN STACK]:                                                  ||
+|| [CONTEXT]: {CS: [2] [2 -> 1]} {OS: []}                               ||    || [CONTEXT]: {CS: [13] [17 -> 16]} {OS: []}                            ||
+|| [RETURN STACK]:                                                      ||    || [RETURN STACK]:                                                      ||
 ||   [18][5][16]: Do -> [24][Stat]<! !Do @ !>                           ||    ||   [20][5][17]: Do -> [24][Stat]<! !Do @ !>                           ||
 ||   [17][7][16]: Stat -> [12][IfThenStat]< "if" "cond" "then" Stat @ > ||    ||   [19][7][17]: Stat -> [12][IfThenStat]< "if" "cond" "then" Stat @ > ||
 ||   [9][4][5]: IfThenStat -> [20][If]<! !IfThenStat @ "else" Stat !>   ||    ||   [12][3][6]: IfThenStat -> [19][If]<! !IfThenStat @ !>              ||
@@ -252,23 +232,19 @@
 |   ForwardTrace: 1                                                    |      |   ForwardTrace: 2                                                    |
 | [24][Stat]<! !Do @ !>                                                |      | [24][Stat]<! !Do @ !>                                                |
 | [AST-INSTRUCTIONS]:                                                  |      | [AST-INSTRUCTIONS]:                                                  |
-|     Creates: [2] [2 -> 1]                                            |      |     Creates: [13] [17 -> 16]                                         |
-|     Pushes: []                                                       |      |     Pushes: []                                                       |
-|       + CreateObject(DoStat)                                         |      |       + CreateObject(DoStat)                                         |
-|       operatingStacks: 2                                             |      |       operatingStacks: 13                                            |
+|   + CreateObject(DoStat)                                             |      |   + CreateObject(DoStat)                                             |
+|     {CS: [2] [2 -> 1]} {OS: []}                                      |      |     {CS: [13] [17 -> 16]} {OS: []}                                   |
+|     objs: 2                                                          |      |     objs: 13                                                         |
 |                                                                      |      |                                                                      |
-|     Creates: [2] [2 -> 1]                                            |      |     Creates: [13] [17 -> 16]                                         |
-|     Pushes: []                                                       |      |     Pushes: []                                                       |
-|       + StackEnd()                                                   |      |       + StackEnd()                                                   |
+|   + StackEnd()                                                       |      |   + StackEnd()                                                       |
+|     {CS: [2] [2 -> 1]} {OS: []}                                      |      |     {CS: [13] [17 -> 16]} {OS: []}                                   |
 |                                                                      |      |                                                                      |
-|     Creates: [1] [1 -> 0]                                            |      |     Creates: [12] [16 -> 15]                                         |
-|     Pushes: [2] [3 -> -1]                                            |      |     Pushes: [13] [18 -> -1]                                          |
-|       > StackBegin()                                                 |      |       > StackBegin()                                                 |
-|       operatingStacks: 3                                             |      |       operatingStacks: 14                                            |
+|   > StackBegin()                                                     |      |   > StackBegin()                                                     |
+|     {CS: [1] [1 -> 0]} {OS: [2] [3 -> -1]}                           |      |     {CS: [12] [16 -> 15]} {OS: [13] [18 -> -1]}                      |
+|     objs: 3                                                          |      |     objs: 14                                                         |
 |                                                                      |      |                                                                      |
-|     Creates: [3] [4 -> 1]                                            |      |     Creates: [14] [19 -> 16]                                         |
-|     Pushes: [2] [3 -> -1]                                            |      |     Pushes: [13] [18 -> -1]                                          |
-|     [RETURN STACK]:                                                  |      |     [RETURN STACK]:                                                  |
+| [CONTEXT]: {CS: [3] [4 -> 1]} {OS: [2] [3 -> -1]}                    |      | [CONTEXT]: {CS: [14] [19 -> 16]} {OS: [13] [18 -> -1]}               |
+| [RETURN STACK]:                                                      |      | [RETURN STACK]:                                                      |
 |   [17][7][16]: Stat -> [12][IfThenStat]< "if" "cond" "then" Stat @ > |      |   [19][7][17]: Stat -> [12][IfThenStat]< "if" "cond" "then" Stat @ > |
 |   [9][4][5]: IfThenStat -> [20][If]<! !IfThenStat @ "else" Stat !>   |      |   [12][3][6]: IfThenStat -> [19][If]<! !IfThenStat @ !>              |
 |   [8][2][5]: If -> [25][Stat]<! !If @ !>                             |      |   [11][2][6]: If -> [25][Stat]<! !If @ !>                            |
@@ -289,17 +265,14 @@
 |   ForwardTrace: 1                                                  |        |   ForwardTrace: 2                                                   |
 | [12][IfThenStat]< "if" "cond" "then" Stat @ >                      |        | [12][IfThenStat]< "if" "cond" "then" Stat @ >                       |
 | [AST-INSTRUCTIONS]:                                                |        | [AST-INSTRUCTIONS]:                                                 |
-|     Creates: [3] [4 -> 1]                                          |        |     Creates: [14] [19 -> 16]                                        |
-|     Pushes: [2] [3 -> -1]                                          |        |     Pushes: [13] [18 -> -1]                                         |
-|       + StackEnd()                                                 |        |       + StackEnd()                                                  |
+|   + StackEnd()                                                     |        |   + StackEnd()                                                      |
+|     {CS: [3] [4 -> 1]} {OS: [2] [3 -> -1]}                         |        |     {CS: [14] [19 -> 16]} {OS: [13] [18 -> -1]}                     |
 |                                                                    |        |                                                                     |
-|     Creates: [3] [4 -> 1]                                          |        |     Creates: [14] [19 -> 16]                                        |
-|     Pushes: [2] [3 -> -1]                                          |        |     Pushes: [13] [18 -> -1]                                         |
-|       > StackSlot(3)                                               |        |       > StackSlot(3)                                                |
+|   > StackSlot(3)                                                   |        |   > StackSlot(3)                                                    |
+|     {CS: [3] [4 -> 1]} {OS: [2] [3 -> -1]}                         |        |     {CS: [14] [19 -> 16]} {OS: [13] [18 -> -1]}                     |
 |                                                                    |        |                                                                     |
-|     Creates: [3] [4 -> 1]                                          |        |     Creates: [14] [19 -> 16]                                        |
-|     Pushes: [2] [3 -> -1]                                          |        |     Pushes: [13] [18 -> -1]                                         |
-|     [RETURN STACK]:                                                |        |     [RETURN STACK]:                                                 |
+| [CONTEXT]: {CS: [3] [4 -> 1]} {OS: [2] [3 -> -1]}                  |        | [CONTEXT]: {CS: [14] [19 -> 16]} {OS: [13] [18 -> -1]}              |
+| [RETURN STACK]:                                                    |        | [RETURN STACK]:                                                     |
 |   [9][4][5]: IfThenStat -> [20][If]<! !IfThenStat @ "else" Stat !> |        |   [12][3][6]: IfThenStat -> [19][If]<! !IfThenStat @ !>             |
 |   [8][2][5]: If -> [25][Stat]<! !If @ !>                           |        |   [11][2][6]: If -> [25][Stat]<! !If @ !>                           |
 |   [5][7][5]: Stat -> [12][IfThenStat]< "if" "cond" "then" Stat @ > |        |   [10][7][6]: Stat -> [12][IfThenStat]< "if" "cond" "then" Stat @ > |
@@ -319,27 +292,22 @@
 |   ForwardTrace: 1                                                  |        |   ForwardTrace: 2                                                   |
 | [20][If]<! !IfThenStat @ "else" Stat !>                            |        | [19][If]<! !IfThenStat @ !>                                         |
 | [AST-INSTRUCTIONS]:                                                |        | [AST-INSTRUCTIONS]:                                                 |
-|     Creates: [3] [4 -> 1]                                          |        |     Creates: [14] [19 -> 16]                                        |
-|     Pushes: [2] [3 -> -1]                                          |        |     Pushes: [13] [18 -> -1]                                         |
-|       + CreateObject(IfStat)                                       |        |       + CreateObject(IfStat)                                        |
-|       operatingStacks: 3                                           |        |       operatingStacks: 14                                           |
+|   + CreateObject(IfStat)                                           |        |   + CreateObject(IfStat)                                            |
+|     {CS: [3] [4 -> 1]} {OS: [2] [3 -> -1]}                         |        |     {CS: [14] [19 -> 16]} {OS: [13] [18 -> -1]}                     |
+|     objs: 3                                                        |        |     objs: 14                                                        |
 |                                                                    |        |                                                                     |
-|     Creates: [3] [4 -> 1]                                          |        |     Creates: [14] [19 -> 16]                                        |
-|     Pushes: [2] [3 -> -1]                                          |        |     Pushes: [13] [18 -> -1]                                         |
-|       + Field(IfStat::thenBranch, 3)                               |        |       + Field(IfStat::thenBranch, 3)                                |
+|   + Field(IfStat::thenBranch, 3)                                   |        |   + Field(IfStat::thenBranch, 3)                                    |
+|     {CS: [3] [4 -> 1]} {OS: [2] [3 -> -1]}                         |        |     {CS: [14] [19 -> 16]} {OS: [13] [18 -> -1]}                     |
 |                                                                    |        |                                                                     |
-|     Creates: [3] [4 -> 1]                                          |        |     Creates: [14] [19 -> 16]                                        |
-|     Pushes: [2] [3 -> -1]                                          |        |     Pushes: [13] [18 -> -1]                                         |
-|       + StackEnd()                                                 |        |       + StackEnd()                                                  |
+|   + StackEnd()                                                     |        |   + StackEnd()                                                      |
+|     {CS: [3] [4 -> 1]} {OS: [2] [3 -> -1]}                         |        |     {CS: [14] [19 -> 16]} {OS: [13] [18 -> -1]}                     |
 |                                                                    |        |                                                                     |
-|     Creates: [1] [1 -> 0]                                          |        |     Creates: [12] [16 -> 15]                                        |
-|     Pushes: [3] [5 -> 3]                                           |        |     Pushes: [14] [20 -> 18]                                         |
-|       > StackBegin()                                               |        |       > StackBegin()                                                |
-|       operatingStacks: 4                                           |        |       operatingStacks: 15                                           |
+|   > StackBegin()                                                   |        |   > StackBegin()                                                    |
+|     {CS: [1] [1 -> 0]} {OS: [3] [5 -> 3]}                          |        |     {CS: [12] [16 -> 15]} {OS: [14] [20 -> 18]}                     |
+|     objs: 4                                                        |        |     objs: 15                                                        |
 |                                                                    |        |                                                                     |
-|     Creates: [4] [6 -> 1]                                          |        |     Creates: [15] [21 -> 16]                                        |
-|     Pushes: [3] [5 -> 3]                                           |        |     Pushes: [14] [20 -> 18]                                         |
-|     [RETURN STACK]:                                                |        |     [RETURN STACK]:                                                 |
+| [CONTEXT]: {CS: [4] [6 -> 1]} {OS: [3] [5 -> 3]}                   |        | [CONTEXT]: {CS: [15] [21 -> 16]} {OS: [14] [20 -> 18]}              |
+| [RETURN STACK]:                                                    |        | [RETURN STACK]:                                                     |
 |   [8][2][5]: If -> [25][Stat]<! !If @ !>                           |        |   [11][2][6]: If -> [25][Stat]<! !If @ !>                           |
 |   [5][7][5]: Stat -> [12][IfThenStat]< "if" "cond" "then" Stat @ > |        |   [10][7][6]: Stat -> [12][IfThenStat]< "if" "cond" "then" Stat @ > |
 |   [2][3][0]: IfThenStat -> [19][If]<! !IfThenStat @ !>             |        |   [4][4][0]: IfThenStat -> [20][If]<! !IfThenStat @ "else" Stat !>  |
@@ -358,18 +326,15 @@
 |                                                                             |   ForwardTrace: 2                                                   |
 |                                                                             | [25][Stat]<! !If @ !>                                               |
 |                                                                             | [AST-INSTRUCTIONS]:                                                 |
-|                                                                             |     Creates: [15] [21 -> 16]                                        |
-|                                                                             |     Pushes: [14] [20 -> 18]                                         |
-|                                                                             |       + StackEnd()                                                  |
+|                                                                             |   + StackEnd()                                                      |
+|                                                                             |     {CS: [15] [21 -> 16]} {OS: [14] [20 -> 18]}                     |
 |                                                                             |                                                                     |
-|                                                                             |     Creates: [15] [21 -> 16]                                        |
-|                                                                             |     Pushes: [14] [20 -> 18]                                         |
-|                                                                             |       > StackBegin()                                                |
-|                                                                             |       operatingStacks: 16                                           |
+|                                                                             |   > StackBegin()                                                    |
+|                                                                             |     {CS: [15] [21 -> 16]} {OS: [14] [20 -> 18]}                     |
+|                                                                             |     objs: 16                                                        |
 |                                                                             |                                                                     |
-|                                                                             |     Creates: [16] [22 -> 21]                                        |
-|                                                                             |     Pushes: [14] [20 -> 18]                                         |
-|                                                                             |     [RETURN STACK]:                                                 |
+|                                                                             | [CONTEXT]: {CS: [16] [22 -> 21]} {OS: [14] [20 -> 18]}              |
+|                                                                             | [RETURN STACK]:                                                     |
 |                                                                             |   [10][7][6]: Stat -> [12][IfThenStat]< "if" "cond" "then" Stat @ > |
 |                                                                             |   [4][4][0]: IfThenStat -> [20][If]<! !IfThenStat @ "else" Stat !>  |
 |                                                                             |   [3][2][0]: If -> [25][Stat]<! !If @ !>                            |
@@ -387,17 +352,14 @@
 |                                                                             |   ForwardTrace: 2                                                  |
 |                                                                             | [12][IfThenStat]< "if" "cond" "then" Stat @ >                      |
 |                                                                             | [AST-INSTRUCTIONS]:                                                |
-|                                                                             |     Creates: [16] [22 -> 21]                                       |
-|                                                                             |     Pushes: [14] [20 -> 18]                                        |
-|                                                                             |       + StackEnd()                                                 |
+|                                                                             |   + StackEnd()                                                     |
+|                                                                             |     {CS: [16] [22 -> 21]} {OS: [14] [20 -> 18]}                    |
 |                                                                             |                                                                    |
-|                                                                             |     Creates: [16] [22 -> 21]                                       |
-|                                                                             |     Pushes: [14] [20 -> 18]                                        |
-|                                                                             |       > StackSlot(3)                                               |
+|                                                                             |   > StackSlot(3)                                                   |
+|                                                                             |     {CS: [16] [22 -> 21]} {OS: [14] [20 -> 18]}                    |
 |                                                                             |                                                                    |
-|                                                                             |     Creates: [16] [22 -> 21]                                       |
-|                                                                             |     Pushes: [14] [20 -> 18]                                        |
-|                                                                             |     [RETURN STACK]:                                                |
+|                                                                             | [CONTEXT]: {CS: [16] [22 -> 21]} {OS: [14] [20 -> 18]}             |
+|                                                                             | [RETURN STACK]:                                                    |
 |                                                                             |   [4][4][0]: IfThenStat -> [20][If]<! !IfThenStat @ "else" Stat !> |
 |                                                                             |   [3][2][0]: If -> [25][Stat]<! !If @ !>                           |
 |                                                                             |   [0][9][0]: Stat -> [28][Module]< Stat @ >                        |
@@ -407,63 +369,56 @@
 |                                                                             |
 |                                                                             +
 |                                                                             |
-|                                                                             +---------------------------------------------+
-|                                                                             | [43]: <Ending>                              |
-|                                                                             |   TraceExec: [35]                           |
-|                                                                             |   InsExec: [67:4]                           |
-|                                                                             |   ForwardTrace: 2                           |
-|                                                                             | [20][If]<! !IfThenStat @ "else" Stat !>     |
-|                                                                             | [AST-INSTRUCTIONS]:                         |
-|                                                                             |     Creates: [16] [22 -> 21]                |
-|                                                                             |     Pushes: [14] [20 -> 18]                 |
-|                                                                             |       + CreateObject(IfStat)                |
-|                                                                             |       operatingStacks: 16                   |
-|                                                                             |                                             |
-|                                                                             |     Creates: [16] [22 -> 21]                |
-|                                                                             |     Pushes: [14] [20 -> 18]                 |
-|                                                                             |       + Field(IfStat::thenBranch, 3)        |
-|                                                                             |                                             |
-|                                                                             |     Creates: [16] [22 -> 21]                |
-|                                                                             |     Pushes: [14] [20 -> 18]                 |
-|                                                                             |       + StackEnd()                          |
-|                                                                             |                                             |
-|                                                                             |     Creates: [15] [21 -> 16]                |
-|                                                                             |     Pushes: [16] [23 -> 20]                 |
-|                                                                             |       > StackBegin()                        |
-|                                                                             |       operatingStacks: 17                   |
-|                                                                             |                                             |
-|                                                                             |     Creates: [17] [24 -> 21]                |
-|                                                                             |     Pushes: [16] [23 -> 20]                 |
-|                                                                             |     [RETURN STACK]:                         |
-|                                                                             |   [3][2][0]: If -> [25][Stat]<! !If @ !>    |
-|                                                                             |   [0][9][0]: Stat -> [28][Module]< Stat @ > |
-|                                                                             | [PREDECESSORS 42-42]: [42]                  |
-|                                                                             | [SUCCESORS 49-49]: [49]                     |
-|                                                                             +---------------------------------------------+
+|                                                                             +--------------------------------------------------------+
+|                                                                             | [43]: <Ending>                                         |
+|                                                                             |   TraceExec: [35]                                      |
+|                                                                             |   InsExec: [67:4]                                      |
+|                                                                             |   ForwardTrace: 2                                      |
+|                                                                             | [20][If]<! !IfThenStat @ "else" Stat !>                |
+|                                                                             | [AST-INSTRUCTIONS]:                                    |
+|                                                                             |   + CreateObject(IfStat)                               |
+|                                                                             |     {CS: [16] [22 -> 21]} {OS: [14] [20 -> 18]}        |
+|                                                                             |     objs: 16                                           |
+|                                                                             |                                                        |
+|                                                                             |   + Field(IfStat::thenBranch, 3)                       |
+|                                                                             |     {CS: [16] [22 -> 21]} {OS: [14] [20 -> 18]}        |
+|                                                                             |                                                        |
+|                                                                             |   + StackEnd()                                         |
+|                                                                             |     {CS: [16] [22 -> 21]} {OS: [14] [20 -> 18]}        |
+|                                                                             |                                                        |
+|                                                                             |   > StackBegin()                                       |
+|                                                                             |     {CS: [15] [21 -> 16]} {OS: [16] [23 -> 20]}        |
+|                                                                             |     objs: 17                                           |
+|                                                                             |                                                        |
+|                                                                             | [CONTEXT]: {CS: [17] [24 -> 21]} {OS: [16] [23 -> 20]} |
+|                                                                             | [RETURN STACK]:                                        |
+|                                                                             |   [3][2][0]: If -> [25][Stat]<! !If @ !>               |
+|                                                                             |   [0][9][0]: Stat -> [28][Module]< Stat @ >            |
+|                                                                             | [PREDECESSORS 42-42]: [42]                             |
+|                                                                             | [SUCCESORS 49-49]: [49]                                |
+|                                                                             +--------------------------------------------------------+
 [0]                                                                           [1]
  |                                                                             |
  +                                                                           +-+
  |                                                                           |
 [0]                                                                         [1]
-++====================================================================++    ++=============================================++
-|| [48]: {ELSE} else                                                  ||    || [49]: {ELSE} else                           ||
-||   TraceExec: [12]                                                  ||    ||   TraceExec: [36]                           ||
-||   InsExec: [20:1]                                                  ||    ||   InsExec: [71:1]                           ||
-||   ForwardTrace: 1                                                  ||    ||   ForwardTrace: 2                           ||
-|| [17][If]<! !IfThenStat "else" @ Stat !>                            ||    || [17][If]<! !IfThenStat "else" @ Stat !>     ||
-|| [AST-INSTRUCTIONS]:                                                ||    || [AST-INSTRUCTIONS]:                         ||
-||     Creates: [4] [6 -> 1]                                          ||    ||     Creates: [17] [24 -> 21]                ||
-||     Pushes: [3] [5 -> 3]                                           ||    ||     Pushes: [16] [23 -> 20]                 ||
-||       + Token(1)                                                   ||    ||       + Token(1)                            ||
-||                                                                    ||    ||                                             ||
-||     Creates: [4] [6 -> 1]                                          ||    ||     Creates: [17] [24 -> 21]                ||
-||     Pushes: [3] [5 -> 3]                                           ||    ||     Pushes: [16] [23 -> 20]                 ||
-||     [RETURN STACK]:                                                ||    ||     [RETURN STACK]:                         ||
-||   [8][2][5]: If -> [25][Stat]<! !If @ !>                           ||    ||   [3][2][0]: If -> [25][Stat]<! !If @ !>    ||
-||   [5][7][5]: Stat -> [12][IfThenStat]< "if" "cond" "then" Stat @ > ||    ||   [0][9][0]: Stat -> [28][Module]< Stat @ > ||
-||   [2][3][0]: IfThenStat -> [19][If]<! !IfThenStat @ !>             ||    || [PREDECESSORS 43-43]: [43]                  ||
-||   [1][2][0]: If -> [25][Stat]<! !If @ !>                           ||    || [SUCCESORS 52-52]: [52]                     ||
-||   [0][9][0]: Stat -> [28][Module]< Stat @ >                        ||    ++=============================================++
+++====================================================================++    ++========================================================++
+|| [48]: {ELSE} else                                                  ||    || [49]: {ELSE} else                                      ||
+||   TraceExec: [12]                                                  ||    ||   TraceExec: [36]                                      ||
+||   InsExec: [20:1]                                                  ||    ||   InsExec: [71:1]                                      ||
+||   ForwardTrace: 1                                                  ||    ||   ForwardTrace: 2                                      ||
+|| [17][If]<! !IfThenStat "else" @ Stat !>                            ||    || [17][If]<! !IfThenStat "else" @ Stat !>                ||
+|| [AST-INSTRUCTIONS]:                                                ||    || [AST-INSTRUCTIONS]:                                    ||
+||   + Token(1)                                                       ||    ||   + Token(1)                                           ||
+||     {CS: [4] [6 -> 1]} {OS: [3] [5 -> 3]}                          ||    ||     {CS: [17] [24 -> 21]} {OS: [16] [23 -> 20]}        ||
+||                                                                    ||    ||                                                        ||
+|| [CONTEXT]: {CS: [4] [6 -> 1]} {OS: [3] [5 -> 3]}                   ||    || [CONTEXT]: {CS: [17] [24 -> 21]} {OS: [16] [23 -> 20]} ||
+|| [RETURN STACK]:                                                    ||    || [RETURN STACK]:                                        ||
+||   [8][2][5]: If -> [25][Stat]<! !If @ !>                           ||    ||   [3][2][0]: If -> [25][Stat]<! !If @ !>               ||
+||   [5][7][5]: Stat -> [12][IfThenStat]< "if" "cond" "then" Stat @ > ||    ||   [0][9][0]: Stat -> [28][Module]< Stat @ >            ||
+||   [2][3][0]: IfThenStat -> [19][If]<! !IfThenStat @ !>             ||    || [PREDECESSORS 43-43]: [43]                             ||
+||   [1][2][0]: If -> [25][Stat]<! !If @ !>                           ||    || [SUCCESORS 52-52]: [52]                                ||
+||   [0][9][0]: Stat -> [28][Module]< Stat @ >                        ||    ++========================================================++
 || [PREDECESSORS 36-36]: [36]                                         ||    |
 || [SUCCESORS 51-51]: [51]                                            ||    |
 ++====================================================================++    |
@@ -479,18 +434,15 @@
 ||   ForwardTrace: 1                                                  ||    ||   ForwardTrace: 2                                              ||
 || [3][Do]< "do" @ ";" >                                              ||    || [3][Do]< "do" @ ";" >                                          ||
 || [AST-INSTRUCTIONS]:                                                ||    || [AST-INSTRUCTIONS]:                                            ||
-||     Creates: [4] [6 -> 1]                                          ||    ||     Creates: [17] [24 -> 21]                                   ||
-||     Pushes: [3] [5 -> 3]                                           ||    ||     Pushes: [16] [23 -> 20]                                    ||
-||       + StackBegin()                                               ||    ||       + StackBegin()                                           ||
-||       operatingStacks: 5                                           ||    ||       operatingStacks: 18                                      ||
+||   + StackBegin()                                                   ||    ||   + StackBegin()                                               ||
+||     {CS: [4] [6 -> 1]} {OS: [3] [5 -> 3]}                          ||    ||     {CS: [17] [24 -> 21]} {OS: [16] [23 -> 20]}                ||
+||     objs: 5                                                        ||    ||     objs: 18                                                   ||
 ||                                                                    ||    ||                                                                ||
-||     Creates: [5] [7 -> 6]                                          ||    ||     Creates: [18] [25 -> 24]                                   ||
-||     Pushes: [3] [5 -> 3]                                           ||    ||     Pushes: [16] [23 -> 20]                                    ||
-||       + Token(0)                                                   ||    ||       + Token(0)                                               ||
+||   + Token(0)                                                       ||    ||   + Token(0)                                                   ||
+||     {CS: [5] [7 -> 6]} {OS: [3] [5 -> 3]}                          ||    ||     {CS: [18] [25 -> 24]} {OS: [16] [23 -> 20]}                ||
 ||                                                                    ||    ||                                                                ||
-||     Creates: [5] [7 -> 6]                                          ||    ||     Creates: [18] [25 -> 24]                                   ||
-||     Pushes: [3] [5 -> 3]                                           ||    ||     Pushes: [16] [23 -> 20]                                    ||
-||     [RETURN STACK]:                                                ||    ||     [RETURN STACK]:                                            ||
+|| [CONTEXT]: {CS: [5] [7 -> 6]} {OS: [3] [5 -> 3]}                   ||    || [CONTEXT]: {CS: [18] [25 -> 24]} {OS: [16] [23 -> 20]}         ||
+|| [RETURN STACK]:                                                    ||    || [RETURN STACK]:                                                ||
 ||   [24][5][48]: Do -> [24][Stat]<! !Do @ !>                         ||    ||   [26][5][49]: Do -> [24][Stat]<! !Do @ !>                     ||
 ||   [23][8][48]: Stat -> [18][If]<! !IfThenStat "else" Stat @ !>     ||    ||   [25][8][49]: Stat -> [18][If]<! !IfThenStat "else" Stat @ !> ||
 ||   [8][2][5]: If -> [25][Stat]<! !If @ !>                           ||    ||   [3][2][0]: If -> [25][Stat]<! !If @ !>                       ||
@@ -513,13 +465,11 @@
 ||   ForwardTrace: 1                                                  ||    ||   ForwardTrace: 2                                              ||
 || [2][Do]< "do" ";" @ >                                              ||    || [2][Do]< "do" ";" @ >                                          ||
 || [AST-INSTRUCTIONS]:                                                ||    || [AST-INSTRUCTIONS]:                                            ||
-||     Creates: [5] [7 -> 6]                                          ||    ||     Creates: [18] [25 -> 24]                                   ||
-||     Pushes: [3] [5 -> 3]                                           ||    ||     Pushes: [16] [23 -> 20]                                    ||
-||       + Token(1)                                                   ||    ||       + Token(1)                                               ||
+||   + Token(1)                                                       ||    ||   + Token(1)                                                   ||
+||     {CS: [5] [7 -> 6]} {OS: [3] [5 -> 3]}                          ||    ||     {CS: [18] [25 -> 24]} {OS: [16] [23 -> 20]}                ||
 ||                                                                    ||    ||                                                                ||
-||     Creates: [5] [7 -> 6]                                          ||    ||     Creates: [18] [25 -> 24]                                   ||
-||     Pushes: [3] [5 -> 3]                                           ||    ||     Pushes: [16] [23 -> 20]                                    ||
-||     [RETURN STACK]:                                                ||    ||     [RETURN STACK]:                                            ||
+|| [CONTEXT]: {CS: [5] [7 -> 6]} {OS: [3] [5 -> 3]}                   ||    || [CONTEXT]: {CS: [18] [25 -> 24]} {OS: [16] [23 -> 20]}         ||
+|| [RETURN STACK]:                                                    ||    || [RETURN STACK]:                                                ||
 ||   [24][5][48]: Do -> [24][Stat]<! !Do @ !>                         ||    ||   [26][5][49]: Do -> [24][Stat]<! !Do @ !>                     ||
 ||   [23][8][48]: Stat -> [18][If]<! !IfThenStat "else" Stat @ !>     ||    ||   [25][8][49]: Stat -> [18][If]<! !IfThenStat "else" Stat @ !> ||
 ||   [8][2][5]: If -> [25][Stat]<! !If @ !>                           ||    ||   [3][2][0]: If -> [25][Stat]<! !If @ !>                       ||
@@ -540,23 +490,19 @@
 |   ForwardTrace: 1                                                  |      |   ForwardTrace: 2                                              |
 | [24][Stat]<! !Do @ !>                                              |      | [24][Stat]<! !Do @ !>                                          |
 | [AST-INSTRUCTIONS]:                                                |      | [AST-INSTRUCTIONS]:                                            |
-|     Creates: [5] [7 -> 6]                                          |      |     Creates: [18] [25 -> 24]                                   |
-|     Pushes: [3] [5 -> 3]                                           |      |     Pushes: [16] [23 -> 20]                                    |
-|       + CreateObject(DoStat)                                       |      |       + CreateObject(DoStat)                                   |
-|       operatingStacks: 5                                           |      |       operatingStacks: 18                                      |
+|   + CreateObject(DoStat)                                           |      |   + CreateObject(DoStat)                                       |
+|     {CS: [5] [7 -> 6]} {OS: [3] [5 -> 3]}                          |      |     {CS: [18] [25 -> 24]} {OS: [16] [23 -> 20]}                |
+|     objs: 5                                                        |      |     objs: 18                                                   |
 |                                                                    |      |                                                                |
-|     Creates: [5] [7 -> 6]                                          |      |     Creates: [18] [25 -> 24]                                   |
-|     Pushes: [3] [5 -> 3]                                           |      |     Pushes: [16] [23 -> 20]                                    |
-|       + StackEnd()                                                 |      |       + StackEnd()                                             |
+|   + StackEnd()                                                     |      |   + StackEnd()                                                 |
+|     {CS: [5] [7 -> 6]} {OS: [3] [5 -> 3]}                          |      |     {CS: [18] [25 -> 24]} {OS: [16] [23 -> 20]}                |
 |                                                                    |      |                                                                |
-|     Creates: [4] [6 -> 1]                                          |      |     Creates: [17] [24 -> 21]                                   |
-|     Pushes: [5] [8 -> 5]                                           |      |     Pushes: [18] [26 -> 23]                                    |
-|       > StackBegin()                                               |      |       > StackBegin()                                           |
-|       operatingStacks: 6                                           |      |       operatingStacks: 19                                      |
+|   > StackBegin()                                                   |      |   > StackBegin()                                               |
+|     {CS: [4] [6 -> 1]} {OS: [5] [8 -> 5]}                          |      |     {CS: [17] [24 -> 21]} {OS: [18] [26 -> 23]}                |
+|     objs: 6                                                        |      |     objs: 19                                                   |
 |                                                                    |      |                                                                |
-|     Creates: [6] [9 -> 6]                                          |      |     Creates: [19] [27 -> 24]                                   |
-|     Pushes: [5] [8 -> 5]                                           |      |     Pushes: [18] [26 -> 23]                                    |
-|     [RETURN STACK]:                                                |      |     [RETURN STACK]:                                            |
+| [CONTEXT]: {CS: [6] [9 -> 6]} {OS: [5] [8 -> 5]}                   |      | [CONTEXT]: {CS: [19] [27 -> 24]} {OS: [18] [26 -> 23]}         |
+| [RETURN STACK]:                                                    |      | [RETURN STACK]:                                                |
 |   [23][8][48]: Stat -> [18][If]<! !IfThenStat "else" Stat @ !>     |      |   [25][8][49]: Stat -> [18][If]<! !IfThenStat "else" Stat @ !> |
 |   [8][2][5]: If -> [25][Stat]<! !If @ !>                           |      |   [3][2][0]: If -> [25][Stat]<! !If @ !>                       |
 |   [5][7][5]: Stat -> [12][IfThenStat]< "if" "cond" "then" Stat @ > |      |   [0][9][0]: Stat -> [28][Module]< Stat @ >                    |
@@ -569,220 +515,191 @@
 |                                                                           |
 +                                                                           +
 |                                                                           |
-+--------------------------------------------------------------------+      +---------------------------------------------+
-| [56]: <Ending>                                                     |      | [65]: <Ending>                              |
-|   TraceExec: [16]                                                  |      |   TraceExec: [40]                           |
-|   InsExec: [27:2]                                                  |      |   InsExec: [78:2]                           |
-|   ForwardTrace: 1                                                  |      |   ForwardTrace: 2                           |
-| [18][If]<! !IfThenStat "else" Stat @ !>                            |      | [18][If]<! !IfThenStat "else" Stat @ !>     |
-| [AST-INSTRUCTIONS]:                                                |      | [AST-INSTRUCTIONS]:                         |
-|     Creates: [6] [9 -> 6]                                          |      |     Creates: [19] [27 -> 24]                |
-|     Pushes: [5] [8 -> 5]                                           |      |     Pushes: [18] [26 -> 23]                 |
-|       + StackEnd()                                                 |      |       + StackEnd()                          |
-|                                                                    |      |                                             |
-|     Creates: [6] [9 -> 6]                                          |      |     Creates: [19] [27 -> 24]                |
-|     Pushes: [5] [8 -> 5]                                           |      |     Pushes: [18] [26 -> 23]                 |
-|       > StackSlot(2)                                               |      |       > StackSlot(2)                        |
-|                                                                    |      |                                             |
-|     Creates: [6] [9 -> 6]                                          |      |     Creates: [19] [27 -> 24]                |
-|     Pushes: [5] [8 -> 5]                                           |      |     Pushes: [18] [26 -> 23]                 |
-|     [RETURN STACK]:                                                |      |     [RETURN STACK]:                         |
-|   [8][2][5]: If -> [25][Stat]<! !If @ !>                           |      |   [3][2][0]: If -> [25][Stat]<! !If @ !>    |
-|   [5][7][5]: Stat -> [12][IfThenStat]< "if" "cond" "then" Stat @ > |      |   [0][9][0]: Stat -> [28][Module]< Stat @ > |
-|   [2][3][0]: IfThenStat -> [19][If]<! !IfThenStat @ !>             |      | [PREDECESSORS 64-64]: [64]                  |
-|   [1][2][0]: If -> [25][Stat]<! !If @ !>                           |      | [SUCCESORS 66-66]: [66]                     |
-|   [0][9][0]: Stat -> [28][Module]< Stat @ >                        |      +---------------------------------------------+
++--------------------------------------------------------------------+      +--------------------------------------------------------+
+| [56]: <Ending>                                                     |      | [65]: <Ending>                                         |
+|   TraceExec: [16]                                                  |      |   TraceExec: [40]                                      |
+|   InsExec: [27:2]                                                  |      |   InsExec: [78:2]                                      |
+|   ForwardTrace: 1                                                  |      |   ForwardTrace: 2                                      |
+| [18][If]<! !IfThenStat "else" Stat @ !>                            |      | [18][If]<! !IfThenStat "else" Stat @ !>                |
+| [AST-INSTRUCTIONS]:                                                |      | [AST-INSTRUCTIONS]:                                    |
+|   + StackEnd()                                                     |      |   + StackEnd()                                         |
+|     {CS: [6] [9 -> 6]} {OS: [5] [8 -> 5]}                          |      |     {CS: [19] [27 -> 24]} {OS: [18] [26 -> 23]}        |
+|                                                                    |      |                                                        |
+|   > StackSlot(2)                                                   |      |   > StackSlot(2)                                       |
+|     {CS: [6] [9 -> 6]} {OS: [5] [8 -> 5]}                          |      |     {CS: [19] [27 -> 24]} {OS: [18] [26 -> 23]}        |
+|                                                                    |      |                                                        |
+| [CONTEXT]: {CS: [6] [9 -> 6]} {OS: [5] [8 -> 5]}                   |      | [CONTEXT]: {CS: [19] [27 -> 24]} {OS: [18] [26 -> 23]} |
+| [RETURN STACK]:                                                    |      | [RETURN STACK]:                                        |
+|   [8][2][5]: If -> [25][Stat]<! !If @ !>                           |      |   [3][2][0]: If -> [25][Stat]<! !If @ !>               |
+|   [5][7][5]: Stat -> [12][IfThenStat]< "if" "cond" "then" Stat @ > |      |   [0][9][0]: Stat -> [28][Module]< Stat @ >            |
+|   [2][3][0]: IfThenStat -> [19][If]<! !IfThenStat @ !>             |      | [PREDECESSORS 64-64]: [64]                             |
+|   [1][2][0]: If -> [25][Stat]<! !If @ !>                           |      | [SUCCESORS 66-66]: [66]                                |
+|   [0][9][0]: Stat -> [28][Module]< Stat @ >                        |      +--------------------------------------------------------+
 | [PREDECESSORS 55-55]: [55]                                         |      |
 | [SUCCESORS 57-57]: [57]                                            |      |
 +--------------------------------------------------------------------+      |
 |                                                                           |
 +                                                                           +
 |                                                                           |
-+--------------------------------------------------------------------+      +---------------------------------------------+
-| [57]: <Ending>                                                     |      | [66]: <Ending>                              |
-|   TraceExec: [17]                                                  |      |   TraceExec: [41]                           |
-|   InsExec: [29:3]                                                  |      |   InsExec: [80:3]                           |
-|   ForwardTrace: 1                                                  |      |   ForwardTrace: 2                           |
-| [25][Stat]<! !If @ !>                                              |      | [25][Stat]<! !If @ !>                       |
-| [AST-INSTRUCTIONS]:                                                |      | [AST-INSTRUCTIONS]:                         |
-|     Creates: [6] [9 -> 6]                                          |      |     Creates: [19] [27 -> 24]                |
-|     Pushes: [5] [8 -> 5]                                           |      |     Pushes: [18] [26 -> 23]                 |
-|       + Field(IfStat::elseBranch, 2)                               |      |       + Field(IfStat::elseBranch, 2)        |
-|                                                                    |      |                                             |
-|     Creates: [6] [9 -> 6]                                          |      |     Creates: [19] [27 -> 24]                |
-|     Pushes: [5] [8 -> 5]                                           |      |     Pushes: [18] [26 -> 23]                 |
-|       + StackEnd()                                                 |      |       + StackEnd()                          |
-|                                                                    |      |                                             |
-|     Creates: [6] [9 -> 6]                                          |      |     Creates: [19] [27 -> 24]                |
-|     Pushes: [5] [8 -> 5]                                           |      |     Pushes: [18] [26 -> 23]                 |
-|       > StackBegin()                                               |      |       > StackBegin()                        |
-|       operatingStacks: 7                                           |      |       operatingStacks: 20                   |
-|                                                                    |      |                                             |
-|     Creates: [7] [10 -> 9]                                         |      |     Creates: [20] [28 -> 27]                |
-|     Pushes: [5] [8 -> 5]                                           |      |     Pushes: [18] [26 -> 23]                 |
-|     [RETURN STACK]:                                                |      |     [RETURN STACK]:                         |
-|   [5][7][5]: Stat -> [12][IfThenStat]< "if" "cond" "then" Stat @ > |      |   [0][9][0]: Stat -> [28][Module]< Stat @ > |
-|   [2][3][0]: IfThenStat -> [19][If]<! !IfThenStat @ !>             |      | [PREDECESSORS 65-65]: [65]                  |
-|   [1][2][0]: If -> [25][Stat]<! !If @ !>                           |      | [SUCCESORS 67-67]: [67]                     |
-|   [0][9][0]: Stat -> [28][Module]< Stat @ >                        |      +---------------------------------------------+
++--------------------------------------------------------------------+      +--------------------------------------------------------+
+| [57]: <Ending>                                                     |      | [66]: <Ending>                                         |
+|   TraceExec: [17]                                                  |      |   TraceExec: [41]                                      |
+|   InsExec: [29:3]                                                  |      |   InsExec: [80:3]                                      |
+|   ForwardTrace: 1                                                  |      |   ForwardTrace: 2                                      |
+| [25][Stat]<! !If @ !>                                              |      | [25][Stat]<! !If @ !>                                  |
+| [AST-INSTRUCTIONS]:                                                |      | [AST-INSTRUCTIONS]:                                    |
+|   + Field(IfStat::elseBranch, 2)                                   |      |   + Field(IfStat::elseBranch, 2)                       |
+|     {CS: [6] [9 -> 6]} {OS: [5] [8 -> 5]}                          |      |     {CS: [19] [27 -> 24]} {OS: [18] [26 -> 23]}        |
+|                                                                    |      |                                                        |
+|   + StackEnd()                                                     |      |   + StackEnd()                                         |
+|     {CS: [6] [9 -> 6]} {OS: [5] [8 -> 5]}                          |      |     {CS: [19] [27 -> 24]} {OS: [18] [26 -> 23]}        |
+|                                                                    |      |                                                        |
+|   > StackBegin()                                                   |      |   > StackBegin()                                       |
+|     {CS: [6] [9 -> 6]} {OS: [5] [8 -> 5]}                          |      |     {CS: [19] [27 -> 24]} {OS: [18] [26 -> 23]}        |
+|     objs: 7                                                        |      |     objs: 20                                           |
+|                                                                    |      |                                                        |
+| [CONTEXT]: {CS: [7] [10 -> 9]} {OS: [5] [8 -> 5]}                  |      | [CONTEXT]: {CS: [20] [28 -> 27]} {OS: [18] [26 -> 23]} |
+| [RETURN STACK]:                                                    |      | [RETURN STACK]:                                        |
+|   [5][7][5]: Stat -> [12][IfThenStat]< "if" "cond" "then" Stat @ > |      |   [0][9][0]: Stat -> [28][Module]< Stat @ >            |
+|   [2][3][0]: IfThenStat -> [19][If]<! !IfThenStat @ !>             |      | [PREDECESSORS 65-65]: [65]                             |
+|   [1][2][0]: If -> [25][Stat]<! !If @ !>                           |      | [SUCCESORS 67-67]: [67]                                |
+|   [0][9][0]: Stat -> [28][Module]< Stat @ >                        |      +--------------------------------------------------------+
 | [PREDECESSORS 56-56]: [56]                                         |      |
 | [SUCCESORS 58-58]: [58]                                            |      |
 +--------------------------------------------------------------------+      |
 |                                                                           |
 +                                                                           +
 |                                                                           |
-+--------------------------------------------------------+                  +--------------------------------+
-| [58]: <Ending>                                         |                  | [67]: <Ending>                 |
-|   TraceExec: [18]                                      |                  |   TraceExec: [42]              |
-|   InsExec: [32:2]                                      |                  |   InsExec: [83:3]              |
-|   ForwardTrace: 1                                      |                  |   ForwardTrace: 2              |
-| [12][IfThenStat]< "if" "cond" "then" Stat @ >          |                  | [28][Module]< Stat @ >         |
-| [AST-INSTRUCTIONS]:                                    |                  | [AST-INSTRUCTIONS]:            |
-|     Creates: [7] [10 -> 9]                             |                  |     Creates: [20] [28 -> 27]   |
-|     Pushes: [5] [8 -> 5]                               |                  |     Pushes: [18] [26 -> 23]    |
-|       + StackEnd()                                     |                  |       + StackEnd()             |
-|                                                        |                  |                                |
-|     Creates: [7] [10 -> 9]                             |                  |     Creates: [20] [28 -> 27]   |
-|     Pushes: [5] [8 -> 5]                               |                  |     Pushes: [18] [26 -> 23]    |
-|       > StackSlot(3)                                   |                  |       > StackBegin()           |
-|                                                        |                  |       operatingStacks: 21      |
-|     Creates: [7] [10 -> 9]                             |                  |                                |
-|     Pushes: [5] [8 -> 5]                               |                  |     Creates: [21] [29 -> 28]   |
-|     [RETURN STACK]:                                    |                  |     Pushes: [18] [26 -> 23]    |
-|   [2][3][0]: IfThenStat -> [19][If]<! !IfThenStat @ !> |                  |       > StackSlot(0)           |
-|   [1][2][0]: If -> [25][Stat]<! !If @ !>               |                  |                                |
-|   [0][9][0]: Stat -> [28][Module]< Stat @ >            |                  |     Creates: [21] [29 -> 28]   |
-| [PREDECESSORS 57-57]: [57]                             |                  |     Pushes: [18] [26 -> 23]    |
-| [SUCCESORS 59-59]: [59]                                |                  |     [PREDECESSORS 66-66]: [66] |
-+--------------------------------------------------------+                  | [SUCCESORS 61-61]: [61]        |
-|                                                                           +--------------------------------+
++--------------------------------------------------------+                  +--------------------------------------------------------+
+| [58]: <Ending>                                         |                  | [67]: <Ending>                                         |
+|   TraceExec: [18]                                      |                  |   TraceExec: [42]                                      |
+|   InsExec: [32:2]                                      |                  |   InsExec: [83:3]                                      |
+|   ForwardTrace: 1                                      |                  |   ForwardTrace: 2                                      |
+| [12][IfThenStat]< "if" "cond" "then" Stat @ >          |                  | [28][Module]< Stat @ >                                 |
+| [AST-INSTRUCTIONS]:                                    |                  | [AST-INSTRUCTIONS]:                                    |
+|   + StackEnd()                                         |                  |   + StackEnd()                                         |
+|     {CS: [7] [10 -> 9]} {OS: [5] [8 -> 5]}             |                  |     {CS: [20] [28 -> 27]} {OS: [18] [26 -> 23]}        |
+|                                                        |                  |                                                        |
+|   > StackSlot(3)                                       |                  |   > StackBegin()                                       |
+|     {CS: [7] [10 -> 9]} {OS: [5] [8 -> 5]}             |                  |     {CS: [20] [28 -> 27]} {OS: [18] [26 -> 23]}        |
+|                                                        |                  |     objs: 21                                           |
+| [CONTEXT]: {CS: [7] [10 -> 9]} {OS: [5] [8 -> 5]}      |                  |                                                        |
+| [RETURN STACK]:                                        |                  |   > StackSlot(0)                                       |
+|   [2][3][0]: IfThenStat -> [19][If]<! !IfThenStat @ !> |                  |     {CS: [21] [29 -> 28]} {OS: [18] [26 -> 23]}        |
+|   [1][2][0]: If -> [25][Stat]<! !If @ !>               |                  |                                                        |
+|   [0][9][0]: Stat -> [28][Module]< Stat @ >            |                  | [CONTEXT]: {CS: [21] [29 -> 28]} {OS: [18] [26 -> 23]} |
+| [PREDECESSORS 57-57]: [57]                             |                  | [PREDECESSORS 66-66]: [66]                             |
+| [SUCCESORS 59-59]: [59]                                |                  | [SUCCESORS 61-61]: [61]                                |
++--------------------------------------------------------+                  +--------------------------------------------------------+
 |                                                                           |
 +                                                                           +
 |                                                                           |
-+---------------------------------------------+                             |
-| [59]: <Ending>                              |                             |
-|   TraceExec: [19]                           |                             |
-|   InsExec: [34:4]                           |                             |
-|   ForwardTrace: 1                           |                             |
-| [19][If]<! !IfThenStat @ !>                 |                             |
-| [AST-INSTRUCTIONS]:                         |                             |
-|     Creates: [7] [10 -> 9]                  |                             |
-|     Pushes: [5] [8 -> 5]                    |                             |
-|       + CreateObject(IfStat)                |                             |
-|       operatingStacks: 7                    |                             |
-|                                             |                             |
-|     Creates: [7] [10 -> 9]                  |                             |
-|     Pushes: [5] [8 -> 5]                    |                             |
-|       + Field(IfStat::thenBranch, 3)        |                             |
-|                                             |                             |
-|     Creates: [7] [10 -> 9]                  |                             |
-|     Pushes: [5] [8 -> 5]                    |                             |
-|       + StackEnd()                          |                             |
-|                                             |                             |
-|     Creates: [6] [9 -> 6]                   |                             |
-|     Pushes: [7] [11 -> 8]                   |                             |
-|       > StackBegin()                        |                             |
-|       operatingStacks: 8                    |                             |
-|                                             |                             |
-|     Creates: [8] [12 -> 9]                  |                             |
-|     Pushes: [7] [11 -> 8]                   |                             |
-|     [RETURN STACK]:                         |                             |
-|   [1][2][0]: If -> [25][Stat]<! !If @ !>    |                             |
-|   [0][9][0]: Stat -> [28][Module]< Stat @ > |                             |
-| [PREDECESSORS 58-58]: [58]                  |                             |
-| [SUCCESORS 60-60]: [60]                     |                             |
-+---------------------------------------------+                             |
++----------------------------------------------------+                      |
+| [59]: <Ending>                                     |                      |
+|   TraceExec: [19]                                  |                      |
+|   InsExec: [34:4]                                  |                      |
+|   ForwardTrace: 1                                  |                      |
+| [19][If]<! !IfThenStat @ !>                        |                      |
+| [AST-INSTRUCTIONS]:                                |                      |
+|   + CreateObject(IfStat)                           |                      |
+|     {CS: [7] [10 -> 9]} {OS: [5] [8 -> 5]}         |                      |
+|     objs: 7                                        |                      |
+|                                                    |                      |
+|   + Field(IfStat::thenBranch, 3)                   |                      |
+|     {CS: [7] [10 -> 9]} {OS: [5] [8 -> 5]}         |                      |
+|                                                    |                      |
+|   + StackEnd()                                     |                      |
+|     {CS: [7] [10 -> 9]} {OS: [5] [8 -> 5]}         |                      |
+|                                                    |                      |
+|   > StackBegin()                                   |                      |
+|     {CS: [6] [9 -> 6]} {OS: [7] [11 -> 8]}         |                      |
+|     objs: 8                                        |                      |
+|                                                    |                      |
+| [CONTEXT]: {CS: [8] [12 -> 9]} {OS: [7] [11 -> 8]} |                      |
+| [RETURN STACK]:                                    |                      |
+|   [1][2][0]: If -> [25][Stat]<! !If @ !>           |                      |
+|   [0][9][0]: Stat -> [28][Module]< Stat @ >        |                      |
+| [PREDECESSORS 58-58]: [58]                         |                      |
+| [SUCCESORS 60-60]: [60]                            |                      |
++----------------------------------------------------+                      |
 |                                                                           |
 +                                                                           |
 |                                                                           |
-+---------------------------------------------+                             |
-| [60]: <Ending>                              |                             |
-|   TraceExec: [20]                           |                             |
-|   InsExec: [38:2]                           |                             |
-|   ForwardTrace: 1                           |                             |
-| [25][Stat]<! !If @ !>                       |                             |
-| [AST-INSTRUCTIONS]:                         |                             |
-|     Creates: [8] [12 -> 9]                  |                             |
-|     Pushes: [7] [11 -> 8]                   |                             |
-|       + StackEnd()                          |                             |
-|                                             |                             |
-|     Creates: [8] [12 -> 9]                  |                             |
-|     Pushes: [7] [11 -> 8]                   |                             |
-|       > StackBegin()                        |                             |
-|       operatingStacks: 9                    |                             |
-|                                             |                             |
-|     Creates: [9] [13 -> 12]                 |                             |
-|     Pushes: [7] [11 -> 8]                   |                             |
-|     [RETURN STACK]:                         |                             |
-|   [0][9][0]: Stat -> [28][Module]< Stat @ > |                             |
-| [PREDECESSORS 59-59]: [59]                  |                             |
-| [SUCCESORS 68-68]: [68]                     |                             |
-+---------------------------------------------+                             |
++-----------------------------------------------------+                     |
+| [60]: <Ending>                                      |                     |
+|   TraceExec: [20]                                   |                     |
+|   InsExec: [38:2]                                   |                     |
+|   ForwardTrace: 1                                   |                     |
+| [25][Stat]<! !If @ !>                               |                     |
+| [AST-INSTRUCTIONS]:                                 |                     |
+|   + StackEnd()                                      |                     |
+|     {CS: [8] [12 -> 9]} {OS: [7] [11 -> 8]}         |                     |
+|                                                     |                     |
+|   > StackBegin()                                    |                     |
+|     {CS: [8] [12 -> 9]} {OS: [7] [11 -> 8]}         |                     |
+|     objs: 9                                         |                     |
+|                                                     |                     |
+| [CONTEXT]: {CS: [9] [13 -> 12]} {OS: [7] [11 -> 8]} |                     |
+| [RETURN STACK]:                                     |                     |
+|   [0][9][0]: Stat -> [28][Module]< Stat @ >         |                     |
+| [PREDECESSORS 59-59]: [59]                          |                     |
+| [SUCCESORS 68-68]: [68]                             |                     |
++-----------------------------------------------------+                     |
 |                                                                           |
 +                                                                           |
 |                                                                           |
-+--------------------------------+                                          |
-| [68]: <Ending>                 |                                          |
-|   TraceExec: [21]              |                                          |
-|   InsExec: [40:3]              |                                          |
-|   ForwardTrace: 1              |                                          |
-| [28][Module]< Stat @ >         |                                          |
-| [AST-INSTRUCTIONS]:            |                                          |
-|     Creates: [9] [13 -> 12]    |                                          |
-|     Pushes: [7] [11 -> 8]      |                                          |
-|       + StackEnd()             |                                          |
-|                                |                                          |
-|     Creates: [9] [13 -> 12]    |                                          |
-|     Pushes: [7] [11 -> 8]      |                                          |
-|       > StackBegin()           |                                          |
-|       operatingStacks: 10      |                                          |
-|                                |                                          |
-|     Creates: [10] [14 -> 13]   |                                          |
-|     Pushes: [7] [11 -> 8]      |                                          |
-|       > StackSlot(0)           |                                          |
-|                                |                                          |
-|     Creates: [10] [14 -> 13]   |                                          |
-|     Pushes: [7] [11 -> 8]      |                                          |
-|     [PREDECESSORS 60-60]: [60] |                                          |
-| [SUCCESORS 61-61]: [61]        |                                          |
-+--------------------------------+                                          |
++------------------------------------------------------+                    |
+| [68]: <Ending>                                       |                    |
+|   TraceExec: [21]                                    |                    |
+|   InsExec: [40:3]                                    |                    |
+|   ForwardTrace: 1                                    |                    |
+| [28][Module]< Stat @ >                               |                    |
+| [AST-INSTRUCTIONS]:                                  |                    |
+|   + StackEnd()                                       |                    |
+|     {CS: [9] [13 -> 12]} {OS: [7] [11 -> 8]}         |                    |
+|                                                      |                    |
+|   > StackBegin()                                     |                    |
+|     {CS: [9] [13 -> 12]} {OS: [7] [11 -> 8]}         |                    |
+|     objs: 10                                         |                    |
+|                                                      |                    |
+|   > StackSlot(0)                                     |                    |
+|     {CS: [10] [14 -> 13]} {OS: [7] [11 -> 8]}        |                    |
+|                                                      |                    |
+| [CONTEXT]: {CS: [10] [14 -> 13]} {OS: [7] [11 -> 8]} |                    |
+| [PREDECESSORS 60-60]: [60]                           |                    |
+| [SUCCESORS 61-61]: [61]                              |                    |
++------------------------------------------------------+                    |
 |                                                                           |
 +---------------------------------------------------------------------------+
 |
-+--------------------------------+
-| [61]: <Merging>                |
-| <Start>                        |
-|   TraceExec: [43]              |
-|   ForwardTrace: 61             |
-|   CommonForwardTrace: 0        |
-| [CONTEXT]                      |
-|   Creates: [21, 10] [34 -> 35] |
-|   Pushes: [18, 7] [30 -> 31]   |
-+--------------------------------+
++---------------------------------------------------------------+
+| [61]: <Merging>                                               |
+| <Start>                                                       |
+|   TraceExec: [43]                                             |
+|   ForwardTrace: 61                                            |
+|   CommonForwardTrace: 0                                       |
+| [CONTEXT]: {CS: [21, 10] [34 -> 35]} {OS: [18, 7] [30 -> 31]} |
++---------------------------------------------------------------+
 |
 +
 |
-+----------------------------------+
-| [62]: <Ending>                   |
-|   TraceExec: [44]                |
-|   InsExec: [86:3]                |
-|   ForwardTrace: 61               |
-| [27][Module] END [ENDING]        |
-| [AST-INSTRUCTIONS]:              |
-|     Creates: [21, 10] [34 -> 35] |
-|     Pushes: [18, 7] [30 -> 31]   |
-|       + CreateObject(Module)     |
-|       operatingStacks: 10, 21    |
-|                                  |
-|     Creates: [21, 10] [34 -> 35] |
-|     Pushes: [18, 7] [30 -> 31]   |
-|       + Field(Module::stat, 0)   |
-|                                  |
-|     Creates: [21, 10] [34 -> 35] |
-|     Pushes: [18, 7] [30 -> 31]   |
-|       + StackEnd()               |
-|                                  |
-|     Creates: [20, 9] [35 -> 36]  |
-|     Pushes: [21, 10] [41 -> 30]  |
-|     [PREDECESSORS 61-61]: [61]   |
-+----------------------------------+
++---------------------------------------------------------------+
+| [62]: <Ending>                                                |
+|   TraceExec: [44]                                             |
+|   InsExec: [86:3]                                             |
+|   ForwardTrace: 61                                            |
+| [27][Module] END [ENDING]                                     |
+| [AST-INSTRUCTIONS]:                                           |
+|   + CreateObject(Module)                                      |
+|     {CS: [21, 10] [34 -> 35]} {OS: [18, 7] [30 -> 31]}        |
+|     objs: 10, 21                                              |
+|                                                               |
+|   + Field(Module::stat, 0)                                    |
+|     {CS: [21, 10] [34 -> 35]} {OS: [18, 7] [30 -> 31]}        |
+|                                                               |
+|   + StackEnd()                                                |
+|     {CS: [21, 10] [34 -> 35]} {OS: [18, 7] [30 -> 31]}        |
+|                                                               |
+| [CONTEXT]: {CS: [20, 9] [35 -> 36]} {OS: [21, 10] [41 -> 30]} |
+| [PREDECESSORS 61-61]: [61]                                    |
++---------------------------------------------------------------+
