@@ -296,6 +296,9 @@ TraceManager (Data Structures -- PrepareTraceRoute)
 
 				// The earliest StackBegin instructions including in useFromStacks and fieldStacks
 				InsRef								earliestInsRef;
+
+				// All CreateObject instructions including in useFromStacks
+				Ref<InsExec_InsRefLink>				indirectCreateObjectInsRefs;
 			};
 
 			struct InsExec_Stack : Allocatable<InsExec_Stack>, WithMagicCounter

@@ -570,26 +570,11 @@ BuildAmbiguousStepLink
 					{
 						auto currentStackLink = GetInsExec_StackRefLink(currentStackLinkRef);
 						currentStackLinkRef = currentStackLink->previous;
-
 						auto ieObject = GetInsExec_Stack(currentStackLink->id);
 
-						// find the first StackBegin instruction
-						auto ieInsRefLocal = ieObject->summarizing.earliestLocalInsRef;
-						auto ieLocalTrace = GetTrace(ieInsRefLocal.trace);
-						auto ieLocalTraceExec = GetTraceExec(ieLocalTrace->traceExecRef);
-						auto ieLocal = GetInsExec(ieLocalTraceExec->insExecRefs.start + ieInsRefLocal.ins);
-
-						// find the stack of that StackBegin instruction
-						auto&& ieInsRef = ReadInstruction(ieInsRefLocal.ins, ieLocalTraceExec->insLists);
-						CHECK_ERROR(ieInsRef.type == AstInsType::StackBegin, ERROR_MESSAGE_PREFIX L"earliestLocalInsRef should be StackBegin.");
-						CHECK_ERROR(ieLocal->operatingStacks != nullref, ERROR_MESSAGE_PREFIX L"StackBegin should produce exactly one operatingStacks.");
-						auto ieOSRefLink = GetInsExec_StackRefLink(ieLocal->operatingStacks);
-						CHECK_ERROR(ieOSRefLink->previous == nullref, ERROR_MESSAGE_PREFIX L"StackBegin should produce exactly one operatingStacks.");
-						auto ieLocalObject = GetInsExec_Stack(ieOSRefLink->id);
-
 						// find all CreateObject instructions in that stack
-						CHECK_ERROR(ieLocalObject->createObjectInsRefs != nullref, ERROR_MESSAGE_PREFIX L"Stack from earliestLocalInsRef should have CreateObject executed.");
-						auto coInsRefLink = ieLocalObject->createObjectInsRefs;
+						CHECK_ERROR(ieObject->summarizing.indirectCreateObjectInsRefs != nullref, ERROR_MESSAGE_PREFIX L"indirectCreateObjectInsRefs should not be null.");
+						auto coInsRefLink = ieObject->summarizing.indirectCreateObjectInsRefs;
 						while (coInsRefLink != nullref)
 						{
 							auto coInsRef = GetInsExec_InsRefLink(coInsRefLink);
@@ -598,7 +583,7 @@ BuildAmbiguousStepLink
 							auto coTrace = GetTrace(coInsRef->insRef.trace);
 							auto coTraceExec = GetTraceExec(coTrace->traceExecRef);
 							auto&& coIns = ReadInstruction(coInsRef->insRef.ins, coTraceExec->insLists);
-							CHECK_ERROR(coIns.type == AstInsType::CreateObject && coIns.param != -1, ERROR_MESSAGE_PREFIX L"createObjectInsRefs points to an unexpected instruction.");
+							CHECK_ERROR(coIns.type == AstInsType::CreateObject && coIns.param != -1, ERROR_MESSAGE_PREFIX L"indirectCreateObjectInsRefs points to an unexpected instruction.");
 
 							if (stepRA->et_ra.type == -1)
 							{

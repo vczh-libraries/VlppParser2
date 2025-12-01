@@ -66,6 +66,7 @@ SummarizeEarilestLocalInsRefs
 			{
 				IterateStackWithDependency(&InsExec_Stack::useFromStacks, [this](InsExec_Stack* stack)
 				{
+					SortedList<InsRef> insRefs;
 					auto currentStackRefLink = stack->useFromStacks;
 					while (currentStackRefLink != nullref)
 					{
@@ -74,8 +75,15 @@ SummarizeEarilestLocalInsRefs
 
 						auto useFromStack = GetInsExec_Stack(stackRefLink->id);
 						UpdateTopTrace(stack->summarizing.earliestLocalInsRef, useFromStack->summarizing.earliestLocalInsRef);
+						CollectInsRefs(insRefs, useFromStack->summarizing.indirectCreateObjectInsRefs);
 					}
 					UpdateTopTrace(stack->summarizing.earliestLocalInsRef, stack->beginInsRef);
+					CollectInsRefs(insRefs, stack->createObjectInsRefs);
+
+					for (auto insRef : insRefs)
+					{
+						PushInsRefLink(stack->summarizing.indirectCreateObjectInsRefs, insRef);
+					}
 				});
 			}
 
