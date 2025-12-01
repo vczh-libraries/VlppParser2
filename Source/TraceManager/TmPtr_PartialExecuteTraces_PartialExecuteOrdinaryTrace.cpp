@@ -198,13 +198,6 @@ PartialExecuteOrdinaryTrace
 							});
 							CHECK_ERROR(endWithCreate ^ endWithReuse, ERROR_MESSAGE_PREFIX L"[StackEnd] Connected CreateObject and StackEnd should always be in the same trace.");
 
-							if (endWithCreate)
-							{
-								auto topStacks = GetInsExec_StackArrayRefLink(context.createStack);
-								context.createStack = topStacks->previous;
-								PushStackArrayRefLink(context.objectStack, topStacks->ids);
-							}
-
 							if (endWithReuse)
 							{
 								CHECK_ERROR(context.objectStack != nullref, ERROR_MESSAGE_PREFIX L"[StackEnd] context.objectStack is empty.");
@@ -214,6 +207,10 @@ PartialExecuteOrdinaryTrace
 									topStack->useFromStacks = JoinStackRefLink(topStack->useFromStacks, topObjects->ids);
 								});
 							}
+
+							auto topStacks = GetInsExec_StackArrayRefLink(context.createStack);
+							context.createStack = topStacks->previous;
+							PushStackArrayRefLink(context.objectStack, topStacks->ids);
 						}
 						break;
 					case AstInsType::StackSlot:
