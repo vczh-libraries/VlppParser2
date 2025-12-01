@@ -16,8 +16,8 @@
 #include "../../Source/IfElseSwitch/Generated/IfElseSwitchModuleParser.h"
 #include "../../Source/GenericAmbiguity/Generated/GenericAmbiguityExprAst_Json.h"
 #include "../../Source/GenericAmbiguity/Generated/GenericAmbiguityModuleParser.h"
-#include "../../Source/FeatureTest/Generated/FeatureTestFeatureAst_Json.h"
-#include "../../Source/FeatureTest/Generated/FeatureTestModuleParser.h"
+#include "../../Source/Feature_BO/Generated/Feature_BOFeatureAst_Json.h"
+#include "../../Source/Feature_BO/Generated/Feature_BOModuleParser.h"
 #include "../../Source/BinaryOp/Generated/BinaryOpExprAst_Json.h"
 #include "../../Source/BinaryOp/Generated/BinaryOpModuleParser.h"
 //#include "../../Source/PrefixMerge5_Pm/Generated/PrefixMerge5_PmTypeOrExpr_Json.h"
@@ -406,14 +406,20 @@ TEST_FILE
 		&genericambiguity::ModuleParserRuleName,
 		&genericambiguity::ModuleParserStateLabel
 		);
-	//TestParser<featuretest::ModuleParser, featuretest::json_visitor::FeatureAstVisitor>(
-	//	L"FeatureTest",
-	//	&featuretest::FeatureTestTypeName,
-	//	&featuretest::FeatureTestFieldName,
-	//	&featuretest::FeatureTestTokenId,
-	//	&featuretest::ModuleParserRuleName,
-	//	&featuretest::ModuleParserStateLabel
-	//	);
+
+#define ENABLE_FEATURE(UPPERCASE, LOWERCASE)																\
+	TestParser<feature_##LOWERCASE::ModuleParser, feature_##LOWERCASE::json_visitor::FeatureAstVisitor>(	\
+		L"Feature_" #UPPERCASE,																				\
+		&feature_##LOWERCASE::Feature_##UPPERCASE##TypeName,												\
+		&feature_##LOWERCASE::Feature_##UPPERCASE##FieldName,												\
+		&feature_##LOWERCASE::Feature_##UPPERCASE##TokenId,													\
+		&feature_##LOWERCASE::ModuleParserRuleName,															\
+		&feature_##LOWERCASE::ModuleParserStateLabel														\
+		)																									\
+
+	ENABLE_FEATURE(BO, bo);
+
+#undef ENABLE_FEATURE
 	TestParser<binaryop::ModuleParser, binaryop::json_visitor::ExprAstVisitor>(
 		L"BinaryOp",
 		&binaryop::BinaryOpTypeName,
