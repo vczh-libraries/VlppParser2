@@ -18,6 +18,30 @@
 #include "../../Source/GenericAmbiguity/Generated/GenericAmbiguityModuleParser.h"
 #include "../../Source/Feature_BO/Generated/Feature_BOFeatureAst_Json.h"
 #include "../../Source/Feature_BO/Generated/Feature_BOModuleParser.h"
+#include "../../Source/Feature_CL/Generated/Feature_CLFeatureAst_Json.h"
+#include "../../Source/Feature_CL/Generated/Feature_CLModuleParser.h"
+#include "../../Source/Feature_ERO/Generated/Feature_EROFeatureAst_Json.h"
+#include "../../Source/Feature_ERO/Generated/Feature_EROModuleParser.h"
+#include "../../Source/Feature_FA/Generated/Feature_FAFeatureAst_Json.h"
+#include "../../Source/Feature_FA/Generated/Feature_FAModuleParser.h"
+#include "../../Source/Feature_NOMinus/Generated/Feature_NOMinusFeatureAst_Json.h"
+#include "../../Source/Feature_NOMinus/Generated/Feature_NOMinusModuleParser.h"
+#include "../../Source/Feature_NOPlus/Generated/Feature_NOPlusFeatureAst_Json.h"
+#include "../../Source/Feature_NOPlus/Generated/Feature_NOPlusModuleParser.h"
+#include "../../Source/Feature_NO/Generated/Feature_NOFeatureAst_Json.h"
+#include "../../Source/Feature_NO/Generated/Feature_NOModuleParser.h"
+#include "../../Source/Feature_OptMinus/Generated/Feature_OptMinusFeatureAst_Json.h"
+#include "../../Source/Feature_OptMinus/Generated/Feature_OptMinusModuleParser.h"
+#include "../../Source/Feature_OptPlus/Generated/Feature_OptPlusFeatureAst_Json.h"
+#include "../../Source/Feature_OptPlus/Generated/Feature_OptPlusModuleParser.h"
+#include "../../Source/Feature_Opt/Generated/Feature_OptFeatureAst_Json.h"
+#include "../../Source/Feature_Opt/Generated/Feature_OptModuleParser.h"
+#include "../../Source/Feature_Pba/Generated/Feature_PbaFeatureAst_Json.h"
+#include "../../Source/Feature_Pba/Generated/Feature_PbaModuleParser.h"
+#include "../../Source/Feature_Pwa/Generated/Feature_PwaFeatureAst_Json.h"
+#include "../../Source/Feature_Pwa/Generated/Feature_PwaModuleParser.h"
+#include "../../Source/Feature_Pwl/Generated/Feature_PwlFeatureAst_Json.h"
+#include "../../Source/Feature_Pwl/Generated/Feature_PwlModuleParser.h"
 #include "../../Source/BinaryOp/Generated/BinaryOpExprAst_Json.h"
 #include "../../Source/BinaryOp/Generated/BinaryOpModuleParser.h"
 //#include "../../Source/PrefixMerge5_Pm/Generated/PrefixMerge5_PmTypeOrExpr_Json.h"
@@ -418,6 +442,18 @@ TEST_FILE
 		)																									\
 
 	ENABLE_FEATURE(BO, bo);
+	ENABLE_FEATURE(CL, cl);
+	ENABLE_FEATURE(ERO, ero);
+	ENABLE_FEATURE(FA, fa);
+	ENABLE_FEATURE(NOMinus, nominus);
+	ENABLE_FEATURE(NOPlus, noplus);
+	ENABLE_FEATURE(NO, no);
+	ENABLE_FEATURE(OptMinus, optminus);
+	ENABLE_FEATURE(OptPlus, optplus);
+	ENABLE_FEATURE(Opt, opt);
+	ENABLE_FEATURE(Pba, pba);
+	ENABLE_FEATURE(Pwa, pwa);
+	ENABLE_FEATURE(Pwl, pwl);
 
 #undef ENABLE_FEATURE
 	TestParser<binaryop::ModuleParser, binaryop::json_visitor::ExprAstVisitor>(

@@ -52,7 +52,7 @@
 
 - [x] Non-ambiguous test cases
 - [x] Ambiguous test cases
-- [ ] Split FeatureTest
+- [x] Split FeatureTest
 - [ ] Built-in parsers:
   - [ ] Json
   - [ ] Xml
