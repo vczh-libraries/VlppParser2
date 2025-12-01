@@ -474,7 +474,9 @@ TraceManager (Data Structures -- BuildExecutionOrder)
 			{
 				Empty,
 				Instruction,
-				ResolveAmbiguity,
+				RA_Begin,
+				RA_Branch,
+				RA_End,
 			};
 
 			struct ExecutionStep : Allocatable<ExecutionStep>

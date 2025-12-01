@@ -539,7 +539,7 @@ BuildAmbiguousStepLink
 
 				// create the ResolveAmbiguity step
 				auto stepRA = GetExecutionStep(executionSteps.Allocate());
-				stepRA->type = ExecutionType::ResolveAmbiguity;
+				stepRA->type = ExecutionType::RA_End;
 				stepRA->et_ra.count = 0;
 				stepRA->et_ra.type = -1;
 				stepRA->et_ra.trace = taLast->allocatedIndex;

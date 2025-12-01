@@ -1211,10 +1211,10 @@ FilePath LogTraceManager(
 			writer.WriteLine(L"================ EXECUTION STEPS ================");
 			while (step)
 			{
+				writer.WriteString(L"[" + itow(step->allocatedIndex) + L"]: ");
 				switch (step->type)
 				{
 				case ExecutionType::Instruction:
-					writer.WriteString(L"[" + itow(step->allocatedIndex) + L"]: ");
 					writer.WriteString(itow(step->et_i.startTrace));
 					writer.WriteChar(L'@');
 					writer.WriteString(itow(step->et_i.startIns));
@@ -1223,9 +1223,15 @@ FilePath LogTraceManager(
 					writer.WriteChar(L'@');
 					writer.WriteLine(itow(step->et_i.endIns));
 					break;
-				case ExecutionType::ResolveAmbiguity:
+				case ExecutionType::RA_Begin:
+					writer.WriteLine(L"RA_Begin");
+					break;
+				case ExecutionType::RA_Branch:
+					writer.WriteLine(L"RA_Branch");
+					break;
+				case ExecutionType::RA_End:
 					writer.WriteString(L"[" + itow(step->allocatedIndex) + L"]: ");
-					writer.WriteString(L"RA(");
+					writer.WriteString(L"RA_End(");
 					writer.WriteString(itow(step->et_ra.count));
 					writer.WriteString(L", ");
 					writer.WriteString(typeName(step->et_ra.type));
