@@ -390,6 +390,20 @@ void RenderTrace(
 							);
 						}
 
+						if (ieObject->useFromStacks != nullref)
+						{
+							writer.WriteString(L", use:[");
+							logStackRefLink(ieObject->useFromStacks);
+							writer.WriteString(L"]");
+						}
+
+						if (ieObject->fieldStacks != nullref)
+						{
+							writer.WriteString(L", field:[");
+							logStackRefLink(ieObject->fieldStacks);
+							writer.WriteString(L"]");
+						}
+
 						if (ieObject->createObjectInsRefs != nullref)
 						{
 							writer.WriteString(L", create:[");
