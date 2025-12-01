@@ -125,18 +125,18 @@ CheckMergeTrace
 				{
 					return EnumerateObjects(objRefLink, false, [&](InsExec_Stack* ieObject)
 					{
-						auto createTrace = GetTrace(ieObject->earliestInsRef.trace);
+						auto createTrace = GetTrace(ieObject->summarizing.earliestInsRef.trace);
 						if (!first)
 						{
 							first = createTrace;
 							firstTraceExec = GetTraceExec(first->traceExecRef);
 							ta->firstTrace = createTrace;
-							ta->prefix = ieObject->earliestInsRef.ins;
+							ta->prefix = ieObject->summarizing.earliestInsRef.ins;
 						}
 						else if (first == createTrace)
 						{
 							// check if two instruction is the same
-							if (ta->prefix != ieObject->earliestInsRef.ins) return false;
+							if (ta->prefix != ieObject->summarizing.earliestInsRef.ins) return false;
 							foundBeginSame = true;
 						}
 						else
