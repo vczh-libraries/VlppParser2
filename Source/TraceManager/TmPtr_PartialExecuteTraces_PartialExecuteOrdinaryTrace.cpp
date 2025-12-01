@@ -20,14 +20,6 @@ PartialExecuteOrdinaryTrace
 				return ieStack;
 			}
 
-			InsExec_ObjectInstance* TraceManager::NewObjectInstance()
-			{
-				auto ieObject = GetInsExec_ObjectInstance(insExec_ObjectInstances.Allocate());
-				ieObject->previous = firstObjectInstance;
-				firstObjectInstance = ieObject;
-				return ieObject;
-			}
-
 			void TraceManager::PushInsRefLink(Ref<InsExec_InsRefLink>& link, InsRef insRef)
 			{
 				auto newLink = GetInsExec_InsRefLink(insExec_InsRefLinks.Allocate());
@@ -145,13 +137,13 @@ PartialExecuteOrdinaryTrace
 				{
 					auto&& ins = ReadInstruction(insRef, traceExec->insLists);
 					auto insExec = GetInsExec(traceExec->insExecRefs.start + insRef);
+					insExec->contextBeforeExecution = context;
 
 					switch (ins.type)
 					{
 					case AstInsType::CreateObject:
 						{
 							CHECK_ERROR(context.createStack != nullref, ERROR_MESSAGE_PREFIX L"[CreateObject] context.createStack is empty.");
-							insExec->createdObject = NewObjectInstance();
 							ForEachStack(context.createStack, [=](InsExec_Stack* topStack)
 							{
 								PushInsRefLink(topStack->createObjectInsRefs, { trace, insRef });

@@ -289,19 +289,16 @@ TraceManager (Data Structures -- PrepareTraceRoute)
 				vint								objectStackDepthForCreateStack = -1;
 			};
 
-			struct InsExec_ObjectInstance : Allocatable<InsExec_ObjectInstance>, WithMagicCounter
+			struct InsExec_StackSummarizing
 			{
-				// previous allocated object
-				Ref<InsExec_ObjectInstance>			previous;
+				// All createObjectInsRef including in useFromStacks
+				Ref<InsExec_InsRefLink>				indirectCreateObjectInsRefs;
 
-				// All stacks which directly or indirectly created this object
-				Ref<InsExec_StackRefLink>			associatedStacks;
+				// The earliest StackBegin instructions including in useFromStacks
+				InsRef								earliestLocalInsRef;
 
-				// The top StackBegin instruction for this object
-				InsRef								beginInsRef;
-
-				// The bottom StackEnd instructions for this object
-				Ref<InsExec_InsRefLink>				endInsRefs;
+				// The earliest StackBegin instructions including in useFromStacks and fieldStacks
+				InsRef								earliestInsRef;
 			};
 
 			struct InsExec_Stack : Allocatable<InsExec_Stack>, WithMagicCounter
@@ -321,11 +318,7 @@ TraceManager (Data Structures -- PrepareTraceRoute)
 				Ref<InsExec_InsRefLink>				endWithCreateInsRefs;
 				Ref<InsExec_InsRefLink>				endWithReuseInsRefs;
 
-				// All createObjectInsRef including in useFromStacks
-				Ref<InsExec_InsRefLink>				indirectCreateObjectInsRefs;
-
-				// The earliest StackBegin instructions including all fields
-				InsRef								earliestInsRef;
+				InsExec_StackSummarizing			summarizing;
 			};
 
 			struct InsExec_Context
@@ -339,8 +332,8 @@ TraceManager (Data Structures -- PrepareTraceRoute)
 				// Stack operated by StackBegin/StackEnd/CreateObject
 				Ref<InsExec_StackRefLink>			operatingStacks;
 
-				// ObjectInstance created by CreateObject
-				Ref<InsExec_ObjectInstance>			createdObject;
+				// Context before executing this instruction
+				InsExec_Context						contextBeforeExecution;
 			};
 
 /***********************************************************************
@@ -617,7 +610,6 @@ TraceManager
 				// PrepareTraceRoute
 				AllocateOnly<TraceExec>						traceExecs;
 				collections::Array<InsExec>					insExecs;
-				AllocateOnly<InsExec_ObjectInstance>		insExec_ObjectInstances;
 				AllocateOnly<InsExec_Stack>					insExec_Stacks;
 				AllocateOnly<InsExec_InsRefLink>			insExec_InsRefLinks;
 				AllocateOnly<InsExec_StackRefLink>			insExec_StackRefLinks;
@@ -632,7 +624,6 @@ TraceManager
 
 				// phase: PartialExecuteTraces - PartialExecuteOrdinaryTrace
 				InsExec_Stack*								NewStack();
-				InsExec_ObjectInstance*						NewObjectInstance();
 				void										PushInsRefLink(Ref<InsExec_InsRefLink>& link, InsRef insRef);
 				void										PushStackRefLink(Ref<InsExec_StackRefLink>& link, Ref<InsExec_Stack> id);
 				void										PushStackArrayRefLink(Ref<InsExec_StackArrayRefLink>& arrayLink, Ref<InsExec_Stack> id);
@@ -666,7 +657,6 @@ TraceManager
 				// ResolveAmbiguity
 				Ref<Trace>									firstBranchTrace;
 				Ref<Trace>									firstMergeTrace;
-				Ref<InsExec_ObjectInstance>					firstObjectInstance;
 				Ref<InsExec_Stack>							firstStack;
 				Ref<ExecutionStep>							firstStep;
 				AllocateOnly<TraceAmbiguity>				traceAmbiguities;
@@ -720,7 +710,6 @@ TraceManager
 				AttendingCompetitions*			AllocateAttendingCompetitions();
 
 				InsExec*						GetInsExec(vint32_t index);
-				InsExec_ObjectInstance*			GetInsExec_ObjectInstance(Ref<InsExec_ObjectInstance> index);
 				InsExec_Stack*					GetInsExec_Stack(Ref<InsExec_Stack> index);
 				InsExec_InsRefLink*				GetInsExec_InsRefLink(Ref<InsExec_InsRefLink> index);
 				InsExec_StackRefLink*			GetInsExec_StackRefLink(Ref<InsExec_StackRefLink> index);

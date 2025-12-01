@@ -35,7 +35,6 @@ Initialize
 
 				traceExecs.Clear();
 				insExecs.Resize(0);
-				insExec_ObjectInstances.Clear();
 				insExec_Stacks.Clear();
 				insExec_InsRefLinks.Clear();
 				insExec_StackRefLinks.Clear();
@@ -43,7 +42,6 @@ Initialize
 
 				firstBranchTrace = nullref;
 				firstMergeTrace = nullref;
-				firstObjectInstance = nullref;
 				firstStack = nullref;
 				firstStep = nullref;
 				traceAmbiguities.Clear();

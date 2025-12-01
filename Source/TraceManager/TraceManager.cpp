@@ -123,7 +123,6 @@ TraceManager
 				, competitions(blockSize)
 				, attendingCompetitions(blockSize)
 				, traceExecs(blockSize)
-				, insExec_ObjectInstances(blockSize)
 				, insExec_Stacks(blockSize)
 				, insExec_InsRefLinks(blockSize)
 				, insExec_StackRefLinks(blockSize)
@@ -177,11 +176,6 @@ TraceManager
 			InsExec* TraceManager::GetInsExec(vint32_t index)
 			{
 				return &insExecs[index];
-			}
-
-			InsExec_ObjectInstance* TraceManager::GetInsExec_ObjectInstance(Ref<InsExec_ObjectInstance> index)
-			{
-				return insExec_ObjectInstances.Get(index);
 			}
 
 			InsExec_Stack* TraceManager::GetInsExec_Stack(Ref<InsExec_Stack> index)
