@@ -193,6 +193,8 @@ PartialExecuteOrdinaryTrace
 									endWithReuse = true;
 									PushInsRefLink(topStack->endWithReuseInsRefs, { trace, insRef });
 								}
+
+								PushStackRefLink(insExec->operatingStacks, topStack);
 							});
 							CHECK_ERROR(endWithCreate ^ endWithReuse, ERROR_MESSAGE_PREFIX L"[StackEnd] Connected CreateObject and StackEnd should always be in the same trace.");
 

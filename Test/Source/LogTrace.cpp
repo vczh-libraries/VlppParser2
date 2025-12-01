@@ -373,7 +373,7 @@ void RenderTrace(
 						);
 
 						writer.WriteString(
-							L", new:" + itow(ieObject->beginInsRef.trace.handle) +
+							L", begin:" + itow(ieObject->beginInsRef.trace.handle) +
 							L"@" + itow(ieObject->beginInsRef.ins)
 						);
 
@@ -392,21 +392,21 @@ void RenderTrace(
 
 						if (ieObject->createObjectInsRefs != nullref)
 						{
-							writer.WriteString(L", CO:[");
+							writer.WriteString(L", create:[");
 							logInsRefLink(ieObject->createObjectInsRefs);
 							writer.WriteString(L"]");
 						}
 
 						if (ieObject->endWithCreateInsRefs != nullref)
 						{
-							writer.WriteString(L", endCO:[");
+							writer.WriteString(L", end:[");
 							logInsRefLink(ieObject->endWithCreateInsRefs);
 							writer.WriteString(L"]");
 						}
 
 						if (ieObject->endWithReuseInsRefs != nullref)
 						{
-							writer.WriteString(L", end:[");
+							writer.WriteString(L", end!:[");
 							logInsRefLink(ieObject->endWithReuseInsRefs);
 							writer.WriteString(L"]");
 						}
