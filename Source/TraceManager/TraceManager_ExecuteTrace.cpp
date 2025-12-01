@@ -150,6 +150,7 @@ TraceManager::ExecuteTrace
 						{
 						case ExecutionType::RA_Begin:
 							{
+								if (raToken == -1) raToken = 0;
 								AstIns ins = { AstInsType::StackBegin };
 								receiver.Execute(ins, tokens[raToken], raToken);
 							}
