@@ -680,7 +680,7 @@ TraceManager
 				// phase: BuildExecutionOrder
 #define DEFINE_EXECUTION_STEP_CONTEXT						ExecutionStep*& root, ExecutionStep*& firstLeaf, ExecutionStep*& currentStep, ExecutionStep*& currentLeaf
 				void										MarkNewLeafStep(ExecutionStep* step, ExecutionStep*& firstLeaf, ExecutionStep*& currentLeaf);
-				void										AppendStepLink(ExecutionStep* first, ExecutionStep* last, bool leapNode, DEFINE_EXECUTION_STEP_CONTEXT);
+				void										AppendStepLink(ExecutionStep* first, ExecutionStep* last, DEFINE_EXECUTION_STEP_CONTEXT);
 				void										AppendStepsBeforeAmbiguity(Trace* startTrace, vint32_t startIns, TraceAmbiguity* ta, DEFINE_EXECUTION_STEP_CONTEXT);
 				void										AppendStepsAfterAmbiguity(Trace*& startTrace, vint32_t& startIns, TraceAmbiguity* ta, DEFINE_EXECUTION_STEP_CONTEXT);
 				void										AppendStepsForAmbiguity(TraceAmbiguity* ta, bool checkCoveredMark, DEFINE_EXECUTION_STEP_CONTEXT);

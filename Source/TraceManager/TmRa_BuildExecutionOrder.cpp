@@ -30,7 +30,7 @@ MarkNewLeafStep
 AppendStepLink
 ***********************************************************************/
 
-			void TraceManager::AppendStepLink(ExecutionStep* first, ExecutionStep* last, bool leafNode, DEFINE_EXECUTION_STEP_CONTEXT)
+			void TraceManager::AppendStepLink(ExecutionStep* first, ExecutionStep* last, DEFINE_EXECUTION_STEP_CONTEXT)
 			{
 				if (!root)
 				{
@@ -39,11 +39,6 @@ AppendStepLink
 
 				first->parent = currentStep;
 				currentStep = last;
-
-				if (leafNode)
-				{
-					MarkNewLeafStep(last, firstLeaf, currentLeaf);
-				}
 			}
 
 /***********************************************************************
@@ -69,7 +64,7 @@ AppendStepsBeforeAmbiguity
 							step->et_i.startIns = startIns;
 							step->et_i.endTrace = taFirst->allocatedIndex;
 							step->et_i.endIns = taFirstExec->insLists.countAll - 1;
-							AppendStepLink(step, step, false, PASS_EXECUTION_STEP_CONTEXT);
+							AppendStepLink(step, step, PASS_EXECUTION_STEP_CONTEXT);
 						}
 						if (ta->prefix > taFirstExec->insLists.countAll)
 						{
@@ -79,7 +74,7 @@ AppendStepsBeforeAmbiguity
 							step->et_i.startIns = 0;
 							step->et_i.endTrace = prefixTrace->allocatedIndex;
 							step->et_i.endIns = ta->prefix - taFirstExec->insLists.countAll - 1;
-							AppendStepLink(step, step, false, PASS_EXECUTION_STEP_CONTEXT);
+							AppendStepLink(step, step, PASS_EXECUTION_STEP_CONTEXT);
 						}
 					}
 					else
@@ -92,7 +87,7 @@ AppendStepsBeforeAmbiguity
 							step->et_i.startIns = startIns;
 							step->et_i.endTrace = taFirst->allocatedIndex;
 							step->et_i.endIns = ta->prefix - 1;
-							AppendStepLink(step, step, false, PASS_EXECUTION_STEP_CONTEXT);
+							AppendStepLink(step, step, PASS_EXECUTION_STEP_CONTEXT);
 						}
 					}
 				}
@@ -102,7 +97,7 @@ AppendStepsBeforeAmbiguity
 					step->et_ra.trace = startTrace->allocatedIndex;
 					step->et_ra.type = -1;
 					step->et_ra.count = -1;
-					AppendStepLink(step, step, false, PASS_EXECUTION_STEP_CONTEXT);
+					AppendStepLink(step, step, PASS_EXECUTION_STEP_CONTEXT);
 				}
 			}
 
@@ -126,7 +121,7 @@ AppendStepsAfterAmbiguity
 						step->et_i.startIns = postfixTraceExec->insLists.countAll - (ta->postfix - taLastExec->insLists.countAll);
 						step->et_i.endTrace = postfixTrace->allocatedIndex;
 						step->et_i.endIns = postfixTraceExec->insLists.countAll - 1;
-						AppendStepLink(step, step, false, PASS_EXECUTION_STEP_CONTEXT);
+						AppendStepLink(step, step, PASS_EXECUTION_STEP_CONTEXT);
 					}
 
 					// set the corrent position to the beginning of taList
@@ -150,7 +145,7 @@ AppendStepsForAmbiguity
 				ExecutionStep* taStepFirst = nullptr;
 				ExecutionStep* taStepLast = nullptr;
 				BuildAmbiguousStepLink(ta, checkCoveredMark, taStepFirst, taStepLast);
-				AppendStepLink(taStepFirst, taStepLast, false, PASS_EXECUTION_STEP_CONTEXT);
+				AppendStepLink(taStepFirst, taStepLast, PASS_EXECUTION_STEP_CONTEXT);
 			}
 
 /***********************************************************************
@@ -167,7 +162,7 @@ AppendStepsBeforeBranch
 					step->et_i.startIns = startIns;
 					step->et_i.endTrace = branchTrace->allocatedIndex;
 					step->et_i.endIns = branchTraceExec->insLists.countAll - 1;
-					AppendStepLink(step, step, false, PASS_EXECUTION_STEP_CONTEXT);
+					AppendStepLink(step, step, PASS_EXECUTION_STEP_CONTEXT);
 				}
 			}
 
@@ -362,7 +357,8 @@ BuildStepTree
 					step->et_i.startIns = startIns;
 					step->et_i.endTrace = endTrace->allocatedIndex;
 					step->et_i.endIns = endIns;
-					AppendStepLink(step, step, true, PASS_EXECUTION_STEP_CONTEXT);
+					AppendStepLink(step, step, PASS_EXECUTION_STEP_CONTEXT);
+					MarkNewLeafStep(currentStep, firstLeaf, currentLeaf);
 				}
 				else
 				{
