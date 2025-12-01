@@ -152,10 +152,15 @@ void RenderTrace(
 					itow(ieCSTop->allocatedIndex) +
 					L" -> " +
 					itow(ieCSTop->previous.handle) +
-					L") : [");
-				logStackRefLink(ieCSTop->ids);
-				writer.WriteString(
-					L"]");
+					L") : ");
+
+				while (ieCSTop)
+				{
+					writer.WriteString(L"[");
+					logStackRefLink(ieCSTop->ids);
+					writer.WriteString(L"]");
+					ieCSTop = ieCSTop->previous == nullref ? nullptr : tm.GetInsExec_StackArrayRefLink(ieCSTop->previous);
+				}
 			}
 
 			if (context.objectStack != nullref)
