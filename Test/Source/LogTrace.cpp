@@ -414,10 +414,10 @@ void RenderTrace(
 							writer.WriteString(L"]");
 						}
 
-						if (ieObject->createObjectInsRefs != nullref)
+						if (ieObject->summarizing.indirectCreateObjectInsRefs != nullref)
 						{
-							writer.WriteString(L", create:[");
-							logInsRefLink(ieObject->createObjectInsRefs);
+							writer.WriteString(L", create!:[");
+							logInsRefLink(ieObject->summarizing.indirectCreateObjectInsRefs);
 							writer.WriteString(L"]");
 						}
 
