@@ -30,7 +30,7 @@ MarkNewLeafStep
 AppendStepLink
 ***********************************************************************/
 
-			void TraceManager::AppendStepLink(ExecutionStep* first, ExecutionStep* last, bool leafNode, DEFINE_EXECUTION_STEP_CONTEXT)
+			void TraceManager::AppendStepLink(ExecutionStep* first, ExecutionStep* last, DEFINE_EXECUTION_STEP_CONTEXT)
 			{
 				if (!root)
 				{
@@ -39,11 +39,6 @@ AppendStepLink
 
 				first->parent = currentStep;
 				currentStep = last;
-
-				if (leafNode)
-				{
-					MarkNewLeafStep(last, firstLeaf, currentLeaf);
-				}
 			}
 
 /***********************************************************************
@@ -69,7 +64,7 @@ AppendStepsBeforeAmbiguity
 							step->et_i.startIns = startIns;
 							step->et_i.endTrace = taFirst->allocatedIndex;
 							step->et_i.endIns = taFirstExec->insLists.countAll - 1;
-							AppendStepLink(step, step, false, PASS_EXECUTION_STEP_CONTEXT);
+							AppendStepLink(step, step, PASS_EXECUTION_STEP_CONTEXT);
 						}
 						if (ta->prefix > taFirstExec->insLists.countAll)
 						{
@@ -79,7 +74,7 @@ AppendStepsBeforeAmbiguity
 							step->et_i.startIns = 0;
 							step->et_i.endTrace = prefixTrace->allocatedIndex;
 							step->et_i.endIns = ta->prefix - taFirstExec->insLists.countAll - 1;
-							AppendStepLink(step, step, false, PASS_EXECUTION_STEP_CONTEXT);
+							AppendStepLink(step, step, PASS_EXECUTION_STEP_CONTEXT);
 						}
 					}
 					else
@@ -92,9 +87,17 @@ AppendStepsBeforeAmbiguity
 							step->et_i.startIns = startIns;
 							step->et_i.endTrace = taFirst->allocatedIndex;
 							step->et_i.endIns = ta->prefix - 1;
-							AppendStepLink(step, step, false, PASS_EXECUTION_STEP_CONTEXT);
+							AppendStepLink(step, step, PASS_EXECUTION_STEP_CONTEXT);
 						}
 					}
+				}
+				{
+					auto step = GetExecutionStep(executionSteps.Allocate());
+					step->type = ExecutionType::RA_Begin;
+					step->et_ra.trace = startTrace->allocatedIndex;
+					step->et_ra.type = -1;
+					step->et_ra.count = -1;
+					AppendStepLink(step, step, PASS_EXECUTION_STEP_CONTEXT);
 				}
 			}
 
@@ -118,7 +121,7 @@ AppendStepsAfterAmbiguity
 						step->et_i.startIns = postfixTraceExec->insLists.countAll - (ta->postfix - taLastExec->insLists.countAll);
 						step->et_i.endTrace = postfixTrace->allocatedIndex;
 						step->et_i.endIns = postfixTraceExec->insLists.countAll - 1;
-						AppendStepLink(step, step, false, PASS_EXECUTION_STEP_CONTEXT);
+						AppendStepLink(step, step, PASS_EXECUTION_STEP_CONTEXT);
 					}
 
 					// set the corrent position to the beginning of taList
@@ -142,7 +145,7 @@ AppendStepsForAmbiguity
 				ExecutionStep* taStepFirst = nullptr;
 				ExecutionStep* taStepLast = nullptr;
 				BuildAmbiguousStepLink(ta, checkCoveredMark, taStepFirst, taStepLast);
-				AppendStepLink(taStepFirst, taStepLast, false, PASS_EXECUTION_STEP_CONTEXT);
+				AppendStepLink(taStepFirst, taStepLast, PASS_EXECUTION_STEP_CONTEXT);
 			}
 
 /***********************************************************************
@@ -159,7 +162,7 @@ AppendStepsBeforeBranch
 					step->et_i.startIns = startIns;
 					step->et_i.endTrace = branchTrace->allocatedIndex;
 					step->et_i.endIns = branchTraceExec->insLists.countAll - 1;
-					AppendStepLink(step, step, false, PASS_EXECUTION_STEP_CONTEXT);
+					AppendStepLink(step, step, PASS_EXECUTION_STEP_CONTEXT);
 				}
 			}
 
@@ -167,7 +170,7 @@ AppendStepsBeforeBranch
 BuildStepTree
 ***********************************************************************/
 
-			void TraceManager::BuildStepTree(Trace* startTrace, vint32_t startIns, Trace* endTrace, vint32_t endIns, ExecutionStep*& root, ExecutionStep*& firstLeaf, ExecutionStep* currentStep, ExecutionStep*& currentLeaf)
+			void TraceManager::BuildStepTree(Trace* startTrace, vint32_t startIns, Trace* endTrace, vint32_t endIns, ExecutionStep*& root, ExecutionStep*& firstLeaf, ExecutionStep* currentStep, ExecutionStep*& currentLeaf, bool ambiguityBranch)
 			{
 				// find the next critical trace record which is or after startTrace
 				auto critical = GetTrace(GetTraceExec(startTrace->traceExecRef)->branchData.forwardTrace);
@@ -280,7 +283,7 @@ BuildStepTree
 									AppendStepsBeforeAmbiguity(branchStartTrace, branchStartIns, ta, PASS_BRANCH_STEP_CONTEXT);
 									AppendStepsForAmbiguity(ta, true, PASS_BRANCH_STEP_CONTEXT);
 									AppendStepsAfterAmbiguity(branchStartTrace, branchStartIns, ta, PASS_BRANCH_STEP_CONTEXT);
-									BuildStepTree(branchStartTrace, branchStartIns, endTrace, endIns, PASS_BRANCH_STEP_CONTEXT);
+									BuildStepTree(branchStartTrace, branchStartIns, endTrace, endIns, PASS_BRANCH_STEP_CONTEXT, ambiguityBranch);
 #undef PASS_BRANCH_STEP_CONTEXT
 								}
 
@@ -294,7 +297,7 @@ BuildStepTree
 									successorId = successor->successors.siblingNext;
 									if (GetTraceExec(successor->traceExecRef)->ambiguityCoveredInForward == nullref)
 									{
-										BuildStepTree(successor, 0, endTrace, endIns, PASS_EXECUTION_STEP_CONTEXT);
+										BuildStepTree(successor, 0, endTrace, endIns, PASS_EXECUTION_STEP_CONTEXT, true);
 									}
 								}
 								return;
@@ -313,7 +316,7 @@ BuildStepTree
 							{
 								auto successor = GetTrace(successorId);
 								successorId = successor->successors.siblingNext;
-								BuildStepTree(successor, 0, endTrace, endIns, PASS_EXECUTION_STEP_CONTEXT);
+								BuildStepTree(successor, 0, endTrace, endIns, PASS_EXECUTION_STEP_CONTEXT, true);
 							}
 							return;
 						}
@@ -354,12 +357,19 @@ BuildStepTree
 					step->et_i.startIns = startIns;
 					step->et_i.endTrace = endTrace->allocatedIndex;
 					step->et_i.endIns = endIns;
-					AppendStepLink(step, step, true, PASS_EXECUTION_STEP_CONTEXT);
+					AppendStepLink(step, step, PASS_EXECUTION_STEP_CONTEXT);
 				}
-				else
+
+				if (ambiguityBranch)
 				{
-					MarkNewLeafStep(currentStep, firstLeaf, currentLeaf);
+					auto step = GetExecutionStep(executionSteps.Allocate());
+					step->type = ExecutionType::RA_Branch;
+					step->et_ra.trace = startTrace->allocatedIndex;
+					step->et_ra.type = -1;
+					step->et_ra.count = -1;
+					AppendStepLink(step, step, PASS_EXECUTION_STEP_CONTEXT);
 				}
+				MarkNewLeafStep(currentStep, firstLeaf, currentLeaf);
 			}
 
 /***********************************************************************
@@ -509,7 +519,8 @@ BuildAmbiguousStepLink
 						BuildStepTree(
 							successor, 0,
 							taLast, taLastExec->insLists.countAll - ta->postfix - 1,
-							root, firstLeaf, first, currentLeaf
+							root, firstLeaf, first, currentLeaf,
+							true
 							);
 					}
 				}
@@ -532,14 +543,15 @@ BuildAmbiguousStepLink
 						BuildStepTree(
 							successor, ta->prefix - taFirstExec->insLists.countAll,
 							taLast, taLastExec->insLists.countAll - ta->postfix - 1,
-							root, firstLeaf, root, currentLeaf
+							root, firstLeaf, root, currentLeaf,
+							true
 							);
 					}
 				}
 
 				// create the ResolveAmbiguity step
 				auto stepRA = GetExecutionStep(executionSteps.Allocate());
-				stepRA->type = ExecutionType::ResolveAmbiguity;
+				stepRA->type = ExecutionType::RA_End;
 				stepRA->et_ra.count = 0;
 				stepRA->et_ra.type = -1;
 				stepRA->et_ra.trace = taLast->allocatedIndex;
@@ -553,39 +565,64 @@ BuildAmbiguousStepLink
 				}
 				{
 					CHECK_ERROR(typeCallback != nullptr, ERROR_MESSAGE_PREFIX L"Missing ITypeCallback to resolve the type from multiple objects.");
-					auto linkRef = ta->bottomObjectIds;
-					while (linkRef != nullref)
+					auto currentStackLinkRef = ta->bottomCreateObjectStacks;
+					while (currentStackLinkRef != nullref)
 					{
-						auto link = GetInsExec_ObjRefLink(linkRef);
-						linkRef = link->previous;
+						auto currentStackLink = GetInsExec_StackRefLink(currentStackLinkRef);
+						currentStackLinkRef = currentStackLink->previous;
 
-						auto ieObject = GetInsExec_Object(link->id);
-						auto ieTrace = GetTrace(ieObject->createInsRef.trace);
-						auto ieTraceExec = GetTraceExec(ieTrace->traceExecRef);
+						auto ieObject = GetInsExec_Stack(currentStackLink->id);
 
-						auto&& ins = ReadInstruction(ieObject->createInsRef.ins, ieTraceExec->insLists);
-						if (stepRA->et_ra.type == -1)
+						// find the first StackBegin instruction
+						auto ieInsRefLocal = ieObject->summarizing.earliestLocalInsRef;
+						auto ieLocalTrace = GetTrace(ieInsRefLocal.trace);
+						auto ieLocalTraceExec = GetTraceExec(ieLocalTrace->traceExecRef);
+						auto ieLocal = GetInsExec(ieLocalTraceExec->insExecRefs.start + ieInsRefLocal.ins);
+
+						// find the stack of that StackBegin instruction
+						auto&& ieInsRef = ReadInstruction(ieInsRefLocal.ins, ieLocalTraceExec->insLists);
+						CHECK_ERROR(ieInsRef.type == AstInsType::StackBegin, ERROR_MESSAGE_PREFIX L"earliestLocalInsRef should be StackBegin.");
+						CHECK_ERROR(ieLocal->operatingStacks != nullref, ERROR_MESSAGE_PREFIX L"StackBegin should produce exactly one operatingStacks.");
+						auto ieOSRefLink = GetInsExec_StackRefLink(ieLocal->operatingStacks);
+						CHECK_ERROR(ieOSRefLink->previous == nullref, ERROR_MESSAGE_PREFIX L"StackBegin should produce exactly one operatingStacks.");
+						auto ieLocalObject = GetInsExec_Stack(ieOSRefLink->id);
+
+						// find all CreateObject instructions in that stack
+						CHECK_ERROR(ieLocalObject->createObjectInsRefs != nullref, ERROR_MESSAGE_PREFIX L"Stack from earliestLocalInsRef should have CreateObject executed.");
+						auto coInsRefLink = ieLocalObject->createObjectInsRefs;
+						while (coInsRefLink != nullref)
 						{
-							stepRA->et_ra.type = ins.param;
-						}
-						else if (stepRA->et_ra.type != ins.param)
-						{
-							vint32_t baseClass = typeCallback->FindCommonBaseClass(stepRA->et_ra.type, ins.param);
-							if (baseClass == -1)
+							auto coInsRef = GetInsExec_InsRefLink(coInsRefLink);
+							coInsRefLink = coInsRef->previous;
+
+							auto coTrace = GetTrace(coInsRef->insRef.trace);
+							auto coTraceExec = GetTraceExec(coTrace->traceExecRef);
+							auto&& coIns = ReadInstruction(coInsRef->insRef.ins, coTraceExec->insLists);
+							CHECK_ERROR(coIns.type == AstInsType::CreateObject && coIns.param != -1, ERROR_MESSAGE_PREFIX L"createObjectInsRefs points to an unexpected instruction.");
+
+							if (stepRA->et_ra.type == -1)
 							{
-								throw UnableToResolveAmbiguityException(
-									WString::Unmanaged(L"Unable to resolve ambiguity from ") +
-									typeCallback->GetClassName(stepRA->et_ra.type) +
-									WString::Unmanaged(L" and ") +
-									typeCallback->GetClassName(ins.param) +
-									WString::Unmanaged(L"."),
-									stepRA->et_ra.type,
-									ins.param,
-									EnsureTraceWithValidStates(taFirst)->currentTokenIndex,
-									EnsureTraceWithValidStates(taLast)->currentTokenIndex
-									);
+								stepRA->et_ra.type = coIns.param;
 							}
-							stepRA->et_ra.type = baseClass;
+							else if (stepRA->et_ra.type != coIns.param)
+							{
+								vint32_t baseClass = typeCallback->FindCommonBaseClass(stepRA->et_ra.type, coIns.param);
+								if (baseClass == -1)
+								{
+									throw UnableToResolveAmbiguityException(
+										WString::Unmanaged(L"Unable to resolve ambiguity type from ") +
+										typeCallback->GetClassName(stepRA->et_ra.type) +
+										WString::Unmanaged(L" and ") +
+										typeCallback->GetClassName(coIns.param) +
+										WString::Unmanaged(L"."),
+										stepRA->et_ra.type,
+										coIns.param,
+										EnsureTraceWithValidStates(taFirst)->currentTokenIndex,
+										EnsureTraceWithValidStates(taLast)->currentTokenIndex
+									);
+								}
+								stepRA->et_ra.type = baseClass;
+							}
 						}
 					}
 				}
@@ -624,7 +661,7 @@ BuildExecutionOrder
 				ExecutionStep* root = nullptr;
 				ExecutionStep* firstLeaf = nullptr;
 				ExecutionStep* currentLeaf = nullptr;
-				BuildStepTree(startTrace, startIns, endTrace, endIns, root, firstLeaf, nullptr, currentLeaf);
+				BuildStepTree(startTrace, startIns, endTrace, endIns, root, firstLeaf, nullptr, currentLeaf, false);
 
 				// BuildAmbiguousStepLink should have merged a tree to a link
 				CHECK_ERROR(firstLeaf != nullptr, ERROR_MESSAGE_PREFIX L"Ambiguity is not fully identified.");

@@ -19,16 +19,16 @@ CheckMergeTrace
 ***********************************************************************/
 
 			template<typename TCallback>
-			bool TraceManager::EnumerateObjects(Ref<InsExec_ObjRefLink> objRefLinkStartSet, bool withCounter, TCallback&& callback)
+			bool TraceManager::EnumerateObjects(Ref<InsExec_StackRefLink> stackRefLinkStartSet, bool withCounter, TCallback&& callback)
 			{
 				// check every object in the link
 				auto magicIterating = MergeStack_MagicCounter;
-				auto linkId = objRefLinkStartSet;
+				auto linkId = stackRefLinkStartSet;
 				while (linkId != nullref)
 				{
-					auto objRefLink = GetInsExec_ObjRefLink(linkId);
-					linkId = objRefLink->previous;
-					auto ieObject = GetInsExec_Object(objRefLink->id);
+					auto stackRefLink = GetInsExec_StackRefLink(linkId);
+					linkId = stackRefLink->previous;
+					auto ieObject = GetInsExec_Stack(stackRefLink->id);
 
 					if (withCounter)
 					{
@@ -44,15 +44,24 @@ CheckMergeTrace
 			}
 
 			template<typename TCallback>
-			bool TraceManager::EnumerateBottomInstructions(InsExec_Object* ieObject, TCallback&& callback)
+			bool TraceManager::EnumerateBottomInstructions(InsExec_Stack* ieObject, TCallback&& callback)
 			{
-				auto insRefLinkId = ieObject->bottomInsRefs;
+				auto insRefLinkId = ieObject->endWithCreateInsRefs;
 				while (insRefLinkId != nullref)
 				{
 					auto insRefLink = GetInsExec_InsRefLink(insRefLinkId);
 					insRefLinkId = insRefLink->previous;
 					if (!callback(GetTrace(insRefLink->insRef.trace), insRefLink->insRef.ins)) return false;
 				}
+
+				insRefLinkId = ieObject->endWithReuseInsRefs;
+				while (insRefLinkId != nullref)
+				{
+					auto insRefLink = GetInsExec_InsRefLink(insRefLinkId);
+					insRefLinkId = insRefLink->previous;
+					if (!callback(GetTrace(insRefLink->insRef.trace), insRefLink->insRef.ins)) return false;
+				}
+
 				return true;
 			}
 
@@ -83,9 +92,8 @@ CheckMergeTrace
 			}
 
 			template<typename TCallback>
-			bool TraceManager::CheckAmbiguityResolution(TraceAmbiguity* ta, collections::List<Ref<InsExec_ObjRefLink>>& visitingIds, TCallback&& callback)
+			bool TraceManager::CheckAmbiguityResolution(TraceAmbiguity* ta, collections::List<Ref<InsExec_StackRefLink>>& visitingIds, TCallback&& callback)
 			{
-#define ERROR_MESSAGE_PREFIX L"vl::glr::automaton::TraceManager::CheckAmbiguityResolution(TraceAmbiguity&, List<vint32_t>&, TCallback&&)#"
 				// following conditions need to be satisfies if multiple objects could be the result of ambiguity
 				//
 				// StackBegin that create objects must be
@@ -112,22 +120,22 @@ CheckMergeTrace
 				bool succeeded = false;
 
 				// iterate all top objects
-				succeeded = callback([&](Ref<InsExec_ObjRefLink> objRefLink)
+				succeeded = callback([&](Ref<InsExec_StackRefLink> objRefLink)
 				{
-					return EnumerateObjects(objRefLink, false, [&](InsExec_Object* ieObject)
+					return EnumerateObjects(objRefLink, false, [&](InsExec_Stack* ieObject)
 					{
-						auto createTrace = GetTrace(ieObject->topInsRef.trace);
+						auto createTrace = GetTrace(ieObject->summarizing.earliestInsRef.trace);
 						if (!first)
 						{
 							first = createTrace;
 							firstTraceExec = GetTraceExec(first->traceExecRef);
 							ta->firstTrace = createTrace;
-							ta->prefix = ieObject->topInsRef.ins;
+							ta->prefix = ieObject->summarizing.earliestInsRef.ins;
 						}
 						else if (first == createTrace)
 						{
 							// check if two instruction is the same
-							if (ta->prefix != ieObject->topInsRef.ins) return false;
+							if (ta->prefix != ieObject->summarizing.earliestInsRef.ins) return false;
 							foundBeginSame = true;
 						}
 						else
@@ -154,11 +162,11 @@ CheckMergeTrace
 					Group<Trace*, InsRef> postfixesAtSelf, postfixesAtSuccessor;
 
 					NEW_MERGE_STACK_MAGIC_COUNTER;
-					callback([&](Ref<InsExec_ObjRefLink> objRefLink)
+					callback([&](Ref<InsExec_StackRefLink> objRefLink)
 					{
-						return EnumerateObjects(objRefLink, true, [&](InsExec_Object* ieObject)
+						return EnumerateObjects(objRefLink, true, [&](InsExec_Stack* ieObject)
 						{
-							PushObjRefLink(ta->bottomObjectIds, ieObject);
+							PushStackRefLink(ta->bottomCreateObjectStacks, ieObject);
 
 							// check if EO satisfies the condition
 							return EnumerateBottomInstructions(ieObject, [&](Trace* eoTrace, vint32_t eoIns)
@@ -324,19 +332,18 @@ CheckMergeTrace
 					}
 				}
 				return false;
-#undef ERROR_MESSAGE_PREFIX
 			}
 
-			bool TraceManager::CheckMergeTrace(TraceAmbiguity* ta, Trace* trace, TraceExec* traceExec, collections::List<Ref<InsExec_ObjRefLink>>& visitingIds)
+			bool TraceManager::CheckMergeTrace(TraceAmbiguity* ta, Trace* trace, TraceExec* traceExec, collections::List<Ref<InsExec_StackRefLink>>& visitingIds)
 			{
 				// when a merge trace is the surviving trace
 				// objects in the top object stack are the result of ambiguity
 				if (trace->successorCount == 0)
 				{
-					auto ieOSTop = GetInsExec_ObjectStack(traceExec->context.objectStack);
+					auto ieOSTop = GetInsExec_StackArrayRefLink(traceExec->context.objectStack);
 					return CheckAmbiguityResolution(ta, visitingIds, [=](auto&& callback)
 					{
-						return callback(ieOSTop->objectIds);
+						return callback(ieOSTop->ids);
 					});
 				}
 
@@ -392,10 +399,10 @@ CheckMergeTrace
 					{
 						// if StackEnd is the last instruction of predecessors
 						// then their objRefs has been written to the top object stack
-						auto ieOSTop = GetInsExec_ObjectStack(traceExec->context.objectStack);
+						auto ieOSTop = GetInsExec_StackArrayRefLink(traceExec->context.objectStack);
 						auto succeeded = CheckAmbiguityResolution(ta, visitingIds, [=](auto&& callback)
 						{
-							return callback(ieOSTop->objectIds);
+							return callback(ieOSTop->ids);
 						});
 						if (succeeded) return true;
 					}
@@ -414,7 +421,7 @@ CheckMergeTrace
 								auto predecessorTraceExec = GetTraceExec(predecessor->traceExecRef);
 								auto indexEO = predecessorTraceExec->insLists.countAll - postfix - 1;
 								auto insExecEO = GetInsExec(predecessorTraceExec->insExecRefs.start + indexEO);
-								if (!callback(insExecEO->objRefs)) return false;
+								if (!callback(insExecEO->operatingStacks)) return false;
 							}
 							return true;
 						});
@@ -422,10 +429,10 @@ CheckMergeTrace
 					}
 				}
 			CHECK_OBJECTS_IN_TOP_CREATE_STACK:
-				auto ieCSTop = GetInsExec_CreateStack(traceExec->context.createStack);
+				auto ieCSTop = GetInsExec_StackArrayRefLink(traceExec->context.createStack);
 				return CheckAmbiguityResolution(ta, visitingIds, [=](auto&& callback)
 				{
-					return callback(ieCSTop->objectIds);
+					return callback(ieCSTop->ids);
 				});
 			}
 
@@ -607,7 +614,7 @@ CheckMergeTraces
 				}
 
 				// iterating TraceMergeExec
-				List<Ref<InsExec_ObjRefLink>> visitingIds;
+				List<Ref<InsExec_StackRefLink>> visitingIds;
 				auto traceId = firstMergeTrace;
 				while (traceId != nullref)
 				{

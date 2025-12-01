@@ -38,9 +38,8 @@ AllocateOnly<T>
 				explicit Ref(vint32_t _handle) :handle(_handle) {}
 
 				__forceinline bool operator==(NullRef) const { return handle == -1; }
-
-				__forceinline std::strong_ordering operator<=>(const Ref<T>& ref) const { return handle <=> ref.handle; }
 				__forceinline bool operator==(const Ref<T>& ref) const { return handle == ref.handle; }
+				__forceinline std::strong_ordering operator<=>(const Ref<T>& ref) const = default;
 
 				__forceinline Ref& operator=(const Ref<T>& ref) { handle = ref.handle; return *this; }
 				__forceinline Ref& operator=(T* obj) { handle = obj == nullptr ? -1 : obj->allocatedIndex; return *this; }
@@ -112,7 +111,6 @@ AllocateOnly<T>
 			struct ReturnStack;
 			struct Trace;
 			struct TraceExec;
-			struct InsExec_Object;
 
 /***********************************************************************
 TraceManager (Data Structures)
@@ -256,10 +254,14 @@ Such data structure makes many-to-many relationships impossible to represent.
 TraceManager (Data Structures -- PrepareTraceRoute)
 ***********************************************************************/
 
+			struct InsExec_Stack;
+
 			struct InsRef
 			{
 				Ref<Trace>							trace;
 				vint32_t							ins = -1;
+
+				__forceinline std::strong_ordering operator<=>(const InsRef& ref) const = default;
 			};
 
 			struct InsExec_InsRefLink : Allocatable<InsExec_InsRefLink>
@@ -268,88 +270,66 @@ TraceManager (Data Structures -- PrepareTraceRoute)
 				InsRef								insRef;
 			};
 
-			struct InsExec_ObjRefLink : Allocatable<InsExec_ObjRefLink>
+			struct InsExec_StackRefLink : Allocatable<InsExec_StackRefLink>
 			{
-				Ref<InsExec_ObjRefLink>				previous;
-				Ref<InsExec_Object>					id;
+				Ref<InsExec_StackRefLink>			previous;
+				Ref<InsExec_Stack>					id;
 			};
 
-			struct InsExec_Object : Allocatable<InsExec_Object>, WithMagicCounter
+			struct InsExec_StackArrayRefLink : Allocatable<InsExec_StackArrayRefLink>, WithMagicCounter
 			{
-				static const vint32_t				TokenOrEnumItemObjectId = -2;
+				Ref<InsExec_StackArrayRefLink>		previous;
+				Ref<InsExec_StackRefLink>			ids;
 
+				// The current depth of the link. The first one is 0.
+				vint								currentDepth = -1;
+
+				// Available when the link is in InsExec_Context::createStack
+				// It records the InsExec_Context::objectStack depth when the link is created.
+				vint								objectStackDepthForCreateStack = -1;
+			};
+
+			struct InsExec_StackSummarizing
+			{
+				// The earliest StackBegin instructions including in useFromStacks
+				InsRef								earliestLocalInsRef;
+
+				// The earliest StackBegin instructions including in useFromStacks and fieldStacks
+				InsRef								earliestInsRef;
+			};
+
+			struct InsExec_Stack : Allocatable<InsExec_Stack>, WithMagicCounter
+			{
 				// previous allocated object
-				Ref<InsExec_Object>					previous;
+				Ref<InsExec_Stack>					previous;
 
-				// fieldObjectIds are object fields of this object
-				Ref<InsExec_ObjRefLink>				fieldObjectIds;
+				// owner-field relationships
+				Ref<InsExec_StackRefLink>			fieldStacks;
 
-				// assignedToObjectIds are objects who has at least one field that is this object
-				Ref<InsExec_ObjRefLink>				assignedToObjectIds;
+				// useFrom-useBy relationships
+				Ref<InsExec_StackRefLink>			useFromStacks;
 
-				// instruction that creates this object
-				InsRef								createInsRef;
+				// Key instructions in this stack
+				InsRef								beginInsRef;
+				Ref<InsExec_InsRefLink>				createObjectInsRefs;
+				Ref<InsExec_InsRefLink>				endWithCreateInsRefs;
+				Ref<InsExec_InsRefLink>				endWithReuseInsRefs;
 
-				// DelayFieldAssignment instructions that associates to the current object
-				Ref<InsExec_InsRefLink>				dfaInsRefs;
-
-				// first instruction that creates this object
-				InsRef								topLocalInsRef;
-
-				// first instruction that creates this object or its fields
-				InsRef								topInsRef;
-
-				// last instructions that closes this object
-				Ref<InsExec_InsRefLink>				bottomInsRefs;
-			};
-
-			struct InsExec_ObjectStack : Allocatable<InsExec_ObjectStack>, WithMagicCounter
-			{
-				Ref<InsExec_ObjectStack>			previous;
-				Ref<InsExec_ObjRefLink>				objectIds;
-				vint32_t							pushedCount = -1;		// number for InsExec_CreateStack::stackBase
-			};
-
-			struct InsExec_CreateStack : Allocatable<InsExec_CreateStack>, WithMagicCounter
-			{
-				Ref<InsExec_CreateStack>			previous;
-				vint32_t							stackBase = -1;			// the number of objects in the object stack that is frozen
-
-				// All InsExec_InsRefLink that create the current InsExec_CreateStack
-				Ref<InsExec_InsRefLink>				createInsRefs;
-
-				// InsExec_ObjRefLink assigned by BO/BOLA/RO
-				Ref<InsExec_ObjRefLink>				objectIds;
-
-				// objectIds will be added to reverseAssignedToObjectIds::assignedToObjectIds when ReopenObject happens
-				// it happens when a field is assigned to a DFA created object, the objectIds are unknown yet
-				Ref<InsExec_ObjRefLink>				reverseAssignedToObjectIds;
+				InsExec_StackSummarizing			summarizing;
 			};
 
 			struct InsExec_Context
 			{
-				Ref<InsExec_ObjectStack>			objectStack;			// InsExec_ObjectStack after executing instructions
-				Ref<InsExec_CreateStack>			createStack;			// InsExec_CreateStack after executing instructions
+				Ref<InsExec_StackArrayRefLink>		objectStack;			// Stack of created objects
+				Ref<InsExec_StackArrayRefLink>		createStack;			// Stack of opening objects
 			};
 
 			struct InsExec : WithMagicCounter
 			{
-				// BO:
-				//   the created object
-				Ref<InsExec_Object>					createdObjectId;
+				// Stack operated by StackBegin/StackEnd/CreateObject
+				Ref<InsExec_StackRefLink>			operatingStacks;
 
-				// DFA:
-				//   all associated objects
-				// EO:
-				//   all ended objects
-				Ref<InsExec_ObjRefLink>				objRefs;
-
-				// InsExec_InsRefLink
-				// BO/DFA:
-				//   EndingObject instructions that close objects or create stack created by the current instruction
-				Ref<InsExec_InsRefLink>				eoInsRefs;
-
-				// context before executing the current instruction
+				// Context before executing this instruction
 				InsExec_Context						contextBeforeExecution;
 			};
 
@@ -386,8 +366,8 @@ Traversing through branchData.forwardTrace and branchData.commonForwardBranch wi
 			// TraceAmbiguity describes where an ambiguity resolving begins and ends
 			struct TraceAmbiguity : Allocatable<TraceAmbiguity>
 			{
-				// all objects to merge
-				Ref<InsExec_ObjRefLink>				bottomObjectIds;
+				// all objects to merge, they all have valid createObjectInsRef 
+				Ref<InsExec_StackRefLink>			bottomCreateObjectStacks;
 
 				// if multiple TraceAmbiguity are assigned to the same place
 				// it records the one it overrides
@@ -494,7 +474,9 @@ TraceManager (Data Structures -- BuildExecutionOrder)
 			{
 				Empty,
 				Instruction,
-				ResolveAmbiguity,
+				RA_Begin,
+				RA_Branch,
+				RA_End,
 			};
 
 			struct ExecutionStep : Allocatable<ExecutionStep>
@@ -627,61 +609,53 @@ TraceManager
 				// PrepareTraceRoute
 				AllocateOnly<TraceExec>						traceExecs;
 				collections::Array<InsExec>					insExecs;
-				AllocateOnly<InsExec_Object>				insExec_Objects;
+				AllocateOnly<InsExec_Stack>					insExec_Stacks;
 				AllocateOnly<InsExec_InsRefLink>			insExec_InsRefLinks;
-				AllocateOnly<InsExec_ObjRefLink>			insExec_ObjRefLinks;
-				AllocateOnly<InsExec_ObjectStack>			insExec_ObjectStacks;
-				AllocateOnly<InsExec_CreateStack>			insExec_CreateStacks;
+				AllocateOnly<InsExec_StackRefLink>			insExec_StackRefLinks;
+				AllocateOnly<InsExec_StackArrayRefLink>		insExec_StackArrayRefLinks;
 
 				// phase: AllocateExecutionData
 				void										AllocateExecutionData();
 
+				// phase: BuildAmbiguityStructures
+				Trace* StepForward(Trace* trace);
+				void										BuildAmbiguityStructures();
+
 				// phase: PartialExecuteTraces - PartialExecuteOrdinaryTrace
-				InsExec_Object*								NewObject();
-				vint32_t									GetStackBase(InsExec_Context& context);
-				vint32_t									GetStackTop(InsExec_Context& context);
+				InsExec_Stack*								NewStack();
 				void										PushInsRefLink(Ref<InsExec_InsRefLink>& link, InsRef insRef);
-				void										PushObjRefLink(Ref<InsExec_ObjRefLink>& link, Ref<InsExec_Object> id);
+				void										PushStackRefLink(Ref<InsExec_StackRefLink>& link, Ref<InsExec_Stack> id);
+				void										PushStackArrayRefLink(Ref<InsExec_StackArrayRefLink>& arrayLink, Ref<InsExec_Stack> id);
+				void										PushStackArrayRefLink(Ref<InsExec_StackArrayRefLink>& arrayLink, Ref<InsExec_StackRefLink> link);
 				Ref<InsExec_InsRefLink>						JoinInsRefLink(Ref<InsExec_InsRefLink> first, Ref<InsExec_InsRefLink> second);
-				Ref<InsExec_ObjRefLink>						JoinObjRefLink(Ref<InsExec_ObjRefLink> first, Ref<InsExec_ObjRefLink> second);
-				void										PushAssignedToObjectIdsSingleWithMagic(Ref<InsExec_ObjRefLink> fieldObjectIds, Ref<InsExec_Object> assignedToTarget);
-				void										PushAssignedToObjectIdsMultipleWithMagic(Ref<InsExec_ObjRefLink> fieldObjectIds, Ref<InsExec_ObjRefLink> assignedToTargets);
-				InsExec_ObjectStack*						PushObjectStackSingle(InsExec_Context& context, Ref<InsExec_Object> objectId);
-				InsExec_ObjectStack*						PushObjectStackMultiple(InsExec_Context& context, Ref<InsExec_ObjRefLink> linkId);
-				InsExec_CreateStack*						PushCreateStack(InsExec_Context& context);
+				Ref<InsExec_StackRefLink>					JoinStackRefLink(Ref<InsExec_StackRefLink> first, Ref<InsExec_StackRefLink> second);
 				void										PartialExecuteOrdinaryTrace(Trace* trace);
 
 				// phase: PartialExecuteTraces - EnsureInsExecContextCompatible
 				void										EnsureInsExecContextCompatible(Trace* baselineTrace, Trace* commingTrace);
 
 				// phase: PartialExecuteTraces - MergeInsExecContext
-				void										PushInsRefLinkWithCounter(Ref<InsExec_InsRefLink>& link, Ref<InsExec_InsRefLink> comming);
-				void										PushObjRefLinkWithCounter(Ref<InsExec_ObjRefLink>& link, Ref<InsExec_ObjRefLink> comming);
-				template<typename T, T* (TraceManager::*get)(Ref<T>), Ref<T> (InsExec_Context::*stack), typename TMerge>
-				Ref<T>										MergeStack(Trace* mergeTrace, AllocateOnly<T>& allocator, TMerge&& merge);
+				template<Ref<InsExec_StackArrayRefLink> (InsExec_Context::*stack), typename TMerge>
+				Ref<InsExec_StackArrayRefLink>				MergeStack(Trace* mergeTrace, TMerge&& merge);
 				void										MergeInsExecContext(Trace* mergeTrace);
-
-				// phase: PartialExecuteTraces - CalculateObjectFirstInstruction
-				bool										UpdateTopTrace(InsRef& topInsRef, InsRef newInsRef);
-				void										InjectFirstInstruction(InsRef insRef, Ref<InsExec_ObjRefLink> injectTargets, vuint64_t magicInjection);
-				void										CalculateObjectFirstInstruction();
-
-				// phase: PartialExecuteTraces - CalculateObjectLastInstruction
-				bool										IsInTheSameBranch(Trace* forward, Trace* targetForwardAtFront);
-				void										CalculateObjectLastInstruction();
 
 				// phase: PartialExecuteTraces
 				void										PartialExecuteTraces();
 
-				// phase: BuildAmbiguityStructures
-				Trace*										StepForward(Trace* trace);
-				void										BuildAmbiguityStructures();
+				// phase: SummarizeInstructionRange
+				template<typename TCallback>
+				void										IterateStackWithDependency(Ref<InsExec_StackRefLink>(InsExec_Stack::* dependencies), TCallback&& callback);
+				bool										UpdateTopTrace(InsRef& topInsRef, InsRef newInsRef);
+				void										CollectInsRefs(collections::SortedList<InsRef>& insRefs, Ref<InsExec_InsRefLink> link);
+				void										SummarizeEarilestLocalInsRefs();
+				void										SummarizeEarilestInsRefs();
+				void										SummarizeInstructionRange();
 
 			protected:
 				// ResolveAmbiguity
 				Ref<Trace>									firstBranchTrace;
 				Ref<Trace>									firstMergeTrace;
-				Ref<InsExec_Object>							firstObject;
+				Ref<InsExec_Stack>							firstStack;
 				Ref<ExecutionStep>							firstStep;
 				AllocateOnly<TraceAmbiguity>				traceAmbiguities;
 				AllocateOnly<TraceAmbiguityLink>			traceAmbiguityLinks;
@@ -689,14 +663,14 @@ TraceManager
 
 				// phase: CheckMergeTraces
 				template<typename TCallback>
-				bool										EnumerateObjects(Ref<InsExec_ObjRefLink> objRefLinkStartSet, bool withCounter, TCallback&& callback);
+				bool										EnumerateObjects(Ref<InsExec_StackRefLink> stackRefLinkStartSet, bool withCounter, TCallback&& callback);
 				template<typename TCallback>
-				bool										EnumerateBottomInstructions(InsExec_Object* ieObject, TCallback&& callback);
+				bool										EnumerateBottomInstructions(InsExec_Stack* ieObject, TCallback&& callback);
 				bool										ComparePrefix(TraceExec* baselineTraceExec, TraceExec* commingTraceExec, vint32_t prefix);
 				bool										ComparePostfix(TraceExec* baselineTraceExec, TraceExec* commingTraceExec, vint32_t postfix);
 				template<typename TCallback>
-				bool										CheckAmbiguityResolution(TraceAmbiguity* ta, collections::List<Ref<InsExec_ObjRefLink>>& visitingIds, TCallback&& callback);
-				bool										CheckMergeTrace(TraceAmbiguity* ta, Trace* trace, TraceExec* traceExec, collections::List<Ref<InsExec_ObjRefLink>>& visitingIds);
+				bool										CheckAmbiguityResolution(TraceAmbiguity* ta, collections::List<Ref<InsExec_StackRefLink>>& visitingIds, TCallback&& callback);
+				bool										CheckMergeTrace(TraceAmbiguity* ta, Trace* trace, TraceExec* traceExec, collections::List<Ref<InsExec_StackRefLink>>& visitingIds);
 				void										LinkAmbiguityCriticalTrace(Ref<Trace> traceId);
 				void										CheckTraceAmbiguity(TraceAmbiguity* ta);
 				void										MarkAmbiguityCoveredForward(Trace* currentTrace, TraceAmbiguity* ta, Trace* firstTrace, TraceExec* firstTraceExec);
@@ -706,12 +680,12 @@ TraceManager
 				// phase: BuildExecutionOrder
 #define DEFINE_EXECUTION_STEP_CONTEXT						ExecutionStep*& root, ExecutionStep*& firstLeaf, ExecutionStep*& currentStep, ExecutionStep*& currentLeaf
 				void										MarkNewLeafStep(ExecutionStep* step, ExecutionStep*& firstLeaf, ExecutionStep*& currentLeaf);
-				void										AppendStepLink(ExecutionStep* first, ExecutionStep* last, bool leapNode, DEFINE_EXECUTION_STEP_CONTEXT);
+				void										AppendStepLink(ExecutionStep* first, ExecutionStep* last, DEFINE_EXECUTION_STEP_CONTEXT);
 				void										AppendStepsBeforeAmbiguity(Trace* startTrace, vint32_t startIns, TraceAmbiguity* ta, DEFINE_EXECUTION_STEP_CONTEXT);
 				void										AppendStepsAfterAmbiguity(Trace*& startTrace, vint32_t& startIns, TraceAmbiguity* ta, DEFINE_EXECUTION_STEP_CONTEXT);
 				void										AppendStepsForAmbiguity(TraceAmbiguity* ta, bool checkCoveredMark, DEFINE_EXECUTION_STEP_CONTEXT);
 				void										AppendStepsBeforeBranch(Trace* startTrace, vint32_t startIns, Trace* branchTrace, TraceExec* branchTraceExec, DEFINE_EXECUTION_STEP_CONTEXT);
-				void										BuildStepTree(Trace* startTrace, vint32_t startIns, Trace* endTrace, vint32_t endIns, ExecutionStep*& root, ExecutionStep*& firstLeaf, ExecutionStep* currentStep, ExecutionStep*& currentLeaf);
+				void										BuildStepTree(Trace* startTrace, vint32_t startIns, Trace* endTrace, vint32_t endIns, ExecutionStep*& root, ExecutionStep*& firstLeaf, ExecutionStep* currentStep, ExecutionStep*& currentLeaf, bool ambiguityBranch);
 				void										ConvertStepTreeToLink(ExecutionStep* root, ExecutionStep* firstLeaf, ExecutionStep*& first, ExecutionStep*& last);
 				void										BuildAmbiguousStepLink(TraceAmbiguity* ta, bool checkCoveredMark, ExecutionStep*& first, ExecutionStep*& last);
 				void										BuildExecutionOrder();
@@ -734,11 +708,10 @@ TraceManager
 				AttendingCompetitions*			AllocateAttendingCompetitions();
 
 				InsExec*						GetInsExec(vint32_t index);
-				InsExec_Object*					GetInsExec_Object(Ref<InsExec_Object> index);
+				InsExec_Stack*					GetInsExec_Stack(Ref<InsExec_Stack> index);
 				InsExec_InsRefLink*				GetInsExec_InsRefLink(Ref<InsExec_InsRefLink> index);
-				InsExec_ObjRefLink*				GetInsExec_ObjRefLink(Ref<InsExec_ObjRefLink> index);
-				InsExec_ObjectStack*			GetInsExec_ObjectStack(Ref<InsExec_ObjectStack> index);
-				InsExec_CreateStack*			GetInsExec_CreateStack(Ref<InsExec_CreateStack> index);
+				InsExec_StackRefLink*			GetInsExec_StackRefLink(Ref<InsExec_StackRefLink> index);
+				InsExec_StackArrayRefLink*		GetInsExec_StackArrayRefLink(Ref<InsExec_StackArrayRefLink> index);
 				TraceExec*						GetTraceExec(Ref<TraceExec> index);
 				TraceAmbiguity*					GetTraceAmbiguity(Ref<TraceAmbiguity> index);
 				TraceAmbiguityLink*				GetTraceAmbiguityLink(Ref<TraceAmbiguityLink> index);

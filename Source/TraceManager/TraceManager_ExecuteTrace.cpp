@@ -140,16 +140,40 @@ TraceManager::ExecuteTrace
 						}
 					}
 					break;
-				case ExecutionType::ResolveAmbiguity:
+				default:
 					{
-						AstIns ins = { AstInsType::ResolveAmbiguity,step->et_ra.type,step->et_ra.count };
 						auto raTrace = GetTrace(Ref<Trace>(step->et_ra.trace));
 						raTrace = EnsureTraceWithValidStates(raTrace);
 						auto raToken = raTrace->currentTokenIndex;
-						receiver.Execute(ins, tokens[raToken], raToken);
+
+						switch (step->type)
+						{
+						case ExecutionType::RA_Begin:
+							{
+								if (raToken == -1) raToken = 0;
+								AstIns ins = { AstInsType::StackBegin };
+								receiver.Execute(ins, tokens[raToken], raToken);
+							}
+							break;
+						case ExecutionType::RA_Branch:
+							{
+								AstIns ins = { AstInsType::StackSlot,-1,0 };
+								receiver.Execute(ins, tokens[raToken], raToken);
+							}
+							break;
+						case ExecutionType::RA_End:
+							{
+								AstIns ins = { AstInsType::ResolveAmbiguity,step->et_ra.type,0 };
+								receiver.Execute(ins, tokens[raToken], raToken);
+							}
+							{
+								AstIns ins = { AstInsType::StackEnd };
+								receiver.Execute(ins, tokens[raToken], raToken);
+							}
+							break;
+						default:;
+						}
 					}
-					break;
-				default:;
 				}
 			}
 

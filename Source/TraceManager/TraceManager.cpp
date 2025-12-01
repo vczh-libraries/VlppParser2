@@ -123,11 +123,10 @@ TraceManager
 				, competitions(blockSize)
 				, attendingCompetitions(blockSize)
 				, traceExecs(blockSize)
-				, insExec_Objects(blockSize)
+				, insExec_Stacks(blockSize)
 				, insExec_InsRefLinks(blockSize)
-				, insExec_ObjRefLinks(blockSize)
-				, insExec_ObjectStacks(blockSize)
-				, insExec_CreateStacks(blockSize)
+				, insExec_StackRefLinks(blockSize)
+				, insExec_StackArrayRefLinks(blockSize)
 				, traceAmbiguities(blockSize)
 				, traceAmbiguityLinks(blockSize)
 				, executionSteps(blockSize)
@@ -178,10 +177,10 @@ TraceManager
 			{
 				return &insExecs[index];
 			}
-			
-			InsExec_Object* TraceManager::GetInsExec_Object(Ref<InsExec_Object> index)
+
+			InsExec_Stack* TraceManager::GetInsExec_Stack(Ref<InsExec_Stack> index)
 			{
-				return insExec_Objects.Get(index);
+				return insExec_Stacks.Get(index);
 			}
 
 			InsExec_InsRefLink* TraceManager::GetInsExec_InsRefLink(Ref<InsExec_InsRefLink> index)
@@ -189,19 +188,14 @@ TraceManager
 				return insExec_InsRefLinks.Get(index);
 			}
 
-			InsExec_ObjRefLink* TraceManager::GetInsExec_ObjRefLink(Ref<InsExec_ObjRefLink> index)
+			InsExec_StackRefLink* TraceManager::GetInsExec_StackRefLink(Ref<InsExec_StackRefLink> index)
 			{
-				return insExec_ObjRefLinks.Get(index);
+				return insExec_StackRefLinks.Get(index);
 			}
 
-			InsExec_ObjectStack* TraceManager::GetInsExec_ObjectStack(Ref<InsExec_ObjectStack> index)
+			InsExec_StackArrayRefLink* TraceManager::GetInsExec_StackArrayRefLink(Ref<InsExec_StackArrayRefLink	> index)
 			{
-				return insExec_ObjectStacks.Get(index);
-			}
-
-			InsExec_CreateStack* TraceManager::GetInsExec_CreateStack(Ref<InsExec_CreateStack> index)
-			{
-				return insExec_CreateStacks.Get(index);
+				return insExec_StackArrayRefLinks.Get(index);
 			}
 
 			TraceExec* TraceManager::GetTraceExec(Ref<TraceExec> index)

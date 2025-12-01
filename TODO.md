@@ -52,19 +52,8 @@
 
 - [x] Non-ambiguous test cases
 - [ ] Ambiguous test cases
-  - When the created object is passing through to the next stack, the ieCSTop->objectIds is null since no CreateObject happens.
-  - StackSlot trying to mark objects becoming other objects' field, it suffers from this.
-  - Figure out why the field information is needed.
-    - It is probably because we need to figure out the first instruction due to left recursion.
-    - Left recursion makes an object another object's field but the field stack happens before the owner stack.
-    - Try track the instruction directly.
-    - Remove ExecutionStep::ETRA::count since it is not needed.
-    - Rethink InsExec_CreateStack and InsExec_ObjectStack.
-      - We need to track the actual instruction range of an object.
-      - We need to know the paring between StackBegin and StackEnd. They are either one-to-many or many-to-one.
-      - We need to know a StackBegin's all field StackBegin.
-      - We need to know a StackBegin is reused in another StackBegin.
-        - This will be revealed when StackEnd realizes there is no CreateObject in the stack.
+  - Rethink InsExec_CreateStack and InsExec_ObjectStack.
+  - Split FeatureTest
 - [ ] Built-in parsers:
   - [ ] Json
   - [ ] Xml
