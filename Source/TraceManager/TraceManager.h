@@ -291,9 +291,6 @@ TraceManager (Data Structures -- PrepareTraceRoute)
 
 			struct InsExec_StackSummarizing
 			{
-				// All createObjectInsRef including in useFromStacks
-				Ref<InsExec_InsRefLink>				indirectCreateObjectInsRefs;
-
 				// The earliest StackBegin instructions including in useFromStacks
 				InsRef								earliestLocalInsRef;
 
@@ -648,7 +645,7 @@ TraceManager
 				void										IterateStackWithDependency(Ref<InsExec_StackRefLink>(InsExec_Stack::* dependencies), TCallback&& callback);
 				bool										UpdateTopTrace(InsRef& topInsRef, InsRef newInsRef);
 				void										CollectInsRefs(collections::SortedList<InsRef>& insRefs, Ref<InsExec_InsRefLink> link);
-				void										SummarizeIndirectCreateObjectInsRefs();
+				void										SummarizeEarilestLocalInsRefs();
 				void										SummarizeEarilestInsRefs();
 				void										SummarizeInstructionRange();
 

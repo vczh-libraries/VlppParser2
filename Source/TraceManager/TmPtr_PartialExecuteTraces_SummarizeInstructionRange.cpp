@@ -59,16 +59,13 @@ IterateStackWithDependency
 			}
 
 /***********************************************************************
-SummarizeIndirectCreateObjectInsRefs
+SummarizeEarilestLocalInsRefs
 ***********************************************************************/
 
-			void TraceManager::SummarizeIndirectCreateObjectInsRefs()
+			void TraceManager::SummarizeEarilestLocalInsRefs()
 			{
 				IterateStackWithDependency(&InsExec_Stack::useFromStacks, [this](InsExec_Stack* stack)
 				{
-					Ref<InsExec_InsRefLink> potentialInsRefs;
-
-					// accumulate all createObjectInsRefs from useFromStacks
 					auto currentStackRefLink = stack->useFromStacks;
 					while (currentStackRefLink != nullref)
 					{
@@ -76,68 +73,10 @@ SummarizeIndirectCreateObjectInsRefs
 						currentStackRefLink = stackRefLink->previous;
 
 						auto useFromStack = GetInsExec_Stack(stackRefLink->id);
-						potentialInsRefs = JoinInsRefLink(potentialInsRefs, useFromStack->indirectCreateObjectInsRefs);
+						UpdateTopTrace(stack->summarizing.earliestLocalInsRef, useFromStack->summarizing.earliestLocalInsRef);
 					}
-					potentialInsRefs = JoinInsRefLink(potentialInsRefs, stack->createObjectInsRefs);
-
-					// make sure InsExec_Stack::indirectCreateObjectInsRefs maps to InsExec_ObjectInstance::associatedStacks without duplication
-					NEW_MERGE_STACK_MAGIC_COUNTER;
-					auto objectMagicCounter = MergeStack_MagicCounter;
-
-					auto currentInsRefLink = potentialInsRefs;
-					while (currentInsRefLink != nullref)
-					{
-						auto insRefLink = GetInsExec_InsRefLink(currentInsRefLink);
-						currentInsRefLink = insRefLink->previous;
-
-						auto insTrace = GetTrace(insRefLink->insRef.trace);
-						auto insTraceExec = GetTraceExec(insTrace->traceExecRef);
-						auto insExec = GetInsExec(insTraceExec->insExecRefs.start + insRefLink->insRef.ins);
-						auto insObject = GetInsExec_ObjectInstance(insExec->createdObject);
-						if (insObject->mergeCounter == objectMagicCounter) continue;
-						insObject->mergeCounter = objectMagicCounter;
-
-						PushInsRefLink(stack->indirectCreateObjectInsRefs, insRefLink->insRef);
-						PushStackRefLink(insObject->associatedStacks, stack);
-					}
+					UpdateTopTrace(stack->summarizing.earliestLocalInsRef, stack->beginInsRef);
 				});
-			}
-
-/***********************************************************************
-SummarizeEarilestLocalInsRefs
-***********************************************************************/
-
-			void TraceManager::SummarizeEarilestLocalInsRefs()
-			{
-				// traverse through all object instances
-				auto currentObjectRef = firstObjectInstance;
-				while (currentObjectRef != nullref)
-				{
-					auto currentObject = GetInsExec_ObjectInstance(currentObjectRef);
-					currentObjectRef = currentObject->previous;
-
-					// summarize from associatedStacks
-					SortedList<InsRef> endInsRefs;
-					auto currentStackRefLink = currentObject->associatedStacks;
-					while (currentStackRefLink != nullref)
-					{
-						auto stackRefLink = GetInsExec_StackRefLink(currentStackRefLink);
-						currentStackRefLink = stackRefLink->previous;
-
-						// beginInsRef
-						auto stack = GetInsExec_Stack(stackRefLink->id);
-						UpdateTopTrace(currentObject->beginInsRef, stack->beginInsRef);
-
-						// endInsRefs
-						CollectInsRefs(endInsRefs, stack->endWithCreateInsRefs);
-						CollectInsRefs(endInsRefs, stack->endWithReuseInsRefs);
-					}
-
-					for (auto insRef : endInsRefs)
-					{
-						PushInsRefLink(currentObject->endInsRefs, insRef);
-					}
-				}
 			}
 
 /***********************************************************************
@@ -146,34 +85,18 @@ SummarizeEarilestInsRefs
 
 			void TraceManager::SummarizeEarilestInsRefs()
 			{
-				IterateStackWithDependency(&InsExec_Stack::fieldStacks, [this](InsExec_Stack* stack)
+				IterateStackWithDependency(&InsExec_Stack::useFromStacks, [this](InsExec_Stack* stack)
 				{
-					// traverse through all indirectCreateObjectInsRefs and get the earliest InsExec_ObjectInstance::beginInsRef
-					auto currentInsRefLink = stack->indirectCreateObjectInsRefs;
-					while (currentInsRefLink != nullref)
-					{
-						auto insRefLink = GetInsExec_InsRefLink(currentInsRefLink);
-						currentInsRefLink = insRefLink->previous;
-
-						// update earliestInsRef
-						auto insTrace = GetTrace(insRefLink->insRef.trace);
-						auto insTraceExec = GetTraceExec(insTrace->traceExecRef);
-						auto insExec = GetInsExec(insTraceExec->insExecRefs.start + insRefLink->insRef.ins);
-						auto insObject = GetInsExec_ObjectInstance(insExec->createdObject);
-						UpdateTopTrace(stack->earliestInsRef, insObject->beginInsRef);
-					}
-
-					// traverse through all fieldStacks and get their earliestInsRef
 					auto currentStackRefLink = stack->fieldStacks;
 					while (currentStackRefLink != nullref)
 					{
 						auto stackRefLink = GetInsExec_StackRefLink(currentStackRefLink);
 						currentStackRefLink = stackRefLink->previous;
 
-						// update earliestInsRef
 						auto fieldStack = GetInsExec_Stack(stackRefLink->id);
-						UpdateTopTrace(stack->earliestInsRef, fieldStack->earliestInsRef);
+						UpdateTopTrace(stack->summarizing.earliestInsRef, fieldStack->summarizing.earliestInsRef);
 					}
+					UpdateTopTrace(stack->summarizing.earliestInsRef, stack->summarizing.earliestLocalInsRef);
 				});
 			}
 
@@ -215,7 +138,6 @@ SummarizeInstructionRange
 
 			void TraceManager::SummarizeInstructionRange()
 			{
-				SummarizeIndirectCreateObjectInsRefs();
 				SummarizeEarilestLocalInsRefs();
 				SummarizeEarilestInsRefs();
 			}

@@ -406,13 +406,6 @@ void RenderTrace(
 							writer.WriteString(L"]");
 						}
 
-						if (ieObject->summarizing.indirectCreateObjectInsRefs != nullref)
-						{
-							writer.WriteString(L", iCO:[");
-							logInsRefLink(ieObject->summarizing.indirectCreateObjectInsRefs);
-							writer.WriteString(L"]");
-						}
-
 						if (ieObject->endWithCreateInsRefs != nullref)
 						{
 							writer.WriteString(L", endCO:[");
