@@ -51,9 +51,8 @@
 ### Progressing
 
 - [x] Non-ambiguous test cases
-- [ ] Ambiguous test cases
-  - Rethink InsExec_CreateStack and InsExec_ObjectStack.
-  - Split FeatureTest
+- [x] Ambiguous test cases
+- [ ] Split FeatureTest
 - [ ] Built-in parsers:
   - [ ] Json
   - [ ] Xml
