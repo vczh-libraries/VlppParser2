@@ -34,8 +34,8 @@ namespace feature_fa
 	public:
 		ModuleParser();
 
-		vl::Ptr<feature_fa::FaFeature> ParseModule(const vl::WString& input, vl::vint codeIndex = -1) const;
-		vl::Ptr<feature_fa::FaFeature> ParseModule(vl::collections::List<vl::regex::RegexToken>& tokens, vl::vint codeIndex = -1) const;
+		vl::Ptr<feature_fa::Feature> ParseModule(const vl::WString& input, vl::vint codeIndex = -1) const;
+		vl::Ptr<feature_fa::Feature> ParseModule(vl::collections::List<vl::regex::RegexToken>& tokens, vl::vint codeIndex = -1) const;
 	};
 }
 #endif

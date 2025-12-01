@@ -83,13 +83,13 @@ namespace feature_bo
 		return vl::glr::AssemblerFindCommonBaseClass(class1, class2, results);
 	}
 
-	vl::Ptr<feature_bo::BranchedOptionalFeature> ModuleParser::ParseModule(const vl::WString& input, vl::vint codeIndex) const
+	vl::Ptr<feature_bo::Feature> ModuleParser::ParseModule(const vl::WString& input, vl::vint codeIndex) const
 	{
-		 return ParseWithString<feature_bo::BranchedOptionalFeature, ModuleParserStates::Module>(input, this, codeIndex);
+		 return ParseWithString<feature_bo::Feature, ModuleParserStates::Module>(input, this, codeIndex);
 	}
 
-	vl::Ptr<feature_bo::BranchedOptionalFeature> ModuleParser::ParseModule(vl::collections::List<vl::regex::RegexToken>& tokens, vl::vint codeIndex) const
+	vl::Ptr<feature_bo::Feature> ModuleParser::ParseModule(vl::collections::List<vl::regex::RegexToken>& tokens, vl::vint codeIndex) const
 	{
-		 return ParseWithTokens<feature_bo::BranchedOptionalFeature, ModuleParserStates::Module>(tokens, this, codeIndex);
+		 return ParseWithTokens<feature_bo::Feature, ModuleParserStates::Module>(tokens, this, codeIndex);
 	}
 }

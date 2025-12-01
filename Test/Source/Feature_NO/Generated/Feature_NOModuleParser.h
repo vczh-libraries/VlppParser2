@@ -36,8 +36,8 @@ namespace feature_no
 	public:
 		ModuleParser();
 
-		vl::Ptr<feature_no::NestedOptionalFeature> ParseModule(const vl::WString& input, vl::vint codeIndex = -1) const;
-		vl::Ptr<feature_no::NestedOptionalFeature> ParseModule(vl::collections::List<vl::regex::RegexToken>& tokens, vl::vint codeIndex = -1) const;
+		vl::Ptr<feature_no::Feature> ParseModule(const vl::WString& input, vl::vint codeIndex = -1) const;
+		vl::Ptr<feature_no::Feature> ParseModule(vl::collections::List<vl::regex::RegexToken>& tokens, vl::vint codeIndex = -1) const;
 	};
 }
 #endif

@@ -34,8 +34,8 @@ namespace feature_optminus
 	public:
 		ModuleParser();
 
-		vl::Ptr<feature_optminus::OptionalFeature> ParseModule(const vl::WString& input, vl::vint codeIndex = -1) const;
-		vl::Ptr<feature_optminus::OptionalFeature> ParseModule(vl::collections::List<vl::regex::RegexToken>& tokens, vl::vint codeIndex = -1) const;
+		vl::Ptr<feature_optminus::Feature> ParseModule(const vl::WString& input, vl::vint codeIndex = -1) const;
+		vl::Ptr<feature_optminus::Feature> ParseModule(vl::collections::List<vl::regex::RegexToken>& tokens, vl::vint codeIndex = -1) const;
 	};
 }
 #endif

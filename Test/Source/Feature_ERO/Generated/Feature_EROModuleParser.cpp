@@ -78,13 +78,13 @@ namespace feature_ero
 		return vl::glr::AssemblerFindCommonBaseClass(class1, class2, results);
 	}
 
-	vl::Ptr<feature_ero::BranchedOptionalFeature> ModuleParser::ParseModule(const vl::WString& input, vl::vint codeIndex) const
+	vl::Ptr<feature_ero::Feature> ModuleParser::ParseModule(const vl::WString& input, vl::vint codeIndex) const
 	{
-		 return ParseWithString<feature_ero::BranchedOptionalFeature, ModuleParserStates::Module>(input, this, codeIndex);
+		 return ParseWithString<feature_ero::Feature, ModuleParserStates::Module>(input, this, codeIndex);
 	}
 
-	vl::Ptr<feature_ero::BranchedOptionalFeature> ModuleParser::ParseModule(vl::collections::List<vl::regex::RegexToken>& tokens, vl::vint codeIndex) const
+	vl::Ptr<feature_ero::Feature> ModuleParser::ParseModule(vl::collections::List<vl::regex::RegexToken>& tokens, vl::vint codeIndex) const
 	{
-		 return ParseWithTokens<feature_ero::BranchedOptionalFeature, ModuleParserStates::Module>(tokens, this, codeIndex);
+		 return ParseWithTokens<feature_ero::Feature, ModuleParserStates::Module>(tokens, this, codeIndex);
 	}
 }

@@ -77,13 +77,13 @@ namespace feature_nominus
 		return vl::glr::AssemblerFindCommonBaseClass(class1, class2, results);
 	}
 
-	vl::Ptr<feature_nominus::NestedOptionalFeature> ModuleParser::ParseModule(const vl::WString& input, vl::vint codeIndex) const
+	vl::Ptr<feature_nominus::Feature> ModuleParser::ParseModule(const vl::WString& input, vl::vint codeIndex) const
 	{
-		 return ParseWithString<feature_nominus::NestedOptionalFeature, ModuleParserStates::Module>(input, this, codeIndex);
+		 return ParseWithString<feature_nominus::Feature, ModuleParserStates::Module>(input, this, codeIndex);
 	}
 
-	vl::Ptr<feature_nominus::NestedOptionalFeature> ModuleParser::ParseModule(vl::collections::List<vl::regex::RegexToken>& tokens, vl::vint codeIndex) const
+	vl::Ptr<feature_nominus::Feature> ModuleParser::ParseModule(vl::collections::List<vl::regex::RegexToken>& tokens, vl::vint codeIndex) const
 	{
-		 return ParseWithTokens<feature_nominus::NestedOptionalFeature, ModuleParserStates::Module>(tokens, this, codeIndex);
+		 return ParseWithTokens<feature_nominus::Feature, ModuleParserStates::Module>(tokens, this, codeIndex);
 	}
 }

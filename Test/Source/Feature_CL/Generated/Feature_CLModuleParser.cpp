@@ -62,13 +62,13 @@ namespace feature_cl
 		return vl::glr::AssemblerFindCommonBaseClass(class1, class2, results);
 	}
 
-	vl::Ptr<feature_cl::ClFeature> ModuleParser::ParseModule(const vl::WString& input, vl::vint codeIndex) const
+	vl::Ptr<feature_cl::Feature> ModuleParser::ParseModule(const vl::WString& input, vl::vint codeIndex) const
 	{
-		 return ParseWithString<feature_cl::ClFeature, ModuleParserStates::Module>(input, this, codeIndex);
+		 return ParseWithString<feature_cl::Feature, ModuleParserStates::Module>(input, this, codeIndex);
 	}
 
-	vl::Ptr<feature_cl::ClFeature> ModuleParser::ParseModule(vl::collections::List<vl::regex::RegexToken>& tokens, vl::vint codeIndex) const
+	vl::Ptr<feature_cl::Feature> ModuleParser::ParseModule(vl::collections::List<vl::regex::RegexToken>& tokens, vl::vint codeIndex) const
 	{
-		 return ParseWithTokens<feature_cl::ClFeature, ModuleParserStates::Module>(tokens, this, codeIndex);
+		 return ParseWithTokens<feature_cl::Feature, ModuleParserStates::Module>(tokens, this, codeIndex);
 	}
 }

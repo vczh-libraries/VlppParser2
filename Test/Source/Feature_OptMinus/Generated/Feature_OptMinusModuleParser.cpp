@@ -72,13 +72,13 @@ namespace feature_optminus
 		return vl::glr::AssemblerFindCommonBaseClass(class1, class2, results);
 	}
 
-	vl::Ptr<feature_optminus::OptionalFeature> ModuleParser::ParseModule(const vl::WString& input, vl::vint codeIndex) const
+	vl::Ptr<feature_optminus::Feature> ModuleParser::ParseModule(const vl::WString& input, vl::vint codeIndex) const
 	{
-		 return ParseWithString<feature_optminus::OptionalFeature, ModuleParserStates::Module>(input, this, codeIndex);
+		 return ParseWithString<feature_optminus::Feature, ModuleParserStates::Module>(input, this, codeIndex);
 	}
 
-	vl::Ptr<feature_optminus::OptionalFeature> ModuleParser::ParseModule(vl::collections::List<vl::regex::RegexToken>& tokens, vl::vint codeIndex) const
+	vl::Ptr<feature_optminus::Feature> ModuleParser::ParseModule(vl::collections::List<vl::regex::RegexToken>& tokens, vl::vint codeIndex) const
 	{
-		 return ParseWithTokens<feature_optminus::OptionalFeature, ModuleParserStates::Module>(tokens, this, codeIndex);
+		 return ParseWithTokens<feature_optminus::Feature, ModuleParserStates::Module>(tokens, this, codeIndex);
 	}
 }
