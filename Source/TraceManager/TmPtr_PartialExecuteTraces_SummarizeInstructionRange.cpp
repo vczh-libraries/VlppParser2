@@ -104,10 +104,10 @@ SummarizeIndirectCreateObjectInsRefs
 			}
 
 /***********************************************************************
-SummarizeObjectInstances
+SummarizeEarilestLocalInsRefs
 ***********************************************************************/
 
-			void TraceManager::SummarizeObjectInstances()
+			void TraceManager::SummarizeEarilestLocalInsRefs()
 			{
 				// traverse through all object instances
 				auto currentObjectRef = firstObjectInstance;
@@ -216,7 +216,7 @@ SummarizeInstructionRange
 			void TraceManager::SummarizeInstructionRange()
 			{
 				SummarizeIndirectCreateObjectInsRefs();
-				SummarizeObjectInstances();
+				SummarizeEarilestLocalInsRefs();
 				SummarizeEarilestInsRefs();
 			}
 

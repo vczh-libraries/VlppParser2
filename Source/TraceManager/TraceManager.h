@@ -649,7 +649,6 @@ TraceManager
 				bool										UpdateTopTrace(InsRef& topInsRef, InsRef newInsRef);
 				void										CollectInsRefs(collections::SortedList<InsRef>& insRefs, Ref<InsExec_InsRefLink> link);
 				void										SummarizeIndirectCreateObjectInsRefs();
-				void										SummarizeObjectInstances();
 				void										SummarizeEarilestInsRefs();
 				void										SummarizeInstructionRange();
 
