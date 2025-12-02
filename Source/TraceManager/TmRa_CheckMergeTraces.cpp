@@ -88,7 +88,7 @@ CheckAmbiguityResolution
 			}
 
 			template<typename TCallback>
-			bool TraceManager::CheckAmbiguityResolution(TraceAmbiguity* ta, collections::List<Ref<InsExec_StackRefLink>>& visitingIds, TCallback&& callback)
+			bool TraceManager::CheckAmbiguityResolution(TraceAmbiguity* ta, collections::List<Ref<InsExec_StackRefLink>>& visitingIds, collections::List<WString>* failureReasons, TCallback&& callback)
 			{
 				// following conditions need to be satisfies if multiple objects could be the result of ambiguity
 				//
@@ -331,17 +331,27 @@ CheckAmbiguityResolution
 			}
 
 /***********************************************************************
-CheckMergeTrace
+CheckSingleMergeTrace
 ***********************************************************************/
 
-			bool TraceManager::CheckMergeTrace(TraceAmbiguity* ta, Trace* trace, TraceExec* traceExec, collections::List<Ref<InsExec_StackRefLink>>& visitingIds)
+			bool TraceManager::CheckSingleMergeTrace(TraceAmbiguity* ta, Trace* trace, TraceExec* traceExec, collections::List<Ref<InsExec_StackRefLink>>& visitingIds, collections::List<WString>* failureReasons)
 			{
-				// when a merge trace is the surviving trace
+				if (failureReasons)
+				{
+					failureReasons->Add(L"Trying to merge trace " +
+						itow(trace->allocatedIndex));
+				}
+
+				// when a merge trace is the last trace
 				// objects in the top object stack are the result of ambiguity
 				if (trace->successorCount == 0)
 				{
+					if (failureReasons)
+					{
+						failureReasons->Add(L"This is the last trace, compare all concurrent objects in the objectStack top.");
+					}
 					auto ieOSTop = GetInsExec_StackArrayRefLink(traceExec->context.objectStack);
-					return CheckAmbiguityResolution(ta, visitingIds, [=](auto&& callback)
+					return CheckAmbiguityResolution(ta, visitingIds, failureReasons, [=](auto&& callback)
 					{
 						return callback(ieOSTop->ids);
 					});
@@ -375,7 +385,23 @@ CheckMergeTrace
 					}
 					if (postfix == -1)
 					{
+						if (failureReasons)
+						{
+							failureReasons->Add(L"The first predecessor " +
+								itow(firstTrace->allocatedIndex) +
+								L" has no StackEnd.");
+						}
+
 						goto CHECK_OBJECTS_IN_TOP_CREATE_STACK;
+					}
+
+					if (failureReasons)
+					{
+						failureReasons->Add(L"The first predecessor " +
+							itow(firstTrace->allocatedIndex) +
+							L" has StackEnd, its postfix (instructions after StackEnd) is " +
+							itow(postfix) +
+							L".");
 					}
 
 					// [CONDITION]
@@ -389,6 +415,12 @@ CheckMergeTrace
 							predecessorId = predecessor->predecessors.siblingPrev;
 							if (!ComparePostfix(firstTraceExec, GetTraceExec(predecessor->traceExecRef), postfix + 1))
 							{
+								if (failureReasons)
+								{
+									failureReasons->Add(L"Another predecessor " +
+										itow(predecessor->allocatedIndex) +
+										L" has no StackEnd or has a different postfix.");
+								}
 								goto CHECK_OBJECTS_IN_TOP_CREATE_STACK;
 							}
 						}
@@ -399,8 +431,12 @@ CheckMergeTrace
 					{
 						// if StackEnd is the last instruction of predecessors
 						// then their objRefs has been written to the top object stack
+						if (failureReasons)
+						{
+							failureReasons->Add(L"The postfix is 0, compare all concurrent objects in the objectStack top.");
+						}
 						auto ieOSTop = GetInsExec_StackArrayRefLink(traceExec->context.objectStack);
-						auto succeeded = CheckAmbiguityResolution(ta, visitingIds, [=](auto&& callback)
+						auto succeeded = CheckAmbiguityResolution(ta, visitingIds, failureReasons, [=](auto&& callback)
 						{
 							return callback(ieOSTop->ids);
 						});
@@ -409,7 +445,11 @@ CheckMergeTrace
 					else
 					{
 						// otherwise find all objRefs of StackEnd
-						auto succeeded = CheckAmbiguityResolution(ta, visitingIds, [=, this, &visitingIds](auto&& callback)
+						if (failureReasons)
+						{
+							failureReasons->Add(L"The postfix > 0, compare all concurrent objects in all StackEnd instructions.");
+						}
+						auto succeeded = CheckAmbiguityResolution(ta, visitingIds, failureReasons, [=, this, &visitingIds](auto&& callback)
 						{
 							auto predecessorId = trace->predecessors.first;
 							while (predecessorId != nullref)
@@ -429,8 +469,12 @@ CheckMergeTrace
 					}
 				}
 			CHECK_OBJECTS_IN_TOP_CREATE_STACK:
+				if (failureReasons)
+				{
+					failureReasons->Add(L"All condition dissatisfied, compare all concurrent objects in the createStack top.");
+				}
 				auto ieCSTop = GetInsExec_StackArrayRefLink(traceExec->context.createStack);
-				return CheckAmbiguityResolution(ta, visitingIds, [=](auto&& callback)
+				return CheckAmbiguityResolution(ta, visitingIds, failureReasons, [=](auto&& callback)
 				{
 					return callback(ieCSTop->ids);
 				});
@@ -626,10 +670,21 @@ CheckMergeTraces
 					traceId = traceExec->nextMergeTrace;
 
 					auto ta = GetTraceAmbiguity(traceAmbiguities.Allocate());
-					bool succeeded = CheckMergeTrace(ta, trace, traceExec, visitingIds);
+					bool succeeded = CheckSingleMergeTrace(ta, trace, traceExec, visitingIds, nullptr);
 					if (!succeeded)
 					{
-						throw TraceException(*this, trace, nullptr, TRACE_MAMAGER_PHRASE, L"Failed to find ambiguous objects in a merge trace.");
+						List<WString> failureReasons;
+						CheckSingleMergeTrace(ta, trace, traceExec, visitingIds, &failureReasons);
+
+						throw TraceException(*this, trace, nullptr, TRACE_MAMAGER_PHRASE, stream::GenerateToStream([&](stream::TextWriter& writer)
+						{
+							writer.WriteLine(L"Failed to find ambiguous objects in a merge trace.");
+							writer.WriteLine(L"[Details]");
+							for (auto&& reason : failureReasons)
+							{
+								writer.WriteLine(reason);
+							}
+						}));
 					}
 					traceExec->ambiguityDetected = ta;
 

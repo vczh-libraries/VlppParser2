@@ -674,8 +674,8 @@ TraceManager
 				bool										ComparePrefix(TraceExec* baselineTraceExec, TraceExec* commingTraceExec, vint32_t prefix);
 				bool										ComparePostfix(TraceExec* baselineTraceExec, TraceExec* commingTraceExec, vint32_t postfix);
 				template<typename TCallback>
-				bool										CheckAmbiguityResolution(TraceAmbiguity* ta, collections::List<Ref<InsExec_StackRefLink>>& visitingIds, TCallback&& callback);
-				bool										CheckMergeTrace(TraceAmbiguity* ta, Trace* trace, TraceExec* traceExec, collections::List<Ref<InsExec_StackRefLink>>& visitingIds);
+				bool										CheckAmbiguityResolution(TraceAmbiguity* ta, collections::List<Ref<InsExec_StackRefLink>>& visitingIds, collections::List<WString>* failureReasons, TCallback&& callback);
+				bool										CheckSingleMergeTrace(TraceAmbiguity* ta, Trace* trace, TraceExec* traceExec, collections::List<Ref<InsExec_StackRefLink>>& visitingIds, collections::List<WString>* failureReasons);
 				void										LinkAmbiguityCriticalTrace(Ref<Trace> traceId);
 				void										CheckTraceAmbiguity(TraceAmbiguity* ta);
 				void										MarkAmbiguityCoveredForward(Trace* currentTrace, TraceAmbiguity* ta, Trace* firstTrace, TraceExec* firstTraceExec);
@@ -754,7 +754,7 @@ TraceManager
 				{
 				}
 
-				TraceException(TraceManager& tm, Trace* trace1, Trace* trace2, const wchar_t* phrase, const wchar_t* message)
+				TraceException(TraceManager& tm, Trace* trace1, Trace* trace2, const wchar_t* phrase, const WString& message)
 					: Exception(
 						WString::Unmanaged(L"[") +
 						WString::Unmanaged(phrase) +
@@ -762,8 +762,13 @@ TraceManager
 						itow(trace1->allocatedIndex) +
 						(trace2 == nullptr ? WString::Empty : WString::Unmanaged(L" and ") + itow(trace2->allocatedIndex)) +
 						WString::Unmanaged(L" : ") +
-						WString::Unmanaged(message)
+						message
 					)
+				{
+				}
+
+				TraceException(TraceManager& tm, Trace* trace1, Trace* trace2, const wchar_t* phrase, const wchar_t* message)
+					: TraceException(tm, trace1, trace2, phrase, WString::Unmanaged(message))
 				{
 				}
 
