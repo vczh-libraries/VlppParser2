@@ -36,7 +36,6 @@
 ||   + StackBegin()                                ||    ||   + StackBegin()                                ||
 ||     obj!:0 : PwlFeature                         ||    ||     obj!:14 : PwlFeature                        ||
 ||                                                 ||    ||                                                 ||
-||                                                 ||    ||                                                 ||
 ||   @ CS(0 -> -1) : [0]                           ||    ||   @ CS(28 -> -1) : [14]                         ||
 ||   + Token(0)                                    ||    ||   + Token(0)                                    ||
 ||                                                 ||    ||                                                 ||
@@ -59,7 +58,6 @@
 ||   @ CS(0 -> -1) : [0]                                                 ||    ||   @ CS(28 -> -1) : [14]                                               ||
 ||   + StackBegin()                                                      ||    ||   + StackBegin()                                                      ||
 ||     obj:1 : Plus                                                      ||    ||     obj:15 : Plus                                                     ||
-||                                                                       ||    ||                                                                       ||
 ||                                                                       ||    ||                                                                       ||
 ||   @ CS(1 -> 0) : [1][0]                                               ||    ||   @ CS(29 -> 28) : [15][14]                                           ||
 ||   + Token(0)                                                          ||    ||   + Token(0)                                                          ||
@@ -86,16 +84,13 @@
 |   + CreateObject(Plus)                                                |      |   + CreateObject(Plus)                                                |
 |     obj:1 : Plus                                                      |      |     obj:15 : Plus                                                     |
 |                                                                       |      |                                                                       |
-|                                                                       |      |                                                                       |
 |   @ CS(1 -> 0) : [1][0]                                               |      |   @ CS(29 -> 28) : [15][14]                                           |
 |   + StackEnd()                                                        |      |   + StackEnd()                                                        |
 |     obj+:1 : Plus                                                     |      |     obj+:15 : Plus                                                    |
 |       begin:3@0, top:3@0, create!:[4@0], end:[4@1]                    |      |       begin:5@0, top:5@0, create!:[6@0], end:[6@1]                    |
-|                                                                       |      |                                                                       |
 |   @ CS(0 -> -1) : [0] OS(2 -> -1) : [1]                               |      |   @ CS(28 -> -1) : [14] OS(30 -> -1) : [15]                           |
 |   > StackBegin()                                                      |      |   > StackBegin()                                                      |
 |     obj!:2 : PwlFeature                                               |      |     obj!:16 : PwlFeature                                              |
-|                                                                       |      |                                                                       |
 |                                                                       |      |                                                                       |
 |   @ CS(3 -> 0) : [2][0] OS(2 -> -1) : [1]                             |      |   @ CS(31 -> 28) : [16][14] OS(30 -> -1) : [15]                       |
 |   > StackSlot(0)                                                      |      |   > StackSlot(0)                                                      |
@@ -123,7 +118,6 @@
 ||   + StackBegin()                                                      ||    ||   + StackBegin()                                                      ||
 ||     obj:3 : Plus                                                      ||    ||     obj:17 : Plus                                                     ||
 ||                                                                       ||    ||                                                                       ||
-||                                                                       ||    ||                                                                       ||
 ||   @ CS(4 -> 3) : [3][2][0]                                            ||    ||   @ CS(32 -> 31) : [17][16][14]                                       ||
 ||   + Token(0)                                                          ||    ||   + Token(0)                                                          ||
 ||                                                                       ||    ||                                                                       ||
@@ -150,22 +144,19 @@
 |   + CreateObject(Plus)                                                |      |   + CreateObject(Plus)                                                |
 |     obj:3 : Plus                                                      |      |     obj:17 : Plus                                                     |
 |                                                                       |      |                                                                       |
-|                                                                       |      |                                                                       |
 |   @ CS(4 -> 3) : [3][2][0]                                            |      |   @ CS(32 -> 31) : [17][16][14]                                       |
 |   + StackEnd()                                                        |      |   + StackEnd()                                                        |
 |     obj+:3 : Plus                                                     |      |     obj+:17 : Plus                                                    |
 |       begin:7@0, top:7@0, create!:[8@0], end:[8@1]                    |      |       begin:9@0, top:9@0, create!:[10@0], end:[10@1]                  |
-|                                                                       |      |                                                                       |
 |   @ CS(3 -> 0) : [2][0] OS(5 -> -1) : [3]                             |      |   @ CS(31 -> 28) : [16][14] OS(33 -> -1) : [17]                       |
 |   > StackBegin()                                                      |      |   > StackSlot(0)                                                      |
 |     obj!:4 : PwlFeature                                               |      |                                                                       |
 |                                                                       |      |   @ CS(31 -> 28) : [16][14]                                           |
-|                                                                       |      | [RETURN STACK]:                                                       |
-|   @ CS(6 -> 3) : [4][2][0] OS(5 -> -1) : [3]                          |      |   [3][12][2]: Pwl2 -> [28][Module]<! "prefix_with_leftrec" !Pwl2 @ !> |
-|   > StackSlot(0)                                                      |      | [PREDECESSORS 9-9]: [9]                                               |
-|                                                                       |      | [SUCCESORS 13-13]: [13]                                               |
-|   @ CS(6 -> 3) : [4][2][0]                                            |      +-----------------------------------------------------------------------+
-| [RETURN STACK]:                                                       |      |
+|   @ CS(6 -> 3) : [4][2][0] OS(5 -> -1) : [3]                          |      | [RETURN STACK]:                                                       |
+|   > StackSlot(0)                                                      |      |   [3][12][2]: Pwl2 -> [28][Module]<! "prefix_with_leftrec" !Pwl2 @ !> |
+|                                                                       |      | [PREDECESSORS 9-9]: [9]                                               |
+|   @ CS(6 -> 3) : [4][2][0]                                            |      | [SUCCESORS 13-13]: [13]                                               |
+| [RETURN STACK]:                                                       |      +-----------------------------------------------------------------------+
 |   [5][2][4]: Pwl1_P -> [9][Pwl1_P]<! Plus !Pwl1_P @ !>                |      |
 |   [1][3][1]: Pwl1_P -> [15][Pwl1]<! !Pwl1_P @ !>                      |      |
 |   [0][11][1]: Pwl1 -> [27][Module]<! "prefix_with_leftrec" !Pwl1 @ !> |      |
@@ -187,7 +178,6 @@
 ||   @ CS(6 -> 3) : [4][2][0]                                            ||    ||   @ CS(31 -> 28) : [16][14]                                           ||
 ||   + StackBegin()                                                      ||    ||   + StackBegin()                                                      ||
 ||     obj:5 : Plus                                                      ||    ||     obj:18 : Plus                                                     ||
-||                                                                       ||    ||                                                                       ||
 ||                                                                       ||    ||                                                                       ||
 ||   @ CS(7 -> 6) : [5][4][2][0]                                         ||    ||   @ CS(34 -> 31) : [18][16][14]                                       ||
 ||   + Token(0)                                                          ||    ||   + Token(0)                                                          ||
@@ -216,22 +206,19 @@
 |   + CreateObject(Plus)                                                |      |   + CreateObject(Plus)                                                |
 |     obj:5 : Plus                                                      |      |     obj:18 : Plus                                                     |
 |                                                                       |      |                                                                       |
-|                                                                       |      |                                                                       |
 |   @ CS(7 -> 6) : [5][4][2][0]                                         |      |   @ CS(34 -> 31) : [18][16][14]                                       |
 |   + StackEnd()                                                        |      |   + StackEnd()                                                        |
 |     obj+:5 : Plus                                                     |      |     obj+:18 : Plus                                                    |
 |       begin:11@0, top:11@0, create!:[12@0], end:[12@1]                |      |       begin:13@0, top:13@0, create!:[14@0], end:[14@1]                |
-|                                                                       |      |                                                                       |
 |   @ CS(6 -> 3) : [4][2][0] OS(8 -> -1) : [5]                          |      |   @ CS(31 -> 28) : [16][14] OS(35 -> -1) : [18]                       |
 |   > StackBegin()                                                      |      |   > StackSlot(0)                                                      |
 |     obj!:6 : PwlFeature                                               |      |                                                                       |
 |                                                                       |      |   @ CS(31 -> 28) : [16][14]                                           |
-|                                                                       |      | [RETURN STACK]:                                                       |
-|   @ CS(9 -> 6) : [6][4][2][0] OS(8 -> -1) : [5]                       |      |   [3][12][2]: Pwl2 -> [28][Module]<! "prefix_with_leftrec" !Pwl2 @ !> |
-|   > StackSlot(0)                                                      |      | [PREDECESSORS 13-13]: [13]                                            |
-|                                                                       |      | [SUCCESORS 23-23]: [23]                                               |
-|   @ CS(9 -> 6) : [6][4][2][0]                                         |      +-----------------------------------------------------------------------+
-| [RETURN STACK]:                                                       |      |
+|   @ CS(9 -> 6) : [6][4][2][0] OS(8 -> -1) : [5]                       |      | [RETURN STACK]:                                                       |
+|   > StackSlot(0)                                                      |      |   [3][12][2]: Pwl2 -> [28][Module]<! "prefix_with_leftrec" !Pwl2 @ !> |
+|                                                                       |      | [PREDECESSORS 13-13]: [13]                                            |
+|   @ CS(9 -> 6) : [6][4][2][0]                                         |      | [SUCCESORS 23-23]: [23]                                               |
+| [RETURN STACK]:                                                       |      +-----------------------------------------------------------------------+
 |   [8][2][8]: Pwl1_P -> [9][Pwl1_P]<! Plus !Pwl1_P @ !>                |      |
 |   [5][2][4]: Pwl1_P -> [9][Pwl1_P]<! Plus !Pwl1_P @ !>                |      |
 |   [1][3][1]: Pwl1_P -> [15][Pwl1]<! !Pwl1_P @ !>                      |      |
@@ -254,7 +241,6 @@
 ||   @ CS(9 -> 6) : [6][4][2][0]                                         ||                   ||   @ CS(31 -> 28) : [16][14]                                           ||
 ||   + StackBegin()                                                      ||                   ||   + StackBegin()                                                      ||
 ||     obj:7 : Lt                                                        ||                   ||     obj:19 : Lt                                                       ||
-||                                                                       ||                   ||                                                                       ||
 ||                                                                       ||                   ||                                                                       ||
 ||   @ CS(10 -> 9) : [7][6][4][2][0]                                     ||                   ||   @ CS(36 -> 31) : [19][16][14]                                       ||
 ||   + Token(0)                                                          ||                   ||   + Token(0)                                                          ||
@@ -284,16 +270,13 @@
 |   + CreateObject(Lt)                                                  |                     |   + CreateObject(Lt)                                                  |
 |     obj:7 : Lt                                                        |                     |     obj:19 : Lt                                                       |
 |                                                                       |                     |                                                                       |
-|                                                                       |                     |                                                                       |
 |   @ CS(10 -> 9) : [7][6][4][2][0]                                     |                     |   @ CS(36 -> 31) : [19][16][14]                                       |
 |   + StackEnd()                                                        |                     |   + StackEnd()                                                        |
 |     obj+:7 : Lt                                                       |                     |     obj+:19 : Lt                                                      |
 |       begin:15@0, top:15@0, create!:[16@0], end:[16@1]                |                     |       begin:23@0, top:23@0, create!:[24@0], end:[24@1]                |
-|                                                                       |                     |                                                                       |
 |   @ CS(9 -> 6) : [6][4][2][0] OS(11 -> -1) : [7]                      |                     |   @ CS(31 -> 28) : [16][14] OS(37 -> -1) : [19]                       |
 |   > StackBegin()                                                      |                     |   > StackBegin()                                                      |
 |     obj:8 : PwlFeature                                                |                     |     obj:20 : PwlFeature                                               |
-|                                                                       |                     |                                                                       |
 |                                                                       |                     |                                                                       |
 |   @ CS(12 -> 9) : [8][6][4][2][0] OS(11 -> -1) : [7]                  |                     |   @ CS(38 -> 31) : [20][16][14] OS(37 -> -1) : [19]                   |
 |   > StackSlot(0)                                                      |                     |   > StackSlot(0)                                                      |
@@ -322,7 +305,6 @@
 |   + CreateObject(PwlFeature)                                                 |              |   + CreateObject(PwlFeature)                                                  |
 |     obj:8 : PwlFeature                                                       |              |     obj:20 : PwlFeature                                                       |
 |                                                                              |              |                                                                               |
-|                                                                              |              |                                                                               |
 |   @ CS(12 -> 9) : [8][6][4][2][0]                                            |              |   @ CS(38 -> 31) : [20][16][14]                                               |
 |   + Field(PwlFeature::one, 0)                                                |              |   + Field(PwlFeature::two, 0)                                                 |
 |                                                                              |              |                                                                               |
@@ -330,17 +312,15 @@
 |   + StackEnd()                                                               |              |   + StackEnd()                                                                |
 |     obj+:8 : PwlFeature                                                      |              |     obj+:20 : PwlFeature                                                      |
 |       begin:16@2, top:16@2, lrec:15@0, field:[7], create!:[17@0], end:[17@2] |              |       begin:24@2, top:24@2, lrec:23@0, field:[19], create!:[25@0], end:[25@2] |
-|                                                                              |              |                                                                               |
 |   @ CS(9 -> 6) : [6][4][2][0] OS(13 -> -1) : [8]                             |              |   @ CS(31 -> 28) : [16][14] OS(39 -> -1) : [20]                               |
 | [RETURN STACK]:                                                              |              |   + StackBegin()                                                              |
 |   [8][2][8]: Pwl1_P -> [9][Pwl1_P]<! Plus !Pwl1_P @ !>                       |              |     obj:21 : PwlFeature                                                       |
 |   [5][2][4]: Pwl1_P -> [9][Pwl1_P]<! Plus !Pwl1_P @ !>                       |              |                                                                               |
-|   [1][3][1]: Pwl1_P -> [15][Pwl1]<! !Pwl1_P @ !>                             |              |                                                                               |
-|   [0][11][1]: Pwl1 -> [27][Module]<! "prefix_with_leftrec" !Pwl1 @ !>        |              |   @ CS(40 -> 31) : [21][16][14] OS(39 -> -1) : [20]                           |
-| [PREDECESSORS 16-16]: [16]                                                   |              |   + StackSlot(0)                                                              |
-| [SUCCESORS 18-18]: [18]                                                      |              |                                                                               |
-+------------------------------------------------------------------------------+              |   @ CS(40 -> 31) : [21][16][14]                                               |
-|                                                                                             | [RETURN STACK]:                                                               |
+|   [1][3][1]: Pwl1_P -> [15][Pwl1]<! !Pwl1_P @ !>                             |              |   @ CS(40 -> 31) : [21][16][14] OS(39 -> -1) : [20]                           |
+|   [0][11][1]: Pwl1 -> [27][Module]<! "prefix_with_leftrec" !Pwl1 @ !>        |              |   + StackSlot(0)                                                              |
+| [PREDECESSORS 16-16]: [16]                                                   |              |                                                                               |
+| [SUCCESORS 18-18]: [18]                                                      |              |   @ CS(40 -> 31) : [21][16][14]                                               |
++------------------------------------------------------------------------------+              | [RETURN STACK]:                                                               |
 |                                                                                             |   [13][10][14]: Pwl2_P -> [24][Pwl2]<! { Plus } !Pwl2_P @ !>                  |
 |                                                                                             |   [3][12][2]: Pwl2 -> [28][Module]<! "prefix_with_leftrec" !Pwl2 @ !>         |
 |                                                                                             | [PREDECESSORS 24-24]: [24]                                                    |
@@ -363,7 +343,6 @@
 |   + StackEnd()                                                                         |    |
 |     obj+:6 : PwlFeature                                                                |    |
 |       begin:12@2, top:12@2, lrec:11@0, use:[8], field:[5], create!:[17@0], end!:[18@1] |    |
-|                                                                                        |    |
 |   @ CS(6 -> 3) : [4][2][0] OS(14 -> -1) : [6]                                          |    |
 | [RETURN STACK]:                                                                        |    |
 |   [5][2][4]: Pwl1_P -> [9][Pwl1_P]<! Plus !Pwl1_P @ !>                                 |    |
@@ -389,7 +368,6 @@
 |   + StackEnd()                                                                      |       |
 |     obj+:4 : PwlFeature                                                             |       |
 |       begin:8@2, top:8@2, lrec:7@0, use:[6], field:[3], create!:[17@0], end!:[19@1] |       |
-|                                                                                     |       |
 |   @ CS(3 -> 0) : [2][0] OS(15 -> -1) : [4]                                          |       |
 | [RETURN STACK]:                                                                     |       |
 |   [1][3][1]: Pwl1_P -> [15][Pwl1]<! !Pwl1_P @ !>                                    |       |
@@ -414,11 +392,9 @@
 |   + StackEnd()                                                                      |       |
 |     obj+:2 : PwlFeature                                                             |       |
 |       begin:4@2, top:4@2, lrec:3@0, use:[4], field:[1], create!:[17@0], end!:[20@1] |       |
-|                                                                                     |       |
 |   @ CS(0 -> -1) : [0] OS(16 -> -1) : [2]                                            |       |
 |   > StackBegin()                                                                    |       |
 |     obj!:9 : PwlFeature                                                             |       |
-|                                                                                     |       |
 |                                                                                     |       |
 |   @ CS(17 -> 0) : [9][0] OS(16 -> -1) : [2]                                         |       |
 | [RETURN STACK]:                                                                     |       |
@@ -440,11 +416,9 @@
 |   + StackEnd()                                                        |                     |
 |     obj+:9 : PwlFeature                                               |                     |
 |       begin:20@2, top:4@2, use:[2], create!:[17@0], end!:[21@0]       |                     |
-|                                                                       |                     |
 |   @ CS(0 -> -1) : [0] OS(18 -> -1) : [9]                              |                     |
 |   + StackBegin()                                                      |                     |
 |     obj:10 : PwlFeature                                               |                     |
-|                                                                       |                     |
 |                                                                       |                     |
 |   @ CS(19 -> 0) : [10][0] OS(18 -> -1) : [9]                          |                     |
 |   + StackSlot(0)                                                      |                     |
@@ -471,7 +445,6 @@
 ||   + StackBegin()                                                      ||            ||   + StackBegin()                                                      ||
 ||     obj:11 : Lt                                                       ||            ||     obj:22 : Lt                                                       ||
 ||                                                                       ||            ||                                                                       ||
-||                                                                       ||            ||                                                                       ||
 ||   @ CS(20 -> 19) : [11][10][0]                                        ||            ||   @ CS(41 -> 40) : [22][21][16][14]                                   ||
 ||   + Token(0)                                                          ||            ||   + Token(0)                                                          ||
 ||                                                                       ||            ||                                                                       ||
@@ -497,12 +470,10 @@
 |   + CreateObject(Lt)                                                  |              |   + CreateObject(Lt)                                                  |
 |     obj:11 : Lt                                                       |              |     obj:22 : Lt                                                       |
 |                                                                       |              |                                                                       |
-|                                                                       |              |                                                                       |
 |   @ CS(20 -> 19) : [11][10][0]                                        |              |   @ CS(41 -> 40) : [22][21][16][14]                                   |
 |   + StackEnd()                                                        |              |   + StackEnd()                                                        |
 |     obj+:11 : Lt                                                      |              |     obj+:22 : Lt                                                      |
 |       begin:27@0, top:27@0, create!:[28@0], end:[28@1]                |              |       begin:31@0, top:31@0, create!:[32@0], end:[32@1]                |
-|                                                                       |              |                                                                       |
 |   @ CS(19 -> 0) : [10][0] OS(21 -> -1) : [11]                         |              |   @ CS(40 -> 31) : [21][16][14] OS(42 -> -1) : [22]                   |
 |   > StackSlot(1)                                                      |              |   > StackSlot(1)                                                      |
 |                                                                       |              |                                                                       |
@@ -527,7 +498,6 @@
 |   + CreateObject(PwlFeature)                                                    |    |   + CreateObject(PwlFeature)                                                      |
 |     obj:10 : PwlFeature                                                         |    |     obj:21 : PwlFeature                                                           |
 |                                                                                 |    |                                                                                   |
-|                                                                                 |    |                                                                                   |
 |   @ CS(19 -> 0) : [10][0]                                                       |    |   @ CS(40 -> 31) : [21][16][14]                                                   |
 |   + Field(PwlFeature::prev, 0)                                                  |    |   + Field(PwlFeature::prev, 0)                                                    |
 |                                                                                 |    |                                                                                   |
@@ -538,11 +508,9 @@
 |   + StackEnd()                                                                  |    |   + StackEnd()                                                                    |
 |     obj+:10 : PwlFeature                                                        |    |     obj+:21 : PwlFeature                                                          |
 |       begin:21@1, top:21@1, lrec:4@2, field:[11, 9], create!:[29@0], end:[29@3] |    |       begin:25@3, top:25@3, lrec:23@0, field:[22, 20], create!:[33@0], end:[33@3] |
-|                                                                                 |    |                                                                                   |
 |   @ CS(0 -> -1) : [0] OS(22 -> -1) : [10]                                       |    |   @ CS(31 -> 28) : [16][14] OS(43 -> -1) : [21]                                   |
 |   + StackBegin()                                                                |    |   + StackBegin()                                                                  |
 |     obj:12 : PwlFeature                                                         |    |     obj:23 : PwlFeature                                                           |
-|                                                                                 |    |                                                                                   |
 |                                                                                 |    |                                                                                   |
 |   @ CS(23 -> 0) : [12][0] OS(22 -> -1) : [10]                                   |    |   @ CS(44 -> 31) : [23][16][14] OS(43 -> -1) : [21]                               |
 |   + StackSlot(0)                                                                |    |   + StackSlot(0)                                                                  |
@@ -570,7 +538,6 @@
 ||   + StackBegin()                                                      ||             ||   + StackBegin()                                                      ||
 ||     obj:13 : Lt                                                       ||             ||     obj:24 : Lt                                                       ||
 ||                                                                       ||             ||                                                                       ||
-||                                                                       ||             ||                                                                       ||
 ||   @ CS(24 -> 23) : [13][12][0]                                        ||             ||   @ CS(45 -> 44) : [24][23][16][14]                                   ||
 ||   + Token(0)                                                          ||             ||   + Token(0)                                                          ||
 ||                                                                       ||             ||                                                                       ||
@@ -596,12 +563,10 @@
 |   + CreateObject(Lt)                                                  |               |   + CreateObject(Lt)                                                  |
 |     obj:13 : Lt                                                       |               |     obj:24 : Lt                                                       |
 |                                                                       |               |                                                                       |
-|                                                                       |               |                                                                       |
 |   @ CS(24 -> 23) : [13][12][0]                                        |               |   @ CS(45 -> 44) : [24][23][16][14]                                   |
 |   + StackEnd()                                                        |               |   + StackEnd()                                                        |
 |     obj+:13 : Lt                                                      |               |     obj+:24 : Lt                                                      |
 |       begin:35@0, top:35@0, create!:[36@0], end:[36@1]                |               |       begin:39@0, top:39@0, create!:[40@0], end:[40@1]                |
-|                                                                       |               |                                                                       |
 |   @ CS(23 -> 0) : [12][0] OS(25 -> -1) : [13]                         |               |   @ CS(44 -> 31) : [23][16][14] OS(46 -> -1) : [24]                   |
 |   > StackSlot(1)                                                      |               |   > StackSlot(1)                                                      |
 |                                                                       |               |                                                                       |
@@ -626,7 +591,6 @@
 |   + CreateObject(PwlFeature)                                                     |    |   + CreateObject(PwlFeature)                                                      |
 |     obj:12 : PwlFeature                                                          |    |     obj:23 : PwlFeature                                                           |
 |                                                                                  |    |                                                                                   |
-|                                                                                  |    |                                                                                   |
 |   @ CS(23 -> 0) : [12][0]                                                        |    |   @ CS(44 -> 31) : [23][16][14]                                                   |
 |   + Field(PwlFeature::prev, 0)                                                   |    |   + Field(PwlFeature::prev, 0)                                                    |
 |                                                                                  |    |                                                                                   |
@@ -637,7 +601,6 @@
 |   + StackEnd()                                                                   |    |   + StackEnd()                                                                    |
 |     obj+:12 : PwlFeature                                                         |    |     obj+:23 : PwlFeature                                                          |
 |       begin:29@4, top:29@4, lrec:4@2, field:[13, 10], create!:[37@0], end:[37@3] |    |       begin:33@4, top:33@4, lrec:23@0, field:[24, 21], create!:[41@0], end:[41@3] |
-|                                                                                  |    |                                                                                   |
 |   @ CS(0 -> -1) : [0] OS(26 -> -1) : [12]                                        |    |   @ CS(31 -> 28) : [16][14] OS(47 -> -1) : [23]                                   |
 | [PREDECESSORS 36-36]: [36]                                                       |    | [RETURN STACK]:                                                                   |
 | [SUCCESORS 44-44]: [44]                                                          |    |   [3][12][2]: Pwl2 -> [28][Module]<! "prefix_with_leftrec" !Pwl2 @ !>             |
@@ -658,10 +621,9 @@
 |   + StackEnd()                                                  |                     |   + Field(PwlFeature::prefix, 0)                                                              |
 |     obj+:0 : PwlFeature                                         |                     |                                                                                               |
 |       begin:1@0, top:1@0, use:[12], create!:[37@0], end!:[44@0] |                     |   @ CS(31 -> 28) : [16][14] OS(47 -> -1) : [23]                                               |
-|                                                                 |                     |   + StackEnd()                                                                                |
-|   @ OS(27 -> -1) : [0]                                          |                     |     obj+:16 : PwlFeature                                                                      |
-| [PREDECESSORS 37-37]: [37]                                      |                     |       begin:6@2, top:6@2, lrec:5@0, use:[23], field:[18, 15, 17], create!:[41@0], end!:[42@1] |
-| [SUCCESORS 38-38]: [38]                                         |                     |                                                                                               |
+|   @ OS(27 -> -1) : [0]                                          |                     |   + StackEnd()                                                                                |
+| [PREDECESSORS 37-37]: [37]                                      |                     |     obj+:16 : PwlFeature                                                                      |
+| [SUCCESORS 38-38]: [38]                                         |                     |       begin:6@2, top:6@2, lrec:5@0, use:[23], field:[18, 15, 17], create!:[41@0], end!:[42@1] |
 +-----------------------------------------------------------------+                     |   @ CS(28 -> -1) : [14] OS(48 -> -1) : [16]                                                   |
 |                                                                                       | [PREDECESSORS 41-41]: [41]                                                                    |
 |                                                                                       | [SUCCESORS 43-43]: [43]                                                                       |
@@ -680,7 +642,6 @@
 |                                                                                       |   + StackEnd()                                                  |
 |                                                                                       |     obj+:14 : PwlFeature                                        |
 |                                                                                       |       begin:2@0, top:2@0, use:[16], create!:[41@0], end!:[43@0] |
-|                                                                                       |                                                                 |
 |                                                                                       |   @ OS(49 -> -1) : [14]                                         |
 |                                                                                       | [PREDECESSORS 42-42]: [42]                                      |
 |                                                                                       | [SUCCESORS 38-38]: [38]                                         |

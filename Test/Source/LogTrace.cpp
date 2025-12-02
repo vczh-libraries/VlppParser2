@@ -475,7 +475,6 @@ void RenderTrace(
 							writer.WriteString(L"]");
 						}
 					}
-					writer.WriteLine(L"");
 				}
 
 				writer.WriteLine(L"");
