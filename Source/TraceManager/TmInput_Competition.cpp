@@ -160,8 +160,8 @@ CheckAttendingCompetitionsOnEndingEdge
 				while (acId != nullref)
 				{
 					// when executing an EndingInput transition, we announce high priority win a competition if
-					//   1) such EndingInput transitions ends the clause, and the state of the trace holding competition belongs to the same clause
-					//      we ensure this by comparing rule id, clause id in Competition
+					//   1) such EndingInput transitions ends the rule, and the state of the trace holding competition belongs to the same rule
+					//      we ensure this by comparing rule id in Competition
 					//      and compare ReturnStack object (not content) in AttendingCompetitions
 					//      the reason returnStack is not in Competition is that
 					//      different transitions always create new ReturnStack objects
@@ -171,9 +171,9 @@ CheckAttendingCompetitionsOnEndingEdge
 					if (ac->returnStack == returnStack)
 					{
 						auto cpt = GetCompetition(ac->competition);
-						// ensure that this EndingInput edge and the competition belong to the same clause
+						// ensure that this EndingInput edge and the competition belong to the same rule
 						auto&& stateDesc = executable.states[edgeDesc.fromState];
-						if (cpt->ruleId == stateDesc.rule && cpt->competitionId == stateDesc.clause)
+						if (cpt->ruleId == stateDesc.rule)
 						{
 							// check if it is a high bet
 							if (ac->forHighPriority && cpt->status == CompetitionStatus::Holding)
