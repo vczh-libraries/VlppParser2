@@ -38,7 +38,8 @@
 || [AST-INSTRUCTIONS]:                                              ||
 ||   @                                                              ||
 ||   + StackBegin()                                                 ||
-||     objs: 0                                                      ||
+||     obj:0 : OptionalFeature                                      ||
+||                                                                  ||
 ||                                                                  ||
 ||   @ CS(0 -> -1) : [0]                                            ||
 ||   + Token(0)                                                     ||
@@ -64,13 +65,14 @@
 || [AST-INSTRUCTIONS]:                                                           ||    || [AST-INSTRUCTIONS]:                                              ||
 ||   @ CS(0 -> -1) : [0]                                                         ||    ||   @ CS(0 -> -1) : [0]                                            ||
 ||   + StackBegin()                                                              ||    ||   + Token(2)                                                     ||
-||     objs: 1                                                                   ||    ||                                                                  ||
+||     obj:1 : Plus                                                              ||    ||                                                                  ||
 ||                                                                               ||    ||   @ CS(0 -> -1) : [0]                                            ||
-||   @ CS(1 -> 0) : [1][0]                                                       ||    || [RETURN STACK]:                                                  ||
-||   + Token(0)                                                                  ||    ||   [0][3][0]: EqualOptional -> [11][Module]<! !EqualOptional @ !> ||
-||                                                                               ||    || [PREDECESSORS 1-1]: [1]                                          ||
-||   @ CS(1 -> 0) : [1][0]                                                       ||    || [SUCCESORS 9-9]: [9]                                             ||
-|| [RETURN STACK]:                                                               ||    ++==================================================================++
+||                                                                               ||    || [RETURN STACK]:                                                  ||
+||   @ CS(1 -> 0) : [1][0]                                                       ||    ||   [0][3][0]: EqualOptional -> [11][Module]<! !EqualOptional @ !> ||
+||   + Token(0)                                                                  ||    || [PREDECESSORS 1-1]: [1]                                          ||
+||                                                                               ||    || [SUCCESORS 9-9]: [9]                                             ||
+||   @ CS(1 -> 0) : [1][0]                                                       ||    ++==================================================================++
+|| [RETURN STACK]:                                                               ||    |
 ||   [1][0][1]: Plus -> [6][EqualOptional]< "optional" [ Plus @ ] "+" { Plus } > ||    |
 ||   [0][3][0]: EqualOptional -> [11][Module]<! !EqualOptional @ !>              ||    |
 || [PREDECESSORS 1-1]: [1]                                                       ||    |
@@ -88,11 +90,13 @@
 | [AST-INSTRUCTIONS]:                                              |                   |
 |   @ CS(1 -> 0) : [1][0]                                          |                   |
 |   + CreateObject(Plus)                                           |                   |
-|     objs: 1                                                      |                   |
+|     obj:1 : Plus                                                 |                   |
+|                                                                  |                   |
 |                                                                  |                   |
 |   @ CS(1 -> 0) : [1][0]                                          |                   |
 |   + StackEnd()                                                   |                   |
-|     obj:1, begin:2@0, top:2@0, create!:[3@0], end:[3@1]          |                   |
+|     obj+:1 : Plus                                                |                   |
+|       begin:2@0, top:2@0, create!:[3@0], end:[3@1]               |                   |
 |                                                                  |                   |
 |   @ CS(0 -> -1) : [0] OS(2 -> -1) : [1]                          |                   |
 |   > StackSlot(1)                                                 |                   |
@@ -105,108 +109,115 @@
 +------------------------------------------------------------------+                   |
 [0]                                                                                    [1]
  |                                                                                      |
- +                                                                                      +---+
- |                                                                                          |
-[0]                                                                                        [1]
-++==================================================================++                     ++===============================================================================++
-|| [6]: {PLUS} +                                                    ||                     || [9]: {PLUS} +                                                                 ||
-||   TraceExec: [4]                                                 ||                     ||   TraceExec: [7]                                                              ||
-||   InsExec: [7:1]                                                 ||                     ||   InsExec: [16:2]                                                             ||
-||   ForwardTrace: 2                                                ||                     ||   ForwardTrace: 4                                                             ||
-|| [7][EqualOptional]< "optional" [ Plus ] "+" @ { Plus } >         ||                     || [2][Plus]< "+" @ >                                                            ||
-|| [AST-INSTRUCTIONS]:                                              ||                     || [AST-INSTRUCTIONS]:                                                           ||
-||   @ CS(0 -> -1) : [0]                                            ||                     ||   @ CS(0 -> -1) : [0]                                                         ||
-||   + Token(2)                                                     ||                     ||   + StackBegin()                                                              ||
-||                                                                  ||                     ||     objs: 3                                                                   ||
-||   @ CS(0 -> -1) : [0]                                            ||                     ||                                                                               ||
-|| [RETURN STACK]:                                                  ||                     ||   @ CS(5 -> 0) : [3][0]                                                       ||
-||   [0][3][0]: EqualOptional -> [11][Module]<! !EqualOptional @ !> ||                     ||   + Token(0)                                                                  ||
-|| [PREDECESSORS 3-3]: [3]                                          ||                     ||                                                                               ||
-|| [SUCCESORS 12-12]: [12]                                          ||                     ||   @ CS(5 -> 0) : [3][0]                                                       ||
-++==================================================================++                     || [RETURN STACK]:                                                               ||
-|                                                                                          ||   [2][1][4]: Plus -> [8][EqualOptional]< "optional" [ Plus ] "+" { Plus @ } > ||
-|                                                                                          ||   [0][3][0]: EqualOptional -> [11][Module]<! !EqualOptional @ !>              ||
-|                                                                                          || [PREDECESSORS 4-4]: [4]                                                       ||
-|                                                                                          || [SUCCESORS 10-10]: [10]                                                       ||
-|                                                                                          ++===============================================================================++
-|                                                                                          |
-+                                                                                          +
-|                                                                                          |
-+-------------------------------------------------------------------------------------+    +------------------------------------------------------------------+
-| [12]: <Ending>                                                                      |    | [10]: <Ending>                                                   |
-|   TraceExec: [5]                                                                    |    |   TraceExec: [8]                                                 |
-|   InsExec: [8:7]                                                                    |    |   InsExec: [18:3]                                                |
-|   ForwardTrace: 2                                                                   |    |   ForwardTrace: 4                                                |
-| [11][Module]<! !EqualOptional @ !>                                                  |    | [8][EqualOptional]< "optional" [ Plus ] "+" { Plus @ } >         |
-| [AST-INSTRUCTIONS]:                                                                 |    | [AST-INSTRUCTIONS]:                                              |
-|   @ CS(0 -> -1) : [0]                                                               |    |   @ CS(5 -> 0) : [3][0]                                          |
-|   + EnumItem(0, 4)                                                                  |    |   + CreateObject(Plus)                                           |
-|                                                                                     |    |     objs: 3                                                      |
-|   @ CS(0 -> -1) : [0]                                                               |    |                                                                  |
-|   + CreateObject(OptionalFeature)                                                   |    |   @ CS(5 -> 0) : [3][0]                                          |
-|     objs: 0                                                                         |    |   + StackEnd()                                                   |
-|                                                                                     |    |     obj:3, begin:9@0, top:9@0, create!:[10@0], end:[10@1]        |
-|   @ CS(0 -> -1) : [0]                                                               |    |                                                                  |
-|   + Field(OptionalFeature::optional, 1)                                             |    |   @ CS(0 -> -1) : [0] OS(6 -> -1) : [3]                          |
-|                                                                                     |    |   > StackSlot(3)                                                 |
-|   @ CS(0 -> -1) : [0]                                                               |    |                                                                  |
-|   + Field(OptionalFeature::loop, 3)                                                 |    |   @ CS(0 -> -1) : [0]                                            |
-|                                                                                     |    | [RETURN STACK]:                                                  |
-|   @ CS(0 -> -1) : [0]                                                               |    |   [0][3][0]: EqualOptional -> [11][Module]<! !EqualOptional @ !> |
-|   + Field(OptionalFeature::priority, 4)                                             |    | [PREDECESSORS 9-9]: [9]                                          |
-|                                                                                     |    | [SUCCESORS 11-11]: [11]                                          |
-|   @ CS(0 -> -1) : [0]                                                               |    +------------------------------------------------------------------+
-|   + StackEnd()                                                                      |    |
-|     obj:0, begin:1@0, top:1@0, field:[3, 1], create!:[12@1, 11@1], end:[11@5, 12@5] |    |
-|                                                                                     |    |
-|   @ OS(3 -> -1) : [0]                                                               |    |
-|   > StackBegin()                                                                    |    |
-|     objs: 2                                                                         |    |
-|                                                                                     |    |
-|   @ CS(4 -> -1) : [2] OS(3 -> -1) : [0]                                             |    |
-| [PREDECESSORS 6-6]: [6]                                                             |    |
-| [SUCCESORS 7-7]: [7]                                                                |    |
-+-------------------------------------------------------------------------------------+    |
-|                                                                                          |
-+                                                                                          +
-|                                                                                          |
-|                                                                                          +-------------------------------------------------------------------------------------+
-|                                                                                          | [11]: <Ending>                                                                      |
-|                                                                                          |   TraceExec: [9]                                                                    |
-|                                                                                          |   InsExec: [21:7]                                                                   |
-|                                                                                          |   ForwardTrace: 4                                                                   |
-|                                                                                          | [11][Module]<! !EqualOptional @ !>                                                  |
-|                                                                                          | [AST-INSTRUCTIONS]:                                                                 |
-|                                                                                          |   @ CS(0 -> -1) : [0]                                                               |
-|                                                                                          |   + EnumItem(0, 4)                                                                  |
-|                                                                                          |                                                                                     |
-|                                                                                          |   @ CS(0 -> -1) : [0]                                                               |
-|                                                                                          |   + CreateObject(OptionalFeature)                                                   |
-|                                                                                          |     objs: 0                                                                         |
-|                                                                                          |                                                                                     |
-|                                                                                          |   @ CS(0 -> -1) : [0]                                                               |
-|                                                                                          |   + Field(OptionalFeature::optional, 1)                                             |
-|                                                                                          |                                                                                     |
-|                                                                                          |   @ CS(0 -> -1) : [0]                                                               |
-|                                                                                          |   + Field(OptionalFeature::loop, 3)                                                 |
-|                                                                                          |                                                                                     |
-|                                                                                          |   @ CS(0 -> -1) : [0]                                                               |
-|                                                                                          |   + Field(OptionalFeature::priority, 4)                                             |
-|                                                                                          |                                                                                     |
-|                                                                                          |   @ CS(0 -> -1) : [0]                                                               |
-|                                                                                          |   + StackEnd()                                                                      |
-|                                                                                          |     obj:0, begin:1@0, top:1@0, field:[3, 1], create!:[12@1, 11@1], end:[11@5, 12@5] |
-|                                                                                          |                                                                                     |
-|                                                                                          |   @ OS(7 -> -1) : [0]                                                               |
-|                                                                                          |   > StackBegin()                                                                    |
-|                                                                                          |     objs: 4                                                                         |
-|                                                                                          |                                                                                     |
-|                                                                                          |   @ CS(8 -> -1) : [4] OS(7 -> -1) : [0]                                             |
-|                                                                                          | [PREDECESSORS 10-10]: [10]                                                          |
-|                                                                                          | [SUCCESORS 7-7]: [7]                                                                |
-|                                                                                          +-------------------------------------------------------------------------------------+
-|                                                                                          |
-+------------------------------------------------------------------------------------------+
+ +                                                                                     ++
+ |                                                                                     |
+[0]                                                                                   [1]
+++==================================================================++                ++===============================================================================++
+|| [6]: {PLUS} +                                                    ||                || [9]: {PLUS} +                                                                 ||
+||   TraceExec: [4]                                                 ||                ||   TraceExec: [7]                                                              ||
+||   InsExec: [7:1]                                                 ||                ||   InsExec: [16:2]                                                             ||
+||   ForwardTrace: 2                                                ||                ||   ForwardTrace: 4                                                             ||
+|| [7][EqualOptional]< "optional" [ Plus ] "+" @ { Plus } >         ||                || [2][Plus]< "+" @ >                                                            ||
+|| [AST-INSTRUCTIONS]:                                              ||                || [AST-INSTRUCTIONS]:                                                           ||
+||   @ CS(0 -> -1) : [0]                                            ||                ||   @ CS(0 -> -1) : [0]                                                         ||
+||   + Token(2)                                                     ||                ||   + StackBegin()                                                              ||
+||                                                                  ||                ||     obj:3 : Plus                                                              ||
+||   @ CS(0 -> -1) : [0]                                            ||                ||                                                                               ||
+|| [RETURN STACK]:                                                  ||                ||                                                                               ||
+||   [0][3][0]: EqualOptional -> [11][Module]<! !EqualOptional @ !> ||                ||   @ CS(5 -> 0) : [3][0]                                                       ||
+|| [PREDECESSORS 3-3]: [3]                                          ||                ||   + Token(0)                                                                  ||
+|| [SUCCESORS 12-12]: [12]                                          ||                ||                                                                               ||
+++==================================================================++                ||   @ CS(5 -> 0) : [3][0]                                                       ||
+|                                                                                     || [RETURN STACK]:                                                               ||
+|                                                                                     ||   [2][1][4]: Plus -> [8][EqualOptional]< "optional" [ Plus ] "+" { Plus @ } > ||
+|                                                                                     ||   [0][3][0]: EqualOptional -> [11][Module]<! !EqualOptional @ !>              ||
+|                                                                                     || [PREDECESSORS 4-4]: [4]                                                       ||
+|                                                                                     || [SUCCESORS 10-10]: [10]                                                       ||
+|                                                                                     ++===============================================================================++
+|                                                                                     |
++                                                                                     +
+|                                                                                     |
++--------------------------------------------------------------------------------+    +------------------------------------------------------------------+
+| [12]: <Ending>                                                                 |    | [10]: <Ending>                                                   |
+|   TraceExec: [5]                                                               |    |   TraceExec: [8]                                                 |
+|   InsExec: [8:7]                                                               |    |   InsExec: [18:3]                                                |
+|   ForwardTrace: 2                                                              |    |   ForwardTrace: 4                                                |
+| [11][Module]<! !EqualOptional @ !>                                             |    | [8][EqualOptional]< "optional" [ Plus ] "+" { Plus @ } >         |
+| [AST-INSTRUCTIONS]:                                                            |    | [AST-INSTRUCTIONS]:                                              |
+|   @ CS(0 -> -1) : [0]                                                          |    |   @ CS(5 -> 0) : [3][0]                                          |
+|   + EnumItem(0, 4)                                                             |    |   + CreateObject(Plus)                                           |
+|                                                                                |    |     obj:3 : Plus                                                 |
+|   @ CS(0 -> -1) : [0]                                                          |    |                                                                  |
+|   + CreateObject(OptionalFeature)                                              |    |                                                                  |
+|     obj:0 : OptionalFeature                                                    |    |   @ CS(5 -> 0) : [3][0]                                          |
+|                                                                                |    |   + StackEnd()                                                   |
+|                                                                                |    |     obj+:3 : Plus                                                |
+|   @ CS(0 -> -1) : [0]                                                          |    |       begin:9@0, top:9@0, create!:[10@0], end:[10@1]             |
+|   + Field(OptionalFeature::optional, 1)                                        |    |                                                                  |
+|                                                                                |    |   @ CS(0 -> -1) : [0] OS(6 -> -1) : [3]                          |
+|   @ CS(0 -> -1) : [0]                                                          |    |   > StackSlot(3)                                                 |
+|   + Field(OptionalFeature::loop, 3)                                            |    |                                                                  |
+|                                                                                |    |   @ CS(0 -> -1) : [0]                                            |
+|   @ CS(0 -> -1) : [0]                                                          |    | [RETURN STACK]:                                                  |
+|   + Field(OptionalFeature::priority, 4)                                        |    |   [0][3][0]: EqualOptional -> [11][Module]<! !EqualOptional @ !> |
+|                                                                                |    | [PREDECESSORS 9-9]: [9]                                          |
+|   @ CS(0 -> -1) : [0]                                                          |    | [SUCCESORS 11-11]: [11]                                          |
+|   + StackEnd()                                                                 |    +------------------------------------------------------------------+
+|     obj+:0 : OptionalFeature                                                   |    |
+|       begin:1@0, top:1@0, field:[3, 1], create!:[12@1, 11@1], end:[11@5, 12@5] |    |
+|                                                                                |    |
+|   @ OS(3 -> -1) : [0]                                                          |    |
+|   > StackBegin()                                                               |    |
+|     obj!:2 : OptionalFeature                                                   |    |
+|                                                                                |    |
+|                                                                                |    |
+|   @ CS(4 -> -1) : [2] OS(3 -> -1) : [0]                                        |    |
+| [PREDECESSORS 6-6]: [6]                                                        |    |
+| [SUCCESORS 7-7]: [7]                                                           |    |
++--------------------------------------------------------------------------------+    |
+|                                                                                     |
++                                                                                     +
+|                                                                                     |
+|                                                                                     +--------------------------------------------------------------------------------+
+|                                                                                     | [11]: <Ending>                                                                 |
+|                                                                                     |   TraceExec: [9]                                                               |
+|                                                                                     |   InsExec: [21:7]                                                              |
+|                                                                                     |   ForwardTrace: 4                                                              |
+|                                                                                     | [11][Module]<! !EqualOptional @ !>                                             |
+|                                                                                     | [AST-INSTRUCTIONS]:                                                            |
+|                                                                                     |   @ CS(0 -> -1) : [0]                                                          |
+|                                                                                     |   + EnumItem(0, 4)                                                             |
+|                                                                                     |                                                                                |
+|                                                                                     |   @ CS(0 -> -1) : [0]                                                          |
+|                                                                                     |   + CreateObject(OptionalFeature)                                              |
+|                                                                                     |     obj:0 : OptionalFeature                                                    |
+|                                                                                     |                                                                                |
+|                                                                                     |                                                                                |
+|                                                                                     |   @ CS(0 -> -1) : [0]                                                          |
+|                                                                                     |   + Field(OptionalFeature::optional, 1)                                        |
+|                                                                                     |                                                                                |
+|                                                                                     |   @ CS(0 -> -1) : [0]                                                          |
+|                                                                                     |   + Field(OptionalFeature::loop, 3)                                            |
+|                                                                                     |                                                                                |
+|                                                                                     |   @ CS(0 -> -1) : [0]                                                          |
+|                                                                                     |   + Field(OptionalFeature::priority, 4)                                        |
+|                                                                                     |                                                                                |
+|                                                                                     |   @ CS(0 -> -1) : [0]                                                          |
+|                                                                                     |   + StackEnd()                                                                 |
+|                                                                                     |     obj+:0 : OptionalFeature                                                   |
+|                                                                                     |       begin:1@0, top:1@0, field:[3, 1], create!:[12@1, 11@1], end:[11@5, 12@5] |
+|                                                                                     |                                                                                |
+|                                                                                     |   @ OS(7 -> -1) : [0]                                                          |
+|                                                                                     |   > StackBegin()                                                               |
+|                                                                                     |     obj!:4 : OptionalFeature                                                   |
+|                                                                                     |                                                                                |
+|                                                                                     |                                                                                |
+|                                                                                     |   @ CS(8 -> -1) : [4] OS(7 -> -1) : [0]                                        |
+|                                                                                     | [PREDECESSORS 10-10]: [10]                                                     |
+|                                                                                     | [SUCCESORS 7-7]: [7]                                                           |
+|                                                                                     +--------------------------------------------------------------------------------+
+|                                                                                     |
++-------------------------------------------------------------------------------------+
 |
 +----------------------------------------------------+
 | [7]: <Merging>                                     |
@@ -223,18 +234,20 @@
 |
 +
 |
-+---------------------------------------------------------------------------+
-| [8]: <Ending>                                                             |
-|   TraceExec: [11]                                                         |
-|   InsExec: [28:1]                                                         |
-|   ForwardTrace: 7                                                         |
-| [10][Module] END [ENDING]                                                 |
-| [AST-INSTRUCTIONS]:                                                       |
-|   @ CS(10 -> -1) : [4, 2] OS(9 -> -1) : [0]                               |
-|   + StackEnd()                                                            |
-|     obj:2, begin:12@6, top:1@0, use:[0], create!:[12@1, 11@1], end!:[8@0] |
-|     obj:4, begin:11@6, top:1@0, use:[0], create!:[12@1, 11@1], end!:[8@0] |
-|                                                                           |
-|   @ OS(11 -> -1) : [4, 2]                                                 |
-| [PREDECESSORS 7-7]: [7]                                                   |
-+---------------------------------------------------------------------------+
++----------------------------------------------------------------------+
+| [8]: <Ending>                                                        |
+|   TraceExec: [11]                                                    |
+|   InsExec: [28:1]                                                    |
+|   ForwardTrace: 7                                                    |
+| [10][Module] END [ENDING]                                            |
+| [AST-INSTRUCTIONS]:                                                  |
+|   @ CS(10 -> -1) : [4, 2] OS(9 -> -1) : [0]                          |
+|   + StackEnd()                                                       |
+|     obj+:2 : OptionalFeature                                         |
+|       begin:12@6, top:1@0, use:[0], create!:[12@1, 11@1], end!:[8@0] |
+|     obj+:4 : OptionalFeature                                         |
+|       begin:11@6, top:1@0, use:[0], create!:[12@1, 11@1], end!:[8@0] |
+|                                                                      |
+|   @ OS(11 -> -1) : [4, 2]                                            |
+| [PREDECESSORS 7-7]: [7]                                              |
++----------------------------------------------------------------------+

@@ -21,7 +21,8 @@
 || [AST-INSTRUCTIONS]:                                              ||
 ||   @                                                              ||
 ||   + StackBegin()                                                 ||
-||     objs: 0                                                      ||
+||     obj!:0 : Pwa1Feature                                         ||
+||                                                                  ||
 ||                                                                  ||
 ||   @ CS(0 -> -1) : [0]                                            ||
 ||   + Token(0)                                                     ||
@@ -46,7 +47,8 @@
 || [AST-INSTRUCTIONS]:                                                                          ||    || [AST-INSTRUCTIONS]:                                                                          ||
 ||   @ CS(0 -> -1) : [0]                                                                        ||    ||   @ CS(0 -> -1) : [0]                                                                        ||
 ||   + StackBegin()                                                                             ||    ||   + StackBegin()                                                                             ||
-||     objs: 1                                                                                  ||    ||     objs: 5                                                                                  ||
+||     obj:1 : Plus                                                                             ||    ||     obj:5 : Plus                                                                             ||
+||                                                                                              ||    ||                                                                                              ||
 ||                                                                                              ||    ||                                                                                              ||
 ||   @ CS(1 -> 0) : [1][0]                                                                      ||    ||   @ CS(9 -> 0) : [5][0]                                                                      ||
 ||   + Token(0)                                                                                 ||    ||   + Token(0)                                                                                 ||
@@ -71,15 +73,18 @@
 | [AST-INSTRUCTIONS]:                                                                          |      | [AST-INSTRUCTIONS]:                                                                          |
 |   @ CS(1 -> 0) : [1][0]                                                                      |      |   @ CS(9 -> 0) : [5][0]                                                                      |
 |   + CreateObject(Plus)                                                                       |      |   + CreateObject(Plus)                                                                       |
-|     objs: 1                                                                                  |      |     objs: 5                                                                                  |
+|     obj:1 : Plus                                                                             |      |     obj:5 : Plus                                                                             |
+|                                                                                              |      |                                                                                              |
 |                                                                                              |      |                                                                                              |
 |   @ CS(1 -> 0) : [1][0]                                                                      |      |   @ CS(9 -> 0) : [5][0]                                                                      |
 |   + StackEnd()                                                                               |      |   + StackEnd()                                                                               |
-|     obj:1, begin:2@0, top:2@0, create!:[3@0], end:[3@1]                                      |      |     obj:5, begin:4@0, top:4@0, create!:[5@0], end:[5@1]                                      |
+|     obj+:1 : Plus                                                                            |      |     obj+:5 : Plus                                                                            |
+|       begin:2@0, top:2@0, create!:[3@0], end:[3@1]                                           |      |       begin:4@0, top:4@0, create!:[5@0], end:[5@1]                                           |
 |                                                                                              |      |                                                                                              |
 |   @ CS(0 -> -1) : [0] OS(2 -> -1) : [1]                                                      |      |   @ CS(0 -> -1) : [0] OS(10 -> -1) : [5]                                                     |
 |   > StackBegin()                                                                             |      |   > StackBegin()                                                                             |
-|     objs: 2                                                                                  |      |     objs: 6                                                                                  |
+|     obj:2 : PbaFeature                                                                       |      |     obj:6 : PbaFeature                                                                       |
+|                                                                                              |      |                                                                                              |
 |                                                                                              |      |                                                                                              |
 |   @ CS(3 -> 0) : [2][0] OS(2 -> -1) : [1]                                                    |      |   @ CS(11 -> 0) : [6][0] OS(10 -> -1) : [5]                                                  |
 |   > StackSlot(0)                                                                             |      |   > StackSlot(1)                                                                             |
@@ -105,7 +110,8 @@
 || [AST-INSTRUCTIONS]:                                                                          ||    || [AST-INSTRUCTIONS]:                                                                          ||
 ||   @ CS(3 -> 0) : [2][0]                                                                      ||    ||   @ CS(11 -> 0) : [6][0]                                                                     ||
 ||   + StackBegin()                                                                             ||    ||   + StackBegin()                                                                             ||
-||     objs: 3                                                                                  ||    ||     objs: 7                                                                                  ||
+||     obj:3 : Plus                                                                             ||    ||     obj:7 : Plus                                                                             ||
+||                                                                                              ||    ||                                                                                              ||
 ||                                                                                              ||    ||                                                                                              ||
 ||   @ CS(4 -> 3) : [3][2][0]                                                                   ||    ||   @ CS(12 -> 11) : [7][6][0]                                                                 ||
 ||   + Token(0)                                                                                 ||    ||   + Token(0)                                                                                 ||
@@ -130,11 +136,13 @@
 | [AST-INSTRUCTIONS]:                                                                          |      | [AST-INSTRUCTIONS]:                                                                          |
 |   @ CS(4 -> 3) : [3][2][0]                                                                   |      |   @ CS(12 -> 11) : [7][6][0]                                                                 |
 |   + CreateObject(Plus)                                                                       |      |   + CreateObject(Plus)                                                                       |
-|     objs: 3                                                                                  |      |     objs: 7                                                                                  |
+|     obj:3 : Plus                                                                             |      |     obj:7 : Plus                                                                             |
+|                                                                                              |      |                                                                                              |
 |                                                                                              |      |                                                                                              |
 |   @ CS(4 -> 3) : [3][2][0]                                                                   |      |   @ CS(12 -> 11) : [7][6][0]                                                                 |
 |   + StackEnd()                                                                               |      |   + StackEnd()                                                                               |
-|     obj:3, begin:7@0, top:7@0, create!:[8@0], end:[8@1]                                      |      |     obj:7, begin:10@0, top:10@0, create!:[11@0], end:[11@1]                                  |
+|     obj+:3 : Plus                                                                            |      |     obj+:7 : Plus                                                                            |
+|       begin:7@0, top:7@0, create!:[8@0], end:[8@1]                                           |      |       begin:10@0, top:10@0, create!:[11@0], end:[11@1]                                       |
 |                                                                                              |      |                                                                                              |
 |   @ CS(3 -> 0) : [2][0] OS(5 -> -1) : [3]                                                    |      |   @ CS(11 -> 0) : [6][0] OS(13 -> -1) : [7]                                                  |
 |   > StackSlot(1)                                                                             |      |   > StackSlot(2)                                                                             |
@@ -160,7 +168,8 @@
 || [AST-INSTRUCTIONS]:                                                                          ||    || [AST-INSTRUCTIONS]:                                                                          ||
 ||   @ CS(3 -> 0) : [2][0]                                                                      ||    ||   @ CS(11 -> 0) : [6][0]                                                                     ||
 ||   + StackBegin()                                                                             ||    ||   + StackBegin()                                                                             ||
-||     objs: 4                                                                                  ||    ||     objs: 8                                                                                  ||
+||     obj:4 : Plus                                                                             ||    ||     obj:8 : Plus                                                                             ||
+||                                                                                              ||    ||                                                                                              ||
 ||                                                                                              ||    ||                                                                                              ||
 ||   @ CS(6 -> 3) : [4][2][0]                                                                   ||    ||   @ CS(14 -> 11) : [8][6][0]                                                                 ||
 ||   + Token(0)                                                                                 ||    ||   + Token(0)                                                                                 ||
@@ -185,11 +194,13 @@
 | [AST-INSTRUCTIONS]:                                                                          |      | [AST-INSTRUCTIONS]:                                                                          |
 |   @ CS(6 -> 3) : [4][2][0]                                                                   |      |   @ CS(14 -> 11) : [8][6][0]                                                                 |
 |   + CreateObject(Plus)                                                                       |      |   + CreateObject(Plus)                                                                       |
-|     objs: 4                                                                                  |      |     objs: 8                                                                                  |
+|     obj:4 : Plus                                                                             |      |     obj:8 : Plus                                                                             |
+|                                                                                              |      |                                                                                              |
 |                                                                                              |      |                                                                                              |
 |   @ CS(6 -> 3) : [4][2][0]                                                                   |      |   @ CS(14 -> 11) : [8][6][0]                                                                 |
 |   + StackEnd()                                                                               |      |   + StackEnd()                                                                               |
-|     obj:4, begin:14@0, top:14@0, create!:[15@0], end:[15@1]                                  |      |     obj:8, begin:17@0, top:17@0, create!:[18@0], end:[18@1]                                  |
+|     obj+:4 : Plus                                                                            |      |     obj+:8 : Plus                                                                            |
+|       begin:14@0, top:14@0, create!:[15@0], end:[15@1]                                       |      |       begin:17@0, top:17@0, create!:[18@0], end:[18@1]                                       |
 |                                                                                              |      |                                                                                              |
 |   @ CS(3 -> 0) : [2][0] OS(7 -> -1) : [4]                                                    |      |   @ CS(11 -> 0) : [6][0] OS(15 -> -1) : [8]                                                  |
 |   > StackSlot(2)                                                                             |      |   > StackSlot(2)                                                                             |
@@ -204,36 +215,38 @@
 |                                                                                                     |
 +                                                                                                     +
 |                                                                                                     |
-+--------------------------------------------------------------------------------------+              +--------------------------------------------------------------------------------------+
-| [20]: <Ending>                                                                       |              | [19]: <Ending>                                                                       |
-|   TraceExec: [8]                                                                     |              |   TraceExec: [15]                                                                    |
-|   InsExec: [18:5]                                                                    |              |   InsExec: [39:5]                                                                    |
-|   ForwardTrace: 2                                                                    |              |   ForwardTrace: 4                                                                    |
-| [23][Pwa1]<! "prefix_with_ambiguity_1" Pwa1Prefix @ !Pwa1Body !>                     |              | [23][Pwa1]<! "prefix_with_ambiguity_1" Pwa1Prefix @ !Pwa1Body !>                     |
-| [AST-INSTRUCTIONS]:                                                                  |              | [AST-INSTRUCTIONS]:                                                                  |
-|   @ CS(3 -> 0) : [2][0]                                                              |              |   @ CS(11 -> 0) : [6][0]                                                             |
-|   + CreateObject(PbaFeature)                                                         |              |   + CreateObject(PbaFeature)                                                         |
-|     objs: 2                                                                          |              |     objs: 6                                                                          |
-|                                                                                      |              |                                                                                      |
-|   @ CS(3 -> 0) : [2][0]                                                              |              |   @ CS(11 -> 0) : [6][0]                                                             |
-|   + Field(PbaFeature::optional, 0)                                                   |              |   + Field(PbaFeature::optional, 0)                                                   |
-|                                                                                      |              |                                                                                      |
-|   @ CS(3 -> 0) : [2][0]                                                              |              |   @ CS(11 -> 0) : [6][0]                                                             |
-|   + Field(PbaFeature::tails, 2)                                                      |              |   + Field(PbaFeature::tails, 2)                                                      |
-|                                                                                      |              |                                                                                      |
-|   @ CS(3 -> 0) : [2][0]                                                              |              |   @ CS(11 -> 0) : [6][0]                                                             |
-|   + StackEnd()                                                                       |              |   + StackEnd()                                                                       |
-|     obj:2, begin:3@2, top:3@2, lrec:2@0, field:[4, 1, 3], create!:[20@0], end:[20@3] |              |     obj:6, begin:5@2, top:5@2, lrec:4@0, field:[8, 5, 7], create!:[19@0], end:[19@3] |
-|                                                                                      |              |                                                                                      |
-|   @ CS(0 -> -1) : [0] OS(8 -> -1) : [2]                                              |              |   @ CS(0 -> -1) : [0] OS(16 -> -1) : [6]                                             |
-|   > StackSlot(1)                                                                     |              |   > StackSlot(1)                                                                     |
-|                                                                                      |              |                                                                                      |
-|   @ CS(0 -> -1) : [0]                                                                |              |   @ CS(0 -> -1) : [0]                                                                |
-| [RETURN STACK]:                                                                      |              | [RETURN STACK]:                                                                      |
-|   [0][26][0]: Pwa1 -> [38][Module]<! !Pwa1 @ !>                                      |              |   [0][26][0]: Pwa1 -> [38][Module]<! !Pwa1 @ !>                                      |
-| [PREDECESSORS 15-15]: [15]                                                           |              | [PREDECESSORS 18-18]: [18]                                                           |
-| [SUCCESORS 16-16]: [16]                                                              |              | [SUCCESORS 16-16]: [16]                                                              |
-+--------------------------------------------------------------------------------------+              +--------------------------------------------------------------------------------------+
++---------------------------------------------------------------------------------+                   +---------------------------------------------------------------------------------+
+| [20]: <Ending>                                                                  |                   | [19]: <Ending>                                                                  |
+|   TraceExec: [8]                                                                |                   |   TraceExec: [15]                                                               |
+|   InsExec: [18:5]                                                               |                   |   InsExec: [39:5]                                                               |
+|   ForwardTrace: 2                                                               |                   |   ForwardTrace: 4                                                               |
+| [23][Pwa1]<! "prefix_with_ambiguity_1" Pwa1Prefix @ !Pwa1Body !>                |                   | [23][Pwa1]<! "prefix_with_ambiguity_1" Pwa1Prefix @ !Pwa1Body !>                |
+| [AST-INSTRUCTIONS]:                                                             |                   | [AST-INSTRUCTIONS]:                                                             |
+|   @ CS(3 -> 0) : [2][0]                                                         |                   |   @ CS(11 -> 0) : [6][0]                                                        |
+|   + CreateObject(PbaFeature)                                                    |                   |   + CreateObject(PbaFeature)                                                    |
+|     obj:2 : PbaFeature                                                          |                   |     obj:6 : PbaFeature                                                          |
+|                                                                                 |                   |                                                                                 |
+|                                                                                 |                   |                                                                                 |
+|   @ CS(3 -> 0) : [2][0]                                                         |                   |   @ CS(11 -> 0) : [6][0]                                                        |
+|   + Field(PbaFeature::optional, 0)                                              |                   |   + Field(PbaFeature::optional, 0)                                              |
+|                                                                                 |                   |                                                                                 |
+|   @ CS(3 -> 0) : [2][0]                                                         |                   |   @ CS(11 -> 0) : [6][0]                                                        |
+|   + Field(PbaFeature::tails, 2)                                                 |                   |   + Field(PbaFeature::tails, 2)                                                 |
+|                                                                                 |                   |                                                                                 |
+|   @ CS(3 -> 0) : [2][0]                                                         |                   |   @ CS(11 -> 0) : [6][0]                                                        |
+|   + StackEnd()                                                                  |                   |   + StackEnd()                                                                  |
+|     obj+:2 : PbaFeature                                                         |                   |     obj+:6 : PbaFeature                                                         |
+|       begin:3@2, top:3@2, lrec:2@0, field:[4, 1, 3], create!:[20@0], end:[20@3] |                   |       begin:5@2, top:5@2, lrec:4@0, field:[8, 5, 7], create!:[19@0], end:[19@3] |
+|                                                                                 |                   |                                                                                 |
+|   @ CS(0 -> -1) : [0] OS(8 -> -1) : [2]                                         |                   |   @ CS(0 -> -1) : [0] OS(16 -> -1) : [6]                                        |
+|   > StackSlot(1)                                                                |                   |   > StackSlot(1)                                                                |
+|                                                                                 |                   |                                                                                 |
+|   @ CS(0 -> -1) : [0]                                                           |                   |   @ CS(0 -> -1) : [0]                                                           |
+| [RETURN STACK]:                                                                 |                   | [RETURN STACK]:                                                                 |
+|   [0][26][0]: Pwa1 -> [38][Module]<! !Pwa1 @ !>                                 |                   |   [0][26][0]: Pwa1 -> [38][Module]<! !Pwa1 @ !>                                 |
+| [PREDECESSORS 15-15]: [15]                                                      |                   | [PREDECESSORS 18-18]: [18]                                                      |
+| [SUCCESORS 16-16]: [16]                                                         |                   | [SUCCESORS 16-16]: [16]                                                         |
++---------------------------------------------------------------------------------+                   +---------------------------------------------------------------------------------+
 |                                                                                                     |
 +-----------------------------------------------------------------------------------------------------+
 |
@@ -259,7 +272,8 @@
 || [AST-INSTRUCTIONS]:                                                                         ||
 ||   @ CS(0 -> -1) : [0]                                                                       ||
 ||   + StackBegin()                                                                            ||
-||     objs: 9                                                                                 ||
+||     obj:9 : Lt                                                                              ||
+||                                                                                             ||
 ||                                                                                             ||
 ||   @ CS(17 -> 0) : [9][0]                                                                    ||
 ||   + Token(0)                                                                                ||
@@ -284,15 +298,18 @@
 | [AST-INSTRUCTIONS]:                                                                         |
 |   @ CS(17 -> 0) : [9][0]                                                                    |
 |   + CreateObject(Lt)                                                                        |
-|     objs: 9                                                                                 |
+|     obj:9 : Lt                                                                              |
+|                                                                                             |
 |                                                                                             |
 |   @ CS(17 -> 0) : [9][0]                                                                    |
 |   + StackEnd()                                                                              |
-|     obj:9, begin:21@0, top:21@0, create!:[22@0], end:[22@1]                                 |
+|     obj+:9 : Lt                                                                             |
+|       begin:21@0, top:21@0, create!:[22@0], end:[22@1]                                      |
 |                                                                                             |
 |   @ CS(0 -> -1) : [0] OS(18 -> -1) : [9]                                                    |
 |   > StackBegin()                                                                            |
-|     objs: 10                                                                                |
+|     obj:10 : Pwa1Feature                                                                    |
+|                                                                                             |
 |                                                                                             |
 |   @ CS(19 -> 0) : [10][0] OS(18 -> -1) : [9]                                                |
 |   > StackSlot(0)                                                                            |
@@ -318,7 +335,8 @@
 || [AST-INSTRUCTIONS]:                                                                         ||
 ||   @ CS(19 -> 0) : [10][0]                                                                   ||
 ||   + StackBegin()                                                                            ||
-||     objs: 11                                                                                ||
+||     obj:11 : Lt                                                                             ||
+||                                                                                             ||
 ||                                                                                             ||
 ||   @ CS(20 -> 19) : [11][10][0]                                                              ||
 ||   + Token(0)                                                                                ||
@@ -343,11 +361,13 @@
 | [AST-INSTRUCTIONS]:                                                                         |
 |   @ CS(20 -> 19) : [11][10][0]                                                              |
 |   + CreateObject(Lt)                                                                        |
-|     objs: 11                                                                                |
+|     obj:11 : Lt                                                                             |
+|                                                                                             |
 |                                                                                             |
 |   @ CS(20 -> 19) : [11][10][0]                                                              |
 |   + StackEnd()                                                                              |
-|     obj:11, begin:24@0, top:24@0, create!:[25@0], end:[25@1]                                |
+|     obj+:11 : Lt                                                                            |
+|       begin:24@0, top:24@0, create!:[25@0], end:[25@1]                                      |
 |                                                                                             |
 |   @ CS(19 -> 0) : [10][0] OS(21 -> -1) : [11]                                               |
 |   > StackSlot(1)                                                                            |
@@ -373,7 +393,8 @@
 || [AST-INSTRUCTIONS]:                                                                         ||
 ||   @ CS(19 -> 0) : [10][0]                                                                   ||
 ||   + StackBegin()                                                                            ||
-||     objs: 12                                                                                ||
+||     obj:12 : Lt                                                                             ||
+||                                                                                             ||
 ||                                                                                             ||
 ||   @ CS(22 -> 19) : [12][10][0]                                                              ||
 ||   + Token(0)                                                                                ||
@@ -398,11 +419,13 @@
 | [AST-INSTRUCTIONS]:                                                                         |
 |   @ CS(22 -> 19) : [12][10][0]                                                              |
 |   + CreateObject(Lt)                                                                        |
-|     objs: 12                                                                                |
+|     obj:12 : Lt                                                                             |
+|                                                                                             |
 |                                                                                             |
 |   @ CS(22 -> 19) : [12][10][0]                                                              |
 |   + StackEnd()                                                                              |
-|     obj:12, begin:27@0, top:27@0, create!:[28@0], end:[28@1]                                |
+|     obj+:12 : Lt                                                                            |
+|       begin:27@0, top:27@0, create!:[28@0], end:[28@1]                                      |
 |                                                                                             |
 |   @ CS(19 -> 0) : [10][0] OS(23 -> -1) : [12]                                               |
 |   > StackSlot(1)                                                                            |
@@ -428,7 +451,8 @@
 || [AST-INSTRUCTIONS]:                                                                         ||
 ||   @ CS(19 -> 0) : [10][0]                                                                   ||
 ||   + StackBegin()                                                                            ||
-||     objs: 13                                                                                ||
+||     obj:13 : Gt                                                                             ||
+||                                                                                             ||
 ||                                                                                             ||
 ||   @ CS(24 -> 19) : [13][10][0]                                                              ||
 ||   + Token(0)                                                                                ||
@@ -453,11 +477,13 @@
 | [AST-INSTRUCTIONS]:                                                                         |
 |   @ CS(24 -> 19) : [13][10][0]                                                              |
 |   + CreateObject(Gt)                                                                        |
-|     objs: 13                                                                                |
+|     obj:13 : Gt                                                                             |
+|                                                                                             |
 |                                                                                             |
 |   @ CS(24 -> 19) : [13][10][0]                                                              |
 |   + StackEnd()                                                                              |
-|     obj:13, begin:30@0, top:30@0, create!:[31@0], end:[31@1]                                |
+|     obj+:13 : Gt                                                                            |
+|       begin:30@0, top:30@0, create!:[31@0], end:[31@1]                                      |
 |                                                                                             |
 |   @ CS(19 -> 0) : [10][0] OS(25 -> -1) : [13]                                               |
 |   > StackSlot(2)                                                                            |
@@ -483,7 +509,8 @@
 || [AST-INSTRUCTIONS]:                                                                         ||
 ||   @ CS(19 -> 0) : [10][0]                                                                   ||
 ||   + StackBegin()                                                                            ||
-||     objs: 14                                                                                ||
+||     obj:14 : Gt                                                                             ||
+||                                                                                             ||
 ||                                                                                             ||
 ||   @ CS(26 -> 19) : [14][10][0]                                                              ||
 ||   + Token(0)                                                                                ||
@@ -508,11 +535,13 @@
 | [AST-INSTRUCTIONS]:                                                                         |
 |   @ CS(26 -> 19) : [14][10][0]                                                              |
 |   + CreateObject(Gt)                                                                        |
-|     objs: 14                                                                                |
+|     obj:14 : Gt                                                                             |
+|                                                                                             |
 |                                                                                             |
 |   @ CS(26 -> 19) : [14][10][0]                                                              |
 |   + StackEnd()                                                                              |
-|     obj:14, begin:33@0, top:33@0, create!:[34@0], end:[34@1]                                |
+|     obj+:14 : Gt                                                                            |
+|       begin:33@0, top:33@0, create!:[34@0], end:[34@1]                                      |
 |                                                                                             |
 |   @ CS(19 -> 0) : [10][0] OS(27 -> -1) : [14]                                               |
 |   > StackSlot(2)                                                                            |
@@ -538,7 +567,8 @@
 || [AST-INSTRUCTIONS]:                                                                         ||
 ||   @ CS(19 -> 0) : [10][0]                                                                   ||
 ||   + StackBegin()                                                                            ||
-||     objs: 15                                                                                ||
+||     obj:15 : Gt                                                                             ||
+||                                                                                             ||
 ||                                                                                             ||
 ||   @ CS(28 -> 19) : [15][10][0]                                                              ||
 ||   + Token(0)                                                                                ||
@@ -563,11 +593,13 @@
 | [AST-INSTRUCTIONS]:                                                                         |
 |   @ CS(28 -> 19) : [15][10][0]                                                              |
 |   + CreateObject(Gt)                                                                        |
-|     objs: 15                                                                                |
+|     obj:15 : Gt                                                                             |
+|                                                                                             |
 |                                                                                             |
 |   @ CS(28 -> 19) : [15][10][0]                                                              |
 |   + StackEnd()                                                                              |
-|     obj:15, begin:36@0, top:36@0, create!:[37@0], end:[37@1]                                |
+|     obj+:15 : Gt                                                                            |
+|       begin:36@0, top:36@0, create!:[37@0], end:[37@1]                                      |
 |                                                                                             |
 |   @ CS(19 -> 0) : [10][0] OS(29 -> -1) : [15]                                               |
 |   > StackSlot(2)                                                                            |
@@ -582,75 +614,80 @@
 |
 +
 |
-+--------------------------------------------------------------------------------------------------------+
-| [38]: <Ending>                                                                                         |
-|   TraceExec: [29]                                                                                      |
-|   InsExec: [75:5]                                                                                      |
-|   ForwardTrace: 16                                                                                     |
-| [22][Pwa1]<! "prefix_with_ambiguity_1" Pwa1Prefix !Pwa1Body @ !>                                       |
-| [AST-INSTRUCTIONS]:                                                                                    |
-|   @ CS(19 -> 0) : [10][0]                                                                              |
-|   + CreateObject(Pwa1Feature)                                                                          |
-|     objs: 10                                                                                           |
-|                                                                                                        |
-|   @ CS(19 -> 0) : [10][0]                                                                              |
-|   + Field(Pwa1Feature::lts, 0)                                                                         |
-|                                                                                                        |
-|   @ CS(19 -> 0) : [10][0]                                                                              |
-|   + Field(Pwa1Feature::lts, 1)                                                                         |
-|                                                                                                        |
-|   @ CS(19 -> 0) : [10][0]                                                                              |
-|   + Field(Pwa1Feature::gts, 2)                                                                         |
-|                                                                                                        |
-|   @ CS(19 -> 0) : [10][0]                                                                              |
-|   + StackEnd()                                                                                         |
-|     obj:10, begin:22@2, top:22@2, lrec:21@0, field:[15, 13, 11, 9, 12, 14], create!:[38@0], end:[38@4] |
-|                                                                                                        |
-|   @ CS(0 -> -1) : [0] OS(30 -> -1) : [10]                                                              |
-| [RETURN STACK]:                                                                                        |
-|   [0][26][0]: Pwa1 -> [38][Module]<! !Pwa1 @ !>                                                        |
-| [PREDECESSORS 37-37]: [37]                                                                             |
-| [SUCCESORS 39-39]: [39]                                                                                |
-+--------------------------------------------------------------------------------------------------------+
++--------------------------------------------------------------------------------------------------+
+| [38]: <Ending>                                                                                   |
+|   TraceExec: [29]                                                                                |
+|   InsExec: [75:5]                                                                                |
+|   ForwardTrace: 16                                                                               |
+| [22][Pwa1]<! "prefix_with_ambiguity_1" Pwa1Prefix !Pwa1Body @ !>                                 |
+| [AST-INSTRUCTIONS]:                                                                              |
+|   @ CS(19 -> 0) : [10][0]                                                                        |
+|   + CreateObject(Pwa1Feature)                                                                    |
+|     obj:10 : Pwa1Feature                                                                         |
+|                                                                                                  |
+|                                                                                                  |
+|   @ CS(19 -> 0) : [10][0]                                                                        |
+|   + Field(Pwa1Feature::lts, 0)                                                                   |
+|                                                                                                  |
+|   @ CS(19 -> 0) : [10][0]                                                                        |
+|   + Field(Pwa1Feature::lts, 1)                                                                   |
+|                                                                                                  |
+|   @ CS(19 -> 0) : [10][0]                                                                        |
+|   + Field(Pwa1Feature::gts, 2)                                                                   |
+|                                                                                                  |
+|   @ CS(19 -> 0) : [10][0]                                                                        |
+|   + StackEnd()                                                                                   |
+|     obj+:10 : Pwa1Feature                                                                        |
+|       begin:22@2, top:22@2, lrec:21@0, field:[15, 13, 11, 9, 12, 14], create!:[38@0], end:[38@4] |
+|                                                                                                  |
+|   @ CS(0 -> -1) : [0] OS(30 -> -1) : [10]                                                        |
+| [RETURN STACK]:                                                                                  |
+|   [0][26][0]: Pwa1 -> [38][Module]<! !Pwa1 @ !>                                                  |
+| [PREDECESSORS 37-37]: [37]                                                                       |
+| [SUCCESORS 39-39]: [39]                                                                          |
++--------------------------------------------------------------------------------------------------+
 |
 +
 |
-+------------------------------------------------------------------------------------+
-| [39]: <Ending>                                                                     |
-|   TraceExec: [30]                                                                  |
-|   InsExec: [80:3]                                                                  |
-|   ForwardTrace: 16                                                                 |
-| [38][Module]<! !Pwa1 @ !>                                                          |
-| [AST-INSTRUCTIONS]:                                                                |
-|   @ CS(0 -> -1) : [0] OS(30 -> -1) : [10]                                          |
-|   + Field(Pwa1Feature::pba, 1)                                                     |
-|                                                                                    |
-|   @ CS(0 -> -1) : [0] OS(30 -> -1) : [10]                                          |
-|   + StackEnd()                                                                     |
-|     obj:0, begin:1@0, top:1@0, use:[10], field:[6, 2], create!:[38@0], end!:[39@1] |
-|                                                                                    |
-|   @ OS(31 -> -1) : [0]                                                             |
-|   > StackBegin()                                                                   |
-|     objs: 16                                                                       |
-|                                                                                    |
-|   @ CS(32 -> -1) : [16] OS(31 -> -1) : [0]                                         |
-| [PREDECESSORS 38-38]: [38]                                                         |
-| [SUCCESORS 40-40]: [40]                                                            |
-+------------------------------------------------------------------------------------+
++-------------------------------------------------------------------------------+
+| [39]: <Ending>                                                                |
+|   TraceExec: [30]                                                             |
+|   InsExec: [80:3]                                                             |
+|   ForwardTrace: 16                                                            |
+| [38][Module]<! !Pwa1 @ !>                                                     |
+| [AST-INSTRUCTIONS]:                                                           |
+|   @ CS(0 -> -1) : [0] OS(30 -> -1) : [10]                                     |
+|   + Field(Pwa1Feature::pba, 1)                                                |
+|                                                                               |
+|   @ CS(0 -> -1) : [0] OS(30 -> -1) : [10]                                     |
+|   + StackEnd()                                                                |
+|     obj+:0 : Pwa1Feature                                                      |
+|       begin:1@0, top:1@0, use:[10], field:[6, 2], create!:[38@0], end!:[39@1] |
+|                                                                               |
+|   @ OS(31 -> -1) : [0]                                                        |
+|   > StackBegin()                                                              |
+|     obj!:16 : Pwa1Feature                                                     |
+|                                                                               |
+|                                                                               |
+|   @ CS(32 -> -1) : [16] OS(31 -> -1) : [0]                                    |
+| [PREDECESSORS 38-38]: [38]                                                    |
+| [SUCCESORS 40-40]: [40]                                                       |
++-------------------------------------------------------------------------------+
 |
 +
 |
-+-----------------------------------------------------------------------+
-| [40]: <Ending>                                                        |
-|   TraceExec: [31]                                                     |
-|   InsExec: [83:1]                                                     |
-|   ForwardTrace: 16                                                    |
-| [37][Module] END [ENDING]                                             |
-| [AST-INSTRUCTIONS]:                                                   |
-|   @ CS(32 -> -1) : [16] OS(31 -> -1) : [0]                            |
-|   + StackEnd()                                                        |
-|     obj:16, begin:39@2, top:1@0, use:[0], create!:[38@0], end!:[40@0] |
-|                                                                       |
-|   @ OS(33 -> -1) : [16]                                               |
-| [PREDECESSORS 39-39]: [39]                                            |
-+-----------------------------------------------------------------------+
++-----------------------------------------------------------------+
+| [40]: <Ending>                                                  |
+|   TraceExec: [31]                                               |
+|   InsExec: [83:1]                                               |
+|   ForwardTrace: 16                                              |
+| [37][Module] END [ENDING]                                       |
+| [AST-INSTRUCTIONS]:                                             |
+|   @ CS(32 -> -1) : [16] OS(31 -> -1) : [0]                      |
+|   + StackEnd()                                                  |
+|     obj+:16 : Pwa1Feature                                       |
+|       begin:39@2, top:1@0, use:[0], create!:[38@0], end!:[40@0] |
+|                                                                 |
+|   @ OS(33 -> -1) : [16]                                         |
+| [PREDECESSORS 39-39]: [39]                                      |
++-----------------------------------------------------------------+

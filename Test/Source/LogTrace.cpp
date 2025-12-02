@@ -368,22 +368,62 @@ void RenderTrace(
 			{
 				auto traceExec = tm.GetTraceExec(trace->traceExecRef);
 				auto insExec = tm.GetInsExec(traceExec->insExecRefs.start + i);
-
-				if (ins.type == AstInsType::StackEnd)
+				auto currentStackRefLink = insExec->operatingStacks;
+				while (currentStackRefLink != nullref)
 				{
-					auto currentStackRefLink = insExec->operatingStacks;
-					while (currentStackRefLink != nullref)
-					{
-						auto stackRefLink = tm.GetInsExec_StackRefLink(currentStackRefLink);
-						currentStackRefLink = stackRefLink->previous;
+					auto stackRefLink = tm.GetInsExec_StackRefLink(currentStackRefLink);
+					currentStackRefLink = stackRefLink->previous;
 
-						auto ieObject = tm.GetInsExec_Stack(stackRefLink->id);
+					auto ieObject = tm.GetInsExec_Stack(stackRefLink->id);
+
+					if (ins.type == AstInsType::StackEnd)
+					{
+						writer.WriteString(
+							L"    obj+:" + itow(ieObject->allocatedIndex)
+						);
+					}
+					else if (ieObject->endWithCreateInsRefs == nullref)
+					{
+						writer.WriteString(
+							L"    obj!:" + itow(ieObject->allocatedIndex)
+						);
+					}
+					else
+					{
 						writer.WriteString(
 							L"    obj:" + itow(ieObject->allocatedIndex)
 						);
+					}
 
+					writer.WriteString(L" :");
+					SortedList<WString> coTypeNames;
+					auto currentCreateObjectRefLink = ieObject->summarizing.indirectCreateObjectInsRefs;
+					while (currentCreateObjectRefLink != nullref)
+					{
+						auto createObjectRefLink = tm.GetInsExec_InsRefLink(currentCreateObjectRefLink);
+						currentCreateObjectRefLink = createObjectRefLink->previous;
+
+						auto coInsRef = createObjectRefLink->insRef;
+						auto coTrace = tm.GetTrace(coInsRef.trace);
+						auto coTraceExec = tm.GetTraceExec(coTrace->traceExecRef);
+						auto&& coIns = tm.ReadInstruction(coInsRef.ins, coTraceExec->insLists);
+						auto name = typeName(coIns.param);
+						if (!coTypeNames.Contains(name))
+						{
+							coTypeNames.Add(name);
+						}
+					}
+					for (auto&& name : coTypeNames)
+					{
+						writer.WriteString(L" ");
+						writer.WriteString(name);
+					}
+					writer.WriteLine(L"");
+
+					if (ins.type == AstInsType::StackEnd)
+					{
 						writer.WriteString(
-							L", begin:" + itow(ieObject->beginInsRef.trace.handle) +
+							L"      begin:" + itow(ieObject->beginInsRef.trace.handle) +
 							L"@" + itow(ieObject->beginInsRef.ins)
 						);
 
@@ -434,13 +474,7 @@ void RenderTrace(
 							logInsRefLink(ieObject->endWithReuseInsRefs);
 							writer.WriteString(L"]");
 						}
-						writer.WriteLine(L"");
 					}
-				}
-				else if (insExec->operatingStacks != nullref)
-				{
-					writer.WriteString(L"    objs: ");
-					logStackRefLink(insExec->operatingStacks);
 					writer.WriteLine(L"");
 				}
 
