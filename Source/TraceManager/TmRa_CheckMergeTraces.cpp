@@ -11,7 +11,7 @@ namespace vl
 #define NEW_MERGE_STACK_MAGIC_COUNTER (void)(MergeStack_MagicCounter++)
 
 /***********************************************************************
-CheckMergeTrace
+CheckAmbiguityResolution
 ***********************************************************************/
 
 			template<typename TCallback>
@@ -329,6 +329,10 @@ CheckMergeTrace
 				}
 				return false;
 			}
+
+/***********************************************************************
+CheckMergeTrace
+***********************************************************************/
 
 			bool TraceManager::CheckMergeTrace(TraceAmbiguity* ta, Trace* trace, TraceExec* traceExec, collections::List<Ref<InsExec_StackRefLink>>& visitingIds)
 			{
