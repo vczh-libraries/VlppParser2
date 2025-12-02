@@ -17,11 +17,10 @@ AttendCompetition
 				Ref<AttendingCompetitions>& newCarriedCompetitions,
 				Ref<ReturnStack> returnStack,
 				vint32_t ruleId,
-				vint32_t clauseId,
-				bool forHighPriority
+				CompetitionDesc comp
 			)
 			{
-				// a competition is defined by its rule, clause and the owner trace
+				// a competition is defined by its rule, competition id and the owner trace
 				// but we don't need to compare the trace
 				// since only transitions starting from that trace will search competitions in that trace
 				// we only create a new Competition object if it has not been created for the trace yet
@@ -31,7 +30,7 @@ AttendCompetition
 					while (cid != nullref)
 					{
 						auto cpt = GetCompetition(cid);
-						if (cpt->ruleId == ruleId && cpt->clauseId == clauseId)
+						if (cpt->ruleId == ruleId && cpt->competitionId == comp.competitionId)
 						{
 							competition = cpt;
 							break;
@@ -49,7 +48,7 @@ AttendCompetition
 
 					competition->currentTokenIndex = trace->currentTokenIndex;
 					competition->ruleId = ruleId;
-					competition->clauseId = clauseId;
+					competition->competitionId = comp.competitionId;
 
 					competition->nextActiveCompetition = activeCompetitions;
 					activeCompetitions = competition;
@@ -64,7 +63,7 @@ AttendCompetition
 
 				auto ac = AllocateAttendingCompetitions();
 				ac->competition = competition;
-				ac->forHighPriority = forHighPriority;
+				ac->forHighPriority = comp.highPriority;
 				ac->returnStack = returnStack;
 
 				ac->nextActiveAC = newAttendingCompetitions;
@@ -104,18 +103,19 @@ AttendCompetitionIfNecessary
 					auto returnIndex = executable.returnIndices[edgeDesc.returnIndices.start + returnRef];
 					auto&& returnDesc = executable.returns[returnIndex];
 
-					if (returnDesc.priority != EdgePriority::NoCompetition)
+					for (vint compRef = 0; compRef < returnDesc.competitions.count; compRef++)
 					{
+						auto&& comp = executable.competitions[returnDesc.competitions.start + compRef];
 						// attend a competition from a ReturnDesc edge
-						// find out the rule id and the clause id for this competition
+						// find out the rule id and the competition id for this competition
 						// a ReturnDesc is a compact transition which consumes a rule
 						// so it does not points to the ending state
 						// therefore we just need the toState of this ReturnDesc for reference
-						auto&& stateForClause = executable.states[returnDesc.returnState];
-						vint32_t competitionRule = stateForClause.rule;
-						vint32_t competitionClause = stateForClause.clause;
-						CHECK_ERROR(competitionRule != -1 && competitionClause != -1, ERROR_MESSAGE_PREFIX L"Illegal rule or clause id.");
-						AttendCompetition(trace, newAttendingCompetitions, newCarriedCompetitions, newReturnStack, competitionRule, competitionClause, returnDesc.priority == EdgePriority::HighPriority);
+						auto&& returnState = executable.states[returnDesc.returnState];
+						vint32_t competitionRule = returnState.rule;
+						CHECK_ERROR(competitionRule != -1, ERROR_MESSAGE_PREFIX L"Illegal rule id.");
+						CHECK_ERROR(comp.competitionId != -1, ERROR_MESSAGE_PREFIX L"Illegal competition id.");
+						AttendCompetition(trace, newAttendingCompetitions, newCarriedCompetitions, newReturnStack, competitionRule, comp);
 					}
 
 					// push this ReturnDesc to the ReturnStack
@@ -128,21 +128,20 @@ AttendCompetitionIfNecessary
 					edgeFromState = executable.ruleStartStates[returnDesc.consumedRule];
 				}
 
-				if (edgeDesc.priority != EdgePriority::NoCompetition)
+				for (vint compRef = 0; compRef < edgeDesc.competitions.count; compRef++)
 				{
-					// attend a competition from a EdgeDesc edge
-					// find out the rule id and the clause id for this competition
+					auto&& comp = executable.competitions[edgeDesc.competitions.start + compRef];
+					// attend a competition from a ReturnDesc edge
+					// find out the rule id and the competition id for this competition
+					// a ReturnDesc is a compact transition which consumes a rule
+					// so it does not points to the ending state
+					// therefore we just need the toState of this ReturnDesc for reference
 					auto&& fromState = executable.states[edgeFromState];
 					auto&& toState = executable.states[edgeDesc.toState];
-					vint32_t competitionRule = toState.rule;
-					vint32_t competitionClause = toState.clause;
-					if (toState.endingState)
-					{
-						competitionRule = fromState.rule;
-						competitionClause = fromState.clause;
-					}
-					CHECK_ERROR(competitionRule != -1 && competitionClause != -1, ERROR_MESSAGE_PREFIX L"Illegal rule or clause id.");
-					AttendCompetition(trace, newAttendingCompetitions, newCarriedCompetitions, newReturnStack, competitionRule, competitionClause, edgeDesc.priority == EdgePriority::HighPriority);
+					vint32_t competitionRule = toState.endingState ? fromState.rule : toState.rule;
+					CHECK_ERROR(competitionRule != -1, ERROR_MESSAGE_PREFIX L"Illegal rule id.");
+					CHECK_ERROR(comp.competitionId != -1, ERROR_MESSAGE_PREFIX L"Illegal competition id.");
+					AttendCompetition(trace, newAttendingCompetitions, newCarriedCompetitions, newReturnStack, competitionRule, comp);
 				}
 #undef ERROR_MESSAGE_PREFIX
 			}
@@ -174,7 +173,7 @@ CheckAttendingCompetitionsOnEndingEdge
 						auto cpt = GetCompetition(ac->competition);
 						// ensure that this EndingInput edge and the competition belong to the same clause
 						auto&& stateDesc = executable.states[edgeDesc.fromState];
-						if (cpt->ruleId == stateDesc.rule && cpt->clauseId == stateDesc.clause)
+						if (cpt->ruleId == stateDesc.rule && cpt->competitionId == stateDesc.clause)
 						{
 							// check if it is a high bet
 							if (ac->forHighPriority && cpt->status == CompetitionStatus::Holding)
