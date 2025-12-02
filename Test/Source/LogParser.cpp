@@ -66,7 +66,7 @@ FilePath LogSyntaxWithPath(
 			for (auto comp : edge->competitions)
 			{
 				writer.WriteChar(L'[');
-				writer.WriteChar(comp.highProprity ? L'H' : L'L');
+				writer.WriteChar(comp.highPriority ? L'H' : L'L');
 				writer.WriteString(itow(comp.competitionId));
 				writer.WriteChar(L']');
 			}

@@ -314,7 +314,7 @@ void RenderTrace(
 				}
 				writer.WriteLine(
 					L"[RULE: " + itow(competition->ruleId) +
-					L"][CLAUSE: " + itow(competition->clauseId) + L"]");
+					L"][COMPID: " + itow(competition->competitionId) + L"]");
 				cid = competition->nextHoldCompetition;
 			}
 		}
