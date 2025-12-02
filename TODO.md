@@ -50,6 +50,46 @@
 
 ### Progressing
 
+```
+    Test Feature_BO Syntax
+        BO_1
+            Compared with: .\BO_1.json
+        BO_2
+            [ResolveAmbiguity/CheckMergeTraces] at trace 22 : Failed to find ambiguous objects in a merge trace.
+[Details]
+Trying to merge trace 22.
+This is the last trace, compare all concurrent objects in the objectStack top.
+[InsExec_Stack->summarizing.earliestInsRef]
+  Verifying object 11, its earliestInsRef is 3@0.
+  This is the first object in the list.
+  Verifying object 14, its earliestInsRef is 3@0.
+  Verifying object 7, its earliestInsRef is 2@0.
+  Verifying object 3, its earliestInsRef is 1@0.
+[InsExec_Stack->endWithCreateInsRefs/endWithReuseInsRefs]
+  Verifying object 11 which has StackEnd instructions:
+    34@0.
+  Verifying object 14 which has StackEnd instructions:
+    34@0.
+  Verifying object 7 which has StackEnd instructions:
+    35@0.
+  Verifying object 3 which has StackEnd instructions:
+    40@0.
+  [postfixesAtSelf]
+  34 -> 34@-0 34@-0
+  35 -> 35@-0
+  40 -> 40@-0
+  [postfixesAtSuccessor]
+  22 -> 34@-0 34@-0 35@-0 40@-0
+  [unique possible largest group]
+  postfixesAtSelf -> -1
+  postfixesAtSuccessor -> 0
+  lastPostfix -> 34@0
+[TraceAmbiguity]
+Some StackBegin instructions share the same trace while some share the same predecessor, stopped.
+```
+
+Although two `3@0` are the same, but all actually shares the same predecessor (0), so the check should pass.
+
 - [x] Non-ambiguous test cases
 - [x] Ambiguous test cases
 - [x] Split FeatureTest
