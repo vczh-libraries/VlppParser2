@@ -1,34 +1,34 @@
 ﻿[0][Do] BEGIN 
-[RULE: 0][CLAUSE: -1]
+[RULE: 0]
 	token: "do" -> [3][Do]< "do" @ ";" >
 		+ StackBegin()
 		+ Token(0)
 
 [1][Do] END [ENDING]
-[RULE: 0][CLAUSE: -1]
+[RULE: 0]
 
 [2][Do]< "do" ";" @ >
-[RULE: 0][CLAUSE: 0]
+[RULE: 0]
 	ending -> [1][Do] END [ENDING]
 		+ CreateObject(DoStat)
 		+ StackEnd()
 
 [3][Do]< "do" @ ";" >
-[RULE: 0][CLAUSE: 0]
+[RULE: 0]
 	token: ";" -> [2][Do]< "do" ";" @ >
 		+ Token(1)
 
 [4][Block] BEGIN 
-[RULE: 1][CLAUSE: -1]
+[RULE: 1]
 	token: "{" -> [6][Block]< "{" @ { Stat } "}" >
 		+ StackBegin()
 		+ Token(0)
 
 [5][Block] END [ENDING]
-[RULE: 1][CLAUSE: -1]
+[RULE: 1]
 
 [6][Block]< "{" @ { Stat } "}" >
-[RULE: 1][CLAUSE: 0]
+[RULE: 1]
 	token: "{" -> [6][Block]< "{" @ { Stat } "}" >
 		+ StackBegin()
 		+ Token(0)
@@ -54,7 +54,7 @@
 			+ StackBegin()
 
 [7][Block]< "{" { Stat @ } "}" >
-[RULE: 1][CLAUSE: 0]
+[RULE: 1]
 	token: "{" -> [6][Block]< "{" @ { Stat } "}" >
 		+ StackBegin()
 		+ Token(0)
@@ -80,23 +80,23 @@
 			+ StackBegin()
 
 [8][Block]< "{" { Stat } "}" @ >
-[RULE: 1][CLAUSE: 0]
+[RULE: 1]
 	ending -> [5][Block] END [ENDING]
 		+ CreateObject(BlockStat)
 		+ Field(BlockStat::stats, 1)
 		+ StackEnd()
 
 [9][If] BEGIN 
-[RULE: 2][CLAUSE: -1]
+[RULE: 2]
 	token: "if" -> [16][If]< "if" @ "cond" "then" Stat +[ "else" Stat ] >
 		+ StackBegin()
 		+ Token(0)
 
 [10][If] END [ENDING]
-[RULE: 2][CLAUSE: -1]
+[RULE: 2]
 
 [11][If]< "if" "cond" "then" @ Stat +[ "else" Stat ] >
-[RULE: 2][CLAUSE: 0]
+[RULE: 2]
 	token: "{" -> [6][Block]< "{" @ { Stat } "}" >
 		+ StackBegin()
 		+ Token(0)
@@ -120,7 +120,7 @@
 			+ StackBegin()
 
 [12][If]< "if" "cond" "then" Stat +[ "else" @ Stat ] >
-[RULE: 2][CLAUSE: 0]
+[RULE: 2]
 	token: "{" -> [6][Block]< "{" @ { Stat } "}" >
 		+ StackBegin()
 		+ Token(0)
@@ -144,7 +144,7 @@
 			+ StackBegin()
 
 [13][If]< "if" "cond" "then" Stat +[ "else" Stat @ ] >
-[RULE: 2][CLAUSE: 0]
+[RULE: 2]
 	ending -> [10][If] END [ENDING]
 		+ CreateObject(IfStat)
 		+ Field(IfStat::thenBranch, 3)
@@ -152,27 +152,27 @@
 		+ StackEnd()
 
 [14][If]< "if" "cond" "then" Stat @ +[ "else" Stat ] >
-[RULE: 2][CLAUSE: 0]
-	ending [LOW PRIORITY] -> [10][If] END [ENDING]
+[RULE: 2]
+	ending[H1] -> [10][If] END [ENDING]
 		+ CreateObject(IfStat)
 		+ Field(IfStat::thenBranch, 3)
 		+ Field(IfStat::elseBranch, 5)
 		+ StackEnd()
-	token: "else" [HIGH PRIORITY] -> [12][If]< "if" "cond" "then" Stat +[ "else" @ Stat ] >
+	token: "else"[H1] -> [12][If]< "if" "cond" "then" Stat +[ "else" @ Stat ] >
 		+ Token(4)
 
 [15][If]< "if" "cond" @ "then" Stat +[ "else" Stat ] >
-[RULE: 2][CLAUSE: 0]
+[RULE: 2]
 	token: "then" -> [11][If]< "if" "cond" "then" @ Stat +[ "else" Stat ] >
 		+ Token(2)
 
 [16][If]< "if" @ "cond" "then" Stat +[ "else" Stat ] >
-[RULE: 2][CLAUSE: 0]
+[RULE: 2]
 	token: "cond" -> [15][If]< "if" "cond" @ "then" Stat +[ "else" Stat ] >
 		+ Token(1)
 
 [17][Stat] BEGIN 
-[RULE: 3][CLAUSE: -1]
+[RULE: 3]
 	token: "{" -> [6][Block]< "{" @ { Stat } "}" >
 		+ StackBegin()
 		+ Token(0)
@@ -190,25 +190,25 @@
 			+ StackBegin()
 
 [18][Stat] END [ENDING]
-[RULE: 3][CLAUSE: -1]
+[RULE: 3]
 
 [19][Stat]<! !Block @ !>
-[RULE: 3][CLAUSE: 1]
+[RULE: 3]
 	ending -> [18][Stat] END [ENDING]
 		+ StackEnd()
 
 [20][Stat]<! !Do @ !>
-[RULE: 3][CLAUSE: 0]
+[RULE: 3]
 	ending -> [18][Stat] END [ENDING]
 		+ StackEnd()
 
 [21][Stat]<! !If @ !>
-[RULE: 3][CLAUSE: 2]
+[RULE: 3]
 	ending -> [18][Stat] END [ENDING]
 		+ StackEnd()
 
 [22][Module] BEGIN 
-[RULE: 4][CLAUSE: -1]
+[RULE: 4]
 	token: "{" -> [6][Block]< "{" @ { Stat } "}" >
 		+ StackBegin()
 		+ Token(0)
@@ -235,10 +235,10 @@
 			+ StackBegin()
 
 [23][Module] END [ENDING]
-[RULE: 4][CLAUSE: -1]
+[RULE: 4]
 
 [24][Module]< Stat @ >
-[RULE: 4][CLAUSE: 0]
+[RULE: 4]
 	ending -> [23][Module] END [ENDING]
 		+ CreateObject(Module)
 		+ Field(Module::stat, 0)

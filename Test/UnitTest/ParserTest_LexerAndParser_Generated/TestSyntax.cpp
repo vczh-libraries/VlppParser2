@@ -156,16 +156,12 @@ TEST_FILE
 
 	syntaxManager.BuildCrossReferencedNFA();
 	TEST_CASE_ASSERT(global.Errors().Count() == 0);
-	auto fileCompact = LogCalculatorSyntax(syntaxManager, L"NFA[3]");
+	LogCalculatorSyntax(syntaxManager, L"NFA[3]");
 
 	Executable executable;
 	Metadata metadata;
 	syntaxManager.BuildAutomaton(CalculatorTokenCount, executable, metadata);
-	auto fileAutomaton = LogCalculatorAutomaton(executable, metadata);
-
-	auto contentCompact = File(fileCompact).ReadAllTextByBom();
-	auto contectAutomaton = File(fileAutomaton).ReadAllTextByBom();
-	TEST_CASE_ASSERT(contentCompact == contectAutomaton);
+	LogCalculatorAutomaton(executable, metadata);
 
 	MemoryStream lexerData;
 	CalculatorLexerData(lexerData);

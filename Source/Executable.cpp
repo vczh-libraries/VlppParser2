@@ -74,6 +74,7 @@ namespace vl
 				SERIALIZE(transitions)
 				SERIALIZE(astInstructions)
 				SERIALIZE(returnIndices)
+				SERIALIZE(competitions)
 				SERIALIZE(returns)
 				SERIALIZE(edges)
 				SERIALIZE(states)

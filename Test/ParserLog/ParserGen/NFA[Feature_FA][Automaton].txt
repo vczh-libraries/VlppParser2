@@ -1,5 +1,5 @@
 ﻿[0][Fa] BEGIN 
-[RULE: 1][CLAUSE: -1]
+[RULE: 1]
 	token: ID="a" -> [2][Fa]< [ ( ID ) ] ID @ >
 		+ StackBegin()
 		+ Token(2)
@@ -8,10 +8,10 @@
 		+ Token(0)
 
 [1][Fa] END [ENDING]
-[RULE: 1][CLAUSE: -1]
+[RULE: 1]
 
 [2][Fa]< [ ( ID ) ] ID @ >
-[RULE: 1][CLAUSE: 0]
+[RULE: 1]
 	ending -> [1][Fa] END [ENDING]
 		+ EnumItem(0, 3)
 		+ CreateObject(FaFeature)
@@ -20,27 +20,27 @@
 		+ StackEnd()
 
 [3][Fa]< [ ( ID @ ) ] ID >
-[RULE: 1][CLAUSE: 0]
+[RULE: 1]
 	token: ID="a" -> [2][Fa]< [ ( ID ) ] ID @ >
 		+ EnumItem(1, 1)
 		+ Token(2)
 
 [4][Module] BEGIN 
-[RULE: 2][CLAUSE: -1]
+[RULE: 2]
 	token: "field_assignment" -> [7][Module]<! "field_assignment" @ !Fa !>
 		+ StackBegin()
 		+ Token(0)
 
 [5][Module] END [ENDING]
-[RULE: 2][CLAUSE: -1]
+[RULE: 2]
 
 [6][Module]<! "field_assignment" !Fa @ !>
-[RULE: 2][CLAUSE: 0]
+[RULE: 2]
 	ending -> [5][Module] END [ENDING]
 		+ StackEnd()
 
 [7][Module]<! "field_assignment" @ !Fa !>
-[RULE: 2][CLAUSE: 0]
+[RULE: 2]
 	token: ID="a" -> [2][Fa]< [ ( ID ) ] ID @ >
 		+ StackBegin()
 		+ Token(2)

@@ -77,12 +77,12 @@
 
 [14][If]< "if" "cond" "then" Stat @ +[ "else" Stat ] >
 [RULE: 2][CLAUSE: 0]
-	ending[L] -> [10][If] END [ENDING]
+	ending[L1] -> [10][If] END [ENDING]
 		+ CreateObject(IfStat)
 		+ Field(IfStat::thenBranch, 3)
 		+ Field(IfStat::elseBranch, 5)
 		+ StackEnd()
-	token: "else"![H] -> [12][If]< "if" "cond" "then" Stat +[ "else" @ Stat ] >
+	token: "else"[H1] -> [12][If]< "if" "cond" "then" Stat +[ "else" @ Stat ] >
 		+ Token(4)
 
 [15][If]< "if" "cond" @ "then" Stat +[ "else" Stat ] >

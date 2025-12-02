@@ -1,20 +1,20 @@
 ﻿[0][Plus] BEGIN 
-[RULE: 0][CLAUSE: -1]
+[RULE: 0]
 	token: "+" -> [2][Plus]< "+" @ >
 		+ StackBegin()
 		+ Token(0)
 
 [1][Plus] END [ENDING]
-[RULE: 0][CLAUSE: -1]
+[RULE: 0]
 
 [2][Plus]< "+" @ >
-[RULE: 0][CLAUSE: 0]
+[RULE: 0]
 	ending -> [1][Plus] END [ENDING]
 		+ CreateObject(Plus)
 		+ StackEnd()
 
 [3][BranchedOptional] BEGIN 
-[RULE: 1][CLAUSE: -1]
+[RULE: 1]
 	token: "branched_optional" -> [11][BranchedOptional]< "branched_optional" @ +[ Plus ] Plus { Plus } >
 		+ StackBegin()
 		+ Token(0)
@@ -26,10 +26,10 @@
 		+ Token(0)
 
 [4][BranchedOptional] END [ENDING]
-[RULE: 1][CLAUSE: -1]
+[RULE: 1]
 
 [5][BranchedOptional]< "branched_optional" +[ Plus @ ] Plus { Plus } >
-[RULE: 1][CLAUSE: 0]
+[RULE: 1]
 	token: "+" -> [2][Plus]< "+" @ >
 		+ StackBegin()
 		+ Token(0)
@@ -37,7 +37,7 @@
 			+ StackSlot(2)
 
 [6][BranchedOptional]< "branched_optional" +[ Plus ] Plus @ { Plus } >
-[RULE: 1][CLAUSE: 0]
+[RULE: 1]
 	ending -> [4][BranchedOptional] END [ENDING]
 		+ EnumItem(0, 4)
 		+ CreateObject(BranchedOptionalFeature)
@@ -52,7 +52,7 @@
 			+ StackSlot(3)
 
 [7][BranchedOptional]< "branched_optional" +[ Plus ] Plus { Plus @ } >
-[RULE: 1][CLAUSE: 0]
+[RULE: 1]
 	ending -> [4][BranchedOptional] END [ENDING]
 		+ EnumItem(0, 4)
 		+ CreateObject(BranchedOptionalFeature)
@@ -67,7 +67,7 @@
 			+ StackSlot(3)
 
 [8][BranchedOptional]< "branched_optional" -[ Plus @ ] Plus { Plus } >
-[RULE: 1][CLAUSE: 1]
+[RULE: 1]
 	token: "+" -> [2][Plus]< "+" @ >
 		+ StackBegin()
 		+ Token(0)
@@ -75,7 +75,7 @@
 			+ StackSlot(2)
 
 [9][BranchedOptional]< "branched_optional" -[ Plus ] Plus @ { Plus } >
-[RULE: 1][CLAUSE: 1]
+[RULE: 1]
 	ending -> [4][BranchedOptional] END [ENDING]
 		+ EnumItem(1, 4)
 		+ CreateObject(BranchedOptionalFeature)
@@ -90,7 +90,7 @@
 			+ StackSlot(3)
 
 [10][BranchedOptional]< "branched_optional" -[ Plus ] Plus { Plus @ } >
-[RULE: 1][CLAUSE: 1]
+[RULE: 1]
 	ending -> [4][BranchedOptional] END [ENDING]
 		+ EnumItem(1, 4)
 		+ CreateObject(BranchedOptionalFeature)
@@ -105,33 +105,33 @@
 			+ StackSlot(3)
 
 [11][BranchedOptional]< "branched_optional" @ +[ Plus ] Plus { Plus } >
-[RULE: 1][CLAUSE: 0]
+[RULE: 1]
 	token: "+" -> [2][Plus]< "+" @ >
 		+ StackBegin()
 		+ Token(0)
-		> rule [HIGH PRIORITY]: Plus -> [5][BranchedOptional]< "branched_optional" +[ Plus @ ] Plus { Plus } >
+		> rule[L1]: Plus -> [5][BranchedOptional]< "branched_optional" +[ Plus @ ] Plus { Plus } >
 			+ StackSlot(1)
 	token: "+" -> [2][Plus]< "+" @ >
 		+ StackBegin()
 		+ Token(0)
-		> rule [LOW PRIORITY]: Plus -> [6][BranchedOptional]< "branched_optional" +[ Plus ] Plus @ { Plus } >
+		> rule[L1]: Plus -> [6][BranchedOptional]< "branched_optional" +[ Plus ] Plus @ { Plus } >
 			+ StackSlot(2)
 
 [12][BranchedOptional]< "branched_optional" @ -[ Plus ] Plus { Plus } >
-[RULE: 1][CLAUSE: 1]
+[RULE: 1]
 	token: "+" -> [2][Plus]< "+" @ >
 		+ StackBegin()
 		+ Token(0)
-		> rule [LOW PRIORITY]: Plus -> [8][BranchedOptional]< "branched_optional" -[ Plus @ ] Plus { Plus } >
+		> rule[L2]: Plus -> [8][BranchedOptional]< "branched_optional" -[ Plus @ ] Plus { Plus } >
 			+ StackSlot(1)
 	token: "+" -> [2][Plus]< "+" @ >
 		+ StackBegin()
 		+ Token(0)
-		> rule [HIGH PRIORITY]: Plus -> [9][BranchedOptional]< "branched_optional" -[ Plus ] Plus @ { Plus } >
+		> rule[L2]: Plus -> [9][BranchedOptional]< "branched_optional" -[ Plus ] Plus @ { Plus } >
 			+ StackSlot(2)
 
 [13][BranchedOptional]< "branched_optional" @ [ Plus ] Plus { Plus } >
-[RULE: 1][CLAUSE: 2]
+[RULE: 1]
 	token: "+" -> [2][Plus]< "+" @ >
 		+ StackBegin()
 		+ Token(0)
@@ -144,7 +144,7 @@
 			+ StackSlot(2)
 
 [14][BranchedOptional]< "branched_optional" [ Plus @ ] Plus { Plus } >
-[RULE: 1][CLAUSE: 2]
+[RULE: 1]
 	token: "+" -> [2][Plus]< "+" @ >
 		+ StackBegin()
 		+ Token(0)
@@ -152,7 +152,7 @@
 			+ StackSlot(2)
 
 [15][BranchedOptional]< "branched_optional" [ Plus ] Plus @ { Plus } >
-[RULE: 1][CLAUSE: 2]
+[RULE: 1]
 	ending -> [4][BranchedOptional] END [ENDING]
 		+ EnumItem(2, 4)
 		+ CreateObject(BranchedOptionalFeature)
@@ -167,7 +167,7 @@
 			+ StackSlot(3)
 
 [16][BranchedOptional]< "branched_optional" [ Plus ] Plus { Plus @ } >
-[RULE: 1][CLAUSE: 2]
+[RULE: 1]
 	ending -> [4][BranchedOptional] END [ENDING]
 		+ EnumItem(2, 4)
 		+ CreateObject(BranchedOptionalFeature)
@@ -182,7 +182,7 @@
 			+ StackSlot(3)
 
 [17][Module] BEGIN 
-[RULE: 2][CLAUSE: -1]
+[RULE: 2]
 	token: "branched_optional" -> [11][BranchedOptional]< "branched_optional" @ +[ Plus ] Plus { Plus } >
 		+ StackBegin()
 		+ Token(0)
@@ -200,10 +200,10 @@
 			+ StackBegin()
 
 [18][Module] END [ENDING]
-[RULE: 2][CLAUSE: -1]
+[RULE: 2]
 
 [19][Module]<! !BranchedOptional @ !>
-[RULE: 2][CLAUSE: 0]
+[RULE: 2]
 	ending -> [18][Module] END [ENDING]
 		+ StackEnd()
 
