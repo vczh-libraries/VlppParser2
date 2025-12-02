@@ -116,30 +116,71 @@ CheckAmbiguityResolution
 				bool succeeded = false;
 
 				// iterate all top objects
+				if (failureReasons)
+				{
+					failureReasons->Add(L"[InsExec_Stack->summarizing.earliestInsRef]");
+				}
 				succeeded = callback([&](Ref<InsExec_StackRefLink> objRefLink)
 				{
 					return EnumerateObjects(objRefLink, false, [&](InsExec_Stack* ieObject)
 					{
 						auto createTrace = GetTrace(ieObject->summarizing.earliestInsRef.trace);
+						if (failureReasons)
+						{
+							failureReasons->Add(L"  Verifying object " +
+								itow(ieObject->allocatedIndex) +
+								L", its earliestInsRef is " +
+								itow(ieObject->summarizing.earliestInsRef.trace.handle) + L"@" + itow(ieObject->summarizing.earliestInsRef.ins)) +
+								L".");
+						}
 						if (!first)
 						{
 							first = createTrace;
 							firstTraceExec = GetTraceExec(first->traceExecRef);
 							ta->firstTrace = createTrace;
 							ta->prefix = ieObject->summarizing.earliestInsRef.ins;
+							if (failureReasons)
+							{
+								failureReasons->Add(L"  This is the first object in the list.");
+							}
 						}
 						else if (first == createTrace)
 						{
 							// check if two instruction is the same
-							if (ta->prefix != ieObject->summarizing.earliestInsRef.ins) return false;
+							if (ta->prefix != ieObject->summarizing.earliestInsRef.ins)
+							{
+								if (failureReasons)
+								{
+									failureReasons->Add(L"  It has a different prefix, stopped.");
+								}
+								return false;
+							}
 							foundBeginSame = true;
 						}
 						else
 						{
 							// check if two instruction shares the same prefix
-							if (first->predecessors.first != createTrace->predecessors.first) return false;
+							if (first->predecessors.first != createTrace->predecessors.first)
+							{
+								if (failureReasons)
+								{
+									failureReasons->Add(L"  The predecessor of the trace where the earliestInsRef of the first object is " +
+										itow(first->predecessors.first.handle) +
+										L", meanwhile the one for the current object is " +
+										itow(createTrace->predecessors.first.handle) + 
+										L", they are different, stopped.");
+								}
+								return false;
+							}
 							auto createTraceExec = GetTraceExec(createTrace->traceExecRef);
-							if (!ComparePrefix(firstTraceExec, createTraceExec, ta->prefix)) return false;
+							if (!ComparePrefix(firstTraceExec, createTraceExec, ta->prefix))
+							{
+								if (failureReasons)
+								{
+									failureReasons->Add(L"  They has a different postfix, stopped");
+								}
+								return false;
+							}
 							foundBeginPrefix = true;
 						}
 
@@ -150,9 +191,13 @@ CheckAmbiguityResolution
 
 				// iterate all bottom instructions
 				{
-					// bottomInsRefs need to be filtered again
+					if (failureReasons)
+					{
+						failureReasons->Add(L"[InsExec_Stack->endWithCreateInsRefs/endWithReuseInsRefs]");
+					}
+					// endWith(Create|Reuse)InsRefs need to be filtered again
 					// because the object from the first branch could be a field in the object from the second branch
-					// in this case, that object could have multiple incompatible bottomInsRefs
+					// in this case, that object could have multiple incompatible endWith(Create|Reuse)InsRefs
 					// so we try eoTrace and the unique and existing eoTrace->successors.first
 					// see which wins
 					Group<Trace*, InsRef> postfixesAtSelf, postfixesAtSuccessor;
@@ -162,11 +207,23 @@ CheckAmbiguityResolution
 					{
 						return EnumerateObjects(objRefLink, true, [&](InsExec_Stack* ieObject)
 						{
+							if (failureReasons)
+							{
+								failureReasons->Add(L"  Verifying object " +
+									itow(ieObject->allocatedIndex) +
+									L" which has StackEnd instructions:");
+							}
 							PushStackRefLink(ta->bottomCreateObjectStacks, ieObject);
 
 							// check if EO satisfies the condition
 							return EnumerateBottomInstructions(ieObject, [&](Trace* eoTrace, vint32_t eoIns)
 							{
+								if (failureReasons)
+								{
+									failureReasons->Add(L"    " +
+										itow(eoTrace->allocatedIndex) + L"@" + itow(eoIns)) +
+										L".");
+								}
 								auto eoTraceExec = GetTraceExec(eoTrace->traceExecRef);
 								InsRef insRef{ eoTrace,eoTraceExec->insLists.countAll - eoIns - 1 };
 								postfixesAtSelf.Add(eoTrace, insRef);
@@ -339,7 +396,8 @@ CheckSingleMergeTrace
 				if (failureReasons)
 				{
 					failureReasons->Add(L"Trying to merge trace " +
-						itow(trace->allocatedIndex));
+						itow(trace->allocatedIndex)
+						+ L".");
 				}
 
 				// when a merge trace is the last trace
@@ -399,7 +457,7 @@ CheckSingleMergeTrace
 					{
 						failureReasons->Add(L"The first predecessor " +
 							itow(firstTrace->allocatedIndex) +
-							L" has StackEnd, its postfix (instructions after StackEnd) is " +
+							L" has StackEnd, its postfix is " +
 							itow(postfix) +
 							L".");
 					}
@@ -458,6 +516,12 @@ CheckSingleMergeTrace
 								predecessorId = predecessor->predecessors.siblingNext;
 
 								// search for the object it ends
+								if (failureReasons)
+								{
+									failureReasons->Add(L"Verifying predecessor " +
+										itow(predecessor->allocatedIndex) +
+										L".");
+								}
 								auto predecessorTraceExec = GetTraceExec(predecessor->traceExecRef);
 								auto indexEO = predecessorTraceExec->insLists.countAll - postfix - 1;
 								auto insExecEO = GetInsExec(predecessorTraceExec->insExecRefs.start + indexEO);
