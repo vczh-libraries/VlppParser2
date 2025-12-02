@@ -130,7 +130,7 @@ CheckAmbiguityResolution
 							failureReasons->Add(L"  Verifying object " +
 								itow(ieObject->allocatedIndex) +
 								L", its earliestInsRef is " +
-								itow(ieObject->summarizing.earliestInsRef.trace.handle) + L"@" + itow(ieObject->summarizing.earliestInsRef.ins)) +
+								itow(ieObject->summarizing.earliestInsRef.trace.handle) + L"@" + itow(ieObject->summarizing.earliestInsRef.ins) +
 								L".");
 						}
 						if (!first)
@@ -221,7 +221,7 @@ CheckAmbiguityResolution
 								if (failureReasons)
 								{
 									failureReasons->Add(L"    " +
-										itow(eoTrace->allocatedIndex) + L"@" + itow(eoIns)) +
+										itow(eoTrace->allocatedIndex) + L"@" + itow(eoIns) +
 										L".");
 								}
 								auto eoTraceExec = GetTraceExec(eoTrace->traceExecRef);
@@ -238,6 +238,33 @@ CheckAmbiguityResolution
 							});
 						});
 					});
+
+					if (failureReasons)
+					{
+						failureReasons->Add(L"  [postfixesAtSelf]");
+						for (vint i = 0; i < postfixesAtSelf.Count(); i++)
+						{
+							auto key = postfixesAtSelf.Keys()[i];
+							WString message = L"  " + itow(key ? key->allocatedIndex : -1) + L" ->";
+							for (auto&& value : postfixesAtSelf.GetByIndex(i))
+							{
+								message += L" " + itow(value.trace.handle) + L"@-" + itow(value.ins);
+							}
+							failureReasons->Add(message);
+						}
+
+						failureReasons->Add(L"  [postfixesAtSuccessor]");
+						for (vint i = 0; i < postfixesAtSuccessor.Count(); i++)
+						{
+							auto key = postfixesAtSuccessor.Keys()[i];
+							WString message = L"  " + itow(key ? key->allocatedIndex : -1) + L" ->";
+							for (auto&& value : postfixesAtSuccessor.GetByIndex(i))
+							{
+								message += L" " + itow(value.trace.handle) + L"@-" + itow(value.ins);
+							}
+							failureReasons->Add(message);
+						}
+					}
 
 					// find the most possible answer from postfixesAtSelf and postfixesAtSuccessor
 					// bottom bottomInsRefs are splitted into multiple group
@@ -308,8 +335,20 @@ CheckAmbiguityResolution
 						foundEndPostfix = true;
 					}
 
+					if (failureReasons)
+					{
+						failureReasons->Add(L"  [unique possible largest group]");
+						failureReasons->Add(L"  postfixesAtSelf -> " + itow(uniqueAtSelf));
+						failureReasons->Add(L"  postfixesAtSuccessor -> " + itow(uniqueAtSuccessor));
+						failureReasons->Add(L"  lastPostfix -> " + itow(lastPostfix.trace.handle) + L"@" + itow(lastPostfix.ins));
+					}
+
 					if (lastPostfix.trace == nullref)
 					{
+						if (failureReasons)
+						{
+							failureReasons->Add(L"  lastPostfix has an empty trace, stopped.");
+						}
 						succeeded = false;
 					}
 					else
@@ -323,11 +362,30 @@ CheckAmbiguityResolution
 				}
 				if (!succeeded) return false;
 
+				if (failureReasons)
+				{
+					failureReasons->Add(L"[TraceAmbiguity]");
+				}
+
 				// ensure the statistics result is compatible
 				if (first && !foundBeginSame && !foundBeginPrefix) foundBeginSame = true;
 				if (last && !foundEndSame && !foundEndPostfix) foundEndSame = true;
-				if (foundBeginSame == foundBeginPrefix) return false;
-				if (foundEndSame == foundEndPostfix) return false;
+				if (foundBeginSame == foundBeginPrefix)
+				{
+					if (failureReasons)
+					{
+						failureReasons->Add(L"Some StackBegin instructions share the same trace while some share the same predecessor, stopped.");
+					}
+					return false;
+				}
+				if (foundEndSame == foundEndPostfix)
+				{
+					if (failureReasons)
+					{
+						failureReasons->Add(L"Some StackEnd instructions share the same trace while some share the same successor, stopped.");
+					}
+					return false;
+				}
 
 				// fix prefix if necessary
 				if (foundBeginPrefix)
@@ -351,11 +409,26 @@ CheckAmbiguityResolution
 				// ensure firstTrace and lastTrace are in the same branch
 				auto firstForward = GetTrace(GetTraceExec(GetTrace(ta->firstTrace)->traceExecRef)->branchData.forwardTrace);
 				auto lastForward = GetTrace(GetTraceExec(GetTrace(ta->lastTrace)->traceExecRef)->branchData.forwardTrace);
+
+				if (failureReasons)
+				{
+					failureReasons->Add(L"firstTrace: " + itow(ta->firstTrace.handle));
+					failureReasons->Add(L"prefix: " + itow(ta->prefix));
+					failureReasons->Add(L"lastTrace: " + itow(ta->lastTrace.handle));
+					failureReasons->Add(L"postfix: " + itow(ta->postfix));
+					failureReasons->Add(L"firstForward: " + itow(firstForward->allocatedIndex));
+					failureReasons->Add(L"lastForward (currentForward): " + itow(lastForward->allocatedIndex));
+				}
+
 				auto currentForward = lastForward;
 				while (true)
 				{
 					if (currentForward->traceExecRef < firstForward->traceExecRef)
 					{
+						if (failureReasons)
+						{
+							failureReasons->Add(L"currentForward is before firstForward, stopped.");
+						}
 						return false;
 					}
 					if (currentForward == firstForward)
@@ -374,16 +447,33 @@ CheckAmbiguityResolution
 					if (currentForward != nextForward)
 					{
 						currentForward = nextForward;
+						if (failureReasons)
+						{
+							failureReasons->Add(L"currentForward steps forward to: " +
+								itow(currentForward->allocatedIndex) +
+								L".");
+						}
 					}
 					else if (currentForward->predecessorCount > 0)
 					{
 						currentForward = GetTrace(GetTraceExec(GetTrace(currentForward->predecessors.first)->traceExecRef)->branchData.forwardTrace);
+						if (failureReasons)
+						{
+							failureReasons->Add(L"currentForward steps forward passing a branch to: " +
+								itow(currentForward->allocatedIndex) +
+								L".");
+						}
 					}
 					else
 					{
+						if (failureReasons)
+						{
+							failureReasons->Add(L"currentForward reaches the beginning of the trace, stopped.");
+						}
 						break;
 					}
 				}
+
 				return false;
 			}
 
