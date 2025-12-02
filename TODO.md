@@ -51,6 +51,7 @@
 ### Progressing
 
 `Feature_NOMinus` and `Feature_NOPlus` seem to miss competition filtering.
+The rule expands to `-[-[-[a]a]a]a`, they are counted the same competition.
 
 - [x] Non-ambiguous test cases
 - [x] Ambiguous test cases
