@@ -76,6 +76,7 @@
 |   + StackEnd()                                     |
 |     obj+:0 : RefExpr                               |
 |       begin:2@0, top:2@0, create!:[3@0], end:[3@2] |
+|                                                    |
 |   @ OS(1 -> -1) : [0]                              |
 |   > StackBegin()                                   |
 |     obj!:1 : RefExpr                               |
@@ -102,6 +103,7 @@
 |   + StackEnd()                                               |
 |     obj+:1 : RefExpr                                         |
 |       begin:3@3, top:2@0, use:[0], create!:[3@0], end!:[4@0] |
+|                                                              |
 |   @ OS(3 -> -1) : [1]                                        |
 |   + StackBegin()                                             |
 |     obj:2 : CallExpr                                         |
@@ -193,6 +195,7 @@
 |                                                                       |   + StackEnd()                                                 |
 |                                                                       |     obj+:21 : RefExpr                                          |
 |                                                                       |       begin:8@0, top:8@0, create!:[9@0], end:[9@2]             |
+|                                                                       |                                                                |
 |                                                                       |   @ CS(4 -> -1) : [2] OS(42 -> -1) : [21]                      |
 |                                                                       |   > StackBegin()                                               |
 |                                                                       |     obj!:22 : RefExpr                                          |
@@ -222,6 +225,7 @@
 |                                                                       |   + StackEnd()                                                 |
 |                                                                       |     obj+:22 : RefExpr                                          |
 |                                                                       |       begin:9@3, top:8@0, use:[21], create!:[9@0], end!:[10@0] |
+|                                                                       |                                                                |
 |                                                                       |   @ CS(4 -> -1) : [2] OS(44 -> -1) : [22]                      |
 |                                                                       |   > StackBegin()                                               |
 |                                                                       |     obj!:23 : RefExpr                                          |
@@ -250,6 +254,7 @@
 |                                                                       |   + StackEnd()                                                  |
 |                                                                       |     obj+:23 : RefExpr                                           |
 |                                                                       |       begin:10@1, top:8@0, use:[22], create!:[9@0], end!:[11@0] |
+|                                                                       |                                                                 |
 |                                                                       |   @ CS(4 -> -1) : [2] OS(46 -> -1) : [23]                       |
 |                                                                       |   > StackBegin()                                                |
 |                                                                       |     obj!:24 : RefExpr                                           |
@@ -277,6 +282,7 @@
 |                                                                       |   + StackEnd()                                                  |
 |                                                                       |     obj+:24 : RefExpr                                           |
 |                                                                       |       begin:11@1, top:8@0, use:[23], create!:[9@0], end!:[12@0] |
+|                                                                       |                                                                 |
 |                                                                       |   @ CS(4 -> -1) : [2] OS(48 -> -1) : [24]                       |
 |                                                                       |   + StackBegin()                                                |
 |                                                                       |     obj:25 : BinaryExpr                                         |
@@ -376,6 +382,7 @@
 |   + StackEnd()                                                 |      |   + StackEnd()                                                 |
 |     obj+:4 : RefExpr                                           |      |     obj+:26 : RefExpr                                          |
 |       begin:17@0, top:17@0, create!:[18@0], end:[18@2]         |      |       begin:23@0, top:23@0, create!:[24@0], end:[24@2]         |
+|                                                                |      |                                                                |
 |   @ CS(5 -> 4) : [3][2] OS(7 -> -1) : [4]                      |      |   @ CS(49 -> 4) : [25][2] OS(51 -> -1) : [26]                  |
 |   > StackBegin()                                               |      |   > StackBegin()                                               |
 |     obj!:5 : RefExpr                                           |      |     obj!:27 : RefExpr                                          |
@@ -409,6 +416,7 @@
 |   + StackEnd()                                                   |    |   + StackEnd()                                                    |
 |     obj+:5 : RefExpr                                             |    |     obj+:27 : RefExpr                                             |
 |       begin:18@3, top:17@0, use:[4], create!:[18@0], end!:[19@0] |    |       begin:24@3, top:23@0, use:[26], create!:[24@0], end!:[25@0] |
+|                                                                  |    |                                                                   |
 |   @ CS(5 -> 4) : [3][2] OS(9 -> -1) : [5]                        |    |   @ CS(49 -> 4) : [25][2] OS(53 -> -1) : [27]                     |
 |   > StackBegin()                                                 |    |   > StackBegin()                                                  |
 |     obj!:6 : RefExpr                                             |    |     obj!:28 : RefExpr                                             |
@@ -441,6 +449,7 @@
 |   + StackEnd()                                                   |    |   + StackEnd()                                                    |
 |     obj+:6 : RefExpr                                             |    |     obj+:28 : RefExpr                                             |
 |       begin:19@1, top:17@0, use:[5], create!:[18@0], end!:[20@0] |    |       begin:25@1, top:23@0, use:[27], create!:[24@0], end!:[26@0] |
+|                                                                  |    |                                                                   |
 |   @ CS(5 -> 4) : [3][2] OS(11 -> -1) : [6]                       |    |   @ CS(49 -> 4) : [25][2] OS(55 -> -1) : [28]                     |
 |   > StackBegin()                                                 |    |   > StackSlot(2)                                                  |
 |     obj!:7 : RefExpr                                             |    |                                                                   |
@@ -472,22 +481,23 @@
 |   + StackEnd()                                                   |    |   + EnumItem(0, 3)                                                               |
 |     obj+:7 : RefExpr                                             |    |                                                                                  |
 |       begin:20@1, top:17@0, use:[6], create!:[18@0], end!:[21@0] |    |   @ CS(49 -> 4) : [25][2]                                                        |
-|   @ CS(5 -> 4) : [3][2] OS(13 -> -1) : [7]                       |    |   + CreateObject(BinaryExpr)                                                     |
-|   > StackSlot(2)                                                 |    |     obj:25 : BinaryExpr                                                          |
-|                                                                  |    |                                                                                  |
-|   @ CS(5 -> 4) : [3][2]                                          |    |   @ CS(49 -> 4) : [25][2]                                                        |
-| [RETURN STACK]:                                                  |    |   + Field(BinaryExpr::left, 0)                                                   |
-|   [10][3][6]: Exp0 -> [18][Exp1]<! !Exp0 @ !>                    |    |                                                                                  |
-|   [9][2][6]: Exp1 -> [31][Exp2]<! !Exp1 @ !>                     |    |   @ CS(49 -> 4) : [25][2]                                                        |
-|   [8][1][6]: Exp2 -> [40][Exp]<! !Exp2 @ !>                      |    |   + Field(BinaryExpr::right, 2)                                                  |
-|   [7][6][6]: Exp -> [16][Exp1]< Exp1 "(" { Exp @ ; "," } ")" >   |    |                                                                                  |
-|   [5][2][0]: Exp1 -> [31][Exp2]<! !Exp1 @ !>                     |    |   @ CS(49 -> 4) : [25][2]                                                        |
-|   [4][1][0]: Exp2 -> [40][Exp]<! !Exp2 @ !>                      |    |   + Field(BinaryExpr::op, 3)                                                     |
-|   [0][10][0]: Exp -> [43][Module]< Exp @ >                       |    |                                                                                  |
-| [PREDECESSORS 20-20]: [20]                                       |    |   @ CS(49 -> 4) : [25][2]                                                        |
-| [SUCCESORS 28-28]: [28]                                          |    |   + StackEnd()                                                                   |
-+------------------------------------------------------------------+    |     obj+:25 : BinaryExpr                                                         |
-|                                                                       |       begin:12@1, top:12@1, lrec:8@0, field:[28, 24], create!:[27@1], end:[27@5] |
+|                                                                  |    |   + CreateObject(BinaryExpr)                                                     |
+|   @ CS(5 -> 4) : [3][2] OS(13 -> -1) : [7]                       |    |     obj:25 : BinaryExpr                                                          |
+|   > StackSlot(2)                                                 |    |                                                                                  |
+|                                                                  |    |   @ CS(49 -> 4) : [25][2]                                                        |
+|   @ CS(5 -> 4) : [3][2]                                          |    |   + Field(BinaryExpr::left, 0)                                                   |
+| [RETURN STACK]:                                                  |    |                                                                                  |
+|   [10][3][6]: Exp0 -> [18][Exp1]<! !Exp0 @ !>                    |    |   @ CS(49 -> 4) : [25][2]                                                        |
+|   [9][2][6]: Exp1 -> [31][Exp2]<! !Exp1 @ !>                     |    |   + Field(BinaryExpr::right, 2)                                                  |
+|   [8][1][6]: Exp2 -> [40][Exp]<! !Exp2 @ !>                      |    |                                                                                  |
+|   [7][6][6]: Exp -> [16][Exp1]< Exp1 "(" { Exp @ ; "," } ")" >   |    |   @ CS(49 -> 4) : [25][2]                                                        |
+|   [5][2][0]: Exp1 -> [31][Exp2]<! !Exp1 @ !>                     |    |   + Field(BinaryExpr::op, 3)                                                     |
+|   [4][1][0]: Exp2 -> [40][Exp]<! !Exp2 @ !>                      |    |                                                                                  |
+|   [0][10][0]: Exp -> [43][Module]< Exp @ >                       |    |   @ CS(49 -> 4) : [25][2]                                                        |
+| [PREDECESSORS 20-20]: [20]                                       |    |   + StackEnd()                                                                   |
+| [SUCCESORS 28-28]: [28]                                          |    |     obj+:25 : BinaryExpr                                                         |
++------------------------------------------------------------------+    |       begin:12@1, top:12@1, lrec:8@0, field:[28, 24], create!:[27@1], end:[27@5] |
+|                                                                       |                                                                                  |
 |                                                                       |   @ CS(4 -> -1) : [2] OS(56 -> -1) : [25]                                        |
 |                                                                       |   > StackSlot(2)                                                                 |
 |                                                                       |                                                                                  |
@@ -582,6 +592,7 @@
 |   + StackEnd()                                                 |       |   + StackEnd()                                                   |
 |     obj+:8 : RefExpr                                           |       |     obj+:29 : RefExpr                                            |
 |       begin:31@0, top:31@0, create!:[32@0], end:[32@2]         |       |       begin:38@0, top:38@0, create!:[39@0], end:[39@2]           |
+|                                                                |       |                                                                  |
 |   @ CS(5 -> 4) : [3][2] OS(15 -> -1) : [8]                     |       |   @ CS(4 -> -1) : [2] OS(58 -> -1) : [29]                        |
 |   > StackBegin()                                               |       |   > StackBegin()                                                 |
 |     obj!:9 : RefExpr                                           |       |     obj!:30 : RefExpr                                            |
@@ -615,6 +626,7 @@
 |   + StackEnd()                                                   |     |   + StackEnd()                                                    |
 |     obj+:9 : RefExpr                                             |     |     obj+:30 : RefExpr                                             |
 |       begin:32@3, top:31@0, use:[8], create!:[32@0], end!:[33@0] |     |       begin:39@3, top:38@0, use:[29], create!:[39@0], end!:[40@0] |
+|                                                                  |     |                                                                   |
 |   @ CS(5 -> 4) : [3][2] OS(17 -> -1) : [9]                       |     |   @ CS(4 -> -1) : [2] OS(60 -> -1) : [30]                         |
 |   > StackBegin()                                                 |     |   > StackBegin()                                                  |
 |     obj!:10 : RefExpr                                            |     |     obj!:31 : RefExpr                                             |
@@ -647,6 +659,7 @@
 |   + StackEnd()                                                   |     |   + StackEnd()                                                    |
 |     obj+:10 : RefExpr                                            |     |     obj+:31 : RefExpr                                             |
 |       begin:33@1, top:31@0, use:[9], create!:[32@0], end!:[34@0] |     |       begin:40@1, top:38@0, use:[30], create!:[39@0], end!:[41@0] |
+|                                                                  |     |                                                                   |
 |   @ CS(5 -> 4) : [3][2] OS(19 -> -1) : [10]                      |     |   @ CS(4 -> -1) : [2] OS(62 -> -1) : [31]                         |
 |   > StackBegin()                                                 |     |   > StackBegin()                                                  |
 |     obj!:11 : RefExpr                                            |     |     obj!:32 : RefExpr                                             |
@@ -678,6 +691,7 @@
 |   + StackEnd()                                                    |    |   + StackEnd()                                                    |
 |     obj+:11 : RefExpr                                             |    |     obj+:32 : RefExpr                                             |
 |       begin:34@1, top:31@0, use:[10], create!:[32@0], end!:[36@0] |    |       begin:41@1, top:38@0, use:[31], create!:[39@0], end!:[42@0] |
+|                                                                   |    |                                                                   |
 |   @ CS(5 -> 4) : [3][2] OS(21 -> -1) : [11]                       |    |   @ CS(4 -> -1) : [2] OS(64 -> -1) : [32]                         |
 |   > StackSlot(2)                                                  |    |   + StackBegin()                                                  |
 |                                                                   |    |     obj:33 : BinaryExpr                                           |
@@ -745,6 +759,7 @@
 |   + StackEnd()                                                      |    |
 |     obj+:3 : GenericExpr                                            |    |
 |       begin:7@0, top:7@0, field:[11, 7], create!:[46@0], end:[46@3] |    |
+|                                                                     |    |
 |   @ CS(4 -> -1) : [2] OS(22 -> -1) : [3]                            |    |
 |   > StackBegin()                                                    |    |
 |     obj!:12 : GenericExpr                                           |    |
@@ -774,6 +789,7 @@
 |   + StackEnd()                                                  |        |
 |     obj+:12 : GenericExpr                                       |        |
 |       begin:46@4, top:7@0, use:[3], create!:[46@0], end!:[47@0] |        |
+|                                                                 |        |
 |   @ CS(4 -> -1) : [2] OS(24 -> -1) : [12]                       |        |
 |   + StackBegin()                                                |        |
 |     obj:13 : CallExpr                                           |        |
@@ -879,6 +895,7 @@
 |   + StackEnd()                                                   |      |   + StackEnd()                                                   |
 |     obj+:14 : RefExpr                                            |      |     obj+:35 : RefExpr                                            |
 |       begin:60@0, top:60@0, create!:[61@0], end:[61@2]           |      |       begin:66@0, top:66@0, create!:[67@0], end:[67@2]           |
+|                                                                  |      |                                                                  |
 |   @ CS(25 -> 4) : [13][2] OS(27 -> -1) : [14]                    |      |   @ CS(66 -> 65) : [34][33][2] OS(68 -> -1) : [35]               |
 |   > StackBegin()                                                 |      |   > StackBegin()                                                 |
 |     obj!:15 : RefExpr                                            |      |     obj!:36 : RefExpr                                            |
@@ -912,6 +929,7 @@
 |   + StackEnd()                                                    |     |   + StackEnd()                                                    |
 |     obj+:15 : RefExpr                                             |     |     obj+:36 : RefExpr                                             |
 |       begin:61@3, top:60@0, use:[14], create!:[61@0], end!:[62@0] |     |       begin:67@3, top:66@0, use:[35], create!:[67@0], end!:[68@0] |
+|                                                                   |     |                                                                   |
 |   @ CS(25 -> 4) : [13][2] OS(29 -> -1) : [15]                     |     |   @ CS(66 -> 65) : [34][33][2] OS(70 -> -1) : [36]                |
 |   > StackBegin()                                                  |     |   > StackBegin()                                                  |
 |     obj!:16 : RefExpr                                             |     |     obj!:37 : RefExpr                                             |
@@ -944,6 +962,7 @@
 |   + StackEnd()                                                    |     |   + StackEnd()                                                    |
 |     obj+:16 : RefExpr                                             |     |     obj+:37 : RefExpr                                             |
 |       begin:62@1, top:60@0, use:[15], create!:[61@0], end!:[63@0] |     |       begin:68@1, top:66@0, use:[36], create!:[67@0], end!:[69@0] |
+|                                                                   |     |                                                                   |
 |   @ CS(25 -> 4) : [13][2] OS(31 -> -1) : [16]                     |     |   @ CS(66 -> 65) : [34][33][2] OS(72 -> -1) : [37]                |
 |   > StackBegin()                                                  |     |   > StackBegin()                                                  |
 |     obj!:17 : RefExpr                                             |     |     obj!:38 : RefExpr                                             |
@@ -975,6 +994,7 @@
 |   + StackEnd()                                                    |     |   + StackEnd()                                                    |
 |     obj+:17 : RefExpr                                             |     |     obj+:38 : RefExpr                                             |
 |       begin:63@1, top:60@0, use:[16], create!:[61@0], end!:[64@0] |     |       begin:69@1, top:66@0, use:[37], create!:[67@0], end!:[70@0] |
+|                                                                   |     |                                                                   |
 |   @ CS(25 -> 4) : [13][2] OS(33 -> -1) : [17]                     |     |   @ CS(66 -> 65) : [34][33][2] OS(74 -> -1) : [38]                |
 |   > StackSlot(2)                                                  |     | [RETURN STACK]:                                                   |
 |                                                                   |     |   [45][3][49]: Exp0 -> [18][Exp1]<! !Exp0 @ !>                    |
@@ -1030,16 +1050,17 @@
 |   + CreateObject(CallExpr)                                                       |    |   + StackEnd()                                                    |
 |     obj:13 : CallExpr                                                            |    |     obj+:34 : RefExpr                                             |
 |                                                                                  |    |       begin:52@0, top:52@0, use:[38], create!:[67@0], end!:[81@0] |
-|   @ CS(25 -> 4) : [13][2]                                                        |    |   @ CS(65 -> 4) : [33][2] OS(75 -> -1) : [34]                     |
-|   + Field(CallExpr::func, 0)                                                     |    |   > StackBegin()                                                  |
-|                                                                                  |    |     obj!:39 : RefExpr                                             |
 |   @ CS(25 -> 4) : [13][2]                                                        |    |                                                                   |
-|   + Field(CallExpr::args, 2)                                                     |    |   @ CS(76 -> 65) : [39][33][2] OS(75 -> -1) : [34]                |
-|                                                                                  |    | [RETURN STACK]:                                                   |
-|   @ CS(25 -> 4) : [13][2]                                                        |    |   [44][2][49]: Exp1 -> [31][Exp2]<! !Exp1 @ !>                    |
-|   + StackEnd()                                                                   |    |   [43][9][49]: Exp2 -> [37][Exp]< Exp ">" Exp2 @ >                |
-|     obj+:13 : CallExpr                                                           |    |   [33][7][29]: Exp -> [16][Exp1]< Exp1 "(" { Exp @ ; "," } ")" >  |
-|       begin:47@1, top:47@1, lrec:7@0, field:[17, 12], create!:[77@0], end:[77@3] |    |   [5][2][0]: Exp1 -> [31][Exp2]<! !Exp1 @ !>                      |
+|   + Field(CallExpr::func, 0)                                                     |    |   @ CS(65 -> 4) : [33][2] OS(75 -> -1) : [34]                     |
+|                                                                                  |    |   > StackBegin()                                                  |
+|   @ CS(25 -> 4) : [13][2]                                                        |    |     obj!:39 : RefExpr                                             |
+|   + Field(CallExpr::args, 2)                                                     |    |                                                                   |
+|                                                                                  |    |   @ CS(76 -> 65) : [39][33][2] OS(75 -> -1) : [34]                |
+|   @ CS(25 -> 4) : [13][2]                                                        |    | [RETURN STACK]:                                                   |
+|   + StackEnd()                                                                   |    |   [44][2][49]: Exp1 -> [31][Exp2]<! !Exp1 @ !>                    |
+|     obj+:13 : CallExpr                                                           |    |   [43][9][49]: Exp2 -> [37][Exp]< Exp ">" Exp2 @ >                |
+|       begin:47@1, top:47@1, lrec:7@0, field:[17, 12], create!:[77@0], end:[77@3] |    |   [33][7][29]: Exp -> [16][Exp1]< Exp1 "(" { Exp @ ; "," } ")" >  |
+|                                                                                  |    |   [5][2][0]: Exp1 -> [31][Exp2]<! !Exp1 @ !>                      |
 |   @ CS(4 -> -1) : [2] OS(34 -> -1) : [13]                                        |    |   [4][1][0]: Exp2 -> [40][Exp]<! !Exp2 @ !>                       |
 |   > StackBegin()                                                                 |    |   [0][10][0]: Exp -> [43][Module]< Exp @ >                        |
 |     obj!:18 : CallExpr                                                           |    | [PREDECESSORS 80-80]: [80]                                        |
@@ -1068,6 +1089,7 @@
 |   + StackEnd()                                                    |                   |   + StackEnd()                                                    |
 |     obj+:18 : CallExpr                                            |                   |     obj+:39 : RefExpr                                             |
 |       begin:77@4, top:47@1, use:[13], create!:[77@0], end!:[78@0] |                   |       begin:81@1, top:52@0, use:[34], create!:[67@0], end!:[82@0] |
+|                                                                   |                   |                                                                   |
 |   @ CS(4 -> -1) : [2] OS(36 -> -1) : [18]                         |                   |   @ CS(65 -> 4) : [33][2] OS(77 -> -1) : [39]                     |
 |   > StackBegin()                                                  |                   |   > StackBegin()                                                  |
 |     obj!:19 : CallExpr                                            |                   |     obj!:40 : RefExpr                                             |
@@ -1096,6 +1118,7 @@
 |   + StackEnd()                                                    |                   |   + StackEnd()                                                    |
 |     obj+:19 : CallExpr                                            |                   |     obj+:40 : RefExpr                                             |
 |       begin:78@1, top:47@1, use:[18], create!:[77@0], end!:[79@0] |                   |       begin:82@1, top:52@0, use:[39], create!:[67@0], end!:[83@0] |
+|                                                                   |                   |                                                                   |
 |   @ CS(4 -> -1) : [2] OS(38 -> -1) : [19]                         |                   |   @ CS(65 -> 4) : [33][2] OS(79 -> -1) : [40]                     |
 |   > StackSlot(2)                                                  |                   |   > StackSlot(2)                                                  |
 |                                                                   |                   |                                                                   |
@@ -1138,6 +1161,7 @@
 |                                                                                       |   + StackEnd()                                                                    |
 |                                                                                       |     obj+:33 : BinaryExpr                                                          |
 |                                                                                       |       begin:42@1, top:42@1, lrec:38@0, field:[40, 32], create!:[84@1], end:[84@5] |
+|                                                                                       |                                                                                   |
 |                                                                                       |   @ CS(4 -> -1) : [2] OS(80 -> -1) : [33]                                         |
 |                                                                                       |   > StackSlot(2)                                                                  |
 |                                                                                       |                                                                                   |
@@ -1196,6 +1220,7 @@
 |   + StackEnd()                                                                                    |    |   + StackEnd()                                                                                    |
 |     obj+:2 : CallExpr                                                                             |    |     obj+:2 : CallExpr                                                                             |
 |       begin:4@1, top:4@1, lrec:2@0, field:[33, 19, 1, 25], create!:[92@0, 91@0], end:[91@3, 92@3] |    |       begin:4@1, top:4@1, lrec:2@0, field:[33, 19, 1, 25], create!:[92@0, 91@0], end:[91@3, 92@3] |
+|                                                                                                   |    |                                                                                                   |
 |   @ OS(39 -> -1) : [2]                                                                            |    |   @ OS(81 -> -1) : [2]                                                                            |
 |   > StackBegin()                                                                                  |    |   > StackBegin()                                                                                  |
 |     obj!:20 : CallExpr                                                                            |    |     obj!:41 : CallExpr                                                                            |
@@ -1225,28 +1250,30 @@
 |
 +
 |
-+---------------------------------------------------------------------------------------------+
-| [87]: <Ending>                                                                              |
-|   TraceExec: [65]                                                                           |
-|   InsExec: [155:2]                                                                          |
-|   ForwardTrace: 86                                                                          |
-| [40][Exp]<! !Exp2 @ !>                                                                      |
-| [AST-INSTRUCTIONS]:                                                                         |
-|   @ CS(84 -> -1) : [41, 20] OS(83 -> -1) : [2]                                              |
-|   + StackEnd()                                                                              |
-|     obj+:20 : CallExpr                                                                      |
-|       begin:92@4, top:4@1, use:[2], create!:[92@0, 91@0], end!:[87@0]    obj+:41 : CallExpr |
-|       begin:91@4, top:4@1, use:[2], create!:[92@0, 91@0], end!:[87@0]                       |
-|   @ OS(85 -> -1) : [41, 20]                                                                 |
-|   > StackBegin()                                                                            |
-|     obj!:42 : CallExpr                                                                      |
-|                                                                                             |
-|   @ CS(86 -> -1) : [42] OS(85 -> -1) : [41, 20]                                             |
-| [RETURN STACK]:                                                                             |
-|   [0][10][0]: Exp -> [43][Module]< Exp @ >                                                  |
-| [PREDECESSORS 86-86]: [86]                                                                  |
-| [SUCCESORS 88-88]: [88]                                                                     |
-+---------------------------------------------------------------------------------------------+
++-----------------------------------------------------------------------+
+| [87]: <Ending>                                                        |
+|   TraceExec: [65]                                                     |
+|   InsExec: [155:2]                                                    |
+|   ForwardTrace: 86                                                    |
+| [40][Exp]<! !Exp2 @ !>                                                |
+| [AST-INSTRUCTIONS]:                                                   |
+|   @ CS(84 -> -1) : [41, 20] OS(83 -> -1) : [2]                        |
+|   + StackEnd()                                                        |
+|     obj+:20 : CallExpr                                                |
+|       begin:92@4, top:4@1, use:[2], create!:[92@0, 91@0], end!:[87@0] |
+|     obj+:41 : CallExpr                                                |
+|       begin:91@4, top:4@1, use:[2], create!:[92@0, 91@0], end!:[87@0] |
+|                                                                       |
+|   @ OS(85 -> -1) : [41, 20]                                           |
+|   > StackBegin()                                                      |
+|     obj!:42 : CallExpr                                                |
+|                                                                       |
+|   @ CS(86 -> -1) : [42] OS(85 -> -1) : [41, 20]                       |
+| [RETURN STACK]:                                                       |
+|   [0][10][0]: Exp -> [43][Module]< Exp @ >                            |
+| [PREDECESSORS 86-86]: [86]                                            |
+| [SUCCESORS 88-88]: [88]                                               |
++-----------------------------------------------------------------------+
 |
 +
 |
@@ -1261,6 +1288,7 @@
 |   + StackEnd()                                                             |
 |     obj+:42 : CallExpr                                                     |
 |       begin:87@1, top:4@1, use:[41, 20], create!:[92@0, 91@0], end!:[88@0] |
+|                                                                            |
 |   @ OS(87 -> -1) : [42]                                                    |
 |   > StackBegin()                                                           |
 |     obj:43 : Module                                                        |
@@ -1293,6 +1321,7 @@
 |   + StackEnd()                                                               |
 |     obj+:43 : Module                                                         |
 |       begin:88@1, top:88@1, lrec:4@1, field:[42], create!:[89@0], end:[89@2] |
+|                                                                              |
 |   @ OS(89 -> -1) : [43]                                                      |
 | [PREDECESSORS 88-88]: [88]                                                   |
 +------------------------------------------------------------------------------+

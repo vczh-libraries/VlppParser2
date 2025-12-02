@@ -94,6 +94,7 @@
 |   + StackEnd()                                                                              |                           |   + StackEnd()                                                                              |
 |     obj+:1 : Plus                                                                           |                           |     obj+:4 : Plus                                                                           |
 |       begin:4@0, top:4@0, create!:[5@0], end:[5@1]                                          |                           |       begin:7@0, top:7@0, create!:[8@0], end:[8@1]                                          |
+|                                                                                             |                           |                                                                                             |
 |   @ CS(0 -> -1) : [0] OS(2 -> -1) : [1]                                                     |                           |   @ CS(0 -> -1) : [0] OS(8 -> -1) : [4]                                                     |
 |   > StackSlot(4)                                                                            |                           |   > StackSlot(3)                                                                            |
 |                                                                                             |                           |                                                                                             |
@@ -147,6 +148,7 @@
 |   + StackEnd()                                                                              |                           |   + StackEnd()                                                                              |
 |     obj+:2 : Plus                                                                           |                           |     obj+:5 : Plus                                                                           |
 |       begin:12@0, top:12@0, create!:[13@0], end:[13@1]                                      |                           |       begin:16@0, top:16@0, create!:[17@0], end:[17@1]                                      |
+|                                                                                             |                           |                                                                                             |
 |   @ CS(0 -> -1) : [0] OS(4 -> -1) : [2]                                                     |                           |   @ CS(0 -> -1) : [0] OS(10 -> -1) : [5]                                                    |
 |   > StackSlot(5)                                                                            |                           |   > StackSlot(4)                                                                            |
 |                                                                                             |                           |                                                                                             |
@@ -189,6 +191,7 @@
 |   + StackEnd()                                                                       |                                  |   + StackEnd()                                                                       |
 |     obj+:0 : NestedOptionalFeature                                                   |                                  |     obj+:0 : NestedOptionalFeature                                                   |
 |       begin:1@0, top:1@0, field:[5, 2, 1, 4], create!:[19@0, 18@0], end:[18@6, 19@6] |                                  |       begin:1@0, top:1@0, field:[5, 2, 1, 4], create!:[19@0, 18@0], end:[18@6, 19@6] |
+|                                                                                      |                                  |                                                                                      |
 |   @ OS(5 -> -1) : [0]                                                                |                                  |   @ OS(11 -> -1) : [0]                                                               |
 |   > StackBegin()                                                                     |                                  |   > StackBegin()                                                                     |
 |     obj!:3 : NestedOptionalFeature                                                   |                                  |     obj!:6 : NestedOptionalFeature                                                   |
@@ -215,18 +218,20 @@
 |
 +
 |
-+---------------------------------------------------------------------------------------------------------+
-| [15]: <Ending>                                                                                          |
-|   TraceExec: [13]                                                                                       |
-|   InsExec: [38:1]                                                                                       |
-|   ForwardTrace: 14                                                                                      |
-| [12][Module] END [ENDING]                                                                               |
-| [AST-INSTRUCTIONS]:                                                                                     |
-|   @ CS(14 -> -1) : [6, 3] OS(13 -> -1) : [0]                                                            |
-|   + StackEnd()                                                                                          |
-|     obj+:3 : NestedOptionalFeature                                                                      |
-|       begin:19@7, top:1@0, use:[0], create!:[19@0, 18@0], end!:[15@0]    obj+:6 : NestedOptionalFeature |
-|       begin:18@7, top:1@0, use:[0], create!:[19@0, 18@0], end!:[15@0]                                   |
-|   @ OS(15 -> -1) : [6, 3]                                                                               |
-| [PREDECESSORS 14-14]: [14]                                                                              |
-+---------------------------------------------------------------------------------------------------------+
++-----------------------------------------------------------------------+
+| [15]: <Ending>                                                        |
+|   TraceExec: [13]                                                     |
+|   InsExec: [38:1]                                                     |
+|   ForwardTrace: 14                                                    |
+| [12][Module] END [ENDING]                                             |
+| [AST-INSTRUCTIONS]:                                                   |
+|   @ CS(14 -> -1) : [6, 3] OS(13 -> -1) : [0]                          |
+|   + StackEnd()                                                        |
+|     obj+:3 : NestedOptionalFeature                                    |
+|       begin:19@7, top:1@0, use:[0], create!:[19@0, 18@0], end!:[15@0] |
+|     obj+:6 : NestedOptionalFeature                                    |
+|       begin:18@7, top:1@0, use:[0], create!:[19@0, 18@0], end!:[15@0] |
+|                                                                       |
+|   @ OS(15 -> -1) : [6, 3]                                             |
+| [PREDECESSORS 14-14]: [14]                                            |
++-----------------------------------------------------------------------+

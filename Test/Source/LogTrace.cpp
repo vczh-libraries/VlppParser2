@@ -474,6 +474,8 @@ void RenderTrace(
 							logInsRefLink(ieObject->endWithReuseInsRefs);
 							writer.WriteString(L"]");
 						}
+
+						writer.WriteLine(L"");
 					}
 				}
 

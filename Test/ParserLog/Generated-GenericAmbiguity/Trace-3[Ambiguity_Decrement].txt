@@ -76,6 +76,7 @@
 |   + StackEnd()                                     |
 |     obj+:0 : RefExpr                               |
 |       begin:2@0, top:2@0, create!:[3@0], end:[3@2] |
+|                                                    |
 |   @ OS(1 -> -1) : [0]                              |
 |   > StackBegin()                                   |
 |     obj!:1 : RefExpr                               |
@@ -102,6 +103,7 @@
 |   + StackEnd()                                               |
 |     obj+:1 : RefExpr                                         |
 |       begin:3@3, top:2@0, use:[0], create!:[3@0], end!:[4@0] |
+|                                                              |
 |   @ OS(3 -> -1) : [1]                                        |
 |   > StackBegin()                                             |
 |     obj!:2 : RefExpr                                         |
@@ -128,6 +130,7 @@
 |   + StackEnd()                                                       |    |   + StackEnd()                                                       |
 |     obj+:2 : RefExpr                                                 |    |     obj+:2 : RefExpr                                                 |
 |       begin:4@1, top:2@0, use:[1, 1], create!:[3@0], end!:[6@0, 5@0] |    |       begin:4@1, top:2@0, use:[1, 1], create!:[3@0], end!:[6@0, 5@0] |
+|                                                                      |    |                                                                      |
 |   @ OS(5 -> -1) : [2]                                                |    |   @ OS(9 -> -1) : [2]                                                |
 |   + StackBegin()                                                     |    |   + StackBegin()                                                     |
 |     obj:3 : DecrementExpr                                            |    |     obj:5 : PostfixExpr                                              |
@@ -191,6 +194,7 @@
 |                                                    |   + StackEnd()                                                            |
 |                                                    |     obj+:5 : PostfixExpr                                                  |
 |                                                    |       begin:6@1, top:6@1, lrec:2@0, field:[2], create!:[11@1], end:[11@4] |
+|                                                    |                                                                           |
 |                                                    |   @ OS(11 -> -1) : [5]                                                    |
 |                                                    |   + StackBegin()                                                          |
 |                                                    |     obj:6 : PostfixExpr                                                   |
@@ -207,65 +211,66 @@
 |                                                    +---------------------------------------------------------------------------+
 [0]                                                  [1]
  |                                                    |
- +                                                    +----------------------------------------------------------------+
- |                                                                                                                     |
-[0]                                                                                                                   [1]
-++=============================================++                                                                     ++=============================================++
-|| [13]: {SUB} -                               ||                                                                     || [18]: {SUB} -                               ||
-||   TraceExec: [6]                            ||                                                                     ||   TraceExec: [11]                           ||
-||   InsExec: [12:1]                           ||                                                                     ||   InsExec: [28:1]                           ||
-||   ForwardTrace: 5                           ||                                                                     ||   ForwardTrace: 6                           ||
-|| [24][Exp2]< Exp2 "-" "-" @ >                ||                                                                     || [26][Exp2]< Exp2 "-" @ >                    ||
-|| [AST-INSTRUCTIONS]:                         ||                                                                     || [AST-INSTRUCTIONS]:                         ||
-||   @ CS(6 -> -1) : [3]                       ||                                                                     ||   @ CS(12 -> -1) : [6]                      ||
-||   + Token(2)                                ||                                                                     ||   + Token(1)                                ||
-||                                             ||                                                                     ||                                             ||
-||   @ CS(6 -> -1) : [3]                       ||                                                                     ||   @ CS(12 -> -1) : [6]                      ||
-|| [RETURN STACK]:                             ||                                                                     || [RETURN STACK]:                             ||
-||   [4][1][0]: Exp2 -> [40][Exp]<! !Exp2 @ !> ||                                                                     ||   [4][1][0]: Exp2 -> [40][Exp]<! !Exp2 @ !> ||
-||   [0][10][0]: Exp -> [43][Module]< Exp @ >  ||                                                                     ||   [0][10][0]: Exp -> [43][Module]< Exp @ >  ||
-|| [PREDECESSORS 8-8]: [8]                     ||                                                                     || [PREDECESSORS 11-11]: [11]                  ||
-|| [SUCCESORS 20-20]: [20]                     ||                                                                     || [SUCCESORS 19-19]: [19]                     ||
-++=============================================++                                                                     ++=============================================++
-|                                                                                                                     |
-+                                                                                                                     +
-|                                                                                                                     |
-+---------------------------------------------------------------------------+                                         +-----------------------------------------------------------------------------+
-| [20]: <Ending>                                                            |                                         | [19]: <Ending>                                                              |
-|   TraceExec: [7]                                                          |                                         |   TraceExec: [12]                                                           |
-|   InsExec: [13:4]                                                         |                                         |   InsExec: [29:6]                                                           |
-|   ForwardTrace: 5                                                         |                                         |   ForwardTrace: 6                                                           |
-| [40][Exp]<! !Exp2 @ !>                                                    |                                         | [40][Exp]<! !Exp2 @ !>                                                      |
-| [AST-INSTRUCTIONS]:                                                       |                                         | [AST-INSTRUCTIONS]:                                                         |
-|   @ CS(6 -> -1) : [3]                                                     |                                         |   @ CS(12 -> -1) : [6]                                                      |
-|   + CreateObject(DecrementExpr)                                           |                                         |   + EnumItem(1, 2)                                                          |
-|     obj:3 : DecrementExpr                                                 |                                         |                                                                             |
-|                                                                           |                                         |   @ CS(12 -> -1) : [6]                                                      |
-|   @ CS(6 -> -1) : [3]                                                     |                                         |   + CreateObject(PostfixExpr)                                               |
-|   + Field(DecrementExpr::expr, 0)                                         |                                         |     obj:6 : PostfixExpr                                                     |
-|                                                                           |                                         |                                                                             |
-|   @ CS(6 -> -1) : [3]                                                     |                                         |   @ CS(12 -> -1) : [6]                                                      |
-|   + StackEnd()                                                            |                                         |   + Field(PostfixExpr::expr, 0)                                             |
-|     obj+:3 : DecrementExpr                                                |                                         |                                                                             |
-|       begin:5@1, top:5@1, lrec:2@0, field:[2], create!:[20@0], end:[20@2] |                                         |   @ CS(12 -> -1) : [6]                                                      |
-|   @ OS(7 -> -1) : [3]                                                     |                                         |   + Field(PostfixExpr::op, 2)                                               |
-|   > StackBegin()                                                          |                                         |                                                                             |
-|     obj!:4 : DecrementExpr PostfixExpr                                    |                                         |   @ CS(12 -> -1) : [6]                                                      |
-|                                                                           |                                         |   + StackEnd()                                                              |
-|   @ CS(8 -> -1) : [4] OS(7 -> -1) : [3]                                   |                                         |     obj+:6 : PostfixExpr                                                    |
-| [RETURN STACK]:                                                           |                                         |       begin:11@5, top:11@5, lrec:2@0, field:[5], create!:[19@1], end:[19@4] |
-|   [0][10][0]: Exp -> [43][Module]< Exp @ >                                |                                         |   @ OS(13 -> -1) : [6]                                                      |
-| [PREDECESSORS 13-13]: [13]                                                |                                         |   > StackBegin()                                                            |
-| [SUCCESORS 14-14]: [14]                                                   |                                         |     obj!:7 : DecrementExpr PostfixExpr                                      |
-+---------------------------------------------------------------------------+                                         |                                                                             |
-|                                                                                                                     |   @ CS(14 -> -1) : [7] OS(13 -> -1) : [6]                                   |
-|                                                                                                                     | [RETURN STACK]:                                                             |
-|                                                                                                                     |   [0][10][0]: Exp -> [43][Module]< Exp @ >                                  |
-|                                                                                                                     | [PREDECESSORS 18-18]: [18]                                                  |
-|                                                                                                                     | [SUCCESORS 14-14]: [14]                                                     |
-|                                                                                                                     +-----------------------------------------------------------------------------+
-|                                                                                                                     |
-+---------------------------------------------------------------------------------------------------------------------+
+ +                                                    +--------------------------------+
+ |                                                                                     |
+[0]                                                                                   [1]
+++=============================================++                                     ++=============================================++
+|| [13]: {SUB} -                               ||                                     || [18]: {SUB} -                               ||
+||   TraceExec: [6]                            ||                                     ||   TraceExec: [11]                           ||
+||   InsExec: [12:1]                           ||                                     ||   InsExec: [28:1]                           ||
+||   ForwardTrace: 5                           ||                                     ||   ForwardTrace: 6                           ||
+|| [24][Exp2]< Exp2 "-" "-" @ >                ||                                     || [26][Exp2]< Exp2 "-" @ >                    ||
+|| [AST-INSTRUCTIONS]:                         ||                                     || [AST-INSTRUCTIONS]:                         ||
+||   @ CS(6 -> -1) : [3]                       ||                                     ||   @ CS(12 -> -1) : [6]                      ||
+||   + Token(2)                                ||                                     ||   + Token(1)                                ||
+||                                             ||                                     ||                                             ||
+||   @ CS(6 -> -1) : [3]                       ||                                     ||   @ CS(12 -> -1) : [6]                      ||
+|| [RETURN STACK]:                             ||                                     || [RETURN STACK]:                             ||
+||   [4][1][0]: Exp2 -> [40][Exp]<! !Exp2 @ !> ||                                     ||   [4][1][0]: Exp2 -> [40][Exp]<! !Exp2 @ !> ||
+||   [0][10][0]: Exp -> [43][Module]< Exp @ >  ||                                     ||   [0][10][0]: Exp -> [43][Module]< Exp @ >  ||
+|| [PREDECESSORS 8-8]: [8]                     ||                                     || [PREDECESSORS 11-11]: [11]                  ||
+|| [SUCCESORS 20-20]: [20]                     ||                                     || [SUCCESORS 19-19]: [19]                     ||
+++=============================================++                                     ++=============================================++
+|                                                                                     |
++                                                                                     +
+|                                                                                     |
++---------------------------------------------------------------------------+         +-----------------------------------------------------------------------------+
+| [20]: <Ending>                                                            |         | [19]: <Ending>                                                              |
+|   TraceExec: [7]                                                          |         |   TraceExec: [12]                                                           |
+|   InsExec: [13:4]                                                         |         |   InsExec: [29:6]                                                           |
+|   ForwardTrace: 5                                                         |         |   ForwardTrace: 6                                                           |
+| [40][Exp]<! !Exp2 @ !>                                                    |         | [40][Exp]<! !Exp2 @ !>                                                      |
+| [AST-INSTRUCTIONS]:                                                       |         | [AST-INSTRUCTIONS]:                                                         |
+|   @ CS(6 -> -1) : [3]                                                     |         |   @ CS(12 -> -1) : [6]                                                      |
+|   + CreateObject(DecrementExpr)                                           |         |   + EnumItem(1, 2)                                                          |
+|     obj:3 : DecrementExpr                                                 |         |                                                                             |
+|                                                                           |         |   @ CS(12 -> -1) : [6]                                                      |
+|   @ CS(6 -> -1) : [3]                                                     |         |   + CreateObject(PostfixExpr)                                               |
+|   + Field(DecrementExpr::expr, 0)                                         |         |     obj:6 : PostfixExpr                                                     |
+|                                                                           |         |                                                                             |
+|   @ CS(6 -> -1) : [3]                                                     |         |   @ CS(12 -> -1) : [6]                                                      |
+|   + StackEnd()                                                            |         |   + Field(PostfixExpr::expr, 0)                                             |
+|     obj+:3 : DecrementExpr                                                |         |                                                                             |
+|       begin:5@1, top:5@1, lrec:2@0, field:[2], create!:[20@0], end:[20@2] |         |   @ CS(12 -> -1) : [6]                                                      |
+|                                                                           |         |   + Field(PostfixExpr::op, 2)                                               |
+|   @ OS(7 -> -1) : [3]                                                     |         |                                                                             |
+|   > StackBegin()                                                          |         |   @ CS(12 -> -1) : [6]                                                      |
+|     obj!:4 : DecrementExpr PostfixExpr                                    |         |   + StackEnd()                                                              |
+|                                                                           |         |     obj+:6 : PostfixExpr                                                    |
+|   @ CS(8 -> -1) : [4] OS(7 -> -1) : [3]                                   |         |       begin:11@5, top:11@5, lrec:2@0, field:[5], create!:[19@1], end:[19@4] |
+| [RETURN STACK]:                                                           |         |                                                                             |
+|   [0][10][0]: Exp -> [43][Module]< Exp @ >                                |         |   @ OS(13 -> -1) : [6]                                                      |
+| [PREDECESSORS 13-13]: [13]                                                |         |   > StackBegin()                                                            |
+| [SUCCESORS 14-14]: [14]                                                   |         |     obj!:7 : DecrementExpr PostfixExpr                                      |
++---------------------------------------------------------------------------+         |                                                                             |
+|                                                                                     |   @ CS(14 -> -1) : [7] OS(13 -> -1) : [6]                                   |
+|                                                                                     | [RETURN STACK]:                                                             |
+|                                                                                     |   [0][10][0]: Exp -> [43][Module]< Exp @ >                                  |
+|                                                                                     | [PREDECESSORS 18-18]: [18]                                                  |
+|                                                                                     | [SUCCESORS 14-14]: [14]                                                     |
+|                                                                                     +-----------------------------------------------------------------------------+
+|                                                                                     |
++-------------------------------------------------------------------------------------+
 |
 +--------------------------------------------------------+
 | [14]: <Merging>                                        |
@@ -282,29 +287,31 @@
 |
 +
 |
-+----------------------------------------------------------------------------------------------------------------+
-| [15]: <Ending>                                                                                                 |
-|   TraceExec: [14]                                                                                              |
-|   InsExec: [35:3]                                                                                              |
-|   ForwardTrace: 14                                                                                             |
-| [43][Module]< Exp @ >                                                                                          |
-| [AST-INSTRUCTIONS]:                                                                                            |
-|   @ CS(16 -> -1) : [7, 4] OS(15 -> -1) : [6, 3]                                                                |
-|   + StackEnd()                                                                                                 |
-|     obj+:4 : DecrementExpr PostfixExpr                                                                         |
-|       begin:20@3, top:5@1, use:[6, 3], create!:[20@0, 19@1], end!:[15@0]    obj+:7 : DecrementExpr PostfixExpr |
-|       begin:19@5, top:5@1, use:[6, 3], create!:[20@0, 19@1], end!:[15@0]                                       |
-|   @ OS(17 -> -1) : [7, 4]                                                                                      |
-|   > StackBegin()                                                                                               |
-|     obj:8 : Module                                                                                             |
-|                                                                                                                |
-|   @ CS(18 -> -1) : [8] OS(17 -> -1) : [7, 4]                                                                   |
-|   > StackSlot(0)                                                                                               |
-|                                                                                                                |
-|   @ CS(18 -> -1) : [8]                                                                                         |
-| [PREDECESSORS 14-14]: [14]                                                                                     |
-| [SUCCESORS 16-16]: [16]                                                                                        |
-+----------------------------------------------------------------------------------------------------------------+
++--------------------------------------------------------------------------+
+| [15]: <Ending>                                                           |
+|   TraceExec: [14]                                                        |
+|   InsExec: [35:3]                                                        |
+|   ForwardTrace: 14                                                       |
+| [43][Module]< Exp @ >                                                    |
+| [AST-INSTRUCTIONS]:                                                      |
+|   @ CS(16 -> -1) : [7, 4] OS(15 -> -1) : [6, 3]                          |
+|   + StackEnd()                                                           |
+|     obj+:4 : DecrementExpr PostfixExpr                                   |
+|       begin:20@3, top:5@1, use:[6, 3], create!:[20@0, 19@1], end!:[15@0] |
+|     obj+:7 : DecrementExpr PostfixExpr                                   |
+|       begin:19@5, top:5@1, use:[6, 3], create!:[20@0, 19@1], end!:[15@0] |
+|                                                                          |
+|   @ OS(17 -> -1) : [7, 4]                                                |
+|   > StackBegin()                                                         |
+|     obj:8 : Module                                                       |
+|                                                                          |
+|   @ CS(18 -> -1) : [8] OS(17 -> -1) : [7, 4]                             |
+|   > StackSlot(0)                                                         |
+|                                                                          |
+|   @ CS(18 -> -1) : [8]                                                   |
+| [PREDECESSORS 14-14]: [14]                                               |
+| [SUCCESORS 16-16]: [16]                                                  |
++--------------------------------------------------------------------------+
 |
 +
 |
@@ -326,6 +333,7 @@
 |   + StackEnd()                                                                 |
 |     obj+:8 : Module                                                            |
 |       begin:15@1, top:15@1, lrec:5@1, field:[7, 4], create!:[16@0], end:[16@2] |
+|                                                                                |
 |   @ OS(19 -> -1) : [8]                                                         |
 | [PREDECESSORS 15-15]: [15]                                                     |
 +--------------------------------------------------------------------------------+
