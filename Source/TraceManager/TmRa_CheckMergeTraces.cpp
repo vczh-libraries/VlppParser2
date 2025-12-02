@@ -109,8 +109,11 @@ CheckAmbiguityResolution
 				Trace* last = nullptr;
 				TraceExec* firstTraceExec = nullptr;
 				TraceExec* lastTraceExec = nullptr;
-				bool foundBeginSame = false;
-				bool foundBeginPrefix = false;
+
+				vint firstTraceCount = 0;
+				vint firstSameTraceCount = 0;
+				vint firstSamePredecessorCount = 0;
+
 				bool foundEndSame = false;
 				bool foundEndPostfix = false;
 				bool succeeded = false;
@@ -144,44 +147,54 @@ CheckAmbiguityResolution
 								failureReasons->Add(L"  This is the first object in the list.");
 							}
 						}
-						else if (first == createTrace)
-						{
-							// check if two instruction is the same
-							if (ta->prefix != ieObject->summarizing.earliestInsRef.ins)
-							{
-								if (failureReasons)
-								{
-									failureReasons->Add(L"  It has a different prefix, stopped.");
-								}
-								return false;
-							}
-							foundBeginSame = true;
-						}
 						else
 						{
-							// check if two instruction shares the same prefix
-							if (first->predecessors.first != createTrace->predecessors.first)
+							firstTraceCount++;
+
+							if (first == createTrace)
+							{
+								// check if two instruction is the same
+								if (ta->prefix != ieObject->summarizing.earliestInsRef.ins)
+								{
+									if (failureReasons)
+									{
+										failureReasons->Add(L"  It has a different prefix, stopped.");
+									}
+									return false;
+								}
+								firstSameTraceCount++;
+							}
+
+							if (first->predecessors.first == createTrace->predecessors.first)
+							{
+								// check if two instruction shares the same prefix
+								if (first->predecessors.first != createTrace->predecessors.first)
+								{
+								}
+								auto createTraceExec = GetTraceExec(createTrace->traceExecRef);
+								if (!ComparePrefix(firstTraceExec, createTraceExec, ta->prefix))
+								{
+									if (failureReasons)
+									{
+										failureReasons->Add(L"  They has a different postfix, stopped");
+									}
+									return false;
+								}
+								firstSamePredecessorCount++;
+							}
+
+							if (first != createTrace && first->predecessors.first != createTrace->predecessors.first)
 							{
 								if (failureReasons)
 								{
 									failureReasons->Add(L"  The predecessor of the trace where the earliestInsRef of the first object is " +
 										itow(first->predecessors.first.handle) +
 										L", meanwhile the one for the current object is " +
-										itow(createTrace->predecessors.first.handle) + 
+										itow(createTrace->predecessors.first.handle) +
 										L", they are different, stopped.");
 								}
 								return false;
 							}
-							auto createTraceExec = GetTraceExec(createTrace->traceExecRef);
-							if (!ComparePrefix(firstTraceExec, createTraceExec, ta->prefix))
-							{
-								if (failureReasons)
-								{
-									failureReasons->Add(L"  They has a different postfix, stopped");
-								}
-								return false;
-							}
-							foundBeginPrefix = true;
 						}
 
 						return true;
@@ -368,9 +381,8 @@ CheckAmbiguityResolution
 				}
 
 				// ensure the statistics result is compatible
-				if (first && !foundBeginSame && !foundBeginPrefix) foundBeginSame = true;
 				if (last && !foundEndSame && !foundEndPostfix) foundEndSame = true;
-				if (foundBeginSame == foundBeginPrefix)
+				if (firstTraceCount != firstSameTraceCount && firstTraceCount != firstSamePredecessorCount)
 				{
 					if (failureReasons)
 					{
@@ -388,7 +400,7 @@ CheckAmbiguityResolution
 				}
 
 				// fix prefix if necessary
-				if (foundBeginPrefix)
+				if (firstTraceCount != firstSameTraceCount)
 				{
 					auto first = GetTrace(GetTrace(ta->firstTrace)->predecessors.first);
 					auto traceExec = GetTraceExec(first->traceExecRef);
