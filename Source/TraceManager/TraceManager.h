@@ -764,6 +764,44 @@ TraceManager
 					)
 				{
 				}
+
+				TraceException(TraceManager& tm, TraceAmbiguity* ta1, TraceAmbiguity* ta2, const wchar_t* phrase, const wchar_t* message)
+					: Exception(
+						WString::Unmanaged(L"[") +
+						WString::Unmanaged(phrase) +
+						WString::Unmanaged(L"] at trace ambiguity ") +
+						itow(ta1->firstTrace.handle) + WString::Unmanaged(L"@") + itow(ta1->prefix) + WString::Unmanaged(L"..") +
+						itow(ta1->lastTrace.handle) + WString::Unmanaged(L"@-") + itow(ta1->postfix) +
+						WString::Unmanaged(L" and ") +
+						itow(ta2->firstTrace.handle) + WString::Unmanaged(L"@") + itow(ta2->prefix) + WString::Unmanaged(L"..") +
+						itow(ta2->lastTrace.handle) + WString::Unmanaged(L"@-") + itow(ta2->postfix) +
+						WString::Unmanaged(L" : ") +
+						WString::Unmanaged(message)
+					)
+				{
+				}
+
+				TraceException(TraceManager& tm, InsExec_Stack* stack, const wchar_t* phrase, const wchar_t* message)
+					: Exception(
+						WString::Unmanaged(L"[") +
+						WString::Unmanaged(phrase) +
+						WString::Unmanaged(L"] at trace ") +
+						itow(stack->allocatedIndex) +
+						WString::Unmanaged(L" : ") +
+						WString::Unmanaged(message)
+					)
+				{
+				}
+
+				TraceException(TraceManager& tm, const wchar_t* phrase, const wchar_t* message)
+					: Exception(
+						WString::Unmanaged(L"[") +
+						WString::Unmanaged(phrase) +
+						WString::Unmanaged(L"] : ") +
+						WString::Unmanaged(message)
+					)
+				{
+				}
 			};
 		}
 	}

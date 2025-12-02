@@ -493,7 +493,7 @@ CheckTraceAmbiguity
 					auto ta2 = GetTraceAmbiguity(taLinkToOverride->ambiguity);
 					if (ta2->prefix != ta->prefix || ta2->postfix != ta->postfix)
 					{
-						throw TraceManager(*this, TRACE_MAMAGER_PHRASE, L"Incompatible TraceAmbiguity has been assigned at the same place");
+						throw TraceException(*this, ta, ta2, TRACE_MAMAGER_PHRASE, L"Incompatible TraceAmbiguity has been assigned at the same place");
 					}
 					// override ambiguityBegins
 					taLinkToOverride->ambiguity = ta;

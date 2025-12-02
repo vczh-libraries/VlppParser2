@@ -564,7 +564,10 @@ BuildAmbiguousStepLink
 					}
 				}
 				{
-					CHECK_ERROR(typeCallback != nullptr, ERROR_MESSAGE_PREFIX L"Missing ITypeCallback to resolve the type from multiple objects.");
+					if (typeCallback == nullptr)
+					{
+						throw TraceException(*this, TRACE_MAMAGER_PHRASE, L"Missing ITypeCallback to resolve the type from multiple objects.");
+					}
 					auto currentStackLinkRef = ta->bottomCreateObjectStacks;
 					while (currentStackLinkRef != nullref)
 					{
@@ -573,7 +576,10 @@ BuildAmbiguousStepLink
 						auto ieObject = GetInsExec_Stack(currentStackLink->id);
 
 						// find all CreateObject instructions in that stack
-						CHECK_ERROR(ieObject->summarizing.indirectCreateObjectInsRefs != nullref, ERROR_MESSAGE_PREFIX L"indirectCreateObjectInsRefs should not be null.");
+						if (ieObject->summarizing.indirectCreateObjectInsRefs == nullref)
+						{
+							throw TraceException(*this, ieObject, TRACE_MAMAGER_PHRASE, L"indirectCreateObjectInsRefs should not be null.");
+						}
 						auto coInsRefLink = ieObject->summarizing.indirectCreateObjectInsRefs;
 						while (coInsRefLink != nullref)
 						{
@@ -583,7 +589,10 @@ BuildAmbiguousStepLink
 							auto coTrace = GetTrace(coInsRef->insRef.trace);
 							auto coTraceExec = GetTraceExec(coTrace->traceExecRef);
 							auto&& coIns = ReadInstruction(coInsRef->insRef.ins, coTraceExec->insLists);
-							CHECK_ERROR(coIns.type == AstInsType::CreateObject && coIns.param != -1, ERROR_MESSAGE_PREFIX L"indirectCreateObjectInsRefs points to an unexpected instruction.");
+							if (coIns.type != AstInsType::CreateObject || coIns.param == -1)
+							{
+								throw TraceException(*this, ieObject, TRACE_MAMAGER_PHRASE, L"indirectCreateObjectInsRefs points to an unexpected instruction.");
+							}
 
 							if (stepRA->et_ra.type == -1)
 							{
@@ -649,8 +658,10 @@ BuildExecutionOrder
 				BuildStepTree(startTrace, startIns, endTrace, endIns, root, firstLeaf, nullptr, currentLeaf, false);
 
 				// BuildAmbiguousStepLink should have merged a tree to a link
-				CHECK_ERROR(firstLeaf != nullptr, ERROR_MESSAGE_PREFIX L"Ambiguity is not fully identified.");
-				CHECK_ERROR(firstLeaf->next == nullref, ERROR_MESSAGE_PREFIX L"Ambiguity is not fully identified.");
+				if (firstLeaf == nullptr || firstLeaf->next != nullref)
+				{
+					throw TraceException(*this, TRACE_MAMAGER_PHRASE, L"Ambiguity is not fully identified.");
+				}
 
 				// fill firstStep
 				ExecutionStep* first = nullptr;
