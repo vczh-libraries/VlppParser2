@@ -62,6 +62,18 @@ FilePath LogSyntaxWithPath(
 				writer.WriteString(L"\trule: " + edge->input.rule->Name());
 				break;
 			}
+			if (edge->important)
+			{
+				writer.WriteChar(L'!');
+			}
+			if (edge->importancy == EdgeImportancy::HighPriority)
+			{
+				writer.WriteString(L"[H]");
+			}
+			else if(edge->importancy==EdgeImportancy::LowPriority)
+			{
+				writer.WriteString(L"[L]");
+			}
 			writer.WriteLine(L" -> " + labels[edge->To()]);
 
 			for (auto&& ins : edge->insAfterInput)
