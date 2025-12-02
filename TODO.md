@@ -55,10 +55,10 @@
 - [x] Non-ambiguous test cases
 - [x] Ambiguous test cases
 - [x] Split FeatureTest
-- [ ] Built-in parsers:
-  - [ ] Json
-  - [ ] Xml
-  - [ ] Workflow
+- [x] Built-in parsers:
+  - [x] Json
+  - [x] Xml
+  - [x] Workflow
 - [ ] prefix_merge test cases
 - [ ] Built-in parsers:
   - [ ] C++

@@ -9,6 +9,7 @@ TEST_FILE
 	auto handlerOnTraceProcessing = GetCppParser().OnTraceProcessing.Add(
 		[&](TraceProcessingArgs& args)
 		{
+			TEST_PRINT(L"Printing Trace-" + itow((vint)args.phase + 1) + L"[" + caseName + L"].txt ...");
 			auto& traceManager = *dynamic_cast<TraceManager*>(args.executor);
 			LogTraceManager(
 				L"BuiltIn-Cpp",
@@ -23,11 +24,13 @@ TEST_FILE
 				[=](vint32_t rule) { return WString::Unmanaged(ParserRuleName(rule)); },
 				[=](vint32_t state) { return WString::Unmanaged(ParserStateLabel(state)); }
 			);
+			TEST_PRINT(L"Finished");
 		});
 
 	auto handlerOnReadyToExecute = GetCppParser().OnReadyToExecute.Add(
 		[&](ReadyToExecuteArgs& args)
 		{
+			TEST_PRINT(L"Printing Instructions[" + caseName + L"].txt ...");
 			auto& traceManager = *dynamic_cast<TraceManager*>(args.executor);
 			LogTraceExecution(
 				L"BuiltIn-Cpp",
@@ -39,6 +42,7 @@ TEST_FILE
 				{
 					traceManager.ExecuteTrace(receiver, args.tokens);
 				});
+			TEST_PRINT(L"Finished");
 		});
 
 	auto runParser = [&](const wchar_t* _indexName, const wchar_t* _caseName, auto parse)
