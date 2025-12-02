@@ -94,7 +94,7 @@ EdgeSymbol
 			struct EdgeCompetition
 			{
 				vint32_t					competitionId = -1;
-				bool						highProprity = false;
+				bool						highPriority = false;
 
 				auto operator<=>(const EdgeCompetition&) const = default;
 			};

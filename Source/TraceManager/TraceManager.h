@@ -161,7 +161,7 @@ TraceManager (Data Structures)
 
 				vint32_t				currentTokenIndex = -1;					// currentTokenIndex from the trace that creates this competition
 				vint32_t				ruleId = -1;							// the rule id of state, when an edge starts this competition
-				vint32_t				clauseId = -1;							// the clause id of the state, when an edge starts this competition
+				vint32_t				competitionId = -1;						// the unique competition id in a rule, when an edge starts this competition
 																				// an state must be picked up and ensure that, the syntax creating the priority and the state belong to the same clause
 
 				vint32_t				highCounter = 0;						// temporary counter for all existing high bets
