@@ -91,11 +91,12 @@ EdgeSymbol
 				}
 			};
 
-			enum class EdgeImportancy
+			struct EdgeCompetition
 			{
-				NoCompetition,
-				HighPriority,
-				LowPriority,
+				vint32_t					competitionId = -1;
+				bool						highPriority = false;
+
+				auto operator<=>(const EdgeCompetition&) const = default;
 			};
 
 			class EdgeSymbol : public Object
@@ -105,6 +106,7 @@ EdgeSymbol
 
 				using InsList = collections::List<AstIns>;
 				using EdgeList = collections::List<EdgeSymbol*>;
+				using CompetitionList = collections::List<EdgeCompetition>;
 			protected:
 				SyntaxSymbolManager*		ownerManager;
 				StateSymbol*				fromState;
@@ -113,8 +115,7 @@ EdgeSymbol
 				EdgeSymbol(StateSymbol* _from, StateSymbol* _to);
 			public:
 				EdgeInput					input;											// Input of this edge.
-				bool						important = false;								// true and false are the only two priorites of edges.
-				EdgeImportancy				importancy = EdgeImportancy::NoCompetition;		// important -> HighPriority, !important with important sibling -> LowPriority.
+				CompetitionList				competitions;									// Competitions this edge involves in.
 																							// (filled by BuildCompactNFA)
 																							// If any important edge forms a cross referenced NFA edge, it becomes important too.
 				InsList						insAfterInput;									// Instructions to execute after pushing the value from a token or a reduced rule.
@@ -203,6 +204,7 @@ SyntaxSymbolManager
 				SyntaxSymbolManager(ParserSymbolManager& _global);
 
 				WString						name;
+				vint32_t					usedCompetitionIds = 0;
 
 				RuleSymbol*					CreateRule(const WString& name, vint fileIndex, bool isPublic, bool isParser, ParsingTextRange codeRange = {});
 				void						RemoveRule(const WString& name);

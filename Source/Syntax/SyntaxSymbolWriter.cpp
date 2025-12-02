@@ -192,13 +192,11 @@ AutomatonBuilder (Syntax)
 				CreateEdge(bodyPair.end, pair.end);
 				auto skipEdge = CreateEdge(pair.begin, pair.end);
 
-				if (preferTake)
+				if (preferTake || preferSkip)
 				{
-					takeEdge->important = true;
-				}
-				if (preferSkip)
-				{
-					skipEdge->important = true;
+					vint32_t id = ++ruleSymbol->Owner()->usedCompetitionIds;
+					takeEdge->competitions.Add({ id,preferTake });
+					skipEdge->competitions.Add({ id,preferSkip });
 				}
 
 				endPoses.Add(pair.end, clauseDisplayText.Length());

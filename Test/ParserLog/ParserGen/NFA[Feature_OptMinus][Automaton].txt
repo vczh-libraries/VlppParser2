@@ -1,34 +1,34 @@
 ﻿[0][Plus] BEGIN 
-[RULE: 0][CLAUSE: -1]
+[RULE: 0]
 	token: "+" -> [2][Plus]< "+" @ >
 		+ StackBegin()
 		+ Token(0)
 
 [1][Plus] END [ENDING]
-[RULE: 0][CLAUSE: -1]
+[RULE: 0]
 
 [2][Plus]< "+" @ >
-[RULE: 0][CLAUSE: 0]
+[RULE: 0]
 	ending -> [1][Plus] END [ENDING]
 		+ CreateObject(Plus)
 		+ StackEnd()
 
 [3][NegativeOptional] BEGIN 
-[RULE: 1][CLAUSE: -1]
+[RULE: 1]
 	token: "negative_optional" -> [8][NegativeOptional]< "negative_optional" @ -[ Plus ] "+" { Plus } >
 		+ StackBegin()
 		+ Token(0)
 
 [4][NegativeOptional] END [ENDING]
-[RULE: 1][CLAUSE: -1]
+[RULE: 1]
 
 [5][NegativeOptional]< "negative_optional" -[ Plus @ ] "+" { Plus } >
-[RULE: 1][CLAUSE: 0]
+[RULE: 1]
 	token: "+" -> [6][NegativeOptional]< "negative_optional" -[ Plus ] "+" @ { Plus } >
 		+ Token(2)
 
 [6][NegativeOptional]< "negative_optional" -[ Plus ] "+" @ { Plus } >
-[RULE: 1][CLAUSE: 0]
+[RULE: 1]
 	ending -> [4][NegativeOptional] END [ENDING]
 		+ EnumItem(2, 4)
 		+ CreateObject(OptionalFeature)
@@ -43,7 +43,7 @@
 			+ StackSlot(3)
 
 [7][NegativeOptional]< "negative_optional" -[ Plus ] "+" { Plus @ } >
-[RULE: 1][CLAUSE: 0]
+[RULE: 1]
 	ending -> [4][NegativeOptional] END [ENDING]
 		+ EnumItem(2, 4)
 		+ CreateObject(OptionalFeature)
@@ -58,17 +58,17 @@
 			+ StackSlot(3)
 
 [8][NegativeOptional]< "negative_optional" @ -[ Plus ] "+" { Plus } >
-[RULE: 1][CLAUSE: 0]
+[RULE: 1]
 	token: "+" -> [2][Plus]< "+" @ >
 		+ StackBegin()
 		+ Token(0)
-		> rule [LOW PRIORITY]: Plus -> [5][NegativeOptional]< "negative_optional" -[ Plus @ ] "+" { Plus } >
+		> rule[L1]: Plus -> [5][NegativeOptional]< "negative_optional" -[ Plus @ ] "+" { Plus } >
 			+ StackSlot(1)
-	token: "+" [HIGH PRIORITY] -> [6][NegativeOptional]< "negative_optional" -[ Plus ] "+" @ { Plus } >
+	token: "+"[L1] -> [6][NegativeOptional]< "negative_optional" -[ Plus ] "+" @ { Plus } >
 		+ Token(2)
 
 [9][Module] BEGIN 
-[RULE: 2][CLAUSE: -1]
+[RULE: 2]
 	token: "negative_optional" -> [8][NegativeOptional]< "negative_optional" @ -[ Plus ] "+" { Plus } >
 		+ StackBegin()
 		+ Token(0)
@@ -76,10 +76,10 @@
 			+ StackBegin()
 
 [10][Module] END [ENDING]
-[RULE: 2][CLAUSE: -1]
+[RULE: 2]
 
 [11][Module]<! !NegativeOptional @ !>
-[RULE: 2][CLAUSE: 0]
+[RULE: 2]
 	ending -> [10][Module] END [ENDING]
 		+ StackEnd()
 

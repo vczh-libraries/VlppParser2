@@ -127,11 +127,10 @@ CompactSyntaxBuilder
 								auto newEdge = Ptr(new EdgeSymbol(newState, targetNewState));
 								newEdges.Add(newEdge);
 								newEdge->input = edge->input;
-								newEdge->important |= edge->important;
 								for (auto accumulatedEdge : accumulatedEdges)
 								{
 									CopyFrom(newEdge->insAfterInput, accumulatedEdge->insAfterInput, true);
-									newEdge->important |= accumulatedEdge->important;
+									CopyFrom(newEdge->competitions, accumulatedEdge->competitions, true);
 								}
 							}
 							break;
@@ -159,7 +158,7 @@ CompactSyntaxBuilder
 						for (auto accumulatedEdge : accumulatedEdges)
 						{
 							CopyFrom(newEdge->insAfterInput, accumulatedEdge->insAfterInput, true);
-							newEdge->important |= accumulatedEdge->important;
+							CopyFrom(newEdge->competitions, accumulatedEdge->competitions, true);
 						}
 
 						for (auto endingEdge : newState->OutEdges())
@@ -168,7 +167,6 @@ CompactSyntaxBuilder
 							{
 								if (CompareEnumerable(endingEdge->insAfterInput, newEdge->insAfterInput) == 0)
 								{
-									CHECK_ERROR(newEdge->important == endingEdge->important, L"It is not possible to have two equal ending edges with different priority.");
 									newState->outEdges.Remove(newEdge.Obj());
 									endState->inEdges.Remove(newEdge.Obj());
 									goto DISCARD_ENDING_EDGE;
@@ -222,8 +220,8 @@ SyntaxSymbolManager::BuildLeftRecEdge
 
 			void SyntaxSymbolManager::BuildLeftRecEdge(EdgeSymbol* newEdge, EdgeSymbol* endingEdge, EdgeSymbol* lrecPrefixEdge)
 			{
-				newEdge->important |= endingEdge->important;
-				newEdge->important |= lrecPrefixEdge->important;
+				CopyFrom(newEdge->competitions, endingEdge->competitions, true);
+				CopyFrom(newEdge->competitions, lrecPrefixEdge->competitions, true);
 
 				newEdge->input.type = EdgeInputType::LeftRec;
 				CopyFrom(newEdge->insAfterInput, endingEdge->insAfterInput, true);
@@ -364,29 +362,6 @@ SyntaxSymbolManager::BuildCompactNFAInternal
 				}
 				CopyFrom(states, newStates);
 				CopyFrom(edges, newEdges);
-
-				// only when a state has any important out edge
-				// its out edges are marked accordingly
-				for (auto state : states)
-				{
-					bool competition = false;
-					for (auto edge : state->OutEdges())
-					{
-						if (edge->important)
-						{
-							competition = true;
-							break;
-						}
-					}
-
-					if (competition)
-					{
-						for (auto edge : state->OutEdges())
-						{
-							edge->importancy = edge->important ? EdgeImportancy::HighPriority : EdgeImportancy::LowPriority;
-						}
-					}
-				}
 			}
 		}
 	}

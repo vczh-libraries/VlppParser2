@@ -1,5 +1,5 @@
 ﻿[0][JLiteral] BEGIN 
-[RULE: 0][CLAUSE: -1]
+[RULE: 0]
 	token: "true" -> [4][JLiteral]< "true" @ >
 		+ StackBegin()
 		+ Token(0)
@@ -17,10 +17,10 @@
 		+ Token(0)
 
 [1][JLiteral] END [ENDING]
-[RULE: 0][CLAUSE: -1]
+[RULE: 0]
 
 [2][JLiteral]< "false" @ >
-[RULE: 0][CLAUSE: 3]
+[RULE: 0]
 	ending -> [1][JLiteral] END [ENDING]
 		+ EnumItem(1, 1)
 		+ CreateObject(Literal)
@@ -28,7 +28,7 @@
 		+ StackEnd()
 
 [3][JLiteral]< "null" @ >
-[RULE: 0][CLAUSE: 4]
+[RULE: 0]
 	ending -> [1][JLiteral] END [ENDING]
 		+ EnumItem(2, 1)
 		+ CreateObject(Literal)
@@ -36,7 +36,7 @@
 		+ StackEnd()
 
 [4][JLiteral]< "true" @ >
-[RULE: 0][CLAUSE: 2]
+[RULE: 0]
 	ending -> [1][JLiteral] END [ENDING]
 		+ EnumItem(0, 1)
 		+ CreateObject(Literal)
@@ -44,30 +44,30 @@
 		+ StackEnd()
 
 [5][JLiteral]< NUMBER @ >
-[RULE: 0][CLAUSE: 1]
+[RULE: 0]
 	ending -> [1][JLiteral] END [ENDING]
 		+ CreateObject(Number)
 		+ Field(Number::content, 0)
 		+ StackEnd()
 
 [6][JLiteral]< STRING @ >
-[RULE: 0][CLAUSE: 0]
+[RULE: 0]
 	ending -> [1][JLiteral] END [ENDING]
 		+ CreateObject(String)
 		+ Field(String::content, 0)
 		+ StackEnd()
 
 [7][JField] BEGIN 
-[RULE: 1][CLAUSE: -1]
+[RULE: 1]
 	token: STRING -> [11][JField]< STRING @ ":" JValue >
 		+ StackBegin()
 		+ Token(0)
 
 [8][JField] END [ENDING]
-[RULE: 1][CLAUSE: -1]
+[RULE: 1]
 
 [9][JField]< STRING ":" @ JValue >
-[RULE: 1][CLAUSE: 0]
+[RULE: 1]
 	token: "true" -> [4][JLiteral]< "true" @ >
 		+ StackBegin()
 		+ Token(0)
@@ -119,7 +119,7 @@
 			+ StackBegin()
 
 [10][JField]< STRING ":" JValue @ >
-[RULE: 1][CLAUSE: 0]
+[RULE: 1]
 	ending -> [8][JField] END [ENDING]
 		+ CreateObject(ObjectField)
 		+ Field(ObjectField::name, 0)
@@ -127,21 +127,21 @@
 		+ StackEnd()
 
 [11][JField]< STRING @ ":" JValue >
-[RULE: 1][CLAUSE: 0]
+[RULE: 1]
 	token: ":" -> [9][JField]< STRING ":" @ JValue >
 		+ Token(1)
 
 [12][JObject] BEGIN 
-[RULE: 2][CLAUSE: -1]
+[RULE: 2]
 	token: "{" -> [14][JObject]< "{" @ { JField ; "," } "}" >
 		+ StackBegin()
 		+ Token(0)
 
 [13][JObject] END [ENDING]
-[RULE: 2][CLAUSE: -1]
+[RULE: 2]
 
 [14][JObject]< "{" @ { JField ; "," } "}" >
-[RULE: 2][CLAUSE: 0]
+[RULE: 2]
 	token: "}" -> [16][JObject]< "{" { JField ; "," } "}" @ >
 		+ Token(3)
 	token: STRING -> [11][JField]< STRING @ ":" JValue >
@@ -151,7 +151,7 @@
 			+ StackSlot(1)
 
 [15][JObject]< "{" { JField ; "," @ } "}" >
-[RULE: 2][CLAUSE: 0]
+[RULE: 2]
 	token: STRING -> [11][JField]< STRING @ ":" JValue >
 		+ StackBegin()
 		+ Token(0)
@@ -159,30 +159,30 @@
 			+ StackSlot(1)
 
 [16][JObject]< "{" { JField ; "," } "}" @ >
-[RULE: 2][CLAUSE: 0]
+[RULE: 2]
 	ending -> [13][JObject] END [ENDING]
 		+ CreateObject(Object)
 		+ Field(Object::fields, 1)
 		+ StackEnd()
 
 [17][JObject]< "{" { JField @ ; "," } "}" >
-[RULE: 2][CLAUSE: 0]
+[RULE: 2]
 	token: "}" -> [16][JObject]< "{" { JField ; "," } "}" @ >
 		+ Token(3)
 	token: "," -> [15][JObject]< "{" { JField ; "," @ } "}" >
 		+ Token(2)
 
 [18][JArray] BEGIN 
-[RULE: 3][CLAUSE: -1]
+[RULE: 3]
 	token: "[" -> [20][JArray]< "[" @ { JValue ; "," } "]" >
 		+ StackBegin()
 		+ Token(0)
 
 [19][JArray] END [ENDING]
-[RULE: 3][CLAUSE: -1]
+[RULE: 3]
 
 [20][JArray]< "[" @ { JValue ; "," } "]" >
-[RULE: 3][CLAUSE: 0]
+[RULE: 3]
 	token: "true" -> [4][JLiteral]< "true" @ >
 		+ StackBegin()
 		+ Token(0)
@@ -236,7 +236,7 @@
 			+ StackBegin()
 
 [21][JArray]< "[" { JValue ; "," @ } "]" >
-[RULE: 3][CLAUSE: 0]
+[RULE: 3]
 	token: "true" -> [4][JLiteral]< "true" @ >
 		+ StackBegin()
 		+ Token(0)
@@ -288,21 +288,21 @@
 			+ StackBegin()
 
 [22][JArray]< "[" { JValue ; "," } "]" @ >
-[RULE: 3][CLAUSE: 0]
+[RULE: 3]
 	ending -> [19][JArray] END [ENDING]
 		+ CreateObject(Array)
 		+ Field(Array::items, 1)
 		+ StackEnd()
 
 [23][JArray]< "[" { JValue @ ; "," } "]" >
-[RULE: 3][CLAUSE: 0]
+[RULE: 3]
 	token: "]" -> [22][JArray]< "[" { JValue ; "," } "]" @ >
 		+ Token(3)
 	token: "," -> [21][JArray]< "[" { JValue ; "," @ } "]" >
 		+ Token(2)
 
 [24][JValue] BEGIN 
-[RULE: 4][CLAUSE: -1]
+[RULE: 4]
 	token: "true" -> [4][JLiteral]< "true" @ >
 		+ StackBegin()
 		+ Token(0)
@@ -340,25 +340,25 @@
 			+ StackBegin()
 
 [25][JValue] END [ENDING]
-[RULE: 4][CLAUSE: -1]
+[RULE: 4]
 
 [26][JValue]<! !JArray @ !>
-[RULE: 4][CLAUSE: 2]
+[RULE: 4]
 	ending -> [25][JValue] END [ENDING]
 		+ StackEnd()
 
 [27][JValue]<! !JLiteral @ !>
-[RULE: 4][CLAUSE: 0]
+[RULE: 4]
 	ending -> [25][JValue] END [ENDING]
 		+ StackEnd()
 
 [28][JValue]<! !JObject @ !>
-[RULE: 4][CLAUSE: 1]
+[RULE: 4]
 	ending -> [25][JValue] END [ENDING]
 		+ StackEnd()
 
 [29][JRoot] BEGIN 
-[RULE: 5][CLAUSE: -1]
+[RULE: 5]
 	token: "{" -> [14][JObject]< "{" @ { JField ; "," } "}" >
 		+ StackBegin()
 		+ Token(0)
@@ -371,15 +371,15 @@
 			+ StackBegin()
 
 [30][JRoot] END [ENDING]
-[RULE: 5][CLAUSE: -1]
+[RULE: 5]
 
 [31][JRoot]<! !JArray @ !>
-[RULE: 5][CLAUSE: 1]
+[RULE: 5]
 	ending -> [30][JRoot] END [ENDING]
 		+ StackEnd()
 
 [32][JRoot]<! !JObject @ !>
-[RULE: 5][CLAUSE: 0]
+[RULE: 5]
 	ending -> [30][JRoot] END [ENDING]
 		+ StackEnd()
 
