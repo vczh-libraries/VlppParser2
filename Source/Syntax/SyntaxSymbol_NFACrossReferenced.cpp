@@ -31,7 +31,7 @@ SyntaxSymbolManager::FixCrossReferencedRuleEdge
 							edges.Add(newEdge);
 
 							newEdge->input = edge->input;
-							newEdge->importancy = edge->importancy;
+							CopyFrom(newEdge->competitions, edge->competitions, true);
 							for (auto acc : accumulatedEdges)
 							{
 								newEdge->returnEdges.Add(acc);

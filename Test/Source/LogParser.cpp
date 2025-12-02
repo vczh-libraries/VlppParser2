@@ -62,17 +62,13 @@ FilePath LogSyntaxWithPath(
 				writer.WriteString(L"\trule: " + edge->input.rule->Name());
 				break;
 			}
-			if (edge->important)
+
+			for (auto comp : edge->competitions)
 			{
-				writer.WriteChar(L'!');
-			}
-			if (edge->importancy == EdgeImportancy::HighPriority)
-			{
-				writer.WriteString(L"[H]");
-			}
-			else if(edge->importancy==EdgeImportancy::LowPriority)
-			{
-				writer.WriteString(L"[L]");
+				writer.WriteChar(L'[');
+				writer.WriteChar(comp.highProprity ? L'H' : L'L');
+				writer.WriteString(itow(comp.competitionId));
+				writer.WriteChar(L']');
 			}
 			writer.WriteLine(L" -> " + labels[edge->To()]);
 
