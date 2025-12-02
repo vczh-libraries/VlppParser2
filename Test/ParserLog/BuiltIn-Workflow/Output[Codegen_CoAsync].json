@@ -1,0 +1,480 @@
+﻿{
+    "$ast": "Module",
+    "declarations": [{
+        "$ast": "VariableDeclaration",
+        "attributes": [],
+        "name": "s",
+        "expression": {
+            "$ast": "StringExpression",
+            "value": "\"\""
+        },
+        "type": null
+    }, {
+        "$ast": "NamespaceDeclaration",
+        "attributes": [],
+        "name": "CoAsync_types",
+        "declarations": [{
+            "$ast": "CastResultInterfaceDeclaration",
+            "attributes": [],
+            "name": "IStringAsync",
+            "expandedDeclarations": [],
+            "baseType": {
+                "$ast": "ReferenceType",
+                "name": "Async"
+            },
+            "elementType": {
+                "$ast": "PredefinedType",
+                "name": "String"
+            }
+        }]
+    }, {
+        "$ast": "FunctionDeclaration",
+        "attributes": [],
+        "name": "GetStringAsync",
+        "anonymity": "Named",
+        "arguments": [{
+            "$ast": "FunctionArgument",
+            "attributes": [],
+            "name": "x",
+            "type": {
+                "$ast": "PredefinedType",
+                "name": "Int"
+            }
+        }],
+        "functionKind": "Normal",
+        "returnType": {
+            "$ast": "SharedPointerType",
+            "element": {
+                "$ast": "ReferenceType",
+                "name": "IStringAsync"
+            }
+        },
+        "statement": {
+            "$ast": "CoProviderStatement",
+            "expandedStatement": null,
+            "name": "",
+            "statement": {
+                "$ast": "BlockStatement",
+                "endLabel": "",
+                "statements": [{
+                    "$ast": "ExpressionStatement",
+                    "expression": {
+                        "$ast": "BinaryExpression",
+                        "first": {
+                            "$ast": "ReferenceExpression",
+                            "name": "s"
+                        },
+                        "op": "Assign",
+                        "second": {
+                            "$ast": "FormatExpression",
+                            "expandedExpression": null,
+                            "value": "$\"$(s)[$(x)]\""
+                        }
+                    }
+                }, {
+                    "$ast": "ReturnStatement",
+                    "expression": {
+                        "$ast": "TypeCastingExpression",
+                        "expression": {
+                            "$ast": "ReferenceExpression",
+                            "name": "x"
+                        },
+                        "strategy": "Strong",
+                        "type": {
+                            "$ast": "PredefinedType",
+                            "name": "String"
+                        }
+                    }
+                }]
+            }
+        }
+    }, {
+        "$ast": "FunctionDeclaration",
+        "attributes": [],
+        "name": "GetStringAsync2",
+        "anonymity": "Named",
+        "arguments": [{
+            "$ast": "FunctionArgument",
+            "attributes": [],
+            "name": "x",
+            "type": {
+                "$ast": "PredefinedType",
+                "name": "Int"
+            }
+        }],
+        "functionKind": "Normal",
+        "returnType": {
+            "$ast": "SharedPointerType",
+            "element": {
+                "$ast": "ReferenceType",
+                "name": "IStringAsync"
+            }
+        },
+        "statement": {
+            "$ast": "BlockStatement",
+            "endLabel": "",
+            "statements": [{
+                "$ast": "VariableStatement",
+                "variable": {
+                    "$ast": "VariableDeclaration",
+                    "attributes": [],
+                    "name": "future",
+                    "expression": {
+                        "$ast": "CallExpression",
+                        "arguments": [],
+                        "function": {
+                            "$ast": "ChildExpression",
+                            "name": "Create",
+                            "parent": {
+                                "$ast": "ReferenceExpression",
+                                "name": "Future"
+                            }
+                        }
+                    },
+                    "type": null
+                }
+            }, {
+                "$ast": "ExpressionStatement",
+                "expression": {
+                    "$ast": "CallExpression",
+                    "arguments": [{
+                        "$ast": "FunctionExpression",
+                        "function": {
+                            "$ast": "FunctionDeclaration",
+                            "attributes": [],
+                            "name": "",
+                            "anonymity": "Anonymous",
+                            "arguments": [],
+                            "functionKind": "Normal",
+                            "returnType": {
+                                "$ast": "PredefinedType",
+                                "name": "Void"
+                            },
+                            "statement": {
+                                "$ast": "BlockStatement",
+                                "endLabel": "",
+                                "statements": [{
+                                    "$ast": "ExpressionStatement",
+                                    "expression": {
+                                        "$ast": "BinaryExpression",
+                                        "first": {
+                                            "$ast": "ReferenceExpression",
+                                            "name": "s"
+                                        },
+                                        "op": "Assign",
+                                        "second": {
+                                            "$ast": "FormatExpression",
+                                            "expandedExpression": null,
+                                            "value": "$\"$(s)[$(x)]\""
+                                        }
+                                    }
+                                }, {
+                                    "$ast": "ExpressionStatement",
+                                    "expression": {
+                                        "$ast": "CallExpression",
+                                        "arguments": [{
+                                            "$ast": "TypeCastingExpression",
+                                            "expression": {
+                                                "$ast": "ReferenceExpression",
+                                                "name": "x"
+                                            },
+                                            "strategy": "Strong",
+                                            "type": {
+                                                "$ast": "PredefinedType",
+                                                "name": "String"
+                                            }
+                                        }],
+                                        "function": {
+                                            "$ast": "MemberExpression",
+                                            "name": "SendResult",
+                                            "parent": {
+                                                "$ast": "MemberExpression",
+                                                "name": "Promise",
+                                                "parent": {
+                                                    "$ast": "ReferenceExpression",
+                                                    "name": "future"
+                                                }
+                                            }
+                                        }
+                                    }
+                                }]
+                            }
+                        }
+                    }],
+                    "function": {
+                        "$ast": "MemberExpression",
+                        "name": "ExecuteInBackground",
+                        "parent": {
+                            "$ast": "CallExpression",
+                            "arguments": [],
+                            "function": {
+                                "$ast": "ChildExpression",
+                                "name": "GetSchedulerForCurrentThread",
+                                "parent": {
+                                    "$ast": "ReferenceExpression",
+                                    "name": "AsyncScheduler"
+                                }
+                            }
+                        }
+                    }
+                }
+            }, {
+                "$ast": "ReturnStatement",
+                "expression": {
+                    "$ast": "MixinCastExpression",
+                    "expandedExpression": null,
+                    "expression": {
+                        "$ast": "InferExpression",
+                        "expression": {
+                            "$ast": "ReferenceExpression",
+                            "name": "future"
+                        },
+                        "type": {
+                            "$ast": "SharedPointerType",
+                            "element": {
+                                "$ast": "ReferenceType",
+                                "name": "Async"
+                            }
+                        }
+                    },
+                    "type": {
+                        "$ast": "SharedPointerType",
+                        "element": {
+                            "$ast": "ReferenceType",
+                            "name": "IStringAsync"
+                        }
+                    }
+                }
+            }]
+        }
+    }, {
+        "$ast": "FunctionDeclaration",
+        "attributes": [],
+        "name": "GetMultipleString",
+        "anonymity": "Named",
+        "arguments": [],
+        "functionKind": "Normal",
+        "returnType": {
+            "$ast": "PredefinedType",
+            "name": "Void"
+        },
+        "statement": {
+            "$ast": "CoProviderStatement",
+            "expandedStatement": null,
+            "name": "$Async",
+            "statement": {
+                "$ast": "BlockStatement",
+                "endLabel": "",
+                "statements": [{
+                    "$ast": "ForEachStatement",
+                    "expandedStatement": null,
+                    "collection": {
+                        "$ast": "RangeExpression",
+                        "begin": {
+                            "$ast": "IntegerExpression",
+                            "value": "0"
+                        },
+                        "beginBoundary": "Inclusive",
+                        "end": {
+                            "$ast": "IntegerExpression",
+                            "value": "1"
+                        },
+                        "endBoundary": "Inclusive"
+                    },
+                    "direction": "Normal",
+                    "name": "i",
+                    "statement": {
+                        "$ast": "BlockStatement",
+                        "endLabel": "",
+                        "statements": [{
+                            "$ast": "CoOperatorStatement",
+                            "arguments": [{
+                                "$ast": "CallExpression",
+                                "arguments": [{
+                                    "$ast": "ReferenceExpression",
+                                    "name": "i"
+                                }],
+                                "function": {
+                                    "$ast": "ReferenceExpression",
+                                    "name": "GetStringAsync"
+                                }
+                            }],
+                            "opName": "$Await",
+                            "varName": "x"
+                        }, {
+                            "$ast": "ExpressionStatement",
+                            "expression": {
+                                "$ast": "BinaryExpression",
+                                "first": {
+                                    "$ast": "ReferenceExpression",
+                                    "name": "s"
+                                },
+                                "op": "Assign",
+                                "second": {
+                                    "$ast": "FormatExpression",
+                                    "expandedExpression": null,
+                                    "value": "$\"$(s)[+$(x)]\""
+                                }
+                            }
+                        }, {
+                            "$ast": "CoOperatorStatement",
+                            "arguments": [{
+                                "$ast": "CallExpression",
+                                "arguments": [{
+                                    "$ast": "ReferenceExpression",
+                                    "name": "i"
+                                }],
+                                "function": {
+                                    "$ast": "ReferenceExpression",
+                                    "name": "GetStringAsync2"
+                                }
+                            }],
+                            "opName": "$Await",
+                            "varName": "y"
+                        }, {
+                            "$ast": "ExpressionStatement",
+                            "expression": {
+                                "$ast": "BinaryExpression",
+                                "first": {
+                                    "$ast": "ReferenceExpression",
+                                    "name": "s"
+                                },
+                                "op": "Assign",
+                                "second": {
+                                    "$ast": "FormatExpression",
+                                    "expandedExpression": null,
+                                    "value": "$\"$(s)[-$(y)]\""
+                                }
+                            }
+                        }, {
+                            "$ast": "CoOperatorStatement",
+                            "arguments": [{
+                                "$ast": "CallExpression",
+                                "arguments": [{
+                                    "$ast": "IntegerExpression",
+                                    "value": "0"
+                                }],
+                                "function": {
+                                    "$ast": "ChildExpression",
+                                    "name": "Delay",
+                                    "parent": {
+                                        "$ast": "ReferenceExpression",
+                                        "name": "Async"
+                                    }
+                                }
+                            }],
+                            "opName": "$Await",
+                            "varName": ""
+                        }, {
+                            "$ast": "ExpressionStatement",
+                            "expression": {
+                                "$ast": "BinaryExpression",
+                                "first": {
+                                    "$ast": "ReferenceExpression",
+                                    "name": "s"
+                                },
+                                "op": "Assign",
+                                "second": {
+                                    "$ast": "FormatExpression",
+                                    "expandedExpression": null,
+                                    "value": "$\"$(s)!\""
+                                }
+                            }
+                        }]
+                    }
+                }]
+            }
+        }
+    }, {
+        "$ast": "FunctionDeclaration",
+        "attributes": [],
+        "name": "main",
+        "anonymity": "Named",
+        "arguments": [],
+        "functionKind": "Normal",
+        "returnType": {
+            "$ast": "PredefinedType",
+            "name": "String"
+        },
+        "statement": {
+            "$ast": "BlockStatement",
+            "endLabel": "",
+            "statements": [{
+                "$ast": "ExpressionStatement",
+                "expression": {
+                    "$ast": "CallExpression",
+                    "arguments": [{
+                        "$ast": "OrderedLambdaExpression",
+                        "body": {
+                            "$ast": "CallExpression",
+                            "arguments": [],
+                            "function": {
+                                "$ast": "ReferenceExpression",
+                                "name": "GetMultipleString"
+                            }
+                        }
+                    }],
+                    "function": {
+                        "$ast": "ChildExpression",
+                        "name": "Run",
+                        "parent": {
+                            "$ast": "ReferenceExpression",
+                            "name": "SyncScheduler"
+                        }
+                    }
+                }
+            }, {
+                "$ast": "ReturnStatement",
+                "expression": {
+                    "$ast": "ReferenceExpression",
+                    "name": "s"
+                }
+            }]
+        }
+    }],
+    "moduleType": "Module",
+    "name": "test",
+    "paths": [{
+        "$ast": "ModuleUsingPath",
+        "items": [{
+            "$ast": "ModuleUsingItem",
+            "fragments": [{
+                "$ast": "ModuleUsingNameFragment",
+                "name": "system"
+            }]
+        }, {
+            "$ast": "ModuleUsingItem",
+            "fragments": [{
+                "$ast": "ModuleUsingWildCardFragment"
+            }]
+        }]
+    }, {
+        "$ast": "ModuleUsingPath",
+        "items": [{
+            "$ast": "ModuleUsingItem",
+            "fragments": [{
+                "$ast": "ModuleUsingNameFragment",
+                "name": "test"
+            }]
+        }, {
+            "$ast": "ModuleUsingItem",
+            "fragments": [{
+                "$ast": "ModuleUsingWildCardFragment"
+            }]
+        }]
+    }, {
+        "$ast": "ModuleUsingPath",
+        "items": [{
+            "$ast": "ModuleUsingItem",
+            "fragments": [{
+                "$ast": "ModuleUsingNameFragment",
+                "name": "CoAsync_types"
+            }]
+        }, {
+            "$ast": "ModuleUsingItem",
+            "fragments": [{
+                "$ast": "ModuleUsingWildCardFragment"
+            }]
+        }]
+    }]
+}

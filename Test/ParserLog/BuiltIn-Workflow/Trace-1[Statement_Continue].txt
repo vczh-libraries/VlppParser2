@@ -1,0 +1,49 @@
+﻿================ EXECUTION STEPS ================
+[0]: 0@0 - 3@1
+
+==================== TRACES =====================
+
++--------------------------+
+| [0]: <Start>             |
+| [468][_Statement] BEGIN  |
+| [AST-INSTRUCTIONS]:      |
+| [SUCCESORS 1-1]: [1]     |
++--------------------------+
+[0]
+ |
+ +
+ |
+[0]
+++=======================================++
+|| [1]: {KEYWORD_CONTINUE} continue      ||
+|| [473][_Statement]< "continue" @ ";" > ||
+|| [AST-INSTRUCTIONS]:                   ||
+||   + StackBegin()                      ||
+||   + Token(0)                          ||
+|| [PREDECESSORS 0-0]: [0]               ||
+|| [SUCCESORS 2-2]: [2]                  ||
+++=======================================++
+[0]
+ |
+ +
+ |
+[0]
+++=======================================++
+|| [2]: {SEMICOLON} ;                    ||
+|| [472][_Statement]< "continue" ";" @ > ||
+|| [AST-INSTRUCTIONS]:                   ||
+||   + Token(1)                          ||
+|| [PREDECESSORS 1-1]: [1]               ||
+|| [SUCCESORS 3-3]: [3]                  ||
+++=======================================++
+|
++
+|
++-------------------------------------+
+| [3]: <Ending>                       |
+| [469][_Statement] END [ENDING]      |
+| [AST-INSTRUCTIONS]:                 |
+|   + CreateObject(ContinueStatement) |
+|   + StackEnd()                      |
+| [PREDECESSORS 2-2]: [2]             |
++-------------------------------------+

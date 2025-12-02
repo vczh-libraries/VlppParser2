@@ -1,0 +1,226 @@
+﻿{
+    "$ast": "NamespaceDeclaration",
+    "attributes": [],
+    "name": "test",
+    "declarations": [{
+        "$ast": "FunctionDeclaration",
+        "attributes": [],
+        "name": "a",
+        "anonymity": "Named",
+        "arguments": [],
+        "functionKind": "Normal",
+        "returnType": {
+            "$ast": "MapType",
+            "key": null,
+            "value": {
+                "$ast": "PredefinedType",
+                "name": "Int"
+            },
+            "writability": "Writable"
+        },
+        "statement": {
+            "$ast": "CoProviderStatement",
+            "expandedStatement": null,
+            "name": "",
+            "statement": {
+                "$ast": "BlockStatement",
+                "endLabel": "",
+                "statements": [{
+                    "$ast": "ForEachStatement",
+                    "expandedStatement": null,
+                    "collection": {
+                        "$ast": "RangeExpression",
+                        "begin": {
+                            "$ast": "IntegerExpression",
+                            "value": "0"
+                        },
+                        "beginBoundary": "Inclusive",
+                        "end": {
+                            "$ast": "IntegerExpression",
+                            "value": "10"
+                        },
+                        "endBoundary": "Exclusive"
+                    },
+                    "direction": "Normal",
+                    "name": "x",
+                    "statement": {
+                        "$ast": "BlockStatement",
+                        "endLabel": "",
+                        "statements": [{
+                            "$ast": "CoOperatorStatement",
+                            "arguments": [{
+                                "$ast": "ReferenceExpression",
+                                "name": "x"
+                            }],
+                            "opName": "$Yield",
+                            "varName": ""
+                        }]
+                    }
+                }]
+            }
+        }
+    }, {
+        "$ast": "CastResultInterfaceDeclaration",
+        "attributes": [],
+        "name": "IDownloadAsync",
+        "expandedDeclarations": [],
+        "baseType": {
+            "$ast": "ReferenceType",
+            "name": "Async"
+        },
+        "elementType": {
+            "$ast": "MapType",
+            "key": null,
+            "value": {
+                "$ast": "PredefinedType",
+                "name": "String"
+            },
+            "writability": "Writable"
+        }
+    }, {
+        "$ast": "FunctionDeclaration",
+        "attributes": [],
+        "name": "b",
+        "anonymity": "Named",
+        "arguments": [{
+            "$ast": "FunctionArgument",
+            "attributes": [],
+            "name": "urls",
+            "type": {
+                "$ast": "MapType",
+                "key": null,
+                "value": {
+                    "$ast": "PredefinedType",
+                    "name": "String"
+                },
+                "writability": "Writable"
+            }
+        }],
+        "functionKind": "Normal",
+        "returnType": {
+            "$ast": "SharedPointerType",
+            "element": {
+                "$ast": "ReferenceType",
+                "name": "IDownloadAsync"
+            }
+        },
+        "statement": {
+            "$ast": "CoProviderStatement",
+            "expandedStatement": null,
+            "name": "",
+            "statement": {
+                "$ast": "BlockStatement",
+                "endLabel": "",
+                "statements": [{
+                    "$ast": "VariableStatement",
+                    "variable": {
+                        "$ast": "VariableDeclaration",
+                        "attributes": [],
+                        "name": "xs",
+                        "expression": {
+                            "$ast": "ConstructorExpression",
+                            "arguments": []
+                        },
+                        "type": {
+                            "$ast": "MapType",
+                            "key": null,
+                            "value": {
+                                "$ast": "PredefinedType",
+                                "name": "String"
+                            },
+                            "writability": "Writable"
+                        }
+                    }
+                }, {
+                    "$ast": "ForEachStatement",
+                    "expandedStatement": null,
+                    "collection": {
+                        "$ast": "ReferenceExpression",
+                        "name": "urls"
+                    },
+                    "direction": "Normal",
+                    "name": "x",
+                    "statement": {
+                        "$ast": "BlockStatement",
+                        "endLabel": "",
+                        "statements": [{
+                            "$ast": "CoOperatorStatement",
+                            "arguments": [{
+                                "$ast": "CallExpression",
+                                "arguments": [{
+                                    "$ast": "ReferenceExpression",
+                                    "name": "x"
+                                }],
+                                "function": {
+                                    "$ast": "ReferenceExpression",
+                                    "name": "DownloadSingleAsync"
+                                }
+                            }],
+                            "opName": "$Await",
+                            "varName": "text"
+                        }, {
+                            "$ast": "ExpressionStatement",
+                            "expression": {
+                                "$ast": "CallExpression",
+                                "arguments": [{
+                                    "$ast": "ReferenceExpression",
+                                    "name": "text"
+                                }],
+                                "function": {
+                                    "$ast": "MemberExpression",
+                                    "name": "Add",
+                                    "parent": {
+                                        "$ast": "ReferenceExpression",
+                                        "name": "xs"
+                                    }
+                                }
+                            }
+                        }]
+                    }
+                }, {
+                    "$ast": "ReturnStatement",
+                    "expression": {
+                        "$ast": "ReferenceExpression",
+                        "name": "xs"
+                    }
+                }]
+            }
+        }
+    }, {
+        "$ast": "FunctionDeclaration",
+        "attributes": [],
+        "name": "c",
+        "anonymity": "Named",
+        "arguments": [],
+        "functionKind": "Normal",
+        "returnType": {
+            "$ast": "PredefinedType",
+            "name": "Void"
+        },
+        "statement": {
+            "$ast": "CoProviderStatement",
+            "expandedStatement": null,
+            "name": "$Async",
+            "statement": {
+                "$ast": "BlockStatement",
+                "endLabel": "",
+                "statements": [{
+                    "$ast": "CoOperatorStatement",
+                    "arguments": [{
+                        "$ast": "CallExpression",
+                        "arguments": [{
+                            "$ast": "ConstructorExpression",
+                            "arguments": []
+                        }],
+                        "function": {
+                            "$ast": "ReferenceExpression",
+                            "name": "b"
+                        }
+                    }],
+                    "opName": "$Await",
+                    "varName": ""
+                }]
+            }
+        }
+    }]
+}

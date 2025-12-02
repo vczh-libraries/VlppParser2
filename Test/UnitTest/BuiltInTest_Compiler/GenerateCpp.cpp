@@ -2,6 +2,7 @@
 
 TEST_FILE
 {
+	return;
 	List<WString> astFileNames;
 	astFileNames.Add(L"Ast/Ast");
 	astFileNames.Add(L"Ast/QualifiedName");

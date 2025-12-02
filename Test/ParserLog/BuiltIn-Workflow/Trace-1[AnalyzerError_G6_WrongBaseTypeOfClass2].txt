@@ -1,0 +1,527 @@
+﻿================ EXECUTION STEPS ================
+[0]: 0@0 - 39@6
+
+==================== TRACES =====================
+
++-----------------------+
+| [0]: <Start>          |
+| [798][_Module] BEGIN  |
+| [AST-INSTRUCTIONS]:   |
+| [SUCCESORS 1-1]: [1]  |
++-----------------------+
+[0]
+ |
+ +
+ |
+[0]
+++===========================================================================++
+|| [1]: {KEYWORD_MODULE} module                                              ||
+|| [804][_Module]< "module" @ ( NAME ";" { _UsingPath } { _Declaration } ) > ||
+|| [AST-INSTRUCTIONS]:                                                       ||
+||   + StackBegin()                                                          ||
+||   + Token(0)                                                              ||
+|| [PREDECESSORS 0-0]: [0]                                                   ||
+|| [SUCCESORS 2-2]: [2]                                                      ||
+++===========================================================================++
+[0]
+ |
+ +
+ |
+[0]
+++===========================================================================++
+|| [2]: {NAME} test                                                          ||
+|| [803][_Module]< "module" ( NAME @ ";" { _UsingPath } { _Declaration } ) > ||
+|| [AST-INSTRUCTIONS]:                                                       ||
+||   + Token(1)                                                              ||
+|| [PREDECESSORS 1-1]: [1]                                                   ||
+|| [SUCCESORS 3-3]: [3]                                                      ||
+++===========================================================================++
+[0]
+ |
+ +
+ |
+[0]
+++===========================================================================++
+|| [3]: {SEMICOLON} ;                                                        ||
+|| [800][_Module]< "module" ( NAME ";" @ { _UsingPath } { _Declaration } ) > ||
+|| [AST-INSTRUCTIONS]:                                                       ||
+||   + Token(2)                                                              ||
+|| [PREDECESSORS 2-2]: [2]                                                   ||
+|| [SUCCESORS 5-5]: [5]                                                      ||
+++===========================================================================++
+[0]
+ |
+ +
+ |
+[0]
+++========================================================================================================++
+|| [5]: {KEYWORD_USING} using                                                                             ||
+|| [793][_UsingPath]< "using" @ _UsingItem { "::" _UsingItem } ";" >                                      ||
+|| [AST-INSTRUCTIONS]:                                                                                    ||
+||   + StackBegin()                                                                                       ||
+||   + Token(0)                                                                                           ||
+|| [RETURN STACK]:                                                                                        ||
+||   [0][258][3]: _UsingPath -> [801][_Module]< "module" ( NAME ";" { _UsingPath @ } { _Declaration } ) > ||
+|| [PREDECESSORS 3-3]: [3]                                                                                ||
+|| [SUCCESORS 6-6]: [6]                                                                                   ||
+++========================================================================================================++
+[0]
+ |
+ +
+ |
+[0]
+++========================================================================================================++
+|| [6]: {NAME} system                                                                                     ||
+|| [786][_UsingFragment]< NAME @ >                                                                        ||
+|| [AST-INSTRUCTIONS]:                                                                                    ||
+||   + StackBegin()                                                                                       ||
+||   + Token(0)                                                                                           ||
+|| [RETURN STACK]:                                                                                        ||
+||   [2][252][5]: _UsingFragment -> [789][_UsingItem]< _UsingFragment @ { _UsingFragment } >              ||
+||   [1][255][5]: _UsingItem -> [794][_UsingPath]< "using" _UsingItem @ { "::" _UsingItem } ";" >         ||
+||   [0][258][3]: _UsingPath -> [801][_Module]< "module" ( NAME ";" { _UsingPath @ } { _Declaration } ) > ||
+|| [PREDECESSORS 5-5]: [5]                                                                                ||
+|| [SUCCESORS 7-7]: [7]                                                                                   ||
+++========================================================================================================++
+|
++
+|
++--------------------------------------------------------------------------------------------------------+
+| [7]: <Ending>                                                                                          |
+| [789][_UsingItem]< _UsingFragment @ { _UsingFragment } >                                               |
+| [AST-INSTRUCTIONS]:                                                                                    |
+|   + CreateObject(ModuleUsingNameFragment)                                                              |
+|   + Field(ModuleUsingNameFragment::name, 0)                                                            |
+|   + StackEnd()                                                                                         |
+|   > StackBegin()                                                                                       |
+|   > StackSlot(0)                                                                                       |
+| [RETURN STACK]:                                                                                        |
+|   [1][255][5]: _UsingItem -> [794][_UsingPath]< "using" _UsingItem @ { "::" _UsingItem } ";" >         |
+|   [0][258][3]: _UsingPath -> [801][_Module]< "module" ( NAME ";" { _UsingPath @ } { _Declaration } ) > |
+| [PREDECESSORS 6-6]: [6]                                                                                |
+| [SUCCESORS 8-8]: [8]                                                                                   |
++--------------------------------------------------------------------------------------------------------+
+|
++
+|
++--------------------------------------------------------------------------------------------------------+
+| [8]: <Ending>                                                                                          |
+| [794][_UsingPath]< "using" _UsingItem @ { "::" _UsingItem } ";" >                                      |
+| [AST-INSTRUCTIONS]:                                                                                    |
+|   + CreateObject(ModuleUsingItem)                                                                      |
+|   + Field(ModuleUsingItem::fragments, 0)                                                               |
+|   + Field(ModuleUsingItem::fragments, 1)                                                               |
+|   + StackEnd()                                                                                         |
+|   > StackSlot(1)                                                                                       |
+| [RETURN STACK]:                                                                                        |
+|   [0][258][3]: _UsingPath -> [801][_Module]< "module" ( NAME ";" { _UsingPath @ } { _Declaration } ) > |
+| [PREDECESSORS 7-7]: [7]                                                                                |
+| [SUCCESORS 9-9]: [9]                                                                                   |
++--------------------------------------------------------------------------------------------------------+
+[0]
+ |
+ +
+ |
+[0]
+++========================================================================================================++
+|| [9]: {SCOPE_DELIMITER} ::                                                                              ||
+|| [795][_UsingPath]< "using" _UsingItem { "::" @ _UsingItem } ";" >                                      ||
+|| [AST-INSTRUCTIONS]:                                                                                    ||
+||   + Token(2)                                                                                           ||
+|| [RETURN STACK]:                                                                                        ||
+||   [0][258][3]: _UsingPath -> [801][_Module]< "module" ( NAME ";" { _UsingPath @ } { _Declaration } ) > ||
+|| [PREDECESSORS 8-8]: [8]                                                                                ||
+|| [SUCCESORS 10-10]: [10]                                                                                ||
+++========================================================================================================++
+[0]
+ |
+ +
+ |
+[0]
+++========================================================================================================++
+|| [10]: {MUL} *                                                                                          ||
+|| [785][_UsingFragment]< "*" @ >                                                                         ||
+|| [AST-INSTRUCTIONS]:                                                                                    ||
+||   + StackBegin()                                                                                       ||
+||   + Token(0)                                                                                           ||
+|| [RETURN STACK]:                                                                                        ||
+||   [4][252][9]: _UsingFragment -> [789][_UsingItem]< _UsingFragment @ { _UsingFragment } >              ||
+||   [3][256][9]: _UsingItem -> [796][_UsingPath]< "using" _UsingItem { "::" _UsingItem @ } ";" >         ||
+||   [0][258][3]: _UsingPath -> [801][_Module]< "module" ( NAME ";" { _UsingPath @ } { _Declaration } ) > ||
+|| [PREDECESSORS 9-9]: [9]                                                                                ||
+|| [SUCCESORS 11-11]: [11]                                                                                ||
+++========================================================================================================++
+|
++
+|
++--------------------------------------------------------------------------------------------------------+
+| [11]: <Ending>                                                                                         |
+| [789][_UsingItem]< _UsingFragment @ { _UsingFragment } >                                               |
+| [AST-INSTRUCTIONS]:                                                                                    |
+|   + CreateObject(ModuleUsingWildCardFragment)                                                          |
+|   + StackEnd()                                                                                         |
+|   > StackBegin()                                                                                       |
+|   > StackSlot(0)                                                                                       |
+| [RETURN STACK]:                                                                                        |
+|   [3][256][9]: _UsingItem -> [796][_UsingPath]< "using" _UsingItem { "::" _UsingItem @ } ";" >         |
+|   [0][258][3]: _UsingPath -> [801][_Module]< "module" ( NAME ";" { _UsingPath @ } { _Declaration } ) > |
+| [PREDECESSORS 10-10]: [10]                                                                             |
+| [SUCCESORS 12-12]: [12]                                                                                |
++--------------------------------------------------------------------------------------------------------+
+|
++
+|
++--------------------------------------------------------------------------------------------------------+
+| [12]: <Ending>                                                                                         |
+| [796][_UsingPath]< "using" _UsingItem { "::" _UsingItem @ } ";" >                                      |
+| [AST-INSTRUCTIONS]:                                                                                    |
+|   + CreateObject(ModuleUsingItem)                                                                      |
+|   + Field(ModuleUsingItem::fragments, 0)                                                               |
+|   + Field(ModuleUsingItem::fragments, 1)                                                               |
+|   + StackEnd()                                                                                         |
+|   > StackSlot(3)                                                                                       |
+| [RETURN STACK]:                                                                                        |
+|   [0][258][3]: _UsingPath -> [801][_Module]< "module" ( NAME ";" { _UsingPath @ } { _Declaration } ) > |
+| [PREDECESSORS 11-11]: [11]                                                                             |
+| [SUCCESORS 13-13]: [13]                                                                                |
++--------------------------------------------------------------------------------------------------------+
+[0]
+ |
+ +
+ |
+[0]
+++========================================================================================================++
+|| [13]: {SEMICOLON} ;                                                                                    ||
+|| [797][_UsingPath]< "using" _UsingItem { "::" _UsingItem } ";" @ >                                      ||
+|| [AST-INSTRUCTIONS]:                                                                                    ||
+||   + Token(4)                                                                                           ||
+|| [RETURN STACK]:                                                                                        ||
+||   [0][258][3]: _UsingPath -> [801][_Module]< "module" ( NAME ";" { _UsingPath @ } { _Declaration } ) > ||
+|| [PREDECESSORS 12-12]: [12]                                                                             ||
+|| [SUCCESORS 14-14]: [14]                                                                                ||
+++========================================================================================================++
+|
++
+|
++---------------------------------------------------------------------------+
+| [14]: <Ending>                                                            |
+| [801][_Module]< "module" ( NAME ";" { _UsingPath @ } { _Declaration } ) > |
+| [AST-INSTRUCTIONS]:                                                       |
+|   + CreateObject(ModuleUsingPath)                                         |
+|   + Field(ModuleUsingPath::items, 1)                                      |
+|   + Field(ModuleUsingPath::items, 3)                                      |
+|   + StackEnd()                                                            |
+|   > StackSlot(3)                                                          |
+| [PREDECESSORS 13-13]: [13]                                                |
+| [SUCCESORS 17-17]: [17]                                                   |
++---------------------------------------------------------------------------+
+[0]
+ |
+ +
+ |
+[0]
+++============================================================================================================++
+|| [17]: {TYPE_INTERFACE} interface                                                                           ||
+|| [661][_Class]< "interface" @ NAME ( [ ":" { _Type ; "," } ] "{" { _Declaration } [ _StateMachine ] "}" ) > ||
+|| [AST-INSTRUCTIONS]:                                                                                        ||
+||   + StackBegin()                                                                                           ||
+||   + Token(0)                                                                                               ||
+|| [RETURN STACK]:                                                                                            ||
+||   [9][48][14]: _Class -> [768][_DeclarationCandidates]<! !_Class @ !>                                      ||
+||   [8][47][14]: _DeclarationCandidates -> [782][_Declaration]<! { _Attribute } !_DeclarationCandidates @ !> ||
+||   [5][259][14]: _Declaration -> [802][_Module]< "module" ( NAME ";" { _UsingPath } { _Declaration @ } ) >  ||
+|| [PREDECESSORS 14-14]: [14]                                                                                 ||
+|| [SUCCESORS 19-19]: [19]                                                                                    ||
+++============================================================================================================++
+[0]
+ |
+ +
+ |
+[0]
+++============================================================================================================++
+|| [19]: {NAME} A                                                                                             ||
+|| [678][_Class]< "interface" NAME @ ( [ ":" { _Type ; "," } ] "{" { _Declaration } [ _StateMachine ] "}" ) > ||
+|| [AST-INSTRUCTIONS]:                                                                                        ||
+||   + Token(1)                                                                                               ||
+|| [RETURN STACK]:                                                                                            ||
+||   [9][48][14]: _Class -> [768][_DeclarationCandidates]<! !_Class @ !>                                      ||
+||   [8][47][14]: _DeclarationCandidates -> [782][_Declaration]<! { _Attribute } !_DeclarationCandidates @ !> ||
+||   [5][259][14]: _Declaration -> [802][_Module]< "module" ( NAME ";" { _UsingPath } { _Declaration @ } ) >  ||
+|| [PREDECESSORS 17-17]: [17]                                                                                 ||
+|| [SUCCESORS 20-20]: [20]                                                                                    ||
+++============================================================================================================++
+[0]
+ |
+ +
+ |
+[0]
+++============================================================================================================++
+|| [20]: {OPEN_BRACE} {                                                                                       ||
+|| [672][_Class]< "interface" NAME ( [ ":" { _Type ; "," } ] "{" @ { _Declaration } [ _StateMachine ] "}" ) > ||
+|| [AST-INSTRUCTIONS]:                                                                                        ||
+||   + Token(5)                                                                                               ||
+|| [RETURN STACK]:                                                                                            ||
+||   [9][48][14]: _Class -> [768][_DeclarationCandidates]<! !_Class @ !>                                      ||
+||   [8][47][14]: _DeclarationCandidates -> [782][_Declaration]<! { _Attribute } !_DeclarationCandidates @ !> ||
+||   [5][259][14]: _Declaration -> [802][_Module]< "module" ( NAME ";" { _UsingPath } { _Declaration @ } ) >  ||
+|| [PREDECESSORS 19-19]: [19]                                                                                 ||
+|| [SUCCESORS 21-21]: [21]                                                                                    ||
+++============================================================================================================++
+[0]
+ |
+ +
+ |
+[0]
+++============================================================================================================++
+|| [21]: {CLOSE_BRACE} }                                                                                      ||
+|| [675][_Class]< "interface" NAME ( [ ":" { _Type ; "," } ] "{" { _Declaration } [ _StateMachine ] "}" @ ) > ||
+|| [AST-INSTRUCTIONS]:                                                                                        ||
+||   + Token(8)                                                                                               ||
+|| [RETURN STACK]:                                                                                            ||
+||   [9][48][14]: _Class -> [768][_DeclarationCandidates]<! !_Class @ !>                                      ||
+||   [8][47][14]: _DeclarationCandidates -> [782][_Declaration]<! { _Attribute } !_DeclarationCandidates @ !> ||
+||   [5][259][14]: _Declaration -> [802][_Module]< "module" ( NAME ";" { _UsingPath } { _Declaration @ } ) >  ||
+|| [PREDECESSORS 20-20]: [20]                                                                                 ||
+|| [SUCCESORS 22-22]: [22]                                                                                    ||
+++============================================================================================================++
+|
++
+|
++------------------------------------------------------------------------------------------------------------+
+| [22]: <Ending>                                                                                             |
+| [768][_DeclarationCandidates]<! !_Class @ !>                                                               |
+| [AST-INSTRUCTIONS]:                                                                                        |
+|   + EnumItem(1, 9)                                                                                         |
+|   + EnumItem(1, 10)                                                                                        |
+|   + CreateObject(ClassDeclaration)                                                                         |
+|   + Field(Declaration::name, 1)                                                                            |
+|   + Field(ClassDeclaration::baseTypes, 3)                                                                  |
+|   + Field(ClassDeclaration::declarations, 6)                                                               |
+|   + Field(ClassDeclaration::declarations, 7)                                                               |
+|   + Field(ClassDeclaration::kind, 9)                                                                       |
+|   + Field(ClassDeclaration::constructorType, 10)                                                           |
+|   + StackEnd()                                                                                             |
+|   > StackBegin()                                                                                           |
+| [RETURN STACK]:                                                                                            |
+|   [8][47][14]: _DeclarationCandidates -> [782][_Declaration]<! { _Attribute } !_DeclarationCandidates @ !> |
+|   [5][259][14]: _Declaration -> [802][_Module]< "module" ( NAME ";" { _UsingPath } { _Declaration @ } ) >  |
+| [PREDECESSORS 21-21]: [21]                                                                                 |
+| [SUCCESORS 23-23]: [23]                                                                                    |
++------------------------------------------------------------------------------------------------------------+
+|
++
+|
++-----------------------------------------------------------------------------------------------------------+
+| [23]: <Ending>                                                                                            |
+| [782][_Declaration]<! { _Attribute } !_DeclarationCandidates @ !>                                         |
+| [AST-INSTRUCTIONS]:                                                                                       |
+|   + StackEnd()                                                                                            |
+|   > StackBegin()                                                                                          |
+| [RETURN STACK]:                                                                                           |
+|   [5][259][14]: _Declaration -> [802][_Module]< "module" ( NAME ";" { _UsingPath } { _Declaration @ } ) > |
+| [PREDECESSORS 22-22]: [22]                                                                                |
+| [SUCCESORS 24-24]: [24]                                                                                   |
++-----------------------------------------------------------------------------------------------------------+
+|
++
+|
++---------------------------------------------------------------------------+
+| [24]: <Ending>                                                            |
+| [802][_Module]< "module" ( NAME ";" { _UsingPath } { _Declaration @ } ) > |
+| [AST-INSTRUCTIONS]:                                                       |
+|   + Field(Declaration::attributes, 0)                                     |
+|   + StackEnd()                                                            |
+|   > StackSlot(4)                                                          |
+| [PREDECESSORS 23-23]: [23]                                                |
+| [SUCCESORS 26-26]: [26]                                                   |
++---------------------------------------------------------------------------+
+[0]
+ |
+ +
+ |
+[0]
+++=============================================================================================================++
+|| [26]: {KEYWORD_CLASS} class                                                                                 ||
+|| [651][_Class]< "class" @ NAME ( [ ":" { _Type ; "," } ] "{" { _Declaration } [ _StateMachine ] "}" ) >      ||
+|| [AST-INSTRUCTIONS]:                                                                                         ||
+||   + StackBegin()                                                                                            ||
+||   + Token(0)                                                                                                ||
+|| [RETURN STACK]:                                                                                             ||
+||   [12][48][24]: _Class -> [768][_DeclarationCandidates]<! !_Class @ !>                                      ||
+||   [11][47][24]: _DeclarationCandidates -> [782][_Declaration]<! { _Attribute } !_DeclarationCandidates @ !> ||
+||   [10][261][24]: _Declaration -> [802][_Module]< "module" ( NAME ";" { _UsingPath } { _Declaration @ } ) >  ||
+|| [PREDECESSORS 24-24]: [24]                                                                                  ||
+|| [SUCCESORS 27-27]: [27]                                                                                     ||
+++=============================================================================================================++
+[0]
+ |
+ +
+ |
+[0]
+++=============================================================================================================++
+|| [27]: {NAME} B                                                                                              ||
+|| [659][_Class]< "class" NAME @ ( [ ":" { _Type ; "," } ] "{" { _Declaration } [ _StateMachine ] "}" ) >      ||
+|| [AST-INSTRUCTIONS]:                                                                                         ||
+||   + Token(1)                                                                                                ||
+|| [RETURN STACK]:                                                                                             ||
+||   [12][48][24]: _Class -> [768][_DeclarationCandidates]<! !_Class @ !>                                      ||
+||   [11][47][24]: _DeclarationCandidates -> [782][_Declaration]<! { _Attribute } !_DeclarationCandidates @ !> ||
+||   [10][261][24]: _Declaration -> [802][_Module]< "module" ( NAME ";" { _UsingPath } { _Declaration @ } ) >  ||
+|| [PREDECESSORS 26-26]: [26]                                                                                  ||
+|| [SUCCESORS 28-28]: [28]                                                                                     ||
+++=============================================================================================================++
+[0]
+ |
+ +
+ |
+[0]
+++=============================================================================================================++
+|| [28]: {COLON} :                                                                                             ||
+|| [652][_Class]< "class" NAME ( [ ":" @ { _Type ; "," } ] "{" { _Declaration } [ _StateMachine ] "}" ) >      ||
+|| [AST-INSTRUCTIONS]:                                                                                         ||
+||   + Token(2)                                                                                                ||
+|| [RETURN STACK]:                                                                                             ||
+||   [12][48][24]: _Class -> [768][_DeclarationCandidates]<! !_Class @ !>                                      ||
+||   [11][47][24]: _DeclarationCandidates -> [782][_Declaration]<! { _Attribute } !_DeclarationCandidates @ !> ||
+||   [10][261][24]: _Declaration -> [802][_Module]< "module" ( NAME ";" { _UsingPath } { _Declaration @ } ) >  ||
+|| [PREDECESSORS 27-27]: [27]                                                                                  ||
+|| [SUCCESORS 29-29]: [29]                                                                                     ||
+++=============================================================================================================++
+[0]
+ |
+ +
+ |
+[0]
+++==================================================================================================================================++
+|| [29]: {NAME} A                                                                                                                   ||
+|| [30][_Type]< NAME @ >                                                                                                            ||
+|| [AST-INSTRUCTIONS]:                                                                                                              ||
+||   + StackBegin()                                                                                                                 ||
+||   + Token(0)                                                                                                                     ||
+|| [RETURN STACK]:                                                                                                                  ||
+||   [13][208][28]: _Type -> [658][_Class]< "class" NAME ( [ ":" { _Type @ ; "," } ] "{" { _Declaration } [ _StateMachine ] "}" ) > ||
+||   [12][48][24]: _Class -> [768][_DeclarationCandidates]<! !_Class @ !>                                                           ||
+||   [11][47][24]: _DeclarationCandidates -> [782][_Declaration]<! { _Attribute } !_DeclarationCandidates @ !>                      ||
+||   [10][261][24]: _Declaration -> [802][_Module]< "module" ( NAME ";" { _UsingPath } { _Declaration @ } ) >                       ||
+|| [PREDECESSORS 28-28]: [28]                                                                                                       ||
+|| [SUCCESORS 31-31]: [31]                                                                                                          ||
+++==================================================================================================================================++
+|
++
+|
++-------------------------------------------------------------------------------------------------------------+
+| [31]: <Ending>                                                                                              |
+| [658][_Class]< "class" NAME ( [ ":" { _Type @ ; "," } ] "{" { _Declaration } [ _StateMachine ] "}" ) >      |
+| [AST-INSTRUCTIONS]:                                                                                         |
+|   + CreateObject(ReferenceType)                                                                             |
+|   + Field(ReferenceType::name, 0)                                                                           |
+|   + StackEnd()                                                                                              |
+|   > StackSlot(3)                                                                                            |
+| [RETURN STACK]:                                                                                             |
+|   [12][48][24]: _Class -> [768][_DeclarationCandidates]<! !_Class @ !>                                      |
+|   [11][47][24]: _DeclarationCandidates -> [782][_Declaration]<! { _Attribute } !_DeclarationCandidates @ !> |
+|   [10][261][24]: _Declaration -> [802][_Module]< "module" ( NAME ";" { _UsingPath } { _Declaration @ } ) >  |
+| [PREDECESSORS 29-29]: [29]                                                                                  |
+| [SUCCESORS 33-33]: [33]                                                                                     |
++-------------------------------------------------------------------------------------------------------------+
+[0]
+ |
+ +
+ |
+[0]
+++=============================================================================================================++
+|| [33]: {OPEN_BRACE} {                                                                                        ||
+|| [654][_Class]< "class" NAME ( [ ":" { _Type ; "," } ] "{" @ { _Declaration } [ _StateMachine ] "}" ) >      ||
+|| [AST-INSTRUCTIONS]:                                                                                         ||
+||   + Token(5)                                                                                                ||
+|| [RETURN STACK]:                                                                                             ||
+||   [12][48][24]: _Class -> [768][_DeclarationCandidates]<! !_Class @ !>                                      ||
+||   [11][47][24]: _DeclarationCandidates -> [782][_Declaration]<! { _Attribute } !_DeclarationCandidates @ !> ||
+||   [10][261][24]: _Declaration -> [802][_Module]< "module" ( NAME ";" { _UsingPath } { _Declaration @ } ) >  ||
+|| [PREDECESSORS 31-31]: [31]                                                                                  ||
+|| [SUCCESORS 35-35]: [35]                                                                                     ||
+++=============================================================================================================++
+[0]
+ |
+ +
+ |
+[0]
+++=============================================================================================================++
+|| [35]: {CLOSE_BRACE} }                                                                                       ||
+|| [657][_Class]< "class" NAME ( [ ":" { _Type ; "," } ] "{" { _Declaration } [ _StateMachine ] "}" @ ) >      ||
+|| [AST-INSTRUCTIONS]:                                                                                         ||
+||   + Token(8)                                                                                                ||
+|| [RETURN STACK]:                                                                                             ||
+||   [12][48][24]: _Class -> [768][_DeclarationCandidates]<! !_Class @ !>                                      ||
+||   [11][47][24]: _DeclarationCandidates -> [782][_Declaration]<! { _Attribute } !_DeclarationCandidates @ !> ||
+||   [10][261][24]: _Declaration -> [802][_Module]< "module" ( NAME ";" { _UsingPath } { _Declaration @ } ) >  ||
+|| [PREDECESSORS 33-33]: [33]                                                                                  ||
+|| [SUCCESORS 36-36]: [36]                                                                                     ||
+++=============================================================================================================++
+|
++
+|
++-------------------------------------------------------------------------------------------------------------+
+| [36]: <Ending>                                                                                              |
+| [768][_DeclarationCandidates]<! !_Class @ !>                                                                |
+| [AST-INSTRUCTIONS]:                                                                                         |
+|   + EnumItem(0, 9)                                                                                          |
+|   + EnumItem(0, 10)                                                                                         |
+|   + CreateObject(ClassDeclaration)                                                                          |
+|   + Field(Declaration::name, 1)                                                                             |
+|   + Field(ClassDeclaration::baseTypes, 3)                                                                   |
+|   + Field(ClassDeclaration::declarations, 6)                                                                |
+|   + Field(ClassDeclaration::declarations, 7)                                                                |
+|   + Field(ClassDeclaration::kind, 9)                                                                        |
+|   + Field(ClassDeclaration::constructorType, 10)                                                            |
+|   + StackEnd()                                                                                              |
+|   > StackBegin()                                                                                            |
+| [RETURN STACK]:                                                                                             |
+|   [11][47][24]: _DeclarationCandidates -> [782][_Declaration]<! { _Attribute } !_DeclarationCandidates @ !> |
+|   [10][261][24]: _Declaration -> [802][_Module]< "module" ( NAME ";" { _UsingPath } { _Declaration @ } ) >  |
+| [PREDECESSORS 35-35]: [35]                                                                                  |
+| [SUCCESORS 37-37]: [37]                                                                                     |
++-------------------------------------------------------------------------------------------------------------+
+|
++
+|
++------------------------------------------------------------------------------------------------------------+
+| [37]: <Ending>                                                                                             |
+| [782][_Declaration]<! { _Attribute } !_DeclarationCandidates @ !>                                          |
+| [AST-INSTRUCTIONS]:                                                                                        |
+|   + StackEnd()                                                                                             |
+|   > StackBegin()                                                                                           |
+| [RETURN STACK]:                                                                                            |
+|   [10][261][24]: _Declaration -> [802][_Module]< "module" ( NAME ";" { _UsingPath } { _Declaration @ } ) > |
+| [PREDECESSORS 36-36]: [36]                                                                                 |
+| [SUCCESORS 38-38]: [38]                                                                                    |
++------------------------------------------------------------------------------------------------------------+
+|
++
+|
++---------------------------------------------------------------------------+
+| [38]: <Ending>                                                            |
+| [802][_Module]< "module" ( NAME ";" { _UsingPath } { _Declaration @ } ) > |
+| [AST-INSTRUCTIONS]:                                                       |
+|   + Field(Declaration::attributes, 0)                                     |
+|   + StackEnd()                                                            |
+|   > StackSlot(4)                                                          |
+| [PREDECESSORS 37-37]: [37]                                                |
+| [SUCCESORS 39-39]: [39]                                                   |
++---------------------------------------------------------------------------+
+|
++
+|
++------------------------------------+
+| [39]: <Ending>                     |
+| [799][_Module] END [ENDING]        |
+| [AST-INSTRUCTIONS]:                |
+|   + EnumItem(0, 5)                 |
+|   + CreateObject(Module)           |
+|   + Field(Module::name, 1)         |
+|   + Field(Module::paths, 3)        |
+|   + Field(Module::declarations, 4) |
+|   + Field(Module::moduleType, 5)   |
+|   + StackEnd()                     |
+| [PREDECESSORS 38-38]: [38]         |
++------------------------------------+

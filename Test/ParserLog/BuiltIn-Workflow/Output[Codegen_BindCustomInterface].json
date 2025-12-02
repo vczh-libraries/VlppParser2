@@ -1,0 +1,466 @@
+﻿{
+    "$ast": "Module",
+    "declarations": [{
+        "$ast": "VariableDeclaration",
+        "attributes": [],
+        "name": "s",
+        "expression": {
+            "$ast": "StringExpression",
+            "value": "\"\""
+        },
+        "type": null
+    }, {
+        "$ast": "ClassDeclaration",
+        "attributes": [],
+        "name": "ISummer",
+        "baseTypes": [],
+        "constructorType": "SharedPtr",
+        "declarations": [{
+            "$ast": "FunctionDeclaration",
+            "attributes": [],
+            "name": "GetSum",
+            "anonymity": "Named",
+            "arguments": [],
+            "functionKind": "Normal",
+            "returnType": {
+                "$ast": "PredefinedType",
+                "name": "Int"
+            },
+            "statement": null
+        }, {
+            "$ast": "EventDeclaration",
+            "attributes": [],
+            "name": "SumChanged",
+            "arguments": []
+        }, {
+            "$ast": "PropertyDeclaration",
+            "attributes": [],
+            "name": "Sum",
+            "getter": "GetSum",
+            "setter": "",
+            "type": {
+                "$ast": "PredefinedType",
+                "name": "Int"
+            },
+            "valueChangedEvent": "SumChanged"
+        }],
+        "kind": "Interface"
+    }, {
+        "$ast": "ClassDeclaration",
+        "attributes": [],
+        "name": "IAdder",
+        "baseTypes": [{
+            "$ast": "ReferenceType",
+            "name": "ISummer"
+        }],
+        "constructorType": "SharedPtr",
+        "declarations": [{
+            "$ast": "FunctionDeclaration",
+            "attributes": [],
+            "name": "Add",
+            "anonymity": "Named",
+            "arguments": [{
+                "$ast": "FunctionArgument",
+                "attributes": [],
+                "name": "value",
+                "type": {
+                    "$ast": "PredefinedType",
+                    "name": "Int"
+                }
+            }],
+            "functionKind": "Normal",
+            "returnType": {
+                "$ast": "PredefinedType",
+                "name": "Void"
+            },
+            "statement": null
+        }],
+        "kind": "Interface"
+    }, {
+        "$ast": "FunctionDeclaration",
+        "attributes": [],
+        "name": "Bind",
+        "anonymity": "Named",
+        "arguments": [{
+            "$ast": "FunctionArgument",
+            "attributes": [],
+            "name": "summer",
+            "type": {
+                "$ast": "SharedPointerType",
+                "element": {
+                    "$ast": "ReferenceType",
+                    "name": "ISummer"
+                }
+            }
+        }],
+        "functionKind": "Normal",
+        "returnType": {
+            "$ast": "SharedPointerType",
+            "element": {
+                "$ast": "ReferenceType",
+                "name": "Subscription"
+            }
+        },
+        "statement": {
+            "$ast": "BlockStatement",
+            "endLabel": "",
+            "statements": [{
+                "$ast": "VariableStatement",
+                "variable": {
+                    "$ast": "VariableDeclaration",
+                    "attributes": [],
+                    "name": "subscription",
+                    "expression": {
+                        "$ast": "BindExpression",
+                        "expandedExpression": null,
+                        "expression": {
+                            "$ast": "MemberExpression",
+                            "name": "Sum",
+                            "parent": {
+                                "$ast": "ReferenceExpression",
+                                "name": "summer"
+                            }
+                        }
+                    },
+                    "type": null
+                }
+            }, {
+                "$ast": "ExpressionStatement",
+                "expression": {
+                    "$ast": "CallExpression",
+                    "arguments": [],
+                    "function": {
+                        "$ast": "MemberExpression",
+                        "name": "Open",
+                        "parent": {
+                            "$ast": "ReferenceExpression",
+                            "name": "subscription"
+                        }
+                    }
+                }
+            }, {
+                "$ast": "ExpressionStatement",
+                "expression": {
+                    "$ast": "AttachEventExpression",
+                    "event": {
+                        "$ast": "MemberExpression",
+                        "name": "ValueChanged",
+                        "parent": {
+                            "$ast": "ReferenceExpression",
+                            "name": "subscription"
+                        }
+                    },
+                    "function": {
+                        "$ast": "FunctionExpression",
+                        "function": {
+                            "$ast": "FunctionDeclaration",
+                            "attributes": [],
+                            "name": "",
+                            "anonymity": "Anonymous",
+                            "arguments": [{
+                                "$ast": "FunctionArgument",
+                                "attributes": [],
+                                "name": "value",
+                                "type": {
+                                    "$ast": "PredefinedType",
+                                    "name": "Object"
+                                }
+                            }],
+                            "functionKind": "Normal",
+                            "returnType": {
+                                "$ast": "PredefinedType",
+                                "name": "Void"
+                            },
+                            "statement": {
+                                "$ast": "BlockStatement",
+                                "endLabel": "",
+                                "statements": [{
+                                    "$ast": "ExpressionStatement",
+                                    "expression": {
+                                        "$ast": "BinaryExpression",
+                                        "first": {
+                                            "$ast": "ReferenceExpression",
+                                            "name": "s"
+                                        },
+                                        "op": "Assign",
+                                        "second": {
+                                            "$ast": "FormatExpression",
+                                            "expandedExpression": null,
+                                            "value": "$\"$(s)[$(cast int value)]\""
+                                        }
+                                    }
+                                }]
+                            }
+                        }
+                    }
+                }
+            }, {
+                "$ast": "ReturnStatement",
+                "expression": {
+                    "$ast": "ReferenceExpression",
+                    "name": "subscription"
+                }
+            }]
+        }
+    }, {
+        "$ast": "FunctionDeclaration",
+        "attributes": [],
+        "name": "Execute",
+        "anonymity": "Named",
+        "arguments": [{
+            "$ast": "FunctionArgument",
+            "attributes": [],
+            "name": "adder",
+            "type": {
+                "$ast": "SharedPointerType",
+                "element": {
+                    "$ast": "ReferenceType",
+                    "name": "IAdder"
+                }
+            }
+        }],
+        "functionKind": "Normal",
+        "returnType": {
+            "$ast": "PredefinedType",
+            "name": "Void"
+        },
+        "statement": {
+            "$ast": "BlockStatement",
+            "endLabel": "",
+            "statements": [{
+                "$ast": "VariableStatement",
+                "variable": {
+                    "$ast": "VariableDeclaration",
+                    "attributes": [],
+                    "name": "subscription",
+                    "expression": {
+                        "$ast": "CallExpression",
+                        "arguments": [{
+                            "$ast": "ReferenceExpression",
+                            "name": "adder"
+                        }],
+                        "function": {
+                            "$ast": "ReferenceExpression",
+                            "name": "Bind"
+                        }
+                    },
+                    "type": null
+                }
+            }, {
+                "$ast": "ForEachStatement",
+                "expandedStatement": null,
+                "collection": {
+                    "$ast": "RangeExpression",
+                    "begin": {
+                        "$ast": "IntegerExpression",
+                        "value": "1"
+                    },
+                    "beginBoundary": "Inclusive",
+                    "end": {
+                        "$ast": "IntegerExpression",
+                        "value": "5"
+                    },
+                    "endBoundary": "Inclusive"
+                },
+                "direction": "Normal",
+                "name": "x",
+                "statement": {
+                    "$ast": "BlockStatement",
+                    "endLabel": "",
+                    "statements": [{
+                        "$ast": "ExpressionStatement",
+                        "expression": {
+                            "$ast": "CallExpression",
+                            "arguments": [{
+                                "$ast": "ReferenceExpression",
+                                "name": "x"
+                            }],
+                            "function": {
+                                "$ast": "MemberExpression",
+                                "name": "Add",
+                                "parent": {
+                                    "$ast": "ReferenceExpression",
+                                    "name": "adder"
+                                }
+                            }
+                        }
+                    }]
+                }
+            }, {
+                "$ast": "ExpressionStatement",
+                "expression": {
+                    "$ast": "CallExpression",
+                    "arguments": [],
+                    "function": {
+                        "$ast": "MemberExpression",
+                        "name": "Close",
+                        "parent": {
+                            "$ast": "ReferenceExpression",
+                            "name": "subscription"
+                        }
+                    }
+                }
+            }]
+        }
+    }, {
+        "$ast": "FunctionDeclaration",
+        "attributes": [],
+        "name": "main",
+        "anonymity": "Named",
+        "arguments": [],
+        "functionKind": "Normal",
+        "returnType": {
+            "$ast": "PredefinedType",
+            "name": "String"
+        },
+        "statement": {
+            "$ast": "BlockStatement",
+            "endLabel": "",
+            "statements": [{
+                "$ast": "ExpressionStatement",
+                "expression": {
+                    "$ast": "CallExpression",
+                    "arguments": [{
+                        "$ast": "NewInterfaceExpression",
+                        "declarations": [{
+                            "$ast": "VariableDeclaration",
+                            "attributes": [],
+                            "name": "sum",
+                            "expression": {
+                                "$ast": "IntegerExpression",
+                                "value": "0"
+                            },
+                            "type": null
+                        }, {
+                            "$ast": "FunctionDeclaration",
+                            "attributes": [],
+                            "name": "GetSum",
+                            "anonymity": "Named",
+                            "arguments": [],
+                            "functionKind": "Override",
+                            "returnType": {
+                                "$ast": "PredefinedType",
+                                "name": "Int"
+                            },
+                            "statement": {
+                                "$ast": "BlockStatement",
+                                "endLabel": "",
+                                "statements": [{
+                                    "$ast": "ReturnStatement",
+                                    "expression": {
+                                        "$ast": "ReferenceExpression",
+                                        "name": "sum"
+                                    }
+                                }]
+                            }
+                        }, {
+                            "$ast": "FunctionDeclaration",
+                            "attributes": [],
+                            "name": "Add",
+                            "anonymity": "Named",
+                            "arguments": [{
+                                "$ast": "FunctionArgument",
+                                "attributes": [],
+                                "name": "value",
+                                "type": {
+                                    "$ast": "PredefinedType",
+                                    "name": "Int"
+                                }
+                            }],
+                            "functionKind": "Override",
+                            "returnType": {
+                                "$ast": "PredefinedType",
+                                "name": "Void"
+                            },
+                            "statement": {
+                                "$ast": "BlockStatement",
+                                "endLabel": "",
+                                "statements": [{
+                                    "$ast": "ExpressionStatement",
+                                    "expression": {
+                                        "$ast": "BinaryExpression",
+                                        "first": {
+                                            "$ast": "ReferenceExpression",
+                                            "name": "sum"
+                                        },
+                                        "op": "Assign",
+                                        "second": {
+                                            "$ast": "BinaryExpression",
+                                            "first": {
+                                                "$ast": "ReferenceExpression",
+                                                "name": "sum"
+                                            },
+                                            "op": "Add",
+                                            "second": {
+                                                "$ast": "ReferenceExpression",
+                                                "name": "value"
+                                            }
+                                        }
+                                    }
+                                }, {
+                                    "$ast": "ExpressionStatement",
+                                    "expression": {
+                                        "$ast": "CallExpression",
+                                        "arguments": [],
+                                        "function": {
+                                            "$ast": "ReferenceExpression",
+                                            "name": "SumChanged"
+                                        }
+                                    }
+                                }]
+                            }
+                        }],
+                        "type": {
+                            "$ast": "SharedPointerType",
+                            "element": {
+                                "$ast": "ReferenceType",
+                                "name": "IAdder"
+                            }
+                        }
+                    }],
+                    "function": {
+                        "$ast": "ReferenceExpression",
+                        "name": "Execute"
+                    }
+                }
+            }, {
+                "$ast": "ReturnStatement",
+                "expression": {
+                    "$ast": "ReferenceExpression",
+                    "name": "s"
+                }
+            }]
+        }
+    }],
+    "moduleType": "Module",
+    "name": "test",
+    "paths": [{
+        "$ast": "ModuleUsingPath",
+        "items": [{
+            "$ast": "ModuleUsingItem",
+            "fragments": [{
+                "$ast": "ModuleUsingNameFragment",
+                "name": "test"
+            }]
+        }, {
+            "$ast": "ModuleUsingItem",
+            "fragments": [{
+                "$ast": "ModuleUsingWildCardFragment"
+            }]
+        }]
+    }, {
+        "$ast": "ModuleUsingPath",
+        "items": [{
+            "$ast": "ModuleUsingItem",
+            "fragments": [{
+                "$ast": "ModuleUsingNameFragment",
+                "name": "system"
+            }]
+        }, {
+            "$ast": "ModuleUsingItem",
+            "fragments": [{
+                "$ast": "ModuleUsingWildCardFragment"
+            }]
+        }]
+    }]
+}

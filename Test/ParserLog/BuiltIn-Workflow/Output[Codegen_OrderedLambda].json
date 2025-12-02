@@ -1,0 +1,286 @@
+﻿{
+    "$ast": "Module",
+    "declarations": [{
+        "$ast": "FunctionDeclaration",
+        "attributes": [],
+        "name": "Apply",
+        "anonymity": "Named",
+        "arguments": [{
+            "$ast": "FunctionArgument",
+            "attributes": [],
+            "name": "f",
+            "type": {
+                "$ast": "FunctionType",
+                "arguments": [{
+                    "$ast": "PredefinedType",
+                    "name": "Int"
+                }],
+                "result": {
+                    "$ast": "PredefinedType",
+                    "name": "Int"
+                }
+            }
+        }, {
+            "$ast": "FunctionArgument",
+            "attributes": [],
+            "name": "arg",
+            "type": {
+                "$ast": "PredefinedType",
+                "name": "Int"
+            }
+        }],
+        "functionKind": "Normal",
+        "returnType": {
+            "$ast": "PredefinedType",
+            "name": "Int"
+        },
+        "statement": {
+            "$ast": "BlockStatement",
+            "endLabel": "",
+            "statements": [{
+                "$ast": "ReturnStatement",
+                "expression": {
+                    "$ast": "CallExpression",
+                    "arguments": [{
+                        "$ast": "ReferenceExpression",
+                        "name": "arg"
+                    }],
+                    "function": {
+                        "$ast": "ReferenceExpression",
+                        "name": "f"
+                    }
+                }
+            }]
+        }
+    }, {
+        "$ast": "FunctionDeclaration",
+        "attributes": [],
+        "name": "Adder",
+        "anonymity": "Named",
+        "arguments": [{
+            "$ast": "FunctionArgument",
+            "attributes": [],
+            "name": "x",
+            "type": {
+                "$ast": "PredefinedType",
+                "name": "Int"
+            }
+        }],
+        "functionKind": "Normal",
+        "returnType": {
+            "$ast": "FunctionType",
+            "arguments": [{
+                "$ast": "PredefinedType",
+                "name": "Int"
+            }],
+            "result": {
+                "$ast": "PredefinedType",
+                "name": "Int"
+            }
+        },
+        "statement": {
+            "$ast": "BlockStatement",
+            "endLabel": "",
+            "statements": [{
+                "$ast": "ReturnStatement",
+                "expression": {
+                    "$ast": "OrderedLambdaExpression",
+                    "body": {
+                        "$ast": "BinaryExpression",
+                        "first": {
+                            "$ast": "BinaryExpression",
+                            "first": {
+                                "$ast": "OrderedNameExpression",
+                                "name": "$1"
+                            },
+                            "op": "Mul",
+                            "second": {
+                                "$ast": "IntegerExpression",
+                                "value": "0"
+                            }
+                        },
+                        "op": "Add",
+                        "second": {
+                            "$ast": "CallExpression",
+                            "arguments": [{
+                                "$ast": "OrderedLambdaExpression",
+                                "body": {
+                                    "$ast": "BinaryExpression",
+                                    "first": {
+                                        "$ast": "OrderedNameExpression",
+                                        "name": "$1"
+                                    },
+                                    "op": "Add",
+                                    "second": {
+                                        "$ast": "OrderedNameExpression",
+                                        "name": "$2"
+                                    }
+                                }
+                            }, {
+                                "$ast": "ReferenceExpression",
+                                "name": "x"
+                            }],
+                            "function": {
+                                "$ast": "ReferenceExpression",
+                                "name": "Apply"
+                            }
+                        }
+                    }
+                }
+            }]
+        }
+    }, {
+        "$ast": "FunctionDeclaration",
+        "attributes": [],
+        "name": "main",
+        "anonymity": "Named",
+        "arguments": [],
+        "functionKind": "Normal",
+        "returnType": {
+            "$ast": "PredefinedType",
+            "name": "String"
+        },
+        "statement": {
+            "$ast": "BlockStatement",
+            "endLabel": "",
+            "statements": [{
+                "$ast": "VariableStatement",
+                "variable": {
+                    "$ast": "VariableDeclaration",
+                    "attributes": [],
+                    "name": "f",
+                    "expression": {
+                        "$ast": "CallExpression",
+                        "arguments": [{
+                            "$ast": "IntegerExpression",
+                            "value": "1"
+                        }],
+                        "function": {
+                            "$ast": "ReferenceExpression",
+                            "name": "Adder"
+                        }
+                    },
+                    "type": null
+                }
+            }, {
+                "$ast": "VariableStatement",
+                "variable": {
+                    "$ast": "VariableDeclaration",
+                    "attributes": [],
+                    "name": "g",
+                    "expression": {
+                        "$ast": "CallExpression",
+                        "arguments": [{
+                            "$ast": "IntegerExpression",
+                            "value": "2"
+                        }],
+                        "function": {
+                            "$ast": "ReferenceExpression",
+                            "name": "Adder"
+                        }
+                    },
+                    "type": null
+                }
+            }, {
+                "$ast": "ReturnStatement",
+                "expression": {
+                    "$ast": "BinaryExpression",
+                    "first": {
+                        "$ast": "BinaryExpression",
+                        "first": {
+                            "$ast": "BinaryExpression",
+                            "first": {
+                                "$ast": "BinaryExpression",
+                                "first": {
+                                    "$ast": "BinaryExpression",
+                                    "first": {
+                                        "$ast": "BinaryExpression",
+                                        "first": {
+                                            "$ast": "CallExpression",
+                                            "arguments": [{
+                                                "$ast": "IntegerExpression",
+                                                "value": "1"
+                                            }],
+                                            "function": {
+                                                "$ast": "ReferenceExpression",
+                                                "name": "f"
+                                            }
+                                        },
+                                        "op": "FlagAnd",
+                                        "second": {
+                                            "$ast": "StringExpression",
+                                            "value": "\", \""
+                                        }
+                                    },
+                                    "op": "FlagAnd",
+                                    "second": {
+                                        "$ast": "CallExpression",
+                                        "arguments": [{
+                                            "$ast": "IntegerExpression",
+                                            "value": "2"
+                                        }],
+                                        "function": {
+                                            "$ast": "ReferenceExpression",
+                                            "name": "f"
+                                        }
+                                    }
+                                },
+                                "op": "FlagAnd",
+                                "second": {
+                                    "$ast": "StringExpression",
+                                    "value": "\", \""
+                                }
+                            },
+                            "op": "FlagAnd",
+                            "second": {
+                                "$ast": "CallExpression",
+                                "arguments": [{
+                                    "$ast": "IntegerExpression",
+                                    "value": "1"
+                                }],
+                                "function": {
+                                    "$ast": "ReferenceExpression",
+                                    "name": "g"
+                                }
+                            }
+                        },
+                        "op": "FlagAnd",
+                        "second": {
+                            "$ast": "StringExpression",
+                            "value": "\", \""
+                        }
+                    },
+                    "op": "FlagAnd",
+                    "second": {
+                        "$ast": "CallExpression",
+                        "arguments": [{
+                            "$ast": "IntegerExpression",
+                            "value": "2"
+                        }],
+                        "function": {
+                            "$ast": "ReferenceExpression",
+                            "name": "g"
+                        }
+                    }
+                }
+            }]
+        }
+    }],
+    "moduleType": "Module",
+    "name": "test",
+    "paths": [{
+        "$ast": "ModuleUsingPath",
+        "items": [{
+            "$ast": "ModuleUsingItem",
+            "fragments": [{
+                "$ast": "ModuleUsingNameFragment",
+                "name": "system"
+            }]
+        }, {
+            "$ast": "ModuleUsingItem",
+            "fragments": [{
+                "$ast": "ModuleUsingWildCardFragment"
+            }]
+        }]
+    }]
+}

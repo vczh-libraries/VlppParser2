@@ -1,0 +1,1087 @@
+﻿{
+    "$ast": "Module",
+    "declarations": [{
+        "$ast": "ClassDeclaration",
+        "attributes": [],
+        "name": "SMCalculator",
+        "baseTypes": [{
+            "$ast": "ReferenceType",
+            "name": "StateMachine"
+        }],
+        "constructorType": "Undefined",
+        "declarations": [{
+            "$ast": "VariableDeclaration",
+            "attributes": [],
+            "name": "valueFirst",
+            "expression": {
+                "$ast": "StringExpression",
+                "value": "\"\""
+            },
+            "type": {
+                "$ast": "PredefinedType",
+                "name": "String"
+            }
+        }, {
+            "$ast": "VariableDeclaration",
+            "attributes": [],
+            "name": "op",
+            "expression": {
+                "$ast": "StringExpression",
+                "value": "\"\""
+            },
+            "type": {
+                "$ast": "PredefinedType",
+                "name": "String"
+            }
+        }, {
+            "$ast": "AutoPropertyDeclaration",
+            "attributes": [],
+            "name": "Value",
+            "expandedDeclarations": [],
+            "configConst": "Writable",
+            "configObserve": "Observable",
+            "expression": {
+                "$ast": "StringExpression",
+                "value": "\"0\""
+            },
+            "functionKind": "Normal",
+            "type": {
+                "$ast": "PredefinedType",
+                "name": "String"
+            }
+        }, {
+            "$ast": "FunctionDeclaration",
+            "attributes": [],
+            "name": "Update",
+            "anonymity": "Named",
+            "arguments": [{
+                "$ast": "FunctionArgument",
+                "attributes": [],
+                "name": "value",
+                "type": {
+                    "$ast": "PredefinedType",
+                    "name": "String"
+                }
+            }],
+            "functionKind": "Normal",
+            "returnType": {
+                "$ast": "PredefinedType",
+                "name": "Void"
+            },
+            "statement": {
+                "$ast": "BlockStatement",
+                "endLabel": "",
+                "statements": [{
+                    "$ast": "ExpressionStatement",
+                    "expression": {
+                        "$ast": "CallExpression",
+                        "arguments": [{
+                            "$ast": "ReferenceExpression",
+                            "name": "value"
+                        }],
+                        "function": {
+                            "$ast": "ReferenceExpression",
+                            "name": "SetValue"
+                        }
+                    }
+                }, {
+                    "$ast": "ExpressionStatement",
+                    "expression": {
+                        "$ast": "BinaryExpression",
+                        "first": {
+                            "$ast": "ReferenceExpression",
+                            "name": "valueFirst"
+                        },
+                        "op": "Assign",
+                        "second": {
+                            "$ast": "ReferenceExpression",
+                            "name": "value"
+                        }
+                    }
+                }]
+            }
+        }, {
+            "$ast": "FunctionDeclaration",
+            "attributes": [],
+            "name": "Calculate",
+            "anonymity": "Named",
+            "arguments": [],
+            "functionKind": "Normal",
+            "returnType": {
+                "$ast": "PredefinedType",
+                "name": "Void"
+            },
+            "statement": {
+                "$ast": "BlockStatement",
+                "endLabel": "",
+                "statements": [{
+                    "$ast": "IfStatement",
+                    "expression": {
+                        "$ast": "BinaryExpression",
+                        "first": {
+                            "$ast": "ReferenceExpression",
+                            "name": "valueFirst"
+                        },
+                        "op": "EQ",
+                        "second": {
+                            "$ast": "StringExpression",
+                            "value": "\"\""
+                        }
+                    },
+                    "falseBranch": {
+                        "$ast": "IfStatement",
+                        "expression": {
+                            "$ast": "BinaryExpression",
+                            "first": {
+                                "$ast": "ReferenceExpression",
+                                "name": "op"
+                            },
+                            "op": "EQ",
+                            "second": {
+                                "$ast": "StringExpression",
+                                "value": "\"+\""
+                            }
+                        },
+                        "falseBranch": {
+                            "$ast": "IfStatement",
+                            "expression": {
+                                "$ast": "BinaryExpression",
+                                "first": {
+                                    "$ast": "ReferenceExpression",
+                                    "name": "op"
+                                },
+                                "op": "EQ",
+                                "second": {
+                                    "$ast": "StringExpression",
+                                    "value": "\"*\""
+                                }
+                            },
+                            "falseBranch": {
+                                "$ast": "BlockStatement",
+                                "endLabel": "",
+                                "statements": [{
+                                    "$ast": "RaiseExceptionStatement",
+                                    "expression": {
+                                        "$ast": "FormatExpression",
+                                        "expandedExpression": null,
+                                        "value": "$\"Unrecognized operator: $(op)\""
+                                    }
+                                }]
+                            },
+                            "name": "",
+                            "trueBranch": {
+                                "$ast": "BlockStatement",
+                                "endLabel": "",
+                                "statements": [{
+                                    "$ast": "ExpressionStatement",
+                                    "expression": {
+                                        "$ast": "CallExpression",
+                                        "arguments": [{
+                                            "$ast": "BinaryExpression",
+                                            "first": {
+                                                "$ast": "TypeCastingExpression",
+                                                "expression": {
+                                                    "$ast": "ReferenceExpression",
+                                                    "name": "valueFirst"
+                                                },
+                                                "strategy": "Strong",
+                                                "type": {
+                                                    "$ast": "PredefinedType",
+                                                    "name": "Double"
+                                                }
+                                            },
+                                            "op": "Mul",
+                                            "second": {
+                                                "$ast": "TypeCastingExpression",
+                                                "expression": {
+                                                    "$ast": "ReferenceExpression",
+                                                    "name": "Value"
+                                                },
+                                                "strategy": "Strong",
+                                                "type": {
+                                                    "$ast": "PredefinedType",
+                                                    "name": "Double"
+                                                }
+                                            }
+                                        }],
+                                        "function": {
+                                            "$ast": "ReferenceExpression",
+                                            "name": "Update"
+                                        }
+                                    }
+                                }]
+                            },
+                            "type": null
+                        },
+                        "name": "",
+                        "trueBranch": {
+                            "$ast": "BlockStatement",
+                            "endLabel": "",
+                            "statements": [{
+                                "$ast": "ExpressionStatement",
+                                "expression": {
+                                    "$ast": "CallExpression",
+                                    "arguments": [{
+                                        "$ast": "BinaryExpression",
+                                        "first": {
+                                            "$ast": "TypeCastingExpression",
+                                            "expression": {
+                                                "$ast": "ReferenceExpression",
+                                                "name": "valueFirst"
+                                            },
+                                            "strategy": "Strong",
+                                            "type": {
+                                                "$ast": "PredefinedType",
+                                                "name": "Double"
+                                            }
+                                        },
+                                        "op": "Add",
+                                        "second": {
+                                            "$ast": "TypeCastingExpression",
+                                            "expression": {
+                                                "$ast": "ReferenceExpression",
+                                                "name": "Value"
+                                            },
+                                            "strategy": "Strong",
+                                            "type": {
+                                                "$ast": "PredefinedType",
+                                                "name": "Double"
+                                            }
+                                        }
+                                    }],
+                                    "function": {
+                                        "$ast": "ReferenceExpression",
+                                        "name": "Update"
+                                    }
+                                }
+                            }]
+                        },
+                        "type": null
+                    },
+                    "name": "",
+                    "trueBranch": {
+                        "$ast": "BlockStatement",
+                        "endLabel": "",
+                        "statements": [{
+                            "$ast": "ExpressionStatement",
+                            "expression": {
+                                "$ast": "BinaryExpression",
+                                "first": {
+                                    "$ast": "ReferenceExpression",
+                                    "name": "valueFirst"
+                                },
+                                "op": "Assign",
+                                "second": {
+                                    "$ast": "ReferenceExpression",
+                                    "name": "Value"
+                                }
+                            }
+                        }]
+                    },
+                    "type": null
+                }]
+            }
+        }, {
+            "$ast": "StateMachineDeclaration",
+            "attributes": [],
+            "name": "",
+            "expandedDeclarations": [],
+            "inputs": [{
+                "$ast": "StateInput",
+                "arguments": [{
+                    "$ast": "FunctionArgument",
+                    "attributes": [],
+                    "name": "i",
+                    "type": {
+                        "$ast": "PredefinedType",
+                        "name": "Int"
+                    }
+                }],
+                "name": "Digit"
+            }, {
+                "$ast": "StateInput",
+                "arguments": [],
+                "name": "Dot"
+            }, {
+                "$ast": "StateInput",
+                "arguments": [],
+                "name": "Add"
+            }, {
+                "$ast": "StateInput",
+                "arguments": [],
+                "name": "Mul"
+            }, {
+                "$ast": "StateInput",
+                "arguments": [],
+                "name": "Equal"
+            }, {
+                "$ast": "StateInput",
+                "arguments": [],
+                "name": "Clear"
+            }],
+            "states": [{
+                "$ast": "StateDeclaration",
+                "arguments": [],
+                "name": "Digits",
+                "statement": {
+                    "$ast": "BlockStatement",
+                    "endLabel": "",
+                    "statements": [{
+                        "$ast": "StateSwitchStatement",
+                        "caseBranches": [{
+                            "$ast": "StateSwitchCase",
+                            "arguments": [{
+                                "$ast": "StateSwitchArgument",
+                                "name": "i"
+                            }],
+                            "name": "Digit",
+                            "statement": {
+                                "$ast": "BlockStatement",
+                                "endLabel": "",
+                                "statements": [{
+                                    "$ast": "ExpressionStatement",
+                                    "expression": {
+                                        "$ast": "BinaryExpression",
+                                        "first": {
+                                            "$ast": "ReferenceExpression",
+                                            "name": "Value"
+                                        },
+                                        "op": "Assign",
+                                        "second": {
+                                            "$ast": "BinaryExpression",
+                                            "first": {
+                                                "$ast": "ReferenceExpression",
+                                                "name": "Value"
+                                            },
+                                            "op": "FlagAnd",
+                                            "second": {
+                                                "$ast": "ReferenceExpression",
+                                                "name": "i"
+                                            }
+                                        }
+                                    }
+                                }, {
+                                    "$ast": "StateInvokeStatement",
+                                    "arguments": [],
+                                    "name": "Digits",
+                                    "type": "Goto"
+                                }]
+                            }
+                        }],
+                        "type": "Pass"
+                    }]
+                }
+            }, {
+                "$ast": "StateDeclaration",
+                "arguments": [{
+                    "$ast": "FunctionArgument",
+                    "attributes": [],
+                    "name": "newNumber",
+                    "type": {
+                        "$ast": "PredefinedType",
+                        "name": "Bool"
+                    }
+                }],
+                "name": "Integer",
+                "statement": {
+                    "$ast": "BlockStatement",
+                    "endLabel": "",
+                    "statements": [{
+                        "$ast": "StateSwitchStatement",
+                        "caseBranches": [{
+                            "$ast": "StateSwitchCase",
+                            "arguments": [{
+                                "$ast": "StateSwitchArgument",
+                                "name": "i"
+                            }],
+                            "name": "Digit",
+                            "statement": {
+                                "$ast": "BlockStatement",
+                                "endLabel": "",
+                                "statements": [{
+                                    "$ast": "IfStatement",
+                                    "expression": {
+                                        "$ast": "ReferenceExpression",
+                                        "name": "newNumber"
+                                    },
+                                    "falseBranch": {
+                                        "$ast": "BlockStatement",
+                                        "endLabel": "",
+                                        "statements": [{
+                                            "$ast": "ExpressionStatement",
+                                            "expression": {
+                                                "$ast": "BinaryExpression",
+                                                "first": {
+                                                    "$ast": "ReferenceExpression",
+                                                    "name": "Value"
+                                                },
+                                                "op": "Assign",
+                                                "second": {
+                                                    "$ast": "BinaryExpression",
+                                                    "first": {
+                                                        "$ast": "ReferenceExpression",
+                                                        "name": "Value"
+                                                    },
+                                                    "op": "FlagAnd",
+                                                    "second": {
+                                                        "$ast": "ReferenceExpression",
+                                                        "name": "i"
+                                                    }
+                                                }
+                                            }
+                                        }]
+                                    },
+                                    "name": "",
+                                    "trueBranch": {
+                                        "$ast": "BlockStatement",
+                                        "endLabel": "",
+                                        "statements": [{
+                                            "$ast": "ExpressionStatement",
+                                            "expression": {
+                                                "$ast": "BinaryExpression",
+                                                "first": {
+                                                    "$ast": "ReferenceExpression",
+                                                    "name": "Value"
+                                                },
+                                                "op": "Assign",
+                                                "second": {
+                                                    "$ast": "ReferenceExpression",
+                                                    "name": "i"
+                                                }
+                                            }
+                                        }]
+                                    },
+                                    "type": null
+                                }, {
+                                    "$ast": "StateInvokeStatement",
+                                    "arguments": [],
+                                    "name": "Digits",
+                                    "type": "Goto"
+                                }]
+                            }
+                        }],
+                        "type": "Pass"
+                    }]
+                }
+            }, {
+                "$ast": "StateDeclaration",
+                "arguments": [],
+                "name": "Number",
+                "statement": {
+                    "$ast": "BlockStatement",
+                    "endLabel": "",
+                    "statements": [{
+                        "$ast": "StateInvokeStatement",
+                        "arguments": [{
+                            "$ast": "LiteralExpression",
+                            "value": "True"
+                        }],
+                        "name": "Integer",
+                        "type": "Push"
+                    }, {
+                        "$ast": "StateSwitchStatement",
+                        "caseBranches": [{
+                            "$ast": "StateSwitchCase",
+                            "arguments": [],
+                            "name": "Dot",
+                            "statement": {
+                                "$ast": "BlockStatement",
+                                "endLabel": "",
+                                "statements": [{
+                                    "$ast": "ExpressionStatement",
+                                    "expression": {
+                                        "$ast": "BinaryExpression",
+                                        "first": {
+                                            "$ast": "ReferenceExpression",
+                                            "name": "Value"
+                                        },
+                                        "op": "Assign",
+                                        "second": {
+                                            "$ast": "BinaryExpression",
+                                            "first": {
+                                                "$ast": "ReferenceExpression",
+                                                "name": "Value"
+                                            },
+                                            "op": "FlagAnd",
+                                            "second": {
+                                                "$ast": "StringExpression",
+                                                "value": "\".\""
+                                            }
+                                        }
+                                    }
+                                }]
+                            }
+                        }],
+                        "type": "PassAndReturn"
+                    }, {
+                        "$ast": "StateInvokeStatement",
+                        "arguments": [{
+                            "$ast": "LiteralExpression",
+                            "value": "False"
+                        }],
+                        "name": "Integer",
+                        "type": "Push"
+                    }]
+                }
+            }, {
+                "$ast": "StateDeclaration",
+                "arguments": [],
+                "name": "Operator",
+                "statement": {
+                    "$ast": "BlockStatement",
+                    "endLabel": "",
+                    "statements": [{
+                        "$ast": "StateInvokeStatement",
+                        "arguments": [],
+                        "name": "Number",
+                        "type": "Push"
+                    }, {
+                        "$ast": "StateSwitchStatement",
+                        "caseBranches": [{
+                            "$ast": "StateSwitchCase",
+                            "arguments": [],
+                            "name": "Add",
+                            "statement": {
+                                "$ast": "BlockStatement",
+                                "endLabel": "",
+                                "statements": [{
+                                    "$ast": "ExpressionStatement",
+                                    "expression": {
+                                        "$ast": "CallExpression",
+                                        "arguments": [],
+                                        "function": {
+                                            "$ast": "ReferenceExpression",
+                                            "name": "Calculate"
+                                        }
+                                    }
+                                }, {
+                                    "$ast": "ExpressionStatement",
+                                    "expression": {
+                                        "$ast": "BinaryExpression",
+                                        "first": {
+                                            "$ast": "ReferenceExpression",
+                                            "name": "op"
+                                        },
+                                        "op": "Assign",
+                                        "second": {
+                                            "$ast": "StringExpression",
+                                            "value": "\"+\""
+                                        }
+                                    }
+                                }]
+                            }
+                        }, {
+                            "$ast": "StateSwitchCase",
+                            "arguments": [],
+                            "name": "Mul",
+                            "statement": {
+                                "$ast": "BlockStatement",
+                                "endLabel": "",
+                                "statements": [{
+                                    "$ast": "ExpressionStatement",
+                                    "expression": {
+                                        "$ast": "CallExpression",
+                                        "arguments": [],
+                                        "function": {
+                                            "$ast": "ReferenceExpression",
+                                            "name": "Calculate"
+                                        }
+                                    }
+                                }, {
+                                    "$ast": "ExpressionStatement",
+                                    "expression": {
+                                        "$ast": "BinaryExpression",
+                                        "first": {
+                                            "$ast": "ReferenceExpression",
+                                            "name": "op"
+                                        },
+                                        "op": "Assign",
+                                        "second": {
+                                            "$ast": "StringExpression",
+                                            "value": "\"*\""
+                                        }
+                                    }
+                                }]
+                            }
+                        }, {
+                            "$ast": "StateSwitchCase",
+                            "arguments": [],
+                            "name": "Equal",
+                            "statement": {
+                                "$ast": "BlockStatement",
+                                "endLabel": "",
+                                "statements": [{
+                                    "$ast": "ExpressionStatement",
+                                    "expression": {
+                                        "$ast": "CallExpression",
+                                        "arguments": [],
+                                        "function": {
+                                            "$ast": "ReferenceExpression",
+                                            "name": "Calculate"
+                                        }
+                                    }
+                                }, {
+                                    "$ast": "ExpressionStatement",
+                                    "expression": {
+                                        "$ast": "BinaryExpression",
+                                        "first": {
+                                            "$ast": "ReferenceExpression",
+                                            "name": "op"
+                                        },
+                                        "op": "Assign",
+                                        "second": {
+                                            "$ast": "StringExpression",
+                                            "value": "\"=\""
+                                        }
+                                    }
+                                }]
+                            }
+                        }, {
+                            "$ast": "StateSwitchCase",
+                            "arguments": [],
+                            "name": "Clear",
+                            "statement": {
+                                "$ast": "BlockStatement",
+                                "endLabel": "",
+                                "statements": [{
+                                    "$ast": "ExpressionStatement",
+                                    "expression": {
+                                        "$ast": "BinaryExpression",
+                                        "first": {
+                                            "$ast": "ReferenceExpression",
+                                            "name": "valueFirst"
+                                        },
+                                        "op": "Assign",
+                                        "second": {
+                                            "$ast": "StringExpression",
+                                            "value": "\"\""
+                                        }
+                                    }
+                                }, {
+                                    "$ast": "ExpressionStatement",
+                                    "expression": {
+                                        "$ast": "BinaryExpression",
+                                        "first": {
+                                            "$ast": "ReferenceExpression",
+                                            "name": "op"
+                                        },
+                                        "op": "Assign",
+                                        "second": {
+                                            "$ast": "StringExpression",
+                                            "value": "\"\""
+                                        }
+                                    }
+                                }, {
+                                    "$ast": "ExpressionStatement",
+                                    "expression": {
+                                        "$ast": "BinaryExpression",
+                                        "first": {
+                                            "$ast": "ReferenceExpression",
+                                            "name": "Value"
+                                        },
+                                        "op": "Assign",
+                                        "second": {
+                                            "$ast": "StringExpression",
+                                            "value": "\"0\""
+                                        }
+                                    }
+                                }]
+                            }
+                        }],
+                        "type": "Default"
+                    }, {
+                        "$ast": "StateInvokeStatement",
+                        "arguments": [],
+                        "name": "Operator",
+                        "type": "Goto"
+                    }]
+                }
+            }, {
+                "$ast": "StateDeclaration",
+                "arguments": [],
+                "name": "",
+                "statement": {
+                    "$ast": "BlockStatement",
+                    "endLabel": "",
+                    "statements": [{
+                        "$ast": "StateInvokeStatement",
+                        "arguments": [],
+                        "name": "Operator",
+                        "type": "Goto"
+                    }]
+                }
+            }]
+        }],
+        "kind": "Class"
+    }, {
+        "$ast": "VariableDeclaration",
+        "attributes": [],
+        "name": "s",
+        "expression": {
+            "$ast": "StringExpression",
+            "value": "\"\""
+        },
+        "type": null
+    }, {
+        "$ast": "FunctionDeclaration",
+        "attributes": [],
+        "name": "main",
+        "anonymity": "Named",
+        "arguments": [],
+        "functionKind": "Normal",
+        "returnType": {
+            "$ast": "PredefinedType",
+            "name": "String"
+        },
+        "statement": {
+            "$ast": "BlockStatement",
+            "endLabel": "",
+            "statements": [{
+                "$ast": "VariableStatement",
+                "variable": {
+                    "$ast": "VariableDeclaration",
+                    "attributes": [],
+                    "name": "c",
+                    "expression": {
+                        "$ast": "NewClassExpression",
+                        "arguments": [],
+                        "type": {
+                            "$ast": "SharedPointerType",
+                            "element": {
+                                "$ast": "ReferenceType",
+                                "name": "SMCalculator"
+                            }
+                        }
+                    },
+                    "type": null
+                }
+            }, {
+                "$ast": "ExpressionStatement",
+                "expression": {
+                    "$ast": "BinaryExpression",
+                    "first": {
+                        "$ast": "ReferenceExpression",
+                        "name": "s"
+                    },
+                    "op": "Assign",
+                    "second": {
+                        "$ast": "FormatExpression",
+                        "expandedExpression": null,
+                        "value": "$\"[$(c.Value)]\""
+                    }
+                }
+            }, {
+                "$ast": "VariableStatement",
+                "variable": {
+                    "$ast": "VariableDeclaration",
+                    "attributes": [],
+                    "name": "handler",
+                    "expression": {
+                        "$ast": "AttachEventExpression",
+                        "event": {
+                            "$ast": "MemberExpression",
+                            "name": "ValueChanged",
+                            "parent": {
+                                "$ast": "ReferenceExpression",
+                                "name": "c"
+                            }
+                        },
+                        "function": {
+                            "$ast": "FunctionExpression",
+                            "function": {
+                                "$ast": "FunctionDeclaration",
+                                "attributes": [],
+                                "name": "",
+                                "anonymity": "Anonymous",
+                                "arguments": [],
+                                "functionKind": "Normal",
+                                "returnType": {
+                                    "$ast": "PredefinedType",
+                                    "name": "Void"
+                                },
+                                "statement": {
+                                    "$ast": "BlockStatement",
+                                    "endLabel": "",
+                                    "statements": [{
+                                        "$ast": "ExpressionStatement",
+                                        "expression": {
+                                            "$ast": "BinaryExpression",
+                                            "first": {
+                                                "$ast": "ReferenceExpression",
+                                                "name": "s"
+                                            },
+                                            "op": "Assign",
+                                            "second": {
+                                                "$ast": "FormatExpression",
+                                                "expandedExpression": null,
+                                                "value": "$\"$(s)[$(c.Value)]\""
+                                            }
+                                        }
+                                    }]
+                                }
+                            }
+                        }
+                    },
+                    "type": null
+                }
+            }, {
+                "$ast": "ExpressionStatement",
+                "expression": {
+                    "$ast": "CallExpression",
+                    "arguments": [{
+                        "$ast": "IntegerExpression",
+                        "value": "1"
+                    }],
+                    "function": {
+                        "$ast": "MemberExpression",
+                        "name": "Digit",
+                        "parent": {
+                            "$ast": "ReferenceExpression",
+                            "name": "c"
+                        }
+                    }
+                }
+            }, {
+                "$ast": "ExpressionStatement",
+                "expression": {
+                    "$ast": "CallExpression",
+                    "arguments": [],
+                    "function": {
+                        "$ast": "MemberExpression",
+                        "name": "Dot",
+                        "parent": {
+                            "$ast": "ReferenceExpression",
+                            "name": "c"
+                        }
+                    }
+                }
+            }, {
+                "$ast": "ExpressionStatement",
+                "expression": {
+                    "$ast": "CallExpression",
+                    "arguments": [{
+                        "$ast": "IntegerExpression",
+                        "value": "5"
+                    }],
+                    "function": {
+                        "$ast": "MemberExpression",
+                        "name": "Digit",
+                        "parent": {
+                            "$ast": "ReferenceExpression",
+                            "name": "c"
+                        }
+                    }
+                }
+            }, {
+                "$ast": "ExpressionStatement",
+                "expression": {
+                    "$ast": "CallExpression",
+                    "arguments": [],
+                    "function": {
+                        "$ast": "MemberExpression",
+                        "name": "Add",
+                        "parent": {
+                            "$ast": "ReferenceExpression",
+                            "name": "c"
+                        }
+                    }
+                }
+            }, {
+                "$ast": "ExpressionStatement",
+                "expression": {
+                    "$ast": "CallExpression",
+                    "arguments": [{
+                        "$ast": "IntegerExpression",
+                        "value": "2"
+                    }],
+                    "function": {
+                        "$ast": "MemberExpression",
+                        "name": "Digit",
+                        "parent": {
+                            "$ast": "ReferenceExpression",
+                            "name": "c"
+                        }
+                    }
+                }
+            }, {
+                "$ast": "ExpressionStatement",
+                "expression": {
+                    "$ast": "CallExpression",
+                    "arguments": [{
+                        "$ast": "IntegerExpression",
+                        "value": "1"
+                    }],
+                    "function": {
+                        "$ast": "MemberExpression",
+                        "name": "Digit",
+                        "parent": {
+                            "$ast": "ReferenceExpression",
+                            "name": "c"
+                        }
+                    }
+                }
+            }, {
+                "$ast": "ExpressionStatement",
+                "expression": {
+                    "$ast": "CallExpression",
+                    "arguments": [],
+                    "function": {
+                        "$ast": "MemberExpression",
+                        "name": "Dot",
+                        "parent": {
+                            "$ast": "ReferenceExpression",
+                            "name": "c"
+                        }
+                    }
+                }
+            }, {
+                "$ast": "ExpressionStatement",
+                "expression": {
+                    "$ast": "CallExpression",
+                    "arguments": [{
+                        "$ast": "IntegerExpression",
+                        "value": "2"
+                    }],
+                    "function": {
+                        "$ast": "MemberExpression",
+                        "name": "Digit",
+                        "parent": {
+                            "$ast": "ReferenceExpression",
+                            "name": "c"
+                        }
+                    }
+                }
+            }, {
+                "$ast": "ExpressionStatement",
+                "expression": {
+                    "$ast": "CallExpression",
+                    "arguments": [{
+                        "$ast": "IntegerExpression",
+                        "value": "5"
+                    }],
+                    "function": {
+                        "$ast": "MemberExpression",
+                        "name": "Digit",
+                        "parent": {
+                            "$ast": "ReferenceExpression",
+                            "name": "c"
+                        }
+                    }
+                }
+            }, {
+                "$ast": "ExpressionStatement",
+                "expression": {
+                    "$ast": "CallExpression",
+                    "arguments": [],
+                    "function": {
+                        "$ast": "MemberExpression",
+                        "name": "Mul",
+                        "parent": {
+                            "$ast": "ReferenceExpression",
+                            "name": "c"
+                        }
+                    }
+                }
+            }, {
+                "$ast": "ExpressionStatement",
+                "expression": {
+                    "$ast": "CallExpression",
+                    "arguments": [{
+                        "$ast": "IntegerExpression",
+                        "value": "2"
+                    }],
+                    "function": {
+                        "$ast": "MemberExpression",
+                        "name": "Digit",
+                        "parent": {
+                            "$ast": "ReferenceExpression",
+                            "name": "c"
+                        }
+                    }
+                }
+            }, {
+                "$ast": "ExpressionStatement",
+                "expression": {
+                    "$ast": "CallExpression",
+                    "arguments": [],
+                    "function": {
+                        "$ast": "MemberExpression",
+                        "name": "Equal",
+                        "parent": {
+                            "$ast": "ReferenceExpression",
+                            "name": "c"
+                        }
+                    }
+                }
+            }, {
+                "$ast": "ExpressionStatement",
+                "expression": {
+                    "$ast": "CallExpression",
+                    "arguments": [],
+                    "function": {
+                        "$ast": "MemberExpression",
+                        "name": "Clear",
+                        "parent": {
+                            "$ast": "ReferenceExpression",
+                            "name": "c"
+                        }
+                    }
+                }
+            }, {
+                "$ast": "ExpressionStatement",
+                "expression": {
+                    "$ast": "DetachEventExpression",
+                    "event": {
+                        "$ast": "MemberExpression",
+                        "name": "ValueChanged",
+                        "parent": {
+                            "$ast": "ReferenceExpression",
+                            "name": "c"
+                        }
+                    },
+                    "handler": {
+                        "$ast": "ReferenceExpression",
+                        "name": "handler"
+                    }
+                }
+            }, {
+                "$ast": "ReturnStatement",
+                "expression": {
+                    "$ast": "ReferenceExpression",
+                    "name": "s"
+                }
+            }]
+        }
+    }],
+    "moduleType": "Module",
+    "name": "test",
+    "paths": [{
+        "$ast": "ModuleUsingPath",
+        "items": [{
+            "$ast": "ModuleUsingItem",
+            "fragments": [{
+                "$ast": "ModuleUsingNameFragment",
+                "name": "test"
+            }]
+        }, {
+            "$ast": "ModuleUsingItem",
+            "fragments": [{
+                "$ast": "ModuleUsingWildCardFragment"
+            }]
+        }]
+    }, {
+        "$ast": "ModuleUsingPath",
+        "items": [{
+            "$ast": "ModuleUsingItem",
+            "fragments": [{
+                "$ast": "ModuleUsingNameFragment",
+                "name": "system"
+            }]
+        }, {
+            "$ast": "ModuleUsingItem",
+            "fragments": [{
+                "$ast": "ModuleUsingWildCardFragment"
+            }]
+        }]
+    }]
+}

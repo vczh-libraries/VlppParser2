@@ -1,0 +1,190 @@
+﻿{
+    "$ast": "Module",
+    "declarations": [{
+        "$ast": "StructDeclaration",
+        "attributes": [],
+        "name": "BoxedIntValue",
+        "members": [{
+            "$ast": "StructMember",
+            "attributes": [],
+            "name": "value",
+            "type": {
+                "$ast": "PredefinedType",
+                "name": "Int"
+            }
+        }]
+    }, {
+        "$ast": "FunctionDeclaration",
+        "attributes": [],
+        "name": "ReadValue",
+        "anonymity": "Named",
+        "arguments": [{
+            "$ast": "FunctionArgument",
+            "attributes": [],
+            "name": "value",
+            "type": {
+                "$ast": "PredefinedType",
+                "name": "Object"
+            }
+        }],
+        "functionKind": "Normal",
+        "returnType": {
+            "$ast": "PredefinedType",
+            "name": "String"
+        },
+        "statement": {
+            "$ast": "BlockStatement",
+            "endLabel": "",
+            "statements": [{
+                "$ast": "VariableStatement",
+                "variable": {
+                    "$ast": "VariableDeclaration",
+                    "attributes": [],
+                    "name": "nullable",
+                    "expression": {
+                        "$ast": "TypeCastingExpression",
+                        "expression": {
+                            "$ast": "ReferenceExpression",
+                            "name": "value"
+                        },
+                        "strategy": "Strong",
+                        "type": {
+                            "$ast": "NullableType",
+                            "element": {
+                                "$ast": "ReferenceType",
+                                "name": "BoxedIntValue"
+                            }
+                        }
+                    },
+                    "type": null
+                }
+            }, {
+                "$ast": "ReturnStatement",
+                "expression": {
+                    "$ast": "IfExpression",
+                    "condition": {
+                        "$ast": "TypeTestingExpression",
+                        "expression": {
+                            "$ast": "ReferenceExpression",
+                            "name": "nullable"
+                        },
+                        "test": "IsNull",
+                        "type": null
+                    },
+                    "falseBranch": {
+                        "$ast": "MemberExpression",
+                        "name": "value",
+                        "parent": {
+                            "$ast": "ReferenceExpression",
+                            "name": "nullable"
+                        }
+                    },
+                    "trueBranch": {
+                        "$ast": "StringExpression",
+                        "value": "\"null\""
+                    }
+                }
+            }]
+        }
+    }, {
+        "$ast": "FunctionDeclaration",
+        "attributes": [],
+        "name": "main",
+        "anonymity": "Named",
+        "arguments": [],
+        "functionKind": "Normal",
+        "returnType": {
+            "$ast": "PredefinedType",
+            "name": "String"
+        },
+        "statement": {
+            "$ast": "BlockStatement",
+            "endLabel": "",
+            "statements": [{
+                "$ast": "ReturnStatement",
+                "expression": {
+                    "$ast": "BinaryExpression",
+                    "first": {
+                        "$ast": "BinaryExpression",
+                        "first": {
+                            "$ast": "CallExpression",
+                            "arguments": [{
+                                "$ast": "LiteralExpression",
+                                "value": "Null"
+                            }],
+                            "function": {
+                                "$ast": "ReferenceExpression",
+                                "name": "ReadValue"
+                            }
+                        },
+                        "op": "FlagAnd",
+                        "second": {
+                            "$ast": "StringExpression",
+                            "value": "\", \""
+                        }
+                    },
+                    "op": "FlagAnd",
+                    "second": {
+                        "$ast": "CallExpression",
+                        "arguments": [{
+                            "$ast": "InferExpression",
+                            "expression": {
+                                "$ast": "ConstructorExpression",
+                                "arguments": [{
+                                    "$ast": "ConstructorArgument",
+                                    "key": {
+                                        "$ast": "ReferenceExpression",
+                                        "name": "value"
+                                    },
+                                    "value": {
+                                        "$ast": "IntegerExpression",
+                                        "value": "0"
+                                    }
+                                }]
+                            },
+                            "type": {
+                                "$ast": "ReferenceType",
+                                "name": "BoxedIntValue"
+                            }
+                        }],
+                        "function": {
+                            "$ast": "ReferenceExpression",
+                            "name": "ReadValue"
+                        }
+                    }
+                }
+            }]
+        }
+    }],
+    "moduleType": "Module",
+    "name": "test",
+    "paths": [{
+        "$ast": "ModuleUsingPath",
+        "items": [{
+            "$ast": "ModuleUsingItem",
+            "fragments": [{
+                "$ast": "ModuleUsingNameFragment",
+                "name": "test"
+            }]
+        }, {
+            "$ast": "ModuleUsingItem",
+            "fragments": [{
+                "$ast": "ModuleUsingWildCardFragment"
+            }]
+        }]
+    }, {
+        "$ast": "ModuleUsingPath",
+        "items": [{
+            "$ast": "ModuleUsingItem",
+            "fragments": [{
+                "$ast": "ModuleUsingNameFragment",
+                "name": "system"
+            }]
+        }, {
+            "$ast": "ModuleUsingItem",
+            "fragments": [{
+                "$ast": "ModuleUsingWildCardFragment"
+            }]
+        }]
+    }]
+}

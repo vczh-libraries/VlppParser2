@@ -1,0 +1,348 @@
+﻿{
+    "$ast": "Module",
+    "declarations": [{
+        "$ast": "FunctionDeclaration",
+        "attributes": [],
+        "name": "main",
+        "anonymity": "Named",
+        "arguments": [],
+        "functionKind": "Normal",
+        "returnType": {
+            "$ast": "PredefinedType",
+            "name": "Void"
+        },
+        "statement": {
+            "$ast": "BlockStatement",
+            "endLabel": "",
+            "statements": [{
+                "$ast": "RaiseExceptionStatement",
+                "expression": {
+                    "$ast": "StringExpression",
+                    "value": "\"This is not a useful program.\""
+                }
+            }]
+        }
+    }, {
+        "$ast": "NamespaceDeclaration",
+        "attributes": [],
+        "name": "test",
+        "declarations": [{
+            "$ast": "NamespaceDeclaration",
+            "attributes": [],
+            "name": "useless",
+            "declarations": []
+        }, {
+            "$ast": "NamespaceDeclaration",
+            "attributes": [],
+            "name": "useful",
+            "declarations": [{
+                "$ast": "FunctionDeclaration",
+                "attributes": [],
+                "name": "Sum",
+                "anonymity": "Named",
+                "arguments": [{
+                    "$ast": "FunctionArgument",
+                    "attributes": [],
+                    "name": "begin",
+                    "type": {
+                        "$ast": "PredefinedType",
+                        "name": "Int"
+                    }
+                }, {
+                    "$ast": "FunctionArgument",
+                    "attributes": [],
+                    "name": "end",
+                    "type": {
+                        "$ast": "PredefinedType",
+                        "name": "Int"
+                    }
+                }],
+                "functionKind": "Normal",
+                "returnType": {
+                    "$ast": "PredefinedType",
+                    "name": "Int"
+                },
+                "statement": {
+                    "$ast": "BlockStatement",
+                    "endLabel": "",
+                    "statements": [{
+                        "$ast": "VariableStatement",
+                        "variable": {
+                            "$ast": "VariableDeclaration",
+                            "attributes": [],
+                            "name": "sum",
+                            "expression": {
+                                "$ast": "IntegerExpression",
+                                "value": "0"
+                            },
+                            "type": {
+                                "$ast": "PredefinedType",
+                                "name": "Int"
+                            }
+                        }
+                    }, {
+                        "$ast": "ForEachStatement",
+                        "expandedStatement": null,
+                        "collection": {
+                            "$ast": "RangeExpression",
+                            "begin": {
+                                "$ast": "ReferenceExpression",
+                                "name": "begin"
+                            },
+                            "beginBoundary": "Inclusive",
+                            "end": {
+                                "$ast": "ReferenceExpression",
+                                "name": "end"
+                            },
+                            "endBoundary": "Inclusive"
+                        },
+                        "direction": "Normal",
+                        "name": "x",
+                        "statement": {
+                            "$ast": "BlockStatement",
+                            "endLabel": "",
+                            "statements": [{
+                                "$ast": "ExpressionStatement",
+                                "expression": {
+                                    "$ast": "BinaryExpression",
+                                    "first": {
+                                        "$ast": "ReferenceExpression",
+                                        "name": "sum"
+                                    },
+                                    "op": "Assign",
+                                    "second": {
+                                        "$ast": "BinaryExpression",
+                                        "first": {
+                                            "$ast": "ReferenceExpression",
+                                            "name": "sum"
+                                        },
+                                        "op": "Add",
+                                        "second": {
+                                            "$ast": "ReferenceExpression",
+                                            "name": "x"
+                                        }
+                                    }
+                                }
+                            }]
+                        }
+                    }, {
+                        "$ast": "ReturnStatement",
+                        "expression": {
+                            "$ast": "ReferenceExpression",
+                            "name": "sum"
+                        }
+                    }]
+                }
+            }, {
+                "$ast": "FunctionDeclaration",
+                "attributes": [],
+                "name": "CreateWindow",
+                "anonymity": "Named",
+                "arguments": [],
+                "functionKind": "Normal",
+                "returnType": {
+                    "$ast": "ReferenceType",
+                    "name": "Window"
+                },
+                "statement": {
+                    "$ast": "BlockStatement",
+                    "endLabel": "",
+                    "statements": [{
+                        "$ast": "VariableStatement",
+                        "variable": {
+                            "$ast": "VariableDeclaration",
+                            "attributes": [],
+                            "name": "window",
+                            "expression": {
+                                "$ast": "NewClassExpression",
+                                "arguments": [],
+                                "type": {
+                                    "$ast": "ReferenceType",
+                                    "name": "Window"
+                                }
+                            },
+                            "type": null
+                        }
+                    }, {
+                        "$ast": "ExpressionStatement",
+                        "expression": {
+                            "$ast": "BinaryExpression",
+                            "first": {
+                                "$ast": "MemberExpression",
+                                "name": "Text",
+                                "parent": {
+                                    "$ast": "ReferenceExpression",
+                                    "name": "window"
+                                }
+                            },
+                            "op": "Assign",
+                            "second": {
+                                "$ast": "StringExpression",
+                                "value": "\"This is a window!\""
+                            }
+                        }
+                    }, {
+                        "$ast": "ExpressionStatement",
+                        "expression": {
+                            "$ast": "CallExpression",
+                            "arguments": [{
+                                "$ast": "InferExpression",
+                                "expression": {
+                                    "$ast": "ConstructorExpression",
+                                    "arguments": [{
+                                        "$ast": "ConstructorArgument",
+                                        "key": {
+                                            "$ast": "ReferenceExpression",
+                                            "name": "Text"
+                                        },
+                                        "value": {
+                                            "$ast": "StringExpression",
+                                            "value": "\"Press Me!\""
+                                        }
+                                    }]
+                                },
+                                "type": {
+                                    "$ast": "ReferenceType",
+                                    "name": "Button"
+                                }
+                            }],
+                            "function": {
+                                "$ast": "MemberExpression",
+                                "name": "AddChild",
+                                "parent": {
+                                    "$ast": "ReferenceExpression",
+                                    "name": "window"
+                                }
+                            }
+                        }
+                    }, {
+                        "$ast": "ReturnStatement",
+                        "expression": {
+                            "$ast": "ReferenceExpression",
+                            "name": "window"
+                        }
+                    }]
+                }
+            }]
+        }, {
+            "$ast": "FunctionDeclaration",
+            "attributes": [],
+            "name": "inc",
+            "anonymity": "Named",
+            "arguments": [{
+                "$ast": "FunctionArgument",
+                "attributes": [],
+                "name": "x",
+                "type": {
+                    "$ast": "PredefinedType",
+                    "name": "Int"
+                }
+            }],
+            "functionKind": "Normal",
+            "returnType": {
+                "$ast": "PredefinedType",
+                "name": "Int"
+            },
+            "statement": {
+                "$ast": "BlockStatement",
+                "endLabel": "",
+                "statements": [{
+                    "$ast": "ReturnStatement",
+                    "expression": {
+                        "$ast": "BinaryExpression",
+                        "first": {
+                            "$ast": "ReferenceExpression",
+                            "name": "x"
+                        },
+                        "op": "Add",
+                        "second": {
+                            "$ast": "IntegerExpression",
+                            "value": "1"
+                        }
+                    }
+                }]
+            }
+        }, {
+            "$ast": "FunctionDeclaration",
+            "attributes": [],
+            "name": "dec",
+            "anonymity": "Named",
+            "arguments": [{
+                "$ast": "FunctionArgument",
+                "attributes": [],
+                "name": "x",
+                "type": {
+                    "$ast": "PredefinedType",
+                    "name": "Int"
+                }
+            }],
+            "functionKind": "Normal",
+            "returnType": {
+                "$ast": "PredefinedType",
+                "name": "Int"
+            },
+            "statement": {
+                "$ast": "BlockStatement",
+                "endLabel": "",
+                "statements": [{
+                    "$ast": "ReturnStatement",
+                    "expression": {
+                        "$ast": "BinaryExpression",
+                        "first": {
+                            "$ast": "ReferenceExpression",
+                            "name": "x"
+                        },
+                        "op": "Sub",
+                        "second": {
+                            "$ast": "IntegerExpression",
+                            "value": "1"
+                        }
+                    }
+                }]
+            }
+        }]
+    }],
+    "moduleType": "Unit",
+    "name": "test",
+    "paths": [{
+        "$ast": "ModuleUsingPath",
+        "items": [{
+            "$ast": "ModuleUsingItem",
+            "fragments": [{
+                "$ast": "ModuleUsingNameFragment",
+                "name": "system"
+            }]
+        }, {
+            "$ast": "ModuleUsingItem",
+            "fragments": [{
+                "$ast": "ModuleUsingWildCardFragment"
+            }]
+        }]
+    }, {
+        "$ast": "ModuleUsingPath",
+        "items": [{
+            "$ast": "ModuleUsingItem",
+            "fragments": [{
+                "$ast": "ModuleUsingNameFragment",
+                "name": "presentation"
+            }]
+        }, {
+            "$ast": "ModuleUsingItem",
+            "fragments": [{
+                "$ast": "ModuleUsingNameFragment",
+                "name": "controls"
+            }]
+        }, {
+            "$ast": "ModuleUsingItem",
+            "fragments": [{
+                "$ast": "ModuleUsingNameFragment",
+                "name": "Gui"
+            }, {
+                "$ast": "ModuleUsingWildCardFragment"
+            }, {
+                "$ast": "ModuleUsingNameFragment",
+                "name": "Control"
+            }]
+        }]
+    }]
+}

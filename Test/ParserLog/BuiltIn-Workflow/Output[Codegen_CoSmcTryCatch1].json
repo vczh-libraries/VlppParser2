@@ -1,0 +1,364 @@
+﻿{
+    "$ast": "Module",
+    "declarations": [{
+        "$ast": "VariableDeclaration",
+        "attributes": [],
+        "name": "s",
+        "expression": {
+            "$ast": "StringExpression",
+            "value": "\"\""
+        },
+        "type": null
+    }, {
+        "$ast": "ClassDeclaration",
+        "attributes": [],
+        "name": "SMTryCatch1",
+        "baseTypes": [{
+            "$ast": "ReferenceType",
+            "name": "StateMachine"
+        }],
+        "constructorType": "Undefined",
+        "declarations": [{
+            "$ast": "StateMachineDeclaration",
+            "attributes": [],
+            "name": "",
+            "expandedDeclarations": [],
+            "inputs": [{
+                "$ast": "StateInput",
+                "arguments": [],
+                "name": "A"
+            }, {
+                "$ast": "StateInput",
+                "arguments": [],
+                "name": "B"
+            }],
+            "states": [{
+                "$ast": "StateDeclaration",
+                "arguments": [],
+                "name": "ProcessA",
+                "statement": {
+                    "$ast": "BlockStatement",
+                    "endLabel": "",
+                    "statements": [{
+                        "$ast": "StateSwitchStatement",
+                        "caseBranches": [{
+                            "$ast": "StateSwitchCase",
+                            "arguments": [],
+                            "name": "A",
+                            "statement": {
+                                "$ast": "BlockStatement",
+                                "endLabel": "",
+                                "statements": [{
+                                    "$ast": "ExpressionStatement",
+                                    "expression": {
+                                        "$ast": "BinaryExpression",
+                                        "first": {
+                                            "$ast": "ReferenceExpression",
+                                            "name": "s"
+                                        },
+                                        "op": "Assign",
+                                        "second": {
+                                            "$ast": "FormatExpression",
+                                            "expandedExpression": null,
+                                            "value": "$\"$(s)[A]\""
+                                        }
+                                    }
+                                }]
+                            }
+                        }],
+                        "type": "Default"
+                    }, {
+                        "$ast": "ExpressionStatement",
+                        "expression": {
+                            "$ast": "BinaryExpression",
+                            "first": {
+                                "$ast": "ReferenceExpression",
+                                "name": "s"
+                            },
+                            "op": "Assign",
+                            "second": {
+                                "$ast": "FormatExpression",
+                                "expandedExpression": null,
+                                "value": "$\"$(s).A\""
+                            }
+                        }
+                    }]
+                }
+            }, {
+                "$ast": "StateDeclaration",
+                "arguments": [],
+                "name": "ProcessB",
+                "statement": {
+                    "$ast": "BlockStatement",
+                    "endLabel": "",
+                    "statements": [{
+                        "$ast": "StateSwitchStatement",
+                        "caseBranches": [{
+                            "$ast": "StateSwitchCase",
+                            "arguments": [],
+                            "name": "B",
+                            "statement": {
+                                "$ast": "BlockStatement",
+                                "endLabel": "",
+                                "statements": [{
+                                    "$ast": "ExpressionStatement",
+                                    "expression": {
+                                        "$ast": "BinaryExpression",
+                                        "first": {
+                                            "$ast": "ReferenceExpression",
+                                            "name": "s"
+                                        },
+                                        "op": "Assign",
+                                        "second": {
+                                            "$ast": "FormatExpression",
+                                            "expandedExpression": null,
+                                            "value": "$\"$(s)[B]\""
+                                        }
+                                    }
+                                }]
+                            }
+                        }],
+                        "type": "Default"
+                    }, {
+                        "$ast": "ExpressionStatement",
+                        "expression": {
+                            "$ast": "BinaryExpression",
+                            "first": {
+                                "$ast": "ReferenceExpression",
+                                "name": "s"
+                            },
+                            "op": "Assign",
+                            "second": {
+                                "$ast": "FormatExpression",
+                                "expandedExpression": null,
+                                "value": "$\"$(s).B\""
+                            }
+                        }
+                    }]
+                }
+            }, {
+                "$ast": "StateDeclaration",
+                "arguments": [],
+                "name": "",
+                "statement": {
+                    "$ast": "BlockStatement",
+                    "endLabel": "",
+                    "statements": [{
+                        "$ast": "TryStatement",
+                        "catchStatement": {
+                            "$ast": "BlockStatement",
+                            "endLabel": "",
+                            "statements": [{
+                                "$ast": "ExpressionStatement",
+                                "expression": {
+                                    "$ast": "BinaryExpression",
+                                    "first": {
+                                        "$ast": "ReferenceExpression",
+                                        "name": "s"
+                                    },
+                                    "op": "Assign",
+                                    "second": {
+                                        "$ast": "FormatExpression",
+                                        "expandedExpression": null,
+                                        "value": "$\"$(s)!A\""
+                                    }
+                                }
+                            }]
+                        },
+                        "finallyStatement": null,
+                        "name": "ex",
+                        "protectedStatement": {
+                            "$ast": "BlockStatement",
+                            "endLabel": "",
+                            "statements": [{
+                                "$ast": "StateInvokeStatement",
+                                "arguments": [],
+                                "name": "ProcessA",
+                                "type": "Push"
+                            }]
+                        }
+                    }, {
+                        "$ast": "TryStatement",
+                        "catchStatement": {
+                            "$ast": "BlockStatement",
+                            "endLabel": "",
+                            "statements": [{
+                                "$ast": "ExpressionStatement",
+                                "expression": {
+                                    "$ast": "BinaryExpression",
+                                    "first": {
+                                        "$ast": "ReferenceExpression",
+                                        "name": "s"
+                                    },
+                                    "op": "Assign",
+                                    "second": {
+                                        "$ast": "FormatExpression",
+                                        "expandedExpression": null,
+                                        "value": "$\"$(s)!B\""
+                                    }
+                                }
+                            }]
+                        },
+                        "finallyStatement": null,
+                        "name": "ex",
+                        "protectedStatement": {
+                            "$ast": "BlockStatement",
+                            "endLabel": "",
+                            "statements": [{
+                                "$ast": "StateInvokeStatement",
+                                "arguments": [],
+                                "name": "ProcessB",
+                                "type": "Push"
+                            }]
+                        }
+                    }, {
+                        "$ast": "ExpressionStatement",
+                        "expression": {
+                            "$ast": "BinaryExpression",
+                            "first": {
+                                "$ast": "ReferenceExpression",
+                                "name": "s"
+                            },
+                            "op": "Assign",
+                            "second": {
+                                "$ast": "FormatExpression",
+                                "expandedExpression": null,
+                                "value": "$\"$(s).\""
+                            }
+                        }
+                    }]
+                }
+            }]
+        }],
+        "kind": "Class"
+    }, {
+        "$ast": "FunctionDeclaration",
+        "attributes": [],
+        "name": "main",
+        "anonymity": "Named",
+        "arguments": [],
+        "functionKind": "Normal",
+        "returnType": {
+            "$ast": "PredefinedType",
+            "name": "String"
+        },
+        "statement": {
+            "$ast": "BlockStatement",
+            "endLabel": "",
+            "statements": [{
+                "$ast": "VariableStatement",
+                "variable": {
+                    "$ast": "VariableDeclaration",
+                    "attributes": [],
+                    "name": "sm",
+                    "expression": {
+                        "$ast": "NewClassExpression",
+                        "arguments": [],
+                        "type": {
+                            "$ast": "SharedPointerType",
+                            "element": {
+                                "$ast": "ReferenceType",
+                                "name": "SMTryCatch1"
+                            }
+                        }
+                    },
+                    "type": null
+                }
+            }, {
+                "$ast": "TryStatement",
+                "catchStatement": {
+                    "$ast": "BlockStatement",
+                    "endLabel": "",
+                    "statements": [{
+                        "$ast": "ExpressionStatement",
+                        "expression": {
+                            "$ast": "BinaryExpression",
+                            "first": {
+                                "$ast": "ReferenceExpression",
+                                "name": "s"
+                            },
+                            "op": "Assign",
+                            "second": {
+                                "$ast": "FormatExpression",
+                                "expandedExpression": null,
+                                "value": "$\"$(s)!\""
+                            }
+                        }
+                    }]
+                },
+                "finallyStatement": null,
+                "name": "ex",
+                "protectedStatement": {
+                    "$ast": "BlockStatement",
+                    "endLabel": "",
+                    "statements": [{
+                        "$ast": "ExpressionStatement",
+                        "expression": {
+                            "$ast": "CallExpression",
+                            "arguments": [],
+                            "function": {
+                                "$ast": "MemberExpression",
+                                "name": "A",
+                                "parent": {
+                                    "$ast": "ReferenceExpression",
+                                    "name": "sm"
+                                }
+                            }
+                        }
+                    }, {
+                        "$ast": "ExpressionStatement",
+                        "expression": {
+                            "$ast": "CallExpression",
+                            "arguments": [],
+                            "function": {
+                                "$ast": "MemberExpression",
+                                "name": "B",
+                                "parent": {
+                                    "$ast": "ReferenceExpression",
+                                    "name": "sm"
+                                }
+                            }
+                        }
+                    }]
+                }
+            }, {
+                "$ast": "ReturnStatement",
+                "expression": {
+                    "$ast": "ReferenceExpression",
+                    "name": "s"
+                }
+            }]
+        }
+    }],
+    "moduleType": "Module",
+    "name": "test",
+    "paths": [{
+        "$ast": "ModuleUsingPath",
+        "items": [{
+            "$ast": "ModuleUsingItem",
+            "fragments": [{
+                "$ast": "ModuleUsingNameFragment",
+                "name": "test"
+            }]
+        }, {
+            "$ast": "ModuleUsingItem",
+            "fragments": [{
+                "$ast": "ModuleUsingWildCardFragment"
+            }]
+        }]
+    }, {
+        "$ast": "ModuleUsingPath",
+        "items": [{
+            "$ast": "ModuleUsingItem",
+            "fragments": [{
+                "$ast": "ModuleUsingNameFragment",
+                "name": "system"
+            }]
+        }, {
+            "$ast": "ModuleUsingItem",
+            "fragments": [{
+                "$ast": "ModuleUsingWildCardFragment"
+            }]
+        }]
+    }]
+}

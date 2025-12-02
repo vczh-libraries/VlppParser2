@@ -1,0 +1,816 @@
+﻿================ EXECUTION STEPS ================
+[0]: 0@0 - 85@6
+
+==================== TRACES =====================
+
++-----------------------+
+| [0]: <Start>          |
+| [798][_Module] BEGIN  |
+| [AST-INSTRUCTIONS]:   |
+| [SUCCESORS 1-1]: [1]  |
++-----------------------+
+[0]
+ |
+ +
+ |
+[0]
+++===========================================================================++
+|| [1]: {KEYWORD_MODULE} module                                              ||
+|| [804][_Module]< "module" @ ( NAME ";" { _UsingPath } { _Declaration } ) > ||
+|| [AST-INSTRUCTIONS]:                                                       ||
+||   + StackBegin()                                                          ||
+||   + Token(0)                                                              ||
+|| [PREDECESSORS 0-0]: [0]                                                   ||
+|| [SUCCESORS 2-2]: [2]                                                      ||
+++===========================================================================++
+[0]
+ |
+ +
+ |
+[0]
+++===========================================================================++
+|| [2]: {NAME} test                                                          ||
+|| [803][_Module]< "module" ( NAME @ ";" { _UsingPath } { _Declaration } ) > ||
+|| [AST-INSTRUCTIONS]:                                                       ||
+||   + Token(1)                                                              ||
+|| [PREDECESSORS 1-1]: [1]                                                   ||
+|| [SUCCESORS 3-3]: [3]                                                      ||
+++===========================================================================++
+[0]
+ |
+ +
+ |
+[0]
+++===========================================================================++
+|| [3]: {SEMICOLON} ;                                                        ||
+|| [800][_Module]< "module" ( NAME ";" @ { _UsingPath } { _Declaration } ) > ||
+|| [AST-INSTRUCTIONS]:                                                       ||
+||   + Token(2)                                                              ||
+|| [PREDECESSORS 2-2]: [2]                                                   ||
+|| [SUCCESORS 6-6]: [6]                                                      ||
+++===========================================================================++
+[0]
+ |
+ +
+ |
+[0]
+++============================================================================================================++
+|| [6]: {TYPE_INTERFACE} interface                                                                            ||
+|| [661][_Class]< "interface" @ NAME ( [ ":" { _Type ; "," } ] "{" { _Declaration } [ _StateMachine ] "}" ) > ||
+|| [AST-INSTRUCTIONS]:                                                                                        ||
+||   + StackBegin()                                                                                           ||
+||   + Token(0)                                                                                               ||
+|| [RETURN STACK]:                                                                                            ||
+||   [4][48][3]: _Class -> [768][_DeclarationCandidates]<! !_Class @ !>                                       ||
+||   [3][47][3]: _DeclarationCandidates -> [782][_Declaration]<! { _Attribute } !_DeclarationCandidates @ !>  ||
+||   [0][257][3]: _Declaration -> [802][_Module]< "module" ( NAME ";" { _UsingPath } { _Declaration @ } ) >   ||
+|| [PREDECESSORS 3-3]: [3]                                                                                    ||
+|| [SUCCESORS 8-8]: [8]                                                                                       ||
+++============================================================================================================++
+[0]
+ |
+ +
+ |
+[0]
+++============================================================================================================++
+|| [8]: {NAME} IA                                                                                             ||
+|| [678][_Class]< "interface" NAME @ ( [ ":" { _Type ; "," } ] "{" { _Declaration } [ _StateMachine ] "}" ) > ||
+|| [AST-INSTRUCTIONS]:                                                                                        ||
+||   + Token(1)                                                                                               ||
+|| [RETURN STACK]:                                                                                            ||
+||   [4][48][3]: _Class -> [768][_DeclarationCandidates]<! !_Class @ !>                                       ||
+||   [3][47][3]: _DeclarationCandidates -> [782][_Declaration]<! { _Attribute } !_DeclarationCandidates @ !>  ||
+||   [0][257][3]: _Declaration -> [802][_Module]< "module" ( NAME ";" { _UsingPath } { _Declaration @ } ) >   ||
+|| [PREDECESSORS 6-6]: [6]                                                                                    ||
+|| [SUCCESORS 9-9]: [9]                                                                                       ||
+++============================================================================================================++
+[0]
+ |
+ +
+ |
+[0]
+++============================================================================================================++
+|| [9]: {OPEN_BRACE} {                                                                                        ||
+|| [672][_Class]< "interface" NAME ( [ ":" { _Type ; "," } ] "{" @ { _Declaration } [ _StateMachine ] "}" ) > ||
+|| [AST-INSTRUCTIONS]:                                                                                        ||
+||   + Token(5)                                                                                               ||
+|| [RETURN STACK]:                                                                                            ||
+||   [4][48][3]: _Class -> [768][_DeclarationCandidates]<! !_Class @ !>                                       ||
+||   [3][47][3]: _DeclarationCandidates -> [782][_Declaration]<! { _Attribute } !_DeclarationCandidates @ !>  ||
+||   [0][257][3]: _Declaration -> [802][_Module]< "module" ( NAME ";" { _UsingPath } { _Declaration @ } ) >   ||
+|| [PREDECESSORS 8-8]: [8]                                                                                    ||
+|| [SUCCESORS 11-11]: [11]                                                                                    ||
+++============================================================================================================++
+[0]
+ |
+ +
+ |
+[0]
+++=============================================================================================================================================================================================================++
+|| [11]: {KEYWORD_PROP} prop                                                                                                                                                                                   ||
+|| [751][_AutoProperty]< ( "static" "prop" | "override" "prop" | "prop" @ ) NAME ":" _Type [ "=" _Expression ] ( "{" "}" | "{" "const" "}" | "{" "not" "observe" "}" | "{" "const" "," "not" "observe" "}" ) > ||
+|| [AST-INSTRUCTIONS]:                                                                                                                                                                                         ||
+||   + StackBegin()                                                                                                                                                                                            ||
+||   + Token(6)                                                                                                                                                                                                ||
+|| [RETURN STACK]:                                                                                                                                                                                             ||
+||   [9][56][9]: _AutoProperty -> [766][_DeclarationCandidates]<! !_AutoProperty @ !>                                                                                                                          ||
+||   [8][47][9]: _DeclarationCandidates -> [782][_Declaration]<! { _Attribute } !_DeclarationCandidates @ !>                                                                                                   ||
+||   [5][222][9]: _Declaration -> [673][_Class]< "interface" NAME ( [ ":" { _Type ; "," } ] "{" { _Declaration @ } [ _StateMachine ] "}" ) >                                                                   ||
+||   [4][48][3]: _Class -> [768][_DeclarationCandidates]<! !_Class @ !>                                                                                                                                        ||
+||   [3][47][3]: _DeclarationCandidates -> [782][_Declaration]<! { _Attribute } !_DeclarationCandidates @ !>                                                                                                   ||
+||   [0][257][3]: _Declaration -> [802][_Module]< "module" ( NAME ";" { _UsingPath } { _Declaration @ } ) >                                                                                                    ||
+|| [PREDECESSORS 9-9]: [9]                                                                                                                                                                                     ||
+|| [SUCCESORS 13-13]: [13]                                                                                                                                                                                     ||
+++=============================================================================================================================================================================================================++
+[0]
+ |
+ +
+ |
+[0]
+++=============================================================================================================================================================================================================++
+|| [13]: {NAME} P                                                                                                                                                                                              ||
+|| [750][_AutoProperty]< ( "static" "prop" | "override" "prop" | "prop" ) NAME @ ":" _Type [ "=" _Expression ] ( "{" "}" | "{" "const" "}" | "{" "not" "observe" "}" | "{" "const" "," "not" "observe" "}" ) > ||
+|| [AST-INSTRUCTIONS]:                                                                                                                                                                                         ||
+||   + EnumItem(2, 7)                                                                                                                                                                                          ||
+||   + Token(8)                                                                                                                                                                                                ||
+|| [RETURN STACK]:                                                                                                                                                                                             ||
+||   [9][56][9]: _AutoProperty -> [766][_DeclarationCandidates]<! !_AutoProperty @ !>                                                                                                                          ||
+||   [8][47][9]: _DeclarationCandidates -> [782][_Declaration]<! { _Attribute } !_DeclarationCandidates @ !>                                                                                                   ||
+||   [5][222][9]: _Declaration -> [673][_Class]< "interface" NAME ( [ ":" { _Type ; "," } ] "{" { _Declaration @ } [ _StateMachine ] "}" ) >                                                                   ||
+||   [4][48][3]: _Class -> [768][_DeclarationCandidates]<! !_Class @ !>                                                                                                                                        ||
+||   [3][47][3]: _DeclarationCandidates -> [782][_Declaration]<! { _Attribute } !_DeclarationCandidates @ !>                                                                                                   ||
+||   [0][257][3]: _Declaration -> [802][_Module]< "module" ( NAME ";" { _UsingPath } { _Declaration @ } ) >                                                                                                    ||
+|| [PREDECESSORS 11-11]: [11]                                                                                                                                                                                  ||
+|| [SUCCESORS 15-15]: [15]                                                                                                                                                                                     ||
+++=============================================================================================================================================================================================================++
+[0]
+ |
+ +
+ |
+[0]
+++=============================================================================================================================================================================================================++
+|| [15]: {COLON} :                                                                                                                                                                                             ||
+|| [731][_AutoProperty]< ( "static" "prop" | "override" "prop" | "prop" ) NAME ":" @ _Type [ "=" _Expression ] ( "{" "}" | "{" "const" "}" | "{" "not" "observe" "}" | "{" "const" "," "not" "observe" "}" ) > ||
+|| [AST-INSTRUCTIONS]:                                                                                                                                                                                         ||
+||   + Token(9)                                                                                                                                                                                                ||
+|| [RETURN STACK]:                                                                                                                                                                                             ||
+||   [9][56][9]: _AutoProperty -> [766][_DeclarationCandidates]<! !_AutoProperty @ !>                                                                                                                          ||
+||   [8][47][9]: _DeclarationCandidates -> [782][_Declaration]<! { _Attribute } !_DeclarationCandidates @ !>                                                                                                   ||
+||   [5][222][9]: _Declaration -> [673][_Class]< "interface" NAME ( [ ":" { _Type ; "," } ] "{" { _Declaration @ } [ _StateMachine ] "}" ) >                                                                   ||
+||   [4][48][3]: _Class -> [768][_DeclarationCandidates]<! !_Class @ !>                                                                                                                                        ||
+||   [3][47][3]: _DeclarationCandidates -> [782][_Declaration]<! { _Attribute } !_DeclarationCandidates @ !>                                                                                                   ||
+||   [0][257][3]: _Declaration -> [802][_Module]< "module" ( NAME ";" { _UsingPath } { _Declaration @ } ) >                                                                                                    ||
+|| [PREDECESSORS 13-13]: [13]                                                                                                                                                                                  ||
+|| [SUCCESORS 18-18]: [18]                                                                                                                                                                                     ||
+++=============================================================================================================================================================================================================++
+[0]
+ |
+ +
+ |
+[0]
+++=======================================================================================================================================================================================================================================++
+|| [18]: {TYPE_STRING} string                                                                                                                                                                                                            ||
+|| [27][_Type]< "string" @ >                                                                                                                                                                                                             ||
+|| [AST-INSTRUCTIONS]:                                                                                                                                                                                                                   ||
+||   + StackBegin()                                                                                                                                                                                                                      ||
+||   + Token(0)                                                                                                                                                                                                                          ||
+|| [RETURN STACK]:                                                                                                                                                                                                                       ||
+||   [11][246][15]: _Type -> [732][_AutoProperty]< ( "static" "prop" | "override" "prop" | "prop" ) NAME ":" _Type @ [ "=" _Expression ] ( "{" "}" | "{" "const" "}" | "{" "not" "observe" "}" | "{" "const" "," "not" "observe" "}" ) > ||
+||   [9][56][9]: _AutoProperty -> [766][_DeclarationCandidates]<! !_AutoProperty @ !>                                                                                                                                                    ||
+||   [8][47][9]: _DeclarationCandidates -> [782][_Declaration]<! { _Attribute } !_DeclarationCandidates @ !>                                                                                                                             ||
+||   [5][222][9]: _Declaration -> [673][_Class]< "interface" NAME ( [ ":" { _Type ; "," } ] "{" { _Declaration @ } [ _StateMachine ] "}" ) >                                                                                             ||
+||   [4][48][3]: _Class -> [768][_DeclarationCandidates]<! !_Class @ !>                                                                                                                                                                  ||
+||   [3][47][3]: _DeclarationCandidates -> [782][_Declaration]<! { _Attribute } !_DeclarationCandidates @ !>                                                                                                                             ||
+||   [0][257][3]: _Declaration -> [802][_Module]< "module" ( NAME ";" { _UsingPath } { _Declaration @ } ) >                                                                                                                              ||
+|| [PREDECESSORS 15-15]: [15]                                                                                                                                                                                                            ||
+|| [SUCCESORS 19-19]: [19]                                                                                                                                                                                                               ||
+++=======================================================================================================================================================================================================================================++
+|
++
+|
++-------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------+
+| [19]: <Ending>                                                                                                                                                                                              |
+| [732][_AutoProperty]< ( "static" "prop" | "override" "prop" | "prop" ) NAME ":" _Type @ [ "=" _Expression ] ( "{" "}" | "{" "const" "}" | "{" "not" "observe" "}" | "{" "const" "," "not" "observe" "}" ) > |
+| [AST-INSTRUCTIONS]:                                                                                                                                                                                         |
+|   + EnumItem(7, 1)                                                                                                                                                                                          |
+|   + CreateObject(PredefinedType)                                                                                                                                                                            |
+|   + Field(PredefinedType::name, 1)                                                                                                                                                                          |
+|   + StackEnd()                                                                                                                                                                                              |
+|   > StackSlot(10)                                                                                                                                                                                           |
+| [RETURN STACK]:                                                                                                                                                                                             |
+|   [9][56][9]: _AutoProperty -> [766][_DeclarationCandidates]<! !_AutoProperty @ !>                                                                                                                          |
+|   [8][47][9]: _DeclarationCandidates -> [782][_Declaration]<! { _Attribute } !_DeclarationCandidates @ !>                                                                                                   |
+|   [5][222][9]: _Declaration -> [673][_Class]< "interface" NAME ( [ ":" { _Type ; "," } ] "{" { _Declaration @ } [ _StateMachine ] "}" ) >                                                                   |
+|   [4][48][3]: _Class -> [768][_DeclarationCandidates]<! !_Class @ !>                                                                                                                                        |
+|   [3][47][3]: _DeclarationCandidates -> [782][_Declaration]<! { _Attribute } !_DeclarationCandidates @ !>                                                                                                   |
+|   [0][257][3]: _Declaration -> [802][_Module]< "module" ( NAME ";" { _UsingPath } { _Declaration @ } ) >                                                                                                    |
+| [PREDECESSORS 18-18]: [18]                                                                                                                                                                                  |
+| [SUCCESORS 20-20]: [20]                                                                                                                                                                                     |
++-------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------+
+[0]
+ |
+ +
+ |
+[0]
+++=============================================================================================================================================================================================================++
+|| [20]: {ASSIGN} =                                                                                                                                                                                            ||
+|| [733][_AutoProperty]< ( "static" "prop" | "override" "prop" | "prop" ) NAME ":" _Type [ "=" @ _Expression ] ( "{" "}" | "{" "const" "}" | "{" "not" "observe" "}" | "{" "const" "," "not" "observe" "}" ) > ||
+|| [AST-INSTRUCTIONS]:                                                                                                                                                                                         ||
+||   + Token(11)                                                                                                                                                                                               ||
+|| [RETURN STACK]:                                                                                                                                                                                             ||
+||   [9][56][9]: _AutoProperty -> [766][_DeclarationCandidates]<! !_AutoProperty @ !>                                                                                                                          ||
+||   [8][47][9]: _DeclarationCandidates -> [782][_Declaration]<! { _Attribute } !_DeclarationCandidates @ !>                                                                                                   ||
+||   [5][222][9]: _Declaration -> [673][_Class]< "interface" NAME ( [ ":" { _Type ; "," } ] "{" { _Declaration @ } [ _StateMachine ] "}" ) >                                                                   ||
+||   [4][48][3]: _Class -> [768][_DeclarationCandidates]<! !_Class @ !>                                                                                                                                        ||
+||   [3][47][3]: _DeclarationCandidates -> [782][_Declaration]<! { _Attribute } !_DeclarationCandidates @ !>                                                                                                   ||
+||   [0][257][3]: _Declaration -> [802][_Module]< "module" ( NAME ";" { _UsingPath } { _Declaration @ } ) >                                                                                                    ||
+|| [PREDECESSORS 19-19]: [19]                                                                                                                                                                                  ||
+|| [SUCCESORS 58-58]: [58]                                                                                                                                                                                     ||
+++=============================================================================================================================================================================================================++
+[0]
+ |
+ +
+ |
+[0]
+++=============================================================================================================================================================================================================================================++
+|| [58]: {STRING} ""                                                                                                                                                                                                                           ||
+|| [150][_ExpPrimitive]< STRING @ >                                                                                                                                                                                                            ||
+|| [AST-INSTRUCTIONS]:                                                                                                                                                                                                                         ||
+||   + StackBegin()                                                                                                                                                                                                                            ||
+||   + Token(0)                                                                                                                                                                                                                                ||
+|| [RETURN STACK]:                                                                                                                                                                                                                             ||
+||   [64][23][20]: _ExpPrimitive -> [236][_Exp0]<! !_ExpPrimitive @ !>                                                                                                                                                                         ||
+||   [63][20][20]: _Exp0 -> [242][_Exp1]<! !_Exp0 @ !>                                                                                                                                                                                         ||
+||   [62][19][20]: _Exp1 -> [254][_Exp2]<! !_Exp1 @ !>                                                                                                                                                                                         ||
+||   [61][18][20]: _Exp2 -> [269][_Exp3]<! !_Exp2 @ !>                                                                                                                                                                                         ||
+||   [60][17][20]: _Exp3 -> [278][_Exp4]<! !_Exp3 @ !>                                                                                                                                                                                         ||
+||   [59][16][20]: _Exp4 -> [299][_Exp5]<! !_Exp4 @ !>                                                                                                                                                                                         ||
+||   [58][15][20]: _Exp5 -> [305][_Exp6]<! !_Exp5 @ !>                                                                                                                                                                                         ||
+||   [57][14][20]: _Exp6 -> [311][_Exp7]<! !_Exp6 @ !>                                                                                                                                                                                         ||
+||   [56][13][20]: _Exp7 -> [317][_Exp8]<! !_Exp7 @ !>                                                                                                                                                                                         ||
+||   [55][12][20]: _Exp8 -> [323][_Exp9]<! !_Exp8 @ !>                                                                                                                                                                                         ||
+||   [54][21][20]: _Exp9 -> [331][_Exp10]<! !_Exp9 @ !>                                                                                                                                                                                        ||
+||   [53][22][20]: _Exp10 -> [337][_Exp11]<! !_Exp10 @ !>                                                                                                                                                                                      ||
+||   [52][9][20]: _Exp11 -> [340][_Expression]<! !_Exp11 @ !>                                                                                                                                                                                  ||
+||   [12][247][20]: _Expression -> [734][_AutoProperty]< ( "static" "prop" | "override" "prop" | "prop" ) NAME ":" _Type [ "=" _Expression @ ] ( "{" "}" | "{" "const" "}" | "{" "not" "observe" "}" | "{" "const" "," "not" "observe" "}" ) > ||
+||   [9][56][9]: _AutoProperty -> [766][_DeclarationCandidates]<! !_AutoProperty @ !>                                                                                                                                                          ||
+||   [8][47][9]: _DeclarationCandidates -> [782][_Declaration]<! { _Attribute } !_DeclarationCandidates @ !>                                                                                                                                   ||
+||   [5][222][9]: _Declaration -> [673][_Class]< "interface" NAME ( [ ":" { _Type ; "," } ] "{" { _Declaration @ } [ _StateMachine ] "}" ) >                                                                                                   ||
+||   [4][48][3]: _Class -> [768][_DeclarationCandidates]<! !_Class @ !>                                                                                                                                                                        ||
+||   [3][47][3]: _DeclarationCandidates -> [782][_Declaration]<! { _Attribute } !_DeclarationCandidates @ !>                                                                                                                                   ||
+||   [0][257][3]: _Declaration -> [802][_Module]< "module" ( NAME ";" { _UsingPath } { _Declaration @ } ) >                                                                                                                                    ||
+|| [PREDECESSORS 20-20]: [20]                                                                                                                                                                                                                  ||
+|| [SUCCESORS 59-59]: [59]                                                                                                                                                                                                                     ||
+++=============================================================================================================================================================================================================================================++
+|
++
+|
++---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------+
+| [59]: <Ending>                                                                                                                                                                                                                              |
+| [236][_Exp0]<! !_ExpPrimitive @ !>                                                                                                                                                                                                          |
+| [AST-INSTRUCTIONS]:                                                                                                                                                                                                                         |
+|   + CreateObject(StringExpression)                                                                                                                                                                                                          |
+|   + Field(StringExpression::value, 0)                                                                                                                                                                                                       |
+|   + StackEnd()                                                                                                                                                                                                                              |
+|   > StackBegin()                                                                                                                                                                                                                            |
+| [RETURN STACK]:                                                                                                                                                                                                                             |
+|   [63][20][20]: _Exp0 -> [242][_Exp1]<! !_Exp0 @ !>                                                                                                                                                                                         |
+|   [62][19][20]: _Exp1 -> [254][_Exp2]<! !_Exp1 @ !>                                                                                                                                                                                         |
+|   [61][18][20]: _Exp2 -> [269][_Exp3]<! !_Exp2 @ !>                                                                                                                                                                                         |
+|   [60][17][20]: _Exp3 -> [278][_Exp4]<! !_Exp3 @ !>                                                                                                                                                                                         |
+|   [59][16][20]: _Exp4 -> [299][_Exp5]<! !_Exp4 @ !>                                                                                                                                                                                         |
+|   [58][15][20]: _Exp5 -> [305][_Exp6]<! !_Exp5 @ !>                                                                                                                                                                                         |
+|   [57][14][20]: _Exp6 -> [311][_Exp7]<! !_Exp6 @ !>                                                                                                                                                                                         |
+|   [56][13][20]: _Exp7 -> [317][_Exp8]<! !_Exp7 @ !>                                                                                                                                                                                         |
+|   [55][12][20]: _Exp8 -> [323][_Exp9]<! !_Exp8 @ !>                                                                                                                                                                                         |
+|   [54][21][20]: _Exp9 -> [331][_Exp10]<! !_Exp9 @ !>                                                                                                                                                                                        |
+|   [53][22][20]: _Exp10 -> [337][_Exp11]<! !_Exp10 @ !>                                                                                                                                                                                      |
+|   [52][9][20]: _Exp11 -> [340][_Expression]<! !_Exp11 @ !>                                                                                                                                                                                  |
+|   [12][247][20]: _Expression -> [734][_AutoProperty]< ( "static" "prop" | "override" "prop" | "prop" ) NAME ":" _Type [ "=" _Expression @ ] ( "{" "}" | "{" "const" "}" | "{" "not" "observe" "}" | "{" "const" "," "not" "observe" "}" ) > |
+|   [9][56][9]: _AutoProperty -> [766][_DeclarationCandidates]<! !_AutoProperty @ !>                                                                                                                                                          |
+|   [8][47][9]: _DeclarationCandidates -> [782][_Declaration]<! { _Attribute } !_DeclarationCandidates @ !>                                                                                                                                   |
+|   [5][222][9]: _Declaration -> [673][_Class]< "interface" NAME ( [ ":" { _Type ; "," } ] "{" { _Declaration @ } [ _StateMachine ] "}" ) >                                                                                                   |
+|   [4][48][3]: _Class -> [768][_DeclarationCandidates]<! !_Class @ !>                                                                                                                                                                        |
+|   [3][47][3]: _DeclarationCandidates -> [782][_Declaration]<! { _Attribute } !_DeclarationCandidates @ !>                                                                                                                                   |
+|   [0][257][3]: _Declaration -> [802][_Module]< "module" ( NAME ";" { _UsingPath } { _Declaration @ } ) >                                                                                                                                    |
+| [PREDECESSORS 58-58]: [58]                                                                                                                                                                                                                  |
+| [SUCCESORS 60-60]: [60]                                                                                                                                                                                                                     |
++---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------+
+|
++
+|
++---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------+
+| [60]: <Ending>                                                                                                                                                                                                                              |
+| [242][_Exp1]<! !_Exp0 @ !>                                                                                                                                                                                                                  |
+| [AST-INSTRUCTIONS]:                                                                                                                                                                                                                         |
+|   + StackEnd()                                                                                                                                                                                                                              |
+|   > StackBegin()                                                                                                                                                                                                                            |
+| [RETURN STACK]:                                                                                                                                                                                                                             |
+|   [62][19][20]: _Exp1 -> [254][_Exp2]<! !_Exp1 @ !>                                                                                                                                                                                         |
+|   [61][18][20]: _Exp2 -> [269][_Exp3]<! !_Exp2 @ !>                                                                                                                                                                                         |
+|   [60][17][20]: _Exp3 -> [278][_Exp4]<! !_Exp3 @ !>                                                                                                                                                                                         |
+|   [59][16][20]: _Exp4 -> [299][_Exp5]<! !_Exp4 @ !>                                                                                                                                                                                         |
+|   [58][15][20]: _Exp5 -> [305][_Exp6]<! !_Exp5 @ !>                                                                                                                                                                                         |
+|   [57][14][20]: _Exp6 -> [311][_Exp7]<! !_Exp6 @ !>                                                                                                                                                                                         |
+|   [56][13][20]: _Exp7 -> [317][_Exp8]<! !_Exp7 @ !>                                                                                                                                                                                         |
+|   [55][12][20]: _Exp8 -> [323][_Exp9]<! !_Exp8 @ !>                                                                                                                                                                                         |
+|   [54][21][20]: _Exp9 -> [331][_Exp10]<! !_Exp9 @ !>                                                                                                                                                                                        |
+|   [53][22][20]: _Exp10 -> [337][_Exp11]<! !_Exp10 @ !>                                                                                                                                                                                      |
+|   [52][9][20]: _Exp11 -> [340][_Expression]<! !_Exp11 @ !>                                                                                                                                                                                  |
+|   [12][247][20]: _Expression -> [734][_AutoProperty]< ( "static" "prop" | "override" "prop" | "prop" ) NAME ":" _Type [ "=" _Expression @ ] ( "{" "}" | "{" "const" "}" | "{" "not" "observe" "}" | "{" "const" "," "not" "observe" "}" ) > |
+|   [9][56][9]: _AutoProperty -> [766][_DeclarationCandidates]<! !_AutoProperty @ !>                                                                                                                                                          |
+|   [8][47][9]: _DeclarationCandidates -> [782][_Declaration]<! { _Attribute } !_DeclarationCandidates @ !>                                                                                                                                   |
+|   [5][222][9]: _Declaration -> [673][_Class]< "interface" NAME ( [ ":" { _Type ; "," } ] "{" { _Declaration @ } [ _StateMachine ] "}" ) >                                                                                                   |
+|   [4][48][3]: _Class -> [768][_DeclarationCandidates]<! !_Class @ !>                                                                                                                                                                        |
+|   [3][47][3]: _DeclarationCandidates -> [782][_Declaration]<! { _Attribute } !_DeclarationCandidates @ !>                                                                                                                                   |
+|   [0][257][3]: _Declaration -> [802][_Module]< "module" ( NAME ";" { _UsingPath } { _Declaration @ } ) >                                                                                                                                    |
+| [PREDECESSORS 59-59]: [59]                                                                                                                                                                                                                  |
+| [SUCCESORS 61-61]: [61]                                                                                                                                                                                                                     |
++---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------+
+|
++
+|
++---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------+
+| [61]: <Ending>                                                                                                                                                                                                                              |
+| [254][_Exp2]<! !_Exp1 @ !>                                                                                                                                                                                                                  |
+| [AST-INSTRUCTIONS]:                                                                                                                                                                                                                         |
+|   + StackEnd()                                                                                                                                                                                                                              |
+|   > StackBegin()                                                                                                                                                                                                                            |
+| [RETURN STACK]:                                                                                                                                                                                                                             |
+|   [61][18][20]: _Exp2 -> [269][_Exp3]<! !_Exp2 @ !>                                                                                                                                                                                         |
+|   [60][17][20]: _Exp3 -> [278][_Exp4]<! !_Exp3 @ !>                                                                                                                                                                                         |
+|   [59][16][20]: _Exp4 -> [299][_Exp5]<! !_Exp4 @ !>                                                                                                                                                                                         |
+|   [58][15][20]: _Exp5 -> [305][_Exp6]<! !_Exp5 @ !>                                                                                                                                                                                         |
+|   [57][14][20]: _Exp6 -> [311][_Exp7]<! !_Exp6 @ !>                                                                                                                                                                                         |
+|   [56][13][20]: _Exp7 -> [317][_Exp8]<! !_Exp7 @ !>                                                                                                                                                                                         |
+|   [55][12][20]: _Exp8 -> [323][_Exp9]<! !_Exp8 @ !>                                                                                                                                                                                         |
+|   [54][21][20]: _Exp9 -> [331][_Exp10]<! !_Exp9 @ !>                                                                                                                                                                                        |
+|   [53][22][20]: _Exp10 -> [337][_Exp11]<! !_Exp10 @ !>                                                                                                                                                                                      |
+|   [52][9][20]: _Exp11 -> [340][_Expression]<! !_Exp11 @ !>                                                                                                                                                                                  |
+|   [12][247][20]: _Expression -> [734][_AutoProperty]< ( "static" "prop" | "override" "prop" | "prop" ) NAME ":" _Type [ "=" _Expression @ ] ( "{" "}" | "{" "const" "}" | "{" "not" "observe" "}" | "{" "const" "," "not" "observe" "}" ) > |
+|   [9][56][9]: _AutoProperty -> [766][_DeclarationCandidates]<! !_AutoProperty @ !>                                                                                                                                                          |
+|   [8][47][9]: _DeclarationCandidates -> [782][_Declaration]<! { _Attribute } !_DeclarationCandidates @ !>                                                                                                                                   |
+|   [5][222][9]: _Declaration -> [673][_Class]< "interface" NAME ( [ ":" { _Type ; "," } ] "{" { _Declaration @ } [ _StateMachine ] "}" ) >                                                                                                   |
+|   [4][48][3]: _Class -> [768][_DeclarationCandidates]<! !_Class @ !>                                                                                                                                                                        |
+|   [3][47][3]: _DeclarationCandidates -> [782][_Declaration]<! { _Attribute } !_DeclarationCandidates @ !>                                                                                                                                   |
+|   [0][257][3]: _Declaration -> [802][_Module]< "module" ( NAME ";" { _UsingPath } { _Declaration @ } ) >                                                                                                                                    |
+| [PREDECESSORS 60-60]: [60]                                                                                                                                                                                                                  |
+| [SUCCESORS 62-62]: [62]                                                                                                                                                                                                                     |
++---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------+
+|
++
+|
++---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------+
+| [62]: <Ending>                                                                                                                                                                                                                              |
+| [269][_Exp3]<! !_Exp2 @ !>                                                                                                                                                                                                                  |
+| [AST-INSTRUCTIONS]:                                                                                                                                                                                                                         |
+|   + StackEnd()                                                                                                                                                                                                                              |
+|   > StackBegin()                                                                                                                                                                                                                            |
+| [RETURN STACK]:                                                                                                                                                                                                                             |
+|   [60][17][20]: _Exp3 -> [278][_Exp4]<! !_Exp3 @ !>                                                                                                                                                                                         |
+|   [59][16][20]: _Exp4 -> [299][_Exp5]<! !_Exp4 @ !>                                                                                                                                                                                         |
+|   [58][15][20]: _Exp5 -> [305][_Exp6]<! !_Exp5 @ !>                                                                                                                                                                                         |
+|   [57][14][20]: _Exp6 -> [311][_Exp7]<! !_Exp6 @ !>                                                                                                                                                                                         |
+|   [56][13][20]: _Exp7 -> [317][_Exp8]<! !_Exp7 @ !>                                                                                                                                                                                         |
+|   [55][12][20]: _Exp8 -> [323][_Exp9]<! !_Exp8 @ !>                                                                                                                                                                                         |
+|   [54][21][20]: _Exp9 -> [331][_Exp10]<! !_Exp9 @ !>                                                                                                                                                                                        |
+|   [53][22][20]: _Exp10 -> [337][_Exp11]<! !_Exp10 @ !>                                                                                                                                                                                      |
+|   [52][9][20]: _Exp11 -> [340][_Expression]<! !_Exp11 @ !>                                                                                                                                                                                  |
+|   [12][247][20]: _Expression -> [734][_AutoProperty]< ( "static" "prop" | "override" "prop" | "prop" ) NAME ":" _Type [ "=" _Expression @ ] ( "{" "}" | "{" "const" "}" | "{" "not" "observe" "}" | "{" "const" "," "not" "observe" "}" ) > |
+|   [9][56][9]: _AutoProperty -> [766][_DeclarationCandidates]<! !_AutoProperty @ !>                                                                                                                                                          |
+|   [8][47][9]: _DeclarationCandidates -> [782][_Declaration]<! { _Attribute } !_DeclarationCandidates @ !>                                                                                                                                   |
+|   [5][222][9]: _Declaration -> [673][_Class]< "interface" NAME ( [ ":" { _Type ; "," } ] "{" { _Declaration @ } [ _StateMachine ] "}" ) >                                                                                                   |
+|   [4][48][3]: _Class -> [768][_DeclarationCandidates]<! !_Class @ !>                                                                                                                                                                        |
+|   [3][47][3]: _DeclarationCandidates -> [782][_Declaration]<! { _Attribute } !_DeclarationCandidates @ !>                                                                                                                                   |
+|   [0][257][3]: _Declaration -> [802][_Module]< "module" ( NAME ";" { _UsingPath } { _Declaration @ } ) >                                                                                                                                    |
+| [PREDECESSORS 61-61]: [61]                                                                                                                                                                                                                  |
+| [SUCCESORS 63-63]: [63]                                                                                                                                                                                                                     |
++---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------+
+|
++
+|
++---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------+
+| [63]: <Ending>                                                                                                                                                                                                                              |
+| [278][_Exp4]<! !_Exp3 @ !>                                                                                                                                                                                                                  |
+| [AST-INSTRUCTIONS]:                                                                                                                                                                                                                         |
+|   + StackEnd()                                                                                                                                                                                                                              |
+|   > StackBegin()                                                                                                                                                                                                                            |
+| [RETURN STACK]:                                                                                                                                                                                                                             |
+|   [59][16][20]: _Exp4 -> [299][_Exp5]<! !_Exp4 @ !>                                                                                                                                                                                         |
+|   [58][15][20]: _Exp5 -> [305][_Exp6]<! !_Exp5 @ !>                                                                                                                                                                                         |
+|   [57][14][20]: _Exp6 -> [311][_Exp7]<! !_Exp6 @ !>                                                                                                                                                                                         |
+|   [56][13][20]: _Exp7 -> [317][_Exp8]<! !_Exp7 @ !>                                                                                                                                                                                         |
+|   [55][12][20]: _Exp8 -> [323][_Exp9]<! !_Exp8 @ !>                                                                                                                                                                                         |
+|   [54][21][20]: _Exp9 -> [331][_Exp10]<! !_Exp9 @ !>                                                                                                                                                                                        |
+|   [53][22][20]: _Exp10 -> [337][_Exp11]<! !_Exp10 @ !>                                                                                                                                                                                      |
+|   [52][9][20]: _Exp11 -> [340][_Expression]<! !_Exp11 @ !>                                                                                                                                                                                  |
+|   [12][247][20]: _Expression -> [734][_AutoProperty]< ( "static" "prop" | "override" "prop" | "prop" ) NAME ":" _Type [ "=" _Expression @ ] ( "{" "}" | "{" "const" "}" | "{" "not" "observe" "}" | "{" "const" "," "not" "observe" "}" ) > |
+|   [9][56][9]: _AutoProperty -> [766][_DeclarationCandidates]<! !_AutoProperty @ !>                                                                                                                                                          |
+|   [8][47][9]: _DeclarationCandidates -> [782][_Declaration]<! { _Attribute } !_DeclarationCandidates @ !>                                                                                                                                   |
+|   [5][222][9]: _Declaration -> [673][_Class]< "interface" NAME ( [ ":" { _Type ; "," } ] "{" { _Declaration @ } [ _StateMachine ] "}" ) >                                                                                                   |
+|   [4][48][3]: _Class -> [768][_DeclarationCandidates]<! !_Class @ !>                                                                                                                                                                        |
+|   [3][47][3]: _DeclarationCandidates -> [782][_Declaration]<! { _Attribute } !_DeclarationCandidates @ !>                                                                                                                                   |
+|   [0][257][3]: _Declaration -> [802][_Module]< "module" ( NAME ";" { _UsingPath } { _Declaration @ } ) >                                                                                                                                    |
+| [PREDECESSORS 62-62]: [62]                                                                                                                                                                                                                  |
+| [SUCCESORS 64-64]: [64]                                                                                                                                                                                                                     |
++---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------+
+|
++
+|
++---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------+
+| [64]: <Ending>                                                                                                                                                                                                                              |
+| [299][_Exp5]<! !_Exp4 @ !>                                                                                                                                                                                                                  |
+| [AST-INSTRUCTIONS]:                                                                                                                                                                                                                         |
+|   + StackEnd()                                                                                                                                                                                                                              |
+|   > StackBegin()                                                                                                                                                                                                                            |
+| [RETURN STACK]:                                                                                                                                                                                                                             |
+|   [58][15][20]: _Exp5 -> [305][_Exp6]<! !_Exp5 @ !>                                                                                                                                                                                         |
+|   [57][14][20]: _Exp6 -> [311][_Exp7]<! !_Exp6 @ !>                                                                                                                                                                                         |
+|   [56][13][20]: _Exp7 -> [317][_Exp8]<! !_Exp7 @ !>                                                                                                                                                                                         |
+|   [55][12][20]: _Exp8 -> [323][_Exp9]<! !_Exp8 @ !>                                                                                                                                                                                         |
+|   [54][21][20]: _Exp9 -> [331][_Exp10]<! !_Exp9 @ !>                                                                                                                                                                                        |
+|   [53][22][20]: _Exp10 -> [337][_Exp11]<! !_Exp10 @ !>                                                                                                                                                                                      |
+|   [52][9][20]: _Exp11 -> [340][_Expression]<! !_Exp11 @ !>                                                                                                                                                                                  |
+|   [12][247][20]: _Expression -> [734][_AutoProperty]< ( "static" "prop" | "override" "prop" | "prop" ) NAME ":" _Type [ "=" _Expression @ ] ( "{" "}" | "{" "const" "}" | "{" "not" "observe" "}" | "{" "const" "," "not" "observe" "}" ) > |
+|   [9][56][9]: _AutoProperty -> [766][_DeclarationCandidates]<! !_AutoProperty @ !>                                                                                                                                                          |
+|   [8][47][9]: _DeclarationCandidates -> [782][_Declaration]<! { _Attribute } !_DeclarationCandidates @ !>                                                                                                                                   |
+|   [5][222][9]: _Declaration -> [673][_Class]< "interface" NAME ( [ ":" { _Type ; "," } ] "{" { _Declaration @ } [ _StateMachine ] "}" ) >                                                                                                   |
+|   [4][48][3]: _Class -> [768][_DeclarationCandidates]<! !_Class @ !>                                                                                                                                                                        |
+|   [3][47][3]: _DeclarationCandidates -> [782][_Declaration]<! { _Attribute } !_DeclarationCandidates @ !>                                                                                                                                   |
+|   [0][257][3]: _Declaration -> [802][_Module]< "module" ( NAME ";" { _UsingPath } { _Declaration @ } ) >                                                                                                                                    |
+| [PREDECESSORS 63-63]: [63]                                                                                                                                                                                                                  |
+| [SUCCESORS 65-65]: [65]                                                                                                                                                                                                                     |
++---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------+
+|
++
+|
++---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------+
+| [65]: <Ending>                                                                                                                                                                                                                              |
+| [305][_Exp6]<! !_Exp5 @ !>                                                                                                                                                                                                                  |
+| [AST-INSTRUCTIONS]:                                                                                                                                                                                                                         |
+|   + StackEnd()                                                                                                                                                                                                                              |
+|   > StackBegin()                                                                                                                                                                                                                            |
+| [RETURN STACK]:                                                                                                                                                                                                                             |
+|   [57][14][20]: _Exp6 -> [311][_Exp7]<! !_Exp6 @ !>                                                                                                                                                                                         |
+|   [56][13][20]: _Exp7 -> [317][_Exp8]<! !_Exp7 @ !>                                                                                                                                                                                         |
+|   [55][12][20]: _Exp8 -> [323][_Exp9]<! !_Exp8 @ !>                                                                                                                                                                                         |
+|   [54][21][20]: _Exp9 -> [331][_Exp10]<! !_Exp9 @ !>                                                                                                                                                                                        |
+|   [53][22][20]: _Exp10 -> [337][_Exp11]<! !_Exp10 @ !>                                                                                                                                                                                      |
+|   [52][9][20]: _Exp11 -> [340][_Expression]<! !_Exp11 @ !>                                                                                                                                                                                  |
+|   [12][247][20]: _Expression -> [734][_AutoProperty]< ( "static" "prop" | "override" "prop" | "prop" ) NAME ":" _Type [ "=" _Expression @ ] ( "{" "}" | "{" "const" "}" | "{" "not" "observe" "}" | "{" "const" "," "not" "observe" "}" ) > |
+|   [9][56][9]: _AutoProperty -> [766][_DeclarationCandidates]<! !_AutoProperty @ !>                                                                                                                                                          |
+|   [8][47][9]: _DeclarationCandidates -> [782][_Declaration]<! { _Attribute } !_DeclarationCandidates @ !>                                                                                                                                   |
+|   [5][222][9]: _Declaration -> [673][_Class]< "interface" NAME ( [ ":" { _Type ; "," } ] "{" { _Declaration @ } [ _StateMachine ] "}" ) >                                                                                                   |
+|   [4][48][3]: _Class -> [768][_DeclarationCandidates]<! !_Class @ !>                                                                                                                                                                        |
+|   [3][47][3]: _DeclarationCandidates -> [782][_Declaration]<! { _Attribute } !_DeclarationCandidates @ !>                                                                                                                                   |
+|   [0][257][3]: _Declaration -> [802][_Module]< "module" ( NAME ";" { _UsingPath } { _Declaration @ } ) >                                                                                                                                    |
+| [PREDECESSORS 64-64]: [64]                                                                                                                                                                                                                  |
+| [SUCCESORS 66-66]: [66]                                                                                                                                                                                                                     |
++---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------+
+|
++
+|
++---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------+
+| [66]: <Ending>                                                                                                                                                                                                                              |
+| [311][_Exp7]<! !_Exp6 @ !>                                                                                                                                                                                                                  |
+| [AST-INSTRUCTIONS]:                                                                                                                                                                                                                         |
+|   + StackEnd()                                                                                                                                                                                                                              |
+|   > StackBegin()                                                                                                                                                                                                                            |
+| [RETURN STACK]:                                                                                                                                                                                                                             |
+|   [56][13][20]: _Exp7 -> [317][_Exp8]<! !_Exp7 @ !>                                                                                                                                                                                         |
+|   [55][12][20]: _Exp8 -> [323][_Exp9]<! !_Exp8 @ !>                                                                                                                                                                                         |
+|   [54][21][20]: _Exp9 -> [331][_Exp10]<! !_Exp9 @ !>                                                                                                                                                                                        |
+|   [53][22][20]: _Exp10 -> [337][_Exp11]<! !_Exp10 @ !>                                                                                                                                                                                      |
+|   [52][9][20]: _Exp11 -> [340][_Expression]<! !_Exp11 @ !>                                                                                                                                                                                  |
+|   [12][247][20]: _Expression -> [734][_AutoProperty]< ( "static" "prop" | "override" "prop" | "prop" ) NAME ":" _Type [ "=" _Expression @ ] ( "{" "}" | "{" "const" "}" | "{" "not" "observe" "}" | "{" "const" "," "not" "observe" "}" ) > |
+|   [9][56][9]: _AutoProperty -> [766][_DeclarationCandidates]<! !_AutoProperty @ !>                                                                                                                                                          |
+|   [8][47][9]: _DeclarationCandidates -> [782][_Declaration]<! { _Attribute } !_DeclarationCandidates @ !>                                                                                                                                   |
+|   [5][222][9]: _Declaration -> [673][_Class]< "interface" NAME ( [ ":" { _Type ; "," } ] "{" { _Declaration @ } [ _StateMachine ] "}" ) >                                                                                                   |
+|   [4][48][3]: _Class -> [768][_DeclarationCandidates]<! !_Class @ !>                                                                                                                                                                        |
+|   [3][47][3]: _DeclarationCandidates -> [782][_Declaration]<! { _Attribute } !_DeclarationCandidates @ !>                                                                                                                                   |
+|   [0][257][3]: _Declaration -> [802][_Module]< "module" ( NAME ";" { _UsingPath } { _Declaration @ } ) >                                                                                                                                    |
+| [PREDECESSORS 65-65]: [65]                                                                                                                                                                                                                  |
+| [SUCCESORS 67-67]: [67]                                                                                                                                                                                                                     |
++---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------+
+|
++
+|
++---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------+
+| [67]: <Ending>                                                                                                                                                                                                                              |
+| [317][_Exp8]<! !_Exp7 @ !>                                                                                                                                                                                                                  |
+| [AST-INSTRUCTIONS]:                                                                                                                                                                                                                         |
+|   + StackEnd()                                                                                                                                                                                                                              |
+|   > StackBegin()                                                                                                                                                                                                                            |
+| [RETURN STACK]:                                                                                                                                                                                                                             |
+|   [55][12][20]: _Exp8 -> [323][_Exp9]<! !_Exp8 @ !>                                                                                                                                                                                         |
+|   [54][21][20]: _Exp9 -> [331][_Exp10]<! !_Exp9 @ !>                                                                                                                                                                                        |
+|   [53][22][20]: _Exp10 -> [337][_Exp11]<! !_Exp10 @ !>                                                                                                                                                                                      |
+|   [52][9][20]: _Exp11 -> [340][_Expression]<! !_Exp11 @ !>                                                                                                                                                                                  |
+|   [12][247][20]: _Expression -> [734][_AutoProperty]< ( "static" "prop" | "override" "prop" | "prop" ) NAME ":" _Type [ "=" _Expression @ ] ( "{" "}" | "{" "const" "}" | "{" "not" "observe" "}" | "{" "const" "," "not" "observe" "}" ) > |
+|   [9][56][9]: _AutoProperty -> [766][_DeclarationCandidates]<! !_AutoProperty @ !>                                                                                                                                                          |
+|   [8][47][9]: _DeclarationCandidates -> [782][_Declaration]<! { _Attribute } !_DeclarationCandidates @ !>                                                                                                                                   |
+|   [5][222][9]: _Declaration -> [673][_Class]< "interface" NAME ( [ ":" { _Type ; "," } ] "{" { _Declaration @ } [ _StateMachine ] "}" ) >                                                                                                   |
+|   [4][48][3]: _Class -> [768][_DeclarationCandidates]<! !_Class @ !>                                                                                                                                                                        |
+|   [3][47][3]: _DeclarationCandidates -> [782][_Declaration]<! { _Attribute } !_DeclarationCandidates @ !>                                                                                                                                   |
+|   [0][257][3]: _Declaration -> [802][_Module]< "module" ( NAME ";" { _UsingPath } { _Declaration @ } ) >                                                                                                                                    |
+| [PREDECESSORS 66-66]: [66]                                                                                                                                                                                                                  |
+| [SUCCESORS 68-68]: [68]                                                                                                                                                                                                                     |
++---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------+
+|
++
+|
++---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------+
+| [68]: <Ending>                                                                                                                                                                                                                              |
+| [323][_Exp9]<! !_Exp8 @ !>                                                                                                                                                                                                                  |
+| [AST-INSTRUCTIONS]:                                                                                                                                                                                                                         |
+|   + StackEnd()                                                                                                                                                                                                                              |
+|   > StackBegin()                                                                                                                                                                                                                            |
+| [RETURN STACK]:                                                                                                                                                                                                                             |
+|   [54][21][20]: _Exp9 -> [331][_Exp10]<! !_Exp9 @ !>                                                                                                                                                                                        |
+|   [53][22][20]: _Exp10 -> [337][_Exp11]<! !_Exp10 @ !>                                                                                                                                                                                      |
+|   [52][9][20]: _Exp11 -> [340][_Expression]<! !_Exp11 @ !>                                                                                                                                                                                  |
+|   [12][247][20]: _Expression -> [734][_AutoProperty]< ( "static" "prop" | "override" "prop" | "prop" ) NAME ":" _Type [ "=" _Expression @ ] ( "{" "}" | "{" "const" "}" | "{" "not" "observe" "}" | "{" "const" "," "not" "observe" "}" ) > |
+|   [9][56][9]: _AutoProperty -> [766][_DeclarationCandidates]<! !_AutoProperty @ !>                                                                                                                                                          |
+|   [8][47][9]: _DeclarationCandidates -> [782][_Declaration]<! { _Attribute } !_DeclarationCandidates @ !>                                                                                                                                   |
+|   [5][222][9]: _Declaration -> [673][_Class]< "interface" NAME ( [ ":" { _Type ; "," } ] "{" { _Declaration @ } [ _StateMachine ] "}" ) >                                                                                                   |
+|   [4][48][3]: _Class -> [768][_DeclarationCandidates]<! !_Class @ !>                                                                                                                                                                        |
+|   [3][47][3]: _DeclarationCandidates -> [782][_Declaration]<! { _Attribute } !_DeclarationCandidates @ !>                                                                                                                                   |
+|   [0][257][3]: _Declaration -> [802][_Module]< "module" ( NAME ";" { _UsingPath } { _Declaration @ } ) >                                                                                                                                    |
+| [PREDECESSORS 67-67]: [67]                                                                                                                                                                                                                  |
+| [SUCCESORS 69-69]: [69]                                                                                                                                                                                                                     |
++---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------+
+|
++
+|
++---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------+
+| [69]: <Ending>                                                                                                                                                                                                                              |
+| [331][_Exp10]<! !_Exp9 @ !>                                                                                                                                                                                                                 |
+| [AST-INSTRUCTIONS]:                                                                                                                                                                                                                         |
+|   + StackEnd()                                                                                                                                                                                                                              |
+|   > StackBegin()                                                                                                                                                                                                                            |
+| [RETURN STACK]:                                                                                                                                                                                                                             |
+|   [53][22][20]: _Exp10 -> [337][_Exp11]<! !_Exp10 @ !>                                                                                                                                                                                      |
+|   [52][9][20]: _Exp11 -> [340][_Expression]<! !_Exp11 @ !>                                                                                                                                                                                  |
+|   [12][247][20]: _Expression -> [734][_AutoProperty]< ( "static" "prop" | "override" "prop" | "prop" ) NAME ":" _Type [ "=" _Expression @ ] ( "{" "}" | "{" "const" "}" | "{" "not" "observe" "}" | "{" "const" "," "not" "observe" "}" ) > |
+|   [9][56][9]: _AutoProperty -> [766][_DeclarationCandidates]<! !_AutoProperty @ !>                                                                                                                                                          |
+|   [8][47][9]: _DeclarationCandidates -> [782][_Declaration]<! { _Attribute } !_DeclarationCandidates @ !>                                                                                                                                   |
+|   [5][222][9]: _Declaration -> [673][_Class]< "interface" NAME ( [ ":" { _Type ; "," } ] "{" { _Declaration @ } [ _StateMachine ] "}" ) >                                                                                                   |
+|   [4][48][3]: _Class -> [768][_DeclarationCandidates]<! !_Class @ !>                                                                                                                                                                        |
+|   [3][47][3]: _DeclarationCandidates -> [782][_Declaration]<! { _Attribute } !_DeclarationCandidates @ !>                                                                                                                                   |
+|   [0][257][3]: _Declaration -> [802][_Module]< "module" ( NAME ";" { _UsingPath } { _Declaration @ } ) >                                                                                                                                    |
+| [PREDECESSORS 68-68]: [68]                                                                                                                                                                                                                  |
+| [SUCCESORS 70-70]: [70]                                                                                                                                                                                                                     |
++---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------+
+|
++
+|
++---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------+
+| [70]: <Ending>                                                                                                                                                                                                                              |
+| [337][_Exp11]<! !_Exp10 @ !>                                                                                                                                                                                                                |
+| [AST-INSTRUCTIONS]:                                                                                                                                                                                                                         |
+|   + StackEnd()                                                                                                                                                                                                                              |
+|   > StackBegin()                                                                                                                                                                                                                            |
+| [RETURN STACK]:                                                                                                                                                                                                                             |
+|   [52][9][20]: _Exp11 -> [340][_Expression]<! !_Exp11 @ !>                                                                                                                                                                                  |
+|   [12][247][20]: _Expression -> [734][_AutoProperty]< ( "static" "prop" | "override" "prop" | "prop" ) NAME ":" _Type [ "=" _Expression @ ] ( "{" "}" | "{" "const" "}" | "{" "not" "observe" "}" | "{" "const" "," "not" "observe" "}" ) > |
+|   [9][56][9]: _AutoProperty -> [766][_DeclarationCandidates]<! !_AutoProperty @ !>                                                                                                                                                          |
+|   [8][47][9]: _DeclarationCandidates -> [782][_Declaration]<! { _Attribute } !_DeclarationCandidates @ !>                                                                                                                                   |
+|   [5][222][9]: _Declaration -> [673][_Class]< "interface" NAME ( [ ":" { _Type ; "," } ] "{" { _Declaration @ } [ _StateMachine ] "}" ) >                                                                                                   |
+|   [4][48][3]: _Class -> [768][_DeclarationCandidates]<! !_Class @ !>                                                                                                                                                                        |
+|   [3][47][3]: _DeclarationCandidates -> [782][_Declaration]<! { _Attribute } !_DeclarationCandidates @ !>                                                                                                                                   |
+|   [0][257][3]: _Declaration -> [802][_Module]< "module" ( NAME ";" { _UsingPath } { _Declaration @ } ) >                                                                                                                                    |
+| [PREDECESSORS 69-69]: [69]                                                                                                                                                                                                                  |
+| [SUCCESORS 71-71]: [71]                                                                                                                                                                                                                     |
++---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------+
+|
++
+|
++---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------+
+| [71]: <Ending>                                                                                                                                                                                                                              |
+| [340][_Expression]<! !_Exp11 @ !>                                                                                                                                                                                                           |
+| [AST-INSTRUCTIONS]:                                                                                                                                                                                                                         |
+|   + StackEnd()                                                                                                                                                                                                                              |
+|   > StackBegin()                                                                                                                                                                                                                            |
+| [RETURN STACK]:                                                                                                                                                                                                                             |
+|   [12][247][20]: _Expression -> [734][_AutoProperty]< ( "static" "prop" | "override" "prop" | "prop" ) NAME ":" _Type [ "=" _Expression @ ] ( "{" "}" | "{" "const" "}" | "{" "not" "observe" "}" | "{" "const" "," "not" "observe" "}" ) > |
+|   [9][56][9]: _AutoProperty -> [766][_DeclarationCandidates]<! !_AutoProperty @ !>                                                                                                                                                          |
+|   [8][47][9]: _DeclarationCandidates -> [782][_Declaration]<! { _Attribute } !_DeclarationCandidates @ !>                                                                                                                                   |
+|   [5][222][9]: _Declaration -> [673][_Class]< "interface" NAME ( [ ":" { _Type ; "," } ] "{" { _Declaration @ } [ _StateMachine ] "}" ) >                                                                                                   |
+|   [4][48][3]: _Class -> [768][_DeclarationCandidates]<! !_Class @ !>                                                                                                                                                                        |
+|   [3][47][3]: _DeclarationCandidates -> [782][_Declaration]<! { _Attribute } !_DeclarationCandidates @ !>                                                                                                                                   |
+|   [0][257][3]: _Declaration -> [802][_Module]< "module" ( NAME ";" { _UsingPath } { _Declaration @ } ) >                                                                                                                                    |
+| [PREDECESSORS 70-70]: [70]                                                                                                                                                                                                                  |
+| [SUCCESORS 72-72]: [72]                                                                                                                                                                                                                     |
++---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------+
+|
++
+|
++-------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------+
+| [72]: <Ending>                                                                                                                                                                                              |
+| [734][_AutoProperty]< ( "static" "prop" | "override" "prop" | "prop" ) NAME ":" _Type [ "=" _Expression @ ] ( "{" "}" | "{" "const" "}" | "{" "not" "observe" "}" | "{" "const" "," "not" "observe" "}" ) > |
+| [AST-INSTRUCTIONS]:                                                                                                                                                                                         |
+|   + StackEnd()                                                                                                                                                                                              |
+|   > StackSlot(12)                                                                                                                                                                                           |
+| [RETURN STACK]:                                                                                                                                                                                             |
+|   [9][56][9]: _AutoProperty -> [766][_DeclarationCandidates]<! !_AutoProperty @ !>                                                                                                                          |
+|   [8][47][9]: _DeclarationCandidates -> [782][_Declaration]<! { _Attribute } !_DeclarationCandidates @ !>                                                                                                   |
+|   [5][222][9]: _Declaration -> [673][_Class]< "interface" NAME ( [ ":" { _Type ; "," } ] "{" { _Declaration @ } [ _StateMachine ] "}" ) >                                                                   |
+|   [4][48][3]: _Class -> [768][_DeclarationCandidates]<! !_Class @ !>                                                                                                                                        |
+|   [3][47][3]: _DeclarationCandidates -> [782][_Declaration]<! { _Attribute } !_DeclarationCandidates @ !>                                                                                                   |
+|   [0][257][3]: _Declaration -> [802][_Module]< "module" ( NAME ";" { _UsingPath } { _Declaration @ } ) >                                                                                                    |
+| [PREDECESSORS 71-71]: [71]                                                                                                                                                                                  |
+| [SUCCESORS 76-76]: [76]                                                                                                                                                                                     |
++-------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------+
+[0]
+ |
+ +
+ |
+[0]
+++=============================================================================================================================================================================================================++
+|| [76]: {OPEN_BRACE} {                                                                                                                                                                                        ||
+|| [749][_AutoProperty]< ( "static" "prop" | "override" "prop" | "prop" ) NAME ":" _Type [ "=" _Expression ] ( "{" @ "}" | "{" "const" "}" | "{" "not" "observe" "}" | "{" "const" "," "not" "observe" "}" ) > ||
+|| [AST-INSTRUCTIONS]:                                                                                                                                                                                         ||
+||   + Token(13)                                                                                                                                                                                               ||
+|| [RETURN STACK]:                                                                                                                                                                                             ||
+||   [9][56][9]: _AutoProperty -> [766][_DeclarationCandidates]<! !_AutoProperty @ !>                                                                                                                          ||
+||   [8][47][9]: _DeclarationCandidates -> [782][_Declaration]<! { _Attribute } !_DeclarationCandidates @ !>                                                                                                   ||
+||   [5][222][9]: _Declaration -> [673][_Class]< "interface" NAME ( [ ":" { _Type ; "," } ] "{" { _Declaration @ } [ _StateMachine ] "}" ) >                                                                   ||
+||   [4][48][3]: _Class -> [768][_DeclarationCandidates]<! !_Class @ !>                                                                                                                                        ||
+||   [3][47][3]: _DeclarationCandidates -> [782][_Declaration]<! { _Attribute } !_DeclarationCandidates @ !>                                                                                                   ||
+||   [0][257][3]: _Declaration -> [802][_Module]< "module" ( NAME ";" { _UsingPath } { _Declaration @ } ) >                                                                                                    ||
+|| [PREDECESSORS 72-72]: [72]                                                                                                                                                                                  ||
+|| [SUCCESORS 77-77]: [77]                                                                                                                                                                                     ||
+++=============================================================================================================================================================================================================++
+[0]
+ |
+ +
+ |
+[0]
+++=============================================================================================================================================================================================================++
+|| [77]: {CLOSE_BRACE} }                                                                                                                                                                                       ||
+|| [735][_AutoProperty]< ( "static" "prop" | "override" "prop" | "prop" ) NAME ":" _Type [ "=" _Expression ] ( "{" "}" @ | "{" "const" "}" | "{" "not" "observe" "}" | "{" "const" "," "not" "observe" "}" ) > ||
+|| [AST-INSTRUCTIONS]:                                                                                                                                                                                         ||
+||   + Token(14)                                                                                                                                                                                               ||
+|| [RETURN STACK]:                                                                                                                                                                                             ||
+||   [9][56][9]: _AutoProperty -> [766][_DeclarationCandidates]<! !_AutoProperty @ !>                                                                                                                          ||
+||   [8][47][9]: _DeclarationCandidates -> [782][_Declaration]<! { _Attribute } !_DeclarationCandidates @ !>                                                                                                   ||
+||   [5][222][9]: _Declaration -> [673][_Class]< "interface" NAME ( [ ":" { _Type ; "," } ] "{" { _Declaration @ } [ _StateMachine ] "}" ) >                                                                   ||
+||   [4][48][3]: _Class -> [768][_DeclarationCandidates]<! !_Class @ !>                                                                                                                                        ||
+||   [3][47][3]: _DeclarationCandidates -> [782][_Declaration]<! { _Attribute } !_DeclarationCandidates @ !>                                                                                                   ||
+||   [0][257][3]: _Declaration -> [802][_Module]< "module" ( NAME ";" { _UsingPath } { _Declaration @ } ) >                                                                                                    ||
+|| [PREDECESSORS 76-76]: [76]                                                                                                                                                                                  ||
+|| [SUCCESORS 78-78]: [78]                                                                                                                                                                                     ||
+++=============================================================================================================================================================================================================++
+|
++
+|
++-------------------------------------------------------------------------------------------------------------------------------------------+
+| [78]: <Ending>                                                                                                                            |
+| [766][_DeclarationCandidates]<! !_AutoProperty @ !>                                                                                       |
+| [AST-INSTRUCTIONS]:                                                                                                                       |
+|   + EnumItem(1, 15)                                                                                                                       |
+|   + EnumItem(0, 16)                                                                                                                       |
+|   + CreateObject(AutoPropertyDeclaration)                                                                                                 |
+|   + Field(AutoPropertyDeclaration::functionKind, 2)                                                                                       |
+|   + Field(AutoPropertyDeclaration::functionKind, 5)                                                                                       |
+|   + Field(AutoPropertyDeclaration::functionKind, 7)                                                                                       |
+|   + Field(Declaration::name, 8)                                                                                                           |
+|   + Field(AutoPropertyDeclaration::type, 10)                                                                                              |
+|   + Field(AutoPropertyDeclaration::expression, 12)                                                                                        |
+|   + Field(AutoPropertyDeclaration::configConst, 15)                                                                                       |
+|   + Field(AutoPropertyDeclaration::configObserve, 16)                                                                                     |
+|   + Field(AutoPropertyDeclaration::configConst, 20)                                                                                       |
+|   + Field(AutoPropertyDeclaration::configObserve, 21)                                                                                     |
+|   + Field(AutoPropertyDeclaration::configConst, 26)                                                                                       |
+|   + Field(AutoPropertyDeclaration::configObserve, 27)                                                                                     |
+|   + Field(AutoPropertyDeclaration::configConst, 34)                                                                                       |
+|   + Field(AutoPropertyDeclaration::configObserve, 35)                                                                                     |
+|   + StackEnd()                                                                                                                            |
+|   > StackBegin()                                                                                                                          |
+| [RETURN STACK]:                                                                                                                           |
+|   [8][47][9]: _DeclarationCandidates -> [782][_Declaration]<! { _Attribute } !_DeclarationCandidates @ !>                                 |
+|   [5][222][9]: _Declaration -> [673][_Class]< "interface" NAME ( [ ":" { _Type ; "," } ] "{" { _Declaration @ } [ _StateMachine ] "}" ) > |
+|   [4][48][3]: _Class -> [768][_DeclarationCandidates]<! !_Class @ !>                                                                      |
+|   [3][47][3]: _DeclarationCandidates -> [782][_Declaration]<! { _Attribute } !_DeclarationCandidates @ !>                                 |
+|   [0][257][3]: _Declaration -> [802][_Module]< "module" ( NAME ";" { _UsingPath } { _Declaration @ } ) >                                  |
+| [PREDECESSORS 77-77]: [77]                                                                                                                |
+| [SUCCESORS 79-79]: [79]                                                                                                                   |
++-------------------------------------------------------------------------------------------------------------------------------------------+
+|
++
+|
++-------------------------------------------------------------------------------------------------------------------------------------------+
+| [79]: <Ending>                                                                                                                            |
+| [782][_Declaration]<! { _Attribute } !_DeclarationCandidates @ !>                                                                         |
+| [AST-INSTRUCTIONS]:                                                                                                                       |
+|   + StackEnd()                                                                                                                            |
+|   > StackBegin()                                                                                                                          |
+| [RETURN STACK]:                                                                                                                           |
+|   [5][222][9]: _Declaration -> [673][_Class]< "interface" NAME ( [ ":" { _Type ; "," } ] "{" { _Declaration @ } [ _StateMachine ] "}" ) > |
+|   [4][48][3]: _Class -> [768][_DeclarationCandidates]<! !_Class @ !>                                                                      |
+|   [3][47][3]: _DeclarationCandidates -> [782][_Declaration]<! { _Attribute } !_DeclarationCandidates @ !>                                 |
+|   [0][257][3]: _Declaration -> [802][_Module]< "module" ( NAME ";" { _UsingPath } { _Declaration @ } ) >                                  |
+| [PREDECESSORS 78-78]: [78]                                                                                                                |
+| [SUCCESORS 80-80]: [80]                                                                                                                   |
++-------------------------------------------------------------------------------------------------------------------------------------------+
+|
++
+|
++------------------------------------------------------------------------------------------------------------+
+| [80]: <Ending>                                                                                             |
+| [673][_Class]< "interface" NAME ( [ ":" { _Type ; "," } ] "{" { _Declaration @ } [ _StateMachine ] "}" ) > |
+| [AST-INSTRUCTIONS]:                                                                                        |
+|   + Field(Declaration::attributes, 0)                                                                      |
+|   + StackEnd()                                                                                             |
+|   > StackSlot(6)                                                                                           |
+| [RETURN STACK]:                                                                                            |
+|   [4][48][3]: _Class -> [768][_DeclarationCandidates]<! !_Class @ !>                                       |
+|   [3][47][3]: _DeclarationCandidates -> [782][_Declaration]<! { _Attribute } !_DeclarationCandidates @ !>  |
+|   [0][257][3]: _Declaration -> [802][_Module]< "module" ( NAME ";" { _UsingPath } { _Declaration @ } ) >   |
+| [PREDECESSORS 79-79]: [79]                                                                                 |
+| [SUCCESORS 81-81]: [81]                                                                                    |
++------------------------------------------------------------------------------------------------------------+
+[0]
+ |
+ +
+ |
+[0]
+++============================================================================================================++
+|| [81]: {CLOSE_BRACE} }                                                                                      ||
+|| [675][_Class]< "interface" NAME ( [ ":" { _Type ; "," } ] "{" { _Declaration } [ _StateMachine ] "}" @ ) > ||
+|| [AST-INSTRUCTIONS]:                                                                                        ||
+||   + Token(8)                                                                                               ||
+|| [RETURN STACK]:                                                                                            ||
+||   [4][48][3]: _Class -> [768][_DeclarationCandidates]<! !_Class @ !>                                       ||
+||   [3][47][3]: _DeclarationCandidates -> [782][_Declaration]<! { _Attribute } !_DeclarationCandidates @ !>  ||
+||   [0][257][3]: _Declaration -> [802][_Module]< "module" ( NAME ";" { _UsingPath } { _Declaration @ } ) >   ||
+|| [PREDECESSORS 80-80]: [80]                                                                                 ||
+|| [SUCCESORS 82-82]: [82]                                                                                    ||
+++============================================================================================================++
+|
++
+|
++-----------------------------------------------------------------------------------------------------------+
+| [82]: <Ending>                                                                                            |
+| [768][_DeclarationCandidates]<! !_Class @ !>                                                              |
+| [AST-INSTRUCTIONS]:                                                                                       |
+|   + EnumItem(1, 9)                                                                                        |
+|   + EnumItem(1, 10)                                                                                       |
+|   + CreateObject(ClassDeclaration)                                                                        |
+|   + Field(Declaration::name, 1)                                                                           |
+|   + Field(ClassDeclaration::baseTypes, 3)                                                                 |
+|   + Field(ClassDeclaration::declarations, 6)                                                              |
+|   + Field(ClassDeclaration::declarations, 7)                                                              |
+|   + Field(ClassDeclaration::kind, 9)                                                                      |
+|   + Field(ClassDeclaration::constructorType, 10)                                                          |
+|   + StackEnd()                                                                                            |
+|   > StackBegin()                                                                                          |
+| [RETURN STACK]:                                                                                           |
+|   [3][47][3]: _DeclarationCandidates -> [782][_Declaration]<! { _Attribute } !_DeclarationCandidates @ !> |
+|   [0][257][3]: _Declaration -> [802][_Module]< "module" ( NAME ";" { _UsingPath } { _Declaration @ } ) >  |
+| [PREDECESSORS 81-81]: [81]                                                                                |
+| [SUCCESORS 83-83]: [83]                                                                                   |
++-----------------------------------------------------------------------------------------------------------+
+|
++
+|
++----------------------------------------------------------------------------------------------------------+
+| [83]: <Ending>                                                                                           |
+| [782][_Declaration]<! { _Attribute } !_DeclarationCandidates @ !>                                        |
+| [AST-INSTRUCTIONS]:                                                                                      |
+|   + StackEnd()                                                                                           |
+|   > StackBegin()                                                                                         |
+| [RETURN STACK]:                                                                                          |
+|   [0][257][3]: _Declaration -> [802][_Module]< "module" ( NAME ";" { _UsingPath } { _Declaration @ } ) > |
+| [PREDECESSORS 82-82]: [82]                                                                               |
+| [SUCCESORS 84-84]: [84]                                                                                  |
++----------------------------------------------------------------------------------------------------------+
+|
++
+|
++---------------------------------------------------------------------------+
+| [84]: <Ending>                                                            |
+| [802][_Module]< "module" ( NAME ";" { _UsingPath } { _Declaration @ } ) > |
+| [AST-INSTRUCTIONS]:                                                       |
+|   + Field(Declaration::attributes, 0)                                     |
+|   + StackEnd()                                                            |
+|   > StackSlot(4)                                                          |
+| [PREDECESSORS 83-83]: [83]                                                |
+| [SUCCESORS 85-85]: [85]                                                   |
++---------------------------------------------------------------------------+
+|
++
+|
++------------------------------------+
+| [85]: <Ending>                     |
+| [799][_Module] END [ENDING]        |
+| [AST-INSTRUCTIONS]:                |
+|   + EnumItem(0, 5)                 |
+|   + CreateObject(Module)           |
+|   + Field(Module::name, 1)         |
+|   + Field(Module::paths, 3)        |
+|   + Field(Module::declarations, 4) |
+|   + Field(Module::moduleType, 5)   |
+|   + StackEnd()                     |
+| [PREDECESSORS 84-84]: [84]         |
++------------------------------------+

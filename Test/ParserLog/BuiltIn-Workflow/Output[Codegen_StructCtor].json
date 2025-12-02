@@ -1,0 +1,291 @@
+﻿{
+    "$ast": "Module",
+    "declarations": [{
+        "$ast": "NamespaceDeclaration",
+        "attributes": [],
+        "name": "depended_structs",
+        "declarations": [{
+            "$ast": "StructDeclaration",
+            "attributes": [],
+            "name": "A",
+            "members": [{
+                "$ast": "StructMember",
+                "attributes": [],
+                "name": "data",
+                "type": {
+                    "$ast": "ReferenceType",
+                    "name": "B"
+                }
+            }]
+        }, {
+            "$ast": "StructDeclaration",
+            "attributes": [],
+            "name": "B",
+            "members": [{
+                "$ast": "StructMember",
+                "attributes": [],
+                "name": "data",
+                "type": {
+                    "$ast": "ReferenceType",
+                    "name": "Point"
+                }
+            }]
+        }, {
+            "$ast": "StructDeclaration",
+            "attributes": [],
+            "name": "C",
+            "members": [{
+                "$ast": "StructMember",
+                "attributes": [],
+                "name": "data",
+                "type": {
+                    "$ast": "ReferenceType",
+                    "name": "A"
+                }
+            }]
+        }, {
+            "$ast": "StructDeclaration",
+            "attributes": [],
+            "name": "D",
+            "members": [{
+                "$ast": "StructMember",
+                "attributes": [],
+                "name": "data",
+                "type": {
+                    "$ast": "ReferenceType",
+                    "name": "B"
+                }
+            }]
+        }]
+    }, {
+        "$ast": "FunctionDeclaration",
+        "attributes": [],
+        "name": "Do",
+        "anonymity": "Named",
+        "arguments": [{
+            "$ast": "FunctionArgument",
+            "attributes": [],
+            "name": "p",
+            "type": {
+                "$ast": "ReferenceType",
+                "name": "Point"
+            }
+        }],
+        "functionKind": "Normal",
+        "returnType": {
+            "$ast": "PredefinedType",
+            "name": "Int"
+        },
+        "statement": {
+            "$ast": "BlockStatement",
+            "endLabel": "",
+            "statements": [{
+                "$ast": "ReturnStatement",
+                "expression": {
+                    "$ast": "BinaryExpression",
+                    "first": {
+                        "$ast": "MemberExpression",
+                        "name": "x",
+                        "parent": {
+                            "$ast": "ReferenceExpression",
+                            "name": "p"
+                        }
+                    },
+                    "op": "Add",
+                    "second": {
+                        "$ast": "MemberExpression",
+                        "name": "y",
+                        "parent": {
+                            "$ast": "ReferenceExpression",
+                            "name": "p"
+                        }
+                    }
+                }
+            }]
+        }
+    }, {
+        "$ast": "FunctionDeclaration",
+        "attributes": [],
+        "name": "main",
+        "anonymity": "Named",
+        "arguments": [],
+        "functionKind": "Normal",
+        "returnType": {
+            "$ast": "PredefinedType",
+            "name": "String"
+        },
+        "statement": {
+            "$ast": "BlockStatement",
+            "endLabel": "",
+            "statements": [{
+                "$ast": "VariableStatement",
+                "variable": {
+                    "$ast": "VariableDeclaration",
+                    "attributes": [],
+                    "name": "a",
+                    "expression": {
+                        "$ast": "InferExpression",
+                        "expression": {
+                            "$ast": "ConstructorExpression",
+                            "arguments": [{
+                                "$ast": "ConstructorArgument",
+                                "key": {
+                                    "$ast": "ReferenceExpression",
+                                    "name": "x"
+                                },
+                                "value": {
+                                    "$ast": "IntegerExpression",
+                                    "value": "1"
+                                }
+                            }, {
+                                "$ast": "ConstructorArgument",
+                                "key": {
+                                    "$ast": "ReferenceExpression",
+                                    "name": "y"
+                                },
+                                "value": {
+                                    "$ast": "IntegerExpression",
+                                    "value": "2"
+                                }
+                            }]
+                        },
+                        "type": {
+                            "$ast": "ReferenceType",
+                            "name": "Point"
+                        }
+                    },
+                    "type": null
+                }
+            }, {
+                "$ast": "VariableStatement",
+                "variable": {
+                    "$ast": "VariableDeclaration",
+                    "attributes": [],
+                    "name": "b",
+                    "expression": {
+                        "$ast": "ConstructorExpression",
+                        "arguments": [{
+                            "$ast": "ConstructorArgument",
+                            "key": {
+                                "$ast": "ReferenceExpression",
+                                "name": "x"
+                            },
+                            "value": {
+                                "$ast": "IntegerExpression",
+                                "value": "3"
+                            }
+                        }, {
+                            "$ast": "ConstructorArgument",
+                            "key": {
+                                "$ast": "ReferenceExpression",
+                                "name": "y"
+                            },
+                            "value": {
+                                "$ast": "IntegerExpression",
+                                "value": "4"
+                            }
+                        }]
+                    },
+                    "type": {
+                        "$ast": "ReferenceType",
+                        "name": "Point"
+                    }
+                }
+            }, {
+                "$ast": "ReturnStatement",
+                "expression": {
+                    "$ast": "BinaryExpression",
+                    "first": {
+                        "$ast": "BinaryExpression",
+                        "first": {
+                            "$ast": "CallExpression",
+                            "arguments": [{
+                                "$ast": "ReferenceExpression",
+                                "name": "a"
+                            }],
+                            "function": {
+                                "$ast": "ReferenceExpression",
+                                "name": "Do"
+                            }
+                        },
+                        "op": "Add",
+                        "second": {
+                            "$ast": "CallExpression",
+                            "arguments": [{
+                                "$ast": "ReferenceExpression",
+                                "name": "b"
+                            }],
+                            "function": {
+                                "$ast": "ReferenceExpression",
+                                "name": "Do"
+                            }
+                        }
+                    },
+                    "op": "Add",
+                    "second": {
+                        "$ast": "CallExpression",
+                        "arguments": [{
+                            "$ast": "ConstructorExpression",
+                            "arguments": [{
+                                "$ast": "ConstructorArgument",
+                                "key": {
+                                    "$ast": "ReferenceExpression",
+                                    "name": "x"
+                                },
+                                "value": {
+                                    "$ast": "IntegerExpression",
+                                    "value": "5"
+                                }
+                            }, {
+                                "$ast": "ConstructorArgument",
+                                "key": {
+                                    "$ast": "ReferenceExpression",
+                                    "name": "y"
+                                },
+                                "value": {
+                                    "$ast": "IntegerExpression",
+                                    "value": "6"
+                                }
+                            }]
+                        }],
+                        "function": {
+                            "$ast": "ReferenceExpression",
+                            "name": "Do"
+                        }
+                    }
+                }
+            }]
+        }
+    }],
+    "moduleType": "Module",
+    "name": "test",
+    "paths": [{
+        "$ast": "ModuleUsingPath",
+        "items": [{
+            "$ast": "ModuleUsingItem",
+            "fragments": [{
+                "$ast": "ModuleUsingNameFragment",
+                "name": "system"
+            }]
+        }, {
+            "$ast": "ModuleUsingItem",
+            "fragments": [{
+                "$ast": "ModuleUsingWildCardFragment"
+            }]
+        }]
+    }, {
+        "$ast": "ModuleUsingPath",
+        "items": [{
+            "$ast": "ModuleUsingItem",
+            "fragments": [{
+                "$ast": "ModuleUsingNameFragment",
+                "name": "test"
+            }]
+        }, {
+            "$ast": "ModuleUsingItem",
+            "fragments": [{
+                "$ast": "ModuleUsingWildCardFragment"
+            }]
+        }]
+    }]
+}
