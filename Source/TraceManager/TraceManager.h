@@ -736,6 +736,35 @@ TraceManager
 			public:
 				Ptr<ParsingAstBase>				ExecuteTrace(IAstInsReceiver& receiver, collections::List<regex::RegexToken>& tokens) override;
 			};
+
+			class TraceException : public Exception
+			{
+			public:
+				TraceException(TraceManager& tm, InsRef insRef, const wchar_t* phrase, const wchar_t* message)
+					: Exception(
+						WString::Unmanaged(L"[") + 
+						WString::Unmanaged(phrase) +
+						WString::Unmanaged(L"] at ") +
+						itow(insRef.trace.handle) + WString::Unmanaged(L"@") + itow(insRef.ins) +
+						WString::Unmanaged(L" : ") +
+						WString::Unmanaged(message)
+					)
+				{
+				}
+
+				TraceException(TraceManager& tm, Trace* trace1, Trace* trace2, const wchar_t* phrase, const wchar_t* message)
+					: Exception(
+						WString::Unmanaged(L"[") +
+						WString::Unmanaged(phrase) +
+						WString::Unmanaged(L"] at trace ") +
+						itow(trace1->allocatedIndex) +
+						(trace2 == nullptr ? WString::Empty : WString::Unmanaged(L" and ") + itow(trace2->allocatedIndex)) +
+						WString::Unmanaged(L" : ") +
+						WString::Unmanaged(message)
+					)
+				{
+				}
+			};
 		}
 	}
 }

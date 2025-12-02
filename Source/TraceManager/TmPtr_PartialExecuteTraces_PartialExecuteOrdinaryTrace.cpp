@@ -110,7 +110,7 @@ PartialExecuteOrdinaryTrace
 
 			void TraceManager::PartialExecuteOrdinaryTrace(Trace* trace)
 			{
-#define ERROR_MESSAGE_PREFIX L"vl::glr::automaton::TraceManager::PartialExecuteOrdinaryTrace(Trace*)#"
+#define TRACE_MAMAGER_PHRASE L"PrepareTraceRoute/PartialExecuteOrdinaryTrace"
 				InsExec_Context context;
 				if (trace->predecessors.first != nullref)
 				{
@@ -143,7 +143,10 @@ PartialExecuteOrdinaryTrace
 					{
 					case AstInsType::CreateObject:
 						{
-							CHECK_ERROR(context.createStack != nullref, ERROR_MESSAGE_PREFIX L"Internal error: [CreateObject] context.createStack is empty.");
+							if (context.createStack == nullref)
+							{
+								throw TraceException(*this, { trace, insRef }, TRACE_MAMAGER_PHRASE, L"[CreateObject] context.createStack is empty.");
+							}
 							ForEachStack(context.createStack, [=](InsExec_Stack* topStack)
 							{
 								PushInsRefLink(topStack->createObjectInsRefs, { trace, insRef });
@@ -171,7 +174,10 @@ PartialExecuteOrdinaryTrace
 						break;
 					case AstInsType::StackEnd:
 						{
-							CHECK_ERROR(context.createStack != nullref, ERROR_MESSAGE_PREFIX L"Internal error: [StackEnd] context.createStack is empty.");
+							if (context.createStack == nullref)
+							{
+								throw TraceException(*this, { trace, insRef }, TRACE_MAMAGER_PHRASE, L"[StackEnd] context.createStack is empty.");
+							}
 							bool endWithCreate = false;
 							bool endWithReuse = false;
 							ForEachStack(context.createStack, [&](InsExec_Stack* topStack)
@@ -196,11 +202,18 @@ PartialExecuteOrdinaryTrace
 
 								PushStackRefLink(insExec->operatingStacks, topStack);
 							});
-							CHECK_ERROR(endWithCreate ^ endWithReuse, ERROR_MESSAGE_PREFIX L"Internal error: [StackEnd] Connected CreateObject and StackEnd should always be in the same trace.");
+
+							if (endWithCreate == endWithReuse)
+							{
+								throw TraceException(*this, { trace, insRef }, TRACE_MAMAGER_PHRASE, L"[StackEnd] Connected CreateObject and StackEnd should always be in the same trace.");
+							}
 
 							if (endWithReuse)
 							{
-								CHECK_ERROR(context.objectStack != nullref, ERROR_MESSAGE_PREFIX L"Internal error: [StackEnd] context.objectStack is empty.");
+								if (context.objectStack == nullref)
+								{
+									throw TraceException(*this, { trace, insRef }, TRACE_MAMAGER_PHRASE, L"[StackEnd] context.objectStack is empty.");
+								}
 								auto topObjects = GetInsExec_StackArrayRefLink(context.objectStack);
 								context.objectStack = topObjects->previous;
 								ForEachStack(context.createStack, [&](InsExec_Stack* topStack)
@@ -216,8 +229,14 @@ PartialExecuteOrdinaryTrace
 						break;
 					case AstInsType::StackSlot:
 						{
-							CHECK_ERROR(context.createStack != nullref, ERROR_MESSAGE_PREFIX L"Internal error: [StackSlot] context.createStack is empty.");
-							CHECK_ERROR(context.objectStack != nullref, ERROR_MESSAGE_PREFIX L"Internal error: [StackSlot] context.objectStack is empty.");
+							if (context.createStack == nullref)
+							{
+								throw TraceException(*this, { trace, insRef }, TRACE_MAMAGER_PHRASE, L"[StackSlot] context.createStack is empty.");
+							}
+							if (context.objectStack == nullref)
+							{
+								throw TraceException(*this, { trace, insRef }, TRACE_MAMAGER_PHRASE, L"[StackSlot] context.objectStack is empty.");
+							}
 							auto topObjects = GetInsExec_StackArrayRefLink(context.objectStack);
 							context.objectStack = topObjects->previous;
 							ForEachStack(context.createStack, [&](InsExec_Stack* topStack)
@@ -232,13 +251,13 @@ PartialExecuteOrdinaryTrace
 					case AstInsType::EnumItem:
 						break;
 					case AstInsType::ResolveAmbiguity:
-						CHECK_FAIL(ERROR_MESSAGE_PREFIX L"Internal error: ResolveAmbiguity should not appear in traces.");
+						throw TraceException(*this, { trace, insRef }, TRACE_MAMAGER_PHRASE, L"[ResolveAmbiguity] should not appear in traces.");
 					default:;
-						CHECK_FAIL(ERROR_MESSAGE_PREFIX L"Internal error: Unrecognizabled instruction.");
+						throw TraceException(*this, { trace, insRef }, TRACE_MAMAGER_PHRASE, L"Unrecognizabled instruction.");
 					}
 				}
 				traceExec->context = context;
-#undef ERROR_MESSAGE_PREFIX
+#undef TRACE_MAMAGER_PHRASE
 			}
 
 #undef NEW_MERGE_STACK_MAGIC_COUNTER

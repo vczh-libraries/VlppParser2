@@ -1,9 +1,5 @@
 #include "TraceManager.h"
 
-#if defined VCZH_MSVC && defined _DEBUG
-#define VCZH_DO_DEBUG_CHECK
-#endif
-
 namespace vl
 {
 	namespace glr
@@ -465,7 +461,7 @@ CheckTraceAmbiguity
 
 			void TraceManager::CheckTraceAmbiguity(TraceAmbiguity* ta)
 			{
-#define ERROR_MESSAGE_PREFIX L"vl::glr::automaton::TraceManager::CheckTraceAmbiguity(TraceAmbiguity*)#"
+#define TRACE_MAMAGER_PHRASE L"ResolveAmbiguity/CheckMergeTraces/CheckTraceAmbiguity"
 				auto teFirst = GetTraceExec(GetTrace(ta->firstTrace)->traceExecRef);
 
 				if (teFirst->ambiguityBegins == nullref)
@@ -495,10 +491,10 @@ CheckTraceAmbiguity
 					// if there is a TraceAmbiguity to override
 					// ensure they are equivalent
 					auto ta2 = GetTraceAmbiguity(taLinkToOverride->ambiguity);
-#ifdef VCZH_DO_DEBUG_CHECK
-					CHECK_ERROR(ta2->prefix == ta->prefix, ERROR_MESSAGE_PREFIX L"Incompatible TraceAmbiguity has been assigned at the same place.");
-					CHECK_ERROR(ta2->postfix == ta->postfix, ERROR_MESSAGE_PREFIX L"Incompatible TraceAmbiguity has been assigned at the same place.");
-#endif
+					if (ta2->prefix != ta->prefix || ta2->postfix != ta->postfix)
+					{
+						throw TraceManager(*this, TRACE_MAMAGER_PHRASE, L"Incompatible TraceAmbiguity has been assigned at the same place");
+					}
 					// override ambiguityBegins
 					taLinkToOverride->ambiguity = ta;
 
@@ -513,7 +509,7 @@ CheckTraceAmbiguity
 					taLink->previous = teFirst->ambiguityBegins;
 					teFirst->ambiguityBegins = taLink;
 				}
-#undef ERROR_MESSAGE_PREFIX
+#undef TRACE_MAMAGER_PHRASE
 			}
 
 /***********************************************************************
@@ -522,11 +518,14 @@ CategorizeTraceAmbiguities
 
 			void TraceManager::MarkAmbiguityCoveredForward(Trace* currentTrace, TraceAmbiguity* ta, Trace* firstTrace, TraceExec* firstTraceExec)
 			{
-#define ERROR_MESSAGE_PREFIX L"vl::glr::automaton::TraceManager::MarkAmbiguityCoveredForward(Trace*, TraceAmbiguity*, Trace*, TraceExec*)#"
+#define TRACE_MAMAGER_PHRASE L"ResolveAmbiguity/CheckMergeTraces/MarkAmbiguityCoveredForward"
 				while (true)
 				{
 					auto forward = GetTrace(GetTraceExec(currentTrace->traceExecRef)->branchData.forwardTrace);
-					CHECK_ERROR(forward->traceExecRef > firstTraceExec, ERROR_MESSAGE_PREFIX L"Unexpected ambiguity resolving structure found.");
+					if (forward->traceExecRef <= firstTraceExec)
+					{
+						throw TraceException(*this, forward, nullptr, TRACE_MAMAGER_PHRASE, L"Unexpected ambiguity resolving structure found.");
+					}
 
 					auto forwardExec = GetTraceExec(forward->traceExecRef);
 					if (forward->predecessors.first != forward->predecessors.last)
@@ -559,7 +558,7 @@ CategorizeTraceAmbiguities
 						currentTrace = GetTrace(forward->predecessors.first);
 					}
 				}
-#undef ERROR_MESSAGE_PREFIX
+#undef TRACE_MAMAGER_PHRASE
 			}
 
 			void TraceManager::CategorizeTraceAmbiguities(Trace* trace, TraceExec* traceExec)
@@ -586,7 +585,7 @@ CheckMergeTraces
 
 			void TraceManager::CheckMergeTraces()
 			{
-#define ERROR_MESSAGE_PREFIX L"vl::glr::automaton::TraceManager::CheckMergeTraces()#"
+#define TRACE_MAMAGER_PHRASE L"ResolveAmbiguity/CheckMergeTraces"
 				// mark all branch trace critical
 				{
 					auto traceId = firstBranchTrace;
@@ -624,7 +623,10 @@ CheckMergeTraces
 
 					auto ta = GetTraceAmbiguity(traceAmbiguities.Allocate());
 					bool succeeded = CheckMergeTrace(ta, trace, traceExec, visitingIds);
-					CHECK_ERROR(succeeded, ERROR_MESSAGE_PREFIX L"Failed to find ambiguous objects in a merge trace.");
+					if (!succeeded)
+					{
+						throw TraceException(*this, trace, nullptr, TRACE_MAMAGER_PHRASE, L"Failed to find ambiguous objects in a merge trace.");
+					}
 					traceExec->ambiguityDetected = ta;
 
 					// check if existing TraceAmbiguity in firstTrace are compatible
@@ -646,14 +648,10 @@ CheckMergeTraces
 						}
 					}
 				}
-#undef ERROR_MESSAGE_PREFIX
+#undef TRACE_MAMAGER_PHRASE
 			}
 
 #undef NEW_MERGE_STACK_MAGIC_COUNTER
 		}
 	}
 }
-
-#if defined VCZH_MSVC && defined _DEBUG
-#undef VCZH_DO_DEBUG_CHECK
-#endif

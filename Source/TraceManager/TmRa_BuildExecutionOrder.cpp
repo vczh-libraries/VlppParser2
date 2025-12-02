@@ -480,7 +480,7 @@ BuildAmbiguousStepLink
 
 			void TraceManager::BuildAmbiguousStepLink(TraceAmbiguity* ta, bool checkCoveredMark, ExecutionStep*& first, ExecutionStep*& last)
 			{
-#define ERROR_MESSAGE_PREFIX L"vl::glr::automaton::TraceManager::BuildAmbiguousStepLink()#"
+#define TRACE_MAMAGER_PHRASE L"ResolveAmbiguity/BuildExecutionOrder"
 				auto taFirst = GetTrace(ta->firstTrace);
 				auto taFirstExec = GetTraceExec(taFirst->traceExecRef);
 				auto taLast = GetTrace(ta->lastTrace);
@@ -626,7 +626,7 @@ BuildAmbiguousStepLink
 
 				stepRA->parent = last;
 				last = stepRA;
-#undef ERROR_MESSAGE_PREFIX
+#undef TRACE_MAMAGER_PHRASE
 			}
 
 /***********************************************************************
@@ -635,7 +635,7 @@ BuildExecutionOrder
 
 			void TraceManager::BuildExecutionOrder()
 			{
-#define ERROR_MESSAGE_PREFIX L"vl::glr::automaton::TraceManager::BuildExecutionOrder()#"
+#define TRACE_MAMAGER_PHRASE L"ResolveAmbiguity/BuildExecutionOrder"
 				// get the instruction range
 				auto startTrace = initialTrace;
 				vint32_t startIns = 0;
@@ -657,7 +657,7 @@ BuildExecutionOrder
 				ExecutionStep* last = nullptr;
 				ConvertStepTreeToLink(root, firstLeaf, first, last);
 				firstStep = first;
-#undef ERROR_MESSAGE_PREFIX
+#undef TRACE_MAMAGER_PHRASE
 			}
 		}
 	}

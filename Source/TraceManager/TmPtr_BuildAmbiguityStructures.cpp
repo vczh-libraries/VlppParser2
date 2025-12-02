@@ -42,7 +42,7 @@ BuildAmbiguityStructures
 
 			void TraceManager::BuildAmbiguityStructures()
 			{
-#define ERROR_MESSAGE_PREFIX L"vl::glr::automaton::TraceManager::BuildAmbiguityStructures()#"
+#define TRACE_MAMAGER_PHRASE L"PrepareTraceRoute/BuildAmbiguityStructures"
 				IterateSurvivedTraces(
 					[this](Trace* trace, Trace* predecessor, vint32_t visitCount, vint32_t predecessorCount)
 					{
@@ -67,7 +67,10 @@ BuildAmbiguityStructures
 						}
 						else
 						{
-							CHECK_ERROR(predecessor->state != -1, ERROR_MESSAGE_PREFIX L"Internal error: Predecessor trace of a merge trace cannot be a merge trace.");
+							if (predecessor->state == -1)
+							{
+								throw TraceException(*this, trace, predecessor, TRACE_MAMAGER_PHRASE, L"Predecessor trace of a merge trace cannot be a merge trace.");
+							}
 
 							if (visitCount == 1)
 							{
@@ -99,13 +102,16 @@ BuildAmbiguityStructures
 									}
 									currentTrace = StepForward(currentTrace);
 								}
-								CHECK_ERROR(currentTrace != nullptr, ERROR_MESSAGE_PREFIX L"Internal error: Cannot determine commonForwardBranch of a merge trace.");
+								if (currentTrace == nullptr)
+								{
+									throw TraceException(*this, currentTrace, nullptr, TRACE_MAMAGER_PHRASE, L"Cannot determine commonForwardBranch of a merge trace.");
+								}
 								traceExec->branchData.commonForwardBranch = currentTrace;
 							}
 						}
 					}
 				);
-#undef ERROR_MESSAGE_PREFIX
+#undef TRACE_MAMAGER_PHRASE
 			}
 
 #undef NEW_MERGE_STACK_MAGIC_COUNTER

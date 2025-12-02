@@ -13,6 +13,7 @@ GetCurrentSuccessorInReturnStack
 
 			ReturnStackSuccessors* TraceManager::GetCurrentSuccessorInReturnStack(Ref<ReturnStack> base, vint32_t currentTokenIndex)
 			{
+#define ERROR_MESSAGE_PREFIX L"vl::glr::automaton::TraceManager::GetCurrentSuccessorInReturnStack(vint32_t, vint32_t)#"
 				auto& cache = base == nullref ? initialReturnStackCache : GetReturnStack(base)->cache;
 				if (cache.successors.tokenIndex == currentTokenIndex)
 				{
@@ -23,11 +24,12 @@ GetCurrentSuccessorInReturnStack
 					return &cache.lastSuccessors;
 				}
 
-				CHECK_ERROR(currentTokenIndex > cache.successors.tokenIndex, L"vl::glr::automaton::TraceManager::GetCurrentSuccessorInReturnStack(vint32_t, vint32_t)#ReturnStackSuccessors::tokenIndex corrupted.");
+				CHECK_ERROR(currentTokenIndex > cache.successors.tokenIndex, ERROR_MESSAGE_PREFIX L"ReturnStackSuccessors::tokenIndex corrupted.");
 				cache.lastSuccessors = cache.successors;
 				cache.successors = {};
 				cache.successors.tokenIndex = currentTokenIndex;
 				return &cache.successors;
+#undef ERROR_MESSAGE_PREFIX
 			}
 
 /***********************************************************************
