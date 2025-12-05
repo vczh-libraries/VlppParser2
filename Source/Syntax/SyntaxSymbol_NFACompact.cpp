@@ -285,6 +285,26 @@ SyntaxSymbolManager::EliminateLeftRecursion
 			}
 
 /***********************************************************************
+SyntaxSymbolManager::MergeEdgesWithSameInput
+***********************************************************************/
+
+			void SyntaxSymbolManager::MergeEdgesWithSameInput(RuleSymbol* rule, StateSymbol* startState, StateList& newStates, EdgeList& newEdges)
+			{
+				// TODO:
+				// Just like building DFA
+				//   start from startState, put into pending list
+				//   group outgoing edges by input
+				//   make new state for each group with multiple input
+				//   maintain a map from merged states to use state using StateSymbolSet
+				//   for each grouped edge, whether new states are created or not, put target state into pending list
+				//   work until pending list is empty
+				// After merging, newStates and newEdges should not contain removed objects
+				// We should take into consideration that input includes insAfterInput
+				//   returnEdges are always empty at the moment
+				//   competitions should be merged
+			}
+
+/***********************************************************************
 SyntaxSymbolManager::EliminateEpsilonEdges
 ***********************************************************************/
 
@@ -342,6 +362,7 @@ SyntaxSymbolManager::EliminateEpsilonEdges
 
 				// optimize
 				EliminateLeftRecursion(rule, compactStartState, compactEndState.Obj(), newStates, newEdges);
+				MergeEdgesWithSameInput(rule, compactStartState, newStates, newEdges);
 
 				return compactStartState;
 			}
