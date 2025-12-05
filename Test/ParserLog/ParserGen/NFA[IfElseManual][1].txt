@@ -1,149 +1,149 @@
 ﻿[0][Do]< "do" ";" > @[ENDING]
-[RULE: 0][CLAUSE: 0]
+[RULE: 0]
 
 [1][Do]< "do" ";" @ >
-[RULE: 0][CLAUSE: 0]
+[RULE: 0]
 	epsilon -> [0][Do]< "do" ";" > @[ENDING]
 		+ CreateObject(DoStat)
 		+ StackEnd()
 
 [2][Do]< "do" @ ";" >
-[RULE: 0][CLAUSE: 0]
+[RULE: 0]
 	epsilon -> [3][Do]< "do" @ ";" >
 
 [3][Do]< "do" @ ";" >
-[RULE: 0][CLAUSE: 0]
+[RULE: 0]
 	token: ";" -> [1][Do]< "do" ";" @ >
 		+ Token(1)
 
 [4][Do]< @ "do" ";" >
-[RULE: 0][CLAUSE: 0]
+[RULE: 0]
 	token: "do" -> [2][Do]< "do" @ ";" >
 		+ Token(0)
 
 [5][Do]@ < "do" ";" >
-[RULE: 0][CLAUSE: 0]
+[RULE: 0]
 	epsilon -> [4][Do]< @ "do" ";" >
 		+ StackBegin()
 
 [6][Block]< "{" @ { Stat } "}" >
-[RULE: 1][CLAUSE: 0]
+[RULE: 1]
 	epsilon -> [8][Block]< "{" { @ Stat } "}" >
 	epsilon -> [12][Block]< "{" { Stat } @ "}" >
 
 [7][Block]< "{" @ { Stat } "}" >
-[RULE: 1][CLAUSE: 0]
+[RULE: 1]
 	epsilon -> [6][Block]< "{" @ { Stat } "}" >
 
 [8][Block]< "{" { @ Stat } "}" >
-[RULE: 1][CLAUSE: 0]
+[RULE: 1]
 	rule: Stat -> [9][Block]< "{" { Stat @ } "}" >
 		+ StackSlot(1)
 
 [9][Block]< "{" { Stat @ } "}" >
-[RULE: 1][CLAUSE: 0]
+[RULE: 1]
 	epsilon -> [8][Block]< "{" { @ Stat } "}" >
 	epsilon -> [12][Block]< "{" { Stat } @ "}" >
 
 [10][Block]< "{" { Stat } "}" > @[ENDING]
-[RULE: 1][CLAUSE: 0]
+[RULE: 1]
 
 [11][Block]< "{" { Stat } "}" @ >
-[RULE: 1][CLAUSE: 0]
+[RULE: 1]
 	epsilon -> [10][Block]< "{" { Stat } "}" > @[ENDING]
 		+ CreateObject(BlockStat)
 		+ Field(BlockStat::stats, 1)
 		+ StackEnd()
 
 [12][Block]< "{" { Stat } @ "}" >
-[RULE: 1][CLAUSE: 0]
+[RULE: 1]
 	epsilon -> [13][Block]< "{" { Stat } @ "}" >
 
 [13][Block]< "{" { Stat } @ "}" >
-[RULE: 1][CLAUSE: 0]
+[RULE: 1]
 	token: "}" -> [11][Block]< "{" { Stat } "}" @ >
 		+ Token(2)
 
 [14][Block]< @ "{" { Stat } "}" >
-[RULE: 1][CLAUSE: 0]
+[RULE: 1]
 	token: "{" -> [7][Block]< "{" @ { Stat } "}" >
 		+ Token(0)
 
 [15][Block]@ < "{" { Stat } "}" >
-[RULE: 1][CLAUSE: 0]
+[RULE: 1]
 	epsilon -> [14][Block]< @ "{" { Stat } "}" >
 		+ StackBegin()
 
 [16][HalfIf]< "if" "cond" "then" @ Stat >
-[RULE: 2][CLAUSE: 0]
+[RULE: 2]
 	rule: Stat -> [19][HalfIf]< "if" "cond" "then" Stat @ >
 		+ StackSlot(3)
 
 [17][HalfIf]< "if" "cond" "then" @ Stat >
-[RULE: 2][CLAUSE: 0]
+[RULE: 2]
 	epsilon -> [16][HalfIf]< "if" "cond" "then" @ Stat >
 
 [18][HalfIf]< "if" "cond" "then" Stat > @[ENDING]
-[RULE: 2][CLAUSE: 0]
+[RULE: 2]
 
 [19][HalfIf]< "if" "cond" "then" Stat @ >
-[RULE: 2][CLAUSE: 0]
+[RULE: 2]
 	epsilon -> [18][HalfIf]< "if" "cond" "then" Stat > @[ENDING]
 		+ CreateObject(IfStat)
 		+ Field(IfStat::thenBranch, 3)
 		+ StackEnd()
 
 [20][HalfIf]< "if" "cond" @ "then" Stat >
-[RULE: 2][CLAUSE: 0]
+[RULE: 2]
 	epsilon -> [21][HalfIf]< "if" "cond" @ "then" Stat >
 
 [21][HalfIf]< "if" "cond" @ "then" Stat >
-[RULE: 2][CLAUSE: 0]
+[RULE: 2]
 	token: "then" -> [17][HalfIf]< "if" "cond" "then" @ Stat >
 		+ Token(2)
 
 [22][HalfIf]< "if" @ "cond" "then" Stat >
-[RULE: 2][CLAUSE: 0]
+[RULE: 2]
 	epsilon -> [23][HalfIf]< "if" @ "cond" "then" Stat >
 
 [23][HalfIf]< "if" @ "cond" "then" Stat >
-[RULE: 2][CLAUSE: 0]
+[RULE: 2]
 	token: "cond" -> [20][HalfIf]< "if" "cond" @ "then" Stat >
 		+ Token(1)
 
 [24][HalfIf]< @ "if" "cond" "then" Stat >
-[RULE: 2][CLAUSE: 0]
+[RULE: 2]
 	token: "if" -> [22][HalfIf]< "if" @ "cond" "then" Stat >
 		+ Token(0)
 
 [25][HalfIf]@ < "if" "cond" "then" Stat >
-[RULE: 2][CLAUSE: 0]
+[RULE: 2]
 	epsilon -> [24][HalfIf]< @ "if" "cond" "then" Stat >
 		+ StackBegin()
 
 [26][CompleteIf]< "if" "cond" "then" @ CompleteStat "else" Stat >
-[RULE: 3][CLAUSE: 0]
+[RULE: 3]
 	epsilon -> [27][CompleteIf]< "if" "cond" "then" @ CompleteStat "else" Stat >
 
 [27][CompleteIf]< "if" "cond" "then" @ CompleteStat "else" Stat >
-[RULE: 3][CLAUSE: 0]
+[RULE: 3]
 	rule: CompleteStat -> [32][CompleteIf]< "if" "cond" "then" CompleteStat @ "else" Stat >
 		+ StackSlot(3)
 
 [28][CompleteIf]< "if" "cond" "then" CompleteStat "else" @ Stat >
-[RULE: 3][CLAUSE: 0]
+[RULE: 3]
 	epsilon -> [29][CompleteIf]< "if" "cond" "then" CompleteStat "else" @ Stat >
 
 [29][CompleteIf]< "if" "cond" "then" CompleteStat "else" @ Stat >
-[RULE: 3][CLAUSE: 0]
+[RULE: 3]
 	rule: Stat -> [31][CompleteIf]< "if" "cond" "then" CompleteStat "else" Stat @ >
 		+ StackSlot(5)
 
 [30][CompleteIf]< "if" "cond" "then" CompleteStat "else" Stat > @[ENDING]
-[RULE: 3][CLAUSE: 0]
+[RULE: 3]
 
 [31][CompleteIf]< "if" "cond" "then" CompleteStat "else" Stat @ >
-[RULE: 3][CLAUSE: 0]
+[RULE: 3]
 	epsilon -> [30][CompleteIf]< "if" "cond" "then" CompleteStat "else" Stat > @[ENDING]
 		+ CreateObject(IfStat)
 		+ Field(IfStat::thenBranch, 3)
@@ -151,83 +151,83 @@
 		+ StackEnd()
 
 [32][CompleteIf]< "if" "cond" "then" CompleteStat @ "else" Stat >
-[RULE: 3][CLAUSE: 0]
+[RULE: 3]
 	epsilon -> [33][CompleteIf]< "if" "cond" "then" CompleteStat @ "else" Stat >
 
 [33][CompleteIf]< "if" "cond" "then" CompleteStat @ "else" Stat >
-[RULE: 3][CLAUSE: 0]
+[RULE: 3]
 	token: "else" -> [28][CompleteIf]< "if" "cond" "then" CompleteStat "else" @ Stat >
 		+ Token(4)
 
 [34][CompleteIf]< "if" "cond" @ "then" CompleteStat "else" Stat >
-[RULE: 3][CLAUSE: 0]
+[RULE: 3]
 	epsilon -> [35][CompleteIf]< "if" "cond" @ "then" CompleteStat "else" Stat >
 
 [35][CompleteIf]< "if" "cond" @ "then" CompleteStat "else" Stat >
-[RULE: 3][CLAUSE: 0]
+[RULE: 3]
 	token: "then" -> [26][CompleteIf]< "if" "cond" "then" @ CompleteStat "else" Stat >
 		+ Token(2)
 
 [36][CompleteIf]< "if" @ "cond" "then" CompleteStat "else" Stat >
-[RULE: 3][CLAUSE: 0]
+[RULE: 3]
 	epsilon -> [37][CompleteIf]< "if" @ "cond" "then" CompleteStat "else" Stat >
 
 [37][CompleteIf]< "if" @ "cond" "then" CompleteStat "else" Stat >
-[RULE: 3][CLAUSE: 0]
+[RULE: 3]
 	token: "cond" -> [34][CompleteIf]< "if" "cond" @ "then" CompleteStat "else" Stat >
 		+ Token(1)
 
 [38][CompleteIf]< @ "if" "cond" "then" CompleteStat "else" Stat >
-[RULE: 3][CLAUSE: 0]
+[RULE: 3]
 	token: "if" -> [36][CompleteIf]< "if" @ "cond" "then" CompleteStat "else" Stat >
 		+ Token(0)
 
 [39][CompleteIf]@ < "if" "cond" "then" CompleteStat "else" Stat >
-[RULE: 3][CLAUSE: 0]
+[RULE: 3]
 	epsilon -> [38][CompleteIf]< @ "if" "cond" "then" CompleteStat "else" Stat >
 		+ StackBegin()
 
 [40][If]< "if" "cond" "then" ( ( @ CompleteStat [ "else" Stat ] | HalfIf ) ) >
-[RULE: 5][CLAUSE: 0]
+[RULE: 5]
 	rule: CompleteStat -> [41][If]< "if" "cond" "then" ( ( CompleteStat @ [ "else" Stat ] | HalfIf ) ) >
 		+ StackSlot(3)
 
 [41][If]< "if" "cond" "then" ( ( CompleteStat @ [ "else" Stat ] | HalfIf ) ) >
-[RULE: 5][CLAUSE: 0]
+[RULE: 5]
 	epsilon -> [42][If]< "if" "cond" "then" ( ( CompleteStat @ [ "else" Stat ] | HalfIf ) ) >
 
 [42][If]< "if" "cond" "then" ( ( CompleteStat @ [ "else" Stat ] | HalfIf ) ) >
-[RULE: 5][CLAUSE: 0]
+[RULE: 5]
 	epsilon -> [46][If]< "if" "cond" "then" ( ( CompleteStat [ "else" Stat ] @ | HalfIf ) ) >
 	epsilon -> [52][If]< "if" "cond" "then" ( ( CompleteStat [ @ "else" Stat ] | HalfIf ) ) >
 
 [43][If]< "if" "cond" "then" ( ( CompleteStat [ "else" @ Stat ] | HalfIf ) ) >
-[RULE: 5][CLAUSE: 0]
+[RULE: 5]
 	epsilon -> [44][If]< "if" "cond" "then" ( ( CompleteStat [ "else" @ Stat ] | HalfIf ) ) >
 
 [44][If]< "if" "cond" "then" ( ( CompleteStat [ "else" @ Stat ] | HalfIf ) ) >
-[RULE: 5][CLAUSE: 0]
+[RULE: 5]
 	rule: Stat -> [45][If]< "if" "cond" "then" ( ( CompleteStat [ "else" Stat @ ] | HalfIf ) ) >
 		+ StackSlot(5)
 
 [45][If]< "if" "cond" "then" ( ( CompleteStat [ "else" Stat @ ] | HalfIf ) ) >
-[RULE: 5][CLAUSE: 0]
+[RULE: 5]
 	epsilon -> [46][If]< "if" "cond" "then" ( ( CompleteStat [ "else" Stat ] @ | HalfIf ) ) >
 
 [46][If]< "if" "cond" "then" ( ( CompleteStat [ "else" Stat ] @ | HalfIf ) ) >
-[RULE: 5][CLAUSE: 0]
+[RULE: 5]
 	epsilon -> [50][If]< "if" "cond" "then" ( ( CompleteStat [ "else" Stat ] | HalfIf ) @ ) >
 
 [47][If]< "if" "cond" "then" ( ( CompleteStat [ "else" Stat ] | @ HalfIf ) ) >
-[RULE: 5][CLAUSE: 0]
+[RULE: 5]
 	rule: HalfIf -> [51][If]< "if" "cond" "then" ( ( CompleteStat [ "else" Stat ] | HalfIf @ ) ) >
 		+ StackSlot(6)
 
 [48][If]< "if" "cond" "then" ( ( CompleteStat [ "else" Stat ] | HalfIf ) ) > @[ENDING]
-[RULE: 5][CLAUSE: 0]
+[RULE: 5]
 
 [49][If]< "if" "cond" "then" ( ( CompleteStat [ "else" Stat ] | HalfIf ) ) @ >
-[RULE: 5][CLAUSE: 0]
+[RULE: 5]
 	epsilon -> [48][If]< "if" "cond" "then" ( ( CompleteStat [ "else" Stat ] | HalfIf ) ) > @[ENDING]
 		+ CreateObject(IfStat)
 		+ Field(IfStat::thenBranch, 3)
@@ -236,178 +236,178 @@
 		+ StackEnd()
 
 [50][If]< "if" "cond" "then" ( ( CompleteStat [ "else" Stat ] | HalfIf ) @ ) >
-[RULE: 5][CLAUSE: 0]
+[RULE: 5]
 	epsilon -> [49][If]< "if" "cond" "then" ( ( CompleteStat [ "else" Stat ] | HalfIf ) ) @ >
 
 [51][If]< "if" "cond" "then" ( ( CompleteStat [ "else" Stat ] | HalfIf @ ) ) >
-[RULE: 5][CLAUSE: 0]
+[RULE: 5]
 	epsilon -> [50][If]< "if" "cond" "then" ( ( CompleteStat [ "else" Stat ] | HalfIf ) @ ) >
 
 [52][If]< "if" "cond" "then" ( ( CompleteStat [ @ "else" Stat ] | HalfIf ) ) >
-[RULE: 5][CLAUSE: 0]
+[RULE: 5]
 	token: "else" -> [43][If]< "if" "cond" "then" ( ( CompleteStat [ "else" @ Stat ] | HalfIf ) ) >
 		+ Token(4)
 
 [53][If]< "if" "cond" "then" ( @ ( CompleteStat [ "else" Stat ] | HalfIf ) ) >
-[RULE: 5][CLAUSE: 0]
+[RULE: 5]
 	epsilon -> [40][If]< "if" "cond" "then" ( ( @ CompleteStat [ "else" Stat ] | HalfIf ) ) >
 	epsilon -> [47][If]< "if" "cond" "then" ( ( CompleteStat [ "else" Stat ] | @ HalfIf ) ) >
 
 [54][If]< "if" "cond" "then" @ ( ( CompleteStat [ "else" Stat ] | HalfIf ) ) >
-[RULE: 5][CLAUSE: 0]
+[RULE: 5]
 	epsilon -> [53][If]< "if" "cond" "then" ( @ ( CompleteStat [ "else" Stat ] | HalfIf ) ) >
 
 [55][If]< "if" "cond" "then" @ ( ( CompleteStat [ "else" Stat ] | HalfIf ) ) >
-[RULE: 5][CLAUSE: 0]
+[RULE: 5]
 	epsilon -> [54][If]< "if" "cond" "then" @ ( ( CompleteStat [ "else" Stat ] | HalfIf ) ) >
 
 [56][If]< "if" "cond" @ "then" ( ( CompleteStat [ "else" Stat ] | HalfIf ) ) >
-[RULE: 5][CLAUSE: 0]
+[RULE: 5]
 	token: "then" -> [55][If]< "if" "cond" "then" @ ( ( CompleteStat [ "else" Stat ] | HalfIf ) ) >
 		+ Token(2)
 
 [57][If]< "if" "cond" @ "then" ( ( CompleteStat [ "else" Stat ] | HalfIf ) ) >
-[RULE: 5][CLAUSE: 0]
+[RULE: 5]
 	epsilon -> [56][If]< "if" "cond" @ "then" ( ( CompleteStat [ "else" Stat ] | HalfIf ) ) >
 
 [58][If]< "if" @ "cond" "then" ( ( CompleteStat [ "else" Stat ] | HalfIf ) ) >
-[RULE: 5][CLAUSE: 0]
+[RULE: 5]
 	epsilon -> [59][If]< "if" @ "cond" "then" ( ( CompleteStat [ "else" Stat ] | HalfIf ) ) >
 
 [59][If]< "if" @ "cond" "then" ( ( CompleteStat [ "else" Stat ] | HalfIf ) ) >
-[RULE: 5][CLAUSE: 0]
+[RULE: 5]
 	token: "cond" -> [57][If]< "if" "cond" @ "then" ( ( CompleteStat [ "else" Stat ] | HalfIf ) ) >
 		+ Token(1)
 
 [60][If]< @ "if" "cond" "then" ( ( CompleteStat [ "else" Stat ] | HalfIf ) ) >
-[RULE: 5][CLAUSE: 0]
+[RULE: 5]
 	token: "if" -> [58][If]< "if" @ "cond" "then" ( ( CompleteStat [ "else" Stat ] | HalfIf ) ) >
 		+ Token(0)
 
 [61][If]@ < "if" "cond" "then" ( ( CompleteStat [ "else" Stat ] | HalfIf ) ) >
-[RULE: 5][CLAUSE: 0]
+[RULE: 5]
 	epsilon -> [60][If]< @ "if" "cond" "then" ( ( CompleteStat [ "else" Stat ] | HalfIf ) ) >
 		+ StackBegin()
 
 [62][OtherStat]<! ( !Do @ | !Block ) !>
-[RULE: 6][CLAUSE: 0]
+[RULE: 6]
 	epsilon -> [64][OtherStat]<! ( !Do | !Block ) @ !>
 
 [63][OtherStat]<! ( !Do | !Block ) !> @[ENDING]
-[RULE: 6][CLAUSE: 0]
+[RULE: 6]
 
 [64][OtherStat]<! ( !Do | !Block ) @ !>
-[RULE: 6][CLAUSE: 0]
+[RULE: 6]
 	epsilon -> [63][OtherStat]<! ( !Do | !Block ) !> @[ENDING]
 		+ StackEnd()
 
 [65][OtherStat]<! ( !Do | !Block @ ) !>
-[RULE: 6][CLAUSE: 0]
+[RULE: 6]
 	epsilon -> [64][OtherStat]<! ( !Do | !Block ) @ !>
 
 [66][OtherStat]<! ( !Do | @ !Block ) !>
-[RULE: 6][CLAUSE: 0]
+[RULE: 6]
 	rule: Block -> [65][OtherStat]<! ( !Do | !Block @ ) !>
 
 [67][OtherStat]<! ( @ !Do | !Block ) !>
-[RULE: 6][CLAUSE: 0]
+[RULE: 6]
 	rule: Do -> [62][OtherStat]<! ( !Do @ | !Block ) !>
 
 [68][OtherStat]<! @ ( !Do | !Block ) !>
-[RULE: 6][CLAUSE: 0]
+[RULE: 6]
 	epsilon -> [66][OtherStat]<! ( !Do | @ !Block ) !>
 	epsilon -> [67][OtherStat]<! ( @ !Do | !Block ) !>
 
 [69][OtherStat]@ <! ( !Do | !Block ) !>
-[RULE: 6][CLAUSE: 0]
+[RULE: 6]
 	epsilon -> [68][OtherStat]<! @ ( !Do | !Block ) !>
 		+ StackBegin()
 
 [70][CompleteStat]<! ( !OtherStat @ | !CompleteIf ) !>
-[RULE: 7][CLAUSE: 0]
+[RULE: 7]
 	epsilon -> [72][CompleteStat]<! ( !OtherStat | !CompleteIf ) @ !>
 
 [71][CompleteStat]<! ( !OtherStat | !CompleteIf ) !> @[ENDING]
-[RULE: 7][CLAUSE: 0]
+[RULE: 7]
 
 [72][CompleteStat]<! ( !OtherStat | !CompleteIf ) @ !>
-[RULE: 7][CLAUSE: 0]
+[RULE: 7]
 	epsilon -> [71][CompleteStat]<! ( !OtherStat | !CompleteIf ) !> @[ENDING]
 		+ StackEnd()
 
 [73][CompleteStat]<! ( !OtherStat | !CompleteIf @ ) !>
-[RULE: 7][CLAUSE: 0]
+[RULE: 7]
 	epsilon -> [72][CompleteStat]<! ( !OtherStat | !CompleteIf ) @ !>
 
 [74][CompleteStat]<! ( !OtherStat | @ !CompleteIf ) !>
-[RULE: 7][CLAUSE: 0]
+[RULE: 7]
 	rule: CompleteIf -> [73][CompleteStat]<! ( !OtherStat | !CompleteIf @ ) !>
 
 [75][CompleteStat]<! ( @ !OtherStat | !CompleteIf ) !>
-[RULE: 7][CLAUSE: 0]
+[RULE: 7]
 	rule: OtherStat -> [70][CompleteStat]<! ( !OtherStat @ | !CompleteIf ) !>
 
 [76][CompleteStat]<! @ ( !OtherStat | !CompleteIf ) !>
-[RULE: 7][CLAUSE: 0]
+[RULE: 7]
 	epsilon -> [74][CompleteStat]<! ( !OtherStat | @ !CompleteIf ) !>
 	epsilon -> [75][CompleteStat]<! ( @ !OtherStat | !CompleteIf ) !>
 
 [77][CompleteStat]@ <! ( !OtherStat | !CompleteIf ) !>
-[RULE: 7][CLAUSE: 0]
+[RULE: 7]
 	epsilon -> [76][CompleteStat]<! @ ( !OtherStat | !CompleteIf ) !>
 		+ StackBegin()
 
 [78][Stat]<! ( !OtherStat @ | !If ) !>
-[RULE: 8][CLAUSE: 0]
+[RULE: 8]
 	epsilon -> [80][Stat]<! ( !OtherStat | !If ) @ !>
 
 [79][Stat]<! ( !OtherStat | !If ) !> @[ENDING]
-[RULE: 8][CLAUSE: 0]
+[RULE: 8]
 
 [80][Stat]<! ( !OtherStat | !If ) @ !>
-[RULE: 8][CLAUSE: 0]
+[RULE: 8]
 	epsilon -> [79][Stat]<! ( !OtherStat | !If ) !> @[ENDING]
 		+ StackEnd()
 
 [81][Stat]<! ( !OtherStat | !If @ ) !>
-[RULE: 8][CLAUSE: 0]
+[RULE: 8]
 	epsilon -> [80][Stat]<! ( !OtherStat | !If ) @ !>
 
 [82][Stat]<! ( !OtherStat | @ !If ) !>
-[RULE: 8][CLAUSE: 0]
+[RULE: 8]
 	rule: If -> [81][Stat]<! ( !OtherStat | !If @ ) !>
 
 [83][Stat]<! ( @ !OtherStat | !If ) !>
-[RULE: 8][CLAUSE: 0]
+[RULE: 8]
 	rule: OtherStat -> [78][Stat]<! ( !OtherStat @ | !If ) !>
 
 [84][Stat]<! @ ( !OtherStat | !If ) !>
-[RULE: 8][CLAUSE: 0]
+[RULE: 8]
 	epsilon -> [82][Stat]<! ( !OtherStat | @ !If ) !>
 	epsilon -> [83][Stat]<! ( @ !OtherStat | !If ) !>
 
 [85][Stat]@ <! ( !OtherStat | !If ) !>
-[RULE: 8][CLAUSE: 0]
+[RULE: 8]
 	epsilon -> [84][Stat]<! @ ( !OtherStat | !If ) !>
 		+ StackBegin()
 
 [86][Module]< @ Stat >
-[RULE: 9][CLAUSE: 0]
+[RULE: 9]
 	rule: Stat -> [88][Module]< Stat @ >
 		+ StackSlot(0)
 
 [87][Module]< Stat > @[ENDING]
-[RULE: 9][CLAUSE: 0]
+[RULE: 9]
 
 [88][Module]< Stat @ >
-[RULE: 9][CLAUSE: 0]
+[RULE: 9]
 	epsilon -> [87][Module]< Stat > @[ENDING]
 		+ CreateObject(Module)
 		+ Field(Module::stat, 0)
 		+ StackEnd()
 
 [89][Module]@ < Stat >
-[RULE: 9][CLAUSE: 0]
+[RULE: 9]
 	epsilon -> [86][Module]< @ Stat >
 		+ StackBegin()
 

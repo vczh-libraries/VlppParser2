@@ -44,7 +44,7 @@ AutomatonBuilder
 
 				StateSymbol* CreateState()
 				{
-					return ruleSymbol->Owner()->CreateState(ruleSymbol, ruleSymbol->CurrentClauseId());
+					return ruleSymbol->Owner()->CreateState(ruleSymbol);
 				}
 
 				EdgeSymbol* CreateEdge(StateSymbol* from, StateSymbol* to)

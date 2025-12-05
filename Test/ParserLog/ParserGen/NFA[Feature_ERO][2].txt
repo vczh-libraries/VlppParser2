@@ -1,20 +1,20 @@
 ﻿[0][Plus] BEGIN 
-[RULE: 0][CLAUSE: -1]
+[RULE: 0]
 	token: "+" -> [2][Plus]< "+" @ >
 		+ StackBegin()
 		+ Token(0)
 
 [1][Plus] END [ENDING]
-[RULE: 0][CLAUSE: -1]
+[RULE: 0]
 
 [2][Plus]< "+" @ >
-[RULE: 0][CLAUSE: 0]
+[RULE: 0]
 	ending -> [1][Plus] END [ENDING]
 		+ CreateObject(Plus)
 		+ StackEnd()
 
 [3][Module] BEGIN 
-[RULE: 1][CLAUSE: -1]
+[RULE: 1]
 	token: "entry_rule_priority" -> [11][Module]< "entry_rule_priority" @ +[ Plus ] Plus { Plus } >
 		+ StackBegin()
 		+ Token(0)
@@ -26,15 +26,15 @@
 		+ Token(0)
 
 [4][Module] END [ENDING]
-[RULE: 1][CLAUSE: -1]
+[RULE: 1]
 
 [5][Module]< "entry_rule_priority" +[ Plus @ ] Plus { Plus } >
-[RULE: 1][CLAUSE: 0]
+[RULE: 1]
 	rule: Plus -> [6][Module]< "entry_rule_priority" +[ Plus ] Plus @ { Plus } >
 		+ StackSlot(2)
 
 [6][Module]< "entry_rule_priority" +[ Plus ] Plus @ { Plus } >
-[RULE: 1][CLAUSE: 0]
+[RULE: 1]
 	ending -> [4][Module] END [ENDING]
 		+ EnumItem(0, 4)
 		+ CreateObject(BranchedOptionalFeature)
@@ -46,7 +46,7 @@
 		+ StackSlot(3)
 
 [7][Module]< "entry_rule_priority" +[ Plus ] Plus { Plus @ } >
-[RULE: 1][CLAUSE: 0]
+[RULE: 1]
 	ending -> [4][Module] END [ENDING]
 		+ EnumItem(0, 4)
 		+ CreateObject(BranchedOptionalFeature)
@@ -58,12 +58,12 @@
 		+ StackSlot(3)
 
 [8][Module]< "entry_rule_priority" -[ Plus @ ] Plus { Plus } >
-[RULE: 1][CLAUSE: 1]
+[RULE: 1]
 	rule: Plus -> [9][Module]< "entry_rule_priority" -[ Plus ] Plus @ { Plus } >
 		+ StackSlot(2)
 
 [9][Module]< "entry_rule_priority" -[ Plus ] Plus @ { Plus } >
-[RULE: 1][CLAUSE: 1]
+[RULE: 1]
 	ending -> [4][Module] END [ENDING]
 		+ EnumItem(1, 4)
 		+ CreateObject(BranchedOptionalFeature)
@@ -75,7 +75,7 @@
 		+ StackSlot(3)
 
 [10][Module]< "entry_rule_priority" -[ Plus ] Plus { Plus @ } >
-[RULE: 1][CLAUSE: 1]
+[RULE: 1]
 	ending -> [4][Module] END [ENDING]
 		+ EnumItem(1, 4)
 		+ CreateObject(BranchedOptionalFeature)
@@ -87,33 +87,33 @@
 		+ StackSlot(3)
 
 [11][Module]< "entry_rule_priority" @ +[ Plus ] Plus { Plus } >
-[RULE: 1][CLAUSE: 0]
+[RULE: 1]
 	rule: Plus[H1] -> [5][Module]< "entry_rule_priority" +[ Plus @ ] Plus { Plus } >
 		+ StackSlot(1)
 	rule: Plus[L1] -> [6][Module]< "entry_rule_priority" +[ Plus ] Plus @ { Plus } >
 		+ StackSlot(2)
 
 [12][Module]< "entry_rule_priority" @ -[ Plus ] Plus { Plus } >
-[RULE: 1][CLAUSE: 1]
+[RULE: 1]
 	rule: Plus[L2] -> [8][Module]< "entry_rule_priority" -[ Plus @ ] Plus { Plus } >
 		+ StackSlot(1)
 	rule: Plus[H2] -> [9][Module]< "entry_rule_priority" -[ Plus ] Plus @ { Plus } >
 		+ StackSlot(2)
 
 [13][Module]< "entry_rule_priority" @ [ Plus ] Plus { Plus } >
-[RULE: 1][CLAUSE: 2]
+[RULE: 1]
 	rule: Plus -> [14][Module]< "entry_rule_priority" [ Plus @ ] Plus { Plus } >
 		+ StackSlot(1)
 	rule: Plus -> [15][Module]< "entry_rule_priority" [ Plus ] Plus @ { Plus } >
 		+ StackSlot(2)
 
 [14][Module]< "entry_rule_priority" [ Plus @ ] Plus { Plus } >
-[RULE: 1][CLAUSE: 2]
+[RULE: 1]
 	rule: Plus -> [15][Module]< "entry_rule_priority" [ Plus ] Plus @ { Plus } >
 		+ StackSlot(2)
 
 [15][Module]< "entry_rule_priority" [ Plus ] Plus @ { Plus } >
-[RULE: 1][CLAUSE: 2]
+[RULE: 1]
 	ending -> [4][Module] END [ENDING]
 		+ EnumItem(2, 4)
 		+ CreateObject(BranchedOptionalFeature)
@@ -125,7 +125,7 @@
 		+ StackSlot(3)
 
 [16][Module]< "entry_rule_priority" [ Plus ] Plus { Plus @ } >
-[RULE: 1][CLAUSE: 2]
+[RULE: 1]
 	ending -> [4][Module] END [ENDING]
 		+ EnumItem(2, 4)
 		+ CreateObject(BranchedOptionalFeature)

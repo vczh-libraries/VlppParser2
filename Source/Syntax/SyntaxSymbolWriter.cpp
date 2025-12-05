@@ -258,7 +258,6 @@ AutomatonBuilder (Clause)
 			{
 				usedFieldIds = 0;
 				fieldIns.Clear();
-				ruleSymbol->NewClause();
 				clauseDisplayText = L"";
 				startPoses.Clear();
 				endPoses.Clear();

@@ -1,5 +1,5 @@
 ﻿[0][Exp0] BEGIN 
-[RULE: 0][CLAUSE: -1]
+[RULE: 0]
 	token: "(" -> [5][Exp0]<! "(" @ !Exp6 ")" !>
 		+ StackBegin()
 		+ Token(0)
@@ -8,44 +8,44 @@
 		+ Token(0)
 
 [1][Exp0] END [ENDING]
-[RULE: 0][CLAUSE: -1]
+[RULE: 0]
 
 [2][Exp0]< ID @ >
-[RULE: 0][CLAUSE: 0]
+[RULE: 0]
 	ending -> [1][Exp0] END [ENDING]
 		+ CreateObject(RefExpr)
 		+ Field(RefExpr::name, 0)
 		+ StackEnd()
 
 [3][Exp0]<! "(" !Exp6 ")" @ !>
-[RULE: 0][CLAUSE: 1]
+[RULE: 0]
 	ending -> [1][Exp0] END [ENDING]
 		+ StackEnd()
 
 [4][Exp0]<! "(" !Exp6 @ ")" !>
-[RULE: 0][CLAUSE: 1]
+[RULE: 0]
 	token: ")" -> [3][Exp0]<! "(" !Exp6 ")" @ !>
 		+ Token(2)
 
 [5][Exp0]<! "(" @ !Exp6 ")" !>
-[RULE: 0][CLAUSE: 1]
+[RULE: 0]
 	rule: Exp6 -> [4][Exp0]<! "(" !Exp6 @ ")" !>
 
 [6][Exp1] BEGIN 
-[RULE: 1][CLAUSE: -1]
+[RULE: 1]
 	rule: Exp0 -> [11][Exp1]<! !Exp0 @ !>
 		+ StackBegin()
 
 [7][Exp1] END [ENDING]
-[RULE: 1][CLAUSE: -1]
+[RULE: 1]
 
 [8][Exp1]< Exp1 "^" @ Exp0 >
-[RULE: 1][CLAUSE: 1]
+[RULE: 1]
 	rule: Exp0 -> [9][Exp1]< Exp1 "^" Exp0 @ >
 		+ StackSlot(2)
 
 [9][Exp1]< Exp1 "^" Exp0 @ >
-[RULE: 1][CLAUSE: 1]
+[RULE: 1]
 	ending -> [7][Exp1] END [ENDING]
 		+ EnumItem(2, 3)
 		+ CreateObject(BinaryExpr)
@@ -64,12 +64,12 @@
 		+ StackSlot(0)
 
 [10][Exp1]< Exp1 @ "^" Exp0 >
-[RULE: 1][CLAUSE: 1]
+[RULE: 1]
 	token: "^" -> [8][Exp1]< Exp1 "^" @ Exp0 >
 		+ Token(1)
 
 [11][Exp1]<! !Exp0 @ !>
-[RULE: 1][CLAUSE: 0]
+[RULE: 1]
 	ending -> [7][Exp1] END [ENDING]
 		+ StackEnd()
 	leftrec -> [10][Exp1]< Exp1 @ "^" Exp0 >
@@ -78,20 +78,20 @@
 		+ StackSlot(0)
 
 [12][Exp2] BEGIN 
-[RULE: 2][CLAUSE: -1]
+[RULE: 2]
 	rule: Exp1 -> [17][Exp2]<! !Exp1 @ !>
 		+ StackBegin()
 
 [13][Exp2] END [ENDING]
-[RULE: 2][CLAUSE: -1]
+[RULE: 2]
 
 [14][Exp2]< Exp2 "*" @ Exp1 >
-[RULE: 2][CLAUSE: 1]
+[RULE: 2]
 	rule: Exp1 -> [15][Exp2]< Exp2 "*" Exp1 @ >
 		+ StackSlot(2)
 
 [15][Exp2]< Exp2 "*" Exp1 @ >
-[RULE: 2][CLAUSE: 1]
+[RULE: 2]
 	ending -> [13][Exp2] END [ENDING]
 		+ EnumItem(1, 3)
 		+ CreateObject(BinaryExpr)
@@ -110,12 +110,12 @@
 		+ StackSlot(0)
 
 [16][Exp2]< Exp2 @ "*" Exp1 >
-[RULE: 2][CLAUSE: 1]
+[RULE: 2]
 	token: "*" -> [14][Exp2]< Exp2 "*" @ Exp1 >
 		+ Token(1)
 
 [17][Exp2]<! !Exp1 @ !>
-[RULE: 2][CLAUSE: 0]
+[RULE: 2]
 	ending -> [13][Exp2] END [ENDING]
 		+ StackEnd()
 	leftrec -> [16][Exp2]< Exp2 @ "*" Exp1 >
@@ -124,20 +124,20 @@
 		+ StackSlot(0)
 
 [18][Exp3] BEGIN 
-[RULE: 3][CLAUSE: -1]
+[RULE: 3]
 	rule: Exp2 -> [23][Exp3]<! !Exp2 @ !>
 		+ StackBegin()
 
 [19][Exp3] END [ENDING]
-[RULE: 3][CLAUSE: -1]
+[RULE: 3]
 
 [20][Exp3]< Exp3 "+" @ Exp2 >
-[RULE: 3][CLAUSE: 1]
+[RULE: 3]
 	rule: Exp2 -> [21][Exp3]< Exp3 "+" Exp2 @ >
 		+ StackSlot(2)
 
 [21][Exp3]< Exp3 "+" Exp2 @ >
-[RULE: 3][CLAUSE: 1]
+[RULE: 3]
 	ending -> [19][Exp3] END [ENDING]
 		+ EnumItem(0, 3)
 		+ CreateObject(BinaryExpr)
@@ -156,12 +156,12 @@
 		+ StackSlot(0)
 
 [22][Exp3]< Exp3 @ "+" Exp2 >
-[RULE: 3][CLAUSE: 1]
+[RULE: 3]
 	token: "+" -> [20][Exp3]< Exp3 "+" @ Exp2 >
 		+ Token(1)
 
 [23][Exp3]<! !Exp2 @ !>
-[RULE: 3][CLAUSE: 0]
+[RULE: 3]
 	ending -> [19][Exp3] END [ENDING]
 		+ StackEnd()
 	leftrec -> [22][Exp3]< Exp3 @ "+" Exp2 >
@@ -170,7 +170,7 @@
 		+ StackSlot(0)
 
 [24][Exp4] BEGIN 
-[RULE: 4][CLAUSE: -1]
+[RULE: 4]
 	rule: Exp3 -> [28][Exp4]< Exp3 @ "=" Exp4 >
 		+ StackBegin()
 		+ StackSlot(0)
@@ -178,15 +178,15 @@
 		+ StackBegin()
 
 [25][Exp4] END [ENDING]
-[RULE: 4][CLAUSE: -1]
+[RULE: 4]
 
 [26][Exp4]< Exp3 "=" @ Exp4 >
-[RULE: 4][CLAUSE: 1]
+[RULE: 4]
 	rule: Exp4 -> [27][Exp4]< Exp3 "=" Exp4 @ >
 		+ StackSlot(2)
 
 [27][Exp4]< Exp3 "=" Exp4 @ >
-[RULE: 4][CLAUSE: 1]
+[RULE: 4]
 	ending -> [25][Exp4] END [ENDING]
 		+ EnumItem(3, 3)
 		+ CreateObject(BinaryExpr)
@@ -196,17 +196,17 @@
 		+ StackEnd()
 
 [28][Exp4]< Exp3 @ "=" Exp4 >
-[RULE: 4][CLAUSE: 1]
+[RULE: 4]
 	token: "=" -> [26][Exp4]< Exp3 "=" @ Exp4 >
 		+ Token(1)
 
 [29][Exp4]<! !Exp3 @ !>
-[RULE: 4][CLAUSE: 0]
+[RULE: 4]
 	ending -> [25][Exp4] END [ENDING]
 		+ StackEnd()
 
 [30][Exp5] BEGIN 
-[RULE: 5][CLAUSE: -1]
+[RULE: 5]
 	rule: Exp4 -> [34][Exp5]< Exp4 @ "?" Exp5 >
 		+ StackBegin()
 		+ StackSlot(0)
@@ -214,15 +214,15 @@
 		+ StackBegin()
 
 [31][Exp5] END [ENDING]
-[RULE: 5][CLAUSE: -1]
+[RULE: 5]
 
 [32][Exp5]< Exp4 "?" @ Exp5 >
-[RULE: 5][CLAUSE: 1]
+[RULE: 5]
 	rule: Exp5 -> [33][Exp5]< Exp4 "?" Exp5 @ >
 		+ StackSlot(2)
 
 [33][Exp5]< Exp4 "?" Exp5 @ >
-[RULE: 5][CLAUSE: 1]
+[RULE: 5]
 	ending -> [31][Exp5] END [ENDING]
 		+ EnumItem(4, 3)
 		+ CreateObject(BinaryExpr)
@@ -232,17 +232,17 @@
 		+ StackEnd()
 
 [34][Exp5]< Exp4 @ "?" Exp5 >
-[RULE: 5][CLAUSE: 1]
+[RULE: 5]
 	token: "?" -> [32][Exp5]< Exp4 "?" @ Exp5 >
 		+ Token(1)
 
 [35][Exp5]<! !Exp4 @ !>
-[RULE: 5][CLAUSE: 0]
+[RULE: 5]
 	ending -> [31][Exp5] END [ENDING]
 		+ StackEnd()
 
 [36][Exp6] BEGIN 
-[RULE: 6][CLAUSE: -1]
+[RULE: 6]
 	rule: Exp5 -> [40][Exp6]< Exp5 @ "$" Exp6 >
 		+ StackBegin()
 		+ StackSlot(0)
@@ -250,15 +250,15 @@
 		+ StackBegin()
 
 [37][Exp6] END [ENDING]
-[RULE: 6][CLAUSE: -1]
+[RULE: 6]
 
 [38][Exp6]< Exp5 "$" @ Exp6 >
-[RULE: 6][CLAUSE: 1]
+[RULE: 6]
 	rule: Exp6 -> [39][Exp6]< Exp5 "$" Exp6 @ >
 		+ StackSlot(2)
 
 [39][Exp6]< Exp5 "$" Exp6 @ >
-[RULE: 6][CLAUSE: 1]
+[RULE: 6]
 	ending -> [37][Exp6] END [ENDING]
 		+ EnumItem(5, 3)
 		+ CreateObject(BinaryExpr)
@@ -268,25 +268,25 @@
 		+ StackEnd()
 
 [40][Exp6]< Exp5 @ "$" Exp6 >
-[RULE: 6][CLAUSE: 1]
+[RULE: 6]
 	token: "$" -> [38][Exp6]< Exp5 "$" @ Exp6 >
 		+ Token(1)
 
 [41][Exp6]<! !Exp5 @ !>
-[RULE: 6][CLAUSE: 0]
+[RULE: 6]
 	ending -> [37][Exp6] END [ENDING]
 		+ StackEnd()
 
 [42][Module] BEGIN 
-[RULE: 7][CLAUSE: -1]
+[RULE: 7]
 	rule: Exp6 -> [44][Module]<! !Exp6 @ !>
 		+ StackBegin()
 
 [43][Module] END [ENDING]
-[RULE: 7][CLAUSE: -1]
+[RULE: 7]
 
 [44][Module]<! !Exp6 @ !>
-[RULE: 7][CLAUSE: 0]
+[RULE: 7]
 	ending -> [43][Module] END [ENDING]
 		+ StackEnd()
 

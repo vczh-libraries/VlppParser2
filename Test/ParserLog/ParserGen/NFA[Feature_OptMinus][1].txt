@@ -1,55 +1,55 @@
 ﻿[0][Plus]< "+" > @[ENDING]
-[RULE: 0][CLAUSE: 0]
+[RULE: 0]
 
 [1][Plus]< "+" @ >
-[RULE: 0][CLAUSE: 0]
+[RULE: 0]
 	epsilon -> [0][Plus]< "+" > @[ENDING]
 		+ CreateObject(Plus)
 		+ StackEnd()
 
 [2][Plus]< @ "+" >
-[RULE: 0][CLAUSE: 0]
+[RULE: 0]
 	token: "+" -> [1][Plus]< "+" @ >
 		+ Token(0)
 
 [3][Plus]@ < "+" >
-[RULE: 0][CLAUSE: 0]
+[RULE: 0]
 	epsilon -> [2][Plus]< @ "+" >
 		+ StackBegin()
 
 [4][NegativeOptional]< "negative_optional" -[ @ Plus ] "+" { Plus } >
-[RULE: 1][CLAUSE: 0]
+[RULE: 1]
 	rule: Plus -> [5][NegativeOptional]< "negative_optional" -[ Plus @ ] "+" { Plus } >
 		+ StackSlot(1)
 
 [5][NegativeOptional]< "negative_optional" -[ Plus @ ] "+" { Plus } >
-[RULE: 1][CLAUSE: 0]
+[RULE: 1]
 	epsilon -> [13][NegativeOptional]< "negative_optional" -[ Plus ] @ "+" { Plus } >
 
 [6][NegativeOptional]< "negative_optional" -[ Plus ] "+" @ { Plus } >
-[RULE: 1][CLAUSE: 0]
+[RULE: 1]
 	epsilon -> [8][NegativeOptional]< "negative_optional" -[ Plus ] "+" { @ Plus } >
 	epsilon -> [12][NegativeOptional]< "negative_optional" -[ Plus ] "+" { Plus } @ >
 
 [7][NegativeOptional]< "negative_optional" -[ Plus ] "+" @ { Plus } >
-[RULE: 1][CLAUSE: 0]
+[RULE: 1]
 	epsilon -> [6][NegativeOptional]< "negative_optional" -[ Plus ] "+" @ { Plus } >
 
 [8][NegativeOptional]< "negative_optional" -[ Plus ] "+" { @ Plus } >
-[RULE: 1][CLAUSE: 0]
+[RULE: 1]
 	rule: Plus -> [9][NegativeOptional]< "negative_optional" -[ Plus ] "+" { Plus @ } >
 		+ StackSlot(3)
 
 [9][NegativeOptional]< "negative_optional" -[ Plus ] "+" { Plus @ } >
-[RULE: 1][CLAUSE: 0]
+[RULE: 1]
 	epsilon -> [8][NegativeOptional]< "negative_optional" -[ Plus ] "+" { @ Plus } >
 	epsilon -> [12][NegativeOptional]< "negative_optional" -[ Plus ] "+" { Plus } @ >
 
 [10][NegativeOptional]< "negative_optional" -[ Plus ] "+" { Plus } > @[ENDING]
-[RULE: 1][CLAUSE: 0]
+[RULE: 1]
 
 [11][NegativeOptional]< "negative_optional" -[ Plus ] "+" { Plus } @ >
-[RULE: 1][CLAUSE: 0]
+[RULE: 1]
 	epsilon -> [10][NegativeOptional]< "negative_optional" -[ Plus ] "+" { Plus } > @[ENDING]
 		+ CreateObject(OptionalFeature)
 		+ Field(OptionalFeature::optional, 1)
@@ -58,52 +58,52 @@
 		+ StackEnd()
 
 [12][NegativeOptional]< "negative_optional" -[ Plus ] "+" { Plus } @ >
-[RULE: 1][CLAUSE: 0]
+[RULE: 1]
 	epsilon -> [11][NegativeOptional]< "negative_optional" -[ Plus ] "+" { Plus } @ >
 		+ EnumItem(2, 4)
 
 [13][NegativeOptional]< "negative_optional" -[ Plus ] @ "+" { Plus } >
-[RULE: 1][CLAUSE: 0]
+[RULE: 1]
 	epsilon -> [14][NegativeOptional]< "negative_optional" -[ Plus ] @ "+" { Plus } >
 
 [14][NegativeOptional]< "negative_optional" -[ Plus ] @ "+" { Plus } >
-[RULE: 1][CLAUSE: 0]
+[RULE: 1]
 	token: "+" -> [7][NegativeOptional]< "negative_optional" -[ Plus ] "+" @ { Plus } >
 		+ Token(2)
 
 [15][NegativeOptional]< "negative_optional" @ -[ Plus ] "+" { Plus } >
-[RULE: 1][CLAUSE: 0]
+[RULE: 1]
 	epsilon -> [16][NegativeOptional]< "negative_optional" @ -[ Plus ] "+" { Plus } >
 
 [16][NegativeOptional]< "negative_optional" @ -[ Plus ] "+" { Plus } >
-[RULE: 1][CLAUSE: 0]
+[RULE: 1]
 	epsilon[L1] -> [4][NegativeOptional]< "negative_optional" -[ @ Plus ] "+" { Plus } >
 	epsilon[H1] -> [13][NegativeOptional]< "negative_optional" -[ Plus ] @ "+" { Plus } >
 
 [17][NegativeOptional]< @ "negative_optional" -[ Plus ] "+" { Plus } >
-[RULE: 1][CLAUSE: 0]
+[RULE: 1]
 	token: "negative_optional" -> [15][NegativeOptional]< "negative_optional" @ -[ Plus ] "+" { Plus } >
 		+ Token(0)
 
 [18][NegativeOptional]@ < "negative_optional" -[ Plus ] "+" { Plus } >
-[RULE: 1][CLAUSE: 0]
+[RULE: 1]
 	epsilon -> [17][NegativeOptional]< @ "negative_optional" -[ Plus ] "+" { Plus } >
 		+ StackBegin()
 
 [19][Module]<! !NegativeOptional !> @[ENDING]
-[RULE: 2][CLAUSE: 0]
+[RULE: 2]
 
 [20][Module]<! !NegativeOptional @ !>
-[RULE: 2][CLAUSE: 0]
+[RULE: 2]
 	epsilon -> [19][Module]<! !NegativeOptional !> @[ENDING]
 		+ StackEnd()
 
 [21][Module]<! @ !NegativeOptional !>
-[RULE: 2][CLAUSE: 0]
+[RULE: 2]
 	rule: NegativeOptional -> [20][Module]<! !NegativeOptional @ !>
 
 [22][Module]@ <! !NegativeOptional !>
-[RULE: 2][CLAUSE: 0]
+[RULE: 2]
 	epsilon -> [21][Module]<! @ !NegativeOptional !>
 		+ StackBegin()
 

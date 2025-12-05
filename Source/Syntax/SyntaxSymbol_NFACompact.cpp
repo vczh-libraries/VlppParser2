@@ -195,7 +195,7 @@ CompactSyntaxBuilder
 					}
 					else
 					{
-						auto newState = Ptr(new StateSymbol(rule, state->ClauseId()));
+						auto newState = Ptr(new StateSymbol(rule));
 						newState->label = state->label;
 						newStates.Add(newState);
 						oldToNew.Add(state, newState.Obj());
@@ -313,7 +313,7 @@ SyntaxSymbolManager::EliminateEpsilonEdges
 				// epsilon-NFAs are per clause
 				// now we need to create a start state and an ending state
 				// to connect all epsilon-NFAs of its clauses together
-				auto psuedoState = CreateState(rule, -1);
+				auto psuedoState = CreateState(rule);
 				for (auto startState : rule->startStates)
 				{
 					CreateEdge(psuedoState, startState);
@@ -323,7 +323,7 @@ SyntaxSymbolManager::EliminateEpsilonEdges
 				auto compactStartState = builder.CreateCompactState(psuedoState);
 				compactStartState->label = L" BEGIN ";
 
-				auto compactEndState = Ptr(new StateSymbol(rule, -1));
+				auto compactEndState = Ptr(new StateSymbol(rule));
 				compactEndState->label = L" END ";
 				compactEndState->endingState = true;
 				newStates.Add(compactEndState);

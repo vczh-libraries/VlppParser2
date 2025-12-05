@@ -1,34 +1,34 @@
 ﻿[0][Do] BEGIN 
-[RULE: 0][CLAUSE: -1]
+[RULE: 0]
 	token: "do" -> [3][Do]< "do" @ ";" >
 		+ StackBegin()
 		+ Token(0)
 
 [1][Do] END [ENDING]
-[RULE: 0][CLAUSE: -1]
+[RULE: 0]
 
 [2][Do]< "do" ";" @ >
-[RULE: 0][CLAUSE: 0]
+[RULE: 0]
 	ending -> [1][Do] END [ENDING]
 		+ CreateObject(DoStat)
 		+ StackEnd()
 
 [3][Do]< "do" @ ";" >
-[RULE: 0][CLAUSE: 0]
+[RULE: 0]
 	token: ";" -> [2][Do]< "do" ";" @ >
 		+ Token(1)
 
 [4][Block] BEGIN 
-[RULE: 1][CLAUSE: -1]
+[RULE: 1]
 	token: "{" -> [6][Block]< "{" @ { Stat } "}" >
 		+ StackBegin()
 		+ Token(0)
 
 [5][Block] END [ENDING]
-[RULE: 1][CLAUSE: -1]
+[RULE: 1]
 
 [6][Block]< "{" @ { Stat } "}" >
-[RULE: 1][CLAUSE: 0]
+[RULE: 1]
 	token: "{" -> [6][Block]< "{" @ { Stat } "}" >
 		+ StackBegin()
 		+ Token(0)
@@ -67,7 +67,7 @@
 			+ StackBegin()
 
 [7][Block]< "{" { Stat @ } "}" >
-[RULE: 1][CLAUSE: 0]
+[RULE: 1]
 	token: "{" -> [6][Block]< "{" @ { Stat } "}" >
 		+ StackBegin()
 		+ Token(0)
@@ -106,23 +106,23 @@
 			+ StackBegin()
 
 [8][Block]< "{" { Stat } "}" @ >
-[RULE: 1][CLAUSE: 0]
+[RULE: 1]
 	ending -> [5][Block] END [ENDING]
 		+ CreateObject(BlockStat)
 		+ Field(BlockStat::stats, 1)
 		+ StackEnd()
 
 [9][IfThenStat] BEGIN 
-[RULE: 2][CLAUSE: -1]
+[RULE: 2]
 	token: "if" -> [14][IfThenStat]< "if" @ "cond" "then" Stat >
 		+ StackBegin()
 		+ Token(0)
 
 [10][IfThenStat] END [ENDING]
-[RULE: 2][CLAUSE: -1]
+[RULE: 2]
 
 [11][IfThenStat]< "if" "cond" "then" @ Stat >
-[RULE: 2][CLAUSE: 0]
+[RULE: 2]
 	token: "{" -> [6][Block]< "{" @ { Stat } "}" >
 		+ StackBegin()
 		+ Token(0)
@@ -159,24 +159,24 @@
 			+ StackBegin()
 
 [12][IfThenStat]< "if" "cond" "then" Stat @ >
-[RULE: 2][CLAUSE: 0]
+[RULE: 2]
 	ending -> [10][IfThenStat] END [ENDING]
 		+ CreateObject(IfContentCandidate)
 		+ Field(IfContentCandidate::thenBranch, 3)
 		+ StackEnd()
 
 [13][IfThenStat]< "if" "cond" @ "then" Stat >
-[RULE: 2][CLAUSE: 0]
+[RULE: 2]
 	token: "then" -> [11][IfThenStat]< "if" "cond" "then" @ Stat >
 		+ Token(2)
 
 [14][IfThenStat]< "if" @ "cond" "then" Stat >
-[RULE: 2][CLAUSE: 0]
+[RULE: 2]
 	token: "cond" -> [13][IfThenStat]< "if" "cond" @ "then" Stat >
 		+ Token(1)
 
 [15][IfContent] BEGIN 
-[RULE: 3][CLAUSE: -1]
+[RULE: 3]
 	token: "if" -> [14][IfThenStat]< "if" @ "cond" "then" Stat >
 		+ StackBegin()
 		+ Token(0)
@@ -189,10 +189,10 @@
 			+ StackBegin()
 
 [16][IfContent] END [ENDING]
-[RULE: 3][CLAUSE: -1]
+[RULE: 3]
 
 [17][IfContent]<! !IfThenStat "else" @ Stat !>
-[RULE: 3][CLAUSE: 1]
+[RULE: 3]
 	token: "{" -> [6][Block]< "{" @ { Stat } "}" >
 		+ StackBegin()
 		+ Token(0)
@@ -229,23 +229,23 @@
 			+ StackBegin()
 
 [18][IfContent]<! !IfThenStat "else" Stat @ !>
-[RULE: 3][CLAUSE: 1]
+[RULE: 3]
 	ending -> [16][IfContent] END [ENDING]
 		+ Field(IfContentCandidate::elseBranch, 2)
 		+ StackEnd()
 
 [19][IfContent]<! !IfThenStat @ !>
-[RULE: 3][CLAUSE: 0]
+[RULE: 3]
 	ending -> [16][IfContent] END [ENDING]
 		+ StackEnd()
 
 [20][IfContent]<! !IfThenStat @ "else" Stat !>
-[RULE: 3][CLAUSE: 1]
+[RULE: 3]
 	token: "else" -> [17][IfContent]<! !IfThenStat "else" @ Stat !>
 		+ Token(1)
 
 [21][Stat] BEGIN 
-[RULE: 4][CLAUSE: -1]
+[RULE: 4]
 	token: "{" -> [6][Block]< "{" @ { Stat } "}" >
 		+ StackBegin()
 		+ Token(0)
@@ -274,27 +274,27 @@
 			+ StackBegin()
 
 [22][Stat] END [ENDING]
-[RULE: 4][CLAUSE: -1]
+[RULE: 4]
 
 [23][Stat]< IfContent @ >
-[RULE: 4][CLAUSE: 2]
+[RULE: 4]
 	ending -> [22][Stat] END [ENDING]
 		+ CreateObject(IfStat)
 		+ Field(IfStat::content, 0)
 		+ StackEnd()
 
 [24][Stat]<! !Block @ !>
-[RULE: 4][CLAUSE: 1]
+[RULE: 4]
 	ending -> [22][Stat] END [ENDING]
 		+ StackEnd()
 
 [25][Stat]<! !Do @ !>
-[RULE: 4][CLAUSE: 0]
+[RULE: 4]
 	ending -> [22][Stat] END [ENDING]
 		+ StackEnd()
 
 [26][Module] BEGIN 
-[RULE: 5][CLAUSE: -1]
+[RULE: 5]
 	token: "{" -> [6][Block]< "{" @ { Stat } "}" >
 		+ StackBegin()
 		+ Token(0)
@@ -335,10 +335,10 @@
 			+ StackBegin()
 
 [27][Module] END [ENDING]
-[RULE: 5][CLAUSE: -1]
+[RULE: 5]
 
 [28][Module]< Stat @ >
-[RULE: 5][CLAUSE: 0]
+[RULE: 5]
 	ending -> [27][Module] END [ENDING]
 		+ CreateObject(Module)
 		+ Field(Module::stat, 0)

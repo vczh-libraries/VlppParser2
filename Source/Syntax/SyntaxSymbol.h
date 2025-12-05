@@ -37,18 +37,16 @@ StateSymbol
 			protected:
 				SyntaxSymbolManager*		ownerManager;
 				RuleSymbol*					rule;
-				vint32_t					clauseId;
 				EdgeList					inEdges;
 				EdgeList					outEdges;
 
-				StateSymbol(RuleSymbol* _rule, vint32_t _clauseId);
+				StateSymbol(RuleSymbol* _rule);
 			public:
 				WString						label;
 				bool						endingState = false;
 
 				SyntaxSymbolManager*		Owner() { return ownerManager; }
 				RuleSymbol*					Rule() { return rule; }
-				vint32_t					ClauseId() { return clauseId; }
 				const EdgeList&				InEdges() { return inEdges; }
 				const EdgeList&				OutEdges() { return outEdges; }
 
@@ -141,7 +139,6 @@ RuleSymbol
 			protected:
 				SyntaxSymbolManager*		ownerManager;
 				WString						name;
-				vint32_t					currentClauseId = -1;
 
 				RuleSymbol(SyntaxSymbolManager* _ownerManager, const WString& _name, vint _fileIndex);
 			public:
@@ -156,8 +153,6 @@ RuleSymbol
 
 				SyntaxSymbolManager*		Owner() { return ownerManager; }
 				const WString&				Name() { return name; }
-				void						NewClause() { currentClauseId++; }
-				vint32_t					CurrentClauseId() { return currentClauseId; }
 			};
 
 /***********************************************************************
@@ -209,7 +204,7 @@ SyntaxSymbolManager
 				RuleSymbol*					CreateRule(const WString& name, vint fileIndex, bool isPublic, bool isParser, ParsingTextRange codeRange = {});
 				void						RemoveRule(const WString& name);
 
-				StateSymbol*				CreateState(RuleSymbol* rule, vint32_t clauseId);
+				StateSymbol*				CreateState(RuleSymbol* rule);
 				EdgeSymbol*					CreateEdge(StateSymbol* from, StateSymbol* to);
 
 				void						BuildCompactNFA();

@@ -1,35 +1,35 @@
 ﻿[0][Plus] BEGIN 
-[RULE: 0][CLAUSE: -1]
+[RULE: 0]
 	token: "+" -> [2][Plus]< "+" @ >
 		+ StackBegin()
 		+ Token(0)
 
 [1][Plus] END [ENDING]
-[RULE: 0][CLAUSE: -1]
+[RULE: 0]
 
 [2][Plus]< "+" @ >
-[RULE: 0][CLAUSE: 0]
+[RULE: 0]
 	ending -> [1][Plus] END [ENDING]
 		+ CreateObject(Plus)
 		+ StackEnd()
 
 [3][Lt] BEGIN 
-[RULE: 1][CLAUSE: -1]
+[RULE: 1]
 	token: "<" -> [5][Lt]< "<" @ >
 		+ StackBegin()
 		+ Token(0)
 
 [4][Lt] END [ENDING]
-[RULE: 1][CLAUSE: -1]
+[RULE: 1]
 
 [5][Lt]< "<" @ >
-[RULE: 1][CLAUSE: 0]
+[RULE: 1]
 	ending -> [4][Lt] END [ENDING]
 		+ CreateObject(Lt)
 		+ StackEnd()
 
 [6][Pwl1_P] BEGIN 
-[RULE: 2][CLAUSE: -1]
+[RULE: 2]
 	rule: Plus -> [10][Pwl1_P]<! Plus @ !Pwl1_P !>
 		+ StackBegin()
 		+ StackSlot(0)
@@ -38,40 +38,40 @@
 		+ StackSlot(0)
 
 [7][Pwl1_P] END [ENDING]
-[RULE: 2][CLAUSE: -1]
+[RULE: 2]
 
 [8][Pwl1_P]< Lt @ >
-[RULE: 2][CLAUSE: 0]
+[RULE: 2]
 	ending -> [7][Pwl1_P] END [ENDING]
 		+ CreateObject(PwlFeature)
 		+ Field(PwlFeature::one, 0)
 		+ StackEnd()
 
 [9][Pwl1_P]<! Plus !Pwl1_P @ !>
-[RULE: 2][CLAUSE: 1]
+[RULE: 2]
 	ending -> [7][Pwl1_P] END [ENDING]
 		+ Field(PwlFeature::prefix, 0)
 		+ StackEnd()
 
 [10][Pwl1_P]<! Plus @ !Pwl1_P !>
-[RULE: 2][CLAUSE: 1]
+[RULE: 2]
 	rule: Pwl1_P -> [9][Pwl1_P]<! Plus !Pwl1_P @ !>
 
 [11][Pwl1] BEGIN 
-[RULE: 3][CLAUSE: -1]
+[RULE: 3]
 	rule: Pwl1_P -> [15][Pwl1]<! !Pwl1_P @ !>
 		+ StackBegin()
 
 [12][Pwl1] END [ENDING]
-[RULE: 3][CLAUSE: -1]
+[RULE: 3]
 
 [13][Pwl1]< Pwl1 @ Lt >
-[RULE: 3][CLAUSE: 1]
+[RULE: 3]
 	rule: Lt -> [14][Pwl1]< Pwl1 Lt @ >
 		+ StackSlot(1)
 
 [14][Pwl1]< Pwl1 Lt @ >
-[RULE: 3][CLAUSE: 1]
+[RULE: 3]
 	ending -> [12][Pwl1] END [ENDING]
 		+ CreateObject(PwlFeature)
 		+ Field(PwlFeature::prev, 0)
@@ -86,7 +86,7 @@
 		+ StackSlot(0)
 
 [15][Pwl1]<! !Pwl1_P @ !>
-[RULE: 3][CLAUSE: 0]
+[RULE: 3]
 	ending -> [12][Pwl1] END [ENDING]
 		+ StackEnd()
 	leftrec -> [13][Pwl1]< Pwl1 @ Lt >
@@ -95,16 +95,16 @@
 		+ StackSlot(0)
 
 [16][Pwl2_P] BEGIN 
-[RULE: 4][CLAUSE: -1]
+[RULE: 4]
 	rule: Lt -> [18][Pwl2_P]< Lt @ >
 		+ StackBegin()
 		+ StackSlot(0)
 
 [17][Pwl2_P] END [ENDING]
-[RULE: 4][CLAUSE: -1]
+[RULE: 4]
 
 [18][Pwl2_P]< Lt @ >
-[RULE: 4][CLAUSE: 0]
+[RULE: 4]
 	ending -> [17][Pwl2_P] END [ENDING]
 		+ CreateObject(PwlFeature)
 		+ Field(PwlFeature::two, 0)
@@ -117,12 +117,12 @@
 		+ StackSlot(0)
 
 [19][Pwl2_P]< Pwl2_P @ Lt >
-[RULE: 4][CLAUSE: 1]
+[RULE: 4]
 	rule: Lt -> [20][Pwl2_P]< Pwl2_P Lt @ >
 		+ StackSlot(1)
 
 [20][Pwl2_P]< Pwl2_P Lt @ >
-[RULE: 4][CLAUSE: 1]
+[RULE: 4]
 	ending -> [17][Pwl2_P] END [ENDING]
 		+ CreateObject(PwlFeature)
 		+ Field(PwlFeature::prev, 0)
@@ -137,7 +137,7 @@
 		+ StackSlot(0)
 
 [21][Pwl2] BEGIN 
-[RULE: 5][CLAUSE: -1]
+[RULE: 5]
 	rule: Plus -> [23][Pwl2]<! { Plus @ } !Pwl2_P !>
 		+ StackBegin()
 		+ StackSlot(0)
@@ -145,22 +145,22 @@
 		+ StackBegin()
 
 [22][Pwl2] END [ENDING]
-[RULE: 5][CLAUSE: -1]
+[RULE: 5]
 
 [23][Pwl2]<! { Plus @ } !Pwl2_P !>
-[RULE: 5][CLAUSE: 0]
+[RULE: 5]
 	rule: Plus -> [23][Pwl2]<! { Plus @ } !Pwl2_P !>
 		+ StackSlot(0)
 	rule: Pwl2_P -> [24][Pwl2]<! { Plus } !Pwl2_P @ !>
 
 [24][Pwl2]<! { Plus } !Pwl2_P @ !>
-[RULE: 5][CLAUSE: 0]
+[RULE: 5]
 	ending -> [22][Pwl2] END [ENDING]
 		+ Field(PwlFeature::prefix, 0)
 		+ StackEnd()
 
 [25][Module] BEGIN 
-[RULE: 6][CLAUSE: -1]
+[RULE: 6]
 	token: "prefix_with_leftrec" -> [29][Module]<! "prefix_with_leftrec" @ !Pwl1 !>
 		+ StackBegin()
 		+ Token(0)
@@ -169,23 +169,23 @@
 		+ Token(0)
 
 [26][Module] END [ENDING]
-[RULE: 6][CLAUSE: -1]
+[RULE: 6]
 
 [27][Module]<! "prefix_with_leftrec" !Pwl1 @ !>
-[RULE: 6][CLAUSE: 0]
+[RULE: 6]
 	ending -> [26][Module] END [ENDING]
 		+ StackEnd()
 
 [28][Module]<! "prefix_with_leftrec" !Pwl2 @ !>
-[RULE: 6][CLAUSE: 1]
+[RULE: 6]
 	ending -> [26][Module] END [ENDING]
 		+ StackEnd()
 
 [29][Module]<! "prefix_with_leftrec" @ !Pwl1 !>
-[RULE: 6][CLAUSE: 0]
+[RULE: 6]
 	rule: Pwl1 -> [27][Module]<! "prefix_with_leftrec" !Pwl1 @ !>
 
 [30][Module]<! "prefix_with_leftrec" @ !Pwl2 !>
-[RULE: 6][CLAUSE: 1]
+[RULE: 6]
 	rule: Pwl2 -> [28][Module]<! "prefix_with_leftrec" !Pwl2 @ !>
 
