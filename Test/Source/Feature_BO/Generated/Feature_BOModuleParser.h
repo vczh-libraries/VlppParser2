@@ -17,7 +17,7 @@ namespace feature_bo
 	{
 		Plus = 0,
 		BranchedOptional = 3,
-		Module = 17,
+		Module = 9,
 	};
 
 	const wchar_t* ModuleParserRuleName(vl::vint index);
