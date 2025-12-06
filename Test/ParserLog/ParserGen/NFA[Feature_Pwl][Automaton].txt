@@ -221,10 +221,7 @@
 
 [25][Module] BEGIN 
 [RULE: 6]
-	token: "prefix_with_leftrec" -> [29][Module]<! "prefix_with_leftrec" @ !Pwl1 !>
-		+ StackBegin()
-		+ Token(0)
-	token: "prefix_with_leftrec" -> [30][Module]<! "prefix_with_leftrec" @ !Pwl2 !>
+	token: "prefix_with_leftrec" -> [29][Module]{{<! "prefix_with_leftrec" @ !Pwl1 !> ; <! "prefix_with_leftrec" @ !Pwl2 !>}}
 		+ StackBegin()
 		+ Token(0)
 
@@ -241,7 +238,7 @@
 	ending -> [26][Module] END [ENDING]
 		+ StackEnd()
 
-[29][Module]<! "prefix_with_leftrec" @ !Pwl1 !>
+[29][Module]{{<! "prefix_with_leftrec" @ !Pwl1 !> ; <! "prefix_with_leftrec" @ !Pwl2 !>}}
 [RULE: 6]
 	token: "+" -> [2][Plus]< "+" @ >
 		+ StackBegin()
@@ -252,6 +249,13 @@
 		> rule: Plus -> [10][Pwl1_P]<! Plus @ !Pwl1_P !>
 			+ StackBegin()
 			+ StackSlot(0)
+	token: "+" -> [2][Plus]< "+" @ >
+		+ StackBegin()
+		+ Token(0)
+		> rule: Pwl2 -> [28][Module]<! "prefix_with_leftrec" !Pwl2 @ !>
+		> rule: Plus -> [23][Pwl2]<! { Plus @ } !Pwl2_P !>
+			+ StackBegin()
+			+ StackSlot(0)
 	token: "<" -> [5][Lt]< "<" @ >
 		+ StackBegin()
 		+ Token(0)
@@ -259,16 +263,6 @@
 		> rule: Pwl1_P -> [15][Pwl1]<! !Pwl1_P @ !>
 			+ StackBegin()
 		> rule: Lt -> [8][Pwl1_P]< Lt @ >
-			+ StackBegin()
-			+ StackSlot(0)
-
-[30][Module]<! "prefix_with_leftrec" @ !Pwl2 !>
-[RULE: 6]
-	token: "+" -> [2][Plus]< "+" @ >
-		+ StackBegin()
-		+ Token(0)
-		> rule: Pwl2 -> [28][Module]<! "prefix_with_leftrec" !Pwl2 @ !>
-		> rule: Plus -> [23][Pwl2]<! { Plus @ } !Pwl2_P !>
 			+ StackBegin()
 			+ StackSlot(0)
 	token: "<" -> [5][Lt]< "<" @ >

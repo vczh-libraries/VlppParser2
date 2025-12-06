@@ -81,9 +81,7 @@
 
 [15][IfContent] BEGIN 
 [RULE: 3]
-	rule: IfThenStat -> [19][IfContent]<! !IfThenStat @ !>
-		+ StackBegin()
-	rule: IfThenStat -> [20][IfContent]<! !IfThenStat @ "else" Stat !>
+	rule: IfThenStat -> [19][IfContent]{{<! !IfThenStat @ !> ; <! !IfThenStat @ "else" Stat !>}}
 		+ StackBegin()
 
 [16][IfContent] END [ENDING]
@@ -100,58 +98,55 @@
 		+ Field(IfContentCandidate::elseBranch, 2)
 		+ StackEnd()
 
-[19][IfContent]<! !IfThenStat @ !>
+[19][IfContent]{{<! !IfThenStat @ !> ; <! !IfThenStat @ "else" Stat !>}}
 [RULE: 3]
 	ending -> [16][IfContent] END [ENDING]
 		+ StackEnd()
-
-[20][IfContent]<! !IfThenStat @ "else" Stat !>
-[RULE: 3]
 	token: "else" -> [17][IfContent]<! !IfThenStat "else" @ Stat !>
 		+ Token(1)
 
-[21][Stat] BEGIN 
+[20][Stat] BEGIN 
 [RULE: 4]
-	rule: Do -> [25][Stat]<! !Do @ !>
+	rule: Do -> [24][Stat]<! !Do @ !>
 		+ StackBegin()
-	rule: Block -> [24][Stat]<! !Block @ !>
+	rule: Block -> [23][Stat]<! !Block @ !>
 		+ StackBegin()
-	rule: IfContent -> [23][Stat]< IfContent @ >
+	rule: IfContent -> [22][Stat]< IfContent @ >
 		+ StackBegin()
 		+ StackSlot(0)
 
-[22][Stat] END [ENDING]
+[21][Stat] END [ENDING]
 [RULE: 4]
 
-[23][Stat]< IfContent @ >
+[22][Stat]< IfContent @ >
 [RULE: 4]
-	ending -> [22][Stat] END [ENDING]
+	ending -> [21][Stat] END [ENDING]
 		+ CreateObject(IfStat)
 		+ Field(IfStat::content, 0)
 		+ StackEnd()
 
-[24][Stat]<! !Block @ !>
+[23][Stat]<! !Block @ !>
 [RULE: 4]
-	ending -> [22][Stat] END [ENDING]
+	ending -> [21][Stat] END [ENDING]
 		+ StackEnd()
 
-[25][Stat]<! !Do @ !>
+[24][Stat]<! !Do @ !>
 [RULE: 4]
-	ending -> [22][Stat] END [ENDING]
+	ending -> [21][Stat] END [ENDING]
 		+ StackEnd()
 
-[26][Module] BEGIN 
+[25][Module] BEGIN 
 [RULE: 5]
-	rule: Stat -> [28][Module]< Stat @ >
+	rule: Stat -> [27][Module]< Stat @ >
 		+ StackBegin()
 		+ StackSlot(0)
 
-[27][Module] END [ENDING]
+[26][Module] END [ENDING]
 [RULE: 5]
 
-[28][Module]< Stat @ >
+[27][Module]< Stat @ >
 [RULE: 5]
-	ending -> [27][Module] END [ENDING]
+	ending -> [26][Module] END [ENDING]
 		+ CreateObject(Module)
 		+ Field(Module::stat, 0)
 		+ StackEnd()

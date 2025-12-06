@@ -81,9 +81,7 @@
 
 [15][If] BEGIN 
 [RULE: 3]
-	rule: IfThenStat -> [19][If]<! !IfThenStat @ !>
-		+ StackBegin()
-	rule: IfThenStat -> [20][If]<! !IfThenStat @ "else" Stat !>
+	rule: IfThenStat -> [19][If]{{<! !IfThenStat @ !> ; <! !IfThenStat @ "else" Stat !>}}
 		+ StackBegin()
 
 [16][If] END [ENDING]
@@ -100,55 +98,52 @@
 		+ Field(IfStat::elseBranch, 2)
 		+ StackEnd()
 
-[19][If]<! !IfThenStat @ !>
+[19][If]{{<! !IfThenStat @ !> ; <! !IfThenStat @ "else" Stat !>}}
 [RULE: 3]
 	ending -> [16][If] END [ENDING]
 		+ StackEnd()
-
-[20][If]<! !IfThenStat @ "else" Stat !>
-[RULE: 3]
 	token: "else" -> [17][If]<! !IfThenStat "else" @ Stat !>
 		+ Token(1)
 
-[21][Stat] BEGIN 
+[20][Stat] BEGIN 
 [RULE: 4]
-	rule: Do -> [24][Stat]<! !Do @ !>
+	rule: Do -> [23][Stat]<! !Do @ !>
 		+ StackBegin()
-	rule: Block -> [23][Stat]<! !Block @ !>
+	rule: Block -> [22][Stat]<! !Block @ !>
 		+ StackBegin()
-	rule: If -> [25][Stat]<! !If @ !>
+	rule: If -> [24][Stat]<! !If @ !>
 		+ StackBegin()
 
-[22][Stat] END [ENDING]
+[21][Stat] END [ENDING]
 [RULE: 4]
 
-[23][Stat]<! !Block @ !>
+[22][Stat]<! !Block @ !>
 [RULE: 4]
-	ending -> [22][Stat] END [ENDING]
+	ending -> [21][Stat] END [ENDING]
 		+ StackEnd()
 
-[24][Stat]<! !Do @ !>
+[23][Stat]<! !Do @ !>
 [RULE: 4]
-	ending -> [22][Stat] END [ENDING]
+	ending -> [21][Stat] END [ENDING]
 		+ StackEnd()
 
-[25][Stat]<! !If @ !>
+[24][Stat]<! !If @ !>
 [RULE: 4]
-	ending -> [22][Stat] END [ENDING]
+	ending -> [21][Stat] END [ENDING]
 		+ StackEnd()
 
-[26][Module] BEGIN 
+[25][Module] BEGIN 
 [RULE: 5]
-	rule: Stat -> [28][Module]< Stat @ >
+	rule: Stat -> [27][Module]< Stat @ >
 		+ StackBegin()
 		+ StackSlot(0)
 
-[27][Module] END [ENDING]
+[26][Module] END [ENDING]
 [RULE: 5]
 
-[28][Module]< Stat @ >
+[27][Module]< Stat @ >
 [RULE: 5]
-	ending -> [27][Module] END [ENDING]
+	ending -> [26][Module] END [ENDING]
 		+ CreateObject(Module)
 		+ Field(Module::stat, 0)
 		+ StackEnd()

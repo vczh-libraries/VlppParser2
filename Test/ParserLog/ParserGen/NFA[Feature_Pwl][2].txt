@@ -161,10 +161,7 @@
 
 [25][Module] BEGIN 
 [RULE: 6]
-	token: "prefix_with_leftrec" -> [29][Module]<! "prefix_with_leftrec" @ !Pwl1 !>
-		+ StackBegin()
-		+ Token(0)
-	token: "prefix_with_leftrec" -> [30][Module]<! "prefix_with_leftrec" @ !Pwl2 !>
+	token: "prefix_with_leftrec" -> [29][Module]{{<! "prefix_with_leftrec" @ !Pwl1 !> ; <! "prefix_with_leftrec" @ !Pwl2 !>}}
 		+ StackBegin()
 		+ Token(0)
 
@@ -181,11 +178,8 @@
 	ending -> [26][Module] END [ENDING]
 		+ StackEnd()
 
-[29][Module]<! "prefix_with_leftrec" @ !Pwl1 !>
+[29][Module]{{<! "prefix_with_leftrec" @ !Pwl1 !> ; <! "prefix_with_leftrec" @ !Pwl2 !>}}
 [RULE: 6]
 	rule: Pwl1 -> [27][Module]<! "prefix_with_leftrec" !Pwl1 @ !>
-
-[30][Module]<! "prefix_with_leftrec" @ !Pwl2 !>
-[RULE: 6]
 	rule: Pwl2 -> [28][Module]<! "prefix_with_leftrec" !Pwl2 @ !>
 
