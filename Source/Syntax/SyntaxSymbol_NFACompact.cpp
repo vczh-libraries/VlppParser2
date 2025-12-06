@@ -16,8 +16,8 @@ SymbolSet
 			struct SymbolSet
 			{
 			private:
-				static const SortedList<TSymbol*>	EmptyStates;
-				Ptr<SortedList<TSymbol*>>			states;
+				static const SortedList<TSymbol>	EmptySymbols;
+				Ptr<SortedList<TSymbol>>			symbols;
 
 			public:
 				SymbolSet() = default;
@@ -26,49 +26,59 @@ SymbolSet
 
 				SymbolSet<TSymbol>(SymbolSet<TSymbol>&& set)
 				{
-					states = set.states;
-					set.states = nullptr;
+					symbols = set.symbols;
+					set.symbols = nullptr;
 				}
 
 				SymbolSet<TSymbol>& operator=(SymbolSet<TSymbol>&& set)
 				{
-					states = set.states;
-					set.states = nullptr;
+					symbols = set.symbols;
+					set.symbols = nullptr;
 					return *this;
 				}
 
-				bool Add(TSymbol* state)
+				SymbolSet(TSymbol _symbol)
 				{
-					if (!states)
+					Add(_symbol);
+				}
+
+				SymbolSet(const IEnumerable<TSymbol>& _symbols)
+				{
+					symbols = Ptr(new SortedList<TSymbol>);
+					CopyFrom(*symbols.Obj(), _symbols);
+				}
+
+				bool Add(TSymbol _symbol)
+				{
+					if (!symbols)
 					{
-						states = Ptr(new SortedList<TSymbol*>);
+						symbols = Ptr(new SortedList<TSymbol>);
 					}
-					if (states->Contains(state)) return false;
-					states->Add(state);
+					if (symbols->Contains(_symbol)) return false;
+					symbols->Add(_symbol);
 					return true;
 				}
 
-				const SortedList<TSymbol*>& States() const
+				const SortedList<TSymbol>& Symbols() const
 				{
-					return states ? *states.Obj() : EmptyStates;
+					return symbols ? *symbols.Obj() : EmptySymbols;
 				}
 
 				std::strong_ordering operator<=>(const SymbolSet<TSymbol>& set) const
 				{
-					if (!states && !set.states) return std::strong_ordering::equal;
-					if (!states) return std::strong_ordering::less;
-					if (!set.states) return std::strong_ordering::greater;
-					return CompareEnumerable(*states.Obj(), *set.states.Obj());
+					if (!symbols && !set.symbols) return std::strong_ordering::equal;
+					if (!symbols) return std::strong_ordering::less;
+					if (!set.symbols) return std::strong_ordering::greater;
+					return CompareEnumerable(*symbols.Obj(), *set.symbols.Obj());
 				}
-
-				bool operator==(const SymbolSet<TSymbol>& set) const { return states == set.states  || (*this <=> set) == 0; }
 			};
 
 			template<typename TSymbol>
-			const SortedList<TSymbol*> SymbolSet<TSymbol>::EmptyStates;
+			const SortedList<TSymbol> SymbolSet<TSymbol>::EmptySymbols;
 
-			using StateSymbolSet = SymbolSet<StateSymbol>;
-			using EdgeSymbolSet = SymbolSet<EdgeSymbol>;
+			using StateSymbolSet = SymbolSet<StateSymbol*>;
+			using EdgeSymbolSet = SymbolSet<EdgeSymbol*>;
+			using InsSymbolSet = SymbolSet<AstIns>;
 
 /***********************************************************************
 CompactSyntaxBuilder
@@ -303,9 +313,7 @@ SyntaxSymbolManager::MergeEdgesWithSameInput
 				SortedList<EdgeSymbol*> availableEdges;
 
 				{
-					StateSymbolSet startSet;
-					startSet.Add(startState);
-					statesToMerged.Add(startSet, startState);
+					statesToMerged.Add({ startState }, startState);
 					availableStates.Add(startState);
 					workingStates.Add(startState);
 				}
@@ -313,16 +321,30 @@ SyntaxSymbolManager::MergeEdgesWithSameInput
 				for (vint i = 0; i < workingStates.Count(); i++)
 				{
 					auto currentState = workingStates[i];
-					Dictionary<EdgeInput, List<EdgeSymbol*>> groupedEdges;
+					Group<Pair<EdgeInput, InsSymbolSet>, EdgeSymbol*> groupedEdges;
 					for (auto edge : currentState->OutEdges())
 					{
-						groupedEdges.AddIfNotExist(edge->input).Add(edge);
+						groupedEdges.Add({ edge->input,InsSymbolSet{edge->insAfterInput} }, edge);
 					}
-					for (auto [input, edges] : groupedEdges)
+
+					for (vint groupedIndex = 0; groupedIndex < groupedEdges.Count(); groupedIndex++)
 					{
-						if (edges.Count() == 1)
+						auto&& groupedKeys = groupedEdges.Keys()[groupedIndex];
+						auto&& groupedValues = groupedEdges.GetByIndex(groupedIndex);
+
+						if (groupedValues.Count() == 1)
 						{
-							mergedEdges.Add(edges[0]);
+							auto edge = groupedValues[0];
+							auto state = edge->To();
+							if (!availableEdges.Contains(edge))
+							{
+								availableEdges.Add(edge);
+							}
+							if (!availableStates.Contains(state))
+							{
+								availableStates.Add(state);
+								workingStates.Add(state);
+							}
 						}
 						else
 						{
