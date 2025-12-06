@@ -69,24 +69,16 @@ EdgeSymbol
 			struct EdgeInput
 			{
 				EdgeInputType						type = EdgeInputType::Epsilon;
-				vint32_t							token = -1;										// useful when type == Token
-				Nullable<WString>					condition;										// useful when type == Token
 
-				collections::SortedList<vint32_t>	flags;											// usefule when type == LrPlaceholder or LrInject
+				// Token
+				vint32_t							token = -1;
+				Nullable<WString>					condition;
 
-				automaton::ReturnRuleType			ruleType = automaton::ReturnRuleType::Field;	// useful when type == Rule or LrInject
-				RuleSymbol*							rule = nullptr;									// useful when type == Rule or LrInject
+				// Rule
+				automaton::ReturnRuleType			ruleType = automaton::ReturnRuleType::Field;
+				RuleSymbol*							rule = nullptr;
 
-				EdgeInput& operator=(EdgeInput& input)
-				{
-					type = input.type;
-					token = input.token;
-					condition = input.condition;
-					CopyFrom(flags, input.flags);
-					ruleType = input.ruleType;
-					rule = input.rule;
-					return *this;
-				}
+				auto operator<=>(const EdgeInput&) const = default;
 			};
 
 			struct EdgeCompetition

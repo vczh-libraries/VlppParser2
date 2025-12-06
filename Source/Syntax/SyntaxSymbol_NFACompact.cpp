@@ -309,12 +309,12 @@ SyntaxSymbolManager::MergeEdgesWithSameInput
 				StateList createdStates;
 				EdgeList createdEdges;
 				List<StateSymbol*> workingStates;
-				SortedList<StateSymbol*> availableStates;
-				SortedList<EdgeSymbol*> availableEdges;
+				SortedList<StateSymbol*> reusedStates;
+				SortedList<EdgeSymbol*> reusedEdges;
 
 				{
 					statesToMerged.Add({ startState }, startState);
-					availableStates.Add(startState);
+					reusedStates.Add(startState);
 					workingStates.Add(startState);
 				}
 
@@ -329,58 +329,73 @@ SyntaxSymbolManager::MergeEdgesWithSameInput
 
 					for (vint groupedIndex = 0; groupedIndex < groupedEdges.Count(); groupedIndex++)
 					{
-						auto&& groupedKeys = groupedEdges.Keys()[groupedIndex];
+						auto&& groupedKey = groupedEdges.Keys()[groupedIndex];
 						auto&& groupedValues = groupedEdges.GetByIndex(groupedIndex);
 
 						if (groupedValues.Count() == 1)
 						{
 							auto edge = groupedValues[0];
 							auto state = edge->To();
-							if (!availableEdges.Contains(edge))
+							if (!reusedEdges.Contains(edge))
 							{
-								availableEdges.Add(edge);
+								reusedEdges.Add(edge);
 							}
-							if (!availableStates.Contains(state))
+							if (!reusedStates.Contains(state))
 							{
-								availableStates.Add(state);
+								reusedStates.Add(state);
 								workingStates.Add(state);
 							}
 						}
 						else
 						{
-							StateSymbolSet targetSet;
-							for (auto edge : edges)
-							{
-								targetSet.Add(edge->To());
-							}
 							StateSymbol* mergedState = nullptr;
-							vint index = statesToMerged.Keys().IndexOf(targetSet);
-							if (index != -1)
 							{
-								mergedState = statesToMerged.Values()[index];
+								StateSymbolSet targetSet;
+								for (auto edge : edges)
+								{
+									targetSet.Add(edge->To());
+								}
+
+								vint index = statesToMerged.Keys().IndexOf(targetSet);
+								if (index != -1)
+								{
+									mergedState = statesToMerged.Values()[index];
+								}
+								else
+								{
+									mergedState = CreateState(startState->Rule());
+									createdStates.Add(Ptr(mergedState));
+
+									statesToMerged.Add(std::move(targetSet), mergedState);
+									mergedState->label = stream::GenerateToStream([&](stream::TextWriter& writer)
+									{
+										writer.WriteString(L"{{");
+										for (auto [state, index] : indexed(targetSet.Symbols()))
+										{
+											if (index > 0) writer.WriteString(L" ; ");
+											writer.WriteString(state->label);
+										}
+										writer.WriteString(L"}}");
+									});
+								}
 							}
-							else
+
+							auto newEdge = new EdgeSymbol(currentState, mergedState);
+							createdEdges.Add(Ptr(newEdge));
+
+							newEdge->input = groupedKey.key;
+							CopyFrom(newEdge->insAfterInput, groupedKey.value.Symbols());
+							for (auto edge : groupedValues)
 							{
-								mergedState = Ptr(new StateSymbol(rule)).Obj();
-								newStates.Add(mergedState);
-								statesToMerged.Add(targetSet, mergedState);
-								workingStates.Add(mergedState);
-							}
-							auto newEdge = Ptr(new EdgeSymbol(currentState, mergedState));
-							newEdge->input = input;
-							for (auto edge : edges)
-							{
-								CopyFrom(newEdge->insAfterInput, edge->insAfterInput, true);
 								CopyFrom(newEdge->competitions, edge->competitions, true);
 							}
-							mergedEdges.Add(newEdge);
 						}
 					}
 				}
 
 				for (auto state : newStates)
 				{
-					if (availableStates.Contains(state.Obj()))
+					if (reusedStates.Contains(state.Obj()))
 					{
 						createdStates.Add(state);
 					}
@@ -388,7 +403,7 @@ SyntaxSymbolManager::MergeEdgesWithSameInput
 
 				for (auto edge : newEdges)
 				{
-					if (availableEdges.Contains(edge.Obj()))
+					if (reusedEdges.Contains(edge.Obj()))
 					{
 						createdEdges.Add(edge);
 					}
