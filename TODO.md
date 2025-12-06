@@ -21,9 +21,6 @@
 
 ### Progressing
 
-`Feature_BO` and `Feature_ERO` has obvious ambiguity, causing a merged prefix state to have multiple `EndingInput` edges.
-Consider rewriting `TraceManager::WalkAlongEpsilonEdges` to allow that situation.
-
 - [x] Non-ambiguous test cases
 - [x] Ambiguous test cases
 - [x] Split FeatureTest
