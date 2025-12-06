@@ -395,29 +395,30 @@ SyntaxSymbolManager::MergeEdgesWithSameInput
 					}
 				}
 
-				for (auto state : newStates)
+				for (vint i = newStates.Count() - 1; i >= 0; i--)
 				{
-					if (reusedStates.Contains(state.Obj()))
+					auto state = newStates[i];
+					if (state->Rule() != rule) break;
+					if (!reusedStates.Contains(state.Obj()))
 					{
-						createdStates.Add(state);
+						newStates.RemoveAt(i);
 					}
 				}
 
-				for (auto edge : newEdges)
+				for (vint i = newEdges.Count() - 1; i >= 0; i--)
 				{
-					if (reusedEdges.Contains(edge.Obj()))
-					{
-						createdEdges.Add(edge);
-					}
-					else
+					auto edge = newEdges[i];
+					if (edge->From()->Rule() != rule) break;
+					if (!reusedEdges.Contains(edge.Obj()))
 					{
 						edge->From()->outEdges.Remove(edge.Obj());
 						edge->To()->inEdges.Remove(edge.Obj());
+						newEdges.RemoveAt(i);
 					}
 				}
 
-				newStates = std::move(createdStates);
-				newEdges = std::move(createdEdges);
+				CopyFrom(newStates, createdStates, true);
+				CopyFrom(newEdges, createdEdges, true);
 			}
 
 /***********************************************************************
