@@ -71,6 +71,8 @@ SymbolSet
 					if (!set.symbols) return std::strong_ordering::greater;
 					return CompareEnumerable(*symbols.Obj(), *set.symbols.Obj());
 				}
+
+				bool operator==(const SymbolSet<TSymbol>& set) const = default;
 			};
 
 			template<typename TSymbol>
