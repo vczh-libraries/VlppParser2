@@ -12,10 +12,9 @@ namespace vl
 StateSymbol
 ***********************************************************************/
 
-			StateSymbol::StateSymbol(RuleSymbol* _rule, vint32_t _clauseId)
+			StateSymbol::StateSymbol(RuleSymbol* _rule)
 				: ownerManager(_rule->Owner())
 				, rule(_rule)
-				, clauseId(_clauseId)
 			{
 			}
 
@@ -114,10 +113,10 @@ SyntaxSymbolManager
 				rules.Remove(name);
 			}
 
-			StateSymbol* SyntaxSymbolManager::CreateState(RuleSymbol* rule, vint32_t clauseId)
+			StateSymbol* SyntaxSymbolManager::CreateState(RuleSymbol* rule)
 			{
 				CHECK_ERROR(phase == SyntaxPhase::EpsilonNFA, L"vl::gre::parsergen::SyntaxSymbolManager::CreateState(RuleSymbol*)#Cannot change the automaton after calling BuildCompactSyntax().");
-				auto symbol = Ptr(new StateSymbol(rule, clauseId));
+				auto symbol = Ptr(new StateSymbol(rule));
 				states.Add(symbol);
 				return symbol.Obj();
 			}

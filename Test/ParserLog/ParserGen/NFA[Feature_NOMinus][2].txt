@@ -1,34 +1,34 @@
 ﻿[0][Plus] BEGIN 
-[RULE: 0][CLAUSE: -1]
+[RULE: 0]
 	token: "+" -> [2][Plus]< "+" @ >
 		+ StackBegin()
 		+ Token(0)
 
 [1][Plus] END [ENDING]
-[RULE: 0][CLAUSE: -1]
+[RULE: 0]
 
 [2][Plus]< "+" @ >
-[RULE: 0][CLAUSE: 0]
+[RULE: 0]
 	ending -> [1][Plus] END [ENDING]
 		+ CreateObject(Plus)
 		+ StackEnd()
 
 [3][NestedNegativeOptional] BEGIN 
-[RULE: 3][CLAUSE: -1]
+[RULE: 3]
 	token: "nested_negative_optional" -> [10][NestedNegativeOptional]< "nested_negative_optional" @ -[ ( -[ ( -[ Plus ] Plus ) ] Plus ) ] Plus { Plus } >
 		+ StackBegin()
 		+ Token(0)
 
 [4][NestedNegativeOptional] END [ENDING]
-[RULE: 3][CLAUSE: -1]
+[RULE: 3]
 
 [5][NestedNegativeOptional]< "nested_negative_optional" -[ ( -[ ( -[ Plus @ ] Plus ) ] Plus ) ] Plus { Plus } >
-[RULE: 3][CLAUSE: 0]
+[RULE: 3]
 	rule: Plus -> [9][NestedNegativeOptional]< "nested_negative_optional" -[ ( -[ ( -[ Plus ] Plus @ ) ] Plus ) ] Plus { Plus } >
 		+ StackSlot(2)
 
 [6][NestedNegativeOptional]< "nested_negative_optional" -[ ( -[ ( -[ Plus ] Plus ) ] Plus ) ] Plus @ { Plus } >
-[RULE: 3][CLAUSE: 0]
+[RULE: 3]
 	ending -> [4][NestedNegativeOptional] END [ENDING]
 		+ CreateObject(NestedOptionalFeature)
 		+ Field(NestedOptionalFeature::optional, 1)
@@ -41,7 +41,7 @@
 		+ StackSlot(5)
 
 [7][NestedNegativeOptional]< "nested_negative_optional" -[ ( -[ ( -[ Plus ] Plus ) ] Plus ) ] Plus { Plus @ } >
-[RULE: 3][CLAUSE: 0]
+[RULE: 3]
 	ending -> [4][NestedNegativeOptional] END [ENDING]
 		+ CreateObject(NestedOptionalFeature)
 		+ Field(NestedOptionalFeature::optional, 1)
@@ -54,17 +54,17 @@
 		+ StackSlot(5)
 
 [8][NestedNegativeOptional]< "nested_negative_optional" -[ ( -[ ( -[ Plus ] Plus ) ] Plus @ ) ] Plus { Plus } >
-[RULE: 3][CLAUSE: 0]
+[RULE: 3]
 	rule: Plus -> [6][NestedNegativeOptional]< "nested_negative_optional" -[ ( -[ ( -[ Plus ] Plus ) ] Plus ) ] Plus @ { Plus } >
 		+ StackSlot(4)
 
 [9][NestedNegativeOptional]< "nested_negative_optional" -[ ( -[ ( -[ Plus ] Plus @ ) ] Plus ) ] Plus { Plus } >
-[RULE: 3][CLAUSE: 0]
+[RULE: 3]
 	rule: Plus -> [8][NestedNegativeOptional]< "nested_negative_optional" -[ ( -[ ( -[ Plus ] Plus ) ] Plus @ ) ] Plus { Plus } >
 		+ StackSlot(3)
 
 [10][NestedNegativeOptional]< "nested_negative_optional" @ -[ ( -[ ( -[ Plus ] Plus ) ] Plus ) ] Plus { Plus } >
-[RULE: 3][CLAUSE: 0]
+[RULE: 3]
 	rule: Plus[L3][L2][L1] -> [5][NestedNegativeOptional]< "nested_negative_optional" -[ ( -[ ( -[ Plus @ ] Plus ) ] Plus ) ] Plus { Plus } >
 		+ StackSlot(1)
 	rule: Plus[H3] -> [6][NestedNegativeOptional]< "nested_negative_optional" -[ ( -[ ( -[ Plus ] Plus ) ] Plus ) ] Plus @ { Plus } >
@@ -75,15 +75,15 @@
 		+ StackSlot(2)
 
 [11][Module] BEGIN 
-[RULE: 4][CLAUSE: -1]
+[RULE: 4]
 	rule: NestedNegativeOptional -> [13][Module]<! !NestedNegativeOptional @ !>
 		+ StackBegin()
 
 [12][Module] END [ENDING]
-[RULE: 4][CLAUSE: -1]
+[RULE: 4]
 
 [13][Module]<! !NestedNegativeOptional @ !>
-[RULE: 4][CLAUSE: 0]
+[RULE: 4]
 	ending -> [12][Module] END [ENDING]
 		+ StackEnd()
 

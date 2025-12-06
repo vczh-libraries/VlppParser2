@@ -1,159 +1,164 @@
 ﻿================ EXECUTION STEPS ================
-[0]: RA_Begin
-[2]: 1@0 - 7@5
-[3]: RA_Branch
-[4]: 2@0 - 16@5
+[0]: 0@0 - 1@-1
+[1]: RA_Begin
+[3]: 1@0 - 1@1
+[4]: 3@0 - 5@5
 [5]: RA_Branch
-[6]: 3@0 - 15@5
-[7]: RA_Branch
-[8]: RA_End(3, BranchedOptionalFeature)
+[6]: 1@0 - 1@1
+[7]: 7@0 - 14@5
+[8]: RA_Branch
+[9]: 1@0 - 1@1
+[10]: 11@0 - 13@5
+[11]: RA_Branch
+[12]: RA_End(3, BranchedOptionalFeature)
 
 ==================== TRACES =====================
 
-+----------------------------+
-| [0]: <Start>               |
-|   TraceExec: [0]           |
-|   ForwardTrace: 0          |
-|   AmbiguityBegins: [0]     |
-| [3][Module] BEGIN          |
-| [AST-INSTRUCTIONS]:        |
-|   @                        |
-| [SUCCESORS 1-3]: [1][2][3] |
-+----------------------------+
++----------------------+
+| [0]: <Start>         |
+|   TraceExec: [0]     |
+|   ForwardTrace: 0    |
+|   NextACT: 1         |
+| [3][Module] BEGIN    |
+| [AST-INSTRUCTIONS]:  |
+|   @                  |
+| [SUCCESORS 1-1]: [1] |
++----------------------+
+[0]
+ |
+ +
+ |
+[0]
+++================================================================================================================================================================================++
+|| [1]: {ENTRY_RULE_PRIORITY} entry_rule_priority                                                                                                                                 ||
+||   TraceExec: [1]                                                                                                                                                               ||
+||   InsExec: [0:2]                                                                                                                                                               ||
+||   ForwardTrace: 0                                                                                                                                                              ||
+||   AmbiguityBegins: [0]                                                                                                                                                         ||
+|| [14][Module]{{< "entry_rule_priority" @ +[ Plus ] Plus { Plus } > ; < "entry_rule_priority" @ -[ Plus ] Plus { Plus } > ; < "entry_rule_priority" @ [ Plus ] Plus { Plus } >}} ||
+|| [HOLDING COMPETITION]:                                                                                                                                                         ||
+||   [1][HIGH PRIORITY WIN][RULE: 1][COMPID: 2]                                                                                                                                   ||
+||   [0][HOLDING][RULE: 1][COMPID: 1]                                                                                                                                             ||
+|| [AST-INSTRUCTIONS]:                                                                                                                                                            ||
+||   @                                                                                                                                                                            ||
+||   + StackBegin()                                                                                                                                                               ||
+||     obj:0 : BranchedOptionalFeature                                                                                                                                            ||
+||                                                                                                                                                                                ||
+||   @ CS(0 -> -1) : [0]                                                                                                                                                          ||
+||   + Token(0)                                                                                                                                                                   ||
+||                                                                                                                                                                                ||
+||   @ CS(0 -> -1) : [0]                                                                                                                                                          ||
+|| [PREDECESSORS 0-0]: [0]                                                                                                                                                        ||
+|| [SUCCESORS 3-11]: [3][7][11]                                                                                                                                                   ||
+++================================================================================================================================================================================++
 [0/1/2]
  |
- +------------------------------------------------------------------------+------------------------------------------------------------------------+
- |                                                                        |                                                                        |
-[0]                                                                      [1]                                                                      [2]
-++=================================================================++    ++=================================================================++    ++================================================================++
-|| [1]: {ENTRY_RULE_PRIORITY} entry_rule_priority                  ||    || [2]: {ENTRY_RULE_PRIORITY} entry_rule_priority                  ||    || [3]: {ENTRY_RULE_PRIORITY} entry_rule_priority                 ||
-||   TraceExec: [1]                                                ||    ||   TraceExec: [5]                                                ||    ||   TraceExec: [9]                                               ||
-||   InsExec: [0:2]                                                ||    ||   InsExec: [13:2]                                               ||    ||   InsExec: [26:2]                                              ||
-||   ForwardTrace: 1                                               ||    ||   ForwardTrace: 2                                               ||    ||   ForwardTrace: 3                                              ||
-||   NextACT: 7                                                    ||    ||   NextACT: 16                                                   ||    ||   NextACT: 15                                                  ||
-||   AmbiguityCoveredInForward: [0]                                ||    ||   AmbiguityCoveredInForward: [0]                                ||    ||   AmbiguityCoveredInForward: [0]                               ||
-|| [11][Module]< "entry_rule_priority" @ +[ Plus ] Plus { Plus } > ||    || [12][Module]< "entry_rule_priority" @ -[ Plus ] Plus { Plus } > ||    || [13][Module]< "entry_rule_priority" @ [ Plus ] Plus { Plus } > ||
-|| [HOLDING COMPETITION]:                                          ||    || [HOLDING COMPETITION]:                                          ||    || [AST-INSTRUCTIONS]:                                            ||
-||   [0][HOLDING][RULE: 1][COMPID: 1]                              ||    ||   [1][HIGH PRIORITY WIN][RULE: 1][COMPID: 2]                    ||    ||   @                                                            ||
-|| [AST-INSTRUCTIONS]:                                             ||    || [AST-INSTRUCTIONS]:                                             ||    ||   + StackBegin()                                               ||
-||   @                                                             ||    ||   @                                                             ||    ||     obj:4 : BranchedOptionalFeature                            ||
-||   + StackBegin()                                                ||    ||   + StackBegin()                                                ||    ||                                                                ||
-||     obj:0 : BranchedOptionalFeature                             ||    ||     obj:2 : BranchedOptionalFeature                             ||    ||   @ CS(8 -> -1) : [4]                                          ||
-||                                                                 ||    ||                                                                 ||    ||   + Token(0)                                                   ||
-||   @ CS(0 -> -1) : [0]                                           ||    ||   @ CS(4 -> -1) : [2]                                           ||    ||                                                                ||
-||   + Token(0)                                                    ||    ||   + Token(0)                                                    ||    ||   @ CS(8 -> -1) : [4]                                          ||
-||                                                                 ||    ||                                                                 ||    || [PREDECESSORS 0-0]: [0]                                        ||
-||   @ CS(0 -> -1) : [0]                                           ||    ||   @ CS(4 -> -1) : [2]                                           ||    || [SUCCESORS 13-13]: [13]                                        ||
-|| [PREDECESSORS 0-0]: [0]                                         ||    || [PREDECESSORS 0-0]: [0]                                         ||    ++================================================================++
-|| [SUCCESORS 5-5]: [5]                                            ||    || [SUCCESORS 9-9]: [9]                                            ||    |
-++=================================================================++    ++=================================================================++    |
-[0]                                                                      [1]                                                                      [2]
- |                                                                        |                                                                        |
- +                                                                        +-------------------+                                                    +---------------------------------------+
- |                                                                                            |                                                                                            |
-[0]                                                                                          [1]                                                                                          [2]
-++=====================================================================================++    ++=====================================================================================++    ++======================================================================================++
-|| [5]: {PLUS} +                                                                       ||    || [9]: {PLUS} +                                                                       ||    || [13]: {PLUS} +                                                                       ||
-||   TraceExec: [2]                                                                    ||    ||   TraceExec: [6]                                                                    ||    ||   TraceExec: [10]                                                                    ||
-||   InsExec: [2:2]                                                                    ||    ||   InsExec: [15:2]                                                                   ||    ||   InsExec: [28:2]                                                                    ||
-||   ForwardTrace: 1                                                                   ||    ||   ForwardTrace: 2                                                                   ||    ||   ForwardTrace: 3                                                                    ||
-|| [2][Plus]< "+" @ >                                                                  ||    || [2][Plus]< "+" @ >                                                                  ||    || [2][Plus]< "+" @ >                                                                   ||
-|| [AST-INSTRUCTIONS]:                                                                 ||    || [AST-INSTRUCTIONS]:                                                                 ||    || [AST-INSTRUCTIONS]:                                                                  ||
-||   @ CS(0 -> -1) : [0]                                                               ||    ||   @ CS(4 -> -1) : [2]                                                               ||    ||   @ CS(8 -> -1) : [4]                                                                ||
-||   + StackBegin()                                                                    ||    ||   + StackBegin()                                                                    ||    ||   + StackBegin()                                                                     ||
-||     obj:1 : Plus                                                                    ||    ||     obj:3 : Plus                                                                    ||    ||     obj:5 : Plus                                                                     ||
-||                                                                                     ||    ||                                                                                     ||    ||                                                                                      ||
-||   @ CS(1 -> 0) : [1][0]                                                             ||    ||   @ CS(5 -> 4) : [3][2]                                                             ||    ||   @ CS(9 -> 8) : [5][4]                                                              ||
-||   + Token(0)                                                                        ||    ||   + Token(0)                                                                        ||    ||   + Token(0)                                                                         ||
-||                                                                                     ||    ||                                                                                     ||    ||                                                                                      ||
-||   @ CS(1 -> 0) : [1][0]                                                             ||    ||   @ CS(5 -> 4) : [3][2]                                                             ||    ||   @ CS(9 -> 8) : [5][4]                                                              ||
-|| [RETURN STACK]:                                                                     ||    || [RETURN STACK]:                                                                     ||    || [RETURN STACK]:                                                                      ||
-||   [1][7][1]: Plus -> [6][Module]< "entry_rule_priority" +[ Plus ] Plus @ { Plus } > ||    ||   [3][9][2]: Plus -> [9][Module]< "entry_rule_priority" -[ Plus ] Plus @ { Plus } > ||    ||   [5][11][3]: Plus -> [15][Module]< "entry_rule_priority" [ Plus ] Plus @ { Plus } > ||
-|| [FIRST ATTENDING COMPETITION]:  [1]                                                 ||    || [CARRIED COMPETITION]:                                                              ||    || [PREDECESSORS 3-3]: [3]                                                              ||
-|| [CARRIED COMPETITION]:                                                              ||    ||   [3]: competition[1][RS: -1] high                                                  ||    || [SUCCESORS 14-14]: [14]                                                              ||
-||   [1]: competition[0][RS: -1] low                                                   ||    || [PREDECESSORS 2-2]: [2]                                                             ||    ++======================================================================================++
-|| [PREDECESSORS 1-1]: [1]                                                             ||    || [SUCCESORS 10-10]: [10]                                                             ||    |
-|| [SUCCESORS 6-6]: [6]                                                                ||    ++=====================================================================================++    |
-++=====================================================================================++    |                                                                                            |
-|                                                                                            |                                                                                            |
-+                                                                                            +                                                                                            +
-|                                                                                            |                                                                                            |
-+----------------------------------------------------------------+                           +----------------------------------------------------------------+                           +----------------------------------------------------------------+
-| [6]: <Ending>                                                  |                           | [10]: <Ending>                                                 |                           | [14]: <Ending>                                                 |
-|   TraceExec: [3]                                               |                           |   TraceExec: [7]                                               |                           |   TraceExec: [11]                                              |
-|   InsExec: [4:3]                                               |                           |   InsExec: [17:3]                                              |                           |   InsExec: [30:3]                                              |
-|   ForwardTrace: 1                                              |                           |   ForwardTrace: 2                                              |                           |   ForwardTrace: 3                                              |
-| [6][Module]< "entry_rule_priority" +[ Plus ] Plus @ { Plus } > |                           | [9][Module]< "entry_rule_priority" -[ Plus ] Plus @ { Plus } > |                           | [15][Module]< "entry_rule_priority" [ Plus ] Plus @ { Plus } > |
-| [AST-INSTRUCTIONS]:                                            |                           | [AST-INSTRUCTIONS]:                                            |                           | [AST-INSTRUCTIONS]:                                            |
-|   @ CS(1 -> 0) : [1][0]                                        |                           |   @ CS(5 -> 4) : [3][2]                                        |                           |   @ CS(9 -> 8) : [5][4]                                        |
-|   + CreateObject(Plus)                                         |                           |   + CreateObject(Plus)                                         |                           |   + CreateObject(Plus)                                         |
-|     obj:1 : Plus                                               |                           |     obj:3 : Plus                                               |                           |     obj:5 : Plus                                               |
-|                                                                |                           |                                                                |                           |                                                                |
-|   @ CS(1 -> 0) : [1][0]                                        |                           |   @ CS(5 -> 4) : [3][2]                                        |                           |   @ CS(9 -> 8) : [5][4]                                        |
-|   + StackEnd()                                                 |                           |   + StackEnd()                                                 |                           |   + StackEnd()                                                 |
-|     obj+:1 : Plus                                              |                           |     obj+:3 : Plus                                              |                           |     obj+:5 : Plus                                              |
-|       begin:5@0, top:5@0, create!:[6@0], end:[6@1]             |                           |       begin:9@0, top:9@0, create!:[10@0], end:[10@1]           |                           |       begin:13@0, top:13@0, create!:[14@0], end:[14@1]         |
-|                                                                |                           |                                                                |                           |                                                                |
-|   @ CS(0 -> -1) : [0] OS(2 -> -1) : [1]                        |                           |   @ CS(4 -> -1) : [2] OS(6 -> -1) : [3]                        |                           |   @ CS(8 -> -1) : [4] OS(10 -> -1) : [5]                       |
-|   > StackSlot(2)                                               |                           |   > StackSlot(2)                                               |                           |   > StackSlot(2)                                               |
-|                                                                |                           |                                                                |                           |                                                                |
-|   @ CS(0 -> -1) : [0]                                          |                           |   @ CS(4 -> -1) : [2]                                          |                           |   @ CS(8 -> -1) : [4]                                          |
-| [FIRST ATTENDING COMPETITION]:  [1]                            |                           | [CARRIED COMPETITION]:                                         |                           | [PREDECESSORS 13-13]: [13]                                     |
-| [CARRIED COMPETITION]:                                         |                           |   [3]: competition[1][RS: -1] high                             |                           | [SUCCESORS 15-15]: [15]                                        |
-|   [1]: competition[0][RS: -1] low                              |                           | [PREDECESSORS 9-9]: [9]                                        |                           +----------------------------------------------------------------+
-| [PREDECESSORS 5-5]: [5]                                        |                           | [SUCCESORS 16-16]: [16]                                        |                           |
-| [SUCCESORS 7-7]: [7]                                           |                           +----------------------------------------------------------------+                           |
-+----------------------------------------------------------------+                           |                                                                                            |
-|                                                                                            |                                                                                            |
-+                                                                                            +                                                                                            +
-|                                                                                            |                                                                                            |
-+---------------------------------------------------------------+                            +-----------------------------------------------------------------+                          +-----------------------------------------------------------------+
-| [7]: <Ending>                                                 |                            | [16]: <Ending>                                                  |                          | [15]: <Ending>                                                  |
-|   TraceExec: [4]                                              |                            |   TraceExec: [8]                                                |                          |   TraceExec: [12]                                               |
-|   InsExec: [7:6]                                              |                            |   InsExec: [20:6]                                               |                          |   InsExec: [33:6]                                               |
-|   ForwardTrace: 1                                             |                            |   ForwardTrace: 2                                               |                          |   ForwardTrace: 3                                               |
-| [4][Module] END [ENDING]                                      |                            | [4][Module] END [ENDING]                                        |                          | [4][Module] END [ENDING]                                        |
-| [AST-INSTRUCTIONS]:                                           |                            | [AST-INSTRUCTIONS]:                                             |                          | [AST-INSTRUCTIONS]:                                             |
-|   @ CS(0 -> -1) : [0]                                         |                            |   @ CS(4 -> -1) : [2]                                           |                          |   @ CS(8 -> -1) : [4]                                           |
-|   + EnumItem(0, 4)                                            |                            |   + EnumItem(1, 4)                                              |                          |   + EnumItem(2, 4)                                              |
-|                                                               |                            |                                                                 |                          |                                                                 |
-|   @ CS(0 -> -1) : [0]                                         |                            |   @ CS(4 -> -1) : [2]                                           |                          |   @ CS(8 -> -1) : [4]                                           |
-|   + CreateObject(BranchedOptionalFeature)                     |                            |   + CreateObject(BranchedOptionalFeature)                       |                          |   + CreateObject(BranchedOptionalFeature)                       |
-|     obj:0 : BranchedOptionalFeature                           |                            |     obj:2 : BranchedOptionalFeature                             |                          |     obj:4 : BranchedOptionalFeature                             |
-|                                                               |                            |                                                                 |                          |                                                                 |
-|   @ CS(0 -> -1) : [0]                                         |                            |   @ CS(4 -> -1) : [2]                                           |                          |   @ CS(8 -> -1) : [4]                                           |
-|   + Field(BranchedOptionalFeature::optional, 1)               |                            |   + Field(BranchedOptionalFeature::optional, 1)                 |                          |   + Field(BranchedOptionalFeature::optional, 1)                 |
-|                                                               |                            |                                                                 |                          |                                                                 |
-|   @ CS(0 -> -1) : [0]                                         |                            |   @ CS(4 -> -1) : [2]                                           |                          |   @ CS(8 -> -1) : [4]                                           |
-|   + Field(BranchedOptionalFeature::tails, 3)                  |                            |   + Field(BranchedOptionalFeature::tails, 3)                    |                          |   + Field(BranchedOptionalFeature::tails, 3)                    |
-|                                                               |                            |                                                                 |                          |                                                                 |
-|   @ CS(0 -> -1) : [0]                                         |                            |   @ CS(4 -> -1) : [2]                                           |                          |   @ CS(8 -> -1) : [4]                                           |
-|   + Field(BranchedOptionalFeature::type, 4)                   |                            |   + Field(BranchedOptionalFeature::type, 4)                     |                          |   + Field(BranchedOptionalFeature::type, 4)                     |
-|                                                               |                            |                                                                 |                          |                                                                 |
-|   @ CS(0 -> -1) : [0]                                         |                            |   @ CS(4 -> -1) : [2]                                           |                          |   @ CS(8 -> -1) : [4]                                           |
-|   + StackEnd()                                                |                            |   + StackEnd()                                                  |                          |   + StackEnd()                                                  |
-|     obj+:0 : BranchedOptionalFeature                          |                            |     obj+:2 : BranchedOptionalFeature                            |                          |     obj+:4 : BranchedOptionalFeature                            |
-|       begin:1@0, top:1@0, field:[1], create!:[7@1], end:[7@5] |                            |       begin:2@0, top:2@0, field:[3], create!:[16@1], end:[16@5] |                          |       begin:3@0, top:3@0, field:[5], create!:[15@1], end:[15@5] |
-|                                                               |                            |                                                                 |                          |                                                                 |
-|   @ OS(3 -> -1) : [0]                                         |                            |   @ OS(7 -> -1) : [2]                                           |                          |   @ OS(11 -> -1) : [4]                                          |
-| [FIRST ATTENDING COMPETITION]:  [1]                           |                            | [CARRIED COMPETITION]:                                          |                          | [PREDECESSORS 14-14]: [14]                                      |
-| [CARRIED COMPETITION]:                                        |                            |   [3]: competition[1][RS: -1] high                              |                          | [SUCCESORS 17-17]: [17]                                         |
-|   [1]: competition[0][RS: -1] low                             |                            | [PREDECESSORS 10-10]: [10]                                      |                          +-----------------------------------------------------------------+
-| [PREDECESSORS 6-6]: [6]                                       |                            | [SUCCESORS 17-17]: [17]                                         |                          |
-| [SUCCESORS 17-17]: [17]                                       |                            +-----------------------------------------------------------------+                          |
-+---------------------------------------------------------------+                            |                                                                                            |
-|                                                                                            |                                                                                            |
-+--------------------------------------------------------------------------------------------+--------------------------------------------------------------------------------------------+
+ +--------------------------------------------------------------------------------------------------+--------------------------------------------------------------------------------------------------+
+ |                                                                                                  |                                                                                                  |
+[0]                                                                                                [1]                                                                                                [2]
+++======================================================================================++         ++======================================================================================++         ++======================================================================================++
+|| [3]: {PLUS} +                                                                        ||         || [7]: {PLUS} +                                                                        ||         || [11]: {PLUS} +                                                                       ||
+||   TraceExec: [2]                                                                     ||         ||   TraceExec: [5]                                                                     ||         ||   TraceExec: [8]                                                                     ||
+||   InsExec: [2:2]                                                                     ||         ||   InsExec: [13:2]                                                                    ||         ||   InsExec: [24:2]                                                                    ||
+||   ForwardTrace: 3                                                                    ||         ||   ForwardTrace: 7                                                                    ||         ||   ForwardTrace: 11                                                                   ||
+||   NextACT: 5                                                                         ||         ||   NextACT: 14                                                                        ||         ||   NextACT: 13                                                                        ||
+|| [2][Plus]< "+" @ >                                                                   ||         || [2][Plus]< "+" @ >                                                                   ||         || [2][Plus]< "+" @ >                                                                   ||
+|| [AST-INSTRUCTIONS]:                                                                  ||         || [AST-INSTRUCTIONS]:                                                                  ||         || [AST-INSTRUCTIONS]:                                                                  ||
+||   @ CS(0 -> -1) : [0]                                                                ||         ||   @ CS(0 -> -1) : [0]                                                                ||         ||   @ CS(0 -> -1) : [0]                                                                ||
+||   + StackBegin()                                                                     ||         ||   + StackBegin()                                                                     ||         ||   + StackBegin()                                                                     ||
+||     obj:1 : Plus                                                                     ||         ||     obj:2 : Plus                                                                     ||         ||     obj:3 : Plus                                                                     ||
+||                                                                                      ||         ||                                                                                      ||         ||                                                                                      ||
+||   @ CS(1 -> 0) : [1][0]                                                              ||         ||   @ CS(4 -> 0) : [2][0]                                                              ||         ||   @ CS(7 -> 0) : [3][0]                                                              ||
+||   + Token(0)                                                                         ||         ||   + Token(0)                                                                         ||         ||   + Token(0)                                                                         ||
+||                                                                                      ||         ||                                                                                      ||         ||                                                                                      ||
+||   @ CS(1 -> 0) : [1][0]                                                              ||         ||   @ CS(4 -> 0) : [2][0]                                                              ||         ||   @ CS(7 -> 0) : [3][0]                                                              ||
+|| [RETURN STACK]:                                                                      ||         || [RETURN STACK]:                                                                      ||         || [RETURN STACK]:                                                                      ||
+||   [1][10][1]: Plus -> [6][Module]< "entry_rule_priority" +[ Plus ] Plus @ { Plus } > ||         ||   [3][12][1]: Plus -> [9][Module]< "entry_rule_priority" -[ Plus ] Plus @ { Plus } > ||         ||   [5][14][1]: Plus -> [12][Module]< "entry_rule_priority" [ Plus ] Plus @ { Plus } > ||
+|| [FIRST ATTENDING COMPETITION]:  [1]                                                  ||         || [CARRIED COMPETITION]:                                                               ||         || [PREDECESSORS 1-1]: [1]                                                              ||
+|| [CARRIED COMPETITION]:                                                               ||         ||   [3]: competition[1][RS: -1] high                                                   ||         || [SUCCESORS 12-12]: [12]                                                              ||
+||   [1]: competition[0][RS: -1] low                                                    ||         || [PREDECESSORS 1-1]: [1]                                                              ||         ++======================================================================================++
+|| [PREDECESSORS 1-1]: [1]                                                              ||         || [SUCCESORS 8-8]: [8]                                                                 ||         |
+|| [SUCCESORS 4-4]: [4]                                                                 ||         ++======================================================================================++         |
+++======================================================================================++         |                                                                                                  |
+|                                                                                                  |                                                                                                  |
++                                                                                                  +                                                                                                  +
+|                                                                                                  |                                                                                                  |
++----------------------------------------------------------------+                                 +----------------------------------------------------------------+                                 +----------------------------------------------------------------+
+| [4]: <Ending>                                                  |                                 | [8]: <Ending>                                                  |                                 | [12]: <Ending>                                                 |
+|   TraceExec: [3]                                               |                                 |   TraceExec: [6]                                               |                                 |   TraceExec: [9]                                               |
+|   InsExec: [4:3]                                               |                                 |   InsExec: [15:3]                                              |                                 |   InsExec: [26:3]                                              |
+|   ForwardTrace: 3                                              |                                 |   ForwardTrace: 7                                              |                                 |   ForwardTrace: 11                                             |
+| [6][Module]< "entry_rule_priority" +[ Plus ] Plus @ { Plus } > |                                 | [9][Module]< "entry_rule_priority" -[ Plus ] Plus @ { Plus } > |                                 | [12][Module]< "entry_rule_priority" [ Plus ] Plus @ { Plus } > |
+| [AST-INSTRUCTIONS]:                                            |                                 | [AST-INSTRUCTIONS]:                                            |                                 | [AST-INSTRUCTIONS]:                                            |
+|   @ CS(1 -> 0) : [1][0]                                        |                                 |   @ CS(4 -> 0) : [2][0]                                        |                                 |   @ CS(7 -> 0) : [3][0]                                        |
+|   + CreateObject(Plus)                                         |                                 |   + CreateObject(Plus)                                         |                                 |   + CreateObject(Plus)                                         |
+|     obj:1 : Plus                                               |                                 |     obj:2 : Plus                                               |                                 |     obj:3 : Plus                                               |
+|                                                                |                                 |                                                                |                                 |                                                                |
+|   @ CS(1 -> 0) : [1][0]                                        |                                 |   @ CS(4 -> 0) : [2][0]                                        |                                 |   @ CS(7 -> 0) : [3][0]                                        |
+|   + StackEnd()                                                 |                                 |   + StackEnd()                                                 |                                 |   + StackEnd()                                                 |
+|     obj+:1 : Plus                                              |                                 |     obj+:2 : Plus                                              |                                 |     obj+:3 : Plus                                              |
+|       begin:3@0, top:3@0, create!:[4@0], end:[4@1]             |                                 |       begin:7@0, top:7@0, create!:[8@0], end:[8@1]             |                                 |       begin:11@0, top:11@0, create!:[12@0], end:[12@1]         |
+|                                                                |                                 |                                                                |                                 |                                                                |
+|   @ CS(0 -> -1) : [0] OS(2 -> -1) : [1]                        |                                 |   @ CS(0 -> -1) : [0] OS(5 -> -1) : [2]                        |                                 |   @ CS(0 -> -1) : [0] OS(8 -> -1) : [3]                        |
+|   > StackSlot(2)                                               |                                 |   > StackSlot(2)                                               |                                 |   > StackSlot(2)                                               |
+|                                                                |                                 |                                                                |                                 |                                                                |
+|   @ CS(0 -> -1) : [0]                                          |                                 |   @ CS(0 -> -1) : [0]                                          |                                 |   @ CS(0 -> -1) : [0]                                          |
+| [FIRST ATTENDING COMPETITION]:  [1]                            |                                 | [CARRIED COMPETITION]:                                         |                                 | [PREDECESSORS 11-11]: [11]                                     |
+| [CARRIED COMPETITION]:                                         |                                 |   [3]: competition[1][RS: -1] high                             |                                 | [SUCCESORS 13-13]: [13]                                        |
+|   [1]: competition[0][RS: -1] low                              |                                 | [PREDECESSORS 7-7]: [7]                                        |                                 +----------------------------------------------------------------+
+| [PREDECESSORS 3-3]: [3]                                        |                                 | [SUCCESORS 14-14]: [14]                                        |                                 |
+| [SUCCESORS 5-5]: [5]                                           |                                 +----------------------------------------------------------------+                                 |
++----------------------------------------------------------------+                                 |                                                                                                  |
+|                                                                                                  |                                                                                                  |
++                                                                                                  +                                                                                                  +
+|                                                                                                  |                                                                                                  |
++---------------------------------------------------------------------------------------------+    +---------------------------------------------------------------------------------------------+    +---------------------------------------------------------------------------------------------+
+| [5]: <Ending>                                                                               |    | [14]: <Ending>                                                                              |    | [13]: <Ending>                                                                              |
+|   TraceExec: [4]                                                                            |    |   TraceExec: [7]                                                                            |    |   TraceExec: [10]                                                                           |
+|   InsExec: [7:6]                                                                            |    |   InsExec: [18:6]                                                                           |    |   InsExec: [29:6]                                                                           |
+|   ForwardTrace: 3                                                                           |    |   ForwardTrace: 7                                                                           |    |   ForwardTrace: 11                                                                          |
+| [4][Module] END [ENDING]                                                                    |    | [4][Module] END [ENDING]                                                                    |    | [4][Module] END [ENDING]                                                                    |
+| [AST-INSTRUCTIONS]:                                                                         |    | [AST-INSTRUCTIONS]:                                                                         |    | [AST-INSTRUCTIONS]:                                                                         |
+|   @ CS(0 -> -1) : [0]                                                                       |    |   @ CS(0 -> -1) : [0]                                                                       |    |   @ CS(0 -> -1) : [0]                                                                       |
+|   + EnumItem(0, 4)                                                                          |    |   + EnumItem(1, 4)                                                                          |    |   + EnumItem(2, 4)                                                                          |
+|                                                                                             |    |                                                                                             |    |                                                                                             |
+|   @ CS(0 -> -1) : [0]                                                                       |    |   @ CS(0 -> -1) : [0]                                                                       |    |   @ CS(0 -> -1) : [0]                                                                       |
+|   + CreateObject(BranchedOptionalFeature)                                                   |    |   + CreateObject(BranchedOptionalFeature)                                                   |    |   + CreateObject(BranchedOptionalFeature)                                                   |
+|     obj:0 : BranchedOptionalFeature                                                         |    |     obj:0 : BranchedOptionalFeature                                                         |    |     obj:0 : BranchedOptionalFeature                                                         |
+|                                                                                             |    |                                                                                             |    |                                                                                             |
+|   @ CS(0 -> -1) : [0]                                                                       |    |   @ CS(0 -> -1) : [0]                                                                       |    |   @ CS(0 -> -1) : [0]                                                                       |
+|   + Field(BranchedOptionalFeature::optional, 1)                                             |    |   + Field(BranchedOptionalFeature::optional, 1)                                             |    |   + Field(BranchedOptionalFeature::optional, 1)                                             |
+|                                                                                             |    |                                                                                             |    |                                                                                             |
+|   @ CS(0 -> -1) : [0]                                                                       |    |   @ CS(0 -> -1) : [0]                                                                       |    |   @ CS(0 -> -1) : [0]                                                                       |
+|   + Field(BranchedOptionalFeature::tails, 3)                                                |    |   + Field(BranchedOptionalFeature::tails, 3)                                                |    |   + Field(BranchedOptionalFeature::tails, 3)                                                |
+|                                                                                             |    |                                                                                             |    |                                                                                             |
+|   @ CS(0 -> -1) : [0]                                                                       |    |   @ CS(0 -> -1) : [0]                                                                       |    |   @ CS(0 -> -1) : [0]                                                                       |
+|   + Field(BranchedOptionalFeature::type, 4)                                                 |    |   + Field(BranchedOptionalFeature::type, 4)                                                 |    |   + Field(BranchedOptionalFeature::type, 4)                                                 |
+|                                                                                             |    |                                                                                             |    |                                                                                             |
+|   @ CS(0 -> -1) : [0]                                                                       |    |   @ CS(0 -> -1) : [0]                                                                       |    |   @ CS(0 -> -1) : [0]                                                                       |
+|   + StackEnd()                                                                              |    |   + StackEnd()                                                                              |    |   + StackEnd()                                                                              |
+|     obj+:0 : BranchedOptionalFeature                                                        |    |     obj+:0 : BranchedOptionalFeature                                                        |    |     obj+:0 : BranchedOptionalFeature                                                        |
+|       begin:1@0, top:1@0, field:[3, 1, 2], create!:[14@1, 13@1, 5@1], end:[13@5, 14@5, 5@5] |    |       begin:1@0, top:1@0, field:[3, 1, 2], create!:[14@1, 13@1, 5@1], end:[13@5, 14@5, 5@5] |    |       begin:1@0, top:1@0, field:[3, 1, 2], create!:[14@1, 13@1, 5@1], end:[13@5, 14@5, 5@5] |
+|                                                                                             |    |                                                                                             |    |                                                                                             |
+|   @ OS(3 -> -1) : [0]                                                                       |    |   @ OS(6 -> -1) : [0]                                                                       |    |   @ OS(9 -> -1) : [0]                                                                       |
+| [FIRST ATTENDING COMPETITION]:  [1]                                                         |    | [CARRIED COMPETITION]:                                                                      |    | [PREDECESSORS 12-12]: [12]                                                                  |
+| [CARRIED COMPETITION]:                                                                      |    |   [3]: competition[1][RS: -1] high                                                          |    | [SUCCESORS 15-15]: [15]                                                                     |
+|   [1]: competition[0][RS: -1] low                                                           |    | [PREDECESSORS 8-8]: [8]                                                                     |    +---------------------------------------------------------------------------------------------+
+| [PREDECESSORS 4-4]: [4]                                                                     |    | [SUCCESORS 15-15]: [15]                                                                     |    |
+| [SUCCESORS 15-15]: [15]                                                                     |    +---------------------------------------------------------------------------------------------+    |
++---------------------------------------------------------------------------------------------+    |                                                                                                  |
+|                                                                                                  |                                                                                                  |
++--------------------------------------------------------------------------------------------------+--------------------------------------------------------------------------------------------------+
 |
-+-------------------------------------+
-| [17]: <Merging>                     |
-| <Start>                             |
-|   TraceExec: [13]                   |
-|   ForwardTrace: 17                  |
-|   CommonForwardTrace: 0             |
-| [AMBIGUITY-RESOLVING]: [0]          |
-|   objs: [0, 2, 4]                   |
-|   first: 0 prefix: 0                |
-|   last: 17 postfix: 0               |
-| [CONTEXT]: OS(12 -> -1) : [4, 2, 0] |
-+-------------------------------------+
++-------------------------------+
+| [15]: <Merging>               |
+| <Start>                       |
+|   TraceExec: [11]             |
+|   ForwardTrace: 15            |
+|   CommonForwardTrace: 0       |
+| [AMBIGUITY-RESOLVING]: [0]    |
+|   objs: [0]                   |
+|   first: 1 prefix: 0          |
+|   last: 15 postfix: 0         |
+| [CONTEXT]: OS(10 -> -1) : [0] |
++-------------------------------+

@@ -1,29 +1,29 @@
 ﻿[0][Plus] BEGIN 
-[RULE: 0][CLAUSE: -1]
+[RULE: 0]
 	token: "+" -> [2][Plus]< "+" @ >
 		+ StackBegin()
 		+ Token(0)
 
 [1][Plus] END [ENDING]
-[RULE: 0][CLAUSE: -1]
+[RULE: 0]
 
 [2][Plus]< "+" @ >
-[RULE: 0][CLAUSE: 0]
+[RULE: 0]
 	ending -> [1][Plus] END [ENDING]
 		+ CreateObject(Plus)
 		+ StackEnd()
 
 [3][EqualOptional] BEGIN 
-[RULE: 1][CLAUSE: -1]
+[RULE: 1]
 	token: "optional" -> [5][EqualOptional]< "optional" @ [ Plus ] "+" { Plus } >
 		+ StackBegin()
 		+ Token(0)
 
 [4][EqualOptional] END [ENDING]
-[RULE: 1][CLAUSE: -1]
+[RULE: 1]
 
 [5][EqualOptional]< "optional" @ [ Plus ] "+" { Plus } >
-[RULE: 1][CLAUSE: 0]
+[RULE: 1]
 	token: "+" -> [2][Plus]< "+" @ >
 		+ StackBegin()
 		+ Token(0)
@@ -33,12 +33,12 @@
 		+ Token(2)
 
 [6][EqualOptional]< "optional" [ Plus @ ] "+" { Plus } >
-[RULE: 1][CLAUSE: 0]
+[RULE: 1]
 	token: "+" -> [7][EqualOptional]< "optional" [ Plus ] "+" @ { Plus } >
 		+ Token(2)
 
 [7][EqualOptional]< "optional" [ Plus ] "+" @ { Plus } >
-[RULE: 1][CLAUSE: 0]
+[RULE: 1]
 	ending -> [4][EqualOptional] END [ENDING]
 		+ EnumItem(0, 4)
 		+ CreateObject(OptionalFeature)
@@ -53,7 +53,7 @@
 			+ StackSlot(3)
 
 [8][EqualOptional]< "optional" [ Plus ] "+" { Plus @ } >
-[RULE: 1][CLAUSE: 0]
+[RULE: 1]
 	ending -> [4][EqualOptional] END [ENDING]
 		+ EnumItem(0, 4)
 		+ CreateObject(OptionalFeature)
@@ -68,7 +68,7 @@
 			+ StackSlot(3)
 
 [9][Module] BEGIN 
-[RULE: 2][CLAUSE: -1]
+[RULE: 2]
 	token: "optional" -> [5][EqualOptional]< "optional" @ [ Plus ] "+" { Plus } >
 		+ StackBegin()
 		+ Token(0)
@@ -76,10 +76,10 @@
 			+ StackBegin()
 
 [10][Module] END [ENDING]
-[RULE: 2][CLAUSE: -1]
+[RULE: 2]
 
 [11][Module]<! !EqualOptional @ !>
-[RULE: 2][CLAUSE: 0]
+[RULE: 2]
 	ending -> [10][Module] END [ENDING]
 		+ StackEnd()
 

@@ -1,102 +1,102 @@
 ﻿================ EXECUTION STEPS ================
-[0]: 0@0 - 7@2
+[0]: 0@0 - 6@2
 
 ==================== TRACES =====================
 
 +----------------------+
 | [0]: <Start>         |
-| [41][Module] BEGIN   |
+| [40][Module] BEGIN   |
 | [AST-INSTRUCTIONS]:  |
-| [SUCCESORS 2-2]: [2] |
+| [SUCCESORS 1-1]: [1] |
 +----------------------+
 [0]
  |
  +
  |
 [0]
-++==============================================++
-|| [2]: {ID} Value                              ||
-|| [7][Exp0]< ID @ >                            ||
-|| [AST-INSTRUCTIONS]:                          ||
-||   + StackBegin()                             ||
-||   + Token(0)                                 ||
-|| [RETURN STACK]:                              ||
-||   [6][3][0]: Exp0 -> [18][Exp1]<! !Exp0 @ !> ||
-||   [5][2][0]: Exp1 -> [31][Exp2]<! !Exp1 @ !> ||
-||   [4][1][0]: Exp2 -> [40][Exp]<! !Exp2 @ !>  ||
-||   [0][10][0]: Exp -> [43][Module]< Exp @ >   ||
-|| [PREDECESSORS 0-0]: [0]                      ||
-|| [SUCCESORS 3-3]: [3]                         ||
-++==============================================++
+++========================================================++
+|| [1]: {ID} Value                                        ||
+|| [9][Exp0]{{< ID @ "<" { Exp ; "," } ">" > ; < ID @ >}} ||
+|| [AST-INSTRUCTIONS]:                                    ||
+||   + StackBegin()                                       ||
+||   + Token(0)                                           ||
+|| [RETURN STACK]:                                        ||
+||   [3][3][0]: Exp0 -> [17][Exp1]<! !Exp0 @ !>           ||
+||   [2][2][0]: Exp1 -> [30][Exp2]<! !Exp1 @ !>           ||
+||   [1][1][0]: Exp2 -> [39][Exp]<! !Exp2 @ !>            ||
+||   [0][10][0]: Exp -> [42][Module]< Exp @ >             ||
+|| [PREDECESSORS 0-0]: [0]                                ||
+|| [SUCCESORS 2-2]: [2]                                   ||
+++========================================================++
 |
 +
 |
 +----------------------------------------------+
-| [3]: <Ending>                                |
-| [18][Exp1]<! !Exp0 @ !>                      |
+| [2]: <Ending>                                |
+| [17][Exp1]<! !Exp0 @ !>                      |
 | [AST-INSTRUCTIONS]:                          |
 |   + CreateObject(RefExpr)                    |
 |   + Field(RefExpr::name, 0)                  |
 |   + StackEnd()                               |
 |   > StackBegin()                             |
 | [RETURN STACK]:                              |
-|   [5][2][0]: Exp1 -> [31][Exp2]<! !Exp1 @ !> |
-|   [4][1][0]: Exp2 -> [40][Exp]<! !Exp2 @ !>  |
-|   [0][10][0]: Exp -> [43][Module]< Exp @ >   |
-| [PREDECESSORS 2-2]: [2]                      |
-| [SUCCESORS 4-4]: [4]                         |
+|   [2][2][0]: Exp1 -> [30][Exp2]<! !Exp1 @ !> |
+|   [1][1][0]: Exp2 -> [39][Exp]<! !Exp2 @ !>  |
+|   [0][10][0]: Exp -> [42][Module]< Exp @ >   |
+| [PREDECESSORS 1-1]: [1]                      |
+| [SUCCESORS 3-3]: [3]                         |
 +----------------------------------------------+
 |
 +
 |
 +---------------------------------------------+
-| [4]: <Ending>                               |
-| [31][Exp2]<! !Exp1 @ !>                     |
+| [3]: <Ending>                               |
+| [30][Exp2]<! !Exp1 @ !>                     |
 | [AST-INSTRUCTIONS]:                         |
 |   + StackEnd()                              |
 |   > StackBegin()                            |
 | [RETURN STACK]:                             |
-|   [4][1][0]: Exp2 -> [40][Exp]<! !Exp2 @ !> |
-|   [0][10][0]: Exp -> [43][Module]< Exp @ >  |
-| [PREDECESSORS 3-3]: [3]                     |
-| [SUCCESORS 5-5]: [5]                        |
+|   [1][1][0]: Exp2 -> [39][Exp]<! !Exp2 @ !> |
+|   [0][10][0]: Exp -> [42][Module]< Exp @ >  |
+| [PREDECESSORS 2-2]: [2]                     |
+| [SUCCESORS 4-4]: [4]                        |
 +---------------------------------------------+
 |
 +
 |
 +--------------------------------------------+
-| [5]: <Ending>                              |
-| [40][Exp]<! !Exp2 @ !>                     |
+| [4]: <Ending>                              |
+| [39][Exp]<! !Exp2 @ !>                     |
 | [AST-INSTRUCTIONS]:                        |
 |   + StackEnd()                             |
 |   > StackBegin()                           |
 | [RETURN STACK]:                            |
-|   [0][10][0]: Exp -> [43][Module]< Exp @ > |
-| [PREDECESSORS 4-4]: [4]                    |
-| [SUCCESORS 6-6]: [6]                       |
+|   [0][10][0]: Exp -> [42][Module]< Exp @ > |
+| [PREDECESSORS 3-3]: [3]                    |
+| [SUCCESORS 5-5]: [5]                       |
 +--------------------------------------------+
 |
 +
 |
 +-------------------------+
-| [6]: <Ending>           |
-| [43][Module]< Exp @ >   |
+| [5]: <Ending>           |
+| [42][Module]< Exp @ >   |
 | [AST-INSTRUCTIONS]:     |
 |   + StackEnd()          |
 |   > StackBegin()        |
 |   > StackSlot(0)        |
-| [PREDECESSORS 5-5]: [5] |
-| [SUCCESORS 7-7]: [7]    |
+| [PREDECESSORS 4-4]: [4] |
+| [SUCCESORS 6-6]: [6]    |
 +-------------------------+
 |
 +
 |
 +----------------------------+
-| [7]: <Ending>              |
-| [42][Module] END [ENDING]  |
+| [6]: <Ending>              |
+| [41][Module] END [ENDING]  |
 | [AST-INSTRUCTIONS]:        |
 |   + CreateObject(Module)   |
 |   + Field(Module::expr, 0) |
 |   + StackEnd()             |
-| [PREDECESSORS 6-6]: [6]    |
+| [PREDECESSORS 5-5]: [5]    |
 +----------------------------+

@@ -1,36 +1,30 @@
 ﻿[0][Module] BEGIN 
-[RULE: 0][CLAUSE: -1]
-	token: "conditional_literal" -> [2][Module]< "conditional_literal" @ ID >
-		+ StackBegin()
-		+ Token(0)
-	token: "conditional_literal" -> [3][Module]< "conditional_literal" @ ID >
+[RULE: 0]
+	token: "conditional_literal" -> [4][Module]{{< "conditional_literal" @ ID > ; < "conditional_literal" @ ID >}}
 		+ StackBegin()
 		+ Token(0)
 
 [1][Module] END [ENDING]
-[RULE: 0][CLAUSE: -1]
+[RULE: 0]
 
-[2][Module]< "conditional_literal" @ ID >
-[RULE: 0][CLAUSE: 1]
-	token: ID="b" -> [4][Module]< "conditional_literal" ID @ >
-		+ Token(1)
-
-[3][Module]< "conditional_literal" @ ID >
-[RULE: 0][CLAUSE: 0]
-	token: ID="a" -> [5][Module]< "conditional_literal" ID @ >
-		+ Token(1)
-
-[4][Module]< "conditional_literal" ID @ >
-[RULE: 0][CLAUSE: 1]
+[2][Module]< "conditional_literal" ID @ >
+[RULE: 0]
 	ending -> [1][Module] END [ENDING]
 		+ CreateObject(ClFeature)
 		+ Field(ClFeature::id, 1)
 		+ StackEnd()
 
-[5][Module]< "conditional_literal" ID @ >
-[RULE: 0][CLAUSE: 0]
+[3][Module]< "conditional_literal" ID @ >
+[RULE: 0]
 	ending -> [1][Module] END [ENDING]
 		+ CreateObject(ClFeature)
 		+ Field(ClFeature::id, 1)
 		+ StackEnd()
+
+[4][Module]{{< "conditional_literal" @ ID > ; < "conditional_literal" @ ID >}}
+[RULE: 0]
+	token: ID="a" -> [2][Module]< "conditional_literal" ID @ >
+		+ Token(1)
+	token: ID="b" -> [3][Module]< "conditional_literal" ID @ >
+		+ Token(1)
 

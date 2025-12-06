@@ -1,250 +1,250 @@
 ﻿[0][Do]< "do" ";" > @[ENDING]
-[RULE: 0][CLAUSE: 0]
+[RULE: 0]
 
 [1][Do]< "do" ";" @ >
-[RULE: 0][CLAUSE: 0]
+[RULE: 0]
 	epsilon -> [0][Do]< "do" ";" > @[ENDING]
 		+ CreateObject(DoStat)
 		+ StackEnd()
 
 [2][Do]< "do" @ ";" >
-[RULE: 0][CLAUSE: 0]
+[RULE: 0]
 	epsilon -> [3][Do]< "do" @ ";" >
 
 [3][Do]< "do" @ ";" >
-[RULE: 0][CLAUSE: 0]
+[RULE: 0]
 	token: ";" -> [1][Do]< "do" ";" @ >
 		+ Token(1)
 
 [4][Do]< @ "do" ";" >
-[RULE: 0][CLAUSE: 0]
+[RULE: 0]
 	token: "do" -> [2][Do]< "do" @ ";" >
 		+ Token(0)
 
 [5][Do]@ < "do" ";" >
-[RULE: 0][CLAUSE: 0]
+[RULE: 0]
 	epsilon -> [4][Do]< @ "do" ";" >
 		+ StackBegin()
 
 [6][Block]< "{" @ { Stat } "}" >
-[RULE: 1][CLAUSE: 0]
+[RULE: 1]
 	epsilon -> [8][Block]< "{" { @ Stat } "}" >
 	epsilon -> [12][Block]< "{" { Stat } @ "}" >
 
 [7][Block]< "{" @ { Stat } "}" >
-[RULE: 1][CLAUSE: 0]
+[RULE: 1]
 	epsilon -> [6][Block]< "{" @ { Stat } "}" >
 
 [8][Block]< "{" { @ Stat } "}" >
-[RULE: 1][CLAUSE: 0]
+[RULE: 1]
 	rule: Stat -> [9][Block]< "{" { Stat @ } "}" >
 		+ StackSlot(1)
 
 [9][Block]< "{" { Stat @ } "}" >
-[RULE: 1][CLAUSE: 0]
+[RULE: 1]
 	epsilon -> [8][Block]< "{" { @ Stat } "}" >
 	epsilon -> [12][Block]< "{" { Stat } @ "}" >
 
 [10][Block]< "{" { Stat } "}" > @[ENDING]
-[RULE: 1][CLAUSE: 0]
+[RULE: 1]
 
 [11][Block]< "{" { Stat } "}" @ >
-[RULE: 1][CLAUSE: 0]
+[RULE: 1]
 	epsilon -> [10][Block]< "{" { Stat } "}" > @[ENDING]
 		+ CreateObject(BlockStat)
 		+ Field(BlockStat::stats, 1)
 		+ StackEnd()
 
 [12][Block]< "{" { Stat } @ "}" >
-[RULE: 1][CLAUSE: 0]
+[RULE: 1]
 	epsilon -> [13][Block]< "{" { Stat } @ "}" >
 
 [13][Block]< "{" { Stat } @ "}" >
-[RULE: 1][CLAUSE: 0]
+[RULE: 1]
 	token: "}" -> [11][Block]< "{" { Stat } "}" @ >
 		+ Token(2)
 
 [14][Block]< @ "{" { Stat } "}" >
-[RULE: 1][CLAUSE: 0]
+[RULE: 1]
 	token: "{" -> [7][Block]< "{" @ { Stat } "}" >
 		+ Token(0)
 
 [15][Block]@ < "{" { Stat } "}" >
-[RULE: 1][CLAUSE: 0]
+[RULE: 1]
 	epsilon -> [14][Block]< @ "{" { Stat } "}" >
 		+ StackBegin()
 
 [16][IfThenStat]< "if" "cond" "then" @ Stat >
-[RULE: 2][CLAUSE: 0]
+[RULE: 2]
 	rule: Stat -> [19][IfThenStat]< "if" "cond" "then" Stat @ >
 		+ StackSlot(3)
 
 [17][IfThenStat]< "if" "cond" "then" @ Stat >
-[RULE: 2][CLAUSE: 0]
+[RULE: 2]
 	epsilon -> [16][IfThenStat]< "if" "cond" "then" @ Stat >
 
 [18][IfThenStat]< "if" "cond" "then" Stat > @[ENDING]
-[RULE: 2][CLAUSE: 0]
+[RULE: 2]
 
 [19][IfThenStat]< "if" "cond" "then" Stat @ >
-[RULE: 2][CLAUSE: 0]
+[RULE: 2]
 	epsilon -> [18][IfThenStat]< "if" "cond" "then" Stat > @[ENDING]
 		+ CreateObject(IfContentCandidate)
 		+ Field(IfContentCandidate::thenBranch, 3)
 		+ StackEnd()
 
 [20][IfThenStat]< "if" "cond" @ "then" Stat >
-[RULE: 2][CLAUSE: 0]
+[RULE: 2]
 	epsilon -> [21][IfThenStat]< "if" "cond" @ "then" Stat >
 
 [21][IfThenStat]< "if" "cond" @ "then" Stat >
-[RULE: 2][CLAUSE: 0]
+[RULE: 2]
 	token: "then" -> [17][IfThenStat]< "if" "cond" "then" @ Stat >
 		+ Token(2)
 
 [22][IfThenStat]< "if" @ "cond" "then" Stat >
-[RULE: 2][CLAUSE: 0]
+[RULE: 2]
 	epsilon -> [23][IfThenStat]< "if" @ "cond" "then" Stat >
 
 [23][IfThenStat]< "if" @ "cond" "then" Stat >
-[RULE: 2][CLAUSE: 0]
+[RULE: 2]
 	token: "cond" -> [20][IfThenStat]< "if" "cond" @ "then" Stat >
 		+ Token(1)
 
 [24][IfThenStat]< @ "if" "cond" "then" Stat >
-[RULE: 2][CLAUSE: 0]
+[RULE: 2]
 	token: "if" -> [22][IfThenStat]< "if" @ "cond" "then" Stat >
 		+ Token(0)
 
 [25][IfThenStat]@ < "if" "cond" "then" Stat >
-[RULE: 2][CLAUSE: 0]
+[RULE: 2]
 	epsilon -> [24][IfThenStat]< @ "if" "cond" "then" Stat >
 		+ StackBegin()
 
 [26][IfContent]<! !IfThenStat !> @[ENDING]
-[RULE: 3][CLAUSE: 0]
+[RULE: 3]
 
 [27][IfContent]<! !IfThenStat "else" @ Stat !>
-[RULE: 3][CLAUSE: 1]
+[RULE: 3]
 	epsilon -> [28][IfContent]<! !IfThenStat "else" @ Stat !>
 
 [28][IfContent]<! !IfThenStat "else" @ Stat !>
-[RULE: 3][CLAUSE: 1]
+[RULE: 3]
 	rule: Stat -> [30][IfContent]<! !IfThenStat "else" Stat @ !>
 		+ StackSlot(2)
 
 [29][IfContent]<! !IfThenStat "else" Stat !> @[ENDING]
-[RULE: 3][CLAUSE: 1]
+[RULE: 3]
 
 [30][IfContent]<! !IfThenStat "else" Stat @ !>
-[RULE: 3][CLAUSE: 1]
+[RULE: 3]
 	epsilon -> [29][IfContent]<! !IfThenStat "else" Stat !> @[ENDING]
 		+ Field(IfContentCandidate::elseBranch, 2)
 		+ StackEnd()
 
 [31][IfContent]<! !IfThenStat @ !>
-[RULE: 3][CLAUSE: 0]
+[RULE: 3]
 	epsilon -> [26][IfContent]<! !IfThenStat !> @[ENDING]
 		+ StackEnd()
 
 [32][IfContent]<! !IfThenStat @ "else" Stat !>
-[RULE: 3][CLAUSE: 1]
+[RULE: 3]
 	epsilon -> [33][IfContent]<! !IfThenStat @ "else" Stat !>
 
 [33][IfContent]<! !IfThenStat @ "else" Stat !>
-[RULE: 3][CLAUSE: 1]
+[RULE: 3]
 	token: "else" -> [27][IfContent]<! !IfThenStat "else" @ Stat !>
 		+ Token(1)
 
 [34][IfContent]<! @ !IfThenStat !>
-[RULE: 3][CLAUSE: 0]
+[RULE: 3]
 	rule: IfThenStat -> [31][IfContent]<! !IfThenStat @ !>
 
 [35][IfContent]<! @ !IfThenStat "else" Stat !>
-[RULE: 3][CLAUSE: 1]
+[RULE: 3]
 	rule: IfThenStat -> [32][IfContent]<! !IfThenStat @ "else" Stat !>
 
 [36][IfContent]@ <! !IfThenStat !>
-[RULE: 3][CLAUSE: 0]
+[RULE: 3]
 	epsilon -> [34][IfContent]<! @ !IfThenStat !>
 		+ StackBegin()
 
 [37][IfContent]@ <! !IfThenStat "else" Stat !>
-[RULE: 3][CLAUSE: 1]
+[RULE: 3]
 	epsilon -> [35][IfContent]<! @ !IfThenStat "else" Stat !>
 		+ StackBegin()
 
 [38][Stat]< @ IfContent >
-[RULE: 4][CLAUSE: 2]
+[RULE: 4]
 	rule: IfContent -> [40][Stat]< IfContent @ >
 		+ StackSlot(0)
 
 [39][Stat]< IfContent > @[ENDING]
-[RULE: 4][CLAUSE: 2]
+[RULE: 4]
 
 [40][Stat]< IfContent @ >
-[RULE: 4][CLAUSE: 2]
+[RULE: 4]
 	epsilon -> [39][Stat]< IfContent > @[ENDING]
 		+ CreateObject(IfStat)
 		+ Field(IfStat::content, 0)
 		+ StackEnd()
 
 [41][Stat]<! !Block !> @[ENDING]
-[RULE: 4][CLAUSE: 1]
+[RULE: 4]
 
 [42][Stat]<! !Block @ !>
-[RULE: 4][CLAUSE: 1]
+[RULE: 4]
 	epsilon -> [41][Stat]<! !Block !> @[ENDING]
 		+ StackEnd()
 
 [43][Stat]<! !Do !> @[ENDING]
-[RULE: 4][CLAUSE: 0]
+[RULE: 4]
 
 [44][Stat]<! !Do @ !>
-[RULE: 4][CLAUSE: 0]
+[RULE: 4]
 	epsilon -> [43][Stat]<! !Do !> @[ENDING]
 		+ StackEnd()
 
 [45][Stat]<! @ !Block !>
-[RULE: 4][CLAUSE: 1]
+[RULE: 4]
 	rule: Block -> [42][Stat]<! !Block @ !>
 
 [46][Stat]<! @ !Do !>
-[RULE: 4][CLAUSE: 0]
+[RULE: 4]
 	rule: Do -> [44][Stat]<! !Do @ !>
 
 [47][Stat]@ < IfContent >
-[RULE: 4][CLAUSE: 2]
+[RULE: 4]
 	epsilon -> [38][Stat]< @ IfContent >
 		+ StackBegin()
 
 [48][Stat]@ <! !Block !>
-[RULE: 4][CLAUSE: 1]
+[RULE: 4]
 	epsilon -> [45][Stat]<! @ !Block !>
 		+ StackBegin()
 
 [49][Stat]@ <! !Do !>
-[RULE: 4][CLAUSE: 0]
+[RULE: 4]
 	epsilon -> [46][Stat]<! @ !Do !>
 		+ StackBegin()
 
 [50][Module]< @ Stat >
-[RULE: 5][CLAUSE: 0]
+[RULE: 5]
 	rule: Stat -> [52][Module]< Stat @ >
 		+ StackSlot(0)
 
 [51][Module]< Stat > @[ENDING]
-[RULE: 5][CLAUSE: 0]
+[RULE: 5]
 
 [52][Module]< Stat @ >
-[RULE: 5][CLAUSE: 0]
+[RULE: 5]
 	epsilon -> [51][Module]< Stat > @[ENDING]
 		+ CreateObject(Module)
 		+ Field(Module::stat, 0)
 		+ StackEnd()
 
 [53][Module]@ < Stat >
-[RULE: 5][CLAUSE: 0]
+[RULE: 5]
 	epsilon -> [50][Module]< @ Stat >
 		+ StackBegin()
 

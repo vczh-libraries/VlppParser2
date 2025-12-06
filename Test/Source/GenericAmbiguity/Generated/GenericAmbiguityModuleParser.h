@@ -16,10 +16,10 @@ namespace genericambiguity
 	enum class ModuleParserStates
 	{
 		Exp0 = 0,
-		Exp1 = 11,
-		Exp2 = 19,
-		Exp = 32,
-		Module = 41,
+		Exp1 = 10,
+		Exp2 = 18,
+		Exp = 31,
+		Module = 40,
 	};
 
 	const wchar_t* ModuleParserRuleName(vl::vint index);

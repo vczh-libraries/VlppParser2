@@ -37,18 +37,16 @@ StateSymbol
 			protected:
 				SyntaxSymbolManager*		ownerManager;
 				RuleSymbol*					rule;
-				vint32_t					clauseId;
 				EdgeList					inEdges;
 				EdgeList					outEdges;
 
-				StateSymbol(RuleSymbol* _rule, vint32_t _clauseId);
+				StateSymbol(RuleSymbol* _rule);
 			public:
 				WString						label;
 				bool						endingState = false;
 
 				SyntaxSymbolManager*		Owner() { return ownerManager; }
 				RuleSymbol*					Rule() { return rule; }
-				vint32_t					ClauseId() { return clauseId; }
 				const EdgeList&				InEdges() { return inEdges; }
 				const EdgeList&				OutEdges() { return outEdges; }
 
@@ -71,24 +69,16 @@ EdgeSymbol
 			struct EdgeInput
 			{
 				EdgeInputType						type = EdgeInputType::Epsilon;
-				vint32_t							token = -1;										// useful when type == Token
-				Nullable<WString>					condition;										// useful when type == Token
 
-				collections::SortedList<vint32_t>	flags;											// usefule when type == LrPlaceholder or LrInject
+				// Token
+				vint32_t							token = -1;
+				Nullable<WString>					condition;
 
-				automaton::ReturnRuleType			ruleType = automaton::ReturnRuleType::Field;	// useful when type == Rule or LrInject
-				RuleSymbol*							rule = nullptr;									// useful when type == Rule or LrInject
+				// Rule
+				automaton::ReturnRuleType			ruleType = automaton::ReturnRuleType::Field;
+				RuleSymbol*							rule = nullptr;
 
-				EdgeInput& operator=(EdgeInput& input)
-				{
-					type = input.type;
-					token = input.token;
-					condition = input.condition;
-					CopyFrom(flags, input.flags);
-					ruleType = input.ruleType;
-					rule = input.rule;
-					return *this;
-				}
+				auto operator<=>(const EdgeInput&) const = default;
 			};
 
 			struct EdgeCompetition
@@ -141,7 +131,6 @@ RuleSymbol
 			protected:
 				SyntaxSymbolManager*		ownerManager;
 				WString						name;
-				vint32_t					currentClauseId = -1;
 
 				RuleSymbol(SyntaxSymbolManager* _ownerManager, const WString& _name, vint _fileIndex);
 			public:
@@ -156,8 +145,6 @@ RuleSymbol
 
 				SyntaxSymbolManager*		Owner() { return ownerManager; }
 				const WString&				Name() { return name; }
-				void						NewClause() { currentClauseId++; }
-				vint32_t					CurrentClauseId() { return currentClauseId; }
 			};
 
 /***********************************************************************
@@ -195,6 +182,7 @@ SyntaxSymbolManager
 
 				void						BuildLeftRecEdge(EdgeSymbol* newEdge, EdgeSymbol* endingEdge, EdgeSymbol* lrecPrefixEdge);
 				void						EliminateLeftRecursion(RuleSymbol* rule, StateSymbol* startState, StateSymbol* endState, StateList& newStates, EdgeList& newEdges);
+				void						MergeEdgesWithSameInput(RuleSymbol* rule, StateSymbol* startState, StateList& newStates, EdgeList& newEdges);
 				StateSymbol*				EliminateEpsilonEdges(RuleSymbol* rule, StateList& newStates, EdgeList& newEdges);
 				void						BuildCompactNFAInternal();
 
@@ -209,7 +197,7 @@ SyntaxSymbolManager
 				RuleSymbol*					CreateRule(const WString& name, vint fileIndex, bool isPublic, bool isParser, ParsingTextRange codeRange = {});
 				void						RemoveRule(const WString& name);
 
-				StateSymbol*				CreateState(RuleSymbol* rule, vint32_t clauseId);
+				StateSymbol*				CreateState(RuleSymbol* rule);
 				EdgeSymbol*					CreateEdge(StateSymbol* from, StateSymbol* to);
 
 				void						BuildCompactNFA();

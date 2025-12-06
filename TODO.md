@@ -7,8 +7,6 @@
 
 ## Big Design Change
 
-- Allow indirect left recursion as it doesn't matter anymore for left recursion or non-left recursion.
-
 ### New Instructions
 
 - StackBegin() and StackEnd() manage a separated storage of slots.
@@ -19,39 +17,9 @@
 - Field(f, n) assign all values in the n-th slot to a field.
 - If the first input in a clause is a rule, StackBegin() + optional(StackSlot(n)) is generated after existing the rule.
 - If the first input in a clause is a token, StackBegin() is generated before Token(n).
-
-### Notes
-
-- During building CompressedNFA, the StackBegin instruction (aka in all epsilon transitions from the begin state) will be moved to all immediate transition's beginning of insAfterInput.
-- Remove NFA for partial rules, they will be copied.
-  - Remove builder functions for partial rules.
-  - Since partial rule cannot create object, clauses can be merged with | operator into one clause.
-    - Do this in all partial rules, and then the clause can be copied easily embedding into other clauses.
-- left_recursion transition:
-  - Found by detecting dead-loop starting from a rule.
-  - Starts from ending states of a rule, appears in CompressedNFA.
-- prefix_merge transition:
-  - Found by detecting clause level prefix starting from a rule.
-  - Appears in CrossReferencedNFA.
-- Prefix merging 1st
-  - Performed at the end of CompressedNFA.
-  - In any rule, clauses may branch from the middle, not always at the beginning.
-- Prefix merging 2nd
-  - Performed at the beginning of CrossReferencedNFA.
-  - Calculating prefix_merge transition.
-  - This can happen in any branch in a rule, not just the beginning.
-- In the original implementation LM transitions marked "leftrec" but it may be unnecessary now.
-- Redign TmPtr (PrepareTraceRoute) and TmRa (ResolveAmbiguity)
-  - Make StackBegin and StackEnd mapping to each other
-  - Make each StackBegin link to previous StackBegin if it is StackSlot-ed
-  - Make each object knows its parent
-  - Leverage these information and decide where to begin and end ambiguity
-  - Fix all non-ambiguous test cases first, and then rework this part.
+- ResolveAmbiguity(type) merge all objects in 0-th slot.
 
 ### Progressing
-
-`Feature_NOMinus` and `Feature_NOPlus` seem to miss competition filtering.
-The rule expands to `-[-[-[a]a]a]a`, they are counted the same competition.
 
 - [x] Non-ambiguous test cases
 - [x] Ambiguous test cases
@@ -61,6 +29,8 @@ The rule expands to `-[-[-[a]a]a]a`, they are counted the same competition.
   - [x] Xml
   - [x] Workflow
 - [ ] prefix_merge test cases
+  - [ ] merge prefix in rules
+  - [ ] automatically identify prefix_merge
 - [ ] Built-in parsers:
   - [ ] C++
 - [ ] build.ps1
@@ -135,6 +105,8 @@ The rule expands to `-[-[-[a]a]a]a`, they are counted the same competition.
 
 ## Experiments
 
+- Indirect and multiple left recursion.
+- Twist slot number in alternative branches in a clause and see if it is possible to merge prefix
 - Add union type and remove `TypeOrExprOrOthers` in C++.
   - Consider what does `@ambiguous union` mean.
 - Try to see if it is possible to

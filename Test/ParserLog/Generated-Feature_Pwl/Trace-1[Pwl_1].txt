@@ -1,46 +1,46 @@
-﻿+-------------------------+
-| [0]: <Start>            |
-| [25][Module] BEGIN      |
-| [AST-INSTRUCTIONS]:     |
-| [SUCCESORS 1-2]: [1][2] |
-+-------------------------+
+﻿+----------------------+
+| [0]: <Start>         |
+| [25][Module] BEGIN   |
+| [AST-INSTRUCTIONS]:  |
+| [SUCCESORS 1-1]: [1] |
++----------------------+
+[0]
+ |
+ +
+ |
+[0]
+++===========================================================================================++
+|| [1]: {PREFIX_WITH_LEFTREC} prefix_with_leftrec                                            ||
+|| [29][Module]{{<! "prefix_with_leftrec" @ !Pwl1 !> ; <! "prefix_with_leftrec" @ !Pwl2 !>}} ||
+|| [AST-INSTRUCTIONS]:                                                                       ||
+||   + StackBegin()                                                                          ||
+||   + Token(0)                                                                              ||
+|| [PREDECESSORS 0-0]: [0]                                                                   ||
+|| [SUCCESORS 2-7]: [2][7]                                                                   ||
+++===========================================================================================++
 [0/1]
  |
- +--------------------------------------------------------+
- |                                                        |
-[0]                                                      [1]
-++=================================================++    ++=================================================++
-|| [1]: {PREFIX_WITH_LEFTREC} prefix_with_leftrec  ||    || [2]: {PREFIX_WITH_LEFTREC} prefix_with_leftrec  ||
-|| [29][Module]<! "prefix_with_leftrec" @ !Pwl1 !> ||    || [30][Module]<! "prefix_with_leftrec" @ !Pwl2 !> ||
-|| [AST-INSTRUCTIONS]:                             ||    || [AST-INSTRUCTIONS]:                             ||
-||   + StackBegin()                                ||    ||   + StackBegin()                                ||
-||   + Token(0)                                    ||    ||   + Token(0)                                    ||
-|| [PREDECESSORS 0-0]: [0]                         ||    || [PREDECESSORS 0-0]: [0]                         ||
-|| [SUCCESORS 3-3]: [3]                            ||    || [SUCCESORS 8-8]: [8]                            ||
-++=================================================++    ++=================================================++
-[0]                                                      [1]
- |                                                        |
- +                                                        +---------------------+
+ +------------------------------------------------------------------------------+
  |                                                                              |
 [0]                                                                            [1]
 ++=======================================================================++    ++=======================================================================++
-|| [3]: {LT} <                                                           ||    || [8]: {LT} <                                                           ||
+|| [2]: {LT} <                                                           ||    || [7]: {LT} <                                                           ||
 || [5][Lt]< "<" @ >                                                      ||    || [5][Lt]< "<" @ >                                                      ||
 || [AST-INSTRUCTIONS]:                                                   ||    || [AST-INSTRUCTIONS]:                                                   ||
 ||   + StackBegin()                                                      ||    ||   + StackBegin()                                                      ||
 ||   + Token(0)                                                          ||    ||   + Token(0)                                                          ||
 || [RETURN STACK]:                                                       ||    || [RETURN STACK]:                                                       ||
-||   [2][1][1]: Lt -> [8][Pwl1_P]< Lt @ >                                ||    ||   [5][5][2]: Lt -> [18][Pwl2_P]< Lt @ >                               ||
-||   [1][3][1]: Pwl1_P -> [15][Pwl1]<! !Pwl1_P @ !>                      ||    ||   [4][8][2]: Pwl2_P -> [24][Pwl2]<! { Plus } !Pwl2_P @ !>             ||
-||   [0][11][1]: Pwl1 -> [27][Module]<! "prefix_with_leftrec" !Pwl1 @ !> ||    ||   [3][12][2]: Pwl2 -> [28][Module]<! "prefix_with_leftrec" !Pwl2 @ !> ||
-|| [PREDECESSORS 1-1]: [1]                                               ||    || [PREDECESSORS 2-2]: [2]                                               ||
-|| [SUCCESORS 4-4]: [4]                                                  ||    || [SUCCESORS 9-9]: [9]                                                  ||
+||   [2][1][1]: Lt -> [8][Pwl1_P]< Lt @ >                                ||    ||   [5][5][1]: Lt -> [18][Pwl2_P]< Lt @ >                               ||
+||   [1][3][1]: Pwl1_P -> [15][Pwl1]<! !Pwl1_P @ !>                      ||    ||   [4][8][1]: Pwl2_P -> [24][Pwl2]<! { Plus } !Pwl2_P @ !>             ||
+||   [0][11][1]: Pwl1 -> [27][Module]<! "prefix_with_leftrec" !Pwl1 @ !> ||    ||   [3][12][1]: Pwl2 -> [28][Module]<! "prefix_with_leftrec" !Pwl2 @ !> ||
+|| [PREDECESSORS 1-1]: [1]                                               ||    || [PREDECESSORS 1-1]: [1]                                               ||
+|| [SUCCESORS 3-3]: [3]                                                  ||    || [SUCCESORS 8-8]: [8]                                                  ||
 ++=======================================================================++    ++=======================================================================++
 |                                                                              |
 +                                                                              +
 |                                                                              |
 +-----------------------------------------------------------------------+      +-----------------------------------------------------------------------+
-| [4]: <Ending>                                                         |      | [9]: <Ending>                                                         |
+| [3]: <Ending>                                                         |      | [8]: <Ending>                                                         |
 | [8][Pwl1_P]< Lt @ >                                                   |      | [18][Pwl2_P]< Lt @ >                                                  |
 | [AST-INSTRUCTIONS]:                                                   |      | [AST-INSTRUCTIONS]:                                                   |
 |   + CreateObject(Lt)                                                  |      |   + CreateObject(Lt)                                                  |
@@ -48,16 +48,16 @@
 |   > StackBegin()                                                      |      |   > StackBegin()                                                      |
 |   > StackSlot(0)                                                      |      |   > StackSlot(0)                                                      |
 | [RETURN STACK]:                                                       |      | [RETURN STACK]:                                                       |
-|   [1][3][1]: Pwl1_P -> [15][Pwl1]<! !Pwl1_P @ !>                      |      |   [4][8][2]: Pwl2_P -> [24][Pwl2]<! { Plus } !Pwl2_P @ !>             |
-|   [0][11][1]: Pwl1 -> [27][Module]<! "prefix_with_leftrec" !Pwl1 @ !> |      |   [3][12][2]: Pwl2 -> [28][Module]<! "prefix_with_leftrec" !Pwl2 @ !> |
-| [PREDECESSORS 3-3]: [3]                                               |      | [PREDECESSORS 8-8]: [8]                                               |
-| [SUCCESORS 5-5]: [5]                                                  |      | [SUCCESORS 10-10]: [10]                                               |
+|   [1][3][1]: Pwl1_P -> [15][Pwl1]<! !Pwl1_P @ !>                      |      |   [4][8][1]: Pwl2_P -> [24][Pwl2]<! { Plus } !Pwl2_P @ !>             |
+|   [0][11][1]: Pwl1 -> [27][Module]<! "prefix_with_leftrec" !Pwl1 @ !> |      |   [3][12][1]: Pwl2 -> [28][Module]<! "prefix_with_leftrec" !Pwl2 @ !> |
+| [PREDECESSORS 2-2]: [2]                                               |      | [PREDECESSORS 7-7]: [7]                                               |
+| [SUCCESORS 4-4]: [4]                                                  |      | [SUCCESORS 9-9]: [9]                                                  |
 +-----------------------------------------------------------------------+      +-----------------------------------------------------------------------+
 |                                                                              |
 +                                                                              +
 |                                                                              |
 +-----------------------------------------------------------------------+      +-----------------------------------------------------------------------+
-| [5]: <Ending>                                                         |      | [10]: <Ending>                                                        |
+| [4]: <Ending>                                                         |      | [9]: <Ending>                                                         |
 | [15][Pwl1]<! !Pwl1_P @ !>                                             |      | [24][Pwl2]<! { Plus } !Pwl2_P @ !>                                    |
 | [AST-INSTRUCTIONS]:                                                   |      | [AST-INSTRUCTIONS]:                                                   |
 |   + CreateObject(PwlFeature)                                          |      |   + CreateObject(PwlFeature)                                          |
@@ -65,37 +65,37 @@
 |   + StackEnd()                                                        |      |   + StackEnd()                                                        |
 |   > StackBegin()                                                      |      |   > StackBegin()                                                      |
 | [RETURN STACK]:                                                       |      | [RETURN STACK]:                                                       |
-|   [0][11][1]: Pwl1 -> [27][Module]<! "prefix_with_leftrec" !Pwl1 @ !> |      |   [3][12][2]: Pwl2 -> [28][Module]<! "prefix_with_leftrec" !Pwl2 @ !> |
-| [PREDECESSORS 4-4]: [4]                                               |      | [PREDECESSORS 9-9]: [9]                                               |
-| [SUCCESORS 6-6]: [6]                                                  |      | [SUCCESORS 11-11]: [11]                                               |
+|   [0][11][1]: Pwl1 -> [27][Module]<! "prefix_with_leftrec" !Pwl1 @ !> |      |   [3][12][1]: Pwl2 -> [28][Module]<! "prefix_with_leftrec" !Pwl2 @ !> |
+| [PREDECESSORS 3-3]: [3]                                               |      | [PREDECESSORS 8-8]: [8]                                               |
+| [SUCCESORS 5-5]: [5]                                                  |      | [SUCCESORS 10-10]: [10]                                               |
 +-----------------------------------------------------------------------+      +-----------------------------------------------------------------------+
 |                                                                              |
 +                                                                              +
 |                                                                              |
 +-------------------------------------------------+                            +-------------------------------------------------+
-| [6]: <Ending>                                   |                            | [11]: <Ending>                                  |
+| [5]: <Ending>                                   |                            | [10]: <Ending>                                  |
 | [27][Module]<! "prefix_with_leftrec" !Pwl1 @ !> |                            | [28][Module]<! "prefix_with_leftrec" !Pwl2 @ !> |
 | [AST-INSTRUCTIONS]:                             |                            | [AST-INSTRUCTIONS]:                             |
 |   + StackEnd()                                  |                            |   + Field(PwlFeature::prefix, 0)                |
-| [PREDECESSORS 5-5]: [5]                         |                            |   + StackEnd()                                  |
-| [SUCCESORS 13-13]: [13]                         |                            | [PREDECESSORS 10-10]: [10]                      |
-+-------------------------------------------------+                            | [SUCCESORS 12-12]: [12]                         |
+| [PREDECESSORS 4-4]: [4]                         |                            |   + StackEnd()                                  |
+| [SUCCESORS 12-12]: [12]                         |                            | [PREDECESSORS 9-9]: [9]                         |
++-------------------------------------------------+                            | [SUCCESORS 11-11]: [11]                         |
 |                                                                              +-------------------------------------------------+
 |                                                                              |
 +                                                                              +
 |                                                                              |
 +---------------------------+                                                  +----------------------------+
-| [13]: <Ending>            |                                                  | [12]: <Ending>             |
+| [12]: <Ending>            |                                                  | [11]: <Ending>             |
 | [26][Module] END [ENDING] |                                                  | [26][Module] END [ENDING]  |
 | [AST-INSTRUCTIONS]:       |                                                  | [AST-INSTRUCTIONS]:        |
 |   + StackEnd()            |                                                  |   + StackEnd()             |
-| [PREDECESSORS 6-6]: [6]   |                                                  | [PREDECESSORS 11-11]: [11] |
-| [SUCCESORS 7-7]: [7]      |                                                  | [SUCCESORS 7-7]: [7]       |
+| [PREDECESSORS 5-5]: [5]   |                                                  | [PREDECESSORS 10-10]: [10] |
+| [SUCCESORS 6-6]: [6]      |                                                  | [SUCCESORS 6-6]: [6]       |
 +---------------------------+                                                  +----------------------------+
 |                                                                              |
 +------------------------------------------------------------------------------+
 |
 +----------------+
-| [7]: <Merging> |
+| [6]: <Merging> |
 | <Start>        |
 +----------------+
