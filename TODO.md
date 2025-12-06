@@ -29,7 +29,7 @@
   - [x] Xml
   - [x] Workflow
 - [ ] prefix_merge test cases
-  - [ ] merge prefix in rules
+  - [x] merge prefix in rules
   - [ ] automatically identify prefix_merge
 - [ ] Built-in parsers:
   - [ ] C++
