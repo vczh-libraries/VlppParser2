@@ -378,8 +378,8 @@ SyntaxSymbolManager::MergeEdgesWithSameInput
 								{
 									mergedState = CreateState(startState->Rule());
 									createdStates.Add(Ptr(mergedState));
+									workingStates.Add(mergedState);
 
-									statesToMerged.Add(std::move(targetSet), mergedState);
 									mergedState->label = stream::GenerateToStream([&](stream::TextWriter& writer)
 									{
 										writer.WriteString(L"{{");
@@ -390,6 +390,7 @@ SyntaxSymbolManager::MergeEdgesWithSameInput
 										}
 										writer.WriteString(L"}}");
 									});
+									statesToMerged.Add(std::move(targetSet), mergedState);
 								}
 							}
 
