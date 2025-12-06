@@ -64,6 +64,11 @@ SymbolSet
 					return symbols ? *symbols.Obj() : EmptySymbols;
 				}
 
+				Ptr<SortedList<TSymbol>> SymbolsPtr() const
+				{
+					return symbols;
+				}
+
 				std::strong_ordering operator<=>(const SymbolSet<TSymbol>& set) const
 				{
 					if (!symbols && !set.symbols) return std::strong_ordering::equal;
@@ -308,25 +313,23 @@ SyntaxSymbolManager::MergeEdgesWithSameInput
 				//   competitions should be merged
 
 				Dictionary<StateSymbolSet, StateSymbol*> statesToMerged;
+				Dictionary<StateSymbol*, Ptr<SortedList<StateSymbol*>>> mergedToStates;
+
 				StateList createdStates;
 				EdgeList createdEdges;
 				List<StateSymbol*> workingStates;
 				SortedList<StateSymbol*> reusedStates;
 				SortedList<EdgeSymbol*> reusedEdges;
 
+				// Start from the start state
 				{
 					statesToMerged.Add({ startState }, startState);
 					reusedStates.Add(startState);
 					workingStates.Add(startState);
 				}
 
-				auto ReuseEdge = [&](EdgeSymbol* edge)
+				auto ReuseState = [&](StateSymbol* state)
 				{
-					auto state = edge->To();
-					if (!reusedEdges.Contains(edge))
-					{
-						reusedEdges.Add(edge);
-					}
 					if (!reusedStates.Contains(state))
 					{
 						reusedStates.Add(state);
@@ -334,22 +337,69 @@ SyntaxSymbolManager::MergeEdgesWithSameInput
 					}
 				};
 
+				auto ReuseEdge = [&](EdgeSymbol* edge)
+				{
+					ReuseState(edge->To());
+					if (!reusedEdges.Contains(edge))
+					{
+						reusedEdges.Add(edge);
+					}
+				};
+
+				auto ApplyEdgeToMergedState = [&](EdgeSymbol* edge, StateSymbol* mergedState)
+				{
+					ReuseState(edge->To());
+					auto newEdge = CreateEdge(mergedState, edge->To());
+					newEdge->input = edge->input;
+					CopyFrom(newEdge->competitions, edge->competitions);
+					CopyFrom(newEdge->insAfterInput, edge->insAfterInput);
+				};
+
 				for (vint i = 0; i < workingStates.Count(); i++)
 				{
 					auto currentState = workingStates[i];
+					vint currentMergedToStateIndex = mergedToStates.Keys().IndexOf(currentState);
+
 					Group<Pair<EdgeInput, InsSymbolSet>, EdgeSymbol*> groupedEdges;
-					for (auto edge : currentState->OutEdges())
+					if (currentMergedToStateIndex == -1)
 					{
-						if (edge->input.type == EdgeInputType::Token || edge->input.type == EdgeInputType::Rule)
+						// if the current state is an original state
+						for (auto edge : currentState->OutEdges())
 						{
-							groupedEdges.Add({ edge->input,InsSymbolSet{edge->insAfterInput} }, edge);
+							if (edge->input.type == EdgeInputType::Token || edge->input.type == EdgeInputType::Rule)
+							{
+								// only group Token or Rule edges
+								groupedEdges.Add({ edge->input,InsSymbolSet{edge->insAfterInput} }, edge);
+							}
+							else
+							{
+								// reuse others
+								ReuseEdge(edge);
+							}
 						}
-						else
+					}
+					else
+					{
+						// if the current state is a merged state, search all of its original states
+						for (auto targetState : *mergedToStates.Values()[currentMergedToStateIndex].Obj())
 						{
-							ReuseEdge(edge);
+							for (auto edge : targetState->OutEdges())
+							{
+								if (edge->input.type == EdgeInputType::Token || edge->input.type == EdgeInputType::Rule)
+								{
+									// only group Token or Rule edges
+									groupedEdges.Add({ edge->input,InsSymbolSet{edge->insAfterInput} }, edge);
+								}
+								else
+								{
+									// duplicate others to start from the merged state
+									ApplyEdgeToMergedState(edge, currentState);
+								}
+							}
 						}
 					}
 
+					// see if multiple edges could be grouped together
 					for (vint groupedIndex = 0; groupedIndex < groupedEdges.Count(); groupedIndex++)
 					{
 						auto&& groupedKey = groupedEdges.Keys()[groupedIndex];
@@ -357,10 +407,19 @@ SyntaxSymbolManager::MergeEdgesWithSameInput
 
 						if (groupedValues.Count() == 1)
 						{
-							ReuseEdge(groupedValues[0]);
+							// if a group only has one edge, reuse the target state
+							if (currentMergedToStateIndex == -1)
+							{
+								ReuseEdge(groupedValues[0]);
+							}
+							else
+							{
+								ApplyEdgeToMergedState(groupedValues[0], currentState);
+							}
 						}
 						else
 						{
+							// if a group has multiple edges, merge all target states into one
 							StateSymbol* mergedState = nullptr;
 							{
 								StateSymbolSet targetSet;
@@ -390,6 +449,8 @@ SyntaxSymbolManager::MergeEdgesWithSameInput
 										}
 										writer.WriteString(L"}}");
 									});
+
+									mergedToStates.Add(mergedState, targetSet.SymbolsPtr());
 									statesToMerged.Add(std::move(targetSet), mergedState);
 								}
 							}
