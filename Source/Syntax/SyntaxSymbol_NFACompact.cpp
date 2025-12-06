@@ -9,63 +9,51 @@ namespace vl
 			using namespace collections;
 
 /***********************************************************************
-StateSymbolSet
+SymbolSet
 ***********************************************************************/
 
-			struct StateSymbolSet
+			template<typename TSymbol>
+			struct SymbolSet
 			{
 			private:
-				static const SortedList<StateSymbol*> EmptyStates;
-
-				Ptr<SortedList<StateSymbol*>> states;
+				static const SortedList<TSymbol*>	EmptyStates;
+				Ptr<SortedList<TSymbol*>>			states;
 
 			public:
-				StateSymbolSet() = default;
-				StateSymbolSet(const StateSymbolSet&) = delete;
-				StateSymbolSet& operator=(const StateSymbolSet&) = delete;
+				SymbolSet() = default;
+				SymbolSet(const SymbolSet&) = delete;
+				SymbolSet<TSymbol>& operator=(const SymbolSet<TSymbol>&) = delete;
 
-				StateSymbolSet(StateSymbolSet&& set)
+				SymbolSet<TSymbol>(SymbolSet<TSymbol>&& set)
 				{
 					states = set.states;
 					set.states = nullptr;
 				}
 
-				StateSymbolSet& operator=(StateSymbolSet&& set)
+				SymbolSet<TSymbol>& operator=(SymbolSet<TSymbol>&& set)
 				{
 					states = set.states;
 					set.states = nullptr;
 					return *this;
 				}
 
-				StateSymbolSet Copy() const
+				bool Add(TSymbol* state)
 				{
-					StateSymbolSet set;
-					set.states = states;
-					return set;
+					if (!states)
+					{
+						states = Ptr(new SortedList<TSymbol*>);
+					}
+					if (states->Contains(state)) return false;
+					states->Add(state);
+					return true;
 				}
 
-				bool Add(StateSymbol* state)
-				{
-					if (states)
-					{
-						if (states->Contains(state)) return false;
-						states->Add(state);
-						return true;
-					}
-					else
-					{
-						states = Ptr(new SortedList<StateSymbol*>);
-						states->Add(state);
-						return true;
-					}
-				}
-
-				const SortedList<StateSymbol*>& States() const
+				const SortedList<TSymbol*>& States() const
 				{
 					return states ? *states.Obj() : EmptyStates;
 				}
 
-				std::strong_ordering operator<=>(const StateSymbolSet& set) const
+				std::strong_ordering operator<=>(const SymbolSet<TSymbol>& set) const
 				{
 					if (!states && !set.states) return std::strong_ordering::equal;
 					if (!states) return std::strong_ordering::less;
@@ -73,9 +61,14 @@ StateSymbolSet
 					return CompareEnumerable(*states.Obj(), *set.states.Obj());
 				}
 
-				bool operator==(const StateSymbolSet& set) const { return (*this <=> set) == 0; }
+				bool operator==(const SymbolSet<TSymbol>& set) const { return states == set.states  || (*this <=> set) == 0; }
 			};
-			const SortedList<StateSymbol*> StateSymbolSet::EmptyStates;
+
+			template<typename TSymbol>
+			const SortedList<TSymbol*> SymbolSet<TSymbol>::EmptyStates;
+
+			using StateSymbolSet = SymbolSet<StateSymbol>;
+			using EdgeSymbolSet = SymbolSet<EdgeSymbol>;
 
 /***********************************************************************
 CompactSyntaxBuilder
@@ -290,7 +283,6 @@ SyntaxSymbolManager::MergeEdgesWithSameInput
 
 			void SyntaxSymbolManager::MergeEdgesWithSameInput(RuleSymbol* rule, StateSymbol* startState, StateList& newStates, EdgeList& newEdges)
 			{
-				// TODO:
 				// Just like building DFA
 				//   start from startState, put into pending list
 				//   group outgoing edges by input
@@ -302,6 +294,91 @@ SyntaxSymbolManager::MergeEdgesWithSameInput
 				// We should take into consideration that input includes insAfterInput
 				//   returnEdges are always empty at the moment
 				//   competitions should be merged
+
+				Dictionary<StateSymbolSet, StateSymbol*> statesToMerged;
+				StateList createdStates;
+				EdgeList createdEdges;
+				List<StateSymbol*> workingStates;
+				SortedList<StateSymbol*> availableStates;
+				SortedList<EdgeSymbol*> availableEdges;
+
+				{
+					StateSymbolSet startSet;
+					startSet.Add(startState);
+					statesToMerged.Add(startSet, startState);
+					availableStates.Add(startState);
+					workingStates.Add(startState);
+				}
+
+				for (vint i = 0; i < workingStates.Count(); i++)
+				{
+					auto currentState = workingStates[i];
+					Dictionary<EdgeInput, List<EdgeSymbol*>> groupedEdges;
+					for (auto edge : currentState->OutEdges())
+					{
+						groupedEdges.AddIfNotExist(edge->input).Add(edge);
+					}
+					for (auto [input, edges] : groupedEdges)
+					{
+						if (edges.Count() == 1)
+						{
+							mergedEdges.Add(edges[0]);
+						}
+						else
+						{
+							StateSymbolSet targetSet;
+							for (auto edge : edges)
+							{
+								targetSet.Add(edge->To());
+							}
+							StateSymbol* mergedState = nullptr;
+							vint index = statesToMerged.Keys().IndexOf(targetSet);
+							if (index != -1)
+							{
+								mergedState = statesToMerged.Values()[index];
+							}
+							else
+							{
+								mergedState = Ptr(new StateSymbol(rule)).Obj();
+								newStates.Add(mergedState);
+								statesToMerged.Add(targetSet, mergedState);
+								workingStates.Add(mergedState);
+							}
+							auto newEdge = Ptr(new EdgeSymbol(currentState, mergedState));
+							newEdge->input = input;
+							for (auto edge : edges)
+							{
+								CopyFrom(newEdge->insAfterInput, edge->insAfterInput, true);
+								CopyFrom(newEdge->competitions, edge->competitions, true);
+							}
+							mergedEdges.Add(newEdge);
+						}
+					}
+				}
+
+				for (auto state : newStates)
+				{
+					if (availableStates.Contains(state.Obj()))
+					{
+						createdStates.Add(state);
+					}
+				}
+
+				for (auto edge : newEdges)
+				{
+					if (availableEdges.Contains(edge.Obj()))
+					{
+						createdEdges.Add(edge);
+					}
+					else
+					{
+						edge->From()->outEdges.Remove(edge.Obj());
+						edge->To()->inEdges.Remove(edge.Obj());
+					}
+				}
+
+				newStates = std::move(createdStates);
+				newEdges = std::move(createdEdges);
 			}
 
 /***********************************************************************
@@ -381,8 +458,8 @@ SyntaxSymbolManager::BuildCompactNFAInternal
 					ruleSymbol->startStates.Clear();
 					ruleSymbol->startStates.Add(startState);
 				}
-				CopyFrom(states, newStates);
-				CopyFrom(edges, newEdges);
+				states = std::move(newStates);
+				edges = std::move(newEdges);
 			}
 		}
 	}
