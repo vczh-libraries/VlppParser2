@@ -108,9 +108,10 @@ SymbolSet
 			struct LabeledState
 			{
 				WString				label;
+				vint				index;
 				StateSymbol*		state = nullptr;
 
-				auto operator<=>(const LabeledState& ls) const { return label <=> ls.label; };
+				auto operator<=>(const LabeledState& ls) const = default;
 				bool operator==(const LabeledState&) const = default;
 			};
 
@@ -455,7 +456,7 @@ SyntaxSymbolManager::MergeEdgesWithSameInput
 								StateSymbolSet targetSet;
 								for (auto edge : groupedValues)
 								{
-									targetSet.Add({ edge->To()->label,edge->To() });
+									targetSet.Add({ edge->To()->label,newStates.IndexOf(edge->To()),edge->To() });
 								}
 
 								vint index = statesToMerged.Keys().IndexOf(targetSet);
