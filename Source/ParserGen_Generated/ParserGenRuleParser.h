@@ -27,8 +27,8 @@ namespace vl::glr::parsergen
 		Syntax = 84,
 		Assignment = 87,
 		Clause = 93,
-		Rule = 115,
-		File = 125,
+		Rule = 112,
+		File = 122,
 	};
 
 	const wchar_t* RuleParserRuleName(vl::vint index);

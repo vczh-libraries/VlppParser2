@@ -28,13 +28,13 @@ SymbolSet
 			};
 
 			template<typename TSymbol, bool Ordered>
-			using SYmbolSetListType_t = typename SymbolSetListType<TSymbol, Ordered>::Type;;
+			using SymbolSetListType_t = typename SymbolSetListType<TSymbol, Ordered>::Type;;
 
 			template<typename TSymbol, bool Ordered>
 			struct SymbolSet
 			{
 			public:
-				using ListType = SYmbolSetListType_t<TSymbol, Ordered>;
+				using ListType = SymbolSetListType_t<TSymbol, Ordered>;
 				using ListPtr = Ptr<ListType>;
 
 			private:
@@ -103,9 +103,18 @@ SymbolSet
 			};
 
 			template<typename TSymbol, bool Ordered>
-			const SYmbolSetListType_t<TSymbol, Ordered> SymbolSet<TSymbol, Ordered>::EmptySymbols;
+			const SymbolSetListType_t<TSymbol, Ordered> SymbolSet<TSymbol, Ordered>::EmptySymbols;
 
-			using StateSymbolSet = SymbolSet<StateSymbol*, true>;
+			struct LabeledState
+			{
+				WString				label;
+				StateSymbol*		state = nullptr;
+
+				auto operator<=>(const LabeledState& ls) const { return label <=> ls.label; };
+				bool operator==(const LabeledState&) const = default;
+			};
+
+			using StateSymbolSet = SymbolSet<LabeledState, true>;
 			using InsSymbolSet = SymbolSet<AstIns, false>;
 
 /***********************************************************************
@@ -404,7 +413,7 @@ SyntaxSymbolManager::MergeEdgesWithSameInput
 						// if the current state is a merged state, search all of its original states
 						for (auto targetState : *mergedToStates.Values()[currentMergedToStateIndex].Obj())
 						{
-							for (auto edge : targetState->OutEdges())
+							for (auto edge : targetState.state->OutEdges())
 							{
 								if (edge->input.type == EdgeInputType::Token || edge->input.type == EdgeInputType::Rule)
 								{
@@ -446,7 +455,7 @@ SyntaxSymbolManager::MergeEdgesWithSameInput
 								StateSymbolSet targetSet;
 								for (auto edge : groupedValues)
 								{
-									targetSet.Add(edge->To());
+									targetSet.Add({ edge->To()->label,edge->To() });
 								}
 
 								vint index = statesToMerged.Keys().IndexOf(targetSet);
@@ -466,7 +475,7 @@ SyntaxSymbolManager::MergeEdgesWithSameInput
 										for (auto [state, index] : indexed(targetSet.Symbols()))
 										{
 											if (index > 0) writer.WriteString(L" ; ");
-											writer.WriteString(state->label);
+											writer.WriteString(state.label);
 										}
 										writer.WriteString(L"}}");
 									});
