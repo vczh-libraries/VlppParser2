@@ -21,8 +21,6 @@
 
 ### Progressing
 
-- `SyntaxSymbolManager::MergeEdgesWithSameInput` is producing non-stable result because StateSymbolSet ordered states by its pointer.
-
 - [x] Non-ambiguous test cases
 - [x] Ambiguous test cases
 - [x] Split FeatureTest
