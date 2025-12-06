@@ -312,7 +312,7 @@ SyntaxSymbolManager::MergeEdgesWithSameInput
 				//   returnEdges are always empty at the moment
 				//   competitions should be merged
 
-				Dictionary<StateSymbolSet, StateSymbol*> statesToMerged;
+				Dictionary<StateSymbolSet, Ptr<StateSymbol>> statesToMerged;
 				Dictionary<StateSymbol*, Ptr<SortedList<StateSymbol*>>> mergedToStates;
 
 				StateList createdStates;
@@ -323,7 +323,6 @@ SyntaxSymbolManager::MergeEdgesWithSameInput
 
 				// Start from the start state
 				{
-					statesToMerged.Add({ startState }, startState);
 					reusedStates.Add(startState);
 					workingStates.Add(startState);
 				}
@@ -349,7 +348,8 @@ SyntaxSymbolManager::MergeEdgesWithSameInput
 				auto ApplyEdgeToMergedState = [&](EdgeSymbol* edge, StateSymbol* mergedState)
 				{
 					ReuseState(edge->To());
-					auto newEdge = CreateEdge(mergedState, edge->To());
+					auto newEdge = Ptr(new EdgeSymbol(mergedState, edge->To()));
+					createdEdges.Add(newEdge);
 					newEdge->input = edge->input;
 					CopyFrom(newEdge->competitions, edge->competitions);
 					CopyFrom(newEdge->insAfterInput, edge->insAfterInput);
@@ -420,7 +420,7 @@ SyntaxSymbolManager::MergeEdgesWithSameInput
 						else
 						{
 							// if a group has multiple edges, merge all target states into one
-							StateSymbol* mergedState = nullptr;
+							Ptr<StateSymbol> mergedState;
 							{
 								StateSymbolSet targetSet;
 								for (auto edge : groupedValues)
@@ -435,9 +435,9 @@ SyntaxSymbolManager::MergeEdgesWithSameInput
 								}
 								else
 								{
-									mergedState = CreateState(startState->Rule());
-									createdStates.Add(Ptr(mergedState));
-									workingStates.Add(mergedState);
+									mergedState = Ptr(new StateSymbol(startState->Rule()));
+									createdStates.Add(mergedState);
+									workingStates.Add(mergedState.Obj());
 
 									mergedState->label = stream::GenerateToStream([&](stream::TextWriter& writer)
 									{
@@ -450,13 +450,13 @@ SyntaxSymbolManager::MergeEdgesWithSameInput
 										writer.WriteString(L"}}");
 									});
 
-									mergedToStates.Add(mergedState, targetSet.SymbolsPtr());
+									mergedToStates.Add(mergedState.Obj(), targetSet.SymbolsPtr());
 									statesToMerged.Add(std::move(targetSet), mergedState);
 								}
 							}
 
-							auto newEdge = new EdgeSymbol(currentState, mergedState);
-							createdEdges.Add(Ptr(newEdge));
+							auto newEdge = Ptr(new EdgeSymbol(currentState, mergedState.Obj()));
+							createdEdges.Add(newEdge);
 
 							newEdge->input = groupedKey.key;
 							CopyFrom(newEdge->insAfterInput, groupedKey.value.Symbols());
@@ -468,30 +468,33 @@ SyntaxSymbolManager::MergeEdgesWithSameInput
 					}
 				}
 
-				for (vint i = newEdges.Count() - 1; i >= 0; i--)
+				if (createdStates.Count() + createdEdges.Count() > 0)
 				{
-					auto edge = newEdges[i];
-					if (edge->From()->Rule() != rule) break;
-					if (!reusedEdges.Contains(edge.Obj()))
+					for (vint i = newEdges.Count() - 1; i >= 0; i--)
 					{
-						edge->From()->outEdges.Remove(edge.Obj());
-						edge->To()->inEdges.Remove(edge.Obj());
-						newEdges.RemoveAt(i);
+						auto edge = newEdges[i];
+						if (edge->From()->Rule() != rule) break;
+						if (!reusedEdges.Contains(edge.Obj()))
+						{
+							edge->From()->outEdges.Remove(edge.Obj());
+							edge->To()->inEdges.Remove(edge.Obj());
+							newEdges.RemoveAt(i);
+						}
 					}
-				}
 
-				for (vint i = newStates.Count() - 1; i >= 0; i--)
-				{
-					auto state = newStates[i];
-					if (state->Rule() != rule) break;
-					if (!reusedStates.Contains(state.Obj()))
+					for (vint i = newStates.Count() - 1; i >= 0; i--)
 					{
-						newStates.RemoveAt(i);
+						auto state = newStates[i];
+						if (state->Rule() != rule) break;
+						if (!reusedStates.Contains(state.Obj()))
+						{
+							newStates.RemoveAt(i);
+						}
 					}
-				}
 
-				CopyFrom(newStates, createdStates, true);
-				CopyFrom(newEdges, createdEdges, true);
+					CopyFrom(newStates, createdStates, true);
+					CopyFrom(newEdges, createdEdges, true);
+				}
 			}
 
 /***********************************************************************
