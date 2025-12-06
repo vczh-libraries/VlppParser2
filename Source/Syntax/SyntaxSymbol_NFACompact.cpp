@@ -12,25 +12,47 @@ namespace vl
 SymbolSet
 ***********************************************************************/
 
+			template<typename TSymbol, bool Ordered>
+			struct SymbolSetListType;
+
 			template<typename TSymbol>
+			struct SymbolSetListType<TSymbol, false>
+			{
+				using Type = List<TSymbol>;
+			};
+
+			template<typename TSymbol>
+			struct SymbolSetListType<TSymbol, true>
+			{
+				using Type = SortedList<TSymbol>;
+			};
+
+			template<typename TSymbol, bool Ordered>
+			using SYmbolSetListType_t = typename SymbolSetListType<TSymbol, Ordered>::Type;;
+
+			template<typename TSymbol, bool Ordered>
 			struct SymbolSet
 			{
+			public:
+				using ListType = SYmbolSetListType_t<TSymbol, Ordered>;
+				using ListPtr = Ptr<ListType>;
+
 			private:
-				static const SortedList<TSymbol>	EmptySymbols;
-				Ptr<SortedList<TSymbol>>			symbols;
+				static const ListType				EmptySymbols;
+				ListPtr								symbols;
 
 			public:
 				SymbolSet() = default;
 				SymbolSet(const SymbolSet&) = delete;
-				SymbolSet<TSymbol>& operator=(const SymbolSet<TSymbol>&) = delete;
+				SymbolSet<TSymbol, Ordered>& operator=(const SymbolSet<TSymbol, Ordered>&) = delete;
 
-				SymbolSet<TSymbol>(SymbolSet<TSymbol>&& set)
+				SymbolSet<TSymbol, Ordered>(SymbolSet<TSymbol, Ordered>&& set)
 				{
 					symbols = set.symbols;
 					set.symbols = nullptr;
 				}
 
-				SymbolSet<TSymbol>& operator=(SymbolSet<TSymbol>&& set)
+				SymbolSet<TSymbol, Ordered>& operator=(SymbolSet<TSymbol, Ordered>&& set)
 				{
 					symbols = set.symbols;
 					set.symbols = nullptr;
@@ -44,7 +66,7 @@ SymbolSet
 
 				SymbolSet(const IEnumerable<TSymbol>& _symbols)
 				{
-					symbols = Ptr(new SortedList<TSymbol>);
+					symbols = Ptr(new ListType);
 					CopyFrom(*symbols.Obj(), _symbols);
 				}
 
@@ -52,24 +74,24 @@ SymbolSet
 				{
 					if (!symbols)
 					{
-						symbols = Ptr(new SortedList<TSymbol>);
+						symbols = Ptr(new ListType);
 					}
 					if (symbols->Contains(_symbol)) return false;
 					symbols->Add(_symbol);
 					return true;
 				}
 
-				const SortedList<TSymbol>& Symbols() const
+				const ListType& Symbols() const
 				{
 					return symbols ? *symbols.Obj() : EmptySymbols;
 				}
 
-				Ptr<SortedList<TSymbol>> SymbolsPtr() const
+				ListPtr SymbolsPtr() const
 				{
 					return symbols;
 				}
 
-				std::strong_ordering operator<=>(const SymbolSet<TSymbol>& set) const
+				std::strong_ordering operator<=>(const SymbolSet<TSymbol, Ordered>& set) const
 				{
 					if (!symbols && !set.symbols) return std::strong_ordering::equal;
 					if (!symbols) return std::strong_ordering::less;
@@ -77,15 +99,14 @@ SymbolSet
 					return CompareEnumerable(*symbols.Obj(), *set.symbols.Obj());
 				}
 
-				bool operator==(const SymbolSet<TSymbol>& set) const = default;
+				bool operator==(const SymbolSet<TSymbol, Ordered>& set) const = default;
 			};
 
-			template<typename TSymbol>
-			const SortedList<TSymbol> SymbolSet<TSymbol>::EmptySymbols;
+			template<typename TSymbol, bool Ordered>
+			const SYmbolSetListType_t<TSymbol, Ordered> SymbolSet<TSymbol, Ordered>::EmptySymbols;
 
-			using StateSymbolSet = SymbolSet<StateSymbol*>;
-			using EdgeSymbolSet = SymbolSet<EdgeSymbol*>;
-			using InsSymbolSet = SymbolSet<AstIns>;
+			using StateSymbolSet = SymbolSet<StateSymbol*, true>;
+			using InsSymbolSet = SymbolSet<AstIns, false>;
 
 /***********************************************************************
 CompactSyntaxBuilder
@@ -313,7 +334,7 @@ SyntaxSymbolManager::MergeEdgesWithSameInput
 				//   competitions should be merged
 
 				Dictionary<StateSymbolSet, Ptr<StateSymbol>> statesToMerged;
-				Dictionary<StateSymbol*, Ptr<SortedList<StateSymbol*>>> mergedToStates;
+				Dictionary<StateSymbol*, StateSymbolSet::ListPtr> mergedToStates;
 
 				StateList createdStates;
 				EdgeList createdEdges;
