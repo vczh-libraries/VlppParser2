@@ -30,7 +30,7 @@ TEST_FILE
 		return d ? L"\"" + WString::Unmanaged(d) + L"\"" : WString::Unmanaged(n);
 	};
 
-	TEST_CASE(L"CreateCalculatorLexer")
+	TEST_CASE(L"CreateCalculatorSyntax")
 	{
 		ParserSymbolManager global;
 		AstSymbolManager astManager(global);

@@ -21,7 +21,7 @@ TEST_FILE
 		return d ? L"\"" + WString::Unmanaged(d) + L"\"" : WString::Unmanaged(n);
 	};
 
-	TEST_CASE(L"CreateParserGenLexer")
+	TEST_CASE(L"CreateParserGenSyntax")
 	{
 		ParserSymbolManager global;
 		AstSymbolManager astManager(global);

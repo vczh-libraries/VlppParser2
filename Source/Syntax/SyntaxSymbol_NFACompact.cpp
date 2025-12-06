@@ -320,13 +320,34 @@ SyntaxSymbolManager::MergeEdgesWithSameInput
 					workingStates.Add(startState);
 				}
 
+				auto ReuseEdge = [&](EdgeSymbol* edge)
+				{
+					auto state = edge->To();
+					if (!reusedEdges.Contains(edge))
+					{
+						reusedEdges.Add(edge);
+					}
+					if (!reusedStates.Contains(state))
+					{
+						reusedStates.Add(state);
+						workingStates.Add(state);
+					}
+				};
+
 				for (vint i = 0; i < workingStates.Count(); i++)
 				{
 					auto currentState = workingStates[i];
 					Group<Pair<EdgeInput, InsSymbolSet>, EdgeSymbol*> groupedEdges;
 					for (auto edge : currentState->OutEdges())
 					{
-						groupedEdges.Add({ edge->input,InsSymbolSet{edge->insAfterInput} }, edge);
+						if (edge->input.type == EdgeInputType::Token || edge->input.type == EdgeInputType::Rule)
+						{
+							groupedEdges.Add({ edge->input,InsSymbolSet{edge->insAfterInput} }, edge);
+						}
+						else
+						{
+							ReuseEdge(edge);
+						}
 					}
 
 					for (vint groupedIndex = 0; groupedIndex < groupedEdges.Count(); groupedIndex++)
@@ -336,24 +357,14 @@ SyntaxSymbolManager::MergeEdgesWithSameInput
 
 						if (groupedValues.Count() == 1)
 						{
-							auto edge = groupedValues[0];
-							auto state = edge->To();
-							if (!reusedEdges.Contains(edge))
-							{
-								reusedEdges.Add(edge);
-							}
-							if (!reusedStates.Contains(state))
-							{
-								reusedStates.Add(state);
-								workingStates.Add(state);
-							}
+							ReuseEdge(groupedValues[0]);
 						}
 						else
 						{
 							StateSymbol* mergedState = nullptr;
 							{
 								StateSymbolSet targetSet;
-								for (auto edge : edges)
+								for (auto edge : groupedValues)
 								{
 									targetSet.Add(edge->To());
 								}
