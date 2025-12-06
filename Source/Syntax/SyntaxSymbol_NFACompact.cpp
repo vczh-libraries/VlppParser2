@@ -468,16 +468,6 @@ SyntaxSymbolManager::MergeEdgesWithSameInput
 					}
 				}
 
-				for (vint i = newStates.Count() - 1; i >= 0; i--)
-				{
-					auto state = newStates[i];
-					if (state->Rule() != rule) break;
-					if (!reusedStates.Contains(state.Obj()))
-					{
-						newStates.RemoveAt(i);
-					}
-				}
-
 				for (vint i = newEdges.Count() - 1; i >= 0; i--)
 				{
 					auto edge = newEdges[i];
@@ -487,6 +477,16 @@ SyntaxSymbolManager::MergeEdgesWithSameInput
 						edge->From()->outEdges.Remove(edge.Obj());
 						edge->To()->inEdges.Remove(edge.Obj());
 						newEdges.RemoveAt(i);
+					}
+				}
+
+				for (vint i = newStates.Count() - 1; i >= 0; i--)
+				{
+					auto state = newStates[i];
+					if (state->Rule() != rule) break;
+					if (!reusedStates.Contains(state.Obj()))
+					{
+						newStates.RemoveAt(i);
 					}
 				}
 
