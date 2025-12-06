@@ -40,37 +40,57 @@ TEST_FILE
 		CreateParserGenTypeSyntax(astManager, typeSyntaxManager);
 		CreateParserGenRuleSyntax(astManager, ruleSyntaxManager);
 		TEST_ASSERT(global.Errors().Count() == 0);
+
+		auto logSyntax = [&](const WString& parserName, vint phase, SyntaxSymbolManager& syntaxManager)
 		{
+			LogSyntaxWithPath(
+				syntaxManager,
+				GetOutputDir(L"ParserGen") / (L"NFA[" + parserName + L"][" + itow(phase) + L"].txt"),
+				typeName,
+				fieldName,
+				tokenName
+				);
+		};
+
+		auto logAutomaton = [&](const WString& parserName, Executable& executable, Metadata& metadata)
+		{
+			LogAutomatonWithPath(
+				GetOutputDir(L"ParserGen") / (L"Automaton[" + parserName + L"].txt"),
+				executable,
+				metadata,
+				typeName,
+				fieldName,
+				tokenName
+				);
+		};
+
+		{
+			logSyntax(L"ParserGen_TypeParser", 1, typeSyntaxManager);
+
 			typeSyntaxManager.BuildCompactNFA();
 			TEST_ASSERT(global.Errors().Count() == 0);
+			logSyntax(L"ParserGen_TypeParser", 2, typeSyntaxManager);
+
 			typeSyntaxManager.BuildCrossReferencedNFA();
 			TEST_ASSERT(global.Errors().Count() == 0);
-			typeSyntaxManager.BuildAutomaton(ParserGenTokenCount, typeExecutable, typeMetadata);
+			logSyntax(L"ParserGen_TypeParser", 3, typeSyntaxManager);
 
-			LogAutomatonWithPath(
-				GetOutputDir(L"ParserGen") / L"Automaton[ParserGen_TypeParser].txt",
-				typeExecutable,
-				typeMetadata,
-				typeName,
-				fieldName,
-				tokenName
-				);
+			typeSyntaxManager.BuildAutomaton(ParserGenTokenCount, typeExecutable, typeMetadata);
+			logAutomaton(L"ParserGen_TypeParser", typeExecutable, typeMetadata);
 		}
 		{
+			logSyntax(L"ParserGen_RuleParser", 1, ruleSyntaxManager);
+
 			ruleSyntaxManager.BuildCompactNFA();
 			TEST_ASSERT(global.Errors().Count() == 0);
+			logSyntax(L"ParserGen_RuleParser", 2, ruleSyntaxManager);
+
 			ruleSyntaxManager.BuildCrossReferencedNFA();
 			TEST_ASSERT(global.Errors().Count() == 0);
-			ruleSyntaxManager.BuildAutomaton(ParserGenTokenCount, ruleExecutable, ruleMetadata);
+			logSyntax(L"ParserGen_RuleParser", 3, ruleSyntaxManager);
 
-			LogAutomatonWithPath(
-				GetOutputDir(L"ParserGen") / L"Automaton[ParserGen_RuleParser].txt",
-				ruleExecutable,
-				ruleMetadata,
-				typeName,
-				fieldName,
-				tokenName
-				);
+			ruleSyntaxManager.BuildAutomaton(ParserGenTokenCount, ruleExecutable, ruleMetadata);
+			logAutomaton(L"ParserGen_RuleParser", ruleExecutable, ruleMetadata);
 		}
 		auto output = GenerateParserFileNames(global);
 		GenerateSyntaxFileNames(typeSyntaxManager, output);

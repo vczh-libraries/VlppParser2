@@ -1,0 +1,444 @@
+﻿[0][EnumItem]< @ ID "," >
+[RULE: 0]
+	token: ID -> [4][EnumItem]< ID @ "," >
+		+ Token(0)
+
+[1][EnumItem]< ID "," > @[ENDING]
+[RULE: 0]
+
+[2][EnumItem]< ID "," @ >
+[RULE: 0]
+	epsilon -> [1][EnumItem]< ID "," > @[ENDING]
+		+ CreateObject(EnumItem)
+		+ Field(EnumItem::name, 0)
+		+ StackEnd()
+
+[3][EnumItem]< ID @ "," >
+[RULE: 0]
+	token: "," -> [2][EnumItem]< ID "," @ >
+		+ Token(1)
+
+[4][EnumItem]< ID @ "," >
+[RULE: 0]
+	epsilon -> [3][EnumItem]< ID @ "," >
+
+[5][EnumItem]@ < ID "," >
+[RULE: 0]
+	epsilon -> [0][EnumItem]< @ ID "," >
+		+ StackBegin()
+
+[6][Enum]< @ [ "@public" ] "enum" ID "{" { EnumItem } "}" >
+[RULE: 1]
+	epsilon -> [21][Enum]< [ "@public" ] @ "enum" ID "{" { EnumItem } "}" >
+	epsilon -> [22][Enum]< [ @ "@public" ] "enum" ID "{" { EnumItem } "}" >
+
+[7][Enum]< [ "@public" @ ] "enum" ID "{" { EnumItem } "}" >
+[RULE: 1]
+	epsilon -> [21][Enum]< [ "@public" ] @ "enum" ID "{" { EnumItem } "}" >
+
+[8][Enum]< [ "@public" ] "enum" @ ID "{" { EnumItem } "}" >
+[RULE: 1]
+	token: ID -> [18][Enum]< [ "@public" ] "enum" ID @ "{" { EnumItem } "}" >
+		+ Token(2)
+
+[9][Enum]< [ "@public" ] "enum" @ ID "{" { EnumItem } "}" >
+[RULE: 1]
+	epsilon -> [8][Enum]< [ "@public" ] "enum" @ ID "{" { EnumItem } "}" >
+
+[10][Enum]< [ "@public" ] "enum" ID "{" @ { EnumItem } "}" >
+[RULE: 1]
+	epsilon -> [12][Enum]< [ "@public" ] "enum" ID "{" { @ EnumItem } "}" >
+	epsilon -> [16][Enum]< [ "@public" ] "enum" ID "{" { EnumItem } @ "}" >
+
+[11][Enum]< [ "@public" ] "enum" ID "{" @ { EnumItem } "}" >
+[RULE: 1]
+	epsilon -> [10][Enum]< [ "@public" ] "enum" ID "{" @ { EnumItem } "}" >
+
+[12][Enum]< [ "@public" ] "enum" ID "{" { @ EnumItem } "}" >
+[RULE: 1]
+	rule: EnumItem -> [13][Enum]< [ "@public" ] "enum" ID "{" { EnumItem @ } "}" >
+		+ StackSlot(4)
+
+[13][Enum]< [ "@public" ] "enum" ID "{" { EnumItem @ } "}" >
+[RULE: 1]
+	epsilon -> [12][Enum]< [ "@public" ] "enum" ID "{" { @ EnumItem } "}" >
+	epsilon -> [16][Enum]< [ "@public" ] "enum" ID "{" { EnumItem } @ "}" >
+
+[14][Enum]< [ "@public" ] "enum" ID "{" { EnumItem } "}" > @[ENDING]
+[RULE: 1]
+
+[15][Enum]< [ "@public" ] "enum" ID "{" { EnumItem } "}" @ >
+[RULE: 1]
+	epsilon -> [14][Enum]< [ "@public" ] "enum" ID "{" { EnumItem } "}" > @[ENDING]
+		+ CreateObject(Enum)
+		+ Field(Type::attPublic, 0)
+		+ Field(Type::name, 2)
+		+ Field(Enum::items, 4)
+		+ StackEnd()
+
+[16][Enum]< [ "@public" ] "enum" ID "{" { EnumItem } @ "}" >
+[RULE: 1]
+	epsilon -> [17][Enum]< [ "@public" ] "enum" ID "{" { EnumItem } @ "}" >
+
+[17][Enum]< [ "@public" ] "enum" ID "{" { EnumItem } @ "}" >
+[RULE: 1]
+	token: "}" -> [15][Enum]< [ "@public" ] "enum" ID "{" { EnumItem } "}" @ >
+		+ Token(5)
+
+[18][Enum]< [ "@public" ] "enum" ID @ "{" { EnumItem } "}" >
+[RULE: 1]
+	epsilon -> [19][Enum]< [ "@public" ] "enum" ID @ "{" { EnumItem } "}" >
+
+[19][Enum]< [ "@public" ] "enum" ID @ "{" { EnumItem } "}" >
+[RULE: 1]
+	token: "{" -> [11][Enum]< [ "@public" ] "enum" ID "{" @ { EnumItem } "}" >
+		+ Token(3)
+
+[20][Enum]< [ "@public" ] @ "enum" ID "{" { EnumItem } "}" >
+[RULE: 1]
+	token: "enum" -> [9][Enum]< [ "@public" ] "enum" @ ID "{" { EnumItem } "}" >
+		+ Token(1)
+
+[21][Enum]< [ "@public" ] @ "enum" ID "{" { EnumItem } "}" >
+[RULE: 1]
+	epsilon -> [20][Enum]< [ "@public" ] @ "enum" ID "{" { EnumItem } "}" >
+
+[22][Enum]< [ @ "@public" ] "enum" ID "{" { EnumItem } "}" >
+[RULE: 1]
+	token: "@public" -> [7][Enum]< [ "@public" @ ] "enum" ID "{" { EnumItem } "}" >
+		+ Token(0)
+
+[23][Enum]@ < [ "@public" ] "enum" ID "{" { EnumItem } "}" >
+[RULE: 1]
+	epsilon -> [6][Enum]< @ [ "@public" ] "enum" ID "{" { EnumItem } "}" >
+		+ StackBegin()
+
+[24][classProp]< "var" @ ID ":" ( "token" | ID | ID "[" "]" ) ";" >
+[RULE: 2]
+	token: ID -> [45][classProp]< "var" ID @ ":" ( "token" | ID | ID "[" "]" ) ";" >
+		+ Token(1)
+
+[25][classProp]< "var" @ ID ":" ( "token" | ID | ID "[" "]" ) ";" >
+[RULE: 2]
+	epsilon -> [24][classProp]< "var" @ ID ":" ( "token" | ID | ID "[" "]" ) ";" >
+
+[26][classProp]< "var" ID ":" ( "token" @ | ID | ID "[" "]" ) ";" >
+[RULE: 2]
+	epsilon -> [27][classProp]< "var" ID ":" ( "token" @ | ID | ID "[" "]" ) ";" >
+		+ EnumItem(0, 4)
+
+[27][classProp]< "var" ID ":" ( "token" @ | ID | ID "[" "]" ) ";" >
+[RULE: 2]
+	epsilon -> [35][classProp]< "var" ID ":" ( "token" | ID | ID "[" "]" ) @ ";" >
+
+[28][classProp]< "var" ID ":" ( "token" | @ ID | ID "[" "]" ) ";" >
+[RULE: 2]
+	token: ID -> [29][classProp]< "var" ID ":" ( "token" | ID @ | ID "[" "]" ) ";" >
+		+ Token(5)
+
+[29][classProp]< "var" ID ":" ( "token" | ID @ | ID "[" "]" ) ";" >
+[RULE: 2]
+	epsilon -> [30][classProp]< "var" ID ":" ( "token" | ID @ | ID "[" "]" ) ";" >
+		+ EnumItem(1, 6)
+
+[30][classProp]< "var" ID ":" ( "token" | ID @ | ID "[" "]" ) ";" >
+[RULE: 2]
+	epsilon -> [35][classProp]< "var" ID ":" ( "token" | ID | ID "[" "]" ) @ ";" >
+
+[31][classProp]< "var" ID ":" ( "token" | ID | @ ID "[" "]" ) ";" >
+[RULE: 2]
+	token: ID -> [41][classProp]< "var" ID ":" ( "token" | ID | ID @ "[" "]" ) ";" >
+		+ Token(7)
+
+[32][classProp]< "var" ID ":" ( "token" | ID | ID "[" "]" ) ";" > @[ENDING]
+[RULE: 2]
+
+[33][classProp]< "var" ID ":" ( "token" | ID | ID "[" "]" ) ";" @ >
+[RULE: 2]
+	epsilon -> [32][classProp]< "var" ID ":" ( "token" | ID | ID "[" "]" ) ";" > @[ENDING]
+		+ CreateObject(ClassProp)
+		+ Field(ClassProp::name, 1)
+		+ Field(ClassProp::propType, 4)
+		+ Field(ClassProp::propTypeName, 5)
+		+ Field(ClassProp::propType, 6)
+		+ Field(ClassProp::propTypeName, 7)
+		+ Field(ClassProp::propType, 10)
+		+ StackEnd()
+
+[34][classProp]< "var" ID ":" ( "token" | ID | ID "[" "]" ) @ ";" >
+[RULE: 2]
+	token: ";" -> [33][classProp]< "var" ID ":" ( "token" | ID | ID "[" "]" ) ";" @ >
+		+ Token(11)
+
+[35][classProp]< "var" ID ":" ( "token" | ID | ID "[" "]" ) @ ";" >
+[RULE: 2]
+	epsilon -> [34][classProp]< "var" ID ":" ( "token" | ID | ID "[" "]" ) @ ";" >
+
+[36][classProp]< "var" ID ":" ( "token" | ID | ID "[" "]" @ ) ";" >
+[RULE: 2]
+	epsilon -> [35][classProp]< "var" ID ":" ( "token" | ID | ID "[" "]" ) @ ";" >
+
+[37][classProp]< "var" ID ":" ( "token" | ID | ID "[" "]" @ ) ";" >
+[RULE: 2]
+	epsilon -> [36][classProp]< "var" ID ":" ( "token" | ID | ID "[" "]" @ ) ";" >
+		+ EnumItem(2, 10)
+
+[38][classProp]< "var" ID ":" ( "token" | ID | ID "[" @ "]" ) ";" >
+[RULE: 2]
+	epsilon -> [39][classProp]< "var" ID ":" ( "token" | ID | ID "[" @ "]" ) ";" >
+
+[39][classProp]< "var" ID ":" ( "token" | ID | ID "[" @ "]" ) ";" >
+[RULE: 2]
+	token: "]" -> [37][classProp]< "var" ID ":" ( "token" | ID | ID "[" "]" @ ) ";" >
+		+ Token(9)
+
+[40][classProp]< "var" ID ":" ( "token" | ID | ID @ "[" "]" ) ";" >
+[RULE: 2]
+	token: "[" -> [38][classProp]< "var" ID ":" ( "token" | ID | ID "[" @ "]" ) ";" >
+		+ Token(8)
+
+[41][classProp]< "var" ID ":" ( "token" | ID | ID @ "[" "]" ) ";" >
+[RULE: 2]
+	epsilon -> [40][classProp]< "var" ID ":" ( "token" | ID | ID @ "[" "]" ) ";" >
+
+[42][classProp]< "var" ID ":" ( @ "token" | ID | ID "[" "]" ) ";" >
+[RULE: 2]
+	token: "token" -> [26][classProp]< "var" ID ":" ( "token" @ | ID | ID "[" "]" ) ";" >
+		+ Token(3)
+
+[43][classProp]< "var" ID ":" @ ( "token" | ID | ID "[" "]" ) ";" >
+[RULE: 2]
+	epsilon -> [28][classProp]< "var" ID ":" ( "token" | @ ID | ID "[" "]" ) ";" >
+	epsilon -> [31][classProp]< "var" ID ":" ( "token" | ID | @ ID "[" "]" ) ";" >
+	epsilon -> [42][classProp]< "var" ID ":" ( @ "token" | ID | ID "[" "]" ) ";" >
+
+[44][classProp]< "var" ID ":" @ ( "token" | ID | ID "[" "]" ) ";" >
+[RULE: 2]
+	epsilon -> [43][classProp]< "var" ID ":" @ ( "token" | ID | ID "[" "]" ) ";" >
+
+[45][classProp]< "var" ID @ ":" ( "token" | ID | ID "[" "]" ) ";" >
+[RULE: 2]
+	epsilon -> [46][classProp]< "var" ID @ ":" ( "token" | ID | ID "[" "]" ) ";" >
+
+[46][classProp]< "var" ID @ ":" ( "token" | ID | ID "[" "]" ) ";" >
+[RULE: 2]
+	token: ":" -> [44][classProp]< "var" ID ":" @ ( "token" | ID | ID "[" "]" ) ";" >
+		+ Token(2)
+
+[47][classProp]< @ "var" ID ":" ( "token" | ID | ID "[" "]" ) ";" >
+[RULE: 2]
+	token: "var" -> [25][classProp]< "var" @ ID ":" ( "token" | ID | ID "[" "]" ) ";" >
+		+ Token(0)
+
+[48][classProp]@ < "var" ID ":" ( "token" | ID | ID "[" "]" ) ";" >
+[RULE: 2]
+	epsilon -> [47][classProp]< @ "var" ID ":" ( "token" | ID | ID "[" "]" ) ";" >
+		+ StackBegin()
+
+[49][Class]< @ [ "@public" ] [ "@ambiguous" ] "class" ID [ ":" ID ] "{" { classProp } "}" >
+[RULE: 3]
+	epsilon -> [52][Class]< [ "@public" ] @ [ "@ambiguous" ] "class" ID [ ":" ID ] "{" { classProp } "}" >
+	epsilon -> [75][Class]< [ @ "@public" ] [ "@ambiguous" ] "class" ID [ ":" ID ] "{" { classProp } "}" >
+
+[50][Class]< [ "@public" @ ] [ "@ambiguous" ] "class" ID [ ":" ID ] "{" { classProp } "}" >
+[RULE: 3]
+	epsilon -> [52][Class]< [ "@public" ] @ [ "@ambiguous" ] "class" ID [ ":" ID ] "{" { classProp } "}" >
+
+[51][Class]< [ "@public" ] @ [ "@ambiguous" ] "class" ID [ ":" ID ] "{" { classProp } "}" >
+[RULE: 3]
+	epsilon -> [72][Class]< [ "@public" ] [ "@ambiguous" ] @ "class" ID [ ":" ID ] "{" { classProp } "}" >
+	epsilon -> [74][Class]< [ "@public" ] [ @ "@ambiguous" ] "class" ID [ ":" ID ] "{" { classProp } "}" >
+
+[52][Class]< [ "@public" ] @ [ "@ambiguous" ] "class" ID [ ":" ID ] "{" { classProp } "}" >
+[RULE: 3]
+	epsilon -> [51][Class]< [ "@public" ] @ [ "@ambiguous" ] "class" ID [ ":" ID ] "{" { classProp } "}" >
+
+[53][Class]< [ "@public" ] [ "@ambiguous" @ ] "class" ID [ ":" ID ] "{" { classProp } "}" >
+[RULE: 3]
+	epsilon -> [72][Class]< [ "@public" ] [ "@ambiguous" ] @ "class" ID [ ":" ID ] "{" { classProp } "}" >
+
+[54][Class]< [ "@public" ] [ "@ambiguous" ] "class" @ ID [ ":" ID ] "{" { classProp } "}" >
+[RULE: 3]
+	epsilon -> [55][Class]< [ "@public" ] [ "@ambiguous" ] "class" @ ID [ ":" ID ] "{" { classProp } "}" >
+
+[55][Class]< [ "@public" ] [ "@ambiguous" ] "class" @ ID [ ":" ID ] "{" { classProp } "}" >
+[RULE: 3]
+	token: ID -> [56][Class]< [ "@public" ] [ "@ambiguous" ] "class" ID @ [ ":" ID ] "{" { classProp } "}" >
+		+ Token(3)
+
+[56][Class]< [ "@public" ] [ "@ambiguous" ] "class" ID @ [ ":" ID ] "{" { classProp } "}" >
+[RULE: 3]
+	epsilon -> [57][Class]< [ "@public" ] [ "@ambiguous" ] "class" ID @ [ ":" ID ] "{" { classProp } "}" >
+
+[57][Class]< [ "@public" ] [ "@ambiguous" ] "class" ID @ [ ":" ID ] "{" { classProp } "}" >
+[RULE: 3]
+	epsilon -> [69][Class]< [ "@public" ] [ "@ambiguous" ] "class" ID [ ":" ID ] @ "{" { classProp } "}" >
+	epsilon -> [71][Class]< [ "@public" ] [ "@ambiguous" ] "class" ID [ @ ":" ID ] "{" { classProp } "}" >
+
+[58][Class]< [ "@public" ] [ "@ambiguous" ] "class" ID [ ":" @ ID ] "{" { classProp } "}" >
+[RULE: 3]
+	epsilon -> [59][Class]< [ "@public" ] [ "@ambiguous" ] "class" ID [ ":" @ ID ] "{" { classProp } "}" >
+
+[59][Class]< [ "@public" ] [ "@ambiguous" ] "class" ID [ ":" @ ID ] "{" { classProp } "}" >
+[RULE: 3]
+	token: ID -> [60][Class]< [ "@public" ] [ "@ambiguous" ] "class" ID [ ":" ID @ ] "{" { classProp } "}" >
+		+ Token(5)
+
+[60][Class]< [ "@public" ] [ "@ambiguous" ] "class" ID [ ":" ID @ ] "{" { classProp } "}" >
+[RULE: 3]
+	epsilon -> [69][Class]< [ "@public" ] [ "@ambiguous" ] "class" ID [ ":" ID ] @ "{" { classProp } "}" >
+
+[61][Class]< [ "@public" ] [ "@ambiguous" ] "class" ID [ ":" ID ] "{" @ { classProp } "}" >
+[RULE: 3]
+	epsilon -> [63][Class]< [ "@public" ] [ "@ambiguous" ] "class" ID [ ":" ID ] "{" { @ classProp } "}" >
+	epsilon -> [67][Class]< [ "@public" ] [ "@ambiguous" ] "class" ID [ ":" ID ] "{" { classProp } @ "}" >
+
+[62][Class]< [ "@public" ] [ "@ambiguous" ] "class" ID [ ":" ID ] "{" @ { classProp } "}" >
+[RULE: 3]
+	epsilon -> [61][Class]< [ "@public" ] [ "@ambiguous" ] "class" ID [ ":" ID ] "{" @ { classProp } "}" >
+
+[63][Class]< [ "@public" ] [ "@ambiguous" ] "class" ID [ ":" ID ] "{" { @ classProp } "}" >
+[RULE: 3]
+	rule: classProp -> [64][Class]< [ "@public" ] [ "@ambiguous" ] "class" ID [ ":" ID ] "{" { classProp @ } "}" >
+		+ StackSlot(7)
+
+[64][Class]< [ "@public" ] [ "@ambiguous" ] "class" ID [ ":" ID ] "{" { classProp @ } "}" >
+[RULE: 3]
+	epsilon -> [63][Class]< [ "@public" ] [ "@ambiguous" ] "class" ID [ ":" ID ] "{" { @ classProp } "}" >
+	epsilon -> [67][Class]< [ "@public" ] [ "@ambiguous" ] "class" ID [ ":" ID ] "{" { classProp } @ "}" >
+
+[65][Class]< [ "@public" ] [ "@ambiguous" ] "class" ID [ ":" ID ] "{" { classProp } "}" > @[ENDING]
+[RULE: 3]
+
+[66][Class]< [ "@public" ] [ "@ambiguous" ] "class" ID [ ":" ID ] "{" { classProp } "}" @ >
+[RULE: 3]
+	epsilon -> [65][Class]< [ "@public" ] [ "@ambiguous" ] "class" ID [ ":" ID ] "{" { classProp } "}" > @[ENDING]
+		+ CreateObject(Class)
+		+ Field(Type::attPublic, 0)
+		+ Field(Class::attAmbiguous, 1)
+		+ Field(Type::name, 3)
+		+ Field(Class::baseClass, 5)
+		+ Field(Class::props, 7)
+		+ StackEnd()
+
+[67][Class]< [ "@public" ] [ "@ambiguous" ] "class" ID [ ":" ID ] "{" { classProp } @ "}" >
+[RULE: 3]
+	epsilon -> [68][Class]< [ "@public" ] [ "@ambiguous" ] "class" ID [ ":" ID ] "{" { classProp } @ "}" >
+
+[68][Class]< [ "@public" ] [ "@ambiguous" ] "class" ID [ ":" ID ] "{" { classProp } @ "}" >
+[RULE: 3]
+	token: "}" -> [66][Class]< [ "@public" ] [ "@ambiguous" ] "class" ID [ ":" ID ] "{" { classProp } "}" @ >
+		+ Token(8)
+
+[69][Class]< [ "@public" ] [ "@ambiguous" ] "class" ID [ ":" ID ] @ "{" { classProp } "}" >
+[RULE: 3]
+	epsilon -> [70][Class]< [ "@public" ] [ "@ambiguous" ] "class" ID [ ":" ID ] @ "{" { classProp } "}" >
+
+[70][Class]< [ "@public" ] [ "@ambiguous" ] "class" ID [ ":" ID ] @ "{" { classProp } "}" >
+[RULE: 3]
+	token: "{" -> [62][Class]< [ "@public" ] [ "@ambiguous" ] "class" ID [ ":" ID ] "{" @ { classProp } "}" >
+		+ Token(6)
+
+[71][Class]< [ "@public" ] [ "@ambiguous" ] "class" ID [ @ ":" ID ] "{" { classProp } "}" >
+[RULE: 3]
+	token: ":" -> [58][Class]< [ "@public" ] [ "@ambiguous" ] "class" ID [ ":" @ ID ] "{" { classProp } "}" >
+		+ Token(4)
+
+[72][Class]< [ "@public" ] [ "@ambiguous" ] @ "class" ID [ ":" ID ] "{" { classProp } "}" >
+[RULE: 3]
+	epsilon -> [73][Class]< [ "@public" ] [ "@ambiguous" ] @ "class" ID [ ":" ID ] "{" { classProp } "}" >
+
+[73][Class]< [ "@public" ] [ "@ambiguous" ] @ "class" ID [ ":" ID ] "{" { classProp } "}" >
+[RULE: 3]
+	token: "class" -> [54][Class]< [ "@public" ] [ "@ambiguous" ] "class" @ ID [ ":" ID ] "{" { classProp } "}" >
+		+ Token(2)
+
+[74][Class]< [ "@public" ] [ @ "@ambiguous" ] "class" ID [ ":" ID ] "{" { classProp } "}" >
+[RULE: 3]
+	token: "@ambiguous" -> [53][Class]< [ "@public" ] [ "@ambiguous" @ ] "class" ID [ ":" ID ] "{" { classProp } "}" >
+		+ Token(1)
+
+[75][Class]< [ @ "@public" ] [ "@ambiguous" ] "class" ID [ ":" ID ] "{" { classProp } "}" >
+[RULE: 3]
+	token: "@public" -> [50][Class]< [ "@public" @ ] [ "@ambiguous" ] "class" ID [ ":" ID ] "{" { classProp } "}" >
+		+ Token(0)
+
+[76][Class]@ < [ "@public" ] [ "@ambiguous" ] "class" ID [ ":" ID ] "{" { classProp } "}" >
+[RULE: 3]
+	epsilon -> [49][Class]< @ [ "@public" ] [ "@ambiguous" ] "class" ID [ ":" ID ] "{" { classProp } "}" >
+		+ StackBegin()
+
+[77][Type]<! ( !Enum @ | !Class ) !>
+[RULE: 4]
+	epsilon -> [79][Type]<! ( !Enum | !Class ) @ !>
+
+[78][Type]<! ( !Enum | !Class ) !> @[ENDING]
+[RULE: 4]
+
+[79][Type]<! ( !Enum | !Class ) @ !>
+[RULE: 4]
+	epsilon -> [78][Type]<! ( !Enum | !Class ) !> @[ENDING]
+		+ StackEnd()
+
+[80][Type]<! ( !Enum | !Class @ ) !>
+[RULE: 4]
+	epsilon -> [79][Type]<! ( !Enum | !Class ) @ !>
+
+[81][Type]<! ( !Enum | @ !Class ) !>
+[RULE: 4]
+	rule: Class -> [80][Type]<! ( !Enum | !Class @ ) !>
+
+[82][Type]<! ( @ !Enum | !Class ) !>
+[RULE: 4]
+	rule: Enum -> [77][Type]<! ( !Enum @ | !Class ) !>
+
+[83][Type]<! @ ( !Enum | !Class ) !>
+[RULE: 4]
+	epsilon -> [81][Type]<! ( !Enum | @ !Class ) !>
+	epsilon -> [82][Type]<! ( @ !Enum | !Class ) !>
+
+[84][Type]@ <! ( !Enum | !Class ) !>
+[RULE: 4]
+	epsilon -> [83][Type]<! @ ( !Enum | !Class ) !>
+		+ StackBegin()
+
+[85][File]< @ Type { Type } >
+[RULE: 5]
+	rule: Type -> [87][File]< Type @ { Type } >
+		+ StackSlot(0)
+
+[86][File]< Type @ { Type } >
+[RULE: 5]
+	epsilon -> [88][File]< Type { @ Type } >
+	epsilon -> [91][File]< Type { Type } @ >
+
+[87][File]< Type @ { Type } >
+[RULE: 5]
+	epsilon -> [86][File]< Type @ { Type } >
+
+[88][File]< Type { @ Type } >
+[RULE: 5]
+	rule: Type -> [89][File]< Type { Type @ } >
+		+ StackSlot(1)
+
+[89][File]< Type { Type @ } >
+[RULE: 5]
+	epsilon -> [88][File]< Type { @ Type } >
+	epsilon -> [91][File]< Type { Type } @ >
+
+[90][File]< Type { Type } > @[ENDING]
+[RULE: 5]
+
+[91][File]< Type { Type } @ >
+[RULE: 5]
+	epsilon -> [90][File]< Type { Type } > @[ENDING]
+		+ CreateObject(AstFile)
+		+ Field(AstFile::types, 0)
+		+ Field(AstFile::types, 1)
+		+ StackEnd()
+
+[92][File]@ < Type { Type } >
+[RULE: 5]
+	epsilon -> [85][File]< @ Type { Type } >
+		+ StackBegin()
+
