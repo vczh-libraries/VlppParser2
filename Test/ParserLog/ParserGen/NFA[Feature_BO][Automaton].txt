@@ -15,22 +15,22 @@
 
 [3][BranchedOptional] BEGIN 
 [RULE: 1]
-	token: "branched_optional" -> [8][BranchedOptional]{{< "branched_optional" @ +[ Plus ] Plus { Plus } > ; < "branched_optional" @ -[ Plus ] Plus { Plus } > ; < "branched_optional" @ [ Plus ] Plus { Plus } >}}
+	token: "branched_optional" -> [14][BranchedOptional]{{< "branched_optional" @ +[ Plus ] Plus { Plus } > ; < "branched_optional" @ -[ Plus ] Plus { Plus } > ; < "branched_optional" @ [ Plus ] Plus { Plus } >}}
 		+ StackBegin()
 		+ Token(0)
 
 [4][BranchedOptional] END [ENDING]
 [RULE: 1]
 
-[5][BranchedOptional]{{< "branched_optional" +[ Plus @ ] Plus { Plus } > ; < "branched_optional" -[ Plus @ ] Plus { Plus } > ; < "branched_optional" [ Plus @ ] Plus { Plus } >}}
+[5][BranchedOptional]< "branched_optional" +[ Plus @ ] Plus { Plus } >
 [RULE: 1]
 	token: "+" -> [2][Plus]< "+" @ >
 		+ StackBegin()
 		+ Token(0)
-		> rule: Plus -> [6][BranchedOptional]{{< "branched_optional" +[ Plus ] Plus @ { Plus } > ; < "branched_optional" -[ Plus ] Plus @ { Plus } > ; < "branched_optional" [ Plus ] Plus @ { Plus } >}}
+		> rule: Plus -> [6][BranchedOptional]< "branched_optional" +[ Plus ] Plus @ { Plus } >
 			+ StackSlot(2)
 
-[6][BranchedOptional]{{< "branched_optional" +[ Plus ] Plus @ { Plus } > ; < "branched_optional" -[ Plus ] Plus @ { Plus } > ; < "branched_optional" [ Plus ] Plus @ { Plus } >}}
+[6][BranchedOptional]< "branched_optional" +[ Plus ] Plus @ { Plus } >
 [RULE: 1]
 	ending -> [4][BranchedOptional] END [ENDING]
 		+ EnumItem(0, 4)
@@ -39,6 +39,37 @@
 		+ Field(BranchedOptionalFeature::tails, 3)
 		+ Field(BranchedOptionalFeature::type, 4)
 		+ StackEnd()
+	token: "+" -> [2][Plus]< "+" @ >
+		+ StackBegin()
+		+ Token(0)
+		> rule: Plus -> [7][BranchedOptional]< "branched_optional" +[ Plus ] Plus { Plus @ } >
+			+ StackSlot(3)
+
+[7][BranchedOptional]< "branched_optional" +[ Plus ] Plus { Plus @ } >
+[RULE: 1]
+	ending -> [4][BranchedOptional] END [ENDING]
+		+ EnumItem(0, 4)
+		+ CreateObject(BranchedOptionalFeature)
+		+ Field(BranchedOptionalFeature::optional, 1)
+		+ Field(BranchedOptionalFeature::tails, 3)
+		+ Field(BranchedOptionalFeature::type, 4)
+		+ StackEnd()
+	token: "+" -> [2][Plus]< "+" @ >
+		+ StackBegin()
+		+ Token(0)
+		> rule: Plus -> [7][BranchedOptional]< "branched_optional" +[ Plus ] Plus { Plus @ } >
+			+ StackSlot(3)
+
+[8][BranchedOptional]< "branched_optional" -[ Plus @ ] Plus { Plus } >
+[RULE: 1]
+	token: "+" -> [2][Plus]< "+" @ >
+		+ StackBegin()
+		+ Token(0)
+		> rule: Plus -> [9][BranchedOptional]< "branched_optional" -[ Plus ] Plus @ { Plus } >
+			+ StackSlot(2)
+
+[9][BranchedOptional]< "branched_optional" -[ Plus ] Plus @ { Plus } >
+[RULE: 1]
 	ending -> [4][BranchedOptional] END [ENDING]
 		+ EnumItem(1, 4)
 		+ CreateObject(BranchedOptionalFeature)
@@ -46,6 +77,37 @@
 		+ Field(BranchedOptionalFeature::tails, 3)
 		+ Field(BranchedOptionalFeature::type, 4)
 		+ StackEnd()
+	token: "+" -> [2][Plus]< "+" @ >
+		+ StackBegin()
+		+ Token(0)
+		> rule: Plus -> [10][BranchedOptional]< "branched_optional" -[ Plus ] Plus { Plus @ } >
+			+ StackSlot(3)
+
+[10][BranchedOptional]< "branched_optional" -[ Plus ] Plus { Plus @ } >
+[RULE: 1]
+	ending -> [4][BranchedOptional] END [ENDING]
+		+ EnumItem(1, 4)
+		+ CreateObject(BranchedOptionalFeature)
+		+ Field(BranchedOptionalFeature::optional, 1)
+		+ Field(BranchedOptionalFeature::tails, 3)
+		+ Field(BranchedOptionalFeature::type, 4)
+		+ StackEnd()
+	token: "+" -> [2][Plus]< "+" @ >
+		+ StackBegin()
+		+ Token(0)
+		> rule: Plus -> [10][BranchedOptional]< "branched_optional" -[ Plus ] Plus { Plus @ } >
+			+ StackSlot(3)
+
+[11][BranchedOptional]< "branched_optional" [ Plus @ ] Plus { Plus } >
+[RULE: 1]
+	token: "+" -> [2][Plus]< "+" @ >
+		+ StackBegin()
+		+ Token(0)
+		> rule: Plus -> [12][BranchedOptional]< "branched_optional" [ Plus ] Plus @ { Plus } >
+			+ StackSlot(2)
+
+[12][BranchedOptional]< "branched_optional" [ Plus ] Plus @ { Plus } >
+[RULE: 1]
 	ending -> [4][BranchedOptional] END [ENDING]
 		+ EnumItem(2, 4)
 		+ CreateObject(BranchedOptionalFeature)
@@ -56,25 +118,11 @@
 	token: "+" -> [2][Plus]< "+" @ >
 		+ StackBegin()
 		+ Token(0)
-		> rule: Plus -> [7][BranchedOptional]{{< "branched_optional" +[ Plus ] Plus { Plus @ } > ; < "branched_optional" -[ Plus ] Plus { Plus @ } > ; < "branched_optional" [ Plus ] Plus { Plus @ } >}}
+		> rule: Plus -> [13][BranchedOptional]< "branched_optional" [ Plus ] Plus { Plus @ } >
 			+ StackSlot(3)
 
-[7][BranchedOptional]{{< "branched_optional" +[ Plus ] Plus { Plus @ } > ; < "branched_optional" -[ Plus ] Plus { Plus @ } > ; < "branched_optional" [ Plus ] Plus { Plus @ } >}}
+[13][BranchedOptional]< "branched_optional" [ Plus ] Plus { Plus @ } >
 [RULE: 1]
-	ending -> [4][BranchedOptional] END [ENDING]
-		+ EnumItem(0, 4)
-		+ CreateObject(BranchedOptionalFeature)
-		+ Field(BranchedOptionalFeature::optional, 1)
-		+ Field(BranchedOptionalFeature::tails, 3)
-		+ Field(BranchedOptionalFeature::type, 4)
-		+ StackEnd()
-	ending -> [4][BranchedOptional] END [ENDING]
-		+ EnumItem(1, 4)
-		+ CreateObject(BranchedOptionalFeature)
-		+ Field(BranchedOptionalFeature::optional, 1)
-		+ Field(BranchedOptionalFeature::tails, 3)
-		+ Field(BranchedOptionalFeature::type, 4)
-		+ StackEnd()
 	ending -> [4][BranchedOptional] END [ENDING]
 		+ EnumItem(2, 4)
 		+ CreateObject(BranchedOptionalFeature)
@@ -85,35 +133,55 @@
 	token: "+" -> [2][Plus]< "+" @ >
 		+ StackBegin()
 		+ Token(0)
-		> rule: Plus -> [7][BranchedOptional]{{< "branched_optional" +[ Plus ] Plus { Plus @ } > ; < "branched_optional" -[ Plus ] Plus { Plus @ } > ; < "branched_optional" [ Plus ] Plus { Plus @ } >}}
+		> rule: Plus -> [13][BranchedOptional]< "branched_optional" [ Plus ] Plus { Plus @ } >
 			+ StackSlot(3)
 
-[8][BranchedOptional]{{< "branched_optional" @ +[ Plus ] Plus { Plus } > ; < "branched_optional" @ -[ Plus ] Plus { Plus } > ; < "branched_optional" @ [ Plus ] Plus { Plus } >}}
+[14][BranchedOptional]{{< "branched_optional" @ +[ Plus ] Plus { Plus } > ; < "branched_optional" @ -[ Plus ] Plus { Plus } > ; < "branched_optional" @ [ Plus ] Plus { Plus } >}}
 [RULE: 1]
 	token: "+" -> [2][Plus]< "+" @ >
 		+ StackBegin()
 		+ Token(0)
-		> rule[L2][L1]: Plus -> [5][BranchedOptional]{{< "branched_optional" +[ Plus @ ] Plus { Plus } > ; < "branched_optional" -[ Plus @ ] Plus { Plus } > ; < "branched_optional" [ Plus @ ] Plus { Plus } >}}
+		> rule[L1]: Plus -> [5][BranchedOptional]< "branched_optional" +[ Plus @ ] Plus { Plus } >
 			+ StackSlot(1)
 	token: "+" -> [2][Plus]< "+" @ >
 		+ StackBegin()
 		+ Token(0)
-		> rule[L2][L1]: Plus -> [6][BranchedOptional]{{< "branched_optional" +[ Plus ] Plus @ { Plus } > ; < "branched_optional" -[ Plus ] Plus @ { Plus } > ; < "branched_optional" [ Plus ] Plus @ { Plus } >}}
+		> rule[L1]: Plus -> [6][BranchedOptional]< "branched_optional" +[ Plus ] Plus @ { Plus } >
 			+ StackSlot(2)
-
-[9][Module] BEGIN 
-[RULE: 2]
-	token: "branched_optional" -> [8][BranchedOptional]{{< "branched_optional" @ +[ Plus ] Plus { Plus } > ; < "branched_optional" @ -[ Plus ] Plus { Plus } > ; < "branched_optional" @ [ Plus ] Plus { Plus } >}}
+	token: "+" -> [2][Plus]< "+" @ >
 		+ StackBegin()
 		+ Token(0)
-		> rule: BranchedOptional -> [11][Module]<! !BranchedOptional @ !>
+		> rule[L2]: Plus -> [8][BranchedOptional]< "branched_optional" -[ Plus @ ] Plus { Plus } >
+			+ StackSlot(1)
+	token: "+" -> [2][Plus]< "+" @ >
+		+ StackBegin()
+		+ Token(0)
+		> rule[L2]: Plus -> [9][BranchedOptional]< "branched_optional" -[ Plus ] Plus @ { Plus } >
+			+ StackSlot(2)
+	token: "+" -> [2][Plus]< "+" @ >
+		+ StackBegin()
+		+ Token(0)
+		> rule: Plus -> [11][BranchedOptional]< "branched_optional" [ Plus @ ] Plus { Plus } >
+			+ StackSlot(1)
+	token: "+" -> [2][Plus]< "+" @ >
+		+ StackBegin()
+		+ Token(0)
+		> rule: Plus -> [12][BranchedOptional]< "branched_optional" [ Plus ] Plus @ { Plus } >
+			+ StackSlot(2)
+
+[15][Module] BEGIN 
+[RULE: 2]
+	token: "branched_optional" -> [14][BranchedOptional]{{< "branched_optional" @ +[ Plus ] Plus { Plus } > ; < "branched_optional" @ -[ Plus ] Plus { Plus } > ; < "branched_optional" @ [ Plus ] Plus { Plus } >}}
+		+ StackBegin()
+		+ Token(0)
+		> rule: BranchedOptional -> [17][Module]<! !BranchedOptional @ !>
 			+ StackBegin()
 
-[10][Module] END [ENDING]
+[16][Module] END [ENDING]
 [RULE: 2]
 
-[11][Module]<! !BranchedOptional @ !>
+[17][Module]<! !BranchedOptional @ !>
 [RULE: 2]
-	ending -> [10][Module] END [ENDING]
+	ending -> [16][Module] END [ENDING]
 		+ StackEnd()
 
