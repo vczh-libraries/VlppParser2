@@ -117,6 +117,7 @@ SymbolSet
 
 			using StateSymbolSet = SymbolSet<LabeledState, true>;
 			using InsSymbolSet = SymbolSet<AstIns, false>;
+			using CompetitionSymbolSet = SymbolSet<EdgeCompetition, true>;
 
 /***********************************************************************
 CompactSyntaxBuilder
@@ -339,9 +340,8 @@ SyntaxSymbolManager::MergeEdgesWithSameInput
 				//   for each grouped edge, whether new states are created or not, put target state into pending list
 				//   work until pending list is empty
 				// After merging, newStates and newEdges should not contain removed objects
-				// We should take into consideration that input includes insAfterInput
+				// We should take into consideration that input includes insAfterInput and competitions
 				//   returnEdges are always empty at the moment
-				//   competitions should be merged
 
 				Dictionary<StateSymbolSet, Ptr<StateSymbol>> statesToMerged;
 				Dictionary<StateSymbol*, StateSymbolSet::ListPtr> mergedToStates;
@@ -391,7 +391,7 @@ SyntaxSymbolManager::MergeEdgesWithSameInput
 					auto currentState = workingStates[i];
 					vint currentMergedToStateIndex = mergedToStates.Keys().IndexOf(currentState);
 
-					Group<Pair<EdgeInput, InsSymbolSet>, EdgeSymbol*> groupedEdges;
+					Group<Tuple<EdgeInput, InsSymbolSet, CompetitionSymbolSet>, EdgeSymbol*> groupedEdges;
 					if (currentMergedToStateIndex == -1)
 					{
 						// if the current state is an original state
@@ -400,7 +400,12 @@ SyntaxSymbolManager::MergeEdgesWithSameInput
 							if (edge->input.type == EdgeInputType::Token || edge->input.type == EdgeInputType::Rule)
 							{
 								// only group Token or Rule edges
-								groupedEdges.Add({ edge->input,InsSymbolSet{edge->insAfterInput} }, edge);
+								groupedEdges.Add(
+									{
+										edge->input,
+										InsSymbolSet{edge->insAfterInput},
+										CompetitionSymbolSet(edge->competitions)
+									}, edge);
 							}
 							else
 							{
@@ -419,7 +424,12 @@ SyntaxSymbolManager::MergeEdgesWithSameInput
 								if (edge->input.type == EdgeInputType::Token || edge->input.type == EdgeInputType::Rule)
 								{
 									// only group Token or Rule edges
-									groupedEdges.Add({ edge->input,InsSymbolSet{edge->insAfterInput} }, edge);
+									groupedEdges.Add(
+										{
+											edge->input,
+											InsSymbolSet{edge->insAfterInput},
+											CompetitionSymbolSet(edge->competitions)
+										}, edge);
 								}
 								else
 								{
@@ -489,12 +499,9 @@ SyntaxSymbolManager::MergeEdgesWithSameInput
 							auto newEdge = Ptr(new EdgeSymbol(currentState, mergedState.Obj()));
 							createdEdges.Add(newEdge);
 
-							newEdge->input = groupedKey.key;
-							CopyFrom(newEdge->insAfterInput, groupedKey.value.Symbols());
-							for (auto edge : groupedValues)
-							{
-								CopyFrom(newEdge->competitions, edge->competitions, true);
-							}
+							newEdge->input = groupedKey.get<0>();
+							CopyFrom(newEdge->insAfterInput, groupedKey.get<1>().Symbols());
+							CopyFrom(newEdge->competitions, groupedKey.get<2>().Symbols());
 						}
 					}
 				}
