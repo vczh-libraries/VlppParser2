@@ -123,6 +123,39 @@ SymbolSet
 SyntaxSymbolManager::MergeEdgesWithSameInput
 ***********************************************************************/
 
+			void SyntaxSymbolManager::ApplyIncrementalChange(const IncrementalChange& ic, StateList& newStates, EdgeList& newEdges)
+			{
+				if (ic.createdStates.Count() + ic.createdEdges.Count() > 0)
+				{
+					for (vint i = newEdges.Count() - 1; i >= 0; i--)
+					{
+						auto edge = newEdges[i];
+						if (!ic.reusedEdges.Contains(edge.Obj()))
+						{
+							edge->From()->outEdges.Remove(edge.Obj());
+							edge->To()->inEdges.Remove(edge.Obj());
+							newEdges.RemoveAt(i);
+						}
+					}
+
+					for (vint i = newStates.Count() - 1; i >= 0; i--)
+					{
+						auto state = newStates[i];
+						if (!ic.reusedStates.Contains(state.Obj()))
+						{
+							newStates.RemoveAt(i);
+						}
+					}
+
+					CopyFrom(newStates, ic.createdStates, true);
+					CopyFrom(newEdges, ic.createdEdges, true);
+				}
+			}
+
+/***********************************************************************
+SyntaxSymbolManager::MergeEdgesWithSameInput
+***********************************************************************/
+
 			void SyntaxSymbolManager::MergeEdgesWithSameInput(RuleSymbol* rule, StateSymbol* startState, StateList& newStates, EdgeList& newEdges)
 			{
 				// Just like building DFA
@@ -139,23 +172,20 @@ SyntaxSymbolManager::MergeEdgesWithSameInput
 				Dictionary<StateSymbolSet, Ptr<StateSymbol>> statesToMerged;
 				Dictionary<StateSymbol*, StateSymbolSet::ListPtr> mergedToStates;
 
-				StateList createdStates;
-				EdgeList createdEdges;
 				List<StateSymbol*> workingStates;
-				SortedList<StateSymbol*> reusedStates;
-				SortedList<EdgeSymbol*> reusedEdges;
+				IncrementalChange ic;
 
 				// Start from the start state
 				{
-					reusedStates.Add(startState);
+					ic.reusedStates.Add(startState);
 					workingStates.Add(startState);
 				}
 
 				auto ReuseState = [&](StateSymbol* state)
 				{
-					if (!reusedStates.Contains(state))
+					if (!ic.reusedStates.Contains(state))
 					{
-						reusedStates.Add(state);
+						ic.reusedStates.Add(state);
 						workingStates.Add(state);
 					}
 				};
@@ -163,9 +193,9 @@ SyntaxSymbolManager::MergeEdgesWithSameInput
 				auto ReuseEdge = [&](EdgeSymbol* edge)
 				{
 					ReuseState(edge->To());
-					if (!reusedEdges.Contains(edge))
+					if (!ic.reusedEdges.Contains(edge))
 					{
-						reusedEdges.Add(edge);
+						ic.reusedEdges.Add(edge);
 					}
 				};
 
@@ -173,7 +203,7 @@ SyntaxSymbolManager::MergeEdgesWithSameInput
 				{
 					ReuseState(edge->To());
 					auto newEdge = Ptr(new EdgeSymbol(mergedState, edge->To()));
-					createdEdges.Add(newEdge);
+					ic.createdEdges.Add(newEdge);
 					newEdge->input = edge->input;
 					CopyFrom(newEdge->competitions, edge->competitions);
 					CopyFrom(newEdge->insAfterInput, edge->insAfterInput);
@@ -270,7 +300,7 @@ SyntaxSymbolManager::MergeEdgesWithSameInput
 								else
 								{
 									mergedState = Ptr(new StateSymbol(startState->Rule()));
-									createdStates.Add(mergedState);
+									ic.createdStates.Add(mergedState);
 									workingStates.Add(mergedState.Obj());
 
 									mergedState->label = stream::GenerateToStream([&](stream::TextWriter& writer)
@@ -290,7 +320,7 @@ SyntaxSymbolManager::MergeEdgesWithSameInput
 							}
 
 							auto newEdge = Ptr(new EdgeSymbol(currentState, mergedState.Obj()));
-							createdEdges.Add(newEdge);
+							ic.createdEdges.Add(newEdge);
 
 							newEdge->input = groupedKey.get<0>();
 							CopyFrom(newEdge->insAfterInput, groupedKey.get<1>().Symbols());
@@ -299,31 +329,7 @@ SyntaxSymbolManager::MergeEdgesWithSameInput
 					}
 				}
 
-				if (createdStates.Count() + createdEdges.Count() > 0)
-				{
-					for (vint i = newEdges.Count() - 1; i >= 0; i--)
-					{
-						auto edge = newEdges[i];
-						if (!reusedEdges.Contains(edge.Obj()))
-						{
-							edge->From()->outEdges.Remove(edge.Obj());
-							edge->To()->inEdges.Remove(edge.Obj());
-							newEdges.RemoveAt(i);
-						}
-					}
-
-					for (vint i = newStates.Count() - 1; i >= 0; i--)
-					{
-						auto state = newStates[i];
-						if (!reusedStates.Contains(state.Obj()))
-						{
-							newStates.RemoveAt(i);
-						}
-					}
-
-					CopyFrom(newStates, createdStates, true);
-					CopyFrom(newEdges, createdEdges, true);
-				}
+				ApplyIncrementalChange(ic, newStates, newEdges);
 			}
 		}
 	}

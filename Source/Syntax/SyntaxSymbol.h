@@ -178,17 +178,26 @@ SyntaxSymbolManager
 				ParserSymbolManager&		global;
 				SyntaxPhase					phase = SyntaxPhase::EpsilonNFA;
 
-
 			protected:
+				struct IncrementalChange
+				{
+					StateList								createdStates;
+					EdgeList								createdEdges;
+					collections::SortedList<StateSymbol*>	reusedStates;
+					collections::SortedList<EdgeSymbol*>	reusedEdges;
+				};
+
 				static void					BuildLeftRecEdge(EdgeSymbol* newEdge, EdgeSymbol* endingEdge, EdgeSymbol* lrecPrefixEdge);
 				static void					EliminateLeftRecursion(RuleSymbol* rule, StateSymbol* startState, StateSymbol* endState, StateList& newStates, EdgeList& newEdges);
+				static void					ApplyIncrementalChange(const IncrementalChange& ic, StateList& newStates, EdgeList& newEdges);
 				static void					MergeEdgesWithSameInput(RuleSymbol* rule, StateSymbol* startState, StateList& newStates, EdgeList& newEdges);
 				static StartEndStatePair	EliminateEpsilonEdges(RuleSymbol* rule, StateList& newStates, EdgeList& newEdges);
+				void						CheckIndirectLeftRecursion(StateSymbol* startState, collections::List<EdgeSymbol*>& accumulatedEdges);
 				void						BuildCompactNFAInternal();
 
 				void						FixCrossReferencedRuleEdge(StateSymbol* startState, collections::Group<StateSymbol*, EdgeSymbol*>& orderedEdges, collections::List<EdgeSymbol*>& accumulatedEdges);
-				void						CheckIndirectLeftRecursion(StateSymbol* startState, collections::List<EdgeSymbol*>& accumulatedEdges);
 				void						BuildCrossReferencedNFAInternal();
+
 			public:
 				SyntaxSymbolManager(ParserSymbolManager& _global);
 
