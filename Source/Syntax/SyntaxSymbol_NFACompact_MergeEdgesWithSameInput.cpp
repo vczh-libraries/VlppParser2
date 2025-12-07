@@ -158,16 +158,30 @@ SyntaxSymbolManager::MergeEdgesWithSameInput
 
 			void SyntaxSymbolManager::MergeEdgesWithSameInput(RuleSymbol* rule, StateSymbol* startState, StateList& newStates, EdgeList& newEdges)
 			{
-				// Just like building DFA
-				//   start from startState, put into pending list
-				//   group outgoing edges by input
-				//   make new state for each group with multiple input
-				//   maintain a map from merged states to use state using StateSymbolSet
-				//   for each grouped edge, whether new states are created or not, put target state into pending list
-				//   work until pending list is empty
-				// After merging, newStates and newEdges should not contain removed objects
-				// We should take into consideration that input includes insAfterInput and competitions
-				//   returnEdges are always empty at the moment
+				/*
+				* Two edges can be merged if:
+				*   They are both Token or Rule
+				*   They have the same input, insAfterInput and competitions
+				*   returnEdges of an edge is empty at this moment so it is ignored
+				* 
+				* If a state has multiple outgoing edges that can be merged
+				*   the target states will be merged into one
+				*   all outgoing edges from target states will be recreated from the merged state
+				*   mergable edges will be replaced by a new edge
+				* 
+				* [BEFORE]
+				*    +-(r)-> U -(b)-> X
+				*    |
+				* A -+-(r)-> V -(b)-> Y
+				*    |
+				*    +-(r)-> W -(c)-> Z
+				* 
+				* [AFTER]
+				* 
+				*                 +-(b)-> XY
+				*                 |
+				* A -+-(r)-> UVW -+-(c)-> Z
+				*/
 
 				Dictionary<StateSymbolSet, Ptr<StateSymbol>> statesToMerged;
 				Dictionary<StateSymbol*, StateSymbolSet::ListPtr> mergedToStates;
@@ -295,10 +309,13 @@ SyntaxSymbolManager::MergeEdgesWithSameInput
 								vint index = statesToMerged.Keys().IndexOf(targetSet);
 								if (index != -1)
 								{
+									// if the merged state already exists, reuse it
 									mergedState = statesToMerged.Values()[index];
 								}
 								else
 								{
+									// otherwise, create a new merged state
+									// its label is the combination of all originals
 									mergedState = Ptr(new StateSymbol(startState->Rule()));
 									ic.createdStates.Add(mergedState);
 									workingStates.Add(mergedState.Obj());
