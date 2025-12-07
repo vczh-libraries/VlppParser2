@@ -564,14 +564,15 @@ SyntaxSymbolManager::EliminateEpsilonEdges
 				// epsilon-NFAs are per clause
 				// now we need to create a start state and an ending state
 				// to connect all epsilon-NFAs of its clauses together
-				auto psuedoState = CreateState(rule);
+				auto psuedoState = Ptr(new StateSymbol(rule));
+				newStates.Add(psuedoState);
 				for (auto startState : rule->startStates)
 				{
-					CreateEdge(psuedoState, startState);
+					newEdges.Add(Ptr(new EdgeSymbol(psuedoState.Obj(), startState)));
 				}
 
 				CompactSyntaxBuilder builder(rule, newStates, newEdges);
-				auto compactStartState = builder.CreateCompactState(psuedoState);
+				auto compactStartState = builder.CreateCompactState(psuedoState.Obj());
 				compactStartState->label = L" BEGIN ";
 
 				auto compactEndState = Ptr(new StateSymbol(rule));

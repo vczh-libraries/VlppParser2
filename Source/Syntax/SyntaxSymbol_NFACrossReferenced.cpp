@@ -27,6 +27,8 @@ SyntaxSymbolManager::FixCrossReferencedRuleEdge
 					case EdgeInputType::Token:
 						if (edge->returnEdges.Count() == 0)
 						{
+							// Cannot call CreateEdge here because it is checked as a public API
+							// But during NFA building we should still change the automaton
 							auto newEdge = Ptr(new EdgeSymbol(startState, edge->To()));
 							edges.Add(newEdge);
 
@@ -40,20 +42,10 @@ SyntaxSymbolManager::FixCrossReferencedRuleEdge
 						}
 						break;
 					case EdgeInputType::Rule:
-						if (accumulatedEdges.Contains(edge))
-						{
-							AddError(
-								ParserErrorType::RuleIsIndirectlyLeftRecursive,
-								{},
-								edge->input.rule->Name()
-								);
-						}
-						else
-						{
-							accumulatedEdges.Add(edge);
-							FixCrossReferencedRuleEdge(startState, orderedEdges, accumulatedEdges);
-							accumulatedEdges.RemoveAt(accumulatedEdges.Count() - 1);
-						}
+						// RuleIsIndirectlyLeftRecursive has been checked so there will be no deadloop 
+						accumulatedEdges.Add(edge);
+						FixCrossReferencedRuleEdge(startState, orderedEdges, accumulatedEdges);
+						accumulatedEdges.RemoveAt(accumulatedEdges.Count() - 1);
 						break;
 					case EdgeInputType::Epsilon:
 					case EdgeInputType::Ending:
@@ -71,8 +63,44 @@ SyntaxSymbolManager::FixCrossReferencedRuleEdge
 SyntaxSymbolManager::BuildCrossReferencedNFAInternal
 ***********************************************************************/
 
+			void SyntaxSymbolManager::CheckIndirectLeftRecursion(StateSymbol* startState, collections::List<EdgeSymbol*>& accumulatedEdges)
+			{
+				for (auto edge : startState->OutEdges())
+				{
+					if (edge->input.type == EdgeInputType::Rule)
+					{
+						if (accumulatedEdges.Contains(edge))
+						{
+							AddError(
+								ParserErrorType::RuleIsIndirectlyLeftRecursive,
+								{},
+								edge->input.rule->Name()
+							);
+						}
+						else
+						{
+							accumulatedEdges.Add(edge);
+							CheckIndirectLeftRecursion(edge->input.rule->startStates[0], accumulatedEdges);
+							accumulatedEdges.RemoveAt(accumulatedEdges.Count() - 1);
+						}
+					}
+				}
+			}
+
 			void SyntaxSymbolManager::BuildCrossReferencedNFAInternal()
 			{
+				{
+					collections::List<EdgeSymbol*> accumulatedEdges;
+					for (auto ruleSymbol : rules.map.Values())
+					{
+						// there will be only one start state per rule in CompactNFA
+						CheckIndirectLeftRecursion(ruleSymbol->startStates[0], accumulatedEdges);
+					}
+					if (global.Errors().Count() > 0)
+					{
+						return;
+					}
+				}
 				List<StateSymbol*> states;
 				GetStatesInStableOrder(states);
 
