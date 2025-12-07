@@ -170,6 +170,7 @@ SyntaxSymbolManager
 			{
 				using StateList = collections::List<Ptr<StateSymbol>>;
 				using EdgeList = collections::List<Ptr<EdgeSymbol>>;
+				using StartEndStatePair = collections::Pair<StateSymbol*, StateSymbol*>;
 			protected:
 				MappedOwning<RuleSymbol>	rules;
 				StateList					states;
@@ -177,10 +178,12 @@ SyntaxSymbolManager
 				ParserSymbolManager&		global;
 				SyntaxPhase					phase = SyntaxPhase::EpsilonNFA;
 
+
+			protected:
 				static void					BuildLeftRecEdge(EdgeSymbol* newEdge, EdgeSymbol* endingEdge, EdgeSymbol* lrecPrefixEdge);
 				static void					EliminateLeftRecursion(RuleSymbol* rule, StateSymbol* startState, StateSymbol* endState, StateList& newStates, EdgeList& newEdges);
 				static void					MergeEdgesWithSameInput(RuleSymbol* rule, StateSymbol* startState, StateList& newStates, EdgeList& newEdges);
-				static StateSymbol*			EliminateEpsilonEdges(RuleSymbol* rule, StateList& newStates, EdgeList& newEdges);
+				static StartEndStatePair	EliminateEpsilonEdges(RuleSymbol* rule, StateList& newStates, EdgeList& newEdges);
 				void						BuildCompactNFAInternal();
 
 				void						FixCrossReferencedRuleEdge(StateSymbol* startState, collections::Group<StateSymbol*, EdgeSymbol*>& orderedEdges, collections::List<EdgeSymbol*>& accumulatedEdges);
