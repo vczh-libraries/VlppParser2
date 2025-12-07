@@ -511,7 +511,6 @@ SyntaxSymbolManager::MergeEdgesWithSameInput
 					for (vint i = newEdges.Count() - 1; i >= 0; i--)
 					{
 						auto edge = newEdges[i];
-						if (edge->From()->Rule() != rule) break;
 						if (!reusedEdges.Contains(edge.Obj()))
 						{
 							edge->From()->outEdges.Remove(edge.Obj());
@@ -523,7 +522,6 @@ SyntaxSymbolManager::MergeEdgesWithSameInput
 					for (vint i = newStates.Count() - 1; i >= 0; i--)
 					{
 						auto state = newStates[i];
-						if (state->Rule() != rule) break;
 						if (!reusedStates.Contains(state.Obj()))
 						{
 							newStates.RemoveAt(i);
@@ -605,16 +603,30 @@ SyntaxSymbolManager::BuildCompactNFAInternal
 
 			void SyntaxSymbolManager::BuildCompactNFAInternal()
 			{
-				StateList newStates;
-				EdgeList newEdges;
-				for (auto ruleSymbol : rules.map.Values())
+				Array<Pair<Ptr<StateList>, Ptr<EdgeList>>> newStatesAndEdges(rules.map.Count());
+				for (vint i = 0; i < newStatesAndEdges.Count(); i++)
 				{
+					newStatesAndEdges[i] = { Ptr(new StateList),Ptr(new EdgeList) };
+				}
+
+				for (auto [ruleSymbol, i] : indexed(rules.map.Values()))
+				{
+					auto&& newStates = *newStatesAndEdges[i].key.Obj();
+					auto&& newEdges = *newStatesAndEdges[i].value.Obj();
 					auto startState = EliminateEpsilonEdges(ruleSymbol, newStates, newEdges);
 					ruleSymbol->startStates.Clear();
 					ruleSymbol->startStates.Add(startState);
 				}
-				states = std::move(newStates);
-				edges = std::move(newEdges);
+
+				states.Clear();
+				edges.Clear();
+				for (vint i = 0; i < newStatesAndEdges.Count(); i++)
+				{
+					auto&& newStates = *newStatesAndEdges[i].key.Obj();
+					auto&& newEdges = *newStatesAndEdges[i].value.Obj();
+					CopyFrom(states, newStates, true);
+					CopyFrom(edges, newEdges, true);
+				}
 			}
 		}
 	}
