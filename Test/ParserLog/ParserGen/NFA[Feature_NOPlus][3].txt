@@ -83,13 +83,8 @@
 	token: "+" -> [2][Plus]< "+" @ >
 		+ StackBegin()
 		+ Token(0)
-		> rule: Plus -> [9][NestedPositiveOptional]< "nested_positive_optional" +[ ( +[ ( +[ Plus ] Plus @ ) ] Plus ) ] Plus { Plus } >
-			+ StackSlot(2)
-	token: "+" -> [2][Plus]< "+" @ >
-		+ StackBegin()
-		+ Token(0)
-		> rule: Plus -> [8][NestedPositiveOptional]< "nested_positive_optional" +[ ( +[ ( +[ Plus ] Plus ) ] Plus @ ) ] Plus { Plus } >
-			+ StackSlot(3)
+		> rule: Plus -> [5][NestedPositiveOptional]< "nested_positive_optional" +[ ( +[ ( +[ Plus @ ] Plus ) ] Plus ) ] Plus { Plus } >
+			+ StackSlot(1)
 	token: "+" -> [2][Plus]< "+" @ >
 		+ StackBegin()
 		+ Token(0)
@@ -98,8 +93,13 @@
 	token: "+" -> [2][Plus]< "+" @ >
 		+ StackBegin()
 		+ Token(0)
-		> rule: Plus -> [5][NestedPositiveOptional]< "nested_positive_optional" +[ ( +[ ( +[ Plus @ ] Plus ) ] Plus ) ] Plus { Plus } >
-			+ StackSlot(1)
+		> rule: Plus -> [8][NestedPositiveOptional]< "nested_positive_optional" +[ ( +[ ( +[ Plus ] Plus ) ] Plus @ ) ] Plus { Plus } >
+			+ StackSlot(3)
+	token: "+" -> [2][Plus]< "+" @ >
+		+ StackBegin()
+		+ Token(0)
+		> rule: Plus -> [9][NestedPositiveOptional]< "nested_positive_optional" +[ ( +[ ( +[ Plus ] Plus @ ) ] Plus ) ] Plus { Plus } >
+			+ StackSlot(2)
 
 [11][Module] BEGIN 
 [RULE: 4]

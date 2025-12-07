@@ -537,7 +537,7 @@ SyntaxSymbolManager::MergeEdgesWithSameInput
 SyntaxSymbolManager::EliminateEpsilonEdges
 ***********************************************************************/
 
-			Pair<StateSymbol*, StateSymbol*> SyntaxSymbolManager::EliminateEpsilonEdges(RuleSymbol* rule, StateList& newStates, EdgeList& newEdges)
+			SyntaxSymbolManager::StartEndStatePair SyntaxSymbolManager::EliminateEpsilonEdges(RuleSymbol* rule, StateList& newStates, EdgeList& newEdges)
 			{
 				/*
 				* For any transition that goes through some epsilon edge and ends with a non-epsilon edge
@@ -590,10 +590,6 @@ SyntaxSymbolManager::EliminateEpsilonEdges
 					builder.BuildEpsilonEliminatedEdges(current, compactEndState.Obj(), visited);
 				}
 
-				// optimize
-				EliminateLeftRecursion(rule, compactStartState, compactEndState.Obj(), newStates, newEdges);
-				MergeEdgesWithSameInput(rule, compactStartState, newStates, newEdges);
-
 				return { compactStartState,compactEndState.Obj()};
 			}
 
@@ -616,6 +612,9 @@ SyntaxSymbolManager::BuildCompactNFAInternal
 					auto [startState, endState] = EliminateEpsilonEdges(ruleSymbol, newStates, newEdges);
 					ruleSymbol->startStates.Clear();
 					ruleSymbol->startStates.Add(startState);
+
+					EliminateLeftRecursion(ruleSymbol, startState, endState, newStates, newEdges);
+					MergeEdgesWithSameInput(ruleSymbol, startState, newStates, newEdges);
 				}
 
 				states.Clear();

@@ -32,18 +32,7 @@ StateSymbol
 								result = e1->input.token <=> e2->input.token;
 								if (result == 0)
 								{
-									if (e1->input.condition && e2->input.condition)
-									{
-										result = e1->input.condition.Value() <=> e2->input.condition.Value();
-									}
-									else if (e1->input.condition)
-									{
-										result = std::strong_ordering::greater;
-									}
-									else if (e2->input.condition)
-									{
-										result = std::strong_ordering::less;
-									}
+									result = e1->input.condition <=> e2->input.condition;
 								}
 								break;
 							case EdgeInputType::Rule:
@@ -52,9 +41,30 @@ StateSymbol
 							default:;
 							}
 						}
-
-						if (result != 0) return result;
-						return orderedStates.IndexOf(e1->To()) <=> orderedStates.IndexOf(e2->To());
+						if (result == 0)
+						{
+							result = orderedStates.IndexOf(e1->To()) <=> orderedStates.IndexOf(e2->To());
+						}
+						if (result == 0)
+						{
+							result = CompareEnumerable(e1->competitions, e2->competitions);
+						}
+						if (result == 0)
+						{
+							result = CompareEnumerable(e1->insAfterInput, e2->insAfterInput);
+						}
+						if (result == 0)
+						{
+							result = e1->returnEdges.Count() <=> e2->returnEdges.Count();
+						}
+						if (result == 0)
+						{
+							result = CompareEnumerable(
+								From(e1->returnEdges).Select([&](EdgeSymbol* e) { return orderedStates.IndexOf(e->To()); }),
+								From(e2->returnEdges).Select([&](EdgeSymbol* e) { return orderedStates.IndexOf(e->To()); })
+								);
+						}
+						return result;
 					}));
 			}
 
