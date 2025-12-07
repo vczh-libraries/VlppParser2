@@ -9,6 +9,34 @@ namespace vl
 			using namespace collections;
 
 /***********************************************************************
+SyntaxSymbolManager::CheckIndirectLeftRecursion
+***********************************************************************/
+
+			void SyntaxSymbolManager::CheckIndirectLeftRecursion(StateSymbol* startState, collections::List<EdgeSymbol*>& accumulatedEdges)
+			{
+				for (auto edge : startState->OutEdges())
+				{
+					if (edge->input.type == EdgeInputType::Rule)
+					{
+						if (accumulatedEdges.Contains(edge))
+						{
+							AddError(
+								ParserErrorType::RuleIsIndirectlyLeftRecursive,
+								{},
+								edge->input.rule->Name()
+							);
+						}
+						else
+						{
+							accumulatedEdges.Add(edge);
+							CheckIndirectLeftRecursion(edge->input.rule->startStates[0], accumulatedEdges);
+							accumulatedEdges.RemoveAt(accumulatedEdges.Count() - 1);
+						}
+					}
+				}
+			}
+
+/***********************************************************************
 SyntaxSymbolManager::BuildCompactNFAInternal
 ***********************************************************************/
 
@@ -31,6 +59,14 @@ SyntaxSymbolManager::BuildCompactNFAInternal
 					EliminateLeftRecursion(ruleSymbol, startState, endState, newStates, newEdges);
 					MergeEdgesWithSameInput(ruleSymbol, startState, newStates, newEdges);
 				}
+
+				collections::List<EdgeSymbol*> accumulatedEdges;
+				for (auto ruleSymbol : rules.map.Values())
+				{
+					// there will be only one start state per rule in CompactNFA
+					CheckIndirectLeftRecursion(ruleSymbol->startStates[0], accumulatedEdges);
+				}
+				if (global.Errors().Count() > 0) return;
 
 				states.Clear();
 				edges.Clear();
