@@ -392,6 +392,10 @@ SyntaxSymbolManager::MergeEdgesWithSameInputCrossReference
 				*        +- r2 (injects into r1)
 				*        +- r6 (injects into r1)
 				*   only first level transitions are unaffected, all extra injections include Token from (r1, r3)
+				* 
+				* Do not merge edges when it is equivalent to just call those rules.
+				*   It means merging should happen between different first level sub trees.
+				*   Be careful when merging destroy the prefix structure, do we need to keep a copy of unmerged rule?
 				*/
 			}
 		}
