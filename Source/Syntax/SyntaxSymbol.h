@@ -127,7 +127,6 @@ RuleSymbol
 				friend class SyntaxSymbolManager;
 
 				using StateList = collections::List<StateSymbol*>;
-				using NameList = collections::SortedList<WString>;
 			protected:
 				SyntaxSymbolManager*		ownerManager;
 				WString						name;
@@ -141,7 +140,6 @@ RuleSymbol
 				bool						isPartial = false;
 				bool						assignedNonArrayField = false;
 				AstClassSymbol*				ruleType = nullptr;
-				NameList					lrFlags;
 
 				SyntaxSymbolManager*		Owner() { return ownerManager; }
 				const WString&				Name() { return name; }
@@ -172,7 +170,6 @@ SyntaxSymbolManager
 			{
 				using StateList = collections::List<Ptr<StateSymbol>>;
 				using EdgeList = collections::List<Ptr<EdgeSymbol>>;
-				using LrpFlagList = collections::SortedList<WString>;
 			protected:
 				MappedOwning<RuleSymbol>	rules;
 				StateList					states;
