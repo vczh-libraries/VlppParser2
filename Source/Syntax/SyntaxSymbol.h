@@ -191,6 +191,7 @@ SyntaxSymbolManager
 				static void					EliminateLeftRecursion(RuleSymbol* rule, StateSymbol* startState, StateSymbol* endState, StateList& newStates, EdgeList& newEdges);
 				static void					ApplyIncrementalChange(const IncrementalChange& ic, StateList& newStates, EdgeList& newEdges);
 				static void					MergeEdgesWithSameInput(RuleSymbol* rule, StateSymbol* startState, StateList& newStates, EdgeList& newEdges);
+				static void					MergeEdgesWithSameInputCrossReference(RuleSymbol* rule, StateSymbol* startState, StateList& newStates, EdgeList& newEdges);
 				static StartEndStatePair	EliminateEpsilonEdges(RuleSymbol* rule, StateList& newStates, EdgeList& newEdges);
 				void						CheckIndirectLeftRecursion(StateSymbol* startState, collections::List<EdgeSymbol*>& accumulatedEdges);
 				void						BuildCompactNFAInternal();

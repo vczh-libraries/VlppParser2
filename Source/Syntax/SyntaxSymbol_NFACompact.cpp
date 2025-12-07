@@ -60,13 +60,21 @@ SyntaxSymbolManager::BuildCompactNFAInternal
 					MergeEdgesWithSameInput(ruleSymbol, startState, newStates, newEdges);
 				}
 
+				// there will be only one start state per rule after EliminateEpsilonEdges
+
 				collections::List<EdgeSymbol*> accumulatedEdges;
 				for (auto ruleSymbol : rules.map.Values())
 				{
-					// there will be only one start state per rule in CompactNFA
 					CheckIndirectLeftRecursion(ruleSymbol->startStates[0], accumulatedEdges);
 				}
 				if (global.Errors().Count() > 0) return;
+
+				for (auto [ruleSymbol, i] : indexed(rules.map.Values()))
+				{
+					auto&& newStates = *newStatesAndEdges[i].key.Obj();
+					auto&& newEdges = *newStatesAndEdges[i].value.Obj();
+					MergeEdgesWithSameInputCrossReference(ruleSymbol, ruleSymbol->startStates[0], newStates, newEdges);
+				}
 
 				states.Clear();
 				edges.Clear();

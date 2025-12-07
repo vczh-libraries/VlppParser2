@@ -331,6 +331,14 @@ SyntaxSymbolManager::MergeEdgesWithSameInput
 
 				ApplyIncrementalChange(ic, newStates, newEdges);
 			}
+
+/***********************************************************************
+SyntaxSymbolManager::MergeEdgesWithSameInputCrossReference
+***********************************************************************/
+
+			void SyntaxSymbolManager::MergeEdgesWithSameInputCrossReference(RuleSymbol* rule, StateSymbol* startState, StateList& newStates, EdgeList& newEdges)
+			{
+			}
 		}
 	}
 }
