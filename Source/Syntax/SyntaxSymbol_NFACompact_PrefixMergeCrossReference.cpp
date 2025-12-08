@@ -8,11 +8,20 @@ namespace vl
 		{
 			using namespace collections;
 
+			struct PrefixMergeCache
+			{
+			};
+
+			Ptr<PrefixMergeCache> SyntaxSymbolManager::CreatePrefixMerge()
+			{
+				return Ptr(new PrefixMergeCache);
+			}
+
 /***********************************************************************
 SyntaxSymbolManager::MergeEdgesWithSameInputCrossReference
 ***********************************************************************/
 
-			void SyntaxSymbolManager::MergeEdgesWithSameInputCrossReference(RuleSymbol* rule, StateSymbol* startState, StateList& newStates, EdgeList& newEdges)
+			void SyntaxSymbolManager::PrefixMergeCrossReference(PrefixMergeCache* cache, RuleSymbol* rule, StateSymbol* startState, StateList& newStates, EdgeList& newEdges)
 			{
 				/*
 				* For any state A whose prefix calls look like:

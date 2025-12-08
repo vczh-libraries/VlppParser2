@@ -9,6 +9,39 @@ namespace vl
 			using namespace collections;
 
 /***********************************************************************
+SyntaxSymbolManager::MergeEdgesWithSameInput
+***********************************************************************/
+
+			void SyntaxSymbolManager::ApplyIncrementalChange(const IncrementalChange& ic, StateList& newStates, EdgeList& newEdges)
+			{
+				if (ic.createdStates.Count() + ic.createdEdges.Count() > 0)
+				{
+					for (vint i = newEdges.Count() - 1; i >= 0; i--)
+					{
+						auto edge = newEdges[i];
+						if (!ic.reusedEdges.Contains(edge.Obj()))
+						{
+							edge->From()->outEdges.Remove(edge.Obj());
+							edge->To()->inEdges.Remove(edge.Obj());
+							newEdges.RemoveAt(i);
+						}
+					}
+
+					for (vint i = newStates.Count() - 1; i >= 0; i--)
+					{
+						auto state = newStates[i];
+						if (!ic.reusedStates.Contains(state.Obj()))
+						{
+							newStates.RemoveAt(i);
+						}
+					}
+
+					CopyFrom(newStates, ic.createdStates, true);
+					CopyFrom(newEdges, ic.createdEdges, true);
+				}
+			}
+
+/***********************************************************************
 SyntaxSymbolManager::CheckIndirectLeftRecursion
 ***********************************************************************/
 
@@ -69,11 +102,12 @@ SyntaxSymbolManager::BuildCompactNFAInternal
 				}
 				if (global.Errors().Count() > 0) return;
 
+				auto pmCache = CreatePrefixMerge();
 				for (auto [ruleSymbol, i] : indexed(rules.map.Values()))
 				{
 					auto&& newStates = *newStatesAndEdges[i].key.Obj();
 					auto&& newEdges = *newStatesAndEdges[i].value.Obj();
-					MergeEdgesWithSameInputCrossReference(ruleSymbol, ruleSymbol->startStates[0], newStates, newEdges);
+					PrefixMergeCrossReference(pmCache.Obj(), ruleSymbol, ruleSymbol->startStates[0], newStates, newEdges);
 				}
 
 				states.Clear();

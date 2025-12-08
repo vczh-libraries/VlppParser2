@@ -166,6 +166,8 @@ SyntaxSymbolManager
 											// automaton::Executable is exactly the same to CrossReferencedNFA, stored a more cache friendly way.
 			};
 
+			struct PrefixMergeCache;
+
 			class SyntaxSymbolManager : public Object
 			{
 				using StateList = collections::List<Ptr<StateSymbol>>;
@@ -187,40 +189,43 @@ SyntaxSymbolManager
 					collections::SortedList<EdgeSymbol*>	reusedEdges;
 				};
 
-				static void					BuildLeftRecEdge(EdgeSymbol* newEdge, EdgeSymbol* endingEdge, EdgeSymbol* lrecPrefixEdge);
-				static void					EliminateLeftRecursion(RuleSymbol* rule, StateSymbol* startState, StateSymbol* endState, StateList& newStates, EdgeList& newEdges);
-				static void					ApplyIncrementalChange(const IncrementalChange& ic, StateList& newStates, EdgeList& newEdges);
-				static void					MergeEdgesWithSameInput(RuleSymbol* rule, StateSymbol* startState, StateList& newStates, EdgeList& newEdges);
-				static void					MergeEdgesWithSameInputCrossReference(RuleSymbol* rule, StateSymbol* startState, StateList& newStates, EdgeList& newEdges);
-				static StartEndStatePair	EliminateEpsilonEdges(RuleSymbol* rule, StateList& newStates, EdgeList& newEdges);
-				void						CheckIndirectLeftRecursion(StateSymbol* startState, collections::List<EdgeSymbol*>& accumulatedEdges);
-				void						BuildCompactNFAInternal();
+				static StartEndStatePair		EliminateEpsilonEdges(RuleSymbol* rule, StateList& newStates, EdgeList& newEdges);
+				static void						BuildLeftRecEdge(EdgeSymbol* newEdge, EdgeSymbol* endingEdge, EdgeSymbol* lrecPrefixEdge);
+				static void						EliminateLeftRecursion(RuleSymbol* rule, StateSymbol* startState, StateSymbol* endState, StateList& newStates, EdgeList& newEdges);
+				static void						MergeEdgesWithSameInput(RuleSymbol* rule, StateSymbol* startState, StateList& newStates, EdgeList& newEdges);
 
-				void						FixCrossReferencedRuleEdge(StateSymbol* startState, collections::Group<StateSymbol*, EdgeSymbol*>& orderedEdges, collections::List<EdgeSymbol*>& accumulatedEdges);
-				void						BuildCrossReferencedNFAInternal();
+				static Ptr<PrefixMergeCache>	CreatePrefixMerge();
+				static void						PrefixMergeCrossReference(PrefixMergeCache* cache, RuleSymbol* rule, StateSymbol* startState, StateList& newStates, EdgeList& newEdges);
+
+				static void						ApplyIncrementalChange(const IncrementalChange& ic, StateList& newStates, EdgeList& newEdges);
+				void							CheckIndirectLeftRecursion(StateSymbol* startState, collections::List<EdgeSymbol*>& accumulatedEdges);
+				void							BuildCompactNFAInternal();
+
+				void							FixCrossReferencedRuleEdge(StateSymbol* startState, collections::Group<StateSymbol*, EdgeSymbol*>& orderedEdges, collections::List<EdgeSymbol*>& accumulatedEdges);
+				void							BuildCrossReferencedNFAInternal();
 
 			public:
 				SyntaxSymbolManager(ParserSymbolManager& _global);
 
-				WString						name;
-				vint32_t					usedCompetitionIds = 0;
+				WString							name;
+				vint32_t						usedCompetitionIds = 0;
 
-				RuleSymbol*					CreateRule(const WString& name, vint fileIndex, bool isPublic, bool isParser, ParsingTextRange codeRange = {});
-				void						RemoveRule(const WString& name);
+				RuleSymbol*						CreateRule(const WString& name, vint fileIndex, bool isPublic, bool isParser, ParsingTextRange codeRange = {});
+				void							RemoveRule(const WString& name);
 
-				StateSymbol*				CreateState(RuleSymbol* rule);
-				EdgeSymbol*					CreateEdge(StateSymbol* from, StateSymbol* to);
+				StateSymbol*					CreateState(RuleSymbol* rule);
+				EdgeSymbol*						CreateEdge(StateSymbol* from, StateSymbol* to);
 
-				void						BuildCompactNFA();
-				void						BuildCrossReferencedNFA();
-				void						BuildAutomaton(vint tokenCount, automaton::Executable& executable, automaton::Metadata& metadata);
-				void						GetStatesInStableOrder(collections::List<StateSymbol*>& order);
-				WString						GetStateGlobalLabel(StateSymbol* state, vint index);
+				void							BuildCompactNFA();
+				void							BuildCrossReferencedNFA();
+				void							BuildAutomaton(vint tokenCount, automaton::Executable& executable, automaton::Metadata& metadata);
+				void							GetStatesInStableOrder(collections::List<StateSymbol*>& order);
+				WString							GetStateGlobalLabel(StateSymbol* state, vint index);
 
-				const ParserSymbolManager&	Global() const { return global; }
-				const auto&					Rules() const { return rules.map; }
-				const auto&					RuleOrder() { return rules.order; }
-				SyntaxPhase					Phase() { return phase; }
+				const ParserSymbolManager&		Global() const { return global; }
+				const auto&						Rules() const { return rules.map; }
+				const auto&						RuleOrder() { return rules.order; }
+				SyntaxPhase						Phase() { return phase; }
 
 				template<typename ...TArgs>
 				void AddError(ParserErrorType type, ParsingTextRange codeRange, TArgs&&... args) const
@@ -229,8 +234,8 @@ SyntaxSymbolManager
 				}
 			};
 
-			extern void						CreateParserGenTypeSyntax(AstSymbolManager& ast, SyntaxSymbolManager& manager);
-			extern void						CreateParserGenRuleSyntax(AstSymbolManager& ast, SyntaxSymbolManager& manager);
+			extern void							CreateParserGenTypeSyntax(AstSymbolManager& ast, SyntaxSymbolManager& manager);
+			extern void							CreateParserGenRuleSyntax(AstSymbolManager& ast, SyntaxSymbolManager& manager);
 		}
 	}
 }

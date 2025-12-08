@@ -123,39 +123,6 @@ SymbolSet
 SyntaxSymbolManager::MergeEdgesWithSameInput
 ***********************************************************************/
 
-			void SyntaxSymbolManager::ApplyIncrementalChange(const IncrementalChange& ic, StateList& newStates, EdgeList& newEdges)
-			{
-				if (ic.createdStates.Count() + ic.createdEdges.Count() > 0)
-				{
-					for (vint i = newEdges.Count() - 1; i >= 0; i--)
-					{
-						auto edge = newEdges[i];
-						if (!ic.reusedEdges.Contains(edge.Obj()))
-						{
-							edge->From()->outEdges.Remove(edge.Obj());
-							edge->To()->inEdges.Remove(edge.Obj());
-							newEdges.RemoveAt(i);
-						}
-					}
-
-					for (vint i = newStates.Count() - 1; i >= 0; i--)
-					{
-						auto state = newStates[i];
-						if (!ic.reusedStates.Contains(state.Obj()))
-						{
-							newStates.RemoveAt(i);
-						}
-					}
-
-					CopyFrom(newStates, ic.createdStates, true);
-					CopyFrom(newEdges, ic.createdEdges, true);
-				}
-			}
-
-/***********************************************************************
-SyntaxSymbolManager::MergeEdgesWithSameInput
-***********************************************************************/
-
 			void SyntaxSymbolManager::MergeEdgesWithSameInput(RuleSymbol* rule, StateSymbol* startState, StateList& newStates, EdgeList& newEdges)
 			{
 				/*
