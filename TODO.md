@@ -21,6 +21,9 @@
 
 ### Progressing
 
+In `TraceManager::SummarizeInstructionRange`, if A reuses B, but also leftrec inherited a C as a field, B should also update its `earliestInsRef` to C.
+We can introduce a `earliestReusedInsRef` between `earliestLocalInsRef` and `earliestInsRef`, and add a new pass to compute the correct `earliestInsRef`.
+
 - [x] Non-ambiguous test cases
 - [x] Ambiguous test cases
 - [x] Split FeatureTest
