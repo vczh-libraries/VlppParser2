@@ -32,7 +32,7 @@
   - [x] Workflow
 - [ ] prefix_merge test cases
   - [x] merge prefix in rules
-    - 109236 -> 10141 states: Test\ParserLog\BuiltIn-Workflow\Trace-1[Codegen_WorkflowHints].txt
+    - 109236 -> 10141 states: Test\ParserLog\BuiltIn-Workflow\Trace-1[Codegen_WorkflowHints].txt, but 6750 in master
   - [ ] automatically identify prefix_merge
 - [ ] Built-in parsers:
   - [ ] C++
