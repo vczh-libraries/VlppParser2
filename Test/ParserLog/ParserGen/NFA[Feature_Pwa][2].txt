@@ -49,12 +49,20 @@
 
 [10][Pwa1Prefix] BEGIN [pm-lr]
 [RULE: 3]
+	ending -> [11][Pwa1Prefix] END [ENDING]
+		+ StackBegin()
+		+ StackSlot(1)
+		+ CreateObject(PbaFeature)
+		+ Field(PbaFeature::optional, 0)
+		+ Field(PbaFeature::tails, 2)
+		+ StackEnd()
 	leftrec -> [12][Pwa1Prefix]< [ Plus @ ] Plus { Plus } >
 		+ StackBegin()
 		+ StackSlot(0)
-	leftrec -> [13][Pwa1Prefix]< [ Plus ] Plus @ { Plus } >
+	rule: Plus -> [14][Pwa1Prefix]< [ Plus ] Plus { Plus @ } >
 		+ StackBegin()
 		+ StackSlot(1)
+		+ StackSlot(2)
 
 [11][Pwa1Prefix] END [ENDING]
 [RULE: 3]
