@@ -32,6 +32,7 @@
   - [x] Workflow
 - [ ] prefix_merge test cases
   - [x] merge prefix in rules
+    - 109236 -> 10141 states: Test\ParserLog\BuiltIn-Workflow\Trace-1[Codegen_WorkflowHints].txt
   - [ ] automatically identify prefix_merge
 - [ ] Built-in parsers:
   - [ ] C++
