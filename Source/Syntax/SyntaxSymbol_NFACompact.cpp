@@ -21,8 +21,8 @@ SyntaxSymbolManager::MergeEdgesWithSameInput
 						auto edge = newEdges[i];
 						if (!ic.reusedEdges.Contains(edge.Obj()))
 						{
-							edge->From()->outEdges.Remove(edge.Obj());
-							edge->To()->inEdges.Remove(edge.Obj());
+							if (edge->fromState) edge->fromState->outEdges.Remove(edge.Obj());
+							if (edge->toState) edge->toState->inEdges.Remove(edge.Obj());
 							newEdges.RemoveAt(i);
 						}
 					}

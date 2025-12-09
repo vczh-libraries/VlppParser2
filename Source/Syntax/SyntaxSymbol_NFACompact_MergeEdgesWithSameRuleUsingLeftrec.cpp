@@ -64,51 +64,94 @@ SyntaxSymbolManager::MergeEdgesWithSameRuleUsingLeftrec
 						{
 							auto newState = Ptr(new StateSymbol(rule));
 							ic.createdStates.Add(newState);
-							auto newEdge = Ptr(new EdgeSymbol(currentState, newState.Obj()));
-							ic.createdEdges.Add(newEdge);
-
 							newState->label = currentState->label + L"[pm-lr]";
 
+							auto newEdge = Ptr(new EdgeSymbol(currentState, newState.Obj()));
+							ic.createdEdges.Add(newEdge);
 							newEdge->input = edges[0]->input;
+
 							for (auto edge : edges)
 							{
 								edge->fromState->outEdges.Remove(edge);
-								edge->fromState = newState.Obj();
-								if (From(edge->toState->outEdges)
-									.Select([](auto e) { return e->input.type; })
-									.Where([](auto t) { return t == EdgeInputType::Ending || t == EdgeInputType::LeftRec; })
-									.IsEmpty()
-									)
+								edge->fromState = nullptr;
+
+								vint epsilonCount = 0;
+								vint inputCount = 0;
+
+								auto targetState = edge->toState;
+								for (auto targetEdge : targetState->outEdges)
 								{
+									if (targetEdge->input.type == EdgeInputType::Ending || targetEdge->input.type == EdgeInputType::LeftRec)
+									{
+										epsilonCount++;
+									}
+									else
+									{
+										inputCount++;
+									}
+								}
+
+								if (epsilonCount == 0)
+								{
+									edge->fromState = newState.Obj();
 									edge->fromState->outEdges.Add(edge);
 									edge->input = { EdgeInputType::LeftRec };
 								}
 								else
 								{
-									auto targetState = edge->toState;
+									Ptr<StateSymbol> newTargetState;
 									for (auto targetEdge : targetState->OutEdges())
 									{
-										auto newTargetEdge = Ptr(new EdgeSymbol(newState.Obj(), targetEdge->toState));
-										ic.createdEdges.Add(newTargetEdge);
+										if (targetEdge->input.type == EdgeInputType::Ending || targetEdge->input.type == EdgeInputType::LeftRec)
+										{
+											auto newTargetEdge = Ptr(new EdgeSymbol(newState.Obj(), targetEdge->toState));
+											ic.createdEdges.Add(newTargetEdge);
 
-										newTargetEdge->input = targetEdge->input;
-										CopyFrom(newTargetEdge->competitions, edge->competitions, true);
-										CopyFrom(newTargetEdge->competitions, targetEdge->competitions, true);
-										CopyFrom(newTargetEdge->insAfterInput, edge->insAfterInput, true);
-										CopyFrom(newTargetEdge->insAfterInput, targetEdge->insAfterInput, true);
+											newTargetEdge->input = targetEdge->input;
+											CopyFrom(newTargetEdge->competitions, edge->competitions, true);
+											CopyFrom(newTargetEdge->competitions, targetEdge->competitions, true);
+											CopyFrom(newTargetEdge->insAfterInput, edge->insAfterInput, true);
+											CopyFrom(newTargetEdge->insAfterInput, targetEdge->insAfterInput, true);
+										}
+										else
+										{
+											if (!newTargetState)
+											{
+												newTargetState = Ptr(new StateSymbol(rule));
+												ic.createdStates.Add(newTargetState);
+												newTargetState->label = targetState->label + L"[pm-dup]";
+
+												edge->fromState = newState.Obj();
+												edge->fromState->outEdges.Add(edge);
+												edge->toState->inEdges.Remove(edge);
+												edge->toState = newTargetState.Obj();
+												edge->toState->inEdges.Add(edge);
+												edge->input = { EdgeInputType::LeftRec };
+											}
+
+											auto newTargetEdge = Ptr(new EdgeSymbol(newTargetState.Obj(), targetEdge->toState));
+											ic.createdEdges.Add(newTargetEdge);
+
+											newTargetEdge->input = targetEdge->input;
+											CopyFrom(newTargetEdge->competitions, targetEdge->competitions, true);
+											CopyFrom(newTargetEdge->insAfterInput, targetEdge->insAfterInput, true);
+										}
 									}
+								}
 
+								if (edge->fromState == nullptr)
+								{
 									edge->toState->inEdges.Remove(edge);
 									ic.reusedEdges.Remove(edge);
+								}
 
-									if (targetState->inEdges.Count() == 0)
+								if (targetState->inEdges.Count() == 0)
+								{
+									ic.reusedStates.Remove(targetState);
+									for (auto targetEdge : targetState->OutEdges())
 									{
-										ic.reusedStates.Remove(targetState);
-										for (auto targetEdge : targetState->OutEdges())
-										{
-											targetEdge->toState->inEdges.Remove(targetEdge);
-											ic.reusedEdges.Remove(targetEdge);
-										}
+										targetEdge->toState->inEdges.Remove(targetEdge);
+										ic.reusedEdges.Remove(targetEdge);
 									}
 								}
 							}
