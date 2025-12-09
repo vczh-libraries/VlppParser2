@@ -268,6 +268,8 @@ AST (Visitor)
 Instructions
 ***********************************************************************/
 
+		constexpr vint32_t ResolveAmbiguitySlotIndex = -2;
+
 		enum class AstInsType
 		{
 			Token,										// Token(Count)						: Put the current token in the Count-th slot.
@@ -278,7 +280,7 @@ Instructions
 			Field,										// Field(Field, Count)				: Associate a field name of the creating object with the value in the Count-th slot. Ignored if the Count-th slot is empty.
 			FieldIfUnassigned,							// FieldIfUnassigned(Field, Count)	: Like Field(Field) but only take effect if such field has never been assigned.
 			StackEnd,									// StackEnd()						: End the current stack frame. Leave the creating object as is.
-			ResolveAmbiguity,							// ResolveAmbiguity(Type)			: Combine several values in the 0-th slot to one using an ambiguity node. Type is the type of each value.
+			ResolveAmbiguity,							// ResolveAmbiguity(Type)			: Combine several values in the specified slot to one using an ambiguity node. Type is the type of each value.
 		};
 
 		struct AstIns

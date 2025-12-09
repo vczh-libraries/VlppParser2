@@ -295,7 +295,15 @@ TraceManager (Data Structures -- PrepareTraceRoute)
 				InsRef								earliestLocalInsRef;
 
 				// The earliest StackBegin instructions including in useFromStacks and fieldStacks
+				InsRef								earliestStackInsRef;
+
+				// earliestStackInsRef but propogated back into useFromStacks
 				InsRef								earliestInsRef;
+
+				// StackEnd instructions mapping earliestInsRef.
+				// Such StackBegin and StackEnd may not belong to the same stack.
+				// But belong to the out-most stack.
+				Ref<InsExec_InsRefLink>				bottomInsRefs;
 
 				// All CreateObject instructions including in useFromStacks
 				Ref<InsExec_InsRefLink>				indirectCreateObjectInsRefs;
@@ -591,6 +599,7 @@ TraceManager
 				// Walk
 				bool										IsQualifiedTokenForCondition(regex::RegexToken* token, StringLiteral condition);
 				bool										IsQualifiedTokenForEdgeArray(regex::RegexToken* token, EdgeArray& edgeArray);
+				void										TestLeftrecEdgeQualification(EdgeDesc& edgeDesc, regex::RegexToken* lookAhead, bool& acceptLookAhead, bool& acceptEndingInput);
 				WalkingTrace								WalkAlongSingleEdge(vint32_t currentTokenIndex, vint32_t input, WalkingTrace trace, vint32_t byEdge, EdgeDesc& edgeDesc);
 				void										WalkAlongLeftrecEdges(vint32_t currentTokenIndex, regex::RegexToken* lookAhead, WalkingTrace trace, EdgeArray& edgeArray);
 				void										WalkAlongEpsilonEdges(vint32_t currentTokenIndex, regex::RegexToken* lookAhead, WalkingTrace trace);
@@ -653,6 +662,7 @@ TraceManager
 				bool										UpdateTopTrace(InsRef& topInsRef, InsRef newInsRef);
 				void										CollectInsRefs(collections::SortedList<InsRef>& insRefs, Ref<InsExec_InsRefLink> link);
 				void										SummarizeEarilestLocalInsRefs();
+				void										SummarizeEarilestStackInsRefs();
 				void										SummarizeEarilestInsRefs();
 				void										SummarizeInstructionRange();
 
@@ -700,6 +710,7 @@ TraceManager
 				TraceManager(Executable& _executable, const ITypeCallback* _typeCallback, vint blockSize);
 
 				vint32_t						concurrentCount = 0;
+				Nullable<vint32_t>				concurrentCountBeforeError;
 				collections::List<Trace*>*		concurrentTraces = nullptr;
 				collections::List<Trace*>*		backupTraces = nullptr;
 

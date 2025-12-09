@@ -477,8 +477,8 @@ export 1
 		LEXER(input, tokens);
 		CalculatorAstInsReceiver receiver;
 		receiver.Execute({ AstInsType::StackBegin }, tokens[0], 0);
-		BuildNumExprToSlot(receiver, tokens, 1, 0);
-		BuildNumExprToSlot(receiver, tokens, 1, 0);
+		BuildNumExprToSlot(receiver, tokens, 1, ResolveAmbiguitySlotIndex);
+		BuildNumExprToSlot(receiver, tokens, 1, ResolveAmbiguitySlotIndex);
 		TEST_EXCEPTION(
 			receiver.Execute({ AstInsType::ResolveAmbiguity, (vint32_t)CalculatorClasses::NumExpr, 0 }, tokens[1], 1),
 			AstInsException,
@@ -530,8 +530,8 @@ export 1
 		LEXER(input, tokens);
 		CalculatorAstInsReceiver receiver;
 		receiver.Execute({ AstInsType::StackBegin }, tokens[0], 0);
-		receiver.Execute({ AstInsType::Token, -1, 0 }, tokens[1], 1);
-		receiver.Execute({ AstInsType::Token, -1, 0 }, tokens[1], 1);
+		receiver.Execute({ AstInsType::Token, -1, ResolveAmbiguitySlotIndex }, tokens[1], 1);
+		receiver.Execute({ AstInsType::Token, -1, ResolveAmbiguitySlotIndex }, tokens[1], 1);
 		TEST_EXCEPTION(
 			receiver.Execute({ AstInsType::ResolveAmbiguity, (vint32_t)CalculatorClasses::Expr, 0 }, tokens[1], 1),
 			AstInsException,
@@ -547,8 +547,8 @@ export 1
 		LEXER(input, tokens);
 		CalculatorAstInsReceiver receiver;
 		receiver.Execute({ AstInsType::StackBegin }, tokens[0], 0);
-		receiver.Execute({ AstInsType::EnumItem, 0, 0 }, tokens[1], 1);
-		receiver.Execute({ AstInsType::EnumItem, 1, 0 }, tokens[1], 1);
+		receiver.Execute({ AstInsType::EnumItem, 0, ResolveAmbiguitySlotIndex }, tokens[1], 1);
+		receiver.Execute({ AstInsType::EnumItem, 1, ResolveAmbiguitySlotIndex }, tokens[1], 1);
 		TEST_EXCEPTION(
 			receiver.Execute({ AstInsType::ResolveAmbiguity, (vint32_t)CalculatorClasses::Expr, 0 }, tokens[1], 1),
 			AstInsException,

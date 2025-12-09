@@ -157,7 +157,7 @@ TraceManager::ExecuteTrace
 							break;
 						case ExecutionType::RA_Branch:
 							{
-								AstIns ins = { AstInsType::StackSlot,-1,0 };
+								AstIns ins = { AstInsType::StackSlot,-1,ResolveAmbiguitySlotIndex };
 								receiver.Execute(ins, tokens[raToken], raToken);
 							}
 							break;

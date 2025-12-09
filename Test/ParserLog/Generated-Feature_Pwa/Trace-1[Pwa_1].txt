@@ -1,6 +1,6 @@
 ﻿+----------------------+
 | [0]: <Start>         |
-| [36][Module] BEGIN   |
+| [37][Module] BEGIN   |
 | [AST-INSTRUCTIONS]:  |
 | [SUCCESORS 1-1]: [1] |
 +----------------------+
@@ -11,48 +11,61 @@
 [0]
 ++==================================================================++
 || [1]: {PREFIX_WITH_AMBIGUITY_1} prefix_with_ambiguity_1           ||
-|| [21][Pwa1]<! "prefix_with_ambiguity_1" @ Pwa1Prefix !Pwa1Body !> ||
+|| [22][Pwa1]<! "prefix_with_ambiguity_1" @ Pwa1Prefix !Pwa1Body !> ||
 || [AST-INSTRUCTIONS]:                                              ||
 ||   + StackBegin()                                                 ||
 ||   + Token(0)                                                     ||
 || [RETURN STACK]:                                                  ||
-||   [0][26][0]: Pwa1 -> [38][Module]<! !Pwa1 @ !>                  ||
+||   [0][25][0]: Pwa1 -> [39][Module]<! !Pwa1 @ !>                  ||
 || [PREDECESSORS 0-0]: [0]                                          ||
-|| [SUCCESORS 2-4]: [2][4]                                          ||
+|| [SUCCESORS 2-2]: [2]                                             ||
 ++==================================================================++
-[0/1]
+[0]
  |
- +-----------------------------------------------------------------------------------------------------+
- |                                                                                                     |
-[0]                                                                                                   [1]
-++==============================================================================================++    ++==============================================================================================++
-|| [2]: {PLUS} +                                                                                ||    || [4]: {PLUS} +                                                                                ||
-|| [2][Plus]< "+" @ >                                                                           ||    || [2][Plus]< "+" @ >                                                                           ||
-|| [AST-INSTRUCTIONS]:                                                                          ||    || [AST-INSTRUCTIONS]:                                                                          ||
-||   + StackBegin()                                                                             ||    ||   + StackBegin()                                                                             ||
-||   + Token(0)                                                                                 ||    ||   + Token(0)                                                                                 ||
-|| [RETURN STACK]:                                                                              ||    || [RETURN STACK]:                                                                              ||
-||   [2][0][1]: Plus -> [11][Pwa1Prefix]< [ Plus @ ] Plus { Plus } >                            ||    ||   [3][1][1]: Plus -> [12][Pwa1Prefix]< [ Plus ] Plus @ { Plus } >                            ||
-||   [1][11][1]: Pwa1Prefix -> [23][Pwa1]<! "prefix_with_ambiguity_1" Pwa1Prefix @ !Pwa1Body !> ||    ||   [1][11][1]: Pwa1Prefix -> [23][Pwa1]<! "prefix_with_ambiguity_1" Pwa1Prefix @ !Pwa1Body !> ||
-||   [0][26][0]: Pwa1 -> [38][Module]<! !Pwa1 @ !>                                              ||    ||   [0][26][0]: Pwa1 -> [38][Module]<! !Pwa1 @ !>                                              ||
-|| [PREDECESSORS 1-1]: [1]                                                                      ||    || [PREDECESSORS 1-1]: [1]                                                                      ||
-|| [SUCCESORS 3-3]: [3]                                                                         ||    || [SUCCESORS 5-5]: [5]                                                                         ||
-++==============================================================================================++    ++==============================================================================================++
-|                                                                                                     |
-+                                                                                                     +
+ +
+ |
+[0]
+++==============================================================================================++
+|| [2]: {PLUS} +                                                                                ||
+|| [2][Plus]< "+" @ >                                                                           ||
+|| [AST-INSTRUCTIONS]:                                                                          ||
+||   + StackBegin()                                                                             ||
+||   + Token(0)                                                                                 ||
+|| [RETURN STACK]:                                                                              ||
+||   [2][0][1]: Plus -> [10][Pwa1Prefix] BEGIN [pm-lr]                                          ||
+||   [1][10][1]: Pwa1Prefix -> [24][Pwa1]<! "prefix_with_ambiguity_1" Pwa1Prefix @ !Pwa1Body !> ||
+||   [0][25][0]: Pwa1 -> [39][Module]<! !Pwa1 @ !>                                              ||
+|| [PREDECESSORS 1-1]: [1]                                                                      ||
+|| [SUCCESORS 3-3]: [3]                                                                         ||
+++==============================================================================================++
+|
++
+|
++----------------------------------------------------------------------------------------------+
+| [3]: <Ending>                                                                                |
+| [10][Pwa1Prefix] BEGIN [pm-lr]                                                               |
+| [AST-INSTRUCTIONS]:                                                                          |
+|   + CreateObject(Plus)                                                                       |
+|   + StackEnd()                                                                               |
+| [RETURN STACK]:                                                                              |
+|   [1][10][1]: Pwa1Prefix -> [24][Pwa1]<! "prefix_with_ambiguity_1" Pwa1Prefix @ !Pwa1Body !> |
+|   [0][25][0]: Pwa1 -> [39][Module]<! !Pwa1 @ !>                                              |
+| [PREDECESSORS 2-2]: [2]                                                                      |
+| [SUCCESORS 4-5]: [4][5]                                                                      |
++----------------------------------------------------------------------------------------------+
+|
++-----------------------------------------------------------------------------------------------------+
 |                                                                                                     |
 +----------------------------------------------------------------------------------------------+      +----------------------------------------------------------------------------------------------+
-| [3]: <Ending>                                                                                |      | [5]: <Ending>                                                                                |
-| [11][Pwa1Prefix]< [ Plus @ ] Plus { Plus } >                                                 |      | [12][Pwa1Prefix]< [ Plus ] Plus @ { Plus } >                                                 |
+| [4]: <Leftrec>                                                                               |      | [5]: <Leftrec>                                                                               |
+| [12][Pwa1Prefix]< [ Plus @ ] Plus { Plus } >                                                 |      | [13][Pwa1Prefix]< [ Plus ] Plus @ { Plus } >                                                 |
 | [AST-INSTRUCTIONS]:                                                                          |      | [AST-INSTRUCTIONS]:                                                                          |
-|   + CreateObject(Plus)                                                                       |      |   + CreateObject(Plus)                                                                       |
-|   + StackEnd()                                                                               |      |   + StackEnd()                                                                               |
-|   > StackBegin()                                                                             |      |   > StackBegin()                                                                             |
-|   > StackSlot(0)                                                                             |      |   > StackSlot(1)                                                                             |
+|   + StackBegin()                                                                             |      |   + StackBegin()                                                                             |
+|   + StackSlot(0)                                                                             |      |   + StackSlot(1)                                                                             |
 | [RETURN STACK]:                                                                              |      | [RETURN STACK]:                                                                              |
-|   [1][11][1]: Pwa1Prefix -> [23][Pwa1]<! "prefix_with_ambiguity_1" Pwa1Prefix @ !Pwa1Body !> |      |   [1][11][1]: Pwa1Prefix -> [23][Pwa1]<! "prefix_with_ambiguity_1" Pwa1Prefix @ !Pwa1Body !> |
-|   [0][26][0]: Pwa1 -> [38][Module]<! !Pwa1 @ !>                                              |      |   [0][26][0]: Pwa1 -> [38][Module]<! !Pwa1 @ !>                                              |
-| [PREDECESSORS 2-2]: [2]                                                                      |      | [PREDECESSORS 4-4]: [4]                                                                      |
+|   [1][10][1]: Pwa1Prefix -> [24][Pwa1]<! "prefix_with_ambiguity_1" Pwa1Prefix @ !Pwa1Body !> |      |   [1][10][1]: Pwa1Prefix -> [24][Pwa1]<! "prefix_with_ambiguity_1" Pwa1Prefix @ !Pwa1Body !> |
+|   [0][25][0]: Pwa1 -> [39][Module]<! !Pwa1 @ !>                                              |      |   [0][25][0]: Pwa1 -> [39][Module]<! !Pwa1 @ !>                                              |
+| [PREDECESSORS 3-3]: [3]                                                                      |      | [PREDECESSORS 3-3]: [3]                                                                      |
 | [SUCCESORS 7-7]: [7]                                                                         |      | [SUCCESORS 10-10]: [10]                                                                      |
 +----------------------------------------------------------------------------------------------+      +----------------------------------------------------------------------------------------------+
 [0]                                                                                                   [1]
@@ -67,10 +80,10 @@
 ||   + StackBegin()                                                                             ||    ||   + StackBegin()                                                                             ||
 ||   + Token(0)                                                                                 ||    ||   + Token(0)                                                                                 ||
 || [RETURN STACK]:                                                                              ||    || [RETURN STACK]:                                                                              ||
-||   [4][2][3]: Plus -> [12][Pwa1Prefix]< [ Plus ] Plus @ { Plus } >                            ||    ||   [5][3][5]: Plus -> [13][Pwa1Prefix]< [ Plus ] Plus { Plus @ } >                            ||
-||   [1][11][1]: Pwa1Prefix -> [23][Pwa1]<! "prefix_with_ambiguity_1" Pwa1Prefix @ !Pwa1Body !> ||    ||   [1][11][1]: Pwa1Prefix -> [23][Pwa1]<! "prefix_with_ambiguity_1" Pwa1Prefix @ !Pwa1Body !> ||
-||   [0][26][0]: Pwa1 -> [38][Module]<! !Pwa1 @ !>                                              ||    ||   [0][26][0]: Pwa1 -> [38][Module]<! !Pwa1 @ !>                                              ||
-|| [PREDECESSORS 3-3]: [3]                                                                      ||    || [PREDECESSORS 5-5]: [5]                                                                      ||
+||   [3][1][4]: Plus -> [13][Pwa1Prefix]< [ Plus ] Plus @ { Plus } >                            ||    ||   [4][2][5]: Plus -> [14][Pwa1Prefix]< [ Plus ] Plus { Plus @ } >                            ||
+||   [1][10][1]: Pwa1Prefix -> [24][Pwa1]<! "prefix_with_ambiguity_1" Pwa1Prefix @ !Pwa1Body !> ||    ||   [1][10][1]: Pwa1Prefix -> [24][Pwa1]<! "prefix_with_ambiguity_1" Pwa1Prefix @ !Pwa1Body !> ||
+||   [0][25][0]: Pwa1 -> [39][Module]<! !Pwa1 @ !>                                              ||    ||   [0][25][0]: Pwa1 -> [39][Module]<! !Pwa1 @ !>                                              ||
+|| [PREDECESSORS 4-4]: [4]                                                                      ||    || [PREDECESSORS 5-5]: [5]                                                                      ||
 || [SUCCESORS 8-8]: [8]                                                                         ||    || [SUCCESORS 11-11]: [11]                                                                      ||
 ++==============================================================================================++    ++==============================================================================================++
 |                                                                                                     |
@@ -78,14 +91,14 @@
 |                                                                                                     |
 +----------------------------------------------------------------------------------------------+      +----------------------------------------------------------------------------------------------+
 | [8]: <Ending>                                                                                |      | [11]: <Ending>                                                                               |
-| [12][Pwa1Prefix]< [ Plus ] Plus @ { Plus } >                                                 |      | [13][Pwa1Prefix]< [ Plus ] Plus { Plus @ } >                                                 |
+| [13][Pwa1Prefix]< [ Plus ] Plus @ { Plus } >                                                 |      | [14][Pwa1Prefix]< [ Plus ] Plus { Plus @ } >                                                 |
 | [AST-INSTRUCTIONS]:                                                                          |      | [AST-INSTRUCTIONS]:                                                                          |
 |   + CreateObject(Plus)                                                                       |      |   + CreateObject(Plus)                                                                       |
 |   + StackEnd()                                                                               |      |   + StackEnd()                                                                               |
 |   > StackSlot(1)                                                                             |      |   > StackSlot(2)                                                                             |
 | [RETURN STACK]:                                                                              |      | [RETURN STACK]:                                                                              |
-|   [1][11][1]: Pwa1Prefix -> [23][Pwa1]<! "prefix_with_ambiguity_1" Pwa1Prefix @ !Pwa1Body !> |      |   [1][11][1]: Pwa1Prefix -> [23][Pwa1]<! "prefix_with_ambiguity_1" Pwa1Prefix @ !Pwa1Body !> |
-|   [0][26][0]: Pwa1 -> [38][Module]<! !Pwa1 @ !>                                              |      |   [0][26][0]: Pwa1 -> [38][Module]<! !Pwa1 @ !>                                              |
+|   [1][10][1]: Pwa1Prefix -> [24][Pwa1]<! "prefix_with_ambiguity_1" Pwa1Prefix @ !Pwa1Body !> |      |   [1][10][1]: Pwa1Prefix -> [24][Pwa1]<! "prefix_with_ambiguity_1" Pwa1Prefix @ !Pwa1Body !> |
+|   [0][25][0]: Pwa1 -> [39][Module]<! !Pwa1 @ !>                                              |      |   [0][25][0]: Pwa1 -> [39][Module]<! !Pwa1 @ !>                                              |
 | [PREDECESSORS 7-7]: [7]                                                                      |      | [PREDECESSORS 10-10]: [10]                                                                   |
 | [SUCCESORS 14-14]: [14]                                                                      |      | [SUCCESORS 17-17]: [17]                                                                      |
 +----------------------------------------------------------------------------------------------+      +----------------------------------------------------------------------------------------------+
@@ -101,9 +114,9 @@
 ||   + StackBegin()                                                                             ||    ||   + StackBegin()                                                                             ||
 ||   + Token(0)                                                                                 ||    ||   + Token(0)                                                                                 ||
 || [RETURN STACK]:                                                                              ||    || [RETURN STACK]:                                                                              ||
-||   [6][3][8]: Plus -> [13][Pwa1Prefix]< [ Plus ] Plus { Plus @ } >                            ||    ||   [7][4][11]: Plus -> [13][Pwa1Prefix]< [ Plus ] Plus { Plus @ } >                           ||
-||   [1][11][1]: Pwa1Prefix -> [23][Pwa1]<! "prefix_with_ambiguity_1" Pwa1Prefix @ !Pwa1Body !> ||    ||   [1][11][1]: Pwa1Prefix -> [23][Pwa1]<! "prefix_with_ambiguity_1" Pwa1Prefix @ !Pwa1Body !> ||
-||   [0][26][0]: Pwa1 -> [38][Module]<! !Pwa1 @ !>                                              ||    ||   [0][26][0]: Pwa1 -> [38][Module]<! !Pwa1 @ !>                                              ||
+||   [5][2][8]: Plus -> [14][Pwa1Prefix]< [ Plus ] Plus { Plus @ } >                            ||    ||   [6][3][11]: Plus -> [14][Pwa1Prefix]< [ Plus ] Plus { Plus @ } >                           ||
+||   [1][10][1]: Pwa1Prefix -> [24][Pwa1]<! "prefix_with_ambiguity_1" Pwa1Prefix @ !Pwa1Body !> ||    ||   [1][10][1]: Pwa1Prefix -> [24][Pwa1]<! "prefix_with_ambiguity_1" Pwa1Prefix @ !Pwa1Body !> ||
+||   [0][25][0]: Pwa1 -> [39][Module]<! !Pwa1 @ !>                                              ||    ||   [0][25][0]: Pwa1 -> [39][Module]<! !Pwa1 @ !>                                              ||
 || [PREDECESSORS 8-8]: [8]                                                                      ||    || [PREDECESSORS 11-11]: [11]                                                                   ||
 || [SUCCESORS 15-15]: [15]                                                                      ||    || [SUCCESORS 18-18]: [18]                                                                      ||
 ++==============================================================================================++    ++==============================================================================================++
@@ -112,14 +125,14 @@
 |                                                                                                     |
 +----------------------------------------------------------------------------------------------+      +----------------------------------------------------------------------------------------------+
 | [15]: <Ending>                                                                               |      | [18]: <Ending>                                                                               |
-| [13][Pwa1Prefix]< [ Plus ] Plus { Plus @ } >                                                 |      | [13][Pwa1Prefix]< [ Plus ] Plus { Plus @ } >                                                 |
+| [14][Pwa1Prefix]< [ Plus ] Plus { Plus @ } >                                                 |      | [14][Pwa1Prefix]< [ Plus ] Plus { Plus @ } >                                                 |
 | [AST-INSTRUCTIONS]:                                                                          |      | [AST-INSTRUCTIONS]:                                                                          |
 |   + CreateObject(Plus)                                                                       |      |   + CreateObject(Plus)                                                                       |
 |   + StackEnd()                                                                               |      |   + StackEnd()                                                                               |
 |   > StackSlot(2)                                                                             |      |   > StackSlot(2)                                                                             |
 | [RETURN STACK]:                                                                              |      | [RETURN STACK]:                                                                              |
-|   [1][11][1]: Pwa1Prefix -> [23][Pwa1]<! "prefix_with_ambiguity_1" Pwa1Prefix @ !Pwa1Body !> |      |   [1][11][1]: Pwa1Prefix -> [23][Pwa1]<! "prefix_with_ambiguity_1" Pwa1Prefix @ !Pwa1Body !> |
-|   [0][26][0]: Pwa1 -> [38][Module]<! !Pwa1 @ !>                                              |      |   [0][26][0]: Pwa1 -> [38][Module]<! !Pwa1 @ !>                                              |
+|   [1][10][1]: Pwa1Prefix -> [24][Pwa1]<! "prefix_with_ambiguity_1" Pwa1Prefix @ !Pwa1Body !> |      |   [1][10][1]: Pwa1Prefix -> [24][Pwa1]<! "prefix_with_ambiguity_1" Pwa1Prefix @ !Pwa1Body !> |
+|   [0][25][0]: Pwa1 -> [39][Module]<! !Pwa1 @ !>                                              |      |   [0][25][0]: Pwa1 -> [39][Module]<! !Pwa1 @ !>                                              |
 | [PREDECESSORS 14-14]: [14]                                                                   |      | [PREDECESSORS 17-17]: [17]                                                                   |
 | [SUCCESORS 20-20]: [20]                                                                      |      | [SUCCESORS 19-19]: [19]                                                                      |
 +----------------------------------------------------------------------------------------------+      +----------------------------------------------------------------------------------------------+
@@ -128,7 +141,7 @@
 |                                                                                                     |
 +------------------------------------------------------------------+                                  +------------------------------------------------------------------+
 | [20]: <Ending>                                                   |                                  | [19]: <Ending>                                                   |
-| [23][Pwa1]<! "prefix_with_ambiguity_1" Pwa1Prefix @ !Pwa1Body !> |                                  | [23][Pwa1]<! "prefix_with_ambiguity_1" Pwa1Prefix @ !Pwa1Body !> |
+| [24][Pwa1]<! "prefix_with_ambiguity_1" Pwa1Prefix @ !Pwa1Body !> |                                  | [24][Pwa1]<! "prefix_with_ambiguity_1" Pwa1Prefix @ !Pwa1Body !> |
 | [AST-INSTRUCTIONS]:                                              |                                  | [AST-INSTRUCTIONS]:                                              |
 |   + CreateObject(PbaFeature)                                     |                                  |   + CreateObject(PbaFeature)                                     |
 |   + Field(PbaFeature::optional, 0)                               |                                  |   + Field(PbaFeature::optional, 0)                               |
@@ -136,7 +149,7 @@
 |   + StackEnd()                                                   |                                  |   + StackEnd()                                                   |
 |   > StackSlot(1)                                                 |                                  |   > StackSlot(1)                                                 |
 | [RETURN STACK]:                                                  |                                  | [RETURN STACK]:                                                  |
-|   [0][26][0]: Pwa1 -> [38][Module]<! !Pwa1 @ !>                  |                                  |   [0][26][0]: Pwa1 -> [38][Module]<! !Pwa1 @ !>                  |
+|   [0][25][0]: Pwa1 -> [39][Module]<! !Pwa1 @ !>                  |                                  |   [0][25][0]: Pwa1 -> [39][Module]<! !Pwa1 @ !>                  |
 | [PREDECESSORS 15-15]: [15]                                       |                                  | [PREDECESSORS 18-18]: [18]                                       |
 | [SUCCESORS 16-16]: [16]                                          |                                  | [SUCCESORS 16-16]: [16]                                          |
 +------------------------------------------------------------------+                                  +------------------------------------------------------------------+
@@ -159,9 +172,9 @@
 ||   + StackBegin()                                                                            ||
 ||   + Token(0)                                                                                ||
 || [RETURN STACK]:                                                                             ||
-||   [9][5][20]: Lt -> [16][Pwa1Body]< Lt @ { Lt } { Gt } >                                    ||
-||   [8][12][20]: Pwa1Body -> [22][Pwa1]<! "prefix_with_ambiguity_1" Pwa1Prefix !Pwa1Body @ !> ||
-||   [0][26][0]: Pwa1 -> [38][Module]<! !Pwa1 @ !>                                             ||
+||   [8][4][20]: Lt -> [17][Pwa1Body]< Lt @ { Lt } { Gt } >                                    ||
+||   [7][11][20]: Pwa1Body -> [23][Pwa1]<! "prefix_with_ambiguity_1" Pwa1Prefix !Pwa1Body @ !> ||
+||   [0][25][0]: Pwa1 -> [39][Module]<! !Pwa1 @ !>                                             ||
 || [PREDECESSORS 16-16]: [16]                                                                  ||
 || [SUCCESORS 22-22]: [22]                                                                     ||
 ++=============================================================================================++
@@ -170,15 +183,15 @@
 |
 +---------------------------------------------------------------------------------------------+
 | [22]: <Ending>                                                                              |
-| [16][Pwa1Body]< Lt @ { Lt } { Gt } >                                                        |
+| [17][Pwa1Body]< Lt @ { Lt } { Gt } >                                                        |
 | [AST-INSTRUCTIONS]:                                                                         |
 |   + CreateObject(Lt)                                                                        |
 |   + StackEnd()                                                                              |
 |   > StackBegin()                                                                            |
 |   > StackSlot(0)                                                                            |
 | [RETURN STACK]:                                                                             |
-|   [8][12][20]: Pwa1Body -> [22][Pwa1]<! "prefix_with_ambiguity_1" Pwa1Prefix !Pwa1Body @ !> |
-|   [0][26][0]: Pwa1 -> [38][Module]<! !Pwa1 @ !>                                             |
+|   [7][11][20]: Pwa1Body -> [23][Pwa1]<! "prefix_with_ambiguity_1" Pwa1Prefix !Pwa1Body @ !> |
+|   [0][25][0]: Pwa1 -> [39][Module]<! !Pwa1 @ !>                                             |
 | [PREDECESSORS 21-21]: [21]                                                                  |
 | [SUCCESORS 24-24]: [24]                                                                     |
 +---------------------------------------------------------------------------------------------+
@@ -194,9 +207,9 @@
 ||   + StackBegin()                                                                            ||
 ||   + Token(0)                                                                                ||
 || [RETURN STACK]:                                                                             ||
-||   [10][6][22]: Lt -> [17][Pwa1Body]< Lt { Lt @ } { Gt } >                                   ||
-||   [8][12][20]: Pwa1Body -> [22][Pwa1]<! "prefix_with_ambiguity_1" Pwa1Prefix !Pwa1Body @ !> ||
-||   [0][26][0]: Pwa1 -> [38][Module]<! !Pwa1 @ !>                                             ||
+||   [9][5][22]: Lt -> [18][Pwa1Body]< Lt { Lt @ } { Gt } >                                    ||
+||   [7][11][20]: Pwa1Body -> [23][Pwa1]<! "prefix_with_ambiguity_1" Pwa1Prefix !Pwa1Body @ !> ||
+||   [0][25][0]: Pwa1 -> [39][Module]<! !Pwa1 @ !>                                             ||
 || [PREDECESSORS 22-22]: [22]                                                                  ||
 || [SUCCESORS 25-25]: [25]                                                                     ||
 ++=============================================================================================++
@@ -205,14 +218,14 @@
 |
 +---------------------------------------------------------------------------------------------+
 | [25]: <Ending>                                                                              |
-| [17][Pwa1Body]< Lt { Lt @ } { Gt } >                                                        |
+| [18][Pwa1Body]< Lt { Lt @ } { Gt } >                                                        |
 | [AST-INSTRUCTIONS]:                                                                         |
 |   + CreateObject(Lt)                                                                        |
 |   + StackEnd()                                                                              |
 |   > StackSlot(1)                                                                            |
 | [RETURN STACK]:                                                                             |
-|   [8][12][20]: Pwa1Body -> [22][Pwa1]<! "prefix_with_ambiguity_1" Pwa1Prefix !Pwa1Body @ !> |
-|   [0][26][0]: Pwa1 -> [38][Module]<! !Pwa1 @ !>                                             |
+|   [7][11][20]: Pwa1Body -> [23][Pwa1]<! "prefix_with_ambiguity_1" Pwa1Prefix !Pwa1Body @ !> |
+|   [0][25][0]: Pwa1 -> [39][Module]<! !Pwa1 @ !>                                             |
 | [PREDECESSORS 24-24]: [24]                                                                  |
 | [SUCCESORS 27-27]: [27]                                                                     |
 +---------------------------------------------------------------------------------------------+
@@ -228,9 +241,9 @@
 ||   + StackBegin()                                                                            ||
 ||   + Token(0)                                                                                ||
 || [RETURN STACK]:                                                                             ||
-||   [11][8][25]: Lt -> [17][Pwa1Body]< Lt { Lt @ } { Gt } >                                   ||
-||   [8][12][20]: Pwa1Body -> [22][Pwa1]<! "prefix_with_ambiguity_1" Pwa1Prefix !Pwa1Body @ !> ||
-||   [0][26][0]: Pwa1 -> [38][Module]<! !Pwa1 @ !>                                             ||
+||   [10][7][25]: Lt -> [18][Pwa1Body]< Lt { Lt @ } { Gt } >                                   ||
+||   [7][11][20]: Pwa1Body -> [23][Pwa1]<! "prefix_with_ambiguity_1" Pwa1Prefix !Pwa1Body @ !> ||
+||   [0][25][0]: Pwa1 -> [39][Module]<! !Pwa1 @ !>                                             ||
 || [PREDECESSORS 25-25]: [25]                                                                  ||
 || [SUCCESORS 28-28]: [28]                                                                     ||
 ++=============================================================================================++
@@ -239,14 +252,14 @@
 |
 +---------------------------------------------------------------------------------------------+
 | [28]: <Ending>                                                                              |
-| [17][Pwa1Body]< Lt { Lt @ } { Gt } >                                                        |
+| [18][Pwa1Body]< Lt { Lt @ } { Gt } >                                                        |
 | [AST-INSTRUCTIONS]:                                                                         |
 |   + CreateObject(Lt)                                                                        |
 |   + StackEnd()                                                                              |
 |   > StackSlot(1)                                                                            |
 | [RETURN STACK]:                                                                             |
-|   [8][12][20]: Pwa1Body -> [22][Pwa1]<! "prefix_with_ambiguity_1" Pwa1Prefix !Pwa1Body @ !> |
-|   [0][26][0]: Pwa1 -> [38][Module]<! !Pwa1 @ !>                                             |
+|   [7][11][20]: Pwa1Body -> [23][Pwa1]<! "prefix_with_ambiguity_1" Pwa1Prefix !Pwa1Body @ !> |
+|   [0][25][0]: Pwa1 -> [39][Module]<! !Pwa1 @ !>                                             |
 | [PREDECESSORS 27-27]: [27]                                                                  |
 | [SUCCESORS 30-30]: [30]                                                                     |
 +---------------------------------------------------------------------------------------------+
@@ -262,9 +275,9 @@
 ||   + StackBegin()                                                                            ||
 ||   + Token(0)                                                                                ||
 || [RETURN STACK]:                                                                             ||
-||   [12][9][28]: Gt -> [18][Pwa1Body]< Lt { Lt } { Gt @ } >                                   ||
-||   [8][12][20]: Pwa1Body -> [22][Pwa1]<! "prefix_with_ambiguity_1" Pwa1Prefix !Pwa1Body @ !> ||
-||   [0][26][0]: Pwa1 -> [38][Module]<! !Pwa1 @ !>                                             ||
+||   [11][8][28]: Gt -> [19][Pwa1Body]< Lt { Lt } { Gt @ } >                                   ||
+||   [7][11][20]: Pwa1Body -> [23][Pwa1]<! "prefix_with_ambiguity_1" Pwa1Prefix !Pwa1Body @ !> ||
+||   [0][25][0]: Pwa1 -> [39][Module]<! !Pwa1 @ !>                                             ||
 || [PREDECESSORS 28-28]: [28]                                                                  ||
 || [SUCCESORS 31-31]: [31]                                                                     ||
 ++=============================================================================================++
@@ -273,14 +286,14 @@
 |
 +---------------------------------------------------------------------------------------------+
 | [31]: <Ending>                                                                              |
-| [18][Pwa1Body]< Lt { Lt } { Gt @ } >                                                        |
+| [19][Pwa1Body]< Lt { Lt } { Gt @ } >                                                        |
 | [AST-INSTRUCTIONS]:                                                                         |
 |   + CreateObject(Gt)                                                                        |
 |   + StackEnd()                                                                              |
 |   > StackSlot(2)                                                                            |
 | [RETURN STACK]:                                                                             |
-|   [8][12][20]: Pwa1Body -> [22][Pwa1]<! "prefix_with_ambiguity_1" Pwa1Prefix !Pwa1Body @ !> |
-|   [0][26][0]: Pwa1 -> [38][Module]<! !Pwa1 @ !>                                             |
+|   [7][11][20]: Pwa1Body -> [23][Pwa1]<! "prefix_with_ambiguity_1" Pwa1Prefix !Pwa1Body @ !> |
+|   [0][25][0]: Pwa1 -> [39][Module]<! !Pwa1 @ !>                                             |
 | [PREDECESSORS 30-30]: [30]                                                                  |
 | [SUCCESORS 33-33]: [33]                                                                     |
 +---------------------------------------------------------------------------------------------+
@@ -296,9 +309,9 @@
 ||   + StackBegin()                                                                            ||
 ||   + Token(0)                                                                                ||
 || [RETURN STACK]:                                                                             ||
-||   [13][10][31]: Gt -> [18][Pwa1Body]< Lt { Lt } { Gt @ } >                                  ||
-||   [8][12][20]: Pwa1Body -> [22][Pwa1]<! "prefix_with_ambiguity_1" Pwa1Prefix !Pwa1Body @ !> ||
-||   [0][26][0]: Pwa1 -> [38][Module]<! !Pwa1 @ !>                                             ||
+||   [12][9][31]: Gt -> [19][Pwa1Body]< Lt { Lt } { Gt @ } >                                   ||
+||   [7][11][20]: Pwa1Body -> [23][Pwa1]<! "prefix_with_ambiguity_1" Pwa1Prefix !Pwa1Body @ !> ||
+||   [0][25][0]: Pwa1 -> [39][Module]<! !Pwa1 @ !>                                             ||
 || [PREDECESSORS 31-31]: [31]                                                                  ||
 || [SUCCESORS 34-34]: [34]                                                                     ||
 ++=============================================================================================++
@@ -307,14 +320,14 @@
 |
 +---------------------------------------------------------------------------------------------+
 | [34]: <Ending>                                                                              |
-| [18][Pwa1Body]< Lt { Lt } { Gt @ } >                                                        |
+| [19][Pwa1Body]< Lt { Lt } { Gt @ } >                                                        |
 | [AST-INSTRUCTIONS]:                                                                         |
 |   + CreateObject(Gt)                                                                        |
 |   + StackEnd()                                                                              |
 |   > StackSlot(2)                                                                            |
 | [RETURN STACK]:                                                                             |
-|   [8][12][20]: Pwa1Body -> [22][Pwa1]<! "prefix_with_ambiguity_1" Pwa1Prefix !Pwa1Body @ !> |
-|   [0][26][0]: Pwa1 -> [38][Module]<! !Pwa1 @ !>                                             |
+|   [7][11][20]: Pwa1Body -> [23][Pwa1]<! "prefix_with_ambiguity_1" Pwa1Prefix !Pwa1Body @ !> |
+|   [0][25][0]: Pwa1 -> [39][Module]<! !Pwa1 @ !>                                             |
 | [PREDECESSORS 33-33]: [33]                                                                  |
 | [SUCCESORS 36-36]: [36]                                                                     |
 +---------------------------------------------------------------------------------------------+
@@ -330,9 +343,9 @@
 ||   + StackBegin()                                                                            ||
 ||   + Token(0)                                                                                ||
 || [RETURN STACK]:                                                                             ||
-||   [14][10][34]: Gt -> [18][Pwa1Body]< Lt { Lt } { Gt @ } >                                  ||
-||   [8][12][20]: Pwa1Body -> [22][Pwa1]<! "prefix_with_ambiguity_1" Pwa1Prefix !Pwa1Body @ !> ||
-||   [0][26][0]: Pwa1 -> [38][Module]<! !Pwa1 @ !>                                             ||
+||   [13][9][34]: Gt -> [19][Pwa1Body]< Lt { Lt } { Gt @ } >                                   ||
+||   [7][11][20]: Pwa1Body -> [23][Pwa1]<! "prefix_with_ambiguity_1" Pwa1Prefix !Pwa1Body @ !> ||
+||   [0][25][0]: Pwa1 -> [39][Module]<! !Pwa1 @ !>                                             ||
 || [PREDECESSORS 34-34]: [34]                                                                  ||
 || [SUCCESORS 37-37]: [37]                                                                     ||
 ++=============================================================================================++
@@ -341,14 +354,14 @@
 |
 +---------------------------------------------------------------------------------------------+
 | [37]: <Ending>                                                                              |
-| [18][Pwa1Body]< Lt { Lt } { Gt @ } >                                                        |
+| [19][Pwa1Body]< Lt { Lt } { Gt @ } >                                                        |
 | [AST-INSTRUCTIONS]:                                                                         |
 |   + CreateObject(Gt)                                                                        |
 |   + StackEnd()                                                                              |
 |   > StackSlot(2)                                                                            |
 | [RETURN STACK]:                                                                             |
-|   [8][12][20]: Pwa1Body -> [22][Pwa1]<! "prefix_with_ambiguity_1" Pwa1Prefix !Pwa1Body @ !> |
-|   [0][26][0]: Pwa1 -> [38][Module]<! !Pwa1 @ !>                                             |
+|   [7][11][20]: Pwa1Body -> [23][Pwa1]<! "prefix_with_ambiguity_1" Pwa1Prefix !Pwa1Body @ !> |
+|   [0][25][0]: Pwa1 -> [39][Module]<! !Pwa1 @ !>                                             |
 | [PREDECESSORS 36-36]: [36]                                                                  |
 | [SUCCESORS 38-38]: [38]                                                                     |
 +---------------------------------------------------------------------------------------------+
@@ -357,7 +370,7 @@
 |
 +------------------------------------------------------------------+
 | [38]: <Ending>                                                   |
-| [22][Pwa1]<! "prefix_with_ambiguity_1" Pwa1Prefix !Pwa1Body @ !> |
+| [23][Pwa1]<! "prefix_with_ambiguity_1" Pwa1Prefix !Pwa1Body @ !> |
 | [AST-INSTRUCTIONS]:                                              |
 |   + CreateObject(Pwa1Feature)                                    |
 |   + Field(Pwa1Feature::lts, 0)                                   |
@@ -365,7 +378,7 @@
 |   + Field(Pwa1Feature::gts, 2)                                   |
 |   + StackEnd()                                                   |
 | [RETURN STACK]:                                                  |
-|   [0][26][0]: Pwa1 -> [38][Module]<! !Pwa1 @ !>                  |
+|   [0][25][0]: Pwa1 -> [39][Module]<! !Pwa1 @ !>                  |
 | [PREDECESSORS 37-37]: [37]                                       |
 | [SUCCESORS 39-39]: [39]                                          |
 +------------------------------------------------------------------+
@@ -374,7 +387,7 @@
 |
 +--------------------------------+
 | [39]: <Ending>                 |
-| [38][Module]<! !Pwa1 @ !>      |
+| [39][Module]<! !Pwa1 @ !>      |
 | [AST-INSTRUCTIONS]:            |
 |   + Field(Pwa1Feature::pba, 1) |
 |   + StackEnd()                 |
@@ -387,7 +400,7 @@
 |
 +----------------------------+
 | [40]: <Ending>             |
-| [37][Module] END [ENDING]  |
+| [38][Module] END [ENDING]  |
 | [AST-INSTRUCTIONS]:        |
 |   + StackEnd()             |
 | [PREDECESSORS 39-39]: [39] |

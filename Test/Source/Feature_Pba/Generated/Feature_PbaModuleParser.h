@@ -20,8 +20,8 @@ namespace feature_pba
 		Gt = 6,
 		PbaGts = -1,
 		PbaBody = 9,
-		Pba = 14,
-		Module = 21,
+		Pba = 15,
+		Module = 22,
 	};
 
 	const wchar_t* ModuleParserRuleName(vl::vint index);

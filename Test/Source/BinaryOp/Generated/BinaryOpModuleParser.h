@@ -20,9 +20,9 @@ namespace binaryop
 		Exp2 = 12,
 		Exp3 = 18,
 		Exp4 = 24,
-		Exp5 = 30,
-		Exp6 = 36,
-		Module = 42,
+		Exp5 = 31,
+		Exp6 = 38,
+		Module = 45,
 	};
 
 	const wchar_t* ModuleParserRuleName(vl::vint index);

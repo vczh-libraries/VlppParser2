@@ -54,7 +54,7 @@ Z
 			astCode,
 			lexerCode,
 			syntaxCode,
-			{ ParserErrorType::RuleIsIndirectlyLeftRecursive,L"Z" }
+			{ ParserErrorType::RuleIsIndirectlyLeftRecursive,L"Y, Z" }
 			);
 	});
 }

@@ -490,7 +490,7 @@ AstInsReceiverBase
 						}
 						auto&& frame = stackFrames[stackFrames.Count() - 1];
 
-						auto slotKeyIndex = frame.slots.Keys().IndexOf(0);
+						auto slotKeyIndex = frame.slots.Keys().IndexOf(ResolveAmbiguitySlotIndex);
 						if (slotKeyIndex == -1)
 						{
 							throw AstInsException(

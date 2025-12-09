@@ -88,10 +88,10 @@ SummarizeEarilestLocalInsRefs
 			}
 
 /***********************************************************************
-SummarizeEarilestInsRefs
+SummarizeEarilestStackInsRefs
 ***********************************************************************/
 
-			void TraceManager::SummarizeEarilestInsRefs()
+			void TraceManager::SummarizeEarilestStackInsRefs()
 			{
 				IterateStackWithDependency(&InsExec_Stack::fieldStacks, [this](InsExec_Stack* stack)
 				{
@@ -102,10 +102,60 @@ SummarizeEarilestInsRefs
 						currentStackRefLink = stackRefLink->previous;
 
 						auto fieldStack = GetInsExec_Stack(stackRefLink->id);
-						UpdateTopTrace(stack->summarizing.earliestInsRef, fieldStack->summarizing.earliestInsRef);
+						UpdateTopTrace(stack->summarizing.earliestStackInsRef, fieldStack->summarizing.earliestStackInsRef);
 					}
-					UpdateTopTrace(stack->summarizing.earliestInsRef, stack->summarizing.earliestLocalInsRef);
+					UpdateTopTrace(stack->summarizing.earliestStackInsRef, stack->summarizing.earliestLocalInsRef);
 				});
+			}
+
+/***********************************************************************
+SummarizeEarilestInsRefs
+***********************************************************************/
+
+			void TraceManager::SummarizeEarilestInsRefs()
+			{
+				List<InsExec_Stack*> indirectStacks;
+
+				// traverse through all stacks
+				auto currentStackRef = firstStack;
+				while (currentStackRef != nullref)
+				{
+					auto currentStack = GetInsExec_Stack(currentStackRef);
+					currentStackRef = currentStack->previous;
+
+					indirectStacks.Clear();
+					indirectStacks.Add(currentStack);
+
+					// traverse through all useFromStacks recursively
+					for (vint i = 0; i < indirectStacks.Count(); i++)
+					{
+						auto stack = indirectStacks[i];
+						// if earliestInsRef could be refreshed, propogate it into useFromStacks
+						if (!UpdateTopTrace(stack->summarizing.earliestInsRef, currentStack->summarizing.earliestStackInsRef))
+						{
+							continue;
+						}
+
+						if (stack == currentStack)
+						{
+							stack->summarizing.bottomInsRefs = JoinInsRefLink(stack->endWithCreateInsRefs, stack->endWithReuseInsRefs);
+						}
+						else
+						{
+							stack->summarizing.bottomInsRefs = currentStack->summarizing.bottomInsRefs;
+						}
+
+						auto currentInsRefLink = stack->useFromStacks;
+						while (currentInsRefLink != nullref)
+						{
+							auto insRefLink = GetInsExec_StackRefLink(currentInsRefLink);
+							currentInsRefLink = insRefLink->previous;
+
+							auto useFromStack = GetInsExec_Stack(insRefLink->id);
+							indirectStacks.Add(useFromStack);
+						}
+					}
+				}
 			}
 
 /***********************************************************************
@@ -147,6 +197,7 @@ SummarizeInstructionRange
 			void TraceManager::SummarizeInstructionRange()
 			{
 				SummarizeEarilestLocalInsRefs();
+				SummarizeEarilestStackInsRefs();
 				SummarizeEarilestInsRefs();
 			}
 

@@ -21,6 +21,8 @@
 
 ### Progressing
 
+`BinaryOp` failed to parse.
+
 - [x] Non-ambiguous test cases
 - [x] Ambiguous test cases
 - [x] Split FeatureTest
@@ -29,7 +31,8 @@
   - [x] Xml
   - [x] Workflow
 - [ ] prefix_merge test cases
-  - [ ] merge prefix in rules
+  - [x] merge prefix in rules
+    - 109236 -> 10141 states: Test\ParserLog\BuiltIn-Workflow\Trace-1[Codegen_WorkflowHints].txt
   - [ ] automatically identify prefix_merge
 - [ ] Built-in parsers:
   - [ ] C++
@@ -39,8 +42,6 @@
 - [ ] build.ps1
 
 ### Optimization ToDo
-
-- In (A | B), both A and B should start with the same slot number, but it may cause another issue if they are assigned to different fields.
 
 ## Features to Add
 

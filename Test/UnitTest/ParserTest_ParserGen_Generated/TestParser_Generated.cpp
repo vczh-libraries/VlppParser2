@@ -297,6 +297,9 @@ namespace TestParser_Generated_TestObjects
 			[&](ErrorArgs& args)
 			{
 				args.throwError = true;
+
+				TraceProcessingArgs tpArgs(args.tokens, args.executable, args.executor, false, TraceProcessingPhase::EndOfInput);
+				parser.OnTraceProcessing(tpArgs);
 			});
 
 		parser.OnTraceProcessing.Add(

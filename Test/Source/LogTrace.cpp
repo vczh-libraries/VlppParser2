@@ -15,6 +15,8 @@ protected:
 	const Func<WString(vint32_t)>&		fieldName;
 	const Func<WString(vint32_t)>&		tokenName;
 	StreamWriter&						writer;
+	vint								indentation = 0;
+
 public:
 	LogTraceInsReceiver(
 		const Func<WString(vint32_t)>& _typeName,
@@ -30,6 +32,11 @@ public:
 
 	void Execute(AstIns instruction, const regex::RegexToken& token, vint32_t tokenIndex) override
 	{
+		if (instruction.type == AstInsType::StackEnd) indentation--;
+		for (vint i = 0; i < indentation; i++)
+		{
+			writer.WriteString(L"  ");
+		}
 		writer.WriteString(L"<[");
 		writer.WriteString(itow(tokenIndex));
 		writer.WriteString(L"]");
@@ -38,6 +45,7 @@ public:
 		writer.WriteString(token.reading, token.length);
 		writer.WriteString(L"> ");
 		LogInstruction(instruction, typeName, fieldName, writer);
+		if (instruction.type == AstInsType::StackBegin) indentation++;
 	}
 
 	Ptr<ParsingAstBase> Finished() override
@@ -432,7 +440,15 @@ void RenderTrace(
 							L"@" + itow(ieObject->summarizing.earliestLocalInsRef.ins)
 						);
 
-						if (ieObject->summarizing.earliestInsRef != ieObject->summarizing.earliestLocalInsRef)
+						if (ieObject->summarizing.earliestStackInsRef != ieObject->summarizing.earliestLocalInsRef)
+						{
+							writer.WriteString(
+								L", stack:" + itow(ieObject->summarizing.earliestStackInsRef.trace.handle) +
+								L"@" + itow(ieObject->summarizing.earliestStackInsRef.ins)
+							);
+						}
+
+						if (ieObject->summarizing.earliestInsRef != ieObject->summarizing.earliestStackInsRef)
 						{
 							writer.WriteString(
 								L", lrec:" + itow(ieObject->summarizing.earliestInsRef.trace.handle) +
@@ -472,6 +488,13 @@ void RenderTrace(
 						{
 							writer.WriteString(L", end!:[");
 							logInsRefLink(ieObject->endWithReuseInsRefs);
+							writer.WriteString(L"]");
+						}
+
+						if (ieObject->summarizing.bottomInsRefs != ieObject->endWithCreateInsRefs && ieObject->summarizing.bottomInsRefs != ieObject->endWithReuseInsRefs)
+						{
+							writer.WriteString(L", endLref:[");
+							logInsRefLink(ieObject->summarizing.bottomInsRefs);
 							writer.WriteString(L"]");
 						}
 
@@ -1209,7 +1232,6 @@ FilePath LogTraceManager(
 	const Func<WString(vint32_t)>& stateLabel
 )
 {
-	CHECK_ERROR(tm.concurrentCount > 0, L"Cannot log failed traces!");
 	Group<Trace*, WString> traceLogs;
 	{
 		SortedList<Trace*> logged;
@@ -1251,7 +1273,11 @@ FilePath LogTraceManager(
 	auto outputFile = outputDir / (L"Trace-" + itow((vint)traceProcessingPhase + 1) + L"[" + caseName + L"].txt");
 	auto content = GenerateToStream([&](StreamWriter& writer)
 	{
-		if (auto step = tm.GetInitialExecutionStep())
+		if (tm.concurrentCountBeforeError)
+		{
+			writer.WriteLine(L"================ FAILED TRACES ================");
+		}
+		else if (auto step = tm.GetInitialExecutionStep())
 		{
 			writer.WriteLine(L"================ EXECUTION STEPS ================");
 			while (step)
