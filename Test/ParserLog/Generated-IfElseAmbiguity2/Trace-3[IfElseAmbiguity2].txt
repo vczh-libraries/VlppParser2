@@ -468,7 +468,7 @@
 |                                                                                                            |   @ CS(21 -> 1) : [11][1][0]                                                                        |
 |                                                                                                            |   + StackEnd()                                                                                      |
 |                                                                                                            |     obj+:11 : IfStat                                                                                |
-|                                                                                                            |       begin:13@1, top:13@1, lrec:5@0, field:[5], create!:[14@0], end:[14@2]                         |
+|                                                                                                            |       begin:13@1, top:13@1, stack:5@0, field:[5], create!:[14@0], end:[14@2]                        |
 |                                                                                                            |                                                                                                     |
 |                                                                                                            |   @ CS(1 -> 0) : [1][0] OS(22 -> -1) : [11]                                                         |
 |                                                                                                            |   > StackSlot(3)                                                                                    |
@@ -730,7 +730,7 @@
 |   @ CS(14 -> 1) : [8][1][0]                                                                         |      |
 |   + StackEnd()                                                                                      |      |
 |     obj+:8 : IfStat                                                                                 |      |
-|       begin:24@2, top:24@2, lrec:5@0, field:[5], create!:[25@0], end:[25@2]                         |      |
+|       begin:24@2, top:24@2, stack:5@0, field:[5], create!:[25@0], end:[25@2]                        |      |
 |                                                                                                     |      |
 |   @ CS(1 -> 0) : [1][0] OS(15 -> -1) : [8]                                                          |      |
 |   > StackSlot(3)                                                                                    |      |
@@ -829,38 +829,38 @@
 |
 +
 |
-+------------------------------------------------------------------------------+
-| [28]: <Ending>                                                               |
-|   TraceExec: [32]                                                            |
-|   InsExec: [70:4]                                                            |
-|   ForwardTrace: 27                                                           |
-| [7][Block]< "{" { Stat @ } "}" >                                             |
-| [AST-INSTRUCTIONS]:                                                          |
-|   @ CS(31 -> 0) : [15, 10][0]                                                |
-|   + CreateObject(IfStat)                                                     |
-|     obj:10 : IfStat                                                          |
-|     obj:15 : IfStat                                                          |
-|                                                                              |
-|   @ CS(31 -> 0) : [15, 10][0]                                                |
-|   + Field(IfStat::content, 0)                                                |
-|                                                                              |
-|   @ CS(31 -> 0) : [15, 10][0]                                                |
-|   + StackEnd()                                                               |
-|     obj+:10 : IfStat                                                         |
-|       begin:33@1, top:33@1, lrec:2@0, field:[9], create!:[28@0], end:[28@2]  |
-|     obj+:15 : IfStat                                                         |
-|       begin:32@2, top:32@2, lrec:2@0, field:[12], create!:[28@0], end:[28@2] |
-|                                                                              |
-|   @ CS(0 -> -1) : [0] OS(32 -> -1) : [15, 10]                                |
-|   > StackSlot(1)                                                             |
-|                                                                              |
-|   @ CS(0 -> -1) : [0]                                                        |
-| [RETURN STACK]:                                                              |
-|   [1][1][0]: Block -> [23][Stat]<! !Block @ !>                               |
-|   [0][8][0]: Stat -> [27][Module]< Stat @ >                                  |
-| [PREDECESSORS 27-27]: [27]                                                   |
-| [SUCCESORS 34-34]: [34]                                                      |
-+------------------------------------------------------------------------------+
++-------------------------------------------------------------------------------+
+| [28]: <Ending>                                                                |
+|   TraceExec: [32]                                                             |
+|   InsExec: [70:4]                                                             |
+|   ForwardTrace: 27                                                            |
+| [7][Block]< "{" { Stat @ } "}" >                                              |
+| [AST-INSTRUCTIONS]:                                                           |
+|   @ CS(31 -> 0) : [15, 10][0]                                                 |
+|   + CreateObject(IfStat)                                                      |
+|     obj:10 : IfStat                                                           |
+|     obj:15 : IfStat                                                           |
+|                                                                               |
+|   @ CS(31 -> 0) : [15, 10][0]                                                 |
+|   + Field(IfStat::content, 0)                                                 |
+|                                                                               |
+|   @ CS(31 -> 0) : [15, 10][0]                                                 |
+|   + StackEnd()                                                                |
+|     obj+:10 : IfStat                                                          |
+|       begin:33@1, top:33@1, stack:2@0, field:[9], create!:[28@0], end:[28@2]  |
+|     obj+:15 : IfStat                                                          |
+|       begin:32@2, top:32@2, stack:2@0, field:[12], create!:[28@0], end:[28@2] |
+|                                                                               |
+|   @ CS(0 -> -1) : [0] OS(32 -> -1) : [15, 10]                                 |
+|   > StackSlot(1)                                                              |
+|                                                                               |
+|   @ CS(0 -> -1) : [0]                                                         |
+| [RETURN STACK]:                                                               |
+|   [1][1][0]: Block -> [23][Stat]<! !Block @ !>                                |
+|   [0][8][0]: Stat -> [27][Module]< Stat @ >                                   |
+| [PREDECESSORS 27-27]: [27]                                                    |
+| [SUCCESORS 34-34]: [34]                                                       |
++-------------------------------------------------------------------------------+
 [0/0]
  |
  +
@@ -1254,7 +1254,7 @@
 |                                                                                                              |   @ CS(53 -> 33) : [26][16][0]                                                                        |
 |                                                                                                              |   + StackEnd()                                                                                        |
 |                                                                                                              |     obj+:26 : IfStat                                                                                  |
-|                                                                                                              |       begin:45@1, top:45@1, lrec:37@0, field:[20], create!:[46@0], end:[46@2]                         |
+|                                                                                                              |       begin:45@1, top:45@1, stack:37@0, field:[20], create!:[46@0], end:[46@2]                        |
 |                                                                                                              |                                                                                                       |
 |                                                                                                              |   @ CS(33 -> 0) : [16][0] OS(54 -> -1) : [26]                                                         |
 |                                                                                                              |   > StackSlot(3)                                                                                      |
@@ -1516,7 +1516,7 @@
 |   @ CS(46 -> 33) : [23][16][0]                                                                        |      |
 |   + StackEnd()                                                                                        |      |
 |     obj+:23 : IfStat                                                                                  |      |
-|       begin:56@2, top:56@2, lrec:37@0, field:[20], create!:[57@0], end:[57@2]                         |      |
+|       begin:56@2, top:56@2, stack:37@0, field:[20], create!:[57@0], end:[57@2]                        |      |
 |                                                                                                       |      |
 |   @ CS(33 -> 0) : [16][0] OS(47 -> -1) : [23]                                                         |      |
 |   > StackSlot(3)                                                                                      |      |
@@ -1615,38 +1615,38 @@
 |
 +
 |
-+-------------------------------------------------------------------------------+
-| [60]: <Ending>                                                                |
-|   TraceExec: [63]                                                             |
-|   InsExec: [142:4]                                                            |
-|   ForwardTrace: 59                                                            |
-| [7][Block]< "{" { Stat @ } "}" >                                              |
-| [AST-INSTRUCTIONS]:                                                           |
-|   @ CS(63 -> 0) : [30, 25][0]                                                 |
-|   + CreateObject(IfStat)                                                      |
-|     obj:25 : IfStat                                                           |
-|     obj:30 : IfStat                                                           |
-|                                                                               |
-|   @ CS(63 -> 0) : [30, 25][0]                                                 |
-|   + Field(IfStat::content, 0)                                                 |
-|                                                                               |
-|   @ CS(63 -> 0) : [30, 25][0]                                                 |
-|   + StackEnd()                                                                |
-|     obj+:25 : IfStat                                                          |
-|       begin:65@1, top:65@1, lrec:34@0, field:[24], create!:[60@0], end:[60@2] |
-|     obj+:30 : IfStat                                                          |
-|       begin:64@2, top:64@2, lrec:34@0, field:[27], create!:[60@0], end:[60@2] |
-|                                                                               |
-|   @ CS(0 -> -1) : [0] OS(64 -> -1) : [30, 25]                                 |
-|   > StackSlot(1)                                                              |
-|                                                                               |
-|   @ CS(0 -> -1) : [0]                                                         |
-| [RETURN STACK]:                                                               |
-|   [1][1][0]: Block -> [23][Stat]<! !Block @ !>                                |
-|   [0][8][0]: Stat -> [27][Module]< Stat @ >                                   |
-| [PREDECESSORS 59-59]: [59]                                                    |
-| [SUCCESORS 66-66]: [66]                                                       |
-+-------------------------------------------------------------------------------+
++--------------------------------------------------------------------------------+
+| [60]: <Ending>                                                                 |
+|   TraceExec: [63]                                                              |
+|   InsExec: [142:4]                                                             |
+|   ForwardTrace: 59                                                             |
+| [7][Block]< "{" { Stat @ } "}" >                                               |
+| [AST-INSTRUCTIONS]:                                                            |
+|   @ CS(63 -> 0) : [30, 25][0]                                                  |
+|   + CreateObject(IfStat)                                                       |
+|     obj:25 : IfStat                                                            |
+|     obj:30 : IfStat                                                            |
+|                                                                                |
+|   @ CS(63 -> 0) : [30, 25][0]                                                  |
+|   + Field(IfStat::content, 0)                                                  |
+|                                                                                |
+|   @ CS(63 -> 0) : [30, 25][0]                                                  |
+|   + StackEnd()                                                                 |
+|     obj+:25 : IfStat                                                           |
+|       begin:65@1, top:65@1, stack:34@0, field:[24], create!:[60@0], end:[60@2] |
+|     obj+:30 : IfStat                                                           |
+|       begin:64@2, top:64@2, stack:34@0, field:[27], create!:[60@0], end:[60@2] |
+|                                                                                |
+|   @ CS(0 -> -1) : [0] OS(64 -> -1) : [30, 25]                                  |
+|   > StackSlot(1)                                                               |
+|                                                                                |
+|   @ CS(0 -> -1) : [0]                                                          |
+| [RETURN STACK]:                                                                |
+|   [1][1][0]: Block -> [23][Stat]<! !Block @ !>                                 |
+|   [0][8][0]: Stat -> [27][Module]< Stat @ >                                    |
+| [PREDECESSORS 59-59]: [59]                                                     |
+| [SUCCESORS 66-66]: [66]                                                        |
++--------------------------------------------------------------------------------+
 [0/0]
  |
  +
@@ -2040,7 +2040,7 @@
 |                                                                                                              |   @ CS(85 -> 65) : [41][31][0]                                                                        |
 |                                                                                                              |   + StackEnd()                                                                                        |
 |                                                                                                              |     obj+:41 : IfStat                                                                                  |
-|                                                                                                              |       begin:77@1, top:77@1, lrec:69@0, field:[35], create!:[78@0], end:[78@2]                         |
+|                                                                                                              |       begin:77@1, top:77@1, stack:69@0, field:[35], create!:[78@0], end:[78@2]                        |
 |                                                                                                              |                                                                                                       |
 |                                                                                                              |   @ CS(65 -> 0) : [31][0] OS(86 -> -1) : [41]                                                         |
 |                                                                                                              |   > StackSlot(3)                                                                                      |
@@ -2302,7 +2302,7 @@
 |   @ CS(78 -> 65) : [38][31][0]                                                                        |      |
 |   + StackEnd()                                                                                        |      |
 |     obj+:38 : IfStat                                                                                  |      |
-|       begin:88@2, top:88@2, lrec:69@0, field:[35], create!:[89@0], end:[89@2]                         |      |
+|       begin:88@2, top:88@2, stack:69@0, field:[35], create!:[89@0], end:[89@2]                        |      |
 |                                                                                                       |      |
 |   @ CS(65 -> 0) : [31][0] OS(79 -> -1) : [38]                                                         |      |
 |   > StackSlot(3)                                                                                      |      |
@@ -2400,38 +2400,38 @@
 |
 +
 |
-+-------------------------------------------------------------------------------+
-| [92]: <Ending>                                                                |
-|   TraceExec: [94]                                                             |
-|   InsExec: [214:4]                                                            |
-|   ForwardTrace: 91                                                            |
-| [7][Block]< "{" { Stat @ } "}" >                                              |
-| [AST-INSTRUCTIONS]:                                                           |
-|   @ CS(95 -> 0) : [45, 40][0]                                                 |
-|   + CreateObject(IfStat)                                                      |
-|     obj:40 : IfStat                                                           |
-|     obj:45 : IfStat                                                           |
-|                                                                               |
-|   @ CS(95 -> 0) : [45, 40][0]                                                 |
-|   + Field(IfStat::content, 0)                                                 |
-|                                                                               |
-|   @ CS(95 -> 0) : [45, 40][0]                                                 |
-|   + StackEnd()                                                                |
-|     obj+:40 : IfStat                                                          |
-|       begin:97@1, top:97@1, lrec:66@0, field:[39], create!:[92@0], end:[92@2] |
-|     obj+:45 : IfStat                                                          |
-|       begin:96@2, top:96@2, lrec:66@0, field:[42], create!:[92@0], end:[92@2] |
-|                                                                               |
-|   @ CS(0 -> -1) : [0] OS(96 -> -1) : [45, 40]                                 |
-|   > StackSlot(1)                                                              |
-|                                                                               |
-|   @ CS(0 -> -1) : [0]                                                         |
-| [RETURN STACK]:                                                               |
-|   [1][1][0]: Block -> [23][Stat]<! !Block @ !>                                |
-|   [0][8][0]: Stat -> [27][Module]< Stat @ >                                   |
-| [PREDECESSORS 91-91]: [91]                                                    |
-| [SUCCESORS 98-98]: [98]                                                       |
-+-------------------------------------------------------------------------------+
++--------------------------------------------------------------------------------+
+| [92]: <Ending>                                                                 |
+|   TraceExec: [94]                                                              |
+|   InsExec: [214:4]                                                             |
+|   ForwardTrace: 91                                                             |
+| [7][Block]< "{" { Stat @ } "}" >                                               |
+| [AST-INSTRUCTIONS]:                                                            |
+|   @ CS(95 -> 0) : [45, 40][0]                                                  |
+|   + CreateObject(IfStat)                                                       |
+|     obj:40 : IfStat                                                            |
+|     obj:45 : IfStat                                                            |
+|                                                                                |
+|   @ CS(95 -> 0) : [45, 40][0]                                                  |
+|   + Field(IfStat::content, 0)                                                  |
+|                                                                                |
+|   @ CS(95 -> 0) : [45, 40][0]                                                  |
+|   + StackEnd()                                                                 |
+|     obj+:40 : IfStat                                                           |
+|       begin:97@1, top:97@1, stack:66@0, field:[39], create!:[92@0], end:[92@2] |
+|     obj+:45 : IfStat                                                           |
+|       begin:96@2, top:96@2, stack:66@0, field:[42], create!:[92@0], end:[92@2] |
+|                                                                                |
+|   @ CS(0 -> -1) : [0] OS(96 -> -1) : [45, 40]                                  |
+|   > StackSlot(1)                                                               |
+|                                                                                |
+|   @ CS(0 -> -1) : [0]                                                          |
+| [RETURN STACK]:                                                                |
+|   [1][1][0]: Block -> [23][Stat]<! !Block @ !>                                 |
+|   [0][8][0]: Stat -> [27][Module]< Stat @ >                                    |
+| [PREDECESSORS 91-91]: [91]                                                     |
+| [SUCCESORS 98-98]: [98]                                                        |
++--------------------------------------------------------------------------------+
 [0/0]
  |
  +
@@ -2515,25 +2515,25 @@
 |
 +
 |
-+----------------------------------------------------------------------------------+
-| [101]: <Ending>                                                                  |
-|   TraceExec: [98]                                                                |
-|   InsExec: [226:3]                                                               |
-|   ForwardTrace: 91                                                               |
-| [26][Module] END [ENDING]                                                        |
-| [AST-INSTRUCTIONS]:                                                              |
-|   @ CS(100 -> -1) : [47]                                                         |
-|   + CreateObject(Module)                                                         |
-|     obj:47 : Module                                                              |
-|                                                                                  |
-|   @ CS(100 -> -1) : [47]                                                         |
-|   + Field(Module::stat, 0)                                                       |
-|                                                                                  |
-|   @ CS(100 -> -1) : [47]                                                         |
-|   + StackEnd()                                                                   |
-|     obj+:47 : Module                                                             |
-|       begin:100@1, top:100@1, lrec:1@0, field:[46], create!:[101@0], end:[101@2] |
-|                                                                                  |
-|   @ OS(101 -> -1) : [47]                                                         |
-| [PREDECESSORS 100-100]: [100]                                                    |
-+----------------------------------------------------------------------------------+
++-----------------------------------------------------------------------------------+
+| [101]: <Ending>                                                                   |
+|   TraceExec: [98]                                                                 |
+|   InsExec: [226:3]                                                                |
+|   ForwardTrace: 91                                                                |
+| [26][Module] END [ENDING]                                                         |
+| [AST-INSTRUCTIONS]:                                                               |
+|   @ CS(100 -> -1) : [47]                                                          |
+|   + CreateObject(Module)                                                          |
+|     obj:47 : Module                                                               |
+|                                                                                   |
+|   @ CS(100 -> -1) : [47]                                                          |
+|   + Field(Module::stat, 0)                                                        |
+|                                                                                   |
+|   @ CS(100 -> -1) : [47]                                                          |
+|   + StackEnd()                                                                    |
+|     obj+:47 : Module                                                              |
+|       begin:100@1, top:100@1, stack:1@0, field:[46], create!:[101@0], end:[101@2] |
+|                                                                                   |
+|   @ OS(101 -> -1) : [47]                                                          |
+| [PREDECESSORS 100-100]: [100]                                                     |
++-----------------------------------------------------------------------------------+

@@ -432,7 +432,15 @@ void RenderTrace(
 							L"@" + itow(ieObject->summarizing.earliestLocalInsRef.ins)
 						);
 
-						if (ieObject->summarizing.earliestInsRef != ieObject->summarizing.earliestLocalInsRef)
+						if (ieObject->summarizing.earliestStackInsRef != ieObject->summarizing.earliestLocalInsRef)
+						{
+							writer.WriteString(
+								L", stack:" + itow(ieObject->summarizing.earliestStackInsRef.trace.handle) +
+								L"@" + itow(ieObject->summarizing.earliestStackInsRef.ins)
+							);
+						}
+
+						if (ieObject->summarizing.earliestInsRef != ieObject->summarizing.earliestStackInsRef)
 						{
 							writer.WriteString(
 								L", lrec:" + itow(ieObject->summarizing.earliestInsRef.trace.handle) +

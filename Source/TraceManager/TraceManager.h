@@ -295,6 +295,9 @@ TraceManager (Data Structures -- PrepareTraceRoute)
 				InsRef								earliestLocalInsRef;
 
 				// The earliest StackBegin instructions including in useFromStacks and fieldStacks
+				InsRef								earliestStackInsRef;
+
+				// earliestStackInsRef but propogated back into useFromStacks
 				InsRef								earliestInsRef;
 
 				// All CreateObject instructions including in useFromStacks
@@ -653,6 +656,7 @@ TraceManager
 				bool										UpdateTopTrace(InsRef& topInsRef, InsRef newInsRef);
 				void										CollectInsRefs(collections::SortedList<InsRef>& insRefs, Ref<InsExec_InsRefLink> link);
 				void										SummarizeEarilestLocalInsRefs();
+				void										SummarizeEarilestStackInsRefs();
 				void										SummarizeEarilestInsRefs();
 				void										SummarizeInstructionRange();
 
