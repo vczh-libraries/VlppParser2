@@ -127,6 +127,11 @@ BitSet
 					words[wordIndex] |= (vuint64_t(1) << bitIndex);
 				}
 
+				operator bool() const
+				{
+					return !AllZero(words, wordCount);
+				}
+
 				BitSet operator|(const BitSet& bs) const
 				{
 					if (this == &bs) return *this;
@@ -254,11 +259,9 @@ SyntaxSymbolManager::CreatePrefixMerge
 					auto startState = ruleSymbol->startStates[0];
 					for (auto edge : startState->OutEdges())
 					{
-						if (edge->input.type == EdgeInputType::Rule)
-						{
-							startSetTokens |= cache->startSetTokens[edge->input.rule];
-							startSetRules |= cache->startSetRules[edge->input.rule];
-						}
+						if (edge->input.type != EdgeInputType::Rule) continue;
+						startSetTokens |= cache->startSetTokens[edge->input.rule];
+						startSetRules |= cache->startSetRules[edge->input.rule];
 					}
 					cache->startSetTokens.Add(ruleSymbol, startSetTokens);
 					cache->startSetRules.Add(ruleSymbol, startSetRules);
@@ -315,6 +318,39 @@ SyntaxSymbolManager::MergeEdgesWithSameInputCrossReference
 				*   It means merging should happen between different first level sub trees.
 				*   Be careful when merging destroy the prefix structure, do we need to keep a copy of unmerged rule?
 				*/
+
+				SortedList<StateSymbol*> visitedStates;
+				List<StateSymbol*> workingStates;
+				workingStates.Add(startState);
+
+				for (vint i = 0; i < workingStates.Count(); i++)
+				{
+					auto currentState = workingStates[i];
+
+					for (vint j = 0; j < currentState->OutEdges().Count() - 1; j++)
+					{
+						auto edge1 = currentState->OutEdges()[j];
+						if (edge1->input.type != EdgeInputType::Rule) continue;
+						for (vint k = j + 1; k < currentState->OutEdges().Count(); k++)
+						{
+							auto edge2 = currentState->OutEdges()[k];
+							if (edge2->input.type != EdgeInputType::Rule) continue;
+							if (!(cache->startSetTokens[edge1->input.rule] & cache->startSetTokens[edge2->input.rule])) continue;
+							if (!(cache->startSetRules[edge1->input.rule] & cache->startSetRules[edge2->input.rule])) continue;
+							console::Console::WriteLine(edge1->input.rule->Name() + L", " + edge2->input.rule->Name() + L" : " + currentState->Rule()->Name() + L"@" + currentState->label);
+						}
+					}
+
+					for (auto edge : startState->OutEdges())
+					{
+						if (edge->input.type != EdgeInputType::Rule) continue;
+						if (!visitedStates.Contains(edge->To()))
+						{
+							visitedStates.Add(edge->To());
+							workingStates.Add(edge->To());
+						}
+					}
+				}
 			}
 		}
 	}
