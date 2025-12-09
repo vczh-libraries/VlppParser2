@@ -63,6 +63,7 @@ SyntaxSymbolManager::BuildCompactNFAInternal
 
 					EliminateLeftRecursion(ruleSymbol, startState, endState, newStates, newEdges);
 					MergeEdgesWithSameInput(ruleSymbol, startState, newStates, newEdges);
+					PrefixMergeSameRuleCrossReference(ruleSymbol, ruleSymbol->startStates[0], newStates, newEdges);
 				}
 
 				// there will be only one start state per rule after EliminateEpsilonEdges

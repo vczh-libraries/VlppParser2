@@ -196,6 +196,7 @@ SyntaxSymbolManager
 				static void						MergeEdgesWithSameInput(RuleSymbol* rule, StateSymbol* startState, StateList& newStates, EdgeList& newEdges);
 
 				Ptr<PrefixMergeCache>			CreatePrefixMergeCache();
+				static void						PrefixMergeSameRuleCrossReference(RuleSymbol* rule, StateSymbol* startState, StateList& newStates, EdgeList& newEdges);
 				static void						PrefixMergeCrossReference(PrefixMergeCache* cache, RuleSymbol* rule, StateSymbol* startState, StateList& newStates, EdgeList& newEdges);
 
 				static void						ApplyIncrementalChange(const IncrementalChange& ic, StateList& newStates, EdgeList& newEdges);
