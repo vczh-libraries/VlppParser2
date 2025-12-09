@@ -189,10 +189,6 @@ TraceManager::WalkAlongEpsilonEdges
 				WalkingTrace trace
 			)
 			{
-				if (!lookAhead)
-				{
-					int a = 0;
-				}
 				// if we could walk along multiple EndingInput transition
 				// but the last several transition will fail
 				// then creating them is wasting the performance
