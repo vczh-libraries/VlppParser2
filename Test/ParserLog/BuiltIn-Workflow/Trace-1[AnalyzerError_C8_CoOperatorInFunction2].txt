@@ -1,11 +1,11 @@
 ﻿================ EXECUTION STEPS ================
-[0]: 0@0 - 54@6
+[0]: 0@0 - 52@6
 
 ==================== TRACES =====================
 
 +-----------------------+
 | [0]: <Start>          |
-| [781][_Module] BEGIN  |
+| [779][_Module] BEGIN  |
 | [AST-INSTRUCTIONS]:   |
 | [SUCCESORS 1-1]: [1]  |
 +-----------------------+
@@ -16,7 +16,7 @@
 [0]
 ++===========================================================================++
 || [1]: {KEYWORD_MODULE} module                                              ||
-|| [787][_Module]< "module" @ ( NAME ";" { _UsingPath } { _Declaration } ) > ||
+|| [785][_Module]< "module" @ ( NAME ";" { _UsingPath } { _Declaration } ) > ||
 || [AST-INSTRUCTIONS]:                                                       ||
 ||   + StackBegin()                                                          ||
 ||   + Token(0)                                                              ||
@@ -30,7 +30,7 @@
 [0]
 ++===========================================================================++
 || [2]: {NAME} test                                                          ||
-|| [786][_Module]< "module" ( NAME @ ";" { _UsingPath } { _Declaration } ) > ||
+|| [784][_Module]< "module" ( NAME @ ";" { _UsingPath } { _Declaration } ) > ||
 || [AST-INSTRUCTIONS]:                                                       ||
 ||   + Token(1)                                                              ||
 || [PREDECESSORS 1-1]: [1]                                                   ||
@@ -43,7 +43,7 @@
 [0]
 ++===========================================================================++
 || [3]: {SEMICOLON} ;                                                        ||
-|| [783][_Module]< "module" ( NAME ";" @ { _UsingPath } { _Declaration } ) > ||
+|| [781][_Module]< "module" ( NAME ";" @ { _UsingPath } { _Declaration } ) > ||
 || [AST-INSTRUCTIONS]:                                                       ||
 ||   + Token(2)                                                              ||
 || [PREDECESSORS 2-2]: [2]                                                   ||
@@ -56,12 +56,12 @@
 [0]
 ++========================================================================================================++
 || [5]: {KEYWORD_USING} using                                                                             ||
-|| [776][_UsingPath]< "using" @ _UsingItem { "::" _UsingItem } ";" >                                      ||
+|| [774][_UsingPath]< "using" @ _UsingItem { "::" _UsingItem } ";" >                                      ||
 || [AST-INSTRUCTIONS]:                                                                                    ||
 ||   + StackBegin()                                                                                       ||
 ||   + Token(0)                                                                                           ||
 || [RETURN STACK]:                                                                                        ||
-||   [0][255][3]: _UsingPath -> [784][_Module]< "module" ( NAME ";" { _UsingPath @ } { _Declaration } ) > ||
+||   [0][255][3]: _UsingPath -> [782][_Module]< "module" ( NAME ";" { _UsingPath @ } { _Declaration } ) > ||
 || [PREDECESSORS 3-3]: [3]                                                                                ||
 || [SUCCESORS 6-6]: [6]                                                                                   ||
 ++========================================================================================================++
@@ -72,14 +72,14 @@
 [0]
 ++========================================================================================================++
 || [6]: {NAME} system                                                                                     ||
-|| [769][_UsingFragment]< NAME @ >                                                                        ||
+|| [767][_UsingFragment]< NAME @ >                                                                        ||
 || [AST-INSTRUCTIONS]:                                                                                    ||
 ||   + StackBegin()                                                                                       ||
 ||   + Token(0)                                                                                           ||
 || [RETURN STACK]:                                                                                        ||
-||   [2][249][5]: _UsingFragment -> [772][_UsingItem]< _UsingFragment @ { _UsingFragment } >              ||
-||   [1][252][5]: _UsingItem -> [777][_UsingPath]< "using" _UsingItem @ { "::" _UsingItem } ";" >         ||
-||   [0][255][3]: _UsingPath -> [784][_Module]< "module" ( NAME ";" { _UsingPath @ } { _Declaration } ) > ||
+||   [2][249][5]: _UsingFragment -> [770][_UsingItem]< _UsingFragment @ { _UsingFragment } >              ||
+||   [1][252][5]: _UsingItem -> [775][_UsingPath]< "using" _UsingItem @ { "::" _UsingItem } ";" >         ||
+||   [0][255][3]: _UsingPath -> [782][_Module]< "module" ( NAME ";" { _UsingPath @ } { _Declaration } ) > ||
 || [PREDECESSORS 5-5]: [5]                                                                                ||
 || [SUCCESORS 7-7]: [7]                                                                                   ||
 ++========================================================================================================++
@@ -88,7 +88,7 @@
 |
 +--------------------------------------------------------------------------------------------------------+
 | [7]: <Ending>                                                                                          |
-| [772][_UsingItem]< _UsingFragment @ { _UsingFragment } >                                               |
+| [770][_UsingItem]< _UsingFragment @ { _UsingFragment } >                                               |
 | [AST-INSTRUCTIONS]:                                                                                    |
 |   + CreateObject(ModuleUsingNameFragment)                                                              |
 |   + Field(ModuleUsingNameFragment::name, 0)                                                            |
@@ -96,8 +96,8 @@
 |   > StackBegin()                                                                                       |
 |   > StackSlot(0)                                                                                       |
 | [RETURN STACK]:                                                                                        |
-|   [1][252][5]: _UsingItem -> [777][_UsingPath]< "using" _UsingItem @ { "::" _UsingItem } ";" >         |
-|   [0][255][3]: _UsingPath -> [784][_Module]< "module" ( NAME ";" { _UsingPath @ } { _Declaration } ) > |
+|   [1][252][5]: _UsingItem -> [775][_UsingPath]< "using" _UsingItem @ { "::" _UsingItem } ";" >         |
+|   [0][255][3]: _UsingPath -> [782][_Module]< "module" ( NAME ";" { _UsingPath @ } { _Declaration } ) > |
 | [PREDECESSORS 6-6]: [6]                                                                                |
 | [SUCCESORS 8-8]: [8]                                                                                   |
 +--------------------------------------------------------------------------------------------------------+
@@ -106,7 +106,7 @@
 |
 +--------------------------------------------------------------------------------------------------------+
 | [8]: <Ending>                                                                                          |
-| [777][_UsingPath]< "using" _UsingItem @ { "::" _UsingItem } ";" >                                      |
+| [775][_UsingPath]< "using" _UsingItem @ { "::" _UsingItem } ";" >                                      |
 | [AST-INSTRUCTIONS]:                                                                                    |
 |   + CreateObject(ModuleUsingItem)                                                                      |
 |   + Field(ModuleUsingItem::fragments, 0)                                                               |
@@ -114,7 +114,7 @@
 |   + StackEnd()                                                                                         |
 |   > StackSlot(1)                                                                                       |
 | [RETURN STACK]:                                                                                        |
-|   [0][255][3]: _UsingPath -> [784][_Module]< "module" ( NAME ";" { _UsingPath @ } { _Declaration } ) > |
+|   [0][255][3]: _UsingPath -> [782][_Module]< "module" ( NAME ";" { _UsingPath @ } { _Declaration } ) > |
 | [PREDECESSORS 7-7]: [7]                                                                                |
 | [SUCCESORS 9-9]: [9]                                                                                   |
 +--------------------------------------------------------------------------------------------------------+
@@ -125,11 +125,11 @@
 [0]
 ++========================================================================================================++
 || [9]: {SCOPE_DELIMITER} ::                                                                              ||
-|| [778][_UsingPath]< "using" _UsingItem { "::" @ _UsingItem } ";" >                                      ||
+|| [776][_UsingPath]< "using" _UsingItem { "::" @ _UsingItem } ";" >                                      ||
 || [AST-INSTRUCTIONS]:                                                                                    ||
 ||   + Token(2)                                                                                           ||
 || [RETURN STACK]:                                                                                        ||
-||   [0][255][3]: _UsingPath -> [784][_Module]< "module" ( NAME ";" { _UsingPath @ } { _Declaration } ) > ||
+||   [0][255][3]: _UsingPath -> [782][_Module]< "module" ( NAME ";" { _UsingPath @ } { _Declaration } ) > ||
 || [PREDECESSORS 8-8]: [8]                                                                                ||
 || [SUCCESORS 10-10]: [10]                                                                                ||
 ++========================================================================================================++
@@ -140,14 +140,14 @@
 [0]
 ++========================================================================================================++
 || [10]: {MUL} *                                                                                          ||
-|| [768][_UsingFragment]< "*" @ >                                                                         ||
+|| [766][_UsingFragment]< "*" @ >                                                                         ||
 || [AST-INSTRUCTIONS]:                                                                                    ||
 ||   + StackBegin()                                                                                       ||
 ||   + Token(0)                                                                                           ||
 || [RETURN STACK]:                                                                                        ||
-||   [4][249][9]: _UsingFragment -> [772][_UsingItem]< _UsingFragment @ { _UsingFragment } >              ||
-||   [3][253][9]: _UsingItem -> [779][_UsingPath]< "using" _UsingItem { "::" _UsingItem @ } ";" >         ||
-||   [0][255][3]: _UsingPath -> [784][_Module]< "module" ( NAME ";" { _UsingPath @ } { _Declaration } ) > ||
+||   [4][249][9]: _UsingFragment -> [770][_UsingItem]< _UsingFragment @ { _UsingFragment } >              ||
+||   [3][253][9]: _UsingItem -> [777][_UsingPath]< "using" _UsingItem { "::" _UsingItem @ } ";" >         ||
+||   [0][255][3]: _UsingPath -> [782][_Module]< "module" ( NAME ";" { _UsingPath @ } { _Declaration } ) > ||
 || [PREDECESSORS 9-9]: [9]                                                                                ||
 || [SUCCESORS 11-11]: [11]                                                                                ||
 ++========================================================================================================++
@@ -156,15 +156,15 @@
 |
 +--------------------------------------------------------------------------------------------------------+
 | [11]: <Ending>                                                                                         |
-| [772][_UsingItem]< _UsingFragment @ { _UsingFragment } >                                               |
+| [770][_UsingItem]< _UsingFragment @ { _UsingFragment } >                                               |
 | [AST-INSTRUCTIONS]:                                                                                    |
 |   + CreateObject(ModuleUsingWildCardFragment)                                                          |
 |   + StackEnd()                                                                                         |
 |   > StackBegin()                                                                                       |
 |   > StackSlot(0)                                                                                       |
 | [RETURN STACK]:                                                                                        |
-|   [3][253][9]: _UsingItem -> [779][_UsingPath]< "using" _UsingItem { "::" _UsingItem @ } ";" >         |
-|   [0][255][3]: _UsingPath -> [784][_Module]< "module" ( NAME ";" { _UsingPath @ } { _Declaration } ) > |
+|   [3][253][9]: _UsingItem -> [777][_UsingPath]< "using" _UsingItem { "::" _UsingItem @ } ";" >         |
+|   [0][255][3]: _UsingPath -> [782][_Module]< "module" ( NAME ";" { _UsingPath @ } { _Declaration } ) > |
 | [PREDECESSORS 10-10]: [10]                                                                             |
 | [SUCCESORS 12-12]: [12]                                                                                |
 +--------------------------------------------------------------------------------------------------------+
@@ -173,7 +173,7 @@
 |
 +--------------------------------------------------------------------------------------------------------+
 | [12]: <Ending>                                                                                         |
-| [779][_UsingPath]< "using" _UsingItem { "::" _UsingItem @ } ";" >                                      |
+| [777][_UsingPath]< "using" _UsingItem { "::" _UsingItem @ } ";" >                                      |
 | [AST-INSTRUCTIONS]:                                                                                    |
 |   + CreateObject(ModuleUsingItem)                                                                      |
 |   + Field(ModuleUsingItem::fragments, 0)                                                               |
@@ -181,7 +181,7 @@
 |   + StackEnd()                                                                                         |
 |   > StackSlot(3)                                                                                       |
 | [RETURN STACK]:                                                                                        |
-|   [0][255][3]: _UsingPath -> [784][_Module]< "module" ( NAME ";" { _UsingPath @ } { _Declaration } ) > |
+|   [0][255][3]: _UsingPath -> [782][_Module]< "module" ( NAME ";" { _UsingPath @ } { _Declaration } ) > |
 | [PREDECESSORS 11-11]: [11]                                                                             |
 | [SUCCESORS 13-13]: [13]                                                                                |
 +--------------------------------------------------------------------------------------------------------+
@@ -192,11 +192,11 @@
 [0]
 ++========================================================================================================++
 || [13]: {SEMICOLON} ;                                                                                    ||
-|| [780][_UsingPath]< "using" _UsingItem { "::" _UsingItem } ";" @ >                                      ||
+|| [778][_UsingPath]< "using" _UsingItem { "::" _UsingItem } ";" @ >                                      ||
 || [AST-INSTRUCTIONS]:                                                                                    ||
 ||   + Token(4)                                                                                           ||
 || [RETURN STACK]:                                                                                        ||
-||   [0][255][3]: _UsingPath -> [784][_Module]< "module" ( NAME ";" { _UsingPath @ } { _Declaration } ) > ||
+||   [0][255][3]: _UsingPath -> [782][_Module]< "module" ( NAME ";" { _UsingPath @ } { _Declaration } ) > ||
 || [PREDECESSORS 12-12]: [12]                                                                             ||
 || [SUCCESORS 14-14]: [14]                                                                                ||
 ++========================================================================================================++
@@ -205,7 +205,7 @@
 |
 +---------------------------------------------------------------------------+
 | [14]: <Ending>                                                            |
-| [784][_Module]< "module" ( NAME ";" { _UsingPath @ } { _Declaration } ) > |
+| [782][_Module]< "module" ( NAME ";" { _UsingPath @ } { _Declaration } ) > |
 | [AST-INSTRUCTIONS]:                                                       |
 |   + CreateObject(ModuleUsingPath)                                         |
 |   + Field(ModuleUsingPath::items, 1)                                      |
@@ -222,14 +222,14 @@
 [0]
 ++==============================================================================================================================================================================================================================================================================================++
 || [16]: {KEYWORD_FUNC} func                                                                                                                                                                                                                                                                    ||
-|| [571][_Function]{{< ( "static" "func" | "override" "func" | "func" @ ) ( "(" { _FunctionArgument ; "," } ")" ":" _Type ( _FunctionStat | ";" ) ) > ; < ( "static" "func" | "override" "func" | "func" @ ) NAME ( "(" { _FunctionArgument ; "," } ")" ":" _Type ( _FunctionStat | ";" ) ) >}} ||
+|| [569][_Function]{{< ( "static" "func" | "override" "func" | "func" @ ) ( "(" { _FunctionArgument ; "," } ")" ":" _Type ( _FunctionStat | ";" ) ) > ; < ( "static" "func" | "override" "func" | "func" @ ) NAME ( "(" { _FunctionArgument ; "," } ")" ":" _Type ( _FunctionStat | ";" ) ) >}} ||
 || [AST-INSTRUCTIONS]:                                                                                                                                                                                                                                                                          ||
 ||   + StackBegin()                                                                                                                                                                                                                                                                             ||
 ||   + Token(6)                                                                                                                                                                                                                                                                                 ||
 || [RETURN STACK]:                                                                                                                                                                                                                                                                              ||
-||   [7][46][14]: _Function -> [756][_DeclarationCandidates]<! !_Function @ !>                                                                                                                                                                                                                  ||
-||   [6][43][14]: _DeclarationCandidates -> [765][_Declaration]<! { _Attribute } !_DeclarationCandidates @ !>                                                                                                                                                                                   ||
-||   [5][256][14]: _Declaration -> [785][_Module]< "module" ( NAME ";" { _UsingPath } { _Declaration @ } ) >                                                                                                                                                                                    ||
+||   [7][46][14]: _Function -> [754][_DeclarationCandidates]<! !_Function @ !>                                                                                                                                                                                                                  ||
+||   [6][43][14]: _DeclarationCandidates -> [763][_Declaration]<! { _Attribute } !_DeclarationCandidates @ !>                                                                                                                                                                                   ||
+||   [5][256][14]: _Declaration -> [783][_Module]< "module" ( NAME ";" { _UsingPath } { _Declaration @ } ) >                                                                                                                                                                                    ||
 || [PREDECESSORS 14-14]: [14]                                                                                                                                                                                                                                                                   ||
 || [SUCCESORS 17-17]: [17]                                                                                                                                                                                                                                                                      ||
 ++==============================================================================================================================================================================================================================================================================================++
@@ -240,14 +240,14 @@
 [0]
 ++=======================================================================================================================================================++
 || [17]: {NAME} main                                                                                                                                     ||
-|| [568][_Function]< ( "static" "func" | "override" "func" | "func" ) NAME @ ( "(" { _FunctionArgument ; "," } ")" ":" _Type ( _FunctionStat | ";" ) ) > ||
+|| [566][_Function]< ( "static" "func" | "override" "func" | "func" ) NAME @ ( "(" { _FunctionArgument ; "," } ")" ":" _Type ( _FunctionStat | ";" ) ) > ||
 || [AST-INSTRUCTIONS]:                                                                                                                                   ||
 ||   + EnumItem(2, 7)                                                                                                                                    ||
 ||   + Token(8)                                                                                                                                          ||
 || [RETURN STACK]:                                                                                                                                       ||
-||   [7][46][14]: _Function -> [756][_DeclarationCandidates]<! !_Function @ !>                                                                           ||
-||   [6][43][14]: _DeclarationCandidates -> [765][_Declaration]<! { _Attribute } !_DeclarationCandidates @ !>                                            ||
-||   [5][256][14]: _Declaration -> [785][_Module]< "module" ( NAME ";" { _UsingPath } { _Declaration @ } ) >                                             ||
+||   [7][46][14]: _Function -> [754][_DeclarationCandidates]<! !_Function @ !>                                                                           ||
+||   [6][43][14]: _DeclarationCandidates -> [763][_Declaration]<! { _Attribute } !_DeclarationCandidates @ !>                                            ||
+||   [5][256][14]: _Declaration -> [783][_Module]< "module" ( NAME ";" { _UsingPath } { _Declaration @ } ) >                                             ||
 || [PREDECESSORS 16-16]: [16]                                                                                                                            ||
 || [SUCCESORS 18-18]: [18]                                                                                                                               ||
 ++=======================================================================================================================================================++
@@ -258,13 +258,13 @@
 [0]
 ++=======================================================================================================================================================++
 || [18]: {OPEN_BRACKET} (                                                                                                                                ||
-|| [560][_Function]< ( "static" "func" | "override" "func" | "func" ) NAME ( "(" @ { _FunctionArgument ; "," } ")" ":" _Type ( _FunctionStat | ";" ) ) > ||
+|| [558][_Function]< ( "static" "func" | "override" "func" | "func" ) NAME ( "(" @ { _FunctionArgument ; "," } ")" ":" _Type ( _FunctionStat | ";" ) ) > ||
 || [AST-INSTRUCTIONS]:                                                                                                                                   ||
 ||   + Token(9)                                                                                                                                          ||
 || [RETURN STACK]:                                                                                                                                       ||
-||   [7][46][14]: _Function -> [756][_DeclarationCandidates]<! !_Function @ !>                                                                           ||
-||   [6][43][14]: _DeclarationCandidates -> [765][_Declaration]<! { _Attribute } !_DeclarationCandidates @ !>                                            ||
-||   [5][256][14]: _Declaration -> [785][_Module]< "module" ( NAME ";" { _UsingPath } { _Declaration @ } ) >                                             ||
+||   [7][46][14]: _Function -> [754][_DeclarationCandidates]<! !_Function @ !>                                                                           ||
+||   [6][43][14]: _DeclarationCandidates -> [763][_Declaration]<! { _Attribute } !_DeclarationCandidates @ !>                                            ||
+||   [5][256][14]: _Declaration -> [783][_Module]< "module" ( NAME ";" { _UsingPath } { _Declaration @ } ) >                                             ||
 || [PREDECESSORS 17-17]: [17]                                                                                                                            ||
 || [SUCCESORS 19-19]: [19]                                                                                                                               ||
 ++=======================================================================================================================================================++
@@ -275,13 +275,13 @@
 [0]
 ++=======================================================================================================================================================++
 || [19]: {CLOSE_BRACKET} )                                                                                                                               ||
-|| [566][_Function]< ( "static" "func" | "override" "func" | "func" ) NAME ( "(" { _FunctionArgument ; "," } ")" @ ":" _Type ( _FunctionStat | ";" ) ) > ||
+|| [564][_Function]< ( "static" "func" | "override" "func" | "func" ) NAME ( "(" { _FunctionArgument ; "," } ")" @ ":" _Type ( _FunctionStat | ";" ) ) > ||
 || [AST-INSTRUCTIONS]:                                                                                                                                   ||
 ||   + Token(12)                                                                                                                                         ||
 || [RETURN STACK]:                                                                                                                                       ||
-||   [7][46][14]: _Function -> [756][_DeclarationCandidates]<! !_Function @ !>                                                                           ||
-||   [6][43][14]: _DeclarationCandidates -> [765][_Declaration]<! { _Attribute } !_DeclarationCandidates @ !>                                            ||
-||   [5][256][14]: _Declaration -> [785][_Module]< "module" ( NAME ";" { _UsingPath } { _Declaration @ } ) >                                             ||
+||   [7][46][14]: _Function -> [754][_DeclarationCandidates]<! !_Function @ !>                                                                           ||
+||   [6][43][14]: _DeclarationCandidates -> [763][_Declaration]<! { _Attribute } !_DeclarationCandidates @ !>                                            ||
+||   [5][256][14]: _Declaration -> [783][_Module]< "module" ( NAME ";" { _UsingPath } { _Declaration @ } ) >                                             ||
 || [PREDECESSORS 18-18]: [18]                                                                                                                            ||
 || [SUCCESORS 20-20]: [20]                                                                                                                               ||
 ++=======================================================================================================================================================++
@@ -292,13 +292,13 @@
 [0]
 ++=======================================================================================================================================================++
 || [20]: {COLON} :                                                                                                                                       ||
-|| [562][_Function]< ( "static" "func" | "override" "func" | "func" ) NAME ( "(" { _FunctionArgument ; "," } ")" ":" @ _Type ( _FunctionStat | ";" ) ) > ||
+|| [560][_Function]< ( "static" "func" | "override" "func" | "func" ) NAME ( "(" { _FunctionArgument ; "," } ")" ":" @ _Type ( _FunctionStat | ";" ) ) > ||
 || [AST-INSTRUCTIONS]:                                                                                                                                   ||
 ||   + Token(13)                                                                                                                                         ||
 || [RETURN STACK]:                                                                                                                                       ||
-||   [7][46][14]: _Function -> [756][_DeclarationCandidates]<! !_Function @ !>                                                                           ||
-||   [6][43][14]: _DeclarationCandidates -> [765][_Declaration]<! { _Attribute } !_DeclarationCandidates @ !>                                            ||
-||   [5][256][14]: _Declaration -> [785][_Module]< "module" ( NAME ";" { _UsingPath } { _Declaration @ } ) >                                             ||
+||   [7][46][14]: _Function -> [754][_DeclarationCandidates]<! !_Function @ !>                                                                           ||
+||   [6][43][14]: _DeclarationCandidates -> [763][_Declaration]<! { _Attribute } !_DeclarationCandidates @ !>                                            ||
+||   [5][256][14]: _Declaration -> [783][_Module]< "module" ( NAME ";" { _UsingPath } { _Declaration @ } ) >                                             ||
 || [PREDECESSORS 19-19]: [19]                                                                                                                            ||
 || [SUCCESORS 21-21]: [21]                                                                                                                               ||
 ++=======================================================================================================================================================++
@@ -314,10 +314,10 @@
 ||   + StackBegin()                                                                                                                                                               ||
 ||   + Token(0)                                                                                                                                                                   ||
 || [RETURN STACK]:                                                                                                                                                                ||
-||   [8][186][20]: _Type -> [565][_Function]< ( "static" "func" | "override" "func" | "func" ) NAME ( "(" { _FunctionArgument ; "," } ")" ":" _Type @ ( _FunctionStat | ";" ) ) > ||
-||   [7][46][14]: _Function -> [756][_DeclarationCandidates]<! !_Function @ !>                                                                                                    ||
-||   [6][43][14]: _DeclarationCandidates -> [765][_Declaration]<! { _Attribute } !_DeclarationCandidates @ !>                                                                     ||
-||   [5][256][14]: _Declaration -> [785][_Module]< "module" ( NAME ";" { _UsingPath } { _Declaration @ } ) >                                                                      ||
+||   [8][186][20]: _Type -> [563][_Function]< ( "static" "func" | "override" "func" | "func" ) NAME ( "(" { _FunctionArgument ; "," } ")" ":" _Type @ ( _FunctionStat | ";" ) ) > ||
+||   [7][46][14]: _Function -> [754][_DeclarationCandidates]<! !_Function @ !>                                                                                                    ||
+||   [6][43][14]: _DeclarationCandidates -> [763][_Declaration]<! { _Attribute } !_DeclarationCandidates @ !>                                                                     ||
+||   [5][256][14]: _Declaration -> [783][_Module]< "module" ( NAME ";" { _UsingPath } { _Declaration @ } ) >                                                                      ||
 || [PREDECESSORS 20-20]: [20]                                                                                                                                                     ||
 || [SUCCESORS 23-23]: [23]                                                                                                                                                        ||
 ++================================================================================================================================================================================++
@@ -326,7 +326,7 @@
 |
 +-------------------------------------------------------------------------------------------------------------------------------------------------------+
 | [23]: <Ending>                                                                                                                                        |
-| [565][_Function]< ( "static" "func" | "override" "func" | "func" ) NAME ( "(" { _FunctionArgument ; "," } ")" ":" _Type @ ( _FunctionStat | ";" ) ) > |
+| [563][_Function]< ( "static" "func" | "override" "func" | "func" ) NAME ( "(" { _FunctionArgument ; "," } ")" ":" _Type @ ( _FunctionStat | ";" ) ) > |
 | [AST-INSTRUCTIONS]:                                                                                                                                   |
 |   + EnumItem(0, 1)                                                                                                                                    |
 |   + CreateObject(PredefinedType)                                                                                                                      |
@@ -334,9 +334,9 @@
 |   + StackEnd()                                                                                                                                        |
 |   > StackSlot(14)                                                                                                                                     |
 | [RETURN STACK]:                                                                                                                                       |
-|   [7][46][14]: _Function -> [756][_DeclarationCandidates]<! !_Function @ !>                                                                           |
-|   [6][43][14]: _DeclarationCandidates -> [765][_Declaration]<! { _Attribute } !_DeclarationCandidates @ !>                                            |
-|   [5][256][14]: _Declaration -> [785][_Module]< "module" ( NAME ";" { _UsingPath } { _Declaration @ } ) >                                             |
+|   [7][46][14]: _Function -> [754][_DeclarationCandidates]<! !_Function @ !>                                                                           |
+|   [6][43][14]: _DeclarationCandidates -> [763][_Declaration]<! { _Attribute } !_DeclarationCandidates @ !>                                            |
+|   [5][256][14]: _Declaration -> [783][_Module]< "module" ( NAME ";" { _UsingPath } { _Declaration @ } ) >                                             |
 | [PREDECESSORS 21-21]: [21]                                                                                                                            |
 | [SUCCESORS 25-25]: [25]                                                                                                                               |
 +-------------------------------------------------------------------------------------------------------------------------------------------------------+
@@ -347,16 +347,16 @@
 [0]
 ++========================================================================================================================================================================================++
 || [25]: {OPEN_BRACE} {                                                                                                                                                                   ||
-|| [348][_Block]< "{" @ { _Statement } [ NAME ":" ";" ] "}" >                                                                                                                             ||
+|| [346][_Block]< "{" @ { _Statement } [ NAME ":" ";" ] "}" >                                                                                                                             ||
 || [AST-INSTRUCTIONS]:                                                                                                                                                                    ||
 ||   + StackBegin()                                                                                                                                                                       ||
 ||   + Token(0)                                                                                                                                                                           ||
 || [RETURN STACK]:                                                                                                                                                                        ||
-||   [10][178][23]: _Block -> [548][_FunctionStat]<! !_Block @ !>                                                                                                                         ||
-||   [9][187][23]: _FunctionStat -> [563][_Function]< ( "static" "func" | "override" "func" | "func" ) NAME ( "(" { _FunctionArgument ; "," } ")" ":" _Type ( _FunctionStat @ | ";" ) ) > ||
-||   [7][46][14]: _Function -> [756][_DeclarationCandidates]<! !_Function @ !>                                                                                                            ||
-||   [6][43][14]: _DeclarationCandidates -> [765][_Declaration]<! { _Attribute } !_DeclarationCandidates @ !>                                                                             ||
-||   [5][256][14]: _Declaration -> [785][_Module]< "module" ( NAME ";" { _UsingPath } { _Declaration @ } ) >                                                                              ||
+||   [10][178][23]: _Block -> [546][_FunctionStat]<! !_Block @ !>                                                                                                                         ||
+||   [9][187][23]: _FunctionStat -> [561][_Function]< ( "static" "func" | "override" "func" | "func" ) NAME ( "(" { _FunctionArgument ; "," } ")" ":" _Type ( _FunctionStat @ | ";" ) ) > ||
+||   [7][46][14]: _Function -> [754][_DeclarationCandidates]<! !_Function @ !>                                                                                                            ||
+||   [6][43][14]: _DeclarationCandidates -> [763][_Declaration]<! { _Attribute } !_DeclarationCandidates @ !>                                                                             ||
+||   [5][256][14]: _Declaration -> [783][_Module]< "module" ( NAME ";" { _UsingPath } { _Declaration @ } ) >                                                                              ||
 || [PREDECESSORS 23-23]: [23]                                                                                                                                                             ||
 || [SUCCESORS 26-26]: [26]                                                                                                                                                                ||
 ++========================================================================================================================================================================================++
@@ -384,15 +384,15 @@
 ||   [17][13][25]: _Exp7 -> [314][_Exp8]<! !_Exp7 @ !>                                                                                                                                    ||
 ||   [16][12][25]: _Exp8 -> [320][_Exp9]<! !_Exp8 @ !>                                                                                                                                    ||
 ||   [15][11][25]: _Exp9 -> [322][_Exp10] BEGIN [pm-lr]                                                                                                                                   ||
-||   [14][10][25]: _Exp10 -> [331][_Exp11] BEGIN [pm-lr]                                                                                                                                  ||
-||   [13][9][25]: _Exp11 -> [339][_Expression]<! !_Exp11 @ !>                                                                                                                             ||
-||   [12][116][25]: _Expression -> [491][_Statement]< _Expression @ ";" >                                                                                                                 ||
-||   [11][115][25]: _Statement -> [349][_Block]< "{" { _Statement @ } [ NAME ":" ";" ] "}" >                                                                                              ||
-||   [10][178][23]: _Block -> [548][_FunctionStat]<! !_Block @ !>                                                                                                                         ||
-||   [9][187][23]: _FunctionStat -> [563][_Function]< ( "static" "func" | "override" "func" | "func" ) NAME ( "(" { _FunctionArgument ; "," } ")" ":" _Type ( _FunctionStat @ | ";" ) ) > ||
-||   [7][46][14]: _Function -> [756][_DeclarationCandidates]<! !_Function @ !>                                                                                                            ||
-||   [6][43][14]: _DeclarationCandidates -> [765][_Declaration]<! { _Attribute } !_DeclarationCandidates @ !>                                                                             ||
-||   [5][256][14]: _Declaration -> [785][_Module]< "module" ( NAME ";" { _UsingPath } { _Declaration @ } ) >                                                                              ||
+||   [14][10][25]: _Exp10 -> [330][_Exp11] BEGIN [pm-lr]                                                                                                                                  ||
+||   [13][9][25]: _Exp11 -> [337][_Expression]<! !_Exp11 @ !>                                                                                                                             ||
+||   [12][116][25]: _Expression -> [489][_Statement]< _Expression @ ";" >                                                                                                                 ||
+||   [11][115][25]: _Statement -> [347][_Block]< "{" { _Statement @ } [ NAME ":" ";" ] "}" >                                                                                              ||
+||   [10][178][23]: _Block -> [546][_FunctionStat]<! !_Block @ !>                                                                                                                         ||
+||   [9][187][23]: _FunctionStat -> [561][_Function]< ( "static" "func" | "override" "func" | "func" ) NAME ( "(" { _FunctionArgument ; "," } ")" ":" _Type ( _FunctionStat @ | ";" ) ) > ||
+||   [7][46][14]: _Function -> [754][_DeclarationCandidates]<! !_Function @ !>                                                                                                            ||
+||   [6][43][14]: _DeclarationCandidates -> [763][_Declaration]<! { _Attribute } !_DeclarationCandidates @ !>                                                                             ||
+||   [5][256][14]: _Declaration -> [783][_Module]< "module" ( NAME ";" { _UsingPath } { _Declaration @ } ) >                                                                              ||
 || [PREDECESSORS 25-25]: [25]                                                                                                                                                             ||
 || [SUCCESORS 27-27]: [27]                                                                                                                                                                ||
 ++========================================================================================================================================================================================++
@@ -419,15 +419,15 @@
 ||   [17][13][25]: _Exp7 -> [314][_Exp8]<! !_Exp7 @ !>                                                                                                                                    ||
 ||   [16][12][25]: _Exp8 -> [320][_Exp9]<! !_Exp8 @ !>                                                                                                                                    ||
 ||   [15][11][25]: _Exp9 -> [322][_Exp10] BEGIN [pm-lr]                                                                                                                                   ||
-||   [14][10][25]: _Exp10 -> [331][_Exp11] BEGIN [pm-lr]                                                                                                                                  ||
-||   [13][9][25]: _Exp11 -> [339][_Expression]<! !_Exp11 @ !>                                                                                                                             ||
-||   [12][116][25]: _Expression -> [491][_Statement]< _Expression @ ";" >                                                                                                                 ||
-||   [11][115][25]: _Statement -> [349][_Block]< "{" { _Statement @ } [ NAME ":" ";" ] "}" >                                                                                              ||
-||   [10][178][23]: _Block -> [548][_FunctionStat]<! !_Block @ !>                                                                                                                         ||
-||   [9][187][23]: _FunctionStat -> [563][_Function]< ( "static" "func" | "override" "func" | "func" ) NAME ( "(" { _FunctionArgument ; "," } ")" ":" _Type ( _FunctionStat @ | ";" ) ) > ||
-||   [7][46][14]: _Function -> [756][_DeclarationCandidates]<! !_Function @ !>                                                                                                            ||
-||   [6][43][14]: _DeclarationCandidates -> [765][_Declaration]<! { _Attribute } !_DeclarationCandidates @ !>                                                                             ||
-||   [5][256][14]: _Declaration -> [785][_Module]< "module" ( NAME ";" { _UsingPath } { _Declaration @ } ) >                                                                              ||
+||   [14][10][25]: _Exp10 -> [330][_Exp11] BEGIN [pm-lr]                                                                                                                                  ||
+||   [13][9][25]: _Exp11 -> [337][_Expression]<! !_Exp11 @ !>                                                                                                                             ||
+||   [12][116][25]: _Expression -> [489][_Statement]< _Expression @ ";" >                                                                                                                 ||
+||   [11][115][25]: _Statement -> [347][_Block]< "{" { _Statement @ } [ NAME ":" ";" ] "}" >                                                                                              ||
+||   [10][178][23]: _Block -> [546][_FunctionStat]<! !_Block @ !>                                                                                                                         ||
+||   [9][187][23]: _FunctionStat -> [561][_Function]< ( "static" "func" | "override" "func" | "func" ) NAME ( "(" { _FunctionArgument ; "," } ")" ":" _Type ( _FunctionStat @ | ";" ) ) > ||
+||   [7][46][14]: _Function -> [754][_DeclarationCandidates]<! !_Function @ !>                                                                                                            ||
+||   [6][43][14]: _DeclarationCandidates -> [763][_Declaration]<! { _Attribute } !_DeclarationCandidates @ !>                                                                             ||
+||   [5][256][14]: _Declaration -> [783][_Module]< "module" ( NAME ";" { _UsingPath } { _Declaration @ } ) >                                                                              ||
 || [PREDECESSORS 26-26]: [26]                                                                                                                                                             ||
 || [SUCCESORS 28-28]: [28]                                                                                                                                                                ||
 ++========================================================================================================================================================================================++
@@ -454,15 +454,15 @@
 ||   [17][13][25]: _Exp7 -> [314][_Exp8]<! !_Exp7 @ !>                                                                                                                                    ||
 ||   [16][12][25]: _Exp8 -> [320][_Exp9]<! !_Exp8 @ !>                                                                                                                                    ||
 ||   [15][11][25]: _Exp9 -> [322][_Exp10] BEGIN [pm-lr]                                                                                                                                   ||
-||   [14][10][25]: _Exp10 -> [331][_Exp11] BEGIN [pm-lr]                                                                                                                                  ||
-||   [13][9][25]: _Exp11 -> [339][_Expression]<! !_Exp11 @ !>                                                                                                                             ||
-||   [12][116][25]: _Expression -> [491][_Statement]< _Expression @ ";" >                                                                                                                 ||
-||   [11][115][25]: _Statement -> [349][_Block]< "{" { _Statement @ } [ NAME ":" ";" ] "}" >                                                                                              ||
-||   [10][178][23]: _Block -> [548][_FunctionStat]<! !_Block @ !>                                                                                                                         ||
-||   [9][187][23]: _FunctionStat -> [563][_Function]< ( "static" "func" | "override" "func" | "func" ) NAME ( "(" { _FunctionArgument ; "," } ")" ":" _Type ( _FunctionStat @ | ";" ) ) > ||
-||   [7][46][14]: _Function -> [756][_DeclarationCandidates]<! !_Function @ !>                                                                                                            ||
-||   [6][43][14]: _DeclarationCandidates -> [765][_Declaration]<! { _Attribute } !_DeclarationCandidates @ !>                                                                             ||
-||   [5][256][14]: _Declaration -> [785][_Module]< "module" ( NAME ";" { _UsingPath } { _Declaration @ } ) >                                                                              ||
+||   [14][10][25]: _Exp10 -> [330][_Exp11] BEGIN [pm-lr]                                                                                                                                  ||
+||   [13][9][25]: _Exp11 -> [337][_Expression]<! !_Exp11 @ !>                                                                                                                             ||
+||   [12][116][25]: _Expression -> [489][_Statement]< _Expression @ ";" >                                                                                                                 ||
+||   [11][115][25]: _Statement -> [347][_Block]< "{" { _Statement @ } [ NAME ":" ";" ] "}" >                                                                                              ||
+||   [10][178][23]: _Block -> [546][_FunctionStat]<! !_Block @ !>                                                                                                                         ||
+||   [9][187][23]: _FunctionStat -> [561][_Function]< ( "static" "func" | "override" "func" | "func" ) NAME ( "(" { _FunctionArgument ; "," } ")" ":" _Type ( _FunctionStat @ | ";" ) ) > ||
+||   [7][46][14]: _Function -> [754][_DeclarationCandidates]<! !_Function @ !>                                                                                                            ||
+||   [6][43][14]: _DeclarationCandidates -> [763][_Declaration]<! { _Attribute } !_DeclarationCandidates @ !>                                                                             ||
+||   [5][256][14]: _Declaration -> [783][_Module]< "module" ( NAME ";" { _UsingPath } { _Declaration @ } ) >                                                                              ||
 || [PREDECESSORS 27-27]: [27]                                                                                                                                                             ||
 || [SUCCESORS 29-29]: [29]                                                                                                                                                                ||
 ++========================================================================================================================================================================================++
@@ -489,15 +489,15 @@
 |   [17][13][25]: _Exp7 -> [314][_Exp8]<! !_Exp7 @ !>                                                                                                                                    |
 |   [16][12][25]: _Exp8 -> [320][_Exp9]<! !_Exp8 @ !>                                                                                                                                    |
 |   [15][11][25]: _Exp9 -> [322][_Exp10] BEGIN [pm-lr]                                                                                                                                   |
-|   [14][10][25]: _Exp10 -> [331][_Exp11] BEGIN [pm-lr]                                                                                                                                  |
-|   [13][9][25]: _Exp11 -> [339][_Expression]<! !_Exp11 @ !>                                                                                                                             |
-|   [12][116][25]: _Expression -> [491][_Statement]< _Expression @ ";" >                                                                                                                 |
-|   [11][115][25]: _Statement -> [349][_Block]< "{" { _Statement @ } [ NAME ":" ";" ] "}" >                                                                                              |
-|   [10][178][23]: _Block -> [548][_FunctionStat]<! !_Block @ !>                                                                                                                         |
-|   [9][187][23]: _FunctionStat -> [563][_Function]< ( "static" "func" | "override" "func" | "func" ) NAME ( "(" { _FunctionArgument ; "," } ")" ":" _Type ( _FunctionStat @ | ";" ) ) > |
-|   [7][46][14]: _Function -> [756][_DeclarationCandidates]<! !_Function @ !>                                                                                                            |
-|   [6][43][14]: _DeclarationCandidates -> [765][_Declaration]<! { _Attribute } !_DeclarationCandidates @ !>                                                                             |
-|   [5][256][14]: _Declaration -> [785][_Module]< "module" ( NAME ";" { _UsingPath } { _Declaration @ } ) >                                                                              |
+|   [14][10][25]: _Exp10 -> [330][_Exp11] BEGIN [pm-lr]                                                                                                                                  |
+|   [13][9][25]: _Exp11 -> [337][_Expression]<! !_Exp11 @ !>                                                                                                                             |
+|   [12][116][25]: _Expression -> [489][_Statement]< _Expression @ ";" >                                                                                                                 |
+|   [11][115][25]: _Statement -> [347][_Block]< "{" { _Statement @ } [ NAME ":" ";" ] "}" >                                                                                              |
+|   [10][178][23]: _Block -> [546][_FunctionStat]<! !_Block @ !>                                                                                                                         |
+|   [9][187][23]: _FunctionStat -> [561][_Function]< ( "static" "func" | "override" "func" | "func" ) NAME ( "(" { _FunctionArgument ; "," } ")" ":" _Type ( _FunctionStat @ | ";" ) ) > |
+|   [7][46][14]: _Function -> [754][_DeclarationCandidates]<! !_Function @ !>                                                                                                            |
+|   [6][43][14]: _DeclarationCandidates -> [763][_Declaration]<! { _Attribute } !_DeclarationCandidates @ !>                                                                             |
+|   [5][256][14]: _Declaration -> [783][_Module]< "module" ( NAME ";" { _UsingPath } { _Declaration @ } ) >                                                                              |
 | [PREDECESSORS 28-28]: [28]                                                                                                                                                             |
 | [SUCCESORS 30-30]: [30]                                                                                                                                                                |
 +----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------+
@@ -521,15 +521,15 @@
 |   [17][13][25]: _Exp7 -> [314][_Exp8]<! !_Exp7 @ !>                                                                                                                                    |
 |   [16][12][25]: _Exp8 -> [320][_Exp9]<! !_Exp8 @ !>                                                                                                                                    |
 |   [15][11][25]: _Exp9 -> [322][_Exp10] BEGIN [pm-lr]                                                                                                                                   |
-|   [14][10][25]: _Exp10 -> [331][_Exp11] BEGIN [pm-lr]                                                                                                                                  |
-|   [13][9][25]: _Exp11 -> [339][_Expression]<! !_Exp11 @ !>                                                                                                                             |
-|   [12][116][25]: _Expression -> [491][_Statement]< _Expression @ ";" >                                                                                                                 |
-|   [11][115][25]: _Statement -> [349][_Block]< "{" { _Statement @ } [ NAME ":" ";" ] "}" >                                                                                              |
-|   [10][178][23]: _Block -> [548][_FunctionStat]<! !_Block @ !>                                                                                                                         |
-|   [9][187][23]: _FunctionStat -> [563][_Function]< ( "static" "func" | "override" "func" | "func" ) NAME ( "(" { _FunctionArgument ; "," } ")" ":" _Type ( _FunctionStat @ | ";" ) ) > |
-|   [7][46][14]: _Function -> [756][_DeclarationCandidates]<! !_Function @ !>                                                                                                            |
-|   [6][43][14]: _DeclarationCandidates -> [765][_Declaration]<! { _Attribute } !_DeclarationCandidates @ !>                                                                             |
-|   [5][256][14]: _Declaration -> [785][_Module]< "module" ( NAME ";" { _UsingPath } { _Declaration @ } ) >                                                                              |
+|   [14][10][25]: _Exp10 -> [330][_Exp11] BEGIN [pm-lr]                                                                                                                                  |
+|   [13][9][25]: _Exp11 -> [337][_Expression]<! !_Exp11 @ !>                                                                                                                             |
+|   [12][116][25]: _Expression -> [489][_Statement]< _Expression @ ";" >                                                                                                                 |
+|   [11][115][25]: _Statement -> [347][_Block]< "{" { _Statement @ } [ NAME ":" ";" ] "}" >                                                                                              |
+|   [10][178][23]: _Block -> [546][_FunctionStat]<! !_Block @ !>                                                                                                                         |
+|   [9][187][23]: _FunctionStat -> [561][_Function]< ( "static" "func" | "override" "func" | "func" ) NAME ( "(" { _FunctionArgument ; "," } ")" ":" _Type ( _FunctionStat @ | ";" ) ) > |
+|   [7][46][14]: _Function -> [754][_DeclarationCandidates]<! !_Function @ !>                                                                                                            |
+|   [6][43][14]: _DeclarationCandidates -> [763][_Declaration]<! { _Attribute } !_DeclarationCandidates @ !>                                                                             |
+|   [5][256][14]: _Declaration -> [783][_Module]< "module" ( NAME ";" { _UsingPath } { _Declaration @ } ) >                                                                              |
 | [PREDECESSORS 29-29]: [29]                                                                                                                                                             |
 | [SUCCESORS 31-31]: [31]                                                                                                                                                                |
 +----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------+
@@ -552,15 +552,15 @@
 |   [17][13][25]: _Exp7 -> [314][_Exp8]<! !_Exp7 @ !>                                                                                                                                    |
 |   [16][12][25]: _Exp8 -> [320][_Exp9]<! !_Exp8 @ !>                                                                                                                                    |
 |   [15][11][25]: _Exp9 -> [322][_Exp10] BEGIN [pm-lr]                                                                                                                                   |
-|   [14][10][25]: _Exp10 -> [331][_Exp11] BEGIN [pm-lr]                                                                                                                                  |
-|   [13][9][25]: _Exp11 -> [339][_Expression]<! !_Exp11 @ !>                                                                                                                             |
-|   [12][116][25]: _Expression -> [491][_Statement]< _Expression @ ";" >                                                                                                                 |
-|   [11][115][25]: _Statement -> [349][_Block]< "{" { _Statement @ } [ NAME ":" ";" ] "}" >                                                                                              |
-|   [10][178][23]: _Block -> [548][_FunctionStat]<! !_Block @ !>                                                                                                                         |
-|   [9][187][23]: _FunctionStat -> [563][_Function]< ( "static" "func" | "override" "func" | "func" ) NAME ( "(" { _FunctionArgument ; "," } ")" ":" _Type ( _FunctionStat @ | ";" ) ) > |
-|   [7][46][14]: _Function -> [756][_DeclarationCandidates]<! !_Function @ !>                                                                                                            |
-|   [6][43][14]: _DeclarationCandidates -> [765][_Declaration]<! { _Attribute } !_DeclarationCandidates @ !>                                                                             |
-|   [5][256][14]: _Declaration -> [785][_Module]< "module" ( NAME ";" { _UsingPath } { _Declaration @ } ) >                                                                              |
+|   [14][10][25]: _Exp10 -> [330][_Exp11] BEGIN [pm-lr]                                                                                                                                  |
+|   [13][9][25]: _Exp11 -> [337][_Expression]<! !_Exp11 @ !>                                                                                                                             |
+|   [12][116][25]: _Expression -> [489][_Statement]< _Expression @ ";" >                                                                                                                 |
+|   [11][115][25]: _Statement -> [347][_Block]< "{" { _Statement @ } [ NAME ":" ";" ] "}" >                                                                                              |
+|   [10][178][23]: _Block -> [546][_FunctionStat]<! !_Block @ !>                                                                                                                         |
+|   [9][187][23]: _FunctionStat -> [561][_Function]< ( "static" "func" | "override" "func" | "func" ) NAME ( "(" { _FunctionArgument ; "," } ")" ":" _Type ( _FunctionStat @ | ";" ) ) > |
+|   [7][46][14]: _Function -> [754][_DeclarationCandidates]<! !_Function @ !>                                                                                                            |
+|   [6][43][14]: _DeclarationCandidates -> [763][_Declaration]<! { _Attribute } !_DeclarationCandidates @ !>                                                                             |
+|   [5][256][14]: _Declaration -> [783][_Module]< "module" ( NAME ";" { _UsingPath } { _Declaration @ } ) >                                                                              |
 | [PREDECESSORS 30-30]: [30]                                                                                                                                                             |
 | [SUCCESORS 32-32]: [32]                                                                                                                                                                |
 +----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------+
@@ -582,15 +582,15 @@
 |   [17][13][25]: _Exp7 -> [314][_Exp8]<! !_Exp7 @ !>                                                                                                                                    |
 |   [16][12][25]: _Exp8 -> [320][_Exp9]<! !_Exp8 @ !>                                                                                                                                    |
 |   [15][11][25]: _Exp9 -> [322][_Exp10] BEGIN [pm-lr]                                                                                                                                   |
-|   [14][10][25]: _Exp10 -> [331][_Exp11] BEGIN [pm-lr]                                                                                                                                  |
-|   [13][9][25]: _Exp11 -> [339][_Expression]<! !_Exp11 @ !>                                                                                                                             |
-|   [12][116][25]: _Expression -> [491][_Statement]< _Expression @ ";" >                                                                                                                 |
-|   [11][115][25]: _Statement -> [349][_Block]< "{" { _Statement @ } [ NAME ":" ";" ] "}" >                                                                                              |
-|   [10][178][23]: _Block -> [548][_FunctionStat]<! !_Block @ !>                                                                                                                         |
-|   [9][187][23]: _FunctionStat -> [563][_Function]< ( "static" "func" | "override" "func" | "func" ) NAME ( "(" { _FunctionArgument ; "," } ")" ":" _Type ( _FunctionStat @ | ";" ) ) > |
-|   [7][46][14]: _Function -> [756][_DeclarationCandidates]<! !_Function @ !>                                                                                                            |
-|   [6][43][14]: _DeclarationCandidates -> [765][_Declaration]<! { _Attribute } !_DeclarationCandidates @ !>                                                                             |
-|   [5][256][14]: _Declaration -> [785][_Module]< "module" ( NAME ";" { _UsingPath } { _Declaration @ } ) >                                                                              |
+|   [14][10][25]: _Exp10 -> [330][_Exp11] BEGIN [pm-lr]                                                                                                                                  |
+|   [13][9][25]: _Exp11 -> [337][_Expression]<! !_Exp11 @ !>                                                                                                                             |
+|   [12][116][25]: _Expression -> [489][_Statement]< _Expression @ ";" >                                                                                                                 |
+|   [11][115][25]: _Statement -> [347][_Block]< "{" { _Statement @ } [ NAME ":" ";" ] "}" >                                                                                              |
+|   [10][178][23]: _Block -> [546][_FunctionStat]<! !_Block @ !>                                                                                                                         |
+|   [9][187][23]: _FunctionStat -> [561][_Function]< ( "static" "func" | "override" "func" | "func" ) NAME ( "(" { _FunctionArgument ; "," } ")" ":" _Type ( _FunctionStat @ | ";" ) ) > |
+|   [7][46][14]: _Function -> [754][_DeclarationCandidates]<! !_Function @ !>                                                                                                            |
+|   [6][43][14]: _DeclarationCandidates -> [763][_Declaration]<! { _Attribute } !_DeclarationCandidates @ !>                                                                             |
+|   [5][256][14]: _Declaration -> [783][_Module]< "module" ( NAME ";" { _UsingPath } { _Declaration @ } ) >                                                                              |
 | [PREDECESSORS 31-31]: [31]                                                                                                                                                             |
 | [SUCCESORS 33-33]: [33]                                                                                                                                                                |
 +----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------+
@@ -611,15 +611,15 @@
 |   [17][13][25]: _Exp7 -> [314][_Exp8]<! !_Exp7 @ !>                                                                                                                                    |
 |   [16][12][25]: _Exp8 -> [320][_Exp9]<! !_Exp8 @ !>                                                                                                                                    |
 |   [15][11][25]: _Exp9 -> [322][_Exp10] BEGIN [pm-lr]                                                                                                                                   |
-|   [14][10][25]: _Exp10 -> [331][_Exp11] BEGIN [pm-lr]                                                                                                                                  |
-|   [13][9][25]: _Exp11 -> [339][_Expression]<! !_Exp11 @ !>                                                                                                                             |
-|   [12][116][25]: _Expression -> [491][_Statement]< _Expression @ ";" >                                                                                                                 |
-|   [11][115][25]: _Statement -> [349][_Block]< "{" { _Statement @ } [ NAME ":" ";" ] "}" >                                                                                              |
-|   [10][178][23]: _Block -> [548][_FunctionStat]<! !_Block @ !>                                                                                                                         |
-|   [9][187][23]: _FunctionStat -> [563][_Function]< ( "static" "func" | "override" "func" | "func" ) NAME ( "(" { _FunctionArgument ; "," } ")" ":" _Type ( _FunctionStat @ | ";" ) ) > |
-|   [7][46][14]: _Function -> [756][_DeclarationCandidates]<! !_Function @ !>                                                                                                            |
-|   [6][43][14]: _DeclarationCandidates -> [765][_Declaration]<! { _Attribute } !_DeclarationCandidates @ !>                                                                             |
-|   [5][256][14]: _Declaration -> [785][_Module]< "module" ( NAME ";" { _UsingPath } { _Declaration @ } ) >                                                                              |
+|   [14][10][25]: _Exp10 -> [330][_Exp11] BEGIN [pm-lr]                                                                                                                                  |
+|   [13][9][25]: _Exp11 -> [337][_Expression]<! !_Exp11 @ !>                                                                                                                             |
+|   [12][116][25]: _Expression -> [489][_Statement]< _Expression @ ";" >                                                                                                                 |
+|   [11][115][25]: _Statement -> [347][_Block]< "{" { _Statement @ } [ NAME ":" ";" ] "}" >                                                                                              |
+|   [10][178][23]: _Block -> [546][_FunctionStat]<! !_Block @ !>                                                                                                                         |
+|   [9][187][23]: _FunctionStat -> [561][_Function]< ( "static" "func" | "override" "func" | "func" ) NAME ( "(" { _FunctionArgument ; "," } ")" ":" _Type ( _FunctionStat @ | ";" ) ) > |
+|   [7][46][14]: _Function -> [754][_DeclarationCandidates]<! !_Function @ !>                                                                                                            |
+|   [6][43][14]: _DeclarationCandidates -> [763][_Declaration]<! { _Attribute } !_DeclarationCandidates @ !>                                                                             |
+|   [5][256][14]: _Declaration -> [783][_Module]< "module" ( NAME ";" { _UsingPath } { _Declaration @ } ) >                                                                              |
 | [PREDECESSORS 32-32]: [32]                                                                                                                                                             |
 | [SUCCESORS 34-34]: [34]                                                                                                                                                                |
 +----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------+
@@ -639,15 +639,15 @@
 |   [17][13][25]: _Exp7 -> [314][_Exp8]<! !_Exp7 @ !>                                                                                                                                    |
 |   [16][12][25]: _Exp8 -> [320][_Exp9]<! !_Exp8 @ !>                                                                                                                                    |
 |   [15][11][25]: _Exp9 -> [322][_Exp10] BEGIN [pm-lr]                                                                                                                                   |
-|   [14][10][25]: _Exp10 -> [331][_Exp11] BEGIN [pm-lr]                                                                                                                                  |
-|   [13][9][25]: _Exp11 -> [339][_Expression]<! !_Exp11 @ !>                                                                                                                             |
-|   [12][116][25]: _Expression -> [491][_Statement]< _Expression @ ";" >                                                                                                                 |
-|   [11][115][25]: _Statement -> [349][_Block]< "{" { _Statement @ } [ NAME ":" ";" ] "}" >                                                                                              |
-|   [10][178][23]: _Block -> [548][_FunctionStat]<! !_Block @ !>                                                                                                                         |
-|   [9][187][23]: _FunctionStat -> [563][_Function]< ( "static" "func" | "override" "func" | "func" ) NAME ( "(" { _FunctionArgument ; "," } ")" ":" _Type ( _FunctionStat @ | ";" ) ) > |
-|   [7][46][14]: _Function -> [756][_DeclarationCandidates]<! !_Function @ !>                                                                                                            |
-|   [6][43][14]: _DeclarationCandidates -> [765][_Declaration]<! { _Attribute } !_DeclarationCandidates @ !>                                                                             |
-|   [5][256][14]: _Declaration -> [785][_Module]< "module" ( NAME ";" { _UsingPath } { _Declaration @ } ) >                                                                              |
+|   [14][10][25]: _Exp10 -> [330][_Exp11] BEGIN [pm-lr]                                                                                                                                  |
+|   [13][9][25]: _Exp11 -> [337][_Expression]<! !_Exp11 @ !>                                                                                                                             |
+|   [12][116][25]: _Expression -> [489][_Statement]< _Expression @ ";" >                                                                                                                 |
+|   [11][115][25]: _Statement -> [347][_Block]< "{" { _Statement @ } [ NAME ":" ";" ] "}" >                                                                                              |
+|   [10][178][23]: _Block -> [546][_FunctionStat]<! !_Block @ !>                                                                                                                         |
+|   [9][187][23]: _FunctionStat -> [561][_Function]< ( "static" "func" | "override" "func" | "func" ) NAME ( "(" { _FunctionArgument ; "," } ")" ":" _Type ( _FunctionStat @ | ";" ) ) > |
+|   [7][46][14]: _Function -> [754][_DeclarationCandidates]<! !_Function @ !>                                                                                                            |
+|   [6][43][14]: _DeclarationCandidates -> [763][_Declaration]<! { _Attribute } !_DeclarationCandidates @ !>                                                                             |
+|   [5][256][14]: _Declaration -> [783][_Module]< "module" ( NAME ";" { _UsingPath } { _Declaration @ } ) >                                                                              |
 | [PREDECESSORS 33-33]: [33]                                                                                                                                                             |
 | [SUCCESORS 35-35]: [35]                                                                                                                                                                |
 +----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------+
@@ -666,15 +666,15 @@
 |   [17][13][25]: _Exp7 -> [314][_Exp8]<! !_Exp7 @ !>                                                                                                                                    |
 |   [16][12][25]: _Exp8 -> [320][_Exp9]<! !_Exp8 @ !>                                                                                                                                    |
 |   [15][11][25]: _Exp9 -> [322][_Exp10] BEGIN [pm-lr]                                                                                                                                   |
-|   [14][10][25]: _Exp10 -> [331][_Exp11] BEGIN [pm-lr]                                                                                                                                  |
-|   [13][9][25]: _Exp11 -> [339][_Expression]<! !_Exp11 @ !>                                                                                                                             |
-|   [12][116][25]: _Expression -> [491][_Statement]< _Expression @ ";" >                                                                                                                 |
-|   [11][115][25]: _Statement -> [349][_Block]< "{" { _Statement @ } [ NAME ":" ";" ] "}" >                                                                                              |
-|   [10][178][23]: _Block -> [548][_FunctionStat]<! !_Block @ !>                                                                                                                         |
-|   [9][187][23]: _FunctionStat -> [563][_Function]< ( "static" "func" | "override" "func" | "func" ) NAME ( "(" { _FunctionArgument ; "," } ")" ":" _Type ( _FunctionStat @ | ";" ) ) > |
-|   [7][46][14]: _Function -> [756][_DeclarationCandidates]<! !_Function @ !>                                                                                                            |
-|   [6][43][14]: _DeclarationCandidates -> [765][_Declaration]<! { _Attribute } !_DeclarationCandidates @ !>                                                                             |
-|   [5][256][14]: _Declaration -> [785][_Module]< "module" ( NAME ";" { _UsingPath } { _Declaration @ } ) >                                                                              |
+|   [14][10][25]: _Exp10 -> [330][_Exp11] BEGIN [pm-lr]                                                                                                                                  |
+|   [13][9][25]: _Exp11 -> [337][_Expression]<! !_Exp11 @ !>                                                                                                                             |
+|   [12][116][25]: _Expression -> [489][_Statement]< _Expression @ ";" >                                                                                                                 |
+|   [11][115][25]: _Statement -> [347][_Block]< "{" { _Statement @ } [ NAME ":" ";" ] "}" >                                                                                              |
+|   [10][178][23]: _Block -> [546][_FunctionStat]<! !_Block @ !>                                                                                                                         |
+|   [9][187][23]: _FunctionStat -> [561][_Function]< ( "static" "func" | "override" "func" | "func" ) NAME ( "(" { _FunctionArgument ; "," } ")" ":" _Type ( _FunctionStat @ | ";" ) ) > |
+|   [7][46][14]: _Function -> [754][_DeclarationCandidates]<! !_Function @ !>                                                                                                            |
+|   [6][43][14]: _DeclarationCandidates -> [763][_Declaration]<! { _Attribute } !_DeclarationCandidates @ !>                                                                             |
+|   [5][256][14]: _Declaration -> [783][_Module]< "module" ( NAME ";" { _UsingPath } { _Declaration @ } ) >                                                                              |
 | [PREDECESSORS 34-34]: [34]                                                                                                                                                             |
 | [SUCCESORS 36-36]: [36]                                                                                                                                                                |
 +----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------+
@@ -692,15 +692,15 @@
 |   [17][13][25]: _Exp7 -> [314][_Exp8]<! !_Exp7 @ !>                                                                                                                                    |
 |   [16][12][25]: _Exp8 -> [320][_Exp9]<! !_Exp8 @ !>                                                                                                                                    |
 |   [15][11][25]: _Exp9 -> [322][_Exp10] BEGIN [pm-lr]                                                                                                                                   |
-|   [14][10][25]: _Exp10 -> [331][_Exp11] BEGIN [pm-lr]                                                                                                                                  |
-|   [13][9][25]: _Exp11 -> [339][_Expression]<! !_Exp11 @ !>                                                                                                                             |
-|   [12][116][25]: _Expression -> [491][_Statement]< _Expression @ ";" >                                                                                                                 |
-|   [11][115][25]: _Statement -> [349][_Block]< "{" { _Statement @ } [ NAME ":" ";" ] "}" >                                                                                              |
-|   [10][178][23]: _Block -> [548][_FunctionStat]<! !_Block @ !>                                                                                                                         |
-|   [9][187][23]: _FunctionStat -> [563][_Function]< ( "static" "func" | "override" "func" | "func" ) NAME ( "(" { _FunctionArgument ; "," } ")" ":" _Type ( _FunctionStat @ | ";" ) ) > |
-|   [7][46][14]: _Function -> [756][_DeclarationCandidates]<! !_Function @ !>                                                                                                            |
-|   [6][43][14]: _DeclarationCandidates -> [765][_Declaration]<! { _Attribute } !_DeclarationCandidates @ !>                                                                             |
-|   [5][256][14]: _Declaration -> [785][_Module]< "module" ( NAME ";" { _UsingPath } { _Declaration @ } ) >                                                                              |
+|   [14][10][25]: _Exp10 -> [330][_Exp11] BEGIN [pm-lr]                                                                                                                                  |
+|   [13][9][25]: _Exp11 -> [337][_Expression]<! !_Exp11 @ !>                                                                                                                             |
+|   [12][116][25]: _Expression -> [489][_Statement]< _Expression @ ";" >                                                                                                                 |
+|   [11][115][25]: _Statement -> [347][_Block]< "{" { _Statement @ } [ NAME ":" ";" ] "}" >                                                                                              |
+|   [10][178][23]: _Block -> [546][_FunctionStat]<! !_Block @ !>                                                                                                                         |
+|   [9][187][23]: _FunctionStat -> [561][_Function]< ( "static" "func" | "override" "func" | "func" ) NAME ( "(" { _FunctionArgument ; "," } ")" ":" _Type ( _FunctionStat @ | ";" ) ) > |
+|   [7][46][14]: _Function -> [754][_DeclarationCandidates]<! !_Function @ !>                                                                                                            |
+|   [6][43][14]: _DeclarationCandidates -> [763][_Declaration]<! { _Attribute } !_DeclarationCandidates @ !>                                                                             |
+|   [5][256][14]: _Declaration -> [783][_Module]< "module" ( NAME ";" { _UsingPath } { _Declaration @ } ) >                                                                              |
 | [PREDECESSORS 35-35]: [35]                                                                                                                                                             |
 | [SUCCESORS 37-37]: [37]                                                                                                                                                                |
 +----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------+
@@ -717,15 +717,15 @@
 |   [17][13][25]: _Exp7 -> [314][_Exp8]<! !_Exp7 @ !>                                                                                                                                    |
 |   [16][12][25]: _Exp8 -> [320][_Exp9]<! !_Exp8 @ !>                                                                                                                                    |
 |   [15][11][25]: _Exp9 -> [322][_Exp10] BEGIN [pm-lr]                                                                                                                                   |
-|   [14][10][25]: _Exp10 -> [331][_Exp11] BEGIN [pm-lr]                                                                                                                                  |
-|   [13][9][25]: _Exp11 -> [339][_Expression]<! !_Exp11 @ !>                                                                                                                             |
-|   [12][116][25]: _Expression -> [491][_Statement]< _Expression @ ";" >                                                                                                                 |
-|   [11][115][25]: _Statement -> [349][_Block]< "{" { _Statement @ } [ NAME ":" ";" ] "}" >                                                                                              |
-|   [10][178][23]: _Block -> [548][_FunctionStat]<! !_Block @ !>                                                                                                                         |
-|   [9][187][23]: _FunctionStat -> [563][_Function]< ( "static" "func" | "override" "func" | "func" ) NAME ( "(" { _FunctionArgument ; "," } ")" ":" _Type ( _FunctionStat @ | ";" ) ) > |
-|   [7][46][14]: _Function -> [756][_DeclarationCandidates]<! !_Function @ !>                                                                                                            |
-|   [6][43][14]: _DeclarationCandidates -> [765][_Declaration]<! { _Attribute } !_DeclarationCandidates @ !>                                                                             |
-|   [5][256][14]: _Declaration -> [785][_Module]< "module" ( NAME ";" { _UsingPath } { _Declaration @ } ) >                                                                              |
+|   [14][10][25]: _Exp10 -> [330][_Exp11] BEGIN [pm-lr]                                                                                                                                  |
+|   [13][9][25]: _Exp11 -> [337][_Expression]<! !_Exp11 @ !>                                                                                                                             |
+|   [12][116][25]: _Expression -> [489][_Statement]< _Expression @ ";" >                                                                                                                 |
+|   [11][115][25]: _Statement -> [347][_Block]< "{" { _Statement @ } [ NAME ":" ";" ] "}" >                                                                                              |
+|   [10][178][23]: _Block -> [546][_FunctionStat]<! !_Block @ !>                                                                                                                         |
+|   [9][187][23]: _FunctionStat -> [561][_Function]< ( "static" "func" | "override" "func" | "func" ) NAME ( "(" { _FunctionArgument ; "," } ")" ":" _Type ( _FunctionStat @ | ";" ) ) > |
+|   [7][46][14]: _Function -> [754][_DeclarationCandidates]<! !_Function @ !>                                                                                                            |
+|   [6][43][14]: _DeclarationCandidates -> [763][_Declaration]<! { _Attribute } !_DeclarationCandidates @ !>                                                                             |
+|   [5][256][14]: _Declaration -> [783][_Module]< "module" ( NAME ";" { _UsingPath } { _Declaration @ } ) >                                                                              |
 | [PREDECESSORS 36-36]: [36]                                                                                                                                                             |
 | [SUCCESORS 38-38]: [38]                                                                                                                                                                |
 +----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------+
@@ -741,15 +741,15 @@
 | [RETURN STACK]:                                                                                                                                                                        |
 |   [16][12][25]: _Exp8 -> [320][_Exp9]<! !_Exp8 @ !>                                                                                                                                    |
 |   [15][11][25]: _Exp9 -> [322][_Exp10] BEGIN [pm-lr]                                                                                                                                   |
-|   [14][10][25]: _Exp10 -> [331][_Exp11] BEGIN [pm-lr]                                                                                                                                  |
-|   [13][9][25]: _Exp11 -> [339][_Expression]<! !_Exp11 @ !>                                                                                                                             |
-|   [12][116][25]: _Expression -> [491][_Statement]< _Expression @ ";" >                                                                                                                 |
-|   [11][115][25]: _Statement -> [349][_Block]< "{" { _Statement @ } [ NAME ":" ";" ] "}" >                                                                                              |
-|   [10][178][23]: _Block -> [548][_FunctionStat]<! !_Block @ !>                                                                                                                         |
-|   [9][187][23]: _FunctionStat -> [563][_Function]< ( "static" "func" | "override" "func" | "func" ) NAME ( "(" { _FunctionArgument ; "," } ")" ":" _Type ( _FunctionStat @ | ";" ) ) > |
-|   [7][46][14]: _Function -> [756][_DeclarationCandidates]<! !_Function @ !>                                                                                                            |
-|   [6][43][14]: _DeclarationCandidates -> [765][_Declaration]<! { _Attribute } !_DeclarationCandidates @ !>                                                                             |
-|   [5][256][14]: _Declaration -> [785][_Module]< "module" ( NAME ";" { _UsingPath } { _Declaration @ } ) >                                                                              |
+|   [14][10][25]: _Exp10 -> [330][_Exp11] BEGIN [pm-lr]                                                                                                                                  |
+|   [13][9][25]: _Exp11 -> [337][_Expression]<! !_Exp11 @ !>                                                                                                                             |
+|   [12][116][25]: _Expression -> [489][_Statement]< _Expression @ ";" >                                                                                                                 |
+|   [11][115][25]: _Statement -> [347][_Block]< "{" { _Statement @ } [ NAME ":" ";" ] "}" >                                                                                              |
+|   [10][178][23]: _Block -> [546][_FunctionStat]<! !_Block @ !>                                                                                                                         |
+|   [9][187][23]: _FunctionStat -> [561][_Function]< ( "static" "func" | "override" "func" | "func" ) NAME ( "(" { _FunctionArgument ; "," } ")" ":" _Type ( _FunctionStat @ | ";" ) ) > |
+|   [7][46][14]: _Function -> [754][_DeclarationCandidates]<! !_Function @ !>                                                                                                            |
+|   [6][43][14]: _DeclarationCandidates -> [763][_Declaration]<! { _Attribute } !_DeclarationCandidates @ !>                                                                             |
+|   [5][256][14]: _Declaration -> [783][_Module]< "module" ( NAME ";" { _UsingPath } { _Declaration @ } ) >                                                                              |
 | [PREDECESSORS 37-37]: [37]                                                                                                                                                             |
 | [SUCCESORS 39-39]: [39]                                                                                                                                                                |
 +----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------+
@@ -764,15 +764,15 @@
 |   > StackBegin()                                                                                                                                                                       |
 | [RETURN STACK]:                                                                                                                                                                        |
 |   [15][11][25]: _Exp9 -> [322][_Exp10] BEGIN [pm-lr]                                                                                                                                   |
-|   [14][10][25]: _Exp10 -> [331][_Exp11] BEGIN [pm-lr]                                                                                                                                  |
-|   [13][9][25]: _Exp11 -> [339][_Expression]<! !_Exp11 @ !>                                                                                                                             |
-|   [12][116][25]: _Expression -> [491][_Statement]< _Expression @ ";" >                                                                                                                 |
-|   [11][115][25]: _Statement -> [349][_Block]< "{" { _Statement @ } [ NAME ":" ";" ] "}" >                                                                                              |
-|   [10][178][23]: _Block -> [548][_FunctionStat]<! !_Block @ !>                                                                                                                         |
-|   [9][187][23]: _FunctionStat -> [563][_Function]< ( "static" "func" | "override" "func" | "func" ) NAME ( "(" { _FunctionArgument ; "," } ")" ":" _Type ( _FunctionStat @ | ";" ) ) > |
-|   [7][46][14]: _Function -> [756][_DeclarationCandidates]<! !_Function @ !>                                                                                                            |
-|   [6][43][14]: _DeclarationCandidates -> [765][_Declaration]<! { _Attribute } !_DeclarationCandidates @ !>                                                                             |
-|   [5][256][14]: _Declaration -> [785][_Module]< "module" ( NAME ";" { _UsingPath } { _Declaration @ } ) >                                                                              |
+|   [14][10][25]: _Exp10 -> [330][_Exp11] BEGIN [pm-lr]                                                                                                                                  |
+|   [13][9][25]: _Exp11 -> [337][_Expression]<! !_Exp11 @ !>                                                                                                                             |
+|   [12][116][25]: _Expression -> [489][_Statement]< _Expression @ ";" >                                                                                                                 |
+|   [11][115][25]: _Statement -> [347][_Block]< "{" { _Statement @ } [ NAME ":" ";" ] "}" >                                                                                              |
+|   [10][178][23]: _Block -> [546][_FunctionStat]<! !_Block @ !>                                                                                                                         |
+|   [9][187][23]: _FunctionStat -> [561][_Function]< ( "static" "func" | "override" "func" | "func" ) NAME ( "(" { _FunctionArgument ; "," } ")" ":" _Type ( _FunctionStat @ | ";" ) ) > |
+|   [7][46][14]: _Function -> [754][_DeclarationCandidates]<! !_Function @ !>                                                                                                            |
+|   [6][43][14]: _DeclarationCandidates -> [763][_Declaration]<! { _Attribute } !_DeclarationCandidates @ !>                                                                             |
+|   [5][256][14]: _Declaration -> [783][_Module]< "module" ( NAME ";" { _UsingPath } { _Declaration @ } ) >                                                                              |
 | [PREDECESSORS 38-38]: [38]                                                                                                                                                             |
 | [SUCCESORS 40-40]: [40]                                                                                                                                                                |
 +----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------+
@@ -785,15 +785,15 @@
 | [AST-INSTRUCTIONS]:                                                                                                                                                                    |
 |   + StackEnd()                                                                                                                                                                         |
 | [RETURN STACK]:                                                                                                                                                                        |
-|   [14][10][25]: _Exp10 -> [331][_Exp11] BEGIN [pm-lr]                                                                                                                                  |
-|   [13][9][25]: _Exp11 -> [339][_Expression]<! !_Exp11 @ !>                                                                                                                             |
-|   [12][116][25]: _Expression -> [491][_Statement]< _Expression @ ";" >                                                                                                                 |
-|   [11][115][25]: _Statement -> [349][_Block]< "{" { _Statement @ } [ NAME ":" ";" ] "}" >                                                                                              |
-|   [10][178][23]: _Block -> [548][_FunctionStat]<! !_Block @ !>                                                                                                                         |
-|   [9][187][23]: _FunctionStat -> [563][_Function]< ( "static" "func" | "override" "func" | "func" ) NAME ( "(" { _FunctionArgument ; "," } ")" ":" _Type ( _FunctionStat @ | ";" ) ) > |
-|   [7][46][14]: _Function -> [756][_DeclarationCandidates]<! !_Function @ !>                                                                                                            |
-|   [6][43][14]: _DeclarationCandidates -> [765][_Declaration]<! { _Attribute } !_DeclarationCandidates @ !>                                                                             |
-|   [5][256][14]: _Declaration -> [785][_Module]< "module" ( NAME ";" { _UsingPath } { _Declaration @ } ) >                                                                              |
+|   [14][10][25]: _Exp10 -> [330][_Exp11] BEGIN [pm-lr]                                                                                                                                  |
+|   [13][9][25]: _Exp11 -> [337][_Expression]<! !_Exp11 @ !>                                                                                                                             |
+|   [12][116][25]: _Expression -> [489][_Statement]< _Expression @ ";" >                                                                                                                 |
+|   [11][115][25]: _Statement -> [347][_Block]< "{" { _Statement @ } [ NAME ":" ";" ] "}" >                                                                                              |
+|   [10][178][23]: _Block -> [546][_FunctionStat]<! !_Block @ !>                                                                                                                         |
+|   [9][187][23]: _FunctionStat -> [561][_Function]< ( "static" "func" | "override" "func" | "func" ) NAME ( "(" { _FunctionArgument ; "," } ")" ":" _Type ( _FunctionStat @ | ";" ) ) > |
+|   [7][46][14]: _Function -> [754][_DeclarationCandidates]<! !_Function @ !>                                                                                                            |
+|   [6][43][14]: _DeclarationCandidates -> [763][_Declaration]<! { _Attribute } !_DeclarationCandidates @ !>                                                                             |
+|   [5][256][14]: _Declaration -> [783][_Module]< "module" ( NAME ";" { _UsingPath } { _Declaration @ } ) >                                                                              |
 | [PREDECESSORS 39-39]: [39]                                                                                                                                                             |
 | [SUCCESORS 41-41]: [41]                                                                                                                                                                |
 +----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------+
@@ -801,20 +801,20 @@
 +
 |
 +----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------+
-| [41]: <Leftrec>                                                                                                                                                                        |
-| [329][_Exp10]<! !_Exp9 @ !>                                                                                                                                                            |
+| [41]: <Ending>                                                                                                                                                                         |
+| [330][_Exp11] BEGIN [pm-lr]                                                                                                                                                            |
 | [AST-INSTRUCTIONS]:                                                                                                                                                                    |
 |   + StackBegin()                                                                                                                                                                       |
+|   + StackEnd()                                                                                                                                                                         |
 | [RETURN STACK]:                                                                                                                                                                        |
-|   [14][10][25]: _Exp10 -> [331][_Exp11] BEGIN [pm-lr]                                                                                                                                  |
-|   [13][9][25]: _Exp11 -> [339][_Expression]<! !_Exp11 @ !>                                                                                                                             |
-|   [12][116][25]: _Expression -> [491][_Statement]< _Expression @ ";" >                                                                                                                 |
-|   [11][115][25]: _Statement -> [349][_Block]< "{" { _Statement @ } [ NAME ":" ";" ] "}" >                                                                                              |
-|   [10][178][23]: _Block -> [548][_FunctionStat]<! !_Block @ !>                                                                                                                         |
-|   [9][187][23]: _FunctionStat -> [563][_Function]< ( "static" "func" | "override" "func" | "func" ) NAME ( "(" { _FunctionArgument ; "," } ")" ":" _Type ( _FunctionStat @ | ";" ) ) > |
-|   [7][46][14]: _Function -> [756][_DeclarationCandidates]<! !_Function @ !>                                                                                                            |
-|   [6][43][14]: _DeclarationCandidates -> [765][_Declaration]<! { _Attribute } !_DeclarationCandidates @ !>                                                                             |
-|   [5][256][14]: _Declaration -> [785][_Module]< "module" ( NAME ";" { _UsingPath } { _Declaration @ } ) >                                                                              |
+|   [13][9][25]: _Exp11 -> [337][_Expression]<! !_Exp11 @ !>                                                                                                                             |
+|   [12][116][25]: _Expression -> [489][_Statement]< _Expression @ ";" >                                                                                                                 |
+|   [11][115][25]: _Statement -> [347][_Block]< "{" { _Statement @ } [ NAME ":" ";" ] "}" >                                                                                              |
+|   [10][178][23]: _Block -> [546][_FunctionStat]<! !_Block @ !>                                                                                                                         |
+|   [9][187][23]: _FunctionStat -> [561][_Function]< ( "static" "func" | "override" "func" | "func" ) NAME ( "(" { _FunctionArgument ; "," } ")" ":" _Type ( _FunctionStat @ | ";" ) ) > |
+|   [7][46][14]: _Function -> [754][_DeclarationCandidates]<! !_Function @ !>                                                                                                            |
+|   [6][43][14]: _DeclarationCandidates -> [763][_Declaration]<! { _Attribute } !_DeclarationCandidates @ !>                                                                             |
+|   [5][256][14]: _Declaration -> [783][_Module]< "module" ( NAME ";" { _UsingPath } { _Declaration @ } ) >                                                                              |
 | [PREDECESSORS 40-40]: [40]                                                                                                                                                             |
 | [SUCCESORS 42-42]: [42]                                                                                                                                                                |
 +----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------+
@@ -823,18 +823,19 @@
 |
 +----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------+
 | [42]: <Ending>                                                                                                                                                                         |
-| [331][_Exp11] BEGIN [pm-lr]                                                                                                                                                            |
+| [337][_Expression]<! !_Exp11 @ !>                                                                                                                                                      |
 | [AST-INSTRUCTIONS]:                                                                                                                                                                    |
+|   + StackBegin()                                                                                                                                                                       |
 |   + StackEnd()                                                                                                                                                                         |
+|   > StackBegin()                                                                                                                                                                       |
 | [RETURN STACK]:                                                                                                                                                                        |
-|   [13][9][25]: _Exp11 -> [339][_Expression]<! !_Exp11 @ !>                                                                                                                             |
-|   [12][116][25]: _Expression -> [491][_Statement]< _Expression @ ";" >                                                                                                                 |
-|   [11][115][25]: _Statement -> [349][_Block]< "{" { _Statement @ } [ NAME ":" ";" ] "}" >                                                                                              |
-|   [10][178][23]: _Block -> [548][_FunctionStat]<! !_Block @ !>                                                                                                                         |
-|   [9][187][23]: _FunctionStat -> [563][_Function]< ( "static" "func" | "override" "func" | "func" ) NAME ( "(" { _FunctionArgument ; "," } ")" ":" _Type ( _FunctionStat @ | ";" ) ) > |
-|   [7][46][14]: _Function -> [756][_DeclarationCandidates]<! !_Function @ !>                                                                                                            |
-|   [6][43][14]: _DeclarationCandidates -> [765][_Declaration]<! { _Attribute } !_DeclarationCandidates @ !>                                                                             |
-|   [5][256][14]: _Declaration -> [785][_Module]< "module" ( NAME ";" { _UsingPath } { _Declaration @ } ) >                                                                              |
+|   [12][116][25]: _Expression -> [489][_Statement]< _Expression @ ";" >                                                                                                                 |
+|   [11][115][25]: _Statement -> [347][_Block]< "{" { _Statement @ } [ NAME ":" ";" ] "}" >                                                                                              |
+|   [10][178][23]: _Block -> [546][_FunctionStat]<! !_Block @ !>                                                                                                                         |
+|   [9][187][23]: _FunctionStat -> [561][_Function]< ( "static" "func" | "override" "func" | "func" ) NAME ( "(" { _FunctionArgument ; "," } ")" ":" _Type ( _FunctionStat @ | ";" ) ) > |
+|   [7][46][14]: _Function -> [754][_DeclarationCandidates]<! !_Function @ !>                                                                                                            |
+|   [6][43][14]: _DeclarationCandidates -> [763][_Declaration]<! { _Attribute } !_DeclarationCandidates @ !>                                                                             |
+|   [5][256][14]: _Declaration -> [783][_Module]< "module" ( NAME ";" { _UsingPath } { _Declaration @ } ) >                                                                              |
 | [PREDECESSORS 41-41]: [41]                                                                                                                                                             |
 | [SUCCESORS 43-43]: [43]                                                                                                                                                                |
 +----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------+
@@ -842,59 +843,59 @@
 +
 |
 +----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------+
-| [43]: <Leftrec>                                                                                                                                                                        |
-| [336][_Exp11]<! !_Exp10 @ !>                                                                                                                                                           |
-| [AST-INSTRUCTIONS]:                                                                                                                                                                    |
-|   + StackBegin()                                                                                                                                                                       |
-| [RETURN STACK]:                                                                                                                                                                        |
-|   [13][9][25]: _Exp11 -> [339][_Expression]<! !_Exp11 @ !>                                                                                                                             |
-|   [12][116][25]: _Expression -> [491][_Statement]< _Expression @ ";" >                                                                                                                 |
-|   [11][115][25]: _Statement -> [349][_Block]< "{" { _Statement @ } [ NAME ":" ";" ] "}" >                                                                                              |
-|   [10][178][23]: _Block -> [548][_FunctionStat]<! !_Block @ !>                                                                                                                         |
-|   [9][187][23]: _FunctionStat -> [563][_Function]< ( "static" "func" | "override" "func" | "func" ) NAME ( "(" { _FunctionArgument ; "," } ")" ":" _Type ( _FunctionStat @ | ";" ) ) > |
-|   [7][46][14]: _Function -> [756][_DeclarationCandidates]<! !_Function @ !>                                                                                                            |
-|   [6][43][14]: _DeclarationCandidates -> [765][_Declaration]<! { _Attribute } !_DeclarationCandidates @ !>                                                                             |
-|   [5][256][14]: _Declaration -> [785][_Module]< "module" ( NAME ";" { _UsingPath } { _Declaration @ } ) >                                                                              |
-| [PREDECESSORS 42-42]: [42]                                                                                                                                                             |
-| [SUCCESORS 44-44]: [44]                                                                                                                                                                |
-+----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------+
-|
-+
-|
-+----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------+
-| [44]: <Ending>                                                                                                                                                                         |
-| [339][_Expression]<! !_Exp11 @ !>                                                                                                                                                      |
-| [AST-INSTRUCTIONS]:                                                                                                                                                                    |
-|   + StackEnd()                                                                                                                                                                         |
-|   > StackBegin()                                                                                                                                                                       |
-| [RETURN STACK]:                                                                                                                                                                        |
-|   [12][116][25]: _Expression -> [491][_Statement]< _Expression @ ";" >                                                                                                                 |
-|   [11][115][25]: _Statement -> [349][_Block]< "{" { _Statement @ } [ NAME ":" ";" ] "}" >                                                                                              |
-|   [10][178][23]: _Block -> [548][_FunctionStat]<! !_Block @ !>                                                                                                                         |
-|   [9][187][23]: _FunctionStat -> [563][_Function]< ( "static" "func" | "override" "func" | "func" ) NAME ( "(" { _FunctionArgument ; "," } ")" ":" _Type ( _FunctionStat @ | ";" ) ) > |
-|   [7][46][14]: _Function -> [756][_DeclarationCandidates]<! !_Function @ !>                                                                                                            |
-|   [6][43][14]: _DeclarationCandidates -> [765][_Declaration]<! { _Attribute } !_DeclarationCandidates @ !>                                                                             |
-|   [5][256][14]: _Declaration -> [785][_Module]< "module" ( NAME ";" { _UsingPath } { _Declaration @ } ) >                                                                              |
-| [PREDECESSORS 43-43]: [43]                                                                                                                                                             |
-| [SUCCESORS 45-45]: [45]                                                                                                                                                                |
-+----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------+
-|
-+
-|
-+----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------+
-| [45]: <Ending>                                                                                                                                                                         |
-| [491][_Statement]< _Expression @ ";" >                                                                                                                                                 |
+| [43]: <Ending>                                                                                                                                                                         |
+| [489][_Statement]< _Expression @ ";" >                                                                                                                                                 |
 | [AST-INSTRUCTIONS]:                                                                                                                                                                    |
 |   + StackEnd()                                                                                                                                                                         |
 |   > StackBegin()                                                                                                                                                                       |
 |   > StackSlot(0)                                                                                                                                                                       |
 | [RETURN STACK]:                                                                                                                                                                        |
-|   [11][115][25]: _Statement -> [349][_Block]< "{" { _Statement @ } [ NAME ":" ";" ] "}" >                                                                                              |
-|   [10][178][23]: _Block -> [548][_FunctionStat]<! !_Block @ !>                                                                                                                         |
-|   [9][187][23]: _FunctionStat -> [563][_Function]< ( "static" "func" | "override" "func" | "func" ) NAME ( "(" { _FunctionArgument ; "," } ")" ":" _Type ( _FunctionStat @ | ";" ) ) > |
-|   [7][46][14]: _Function -> [756][_DeclarationCandidates]<! !_Function @ !>                                                                                                            |
-|   [6][43][14]: _DeclarationCandidates -> [765][_Declaration]<! { _Attribute } !_DeclarationCandidates @ !>                                                                             |
-|   [5][256][14]: _Declaration -> [785][_Module]< "module" ( NAME ";" { _UsingPath } { _Declaration @ } ) >                                                                              |
+|   [11][115][25]: _Statement -> [347][_Block]< "{" { _Statement @ } [ NAME ":" ";" ] "}" >                                                                                              |
+|   [10][178][23]: _Block -> [546][_FunctionStat]<! !_Block @ !>                                                                                                                         |
+|   [9][187][23]: _FunctionStat -> [561][_Function]< ( "static" "func" | "override" "func" | "func" ) NAME ( "(" { _FunctionArgument ; "," } ")" ":" _Type ( _FunctionStat @ | ";" ) ) > |
+|   [7][46][14]: _Function -> [754][_DeclarationCandidates]<! !_Function @ !>                                                                                                            |
+|   [6][43][14]: _DeclarationCandidates -> [763][_Declaration]<! { _Attribute } !_DeclarationCandidates @ !>                                                                             |
+|   [5][256][14]: _Declaration -> [783][_Module]< "module" ( NAME ";" { _UsingPath } { _Declaration @ } ) >                                                                              |
+| [PREDECESSORS 42-42]: [42]                                                                                                                                                             |
+| [SUCCESORS 44-44]: [44]                                                                                                                                                                |
++----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------+
+[0]
+ |
+ +
+ |
+[0]
+++========================================================================================================================================================================================++
+|| [44]: {SEMICOLON} ;                                                                                                                                                                    ||
+|| [488][_Statement]< _Expression ";" @ >                                                                                                                                                 ||
+|| [AST-INSTRUCTIONS]:                                                                                                                                                                    ||
+||   + Token(1)                                                                                                                                                                           ||
+|| [RETURN STACK]:                                                                                                                                                                        ||
+||   [11][115][25]: _Statement -> [347][_Block]< "{" { _Statement @ } [ NAME ":" ";" ] "}" >                                                                                              ||
+||   [10][178][23]: _Block -> [546][_FunctionStat]<! !_Block @ !>                                                                                                                         ||
+||   [9][187][23]: _FunctionStat -> [561][_Function]< ( "static" "func" | "override" "func" | "func" ) NAME ( "(" { _FunctionArgument ; "," } ")" ":" _Type ( _FunctionStat @ | ";" ) ) > ||
+||   [7][46][14]: _Function -> [754][_DeclarationCandidates]<! !_Function @ !>                                                                                                            ||
+||   [6][43][14]: _DeclarationCandidates -> [763][_Declaration]<! { _Attribute } !_DeclarationCandidates @ !>                                                                             ||
+||   [5][256][14]: _Declaration -> [783][_Module]< "module" ( NAME ";" { _UsingPath } { _Declaration @ } ) >                                                                              ||
+|| [PREDECESSORS 43-43]: [43]                                                                                                                                                             ||
+|| [SUCCESORS 45-45]: [45]                                                                                                                                                                ||
+++========================================================================================================================================================================================++
+|
++
+|
++----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------+
+| [45]: <Ending>                                                                                                                                                                         |
+| [347][_Block]< "{" { _Statement @ } [ NAME ":" ";" ] "}" >                                                                                                                             |
+| [AST-INSTRUCTIONS]:                                                                                                                                                                    |
+|   + CreateObject(ExpressionStatement)                                                                                                                                                  |
+|   + Field(ExpressionStatement::expression, 0)                                                                                                                                          |
+|   + StackEnd()                                                                                                                                                                         |
+|   > StackSlot(1)                                                                                                                                                                       |
+| [RETURN STACK]:                                                                                                                                                                        |
+|   [10][178][23]: _Block -> [546][_FunctionStat]<! !_Block @ !>                                                                                                                         |
+|   [9][187][23]: _FunctionStat -> [561][_Function]< ( "static" "func" | "override" "func" | "func" ) NAME ( "(" { _FunctionArgument ; "," } ")" ":" _Type ( _FunctionStat @ | ";" ) ) > |
+|   [7][46][14]: _Function -> [754][_DeclarationCandidates]<! !_Function @ !>                                                                                                            |
+|   [6][43][14]: _DeclarationCandidates -> [763][_Declaration]<! { _Attribute } !_DeclarationCandidates @ !>                                                                             |
+|   [5][256][14]: _Declaration -> [783][_Module]< "module" ( NAME ";" { _UsingPath } { _Declaration @ } ) >                                                                              |
 | [PREDECESSORS 44-44]: [44]                                                                                                                                                             |
 | [SUCCESORS 46-46]: [46]                                                                                                                                                                |
 +----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------+
@@ -904,17 +905,16 @@
  |
 [0]
 ++========================================================================================================================================================================================++
-|| [46]: {SEMICOLON} ;                                                                                                                                                                    ||
-|| [490][_Statement]< _Expression ";" @ >                                                                                                                                                 ||
+|| [46]: {CLOSE_BRACE} }                                                                                                                                                                  ||
+|| [349][_Block]< "{" { _Statement } [ NAME ":" ";" ] "}" @ >                                                                                                                             ||
 || [AST-INSTRUCTIONS]:                                                                                                                                                                    ||
-||   + Token(1)                                                                                                                                                                           ||
+||   + Token(5)                                                                                                                                                                           ||
 || [RETURN STACK]:                                                                                                                                                                        ||
-||   [11][115][25]: _Statement -> [349][_Block]< "{" { _Statement @ } [ NAME ":" ";" ] "}" >                                                                                              ||
-||   [10][178][23]: _Block -> [548][_FunctionStat]<! !_Block @ !>                                                                                                                         ||
-||   [9][187][23]: _FunctionStat -> [563][_Function]< ( "static" "func" | "override" "func" | "func" ) NAME ( "(" { _FunctionArgument ; "," } ")" ":" _Type ( _FunctionStat @ | ";" ) ) > ||
-||   [7][46][14]: _Function -> [756][_DeclarationCandidates]<! !_Function @ !>                                                                                                            ||
-||   [6][43][14]: _DeclarationCandidates -> [765][_Declaration]<! { _Attribute } !_DeclarationCandidates @ !>                                                                             ||
-||   [5][256][14]: _Declaration -> [785][_Module]< "module" ( NAME ";" { _UsingPath } { _Declaration @ } ) >                                                                              ||
+||   [10][178][23]: _Block -> [546][_FunctionStat]<! !_Block @ !>                                                                                                                         ||
+||   [9][187][23]: _FunctionStat -> [561][_Function]< ( "static" "func" | "override" "func" | "func" ) NAME ( "(" { _FunctionArgument ; "," } ")" ":" _Type ( _FunctionStat @ | ";" ) ) > ||
+||   [7][46][14]: _Function -> [754][_DeclarationCandidates]<! !_Function @ !>                                                                                                            ||
+||   [6][43][14]: _DeclarationCandidates -> [763][_Declaration]<! { _Attribute } !_DeclarationCandidates @ !>                                                                             ||
+||   [5][256][14]: _Declaration -> [783][_Module]< "module" ( NAME ";" { _UsingPath } { _Declaration @ } ) >                                                                              ||
 || [PREDECESSORS 45-45]: [45]                                                                                                                                                             ||
 || [SUCCESORS 47-47]: [47]                                                                                                                                                                ||
 ++========================================================================================================================================================================================++
@@ -923,46 +923,7 @@
 |
 +----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------+
 | [47]: <Ending>                                                                                                                                                                         |
-| [349][_Block]< "{" { _Statement @ } [ NAME ":" ";" ] "}" >                                                                                                                             |
-| [AST-INSTRUCTIONS]:                                                                                                                                                                    |
-|   + CreateObject(ExpressionStatement)                                                                                                                                                  |
-|   + Field(ExpressionStatement::expression, 0)                                                                                                                                          |
-|   + StackEnd()                                                                                                                                                                         |
-|   > StackSlot(1)                                                                                                                                                                       |
-| [RETURN STACK]:                                                                                                                                                                        |
-|   [10][178][23]: _Block -> [548][_FunctionStat]<! !_Block @ !>                                                                                                                         |
-|   [9][187][23]: _FunctionStat -> [563][_Function]< ( "static" "func" | "override" "func" | "func" ) NAME ( "(" { _FunctionArgument ; "," } ")" ":" _Type ( _FunctionStat @ | ";" ) ) > |
-|   [7][46][14]: _Function -> [756][_DeclarationCandidates]<! !_Function @ !>                                                                                                            |
-|   [6][43][14]: _DeclarationCandidates -> [765][_Declaration]<! { _Attribute } !_DeclarationCandidates @ !>                                                                             |
-|   [5][256][14]: _Declaration -> [785][_Module]< "module" ( NAME ";" { _UsingPath } { _Declaration @ } ) >                                                                              |
-| [PREDECESSORS 46-46]: [46]                                                                                                                                                             |
-| [SUCCESORS 48-48]: [48]                                                                                                                                                                |
-+----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------+
-[0]
- |
- +
- |
-[0]
-++========================================================================================================================================================================================++
-|| [48]: {CLOSE_BRACE} }                                                                                                                                                                  ||
-|| [351][_Block]< "{" { _Statement } [ NAME ":" ";" ] "}" @ >                                                                                                                             ||
-|| [AST-INSTRUCTIONS]:                                                                                                                                                                    ||
-||   + Token(5)                                                                                                                                                                           ||
-|| [RETURN STACK]:                                                                                                                                                                        ||
-||   [10][178][23]: _Block -> [548][_FunctionStat]<! !_Block @ !>                                                                                                                         ||
-||   [9][187][23]: _FunctionStat -> [563][_Function]< ( "static" "func" | "override" "func" | "func" ) NAME ( "(" { _FunctionArgument ; "," } ")" ":" _Type ( _FunctionStat @ | ";" ) ) > ||
-||   [7][46][14]: _Function -> [756][_DeclarationCandidates]<! !_Function @ !>                                                                                                            ||
-||   [6][43][14]: _DeclarationCandidates -> [765][_Declaration]<! { _Attribute } !_DeclarationCandidates @ !>                                                                             ||
-||   [5][256][14]: _Declaration -> [785][_Module]< "module" ( NAME ";" { _UsingPath } { _Declaration @ } ) >                                                                              ||
-|| [PREDECESSORS 47-47]: [47]                                                                                                                                                             ||
-|| [SUCCESORS 49-49]: [49]                                                                                                                                                                ||
-++========================================================================================================================================================================================++
-|
-+
-|
-+----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------+
-| [49]: <Ending>                                                                                                                                                                         |
-| [548][_FunctionStat]<! !_Block @ !>                                                                                                                                                    |
+| [546][_FunctionStat]<! !_Block @ !>                                                                                                                                                    |
 | [AST-INSTRUCTIONS]:                                                                                                                                                                    |
 |   + CreateObject(BlockStatement)                                                                                                                                                       |
 |   + Field(BlockStatement::statements, 1)                                                                                                                                               |
@@ -970,35 +931,35 @@
 |   + StackEnd()                                                                                                                                                                         |
 |   > StackBegin()                                                                                                                                                                       |
 | [RETURN STACK]:                                                                                                                                                                        |
-|   [9][187][23]: _FunctionStat -> [563][_Function]< ( "static" "func" | "override" "func" | "func" ) NAME ( "(" { _FunctionArgument ; "," } ")" ":" _Type ( _FunctionStat @ | ";" ) ) > |
-|   [7][46][14]: _Function -> [756][_DeclarationCandidates]<! !_Function @ !>                                                                                                            |
-|   [6][43][14]: _DeclarationCandidates -> [765][_Declaration]<! { _Attribute } !_DeclarationCandidates @ !>                                                                             |
-|   [5][256][14]: _Declaration -> [785][_Module]< "module" ( NAME ";" { _UsingPath } { _Declaration @ } ) >                                                                              |
-| [PREDECESSORS 48-48]: [48]                                                                                                                                                             |
-| [SUCCESORS 50-50]: [50]                                                                                                                                                                |
+|   [9][187][23]: _FunctionStat -> [561][_Function]< ( "static" "func" | "override" "func" | "func" ) NAME ( "(" { _FunctionArgument ; "," } ")" ":" _Type ( _FunctionStat @ | ";" ) ) > |
+|   [7][46][14]: _Function -> [754][_DeclarationCandidates]<! !_Function @ !>                                                                                                            |
+|   [6][43][14]: _DeclarationCandidates -> [763][_Declaration]<! { _Attribute } !_DeclarationCandidates @ !>                                                                             |
+|   [5][256][14]: _Declaration -> [783][_Module]< "module" ( NAME ";" { _UsingPath } { _Declaration @ } ) >                                                                              |
+| [PREDECESSORS 46-46]: [46]                                                                                                                                                             |
+| [SUCCESORS 48-48]: [48]                                                                                                                                                                |
 +----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------+
 |
 +
 |
 +-------------------------------------------------------------------------------------------------------------------------------------------------------+
-| [50]: <Ending>                                                                                                                                        |
-| [563][_Function]< ( "static" "func" | "override" "func" | "func" ) NAME ( "(" { _FunctionArgument ; "," } ")" ":" _Type ( _FunctionStat @ | ";" ) ) > |
+| [48]: <Ending>                                                                                                                                        |
+| [561][_Function]< ( "static" "func" | "override" "func" | "func" ) NAME ( "(" { _FunctionArgument ; "," } ")" ":" _Type ( _FunctionStat @ | ";" ) ) > |
 | [AST-INSTRUCTIONS]:                                                                                                                                   |
 |   + StackEnd()                                                                                                                                        |
 |   > StackSlot(15)                                                                                                                                     |
 | [RETURN STACK]:                                                                                                                                       |
-|   [7][46][14]: _Function -> [756][_DeclarationCandidates]<! !_Function @ !>                                                                           |
-|   [6][43][14]: _DeclarationCandidates -> [765][_Declaration]<! { _Attribute } !_DeclarationCandidates @ !>                                            |
-|   [5][256][14]: _Declaration -> [785][_Module]< "module" ( NAME ";" { _UsingPath } { _Declaration @ } ) >                                             |
-| [PREDECESSORS 49-49]: [49]                                                                                                                            |
-| [SUCCESORS 51-51]: [51]                                                                                                                               |
+|   [7][46][14]: _Function -> [754][_DeclarationCandidates]<! !_Function @ !>                                                                           |
+|   [6][43][14]: _DeclarationCandidates -> [763][_Declaration]<! { _Attribute } !_DeclarationCandidates @ !>                                            |
+|   [5][256][14]: _Declaration -> [783][_Module]< "module" ( NAME ";" { _UsingPath } { _Declaration @ } ) >                                             |
+| [PREDECESSORS 47-47]: [47]                                                                                                                            |
+| [SUCCESORS 49-49]: [49]                                                                                                                               |
 +-------------------------------------------------------------------------------------------------------------------------------------------------------+
 |
 +
 |
 +------------------------------------------------------------------------------------------------------------+
-| [51]: <Ending>                                                                                             |
-| [756][_DeclarationCandidates]<! !_Function @ !>                                                            |
+| [49]: <Ending>                                                                                             |
+| [754][_DeclarationCandidates]<! !_Function @ !>                                                            |
 | [AST-INSTRUCTIONS]:                                                                                        |
 |   + EnumItem(0, 17)                                                                                        |
 |   + CreateObject(FunctionDeclaration)                                                                      |
@@ -1013,44 +974,44 @@
 |   + StackEnd()                                                                                             |
 |   > StackBegin()                                                                                           |
 | [RETURN STACK]:                                                                                            |
-|   [6][43][14]: _DeclarationCandidates -> [765][_Declaration]<! { _Attribute } !_DeclarationCandidates @ !> |
-|   [5][256][14]: _Declaration -> [785][_Module]< "module" ( NAME ";" { _UsingPath } { _Declaration @ } ) >  |
-| [PREDECESSORS 50-50]: [50]                                                                                 |
-| [SUCCESORS 52-52]: [52]                                                                                    |
+|   [6][43][14]: _DeclarationCandidates -> [763][_Declaration]<! { _Attribute } !_DeclarationCandidates @ !> |
+|   [5][256][14]: _Declaration -> [783][_Module]< "module" ( NAME ";" { _UsingPath } { _Declaration @ } ) >  |
+| [PREDECESSORS 48-48]: [48]                                                                                 |
+| [SUCCESORS 50-50]: [50]                                                                                    |
 +------------------------------------------------------------------------------------------------------------+
 |
 +
 |
 +-----------------------------------------------------------------------------------------------------------+
-| [52]: <Ending>                                                                                            |
-| [765][_Declaration]<! { _Attribute } !_DeclarationCandidates @ !>                                         |
+| [50]: <Ending>                                                                                            |
+| [763][_Declaration]<! { _Attribute } !_DeclarationCandidates @ !>                                         |
 | [AST-INSTRUCTIONS]:                                                                                       |
 |   + StackEnd()                                                                                            |
 |   > StackBegin()                                                                                          |
 | [RETURN STACK]:                                                                                           |
-|   [5][256][14]: _Declaration -> [785][_Module]< "module" ( NAME ";" { _UsingPath } { _Declaration @ } ) > |
-| [PREDECESSORS 51-51]: [51]                                                                                |
-| [SUCCESORS 53-53]: [53]                                                                                   |
+|   [5][256][14]: _Declaration -> [783][_Module]< "module" ( NAME ";" { _UsingPath } { _Declaration @ } ) > |
+| [PREDECESSORS 49-49]: [49]                                                                                |
+| [SUCCESORS 51-51]: [51]                                                                                   |
 +-----------------------------------------------------------------------------------------------------------+
 |
 +
 |
 +---------------------------------------------------------------------------+
-| [53]: <Ending>                                                            |
-| [785][_Module]< "module" ( NAME ";" { _UsingPath } { _Declaration @ } ) > |
+| [51]: <Ending>                                                            |
+| [783][_Module]< "module" ( NAME ";" { _UsingPath } { _Declaration @ } ) > |
 | [AST-INSTRUCTIONS]:                                                       |
 |   + Field(Declaration::attributes, 0)                                     |
 |   + StackEnd()                                                            |
 |   > StackSlot(4)                                                          |
-| [PREDECESSORS 52-52]: [52]                                                |
-| [SUCCESORS 54-54]: [54]                                                   |
+| [PREDECESSORS 50-50]: [50]                                                |
+| [SUCCESORS 52-52]: [52]                                                   |
 +---------------------------------------------------------------------------+
 |
 +
 |
 +------------------------------------+
-| [54]: <Ending>                     |
-| [782][_Module] END [ENDING]        |
+| [52]: <Ending>                     |
+| [780][_Module] END [ENDING]        |
 | [AST-INSTRUCTIONS]:                |
 |   + EnumItem(0, 5)                 |
 |   + CreateObject(Module)           |
@@ -1059,5 +1020,5 @@
 |   + Field(Module::declarations, 4) |
 |   + Field(Module::moduleType, 5)   |
 |   + StackEnd()                     |
-| [PREDECESSORS 53-53]: [53]         |
+| [PREDECESSORS 51-51]: [51]         |
 +------------------------------------+
