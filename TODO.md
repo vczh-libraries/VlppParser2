@@ -21,8 +21,8 @@
 
 ### Progressing
 
-In `TraceManager::SummarizeInstructionRange`, if A reuses B, but also leftrec inherited a C as a field, B should also update its `earliestInsRef` to C.
-We can introduce a `earliestReusedInsRef` between `earliestLocalInsRef` and `earliestInsRef`, and add a new pass to compute the correct `earliestInsRef`.
+In `Pba_1`, it seems bottom objects are not identified correctly, causing missing `StackEnd()` before the first `StackSlot(-2)`.
+Two `StackSlot(-2)` do not happen in the same stack, causing `ResolveAmbiguity` to fail.
 
 - [x] Non-ambiguous test cases
 - [x] Ambiguous test cases
