@@ -36,6 +36,34 @@ TraceManager::IsQualifiedTokenForEdgeArray
 			}
 
 /***********************************************************************
+TraceManager::TestLeftrecEdgeQualification
+***********************************************************************/
+
+			void TraceManager::TestLeftrecEdgeQualification(EdgeDesc& edgeDesc, regex::RegexToken* lookAhead, bool& acceptLookAhead, bool& acceptEndingInput)
+			{
+				if (lookAhead)
+				{
+					vint32_t lookAheadTransitionIndex = executable.GetTransitionIndex(edgeDesc.toState, Executable::TokenBegin + (vint32_t)lookAhead->token);
+					auto& lookAheadEdgeArray = executable.transitions[lookAheadTransitionIndex];
+
+					// mark this EndingInput if any LeftrecInput + lookAhead transition exists
+					if (IsQualifiedTokenForEdgeArray(lookAhead, lookAheadEdgeArray))
+					{
+						acceptLookAhead = true;
+					}
+				}
+
+				{
+					vint32_t endingInputTransitionIndex = executable.GetTransitionIndex(edgeDesc.toState, Executable::EndingInput);
+					auto& endingInputEdgeArray = executable.transitions[endingInputTransitionIndex];
+					if (endingInputEdgeArray.count > 0)
+					{
+						acceptEndingInput = true;
+					}
+				}
+			}
+
+/***********************************************************************
 TraceManager::WalkAlongSingleEdge
 ***********************************************************************/
 
@@ -127,25 +155,31 @@ TraceManager::WalkAlongEpsilonEdges
 				EdgeArray& edgeArray
 			)
 			{
-				// if there is no more token
-				// then it is not possible for more left recursions
-				if (!lookAhead) return;
-
 				for (vint32_t edgeRef = 0; edgeRef < edgeArray.count; edgeRef++)
 				{
 					vint32_t byEdge = edgeArray.start + edgeRef;
 					auto& edgeDesc = executable.edges[byEdge];
 
 					// see if the target state could consume that token
-					vint32_t lookAheadTransitionIndex = executable.GetTransitionIndex(edgeDesc.toState, Executable::TokenBegin + (vint32_t)lookAhead->token);
-					auto& lookAheadEdgeArray = executable.transitions[lookAheadTransitionIndex];
-					if (!IsQualifiedTokenForEdgeArray(lookAhead, lookAheadEdgeArray)) continue;
+					bool acceptLookAhead = false;
+					bool acceptEndingInput = false;
+					TestLeftrecEdgeQualification(edgeDesc, lookAhead, acceptLookAhead, acceptEndingInput);
 
-					// proceed only if it can
-					WalkAlongSingleEdge(currentTokenIndex, Executable::LeftrecInput, trace, byEdge, edgeDesc);
+					if (acceptLookAhead || acceptEndingInput)
+					{
+						// proceed only if it can
+						auto nextTrace = WalkAlongSingleEdge(currentTokenIndex, Executable::LeftrecInput, trace, byEdge, edgeDesc);
 
-					// A LeftrecInput transition points to a non ending state in another clause
-					// so there is no need to find other epsilon transitions after LeftrecInput
+						if (acceptEndingInput && nextTrace)
+						{
+							// A LeftrecInput will be generated because of
+							//   A real left-recursive rule
+							//   Merging prefix inside a rule
+							//   Merging prefix crossed-reference
+							// The last two cases could connect LeftrecInput transitions to an ending state
+							WalkAlongEpsilonEdges(currentTokenIndex, lookAhead, nextTrace);
+						}
+					}
 				}
 			}
 
@@ -173,8 +207,7 @@ TraceManager::WalkAlongEpsilonEdges
 					{
 						currentCount++;
 
-						// try LeftrecInput + lookAhead
-						if (lookAhead)
+						// try LeftrecInput + (lookAhead or EndingInput)
 						{
 							vint32_t transitionIndex = executable.GetTransitionIndex(currentState, Executable::LeftrecInput);
 							auto&& edgeArray = executable.transitions[transitionIndex];
@@ -182,11 +215,13 @@ TraceManager::WalkAlongEpsilonEdges
 							{
 								vint32_t byEdge = edgeArray.start + edgeRef;
 								auto& edgeDesc = executable.edges[byEdge];
-								vint32_t lookAheadTransitionIndex = executable.GetTransitionIndex(edgeDesc.toState, Executable::TokenBegin + (vint32_t)lookAhead->token);
-								auto& lookAheadEdgeArray = executable.transitions[lookAheadTransitionIndex];
 
-								// mark this EndingInput if any LeftrecInput + lookAhead transition exists
-								if (IsQualifiedTokenForEdgeArray(lookAhead, lookAheadEdgeArray))
+								bool acceptLookAhead = false;
+								bool acceptEndingInput = false;
+								TestLeftrecEdgeQualification(edgeDesc, lookAhead, acceptLookAhead, acceptEndingInput);
+
+								// mark this EndingInput if any LeftrecInput + (lookAhead or EndingInput) transition exists
+								if (acceptLookAhead || acceptEndingInput)
 								{
 									endingCount = currentCount;
 									goto TRY_ENDING_INPUT;
