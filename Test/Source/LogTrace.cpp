@@ -15,6 +15,8 @@ protected:
 	const Func<WString(vint32_t)>&		fieldName;
 	const Func<WString(vint32_t)>&		tokenName;
 	StreamWriter&						writer;
+	vint								indentation = 0;
+
 public:
 	LogTraceInsReceiver(
 		const Func<WString(vint32_t)>& _typeName,
@@ -30,6 +32,11 @@ public:
 
 	void Execute(AstIns instruction, const regex::RegexToken& token, vint32_t tokenIndex) override
 	{
+		if (instruction.type == AstInsType::StackEnd) indentation--;
+		for (vint i = 0; i < indentation; i++)
+		{
+			writer.WriteString(L"  ");
+		}
 		writer.WriteString(L"<[");
 		writer.WriteString(itow(tokenIndex));
 		writer.WriteString(L"]");
@@ -38,6 +45,7 @@ public:
 		writer.WriteString(token.reading, token.length);
 		writer.WriteString(L"> ");
 		LogInstruction(instruction, typeName, fieldName, writer);
+		if (instruction.type == AstInsType::StackBegin) indentation++;
 	}
 
 	Ptr<ParsingAstBase> Finished() override
