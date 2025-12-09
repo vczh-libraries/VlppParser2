@@ -14,9 +14,12 @@ BitSet
 
 			struct BitSet
 			{
+			public:
+				static const BitSet		Zero;
+
 			private:
-				vint			wordCount = 0;
-				vuint64_t*		words = nullptr;
+				vint					wordCount = 0;
+				vuint64_t*				words = nullptr;
 
 				static bool AllZero(vuint64_t* words, vint wordCount)
 				{
@@ -27,7 +30,7 @@ BitSet
 					return true;
 				}
 			public:
-				BitSet& operator=(const BitSet& bs)
+				BitSet& operator=(const BitSet& bs) noexcept
 				{
 					if (this != &bs)
 					{
@@ -63,7 +66,7 @@ BitSet
 				}
 
 				BitSet() = default;
-				BitSet(const BitSet& bs) { *this = bs; }
+				BitSet(const BitSet& bs) noexcept { *this = bs; }
 				BitSet(BitSet&& bs) noexcept { *this = std::move(bs); }
 				~BitSet() { if (words) delete[] words; }
 
@@ -126,6 +129,7 @@ BitSet
 
 				BitSet operator|(const BitSet& bs) const
 				{
+					if (this == &bs) return *this;
 					BitSet result;
 					vint maxWordCount = wordCount > bs.wordCount ? wordCount : bs.wordCount;
 					if (maxWordCount > 0)
@@ -142,8 +146,16 @@ BitSet
 					return result;
 				}
 
+				BitSet& operator|=(const BitSet& bs)
+				{
+					if (this == &bs) return *this;
+					*this = *this | bs;
+					return *this;
+				}
+
 				BitSet operator&(const BitSet& bs) const
 				{
+					if (this == &bs) return *this;
 					BitSet result;
 					vint minWordCount = wordCount < bs.wordCount ? wordCount : bs.wordCount;
 					if (minWordCount > 0)
@@ -157,7 +169,16 @@ BitSet
 					}
 					return result;
 				}
+
+				BitSet& operator&=(const BitSet& bs)
+				{
+					if (this == &bs) return *this;
+					*this = *this & bs;
+					return *this;
+				}
 			};
+
+			const BitSet BitSet::Zero;
 
 /***********************************************************************
 SyntaxSymbolManager::CreatePrefixMerge
@@ -165,9 +186,10 @@ SyntaxSymbolManager::CreatePrefixMerge
 
 			struct PrefixMergeCache
 			{
+				// prepared by CreatePrefixMergeCache
 				List<RuleSymbol*>					rules;
-				Dictionary<RuleSymbol*, BitSet>		startSetTokens;
-				Dictionary<RuleSymbol*, BitSet>		startSetRules;
+				Dictionary<RuleSymbol*, BitSet>		directStartSetTokens, startSetTokens;
+				Dictionary<RuleSymbol*, BitSet>		directStartSetRules, startSetRules;
 			};
 
 			Ptr<PrefixMergeCache> SyntaxSymbolManager::CreatePrefixMergeCache()
@@ -200,8 +222,8 @@ SyntaxSymbolManager::CreatePrefixMerge
 							default:;
 							}
 						}
-						cache->startSetTokens.Add(ruleSymbol, directTokens);
-						cache->startSetRules.Add(ruleSymbol, directRules);
+						cache->directStartSetTokens.Add(ruleSymbol, directTokens);
+						cache->directStartSetRules.Add(ruleSymbol, directRules);
 					}
 					pop.InitWithGroup(cache->rules, deps);
 					pop.Sort();
@@ -222,6 +244,25 @@ SyntaxSymbolManager::CreatePrefixMerge
 					}
 				}
 				if (global.Errors().Count() > 0) return nullptr;
+
+				for (auto component : pop.components)
+				{
+					auto ruleSymbol = cache->rules[*component.firstNode];
+					auto startSetTokens = cache->directStartSetTokens[ruleSymbol];
+					auto startSetRules = cache->directStartSetRules[ruleSymbol];
+
+					auto startState = ruleSymbol->startStates[0];
+					for (auto edge : startState->OutEdges())
+					{
+						if (edge->input.type == EdgeInputType::Rule)
+						{
+							startSetTokens |= cache->startSetTokens[edge->input.rule];
+							startSetRules |= cache->startSetRules[edge->input.rule];
+						}
+					}
+					cache->startSetTokens.Add(ruleSymbol, startSetTokens);
+					cache->startSetRules.Add(ruleSymbol, startSetRules);
+				}
 
 				return cache;
 			}
