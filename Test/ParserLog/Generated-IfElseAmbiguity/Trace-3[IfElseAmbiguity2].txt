@@ -312,7 +312,7 @@
 |   @ CS(3 -> 2) : [3][2][1][0]                                                     |
 |   + StackEnd()                                                                    |
 |     obj+:3 : DoStat                                                               |
-|       begin:8@0, top:8@0, create!:[10@0], end:[10@1]                              |
+|       begin:8@0, top:8@0, create!:[10@0], end:[10@1], endLref:[11@0]              |
 |                                                                                   |
 |   @ CS(2 -> 1) : [2][1][0] OS(4 -> -1) : [3]                                      |
 |   > StackBegin()                                                                  |
@@ -540,7 +540,7 @@
 |   @ CS(7 -> 2) : [5][2][1][0]                                                      |      |   @ CS(19 -> 1) : [10][1][0]                                                        |
 |   + StackEnd()                                                                     |      |   + StackEnd()                                                                      |
 |     obj+:5 : DoStat                                                                |      |     obj+:10 : DoStat                                                                |
-|       begin:17@0, top:17@0, create!:[20@0], end:[20@1]                             |      |       begin:18@0, top:18@0, create!:[27@0], end:[27@1]                              |
+|       begin:17@0, top:17@0, create!:[20@0], end:[20@1], endLref:[21@0]             |      |       begin:18@0, top:18@0, create!:[27@0], end:[27@1], endLref:[28@0]              |
 |                                                                                    |      |                                                                                     |
 |   @ CS(2 -> 1) : [2][1][0] OS(8 -> -1) : [5]                                       |      |   @ CS(1 -> 0) : [1][0] OS(20 -> -1) : [10]                                         |
 |   > StackBegin()                                                                   |      |   > StackBegin()                                                                    |
@@ -991,7 +991,7 @@
 |   @ CS(29 -> 28) : [15][14][13][0]                                                  |
 |   + StackEnd()                                                                      |
 |     obj+:15 : DoStat                                                                |
-|       begin:37@0, top:37@0, create!:[39@0], end:[39@1]                              |
+|       begin:37@0, top:37@0, create!:[39@0], end:[39@1], endLref:[40@0]              |
 |                                                                                     |
 |   @ CS(28 -> 27) : [14][13][0] OS(30 -> -1) : [15]                                  |
 |   > StackBegin()                                                                    |
@@ -1219,7 +1219,7 @@
 |   @ CS(33 -> 28) : [17][14][13][0]                                                  |       |   @ CS(45 -> 27) : [22][13][0]                                                      |
 |   + StackEnd()                                                                      |       |   + StackEnd()                                                                      |
 |     obj+:17 : DoStat                                                                |       |     obj+:22 : DoStat                                                                |
-|       begin:46@0, top:46@0, create!:[49@0], end:[49@1]                              |       |       begin:47@0, top:47@0, create!:[56@0], end:[56@1]                              |
+|       begin:46@0, top:46@0, create!:[49@0], end:[49@1], endLref:[50@0]              |       |       begin:47@0, top:47@0, create!:[56@0], end:[56@1], endLref:[57@0]              |
 |                                                                                     |       |                                                                                     |
 |   @ CS(28 -> 27) : [14][13][0] OS(34 -> -1) : [17]                                  |       |   @ CS(27 -> 0) : [13][0] OS(46 -> -1) : [22]                                       |
 |   > StackBegin()                                                                    |       |   > StackBegin()                                                                    |
@@ -1670,7 +1670,7 @@
 |   @ CS(55 -> 54) : [27][26][25][0]                                                  |
 |   + StackEnd()                                                                      |
 |     obj+:27 : DoStat                                                                |
-|       begin:66@0, top:66@0, create!:[68@0], end:[68@1]                              |
+|       begin:66@0, top:66@0, create!:[68@0], end:[68@1], endLref:[69@0]              |
 |                                                                                     |
 |   @ CS(54 -> 53) : [26][25][0] OS(56 -> -1) : [27]                                  |
 |   > StackBegin()                                                                    |
@@ -1898,7 +1898,7 @@
 |   @ CS(59 -> 54) : [29][26][25][0]                                                  |       |   @ CS(71 -> 53) : [34][25][0]                                                      |
 |   + StackEnd()                                                                      |       |   + StackEnd()                                                                      |
 |     obj+:29 : DoStat                                                                |       |     obj+:34 : DoStat                                                                |
-|       begin:75@0, top:75@0, create!:[78@0], end:[78@1]                              |       |       begin:76@0, top:76@0, create!:[85@0], end:[85@1]                              |
+|       begin:75@0, top:75@0, create!:[78@0], end:[78@1], endLref:[79@0]              |       |       begin:76@0, top:76@0, create!:[85@0], end:[85@1], endLref:[86@0]              |
 |                                                                                     |       |                                                                                     |
 |   @ CS(54 -> 53) : [26][25][0] OS(60 -> -1) : [29]                                  |       |   @ CS(53 -> 0) : [25][0] OS(72 -> -1) : [34]                                       |
 |   > StackBegin()                                                                    |       |   > StackBegin()                                                                    |
@@ -2136,35 +2136,35 @@
 |
 +
 |
-+-------------------------------------------------------------------------------------+
-| [90]: <Ending>                                                                      |
-|   TraceExec: [87]                                                                   |
-|   InsExec: [213:4]                                                                  |
-|   ForwardTrace: 82                                                                  |
-| [20][Stat]<! !Block @ !>                                                            |
-| [AST-INSTRUCTIONS]:                                                                 |
-|   @ CS(0 -> -1) : [0]                                                               |
-|   + CreateObject(BlockStat)                                                         |
-|     obj:0 : BlockStat                                                               |
-|                                                                                     |
-|   @ CS(0 -> -1) : [0]                                                               |
-|   + Field(BlockStat::stats, 1)                                                      |
-|                                                                                     |
-|   @ CS(0 -> -1) : [0]                                                               |
-|   + StackEnd()                                                                      |
-|     obj+:0 : BlockStat                                                              |
-|       begin:1@0, top:1@0, field:[32, 36, 12, 8, 24, 20], create!:[90@0], end:[90@2] |
-|                                                                                     |
-|   @ OS(79 -> -1) : [0]                                                              |
-|   > StackBegin()                                                                    |
-|     obj!:37 : BlockStat                                                             |
-|                                                                                     |
-|   @ CS(80 -> -1) : [37] OS(79 -> -1) : [0]                                          |
-| [RETURN STACK]:                                                                     |
-|   [0][7][0]: Stat -> [24][Module]< Stat @ >                                         |
-| [PREDECESSORS 89-89]: [89]                                                          |
-| [SUCCESORS 91-91]: [91]                                                             |
-+-------------------------------------------------------------------------------------+
++-----------------------------------------------------------------------------------------------------+
+| [90]: <Ending>                                                                                      |
+|   TraceExec: [87]                                                                                   |
+|   InsExec: [213:4]                                                                                  |
+|   ForwardTrace: 82                                                                                  |
+| [20][Stat]<! !Block @ !>                                                                            |
+| [AST-INSTRUCTIONS]:                                                                                 |
+|   @ CS(0 -> -1) : [0]                                                                               |
+|   + CreateObject(BlockStat)                                                                         |
+|     obj:0 : BlockStat                                                                               |
+|                                                                                                     |
+|   @ CS(0 -> -1) : [0]                                                                               |
+|   + Field(BlockStat::stats, 1)                                                                      |
+|                                                                                                     |
+|   @ CS(0 -> -1) : [0]                                                                               |
+|   + StackEnd()                                                                                      |
+|     obj+:0 : BlockStat                                                                              |
+|       begin:1@0, top:1@0, field:[32, 36, 12, 8, 24, 20], create!:[90@0], end:[90@2], endLref:[91@0] |
+|                                                                                                     |
+|   @ OS(79 -> -1) : [0]                                                                              |
+|   > StackBegin()                                                                                    |
+|     obj!:37 : BlockStat                                                                             |
+|                                                                                                     |
+|   @ CS(80 -> -1) : [37] OS(79 -> -1) : [0]                                                          |
+| [RETURN STACK]:                                                                                     |
+|   [0][7][0]: Stat -> [24][Module]< Stat @ >                                                         |
+| [PREDECESSORS 89-89]: [89]                                                                          |
+| [SUCCESORS 91-91]: [91]                                                                             |
++-----------------------------------------------------------------------------------------------------+
 |
 +
 |

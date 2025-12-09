@@ -42,15 +42,7 @@ CheckAmbiguityResolution
 			template<typename TCallback>
 			bool TraceManager::EnumerateBottomInstructions(InsExec_Stack* ieObject, TCallback&& callback)
 			{
-				auto insRefLinkId = ieObject->endWithCreateInsRefs;
-				while (insRefLinkId != nullref)
-				{
-					auto insRefLink = GetInsExec_InsRefLink(insRefLinkId);
-					insRefLinkId = insRefLink->previous;
-					if (!callback(GetTrace(insRefLink->insRef.trace), insRefLink->insRef.ins)) return false;
-				}
-
-				insRefLinkId = ieObject->endWithReuseInsRefs;
+				auto insRefLinkId = ieObject->summarizing.bottomInsRefs;
 				while (insRefLinkId != nullref)
 				{
 					auto insRefLink = GetInsExec_InsRefLink(insRefLinkId);

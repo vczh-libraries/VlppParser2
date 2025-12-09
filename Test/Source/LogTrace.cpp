@@ -491,6 +491,13 @@ void RenderTrace(
 							writer.WriteString(L"]");
 						}
 
+						if (ieObject->summarizing.bottomInsRefs != ieObject->endWithCreateInsRefs && ieObject->summarizing.bottomInsRefs != ieObject->endWithReuseInsRefs)
+						{
+							writer.WriteString(L", endLref:[");
+							logInsRefLink(ieObject->summarizing.bottomInsRefs);
+							writer.WriteString(L"]");
+						}
+
 						writer.WriteLine(L"");
 					}
 				}

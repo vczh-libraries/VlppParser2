@@ -300,6 +300,11 @@ TraceManager (Data Structures -- PrepareTraceRoute)
 				// earliestStackInsRef but propogated back into useFromStacks
 				InsRef								earliestInsRef;
 
+				// StackEnd instructions mapping earliestInsRef.
+				// Such StackBegin and StackEnd may not belong to the same stack.
+				// But belong to the out-most stack.
+				Ref<InsExec_InsRefLink>				bottomInsRefs;
+
 				// All CreateObject instructions including in useFromStacks
 				Ref<InsExec_InsRefLink>				indirectCreateObjectInsRefs;
 			};

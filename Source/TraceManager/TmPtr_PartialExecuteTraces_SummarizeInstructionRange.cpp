@@ -136,6 +136,15 @@ SummarizeEarilestInsRefs
 							continue;
 						}
 
+						if (stack == currentStack)
+						{
+							stack->summarizing.bottomInsRefs = JoinInsRefLink(stack->endWithCreateInsRefs, stack->endWithReuseInsRefs);
+						}
+						else
+						{
+							stack->summarizing.bottomInsRefs = currentStack->summarizing.bottomInsRefs;
+						}
+
 						auto currentInsRefLink = stack->useFromStacks;
 						while (currentInsRefLink != nullref)
 						{
