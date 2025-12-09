@@ -319,7 +319,6 @@ SyntaxSymbolManager::PrefixMergeCrossReference
 				*   Be careful when merging destroy the prefix structure, do we need to keep a copy of unmerged rule?
 				*/
 
-				return;
 #define ERROR_MESSAGE_PREFIX L"vl::glr::parsergen::SyntaxSymbolManager::PrefixMergeCrossReference(PrefixMergeCache*, RuleSymbol*, StateSymbol*, StateList&, EdgeList&)#"
 				IncrementalChange ic;
 				SortedList<StateSymbol*> visitedStates;
@@ -346,7 +345,7 @@ SyntaxSymbolManager::PrefixMergeCrossReference
 							auto rules2 = cache->startSetRules[edge2->input.rule];
 							rules2.Set(edge2->input.rule->pmRuleIndex);
 
-							CHECK_ERROR(edge1->input.rule == edge2->input.rule, ERROR_MESSAGE_PREFIX L"Internal error: Two edges from the same state should not consume the same rule, this should have been eliminated by MergeEdgesWithSameRuleUsingLeftrec.");
+							CHECK_ERROR(edge1->input.rule != edge2->input.rule, ERROR_MESSAGE_PREFIX L"Internal error: Two edges from the same state should not consume the same rule, this should have been eliminated by MergeEdgesWithSameRuleUsingLeftrec.");
 							if (!(tokens1 & tokens2)) continue;
 							if (!(rules1 & rules2)) continue;
 							console::Console::WriteLine(edge1->input.rule->Name() + L", " + edge2->input.rule->Name() + L" : " + currentState->Rule()->Name() + L"@" + currentState->label);

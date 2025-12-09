@@ -1,8 +1,4 @@
-////////////////////////////////////////
-// Left Recursive (Primitives)
-////////////////////////////////////////
-
-_Name
+﻿_Name
   ::= ID:name as Name
   ::= _Name:parent "." ID:member as MemberName
   ;
@@ -20,10 +16,6 @@ _PrimitiveExprOnly
   ::= "(" !_Expr ")"
   ;
 
-////////////////////////////////////////
-// Left Recursive (Types)
-////////////////////////////////////////
-
 _LongType
   ::= !_PrimitiveShared
   ::= !_PrimitiveTypeOnly
@@ -31,10 +23,6 @@ _LongType
   ::= _LongType:type "*" as PointerType
   ::= _LongType:returnType "(" {_LongType:args ; ","} ")" as FunctionType
   ;
-
-////////////////////////////////////////
-// Left Recursive (Expressions)
-////////////////////////////////////////
 
 _Expr0
   ::= !_PrimitiveShared
@@ -52,10 +40,6 @@ _Expr
   ::= _Expr:first "*" _Expr1:second as MulExpr
   ;
 
-////////////////////////////////////////
-// Left Recursive (Module)
-////////////////////////////////////////
-
 @parser Module
   ::= !_Expr
   ::= !_LongType
@@ -68,3 +52,4 @@ _Expr
 @parser TypeModule
   ::= !_LongType
   ;
+
