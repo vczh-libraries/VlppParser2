@@ -8,13 +8,222 @@ namespace vl
 		{
 			using namespace collections;
 
-			struct PrefixMergeCache
+/***********************************************************************
+BitSet
+***********************************************************************/
+
+			struct BitSet
 			{
+			private:
+				vint			wordCount = 0;
+				vuint64_t*		words = nullptr;
+
+				static bool AllZero(vuint64_t* words, vint wordCount)
+				{
+					for (vint i = 0; i < wordCount; i++)
+					{
+						if (words[i] != 0) return false;
+					}
+					return true;
+				}
+			public:
+				BitSet& operator=(const BitSet& bs)
+				{
+					if (this != &bs)
+					{
+						wordCount = bs.wordCount;
+						if (words)
+						{
+							delete[] words;
+							words = nullptr;
+						}
+						if (bs.words)
+						{
+							words = new vuint64_t[wordCount];
+							memcpy(words, bs.words, sizeof(vuint64_t) * wordCount);
+						}
+					}
+					return *this;
+				}
+
+				BitSet& operator=(BitSet&& bs) noexcept
+				{
+					if (this != &bs)
+					{
+						wordCount = bs.wordCount;
+						if (words)
+						{
+							delete[] words;
+						}
+						words = bs.words;
+						bs.wordCount = 0;
+						bs.words = nullptr;
+					}
+					return *this;
+				}
+
+				BitSet() = default;
+				BitSet(const BitSet& bs) { *this = bs; }
+				BitSet(BitSet&& bs) noexcept { *this = std::move(bs); }
+				~BitSet() { if (words) delete[] words; }
+
+				auto operator<=>(const BitSet& bs) const
+				{
+					if (this == &bs) return std::strong_ordering::equal;
+					vint minWordCount = wordCount < bs.wordCount ? wordCount : bs.wordCount;
+					if (minWordCount > 0)
+					{
+						auto result = memcmp(words, bs.words, sizeof(vuint64_t) * minWordCount) <=> 0;
+						if (result != 0) return result;
+					}
+
+					auto result = wordCount <=> bs.wordCount;
+					if (result < 0)
+					{
+						return AllZero(bs.words + minWordCount, bs.wordCount - minWordCount) ? std::strong_ordering::equal : std::strong_ordering::less;
+					}
+					else if (result > 0)
+					{
+						return AllZero(words + minWordCount, wordCount - minWordCount) ? std::strong_ordering::equal : std::strong_ordering::greater;
+					}
+					else
+					{
+						return result;
+					}
+				}
+				bool operator==(const BitSet& bs) const = default;
+
+				bool operator[](vint index) const
+				{
+					vint wordIndex = index / 64;
+					vint bitIndex = index % 64;
+					if (wordIndex >= wordCount)
+					{
+						return false;
+					}
+					return (words[wordIndex] & (vuint64_t(1) << bitIndex)) != 0;
+				}
+
+				void Set(vint index)
+				{
+					vint wordIndex = index / 64;
+					vint bitIndex = index % 64;
+					if (wordIndex >= wordCount)
+					{
+						vint oldWordCount = wordCount;
+						wordCount = wordIndex + 1;
+						vuint64_t* newWords = new vuint64_t[wordCount];
+						memset(newWords, 0, sizeof(vuint64_t) * wordCount);
+						if (words)
+						{
+							memcpy(newWords, words, sizeof(vuint64_t) * oldWordCount);
+							delete[] words;
+						}
+						words = newWords;
+					}
+					words[wordIndex] |= (vuint64_t(1) << bitIndex);
+				}
+
+				BitSet operator|(const BitSet& bs) const
+				{
+					BitSet result;
+					vint maxWordCount = wordCount > bs.wordCount ? wordCount : bs.wordCount;
+					if (maxWordCount > 0)
+					{
+						result.wordCount = maxWordCount;
+						result.words = new vuint64_t[maxWordCount];
+						for (vint i = 0; i < maxWordCount; i++)
+						{
+							vuint64_t w1 = i < wordCount ? words[i] : 0;
+							vuint64_t w2 = i < bs.wordCount ? bs.words[i] : 0;
+							result.words[i] = w1 | w2;
+						}
+					}
+					return result;
+				}
+
+				BitSet operator&(const BitSet& bs) const
+				{
+					BitSet result;
+					vint minWordCount = wordCount < bs.wordCount ? wordCount : bs.wordCount;
+					if (minWordCount > 0)
+					{
+						result.wordCount = minWordCount;
+						result.words = new vuint64_t[minWordCount];
+						for (vint i = 0; i < minWordCount; i++)
+						{
+							result.words[i] = words[i] & bs.words[i];
+						}
+					}
+					return result;
+				}
 			};
 
-			Ptr<PrefixMergeCache> SyntaxSymbolManager::CreatePrefixMerge()
+/***********************************************************************
+SyntaxSymbolManager::CreatePrefixMerge
+***********************************************************************/
+
+			struct PrefixMergeCache
 			{
-				return Ptr(new PrefixMergeCache);
+				List<RuleSymbol*>					rules;
+				Dictionary<RuleSymbol*, BitSet>		startSetTokens;
+				Dictionary<RuleSymbol*, BitSet>		startSetRules;
+			};
+
+			Ptr<PrefixMergeCache> SyntaxSymbolManager::CreatePrefixMergeCache()
+			{
+				auto cache = Ptr(new PrefixMergeCache);
+				CopyFrom(cache->rules, rules.map.Values());
+				for (auto [ruleSymbol, index] : indexed(cache->rules))
+				{
+					ruleSymbol->pmRuleIndex = index;
+				}
+
+				PartialOrderingProcessor pop;
+				{
+					Group<RuleSymbol*, RuleSymbol*> deps;
+					for (auto ruleSymbol : cache->rules)
+					{
+						auto startState = ruleSymbol->startStates[0];
+						BitSet directTokens, directRules;
+						for (auto edge : startState->OutEdges())
+						{
+							switch (edge->input.type)
+							{
+							case EdgeInputType::Token:
+								directTokens.Set(edge->input.token);
+								break;
+							case EdgeInputType::Rule:
+								directRules.Set(edge->input.rule->pmRuleIndex);
+								deps.Add(ruleSymbol, edge->input.rule);
+								break;
+							default:;
+							}
+						}
+						cache->startSetTokens.Add(ruleSymbol, directTokens);
+						cache->startSetRules.Add(ruleSymbol, directRules);
+					}
+					pop.InitWithGroup(cache->rules, deps);
+					pop.Sort();
+				}
+
+				for (auto component : pop.components)
+				{
+					if (component.nodeCount > 1)
+					{
+						AddError(
+							ParserErrorType::RuleIsIndirectlyLeftRecursive,
+							{},
+							From(Range<vint>(0,component.nodeCount))
+								.Select([&](vint index) { return cache->rules[component.firstNode[index]]->Name(); })
+								.OrderBySelf()
+								.Aggregate([](auto&& a, auto&& b) { return a + L", " + b; })
+							);
+					}
+				}
+				if (global.Errors().Count() > 0) return nullptr;
+
+				return cache;
 			}
 
 /***********************************************************************

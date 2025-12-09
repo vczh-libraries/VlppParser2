@@ -130,6 +130,7 @@ RuleSymbol
 			protected:
 				SyntaxSymbolManager*		ownerManager;
 				WString						name;
+				vint						pmRuleIndex = -1;
 
 				RuleSymbol(SyntaxSymbolManager* _ownerManager, const WString& _name, vint _fileIndex);
 			public:
@@ -194,12 +195,13 @@ SyntaxSymbolManager
 				static void						EliminateLeftRecursion(RuleSymbol* rule, StateSymbol* startState, StateSymbol* endState, StateList& newStates, EdgeList& newEdges);
 				static void						MergeEdgesWithSameInput(RuleSymbol* rule, StateSymbol* startState, StateList& newStates, EdgeList& newEdges);
 
-				static Ptr<PrefixMergeCache>	CreatePrefixMerge();
+				Ptr<PrefixMergeCache>			CreatePrefixMergeCache();
 				static void						PrefixMergeCrossReference(PrefixMergeCache* cache, RuleSymbol* rule, StateSymbol* startState, StateList& newStates, EdgeList& newEdges);
 
 				static void						ApplyIncrementalChange(const IncrementalChange& ic, StateList& newStates, EdgeList& newEdges);
-				void							CheckIndirectLeftRecursion(StateSymbol* startState, collections::List<EdgeSymbol*>& accumulatedEdges);
 				void							BuildCompactNFAInternal();
+
+			protected:
 
 				void							FixCrossReferencedRuleEdge(StateSymbol* startState, collections::Group<StateSymbol*, EdgeSymbol*>& orderedEdges, collections::List<EdgeSymbol*>& accumulatedEdges);
 				void							BuildCrossReferencedNFAInternal();
