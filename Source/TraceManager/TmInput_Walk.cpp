@@ -189,6 +189,10 @@ TraceManager::WalkAlongEpsilonEdges
 				WalkingTrace trace
 			)
 			{
+				if (!lookAhead)
+				{
+					int a = 0;
+				}
 				// if we could walk along multiple EndingInput transition
 				// but the last several transition will fail
 				// then creating them is wasting the performance
@@ -202,6 +206,8 @@ TraceManager::WalkAlongEpsilonEdges
 					vint32_t currentCount = 0;
 					vint32_t currentState = trace.stateTrace->state;
 					auto currentReturnStack = trace.stateTrace->returnStack;
+
+#define MARK_AT_LEAST_EXECUTE_TO_THIS_LEVEL endingCount = currentCount
 
 					while (currentState != -1)
 					{
@@ -223,7 +229,7 @@ TraceManager::WalkAlongEpsilonEdges
 								// mark this EndingInput if any LeftrecInput + (lookAhead or EndingInput) transition exists
 								if (acceptLookAhead || acceptEndingInput)
 								{
-									endingCount = currentCount;
+									MARK_AT_LEAST_EXECUTE_TO_THIS_LEVEL;
 									goto TRY_ENDING_INPUT;
 								}
 							}
@@ -238,7 +244,7 @@ TraceManager::WalkAlongEpsilonEdges
 							// mark this EndingInput if lookAhead transition exists
 							if (IsQualifiedTokenForEdgeArray(lookAhead, edgeArray))
 							{
-								endingCount = currentCount;
+								MARK_AT_LEAST_EXECUTE_TO_THIS_LEVEL;
 							}
 						}
 
@@ -252,7 +258,8 @@ TraceManager::WalkAlongEpsilonEdges
 							{
 								// if there are multiple EndingInput transitions
 								// assume they would all succeed, and do recursive calls later
-								currentState = -1;
+								MARK_AT_LEAST_EXECUTE_TO_THIS_LEVEL;
+								break;
 							}
 							else if (edgeArray.count == 1 && currentReturnStack != nullref)
 							{
@@ -262,31 +269,34 @@ TraceManager::WalkAlongEpsilonEdges
 							}
 							else if (lookAhead)
 							{
-								// currentReturnStack == -1 means this is the last possible EndingInput
-								// no need to test forward
-								// because if the current EndingInput is doable
-								// it would have already been marked
-								currentState = -1;
+								// lookAhead && (edgeArray.count == 0 || currentReturnStack == nullref)
+								// if edgeArray.count == 0
+								//   no further EndingInput transition could be walked
+								// if currentReturnStack == nullref
+								//   it means this is the last possible EndingInput
+								//   no need to test forward
+								//   because if the current EndingInput is doable
+								//   it would have already been marked
+								break;
 							}
 							else if (edgeArray.count == 0)
 							{
+								// !lookAhead && edgeArray.count == 0
 								// if there is no more EndingInput to go
 								// and the current state is not an ending state
 								// then we just give up
+								// it is possible that a LeftrecInput transition is available
 
 								auto&& stateDesc = executable.states[currentState];
 								if (stateDesc.endingState)
 								{
-									currentState = -1;
+									MARK_AT_LEAST_EXECUTE_TO_THIS_LEVEL;
 								}
-								else
-								{
-									// when there is no more token, the first two tests are not executed, safe to return
-									return;
-								}
+								break;
 							}
 							else
 							{
+								// !lookAhead && edgeArray.count == 1 && currentReturnStack == nullref
 								vint32_t byEdge = edgeArray.start;
 								auto& edgeDesc = executable.edges[byEdge];
 								currentState = edgeDesc.toState;
@@ -294,6 +304,8 @@ TraceManager::WalkAlongEpsilonEdges
 						}
 					}
 				}
+
+#undef MARK_AT_LEAST_EXECUTE_TO_THIS_LEVEL
 
 				for (vint32_t i = 0; trace && (i < endingCount || endingCount == -1); i++)
 				{
