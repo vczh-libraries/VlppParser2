@@ -21,7 +21,8 @@
 
 ### Progressing
 
-`BinaryOp` failed to parse.
+To optimoze: [pm-lr]->leftrec->ending is bad, just make one ending.
+This should make Trace-1[Codegen_WorkflowHints].txt back to ~7000 traces.
 
 - [x] Non-ambiguous test cases
 - [x] Ambiguous test cases
