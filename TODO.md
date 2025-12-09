@@ -21,8 +21,7 @@
 
 ### Progressing
 
-In `Pba_1`, it seems bottom objects are not identified correctly, causing missing `StackEnd()` before the first `StackSlot(-2)`.
-Two `StackSlot(-2)` do not happen in the same stack, causing `ResolveAmbiguity` to fail.
+`BinaryOp` failed to parse.
 
 - [x] Non-ambiguous test cases
 - [x] Ambiguous test cases
