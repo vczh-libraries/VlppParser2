@@ -57,16 +57,22 @@ SyntaxSymbolManager::BuildCompactNFAInternal
 				{
 					auto&& newStates = *newStatesAndEdges[i].key.Obj();
 					auto&& newEdges = *newStatesAndEdges[i].value.Obj();
+					// remove all epsilon edges, potentially duplicating input edges
 					auto [startState, endState] = EliminateEpsilonEdges(ruleSymbol, newStates, newEdges);
 					ruleSymbol->startStates.Clear();
 					ruleSymbol->startStates.Add(startState);
 
+					// there will be only one start state per rule after EliminateEpsilonEdges
+					// detect and resolve direct left recursion
 					EliminateLeftRecursion(ruleSymbol, startState, endState, newStates, newEdges);
+
+					// merge as many input edges as possible to reduce wasted traces during parsing
+					// they consume same token or rule from the same state
+					// performance will be bad if duplicated parsing actually happen
+					// could save 20x wasted traces for Workflow parser
 					MergeEdgesWithSameInput(ruleSymbol, startState, newStates, newEdges);
 					MergeEdgesWithSameRuleUsingLeftrec(ruleSymbol, ruleSymbol->startStates[0], newStates, newEdges);
 				}
-
-				// there will be only one start state per rule after EliminateEpsilonEdges
 
 				auto pmCache = CreatePrefixMergeCache();
 				if (!pmCache) return;
