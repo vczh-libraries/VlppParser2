@@ -74,8 +74,12 @@ SyntaxSymbolManager::BuildCompactNFAInternal
 					MergeEdgesWithSameRuleUsingLeftrec(ruleSymbol, ruleSymbol->startStates[0], newStates, newEdges);
 				}
 
+				// further merging but introduces minimum cross-reference rule input to states in other rule
+				// this should only be done after performing local merging inside each rule
+				// detect and ban indirect left recursion
 				auto pmCache = CreatePrefixMergeCache();
 				if (!pmCache) return;
+
 				for (auto [ruleSymbol, i] : indexed(rules.map.Values()))
 				{
 					auto&& newStates = *newStatesAndEdges[i].key.Obj();
