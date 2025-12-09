@@ -271,50 +271,6 @@ SyntaxSymbolManager::CreatePrefixMerge
 			}
 
 /***********************************************************************
-SyntaxSymbolManager::PrefixMergeSameRuleCrossReference
-***********************************************************************/
-
-			void SyntaxSymbolManager::PrefixMergeSameRuleCrossReference(RuleSymbol* rule, StateSymbol* startState, StateList& newStates, EdgeList& newEdges)
-			{
-				IncrementalChange ic;
-				SortedList<StateSymbol*> visitedStates;
-				List<StateSymbol*> workingStates;
-				workingStates.Add(startState);
-
-				for (vint i = 0; i < workingStates.Count(); i++)
-				{
-					auto currentState = workingStates[i];
-					Group<RuleSymbol*, EdgeSymbol*> groupedEdges;
-					for (auto edge : currentState->OutEdges())
-					{
-						if (edge->input.type != EdgeInputType::Rule) continue;
-						groupedEdges.Add(edge->input.rule, edge);
-					}
-
-					for (vint j = 0; j < groupedEdges.Count(); j++)
-					{
-						auto&& edges = groupedEdges.GetByIndex(j);
-						if (edges.Count() > 1)
-						{
-							console::Console::WriteLine(edges[0]->input.rule->Name() + L" : " + currentState->Rule()->Name() + L"@" + currentState->label);
-						}
-					}
-
-					for (auto edge : startState->OutEdges())
-					{
-						if (edge->input.type != EdgeInputType::Rule) continue;
-						if (!visitedStates.Contains(edge->To()))
-						{
-							visitedStates.Add(edge->To());
-							workingStates.Add(edge->To());
-						}
-					}
-				}
-
-				ApplyIncrementalChange(ic, newStates, newEdges);
-			}
-
-/***********************************************************************
 SyntaxSymbolManager::PrefixMergeCrossReference
 ***********************************************************************/
 
@@ -390,14 +346,14 @@ SyntaxSymbolManager::PrefixMergeCrossReference
 							auto rules2 = cache->startSetRules[edge2->input.rule];
 							rules2.Set(edge2->input.rule->pmRuleIndex);
 
-							CHECK_ERROR(edge1->input.rule == edge2->input.rule, ERROR_MESSAGE_PREFIX L"Internal error: Two edges from the same state should not consume the same rule, this should have been eliminated by PrefixMergeSameRuleCrossReference.");
+							CHECK_ERROR(edge1->input.rule == edge2->input.rule, ERROR_MESSAGE_PREFIX L"Internal error: Two edges from the same state should not consume the same rule, this should have been eliminated by MergeEdgesWithSameRuleUsingLeftrec.");
 							if (!(tokens1 & tokens2)) continue;
 							if (!(rules1 & rules2)) continue;
 							console::Console::WriteLine(edge1->input.rule->Name() + L", " + edge2->input.rule->Name() + L" : " + currentState->Rule()->Name() + L"@" + currentState->label);
 						}
 					}
 
-					for (auto edge : startState->OutEdges())
+					for (auto edge : currentState->OutEdges())
 					{
 						if (edge->input.type != EdgeInputType::Rule) continue;
 						if (!visitedStates.Contains(edge->To()))
