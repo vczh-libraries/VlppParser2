@@ -40,6 +40,9 @@ SyntaxSymbolManager::MergeEdgesWithSameRuleUsingLeftrec
 				*/
 
 				IncrementalChange ic;
+				CopyFrom(ic.reusedStates, From(newStates).Select([](auto p) {return p.Obj(); }));
+				CopyFrom(ic.reusedEdges, From(newEdges).Select([](auto p) {return p.Obj(); }));
+
 				SortedList<StateSymbol*> visitedStates;
 				List<StateSymbol*> workingStates;
 				workingStates.Add(startState);
@@ -59,7 +62,21 @@ SyntaxSymbolManager::MergeEdgesWithSameRuleUsingLeftrec
 						auto&& edges = groupedEdges.GetByIndex(j);
 						if (edges.Count() > 1)
 						{
-							console::Console::WriteLine(edges[0]->input.rule->Name() + L" : " + currentState->Rule()->Name() + L"@" + currentState->label);
+							auto newState = Ptr(new StateSymbol(rule));
+							ic.createdStates.Add(newState);
+							auto newEdge = Ptr(new EdgeSymbol(currentState, newState.Obj()));
+							ic.createdEdges.Add(newEdge);
+
+							newState->label = currentState->label + L"[pm-lr]";
+
+							newEdge->input = edges[0]->input;
+							CopyFrom(newState->outEdges, edges);
+							for (auto edge : edges)
+							{
+								edge->fromState->outEdges.Remove(edge);
+								edge->fromState = newState.Obj();
+								edge->input = { EdgeInputType::LeftRec };
+							}
 						}
 					}
 

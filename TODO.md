@@ -40,8 +40,6 @@
 
 ### Optimization ToDo
 
-- In (A | B), both A and B should start with the same slot number, but it may cause another issue if they are assigned to different fields.
-
 ## Features to Add
 
 - Extensible tokens, for example, recognize `R"[^\s(]\(` and invoke a callback function to determine the end of the string.
