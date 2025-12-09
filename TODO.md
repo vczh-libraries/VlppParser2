@@ -21,9 +21,6 @@
 
 ### Progressing
 
-To optimoze: [pm-lr]->leftrec->ending is bad, just make one ending.
-This should make Trace-1[Codegen_WorkflowHints].txt back to ~7000 traces.
-
 - [x] Non-ambiguous test cases
 - [x] Ambiguous test cases
 - [x] Split FeatureTest
@@ -33,7 +30,8 @@ This should make Trace-1[Codegen_WorkflowHints].txt back to ~7000 traces.
   - [x] Workflow
 - [ ] prefix_merge test cases
   - [x] merge prefix in rules
-    - 109236 -> 10141 states: Test\ParserLog\BuiltIn-Workflow\Trace-1[Codegen_WorkflowHints].txt, but 6750 in master
+    - 109236 -> 10141 -> 6663 states: Test\ParserLog\BuiltIn-Workflow\Trace-1[Codegen_WorkflowHints].txt, meanwhile 6750 in master
+    - second reducing by optimization: [pm-lr]->leftrec->ending is bad, just make one ending
   - [ ] automatically identify prefix_merge
 - [ ] Built-in parsers:
   - [ ] C++
