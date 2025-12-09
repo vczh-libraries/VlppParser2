@@ -710,6 +710,7 @@ TraceManager
 				TraceManager(Executable& _executable, const ITypeCallback* _typeCallback, vint blockSize);
 
 				vint32_t						concurrentCount = 0;
+				Nullable<vint32_t>				concurrentCountBeforeError;
 				collections::List<Trace*>*		concurrentTraces = nullptr;
 				collections::List<Trace*>*		backupTraces = nullptr;
 

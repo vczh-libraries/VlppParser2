@@ -1232,7 +1232,6 @@ FilePath LogTraceManager(
 	const Func<WString(vint32_t)>& stateLabel
 )
 {
-	CHECK_ERROR(tm.concurrentCount > 0, L"Cannot log failed traces!");
 	Group<Trace*, WString> traceLogs;
 	{
 		SortedList<Trace*> logged;
@@ -1274,7 +1273,11 @@ FilePath LogTraceManager(
 	auto outputFile = outputDir / (L"Trace-" + itow((vint)traceProcessingPhase + 1) + L"[" + caseName + L"].txt");
 	auto content = GenerateToStream([&](StreamWriter& writer)
 	{
-		if (auto step = tm.GetInitialExecutionStep())
+		if (tm.concurrentCountBeforeError)
+		{
+			writer.WriteLine(L"================ FAILED TRACES ================");
+		}
+		else if (auto step = tm.GetInitialExecutionStep())
 		{
 			writer.WriteLine(L"================ EXECUTION STEPS ================");
 			while (step)
