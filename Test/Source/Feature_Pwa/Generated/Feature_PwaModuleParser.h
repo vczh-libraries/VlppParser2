@@ -23,7 +23,7 @@ namespace feature_pwa
 		Pwa1 = 21,
 		Pwa2Body = 26,
 		Pwa2 = 31,
-		Module = 38,
+		Module = 39,
 	};
 
 	const wchar_t* ModuleParserRuleName(vl::vint index);

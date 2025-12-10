@@ -190,7 +190,6 @@ SyntaxSymbolManager::MergeEdgesWithSameRuleUsingLeftrec
 
 					for (auto edge : currentState->OutEdges())
 					{
-						if (edge->input.type != EdgeInputType::Rule) continue;
 						if (!visitedStates.Contains(edge->To()))
 						{
 							visitedStates.Add(edge->To());

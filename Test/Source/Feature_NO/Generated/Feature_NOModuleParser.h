@@ -19,7 +19,7 @@ namespace feature_no
 		NO1 = -1,
 		NO2 = -1,
 		NestedOptional = 3,
-		Module = 11,
+		Module = 13,
 	};
 
 	const wchar_t* ModuleParserRuleName(vl::vint index);
