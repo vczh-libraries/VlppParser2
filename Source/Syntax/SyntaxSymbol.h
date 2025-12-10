@@ -197,6 +197,7 @@ SyntaxSymbolManager
 				static void						MergeEdgesWithSameRuleUsingLeftrec(RuleSymbol* rule, StateSymbol* startState, StateList& newStates, EdgeList& newEdges);
 
 				Ptr<PrefixMergeCache>			CreatePrefixMergeCache();
+				static void						PrefixMergeCrossReference_SolveInState(PrefixMergeCache* cache, RuleSymbol* rule, StateSymbol* currentState, collections::Array<EdgeSymbol*>& edgesToMerge);
 				static void						PrefixMergeCrossReference_Solve(PrefixMergeCache* cache, RuleSymbol* rule, StateSymbol* startState);
 				static void						PrefixMergeCrossReference_Apply(PrefixMergeCache* cache, RuleSymbol* rule, StateSymbol* startState, StateList& newStates, EdgeList& newEdges);
 

@@ -241,11 +241,11 @@ SyntaxSymbolManager::CreatePrefixMerge
 						AddError(
 							ParserErrorType::RuleIsIndirectlyLeftRecursive,
 							{},
-							From(Range<vint>(0,component.nodeCount))
-								.Select([&](vint index) { return cache->rules[component.firstNode[index]]->Name(); })
-								.OrderBySelf()
-								.Aggregate([](auto&& a, auto&& b) { return a + L", " + b; })
-							);
+							From(Range<vint>(0, component.nodeCount))
+							.Select([&](vint index) { return cache->rules[component.firstNode[index]]->Name(); })
+							.OrderBySelf()
+							.Aggregate([](auto&& a, auto&& b) { return a + L", " + b; })
+						);
 					}
 				}
 				if (global.Errors().Count() > 0) return nullptr;
@@ -268,6 +268,19 @@ SyntaxSymbolManager::CreatePrefixMerge
 				}
 
 				return cache;
+			}
+
+/***********************************************************************
+SyntaxSymbolManager::PrefixMergeCrossReference_SolveInState
+***********************************************************************/
+
+			void SyntaxSymbolManager::PrefixMergeCrossReference_SolveInState(PrefixMergeCache * cache, RuleSymbol * rule, StateSymbol * currentState, collections::Array<EdgeSymbol*>&edgesToMerge)
+			{
+				console::Console::WriteLine(rule->Name() + L": " + currentState->label);
+				for (auto edge : edgesToMerge)
+				{
+					console::Console::WriteLine(L"  " + edge->input.rule->Name());
+				}
 			}
 
 /***********************************************************************
@@ -319,11 +332,12 @@ SyntaxSymbolManager::PrefixMergeCrossReference_Solve
 					{
 						if (component.nodeCount > 1)
 						{
-							console::Console::WriteLine(rule->Name() + L": " + currentState->label);
+							Array<EdgeSymbol*> edgesToMerge(component.nodeCount);
 							for (vint j = 0; j < component.nodeCount; j++)
 							{
-								console::Console::WriteLine(L"  " + currentState->OutEdges()[component.firstNode[j]]->input.rule->Name());
+								edgesToMerge[j] = currentState->OutEdges()[component.firstNode[j]];
 							}
+							PrefixMergeCrossReference_SolveInState(cache, rule, currentState, edgesToMerge);
 						}
 					}
 
