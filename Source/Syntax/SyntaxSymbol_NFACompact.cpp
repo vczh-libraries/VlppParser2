@@ -82,9 +82,14 @@ SyntaxSymbolManager::BuildCompactNFAInternal
 
 				for (auto [ruleSymbol, i] : indexed(rules.map.Values()))
 				{
+					PrefixMergeCrossReference_Solve(pmCache.Obj(), ruleSymbol, ruleSymbol->startStates[0]);
+				}
+
+				for (auto [ruleSymbol, i] : indexed(rules.map.Values()))
+				{
 					auto&& newStates = *newStatesAndEdges[i].key.Obj();
 					auto&& newEdges = *newStatesAndEdges[i].value.Obj();
-					PrefixMergeCrossReference(pmCache.Obj(), ruleSymbol, ruleSymbol->startStates[0], newStates, newEdges);
+					PrefixMergeCrossReference_Apply(pmCache.Obj(), ruleSymbol, ruleSymbol->startStates[0], newStates, newEdges);
 				}
 
 				states.Clear();

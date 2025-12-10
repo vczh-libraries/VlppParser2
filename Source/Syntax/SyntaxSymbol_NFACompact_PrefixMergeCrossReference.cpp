@@ -271,10 +271,61 @@ SyntaxSymbolManager::CreatePrefixMerge
 			}
 
 /***********************************************************************
-SyntaxSymbolManager::PrefixMergeCrossReference
+SyntaxSymbolManager::PrefixMergeCrossReference_Solve
 ***********************************************************************/
 
-			void SyntaxSymbolManager::PrefixMergeCrossReference(PrefixMergeCache* cache, RuleSymbol* rule, StateSymbol* startState, StateList& newStates, EdgeList& newEdges)
+			void SyntaxSymbolManager::PrefixMergeCrossReference_Solve(PrefixMergeCache* cache, RuleSymbol* rule, StateSymbol* startState)
+			{
+#define ERROR_MESSAGE_PREFIX L"vl::glr::parsergen::SyntaxSymbolManager::PrefixMergeCrossReference_Solve(PrefixMergeCache*, RuleSymbol*, StateSymbol*)#"
+				SortedList<StateSymbol*> visitedStates;
+				List<StateSymbol*> workingStates;
+				workingStates.Add(startState);
+
+				for (vint i = 0; i < workingStates.Count(); i++)
+				{
+					auto currentState = workingStates[i];
+
+					for (vint j = 0; j < currentState->OutEdges().Count() - 1; j++)
+					{
+						auto edge1 = currentState->OutEdges()[j];
+						if (edge1->input.type != EdgeInputType::Rule) continue;
+						auto tokens1 = cache->startSetTokens[edge1->input.rule];
+						auto rules1 = cache->startSetRules[edge1->input.rule];
+						rules1.Set(edge1->input.rule->pmRuleIndex);
+
+						for (vint k = j + 1; k < currentState->OutEdges().Count(); k++)
+						{
+							auto edge2 = currentState->OutEdges()[k];
+							if (edge2->input.type != EdgeInputType::Rule) continue;
+							auto tokens2 = cache->startSetTokens[edge2->input.rule];
+							auto rules2 = cache->startSetRules[edge2->input.rule];
+							rules2.Set(edge2->input.rule->pmRuleIndex);
+
+							CHECK_ERROR(edge1->input.rule != edge2->input.rule, ERROR_MESSAGE_PREFIX L"Internal error: Two edges from the same state should not consume the same rule, this should have been eliminated by MergeEdgesWithSameRuleUsingLeftrec.");
+							if (!(tokens1 & tokens2)) continue;
+							if (!(rules1 & rules2)) continue;
+							console::Console::WriteLine(edge1->input.rule->Name() + L", " + edge2->input.rule->Name() + L" : " + currentState->Rule()->Name() + L"@" + currentState->label);
+						}
+					}
+
+					for (auto edge : currentState->OutEdges())
+					{
+						if (edge->input.type != EdgeInputType::Rule) continue;
+						if (!visitedStates.Contains(edge->To()))
+						{
+							visitedStates.Add(edge->To());
+							workingStates.Add(edge->To());
+						}
+					}
+				}
+#undef ERROR_MESSAGE_PREFIX
+			}
+
+/***********************************************************************
+SyntaxSymbolManager::PrefixMergeCrossReference_Apply
+***********************************************************************/
+
+			void SyntaxSymbolManager::PrefixMergeCrossReference_Apply(PrefixMergeCache* cache, RuleSymbol* rule, StateSymbol* startState, StateList& newStates, EdgeList& newEdges)
 			{
 				/*
 				* For any state A whose prefix calls look like:
@@ -318,53 +369,6 @@ SyntaxSymbolManager::PrefixMergeCrossReference
 				*   It means merging should happen between different first level sub trees.
 				*   Be careful when merging destroy the prefix structure, do we need to keep a copy of unmerged rule?
 				*/
-
-#define ERROR_MESSAGE_PREFIX L"vl::glr::parsergen::SyntaxSymbolManager::PrefixMergeCrossReference(PrefixMergeCache*, RuleSymbol*, StateSymbol*, StateList&, EdgeList&)#"
-				IncrementalChange ic;
-				SortedList<StateSymbol*> visitedStates;
-				List<StateSymbol*> workingStates;
-				workingStates.Add(startState);
-
-				for (vint i = 0; i < workingStates.Count(); i++)
-				{
-					auto currentState = workingStates[i];
-
-					for (vint j = 0; j < currentState->OutEdges().Count() - 1; j++)
-					{
-						auto edge1 = currentState->OutEdges()[j];
-						if (edge1->input.type != EdgeInputType::Rule) continue;
-						auto tokens1 = cache->startSetTokens[edge1->input.rule];
-						auto rules1 = cache->startSetRules[edge1->input.rule];
-						rules1.Set(edge1->input.rule->pmRuleIndex);
-
-						for (vint k = j + 1; k < currentState->OutEdges().Count(); k++)
-						{
-							auto edge2 = currentState->OutEdges()[k];
-							if (edge2->input.type != EdgeInputType::Rule) continue;
-							auto tokens2 = cache->startSetTokens[edge2->input.rule];
-							auto rules2 = cache->startSetRules[edge2->input.rule];
-							rules2.Set(edge2->input.rule->pmRuleIndex);
-
-							CHECK_ERROR(edge1->input.rule != edge2->input.rule, ERROR_MESSAGE_PREFIX L"Internal error: Two edges from the same state should not consume the same rule, this should have been eliminated by MergeEdgesWithSameRuleUsingLeftrec.");
-							if (!(tokens1 & tokens2)) continue;
-							if (!(rules1 & rules2)) continue;
-							console::Console::WriteLine(edge1->input.rule->Name() + L", " + edge2->input.rule->Name() + L" : " + currentState->Rule()->Name() + L"@" + currentState->label);
-						}
-					}
-
-					for (auto edge : currentState->OutEdges())
-					{
-						if (edge->input.type != EdgeInputType::Rule) continue;
-						if (!visitedStates.Contains(edge->To()))
-						{
-							visitedStates.Add(edge->To());
-							workingStates.Add(edge->To());
-						}
-					}
-				}
-
-				ApplyIncrementalChange(ic, newStates, newEdges);
-#undef ERROR_MESSAGE_PREFIX
 			}
 		}
 	}

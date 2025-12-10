@@ -197,7 +197,8 @@ SyntaxSymbolManager
 				static void						MergeEdgesWithSameRuleUsingLeftrec(RuleSymbol* rule, StateSymbol* startState, StateList& newStates, EdgeList& newEdges);
 
 				Ptr<PrefixMergeCache>			CreatePrefixMergeCache();
-				static void						PrefixMergeCrossReference(PrefixMergeCache* cache, RuleSymbol* rule, StateSymbol* startState, StateList& newStates, EdgeList& newEdges);
+				static void						PrefixMergeCrossReference_Solve(PrefixMergeCache* cache, RuleSymbol* rule, StateSymbol* startState);
+				static void						PrefixMergeCrossReference_Apply(PrefixMergeCache* cache, RuleSymbol* rule, StateSymbol* startState, StateList& newStates, EdgeList& newEdges);
 
 				static void						ApplyIncrementalChange(const IncrementalChange& ic, StateList& newStates, EdgeList& newEdges);
 				void							BuildCompactNFAInternal();
