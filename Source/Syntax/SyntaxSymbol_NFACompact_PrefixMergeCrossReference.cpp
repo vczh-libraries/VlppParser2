@@ -284,6 +284,7 @@ SyntaxSymbolManager::PrefixMergeCrossReference_Solve
 				for (vint i = 0; i < workingStates.Count(); i++)
 				{
 					auto currentState = workingStates[i];
+					Group<EdgeSymbol*, EdgeSymbol*> biDeps;
 
 					for (vint j = 0; j < currentState->OutEdges().Count() - 1; j++)
 					{
@@ -304,13 +305,30 @@ SyntaxSymbolManager::PrefixMergeCrossReference_Solve
 							CHECK_ERROR(edge1->input.rule != edge2->input.rule, ERROR_MESSAGE_PREFIX L"Internal error: Two edges from the same state should not consume the same rule, this should have been eliminated by MergeEdgesWithSameRuleUsingLeftrec.");
 							if (!(tokens1 & tokens2)) continue;
 							if (!(rules1 & rules2)) continue;
-							console::Console::WriteLine(edge1->input.rule->Name() + L", " + edge2->input.rule->Name() + L" : " + currentState->Rule()->Name() + L"@" + currentState->label);
+
+							biDeps.Add(edge1, edge2);
+							biDeps.Add(edge2, edge1);
+						}
+					}
+
+					PartialOrderingProcessor pop;
+					pop.InitWithGroup(currentState->OutEdges(), biDeps);
+					pop.Sort();
+
+					for (auto component : pop.components)
+					{
+						if (component.nodeCount > 1)
+						{
+							console::Console::WriteLine(rule->Name() + L": " + currentState->label);
+							for (vint j = 0; j < component.nodeCount; j++)
+							{
+								console::Console::WriteLine(L"  " + currentState->OutEdges()[component.firstNode[j]]->input.rule->Name());
+							}
 						}
 					}
 
 					for (auto edge : currentState->OutEdges())
 					{
-						if (edge->input.type != EdgeInputType::Rule) continue;
 						if (!visitedStates.Contains(edge->To()))
 						{
 							visitedStates.Add(edge->To());
