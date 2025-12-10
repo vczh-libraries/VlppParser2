@@ -192,16 +192,24 @@ SyntaxSymbolManager::CreatePrefixMerge
 			struct PrefixMergeCache
 			{
 				// prepared by CreatePrefixMergeCache
-				List<RuleSymbol*>					rules;
-				List<RuleSymbol*>					rulesByDeps; // if a begins with b, a is before b
-				Dictionary<RuleSymbol*, BitSet>		directStartSetTokens, startSetTokens;
-				Dictionary<RuleSymbol*, BitSet>		directStartSetRules, startSetRules;
+				Array<RuleSymbol*>		rules;
+				Array<RuleSymbol*>		rulesByDeps; // if a begins with b, a is before b
+				Array<BitSet>			directStartSetTokens, startSetTokens;
+				Array<BitSet>			directStartSetRules, startSetRules, reverseStartSetRules;
 			};
 
 			Ptr<PrefixMergeCache> SyntaxSymbolManager::CreatePrefixMergeCache()
 			{
 				auto cache = Ptr(new PrefixMergeCache);
 				CopyFrom(cache->rules, rules.map.Values());
+				const vint ruleCount = cache->rules.Count();
+
+				cache->rulesByDeps.Resize(ruleCount);
+				cache->directStartSetTokens.Resize(ruleCount);
+				cache->startSetTokens.Resize(ruleCount);
+				cache->directStartSetRules.Resize(ruleCount);
+				cache->startSetRules.Resize(ruleCount);
+				cache->reverseStartSetRules.Resize(ruleCount);
 				for (auto [ruleSymbol, index] : indexed(cache->rules))
 				{
 					ruleSymbol->pmRuleIndex = index;
@@ -228,8 +236,8 @@ SyntaxSymbolManager::CreatePrefixMerge
 							default:;
 							}
 						}
-						cache->directStartSetTokens.Add(ruleSymbol, directTokens);
-						cache->directStartSetRules.Add(ruleSymbol, directRules);
+						cache->directStartSetTokens[ruleSymbol->pmRuleIndex] = directTokens;
+						cache->directStartSetRules[ruleSymbol->pmRuleIndex] = directRules;
 					}
 					pop.InitWithGroup(cache->rules, deps);
 					pop.Sort();
@@ -251,21 +259,33 @@ SyntaxSymbolManager::CreatePrefixMerge
 				}
 				if (global.Errors().Count() > 0) return nullptr;
 
-				for (auto component : pop.components)
+				for (auto [component, index] : indexed(pop.components))
 				{
 					auto ruleSymbol = cache->rules[*component.firstNode];
-					auto startSetTokens = cache->directStartSetTokens[ruleSymbol];
-					auto startSetRules = cache->directStartSetRules[ruleSymbol];
+					auto startSetTokens = cache->directStartSetTokens[ruleSymbol->pmRuleIndex];
+					auto startSetRules = cache->directStartSetRules[ruleSymbol->pmRuleIndex];
+					cache->rulesByDeps[ruleCount - 1 - index] = ruleSymbol;
 
 					auto startState = ruleSymbol->startStates[0];
 					for (auto edge : startState->OutEdges())
 					{
 						if (edge->input.type != EdgeInputType::Rule) continue;
-						startSetTokens |= cache->startSetTokens[edge->input.rule];
-						startSetRules |= cache->startSetRules[edge->input.rule];
+						startSetTokens |= cache->startSetTokens[edge->input.rule->pmRuleIndex];
+						startSetRules |= cache->startSetRules[edge->input.rule->pmRuleIndex];
 					}
-					cache->startSetTokens.Add(ruleSymbol, startSetTokens);
-					cache->startSetRules.Add(ruleSymbol, startSetRules);
+					cache->startSetTokens[ruleSymbol->pmRuleIndex] = startSetTokens;
+					cache->startSetRules[ruleSymbol->pmRuleIndex] = startSetRules;
+				}
+
+				for (vint i = 0; i < ruleCount; i++)
+				{
+					for (vint j = 0; j < ruleCount; j++)
+					{
+						if (cache->startSetRules[i][j])
+						{
+							cache->reverseStartSetRules[j].Set(i);
+						}
+					}
 				}
 
 				return cache;
@@ -317,16 +337,16 @@ SyntaxSymbolManager::PrefixMergeCrossReference_Solve
 					{
 						auto edge1 = currentState->OutEdges()[j];
 						if (edge1->input.type != EdgeInputType::Rule) continue;
-						auto tokens1 = cache->startSetTokens[edge1->input.rule];
-						auto rules1 = cache->startSetRules[edge1->input.rule];
+						auto tokens1 = cache->startSetTokens[edge1->input.rule->pmRuleIndex];
+						auto rules1 = cache->startSetRules[edge1->input.rule->pmRuleIndex];
 						rules1.Set(edge1->input.rule->pmRuleIndex);
 
 						for (vint k = j + 1; k < currentState->OutEdges().Count(); k++)
 						{
 							auto edge2 = currentState->OutEdges()[k];
 							if (edge2->input.type != EdgeInputType::Rule) continue;
-							auto tokens2 = cache->startSetTokens[edge2->input.rule];
-							auto rules2 = cache->startSetRules[edge2->input.rule];
+							auto tokens2 = cache->startSetTokens[edge2->input.rule->pmRuleIndex];
+							auto rules2 = cache->startSetRules[edge2->input.rule->pmRuleIndex];
 							rules2.Set(edge2->input.rule->pmRuleIndex);
 
 							CHECK_ERROR(edge1->input.rule != edge2->input.rule, ERROR_MESSAGE_PREFIX L"Internal error: Two edges from the same state should not consume the same rule, this should have been eliminated by MergeEdgesWithSameRuleUsingLeftrec.");
