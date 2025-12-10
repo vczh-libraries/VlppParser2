@@ -20,6 +20,33 @@ FilePath LogSyntaxWithPath(
 	EncoderStream encoderStream(fileStream, encoder);
 	StreamWriter writer(encoderStream);
 
+	if (manager.prefixMergeSolutions.Count() > 0)
+	{
+		writer.WriteLine(L"[PREFIX MERGE SOLUTIONS]");
+		for (auto key : From(manager.prefixMergeSolutions.Keys())
+			.OrderByKey([](auto k) {return Tuple(k.get<0>()->Name(), k.get<1>()->label); })
+			)
+		{
+			auto value = manager.prefixMergeSolutions[key];
+			writer.WriteLine(L"  " + key.get<0>()->Name() + L": " + key.get<1>()->label);
+			writer.WriteString(L"    edges: ");
+			for (auto [edge, index] : indexed(value->edgesToMerge))
+			{
+				if (index > 0) writer.WriteString(L", ");
+				writer.WriteString(edge->input.rule->Name());
+			}
+			writer.WriteLine(L"");
+			writer.WriteString(L"    prefixes: ");
+			for (auto [rule, index] : indexed(value->prefixRules))
+			{
+				if (index > 0) writer.WriteString(L", ");
+				writer.WriteString(rule->Name());
+			}
+			writer.WriteLine(L"");
+		}
+		writer.WriteLine(L"");
+	}
+
 	Dictionary<StateSymbol*, WString> labels;
 	List<StateSymbol*> order;
 	manager.GetStatesInStableOrder(order);

@@ -172,10 +172,10 @@ SyntaxSymbolManager
 			struct PrefixMergeSolutionValue
 			{
 				collections::Array<EdgeSymbol*>			edgesToMerge;
-				collections::List<RuleSymbol*>			identifiedRules;
+				collections::List<RuleSymbol*>			prefixRules;
 			};
 			using PrefixMergeSolutionKey = Tuple<RuleSymbol*, StateSymbol*>;
-			using PrefixMergeSolutionMap = collections::Dictionary<PrefixMergeSolutionKey, PrefixMergeSolutionValue>;
+			using PrefixMergeSolutionMap = collections::Dictionary<PrefixMergeSolutionKey, Ptr<PrefixMergeSolutionValue>>;
 
 			class SyntaxSymbolManager : public Object
 			{
