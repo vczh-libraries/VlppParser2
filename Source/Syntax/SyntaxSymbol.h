@@ -169,6 +169,14 @@ SyntaxSymbolManager
 
 			struct PrefixMergeCache;
 
+			struct PrefixMergeSolutionValue
+			{
+				collections::Array<EdgeSymbol*>			edgesToMerge;
+				collections::List<RuleSymbol*>			identifiedRules;
+			};
+			using PrefixMergeSolutionKey = Tuple<RuleSymbol*, StateSymbol*>;
+			using PrefixMergeSolutionMap = collections::Dictionary<PrefixMergeSolutionKey, PrefixMergeSolutionValue>;
+
 			class SyntaxSymbolManager : public Object
 			{
 				using StateList = collections::List<Ptr<StateSymbol>>;
@@ -197,8 +205,8 @@ SyntaxSymbolManager
 				static void						MergeEdgesWithSameRuleUsingLeftrec(RuleSymbol* rule, StateSymbol* startState, StateList& newStates, EdgeList& newEdges);
 
 				Ptr<PrefixMergeCache>			CreatePrefixMergeCache();
-				static void						PrefixMergeCrossReference_SolveInState(PrefixMergeCache* cache, RuleSymbol* rule, StateSymbol* currentState, collections::Array<EdgeSymbol*>& edgesToMerge);
-				static void						PrefixMergeCrossReference_Solve(PrefixMergeCache* cache, RuleSymbol* rule, StateSymbol* startState);
+				static void						PrefixMergeCrossReference_SolveInState(PrefixMergeCache* cache, RuleSymbol* rule, StateSymbol* currentState, collections::Array<EdgeSymbol*>& edgesToMerge, PrefixMergeSolutionMap& prefixMergeSolutions);
+				static void						PrefixMergeCrossReference_Solve(PrefixMergeCache* cache, RuleSymbol* rule, StateSymbol* startState, PrefixMergeSolutionMap& prefixMergeSolutions);
 				static void						PrefixMergeCrossReference_Apply(PrefixMergeCache* cache, RuleSymbol* rule, StateSymbol* startState, StateList& newStates, EdgeList& newEdges);
 
 				static void						ApplyIncrementalChange(const IncrementalChange& ic, StateList& newStates, EdgeList& newEdges);
@@ -214,6 +222,7 @@ SyntaxSymbolManager
 
 				WString							name;
 				vint32_t						usedCompetitionIds = 0;
+				PrefixMergeSolutionMap			prefixMergeSolutions;
 
 				RuleSymbol*						CreateRule(const WString& name, vint fileIndex, bool isPublic, bool isParser, ParsingTextRange codeRange = {});
 				void							RemoveRule(const WString& name);

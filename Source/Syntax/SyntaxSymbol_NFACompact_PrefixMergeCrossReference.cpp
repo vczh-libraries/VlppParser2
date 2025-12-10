@@ -193,6 +193,7 @@ SyntaxSymbolManager::CreatePrefixMerge
 			{
 				// prepared by CreatePrefixMergeCache
 				List<RuleSymbol*>					rules;
+				List<RuleSymbol*>					rulesByDeps; // if a begins with b, a is before b
 				Dictionary<RuleSymbol*, BitSet>		directStartSetTokens, startSetTokens;
 				Dictionary<RuleSymbol*, BitSet>		directStartSetRules, startSetRules;
 			};
@@ -274,8 +275,21 @@ SyntaxSymbolManager::CreatePrefixMerge
 SyntaxSymbolManager::PrefixMergeCrossReference_SolveInState
 ***********************************************************************/
 
-			void SyntaxSymbolManager::PrefixMergeCrossReference_SolveInState(PrefixMergeCache * cache, RuleSymbol * rule, StateSymbol * currentState, collections::Array<EdgeSymbol*>&edgesToMerge)
+			void SyntaxSymbolManager::PrefixMergeCrossReference_SolveInState(PrefixMergeCache * cache, RuleSymbol * rule, StateSymbol * currentState, collections::Array<EdgeSymbol*>& edgesToMerge, PrefixMergeSolutionMap& prefixMergeSolutions)
 			{
+				/*
+				* To find out the minimum start set of rules to inject
+				* 
+				* Stores startSetRules[edge->input.rule] to startSetEdges
+				* Try each rule in cache->rulesByDeps
+				* If startSetRules[rule] satisfies both conditions on each edge to merge
+				*   startSetEdges[edge] & startSetRules[rule] == startSetRules[rule]
+				*   startSetEdges[edge] & startSetRules[rule] == BitSet::Zero
+				* Then this rule is one in the minimum start set, update startSetEdges by:
+				*   extract startSetRules[rule]
+				*   extract any parent rule where startSetRules[parent rule] has rule
+				* Repeat until the test results in all BitSet::Zero (or when all startSetEdges are BitSet::Zero)
+				*/
 				console::Console::WriteLine(rule->Name() + L": " + currentState->label);
 				for (auto edge : edgesToMerge)
 				{
@@ -287,7 +301,7 @@ SyntaxSymbolManager::PrefixMergeCrossReference_SolveInState
 SyntaxSymbolManager::PrefixMergeCrossReference_Solve
 ***********************************************************************/
 
-			void SyntaxSymbolManager::PrefixMergeCrossReference_Solve(PrefixMergeCache* cache, RuleSymbol* rule, StateSymbol* startState)
+			void SyntaxSymbolManager::PrefixMergeCrossReference_Solve(PrefixMergeCache* cache, RuleSymbol* rule, StateSymbol* startState, PrefixMergeSolutionMap& prefixMergeSolutions)
 			{
 #define ERROR_MESSAGE_PREFIX L"vl::glr::parsergen::SyntaxSymbolManager::PrefixMergeCrossReference_Solve(PrefixMergeCache*, RuleSymbol*, StateSymbol*)#"
 				SortedList<StateSymbol*> visitedStates;
@@ -337,7 +351,7 @@ SyntaxSymbolManager::PrefixMergeCrossReference_Solve
 							{
 								edgesToMerge[j] = currentState->OutEdges()[component.firstNode[j]];
 							}
-							PrefixMergeCrossReference_SolveInState(cache, rule, currentState, edgesToMerge);
+							PrefixMergeCrossReference_SolveInState(cache, rule, currentState, edgesToMerge, prefixMergeSolutions);
 						}
 					}
 

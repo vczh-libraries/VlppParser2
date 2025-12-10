@@ -82,7 +82,7 @@ SyntaxSymbolManager::BuildCompactNFAInternal
 
 				for (auto [ruleSymbol, i] : indexed(rules.map.Values()))
 				{
-					PrefixMergeCrossReference_Solve(pmCache.Obj(), ruleSymbol, ruleSymbol->startStates[0]);
+					PrefixMergeCrossReference_Solve(pmCache.Obj(), ruleSymbol, ruleSymbol->startStates[0], prefixMergeSolutions);
 				}
 
 				for (auto [ruleSymbol, i] : indexed(rules.map.Values()))
