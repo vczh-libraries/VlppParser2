@@ -99,7 +99,10 @@ SymbolSet
 					return CompareEnumerable(*symbols.Obj(), *set.symbols.Obj());
 				}
 
-				bool operator==(const SymbolSet<TSymbol, Ordered>& set) const = default;
+				bool operator==(const SymbolSet<TSymbol, Ordered>& set) const
+				{
+					return (*this <=> set) == 0;
+				}
 			};
 
 			template<typename TSymbol, bool Ordered>

@@ -94,7 +94,10 @@ BitSet
 						return result;
 					}
 				}
-				bool operator==(const BitSet& bs) const = default;
+				bool operator==(const BitSet& bs) const
+				{
+					return (*this <=> bs) == 0;
+				}
 
 				bool operator[](vint index) const
 				{
@@ -336,6 +339,7 @@ SyntaxSymbolManager::PrefixMergeCrossReference_SolveInState
 				{
 					auto edge = edgesToMerge[i];
 					startSetEdges[i] = cache->startSetRules[edge->input.rule->pmRuleIndex];
+					startSetEdges[i].Set(edge->input.rule->pmRuleIndex);
 				}
 
 				{
@@ -348,6 +352,7 @@ SyntaxSymbolManager::PrefixMergeCrossReference_SolveInState
 						vint exclusiveCount = 0;
 						vint otherCount = 0;
 						auto startSetRule = cache->startSetRules[ruleToTest->pmRuleIndex];
+						startSetRule.Set(ruleToTest->pmRuleIndex);
 
 						for (vint edgeIndex = 0; edgeIndex < edgesToMerge.Count(); edgeIndex++)
 						{
@@ -374,7 +379,6 @@ SyntaxSymbolManager::PrefixMergeCrossReference_SolveInState
 						{
 							auto reverseStartSetRule = cache->reverseStartSetRules[ruleToTest->pmRuleIndex];
 							auto startSetToExtract = startSetRule | reverseStartSetRule;
-							startSetToExtract.Set(ruleToTest->pmRuleIndex);
 
 							for (vint edgeIndex = 0; edgeIndex < edgesToMerge.Count(); edgeIndex++)
 							{
