@@ -181,6 +181,23 @@ BitSet
 					*this = *this & bs;
 					return *this;
 				}
+
+				BitSet& operator-=(const BitSet& bs)
+				{
+					if (this == &bs) 
+					{
+						*this = Zero;
+					}
+					else
+					{
+						vint minWordCount = wordCount < bs.wordCount ? wordCount : bs.wordCount;
+						for (vint i = 0; i < minWordCount; i++)
+						{
+							words[i] &= ~bs.words[i];
+						}
+					}
+					return *this;
+				}
 			};
 
 			const BitSet BitSet::Zero;
@@ -295,7 +312,7 @@ SyntaxSymbolManager::CreatePrefixMerge
 SyntaxSymbolManager::PrefixMergeCrossReference_SolveInState
 ***********************************************************************/
 
-			void SyntaxSymbolManager::PrefixMergeCrossReference_SolveInState(PrefixMergeCache * cache, RuleSymbol * rule, StateSymbol * currentState, collections::Array<EdgeSymbol*>& edgesToMerge, PrefixMergeSolutionMap& prefixMergeSolutions)
+			void SyntaxSymbolManager::PrefixMergeCrossReference_SolveInState(PrefixMergeCache * cache, RuleSymbol * rule, StateSymbol * currentState, collections::Array<EdgeSymbol*>&& edgesToMerge, PrefixMergeSolutionMap& prefixMergeSolutions)
 			{
 				/*
 				* To find out the minimum start set of rules to inject
@@ -310,11 +327,71 @@ SyntaxSymbolManager::PrefixMergeCrossReference_SolveInState
 				*   extract any parent rule where startSetRules[parent rule] has rule
 				* Repeat until the test results in all BitSet::Zero (or when all startSetEdges are BitSet::Zero)
 				*/
-				console::Console::WriteLine(rule->Name() + L": " + currentState->label);
-				for (auto edge : edgesToMerge)
+
+#define ERROR_MESSAGE_PREFIX L"vl::glr::parsergen::SyntaxSymbolManager::PrefixMergeCrossReference_SolveInState(PrefixMergeCache*, RuleSymbol*, StateSymbol*, Array<EdgeSymbol*>&&, PrefixMergeSolutionMap&)#"
+				auto solution = Ptr(new PrefixMergeSolutionValue);
+
+				Array<BitSet> startSetEdges(edgesToMerge.Count());
+				for (vint i = 0; i < edgesToMerge.Count(); i++)
 				{
-					console::Console::WriteLine(L"  " + edge->input.rule->Name());
+					auto edge = edgesToMerge[i];
+					startSetEdges[i] = cache->startSetRules[edge->input.rule->pmRuleIndex];
 				}
+
+				{
+				FOUND_ONE_SOLUTION:
+					bool matchedOthers = false;
+
+					for (auto ruleToTest : cache->rulesByDeps)
+					{
+						vint containedCount = 0;
+						vint exclusiveCount = 0;
+						vint otherCount = 0;
+						auto startSetRule = cache->startSetRules[ruleToTest->pmRuleIndex];
+
+						for (vint edgeIndex = 0; edgeIndex < edgesToMerge.Count(); edgeIndex++)
+						{
+							auto& startSetEdge = startSetEdges[edgeIndex];
+							auto matchResult = startSetEdge & startSetRule;
+							if (matchResult == startSetRule)
+							{
+								containedCount++;
+							}
+							else if (matchResult == BitSet::Zero)
+							{
+								exclusiveCount++;
+							}
+							else
+							{
+								otherCount++;
+								break;
+							}
+						}
+
+						if (otherCount > 0) matchedOthers = true;
+
+						if (containedCount > 0 && otherCount == 0)
+						{
+							auto reverseStartSetRule = cache->reverseStartSetRules[ruleToTest->pmRuleIndex];
+							auto startSetToExtract = startSetRule | reverseStartSetRule;
+							startSetToExtract.Set(ruleToTest->pmRuleIndex);
+
+							for (vint edgeIndex = 0; edgeIndex < edgesToMerge.Count(); edgeIndex++)
+							{
+								startSetEdges[edgeIndex] -= startSetToExtract;
+							}
+
+							solution->prefixRules.Add(ruleToTest);
+							goto FOUND_ONE_SOLUTION;
+						}
+					}
+
+					CHECK_ERROR(!matchedOthers, ERROR_MESSAGE_PREFIX L"Internal error: Unable to find a proper prefix merge solution.");
+				}
+
+				solution->edgesToMerge = std::move(edgesToMerge);
+				prefixMergeSolutions.Add({ rule, currentState }, solution);
+#undef ERROR_MESSAGE_PREFIX
 			}
 
 /***********************************************************************
@@ -323,7 +400,7 @@ SyntaxSymbolManager::PrefixMergeCrossReference_Solve
 
 			void SyntaxSymbolManager::PrefixMergeCrossReference_Solve(PrefixMergeCache* cache, RuleSymbol* rule, StateSymbol* startState, PrefixMergeSolutionMap& prefixMergeSolutions)
 			{
-#define ERROR_MESSAGE_PREFIX L"vl::glr::parsergen::SyntaxSymbolManager::PrefixMergeCrossReference_Solve(PrefixMergeCache*, RuleSymbol*, StateSymbol*)#"
+#define ERROR_MESSAGE_PREFIX L"vl::glr::parsergen::SyntaxSymbolManager::PrefixMergeCrossReference_Solve(PrefixMergeCache*, RuleSymbol*, StateSymbol*, PrefixMergeSolutionMap&)#"
 				SortedList<StateSymbol*> visitedStates;
 				List<StateSymbol*> workingStates;
 				workingStates.Add(startState);
@@ -371,7 +448,7 @@ SyntaxSymbolManager::PrefixMergeCrossReference_Solve
 							{
 								edgesToMerge[j] = currentState->OutEdges()[component.firstNode[j]];
 							}
-							PrefixMergeCrossReference_SolveInState(cache, rule, currentState, edgesToMerge, prefixMergeSolutions);
+							PrefixMergeCrossReference_SolveInState(cache, rule, currentState, std::move(edgesToMerge), prefixMergeSolutions);
 						}
 					}
 
