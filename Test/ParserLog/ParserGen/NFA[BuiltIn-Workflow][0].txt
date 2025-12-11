@@ -8323,250 +8323,299 @@
 		+ StackBegin()
 
 [1741][_EnumItemInt]< @ NAME >
-[RULE: 55]
+[RULE: 56]
 	token: NAME -> [1743][_EnumItemInt]< NAME @ >
 		+ Token(0)
 
 [1742][_EnumItemInt]< NAME > @[ENDING]
-[RULE: 55]
+[RULE: 56]
 
 [1743][_EnumItemInt]< NAME @ >
-[RULE: 55]
+[RULE: 56]
 	epsilon -> [1742][_EnumItemInt]< NAME > @[ENDING]
 		+ CreateObject(EnumItemIntersection)
 		+ Field(EnumItemIntersection::name, 0)
 		+ StackEnd()
 
 [1744][_EnumItemInt]@ < NAME >
-[RULE: 55]
+[RULE: 56]
 	epsilon -> [1741][_EnumItemInt]< @ NAME >
 		+ StackBegin()
 
-[1745][_EnumItemA]< @ { _Attribute } NAME "=" INTEGER "," >
-[RULE: 56]
-	epsilon -> [1746][_EnumItemA]< { @ _Attribute } NAME "=" INTEGER "," >
-	epsilon -> [1748][_EnumItemA]< { _Attribute } @ NAME "=" INTEGER "," >
+[1745][_EnumItem]< @ { _Attribute } NAME "=" ( INTEGER ) "," >
+[RULE: 58]
+	epsilon -> [1746][_EnumItem]< { @ _Attribute } NAME "=" ( INTEGER ) "," >
+	epsilon -> [1748][_EnumItem]< { _Attribute } @ NAME "=" ( INTEGER ) "," >
 
-[1746][_EnumItemA]< { @ _Attribute } NAME "=" INTEGER "," >
-[RULE: 56]
-	rule: _Attribute -> [1747][_EnumItemA]< { _Attribute @ } NAME "=" INTEGER "," >
+[1746][_EnumItem]< { @ _Attribute } NAME "=" ( INTEGER ) "," >
+[RULE: 58]
+	rule: _Attribute -> [1747][_EnumItem]< { _Attribute @ } NAME "=" ( INTEGER ) "," >
 		+ StackSlot(0)
 
-[1747][_EnumItemA]< { _Attribute @ } NAME "=" INTEGER "," >
-[RULE: 56]
-	epsilon -> [1746][_EnumItemA]< { @ _Attribute } NAME "=" INTEGER "," >
-	epsilon -> [1748][_EnumItemA]< { _Attribute } @ NAME "=" INTEGER "," >
+[1747][_EnumItem]< { _Attribute @ } NAME "=" ( INTEGER ) "," >
+[RULE: 58]
+	epsilon -> [1746][_EnumItem]< { @ _Attribute } NAME "=" ( INTEGER ) "," >
+	epsilon -> [1748][_EnumItem]< { _Attribute } @ NAME "=" ( INTEGER ) "," >
 
-[1748][_EnumItemA]< { _Attribute } @ NAME "=" INTEGER "," >
-[RULE: 56]
-	epsilon -> [1749][_EnumItemA]< { _Attribute } @ NAME "=" INTEGER "," >
+[1748][_EnumItem]< { _Attribute } @ NAME "=" ( INTEGER ) "," >
+[RULE: 58]
+	epsilon -> [1749][_EnumItem]< { _Attribute } @ NAME "=" ( INTEGER ) "," >
 
-[1749][_EnumItemA]< { _Attribute } @ NAME "=" INTEGER "," >
-[RULE: 56]
-	token: NAME -> [1757][_EnumItemA]< { _Attribute } NAME @ "=" INTEGER "," >
+[1749][_EnumItem]< { _Attribute } @ NAME "=" ( INTEGER ) "," >
+[RULE: 58]
+	token: NAME -> [1759][_EnumItem]< { _Attribute } NAME @ "=" ( INTEGER ) "," >
 		+ Token(1)
 
-[1750][_EnumItemA]< { _Attribute } NAME "=" @ INTEGER "," >
-[RULE: 56]
-	token: INTEGER -> [1755][_EnumItemA]< { _Attribute } NAME "=" INTEGER @ "," >
+[1750][_EnumItem]< { _Attribute } NAME "=" ( @ INTEGER ) "," >
+[RULE: 58]
+	token: INTEGER -> [1756][_EnumItem]< { _Attribute } NAME "=" ( INTEGER @ ) "," >
 		+ Token(3)
 
-[1751][_EnumItemA]< { _Attribute } NAME "=" @ INTEGER "," >
-[RULE: 56]
-	epsilon -> [1750][_EnumItemA]< { _Attribute } NAME "=" @ INTEGER "," >
+[1751][_EnumItem]< { _Attribute } NAME "=" ( INTEGER ) "," > @[ENDING]
+[RULE: 58]
 
-[1752][_EnumItemA]< { _Attribute } NAME "=" INTEGER "," > @[ENDING]
-[RULE: 56]
-
-[1753][_EnumItemA]< { _Attribute } NAME "=" INTEGER "," @ >
-[RULE: 56]
-	epsilon -> [1752][_EnumItemA]< { _Attribute } NAME "=" INTEGER "," > @[ENDING]
+[1752][_EnumItem]< { _Attribute } NAME "=" ( INTEGER ) "," @ >
+[RULE: 58]
+	epsilon -> [1751][_EnumItem]< { _Attribute } NAME "=" ( INTEGER ) "," > @[ENDING]
 		+ CreateObject(EnumItem)
 		+ Field(EnumItem::attributes, 0)
 		+ Field(EnumItem::name, 1)
 		+ Field(EnumItem::number, 3)
-		+ Field(EnumItem::kind, 5)
+		+ Field(EnumItem::kind, 4)
 		+ StackEnd()
 
-[1754][_EnumItemA]< { _Attribute } NAME "=" INTEGER "," @ >
-[RULE: 56]
-	epsilon -> [1753][_EnumItemA]< { _Attribute } NAME "=" INTEGER "," @ >
-		+ EnumItem(0, 5)
+[1753][_EnumItem]< { _Attribute } NAME "=" ( INTEGER ) @ "," >
+[RULE: 58]
+	epsilon -> [1754][_EnumItem]< { _Attribute } NAME "=" ( INTEGER ) @ "," >
 
-[1755][_EnumItemA]< { _Attribute } NAME "=" INTEGER @ "," >
-[RULE: 56]
-	epsilon -> [1756][_EnumItemA]< { _Attribute } NAME "=" INTEGER @ "," >
+[1754][_EnumItem]< { _Attribute } NAME "=" ( INTEGER ) @ "," >
+[RULE: 58]
+	token: "," -> [1752][_EnumItem]< { _Attribute } NAME "=" ( INTEGER ) "," @ >
+		+ Token(5)
 
-[1756][_EnumItemA]< { _Attribute } NAME "=" INTEGER @ "," >
-[RULE: 56]
-	token: "," -> [1754][_EnumItemA]< { _Attribute } NAME "=" INTEGER "," @ >
-		+ Token(4)
+[1755][_EnumItem]< { _Attribute } NAME "=" ( INTEGER @ ) "," >
+[RULE: 58]
+	epsilon -> [1753][_EnumItem]< { _Attribute } NAME "=" ( INTEGER ) @ "," >
 
-[1757][_EnumItemA]< { _Attribute } NAME @ "=" INTEGER "," >
-[RULE: 56]
-	epsilon -> [1758][_EnumItemA]< { _Attribute } NAME @ "=" INTEGER "," >
+[1756][_EnumItem]< { _Attribute } NAME "=" ( INTEGER @ ) "," >
+[RULE: 58]
+	epsilon -> [1755][_EnumItem]< { _Attribute } NAME "=" ( INTEGER @ ) "," >
+		+ EnumItem(0, 4)
 
-[1758][_EnumItemA]< { _Attribute } NAME @ "=" INTEGER "," >
-[RULE: 56]
-	token: "=" -> [1751][_EnumItemA]< { _Attribute } NAME "=" @ INTEGER "," >
+[1757][_EnumItem]< { _Attribute } NAME "=" @ ( INTEGER ) "," >
+[RULE: 58]
+	epsilon -> [1750][_EnumItem]< { _Attribute } NAME "=" ( @ INTEGER ) "," >
+
+[1758][_EnumItem]< { _Attribute } NAME "=" @ ( INTEGER ) "," >
+[RULE: 58]
+	epsilon -> [1757][_EnumItem]< { _Attribute } NAME "=" @ ( INTEGER ) "," >
+
+[1759][_EnumItem]< { _Attribute } NAME @ "=" ( INTEGER ) "," >
+[RULE: 58]
+	epsilon -> [1760][_EnumItem]< { _Attribute } NAME @ "=" ( INTEGER ) "," >
+
+[1760][_EnumItem]< { _Attribute } NAME @ "=" ( INTEGER ) "," >
+[RULE: 58]
+	token: "=" -> [1758][_EnumItem]< { _Attribute } NAME "=" @ ( INTEGER ) "," >
 		+ Token(2)
 
-[1759][_EnumItemA]@ < { _Attribute } NAME "=" INTEGER "," >
-[RULE: 56]
-	epsilon -> [1745][_EnumItemA]< @ { _Attribute } NAME "=" INTEGER "," >
+[1761][_EnumItem]@ < { _Attribute } NAME "=" ( INTEGER ) "," >
+[RULE: 58]
+	epsilon -> [1745][_EnumItem]< @ { _Attribute } NAME "=" ( INTEGER ) "," >
 		+ StackBegin()
 
-[1760][_EnumItemB]< @ { _Attribute } NAME "=" _EnumItemInt { "|" _EnumItemInt } "," >
-[RULE: 57]
-	epsilon -> [1761][_EnumItemB]< { @ _Attribute } NAME "=" _EnumItemInt { "|" _EnumItemInt } "," >
-	epsilon -> [1763][_EnumItemB]< { _Attribute } @ NAME "=" _EnumItemInt { "|" _EnumItemInt } "," >
+[1762][_EnumItemWithFlags]< @ { _Attribute } NAME "=" ( ( INTEGER ) | ( _EnumItemInt { "|" _EnumItemInt } ) ) "," >
+[RULE: 59]
+	epsilon -> [1763][_EnumItemWithFlags]< { @ _Attribute } NAME "=" ( ( INTEGER ) | ( _EnumItemInt { "|" _EnumItemInt } ) ) "," >
+	epsilon -> [1765][_EnumItemWithFlags]< { _Attribute } @ NAME "=" ( ( INTEGER ) | ( _EnumItemInt { "|" _EnumItemInt } ) ) "," >
 
-[1761][_EnumItemB]< { @ _Attribute } NAME "=" _EnumItemInt { "|" _EnumItemInt } "," >
-[RULE: 57]
-	rule: _Attribute -> [1762][_EnumItemB]< { _Attribute @ } NAME "=" _EnumItemInt { "|" _EnumItemInt } "," >
+[1763][_EnumItemWithFlags]< { @ _Attribute } NAME "=" ( ( INTEGER ) | ( _EnumItemInt { "|" _EnumItemInt } ) ) "," >
+[RULE: 59]
+	rule: _Attribute -> [1764][_EnumItemWithFlags]< { _Attribute @ } NAME "=" ( ( INTEGER ) | ( _EnumItemInt { "|" _EnumItemInt } ) ) "," >
 		+ StackSlot(0)
 
-[1762][_EnumItemB]< { _Attribute @ } NAME "=" _EnumItemInt { "|" _EnumItemInt } "," >
-[RULE: 57]
-	epsilon -> [1761][_EnumItemB]< { @ _Attribute } NAME "=" _EnumItemInt { "|" _EnumItemInt } "," >
-	epsilon -> [1763][_EnumItemB]< { _Attribute } @ NAME "=" _EnumItemInt { "|" _EnumItemInt } "," >
+[1764][_EnumItemWithFlags]< { _Attribute @ } NAME "=" ( ( INTEGER ) | ( _EnumItemInt { "|" _EnumItemInt } ) ) "," >
+[RULE: 59]
+	epsilon -> [1763][_EnumItemWithFlags]< { @ _Attribute } NAME "=" ( ( INTEGER ) | ( _EnumItemInt { "|" _EnumItemInt } ) ) "," >
+	epsilon -> [1765][_EnumItemWithFlags]< { _Attribute } @ NAME "=" ( ( INTEGER ) | ( _EnumItemInt { "|" _EnumItemInt } ) ) "," >
 
-[1763][_EnumItemB]< { _Attribute } @ NAME "=" _EnumItemInt { "|" _EnumItemInt } "," >
-[RULE: 57]
-	epsilon -> [1764][_EnumItemB]< { _Attribute } @ NAME "=" _EnumItemInt { "|" _EnumItemInt } "," >
+[1765][_EnumItemWithFlags]< { _Attribute } @ NAME "=" ( ( INTEGER ) | ( _EnumItemInt { "|" _EnumItemInt } ) ) "," >
+[RULE: 59]
+	epsilon -> [1766][_EnumItemWithFlags]< { _Attribute } @ NAME "=" ( ( INTEGER ) | ( _EnumItemInt { "|" _EnumItemInt } ) ) "," >
 
-[1764][_EnumItemB]< { _Attribute } @ NAME "=" _EnumItemInt { "|" _EnumItemInt } "," >
-[RULE: 57]
-	token: NAME -> [1778][_EnumItemB]< { _Attribute } NAME @ "=" _EnumItemInt { "|" _EnumItemInt } "," >
+[1766][_EnumItemWithFlags]< { _Attribute } @ NAME "=" ( ( INTEGER ) | ( _EnumItemInt { "|" _EnumItemInt } ) ) "," >
+[RULE: 59]
+	token: NAME -> [1790][_EnumItemWithFlags]< { _Attribute } NAME @ "=" ( ( INTEGER ) | ( _EnumItemInt { "|" _EnumItemInt } ) ) "," >
 		+ Token(1)
 
-[1765][_EnumItemB]< { _Attribute } NAME "=" @ _EnumItemInt { "|" _EnumItemInt } "," >
-[RULE: 57]
-	rule: _EnumItemInt -> [1768][_EnumItemB]< { _Attribute } NAME "=" _EnumItemInt @ { "|" _EnumItemInt } "," >
-		+ StackSlot(3)
+[1767][_EnumItemWithFlags]< { _Attribute } NAME "=" ( ( @ INTEGER ) | ( _EnumItemInt { "|" _EnumItemInt } ) ) "," >
+[RULE: 59]
+	token: INTEGER -> [1785][_EnumItemWithFlags]< { _Attribute } NAME "=" ( ( INTEGER @ ) | ( _EnumItemInt { "|" _EnumItemInt } ) ) "," >
+		+ Token(3)
 
-[1766][_EnumItemB]< { _Attribute } NAME "=" @ _EnumItemInt { "|" _EnumItemInt } "," >
-[RULE: 57]
-	epsilon -> [1765][_EnumItemB]< { _Attribute } NAME "=" @ _EnumItemInt { "|" _EnumItemInt } "," >
+[1768][_EnumItemWithFlags]< { _Attribute } NAME "=" ( ( INTEGER ) @ | ( _EnumItemInt { "|" _EnumItemInt } ) ) "," >
+[RULE: 59]
+	epsilon -> [1777][_EnumItemWithFlags]< { _Attribute } NAME "=" ( ( INTEGER ) | ( _EnumItemInt { "|" _EnumItemInt } ) ) @ "," >
 
-[1767][_EnumItemB]< { _Attribute } NAME "=" _EnumItemInt @ { "|" _EnumItemInt } "," >
-[RULE: 57]
-	epsilon -> [1776][_EnumItemB]< { _Attribute } NAME "=" _EnumItemInt { "|" _EnumItemInt } @ "," >
-	epsilon -> [1777][_EnumItemB]< { _Attribute } NAME "=" _EnumItemInt { @ "|" _EnumItemInt } "," >
-
-[1768][_EnumItemB]< { _Attribute } NAME "=" _EnumItemInt @ { "|" _EnumItemInt } "," >
-[RULE: 57]
-	epsilon -> [1767][_EnumItemB]< { _Attribute } NAME "=" _EnumItemInt @ { "|" _EnumItemInt } "," >
-
-[1769][_EnumItemB]< { _Attribute } NAME "=" _EnumItemInt { "|" @ _EnumItemInt } "," >
-[RULE: 57]
-	rule: _EnumItemInt -> [1771][_EnumItemB]< { _Attribute } NAME "=" _EnumItemInt { "|" _EnumItemInt @ } "," >
+[1769][_EnumItemWithFlags]< { _Attribute } NAME "=" ( ( INTEGER ) | ( @ _EnumItemInt { "|" _EnumItemInt } ) ) "," >
+[RULE: 59]
+	rule: _EnumItemInt -> [1770][_EnumItemWithFlags]< { _Attribute } NAME "=" ( ( INTEGER ) | ( _EnumItemInt @ { "|" _EnumItemInt } ) ) "," >
 		+ StackSlot(5)
 
-[1770][_EnumItemB]< { _Attribute } NAME "=" _EnumItemInt { "|" @ _EnumItemInt } "," >
-[RULE: 57]
-	epsilon -> [1769][_EnumItemB]< { _Attribute } NAME "=" _EnumItemInt { "|" @ _EnumItemInt } "," >
+[1770][_EnumItemWithFlags]< { _Attribute } NAME "=" ( ( INTEGER ) | ( _EnumItemInt @ { "|" _EnumItemInt } ) ) "," >
+[RULE: 59]
+	epsilon -> [1771][_EnumItemWithFlags]< { _Attribute } NAME "=" ( ( INTEGER ) | ( _EnumItemInt @ { "|" _EnumItemInt } ) ) "," >
 
-[1771][_EnumItemB]< { _Attribute } NAME "=" _EnumItemInt { "|" _EnumItemInt @ } "," >
-[RULE: 57]
-	epsilon -> [1776][_EnumItemB]< { _Attribute } NAME "=" _EnumItemInt { "|" _EnumItemInt } @ "," >
-	epsilon -> [1777][_EnumItemB]< { _Attribute } NAME "=" _EnumItemInt { @ "|" _EnumItemInt } "," >
+[1771][_EnumItemWithFlags]< { _Attribute } NAME "=" ( ( INTEGER ) | ( _EnumItemInt @ { "|" _EnumItemInt } ) ) "," >
+[RULE: 59]
+	epsilon -> [1781][_EnumItemWithFlags]< { _Attribute } NAME "=" ( ( INTEGER ) | ( _EnumItemInt { "|" _EnumItemInt } @ ) ) "," >
+	epsilon -> [1782][_EnumItemWithFlags]< { _Attribute } NAME "=" ( ( INTEGER ) | ( _EnumItemInt { @ "|" _EnumItemInt } ) ) "," >
 
-[1772][_EnumItemB]< { _Attribute } NAME "=" _EnumItemInt { "|" _EnumItemInt } "," > @[ENDING]
-[RULE: 57]
+[1772][_EnumItemWithFlags]< { _Attribute } NAME "=" ( ( INTEGER ) | ( _EnumItemInt { "|" @ _EnumItemInt } ) ) "," >
+[RULE: 59]
+	epsilon -> [1773][_EnumItemWithFlags]< { _Attribute } NAME "=" ( ( INTEGER ) | ( _EnumItemInt { "|" @ _EnumItemInt } ) ) "," >
 
-[1773][_EnumItemB]< { _Attribute } NAME "=" _EnumItemInt { "|" _EnumItemInt } "," @ >
-[RULE: 57]
-	epsilon -> [1772][_EnumItemB]< { _Attribute } NAME "=" _EnumItemInt { "|" _EnumItemInt } "," > @[ENDING]
+[1773][_EnumItemWithFlags]< { _Attribute } NAME "=" ( ( INTEGER ) | ( _EnumItemInt { "|" @ _EnumItemInt } ) ) "," >
+[RULE: 59]
+	rule: _EnumItemInt -> [1774][_EnumItemWithFlags]< { _Attribute } NAME "=" ( ( INTEGER ) | ( _EnumItemInt { "|" _EnumItemInt @ } ) ) "," >
+		+ StackSlot(7)
+
+[1774][_EnumItemWithFlags]< { _Attribute } NAME "=" ( ( INTEGER ) | ( _EnumItemInt { "|" _EnumItemInt @ } ) ) "," >
+[RULE: 59]
+	epsilon -> [1781][_EnumItemWithFlags]< { _Attribute } NAME "=" ( ( INTEGER ) | ( _EnumItemInt { "|" _EnumItemInt } @ ) ) "," >
+	epsilon -> [1782][_EnumItemWithFlags]< { _Attribute } NAME "=" ( ( INTEGER ) | ( _EnumItemInt { @ "|" _EnumItemInt } ) ) "," >
+
+[1775][_EnumItemWithFlags]< { _Attribute } NAME "=" ( ( INTEGER ) | ( _EnumItemInt { "|" _EnumItemInt } ) ) "," > @[ENDING]
+[RULE: 59]
+
+[1776][_EnumItemWithFlags]< { _Attribute } NAME "=" ( ( INTEGER ) | ( _EnumItemInt { "|" _EnumItemInt } ) ) "," @ >
+[RULE: 59]
+	epsilon -> [1775][_EnumItemWithFlags]< { _Attribute } NAME "=" ( ( INTEGER ) | ( _EnumItemInt { "|" _EnumItemInt } ) ) "," > @[ENDING]
 		+ CreateObject(EnumItem)
 		+ Field(EnumItem::attributes, 0)
 		+ Field(EnumItem::name, 1)
-		+ Field(EnumItem::intersections, 3)
+		+ Field(EnumItem::number, 3)
+		+ Field(EnumItem::kind, 4)
 		+ Field(EnumItem::intersections, 5)
-		+ Field(EnumItem::kind, 7)
+		+ Field(EnumItem::intersections, 7)
+		+ Field(EnumItem::kind, 8)
 		+ StackEnd()
 
-[1774][_EnumItemB]< { _Attribute } NAME "=" _EnumItemInt { "|" _EnumItemInt } "," @ >
-[RULE: 57]
-	epsilon -> [1773][_EnumItemB]< { _Attribute } NAME "=" _EnumItemInt { "|" _EnumItemInt } "," @ >
-		+ EnumItem(1, 7)
+[1777][_EnumItemWithFlags]< { _Attribute } NAME "=" ( ( INTEGER ) | ( _EnumItemInt { "|" _EnumItemInt } ) ) @ "," >
+[RULE: 59]
+	epsilon -> [1778][_EnumItemWithFlags]< { _Attribute } NAME "=" ( ( INTEGER ) | ( _EnumItemInt { "|" _EnumItemInt } ) ) @ "," >
 
-[1775][_EnumItemB]< { _Attribute } NAME "=" _EnumItemInt { "|" _EnumItemInt } @ "," >
-[RULE: 57]
-	token: "," -> [1774][_EnumItemB]< { _Attribute } NAME "=" _EnumItemInt { "|" _EnumItemInt } "," @ >
+[1778][_EnumItemWithFlags]< { _Attribute } NAME "=" ( ( INTEGER ) | ( _EnumItemInt { "|" _EnumItemInt } ) ) @ "," >
+[RULE: 59]
+	token: "," -> [1776][_EnumItemWithFlags]< { _Attribute } NAME "=" ( ( INTEGER ) | ( _EnumItemInt { "|" _EnumItemInt } ) ) "," @ >
+		+ Token(9)
+
+[1779][_EnumItemWithFlags]< { _Attribute } NAME "=" ( ( INTEGER ) | ( _EnumItemInt { "|" _EnumItemInt } ) @ ) "," >
+[RULE: 59]
+	epsilon -> [1777][_EnumItemWithFlags]< { _Attribute } NAME "=" ( ( INTEGER ) | ( _EnumItemInt { "|" _EnumItemInt } ) ) @ "," >
+
+[1780][_EnumItemWithFlags]< { _Attribute } NAME "=" ( ( INTEGER ) | ( _EnumItemInt { "|" _EnumItemInt } @ ) ) "," >
+[RULE: 59]
+	epsilon -> [1779][_EnumItemWithFlags]< { _Attribute } NAME "=" ( ( INTEGER ) | ( _EnumItemInt { "|" _EnumItemInt } ) @ ) "," >
+
+[1781][_EnumItemWithFlags]< { _Attribute } NAME "=" ( ( INTEGER ) | ( _EnumItemInt { "|" _EnumItemInt } @ ) ) "," >
+[RULE: 59]
+	epsilon -> [1780][_EnumItemWithFlags]< { _Attribute } NAME "=" ( ( INTEGER ) | ( _EnumItemInt { "|" _EnumItemInt } @ ) ) "," >
+		+ EnumItem(1, 8)
+
+[1782][_EnumItemWithFlags]< { _Attribute } NAME "=" ( ( INTEGER ) | ( _EnumItemInt { @ "|" _EnumItemInt } ) ) "," >
+[RULE: 59]
+	token: "|" -> [1772][_EnumItemWithFlags]< { _Attribute } NAME "=" ( ( INTEGER ) | ( _EnumItemInt { "|" @ _EnumItemInt } ) ) "," >
 		+ Token(6)
 
-[1776][_EnumItemB]< { _Attribute } NAME "=" _EnumItemInt { "|" _EnumItemInt } @ "," >
-[RULE: 57]
-	epsilon -> [1775][_EnumItemB]< { _Attribute } NAME "=" _EnumItemInt { "|" _EnumItemInt } @ "," >
+[1783][_EnumItemWithFlags]< { _Attribute } NAME "=" ( ( INTEGER ) | @ ( _EnumItemInt { "|" _EnumItemInt } ) ) "," >
+[RULE: 59]
+	epsilon -> [1769][_EnumItemWithFlags]< { _Attribute } NAME "=" ( ( INTEGER ) | ( @ _EnumItemInt { "|" _EnumItemInt } ) ) "," >
 
-[1777][_EnumItemB]< { _Attribute } NAME "=" _EnumItemInt { @ "|" _EnumItemInt } "," >
-[RULE: 57]
-	token: "|" -> [1770][_EnumItemB]< { _Attribute } NAME "=" _EnumItemInt { "|" @ _EnumItemInt } "," >
-		+ Token(4)
+[1784][_EnumItemWithFlags]< { _Attribute } NAME "=" ( ( INTEGER @ ) | ( _EnumItemInt { "|" _EnumItemInt } ) ) "," >
+[RULE: 59]
+	epsilon -> [1768][_EnumItemWithFlags]< { _Attribute } NAME "=" ( ( INTEGER ) @ | ( _EnumItemInt { "|" _EnumItemInt } ) ) "," >
 
-[1778][_EnumItemB]< { _Attribute } NAME @ "=" _EnumItemInt { "|" _EnumItemInt } "," >
-[RULE: 57]
-	epsilon -> [1779][_EnumItemB]< { _Attribute } NAME @ "=" _EnumItemInt { "|" _EnumItemInt } "," >
+[1785][_EnumItemWithFlags]< { _Attribute } NAME "=" ( ( INTEGER @ ) | ( _EnumItemInt { "|" _EnumItemInt } ) ) "," >
+[RULE: 59]
+	epsilon -> [1784][_EnumItemWithFlags]< { _Attribute } NAME "=" ( ( INTEGER @ ) | ( _EnumItemInt { "|" _EnumItemInt } ) ) "," >
+		+ EnumItem(0, 4)
 
-[1779][_EnumItemB]< { _Attribute } NAME @ "=" _EnumItemInt { "|" _EnumItemInt } "," >
-[RULE: 57]
-	token: "=" -> [1766][_EnumItemB]< { _Attribute } NAME "=" @ _EnumItemInt { "|" _EnumItemInt } "," >
+[1786][_EnumItemWithFlags]< { _Attribute } NAME "=" ( @ ( INTEGER ) | ( _EnumItemInt { "|" _EnumItemInt } ) ) "," >
+[RULE: 59]
+	epsilon -> [1767][_EnumItemWithFlags]< { _Attribute } NAME "=" ( ( @ INTEGER ) | ( _EnumItemInt { "|" _EnumItemInt } ) ) "," >
+
+[1787][_EnumItemWithFlags]< { _Attribute } NAME "=" @ ( ( INTEGER ) | ( _EnumItemInt { "|" _EnumItemInt } ) ) "," >
+[RULE: 59]
+	epsilon -> [1788][_EnumItemWithFlags]< { _Attribute } NAME "=" @ ( ( INTEGER ) | ( _EnumItemInt { "|" _EnumItemInt } ) ) "," >
+
+[1788][_EnumItemWithFlags]< { _Attribute } NAME "=" @ ( ( INTEGER ) | ( _EnumItemInt { "|" _EnumItemInt } ) ) "," >
+[RULE: 59]
+	epsilon -> [1783][_EnumItemWithFlags]< { _Attribute } NAME "=" ( ( INTEGER ) | @ ( _EnumItemInt { "|" _EnumItemInt } ) ) "," >
+	epsilon -> [1786][_EnumItemWithFlags]< { _Attribute } NAME "=" ( @ ( INTEGER ) | ( _EnumItemInt { "|" _EnumItemInt } ) ) "," >
+
+[1789][_EnumItemWithFlags]< { _Attribute } NAME @ "=" ( ( INTEGER ) | ( _EnumItemInt { "|" _EnumItemInt } ) ) "," >
+[RULE: 59]
+	token: "=" -> [1787][_EnumItemWithFlags]< { _Attribute } NAME "=" @ ( ( INTEGER ) | ( _EnumItemInt { "|" _EnumItemInt } ) ) "," >
 		+ Token(2)
 
-[1780][_EnumItemB]@ < { _Attribute } NAME "=" _EnumItemInt { "|" _EnumItemInt } "," >
-[RULE: 57]
-	epsilon -> [1760][_EnumItemB]< @ { _Attribute } NAME "=" _EnumItemInt { "|" _EnumItemInt } "," >
+[1790][_EnumItemWithFlags]< { _Attribute } NAME @ "=" ( ( INTEGER ) | ( _EnumItemInt { "|" _EnumItemInt } ) ) "," >
+[RULE: 59]
+	epsilon -> [1789][_EnumItemWithFlags]< { _Attribute } NAME @ "=" ( ( INTEGER ) | ( _EnumItemInt { "|" _EnumItemInt } ) ) "," >
+
+[1791][_EnumItemWithFlags]@ < { _Attribute } NAME "=" ( ( INTEGER ) | ( _EnumItemInt { "|" _EnumItemInt } ) ) "," >
+[RULE: 59]
+	epsilon -> [1762][_EnumItemWithFlags]< @ { _Attribute } NAME "=" ( ( INTEGER ) | ( _EnumItemInt { "|" _EnumItemInt } ) ) "," >
 		+ StackBegin()
 
-[1781][_Enum]< "enum" @ NAME "{" _EnumItemA { _EnumItemA } "}" >
-[RULE: 58]
-	token: NAME -> [1794][_Enum]< "enum" NAME @ "{" _EnumItemA { _EnumItemA } "}" >
+[1792][_Enum]< "enum" @ NAME "{" _EnumItem { _EnumItem } "}" >
+[RULE: 60]
+	token: NAME -> [1805][_Enum]< "enum" NAME @ "{" _EnumItem { _EnumItem } "}" >
 		+ Token(1)
 
-[1782][_Enum]< "enum" @ NAME "{" _EnumItemA { _EnumItemA } "}" >
-[RULE: 58]
-	epsilon -> [1781][_Enum]< "enum" @ NAME "{" _EnumItemA { _EnumItemA } "}" >
+[1793][_Enum]< "enum" @ NAME "{" _EnumItem { _EnumItem } "}" >
+[RULE: 60]
+	epsilon -> [1792][_Enum]< "enum" @ NAME "{" _EnumItem { _EnumItem } "}" >
 
-[1783][_Enum]< "enum" NAME "{" @ _EnumItemA { _EnumItemA } "}" >
-[RULE: 58]
-	rule: _EnumItemA -> [1786][_Enum]< "enum" NAME "{" _EnumItemA @ { _EnumItemA } "}" >
+[1794][_Enum]< "enum" NAME "{" @ _EnumItem { _EnumItem } "}" >
+[RULE: 60]
+	rule: _EnumItem -> [1797][_Enum]< "enum" NAME "{" _EnumItem @ { _EnumItem } "}" >
 		+ StackSlot(3)
 
-[1784][_Enum]< "enum" NAME "{" @ _EnumItemA { _EnumItemA } "}" >
-[RULE: 58]
-	epsilon -> [1783][_Enum]< "enum" NAME "{" @ _EnumItemA { _EnumItemA } "}" >
+[1795][_Enum]< "enum" NAME "{" @ _EnumItem { _EnumItem } "}" >
+[RULE: 60]
+	epsilon -> [1794][_Enum]< "enum" NAME "{" @ _EnumItem { _EnumItem } "}" >
 
-[1785][_Enum]< "enum" NAME "{" _EnumItemA @ { _EnumItemA } "}" >
-[RULE: 58]
-	epsilon -> [1787][_Enum]< "enum" NAME "{" _EnumItemA { @ _EnumItemA } "}" >
-	epsilon -> [1792][_Enum]< "enum" NAME "{" _EnumItemA { _EnumItemA } @ "}" >
+[1796][_Enum]< "enum" NAME "{" _EnumItem @ { _EnumItem } "}" >
+[RULE: 60]
+	epsilon -> [1798][_Enum]< "enum" NAME "{" _EnumItem { @ _EnumItem } "}" >
+	epsilon -> [1803][_Enum]< "enum" NAME "{" _EnumItem { _EnumItem } @ "}" >
 
-[1786][_Enum]< "enum" NAME "{" _EnumItemA @ { _EnumItemA } "}" >
-[RULE: 58]
-	epsilon -> [1785][_Enum]< "enum" NAME "{" _EnumItemA @ { _EnumItemA } "}" >
+[1797][_Enum]< "enum" NAME "{" _EnumItem @ { _EnumItem } "}" >
+[RULE: 60]
+	epsilon -> [1796][_Enum]< "enum" NAME "{" _EnumItem @ { _EnumItem } "}" >
 
-[1787][_Enum]< "enum" NAME "{" _EnumItemA { @ _EnumItemA } "}" >
-[RULE: 58]
-	rule: _EnumItemA -> [1788][_Enum]< "enum" NAME "{" _EnumItemA { _EnumItemA @ } "}" >
+[1798][_Enum]< "enum" NAME "{" _EnumItem { @ _EnumItem } "}" >
+[RULE: 60]
+	rule: _EnumItem -> [1799][_Enum]< "enum" NAME "{" _EnumItem { _EnumItem @ } "}" >
 		+ StackSlot(4)
 
-[1788][_Enum]< "enum" NAME "{" _EnumItemA { _EnumItemA @ } "}" >
-[RULE: 58]
-	epsilon -> [1787][_Enum]< "enum" NAME "{" _EnumItemA { @ _EnumItemA } "}" >
-	epsilon -> [1792][_Enum]< "enum" NAME "{" _EnumItemA { _EnumItemA } @ "}" >
+[1799][_Enum]< "enum" NAME "{" _EnumItem { _EnumItem @ } "}" >
+[RULE: 60]
+	epsilon -> [1798][_Enum]< "enum" NAME "{" _EnumItem { @ _EnumItem } "}" >
+	epsilon -> [1803][_Enum]< "enum" NAME "{" _EnumItem { _EnumItem } @ "}" >
 
-[1789][_Enum]< "enum" NAME "{" _EnumItemA { _EnumItemA } "}" > @[ENDING]
-[RULE: 58]
+[1800][_Enum]< "enum" NAME "{" _EnumItem { _EnumItem } "}" > @[ENDING]
+[RULE: 60]
 
-[1790][_Enum]< "enum" NAME "{" _EnumItemA { _EnumItemA } "}" @ >
-[RULE: 58]
-	epsilon -> [1791][_Enum]< "enum" NAME "{" _EnumItemA { _EnumItemA } "}" @ >
+[1801][_Enum]< "enum" NAME "{" _EnumItem { _EnumItem } "}" @ >
+[RULE: 60]
+	epsilon -> [1802][_Enum]< "enum" NAME "{" _EnumItem { _EnumItem } "}" @ >
 		+ EnumItem(0, 6)
 
-[1791][_Enum]< "enum" NAME "{" _EnumItemA { _EnumItemA } "}" @ >
-[RULE: 58]
-	epsilon -> [1789][_Enum]< "enum" NAME "{" _EnumItemA { _EnumItemA } "}" > @[ENDING]
+[1802][_Enum]< "enum" NAME "{" _EnumItem { _EnumItem } "}" @ >
+[RULE: 60]
+	epsilon -> [1800][_Enum]< "enum" NAME "{" _EnumItem { _EnumItem } "}" > @[ENDING]
 		+ CreateObject(EnumDeclaration)
 		+ Field(Declaration::name, 1)
 		+ Field(EnumDeclaration::items, 3)
@@ -8574,378 +8623,358 @@
 		+ Field(EnumDeclaration::kind, 6)
 		+ StackEnd()
 
-[1792][_Enum]< "enum" NAME "{" _EnumItemA { _EnumItemA } @ "}" >
-[RULE: 58]
-	epsilon -> [1793][_Enum]< "enum" NAME "{" _EnumItemA { _EnumItemA } @ "}" >
+[1803][_Enum]< "enum" NAME "{" _EnumItem { _EnumItem } @ "}" >
+[RULE: 60]
+	epsilon -> [1804][_Enum]< "enum" NAME "{" _EnumItem { _EnumItem } @ "}" >
 
-[1793][_Enum]< "enum" NAME "{" _EnumItemA { _EnumItemA } @ "}" >
-[RULE: 58]
-	token: "}" -> [1790][_Enum]< "enum" NAME "{" _EnumItemA { _EnumItemA } "}" @ >
+[1804][_Enum]< "enum" NAME "{" _EnumItem { _EnumItem } @ "}" >
+[RULE: 60]
+	token: "}" -> [1801][_Enum]< "enum" NAME "{" _EnumItem { _EnumItem } "}" @ >
 		+ Token(5)
 
-[1794][_Enum]< "enum" NAME @ "{" _EnumItemA { _EnumItemA } "}" >
-[RULE: 58]
-	epsilon -> [1795][_Enum]< "enum" NAME @ "{" _EnumItemA { _EnumItemA } "}" >
+[1805][_Enum]< "enum" NAME @ "{" _EnumItem { _EnumItem } "}" >
+[RULE: 60]
+	epsilon -> [1806][_Enum]< "enum" NAME @ "{" _EnumItem { _EnumItem } "}" >
 
-[1795][_Enum]< "enum" NAME @ "{" _EnumItemA { _EnumItemA } "}" >
-[RULE: 58]
-	token: "{" -> [1784][_Enum]< "enum" NAME "{" @ _EnumItemA { _EnumItemA } "}" >
+[1806][_Enum]< "enum" NAME @ "{" _EnumItem { _EnumItem } "}" >
+[RULE: 60]
+	token: "{" -> [1795][_Enum]< "enum" NAME "{" @ _EnumItem { _EnumItem } "}" >
 		+ Token(2)
 
-[1796][_Enum]< "flagenum" @ NAME "{" _EnumItemA { _EnumItemA } { _EnumItemB } "}" >
-[RULE: 58]
-	token: NAME -> [1813][_Enum]< "flagenum" NAME @ "{" _EnumItemA { _EnumItemA } { _EnumItemB } "}" >
+[1807][_Enum]< "flagenum" @ NAME "{" _EnumItemWithFlags { _EnumItemWithFlags } "}" >
+[RULE: 60]
+	epsilon -> [1808][_Enum]< "flagenum" @ NAME "{" _EnumItemWithFlags { _EnumItemWithFlags } "}" >
+
+[1808][_Enum]< "flagenum" @ NAME "{" _EnumItemWithFlags { _EnumItemWithFlags } "}" >
+[RULE: 60]
+	token: NAME -> [1820][_Enum]< "flagenum" NAME @ "{" _EnumItemWithFlags { _EnumItemWithFlags } "}" >
 		+ Token(1)
 
-[1797][_Enum]< "flagenum" @ NAME "{" _EnumItemA { _EnumItemA } { _EnumItemB } "}" >
-[RULE: 58]
-	epsilon -> [1796][_Enum]< "flagenum" @ NAME "{" _EnumItemA { _EnumItemA } { _EnumItemB } "}" >
+[1809][_Enum]< "flagenum" NAME "{" @ _EnumItemWithFlags { _EnumItemWithFlags } "}" >
+[RULE: 60]
+	epsilon -> [1810][_Enum]< "flagenum" NAME "{" @ _EnumItemWithFlags { _EnumItemWithFlags } "}" >
 
-[1798][_Enum]< "flagenum" NAME "{" @ _EnumItemA { _EnumItemA } { _EnumItemB } "}" >
-[RULE: 58]
-	epsilon -> [1799][_Enum]< "flagenum" NAME "{" @ _EnumItemA { _EnumItemA } { _EnumItemB } "}" >
-
-[1799][_Enum]< "flagenum" NAME "{" @ _EnumItemA { _EnumItemA } { _EnumItemB } "}" >
-[RULE: 58]
-	rule: _EnumItemA -> [1801][_Enum]< "flagenum" NAME "{" _EnumItemA @ { _EnumItemA } { _EnumItemB } "}" >
+[1810][_Enum]< "flagenum" NAME "{" @ _EnumItemWithFlags { _EnumItemWithFlags } "}" >
+[RULE: 60]
+	rule: _EnumItemWithFlags -> [1812][_Enum]< "flagenum" NAME "{" _EnumItemWithFlags @ { _EnumItemWithFlags } "}" >
 		+ StackSlot(3)
 
-[1800][_Enum]< "flagenum" NAME "{" _EnumItemA @ { _EnumItemA } { _EnumItemB } "}" >
-[RULE: 58]
-	epsilon -> [1802][_Enum]< "flagenum" NAME "{" _EnumItemA { @ _EnumItemA } { _EnumItemB } "}" >
-	epsilon -> [1805][_Enum]< "flagenum" NAME "{" _EnumItemA { _EnumItemA } @ { _EnumItemB } "}" >
+[1811][_Enum]< "flagenum" NAME "{" _EnumItemWithFlags @ { _EnumItemWithFlags } "}" >
+[RULE: 60]
+	epsilon -> [1813][_Enum]< "flagenum" NAME "{" _EnumItemWithFlags { @ _EnumItemWithFlags } "}" >
+	epsilon -> [1819][_Enum]< "flagenum" NAME "{" _EnumItemWithFlags { _EnumItemWithFlags } @ "}" >
 
-[1801][_Enum]< "flagenum" NAME "{" _EnumItemA @ { _EnumItemA } { _EnumItemB } "}" >
-[RULE: 58]
-	epsilon -> [1800][_Enum]< "flagenum" NAME "{" _EnumItemA @ { _EnumItemA } { _EnumItemB } "}" >
+[1812][_Enum]< "flagenum" NAME "{" _EnumItemWithFlags @ { _EnumItemWithFlags } "}" >
+[RULE: 60]
+	epsilon -> [1811][_Enum]< "flagenum" NAME "{" _EnumItemWithFlags @ { _EnumItemWithFlags } "}" >
 
-[1802][_Enum]< "flagenum" NAME "{" _EnumItemA { @ _EnumItemA } { _EnumItemB } "}" >
-[RULE: 58]
-	rule: _EnumItemA -> [1803][_Enum]< "flagenum" NAME "{" _EnumItemA { _EnumItemA @ } { _EnumItemB } "}" >
+[1813][_Enum]< "flagenum" NAME "{" _EnumItemWithFlags { @ _EnumItemWithFlags } "}" >
+[RULE: 60]
+	rule: _EnumItemWithFlags -> [1814][_Enum]< "flagenum" NAME "{" _EnumItemWithFlags { _EnumItemWithFlags @ } "}" >
 		+ StackSlot(4)
 
-[1803][_Enum]< "flagenum" NAME "{" _EnumItemA { _EnumItemA @ } { _EnumItemB } "}" >
-[RULE: 58]
-	epsilon -> [1802][_Enum]< "flagenum" NAME "{" _EnumItemA { @ _EnumItemA } { _EnumItemB } "}" >
-	epsilon -> [1805][_Enum]< "flagenum" NAME "{" _EnumItemA { _EnumItemA } @ { _EnumItemB } "}" >
+[1814][_Enum]< "flagenum" NAME "{" _EnumItemWithFlags { _EnumItemWithFlags @ } "}" >
+[RULE: 60]
+	epsilon -> [1813][_Enum]< "flagenum" NAME "{" _EnumItemWithFlags { @ _EnumItemWithFlags } "}" >
+	epsilon -> [1819][_Enum]< "flagenum" NAME "{" _EnumItemWithFlags { _EnumItemWithFlags } @ "}" >
 
-[1804][_Enum]< "flagenum" NAME "{" _EnumItemA { _EnumItemA } @ { _EnumItemB } "}" >
-[RULE: 58]
-	epsilon -> [1806][_Enum]< "flagenum" NAME "{" _EnumItemA { _EnumItemA } { @ _EnumItemB } "}" >
-	epsilon -> [1812][_Enum]< "flagenum" NAME "{" _EnumItemA { _EnumItemA } { _EnumItemB } @ "}" >
+[1815][_Enum]< "flagenum" NAME "{" _EnumItemWithFlags { _EnumItemWithFlags } "}" > @[ENDING]
+[RULE: 60]
 
-[1805][_Enum]< "flagenum" NAME "{" _EnumItemA { _EnumItemA } @ { _EnumItemB } "}" >
-[RULE: 58]
-	epsilon -> [1804][_Enum]< "flagenum" NAME "{" _EnumItemA { _EnumItemA } @ { _EnumItemB } "}" >
+[1816][_Enum]< "flagenum" NAME "{" _EnumItemWithFlags { _EnumItemWithFlags } "}" @ >
+[RULE: 60]
+	epsilon -> [1817][_Enum]< "flagenum" NAME "{" _EnumItemWithFlags { _EnumItemWithFlags } "}" @ >
+		+ EnumItem(1, 6)
 
-[1806][_Enum]< "flagenum" NAME "{" _EnumItemA { _EnumItemA } { @ _EnumItemB } "}" >
-[RULE: 58]
-	rule: _EnumItemB -> [1807][_Enum]< "flagenum" NAME "{" _EnumItemA { _EnumItemA } { _EnumItemB @ } "}" >
-		+ StackSlot(5)
-
-[1807][_Enum]< "flagenum" NAME "{" _EnumItemA { _EnumItemA } { _EnumItemB @ } "}" >
-[RULE: 58]
-	epsilon -> [1806][_Enum]< "flagenum" NAME "{" _EnumItemA { _EnumItemA } { @ _EnumItemB } "}" >
-	epsilon -> [1812][_Enum]< "flagenum" NAME "{" _EnumItemA { _EnumItemA } { _EnumItemB } @ "}" >
-
-[1808][_Enum]< "flagenum" NAME "{" _EnumItemA { _EnumItemA } { _EnumItemB } "}" > @[ENDING]
-[RULE: 58]
-
-[1809][_Enum]< "flagenum" NAME "{" _EnumItemA { _EnumItemA } { _EnumItemB } "}" @ >
-[RULE: 58]
-	epsilon -> [1810][_Enum]< "flagenum" NAME "{" _EnumItemA { _EnumItemA } { _EnumItemB } "}" @ >
-		+ EnumItem(1, 7)
-
-[1810][_Enum]< "flagenum" NAME "{" _EnumItemA { _EnumItemA } { _EnumItemB } "}" @ >
-[RULE: 58]
-	epsilon -> [1808][_Enum]< "flagenum" NAME "{" _EnumItemA { _EnumItemA } { _EnumItemB } "}" > @[ENDING]
+[1817][_Enum]< "flagenum" NAME "{" _EnumItemWithFlags { _EnumItemWithFlags } "}" @ >
+[RULE: 60]
+	epsilon -> [1815][_Enum]< "flagenum" NAME "{" _EnumItemWithFlags { _EnumItemWithFlags } "}" > @[ENDING]
 		+ CreateObject(EnumDeclaration)
 		+ Field(Declaration::name, 1)
 		+ Field(EnumDeclaration::items, 3)
 		+ Field(EnumDeclaration::items, 4)
-		+ Field(EnumDeclaration::items, 5)
-		+ Field(EnumDeclaration::kind, 7)
+		+ Field(EnumDeclaration::kind, 6)
 		+ StackEnd()
 
-[1811][_Enum]< "flagenum" NAME "{" _EnumItemA { _EnumItemA } { _EnumItemB } @ "}" >
-[RULE: 58]
-	token: "}" -> [1809][_Enum]< "flagenum" NAME "{" _EnumItemA { _EnumItemA } { _EnumItemB } "}" @ >
-		+ Token(6)
+[1818][_Enum]< "flagenum" NAME "{" _EnumItemWithFlags { _EnumItemWithFlags } @ "}" >
+[RULE: 60]
+	token: "}" -> [1816][_Enum]< "flagenum" NAME "{" _EnumItemWithFlags { _EnumItemWithFlags } "}" @ >
+		+ Token(5)
 
-[1812][_Enum]< "flagenum" NAME "{" _EnumItemA { _EnumItemA } { _EnumItemB } @ "}" >
-[RULE: 58]
-	epsilon -> [1811][_Enum]< "flagenum" NAME "{" _EnumItemA { _EnumItemA } { _EnumItemB } @ "}" >
+[1819][_Enum]< "flagenum" NAME "{" _EnumItemWithFlags { _EnumItemWithFlags } @ "}" >
+[RULE: 60]
+	epsilon -> [1818][_Enum]< "flagenum" NAME "{" _EnumItemWithFlags { _EnumItemWithFlags } @ "}" >
 
-[1813][_Enum]< "flagenum" NAME @ "{" _EnumItemA { _EnumItemA } { _EnumItemB } "}" >
-[RULE: 58]
-	epsilon -> [1814][_Enum]< "flagenum" NAME @ "{" _EnumItemA { _EnumItemA } { _EnumItemB } "}" >
+[1820][_Enum]< "flagenum" NAME @ "{" _EnumItemWithFlags { _EnumItemWithFlags } "}" >
+[RULE: 60]
+	epsilon -> [1821][_Enum]< "flagenum" NAME @ "{" _EnumItemWithFlags { _EnumItemWithFlags } "}" >
 
-[1814][_Enum]< "flagenum" NAME @ "{" _EnumItemA { _EnumItemA } { _EnumItemB } "}" >
-[RULE: 58]
-	token: "{" -> [1798][_Enum]< "flagenum" NAME "{" @ _EnumItemA { _EnumItemA } { _EnumItemB } "}" >
+[1821][_Enum]< "flagenum" NAME @ "{" _EnumItemWithFlags { _EnumItemWithFlags } "}" >
+[RULE: 60]
+	token: "{" -> [1809][_Enum]< "flagenum" NAME "{" @ _EnumItemWithFlags { _EnumItemWithFlags } "}" >
 		+ Token(2)
 
-[1815][_Enum]< @ "enum" NAME "{" _EnumItemA { _EnumItemA } "}" >
-[RULE: 58]
-	token: "enum" -> [1782][_Enum]< "enum" @ NAME "{" _EnumItemA { _EnumItemA } "}" >
+[1822][_Enum]< @ "enum" NAME "{" _EnumItem { _EnumItem } "}" >
+[RULE: 60]
+	token: "enum" -> [1793][_Enum]< "enum" @ NAME "{" _EnumItem { _EnumItem } "}" >
 		+ Token(0)
 
-[1816][_Enum]< @ "flagenum" NAME "{" _EnumItemA { _EnumItemA } { _EnumItemB } "}" >
-[RULE: 58]
-	token: "flagenum" -> [1797][_Enum]< "flagenum" @ NAME "{" _EnumItemA { _EnumItemA } { _EnumItemB } "}" >
+[1823][_Enum]< @ "flagenum" NAME "{" _EnumItemWithFlags { _EnumItemWithFlags } "}" >
+[RULE: 60]
+	token: "flagenum" -> [1807][_Enum]< "flagenum" @ NAME "{" _EnumItemWithFlags { _EnumItemWithFlags } "}" >
 		+ Token(0)
 
-[1817][_Enum]@ < "enum" NAME "{" _EnumItemA { _EnumItemA } "}" >
-[RULE: 58]
-	epsilon -> [1815][_Enum]< @ "enum" NAME "{" _EnumItemA { _EnumItemA } "}" >
+[1824][_Enum]@ < "enum" NAME "{" _EnumItem { _EnumItem } "}" >
+[RULE: 60]
+	epsilon -> [1822][_Enum]< @ "enum" NAME "{" _EnumItem { _EnumItem } "}" >
 		+ StackBegin()
 
-[1818][_Enum]@ < "flagenum" NAME "{" _EnumItemA { _EnumItemA } { _EnumItemB } "}" >
-[RULE: 58]
-	epsilon -> [1816][_Enum]< @ "flagenum" NAME "{" _EnumItemA { _EnumItemA } { _EnumItemB } "}" >
+[1825][_Enum]@ < "flagenum" NAME "{" _EnumItemWithFlags { _EnumItemWithFlags } "}" >
+[RULE: 60]
+	epsilon -> [1823][_Enum]< @ "flagenum" NAME "{" _EnumItemWithFlags { _EnumItemWithFlags } "}" >
 		+ StackBegin()
 
-[1819][_StructMember]< @ { _Attribute } NAME ":" _Type ";" >
-[RULE: 59]
-	epsilon -> [1820][_StructMember]< { @ _Attribute } NAME ":" _Type ";" >
-	epsilon -> [1822][_StructMember]< { _Attribute } @ NAME ":" _Type ";" >
+[1826][_StructMember]< @ { _Attribute } NAME ":" _Type ";" >
+[RULE: 61]
+	epsilon -> [1827][_StructMember]< { @ _Attribute } NAME ":" _Type ";" >
+	epsilon -> [1829][_StructMember]< { _Attribute } @ NAME ":" _Type ";" >
 
-[1820][_StructMember]< { @ _Attribute } NAME ":" _Type ";" >
-[RULE: 59]
-	rule: _Attribute -> [1821][_StructMember]< { _Attribute @ } NAME ":" _Type ";" >
+[1827][_StructMember]< { @ _Attribute } NAME ":" _Type ";" >
+[RULE: 61]
+	rule: _Attribute -> [1828][_StructMember]< { _Attribute @ } NAME ":" _Type ";" >
 		+ StackSlot(0)
 
-[1821][_StructMember]< { _Attribute @ } NAME ":" _Type ";" >
-[RULE: 59]
-	epsilon -> [1820][_StructMember]< { @ _Attribute } NAME ":" _Type ";" >
-	epsilon -> [1822][_StructMember]< { _Attribute } @ NAME ":" _Type ";" >
+[1828][_StructMember]< { _Attribute @ } NAME ":" _Type ";" >
+[RULE: 61]
+	epsilon -> [1827][_StructMember]< { @ _Attribute } NAME ":" _Type ";" >
+	epsilon -> [1829][_StructMember]< { _Attribute } @ NAME ":" _Type ";" >
 
-[1822][_StructMember]< { _Attribute } @ NAME ":" _Type ";" >
-[RULE: 59]
-	epsilon -> [1823][_StructMember]< { _Attribute } @ NAME ":" _Type ";" >
+[1829][_StructMember]< { _Attribute } @ NAME ":" _Type ";" >
+[RULE: 61]
+	epsilon -> [1830][_StructMember]< { _Attribute } @ NAME ":" _Type ";" >
 
-[1823][_StructMember]< { _Attribute } @ NAME ":" _Type ";" >
-[RULE: 59]
-	token: NAME -> [1830][_StructMember]< { _Attribute } NAME @ ":" _Type ";" >
+[1830][_StructMember]< { _Attribute } @ NAME ":" _Type ";" >
+[RULE: 61]
+	token: NAME -> [1837][_StructMember]< { _Attribute } NAME @ ":" _Type ";" >
 		+ Token(1)
 
-[1824][_StructMember]< { _Attribute } NAME ":" @ _Type ";" >
-[RULE: 59]
-	rule: _Type -> [1829][_StructMember]< { _Attribute } NAME ":" _Type @ ";" >
+[1831][_StructMember]< { _Attribute } NAME ":" @ _Type ";" >
+[RULE: 61]
+	rule: _Type -> [1836][_StructMember]< { _Attribute } NAME ":" _Type @ ";" >
 		+ StackSlot(3)
 
-[1825][_StructMember]< { _Attribute } NAME ":" @ _Type ";" >
-[RULE: 59]
-	epsilon -> [1824][_StructMember]< { _Attribute } NAME ":" @ _Type ";" >
+[1832][_StructMember]< { _Attribute } NAME ":" @ _Type ";" >
+[RULE: 61]
+	epsilon -> [1831][_StructMember]< { _Attribute } NAME ":" @ _Type ";" >
 
-[1826][_StructMember]< { _Attribute } NAME ":" _Type ";" > @[ENDING]
-[RULE: 59]
+[1833][_StructMember]< { _Attribute } NAME ":" _Type ";" > @[ENDING]
+[RULE: 61]
 
-[1827][_StructMember]< { _Attribute } NAME ":" _Type ";" @ >
-[RULE: 59]
-	epsilon -> [1826][_StructMember]< { _Attribute } NAME ":" _Type ";" > @[ENDING]
+[1834][_StructMember]< { _Attribute } NAME ":" _Type ";" @ >
+[RULE: 61]
+	epsilon -> [1833][_StructMember]< { _Attribute } NAME ":" _Type ";" > @[ENDING]
 		+ CreateObject(StructMember)
 		+ Field(StructMember::attributes, 0)
 		+ Field(StructMember::name, 1)
 		+ Field(StructMember::type, 3)
 		+ StackEnd()
 
-[1828][_StructMember]< { _Attribute } NAME ":" _Type @ ";" >
-[RULE: 59]
-	token: ";" -> [1827][_StructMember]< { _Attribute } NAME ":" _Type ";" @ >
+[1835][_StructMember]< { _Attribute } NAME ":" _Type @ ";" >
+[RULE: 61]
+	token: ";" -> [1834][_StructMember]< { _Attribute } NAME ":" _Type ";" @ >
 		+ Token(4)
 
-[1829][_StructMember]< { _Attribute } NAME ":" _Type @ ";" >
-[RULE: 59]
-	epsilon -> [1828][_StructMember]< { _Attribute } NAME ":" _Type @ ";" >
+[1836][_StructMember]< { _Attribute } NAME ":" _Type @ ";" >
+[RULE: 61]
+	epsilon -> [1835][_StructMember]< { _Attribute } NAME ":" _Type @ ";" >
 
-[1830][_StructMember]< { _Attribute } NAME @ ":" _Type ";" >
-[RULE: 59]
-	epsilon -> [1831][_StructMember]< { _Attribute } NAME @ ":" _Type ";" >
+[1837][_StructMember]< { _Attribute } NAME @ ":" _Type ";" >
+[RULE: 61]
+	epsilon -> [1838][_StructMember]< { _Attribute } NAME @ ":" _Type ";" >
 
-[1831][_StructMember]< { _Attribute } NAME @ ":" _Type ";" >
-[RULE: 59]
-	token: ":" -> [1825][_StructMember]< { _Attribute } NAME ":" @ _Type ";" >
+[1838][_StructMember]< { _Attribute } NAME @ ":" _Type ";" >
+[RULE: 61]
+	token: ":" -> [1832][_StructMember]< { _Attribute } NAME ":" @ _Type ";" >
 		+ Token(2)
 
-[1832][_StructMember]@ < { _Attribute } NAME ":" _Type ";" >
-[RULE: 59]
-	epsilon -> [1819][_StructMember]< @ { _Attribute } NAME ":" _Type ";" >
+[1839][_StructMember]@ < { _Attribute } NAME ":" _Type ";" >
+[RULE: 61]
+	epsilon -> [1826][_StructMember]< @ { _Attribute } NAME ":" _Type ";" >
 		+ StackBegin()
 
-[1833][_Struct]< "struct" @ NAME "{" { _StructMember } "}" >
-[RULE: 60]
-	token: NAME -> [1843][_Struct]< "struct" NAME @ "{" { _StructMember } "}" >
+[1840][_Struct]< "struct" @ NAME "{" { _StructMember } "}" >
+[RULE: 62]
+	token: NAME -> [1850][_Struct]< "struct" NAME @ "{" { _StructMember } "}" >
 		+ Token(1)
 
-[1834][_Struct]< "struct" @ NAME "{" { _StructMember } "}" >
-[RULE: 60]
-	epsilon -> [1833][_Struct]< "struct" @ NAME "{" { _StructMember } "}" >
+[1841][_Struct]< "struct" @ NAME "{" { _StructMember } "}" >
+[RULE: 62]
+	epsilon -> [1840][_Struct]< "struct" @ NAME "{" { _StructMember } "}" >
 
-[1835][_Struct]< "struct" NAME "{" @ { _StructMember } "}" >
-[RULE: 60]
-	epsilon -> [1836][_Struct]< "struct" NAME "{" @ { _StructMember } "}" >
+[1842][_Struct]< "struct" NAME "{" @ { _StructMember } "}" >
+[RULE: 62]
+	epsilon -> [1843][_Struct]< "struct" NAME "{" @ { _StructMember } "}" >
 
-[1836][_Struct]< "struct" NAME "{" @ { _StructMember } "}" >
-[RULE: 60]
-	epsilon -> [1837][_Struct]< "struct" NAME "{" { @ _StructMember } "}" >
-	epsilon -> [1842][_Struct]< "struct" NAME "{" { _StructMember } @ "}" >
+[1843][_Struct]< "struct" NAME "{" @ { _StructMember } "}" >
+[RULE: 62]
+	epsilon -> [1844][_Struct]< "struct" NAME "{" { @ _StructMember } "}" >
+	epsilon -> [1849][_Struct]< "struct" NAME "{" { _StructMember } @ "}" >
 
-[1837][_Struct]< "struct" NAME "{" { @ _StructMember } "}" >
-[RULE: 60]
-	rule: _StructMember -> [1838][_Struct]< "struct" NAME "{" { _StructMember @ } "}" >
+[1844][_Struct]< "struct" NAME "{" { @ _StructMember } "}" >
+[RULE: 62]
+	rule: _StructMember -> [1845][_Struct]< "struct" NAME "{" { _StructMember @ } "}" >
 		+ StackSlot(3)
 
-[1838][_Struct]< "struct" NAME "{" { _StructMember @ } "}" >
-[RULE: 60]
-	epsilon -> [1837][_Struct]< "struct" NAME "{" { @ _StructMember } "}" >
-	epsilon -> [1842][_Struct]< "struct" NAME "{" { _StructMember } @ "}" >
+[1845][_Struct]< "struct" NAME "{" { _StructMember @ } "}" >
+[RULE: 62]
+	epsilon -> [1844][_Struct]< "struct" NAME "{" { @ _StructMember } "}" >
+	epsilon -> [1849][_Struct]< "struct" NAME "{" { _StructMember } @ "}" >
 
-[1839][_Struct]< "struct" NAME "{" { _StructMember } "}" > @[ENDING]
-[RULE: 60]
+[1846][_Struct]< "struct" NAME "{" { _StructMember } "}" > @[ENDING]
+[RULE: 62]
 
-[1840][_Struct]< "struct" NAME "{" { _StructMember } "}" @ >
-[RULE: 60]
-	epsilon -> [1839][_Struct]< "struct" NAME "{" { _StructMember } "}" > @[ENDING]
+[1847][_Struct]< "struct" NAME "{" { _StructMember } "}" @ >
+[RULE: 62]
+	epsilon -> [1846][_Struct]< "struct" NAME "{" { _StructMember } "}" > @[ENDING]
 		+ CreateObject(StructDeclaration)
 		+ Field(Declaration::name, 1)
 		+ Field(StructDeclaration::members, 3)
 		+ StackEnd()
 
-[1841][_Struct]< "struct" NAME "{" { _StructMember } @ "}" >
-[RULE: 60]
-	token: "}" -> [1840][_Struct]< "struct" NAME "{" { _StructMember } "}" @ >
+[1848][_Struct]< "struct" NAME "{" { _StructMember } @ "}" >
+[RULE: 62]
+	token: "}" -> [1847][_Struct]< "struct" NAME "{" { _StructMember } "}" @ >
 		+ Token(4)
 
-[1842][_Struct]< "struct" NAME "{" { _StructMember } @ "}" >
-[RULE: 60]
-	epsilon -> [1841][_Struct]< "struct" NAME "{" { _StructMember } @ "}" >
+[1849][_Struct]< "struct" NAME "{" { _StructMember } @ "}" >
+[RULE: 62]
+	epsilon -> [1848][_Struct]< "struct" NAME "{" { _StructMember } @ "}" >
 
-[1843][_Struct]< "struct" NAME @ "{" { _StructMember } "}" >
-[RULE: 60]
-	epsilon -> [1844][_Struct]< "struct" NAME @ "{" { _StructMember } "}" >
+[1850][_Struct]< "struct" NAME @ "{" { _StructMember } "}" >
+[RULE: 62]
+	epsilon -> [1851][_Struct]< "struct" NAME @ "{" { _StructMember } "}" >
 
-[1844][_Struct]< "struct" NAME @ "{" { _StructMember } "}" >
-[RULE: 60]
-	token: "{" -> [1835][_Struct]< "struct" NAME "{" @ { _StructMember } "}" >
+[1851][_Struct]< "struct" NAME @ "{" { _StructMember } "}" >
+[RULE: 62]
+	token: "{" -> [1842][_Struct]< "struct" NAME "{" @ { _StructMember } "}" >
 		+ Token(2)
 
-[1845][_Struct]< @ "struct" NAME "{" { _StructMember } "}" >
-[RULE: 60]
-	token: "struct" -> [1834][_Struct]< "struct" @ NAME "{" { _StructMember } "}" >
+[1852][_Struct]< @ "struct" NAME "{" { _StructMember } "}" >
+[RULE: 62]
+	token: "struct" -> [1841][_Struct]< "struct" @ NAME "{" { _StructMember } "}" >
 		+ Token(0)
 
-[1846][_Struct]@ < "struct" NAME "{" { _StructMember } "}" >
-[RULE: 60]
-	epsilon -> [1845][_Struct]< @ "struct" NAME "{" { _StructMember } "}" >
+[1853][_Struct]@ < "struct" NAME "{" { _StructMember } "}" >
+[RULE: 62]
+	epsilon -> [1852][_Struct]< @ "struct" NAME "{" { _StructMember } "}" >
 		+ StackBegin()
 
-[1847][_AutoProperty]< ( "static" "prop" @ | "override" "prop" | "prop" ) NAME ":" _Type [ "=" _Expression ] ( "{" "}" | "{" "const" "}" | "{" "not" "observe" "}" | "{" "const" "," "not" "observe" "}" ) >
-[RULE: 63]
-	epsilon -> [1848][_AutoProperty]< ( "static" "prop" @ | "override" "prop" | "prop" ) NAME ":" _Type [ "=" _Expression ] ( "{" "}" | "{" "const" "}" | "{" "not" "observe" "}" | "{" "const" "," "not" "observe" "}" ) >
+[1854][_AutoProperty]< ( "static" "prop" @ | "override" "prop" | "prop" ) NAME ":" _Type [ "=" _Expression ] ( "{" "}" | "{" "const" "}" | "{" "not" "observe" "}" | "{" "const" "," "not" "observe" "}" ) >
+[RULE: 65]
+	epsilon -> [1855][_AutoProperty]< ( "static" "prop" @ | "override" "prop" | "prop" ) NAME ":" _Type [ "=" _Expression ] ( "{" "}" | "{" "const" "}" | "{" "not" "observe" "}" | "{" "const" "," "not" "observe" "}" ) >
 		+ EnumItem(0, 2)
 
-[1848][_AutoProperty]< ( "static" "prop" @ | "override" "prop" | "prop" ) NAME ":" _Type [ "=" _Expression ] ( "{" "}" | "{" "const" "}" | "{" "not" "observe" "}" | "{" "const" "," "not" "observe" "}" ) >
-[RULE: 63]
-	epsilon -> [1852][_AutoProperty]< ( "static" "prop" | "override" "prop" | "prop" ) @ NAME ":" _Type [ "=" _Expression ] ( "{" "}" | "{" "const" "}" | "{" "not" "observe" "}" | "{" "const" "," "not" "observe" "}" ) >
+[1855][_AutoProperty]< ( "static" "prop" @ | "override" "prop" | "prop" ) NAME ":" _Type [ "=" _Expression ] ( "{" "}" | "{" "const" "}" | "{" "not" "observe" "}" | "{" "const" "," "not" "observe" "}" ) >
+[RULE: 65]
+	epsilon -> [1859][_AutoProperty]< ( "static" "prop" | "override" "prop" | "prop" ) @ NAME ":" _Type [ "=" _Expression ] ( "{" "}" | "{" "const" "}" | "{" "not" "observe" "}" | "{" "const" "," "not" "observe" "}" ) >
 
-[1849][_AutoProperty]< ( "static" "prop" | "override" "prop" @ | "prop" ) NAME ":" _Type [ "=" _Expression ] ( "{" "}" | "{" "const" "}" | "{" "not" "observe" "}" | "{" "const" "," "not" "observe" "}" ) >
-[RULE: 63]
-	epsilon -> [1850][_AutoProperty]< ( "static" "prop" | "override" "prop" @ | "prop" ) NAME ":" _Type [ "=" _Expression ] ( "{" "}" | "{" "const" "}" | "{" "not" "observe" "}" | "{" "const" "," "not" "observe" "}" ) >
+[1856][_AutoProperty]< ( "static" "prop" | "override" "prop" @ | "prop" ) NAME ":" _Type [ "=" _Expression ] ( "{" "}" | "{" "const" "}" | "{" "not" "observe" "}" | "{" "const" "," "not" "observe" "}" ) >
+[RULE: 65]
+	epsilon -> [1857][_AutoProperty]< ( "static" "prop" | "override" "prop" @ | "prop" ) NAME ":" _Type [ "=" _Expression ] ( "{" "}" | "{" "const" "}" | "{" "not" "observe" "}" | "{" "const" "," "not" "observe" "}" ) >
 		+ EnumItem(1, 5)
 
-[1850][_AutoProperty]< ( "static" "prop" | "override" "prop" @ | "prop" ) NAME ":" _Type [ "=" _Expression ] ( "{" "}" | "{" "const" "}" | "{" "not" "observe" "}" | "{" "const" "," "not" "observe" "}" ) >
-[RULE: 63]
-	epsilon -> [1852][_AutoProperty]< ( "static" "prop" | "override" "prop" | "prop" ) @ NAME ":" _Type [ "=" _Expression ] ( "{" "}" | "{" "const" "}" | "{" "not" "observe" "}" | "{" "const" "," "not" "observe" "}" ) >
+[1857][_AutoProperty]< ( "static" "prop" | "override" "prop" @ | "prop" ) NAME ":" _Type [ "=" _Expression ] ( "{" "}" | "{" "const" "}" | "{" "not" "observe" "}" | "{" "const" "," "not" "observe" "}" ) >
+[RULE: 65]
+	epsilon -> [1859][_AutoProperty]< ( "static" "prop" | "override" "prop" | "prop" ) @ NAME ":" _Type [ "=" _Expression ] ( "{" "}" | "{" "const" "}" | "{" "not" "observe" "}" | "{" "const" "," "not" "observe" "}" ) >
 
-[1851][_AutoProperty]< ( "static" "prop" | "override" "prop" | "prop" ) @ NAME ":" _Type [ "=" _Expression ] ( "{" "}" | "{" "const" "}" | "{" "not" "observe" "}" | "{" "const" "," "not" "observe" "}" ) >
-[RULE: 63]
-	token: NAME -> [1904][_AutoProperty]< ( "static" "prop" | "override" "prop" | "prop" ) NAME @ ":" _Type [ "=" _Expression ] ( "{" "}" | "{" "const" "}" | "{" "not" "observe" "}" | "{" "const" "," "not" "observe" "}" ) >
+[1858][_AutoProperty]< ( "static" "prop" | "override" "prop" | "prop" ) @ NAME ":" _Type [ "=" _Expression ] ( "{" "}" | "{" "const" "}" | "{" "not" "observe" "}" | "{" "const" "," "not" "observe" "}" ) >
+[RULE: 65]
+	token: NAME -> [1911][_AutoProperty]< ( "static" "prop" | "override" "prop" | "prop" ) NAME @ ":" _Type [ "=" _Expression ] ( "{" "}" | "{" "const" "}" | "{" "not" "observe" "}" | "{" "const" "," "not" "observe" "}" ) >
 		+ Token(8)
 
-[1852][_AutoProperty]< ( "static" "prop" | "override" "prop" | "prop" ) @ NAME ":" _Type [ "=" _Expression ] ( "{" "}" | "{" "const" "}" | "{" "not" "observe" "}" | "{" "const" "," "not" "observe" "}" ) >
-[RULE: 63]
-	epsilon -> [1851][_AutoProperty]< ( "static" "prop" | "override" "prop" | "prop" ) @ NAME ":" _Type [ "=" _Expression ] ( "{" "}" | "{" "const" "}" | "{" "not" "observe" "}" | "{" "const" "," "not" "observe" "}" ) >
+[1859][_AutoProperty]< ( "static" "prop" | "override" "prop" | "prop" ) @ NAME ":" _Type [ "=" _Expression ] ( "{" "}" | "{" "const" "}" | "{" "not" "observe" "}" | "{" "const" "," "not" "observe" "}" ) >
+[RULE: 65]
+	epsilon -> [1858][_AutoProperty]< ( "static" "prop" | "override" "prop" | "prop" ) @ NAME ":" _Type [ "=" _Expression ] ( "{" "}" | "{" "const" "}" | "{" "not" "observe" "}" | "{" "const" "," "not" "observe" "}" ) >
 
-[1853][_AutoProperty]< ( "static" "prop" | "override" "prop" | "prop" ) NAME ":" @ _Type [ "=" _Expression ] ( "{" "}" | "{" "const" "}" | "{" "not" "observe" "}" | "{" "const" "," "not" "observe" "}" ) >
-[RULE: 63]
-	epsilon -> [1854][_AutoProperty]< ( "static" "prop" | "override" "prop" | "prop" ) NAME ":" @ _Type [ "=" _Expression ] ( "{" "}" | "{" "const" "}" | "{" "not" "observe" "}" | "{" "const" "," "not" "observe" "}" ) >
+[1860][_AutoProperty]< ( "static" "prop" | "override" "prop" | "prop" ) NAME ":" @ _Type [ "=" _Expression ] ( "{" "}" | "{" "const" "}" | "{" "not" "observe" "}" | "{" "const" "," "not" "observe" "}" ) >
+[RULE: 65]
+	epsilon -> [1861][_AutoProperty]< ( "static" "prop" | "override" "prop" | "prop" ) NAME ":" @ _Type [ "=" _Expression ] ( "{" "}" | "{" "const" "}" | "{" "not" "observe" "}" | "{" "const" "," "not" "observe" "}" ) >
 
-[1854][_AutoProperty]< ( "static" "prop" | "override" "prop" | "prop" ) NAME ":" @ _Type [ "=" _Expression ] ( "{" "}" | "{" "const" "}" | "{" "not" "observe" "}" | "{" "const" "," "not" "observe" "}" ) >
-[RULE: 63]
-	rule: _Type -> [1856][_AutoProperty]< ( "static" "prop" | "override" "prop" | "prop" ) NAME ":" _Type @ [ "=" _Expression ] ( "{" "}" | "{" "const" "}" | "{" "not" "observe" "}" | "{" "const" "," "not" "observe" "}" ) >
+[1861][_AutoProperty]< ( "static" "prop" | "override" "prop" | "prop" ) NAME ":" @ _Type [ "=" _Expression ] ( "{" "}" | "{" "const" "}" | "{" "not" "observe" "}" | "{" "const" "," "not" "observe" "}" ) >
+[RULE: 65]
+	rule: _Type -> [1863][_AutoProperty]< ( "static" "prop" | "override" "prop" | "prop" ) NAME ":" _Type @ [ "=" _Expression ] ( "{" "}" | "{" "const" "}" | "{" "not" "observe" "}" | "{" "const" "," "not" "observe" "}" ) >
 		+ StackSlot(10)
 
-[1855][_AutoProperty]< ( "static" "prop" | "override" "prop" | "prop" ) NAME ":" _Type @ [ "=" _Expression ] ( "{" "}" | "{" "const" "}" | "{" "not" "observe" "}" | "{" "const" "," "not" "observe" "}" ) >
-[RULE: 63]
-	epsilon -> [1900][_AutoProperty]< ( "static" "prop" | "override" "prop" | "prop" ) NAME ":" _Type [ "=" _Expression ] @ ( "{" "}" | "{" "const" "}" | "{" "not" "observe" "}" | "{" "const" "," "not" "observe" "}" ) >
-	epsilon -> [1902][_AutoProperty]< ( "static" "prop" | "override" "prop" | "prop" ) NAME ":" _Type [ @ "=" _Expression ] ( "{" "}" | "{" "const" "}" | "{" "not" "observe" "}" | "{" "const" "," "not" "observe" "}" ) >
+[1862][_AutoProperty]< ( "static" "prop" | "override" "prop" | "prop" ) NAME ":" _Type @ [ "=" _Expression ] ( "{" "}" | "{" "const" "}" | "{" "not" "observe" "}" | "{" "const" "," "not" "observe" "}" ) >
+[RULE: 65]
+	epsilon -> [1907][_AutoProperty]< ( "static" "prop" | "override" "prop" | "prop" ) NAME ":" _Type [ "=" _Expression ] @ ( "{" "}" | "{" "const" "}" | "{" "not" "observe" "}" | "{" "const" "," "not" "observe" "}" ) >
+	epsilon -> [1909][_AutoProperty]< ( "static" "prop" | "override" "prop" | "prop" ) NAME ":" _Type [ @ "=" _Expression ] ( "{" "}" | "{" "const" "}" | "{" "not" "observe" "}" | "{" "const" "," "not" "observe" "}" ) >
 
-[1856][_AutoProperty]< ( "static" "prop" | "override" "prop" | "prop" ) NAME ":" _Type @ [ "=" _Expression ] ( "{" "}" | "{" "const" "}" | "{" "not" "observe" "}" | "{" "const" "," "not" "observe" "}" ) >
-[RULE: 63]
-	epsilon -> [1855][_AutoProperty]< ( "static" "prop" | "override" "prop" | "prop" ) NAME ":" _Type @ [ "=" _Expression ] ( "{" "}" | "{" "const" "}" | "{" "not" "observe" "}" | "{" "const" "," "not" "observe" "}" ) >
+[1863][_AutoProperty]< ( "static" "prop" | "override" "prop" | "prop" ) NAME ":" _Type @ [ "=" _Expression ] ( "{" "}" | "{" "const" "}" | "{" "not" "observe" "}" | "{" "const" "," "not" "observe" "}" ) >
+[RULE: 65]
+	epsilon -> [1862][_AutoProperty]< ( "static" "prop" | "override" "prop" | "prop" ) NAME ":" _Type @ [ "=" _Expression ] ( "{" "}" | "{" "const" "}" | "{" "not" "observe" "}" | "{" "const" "," "not" "observe" "}" ) >
 
-[1857][_AutoProperty]< ( "static" "prop" | "override" "prop" | "prop" ) NAME ":" _Type [ "=" @ _Expression ] ( "{" "}" | "{" "const" "}" | "{" "not" "observe" "}" | "{" "const" "," "not" "observe" "}" ) >
-[RULE: 63]
-	epsilon -> [1858][_AutoProperty]< ( "static" "prop" | "override" "prop" | "prop" ) NAME ":" _Type [ "=" @ _Expression ] ( "{" "}" | "{" "const" "}" | "{" "not" "observe" "}" | "{" "const" "," "not" "observe" "}" ) >
+[1864][_AutoProperty]< ( "static" "prop" | "override" "prop" | "prop" ) NAME ":" _Type [ "=" @ _Expression ] ( "{" "}" | "{" "const" "}" | "{" "not" "observe" "}" | "{" "const" "," "not" "observe" "}" ) >
+[RULE: 65]
+	epsilon -> [1865][_AutoProperty]< ( "static" "prop" | "override" "prop" | "prop" ) NAME ":" _Type [ "=" @ _Expression ] ( "{" "}" | "{" "const" "}" | "{" "not" "observe" "}" | "{" "const" "," "not" "observe" "}" ) >
 
-[1858][_AutoProperty]< ( "static" "prop" | "override" "prop" | "prop" ) NAME ":" _Type [ "=" @ _Expression ] ( "{" "}" | "{" "const" "}" | "{" "not" "observe" "}" | "{" "const" "," "not" "observe" "}" ) >
-[RULE: 63]
-	rule: _Expression -> [1859][_AutoProperty]< ( "static" "prop" | "override" "prop" | "prop" ) NAME ":" _Type [ "=" _Expression @ ] ( "{" "}" | "{" "const" "}" | "{" "not" "observe" "}" | "{" "const" "," "not" "observe" "}" ) >
+[1865][_AutoProperty]< ( "static" "prop" | "override" "prop" | "prop" ) NAME ":" _Type [ "=" @ _Expression ] ( "{" "}" | "{" "const" "}" | "{" "not" "observe" "}" | "{" "const" "," "not" "observe" "}" ) >
+[RULE: 65]
+	rule: _Expression -> [1866][_AutoProperty]< ( "static" "prop" | "override" "prop" | "prop" ) NAME ":" _Type [ "=" _Expression @ ] ( "{" "}" | "{" "const" "}" | "{" "not" "observe" "}" | "{" "const" "," "not" "observe" "}" ) >
 		+ StackSlot(12)
 
-[1859][_AutoProperty]< ( "static" "prop" | "override" "prop" | "prop" ) NAME ":" _Type [ "=" _Expression @ ] ( "{" "}" | "{" "const" "}" | "{" "not" "observe" "}" | "{" "const" "," "not" "observe" "}" ) >
-[RULE: 63]
-	epsilon -> [1900][_AutoProperty]< ( "static" "prop" | "override" "prop" | "prop" ) NAME ":" _Type [ "=" _Expression ] @ ( "{" "}" | "{" "const" "}" | "{" "not" "observe" "}" | "{" "const" "," "not" "observe" "}" ) >
+[1866][_AutoProperty]< ( "static" "prop" | "override" "prop" | "prop" ) NAME ":" _Type [ "=" _Expression @ ] ( "{" "}" | "{" "const" "}" | "{" "not" "observe" "}" | "{" "const" "," "not" "observe" "}" ) >
+[RULE: 65]
+	epsilon -> [1907][_AutoProperty]< ( "static" "prop" | "override" "prop" | "prop" ) NAME ":" _Type [ "=" _Expression ] @ ( "{" "}" | "{" "const" "}" | "{" "not" "observe" "}" | "{" "const" "," "not" "observe" "}" ) >
 
-[1860][_AutoProperty]< ( "static" "prop" | "override" "prop" | "prop" ) NAME ":" _Type [ "=" _Expression ] ( "{" "}" @ | "{" "const" "}" | "{" "not" "observe" "}" | "{" "const" "," "not" "observe" "}" ) >
-[RULE: 63]
-	epsilon -> [1870][_AutoProperty]< ( "static" "prop" | "override" "prop" | "prop" ) NAME ":" _Type [ "=" _Expression ] ( "{" "}" | "{" "const" "}" | "{" "not" "observe" "}" | "{" "const" "," "not" "observe" "}" ) @ >
+[1867][_AutoProperty]< ( "static" "prop" | "override" "prop" | "prop" ) NAME ":" _Type [ "=" _Expression ] ( "{" "}" @ | "{" "const" "}" | "{" "not" "observe" "}" | "{" "const" "," "not" "observe" "}" ) >
+[RULE: 65]
+	epsilon -> [1877][_AutoProperty]< ( "static" "prop" | "override" "prop" | "prop" ) NAME ":" _Type [ "=" _Expression ] ( "{" "}" | "{" "const" "}" | "{" "not" "observe" "}" | "{" "const" "," "not" "observe" "}" ) @ >
 
-[1861][_AutoProperty]< ( "static" "prop" | "override" "prop" | "prop" ) NAME ":" _Type [ "=" _Expression ] ( "{" "}" @ | "{" "const" "}" | "{" "not" "observe" "}" | "{" "const" "," "not" "observe" "}" ) >
-[RULE: 63]
-	epsilon -> [1860][_AutoProperty]< ( "static" "prop" | "override" "prop" | "prop" ) NAME ":" _Type [ "=" _Expression ] ( "{" "}" @ | "{" "const" "}" | "{" "not" "observe" "}" | "{" "const" "," "not" "observe" "}" ) >
+[1868][_AutoProperty]< ( "static" "prop" | "override" "prop" | "prop" ) NAME ":" _Type [ "=" _Expression ] ( "{" "}" @ | "{" "const" "}" | "{" "not" "observe" "}" | "{" "const" "," "not" "observe" "}" ) >
+[RULE: 65]
+	epsilon -> [1867][_AutoProperty]< ( "static" "prop" | "override" "prop" | "prop" ) NAME ":" _Type [ "=" _Expression ] ( "{" "}" @ | "{" "const" "}" | "{" "not" "observe" "}" | "{" "const" "," "not" "observe" "}" ) >
 		+ EnumItem(0, 16)
 
-[1862][_AutoProperty]< ( "static" "prop" | "override" "prop" | "prop" ) NAME ":" _Type [ "=" _Expression ] ( "{" "}" @ | "{" "const" "}" | "{" "not" "observe" "}" | "{" "const" "," "not" "observe" "}" ) >
-[RULE: 63]
-	epsilon -> [1861][_AutoProperty]< ( "static" "prop" | "override" "prop" | "prop" ) NAME ":" _Type [ "=" _Expression ] ( "{" "}" @ | "{" "const" "}" | "{" "not" "observe" "}" | "{" "const" "," "not" "observe" "}" ) >
+[1869][_AutoProperty]< ( "static" "prop" | "override" "prop" | "prop" ) NAME ":" _Type [ "=" _Expression ] ( "{" "}" @ | "{" "const" "}" | "{" "not" "observe" "}" | "{" "const" "," "not" "observe" "}" ) >
+[RULE: 65]
+	epsilon -> [1868][_AutoProperty]< ( "static" "prop" | "override" "prop" | "prop" ) NAME ":" _Type [ "=" _Expression ] ( "{" "}" @ | "{" "const" "}" | "{" "not" "observe" "}" | "{" "const" "," "not" "observe" "}" ) >
 		+ EnumItem(1, 15)
 
-[1863][_AutoProperty]< ( "static" "prop" | "override" "prop" | "prop" ) NAME ":" _Type [ "=" _Expression ] ( "{" "}" | "{" "const" "}" @ | "{" "not" "observe" "}" | "{" "const" "," "not" "observe" "}" ) >
-[RULE: 63]
-	epsilon -> [1870][_AutoProperty]< ( "static" "prop" | "override" "prop" | "prop" ) NAME ":" _Type [ "=" _Expression ] ( "{" "}" | "{" "const" "}" | "{" "not" "observe" "}" | "{" "const" "," "not" "observe" "}" ) @ >
+[1870][_AutoProperty]< ( "static" "prop" | "override" "prop" | "prop" ) NAME ":" _Type [ "=" _Expression ] ( "{" "}" | "{" "const" "}" @ | "{" "not" "observe" "}" | "{" "const" "," "not" "observe" "}" ) >
+[RULE: 65]
+	epsilon -> [1877][_AutoProperty]< ( "static" "prop" | "override" "prop" | "prop" ) NAME ":" _Type [ "=" _Expression ] ( "{" "}" | "{" "const" "}" | "{" "not" "observe" "}" | "{" "const" "," "not" "observe" "}" ) @ >
 
-[1864][_AutoProperty]< ( "static" "prop" | "override" "prop" | "prop" ) NAME ":" _Type [ "=" _Expression ] ( "{" "}" | "{" "const" "}" @ | "{" "not" "observe" "}" | "{" "const" "," "not" "observe" "}" ) >
-[RULE: 63]
-	epsilon -> [1865][_AutoProperty]< ( "static" "prop" | "override" "prop" | "prop" ) NAME ":" _Type [ "=" _Expression ] ( "{" "}" | "{" "const" "}" @ | "{" "not" "observe" "}" | "{" "const" "," "not" "observe" "}" ) >
+[1871][_AutoProperty]< ( "static" "prop" | "override" "prop" | "prop" ) NAME ":" _Type [ "=" _Expression ] ( "{" "}" | "{" "const" "}" @ | "{" "not" "observe" "}" | "{" "const" "," "not" "observe" "}" ) >
+[RULE: 65]
+	epsilon -> [1872][_AutoProperty]< ( "static" "prop" | "override" "prop" | "prop" ) NAME ":" _Type [ "=" _Expression ] ( "{" "}" | "{" "const" "}" @ | "{" "not" "observe" "}" | "{" "const" "," "not" "observe" "}" ) >
 		+ EnumItem(0, 20)
 
-[1865][_AutoProperty]< ( "static" "prop" | "override" "prop" | "prop" ) NAME ":" _Type [ "=" _Expression ] ( "{" "}" | "{" "const" "}" @ | "{" "not" "observe" "}" | "{" "const" "," "not" "observe" "}" ) >
-[RULE: 63]
-	epsilon -> [1863][_AutoProperty]< ( "static" "prop" | "override" "prop" | "prop" ) NAME ":" _Type [ "=" _Expression ] ( "{" "}" | "{" "const" "}" @ | "{" "not" "observe" "}" | "{" "const" "," "not" "observe" "}" ) >
+[1872][_AutoProperty]< ( "static" "prop" | "override" "prop" | "prop" ) NAME ":" _Type [ "=" _Expression ] ( "{" "}" | "{" "const" "}" @ | "{" "not" "observe" "}" | "{" "const" "," "not" "observe" "}" ) >
+[RULE: 65]
+	epsilon -> [1870][_AutoProperty]< ( "static" "prop" | "override" "prop" | "prop" ) NAME ":" _Type [ "=" _Expression ] ( "{" "}" | "{" "const" "}" @ | "{" "not" "observe" "}" | "{" "const" "," "not" "observe" "}" ) >
 		+ EnumItem(0, 21)
 
-[1866][_AutoProperty]< ( "static" "prop" | "override" "prop" | "prop" ) NAME ":" _Type [ "=" _Expression ] ( "{" "}" | "{" "const" "}" | "{" "not" "observe" "}" @ | "{" "const" "," "not" "observe" "}" ) >
-[RULE: 63]
-	epsilon -> [1868][_AutoProperty]< ( "static" "prop" | "override" "prop" | "prop" ) NAME ":" _Type [ "=" _Expression ] ( "{" "}" | "{" "const" "}" | "{" "not" "observe" "}" @ | "{" "const" "," "not" "observe" "}" ) >
+[1873][_AutoProperty]< ( "static" "prop" | "override" "prop" | "prop" ) NAME ":" _Type [ "=" _Expression ] ( "{" "}" | "{" "const" "}" | "{" "not" "observe" "}" @ | "{" "const" "," "not" "observe" "}" ) >
+[RULE: 65]
+	epsilon -> [1875][_AutoProperty]< ( "static" "prop" | "override" "prop" | "prop" ) NAME ":" _Type [ "=" _Expression ] ( "{" "}" | "{" "const" "}" | "{" "not" "observe" "}" @ | "{" "const" "," "not" "observe" "}" ) >
 		+ EnumItem(1, 27)
 
-[1867][_AutoProperty]< ( "static" "prop" | "override" "prop" | "prop" ) NAME ":" _Type [ "=" _Expression ] ( "{" "}" | "{" "const" "}" | "{" "not" "observe" "}" @ | "{" "const" "," "not" "observe" "}" ) >
-[RULE: 63]
-	epsilon -> [1866][_AutoProperty]< ( "static" "prop" | "override" "prop" | "prop" ) NAME ":" _Type [ "=" _Expression ] ( "{" "}" | "{" "const" "}" | "{" "not" "observe" "}" @ | "{" "const" "," "not" "observe" "}" ) >
+[1874][_AutoProperty]< ( "static" "prop" | "override" "prop" | "prop" ) NAME ":" _Type [ "=" _Expression ] ( "{" "}" | "{" "const" "}" | "{" "not" "observe" "}" @ | "{" "const" "," "not" "observe" "}" ) >
+[RULE: 65]
+	epsilon -> [1873][_AutoProperty]< ( "static" "prop" | "override" "prop" | "prop" ) NAME ":" _Type [ "=" _Expression ] ( "{" "}" | "{" "const" "}" | "{" "not" "observe" "}" @ | "{" "const" "," "not" "observe" "}" ) >
 		+ EnumItem(1, 26)
 
-[1868][_AutoProperty]< ( "static" "prop" | "override" "prop" | "prop" ) NAME ":" _Type [ "=" _Expression ] ( "{" "}" | "{" "const" "}" | "{" "not" "observe" "}" @ | "{" "const" "," "not" "observe" "}" ) >
-[RULE: 63]
-	epsilon -> [1870][_AutoProperty]< ( "static" "prop" | "override" "prop" | "prop" ) NAME ":" _Type [ "=" _Expression ] ( "{" "}" | "{" "const" "}" | "{" "not" "observe" "}" | "{" "const" "," "not" "observe" "}" ) @ >
+[1875][_AutoProperty]< ( "static" "prop" | "override" "prop" | "prop" ) NAME ":" _Type [ "=" _Expression ] ( "{" "}" | "{" "const" "}" | "{" "not" "observe" "}" @ | "{" "const" "," "not" "observe" "}" ) >
+[RULE: 65]
+	epsilon -> [1877][_AutoProperty]< ( "static" "prop" | "override" "prop" | "prop" ) NAME ":" _Type [ "=" _Expression ] ( "{" "}" | "{" "const" "}" | "{" "not" "observe" "}" | "{" "const" "," "not" "observe" "}" ) @ >
 
-[1869][_AutoProperty]< ( "static" "prop" | "override" "prop" | "prop" ) NAME ":" _Type [ "=" _Expression ] ( "{" "}" | "{" "const" "}" | "{" "not" "observe" "}" | "{" "const" "," "not" "observe" "}" ) > @[ENDING]
-[RULE: 63]
+[1876][_AutoProperty]< ( "static" "prop" | "override" "prop" | "prop" ) NAME ":" _Type [ "=" _Expression ] ( "{" "}" | "{" "const" "}" | "{" "not" "observe" "}" | "{" "const" "," "not" "observe" "}" ) > @[ENDING]
+[RULE: 65]
 
-[1870][_AutoProperty]< ( "static" "prop" | "override" "prop" | "prop" ) NAME ":" _Type [ "=" _Expression ] ( "{" "}" | "{" "const" "}" | "{" "not" "observe" "}" | "{" "const" "," "not" "observe" "}" ) @ >
-[RULE: 63]
-	epsilon -> [1869][_AutoProperty]< ( "static" "prop" | "override" "prop" | "prop" ) NAME ":" _Type [ "=" _Expression ] ( "{" "}" | "{" "const" "}" | "{" "not" "observe" "}" | "{" "const" "," "not" "observe" "}" ) > @[ENDING]
+[1877][_AutoProperty]< ( "static" "prop" | "override" "prop" | "prop" ) NAME ":" _Type [ "=" _Expression ] ( "{" "}" | "{" "const" "}" | "{" "not" "observe" "}" | "{" "const" "," "not" "observe" "}" ) @ >
+[RULE: 65]
+	epsilon -> [1876][_AutoProperty]< ( "static" "prop" | "override" "prop" | "prop" ) NAME ":" _Type [ "=" _Expression ] ( "{" "}" | "{" "const" "}" | "{" "not" "observe" "}" | "{" "const" "," "not" "observe" "}" ) > @[ENDING]
 		+ CreateObject(AutoPropertyDeclaration)
 		+ Field(AutoPropertyDeclaration::functionKind, 2)
 		+ Field(AutoPropertyDeclaration::functionKind, 5)
@@ -8963,755 +8992,755 @@
 		+ Field(AutoPropertyDeclaration::configObserve, 35)
 		+ StackEnd()
 
-[1871][_AutoProperty]< ( "static" "prop" | "override" "prop" | "prop" ) NAME ":" _Type [ "=" _Expression ] ( "{" "}" | "{" "const" "}" | "{" "not" "observe" "}" | "{" "const" "," "not" "observe" "}" @ ) >
-[RULE: 63]
-	epsilon -> [1870][_AutoProperty]< ( "static" "prop" | "override" "prop" | "prop" ) NAME ":" _Type [ "=" _Expression ] ( "{" "}" | "{" "const" "}" | "{" "not" "observe" "}" | "{" "const" "," "not" "observe" "}" ) @ >
+[1878][_AutoProperty]< ( "static" "prop" | "override" "prop" | "prop" ) NAME ":" _Type [ "=" _Expression ] ( "{" "}" | "{" "const" "}" | "{" "not" "observe" "}" | "{" "const" "," "not" "observe" "}" @ ) >
+[RULE: 65]
+	epsilon -> [1877][_AutoProperty]< ( "static" "prop" | "override" "prop" | "prop" ) NAME ":" _Type [ "=" _Expression ] ( "{" "}" | "{" "const" "}" | "{" "not" "observe" "}" | "{" "const" "," "not" "observe" "}" ) @ >
 
-[1872][_AutoProperty]< ( "static" "prop" | "override" "prop" | "prop" ) NAME ":" _Type [ "=" _Expression ] ( "{" "}" | "{" "const" "}" | "{" "not" "observe" "}" | "{" "const" "," "not" "observe" "}" @ ) >
-[RULE: 63]
-	epsilon -> [1873][_AutoProperty]< ( "static" "prop" | "override" "prop" | "prop" ) NAME ":" _Type [ "=" _Expression ] ( "{" "}" | "{" "const" "}" | "{" "not" "observe" "}" | "{" "const" "," "not" "observe" "}" @ ) >
+[1879][_AutoProperty]< ( "static" "prop" | "override" "prop" | "prop" ) NAME ":" _Type [ "=" _Expression ] ( "{" "}" | "{" "const" "}" | "{" "not" "observe" "}" | "{" "const" "," "not" "observe" "}" @ ) >
+[RULE: 65]
+	epsilon -> [1880][_AutoProperty]< ( "static" "prop" | "override" "prop" | "prop" ) NAME ":" _Type [ "=" _Expression ] ( "{" "}" | "{" "const" "}" | "{" "not" "observe" "}" | "{" "const" "," "not" "observe" "}" @ ) >
 		+ EnumItem(0, 34)
 
-[1873][_AutoProperty]< ( "static" "prop" | "override" "prop" | "prop" ) NAME ":" _Type [ "=" _Expression ] ( "{" "}" | "{" "const" "}" | "{" "not" "observe" "}" | "{" "const" "," "not" "observe" "}" @ ) >
-[RULE: 63]
-	epsilon -> [1871][_AutoProperty]< ( "static" "prop" | "override" "prop" | "prop" ) NAME ":" _Type [ "=" _Expression ] ( "{" "}" | "{" "const" "}" | "{" "not" "observe" "}" | "{" "const" "," "not" "observe" "}" @ ) >
+[1880][_AutoProperty]< ( "static" "prop" | "override" "prop" | "prop" ) NAME ":" _Type [ "=" _Expression ] ( "{" "}" | "{" "const" "}" | "{" "not" "observe" "}" | "{" "const" "," "not" "observe" "}" @ ) >
+[RULE: 65]
+	epsilon -> [1878][_AutoProperty]< ( "static" "prop" | "override" "prop" | "prop" ) NAME ":" _Type [ "=" _Expression ] ( "{" "}" | "{" "const" "}" | "{" "not" "observe" "}" | "{" "const" "," "not" "observe" "}" @ ) >
 		+ EnumItem(1, 35)
 
-[1874][_AutoProperty]< ( "static" "prop" | "override" "prop" | "prop" ) NAME ":" _Type [ "=" _Expression ] ( "{" "}" | "{" "const" "}" | "{" "not" "observe" "}" | "{" "const" "," "not" "observe" @ "}" ) >
-[RULE: 63]
-	token: "}" -> [1872][_AutoProperty]< ( "static" "prop" | "override" "prop" | "prop" ) NAME ":" _Type [ "=" _Expression ] ( "{" "}" | "{" "const" "}" | "{" "not" "observe" "}" | "{" "const" "," "not" "observe" "}" @ ) >
+[1881][_AutoProperty]< ( "static" "prop" | "override" "prop" | "prop" ) NAME ":" _Type [ "=" _Expression ] ( "{" "}" | "{" "const" "}" | "{" "not" "observe" "}" | "{" "const" "," "not" "observe" @ "}" ) >
+[RULE: 65]
+	token: "}" -> [1879][_AutoProperty]< ( "static" "prop" | "override" "prop" | "prop" ) NAME ":" _Type [ "=" _Expression ] ( "{" "}" | "{" "const" "}" | "{" "not" "observe" "}" | "{" "const" "," "not" "observe" "}" @ ) >
 		+ Token(33)
 
-[1875][_AutoProperty]< ( "static" "prop" | "override" "prop" | "prop" ) NAME ":" _Type [ "=" _Expression ] ( "{" "}" | "{" "const" "}" | "{" "not" "observe" "}" | "{" "const" "," "not" "observe" @ "}" ) >
-[RULE: 63]
-	epsilon -> [1874][_AutoProperty]< ( "static" "prop" | "override" "prop" | "prop" ) NAME ":" _Type [ "=" _Expression ] ( "{" "}" | "{" "const" "}" | "{" "not" "observe" "}" | "{" "const" "," "not" "observe" @ "}" ) >
+[1882][_AutoProperty]< ( "static" "prop" | "override" "prop" | "prop" ) NAME ":" _Type [ "=" _Expression ] ( "{" "}" | "{" "const" "}" | "{" "not" "observe" "}" | "{" "const" "," "not" "observe" @ "}" ) >
+[RULE: 65]
+	epsilon -> [1881][_AutoProperty]< ( "static" "prop" | "override" "prop" | "prop" ) NAME ":" _Type [ "=" _Expression ] ( "{" "}" | "{" "const" "}" | "{" "not" "observe" "}" | "{" "const" "," "not" "observe" @ "}" ) >
 
-[1876][_AutoProperty]< ( "static" "prop" | "override" "prop" | "prop" ) NAME ":" _Type [ "=" _Expression ] ( "{" "}" | "{" "const" "}" | "{" "not" "observe" "}" | "{" "const" "," "not" @ "observe" "}" ) >
-[RULE: 63]
-	token: "observe" -> [1875][_AutoProperty]< ( "static" "prop" | "override" "prop" | "prop" ) NAME ":" _Type [ "=" _Expression ] ( "{" "}" | "{" "const" "}" | "{" "not" "observe" "}" | "{" "const" "," "not" "observe" @ "}" ) >
+[1883][_AutoProperty]< ( "static" "prop" | "override" "prop" | "prop" ) NAME ":" _Type [ "=" _Expression ] ( "{" "}" | "{" "const" "}" | "{" "not" "observe" "}" | "{" "const" "," "not" @ "observe" "}" ) >
+[RULE: 65]
+	token: "observe" -> [1882][_AutoProperty]< ( "static" "prop" | "override" "prop" | "prop" ) NAME ":" _Type [ "=" _Expression ] ( "{" "}" | "{" "const" "}" | "{" "not" "observe" "}" | "{" "const" "," "not" "observe" @ "}" ) >
 		+ Token(32)
 
-[1877][_AutoProperty]< ( "static" "prop" | "override" "prop" | "prop" ) NAME ":" _Type [ "=" _Expression ] ( "{" "}" | "{" "const" "}" | "{" "not" "observe" "}" | "{" "const" "," "not" @ "observe" "}" ) >
-[RULE: 63]
-	epsilon -> [1876][_AutoProperty]< ( "static" "prop" | "override" "prop" | "prop" ) NAME ":" _Type [ "=" _Expression ] ( "{" "}" | "{" "const" "}" | "{" "not" "observe" "}" | "{" "const" "," "not" @ "observe" "}" ) >
+[1884][_AutoProperty]< ( "static" "prop" | "override" "prop" | "prop" ) NAME ":" _Type [ "=" _Expression ] ( "{" "}" | "{" "const" "}" | "{" "not" "observe" "}" | "{" "const" "," "not" @ "observe" "}" ) >
+[RULE: 65]
+	epsilon -> [1883][_AutoProperty]< ( "static" "prop" | "override" "prop" | "prop" ) NAME ":" _Type [ "=" _Expression ] ( "{" "}" | "{" "const" "}" | "{" "not" "observe" "}" | "{" "const" "," "not" @ "observe" "}" ) >
 
-[1878][_AutoProperty]< ( "static" "prop" | "override" "prop" | "prop" ) NAME ":" _Type [ "=" _Expression ] ( "{" "}" | "{" "const" "}" | "{" "not" "observe" "}" | "{" "const" "," @ "not" "observe" "}" ) >
-[RULE: 63]
-	epsilon -> [1879][_AutoProperty]< ( "static" "prop" | "override" "prop" | "prop" ) NAME ":" _Type [ "=" _Expression ] ( "{" "}" | "{" "const" "}" | "{" "not" "observe" "}" | "{" "const" "," @ "not" "observe" "}" ) >
+[1885][_AutoProperty]< ( "static" "prop" | "override" "prop" | "prop" ) NAME ":" _Type [ "=" _Expression ] ( "{" "}" | "{" "const" "}" | "{" "not" "observe" "}" | "{" "const" "," @ "not" "observe" "}" ) >
+[RULE: 65]
+	epsilon -> [1886][_AutoProperty]< ( "static" "prop" | "override" "prop" | "prop" ) NAME ":" _Type [ "=" _Expression ] ( "{" "}" | "{" "const" "}" | "{" "not" "observe" "}" | "{" "const" "," @ "not" "observe" "}" ) >
 
-[1879][_AutoProperty]< ( "static" "prop" | "override" "prop" | "prop" ) NAME ":" _Type [ "=" _Expression ] ( "{" "}" | "{" "const" "}" | "{" "not" "observe" "}" | "{" "const" "," @ "not" "observe" "}" ) >
-[RULE: 63]
-	token: "not" -> [1877][_AutoProperty]< ( "static" "prop" | "override" "prop" | "prop" ) NAME ":" _Type [ "=" _Expression ] ( "{" "}" | "{" "const" "}" | "{" "not" "observe" "}" | "{" "const" "," "not" @ "observe" "}" ) >
+[1886][_AutoProperty]< ( "static" "prop" | "override" "prop" | "prop" ) NAME ":" _Type [ "=" _Expression ] ( "{" "}" | "{" "const" "}" | "{" "not" "observe" "}" | "{" "const" "," @ "not" "observe" "}" ) >
+[RULE: 65]
+	token: "not" -> [1884][_AutoProperty]< ( "static" "prop" | "override" "prop" | "prop" ) NAME ":" _Type [ "=" _Expression ] ( "{" "}" | "{" "const" "}" | "{" "not" "observe" "}" | "{" "const" "," "not" @ "observe" "}" ) >
 		+ Token(31)
 
-[1880][_AutoProperty]< ( "static" "prop" | "override" "prop" | "prop" ) NAME ":" _Type [ "=" _Expression ] ( "{" "}" | "{" "const" "}" | "{" "not" "observe" "}" | "{" "const" @ "," "not" "observe" "}" ) >
-[RULE: 63]
-	token: "," -> [1878][_AutoProperty]< ( "static" "prop" | "override" "prop" | "prop" ) NAME ":" _Type [ "=" _Expression ] ( "{" "}" | "{" "const" "}" | "{" "not" "observe" "}" | "{" "const" "," @ "not" "observe" "}" ) >
+[1887][_AutoProperty]< ( "static" "prop" | "override" "prop" | "prop" ) NAME ":" _Type [ "=" _Expression ] ( "{" "}" | "{" "const" "}" | "{" "not" "observe" "}" | "{" "const" @ "," "not" "observe" "}" ) >
+[RULE: 65]
+	token: "," -> [1885][_AutoProperty]< ( "static" "prop" | "override" "prop" | "prop" ) NAME ":" _Type [ "=" _Expression ] ( "{" "}" | "{" "const" "}" | "{" "not" "observe" "}" | "{" "const" "," @ "not" "observe" "}" ) >
 		+ Token(30)
 
-[1881][_AutoProperty]< ( "static" "prop" | "override" "prop" | "prop" ) NAME ":" _Type [ "=" _Expression ] ( "{" "}" | "{" "const" "}" | "{" "not" "observe" "}" | "{" "const" @ "," "not" "observe" "}" ) >
-[RULE: 63]
-	epsilon -> [1880][_AutoProperty]< ( "static" "prop" | "override" "prop" | "prop" ) NAME ":" _Type [ "=" _Expression ] ( "{" "}" | "{" "const" "}" | "{" "not" "observe" "}" | "{" "const" @ "," "not" "observe" "}" ) >
+[1888][_AutoProperty]< ( "static" "prop" | "override" "prop" | "prop" ) NAME ":" _Type [ "=" _Expression ] ( "{" "}" | "{" "const" "}" | "{" "not" "observe" "}" | "{" "const" @ "," "not" "observe" "}" ) >
+[RULE: 65]
+	epsilon -> [1887][_AutoProperty]< ( "static" "prop" | "override" "prop" | "prop" ) NAME ":" _Type [ "=" _Expression ] ( "{" "}" | "{" "const" "}" | "{" "not" "observe" "}" | "{" "const" @ "," "not" "observe" "}" ) >
 
-[1882][_AutoProperty]< ( "static" "prop" | "override" "prop" | "prop" ) NAME ":" _Type [ "=" _Expression ] ( "{" "}" | "{" "const" "}" | "{" "not" "observe" "}" | "{" @ "const" "," "not" "observe" "}" ) >
-[RULE: 63]
-	token: "const" -> [1881][_AutoProperty]< ( "static" "prop" | "override" "prop" | "prop" ) NAME ":" _Type [ "=" _Expression ] ( "{" "}" | "{" "const" "}" | "{" "not" "observe" "}" | "{" "const" @ "," "not" "observe" "}" ) >
+[1889][_AutoProperty]< ( "static" "prop" | "override" "prop" | "prop" ) NAME ":" _Type [ "=" _Expression ] ( "{" "}" | "{" "const" "}" | "{" "not" "observe" "}" | "{" @ "const" "," "not" "observe" "}" ) >
+[RULE: 65]
+	token: "const" -> [1888][_AutoProperty]< ( "static" "prop" | "override" "prop" | "prop" ) NAME ":" _Type [ "=" _Expression ] ( "{" "}" | "{" "const" "}" | "{" "not" "observe" "}" | "{" "const" @ "," "not" "observe" "}" ) >
 		+ Token(29)
 
-[1883][_AutoProperty]< ( "static" "prop" | "override" "prop" | "prop" ) NAME ":" _Type [ "=" _Expression ] ( "{" "}" | "{" "const" "}" | "{" "not" "observe" "}" | "{" @ "const" "," "not" "observe" "}" ) >
-[RULE: 63]
-	epsilon -> [1882][_AutoProperty]< ( "static" "prop" | "override" "prop" | "prop" ) NAME ":" _Type [ "=" _Expression ] ( "{" "}" | "{" "const" "}" | "{" "not" "observe" "}" | "{" @ "const" "," "not" "observe" "}" ) >
+[1890][_AutoProperty]< ( "static" "prop" | "override" "prop" | "prop" ) NAME ":" _Type [ "=" _Expression ] ( "{" "}" | "{" "const" "}" | "{" "not" "observe" "}" | "{" @ "const" "," "not" "observe" "}" ) >
+[RULE: 65]
+	epsilon -> [1889][_AutoProperty]< ( "static" "prop" | "override" "prop" | "prop" ) NAME ":" _Type [ "=" _Expression ] ( "{" "}" | "{" "const" "}" | "{" "not" "observe" "}" | "{" @ "const" "," "not" "observe" "}" ) >
 
-[1884][_AutoProperty]< ( "static" "prop" | "override" "prop" | "prop" ) NAME ":" _Type [ "=" _Expression ] ( "{" "}" | "{" "const" "}" | "{" "not" "observe" "}" | @ "{" "const" "," "not" "observe" "}" ) >
-[RULE: 63]
-	token: "{" -> [1883][_AutoProperty]< ( "static" "prop" | "override" "prop" | "prop" ) NAME ":" _Type [ "=" _Expression ] ( "{" "}" | "{" "const" "}" | "{" "not" "observe" "}" | "{" @ "const" "," "not" "observe" "}" ) >
+[1891][_AutoProperty]< ( "static" "prop" | "override" "prop" | "prop" ) NAME ":" _Type [ "=" _Expression ] ( "{" "}" | "{" "const" "}" | "{" "not" "observe" "}" | @ "{" "const" "," "not" "observe" "}" ) >
+[RULE: 65]
+	token: "{" -> [1890][_AutoProperty]< ( "static" "prop" | "override" "prop" | "prop" ) NAME ":" _Type [ "=" _Expression ] ( "{" "}" | "{" "const" "}" | "{" "not" "observe" "}" | "{" @ "const" "," "not" "observe" "}" ) >
 		+ Token(28)
 
-[1885][_AutoProperty]< ( "static" "prop" | "override" "prop" | "prop" ) NAME ":" _Type [ "=" _Expression ] ( "{" "}" | "{" "const" "}" | "{" "not" "observe" @ "}" | "{" "const" "," "not" "observe" "}" ) >
-[RULE: 63]
-	token: "}" -> [1867][_AutoProperty]< ( "static" "prop" | "override" "prop" | "prop" ) NAME ":" _Type [ "=" _Expression ] ( "{" "}" | "{" "const" "}" | "{" "not" "observe" "}" @ | "{" "const" "," "not" "observe" "}" ) >
+[1892][_AutoProperty]< ( "static" "prop" | "override" "prop" | "prop" ) NAME ":" _Type [ "=" _Expression ] ( "{" "}" | "{" "const" "}" | "{" "not" "observe" @ "}" | "{" "const" "," "not" "observe" "}" ) >
+[RULE: 65]
+	token: "}" -> [1874][_AutoProperty]< ( "static" "prop" | "override" "prop" | "prop" ) NAME ":" _Type [ "=" _Expression ] ( "{" "}" | "{" "const" "}" | "{" "not" "observe" "}" @ | "{" "const" "," "not" "observe" "}" ) >
 		+ Token(25)
 
-[1886][_AutoProperty]< ( "static" "prop" | "override" "prop" | "prop" ) NAME ":" _Type [ "=" _Expression ] ( "{" "}" | "{" "const" "}" | "{" "not" "observe" @ "}" | "{" "const" "," "not" "observe" "}" ) >
-[RULE: 63]
-	epsilon -> [1885][_AutoProperty]< ( "static" "prop" | "override" "prop" | "prop" ) NAME ":" _Type [ "=" _Expression ] ( "{" "}" | "{" "const" "}" | "{" "not" "observe" @ "}" | "{" "const" "," "not" "observe" "}" ) >
+[1893][_AutoProperty]< ( "static" "prop" | "override" "prop" | "prop" ) NAME ":" _Type [ "=" _Expression ] ( "{" "}" | "{" "const" "}" | "{" "not" "observe" @ "}" | "{" "const" "," "not" "observe" "}" ) >
+[RULE: 65]
+	epsilon -> [1892][_AutoProperty]< ( "static" "prop" | "override" "prop" | "prop" ) NAME ":" _Type [ "=" _Expression ] ( "{" "}" | "{" "const" "}" | "{" "not" "observe" @ "}" | "{" "const" "," "not" "observe" "}" ) >
 
-[1887][_AutoProperty]< ( "static" "prop" | "override" "prop" | "prop" ) NAME ":" _Type [ "=" _Expression ] ( "{" "}" | "{" "const" "}" | "{" "not" @ "observe" "}" | "{" "const" "," "not" "observe" "}" ) >
-[RULE: 63]
-	token: "observe" -> [1886][_AutoProperty]< ( "static" "prop" | "override" "prop" | "prop" ) NAME ":" _Type [ "=" _Expression ] ( "{" "}" | "{" "const" "}" | "{" "not" "observe" @ "}" | "{" "const" "," "not" "observe" "}" ) >
+[1894][_AutoProperty]< ( "static" "prop" | "override" "prop" | "prop" ) NAME ":" _Type [ "=" _Expression ] ( "{" "}" | "{" "const" "}" | "{" "not" @ "observe" "}" | "{" "const" "," "not" "observe" "}" ) >
+[RULE: 65]
+	token: "observe" -> [1893][_AutoProperty]< ( "static" "prop" | "override" "prop" | "prop" ) NAME ":" _Type [ "=" _Expression ] ( "{" "}" | "{" "const" "}" | "{" "not" "observe" @ "}" | "{" "const" "," "not" "observe" "}" ) >
 		+ Token(24)
 
-[1888][_AutoProperty]< ( "static" "prop" | "override" "prop" | "prop" ) NAME ":" _Type [ "=" _Expression ] ( "{" "}" | "{" "const" "}" | "{" "not" @ "observe" "}" | "{" "const" "," "not" "observe" "}" ) >
-[RULE: 63]
-	epsilon -> [1887][_AutoProperty]< ( "static" "prop" | "override" "prop" | "prop" ) NAME ":" _Type [ "=" _Expression ] ( "{" "}" | "{" "const" "}" | "{" "not" @ "observe" "}" | "{" "const" "," "not" "observe" "}" ) >
+[1895][_AutoProperty]< ( "static" "prop" | "override" "prop" | "prop" ) NAME ":" _Type [ "=" _Expression ] ( "{" "}" | "{" "const" "}" | "{" "not" @ "observe" "}" | "{" "const" "," "not" "observe" "}" ) >
+[RULE: 65]
+	epsilon -> [1894][_AutoProperty]< ( "static" "prop" | "override" "prop" | "prop" ) NAME ":" _Type [ "=" _Expression ] ( "{" "}" | "{" "const" "}" | "{" "not" @ "observe" "}" | "{" "const" "," "not" "observe" "}" ) >
 
-[1889][_AutoProperty]< ( "static" "prop" | "override" "prop" | "prop" ) NAME ":" _Type [ "=" _Expression ] ( "{" "}" | "{" "const" "}" | "{" @ "not" "observe" "}" | "{" "const" "," "not" "observe" "}" ) >
-[RULE: 63]
-	token: "not" -> [1888][_AutoProperty]< ( "static" "prop" | "override" "prop" | "prop" ) NAME ":" _Type [ "=" _Expression ] ( "{" "}" | "{" "const" "}" | "{" "not" @ "observe" "}" | "{" "const" "," "not" "observe" "}" ) >
+[1896][_AutoProperty]< ( "static" "prop" | "override" "prop" | "prop" ) NAME ":" _Type [ "=" _Expression ] ( "{" "}" | "{" "const" "}" | "{" @ "not" "observe" "}" | "{" "const" "," "not" "observe" "}" ) >
+[RULE: 65]
+	token: "not" -> [1895][_AutoProperty]< ( "static" "prop" | "override" "prop" | "prop" ) NAME ":" _Type [ "=" _Expression ] ( "{" "}" | "{" "const" "}" | "{" "not" @ "observe" "}" | "{" "const" "," "not" "observe" "}" ) >
 		+ Token(23)
 
-[1890][_AutoProperty]< ( "static" "prop" | "override" "prop" | "prop" ) NAME ":" _Type [ "=" _Expression ] ( "{" "}" | "{" "const" "}" | "{" @ "not" "observe" "}" | "{" "const" "," "not" "observe" "}" ) >
-[RULE: 63]
-	epsilon -> [1889][_AutoProperty]< ( "static" "prop" | "override" "prop" | "prop" ) NAME ":" _Type [ "=" _Expression ] ( "{" "}" | "{" "const" "}" | "{" @ "not" "observe" "}" | "{" "const" "," "not" "observe" "}" ) >
+[1897][_AutoProperty]< ( "static" "prop" | "override" "prop" | "prop" ) NAME ":" _Type [ "=" _Expression ] ( "{" "}" | "{" "const" "}" | "{" @ "not" "observe" "}" | "{" "const" "," "not" "observe" "}" ) >
+[RULE: 65]
+	epsilon -> [1896][_AutoProperty]< ( "static" "prop" | "override" "prop" | "prop" ) NAME ":" _Type [ "=" _Expression ] ( "{" "}" | "{" "const" "}" | "{" @ "not" "observe" "}" | "{" "const" "," "not" "observe" "}" ) >
 
-[1891][_AutoProperty]< ( "static" "prop" | "override" "prop" | "prop" ) NAME ":" _Type [ "=" _Expression ] ( "{" "}" | "{" "const" "}" | @ "{" "not" "observe" "}" | "{" "const" "," "not" "observe" "}" ) >
-[RULE: 63]
-	token: "{" -> [1890][_AutoProperty]< ( "static" "prop" | "override" "prop" | "prop" ) NAME ":" _Type [ "=" _Expression ] ( "{" "}" | "{" "const" "}" | "{" @ "not" "observe" "}" | "{" "const" "," "not" "observe" "}" ) >
+[1898][_AutoProperty]< ( "static" "prop" | "override" "prop" | "prop" ) NAME ":" _Type [ "=" _Expression ] ( "{" "}" | "{" "const" "}" | @ "{" "not" "observe" "}" | "{" "const" "," "not" "observe" "}" ) >
+[RULE: 65]
+	token: "{" -> [1897][_AutoProperty]< ( "static" "prop" | "override" "prop" | "prop" ) NAME ":" _Type [ "=" _Expression ] ( "{" "}" | "{" "const" "}" | "{" @ "not" "observe" "}" | "{" "const" "," "not" "observe" "}" ) >
 		+ Token(22)
 
-[1892][_AutoProperty]< ( "static" "prop" | "override" "prop" | "prop" ) NAME ":" _Type [ "=" _Expression ] ( "{" "}" | "{" "const" @ "}" | "{" "not" "observe" "}" | "{" "const" "," "not" "observe" "}" ) >
-[RULE: 63]
-	epsilon -> [1893][_AutoProperty]< ( "static" "prop" | "override" "prop" | "prop" ) NAME ":" _Type [ "=" _Expression ] ( "{" "}" | "{" "const" @ "}" | "{" "not" "observe" "}" | "{" "const" "," "not" "observe" "}" ) >
+[1899][_AutoProperty]< ( "static" "prop" | "override" "prop" | "prop" ) NAME ":" _Type [ "=" _Expression ] ( "{" "}" | "{" "const" @ "}" | "{" "not" "observe" "}" | "{" "const" "," "not" "observe" "}" ) >
+[RULE: 65]
+	epsilon -> [1900][_AutoProperty]< ( "static" "prop" | "override" "prop" | "prop" ) NAME ":" _Type [ "=" _Expression ] ( "{" "}" | "{" "const" @ "}" | "{" "not" "observe" "}" | "{" "const" "," "not" "observe" "}" ) >
 
-[1893][_AutoProperty]< ( "static" "prop" | "override" "prop" | "prop" ) NAME ":" _Type [ "=" _Expression ] ( "{" "}" | "{" "const" @ "}" | "{" "not" "observe" "}" | "{" "const" "," "not" "observe" "}" ) >
-[RULE: 63]
-	token: "}" -> [1864][_AutoProperty]< ( "static" "prop" | "override" "prop" | "prop" ) NAME ":" _Type [ "=" _Expression ] ( "{" "}" | "{" "const" "}" @ | "{" "not" "observe" "}" | "{" "const" "," "not" "observe" "}" ) >
+[1900][_AutoProperty]< ( "static" "prop" | "override" "prop" | "prop" ) NAME ":" _Type [ "=" _Expression ] ( "{" "}" | "{" "const" @ "}" | "{" "not" "observe" "}" | "{" "const" "," "not" "observe" "}" ) >
+[RULE: 65]
+	token: "}" -> [1871][_AutoProperty]< ( "static" "prop" | "override" "prop" | "prop" ) NAME ":" _Type [ "=" _Expression ] ( "{" "}" | "{" "const" "}" @ | "{" "not" "observe" "}" | "{" "const" "," "not" "observe" "}" ) >
 		+ Token(19)
 
-[1894][_AutoProperty]< ( "static" "prop" | "override" "prop" | "prop" ) NAME ":" _Type [ "=" _Expression ] ( "{" "}" | "{" @ "const" "}" | "{" "not" "observe" "}" | "{" "const" "," "not" "observe" "}" ) >
-[RULE: 63]
-	epsilon -> [1895][_AutoProperty]< ( "static" "prop" | "override" "prop" | "prop" ) NAME ":" _Type [ "=" _Expression ] ( "{" "}" | "{" @ "const" "}" | "{" "not" "observe" "}" | "{" "const" "," "not" "observe" "}" ) >
+[1901][_AutoProperty]< ( "static" "prop" | "override" "prop" | "prop" ) NAME ":" _Type [ "=" _Expression ] ( "{" "}" | "{" @ "const" "}" | "{" "not" "observe" "}" | "{" "const" "," "not" "observe" "}" ) >
+[RULE: 65]
+	epsilon -> [1902][_AutoProperty]< ( "static" "prop" | "override" "prop" | "prop" ) NAME ":" _Type [ "=" _Expression ] ( "{" "}" | "{" @ "const" "}" | "{" "not" "observe" "}" | "{" "const" "," "not" "observe" "}" ) >
 
-[1895][_AutoProperty]< ( "static" "prop" | "override" "prop" | "prop" ) NAME ":" _Type [ "=" _Expression ] ( "{" "}" | "{" @ "const" "}" | "{" "not" "observe" "}" | "{" "const" "," "not" "observe" "}" ) >
-[RULE: 63]
-	token: "const" -> [1892][_AutoProperty]< ( "static" "prop" | "override" "prop" | "prop" ) NAME ":" _Type [ "=" _Expression ] ( "{" "}" | "{" "const" @ "}" | "{" "not" "observe" "}" | "{" "const" "," "not" "observe" "}" ) >
+[1902][_AutoProperty]< ( "static" "prop" | "override" "prop" | "prop" ) NAME ":" _Type [ "=" _Expression ] ( "{" "}" | "{" @ "const" "}" | "{" "not" "observe" "}" | "{" "const" "," "not" "observe" "}" ) >
+[RULE: 65]
+	token: "const" -> [1899][_AutoProperty]< ( "static" "prop" | "override" "prop" | "prop" ) NAME ":" _Type [ "=" _Expression ] ( "{" "}" | "{" "const" @ "}" | "{" "not" "observe" "}" | "{" "const" "," "not" "observe" "}" ) >
 		+ Token(18)
 
-[1896][_AutoProperty]< ( "static" "prop" | "override" "prop" | "prop" ) NAME ":" _Type [ "=" _Expression ] ( "{" "}" | @ "{" "const" "}" | "{" "not" "observe" "}" | "{" "const" "," "not" "observe" "}" ) >
-[RULE: 63]
-	token: "{" -> [1894][_AutoProperty]< ( "static" "prop" | "override" "prop" | "prop" ) NAME ":" _Type [ "=" _Expression ] ( "{" "}" | "{" @ "const" "}" | "{" "not" "observe" "}" | "{" "const" "," "not" "observe" "}" ) >
+[1903][_AutoProperty]< ( "static" "prop" | "override" "prop" | "prop" ) NAME ":" _Type [ "=" _Expression ] ( "{" "}" | @ "{" "const" "}" | "{" "not" "observe" "}" | "{" "const" "," "not" "observe" "}" ) >
+[RULE: 65]
+	token: "{" -> [1901][_AutoProperty]< ( "static" "prop" | "override" "prop" | "prop" ) NAME ":" _Type [ "=" _Expression ] ( "{" "}" | "{" @ "const" "}" | "{" "not" "observe" "}" | "{" "const" "," "not" "observe" "}" ) >
 		+ Token(17)
 
-[1897][_AutoProperty]< ( "static" "prop" | "override" "prop" | "prop" ) NAME ":" _Type [ "=" _Expression ] ( "{" @ "}" | "{" "const" "}" | "{" "not" "observe" "}" | "{" "const" "," "not" "observe" "}" ) >
-[RULE: 63]
-	epsilon -> [1898][_AutoProperty]< ( "static" "prop" | "override" "prop" | "prop" ) NAME ":" _Type [ "=" _Expression ] ( "{" @ "}" | "{" "const" "}" | "{" "not" "observe" "}" | "{" "const" "," "not" "observe" "}" ) >
+[1904][_AutoProperty]< ( "static" "prop" | "override" "prop" | "prop" ) NAME ":" _Type [ "=" _Expression ] ( "{" @ "}" | "{" "const" "}" | "{" "not" "observe" "}" | "{" "const" "," "not" "observe" "}" ) >
+[RULE: 65]
+	epsilon -> [1905][_AutoProperty]< ( "static" "prop" | "override" "prop" | "prop" ) NAME ":" _Type [ "=" _Expression ] ( "{" @ "}" | "{" "const" "}" | "{" "not" "observe" "}" | "{" "const" "," "not" "observe" "}" ) >
 
-[1898][_AutoProperty]< ( "static" "prop" | "override" "prop" | "prop" ) NAME ":" _Type [ "=" _Expression ] ( "{" @ "}" | "{" "const" "}" | "{" "not" "observe" "}" | "{" "const" "," "not" "observe" "}" ) >
-[RULE: 63]
-	token: "}" -> [1862][_AutoProperty]< ( "static" "prop" | "override" "prop" | "prop" ) NAME ":" _Type [ "=" _Expression ] ( "{" "}" @ | "{" "const" "}" | "{" "not" "observe" "}" | "{" "const" "," "not" "observe" "}" ) >
+[1905][_AutoProperty]< ( "static" "prop" | "override" "prop" | "prop" ) NAME ":" _Type [ "=" _Expression ] ( "{" @ "}" | "{" "const" "}" | "{" "not" "observe" "}" | "{" "const" "," "not" "observe" "}" ) >
+[RULE: 65]
+	token: "}" -> [1869][_AutoProperty]< ( "static" "prop" | "override" "prop" | "prop" ) NAME ":" _Type [ "=" _Expression ] ( "{" "}" @ | "{" "const" "}" | "{" "not" "observe" "}" | "{" "const" "," "not" "observe" "}" ) >
 		+ Token(14)
 
-[1899][_AutoProperty]< ( "static" "prop" | "override" "prop" | "prop" ) NAME ":" _Type [ "=" _Expression ] ( @ "{" "}" | "{" "const" "}" | "{" "not" "observe" "}" | "{" "const" "," "not" "observe" "}" ) >
-[RULE: 63]
-	token: "{" -> [1897][_AutoProperty]< ( "static" "prop" | "override" "prop" | "prop" ) NAME ":" _Type [ "=" _Expression ] ( "{" @ "}" | "{" "const" "}" | "{" "not" "observe" "}" | "{" "const" "," "not" "observe" "}" ) >
+[1906][_AutoProperty]< ( "static" "prop" | "override" "prop" | "prop" ) NAME ":" _Type [ "=" _Expression ] ( @ "{" "}" | "{" "const" "}" | "{" "not" "observe" "}" | "{" "const" "," "not" "observe" "}" ) >
+[RULE: 65]
+	token: "{" -> [1904][_AutoProperty]< ( "static" "prop" | "override" "prop" | "prop" ) NAME ":" _Type [ "=" _Expression ] ( "{" @ "}" | "{" "const" "}" | "{" "not" "observe" "}" | "{" "const" "," "not" "observe" "}" ) >
 		+ Token(13)
 
-[1900][_AutoProperty]< ( "static" "prop" | "override" "prop" | "prop" ) NAME ":" _Type [ "=" _Expression ] @ ( "{" "}" | "{" "const" "}" | "{" "not" "observe" "}" | "{" "const" "," "not" "observe" "}" ) >
-[RULE: 63]
-	epsilon -> [1901][_AutoProperty]< ( "static" "prop" | "override" "prop" | "prop" ) NAME ":" _Type [ "=" _Expression ] @ ( "{" "}" | "{" "const" "}" | "{" "not" "observe" "}" | "{" "const" "," "not" "observe" "}" ) >
+[1907][_AutoProperty]< ( "static" "prop" | "override" "prop" | "prop" ) NAME ":" _Type [ "=" _Expression ] @ ( "{" "}" | "{" "const" "}" | "{" "not" "observe" "}" | "{" "const" "," "not" "observe" "}" ) >
+[RULE: 65]
+	epsilon -> [1908][_AutoProperty]< ( "static" "prop" | "override" "prop" | "prop" ) NAME ":" _Type [ "=" _Expression ] @ ( "{" "}" | "{" "const" "}" | "{" "not" "observe" "}" | "{" "const" "," "not" "observe" "}" ) >
 
-[1901][_AutoProperty]< ( "static" "prop" | "override" "prop" | "prop" ) NAME ":" _Type [ "=" _Expression ] @ ( "{" "}" | "{" "const" "}" | "{" "not" "observe" "}" | "{" "const" "," "not" "observe" "}" ) >
-[RULE: 63]
-	epsilon -> [1884][_AutoProperty]< ( "static" "prop" | "override" "prop" | "prop" ) NAME ":" _Type [ "=" _Expression ] ( "{" "}" | "{" "const" "}" | "{" "not" "observe" "}" | @ "{" "const" "," "not" "observe" "}" ) >
-	epsilon -> [1891][_AutoProperty]< ( "static" "prop" | "override" "prop" | "prop" ) NAME ":" _Type [ "=" _Expression ] ( "{" "}" | "{" "const" "}" | @ "{" "not" "observe" "}" | "{" "const" "," "not" "observe" "}" ) >
-	epsilon -> [1896][_AutoProperty]< ( "static" "prop" | "override" "prop" | "prop" ) NAME ":" _Type [ "=" _Expression ] ( "{" "}" | @ "{" "const" "}" | "{" "not" "observe" "}" | "{" "const" "," "not" "observe" "}" ) >
-	epsilon -> [1899][_AutoProperty]< ( "static" "prop" | "override" "prop" | "prop" ) NAME ":" _Type [ "=" _Expression ] ( @ "{" "}" | "{" "const" "}" | "{" "not" "observe" "}" | "{" "const" "," "not" "observe" "}" ) >
+[1908][_AutoProperty]< ( "static" "prop" | "override" "prop" | "prop" ) NAME ":" _Type [ "=" _Expression ] @ ( "{" "}" | "{" "const" "}" | "{" "not" "observe" "}" | "{" "const" "," "not" "observe" "}" ) >
+[RULE: 65]
+	epsilon -> [1891][_AutoProperty]< ( "static" "prop" | "override" "prop" | "prop" ) NAME ":" _Type [ "=" _Expression ] ( "{" "}" | "{" "const" "}" | "{" "not" "observe" "}" | @ "{" "const" "," "not" "observe" "}" ) >
+	epsilon -> [1898][_AutoProperty]< ( "static" "prop" | "override" "prop" | "prop" ) NAME ":" _Type [ "=" _Expression ] ( "{" "}" | "{" "const" "}" | @ "{" "not" "observe" "}" | "{" "const" "," "not" "observe" "}" ) >
+	epsilon -> [1903][_AutoProperty]< ( "static" "prop" | "override" "prop" | "prop" ) NAME ":" _Type [ "=" _Expression ] ( "{" "}" | @ "{" "const" "}" | "{" "not" "observe" "}" | "{" "const" "," "not" "observe" "}" ) >
+	epsilon -> [1906][_AutoProperty]< ( "static" "prop" | "override" "prop" | "prop" ) NAME ":" _Type [ "=" _Expression ] ( @ "{" "}" | "{" "const" "}" | "{" "not" "observe" "}" | "{" "const" "," "not" "observe" "}" ) >
 
-[1902][_AutoProperty]< ( "static" "prop" | "override" "prop" | "prop" ) NAME ":" _Type [ @ "=" _Expression ] ( "{" "}" | "{" "const" "}" | "{" "not" "observe" "}" | "{" "const" "," "not" "observe" "}" ) >
-[RULE: 63]
-	token: "=" -> [1857][_AutoProperty]< ( "static" "prop" | "override" "prop" | "prop" ) NAME ":" _Type [ "=" @ _Expression ] ( "{" "}" | "{" "const" "}" | "{" "not" "observe" "}" | "{" "const" "," "not" "observe" "}" ) >
+[1909][_AutoProperty]< ( "static" "prop" | "override" "prop" | "prop" ) NAME ":" _Type [ @ "=" _Expression ] ( "{" "}" | "{" "const" "}" | "{" "not" "observe" "}" | "{" "const" "," "not" "observe" "}" ) >
+[RULE: 65]
+	token: "=" -> [1864][_AutoProperty]< ( "static" "prop" | "override" "prop" | "prop" ) NAME ":" _Type [ "=" @ _Expression ] ( "{" "}" | "{" "const" "}" | "{" "not" "observe" "}" | "{" "const" "," "not" "observe" "}" ) >
 		+ Token(11)
 
-[1903][_AutoProperty]< ( "static" "prop" | "override" "prop" | "prop" ) NAME @ ":" _Type [ "=" _Expression ] ( "{" "}" | "{" "const" "}" | "{" "not" "observe" "}" | "{" "const" "," "not" "observe" "}" ) >
-[RULE: 63]
-	token: ":" -> [1853][_AutoProperty]< ( "static" "prop" | "override" "prop" | "prop" ) NAME ":" @ _Type [ "=" _Expression ] ( "{" "}" | "{" "const" "}" | "{" "not" "observe" "}" | "{" "const" "," "not" "observe" "}" ) >
+[1910][_AutoProperty]< ( "static" "prop" | "override" "prop" | "prop" ) NAME @ ":" _Type [ "=" _Expression ] ( "{" "}" | "{" "const" "}" | "{" "not" "observe" "}" | "{" "const" "," "not" "observe" "}" ) >
+[RULE: 65]
+	token: ":" -> [1860][_AutoProperty]< ( "static" "prop" | "override" "prop" | "prop" ) NAME ":" @ _Type [ "=" _Expression ] ( "{" "}" | "{" "const" "}" | "{" "not" "observe" "}" | "{" "const" "," "not" "observe" "}" ) >
 		+ Token(9)
 
-[1904][_AutoProperty]< ( "static" "prop" | "override" "prop" | "prop" ) NAME @ ":" _Type [ "=" _Expression ] ( "{" "}" | "{" "const" "}" | "{" "not" "observe" "}" | "{" "const" "," "not" "observe" "}" ) >
-[RULE: 63]
-	epsilon -> [1903][_AutoProperty]< ( "static" "prop" | "override" "prop" | "prop" ) NAME @ ":" _Type [ "=" _Expression ] ( "{" "}" | "{" "const" "}" | "{" "not" "observe" "}" | "{" "const" "," "not" "observe" "}" ) >
+[1911][_AutoProperty]< ( "static" "prop" | "override" "prop" | "prop" ) NAME @ ":" _Type [ "=" _Expression ] ( "{" "}" | "{" "const" "}" | "{" "not" "observe" "}" | "{" "const" "," "not" "observe" "}" ) >
+[RULE: 65]
+	epsilon -> [1910][_AutoProperty]< ( "static" "prop" | "override" "prop" | "prop" ) NAME @ ":" _Type [ "=" _Expression ] ( "{" "}" | "{" "const" "}" | "{" "not" "observe" "}" | "{" "const" "," "not" "observe" "}" ) >
 
-[1905][_AutoProperty]< ( "static" "prop" | "override" "prop" | "prop" @ ) NAME ":" _Type [ "=" _Expression ] ( "{" "}" | "{" "const" "}" | "{" "not" "observe" "}" | "{" "const" "," "not" "observe" "}" ) >
-[RULE: 63]
-	epsilon -> [1906][_AutoProperty]< ( "static" "prop" | "override" "prop" | "prop" @ ) NAME ":" _Type [ "=" _Expression ] ( "{" "}" | "{" "const" "}" | "{" "not" "observe" "}" | "{" "const" "," "not" "observe" "}" ) >
+[1912][_AutoProperty]< ( "static" "prop" | "override" "prop" | "prop" @ ) NAME ":" _Type [ "=" _Expression ] ( "{" "}" | "{" "const" "}" | "{" "not" "observe" "}" | "{" "const" "," "not" "observe" "}" ) >
+[RULE: 65]
+	epsilon -> [1913][_AutoProperty]< ( "static" "prop" | "override" "prop" | "prop" @ ) NAME ":" _Type [ "=" _Expression ] ( "{" "}" | "{" "const" "}" | "{" "not" "observe" "}" | "{" "const" "," "not" "observe" "}" ) >
 		+ EnumItem(2, 7)
 
-[1906][_AutoProperty]< ( "static" "prop" | "override" "prop" | "prop" @ ) NAME ":" _Type [ "=" _Expression ] ( "{" "}" | "{" "const" "}" | "{" "not" "observe" "}" | "{" "const" "," "not" "observe" "}" ) >
-[RULE: 63]
-	epsilon -> [1852][_AutoProperty]< ( "static" "prop" | "override" "prop" | "prop" ) @ NAME ":" _Type [ "=" _Expression ] ( "{" "}" | "{" "const" "}" | "{" "not" "observe" "}" | "{" "const" "," "not" "observe" "}" ) >
+[1913][_AutoProperty]< ( "static" "prop" | "override" "prop" | "prop" @ ) NAME ":" _Type [ "=" _Expression ] ( "{" "}" | "{" "const" "}" | "{" "not" "observe" "}" | "{" "const" "," "not" "observe" "}" ) >
+[RULE: 65]
+	epsilon -> [1859][_AutoProperty]< ( "static" "prop" | "override" "prop" | "prop" ) @ NAME ":" _Type [ "=" _Expression ] ( "{" "}" | "{" "const" "}" | "{" "not" "observe" "}" | "{" "const" "," "not" "observe" "}" ) >
 
-[1907][_AutoProperty]< ( "static" "prop" | "override" "prop" | @ "prop" ) NAME ":" _Type [ "=" _Expression ] ( "{" "}" | "{" "const" "}" | "{" "not" "observe" "}" | "{" "const" "," "not" "observe" "}" ) >
-[RULE: 63]
-	token: "prop" -> [1905][_AutoProperty]< ( "static" "prop" | "override" "prop" | "prop" @ ) NAME ":" _Type [ "=" _Expression ] ( "{" "}" | "{" "const" "}" | "{" "not" "observe" "}" | "{" "const" "," "not" "observe" "}" ) >
+[1914][_AutoProperty]< ( "static" "prop" | "override" "prop" | @ "prop" ) NAME ":" _Type [ "=" _Expression ] ( "{" "}" | "{" "const" "}" | "{" "not" "observe" "}" | "{" "const" "," "not" "observe" "}" ) >
+[RULE: 65]
+	token: "prop" -> [1912][_AutoProperty]< ( "static" "prop" | "override" "prop" | "prop" @ ) NAME ":" _Type [ "=" _Expression ] ( "{" "}" | "{" "const" "}" | "{" "not" "observe" "}" | "{" "const" "," "not" "observe" "}" ) >
 		+ Token(6)
 
-[1908][_AutoProperty]< ( "static" "prop" | "override" @ "prop" | "prop" ) NAME ":" _Type [ "=" _Expression ] ( "{" "}" | "{" "const" "}" | "{" "not" "observe" "}" | "{" "const" "," "not" "observe" "}" ) >
-[RULE: 63]
-	epsilon -> [1909][_AutoProperty]< ( "static" "prop" | "override" @ "prop" | "prop" ) NAME ":" _Type [ "=" _Expression ] ( "{" "}" | "{" "const" "}" | "{" "not" "observe" "}" | "{" "const" "," "not" "observe" "}" ) >
+[1915][_AutoProperty]< ( "static" "prop" | "override" @ "prop" | "prop" ) NAME ":" _Type [ "=" _Expression ] ( "{" "}" | "{" "const" "}" | "{" "not" "observe" "}" | "{" "const" "," "not" "observe" "}" ) >
+[RULE: 65]
+	epsilon -> [1916][_AutoProperty]< ( "static" "prop" | "override" @ "prop" | "prop" ) NAME ":" _Type [ "=" _Expression ] ( "{" "}" | "{" "const" "}" | "{" "not" "observe" "}" | "{" "const" "," "not" "observe" "}" ) >
 
-[1909][_AutoProperty]< ( "static" "prop" | "override" @ "prop" | "prop" ) NAME ":" _Type [ "=" _Expression ] ( "{" "}" | "{" "const" "}" | "{" "not" "observe" "}" | "{" "const" "," "not" "observe" "}" ) >
-[RULE: 63]
-	token: "prop" -> [1849][_AutoProperty]< ( "static" "prop" | "override" "prop" @ | "prop" ) NAME ":" _Type [ "=" _Expression ] ( "{" "}" | "{" "const" "}" | "{" "not" "observe" "}" | "{" "const" "," "not" "observe" "}" ) >
+[1916][_AutoProperty]< ( "static" "prop" | "override" @ "prop" | "prop" ) NAME ":" _Type [ "=" _Expression ] ( "{" "}" | "{" "const" "}" | "{" "not" "observe" "}" | "{" "const" "," "not" "observe" "}" ) >
+[RULE: 65]
+	token: "prop" -> [1856][_AutoProperty]< ( "static" "prop" | "override" "prop" @ | "prop" ) NAME ":" _Type [ "=" _Expression ] ( "{" "}" | "{" "const" "}" | "{" "not" "observe" "}" | "{" "const" "," "not" "observe" "}" ) >
 		+ Token(4)
 
-[1910][_AutoProperty]< ( "static" "prop" | @ "override" "prop" | "prop" ) NAME ":" _Type [ "=" _Expression ] ( "{" "}" | "{" "const" "}" | "{" "not" "observe" "}" | "{" "const" "," "not" "observe" "}" ) >
-[RULE: 63]
-	token: "override" -> [1908][_AutoProperty]< ( "static" "prop" | "override" @ "prop" | "prop" ) NAME ":" _Type [ "=" _Expression ] ( "{" "}" | "{" "const" "}" | "{" "not" "observe" "}" | "{" "const" "," "not" "observe" "}" ) >
+[1917][_AutoProperty]< ( "static" "prop" | @ "override" "prop" | "prop" ) NAME ":" _Type [ "=" _Expression ] ( "{" "}" | "{" "const" "}" | "{" "not" "observe" "}" | "{" "const" "," "not" "observe" "}" ) >
+[RULE: 65]
+	token: "override" -> [1915][_AutoProperty]< ( "static" "prop" | "override" @ "prop" | "prop" ) NAME ":" _Type [ "=" _Expression ] ( "{" "}" | "{" "const" "}" | "{" "not" "observe" "}" | "{" "const" "," "not" "observe" "}" ) >
 		+ Token(3)
 
-[1911][_AutoProperty]< ( "static" @ "prop" | "override" "prop" | "prop" ) NAME ":" _Type [ "=" _Expression ] ( "{" "}" | "{" "const" "}" | "{" "not" "observe" "}" | "{" "const" "," "not" "observe" "}" ) >
-[RULE: 63]
-	token: "prop" -> [1847][_AutoProperty]< ( "static" "prop" @ | "override" "prop" | "prop" ) NAME ":" _Type [ "=" _Expression ] ( "{" "}" | "{" "const" "}" | "{" "not" "observe" "}" | "{" "const" "," "not" "observe" "}" ) >
+[1918][_AutoProperty]< ( "static" @ "prop" | "override" "prop" | "prop" ) NAME ":" _Type [ "=" _Expression ] ( "{" "}" | "{" "const" "}" | "{" "not" "observe" "}" | "{" "const" "," "not" "observe" "}" ) >
+[RULE: 65]
+	token: "prop" -> [1854][_AutoProperty]< ( "static" "prop" @ | "override" "prop" | "prop" ) NAME ":" _Type [ "=" _Expression ] ( "{" "}" | "{" "const" "}" | "{" "not" "observe" "}" | "{" "const" "," "not" "observe" "}" ) >
 		+ Token(1)
 
-[1912][_AutoProperty]< ( "static" @ "prop" | "override" "prop" | "prop" ) NAME ":" _Type [ "=" _Expression ] ( "{" "}" | "{" "const" "}" | "{" "not" "observe" "}" | "{" "const" "," "not" "observe" "}" ) >
-[RULE: 63]
-	epsilon -> [1911][_AutoProperty]< ( "static" @ "prop" | "override" "prop" | "prop" ) NAME ":" _Type [ "=" _Expression ] ( "{" "}" | "{" "const" "}" | "{" "not" "observe" "}" | "{" "const" "," "not" "observe" "}" ) >
+[1919][_AutoProperty]< ( "static" @ "prop" | "override" "prop" | "prop" ) NAME ":" _Type [ "=" _Expression ] ( "{" "}" | "{" "const" "}" | "{" "not" "observe" "}" | "{" "const" "," "not" "observe" "}" ) >
+[RULE: 65]
+	epsilon -> [1918][_AutoProperty]< ( "static" @ "prop" | "override" "prop" | "prop" ) NAME ":" _Type [ "=" _Expression ] ( "{" "}" | "{" "const" "}" | "{" "not" "observe" "}" | "{" "const" "," "not" "observe" "}" ) >
 
-[1913][_AutoProperty]< ( @ "static" "prop" | "override" "prop" | "prop" ) NAME ":" _Type [ "=" _Expression ] ( "{" "}" | "{" "const" "}" | "{" "not" "observe" "}" | "{" "const" "," "not" "observe" "}" ) >
-[RULE: 63]
-	token: "static" -> [1912][_AutoProperty]< ( "static" @ "prop" | "override" "prop" | "prop" ) NAME ":" _Type [ "=" _Expression ] ( "{" "}" | "{" "const" "}" | "{" "not" "observe" "}" | "{" "const" "," "not" "observe" "}" ) >
+[1920][_AutoProperty]< ( @ "static" "prop" | "override" "prop" | "prop" ) NAME ":" _Type [ "=" _Expression ] ( "{" "}" | "{" "const" "}" | "{" "not" "observe" "}" | "{" "const" "," "not" "observe" "}" ) >
+[RULE: 65]
+	token: "static" -> [1919][_AutoProperty]< ( "static" @ "prop" | "override" "prop" | "prop" ) NAME ":" _Type [ "=" _Expression ] ( "{" "}" | "{" "const" "}" | "{" "not" "observe" "}" | "{" "const" "," "not" "observe" "}" ) >
 		+ Token(0)
 
-[1914][_AutoProperty]< @ ( "static" "prop" | "override" "prop" | "prop" ) NAME ":" _Type [ "=" _Expression ] ( "{" "}" | "{" "const" "}" | "{" "not" "observe" "}" | "{" "const" "," "not" "observe" "}" ) >
-[RULE: 63]
-	epsilon -> [1907][_AutoProperty]< ( "static" "prop" | "override" "prop" | @ "prop" ) NAME ":" _Type [ "=" _Expression ] ( "{" "}" | "{" "const" "}" | "{" "not" "observe" "}" | "{" "const" "," "not" "observe" "}" ) >
-	epsilon -> [1910][_AutoProperty]< ( "static" "prop" | @ "override" "prop" | "prop" ) NAME ":" _Type [ "=" _Expression ] ( "{" "}" | "{" "const" "}" | "{" "not" "observe" "}" | "{" "const" "," "not" "observe" "}" ) >
-	epsilon -> [1913][_AutoProperty]< ( @ "static" "prop" | "override" "prop" | "prop" ) NAME ":" _Type [ "=" _Expression ] ( "{" "}" | "{" "const" "}" | "{" "not" "observe" "}" | "{" "const" "," "not" "observe" "}" ) >
+[1921][_AutoProperty]< @ ( "static" "prop" | "override" "prop" | "prop" ) NAME ":" _Type [ "=" _Expression ] ( "{" "}" | "{" "const" "}" | "{" "not" "observe" "}" | "{" "const" "," "not" "observe" "}" ) >
+[RULE: 65]
+	epsilon -> [1914][_AutoProperty]< ( "static" "prop" | "override" "prop" | @ "prop" ) NAME ":" _Type [ "=" _Expression ] ( "{" "}" | "{" "const" "}" | "{" "not" "observe" "}" | "{" "const" "," "not" "observe" "}" ) >
+	epsilon -> [1917][_AutoProperty]< ( "static" "prop" | @ "override" "prop" | "prop" ) NAME ":" _Type [ "=" _Expression ] ( "{" "}" | "{" "const" "}" | "{" "not" "observe" "}" | "{" "const" "," "not" "observe" "}" ) >
+	epsilon -> [1920][_AutoProperty]< ( @ "static" "prop" | "override" "prop" | "prop" ) NAME ":" _Type [ "=" _Expression ] ( "{" "}" | "{" "const" "}" | "{" "not" "observe" "}" | "{" "const" "," "not" "observe" "}" ) >
 
-[1915][_AutoProperty]@ < ( "static" "prop" | "override" "prop" | "prop" ) NAME ":" _Type [ "=" _Expression ] ( "{" "}" | "{" "const" "}" | "{" "not" "observe" "}" | "{" "const" "," "not" "observe" "}" ) >
-[RULE: 63]
-	epsilon -> [1914][_AutoProperty]< @ ( "static" "prop" | "override" "prop" | "prop" ) NAME ":" _Type [ "=" _Expression ] ( "{" "}" | "{" "const" "}" | "{" "not" "observe" "}" | "{" "const" "," "not" "observe" "}" ) >
+[1922][_AutoProperty]@ < ( "static" "prop" | "override" "prop" | "prop" ) NAME ":" _Type [ "=" _Expression ] ( "{" "}" | "{" "const" "}" | "{" "not" "observe" "}" | "{" "const" "," "not" "observe" "}" ) >
+[RULE: 65]
+	epsilon -> [1921][_AutoProperty]< @ ( "static" "prop" | "override" "prop" | "prop" ) NAME ":" _Type [ "=" _Expression ] ( "{" "}" | "{" "const" "}" | "{" "not" "observe" "}" | "{" "const" "," "not" "observe" "}" ) >
 		+ StackBegin()
 
-[1916][_CastResultInterface]< "$interface" @ NAME ":" _Type "<" _Type ">" ";" >
-[RULE: 64]
-	token: NAME -> [1930][_CastResultInterface]< "$interface" NAME @ ":" _Type "<" _Type ">" ";" >
+[1923][_CastResultInterface]< "$interface" @ NAME ":" _Type "<" _Type ">" ";" >
+[RULE: 66]
+	token: NAME -> [1937][_CastResultInterface]< "$interface" NAME @ ":" _Type "<" _Type ">" ";" >
 		+ Token(1)
 
-[1917][_CastResultInterface]< "$interface" @ NAME ":" _Type "<" _Type ">" ";" >
-[RULE: 64]
-	epsilon -> [1916][_CastResultInterface]< "$interface" @ NAME ":" _Type "<" _Type ">" ";" >
+[1924][_CastResultInterface]< "$interface" @ NAME ":" _Type "<" _Type ">" ";" >
+[RULE: 66]
+	epsilon -> [1923][_CastResultInterface]< "$interface" @ NAME ":" _Type "<" _Type ">" ";" >
 
-[1918][_CastResultInterface]< "$interface" NAME ":" @ _Type "<" _Type ">" ";" >
-[RULE: 64]
-	rule: _Type -> [1929][_CastResultInterface]< "$interface" NAME ":" _Type @ "<" _Type ">" ";" >
+[1925][_CastResultInterface]< "$interface" NAME ":" @ _Type "<" _Type ">" ";" >
+[RULE: 66]
+	rule: _Type -> [1936][_CastResultInterface]< "$interface" NAME ":" _Type @ "<" _Type ">" ";" >
 		+ StackSlot(3)
 
-[1919][_CastResultInterface]< "$interface" NAME ":" @ _Type "<" _Type ">" ";" >
-[RULE: 64]
-	epsilon -> [1918][_CastResultInterface]< "$interface" NAME ":" @ _Type "<" _Type ">" ";" >
+[1926][_CastResultInterface]< "$interface" NAME ":" @ _Type "<" _Type ">" ";" >
+[RULE: 66]
+	epsilon -> [1925][_CastResultInterface]< "$interface" NAME ":" @ _Type "<" _Type ">" ";" >
 
-[1920][_CastResultInterface]< "$interface" NAME ":" _Type "<" @ _Type ">" ";" >
-[RULE: 64]
-	epsilon -> [1921][_CastResultInterface]< "$interface" NAME ":" _Type "<" @ _Type ">" ";" >
+[1927][_CastResultInterface]< "$interface" NAME ":" _Type "<" @ _Type ">" ";" >
+[RULE: 66]
+	epsilon -> [1928][_CastResultInterface]< "$interface" NAME ":" _Type "<" @ _Type ">" ";" >
 
-[1921][_CastResultInterface]< "$interface" NAME ":" _Type "<" @ _Type ">" ";" >
-[RULE: 64]
-	rule: _Type -> [1926][_CastResultInterface]< "$interface" NAME ":" _Type "<" _Type @ ">" ";" >
+[1928][_CastResultInterface]< "$interface" NAME ":" _Type "<" @ _Type ">" ";" >
+[RULE: 66]
+	rule: _Type -> [1933][_CastResultInterface]< "$interface" NAME ":" _Type "<" _Type @ ">" ";" >
 		+ StackSlot(5)
 
-[1922][_CastResultInterface]< "$interface" NAME ":" _Type "<" _Type ">" ";" > @[ENDING]
-[RULE: 64]
+[1929][_CastResultInterface]< "$interface" NAME ":" _Type "<" _Type ">" ";" > @[ENDING]
+[RULE: 66]
 
-[1923][_CastResultInterface]< "$interface" NAME ":" _Type "<" _Type ">" ";" @ >
-[RULE: 64]
-	epsilon -> [1922][_CastResultInterface]< "$interface" NAME ":" _Type "<" _Type ">" ";" > @[ENDING]
+[1930][_CastResultInterface]< "$interface" NAME ":" _Type "<" _Type ">" ";" @ >
+[RULE: 66]
+	epsilon -> [1929][_CastResultInterface]< "$interface" NAME ":" _Type "<" _Type ">" ";" > @[ENDING]
 		+ CreateObject(CastResultInterfaceDeclaration)
 		+ Field(Declaration::name, 1)
 		+ Field(CastResultInterfaceDeclaration::baseType, 3)
 		+ Field(CastResultInterfaceDeclaration::elementType, 5)
 		+ StackEnd()
 
-[1924][_CastResultInterface]< "$interface" NAME ":" _Type "<" _Type ">" @ ";" >
-[RULE: 64]
-	token: ";" -> [1923][_CastResultInterface]< "$interface" NAME ":" _Type "<" _Type ">" ";" @ >
+[1931][_CastResultInterface]< "$interface" NAME ":" _Type "<" _Type ">" @ ";" >
+[RULE: 66]
+	token: ";" -> [1930][_CastResultInterface]< "$interface" NAME ":" _Type "<" _Type ">" ";" @ >
 		+ Token(7)
 
-[1925][_CastResultInterface]< "$interface" NAME ":" _Type "<" _Type ">" @ ";" >
-[RULE: 64]
-	epsilon -> [1924][_CastResultInterface]< "$interface" NAME ":" _Type "<" _Type ">" @ ";" >
+[1932][_CastResultInterface]< "$interface" NAME ":" _Type "<" _Type ">" @ ";" >
+[RULE: 66]
+	epsilon -> [1931][_CastResultInterface]< "$interface" NAME ":" _Type "<" _Type ">" @ ";" >
 
-[1926][_CastResultInterface]< "$interface" NAME ":" _Type "<" _Type @ ">" ";" >
-[RULE: 64]
-	epsilon -> [1927][_CastResultInterface]< "$interface" NAME ":" _Type "<" _Type @ ">" ";" >
+[1933][_CastResultInterface]< "$interface" NAME ":" _Type "<" _Type @ ">" ";" >
+[RULE: 66]
+	epsilon -> [1934][_CastResultInterface]< "$interface" NAME ":" _Type "<" _Type @ ">" ";" >
 
-[1927][_CastResultInterface]< "$interface" NAME ":" _Type "<" _Type @ ">" ";" >
-[RULE: 64]
-	token: ">" -> [1925][_CastResultInterface]< "$interface" NAME ":" _Type "<" _Type ">" @ ";" >
+[1934][_CastResultInterface]< "$interface" NAME ":" _Type "<" _Type @ ">" ";" >
+[RULE: 66]
+	token: ">" -> [1932][_CastResultInterface]< "$interface" NAME ":" _Type "<" _Type ">" @ ";" >
 		+ Token(6)
 
-[1928][_CastResultInterface]< "$interface" NAME ":" _Type @ "<" _Type ">" ";" >
-[RULE: 64]
-	token: "<" -> [1920][_CastResultInterface]< "$interface" NAME ":" _Type "<" @ _Type ">" ";" >
+[1935][_CastResultInterface]< "$interface" NAME ":" _Type @ "<" _Type ">" ";" >
+[RULE: 66]
+	token: "<" -> [1927][_CastResultInterface]< "$interface" NAME ":" _Type "<" @ _Type ">" ";" >
 		+ Token(4)
 
-[1929][_CastResultInterface]< "$interface" NAME ":" _Type @ "<" _Type ">" ";" >
-[RULE: 64]
-	epsilon -> [1928][_CastResultInterface]< "$interface" NAME ":" _Type @ "<" _Type ">" ";" >
+[1936][_CastResultInterface]< "$interface" NAME ":" _Type @ "<" _Type ">" ";" >
+[RULE: 66]
+	epsilon -> [1935][_CastResultInterface]< "$interface" NAME ":" _Type @ "<" _Type ">" ";" >
 
-[1930][_CastResultInterface]< "$interface" NAME @ ":" _Type "<" _Type ">" ";" >
-[RULE: 64]
-	epsilon -> [1931][_CastResultInterface]< "$interface" NAME @ ":" _Type "<" _Type ">" ";" >
+[1937][_CastResultInterface]< "$interface" NAME @ ":" _Type "<" _Type ">" ";" >
+[RULE: 66]
+	epsilon -> [1938][_CastResultInterface]< "$interface" NAME @ ":" _Type "<" _Type ">" ";" >
 
-[1931][_CastResultInterface]< "$interface" NAME @ ":" _Type "<" _Type ">" ";" >
-[RULE: 64]
-	token: ":" -> [1919][_CastResultInterface]< "$interface" NAME ":" @ _Type "<" _Type ">" ";" >
+[1938][_CastResultInterface]< "$interface" NAME @ ":" _Type "<" _Type ">" ";" >
+[RULE: 66]
+	token: ":" -> [1926][_CastResultInterface]< "$interface" NAME ":" @ _Type "<" _Type ">" ";" >
 		+ Token(2)
 
-[1932][_CastResultInterface]< @ "$interface" NAME ":" _Type "<" _Type ">" ";" >
-[RULE: 64]
-	token: "$interface" -> [1917][_CastResultInterface]< "$interface" @ NAME ":" _Type "<" _Type ">" ";" >
+[1939][_CastResultInterface]< @ "$interface" NAME ":" _Type "<" _Type ">" ";" >
+[RULE: 66]
+	token: "$interface" -> [1924][_CastResultInterface]< "$interface" @ NAME ":" _Type "<" _Type ">" ";" >
 		+ Token(0)
 
-[1933][_CastResultInterface]@ < "$interface" NAME ":" _Type "<" _Type ">" ";" >
-[RULE: 64]
-	epsilon -> [1932][_CastResultInterface]< @ "$interface" NAME ":" _Type "<" _Type ">" ";" >
-		+ StackBegin()
-
-[1934][_DeclarationCandidates]<! !_AutoProperty !> @[ENDING]
-[RULE: 65]
-
-[1935][_DeclarationCandidates]<! !_AutoProperty @ !>
-[RULE: 65]
-	epsilon -> [1934][_DeclarationCandidates]<! !_AutoProperty !> @[ENDING]
-		+ StackEnd()
-
-[1936][_DeclarationCandidates]<! !_CastResultInterface !> @[ENDING]
-[RULE: 65]
-
-[1937][_DeclarationCandidates]<! !_CastResultInterface @ !>
-[RULE: 65]
-	epsilon -> [1936][_DeclarationCandidates]<! !_CastResultInterface !> @[ENDING]
-		+ StackEnd()
-
-[1938][_DeclarationCandidates]<! !_Class !> @[ENDING]
-[RULE: 65]
-
-[1939][_DeclarationCandidates]<! !_Class @ !>
-[RULE: 65]
-	epsilon -> [1938][_DeclarationCandidates]<! !_Class !> @[ENDING]
-		+ StackEnd()
-
-[1940][_DeclarationCandidates]<! !_Constructor !> @[ENDING]
-[RULE: 65]
-
-[1941][_DeclarationCandidates]<! !_Constructor @ !>
-[RULE: 65]
-	epsilon -> [1940][_DeclarationCandidates]<! !_Constructor !> @[ENDING]
-		+ StackEnd()
-
-[1942][_DeclarationCandidates]<! !_Destructor !> @[ENDING]
-[RULE: 65]
-
-[1943][_DeclarationCandidates]<! !_Destructor @ !>
-[RULE: 65]
-	epsilon -> [1942][_DeclarationCandidates]<! !_Destructor !> @[ENDING]
-		+ StackEnd()
-
-[1944][_DeclarationCandidates]<! !_Enum !> @[ENDING]
-[RULE: 65]
-
-[1945][_DeclarationCandidates]<! !_Enum @ !>
-[RULE: 65]
-	epsilon -> [1944][_DeclarationCandidates]<! !_Enum !> @[ENDING]
-		+ StackEnd()
-
-[1946][_DeclarationCandidates]<! !_Event !> @[ENDING]
-[RULE: 65]
-
-[1947][_DeclarationCandidates]<! !_Event @ !>
-[RULE: 65]
-	epsilon -> [1946][_DeclarationCandidates]<! !_Event !> @[ENDING]
-		+ StackEnd()
-
-[1948][_DeclarationCandidates]<! !_Function !> @[ENDING]
-[RULE: 65]
-
-[1949][_DeclarationCandidates]<! !_Function @ !>
-[RULE: 65]
-	epsilon -> [1948][_DeclarationCandidates]<! !_Function !> @[ENDING]
-		+ StackEnd()
-
-[1950][_DeclarationCandidates]<! !_Namespace !> @[ENDING]
-[RULE: 65]
-
-[1951][_DeclarationCandidates]<! !_Namespace @ !>
-[RULE: 65]
-	epsilon -> [1950][_DeclarationCandidates]<! !_Namespace !> @[ENDING]
-		+ StackEnd()
-
-[1952][_DeclarationCandidates]<! !_Property !> @[ENDING]
-[RULE: 65]
-
-[1953][_DeclarationCandidates]<! !_Property @ !>
-[RULE: 65]
-	epsilon -> [1952][_DeclarationCandidates]<! !_Property !> @[ENDING]
-		+ StackEnd()
-
-[1954][_DeclarationCandidates]<! !_StaticInit !> @[ENDING]
-[RULE: 65]
-
-[1955][_DeclarationCandidates]<! !_StaticInit @ !>
-[RULE: 65]
-	epsilon -> [1954][_DeclarationCandidates]<! !_StaticInit !> @[ENDING]
-		+ StackEnd()
-
-[1956][_DeclarationCandidates]<! !_Struct !> @[ENDING]
-[RULE: 65]
-
-[1957][_DeclarationCandidates]<! !_Struct @ !>
-[RULE: 65]
-	epsilon -> [1956][_DeclarationCandidates]<! !_Struct !> @[ENDING]
-		+ StackEnd()
-
-[1958][_DeclarationCandidates]<! !_Variable !> @[ENDING]
-[RULE: 65]
-
-[1959][_DeclarationCandidates]<! !_Variable @ !>
-[RULE: 65]
-	epsilon -> [1958][_DeclarationCandidates]<! !_Variable !> @[ENDING]
-		+ StackEnd()
-
-[1960][_DeclarationCandidates]<! @ !_AutoProperty !>
-[RULE: 65]
-	rule: _AutoProperty -> [1935][_DeclarationCandidates]<! !_AutoProperty @ !>
-
-[1961][_DeclarationCandidates]<! @ !_CastResultInterface !>
-[RULE: 65]
-	rule: _CastResultInterface -> [1937][_DeclarationCandidates]<! !_CastResultInterface @ !>
-
-[1962][_DeclarationCandidates]<! @ !_Class !>
-[RULE: 65]
-	rule: _Class -> [1939][_DeclarationCandidates]<! !_Class @ !>
-
-[1963][_DeclarationCandidates]<! @ !_Constructor !>
-[RULE: 65]
-	rule: _Constructor -> [1941][_DeclarationCandidates]<! !_Constructor @ !>
-
-[1964][_DeclarationCandidates]<! @ !_Destructor !>
-[RULE: 65]
-	rule: _Destructor -> [1943][_DeclarationCandidates]<! !_Destructor @ !>
-
-[1965][_DeclarationCandidates]<! @ !_Enum !>
-[RULE: 65]
-	rule: _Enum -> [1945][_DeclarationCandidates]<! !_Enum @ !>
-
-[1966][_DeclarationCandidates]<! @ !_Event !>
-[RULE: 65]
-	rule: _Event -> [1947][_DeclarationCandidates]<! !_Event @ !>
-
-[1967][_DeclarationCandidates]<! @ !_Function !>
-[RULE: 65]
-	rule: _Function -> [1949][_DeclarationCandidates]<! !_Function @ !>
-
-[1968][_DeclarationCandidates]<! @ !_Namespace !>
-[RULE: 65]
-	rule: _Namespace -> [1951][_DeclarationCandidates]<! !_Namespace @ !>
-
-[1969][_DeclarationCandidates]<! @ !_Property !>
-[RULE: 65]
-	rule: _Property -> [1953][_DeclarationCandidates]<! !_Property @ !>
-
-[1970][_DeclarationCandidates]<! @ !_StaticInit !>
-[RULE: 65]
-	rule: _StaticInit -> [1955][_DeclarationCandidates]<! !_StaticInit @ !>
-
-[1971][_DeclarationCandidates]<! @ !_Struct !>
-[RULE: 65]
-	rule: _Struct -> [1957][_DeclarationCandidates]<! !_Struct @ !>
-
-[1972][_DeclarationCandidates]<! @ !_Variable !>
-[RULE: 65]
-	rule: _Variable -> [1959][_DeclarationCandidates]<! !_Variable @ !>
-
-[1973][_DeclarationCandidates]@ <! !_AutoProperty !>
-[RULE: 65]
-	epsilon -> [1960][_DeclarationCandidates]<! @ !_AutoProperty !>
-		+ StackBegin()
-
-[1974][_DeclarationCandidates]@ <! !_CastResultInterface !>
-[RULE: 65]
-	epsilon -> [1961][_DeclarationCandidates]<! @ !_CastResultInterface !>
-		+ StackBegin()
-
-[1975][_DeclarationCandidates]@ <! !_Class !>
-[RULE: 65]
-	epsilon -> [1962][_DeclarationCandidates]<! @ !_Class !>
-		+ StackBegin()
-
-[1976][_DeclarationCandidates]@ <! !_Constructor !>
-[RULE: 65]
-	epsilon -> [1963][_DeclarationCandidates]<! @ !_Constructor !>
-		+ StackBegin()
-
-[1977][_DeclarationCandidates]@ <! !_Destructor !>
-[RULE: 65]
-	epsilon -> [1964][_DeclarationCandidates]<! @ !_Destructor !>
-		+ StackBegin()
-
-[1978][_DeclarationCandidates]@ <! !_Enum !>
-[RULE: 65]
-	epsilon -> [1965][_DeclarationCandidates]<! @ !_Enum !>
-		+ StackBegin()
-
-[1979][_DeclarationCandidates]@ <! !_Event !>
-[RULE: 65]
-	epsilon -> [1966][_DeclarationCandidates]<! @ !_Event !>
-		+ StackBegin()
-
-[1980][_DeclarationCandidates]@ <! !_Function !>
-[RULE: 65]
-	epsilon -> [1967][_DeclarationCandidates]<! @ !_Function !>
-		+ StackBegin()
-
-[1981][_DeclarationCandidates]@ <! !_Namespace !>
-[RULE: 65]
-	epsilon -> [1968][_DeclarationCandidates]<! @ !_Namespace !>
-		+ StackBegin()
-
-[1982][_DeclarationCandidates]@ <! !_Property !>
-[RULE: 65]
-	epsilon -> [1969][_DeclarationCandidates]<! @ !_Property !>
-		+ StackBegin()
-
-[1983][_DeclarationCandidates]@ <! !_StaticInit !>
-[RULE: 65]
-	epsilon -> [1970][_DeclarationCandidates]<! @ !_StaticInit !>
-		+ StackBegin()
-
-[1984][_DeclarationCandidates]@ <! !_Struct !>
-[RULE: 65]
-	epsilon -> [1971][_DeclarationCandidates]<! @ !_Struct !>
-		+ StackBegin()
-
-[1985][_DeclarationCandidates]@ <! !_Variable !>
-[RULE: 65]
-	epsilon -> [1972][_DeclarationCandidates]<! @ !_Variable !>
-		+ StackBegin()
-
-[1986][_Declaration]<! @ { _Attribute } !_DeclarationCandidates !>
+[1940][_CastResultInterface]@ < "$interface" NAME ":" _Type "<" _Type ">" ";" >
 [RULE: 66]
-	epsilon -> [1987][_Declaration]<! { @ _Attribute } !_DeclarationCandidates !>
-	epsilon -> [1992][_Declaration]<! { _Attribute } @ !_DeclarationCandidates !>
+	epsilon -> [1939][_CastResultInterface]< @ "$interface" NAME ":" _Type "<" _Type ">" ";" >
+		+ StackBegin()
 
-[1987][_Declaration]<! { @ _Attribute } !_DeclarationCandidates !>
-[RULE: 66]
-	rule: _Attribute -> [1988][_Declaration]<! { _Attribute @ } !_DeclarationCandidates !>
+[1941][_DeclarationCandidates]<! !_AutoProperty !> @[ENDING]
+[RULE: 67]
+
+[1942][_DeclarationCandidates]<! !_AutoProperty @ !>
+[RULE: 67]
+	epsilon -> [1941][_DeclarationCandidates]<! !_AutoProperty !> @[ENDING]
+		+ StackEnd()
+
+[1943][_DeclarationCandidates]<! !_CastResultInterface !> @[ENDING]
+[RULE: 67]
+
+[1944][_DeclarationCandidates]<! !_CastResultInterface @ !>
+[RULE: 67]
+	epsilon -> [1943][_DeclarationCandidates]<! !_CastResultInterface !> @[ENDING]
+		+ StackEnd()
+
+[1945][_DeclarationCandidates]<! !_Class !> @[ENDING]
+[RULE: 67]
+
+[1946][_DeclarationCandidates]<! !_Class @ !>
+[RULE: 67]
+	epsilon -> [1945][_DeclarationCandidates]<! !_Class !> @[ENDING]
+		+ StackEnd()
+
+[1947][_DeclarationCandidates]<! !_Constructor !> @[ENDING]
+[RULE: 67]
+
+[1948][_DeclarationCandidates]<! !_Constructor @ !>
+[RULE: 67]
+	epsilon -> [1947][_DeclarationCandidates]<! !_Constructor !> @[ENDING]
+		+ StackEnd()
+
+[1949][_DeclarationCandidates]<! !_Destructor !> @[ENDING]
+[RULE: 67]
+
+[1950][_DeclarationCandidates]<! !_Destructor @ !>
+[RULE: 67]
+	epsilon -> [1949][_DeclarationCandidates]<! !_Destructor !> @[ENDING]
+		+ StackEnd()
+
+[1951][_DeclarationCandidates]<! !_Enum !> @[ENDING]
+[RULE: 67]
+
+[1952][_DeclarationCandidates]<! !_Enum @ !>
+[RULE: 67]
+	epsilon -> [1951][_DeclarationCandidates]<! !_Enum !> @[ENDING]
+		+ StackEnd()
+
+[1953][_DeclarationCandidates]<! !_Event !> @[ENDING]
+[RULE: 67]
+
+[1954][_DeclarationCandidates]<! !_Event @ !>
+[RULE: 67]
+	epsilon -> [1953][_DeclarationCandidates]<! !_Event !> @[ENDING]
+		+ StackEnd()
+
+[1955][_DeclarationCandidates]<! !_Function !> @[ENDING]
+[RULE: 67]
+
+[1956][_DeclarationCandidates]<! !_Function @ !>
+[RULE: 67]
+	epsilon -> [1955][_DeclarationCandidates]<! !_Function !> @[ENDING]
+		+ StackEnd()
+
+[1957][_DeclarationCandidates]<! !_Namespace !> @[ENDING]
+[RULE: 67]
+
+[1958][_DeclarationCandidates]<! !_Namespace @ !>
+[RULE: 67]
+	epsilon -> [1957][_DeclarationCandidates]<! !_Namespace !> @[ENDING]
+		+ StackEnd()
+
+[1959][_DeclarationCandidates]<! !_Property !> @[ENDING]
+[RULE: 67]
+
+[1960][_DeclarationCandidates]<! !_Property @ !>
+[RULE: 67]
+	epsilon -> [1959][_DeclarationCandidates]<! !_Property !> @[ENDING]
+		+ StackEnd()
+
+[1961][_DeclarationCandidates]<! !_StaticInit !> @[ENDING]
+[RULE: 67]
+
+[1962][_DeclarationCandidates]<! !_StaticInit @ !>
+[RULE: 67]
+	epsilon -> [1961][_DeclarationCandidates]<! !_StaticInit !> @[ENDING]
+		+ StackEnd()
+
+[1963][_DeclarationCandidates]<! !_Struct !> @[ENDING]
+[RULE: 67]
+
+[1964][_DeclarationCandidates]<! !_Struct @ !>
+[RULE: 67]
+	epsilon -> [1963][_DeclarationCandidates]<! !_Struct !> @[ENDING]
+		+ StackEnd()
+
+[1965][_DeclarationCandidates]<! !_Variable !> @[ENDING]
+[RULE: 67]
+
+[1966][_DeclarationCandidates]<! !_Variable @ !>
+[RULE: 67]
+	epsilon -> [1965][_DeclarationCandidates]<! !_Variable !> @[ENDING]
+		+ StackEnd()
+
+[1967][_DeclarationCandidates]<! @ !_AutoProperty !>
+[RULE: 67]
+	rule: _AutoProperty -> [1942][_DeclarationCandidates]<! !_AutoProperty @ !>
+
+[1968][_DeclarationCandidates]<! @ !_CastResultInterface !>
+[RULE: 67]
+	rule: _CastResultInterface -> [1944][_DeclarationCandidates]<! !_CastResultInterface @ !>
+
+[1969][_DeclarationCandidates]<! @ !_Class !>
+[RULE: 67]
+	rule: _Class -> [1946][_DeclarationCandidates]<! !_Class @ !>
+
+[1970][_DeclarationCandidates]<! @ !_Constructor !>
+[RULE: 67]
+	rule: _Constructor -> [1948][_DeclarationCandidates]<! !_Constructor @ !>
+
+[1971][_DeclarationCandidates]<! @ !_Destructor !>
+[RULE: 67]
+	rule: _Destructor -> [1950][_DeclarationCandidates]<! !_Destructor @ !>
+
+[1972][_DeclarationCandidates]<! @ !_Enum !>
+[RULE: 67]
+	rule: _Enum -> [1952][_DeclarationCandidates]<! !_Enum @ !>
+
+[1973][_DeclarationCandidates]<! @ !_Event !>
+[RULE: 67]
+	rule: _Event -> [1954][_DeclarationCandidates]<! !_Event @ !>
+
+[1974][_DeclarationCandidates]<! @ !_Function !>
+[RULE: 67]
+	rule: _Function -> [1956][_DeclarationCandidates]<! !_Function @ !>
+
+[1975][_DeclarationCandidates]<! @ !_Namespace !>
+[RULE: 67]
+	rule: _Namespace -> [1958][_DeclarationCandidates]<! !_Namespace @ !>
+
+[1976][_DeclarationCandidates]<! @ !_Property !>
+[RULE: 67]
+	rule: _Property -> [1960][_DeclarationCandidates]<! !_Property @ !>
+
+[1977][_DeclarationCandidates]<! @ !_StaticInit !>
+[RULE: 67]
+	rule: _StaticInit -> [1962][_DeclarationCandidates]<! !_StaticInit @ !>
+
+[1978][_DeclarationCandidates]<! @ !_Struct !>
+[RULE: 67]
+	rule: _Struct -> [1964][_DeclarationCandidates]<! !_Struct @ !>
+
+[1979][_DeclarationCandidates]<! @ !_Variable !>
+[RULE: 67]
+	rule: _Variable -> [1966][_DeclarationCandidates]<! !_Variable @ !>
+
+[1980][_DeclarationCandidates]@ <! !_AutoProperty !>
+[RULE: 67]
+	epsilon -> [1967][_DeclarationCandidates]<! @ !_AutoProperty !>
+		+ StackBegin()
+
+[1981][_DeclarationCandidates]@ <! !_CastResultInterface !>
+[RULE: 67]
+	epsilon -> [1968][_DeclarationCandidates]<! @ !_CastResultInterface !>
+		+ StackBegin()
+
+[1982][_DeclarationCandidates]@ <! !_Class !>
+[RULE: 67]
+	epsilon -> [1969][_DeclarationCandidates]<! @ !_Class !>
+		+ StackBegin()
+
+[1983][_DeclarationCandidates]@ <! !_Constructor !>
+[RULE: 67]
+	epsilon -> [1970][_DeclarationCandidates]<! @ !_Constructor !>
+		+ StackBegin()
+
+[1984][_DeclarationCandidates]@ <! !_Destructor !>
+[RULE: 67]
+	epsilon -> [1971][_DeclarationCandidates]<! @ !_Destructor !>
+		+ StackBegin()
+
+[1985][_DeclarationCandidates]@ <! !_Enum !>
+[RULE: 67]
+	epsilon -> [1972][_DeclarationCandidates]<! @ !_Enum !>
+		+ StackBegin()
+
+[1986][_DeclarationCandidates]@ <! !_Event !>
+[RULE: 67]
+	epsilon -> [1973][_DeclarationCandidates]<! @ !_Event !>
+		+ StackBegin()
+
+[1987][_DeclarationCandidates]@ <! !_Function !>
+[RULE: 67]
+	epsilon -> [1974][_DeclarationCandidates]<! @ !_Function !>
+		+ StackBegin()
+
+[1988][_DeclarationCandidates]@ <! !_Namespace !>
+[RULE: 67]
+	epsilon -> [1975][_DeclarationCandidates]<! @ !_Namespace !>
+		+ StackBegin()
+
+[1989][_DeclarationCandidates]@ <! !_Property !>
+[RULE: 67]
+	epsilon -> [1976][_DeclarationCandidates]<! @ !_Property !>
+		+ StackBegin()
+
+[1990][_DeclarationCandidates]@ <! !_StaticInit !>
+[RULE: 67]
+	epsilon -> [1977][_DeclarationCandidates]<! @ !_StaticInit !>
+		+ StackBegin()
+
+[1991][_DeclarationCandidates]@ <! !_Struct !>
+[RULE: 67]
+	epsilon -> [1978][_DeclarationCandidates]<! @ !_Struct !>
+		+ StackBegin()
+
+[1992][_DeclarationCandidates]@ <! !_Variable !>
+[RULE: 67]
+	epsilon -> [1979][_DeclarationCandidates]<! @ !_Variable !>
+		+ StackBegin()
+
+[1993][_Declaration]<! @ { _Attribute } !_DeclarationCandidates !>
+[RULE: 68]
+	epsilon -> [1994][_Declaration]<! { @ _Attribute } !_DeclarationCandidates !>
+	epsilon -> [1999][_Declaration]<! { _Attribute } @ !_DeclarationCandidates !>
+
+[1994][_Declaration]<! { @ _Attribute } !_DeclarationCandidates !>
+[RULE: 68]
+	rule: _Attribute -> [1995][_Declaration]<! { _Attribute @ } !_DeclarationCandidates !>
 		+ StackSlot(0)
 
-[1988][_Declaration]<! { _Attribute @ } !_DeclarationCandidates !>
-[RULE: 66]
-	epsilon -> [1987][_Declaration]<! { @ _Attribute } !_DeclarationCandidates !>
-	epsilon -> [1992][_Declaration]<! { _Attribute } @ !_DeclarationCandidates !>
+[1995][_Declaration]<! { _Attribute @ } !_DeclarationCandidates !>
+[RULE: 68]
+	epsilon -> [1994][_Declaration]<! { @ _Attribute } !_DeclarationCandidates !>
+	epsilon -> [1999][_Declaration]<! { _Attribute } @ !_DeclarationCandidates !>
 
-[1989][_Declaration]<! { _Attribute } !_DeclarationCandidates !> @[ENDING]
-[RULE: 66]
+[1996][_Declaration]<! { _Attribute } !_DeclarationCandidates !> @[ENDING]
+[RULE: 68]
 
-[1990][_Declaration]<! { _Attribute } !_DeclarationCandidates @ !>
-[RULE: 66]
-	epsilon -> [1989][_Declaration]<! { _Attribute } !_DeclarationCandidates !> @[ENDING]
+[1997][_Declaration]<! { _Attribute } !_DeclarationCandidates @ !>
+[RULE: 68]
+	epsilon -> [1996][_Declaration]<! { _Attribute } !_DeclarationCandidates !> @[ENDING]
 		+ Field(Declaration::attributes, 0)
 		+ StackEnd()
 
-[1991][_Declaration]<! { _Attribute } @ !_DeclarationCandidates !>
-[RULE: 66]
-	rule: _DeclarationCandidates -> [1990][_Declaration]<! { _Attribute } !_DeclarationCandidates @ !>
+[1998][_Declaration]<! { _Attribute } @ !_DeclarationCandidates !>
+[RULE: 68]
+	rule: _DeclarationCandidates -> [1997][_Declaration]<! { _Attribute } !_DeclarationCandidates @ !>
 
-[1992][_Declaration]<! { _Attribute } @ !_DeclarationCandidates !>
-[RULE: 66]
-	epsilon -> [1991][_Declaration]<! { _Attribute } @ !_DeclarationCandidates !>
+[1999][_Declaration]<! { _Attribute } @ !_DeclarationCandidates !>
+[RULE: 68]
+	epsilon -> [1998][_Declaration]<! { _Attribute } @ !_DeclarationCandidates !>
 
-[1993][_Declaration]@ <! { _Attribute } !_DeclarationCandidates !>
-[RULE: 66]
-	epsilon -> [1986][_Declaration]<! @ { _Attribute } !_DeclarationCandidates !>
+[2000][_Declaration]@ <! { _Attribute } !_DeclarationCandidates !>
+[RULE: 68]
+	epsilon -> [1993][_Declaration]<! @ { _Attribute } !_DeclarationCandidates !>
 		+ StackBegin()
 
-[1994][_UsingFragment]< "*" > @[ENDING]
-[RULE: 67]
+[2001][_UsingFragment]< "*" > @[ENDING]
+[RULE: 69]
 
-[1995][_UsingFragment]< "*" @ >
-[RULE: 67]
-	epsilon -> [1994][_UsingFragment]< "*" > @[ENDING]
+[2002][_UsingFragment]< "*" @ >
+[RULE: 69]
+	epsilon -> [2001][_UsingFragment]< "*" > @[ENDING]
 		+ CreateObject(ModuleUsingWildCardFragment)
 		+ StackEnd()
 
-[1996][_UsingFragment]< @ "*" >
-[RULE: 67]
-	token: "*" -> [1995][_UsingFragment]< "*" @ >
+[2003][_UsingFragment]< @ "*" >
+[RULE: 69]
+	token: "*" -> [2002][_UsingFragment]< "*" @ >
 		+ Token(0)
 
-[1997][_UsingFragment]< @ NAME >
-[RULE: 67]
-	token: NAME -> [1999][_UsingFragment]< NAME @ >
+[2004][_UsingFragment]< @ NAME >
+[RULE: 69]
+	token: NAME -> [2006][_UsingFragment]< NAME @ >
 		+ Token(0)
 
-[1998][_UsingFragment]< NAME > @[ENDING]
-[RULE: 67]
+[2005][_UsingFragment]< NAME > @[ENDING]
+[RULE: 69]
 
-[1999][_UsingFragment]< NAME @ >
-[RULE: 67]
-	epsilon -> [1998][_UsingFragment]< NAME > @[ENDING]
+[2006][_UsingFragment]< NAME @ >
+[RULE: 69]
+	epsilon -> [2005][_UsingFragment]< NAME > @[ENDING]
 		+ CreateObject(ModuleUsingNameFragment)
 		+ Field(ModuleUsingNameFragment::name, 0)
 		+ StackEnd()
 
-[2000][_UsingFragment]@ < "*" >
-[RULE: 67]
-	epsilon -> [1996][_UsingFragment]< @ "*" >
+[2007][_UsingFragment]@ < "*" >
+[RULE: 69]
+	epsilon -> [2003][_UsingFragment]< @ "*" >
 		+ StackBegin()
 
-[2001][_UsingFragment]@ < NAME >
-[RULE: 67]
-	epsilon -> [1997][_UsingFragment]< @ NAME >
+[2008][_UsingFragment]@ < NAME >
+[RULE: 69]
+	epsilon -> [2004][_UsingFragment]< @ NAME >
 		+ StackBegin()
 
-[2002][_UsingItem]< @ _UsingFragment { _UsingFragment } >
-[RULE: 68]
-	rule: _UsingFragment -> [2004][_UsingItem]< _UsingFragment @ { _UsingFragment } >
+[2009][_UsingItem]< @ _UsingFragment { _UsingFragment } >
+[RULE: 70]
+	rule: _UsingFragment -> [2011][_UsingItem]< _UsingFragment @ { _UsingFragment } >
 		+ StackSlot(0)
 
-[2003][_UsingItem]< _UsingFragment @ { _UsingFragment } >
-[RULE: 68]
-	epsilon -> [2005][_UsingItem]< _UsingFragment { @ _UsingFragment } >
-	epsilon -> [2008][_UsingItem]< _UsingFragment { _UsingFragment } @ >
+[2010][_UsingItem]< _UsingFragment @ { _UsingFragment } >
+[RULE: 70]
+	epsilon -> [2012][_UsingItem]< _UsingFragment { @ _UsingFragment } >
+	epsilon -> [2015][_UsingItem]< _UsingFragment { _UsingFragment } @ >
 
-[2004][_UsingItem]< _UsingFragment @ { _UsingFragment } >
-[RULE: 68]
-	epsilon -> [2003][_UsingItem]< _UsingFragment @ { _UsingFragment } >
+[2011][_UsingItem]< _UsingFragment @ { _UsingFragment } >
+[RULE: 70]
+	epsilon -> [2010][_UsingItem]< _UsingFragment @ { _UsingFragment } >
 
-[2005][_UsingItem]< _UsingFragment { @ _UsingFragment } >
-[RULE: 68]
-	rule: _UsingFragment -> [2006][_UsingItem]< _UsingFragment { _UsingFragment @ } >
+[2012][_UsingItem]< _UsingFragment { @ _UsingFragment } >
+[RULE: 70]
+	rule: _UsingFragment -> [2013][_UsingItem]< _UsingFragment { _UsingFragment @ } >
 		+ StackSlot(1)
 
-[2006][_UsingItem]< _UsingFragment { _UsingFragment @ } >
-[RULE: 68]
-	epsilon -> [2005][_UsingItem]< _UsingFragment { @ _UsingFragment } >
-	epsilon -> [2008][_UsingItem]< _UsingFragment { _UsingFragment } @ >
+[2013][_UsingItem]< _UsingFragment { _UsingFragment @ } >
+[RULE: 70]
+	epsilon -> [2012][_UsingItem]< _UsingFragment { @ _UsingFragment } >
+	epsilon -> [2015][_UsingItem]< _UsingFragment { _UsingFragment } @ >
 
-[2007][_UsingItem]< _UsingFragment { _UsingFragment } > @[ENDING]
-[RULE: 68]
+[2014][_UsingItem]< _UsingFragment { _UsingFragment } > @[ENDING]
+[RULE: 70]
 
-[2008][_UsingItem]< _UsingFragment { _UsingFragment } @ >
-[RULE: 68]
-	epsilon -> [2007][_UsingItem]< _UsingFragment { _UsingFragment } > @[ENDING]
+[2015][_UsingItem]< _UsingFragment { _UsingFragment } @ >
+[RULE: 70]
+	epsilon -> [2014][_UsingItem]< _UsingFragment { _UsingFragment } > @[ENDING]
 		+ CreateObject(ModuleUsingItem)
 		+ Field(ModuleUsingItem::fragments, 0)
 		+ Field(ModuleUsingItem::fragments, 1)
 		+ StackEnd()
 
-[2009][_UsingItem]@ < _UsingFragment { _UsingFragment } >
-[RULE: 68]
-	epsilon -> [2002][_UsingItem]< @ _UsingFragment { _UsingFragment } >
+[2016][_UsingItem]@ < _UsingFragment { _UsingFragment } >
+[RULE: 70]
+	epsilon -> [2009][_UsingItem]< @ _UsingFragment { _UsingFragment } >
 		+ StackBegin()
 
-[2010][_UsingPath]< "using" @ _UsingItem { "::" _UsingItem } ";" >
-[RULE: 69]
-	rule: _UsingItem -> [2012][_UsingPath]< "using" _UsingItem @ { "::" _UsingItem } ";" >
+[2017][_UsingPath]< "using" @ _UsingItem { "::" _UsingItem } ";" >
+[RULE: 71]
+	rule: _UsingItem -> [2019][_UsingPath]< "using" _UsingItem @ { "::" _UsingItem } ";" >
 		+ StackSlot(1)
 
-[2011][_UsingPath]< "using" @ _UsingItem { "::" _UsingItem } ";" >
-[RULE: 69]
-	epsilon -> [2010][_UsingPath]< "using" @ _UsingItem { "::" _UsingItem } ";" >
+[2018][_UsingPath]< "using" @ _UsingItem { "::" _UsingItem } ";" >
+[RULE: 71]
+	epsilon -> [2017][_UsingPath]< "using" @ _UsingItem { "::" _UsingItem } ";" >
 
-[2012][_UsingPath]< "using" _UsingItem @ { "::" _UsingItem } ";" >
-[RULE: 69]
-	epsilon -> [2013][_UsingPath]< "using" _UsingItem @ { "::" _UsingItem } ";" >
+[2019][_UsingPath]< "using" _UsingItem @ { "::" _UsingItem } ";" >
+[RULE: 71]
+	epsilon -> [2020][_UsingPath]< "using" _UsingItem @ { "::" _UsingItem } ";" >
 
-[2013][_UsingPath]< "using" _UsingItem @ { "::" _UsingItem } ";" >
-[RULE: 69]
-	epsilon -> [2020][_UsingPath]< "using" _UsingItem { "::" _UsingItem } @ ";" >
-	epsilon -> [2021][_UsingPath]< "using" _UsingItem { @ "::" _UsingItem } ";" >
+[2020][_UsingPath]< "using" _UsingItem @ { "::" _UsingItem } ";" >
+[RULE: 71]
+	epsilon -> [2027][_UsingPath]< "using" _UsingItem { "::" _UsingItem } @ ";" >
+	epsilon -> [2028][_UsingPath]< "using" _UsingItem { @ "::" _UsingItem } ";" >
 
-[2014][_UsingPath]< "using" _UsingItem { "::" @ _UsingItem } ";" >
-[RULE: 69]
-	rule: _UsingItem -> [2016][_UsingPath]< "using" _UsingItem { "::" _UsingItem @ } ";" >
+[2021][_UsingPath]< "using" _UsingItem { "::" @ _UsingItem } ";" >
+[RULE: 71]
+	rule: _UsingItem -> [2023][_UsingPath]< "using" _UsingItem { "::" _UsingItem @ } ";" >
 		+ StackSlot(3)
 
-[2015][_UsingPath]< "using" _UsingItem { "::" @ _UsingItem } ";" >
-[RULE: 69]
-	epsilon -> [2014][_UsingPath]< "using" _UsingItem { "::" @ _UsingItem } ";" >
+[2022][_UsingPath]< "using" _UsingItem { "::" @ _UsingItem } ";" >
+[RULE: 71]
+	epsilon -> [2021][_UsingPath]< "using" _UsingItem { "::" @ _UsingItem } ";" >
 
-[2016][_UsingPath]< "using" _UsingItem { "::" _UsingItem @ } ";" >
-[RULE: 69]
-	epsilon -> [2020][_UsingPath]< "using" _UsingItem { "::" _UsingItem } @ ";" >
-	epsilon -> [2021][_UsingPath]< "using" _UsingItem { @ "::" _UsingItem } ";" >
+[2023][_UsingPath]< "using" _UsingItem { "::" _UsingItem @ } ";" >
+[RULE: 71]
+	epsilon -> [2027][_UsingPath]< "using" _UsingItem { "::" _UsingItem } @ ";" >
+	epsilon -> [2028][_UsingPath]< "using" _UsingItem { @ "::" _UsingItem } ";" >
 
-[2017][_UsingPath]< "using" _UsingItem { "::" _UsingItem } ";" > @[ENDING]
-[RULE: 69]
+[2024][_UsingPath]< "using" _UsingItem { "::" _UsingItem } ";" > @[ENDING]
+[RULE: 71]
 
-[2018][_UsingPath]< "using" _UsingItem { "::" _UsingItem } ";" @ >
-[RULE: 69]
-	epsilon -> [2017][_UsingPath]< "using" _UsingItem { "::" _UsingItem } ";" > @[ENDING]
+[2025][_UsingPath]< "using" _UsingItem { "::" _UsingItem } ";" @ >
+[RULE: 71]
+	epsilon -> [2024][_UsingPath]< "using" _UsingItem { "::" _UsingItem } ";" > @[ENDING]
 		+ CreateObject(ModuleUsingPath)
 		+ Field(ModuleUsingPath::items, 1)
 		+ Field(ModuleUsingPath::items, 3)
 		+ StackEnd()
 
-[2019][_UsingPath]< "using" _UsingItem { "::" _UsingItem } @ ";" >
-[RULE: 69]
-	token: ";" -> [2018][_UsingPath]< "using" _UsingItem { "::" _UsingItem } ";" @ >
+[2026][_UsingPath]< "using" _UsingItem { "::" _UsingItem } @ ";" >
+[RULE: 71]
+	token: ";" -> [2025][_UsingPath]< "using" _UsingItem { "::" _UsingItem } ";" @ >
 		+ Token(4)
 
-[2020][_UsingPath]< "using" _UsingItem { "::" _UsingItem } @ ";" >
-[RULE: 69]
-	epsilon -> [2019][_UsingPath]< "using" _UsingItem { "::" _UsingItem } @ ";" >
+[2027][_UsingPath]< "using" _UsingItem { "::" _UsingItem } @ ";" >
+[RULE: 71]
+	epsilon -> [2026][_UsingPath]< "using" _UsingItem { "::" _UsingItem } @ ";" >
 
-[2021][_UsingPath]< "using" _UsingItem { @ "::" _UsingItem } ";" >
-[RULE: 69]
-	token: "::" -> [2015][_UsingPath]< "using" _UsingItem { "::" @ _UsingItem } ";" >
+[2028][_UsingPath]< "using" _UsingItem { @ "::" _UsingItem } ";" >
+[RULE: 71]
+	token: "::" -> [2022][_UsingPath]< "using" _UsingItem { "::" @ _UsingItem } ";" >
 		+ Token(2)
 
-[2022][_UsingPath]< @ "using" _UsingItem { "::" _UsingItem } ";" >
-[RULE: 69]
-	token: "using" -> [2011][_UsingPath]< "using" @ _UsingItem { "::" _UsingItem } ";" >
+[2029][_UsingPath]< @ "using" _UsingItem { "::" _UsingItem } ";" >
+[RULE: 71]
+	token: "using" -> [2018][_UsingPath]< "using" @ _UsingItem { "::" _UsingItem } ";" >
 		+ Token(0)
 
-[2023][_UsingPath]@ < "using" _UsingItem { "::" _UsingItem } ";" >
-[RULE: 69]
-	epsilon -> [2022][_UsingPath]< @ "using" _UsingItem { "::" _UsingItem } ";" >
+[2030][_UsingPath]@ < "using" _UsingItem { "::" _UsingItem } ";" >
+[RULE: 71]
+	epsilon -> [2029][_UsingPath]< @ "using" _UsingItem { "::" _UsingItem } ";" >
 		+ StackBegin()
 
-[2024][_Module]< "module" ( @ NAME ";" { _UsingPath } { _Declaration } ) >
-[RULE: 71]
-	token: NAME -> [2037][_Module]< "module" ( NAME @ ";" { _UsingPath } { _Declaration } ) >
+[2031][_Module]< "module" ( @ NAME ";" { _UsingPath } { _Declaration } ) >
+[RULE: 73]
+	token: NAME -> [2044][_Module]< "module" ( NAME @ ";" { _UsingPath } { _Declaration } ) >
 		+ Token(1)
 
-[2025][_Module]< "module" ( NAME ";" @ { _UsingPath } { _Declaration } ) >
-[RULE: 71]
-	epsilon -> [2027][_Module]< "module" ( NAME ";" { @ _UsingPath } { _Declaration } ) >
-	epsilon -> [2030][_Module]< "module" ( NAME ";" { _UsingPath } @ { _Declaration } ) >
+[2032][_Module]< "module" ( NAME ";" @ { _UsingPath } { _Declaration } ) >
+[RULE: 73]
+	epsilon -> [2034][_Module]< "module" ( NAME ";" { @ _UsingPath } { _Declaration } ) >
+	epsilon -> [2037][_Module]< "module" ( NAME ";" { _UsingPath } @ { _Declaration } ) >
 
-[2026][_Module]< "module" ( NAME ";" @ { _UsingPath } { _Declaration } ) >
-[RULE: 71]
-	epsilon -> [2025][_Module]< "module" ( NAME ";" @ { _UsingPath } { _Declaration } ) >
+[2033][_Module]< "module" ( NAME ";" @ { _UsingPath } { _Declaration } ) >
+[RULE: 73]
+	epsilon -> [2032][_Module]< "module" ( NAME ";" @ { _UsingPath } { _Declaration } ) >
 
-[2027][_Module]< "module" ( NAME ";" { @ _UsingPath } { _Declaration } ) >
-[RULE: 71]
-	rule: _UsingPath -> [2028][_Module]< "module" ( NAME ";" { _UsingPath @ } { _Declaration } ) >
+[2034][_Module]< "module" ( NAME ";" { @ _UsingPath } { _Declaration } ) >
+[RULE: 73]
+	rule: _UsingPath -> [2035][_Module]< "module" ( NAME ";" { _UsingPath @ } { _Declaration } ) >
 		+ StackSlot(3)
 
-[2028][_Module]< "module" ( NAME ";" { _UsingPath @ } { _Declaration } ) >
-[RULE: 71]
-	epsilon -> [2027][_Module]< "module" ( NAME ";" { @ _UsingPath } { _Declaration } ) >
-	epsilon -> [2030][_Module]< "module" ( NAME ";" { _UsingPath } @ { _Declaration } ) >
+[2035][_Module]< "module" ( NAME ";" { _UsingPath @ } { _Declaration } ) >
+[RULE: 73]
+	epsilon -> [2034][_Module]< "module" ( NAME ";" { @ _UsingPath } { _Declaration } ) >
+	epsilon -> [2037][_Module]< "module" ( NAME ";" { _UsingPath } @ { _Declaration } ) >
 
-[2029][_Module]< "module" ( NAME ";" { _UsingPath } @ { _Declaration } ) >
-[RULE: 71]
-	epsilon -> [2031][_Module]< "module" ( NAME ";" { _UsingPath } { @ _Declaration } ) >
-	epsilon -> [2036][_Module]< "module" ( NAME ";" { _UsingPath } { _Declaration } @ ) >
+[2036][_Module]< "module" ( NAME ";" { _UsingPath } @ { _Declaration } ) >
+[RULE: 73]
+	epsilon -> [2038][_Module]< "module" ( NAME ";" { _UsingPath } { @ _Declaration } ) >
+	epsilon -> [2043][_Module]< "module" ( NAME ";" { _UsingPath } { _Declaration } @ ) >
 
-[2030][_Module]< "module" ( NAME ";" { _UsingPath } @ { _Declaration } ) >
-[RULE: 71]
-	epsilon -> [2029][_Module]< "module" ( NAME ";" { _UsingPath } @ { _Declaration } ) >
+[2037][_Module]< "module" ( NAME ";" { _UsingPath } @ { _Declaration } ) >
+[RULE: 73]
+	epsilon -> [2036][_Module]< "module" ( NAME ";" { _UsingPath } @ { _Declaration } ) >
 
-[2031][_Module]< "module" ( NAME ";" { _UsingPath } { @ _Declaration } ) >
-[RULE: 71]
-	rule: _Declaration -> [2032][_Module]< "module" ( NAME ";" { _UsingPath } { _Declaration @ } ) >
+[2038][_Module]< "module" ( NAME ";" { _UsingPath } { @ _Declaration } ) >
+[RULE: 73]
+	rule: _Declaration -> [2039][_Module]< "module" ( NAME ";" { _UsingPath } { _Declaration @ } ) >
 		+ StackSlot(4)
 
-[2032][_Module]< "module" ( NAME ";" { _UsingPath } { _Declaration @ } ) >
-[RULE: 71]
-	epsilon -> [2031][_Module]< "module" ( NAME ";" { _UsingPath } { @ _Declaration } ) >
-	epsilon -> [2036][_Module]< "module" ( NAME ";" { _UsingPath } { _Declaration } @ ) >
+[2039][_Module]< "module" ( NAME ";" { _UsingPath } { _Declaration @ } ) >
+[RULE: 73]
+	epsilon -> [2038][_Module]< "module" ( NAME ";" { _UsingPath } { @ _Declaration } ) >
+	epsilon -> [2043][_Module]< "module" ( NAME ";" { _UsingPath } { _Declaration } @ ) >
 
-[2033][_Module]< "module" ( NAME ";" { _UsingPath } { _Declaration } ) > @[ENDING]
-[RULE: 71]
+[2040][_Module]< "module" ( NAME ";" { _UsingPath } { _Declaration } ) > @[ENDING]
+[RULE: 73]
 
-[2034][_Module]< "module" ( NAME ";" { _UsingPath } { _Declaration } ) @ >
-[RULE: 71]
-	epsilon -> [2033][_Module]< "module" ( NAME ";" { _UsingPath } { _Declaration } ) > @[ENDING]
+[2041][_Module]< "module" ( NAME ";" { _UsingPath } { _Declaration } ) @ >
+[RULE: 73]
+	epsilon -> [2040][_Module]< "module" ( NAME ";" { _UsingPath } { _Declaration } ) > @[ENDING]
 		+ CreateObject(Module)
 		+ Field(Module::name, 1)
 		+ Field(Module::paths, 3)
@@ -9719,86 +9748,86 @@
 		+ Field(Module::moduleType, 5)
 		+ StackEnd()
 
-[2035][_Module]< "module" ( NAME ";" { _UsingPath } { _Declaration } ) @ >
-[RULE: 71]
-	epsilon -> [2034][_Module]< "module" ( NAME ";" { _UsingPath } { _Declaration } ) @ >
+[2042][_Module]< "module" ( NAME ";" { _UsingPath } { _Declaration } ) @ >
+[RULE: 73]
+	epsilon -> [2041][_Module]< "module" ( NAME ";" { _UsingPath } { _Declaration } ) @ >
 		+ EnumItem(0, 5)
 
-[2036][_Module]< "module" ( NAME ";" { _UsingPath } { _Declaration } @ ) >
-[RULE: 71]
-	epsilon -> [2035][_Module]< "module" ( NAME ";" { _UsingPath } { _Declaration } ) @ >
+[2043][_Module]< "module" ( NAME ";" { _UsingPath } { _Declaration } @ ) >
+[RULE: 73]
+	epsilon -> [2042][_Module]< "module" ( NAME ";" { _UsingPath } { _Declaration } ) @ >
 
-[2037][_Module]< "module" ( NAME @ ";" { _UsingPath } { _Declaration } ) >
-[RULE: 71]
-	epsilon -> [2038][_Module]< "module" ( NAME @ ";" { _UsingPath } { _Declaration } ) >
+[2044][_Module]< "module" ( NAME @ ";" { _UsingPath } { _Declaration } ) >
+[RULE: 73]
+	epsilon -> [2045][_Module]< "module" ( NAME @ ";" { _UsingPath } { _Declaration } ) >
 
-[2038][_Module]< "module" ( NAME @ ";" { _UsingPath } { _Declaration } ) >
-[RULE: 71]
-	token: ";" -> [2026][_Module]< "module" ( NAME ";" @ { _UsingPath } { _Declaration } ) >
+[2045][_Module]< "module" ( NAME @ ";" { _UsingPath } { _Declaration } ) >
+[RULE: 73]
+	token: ";" -> [2033][_Module]< "module" ( NAME ";" @ { _UsingPath } { _Declaration } ) >
 		+ Token(2)
 
-[2039][_Module]< "module" @ ( NAME ";" { _UsingPath } { _Declaration } ) >
-[RULE: 71]
-	epsilon -> [2040][_Module]< "module" @ ( NAME ";" { _UsingPath } { _Declaration } ) >
+[2046][_Module]< "module" @ ( NAME ";" { _UsingPath } { _Declaration } ) >
+[RULE: 73]
+	epsilon -> [2047][_Module]< "module" @ ( NAME ";" { _UsingPath } { _Declaration } ) >
 
-[2040][_Module]< "module" @ ( NAME ";" { _UsingPath } { _Declaration } ) >
-[RULE: 71]
-	epsilon -> [2024][_Module]< "module" ( @ NAME ";" { _UsingPath } { _Declaration } ) >
+[2047][_Module]< "module" @ ( NAME ";" { _UsingPath } { _Declaration } ) >
+[RULE: 73]
+	epsilon -> [2031][_Module]< "module" ( @ NAME ";" { _UsingPath } { _Declaration } ) >
 
-[2041][_Module]< "unit" ( @ NAME ";" { _UsingPath } { _Declaration } ) >
-[RULE: 71]
-	token: NAME -> [2054][_Module]< "unit" ( NAME @ ";" { _UsingPath } { _Declaration } ) >
+[2048][_Module]< "unit" ( @ NAME ";" { _UsingPath } { _Declaration } ) >
+[RULE: 73]
+	token: NAME -> [2061][_Module]< "unit" ( NAME @ ";" { _UsingPath } { _Declaration } ) >
 		+ Token(1)
 
-[2042][_Module]< "unit" ( NAME ";" @ { _UsingPath } { _Declaration } ) >
-[RULE: 71]
-	epsilon -> [2043][_Module]< "unit" ( NAME ";" @ { _UsingPath } { _Declaration } ) >
+[2049][_Module]< "unit" ( NAME ";" @ { _UsingPath } { _Declaration } ) >
+[RULE: 73]
+	epsilon -> [2050][_Module]< "unit" ( NAME ";" @ { _UsingPath } { _Declaration } ) >
 
-[2043][_Module]< "unit" ( NAME ";" @ { _UsingPath } { _Declaration } ) >
-[RULE: 71]
-	epsilon -> [2044][_Module]< "unit" ( NAME ";" { @ _UsingPath } { _Declaration } ) >
-	epsilon -> [2046][_Module]< "unit" ( NAME ";" { _UsingPath } @ { _Declaration } ) >
+[2050][_Module]< "unit" ( NAME ";" @ { _UsingPath } { _Declaration } ) >
+[RULE: 73]
+	epsilon -> [2051][_Module]< "unit" ( NAME ";" { @ _UsingPath } { _Declaration } ) >
+	epsilon -> [2053][_Module]< "unit" ( NAME ";" { _UsingPath } @ { _Declaration } ) >
 
-[2044][_Module]< "unit" ( NAME ";" { @ _UsingPath } { _Declaration } ) >
-[RULE: 71]
-	rule: _UsingPath -> [2045][_Module]< "unit" ( NAME ";" { _UsingPath @ } { _Declaration } ) >
+[2051][_Module]< "unit" ( NAME ";" { @ _UsingPath } { _Declaration } ) >
+[RULE: 73]
+	rule: _UsingPath -> [2052][_Module]< "unit" ( NAME ";" { _UsingPath @ } { _Declaration } ) >
 		+ StackSlot(3)
 
-[2045][_Module]< "unit" ( NAME ";" { _UsingPath @ } { _Declaration } ) >
-[RULE: 71]
-	epsilon -> [2044][_Module]< "unit" ( NAME ";" { @ _UsingPath } { _Declaration } ) >
-	epsilon -> [2046][_Module]< "unit" ( NAME ";" { _UsingPath } @ { _Declaration } ) >
+[2052][_Module]< "unit" ( NAME ";" { _UsingPath @ } { _Declaration } ) >
+[RULE: 73]
+	epsilon -> [2051][_Module]< "unit" ( NAME ";" { @ _UsingPath } { _Declaration } ) >
+	epsilon -> [2053][_Module]< "unit" ( NAME ";" { _UsingPath } @ { _Declaration } ) >
 
-[2046][_Module]< "unit" ( NAME ";" { _UsingPath } @ { _Declaration } ) >
-[RULE: 71]
-	epsilon -> [2047][_Module]< "unit" ( NAME ";" { _UsingPath } @ { _Declaration } ) >
+[2053][_Module]< "unit" ( NAME ";" { _UsingPath } @ { _Declaration } ) >
+[RULE: 73]
+	epsilon -> [2054][_Module]< "unit" ( NAME ";" { _UsingPath } @ { _Declaration } ) >
 
-[2047][_Module]< "unit" ( NAME ";" { _UsingPath } @ { _Declaration } ) >
-[RULE: 71]
-	epsilon -> [2048][_Module]< "unit" ( NAME ";" { _UsingPath } { @ _Declaration } ) >
-	epsilon -> [2053][_Module]< "unit" ( NAME ";" { _UsingPath } { _Declaration } @ ) >
+[2054][_Module]< "unit" ( NAME ";" { _UsingPath } @ { _Declaration } ) >
+[RULE: 73]
+	epsilon -> [2055][_Module]< "unit" ( NAME ";" { _UsingPath } { @ _Declaration } ) >
+	epsilon -> [2060][_Module]< "unit" ( NAME ";" { _UsingPath } { _Declaration } @ ) >
 
-[2048][_Module]< "unit" ( NAME ";" { _UsingPath } { @ _Declaration } ) >
-[RULE: 71]
-	rule: _Declaration -> [2049][_Module]< "unit" ( NAME ";" { _UsingPath } { _Declaration @ } ) >
+[2055][_Module]< "unit" ( NAME ";" { _UsingPath } { @ _Declaration } ) >
+[RULE: 73]
+	rule: _Declaration -> [2056][_Module]< "unit" ( NAME ";" { _UsingPath } { _Declaration @ } ) >
 		+ StackSlot(4)
 
-[2049][_Module]< "unit" ( NAME ";" { _UsingPath } { _Declaration @ } ) >
-[RULE: 71]
-	epsilon -> [2048][_Module]< "unit" ( NAME ";" { _UsingPath } { @ _Declaration } ) >
-	epsilon -> [2053][_Module]< "unit" ( NAME ";" { _UsingPath } { _Declaration } @ ) >
+[2056][_Module]< "unit" ( NAME ";" { _UsingPath } { _Declaration @ } ) >
+[RULE: 73]
+	epsilon -> [2055][_Module]< "unit" ( NAME ";" { _UsingPath } { @ _Declaration } ) >
+	epsilon -> [2060][_Module]< "unit" ( NAME ";" { _UsingPath } { _Declaration } @ ) >
 
-[2050][_Module]< "unit" ( NAME ";" { _UsingPath } { _Declaration } ) > @[ENDING]
-[RULE: 71]
+[2057][_Module]< "unit" ( NAME ";" { _UsingPath } { _Declaration } ) > @[ENDING]
+[RULE: 73]
 
-[2051][_Module]< "unit" ( NAME ";" { _UsingPath } { _Declaration } ) @ >
-[RULE: 71]
-	epsilon -> [2052][_Module]< "unit" ( NAME ";" { _UsingPath } { _Declaration } ) @ >
+[2058][_Module]< "unit" ( NAME ";" { _UsingPath } { _Declaration } ) @ >
+[RULE: 73]
+	epsilon -> [2059][_Module]< "unit" ( NAME ";" { _UsingPath } { _Declaration } ) @ >
 		+ EnumItem(1, 5)
 
-[2052][_Module]< "unit" ( NAME ";" { _UsingPath } { _Declaration } ) @ >
-[RULE: 71]
-	epsilon -> [2050][_Module]< "unit" ( NAME ";" { _UsingPath } { _Declaration } ) > @[ENDING]
+[2059][_Module]< "unit" ( NAME ";" { _UsingPath } { _Declaration } ) @ >
+[RULE: 73]
+	epsilon -> [2057][_Module]< "unit" ( NAME ";" { _UsingPath } { _Declaration } ) > @[ENDING]
 		+ CreateObject(Module)
 		+ Field(Module::name, 1)
 		+ Field(Module::paths, 3)
@@ -9806,44 +9835,44 @@
 		+ Field(Module::moduleType, 5)
 		+ StackEnd()
 
-[2053][_Module]< "unit" ( NAME ";" { _UsingPath } { _Declaration } @ ) >
-[RULE: 71]
-	epsilon -> [2051][_Module]< "unit" ( NAME ";" { _UsingPath } { _Declaration } ) @ >
+[2060][_Module]< "unit" ( NAME ";" { _UsingPath } { _Declaration } @ ) >
+[RULE: 73]
+	epsilon -> [2058][_Module]< "unit" ( NAME ";" { _UsingPath } { _Declaration } ) @ >
 
-[2054][_Module]< "unit" ( NAME @ ";" { _UsingPath } { _Declaration } ) >
-[RULE: 71]
-	epsilon -> [2055][_Module]< "unit" ( NAME @ ";" { _UsingPath } { _Declaration } ) >
+[2061][_Module]< "unit" ( NAME @ ";" { _UsingPath } { _Declaration } ) >
+[RULE: 73]
+	epsilon -> [2062][_Module]< "unit" ( NAME @ ";" { _UsingPath } { _Declaration } ) >
 
-[2055][_Module]< "unit" ( NAME @ ";" { _UsingPath } { _Declaration } ) >
-[RULE: 71]
-	token: ";" -> [2042][_Module]< "unit" ( NAME ";" @ { _UsingPath } { _Declaration } ) >
+[2062][_Module]< "unit" ( NAME @ ";" { _UsingPath } { _Declaration } ) >
+[RULE: 73]
+	token: ";" -> [2049][_Module]< "unit" ( NAME ";" @ { _UsingPath } { _Declaration } ) >
 		+ Token(2)
 
-[2056][_Module]< "unit" @ ( NAME ";" { _UsingPath } { _Declaration } ) >
-[RULE: 71]
-	epsilon -> [2041][_Module]< "unit" ( @ NAME ";" { _UsingPath } { _Declaration } ) >
+[2063][_Module]< "unit" @ ( NAME ";" { _UsingPath } { _Declaration } ) >
+[RULE: 73]
+	epsilon -> [2048][_Module]< "unit" ( @ NAME ";" { _UsingPath } { _Declaration } ) >
 
-[2057][_Module]< "unit" @ ( NAME ";" { _UsingPath } { _Declaration } ) >
-[RULE: 71]
-	epsilon -> [2056][_Module]< "unit" @ ( NAME ";" { _UsingPath } { _Declaration } ) >
+[2064][_Module]< "unit" @ ( NAME ";" { _UsingPath } { _Declaration } ) >
+[RULE: 73]
+	epsilon -> [2063][_Module]< "unit" @ ( NAME ";" { _UsingPath } { _Declaration } ) >
 
-[2058][_Module]< @ "module" ( NAME ";" { _UsingPath } { _Declaration } ) >
-[RULE: 71]
-	token: "module" -> [2039][_Module]< "module" @ ( NAME ";" { _UsingPath } { _Declaration } ) >
+[2065][_Module]< @ "module" ( NAME ";" { _UsingPath } { _Declaration } ) >
+[RULE: 73]
+	token: "module" -> [2046][_Module]< "module" @ ( NAME ";" { _UsingPath } { _Declaration } ) >
 		+ Token(0)
 
-[2059][_Module]< @ "unit" ( NAME ";" { _UsingPath } { _Declaration } ) >
-[RULE: 71]
-	token: "unit" -> [2057][_Module]< "unit" @ ( NAME ";" { _UsingPath } { _Declaration } ) >
+[2066][_Module]< @ "unit" ( NAME ";" { _UsingPath } { _Declaration } ) >
+[RULE: 73]
+	token: "unit" -> [2064][_Module]< "unit" @ ( NAME ";" { _UsingPath } { _Declaration } ) >
 		+ Token(0)
 
-[2060][_Module]@ < "module" ( NAME ";" { _UsingPath } { _Declaration } ) >
-[RULE: 71]
-	epsilon -> [2058][_Module]< @ "module" ( NAME ";" { _UsingPath } { _Declaration } ) >
+[2067][_Module]@ < "module" ( NAME ";" { _UsingPath } { _Declaration } ) >
+[RULE: 73]
+	epsilon -> [2065][_Module]< @ "module" ( NAME ";" { _UsingPath } { _Declaration } ) >
 		+ StackBegin()
 
-[2061][_Module]@ < "unit" ( NAME ";" { _UsingPath } { _Declaration } ) >
-[RULE: 71]
-	epsilon -> [2059][_Module]< @ "unit" ( NAME ";" { _UsingPath } { _Declaration } ) >
+[2068][_Module]@ < "unit" ( NAME ";" { _UsingPath } { _Declaration } ) >
+[RULE: 73]
+	epsilon -> [2066][_Module]< @ "unit" ( NAME ";" { _UsingPath } { _Declaration } ) >
 		+ StackBegin()
 
