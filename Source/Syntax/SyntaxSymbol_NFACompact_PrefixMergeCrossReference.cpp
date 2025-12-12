@@ -642,14 +642,15 @@ SyntaxSymbolManager::PrefixMergeCrossReference_Solve
 									}
 									for (auto edge : edgesToMerge)
 									{
-										auto prefixRule = currentState->OutEdges()[*component.firstNode]->input.rule;
-										vint solutionIndex = prefixMergeSolutions.Keys().IndexOf({ prefixRule, currentState });
+										auto prefixRule = edge->input.rule;
+										vint solutionIndex = prefixMergeSolutions.Keys().IndexOf({ prefixRule, prefixRule->startStates[0] });
 										if (solutionIndex != -1)
 										{
 #ifdef LOG_DECISION_MAKING
 											LOGL(L"  [SINGLE USED] " + prefixRule->Name());
 #endif
-											CopyFrom(solution->prefixRules, prefixMergeSolutions.Values()[solutionIndex]->prefixRules, true);
+											CopyFrom(reusedPrefixRules, prefixMergeSolutions.Values()[solutionIndex]->prefixRules);
+											CopyFrom(solution->prefixRules, reusedPrefixRules, true);
 										}
 									}
 									PrefixMergeCrossReference_SolveInState(cache, rule, currentState, edgesToMerge, reusedPrefixRules, solution);
