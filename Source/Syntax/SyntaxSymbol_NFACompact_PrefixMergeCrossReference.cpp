@@ -583,11 +583,15 @@ SyntaxSymbolManager::PrefixMergeCrossReference_Solve
 							}
 							else
 							{
-								auto prefixRule = currentState->OutEdges()[*component.firstNode]->input.rule;
-								if (prefixMergeSolutions.Keys().Contains({ prefixRule, currentState }))
+								auto edge = currentState->OutEdges()[*component.firstNode];
+								if (edge->input.type == EdgeInputType::Rule)
 								{
-									hasSolution = true;
-									break;
+									auto prefixRule = edge->input.rule;
+									if (prefixMergeSolutions.Keys().Contains({ prefixRule, prefixRule->startStates[0] }))
+									{
+										hasSolution = true;
+										break;
+									}
 								}
 							}
 						}
@@ -604,21 +608,25 @@ SyntaxSymbolManager::PrefixMergeCrossReference_Solve
 							{
 								if (component.nodeCount == 1)
 								{
-									auto prefixRule = currentState->OutEdges()[*component.firstNode]->input.rule;
-									vint solutionIndex = prefixMergeSolutions.Keys().IndexOf({ prefixRule, currentState });
-									if (solutionIndex == -1)
+									auto edge = currentState->OutEdges()[*component.firstNode];
+									if (edge->input.type == EdgeInputType::Rule)
 									{
+										auto prefixRule = edge->input.rule;
+										vint solutionIndex = prefixMergeSolutions.Keys().IndexOf({ prefixRule, prefixRule->startStates[0] });
+										if (solutionIndex == -1)
+										{
 #ifdef LOG_DECISION_MAKING
-										LOGL(L"  [SINGLE] " + prefixRule->Name());
+											LOGL(L"  [SINGLE] " + prefixRule->Name());
 #endif
-										solution->prefixRules.Add(prefixRule);
-									}
-									else
-									{
+											solution->prefixRules.Add(prefixRule);
+										}
+										else
+										{
 #ifdef LOG_DECISION_MAKING
-										LOGL(L"  [SINGLE USED] " + prefixRule->Name());
+											LOGL(L"  [SINGLE USED] " + prefixRule->Name());
 #endif
-										CopyFrom(solution->prefixRules, prefixMergeSolutions.Values()[solutionIndex]->prefixRules, true);
+											CopyFrom(solution->prefixRules, prefixMergeSolutions.Values()[solutionIndex]->prefixRules, true);
+										}
 									}
 								}
 							}
