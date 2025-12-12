@@ -206,8 +206,9 @@ SyntaxSymbolManager
 
 				Ptr<PrefixMergeCache>			CreatePrefixMergeCache();
 				static void						PrefixMergeCrossReference_SolveInState(PrefixMergeCache* cache, RuleSymbol* rule, StateSymbol* currentState, collections::Array<EdgeSymbol*>&& edgesToMerge, PrefixMergeSolutionMap& prefixMergeSolutions);
-				static void						PrefixMergeCrossReference_Solve(PrefixMergeCache* cache, RuleSymbol* rule, StateSymbol* startState, PrefixMergeSolutionMap& prefixMergeSolutions);
-				static void						PrefixMergeCrossReference_Apply(PrefixMergeCache* cache, RuleSymbol* rule, StateSymbol* startState, StateList& newStates, EdgeList& newEdges);
+				static void						PrefixMergeCrossReference_Solve(PrefixMergeCache* cache, bool forStartState, RuleSymbol* rule, StateSymbol* startState, PrefixMergeSolutionMap& prefixMergeSolutions);
+				static void						PrefixMergeCrossReference_Solve(PrefixMergeCache* cache, PrefixMergeSolutionMap& prefixMergeSolutions);
+				static void						PrefixMergeCrossReference_Apply(PrefixMergeCache* cache, RuleSymbol* rule, StateSymbol* currentState, Ptr<PrefixMergeSolutionValue> solution, StateList& newStates, EdgeList& newEdges);
 
 				static void						ApplyIncrementalChange(const IncrementalChange& ic, StateList& newStates, EdgeList& newEdges);
 				void							BuildCompactNFAInternal();

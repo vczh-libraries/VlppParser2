@@ -335,6 +335,13 @@ SyntaxSymbolManager::PrefixMergeCrossReference_SolveInState
 				*   extract startSetRules[rule]
 				*   extract any parent rule where startSetRules[parent rule] has rule
 				* Repeat until the test results in all BitSet::Zero (or when all startSetEdges are BitSet::Zero)
+				* 
+				* TODO: At the beginning of the function
+				*   for each directStartSetRules add the solution for the start state to current solution if it exists
+				*   check each solution if they are conflict with each other
+				* TODO: At the end of the function
+				*   enumerate all rules that is not covered by the solution
+				* TODO: Make test cases that covers the above cases
 				*/
 
 #define ERROR_MESSAGE_PREFIX L"vl::glr::parsergen::SyntaxSymbolManager::PrefixMergeCrossReference_SolveInState(PrefixMergeCache*, RuleSymbol*, StateSymbol*, Array<EdgeSymbol*>&&, PrefixMergeSolutionMap&)#"
@@ -489,7 +496,7 @@ SyntaxSymbolManager::PrefixMergeCrossReference_SolveInState
 SyntaxSymbolManager::PrefixMergeCrossReference_Solve
 ***********************************************************************/
 
-			void SyntaxSymbolManager::PrefixMergeCrossReference_Solve(PrefixMergeCache* cache, RuleSymbol* rule, StateSymbol* startState, PrefixMergeSolutionMap& prefixMergeSolutions)
+			void SyntaxSymbolManager::PrefixMergeCrossReference_Solve(PrefixMergeCache* cache, bool forStartState, RuleSymbol* rule, StateSymbol* startState, PrefixMergeSolutionMap& prefixMergeSolutions)
 			{
 #define ERROR_MESSAGE_PREFIX L"vl::glr::parsergen::SyntaxSymbolManager::PrefixMergeCrossReference_Solve(PrefixMergeCache*, RuleSymbol*, StateSymbol*, PrefixMergeSolutionMap&)#"
 				SortedList<StateSymbol*> visitedStates;
@@ -499,67 +506,86 @@ SyntaxSymbolManager::PrefixMergeCrossReference_Solve
 				for (vint i = 0; i < workingStates.Count(); i++)
 				{
 					auto currentState = workingStates[i];
-					Group<EdgeSymbol*, EdgeSymbol*> biDeps;
 
-					for (vint j = 0; j < currentState->OutEdges().Count() - 1; j++)
+					if (forStartState == (currentState == startState))
 					{
-						auto edge1 = currentState->OutEdges()[j];
-						if (edge1->input.type != EdgeInputType::Rule) continue;
-						auto tokens1 = cache->startSetTokens[edge1->input.rule->pmRuleIndex];
-						auto rules1 = cache->startSetRules[edge1->input.rule->pmRuleIndex];
-						rules1.Set(edge1->input.rule->pmRuleIndex);
+						Group<EdgeSymbol*, EdgeSymbol*> biDeps;
 
-						for (vint k = j + 1; k < currentState->OutEdges().Count(); k++)
+						for (vint j = 0; j < currentState->OutEdges().Count() - 1; j++)
 						{
-							auto edge2 = currentState->OutEdges()[k];
-							if (edge2->input.type != EdgeInputType::Rule) continue;
-							auto tokens2 = cache->startSetTokens[edge2->input.rule->pmRuleIndex];
-							auto rules2 = cache->startSetRules[edge2->input.rule->pmRuleIndex];
-							rules2.Set(edge2->input.rule->pmRuleIndex);
+							auto edge1 = currentState->OutEdges()[j];
+							if (edge1->input.type != EdgeInputType::Rule) continue;
+							auto tokens1 = cache->startSetTokens[edge1->input.rule->pmRuleIndex];
+							auto rules1 = cache->startSetRules[edge1->input.rule->pmRuleIndex];
+							rules1.Set(edge1->input.rule->pmRuleIndex);
 
-							CHECK_ERROR(edge1->input.rule != edge2->input.rule, ERROR_MESSAGE_PREFIX L"Internal error: Two edges from the same state should not consume the same rule, this should have been eliminated by MergeEdgesWithSameRuleUsingLeftrec.");
-							if (!(tokens1 & tokens2)) continue;
-							if (!(rules1 & rules2)) continue;
-
-							biDeps.Add(edge1, edge2);
-							biDeps.Add(edge2, edge1);
-						}
-					}
-
-					PartialOrderingProcessor pop;
-					pop.InitWithGroup(currentState->OutEdges(), biDeps);
-					pop.Sort();
-
-					for (auto component : pop.components)
-					{
-						if (component.nodeCount > 1)
-						{
-							Array<EdgeSymbol*> edgesToMerge(component.nodeCount);
-							for (vint j = 0; j < component.nodeCount; j++)
+							for (vint k = j + 1; k < currentState->OutEdges().Count(); k++)
 							{
-								edgesToMerge[j] = currentState->OutEdges()[component.firstNode[j]];
+								auto edge2 = currentState->OutEdges()[k];
+								if (edge2->input.type != EdgeInputType::Rule) continue;
+								auto tokens2 = cache->startSetTokens[edge2->input.rule->pmRuleIndex];
+								auto rules2 = cache->startSetRules[edge2->input.rule->pmRuleIndex];
+								rules2.Set(edge2->input.rule->pmRuleIndex);
+
+								CHECK_ERROR(edge1->input.rule != edge2->input.rule, ERROR_MESSAGE_PREFIX L"Internal error: Two edges from the same state should not consume the same rule, this should have been eliminated by MergeEdgesWithSameRuleUsingLeftrec.");
+								if (!(tokens1 & tokens2)) continue;
+								if (!(rules1 & rules2)) continue;
+
+								biDeps.Add(edge1, edge2);
+								biDeps.Add(edge2, edge1);
 							}
-							PrefixMergeCrossReference_SolveInState(cache, rule, currentState, std::move(edgesToMerge), prefixMergeSolutions);
+						}
+
+						PartialOrderingProcessor pop;
+						pop.InitWithGroup(currentState->OutEdges(), biDeps);
+						pop.Sort();
+
+						for (auto component : pop.components)
+						{
+							if (component.nodeCount > 1)
+							{
+								Array<EdgeSymbol*> edgesToMerge(component.nodeCount);
+								for (vint j = 0; j < component.nodeCount; j++)
+								{
+									edgesToMerge[j] = currentState->OutEdges()[component.firstNode[j]];
+								}
+								PrefixMergeCrossReference_SolveInState(cache, rule, currentState, std::move(edgesToMerge), prefixMergeSolutions);
+							}
 						}
 					}
 
-					for (auto edge : currentState->OutEdges())
+					if (!forStartState)
 					{
-						if (!visitedStates.Contains(edge->To()))
+						for (auto edge : currentState->OutEdges())
 						{
-							visitedStates.Add(edge->To());
-							workingStates.Add(edge->To());
+							if (!visitedStates.Contains(edge->To()))
+							{
+								visitedStates.Add(edge->To());
+								workingStates.Add(edge->To());
+							}
 						}
 					}
 				}
 #undef ERROR_MESSAGE_PREFIX
 			}
 
+			void SyntaxSymbolManager::PrefixMergeCrossReference_Solve(PrefixMergeCache* cache, PrefixMergeSolutionMap& prefixMergeSolutions)
+			{
+				for (auto rule : From(cache->rulesByDeps).Reverse())
+				{
+					PrefixMergeCrossReference_Solve(cache, true, rule, rule->startStates[0], prefixMergeSolutions);
+				}
+				for (auto rule : From(cache->rulesByDeps).Reverse())
+				{
+					PrefixMergeCrossReference_Solve(cache, false, rule, rule->startStates[0], prefixMergeSolutions);
+				}
+			}
+
 /***********************************************************************
 SyntaxSymbolManager::PrefixMergeCrossReference_Apply
 ***********************************************************************/
 
-			void SyntaxSymbolManager::PrefixMergeCrossReference_Apply(PrefixMergeCache* cache, RuleSymbol* rule, StateSymbol* startState, StateList& newStates, EdgeList& newEdges)
+			void SyntaxSymbolManager::PrefixMergeCrossReference_Apply(PrefixMergeCache* cache, RuleSymbol* rule, StateSymbol* currentState, Ptr<PrefixMergeSolutionValue> solution, StateList& newStates, EdgeList& newEdges)
 			{
 				/*
 				* For any state A whose prefix calls look like:

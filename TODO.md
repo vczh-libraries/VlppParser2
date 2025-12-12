@@ -31,7 +31,6 @@
 - [ ] prefix_merge test cases
   - [x] merge prefix in rules
     - 109236 -> 10141 -> 6663 states: `Test\ParserLog\BuiltIn-Workflow\Trace-1[Codegen_WorkflowHints].txt`, meanwhile 6750 in master
-    - second reducing by optimization: `[pm-lr]->leftrec->ending` is bad, just make one ending
   - [ ] automatically identify prefix_merge
 - [ ] Built-in parsers:
   - [ ] C++

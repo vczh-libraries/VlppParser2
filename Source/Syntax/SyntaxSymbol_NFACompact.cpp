@@ -79,17 +79,16 @@ SyntaxSymbolManager::BuildCompactNFAInternal
 				// detect and ban indirect left recursion
 				auto pmCache = CreatePrefixMergeCache();
 				if (!pmCache) return;
+				PrefixMergeCrossReference_Solve(pmCache.Obj(), prefixMergeSolutions);
 
-				for (auto [ruleSymbol, i] : indexed(rules.map.Values()))
+				for (auto [key, index] : indexed(prefixMergeSolutions.Keys()))
 				{
-					PrefixMergeCrossReference_Solve(pmCache.Obj(), ruleSymbol, ruleSymbol->startStates[0], prefixMergeSolutions);
-				}
-
-				for (auto [ruleSymbol, i] : indexed(rules.map.Values()))
-				{
+					auto [ruleSymbol, currentState] = key;
+					vint i = rules.map.Keys().IndexOf(ruleSymbol->Name());
 					auto&& newStates = *newStatesAndEdges[i].key.Obj();
 					auto&& newEdges = *newStatesAndEdges[i].value.Obj();
-					PrefixMergeCrossReference_Apply(pmCache.Obj(), ruleSymbol, ruleSymbol->startStates[0], newStates, newEdges);
+					auto solution = prefixMergeSolutions[key];
+					PrefixMergeCrossReference_Apply(pmCache.Obj(), ruleSymbol, currentState, solution, newStates, newEdges);
 				}
 
 				states.Clear();
