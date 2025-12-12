@@ -30,7 +30,7 @@ FilePath LogSyntaxWithPath(
 			auto value = manager.prefixMergeSolutions[key];
 			writer.WriteLine(L"  " + key.get<0>()->Name() + L": " + key.get<1>()->label);
 			writer.WriteString(L"    edges: ");
-			for (auto [edge, index] : indexed(value->edgesToMerge))
+			for (auto [edge, index] : indexed(From(value->edgesToMerge).OrderByKey([](auto edge) { return edge->input.rule->Name(); })))
 			{
 				if (index > 0) writer.WriteString(L", ");
 				writer.WriteString(edge->input.rule->Name());
