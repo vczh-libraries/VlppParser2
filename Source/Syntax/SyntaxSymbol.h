@@ -171,8 +171,7 @@ SyntaxSymbolManager
 
 			struct PrefixMergeSolutionValue
 			{
-				collections::Array<EdgeSymbol*>			edgesToMerge;
-				collections::List<RuleSymbol*>			prefixRules;
+				collections::SortedList<RuleSymbol*>			prefixRules;
 			};
 			using PrefixMergeSolutionKey = Tuple<RuleSymbol*, StateSymbol*>;
 			using PrefixMergeSolutionMap = collections::Dictionary<PrefixMergeSolutionKey, Ptr<PrefixMergeSolutionValue>>;
@@ -183,19 +182,19 @@ SyntaxSymbolManager
 				using EdgeList = collections::List<Ptr<EdgeSymbol>>;
 				using StartEndStatePair = collections::Pair<StateSymbol*, StateSymbol*>;
 			protected:
-				MappedOwning<RuleSymbol>	rules;
-				StateList					states;
-				EdgeList					edges;
-				ParserSymbolManager&		global;
-				SyntaxPhase					phase = SyntaxPhase::EpsilonNFA;
+				MappedOwning<RuleSymbol>						rules;
+				StateList										states;
+				EdgeList										edges;
+				ParserSymbolManager&							global;
+				SyntaxPhase										phase = SyntaxPhase::EpsilonNFA;
 
 			protected:
 				struct IncrementalChange
 				{
-					StateList								createdStates;
-					EdgeList								createdEdges;
-					collections::SortedList<StateSymbol*>	reusedStates;
-					collections::SortedList<EdgeSymbol*>	reusedEdges;
+					StateList									createdStates;
+					EdgeList									createdEdges;
+					collections::SortedList<StateSymbol*>		reusedStates;
+					collections::SortedList<EdgeSymbol*>		reusedEdges;
 				};
 
 				static StartEndStatePair		EliminateEpsilonEdges(RuleSymbol* rule, StateList& newStates, EdgeList& newEdges);
@@ -205,7 +204,7 @@ SyntaxSymbolManager
 				static void						MergeEdgesWithSameRuleUsingLeftrec(RuleSymbol* rule, StateSymbol* startState, StateList& newStates, EdgeList& newEdges);
 
 				Ptr<PrefixMergeCache>			CreatePrefixMergeCache();
-				static void						PrefixMergeCrossReference_SolveInState(PrefixMergeCache* cache, RuleSymbol* rule, StateSymbol* currentState, collections::Array<EdgeSymbol*>&& edgesToMerge, PrefixMergeSolutionMap& prefixMergeSolutions);
+				static void						PrefixMergeCrossReference_SolveInState(PrefixMergeCache* cache, RuleSymbol* rule, StateSymbol* currentState, collections::Array<EdgeSymbol*>&& edgesToMerge, Ptr<PrefixMergeSolutionValue> solution);
 				static void						PrefixMergeCrossReference_Solve(PrefixMergeCache* cache, bool forStartState, RuleSymbol* rule, StateSymbol* startState, PrefixMergeSolutionMap& prefixMergeSolutions);
 				static void						PrefixMergeCrossReference_Solve(PrefixMergeCache* cache, PrefixMergeSolutionMap& prefixMergeSolutions);
 				static void						PrefixMergeCrossReference_Apply(PrefixMergeCache* cache, RuleSymbol* rule, StateSymbol* currentState, Ptr<PrefixMergeSolutionValue> solution, StateList& newStates, EdgeList& newEdges);

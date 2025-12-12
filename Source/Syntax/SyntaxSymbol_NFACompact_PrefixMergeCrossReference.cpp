@@ -321,7 +321,7 @@ SyntaxSymbolManager::CreatePrefixMerge
 SyntaxSymbolManager::PrefixMergeCrossReference_SolveInState
 ***********************************************************************/
 
-			void SyntaxSymbolManager::PrefixMergeCrossReference_SolveInState(PrefixMergeCache * cache, RuleSymbol * rule, StateSymbol * currentState, collections::Array<EdgeSymbol*>&& edgesToMerge, PrefixMergeSolutionMap& prefixMergeSolutions)
+			void SyntaxSymbolManager::PrefixMergeCrossReference_SolveInState(PrefixMergeCache * cache, RuleSymbol * rule, StateSymbol * currentState, collections::Array<EdgeSymbol*>&& edgesToMerge, Ptr<PrefixMergeSolutionValue> solution)
 			{
 				/*
 				* To find out the minimum start set of rules to inject
@@ -345,48 +345,6 @@ SyntaxSymbolManager::PrefixMergeCrossReference_SolveInState
 				*/
 
 #define ERROR_MESSAGE_PREFIX L"vl::glr::parsergen::SyntaxSymbolManager::PrefixMergeCrossReference_SolveInState(PrefixMergeCache*, RuleSymbol*, StateSymbol*, Array<EdgeSymbol*>&&, PrefixMergeSolutionMap&)#"
-				auto solution = Ptr(new PrefixMergeSolutionValue);
-
-#ifdef LOG_DECISION_MAKING
-				if (prefixMergeSolutions.Count() == 0)
-				{
-					LOGL(L"[CACHE]");
-					LOGL(L"  [RULES]");
-					for (auto rule : cache->rulesByDeps)
-					{
-						LOG(L"    " + rule->Name() + L" :");
-						auto&& startSetRule = cache->directStartSetRules[rule->pmRuleIndex];
-						for (auto rule : cache->rulesByDeps)
-						{
-							if (startSetRule[rule->pmRuleIndex]) LOG(L" " + rule->Name());
-						}
-						LOGL(L"");
-					}
-					LOGL(L"  [START SET]");
-					for (auto rule : cache->rulesByDeps)
-					{
-						LOG(L"    " + rule->Name() + L" :");
-						auto&& startSetRule = cache->startSetRules[rule->pmRuleIndex];
-						for (auto rule : cache->rulesByDeps)
-						{
-							if (startSetRule[rule->pmRuleIndex]) LOG(L" " + rule->Name());
-						}
-						LOGL(L"");
-					}
-					LOGL(L"  [REVERSED]");
-					for (auto rule : cache->rulesByDeps)
-					{
-						LOG(L"    " + rule->Name() + L" :");
-						auto&& startSetRule = cache->reverseStartSetRules[rule->pmRuleIndex];
-						for (auto rule : cache->rulesByDeps)
-						{
-							if (startSetRule[rule->pmRuleIndex]) LOG(L" " + rule->Name());
-						}
-						LOGL(L"");
-					}
-					LOGL(L"");
-				}
-#endif
 
 #ifdef LOG_DECISION_MAKING
 				LOGL(L"[PMCR] " + rule->Name() + L" @ " + currentState->label);
@@ -416,13 +374,13 @@ SyntaxSymbolManager::PrefixMergeCrossReference_SolveInState
 #endif
 					bool matchedOthers = false;
 
-					for (auto ruleToTest : cache->rulesByDeps)
+					for (auto prefixRule : cache->rulesByDeps)
 					{
 						vint containedCount = 0;
 						vint exclusiveCount = 0;
 						vint otherCount = 0;
-						auto startSetRule = cache->startSetRules[ruleToTest->pmRuleIndex];
-						startSetRule.Set(ruleToTest->pmRuleIndex);
+						auto startSetRule = cache->startSetRules[prefixRule->pmRuleIndex];
+						startSetRule.Set(prefixRule->pmRuleIndex);
 
 						for (vint edgeIndex = 0; edgeIndex < edgesToMerge.Count(); edgeIndex++)
 						{
@@ -447,7 +405,7 @@ SyntaxSymbolManager::PrefixMergeCrossReference_SolveInState
 
 						if (containedCount > 0 && otherCount == 0)
 						{
-							auto reverseStartSetRule = cache->reverseStartSetRules[ruleToTest->pmRuleIndex];
+							auto reverseStartSetRule = cache->reverseStartSetRules[prefixRule->pmRuleIndex];
 							auto startSetToExtract = startSetRule | reverseStartSetRule;
 
 							for (vint edgeIndex = 0; edgeIndex < edgesToMerge.Count(); edgeIndex++)
@@ -455,9 +413,12 @@ SyntaxSymbolManager::PrefixMergeCrossReference_SolveInState
 								startSetEdges[edgeIndex] -= startSetToExtract;
 							}
 
-							solution->prefixRules.Add(ruleToTest);
+							if (!solution->prefixRules.Contains(prefixRule))
+							{
+								solution->prefixRules.Add(prefixRule);
+							}
 #ifdef LOG_DECISION_MAKING
-							LOG(L"    [FOUND " + ruleToTest->Name() + L"] :");
+							LOG(L"    [FOUND " + prefixRule->Name() + L"] :");
 							for (auto rule : cache->rulesByDeps)
 							{
 								if (startSetRule[rule->pmRuleIndex]) LOG(L" " + rule->Name());
@@ -471,8 +432,6 @@ SyntaxSymbolManager::PrefixMergeCrossReference_SolveInState
 					CHECK_ERROR(!matchedOthers, ERROR_MESSAGE_PREFIX L"Internal error: Unable to find a proper prefix merge solution.");
 				}
 
-				solution->edgesToMerge = std::move(edgesToMerge);
-				prefixMergeSolutions.Add({ rule, currentState }, solution);
 #ifdef LOG_DECISION_MAKING
 				LOG(L"  [MATCHED] :");
 				for (auto rule : solution->prefixRules)
@@ -486,18 +445,56 @@ SyntaxSymbolManager::PrefixMergeCrossReference_SolveInState
 #undef ERROR_MESSAGE_PREFIX
 			}
 
-#if defined VCZH_MSVC && defined _DEBUG
-#undef LOG_DECISION_MAKING
-#undef LOG
-#undef LOGL
-#endif
-
 /***********************************************************************
 SyntaxSymbolManager::PrefixMergeCrossReference_Solve
 ***********************************************************************/
 
 			void SyntaxSymbolManager::PrefixMergeCrossReference_Solve(PrefixMergeCache* cache, bool forStartState, RuleSymbol* rule, StateSymbol* startState, PrefixMergeSolutionMap& prefixMergeSolutions)
 			{
+				auto logCache = [&]()
+				{
+#ifdef LOG_DECISION_MAKING
+					if (prefixMergeSolutions.Count() == 0)
+					{
+						LOGL(L"[CACHE]");
+						LOGL(L"  [RULES]");
+						for (auto rule : cache->rulesByDeps)
+						{
+							LOG(L"    " + rule->Name() + L" :");
+							auto&& startSetRule = cache->directStartSetRules[rule->pmRuleIndex];
+							for (auto rule : cache->rulesByDeps)
+							{
+								if (startSetRule[rule->pmRuleIndex]) LOG(L" " + rule->Name());
+							}
+							LOGL(L"");
+						}
+						LOGL(L"  [START SET]");
+						for (auto rule : cache->rulesByDeps)
+						{
+							LOG(L"    " + rule->Name() + L" :");
+							auto&& startSetRule = cache->startSetRules[rule->pmRuleIndex];
+							for (auto rule : cache->rulesByDeps)
+							{
+								if (startSetRule[rule->pmRuleIndex]) LOG(L" " + rule->Name());
+							}
+							LOGL(L"");
+						}
+						LOGL(L"  [REVERSED]");
+						for (auto rule : cache->rulesByDeps)
+						{
+							LOG(L"    " + rule->Name() + L" :");
+							auto&& startSetRule = cache->reverseStartSetRules[rule->pmRuleIndex];
+							for (auto rule : cache->rulesByDeps)
+							{
+								if (startSetRule[rule->pmRuleIndex]) LOG(L" " + rule->Name());
+							}
+							LOGL(L"");
+						}
+						LOGL(L"");
+					}
+#endif
+				};
+
 #define ERROR_MESSAGE_PREFIX L"vl::glr::parsergen::SyntaxSymbolManager::PrefixMergeCrossReference_Solve(PrefixMergeCache*, RuleSymbol*, StateSymbol*, PrefixMergeSolutionMap&)#"
 				SortedList<StateSymbol*> visitedStates;
 				List<StateSymbol*> workingStates;
@@ -540,17 +537,31 @@ SyntaxSymbolManager::PrefixMergeCrossReference_Solve
 						pop.InitWithGroup(currentState->OutEdges(), biDeps);
 						pop.Sort();
 
-						for (auto component : pop.components)
+						if (From(pop.components).Any([](auto component) { return component.nodeCount > 1; }))
 						{
-							if (component.nodeCount > 1)
+							logCache();
+							auto solution = Ptr(new PrefixMergeSolutionValue);
+							for (auto component : pop.components)
 							{
-								Array<EdgeSymbol*> edgesToMerge(component.nodeCount);
-								for (vint j = 0; j < component.nodeCount; j++)
+								if (component.nodeCount > 1)
 								{
-									edgesToMerge[j] = currentState->OutEdges()[component.firstNode[j]];
+									Array<EdgeSymbol*> edgesToMerge(component.nodeCount);
+									for (vint j = 0; j < component.nodeCount; j++)
+									{
+										edgesToMerge[j] = currentState->OutEdges()[component.firstNode[j]];
+									}
+									PrefixMergeCrossReference_SolveInState(cache, rule, currentState, std::move(edgesToMerge), solution);
 								}
-								PrefixMergeCrossReference_SolveInState(cache, rule, currentState, std::move(edgesToMerge), prefixMergeSolutions);
+								else
+								{
+									auto prefixRule = currentState->OutEdges()[*component.firstNode]->input.rule;
+									if (!solution->prefixRules.Contains(prefixRule))
+									{
+										solution->prefixRules.Add(prefixRule);
+									}
+								}
 							}
+							prefixMergeSolutions.Add({ rule, currentState }, solution);
 						}
 					}
 
@@ -580,6 +591,12 @@ SyntaxSymbolManager::PrefixMergeCrossReference_Solve
 					PrefixMergeCrossReference_Solve(cache, false, rule, rule->startStates[0], prefixMergeSolutions);
 				}
 			}
+
+#if defined VCZH_MSVC && defined _DEBUG
+#undef LOG_DECISION_MAKING
+#undef LOG
+#undef LOGL
+#endif
 
 /***********************************************************************
 SyntaxSymbolManager::PrefixMergeCrossReference_Apply
