@@ -541,11 +541,22 @@ SyntaxSymbolManager::PrefixMergeCrossReference_Solve
 #endif
 				};
 
+				/*
+				* If forStartState is true, only process the start state, otherwise process all reachable states except the start state
+				* forStartState == true will be applied all rules in start set dependency order first
+				* therefore whenever we see a rule input edge, its (rule, startState) should already have a solution
+				* 
+				* When making a solution, if any Rule input edge already have a solution, reuse it
+				* Find edges whose start set have intersection, process each group
+				* Merge all solutions into one
+				*/
+
 #define ERROR_MESSAGE_PREFIX L"vl::glr::parsergen::SyntaxSymbolManager::PrefixMergeCrossReference_Solve(PrefixMergeCache*, RuleSymbol*, StateSymbol*, PrefixMergeSolutionMap&)#"
 				SortedList<StateSymbol*> visitedStates;
 				List<StateSymbol*> workingStates;
 				workingStates.Add(startState);
 
+				// Traverse all states
 				for (vint i = 0; i < workingStates.Count(); i++)
 				{
 					auto currentState = workingStates[i];
@@ -554,6 +565,7 @@ SyntaxSymbolManager::PrefixMergeCrossReference_Solve
 					{
 						Group<EdgeSymbol*, EdgeSymbol*> biDeps;
 
+						// Group all edges that have intersection in start set
 						for (vint j = 0; j < currentState->OutEdges().Count() - 1; j++)
 						{
 							auto edge1 = currentState->OutEdges()[j];
@@ -583,16 +595,19 @@ SyntaxSymbolManager::PrefixMergeCrossReference_Solve
 						pop.InitWithGroup(currentState->OutEdges(), biDeps);
 						pop.Sort();
 
+						// Find if a solution needs to be created for the current state
 						bool hasSolution = false;
 						for (auto component : pop.components)
 						{
 							if (component.nodeCount > 1)
 							{
+								// if there is a group with multiple edges, yes
 								hasSolution = true;
 								break;
 							}
 							else
 							{
+								// if the input rule has a solution on its start state, yes
 								auto edge = currentState->OutEdges()[*component.firstNode];
 								if (edge->input.type == EdgeInputType::Rule)
 								{
@@ -606,13 +621,18 @@ SyntaxSymbolManager::PrefixMergeCrossReference_Solve
 							}
 						}
 
+						// skip the current state if no solution is needed
+						// edges are grouped by start set intersections
+						// so whenever a rule input has a solution on its start state or not
+						// the rule or its solution will never conflict with other groups
+						// since the solution will be a subset of union of all start sets for the group
 						if (hasSolution)
 						{
 							logCache();
 #ifdef LOG_DECISION_MAKING
 							LOGL(L"[PMCR] " + rule->Name() + L" @ " + currentState->label);
 #endif
-
+							// Check all groups with single edge
 							auto solution = Ptr(new PrefixMergeSolutionValue);
 							for (auto component : pop.components)
 							{
@@ -628,6 +648,9 @@ SyntaxSymbolManager::PrefixMergeCrossReference_Solve
 #ifdef LOG_DECISION_MAKING
 											LOGL(L"  [SINGLE] " + prefixRule->Name());
 #endif
+											// if the input rule has no solution on its start state
+											// but the current state needs a solution
+											// then the input rule is a prefix
 											solution->prefixRules.Add(prefixRule);
 										}
 										else
@@ -635,15 +658,19 @@ SyntaxSymbolManager::PrefixMergeCrossReference_Solve
 #ifdef LOG_DECISION_MAKING
 											LOGL(L"  [SINGLE USED] " + prefixRule->Name());
 #endif
+											// otherwise, copy all prefix rules
 											CopyFrom(solution->prefixRules, prefixMergeSolutions.Values()[solutionIndex]->prefixRules, true);
 										}
 									}
 								}
 							}
+
+							// Check all groups with multiple edges
 							for (auto component : pop.components)
 							{
 								if (component.nodeCount > 1)
 								{
+									// collect all existing solutions for each edge
 									Array<EdgeSymbol*> edgesToMerge(component.nodeCount);
 									List<RuleSymbol*> reusedPrefixRules;
 									for (vint j = 0; j < component.nodeCount; j++)
@@ -659,10 +686,20 @@ SyntaxSymbolManager::PrefixMergeCrossReference_Solve
 #ifdef LOG_DECISION_MAKING
 											LOGL(L"  [SINGLE USED] " + prefixRule->Name());
 #endif
-											CopyFrom(reusedPrefixRules, prefixMergeSolutions.Values()[solutionIndex]->prefixRules);
-											CopyFrom(solution->prefixRules, reusedPrefixRules, true);
+											CopyFrom(reusedPrefixRules, prefixMergeSolutions.Values()[solutionIndex]->prefixRules, true);
 										}
 									}
+
+									// copy all prefix rules, ensure no duplication
+									for (auto prefixRule : reusedPrefixRules)
+									{
+										if (!solution->prefixRules.Contains(prefixRule))
+										{
+											solution->prefixRules.Add(prefixRule);
+										}
+									}
+
+									// solve for the current group
 									PrefixMergeCrossReference_SolveInState(cache, rule, currentState, edgesToMerge, reusedPrefixRules, solution);
 								}
 							}
@@ -680,6 +717,7 @@ SyntaxSymbolManager::PrefixMergeCrossReference_Solve
 						}
 					}
 
+					// continue if required
 					if (!forStartState)
 					{
 						for (auto edge : currentState->OutEdges())
