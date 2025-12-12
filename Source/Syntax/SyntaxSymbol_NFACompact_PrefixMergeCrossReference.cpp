@@ -395,6 +395,16 @@ SyntaxSymbolManager::PrefixMergeCrossReference_SolveInState
 						LOGL(L"");
 					}
 #endif
+					bool allZero = true;
+					for (vint edgeIndex = 0; edgeIndex < edgesToMerge.Count(); edgeIndex++)
+					{
+						if (startSetEdges[edgeIndex] != BitSet::Zero)
+						{
+							allZero = false;
+							break;
+						}
+					}
+					if (allZero) return;
 				}
 
 				{
