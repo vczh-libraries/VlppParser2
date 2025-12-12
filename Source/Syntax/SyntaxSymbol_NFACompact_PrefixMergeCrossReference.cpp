@@ -337,7 +337,7 @@ SyntaxSymbolManager::PrefixMergeCrossReference_SolveInState
 				* Repeat until the test results in all BitSet::Zero (or when all startSetEdges are BitSet::Zero)
 				* 
 				* TODO: At the beginning of the function
-				*   for each directStartSetRules add the solution for the start state to current solution if it exists
+				*   for each directStartSetRules consider its solution
 				*   check each solution if they are conflict with each other
 				* TODO: At the end of the function
 				*   enumerate all rules that is not covered by the solution
