@@ -30,7 +30,7 @@ FilePath LogSyntaxWithPath(
 			auto value = manager.prefixMergeSolutions[key];
 			writer.WriteLine(L"  " + key.get<0>()->Name() + L": " + key.get<1>()->label);
 			writer.WriteString(L"    prefixes: ");
-			for (auto [rule, index] : indexed(value->prefixRules))
+			for (auto [rule, index] : indexed(From(value->prefixRules).OrderByKey([](auto k) { return k->Name(); })))
 			{
 				if (index > 0) writer.WriteString(L", ");
 				writer.WriteString(rule->Name());

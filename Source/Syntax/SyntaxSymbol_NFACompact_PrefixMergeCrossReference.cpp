@@ -347,7 +347,12 @@ SyntaxSymbolManager::PrefixMergeCrossReference_SolveInState
 #define ERROR_MESSAGE_PREFIX L"vl::glr::parsergen::SyntaxSymbolManager::PrefixMergeCrossReference_SolveInState(PrefixMergeCache*, RuleSymbol*, StateSymbol*, Array<EdgeSymbol*>&&, PrefixMergeSolutionMap&)#"
 
 #ifdef LOG_DECISION_MAKING
-				LOGL(L"[PMCR] " + rule->Name() + L" @ " + currentState->label);
+				LOG(L"  [GROUPED] :");
+				for (auto [edge, index] : indexed(edgesToMerge))
+				{
+					LOG(L" " + edge->input.rule->Name());
+				}
+				LOGL(L"");
 #endif
 
 				Array<BitSet> startSetEdges(edgesToMerge.Count());
@@ -360,10 +365,10 @@ SyntaxSymbolManager::PrefixMergeCrossReference_SolveInState
 				{
 				FOUND_ONE_SOLUTION:
 #ifdef LOG_DECISION_MAKING
-					LOGL(L"  [ITERATION]");
+					LOGL(L"    [ITERATION]");
 					for (auto [edge, index] : indexed(edgesToMerge))
 					{
-						LOG(L"    " + edge->input.rule->Name() + L" :");
+						LOG(L"      " + edge->input.rule->Name() + L" :");
 						auto&& startSetEdge = startSetEdges[index];
 						for (auto rule : cache->rulesByDeps)
 						{
@@ -431,16 +436,6 @@ SyntaxSymbolManager::PrefixMergeCrossReference_SolveInState
 
 					CHECK_ERROR(!matchedOthers, ERROR_MESSAGE_PREFIX L"Internal error: Unable to find a proper prefix merge solution.");
 				}
-
-#ifdef LOG_DECISION_MAKING
-				LOG(L"  [MATCHED] :");
-				for (auto rule : solution->prefixRules)
-				{
-					LOG(L" " + rule->Name());
-				}
-				LOGL(L"");
-				LOGL(L"");
-#endif
 
 #undef ERROR_MESSAGE_PREFIX
 			}
@@ -540,7 +535,25 @@ SyntaxSymbolManager::PrefixMergeCrossReference_Solve
 						if (From(pop.components).Any([](auto component) { return component.nodeCount > 1; }))
 						{
 							logCache();
+#ifdef LOG_DECISION_MAKING
+							LOGL(L"[PMCR] " + rule->Name() + L" @ " + currentState->label);
+#endif
+
 							auto solution = Ptr(new PrefixMergeSolutionValue);
+							for (auto component : pop.components)
+							{
+								if (component.nodeCount == 1)
+								{
+									auto prefixRule = currentState->OutEdges()[*component.firstNode]->input.rule;
+									if (!solution->prefixRules.Contains(prefixRule))
+									{
+#ifdef LOG_DECISION_MAKING
+										LOGL(L"  [SINGLE] " + prefixRule->Name());
+#endif
+										solution->prefixRules.Add(prefixRule);
+									}
+								}
+							}
 							for (auto component : pop.components)
 							{
 								if (component.nodeCount > 1)
@@ -552,16 +565,18 @@ SyntaxSymbolManager::PrefixMergeCrossReference_Solve
 									}
 									PrefixMergeCrossReference_SolveInState(cache, rule, currentState, std::move(edgesToMerge), solution);
 								}
-								else
-								{
-									auto prefixRule = currentState->OutEdges()[*component.firstNode]->input.rule;
-									if (!solution->prefixRules.Contains(prefixRule))
-									{
-										solution->prefixRules.Add(prefixRule);
-									}
-								}
 							}
 							prefixMergeSolutions.Add({ rule, currentState }, solution);
+
+#ifdef LOG_DECISION_MAKING
+							LOG(L"  [MATCHED] :");
+							for (auto rule : solution->prefixRules)
+							{
+								LOG(L" " + rule->Name());
+							}
+							LOGL(L"");
+							LOGL(L"");
+#endif
 						}
 					}
 
