@@ -348,6 +348,10 @@ SyntaxSymbolManager::PrefixMergeCrossReference_SolveInState
 				*   and we will have to break all node that depends on this prefix rule into multiple prefix rules
 				*   so those parents will never be prefix rules
 				*   after parent nodes are removed, the graph breaks into multiple sub graphs, maybe disconnected
+				* The goal is to pick up all smaller graphs that:
+				*   they are big enough
+				*   their leaf nodes do no intersect with each other
+				*   leaf nodes of the current graph is covered by them
 				*/
 
 #define ERROR_MESSAGE_PREFIX L"vl::glr::parsergen::SyntaxSymbolManager::PrefixMergeCrossReference_SolveInState(PrefixMergeCache*, RuleSymbol*, StateSymbol*, Array<EdgeSymbol*>&, List<RuleSymbol*>&, PrefixMergeSolutionMap&)#"
