@@ -5,22 +5,16 @@
     prefixes: _PrimitiveExprOnly, _PrimitiveShared, _PrimitiveTypeOnly
   _Expr:  BEGIN 
     prefixes: _PrimitiveExprOnly, _PrimitiveShared, _PrimitiveTypeOnly
-  _Expr: < _Expr "*" @ _Expr1 >
-    prefixes: _PrimitiveExprOnly, _PrimitiveShared, _PrimitiveTypeOnly
   _Expr0:  BEGIN 
-    prefixes: _PrimitiveExprOnly, _PrimitiveShared, _PrimitiveTypeOnly
-  _Expr0: < _LongType "{" @ { _Expr ; "," } "}" >
-    prefixes: _PrimitiveExprOnly, _PrimitiveShared, _PrimitiveTypeOnly
-  _Expr0: < _LongType "{" { _Expr ; "," @ } "}" >
     prefixes: _PrimitiveExprOnly, _PrimitiveShared, _PrimitiveTypeOnly
   _Expr1:  BEGIN 
     prefixes: _PrimitiveExprOnly, _PrimitiveShared, _PrimitiveTypeOnly
-  _Expr1: < _Expr1 "(" @ { _Expr ; "," } ")" >
-    prefixes: _PrimitiveExprOnly, _PrimitiveShared, _PrimitiveTypeOnly
-  _Expr1: < _Expr1 "(" { _Expr ; "," @ } ")" >
-    prefixes: _PrimitiveExprOnly, _PrimitiveShared, _PrimitiveTypeOnly
-  _PrimitiveExprOnly: <! "(" @ !_Expr ")" !>
-    prefixes: _PrimitiveExprOnly, _PrimitiveShared, _PrimitiveTypeOnly
+
+[PREFIX MERGE APPLICATIONS]
+  Module:  BEGIN 
+    [applies: _PrimitiveExprOnly, _PrimitiveShared, _PrimitiveTypeOnly] [on: _Expr, _LongType]
+  _Expr0:  BEGIN 
+    [applies: _PrimitiveShared, _PrimitiveTypeOnly] [on: _LongType, _PrimitiveShared]
 
 [0][_Name] BEGIN 
 [RULE: 0]

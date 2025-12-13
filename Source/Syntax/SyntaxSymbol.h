@@ -169,9 +169,17 @@ SyntaxSymbolManager
 
 			struct PrefixMergeCache;
 
+			struct PrefixMergeSolutionApplication
+			{
+				collections::Array<EdgeSymbol*>					edgesToMerge;
+				collections::SortedList<RuleSymbol*>			prefixRules;
+			};
+			using PrefixMergeSolutionApplicationList = collections::List<Ptr<PrefixMergeSolutionApplication>>;
+
 			struct PrefixMergeSolutionValue
 			{
 				collections::SortedList<RuleSymbol*>			prefixRules;
+				PrefixMergeSolutionApplicationList				applications;
 			};
 			using PrefixMergeSolutionKey = Tuple<RuleSymbol*, StateSymbol*>;
 			using PrefixMergeSolutionMap = collections::Dictionary<PrefixMergeSolutionKey, Ptr<PrefixMergeSolutionValue>>;
@@ -208,9 +216,7 @@ SyntaxSymbolManager
 													PrefixMergeCache* cache,
 													RuleSymbol* rule,
 													StateSymbol* currentState,
-													collections::Array<EdgeSymbol*>& edgesToMerge,
-													collections::List<RuleSymbol*>& reusedPrefixRules,
-													Ptr<PrefixMergeSolutionValue> solution);
+													Ptr<PrefixMergeSolutionApplication> application);
 				static void						PrefixMergeCrossReference_Solve(
 													PrefixMergeCache* cache,
 													bool forStartState,

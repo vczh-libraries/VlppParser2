@@ -325,9 +325,7 @@ SyntaxSymbolManager::PrefixMergeCrossReference_SolveInState
 				PrefixMergeCache * cache,
 				RuleSymbol * rule,
 				StateSymbol * currentState,
-				collections::Array<EdgeSymbol*>& edgesToMerge,
-				collections::List<RuleSymbol*>& reusedPrefixRules,
-				Ptr<PrefixMergeSolutionValue> solution)
+				Ptr<PrefixMergeSolutionApplication> application)
 			{
 				/*
 				* To find out the minimum start set of rules to inject
@@ -358,25 +356,24 @@ SyntaxSymbolManager::PrefixMergeCrossReference_SolveInState
 
 #ifdef LOG_DECISION_MAKING
 				LOG(L"  [GROUPED] :");
-				for (auto [edge, index] : indexed(edgesToMerge))
+				for (auto [edge, index] : indexed(application->edgesToMerge))
 				{
 					LOG(L" " + edge->input.rule->Name());
 				}
 				LOGL(L"");
 #endif
 				// prepare startSetEdges to be startSetRules of each edge's input rule
-				Array<BitSet> startSetEdges(edgesToMerge.Count());
-				for (auto [edge, index] : indexed(edgesToMerge))
+				Array<BitSet> startSetEdges(application->edgesToMerge.Count());
+				for (auto [edge, index] : indexed(application->edgesToMerge))
 				{
 					startSetEdges[index] = cache->startSetRules[edge->input.rule->pmRuleIndex];
 					startSetEdges[index].Set(edge->input.rule->pmRuleIndex);
 				}
 
-				// reusedPrefixRules are part of the solution that has already been picked up
-				// process startSetEdges against reusedPrefixRules
-				if (reusedPrefixRules.Count() > 0)
+				// at this moment, application->prefixRules are part of the solution that has already been picked u
+				if (application->prefixRules.Count() > 0)
 				{
-					for (auto prefixRule : reusedPrefixRules)
+					for (auto prefixRule : application->prefixRules)
 					{
 						// take away all rules that depends or reversed depends on the prefix rule
 						auto startSetRule = cache->startSetRules[prefixRule->pmRuleIndex];
@@ -384,14 +381,14 @@ SyntaxSymbolManager::PrefixMergeCrossReference_SolveInState
 						auto reverseStartSetRule = cache->reverseStartSetRules[prefixRule->pmRuleIndex];
 						auto startSetToExtract = startSetRule | reverseStartSetRule;
 
-						for (vint edgeIndex = 0; edgeIndex < edgesToMerge.Count(); edgeIndex++)
+						for (vint edgeIndex = 0; edgeIndex < application->edgesToMerge.Count(); edgeIndex++)
 						{
 							startSetEdges[edgeIndex] -= startSetToExtract;
 						}
 					}
 #ifdef LOG_DECISION_MAKING
 					LOGL(L"    [APPLIED REUSED]");
-					for (auto [edge, index] : indexed(edgesToMerge))
+					for (auto [edge, index] : indexed(application->edgesToMerge))
 					{
 						LOG(L"      " + edge->input.rule->Name() + L" :");
 						auto&& startSetEdge = startSetEdges[index];
@@ -404,7 +401,7 @@ SyntaxSymbolManager::PrefixMergeCrossReference_SolveInState
 #endif
 					// if startSetEdges become all empty, no more prefix rule will be found
 					bool allZero = true;
-					for (vint edgeIndex = 0; edgeIndex < edgesToMerge.Count(); edgeIndex++)
+					for (vint edgeIndex = 0; edgeIndex < application->edgesToMerge.Count(); edgeIndex++)
 					{
 						if (startSetEdges[edgeIndex] != BitSet::Zero)
 						{
@@ -419,7 +416,7 @@ SyntaxSymbolManager::PrefixMergeCrossReference_SolveInState
 				FOUND_ONE_SOLUTION:
 #ifdef LOG_DECISION_MAKING
 					LOGL(L"    [ITERATION]");
-					for (auto [edge, index] : indexed(edgesToMerge))
+					for (auto [edge, index] : indexed(application->edgesToMerge))
 					{
 						LOG(L"      " + edge->input.rule->Name() + L" :");
 						auto&& startSetEdge = startSetEdges[index];
@@ -444,7 +441,7 @@ SyntaxSymbolManager::PrefixMergeCrossReference_SolveInState
 
 						// compare the start set of this rule to remaining start set subset of each edge
 						// count each situation
-						for (vint edgeIndex = 0; edgeIndex < edgesToMerge.Count(); edgeIndex++)
+						for (vint edgeIndex = 0; edgeIndex < application->edgesToMerge.Count(); edgeIndex++)
 						{
 							auto& startSetEdge = startSetEdges[edgeIndex];
 							auto matchResult = startSetEdge & startSetRule;
@@ -476,15 +473,12 @@ SyntaxSymbolManager::PrefixMergeCrossReference_SolveInState
 							auto reverseStartSetRule = cache->reverseStartSetRules[prefixRule->pmRuleIndex];
 							auto startSetToExtract = startSetRule | reverseStartSetRule;
 
-							for (vint edgeIndex = 0; edgeIndex < edgesToMerge.Count(); edgeIndex++)
+							for (vint edgeIndex = 0; edgeIndex < application->edgesToMerge.Count(); edgeIndex++)
 							{
 								startSetEdges[edgeIndex] -= startSetToExtract;
 							}
 
-							if (!solution->prefixRules.Contains(prefixRule))
-							{
-								solution->prefixRules.Add(prefixRule);
-							}
+							application->prefixRules.Add(prefixRule);
 #ifdef LOG_DECISION_MAKING
 							LOG(L"    [FOUND " + prefixRule->Name() + L"] :");
 							for (auto rule : cache->rulesByDeps)
@@ -622,7 +616,7 @@ SyntaxSymbolManager::PrefixMergeCrossReference_Solve
 								hasSolution = true;
 								break;
 							}
-							else
+							else if (currentState == startState)
 							{
 								// if the input rule has a solution on its start state, yes
 								auto edge = currentState->OutEdges()[*component.firstNode];
@@ -688,13 +682,13 @@ SyntaxSymbolManager::PrefixMergeCrossReference_Solve
 								if (component.nodeCount > 1)
 								{
 									// collect all existing solutions for each edge
-									Array<EdgeSymbol*> edgesToMerge(component.nodeCount);
-									List<RuleSymbol*> reusedPrefixRules;
+									auto application = Ptr(new PrefixMergeSolutionApplication);
+									application->edgesToMerge.Resize(component.nodeCount);
 									for (vint j = 0; j < component.nodeCount; j++)
 									{
-										edgesToMerge[j] = currentState->OutEdges()[component.firstNode[j]];
+										application->edgesToMerge[j] = currentState->OutEdges()[component.firstNode[j]];
 									}
-									for (auto edge : edgesToMerge)
+									for (auto edge : application->edgesToMerge)
 									{
 										auto prefixRule = edge->input.rule;
 										vint solutionIndex = prefixMergeSolutions.Keys().IndexOf({ prefixRule, prefixRule->startStates[0] });
@@ -703,21 +697,29 @@ SyntaxSymbolManager::PrefixMergeCrossReference_Solve
 #ifdef LOG_DECISION_MAKING
 											LOGL(L"  [SINGLE USED] " + prefixRule->Name());
 #endif
-											CopyFrom(reusedPrefixRules, prefixMergeSolutions.Values()[solutionIndex]->prefixRules, true);
+											// copy all prefix rules, ensure no duplication
+											for (auto prefixRule : prefixMergeSolutions.Values()[solutionIndex]->prefixRules)
+											{
+												if (!application->prefixRules.Contains(prefixRule))
+												{
+													application->prefixRules.Add(prefixRule);
+												}
+											}
 										}
 									}
 
+									// solve for the current group
+									PrefixMergeCrossReference_SolveInState(cache, rule, currentState, application);
+
 									// copy all prefix rules, ensure no duplication
-									for (auto prefixRule : reusedPrefixRules)
+									solution->applications.Add(application);
+									for (auto prefixRule : application->prefixRules)
 									{
 										if (!solution->prefixRules.Contains(prefixRule))
 										{
 											solution->prefixRules.Add(prefixRule);
 										}
 									}
-
-									// solve for the current group
-									PrefixMergeCrossReference_SolveInState(cache, rule, currentState, edgesToMerge, reusedPrefixRules, solution);
 								}
 							}
 							prefixMergeSolutions.Add({ rule, currentState }, solution);

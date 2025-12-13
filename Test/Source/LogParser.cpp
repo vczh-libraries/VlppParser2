@@ -38,6 +38,41 @@ FilePath LogSyntaxWithPath(
 			writer.WriteLine(L"");
 		}
 		writer.WriteLine(L"");
+
+		writer.WriteLine(L"[PREFIX MERGE APPLICATIONS]");
+		for (auto key : From(manager.prefixMergeSolutions.Keys())
+			.OrderByKey([](auto k) {return Tuple(k.get<0>()->Name(), k.get<1>()->label); })
+			)
+		{
+			auto value = manager.prefixMergeSolutions[key];
+			if (value->applications.Count() == 0) continue;
+
+			writer.WriteLine(L"  " + key.get<0>()->Name() + L": " + key.get<1>()->label);
+			for (auto application : From(value->applications)
+				.OrderByKey([](auto a)
+				{
+					return From(a->edgesToMerge)
+						.Select([](auto e) { return e->input.rule->Name(); })
+						.OrderBySelf()
+						.First();
+				}))
+			{
+				writer.WriteString(L"    [applies: ");
+				for (auto [rule, index] : indexed(From(application->prefixRules).OrderByKey([](auto k) { return k->Name(); })))
+				{
+					if (index > 0) writer.WriteString(L", ");
+					writer.WriteString(rule->Name());
+				}
+				writer.WriteString(L"] [on: ");
+				for (auto [edge, index] : indexed(From(application->edgesToMerge).OrderByKey([](auto k) { return k->input.rule->Name(); })))
+				{
+					if (index > 0) writer.WriteString(L", ");
+					writer.WriteString(edge->input.rule->Name());
+				}
+				writer.WriteLine(L"]");
+			}
+		}
+		writer.WriteLine(L"");
 	}
 
 	Dictionary<StateSymbol*, WString> labels;
