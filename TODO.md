@@ -21,6 +21,31 @@
 
 ### Progressing
 
+```
+_Expr1
+  ::= !_Expr0
+  ::= _Expr1:func "(" {_Expr:args ; ","} ")" as CallExpr
+  ;
+```
+
+```
+  _Expr1:  BEGIN 
+    prefixes: _PrimitiveExprOnly, _PrimitiveShared, _PrimitiveTypeOnly
+  _Expr1: < _Expr1 "(" @ { _Expr ; "," } ")" >
+    prefixes: _PrimitiveExprOnly, _PrimitiveShared, _PrimitiveTypeOnly
+```
+
+Begins from a state, edges are grouped by their intersection of start set
+for any group that has only one edge
+we don't need to change the automaton to replace it with prefix rules
+
+But we still need a complete solution for each rule's start state so it can be reused in other states
+we need to record more information in the solution:
+
+1) for a start state, we calculate a solution if any input rule has a solution, but mark all groups with single edge
+2) for non-start state, we calculate a solution if any group has multiple edges
+3) besides of prefixRules, we will store actually used prefix rules for each group that has multiple edges
+
 - [x] Non-ambiguous test cases
 - [x] Ambiguous test cases
 - [x] Split FeatureTest
