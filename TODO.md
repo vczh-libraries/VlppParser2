@@ -45,6 +45,7 @@ we need to record more information in the solution:
 1) for a start state, we calculate a solution if any input rule has a solution, but mark all groups with single edge
 2) for non-start state, we calculate a solution if any group has multiple edges
 3) besides of prefixRules, we will store actually used prefix rules for each group that has multiple edges
+4) for any start state, it is possible that, there is a solution, but all groups have only one edge, so nothing needs to be done for that state
 
 - [x] Non-ambiguous test cases
 - [x] Ambiguous test cases
