@@ -342,12 +342,12 @@ SyntaxSymbolManager::PrefixMergeCrossReference_SolveInState
 				*   extract any parent rule where startSetRules[parent rule] has rule
 				* Repeat until the test results in all BitSet::Zero (or when all startSetEdges are BitSet::Zero)
 				* 
-				* TODO: At the beginning of the function
-				*   for each directStartSetRules consider its solution
-				*   check each solution if they are conflict with each other
-				* TODO: At the end of the function
-				*   enumerate all rules that is not covered by the solution
-				* TODO: Make test cases that covers the above cases
+				* We can see indirectStartSetRules as the relationship in a partial ordered graph starting from a rule
+				* When a rule is picked up as a prefix rule
+				*   it removes the rule and all its descendants from the graph
+				*   and we will have to break all node that depends on this prefix rule into multiple prefix rules
+				*   so those parents will never be prefix rules
+				*   after parent nodes are removed, the graph breaks into multiple sub graphs, maybe disconnected
 				*/
 
 #define ERROR_MESSAGE_PREFIX L"vl::glr::parsergen::SyntaxSymbolManager::PrefixMergeCrossReference_SolveInState(PrefixMergeCache*, RuleSymbol*, StateSymbol*, Array<EdgeSymbol*>&, List<RuleSymbol*>&, PrefixMergeSolutionMap&)#"
@@ -360,7 +360,7 @@ SyntaxSymbolManager::PrefixMergeCrossReference_SolveInState
 				}
 				LOGL(L"");
 #endif
-
+				// prepare startSetEdges to be startSetRules of each edge's input rule
 				Array<BitSet> startSetEdges(edgesToMerge.Count());
 				for (auto [edge, index] : indexed(edgesToMerge))
 				{
@@ -368,10 +368,13 @@ SyntaxSymbolManager::PrefixMergeCrossReference_SolveInState
 					startSetEdges[index].Set(edge->input.rule->pmRuleIndex);
 				}
 
+				// reusedPrefixRules are part of the solution that has already been picked up
+				// process startSetEdges against reusedPrefixRules
 				if (reusedPrefixRules.Count() > 0)
 				{
 					for (auto prefixRule : reusedPrefixRules)
 					{
+						// take away all rules that depends or reversed depends on the prefix rule
 						auto startSetRule = cache->startSetRules[prefixRule->pmRuleIndex];
 						startSetRule.Set(prefixRule->pmRuleIndex);
 						auto reverseStartSetRule = cache->reverseStartSetRules[prefixRule->pmRuleIndex];
@@ -395,6 +398,7 @@ SyntaxSymbolManager::PrefixMergeCrossReference_SolveInState
 						LOGL(L"");
 					}
 #endif
+					// if startSetEdges become all empty, no more prefix rule will be found
 					bool allZero = true;
 					for (vint edgeIndex = 0; edgeIndex < edgesToMerge.Count(); edgeIndex++)
 					{
@@ -425,6 +429,7 @@ SyntaxSymbolManager::PrefixMergeCrossReference_SolveInState
 
 					bool matchedOthers = false;
 
+					// try each rule in dependency order
 					for (auto prefixRule : cache->rulesByDeps)
 					{
 						vint containedCount = 0;
@@ -433,29 +438,37 @@ SyntaxSymbolManager::PrefixMergeCrossReference_SolveInState
 						auto startSetRule = cache->startSetRules[prefixRule->pmRuleIndex];
 						startSetRule.Set(prefixRule->pmRuleIndex);
 
+						// compare the start set of this rule to remaining start set subset of each edge
+						// count each situation
 						for (vint edgeIndex = 0; edgeIndex < edgesToMerge.Count(); edgeIndex++)
 						{
 							auto& startSetEdge = startSetEdges[edgeIndex];
 							auto matchResult = startSetEdge & startSetRule;
 							if (matchResult == startSetRule)
 							{
+								// startSetEdge contains startSetRule
 								containedCount++;
 							}
 							else if (matchResult == BitSet::Zero)
 							{
+								// startSetEdge does no intercept with startSetRule
 								exclusiveCount++;
 							}
 							else
 							{
+								// others
 								otherCount++;
 								break;
 							}
 						}
-
 						if (otherCount > 0) matchedOthers = true;
 
+						// if some startSetEdge contains start set of the candidate rule
+						// and others are empty intersection
+						// we found a prefix rule
 						if (containedCount > 0 && otherCount == 0)
 						{
+							// take away all rules that depends or reversed depends on the prefix rule
 							auto reverseStartSetRule = cache->reverseStartSetRules[prefixRule->pmRuleIndex];
 							auto startSetToExtract = startSetRule | reverseStartSetRule;
 

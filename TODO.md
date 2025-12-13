@@ -61,7 +61,7 @@
 - Code Coverage
   - Collect uncovered code again by break points in executator (trace manager).
 - Reconsider in new implementation:
-  - Make a test case to test `prefix_merge` generates `left_recursion_inject_multiple`.
+  - Test `SyntaxSymbolManager::PrefixMergeCrossReference_Solve` firmly.
   - Create ambiguity test case caused by only one clause with alternative syntax.
 - Windows and Linux test output inconsistency on
   - the order of ambiguous candidates.
