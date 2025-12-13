@@ -560,6 +560,13 @@ SyntaxSymbolManager::PrefixMergeCrossReference_Solve
 				* When making a solution, if any Rule input edge already have a solution, reuse it
 				* Find edges whose start set have intersection, process each group
 				* Merge all solutions into one
+				* 
+				* There are multiple applications in a solution
+				* Each application records what prefix rules will be injected into what edges
+				* For group that has only one edge, there will be no application
+				* 
+				* For any start state, a solution will be created when there are groups with multiple edges, or any edge whose input rule has a solution on its start state
+				* For any other state, a solution will be created only when there are groups with multiple edges
 				*/
 
 #define ERROR_MESSAGE_PREFIX L"vl::glr::parsergen::SyntaxSymbolManager::PrefixMergeCrossReference_Solve(PrefixMergeCache*, RuleSymbol*, StateSymbol*, PrefixMergeSolutionMap&)#"
@@ -618,7 +625,7 @@ SyntaxSymbolManager::PrefixMergeCrossReference_Solve
 							}
 							else if (currentState == startState)
 							{
-								// if the input rule has a solution on its start state, yes
+								// if the input rule has a solution on its start state, and the current state is the start state, yes
 								auto edge = currentState->OutEdges()[*component.firstNode];
 								if (edge->input.type == EdgeInputType::Rule)
 								{
@@ -676,7 +683,7 @@ SyntaxSymbolManager::PrefixMergeCrossReference_Solve
 								}
 							}
 
-							// Check all groups with multiple edges
+							// Check all groups with multiple edges, applications will be created on these groups
 							for (auto component : pop.components)
 							{
 								if (component.nodeCount > 1)
