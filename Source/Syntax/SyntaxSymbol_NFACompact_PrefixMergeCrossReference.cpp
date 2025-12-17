@@ -311,11 +311,11 @@ SyntaxSymbolManager::CreatePrefixMerge
 				return cache;
 			}
 
-//#if defined VCZH_MSVC && defined _DEBUG
-//#define LOG_DECISION_MAKING
-//#define LOG console::Console::Write
-//#define LOGL console::Console::WriteLine
-//#endif
+#if defined VCZH_MSVC && defined _DEBUG
+#define LOG_DECISION_MAKING
+#define LOG console::Console::Write
+#define LOGL console::Console::WriteLine
+#endif
 
 /***********************************************************************
 SyntaxSymbolManager::PrefixMergeCrossReference_SolveInState
@@ -771,12 +771,6 @@ SyntaxSymbolManager::PrefixMergeCrossReference_Solve
 				}
 			}
 
-#ifdef LOG_DECISION_MAKING
-#undef LOG_DECISION_MAKING
-#undef LOG
-#undef LOGL
-#endif
-
 /***********************************************************************
 SyntaxSymbolManager::PrefixMergeCrossReference_Apply
 ***********************************************************************/
@@ -878,8 +872,48 @@ SyntaxSymbolManager::PrefixMergeCrossReference_Apply
 						PrefixMergeCrossReference_Apply(cache, currentEdges, pmai);
 						currentEdges.RemoveAt(currentEdges.Count() - 1);
 					}
+
+#ifdef LOG_DECISION_MAKING
+					LOGL(L"[PMAI] " + rule->Name() + L" @ " + currentState->label);
+					for (vint i = 0; i < pmai.ruleToEdges.Count(); i++)
+					{
+						auto rule = pmai.ruleToEdges.Keys()[i];
+						LOGL(L"  [RULE] " + rule->Name() + L" :");
+						for (auto edges : pmai.ruleToEdges.GetByIndex(i))
+						{
+							LOG(L"    ");
+							for (auto [edge, index] : indexed(*edges.Obj()))
+							{
+								if (index > 0) LOG(L" -> ");
+								LOG(edge->input.rule->Name());
+							}
+							LOGL(L"");
+						}
+					}
+					for (vint i = 0; i < pmai.tokenToEdges.Count(); i++)
+					{
+						auto [token, condition] = pmai.tokenToEdges.Keys()[i];
+						LOG(L"  [TOKEN] " + (condition ? condition.Value() : itow(token)));
+						for (auto edges : pmai.ruleToEdges.GetByIndex(i))
+						{
+							LOG(L"    ");
+							for (auto [edge, index] : indexed(*edges.Obj()))
+							{
+								if (index > 0) LOG(L" -> ");
+								LOG(edge->input.rule->Name());
+							}
+							LOGL(L"");
+						}
+					}
+#endif
 				}
 			}
+
+#ifdef LOG_DECISION_MAKING
+#undef LOG_DECISION_MAKING
+#undef LOG
+#undef LOGL
+#endif
 		}
 	}
 }
