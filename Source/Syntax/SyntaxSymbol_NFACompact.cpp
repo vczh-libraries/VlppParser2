@@ -81,6 +81,11 @@ SyntaxSymbolManager::BuildCompactNFAInternal
 				if (!pmCache) return;
 				PrefixMergeCrossReference_Solve(pmCache.Obj(), prefixMergeSolutions);
 
+				// apply each solution
+				// unnecessary edges will be removed later as they could be still needed
+				// prefix-merge created Rule transitions have non-empty returnEdges
+				// original Rule transitions have empty returnEdges
+				Array<IncrementalChange> ics(prefixMergeSolutions.Count());
 				for (auto [key, index] : indexed(prefixMergeSolutions.Keys()))
 				{
 					auto [ruleSymbol, currentState] = key;
@@ -88,9 +93,21 @@ SyntaxSymbolManager::BuildCompactNFAInternal
 					auto&& newStates = *newStatesAndEdges[i].key.Obj();
 					auto&& newEdges = *newStatesAndEdges[i].value.Obj();
 					auto solution = prefixMergeSolutions[key];
-					PrefixMergeCrossReference_Apply(pmCache.Obj(), ruleSymbol, currentState, solution, newStates, newEdges);
+					PrefixMergeCrossReference_Apply(pmCache.Obj(), ruleSymbol, currentState, solution, newStates, newEdges, ics[index]);
 				}
 
+				// recycle unused states and edges
+				for (auto [key, index] : indexed(prefixMergeSolutions.Keys()))
+				{
+					auto [ruleSymbol, currentState] = key;
+					vint i = rules.map.Keys().IndexOf(ruleSymbol->Name());
+					auto&& newStates = *newStatesAndEdges[i].key.Obj();
+					auto&& newEdges = *newStatesAndEdges[i].value.Obj();
+					auto&& ic = ics[index];
+					ApplyIncrementalChange(ic, newStates, newEdges);
+				}
+
+				// secure life cycle of states and edges
 				states.Clear();
 				edges.Clear();
 				for (vint i = 0; i < newStatesAndEdges.Count(); i++)

@@ -781,7 +781,7 @@ SyntaxSymbolManager::PrefixMergeCrossReference_Solve
 SyntaxSymbolManager::PrefixMergeCrossReference_Apply
 ***********************************************************************/
 
-			void SyntaxSymbolManager::PrefixMergeCrossReference_Apply(PrefixMergeCache* cache, RuleSymbol* rule, StateSymbol* currentState, Ptr<PrefixMergeSolutionValue> solution, StateList& newStates, EdgeList& newEdges)
+			void SyntaxSymbolManager::PrefixMergeCrossReference_Apply(PrefixMergeCache* cache, RuleSymbol* rule, StateSymbol* currentState, Ptr<PrefixMergeSolutionValue> solution, StateList& newStates, EdgeList& newEdges, IncrementalChange& ic)
 			{
 				/*
 				* For any state A whose prefix calls look like:
