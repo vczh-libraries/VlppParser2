@@ -89,11 +89,8 @@ SyntaxSymbolManager::BuildCompactNFAInternal
 				for (auto [key, index] : indexed(prefixMergeSolutions.Keys()))
 				{
 					auto [ruleSymbol, currentState] = key;
-					vint i = rules.map.Keys().IndexOf(ruleSymbol->Name());
-					auto&& newStates = *newStatesAndEdges[i].key.Obj();
-					auto&& newEdges = *newStatesAndEdges[i].value.Obj();
 					auto solution = prefixMergeSolutions[key];
-					PrefixMergeCrossReference_Apply(pmCache.Obj(), ruleSymbol, currentState, solution, newStates, newEdges, ics[index]);
+					PrefixMergeCrossReference_Apply(pmCache.Obj(), ruleSymbol, currentState, solution, ics[index]);
 				}
 
 				// recycle unused states and edges
