@@ -781,6 +781,53 @@ SyntaxSymbolManager::PrefixMergeCrossReference_Solve
 SyntaxSymbolManager::PrefixMergeCrossReference_Apply
 ***********************************************************************/
 
+			struct PrefixMergeApplicationItems
+			{
+				using EdgeListPtr = Ptr<List<EdgeSymbol*>>;
+				using RuleToEdgesMap = Group<RuleSymbol*, EdgeListPtr>;
+				using TokenToEdgesMap = Group<Pair<vint32_t, Nullable<WString>>, EdgeListPtr>;
+
+				BitSet				coveredRules;
+				RuleToEdgesMap		ruleToEdges;
+				TokenToEdgesMap		tokenToEdges;
+			};
+
+			void SyntaxSymbolManager::PrefixMergeCrossReference_Apply(PrefixMergeCache* cache, collections::List<EdgeSymbol*>& currentEdges, PrefixMergeApplicationItems& pmai)
+			{
+				auto lastEdge = currentEdges[currentEdges.Count() - 1];
+				auto lastRule = lastEdge->input.rule;
+
+				if (pmai.coveredRules[lastRule->pmRuleIndex])
+				{
+					auto edges = Ptr(new List<EdgeSymbol*>);
+					CopyFrom(*edges.Obj(), currentEdges);
+					pmai.ruleToEdges.Add(lastRule, edges);
+				}
+				else
+				{
+					for (auto edge : lastRule->startStates[0]->OutEdges())
+					{
+						switch (edge->input.type)
+						{
+						case EdgeInputType::Rule:
+							currentEdges.Add(edge);
+							PrefixMergeCrossReference_Apply(cache, currentEdges, pmai);
+							currentEdges.RemoveAt(currentEdges.Count() - 1);
+							break;
+						case EdgeInputType::Token:
+							{
+								auto edges = Ptr(new List<EdgeSymbol*>);
+								CopyFrom(*edges.Obj(), currentEdges);
+								pmai.tokenToEdges.Add({ edge->input.token, edge->input.condition }, edges);
+							}
+							break;
+						default:;
+						}
+					}
+				}
+
+			}
+
 			void SyntaxSymbolManager::PrefixMergeCrossReference_Apply(PrefixMergeCache* cache, RuleSymbol* rule, StateSymbol* currentState, Ptr<PrefixMergeSolutionValue> solution, IncrementalChange& ic)
 			{
 				/*
@@ -815,6 +862,23 @@ SyntaxSymbolManager::PrefixMergeCrossReference_Apply
 				*        +- r2 (injects into r1)
 				*        +- r6 (injects into r1)
 				*/
+
+				for (auto application : solution->applications)
+				{
+					PrefixMergeApplicationItems pmai;
+					for (auto edge : application->edgesToMerge)
+					{
+						pmai.coveredRules.Set(edge->input.rule->pmRuleIndex);
+					}
+
+					List<EdgeSymbol*> currentEdges;
+					for (auto edge : application->edgesToMerge)
+					{
+						currentEdges.Add(edge);
+						PrefixMergeCrossReference_Apply(cache, currentEdges, pmai);
+						currentEdges.RemoveAt(currentEdges.Count() - 1);
+					}
+				}
 			}
 		}
 	}

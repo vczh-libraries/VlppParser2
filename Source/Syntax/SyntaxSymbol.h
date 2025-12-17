@@ -59,11 +59,13 @@ EdgeSymbol
 
 			enum class EdgeInputType
 			{
-				Epsilon,		// No input is needed to execute this edge.
-				Ending,			// An epsilon edge that reduces the current rule.
-				LeftRec,		// An epsilon edge that reduces the current rule, which is the first input of one of its left recursive clause.
-				Token,			// An token is read to execute this edge.
-				Rule,			// A rule is reduced to execute this edge.
+				Epsilon,			// No input is needed to execute this edge.
+				PrefixMergeRule,	// A Rule transition referenced that created by and only temporarily used during prefix merge.
+
+				Ending,				// An epsilon edge that reduces the current rule.
+				LeftRec,			// An epsilon edge that reduces the current rule, which is the first input of one of its left recursive clause.
+				Token,				// An token is read to execute this edge.
+				Rule,				// A rule is reduced to execute this edge.
 			};
 
 			struct EdgeInput
@@ -184,6 +186,8 @@ SyntaxSymbolManager
 			using PrefixMergeSolutionKey = Tuple<RuleSymbol*, StateSymbol*>;
 			using PrefixMergeSolutionMap = collections::Dictionary<PrefixMergeSolutionKey, Ptr<PrefixMergeSolutionValue>>;
 
+			struct PrefixMergeApplicationItems;
+
 			class SyntaxSymbolManager : public Object
 			{
 				using StateList = collections::List<Ptr<StateSymbol>>;
@@ -201,8 +205,9 @@ SyntaxSymbolManager
 				{
 					StateList									createdStates;
 					EdgeList									createdEdges;
-					collections::SortedList<StateSymbol*>		reusedStates;
-					collections::SortedList<EdgeSymbol*>		reusedEdges;
+					bool										reuseOps = true; // In ApplyIncrementalChange, true means to keep opStates and opEdges, false means to remove
+					collections::SortedList<StateSymbol*>		opStates;
+					collections::SortedList<EdgeSymbol*>		opEdges;
 				};
 
 				static StartEndStatePair		EliminateEpsilonEdges(RuleSymbol* rule, StateList& newStates, EdgeList& newEdges);
@@ -224,6 +229,8 @@ SyntaxSymbolManager
 													StateSymbol* startState,
 													PrefixMergeSolutionMap& prefixMergeSolutions);
 				static void						PrefixMergeCrossReference_Solve(PrefixMergeCache* cache, PrefixMergeSolutionMap& prefixMergeSolutions);
+
+				static void						PrefixMergeCrossReference_Apply(PrefixMergeCache* cache, collections::List<EdgeSymbol*>& currentEdges, PrefixMergeApplicationItems& pmai);
 				static void						PrefixMergeCrossReference_Apply(PrefixMergeCache* cache, RuleSymbol* rule, StateSymbol* currentState, Ptr<PrefixMergeSolutionValue> solution, IncrementalChange& ic);
 
 				static void						ApplyIncrementalChange(const IncrementalChange& ic, StateList& newStates, EdgeList& newEdges);

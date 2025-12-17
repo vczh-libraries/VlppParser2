@@ -19,7 +19,7 @@ SyntaxSymbolManager::MergeEdgesWithSameInput
 					for (vint i = newEdges.Count() - 1; i >= 0; i--)
 					{
 						auto edge = newEdges[i];
-						if (!ic.reusedEdges.Contains(edge.Obj()))
+						if (ic.reuseOps == !ic.opEdges.Contains(edge.Obj()))
 						{
 							if (edge->fromState) edge->fromState->outEdges.Remove(edge.Obj());
 							if (edge->toState) edge->toState->inEdges.Remove(edge.Obj());
@@ -30,7 +30,7 @@ SyntaxSymbolManager::MergeEdgesWithSameInput
 					for (vint i = newStates.Count() - 1; i >= 0; i--)
 					{
 						auto state = newStates[i];
-						if (!ic.reusedStates.Contains(state.Obj()))
+						if (ic.reuseOps == !ic.opStates.Contains(state.Obj()))
 						{
 							newStates.RemoveAt(i);
 						}
@@ -83,14 +83,19 @@ SyntaxSymbolManager::BuildCompactNFAInternal
 
 				// apply each solution
 				// unnecessary edges will be removed later as they could be still needed
-				// prefix-merge created Rule transitions have non-empty returnEdges
-				// original Rule transitions have empty returnEdges
+				// prefix-merge created Rule becomes PrefixMergeRule and later changed back to Rule
 				Array<IncrementalChange> ics(prefixMergeSolutions.Count());
 				for (auto [key, index] : indexed(prefixMergeSolutions.Keys()))
 				{
 					auto [ruleSymbol, currentState] = key;
 					auto solution = prefixMergeSolutions[key];
-					PrefixMergeCrossReference_Apply(pmCache.Obj(), ruleSymbol, currentState, solution, ics[index]);
+					auto&& ic = ics[index];
+					ic.reuseOps = false;
+					for (auto application : solution->applications)
+					{
+						CopyFrom(ic.opEdges, application->edgesToMerge, true);
+					}
+					PrefixMergeCrossReference_Apply(pmCache.Obj(), ruleSymbol, currentState, solution, ic);
 				}
 
 				// recycle unused states and edges
@@ -102,6 +107,14 @@ SyntaxSymbolManager::BuildCompactNFAInternal
 					auto&& newEdges = *newStatesAndEdges[i].value.Obj();
 					auto&& ic = ics[index];
 					ApplyIncrementalChange(ic, newStates, newEdges);
+
+					for (auto edge : currentState->OutEdges())
+					{
+						if (edge->input.type == EdgeInputType::PrefixMergeRule)
+						{
+							edge->input.type = EdgeInputType::Rule;
+						}
+					}
 				}
 
 				// secure life cycle of states and edges

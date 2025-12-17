@@ -44,8 +44,8 @@ SyntaxSymbolManager::MergeEdgesWithSameRuleUsingLeftrec
 				*/
 
 				IncrementalChange ic;
-				CopyFrom(ic.reusedStates, From(newStates).Select([](auto p) {return p.Obj(); }));
-				CopyFrom(ic.reusedEdges, From(newEdges).Select([](auto p) {return p.Obj(); }));
+				CopyFrom(ic.opStates, From(newStates).Select([](auto p) {return p.Obj(); }));
+				CopyFrom(ic.opEdges, From(newEdges).Select([](auto p) {return p.Obj(); }));
 
 				SortedList<StateSymbol*> visitedStates;
 				List<StateSymbol*> workingStates;
@@ -168,7 +168,7 @@ SyntaxSymbolManager::MergeEdgesWithSameRuleUsingLeftrec
 								{
 									// if originalRuleEdge is not reused, remove it
 									originalRuleEdge->toState->inEdges.Remove(originalRuleEdge);
-									ic.reusedEdges.Remove(originalRuleEdge);
+									ic.opEdges.Remove(originalRuleEdge);
 								}
 
 								if (targetState->inEdges.Count() == 0)
@@ -177,11 +177,11 @@ SyntaxSymbolManager::MergeEdgesWithSameRuleUsingLeftrec
 									// if no other state points to targetState
 									// remove it
 									// if a [pm-dup] is made, we won't reusing and just let that happen
-									ic.reusedStates.Remove(targetState);
+									ic.opStates.Remove(targetState);
 									for (auto targetEdge : targetState->OutEdges())
 									{
 										targetEdge->toState->inEdges.Remove(targetEdge);
-										ic.reusedEdges.Remove(targetEdge);
+										ic.opEdges.Remove(targetEdge);
 									}
 								}
 							}
