@@ -31,7 +31,7 @@
 - [ ] prefix_merge test cases
   - [x] merge prefix in rules
     - 109236 -> 10141 -> 6663 states: `Test\ParserLog\BuiltIn-Workflow\Trace-1[Codegen_WorkflowHints].txt`, meanwhile 6750 in master
-  - [ ] automatically identify prefix_merge
+  - [x] automatically identify prefix_merge
 - [ ] Built-in parsers:
   - [ ] C++
 - [ ] build.ps1
@@ -39,7 +39,22 @@
 - [ ] Document design principal, algorithm and syntax
 - [ ] build.ps1
 
-### Optimization ToDo
+## Prefix Merge
+
+In `PrefixMerge5_Pm` test case, one of a prefix merge instance is
+```
+  [RULE] _PrimitiveShared :
+    _LongType -> _PrimitiveShared
+    _Expr -> _Expr1 -> _Expr0 -> _PrimitiveShared
+    _Expr -> _Expr1 -> _Expr0 -> _LongType -> _PrimitiveShared
+```
+Currently we only do `_PrimitiveShared` merging.
+In the future we should do
+```
+_PrimitiveShared +-> _Expr0 ... _Expr
+                 +-> _LongType +-> _LongType
+                               +-> _Expr0 ... _Expr
+```
 
 ## Features to Add
 
