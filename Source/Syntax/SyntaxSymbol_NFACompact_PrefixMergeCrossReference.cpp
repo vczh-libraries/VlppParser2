@@ -860,9 +860,9 @@ SyntaxSymbolManager::PrefixMergeCrossReference_Apply
 				for (auto application : solution->applications)
 				{
 					PrefixMergeApplicationItems pmai;
-					for (auto edge : application->edgesToMerge)
+					for (auto prefixRule : application->prefixRules)
 					{
-						pmai.coveredRules.Set(edge->input.rule->pmRuleIndex);
+						pmai.coveredRules.Set(prefixRule->pmRuleIndex);
 					}
 
 					List<EdgeSymbol*> currentEdges;
