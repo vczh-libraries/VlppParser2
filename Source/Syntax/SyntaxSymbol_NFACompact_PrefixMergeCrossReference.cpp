@@ -793,11 +793,13 @@ SyntaxSymbolManager::PrefixMergeCrossReference_AccumulatedEdges
 				auto newEdge = Ptr(new EdgeSymbol(fromState, toState));
 				ic.createdEdges.Add(newEdge);
 
+				CopyFrom(newEdge->competitions, lastEdge->competitions, true);
 				for (auto acc : accumulatedEdges)
 				{
-					CopyFrom(newEdge->competitions, acc->competitions, true);
+					if (acc == lastEdge) break;
 					newEdge->returnEdges.Add(acc);
 				}
+				CopyFrom(newEdge->insAfterInput, lastEdge->insAfterInput, true);
 
 				return newEdge.Obj();
 			}
