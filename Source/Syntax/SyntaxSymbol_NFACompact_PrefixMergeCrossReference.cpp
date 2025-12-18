@@ -905,7 +905,7 @@ SyntaxSymbolManager::PrefixMergeCrossReference_AccumulatedEdges
 								contState = Ptr(new StateSymbol(fromState->Rule()));
 								ic.createdStates.Add(contState);
 								contState->label = fromState->label + L" [pm-cr-acc]";
-								for (vint j = 0; j < i; i++)
+								for (vint j = 0; j < i; j++)
 								{
 									contState->label += L" " + edgeList[j]->input.rule->Name();
 								}
@@ -914,7 +914,7 @@ SyntaxSymbolManager::PrefixMergeCrossReference_AccumulatedEdges
 								ic.createdEdges.Add(lrEdge);
 
 								CopyFrom(newEdge->competitions, lastEdge->competitions, true);
-								for (vint j = 0; j < i - 1; i++)
+								for (vint j = 0; j < i - 1; j++)
 								{
 									newEdge->returnEdges.Add(edgeList[j]);
 								}
