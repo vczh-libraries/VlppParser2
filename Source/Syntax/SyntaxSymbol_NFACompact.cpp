@@ -104,6 +104,16 @@ SyntaxSymbolManager::BuildCompactNFAInternal
 					auto&& ic = ics[index];
 					ApplyIncrementalChange(ic, newStates, newEdges);
 
+					auto solution = prefixMergeSolutions[key];
+					for (auto application : solution->applications)
+					{
+						for (auto edge : application->edgesToMerge)
+						{
+							edge->fromState->outEdges.Remove(edge);
+							edge->toState->inEdges.Remove(edge);
+						}
+					}
+
 					for (auto edge : currentState->OutEdges())
 					{
 						if (edge->input.type == EdgeInputType::PrefixMergeRule)

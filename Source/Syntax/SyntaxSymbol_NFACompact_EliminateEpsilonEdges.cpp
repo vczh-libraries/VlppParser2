@@ -71,6 +71,7 @@ CompactSyntaxBuilder
 						case EdgeInputType::Ending:
 						case EdgeInputType::LeftRec:
 						case EdgeInputType::PrefixMergeRule:
+						case EdgeInputType::CrossReferencedToken:
 							// Edges do not exist in compact-NFA
 							break;
 						default:

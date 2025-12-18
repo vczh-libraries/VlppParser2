@@ -25,17 +25,21 @@ SyntaxSymbolManager::FixCrossReferencedRuleEdge
 					switch (edge->input.type)
 					{
 					case EdgeInputType::Token:
-						if (edge->returnEdges.Count() == 0)
 						{
 							// Cannot call CreateEdge here because it is checked as a public API
 							// But during NFA building we should still change the automaton
 							auto newEdge = Ptr(new EdgeSymbol(startState, edge->To()));
 							edges.Add(newEdge);
 
+							// Either prefix-merged or cross-referenced Token transition may have non-empty returnEdges
+							// There is no way to tell if a token is cross-referenced, which should be ignored during accumulation
+							// So we use CrossReferencedToken here and later renamed everything back to Token
 							newEdge->input = edge->input;
+							newEdge->input.type = EdgeInputType::CrossReferencedToken;
 							CopyFrom(newEdge->competitions, edge->competitions, true);
 							for (auto acc : accumulatedEdges)
 							{
+								CopyFrom(newEdge->returnEdges, acc->returnEdges, true);
 								newEdge->returnEdges.Add(acc);
 							}
 							CopyFrom(newEdge->insAfterInput, edge->insAfterInput, true);
@@ -51,6 +55,7 @@ SyntaxSymbolManager::FixCrossReferencedRuleEdge
 					case EdgeInputType::Ending:
 					case EdgeInputType::LeftRec:
 					case EdgeInputType::PrefixMergeRule:
+					case EdgeInputType::CrossReferencedToken:
 						// Ending and LeftRec edges are not involved
 						// Other edges do not exist in compact-NFA
 						break;
@@ -96,6 +101,21 @@ SyntaxSymbolManager::BuildCrossReferencedNFAInternal
 								List<EdgeSymbol*> accumulatedEdges;
 								accumulatedEdges.Add(edge);
 								FixCrossReferencedRuleEdge(edge->From(), orderedEdges, accumulatedEdges);
+							}
+						}
+					}
+				}
+
+				for (auto state : states)
+				{
+					vint index = orderedEdges.Keys().IndexOf(state);
+					if (index != -1)
+					{
+						for (auto edge : orderedEdges.GetByIndex(index))
+						{
+							if (edge->input.type == EdgeInputType::CrossReferencedToken)
+							{
+								edge->input.type = EdgeInputType::Token;
 							}
 						}
 					}
