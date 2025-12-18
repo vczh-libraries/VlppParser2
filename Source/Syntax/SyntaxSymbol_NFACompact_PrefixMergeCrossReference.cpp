@@ -786,15 +786,15 @@ SyntaxSymbolManager::PrefixMergeCrossReference_Apply
 				TokenToEdgesMap		tokenToEdges;
 			};
 
-			void SyntaxSymbolManager::PrefixMergeCrossReference_Apply(PrefixMergeCache* cache, collections::List<EdgeSymbol*>& currentEdges, PrefixMergeApplicationItems& pmai)
+			void SyntaxSymbolManager::PrefixMergeCrossReference_Apply(PrefixMergeCache* cache, collections::List<EdgeSymbol*>& accumulatedEdges, PrefixMergeApplicationItems& pmai)
 			{
-				auto lastEdge = currentEdges[currentEdges.Count() - 1];
+				auto lastEdge = accumulatedEdges[accumulatedEdges.Count() - 1];
 				auto lastRule = lastEdge->input.rule;
 
 				if (pmai.coveredRules[lastRule->pmRuleIndex])
 				{
 					auto edges = Ptr(new List<EdgeSymbol*>);
-					CopyFrom(*edges.Obj(), currentEdges);
+					CopyFrom(*edges.Obj(), accumulatedEdges);
 					pmai.ruleToEdges.Add(lastRule, edges);
 				}
 				else
@@ -804,14 +804,15 @@ SyntaxSymbolManager::PrefixMergeCrossReference_Apply
 						switch (edge->input.type)
 						{
 						case EdgeInputType::Rule:
-							currentEdges.Add(edge);
-							PrefixMergeCrossReference_Apply(cache, currentEdges, pmai);
-							currentEdges.RemoveAt(currentEdges.Count() - 1);
+							// RuleIsIndirectlyLeftRecursive has been checked so there will be no deadloop 
+							accumulatedEdges.Add(edge);
+							PrefixMergeCrossReference_Apply(cache, accumulatedEdges, pmai);
+							accumulatedEdges.RemoveAt(accumulatedEdges.Count() - 1);
 							break;
 						case EdgeInputType::Token:
 							{
 								auto edges = Ptr(new List<EdgeSymbol*>);
-								CopyFrom(*edges.Obj(), currentEdges);
+								CopyFrom(*edges.Obj(), accumulatedEdges);
 								pmai.tokenToEdges.Add({ edge->input.token, edge->input.condition }, edges);
 							}
 							break;
@@ -865,12 +866,12 @@ SyntaxSymbolManager::PrefixMergeCrossReference_Apply
 						pmai.coveredRules.Set(prefixRule->pmRuleIndex);
 					}
 
-					List<EdgeSymbol*> currentEdges;
+					List<EdgeSymbol*> accumulatedEdges;
 					for (auto edge : application->edgesToMerge)
 					{
-						currentEdges.Add(edge);
-						PrefixMergeCrossReference_Apply(cache, currentEdges, pmai);
-						currentEdges.RemoveAt(currentEdges.Count() - 1);
+						accumulatedEdges.Add(edge);
+						PrefixMergeCrossReference_Apply(cache, accumulatedEdges, pmai);
+						accumulatedEdges.RemoveAt(accumulatedEdges.Count() - 1);
 					}
 
 #ifdef LOG_DECISION_MAKING

@@ -50,8 +50,9 @@ SyntaxSymbolManager::FixCrossReferencedRuleEdge
 					case EdgeInputType::Epsilon:
 					case EdgeInputType::Ending:
 					case EdgeInputType::LeftRec:
-						// Epsilon edges do not exist in compact-NFA
+					case EdgeInputType::PrefixMergeRule:
 						// Ending and LeftRec edges are not involved
+						// Other edges do not exist in compact-NFA
 						break;
 					default:
 						CHECK_FAIL(L"<BuildCrossReferencedNFAInternal>Unhandled!");

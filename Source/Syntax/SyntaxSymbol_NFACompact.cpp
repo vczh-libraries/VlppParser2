@@ -91,10 +91,6 @@ SyntaxSymbolManager::BuildCompactNFAInternal
 					auto solution = prefixMergeSolutions[key];
 					auto&& ic = ics[index];
 					ic.reuseOps = false;
-					for (auto application : solution->applications)
-					{
-						CopyFrom(ic.opEdges, application->edgesToMerge, true);
-					}
 					PrefixMergeCrossReference_Apply(pmCache.Obj(), ruleSymbol, currentState, solution, ic);
 				}
 
