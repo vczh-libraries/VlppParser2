@@ -868,7 +868,7 @@ SyntaxSymbolManager::PrefixMergeCrossReference_AccumulatedEdges
 						auto lastState = lastEdge->To();
 						for (auto contEdge : lastState->OutEdges())
 						{
-							if (contEdge->input.type == EdgeInputType::Ending && i != 1)
+							if (contEdge->input.type == EdgeInputType::Ending && i != 1 && accSize != edgeList.Count())
 							{
 								continue;
 							}
