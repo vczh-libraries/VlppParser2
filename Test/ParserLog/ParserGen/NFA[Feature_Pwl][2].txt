@@ -188,33 +188,54 @@
 
 [29][Module]{{<! "prefix_with_leftrec" @ !Pwl1 !> ; <! "prefix_with_leftrec" @ !Pwl2 !>}}
 [RULE: 6]
-	rule: Plus -> [31][Module]{{<! "prefix_with_leftrec" @ !Pwl1 !> ; <! "prefix_with_leftrec" @ !Pwl2 !>}}[pm-cr-rule: Plus]
-	rule: Lt -> [30][Module]{{<! "prefix_with_leftrec" @ !Pwl1 !> ; <! "prefix_with_leftrec" @ !Pwl2 !>}}[pm-cr-rule: Lt]
+	rule: Plus -> [34][Module]{{<! "prefix_with_leftrec" @ !Pwl1 !> ; <! "prefix_with_leftrec" @ !Pwl2 !>}}[pm-cr-rule: Plus]
+	rule: Lt -> [33][Module]{{<! "prefix_with_leftrec" @ !Pwl1 !> ; <! "prefix_with_leftrec" @ !Pwl2 !>}}[pm-cr-rule: Lt]
 
-[30][Module]{{<! "prefix_with_leftrec" @ !Pwl1 !> ; <! "prefix_with_leftrec" @ !Pwl2 !>}}[pm-cr-rule: Lt]
+[30][Module]{{<! "prefix_with_leftrec" @ !Pwl1 !> ; <! "prefix_with_leftrec" @ !Pwl2 !>}} [pm-cr-acc] Pwl1 Pwl1_P Plus
 [RULE: 6]
-	leftrec -> [8][Pwl1_P]< Lt @ >
+	rule: Pwl1_P -> [9][Pwl1_P]<! Plus !Pwl1_P @ !>
 		+ StackBegin()
 		+ StackSlot(0)
-		> rule: Pwl1 -> [27][Module]<! "prefix_with_leftrec" !Pwl1 @ !>
-		> rule: Pwl1_P -> [15][Pwl1]<! !Pwl1_P @ !>
-			+ StackBegin()
-	leftrec -> [18][Pwl2_P]< Lt @ >
+
+[31][Module]{{<! "prefix_with_leftrec" @ !Pwl1 !> ; <! "prefix_with_leftrec" @ !Pwl2 !>}} [pm-cr-acc] Pwl2 Plus
+[RULE: 6]
+	rule: Plus -> [23][Pwl2]<! { Plus @ } !Pwl2_P !>
+		+ StackBegin()
+		+ StackSlot(0)
+		+ StackSlot(0)
+	rule: Pwl2_P -> [24][Pwl2]<! { Plus } !Pwl2_P @ !>
+		+ StackBegin()
+		+ StackSlot(0)
+
+[32][Module]{{<! "prefix_with_leftrec" @ !Pwl1 !> ; <! "prefix_with_leftrec" @ !Pwl2 !>}} [pm-cr-acc] Pwl2 Pwl2_P Lt
+[RULE: 6]
+	leftrec -> [19][Pwl2_P]< Pwl2_P @ Lt >
+		+ StackBegin()
+		+ StackSlot(0)
+		+ CreateObject(PwlFeature)
+		+ Field(PwlFeature::two, 0)
+		+ StackEnd()
+		+ StackBegin()
+		+ StackSlot(0)
+
+[33][Module]{{<! "prefix_with_leftrec" @ !Pwl1 !> ; <! "prefix_with_leftrec" @ !Pwl2 !>}}[pm-cr-rule: Lt]
+[RULE: 6]
+	epsilon -> [32][Module]{{<! "prefix_with_leftrec" @ !Pwl1 !> ; <! "prefix_with_leftrec" @ !Pwl2 !>}} [pm-cr-acc] Pwl2 Pwl2_P Lt
 		+ StackBegin()
 		+ StackSlot(0)
 		> rule: Pwl2 -> [28][Module]<! "prefix_with_leftrec" !Pwl2 @ !>
 		> rule: Pwl2_P -> [24][Pwl2]<! { Plus } !Pwl2_P @ !>
 			+ StackBegin()
 
-[31][Module]{{<! "prefix_with_leftrec" @ !Pwl1 !> ; <! "prefix_with_leftrec" @ !Pwl2 !>}}[pm-cr-rule: Plus]
+[34][Module]{{<! "prefix_with_leftrec" @ !Pwl1 !> ; <! "prefix_with_leftrec" @ !Pwl2 !>}}[pm-cr-rule: Plus]
 [RULE: 6]
-	leftrec -> [10][Pwl1_P]<! Plus @ !Pwl1_P !>
+	epsilon -> [30][Module]{{<! "prefix_with_leftrec" @ !Pwl1 !> ; <! "prefix_with_leftrec" @ !Pwl2 !>}} [pm-cr-acc] Pwl1 Pwl1_P Plus
 		+ StackBegin()
 		+ StackSlot(0)
 		> rule: Pwl1 -> [27][Module]<! "prefix_with_leftrec" !Pwl1 @ !>
 		> rule: Pwl1_P -> [15][Pwl1]<! !Pwl1_P @ !>
 			+ StackBegin()
-	leftrec -> [23][Pwl2]<! { Plus @ } !Pwl2_P !>
+	epsilon -> [31][Module]{{<! "prefix_with_leftrec" @ !Pwl1 !> ; <! "prefix_with_leftrec" @ !Pwl2 !>}} [pm-cr-acc] Pwl2 Plus
 		+ StackBegin()
 		+ StackSlot(0)
 		> rule: Pwl2 -> [28][Module]<! "prefix_with_leftrec" !Pwl2 @ !>

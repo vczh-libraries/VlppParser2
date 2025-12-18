@@ -21,11 +21,11 @@ namespace prefixmerge5_pm
 		_PrimitiveExprOnly = 14,
 		_LongType = 19,
 		_Expr0 = 32,
-		_Expr1 = 42,
-		_Expr = 50,
-		Module = 56,
-		ExprModule = 62,
-		TypeModule = 65,
+		_Expr1 = 45,
+		_Expr = 53,
+		Module = 59,
+		ExprModule = 74,
+		TypeModule = 77,
 	};
 
 	const wchar_t* ModuleParserRuleName(vl::vint index);
