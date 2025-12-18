@@ -806,6 +806,44 @@ SyntaxSymbolManager::PrefixMergeCrossReference_AccumulatedEdges
 
 			SyntaxSymbolManager::StateEdgePair SyntaxSymbolManager::PrefixMergeCrossReference_AccumulatedEdges(StateSymbol* fromState, const collections::List<PrefixMergeApplicationItems::EdgeListPtr>& accumulatedEdgesList, IncrementalChange& ic)
 			{
+				auto IsSingleReuseEdge = [](EdgeSymbol* edge)
+				{
+					if (edge->input.type != EdgeInputType::Rule) return false;
+					if (edge->input.ruleType != automaton::ReturnRuleType::Reuse) return false;
+					if (edge->insAfterInput.Count() != 1) return false;
+					if (edge->insAfterInput[0].type != AstInsType::StackBegin) return false;
+
+					auto targetState = edge->To();
+					List<EdgeSymbol*> endingEdges;
+					CopyFrom(endingEdges, From(targetState->OutEdges()).Where([](EdgeSymbol* e)
+					{
+						return e->input.type == EdgeInputType::Ending;
+					}));
+					if (endingEdges.Count() != 1) return false;
+
+					auto endingEdge = endingEdges[0];
+					if (endingEdge->input.type != EdgeInputType::Ending) return false;
+					if (endingEdge->insAfterInput.Count() != 1) return false;
+					if (endingEdge->insAfterInput[0].type != AstInsType::StackEnd) return false;
+					return true;
+				};
+
+				Array<vint> accumulatedSizes(accumulatedEdgesList.Count());
+				for (auto [edges, index] : indexed(accumulatedEdgesList))
+				{
+					auto&& edgeList = *edges.Obj();
+					accumulatedSizes[index] = 0;
+					for (vint i = edgeList.Count(); i > 0; i--)
+					{
+						auto edge = edgeList[i - 1];
+						if (!IsSingleReuseEdge(edge))
+						{
+							accumulatedSizes[index] = i;
+							break;
+						}
+					}
+				}
+
 				if (accumulatedEdgesList.Count() > 1)
 				{
 					// newState labeling [pm-cr] is made if there are multiple choices
@@ -936,15 +974,6 @@ SyntaxSymbolManager::PrefixMergeCrossReference_Apply
 					for (vint i = 0; i < pmai.ruleToEdges.Count(); i++)
 					{
 						auto pmRule = pmai.ruleToEdges.Keys()[i];
-						auto&& accumulatedEdgesList = pmai.ruleToEdges.GetByIndex(i);
-						auto [newState, newEdge] = PrefixMergeCrossReference_AccumulatedEdges(currentState, accumulatedEdgesList, ic);
-						if (newState)
-						{
-							newState->label = currentState->label + L"[pm-cr-rule: " + pmRule->Name() + L"]";
-						}
-						newEdge->input.type = EdgeInputType::PrefixMergeRule;
-						newEdge->input.rule = pmRule;
-
 #ifdef LOG_DECISION_MAKING
 						LOGL(L"  [RULE] " + pmRule->Name() + L" :");
 						for (auto edges : pmai.ruleToEdges.GetByIndex(i))
@@ -958,20 +987,18 @@ SyntaxSymbolManager::PrefixMergeCrossReference_Apply
 							LOGL(L"");
 						}
 #endif
+						auto&& accumulatedEdgesList = pmai.ruleToEdges.GetByIndex(i);
+						auto [newState, newEdge] = PrefixMergeCrossReference_AccumulatedEdges(currentState, accumulatedEdgesList, ic);
+						if (newState)
+						{
+							newState->label = currentState->label + L"[pm-cr-rule: " + pmRule->Name() + L"]";
+						}
+						newEdge->input.type = EdgeInputType::PrefixMergeRule;
+						newEdge->input.rule = pmRule;
 					}
 					for (vint i = 0; i < pmai.tokenToEdges.Count(); i++)
 					{
 						auto [pmToken, condition] = pmai.tokenToEdges.Keys()[i];
-						auto&& accumulatedEdgesList = pmai.tokenToEdges.GetByIndex(i);
-						auto [newState, newEdge] = PrefixMergeCrossReference_AccumulatedEdges(currentState, accumulatedEdgesList, ic);
-						if (newState)
-						{
-							newState->label = currentState->label + L"[pm-cr-token: " + (condition ? condition.Value() : itow(pmToken)) + L"]";
-						}
-						newEdge->input.type = EdgeInputType::Token;
-						newEdge->input.token = pmToken;
-						newEdge->input.condition = condition;
-
 #ifdef LOG_DECISION_MAKING
 						LOG(L"  [TOKEN] " + (condition ? condition.Value() : itow(pmToken)));
 						for (auto edges : pmai.ruleToEdges.GetByIndex(i))
@@ -985,6 +1012,15 @@ SyntaxSymbolManager::PrefixMergeCrossReference_Apply
 							LOGL(L"");
 						}
 #endif
+						auto&& accumulatedEdgesList = pmai.tokenToEdges.GetByIndex(i);
+						auto [newState, newEdge] = PrefixMergeCrossReference_AccumulatedEdges(currentState, accumulatedEdgesList, ic);
+						if (newState)
+						{
+							newState->label = currentState->label + L"[pm-cr-token: " + (condition ? condition.Value() : itow(pmToken)) + L"]";
+						}
+						newEdge->input.type = EdgeInputType::Token;
+						newEdge->input.token = pmToken;
+						newEdge->input.condition = condition;
 					}
 				}
 			}
