@@ -878,15 +878,18 @@ SyntaxSymbolManager::PrefixMergeCrossReference_AccumulatedEdges
 								continue;
 							}
 
-							auto AddNewContEdge = [=, &ic](StateSymbol* contFromState)
+							auto AddNewContEdge = [=, &ic](StateSymbol* contFromState, bool useLastEdgeContent)
 							{
 								auto newContEdge = Ptr(new EdgeSymbol(contFromState, contEdge->To()));
 								ic.createdEdges.Add(newContEdge);
 
 								newContEdge->input = contEdge->input;
-								CopyFrom(newContEdge->competitions, lastEdge->competitions, true);
+								if (useLastEdgeContent)
+								{
+									CopyFrom(newContEdge->competitions, lastEdge->competitions, true);
+									CopyFrom(newContEdge->insAfterInput, lastEdge->insAfterInput, true);
+								}
 								CopyFrom(newContEdge->competitions, contEdge->competitions, true);
-								CopyFrom(newContEdge->insAfterInput, lastEdge->insAfterInput, true);
 								CopyFrom(newContEdge->insAfterInput, contEdge->insAfterInput, true);
 							};
 
@@ -899,7 +902,7 @@ SyntaxSymbolManager::PrefixMergeCrossReference_AccumulatedEdges
 									continue;
 								default:;
 								}
-								AddNewContEdge(newState.Obj());
+								AddNewContEdge(newState.Obj(), true);
 								continue;
 							}
 
@@ -936,7 +939,7 @@ SyntaxSymbolManager::PrefixMergeCrossReference_AccumulatedEdges
 									continue;
 								default:;
 								}
-								AddNewContEdge(contState.Obj());
+								AddNewContEdge(contState.Obj(), false);
 							}
 						}
 					}

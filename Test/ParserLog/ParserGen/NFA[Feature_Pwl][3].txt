@@ -275,8 +275,6 @@
 [31][Module]{{<! "prefix_with_leftrec" @ !Pwl1 !> ; <! "prefix_with_leftrec" @ !Pwl2 !>}}[pm-cr-rule: Lt] Pwl1 Pwl1_P Lt
 [RULE: 6]
 	ending -> [7][Pwl1_P] END [ENDING]
-		+ StackBegin()
-		+ StackSlot(0)
 		+ CreateObject(PwlFeature)
 		+ Field(PwlFeature::one, 0)
 		+ StackEnd()
@@ -284,14 +282,10 @@
 [32][Module]{{<! "prefix_with_leftrec" @ !Pwl1 !> ; <! "prefix_with_leftrec" @ !Pwl2 !>}}[pm-cr-rule: Lt] Pwl2 Pwl2_P Lt
 [RULE: 6]
 	ending -> [17][Pwl2_P] END [ENDING]
-		+ StackBegin()
-		+ StackSlot(0)
 		+ CreateObject(PwlFeature)
 		+ Field(PwlFeature::two, 0)
 		+ StackEnd()
 	leftrec -> [19][Pwl2_P]< Pwl2_P @ Lt >
-		+ StackBegin()
-		+ StackSlot(0)
 		+ CreateObject(PwlFeature)
 		+ Field(PwlFeature::two, 0)
 		+ StackEnd()
@@ -317,8 +311,6 @@
 		+ StackBegin()
 		+ Token(0)
 		> rule: Pwl1_P -> [9][Pwl1_P]<! Plus !Pwl1_P @ !>
-			+ StackBegin()
-			+ StackSlot(0)
 		> rule: Plus -> [10][Pwl1_P]<! Plus @ !Pwl1_P !>
 			+ StackBegin()
 			+ StackSlot(0)
@@ -326,8 +318,6 @@
 		+ StackBegin()
 		+ Token(0)
 		> rule: Pwl1_P -> [9][Pwl1_P]<! Plus !Pwl1_P @ !>
-			+ StackBegin()
-			+ StackSlot(0)
 		> rule: Lt -> [8][Pwl1_P]< Lt @ >
 			+ StackBegin()
 			+ StackSlot(0)
@@ -338,15 +328,11 @@
 		+ StackBegin()
 		+ Token(0)
 		> rule: Plus -> [23][Pwl2]<! { Plus @ } !Pwl2_P !>
-			+ StackBegin()
-			+ StackSlot(0)
 			+ StackSlot(0)
 	token: "<" -> [5][Lt]< "<" @ >
 		+ StackBegin()
 		+ Token(0)
 		> rule: Pwl2_P -> [24][Pwl2]<! { Plus } !Pwl2_P @ !>
-			+ StackBegin()
-			+ StackSlot(0)
 		> rule: Lt -> [18][Pwl2_P]< Lt @ >
 			+ StackBegin()
 			+ StackSlot(0)
