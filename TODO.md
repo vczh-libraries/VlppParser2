@@ -21,8 +21,6 @@
 
 ### Progressing
 
-`BinaryOp` failed to parse.
-
 - [x] Non-ambiguous test cases
 - [x] Ambiguous test cases
 - [x] Split FeatureTest
@@ -32,8 +30,8 @@
   - [x] Workflow
 - [ ] prefix_merge test cases
   - [x] merge prefix in rules
-    - 109236 -> 10141 states: Test\ParserLog\BuiltIn-Workflow\Trace-1[Codegen_WorkflowHints].txt
-  - [ ] automatically identify prefix_merge
+    - 109236 -> 10141 -> 6663 states: `Test\ParserLog\BuiltIn-Workflow\Trace-1[Codegen_WorkflowHints].txt`, meanwhile 6750 in master
+  - [x] automatically identify prefix_merge
 - [ ] Built-in parsers:
   - [ ] C++
 - [ ] build.ps1
@@ -41,7 +39,54 @@
 - [ ] Document design principal, algorithm and syntax
 - [ ] build.ps1
 
-### Optimization ToDo
+## Prefix Merge
+
+In `PrefixMerge5_Pm` test case, one of a prefix merge instance is
+```
+  [RULE] _PrimitiveShared :
+    _LongType -> _PrimitiveShared
+    _Expr -> _Expr1 -> _Expr0 -> _PrimitiveShared
+    _Expr -> _Expr1 -> _Expr0 -> _LongType -> _PrimitiveShared
+```
+Currently we only do `_PrimitiveShared` merging.
+In the future we should do
+```
+_PrimitiveShared +-> _Expr0 ... _Expr
+                 +-> _LongType +-> _LongType
+                               +-> _Expr0 ... _Expr
+```
+Or we are getting this
+```
+[59][Module] BEGIN [pm-cr-rule: _PrimitiveShared]
+[RULE: 8]
+	ending -> [63][Module] END [ENDING]
+		+ StackBegin()
+		+ StackEnd()
+	ending -> [63][Module] END [ENDING]
+		+ StackBegin()
+		+ StackEnd()
+	leftrec -> [27][_LongType]< _LongType @ "(" { _LongType ; "," } ")" >
+		+ StackBegin()
+		+ StackEnd()
+		+ StackBegin()
+		+ StackSlot(0)
+		> rule: _LongType -> [65][Module]<! !_LongType @ !>
+			+ StackBegin()
+	leftrec -> [27][_LongType]< _LongType @ "(" { _LongType ; "," } ")" >
+		+ StackBegin()
+		+ StackEnd()
+		+ StackBegin()
+		+ StackSlot(0)
+		> rule: _Expr -> [64][Module]<! !_Expr @ !>
+			+ StackBegin()
+		> rule: _Expr1 -> [56][_Expr]<! !_Expr1 @ !>
+			+ StackBegin()
+		> rule: _Expr0 -> [50][_Expr1]<! !_Expr0 @ !>
+			+ StackBegin()
+		> rule: _LongType -> [40][_Expr0]< _LongType @ "{" { _Expr ; "," } "}" >
+			+ StackBegin()
+			+ StackSlot(0)
+```
 
 ## Features to Add
 
@@ -63,7 +108,7 @@
 - Code Coverage
   - Collect uncovered code again by break points in executator (trace manager).
 - Reconsider in new implementation:
-  - Make a test case to test `prefix_merge` generates `left_recursion_inject_multiple`.
+  - Test `SyntaxSymbolManager::PrefixMergeCrossReference_Solve` firmly.
   - Create ambiguity test case caused by only one clause with alternative syntax.
 - Windows and Linux test output inconsistency on
   - the order of ambiguous candidates.

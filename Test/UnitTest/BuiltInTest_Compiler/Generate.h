@@ -7,7 +7,7 @@
 #include "../../../Source/Ast/AstCppGen.h"
 #include "../../../Source/Lexer/LexerCppGen.h"
 #include "../../../Source/Syntax/SyntaxCppGen.h"
-#include "../../Source/LogAutomaton.h"
+#include "../../Source/LogParser.h"
 #include "../../Source/LogTrace.h"
 
 using namespace vl::glr::parsergen;

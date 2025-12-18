@@ -99,7 +99,10 @@ SymbolSet
 					return CompareEnumerable(*symbols.Obj(), *set.symbols.Obj());
 				}
 
-				bool operator==(const SymbolSet<TSymbol, Ordered>& set) const = default;
+				bool operator==(const SymbolSet<TSymbol, Ordered>& set) const
+				{
+					return (*this <=> set) == 0;
+				}
 			};
 
 			template<typename TSymbol, bool Ordered>
@@ -158,15 +161,15 @@ SyntaxSymbolManager::MergeEdgesWithSameInput
 
 				// Start from the start state
 				{
-					ic.reusedStates.Add(startState);
+					ic.opStates.Add(startState);
 					workingStates.Add(startState);
 				}
 
 				auto ReuseState = [&](StateSymbol* state)
 				{
-					if (!ic.reusedStates.Contains(state))
+					if (!ic.opStates.Contains(state))
 					{
-						ic.reusedStates.Add(state);
+						ic.opStates.Add(state);
 						workingStates.Add(state);
 					}
 				};
@@ -174,9 +177,9 @@ SyntaxSymbolManager::MergeEdgesWithSameInput
 				auto ReuseEdge = [&](EdgeSymbol* edge)
 				{
 					ReuseState(edge->To());
-					if (!ic.reusedEdges.Contains(edge))
+					if (!ic.opEdges.Contains(edge))
 					{
-						ic.reusedEdges.Add(edge);
+						ic.opEdges.Add(edge);
 					}
 				};
 

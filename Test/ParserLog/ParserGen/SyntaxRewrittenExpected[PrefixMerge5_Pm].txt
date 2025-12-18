@@ -1,0 +1,55 @@
+﻿_Name
+  ::= ID:name as Name
+  ::= _Name:parent "." ID:member as MemberName
+  ;
+
+_PrimitiveShared
+  ::= !_Name
+  ;
+
+_PrimitiveTypeOnly
+  ::= "const" _PrimitiveShared:type as ConstType
+  ::= "const" _PrimitiveTypeOnly:type as ConstType
+  ;
+
+_PrimitiveExprOnly
+  ::= "(" !_Expr ")"
+  ;
+
+_LongType
+  ::= !_PrimitiveShared
+  ::= !_PrimitiveTypeOnly
+  ::= _LongType:type "const" as ConstType
+  ::= _LongType:type "*" as PointerType
+  ::= _LongType:returnType "(" {_LongType:args ; ","} ")" as FunctionType
+  ;
+
+_Expr0
+  ::= !_PrimitiveShared
+  ::= !_PrimitiveExprOnly
+  ::= _LongType:type "{" {_Expr:args ; ","} "}" as CtorExpr
+  ;
+
+_Expr1
+  ::= !_Expr0
+  ::= _Expr1:func "(" {_Expr:args ; ","} ")" as CallExpr
+  ;
+
+_Expr
+  ::= !_Expr1
+  ::= _Expr:first "*" _Expr1:second as MulExpr
+  ;
+
+@parser Module
+  ::= !_Expr
+  ::= !_LongType
+  ;
+
+@parser ExprModule
+  ::= !_Expr
+  ;
+
+@parser TypeModule
+  ::= !_LongType
+  ;
+

@@ -1,0 +1,308 @@
+﻿================ EXECUTION STEPS ================
+[0]: 0@0 - 10@3
+[1]: RA_Begin
+[11]: 10@4 - 10@5
+[12]: 16@0 - 19@0
+[5]: 22@0 - 22@1
+[6]: RA_Branch
+[3]: 10@4 - 10@5
+[4]: 16@0 - 19@0
+[7]: 21@0 - 21@1
+[8]: RA_Branch
+[9]: RA_End(2, MemberName)
+
+==================== TRACES =====================
+
++----------------------+
+| [0]: <Start>         |
+|   TraceExec: [0]     |
+|   ForwardTrace: 0    |
+|   NextACT: 10        |
+| [57][Module] BEGIN   |
+| [AST-INSTRUCTIONS]:  |
+|   @                  |
+| [SUCCESORS 1-1]: [1] |
++----------------------+
+[0]
+ |
+ +
+ |
+[0]
+++=====================================================================================++
+|| [1]: {ID} A                                                                         ||
+||   TraceExec: [1]                                                                    ||
+||   InsExec: [0:2]                                                                    ||
+||   ForwardTrace: 0                                                                   ||
+|| [2][_Name]< ID @ >                                                                  ||
+|| [AST-INSTRUCTIONS]:                                                                 ||
+||   @                                                                                 ||
+||   + StackBegin()                                                                    ||
+||     obj:0 : Name                                                                    ||
+||                                                                                     ||
+||   @ CS(0 -> -1) : [0]                                                               ||
+||   + Token(0)                                                                        ||
+||                                                                                     ||
+||   @ CS(0 -> -1) : [0]                                                               ||
+|| [RETURN STACK]:                                                                     ||
+||   [1][0][0]: _Name -> [8][_PrimitiveShared]<! !_Name @ !>                           ||
+||   [0][21][0]: _PrimitiveShared -> [59][Module] BEGIN [pm-cr-rule: _PrimitiveShared] ||
+|| [PREDECESSORS 0-0]: [0]                                                             ||
+|| [SUCCESORS 2-2]: [2]                                                                ||
+++=====================================================================================++
+|
++
+|
++-------------------------------------------------------------------------------------+
+| [2]: <Leftrec>                                                                      |
+|   TraceExec: [2]                                                                    |
+|   InsExec: [2:5]                                                                    |
+|   ForwardTrace: 0                                                                   |
+| [5][_Name]< _Name @ "." ID >                                                        |
+| [AST-INSTRUCTIONS]:                                                                 |
+|   @ CS(0 -> -1) : [0]                                                               |
+|   + CreateObject(Name)                                                              |
+|     obj:0 : Name                                                                    |
+|                                                                                     |
+|   @ CS(0 -> -1) : [0]                                                               |
+|   + Field(Name::name, 0)                                                            |
+|                                                                                     |
+|   @ CS(0 -> -1) : [0]                                                               |
+|   + StackEnd()                                                                      |
+|     obj+:0 : Name                                                                   |
+|       begin:1@0, top:1@0, create!:[2@0], end:[2@2]                                  |
+|                                                                                     |
+|   @ OS(1 -> -1) : [0]                                                               |
+|   + StackBegin()                                                                    |
+|     obj:1 : MemberName                                                              |
+|                                                                                     |
+|   @ CS(2 -> -1) : [1] OS(1 -> -1) : [0]                                             |
+|   + StackSlot(0)                                                                    |
+|                                                                                     |
+|   @ CS(2 -> -1) : [1]                                                               |
+| [RETURN STACK]:                                                                     |
+|   [1][0][0]: _Name -> [8][_PrimitiveShared]<! !_Name @ !>                           |
+|   [0][21][0]: _PrimitiveShared -> [59][Module] BEGIN [pm-cr-rule: _PrimitiveShared] |
+| [PREDECESSORS 1-1]: [1]                                                             |
+| [SUCCESORS 8-8]: [8]                                                                |
++-------------------------------------------------------------------------------------+
+[0]
+ |
+ +
+ |
+[0]
+++=====================================================================================++
+|| [8]: {DOT} .                                                                        ||
+||   TraceExec: [3]                                                                    ||
+||   InsExec: [7:1]                                                                    ||
+||   ForwardTrace: 0                                                                   ||
+|| [3][_Name]< _Name "." @ ID >                                                        ||
+|| [AST-INSTRUCTIONS]:                                                                 ||
+||   @ CS(2 -> -1) : [1]                                                               ||
+||   + Token(1)                                                                        ||
+||                                                                                     ||
+||   @ CS(2 -> -1) : [1]                                                               ||
+|| [RETURN STACK]:                                                                     ||
+||   [1][0][0]: _Name -> [8][_PrimitiveShared]<! !_Name @ !>                           ||
+||   [0][21][0]: _PrimitiveShared -> [59][Module] BEGIN [pm-cr-rule: _PrimitiveShared] ||
+|| [PREDECESSORS 2-2]: [2]                                                             ||
+|| [SUCCESORS 9-9]: [9]                                                                ||
+++=====================================================================================++
+[0]
+ |
+ +
+ |
+[0]
+++=====================================================================================++
+|| [9]: {ID} B                                                                         ||
+||   TraceExec: [4]                                                                    ||
+||   InsExec: [8:1]                                                                    ||
+||   ForwardTrace: 0                                                                   ||
+|| [4][_Name]< _Name "." ID @ >                                                        ||
+|| [AST-INSTRUCTIONS]:                                                                 ||
+||   @ CS(2 -> -1) : [1]                                                               ||
+||   + Token(2)                                                                        ||
+||                                                                                     ||
+||   @ CS(2 -> -1) : [1]                                                               ||
+|| [RETURN STACK]:                                                                     ||
+||   [1][0][0]: _Name -> [8][_PrimitiveShared]<! !_Name @ !>                           ||
+||   [0][21][0]: _PrimitiveShared -> [59][Module] BEGIN [pm-cr-rule: _PrimitiveShared] ||
+|| [PREDECESSORS 8-8]: [8]                                                             ||
+|| [SUCCESORS 10-10]: [10]                                                             ||
+++=====================================================================================++
+|
++
+|
++-------------------------------------------------------------------------------------+
+| [10]: <Leftrec>                                                                     |
+|   TraceExec: [5]                                                                    |
+|   InsExec: [9:6]                                                                    |
+|   ForwardTrace: 0                                                                   |
+|   NextACT: 19                                                                       |
+|   AmbiguityBegins: [0]                                                              |
+| [5][_Name]< _Name @ "." ID >                                                        |
+| [AST-INSTRUCTIONS]:                                                                 |
+|   @ CS(2 -> -1) : [1]                                                               |
+|   + CreateObject(MemberName)                                                        |
+|     obj:1 : MemberName                                                              |
+|                                                                                     |
+|   @ CS(2 -> -1) : [1]                                                               |
+|   + Field(MemberName::parent, 0)                                                    |
+|                                                                                     |
+|   @ CS(2 -> -1) : [1]                                                               |
+|   + Field(MemberName::member, 2)                                                    |
+|                                                                                     |
+|   @ CS(2 -> -1) : [1]                                                               |
+|   + StackEnd()                                                                      |
+|     obj+:1 : MemberName                                                             |
+|       begin:2@3, top:2@3, stack:1@0, field:[0], create!:[10@0], end:[10@3]          |
+|                                                                                     |
+|   @ OS(3 -> -1) : [1]                                                               |
+|   + StackBegin()                                                                    |
+|     obj:2 : MemberName                                                              |
+|                                                                                     |
+|   @ CS(4 -> -1) : [2] OS(3 -> -1) : [1]                                             |
+|   + StackSlot(0)                                                                    |
+|                                                                                     |
+|   @ CS(4 -> -1) : [2]                                                               |
+| [RETURN STACK]:                                                                     |
+|   [1][0][0]: _Name -> [8][_PrimitiveShared]<! !_Name @ !>                           |
+|   [0][21][0]: _PrimitiveShared -> [59][Module] BEGIN [pm-cr-rule: _PrimitiveShared] |
+| [PREDECESSORS 9-9]: [9]                                                             |
+| [SUCCESORS 16-16]: [16]                                                             |
++-------------------------------------------------------------------------------------+
+[0]
+ |
+ +
+ |
+[0]
+++=====================================================================================++
+|| [16]: {DOT} .                                                                       ||
+||   TraceExec: [6]                                                                    ||
+||   InsExec: [15:1]                                                                   ||
+||   ForwardTrace: 0                                                                   ||
+|| [3][_Name]< _Name "." @ ID >                                                        ||
+|| [AST-INSTRUCTIONS]:                                                                 ||
+||   @ CS(4 -> -1) : [2]                                                               ||
+||   + Token(1)                                                                        ||
+||                                                                                     ||
+||   @ CS(4 -> -1) : [2]                                                               ||
+|| [RETURN STACK]:                                                                     ||
+||   [1][0][0]: _Name -> [8][_PrimitiveShared]<! !_Name @ !>                           ||
+||   [0][21][0]: _PrimitiveShared -> [59][Module] BEGIN [pm-cr-rule: _PrimitiveShared] ||
+|| [PREDECESSORS 10-10]: [10]                                                          ||
+|| [SUCCESORS 17-17]: [17]                                                             ||
+++=====================================================================================++
+[0]
+ |
+ +
+ |
+[0]
+++=====================================================================================++
+|| [17]: {ID} C                                                                        ||
+||   TraceExec: [7]                                                                    ||
+||   InsExec: [16:1]                                                                   ||
+||   ForwardTrace: 0                                                                   ||
+|| [4][_Name]< _Name "." ID @ >                                                        ||
+|| [AST-INSTRUCTIONS]:                                                                 ||
+||   @ CS(4 -> -1) : [2]                                                               ||
+||   + Token(2)                                                                        ||
+||                                                                                     ||
+||   @ CS(4 -> -1) : [2]                                                               ||
+|| [RETURN STACK]:                                                                     ||
+||   [1][0][0]: _Name -> [8][_PrimitiveShared]<! !_Name @ !>                           ||
+||   [0][21][0]: _PrimitiveShared -> [59][Module] BEGIN [pm-cr-rule: _PrimitiveShared] ||
+|| [PREDECESSORS 16-16]: [16]                                                          ||
+|| [SUCCESORS 18-18]: [18]                                                             ||
+++=====================================================================================++
+|
++
+|
++-------------------------------------------------------------------------------------+
+| [18]: <Ending>                                                                      |
+|   TraceExec: [8]                                                                    |
+|   InsExec: [17:5]                                                                   |
+|   ForwardTrace: 0                                                                   |
+| [8][_PrimitiveShared]<! !_Name @ !>                                                 |
+| [AST-INSTRUCTIONS]:                                                                 |
+|   @ CS(4 -> -1) : [2]                                                               |
+|   + CreateObject(MemberName)                                                        |
+|     obj:2 : MemberName                                                              |
+|                                                                                     |
+|   @ CS(4 -> -1) : [2]                                                               |
+|   + Field(MemberName::parent, 0)                                                    |
+|                                                                                     |
+|   @ CS(4 -> -1) : [2]                                                               |
+|   + Field(MemberName::member, 2)                                                    |
+|                                                                                     |
+|   @ CS(4 -> -1) : [2]                                                               |
+|   + StackEnd()                                                                      |
+|     obj+:2 : MemberName                                                             |
+|       begin:10@4, top:10@4, stack:1@0, field:[1], create!:[18@0], end:[18@3]        |
+|                                                                                     |
+|   @ OS(5 -> -1) : [2]                                                               |
+|   > StackBegin()                                                                    |
+|     obj!:3 : MemberName                                                             |
+|                                                                                     |
+|   @ CS(6 -> -1) : [3] OS(5 -> -1) : [2]                                             |
+| [RETURN STACK]:                                                                     |
+|   [0][21][0]: _PrimitiveShared -> [59][Module] BEGIN [pm-cr-rule: _PrimitiveShared] |
+| [PREDECESSORS 17-17]: [17]                                                          |
+| [SUCCESORS 19-19]: [19]                                                             |
++-------------------------------------------------------------------------------------+
+|
++
+|
++----------------------------------------------------------------------------------+
+| [19]: <Ending>                                                                   |
+|   TraceExec: [9]                                                                 |
+|   InsExec: [22:1]                                                                |
+|   ForwardTrace: 0                                                                |
+| [59][Module] BEGIN [pm-cr-rule: _PrimitiveShared]                                |
+| [AST-INSTRUCTIONS]:                                                              |
+|   @ CS(6 -> -1) : [3] OS(5 -> -1) : [2]                                          |
+|   + StackEnd()                                                                   |
+|     obj+:3 : MemberName                                                          |
+|       begin:18@4, top:10@4, use:[2], create!:[18@0], end!:[19@0], endLref:[21@1] |
+|                                                                                  |
+|   @ OS(7 -> -1) : [3]                                                            |
+| [PREDECESSORS 18-18]: [18]                                                       |
+| [SUCCESORS 22-21]: [22][21]                                                      |
++----------------------------------------------------------------------------------+
+|
++--------------------------------------------------------------------------------------------+
+|                                                                                            |
++------------------------------------------------------------------+                         +------------------------------------------------------------------+
+| [22]: <Ending>                                                   |                         | [21]: <Ending>                                                   |
+|   TraceExec: [10]                                                |                         |   TraceExec: [11]                                                |
+|   InsExec: [23:2]                                                |                         |   InsExec: [25:2]                                                |
+|   ForwardTrace: 22                                               |                         |   ForwardTrace: 21                                               |
+| [63][Module] END [ENDING]                                        |                         | [63][Module] END [ENDING]                                        |
+| [AST-INSTRUCTIONS]:                                              |                         | [AST-INSTRUCTIONS]:                                              |
+|   @ OS(7 -> -1) : [3]                                            |                         |   @ OS(7 -> -1) : [3]                                            |
+|   + StackBegin()                                                 |                         |   + StackBegin()                                                 |
+|     obj!:4 : MemberName                                          |                         |     obj!:5 : MemberName                                          |
+|                                                                  |                         |                                                                  |
+|   @ CS(8 -> -1) : [4] OS(7 -> -1) : [3]                          |                         |   @ CS(10 -> -1) : [5] OS(7 -> -1) : [3]                         |
+|   + StackEnd()                                                   |                         |   + StackEnd()                                                   |
+|     obj+:4 : MemberName                                          |                         |     obj+:5 : MemberName                                          |
+|       begin:22@0, top:10@4, use:[3], create!:[18@0], end!:[22@1] |                         |       begin:21@0, top:10@4, use:[3], create!:[18@0], end!:[21@1] |
+|                                                                  |                         |                                                                  |
+|   @ OS(9 -> -1) : [4]                                            |                         |   @ OS(11 -> -1) : [5]                                           |
+| [PREDECESSORS 19-19]: [19]                                       |                         | [PREDECESSORS 19-19]: [19]                                       |
+| [SUCCESORS 20-20]: [20]                                          |                         | [SUCCESORS 20-20]: [20]                                          |
++------------------------------------------------------------------+                         +------------------------------------------------------------------+
+|                                                                                            |
++--------------------------------------------------------------------------------------------+
+|
++----------------------------------+
+| [20]: <Merging>                  |
+| <Start>                          |
+|   TraceExec: [12]                |
+|   ForwardTrace: 20               |
+|   CommonForwardTrace: 0          |
+| [AMBIGUITY-RESOLVING]: [0]       |
+|   objs: [4, 5]                   |
+|   first: 10 prefix: 4            |
+|   last: 20 postfix: 0            |
+| [CONTEXT]: OS(12 -> -1) : [5, 4] |
++----------------------------------+

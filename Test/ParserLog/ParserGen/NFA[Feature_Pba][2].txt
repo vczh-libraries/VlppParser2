@@ -49,10 +49,17 @@
 
 [10][PbaBody] BEGIN [pm-lr]
 [RULE: 4]
+	ending -> [11][PbaBody] END [ENDING]
+		+ StackBegin()
+		+ StackSlot(1)
+		+ CreateObject(PbaFeature)
+		+ Field(PbaFeature::optional, 0)
+		+ Field(PbaFeature::tails, 2)
+		+ StackEnd()
 	leftrec -> [12][PbaBody]< [ Plus @ ] Plus { Plus } >
 		+ StackBegin()
 		+ StackSlot(0)
-	leftrec -> [13][PbaBody]< [ Plus ] Plus @ { Plus } >
+	leftrec -> [14][PbaBody]< [ Plus ] Plus @ { Plus } >[pm-dup]
 		+ StackBegin()
 		+ StackSlot(1)
 
@@ -71,72 +78,77 @@
 		+ Field(PbaFeature::optional, 0)
 		+ Field(PbaFeature::tails, 2)
 		+ StackEnd()
-	rule: Plus -> [14][PbaBody]< [ Plus ] Plus { Plus @ } >
+	rule: Plus -> [15][PbaBody]< [ Plus ] Plus { Plus @ } >
 		+ StackSlot(2)
 
-[14][PbaBody]< [ Plus ] Plus { Plus @ } >
+[14][PbaBody]< [ Plus ] Plus @ { Plus } >[pm-dup]
+[RULE: 4]
+	rule: Plus -> [15][PbaBody]< [ Plus ] Plus { Plus @ } >
+		+ StackSlot(2)
+
+[15][PbaBody]< [ Plus ] Plus { Plus @ } >
 [RULE: 4]
 	ending -> [11][PbaBody] END [ENDING]
 		+ CreateObject(PbaFeature)
 		+ Field(PbaFeature::optional, 0)
 		+ Field(PbaFeature::tails, 2)
 		+ StackEnd()
-	rule: Plus -> [14][PbaBody]< [ Plus ] Plus { Plus @ } >
+	rule: Plus -> [15][PbaBody]< [ Plus ] Plus { Plus @ } >
 		+ StackSlot(2)
 
-[15][Pba] BEGIN 
+[16][Pba] BEGIN 
 [RULE: 5]
-	token: "prefix_before_ambiguity" -> [17][Pba]<! "prefix_before_ambiguity" @ { Lt } ( Gt { Gt } ) !PbaBody !>
+	token: "prefix_before_ambiguity" -> [18][Pba]<! "prefix_before_ambiguity" @ { Lt } ( Gt { Gt } ) !PbaBody !>
 		+ StackBegin()
 		+ Token(0)
 
-[16][Pba] END [ENDING]
+[17][Pba] END [ENDING]
 [RULE: 5]
 
-[17][Pba]<! "prefix_before_ambiguity" @ { Lt } ( Gt { Gt } ) !PbaBody !>
+[18][Pba]<! "prefix_before_ambiguity" @ { Lt } ( Gt { Gt } ) !PbaBody !>
 [RULE: 5]
-	rule: Lt -> [18][Pba]<! "prefix_before_ambiguity" { Lt @ } ( Gt { Gt } ) !PbaBody !>
+	rule: Lt -> [19][Pba]<! "prefix_before_ambiguity" { Lt @ } ( Gt { Gt } ) !PbaBody !>
 		+ StackSlot(1)
-	rule: Gt -> [19][Pba]<! "prefix_before_ambiguity" { Lt } ( Gt @ { Gt } ) !PbaBody !>
+	rule: Gt -> [20][Pba]<! "prefix_before_ambiguity" { Lt } ( Gt @ { Gt } ) !PbaBody !>
 		+ StackSlot(2)
 
-[18][Pba]<! "prefix_before_ambiguity" { Lt @ } ( Gt { Gt } ) !PbaBody !>
+[19][Pba]<! "prefix_before_ambiguity" { Lt @ } ( Gt { Gt } ) !PbaBody !>
 [RULE: 5]
-	rule: Lt -> [18][Pba]<! "prefix_before_ambiguity" { Lt @ } ( Gt { Gt } ) !PbaBody !>
+	rule: Lt -> [19][Pba]<! "prefix_before_ambiguity" { Lt @ } ( Gt { Gt } ) !PbaBody !>
 		+ StackSlot(1)
-	rule: Gt -> [19][Pba]<! "prefix_before_ambiguity" { Lt } ( Gt @ { Gt } ) !PbaBody !>
+	rule: Gt -> [20][Pba]<! "prefix_before_ambiguity" { Lt } ( Gt @ { Gt } ) !PbaBody !>
 		+ StackSlot(2)
 
-[19][Pba]<! "prefix_before_ambiguity" { Lt } ( Gt @ { Gt } ) !PbaBody !>
+[20][Pba]<! "prefix_before_ambiguity" { Lt } ( Gt @ { Gt } ) !PbaBody !>
 [RULE: 5]
-	rule: Gt -> [20][Pba]<! "prefix_before_ambiguity" { Lt } ( Gt { Gt @ } ) !PbaBody !>
+	rule: Gt -> [21][Pba]<! "prefix_before_ambiguity" { Lt } ( Gt { Gt @ } ) !PbaBody !>
 		+ StackSlot(3)
-	rule: PbaBody -> [21][Pba]<! "prefix_before_ambiguity" { Lt } ( Gt { Gt } ) !PbaBody @ !>
+	rule: PbaBody -> [22][Pba]<! "prefix_before_ambiguity" { Lt } ( Gt { Gt } ) !PbaBody @ !>
 
-[20][Pba]<! "prefix_before_ambiguity" { Lt } ( Gt { Gt @ } ) !PbaBody !>
+[21][Pba]<! "prefix_before_ambiguity" { Lt } ( Gt { Gt @ } ) !PbaBody !>
 [RULE: 5]
-	rule: Gt -> [20][Pba]<! "prefix_before_ambiguity" { Lt } ( Gt { Gt @ } ) !PbaBody !>
+	rule: Gt -> [21][Pba]<! "prefix_before_ambiguity" { Lt } ( Gt { Gt @ } ) !PbaBody !>
 		+ StackSlot(3)
-	rule: PbaBody -> [21][Pba]<! "prefix_before_ambiguity" { Lt } ( Gt { Gt } ) !PbaBody @ !>
+	rule: PbaBody -> [22][Pba]<! "prefix_before_ambiguity" { Lt } ( Gt { Gt } ) !PbaBody @ !>
 
-[21][Pba]<! "prefix_before_ambiguity" { Lt } ( Gt { Gt } ) !PbaBody @ !>
+[22][Pba]<! "prefix_before_ambiguity" { Lt } ( Gt { Gt } ) !PbaBody @ !>
 [RULE: 5]
-	ending -> [16][Pba] END [ENDING]
+	ending -> [17][Pba] END [ENDING]
 		+ Field(PbaFeature::lts, 1)
 		+ Field(PbaFeature::gts, 2)
 		+ Field(PbaFeature::gts, 3)
 		+ StackEnd()
 
-[22][Module] BEGIN 
+[23][Module] BEGIN 
 [RULE: 6]
-	rule: Pba -> [24][Module]<! !Pba @ !>
+	rule: Pba -> [25][Module]<! !Pba @ !>
 		+ StackBegin()
 
-[23][Module] END [ENDING]
+[24][Module] END [ENDING]
 [RULE: 6]
 
-[24][Module]<! !Pba @ !>
+[25][Module]<! !Pba @ !>
 [RULE: 6]
-	ending -> [23][Module] END [ENDING]
+	ending -> [24][Module] END [ENDING]
 		+ StackEnd()
 

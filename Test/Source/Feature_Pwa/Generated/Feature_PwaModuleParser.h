@@ -19,11 +19,11 @@ namespace feature_pwa
 		Lt = 3,
 		Gt = 6,
 		Pwa1Prefix = 9,
-		Pwa1Body = 15,
-		Pwa1 = 20,
-		Pwa2Body = 25,
-		Pwa2 = 30,
-		Module = 37,
+		Pwa1Body = 16,
+		Pwa1 = 21,
+		Pwa2Body = 26,
+		Pwa2 = 31,
+		Module = 39,
 	};
 
 	const wchar_t* ModuleParserRuleName(vl::vint index);

@@ -52,7 +52,7 @@ TEST_FILE
 	parsersToLoad.Add(ParserDef{ L"Feature_Pwa",				L"FeatureAst",	L"Module" });
 	parsersToLoad.Add(ParserDef{ L"Feature_Pwl",				L"FeatureAst",	L"Module" });
 	parsersToLoad.Add(ParserDef{ L"BinaryOp",					L"ExprAst",		L"Module" });
-	//parsersToLoad.Add(ParserDef{ L"PrefixMerge5_Pm",			L"TypeOrExpr",	L"Module" });
+	parsersToLoad.Add(ParserDef{ L"PrefixMerge5_Pm",			L"TypeOrExpr",	L"Module" });
 	//parsersToLoad.Add(ParserDef{ L"PrefixMerge6_Pm2",			L"TypeOrExpr",	L"Module" });
 	//parsersToLoad.Add(ParserDef{ L"PrefixMerge7_PmSwitch",		L"TypeOrExpr",	L"Module" });
 	//parsersToLoad.Add(ParserDef{ L"PrefixMerge8_PmVariadic",	L"TypeOrExpr",	L"Module" });

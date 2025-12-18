@@ -52,10 +52,17 @@
 
 [10][Pwa1Prefix] BEGIN [pm-lr]
 [RULE: 3]
+	ending -> [11][Pwa1Prefix] END [ENDING]
+		+ StackBegin()
+		+ StackSlot(1)
+		+ CreateObject(PbaFeature)
+		+ Field(PbaFeature::optional, 0)
+		+ Field(PbaFeature::tails, 2)
+		+ StackEnd()
 	leftrec -> [12][Pwa1Prefix]< [ Plus @ ] Plus { Plus } >
 		+ StackBegin()
 		+ StackSlot(0)
-	leftrec -> [13][Pwa1Prefix]< [ Plus ] Plus @ { Plus } >
+	leftrec -> [14][Pwa1Prefix]< [ Plus ] Plus @ { Plus } >[pm-dup]
 		+ StackBegin()
 		+ StackSlot(1)
 
@@ -80,10 +87,18 @@
 	token: "+" -> [2][Plus]< "+" @ >
 		+ StackBegin()
 		+ Token(0)
-		> rule: Plus -> [14][Pwa1Prefix]< [ Plus ] Plus { Plus @ } >
+		> rule: Plus -> [15][Pwa1Prefix]< [ Plus ] Plus { Plus @ } >
 			+ StackSlot(2)
 
-[14][Pwa1Prefix]< [ Plus ] Plus { Plus @ } >
+[14][Pwa1Prefix]< [ Plus ] Plus @ { Plus } >[pm-dup]
+[RULE: 3]
+	token: "+" -> [2][Plus]< "+" @ >
+		+ StackBegin()
+		+ Token(0)
+		> rule: Plus -> [15][Pwa1Prefix]< [ Plus ] Plus { Plus @ } >
+			+ StackSlot(2)
+
+[15][Pwa1Prefix]< [ Plus ] Plus { Plus @ } >
 [RULE: 3]
 	ending -> [11][Pwa1Prefix] END [ENDING]
 		+ CreateObject(PbaFeature)
@@ -93,24 +108,24 @@
 	token: "+" -> [2][Plus]< "+" @ >
 		+ StackBegin()
 		+ Token(0)
-		> rule: Plus -> [14][Pwa1Prefix]< [ Plus ] Plus { Plus @ } >
+		> rule: Plus -> [15][Pwa1Prefix]< [ Plus ] Plus { Plus @ } >
 			+ StackSlot(2)
 
-[15][Pwa1Body] BEGIN 
+[16][Pwa1Body] BEGIN 
 [RULE: 4]
 	token: "<" -> [5][Lt]< "<" @ >
 		+ StackBegin()
 		+ Token(0)
-		> rule: Lt -> [17][Pwa1Body]< Lt @ { Lt } { Gt } >
+		> rule: Lt -> [18][Pwa1Body]< Lt @ { Lt } { Gt } >
 			+ StackBegin()
 			+ StackSlot(0)
 
-[16][Pwa1Body] END [ENDING]
+[17][Pwa1Body] END [ENDING]
 [RULE: 4]
 
-[17][Pwa1Body]< Lt @ { Lt } { Gt } >
+[18][Pwa1Body]< Lt @ { Lt } { Gt } >
 [RULE: 4]
-	ending -> [16][Pwa1Body] END [ENDING]
+	ending -> [17][Pwa1Body] END [ENDING]
 		+ CreateObject(Pwa1Feature)
 		+ Field(Pwa1Feature::lts, 0)
 		+ Field(Pwa1Feature::lts, 1)
@@ -119,17 +134,17 @@
 	token: "<" -> [5][Lt]< "<" @ >
 		+ StackBegin()
 		+ Token(0)
-		> rule: Lt -> [18][Pwa1Body]< Lt { Lt @ } { Gt } >
+		> rule: Lt -> [19][Pwa1Body]< Lt { Lt @ } { Gt } >
 			+ StackSlot(1)
 	token: ">" -> [8][Gt]< ">" @ >
 		+ StackBegin()
 		+ Token(0)
-		> rule: Gt -> [19][Pwa1Body]< Lt { Lt } { Gt @ } >
+		> rule: Gt -> [20][Pwa1Body]< Lt { Lt } { Gt @ } >
 			+ StackSlot(2)
 
-[18][Pwa1Body]< Lt { Lt @ } { Gt } >
+[19][Pwa1Body]< Lt { Lt @ } { Gt } >
 [RULE: 4]
-	ending -> [16][Pwa1Body] END [ENDING]
+	ending -> [17][Pwa1Body] END [ENDING]
 		+ CreateObject(Pwa1Feature)
 		+ Field(Pwa1Feature::lts, 0)
 		+ Field(Pwa1Feature::lts, 1)
@@ -138,17 +153,17 @@
 	token: "<" -> [5][Lt]< "<" @ >
 		+ StackBegin()
 		+ Token(0)
-		> rule: Lt -> [18][Pwa1Body]< Lt { Lt @ } { Gt } >
+		> rule: Lt -> [19][Pwa1Body]< Lt { Lt @ } { Gt } >
 			+ StackSlot(1)
 	token: ">" -> [8][Gt]< ">" @ >
 		+ StackBegin()
 		+ Token(0)
-		> rule: Gt -> [19][Pwa1Body]< Lt { Lt } { Gt @ } >
+		> rule: Gt -> [20][Pwa1Body]< Lt { Lt } { Gt @ } >
 			+ StackSlot(2)
 
-[19][Pwa1Body]< Lt { Lt } { Gt @ } >
+[20][Pwa1Body]< Lt { Lt } { Gt @ } >
 [RULE: 4]
-	ending -> [16][Pwa1Body] END [ENDING]
+	ending -> [17][Pwa1Body] END [ENDING]
 		+ CreateObject(Pwa1Feature)
 		+ Field(Pwa1Feature::lts, 0)
 		+ Field(Pwa1Feature::lts, 1)
@@ -157,58 +172,58 @@
 	token: ">" -> [8][Gt]< ">" @ >
 		+ StackBegin()
 		+ Token(0)
-		> rule: Gt -> [19][Pwa1Body]< Lt { Lt } { Gt @ } >
+		> rule: Gt -> [20][Pwa1Body]< Lt { Lt } { Gt @ } >
 			+ StackSlot(2)
 
-[20][Pwa1] BEGIN 
+[21][Pwa1] BEGIN 
 [RULE: 5]
-	token: "prefix_with_ambiguity_1" -> [22][Pwa1]<! "prefix_with_ambiguity_1" @ Pwa1Prefix !Pwa1Body !>
+	token: "prefix_with_ambiguity_1" -> [23][Pwa1]<! "prefix_with_ambiguity_1" @ Pwa1Prefix !Pwa1Body !>
 		+ StackBegin()
 		+ Token(0)
 
-[21][Pwa1] END [ENDING]
+[22][Pwa1] END [ENDING]
 [RULE: 5]
 
-[22][Pwa1]<! "prefix_with_ambiguity_1" @ Pwa1Prefix !Pwa1Body !>
+[23][Pwa1]<! "prefix_with_ambiguity_1" @ Pwa1Prefix !Pwa1Body !>
 [RULE: 5]
 	token: "+" -> [2][Plus]< "+" @ >
 		+ StackBegin()
 		+ Token(0)
-		> rule: Pwa1Prefix -> [24][Pwa1]<! "prefix_with_ambiguity_1" Pwa1Prefix @ !Pwa1Body !>
+		> rule: Pwa1Prefix -> [25][Pwa1]<! "prefix_with_ambiguity_1" Pwa1Prefix @ !Pwa1Body !>
 			+ StackSlot(1)
 		> rule: Plus -> [10][Pwa1Prefix] BEGIN [pm-lr]
 
-[23][Pwa1]<! "prefix_with_ambiguity_1" Pwa1Prefix !Pwa1Body @ !>
+[24][Pwa1]<! "prefix_with_ambiguity_1" Pwa1Prefix !Pwa1Body @ !>
 [RULE: 5]
-	ending -> [21][Pwa1] END [ENDING]
+	ending -> [22][Pwa1] END [ENDING]
 		+ Field(Pwa1Feature::pba, 1)
 		+ StackEnd()
 
-[24][Pwa1]<! "prefix_with_ambiguity_1" Pwa1Prefix @ !Pwa1Body !>
+[25][Pwa1]<! "prefix_with_ambiguity_1" Pwa1Prefix @ !Pwa1Body !>
 [RULE: 5]
 	token: "<" -> [5][Lt]< "<" @ >
 		+ StackBegin()
 		+ Token(0)
-		> rule: Pwa1Body -> [23][Pwa1]<! "prefix_with_ambiguity_1" Pwa1Prefix !Pwa1Body @ !>
-		> rule: Lt -> [17][Pwa1Body]< Lt @ { Lt } { Gt } >
+		> rule: Pwa1Body -> [24][Pwa1]<! "prefix_with_ambiguity_1" Pwa1Prefix !Pwa1Body @ !>
+		> rule: Lt -> [18][Pwa1Body]< Lt @ { Lt } { Gt } >
 			+ StackBegin()
 			+ StackSlot(0)
 
-[25][Pwa2Body] BEGIN 
+[26][Pwa2Body] BEGIN 
 [RULE: 6]
 	token: "<" -> [5][Lt]< "<" @ >
 		+ StackBegin()
 		+ Token(0)
-		> rule: Lt -> [27][Pwa2Body]< Lt @ { Lt } { Gt } >
+		> rule: Lt -> [28][Pwa2Body]< Lt @ { Lt } { Gt } >
 			+ StackBegin()
 			+ StackSlot(0)
 
-[26][Pwa2Body] END [ENDING]
+[27][Pwa2Body] END [ENDING]
 [RULE: 6]
 
-[27][Pwa2Body]< Lt @ { Lt } { Gt } >
+[28][Pwa2Body]< Lt @ { Lt } { Gt } >
 [RULE: 6]
-	ending -> [26][Pwa2Body] END [ENDING]
+	ending -> [27][Pwa2Body] END [ENDING]
 		+ CreateObject(PbaFeature)
 		+ Field(PbaFeature::lts, 0)
 		+ Field(PbaFeature::lts, 1)
@@ -217,17 +232,17 @@
 	token: "<" -> [5][Lt]< "<" @ >
 		+ StackBegin()
 		+ Token(0)
-		> rule: Lt -> [28][Pwa2Body]< Lt { Lt @ } { Gt } >
+		> rule: Lt -> [29][Pwa2Body]< Lt { Lt @ } { Gt } >
 			+ StackSlot(1)
 	token: ">" -> [8][Gt]< ">" @ >
 		+ StackBegin()
 		+ Token(0)
-		> rule: Gt -> [29][Pwa2Body]< Lt { Lt } { Gt @ } >
+		> rule: Gt -> [30][Pwa2Body]< Lt { Lt } { Gt @ } >
 			+ StackSlot(2)
 
-[28][Pwa2Body]< Lt { Lt @ } { Gt } >
+[29][Pwa2Body]< Lt { Lt @ } { Gt } >
 [RULE: 6]
-	ending -> [26][Pwa2Body] END [ENDING]
+	ending -> [27][Pwa2Body] END [ENDING]
 		+ CreateObject(PbaFeature)
 		+ Field(PbaFeature::lts, 0)
 		+ Field(PbaFeature::lts, 1)
@@ -236,17 +251,17 @@
 	token: "<" -> [5][Lt]< "<" @ >
 		+ StackBegin()
 		+ Token(0)
-		> rule: Lt -> [28][Pwa2Body]< Lt { Lt @ } { Gt } >
+		> rule: Lt -> [29][Pwa2Body]< Lt { Lt @ } { Gt } >
 			+ StackSlot(1)
 	token: ">" -> [8][Gt]< ">" @ >
 		+ StackBegin()
 		+ Token(0)
-		> rule: Gt -> [29][Pwa2Body]< Lt { Lt } { Gt @ } >
+		> rule: Gt -> [30][Pwa2Body]< Lt { Lt } { Gt @ } >
 			+ StackSlot(2)
 
-[29][Pwa2Body]< Lt { Lt } { Gt @ } >
+[30][Pwa2Body]< Lt { Lt } { Gt @ } >
 [RULE: 6]
-	ending -> [26][Pwa2Body] END [ENDING]
+	ending -> [27][Pwa2Body] END [ENDING]
 		+ CreateObject(PbaFeature)
 		+ Field(PbaFeature::lts, 0)
 		+ Field(PbaFeature::lts, 1)
@@ -255,99 +270,100 @@
 	token: ">" -> [8][Gt]< ">" @ >
 		+ StackBegin()
 		+ Token(0)
-		> rule: Gt -> [29][Pwa2Body]< Lt { Lt } { Gt @ } >
+		> rule: Gt -> [30][Pwa2Body]< Lt { Lt } { Gt @ } >
 			+ StackSlot(2)
 
-[30][Pwa2] BEGIN 
+[31][Pwa2] BEGIN 
 [RULE: 7]
-	token: "prefix_with_ambiguity_2" -> [32][Pwa2]<! "prefix_with_ambiguity_2" @ [ Plus ] Plus { Plus } !Pwa2Body !>
+	token: "prefix_with_ambiguity_2" -> [33][Pwa2]<! "prefix_with_ambiguity_2" @ [ Plus ] Plus { Plus } !Pwa2Body !>
 		+ StackBegin()
 		+ Token(0)
 
-[31][Pwa2] END [ENDING]
+[32][Pwa2] END [ENDING]
 [RULE: 7]
 
-[32][Pwa2]<! "prefix_with_ambiguity_2" @ [ Plus ] Plus { Plus } !Pwa2Body !>
+[33][Pwa2]<! "prefix_with_ambiguity_2" @ [ Plus ] Plus { Plus } !Pwa2Body !>
 [RULE: 7]
 	token: "+" -> [2][Plus]< "+" @ >
 		+ StackBegin()
 		+ Token(0)
-		> rule: Plus -> [33][Pwa2]<! "prefix_with_ambiguity_2" [ Plus @ ] Plus { Plus } !Pwa2Body !>
-			+ StackSlot(1)
+		> rule: Plus -> [34][Pwa2]<! "prefix_with_ambiguity_2" @ [ Plus ] Plus { Plus } !Pwa2Body !>[pm-lr]
+
+[34][Pwa2]<! "prefix_with_ambiguity_2" @ [ Plus ] Plus { Plus } !Pwa2Body !>[pm-lr]
+[RULE: 7]
+	leftrec -> [35][Pwa2]<! "prefix_with_ambiguity_2" [ Plus @ ] Plus { Plus } !Pwa2Body !>
+		+ StackSlot(1)
+	leftrec -> [36][Pwa2]<! "prefix_with_ambiguity_2" [ Plus ] Plus @ { Plus } !Pwa2Body !>
+		+ StackSlot(2)
+
+[35][Pwa2]<! "prefix_with_ambiguity_2" [ Plus @ ] Plus { Plus } !Pwa2Body !>
+[RULE: 7]
 	token: "+" -> [2][Plus]< "+" @ >
 		+ StackBegin()
 		+ Token(0)
-		> rule: Plus -> [34][Pwa2]<! "prefix_with_ambiguity_2" [ Plus ] Plus @ { Plus } !Pwa2Body !>
+		> rule: Plus -> [36][Pwa2]<! "prefix_with_ambiguity_2" [ Plus ] Plus @ { Plus } !Pwa2Body !>
 			+ StackSlot(2)
 
-[33][Pwa2]<! "prefix_with_ambiguity_2" [ Plus @ ] Plus { Plus } !Pwa2Body !>
+[36][Pwa2]<! "prefix_with_ambiguity_2" [ Plus ] Plus @ { Plus } !Pwa2Body !>
 [RULE: 7]
 	token: "+" -> [2][Plus]< "+" @ >
 		+ StackBegin()
 		+ Token(0)
-		> rule: Plus -> [34][Pwa2]<! "prefix_with_ambiguity_2" [ Plus ] Plus @ { Plus } !Pwa2Body !>
-			+ StackSlot(2)
-
-[34][Pwa2]<! "prefix_with_ambiguity_2" [ Plus ] Plus @ { Plus } !Pwa2Body !>
-[RULE: 7]
-	token: "+" -> [2][Plus]< "+" @ >
-		+ StackBegin()
-		+ Token(0)
-		> rule: Plus -> [35][Pwa2]<! "prefix_with_ambiguity_2" [ Plus ] Plus { Plus @ } !Pwa2Body !>
+		> rule: Plus -> [37][Pwa2]<! "prefix_with_ambiguity_2" [ Plus ] Plus { Plus @ } !Pwa2Body !>
 			+ StackSlot(3)
 	token: "<" -> [5][Lt]< "<" @ >
 		+ StackBegin()
 		+ Token(0)
-		> rule: Pwa2Body -> [36][Pwa2]<! "prefix_with_ambiguity_2" [ Plus ] Plus { Plus } !Pwa2Body @ !>
-		> rule: Lt -> [27][Pwa2Body]< Lt @ { Lt } { Gt } >
+		> rule: Pwa2Body -> [38][Pwa2]<! "prefix_with_ambiguity_2" [ Plus ] Plus { Plus } !Pwa2Body @ !>
+		> rule: Lt -> [28][Pwa2Body]< Lt @ { Lt } { Gt } >
 			+ StackBegin()
 			+ StackSlot(0)
 
-[35][Pwa2]<! "prefix_with_ambiguity_2" [ Plus ] Plus { Plus @ } !Pwa2Body !>
+[37][Pwa2]<! "prefix_with_ambiguity_2" [ Plus ] Plus { Plus @ } !Pwa2Body !>
 [RULE: 7]
 	token: "+" -> [2][Plus]< "+" @ >
 		+ StackBegin()
 		+ Token(0)
-		> rule: Plus -> [35][Pwa2]<! "prefix_with_ambiguity_2" [ Plus ] Plus { Plus @ } !Pwa2Body !>
+		> rule: Plus -> [37][Pwa2]<! "prefix_with_ambiguity_2" [ Plus ] Plus { Plus @ } !Pwa2Body !>
 			+ StackSlot(3)
 	token: "<" -> [5][Lt]< "<" @ >
 		+ StackBegin()
 		+ Token(0)
-		> rule: Pwa2Body -> [36][Pwa2]<! "prefix_with_ambiguity_2" [ Plus ] Plus { Plus } !Pwa2Body @ !>
-		> rule: Lt -> [27][Pwa2Body]< Lt @ { Lt } { Gt } >
+		> rule: Pwa2Body -> [38][Pwa2]<! "prefix_with_ambiguity_2" [ Plus ] Plus { Plus } !Pwa2Body @ !>
+		> rule: Lt -> [28][Pwa2Body]< Lt @ { Lt } { Gt } >
 			+ StackBegin()
 			+ StackSlot(0)
 
-[36][Pwa2]<! "prefix_with_ambiguity_2" [ Plus ] Plus { Plus } !Pwa2Body @ !>
+[38][Pwa2]<! "prefix_with_ambiguity_2" [ Plus ] Plus { Plus } !Pwa2Body @ !>
 [RULE: 7]
-	ending -> [31][Pwa2] END [ENDING]
+	ending -> [32][Pwa2] END [ENDING]
 		+ Field(PbaFeature::optional, 1)
 		+ Field(PbaFeature::tails, 3)
 		+ StackEnd()
 
-[37][Module] BEGIN 
+[39][Module] BEGIN 
 [RULE: 8]
-	token: "prefix_with_ambiguity_1" -> [22][Pwa1]<! "prefix_with_ambiguity_1" @ Pwa1Prefix !Pwa1Body !>
+	token: "prefix_with_ambiguity_1" -> [23][Pwa1]<! "prefix_with_ambiguity_1" @ Pwa1Prefix !Pwa1Body !>
 		+ StackBegin()
 		+ Token(0)
-		> rule: Pwa1 -> [39][Module]<! !Pwa1 @ !>
+		> rule: Pwa1 -> [41][Module]<! !Pwa1 @ !>
 			+ StackBegin()
-	token: "prefix_with_ambiguity_2" -> [32][Pwa2]<! "prefix_with_ambiguity_2" @ [ Plus ] Plus { Plus } !Pwa2Body !>
+	token: "prefix_with_ambiguity_2" -> [33][Pwa2]<! "prefix_with_ambiguity_2" @ [ Plus ] Plus { Plus } !Pwa2Body !>
 		+ StackBegin()
 		+ Token(0)
-		> rule: Pwa2 -> [40][Module]<! !Pwa2 @ !>
+		> rule: Pwa2 -> [42][Module]<! !Pwa2 @ !>
 			+ StackBegin()
 
-[38][Module] END [ENDING]
+[40][Module] END [ENDING]
 [RULE: 8]
 
-[39][Module]<! !Pwa1 @ !>
+[41][Module]<! !Pwa1 @ !>
 [RULE: 8]
-	ending -> [38][Module] END [ENDING]
+	ending -> [40][Module] END [ENDING]
 		+ StackEnd()
 
-[40][Module]<! !Pwa2 @ !>
+[42][Module]<! !Pwa2 @ !>
 [RULE: 8]
-	ending -> [38][Module] END [ENDING]
+	ending -> [40][Module] END [ENDING]
 		+ StackEnd()
 
