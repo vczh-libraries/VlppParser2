@@ -76,331 +76,346 @@
 |                                                                                                           |
 |   @ CS(0 -> -1) : [0] OS(2 -> -1) : [1]                                                                   |
 | [PREDECESSORS 2-2]: [2]                                                                                   |
-| [SUCCESORS 4-8]: [4][8]                                                                                   |
+| [SUCCESORS 4-5]: [4][5]                                                                                   |
 +-----------------------------------------------------------------------------------------------------------+
 |
 +--------------------------------------------------------------------------------------------------------------------------------------+
 |                                                                                                                                      |
-+--------------------------------------------------------------------------------------------------------------------------+           +--------------------------------------------------------------------------------------------------------------------------+
-| [4]: <Leftrec>                                                                                                           |           | [8]: <Leftrec>                                                                                                           |
-|   TraceExec: [4]                                                                                                         |           |   TraceExec: [14]                                                                                                        |
-|   InsExec: [6:2]                                                                                                         |           |   InsExec: [36:2]                                                                                                        |
-|   ForwardTrace: 4                                                                                                        |           |   ForwardTrace: 8                                                                                                        |
-| [31][Module]{{<! "prefix_with_leftrec" @ !Pwl1 !> ; <! "prefix_with_leftrec" @ !Pwl2 !>}}[pm-cr-rule: Lt] Pwl1 Pwl1_P Lt |           | [32][Module]{{<! "prefix_with_leftrec" @ !Pwl1 !> ; <! "prefix_with_leftrec" @ !Pwl2 !>}}[pm-cr-rule: Lt] Pwl2 Pwl2_P Lt |
-| [AST-INSTRUCTIONS]:                                                                                                      |           | [AST-INSTRUCTIONS]:                                                                                                      |
-|   @ CS(0 -> -1) : [0] OS(2 -> -1) : [1]                                                                                  |           |   @ CS(0 -> -1) : [0] OS(2 -> -1) : [1]                                                                                  |
-|   + StackBegin()                                                                                                         |           |   + StackBegin()                                                                                                         |
-|     obj:2 : PwlFeature                                                                                                   |           |     obj:8 : PwlFeature                                                                                                   |
-|                                                                                                                          |           |                                                                                                                          |
-|   @ CS(3 -> 0) : [2][0] OS(2 -> -1) : [1]                                                                                |           |   @ CS(16 -> 0) : [8][0] OS(2 -> -1) : [1]                                                                               |
-|   + StackSlot(0)                                                                                                         |           |   + StackSlot(0)                                                                                                         |
-|                                                                                                                          |           |                                                                                                                          |
-|   @ CS(3 -> 0) : [2][0]                                                                                                  |           |   @ CS(16 -> 0) : [8][0]                                                                                                 |
-| [RETURN STACK]:                                                                                                          |           | [RETURN STACK]:                                                                                                          |
-|   [2][3][3]: Pwl1_P -> [15][Pwl1]<! !Pwl1_P @ !>                                                                         |           |   [4][8][3]: Pwl2_P -> [24][Pwl2]<! { Plus } !Pwl2_P @ !>                                                                |
-|   [1][13][3]: Pwl1 -> [27][Module]<! "prefix_with_leftrec" !Pwl1 @ !>                                                    |           |   [3][14][3]: Pwl2 -> [28][Module]<! "prefix_with_leftrec" !Pwl2 @ !>                                                    |
-| [PREDECESSORS 3-3]: [3]                                                                                                  |           | [PREDECESSORS 3-3]: [3]                                                                                                  |
-| [SUCCESORS 5-5]: [5]                                                                                                     |           | [SUCCESORS 9-9]: [9]                                                                                                     |
-+--------------------------------------------------------------------------------------------------------------------------+           +--------------------------------------------------------------------------------------------------------------------------+
++--------------------------------------------------------------------------+                                                           +--------------------------------------------------------------------------------------------------------------------------+
+| [4]: <Leftrec>                                                           |                                                           | [5]: <Leftrec>                                                                                                           |
+|   TraceExec: [4]                                                         |                                                           |   TraceExec: [13]                                                                                                        |
+|   InsExec: [6:7]                                                         |                                                           |   InsExec: [37:2]                                                                                                        |
+|   ForwardTrace: 4                                                        |                                                           |   ForwardTrace: 5                                                                                                        |
+| [19][Pwl2_P]< Pwl2_P @ Lt >                                              |                                                           | [31][Module]{{<! "prefix_with_leftrec" @ !Pwl1 !> ; <! "prefix_with_leftrec" @ !Pwl2 !>}}[pm-cr-rule: Lt] Pwl1 Pwl1_P Lt |
+| [AST-INSTRUCTIONS]:                                                      |                                                           | [AST-INSTRUCTIONS]:                                                                                                      |
+|   @ CS(0 -> -1) : [0] OS(2 -> -1) : [1]                                  |                                                           |   @ CS(0 -> -1) : [0] OS(2 -> -1) : [1]                                                                                  |
+|   + StackBegin()                                                         |                                                           |   + StackBegin()                                                                                                         |
+|     obj:2 : PwlFeature                                                   |                                                           |     obj:8 : PwlFeature                                                                                                   |
+|                                                                          |                                                           |                                                                                                                          |
+|   @ CS(3 -> 0) : [2][0] OS(2 -> -1) : [1]                                |                                                           |   @ CS(16 -> 0) : [8][0] OS(2 -> -1) : [1]                                                                               |
+|   + StackSlot(0)                                                         |                                                           |   + StackSlot(0)                                                                                                         |
+|                                                                          |                                                           |                                                                                                                          |
+|   @ CS(3 -> 0) : [2][0]                                                  |                                                           |   @ CS(16 -> 0) : [8][0]                                                                                                 |
+|   + CreateObject(PwlFeature)                                             |                                                           | [RETURN STACK]:                                                                                                          |
+|     obj:2 : PwlFeature                                                   |                                                           |   [4][3][3]: Pwl1_P -> [15][Pwl1]<! !Pwl1_P @ !>                                                                         |
+|                                                                          |                                                           |   [3][14][3]: Pwl1 -> [27][Module]<! "prefix_with_leftrec" !Pwl1 @ !>                                                    |
+|   @ CS(3 -> 0) : [2][0]                                                  |                                                           | [PREDECESSORS 3-3]: [3]                                                                                                  |
+|   + Field(PwlFeature::two, 0)                                            |                                                           | [SUCCESORS 6-6]: [6]                                                                                                     |
+|                                                                          |                                                           +--------------------------------------------------------------------------------------------------------------------------+
+|   @ CS(3 -> 0) : [2][0]                                                  |                                                           |
+|   + StackEnd()                                                           |                                                           |
+|     obj+:2 : PwlFeature                                                  |                                                           |
+|       begin:4@0, top:4@0, stack:2@0, field:[1], create!:[4@2], end:[4@4] |                                                           |
+|                                                                          |                                                           |
+|   @ CS(0 -> -1) : [0] OS(4 -> -1) : [2]                                  |                                                           |
+|   + StackBegin()                                                         |                                                           |
+|     obj:3 : PwlFeature                                                   |                                                           |
+|                                                                          |                                                           |
+|   @ CS(5 -> 0) : [3][0] OS(4 -> -1) : [2]                                |                                                           |
+|   + StackSlot(0)                                                         |                                                           |
+|                                                                          |                                                           |
+|   @ CS(5 -> 0) : [3][0]                                                  |                                                           |
+| [RETURN STACK]:                                                          |                                                           |
+|   [2][8][3]: Pwl2_P -> [24][Pwl2]<! { Plus } !Pwl2_P @ !>                |                                                           |
+|   [1][13][3]: Pwl2 -> [28][Module]<! "prefix_with_leftrec" !Pwl2 @ !>    |                                                           |
+| [PREDECESSORS 3-3]: [3]                                                  |                                                           |
+| [SUCCESORS 13-13]: [13]                                                  |                                                           |
++--------------------------------------------------------------------------+                                                           |
 |                                                                                                                                      |
 +                                                                                                                                      +
 |                                                                                                                                      |
-+--------------------------------------------------------------------------+                                                           +--------------------------------------------------------------------------+
-| [5]: <Ending>                                                            |                                                           | [9]: <Leftrec>                                                           |
-|   TraceExec: [5]                                                         |                                                           |   TraceExec: [15]                                                        |
-|   InsExec: [8:4]                                                         |                                                           |   InsExec: [38:5]                                                        |
-|   ForwardTrace: 4                                                        |                                                           |   ForwardTrace: 8                                                        |
-| [15][Pwl1]<! !Pwl1_P @ !>                                                |                                                           | [19][Pwl2_P]< Pwl2_P @ Lt >                                              |
-| [AST-INSTRUCTIONS]:                                                      |                                                           | [AST-INSTRUCTIONS]:                                                      |
-|   @ CS(3 -> 0) : [2][0]                                                  |                                                           |   @ CS(16 -> 0) : [8][0]                                                 |
-|   + CreateObject(PwlFeature)                                             |                                                           |   + CreateObject(PwlFeature)                                             |
-|     obj:2 : PwlFeature                                                   |                                                           |     obj:8 : PwlFeature                                                   |
-|                                                                          |                                                           |                                                                          |
-|   @ CS(3 -> 0) : [2][0]                                                  |                                                           |   @ CS(16 -> 0) : [8][0]                                                 |
-|   + Field(PwlFeature::one, 0)                                            |                                                           |   + Field(PwlFeature::two, 0)                                            |
-|                                                                          |                                                           |                                                                          |
-|   @ CS(3 -> 0) : [2][0]                                                  |                                                           |   @ CS(16 -> 0) : [8][0]                                                 |
-|   + StackEnd()                                                           |                                                           |   + StackEnd()                                                           |
-|     obj+:2 : PwlFeature                                                  |                                                           |     obj+:8 : PwlFeature                                                  |
-|       begin:4@0, top:4@0, stack:2@0, field:[1], create!:[5@0], end:[5@2] |                                                           |       begin:8@0, top:8@0, stack:2@0, field:[1], create!:[9@0], end:[9@2] |
-|                                                                          |                                                           |                                                                          |
-|   @ CS(0 -> -1) : [0] OS(4 -> -1) : [2]                                  |                                                           |   @ CS(0 -> -1) : [0] OS(17 -> -1) : [8]                                 |
-|   > StackBegin()                                                         |                                                           |   + StackBegin()                                                         |
-|     obj!:3 : PwlFeature                                                  |                                                           |     obj:9 : PwlFeature                                                   |
-|                                                                          |                                                           |                                                                          |
-|   @ CS(5 -> 0) : [3][0] OS(4 -> -1) : [2]                                |                                                           |   @ CS(18 -> 0) : [9][0] OS(17 -> -1) : [8]                              |
-| [RETURN STACK]:                                                          |                                                           |   + StackSlot(0)                                                         |
-|   [1][13][3]: Pwl1 -> [27][Module]<! "prefix_with_leftrec" !Pwl1 @ !>    |                                                           |                                                                          |
-| [PREDECESSORS 4-4]: [4]                                                  |                                                           |   @ CS(18 -> 0) : [9][0]                                                 |
-| [SUCCESORS 6-6]: [6]                                                     |                                                           | [RETURN STACK]:                                                          |
-+--------------------------------------------------------------------------+                                                           |   [4][8][3]: Pwl2_P -> [24][Pwl2]<! { Plus } !Pwl2_P @ !>                |
-|                                                                                                                                      |   [3][14][3]: Pwl2 -> [28][Module]<! "prefix_with_leftrec" !Pwl2 @ !>    |
-|                                                                                                                                      | [PREDECESSORS 8-8]: [8]                                                  |
-|                                                                                                                                      | [SUCCESORS 15-15]: [15]                                                  |
+|                                                                                                                                      +--------------------------------------------------------------------------+
+|                                                                                                                                      | [6]: <Ending>                                                            |
+|                                                                                                                                      |   TraceExec: [14]                                                        |
+|                                                                                                                                      |   InsExec: [39:4]                                                        |
+|                                                                                                                                      |   ForwardTrace: 5                                                        |
+|                                                                                                                                      | [15][Pwl1]<! !Pwl1_P @ !>                                                |
+|                                                                                                                                      | [AST-INSTRUCTIONS]:                                                      |
+|                                                                                                                                      |   @ CS(16 -> 0) : [8][0]                                                 |
+|                                                                                                                                      |   + CreateObject(PwlFeature)                                             |
+|                                                                                                                                      |     obj:8 : PwlFeature                                                   |
+|                                                                                                                                      |                                                                          |
+|                                                                                                                                      |   @ CS(16 -> 0) : [8][0]                                                 |
+|                                                                                                                                      |   + Field(PwlFeature::one, 0)                                            |
+|                                                                                                                                      |                                                                          |
+|                                                                                                                                      |   @ CS(16 -> 0) : [8][0]                                                 |
+|                                                                                                                                      |   + StackEnd()                                                           |
+|                                                                                                                                      |     obj+:8 : PwlFeature                                                  |
+|                                                                                                                                      |       begin:5@0, top:5@0, stack:2@0, field:[1], create!:[6@0], end:[6@2] |
+|                                                                                                                                      |                                                                          |
+|                                                                                                                                      |   @ CS(0 -> -1) : [0] OS(17 -> -1) : [8]                                 |
+|                                                                                                                                      |   > StackBegin()                                                         |
+|                                                                                                                                      |     obj!:9 : PwlFeature                                                  |
+|                                                                                                                                      |                                                                          |
+|                                                                                                                                      |   @ CS(18 -> 0) : [9][0] OS(17 -> -1) : [8]                              |
+|                                                                                                                                      | [RETURN STACK]:                                                          |
+|                                                                                                                                      |   [3][14][3]: Pwl1 -> [27][Module]<! "prefix_with_leftrec" !Pwl1 @ !>    |
+|                                                                                                                                      | [PREDECESSORS 5-5]: [5]                                                  |
+|                                                                                                                                      | [SUCCESORS 7-7]: [7]                                                     |
 |                                                                                                                                      +--------------------------------------------------------------------------+
 |                                                                                                                                      |
-+                                                                                                                                      +
+|                                                                                                                                      +
 |                                                                                                                                      |
-+-----------------------------------------------------------------------+                                                              |
-| [6]: <Leftrec>                                                        |                                                              |
-|   TraceExec: [6]                                                      |                                                              |
-|   InsExec: [12:3]                                                     |                                                              |
-|   ForwardTrace: 4                                                     |                                                              |
-| [13][Pwl1]< Pwl1 @ Lt >                                               |                                                              |
-| [AST-INSTRUCTIONS]:                                                   |                                                              |
-|   @ CS(5 -> 0) : [3][0] OS(4 -> -1) : [2]                             |                                                              |
-|   + StackEnd()                                                        |                                                              |
-|     obj+:3 : PwlFeature                                               |                                                              |
-|       begin:5@3, top:4@0, use:[2], create!:[5@0], end!:[6@0]          |                                                              |
-|                                                                       |                                                              |
-|   @ CS(0 -> -1) : [0] OS(6 -> -1) : [3]                               |                                                              |
-|   + StackBegin()                                                      |                                                              |
-|     obj:4 : PwlFeature                                                |                                                              |
-|                                                                       |                                                              |
-|   @ CS(7 -> 0) : [4][0] OS(6 -> -1) : [3]                             |                                                              |
-|   + StackSlot(0)                                                      |                                                              |
-|                                                                       |                                                              |
-|   @ CS(7 -> 0) : [4][0]                                               |                                                              |
-| [RETURN STACK]:                                                       |                                                              |
-|   [1][13][3]: Pwl1 -> [27][Module]<! "prefix_with_leftrec" !Pwl1 @ !> |                                                              |
-| [PREDECESSORS 5-5]: [5]                                               |                                                              |
-| [SUCCESORS 11-11]: [11]                                               |                                                              |
-+-----------------------------------------------------------------------+                                                              |
+|                                                                                                                                      +-----------------------------------------------------------------------+
+|                                                                                                                                      | [7]: <Leftrec>                                                        |
+|                                                                                                                                      |   TraceExec: [15]                                                     |
+|                                                                                                                                      |   InsExec: [43:3]                                                     |
+|                                                                                                                                      |   ForwardTrace: 5                                                     |
+|                                                                                                                                      | [13][Pwl1]< Pwl1 @ Lt >                                               |
+|                                                                                                                                      | [AST-INSTRUCTIONS]:                                                   |
+|                                                                                                                                      |   @ CS(18 -> 0) : [9][0] OS(17 -> -1) : [8]                           |
+|                                                                                                                                      |   + StackEnd()                                                        |
+|                                                                                                                                      |     obj+:9 : PwlFeature                                               |
+|                                                                                                                                      |       begin:6@3, top:5@0, use:[8], create!:[6@0], end!:[7@0]          |
+|                                                                                                                                      |                                                                       |
+|                                                                                                                                      |   @ CS(0 -> -1) : [0] OS(19 -> -1) : [9]                              |
+|                                                                                                                                      |   + StackBegin()                                                      |
+|                                                                                                                                      |     obj:10 : PwlFeature                                               |
+|                                                                                                                                      |                                                                       |
+|                                                                                                                                      |   @ CS(20 -> 0) : [10][0] OS(19 -> -1) : [9]                          |
+|                                                                                                                                      |   + StackSlot(0)                                                      |
+|                                                                                                                                      |                                                                       |
+|                                                                                                                                      |   @ CS(20 -> 0) : [10][0]                                             |
+|                                                                                                                                      | [RETURN STACK]:                                                       |
+|                                                                                                                                      |   [3][14][3]: Pwl1 -> [27][Module]<! "prefix_with_leftrec" !Pwl1 @ !> |
+|                                                                                                                                      | [PREDECESSORS 6-6]: [6]                                               |
+|                                                                                                                                      | [SUCCESORS 17-17]: [17]                                               |
+|                                                                                                                                      +-----------------------------------------------------------------------+
 [0]                                                                                                                                    [1]
  |                                                                                                                                      |
  +                                                                                    +-------------------------------------------------+
  |                                                                                    |
 [0]                                                                                  [1]
 ++=======================================================================++          ++=======================================================================++
-|| [11]: {LT} <                                                          ||          || [15]: {LT} <                                                          ||
-||   TraceExec: [7]                                                      ||          ||   TraceExec: [16]                                                     ||
-||   InsExec: [15:2]                                                     ||          ||   InsExec: [43:2]                                                     ||
-||   ForwardTrace: 4                                                     ||          ||   ForwardTrace: 8                                                     ||
+|| [13]: {LT} <                                                          ||          || [17]: {LT} <                                                          ||
+||   TraceExec: [5]                                                      ||          ||   TraceExec: [16]                                                     ||
+||   InsExec: [13:2]                                                     ||          ||   InsExec: [46:2]                                                     ||
+||   ForwardTrace: 4                                                     ||          ||   ForwardTrace: 5                                                     ||
 || [5][Lt]< "<" @ >                                                      ||          || [5][Lt]< "<" @ >                                                      ||
 || [AST-INSTRUCTIONS]:                                                   ||          || [AST-INSTRUCTIONS]:                                                   ||
-||   @ CS(7 -> 0) : [4][0]                                               ||          ||   @ CS(18 -> 0) : [9][0]                                              ||
+||   @ CS(5 -> 0) : [3][0]                                               ||          ||   @ CS(20 -> 0) : [10][0]                                             ||
 ||   + StackBegin()                                                      ||          ||   + StackBegin()                                                      ||
-||     obj:5 : Lt                                                        ||          ||     obj:10 : Lt                                                       ||
+||     obj:4 : Lt                                                        ||          ||     obj:11 : Lt                                                       ||
 ||                                                                       ||          ||                                                                       ||
-||   @ CS(8 -> 7) : [5][4][0]                                            ||          ||   @ CS(19 -> 18) : [10][9][0]                                         ||
+||   @ CS(6 -> 5) : [4][3][0]                                            ||          ||   @ CS(21 -> 20) : [11][10][0]                                        ||
 ||   + Token(0)                                                          ||          ||   + Token(0)                                                          ||
 ||                                                                       ||          ||                                                                       ||
-||   @ CS(8 -> 7) : [5][4][0]                                            ||          ||   @ CS(19 -> 18) : [10][9][0]                                         ||
+||   @ CS(6 -> 5) : [4][3][0]                                            ||          ||   @ CS(21 -> 20) : [11][10][0]                                        ||
 || [RETURN STACK]:                                                       ||          || [RETURN STACK]:                                                       ||
-||   [5][4][6]: Lt -> [14][Pwl1]< Pwl1 Lt @ >                            ||          ||   [6][6][9]: Lt -> [20][Pwl2_P]< Pwl2_P Lt @ >                        ||
-||   [1][13][3]: Pwl1 -> [27][Module]<! "prefix_with_leftrec" !Pwl1 @ !> ||          ||   [4][8][3]: Pwl2_P -> [24][Pwl2]<! { Plus } !Pwl2_P @ !>             ||
-|| [PREDECESSORS 6-6]: [6]                                               ||          ||   [3][14][3]: Pwl2 -> [28][Module]<! "prefix_with_leftrec" !Pwl2 @ !> ||
-|| [SUCCESORS 12-12]: [12]                                               ||          || [PREDECESSORS 9-9]: [9]                                               ||
-++=======================================================================++          || [SUCCESORS 16-16]: [16]                                               ||
-|                                                                                    ++=======================================================================++
+||   [7][6][4]: Lt -> [20][Pwl2_P]< Pwl2_P Lt @ >                        ||          ||   [8][4][7]: Lt -> [14][Pwl1]< Pwl1 Lt @ >                            ||
+||   [2][8][3]: Pwl2_P -> [24][Pwl2]<! { Plus } !Pwl2_P @ !>             ||          ||   [3][14][3]: Pwl1 -> [27][Module]<! "prefix_with_leftrec" !Pwl1 @ !> ||
+||   [1][13][3]: Pwl2 -> [28][Module]<! "prefix_with_leftrec" !Pwl2 @ !> ||          || [PREDECESSORS 7-7]: [7]                                               ||
+|| [PREDECESSORS 4-4]: [4]                                               ||          || [SUCCESORS 18-18]: [18]                                               ||
+|| [SUCCESORS 14-14]: [14]                                               ||          ++=======================================================================++
+++=======================================================================++          |
 |                                                                                    |
 +                                                                                    +
 |                                                                                    |
 +-----------------------------------------------------------------------+            +-----------------------------------------------------------------------+
-| [12]: <Ending>                                                        |            | [16]: <Ending>                                                        |
-|   TraceExec: [8]                                                      |            |   TraceExec: [17]                                                     |
-|   InsExec: [17:3]                                                     |            |   InsExec: [45:3]                                                     |
-|   ForwardTrace: 4                                                     |            |   ForwardTrace: 8                                                     |
-| [14][Pwl1]< Pwl1 Lt @ >                                               |            | [20][Pwl2_P]< Pwl2_P Lt @ >                                           |
+| [14]: <Ending>                                                        |            | [18]: <Ending>                                                        |
+|   TraceExec: [6]                                                      |            |   TraceExec: [17]                                                     |
+|   InsExec: [15:3]                                                     |            |   InsExec: [48:3]                                                     |
+|   ForwardTrace: 4                                                     |            |   ForwardTrace: 5                                                     |
+| [20][Pwl2_P]< Pwl2_P Lt @ >                                           |            | [14][Pwl1]< Pwl1 Lt @ >                                               |
 | [AST-INSTRUCTIONS]:                                                   |            | [AST-INSTRUCTIONS]:                                                   |
-|   @ CS(8 -> 7) : [5][4][0]                                            |            |   @ CS(19 -> 18) : [10][9][0]                                         |
+|   @ CS(6 -> 5) : [4][3][0]                                            |            |   @ CS(21 -> 20) : [11][10][0]                                        |
 |   + CreateObject(Lt)                                                  |            |   + CreateObject(Lt)                                                  |
-|     obj:5 : Lt                                                        |            |     obj:10 : Lt                                                       |
+|     obj:4 : Lt                                                        |            |     obj:11 : Lt                                                       |
 |                                                                       |            |                                                                       |
-|   @ CS(8 -> 7) : [5][4][0]                                            |            |   @ CS(19 -> 18) : [10][9][0]                                         |
+|   @ CS(6 -> 5) : [4][3][0]                                            |            |   @ CS(21 -> 20) : [11][10][0]                                        |
 |   + StackEnd()                                                        |            |   + StackEnd()                                                        |
-|     obj+:5 : Lt                                                       |            |     obj+:10 : Lt                                                      |
-|       begin:11@0, top:11@0, create!:[12@0], end:[12@1]                |            |       begin:15@0, top:15@0, create!:[16@0], end:[16@1]                |
+|     obj+:4 : Lt                                                       |            |     obj+:11 : Lt                                                      |
+|       begin:13@0, top:13@0, create!:[14@0], end:[14@1]                |            |       begin:17@0, top:17@0, create!:[18@0], end:[18@1]                |
 |                                                                       |            |                                                                       |
-|   @ CS(7 -> 0) : [4][0] OS(9 -> -1) : [5]                             |            |   @ CS(18 -> 0) : [9][0] OS(20 -> -1) : [10]                          |
+|   @ CS(5 -> 0) : [3][0] OS(7 -> -1) : [4]                             |            |   @ CS(20 -> 0) : [10][0] OS(22 -> -1) : [11]                         |
 |   > StackSlot(1)                                                      |            |   > StackSlot(1)                                                      |
 |                                                                       |            |                                                                       |
-|   @ CS(7 -> 0) : [4][0]                                               |            |   @ CS(18 -> 0) : [9][0]                                              |
+|   @ CS(5 -> 0) : [3][0]                                               |            |   @ CS(20 -> 0) : [10][0]                                             |
 | [RETURN STACK]:                                                       |            | [RETURN STACK]:                                                       |
-|   [1][13][3]: Pwl1 -> [27][Module]<! "prefix_with_leftrec" !Pwl1 @ !> |            |   [4][8][3]: Pwl2_P -> [24][Pwl2]<! { Plus } !Pwl2_P @ !>             |
-| [PREDECESSORS 11-11]: [11]                                            |            |   [3][14][3]: Pwl2 -> [28][Module]<! "prefix_with_leftrec" !Pwl2 @ !> |
-| [SUCCESORS 13-13]: [13]                                               |            | [PREDECESSORS 15-15]: [15]                                            |
-+-----------------------------------------------------------------------+            | [SUCCESORS 17-17]: [17]                                               |
-|                                                                                    +-----------------------------------------------------------------------+
+|   [2][8][3]: Pwl2_P -> [24][Pwl2]<! { Plus } !Pwl2_P @ !>             |            |   [3][14][3]: Pwl1 -> [27][Module]<! "prefix_with_leftrec" !Pwl1 @ !> |
+|   [1][13][3]: Pwl2 -> [28][Module]<! "prefix_with_leftrec" !Pwl2 @ !> |            | [PREDECESSORS 17-17]: [17]                                            |
+| [PREDECESSORS 13-13]: [13]                                            |            | [SUCCESORS 19-19]: [19]                                               |
+| [SUCCESORS 15-15]: [15]                                               |            +-----------------------------------------------------------------------+
++-----------------------------------------------------------------------+            |
 |                                                                                    |
 +                                                                                    +
 |                                                                                    |
 +-------------------------------------------------------------------------------+    +--------------------------------------------------------------------------------+
-| [13]: <Leftrec>                                                               |    | [17]: <Leftrec>                                                                |
-|   TraceExec: [9]                                                              |    |   TraceExec: [18]                                                              |
-|   InsExec: [20:6]                                                             |    |   InsExec: [48:6]                                                              |
-|   ForwardTrace: 4                                                             |    |   ForwardTrace: 8                                                              |
-| [13][Pwl1]< Pwl1 @ Lt >                                                       |    | [19][Pwl2_P]< Pwl2_P @ Lt >                                                    |
+| [15]: <Leftrec>                                                               |    | [19]: <Leftrec>                                                                |
+|   TraceExec: [7]                                                              |    |   TraceExec: [18]                                                              |
+|   InsExec: [18:6]                                                             |    |   InsExec: [51:6]                                                              |
+|   ForwardTrace: 4                                                             |    |   ForwardTrace: 5                                                              |
+| [19][Pwl2_P]< Pwl2_P @ Lt >                                                   |    | [13][Pwl1]< Pwl1 @ Lt >                                                        |
 | [AST-INSTRUCTIONS]:                                                           |    | [AST-INSTRUCTIONS]:                                                            |
-|   @ CS(7 -> 0) : [4][0]                                                       |    |   @ CS(18 -> 0) : [9][0]                                                       |
+|   @ CS(5 -> 0) : [3][0]                                                       |    |   @ CS(20 -> 0) : [10][0]                                                      |
 |   + CreateObject(PwlFeature)                                                  |    |   + CreateObject(PwlFeature)                                                   |
-|     obj:4 : PwlFeature                                                        |    |     obj:9 : PwlFeature                                                         |
+|     obj:3 : PwlFeature                                                        |    |     obj:10 : PwlFeature                                                        |
 |                                                                               |    |                                                                                |
-|   @ CS(7 -> 0) : [4][0]                                                       |    |   @ CS(18 -> 0) : [9][0]                                                       |
+|   @ CS(5 -> 0) : [3][0]                                                       |    |   @ CS(20 -> 0) : [10][0]                                                      |
 |   + Field(PwlFeature::prev, 0)                                                |    |   + Field(PwlFeature::prev, 0)                                                 |
 |                                                                               |    |                                                                                |
-|   @ CS(7 -> 0) : [4][0]                                                       |    |   @ CS(18 -> 0) : [9][0]                                                       |
-|   + Field(PwlFeature::one, 1)                                                 |    |   + Field(PwlFeature::two, 1)                                                  |
+|   @ CS(5 -> 0) : [3][0]                                                       |    |   @ CS(20 -> 0) : [10][0]                                                      |
+|   + Field(PwlFeature::two, 1)                                                 |    |   + Field(PwlFeature::one, 1)                                                  |
 |                                                                               |    |                                                                                |
-|   @ CS(7 -> 0) : [4][0]                                                       |    |   @ CS(18 -> 0) : [9][0]                                                       |
+|   @ CS(5 -> 0) : [3][0]                                                       |    |   @ CS(20 -> 0) : [10][0]                                                      |
 |   + StackEnd()                                                                |    |   + StackEnd()                                                                 |
-|     obj+:4 : PwlFeature                                                       |    |     obj+:9 : PwlFeature                                                        |
-|       begin:6@1, top:6@1, stack:4@0, field:[5, 3], create!:[13@0], end:[13@3] |    |       begin:9@3, top:9@3, stack:2@0, field:[10, 8], create!:[17@0], end:[17@3] |
+|     obj+:3 : PwlFeature                                                       |    |     obj+:10 : PwlFeature                                                       |
+|       begin:4@5, top:4@5, stack:2@0, field:[4, 2], create!:[15@0], end:[15@3] |    |       begin:7@1, top:7@1, stack:5@0, field:[11, 9], create!:[19@0], end:[19@3] |
 |                                                                               |    |                                                                                |
-|   @ CS(0 -> -1) : [0] OS(10 -> -1) : [4]                                      |    |   @ CS(0 -> -1) : [0] OS(21 -> -1) : [9]                                       |
+|   @ CS(0 -> -1) : [0] OS(8 -> -1) : [3]                                       |    |   @ CS(0 -> -1) : [0] OS(23 -> -1) : [10]                                      |
 |   + StackBegin()                                                              |    |   + StackBegin()                                                               |
-|     obj:6 : PwlFeature                                                        |    |     obj:11 : PwlFeature                                                        |
+|     obj:5 : PwlFeature                                                        |    |     obj:12 : PwlFeature                                                        |
 |                                                                               |    |                                                                                |
-|   @ CS(11 -> 0) : [6][0] OS(10 -> -1) : [4]                                   |    |   @ CS(22 -> 0) : [11][0] OS(21 -> -1) : [9]                                   |
+|   @ CS(9 -> 0) : [5][0] OS(8 -> -1) : [3]                                     |    |   @ CS(24 -> 0) : [12][0] OS(23 -> -1) : [10]                                  |
 |   + StackSlot(0)                                                              |    |   + StackSlot(0)                                                               |
 |                                                                               |    |                                                                                |
-|   @ CS(11 -> 0) : [6][0]                                                      |    |   @ CS(22 -> 0) : [11][0]                                                      |
+|   @ CS(9 -> 0) : [5][0]                                                       |    |   @ CS(24 -> 0) : [12][0]                                                      |
 | [RETURN STACK]:                                                               |    | [RETURN STACK]:                                                                |
-|   [1][13][3]: Pwl1 -> [27][Module]<! "prefix_with_leftrec" !Pwl1 @ !>         |    |   [4][8][3]: Pwl2_P -> [24][Pwl2]<! { Plus } !Pwl2_P @ !>                      |
-| [PREDECESSORS 12-12]: [12]                                                    |    |   [3][14][3]: Pwl2 -> [28][Module]<! "prefix_with_leftrec" !Pwl2 @ !>          |
-| [SUCCESORS 19-19]: [19]                                                       |    | [PREDECESSORS 16-16]: [16]                                                     |
-+-------------------------------------------------------------------------------+    | [SUCCESORS 23-23]: [23]                                                        |
-|                                                                                    +--------------------------------------------------------------------------------+
+|   [2][8][3]: Pwl2_P -> [24][Pwl2]<! { Plus } !Pwl2_P @ !>                     |    |   [3][14][3]: Pwl1 -> [27][Module]<! "prefix_with_leftrec" !Pwl1 @ !>          |
+|   [1][13][3]: Pwl2 -> [28][Module]<! "prefix_with_leftrec" !Pwl2 @ !>         |    | [PREDECESSORS 18-18]: [18]                                                     |
+| [PREDECESSORS 14-14]: [14]                                                    |    | [SUCCESORS 26-26]: [26]                                                        |
+| [SUCCESORS 21-21]: [21]                                                       |    +--------------------------------------------------------------------------------+
++-------------------------------------------------------------------------------+    |
 [0]                                                                                  [1]
  |                                                                                    |
  +                                                                                    +---------------------------------+
  |                                                                                                                      |
 [0]                                                                                                                    [1]
 ++=======================================================================++                                            ++=======================================================================++
-|| [19]: {LT} <                                                          ||                                            || [23]: {LT} <                                                          ||
-||   TraceExec: [10]                                                     ||                                            ||   TraceExec: [19]                                                     ||
-||   InsExec: [26:2]                                                     ||                                            ||   InsExec: [54:2]                                                     ||
-||   ForwardTrace: 4                                                     ||                                            ||   ForwardTrace: 8                                                     ||
+|| [21]: {LT} <                                                          ||                                            || [26]: {LT} <                                                          ||
+||   TraceExec: [8]                                                      ||                                            ||   TraceExec: [19]                                                     ||
+||   InsExec: [24:2]                                                     ||                                            ||   InsExec: [57:2]                                                     ||
+||   ForwardTrace: 4                                                     ||                                            ||   ForwardTrace: 5                                                     ||
 || [5][Lt]< "<" @ >                                                      ||                                            || [5][Lt]< "<" @ >                                                      ||
 || [AST-INSTRUCTIONS]:                                                   ||                                            || [AST-INSTRUCTIONS]:                                                   ||
-||   @ CS(11 -> 0) : [6][0]                                              ||                                            ||   @ CS(22 -> 0) : [11][0]                                             ||
+||   @ CS(9 -> 0) : [5][0]                                               ||                                            ||   @ CS(24 -> 0) : [12][0]                                             ||
 ||   + StackBegin()                                                      ||                                            ||   + StackBegin()                                                      ||
-||     obj:7 : Lt                                                        ||                                            ||     obj:12 : Lt                                                       ||
+||     obj:6 : Lt                                                        ||                                            ||     obj:13 : Lt                                                       ||
 ||                                                                       ||                                            ||                                                                       ||
-||   @ CS(12 -> 11) : [7][6][0]                                          ||                                            ||   @ CS(23 -> 22) : [12][11][0]                                        ||
+||   @ CS(10 -> 9) : [6][5][0]                                           ||                                            ||   @ CS(25 -> 24) : [13][12][0]                                        ||
 ||   + Token(0)                                                          ||                                            ||   + Token(0)                                                          ||
 ||                                                                       ||                                            ||                                                                       ||
-||   @ CS(12 -> 11) : [7][6][0]                                          ||                                            ||   @ CS(23 -> 22) : [12][11][0]                                        ||
+||   @ CS(10 -> 9) : [6][5][0]                                           ||                                            ||   @ CS(25 -> 24) : [13][12][0]                                        ||
 || [RETURN STACK]:                                                       ||                                            || [RETURN STACK]:                                                       ||
-||   [7][4][13]: Lt -> [14][Pwl1]< Pwl1 Lt @ >                           ||                                            ||   [8][6][17]: Lt -> [20][Pwl2_P]< Pwl2_P Lt @ >                       ||
-||   [1][13][3]: Pwl1 -> [27][Module]<! "prefix_with_leftrec" !Pwl1 @ !> ||                                            ||   [4][8][3]: Pwl2_P -> [24][Pwl2]<! { Plus } !Pwl2_P @ !>             ||
-|| [PREDECESSORS 13-13]: [13]                                            ||                                            ||   [3][14][3]: Pwl2 -> [28][Module]<! "prefix_with_leftrec" !Pwl2 @ !> ||
-|| [SUCCESORS 20-20]: [20]                                               ||                                            || [PREDECESSORS 17-17]: [17]                                            ||
-++=======================================================================++                                            || [SUCCESORS 24-24]: [24]                                               ||
-|                                                                                                                      ++=======================================================================++
+||   [9][6][15]: Lt -> [20][Pwl2_P]< Pwl2_P Lt @ >                       ||                                            ||   [10][4][19]: Lt -> [14][Pwl1]< Pwl1 Lt @ >                          ||
+||   [2][8][3]: Pwl2_P -> [24][Pwl2]<! { Plus } !Pwl2_P @ !>             ||                                            ||   [3][14][3]: Pwl1 -> [27][Module]<! "prefix_with_leftrec" !Pwl1 @ !> ||
+||   [1][13][3]: Pwl2 -> [28][Module]<! "prefix_with_leftrec" !Pwl2 @ !> ||                                            || [PREDECESSORS 19-19]: [19]                                            ||
+|| [PREDECESSORS 15-15]: [15]                                            ||                                            || [SUCCESORS 27-27]: [27]                                               ||
+|| [SUCCESORS 22-22]: [22]                                               ||                                            ++=======================================================================++
+++=======================================================================++                                            |
 |                                                                                                                      |
 +                                                                                                                      +
 |                                                                                                                      |
 +-----------------------------------------------------------------------+                                              +-----------------------------------------------------------------------+
-| [20]: <Ending>                                                        |                                              | [24]: <Ending>                                                        |
-|   TraceExec: [11]                                                     |                                              |   TraceExec: [20]                                                     |
-|   InsExec: [28:3]                                                     |                                              |   InsExec: [56:3]                                                     |
-|   ForwardTrace: 4                                                     |                                              |   ForwardTrace: 8                                                     |
-| [14][Pwl1]< Pwl1 Lt @ >                                               |                                              | [20][Pwl2_P]< Pwl2_P Lt @ >                                           |
+| [22]: <Ending>                                                        |                                              | [27]: <Ending>                                                        |
+|   TraceExec: [9]                                                      |                                              |   TraceExec: [20]                                                     |
+|   InsExec: [26:3]                                                     |                                              |   InsExec: [59:3]                                                     |
+|   ForwardTrace: 4                                                     |                                              |   ForwardTrace: 5                                                     |
+| [20][Pwl2_P]< Pwl2_P Lt @ >                                           |                                              | [14][Pwl1]< Pwl1 Lt @ >                                               |
 | [AST-INSTRUCTIONS]:                                                   |                                              | [AST-INSTRUCTIONS]:                                                   |
-|   @ CS(12 -> 11) : [7][6][0]                                          |                                              |   @ CS(23 -> 22) : [12][11][0]                                        |
+|   @ CS(10 -> 9) : [6][5][0]                                           |                                              |   @ CS(25 -> 24) : [13][12][0]                                        |
 |   + CreateObject(Lt)                                                  |                                              |   + CreateObject(Lt)                                                  |
-|     obj:7 : Lt                                                        |                                              |     obj:12 : Lt                                                       |
+|     obj:6 : Lt                                                        |                                              |     obj:13 : Lt                                                       |
 |                                                                       |                                              |                                                                       |
-|   @ CS(12 -> 11) : [7][6][0]                                          |                                              |   @ CS(23 -> 22) : [12][11][0]                                        |
+|   @ CS(10 -> 9) : [6][5][0]                                           |                                              |   @ CS(25 -> 24) : [13][12][0]                                        |
 |   + StackEnd()                                                        |                                              |   + StackEnd()                                                        |
-|     obj+:7 : Lt                                                       |                                              |     obj+:12 : Lt                                                      |
-|       begin:19@0, top:19@0, create!:[20@0], end:[20@1]                |                                              |       begin:23@0, top:23@0, create!:[24@0], end:[24@1]                |
+|     obj+:6 : Lt                                                       |                                              |     obj+:13 : Lt                                                      |
+|       begin:21@0, top:21@0, create!:[22@0], end:[22@1]                |                                              |       begin:26@0, top:26@0, create!:[27@0], end:[27@1]                |
 |                                                                       |                                              |                                                                       |
-|   @ CS(11 -> 0) : [6][0] OS(13 -> -1) : [7]                           |                                              |   @ CS(22 -> 0) : [11][0] OS(24 -> -1) : [12]                         |
+|   @ CS(9 -> 0) : [5][0] OS(11 -> -1) : [6]                            |                                              |   @ CS(24 -> 0) : [12][0] OS(26 -> -1) : [13]                         |
 |   > StackSlot(1)                                                      |                                              |   > StackSlot(1)                                                      |
 |                                                                       |                                              |                                                                       |
-|   @ CS(11 -> 0) : [6][0]                                              |                                              |   @ CS(22 -> 0) : [11][0]                                             |
+|   @ CS(9 -> 0) : [5][0]                                               |                                              |   @ CS(24 -> 0) : [12][0]                                             |
 | [RETURN STACK]:                                                       |                                              | [RETURN STACK]:                                                       |
-|   [1][13][3]: Pwl1 -> [27][Module]<! "prefix_with_leftrec" !Pwl1 @ !> |                                              |   [4][8][3]: Pwl2_P -> [24][Pwl2]<! { Plus } !Pwl2_P @ !>             |
-| [PREDECESSORS 19-19]: [19]                                            |                                              |   [3][14][3]: Pwl2 -> [28][Module]<! "prefix_with_leftrec" !Pwl2 @ !> |
-| [SUCCESORS 21-21]: [21]                                               |                                              | [PREDECESSORS 23-23]: [23]                                            |
-+-----------------------------------------------------------------------+                                              | [SUCCESORS 25-25]: [25]                                               |
-|                                                                                                                      +-----------------------------------------------------------------------+
+|   [2][8][3]: Pwl2_P -> [24][Pwl2]<! { Plus } !Pwl2_P @ !>             |                                              |   [3][14][3]: Pwl1 -> [27][Module]<! "prefix_with_leftrec" !Pwl1 @ !> |
+|   [1][13][3]: Pwl2 -> [28][Module]<! "prefix_with_leftrec" !Pwl2 @ !> |                                              | [PREDECESSORS 26-26]: [26]                                            |
+| [PREDECESSORS 21-21]: [21]                                            |                                              | [SUCCESORS 28-28]: [28]                                               |
+| [SUCCESORS 23-23]: [23]                                               |                                              +-----------------------------------------------------------------------+
++-----------------------------------------------------------------------+                                              |
 |                                                                                                                      |
 +                                                                                                                      +
 |                                                                                                                      |
-+-----------------------------------------------------------------------------------------------------------------+    +------------------------------------------------------------------------------------------------------------------+
-| [21]: <Ending>                                                                                                  |    | [25]: <Ending>                                                                                                   |
-|   TraceExec: [12]                                                                                               |    |   TraceExec: [21]                                                                                                |
-|   InsExec: [31:4]                                                                                               |    |   InsExec: [59:5]                                                                                                |
-|   ForwardTrace: 4                                                                                               |    |   ForwardTrace: 8                                                                                                |
-| [27][Module]<! "prefix_with_leftrec" !Pwl1 @ !>                                                                 |    | [24][Pwl2]<! { Plus } !Pwl2_P @ !>                                                                               |
-| [AST-INSTRUCTIONS]:                                                                                             |    | [AST-INSTRUCTIONS]:                                                                                              |
-|   @ CS(11 -> 0) : [6][0]                                                                                        |    |   @ CS(22 -> 0) : [11][0]                                                                                        |
-|   + CreateObject(PwlFeature)                                                                                    |    |   + CreateObject(PwlFeature)                                                                                     |
-|     obj:6 : PwlFeature                                                                                          |    |     obj:11 : PwlFeature                                                                                          |
-|                                                                                                                 |    |                                                                                                                  |
-|   @ CS(11 -> 0) : [6][0]                                                                                        |    |   @ CS(22 -> 0) : [11][0]                                                                                        |
-|   + Field(PwlFeature::prev, 0)                                                                                  |    |   + Field(PwlFeature::prev, 0)                                                                                   |
-|                                                                                                                 |    |                                                                                                                  |
-|   @ CS(11 -> 0) : [6][0]                                                                                        |    |   @ CS(22 -> 0) : [11][0]                                                                                        |
-|   + Field(PwlFeature::one, 1)                                                                                   |    |   + Field(PwlFeature::two, 1)                                                                                    |
-|                                                                                                                 |    |                                                                                                                  |
-|   @ CS(11 -> 0) : [6][0]                                                                                        |    |   @ CS(22 -> 0) : [11][0]                                                                                        |
-|   + StackEnd()                                                                                                  |    |   + StackEnd()                                                                                                   |
-|     obj+:6 : PwlFeature                                                                                         |    |     obj+:11 : PwlFeature                                                                                         |
-|       begin:13@4, top:13@4, stack:4@0, lrec:1@0, field:[7, 4], create!:[21@0], end:[21@3], endLref:[27@0, 28@0] |    |       begin:17@4, top:17@4, stack:2@0, lrec:1@0, field:[12, 9], create!:[25@0], end:[25@3], endLref:[27@0, 28@0] |
-|                                                                                                                 |    |                                                                                                                  |
-|   @ CS(0 -> -1) : [0] OS(14 -> -1) : [6]                                                                        |    |   @ CS(0 -> -1) : [0] OS(25 -> -1) : [11]                                                                        |
-| [PREDECESSORS 20-20]: [20]                                                                                      |    |   > StackBegin()                                                                                                 |
-| [SUCCESORS 28-28]: [28]                                                                                         |    |     obj!:13 : PwlFeature                                                                                         |
-+-----------------------------------------------------------------------------------------------------------------+    |                                                                                                                  |
-|                                                                                                                      |   @ CS(26 -> 0) : [13][0] OS(25 -> -1) : [11]                                                                    |
-|                                                                                                                      | [RETURN STACK]:                                                                                                  |
-|                                                                                                                      |   [3][14][3]: Pwl2 -> [28][Module]<! "prefix_with_leftrec" !Pwl2 @ !>                                            |
-|                                                                                                                      | [PREDECESSORS 24-24]: [24]                                                                                       |
-|                                                                                                                      | [SUCCESORS 26-26]: [26]                                                                                          |
-|                                                                                                                      +------------------------------------------------------------------------------------------------------------------+
++-----------------------------------------------------------------------------------------------------------------+    +-------------------------------------------------------------------------------------------------------------------+
+| [23]: <Ending>                                                                                                  |    | [28]: <Ending>                                                                                                    |
+|   TraceExec: [10]                                                                                               |    |   TraceExec: [21]                                                                                                 |
+|   InsExec: [29:5]                                                                                               |    |   InsExec: [62:4]                                                                                                 |
+|   ForwardTrace: 4                                                                                               |    |   ForwardTrace: 5                                                                                                 |
+| [24][Pwl2]<! { Plus } !Pwl2_P @ !>                                                                              |    | [27][Module]<! "prefix_with_leftrec" !Pwl1 @ !>                                                                   |
+| [AST-INSTRUCTIONS]:                                                                                             |    | [AST-INSTRUCTIONS]:                                                                                               |
+|   @ CS(9 -> 0) : [5][0]                                                                                         |    |   @ CS(24 -> 0) : [12][0]                                                                                         |
+|   + CreateObject(PwlFeature)                                                                                    |    |   + CreateObject(PwlFeature)                                                                                      |
+|     obj:5 : PwlFeature                                                                                          |    |     obj:12 : PwlFeature                                                                                           |
+|                                                                                                                 |    |                                                                                                                   |
+|   @ CS(9 -> 0) : [5][0]                                                                                         |    |   @ CS(24 -> 0) : [12][0]                                                                                         |
+|   + Field(PwlFeature::prev, 0)                                                                                  |    |   + Field(PwlFeature::prev, 0)                                                                                    |
+|                                                                                                                 |    |                                                                                                                   |
+|   @ CS(9 -> 0) : [5][0]                                                                                         |    |   @ CS(24 -> 0) : [12][0]                                                                                         |
+|   + Field(PwlFeature::two, 1)                                                                                   |    |   + Field(PwlFeature::one, 1)                                                                                     |
+|                                                                                                                 |    |                                                                                                                   |
+|   @ CS(9 -> 0) : [5][0]                                                                                         |    |   @ CS(24 -> 0) : [12][0]                                                                                         |
+|   + StackEnd()                                                                                                  |    |   + StackEnd()                                                                                                    |
+|     obj+:5 : PwlFeature                                                                                         |    |     obj+:12 : PwlFeature                                                                                          |
+|       begin:15@4, top:15@4, stack:2@0, lrec:1@0, field:[6, 3], create!:[23@0], end:[23@3], endLref:[29@0, 30@0] |    |       begin:19@4, top:19@4, stack:5@0, lrec:1@0, field:[13, 10], create!:[28@0], end:[28@3], endLref:[29@0, 30@0] |
+|                                                                                                                 |    |                                                                                                                   |
+|   @ CS(0 -> -1) : [0] OS(12 -> -1) : [5]                                                                        |    |   @ CS(0 -> -1) : [0] OS(27 -> -1) : [12]                                                                         |
+|   > StackBegin()                                                                                                |    | [PREDECESSORS 27-27]: [27]                                                                                        |
+|     obj!:7 : PwlFeature                                                                                         |    | [SUCCESORS 29-29]: [29]                                                                                           |
+|                                                                                                                 |    +-------------------------------------------------------------------------------------------------------------------+
+|   @ CS(13 -> 0) : [7][0] OS(12 -> -1) : [5]                                                                     |    |
+| [RETURN STACK]:                                                                                                 |    |
+|   [1][13][3]: Pwl2 -> [28][Module]<! "prefix_with_leftrec" !Pwl2 @ !>                                           |    |
+| [PREDECESSORS 22-22]: [22]                                                                                      |    |
+| [SUCCESORS 24-24]: [24]                                                                                         |    |
++-----------------------------------------------------------------------------------------------------------------+    |
 |                                                                                                                      |
 +                                                                                                                      +
 |                                                                                                                      |
-+--------------------------------------------------------------------------------+                                     +---------------------------------------------------------------------------------------------------+
-| [28]: <Ending>                                                                 |                                     | [26]: <Ending>                                                                                    |
-|   TraceExec: [13]                                                              |                                     |   TraceExec: [22]                                                                                 |
-|   InsExec: [35:1]                                                              |                                     |   InsExec: [64:2]                                                                                 |
-|   ForwardTrace: 4                                                              |                                     |   ForwardTrace: 8                                                                                 |
-| [26][Module] END [ENDING]                                                      |                                     | [28][Module]<! "prefix_with_leftrec" !Pwl2 @ !>                                                   |
-| [AST-INSTRUCTIONS]:                                                            |                                     | [AST-INSTRUCTIONS]:                                                                               |
-|   @ CS(0 -> -1) : [0] OS(14 -> -1) : [6]                                       |                                     |   @ CS(26 -> 0) : [13][0] OS(25 -> -1) : [11]                                                     |
-|   + StackEnd()                                                                 |                                     |   + Field(PwlFeature::prefix, 0)                                                                  |
-|     obj+:0 : PwlFeature                                                        |                                     |                                                                                                   |
-|       begin:1@0, top:1@0, use:[13, 6], create!:[25@0, 21@0], end!:[27@0, 28@0] |                                     |   @ CS(26 -> 0) : [13][0] OS(25 -> -1) : [11]                                                     |
-|                                                                                |                                     |   + StackEnd()                                                                                    |
-|   @ OS(15 -> -1) : [0]                                                         |                                     |     obj+:13 : PwlFeature                                                                          |
-| [PREDECESSORS 21-21]: [21]                                                     |                                     |       begin:25@4, top:17@4, lrec:1@0, use:[11], create!:[25@0], end!:[26@1], endLref:[27@0, 28@0] |
-| [SUCCESORS 22-22]: [22]                                                        |                                     |                                                                                                   |
-+--------------------------------------------------------------------------------+                                     |   @ CS(0 -> -1) : [0] OS(27 -> -1) : [13]                                                         |
-|                                                                                                                      | [PREDECESSORS 25-25]: [25]                                                                        |
-|                                                                                                                      | [SUCCESORS 27-27]: [27]                                                                           |
-|                                                                                                                      +---------------------------------------------------------------------------------------------------+
++--------------------------------------------------------------------------------------------------+                   +--------------------------------------------------------------------------------+
+| [24]: <Ending>                                                                                   |                   | [29]: <Ending>                                                                 |
+|   TraceExec: [11]                                                                                |                   |   TraceExec: [22]                                                              |
+|   InsExec: [34:2]                                                                                |                   |   InsExec: [66:1]                                                              |
+|   ForwardTrace: 4                                                                                |                   |   ForwardTrace: 5                                                              |
+| [28][Module]<! "prefix_with_leftrec" !Pwl2 @ !>                                                  |                   | [26][Module] END [ENDING]                                                      |
+| [AST-INSTRUCTIONS]:                                                                              |                   | [AST-INSTRUCTIONS]:                                                            |
+|   @ CS(13 -> 0) : [7][0] OS(12 -> -1) : [5]                                                      |                   |   @ CS(0 -> -1) : [0] OS(27 -> -1) : [12]                                      |
+|   + Field(PwlFeature::prefix, 0)                                                                 |                   |   + StackEnd()                                                                 |
+|                                                                                                  |                   |     obj+:0 : PwlFeature                                                        |
+|   @ CS(13 -> 0) : [7][0] OS(12 -> -1) : [5]                                                      |                   |       begin:1@0, top:1@0, use:[12, 7], create!:[28@0, 23@0], end!:[29@0, 30@0] |
+|   + StackEnd()                                                                                   |                   |                                                                                |
+|     obj+:7 : PwlFeature                                                                          |                   |   @ OS(28 -> -1) : [0]                                                         |
+|       begin:23@4, top:15@4, lrec:1@0, use:[5], create!:[23@0], end!:[24@1], endLref:[29@0, 30@0] |                   | [PREDECESSORS 28-28]: [28]                                                     |
+|                                                                                                  |                   | [SUCCESORS 25-25]: [25]                                                        |
+|   @ CS(0 -> -1) : [0] OS(14 -> -1) : [7]                                                         |                   +--------------------------------------------------------------------------------+
+| [PREDECESSORS 23-23]: [23]                                                                       |                   |
+| [SUCCESORS 30-30]: [30]                                                                          |                   |
++--------------------------------------------------------------------------------------------------+                   |
 |                                                                                                                      |
 +                                                                                                                      +
 |                                                                                                                      |
-|                                                                                                                      +--------------------------------------------------------------------------------+
-|                                                                                                                      | [27]: <Ending>                                                                 |
-|                                                                                                                      |   TraceExec: [23]                                                              |
-|                                                                                                                      |   InsExec: [66:1]                                                              |
-|                                                                                                                      |   ForwardTrace: 8                                                              |
-|                                                                                                                      | [26][Module] END [ENDING]                                                      |
-|                                                                                                                      | [AST-INSTRUCTIONS]:                                                            |
-|                                                                                                                      |   @ CS(0 -> -1) : [0] OS(27 -> -1) : [13]                                      |
-|                                                                                                                      |   + StackEnd()                                                                 |
-|                                                                                                                      |     obj+:0 : PwlFeature                                                        |
-|                                                                                                                      |       begin:1@0, top:1@0, use:[13, 6], create!:[25@0, 21@0], end!:[27@0, 28@0] |
-|                                                                                                                      |                                                                                |
-|                                                                                                                      |   @ OS(28 -> -1) : [0]                                                         |
-|                                                                                                                      | [PREDECESSORS 26-26]: [26]                                                     |
-|                                                                                                                      | [SUCCESORS 22-22]: [22]                                                        |
-|                                                                                                                      +--------------------------------------------------------------------------------+
++--------------------------------------------------------------------------------+                                     |
+| [30]: <Ending>                                                                 |                                     |
+|   TraceExec: [12]                                                              |                                     |
+|   InsExec: [36:1]                                                              |                                     |
+|   ForwardTrace: 4                                                              |                                     |
+| [26][Module] END [ENDING]                                                      |                                     |
+| [AST-INSTRUCTIONS]:                                                            |                                     |
+|   @ CS(0 -> -1) : [0] OS(14 -> -1) : [7]                                       |                                     |
+|   + StackEnd()                                                                 |                                     |
+|     obj+:0 : PwlFeature                                                        |                                     |
+|       begin:1@0, top:1@0, use:[12, 7], create!:[28@0, 23@0], end!:[29@0, 30@0] |                                     |
+|                                                                                |                                     |
+|   @ OS(15 -> -1) : [0]                                                         |                                     |
+| [PREDECESSORS 24-24]: [24]                                                     |                                     |
+| [SUCCESORS 25-25]: [25]                                                        |                                     |
++--------------------------------------------------------------------------------+                                     |
 |                                                                                                                      |
 +----------------------------------------------------------------------------------------------------------------------+
 |
 +-------------------------------+
-| [22]: <Merging>               |
+| [25]: <Merging>               |
 | <Start>                       |
-|   TraceExec: [24]             |
-|   ForwardTrace: 22            |
+|   TraceExec: [23]             |
+|   ForwardTrace: 25            |
 |   CommonForwardTrace: 0       |
 | [CONTEXT]: OS(29 -> -1) : [0] |
 +-------------------------------+

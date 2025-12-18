@@ -1,11 +1,11 @@
 ﻿================ EXECUTION STEPS ================
-[0]: 0@0 - 58@0
+[0]: 0@0 - 48@0
 
 ==================== TRACES =====================
 
 +-------------------------+
 | [0]: <Start>            |
-| [62][ExprModule] BEGIN  |
+| [66][ExprModule] BEGIN  |
 | [AST-INSTRUCTIONS]:     |
 | [SUCCESORS 1-1]: [1]    |
 +-------------------------+
@@ -21,11 +21,10 @@
 ||   + StackBegin()                                                                              ||
 ||   + Token(0)                                                                                  ||
 || [RETURN STACK]:                                                                               ||
-||   [4][8][0]: _PrimitiveTypeOnly -> [31][_LongType]<! !_PrimitiveTypeOnly @ !>                 ||
-||   [3][7][0]: _LongType -> [39][_Expr0]< _LongType @ "{" { _Expr ; "," } "}" >                 ||
-||   [2][5][0]: _Expr0 -> [49][_Expr1]<! !_Expr0 @ !>                                            ||
-||   [1][4][0]: _Expr1 -> [55][_Expr]<! !_Expr1 @ !>                                             ||
-||   [0][24][0]: _Expr -> [64][ExprModule]<! !_Expr @ !>                                         ||
+||   [3][7][0]: _PrimitiveTypeOnly -> [34][_Expr0] BEGIN [pm-cr-rule: _PrimitiveTypeOnly]        ||
+||   [2][5][0]: _Expr0 -> [50][_Expr1]<! !_Expr0 @ !>                                            ||
+||   [1][4][0]: _Expr1 -> [56][_Expr]<! !_Expr1 @ !>                                             ||
+||   [0][24][0]: _Expr -> [68][ExprModule]<! !_Expr @ !>                                         ||
 || [PREDECESSORS 0-0]: [0]                                                                       ||
 || [SUCCESORS 2-2]: [2]                                                                          ||
 ++===============================================================================================++
@@ -41,13 +40,12 @@
 ||   + StackBegin()                                                                        ||
 ||   + Token(0)                                                                            ||
 || [RETURN STACK]:                                                                         ||
-||   [6][0][1]: _Name -> [8][_PrimitiveShared]<! !_Name @ !>                               ||
-||   [5][2][1]: _PrimitiveShared -> [11][_PrimitiveTypeOnly]< "const" _PrimitiveShared @ > ||
-||   [4][8][0]: _PrimitiveTypeOnly -> [31][_LongType]<! !_PrimitiveTypeOnly @ !>           ||
-||   [3][7][0]: _LongType -> [39][_Expr0]< _LongType @ "{" { _Expr ; "," } "}" >           ||
-||   [2][5][0]: _Expr0 -> [49][_Expr1]<! !_Expr0 @ !>                                      ||
-||   [1][4][0]: _Expr1 -> [55][_Expr]<! !_Expr1 @ !>                                       ||
-||   [0][24][0]: _Expr -> [64][ExprModule]<! !_Expr @ !>                                   ||
+||   [5][0][1]: _Name -> [8][_PrimitiveShared]<! !_Name @ !>                               ||
+||   [4][2][1]: _PrimitiveShared -> [11][_PrimitiveTypeOnly]< "const" _PrimitiveShared @ > ||
+||   [3][7][0]: _PrimitiveTypeOnly -> [34][_Expr0] BEGIN [pm-cr-rule: _PrimitiveTypeOnly]  ||
+||   [2][5][0]: _Expr0 -> [50][_Expr1]<! !_Expr0 @ !>                                      ||
+||   [1][4][0]: _Expr1 -> [56][_Expr]<! !_Expr1 @ !>                                       ||
+||   [0][24][0]: _Expr -> [68][ExprModule]<! !_Expr @ !>                                   ||
 || [PREDECESSORS 1-1]: [1]                                                                 ||
 || [SUCCESORS 3-3]: [3]                                                                    ||
 ++=========================================================================================++
@@ -63,115 +61,112 @@
 |   + StackEnd()                                                                          |
 |   > StackBegin()                                                                        |
 | [RETURN STACK]:                                                                         |
-|   [5][2][1]: _PrimitiveShared -> [11][_PrimitiveTypeOnly]< "const" _PrimitiveShared @ > |
-|   [4][8][0]: _PrimitiveTypeOnly -> [31][_LongType]<! !_PrimitiveTypeOnly @ !>           |
-|   [3][7][0]: _LongType -> [39][_Expr0]< _LongType @ "{" { _Expr ; "," } "}" >           |
-|   [2][5][0]: _Expr0 -> [49][_Expr1]<! !_Expr0 @ !>                                      |
-|   [1][4][0]: _Expr1 -> [55][_Expr]<! !_Expr1 @ !>                                       |
-|   [0][24][0]: _Expr -> [64][ExprModule]<! !_Expr @ !>                                   |
+|   [4][2][1]: _PrimitiveShared -> [11][_PrimitiveTypeOnly]< "const" _PrimitiveShared @ > |
+|   [3][7][0]: _PrimitiveTypeOnly -> [34][_Expr0] BEGIN [pm-cr-rule: _PrimitiveTypeOnly]  |
+|   [2][5][0]: _Expr0 -> [50][_Expr1]<! !_Expr0 @ !>                                      |
+|   [1][4][0]: _Expr1 -> [56][_Expr]<! !_Expr1 @ !>                                       |
+|   [0][24][0]: _Expr -> [68][ExprModule]<! !_Expr @ !>                                   |
 | [PREDECESSORS 2-2]: [2]                                                                 |
 | [SUCCESORS 4-4]: [4]                                                                    |
 +-----------------------------------------------------------------------------------------+
 |
 +
 |
-+-------------------------------------------------------------------------------+
-| [4]: <Ending>                                                                 |
-| [11][_PrimitiveTypeOnly]< "const" _PrimitiveShared @ >                        |
-| [AST-INSTRUCTIONS]:                                                           |
-|   + StackEnd()                                                                |
-|   > StackSlot(1)                                                              |
-| [RETURN STACK]:                                                               |
-|   [4][8][0]: _PrimitiveTypeOnly -> [31][_LongType]<! !_PrimitiveTypeOnly @ !> |
-|   [3][7][0]: _LongType -> [39][_Expr0]< _LongType @ "{" { _Expr ; "," } "}" > |
-|   [2][5][0]: _Expr0 -> [49][_Expr1]<! !_Expr0 @ !>                            |
-|   [1][4][0]: _Expr1 -> [55][_Expr]<! !_Expr1 @ !>                             |
-|   [0][24][0]: _Expr -> [64][ExprModule]<! !_Expr @ !>                         |
-| [PREDECESSORS 3-3]: [3]                                                       |
-| [SUCCESORS 5-5]: [5]                                                          |
-+-------------------------------------------------------------------------------+
++----------------------------------------------------------------------------------------+
+| [4]: <Ending>                                                                          |
+| [11][_PrimitiveTypeOnly]< "const" _PrimitiveShared @ >                                 |
+| [AST-INSTRUCTIONS]:                                                                    |
+|   + StackEnd()                                                                         |
+|   > StackSlot(1)                                                                       |
+| [RETURN STACK]:                                                                        |
+|   [3][7][0]: _PrimitiveTypeOnly -> [34][_Expr0] BEGIN [pm-cr-rule: _PrimitiveTypeOnly] |
+|   [2][5][0]: _Expr0 -> [50][_Expr1]<! !_Expr0 @ !>                                     |
+|   [1][4][0]: _Expr1 -> [56][_Expr]<! !_Expr1 @ !>                                      |
+|   [0][24][0]: _Expr -> [68][ExprModule]<! !_Expr @ !>                                  |
+| [PREDECESSORS 3-3]: [3]                                                                |
+| [SUCCESORS 5-5]: [5]                                                                   |
++----------------------------------------------------------------------------------------+
 |
 +
 |
-+-------------------------------------------------------------------------------+
-| [5]: <Ending>                                                                 |
-| [31][_LongType]<! !_PrimitiveTypeOnly @ !>                                    |
-| [AST-INSTRUCTIONS]:                                                           |
-|   + CreateObject(ConstType)                                                   |
-|   + Field(ConstType::type, 1)                                                 |
-|   + StackEnd()                                                                |
-|   > StackBegin()                                                              |
-| [RETURN STACK]:                                                               |
-|   [3][7][0]: _LongType -> [39][_Expr0]< _LongType @ "{" { _Expr ; "," } "}" > |
-|   [2][5][0]: _Expr0 -> [49][_Expr1]<! !_Expr0 @ !>                            |
-|   [1][4][0]: _Expr1 -> [55][_Expr]<! !_Expr1 @ !>                             |
-|   [0][24][0]: _Expr -> [64][ExprModule]<! !_Expr @ !>                         |
-| [PREDECESSORS 4-4]: [4]                                                       |
-| [SUCCESORS 6-6]: [6]                                                          |
-+-------------------------------------------------------------------------------+
++-------------------------------------------------------+
+| [5]: <Ending>                                         |
+| [34][_Expr0] BEGIN [pm-cr-rule: _PrimitiveTypeOnly]   |
+| [AST-INSTRUCTIONS]:                                   |
+|   + CreateObject(ConstType)                           |
+|   + Field(ConstType::type, 1)                         |
+|   + StackEnd()                                        |
+| [RETURN STACK]:                                       |
+|   [2][5][0]: _Expr0 -> [50][_Expr1]<! !_Expr0 @ !>    |
+|   [1][4][0]: _Expr1 -> [56][_Expr]<! !_Expr1 @ !>     |
+|   [0][24][0]: _Expr -> [68][ExprModule]<! !_Expr @ !> |
+| [PREDECESSORS 4-4]: [4]                               |
+| [SUCCESORS 6-6]: [6]                                  |
++-------------------------------------------------------+
 |
 +
 |
-+-------------------------------------------------------------------------------+
-| [6]: <Leftrec>                                                                |
-| [27][_LongType]< _LongType @ "(" { _LongType ; "," } ")" >                    |
-| [AST-INSTRUCTIONS]:                                                           |
-|   + StackEnd()                                                                |
-|   + StackBegin()                                                              |
-|   + StackSlot(0)                                                              |
-| [RETURN STACK]:                                                               |
-|   [3][7][0]: _LongType -> [39][_Expr0]< _LongType @ "{" { _Expr ; "," } "}" > |
-|   [2][5][0]: _Expr0 -> [49][_Expr1]<! !_Expr0 @ !>                            |
-|   [1][4][0]: _Expr1 -> [55][_Expr]<! !_Expr1 @ !>                             |
-|   [0][24][0]: _Expr -> [64][ExprModule]<! !_Expr @ !>                         |
-| [PREDECESSORS 5-5]: [5]                                                       |
-| [SUCCESORS 8-8]: [8]                                                          |
-+-------------------------------------------------------------------------------+
++--------------------------------------------------------------------------------+
+| [6]: <Leftrec>                                                                 |
+| [27][_LongType]< _LongType @ "(" { _LongType ; "," } ")" >                     |
+| [AST-INSTRUCTIONS]:                                                            |
+|   + StackBegin()                                                               |
+|   + StackEnd()                                                                 |
+|   + StackBegin()                                                               |
+|   + StackSlot(0)                                                               |
+| [RETURN STACK]:                                                                |
+|   [6][13][5]: _LongType -> [40][_Expr0]< _LongType @ "{" { _Expr ; "," } "}" > |
+|   [2][5][0]: _Expr0 -> [50][_Expr1]<! !_Expr0 @ !>                             |
+|   [1][4][0]: _Expr1 -> [56][_Expr]<! !_Expr1 @ !>                              |
+|   [0][24][0]: _Expr -> [68][ExprModule]<! !_Expr @ !>                          |
+| [PREDECESSORS 5-5]: [5]                                                        |
+| [SUCCESORS 7-7]: [7]                                                           |
++--------------------------------------------------------------------------------+
 [0]
  |
  +
  |
 [0]
-++===============================================================================++
-|| [8]: {OPEN_ROUND} (                                                           ||
-|| [21][_LongType]< _LongType "(" @ { _LongType ; "," } ")" >                    ||
-|| [AST-INSTRUCTIONS]:                                                           ||
-||   + Token(1)                                                                  ||
-|| [RETURN STACK]:                                                               ||
-||   [3][7][0]: _LongType -> [39][_Expr0]< _LongType @ "{" { _Expr ; "," } "}" > ||
-||   [2][5][0]: _Expr0 -> [49][_Expr1]<! !_Expr0 @ !>                            ||
-||   [1][4][0]: _Expr1 -> [55][_Expr]<! !_Expr1 @ !>                             ||
-||   [0][24][0]: _Expr -> [64][ExprModule]<! !_Expr @ !>                         ||
-|| [PREDECESSORS 6-6]: [6]                                                       ||
-|| [SUCCESORS 9-9]: [9]                                                          ||
-++===============================================================================++
+++================================================================================++
+|| [7]: {OPEN_ROUND} (                                                            ||
+|| [21][_LongType]< _LongType "(" @ { _LongType ; "," } ")" >                     ||
+|| [AST-INSTRUCTIONS]:                                                            ||
+||   + Token(1)                                                                   ||
+|| [RETURN STACK]:                                                                ||
+||   [6][13][5]: _LongType -> [40][_Expr0]< _LongType @ "{" { _Expr ; "," } "}" > ||
+||   [2][5][0]: _Expr0 -> [50][_Expr1]<! !_Expr0 @ !>                             ||
+||   [1][4][0]: _Expr1 -> [56][_Expr]<! !_Expr1 @ !>                              ||
+||   [0][24][0]: _Expr -> [68][ExprModule]<! !_Expr @ !>                          ||
+|| [PREDECESSORS 6-6]: [6]                                                        ||
+|| [SUCCESORS 8-8]: [8]                                                           ||
+++================================================================================++
 [0]
  |
  +
  |
 [0]
 ++=======================================================================================++
-|| [9]: {ID} void                                                                        ||
+|| [8]: {ID} void                                                                        ||
 || [2][_Name]< ID @ >                                                                    ||
 || [AST-INSTRUCTIONS]:                                                                   ||
 ||   + StackBegin()                                                                      ||
 ||   + Token(0)                                                                          ||
 || [RETURN STACK]:                                                                       ||
-||   [9][0][8]: _Name -> [8][_PrimitiveShared]<! !_Name @ !>                             ||
-||   [8][11][8]: _PrimitiveShared -> [30][_LongType]<! !_PrimitiveShared @ !>            ||
-||   [7][12][8]: _LongType -> [24][_LongType]< _LongType "(" { _LongType @ ; "," } ")" > ||
-||   [3][7][0]: _LongType -> [39][_Expr0]< _LongType @ "{" { _Expr ; "," } "}" >         ||
-||   [2][5][0]: _Expr0 -> [49][_Expr1]<! !_Expr0 @ !>                                    ||
-||   [1][4][0]: _Expr1 -> [55][_Expr]<! !_Expr1 @ !>                                     ||
-||   [0][24][0]: _Expr -> [64][ExprModule]<! !_Expr @ !>                                 ||
-|| [PREDECESSORS 8-8]: [8]                                                               ||
-|| [SUCCESORS 10-10]: [10]                                                               ||
+||   [9][0][7]: _Name -> [8][_PrimitiveShared]<! !_Name @ !>                             ||
+||   [8][10][7]: _PrimitiveShared -> [30][_LongType]<! !_PrimitiveShared @ !>            ||
+||   [7][11][7]: _LongType -> [24][_LongType]< _LongType "(" { _LongType @ ; "," } ")" > ||
+||   [6][13][5]: _LongType -> [40][_Expr0]< _LongType @ "{" { _Expr ; "," } "}" >        ||
+||   [2][5][0]: _Expr0 -> [50][_Expr1]<! !_Expr0 @ !>                                    ||
+||   [1][4][0]: _Expr1 -> [56][_Expr]<! !_Expr1 @ !>                                     ||
+||   [0][24][0]: _Expr -> [68][ExprModule]<! !_Expr @ !>                                 ||
+|| [PREDECESSORS 7-7]: [7]                                                               ||
+|| [SUCCESORS 9-9]: [9]                                                                  ||
 ++=======================================================================================++
 |
 +
 |
 +---------------------------------------------------------------------------------------+
-| [10]: <Ending>                                                                        |
+| [9]: <Ending>                                                                         |
 | [8][_PrimitiveShared]<! !_Name @ !>                                                   |
 | [AST-INSTRUCTIONS]:                                                                   |
 |   + CreateObject(Name)                                                                |
@@ -179,74 +174,74 @@
 |   + StackEnd()                                                                        |
 |   > StackBegin()                                                                      |
 | [RETURN STACK]:                                                                       |
-|   [8][11][8]: _PrimitiveShared -> [30][_LongType]<! !_PrimitiveShared @ !>            |
-|   [7][12][8]: _LongType -> [24][_LongType]< _LongType "(" { _LongType @ ; "," } ")" > |
-|   [3][7][0]: _LongType -> [39][_Expr0]< _LongType @ "{" { _Expr ; "," } "}" >         |
-|   [2][5][0]: _Expr0 -> [49][_Expr1]<! !_Expr0 @ !>                                    |
-|   [1][4][0]: _Expr1 -> [55][_Expr]<! !_Expr1 @ !>                                     |
-|   [0][24][0]: _Expr -> [64][ExprModule]<! !_Expr @ !>                                 |
+|   [8][10][7]: _PrimitiveShared -> [30][_LongType]<! !_PrimitiveShared @ !>            |
+|   [7][11][7]: _LongType -> [24][_LongType]< _LongType "(" { _LongType @ ; "," } ")" > |
+|   [6][13][5]: _LongType -> [40][_Expr0]< _LongType @ "{" { _Expr ; "," } "}" >        |
+|   [2][5][0]: _Expr0 -> [50][_Expr1]<! !_Expr0 @ !>                                    |
+|   [1][4][0]: _Expr1 -> [56][_Expr]<! !_Expr1 @ !>                                     |
+|   [0][24][0]: _Expr -> [68][ExprModule]<! !_Expr @ !>                                 |
+| [PREDECESSORS 8-8]: [8]                                                               |
+| [SUCCESORS 10-10]: [10]                                                               |
++---------------------------------------------------------------------------------------+
+|
++
+|
++---------------------------------------------------------------------------------------+
+| [10]: <Ending>                                                                        |
+| [30][_LongType]<! !_PrimitiveShared @ !>                                              |
+| [AST-INSTRUCTIONS]:                                                                   |
+|   + StackEnd()                                                                        |
+|   > StackBegin()                                                                      |
+| [RETURN STACK]:                                                                       |
+|   [7][11][7]: _LongType -> [24][_LongType]< _LongType "(" { _LongType @ ; "," } ")" > |
+|   [6][13][5]: _LongType -> [40][_Expr0]< _LongType @ "{" { _Expr ; "," } "}" >        |
+|   [2][5][0]: _Expr0 -> [50][_Expr1]<! !_Expr0 @ !>                                    |
+|   [1][4][0]: _Expr1 -> [56][_Expr]<! !_Expr1 @ !>                                     |
+|   [0][24][0]: _Expr -> [68][ExprModule]<! !_Expr @ !>                                 |
 | [PREDECESSORS 9-9]: [9]                                                               |
 | [SUCCESORS 11-11]: [11]                                                               |
 +---------------------------------------------------------------------------------------+
 |
 +
 |
-+---------------------------------------------------------------------------------------+
-| [11]: <Ending>                                                                        |
-| [30][_LongType]<! !_PrimitiveShared @ !>                                              |
-| [AST-INSTRUCTIONS]:                                                                   |
-|   + StackEnd()                                                                        |
-|   > StackBegin()                                                                      |
-| [RETURN STACK]:                                                                       |
-|   [7][12][8]: _LongType -> [24][_LongType]< _LongType "(" { _LongType @ ; "," } ")" > |
-|   [3][7][0]: _LongType -> [39][_Expr0]< _LongType @ "{" { _Expr ; "," } "}" >         |
-|   [2][5][0]: _Expr0 -> [49][_Expr1]<! !_Expr0 @ !>                                    |
-|   [1][4][0]: _Expr1 -> [55][_Expr]<! !_Expr1 @ !>                                     |
-|   [0][24][0]: _Expr -> [64][ExprModule]<! !_Expr @ !>                                 |
-| [PREDECESSORS 10-10]: [10]                                                            |
-| [SUCCESORS 12-12]: [12]                                                               |
-+---------------------------------------------------------------------------------------+
-|
-+
-|
-+-------------------------------------------------------------------------------+
-| [12]: <Ending>                                                                |
-| [24][_LongType]< _LongType "(" { _LongType @ ; "," } ")" >                    |
-| [AST-INSTRUCTIONS]:                                                           |
-|   + StackEnd()                                                                |
-|   > StackSlot(2)                                                              |
-| [RETURN STACK]:                                                               |
-|   [3][7][0]: _LongType -> [39][_Expr0]< _LongType @ "{" { _Expr ; "," } "}" > |
-|   [2][5][0]: _Expr0 -> [49][_Expr1]<! !_Expr0 @ !>                            |
-|   [1][4][0]: _Expr1 -> [55][_Expr]<! !_Expr1 @ !>                             |
-|   [0][24][0]: _Expr -> [64][ExprModule]<! !_Expr @ !>                         |
-| [PREDECESSORS 11-11]: [11]                                                    |
-| [SUCCESORS 13-13]: [13]                                                       |
-+-------------------------------------------------------------------------------+
++--------------------------------------------------------------------------------+
+| [11]: <Ending>                                                                 |
+| [24][_LongType]< _LongType "(" { _LongType @ ; "," } ")" >                     |
+| [AST-INSTRUCTIONS]:                                                            |
+|   + StackEnd()                                                                 |
+|   > StackSlot(2)                                                               |
+| [RETURN STACK]:                                                                |
+|   [6][13][5]: _LongType -> [40][_Expr0]< _LongType @ "{" { _Expr ; "," } "}" > |
+|   [2][5][0]: _Expr0 -> [50][_Expr1]<! !_Expr0 @ !>                             |
+|   [1][4][0]: _Expr1 -> [56][_Expr]<! !_Expr1 @ !>                              |
+|   [0][24][0]: _Expr -> [68][ExprModule]<! !_Expr @ !>                          |
+| [PREDECESSORS 10-10]: [10]                                                     |
+| [SUCCESORS 12-12]: [12]                                                        |
++--------------------------------------------------------------------------------+
 [0]
  |
  +
  |
 [0]
-++===============================================================================++
-|| [13]: {CLOSE_ROUND} )                                                         ||
-|| [23][_LongType]< _LongType "(" { _LongType ; "," } ")" @ >                    ||
-|| [AST-INSTRUCTIONS]:                                                           ||
-||   + Token(4)                                                                  ||
-|| [RETURN STACK]:                                                               ||
-||   [3][7][0]: _LongType -> [39][_Expr0]< _LongType @ "{" { _Expr ; "," } "}" > ||
-||   [2][5][0]: _Expr0 -> [49][_Expr1]<! !_Expr0 @ !>                            ||
-||   [1][4][0]: _Expr1 -> [55][_Expr]<! !_Expr1 @ !>                             ||
-||   [0][24][0]: _Expr -> [64][ExprModule]<! !_Expr @ !>                         ||
-|| [PREDECESSORS 12-12]: [12]                                                    ||
-|| [SUCCESORS 14-14]: [14]                                                       ||
-++===============================================================================++
+++================================================================================++
+|| [12]: {CLOSE_ROUND} )                                                          ||
+|| [23][_LongType]< _LongType "(" { _LongType ; "," } ")" @ >                     ||
+|| [AST-INSTRUCTIONS]:                                                            ||
+||   + Token(4)                                                                   ||
+|| [RETURN STACK]:                                                                ||
+||   [6][13][5]: _LongType -> [40][_Expr0]< _LongType @ "{" { _Expr ; "," } "}" > ||
+||   [2][5][0]: _Expr0 -> [50][_Expr1]<! !_Expr0 @ !>                             ||
+||   [1][4][0]: _Expr1 -> [56][_Expr]<! !_Expr1 @ !>                              ||
+||   [0][24][0]: _Expr -> [68][ExprModule]<! !_Expr @ !>                          ||
+|| [PREDECESSORS 11-11]: [11]                                                     ||
+|| [SUCCESORS 13-13]: [13]                                                        ||
+++================================================================================++
 |
 +
 |
 +-------------------------------------------------------+
-| [14]: <Ending>                                        |
-| [39][_Expr0]< _LongType @ "{" { _Expr ; "," } "}" >   |
+| [13]: <Ending>                                        |
+| [40][_Expr0]< _LongType @ "{" { _Expr ; "," } "}" >   |
 | [AST-INSTRUCTIONS]:                                   |
 |   + CreateObject(FunctionType)                        |
 |   + Field(FunctionType::returnType, 0)                |
@@ -255,11 +250,11 @@
 |   > StackBegin()                                      |
 |   > StackSlot(0)                                      |
 | [RETURN STACK]:                                       |
-|   [2][5][0]: _Expr0 -> [49][_Expr1]<! !_Expr0 @ !>    |
-|   [1][4][0]: _Expr1 -> [55][_Expr]<! !_Expr1 @ !>     |
-|   [0][24][0]: _Expr -> [64][ExprModule]<! !_Expr @ !> |
-| [PREDECESSORS 13-13]: [13]                            |
-| [SUCCESORS 15-15]: [15]                               |
+|   [2][5][0]: _Expr0 -> [50][_Expr1]<! !_Expr0 @ !>    |
+|   [1][4][0]: _Expr1 -> [56][_Expr]<! !_Expr1 @ !>     |
+|   [0][24][0]: _Expr -> [68][ExprModule]<! !_Expr @ !> |
+| [PREDECESSORS 12-12]: [12]                            |
+| [SUCCESORS 14-14]: [14]                               |
 +-------------------------------------------------------+
 [0]
  |
@@ -267,16 +262,16 @@
  |
 [0]
 ++=======================================================++
-|| [15]: {OPEN_BRACE} {                                  ||
-|| [35][_Expr0]< _LongType "{" @ { _Expr ; "," } "}" >   ||
+|| [14]: {OPEN_BRACE} {                                  ||
+|| [36][_Expr0]< _LongType "{" @ { _Expr ; "," } "}" >   ||
 || [AST-INSTRUCTIONS]:                                   ||
 ||   + Token(1)                                          ||
 || [RETURN STACK]:                                       ||
-||   [2][5][0]: _Expr0 -> [49][_Expr1]<! !_Expr0 @ !>    ||
-||   [1][4][0]: _Expr1 -> [55][_Expr]<! !_Expr1 @ !>     ||
-||   [0][24][0]: _Expr -> [64][ExprModule]<! !_Expr @ !> ||
-|| [PREDECESSORS 14-14]: [14]                            ||
-|| [SUCCESORS 16-16]: [16]                               ||
+||   [2][5][0]: _Expr0 -> [50][_Expr1]<! !_Expr0 @ !>    ||
+||   [1][4][0]: _Expr1 -> [56][_Expr]<! !_Expr1 @ !>     ||
+||   [0][24][0]: _Expr -> [68][ExprModule]<! !_Expr @ !> ||
+|| [PREDECESSORS 13-13]: [13]                            ||
+|| [SUCCESORS 15-15]: [15]                               ||
 ++=======================================================++
 [0]
  |
@@ -284,28 +279,28 @@
  |
 [0]
 ++======================================================================================++
-|| [16]: {ID} X                                                                         ||
+|| [15]: {ID} X                                                                         ||
 || [2][_Name]< ID @ >                                                                   ||
 || [AST-INSTRUCTIONS]:                                                                  ||
 ||   + StackBegin()                                                                     ||
 ||   + Token(0)                                                                         ||
 || [RETURN STACK]:                                                                      ||
-||   [14][0][15]: _Name -> [8][_PrimitiveShared]<! !_Name @ !>                          ||
-||   [13][9][15]: _PrimitiveShared -> [33][_Expr0] BEGIN [pm-cr-rule: _PrimitiveShared] ||
-||   [12][5][15]: _Expr0 -> [49][_Expr1]<! !_Expr0 @ !>                                 ||
-||   [11][4][15]: _Expr1 -> [55][_Expr]<! !_Expr1 @ !>                                  ||
-||   [10][14][15]: _Expr -> [38][_Expr0]< _LongType "{" { _Expr @ ; "," } "}" >         ||
-||   [2][5][0]: _Expr0 -> [49][_Expr1]<! !_Expr0 @ !>                                   ||
-||   [1][4][0]: _Expr1 -> [55][_Expr]<! !_Expr1 @ !>                                    ||
-||   [0][24][0]: _Expr -> [64][ExprModule]<! !_Expr @ !>                                ||
-|| [PREDECESSORS 15-15]: [15]                                                           ||
-|| [SUCCESORS 17-17]: [17]                                                              ||
+||   [14][0][14]: _Name -> [8][_PrimitiveShared]<! !_Name @ !>                          ||
+||   [13][8][14]: _PrimitiveShared -> [33][_Expr0] BEGIN [pm-cr-rule: _PrimitiveShared] ||
+||   [12][5][14]: _Expr0 -> [50][_Expr1]<! !_Expr0 @ !>                                 ||
+||   [11][4][14]: _Expr1 -> [56][_Expr]<! !_Expr1 @ !>                                  ||
+||   [10][14][14]: _Expr -> [39][_Expr0]< _LongType "{" { _Expr @ ; "," } "}" >         ||
+||   [2][5][0]: _Expr0 -> [50][_Expr1]<! !_Expr0 @ !>                                   ||
+||   [1][4][0]: _Expr1 -> [56][_Expr]<! !_Expr1 @ !>                                    ||
+||   [0][24][0]: _Expr -> [68][ExprModule]<! !_Expr @ !>                                ||
+|| [PREDECESSORS 14-14]: [14]                                                           ||
+|| [SUCCESORS 16-16]: [16]                                                              ||
 ++======================================================================================++
 |
 +
 |
 +--------------------------------------------------------------------------------------+
-| [17]: <Ending>                                                                       |
+| [16]: <Ending>                                                                       |
 | [8][_PrimitiveShared]<! !_Name @ !>                                                  |
 | [AST-INSTRUCTIONS]:                                                                  |
 |   + CreateObject(Name)                                                               |
@@ -313,102 +308,85 @@
 |   + StackEnd()                                                                       |
 |   > StackBegin()                                                                     |
 | [RETURN STACK]:                                                                      |
-|   [13][9][15]: _PrimitiveShared -> [33][_Expr0] BEGIN [pm-cr-rule: _PrimitiveShared] |
-|   [12][5][15]: _Expr0 -> [49][_Expr1]<! !_Expr0 @ !>                                 |
-|   [11][4][15]: _Expr1 -> [55][_Expr]<! !_Expr1 @ !>                                  |
-|   [10][14][15]: _Expr -> [38][_Expr0]< _LongType "{" { _Expr @ ; "," } "}" >         |
-|   [2][5][0]: _Expr0 -> [49][_Expr1]<! !_Expr0 @ !>                                   |
-|   [1][4][0]: _Expr1 -> [55][_Expr]<! !_Expr1 @ !>                                    |
-|   [0][24][0]: _Expr -> [64][ExprModule]<! !_Expr @ !>                                |
-| [PREDECESSORS 16-16]: [16]                                                           |
-| [SUCCESORS 18-18]: [18]                                                              |
+|   [13][8][14]: _PrimitiveShared -> [33][_Expr0] BEGIN [pm-cr-rule: _PrimitiveShared] |
+|   [12][5][14]: _Expr0 -> [50][_Expr1]<! !_Expr0 @ !>                                 |
+|   [11][4][14]: _Expr1 -> [56][_Expr]<! !_Expr1 @ !>                                  |
+|   [10][14][14]: _Expr -> [39][_Expr0]< _LongType "{" { _Expr @ ; "," } "}" >         |
+|   [2][5][0]: _Expr0 -> [50][_Expr1]<! !_Expr0 @ !>                                   |
+|   [1][4][0]: _Expr1 -> [56][_Expr]<! !_Expr1 @ !>                                    |
+|   [0][24][0]: _Expr -> [68][ExprModule]<! !_Expr @ !>                                |
+| [PREDECESSORS 15-15]: [15]                                                           |
+| [SUCCESORS 17-17]: [17]                                                              |
 +--------------------------------------------------------------------------------------+
+|
++
+|
++------------------------------------------------------------------------------+
+| [17]: <Ending>                                                               |
+| [33][_Expr0] BEGIN [pm-cr-rule: _PrimitiveShared]                            |
+| [AST-INSTRUCTIONS]:                                                          |
+|   + StackEnd()                                                               |
+| [RETURN STACK]:                                                              |
+|   [12][5][14]: _Expr0 -> [50][_Expr1]<! !_Expr0 @ !>                         |
+|   [11][4][14]: _Expr1 -> [56][_Expr]<! !_Expr1 @ !>                          |
+|   [10][14][14]: _Expr -> [39][_Expr0]< _LongType "{" { _Expr @ ; "," } "}" > |
+|   [2][5][0]: _Expr0 -> [50][_Expr1]<! !_Expr0 @ !>                           |
+|   [1][4][0]: _Expr1 -> [56][_Expr]<! !_Expr1 @ !>                            |
+|   [0][24][0]: _Expr -> [68][ExprModule]<! !_Expr @ !>                        |
+| [PREDECESSORS 16-16]: [16]                                                   |
+| [SUCCESORS 18-18]: [18]                                                      |
++------------------------------------------------------------------------------+
 |
 +
 |
 +------------------------------------------------------------------------------+
 | [18]: <Ending>                                                               |
-| [33][_Expr0] BEGIN [pm-cr-rule: _PrimitiveShared]                            |
-| [AST-INSTRUCTIONS]:                                                          |
-|   + StackEnd()                                                               |
-| [RETURN STACK]:                                                              |
-|   [12][5][15]: _Expr0 -> [49][_Expr1]<! !_Expr0 @ !>                         |
-|   [11][4][15]: _Expr1 -> [55][_Expr]<! !_Expr1 @ !>                          |
-|   [10][14][15]: _Expr -> [38][_Expr0]< _LongType "{" { _Expr @ ; "," } "}" > |
-|   [2][5][0]: _Expr0 -> [49][_Expr1]<! !_Expr0 @ !>                           |
-|   [1][4][0]: _Expr1 -> [55][_Expr]<! !_Expr1 @ !>                            |
-|   [0][24][0]: _Expr -> [64][ExprModule]<! !_Expr @ !>                        |
-| [PREDECESSORS 17-17]: [17]                                                   |
-| [SUCCESORS 21-21]: [21]                                                      |
-+------------------------------------------------------------------------------+
-|
-+
-|
-+------------------------------------------------------------------------------+
-| [21]: <Leftrec>                                                              |
-| [41][_Expr0]<! !_PrimitiveShared @ !>                                        |
+| [50][_Expr1]<! !_Expr0 @ !>                                                  |
 | [AST-INSTRUCTIONS]:                                                          |
 |   + StackBegin()                                                             |
+|   + StackEnd()                                                               |
+|   > StackBegin()                                                             |
 | [RETURN STACK]:                                                              |
-|   [12][5][15]: _Expr0 -> [49][_Expr1]<! !_Expr0 @ !>                         |
-|   [11][4][15]: _Expr1 -> [55][_Expr]<! !_Expr1 @ !>                          |
-|   [10][14][15]: _Expr -> [38][_Expr0]< _LongType "{" { _Expr @ ; "," } "}" > |
-|   [2][5][0]: _Expr0 -> [49][_Expr1]<! !_Expr0 @ !>                           |
-|   [1][4][0]: _Expr1 -> [55][_Expr]<! !_Expr1 @ !>                            |
-|   [0][24][0]: _Expr -> [64][ExprModule]<! !_Expr @ !>                        |
+|   [11][4][14]: _Expr1 -> [56][_Expr]<! !_Expr1 @ !>                          |
+|   [10][14][14]: _Expr -> [39][_Expr0]< _LongType "{" { _Expr @ ; "," } "}" > |
+|   [2][5][0]: _Expr0 -> [50][_Expr1]<! !_Expr0 @ !>                           |
+|   [1][4][0]: _Expr1 -> [56][_Expr]<! !_Expr1 @ !>                            |
+|   [0][24][0]: _Expr -> [68][ExprModule]<! !_Expr @ !>                        |
+| [PREDECESSORS 17-17]: [17]                                                   |
+| [SUCCESORS 19-19]: [19]                                                      |
++------------------------------------------------------------------------------+
+|
++
+|
++------------------------------------------------------------------------------+
+| [19]: <Ending>                                                               |
+| [56][_Expr]<! !_Expr1 @ !>                                                   |
+| [AST-INSTRUCTIONS]:                                                          |
+|   + StackEnd()                                                               |
+|   > StackBegin()                                                             |
+| [RETURN STACK]:                                                              |
+|   [10][14][14]: _Expr -> [39][_Expr0]< _LongType "{" { _Expr @ ; "," } "}" > |
+|   [2][5][0]: _Expr0 -> [50][_Expr1]<! !_Expr0 @ !>                           |
+|   [1][4][0]: _Expr1 -> [56][_Expr]<! !_Expr1 @ !>                            |
+|   [0][24][0]: _Expr -> [68][ExprModule]<! !_Expr @ !>                        |
 | [PREDECESSORS 18-18]: [18]                                                   |
-| [SUCCESORS 22-22]: [22]                                                      |
-+------------------------------------------------------------------------------+
-|
-+
-|
-+------------------------------------------------------------------------------+
-| [22]: <Ending>                                                               |
-| [49][_Expr1]<! !_Expr0 @ !>                                                  |
-| [AST-INSTRUCTIONS]:                                                          |
-|   + StackEnd()                                                               |
-|   > StackBegin()                                                             |
-| [RETURN STACK]:                                                              |
-|   [11][4][15]: _Expr1 -> [55][_Expr]<! !_Expr1 @ !>                          |
-|   [10][14][15]: _Expr -> [38][_Expr0]< _LongType "{" { _Expr @ ; "," } "}" > |
-|   [2][5][0]: _Expr0 -> [49][_Expr1]<! !_Expr0 @ !>                           |
-|   [1][4][0]: _Expr1 -> [55][_Expr]<! !_Expr1 @ !>                            |
-|   [0][24][0]: _Expr -> [64][ExprModule]<! !_Expr @ !>                        |
-| [PREDECESSORS 21-21]: [21]                                                   |
-| [SUCCESORS 23-23]: [23]                                                      |
-+------------------------------------------------------------------------------+
-|
-+
-|
-+------------------------------------------------------------------------------+
-| [23]: <Ending>                                                               |
-| [55][_Expr]<! !_Expr1 @ !>                                                   |
-| [AST-INSTRUCTIONS]:                                                          |
-|   + StackEnd()                                                               |
-|   > StackBegin()                                                             |
-| [RETURN STACK]:                                                              |
-|   [10][14][15]: _Expr -> [38][_Expr0]< _LongType "{" { _Expr @ ; "," } "}" > |
-|   [2][5][0]: _Expr0 -> [49][_Expr1]<! !_Expr0 @ !>                           |
-|   [1][4][0]: _Expr1 -> [55][_Expr]<! !_Expr1 @ !>                            |
-|   [0][24][0]: _Expr -> [64][ExprModule]<! !_Expr @ !>                        |
-| [PREDECESSORS 22-22]: [22]                                                   |
-| [SUCCESORS 24-24]: [24]                                                      |
+| [SUCCESORS 20-20]: [20]                                                      |
 +------------------------------------------------------------------------------+
 |
 +
 |
 +-------------------------------------------------------+
-| [24]: <Ending>                                        |
-| [38][_Expr0]< _LongType "{" { _Expr @ ; "," } "}" >   |
+| [20]: <Ending>                                        |
+| [39][_Expr0]< _LongType "{" { _Expr @ ; "," } "}" >   |
 | [AST-INSTRUCTIONS]:                                   |
 |   + StackEnd()                                        |
 |   > StackSlot(2)                                      |
 | [RETURN STACK]:                                       |
-|   [2][5][0]: _Expr0 -> [49][_Expr1]<! !_Expr0 @ !>    |
-|   [1][4][0]: _Expr1 -> [55][_Expr]<! !_Expr1 @ !>     |
-|   [0][24][0]: _Expr -> [64][ExprModule]<! !_Expr @ !> |
-| [PREDECESSORS 23-23]: [23]                            |
-| [SUCCESORS 25-25]: [25]                               |
+|   [2][5][0]: _Expr0 -> [50][_Expr1]<! !_Expr0 @ !>    |
+|   [1][4][0]: _Expr1 -> [56][_Expr]<! !_Expr1 @ !>     |
+|   [0][24][0]: _Expr -> [68][ExprModule]<! !_Expr @ !> |
+| [PREDECESSORS 19-19]: [19]                            |
+| [SUCCESORS 21-21]: [21]                               |
 +-------------------------------------------------------+
 [0]
  |
@@ -416,16 +394,16 @@
  |
 [0]
 ++=======================================================++
-|| [25]: {COMMA} ,                                       ||
-|| [36][_Expr0]< _LongType "{" { _Expr ; "," @ } "}" >   ||
+|| [21]: {COMMA} ,                                       ||
+|| [37][_Expr0]< _LongType "{" { _Expr ; "," @ } "}" >   ||
 || [AST-INSTRUCTIONS]:                                   ||
 ||   + Token(3)                                          ||
 || [RETURN STACK]:                                       ||
-||   [2][5][0]: _Expr0 -> [49][_Expr1]<! !_Expr0 @ !>    ||
-||   [1][4][0]: _Expr1 -> [55][_Expr]<! !_Expr1 @ !>     ||
-||   [0][24][0]: _Expr -> [64][ExprModule]<! !_Expr @ !> ||
-|| [PREDECESSORS 24-24]: [24]                            ||
-|| [SUCCESORS 26-26]: [26]                               ||
+||   [2][5][0]: _Expr0 -> [50][_Expr1]<! !_Expr0 @ !>    ||
+||   [1][4][0]: _Expr1 -> [56][_Expr]<! !_Expr1 @ !>     ||
+||   [0][24][0]: _Expr -> [68][ExprModule]<! !_Expr @ !> ||
+|| [PREDECESSORS 20-20]: [20]                            ||
+|| [SUCCESORS 22-22]: [22]                               ||
 ++=======================================================++
 [0]
  |
@@ -433,28 +411,28 @@
  |
 [0]
 ++======================================================================================++
-|| [26]: {ID} Y                                                                         ||
+|| [22]: {ID} Y                                                                         ||
 || [2][_Name]< ID @ >                                                                   ||
 || [AST-INSTRUCTIONS]:                                                                  ||
 ||   + StackBegin()                                                                     ||
 ||   + Token(0)                                                                         ||
 || [RETURN STACK]:                                                                      ||
-||   [20][0][25]: _Name -> [8][_PrimitiveShared]<! !_Name @ !>                          ||
-||   [19][9][25]: _PrimitiveShared -> [33][_Expr0] BEGIN [pm-cr-rule: _PrimitiveShared] ||
-||   [18][5][25]: _Expr0 -> [49][_Expr1]<! !_Expr0 @ !>                                 ||
-||   [17][4][25]: _Expr1 -> [55][_Expr]<! !_Expr1 @ !>                                  ||
-||   [16][15][25]: _Expr -> [38][_Expr0]< _LongType "{" { _Expr @ ; "," } "}" >         ||
-||   [2][5][0]: _Expr0 -> [49][_Expr1]<! !_Expr0 @ !>                                   ||
-||   [1][4][0]: _Expr1 -> [55][_Expr]<! !_Expr1 @ !>                                    ||
-||   [0][24][0]: _Expr -> [64][ExprModule]<! !_Expr @ !>                                ||
-|| [PREDECESSORS 25-25]: [25]                                                           ||
-|| [SUCCESORS 27-27]: [27]                                                              ||
+||   [19][0][21]: _Name -> [8][_PrimitiveShared]<! !_Name @ !>                          ||
+||   [18][8][21]: _PrimitiveShared -> [33][_Expr0] BEGIN [pm-cr-rule: _PrimitiveShared] ||
+||   [17][5][21]: _Expr0 -> [50][_Expr1]<! !_Expr0 @ !>                                 ||
+||   [16][4][21]: _Expr1 -> [56][_Expr]<! !_Expr1 @ !>                                  ||
+||   [15][15][21]: _Expr -> [39][_Expr0]< _LongType "{" { _Expr @ ; "," } "}" >         ||
+||   [2][5][0]: _Expr0 -> [50][_Expr1]<! !_Expr0 @ !>                                   ||
+||   [1][4][0]: _Expr1 -> [56][_Expr]<! !_Expr1 @ !>                                    ||
+||   [0][24][0]: _Expr -> [68][ExprModule]<! !_Expr @ !>                                ||
+|| [PREDECESSORS 21-21]: [21]                                                           ||
+|| [SUCCESORS 23-23]: [23]                                                              ||
 ++======================================================================================++
 |
 +
 |
 +--------------------------------------------------------------------------------------+
-| [27]: <Ending>                                                                       |
+| [23]: <Ending>                                                                       |
 | [8][_PrimitiveShared]<! !_Name @ !>                                                  |
 | [AST-INSTRUCTIONS]:                                                                  |
 |   + CreateObject(Name)                                                               |
@@ -462,101 +440,83 @@
 |   + StackEnd()                                                                       |
 |   > StackBegin()                                                                     |
 | [RETURN STACK]:                                                                      |
-|   [19][9][25]: _PrimitiveShared -> [33][_Expr0] BEGIN [pm-cr-rule: _PrimitiveShared] |
-|   [18][5][25]: _Expr0 -> [49][_Expr1]<! !_Expr0 @ !>                                 |
-|   [17][4][25]: _Expr1 -> [55][_Expr]<! !_Expr1 @ !>                                  |
-|   [16][15][25]: _Expr -> [38][_Expr0]< _LongType "{" { _Expr @ ; "," } "}" >         |
-|   [2][5][0]: _Expr0 -> [49][_Expr1]<! !_Expr0 @ !>                                   |
-|   [1][4][0]: _Expr1 -> [55][_Expr]<! !_Expr1 @ !>                                    |
-|   [0][24][0]: _Expr -> [64][ExprModule]<! !_Expr @ !>                                |
-| [PREDECESSORS 26-26]: [26]                                                           |
-| [SUCCESORS 28-28]: [28]                                                              |
+|   [18][8][21]: _PrimitiveShared -> [33][_Expr0] BEGIN [pm-cr-rule: _PrimitiveShared] |
+|   [17][5][21]: _Expr0 -> [50][_Expr1]<! !_Expr0 @ !>                                 |
+|   [16][4][21]: _Expr1 -> [56][_Expr]<! !_Expr1 @ !>                                  |
+|   [15][15][21]: _Expr -> [39][_Expr0]< _LongType "{" { _Expr @ ; "," } "}" >         |
+|   [2][5][0]: _Expr0 -> [50][_Expr1]<! !_Expr0 @ !>                                   |
+|   [1][4][0]: _Expr1 -> [56][_Expr]<! !_Expr1 @ !>                                    |
+|   [0][24][0]: _Expr -> [68][ExprModule]<! !_Expr @ !>                                |
+| [PREDECESSORS 22-22]: [22]                                                           |
+| [SUCCESORS 24-24]: [24]                                                              |
 +--------------------------------------------------------------------------------------+
 |
 +
 |
 +------------------------------------------------------------------------------+
-| [28]: <Ending>                                                               |
+| [24]: <Ending>                                                               |
 | [33][_Expr0] BEGIN [pm-cr-rule: _PrimitiveShared]                            |
 | [AST-INSTRUCTIONS]:                                                          |
 |   + StackEnd()                                                               |
 | [RETURN STACK]:                                                              |
-|   [18][5][25]: _Expr0 -> [49][_Expr1]<! !_Expr0 @ !>                         |
-|   [17][4][25]: _Expr1 -> [55][_Expr]<! !_Expr1 @ !>                          |
-|   [16][15][25]: _Expr -> [38][_Expr0]< _LongType "{" { _Expr @ ; "," } "}" > |
-|   [2][5][0]: _Expr0 -> [49][_Expr1]<! !_Expr0 @ !>                           |
-|   [1][4][0]: _Expr1 -> [55][_Expr]<! !_Expr1 @ !>                            |
-|   [0][24][0]: _Expr -> [64][ExprModule]<! !_Expr @ !>                        |
-| [PREDECESSORS 27-27]: [27]                                                   |
-| [SUCCESORS 29-29]: [29]                                                      |
+|   [17][5][21]: _Expr0 -> [50][_Expr1]<! !_Expr0 @ !>                         |
+|   [16][4][21]: _Expr1 -> [56][_Expr]<! !_Expr1 @ !>                          |
+|   [15][15][21]: _Expr -> [39][_Expr0]< _LongType "{" { _Expr @ ; "," } "}" > |
+|   [2][5][0]: _Expr0 -> [50][_Expr1]<! !_Expr0 @ !>                           |
+|   [1][4][0]: _Expr1 -> [56][_Expr]<! !_Expr1 @ !>                            |
+|   [0][24][0]: _Expr -> [68][ExprModule]<! !_Expr @ !>                        |
+| [PREDECESSORS 23-23]: [23]                                                   |
+| [SUCCESORS 25-25]: [25]                                                      |
 +------------------------------------------------------------------------------+
 |
 +
 |
-+---------------------------------------------------------------------------------+
-| [29]: <Leftrec>                                                                 |
-| [30][_LongType]<! !_PrimitiveShared @ !>                                        |
-| [AST-INSTRUCTIONS]:                                                             |
-|   + StackBegin()                                                                |
-| [RETURN STACK]:                                                                 |
-|   [21][7][28]: _LongType -> [39][_Expr0]< _LongType @ "{" { _Expr ; "," } "}" > |
-|   [18][5][25]: _Expr0 -> [49][_Expr1]<! !_Expr0 @ !>                            |
-|   [17][4][25]: _Expr1 -> [55][_Expr]<! !_Expr1 @ !>                             |
-|   [16][15][25]: _Expr -> [38][_Expr0]< _LongType "{" { _Expr @ ; "," } "}" >    |
-|   [2][5][0]: _Expr0 -> [49][_Expr1]<! !_Expr0 @ !>                              |
-|   [1][4][0]: _Expr1 -> [55][_Expr]<! !_Expr1 @ !>                               |
-|   [0][24][0]: _Expr -> [64][ExprModule]<! !_Expr @ !>                           |
-| [PREDECESSORS 28-28]: [28]                                                      |
-| [SUCCESORS 30-30]: [30]                                                         |
-+---------------------------------------------------------------------------------+
-|
-+
-|
-+---------------------------------------------------------------------------------+
-| [30]: <Leftrec>                                                                 |
-| [28][_LongType]< _LongType @ "*" >                                              |
-| [AST-INSTRUCTIONS]:                                                             |
-|   + StackEnd()                                                                  |
-|   + StackBegin()                                                                |
-|   + StackSlot(0)                                                                |
-| [RETURN STACK]:                                                                 |
-|   [21][7][28]: _LongType -> [39][_Expr0]< _LongType @ "{" { _Expr ; "," } "}" > |
-|   [18][5][25]: _Expr0 -> [49][_Expr1]<! !_Expr0 @ !>                            |
-|   [17][4][25]: _Expr1 -> [55][_Expr]<! !_Expr1 @ !>                             |
-|   [16][15][25]: _Expr -> [38][_Expr0]< _LongType "{" { _Expr @ ; "," } "}" >    |
-|   [2][5][0]: _Expr0 -> [49][_Expr1]<! !_Expr0 @ !>                              |
-|   [1][4][0]: _Expr1 -> [55][_Expr]<! !_Expr1 @ !>                               |
-|   [0][24][0]: _Expr -> [64][ExprModule]<! !_Expr @ !>                           |
-| [PREDECESSORS 29-29]: [29]                                                      |
-| [SUCCESORS 37-37]: [37]                                                         |
-+---------------------------------------------------------------------------------+
++----------------------------------------------------------------------------------+
+| [25]: <Leftrec>                                                                  |
+| [28][_LongType]< _LongType @ "*" >                                               |
+| [AST-INSTRUCTIONS]:                                                              |
+|   + StackBegin()                                                                 |
+|   + StackEnd()                                                                   |
+|   + StackBegin()                                                                 |
+|   + StackSlot(0)                                                                 |
+| [RETURN STACK]:                                                                  |
+|   [20][13][24]: _LongType -> [40][_Expr0]< _LongType @ "{" { _Expr ; "," } "}" > |
+|   [17][5][21]: _Expr0 -> [50][_Expr1]<! !_Expr0 @ !>                             |
+|   [16][4][21]: _Expr1 -> [56][_Expr]<! !_Expr1 @ !>                              |
+|   [15][15][21]: _Expr -> [39][_Expr0]< _LongType "{" { _Expr @ ; "," } "}" >     |
+|   [2][5][0]: _Expr0 -> [50][_Expr1]<! !_Expr0 @ !>                               |
+|   [1][4][0]: _Expr1 -> [56][_Expr]<! !_Expr1 @ !>                                |
+|   [0][24][0]: _Expr -> [68][ExprModule]<! !_Expr @ !>                            |
+| [PREDECESSORS 24-24]: [24]                                                       |
+| [SUCCESORS 30-30]: [30]                                                          |
++----------------------------------------------------------------------------------+
 [0]
  |
  +
  |
 [0]
-++=================================================================================++
-|| [37]: {ASTERISK} *                                                              ||
-|| [25][_LongType]< _LongType "*" @ >                                              ||
-|| [AST-INSTRUCTIONS]:                                                             ||
-||   + Token(1)                                                                    ||
-|| [RETURN STACK]:                                                                 ||
-||   [21][7][28]: _LongType -> [39][_Expr0]< _LongType @ "{" { _Expr ; "," } "}" > ||
-||   [18][5][25]: _Expr0 -> [49][_Expr1]<! !_Expr0 @ !>                            ||
-||   [17][4][25]: _Expr1 -> [55][_Expr]<! !_Expr1 @ !>                             ||
-||   [16][15][25]: _Expr -> [38][_Expr0]< _LongType "{" { _Expr @ ; "," } "}" >    ||
-||   [2][5][0]: _Expr0 -> [49][_Expr1]<! !_Expr0 @ !>                              ||
-||   [1][4][0]: _Expr1 -> [55][_Expr]<! !_Expr1 @ !>                               ||
-||   [0][24][0]: _Expr -> [64][ExprModule]<! !_Expr @ !>                           ||
-|| [PREDECESSORS 30-30]: [30]                                                      ||
-|| [SUCCESORS 38-38]: [38]                                                         ||
-++=================================================================================++
+++==================================================================================++
+|| [30]: {ASTERISK} *                                                               ||
+|| [25][_LongType]< _LongType "*" @ >                                               ||
+|| [AST-INSTRUCTIONS]:                                                              ||
+||   + Token(1)                                                                     ||
+|| [RETURN STACK]:                                                                  ||
+||   [20][13][24]: _LongType -> [40][_Expr0]< _LongType @ "{" { _Expr ; "," } "}" > ||
+||   [17][5][21]: _Expr0 -> [50][_Expr1]<! !_Expr0 @ !>                             ||
+||   [16][4][21]: _Expr1 -> [56][_Expr]<! !_Expr1 @ !>                              ||
+||   [15][15][21]: _Expr -> [39][_Expr0]< _LongType "{" { _Expr @ ; "," } "}" >     ||
+||   [2][5][0]: _Expr0 -> [50][_Expr1]<! !_Expr0 @ !>                               ||
+||   [1][4][0]: _Expr1 -> [56][_Expr]<! !_Expr1 @ !>                                ||
+||   [0][24][0]: _Expr -> [68][ExprModule]<! !_Expr @ !>                            ||
+|| [PREDECESSORS 25-25]: [25]                                                       ||
+|| [SUCCESORS 31-31]: [31]                                                          ||
+++==================================================================================++
 |
 +
 |
 +------------------------------------------------------------------------------+
-| [38]: <Ending>                                                               |
-| [39][_Expr0]< _LongType @ "{" { _Expr ; "," } "}" >                          |
+| [31]: <Ending>                                                               |
+| [40][_Expr0]< _LongType @ "{" { _Expr ; "," } "}" >                          |
 | [AST-INSTRUCTIONS]:                                                          |
 |   + CreateObject(PointerType)                                                |
 |   + Field(PointerType::type, 0)                                              |
@@ -564,13 +524,166 @@
 |   > StackBegin()                                                             |
 |   > StackSlot(0)                                                             |
 | [RETURN STACK]:                                                              |
-|   [18][5][25]: _Expr0 -> [49][_Expr1]<! !_Expr0 @ !>                         |
-|   [17][4][25]: _Expr1 -> [55][_Expr]<! !_Expr1 @ !>                          |
-|   [16][15][25]: _Expr -> [38][_Expr0]< _LongType "{" { _Expr @ ; "," } "}" > |
-|   [2][5][0]: _Expr0 -> [49][_Expr1]<! !_Expr0 @ !>                           |
-|   [1][4][0]: _Expr1 -> [55][_Expr]<! !_Expr1 @ !>                            |
-|   [0][24][0]: _Expr -> [64][ExprModule]<! !_Expr @ !>                        |
+|   [17][5][21]: _Expr0 -> [50][_Expr1]<! !_Expr0 @ !>                         |
+|   [16][4][21]: _Expr1 -> [56][_Expr]<! !_Expr1 @ !>                          |
+|   [15][15][21]: _Expr -> [39][_Expr0]< _LongType "{" { _Expr @ ; "," } "}" > |
+|   [2][5][0]: _Expr0 -> [50][_Expr1]<! !_Expr0 @ !>                           |
+|   [1][4][0]: _Expr1 -> [56][_Expr]<! !_Expr1 @ !>                            |
+|   [0][24][0]: _Expr -> [68][ExprModule]<! !_Expr @ !>                        |
+| [PREDECESSORS 30-30]: [30]                                                   |
+| [SUCCESORS 33-33]: [33]                                                      |
++------------------------------------------------------------------------------+
+[0]
+ |
+ +
+ |
+[0]
+++==============================================================================++
+|| [33]: {OPEN_BRACE} {                                                         ||
+|| [36][_Expr0]< _LongType "{" @ { _Expr ; "," } "}" >                          ||
+|| [AST-INSTRUCTIONS]:                                                          ||
+||   + Token(1)                                                                 ||
+|| [RETURN STACK]:                                                              ||
+||   [17][5][21]: _Expr0 -> [50][_Expr1]<! !_Expr0 @ !>                         ||
+||   [16][4][21]: _Expr1 -> [56][_Expr]<! !_Expr1 @ !>                          ||
+||   [15][15][21]: _Expr -> [39][_Expr0]< _LongType "{" { _Expr @ ; "," } "}" > ||
+||   [2][5][0]: _Expr0 -> [50][_Expr1]<! !_Expr0 @ !>                           ||
+||   [1][4][0]: _Expr1 -> [56][_Expr]<! !_Expr1 @ !>                            ||
+||   [0][24][0]: _Expr -> [68][ExprModule]<! !_Expr @ !>                        ||
+|| [PREDECESSORS 31-31]: [31]                                                   ||
+|| [SUCCESORS 34-34]: [34]                                                      ||
+++==============================================================================++
+[0]
+ |
+ +
+ |
+[0]
+++======================================================================================++
+|| [34]: {ID} Z                                                                         ||
+|| [2][_Name]< ID @ >                                                                   ||
+|| [AST-INSTRUCTIONS]:                                                                  ||
+||   + StackBegin()                                                                     ||
+||   + Token(0)                                                                         ||
+|| [RETURN STACK]:                                                                      ||
+||   [25][0][33]: _Name -> [8][_PrimitiveShared]<! !_Name @ !>                          ||
+||   [24][8][33]: _PrimitiveShared -> [33][_Expr0] BEGIN [pm-cr-rule: _PrimitiveShared] ||
+||   [23][5][33]: _Expr0 -> [50][_Expr1]<! !_Expr0 @ !>                                 ||
+||   [22][4][33]: _Expr1 -> [56][_Expr]<! !_Expr1 @ !>                                  ||
+||   [21][14][33]: _Expr -> [39][_Expr0]< _LongType "{" { _Expr @ ; "," } "}" >         ||
+||   [17][5][21]: _Expr0 -> [50][_Expr1]<! !_Expr0 @ !>                                 ||
+||   [16][4][21]: _Expr1 -> [56][_Expr]<! !_Expr1 @ !>                                  ||
+||   [15][15][21]: _Expr -> [39][_Expr0]< _LongType "{" { _Expr @ ; "," } "}" >         ||
+||   [2][5][0]: _Expr0 -> [50][_Expr1]<! !_Expr0 @ !>                                   ||
+||   [1][4][0]: _Expr1 -> [56][_Expr]<! !_Expr1 @ !>                                    ||
+||   [0][24][0]: _Expr -> [68][ExprModule]<! !_Expr @ !>                                ||
+|| [PREDECESSORS 33-33]: [33]                                                           ||
+|| [SUCCESORS 35-35]: [35]                                                              ||
+++======================================================================================++
+|
++
+|
++--------------------------------------------------------------------------------------+
+| [35]: <Ending>                                                                       |
+| [8][_PrimitiveShared]<! !_Name @ !>                                                  |
+| [AST-INSTRUCTIONS]:                                                                  |
+|   + CreateObject(Name)                                                               |
+|   + Field(Name::name, 0)                                                             |
+|   + StackEnd()                                                                       |
+|   > StackBegin()                                                                     |
+| [RETURN STACK]:                                                                      |
+|   [24][8][33]: _PrimitiveShared -> [33][_Expr0] BEGIN [pm-cr-rule: _PrimitiveShared] |
+|   [23][5][33]: _Expr0 -> [50][_Expr1]<! !_Expr0 @ !>                                 |
+|   [22][4][33]: _Expr1 -> [56][_Expr]<! !_Expr1 @ !>                                  |
+|   [21][14][33]: _Expr -> [39][_Expr0]< _LongType "{" { _Expr @ ; "," } "}" >         |
+|   [17][5][21]: _Expr0 -> [50][_Expr1]<! !_Expr0 @ !>                                 |
+|   [16][4][21]: _Expr1 -> [56][_Expr]<! !_Expr1 @ !>                                  |
+|   [15][15][21]: _Expr -> [39][_Expr0]< _LongType "{" { _Expr @ ; "," } "}" >         |
+|   [2][5][0]: _Expr0 -> [50][_Expr1]<! !_Expr0 @ !>                                   |
+|   [1][4][0]: _Expr1 -> [56][_Expr]<! !_Expr1 @ !>                                    |
+|   [0][24][0]: _Expr -> [68][ExprModule]<! !_Expr @ !>                                |
+| [PREDECESSORS 34-34]: [34]                                                           |
+| [SUCCESORS 36-36]: [36]                                                              |
++--------------------------------------------------------------------------------------+
+|
++
+|
++------------------------------------------------------------------------------+
+| [36]: <Ending>                                                               |
+| [33][_Expr0] BEGIN [pm-cr-rule: _PrimitiveShared]                            |
+| [AST-INSTRUCTIONS]:                                                          |
+|   + StackEnd()                                                               |
+| [RETURN STACK]:                                                              |
+|   [23][5][33]: _Expr0 -> [50][_Expr1]<! !_Expr0 @ !>                         |
+|   [22][4][33]: _Expr1 -> [56][_Expr]<! !_Expr1 @ !>                          |
+|   [21][14][33]: _Expr -> [39][_Expr0]< _LongType "{" { _Expr @ ; "," } "}" > |
+|   [17][5][21]: _Expr0 -> [50][_Expr1]<! !_Expr0 @ !>                         |
+|   [16][4][21]: _Expr1 -> [56][_Expr]<! !_Expr1 @ !>                          |
+|   [15][15][21]: _Expr -> [39][_Expr0]< _LongType "{" { _Expr @ ; "," } "}" > |
+|   [2][5][0]: _Expr0 -> [50][_Expr1]<! !_Expr0 @ !>                           |
+|   [1][4][0]: _Expr1 -> [56][_Expr]<! !_Expr1 @ !>                            |
+|   [0][24][0]: _Expr -> [68][ExprModule]<! !_Expr @ !>                        |
+| [PREDECESSORS 35-35]: [35]                                                   |
+| [SUCCESORS 37-37]: [37]                                                      |
++------------------------------------------------------------------------------+
+|
++
+|
++------------------------------------------------------------------------------+
+| [37]: <Ending>                                                               |
+| [50][_Expr1]<! !_Expr0 @ !>                                                  |
+| [AST-INSTRUCTIONS]:                                                          |
+|   + StackBegin()                                                             |
+|   + StackEnd()                                                               |
+|   > StackBegin()                                                             |
+| [RETURN STACK]:                                                              |
+|   [22][4][33]: _Expr1 -> [56][_Expr]<! !_Expr1 @ !>                          |
+|   [21][14][33]: _Expr -> [39][_Expr0]< _LongType "{" { _Expr @ ; "," } "}" > |
+|   [17][5][21]: _Expr0 -> [50][_Expr1]<! !_Expr0 @ !>                         |
+|   [16][4][21]: _Expr1 -> [56][_Expr]<! !_Expr1 @ !>                          |
+|   [15][15][21]: _Expr -> [39][_Expr0]< _LongType "{" { _Expr @ ; "," } "}" > |
+|   [2][5][0]: _Expr0 -> [50][_Expr1]<! !_Expr0 @ !>                           |
+|   [1][4][0]: _Expr1 -> [56][_Expr]<! !_Expr1 @ !>                            |
+|   [0][24][0]: _Expr -> [68][ExprModule]<! !_Expr @ !>                        |
+| [PREDECESSORS 36-36]: [36]                                                   |
+| [SUCCESORS 38-38]: [38]                                                      |
++------------------------------------------------------------------------------+
+|
++
+|
++------------------------------------------------------------------------------+
+| [38]: <Ending>                                                               |
+| [56][_Expr]<! !_Expr1 @ !>                                                   |
+| [AST-INSTRUCTIONS]:                                                          |
+|   + StackEnd()                                                               |
+|   > StackBegin()                                                             |
+| [RETURN STACK]:                                                              |
+|   [21][14][33]: _Expr -> [39][_Expr0]< _LongType "{" { _Expr @ ; "," } "}" > |
+|   [17][5][21]: _Expr0 -> [50][_Expr1]<! !_Expr0 @ !>                         |
+|   [16][4][21]: _Expr1 -> [56][_Expr]<! !_Expr1 @ !>                          |
+|   [15][15][21]: _Expr -> [39][_Expr0]< _LongType "{" { _Expr @ ; "," } "}" > |
+|   [2][5][0]: _Expr0 -> [50][_Expr1]<! !_Expr0 @ !>                           |
+|   [1][4][0]: _Expr1 -> [56][_Expr]<! !_Expr1 @ !>                            |
+|   [0][24][0]: _Expr -> [68][ExprModule]<! !_Expr @ !>                        |
 | [PREDECESSORS 37-37]: [37]                                                   |
+| [SUCCESORS 39-39]: [39]                                                      |
++------------------------------------------------------------------------------+
+|
++
+|
++------------------------------------------------------------------------------+
+| [39]: <Ending>                                                               |
+| [39][_Expr0]< _LongType "{" { _Expr @ ; "," } "}" >                          |
+| [AST-INSTRUCTIONS]:                                                          |
+|   + StackEnd()                                                               |
+|   > StackSlot(2)                                                             |
+| [RETURN STACK]:                                                              |
+|   [17][5][21]: _Expr0 -> [50][_Expr1]<! !_Expr0 @ !>                         |
+|   [16][4][21]: _Expr1 -> [56][_Expr]<! !_Expr1 @ !>                          |
+|   [15][15][21]: _Expr -> [39][_Expr0]< _LongType "{" { _Expr @ ; "," } "}" > |
+|   [2][5][0]: _Expr0 -> [50][_Expr1]<! !_Expr0 @ !>                           |
+|   [1][4][0]: _Expr1 -> [56][_Expr]<! !_Expr1 @ !>                            |
+|   [0][24][0]: _Expr -> [68][ExprModule]<! !_Expr @ !>                        |
+| [PREDECESSORS 38-38]: [38]                                                   |
 | [SUCCESORS 40-40]: [40]                                                      |
 +------------------------------------------------------------------------------+
 [0]
@@ -579,199 +692,26 @@
  |
 [0]
 ++==============================================================================++
-|| [40]: {OPEN_BRACE} {                                                         ||
-|| [35][_Expr0]< _LongType "{" @ { _Expr ; "," } "}" >                          ||
-|| [AST-INSTRUCTIONS]:                                                          ||
-||   + Token(1)                                                                 ||
-|| [RETURN STACK]:                                                              ||
-||   [18][5][25]: _Expr0 -> [49][_Expr1]<! !_Expr0 @ !>                         ||
-||   [17][4][25]: _Expr1 -> [55][_Expr]<! !_Expr1 @ !>                          ||
-||   [16][15][25]: _Expr -> [38][_Expr0]< _LongType "{" { _Expr @ ; "," } "}" > ||
-||   [2][5][0]: _Expr0 -> [49][_Expr1]<! !_Expr0 @ !>                           ||
-||   [1][4][0]: _Expr1 -> [55][_Expr]<! !_Expr1 @ !>                            ||
-||   [0][24][0]: _Expr -> [64][ExprModule]<! !_Expr @ !>                        ||
-|| [PREDECESSORS 38-38]: [38]                                                   ||
-|| [SUCCESORS 41-41]: [41]                                                      ||
-++==============================================================================++
-[0]
- |
- +
- |
-[0]
-++======================================================================================++
-|| [41]: {ID} Z                                                                         ||
-|| [2][_Name]< ID @ >                                                                   ||
-|| [AST-INSTRUCTIONS]:                                                                  ||
-||   + StackBegin()                                                                     ||
-||   + Token(0)                                                                         ||
-|| [RETURN STACK]:                                                                      ||
-||   [26][0][40]: _Name -> [8][_PrimitiveShared]<! !_Name @ !>                          ||
-||   [25][9][40]: _PrimitiveShared -> [33][_Expr0] BEGIN [pm-cr-rule: _PrimitiveShared] ||
-||   [24][5][40]: _Expr0 -> [49][_Expr1]<! !_Expr0 @ !>                                 ||
-||   [23][4][40]: _Expr1 -> [55][_Expr]<! !_Expr1 @ !>                                  ||
-||   [22][14][40]: _Expr -> [38][_Expr0]< _LongType "{" { _Expr @ ; "," } "}" >         ||
-||   [18][5][25]: _Expr0 -> [49][_Expr1]<! !_Expr0 @ !>                                 ||
-||   [17][4][25]: _Expr1 -> [55][_Expr]<! !_Expr1 @ !>                                  ||
-||   [16][15][25]: _Expr -> [38][_Expr0]< _LongType "{" { _Expr @ ; "," } "}" >         ||
-||   [2][5][0]: _Expr0 -> [49][_Expr1]<! !_Expr0 @ !>                                   ||
-||   [1][4][0]: _Expr1 -> [55][_Expr]<! !_Expr1 @ !>                                    ||
-||   [0][24][0]: _Expr -> [64][ExprModule]<! !_Expr @ !>                                ||
-|| [PREDECESSORS 40-40]: [40]                                                           ||
-|| [SUCCESORS 42-42]: [42]                                                              ||
-++======================================================================================++
-|
-+
-|
-+--------------------------------------------------------------------------------------+
-| [42]: <Ending>                                                                       |
-| [8][_PrimitiveShared]<! !_Name @ !>                                                  |
-| [AST-INSTRUCTIONS]:                                                                  |
-|   + CreateObject(Name)                                                               |
-|   + Field(Name::name, 0)                                                             |
-|   + StackEnd()                                                                       |
-|   > StackBegin()                                                                     |
-| [RETURN STACK]:                                                                      |
-|   [25][9][40]: _PrimitiveShared -> [33][_Expr0] BEGIN [pm-cr-rule: _PrimitiveShared] |
-|   [24][5][40]: _Expr0 -> [49][_Expr1]<! !_Expr0 @ !>                                 |
-|   [23][4][40]: _Expr1 -> [55][_Expr]<! !_Expr1 @ !>                                  |
-|   [22][14][40]: _Expr -> [38][_Expr0]< _LongType "{" { _Expr @ ; "," } "}" >         |
-|   [18][5][25]: _Expr0 -> [49][_Expr1]<! !_Expr0 @ !>                                 |
-|   [17][4][25]: _Expr1 -> [55][_Expr]<! !_Expr1 @ !>                                  |
-|   [16][15][25]: _Expr -> [38][_Expr0]< _LongType "{" { _Expr @ ; "," } "}" >         |
-|   [2][5][0]: _Expr0 -> [49][_Expr1]<! !_Expr0 @ !>                                   |
-|   [1][4][0]: _Expr1 -> [55][_Expr]<! !_Expr1 @ !>                                    |
-|   [0][24][0]: _Expr -> [64][ExprModule]<! !_Expr @ !>                                |
-| [PREDECESSORS 41-41]: [41]                                                           |
-| [SUCCESORS 43-43]: [43]                                                              |
-+--------------------------------------------------------------------------------------+
-|
-+
-|
-+------------------------------------------------------------------------------+
-| [43]: <Ending>                                                               |
-| [33][_Expr0] BEGIN [pm-cr-rule: _PrimitiveShared]                            |
-| [AST-INSTRUCTIONS]:                                                          |
-|   + StackEnd()                                                               |
-| [RETURN STACK]:                                                              |
-|   [24][5][40]: _Expr0 -> [49][_Expr1]<! !_Expr0 @ !>                         |
-|   [23][4][40]: _Expr1 -> [55][_Expr]<! !_Expr1 @ !>                          |
-|   [22][14][40]: _Expr -> [38][_Expr0]< _LongType "{" { _Expr @ ; "," } "}" > |
-|   [18][5][25]: _Expr0 -> [49][_Expr1]<! !_Expr0 @ !>                         |
-|   [17][4][25]: _Expr1 -> [55][_Expr]<! !_Expr1 @ !>                          |
-|   [16][15][25]: _Expr -> [38][_Expr0]< _LongType "{" { _Expr @ ; "," } "}" > |
-|   [2][5][0]: _Expr0 -> [49][_Expr1]<! !_Expr0 @ !>                           |
-|   [1][4][0]: _Expr1 -> [55][_Expr]<! !_Expr1 @ !>                            |
-|   [0][24][0]: _Expr -> [64][ExprModule]<! !_Expr @ !>                        |
-| [PREDECESSORS 42-42]: [42]                                                   |
-| [SUCCESORS 46-46]: [46]                                                      |
-+------------------------------------------------------------------------------+
-|
-+
-|
-+------------------------------------------------------------------------------+
-| [46]: <Leftrec>                                                              |
-| [41][_Expr0]<! !_PrimitiveShared @ !>                                        |
-| [AST-INSTRUCTIONS]:                                                          |
-|   + StackBegin()                                                             |
-| [RETURN STACK]:                                                              |
-|   [24][5][40]: _Expr0 -> [49][_Expr1]<! !_Expr0 @ !>                         |
-|   [23][4][40]: _Expr1 -> [55][_Expr]<! !_Expr1 @ !>                          |
-|   [22][14][40]: _Expr -> [38][_Expr0]< _LongType "{" { _Expr @ ; "," } "}" > |
-|   [18][5][25]: _Expr0 -> [49][_Expr1]<! !_Expr0 @ !>                         |
-|   [17][4][25]: _Expr1 -> [55][_Expr]<! !_Expr1 @ !>                          |
-|   [16][15][25]: _Expr -> [38][_Expr0]< _LongType "{" { _Expr @ ; "," } "}" > |
-|   [2][5][0]: _Expr0 -> [49][_Expr1]<! !_Expr0 @ !>                           |
-|   [1][4][0]: _Expr1 -> [55][_Expr]<! !_Expr1 @ !>                            |
-|   [0][24][0]: _Expr -> [64][ExprModule]<! !_Expr @ !>                        |
-| [PREDECESSORS 43-43]: [43]                                                   |
-| [SUCCESORS 47-47]: [47]                                                      |
-+------------------------------------------------------------------------------+
-|
-+
-|
-+------------------------------------------------------------------------------+
-| [47]: <Ending>                                                               |
-| [49][_Expr1]<! !_Expr0 @ !>                                                  |
-| [AST-INSTRUCTIONS]:                                                          |
-|   + StackEnd()                                                               |
-|   > StackBegin()                                                             |
-| [RETURN STACK]:                                                              |
-|   [23][4][40]: _Expr1 -> [55][_Expr]<! !_Expr1 @ !>                          |
-|   [22][14][40]: _Expr -> [38][_Expr0]< _LongType "{" { _Expr @ ; "," } "}" > |
-|   [18][5][25]: _Expr0 -> [49][_Expr1]<! !_Expr0 @ !>                         |
-|   [17][4][25]: _Expr1 -> [55][_Expr]<! !_Expr1 @ !>                          |
-|   [16][15][25]: _Expr -> [38][_Expr0]< _LongType "{" { _Expr @ ; "," } "}" > |
-|   [2][5][0]: _Expr0 -> [49][_Expr1]<! !_Expr0 @ !>                           |
-|   [1][4][0]: _Expr1 -> [55][_Expr]<! !_Expr1 @ !>                            |
-|   [0][24][0]: _Expr -> [64][ExprModule]<! !_Expr @ !>                        |
-| [PREDECESSORS 46-46]: [46]                                                   |
-| [SUCCESORS 48-48]: [48]                                                      |
-+------------------------------------------------------------------------------+
-|
-+
-|
-+------------------------------------------------------------------------------+
-| [48]: <Ending>                                                               |
-| [55][_Expr]<! !_Expr1 @ !>                                                   |
-| [AST-INSTRUCTIONS]:                                                          |
-|   + StackEnd()                                                               |
-|   > StackBegin()                                                             |
-| [RETURN STACK]:                                                              |
-|   [22][14][40]: _Expr -> [38][_Expr0]< _LongType "{" { _Expr @ ; "," } "}" > |
-|   [18][5][25]: _Expr0 -> [49][_Expr1]<! !_Expr0 @ !>                         |
-|   [17][4][25]: _Expr1 -> [55][_Expr]<! !_Expr1 @ !>                          |
-|   [16][15][25]: _Expr -> [38][_Expr0]< _LongType "{" { _Expr @ ; "," } "}" > |
-|   [2][5][0]: _Expr0 -> [49][_Expr1]<! !_Expr0 @ !>                           |
-|   [1][4][0]: _Expr1 -> [55][_Expr]<! !_Expr1 @ !>                            |
-|   [0][24][0]: _Expr -> [64][ExprModule]<! !_Expr @ !>                        |
-| [PREDECESSORS 47-47]: [47]                                                   |
-| [SUCCESORS 49-49]: [49]                                                      |
-+------------------------------------------------------------------------------+
-|
-+
-|
-+------------------------------------------------------------------------------+
-| [49]: <Ending>                                                               |
-| [38][_Expr0]< _LongType "{" { _Expr @ ; "," } "}" >                          |
-| [AST-INSTRUCTIONS]:                                                          |
-|   + StackEnd()                                                               |
-|   > StackSlot(2)                                                             |
-| [RETURN STACK]:                                                              |
-|   [18][5][25]: _Expr0 -> [49][_Expr1]<! !_Expr0 @ !>                         |
-|   [17][4][25]: _Expr1 -> [55][_Expr]<! !_Expr1 @ !>                          |
-|   [16][15][25]: _Expr -> [38][_Expr0]< _LongType "{" { _Expr @ ; "," } "}" > |
-|   [2][5][0]: _Expr0 -> [49][_Expr1]<! !_Expr0 @ !>                           |
-|   [1][4][0]: _Expr1 -> [55][_Expr]<! !_Expr1 @ !>                            |
-|   [0][24][0]: _Expr -> [64][ExprModule]<! !_Expr @ !>                        |
-| [PREDECESSORS 48-48]: [48]                                                   |
-| [SUCCESORS 50-50]: [50]                                                      |
-+------------------------------------------------------------------------------+
-[0]
- |
- +
- |
-[0]
-++==============================================================================++
-|| [50]: {CLOSE_BRACE} }                                                        ||
-|| [37][_Expr0]< _LongType "{" { _Expr ; "," } "}" @ >                          ||
+|| [40]: {CLOSE_BRACE} }                                                        ||
+|| [38][_Expr0]< _LongType "{" { _Expr ; "," } "}" @ >                          ||
 || [AST-INSTRUCTIONS]:                                                          ||
 ||   + Token(4)                                                                 ||
 || [RETURN STACK]:                                                              ||
-||   [18][5][25]: _Expr0 -> [49][_Expr1]<! !_Expr0 @ !>                         ||
-||   [17][4][25]: _Expr1 -> [55][_Expr]<! !_Expr1 @ !>                          ||
-||   [16][15][25]: _Expr -> [38][_Expr0]< _LongType "{" { _Expr @ ; "," } "}" > ||
-||   [2][5][0]: _Expr0 -> [49][_Expr1]<! !_Expr0 @ !>                           ||
-||   [1][4][0]: _Expr1 -> [55][_Expr]<! !_Expr1 @ !>                            ||
-||   [0][24][0]: _Expr -> [64][ExprModule]<! !_Expr @ !>                        ||
-|| [PREDECESSORS 49-49]: [49]                                                   ||
-|| [SUCCESORS 51-51]: [51]                                                      ||
+||   [17][5][21]: _Expr0 -> [50][_Expr1]<! !_Expr0 @ !>                         ||
+||   [16][4][21]: _Expr1 -> [56][_Expr]<! !_Expr1 @ !>                          ||
+||   [15][15][21]: _Expr -> [39][_Expr0]< _LongType "{" { _Expr @ ; "," } "}" > ||
+||   [2][5][0]: _Expr0 -> [50][_Expr1]<! !_Expr0 @ !>                           ||
+||   [1][4][0]: _Expr1 -> [56][_Expr]<! !_Expr1 @ !>                            ||
+||   [0][24][0]: _Expr -> [68][ExprModule]<! !_Expr @ !>                        ||
+|| [PREDECESSORS 39-39]: [39]                                                   ||
+|| [SUCCESORS 41-41]: [41]                                                      ||
 ++==============================================================================++
 |
 +
 |
 +------------------------------------------------------------------------------+
-| [51]: <Ending>                                                               |
-| [49][_Expr1]<! !_Expr0 @ !>                                                  |
+| [41]: <Ending>                                                               |
+| [50][_Expr1]<! !_Expr0 @ !>                                                  |
 | [AST-INSTRUCTIONS]:                                                          |
 |   + CreateObject(CtorExpr)                                                   |
 |   + Field(CtorExpr::type, 0)                                                 |
@@ -779,46 +719,46 @@
 |   + StackEnd()                                                               |
 |   > StackBegin()                                                             |
 | [RETURN STACK]:                                                              |
-|   [17][4][25]: _Expr1 -> [55][_Expr]<! !_Expr1 @ !>                          |
-|   [16][15][25]: _Expr -> [38][_Expr0]< _LongType "{" { _Expr @ ; "," } "}" > |
-|   [2][5][0]: _Expr0 -> [49][_Expr1]<! !_Expr0 @ !>                           |
-|   [1][4][0]: _Expr1 -> [55][_Expr]<! !_Expr1 @ !>                            |
-|   [0][24][0]: _Expr -> [64][ExprModule]<! !_Expr @ !>                        |
-| [PREDECESSORS 50-50]: [50]                                                   |
-| [SUCCESORS 52-52]: [52]                                                      |
+|   [16][4][21]: _Expr1 -> [56][_Expr]<! !_Expr1 @ !>                          |
+|   [15][15][21]: _Expr -> [39][_Expr0]< _LongType "{" { _Expr @ ; "," } "}" > |
+|   [2][5][0]: _Expr0 -> [50][_Expr1]<! !_Expr0 @ !>                           |
+|   [1][4][0]: _Expr1 -> [56][_Expr]<! !_Expr1 @ !>                            |
+|   [0][24][0]: _Expr -> [68][ExprModule]<! !_Expr @ !>                        |
+| [PREDECESSORS 40-40]: [40]                                                   |
+| [SUCCESORS 42-42]: [42]                                                      |
 +------------------------------------------------------------------------------+
 |
 +
 |
 +------------------------------------------------------------------------------+
-| [52]: <Ending>                                                               |
-| [55][_Expr]<! !_Expr1 @ !>                                                   |
+| [42]: <Ending>                                                               |
+| [56][_Expr]<! !_Expr1 @ !>                                                   |
 | [AST-INSTRUCTIONS]:                                                          |
 |   + StackEnd()                                                               |
 |   > StackBegin()                                                             |
 | [RETURN STACK]:                                                              |
-|   [16][15][25]: _Expr -> [38][_Expr0]< _LongType "{" { _Expr @ ; "," } "}" > |
-|   [2][5][0]: _Expr0 -> [49][_Expr1]<! !_Expr0 @ !>                           |
-|   [1][4][0]: _Expr1 -> [55][_Expr]<! !_Expr1 @ !>                            |
-|   [0][24][0]: _Expr -> [64][ExprModule]<! !_Expr @ !>                        |
-| [PREDECESSORS 51-51]: [51]                                                   |
-| [SUCCESORS 53-53]: [53]                                                      |
+|   [15][15][21]: _Expr -> [39][_Expr0]< _LongType "{" { _Expr @ ; "," } "}" > |
+|   [2][5][0]: _Expr0 -> [50][_Expr1]<! !_Expr0 @ !>                           |
+|   [1][4][0]: _Expr1 -> [56][_Expr]<! !_Expr1 @ !>                            |
+|   [0][24][0]: _Expr -> [68][ExprModule]<! !_Expr @ !>                        |
+| [PREDECESSORS 41-41]: [41]                                                   |
+| [SUCCESORS 43-43]: [43]                                                      |
 +------------------------------------------------------------------------------+
 |
 +
 |
 +-------------------------------------------------------+
-| [53]: <Ending>                                        |
-| [38][_Expr0]< _LongType "{" { _Expr @ ; "," } "}" >   |
+| [43]: <Ending>                                        |
+| [39][_Expr0]< _LongType "{" { _Expr @ ; "," } "}" >   |
 | [AST-INSTRUCTIONS]:                                   |
 |   + StackEnd()                                        |
 |   > StackSlot(2)                                      |
 | [RETURN STACK]:                                       |
-|   [2][5][0]: _Expr0 -> [49][_Expr1]<! !_Expr0 @ !>    |
-|   [1][4][0]: _Expr1 -> [55][_Expr]<! !_Expr1 @ !>     |
-|   [0][24][0]: _Expr -> [64][ExprModule]<! !_Expr @ !> |
-| [PREDECESSORS 52-52]: [52]                            |
-| [SUCCESORS 54-54]: [54]                               |
+|   [2][5][0]: _Expr0 -> [50][_Expr1]<! !_Expr0 @ !>    |
+|   [1][4][0]: _Expr1 -> [56][_Expr]<! !_Expr1 @ !>     |
+|   [0][24][0]: _Expr -> [68][ExprModule]<! !_Expr @ !> |
+| [PREDECESSORS 42-42]: [42]                            |
+| [SUCCESORS 44-44]: [44]                               |
 +-------------------------------------------------------+
 [0]
  |
@@ -826,23 +766,23 @@
  |
 [0]
 ++=======================================================++
-|| [54]: {CLOSE_BRACE} }                                 ||
-|| [37][_Expr0]< _LongType "{" { _Expr ; "," } "}" @ >   ||
+|| [44]: {CLOSE_BRACE} }                                 ||
+|| [38][_Expr0]< _LongType "{" { _Expr ; "," } "}" @ >   ||
 || [AST-INSTRUCTIONS]:                                   ||
 ||   + Token(4)                                          ||
 || [RETURN STACK]:                                       ||
-||   [2][5][0]: _Expr0 -> [49][_Expr1]<! !_Expr0 @ !>    ||
-||   [1][4][0]: _Expr1 -> [55][_Expr]<! !_Expr1 @ !>     ||
-||   [0][24][0]: _Expr -> [64][ExprModule]<! !_Expr @ !> ||
-|| [PREDECESSORS 53-53]: [53]                            ||
-|| [SUCCESORS 55-55]: [55]                               ||
+||   [2][5][0]: _Expr0 -> [50][_Expr1]<! !_Expr0 @ !>    ||
+||   [1][4][0]: _Expr1 -> [56][_Expr]<! !_Expr1 @ !>     ||
+||   [0][24][0]: _Expr -> [68][ExprModule]<! !_Expr @ !> ||
+|| [PREDECESSORS 43-43]: [43]                            ||
+|| [SUCCESORS 45-45]: [45]                               ||
 ++=======================================================++
 |
 +
 |
 +-------------------------------------------------------+
-| [55]: <Ending>                                        |
-| [49][_Expr1]<! !_Expr0 @ !>                           |
+| [45]: <Ending>                                        |
+| [50][_Expr1]<! !_Expr0 @ !>                           |
 | [AST-INSTRUCTIONS]:                                   |
 |   + CreateObject(CtorExpr)                            |
 |   + Field(CtorExpr::type, 0)                          |
@@ -850,44 +790,44 @@
 |   + StackEnd()                                        |
 |   > StackBegin()                                      |
 | [RETURN STACK]:                                       |
-|   [1][4][0]: _Expr1 -> [55][_Expr]<! !_Expr1 @ !>     |
-|   [0][24][0]: _Expr -> [64][ExprModule]<! !_Expr @ !> |
-| [PREDECESSORS 54-54]: [54]                            |
-| [SUCCESORS 56-56]: [56]                               |
+|   [1][4][0]: _Expr1 -> [56][_Expr]<! !_Expr1 @ !>     |
+|   [0][24][0]: _Expr -> [68][ExprModule]<! !_Expr @ !> |
+| [PREDECESSORS 44-44]: [44]                            |
+| [SUCCESORS 46-46]: [46]                               |
 +-------------------------------------------------------+
 |
 +
 |
 +-------------------------------------------------------+
-| [56]: <Ending>                                        |
-| [55][_Expr]<! !_Expr1 @ !>                            |
+| [46]: <Ending>                                        |
+| [56][_Expr]<! !_Expr1 @ !>                            |
 | [AST-INSTRUCTIONS]:                                   |
 |   + StackEnd()                                        |
 |   > StackBegin()                                      |
 | [RETURN STACK]:                                       |
-|   [0][24][0]: _Expr -> [64][ExprModule]<! !_Expr @ !> |
-| [PREDECESSORS 55-55]: [55]                            |
-| [SUCCESORS 57-57]: [57]                               |
+|   [0][24][0]: _Expr -> [68][ExprModule]<! !_Expr @ !> |
+| [PREDECESSORS 45-45]: [45]                            |
+| [SUCCESORS 47-47]: [47]                               |
 +-------------------------------------------------------+
 |
 +
 |
 +--------------------------------+
-| [57]: <Ending>                 |
-| [64][ExprModule]<! !_Expr @ !> |
+| [47]: <Ending>                 |
+| [68][ExprModule]<! !_Expr @ !> |
 | [AST-INSTRUCTIONS]:            |
 |   + StackEnd()                 |
 |   > StackBegin()               |
-| [PREDECESSORS 56-56]: [56]     |
-| [SUCCESORS 58-58]: [58]        |
+| [PREDECESSORS 46-46]: [46]     |
+| [SUCCESORS 48-48]: [48]        |
 +--------------------------------+
 |
 +
 |
 +-------------------------------+
-| [58]: <Ending>                |
-| [63][ExprModule] END [ENDING] |
+| [48]: <Ending>                |
+| [67][ExprModule] END [ENDING] |
 | [AST-INSTRUCTIONS]:           |
 |   + StackEnd()                |
-| [PREDECESSORS 57-57]: [57]    |
+| [PREDECESSORS 47-47]: [47]    |
 +-------------------------------+

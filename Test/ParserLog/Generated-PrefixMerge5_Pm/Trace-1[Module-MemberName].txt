@@ -1,6 +1,6 @@
 ﻿+----------------------+
 | [0]: <Start>         |
-| [56][Module] BEGIN   |
+| [57][Module] BEGIN   |
 | [AST-INSTRUCTIONS]:  |
 | [SUCCESORS 1-1]: [1] |
 +----------------------+
@@ -17,7 +17,7 @@
 ||   + Token(0)                                                                        ||
 || [RETURN STACK]:                                                                     ||
 ||   [1][0][0]: _Name -> [8][_PrimitiveShared]<! !_Name @ !>                           ||
-||   [0][22][0]: _PrimitiveShared -> [57][Module] BEGIN [pm-cr-rule: _PrimitiveShared] ||
+||   [0][21][0]: _PrimitiveShared -> [59][Module] BEGIN [pm-cr-rule: _PrimitiveShared] ||
 || [PREDECESSORS 0-0]: [0]                                                             ||
 || [SUCCESORS 2-2]: [2]                                                                ||
 ++=====================================================================================++
@@ -35,8 +35,59 @@
 |   + StackSlot(0)                                                                    |
 | [RETURN STACK]:                                                                     |
 |   [1][0][0]: _Name -> [8][_PrimitiveShared]<! !_Name @ !>                           |
-|   [0][22][0]: _PrimitiveShared -> [57][Module] BEGIN [pm-cr-rule: _PrimitiveShared] |
+|   [0][21][0]: _PrimitiveShared -> [59][Module] BEGIN [pm-cr-rule: _PrimitiveShared] |
 | [PREDECESSORS 1-1]: [1]                                                             |
+| [SUCCESORS 8-8]: [8]                                                                |
++-------------------------------------------------------------------------------------+
+[0]
+ |
+ +
+ |
+[0]
+++=====================================================================================++
+|| [8]: {DOT} .                                                                        ||
+|| [3][_Name]< _Name "." @ ID >                                                        ||
+|| [AST-INSTRUCTIONS]:                                                                 ||
+||   + Token(1)                                                                        ||
+|| [RETURN STACK]:                                                                     ||
+||   [1][0][0]: _Name -> [8][_PrimitiveShared]<! !_Name @ !>                           ||
+||   [0][21][0]: _PrimitiveShared -> [59][Module] BEGIN [pm-cr-rule: _PrimitiveShared] ||
+|| [PREDECESSORS 2-2]: [2]                                                             ||
+|| [SUCCESORS 9-9]: [9]                                                                ||
+++=====================================================================================++
+[0]
+ |
+ +
+ |
+[0]
+++=====================================================================================++
+|| [9]: {ID} B                                                                         ||
+|| [4][_Name]< _Name "." ID @ >                                                        ||
+|| [AST-INSTRUCTIONS]:                                                                 ||
+||   + Token(2)                                                                        ||
+|| [RETURN STACK]:                                                                     ||
+||   [1][0][0]: _Name -> [8][_PrimitiveShared]<! !_Name @ !>                           ||
+||   [0][21][0]: _PrimitiveShared -> [59][Module] BEGIN [pm-cr-rule: _PrimitiveShared] ||
+|| [PREDECESSORS 8-8]: [8]                                                             ||
+|| [SUCCESORS 10-10]: [10]                                                             ||
+++=====================================================================================++
+|
++
+|
++-------------------------------------------------------------------------------------+
+| [10]: <Leftrec>                                                                     |
+| [5][_Name]< _Name @ "." ID >                                                        |
+| [AST-INSTRUCTIONS]:                                                                 |
+|   + CreateObject(MemberName)                                                        |
+|   + Field(MemberName::parent, 0)                                                    |
+|   + Field(MemberName::member, 2)                                                    |
+|   + StackEnd()                                                                      |
+|   + StackBegin()                                                                    |
+|   + StackSlot(0)                                                                    |
+| [RETURN STACK]:                                                                     |
+|   [1][0][0]: _Name -> [8][_PrimitiveShared]<! !_Name @ !>                           |
+|   [0][21][0]: _PrimitiveShared -> [59][Module] BEGIN [pm-cr-rule: _PrimitiveShared] |
+| [PREDECESSORS 9-9]: [9]                                                             |
 | [SUCCESORS 16-16]: [16]                                                             |
 +-------------------------------------------------------------------------------------+
 [0]
@@ -51,8 +102,8 @@
 ||   + Token(1)                                                                        ||
 || [RETURN STACK]:                                                                     ||
 ||   [1][0][0]: _Name -> [8][_PrimitiveShared]<! !_Name @ !>                           ||
-||   [0][22][0]: _PrimitiveShared -> [57][Module] BEGIN [pm-cr-rule: _PrimitiveShared] ||
-|| [PREDECESSORS 2-2]: [2]                                                             ||
+||   [0][21][0]: _PrimitiveShared -> [59][Module] BEGIN [pm-cr-rule: _PrimitiveShared] ||
+|| [PREDECESSORS 10-10]: [10]                                                          ||
 || [SUCCESORS 17-17]: [17]                                                             ||
 ++=====================================================================================++
 [0]
@@ -61,13 +112,13 @@
  |
 [0]
 ++=====================================================================================++
-|| [17]: {ID} B                                                                        ||
+|| [17]: {ID} C                                                                        ||
 || [4][_Name]< _Name "." ID @ >                                                        ||
 || [AST-INSTRUCTIONS]:                                                                 ||
 ||   + Token(2)                                                                        ||
 || [RETURN STACK]:                                                                     ||
 ||   [1][0][0]: _Name -> [8][_PrimitiveShared]<! !_Name @ !>                           ||
-||   [0][22][0]: _PrimitiveShared -> [57][Module] BEGIN [pm-cr-rule: _PrimitiveShared] ||
+||   [0][21][0]: _PrimitiveShared -> [59][Module] BEGIN [pm-cr-rule: _PrimitiveShared] ||
 || [PREDECESSORS 16-16]: [16]                                                          ||
 || [SUCCESORS 18-18]: [18]                                                             ||
 ++=====================================================================================++
@@ -75,58 +126,7 @@
 +
 |
 +-------------------------------------------------------------------------------------+
-| [18]: <Leftrec>                                                                     |
-| [5][_Name]< _Name @ "." ID >                                                        |
-| [AST-INSTRUCTIONS]:                                                                 |
-|   + CreateObject(MemberName)                                                        |
-|   + Field(MemberName::parent, 0)                                                    |
-|   + Field(MemberName::member, 2)                                                    |
-|   + StackEnd()                                                                      |
-|   + StackBegin()                                                                    |
-|   + StackSlot(0)                                                                    |
-| [RETURN STACK]:                                                                     |
-|   [1][0][0]: _Name -> [8][_PrimitiveShared]<! !_Name @ !>                           |
-|   [0][22][0]: _PrimitiveShared -> [57][Module] BEGIN [pm-cr-rule: _PrimitiveShared] |
-| [PREDECESSORS 17-17]: [17]                                                          |
-| [SUCCESORS 32-32]: [32]                                                             |
-+-------------------------------------------------------------------------------------+
-[0]
- |
- +
- |
-[0]
-++=====================================================================================++
-|| [32]: {DOT} .                                                                       ||
-|| [3][_Name]< _Name "." @ ID >                                                        ||
-|| [AST-INSTRUCTIONS]:                                                                 ||
-||   + Token(1)                                                                        ||
-|| [RETURN STACK]:                                                                     ||
-||   [1][0][0]: _Name -> [8][_PrimitiveShared]<! !_Name @ !>                           ||
-||   [0][22][0]: _PrimitiveShared -> [57][Module] BEGIN [pm-cr-rule: _PrimitiveShared] ||
-|| [PREDECESSORS 18-18]: [18]                                                          ||
-|| [SUCCESORS 33-33]: [33]                                                             ||
-++=====================================================================================++
-[0]
- |
- +
- |
-[0]
-++=====================================================================================++
-|| [33]: {ID} C                                                                        ||
-|| [4][_Name]< _Name "." ID @ >                                                        ||
-|| [AST-INSTRUCTIONS]:                                                                 ||
-||   + Token(2)                                                                        ||
-|| [RETURN STACK]:                                                                     ||
-||   [1][0][0]: _Name -> [8][_PrimitiveShared]<! !_Name @ !>                           ||
-||   [0][22][0]: _PrimitiveShared -> [57][Module] BEGIN [pm-cr-rule: _PrimitiveShared] ||
-|| [PREDECESSORS 32-32]: [32]                                                          ||
-|| [SUCCESORS 34-34]: [34]                                                             ||
-++=====================================================================================++
-|
-+
-|
-+-------------------------------------------------------------------------------------+
-| [34]: <Ending>                                                                      |
+| [18]: <Ending>                                                                      |
 | [8][_PrimitiveShared]<! !_Name @ !>                                                 |
 | [AST-INSTRUCTIONS]:                                                                 |
 |   + CreateObject(MemberName)                                                        |
@@ -135,92 +135,37 @@
 |   + StackEnd()                                                                      |
 |   > StackBegin()                                                                    |
 | [RETURN STACK]:                                                                     |
-|   [0][22][0]: _PrimitiveShared -> [57][Module] BEGIN [pm-cr-rule: _PrimitiveShared] |
-| [PREDECESSORS 33-33]: [33]                                                          |
-| [SUCCESORS 35-35]: [35]                                                             |
+|   [0][21][0]: _PrimitiveShared -> [59][Module] BEGIN [pm-cr-rule: _PrimitiveShared] |
+| [PREDECESSORS 17-17]: [17]                                                          |
+| [SUCCESORS 19-19]: [19]                                                             |
 +-------------------------------------------------------------------------------------+
 |
 +
 |
 +---------------------------------------------------+
-| [35]: <Ending>                                    |
-| [57][Module] BEGIN [pm-cr-rule: _PrimitiveShared] |
+| [19]: <Ending>                                    |
+| [59][Module] BEGIN [pm-cr-rule: _PrimitiveShared] |
 | [AST-INSTRUCTIONS]:                               |
 |   + StackEnd()                                    |
-| [PREDECESSORS 34-34]: [34]                        |
-| [SUCCESORS 36-41]: [36][41]                       |
+| [PREDECESSORS 18-18]: [18]                        |
+| [SUCCESORS 22-21]: [22][21]                       |
 +---------------------------------------------------+
 |
 +--------------------------------------------------------------------------------------------+
 |                                                                                            |
-+-------------------------------------------------------------+                              +------------------------------------------------------+
-| [36]: <Leftrec>                                             |                              | [41]: <Leftrec>                                      |
-| [30][_LongType]<! !_PrimitiveShared @ !>                    |                              | [41][_Expr0]<! !_PrimitiveShared @ !>                |
-| [AST-INSTRUCTIONS]:                                         |                              | [AST-INSTRUCTIONS]:                                  |
-|   + StackBegin()                                            |                              |   + StackBegin()                                     |
-| [RETURN STACK]:                                             |                              | [RETURN STACK]:                                      |
-|   [18][23][35]: _LongType -> [61][Module]<! !_LongType @ !> |                              |   [25][5][35]: _Expr0 -> [49][_Expr1]<! !_Expr0 @ !> |
-| [PREDECESSORS 35-35]: [35]                                  |                              |   [24][4][35]: _Expr1 -> [55][_Expr]<! !_Expr1 @ !>  |
-| [SUCCESORS 37-37]: [37]                                     |                              |   [23][19][35]: _Expr -> [60][Module]<! !_Expr @ !>  |
-+-------------------------------------------------------------+                              | [PREDECESSORS 35-35]: [35]                           |
-|                                                                                            | [SUCCESORS 42-42]: [42]                              |
-|                                                                                            +------------------------------------------------------+
-|                                                                                            |
-+                                                                                            +
-|                                                                                            |
-+--------------------------------+                                                           +-----------------------------------------------------+
-| [37]: <Ending>                 |                                                           | [42]: <Ending>                                      |
-| [61][Module]<! !_LongType @ !> |                                                           | [49][_Expr1]<! !_Expr0 @ !>                         |
-| [AST-INSTRUCTIONS]:            |                                                           | [AST-INSTRUCTIONS]:                                 |
-|   + StackEnd()                 |                                                           |   + StackEnd()                                      |
-|   > StackBegin()               |                                                           |   > StackBegin()                                    |
-| [PREDECESSORS 36-36]: [36]     |                                                           | [RETURN STACK]:                                     |
-| [SUCCESORS 46-46]: [46]        |                                                           |   [24][4][35]: _Expr1 -> [55][_Expr]<! !_Expr1 @ !> |
-+--------------------------------+                                                           |   [23][19][35]: _Expr -> [60][Module]<! !_Expr @ !> |
-|                                                                                            | [PREDECESSORS 41-41]: [41]                          |
-|                                                                                            | [SUCCESORS 43-43]: [43]                             |
-|                                                                                            +-----------------------------------------------------+
-|                                                                                            |
-+                                                                                            +
-|                                                                                            |
-+----------------------------+                                                               +-----------------------------------------------------+
-| [46]: <Ending>             |                                                               | [43]: <Ending>                                      |
-| [59][Module] END [ENDING]  |                                                               | [55][_Expr]<! !_Expr1 @ !>                          |
-| [AST-INSTRUCTIONS]:        |                                                               | [AST-INSTRUCTIONS]:                                 |
-|   + StackEnd()             |                                                               |   + StackEnd()                                      |
-| [PREDECESSORS 37-37]: [37] |                                                               |   > StackBegin()                                    |
-| [SUCCESORS 38-38]: [38]    |                                                               | [RETURN STACK]:                                     |
-+----------------------------+                                                               |   [23][19][35]: _Expr -> [60][Module]<! !_Expr @ !> |
-|                                                                                            | [PREDECESSORS 42-42]: [42]                          |
-|                                                                                            | [SUCCESORS 44-44]: [44]                             |
-|                                                                                            +-----------------------------------------------------+
-|                                                                                            |
-+                                                                                            +
-|                                                                                            |
-|                                                                                            +----------------------------+
-|                                                                                            | [44]: <Ending>             |
-|                                                                                            | [60][Module]<! !_Expr @ !> |
-|                                                                                            | [AST-INSTRUCTIONS]:        |
-|                                                                                            |   + StackEnd()             |
-|                                                                                            |   > StackBegin()           |
-|                                                                                            | [PREDECESSORS 43-43]: [43] |
-|                                                                                            | [SUCCESORS 45-45]: [45]    |
-|                                                                                            +----------------------------+
-|                                                                                            |
-|                                                                                            +
-|                                                                                            |
-|                                                                                            +----------------------------+
-|                                                                                            | [45]: <Ending>             |
-|                                                                                            | [59][Module] END [ENDING]  |
-|                                                                                            | [AST-INSTRUCTIONS]:        |
-|                                                                                            |   + StackEnd()             |
-|                                                                                            | [PREDECESSORS 44-44]: [44] |
-|                                                                                            | [SUCCESORS 38-38]: [38]    |
-|                                                                                            +----------------------------+
++----------------------------+                                                               +----------------------------+
+| [22]: <Ending>             |                                                               | [21]: <Ending>             |
+| [63][Module] END [ENDING]  |                                                               | [63][Module] END [ENDING]  |
+| [AST-INSTRUCTIONS]:        |                                                               | [AST-INSTRUCTIONS]:        |
+|   + StackBegin()           |                                                               |   + StackBegin()           |
+|   + StackEnd()             |                                                               |   + StackEnd()             |
+| [PREDECESSORS 19-19]: [19] |                                                               | [PREDECESSORS 19-19]: [19] |
+| [SUCCESORS 20-20]: [20]    |                                                               | [SUCCESORS 20-20]: [20]    |
++----------------------------+                                                               +----------------------------+
 |                                                                                            |
 +--------------------------------------------------------------------------------------------+
 |
 +-----------------+
-| [38]: <Merging> |
+| [20]: <Merging> |
 | <Start>         |
 +-----------------+

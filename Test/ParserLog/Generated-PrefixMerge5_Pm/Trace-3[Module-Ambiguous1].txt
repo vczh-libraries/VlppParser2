@@ -1,7 +1,20 @@
-﻿+----------------------+
+﻿================ EXECUTION STEPS ================
+[0]: 0@0 - 3@0
+[1]: 5@0 - 5@1
+[2]: RA_Begin
+[4]: 5@2 - 22@0
+[5]: RA_Branch
+[6]: 6@2 - 21@0
+[7]: RA_Branch
+[8]: RA_End(2, TypeOrExpr)
+
+==================== TRACES =====================
+
++----------------------+
 | [0]: <Start>         |
 |   TraceExec: [0]     |
 |   ForwardTrace: 0    |
+|   NextACT: 3         |
 | [57][Module] BEGIN   |
 | [AST-INSTRUCTIONS]:  |
 |   @                  |
@@ -73,6 +86,7 @@
 |   TraceExec: [3]                                                            |
 |   InsExec: [6:1]                                                            |
 |   ForwardTrace: 0                                                           |
+|   AmbiguityBegins: [0]                                                      |
 | [59][Module] BEGIN [pm-cr-rule: _PrimitiveShared]                           |
 | [AST-INSTRUCTIONS]:                                                         |
 |   @ CS(2 -> -1) : [1] OS(1 -> -1) : [0]                                     |
@@ -92,6 +106,8 @@
 |   TraceExec: [4]                                             |                             |   TraceExec: [9]                                             |
 |   InsExec: [7:4]                                             |                             |   InsExec: [19:4]                                            |
 |   ForwardTrace: 5                                            |                             |   ForwardTrace: 6                                            |
+|   NextACT: 22                                                |                             |   NextACT: 21                                                |
+|   AmbiguityCoveredInForward: [0]                             |                             |   AmbiguityCoveredInForward: [0]                             |
 | [27][_LongType]< _LongType @ "(" { _LongType ; "," } ")" >   |                             | [49][_Expr1]< _Expr1 @ "(" { _Expr ; "," } ")" >             |
 | [AST-INSTRUCTIONS]:                                          |                             | [AST-INSTRUCTIONS]:                                          |
 |   @ OS(3 -> -1) : [1]                                        |                             |   @ OS(3 -> -1) : [1]                                        |
@@ -247,5 +263,9 @@
 |   TraceExec: [15]                |
 |   ForwardTrace: 17               |
 |   CommonForwardTrace: 0          |
+| [AMBIGUITY-RESOLVING]: [0]       |
+|   objs: [4, 8]                   |
+|   first: 3 prefix: 3             |
+|   last: 17 postfix: 0            |
 | [CONTEXT]: OS(18 -> -1) : [8, 4] |
 +----------------------------------+

@@ -1,11 +1,11 @@
 ﻿================ EXECUTION STEPS ================
-[0]: 0@0 - 29@0
+[0]: 0@0 - 23@0
 
 ==================== TRACES =====================
 
 +----------------------+
 | [0]: <Start>         |
-| [56][Module] BEGIN   |
+| [57][Module] BEGIN   |
 | [AST-INSTRUCTIONS]:  |
 | [SUCCESORS 1-1]: [1] |
 +----------------------+
@@ -22,7 +22,7 @@
 ||   + Token(0)                                                                        ||
 || [RETURN STACK]:                                                                     ||
 ||   [1][0][0]: _Name -> [8][_PrimitiveShared]<! !_Name @ !>                           ||
-||   [0][22][0]: _PrimitiveShared -> [57][Module] BEGIN [pm-cr-rule: _PrimitiveShared] ||
+||   [0][21][0]: _PrimitiveShared -> [59][Module] BEGIN [pm-cr-rule: _PrimitiveShared] ||
 || [PREDECESSORS 0-0]: [0]                                                             ||
 || [SUCCESORS 2-2]: [2]                                                                ||
 ++=====================================================================================++
@@ -38,7 +38,7 @@
 |   + StackEnd()                                                                      |
 |   > StackBegin()                                                                    |
 | [RETURN STACK]:                                                                     |
-|   [0][22][0]: _PrimitiveShared -> [57][Module] BEGIN [pm-cr-rule: _PrimitiveShared] |
+|   [0][21][0]: _PrimitiveShared -> [59][Module] BEGIN [pm-cr-rule: _PrimitiveShared] |
 | [PREDECESSORS 1-1]: [1]                                                             |
 | [SUCCESORS 3-3]: [3]                                                                |
 +-------------------------------------------------------------------------------------+
@@ -47,7 +47,7 @@
 |
 +---------------------------------------------------+
 | [3]: <Ending>                                     |
-| [57][Module] BEGIN [pm-cr-rule: _PrimitiveShared] |
+| [59][Module] BEGIN [pm-cr-rule: _PrimitiveShared] |
 | [AST-INSTRUCTIONS]:                               |
 |   + StackEnd()                                    |
 | [PREDECESSORS 2-2]: [2]                           |
@@ -58,28 +58,16 @@
 |
 +-----------------------------------------------------------+
 | [4]: <Leftrec>                                            |
-| [30][_LongType]<! !_PrimitiveShared @ !>                  |
-| [AST-INSTRUCTIONS]:                                       |
-|   + StackBegin()                                          |
-| [RETURN STACK]:                                           |
-|   [2][23][3]: _LongType -> [61][Module]<! !_LongType @ !> |
-| [PREDECESSORS 3-3]: [3]                                   |
-| [SUCCESORS 5-5]: [5]                                      |
-+-----------------------------------------------------------+
-|
-+
-|
-+-----------------------------------------------------------+
-| [5]: <Leftrec>                                            |
 | [29][_LongType]< _LongType @ "const" >                    |
 | [AST-INSTRUCTIONS]:                                       |
+|   + StackBegin()                                          |
 |   + StackEnd()                                            |
 |   + StackBegin()                                          |
 |   + StackSlot(0)                                          |
 | [RETURN STACK]:                                           |
-|   [2][23][3]: _LongType -> [61][Module]<! !_LongType @ !> |
-| [PREDECESSORS 4-4]: [4]                                   |
-| [SUCCESORS 15-15]: [15]                                   |
+|   [2][23][3]: _LongType -> [65][Module]<! !_LongType @ !> |
+| [PREDECESSORS 3-3]: [3]                                   |
+| [SUCCESORS 9-9]: [9]                                      |
 +-----------------------------------------------------------+
 [0]
  |
@@ -87,20 +75,20 @@
  |
 [0]
 ++===========================================================++
-|| [15]: {CONST} const                                       ||
+|| [9]: {CONST} const                                        ||
 || [26][_LongType]< _LongType "const" @ >                    ||
 || [AST-INSTRUCTIONS]:                                       ||
 ||   + Token(1)                                              ||
 || [RETURN STACK]:                                           ||
-||   [2][23][3]: _LongType -> [61][Module]<! !_LongType @ !> ||
-|| [PREDECESSORS 5-5]: [5]                                   ||
-|| [SUCCESORS 16-16]: [16]                                   ||
+||   [2][23][3]: _LongType -> [65][Module]<! !_LongType @ !> ||
+|| [PREDECESSORS 4-4]: [4]                                   ||
+|| [SUCCESORS 10-10]: [10]                                   ||
 ++===========================================================++
 |
 +
 |
 +-----------------------------------------------------------+
-| [16]: <Leftrec>                                           |
+| [10]: <Leftrec>                                           |
 | [28][_LongType]< _LongType @ "*" >                        |
 | [AST-INSTRUCTIONS]:                                       |
 |   + CreateObject(ConstType)                               |
@@ -109,7 +97,39 @@
 |   + StackBegin()                                          |
 |   + StackSlot(0)                                          |
 | [RETURN STACK]:                                           |
-|   [2][23][3]: _LongType -> [61][Module]<! !_LongType @ !> |
+|   [2][23][3]: _LongType -> [65][Module]<! !_LongType @ !> |
+| [PREDECESSORS 9-9]: [9]                                   |
+| [SUCCESORS 15-15]: [15]                                   |
++-----------------------------------------------------------+
+[0]
+ |
+ +
+ |
+[0]
+++===========================================================++
+|| [15]: {ASTERISK} *                                        ||
+|| [25][_LongType]< _LongType "*" @ >                        ||
+|| [AST-INSTRUCTIONS]:                                       ||
+||   + Token(1)                                              ||
+|| [RETURN STACK]:                                           ||
+||   [2][23][3]: _LongType -> [65][Module]<! !_LongType @ !> ||
+|| [PREDECESSORS 10-10]: [10]                                ||
+|| [SUCCESORS 16-16]: [16]                                   ||
+++===========================================================++
+|
++
+|
++-----------------------------------------------------------+
+| [16]: <Leftrec>                                           |
+| [29][_LongType]< _LongType @ "const" >                    |
+| [AST-INSTRUCTIONS]:                                       |
+|   + CreateObject(PointerType)                             |
+|   + Field(PointerType::type, 0)                           |
+|   + StackEnd()                                            |
+|   + StackBegin()                                          |
+|   + StackSlot(0)                                          |
+| [RETURN STACK]:                                           |
+|   [2][23][3]: _LongType -> [65][Module]<! !_LongType @ !> |
 | [PREDECESSORS 15-15]: [15]                                |
 | [SUCCESORS 21-21]: [21]                                   |
 +-----------------------------------------------------------+
@@ -119,68 +139,36 @@
  |
 [0]
 ++===========================================================++
-|| [21]: {ASTERISK} *                                        ||
-|| [25][_LongType]< _LongType "*" @ >                        ||
+|| [21]: {CONST} const                                       ||
+|| [26][_LongType]< _LongType "const" @ >                    ||
 || [AST-INSTRUCTIONS]:                                       ||
 ||   + Token(1)                                              ||
 || [RETURN STACK]:                                           ||
-||   [2][23][3]: _LongType -> [61][Module]<! !_LongType @ !> ||
+||   [2][23][3]: _LongType -> [65][Module]<! !_LongType @ !> ||
 || [PREDECESSORS 16-16]: [16]                                ||
 || [SUCCESORS 22-22]: [22]                                   ||
 ++===========================================================++
 |
 +
 |
-+-----------------------------------------------------------+
-| [22]: <Leftrec>                                           |
-| [29][_LongType]< _LongType @ "const" >                    |
-| [AST-INSTRUCTIONS]:                                       |
-|   + CreateObject(PointerType)                             |
-|   + Field(PointerType::type, 0)                           |
-|   + StackEnd()                                            |
-|   + StackBegin()                                          |
-|   + StackSlot(0)                                          |
-| [RETURN STACK]:                                           |
-|   [2][23][3]: _LongType -> [61][Module]<! !_LongType @ !> |
-| [PREDECESSORS 21-21]: [21]                                |
-| [SUCCESORS 27-27]: [27]                                   |
-+-----------------------------------------------------------+
-[0]
- |
- +
- |
-[0]
-++===========================================================++
-|| [27]: {CONST} const                                       ||
-|| [26][_LongType]< _LongType "const" @ >                    ||
-|| [AST-INSTRUCTIONS]:                                       ||
-||   + Token(1)                                              ||
-|| [RETURN STACK]:                                           ||
-||   [2][23][3]: _LongType -> [61][Module]<! !_LongType @ !> ||
-|| [PREDECESSORS 22-22]: [22]                                ||
-|| [SUCCESORS 28-28]: [28]                                   ||
-++===========================================================++
-|
-+
-|
 +--------------------------------+
-| [28]: <Ending>                 |
-| [61][Module]<! !_LongType @ !> |
+| [22]: <Ending>                 |
+| [65][Module]<! !_LongType @ !> |
 | [AST-INSTRUCTIONS]:            |
 |   + CreateObject(ConstType)    |
 |   + Field(ConstType::type, 0)  |
 |   + StackEnd()                 |
 |   > StackBegin()               |
-| [PREDECESSORS 27-27]: [27]     |
-| [SUCCESORS 29-29]: [29]        |
+| [PREDECESSORS 21-21]: [21]     |
+| [SUCCESORS 23-23]: [23]        |
 +--------------------------------+
 |
 +
 |
 +----------------------------+
-| [29]: <Ending>             |
-| [59][Module] END [ENDING]  |
+| [23]: <Ending>             |
+| [63][Module] END [ENDING]  |
 | [AST-INSTRUCTIONS]:        |
 |   + StackEnd()             |
-| [PREDECESSORS 28-28]: [28] |
+| [PREDECESSORS 22-22]: [22] |
 +----------------------------+
