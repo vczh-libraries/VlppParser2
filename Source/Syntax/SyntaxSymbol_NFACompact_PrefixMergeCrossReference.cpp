@@ -891,6 +891,7 @@ SyntaxSymbolManager::PrefixMergeCrossReference_AccumulatedEdges
 								}
 								CopyFrom(newContEdge->competitions, contEdge->competitions, true);
 								CopyFrom(newContEdge->insAfterInput, contEdge->insAfterInput, true);
+								return newContEdge.Obj();
 							};
 
 							if (i == 1)
@@ -903,6 +904,16 @@ SyntaxSymbolManager::PrefixMergeCrossReference_AccumulatedEdges
 								default:;
 								}
 								AddNewContEdge(newState.Obj(), true);
+								continue;
+							}
+
+							if (contEdge->input.type == EdgeInputType::LeftRec)
+							{
+								auto lrEdge = AddNewContEdge(newState.Obj(), true);
+								for (vint j = 0; j < i - 1; j++)
+								{
+									lrEdge->returnEdges.Add(edgeList[j]);
+								}
 								continue;
 							}
 

@@ -193,6 +193,17 @@
 
 [30][Module]{{<! "prefix_with_leftrec" @ !Pwl1 !> ; <! "prefix_with_leftrec" @ !Pwl2 !>}}[pm-cr-rule: Lt]
 [RULE: 6]
+	leftrec -> [19][Pwl2_P]< Pwl2_P @ Lt >
+		+ StackBegin()
+		+ StackSlot(0)
+		+ CreateObject(PwlFeature)
+		+ Field(PwlFeature::two, 0)
+		+ StackEnd()
+		+ StackBegin()
+		+ StackSlot(0)
+		> rule: Pwl2 -> [28][Module]<! "prefix_with_leftrec" !Pwl2 @ !>
+		> rule: Pwl2_P -> [24][Pwl2]<! { Plus } !Pwl2_P @ !>
+			+ StackBegin()
 	leftrec -> [31][Module]{{<! "prefix_with_leftrec" @ !Pwl1 !> ; <! "prefix_with_leftrec" @ !Pwl2 !>}}[pm-cr-rule: Lt] Pwl1 Pwl1_P Lt
 		+ StackBegin()
 		+ StackSlot(0)
@@ -219,12 +230,6 @@
 		+ CreateObject(PwlFeature)
 		+ Field(PwlFeature::two, 0)
 		+ StackEnd()
-	leftrec -> [19][Pwl2_P]< Pwl2_P @ Lt >
-		+ CreateObject(PwlFeature)
-		+ Field(PwlFeature::two, 0)
-		+ StackEnd()
-		+ StackBegin()
-		+ StackSlot(0)
 
 [33][Module]{{<! "prefix_with_leftrec" @ !Pwl1 !> ; <! "prefix_with_leftrec" @ !Pwl2 !>}}[pm-cr-rule: Plus]
 [RULE: 6]
