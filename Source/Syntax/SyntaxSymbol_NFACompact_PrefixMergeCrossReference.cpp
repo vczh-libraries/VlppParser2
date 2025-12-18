@@ -787,23 +787,6 @@ SyntaxSymbolManager::PrefixMergeCrossReference_AccumulatedEdges
 				TokenToEdgesMap		tokenToEdges;
 			};
 
-			EdgeSymbol* SyntaxSymbolManager::PrefixMergeCrossReference_AccumulatedEdges(StateSymbol* fromState, StateSymbol* toState, const PrefixMergeApplicationItems::EdgeList& accumulatedEdges, IncrementalChange& ic)
-			{
-				auto lastEdge = accumulatedEdges[accumulatedEdges.Count() - 1];
-				auto newEdge = Ptr(new EdgeSymbol(fromState, toState));
-				ic.createdEdges.Add(newEdge);
-
-				CopyFrom(newEdge->competitions, lastEdge->competitions, true);
-				for (auto acc : accumulatedEdges)
-				{
-					if (acc == lastEdge) break;
-					newEdge->returnEdges.Add(acc);
-				}
-				CopyFrom(newEdge->insAfterInput, lastEdge->insAfterInput, true);
-
-				return newEdge.Obj();
-			}
-
 			SyntaxSymbolManager::StateEdgePair SyntaxSymbolManager::PrefixMergeCrossReference_AccumulatedEdges(StateSymbol* fromState, const collections::List<PrefixMergeApplicationItems::EdgeListPtr>& accumulatedEdgesList, IncrementalChange& ic)
 			{
 				auto IsSingleReuseEdge = [](EdgeSymbol* edge)
@@ -863,36 +846,103 @@ SyntaxSymbolManager::PrefixMergeCrossReference_AccumulatedEdges
 				}
 #endif
 
-				if (accumulatedEdgesList.Count() > 1)
+				// newState labeling [pm-cr] is made if there are multiple choices
+				auto newState = Ptr(new StateSymbol(fromState->Rule()));
+				ic.createdStates.Add(newState);
+
+				// newEdge to connect fromState to newState
+				auto newEdge = Ptr(new EdgeSymbol(fromState, newState.Obj()));
+				ic.createdEdges.Add(newEdge);
+
+				SortedList<EdgeSymbol*> visitedEdges;
+				for (auto [edges, index] : indexed(accumulatedEdgesList))
 				{
-					// newState labeling [pm-cr] is made if there are multiple choices
-					auto newState = Ptr(new StateSymbol(fromState->Rule()));
-					ic.createdStates.Add(newState);
-
-					// newEdge to connect fromState to newState
-					auto newEdge = Ptr(new EdgeSymbol(fromState, newState.Obj()));
-					ic.createdEdges.Add(newEdge);
-
-					// accumulate edges to multiple LeftRec edges
-					for (auto edges : accumulatedEdgesList)
+					auto&& edgeList = *edges.Obj();
+					vint accSize = accumulatedSizes[index];
+					for (vint i = edgeList.Count(); i >= accSize && i > 0; i--)
 					{
-						auto&& edgeList = *edges.Obj();
-						auto lastEdge = edgeList[edgeList.Count() - 1];
-						auto targetState = lastEdge->To();
-						auto newEdge = PrefixMergeCrossReference_AccumulatedEdges(newState.Obj(), targetState, edgeList, ic);
-						newEdge->input.type = EdgeInputType::LeftRec;
-					}
+						auto lastEdge = edgeList[i - 1];
+						if (visitedEdges.Contains(lastEdge)) continue;
+						visitedEdges.Add(lastEdge);
 
-					return { newState.Obj(),newEdge.Obj() };
+						Ptr<StateSymbol> contState;
+						auto lastState = lastEdge->To();
+						for (auto contEdge : lastState->OutEdges())
+						{
+							if (contEdge->input.type == EdgeInputType::Ending && i != 1)
+							{
+								continue;
+							}
+
+							if (contEdge->returnEdges.Count() > 0)
+							{
+								continue;
+							}
+
+							if (i == 1)
+							{
+								switch (contEdge->input.type)
+								{
+								case EdgeInputType::Rule:
+								case EdgeInputType::PrefixMergeDiscardedRule:
+									continue;
+								default:;
+								}
+
+								auto newContEdge = Ptr(new EdgeSymbol(newState.Obj(), contEdge->To()));
+								ic.createdEdges.Add(newContEdge);
+
+								newContEdge->input = contEdge->input;
+								CopyFrom(newContEdge->competitions, lastEdge->competitions, true);
+								CopyFrom(newContEdge->competitions, contEdge->competitions, true);
+								CopyFrom(newContEdge->insAfterInput, lastEdge->insAfterInput, true);
+								CopyFrom(newContEdge->insAfterInput, contEdge->insAfterInput, true);
+								continue;
+							}
+
+							if (!contState)
+							{
+								contState = Ptr(new StateSymbol(fromState->Rule()));
+								ic.createdStates.Add(contState);
+								contState->label = fromState->label + L" [pm-cr-acc]";
+								for (vint j = 0; j < i; i++)
+								{
+									contState->label += L" " + edgeList[j]->input.rule->Name();
+								}
+
+								auto lrEdge = Ptr(new EdgeSymbol(newState.Obj(), contState.Obj()));
+								ic.createdEdges.Add(lrEdge);
+
+								CopyFrom(newEdge->competitions, lastEdge->competitions, true);
+								for (vint j = 0; j < i - 1; i++)
+								{
+									newEdge->returnEdges.Add(edgeList[j]);
+								}
+								CopyFrom(newEdge->insAfterInput, lastEdge->insAfterInput, true);
+							}
+
+							{
+								switch (contEdge->input.type)
+								{
+								case EdgeInputType::PrefixMergeDiscardedRule:
+									continue;
+								default:;
+								}
+
+								auto newContEdge = Ptr(new EdgeSymbol(contState.Obj(), contEdge->To()));
+								ic.createdEdges.Add(newContEdge);
+
+								newContEdge->input = contEdge->input;
+								CopyFrom(newContEdge->competitions, lastEdge->competitions, true);
+								CopyFrom(newContEdge->competitions, contEdge->competitions, true);
+								CopyFrom(newContEdge->insAfterInput, lastEdge->insAfterInput, true);
+								CopyFrom(newContEdge->insAfterInput, contEdge->insAfterInput, true);
+							}
+						}
+					}
 				}
-				else
-				{
-					auto&& edgeList = *accumulatedEdgesList[0].Obj();
-					auto lastEdge = edgeList[edgeList.Count() - 1];
-					auto targetState = lastEdge->To();
-					auto newEdge = PrefixMergeCrossReference_AccumulatedEdges(fromState, targetState, edgeList, ic);
-					return { nullptr,newEdge };
-				}
+
+				return { newState.Obj(),newEdge.Obj() };
 			}
 
 /***********************************************************************

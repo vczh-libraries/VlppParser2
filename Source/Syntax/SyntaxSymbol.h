@@ -254,11 +254,6 @@ SyntaxSymbolManager
 												PrefixMergeSolutionMap& prefixMergeSolutions);
 				static void					PrefixMergeCrossReference_Solve(PrefixMergeCache* cache, PrefixMergeSolutionMap& prefixMergeSolutions);
 
-				static EdgeSymbol*			PrefixMergeCrossReference_AccumulatedEdges(
-												StateSymbol* fromState,
-												StateSymbol* toState,
-												const collections::List<EdgeSymbol*>& accumulatedEdges,
-												IncrementalChange& ic);
 				static StateEdgePair		PrefixMergeCrossReference_AccumulatedEdges(
 												StateSymbol* fromState,
 												const collections::List<Ptr<collections::List<EdgeSymbol*>>>& accumulatedEdgesList,
