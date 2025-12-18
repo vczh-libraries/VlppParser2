@@ -877,6 +877,18 @@ SyntaxSymbolManager::PrefixMergeCrossReference_AccumulatedEdges
 								continue;
 							}
 
+							auto AddNewContEdge = [=, &ic](StateSymbol* contFromState)
+							{
+								auto newContEdge = Ptr(new EdgeSymbol(contFromState, contEdge->To()));
+								ic.createdEdges.Add(newContEdge);
+
+								newContEdge->input = contEdge->input;
+								CopyFrom(newContEdge->competitions, lastEdge->competitions, true);
+								CopyFrom(newContEdge->competitions, contEdge->competitions, true);
+								CopyFrom(newContEdge->insAfterInput, lastEdge->insAfterInput, true);
+								CopyFrom(newContEdge->insAfterInput, contEdge->insAfterInput, true);
+							};
+
 							if (i == 1)
 							{
 								switch (contEdge->input.type)
@@ -886,15 +898,7 @@ SyntaxSymbolManager::PrefixMergeCrossReference_AccumulatedEdges
 									continue;
 								default:;
 								}
-
-								auto newContEdge = Ptr(new EdgeSymbol(newState.Obj(), contEdge->To()));
-								ic.createdEdges.Add(newContEdge);
-
-								newContEdge->input = contEdge->input;
-								CopyFrom(newContEdge->competitions, lastEdge->competitions, true);
-								CopyFrom(newContEdge->competitions, contEdge->competitions, true);
-								CopyFrom(newContEdge->insAfterInput, lastEdge->insAfterInput, true);
-								CopyFrom(newContEdge->insAfterInput, contEdge->insAfterInput, true);
+								AddNewContEdge(newState.Obj());
 								continue;
 							}
 
@@ -915,6 +919,7 @@ SyntaxSymbolManager::PrefixMergeCrossReference_AccumulatedEdges
 								auto lrEdge = Ptr(new EdgeSymbol(newState.Obj(), contState.Obj()));
 								ic.createdEdges.Add(lrEdge);
 
+								lrEdge->input.type = EdgeInputType::LeftRec;
 								CopyFrom(lrEdge->competitions, lastEdge->competitions, true);
 								for (vint j = 0; j < i - 1; j++)
 								{
@@ -930,15 +935,7 @@ SyntaxSymbolManager::PrefixMergeCrossReference_AccumulatedEdges
 									continue;
 								default:;
 								}
-
-								auto newContEdge = Ptr(new EdgeSymbol(contState.Obj(), contEdge->To()));
-								ic.createdEdges.Add(newContEdge);
-
-								newContEdge->input = contEdge->input;
-								CopyFrom(newContEdge->competitions, lastEdge->competitions, true);
-								CopyFrom(newContEdge->competitions, contEdge->competitions, true);
-								CopyFrom(newContEdge->insAfterInput, lastEdge->insAfterInput, true);
-								CopyFrom(newContEdge->insAfterInput, contEdge->insAfterInput, true);
+								AddNewContEdge(contState.Obj());
 							}
 						}
 					}

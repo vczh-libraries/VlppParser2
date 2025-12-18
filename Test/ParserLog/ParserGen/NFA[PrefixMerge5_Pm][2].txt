@@ -331,14 +331,14 @@
 
 [35][_Expr0] BEGIN [pm-cr-rule: _PrimitiveShared]
 [RULE: 5]
-	epsilon -> [33][_Expr0] BEGIN  [pm-cr-acc] _LongType _PrimitiveShared
+	ending -> [37][_Expr0] END [ENDING]
+		+ StackBegin()
+		+ StackEnd()
+	leftrec -> [33][_Expr0] BEGIN  [pm-cr-acc] _LongType _PrimitiveShared
 		+ StackBegin()
 		> rule: _LongType -> [42][_Expr0]< _LongType @ "{" { _Expr ; "," } "}" >
 			+ StackBegin()
 			+ StackSlot(0)
-	ending -> [37][_Expr0] END [ENDING]
-		+ StackBegin()
-		+ StackEnd()
 	token: "{" -> [38][_Expr0]< _LongType "{" @ { _Expr ; "," } "}" >
 		+ StackBegin()
 		+ StackSlot(0)
@@ -346,7 +346,7 @@
 
 [36][_Expr0] BEGIN [pm-cr-rule: _PrimitiveTypeOnly]
 [RULE: 5]
-	epsilon -> [34][_Expr0] BEGIN  [pm-cr-acc] _LongType _PrimitiveTypeOnly
+	leftrec -> [34][_Expr0] BEGIN  [pm-cr-acc] _LongType _PrimitiveTypeOnly
 		+ StackBegin()
 		> rule: _LongType -> [42][_Expr0]< _LongType @ "{" { _Expr ; "," } "}" >
 			+ StackBegin()
@@ -625,33 +625,39 @@
 
 [70][Module] BEGIN [pm-cr-rule: _PrimitiveExprOnly]
 [RULE: 8]
-	epsilon -> [60][Module] BEGIN  [pm-cr-acc] _Expr _Expr1
+	ending -> [73][Module] END [ENDING]
+		+ StackBegin()
+		+ StackEnd()
+	leftrec -> [60][Module] BEGIN  [pm-cr-acc] _Expr _Expr1
 		+ StackBegin()
 		> rule: _Expr -> [74][Module]<! !_Expr @ !>
 			+ StackBegin()
-	epsilon -> [62][Module] BEGIN  [pm-cr-acc] _Expr _Expr1 _Expr0
+	leftrec -> [62][Module] BEGIN  [pm-cr-acc] _Expr _Expr1 _Expr0
 		+ StackBegin()
 		> rule: _Expr -> [74][Module]<! !_Expr @ !>
 			+ StackBegin()
 		> rule: _Expr1 -> [58][_Expr]<! !_Expr1 @ !>
 			+ StackBegin()
-	ending -> [73][Module] END [ENDING]
-		+ StackBegin()
-		+ StackEnd()
 
 [71][Module] BEGIN [pm-cr-rule: _PrimitiveShared]
 [RULE: 8]
-	epsilon -> [61][Module] BEGIN  [pm-cr-acc] _Expr _Expr1
+	ending -> [73][Module] END [ENDING]
+		+ StackBegin()
+		+ StackEnd()
+	ending -> [73][Module] END [ENDING]
+		+ StackBegin()
+		+ StackEnd()
+	leftrec -> [61][Module] BEGIN  [pm-cr-acc] _Expr _Expr1
 		+ StackBegin()
 		> rule: _Expr -> [74][Module]<! !_Expr @ !>
 			+ StackBegin()
-	epsilon -> [63][Module] BEGIN  [pm-cr-acc] _Expr _Expr1 _Expr0
+	leftrec -> [63][Module] BEGIN  [pm-cr-acc] _Expr _Expr1 _Expr0
 		+ StackBegin()
 		> rule: _Expr -> [74][Module]<! !_Expr @ !>
 			+ StackBegin()
 		> rule: _Expr1 -> [58][_Expr]<! !_Expr1 @ !>
 			+ StackBegin()
-	epsilon -> [64][Module] BEGIN  [pm-cr-acc] _Expr _Expr1 _Expr0 _LongType
+	leftrec -> [65][Module] BEGIN  [pm-cr-acc] _Expr _Expr1 _Expr0 _LongType
 		+ StackBegin()
 		+ StackSlot(0)
 		> rule: _Expr -> [74][Module]<! !_Expr @ !>
@@ -660,7 +666,7 @@
 			+ StackBegin()
 		> rule: _Expr0 -> [52][_Expr1]<! !_Expr0 @ !>
 			+ StackBegin()
-	epsilon -> [66][Module] BEGIN  [pm-cr-acc] _Expr _Expr1 _Expr0 _LongType _PrimitiveShared
+	leftrec -> [66][Module] BEGIN  [pm-cr-acc] _Expr _Expr1 _Expr0 _LongType _PrimitiveShared
 		+ StackBegin()
 		> rule: _Expr -> [74][Module]<! !_Expr @ !>
 			+ StackBegin()
@@ -671,20 +677,17 @@
 		> rule: _LongType -> [42][_Expr0]< _LongType @ "{" { _Expr ; "," } "}" >
 			+ StackBegin()
 			+ StackSlot(0)
-	epsilon -> [68][Module] BEGIN  [pm-cr-acc] _LongType _PrimitiveShared
+	leftrec -> [68][Module] BEGIN  [pm-cr-acc] _LongType _PrimitiveShared
 		+ StackBegin()
 		> rule: _LongType -> [75][Module]<! !_LongType @ !>
 			+ StackBegin()
-	ending -> [73][Module] END [ENDING]
-		+ StackBegin()
-		+ StackEnd()
-	ending -> [73][Module] END [ENDING]
-		+ StackBegin()
-		+ StackEnd()
 
 [72][Module] BEGIN [pm-cr-rule: _PrimitiveTypeOnly]
 [RULE: 8]
-	epsilon -> [65][Module] BEGIN  [pm-cr-acc] _Expr _Expr1 _Expr0 _LongType
+	ending -> [73][Module] END [ENDING]
+		+ StackBegin()
+		+ StackEnd()
+	leftrec -> [64][Module] BEGIN  [pm-cr-acc] _Expr _Expr1 _Expr0 _LongType
 		+ StackBegin()
 		+ StackSlot(0)
 		> rule: _Expr -> [74][Module]<! !_Expr @ !>
@@ -693,7 +696,7 @@
 			+ StackBegin()
 		> rule: _Expr0 -> [52][_Expr1]<! !_Expr0 @ !>
 			+ StackBegin()
-	epsilon -> [67][Module] BEGIN  [pm-cr-acc] _Expr _Expr1 _Expr0 _LongType _PrimitiveTypeOnly
+	leftrec -> [67][Module] BEGIN  [pm-cr-acc] _Expr _Expr1 _Expr0 _LongType _PrimitiveTypeOnly
 		+ StackBegin()
 		> rule: _Expr -> [74][Module]<! !_Expr @ !>
 			+ StackBegin()
@@ -704,13 +707,10 @@
 		> rule: _LongType -> [42][_Expr0]< _LongType @ "{" { _Expr ; "," } "}" >
 			+ StackBegin()
 			+ StackSlot(0)
-	epsilon -> [69][Module] BEGIN  [pm-cr-acc] _LongType _PrimitiveTypeOnly
+	leftrec -> [69][Module] BEGIN  [pm-cr-acc] _LongType _PrimitiveTypeOnly
 		+ StackBegin()
 		> rule: _LongType -> [75][Module]<! !_LongType @ !>
 			+ StackBegin()
-	ending -> [73][Module] END [ENDING]
-		+ StackBegin()
-		+ StackEnd()
 
 [73][Module] END [ENDING]
 [RULE: 8]
