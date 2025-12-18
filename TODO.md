@@ -55,6 +55,50 @@ _PrimitiveShared +-> _Expr0 ... _Expr
                  +-> _LongType +-> _LongType
                                +-> _Expr0 ... _Expr
 ```
+Or we are getting this
+```
+[59][Module] BEGIN [pm-cr-rule: _PrimitiveShared]
+[RULE: 8]
+	ending -> [63][Module] END [ENDING]
+		+ StackBegin()
+		+ StackEnd()
+	ending -> [63][Module] END [ENDING]
+		+ StackBegin()
+		+ StackEnd()
+	leftrec -> [27][_LongType]< _LongType @ "(" { _LongType ; "," } ")" >
+		+ StackBegin()
+		+ StackEnd()
+		+ StackBegin()
+		+ StackSlot(0)
+		> rule: _LongType -> [65][Module]<! !_LongType @ !>
+			+ StackBegin()
+	leftrec -> [27][_LongType]< _LongType @ "(" { _LongType ; "," } ")" >
+		+ StackBegin()
+		+ StackEnd()
+		+ StackBegin()
+		+ StackSlot(0)
+		> rule: _Expr -> [64][Module]<! !_Expr @ !>
+			+ StackBegin()
+		> rule: _Expr1 -> [56][_Expr]<! !_Expr1 @ !>
+			+ StackBegin()
+		> rule: _Expr0 -> [50][_Expr1]<! !_Expr0 @ !>
+			+ StackBegin()
+		> rule: _LongType -> [40][_Expr0]< _LongType @ "{" { _Expr ; "," } "}" >
+			+ StackBegin()
+			+ StackSlot(0)
+```
+
+The following needs to merge
+```
+[59][Module] BEGIN [pm-cr-rule: _PrimitiveShared]
+[RULE: 8]
+	ending -> [63][Module] END [ENDING]
+		+ StackBegin()
+		+ StackEnd()
+	ending -> [63][Module] END [ENDING]
+		+ StackBegin()
+		+ StackEnd()
+```
 
 ## Features to Add
 
