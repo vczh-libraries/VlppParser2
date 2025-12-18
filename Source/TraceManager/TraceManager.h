@@ -320,6 +320,9 @@ TraceManager (Data Structures -- PrepareTraceRoute)
 				// useFrom-useBy relationships
 				Ref<InsExec_StackRefLink>			useFromStacks;
 
+				// fieldStacks and useFromStacks
+				Ref<InsExec_StackRefLink>			allDependentStacks;
+
 				// Key instructions in this stack
 				InsRef								beginInsRef;
 				Ref<InsExec_InsRefLink>				createObjectInsRefs;
