@@ -216,7 +216,6 @@ SyntaxSymbolManager
 				using StateList = collections::List<Ptr<StateSymbol>>;
 				using EdgeList = collections::List<Ptr<EdgeSymbol>>;
 				using StartEndStatePair = collections::Pair<StateSymbol*, StateSymbol*>;
-				using StateEdgePair = collections::Pair<StateSymbol*, EdgeSymbol*>;
 			protected:
 				MappedOwning<RuleSymbol>						rules;
 				StateList										states;
@@ -254,8 +253,9 @@ SyntaxSymbolManager
 												PrefixMergeSolutionMap& prefixMergeSolutions);
 				static void					PrefixMergeCrossReference_Solve(PrefixMergeCache* cache, PrefixMergeSolutionMap& prefixMergeSolutions);
 
-				static StateEdgePair		PrefixMergeCrossReference_AccumulatedEdges(
+				static EdgeSymbol*			PrefixMergeCrossReference_AccumulatedEdges(
 												StateSymbol* fromState,
+												const WString& pmLabel,
 												const collections::List<Ptr<collections::List<EdgeSymbol*>>>& accumulatedEdgesList,
 												IncrementalChange& ic);
 				static void					PrefixMergeCrossReference_Apply(
