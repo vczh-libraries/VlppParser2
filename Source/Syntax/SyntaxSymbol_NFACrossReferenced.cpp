@@ -108,15 +108,11 @@ SyntaxSymbolManager::BuildCrossReferencedNFAInternal
 
 				for (auto state : states)
 				{
-					vint index = orderedEdges.Keys().IndexOf(state);
-					if (index != -1)
+					for (auto edge : state->OutEdges())
 					{
-						for (auto edge : orderedEdges.GetByIndex(index))
+						if (edge->input.type == EdgeInputType::CrossReferencedToken)
 						{
-							if (edge->input.type == EdgeInputType::CrossReferencedToken)
-							{
-								edge->input.type = EdgeInputType::Token;
-							}
+							edge->input.type = EdgeInputType::Token;
 						}
 					}
 				}
