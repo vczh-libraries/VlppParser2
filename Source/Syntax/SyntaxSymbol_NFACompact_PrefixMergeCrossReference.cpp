@@ -878,7 +878,7 @@ SyntaxSymbolManager::PrefixMergeCrossReference_AccumulatedEdges
 								continue;
 							}
 
-							auto AddNewContEdge = [=, &ic](StateSymbol* contFromState, bool useLastEdgeContent)
+							auto AddNewContEdge = [&](StateSymbol* contFromState, bool useLastEdgeContent, bool useReturnEdges)
 							{
 								auto newContEdge = Ptr(new EdgeSymbol(contFromState, contEdge->To()));
 								ic.createdEdges.Add(newContEdge);
@@ -891,7 +891,14 @@ SyntaxSymbolManager::PrefixMergeCrossReference_AccumulatedEdges
 								}
 								CopyFrom(newContEdge->competitions, contEdge->competitions, true);
 								CopyFrom(newContEdge->insAfterInput, contEdge->insAfterInput, true);
-								return newContEdge.Obj();
+
+								if (useReturnEdges)
+								{
+									for (vint j = 0; j < i - 1; j++)
+									{
+										newContEdge->returnEdges.Add(edgeList[j]);
+									}
+								}
 							};
 
 							if (i == 1)
@@ -903,17 +910,13 @@ SyntaxSymbolManager::PrefixMergeCrossReference_AccumulatedEdges
 									continue;
 								default:;
 								}
-								AddNewContEdge(newState.Obj(), true);
+								AddNewContEdge(newState.Obj(), true, false);
 								continue;
 							}
 
 							if (contEdge->input.type == EdgeInputType::LeftRec)
 							{
-								auto lrEdge = AddNewContEdge(newState.Obj(), true);
-								for (vint j = 0; j < i - 1; j++)
-								{
-									lrEdge->returnEdges.Add(edgeList[j]);
-								}
+								AddNewContEdge(newState.Obj(), true, true);
 								continue;
 							}
 
@@ -950,7 +953,7 @@ SyntaxSymbolManager::PrefixMergeCrossReference_AccumulatedEdges
 									continue;
 								default:;
 								}
-								AddNewContEdge(contState.Obj(), false);
+								AddNewContEdge(contState.Obj(), false, false);
 							}
 						}
 					}
