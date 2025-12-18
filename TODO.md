@@ -61,7 +61,9 @@ Like the first and third leftrec transition all return rules satisfies:
   It has StackBegin
   Its only Ending has StackEnd
 We should be able to simple remove prefix (actually postfix in the data structure) single-using rule transitions from return rules
+  The last accumulated edge (which is not in return rules) should also be single-using transition
 And if any two leftrec transitions become identical, keep only one.
+This will be part of the above optimization but we decided not to do the whole optimization at the moment.
 
 So the following state
 
