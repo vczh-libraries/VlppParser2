@@ -188,6 +188,36 @@
 
 [29][Module]{{<! "prefix_with_leftrec" @ !Pwl1 !> ; <! "prefix_with_leftrec" @ !Pwl2 !>}}
 [RULE: 6]
-	rule: Pwl1 -> [27][Module]<! "prefix_with_leftrec" !Pwl1 @ !>
-	rule: Pwl2 -> [28][Module]<! "prefix_with_leftrec" !Pwl2 @ !>
+ -> [27][Module]<! "prefix_with_leftrec" !Pwl1 @ !>
+ -> [28][Module]<! "prefix_with_leftrec" !Pwl2 @ !>
+	rule: Plus -> [31][Module]{{<! "prefix_with_leftrec" @ !Pwl1 !> ; <! "prefix_with_leftrec" @ !Pwl2 !>}}[pm-cr-rule: Plus]
+	rule: Lt -> [30][Module]{{<! "prefix_with_leftrec" @ !Pwl1 !> ; <! "prefix_with_leftrec" @ !Pwl2 !>}}[pm-cr-rule: Lt]
+
+[30][Module]{{<! "prefix_with_leftrec" @ !Pwl1 !> ; <! "prefix_with_leftrec" @ !Pwl2 !>}}[pm-cr-rule: Lt]
+[RULE: 6]
+	leftrec -> [8][Pwl1_P]< Lt @ >
+		+ StackBegin()
+		+ StackSlot(0)
+		> rule: Pwl1 -> [27][Module]<! "prefix_with_leftrec" !Pwl1 @ !>
+		> rule: Pwl1_P -> [15][Pwl1]<! !Pwl1_P @ !>
+			+ StackBegin()
+	leftrec -> [18][Pwl2_P]< Lt @ >
+		+ StackBegin()
+		+ StackSlot(0)
+		> rule: Pwl2 -> [28][Module]<! "prefix_with_leftrec" !Pwl2 @ !>
+		> rule: Pwl2_P -> [24][Pwl2]<! { Plus } !Pwl2_P @ !>
+			+ StackBegin()
+
+[31][Module]{{<! "prefix_with_leftrec" @ !Pwl1 !> ; <! "prefix_with_leftrec" @ !Pwl2 !>}}[pm-cr-rule: Plus]
+[RULE: 6]
+	leftrec -> [10][Pwl1_P]<! Plus @ !Pwl1_P !>
+		+ StackBegin()
+		+ StackSlot(0)
+		> rule: Pwl1 -> [27][Module]<! "prefix_with_leftrec" !Pwl1 @ !>
+		> rule: Pwl1_P -> [15][Pwl1]<! !Pwl1_P @ !>
+			+ StackBegin()
+	leftrec -> [23][Pwl2]<! { Plus @ } !Pwl2_P !>
+		+ StackBegin()
+		+ StackSlot(0)
+		> rule: Pwl2 -> [28][Module]<! "prefix_with_leftrec" !Pwl2 @ !>
 

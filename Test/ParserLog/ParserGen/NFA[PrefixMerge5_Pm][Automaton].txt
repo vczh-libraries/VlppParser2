@@ -124,21 +124,21 @@
 		+ StackBegin()
 		+ Token(0)
 		> rule: _Expr -> [17][_PrimitiveExprOnly]<! "(" !_Expr @ ")" !>
-		> rule: _Expr1 -> [54][_Expr]<! !_Expr1 @ !>
+		> rule: _Expr1 -> [55][_Expr]<! !_Expr1 @ !>
 			+ StackBegin()
-		> rule: _Expr0 -> [48][_Expr1]<! !_Expr0 @ !>
+		> rule: _Expr0 -> [49][_Expr1]<! !_Expr0 @ !>
 			+ StackBegin()
-		> rule: _PrimitiveExprOnly -> [39][_Expr0]<! !_PrimitiveExprOnly @ !>
+		> rule: _PrimitiveExprOnly -> [40][_Expr0]<! !_PrimitiveExprOnly @ !>
 			+ StackBegin()
 	token: "const" -> [13][_PrimitiveTypeOnly]{{< "const" @ _PrimitiveShared > ; < "const" @ _PrimitiveTypeOnly >}}
 		+ StackBegin()
 		+ Token(0)
 		> rule: _Expr -> [17][_PrimitiveExprOnly]<! "(" !_Expr @ ")" !>
-		> rule: _Expr1 -> [54][_Expr]<! !_Expr1 @ !>
+		> rule: _Expr1 -> [55][_Expr]<! !_Expr1 @ !>
 			+ StackBegin()
-		> rule: _Expr0 -> [48][_Expr1]<! !_Expr0 @ !>
+		> rule: _Expr0 -> [49][_Expr1]<! !_Expr0 @ !>
 			+ StackBegin()
-		> rule: _LongType -> [38][_Expr0]< _LongType @ "{" { _Expr ; "," } "}" >
+		> rule: _LongType -> [39][_Expr0]< _LongType @ "{" { _Expr ; "," } "}" >
 			+ StackBegin()
 			+ StackSlot(0)
 		> rule: _PrimitiveTypeOnly -> [31][_LongType]<! !_PrimitiveTypeOnly @ !>
@@ -147,27 +147,11 @@
 		+ StackBegin()
 		+ Token(0)
 		> rule: _Expr -> [17][_PrimitiveExprOnly]<! "(" !_Expr @ ")" !>
-		> rule: _Expr1 -> [54][_Expr]<! !_Expr1 @ !>
+		> rule: _Expr1 -> [55][_Expr]<! !_Expr1 @ !>
 			+ StackBegin()
-		> rule: _Expr0 -> [48][_Expr1]<! !_Expr0 @ !>
+		> rule: _Expr0 -> [49][_Expr1]<! !_Expr0 @ !>
 			+ StackBegin()
-		> rule: _PrimitiveShared -> [40][_Expr0]<! !_PrimitiveShared @ !>
-			+ StackBegin()
-		> rule: _Name -> [8][_PrimitiveShared]<! !_Name @ !>
-			+ StackBegin()
-	token: ID -> [2][_Name]< ID @ >
-		+ StackBegin()
-		+ Token(0)
-		> rule: _Expr -> [17][_PrimitiveExprOnly]<! "(" !_Expr @ ")" !>
-		> rule: _Expr1 -> [54][_Expr]<! !_Expr1 @ !>
-			+ StackBegin()
-		> rule: _Expr0 -> [48][_Expr1]<! !_Expr0 @ !>
-			+ StackBegin()
-		> rule: _LongType -> [38][_Expr0]< _LongType @ "{" { _Expr ; "," } "}" >
-			+ StackBegin()
-			+ StackSlot(0)
-		> rule: _PrimitiveShared -> [30][_LongType]<! !_PrimitiveShared @ !>
-			+ StackBegin()
+		> rule: _PrimitiveShared -> [33][_Expr0] BEGIN [pm-cr-rule: _PrimitiveShared]
 		> rule: _Name -> [8][_PrimitiveShared]<! !_Name @ !>
 			+ StackBegin()
 
@@ -369,12 +353,12 @@
 	token: "(" -> [18][_PrimitiveExprOnly]<! "(" @ !_Expr ")" !>
 		+ StackBegin()
 		+ Token(0)
-		> rule: _PrimitiveExprOnly -> [39][_Expr0]<! !_PrimitiveExprOnly @ !>
+		> rule: _PrimitiveExprOnly -> [40][_Expr0]<! !_PrimitiveExprOnly @ !>
 			+ StackBegin()
 	token: "const" -> [13][_PrimitiveTypeOnly]{{< "const" @ _PrimitiveShared > ; < "const" @ _PrimitiveTypeOnly >}}
 		+ StackBegin()
 		+ Token(0)
-		> rule: _LongType -> [38][_Expr0]< _LongType @ "{" { _Expr ; "," } "}" >
+		> rule: _LongType -> [39][_Expr0]< _LongType @ "{" { _Expr ; "," } "}" >
 			+ StackBegin()
 			+ StackSlot(0)
 		> rule: _PrimitiveTypeOnly -> [31][_LongType]<! !_PrimitiveTypeOnly @ !>
@@ -382,49 +366,48 @@
 	token: ID -> [2][_Name]< ID @ >
 		+ StackBegin()
 		+ Token(0)
-		> rule: _PrimitiveShared -> [40][_Expr0]<! !_PrimitiveShared @ !>
-			+ StackBegin()
+		> rule: _PrimitiveShared -> [33][_Expr0] BEGIN [pm-cr-rule: _PrimitiveShared]
 		> rule: _Name -> [8][_PrimitiveShared]<! !_Name @ !>
 			+ StackBegin()
-	token: ID -> [2][_Name]< ID @ >
+
+[33][_Expr0] BEGIN [pm-cr-rule: _PrimitiveShared]
+[RULE: 5]
+	leftrec -> [30][_LongType]<! !_PrimitiveShared @ !>
 		+ StackBegin()
-		+ Token(0)
-		> rule: _LongType -> [38][_Expr0]< _LongType @ "{" { _Expr ; "," } "}" >
+		> rule: _LongType -> [39][_Expr0]< _LongType @ "{" { _Expr ; "," } "}" >
 			+ StackBegin()
 			+ StackSlot(0)
-		> rule: _PrimitiveShared -> [30][_LongType]<! !_PrimitiveShared @ !>
-			+ StackBegin()
-		> rule: _Name -> [8][_PrimitiveShared]<! !_Name @ !>
-			+ StackBegin()
+	leftrec -> [41][_Expr0]<! !_PrimitiveShared @ !>
+		+ StackBegin()
 
-[33][_Expr0] END [ENDING]
+[34][_Expr0] END [ENDING]
 [RULE: 5]
 
-[34][_Expr0]< _LongType "{" @ { _Expr ; "," } "}" >
+[35][_Expr0]< _LongType "{" @ { _Expr ; "," } "}" >
 [RULE: 5]
 	token: "(" -> [18][_PrimitiveExprOnly]<! "(" @ !_Expr ")" !>
 		+ StackBegin()
 		+ Token(0)
-		> rule: _Expr -> [37][_Expr0]< _LongType "{" { _Expr @ ; "," } "}" >
+		> rule: _Expr -> [38][_Expr0]< _LongType "{" { _Expr @ ; "," } "}" >
 			+ StackSlot(2)
-		> rule: _Expr1 -> [54][_Expr]<! !_Expr1 @ !>
+		> rule: _Expr1 -> [55][_Expr]<! !_Expr1 @ !>
 			+ StackBegin()
-		> rule: _Expr0 -> [48][_Expr1]<! !_Expr0 @ !>
+		> rule: _Expr0 -> [49][_Expr1]<! !_Expr0 @ !>
 			+ StackBegin()
-		> rule: _PrimitiveExprOnly -> [39][_Expr0]<! !_PrimitiveExprOnly @ !>
+		> rule: _PrimitiveExprOnly -> [40][_Expr0]<! !_PrimitiveExprOnly @ !>
 			+ StackBegin()
-	token: "}" -> [36][_Expr0]< _LongType "{" { _Expr ; "," } "}" @ >
+	token: "}" -> [37][_Expr0]< _LongType "{" { _Expr ; "," } "}" @ >
 		+ Token(4)
 	token: "const" -> [13][_PrimitiveTypeOnly]{{< "const" @ _PrimitiveShared > ; < "const" @ _PrimitiveTypeOnly >}}
 		+ StackBegin()
 		+ Token(0)
-		> rule: _Expr -> [37][_Expr0]< _LongType "{" { _Expr @ ; "," } "}" >
+		> rule: _Expr -> [38][_Expr0]< _LongType "{" { _Expr @ ; "," } "}" >
 			+ StackSlot(2)
-		> rule: _Expr1 -> [54][_Expr]<! !_Expr1 @ !>
+		> rule: _Expr1 -> [55][_Expr]<! !_Expr1 @ !>
 			+ StackBegin()
-		> rule: _Expr0 -> [48][_Expr1]<! !_Expr0 @ !>
+		> rule: _Expr0 -> [49][_Expr1]<! !_Expr0 @ !>
 			+ StackBegin()
-		> rule: _LongType -> [38][_Expr0]< _LongType @ "{" { _Expr ; "," } "}" >
+		> rule: _LongType -> [39][_Expr0]< _LongType @ "{" { _Expr ; "," } "}" >
 			+ StackBegin()
 			+ StackSlot(0)
 		> rule: _PrimitiveTypeOnly -> [31][_LongType]<! !_PrimitiveTypeOnly @ !>
@@ -432,56 +415,39 @@
 	token: ID -> [2][_Name]< ID @ >
 		+ StackBegin()
 		+ Token(0)
-		> rule: _Expr -> [37][_Expr0]< _LongType "{" { _Expr @ ; "," } "}" >
+		> rule: _Expr -> [38][_Expr0]< _LongType "{" { _Expr @ ; "," } "}" >
 			+ StackSlot(2)
-		> rule: _Expr1 -> [54][_Expr]<! !_Expr1 @ !>
+		> rule: _Expr1 -> [55][_Expr]<! !_Expr1 @ !>
 			+ StackBegin()
-		> rule: _Expr0 -> [48][_Expr1]<! !_Expr0 @ !>
+		> rule: _Expr0 -> [49][_Expr1]<! !_Expr0 @ !>
 			+ StackBegin()
-		> rule: _PrimitiveShared -> [40][_Expr0]<! !_PrimitiveShared @ !>
-			+ StackBegin()
-		> rule: _Name -> [8][_PrimitiveShared]<! !_Name @ !>
-			+ StackBegin()
-	token: ID -> [2][_Name]< ID @ >
-		+ StackBegin()
-		+ Token(0)
-		> rule: _Expr -> [37][_Expr0]< _LongType "{" { _Expr @ ; "," } "}" >
-			+ StackSlot(2)
-		> rule: _Expr1 -> [54][_Expr]<! !_Expr1 @ !>
-			+ StackBegin()
-		> rule: _Expr0 -> [48][_Expr1]<! !_Expr0 @ !>
-			+ StackBegin()
-		> rule: _LongType -> [38][_Expr0]< _LongType @ "{" { _Expr ; "," } "}" >
-			+ StackBegin()
-			+ StackSlot(0)
-		> rule: _PrimitiveShared -> [30][_LongType]<! !_PrimitiveShared @ !>
-			+ StackBegin()
+		> rule: _PrimitiveShared -> [33][_Expr0] BEGIN [pm-cr-rule: _PrimitiveShared]
 		> rule: _Name -> [8][_PrimitiveShared]<! !_Name @ !>
 			+ StackBegin()
 
-[35][_Expr0]< _LongType "{" { _Expr ; "," @ } "}" >
+[36][_Expr0]< _LongType "{" { _Expr ; "," @ } "}" >
 [RULE: 5]
 	token: "(" -> [18][_PrimitiveExprOnly]<! "(" @ !_Expr ")" !>
 		+ StackBegin()
 		+ Token(0)
-		> rule: _Expr -> [37][_Expr0]< _LongType "{" { _Expr @ ; "," } "}" >
+		> rule: _Expr -> [38][_Expr0]< _LongType "{" { _Expr @ ; "," } "}" >
 			+ StackSlot(2)
-		> rule: _Expr1 -> [54][_Expr]<! !_Expr1 @ !>
+		> rule: _Expr1 -> [55][_Expr]<! !_Expr1 @ !>
 			+ StackBegin()
-		> rule: _Expr0 -> [48][_Expr1]<! !_Expr0 @ !>
+		> rule: _Expr0 -> [49][_Expr1]<! !_Expr0 @ !>
 			+ StackBegin()
-		> rule: _PrimitiveExprOnly -> [39][_Expr0]<! !_PrimitiveExprOnly @ !>
+		> rule: _PrimitiveExprOnly -> [40][_Expr0]<! !_PrimitiveExprOnly @ !>
 			+ StackBegin()
 	token: "const" -> [13][_PrimitiveTypeOnly]{{< "const" @ _PrimitiveShared > ; < "const" @ _PrimitiveTypeOnly >}}
 		+ StackBegin()
 		+ Token(0)
-		> rule: _Expr -> [37][_Expr0]< _LongType "{" { _Expr @ ; "," } "}" >
+		> rule: _Expr -> [38][_Expr0]< _LongType "{" { _Expr @ ; "," } "}" >
 			+ StackSlot(2)
-		> rule: _Expr1 -> [54][_Expr]<! !_Expr1 @ !>
+		> rule: _Expr1 -> [55][_Expr]<! !_Expr1 @ !>
 			+ StackBegin()
-		> rule: _Expr0 -> [48][_Expr1]<! !_Expr0 @ !>
+		> rule: _Expr0 -> [49][_Expr1]<! !_Expr0 @ !>
 			+ StackBegin()
-		> rule: _LongType -> [38][_Expr0]< _LongType @ "{" { _Expr ; "," } "}" >
+		> rule: _LongType -> [39][_Expr0]< _LongType @ "{" { _Expr ; "," } "}" >
 			+ StackBegin()
 			+ StackSlot(0)
 		> rule: _PrimitiveTypeOnly -> [31][_LongType]<! !_PrimitiveTypeOnly @ !>
@@ -489,78 +455,61 @@
 	token: ID -> [2][_Name]< ID @ >
 		+ StackBegin()
 		+ Token(0)
-		> rule: _Expr -> [37][_Expr0]< _LongType "{" { _Expr @ ; "," } "}" >
+		> rule: _Expr -> [38][_Expr0]< _LongType "{" { _Expr @ ; "," } "}" >
 			+ StackSlot(2)
-		> rule: _Expr1 -> [54][_Expr]<! !_Expr1 @ !>
+		> rule: _Expr1 -> [55][_Expr]<! !_Expr1 @ !>
 			+ StackBegin()
-		> rule: _Expr0 -> [48][_Expr1]<! !_Expr0 @ !>
+		> rule: _Expr0 -> [49][_Expr1]<! !_Expr0 @ !>
 			+ StackBegin()
-		> rule: _PrimitiveShared -> [40][_Expr0]<! !_PrimitiveShared @ !>
-			+ StackBegin()
-		> rule: _Name -> [8][_PrimitiveShared]<! !_Name @ !>
-			+ StackBegin()
-	token: ID -> [2][_Name]< ID @ >
-		+ StackBegin()
-		+ Token(0)
-		> rule: _Expr -> [37][_Expr0]< _LongType "{" { _Expr @ ; "," } "}" >
-			+ StackSlot(2)
-		> rule: _Expr1 -> [54][_Expr]<! !_Expr1 @ !>
-			+ StackBegin()
-		> rule: _Expr0 -> [48][_Expr1]<! !_Expr0 @ !>
-			+ StackBegin()
-		> rule: _LongType -> [38][_Expr0]< _LongType @ "{" { _Expr ; "," } "}" >
-			+ StackBegin()
-			+ StackSlot(0)
-		> rule: _PrimitiveShared -> [30][_LongType]<! !_PrimitiveShared @ !>
-			+ StackBegin()
+		> rule: _PrimitiveShared -> [33][_Expr0] BEGIN [pm-cr-rule: _PrimitiveShared]
 		> rule: _Name -> [8][_PrimitiveShared]<! !_Name @ !>
 			+ StackBegin()
 
-[36][_Expr0]< _LongType "{" { _Expr ; "," } "}" @ >
+[37][_Expr0]< _LongType "{" { _Expr ; "," } "}" @ >
 [RULE: 5]
-	ending -> [33][_Expr0] END [ENDING]
+	ending -> [34][_Expr0] END [ENDING]
 		+ CreateObject(CtorExpr)
 		+ Field(CtorExpr::type, 0)
 		+ Field(CtorExpr::args, 2)
 		+ StackEnd()
 
-[37][_Expr0]< _LongType "{" { _Expr @ ; "," } "}" >
+[38][_Expr0]< _LongType "{" { _Expr @ ; "," } "}" >
 [RULE: 5]
-	token: "}" -> [36][_Expr0]< _LongType "{" { _Expr ; "," } "}" @ >
+	token: "}" -> [37][_Expr0]< _LongType "{" { _Expr ; "," } "}" @ >
 		+ Token(4)
-	token: "," -> [35][_Expr0]< _LongType "{" { _Expr ; "," @ } "}" >
+	token: "," -> [36][_Expr0]< _LongType "{" { _Expr ; "," @ } "}" >
 		+ Token(3)
 
-[38][_Expr0]< _LongType @ "{" { _Expr ; "," } "}" >
+[39][_Expr0]< _LongType @ "{" { _Expr ; "," } "}" >
 [RULE: 5]
-	token: "{" -> [34][_Expr0]< _LongType "{" @ { _Expr ; "," } "}" >
+	token: "{" -> [35][_Expr0]< _LongType "{" @ { _Expr ; "," } "}" >
 		+ Token(1)
 
-[39][_Expr0]<! !_PrimitiveExprOnly @ !>
+[40][_Expr0]<! !_PrimitiveExprOnly @ !>
 [RULE: 5]
-	ending -> [33][_Expr0] END [ENDING]
+	ending -> [34][_Expr0] END [ENDING]
 		+ StackEnd()
 
-[40][_Expr0]<! !_PrimitiveShared @ !>
+[41][_Expr0]<! !_PrimitiveShared @ !>
 [RULE: 5]
-	ending -> [33][_Expr0] END [ENDING]
+	ending -> [34][_Expr0] END [ENDING]
 		+ StackEnd()
 
-[41][_Expr1] BEGIN 
+[42][_Expr1] BEGIN 
 [RULE: 6]
 	token: "(" -> [18][_PrimitiveExprOnly]<! "(" @ !_Expr ")" !>
 		+ StackBegin()
 		+ Token(0)
-		> rule: _Expr0 -> [48][_Expr1]<! !_Expr0 @ !>
+		> rule: _Expr0 -> [49][_Expr1]<! !_Expr0 @ !>
 			+ StackBegin()
-		> rule: _PrimitiveExprOnly -> [39][_Expr0]<! !_PrimitiveExprOnly @ !>
+		> rule: _PrimitiveExprOnly -> [40][_Expr0]<! !_PrimitiveExprOnly @ !>
 			+ StackBegin()
 	token: "const" -> [13][_PrimitiveTypeOnly]{{< "const" @ _PrimitiveShared > ; < "const" @ _PrimitiveTypeOnly >}}
 		+ StackBegin()
 		+ Token(0)
-		> rule: _Expr0 -> [48][_Expr1]<! !_Expr0 @ !>
+		> rule: _Expr0 -> [49][_Expr1]<! !_Expr0 @ !>
 			+ StackBegin()
-		> rule: _LongType -> [38][_Expr0]< _LongType @ "{" { _Expr ; "," } "}" >
+		> rule: _LongType -> [39][_Expr0]< _LongType @ "{" { _Expr ; "," } "}" >
 			+ StackBegin()
 			+ StackSlot(0)
 		> rule: _PrimitiveTypeOnly -> [31][_LongType]<! !_PrimitiveTypeOnly @ !>
@@ -568,53 +517,40 @@
 	token: ID -> [2][_Name]< ID @ >
 		+ StackBegin()
 		+ Token(0)
-		> rule: _Expr0 -> [48][_Expr1]<! !_Expr0 @ !>
+		> rule: _Expr0 -> [49][_Expr1]<! !_Expr0 @ !>
 			+ StackBegin()
-		> rule: _PrimitiveShared -> [40][_Expr0]<! !_PrimitiveShared @ !>
-			+ StackBegin()
-		> rule: _Name -> [8][_PrimitiveShared]<! !_Name @ !>
-			+ StackBegin()
-	token: ID -> [2][_Name]< ID @ >
-		+ StackBegin()
-		+ Token(0)
-		> rule: _Expr0 -> [48][_Expr1]<! !_Expr0 @ !>
-			+ StackBegin()
-		> rule: _LongType -> [38][_Expr0]< _LongType @ "{" { _Expr ; "," } "}" >
-			+ StackBegin()
-			+ StackSlot(0)
-		> rule: _PrimitiveShared -> [30][_LongType]<! !_PrimitiveShared @ !>
-			+ StackBegin()
+		> rule: _PrimitiveShared -> [33][_Expr0] BEGIN [pm-cr-rule: _PrimitiveShared]
 		> rule: _Name -> [8][_PrimitiveShared]<! !_Name @ !>
 			+ StackBegin()
 
-[42][_Expr1] END [ENDING]
+[43][_Expr1] END [ENDING]
 [RULE: 6]
 
-[43][_Expr1]< _Expr1 "(" @ { _Expr ; "," } ")" >
+[44][_Expr1]< _Expr1 "(" @ { _Expr ; "," } ")" >
 [RULE: 6]
 	token: "(" -> [18][_PrimitiveExprOnly]<! "(" @ !_Expr ")" !>
 		+ StackBegin()
 		+ Token(0)
-		> rule: _Expr -> [46][_Expr1]< _Expr1 "(" { _Expr @ ; "," } ")" >
+		> rule: _Expr -> [47][_Expr1]< _Expr1 "(" { _Expr @ ; "," } ")" >
 			+ StackSlot(2)
-		> rule: _Expr1 -> [54][_Expr]<! !_Expr1 @ !>
+		> rule: _Expr1 -> [55][_Expr]<! !_Expr1 @ !>
 			+ StackBegin()
-		> rule: _Expr0 -> [48][_Expr1]<! !_Expr0 @ !>
+		> rule: _Expr0 -> [49][_Expr1]<! !_Expr0 @ !>
 			+ StackBegin()
-		> rule: _PrimitiveExprOnly -> [39][_Expr0]<! !_PrimitiveExprOnly @ !>
+		> rule: _PrimitiveExprOnly -> [40][_Expr0]<! !_PrimitiveExprOnly @ !>
 			+ StackBegin()
-	token: ")" -> [45][_Expr1]< _Expr1 "(" { _Expr ; "," } ")" @ >
+	token: ")" -> [46][_Expr1]< _Expr1 "(" { _Expr ; "," } ")" @ >
 		+ Token(4)
 	token: "const" -> [13][_PrimitiveTypeOnly]{{< "const" @ _PrimitiveShared > ; < "const" @ _PrimitiveTypeOnly >}}
 		+ StackBegin()
 		+ Token(0)
-		> rule: _Expr -> [46][_Expr1]< _Expr1 "(" { _Expr @ ; "," } ")" >
+		> rule: _Expr -> [47][_Expr1]< _Expr1 "(" { _Expr @ ; "," } ")" >
 			+ StackSlot(2)
-		> rule: _Expr1 -> [54][_Expr]<! !_Expr1 @ !>
+		> rule: _Expr1 -> [55][_Expr]<! !_Expr1 @ !>
 			+ StackBegin()
-		> rule: _Expr0 -> [48][_Expr1]<! !_Expr0 @ !>
+		> rule: _Expr0 -> [49][_Expr1]<! !_Expr0 @ !>
 			+ StackBegin()
-		> rule: _LongType -> [38][_Expr0]< _LongType @ "{" { _Expr ; "," } "}" >
+		> rule: _LongType -> [39][_Expr0]< _LongType @ "{" { _Expr ; "," } "}" >
 			+ StackBegin()
 			+ StackSlot(0)
 		> rule: _PrimitiveTypeOnly -> [31][_LongType]<! !_PrimitiveTypeOnly @ !>
@@ -622,56 +558,39 @@
 	token: ID -> [2][_Name]< ID @ >
 		+ StackBegin()
 		+ Token(0)
-		> rule: _Expr -> [46][_Expr1]< _Expr1 "(" { _Expr @ ; "," } ")" >
+		> rule: _Expr -> [47][_Expr1]< _Expr1 "(" { _Expr @ ; "," } ")" >
 			+ StackSlot(2)
-		> rule: _Expr1 -> [54][_Expr]<! !_Expr1 @ !>
+		> rule: _Expr1 -> [55][_Expr]<! !_Expr1 @ !>
 			+ StackBegin()
-		> rule: _Expr0 -> [48][_Expr1]<! !_Expr0 @ !>
+		> rule: _Expr0 -> [49][_Expr1]<! !_Expr0 @ !>
 			+ StackBegin()
-		> rule: _PrimitiveShared -> [40][_Expr0]<! !_PrimitiveShared @ !>
-			+ StackBegin()
-		> rule: _Name -> [8][_PrimitiveShared]<! !_Name @ !>
-			+ StackBegin()
-	token: ID -> [2][_Name]< ID @ >
-		+ StackBegin()
-		+ Token(0)
-		> rule: _Expr -> [46][_Expr1]< _Expr1 "(" { _Expr @ ; "," } ")" >
-			+ StackSlot(2)
-		> rule: _Expr1 -> [54][_Expr]<! !_Expr1 @ !>
-			+ StackBegin()
-		> rule: _Expr0 -> [48][_Expr1]<! !_Expr0 @ !>
-			+ StackBegin()
-		> rule: _LongType -> [38][_Expr0]< _LongType @ "{" { _Expr ; "," } "}" >
-			+ StackBegin()
-			+ StackSlot(0)
-		> rule: _PrimitiveShared -> [30][_LongType]<! !_PrimitiveShared @ !>
-			+ StackBegin()
+		> rule: _PrimitiveShared -> [33][_Expr0] BEGIN [pm-cr-rule: _PrimitiveShared]
 		> rule: _Name -> [8][_PrimitiveShared]<! !_Name @ !>
 			+ StackBegin()
 
-[44][_Expr1]< _Expr1 "(" { _Expr ; "," @ } ")" >
+[45][_Expr1]< _Expr1 "(" { _Expr ; "," @ } ")" >
 [RULE: 6]
 	token: "(" -> [18][_PrimitiveExprOnly]<! "(" @ !_Expr ")" !>
 		+ StackBegin()
 		+ Token(0)
-		> rule: _Expr -> [46][_Expr1]< _Expr1 "(" { _Expr @ ; "," } ")" >
+		> rule: _Expr -> [47][_Expr1]< _Expr1 "(" { _Expr @ ; "," } ")" >
 			+ StackSlot(2)
-		> rule: _Expr1 -> [54][_Expr]<! !_Expr1 @ !>
+		> rule: _Expr1 -> [55][_Expr]<! !_Expr1 @ !>
 			+ StackBegin()
-		> rule: _Expr0 -> [48][_Expr1]<! !_Expr0 @ !>
+		> rule: _Expr0 -> [49][_Expr1]<! !_Expr0 @ !>
 			+ StackBegin()
-		> rule: _PrimitiveExprOnly -> [39][_Expr0]<! !_PrimitiveExprOnly @ !>
+		> rule: _PrimitiveExprOnly -> [40][_Expr0]<! !_PrimitiveExprOnly @ !>
 			+ StackBegin()
 	token: "const" -> [13][_PrimitiveTypeOnly]{{< "const" @ _PrimitiveShared > ; < "const" @ _PrimitiveTypeOnly >}}
 		+ StackBegin()
 		+ Token(0)
-		> rule: _Expr -> [46][_Expr1]< _Expr1 "(" { _Expr @ ; "," } ")" >
+		> rule: _Expr -> [47][_Expr1]< _Expr1 "(" { _Expr @ ; "," } ")" >
 			+ StackSlot(2)
-		> rule: _Expr1 -> [54][_Expr]<! !_Expr1 @ !>
+		> rule: _Expr1 -> [55][_Expr]<! !_Expr1 @ !>
 			+ StackBegin()
-		> rule: _Expr0 -> [48][_Expr1]<! !_Expr0 @ !>
+		> rule: _Expr0 -> [49][_Expr1]<! !_Expr0 @ !>
 			+ StackBegin()
-		> rule: _LongType -> [38][_Expr0]< _LongType @ "{" { _Expr ; "," } "}" >
+		> rule: _LongType -> [39][_Expr0]< _LongType @ "{" { _Expr ; "," } "}" >
 			+ StackBegin()
 			+ StackSlot(0)
 		> rule: _PrimitiveTypeOnly -> [31][_LongType]<! !_PrimitiveTypeOnly @ !>
@@ -679,41 +598,24 @@
 	token: ID -> [2][_Name]< ID @ >
 		+ StackBegin()
 		+ Token(0)
-		> rule: _Expr -> [46][_Expr1]< _Expr1 "(" { _Expr @ ; "," } ")" >
+		> rule: _Expr -> [47][_Expr1]< _Expr1 "(" { _Expr @ ; "," } ")" >
 			+ StackSlot(2)
-		> rule: _Expr1 -> [54][_Expr]<! !_Expr1 @ !>
+		> rule: _Expr1 -> [55][_Expr]<! !_Expr1 @ !>
 			+ StackBegin()
-		> rule: _Expr0 -> [48][_Expr1]<! !_Expr0 @ !>
+		> rule: _Expr0 -> [49][_Expr1]<! !_Expr0 @ !>
 			+ StackBegin()
-		> rule: _PrimitiveShared -> [40][_Expr0]<! !_PrimitiveShared @ !>
-			+ StackBegin()
-		> rule: _Name -> [8][_PrimitiveShared]<! !_Name @ !>
-			+ StackBegin()
-	token: ID -> [2][_Name]< ID @ >
-		+ StackBegin()
-		+ Token(0)
-		> rule: _Expr -> [46][_Expr1]< _Expr1 "(" { _Expr @ ; "," } ")" >
-			+ StackSlot(2)
-		> rule: _Expr1 -> [54][_Expr]<! !_Expr1 @ !>
-			+ StackBegin()
-		> rule: _Expr0 -> [48][_Expr1]<! !_Expr0 @ !>
-			+ StackBegin()
-		> rule: _LongType -> [38][_Expr0]< _LongType @ "{" { _Expr ; "," } "}" >
-			+ StackBegin()
-			+ StackSlot(0)
-		> rule: _PrimitiveShared -> [30][_LongType]<! !_PrimitiveShared @ !>
-			+ StackBegin()
+		> rule: _PrimitiveShared -> [33][_Expr0] BEGIN [pm-cr-rule: _PrimitiveShared]
 		> rule: _Name -> [8][_PrimitiveShared]<! !_Name @ !>
 			+ StackBegin()
 
-[45][_Expr1]< _Expr1 "(" { _Expr ; "," } ")" @ >
+[46][_Expr1]< _Expr1 "(" { _Expr ; "," } ")" @ >
 [RULE: 6]
-	ending -> [42][_Expr1] END [ENDING]
+	ending -> [43][_Expr1] END [ENDING]
 		+ CreateObject(CallExpr)
 		+ Field(CallExpr::func, 0)
 		+ Field(CallExpr::args, 2)
 		+ StackEnd()
-	leftrec -> [47][_Expr1]< _Expr1 @ "(" { _Expr ; "," } ")" >
+	leftrec -> [48][_Expr1]< _Expr1 @ "(" { _Expr ; "," } ")" >
 		+ CreateObject(CallExpr)
 		+ Field(CallExpr::func, 0)
 		+ Field(CallExpr::args, 2)
@@ -721,46 +623,46 @@
 		+ StackBegin()
 		+ StackSlot(0)
 
-[46][_Expr1]< _Expr1 "(" { _Expr @ ; "," } ")" >
+[47][_Expr1]< _Expr1 "(" { _Expr @ ; "," } ")" >
 [RULE: 6]
-	token: ")" -> [45][_Expr1]< _Expr1 "(" { _Expr ; "," } ")" @ >
+	token: ")" -> [46][_Expr1]< _Expr1 "(" { _Expr ; "," } ")" @ >
 		+ Token(4)
-	token: "," -> [44][_Expr1]< _Expr1 "(" { _Expr ; "," @ } ")" >
+	token: "," -> [45][_Expr1]< _Expr1 "(" { _Expr ; "," @ } ")" >
 		+ Token(3)
 
-[47][_Expr1]< _Expr1 @ "(" { _Expr ; "," } ")" >
+[48][_Expr1]< _Expr1 @ "(" { _Expr ; "," } ")" >
 [RULE: 6]
-	token: "(" -> [43][_Expr1]< _Expr1 "(" @ { _Expr ; "," } ")" >
+	token: "(" -> [44][_Expr1]< _Expr1 "(" @ { _Expr ; "," } ")" >
 		+ Token(1)
 
-[48][_Expr1]<! !_Expr0 @ !>
+[49][_Expr1]<! !_Expr0 @ !>
 [RULE: 6]
-	ending -> [42][_Expr1] END [ENDING]
+	ending -> [43][_Expr1] END [ENDING]
 		+ StackEnd()
-	leftrec -> [47][_Expr1]< _Expr1 @ "(" { _Expr ; "," } ")" >
+	leftrec -> [48][_Expr1]< _Expr1 @ "(" { _Expr ; "," } ")" >
 		+ StackEnd()
 		+ StackBegin()
 		+ StackSlot(0)
 
-[49][_Expr] BEGIN 
+[50][_Expr] BEGIN 
 [RULE: 7]
 	token: "(" -> [18][_PrimitiveExprOnly]<! "(" @ !_Expr ")" !>
 		+ StackBegin()
 		+ Token(0)
-		> rule: _Expr1 -> [54][_Expr]<! !_Expr1 @ !>
+		> rule: _Expr1 -> [55][_Expr]<! !_Expr1 @ !>
 			+ StackBegin()
-		> rule: _Expr0 -> [48][_Expr1]<! !_Expr0 @ !>
+		> rule: _Expr0 -> [49][_Expr1]<! !_Expr0 @ !>
 			+ StackBegin()
-		> rule: _PrimitiveExprOnly -> [39][_Expr0]<! !_PrimitiveExprOnly @ !>
+		> rule: _PrimitiveExprOnly -> [40][_Expr0]<! !_PrimitiveExprOnly @ !>
 			+ StackBegin()
 	token: "const" -> [13][_PrimitiveTypeOnly]{{< "const" @ _PrimitiveShared > ; < "const" @ _PrimitiveTypeOnly >}}
 		+ StackBegin()
 		+ Token(0)
-		> rule: _Expr1 -> [54][_Expr]<! !_Expr1 @ !>
+		> rule: _Expr1 -> [55][_Expr]<! !_Expr1 @ !>
 			+ StackBegin()
-		> rule: _Expr0 -> [48][_Expr1]<! !_Expr0 @ !>
+		> rule: _Expr0 -> [49][_Expr1]<! !_Expr0 @ !>
 			+ StackBegin()
-		> rule: _LongType -> [38][_Expr0]< _LongType @ "{" { _Expr ; "," } "}" >
+		> rule: _LongType -> [39][_Expr0]< _LongType @ "{" { _Expr ; "," } "}" >
 			+ StackBegin()
 			+ StackSlot(0)
 		> rule: _PrimitiveTypeOnly -> [31][_LongType]<! !_PrimitiveTypeOnly @ !>
@@ -768,51 +670,36 @@
 	token: ID -> [2][_Name]< ID @ >
 		+ StackBegin()
 		+ Token(0)
-		> rule: _Expr1 -> [54][_Expr]<! !_Expr1 @ !>
+		> rule: _Expr1 -> [55][_Expr]<! !_Expr1 @ !>
 			+ StackBegin()
-		> rule: _Expr0 -> [48][_Expr1]<! !_Expr0 @ !>
+		> rule: _Expr0 -> [49][_Expr1]<! !_Expr0 @ !>
 			+ StackBegin()
-		> rule: _PrimitiveShared -> [40][_Expr0]<! !_PrimitiveShared @ !>
-			+ StackBegin()
-		> rule: _Name -> [8][_PrimitiveShared]<! !_Name @ !>
-			+ StackBegin()
-	token: ID -> [2][_Name]< ID @ >
-		+ StackBegin()
-		+ Token(0)
-		> rule: _Expr1 -> [54][_Expr]<! !_Expr1 @ !>
-			+ StackBegin()
-		> rule: _Expr0 -> [48][_Expr1]<! !_Expr0 @ !>
-			+ StackBegin()
-		> rule: _LongType -> [38][_Expr0]< _LongType @ "{" { _Expr ; "," } "}" >
-			+ StackBegin()
-			+ StackSlot(0)
-		> rule: _PrimitiveShared -> [30][_LongType]<! !_PrimitiveShared @ !>
-			+ StackBegin()
+		> rule: _PrimitiveShared -> [33][_Expr0] BEGIN [pm-cr-rule: _PrimitiveShared]
 		> rule: _Name -> [8][_PrimitiveShared]<! !_Name @ !>
 			+ StackBegin()
 
-[50][_Expr] END [ENDING]
+[51][_Expr] END [ENDING]
 [RULE: 7]
 
-[51][_Expr]< _Expr "*" @ _Expr1 >
+[52][_Expr]< _Expr "*" @ _Expr1 >
 [RULE: 7]
 	token: "(" -> [18][_PrimitiveExprOnly]<! "(" @ !_Expr ")" !>
 		+ StackBegin()
 		+ Token(0)
-		> rule: _Expr1 -> [52][_Expr]< _Expr "*" _Expr1 @ >
+		> rule: _Expr1 -> [53][_Expr]< _Expr "*" _Expr1 @ >
 			+ StackSlot(2)
-		> rule: _Expr0 -> [48][_Expr1]<! !_Expr0 @ !>
+		> rule: _Expr0 -> [49][_Expr1]<! !_Expr0 @ !>
 			+ StackBegin()
-		> rule: _PrimitiveExprOnly -> [39][_Expr0]<! !_PrimitiveExprOnly @ !>
+		> rule: _PrimitiveExprOnly -> [40][_Expr0]<! !_PrimitiveExprOnly @ !>
 			+ StackBegin()
 	token: "const" -> [13][_PrimitiveTypeOnly]{{< "const" @ _PrimitiveShared > ; < "const" @ _PrimitiveTypeOnly >}}
 		+ StackBegin()
 		+ Token(0)
-		> rule: _Expr1 -> [52][_Expr]< _Expr "*" _Expr1 @ >
+		> rule: _Expr1 -> [53][_Expr]< _Expr "*" _Expr1 @ >
 			+ StackSlot(2)
-		> rule: _Expr0 -> [48][_Expr1]<! !_Expr0 @ !>
+		> rule: _Expr0 -> [49][_Expr1]<! !_Expr0 @ !>
 			+ StackBegin()
-		> rule: _LongType -> [38][_Expr0]< _LongType @ "{" { _Expr ; "," } "}" >
+		> rule: _LongType -> [39][_Expr0]< _LongType @ "{" { _Expr ; "," } "}" >
 			+ StackBegin()
 			+ StackSlot(0)
 		> rule: _PrimitiveTypeOnly -> [31][_LongType]<! !_PrimitiveTypeOnly @ !>
@@ -820,37 +707,22 @@
 	token: ID -> [2][_Name]< ID @ >
 		+ StackBegin()
 		+ Token(0)
-		> rule: _Expr1 -> [52][_Expr]< _Expr "*" _Expr1 @ >
+		> rule: _Expr1 -> [53][_Expr]< _Expr "*" _Expr1 @ >
 			+ StackSlot(2)
-		> rule: _Expr0 -> [48][_Expr1]<! !_Expr0 @ !>
+		> rule: _Expr0 -> [49][_Expr1]<! !_Expr0 @ !>
 			+ StackBegin()
-		> rule: _PrimitiveShared -> [40][_Expr0]<! !_PrimitiveShared @ !>
-			+ StackBegin()
-		> rule: _Name -> [8][_PrimitiveShared]<! !_Name @ !>
-			+ StackBegin()
-	token: ID -> [2][_Name]< ID @ >
-		+ StackBegin()
-		+ Token(0)
-		> rule: _Expr1 -> [52][_Expr]< _Expr "*" _Expr1 @ >
-			+ StackSlot(2)
-		> rule: _Expr0 -> [48][_Expr1]<! !_Expr0 @ !>
-			+ StackBegin()
-		> rule: _LongType -> [38][_Expr0]< _LongType @ "{" { _Expr ; "," } "}" >
-			+ StackBegin()
-			+ StackSlot(0)
-		> rule: _PrimitiveShared -> [30][_LongType]<! !_PrimitiveShared @ !>
-			+ StackBegin()
+		> rule: _PrimitiveShared -> [33][_Expr0] BEGIN [pm-cr-rule: _PrimitiveShared]
 		> rule: _Name -> [8][_PrimitiveShared]<! !_Name @ !>
 			+ StackBegin()
 
-[52][_Expr]< _Expr "*" _Expr1 @ >
+[53][_Expr]< _Expr "*" _Expr1 @ >
 [RULE: 7]
-	ending -> [50][_Expr] END [ENDING]
+	ending -> [51][_Expr] END [ENDING]
 		+ CreateObject(MulExpr)
 		+ Field(MulExpr::first, 0)
 		+ Field(MulExpr::second, 2)
 		+ StackEnd()
-	leftrec -> [53][_Expr]< _Expr @ "*" _Expr1 >
+	leftrec -> [54][_Expr]< _Expr @ "*" _Expr1 >
 		+ CreateObject(MulExpr)
 		+ Field(MulExpr::first, 0)
 		+ Field(MulExpr::second, 2)
@@ -858,129 +730,124 @@
 		+ StackBegin()
 		+ StackSlot(0)
 
-[53][_Expr]< _Expr @ "*" _Expr1 >
+[54][_Expr]< _Expr @ "*" _Expr1 >
 [RULE: 7]
-	token: "*" -> [51][_Expr]< _Expr "*" @ _Expr1 >
+	token: "*" -> [52][_Expr]< _Expr "*" @ _Expr1 >
 		+ Token(1)
 
-[54][_Expr]<! !_Expr1 @ !>
+[55][_Expr]<! !_Expr1 @ !>
 [RULE: 7]
-	ending -> [50][_Expr] END [ENDING]
+	ending -> [51][_Expr] END [ENDING]
 		+ StackEnd()
-	leftrec -> [53][_Expr]< _Expr @ "*" _Expr1 >
+	leftrec -> [54][_Expr]< _Expr @ "*" _Expr1 >
 		+ StackEnd()
 		+ StackBegin()
 		+ StackSlot(0)
 
-[55][Module] BEGIN 
+[56][Module] BEGIN 
 [RULE: 8]
 	token: "(" -> [18][_PrimitiveExprOnly]<! "(" @ !_Expr ")" !>
 		+ StackBegin()
 		+ Token(0)
-		> rule: _Expr -> [57][Module]<! !_Expr @ !>
+		> rule: _Expr -> [60][Module]<! !_Expr @ !>
 			+ StackBegin()
-		> rule: _Expr1 -> [54][_Expr]<! !_Expr1 @ !>
+		> rule: _Expr1 -> [55][_Expr]<! !_Expr1 @ !>
 			+ StackBegin()
-		> rule: _Expr0 -> [48][_Expr1]<! !_Expr0 @ !>
+		> rule: _Expr0 -> [49][_Expr1]<! !_Expr0 @ !>
 			+ StackBegin()
-		> rule: _PrimitiveExprOnly -> [39][_Expr0]<! !_PrimitiveExprOnly @ !>
-			+ StackBegin()
-	token: "const" -> [13][_PrimitiveTypeOnly]{{< "const" @ _PrimitiveShared > ; < "const" @ _PrimitiveTypeOnly >}}
-		+ StackBegin()
-		+ Token(0)
-		> rule: _LongType -> [58][Module]<! !_LongType @ !>
-			+ StackBegin()
-		> rule: _PrimitiveTypeOnly -> [31][_LongType]<! !_PrimitiveTypeOnly @ !>
+		> rule: _PrimitiveExprOnly -> [40][_Expr0]<! !_PrimitiveExprOnly @ !>
 			+ StackBegin()
 	token: "const" -> [13][_PrimitiveTypeOnly]{{< "const" @ _PrimitiveShared > ; < "const" @ _PrimitiveTypeOnly >}}
 		+ StackBegin()
 		+ Token(0)
-		> rule: _Expr -> [57][Module]<! !_Expr @ !>
+		> rule: _PrimitiveTypeOnly -> [58][Module] BEGIN [pm-cr-rule: _PrimitiveTypeOnly]
+	token: ID -> [2][_Name]< ID @ >
+		+ StackBegin()
+		+ Token(0)
+		> rule: _PrimitiveShared -> [57][Module] BEGIN [pm-cr-rule: _PrimitiveShared]
+		> rule: _Name -> [8][_PrimitiveShared]<! !_Name @ !>
 			+ StackBegin()
-		> rule: _Expr1 -> [54][_Expr]<! !_Expr1 @ !>
+
+[57][Module] BEGIN [pm-cr-rule: _PrimitiveShared]
+[RULE: 8]
+	leftrec -> [30][_LongType]<! !_PrimitiveShared @ !>
+		+ StackBegin()
+		> rule: _LongType -> [61][Module]<! !_LongType @ !>
 			+ StackBegin()
-		> rule: _Expr0 -> [48][_Expr1]<! !_Expr0 @ !>
+	leftrec -> [30][_LongType]<! !_PrimitiveShared @ !>
+		+ StackBegin()
+		> rule: _Expr -> [60][Module]<! !_Expr @ !>
 			+ StackBegin()
-		> rule: _LongType -> [38][_Expr0]< _LongType @ "{" { _Expr ; "," } "}" >
+		> rule: _Expr1 -> [55][_Expr]<! !_Expr1 @ !>
+			+ StackBegin()
+		> rule: _Expr0 -> [49][_Expr1]<! !_Expr0 @ !>
+			+ StackBegin()
+		> rule: _LongType -> [39][_Expr0]< _LongType @ "{" { _Expr ; "," } "}" >
 			+ StackBegin()
 			+ StackSlot(0)
-		> rule: _PrimitiveTypeOnly -> [31][_LongType]<! !_PrimitiveTypeOnly @ !>
-			+ StackBegin()
-	token: ID -> [2][_Name]< ID @ >
+	leftrec -> [41][_Expr0]<! !_PrimitiveShared @ !>
 		+ StackBegin()
-		+ Token(0)
-		> rule: _LongType -> [58][Module]<! !_LongType @ !>
+		> rule: _Expr -> [60][Module]<! !_Expr @ !>
 			+ StackBegin()
-		> rule: _PrimitiveShared -> [30][_LongType]<! !_PrimitiveShared @ !>
+		> rule: _Expr1 -> [55][_Expr]<! !_Expr1 @ !>
 			+ StackBegin()
-		> rule: _Name -> [8][_PrimitiveShared]<! !_Name @ !>
+		> rule: _Expr0 -> [49][_Expr1]<! !_Expr0 @ !>
 			+ StackBegin()
-	token: ID -> [2][_Name]< ID @ >
+
+[58][Module] BEGIN [pm-cr-rule: _PrimitiveTypeOnly]
+[RULE: 8]
+	leftrec -> [31][_LongType]<! !_PrimitiveTypeOnly @ !>
 		+ StackBegin()
-		+ Token(0)
-		> rule: _Expr -> [57][Module]<! !_Expr @ !>
+		> rule: _LongType -> [61][Module]<! !_LongType @ !>
 			+ StackBegin()
-		> rule: _Expr1 -> [54][_Expr]<! !_Expr1 @ !>
-			+ StackBegin()
-		> rule: _Expr0 -> [48][_Expr1]<! !_Expr0 @ !>
-			+ StackBegin()
-		> rule: _PrimitiveShared -> [40][_Expr0]<! !_PrimitiveShared @ !>
-			+ StackBegin()
-		> rule: _Name -> [8][_PrimitiveShared]<! !_Name @ !>
-			+ StackBegin()
-	token: ID -> [2][_Name]< ID @ >
+	leftrec -> [31][_LongType]<! !_PrimitiveTypeOnly @ !>
 		+ StackBegin()
-		+ Token(0)
-		> rule: _Expr -> [57][Module]<! !_Expr @ !>
+		> rule: _Expr -> [60][Module]<! !_Expr @ !>
 			+ StackBegin()
-		> rule: _Expr1 -> [54][_Expr]<! !_Expr1 @ !>
+		> rule: _Expr1 -> [55][_Expr]<! !_Expr1 @ !>
 			+ StackBegin()
-		> rule: _Expr0 -> [48][_Expr1]<! !_Expr0 @ !>
+		> rule: _Expr0 -> [49][_Expr1]<! !_Expr0 @ !>
 			+ StackBegin()
-		> rule: _LongType -> [38][_Expr0]< _LongType @ "{" { _Expr ; "," } "}" >
+		> rule: _LongType -> [39][_Expr0]< _LongType @ "{" { _Expr ; "," } "}" >
 			+ StackBegin()
 			+ StackSlot(0)
-		> rule: _PrimitiveShared -> [30][_LongType]<! !_PrimitiveShared @ !>
-			+ StackBegin()
-		> rule: _Name -> [8][_PrimitiveShared]<! !_Name @ !>
-			+ StackBegin()
 
-[56][Module] END [ENDING]
+[59][Module] END [ENDING]
 [RULE: 8]
 
-[57][Module]<! !_Expr @ !>
+[60][Module]<! !_Expr @ !>
 [RULE: 8]
-	ending -> [56][Module] END [ENDING]
+	ending -> [59][Module] END [ENDING]
 		+ StackEnd()
 
-[58][Module]<! !_LongType @ !>
+[61][Module]<! !_LongType @ !>
 [RULE: 8]
-	ending -> [56][Module] END [ENDING]
+	ending -> [59][Module] END [ENDING]
 		+ StackEnd()
 
-[59][ExprModule] BEGIN 
+[62][ExprModule] BEGIN 
 [RULE: 9]
 	token: "(" -> [18][_PrimitiveExprOnly]<! "(" @ !_Expr ")" !>
 		+ StackBegin()
 		+ Token(0)
-		> rule: _Expr -> [61][ExprModule]<! !_Expr @ !>
+		> rule: _Expr -> [64][ExprModule]<! !_Expr @ !>
 			+ StackBegin()
-		> rule: _Expr1 -> [54][_Expr]<! !_Expr1 @ !>
+		> rule: _Expr1 -> [55][_Expr]<! !_Expr1 @ !>
 			+ StackBegin()
-		> rule: _Expr0 -> [48][_Expr1]<! !_Expr0 @ !>
+		> rule: _Expr0 -> [49][_Expr1]<! !_Expr0 @ !>
 			+ StackBegin()
-		> rule: _PrimitiveExprOnly -> [39][_Expr0]<! !_PrimitiveExprOnly @ !>
+		> rule: _PrimitiveExprOnly -> [40][_Expr0]<! !_PrimitiveExprOnly @ !>
 			+ StackBegin()
 	token: "const" -> [13][_PrimitiveTypeOnly]{{< "const" @ _PrimitiveShared > ; < "const" @ _PrimitiveTypeOnly >}}
 		+ StackBegin()
 		+ Token(0)
-		> rule: _Expr -> [61][ExprModule]<! !_Expr @ !>
+		> rule: _Expr -> [64][ExprModule]<! !_Expr @ !>
 			+ StackBegin()
-		> rule: _Expr1 -> [54][_Expr]<! !_Expr1 @ !>
+		> rule: _Expr1 -> [55][_Expr]<! !_Expr1 @ !>
 			+ StackBegin()
-		> rule: _Expr0 -> [48][_Expr1]<! !_Expr0 @ !>
+		> rule: _Expr0 -> [49][_Expr1]<! !_Expr0 @ !>
 			+ StackBegin()
-		> rule: _LongType -> [38][_Expr0]< _LongType @ "{" { _Expr ; "," } "}" >
+		> rule: _LongType -> [39][_Expr0]< _LongType @ "{" { _Expr ; "," } "}" >
 			+ StackBegin()
 			+ StackSlot(0)
 		> rule: _PrimitiveTypeOnly -> [31][_LongType]<! !_PrimitiveTypeOnly @ !>
@@ -988,65 +855,48 @@
 	token: ID -> [2][_Name]< ID @ >
 		+ StackBegin()
 		+ Token(0)
-		> rule: _Expr -> [61][ExprModule]<! !_Expr @ !>
+		> rule: _Expr -> [64][ExprModule]<! !_Expr @ !>
 			+ StackBegin()
-		> rule: _Expr1 -> [54][_Expr]<! !_Expr1 @ !>
+		> rule: _Expr1 -> [55][_Expr]<! !_Expr1 @ !>
 			+ StackBegin()
-		> rule: _Expr0 -> [48][_Expr1]<! !_Expr0 @ !>
+		> rule: _Expr0 -> [49][_Expr1]<! !_Expr0 @ !>
 			+ StackBegin()
-		> rule: _PrimitiveShared -> [40][_Expr0]<! !_PrimitiveShared @ !>
-			+ StackBegin()
-		> rule: _Name -> [8][_PrimitiveShared]<! !_Name @ !>
-			+ StackBegin()
-	token: ID -> [2][_Name]< ID @ >
-		+ StackBegin()
-		+ Token(0)
-		> rule: _Expr -> [61][ExprModule]<! !_Expr @ !>
-			+ StackBegin()
-		> rule: _Expr1 -> [54][_Expr]<! !_Expr1 @ !>
-			+ StackBegin()
-		> rule: _Expr0 -> [48][_Expr1]<! !_Expr0 @ !>
-			+ StackBegin()
-		> rule: _LongType -> [38][_Expr0]< _LongType @ "{" { _Expr ; "," } "}" >
-			+ StackBegin()
-			+ StackSlot(0)
-		> rule: _PrimitiveShared -> [30][_LongType]<! !_PrimitiveShared @ !>
-			+ StackBegin()
+		> rule: _PrimitiveShared -> [33][_Expr0] BEGIN [pm-cr-rule: _PrimitiveShared]
 		> rule: _Name -> [8][_PrimitiveShared]<! !_Name @ !>
 			+ StackBegin()
 
-[60][ExprModule] END [ENDING]
+[63][ExprModule] END [ENDING]
 [RULE: 9]
 
-[61][ExprModule]<! !_Expr @ !>
+[64][ExprModule]<! !_Expr @ !>
 [RULE: 9]
-	ending -> [60][ExprModule] END [ENDING]
+	ending -> [63][ExprModule] END [ENDING]
 		+ StackEnd()
 
-[62][TypeModule] BEGIN 
+[65][TypeModule] BEGIN 
 [RULE: 10]
 	token: "const" -> [13][_PrimitiveTypeOnly]{{< "const" @ _PrimitiveShared > ; < "const" @ _PrimitiveTypeOnly >}}
 		+ StackBegin()
 		+ Token(0)
-		> rule: _LongType -> [64][TypeModule]<! !_LongType @ !>
+		> rule: _LongType -> [67][TypeModule]<! !_LongType @ !>
 			+ StackBegin()
 		> rule: _PrimitiveTypeOnly -> [31][_LongType]<! !_PrimitiveTypeOnly @ !>
 			+ StackBegin()
 	token: ID -> [2][_Name]< ID @ >
 		+ StackBegin()
 		+ Token(0)
-		> rule: _LongType -> [64][TypeModule]<! !_LongType @ !>
+		> rule: _LongType -> [67][TypeModule]<! !_LongType @ !>
 			+ StackBegin()
 		> rule: _PrimitiveShared -> [30][_LongType]<! !_PrimitiveShared @ !>
 			+ StackBegin()
 		> rule: _Name -> [8][_PrimitiveShared]<! !_Name @ !>
 			+ StackBegin()
 
-[63][TypeModule] END [ENDING]
+[66][TypeModule] END [ENDING]
 [RULE: 10]
 
-[64][TypeModule]<! !_LongType @ !>
+[67][TypeModule]<! !_LongType @ !>
 [RULE: 10]
-	ending -> [63][TypeModule] END [ENDING]
+	ending -> [66][TypeModule] END [ENDING]
 		+ StackEnd()
 
