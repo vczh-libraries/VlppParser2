@@ -116,6 +116,7 @@ FilePath LogSyntaxWithPath(
 				}
 				writer.WriteString(L"\trule: " + edge->input.rule->Name());
 				break;
+			default:;
 			}
 
 			for (auto comp : edge->competitions)

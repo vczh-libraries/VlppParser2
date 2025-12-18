@@ -59,14 +59,15 @@ EdgeSymbol
 
 			enum class EdgeInputType
 			{
-				Epsilon,				// No input is needed to execute this edge.
-				PrefixMergeRule,		// A Rule transition referenced that created by and only temporarily used during prefix merge.
-				CrossReferencedToken,	// A Token transition referenced that created by and only temporarily used during cross reference.
+				Epsilon,						// No input is needed to execute this edge.
+				PrefixMergeRule,				// Rule transition that created from accumulated transitions, it is a temporarily mark and will be converted back to Rule, during prefix-merge process
+				PrefixMergeDiscardedRule,		// Rule transition that leads accmuulated transitions, converted to PrefixMergeDiscardedRule during prefix-merge process
+				CrossReferencedToken,			// Token transition that created from accumulated transitions, it is a temporarily mark and will be converted back to Token, during cross-reference process
 
-				Ending,					// An epsilon edge that reduces the current rule.
-				LeftRec,				// An epsilon edge that reduces the current rule, which is the first input of one of its left recursive clause.
-				Token,					// An token is read to execute this edge.
-				Rule,					// A rule is reduced to execute this edge.
+				Ending,							// An epsilon edge that reduces the current rule.
+				LeftRec,						// An epsilon edge that reduces the current rule, which is the first input of one of its left recursive clause.
+				Token,							// An token is read to execute this edge.
+				Rule,							// A rule is reduced to execute this edge.
 			};
 
 			struct EdgeInput
@@ -155,9 +156,19 @@ SyntaxSymbolManager
 
 			enum class SyntaxPhase
 			{
-				EpsilonNFA,					// An automaton that has edges of Epsilon, Token, Rule, Ending.
+				EpsilonNFA,					// An automaton that has edges of:
+											//   Epsilon
+											//   Token
+											//   Rule
+											//   Ending
 
-				CompactNFA,					// An automaton that has edges of Token, Rule, Ending, LeftRec.
+				CompactNFA,					// An automaton that has edges of
+											//   Token
+											//   Rule
+											//   Ending
+											//   LeftRec
+											// with ignored but still existing edges
+											//   PrefixMergeDiscardedRule
 											// Epsilon edges are eliminated by compressing multiple edges into one.
 											// Epsilon edges to the ending state will be compressed to an Ending edge.
 											// The first edge of Rule in left-recursive clauses becomes a LeftRec edge, with its fromState changed to the ending state.
@@ -165,7 +176,13 @@ SyntaxSymbolManager
 											// PrefixMergeRule transitions will be built from several Rule transitions.
 											// Such Rule transitions will be disconnected but still stored, and PrefixMergeRule will be renamed to Rule.
 
-				CrossReferencedNFA,			// An automaton that has edges of Token, Rule, Ending, LeftRec.
+				CrossReferencedNFA,			// An automaton that has edges of
+											//   Token
+											//   Ending
+											//   LeftRec
+											// with ignored but still existing edges
+											//   Rule
+											//   PrefixMergeDiscardedRule
 											// Edges of Rule are compressed to an edge that pointing towards states in other clauses.
 											// Multiple edges of rule are stored in returnEdges in the order of execution.
 											// insBeforeInput of an edge contains insBeforeInput from its returnEdges.

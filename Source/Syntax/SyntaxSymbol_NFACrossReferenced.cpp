@@ -52,12 +52,13 @@ SyntaxSymbolManager::FixCrossReferencedRuleEdge
 						accumulatedEdges.RemoveAt(accumulatedEdges.Count() - 1);
 						break;
 					case EdgeInputType::Epsilon:
-					case EdgeInputType::Ending:
 					case EdgeInputType::LeftRec:
+					case EdgeInputType::PrefixMergeDiscardedRule:
+						// These edges are not involved
+					case EdgeInputType::Ending:
 					case EdgeInputType::PrefixMergeRule:
 					case EdgeInputType::CrossReferencedToken:
-						// Ending and LeftRec edges are not involved
-						// Other edges do not exist in compact-NFA
+						// These edges do not exist in compact-NFA
 						break;
 					default:
 						CHECK_FAIL(L"<BuildCrossReferencedNFAInternal>Unhandled!");

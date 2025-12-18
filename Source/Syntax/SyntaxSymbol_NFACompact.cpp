@@ -109,8 +109,7 @@ SyntaxSymbolManager::BuildCompactNFAInternal
 					{
 						for (auto edge : application->edgesToMerge)
 						{
-							edge->fromState->outEdges.Remove(edge);
-							edge->toState->inEdges.Remove(edge);
+							edge->input.type = EdgeInputType::PrefixMergeDiscardedRule;
 						}
 					}
 

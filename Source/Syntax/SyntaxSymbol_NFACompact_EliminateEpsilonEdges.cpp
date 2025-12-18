@@ -69,10 +69,12 @@ CompactSyntaxBuilder
 							BuildEpsilonEliminatedEdgesInternal(edge->To(), newState, endState, visited, accumulatedEdges);
 							break;
 						case EdgeInputType::Ending:
+							// These edges are not involved
 						case EdgeInputType::LeftRec:
+						case EdgeInputType::PrefixMergeDiscardedRule:
 						case EdgeInputType::PrefixMergeRule:
 						case EdgeInputType::CrossReferencedToken:
-							// Edges do not exist in compact-NFA
+							// These edges do not exist in epsilon-NFA
 							break;
 						default:
 							CHECK_FAIL(L"<BuildCompactNFAInternal>Unhandled!");
