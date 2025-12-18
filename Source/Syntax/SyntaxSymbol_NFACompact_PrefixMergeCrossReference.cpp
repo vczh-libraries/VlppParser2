@@ -913,12 +913,12 @@ SyntaxSymbolManager::PrefixMergeCrossReference_AccumulatedEdges
 								auto lrEdge = Ptr(new EdgeSymbol(newState.Obj(), contState.Obj()));
 								ic.createdEdges.Add(lrEdge);
 
-								CopyFrom(newEdge->competitions, lastEdge->competitions, true);
+								CopyFrom(lrEdge->competitions, lastEdge->competitions, true);
 								for (vint j = 0; j < i - 1; j++)
 								{
-									newEdge->returnEdges.Add(edgeList[j]);
+									lrEdge->returnEdges.Add(edgeList[j]);
 								}
-								CopyFrom(newEdge->insAfterInput, lastEdge->insAfterInput, true);
+								CopyFrom(lrEdge->insAfterInput, lastEdge->insAfterInput, true);
 							}
 
 							{
