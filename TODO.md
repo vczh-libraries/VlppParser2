@@ -56,6 +56,89 @@ _PrimitiveShared +-> _Expr0 ... _Expr
                                +-> _Expr0 ... _Expr
 ```
 
+But we need to handle a case first when all leftrec accumulates single-using rule transition.
+Like the first and third leftrec transition all return rules satisfies:
+  It has StackBegin
+  Its only Ending has StackEnd
+We should be able to simple remove prefix (actually postfix in the data structure) single-using rule transitions from return rules
+And if any two leftrec transitions become identical, keep only one.
+
+So the following state
+
+```
+[57][Module] BEGIN [pm-cr-rule: _PrimitiveShared]
+[RULE: 8]
+	leftrec -> [30][_LongType]<! !_PrimitiveShared @ !>
+		+ StackBegin()
+		> rule: _LongType -> [61][Module]<! !_LongType @ !>
+			+ StackBegin()
+	leftrec -> [30][_LongType]<! !_PrimitiveShared @ !>
+		+ StackBegin()
+		> rule: _Expr -> [60][Module]<! !_Expr @ !>
+			+ StackBegin()
+		> rule: _Expr1 -> [55][_Expr]<! !_Expr1 @ !>
+			+ StackBegin()
+		> rule: _Expr0 -> [49][_Expr1]<! !_Expr0 @ !>
+			+ StackBegin()
+		> rule: _LongType -> [39][_Expr0]< _LongType @ "{" { _Expr ; "," } "}" >
+			+ StackBegin()
+			+ StackSlot(0)
+	leftrec -> [41][_Expr0]<! !_PrimitiveShared @ !>
+		+ StackBegin()
+		> rule: _Expr -> [60][Module]<! !_Expr @ !>
+			+ StackBegin()
+		> rule: _Expr1 -> [55][_Expr]<! !_Expr1 @ !>
+			+ StackBegin()
+		> rule: _Expr0 -> [49][_Expr1]<! !_Expr0 @ !>
+			+ StackBegin()
+```
+
+should actually looks like
+
+```
+[57][Module] BEGIN [pm-cr-rule: _PrimitiveShared]
+[RULE: 8]
+	leftrec -> [61][Module]<! !_LongType @ !>
+		+ StackBegin()
+	leftrec -> [30][_LongType]<! !_PrimitiveShared @ !>
+		+ StackBegin()
+		> rule: _Expr -> [60][Module]<! !_Expr @ !>
+			+ StackBegin()
+		> rule: _Expr1 -> [55][_Expr]<! !_Expr1 @ !>
+			+ StackBegin()
+		> rule: _Expr0 -> [49][_Expr1]<! !_Expr0 @ !>
+			+ StackBegin()
+		> rule: _LongType -> [39][_Expr0]< _LongType @ "{" { _Expr ; "," } "}" >
+			+ StackBegin()
+			+ StackSlot(0)
+	leftrec -> [60][Module]<! !_Expr @ !>
+		+ StackBegin()
+```
+
+and merge leftrec with consecutive ending:
+
+```
+[57][Module] BEGIN [pm-cr-rule: _PrimitiveShared]
+[RULE: 8]
+	ending -> [59][Module] END [ENDING]
+		+ StackEnd()
+	leftrec -> [30][_LongType]<! !_PrimitiveShared @ !>
+		+ StackBegin()
+		> rule: _Expr -> [60][Module]<! !_Expr @ !>
+			+ StackBegin()
+		> rule: _Expr1 -> [55][_Expr]<! !_Expr1 @ !>
+			+ StackBegin()
+		> rule: _Expr0 -> [49][_Expr1]<! !_Expr0 @ !>
+			+ StackBegin()
+		> rule: _LongType -> [39][_Expr0]< _LongType @ "{" { _Expr ; "," } "}" >
+			+ StackBegin()
+			+ StackSlot(0)
+	ending -> [59][Module] END [ENDING]
+		+ StackEnd()
+```
+
+therefore two transitions are mergable
+
 ## Features to Add
 
 - Extensible tokens, for example, recognize `R"[^\s(]\(` and invoke a callback function to determine the end of the string.
