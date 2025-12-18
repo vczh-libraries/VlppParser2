@@ -844,6 +844,24 @@ SyntaxSymbolManager::PrefixMergeCrossReference_AccumulatedEdges
 					}
 				}
 
+
+#ifdef LOG_DECISION_MAKING
+				for (auto [edges, index] : indexed(accumulatedEdgesList))
+				{
+					LOG(L"    ");
+					for (auto [edge, edgeIndex] : indexed(*edges.Obj()))
+					{
+						if (edgeIndex > 0) LOG(L" -> ");
+						if (edgeIndex == accumulatedSizes[index])
+						{
+							LOG(L"| ");
+						}
+						LOG(edge->input.rule->Name());
+					}
+					LOGL(L"");
+				}
+#endif
+
 				if (accumulatedEdgesList.Count() > 1)
 				{
 					// newState labeling [pm-cr] is made if there are multiple choices
@@ -976,16 +994,6 @@ SyntaxSymbolManager::PrefixMergeCrossReference_Apply
 						auto pmRule = pmai.ruleToEdges.Keys()[i];
 #ifdef LOG_DECISION_MAKING
 						LOGL(L"  [RULE] " + pmRule->Name() + L" :");
-						for (auto edges : pmai.ruleToEdges.GetByIndex(i))
-						{
-							LOG(L"    ");
-							for (auto [edge, index] : indexed(*edges.Obj()))
-							{
-								if (index > 0) LOG(L" -> ");
-								LOG(edge->input.rule->Name());
-							}
-							LOGL(L"");
-						}
 #endif
 						auto&& accumulatedEdgesList = pmai.ruleToEdges.GetByIndex(i);
 						auto [newState, newEdge] = PrefixMergeCrossReference_AccumulatedEdges(currentState, accumulatedEdgesList, ic);
@@ -1001,16 +1009,6 @@ SyntaxSymbolManager::PrefixMergeCrossReference_Apply
 						auto [pmToken, condition] = pmai.tokenToEdges.Keys()[i];
 #ifdef LOG_DECISION_MAKING
 						LOG(L"  [TOKEN] " + (condition ? condition.Value() : itow(pmToken)));
-						for (auto edges : pmai.ruleToEdges.GetByIndex(i))
-						{
-							LOG(L"    ");
-							for (auto [edge, index] : indexed(*edges.Obj()))
-							{
-								if (index > 0) LOG(L" -> ");
-								LOG(edge->input.rule->Name());
-							}
-							LOGL(L"");
-						}
 #endif
 						auto&& accumulatedEdgesList = pmai.tokenToEdges.GetByIndex(i);
 						auto [newState, newEdge] = PrefixMergeCrossReference_AccumulatedEdges(currentState, accumulatedEdgesList, ic);
