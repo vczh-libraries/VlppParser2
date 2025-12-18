@@ -1,0 +1,131 @@
+﻿================ EXECUTION STEPS ================
+[0]: 0@0 - 10@0
+
+==================== TRACES =====================
+
++-------------------------+
+| [0]: <Start>            |
+| [62][ExprModule] BEGIN  |
+| [AST-INSTRUCTIONS]:     |
+| [SUCCESORS 1-1]: [1]    |
++-------------------------+
+[0]
+ |
+ +
+ |
+[0]
+++====================================================================================++
+|| [1]: {ID} Name                                                                     ||
+|| [2][_Name]< ID @ >                                                                 ||
+|| [AST-INSTRUCTIONS]:                                                                ||
+||   + StackBegin()                                                                   ||
+||   + Token(0)                                                                       ||
+|| [RETURN STACK]:                                                                    ||
+||   [4][0][0]: _Name -> [8][_PrimitiveShared]<! !_Name @ !>                          ||
+||   [3][9][0]: _PrimitiveShared -> [33][_Expr0] BEGIN [pm-cr-rule: _PrimitiveShared] ||
+||   [2][5][0]: _Expr0 -> [49][_Expr1]<! !_Expr0 @ !>                                 ||
+||   [1][4][0]: _Expr1 -> [55][_Expr]<! !_Expr1 @ !>                                  ||
+||   [0][24][0]: _Expr -> [64][ExprModule]<! !_Expr @ !>                              ||
+|| [PREDECESSORS 0-0]: [0]                                                            ||
+|| [SUCCESORS 2-2]: [2]                                                               ||
+++====================================================================================++
+|
++
+|
++------------------------------------------------------------------------------------+
+| [2]: <Ending>                                                                      |
+| [8][_PrimitiveShared]<! !_Name @ !>                                                |
+| [AST-INSTRUCTIONS]:                                                                |
+|   + CreateObject(Name)                                                             |
+|   + Field(Name::name, 0)                                                           |
+|   + StackEnd()                                                                     |
+|   > StackBegin()                                                                   |
+| [RETURN STACK]:                                                                    |
+|   [3][9][0]: _PrimitiveShared -> [33][_Expr0] BEGIN [pm-cr-rule: _PrimitiveShared] |
+|   [2][5][0]: _Expr0 -> [49][_Expr1]<! !_Expr0 @ !>                                 |
+|   [1][4][0]: _Expr1 -> [55][_Expr]<! !_Expr1 @ !>                                  |
+|   [0][24][0]: _Expr -> [64][ExprModule]<! !_Expr @ !>                              |
+| [PREDECESSORS 1-1]: [1]                                                            |
+| [SUCCESORS 3-3]: [3]                                                               |
++------------------------------------------------------------------------------------+
+|
++
+|
++-------------------------------------------------------+
+| [3]: <Ending>                                         |
+| [33][_Expr0] BEGIN [pm-cr-rule: _PrimitiveShared]     |
+| [AST-INSTRUCTIONS]:                                   |
+|   + StackEnd()                                        |
+| [RETURN STACK]:                                       |
+|   [2][5][0]: _Expr0 -> [49][_Expr1]<! !_Expr0 @ !>    |
+|   [1][4][0]: _Expr1 -> [55][_Expr]<! !_Expr1 @ !>     |
+|   [0][24][0]: _Expr -> [64][ExprModule]<! !_Expr @ !> |
+| [PREDECESSORS 2-2]: [2]                               |
+| [SUCCESORS 6-6]: [6]                                  |
++-------------------------------------------------------+
+|
++
+|
++-------------------------------------------------------+
+| [6]: <Leftrec>                                        |
+| [41][_Expr0]<! !_PrimitiveShared @ !>                 |
+| [AST-INSTRUCTIONS]:                                   |
+|   + StackBegin()                                      |
+| [RETURN STACK]:                                       |
+|   [2][5][0]: _Expr0 -> [49][_Expr1]<! !_Expr0 @ !>    |
+|   [1][4][0]: _Expr1 -> [55][_Expr]<! !_Expr1 @ !>     |
+|   [0][24][0]: _Expr -> [64][ExprModule]<! !_Expr @ !> |
+| [PREDECESSORS 3-3]: [3]                               |
+| [SUCCESORS 7-7]: [7]                                  |
++-------------------------------------------------------+
+|
++
+|
++-------------------------------------------------------+
+| [7]: <Ending>                                         |
+| [49][_Expr1]<! !_Expr0 @ !>                           |
+| [AST-INSTRUCTIONS]:                                   |
+|   + StackEnd()                                        |
+|   > StackBegin()                                      |
+| [RETURN STACK]:                                       |
+|   [1][4][0]: _Expr1 -> [55][_Expr]<! !_Expr1 @ !>     |
+|   [0][24][0]: _Expr -> [64][ExprModule]<! !_Expr @ !> |
+| [PREDECESSORS 6-6]: [6]                               |
+| [SUCCESORS 8-8]: [8]                                  |
++-------------------------------------------------------+
+|
++
+|
++-------------------------------------------------------+
+| [8]: <Ending>                                         |
+| [55][_Expr]<! !_Expr1 @ !>                            |
+| [AST-INSTRUCTIONS]:                                   |
+|   + StackEnd()                                        |
+|   > StackBegin()                                      |
+| [RETURN STACK]:                                       |
+|   [0][24][0]: _Expr -> [64][ExprModule]<! !_Expr @ !> |
+| [PREDECESSORS 7-7]: [7]                               |
+| [SUCCESORS 9-9]: [9]                                  |
++-------------------------------------------------------+
+|
++
+|
++--------------------------------+
+| [9]: <Ending>                  |
+| [64][ExprModule]<! !_Expr @ !> |
+| [AST-INSTRUCTIONS]:            |
+|   + StackEnd()                 |
+|   > StackBegin()               |
+| [PREDECESSORS 8-8]: [8]        |
+| [SUCCESORS 10-10]: [10]        |
++--------------------------------+
+|
++
+|
++-------------------------------+
+| [10]: <Ending>                |
+| [63][ExprModule] END [ENDING] |
+| [AST-INSTRUCTIONS]:           |
+|   + StackEnd()                |
+| [PREDECESSORS 9-9]: [9]       |
++-------------------------------+

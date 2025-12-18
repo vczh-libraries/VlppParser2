@@ -401,7 +401,7 @@ TEST_FILE
 	ENABLE_FEATURE(Pwa, pwa);
 	ENABLE_FEATURE(Pwl, pwl);
 
-	//ENABLE_PARSER(PrefixMerge5_Pm,			prefixmerge5_pm,			TypeOrExpr,		L"TestCase_Cpp/Basic", L"TestCase_Cpp/Ambiguous2", L"TestCase_Cpp/CtorExpr");
+	ENABLE_PARSER(PrefixMerge5_Pm,			prefixmerge5_pm,			TypeOrExpr,		L"TestCase_Cpp/Basic", L"TestCase_Cpp/Ambiguous2", L"TestCase_Cpp/CtorExpr");
 	//ENABLE_PARSER(PrefixMerge6_Pm2,			prefixmerge6_pm2,			TypeOrExpr,		L"TestCase_Cpp/Basic", L"TestCase_Cpp/Ambiguous2", L"TestCase_Cpp/CtorExpr", L"TestCase_Cpp/ThrowComma");
 	//ENABLE_PARSER(PrefixMerge7_PmSwitch,		prefixmerge7_pmswitch,		TypeOrExpr,		L"TestCase_Cpp/Basic", L"TestCase_Cpp/Ambiguous2", L"TestCase_Cpp/CtorExpr", L"TestCase_Cpp/ThrowComma", L"TestCase_Cpp/Generic");
 	//ENABLE_PARSER(PrefixMerge8_PmVariadic,	prefixmerge8_pmvariadic,	TypeOrExpr,		L"TestCase_Cpp/Basic", L"TestCase_Cpp/Ambiguous2", L"TestCase_Cpp/CtorExpr", L"TestCase_Cpp/Variadic");
