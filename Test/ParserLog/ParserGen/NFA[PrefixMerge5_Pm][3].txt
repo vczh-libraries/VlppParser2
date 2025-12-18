@@ -368,11 +368,6 @@
 
 [32][_Expr0] BEGIN 
 [RULE: 5]
- -> [39][_Expr0]< _LongType @ "{" { _Expr ; "," } "}" >
-		+ StackBegin()
-		+ StackSlot(0)
- -> [41][_Expr0]<! !_PrimitiveShared @ !>
-		+ StackBegin()
 	token: "(" -> [18][_PrimitiveExprOnly]<! "(" @ !_Expr ")" !>
 		+ StackBegin()
 		+ Token(0)
@@ -769,10 +764,6 @@
 
 [56][Module] BEGIN 
 [RULE: 8]
- -> [60][Module]<! !_Expr @ !>
-		+ StackBegin()
- -> [61][Module]<! !_LongType @ !>
-		+ StackBegin()
 	token: "(" -> [18][_PrimitiveExprOnly]<! "(" @ !_Expr ")" !>
 		+ StackBegin()
 		+ Token(0)

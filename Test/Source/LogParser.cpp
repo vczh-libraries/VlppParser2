@@ -116,6 +116,8 @@ FilePath LogSyntaxWithPath(
 				}
 				writer.WriteString(L"\trule: " + edge->input.rule->Name());
 				break;
+			case EdgeInputType::PrefixMergeDiscardedRule:
+				continue;
 			default:;
 			}
 

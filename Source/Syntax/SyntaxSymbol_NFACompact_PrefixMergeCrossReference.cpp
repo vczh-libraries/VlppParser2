@@ -810,6 +810,7 @@ SyntaxSymbolManager::PrefixMergeCrossReference_AccumulatedEdges
 				{
 					if (edge->input.type != EdgeInputType::Rule) return false;
 					if (edge->input.ruleType != automaton::ReturnRuleType::Reuse) return false;
+					if (edge->competitions.Count() != 0) return false;
 					if (edge->insAfterInput.Count() != 1) return false;
 					if (edge->insAfterInput[0].type != AstInsType::StackBegin) return false;
 
