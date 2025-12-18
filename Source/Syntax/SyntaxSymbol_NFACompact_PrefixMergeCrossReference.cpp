@@ -856,7 +856,7 @@ SyntaxSymbolManager::PrefixMergeCrossReference_AccumulatedEdges
 				ic.createdEdges.Add(newEdge);
 
 				SortedList<WString> contStateLabels;
-				Group<StateSymbol*, EdgeSymbol*> createdContEdges;
+				Group<Pair<StateSymbol*, StateSymbol*>, EdgeSymbol*> createdContEdges;
 				for (auto [edges, index] : indexed(accumulatedEdgesList))
 				{
 					auto&& edgeList = *edges.Obj();
@@ -900,7 +900,24 @@ SyntaxSymbolManager::PrefixMergeCrossReference_AccumulatedEdges
 									}
 								}
 
-								createdContEdges.Add(contState.Obj(), newContEdge.Obj());
+								auto key = Pair(newContEdge->From(), newContEdge->To());
+								vint index = createdContEdges.Keys().IndexOf(key);
+								if (index != -1)
+								{
+									for (auto created : createdContEdges.GetByIndex(index))
+									{
+										if (created->input != newContEdge->input) continue;
+										if (CompareEnumerable(created->competitions, newContEdge->competitions) != 0) continue;
+										if (CompareEnumerable(created->insAfterInput, newContEdge->insAfterInput) != 0) continue;
+										if (CompareEnumerable(created->returnEdges, newContEdge->returnEdges) != 0) continue;
+
+										newContEdge->From()->outEdges.Remove(newContEdge.Obj());
+										newContEdge->To()->inEdges.Remove(newContEdge.Obj());
+										return;
+									}
+								}
+
+								createdContEdges.Add(key, newContEdge.Obj());
 								ic.createdEdges.Add(newContEdge);
 							};
 

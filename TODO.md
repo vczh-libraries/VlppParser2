@@ -88,18 +88,6 @@ Or we are getting this
 			+ StackSlot(0)
 ```
 
-The following needs to merge
-```
-[59][Module] BEGIN [pm-cr-rule: _PrimitiveShared]
-[RULE: 8]
-	ending -> [63][Module] END [ENDING]
-		+ StackBegin()
-		+ StackEnd()
-	ending -> [63][Module] END [ENDING]
-		+ StackBegin()
-		+ StackEnd()
-```
-
 ## Features to Add
 
 - Extensible tokens, for example, recognize `R"[^\s(]\(` and invoke a callback function to determine the end of the string.
