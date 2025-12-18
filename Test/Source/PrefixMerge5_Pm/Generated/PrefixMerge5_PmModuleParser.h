@@ -24,8 +24,8 @@ namespace prefixmerge5_pm
 		_Expr1 = 45,
 		_Expr = 53,
 		Module = 59,
-		ExprModule = 74,
-		TypeModule = 77,
+		ExprModule = 76,
+		TypeModule = 79,
 	};
 
 	const wchar_t* ModuleParserRuleName(vl::vint index);

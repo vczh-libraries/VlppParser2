@@ -854,7 +854,7 @@ SyntaxSymbolManager::PrefixMergeCrossReference_AccumulatedEdges
 				auto newEdge = Ptr(new EdgeSymbol(fromState, newState.Obj()));
 				ic.createdEdges.Add(newEdge);
 
-				SortedList<EdgeSymbol*> visitedEdges;
+				SortedList<WString> contStateLabels;
 				for (auto [edges, index] : indexed(accumulatedEdgesList))
 				{
 					auto&& edgeList = *edges.Obj();
@@ -862,8 +862,6 @@ SyntaxSymbolManager::PrefixMergeCrossReference_AccumulatedEdges
 					for (vint i = edgeList.Count(); i >= accSize && i > 0; i--)
 					{
 						auto lastEdge = edgeList[i - 1];
-						if (visitedEdges.Contains(lastEdge)) continue;
-						visitedEdges.Add(lastEdge);
 
 						Ptr<StateSymbol> contState;
 						auto lastState = lastEdge->To();
@@ -902,13 +900,17 @@ SyntaxSymbolManager::PrefixMergeCrossReference_AccumulatedEdges
 
 							if (!contState)
 							{
-								contState = Ptr(new StateSymbol(fromState->Rule()));
-								ic.createdStates.Add(contState);
-								contState->label = fromState->label + L" [pm-cr-acc]";
+								auto label = fromState->label + L" [pm-cr-acc]";
 								for (vint j = 0; j < i; j++)
 								{
-									contState->label += L" " + edgeList[j]->input.rule->Name();
+									label += L" " + edgeList[j]->input.rule->Name();
 								}
+								if (contStateLabels.Contains(label)) continue;
+								contStateLabels.Add(label);
+
+								contState = Ptr(new StateSymbol(fromState->Rule()));
+								ic.createdStates.Add(contState);
+								contState->label = label;
 
 								auto lrEdge = Ptr(new EdgeSymbol(newState.Obj(), contState.Obj()));
 								ic.createdEdges.Add(lrEdge);
