@@ -856,6 +856,7 @@ SyntaxSymbolManager::PrefixMergeCrossReference_AccumulatedEdges
 				ic.createdEdges.Add(newEdge);
 
 				SortedList<WString> contStateLabels;
+				Group<StateSymbol*, EdgeSymbol*> createdContEdges;
 				for (auto [edges, index] : indexed(accumulatedEdgesList))
 				{
 					auto&& edgeList = *edges.Obj();
@@ -881,7 +882,6 @@ SyntaxSymbolManager::PrefixMergeCrossReference_AccumulatedEdges
 							auto AddNewContEdge = [&](StateSymbol* contFromState, bool useLastEdgeContent, bool useReturnEdges)
 							{
 								auto newContEdge = Ptr(new EdgeSymbol(contFromState, contEdge->To()));
-								ic.createdEdges.Add(newContEdge);
 
 								newContEdge->input = contEdge->input;
 								if (useLastEdgeContent)
@@ -899,6 +899,9 @@ SyntaxSymbolManager::PrefixMergeCrossReference_AccumulatedEdges
 										newContEdge->returnEdges.Add(edgeList[j]);
 									}
 								}
+
+								createdContEdges.Add(contState.Obj(), newContEdge.Obj());
+								ic.createdEdges.Add(newContEdge);
 							};
 
 							if (i == 1)
