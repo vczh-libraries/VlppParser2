@@ -1,0 +1,232 @@
+﻿================ EXECUTION STEPS ================
+[0]: 0@0 - 19@3
+
+==================== TRACES =====================
+
++----------------------+
+| [0]: <Start>         |
+| [17][Module] BEGIN   |
+| [AST-INSTRUCTIONS]:  |
+| [SUCCESORS 1-1]: [1] |
++----------------------+
+[0]
+ |
+ +
+ |
+[0]
+++=========================================================++
+|| [1]: {INT} int                                          ||
+|| [2][_Int]< "int" @ >                                    ||
+|| [AST-INSTRUCTIONS]:                                     ||
+||   + StackBegin()                                        ||
+||   + Token(0)                                            ||
+|| [RETURN STACK]:                                         ||
+||   [2][0][0]: _Int -> [5][_IntItem]<! !_Int @ !>         ||
+||   [1][1][0]: _IntItem -> [7][_Item] BEGIN [pm-lr]       ||
+||   [0][2][0]: _Item -> [19][Module]< _Item @ { _Item } > ||
+|| [PREDECESSORS 0-0]: [0]                                 ||
+|| [SUCCESORS 2-2]: [2]                                    ||
+++=========================================================++
+|
++
+|
++---------------------------------------------------------+
+| [2]: <Ending>                                           |
+| [5][_IntItem]<! !_Int @ !>                              |
+| [AST-INSTRUCTIONS]:                                     |
+|   + CreateObject(IntItem)                               |
+|   + StackEnd()                                          |
+|   > StackBegin()                                        |
+| [RETURN STACK]:                                         |
+|   [1][1][0]: _IntItem -> [7][_Item] BEGIN [pm-lr]       |
+|   [0][2][0]: _Item -> [19][Module]< _Item @ { _Item } > |
+| [PREDECESSORS 1-1]: [1]                                 |
+| [SUCCESORS 3-3]: [3]                                    |
++---------------------------------------------------------+
+|
++
+|
++---------------------------------------------------------+
+| [3]: <Ending>                                           |
+| [7][_Item] BEGIN [pm-lr]                                |
+| [AST-INSTRUCTIONS]:                                     |
+|   + StackEnd()                                          |
+| [RETURN STACK]:                                         |
+|   [0][2][0]: _Item -> [19][Module]< _Item @ { _Item } > |
+| [PREDECESSORS 2-2]: [2]                                 |
+| [SUCCESORS 4-4]: [4]                                    |
++---------------------------------------------------------+
+|
++
+|
++-----------------------------------------------------------------------------+
+| [4]: <Leftrec>                                                              |
+| [16][_Item]{{< _IntItem @ "," > ; < _IntItem @ "." > ; < _IntItem @ "?" >}} |
+| [AST-INSTRUCTIONS]:                                                         |
+|   + StackBegin()                                                            |
+|   + StackSlot(0)                                                            |
+| [RETURN STACK]:                                                             |
+|   [0][2][0]: _Item -> [19][Module]< _Item @ { _Item } >                     |
+| [PREDECESSORS 3-3]: [3]                                                     |
+| [SUCCESORS 6-6]: [6]                                                        |
++-----------------------------------------------------------------------------+
+[0]
+ |
+ +
+ |
+[0]
+++=========================================================++
+|| [6]: {COMMA} ,                                          ||
+|| [10][_Item]< _IntItem "," @ >                           ||
+|| [AST-INSTRUCTIONS]:                                     ||
+||   + Token(1)                                            ||
+|| [RETURN STACK]:                                         ||
+||   [0][2][0]: _Item -> [19][Module]< _Item @ { _Item } > ||
+|| [PREDECESSORS 4-4]: [4]                                 ||
+|| [SUCCESORS 7-7]: [7]                                    ||
+++=========================================================++
+|
++
+|
++-----------------------------------+
+| [7]: <Ending>                     |
+| [19][Module]< _Item @ { _Item } > |
+| [AST-INSTRUCTIONS]:               |
+|   + CreateObject(IntCommaItem)    |
+|   + StackEnd()                    |
+|   > StackBegin()                  |
+|   > StackSlot(0)                  |
+| [PREDECESSORS 6-6]: [6]           |
+| [SUCCESORS 9-9]: [9]              |
++-----------------------------------+
+[0]
+ |
+ +
+ |
+[0]
+++=========================================================++
+|| [9]: {CLASS} class                                      ||
+|| [15][_Item]{{< "class" @ "?" > ; < "class" @ >}}        ||
+|| [AST-INSTRUCTIONS]:                                     ||
+||   + StackBegin()                                        ||
+||   + Token(0)                                            ||
+|| [RETURN STACK]:                                         ||
+||   [3][3][7]: _Item -> [20][Module]< _Item { _Item @ } > ||
+|| [PREDECESSORS 7-7]: [7]                                 ||
+|| [SUCCESORS 10-10]: [10]                                 ||
+++=========================================================++
+|
++
+|
++-----------------------------------+
+| [10]: <Ending>                    |
+| [20][Module]< _Item { _Item @ } > |
+| [AST-INSTRUCTIONS]:               |
+|   + CreateObject(ClassItem)       |
+|   + StackEnd()                    |
+|   > StackSlot(1)                  |
+| [PREDECESSORS 9-9]: [9]           |
+| [SUCCESORS 12-12]: [12]           |
++-----------------------------------+
+[0]
+ |
+ +
+ |
+[0]
+++==========================================================++
+|| [12]: {INT} int                                          ||
+|| [2][_Int]< "int" @ >                                     ||
+|| [AST-INSTRUCTIONS]:                                      ||
+||   + StackBegin()                                         ||
+||   + Token(0)                                             ||
+|| [RETURN STACK]:                                          ||
+||   [6][0][10]: _Int -> [5][_IntItem]<! !_Int @ !>         ||
+||   [5][1][10]: _IntItem -> [7][_Item] BEGIN [pm-lr]       ||
+||   [4][4][10]: _Item -> [20][Module]< _Item { _Item @ } > ||
+|| [PREDECESSORS 10-10]: [10]                               ||
+|| [SUCCESORS 13-13]: [13]                                  ||
+++==========================================================++
+|
++
+|
++----------------------------------------------------------+
+| [13]: <Ending>                                           |
+| [5][_IntItem]<! !_Int @ !>                               |
+| [AST-INSTRUCTIONS]:                                      |
+|   + CreateObject(IntItem)                                |
+|   + StackEnd()                                           |
+|   > StackBegin()                                         |
+| [RETURN STACK]:                                          |
+|   [5][1][10]: _IntItem -> [7][_Item] BEGIN [pm-lr]       |
+|   [4][4][10]: _Item -> [20][Module]< _Item { _Item @ } > |
+| [PREDECESSORS 12-12]: [12]                               |
+| [SUCCESORS 14-14]: [14]                                  |
++----------------------------------------------------------+
+|
++
+|
++----------------------------------------------------------+
+| [14]: <Ending>                                           |
+| [7][_Item] BEGIN [pm-lr]                                 |
+| [AST-INSTRUCTIONS]:                                      |
+|   + StackEnd()                                           |
+| [RETURN STACK]:                                          |
+|   [4][4][10]: _Item -> [20][Module]< _Item { _Item @ } > |
+| [PREDECESSORS 13-13]: [13]                               |
+| [SUCCESORS 15-15]: [15]                                  |
++----------------------------------------------------------+
+|
++
+|
++-----------------------------------------------------------------------------+
+| [15]: <Leftrec>                                                             |
+| [16][_Item]{{< _IntItem @ "," > ; < _IntItem @ "." > ; < _IntItem @ "?" >}} |
+| [AST-INSTRUCTIONS]:                                                         |
+|   + StackBegin()                                                            |
+|   + StackSlot(0)                                                            |
+| [RETURN STACK]:                                                             |
+|   [4][4][10]: _Item -> [20][Module]< _Item { _Item @ } >                    |
+| [PREDECESSORS 14-14]: [14]                                                  |
+| [SUCCESORS 17-17]: [17]                                                     |
++-----------------------------------------------------------------------------+
+[0]
+ |
+ +
+ |
+[0]
+++==========================================================++
+|| [17]: {DOT} .                                            ||
+|| [11][_Item]< _IntItem "." @ >                            ||
+|| [AST-INSTRUCTIONS]:                                      ||
+||   + Token(1)                                             ||
+|| [RETURN STACK]:                                          ||
+||   [4][4][10]: _Item -> [20][Module]< _Item { _Item @ } > ||
+|| [PREDECESSORS 15-15]: [15]                               ||
+|| [SUCCESORS 18-18]: [18]                                  ||
+++==========================================================++
+|
++
+|
++-----------------------------------+
+| [18]: <Ending>                    |
+| [20][Module]< _Item { _Item @ } > |
+| [AST-INSTRUCTIONS]:               |
+|   + CreateObject(IntDotItem)      |
+|   + StackEnd()                    |
+|   > StackSlot(1)                  |
+| [PREDECESSORS 17-17]: [17]        |
+| [SUCCESORS 19-19]: [19]           |
++-----------------------------------+
+|
++
+|
++----------------------------+
+| [19]: <Ending>             |
+| [18][Module] END [ENDING]  |
+| [AST-INSTRUCTIONS]:        |
+|   + CreateObject(File)     |
+|   + Field(File::items, 0)  |
+|   + Field(File::items, 1)  |
+|   + StackEnd()             |
+| [PREDECESSORS 18-18]: [18] |
++----------------------------+

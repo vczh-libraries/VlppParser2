@@ -39,6 +39,21 @@
 - [ ] Document design principal, algorithm and syntax
 - [ ] build.ps1
 
+### Failed Test Cases
+
+- `PrefixMerge6_Pm2`, `PrefixMerge7_PmSwitch`
+  - `ThrowComma/ParseModule`
+    - `Comma3`
+    - `Throw1`
+    - `Throw2`
+    - `Throw3`
+- `PrefixMerge7_PmSwitch`
+  - `Generic/ParseModule`, `Generic/ParseExprModule`
+    - `Generic_Ambiguous4`
+- `PrefixMerge8_PmVariadic`
+  - `Variadic/ParseModule`, `Variadic/ParseExprModule` and `Variadic/ParseTypeModule`
+    - `Variadic8`
+
 ## Prefix Merge
 
 In `PrefixMerge5_Pm` test case, one of a prefix merge instance is

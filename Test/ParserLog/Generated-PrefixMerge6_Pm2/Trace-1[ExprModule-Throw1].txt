@@ -1,0 +1,66 @@
+﻿================ EXECUTION STEPS ================
+[0]: 0@0 - 4@0
+
+==================== TRACES =====================
+
++-------------------------+
+| [0]: <Start>            |
+| [78][ExprModule] BEGIN  |
+| [AST-INSTRUCTIONS]:     |
+| [SUCCESORS 1-1]: [1]    |
++-------------------------+
+[0]
+ |
+ +
+ |
+[0]
+++===============================================================++
+|| [1]: {THROW} throw                                            ||
+|| [59][_ExprNoComma]< "throw" @ [ _Expr2 ] >                    ||
+|| [AST-INSTRUCTIONS]:                                           ||
+||   + StackBegin()                                              ||
+||   + Token(0)                                                  ||
+|| [RETURN STACK]:                                               ||
+||   [1][4][0]: _ExprNoComma -> [67][_Expr]<! !_ExprNoComma @ !> ||
+||   [0][28][0]: _Expr -> [80][ExprModule]<! !_Expr @ !>         ||
+|| [PREDECESSORS 0-0]: [0]                                       ||
+|| [SUCCESORS 2-2]: [2]                                          ||
+++===============================================================++
+|
++
+|
++-------------------------------------------------------+
+| [2]: <Ending>                                         |
+| [67][_Expr]<! !_ExprNoComma @ !>                      |
+| [AST-INSTRUCTIONS]:                                   |
+|   + CreateObject(ThrowExpr)                           |
+|   + Field(ThrowExpr::arg, 1)                          |
+|   + StackEnd()                                        |
+|   > StackBegin()                                      |
+| [RETURN STACK]:                                       |
+|   [0][28][0]: _Expr -> [80][ExprModule]<! !_Expr @ !> |
+| [PREDECESSORS 1-1]: [1]                               |
+| [SUCCESORS 3-3]: [3]                                  |
++-------------------------------------------------------+
+|
++
+|
++--------------------------------+
+| [3]: <Ending>                  |
+| [80][ExprModule]<! !_Expr @ !> |
+| [AST-INSTRUCTIONS]:            |
+|   + StackEnd()                 |
+|   > StackBegin()               |
+| [PREDECESSORS 2-2]: [2]        |
+| [SUCCESORS 4-4]: [4]           |
++--------------------------------+
+|
++
+|
++-------------------------------+
+| [4]: <Ending>                 |
+| [79][ExprModule] END [ENDING] |
+| [AST-INSTRUCTIONS]:           |
+|   + StackEnd()                |
+| [PREDECESSORS 3-3]: [3]       |
++-------------------------------+

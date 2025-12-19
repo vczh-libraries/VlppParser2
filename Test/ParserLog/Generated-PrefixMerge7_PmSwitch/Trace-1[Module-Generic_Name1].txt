@@ -1,0 +1,99 @@
+﻿================ EXECUTION STEPS ================
+[0]: 0@0 - 11@1
+
+==================== TRACES =====================
+
++----------------------+
+| [0]: <Start>         |
+| [80][Module] BEGIN   |
+| [AST-INSTRUCTIONS]:  |
+| [SUCCESORS 1-1]: [1] |
++----------------------+
+[0]
+ |
+ +
+ |
+[0]
+++=====================================================================================++
+|| [1]: {ID} A                                                                         ||
+|| [16][_Name]{{< ID @ ( "<" { Module_NoGT_NoComma ; "," } ">" ) > ; < ID @ >}}        ||
+|| [AST-INSTRUCTIONS]:                                                                 ||
+||   + StackBegin()                                                                    ||
+||   + Token(0)                                                                        ||
+|| [RETURN STACK]:                                                                     ||
+||   [1][4][0]: _Name -> [19][_PrimitiveShared]<! !_Name @ !>                          ||
+||   [0][37][0]: _PrimitiveShared -> [82][Module] BEGIN [pm-cr-rule: _PrimitiveShared] ||
+|| [PREDECESSORS 0-0]: [0]                                                             ||
+|| [SUCCESORS 6-6]: [6]                                                                ||
+++=====================================================================================++
+[0]
+ |
+ +
+ |
+[0]
+++=====================================================================================++
+|| [6]: {LT} <                                                                         ||
+|| [2][_Name]< ID ( "<" @ { Module_NoGT_NoComma ; "," } ">" ) >                        ||
+|| [AST-INSTRUCTIONS]:                                                                 ||
+||   + Token(1)                                                                        ||
+|| [RETURN STACK]:                                                                     ||
+||   [1][4][0]: _Name -> [19][_PrimitiveShared]<! !_Name @ !>                          ||
+||   [0][37][0]: _PrimitiveShared -> [82][Module] BEGIN [pm-cr-rule: _PrimitiveShared] ||
+|| [PREDECESSORS 1-1]: [1]                                                             ||
+|| [SUCCESORS 8-8]: [8]                                                                ||
+++=====================================================================================++
+[0]
+ |
+ +
+ |
+[0]
+++=====================================================================================++
+|| [8]: {GT} >                                                                         ||
+|| [4][_Name]< ID ( "<" { Module_NoGT_NoComma ; "," } ">" @ ) >                        ||
+|| [AST-INSTRUCTIONS]:                                                                 ||
+||   + Token(4)                                                                        ||
+|| [RETURN STACK]:                                                                     ||
+||   [1][4][0]: _Name -> [19][_PrimitiveShared]<! !_Name @ !>                          ||
+||   [0][37][0]: _PrimitiveShared -> [82][Module] BEGIN [pm-cr-rule: _PrimitiveShared] ||
+|| [PREDECESSORS 6-6]: [6]                                                             ||
+|| [SUCCESORS 9-9]: [9]                                                                ||
+++=====================================================================================++
+|
++
+|
++-------------------------------------------------------------------------------------+
+| [9]: <Ending>                                                                       |
+| [19][_PrimitiveShared]<! !_Name @ !>                                                |
+| [AST-INSTRUCTIONS]:                                                                 |
+|   + CreateObject(GenericName)                                                       |
+|   + Field(GenericName::name, 0)                                                     |
+|   + Field(GenericQualifiedName::args, 2)                                            |
+|   + StackEnd()                                                                      |
+|   > StackBegin()                                                                    |
+| [RETURN STACK]:                                                                     |
+|   [0][37][0]: _PrimitiveShared -> [82][Module] BEGIN [pm-cr-rule: _PrimitiveShared] |
+| [PREDECESSORS 8-8]: [8]                                                             |
+| [SUCCESORS 10-10]: [10]                                                             |
++-------------------------------------------------------------------------------------+
+|
++
+|
++---------------------------------------------------+
+| [10]: <Ending>                                    |
+| [82][Module] BEGIN [pm-cr-rule: _PrimitiveShared] |
+| [AST-INSTRUCTIONS]:                               |
+|   + StackEnd()                                    |
+| [PREDECESSORS 9-9]: [9]                           |
+| [SUCCESORS 11-11]: [11]                           |
++---------------------------------------------------+
+|
++
+|
++----------------------------+
+| [11]: <Ending>             |
+| [87][Module] END [ENDING]  |
+| [AST-INSTRUCTIONS]:        |
+|   + StackBegin()           |
+|   + StackEnd()             |
+| [PREDECESSORS 10-10]: [10] |
++----------------------------+
