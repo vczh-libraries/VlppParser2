@@ -1,10 +1,4 @@
-switch allow_gt;
-
-////////////////////////////////////////
-// Left Recursive (Primitives)
-////////////////////////////////////////
-
-_GenericArguments
+﻿_GenericArguments
   ::= "<" {Module_NoGT_NoComma:args ; ","} ">" as partial GenericQualifiedName
   ;
 
@@ -28,10 +22,6 @@ _PrimitiveExprOnly
   ::= "(" !_Expr ")"
   ;
 
-////////////////////////////////////////
-// Left Recursive (Types)
-////////////////////////////////////////
-
 _LongType
   ::= !_PrimitiveShared
   ::= !_PrimitiveTypeOnly
@@ -39,10 +29,6 @@ _LongType
   ::= _LongType:type "*" as PointerType
   ::= _LongType:returnType "(" {_LongType:args ; ","} ")" as FunctionType
   ;
-
-////////////////////////////////////////
-// Left Recursive (Expressions)
-////////////////////////////////////////
 
 _Expr0
   ::= !_PrimitiveShared
@@ -60,33 +46,43 @@ _Expr2
   ::= _Expr2:first "*" _Expr1:second as MulExpr
   ;
 
-_Expr3
+_Expr3_SWITCH_COMBINED : TypeOrExpr
   ::= !_Expr2
-  ::= _Expr3:first "<" _Expr2:second as LtExpr
-  ::= _Expr3:first ?(allow_gt: ">" _Expr2:second) as GtExpr
   ;
 
-_Expr4
-  ::= !_Expr3
-  ::= "throw" [_Expr3:arg] as ThrowExpr
+_Expr3_SWITCH_0allow_gt : TypeOrExpr
+  ::= _Expr3_SWITCH_0allow_gt:first "<" _Expr2:second as LtExpr
+  ::= !_Expr3_SWITCH_COMBINED
+  ;
+
+_Expr3_SWITCH_1allow_gt : TypeOrExpr
+  ::= _Expr3_SWITCH_1allow_gt:first "<" _Expr2:second as LtExpr
+  ::= _Expr3_SWITCH_1allow_gt:first ">" _Expr2:second as GtExpr
+  ::= !_Expr3_SWITCH_COMBINED
+  ;
+
+_Expr4_SWITCH_0allow_gt : TypeOrExpr
+  ::= !_Expr3_SWITCH_0allow_gt
+  ::= "throw" [_Expr3_SWITCH_0allow_gt:arg] as ThrowExpr
+  ;
+
+_Expr4_SWITCH_1allow_gt : TypeOrExpr
+  ::= !_Expr3_SWITCH_1allow_gt
+  ::= "throw" [_Expr3_SWITCH_1allow_gt:arg] as ThrowExpr
   ;
 
 _Expr_NoComma
-  ::= !(allow_gt; !_Expr4)
+  ::= !_Expr4_SWITCH_1allow_gt
   ;
 
 _Expr_NoGT_NoComma
-  ::= !(!allow_gt; !_Expr4)
+  ::= !_Expr4_SWITCH_0allow_gt
   ;
 
 _Expr
   ::= !_Expr_NoComma
   ::= _Expr:first "," _Expr_NoComma:second as CommaExpr
   ;
-
-////////////////////////////////////////
-// Left Recursive (Module)
-////////////////////////////////////////
 
 @parser Module
   ::= !_Expr
@@ -105,3 +101,4 @@ Module_NoGT_NoComma
 @parser TypeModule
   ::= !_LongType
   ;
+

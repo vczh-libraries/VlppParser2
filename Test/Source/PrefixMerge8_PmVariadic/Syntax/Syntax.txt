@@ -41,8 +41,8 @@ _LongTypeArg
   ;
 
 _LongType
-  ::= !prefix_merge(_PrimitiveShared)
-  ::= !prefix_merge(_PrimitiveTypeOnly)
+  ::= !_PrimitiveShared
+  ::= !_PrimitiveTypeOnly
   ::= _LongType:type "const" as ConstType
   ::= _LongType:type "*" as PointerType
   ::= _LongType:returnType "(" {_LongTypeArg:args ; ","} ")" as FunctionType
@@ -58,8 +58,8 @@ _ExprArg
   ;
 
 _Expr0
-  ::= !prefix_merge(_PrimitiveShared)
-  ::= !prefix_merge(_PrimitiveExprOnly)
+  ::= !_PrimitiveShared
+  ::= !_PrimitiveExprOnly
   ::= _LongType:type "{" {_ExprArg:args ; ","} "}" as CtorExpr
   ;
 

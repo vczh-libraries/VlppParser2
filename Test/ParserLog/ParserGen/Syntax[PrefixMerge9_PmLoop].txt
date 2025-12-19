@@ -1,0 +1,185 @@
+﻿{
+    "$ast": "SyntaxFile",
+    "rules": [{
+        "$ast": "Rule",
+        "attParser": "",
+        "attPublic": "",
+        "clauses": [{
+            "$ast": "CreateClause",
+            "assignments": [],
+            "syntax": {
+                "$ast": "RefSyntax",
+                "field": "",
+                "literal": "\"int\"",
+                "refType": "Literal"
+            },
+            "type": "IntItem"
+        }],
+        "name": "_Int",
+        "type": ""
+    }, {
+        "$ast": "Rule",
+        "attParser": "",
+        "attPublic": "",
+        "clauses": [{
+            "$ast": "ReuseClause",
+            "assignments": [],
+            "syntax": {
+                "$ast": "UseSyntax",
+                "name": "_Int"
+            }
+        }],
+        "name": "_IntItem",
+        "type": ""
+    }, {
+        "$ast": "Rule",
+        "attParser": "",
+        "attPublic": "",
+        "clauses": [{
+            "$ast": "ReuseClause",
+            "assignments": [],
+            "syntax": {
+                "$ast": "UseSyntax",
+                "name": "_IntItem"
+            }
+        }, {
+            "$ast": "CreateClause",
+            "assignments": [],
+            "syntax": {
+                "$ast": "SequenceSyntax",
+                "first": {
+                    "$ast": "RefSyntax",
+                    "field": "",
+                    "literal": "_IntItem",
+                    "refType": "Id"
+                },
+                "second": {
+                    "$ast": "RefSyntax",
+                    "field": "",
+                    "literal": "\",\"",
+                    "refType": "Literal"
+                }
+            },
+            "type": "IntCommaItem"
+        }, {
+            "$ast": "CreateClause",
+            "assignments": [],
+            "syntax": {
+                "$ast": "SequenceSyntax",
+                "first": {
+                    "$ast": "RefSyntax",
+                    "field": "",
+                    "literal": "_IntItem",
+                    "refType": "Id"
+                },
+                "second": {
+                    "$ast": "RefSyntax",
+                    "field": "",
+                    "literal": "\".\"",
+                    "refType": "Literal"
+                }
+            },
+            "type": "IntDotItem"
+        }, {
+            "$ast": "CreateClause",
+            "assignments": [],
+            "syntax": {
+                "$ast": "SequenceSyntax",
+                "first": {
+                    "$ast": "RefSyntax",
+                    "field": "",
+                    "literal": "_IntItem",
+                    "refType": "Id"
+                },
+                "second": {
+                    "$ast": "RefSyntax",
+                    "field": "",
+                    "literal": "\"?\"",
+                    "refType": "Literal"
+                }
+            },
+            "type": "IntQuestionItem"
+        }, {
+            "$ast": "CreateClause",
+            "assignments": [],
+            "syntax": {
+                "$ast": "RefSyntax",
+                "field": "",
+                "literal": "\"class\"",
+                "refType": "Literal"
+            },
+            "type": "ClassItem"
+        }, {
+            "$ast": "CreateClause",
+            "assignments": [],
+            "syntax": {
+                "$ast": "SequenceSyntax",
+                "first": {
+                    "$ast": "RefSyntax",
+                    "field": "",
+                    "literal": "\"class\"",
+                    "refType": "Literal"
+                },
+                "second": {
+                    "$ast": "RefSyntax",
+                    "field": "",
+                    "literal": "\"?\"",
+                    "refType": "Literal"
+                }
+            },
+            "type": "ClassQuestionItem"
+        }, {
+            "$ast": "CreateClause",
+            "assignments": [],
+            "syntax": {
+                "$ast": "SequenceSyntax",
+                "first": {
+                    "$ast": "RefSyntax",
+                    "field": "item",
+                    "literal": "_Item",
+                    "refType": "Id"
+                },
+                "second": {
+                    "$ast": "RefSyntax",
+                    "field": "",
+                    "literal": "\"?\"",
+                    "refType": "Literal"
+                }
+            },
+            "type": "QuestionItem"
+        }],
+        "name": "_Item",
+        "type": ""
+    }, {
+        "$ast": "Rule",
+        "attParser": "@parser",
+        "attPublic": "",
+        "clauses": [{
+            "$ast": "CreateClause",
+            "assignments": [],
+            "syntax": {
+                "$ast": "SequenceSyntax",
+                "first": {
+                    "$ast": "RefSyntax",
+                    "field": "items",
+                    "literal": "_Item",
+                    "refType": "Id"
+                },
+                "second": {
+                    "$ast": "LoopSyntax",
+                    "delimiter": null,
+                    "syntax": {
+                        "$ast": "RefSyntax",
+                        "field": "items",
+                        "literal": "_Item",
+                        "refType": "Id"
+                    }
+                }
+            },
+            "type": "File"
+        }],
+        "name": "Module",
+        "type": ""
+    }],
+    "switches": []
+}
