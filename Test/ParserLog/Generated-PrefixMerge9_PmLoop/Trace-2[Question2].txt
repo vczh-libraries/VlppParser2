@@ -1,0 +1,215 @@
+﻿+----------------------+
+| [0]: <Start>         |
+|   TraceExec: [0]     |
+|   ForwardTrace: 0    |
+| [17][Module] BEGIN   |
+| [AST-INSTRUCTIONS]:  |
+|   @                  |
+| [SUCCESORS 1-1]: [1] |
++----------------------+
+[0]
+ |
+ +
+ |
+[0]
+++=========================================================++
+|| [1]: {INT} int                                          ||
+||   TraceExec: [1]                                        ||
+||   InsExec: [0:2]                                        ||
+||   ForwardTrace: 0                                       ||
+|| [2][_Int]< "int" @ >                                    ||
+|| [AST-INSTRUCTIONS]:                                     ||
+||   @                                                     ||
+||   + StackBegin()                                        ||
+||     obj:0 : IntItem                                     ||
+||                                                         ||
+||   @ CS(0 -> -1) : [0]                                   ||
+||   + Token(0)                                            ||
+||                                                         ||
+||   @ CS(0 -> -1) : [0]                                   ||
+|| [RETURN STACK]:                                         ||
+||   [2][0][0]: _Int -> [5][_IntItem]<! !_Int @ !>         ||
+||   [1][1][0]: _IntItem -> [7][_Item] BEGIN [pm-lr]       ||
+||   [0][2][0]: _Item -> [19][Module]< _Item @ { _Item } > ||
+|| [PREDECESSORS 0-0]: [0]                                 ||
+|| [SUCCESORS 2-2]: [2]                                    ||
+++=========================================================++
+|
++
+|
++-------------------------------------------------------------------+
+| [2]: <Ending>                                                     |
+|   TraceExec: [2]                                                  |
+|   InsExec: [2:3]                                                  |
+|   ForwardTrace: 0                                                 |
+| [5][_IntItem]<! !_Int @ !>                                        |
+| [AST-INSTRUCTIONS]:                                               |
+|   @ CS(0 -> -1) : [0]                                             |
+|   + CreateObject(IntItem)                                         |
+|     obj:0 : IntItem                                               |
+|                                                                   |
+|   @ CS(0 -> -1) : [0]                                             |
+|   + StackEnd()                                                    |
+|     obj+:0 : IntItem                                              |
+|       begin:1@0, top:1@0, create!:[2@0], end:[2@1], endLref:[4@1] |
+|                                                                   |
+|   @ OS(1 -> -1) : [0]                                             |
+|   > StackBegin()                                                  |
+|     obj!:1 : IntItem                                              |
+|                                                                   |
+|   @ CS(2 -> -1) : [1] OS(1 -> -1) : [0]                           |
+| [RETURN STACK]:                                                   |
+|   [1][1][0]: _IntItem -> [7][_Item] BEGIN [pm-lr]                 |
+|   [0][2][0]: _Item -> [19][Module]< _Item @ { _Item } >           |
+| [PREDECESSORS 1-1]: [1]                                           |
+| [SUCCESORS 3-3]: [3]                                              |
++-------------------------------------------------------------------+
+|
++
+|
++-----------------------------------------------------------------------------+
+| [3]: <Ending>                                                               |
+|   TraceExec: [3]                                                            |
+|   InsExec: [5:1]                                                            |
+|   ForwardTrace: 0                                                           |
+| [7][_Item] BEGIN [pm-lr]                                                    |
+| [AST-INSTRUCTIONS]:                                                         |
+|   @ CS(2 -> -1) : [1] OS(1 -> -1) : [0]                                     |
+|   + StackEnd()                                                              |
+|     obj+:1 : IntItem                                                        |
+|       begin:2@2, top:1@0, use:[0], create!:[2@0], end!:[3@0], endLref:[4@1] |
+|                                                                             |
+|   @ OS(3 -> -1) : [1]                                                       |
+| [RETURN STACK]:                                                             |
+|   [0][2][0]: _Item -> [19][Module]< _Item @ { _Item } >                     |
+| [PREDECESSORS 2-2]: [2]                                                     |
+| [SUCCESORS 4-5]: [4][5]                                                     |
++-----------------------------------------------------------------------------+
+|
++----------------------------------------------------------------------------------+
+|                                                                                  |
++--------------------------------------------------------------+                   +-----------------------------------------------------------------------------+
+| [4]: <Leftrec>                                               |                   | [5]: <Leftrec>                                                              |
+|   TraceExec: [4]                                             |                   |   TraceExec: [7]                                                            |
+|   InsExec: [6:4]                                             |                   |   InsExec: [16:2]                                                           |
+|   ForwardTrace: 4                                            |                   |   ForwardTrace: 5                                                           |
+| [14][_Item]< _Item @ "?" >                                   |                   | [16][_Item]{{< _IntItem @ "," > ; < _IntItem @ "." > ; < _IntItem @ "?" >}} |
+| [AST-INSTRUCTIONS]:                                          |                   | [AST-INSTRUCTIONS]:                                                         |
+|   @ OS(3 -> -1) : [1]                                        |                   |   @ OS(3 -> -1) : [1]                                                       |
+|   + StackBegin()                                             |                   |   + StackBegin()                                                            |
+|     obj!:2 : IntItem                                         |                   |     obj:5 : IntQuestionItem                                                 |
+|                                                              |                   |                                                                             |
+|   @ CS(4 -> -1) : [2] OS(3 -> -1) : [1]                      |                   |   @ CS(9 -> -1) : [5] OS(3 -> -1) : [1]                                     |
+|   + StackEnd()                                               |                   |   + StackSlot(0)                                                            |
+|     obj+:2 : IntItem                                         |                   |                                                                             |
+|       begin:4@0, top:1@0, use:[1], create!:[2@0], end!:[4@1] |                   |   @ CS(9 -> -1) : [5]                                                       |
+|                                                              |                   | [RETURN STACK]:                                                             |
+|   @ OS(5 -> -1) : [2]                                        |                   |   [0][2][0]: _Item -> [19][Module]< _Item @ { _Item } >                     |
+|   + StackBegin()                                             |                   | [PREDECESSORS 3-3]: [3]                                                     |
+|     obj:3 : QuestionItem                                     |                   | [SUCCESORS 10-10]: [10]                                                     |
+|                                                              |                   +-----------------------------------------------------------------------------+
+|   @ CS(6 -> -1) : [3] OS(5 -> -1) : [2]                      |                   |
+|   + StackSlot(0)                                             |                   |
+|                                                              |                   |
+|   @ CS(6 -> -1) : [3]                                        |                   |
+| [RETURN STACK]:                                              |                   |
+|   [0][2][0]: _Item -> [19][Module]< _Item @ { _Item } >      |                   |
+| [PREDECESSORS 3-3]: [3]                                      |                   |
+| [SUCCESORS 7-7]: [7]                                         |                   |
++--------------------------------------------------------------+                   |
+[0]                                                                                [1]
+ |                                                                                  |
+ +                                                                                 ++
+ |                                                                                 |
+[0]                                                                               [1]
+++=========================================================++                     ++=========================================================++
+|| [7]: {QUESTION} ?                                       ||                     || [10]: {QUESTION} ?                                      ||
+||   TraceExec: [5]                                        ||                     ||   TraceExec: [8]                                        ||
+||   InsExec: [10:1]                                       ||                     ||   InsExec: [18:1]                                       ||
+||   ForwardTrace: 4                                       ||                     ||   ForwardTrace: 5                                       ||
+|| [13][_Item]< _Item "?" @ >                              ||                     || [12][_Item]< _IntItem "?" @ >                           ||
+|| [AST-INSTRUCTIONS]:                                     ||                     || [AST-INSTRUCTIONS]:                                     ||
+||   @ CS(6 -> -1) : [3]                                   ||                     ||   @ CS(9 -> -1) : [5]                                   ||
+||   + Token(1)                                            ||                     ||   + Token(1)                                            ||
+||                                                         ||                     ||                                                         ||
+||   @ CS(6 -> -1) : [3]                                   ||                     ||   @ CS(9 -> -1) : [5]                                   ||
+|| [RETURN STACK]:                                         ||                     || [RETURN STACK]:                                         ||
+||   [0][2][0]: _Item -> [19][Module]< _Item @ { _Item } > ||                     ||   [0][2][0]: _Item -> [19][Module]< _Item @ { _Item } > ||
+|| [PREDECESSORS 4-4]: [4]                                 ||                     || [PREDECESSORS 5-5]: [5]                                 ||
+|| [SUCCESORS 12-12]: [12]                                 ||                     || [SUCCESORS 11-11]: [11]                                 ||
+++=========================================================++                     ++=========================================================++
+|                                                                                 |
++                                                                                 +
+|                                                                                 |
++----------------------------------------------------------------------------+    +----------------------------------------------------------------------------+
+| [12]: <Ending>                                                             |    | [11]: <Ending>                                                             |
+|   TraceExec: [6]                                                           |    |   TraceExec: [9]                                                           |
+|   InsExec: [11:5]                                                          |    |   InsExec: [19:4]                                                          |
+|   ForwardTrace: 4                                                          |    |   ForwardTrace: 5                                                          |
+| [19][Module]< _Item @ { _Item } >                                          |    | [19][Module]< _Item @ { _Item } >                                          |
+| [AST-INSTRUCTIONS]:                                                        |    | [AST-INSTRUCTIONS]:                                                        |
+|   @ CS(6 -> -1) : [3]                                                      |    |   @ CS(9 -> -1) : [5]                                                      |
+|   + CreateObject(QuestionItem)                                             |    |   + CreateObject(IntQuestionItem)                                          |
+|     obj:3 : QuestionItem                                                   |    |     obj:5 : IntQuestionItem                                                |
+|                                                                            |    |                                                                            |
+|   @ CS(6 -> -1) : [3]                                                      |    |   @ CS(9 -> -1) : [5]                                                      |
+|   + Field(QuestionItem::item, 0)                                           |    |   + StackEnd()                                                             |
+|                                                                            |    |     obj+:5 : IntQuestionItem                                               |
+|   @ CS(6 -> -1) : [3]                                                      |    |       begin:5@0, top:5@0, stack:1@0, field:[1], create!:[11@0], end:[11@1] |
+|   + StackEnd()                                                             |    |                                                                            |
+|     obj+:3 : QuestionItem                                                  |    |   @ OS(10 -> -1) : [5]                                                     |
+|       begin:4@2, top:4@2, stack:1@0, field:[2], create!:[12@0], end:[12@2] |    |   > StackBegin()                                                           |
+|                                                                            |    |     obj:6 : File                                                           |
+|   @ OS(7 -> -1) : [3]                                                      |    |                                                                            |
+|   > StackBegin()                                                           |    |   @ CS(11 -> -1) : [6] OS(10 -> -1) : [5]                                  |
+|     obj:4 : File                                                           |    |   > StackSlot(0)                                                           |
+|                                                                            |    |                                                                            |
+|   @ CS(8 -> -1) : [4] OS(7 -> -1) : [3]                                    |    |   @ CS(11 -> -1) : [6]                                                     |
+|   > StackSlot(0)                                                           |    | [PREDECESSORS 10-10]: [10]                                                 |
+|                                                                            |    | [SUCCESORS 8-8]: [8]                                                       |
+|   @ CS(8 -> -1) : [4]                                                      |    +----------------------------------------------------------------------------+
+| [PREDECESSORS 7-7]: [7]                                                    |    |
+| [SUCCESORS 8-8]: [8]                                                       |    |
++----------------------------------------------------------------------------+    |
+|                                                                                 |
++---------------------------------------------------------------------------------+
+|
++----------------------------------+
+| [8]: <Merging>                   |
+| <Start>                          |
+|   TraceExec: [10]                |
+|   ForwardTrace: 8                |
+|   CommonForwardTrace: 0          |
+| [CONTEXT]: CS(12 -> -1) : [6, 4] |
++----------------------------------+
+|
++
+|
++----------------------------------------------------------------------------+
+| [9]: <Ending>                                                              |
+|   TraceExec: [11]                                                          |
+|   InsExec: [23:4]                                                          |
+|   ForwardTrace: 8                                                          |
+| [18][Module] END [ENDING]                                                  |
+| [AST-INSTRUCTIONS]:                                                        |
+|   @ CS(12 -> -1) : [6, 4]                                                  |
+|   + CreateObject(File)                                                     |
+|     obj:4 : File                                                           |
+|     obj:6 : File                                                           |
+|                                                                            |
+|   @ CS(12 -> -1) : [6, 4]                                                  |
+|   + Field(File::items, 0)                                                  |
+|                                                                            |
+|   @ CS(12 -> -1) : [6, 4]                                                  |
+|   + Field(File::items, 1)                                                  |
+|                                                                            |
+|   @ CS(12 -> -1) : [6, 4]                                                  |
+|   + StackEnd()                                                             |
+|     obj+:4 : File                                                          |
+|       begin:12@3, top:12@3, stack:1@0, field:[3], create!:[9@0], end:[9@3] |
+|     obj+:6 : File                                                          |
+|       begin:11@2, top:11@2, stack:1@0, field:[5], create!:[9@0], end:[9@3] |
+|                                                                            |
+|   @ OS(13 -> -1) : [6, 4]                                                  |
+| [PREDECESSORS 8-8]: [8]                                                    |
++----------------------------------------------------------------------------+

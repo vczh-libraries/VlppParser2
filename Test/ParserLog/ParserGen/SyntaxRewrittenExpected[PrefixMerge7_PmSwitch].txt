@@ -1,0 +1,104 @@
+﻿_GenericArguments
+  ::= "<" {Module_NoGT_NoComma:args ; ","} ">" as partial GenericQualifiedName
+  ;
+
+_Name
+  ::= ID:name as Name
+  ::= ID:name _GenericArguments as GenericName
+  ::= _Name:parent "." ID:member as MemberName
+  ::= _Name:parent "." ID:member _GenericArguments as GenericMemberName
+  ;
+
+_PrimitiveShared
+  ::= !_Name
+  ;
+
+_PrimitiveTypeOnly
+  ::= "const" _PrimitiveShared:type as ConstType
+  ::= "const" _PrimitiveTypeOnly:type as ConstType
+  ;
+
+_PrimitiveExprOnly
+  ::= "(" !_Expr ")"
+  ;
+
+_LongType
+  ::= !_PrimitiveShared
+  ::= !_PrimitiveTypeOnly
+  ::= _LongType:type "const" as ConstType
+  ::= _LongType:type "*" as PointerType
+  ::= _LongType:returnType "(" {_LongType:args ; ","} ")" as FunctionType
+  ;
+
+_Expr0
+  ::= !_PrimitiveShared
+  ::= !_PrimitiveExprOnly
+  ::= _LongType:type "{" {_Expr_NoComma:args ; ","} "}" as CtorExpr
+  ;
+
+_Expr1
+  ::= !_Expr0
+  ::= _Expr1:func "(" {_Expr_NoComma:args ; ","} ")" as CallExpr
+  ;
+
+_Expr2
+  ::= !_Expr1
+  ::= _Expr2:first "*" _Expr1:second as MulExpr
+  ;
+
+_Expr3_SWITCH_COMBINED : TypeOrExpr
+  ::= !_Expr2
+  ;
+
+_Expr3_SWITCH_0allow_gt : TypeOrExpr
+  ::= _Expr3_SWITCH_0allow_gt:first "<" _Expr2:second as LtExpr
+  ::= !_Expr3_SWITCH_COMBINED
+  ;
+
+_Expr3_SWITCH_1allow_gt : TypeOrExpr
+  ::= _Expr3_SWITCH_1allow_gt:first "<" _Expr2:second as LtExpr
+  ::= _Expr3_SWITCH_1allow_gt:first ">" _Expr2:second as GtExpr
+  ::= !_Expr3_SWITCH_COMBINED
+  ;
+
+_Expr4_SWITCH_0allow_gt : TypeOrExpr
+  ::= !_Expr3_SWITCH_0allow_gt
+  ::= "throw" [_Expr3_SWITCH_0allow_gt:arg] as ThrowExpr
+  ;
+
+_Expr4_SWITCH_1allow_gt : TypeOrExpr
+  ::= !_Expr3_SWITCH_1allow_gt
+  ::= "throw" [_Expr3_SWITCH_1allow_gt:arg] as ThrowExpr
+  ;
+
+_Expr_NoComma
+  ::= !_Expr4_SWITCH_1allow_gt
+  ;
+
+_Expr_NoGT_NoComma
+  ::= !_Expr4_SWITCH_0allow_gt
+  ;
+
+_Expr
+  ::= !_Expr_NoComma
+  ::= _Expr:first "," _Expr_NoComma:second as CommaExpr
+  ;
+
+@parser Module
+  ::= !_Expr
+  ::= !_LongType
+  ;
+
+Module_NoGT_NoComma
+  ::= !_Expr_NoGT_NoComma
+  ::= !_LongType
+  ;
+
+@parser ExprModule
+  ::= !_Expr
+  ;
+
+@parser TypeModule
+  ::= !_LongType
+  ;
+

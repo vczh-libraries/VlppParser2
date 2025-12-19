@@ -1,0 +1,944 @@
+﻿[0][_GenericArgument]< @ Module "..." >
+[RULE: 0]
+	rule: Module -> [3][_GenericArgument]< Module @ "..." >
+		+ StackSlot(0)
+
+[1][_GenericArgument]< Module "..." > @[ENDING]
+[RULE: 0]
+
+[2][_GenericArgument]< Module "..." @ >
+[RULE: 0]
+	epsilon -> [1][_GenericArgument]< Module "..." > @[ENDING]
+		+ CreateObject(VariadicArgument)
+		+ Field(VariadicArgument::operand, 0)
+		+ StackEnd()
+
+[3][_GenericArgument]< Module @ "..." >
+[RULE: 0]
+	epsilon -> [4][_GenericArgument]< Module @ "..." >
+
+[4][_GenericArgument]< Module @ "..." >
+[RULE: 0]
+	token: "..." -> [2][_GenericArgument]< Module "..." @ >
+		+ Token(1)
+
+[5][_GenericArgument]<! !Module !> @[ENDING]
+[RULE: 0]
+
+[6][_GenericArgument]<! !Module @ !>
+[RULE: 0]
+	epsilon -> [5][_GenericArgument]<! !Module !> @[ENDING]
+		+ StackEnd()
+
+[7][_GenericArgument]<! @ !Module !>
+[RULE: 0]
+	rule: Module -> [6][_GenericArgument]<! !Module @ !>
+
+[8][_GenericArgument]@ < Module "..." >
+[RULE: 0]
+	epsilon -> [0][_GenericArgument]< @ Module "..." >
+		+ StackBegin()
+
+[9][_GenericArgument]@ <! !Module !>
+[RULE: 0]
+	epsilon -> [7][_GenericArgument]<! @ !Module !>
+		+ StackBegin()
+
+[10][_Name]< @ ID ( "<" { _GenericArgument ; "," } ">" ) >
+[RULE: 2]
+	token: ID -> [28][_Name]< ID @ ( "<" { _GenericArgument ; "," } ">" ) >
+		+ Token(0)
+
+[11][_Name]< @ ID >
+[RULE: 2]
+	token: ID -> [29][_Name]< ID @ >
+		+ Token(0)
+
+[12][_Name]< @ _Name "." ID ( "<" { _GenericArgument ; "," } ">" ) >
+[RULE: 2]
+	rule: _Name -> [51][_Name]< _Name @ "." ID ( "<" { _GenericArgument ; "," } ">" ) >
+		+ StackSlot(0)
+
+[13][_Name]< @ _Name "." ID >
+[RULE: 2]
+	rule: _Name -> [53][_Name]< _Name @ "." ID >
+		+ StackSlot(0)
+
+[14][_Name]< ID ( "<" @ { _GenericArgument ; "," } ">" ) >
+[RULE: 2]
+	epsilon -> [15][_Name]< ID ( "<" @ { _GenericArgument ; "," } ">" ) >
+
+[15][_Name]< ID ( "<" @ { _GenericArgument ; "," } ">" ) >
+[RULE: 2]
+	epsilon -> [16][_Name]< ID ( "<" { @ _GenericArgument ; "," } ">" ) >
+	epsilon -> [22][_Name]< ID ( "<" { _GenericArgument ; "," } @ ">" ) >
+
+[16][_Name]< ID ( "<" { @ _GenericArgument ; "," } ">" ) >
+[RULE: 2]
+	rule: _GenericArgument -> [24][_Name]< ID ( "<" { _GenericArgument @ ; "," } ">" ) >
+		+ StackSlot(2)
+
+[17][_Name]< ID ( "<" { _GenericArgument ; "," @ } ">" ) >
+[RULE: 2]
+	epsilon -> [16][_Name]< ID ( "<" { @ _GenericArgument ; "," } ">" ) >
+
+[18][_Name]< ID ( "<" { _GenericArgument ; "," } ">" ) > @[ENDING]
+[RULE: 2]
+
+[19][_Name]< ID ( "<" { _GenericArgument ; "," } ">" ) @ >
+[RULE: 2]
+	epsilon -> [18][_Name]< ID ( "<" { _GenericArgument ; "," } ">" ) > @[ENDING]
+		+ CreateObject(GenericName)
+		+ Field(GenericName::name, 0)
+		+ Field(GenericQualifiedName::args, 2)
+		+ StackEnd()
+
+[20][_Name]< ID ( "<" { _GenericArgument ; "," } ">" @ ) >
+[RULE: 2]
+	epsilon -> [19][_Name]< ID ( "<" { _GenericArgument ; "," } ">" ) @ >
+
+[21][_Name]< ID ( "<" { _GenericArgument ; "," } @ ">" ) >
+[RULE: 2]
+	token: ">" -> [20][_Name]< ID ( "<" { _GenericArgument ; "," } ">" @ ) >
+		+ Token(4)
+
+[22][_Name]< ID ( "<" { _GenericArgument ; "," } @ ">" ) >
+[RULE: 2]
+	epsilon -> [21][_Name]< ID ( "<" { _GenericArgument ; "," } @ ">" ) >
+
+[23][_Name]< ID ( "<" { _GenericArgument ; @ "," } ">" ) >
+[RULE: 2]
+	token: "," -> [17][_Name]< ID ( "<" { _GenericArgument ; "," @ } ">" ) >
+		+ Token(3)
+
+[24][_Name]< ID ( "<" { _GenericArgument @ ; "," } ">" ) >
+[RULE: 2]
+	epsilon -> [22][_Name]< ID ( "<" { _GenericArgument ; "," } @ ">" ) >
+	epsilon -> [23][_Name]< ID ( "<" { _GenericArgument ; @ "," } ">" ) >
+
+[25][_Name]< ID ( @ "<" { _GenericArgument ; "," } ">" ) >
+[RULE: 2]
+	token: "<" -> [14][_Name]< ID ( "<" @ { _GenericArgument ; "," } ">" ) >
+		+ Token(1)
+
+[26][_Name]< ID > @[ENDING]
+[RULE: 2]
+
+[27][_Name]< ID @ ( "<" { _GenericArgument ; "," } ">" ) >
+[RULE: 2]
+	epsilon -> [25][_Name]< ID ( @ "<" { _GenericArgument ; "," } ">" ) >
+
+[28][_Name]< ID @ ( "<" { _GenericArgument ; "," } ">" ) >
+[RULE: 2]
+	epsilon -> [27][_Name]< ID @ ( "<" { _GenericArgument ; "," } ">" ) >
+
+[29][_Name]< ID @ >
+[RULE: 2]
+	epsilon -> [26][_Name]< ID > @[ENDING]
+		+ CreateObject(Name)
+		+ Field(Name::name, 0)
+		+ StackEnd()
+
+[30][_Name]< _Name "." @ ID ( "<" { _GenericArgument ; "," } ">" ) >
+[RULE: 2]
+	epsilon -> [31][_Name]< _Name "." @ ID ( "<" { _GenericArgument ; "," } ">" ) >
+
+[31][_Name]< _Name "." @ ID ( "<" { _GenericArgument ; "," } ">" ) >
+[RULE: 2]
+	token: ID -> [47][_Name]< _Name "." ID @ ( "<" { _GenericArgument ; "," } ">" ) >
+		+ Token(2)
+
+[32][_Name]< _Name "." @ ID >
+[RULE: 2]
+	epsilon -> [33][_Name]< _Name "." @ ID >
+
+[33][_Name]< _Name "." @ ID >
+[RULE: 2]
+	token: ID -> [49][_Name]< _Name "." ID @ >
+		+ Token(2)
+
+[34][_Name]< _Name "." ID ( "<" @ { _GenericArgument ; "," } ">" ) >
+[RULE: 2]
+	epsilon -> [36][_Name]< _Name "." ID ( "<" { @ _GenericArgument ; "," } ">" ) >
+	epsilon -> [42][_Name]< _Name "." ID ( "<" { _GenericArgument ; "," } @ ">" ) >
+
+[35][_Name]< _Name "." ID ( "<" @ { _GenericArgument ; "," } ">" ) >
+[RULE: 2]
+	epsilon -> [34][_Name]< _Name "." ID ( "<" @ { _GenericArgument ; "," } ">" ) >
+
+[36][_Name]< _Name "." ID ( "<" { @ _GenericArgument ; "," } ">" ) >
+[RULE: 2]
+	rule: _GenericArgument -> [44][_Name]< _Name "." ID ( "<" { _GenericArgument @ ; "," } ">" ) >
+		+ StackSlot(4)
+
+[37][_Name]< _Name "." ID ( "<" { _GenericArgument ; "," @ } ">" ) >
+[RULE: 2]
+	epsilon -> [36][_Name]< _Name "." ID ( "<" { @ _GenericArgument ; "," } ">" ) >
+
+[38][_Name]< _Name "." ID ( "<" { _GenericArgument ; "," } ">" ) > @[ENDING]
+[RULE: 2]
+
+[39][_Name]< _Name "." ID ( "<" { _GenericArgument ; "," } ">" ) @ >
+[RULE: 2]
+	epsilon -> [38][_Name]< _Name "." ID ( "<" { _GenericArgument ; "," } ">" ) > @[ENDING]
+		+ CreateObject(GenericMemberName)
+		+ Field(GenericMemberName::parent, 0)
+		+ Field(GenericMemberName::member, 2)
+		+ Field(GenericQualifiedName::args, 4)
+		+ StackEnd()
+
+[40][_Name]< _Name "." ID ( "<" { _GenericArgument ; "," } ">" @ ) >
+[RULE: 2]
+	epsilon -> [39][_Name]< _Name "." ID ( "<" { _GenericArgument ; "," } ">" ) @ >
+
+[41][_Name]< _Name "." ID ( "<" { _GenericArgument ; "," } @ ">" ) >
+[RULE: 2]
+	token: ">" -> [40][_Name]< _Name "." ID ( "<" { _GenericArgument ; "," } ">" @ ) >
+		+ Token(6)
+
+[42][_Name]< _Name "." ID ( "<" { _GenericArgument ; "," } @ ">" ) >
+[RULE: 2]
+	epsilon -> [41][_Name]< _Name "." ID ( "<" { _GenericArgument ; "," } @ ">" ) >
+
+[43][_Name]< _Name "." ID ( "<" { _GenericArgument ; @ "," } ">" ) >
+[RULE: 2]
+	token: "," -> [37][_Name]< _Name "." ID ( "<" { _GenericArgument ; "," @ } ">" ) >
+		+ Token(5)
+
+[44][_Name]< _Name "." ID ( "<" { _GenericArgument @ ; "," } ">" ) >
+[RULE: 2]
+	epsilon -> [42][_Name]< _Name "." ID ( "<" { _GenericArgument ; "," } @ ">" ) >
+	epsilon -> [43][_Name]< _Name "." ID ( "<" { _GenericArgument ; @ "," } ">" ) >
+
+[45][_Name]< _Name "." ID ( @ "<" { _GenericArgument ; "," } ">" ) >
+[RULE: 2]
+	token: "<" -> [35][_Name]< _Name "." ID ( "<" @ { _GenericArgument ; "," } ">" ) >
+		+ Token(3)
+
+[46][_Name]< _Name "." ID > @[ENDING]
+[RULE: 2]
+
+[47][_Name]< _Name "." ID @ ( "<" { _GenericArgument ; "," } ">" ) >
+[RULE: 2]
+	epsilon -> [48][_Name]< _Name "." ID @ ( "<" { _GenericArgument ; "," } ">" ) >
+
+[48][_Name]< _Name "." ID @ ( "<" { _GenericArgument ; "," } ">" ) >
+[RULE: 2]
+	epsilon -> [45][_Name]< _Name "." ID ( @ "<" { _GenericArgument ; "," } ">" ) >
+
+[49][_Name]< _Name "." ID @ >
+[RULE: 2]
+	epsilon -> [46][_Name]< _Name "." ID > @[ENDING]
+		+ CreateObject(MemberName)
+		+ Field(MemberName::parent, 0)
+		+ Field(MemberName::member, 2)
+		+ StackEnd()
+
+[50][_Name]< _Name @ "." ID ( "<" { _GenericArgument ; "," } ">" ) >
+[RULE: 2]
+	token: "." -> [30][_Name]< _Name "." @ ID ( "<" { _GenericArgument ; "," } ">" ) >
+		+ Token(1)
+
+[51][_Name]< _Name @ "." ID ( "<" { _GenericArgument ; "," } ">" ) >
+[RULE: 2]
+	epsilon -> [50][_Name]< _Name @ "." ID ( "<" { _GenericArgument ; "," } ">" ) >
+
+[52][_Name]< _Name @ "." ID >
+[RULE: 2]
+	token: "." -> [32][_Name]< _Name "." @ ID >
+		+ Token(1)
+
+[53][_Name]< _Name @ "." ID >
+[RULE: 2]
+	epsilon -> [52][_Name]< _Name @ "." ID >
+
+[54][_Name]@ < ID ( "<" { _GenericArgument ; "," } ">" ) >
+[RULE: 2]
+	epsilon -> [10][_Name]< @ ID ( "<" { _GenericArgument ; "," } ">" ) >
+		+ StackBegin()
+
+[55][_Name]@ < ID >
+[RULE: 2]
+	epsilon -> [11][_Name]< @ ID >
+		+ StackBegin()
+
+[56][_Name]@ < _Name "." ID ( "<" { _GenericArgument ; "," } ">" ) >
+[RULE: 2]
+	epsilon -> [12][_Name]< @ _Name "." ID ( "<" { _GenericArgument ; "," } ">" ) >
+		+ StackBegin()
+
+[57][_Name]@ < _Name "." ID >
+[RULE: 2]
+	epsilon -> [13][_Name]< @ _Name "." ID >
+		+ StackBegin()
+
+[58][_PrimitiveShared]<! !_Name !> @[ENDING]
+[RULE: 3]
+
+[59][_PrimitiveShared]<! !_Name @ !>
+[RULE: 3]
+	epsilon -> [58][_PrimitiveShared]<! !_Name !> @[ENDING]
+		+ StackEnd()
+
+[60][_PrimitiveShared]<! @ !_Name !>
+[RULE: 3]
+	rule: _Name -> [59][_PrimitiveShared]<! !_Name @ !>
+
+[61][_PrimitiveShared]@ <! !_Name !>
+[RULE: 3]
+	epsilon -> [60][_PrimitiveShared]<! @ !_Name !>
+		+ StackBegin()
+
+[62][_PrimitiveTypeOnly]< "const" @ _PrimitiveShared >
+[RULE: 4]
+	rule: _PrimitiveShared -> [67][_PrimitiveTypeOnly]< "const" _PrimitiveShared @ >
+		+ StackSlot(1)
+
+[63][_PrimitiveTypeOnly]< "const" @ _PrimitiveShared >
+[RULE: 4]
+	epsilon -> [62][_PrimitiveTypeOnly]< "const" @ _PrimitiveShared >
+
+[64][_PrimitiveTypeOnly]< "const" @ _PrimitiveTypeOnly >
+[RULE: 4]
+	epsilon -> [65][_PrimitiveTypeOnly]< "const" @ _PrimitiveTypeOnly >
+
+[65][_PrimitiveTypeOnly]< "const" @ _PrimitiveTypeOnly >
+[RULE: 4]
+	rule: _PrimitiveTypeOnly -> [69][_PrimitiveTypeOnly]< "const" _PrimitiveTypeOnly @ >
+		+ StackSlot(1)
+
+[66][_PrimitiveTypeOnly]< "const" _PrimitiveShared > @[ENDING]
+[RULE: 4]
+
+[67][_PrimitiveTypeOnly]< "const" _PrimitiveShared @ >
+[RULE: 4]
+	epsilon -> [66][_PrimitiveTypeOnly]< "const" _PrimitiveShared > @[ENDING]
+		+ CreateObject(ConstType)
+		+ Field(ConstType::type, 1)
+		+ StackEnd()
+
+[68][_PrimitiveTypeOnly]< "const" _PrimitiveTypeOnly > @[ENDING]
+[RULE: 4]
+
+[69][_PrimitiveTypeOnly]< "const" _PrimitiveTypeOnly @ >
+[RULE: 4]
+	epsilon -> [68][_PrimitiveTypeOnly]< "const" _PrimitiveTypeOnly > @[ENDING]
+		+ CreateObject(ConstType)
+		+ Field(ConstType::type, 1)
+		+ StackEnd()
+
+[70][_PrimitiveTypeOnly]< @ "const" _PrimitiveShared >
+[RULE: 4]
+	token: "const" -> [63][_PrimitiveTypeOnly]< "const" @ _PrimitiveShared >
+		+ Token(0)
+
+[71][_PrimitiveTypeOnly]< @ "const" _PrimitiveTypeOnly >
+[RULE: 4]
+	token: "const" -> [64][_PrimitiveTypeOnly]< "const" @ _PrimitiveTypeOnly >
+		+ Token(0)
+
+[72][_PrimitiveTypeOnly]@ < "const" _PrimitiveShared >
+[RULE: 4]
+	epsilon -> [70][_PrimitiveTypeOnly]< @ "const" _PrimitiveShared >
+		+ StackBegin()
+
+[73][_PrimitiveTypeOnly]@ < "const" _PrimitiveTypeOnly >
+[RULE: 4]
+	epsilon -> [71][_PrimitiveTypeOnly]< @ "const" _PrimitiveTypeOnly >
+		+ StackBegin()
+
+[74][_PrimitiveExprOnly]<! "(" !_Expr ")" !> @[ENDING]
+[RULE: 5]
+
+[75][_PrimitiveExprOnly]<! "(" !_Expr ")" @ !>
+[RULE: 5]
+	epsilon -> [74][_PrimitiveExprOnly]<! "(" !_Expr ")" !> @[ENDING]
+		+ StackEnd()
+
+[76][_PrimitiveExprOnly]<! "(" !_Expr @ ")" !>
+[RULE: 5]
+	token: ")" -> [75][_PrimitiveExprOnly]<! "(" !_Expr ")" @ !>
+		+ Token(2)
+
+[77][_PrimitiveExprOnly]<! "(" !_Expr @ ")" !>
+[RULE: 5]
+	epsilon -> [76][_PrimitiveExprOnly]<! "(" !_Expr @ ")" !>
+
+[78][_PrimitiveExprOnly]<! "(" @ !_Expr ")" !>
+[RULE: 5]
+	rule: _Expr -> [77][_PrimitiveExprOnly]<! "(" !_Expr @ ")" !>
+
+[79][_PrimitiveExprOnly]<! "(" @ !_Expr ")" !>
+[RULE: 5]
+	epsilon -> [78][_PrimitiveExprOnly]<! "(" @ !_Expr ")" !>
+
+[80][_PrimitiveExprOnly]<! @ "(" !_Expr ")" !>
+[RULE: 5]
+	token: "(" -> [79][_PrimitiveExprOnly]<! "(" @ !_Expr ")" !>
+		+ Token(0)
+
+[81][_PrimitiveExprOnly]@ <! "(" !_Expr ")" !>
+[RULE: 5]
+	epsilon -> [80][_PrimitiveExprOnly]<! @ "(" !_Expr ")" !>
+		+ StackBegin()
+
+[82][_LongTypeArg]< @ _LongType "..." >
+[RULE: 6]
+	rule: _LongType -> [85][_LongTypeArg]< _LongType @ "..." >
+		+ StackSlot(0)
+
+[83][_LongTypeArg]< _LongType "..." > @[ENDING]
+[RULE: 6]
+
+[84][_LongTypeArg]< _LongType "..." @ >
+[RULE: 6]
+	epsilon -> [83][_LongTypeArg]< _LongType "..." > @[ENDING]
+		+ CreateObject(VariadicArgument)
+		+ Field(VariadicArgument::operand, 0)
+		+ StackEnd()
+
+[85][_LongTypeArg]< _LongType @ "..." >
+[RULE: 6]
+	epsilon -> [86][_LongTypeArg]< _LongType @ "..." >
+
+[86][_LongTypeArg]< _LongType @ "..." >
+[RULE: 6]
+	token: "..." -> [84][_LongTypeArg]< _LongType "..." @ >
+		+ Token(1)
+
+[87][_LongTypeArg]<! !_LongType !> @[ENDING]
+[RULE: 6]
+
+[88][_LongTypeArg]<! !_LongType @ !>
+[RULE: 6]
+	epsilon -> [87][_LongTypeArg]<! !_LongType !> @[ENDING]
+		+ StackEnd()
+
+[89][_LongTypeArg]<! @ !_LongType !>
+[RULE: 6]
+	rule: _LongType -> [88][_LongTypeArg]<! !_LongType @ !>
+
+[90][_LongTypeArg]@ < _LongType "..." >
+[RULE: 6]
+	epsilon -> [82][_LongTypeArg]< @ _LongType "..." >
+		+ StackBegin()
+
+[91][_LongTypeArg]@ <! !_LongType !>
+[RULE: 6]
+	epsilon -> [89][_LongTypeArg]<! @ !_LongType !>
+		+ StackBegin()
+
+[92][_LongType]< @ _LongType "(" { _LongTypeArg ; "," } ")" >
+[RULE: 7]
+	rule: _LongType -> [110][_LongType]< _LongType @ "(" { _LongTypeArg ; "," } ")" >
+		+ StackSlot(0)
+
+[93][_LongType]< @ _LongType "*" >
+[RULE: 7]
+	rule: _LongType -> [111][_LongType]< _LongType @ "*" >
+		+ StackSlot(0)
+
+[94][_LongType]< @ _LongType "const" >
+[RULE: 7]
+	rule: _LongType -> [114][_LongType]< _LongType @ "const" >
+		+ StackSlot(0)
+
+[95][_LongType]< _LongType "(" @ { _LongTypeArg ; "," } ")" >
+[RULE: 7]
+	epsilon -> [96][_LongType]< _LongType "(" @ { _LongTypeArg ; "," } ")" >
+
+[96][_LongType]< _LongType "(" @ { _LongTypeArg ; "," } ")" >
+[RULE: 7]
+	epsilon -> [97][_LongType]< _LongType "(" { @ _LongTypeArg ; "," } ")" >
+	epsilon -> [101][_LongType]< _LongType "(" { _LongTypeArg ; "," } @ ")" >
+
+[97][_LongType]< _LongType "(" { @ _LongTypeArg ; "," } ")" >
+[RULE: 7]
+	rule: _LongTypeArg -> [104][_LongType]< _LongType "(" { _LongTypeArg @ ; "," } ")" >
+		+ StackSlot(2)
+
+[98][_LongType]< _LongType "(" { _LongTypeArg ; "," @ } ")" >
+[RULE: 7]
+	epsilon -> [97][_LongType]< _LongType "(" { @ _LongTypeArg ; "," } ")" >
+
+[99][_LongType]< _LongType "(" { _LongTypeArg ; "," } ")" > @[ENDING]
+[RULE: 7]
+
+[100][_LongType]< _LongType "(" { _LongTypeArg ; "," } ")" @ >
+[RULE: 7]
+	epsilon -> [99][_LongType]< _LongType "(" { _LongTypeArg ; "," } ")" > @[ENDING]
+		+ CreateObject(FunctionType)
+		+ Field(FunctionType::returnType, 0)
+		+ Field(FunctionType::args, 2)
+		+ StackEnd()
+
+[101][_LongType]< _LongType "(" { _LongTypeArg ; "," } @ ")" >
+[RULE: 7]
+	epsilon -> [102][_LongType]< _LongType "(" { _LongTypeArg ; "," } @ ")" >
+
+[102][_LongType]< _LongType "(" { _LongTypeArg ; "," } @ ")" >
+[RULE: 7]
+	token: ")" -> [100][_LongType]< _LongType "(" { _LongTypeArg ; "," } ")" @ >
+		+ Token(4)
+
+[103][_LongType]< _LongType "(" { _LongTypeArg ; @ "," } ")" >
+[RULE: 7]
+	token: "," -> [98][_LongType]< _LongType "(" { _LongTypeArg ; "," @ } ")" >
+		+ Token(3)
+
+[104][_LongType]< _LongType "(" { _LongTypeArg @ ; "," } ")" >
+[RULE: 7]
+	epsilon -> [101][_LongType]< _LongType "(" { _LongTypeArg ; "," } @ ")" >
+	epsilon -> [103][_LongType]< _LongType "(" { _LongTypeArg ; @ "," } ")" >
+
+[105][_LongType]< _LongType "*" > @[ENDING]
+[RULE: 7]
+
+[106][_LongType]< _LongType "*" @ >
+[RULE: 7]
+	epsilon -> [105][_LongType]< _LongType "*" > @[ENDING]
+		+ CreateObject(PointerType)
+		+ Field(PointerType::type, 0)
+		+ StackEnd()
+
+[107][_LongType]< _LongType "const" > @[ENDING]
+[RULE: 7]
+
+[108][_LongType]< _LongType "const" @ >
+[RULE: 7]
+	epsilon -> [107][_LongType]< _LongType "const" > @[ENDING]
+		+ CreateObject(ConstType)
+		+ Field(ConstType::type, 0)
+		+ StackEnd()
+
+[109][_LongType]< _LongType @ "(" { _LongTypeArg ; "," } ")" >
+[RULE: 7]
+	token: "(" -> [95][_LongType]< _LongType "(" @ { _LongTypeArg ; "," } ")" >
+		+ Token(1)
+
+[110][_LongType]< _LongType @ "(" { _LongTypeArg ; "," } ")" >
+[RULE: 7]
+	epsilon -> [109][_LongType]< _LongType @ "(" { _LongTypeArg ; "," } ")" >
+
+[111][_LongType]< _LongType @ "*" >
+[RULE: 7]
+	epsilon -> [112][_LongType]< _LongType @ "*" >
+
+[112][_LongType]< _LongType @ "*" >
+[RULE: 7]
+	token: "*" -> [106][_LongType]< _LongType "*" @ >
+		+ Token(1)
+
+[113][_LongType]< _LongType @ "const" >
+[RULE: 7]
+	token: "const" -> [108][_LongType]< _LongType "const" @ >
+		+ Token(1)
+
+[114][_LongType]< _LongType @ "const" >
+[RULE: 7]
+	epsilon -> [113][_LongType]< _LongType @ "const" >
+
+[115][_LongType]<! !_PrimitiveShared !> @[ENDING]
+[RULE: 7]
+
+[116][_LongType]<! !_PrimitiveShared @ !>
+[RULE: 7]
+	epsilon -> [115][_LongType]<! !_PrimitiveShared !> @[ENDING]
+		+ StackEnd()
+
+[117][_LongType]<! !_PrimitiveTypeOnly !> @[ENDING]
+[RULE: 7]
+
+[118][_LongType]<! !_PrimitiveTypeOnly @ !>
+[RULE: 7]
+	epsilon -> [117][_LongType]<! !_PrimitiveTypeOnly !> @[ENDING]
+		+ StackEnd()
+
+[119][_LongType]<! @ !_PrimitiveShared !>
+[RULE: 7]
+	rule: _PrimitiveShared -> [116][_LongType]<! !_PrimitiveShared @ !>
+
+[120][_LongType]<! @ !_PrimitiveTypeOnly !>
+[RULE: 7]
+	rule: _PrimitiveTypeOnly -> [118][_LongType]<! !_PrimitiveTypeOnly @ !>
+
+[121][_LongType]@ < _LongType "(" { _LongTypeArg ; "," } ")" >
+[RULE: 7]
+	epsilon -> [92][_LongType]< @ _LongType "(" { _LongTypeArg ; "," } ")" >
+		+ StackBegin()
+
+[122][_LongType]@ < _LongType "*" >
+[RULE: 7]
+	epsilon -> [93][_LongType]< @ _LongType "*" >
+		+ StackBegin()
+
+[123][_LongType]@ < _LongType "const" >
+[RULE: 7]
+	epsilon -> [94][_LongType]< @ _LongType "const" >
+		+ StackBegin()
+
+[124][_LongType]@ <! !_PrimitiveShared !>
+[RULE: 7]
+	epsilon -> [119][_LongType]<! @ !_PrimitiveShared !>
+		+ StackBegin()
+
+[125][_LongType]@ <! !_PrimitiveTypeOnly !>
+[RULE: 7]
+	epsilon -> [120][_LongType]<! @ !_PrimitiveTypeOnly !>
+		+ StackBegin()
+
+[126][_ExprArg]< @ _Expr "..." >
+[RULE: 8]
+	rule: _Expr -> [129][_ExprArg]< _Expr @ "..." >
+		+ StackSlot(0)
+
+[127][_ExprArg]< _Expr "..." > @[ENDING]
+[RULE: 8]
+
+[128][_ExprArg]< _Expr "..." @ >
+[RULE: 8]
+	epsilon -> [127][_ExprArg]< _Expr "..." > @[ENDING]
+		+ CreateObject(VariadicArgument)
+		+ Field(VariadicArgument::operand, 0)
+		+ StackEnd()
+
+[129][_ExprArg]< _Expr @ "..." >
+[RULE: 8]
+	epsilon -> [130][_ExprArg]< _Expr @ "..." >
+
+[130][_ExprArg]< _Expr @ "..." >
+[RULE: 8]
+	token: "..." -> [128][_ExprArg]< _Expr "..." @ >
+		+ Token(1)
+
+[131][_ExprArg]<! !_Expr !> @[ENDING]
+[RULE: 8]
+
+[132][_ExprArg]<! !_Expr @ !>
+[RULE: 8]
+	epsilon -> [131][_ExprArg]<! !_Expr !> @[ENDING]
+		+ StackEnd()
+
+[133][_ExprArg]<! @ !_Expr !>
+[RULE: 8]
+	rule: _Expr -> [132][_ExprArg]<! !_Expr @ !>
+
+[134][_ExprArg]@ < _Expr "..." >
+[RULE: 8]
+	epsilon -> [126][_ExprArg]< @ _Expr "..." >
+		+ StackBegin()
+
+[135][_ExprArg]@ <! !_Expr !>
+[RULE: 8]
+	epsilon -> [133][_ExprArg]<! @ !_Expr !>
+		+ StackBegin()
+
+[136][_Expr0]< @ _LongType "{" { _ExprArg ; "," } "}" >
+[RULE: 9]
+	rule: _LongType -> [148][_Expr0]< _LongType @ "{" { _ExprArg ; "," } "}" >
+		+ StackSlot(0)
+
+[137][_Expr0]< _LongType "{" @ { _ExprArg ; "," } "}" >
+[RULE: 9]
+	epsilon -> [138][_Expr0]< _LongType "{" @ { _ExprArg ; "," } "}" >
+
+[138][_Expr0]< _LongType "{" @ { _ExprArg ; "," } "}" >
+[RULE: 9]
+	epsilon -> [139][_Expr0]< _LongType "{" { @ _ExprArg ; "," } "}" >
+	epsilon -> [143][_Expr0]< _LongType "{" { _ExprArg ; "," } @ "}" >
+
+[139][_Expr0]< _LongType "{" { @ _ExprArg ; "," } "}" >
+[RULE: 9]
+	rule: _ExprArg -> [146][_Expr0]< _LongType "{" { _ExprArg @ ; "," } "}" >
+		+ StackSlot(2)
+
+[140][_Expr0]< _LongType "{" { _ExprArg ; "," @ } "}" >
+[RULE: 9]
+	epsilon -> [139][_Expr0]< _LongType "{" { @ _ExprArg ; "," } "}" >
+
+[141][_Expr0]< _LongType "{" { _ExprArg ; "," } "}" > @[ENDING]
+[RULE: 9]
+
+[142][_Expr0]< _LongType "{" { _ExprArg ; "," } "}" @ >
+[RULE: 9]
+	epsilon -> [141][_Expr0]< _LongType "{" { _ExprArg ; "," } "}" > @[ENDING]
+		+ CreateObject(CtorExpr)
+		+ Field(CtorExpr::type, 0)
+		+ Field(CtorExpr::args, 2)
+		+ StackEnd()
+
+[143][_Expr0]< _LongType "{" { _ExprArg ; "," } @ "}" >
+[RULE: 9]
+	epsilon -> [144][_Expr0]< _LongType "{" { _ExprArg ; "," } @ "}" >
+
+[144][_Expr0]< _LongType "{" { _ExprArg ; "," } @ "}" >
+[RULE: 9]
+	token: "}" -> [142][_Expr0]< _LongType "{" { _ExprArg ; "," } "}" @ >
+		+ Token(4)
+
+[145][_Expr0]< _LongType "{" { _ExprArg ; @ "," } "}" >
+[RULE: 9]
+	token: "," -> [140][_Expr0]< _LongType "{" { _ExprArg ; "," @ } "}" >
+		+ Token(3)
+
+[146][_Expr0]< _LongType "{" { _ExprArg @ ; "," } "}" >
+[RULE: 9]
+	epsilon -> [143][_Expr0]< _LongType "{" { _ExprArg ; "," } @ "}" >
+	epsilon -> [145][_Expr0]< _LongType "{" { _ExprArg ; @ "," } "}" >
+
+[147][_Expr0]< _LongType @ "{" { _ExprArg ; "," } "}" >
+[RULE: 9]
+	token: "{" -> [137][_Expr0]< _LongType "{" @ { _ExprArg ; "," } "}" >
+		+ Token(1)
+
+[148][_Expr0]< _LongType @ "{" { _ExprArg ; "," } "}" >
+[RULE: 9]
+	epsilon -> [147][_Expr0]< _LongType @ "{" { _ExprArg ; "," } "}" >
+
+[149][_Expr0]<! !_PrimitiveExprOnly !> @[ENDING]
+[RULE: 9]
+
+[150][_Expr0]<! !_PrimitiveExprOnly @ !>
+[RULE: 9]
+	epsilon -> [149][_Expr0]<! !_PrimitiveExprOnly !> @[ENDING]
+		+ StackEnd()
+
+[151][_Expr0]<! !_PrimitiveShared !> @[ENDING]
+[RULE: 9]
+
+[152][_Expr0]<! !_PrimitiveShared @ !>
+[RULE: 9]
+	epsilon -> [151][_Expr0]<! !_PrimitiveShared !> @[ENDING]
+		+ StackEnd()
+
+[153][_Expr0]<! @ !_PrimitiveExprOnly !>
+[RULE: 9]
+	rule: _PrimitiveExprOnly -> [150][_Expr0]<! !_PrimitiveExprOnly @ !>
+
+[154][_Expr0]<! @ !_PrimitiveShared !>
+[RULE: 9]
+	rule: _PrimitiveShared -> [152][_Expr0]<! !_PrimitiveShared @ !>
+
+[155][_Expr0]@ < _LongType "{" { _ExprArg ; "," } "}" >
+[RULE: 9]
+	epsilon -> [136][_Expr0]< @ _LongType "{" { _ExprArg ; "," } "}" >
+		+ StackBegin()
+
+[156][_Expr0]@ <! !_PrimitiveExprOnly !>
+[RULE: 9]
+	epsilon -> [153][_Expr0]<! @ !_PrimitiveExprOnly !>
+		+ StackBegin()
+
+[157][_Expr0]@ <! !_PrimitiveShared !>
+[RULE: 9]
+	epsilon -> [154][_Expr0]<! @ !_PrimitiveShared !>
+		+ StackBegin()
+
+[158][_Expr1]< @ _Expr1 "(" { _ExprArg ; "," } ")" >
+[RULE: 10]
+	rule: _Expr1 -> [170][_Expr1]< _Expr1 @ "(" { _ExprArg ; "," } ")" >
+		+ StackSlot(0)
+
+[159][_Expr1]< _Expr1 "(" @ { _ExprArg ; "," } ")" >
+[RULE: 10]
+	epsilon -> [160][_Expr1]< _Expr1 "(" @ { _ExprArg ; "," } ")" >
+
+[160][_Expr1]< _Expr1 "(" @ { _ExprArg ; "," } ")" >
+[RULE: 10]
+	epsilon -> [161][_Expr1]< _Expr1 "(" { @ _ExprArg ; "," } ")" >
+	epsilon -> [165][_Expr1]< _Expr1 "(" { _ExprArg ; "," } @ ")" >
+
+[161][_Expr1]< _Expr1 "(" { @ _ExprArg ; "," } ")" >
+[RULE: 10]
+	rule: _ExprArg -> [168][_Expr1]< _Expr1 "(" { _ExprArg @ ; "," } ")" >
+		+ StackSlot(2)
+
+[162][_Expr1]< _Expr1 "(" { _ExprArg ; "," @ } ")" >
+[RULE: 10]
+	epsilon -> [161][_Expr1]< _Expr1 "(" { @ _ExprArg ; "," } ")" >
+
+[163][_Expr1]< _Expr1 "(" { _ExprArg ; "," } ")" > @[ENDING]
+[RULE: 10]
+
+[164][_Expr1]< _Expr1 "(" { _ExprArg ; "," } ")" @ >
+[RULE: 10]
+	epsilon -> [163][_Expr1]< _Expr1 "(" { _ExprArg ; "," } ")" > @[ENDING]
+		+ CreateObject(CallExpr)
+		+ Field(CallExpr::func, 0)
+		+ Field(CallExpr::args, 2)
+		+ StackEnd()
+
+[165][_Expr1]< _Expr1 "(" { _ExprArg ; "," } @ ")" >
+[RULE: 10]
+	epsilon -> [166][_Expr1]< _Expr1 "(" { _ExprArg ; "," } @ ")" >
+
+[166][_Expr1]< _Expr1 "(" { _ExprArg ; "," } @ ")" >
+[RULE: 10]
+	token: ")" -> [164][_Expr1]< _Expr1 "(" { _ExprArg ; "," } ")" @ >
+		+ Token(4)
+
+[167][_Expr1]< _Expr1 "(" { _ExprArg ; @ "," } ")" >
+[RULE: 10]
+	token: "," -> [162][_Expr1]< _Expr1 "(" { _ExprArg ; "," @ } ")" >
+		+ Token(3)
+
+[168][_Expr1]< _Expr1 "(" { _ExprArg @ ; "," } ")" >
+[RULE: 10]
+	epsilon -> [165][_Expr1]< _Expr1 "(" { _ExprArg ; "," } @ ")" >
+	epsilon -> [167][_Expr1]< _Expr1 "(" { _ExprArg ; @ "," } ")" >
+
+[169][_Expr1]< _Expr1 @ "(" { _ExprArg ; "," } ")" >
+[RULE: 10]
+	token: "(" -> [159][_Expr1]< _Expr1 "(" @ { _ExprArg ; "," } ")" >
+		+ Token(1)
+
+[170][_Expr1]< _Expr1 @ "(" { _ExprArg ; "," } ")" >
+[RULE: 10]
+	epsilon -> [169][_Expr1]< _Expr1 @ "(" { _ExprArg ; "," } ")" >
+
+[171][_Expr1]<! !_Expr0 !> @[ENDING]
+[RULE: 10]
+
+[172][_Expr1]<! !_Expr0 @ !>
+[RULE: 10]
+	epsilon -> [171][_Expr1]<! !_Expr0 !> @[ENDING]
+		+ StackEnd()
+
+[173][_Expr1]<! @ !_Expr0 !>
+[RULE: 10]
+	rule: _Expr0 -> [172][_Expr1]<! !_Expr0 @ !>
+
+[174][_Expr1]@ < _Expr1 "(" { _ExprArg ; "," } ")" >
+[RULE: 10]
+	epsilon -> [158][_Expr1]< @ _Expr1 "(" { _ExprArg ; "," } ")" >
+		+ StackBegin()
+
+[175][_Expr1]@ <! !_Expr0 !>
+[RULE: 10]
+	epsilon -> [173][_Expr1]<! @ !_Expr0 !>
+		+ StackBegin()
+
+[176][_Expr]< @ _Expr "*" _Expr1 >
+[RULE: 11]
+	rule: _Expr -> [182][_Expr]< _Expr @ "*" _Expr1 >
+		+ StackSlot(0)
+
+[177][_Expr]< _Expr "*" @ _Expr1 >
+[RULE: 11]
+	epsilon -> [178][_Expr]< _Expr "*" @ _Expr1 >
+
+[178][_Expr]< _Expr "*" @ _Expr1 >
+[RULE: 11]
+	rule: _Expr1 -> [180][_Expr]< _Expr "*" _Expr1 @ >
+		+ StackSlot(2)
+
+[179][_Expr]< _Expr "*" _Expr1 > @[ENDING]
+[RULE: 11]
+
+[180][_Expr]< _Expr "*" _Expr1 @ >
+[RULE: 11]
+	epsilon -> [179][_Expr]< _Expr "*" _Expr1 > @[ENDING]
+		+ CreateObject(MulExpr)
+		+ Field(MulExpr::first, 0)
+		+ Field(MulExpr::second, 2)
+		+ StackEnd()
+
+[181][_Expr]< _Expr @ "*" _Expr1 >
+[RULE: 11]
+	token: "*" -> [177][_Expr]< _Expr "*" @ _Expr1 >
+		+ Token(1)
+
+[182][_Expr]< _Expr @ "*" _Expr1 >
+[RULE: 11]
+	epsilon -> [181][_Expr]< _Expr @ "*" _Expr1 >
+
+[183][_Expr]<! !_Expr1 !> @[ENDING]
+[RULE: 11]
+
+[184][_Expr]<! !_Expr1 @ !>
+[RULE: 11]
+	epsilon -> [183][_Expr]<! !_Expr1 !> @[ENDING]
+		+ StackEnd()
+
+[185][_Expr]<! @ !_Expr1 !>
+[RULE: 11]
+	rule: _Expr1 -> [184][_Expr]<! !_Expr1 @ !>
+
+[186][_Expr]@ < _Expr "*" _Expr1 >
+[RULE: 11]
+	epsilon -> [176][_Expr]< @ _Expr "*" _Expr1 >
+		+ StackBegin()
+
+[187][_Expr]@ <! !_Expr1 !>
+[RULE: 11]
+	epsilon -> [185][_Expr]<! @ !_Expr1 !>
+		+ StackBegin()
+
+[188][Module]<! !_Expr !> @[ENDING]
+[RULE: 12]
+
+[189][Module]<! !_Expr @ !>
+[RULE: 12]
+	epsilon -> [188][Module]<! !_Expr !> @[ENDING]
+		+ StackEnd()
+
+[190][Module]<! !_LongType !> @[ENDING]
+[RULE: 12]
+
+[191][Module]<! !_LongType @ !>
+[RULE: 12]
+	epsilon -> [190][Module]<! !_LongType !> @[ENDING]
+		+ StackEnd()
+
+[192][Module]<! @ !_Expr !>
+[RULE: 12]
+	rule: _Expr -> [189][Module]<! !_Expr @ !>
+
+[193][Module]<! @ !_LongType !>
+[RULE: 12]
+	rule: _LongType -> [191][Module]<! !_LongType @ !>
+
+[194][Module]@ <! !_Expr !>
+[RULE: 12]
+	epsilon -> [192][Module]<! @ !_Expr !>
+		+ StackBegin()
+
+[195][Module]@ <! !_LongType !>
+[RULE: 12]
+	epsilon -> [193][Module]<! @ !_LongType !>
+		+ StackBegin()
+
+[196][ExprModule]<! !_Expr !> @[ENDING]
+[RULE: 13]
+
+[197][ExprModule]<! !_Expr @ !>
+[RULE: 13]
+	epsilon -> [196][ExprModule]<! !_Expr !> @[ENDING]
+		+ StackEnd()
+
+[198][ExprModule]<! @ !_Expr !>
+[RULE: 13]
+	rule: _Expr -> [197][ExprModule]<! !_Expr @ !>
+
+[199][ExprModule]@ <! !_Expr !>
+[RULE: 13]
+	epsilon -> [198][ExprModule]<! @ !_Expr !>
+		+ StackBegin()
+
+[200][TypeModule]<! !_LongType !> @[ENDING]
+[RULE: 14]
+
+[201][TypeModule]<! !_LongType @ !>
+[RULE: 14]
+	epsilon -> [200][TypeModule]<! !_LongType !> @[ENDING]
+		+ StackEnd()
+
+[202][TypeModule]<! @ !_LongType !>
+[RULE: 14]
+	rule: _LongType -> [201][TypeModule]<! !_LongType @ !>
+
+[203][TypeModule]@ <! !_LongType !>
+[RULE: 14]
+	epsilon -> [202][TypeModule]<! @ !_LongType !>
+		+ StackBegin()
+

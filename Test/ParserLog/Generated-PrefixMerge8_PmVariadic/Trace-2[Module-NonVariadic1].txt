@@ -1,0 +1,1283 @@
+﻿+----------------------+
+| [0]: <Start>         |
+|   TraceExec: [0]     |
+|   ForwardTrace: 0    |
+| [83][Module] BEGIN   |
+| [AST-INSTRUCTIONS]:  |
+|   @                  |
+| [SUCCESORS 1-1]: [1] |
++----------------------+
+[0]
+ |
+ +
+ |
+[0]
+++====================================================================================++
+|| [1]: {ID} A                                                                        ||
+||   TraceExec: [1]                                                                   ||
+||   InsExec: [0:2]                                                                   ||
+||   ForwardTrace: 0                                                                  ||
+|| [21][_Name]{{< ID @ ( "<" { _GenericArgument ; "," } ">" ) > ; < ID @ >}}          ||
+|| [AST-INSTRUCTIONS]:                                                                ||
+||   @                                                                                ||
+||   + StackBegin()                                                                   ||
+||     obj:0 : GenericName                                                            ||
+||                                                                                    ||
+||   @ CS(0 -> -1) : [0]                                                              ||
+||   + Token(0)                                                                       ||
+||                                                                                    ||
+||   @ CS(0 -> -1) : [0]                                                              ||
+|| [RETURN STACK]:                                                                    ||
+||   [1][4][0]: _Name -> [24][_PrimitiveShared]<! !_Name @ !>                         ||
+||   [0][3][0]: _PrimitiveShared -> [85][Module] BEGIN [pm-cr-rule: _PrimitiveShared] ||
+|| [PREDECESSORS 0-0]: [0]                                                            ||
+|| [SUCCESORS 3-3]: [3]                                                               ||
+++====================================================================================++
+[0]
+ |
+ +
+ |
+[0]
+++====================================================================================++
+|| [3]: {LT} <                                                                        ||
+||   TraceExec: [2]                                                                   ||
+||   InsExec: [2:1]                                                                   ||
+||   ForwardTrace: 0                                                                  ||
+|| [7][_Name]< ID ( "<" @ { _GenericArgument ; "," } ">" ) >                          ||
+|| [AST-INSTRUCTIONS]:                                                                ||
+||   @ CS(0 -> -1) : [0]                                                              ||
+||   + Token(1)                                                                       ||
+||                                                                                    ||
+||   @ CS(0 -> -1) : [0]                                                              ||
+|| [RETURN STACK]:                                                                    ||
+||   [1][4][0]: _Name -> [24][_PrimitiveShared]<! !_Name @ !>                         ||
+||   [0][3][0]: _PrimitiveShared -> [85][Module] BEGIN [pm-cr-rule: _PrimitiveShared] ||
+|| [PREDECESSORS 1-1]: [1]                                                            ||
+|| [SUCCESORS 4-4]: [4]                                                               ||
+++====================================================================================++
+[0]
+ |
+ +
+ |
+[0]
+++=============================================================================================++
+|| [4]: {ID} B                                                                                 ||
+||   TraceExec: [3]                                                                            ||
+||   InsExec: [3:2]                                                                            ||
+||   ForwardTrace: 0                                                                           ||
+|| [21][_Name]{{< ID @ ( "<" { _GenericArgument ; "," } ">" ) > ; < ID @ >}}                   ||
+|| [AST-INSTRUCTIONS]:                                                                         ||
+||   @ CS(0 -> -1) : [0]                                                                       ||
+||   + StackBegin()                                                                            ||
+||     obj:1 : Name                                                                            ||
+||                                                                                             ||
+||   @ CS(1 -> 0) : [1][0]                                                                     ||
+||   + Token(0)                                                                                ||
+||                                                                                             ||
+||   @ CS(1 -> 0) : [1][0]                                                                     ||
+|| [RETURN STACK]:                                                                             ||
+||   [5][4][3]: _Name -> [24][_PrimitiveShared]<! !_Name @ !>                                  ||
+||   [4][3][3]: _PrimitiveShared -> [85][Module] BEGIN [pm-cr-rule: _PrimitiveShared]          ||
+||   [3][0][3]: Module -> [1][_GenericArgument] BEGIN [pm-lr]                                  ||
+||   [2][5][3]: _GenericArgument -> [10][_Name]< ID ( "<" { _GenericArgument @ ; "," } ">" ) > ||
+||   [1][4][0]: _Name -> [24][_PrimitiveShared]<! !_Name @ !>                                  ||
+||   [0][3][0]: _PrimitiveShared -> [85][Module] BEGIN [pm-cr-rule: _PrimitiveShared]          ||
+|| [PREDECESSORS 3-3]: [3]                                                                     ||
+|| [SUCCESORS 5-5]: [5]                                                                        ||
+++=============================================================================================++
+|
++
+|
++---------------------------------------------------------------------------------------------+
+| [5]: <Ending>                                                                               |
+|   TraceExec: [4]                                                                            |
+|   InsExec: [5:4]                                                                            |
+|   ForwardTrace: 0                                                                           |
+| [24][_PrimitiveShared]<! !_Name @ !>                                                        |
+| [AST-INSTRUCTIONS]:                                                                         |
+|   @ CS(1 -> 0) : [1][0]                                                                     |
+|   + CreateObject(Name)                                                                      |
+|     obj:1 : Name                                                                            |
+|                                                                                             |
+|   @ CS(1 -> 0) : [1][0]                                                                     |
+|   + Field(Name::name, 0)                                                                    |
+|                                                                                             |
+|   @ CS(1 -> 0) : [1][0]                                                                     |
+|   + StackEnd()                                                                              |
+|     obj+:1 : Name                                                                           |
+|       begin:4@0, top:4@0, create!:[5@0], end:[5@2], endLref:[8@1]                           |
+|                                                                                             |
+|   @ CS(0 -> -1) : [0] OS(2 -> -1) : [1]                                                     |
+|   > StackBegin()                                                                            |
+|     obj!:2 : Name                                                                           |
+|                                                                                             |
+|   @ CS(3 -> 0) : [2][0] OS(2 -> -1) : [1]                                                   |
+| [RETURN STACK]:                                                                             |
+|   [4][3][3]: _PrimitiveShared -> [85][Module] BEGIN [pm-cr-rule: _PrimitiveShared]          |
+|   [3][0][3]: Module -> [1][_GenericArgument] BEGIN [pm-lr]                                  |
+|   [2][5][3]: _GenericArgument -> [10][_Name]< ID ( "<" { _GenericArgument @ ; "," } ">" ) > |
+|   [1][4][0]: _Name -> [24][_PrimitiveShared]<! !_Name @ !>                                  |
+|   [0][3][0]: _PrimitiveShared -> [85][Module] BEGIN [pm-cr-rule: _PrimitiveShared]          |
+| [PREDECESSORS 4-4]: [4]                                                                     |
+| [SUCCESORS 6-6]: [6]                                                                        |
++---------------------------------------------------------------------------------------------+
+|
++
+|
++---------------------------------------------------------------------------------------------+
+| [6]: <Ending>                                                                               |
+|   TraceExec: [5]                                                                            |
+|   InsExec: [9:1]                                                                            |
+|   ForwardTrace: 0                                                                           |
+| [85][Module] BEGIN [pm-cr-rule: _PrimitiveShared]                                           |
+| [AST-INSTRUCTIONS]:                                                                         |
+|   @ CS(3 -> 0) : [2][0] OS(2 -> -1) : [1]                                                   |
+|   + StackEnd()                                                                              |
+|     obj+:2 : Name                                                                           |
+|       begin:5@3, top:4@0, use:[1], create!:[5@0], end!:[6@0], endLref:[8@1]                 |
+|                                                                                             |
+|   @ CS(0 -> -1) : [0] OS(4 -> -1) : [2]                                                     |
+| [RETURN STACK]:                                                                             |
+|   [3][0][3]: Module -> [1][_GenericArgument] BEGIN [pm-lr]                                  |
+|   [2][5][3]: _GenericArgument -> [10][_Name]< ID ( "<" { _GenericArgument @ ; "," } ">" ) > |
+|   [1][4][0]: _Name -> [24][_PrimitiveShared]<! !_Name @ !>                                  |
+|   [0][3][0]: _PrimitiveShared -> [85][Module] BEGIN [pm-cr-rule: _PrimitiveShared]          |
+| [PREDECESSORS 5-5]: [5]                                                                     |
+| [SUCCESORS 7-7]: [7]                                                                        |
++---------------------------------------------------------------------------------------------+
+|
++
+|
++---------------------------------------------------------------------------------------------+
+| [7]: <Ending>                                                                               |
+|   TraceExec: [6]                                                                            |
+|   InsExec: [10:2]                                                                           |
+|   ForwardTrace: 0                                                                           |
+| [1][_GenericArgument] BEGIN [pm-lr]                                                         |
+| [AST-INSTRUCTIONS]:                                                                         |
+|   @ CS(0 -> -1) : [0] OS(4 -> -1) : [2]                                                     |
+|   + StackBegin()                                                                            |
+|     obj!:3 : Name                                                                           |
+|                                                                                             |
+|   @ CS(5 -> 0) : [3][0] OS(4 -> -1) : [2]                                                   |
+|   + StackEnd()                                                                              |
+|     obj+:3 : Name                                                                           |
+|       begin:7@0, top:4@0, use:[2], create!:[5@0], end!:[7@1], endLref:[8@1]                 |
+|                                                                                             |
+|   @ CS(0 -> -1) : [0] OS(6 -> -1) : [3]                                                     |
+| [RETURN STACK]:                                                                             |
+|   [2][5][3]: _GenericArgument -> [10][_Name]< ID ( "<" { _GenericArgument @ ; "," } ">" ) > |
+|   [1][4][0]: _Name -> [24][_PrimitiveShared]<! !_Name @ !>                                  |
+|   [0][3][0]: _PrimitiveShared -> [85][Module] BEGIN [pm-cr-rule: _PrimitiveShared]          |
+| [PREDECESSORS 6-6]: [6]                                                                     |
+| [SUCCESORS 8-8]: [8]                                                                        |
++---------------------------------------------------------------------------------------------+
+|
++
+|
++------------------------------------------------------------------------------------+
+| [8]: <Ending>                                                                      |
+|   TraceExec: [7]                                                                   |
+|   InsExec: [12:3]                                                                  |
+|   ForwardTrace: 0                                                                  |
+| [10][_Name]< ID ( "<" { _GenericArgument @ ; "," } ">" ) >                         |
+| [AST-INSTRUCTIONS]:                                                                |
+|   @ CS(0 -> -1) : [0] OS(6 -> -1) : [3]                                            |
+|   + StackBegin()                                                                   |
+|     obj!:4 : Name                                                                  |
+|                                                                                    |
+|   @ CS(7 -> 0) : [4][0] OS(6 -> -1) : [3]                                          |
+|   + StackEnd()                                                                     |
+|     obj+:4 : Name                                                                  |
+|       begin:8@0, top:4@0, use:[3], create!:[5@0], end!:[8@1]                       |
+|                                                                                    |
+|   @ CS(0 -> -1) : [0] OS(8 -> -1) : [4]                                            |
+|   > StackSlot(2)                                                                   |
+|                                                                                    |
+|   @ CS(0 -> -1) : [0]                                                              |
+| [RETURN STACK]:                                                                    |
+|   [1][4][0]: _Name -> [24][_PrimitiveShared]<! !_Name @ !>                         |
+|   [0][3][0]: _PrimitiveShared -> [85][Module] BEGIN [pm-cr-rule: _PrimitiveShared] |
+| [PREDECESSORS 7-7]: [7]                                                            |
+| [SUCCESORS 9-9]: [9]                                                               |
++------------------------------------------------------------------------------------+
+[0]
+ |
+ +
+ |
+[0]
+++====================================================================================++
+|| [9]: {COMMA} ,                                                                     ||
+||   TraceExec: [8]                                                                   ||
+||   InsExec: [15:1]                                                                  ||
+||   ForwardTrace: 0                                                                  ||
+|| [8][_Name]< ID ( "<" { _GenericArgument ; "," @ } ">" ) >                          ||
+|| [AST-INSTRUCTIONS]:                                                                ||
+||   @ CS(0 -> -1) : [0]                                                              ||
+||   + Token(3)                                                                       ||
+||                                                                                    ||
+||   @ CS(0 -> -1) : [0]                                                              ||
+|| [RETURN STACK]:                                                                    ||
+||   [1][4][0]: _Name -> [24][_PrimitiveShared]<! !_Name @ !>                         ||
+||   [0][3][0]: _PrimitiveShared -> [85][Module] BEGIN [pm-cr-rule: _PrimitiveShared] ||
+|| [PREDECESSORS 8-8]: [8]                                                            ||
+|| [SUCCESORS 10-10]: [10]                                                            ||
+++====================================================================================++
+[0]
+ |
+ +
+ |
+[0]
+++=============================================================================================++
+|| [10]: {ID} C                                                                                ||
+||   TraceExec: [9]                                                                            ||
+||   InsExec: [16:2]                                                                           ||
+||   ForwardTrace: 0                                                                           ||
+|| [21][_Name]{{< ID @ ( "<" { _GenericArgument ; "," } ">" ) > ; < ID @ >}}                   ||
+|| [AST-INSTRUCTIONS]:                                                                         ||
+||   @ CS(0 -> -1) : [0]                                                                       ||
+||   + StackBegin()                                                                            ||
+||     obj:5 : GenericName                                                                     ||
+||                                                                                             ||
+||   @ CS(9 -> 0) : [5][0]                                                                     ||
+||   + Token(0)                                                                                ||
+||                                                                                             ||
+||   @ CS(9 -> 0) : [5][0]                                                                     ||
+|| [RETURN STACK]:                                                                             ||
+||   [9][4][9]: _Name -> [24][_PrimitiveShared]<! !_Name @ !>                                  ||
+||   [8][3][9]: _PrimitiveShared -> [85][Module] BEGIN [pm-cr-rule: _PrimitiveShared]          ||
+||   [7][0][9]: Module -> [1][_GenericArgument] BEGIN [pm-lr]                                  ||
+||   [6][6][9]: _GenericArgument -> [10][_Name]< ID ( "<" { _GenericArgument @ ; "," } ">" ) > ||
+||   [1][4][0]: _Name -> [24][_PrimitiveShared]<! !_Name @ !>                                  ||
+||   [0][3][0]: _PrimitiveShared -> [85][Module] BEGIN [pm-cr-rule: _PrimitiveShared]          ||
+|| [PREDECESSORS 9-9]: [9]                                                                     ||
+|| [SUCCESORS 12-12]: [12]                                                                     ||
+++=============================================================================================++
+[0]
+ |
+ +
+ |
+[0]
+++=============================================================================================++
+|| [12]: {LT} <                                                                                ||
+||   TraceExec: [10]                                                                           ||
+||   InsExec: [18:1]                                                                           ||
+||   ForwardTrace: 0                                                                           ||
+|| [7][_Name]< ID ( "<" @ { _GenericArgument ; "," } ">" ) >                                   ||
+|| [AST-INSTRUCTIONS]:                                                                         ||
+||   @ CS(9 -> 0) : [5][0]                                                                     ||
+||   + Token(1)                                                                                ||
+||                                                                                             ||
+||   @ CS(9 -> 0) : [5][0]                                                                     ||
+|| [RETURN STACK]:                                                                             ||
+||   [9][4][9]: _Name -> [24][_PrimitiveShared]<! !_Name @ !>                                  ||
+||   [8][3][9]: _PrimitiveShared -> [85][Module] BEGIN [pm-cr-rule: _PrimitiveShared]          ||
+||   [7][0][9]: Module -> [1][_GenericArgument] BEGIN [pm-lr]                                  ||
+||   [6][6][9]: _GenericArgument -> [10][_Name]< ID ( "<" { _GenericArgument @ ; "," } ">" ) > ||
+||   [1][4][0]: _Name -> [24][_PrimitiveShared]<! !_Name @ !>                                  ||
+||   [0][3][0]: _PrimitiveShared -> [85][Module] BEGIN [pm-cr-rule: _PrimitiveShared]          ||
+|| [PREDECESSORS 10-10]: [10]                                                                  ||
+|| [SUCCESORS 13-13]: [13]                                                                     ||
+++=============================================================================================++
+[0]
+ |
+ +
+ |
+[0]
+++===============================================================================================++
+|| [13]: {ID} D                                                                                  ||
+||   TraceExec: [11]                                                                             ||
+||   InsExec: [19:2]                                                                             ||
+||   ForwardTrace: 0                                                                             ||
+|| [21][_Name]{{< ID @ ( "<" { _GenericArgument ; "," } ">" ) > ; < ID @ >}}                     ||
+|| [AST-INSTRUCTIONS]:                                                                           ||
+||   @ CS(9 -> 0) : [5][0]                                                                       ||
+||   + StackBegin()                                                                              ||
+||     obj:6 : Name                                                                              ||
+||                                                                                               ||
+||   @ CS(10 -> 9) : [6][5][0]                                                                   ||
+||   + Token(0)                                                                                  ||
+||                                                                                               ||
+||   @ CS(10 -> 9) : [6][5][0]                                                                   ||
+|| [RETURN STACK]:                                                                               ||
+||   [13][4][12]: _Name -> [24][_PrimitiveShared]<! !_Name @ !>                                  ||
+||   [12][3][12]: _PrimitiveShared -> [85][Module] BEGIN [pm-cr-rule: _PrimitiveShared]          ||
+||   [11][0][12]: Module -> [1][_GenericArgument] BEGIN [pm-lr]                                  ||
+||   [10][5][12]: _GenericArgument -> [10][_Name]< ID ( "<" { _GenericArgument @ ; "," } ">" ) > ||
+||   [9][4][9]: _Name -> [24][_PrimitiveShared]<! !_Name @ !>                                    ||
+||   [8][3][9]: _PrimitiveShared -> [85][Module] BEGIN [pm-cr-rule: _PrimitiveShared]            ||
+||   [7][0][9]: Module -> [1][_GenericArgument] BEGIN [pm-lr]                                    ||
+||   [6][6][9]: _GenericArgument -> [10][_Name]< ID ( "<" { _GenericArgument @ ; "," } ">" ) >   ||
+||   [1][4][0]: _Name -> [24][_PrimitiveShared]<! !_Name @ !>                                    ||
+||   [0][3][0]: _PrimitiveShared -> [85][Module] BEGIN [pm-cr-rule: _PrimitiveShared]            ||
+|| [PREDECESSORS 12-12]: [12]                                                                    ||
+|| [SUCCESORS 14-14]: [14]                                                                       ||
+++===============================================================================================++
+|
++
+|
++-----------------------------------------------------------------------------------------------+
+| [14]: <Ending>                                                                                |
+|   TraceExec: [12]                                                                             |
+|   InsExec: [21:4]                                                                             |
+|   ForwardTrace: 0                                                                             |
+| [24][_PrimitiveShared]<! !_Name @ !>                                                          |
+| [AST-INSTRUCTIONS]:                                                                           |
+|   @ CS(10 -> 9) : [6][5][0]                                                                   |
+|   + CreateObject(Name)                                                                        |
+|     obj:6 : Name                                                                              |
+|                                                                                               |
+|   @ CS(10 -> 9) : [6][5][0]                                                                   |
+|   + Field(Name::name, 0)                                                                      |
+|                                                                                               |
+|   @ CS(10 -> 9) : [6][5][0]                                                                   |
+|   + StackEnd()                                                                                |
+|     obj+:6 : Name                                                                             |
+|       begin:13@0, top:13@0, create!:[14@0], end:[14@2], endLref:[17@1]                        |
+|                                                                                               |
+|   @ CS(9 -> 0) : [5][0] OS(11 -> -1) : [6]                                                    |
+|   > StackBegin()                                                                              |
+|     obj!:7 : Name                                                                             |
+|                                                                                               |
+|   @ CS(12 -> 9) : [7][5][0] OS(11 -> -1) : [6]                                                |
+| [RETURN STACK]:                                                                               |
+|   [12][3][12]: _PrimitiveShared -> [85][Module] BEGIN [pm-cr-rule: _PrimitiveShared]          |
+|   [11][0][12]: Module -> [1][_GenericArgument] BEGIN [pm-lr]                                  |
+|   [10][5][12]: _GenericArgument -> [10][_Name]< ID ( "<" { _GenericArgument @ ; "," } ">" ) > |
+|   [9][4][9]: _Name -> [24][_PrimitiveShared]<! !_Name @ !>                                    |
+|   [8][3][9]: _PrimitiveShared -> [85][Module] BEGIN [pm-cr-rule: _PrimitiveShared]            |
+|   [7][0][9]: Module -> [1][_GenericArgument] BEGIN [pm-lr]                                    |
+|   [6][6][9]: _GenericArgument -> [10][_Name]< ID ( "<" { _GenericArgument @ ; "," } ">" ) >   |
+|   [1][4][0]: _Name -> [24][_PrimitiveShared]<! !_Name @ !>                                    |
+|   [0][3][0]: _PrimitiveShared -> [85][Module] BEGIN [pm-cr-rule: _PrimitiveShared]            |
+| [PREDECESSORS 13-13]: [13]                                                                    |
+| [SUCCESORS 15-15]: [15]                                                                       |
++-----------------------------------------------------------------------------------------------+
+|
++
+|
++-----------------------------------------------------------------------------------------------+
+| [15]: <Ending>                                                                                |
+|   TraceExec: [13]                                                                             |
+|   InsExec: [25:1]                                                                             |
+|   ForwardTrace: 0                                                                             |
+| [85][Module] BEGIN [pm-cr-rule: _PrimitiveShared]                                             |
+| [AST-INSTRUCTIONS]:                                                                           |
+|   @ CS(12 -> 9) : [7][5][0] OS(11 -> -1) : [6]                                                |
+|   + StackEnd()                                                                                |
+|     obj+:7 : Name                                                                             |
+|       begin:14@3, top:13@0, use:[6], create!:[14@0], end!:[15@0], endLref:[17@1]              |
+|                                                                                               |
+|   @ CS(9 -> 0) : [5][0] OS(13 -> -1) : [7]                                                    |
+| [RETURN STACK]:                                                                               |
+|   [11][0][12]: Module -> [1][_GenericArgument] BEGIN [pm-lr]                                  |
+|   [10][5][12]: _GenericArgument -> [10][_Name]< ID ( "<" { _GenericArgument @ ; "," } ">" ) > |
+|   [9][4][9]: _Name -> [24][_PrimitiveShared]<! !_Name @ !>                                    |
+|   [8][3][9]: _PrimitiveShared -> [85][Module] BEGIN [pm-cr-rule: _PrimitiveShared]            |
+|   [7][0][9]: Module -> [1][_GenericArgument] BEGIN [pm-lr]                                    |
+|   [6][6][9]: _GenericArgument -> [10][_Name]< ID ( "<" { _GenericArgument @ ; "," } ">" ) >   |
+|   [1][4][0]: _Name -> [24][_PrimitiveShared]<! !_Name @ !>                                    |
+|   [0][3][0]: _PrimitiveShared -> [85][Module] BEGIN [pm-cr-rule: _PrimitiveShared]            |
+| [PREDECESSORS 14-14]: [14]                                                                    |
+| [SUCCESORS 16-16]: [16]                                                                       |
++-----------------------------------------------------------------------------------------------+
+|
++
+|
++-----------------------------------------------------------------------------------------------+
+| [16]: <Ending>                                                                                |
+|   TraceExec: [14]                                                                             |
+|   InsExec: [26:2]                                                                             |
+|   ForwardTrace: 0                                                                             |
+| [1][_GenericArgument] BEGIN [pm-lr]                                                           |
+| [AST-INSTRUCTIONS]:                                                                           |
+|   @ CS(9 -> 0) : [5][0] OS(13 -> -1) : [7]                                                    |
+|   + StackBegin()                                                                              |
+|     obj!:8 : Name                                                                             |
+|                                                                                               |
+|   @ CS(14 -> 9) : [8][5][0] OS(13 -> -1) : [7]                                                |
+|   + StackEnd()                                                                                |
+|     obj+:8 : Name                                                                             |
+|       begin:16@0, top:13@0, use:[7], create!:[14@0], end!:[16@1], endLref:[17@1]              |
+|                                                                                               |
+|   @ CS(9 -> 0) : [5][0] OS(15 -> -1) : [8]                                                    |
+| [RETURN STACK]:                                                                               |
+|   [10][5][12]: _GenericArgument -> [10][_Name]< ID ( "<" { _GenericArgument @ ; "," } ">" ) > |
+|   [9][4][9]: _Name -> [24][_PrimitiveShared]<! !_Name @ !>                                    |
+|   [8][3][9]: _PrimitiveShared -> [85][Module] BEGIN [pm-cr-rule: _PrimitiveShared]            |
+|   [7][0][9]: Module -> [1][_GenericArgument] BEGIN [pm-lr]                                    |
+|   [6][6][9]: _GenericArgument -> [10][_Name]< ID ( "<" { _GenericArgument @ ; "," } ">" ) >   |
+|   [1][4][0]: _Name -> [24][_PrimitiveShared]<! !_Name @ !>                                    |
+|   [0][3][0]: _PrimitiveShared -> [85][Module] BEGIN [pm-cr-rule: _PrimitiveShared]            |
+| [PREDECESSORS 15-15]: [15]                                                                    |
+| [SUCCESORS 17-17]: [17]                                                                       |
++-----------------------------------------------------------------------------------------------+
+|
++
+|
++---------------------------------------------------------------------------------------------+
+| [17]: <Ending>                                                                              |
+|   TraceExec: [15]                                                                           |
+|   InsExec: [28:3]                                                                           |
+|   ForwardTrace: 0                                                                           |
+| [10][_Name]< ID ( "<" { _GenericArgument @ ; "," } ">" ) >                                  |
+| [AST-INSTRUCTIONS]:                                                                         |
+|   @ CS(9 -> 0) : [5][0] OS(15 -> -1) : [8]                                                  |
+|   + StackBegin()                                                                            |
+|     obj!:9 : Name                                                                           |
+|                                                                                             |
+|   @ CS(16 -> 9) : [9][5][0] OS(15 -> -1) : [8]                                              |
+|   + StackEnd()                                                                              |
+|     obj+:9 : Name                                                                           |
+|       begin:17@0, top:13@0, use:[8], create!:[14@0], end!:[17@1]                            |
+|                                                                                             |
+|   @ CS(9 -> 0) : [5][0] OS(17 -> -1) : [9]                                                  |
+|   > StackSlot(2)                                                                            |
+|                                                                                             |
+|   @ CS(9 -> 0) : [5][0]                                                                     |
+| [RETURN STACK]:                                                                             |
+|   [9][4][9]: _Name -> [24][_PrimitiveShared]<! !_Name @ !>                                  |
+|   [8][3][9]: _PrimitiveShared -> [85][Module] BEGIN [pm-cr-rule: _PrimitiveShared]          |
+|   [7][0][9]: Module -> [1][_GenericArgument] BEGIN [pm-lr]                                  |
+|   [6][6][9]: _GenericArgument -> [10][_Name]< ID ( "<" { _GenericArgument @ ; "," } ">" ) > |
+|   [1][4][0]: _Name -> [24][_PrimitiveShared]<! !_Name @ !>                                  |
+|   [0][3][0]: _PrimitiveShared -> [85][Module] BEGIN [pm-cr-rule: _PrimitiveShared]          |
+| [PREDECESSORS 16-16]: [16]                                                                  |
+| [SUCCESORS 18-18]: [18]                                                                     |
++---------------------------------------------------------------------------------------------+
+[0]
+ |
+ +
+ |
+[0]
+++=============================================================================================++
+|| [18]: {COMMA} ,                                                                             ||
+||   TraceExec: [16]                                                                           ||
+||   InsExec: [31:1]                                                                           ||
+||   ForwardTrace: 0                                                                           ||
+|| [8][_Name]< ID ( "<" { _GenericArgument ; "," @ } ">" ) >                                   ||
+|| [AST-INSTRUCTIONS]:                                                                         ||
+||   @ CS(9 -> 0) : [5][0]                                                                     ||
+||   + Token(3)                                                                                ||
+||                                                                                             ||
+||   @ CS(9 -> 0) : [5][0]                                                                     ||
+|| [RETURN STACK]:                                                                             ||
+||   [9][4][9]: _Name -> [24][_PrimitiveShared]<! !_Name @ !>                                  ||
+||   [8][3][9]: _PrimitiveShared -> [85][Module] BEGIN [pm-cr-rule: _PrimitiveShared]          ||
+||   [7][0][9]: Module -> [1][_GenericArgument] BEGIN [pm-lr]                                  ||
+||   [6][6][9]: _GenericArgument -> [10][_Name]< ID ( "<" { _GenericArgument @ ; "," } ">" ) > ||
+||   [1][4][0]: _Name -> [24][_PrimitiveShared]<! !_Name @ !>                                  ||
+||   [0][3][0]: _PrimitiveShared -> [85][Module] BEGIN [pm-cr-rule: _PrimitiveShared]          ||
+|| [PREDECESSORS 17-17]: [17]                                                                  ||
+|| [SUCCESORS 19-19]: [19]                                                                     ||
+++=============================================================================================++
+[0]
+ |
+ +
+ |
+[0]
+++===============================================================================================++
+|| [19]: {ID} E                                                                                  ||
+||   TraceExec: [17]                                                                             ||
+||   InsExec: [32:2]                                                                             ||
+||   ForwardTrace: 0                                                                             ||
+|| [21][_Name]{{< ID @ ( "<" { _GenericArgument ; "," } ">" ) > ; < ID @ >}}                     ||
+|| [AST-INSTRUCTIONS]:                                                                           ||
+||   @ CS(9 -> 0) : [5][0]                                                                       ||
+||   + StackBegin()                                                                              ||
+||     obj:10 : Name                                                                             ||
+||                                                                                               ||
+||   @ CS(18 -> 9) : [10][5][0]                                                                  ||
+||   + Token(0)                                                                                  ||
+||                                                                                               ||
+||   @ CS(18 -> 9) : [10][5][0]                                                                  ||
+|| [RETURN STACK]:                                                                               ||
+||   [17][4][18]: _Name -> [24][_PrimitiveShared]<! !_Name @ !>                                  ||
+||   [16][3][18]: _PrimitiveShared -> [85][Module] BEGIN [pm-cr-rule: _PrimitiveShared]          ||
+||   [15][0][18]: Module -> [1][_GenericArgument] BEGIN [pm-lr]                                  ||
+||   [14][6][18]: _GenericArgument -> [10][_Name]< ID ( "<" { _GenericArgument @ ; "," } ">" ) > ||
+||   [9][4][9]: _Name -> [24][_PrimitiveShared]<! !_Name @ !>                                    ||
+||   [8][3][9]: _PrimitiveShared -> [85][Module] BEGIN [pm-cr-rule: _PrimitiveShared]            ||
+||   [7][0][9]: Module -> [1][_GenericArgument] BEGIN [pm-lr]                                    ||
+||   [6][6][9]: _GenericArgument -> [10][_Name]< ID ( "<" { _GenericArgument @ ; "," } ">" ) >   ||
+||   [1][4][0]: _Name -> [24][_PrimitiveShared]<! !_Name @ !>                                    ||
+||   [0][3][0]: _PrimitiveShared -> [85][Module] BEGIN [pm-cr-rule: _PrimitiveShared]            ||
+|| [PREDECESSORS 18-18]: [18]                                                                    ||
+|| [SUCCESORS 20-20]: [20]                                                                       ||
+++===============================================================================================++
+|
++
+|
++-----------------------------------------------------------------------------------------------+
+| [20]: <Ending>                                                                                |
+|   TraceExec: [18]                                                                             |
+|   InsExec: [34:4]                                                                             |
+|   ForwardTrace: 0                                                                             |
+| [24][_PrimitiveShared]<! !_Name @ !>                                                          |
+| [AST-INSTRUCTIONS]:                                                                           |
+|   @ CS(18 -> 9) : [10][5][0]                                                                  |
+|   + CreateObject(Name)                                                                        |
+|     obj:10 : Name                                                                             |
+|                                                                                               |
+|   @ CS(18 -> 9) : [10][5][0]                                                                  |
+|   + Field(Name::name, 0)                                                                      |
+|                                                                                               |
+|   @ CS(18 -> 9) : [10][5][0]                                                                  |
+|   + StackEnd()                                                                                |
+|     obj+:10 : Name                                                                            |
+|       begin:19@0, top:19@0, create!:[20@0], end:[20@2], endLref:[23@1]                        |
+|                                                                                               |
+|   @ CS(9 -> 0) : [5][0] OS(19 -> -1) : [10]                                                   |
+|   > StackBegin()                                                                              |
+|     obj!:11 : Name                                                                            |
+|                                                                                               |
+|   @ CS(20 -> 9) : [11][5][0] OS(19 -> -1) : [10]                                              |
+| [RETURN STACK]:                                                                               |
+|   [16][3][18]: _PrimitiveShared -> [85][Module] BEGIN [pm-cr-rule: _PrimitiveShared]          |
+|   [15][0][18]: Module -> [1][_GenericArgument] BEGIN [pm-lr]                                  |
+|   [14][6][18]: _GenericArgument -> [10][_Name]< ID ( "<" { _GenericArgument @ ; "," } ">" ) > |
+|   [9][4][9]: _Name -> [24][_PrimitiveShared]<! !_Name @ !>                                    |
+|   [8][3][9]: _PrimitiveShared -> [85][Module] BEGIN [pm-cr-rule: _PrimitiveShared]            |
+|   [7][0][9]: Module -> [1][_GenericArgument] BEGIN [pm-lr]                                    |
+|   [6][6][9]: _GenericArgument -> [10][_Name]< ID ( "<" { _GenericArgument @ ; "," } ">" ) >   |
+|   [1][4][0]: _Name -> [24][_PrimitiveShared]<! !_Name @ !>                                    |
+|   [0][3][0]: _PrimitiveShared -> [85][Module] BEGIN [pm-cr-rule: _PrimitiveShared]            |
+| [PREDECESSORS 19-19]: [19]                                                                    |
+| [SUCCESORS 21-21]: [21]                                                                       |
++-----------------------------------------------------------------------------------------------+
+|
++
+|
++-----------------------------------------------------------------------------------------------+
+| [21]: <Ending>                                                                                |
+|   TraceExec: [19]                                                                             |
+|   InsExec: [38:1]                                                                             |
+|   ForwardTrace: 0                                                                             |
+| [85][Module] BEGIN [pm-cr-rule: _PrimitiveShared]                                             |
+| [AST-INSTRUCTIONS]:                                                                           |
+|   @ CS(20 -> 9) : [11][5][0] OS(19 -> -1) : [10]                                              |
+|   + StackEnd()                                                                                |
+|     obj+:11 : Name                                                                            |
+|       begin:20@3, top:19@0, use:[10], create!:[20@0], end!:[21@0], endLref:[23@1]             |
+|                                                                                               |
+|   @ CS(9 -> 0) : [5][0] OS(21 -> -1) : [11]                                                   |
+| [RETURN STACK]:                                                                               |
+|   [15][0][18]: Module -> [1][_GenericArgument] BEGIN [pm-lr]                                  |
+|   [14][6][18]: _GenericArgument -> [10][_Name]< ID ( "<" { _GenericArgument @ ; "," } ">" ) > |
+|   [9][4][9]: _Name -> [24][_PrimitiveShared]<! !_Name @ !>                                    |
+|   [8][3][9]: _PrimitiveShared -> [85][Module] BEGIN [pm-cr-rule: _PrimitiveShared]            |
+|   [7][0][9]: Module -> [1][_GenericArgument] BEGIN [pm-lr]                                    |
+|   [6][6][9]: _GenericArgument -> [10][_Name]< ID ( "<" { _GenericArgument @ ; "," } ">" ) >   |
+|   [1][4][0]: _Name -> [24][_PrimitiveShared]<! !_Name @ !>                                    |
+|   [0][3][0]: _PrimitiveShared -> [85][Module] BEGIN [pm-cr-rule: _PrimitiveShared]            |
+| [PREDECESSORS 20-20]: [20]                                                                    |
+| [SUCCESORS 22-22]: [22]                                                                       |
++-----------------------------------------------------------------------------------------------+
+|
++
+|
++-----------------------------------------------------------------------------------------------+
+| [22]: <Ending>                                                                                |
+|   TraceExec: [20]                                                                             |
+|   InsExec: [39:2]                                                                             |
+|   ForwardTrace: 0                                                                             |
+| [1][_GenericArgument] BEGIN [pm-lr]                                                           |
+| [AST-INSTRUCTIONS]:                                                                           |
+|   @ CS(9 -> 0) : [5][0] OS(21 -> -1) : [11]                                                   |
+|   + StackBegin()                                                                              |
+|     obj!:12 : Name                                                                            |
+|                                                                                               |
+|   @ CS(22 -> 9) : [12][5][0] OS(21 -> -1) : [11]                                              |
+|   + StackEnd()                                                                                |
+|     obj+:12 : Name                                                                            |
+|       begin:22@0, top:19@0, use:[11], create!:[20@0], end!:[22@1], endLref:[23@1]             |
+|                                                                                               |
+|   @ CS(9 -> 0) : [5][0] OS(23 -> -1) : [12]                                                   |
+| [RETURN STACK]:                                                                               |
+|   [14][6][18]: _GenericArgument -> [10][_Name]< ID ( "<" { _GenericArgument @ ; "," } ">" ) > |
+|   [9][4][9]: _Name -> [24][_PrimitiveShared]<! !_Name @ !>                                    |
+|   [8][3][9]: _PrimitiveShared -> [85][Module] BEGIN [pm-cr-rule: _PrimitiveShared]            |
+|   [7][0][9]: Module -> [1][_GenericArgument] BEGIN [pm-lr]                                    |
+|   [6][6][9]: _GenericArgument -> [10][_Name]< ID ( "<" { _GenericArgument @ ; "," } ">" ) >   |
+|   [1][4][0]: _Name -> [24][_PrimitiveShared]<! !_Name @ !>                                    |
+|   [0][3][0]: _PrimitiveShared -> [85][Module] BEGIN [pm-cr-rule: _PrimitiveShared]            |
+| [PREDECESSORS 21-21]: [21]                                                                    |
+| [SUCCESORS 23-23]: [23]                                                                       |
++-----------------------------------------------------------------------------------------------+
+|
++
+|
++---------------------------------------------------------------------------------------------+
+| [23]: <Ending>                                                                              |
+|   TraceExec: [21]                                                                           |
+|   InsExec: [41:3]                                                                           |
+|   ForwardTrace: 0                                                                           |
+| [10][_Name]< ID ( "<" { _GenericArgument @ ; "," } ">" ) >                                  |
+| [AST-INSTRUCTIONS]:                                                                         |
+|   @ CS(9 -> 0) : [5][0] OS(23 -> -1) : [12]                                                 |
+|   + StackBegin()                                                                            |
+|     obj!:13 : Name                                                                          |
+|                                                                                             |
+|   @ CS(24 -> 9) : [13][5][0] OS(23 -> -1) : [12]                                            |
+|   + StackEnd()                                                                              |
+|     obj+:13 : Name                                                                          |
+|       begin:23@0, top:19@0, use:[12], create!:[20@0], end!:[23@1]                           |
+|                                                                                             |
+|   @ CS(9 -> 0) : [5][0] OS(25 -> -1) : [13]                                                 |
+|   > StackSlot(2)                                                                            |
+|                                                                                             |
+|   @ CS(9 -> 0) : [5][0]                                                                     |
+| [RETURN STACK]:                                                                             |
+|   [9][4][9]: _Name -> [24][_PrimitiveShared]<! !_Name @ !>                                  |
+|   [8][3][9]: _PrimitiveShared -> [85][Module] BEGIN [pm-cr-rule: _PrimitiveShared]          |
+|   [7][0][9]: Module -> [1][_GenericArgument] BEGIN [pm-lr]                                  |
+|   [6][6][9]: _GenericArgument -> [10][_Name]< ID ( "<" { _GenericArgument @ ; "," } ">" ) > |
+|   [1][4][0]: _Name -> [24][_PrimitiveShared]<! !_Name @ !>                                  |
+|   [0][3][0]: _PrimitiveShared -> [85][Module] BEGIN [pm-cr-rule: _PrimitiveShared]          |
+| [PREDECESSORS 22-22]: [22]                                                                  |
+| [SUCCESORS 24-24]: [24]                                                                     |
++---------------------------------------------------------------------------------------------+
+[0]
+ |
+ +
+ |
+[0]
+++=============================================================================================++
+|| [24]: {GT} >                                                                                ||
+||   TraceExec: [22]                                                                           ||
+||   InsExec: [44:1]                                                                           ||
+||   ForwardTrace: 0                                                                           ||
+|| [9][_Name]< ID ( "<" { _GenericArgument ; "," } ">" @ ) >                                   ||
+|| [AST-INSTRUCTIONS]:                                                                         ||
+||   @ CS(9 -> 0) : [5][0]                                                                     ||
+||   + Token(4)                                                                                ||
+||                                                                                             ||
+||   @ CS(9 -> 0) : [5][0]                                                                     ||
+|| [RETURN STACK]:                                                                             ||
+||   [9][4][9]: _Name -> [24][_PrimitiveShared]<! !_Name @ !>                                  ||
+||   [8][3][9]: _PrimitiveShared -> [85][Module] BEGIN [pm-cr-rule: _PrimitiveShared]          ||
+||   [7][0][9]: Module -> [1][_GenericArgument] BEGIN [pm-lr]                                  ||
+||   [6][6][9]: _GenericArgument -> [10][_Name]< ID ( "<" { _GenericArgument @ ; "," } ">" ) > ||
+||   [1][4][0]: _Name -> [24][_PrimitiveShared]<! !_Name @ !>                                  ||
+||   [0][3][0]: _PrimitiveShared -> [85][Module] BEGIN [pm-cr-rule: _PrimitiveShared]          ||
+|| [PREDECESSORS 23-23]: [23]                                                                  ||
+|| [SUCCESORS 25-25]: [25]                                                                     ||
+++=============================================================================================++
+|
++
+|
++---------------------------------------------------------------------------------------------+
+| [25]: <Ending>                                                                              |
+|   TraceExec: [23]                                                                           |
+|   InsExec: [45:5]                                                                           |
+|   ForwardTrace: 0                                                                           |
+| [24][_PrimitiveShared]<! !_Name @ !>                                                        |
+| [AST-INSTRUCTIONS]:                                                                         |
+|   @ CS(9 -> 0) : [5][0]                                                                     |
+|   + CreateObject(GenericName)                                                               |
+|     obj:5 : GenericName                                                                     |
+|                                                                                             |
+|   @ CS(9 -> 0) : [5][0]                                                                     |
+|   + Field(GenericName::name, 0)                                                             |
+|                                                                                             |
+|   @ CS(9 -> 0) : [5][0]                                                                     |
+|   + Field(GenericQualifiedName::args, 2)                                                    |
+|                                                                                             |
+|   @ CS(9 -> 0) : [5][0]                                                                     |
+|   + StackEnd()                                                                              |
+|     obj+:5 : GenericName                                                                    |
+|       begin:10@0, top:10@0, field:[13, 9], create!:[25@0], end:[25@3], endLref:[29@1]       |
+|                                                                                             |
+|   @ CS(0 -> -1) : [0] OS(26 -> -1) : [5]                                                    |
+|   > StackBegin()                                                                            |
+|     obj!:14 : GenericName                                                                   |
+|                                                                                             |
+|   @ CS(27 -> 0) : [14][0] OS(26 -> -1) : [5]                                                |
+| [RETURN STACK]:                                                                             |
+|   [8][3][9]: _PrimitiveShared -> [85][Module] BEGIN [pm-cr-rule: _PrimitiveShared]          |
+|   [7][0][9]: Module -> [1][_GenericArgument] BEGIN [pm-lr]                                  |
+|   [6][6][9]: _GenericArgument -> [10][_Name]< ID ( "<" { _GenericArgument @ ; "," } ">" ) > |
+|   [1][4][0]: _Name -> [24][_PrimitiveShared]<! !_Name @ !>                                  |
+|   [0][3][0]: _PrimitiveShared -> [85][Module] BEGIN [pm-cr-rule: _PrimitiveShared]          |
+| [PREDECESSORS 24-24]: [24]                                                                  |
+| [SUCCESORS 26-26]: [26]                                                                     |
++---------------------------------------------------------------------------------------------+
+|
++
+|
++---------------------------------------------------------------------------------------------+
+| [26]: <Ending>                                                                              |
+|   TraceExec: [24]                                                                           |
+|   InsExec: [50:1]                                                                           |
+|   ForwardTrace: 0                                                                           |
+| [85][Module] BEGIN [pm-cr-rule: _PrimitiveShared]                                           |
+| [AST-INSTRUCTIONS]:                                                                         |
+|   @ CS(27 -> 0) : [14][0] OS(26 -> -1) : [5]                                                |
+|   + StackEnd()                                                                              |
+|     obj+:14 : GenericName                                                                   |
+|       begin:25@4, top:10@0, use:[5], create!:[25@0], end!:[26@0], endLref:[29@1]            |
+|                                                                                             |
+|   @ CS(0 -> -1) : [0] OS(28 -> -1) : [14]                                                   |
+| [RETURN STACK]:                                                                             |
+|   [7][0][9]: Module -> [1][_GenericArgument] BEGIN [pm-lr]                                  |
+|   [6][6][9]: _GenericArgument -> [10][_Name]< ID ( "<" { _GenericArgument @ ; "," } ">" ) > |
+|   [1][4][0]: _Name -> [24][_PrimitiveShared]<! !_Name @ !>                                  |
+|   [0][3][0]: _PrimitiveShared -> [85][Module] BEGIN [pm-cr-rule: _PrimitiveShared]          |
+| [PREDECESSORS 25-25]: [25]                                                                  |
+| [SUCCESORS 28-29]: [28][29]                                                                 |
++---------------------------------------------------------------------------------------------+
+|
++----------------------------------------------------------------------------------------------------+
+|                                                                                                    |
++---------------------------------------------------------------------------------------------+      +---------------------------------------------------------------------------------------------+
+| [28]: <Leftrec>                                                                             |      | [29]: <Leftrec>                                                                             |
+|   TraceExec: [25]                                                                           |      |   TraceExec: [35]                                                                           |
+|   InsExec: [51:4]                                                                           |      |   InsExec: [75:4]                                                                           |
+|   ForwardTrace: 28                                                                          |      |   ForwardTrace: 29                                                                          |
+| [48][_LongType]< _LongType @ "(" { _LongTypeArg ; "," } ")" >                               |      | [75][_Expr1]< _Expr1 @ "(" { _ExprArg ; "," } ")" >                                         |
+| [AST-INSTRUCTIONS]:                                                                         |      | [AST-INSTRUCTIONS]:                                                                         |
+|   @ CS(0 -> -1) : [0] OS(28 -> -1) : [14]                                                   |      |   @ CS(0 -> -1) : [0] OS(28 -> -1) : [14]                                                   |
+|   + StackBegin()                                                                            |      |   + StackBegin()                                                                            |
+|     obj!:15 : GenericName                                                                   |      |     obj!:22 : GenericName                                                                   |
+|                                                                                             |      |                                                                                             |
+|   @ CS(29 -> 0) : [15][0] OS(28 -> -1) : [14]                                               |      |   @ CS(43 -> 0) : [22][0] OS(28 -> -1) : [14]                                               |
+|   + StackEnd()                                                                              |      |   + StackEnd()                                                                              |
+|     obj+:15 : GenericName                                                                   |      |     obj+:22 : GenericName                                                                   |
+|       begin:28@0, top:10@0, use:[14], create!:[25@0], end!:[28@1]                           |      |       begin:29@0, top:10@0, use:[14], create!:[25@0], end!:[29@1]                           |
+|                                                                                             |      |                                                                                             |
+|   @ CS(0 -> -1) : [0] OS(30 -> -1) : [15]                                                   |      |   @ CS(0 -> -1) : [0] OS(44 -> -1) : [22]                                                   |
+|   + StackBegin()                                                                            |      |   + StackBegin()                                                                            |
+|     obj:16 : FunctionType                                                                   |      |     obj:23 : CallExpr                                                                       |
+|                                                                                             |      |                                                                                             |
+|   @ CS(31 -> 0) : [16][0] OS(30 -> -1) : [15]                                               |      |   @ CS(45 -> 0) : [23][0] OS(44 -> -1) : [22]                                               |
+|   + StackSlot(0)                                                                            |      |   + StackSlot(0)                                                                            |
+|                                                                                             |      |                                                                                             |
+|   @ CS(31 -> 0) : [16][0]                                                                   |      |   @ CS(45 -> 0) : [23][0]                                                                   |
+| [RETURN STACK]:                                                                             |      | [RETURN STACK]:                                                                             |
+|   [22][30][26]: _LongType -> [91][Module]<! !_LongType @ !>                                 |      |   [24][12][26]: _Expr1 -> [82][_Expr]<! !_Expr1 @ !>                                        |
+|   [7][0][9]: Module -> [1][_GenericArgument] BEGIN [pm-lr]                                  |      |   [23][29][26]: _Expr -> [90][Module]<! !_Expr @ !>                                         |
+|   [6][6][9]: _GenericArgument -> [10][_Name]< ID ( "<" { _GenericArgument @ ; "," } ">" ) > |      |   [7][0][9]: Module -> [1][_GenericArgument] BEGIN [pm-lr]                                  |
+|   [1][4][0]: _Name -> [24][_PrimitiveShared]<! !_Name @ !>                                  |      |   [6][6][9]: _GenericArgument -> [10][_Name]< ID ( "<" { _GenericArgument @ ; "," } ">" ) > |
+|   [0][3][0]: _PrimitiveShared -> [85][Module] BEGIN [pm-cr-rule: _PrimitiveShared]          |      |   [1][4][0]: _Name -> [24][_PrimitiveShared]<! !_Name @ !>                                  |
+| [PREDECESSORS 26-26]: [26]                                                                  |      |   [0][3][0]: _PrimitiveShared -> [85][Module] BEGIN [pm-cr-rule: _PrimitiveShared]          |
+| [SUCCESORS 32-32]: [32]                                                                     |      | [PREDECESSORS 26-26]: [26]                                                                  |
++---------------------------------------------------------------------------------------------+      | [SUCCESORS 33-33]: [33]                                                                     |
+|                                                                                                    +---------------------------------------------------------------------------------------------+
+[0]                                                                                                  [1]
+ |                                                                                                    |
+ +                                                                                                    +
+ |                                                                                                    |
+[0]                                                                                                  [1]
+++=============================================================================================++    ++=============================================================================================++
+|| [32]: {OPEN_ROUND} (                                                                        ||    || [33]: {OPEN_ROUND} (                                                                        ||
+||   TraceExec: [26]                                                                           ||    ||   TraceExec: [36]                                                                           ||
+||   InsExec: [55:1]                                                                           ||    ||   InsExec: [79:1]                                                                           ||
+||   ForwardTrace: 28                                                                          ||    ||   ForwardTrace: 29                                                                          ||
+|| [42][_LongType]< _LongType "(" @ { _LongTypeArg ; "," } ")" >                               ||    || [71][_Expr1]< _Expr1 "(" @ { _ExprArg ; "," } ")" >                                         ||
+|| [AST-INSTRUCTIONS]:                                                                         ||    || [AST-INSTRUCTIONS]:                                                                         ||
+||   @ CS(31 -> 0) : [16][0]                                                                   ||    ||   @ CS(45 -> 0) : [23][0]                                                                   ||
+||   + Token(1)                                                                                ||    ||   + Token(1)                                                                                ||
+||                                                                                             ||    ||                                                                                             ||
+||   @ CS(31 -> 0) : [16][0]                                                                   ||    ||   @ CS(45 -> 0) : [23][0]                                                                   ||
+|| [RETURN STACK]:                                                                             ||    || [RETURN STACK]:                                                                             ||
+||   [22][30][26]: _LongType -> [91][Module]<! !_LongType @ !>                                 ||    ||   [24][12][26]: _Expr1 -> [82][_Expr]<! !_Expr1 @ !>                                        ||
+||   [7][0][9]: Module -> [1][_GenericArgument] BEGIN [pm-lr]                                  ||    ||   [23][29][26]: _Expr -> [90][Module]<! !_Expr @ !>                                         ||
+||   [6][6][9]: _GenericArgument -> [10][_Name]< ID ( "<" { _GenericArgument @ ; "," } ">" ) > ||    ||   [7][0][9]: Module -> [1][_GenericArgument] BEGIN [pm-lr]                                  ||
+||   [1][4][0]: _Name -> [24][_PrimitiveShared]<! !_Name @ !>                                  ||    ||   [6][6][9]: _GenericArgument -> [10][_Name]< ID ( "<" { _GenericArgument @ ; "," } ">" ) > ||
+||   [0][3][0]: _PrimitiveShared -> [85][Module] BEGIN [pm-cr-rule: _PrimitiveShared]          ||    ||   [1][4][0]: _Name -> [24][_PrimitiveShared]<! !_Name @ !>                                  ||
+|| [PREDECESSORS 28-28]: [28]                                                                  ||    ||   [0][3][0]: _PrimitiveShared -> [85][Module] BEGIN [pm-cr-rule: _PrimitiveShared]          ||
+|| [SUCCESORS 39-39]: [39]                                                                     ||    || [PREDECESSORS 29-29]: [29]                                                                  ||
+++=============================================================================================++    || [SUCCESORS 44-44]: [44]                                                                     ||
+|                                                                                                    ++=============================================================================================++
+[0]                                                                                                  [1]
+ |                                                                                                    |
+ +                                                                                                    +-+
+ |                                                                                                      |
+[0]                                                                                                    [1]
+++===============================================================================================++    ++=============================================================================================++
+|| [39]: {ID} F                                                                                  ||    || [44]: {ID} F                                                                                ||
+||   TraceExec: [27]                                                                             ||    ||   TraceExec: [37]                                                                           ||
+||   InsExec: [56:2]                                                                             ||    ||   InsExec: [80:2]                                                                           ||
+||   ForwardTrace: 28                                                                            ||    ||   ForwardTrace: 29                                                                          ||
+|| [21][_Name]{{< ID @ ( "<" { _GenericArgument ; "," } ">" ) > ; < ID @ >}}                     ||    || [21][_Name]{{< ID @ ( "<" { _GenericArgument ; "," } ">" ) > ; < ID @ >}}                   ||
+|| [AST-INSTRUCTIONS]:                                                                           ||    || [AST-INSTRUCTIONS]:                                                                         ||
+||   @ CS(31 -> 0) : [16][0]                                                                     ||    ||   @ CS(45 -> 0) : [23][0]                                                                   ||
+||   + StackBegin()                                                                              ||    ||   + StackBegin()                                                                            ||
+||     obj:17 : Name                                                                             ||    ||     obj:24 : Name                                                                           ||
+||                                                                                               ||    ||                                                                                             ||
+||   @ CS(32 -> 31) : [17][16][0]                                                                ||    ||   @ CS(46 -> 45) : [24][23][0]                                                              ||
+||   + Token(0)                                                                                  ||    ||   + Token(0)                                                                                ||
+||                                                                                               ||    ||                                                                                             ||
+||   @ CS(32 -> 31) : [17][16][0]                                                                ||    ||   @ CS(46 -> 45) : [24][23][0]                                                              ||
+|| [RETURN STACK]:                                                                               ||    || [RETURN STACK]:                                                                             ||
+||   [32][4][32]: _Name -> [24][_PrimitiveShared]<! !_Name @ !>                                  ||    ||   [38][4][33]: _Name -> [24][_PrimitiveShared]<! !_Name @ !>                                ||
+||   [31][19][32]: _PrimitiveShared -> [51][_LongType]<! !_PrimitiveShared @ !>                  ||    ||   [37][16][33]: _PrimitiveShared -> [59][_Expr0] BEGIN [pm-cr-rule: _PrimitiveShared]       ||
+||   [30][17][32]: _LongType -> [36][_LongTypeArg] BEGIN [pm-lr]                                 ||    ||   [36][13][33]: _Expr0 -> [76][_Expr1]<! !_Expr0 @ !>                                       ||
+||   [29][20][32]: _LongTypeArg -> [45][_LongType]< _LongType "(" { _LongTypeArg @ ; "," } ")" > ||    ||   [35][12][33]: _Expr1 -> [82][_Expr]<! !_Expr1 @ !>                                        ||
+||   [22][30][26]: _LongType -> [91][Module]<! !_LongType @ !>                                   ||    ||   [34][22][33]: _Expr -> [54][_ExprArg] BEGIN [pm-lr]                                       ||
+||   [7][0][9]: Module -> [1][_GenericArgument] BEGIN [pm-lr]                                    ||    ||   [33][26][33]: _ExprArg -> [74][_Expr1]< _Expr1 "(" { _ExprArg @ ; "," } ")" >             ||
+||   [6][6][9]: _GenericArgument -> [10][_Name]< ID ( "<" { _GenericArgument @ ; "," } ">" ) >   ||    ||   [24][12][26]: _Expr1 -> [82][_Expr]<! !_Expr1 @ !>                                        ||
+||   [1][4][0]: _Name -> [24][_PrimitiveShared]<! !_Name @ !>                                    ||    ||   [23][29][26]: _Expr -> [90][Module]<! !_Expr @ !>                                         ||
+||   [0][3][0]: _PrimitiveShared -> [85][Module] BEGIN [pm-cr-rule: _PrimitiveShared]            ||    ||   [7][0][9]: Module -> [1][_GenericArgument] BEGIN [pm-lr]                                  ||
+|| [PREDECESSORS 32-32]: [32]                                                                    ||    ||   [6][6][9]: _GenericArgument -> [10][_Name]< ID ( "<" { _GenericArgument @ ; "," } ">" ) > ||
+|| [SUCCESORS 40-40]: [40]                                                                       ||    ||   [1][4][0]: _Name -> [24][_PrimitiveShared]<! !_Name @ !>                                  ||
+++===============================================================================================++    ||   [0][3][0]: _PrimitiveShared -> [85][Module] BEGIN [pm-cr-rule: _PrimitiveShared]          ||
+|                                                                                                      || [PREDECESSORS 33-33]: [33]                                                                  ||
+|                                                                                                      || [SUCCESORS 45-45]: [45]                                                                     ||
+|                                                                                                      ++=============================================================================================++
+|                                                                                                      |
++                                                                                                      +
+|                                                                                                      |
++-----------------------------------------------------------------------------------------------+      +---------------------------------------------------------------------------------------------+
+| [40]: <Ending>                                                                                |      | [45]: <Ending>                                                                              |
+|   TraceExec: [28]                                                                             |      |   TraceExec: [38]                                                                           |
+|   InsExec: [58:4]                                                                             |      |   InsExec: [82:4]                                                                           |
+|   ForwardTrace: 28                                                                            |      |   ForwardTrace: 29                                                                          |
+| [24][_PrimitiveShared]<! !_Name @ !>                                                          |      | [24][_PrimitiveShared]<! !_Name @ !>                                                        |
+| [AST-INSTRUCTIONS]:                                                                           |      | [AST-INSTRUCTIONS]:                                                                         |
+|   @ CS(32 -> 31) : [17][16][0]                                                                |      |   @ CS(46 -> 45) : [24][23][0]                                                              |
+|   + CreateObject(Name)                                                                        |      |   + CreateObject(Name)                                                                      |
+|     obj:17 : Name                                                                             |      |     obj:24 : Name                                                                           |
+|                                                                                               |      |                                                                                             |
+|   @ CS(32 -> 31) : [17][16][0]                                                                |      |   @ CS(46 -> 45) : [24][23][0]                                                              |
+|   + Field(Name::name, 0)                                                                      |      |   + Field(Name::name, 0)                                                                    |
+|                                                                                               |      |                                                                                             |
+|   @ CS(32 -> 31) : [17][16][0]                                                                |      |   @ CS(46 -> 45) : [24][23][0]                                                              |
+|   + StackEnd()                                                                                |      |   + StackEnd()                                                                              |
+|     obj+:17 : Name                                                                            |      |     obj+:24 : Name                                                                          |
+|       begin:39@0, top:39@0, create!:[40@0], end:[40@2], endLref:[43@1]                        |      |       begin:44@0, top:44@0, create!:[45@0], end:[45@2], endLref:[50@1]                      |
+|                                                                                               |      |                                                                                             |
+|   @ CS(31 -> 0) : [16][0] OS(33 -> -1) : [17]                                                 |      |   @ CS(45 -> 0) : [23][0] OS(47 -> -1) : [24]                                               |
+|   > StackBegin()                                                                              |      |   > StackBegin()                                                                            |
+|     obj!:18 : Name                                                                            |      |     obj!:25 : Name                                                                          |
+|                                                                                               |      |                                                                                             |
+|   @ CS(34 -> 31) : [18][16][0] OS(33 -> -1) : [17]                                            |      |   @ CS(48 -> 45) : [25][23][0] OS(47 -> -1) : [24]                                          |
+| [RETURN STACK]:                                                                               |      | [RETURN STACK]:                                                                             |
+|   [31][19][32]: _PrimitiveShared -> [51][_LongType]<! !_PrimitiveShared @ !>                  |      |   [37][16][33]: _PrimitiveShared -> [59][_Expr0] BEGIN [pm-cr-rule: _PrimitiveShared]       |
+|   [30][17][32]: _LongType -> [36][_LongTypeArg] BEGIN [pm-lr]                                 |      |   [36][13][33]: _Expr0 -> [76][_Expr1]<! !_Expr0 @ !>                                       |
+|   [29][20][32]: _LongTypeArg -> [45][_LongType]< _LongType "(" { _LongTypeArg @ ; "," } ")" > |      |   [35][12][33]: _Expr1 -> [82][_Expr]<! !_Expr1 @ !>                                        |
+|   [22][30][26]: _LongType -> [91][Module]<! !_LongType @ !>                                   |      |   [34][22][33]: _Expr -> [54][_ExprArg] BEGIN [pm-lr]                                       |
+|   [7][0][9]: Module -> [1][_GenericArgument] BEGIN [pm-lr]                                    |      |   [33][26][33]: _ExprArg -> [74][_Expr1]< _Expr1 "(" { _ExprArg @ ; "," } ")" >             |
+|   [6][6][9]: _GenericArgument -> [10][_Name]< ID ( "<" { _GenericArgument @ ; "," } ">" ) >   |      |   [24][12][26]: _Expr1 -> [82][_Expr]<! !_Expr1 @ !>                                        |
+|   [1][4][0]: _Name -> [24][_PrimitiveShared]<! !_Name @ !>                                    |      |   [23][29][26]: _Expr -> [90][Module]<! !_Expr @ !>                                         |
+|   [0][3][0]: _PrimitiveShared -> [85][Module] BEGIN [pm-cr-rule: _PrimitiveShared]            |      |   [7][0][9]: Module -> [1][_GenericArgument] BEGIN [pm-lr]                                  |
+| [PREDECESSORS 39-39]: [39]                                                                    |      |   [6][6][9]: _GenericArgument -> [10][_Name]< ID ( "<" { _GenericArgument @ ; "," } ">" ) > |
+| [SUCCESORS 41-41]: [41]                                                                       |      |   [1][4][0]: _Name -> [24][_PrimitiveShared]<! !_Name @ !>                                  |
++-----------------------------------------------------------------------------------------------+      |   [0][3][0]: _PrimitiveShared -> [85][Module] BEGIN [pm-cr-rule: _PrimitiveShared]          |
+|                                                                                                      | [PREDECESSORS 44-44]: [44]                                                                  |
+|                                                                                                      | [SUCCESORS 46-46]: [46]                                                                     |
+|                                                                                                      +---------------------------------------------------------------------------------------------+
+|                                                                                                      |
++                                                                                                      +
+|                                                                                                      |
++-----------------------------------------------------------------------------------------------+      +---------------------------------------------------------------------------------------------+
+| [41]: <Ending>                                                                                |      | [46]: <Ending>                                                                              |
+|   TraceExec: [29]                                                                             |      |   TraceExec: [39]                                                                           |
+|   InsExec: [62:2]                                                                             |      |   InsExec: [86:1]                                                                           |
+|   ForwardTrace: 28                                                                            |      |   ForwardTrace: 29                                                                          |
+| [51][_LongType]<! !_PrimitiveShared @ !>                                                      |      | [59][_Expr0] BEGIN [pm-cr-rule: _PrimitiveShared]                                           |
+| [AST-INSTRUCTIONS]:                                                                           |      | [AST-INSTRUCTIONS]:                                                                         |
+|   @ CS(34 -> 31) : [18][16][0] OS(33 -> -1) : [17]                                            |      |   @ CS(48 -> 45) : [25][23][0] OS(47 -> -1) : [24]                                          |
+|   + StackEnd()                                                                                |      |   + StackEnd()                                                                              |
+|     obj+:18 : Name                                                                            |      |     obj+:25 : Name                                                                          |
+|       begin:40@3, top:39@0, use:[17], create!:[40@0], end!:[41@0], endLref:[43@1]             |      |       begin:45@3, top:44@0, use:[24], create!:[45@0], end!:[46@0], endLref:[50@1]           |
+|                                                                                               |      |                                                                                             |
+|   @ CS(31 -> 0) : [16][0] OS(35 -> -1) : [18]                                                 |      |   @ CS(45 -> 0) : [23][0] OS(49 -> -1) : [25]                                               |
+|   > StackBegin()                                                                              |      | [RETURN STACK]:                                                                             |
+|     obj!:19 : Name                                                                            |      |   [36][13][33]: _Expr0 -> [76][_Expr1]<! !_Expr0 @ !>                                       |
+|                                                                                               |      |   [35][12][33]: _Expr1 -> [82][_Expr]<! !_Expr1 @ !>                                        |
+|   @ CS(36 -> 31) : [19][16][0] OS(35 -> -1) : [18]                                            |      |   [34][22][33]: _Expr -> [54][_ExprArg] BEGIN [pm-lr]                                       |
+| [RETURN STACK]:                                                                               |      |   [33][26][33]: _ExprArg -> [74][_Expr1]< _Expr1 "(" { _ExprArg @ ; "," } ")" >             |
+|   [30][17][32]: _LongType -> [36][_LongTypeArg] BEGIN [pm-lr]                                 |      |   [24][12][26]: _Expr1 -> [82][_Expr]<! !_Expr1 @ !>                                        |
+|   [29][20][32]: _LongTypeArg -> [45][_LongType]< _LongType "(" { _LongTypeArg @ ; "," } ")" > |      |   [23][29][26]: _Expr -> [90][Module]<! !_Expr @ !>                                         |
+|   [22][30][26]: _LongType -> [91][Module]<! !_LongType @ !>                                   |      |   [7][0][9]: Module -> [1][_GenericArgument] BEGIN [pm-lr]                                  |
+|   [7][0][9]: Module -> [1][_GenericArgument] BEGIN [pm-lr]                                    |      |   [6][6][9]: _GenericArgument -> [10][_Name]< ID ( "<" { _GenericArgument @ ; "," } ">" ) > |
+|   [6][6][9]: _GenericArgument -> [10][_Name]< ID ( "<" { _GenericArgument @ ; "," } ">" ) >   |      |   [1][4][0]: _Name -> [24][_PrimitiveShared]<! !_Name @ !>                                  |
+|   [1][4][0]: _Name -> [24][_PrimitiveShared]<! !_Name @ !>                                    |      |   [0][3][0]: _PrimitiveShared -> [85][Module] BEGIN [pm-cr-rule: _PrimitiveShared]          |
+|   [0][3][0]: _PrimitiveShared -> [85][Module] BEGIN [pm-cr-rule: _PrimitiveShared]            |      | [PREDECESSORS 45-45]: [45]                                                                  |
+| [PREDECESSORS 40-40]: [40]                                                                    |      | [SUCCESORS 47-47]: [47]                                                                     |
+| [SUCCESORS 42-42]: [42]                                                                       |      +---------------------------------------------------------------------------------------------+
++-----------------------------------------------------------------------------------------------+      |
+|                                                                                                      |
++                                                                                                      +
+|                                                                                                      |
++-----------------------------------------------------------------------------------------------+      +---------------------------------------------------------------------------------------------+
+| [42]: <Ending>                                                                                |      | [47]: <Ending>                                                                              |
+|   TraceExec: [30]                                                                             |      |   TraceExec: [40]                                                                           |
+|   InsExec: [64:1]                                                                             |      |   InsExec: [87:3]                                                                           |
+|   ForwardTrace: 28                                                                            |      |   ForwardTrace: 29                                                                          |
+| [36][_LongTypeArg] BEGIN [pm-lr]                                                              |      | [76][_Expr1]<! !_Expr0 @ !>                                                                 |
+| [AST-INSTRUCTIONS]:                                                                           |      | [AST-INSTRUCTIONS]:                                                                         |
+|   @ CS(36 -> 31) : [19][16][0] OS(35 -> -1) : [18]                                            |      |   @ CS(45 -> 0) : [23][0] OS(49 -> -1) : [25]                                               |
+|   + StackEnd()                                                                                |      |   + StackBegin()                                                                            |
+|     obj+:19 : Name                                                                            |      |     obj!:26 : Name                                                                          |
+|       begin:41@1, top:39@0, use:[18], create!:[40@0], end!:[42@0], endLref:[43@1]             |      |                                                                                             |
+|                                                                                               |      |   @ CS(50 -> 45) : [26][23][0] OS(49 -> -1) : [25]                                          |
+|   @ CS(31 -> 0) : [16][0] OS(37 -> -1) : [19]                                                 |      |   + StackEnd()                                                                              |
+| [RETURN STACK]:                                                                               |      |     obj+:26 : Name                                                                          |
+|   [29][20][32]: _LongTypeArg -> [45][_LongType]< _LongType "(" { _LongTypeArg @ ; "," } ")" > |      |       begin:47@0, top:44@0, use:[25], create!:[45@0], end!:[47@1], endLref:[50@1]           |
+|   [22][30][26]: _LongType -> [91][Module]<! !_LongType @ !>                                   |      |                                                                                             |
+|   [7][0][9]: Module -> [1][_GenericArgument] BEGIN [pm-lr]                                    |      |   @ CS(45 -> 0) : [23][0] OS(51 -> -1) : [26]                                               |
+|   [6][6][9]: _GenericArgument -> [10][_Name]< ID ( "<" { _GenericArgument @ ; "," } ">" ) >   |      |   > StackBegin()                                                                            |
+|   [1][4][0]: _Name -> [24][_PrimitiveShared]<! !_Name @ !>                                    |      |     obj!:27 : Name                                                                          |
+|   [0][3][0]: _PrimitiveShared -> [85][Module] BEGIN [pm-cr-rule: _PrimitiveShared]            |      |                                                                                             |
+| [PREDECESSORS 41-41]: [41]                                                                    |      |   @ CS(52 -> 45) : [27][23][0] OS(51 -> -1) : [26]                                          |
+| [SUCCESORS 43-43]: [43]                                                                       |      | [RETURN STACK]:                                                                             |
++-----------------------------------------------------------------------------------------------+      |   [35][12][33]: _Expr1 -> [82][_Expr]<! !_Expr1 @ !>                                        |
+|                                                                                                      |   [34][22][33]: _Expr -> [54][_ExprArg] BEGIN [pm-lr]                                       |
+|                                                                                                      |   [33][26][33]: _ExprArg -> [74][_Expr1]< _Expr1 "(" { _ExprArg @ ; "," } ")" >             |
+|                                                                                                      |   [24][12][26]: _Expr1 -> [82][_Expr]<! !_Expr1 @ !>                                        |
+|                                                                                                      |   [23][29][26]: _Expr -> [90][Module]<! !_Expr @ !>                                         |
+|                                                                                                      |   [7][0][9]: Module -> [1][_GenericArgument] BEGIN [pm-lr]                                  |
+|                                                                                                      |   [6][6][9]: _GenericArgument -> [10][_Name]< ID ( "<" { _GenericArgument @ ; "," } ">" ) > |
+|                                                                                                      |   [1][4][0]: _Name -> [24][_PrimitiveShared]<! !_Name @ !>                                  |
+|                                                                                                      |   [0][3][0]: _PrimitiveShared -> [85][Module] BEGIN [pm-cr-rule: _PrimitiveShared]          |
+|                                                                                                      | [PREDECESSORS 46-46]: [46]                                                                  |
+|                                                                                                      | [SUCCESORS 48-48]: [48]                                                                     |
+|                                                                                                      +---------------------------------------------------------------------------------------------+
+|                                                                                                      |
++                                                                                                      +
+|                                                                                                      |
++---------------------------------------------------------------------------------------------+        +---------------------------------------------------------------------------------------------+
+| [43]: <Ending>                                                                              |        | [48]: <Ending>                                                                              |
+|   TraceExec: [31]                                                                           |        |   TraceExec: [41]                                                                           |
+|   InsExec: [65:3]                                                                           |        |   InsExec: [90:2]                                                                           |
+|   ForwardTrace: 28                                                                          |        |   ForwardTrace: 29                                                                          |
+| [45][_LongType]< _LongType "(" { _LongTypeArg @ ; "," } ")" >                               |        | [82][_Expr]<! !_Expr1 @ !>                                                                  |
+| [AST-INSTRUCTIONS]:                                                                         |        | [AST-INSTRUCTIONS]:                                                                         |
+|   @ CS(31 -> 0) : [16][0] OS(37 -> -1) : [19]                                               |        |   @ CS(52 -> 45) : [27][23][0] OS(51 -> -1) : [26]                                          |
+|   + StackBegin()                                                                            |        |   + StackEnd()                                                                              |
+|     obj!:20 : Name                                                                          |        |     obj+:27 : Name                                                                          |
+|                                                                                             |        |       begin:47@2, top:44@0, use:[26], create!:[45@0], end!:[48@0], endLref:[50@1]           |
+|   @ CS(38 -> 31) : [20][16][0] OS(37 -> -1) : [19]                                          |        |                                                                                             |
+|   + StackEnd()                                                                              |        |   @ CS(45 -> 0) : [23][0] OS(53 -> -1) : [27]                                               |
+|     obj+:20 : Name                                                                          |        |   > StackBegin()                                                                            |
+|       begin:43@0, top:39@0, use:[19], create!:[40@0], end!:[43@1]                           |        |     obj!:28 : Name                                                                          |
+|                                                                                             |        |                                                                                             |
+|   @ CS(31 -> 0) : [16][0] OS(39 -> -1) : [20]                                               |        |   @ CS(54 -> 45) : [28][23][0] OS(53 -> -1) : [27]                                          |
+|   > StackSlot(2)                                                                            |        | [RETURN STACK]:                                                                             |
+|                                                                                             |        |   [34][22][33]: _Expr -> [54][_ExprArg] BEGIN [pm-lr]                                       |
+|   @ CS(31 -> 0) : [16][0]                                                                   |        |   [33][26][33]: _ExprArg -> [74][_Expr1]< _Expr1 "(" { _ExprArg @ ; "," } ")" >             |
+| [RETURN STACK]:                                                                             |        |   [24][12][26]: _Expr1 -> [82][_Expr]<! !_Expr1 @ !>                                        |
+|   [22][30][26]: _LongType -> [91][Module]<! !_LongType @ !>                                 |        |   [23][29][26]: _Expr -> [90][Module]<! !_Expr @ !>                                         |
+|   [7][0][9]: Module -> [1][_GenericArgument] BEGIN [pm-lr]                                  |        |   [7][0][9]: Module -> [1][_GenericArgument] BEGIN [pm-lr]                                  |
+|   [6][6][9]: _GenericArgument -> [10][_Name]< ID ( "<" { _GenericArgument @ ; "," } ">" ) > |        |   [6][6][9]: _GenericArgument -> [10][_Name]< ID ( "<" { _GenericArgument @ ; "," } ">" ) > |
+|   [1][4][0]: _Name -> [24][_PrimitiveShared]<! !_Name @ !>                                  |        |   [1][4][0]: _Name -> [24][_PrimitiveShared]<! !_Name @ !>                                  |
+|   [0][3][0]: _PrimitiveShared -> [85][Module] BEGIN [pm-cr-rule: _PrimitiveShared]          |        |   [0][3][0]: _PrimitiveShared -> [85][Module] BEGIN [pm-cr-rule: _PrimitiveShared]          |
+| [PREDECESSORS 42-42]: [42]                                                                  |        | [PREDECESSORS 47-47]: [47]                                                                  |
+| [SUCCESORS 53-53]: [53]                                                                     |        | [SUCCESORS 49-49]: [49]                                                                     |
++---------------------------------------------------------------------------------------------+        +---------------------------------------------------------------------------------------------+
+|                                                                                                      |
++                                                                                                      +
+|                                                                                                      |
+|                                                                                                      +---------------------------------------------------------------------------------------------+
+|                                                                                                      | [49]: <Ending>                                                                              |
+|                                                                                                      |   TraceExec: [42]                                                                           |
+|                                                                                                      |   InsExec: [92:1]                                                                           |
+|                                                                                                      |   ForwardTrace: 29                                                                          |
+|                                                                                                      | [54][_ExprArg] BEGIN [pm-lr]                                                                |
+|                                                                                                      | [AST-INSTRUCTIONS]:                                                                         |
+|                                                                                                      |   @ CS(54 -> 45) : [28][23][0] OS(53 -> -1) : [27]                                          |
+|                                                                                                      |   + StackEnd()                                                                              |
+|                                                                                                      |     obj+:28 : Name                                                                          |
+|                                                                                                      |       begin:48@1, top:44@0, use:[27], create!:[45@0], end!:[49@0], endLref:[50@1]           |
+|                                                                                                      |                                                                                             |
+|                                                                                                      |   @ CS(45 -> 0) : [23][0] OS(55 -> -1) : [28]                                               |
+|                                                                                                      | [RETURN STACK]:                                                                             |
+|                                                                                                      |   [33][26][33]: _ExprArg -> [74][_Expr1]< _Expr1 "(" { _ExprArg @ ; "," } ")" >             |
+|                                                                                                      |   [24][12][26]: _Expr1 -> [82][_Expr]<! !_Expr1 @ !>                                        |
+|                                                                                                      |   [23][29][26]: _Expr -> [90][Module]<! !_Expr @ !>                                         |
+|                                                                                                      |   [7][0][9]: Module -> [1][_GenericArgument] BEGIN [pm-lr]                                  |
+|                                                                                                      |   [6][6][9]: _GenericArgument -> [10][_Name]< ID ( "<" { _GenericArgument @ ; "," } ">" ) > |
+|                                                                                                      |   [1][4][0]: _Name -> [24][_PrimitiveShared]<! !_Name @ !>                                  |
+|                                                                                                      |   [0][3][0]: _PrimitiveShared -> [85][Module] BEGIN [pm-cr-rule: _PrimitiveShared]          |
+|                                                                                                      | [PREDECESSORS 48-48]: [48]                                                                  |
+|                                                                                                      | [SUCCESORS 50-50]: [50]                                                                     |
+|                                                                                                      +---------------------------------------------------------------------------------------------+
+|                                                                                                      |
+|                                                                                                      +
+|                                                                                                      |
+|                                                                                                      +---------------------------------------------------------------------------------------------+
+|                                                                                                      | [50]: <Ending>                                                                              |
+|                                                                                                      |   TraceExec: [43]                                                                           |
+|                                                                                                      |   InsExec: [93:3]                                                                           |
+|                                                                                                      |   ForwardTrace: 29                                                                          |
+|                                                                                                      | [74][_Expr1]< _Expr1 "(" { _ExprArg @ ; "," } ")" >                                         |
+|                                                                                                      | [AST-INSTRUCTIONS]:                                                                         |
+|                                                                                                      |   @ CS(45 -> 0) : [23][0] OS(55 -> -1) : [28]                                               |
+|                                                                                                      |   + StackBegin()                                                                            |
+|                                                                                                      |     obj!:29 : Name                                                                          |
+|                                                                                                      |                                                                                             |
+|                                                                                                      |   @ CS(56 -> 45) : [29][23][0] OS(55 -> -1) : [28]                                          |
+|                                                                                                      |   + StackEnd()                                                                              |
+|                                                                                                      |     obj+:29 : Name                                                                          |
+|                                                                                                      |       begin:50@0, top:44@0, use:[28], create!:[45@0], end!:[50@1]                           |
+|                                                                                                      |                                                                                             |
+|                                                                                                      |   @ CS(45 -> 0) : [23][0] OS(57 -> -1) : [29]                                               |
+|                                                                                                      |   > StackSlot(2)                                                                            |
+|                                                                                                      |                                                                                             |
+|                                                                                                      |   @ CS(45 -> 0) : [23][0]                                                                   |
+|                                                                                                      | [RETURN STACK]:                                                                             |
+|                                                                                                      |   [24][12][26]: _Expr1 -> [82][_Expr]<! !_Expr1 @ !>                                        |
+|                                                                                                      |   [23][29][26]: _Expr -> [90][Module]<! !_Expr @ !>                                         |
+|                                                                                                      |   [7][0][9]: Module -> [1][_GenericArgument] BEGIN [pm-lr]                                  |
+|                                                                                                      |   [6][6][9]: _GenericArgument -> [10][_Name]< ID ( "<" { _GenericArgument @ ; "," } ">" ) > |
+|                                                                                                      |   [1][4][0]: _Name -> [24][_PrimitiveShared]<! !_Name @ !>                                  |
+|                                                                                                      |   [0][3][0]: _PrimitiveShared -> [85][Module] BEGIN [pm-cr-rule: _PrimitiveShared]          |
+|                                                                                                      | [PREDECESSORS 49-49]: [49]                                                                  |
+|                                                                                                      | [SUCCESORS 57-57]: [57]                                                                     |
+|                                                                                                      +---------------------------------------------------------------------------------------------+
+[0]                                                                                                    [1]
+ |                                                                                                      |
+ +                                                                                                      +--+
+ |                                                                                                         |
+[0]                                                                                                       [1]
+++=============================================================================================++         ++=============================================================================================++
+|| [53]: {CLOSE_ROUND} )                                                                       ||         || [57]: {CLOSE_ROUND} )                                                                       ||
+||   TraceExec: [32]                                                                           ||         ||   TraceExec: [44]                                                                           ||
+||   InsExec: [68:1]                                                                           ||         ||   InsExec: [96:1]                                                                           ||
+||   ForwardTrace: 28                                                                          ||         ||   ForwardTrace: 29                                                                          ||
+|| [44][_LongType]< _LongType "(" { _LongTypeArg ; "," } ")" @ >                               ||         || [73][_Expr1]< _Expr1 "(" { _ExprArg ; "," } ")" @ >                                         ||
+|| [AST-INSTRUCTIONS]:                                                                         ||         || [AST-INSTRUCTIONS]:                                                                         ||
+||   @ CS(31 -> 0) : [16][0]                                                                   ||         ||   @ CS(45 -> 0) : [23][0]                                                                   ||
+||   + Token(4)                                                                                ||         ||   + Token(4)                                                                                ||
+||                                                                                             ||         ||                                                                                             ||
+||   @ CS(31 -> 0) : [16][0]                                                                   ||         ||   @ CS(45 -> 0) : [23][0]                                                                   ||
+|| [RETURN STACK]:                                                                             ||         || [RETURN STACK]:                                                                             ||
+||   [22][30][26]: _LongType -> [91][Module]<! !_LongType @ !>                                 ||         ||   [24][12][26]: _Expr1 -> [82][_Expr]<! !_Expr1 @ !>                                        ||
+||   [7][0][9]: Module -> [1][_GenericArgument] BEGIN [pm-lr]                                  ||         ||   [23][29][26]: _Expr -> [90][Module]<! !_Expr @ !>                                         ||
+||   [6][6][9]: _GenericArgument -> [10][_Name]< ID ( "<" { _GenericArgument @ ; "," } ">" ) > ||         ||   [7][0][9]: Module -> [1][_GenericArgument] BEGIN [pm-lr]                                  ||
+||   [1][4][0]: _Name -> [24][_PrimitiveShared]<! !_Name @ !>                                  ||         ||   [6][6][9]: _GenericArgument -> [10][_Name]< ID ( "<" { _GenericArgument @ ; "," } ">" ) > ||
+||   [0][3][0]: _PrimitiveShared -> [85][Module] BEGIN [pm-cr-rule: _PrimitiveShared]          ||         ||   [1][4][0]: _Name -> [24][_PrimitiveShared]<! !_Name @ !>                                  ||
+|| [PREDECESSORS 43-43]: [43]                                                                  ||         ||   [0][3][0]: _PrimitiveShared -> [85][Module] BEGIN [pm-cr-rule: _PrimitiveShared]          ||
+|| [SUCCESORS 54-54]: [54]                                                                     ||         || [PREDECESSORS 50-50]: [50]                                                                  ||
+++=============================================================================================++         || [SUCCESORS 58-58]: [58]                                                                     ||
+|                                                                                                         ++=============================================================================================++
+|                                                                                                         |
++                                                                                                         +
+|                                                                                                         |
++----------------------------------------------------------------------------------------------------+    +----------------------------------------------------------------------------------------------------+
+| [54]: <Ending>                                                                                     |    | [58]: <Ending>                                                                                     |
+|   TraceExec: [33]                                                                                  |    |   TraceExec: [45]                                                                                  |
+|   InsExec: [69:5]                                                                                  |    |   InsExec: [97:5]                                                                                  |
+|   ForwardTrace: 28                                                                                 |    |   ForwardTrace: 29                                                                                 |
+| [91][Module]<! !_LongType @ !>                                                                     |    | [82][_Expr]<! !_Expr1 @ !>                                                                         |
+| [AST-INSTRUCTIONS]:                                                                                |    | [AST-INSTRUCTIONS]:                                                                                |
+|   @ CS(31 -> 0) : [16][0]                                                                          |    |   @ CS(45 -> 0) : [23][0]                                                                          |
+|   + CreateObject(FunctionType)                                                                     |    |   + CreateObject(CallExpr)                                                                         |
+|     obj:16 : FunctionType                                                                          |    |     obj:23 : CallExpr                                                                              |
+|                                                                                                    |    |                                                                                                    |
+|   @ CS(31 -> 0) : [16][0]                                                                          |    |   @ CS(45 -> 0) : [23][0]                                                                          |
+|   + Field(FunctionType::returnType, 0)                                                             |    |   + Field(CallExpr::func, 0)                                                                       |
+|                                                                                                    |    |                                                                                                    |
+|   @ CS(31 -> 0) : [16][0]                                                                          |    |   @ CS(45 -> 0) : [23][0]                                                                          |
+|   + Field(FunctionType::args, 2)                                                                   |    |   + Field(CallExpr::args, 2)                                                                       |
+|                                                                                                    |    |                                                                                                    |
+|   @ CS(31 -> 0) : [16][0]                                                                          |    |   @ CS(45 -> 0) : [23][0]                                                                          |
+|   + StackEnd()                                                                                     |    |   + StackEnd()                                                                                     |
+|     obj+:16 : FunctionType                                                                         |    |     obj+:23 : CallExpr                                                                             |
+|       begin:28@2, top:28@2, stack:10@0, field:[20, 15], create!:[54@0], end:[54@3], endLref:[56@1] |    |       begin:29@2, top:29@2, stack:10@0, field:[29, 22], create!:[58@0], end:[58@3], endLref:[56@1] |
+|                                                                                                    |    |                                                                                                    |
+|   @ CS(0 -> -1) : [0] OS(40 -> -1) : [16]                                                          |    |   @ CS(0 -> -1) : [0] OS(58 -> -1) : [23]                                                          |
+|   > StackBegin()                                                                                   |    |   > StackBegin()                                                                                   |
+|     obj!:21 : FunctionType                                                                         |    |     obj!:30 : CallExpr                                                                             |
+|                                                                                                    |    |                                                                                                    |
+|   @ CS(41 -> 0) : [21][0] OS(40 -> -1) : [16]                                                      |    |   @ CS(59 -> 0) : [30][0] OS(58 -> -1) : [23]                                                      |
+| [RETURN STACK]:                                                                                    |    | [RETURN STACK]:                                                                                    |
+|   [7][0][9]: Module -> [1][_GenericArgument] BEGIN [pm-lr]                                         |    |   [23][29][26]: _Expr -> [90][Module]<! !_Expr @ !>                                                |
+|   [6][6][9]: _GenericArgument -> [10][_Name]< ID ( "<" { _GenericArgument @ ; "," } ">" ) >        |    |   [7][0][9]: Module -> [1][_GenericArgument] BEGIN [pm-lr]                                         |
+|   [1][4][0]: _Name -> [24][_PrimitiveShared]<! !_Name @ !>                                         |    |   [6][6][9]: _GenericArgument -> [10][_Name]< ID ( "<" { _GenericArgument @ ; "," } ">" ) >        |
+|   [0][3][0]: _PrimitiveShared -> [85][Module] BEGIN [pm-cr-rule: _PrimitiveShared]                 |    |   [1][4][0]: _Name -> [24][_PrimitiveShared]<! !_Name @ !>                                         |
+| [PREDECESSORS 53-53]: [53]                                                                         |    |   [0][3][0]: _PrimitiveShared -> [85][Module] BEGIN [pm-cr-rule: _PrimitiveShared]                 |
+| [SUCCESORS 61-61]: [61]                                                                            |    | [PREDECESSORS 57-57]: [57]                                                                         |
++----------------------------------------------------------------------------------------------------+    | [SUCCESORS 59-59]: [59]                                                                            |
+|                                                                                                         +----------------------------------------------------------------------------------------------------+
+|                                                                                                         |
++                                                                                                         +
+|                                                                                                         |
++-----------------------------------------------------------------------------------------------+         +-----------------------------------------------------------------------------------------------+
+| [61]: <Ending>                                                                                |         | [59]: <Ending>                                                                                |
+|   TraceExec: [34]                                                                             |         |   TraceExec: [46]                                                                             |
+|   InsExec: [74:1]                                                                             |         |   InsExec: [102:2]                                                                            |
+|   ForwardTrace: 28                                                                            |         |   ForwardTrace: 29                                                                            |
+| [1][_GenericArgument] BEGIN [pm-lr]                                                           |         | [90][Module]<! !_Expr @ !>                                                                    |
+| [AST-INSTRUCTIONS]:                                                                           |         | [AST-INSTRUCTIONS]:                                                                           |
+|   @ CS(41 -> 0) : [21][0] OS(40 -> -1) : [16]                                                 |         |   @ CS(59 -> 0) : [30][0] OS(58 -> -1) : [23]                                                 |
+|   + StackEnd()                                                                                |         |   + StackEnd()                                                                                |
+|     obj+:21 : FunctionType                                                                    |         |     obj+:30 : CallExpr                                                                        |
+|       begin:54@4, top:28@2, stack:10@0, use:[16], create!:[54@0], end!:[61@0], endLref:[56@1] |         |       begin:58@4, top:29@2, stack:10@0, use:[23], create!:[58@0], end!:[59@0], endLref:[56@1] |
+|                                                                                               |         |                                                                                               |
+|   @ CS(0 -> -1) : [0] OS(42 -> -1) : [21]                                                     |         |   @ CS(0 -> -1) : [0] OS(60 -> -1) : [30]                                                     |
+| [RETURN STACK]:                                                                               |         |   > StackBegin()                                                                              |
+|   [6][6][9]: _GenericArgument -> [10][_Name]< ID ( "<" { _GenericArgument @ ; "," } ">" ) >   |         |     obj!:31 : CallExpr                                                                        |
+|   [1][4][0]: _Name -> [24][_PrimitiveShared]<! !_Name @ !>                                    |         |                                                                                               |
+|   [0][3][0]: _PrimitiveShared -> [85][Module] BEGIN [pm-cr-rule: _PrimitiveShared]            |         |   @ CS(61 -> 0) : [31][0] OS(60 -> -1) : [30]                                                 |
+| [PREDECESSORS 54-54]: [54]                                                                    |         | [RETURN STACK]:                                                                               |
+| [SUCCESORS 55-55]: [55]                                                                       |         |   [7][0][9]: Module -> [1][_GenericArgument] BEGIN [pm-lr]                                    |
++-----------------------------------------------------------------------------------------------+         |   [6][6][9]: _GenericArgument -> [10][_Name]< ID ( "<" { _GenericArgument @ ; "," } ">" ) >   |
+|                                                                                                         |   [1][4][0]: _Name -> [24][_PrimitiveShared]<! !_Name @ !>                                    |
+|                                                                                                         |   [0][3][0]: _PrimitiveShared -> [85][Module] BEGIN [pm-cr-rule: _PrimitiveShared]            |
+|                                                                                                         | [PREDECESSORS 58-58]: [58]                                                                    |
+|                                                                                                         | [SUCCESORS 60-60]: [60]                                                                       |
+|                                                                                                         +-----------------------------------------------------------------------------------------------+
+|                                                                                                         |
++                                                                                                         +
+|                                                                                                         |
+|                                                                                                         +-----------------------------------------------------------------------------------------------+
+|                                                                                                         | [60]: <Ending>                                                                                |
+|                                                                                                         |   TraceExec: [47]                                                                             |
+|                                                                                                         |   InsExec: [104:1]                                                                            |
+|                                                                                                         |   ForwardTrace: 29                                                                            |
+|                                                                                                         | [1][_GenericArgument] BEGIN [pm-lr]                                                           |
+|                                                                                                         | [AST-INSTRUCTIONS]:                                                                           |
+|                                                                                                         |   @ CS(61 -> 0) : [31][0] OS(60 -> -1) : [30]                                                 |
+|                                                                                                         |   + StackEnd()                                                                                |
+|                                                                                                         |     obj+:31 : CallExpr                                                                        |
+|                                                                                                         |       begin:59@1, top:29@2, stack:10@0, use:[30], create!:[58@0], end!:[60@0], endLref:[56@1] |
+|                                                                                                         |                                                                                               |
+|                                                                                                         |   @ CS(0 -> -1) : [0] OS(62 -> -1) : [31]                                                     |
+|                                                                                                         | [RETURN STACK]:                                                                               |
+|                                                                                                         |   [6][6][9]: _GenericArgument -> [10][_Name]< ID ( "<" { _GenericArgument @ ; "," } ">" ) >   |
+|                                                                                                         |   [1][4][0]: _Name -> [24][_PrimitiveShared]<! !_Name @ !>                                    |
+|                                                                                                         |   [0][3][0]: _PrimitiveShared -> [85][Module] BEGIN [pm-cr-rule: _PrimitiveShared]            |
+|                                                                                                         | [PREDECESSORS 59-59]: [59]                                                                    |
+|                                                                                                         | [SUCCESORS 55-55]: [55]                                                                       |
+|                                                                                                         +-----------------------------------------------------------------------------------------------+
+|                                                                                                         |
++---------------------------------------------------------------------------------------------------------+
+|
++------------------------------------------------------+
+| [55]: <Merging>                                      |
+| <Start>                                              |
+|   TraceExec: [48]                                    |
+|   ForwardTrace: 55                                   |
+|   CommonForwardTrace: 0                              |
+| [CONTEXT]: CS(0 -> -1) : [0] OS(63 -> -1) : [31, 21] |
++------------------------------------------------------+
+|
++
+|
++-----------------------------------------------------------------------------------------+
+| [56]: <Ending>                                                                          |
+|   TraceExec: [49]                                                                       |
+|   InsExec: [105:3]                                                                      |
+|   ForwardTrace: 55                                                                      |
+| [10][_Name]< ID ( "<" { _GenericArgument @ ; "," } ">" ) >                              |
+| [AST-INSTRUCTIONS]:                                                                     |
+|   @ CS(0 -> -1) : [0] OS(63 -> -1) : [31, 21]                                           |
+|   + StackBegin()                                                                        |
+|     obj!:32 : CallExpr FunctionType                                                     |
+|                                                                                         |
+|   @ CS(64 -> 0) : [32][0] OS(63 -> -1) : [31, 21]                                       |
+|   + StackEnd()                                                                          |
+|     obj+:32 : CallExpr FunctionType                                                     |
+|       begin:56@0, top:28@2, stack:10@0, use:[31, 21], create!:[58@0, 54@0], end!:[56@1] |
+|                                                                                         |
+|   @ CS(0 -> -1) : [0] OS(65 -> -1) : [32]                                               |
+|   > StackSlot(2)                                                                        |
+|                                                                                         |
+|   @ CS(0 -> -1) : [0]                                                                   |
+| [RETURN STACK]:                                                                         |
+|   [1][4][0]: _Name -> [24][_PrimitiveShared]<! !_Name @ !>                              |
+|   [0][3][0]: _PrimitiveShared -> [85][Module] BEGIN [pm-cr-rule: _PrimitiveShared]      |
+| [PREDECESSORS 55-55]: [55]                                                              |
+| [SUCCESORS 62-62]: [62]                                                                 |
++-----------------------------------------------------------------------------------------+
+[0/0]
+ |
+ +
+ |
+[0]
+++====================================================================================++
+|| [62]: {GT} >                                                                       ||
+||   TraceExec: [50]                                                                  ||
+||   InsExec: [108:1]                                                                 ||
+||   ForwardTrace: 55                                                                 ||
+|| [9][_Name]< ID ( "<" { _GenericArgument ; "," } ">" @ ) >                          ||
+|| [AST-INSTRUCTIONS]:                                                                ||
+||   @ CS(0 -> -1) : [0]                                                              ||
+||   + Token(4)                                                                       ||
+||                                                                                    ||
+||   @ CS(0 -> -1) : [0]                                                              ||
+|| [RETURN STACK]:                                                                    ||
+||   [1][4][0]: _Name -> [24][_PrimitiveShared]<! !_Name @ !>                         ||
+||   [0][3][0]: _PrimitiveShared -> [85][Module] BEGIN [pm-cr-rule: _PrimitiveShared] ||
+|| [PREDECESSORS 56-56]: [56]                                                         ||
+|| [SUCCESORS 63-63]: [63]                                                            ||
+++====================================================================================++
+|
++
+|
++-------------------------------------------------------------------------------------+
+| [63]: <Ending>                                                                      |
+|   TraceExec: [51]                                                                   |
+|   InsExec: [109:5]                                                                  |
+|   ForwardTrace: 55                                                                  |
+| [24][_PrimitiveShared]<! !_Name @ !>                                                |
+| [AST-INSTRUCTIONS]:                                                                 |
+|   @ CS(0 -> -1) : [0]                                                               |
+|   + CreateObject(GenericName)                                                       |
+|     obj:0 : GenericName                                                             |
+|                                                                                     |
+|   @ CS(0 -> -1) : [0]                                                               |
+|   + Field(GenericName::name, 0)                                                     |
+|                                                                                     |
+|   @ CS(0 -> -1) : [0]                                                               |
+|   + Field(GenericQualifiedName::args, 2)                                            |
+|                                                                                     |
+|   @ CS(0 -> -1) : [0]                                                               |
+|   + StackEnd()                                                                      |
+|     obj+:0 : GenericName                                                            |
+|       begin:1@0, top:1@0, field:[32, 4], create!:[63@0], end:[63@3], endLref:[65@1] |
+|                                                                                     |
+|   @ OS(66 -> -1) : [0]                                                              |
+|   > StackBegin()                                                                    |
+|     obj!:33 : GenericName                                                           |
+|                                                                                     |
+|   @ CS(67 -> -1) : [33] OS(66 -> -1) : [0]                                          |
+| [RETURN STACK]:                                                                     |
+|   [0][3][0]: _PrimitiveShared -> [85][Module] BEGIN [pm-cr-rule: _PrimitiveShared]  |
+| [PREDECESSORS 62-62]: [62]                                                          |
+| [SUCCESORS 64-64]: [64]                                                             |
++-------------------------------------------------------------------------------------+
+|
++
+|
++---------------------------------------------------------------------------------+
+| [64]: <Ending>                                                                  |
+|   TraceExec: [52]                                                               |
+|   InsExec: [114:1]                                                              |
+|   ForwardTrace: 55                                                              |
+| [85][Module] BEGIN [pm-cr-rule: _PrimitiveShared]                               |
+| [AST-INSTRUCTIONS]:                                                             |
+|   @ CS(67 -> -1) : [33] OS(66 -> -1) : [0]                                      |
+|   + StackEnd()                                                                  |
+|     obj+:33 : GenericName                                                       |
+|       begin:63@4, top:1@0, use:[0], create!:[63@0], end!:[64@0], endLref:[65@1] |
+|                                                                                 |
+|   @ OS(68 -> -1) : [33]                                                         |
+| [PREDECESSORS 63-63]: [63]                                                      |
+| [SUCCESORS 65-65]: [65]                                                         |
++---------------------------------------------------------------------------------+
+|
++
+|
++------------------------------------------------------------------+
+| [65]: <Ending>                                                   |
+|   TraceExec: [53]                                                |
+|   InsExec: [115:2]                                               |
+|   ForwardTrace: 55                                               |
+| [89][Module] END [ENDING]                                        |
+| [AST-INSTRUCTIONS]:                                              |
+|   @ OS(68 -> -1) : [33]                                          |
+|   + StackBegin()                                                 |
+|     obj!:34 : GenericName                                        |
+|                                                                  |
+|   @ CS(69 -> -1) : [34] OS(68 -> -1) : [33]                      |
+|   + StackEnd()                                                   |
+|     obj+:34 : GenericName                                        |
+|       begin:65@0, top:1@0, use:[33], create!:[63@0], end!:[65@1] |
+|                                                                  |
+|   @ OS(70 -> -1) : [34]                                          |
+| [PREDECESSORS 64-64]: [64]                                       |
++------------------------------------------------------------------+

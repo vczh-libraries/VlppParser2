@@ -1,0 +1,581 @@
+﻿================ EXECUTION STEPS ================
+[0]: 0@0 - 1@-1
+[1]: RA_Begin
+[11]: 1@0 - 1@1
+[12]: 2@0 - 3@0
+[5]: 4@0 - 45@0
+[6]: RA_Branch
+[3]: 1@0 - 1@1
+[4]: 2@0 - 3@0
+[7]: 6@0 - 44@0
+[8]: RA_Branch
+[9]: RA_End(2, TypeOrExpr)
+
+==================== TRACES =====================
+
++----------------------+
+| [0]: <Start>         |
+|   TraceExec: [0]     |
+|   ForwardTrace: 0    |
+|   NextACT: 1         |
+| [83][Module] BEGIN   |
+| [AST-INSTRUCTIONS]:  |
+|   @                  |
+| [SUCCESORS 1-1]: [1] |
++----------------------+
+[0]
+ |
+ +
+ |
+[0]
+++====================================================================================++
+|| [1]: {ID} A                                                                        ||
+||   TraceExec: [1]                                                                   ||
+||   InsExec: [0:2]                                                                   ||
+||   ForwardTrace: 0                                                                  ||
+||   NextACT: 3                                                                       ||
+||   AmbiguityBegins: [0]                                                             ||
+|| [21][_Name]{{< ID @ ( "<" { _GenericArgument ; "," } ">" ) > ; < ID @ >}}          ||
+|| [AST-INSTRUCTIONS]:                                                                ||
+||   @                                                                                ||
+||   + StackBegin()                                                                   ||
+||     obj:0 : Name                                                                   ||
+||                                                                                    ||
+||   @ CS(0 -> -1) : [0]                                                              ||
+||   + Token(0)                                                                       ||
+||                                                                                    ||
+||   @ CS(0 -> -1) : [0]                                                              ||
+|| [RETURN STACK]:                                                                    ||
+||   [1][4][0]: _Name -> [24][_PrimitiveShared]<! !_Name @ !>                         ||
+||   [0][3][0]: _PrimitiveShared -> [85][Module] BEGIN [pm-cr-rule: _PrimitiveShared] ||
+|| [PREDECESSORS 0-0]: [0]                                                            ||
+|| [SUCCESORS 2-2]: [2]                                                               ||
+++====================================================================================++
+|
++
+|
++------------------------------------------------------------------------------------+
+| [2]: <Ending>                                                                      |
+|   TraceExec: [2]                                                                   |
+|   InsExec: [2:4]                                                                   |
+|   ForwardTrace: 0                                                                  |
+| [24][_PrimitiveShared]<! !_Name @ !>                                               |
+| [AST-INSTRUCTIONS]:                                                                |
+|   @ CS(0 -> -1) : [0]                                                              |
+|   + CreateObject(Name)                                                             |
+|     obj:0 : Name                                                                   |
+|                                                                                    |
+|   @ CS(0 -> -1) : [0]                                                              |
+|   + Field(Name::name, 0)                                                           |
+|                                                                                    |
+|   @ CS(0 -> -1) : [0]                                                              |
+|   + StackEnd()                                                                     |
+|     obj+:0 : Name                                                                  |
+|       begin:1@0, top:1@0, create!:[2@0], end:[2@2], endLref:[6@1]                  |
+|                                                                                    |
+|   @ OS(1 -> -1) : [0]                                                              |
+|   > StackBegin()                                                                   |
+|     obj!:1 : Name                                                                  |
+|                                                                                    |
+|   @ CS(2 -> -1) : [1] OS(1 -> -1) : [0]                                            |
+| [RETURN STACK]:                                                                    |
+|   [0][3][0]: _PrimitiveShared -> [85][Module] BEGIN [pm-cr-rule: _PrimitiveShared] |
+| [PREDECESSORS 1-1]: [1]                                                            |
+| [SUCCESORS 3-3]: [3]                                                               |
++------------------------------------------------------------------------------------+
+|
++
+|
++-----------------------------------------------------------------------------+
+| [3]: <Ending>                                                               |
+|   TraceExec: [3]                                                            |
+|   InsExec: [6:1]                                                            |
+|   ForwardTrace: 0                                                           |
+| [85][Module] BEGIN [pm-cr-rule: _PrimitiveShared]                           |
+| [AST-INSTRUCTIONS]:                                                         |
+|   @ CS(2 -> -1) : [1] OS(1 -> -1) : [0]                                     |
+|   + StackEnd()                                                              |
+|     obj+:1 : Name                                                           |
+|       begin:2@3, top:1@0, use:[0], create!:[2@0], end!:[3@0], endLref:[6@1] |
+|                                                                             |
+|   @ OS(3 -> -1) : [1]                                                       |
+| [PREDECESSORS 2-2]: [2]                                                     |
+| [SUCCESORS 4-6]: [4][6]                                                     |
++-----------------------------------------------------------------------------+
+|
++-------------------------------------------------------------------------------------------+
+|                                                                                           |
++--------------------------------------------------------------+                            +--------------------------------------------------------------+
+| [4]: <Leftrec>                                               |                            | [6]: <Leftrec>                                               |
+|   TraceExec: [4]                                             |                            |   TraceExec: [16]                                            |
+|   InsExec: [7:4]                                             |                            |   InsExec: [37:4]                                            |
+|   ForwardTrace: 4                                            |                            |   ForwardTrace: 6                                            |
+|   NextACT: 45                                                |                            |   NextACT: 44                                                |
+| [49][_LongType]< _LongType @ "*" >                           |                            | [81][_Expr]< _Expr @ "*" _Expr1 >                            |
+| [AST-INSTRUCTIONS]:                                          |                            | [AST-INSTRUCTIONS]:                                          |
+|   @ OS(3 -> -1) : [1]                                        |                            |   @ OS(3 -> -1) : [1]                                        |
+|   + StackBegin()                                             |                            |   + StackBegin()                                             |
+|     obj!:2 : Name                                            |                            |     obj!:10 : Name                                           |
+|                                                              |                            |                                                              |
+|   @ CS(4 -> -1) : [2] OS(3 -> -1) : [1]                      |                            |   @ CS(20 -> -1) : [10] OS(3 -> -1) : [1]                    |
+|   + StackEnd()                                               |                            |   + StackEnd()                                               |
+|     obj+:2 : Name                                            |                            |     obj+:10 : Name                                           |
+|       begin:4@0, top:1@0, use:[1], create!:[2@0], end!:[4@1] |                            |       begin:6@0, top:1@0, use:[1], create!:[2@0], end!:[6@1] |
+|                                                              |                            |                                                              |
+|   @ OS(5 -> -1) : [2]                                        |                            |   @ OS(21 -> -1) : [10]                                      |
+|   + StackBegin()                                             |                            |   + StackBegin()                                             |
+|     obj:3 : PointerType                                      |                            |     obj:11 : MulExpr                                         |
+|                                                              |                            |                                                              |
+|   @ CS(6 -> -1) : [3] OS(5 -> -1) : [2]                      |                            |   @ CS(22 -> -1) : [11] OS(21 -> -1) : [10]                  |
+|   + StackSlot(0)                                             |                            |   + StackSlot(0)                                             |
+|                                                              |                            |                                                              |
+|   @ CS(6 -> -1) : [3]                                        |                            |   @ CS(22 -> -1) : [11]                                      |
+| [RETURN STACK]:                                              |                            | [RETURN STACK]:                                              |
+|   [2][30][3]: _LongType -> [91][Module]<! !_LongType @ !>    |                            |   [7][29][3]: _Expr -> [90][Module]<! !_Expr @ !>            |
+| [PREDECESSORS 3-3]: [3]                                      |                            | [PREDECESSORS 3-3]: [3]                                      |
+| [SUCCESORS 8-8]: [8]                                         |                            | [SUCCESORS 14-14]: [14]                                      |
++--------------------------------------------------------------+                            +--------------------------------------------------------------+
+[0]                                                                                         [1]
+ |                                                                                           |
+ +                                                                               +-----------+
+ |                                                                               |
+[0]                                                                             [1]
+++===========================================================++                 ++===================================================++
+|| [8]: {ASTERISK} *                                         ||                 || [14]: {ASTERISK} *                                ||
+||   TraceExec: [5]                                          ||                 ||   TraceExec: [17]                                 ||
+||   InsExec: [11:1]                                         ||                 ||   InsExec: [41:1]                                 ||
+||   ForwardTrace: 4                                         ||                 ||   ForwardTrace: 6                                 ||
+|| [46][_LongType]< _LongType "*" @ >                        ||                 || [79][_Expr]< _Expr "*" @ _Expr1 >                 ||
+|| [AST-INSTRUCTIONS]:                                       ||                 || [AST-INSTRUCTIONS]:                               ||
+||   @ CS(6 -> -1) : [3]                                     ||                 ||   @ CS(22 -> -1) : [11]                           ||
+||   + Token(1)                                              ||                 ||   + Token(1)                                      ||
+||                                                           ||                 ||                                                   ||
+||   @ CS(6 -> -1) : [3]                                     ||                 ||   @ CS(22 -> -1) : [11]                           ||
+|| [RETURN STACK]:                                           ||                 || [RETURN STACK]:                                   ||
+||   [2][30][3]: _LongType -> [91][Module]<! !_LongType @ !> ||                 ||   [7][29][3]: _Expr -> [90][Module]<! !_Expr @ !> ||
+|| [PREDECESSORS 4-4]: [4]                                   ||                 || [PREDECESSORS 6-6]: [6]                           ||
+|| [SUCCESORS 9-9]: [9]                                      ||                 || [SUCCESORS 17-17]: [17]                           ||
+++===========================================================++                 ++===================================================++
+|                                                                               |
++                                                                               +
+|                                                                               |
++--------------------------------------------------------------------------+    |
+| [9]: <Leftrec>                                                           |    |
+|   TraceExec: [6]                                                         |    |
+|   InsExec: [12:5]                                                        |    |
+|   ForwardTrace: 4                                                        |    |
+| [48][_LongType]< _LongType @ "(" { _LongTypeArg ; "," } ")" >            |    |
+| [AST-INSTRUCTIONS]:                                                      |    |
+|   @ CS(6 -> -1) : [3]                                                    |    |
+|   + CreateObject(PointerType)                                            |    |
+|     obj:3 : PointerType                                                  |    |
+|                                                                          |    |
+|   @ CS(6 -> -1) : [3]                                                    |    |
+|   + Field(PointerType::type, 0)                                          |    |
+|                                                                          |    |
+|   @ CS(6 -> -1) : [3]                                                    |    |
+|   + StackEnd()                                                           |    |
+|     obj+:3 : PointerType                                                 |    |
+|       begin:4@2, top:4@2, stack:1@0, field:[2], create!:[9@0], end:[9@2] |    |
+|                                                                          |    |
+|   @ OS(7 -> -1) : [3]                                                    |    |
+|   + StackBegin()                                                         |    |
+|     obj:4 : FunctionType                                                 |    |
+|                                                                          |    |
+|   @ CS(8 -> -1) : [4] OS(7 -> -1) : [3]                                  |    |
+|   + StackSlot(0)                                                         |    |
+|                                                                          |    |
+|   @ CS(8 -> -1) : [4]                                                    |    |
+| [RETURN STACK]:                                                          |    |
+|   [2][30][3]: _LongType -> [91][Module]<! !_LongType @ !>                |    |
+| [PREDECESSORS 8-8]: [8]                                                  |    |
+| [SUCCESORS 15-15]: [15]                                                  |    |
++--------------------------------------------------------------------------+    |
+[0]                                                                             [1]
+ |                                                                               |
+ +                                                                      +--------+
+ |                                                                      |
+[0]                                                                    [1]
+++===============================================================++    ++===============================================================================++
+|| [15]: {OPEN_ROUND} (                                          ||    || [17]: {OPEN_ROUND} (                                                          ||
+||   TraceExec: [7]                                              ||    ||   TraceExec: [18]                                                             ||
+||   InsExec: [17:1]                                             ||    ||   InsExec: [42:2]                                                             ||
+||   ForwardTrace: 4                                             ||    ||   ForwardTrace: 6                                                             ||
+|| [42][_LongType]< _LongType "(" @ { _LongTypeArg ; "," } ")" > ||    || [34][_PrimitiveExprOnly]<! "(" @ !_Expr ")" !>                                ||
+|| [AST-INSTRUCTIONS]:                                           ||    || [AST-INSTRUCTIONS]:                                                           ||
+||   @ CS(8 -> -1) : [4]                                         ||    ||   @ CS(22 -> -1) : [11]                                                       ||
+||   + Token(1)                                                  ||    ||   + StackBegin()                                                              ||
+||                                                               ||    ||     obj!:12 : Name                                                            ||
+||   @ CS(8 -> -1) : [4]                                         ||    ||                                                                               ||
+|| [RETURN STACK]:                                               ||    ||   @ CS(23 -> 22) : [12][11]                                                   ||
+||   [2][30][3]: _LongType -> [91][Module]<! !_LongType @ !>     ||    ||   + Token(0)                                                                  ||
+|| [PREDECESSORS 9-9]: [9]                                       ||    ||                                                                               ||
+|| [SUCCESORS 18-18]: [18]                                       ||    ||   @ CS(23 -> 22) : [12][11]                                                   ||
+++===============================================================++    || [RETURN STACK]:                                                               ||
+|                                                                      ||   [10][14][14]: _PrimitiveExprOnly -> [67][_Expr0]<! !_PrimitiveExprOnly @ !> ||
+|                                                                      ||   [9][13][14]: _Expr0 -> [76][_Expr1]<! !_Expr0 @ !>                          ||
+|                                                                      ||   [8][28][14]: _Expr1 -> [80][_Expr]< _Expr "*" _Expr1 @ >                    ||
+|                                                                      ||   [7][29][3]: _Expr -> [90][Module]<! !_Expr @ !>                             ||
+|                                                                      || [PREDECESSORS 14-14]: [14]                                                    ||
+|                                                                      || [SUCCESORS 28-28]: [28]                                                       ||
+|                                                                      ++===============================================================================++
+[0]                                                                    [1]
+ |                                                                      |
+ +                                                                      +-------------------------------+
+ |                                                                                                      |
+[0]                                                                                                    [1]
+++===============================================================================================++    ++=======================================================================================++
+|| [18]: {ID} B                                                                                  ||    || [28]: {ID} B                                                                          ||
+||   TraceExec: [8]                                                                              ||    ||   TraceExec: [19]                                                                     ||
+||   InsExec: [18:2]                                                                             ||    ||   InsExec: [44:2]                                                                     ||
+||   ForwardTrace: 4                                                                             ||    ||   ForwardTrace: 6                                                                     ||
+|| [21][_Name]{{< ID @ ( "<" { _GenericArgument ; "," } ">" ) > ; < ID @ >}}                     ||    || [21][_Name]{{< ID @ ( "<" { _GenericArgument ; "," } ">" ) > ; < ID @ >}}             ||
+|| [AST-INSTRUCTIONS]:                                                                           ||    || [AST-INSTRUCTIONS]:                                                                   ||
+||   @ CS(8 -> -1) : [4]                                                                         ||    ||   @ CS(23 -> 22) : [12][11]                                                           ||
+||   + StackBegin()                                                                              ||    ||   + StackBegin()                                                                      ||
+||     obj:5 : Name                                                                              ||    ||     obj:13 : Name                                                                     ||
+||                                                                                               ||    ||                                                                                       ||
+||   @ CS(9 -> 8) : [5][4]                                                                       ||    ||   @ CS(24 -> 23) : [13][12][11]                                                       ||
+||   + Token(0)                                                                                  ||    ||   + Token(0)                                                                          ||
+||                                                                                               ||    ||                                                                                       ||
+||   @ CS(9 -> 8) : [5][4]                                                                       ||    ||   @ CS(24 -> 23) : [13][12][11]                                                       ||
+|| [RETURN STACK]:                                                                               ||    || [RETURN STACK]:                                                                       ||
+||   [14][4][15]: _Name -> [24][_PrimitiveShared]<! !_Name @ !>                                  ||    ||   [23][4][17]: _Name -> [24][_PrimitiveShared]<! !_Name @ !>                          ||
+||   [13][19][15]: _PrimitiveShared -> [51][_LongType]<! !_PrimitiveShared @ !>                  ||    ||   [22][16][17]: _PrimitiveShared -> [59][_Expr0] BEGIN [pm-cr-rule: _PrimitiveShared] ||
+||   [12][17][15]: _LongType -> [36][_LongTypeArg] BEGIN [pm-lr]                                 ||    ||   [21][13][17]: _Expr0 -> [76][_Expr1]<! !_Expr0 @ !>                                 ||
+||   [11][20][15]: _LongTypeArg -> [45][_LongType]< _LongType "(" { _LongTypeArg @ ; "," } ")" > ||    ||   [20][12][17]: _Expr1 -> [82][_Expr]<! !_Expr1 @ !>                                  ||
+||   [2][30][3]: _LongType -> [91][Module]<! !_LongType @ !>                                     ||    ||   [19][11][17]: _Expr -> [33][_PrimitiveExprOnly]<! "(" !_Expr @ ")" !>               ||
+|| [PREDECESSORS 15-15]: [15]                                                                    ||    ||   [10][14][14]: _PrimitiveExprOnly -> [67][_Expr0]<! !_PrimitiveExprOnly @ !>         ||
+|| [SUCCESORS 19-19]: [19]                                                                       ||    ||   [9][13][14]: _Expr0 -> [76][_Expr1]<! !_Expr0 @ !>                                  ||
+++===============================================================================================++    ||   [8][28][14]: _Expr1 -> [80][_Expr]< _Expr "*" _Expr1 @ >                            ||
+|                                                                                                      ||   [7][29][3]: _Expr -> [90][Module]<! !_Expr @ !>                                     ||
+|                                                                                                      || [PREDECESSORS 17-17]: [17]                                                            ||
+|                                                                                                      || [SUCCESORS 29-29]: [29]                                                               ||
+|                                                                                                      ++=======================================================================================++
+|                                                                                                      |
++                                                                                                      +
+|                                                                                                      |
++-----------------------------------------------------------------------------------------------+      +---------------------------------------------------------------------------------------+
+| [19]: <Ending>                                                                                |      | [29]: <Ending>                                                                        |
+|   TraceExec: [9]                                                                              |      |   TraceExec: [20]                                                                     |
+|   InsExec: [20:4]                                                                             |      |   InsExec: [46:4]                                                                     |
+|   ForwardTrace: 4                                                                             |      |   ForwardTrace: 6                                                                     |
+| [24][_PrimitiveShared]<! !_Name @ !>                                                          |      | [24][_PrimitiveShared]<! !_Name @ !>                                                  |
+| [AST-INSTRUCTIONS]:                                                                           |      | [AST-INSTRUCTIONS]:                                                                   |
+|   @ CS(9 -> 8) : [5][4]                                                                       |      |   @ CS(24 -> 23) : [13][12][11]                                                       |
+|   + CreateObject(Name)                                                                        |      |   + CreateObject(Name)                                                                |
+|     obj:5 : Name                                                                              |      |     obj:13 : Name                                                                     |
+|                                                                                               |      |                                                                                       |
+|   @ CS(9 -> 8) : [5][4]                                                                       |      |   @ CS(24 -> 23) : [13][12][11]                                                       |
+|   + Field(Name::name, 0)                                                                      |      |   + Field(Name::name, 0)                                                              |
+|                                                                                               |      |                                                                                       |
+|   @ CS(9 -> 8) : [5][4]                                                                       |      |   @ CS(24 -> 23) : [13][12][11]                                                       |
+|   + StackEnd()                                                                                |      |   + StackEnd()                                                                        |
+|     obj+:5 : Name                                                                             |      |     obj+:13 : Name                                                                    |
+|       begin:18@0, top:18@0, create!:[19@0], end:[19@2], endLref:[22@1]                        |      |       begin:28@0, top:28@0, lrec:17@0, create!:[29@0], end:[29@2], endLref:[42@0]     |
+|                                                                                               |      |                                                                                       |
+|   @ CS(8 -> -1) : [4] OS(10 -> -1) : [5]                                                      |      |   @ CS(23 -> 22) : [12][11] OS(25 -> -1) : [13]                                       |
+|   > StackBegin()                                                                              |      |   > StackBegin()                                                                      |
+|     obj!:6 : Name                                                                             |      |     obj!:14 : Name                                                                    |
+|                                                                                               |      |                                                                                       |
+|   @ CS(11 -> 8) : [6][4] OS(10 -> -1) : [5]                                                   |      |   @ CS(26 -> 23) : [14][12][11] OS(25 -> -1) : [13]                                   |
+| [RETURN STACK]:                                                                               |      | [RETURN STACK]:                                                                       |
+|   [13][19][15]: _PrimitiveShared -> [51][_LongType]<! !_PrimitiveShared @ !>                  |      |   [22][16][17]: _PrimitiveShared -> [59][_Expr0] BEGIN [pm-cr-rule: _PrimitiveShared] |
+|   [12][17][15]: _LongType -> [36][_LongTypeArg] BEGIN [pm-lr]                                 |      |   [21][13][17]: _Expr0 -> [76][_Expr1]<! !_Expr0 @ !>                                 |
+|   [11][20][15]: _LongTypeArg -> [45][_LongType]< _LongType "(" { _LongTypeArg @ ; "," } ")" > |      |   [20][12][17]: _Expr1 -> [82][_Expr]<! !_Expr1 @ !>                                  |
+|   [2][30][3]: _LongType -> [91][Module]<! !_LongType @ !>                                     |      |   [19][11][17]: _Expr -> [33][_PrimitiveExprOnly]<! "(" !_Expr @ ")" !>               |
+| [PREDECESSORS 18-18]: [18]                                                                    |      |   [10][14][14]: _PrimitiveExprOnly -> [67][_Expr0]<! !_PrimitiveExprOnly @ !>         |
+| [SUCCESORS 20-20]: [20]                                                                       |      |   [9][13][14]: _Expr0 -> [76][_Expr1]<! !_Expr0 @ !>                                  |
++-----------------------------------------------------------------------------------------------+      |   [8][28][14]: _Expr1 -> [80][_Expr]< _Expr "*" _Expr1 @ >                            |
+|                                                                                                      |   [7][29][3]: _Expr -> [90][Module]<! !_Expr @ !>                                     |
+|                                                                                                      | [PREDECESSORS 28-28]: [28]                                                            |
+|                                                                                                      | [SUCCESORS 30-30]: [30]                                                               |
+|                                                                                                      +---------------------------------------------------------------------------------------+
+|                                                                                                      |
++                                                                                                      +
+|                                                                                                      |
++-----------------------------------------------------------------------------------------------+      +----------------------------------------------------------------------------------------------+
+| [20]: <Ending>                                                                                |      | [30]: <Ending>                                                                               |
+|   TraceExec: [10]                                                                             |      |   TraceExec: [21]                                                                            |
+|   InsExec: [24:2]                                                                             |      |   InsExec: [50:1]                                                                            |
+|   ForwardTrace: 4                                                                             |      |   ForwardTrace: 6                                                                            |
+| [51][_LongType]<! !_PrimitiveShared @ !>                                                      |      | [59][_Expr0] BEGIN [pm-cr-rule: _PrimitiveShared]                                            |
+| [AST-INSTRUCTIONS]:                                                                           |      | [AST-INSTRUCTIONS]:                                                                          |
+|   @ CS(11 -> 8) : [6][4] OS(10 -> -1) : [5]                                                   |      |   @ CS(26 -> 23) : [14][12][11] OS(25 -> -1) : [13]                                          |
+|   + StackEnd()                                                                                |      |   + StackEnd()                                                                               |
+|     obj+:6 : Name                                                                             |      |     obj+:14 : Name                                                                           |
+|       begin:19@3, top:18@0, use:[5], create!:[19@0], end!:[20@0], endLref:[22@1]              |      |       begin:29@3, top:28@0, lrec:17@0, use:[13], create!:[29@0], end!:[30@0], endLref:[42@0] |
+|                                                                                               |      |                                                                                              |
+|   @ CS(8 -> -1) : [4] OS(12 -> -1) : [6]                                                      |      |   @ CS(23 -> 22) : [12][11] OS(27 -> -1) : [14]                                              |
+|   > StackBegin()                                                                              |      | [RETURN STACK]:                                                                              |
+|     obj!:7 : Name                                                                             |      |   [21][13][17]: _Expr0 -> [76][_Expr1]<! !_Expr0 @ !>                                        |
+|                                                                                               |      |   [20][12][17]: _Expr1 -> [82][_Expr]<! !_Expr1 @ !>                                         |
+|   @ CS(13 -> 8) : [7][4] OS(12 -> -1) : [6]                                                   |      |   [19][11][17]: _Expr -> [33][_PrimitiveExprOnly]<! "(" !_Expr @ ")" !>                      |
+| [RETURN STACK]:                                                                               |      |   [10][14][14]: _PrimitiveExprOnly -> [67][_Expr0]<! !_PrimitiveExprOnly @ !>                |
+|   [12][17][15]: _LongType -> [36][_LongTypeArg] BEGIN [pm-lr]                                 |      |   [9][13][14]: _Expr0 -> [76][_Expr1]<! !_Expr0 @ !>                                         |
+|   [11][20][15]: _LongTypeArg -> [45][_LongType]< _LongType "(" { _LongTypeArg @ ; "," } ")" > |      |   [8][28][14]: _Expr1 -> [80][_Expr]< _Expr "*" _Expr1 @ >                                   |
+|   [2][30][3]: _LongType -> [91][Module]<! !_LongType @ !>                                     |      |   [7][29][3]: _Expr -> [90][Module]<! !_Expr @ !>                                            |
+| [PREDECESSORS 19-19]: [19]                                                                    |      | [PREDECESSORS 29-29]: [29]                                                                   |
+| [SUCCESORS 21-21]: [21]                                                                       |      | [SUCCESORS 31-31]: [31]                                                                      |
++-----------------------------------------------------------------------------------------------+      +----------------------------------------------------------------------------------------------+
+|                                                                                                      |
++                                                                                                      +
+|                                                                                                      |
++-----------------------------------------------------------------------------------------------+      +----------------------------------------------------------------------------------------------+
+| [21]: <Ending>                                                                                |      | [31]: <Ending>                                                                               |
+|   TraceExec: [11]                                                                             |      |   TraceExec: [22]                                                                            |
+|   InsExec: [26:1]                                                                             |      |   InsExec: [51:3]                                                                            |
+|   ForwardTrace: 4                                                                             |      |   ForwardTrace: 6                                                                            |
+| [36][_LongTypeArg] BEGIN [pm-lr]                                                              |      | [76][_Expr1]<! !_Expr0 @ !>                                                                  |
+| [AST-INSTRUCTIONS]:                                                                           |      | [AST-INSTRUCTIONS]:                                                                          |
+|   @ CS(13 -> 8) : [7][4] OS(12 -> -1) : [6]                                                   |      |   @ CS(23 -> 22) : [12][11] OS(27 -> -1) : [14]                                              |
+|   + StackEnd()                                                                                |      |   + StackBegin()                                                                             |
+|     obj+:7 : Name                                                                             |      |     obj!:15 : Name                                                                           |
+|       begin:20@1, top:18@0, use:[6], create!:[19@0], end!:[21@0], endLref:[22@1]              |      |                                                                                              |
+|                                                                                               |      |   @ CS(28 -> 23) : [15][12][11] OS(27 -> -1) : [14]                                          |
+|   @ CS(8 -> -1) : [4] OS(14 -> -1) : [7]                                                      |      |   + StackEnd()                                                                               |
+| [RETURN STACK]:                                                                               |      |     obj+:15 : Name                                                                           |
+|   [11][20][15]: _LongTypeArg -> [45][_LongType]< _LongType "(" { _LongTypeArg @ ; "," } ")" > |      |       begin:31@0, top:28@0, lrec:17@0, use:[14], create!:[29@0], end!:[31@1], endLref:[42@0] |
+|   [2][30][3]: _LongType -> [91][Module]<! !_LongType @ !>                                     |      |                                                                                              |
+| [PREDECESSORS 20-20]: [20]                                                                    |      |   @ CS(23 -> 22) : [12][11] OS(29 -> -1) : [15]                                              |
+| [SUCCESORS 22-22]: [22]                                                                       |      |   > StackBegin()                                                                             |
++-----------------------------------------------------------------------------------------------+      |     obj!:16 : Name                                                                           |
+|                                                                                                      |                                                                                              |
+|                                                                                                      |   @ CS(30 -> 23) : [16][12][11] OS(29 -> -1) : [15]                                          |
+|                                                                                                      | [RETURN STACK]:                                                                              |
+|                                                                                                      |   [20][12][17]: _Expr1 -> [82][_Expr]<! !_Expr1 @ !>                                         |
+|                                                                                                      |   [19][11][17]: _Expr -> [33][_PrimitiveExprOnly]<! "(" !_Expr @ ")" !>                      |
+|                                                                                                      |   [10][14][14]: _PrimitiveExprOnly -> [67][_Expr0]<! !_PrimitiveExprOnly @ !>                |
+|                                                                                                      |   [9][13][14]: _Expr0 -> [76][_Expr1]<! !_Expr0 @ !>                                         |
+|                                                                                                      |   [8][28][14]: _Expr1 -> [80][_Expr]< _Expr "*" _Expr1 @ >                                   |
+|                                                                                                      |   [7][29][3]: _Expr -> [90][Module]<! !_Expr @ !>                                            |
+|                                                                                                      | [PREDECESSORS 30-30]: [30]                                                                   |
+|                                                                                                      | [SUCCESORS 32-32]: [32]                                                                      |
+|                                                                                                      +----------------------------------------------------------------------------------------------+
+|                                                                                                      |
++                                                                                                      +
+|                                                                                                      |
++------------------------------------------------------------------+                                   +----------------------------------------------------------------------------------------------+
+| [22]: <Ending>                                                   |                                   | [32]: <Ending>                                                                               |
+|   TraceExec: [12]                                                |                                   |   TraceExec: [23]                                                                            |
+|   InsExec: [27:3]                                                |                                   |   InsExec: [54:2]                                                                            |
+|   ForwardTrace: 4                                                |                                   |   ForwardTrace: 6                                                                            |
+| [45][_LongType]< _LongType "(" { _LongTypeArg @ ; "," } ")" >    |                                   | [82][_Expr]<! !_Expr1 @ !>                                                                   |
+| [AST-INSTRUCTIONS]:                                              |                                   | [AST-INSTRUCTIONS]:                                                                          |
+|   @ CS(8 -> -1) : [4] OS(14 -> -1) : [7]                         |                                   |   @ CS(30 -> 23) : [16][12][11] OS(29 -> -1) : [15]                                          |
+|   + StackBegin()                                                 |                                   |   + StackEnd()                                                                               |
+|     obj!:8 : Name                                                |                                   |     obj+:16 : Name                                                                           |
+|                                                                  |                                   |       begin:31@2, top:28@0, lrec:17@0, use:[15], create!:[29@0], end!:[32@0], endLref:[42@0] |
+|   @ CS(15 -> 8) : [8][4] OS(14 -> -1) : [7]                      |                                   |                                                                                              |
+|   + StackEnd()                                                   |                                   |   @ CS(23 -> 22) : [12][11] OS(31 -> -1) : [16]                                              |
+|     obj+:8 : Name                                                |                                   |   > StackBegin()                                                                             |
+|       begin:22@0, top:18@0, use:[7], create!:[19@0], end!:[22@1] |                                   |     obj!:17 : Name                                                                           |
+|                                                                  |                                   |                                                                                              |
+|   @ CS(8 -> -1) : [4] OS(16 -> -1) : [8]                         |                                   |   @ CS(32 -> 23) : [17][12][11] OS(31 -> -1) : [16]                                          |
+|   > StackSlot(2)                                                 |                                   | [RETURN STACK]:                                                                              |
+|                                                                  |                                   |   [19][11][17]: _Expr -> [33][_PrimitiveExprOnly]<! "(" !_Expr @ ")" !>                      |
+|   @ CS(8 -> -1) : [4]                                            |                                   |   [10][14][14]: _PrimitiveExprOnly -> [67][_Expr0]<! !_PrimitiveExprOnly @ !>                |
+| [RETURN STACK]:                                                  |                                   |   [9][13][14]: _Expr0 -> [76][_Expr1]<! !_Expr0 @ !>                                         |
+|   [2][30][3]: _LongType -> [91][Module]<! !_LongType @ !>        |                                   |   [8][28][14]: _Expr1 -> [80][_Expr]< _Expr "*" _Expr1 @ >                                   |
+| [PREDECESSORS 21-21]: [21]                                       |                                   |   [7][29][3]: _Expr -> [90][Module]<! !_Expr @ !>                                            |
+| [SUCCESORS 34-34]: [34]                                          |                                   | [PREDECESSORS 31-31]: [31]                                                                   |
++------------------------------------------------------------------+                                   | [SUCCESORS 33-33]: [33]                                                                      |
+|                                                                                                      +----------------------------------------------------------------------------------------------+
+|                                                                                                      |
++                                                                                                      +
+|                                                                                                      |
+|                                                                                                      +----------------------------------------------------------------------------------------------+
+|                                                                                                      | [33]: <Ending>                                                                               |
+|                                                                                                      |   TraceExec: [24]                                                                            |
+|                                                                                                      |   InsExec: [56:1]                                                                            |
+|                                                                                                      |   ForwardTrace: 6                                                                            |
+|                                                                                                      | [33][_PrimitiveExprOnly]<! "(" !_Expr @ ")" !>                                               |
+|                                                                                                      | [AST-INSTRUCTIONS]:                                                                          |
+|                                                                                                      |   @ CS(32 -> 23) : [17][12][11] OS(31 -> -1) : [16]                                          |
+|                                                                                                      |   + StackEnd()                                                                               |
+|                                                                                                      |     obj+:17 : Name                                                                           |
+|                                                                                                      |       begin:32@1, top:28@0, lrec:17@0, use:[16], create!:[29@0], end!:[33@0], endLref:[42@0] |
+|                                                                                                      |                                                                                              |
+|                                                                                                      |   @ CS(23 -> 22) : [12][11] OS(33 -> -1) : [17]                                              |
+|                                                                                                      | [RETURN STACK]:                                                                              |
+|                                                                                                      |   [10][14][14]: _PrimitiveExprOnly -> [67][_Expr0]<! !_PrimitiveExprOnly @ !>                |
+|                                                                                                      |   [9][13][14]: _Expr0 -> [76][_Expr1]<! !_Expr0 @ !>                                         |
+|                                                                                                      |   [8][28][14]: _Expr1 -> [80][_Expr]< _Expr "*" _Expr1 @ >                                   |
+|                                                                                                      |   [7][29][3]: _Expr -> [90][Module]<! !_Expr @ !>                                            |
+|                                                                                                      | [PREDECESSORS 32-32]: [32]                                                                   |
+|                                                                                                      | [SUCCESORS 39-39]: [39]                                                                      |
+|                                                                                                      +----------------------------------------------------------------------------------------------+
+[0]                                                                                                    [1]
+ |                                                                                                      |
+ +                                                                                                    +-+
+ |                                                                                                    |
+[0]                                                                                                  [1]
+++===============================================================++                                  ++===============================================================================++
+|| [34]: {CLOSE_ROUND} )                                         ||                                  || [39]: {CLOSE_ROUND} )                                                         ||
+||   TraceExec: [13]                                             ||                                  ||   TraceExec: [25]                                                             ||
+||   InsExec: [30:1]                                             ||                                  ||   InsExec: [57:1]                                                             ||
+||   ForwardTrace: 4                                             ||                                  ||   ForwardTrace: 6                                                             ||
+|| [44][_LongType]< _LongType "(" { _LongTypeArg ; "," } ")" @ > ||                                  || [32][_PrimitiveExprOnly]<! "(" !_Expr ")" @ !>                                ||
+|| [AST-INSTRUCTIONS]:                                           ||                                  || [AST-INSTRUCTIONS]:                                                           ||
+||   @ CS(8 -> -1) : [4]                                         ||                                  ||   @ CS(23 -> 22) : [12][11] OS(33 -> -1) : [17]                               ||
+||   + Token(4)                                                  ||                                  ||   + Token(2)                                                                  ||
+||                                                               ||                                  ||                                                                               ||
+||   @ CS(8 -> -1) : [4]                                         ||                                  ||   @ CS(23 -> 22) : [12][11] OS(33 -> -1) : [17]                               ||
+|| [RETURN STACK]:                                               ||                                  || [RETURN STACK]:                                                               ||
+||   [2][30][3]: _LongType -> [91][Module]<! !_LongType @ !>     ||                                  ||   [10][14][14]: _PrimitiveExprOnly -> [67][_Expr0]<! !_PrimitiveExprOnly @ !> ||
+|| [PREDECESSORS 22-22]: [22]                                    ||                                  ||   [9][13][14]: _Expr0 -> [76][_Expr1]<! !_Expr0 @ !>                          ||
+|| [SUCCESORS 35-35]: [35]                                       ||                                  ||   [8][28][14]: _Expr1 -> [80][_Expr]< _Expr "*" _Expr1 @ >                    ||
+++===============================================================++                                  ||   [7][29][3]: _Expr -> [90][Module]<! !_Expr @ !>                             ||
+|                                                                                                    || [PREDECESSORS 33-33]: [33]                                                    ||
+|                                                                                                    || [SUCCESORS 40-40]: [40]                                                       ||
+|                                                                                                    ++===============================================================================++
+|                                                                                                    |
++                                                                                                    +
+|                                                                                                    |
++-----------------------------------------------------------------------------------------------+    +-----------------------------------------------------------------------------------+
+| [35]: <Ending>                                                                                |    | [40]: <Ending>                                                                    |
+|   TraceExec: [14]                                                                             |    |   TraceExec: [26]                                                                 |
+|   InsExec: [31:5]                                                                             |    |   InsExec: [58:2]                                                                 |
+|   ForwardTrace: 4                                                                             |    |   ForwardTrace: 6                                                                 |
+| [91][Module]<! !_LongType @ !>                                                                |    | [67][_Expr0]<! !_PrimitiveExprOnly @ !>                                           |
+| [AST-INSTRUCTIONS]:                                                                           |    | [AST-INSTRUCTIONS]:                                                               |
+|   @ CS(8 -> -1) : [4]                                                                         |    |   @ CS(23 -> 22) : [12][11] OS(33 -> -1) : [17]                                   |
+|   + CreateObject(FunctionType)                                                                |    |   + StackEnd()                                                                    |
+|     obj:4 : FunctionType                                                                      |    |     obj+:12 : Name                                                                |
+|                                                                                               |    |       begin:17@0, top:17@0, use:[17], create!:[29@0], end!:[40@0], endLref:[42@0] |
+|   @ CS(8 -> -1) : [4]                                                                         |    |                                                                                   |
+|   + Field(FunctionType::returnType, 0)                                                        |    |   @ CS(22 -> -1) : [11] OS(34 -> -1) : [12]                                       |
+|                                                                                               |    |   > StackBegin()                                                                  |
+|   @ CS(8 -> -1) : [4]                                                                         |    |     obj!:18 : Name                                                                |
+|   + Field(FunctionType::args, 2)                                                              |    |                                                                                   |
+|                                                                                               |    |   @ CS(35 -> 22) : [18][11] OS(34 -> -1) : [12]                                   |
+|   @ CS(8 -> -1) : [4]                                                                         |    | [RETURN STACK]:                                                                   |
+|   + StackEnd()                                                                                |    |   [9][13][14]: _Expr0 -> [76][_Expr1]<! !_Expr0 @ !>                              |
+|     obj+:4 : FunctionType                                                                     |    |   [8][28][14]: _Expr1 -> [80][_Expr]< _Expr "*" _Expr1 @ >                        |
+|       begin:9@3, top:9@3, stack:1@0, field:[8, 3], create!:[35@0], end:[35@3], endLref:[45@0] |    |   [7][29][3]: _Expr -> [90][Module]<! !_Expr @ !>                                 |
+|                                                                                               |    | [PREDECESSORS 39-39]: [39]                                                        |
+|   @ OS(17 -> -1) : [4]                                                                        |    | [SUCCESORS 41-41]: [41]                                                           |
+|   > StackBegin()                                                                              |    +-----------------------------------------------------------------------------------+
+|     obj!:9 : FunctionType                                                                     |    |
+|                                                                                               |    |
+|   @ CS(18 -> -1) : [9] OS(17 -> -1) : [4]                                                     |    |
+| [PREDECESSORS 34-34]: [34]                                                                    |    |
+| [SUCCESORS 45-45]: [45]                                                                       |    |
++-----------------------------------------------------------------------------------------------+    |
+|                                                                                                    |
++                                                                                                    +
+|                                                                                                    |
++----------------------------------------------------------------------------+                       +-----------------------------------------------------------------------------------+
+| [45]: <Ending>                                                             |                       | [41]: <Ending>                                                                    |
+|   TraceExec: [15]                                                          |                       |   TraceExec: [27]                                                                 |
+|   InsExec: [36:1]                                                          |                       |   InsExec: [60:2]                                                                 |
+|   ForwardTrace: 4                                                          |                       |   ForwardTrace: 6                                                                 |
+| [89][Module] END [ENDING]                                                  |                       | [76][_Expr1]<! !_Expr0 @ !>                                                       |
+| [AST-INSTRUCTIONS]:                                                        |                       | [AST-INSTRUCTIONS]:                                                               |
+|   @ CS(18 -> -1) : [9] OS(17 -> -1) : [4]                                  |                       |   @ CS(35 -> 22) : [18][11] OS(34 -> -1) : [12]                                   |
+|   + StackEnd()                                                             |                       |   + StackEnd()                                                                    |
+|     obj+:9 : FunctionType                                                  |                       |     obj+:18 : Name                                                                |
+|       begin:35@4, top:9@3, stack:1@0, use:[4], create!:[35@0], end!:[45@0] |                       |       begin:40@1, top:17@0, use:[12], create!:[29@0], end!:[41@0], endLref:[42@0] |
+|                                                                            |                       |                                                                                   |
+|   @ OS(19 -> -1) : [9]                                                     |                       |   @ CS(22 -> -1) : [11] OS(36 -> -1) : [18]                                       |
+| [PREDECESSORS 35-35]: [35]                                                 |                       |   > StackBegin()                                                                  |
+| [SUCCESORS 36-36]: [36]                                                    |                       |     obj!:19 : Name                                                                |
++----------------------------------------------------------------------------+                       |                                                                                   |
+|                                                                                                    |   @ CS(37 -> 22) : [19][11] OS(36 -> -1) : [18]                                   |
+|                                                                                                    | [RETURN STACK]:                                                                   |
+|                                                                                                    |   [8][28][14]: _Expr1 -> [80][_Expr]< _Expr "*" _Expr1 @ >                        |
+|                                                                                                    |   [7][29][3]: _Expr -> [90][Module]<! !_Expr @ !>                                 |
+|                                                                                                    | [PREDECESSORS 40-40]: [40]                                                        |
+|                                                                                                    | [SUCCESORS 42-42]: [42]                                                           |
+|                                                                                                    +-----------------------------------------------------------------------------------+
+|                                                                                                    |
++                                                                                                    +
+|                                                                                                    |
+|                                                                                                    +-------------------------------------------------------------------+
+|                                                                                                    | [42]: <Ending>                                                    |
+|                                                                                                    |   TraceExec: [28]                                                 |
+|                                                                                                    |   InsExec: [62:2]                                                 |
+|                                                                                                    |   ForwardTrace: 6                                                 |
+|                                                                                                    | [80][_Expr]< _Expr "*" _Expr1 @ >                                 |
+|                                                                                                    | [AST-INSTRUCTIONS]:                                               |
+|                                                                                                    |   @ CS(37 -> 22) : [19][11] OS(36 -> -1) : [18]                   |
+|                                                                                                    |   + StackEnd()                                                    |
+|                                                                                                    |     obj+:19 : Name                                                |
+|                                                                                                    |       begin:41@1, top:17@0, use:[18], create!:[29@0], end!:[42@0] |
+|                                                                                                    |                                                                   |
+|                                                                                                    |   @ CS(22 -> -1) : [11] OS(38 -> -1) : [19]                       |
+|                                                                                                    |   > StackSlot(2)                                                  |
+|                                                                                                    |                                                                   |
+|                                                                                                    |   @ CS(22 -> -1) : [11]                                           |
+|                                                                                                    | [RETURN STACK]:                                                   |
+|                                                                                                    |   [7][29][3]: _Expr -> [90][Module]<! !_Expr @ !>                 |
+|                                                                                                    | [PREDECESSORS 41-41]: [41]                                        |
+|                                                                                                    | [SUCCESORS 43-43]: [43]                                           |
+|                                                                                                    +-------------------------------------------------------------------+
+|                                                                                                    |
+|                                                                                                    +
+|                                                                                                    |
+|                                                                                                    +-------------------------------------------------------------------------------------------------+
+|                                                                                                    | [43]: <Ending>                                                                                  |
+|                                                                                                    |   TraceExec: [29]                                                                               |
+|                                                                                                    |   InsExec: [64:5]                                                                               |
+|                                                                                                    |   ForwardTrace: 6                                                                               |
+|                                                                                                    | [90][Module]<! !_Expr @ !>                                                                      |
+|                                                                                                    | [AST-INSTRUCTIONS]:                                                                             |
+|                                                                                                    |   @ CS(22 -> -1) : [11]                                                                         |
+|                                                                                                    |   + CreateObject(MulExpr)                                                                       |
+|                                                                                                    |     obj:11 : MulExpr                                                                            |
+|                                                                                                    |                                                                                                 |
+|                                                                                                    |   @ CS(22 -> -1) : [11]                                                                         |
+|                                                                                                    |   + Field(MulExpr::first, 0)                                                                    |
+|                                                                                                    |                                                                                                 |
+|                                                                                                    |   @ CS(22 -> -1) : [11]                                                                         |
+|                                                                                                    |   + Field(MulExpr::second, 2)                                                                   |
+|                                                                                                    |                                                                                                 |
+|                                                                                                    |   @ CS(22 -> -1) : [11]                                                                         |
+|                                                                                                    |   + StackEnd()                                                                                  |
+|                                                                                                    |     obj+:11 : MulExpr                                                                           |
+|                                                                                                    |       begin:6@2, top:6@2, stack:1@0, field:[19, 10], create!:[43@0], end:[43@3], endLref:[44@0] |
+|                                                                                                    |                                                                                                 |
+|                                                                                                    |   @ OS(39 -> -1) : [11]                                                                         |
+|                                                                                                    |   > StackBegin()                                                                                |
+|                                                                                                    |     obj!:20 : MulExpr                                                                           |
+|                                                                                                    |                                                                                                 |
+|                                                                                                    |   @ CS(40 -> -1) : [20] OS(39 -> -1) : [11]                                                     |
+|                                                                                                    | [PREDECESSORS 42-42]: [42]                                                                      |
+|                                                                                                    | [SUCCESORS 44-44]: [44]                                                                         |
+|                                                                                                    +-------------------------------------------------------------------------------------------------+
+|                                                                                                    |
+|                                                                                                    +
+|                                                                                                    |
+|                                                                                                    +-----------------------------------------------------------------------------+
+|                                                                                                    | [44]: <Ending>                                                              |
+|                                                                                                    |   TraceExec: [30]                                                           |
+|                                                                                                    |   InsExec: [69:1]                                                           |
+|                                                                                                    |   ForwardTrace: 6                                                           |
+|                                                                                                    | [89][Module] END [ENDING]                                                   |
+|                                                                                                    | [AST-INSTRUCTIONS]:                                                         |
+|                                                                                                    |   @ CS(40 -> -1) : [20] OS(39 -> -1) : [11]                                 |
+|                                                                                                    |   + StackEnd()                                                              |
+|                                                                                                    |     obj+:20 : MulExpr                                                       |
+|                                                                                                    |       begin:43@4, top:6@2, stack:1@0, use:[11], create!:[43@0], end!:[44@0] |
+|                                                                                                    |                                                                             |
+|                                                                                                    |   @ OS(41 -> -1) : [20]                                                     |
+|                                                                                                    | [PREDECESSORS 43-43]: [43]                                                  |
+|                                                                                                    | [SUCCESORS 36-36]: [36]                                                     |
+|                                                                                                    +-----------------------------------------------------------------------------+
+|                                                                                                    |
++----------------------------------------------------------------------------------------------------+
+|
++-----------------------------------+
+| [36]: <Merging>                   |
+| <Start>                           |
+|   TraceExec: [31]                 |
+|   ForwardTrace: 36                |
+|   CommonForwardTrace: 0           |
+| [AMBIGUITY-RESOLVING]: [0]        |
+|   objs: [9, 20]                   |
+|   first: 1 prefix: 0              |
+|   last: 36 postfix: 0             |
+| [CONTEXT]: OS(42 -> -1) : [20, 9] |
++-----------------------------------+

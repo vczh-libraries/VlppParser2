@@ -1,0 +1,1491 @@
+﻿================ EXECUTION STEPS ================
+[0]: 0@0 - 75@0
+
+==================== TRACES =====================
+
++----------------------+
+| [0]: <Start>         |
+| [80][Module] BEGIN   |
+| [AST-INSTRUCTIONS]:  |
+| [SUCCESORS 1-1]: [1] |
++----------------------+
+[0]
+ |
+ +
+ |
+[0]
+++===============================================================================================++
+|| [1]: {CONST} const                                                                            ||
+|| [24][_PrimitiveTypeOnly]{{< "const" @ _PrimitiveShared > ; < "const" @ _PrimitiveTypeOnly >}} ||
+|| [AST-INSTRUCTIONS]:                                                                           ||
+||   + StackBegin()                                                                              ||
+||   + Token(0)                                                                                  ||
+|| [RETURN STACK]:                                                                               ||
+||   [0][36][0]: _PrimitiveTypeOnly -> [84][Module] BEGIN [pm-cr-rule: _PrimitiveTypeOnly]       ||
+|| [PREDECESSORS 0-0]: [0]                                                                       ||
+|| [SUCCESORS 2-2]: [2]                                                                          ||
+++===============================================================================================++
+[0]
+ |
+ +
+ |
+[0]
+++=========================================================================================++
+|| [2]: {ID} A                                                                             ||
+|| [16][_Name]{{< ID @ ( "<" { Module_NoGT_NoComma ; "," } ">" ) > ; < ID @ >}}            ||
+|| [AST-INSTRUCTIONS]:                                                                     ||
+||   + StackBegin()                                                                        ||
+||   + Token(0)                                                                            ||
+|| [RETURN STACK]:                                                                         ||
+||   [2][4][1]: _Name -> [19][_PrimitiveShared]<! !_Name @ !>                              ||
+||   [1][9][1]: _PrimitiveShared -> [22][_PrimitiveTypeOnly]< "const" _PrimitiveShared @ > ||
+||   [0][36][0]: _PrimitiveTypeOnly -> [84][Module] BEGIN [pm-cr-rule: _PrimitiveTypeOnly] ||
+|| [PREDECESSORS 1-1]: [1]                                                                 ||
+|| [SUCCESORS 3-3]: [3]                                                                    ||
+++=========================================================================================++
+|
++
+|
++-----------------------------------------------------------------------------------------+
+| [3]: <Ending>                                                                           |
+| [19][_PrimitiveShared]<! !_Name @ !>                                                    |
+| [AST-INSTRUCTIONS]:                                                                     |
+|   + CreateObject(Name)                                                                  |
+|   + Field(Name::name, 0)                                                                |
+|   + StackEnd()                                                                          |
+|   > StackBegin()                                                                        |
+| [RETURN STACK]:                                                                         |
+|   [1][9][1]: _PrimitiveShared -> [22][_PrimitiveTypeOnly]< "const" _PrimitiveShared @ > |
+|   [0][36][0]: _PrimitiveTypeOnly -> [84][Module] BEGIN [pm-cr-rule: _PrimitiveTypeOnly] |
+| [PREDECESSORS 2-2]: [2]                                                                 |
+| [SUCCESORS 4-4]: [4]                                                                    |
++-----------------------------------------------------------------------------------------+
+|
++
+|
++-----------------------------------------------------------------------------------------+
+| [4]: <Ending>                                                                           |
+| [22][_PrimitiveTypeOnly]< "const" _PrimitiveShared @ >                                  |
+| [AST-INSTRUCTIONS]:                                                                     |
+|   + StackEnd()                                                                          |
+|   > StackSlot(1)                                                                        |
+| [RETURN STACK]:                                                                         |
+|   [0][36][0]: _PrimitiveTypeOnly -> [84][Module] BEGIN [pm-cr-rule: _PrimitiveTypeOnly] |
+| [PREDECESSORS 3-3]: [3]                                                                 |
+| [SUCCESORS 5-5]: [5]                                                                    |
++-----------------------------------------------------------------------------------------+
+|
++
+|
++-----------------------------------------------------+
+| [5]: <Ending>                                       |
+| [84][Module] BEGIN [pm-cr-rule: _PrimitiveTypeOnly] |
+| [AST-INSTRUCTIONS]:                                 |
+|   + CreateObject(ConstType)                         |
+|   + Field(ConstType::type, 1)                       |
+|   + StackEnd()                                      |
+| [PREDECESSORS 4-4]: [4]                             |
+| [SUCCESORS 6-6]: [6]                                |
++-----------------------------------------------------+
+|
++
+|
++---------------------------------------------------------------------------------------------------------+
+| [6]: <Leftrec>                                                                                          |
+| [38][_LongType]< _LongType @ "(" { _LongType ; "," } ")" >                                              |
+| [AST-INSTRUCTIONS]:                                                                                     |
+|   + StackBegin()                                                                                        |
+|   + StackEnd()                                                                                          |
+|   + StackBegin()                                                                                        |
+|   + StackSlot(0)                                                                                        |
+| [RETURN STACK]:                                                                                         |
+|   [11][25][5]: _LongType -> [51][_Expr0]< _LongType @ "{" { _Expr_NoComma ; "," } "}" >                 |
+|   [10][17][5]: _Expr0 -> [61][_Expr1]<! !_Expr0 @ !>                                                    |
+|   [9][16][5]: _Expr1 -> [67][_Expr2]<! !_Expr1 @ !>                                                     |
+|   [8][15][5]: _Expr2 -> [110][_Expr3_SWITCH_COMBINED]<! !_Expr2 @ !>                                    |
+|   [7][14][5]: _Expr3_SWITCH_COMBINED -> [125][_Expr3_SWITCH_1allow_gt]<! !_Expr3_SWITCH_COMBINED @ !>   |
+|   [6][13][5]: _Expr3_SWITCH_1allow_gt -> [135][_Expr4_SWITCH_1allow_gt]<! !_Expr3_SWITCH_1allow_gt @ !> |
+|   [5][12][5]: _Expr4_SWITCH_1allow_gt -> [70][_Expr_NoComma]<! !_Expr4_SWITCH_1allow_gt @ !>            |
+|   [4][11][5]: _Expr_NoComma -> [79][_Expr]<! !_Expr_NoComma @ !>                                        |
+|   [3][38][5]: _Expr -> [89][Module]<! !_Expr @ !>                                                       |
+| [PREDECESSORS 5-5]: [5]                                                                                 |
+| [SUCCESORS 9-9]: [9]                                                                                    |
++---------------------------------------------------------------------------------------------------------+
+[0]
+ |
+ +
+ |
+[0]
+++=========================================================================================================++
+|| [9]: {OPEN_ROUND} (                                                                                     ||
+|| [32][_LongType]< _LongType "(" @ { _LongType ; "," } ")" >                                              ||
+|| [AST-INSTRUCTIONS]:                                                                                     ||
+||   + Token(1)                                                                                            ||
+|| [RETURN STACK]:                                                                                         ||
+||   [11][25][5]: _LongType -> [51][_Expr0]< _LongType @ "{" { _Expr_NoComma ; "," } "}" >                 ||
+||   [10][17][5]: _Expr0 -> [61][_Expr1]<! !_Expr0 @ !>                                                    ||
+||   [9][16][5]: _Expr1 -> [67][_Expr2]<! !_Expr1 @ !>                                                     ||
+||   [8][15][5]: _Expr2 -> [110][_Expr3_SWITCH_COMBINED]<! !_Expr2 @ !>                                    ||
+||   [7][14][5]: _Expr3_SWITCH_COMBINED -> [125][_Expr3_SWITCH_1allow_gt]<! !_Expr3_SWITCH_COMBINED @ !>   ||
+||   [6][13][5]: _Expr3_SWITCH_1allow_gt -> [135][_Expr4_SWITCH_1allow_gt]<! !_Expr3_SWITCH_1allow_gt @ !> ||
+||   [5][12][5]: _Expr4_SWITCH_1allow_gt -> [70][_Expr_NoComma]<! !_Expr4_SWITCH_1allow_gt @ !>            ||
+||   [4][11][5]: _Expr_NoComma -> [79][_Expr]<! !_Expr_NoComma @ !>                                        ||
+||   [3][38][5]: _Expr -> [89][Module]<! !_Expr @ !>                                                       ||
+|| [PREDECESSORS 6-6]: [6]                                                                                 ||
+|| [SUCCESORS 11-11]: [11]                                                                                 ||
+++=========================================================================================================++
+[0]
+ |
+ +
+ |
+[0]
+++=========================================================================================================++
+|| [11]: {ID} void                                                                                         ||
+|| [16][_Name]{{< ID @ ( "<" { Module_NoGT_NoComma ; "," } ">" ) > ; < ID @ >}}                            ||
+|| [AST-INSTRUCTIONS]:                                                                                     ||
+||   + StackBegin()                                                                                        ||
+||   + Token(0)                                                                                            ||
+|| [RETURN STACK]:                                                                                         ||
+||   [15][4][9]: _Name -> [19][_PrimitiveShared]<! !_Name @ !>                                             ||
+||   [14][22][9]: _PrimitiveShared -> [41][_LongType]<! !_PrimitiveShared @ !>                             ||
+||   [13][23][9]: _LongType -> [35][_LongType]< _LongType "(" { _LongType @ ; "," } ")" >                  ||
+||   [11][25][5]: _LongType -> [51][_Expr0]< _LongType @ "{" { _Expr_NoComma ; "," } "}" >                 ||
+||   [10][17][5]: _Expr0 -> [61][_Expr1]<! !_Expr0 @ !>                                                    ||
+||   [9][16][5]: _Expr1 -> [67][_Expr2]<! !_Expr1 @ !>                                                     ||
+||   [8][15][5]: _Expr2 -> [110][_Expr3_SWITCH_COMBINED]<! !_Expr2 @ !>                                    ||
+||   [7][14][5]: _Expr3_SWITCH_COMBINED -> [125][_Expr3_SWITCH_1allow_gt]<! !_Expr3_SWITCH_COMBINED @ !>   ||
+||   [6][13][5]: _Expr3_SWITCH_1allow_gt -> [135][_Expr4_SWITCH_1allow_gt]<! !_Expr3_SWITCH_1allow_gt @ !> ||
+||   [5][12][5]: _Expr4_SWITCH_1allow_gt -> [70][_Expr_NoComma]<! !_Expr4_SWITCH_1allow_gt @ !>            ||
+||   [4][11][5]: _Expr_NoComma -> [79][_Expr]<! !_Expr_NoComma @ !>                                        ||
+||   [3][38][5]: _Expr -> [89][Module]<! !_Expr @ !>                                                       ||
+|| [PREDECESSORS 9-9]: [9]                                                                                 ||
+|| [SUCCESORS 12-12]: [12]                                                                                 ||
+++=========================================================================================================++
+|
++
+|
++---------------------------------------------------------------------------------------------------------+
+| [12]: <Ending>                                                                                          |
+| [19][_PrimitiveShared]<! !_Name @ !>                                                                    |
+| [AST-INSTRUCTIONS]:                                                                                     |
+|   + CreateObject(Name)                                                                                  |
+|   + Field(Name::name, 0)                                                                                |
+|   + StackEnd()                                                                                          |
+|   > StackBegin()                                                                                        |
+| [RETURN STACK]:                                                                                         |
+|   [14][22][9]: _PrimitiveShared -> [41][_LongType]<! !_PrimitiveShared @ !>                             |
+|   [13][23][9]: _LongType -> [35][_LongType]< _LongType "(" { _LongType @ ; "," } ")" >                  |
+|   [11][25][5]: _LongType -> [51][_Expr0]< _LongType @ "{" { _Expr_NoComma ; "," } "}" >                 |
+|   [10][17][5]: _Expr0 -> [61][_Expr1]<! !_Expr0 @ !>                                                    |
+|   [9][16][5]: _Expr1 -> [67][_Expr2]<! !_Expr1 @ !>                                                     |
+|   [8][15][5]: _Expr2 -> [110][_Expr3_SWITCH_COMBINED]<! !_Expr2 @ !>                                    |
+|   [7][14][5]: _Expr3_SWITCH_COMBINED -> [125][_Expr3_SWITCH_1allow_gt]<! !_Expr3_SWITCH_COMBINED @ !>   |
+|   [6][13][5]: _Expr3_SWITCH_1allow_gt -> [135][_Expr4_SWITCH_1allow_gt]<! !_Expr3_SWITCH_1allow_gt @ !> |
+|   [5][12][5]: _Expr4_SWITCH_1allow_gt -> [70][_Expr_NoComma]<! !_Expr4_SWITCH_1allow_gt @ !>            |
+|   [4][11][5]: _Expr_NoComma -> [79][_Expr]<! !_Expr_NoComma @ !>                                        |
+|   [3][38][5]: _Expr -> [89][Module]<! !_Expr @ !>                                                       |
+| [PREDECESSORS 11-11]: [11]                                                                              |
+| [SUCCESORS 13-13]: [13]                                                                                 |
++---------------------------------------------------------------------------------------------------------+
+|
++
+|
++---------------------------------------------------------------------------------------------------------+
+| [13]: <Ending>                                                                                          |
+| [41][_LongType]<! !_PrimitiveShared @ !>                                                                |
+| [AST-INSTRUCTIONS]:                                                                                     |
+|   + StackEnd()                                                                                          |
+|   > StackBegin()                                                                                        |
+| [RETURN STACK]:                                                                                         |
+|   [13][23][9]: _LongType -> [35][_LongType]< _LongType "(" { _LongType @ ; "," } ")" >                  |
+|   [11][25][5]: _LongType -> [51][_Expr0]< _LongType @ "{" { _Expr_NoComma ; "," } "}" >                 |
+|   [10][17][5]: _Expr0 -> [61][_Expr1]<! !_Expr0 @ !>                                                    |
+|   [9][16][5]: _Expr1 -> [67][_Expr2]<! !_Expr1 @ !>                                                     |
+|   [8][15][5]: _Expr2 -> [110][_Expr3_SWITCH_COMBINED]<! !_Expr2 @ !>                                    |
+|   [7][14][5]: _Expr3_SWITCH_COMBINED -> [125][_Expr3_SWITCH_1allow_gt]<! !_Expr3_SWITCH_COMBINED @ !>   |
+|   [6][13][5]: _Expr3_SWITCH_1allow_gt -> [135][_Expr4_SWITCH_1allow_gt]<! !_Expr3_SWITCH_1allow_gt @ !> |
+|   [5][12][5]: _Expr4_SWITCH_1allow_gt -> [70][_Expr_NoComma]<! !_Expr4_SWITCH_1allow_gt @ !>            |
+|   [4][11][5]: _Expr_NoComma -> [79][_Expr]<! !_Expr_NoComma @ !>                                        |
+|   [3][38][5]: _Expr -> [89][Module]<! !_Expr @ !>                                                       |
+| [PREDECESSORS 12-12]: [12]                                                                              |
+| [SUCCESORS 14-14]: [14]                                                                                 |
++---------------------------------------------------------------------------------------------------------+
+|
++
+|
++---------------------------------------------------------------------------------------------------------+
+| [14]: <Ending>                                                                                          |
+| [35][_LongType]< _LongType "(" { _LongType @ ; "," } ")" >                                              |
+| [AST-INSTRUCTIONS]:                                                                                     |
+|   + StackEnd()                                                                                          |
+|   > StackSlot(2)                                                                                        |
+| [RETURN STACK]:                                                                                         |
+|   [11][25][5]: _LongType -> [51][_Expr0]< _LongType @ "{" { _Expr_NoComma ; "," } "}" >                 |
+|   [10][17][5]: _Expr0 -> [61][_Expr1]<! !_Expr0 @ !>                                                    |
+|   [9][16][5]: _Expr1 -> [67][_Expr2]<! !_Expr1 @ !>                                                     |
+|   [8][15][5]: _Expr2 -> [110][_Expr3_SWITCH_COMBINED]<! !_Expr2 @ !>                                    |
+|   [7][14][5]: _Expr3_SWITCH_COMBINED -> [125][_Expr3_SWITCH_1allow_gt]<! !_Expr3_SWITCH_COMBINED @ !>   |
+|   [6][13][5]: _Expr3_SWITCH_1allow_gt -> [135][_Expr4_SWITCH_1allow_gt]<! !_Expr3_SWITCH_1allow_gt @ !> |
+|   [5][12][5]: _Expr4_SWITCH_1allow_gt -> [70][_Expr_NoComma]<! !_Expr4_SWITCH_1allow_gt @ !>            |
+|   [4][11][5]: _Expr_NoComma -> [79][_Expr]<! !_Expr_NoComma @ !>                                        |
+|   [3][38][5]: _Expr -> [89][Module]<! !_Expr @ !>                                                       |
+| [PREDECESSORS 13-13]: [13]                                                                              |
+| [SUCCESORS 19-19]: [19]                                                                                 |
++---------------------------------------------------------------------------------------------------------+
+[0]
+ |
+ +
+ |
+[0]
+++=========================================================================================================++
+|| [19]: {CLOSE_ROUND} )                                                                                   ||
+|| [34][_LongType]< _LongType "(" { _LongType ; "," } ")" @ >                                              ||
+|| [AST-INSTRUCTIONS]:                                                                                     ||
+||   + Token(4)                                                                                            ||
+|| [RETURN STACK]:                                                                                         ||
+||   [11][25][5]: _LongType -> [51][_Expr0]< _LongType @ "{" { _Expr_NoComma ; "," } "}" >                 ||
+||   [10][17][5]: _Expr0 -> [61][_Expr1]<! !_Expr0 @ !>                                                    ||
+||   [9][16][5]: _Expr1 -> [67][_Expr2]<! !_Expr1 @ !>                                                     ||
+||   [8][15][5]: _Expr2 -> [110][_Expr3_SWITCH_COMBINED]<! !_Expr2 @ !>                                    ||
+||   [7][14][5]: _Expr3_SWITCH_COMBINED -> [125][_Expr3_SWITCH_1allow_gt]<! !_Expr3_SWITCH_COMBINED @ !>   ||
+||   [6][13][5]: _Expr3_SWITCH_1allow_gt -> [135][_Expr4_SWITCH_1allow_gt]<! !_Expr3_SWITCH_1allow_gt @ !> ||
+||   [5][12][5]: _Expr4_SWITCH_1allow_gt -> [70][_Expr_NoComma]<! !_Expr4_SWITCH_1allow_gt @ !>            ||
+||   [4][11][5]: _Expr_NoComma -> [79][_Expr]<! !_Expr_NoComma @ !>                                        ||
+||   [3][38][5]: _Expr -> [89][Module]<! !_Expr @ !>                                                       ||
+|| [PREDECESSORS 14-14]: [14]                                                                              ||
+|| [SUCCESORS 20-20]: [20]                                                                                 ||
+++=========================================================================================================++
+|
++
+|
++---------------------------------------------------------------------------------------------------------+
+| [20]: <Ending>                                                                                          |
+| [51][_Expr0]< _LongType @ "{" { _Expr_NoComma ; "," } "}" >                                             |
+| [AST-INSTRUCTIONS]:                                                                                     |
+|   + CreateObject(FunctionType)                                                                          |
+|   + Field(FunctionType::returnType, 0)                                                                  |
+|   + Field(FunctionType::args, 2)                                                                        |
+|   + StackEnd()                                                                                          |
+|   > StackBegin()                                                                                        |
+|   > StackSlot(0)                                                                                        |
+| [RETURN STACK]:                                                                                         |
+|   [10][17][5]: _Expr0 -> [61][_Expr1]<! !_Expr0 @ !>                                                    |
+|   [9][16][5]: _Expr1 -> [67][_Expr2]<! !_Expr1 @ !>                                                     |
+|   [8][15][5]: _Expr2 -> [110][_Expr3_SWITCH_COMBINED]<! !_Expr2 @ !>                                    |
+|   [7][14][5]: _Expr3_SWITCH_COMBINED -> [125][_Expr3_SWITCH_1allow_gt]<! !_Expr3_SWITCH_COMBINED @ !>   |
+|   [6][13][5]: _Expr3_SWITCH_1allow_gt -> [135][_Expr4_SWITCH_1allow_gt]<! !_Expr3_SWITCH_1allow_gt @ !> |
+|   [5][12][5]: _Expr4_SWITCH_1allow_gt -> [70][_Expr_NoComma]<! !_Expr4_SWITCH_1allow_gt @ !>            |
+|   [4][11][5]: _Expr_NoComma -> [79][_Expr]<! !_Expr_NoComma @ !>                                        |
+|   [3][38][5]: _Expr -> [89][Module]<! !_Expr @ !>                                                       |
+| [PREDECESSORS 19-19]: [19]                                                                              |
+| [SUCCESORS 24-24]: [24]                                                                                 |
++---------------------------------------------------------------------------------------------------------+
+[0]
+ |
+ +
+ |
+[0]
+++=========================================================================================================++
+|| [24]: {OPEN_BRACE} {                                                                                    ||
+|| [47][_Expr0]< _LongType "{" @ { _Expr_NoComma ; "," } "}" >                                             ||
+|| [AST-INSTRUCTIONS]:                                                                                     ||
+||   + Token(1)                                                                                            ||
+|| [RETURN STACK]:                                                                                         ||
+||   [10][17][5]: _Expr0 -> [61][_Expr1]<! !_Expr0 @ !>                                                    ||
+||   [9][16][5]: _Expr1 -> [67][_Expr2]<! !_Expr1 @ !>                                                     ||
+||   [8][15][5]: _Expr2 -> [110][_Expr3_SWITCH_COMBINED]<! !_Expr2 @ !>                                    ||
+||   [7][14][5]: _Expr3_SWITCH_COMBINED -> [125][_Expr3_SWITCH_1allow_gt]<! !_Expr3_SWITCH_COMBINED @ !>   ||
+||   [6][13][5]: _Expr3_SWITCH_1allow_gt -> [135][_Expr4_SWITCH_1allow_gt]<! !_Expr3_SWITCH_1allow_gt @ !> ||
+||   [5][12][5]: _Expr4_SWITCH_1allow_gt -> [70][_Expr_NoComma]<! !_Expr4_SWITCH_1allow_gt @ !>            ||
+||   [4][11][5]: _Expr_NoComma -> [79][_Expr]<! !_Expr_NoComma @ !>                                        ||
+||   [3][38][5]: _Expr -> [89][Module]<! !_Expr @ !>                                                       ||
+|| [PREDECESSORS 20-20]: [20]                                                                              ||
+|| [SUCCESORS 25-25]: [25]                                                                                 ||
+++=========================================================================================================++
+[0]
+ |
+ +
+ |
+[0]
+++===========================================================================================================++
+|| [25]: {ID} X                                                                                              ||
+|| [16][_Name]{{< ID @ ( "<" { Module_NoGT_NoComma ; "," } ">" ) > ; < ID @ >}}                              ||
+|| [AST-INSTRUCTIONS]:                                                                                       ||
+||   + StackBegin()                                                                                          ||
+||   + Token(0)                                                                                              ||
+|| [RETURN STACK]:                                                                                           ||
+||   [27][4][24]: _Name -> [19][_PrimitiveShared]<! !_Name @ !>                                              ||
+||   [26][20][24]: _PrimitiveShared -> [44][_Expr0] BEGIN [pm-cr-rule: _PrimitiveShared]                     ||
+||   [25][17][24]: _Expr0 -> [61][_Expr1]<! !_Expr0 @ !>                                                     ||
+||   [24][16][24]: _Expr1 -> [67][_Expr2]<! !_Expr1 @ !>                                                     ||
+||   [23][15][24]: _Expr2 -> [110][_Expr3_SWITCH_COMBINED]<! !_Expr2 @ !>                                    ||
+||   [22][14][24]: _Expr3_SWITCH_COMBINED -> [125][_Expr3_SWITCH_1allow_gt]<! !_Expr3_SWITCH_COMBINED @ !>   ||
+||   [21][13][24]: _Expr3_SWITCH_1allow_gt -> [135][_Expr4_SWITCH_1allow_gt]<! !_Expr3_SWITCH_1allow_gt @ !> ||
+||   [20][12][24]: _Expr4_SWITCH_1allow_gt -> [70][_Expr_NoComma]<! !_Expr4_SWITCH_1allow_gt @ !>            ||
+||   [19][26][24]: _Expr_NoComma -> [50][_Expr0]< _LongType "{" { _Expr_NoComma @ ; "," } "}" >              ||
+||   [10][17][5]: _Expr0 -> [61][_Expr1]<! !_Expr0 @ !>                                                      ||
+||   [9][16][5]: _Expr1 -> [67][_Expr2]<! !_Expr1 @ !>                                                       ||
+||   [8][15][5]: _Expr2 -> [110][_Expr3_SWITCH_COMBINED]<! !_Expr2 @ !>                                      ||
+||   [7][14][5]: _Expr3_SWITCH_COMBINED -> [125][_Expr3_SWITCH_1allow_gt]<! !_Expr3_SWITCH_COMBINED @ !>     ||
+||   [6][13][5]: _Expr3_SWITCH_1allow_gt -> [135][_Expr4_SWITCH_1allow_gt]<! !_Expr3_SWITCH_1allow_gt @ !>   ||
+||   [5][12][5]: _Expr4_SWITCH_1allow_gt -> [70][_Expr_NoComma]<! !_Expr4_SWITCH_1allow_gt @ !>              ||
+||   [4][11][5]: _Expr_NoComma -> [79][_Expr]<! !_Expr_NoComma @ !>                                          ||
+||   [3][38][5]: _Expr -> [89][Module]<! !_Expr @ !>                                                         ||
+|| [PREDECESSORS 24-24]: [24]                                                                                ||
+|| [SUCCESORS 26-26]: [26]                                                                                   ||
+++===========================================================================================================++
+|
++
+|
++-----------------------------------------------------------------------------------------------------------+
+| [26]: <Ending>                                                                                            |
+| [19][_PrimitiveShared]<! !_Name @ !>                                                                      |
+| [AST-INSTRUCTIONS]:                                                                                       |
+|   + CreateObject(Name)                                                                                    |
+|   + Field(Name::name, 0)                                                                                  |
+|   + StackEnd()                                                                                            |
+|   > StackBegin()                                                                                          |
+| [RETURN STACK]:                                                                                           |
+|   [26][20][24]: _PrimitiveShared -> [44][_Expr0] BEGIN [pm-cr-rule: _PrimitiveShared]                     |
+|   [25][17][24]: _Expr0 -> [61][_Expr1]<! !_Expr0 @ !>                                                     |
+|   [24][16][24]: _Expr1 -> [67][_Expr2]<! !_Expr1 @ !>                                                     |
+|   [23][15][24]: _Expr2 -> [110][_Expr3_SWITCH_COMBINED]<! !_Expr2 @ !>                                    |
+|   [22][14][24]: _Expr3_SWITCH_COMBINED -> [125][_Expr3_SWITCH_1allow_gt]<! !_Expr3_SWITCH_COMBINED @ !>   |
+|   [21][13][24]: _Expr3_SWITCH_1allow_gt -> [135][_Expr4_SWITCH_1allow_gt]<! !_Expr3_SWITCH_1allow_gt @ !> |
+|   [20][12][24]: _Expr4_SWITCH_1allow_gt -> [70][_Expr_NoComma]<! !_Expr4_SWITCH_1allow_gt @ !>            |
+|   [19][26][24]: _Expr_NoComma -> [50][_Expr0]< _LongType "{" { _Expr_NoComma @ ; "," } "}" >              |
+|   [10][17][5]: _Expr0 -> [61][_Expr1]<! !_Expr0 @ !>                                                      |
+|   [9][16][5]: _Expr1 -> [67][_Expr2]<! !_Expr1 @ !>                                                       |
+|   [8][15][5]: _Expr2 -> [110][_Expr3_SWITCH_COMBINED]<! !_Expr2 @ !>                                      |
+|   [7][14][5]: _Expr3_SWITCH_COMBINED -> [125][_Expr3_SWITCH_1allow_gt]<! !_Expr3_SWITCH_COMBINED @ !>     |
+|   [6][13][5]: _Expr3_SWITCH_1allow_gt -> [135][_Expr4_SWITCH_1allow_gt]<! !_Expr3_SWITCH_1allow_gt @ !>   |
+|   [5][12][5]: _Expr4_SWITCH_1allow_gt -> [70][_Expr_NoComma]<! !_Expr4_SWITCH_1allow_gt @ !>              |
+|   [4][11][5]: _Expr_NoComma -> [79][_Expr]<! !_Expr_NoComma @ !>                                          |
+|   [3][38][5]: _Expr -> [89][Module]<! !_Expr @ !>                                                         |
+| [PREDECESSORS 25-25]: [25]                                                                                |
+| [SUCCESORS 27-27]: [27]                                                                                   |
++-----------------------------------------------------------------------------------------------------------+
+|
++
+|
++-----------------------------------------------------------------------------------------------------------+
+| [27]: <Ending>                                                                                            |
+| [44][_Expr0] BEGIN [pm-cr-rule: _PrimitiveShared]                                                         |
+| [AST-INSTRUCTIONS]:                                                                                       |
+|   + StackEnd()                                                                                            |
+| [RETURN STACK]:                                                                                           |
+|   [25][17][24]: _Expr0 -> [61][_Expr1]<! !_Expr0 @ !>                                                     |
+|   [24][16][24]: _Expr1 -> [67][_Expr2]<! !_Expr1 @ !>                                                     |
+|   [23][15][24]: _Expr2 -> [110][_Expr3_SWITCH_COMBINED]<! !_Expr2 @ !>                                    |
+|   [22][14][24]: _Expr3_SWITCH_COMBINED -> [125][_Expr3_SWITCH_1allow_gt]<! !_Expr3_SWITCH_COMBINED @ !>   |
+|   [21][13][24]: _Expr3_SWITCH_1allow_gt -> [135][_Expr4_SWITCH_1allow_gt]<! !_Expr3_SWITCH_1allow_gt @ !> |
+|   [20][12][24]: _Expr4_SWITCH_1allow_gt -> [70][_Expr_NoComma]<! !_Expr4_SWITCH_1allow_gt @ !>            |
+|   [19][26][24]: _Expr_NoComma -> [50][_Expr0]< _LongType "{" { _Expr_NoComma @ ; "," } "}" >              |
+|   [10][17][5]: _Expr0 -> [61][_Expr1]<! !_Expr0 @ !>                                                      |
+|   [9][16][5]: _Expr1 -> [67][_Expr2]<! !_Expr1 @ !>                                                       |
+|   [8][15][5]: _Expr2 -> [110][_Expr3_SWITCH_COMBINED]<! !_Expr2 @ !>                                      |
+|   [7][14][5]: _Expr3_SWITCH_COMBINED -> [125][_Expr3_SWITCH_1allow_gt]<! !_Expr3_SWITCH_COMBINED @ !>     |
+|   [6][13][5]: _Expr3_SWITCH_1allow_gt -> [135][_Expr4_SWITCH_1allow_gt]<! !_Expr3_SWITCH_1allow_gt @ !>   |
+|   [5][12][5]: _Expr4_SWITCH_1allow_gt -> [70][_Expr_NoComma]<! !_Expr4_SWITCH_1allow_gt @ !>              |
+|   [4][11][5]: _Expr_NoComma -> [79][_Expr]<! !_Expr_NoComma @ !>                                          |
+|   [3][38][5]: _Expr -> [89][Module]<! !_Expr @ !>                                                         |
+| [PREDECESSORS 26-26]: [26]                                                                                |
+| [SUCCESORS 28-28]: [28]                                                                                   |
++-----------------------------------------------------------------------------------------------------------+
+|
++
+|
++-----------------------------------------------------------------------------------------------------------+
+| [28]: <Ending>                                                                                            |
+| [61][_Expr1]<! !_Expr0 @ !>                                                                               |
+| [AST-INSTRUCTIONS]:                                                                                       |
+|   + StackBegin()                                                                                          |
+|   + StackEnd()                                                                                            |
+|   > StackBegin()                                                                                          |
+| [RETURN STACK]:                                                                                           |
+|   [24][16][24]: _Expr1 -> [67][_Expr2]<! !_Expr1 @ !>                                                     |
+|   [23][15][24]: _Expr2 -> [110][_Expr3_SWITCH_COMBINED]<! !_Expr2 @ !>                                    |
+|   [22][14][24]: _Expr3_SWITCH_COMBINED -> [125][_Expr3_SWITCH_1allow_gt]<! !_Expr3_SWITCH_COMBINED @ !>   |
+|   [21][13][24]: _Expr3_SWITCH_1allow_gt -> [135][_Expr4_SWITCH_1allow_gt]<! !_Expr3_SWITCH_1allow_gt @ !> |
+|   [20][12][24]: _Expr4_SWITCH_1allow_gt -> [70][_Expr_NoComma]<! !_Expr4_SWITCH_1allow_gt @ !>            |
+|   [19][26][24]: _Expr_NoComma -> [50][_Expr0]< _LongType "{" { _Expr_NoComma @ ; "," } "}" >              |
+|   [10][17][5]: _Expr0 -> [61][_Expr1]<! !_Expr0 @ !>                                                      |
+|   [9][16][5]: _Expr1 -> [67][_Expr2]<! !_Expr1 @ !>                                                       |
+|   [8][15][5]: _Expr2 -> [110][_Expr3_SWITCH_COMBINED]<! !_Expr2 @ !>                                      |
+|   [7][14][5]: _Expr3_SWITCH_COMBINED -> [125][_Expr3_SWITCH_1allow_gt]<! !_Expr3_SWITCH_COMBINED @ !>     |
+|   [6][13][5]: _Expr3_SWITCH_1allow_gt -> [135][_Expr4_SWITCH_1allow_gt]<! !_Expr3_SWITCH_1allow_gt @ !>   |
+|   [5][12][5]: _Expr4_SWITCH_1allow_gt -> [70][_Expr_NoComma]<! !_Expr4_SWITCH_1allow_gt @ !>              |
+|   [4][11][5]: _Expr_NoComma -> [79][_Expr]<! !_Expr_NoComma @ !>                                          |
+|   [3][38][5]: _Expr -> [89][Module]<! !_Expr @ !>                                                         |
+| [PREDECESSORS 27-27]: [27]                                                                                |
+| [SUCCESORS 29-29]: [29]                                                                                   |
++-----------------------------------------------------------------------------------------------------------+
+|
++
+|
++-----------------------------------------------------------------------------------------------------------+
+| [29]: <Ending>                                                                                            |
+| [67][_Expr2]<! !_Expr1 @ !>                                                                               |
+| [AST-INSTRUCTIONS]:                                                                                       |
+|   + StackEnd()                                                                                            |
+|   > StackBegin()                                                                                          |
+| [RETURN STACK]:                                                                                           |
+|   [23][15][24]: _Expr2 -> [110][_Expr3_SWITCH_COMBINED]<! !_Expr2 @ !>                                    |
+|   [22][14][24]: _Expr3_SWITCH_COMBINED -> [125][_Expr3_SWITCH_1allow_gt]<! !_Expr3_SWITCH_COMBINED @ !>   |
+|   [21][13][24]: _Expr3_SWITCH_1allow_gt -> [135][_Expr4_SWITCH_1allow_gt]<! !_Expr3_SWITCH_1allow_gt @ !> |
+|   [20][12][24]: _Expr4_SWITCH_1allow_gt -> [70][_Expr_NoComma]<! !_Expr4_SWITCH_1allow_gt @ !>            |
+|   [19][26][24]: _Expr_NoComma -> [50][_Expr0]< _LongType "{" { _Expr_NoComma @ ; "," } "}" >              |
+|   [10][17][5]: _Expr0 -> [61][_Expr1]<! !_Expr0 @ !>                                                      |
+|   [9][16][5]: _Expr1 -> [67][_Expr2]<! !_Expr1 @ !>                                                       |
+|   [8][15][5]: _Expr2 -> [110][_Expr3_SWITCH_COMBINED]<! !_Expr2 @ !>                                      |
+|   [7][14][5]: _Expr3_SWITCH_COMBINED -> [125][_Expr3_SWITCH_1allow_gt]<! !_Expr3_SWITCH_COMBINED @ !>     |
+|   [6][13][5]: _Expr3_SWITCH_1allow_gt -> [135][_Expr4_SWITCH_1allow_gt]<! !_Expr3_SWITCH_1allow_gt @ !>   |
+|   [5][12][5]: _Expr4_SWITCH_1allow_gt -> [70][_Expr_NoComma]<! !_Expr4_SWITCH_1allow_gt @ !>              |
+|   [4][11][5]: _Expr_NoComma -> [79][_Expr]<! !_Expr_NoComma @ !>                                          |
+|   [3][38][5]: _Expr -> [89][Module]<! !_Expr @ !>                                                         |
+| [PREDECESSORS 28-28]: [28]                                                                                |
+| [SUCCESORS 30-30]: [30]                                                                                   |
++-----------------------------------------------------------------------------------------------------------+
+|
++
+|
++-----------------------------------------------------------------------------------------------------------+
+| [30]: <Ending>                                                                                            |
+| [110][_Expr3_SWITCH_COMBINED]<! !_Expr2 @ !>                                                              |
+| [AST-INSTRUCTIONS]:                                                                                       |
+|   + StackEnd()                                                                                            |
+|   > StackBegin()                                                                                          |
+| [RETURN STACK]:                                                                                           |
+|   [22][14][24]: _Expr3_SWITCH_COMBINED -> [125][_Expr3_SWITCH_1allow_gt]<! !_Expr3_SWITCH_COMBINED @ !>   |
+|   [21][13][24]: _Expr3_SWITCH_1allow_gt -> [135][_Expr4_SWITCH_1allow_gt]<! !_Expr3_SWITCH_1allow_gt @ !> |
+|   [20][12][24]: _Expr4_SWITCH_1allow_gt -> [70][_Expr_NoComma]<! !_Expr4_SWITCH_1allow_gt @ !>            |
+|   [19][26][24]: _Expr_NoComma -> [50][_Expr0]< _LongType "{" { _Expr_NoComma @ ; "," } "}" >              |
+|   [10][17][5]: _Expr0 -> [61][_Expr1]<! !_Expr0 @ !>                                                      |
+|   [9][16][5]: _Expr1 -> [67][_Expr2]<! !_Expr1 @ !>                                                       |
+|   [8][15][5]: _Expr2 -> [110][_Expr3_SWITCH_COMBINED]<! !_Expr2 @ !>                                      |
+|   [7][14][5]: _Expr3_SWITCH_COMBINED -> [125][_Expr3_SWITCH_1allow_gt]<! !_Expr3_SWITCH_COMBINED @ !>     |
+|   [6][13][5]: _Expr3_SWITCH_1allow_gt -> [135][_Expr4_SWITCH_1allow_gt]<! !_Expr3_SWITCH_1allow_gt @ !>   |
+|   [5][12][5]: _Expr4_SWITCH_1allow_gt -> [70][_Expr_NoComma]<! !_Expr4_SWITCH_1allow_gt @ !>              |
+|   [4][11][5]: _Expr_NoComma -> [79][_Expr]<! !_Expr_NoComma @ !>                                          |
+|   [3][38][5]: _Expr -> [89][Module]<! !_Expr @ !>                                                         |
+| [PREDECESSORS 29-29]: [29]                                                                                |
+| [SUCCESORS 31-31]: [31]                                                                                   |
++-----------------------------------------------------------------------------------------------------------+
+|
++
+|
++-----------------------------------------------------------------------------------------------------------+
+| [31]: <Ending>                                                                                            |
+| [125][_Expr3_SWITCH_1allow_gt]<! !_Expr3_SWITCH_COMBINED @ !>                                             |
+| [AST-INSTRUCTIONS]:                                                                                       |
+|   + StackEnd()                                                                                            |
+|   > StackBegin()                                                                                          |
+| [RETURN STACK]:                                                                                           |
+|   [21][13][24]: _Expr3_SWITCH_1allow_gt -> [135][_Expr4_SWITCH_1allow_gt]<! !_Expr3_SWITCH_1allow_gt @ !> |
+|   [20][12][24]: _Expr4_SWITCH_1allow_gt -> [70][_Expr_NoComma]<! !_Expr4_SWITCH_1allow_gt @ !>            |
+|   [19][26][24]: _Expr_NoComma -> [50][_Expr0]< _LongType "{" { _Expr_NoComma @ ; "," } "}" >              |
+|   [10][17][5]: _Expr0 -> [61][_Expr1]<! !_Expr0 @ !>                                                      |
+|   [9][16][5]: _Expr1 -> [67][_Expr2]<! !_Expr1 @ !>                                                       |
+|   [8][15][5]: _Expr2 -> [110][_Expr3_SWITCH_COMBINED]<! !_Expr2 @ !>                                      |
+|   [7][14][5]: _Expr3_SWITCH_COMBINED -> [125][_Expr3_SWITCH_1allow_gt]<! !_Expr3_SWITCH_COMBINED @ !>     |
+|   [6][13][5]: _Expr3_SWITCH_1allow_gt -> [135][_Expr4_SWITCH_1allow_gt]<! !_Expr3_SWITCH_1allow_gt @ !>   |
+|   [5][12][5]: _Expr4_SWITCH_1allow_gt -> [70][_Expr_NoComma]<! !_Expr4_SWITCH_1allow_gt @ !>              |
+|   [4][11][5]: _Expr_NoComma -> [79][_Expr]<! !_Expr_NoComma @ !>                                          |
+|   [3][38][5]: _Expr -> [89][Module]<! !_Expr @ !>                                                         |
+| [PREDECESSORS 30-30]: [30]                                                                                |
+| [SUCCESORS 32-32]: [32]                                                                                   |
++-----------------------------------------------------------------------------------------------------------+
+|
++
+|
++---------------------------------------------------------------------------------------------------------+
+| [32]: <Ending>                                                                                          |
+| [135][_Expr4_SWITCH_1allow_gt]<! !_Expr3_SWITCH_1allow_gt @ !>                                          |
+| [AST-INSTRUCTIONS]:                                                                                     |
+|   + StackEnd()                                                                                          |
+|   > StackBegin()                                                                                        |
+| [RETURN STACK]:                                                                                         |
+|   [20][12][24]: _Expr4_SWITCH_1allow_gt -> [70][_Expr_NoComma]<! !_Expr4_SWITCH_1allow_gt @ !>          |
+|   [19][26][24]: _Expr_NoComma -> [50][_Expr0]< _LongType "{" { _Expr_NoComma @ ; "," } "}" >            |
+|   [10][17][5]: _Expr0 -> [61][_Expr1]<! !_Expr0 @ !>                                                    |
+|   [9][16][5]: _Expr1 -> [67][_Expr2]<! !_Expr1 @ !>                                                     |
+|   [8][15][5]: _Expr2 -> [110][_Expr3_SWITCH_COMBINED]<! !_Expr2 @ !>                                    |
+|   [7][14][5]: _Expr3_SWITCH_COMBINED -> [125][_Expr3_SWITCH_1allow_gt]<! !_Expr3_SWITCH_COMBINED @ !>   |
+|   [6][13][5]: _Expr3_SWITCH_1allow_gt -> [135][_Expr4_SWITCH_1allow_gt]<! !_Expr3_SWITCH_1allow_gt @ !> |
+|   [5][12][5]: _Expr4_SWITCH_1allow_gt -> [70][_Expr_NoComma]<! !_Expr4_SWITCH_1allow_gt @ !>            |
+|   [4][11][5]: _Expr_NoComma -> [79][_Expr]<! !_Expr_NoComma @ !>                                        |
+|   [3][38][5]: _Expr -> [89][Module]<! !_Expr @ !>                                                       |
+| [PREDECESSORS 31-31]: [31]                                                                              |
+| [SUCCESORS 33-33]: [33]                                                                                 |
++---------------------------------------------------------------------------------------------------------+
+|
++
+|
++---------------------------------------------------------------------------------------------------------+
+| [33]: <Ending>                                                                                          |
+| [70][_Expr_NoComma]<! !_Expr4_SWITCH_1allow_gt @ !>                                                     |
+| [AST-INSTRUCTIONS]:                                                                                     |
+|   + StackEnd()                                                                                          |
+|   > StackBegin()                                                                                        |
+| [RETURN STACK]:                                                                                         |
+|   [19][26][24]: _Expr_NoComma -> [50][_Expr0]< _LongType "{" { _Expr_NoComma @ ; "," } "}" >            |
+|   [10][17][5]: _Expr0 -> [61][_Expr1]<! !_Expr0 @ !>                                                    |
+|   [9][16][5]: _Expr1 -> [67][_Expr2]<! !_Expr1 @ !>                                                     |
+|   [8][15][5]: _Expr2 -> [110][_Expr3_SWITCH_COMBINED]<! !_Expr2 @ !>                                    |
+|   [7][14][5]: _Expr3_SWITCH_COMBINED -> [125][_Expr3_SWITCH_1allow_gt]<! !_Expr3_SWITCH_COMBINED @ !>   |
+|   [6][13][5]: _Expr3_SWITCH_1allow_gt -> [135][_Expr4_SWITCH_1allow_gt]<! !_Expr3_SWITCH_1allow_gt @ !> |
+|   [5][12][5]: _Expr4_SWITCH_1allow_gt -> [70][_Expr_NoComma]<! !_Expr4_SWITCH_1allow_gt @ !>            |
+|   [4][11][5]: _Expr_NoComma -> [79][_Expr]<! !_Expr_NoComma @ !>                                        |
+|   [3][38][5]: _Expr -> [89][Module]<! !_Expr @ !>                                                       |
+| [PREDECESSORS 32-32]: [32]                                                                              |
+| [SUCCESORS 34-34]: [34]                                                                                 |
++---------------------------------------------------------------------------------------------------------+
+|
++
+|
++---------------------------------------------------------------------------------------------------------+
+| [34]: <Ending>                                                                                          |
+| [50][_Expr0]< _LongType "{" { _Expr_NoComma @ ; "," } "}" >                                             |
+| [AST-INSTRUCTIONS]:                                                                                     |
+|   + StackEnd()                                                                                          |
+|   > StackSlot(2)                                                                                        |
+| [RETURN STACK]:                                                                                         |
+|   [10][17][5]: _Expr0 -> [61][_Expr1]<! !_Expr0 @ !>                                                    |
+|   [9][16][5]: _Expr1 -> [67][_Expr2]<! !_Expr1 @ !>                                                     |
+|   [8][15][5]: _Expr2 -> [110][_Expr3_SWITCH_COMBINED]<! !_Expr2 @ !>                                    |
+|   [7][14][5]: _Expr3_SWITCH_COMBINED -> [125][_Expr3_SWITCH_1allow_gt]<! !_Expr3_SWITCH_COMBINED @ !>   |
+|   [6][13][5]: _Expr3_SWITCH_1allow_gt -> [135][_Expr4_SWITCH_1allow_gt]<! !_Expr3_SWITCH_1allow_gt @ !> |
+|   [5][12][5]: _Expr4_SWITCH_1allow_gt -> [70][_Expr_NoComma]<! !_Expr4_SWITCH_1allow_gt @ !>            |
+|   [4][11][5]: _Expr_NoComma -> [79][_Expr]<! !_Expr_NoComma @ !>                                        |
+|   [3][38][5]: _Expr -> [89][Module]<! !_Expr @ !>                                                       |
+| [PREDECESSORS 33-33]: [33]                                                                              |
+| [SUCCESORS 35-35]: [35]                                                                                 |
++---------------------------------------------------------------------------------------------------------+
+[0]
+ |
+ +
+ |
+[0]
+++=========================================================================================================++
+|| [35]: {COMMA} ,                                                                                         ||
+|| [48][_Expr0]< _LongType "{" { _Expr_NoComma ; "," @ } "}" >                                             ||
+|| [AST-INSTRUCTIONS]:                                                                                     ||
+||   + Token(3)                                                                                            ||
+|| [RETURN STACK]:                                                                                         ||
+||   [10][17][5]: _Expr0 -> [61][_Expr1]<! !_Expr0 @ !>                                                    ||
+||   [9][16][5]: _Expr1 -> [67][_Expr2]<! !_Expr1 @ !>                                                     ||
+||   [8][15][5]: _Expr2 -> [110][_Expr3_SWITCH_COMBINED]<! !_Expr2 @ !>                                    ||
+||   [7][14][5]: _Expr3_SWITCH_COMBINED -> [125][_Expr3_SWITCH_1allow_gt]<! !_Expr3_SWITCH_COMBINED @ !>   ||
+||   [6][13][5]: _Expr3_SWITCH_1allow_gt -> [135][_Expr4_SWITCH_1allow_gt]<! !_Expr3_SWITCH_1allow_gt @ !> ||
+||   [5][12][5]: _Expr4_SWITCH_1allow_gt -> [70][_Expr_NoComma]<! !_Expr4_SWITCH_1allow_gt @ !>            ||
+||   [4][11][5]: _Expr_NoComma -> [79][_Expr]<! !_Expr_NoComma @ !>                                        ||
+||   [3][38][5]: _Expr -> [89][Module]<! !_Expr @ !>                                                       ||
+|| [PREDECESSORS 34-34]: [34]                                                                              ||
+|| [SUCCESORS 36-36]: [36]                                                                                 ||
+++=========================================================================================================++
+[0]
+ |
+ +
+ |
+[0]
+++===========================================================================================================++
+|| [36]: {ID} Y                                                                                              ||
+|| [16][_Name]{{< ID @ ( "<" { Module_NoGT_NoComma ; "," } ">" ) > ; < ID @ >}}                              ||
+|| [AST-INSTRUCTIONS]:                                                                                       ||
+||   + StackBegin()                                                                                          ||
+||   + Token(0)                                                                                              ||
+|| [RETURN STACK]:                                                                                           ||
+||   [36][4][35]: _Name -> [19][_PrimitiveShared]<! !_Name @ !>                                              ||
+||   [35][20][35]: _PrimitiveShared -> [44][_Expr0] BEGIN [pm-cr-rule: _PrimitiveShared]                     ||
+||   [34][17][35]: _Expr0 -> [61][_Expr1]<! !_Expr0 @ !>                                                     ||
+||   [33][16][35]: _Expr1 -> [67][_Expr2]<! !_Expr1 @ !>                                                     ||
+||   [32][15][35]: _Expr2 -> [110][_Expr3_SWITCH_COMBINED]<! !_Expr2 @ !>                                    ||
+||   [31][14][35]: _Expr3_SWITCH_COMBINED -> [125][_Expr3_SWITCH_1allow_gt]<! !_Expr3_SWITCH_COMBINED @ !>   ||
+||   [30][13][35]: _Expr3_SWITCH_1allow_gt -> [135][_Expr4_SWITCH_1allow_gt]<! !_Expr3_SWITCH_1allow_gt @ !> ||
+||   [29][12][35]: _Expr4_SWITCH_1allow_gt -> [70][_Expr_NoComma]<! !_Expr4_SWITCH_1allow_gt @ !>            ||
+||   [28][27][35]: _Expr_NoComma -> [50][_Expr0]< _LongType "{" { _Expr_NoComma @ ; "," } "}" >              ||
+||   [10][17][5]: _Expr0 -> [61][_Expr1]<! !_Expr0 @ !>                                                      ||
+||   [9][16][5]: _Expr1 -> [67][_Expr2]<! !_Expr1 @ !>                                                       ||
+||   [8][15][5]: _Expr2 -> [110][_Expr3_SWITCH_COMBINED]<! !_Expr2 @ !>                                      ||
+||   [7][14][5]: _Expr3_SWITCH_COMBINED -> [125][_Expr3_SWITCH_1allow_gt]<! !_Expr3_SWITCH_COMBINED @ !>     ||
+||   [6][13][5]: _Expr3_SWITCH_1allow_gt -> [135][_Expr4_SWITCH_1allow_gt]<! !_Expr3_SWITCH_1allow_gt @ !>   ||
+||   [5][12][5]: _Expr4_SWITCH_1allow_gt -> [70][_Expr_NoComma]<! !_Expr4_SWITCH_1allow_gt @ !>              ||
+||   [4][11][5]: _Expr_NoComma -> [79][_Expr]<! !_Expr_NoComma @ !>                                          ||
+||   [3][38][5]: _Expr -> [89][Module]<! !_Expr @ !>                                                         ||
+|| [PREDECESSORS 35-35]: [35]                                                                                ||
+|| [SUCCESORS 37-37]: [37]                                                                                   ||
+++===========================================================================================================++
+|
++
+|
++-----------------------------------------------------------------------------------------------------------+
+| [37]: <Ending>                                                                                            |
+| [19][_PrimitiveShared]<! !_Name @ !>                                                                      |
+| [AST-INSTRUCTIONS]:                                                                                       |
+|   + CreateObject(Name)                                                                                    |
+|   + Field(Name::name, 0)                                                                                  |
+|   + StackEnd()                                                                                            |
+|   > StackBegin()                                                                                          |
+| [RETURN STACK]:                                                                                           |
+|   [35][20][35]: _PrimitiveShared -> [44][_Expr0] BEGIN [pm-cr-rule: _PrimitiveShared]                     |
+|   [34][17][35]: _Expr0 -> [61][_Expr1]<! !_Expr0 @ !>                                                     |
+|   [33][16][35]: _Expr1 -> [67][_Expr2]<! !_Expr1 @ !>                                                     |
+|   [32][15][35]: _Expr2 -> [110][_Expr3_SWITCH_COMBINED]<! !_Expr2 @ !>                                    |
+|   [31][14][35]: _Expr3_SWITCH_COMBINED -> [125][_Expr3_SWITCH_1allow_gt]<! !_Expr3_SWITCH_COMBINED @ !>   |
+|   [30][13][35]: _Expr3_SWITCH_1allow_gt -> [135][_Expr4_SWITCH_1allow_gt]<! !_Expr3_SWITCH_1allow_gt @ !> |
+|   [29][12][35]: _Expr4_SWITCH_1allow_gt -> [70][_Expr_NoComma]<! !_Expr4_SWITCH_1allow_gt @ !>            |
+|   [28][27][35]: _Expr_NoComma -> [50][_Expr0]< _LongType "{" { _Expr_NoComma @ ; "," } "}" >              |
+|   [10][17][5]: _Expr0 -> [61][_Expr1]<! !_Expr0 @ !>                                                      |
+|   [9][16][5]: _Expr1 -> [67][_Expr2]<! !_Expr1 @ !>                                                       |
+|   [8][15][5]: _Expr2 -> [110][_Expr3_SWITCH_COMBINED]<! !_Expr2 @ !>                                      |
+|   [7][14][5]: _Expr3_SWITCH_COMBINED -> [125][_Expr3_SWITCH_1allow_gt]<! !_Expr3_SWITCH_COMBINED @ !>     |
+|   [6][13][5]: _Expr3_SWITCH_1allow_gt -> [135][_Expr4_SWITCH_1allow_gt]<! !_Expr3_SWITCH_1allow_gt @ !>   |
+|   [5][12][5]: _Expr4_SWITCH_1allow_gt -> [70][_Expr_NoComma]<! !_Expr4_SWITCH_1allow_gt @ !>              |
+|   [4][11][5]: _Expr_NoComma -> [79][_Expr]<! !_Expr_NoComma @ !>                                          |
+|   [3][38][5]: _Expr -> [89][Module]<! !_Expr @ !>                                                         |
+| [PREDECESSORS 36-36]: [36]                                                                                |
+| [SUCCESORS 38-38]: [38]                                                                                   |
++-----------------------------------------------------------------------------------------------------------+
+|
++
+|
++-----------------------------------------------------------------------------------------------------------+
+| [38]: <Ending>                                                                                            |
+| [44][_Expr0] BEGIN [pm-cr-rule: _PrimitiveShared]                                                         |
+| [AST-INSTRUCTIONS]:                                                                                       |
+|   + StackEnd()                                                                                            |
+| [RETURN STACK]:                                                                                           |
+|   [34][17][35]: _Expr0 -> [61][_Expr1]<! !_Expr0 @ !>                                                     |
+|   [33][16][35]: _Expr1 -> [67][_Expr2]<! !_Expr1 @ !>                                                     |
+|   [32][15][35]: _Expr2 -> [110][_Expr3_SWITCH_COMBINED]<! !_Expr2 @ !>                                    |
+|   [31][14][35]: _Expr3_SWITCH_COMBINED -> [125][_Expr3_SWITCH_1allow_gt]<! !_Expr3_SWITCH_COMBINED @ !>   |
+|   [30][13][35]: _Expr3_SWITCH_1allow_gt -> [135][_Expr4_SWITCH_1allow_gt]<! !_Expr3_SWITCH_1allow_gt @ !> |
+|   [29][12][35]: _Expr4_SWITCH_1allow_gt -> [70][_Expr_NoComma]<! !_Expr4_SWITCH_1allow_gt @ !>            |
+|   [28][27][35]: _Expr_NoComma -> [50][_Expr0]< _LongType "{" { _Expr_NoComma @ ; "," } "}" >              |
+|   [10][17][5]: _Expr0 -> [61][_Expr1]<! !_Expr0 @ !>                                                      |
+|   [9][16][5]: _Expr1 -> [67][_Expr2]<! !_Expr1 @ !>                                                       |
+|   [8][15][5]: _Expr2 -> [110][_Expr3_SWITCH_COMBINED]<! !_Expr2 @ !>                                      |
+|   [7][14][5]: _Expr3_SWITCH_COMBINED -> [125][_Expr3_SWITCH_1allow_gt]<! !_Expr3_SWITCH_COMBINED @ !>     |
+|   [6][13][5]: _Expr3_SWITCH_1allow_gt -> [135][_Expr4_SWITCH_1allow_gt]<! !_Expr3_SWITCH_1allow_gt @ !>   |
+|   [5][12][5]: _Expr4_SWITCH_1allow_gt -> [70][_Expr_NoComma]<! !_Expr4_SWITCH_1allow_gt @ !>              |
+|   [4][11][5]: _Expr_NoComma -> [79][_Expr]<! !_Expr_NoComma @ !>                                          |
+|   [3][38][5]: _Expr -> [89][Module]<! !_Expr @ !>                                                         |
+| [PREDECESSORS 37-37]: [37]                                                                                |
+| [SUCCESORS 39-39]: [39]                                                                                   |
++-----------------------------------------------------------------------------------------------------------+
+|
++
+|
++-----------------------------------------------------------------------------------------------------------+
+| [39]: <Leftrec>                                                                                           |
+| [39][_LongType]< _LongType @ "*" >                                                                        |
+| [AST-INSTRUCTIONS]:                                                                                       |
+|   + StackBegin()                                                                                          |
+|   + StackEnd()                                                                                            |
+|   + StackBegin()                                                                                          |
+|   + StackSlot(0)                                                                                          |
+| [RETURN STACK]:                                                                                           |
+|   [37][25][38]: _LongType -> [51][_Expr0]< _LongType @ "{" { _Expr_NoComma ; "," } "}" >                  |
+|   [34][17][35]: _Expr0 -> [61][_Expr1]<! !_Expr0 @ !>                                                     |
+|   [33][16][35]: _Expr1 -> [67][_Expr2]<! !_Expr1 @ !>                                                     |
+|   [32][15][35]: _Expr2 -> [110][_Expr3_SWITCH_COMBINED]<! !_Expr2 @ !>                                    |
+|   [31][14][35]: _Expr3_SWITCH_COMBINED -> [125][_Expr3_SWITCH_1allow_gt]<! !_Expr3_SWITCH_COMBINED @ !>   |
+|   [30][13][35]: _Expr3_SWITCH_1allow_gt -> [135][_Expr4_SWITCH_1allow_gt]<! !_Expr3_SWITCH_1allow_gt @ !> |
+|   [29][12][35]: _Expr4_SWITCH_1allow_gt -> [70][_Expr_NoComma]<! !_Expr4_SWITCH_1allow_gt @ !>            |
+|   [28][27][35]: _Expr_NoComma -> [50][_Expr0]< _LongType "{" { _Expr_NoComma @ ; "," } "}" >              |
+|   [10][17][5]: _Expr0 -> [61][_Expr1]<! !_Expr0 @ !>                                                      |
+|   [9][16][5]: _Expr1 -> [67][_Expr2]<! !_Expr1 @ !>                                                       |
+|   [8][15][5]: _Expr2 -> [110][_Expr3_SWITCH_COMBINED]<! !_Expr2 @ !>                                      |
+|   [7][14][5]: _Expr3_SWITCH_COMBINED -> [125][_Expr3_SWITCH_1allow_gt]<! !_Expr3_SWITCH_COMBINED @ !>     |
+|   [6][13][5]: _Expr3_SWITCH_1allow_gt -> [135][_Expr4_SWITCH_1allow_gt]<! !_Expr3_SWITCH_1allow_gt @ !>   |
+|   [5][12][5]: _Expr4_SWITCH_1allow_gt -> [70][_Expr_NoComma]<! !_Expr4_SWITCH_1allow_gt @ !>              |
+|   [4][11][5]: _Expr_NoComma -> [79][_Expr]<! !_Expr_NoComma @ !>                                          |
+|   [3][38][5]: _Expr -> [89][Module]<! !_Expr @ !>                                                         |
+| [PREDECESSORS 38-38]: [38]                                                                                |
+| [SUCCESORS 44-44]: [44]                                                                                   |
++-----------------------------------------------------------------------------------------------------------+
+[0]
+ |
+ +
+ |
+[0]
+++===========================================================================================================++
+|| [44]: {ASTERISK} *                                                                                        ||
+|| [36][_LongType]< _LongType "*" @ >                                                                        ||
+|| [AST-INSTRUCTIONS]:                                                                                       ||
+||   + Token(1)                                                                                              ||
+|| [RETURN STACK]:                                                                                           ||
+||   [37][25][38]: _LongType -> [51][_Expr0]< _LongType @ "{" { _Expr_NoComma ; "," } "}" >                  ||
+||   [34][17][35]: _Expr0 -> [61][_Expr1]<! !_Expr0 @ !>                                                     ||
+||   [33][16][35]: _Expr1 -> [67][_Expr2]<! !_Expr1 @ !>                                                     ||
+||   [32][15][35]: _Expr2 -> [110][_Expr3_SWITCH_COMBINED]<! !_Expr2 @ !>                                    ||
+||   [31][14][35]: _Expr3_SWITCH_COMBINED -> [125][_Expr3_SWITCH_1allow_gt]<! !_Expr3_SWITCH_COMBINED @ !>   ||
+||   [30][13][35]: _Expr3_SWITCH_1allow_gt -> [135][_Expr4_SWITCH_1allow_gt]<! !_Expr3_SWITCH_1allow_gt @ !> ||
+||   [29][12][35]: _Expr4_SWITCH_1allow_gt -> [70][_Expr_NoComma]<! !_Expr4_SWITCH_1allow_gt @ !>            ||
+||   [28][27][35]: _Expr_NoComma -> [50][_Expr0]< _LongType "{" { _Expr_NoComma @ ; "," } "}" >              ||
+||   [10][17][5]: _Expr0 -> [61][_Expr1]<! !_Expr0 @ !>                                                      ||
+||   [9][16][5]: _Expr1 -> [67][_Expr2]<! !_Expr1 @ !>                                                       ||
+||   [8][15][5]: _Expr2 -> [110][_Expr3_SWITCH_COMBINED]<! !_Expr2 @ !>                                      ||
+||   [7][14][5]: _Expr3_SWITCH_COMBINED -> [125][_Expr3_SWITCH_1allow_gt]<! !_Expr3_SWITCH_COMBINED @ !>     ||
+||   [6][13][5]: _Expr3_SWITCH_1allow_gt -> [135][_Expr4_SWITCH_1allow_gt]<! !_Expr3_SWITCH_1allow_gt @ !>   ||
+||   [5][12][5]: _Expr4_SWITCH_1allow_gt -> [70][_Expr_NoComma]<! !_Expr4_SWITCH_1allow_gt @ !>              ||
+||   [4][11][5]: _Expr_NoComma -> [79][_Expr]<! !_Expr_NoComma @ !>                                          ||
+||   [3][38][5]: _Expr -> [89][Module]<! !_Expr @ !>                                                         ||
+|| [PREDECESSORS 39-39]: [39]                                                                                ||
+|| [SUCCESORS 45-45]: [45]                                                                                   ||
+++===========================================================================================================++
+|
++
+|
++-----------------------------------------------------------------------------------------------------------+
+| [45]: <Ending>                                                                                            |
+| [51][_Expr0]< _LongType @ "{" { _Expr_NoComma ; "," } "}" >                                               |
+| [AST-INSTRUCTIONS]:                                                                                       |
+|   + CreateObject(PointerType)                                                                             |
+|   + Field(PointerType::type, 0)                                                                           |
+|   + StackEnd()                                                                                            |
+|   > StackBegin()                                                                                          |
+|   > StackSlot(0)                                                                                          |
+| [RETURN STACK]:                                                                                           |
+|   [34][17][35]: _Expr0 -> [61][_Expr1]<! !_Expr0 @ !>                                                     |
+|   [33][16][35]: _Expr1 -> [67][_Expr2]<! !_Expr1 @ !>                                                     |
+|   [32][15][35]: _Expr2 -> [110][_Expr3_SWITCH_COMBINED]<! !_Expr2 @ !>                                    |
+|   [31][14][35]: _Expr3_SWITCH_COMBINED -> [125][_Expr3_SWITCH_1allow_gt]<! !_Expr3_SWITCH_COMBINED @ !>   |
+|   [30][13][35]: _Expr3_SWITCH_1allow_gt -> [135][_Expr4_SWITCH_1allow_gt]<! !_Expr3_SWITCH_1allow_gt @ !> |
+|   [29][12][35]: _Expr4_SWITCH_1allow_gt -> [70][_Expr_NoComma]<! !_Expr4_SWITCH_1allow_gt @ !>            |
+|   [28][27][35]: _Expr_NoComma -> [50][_Expr0]< _LongType "{" { _Expr_NoComma @ ; "," } "}" >              |
+|   [10][17][5]: _Expr0 -> [61][_Expr1]<! !_Expr0 @ !>                                                      |
+|   [9][16][5]: _Expr1 -> [67][_Expr2]<! !_Expr1 @ !>                                                       |
+|   [8][15][5]: _Expr2 -> [110][_Expr3_SWITCH_COMBINED]<! !_Expr2 @ !>                                      |
+|   [7][14][5]: _Expr3_SWITCH_COMBINED -> [125][_Expr3_SWITCH_1allow_gt]<! !_Expr3_SWITCH_COMBINED @ !>     |
+|   [6][13][5]: _Expr3_SWITCH_1allow_gt -> [135][_Expr4_SWITCH_1allow_gt]<! !_Expr3_SWITCH_1allow_gt @ !>   |
+|   [5][12][5]: _Expr4_SWITCH_1allow_gt -> [70][_Expr_NoComma]<! !_Expr4_SWITCH_1allow_gt @ !>              |
+|   [4][11][5]: _Expr_NoComma -> [79][_Expr]<! !_Expr_NoComma @ !>                                          |
+|   [3][38][5]: _Expr -> [89][Module]<! !_Expr @ !>                                                         |
+| [PREDECESSORS 44-44]: [44]                                                                                |
+| [SUCCESORS 47-47]: [47]                                                                                   |
++-----------------------------------------------------------------------------------------------------------+
+[0]
+ |
+ +
+ |
+[0]
+++===========================================================================================================++
+|| [47]: {OPEN_BRACE} {                                                                                      ||
+|| [47][_Expr0]< _LongType "{" @ { _Expr_NoComma ; "," } "}" >                                               ||
+|| [AST-INSTRUCTIONS]:                                                                                       ||
+||   + Token(1)                                                                                              ||
+|| [RETURN STACK]:                                                                                           ||
+||   [34][17][35]: _Expr0 -> [61][_Expr1]<! !_Expr0 @ !>                                                     ||
+||   [33][16][35]: _Expr1 -> [67][_Expr2]<! !_Expr1 @ !>                                                     ||
+||   [32][15][35]: _Expr2 -> [110][_Expr3_SWITCH_COMBINED]<! !_Expr2 @ !>                                    ||
+||   [31][14][35]: _Expr3_SWITCH_COMBINED -> [125][_Expr3_SWITCH_1allow_gt]<! !_Expr3_SWITCH_COMBINED @ !>   ||
+||   [30][13][35]: _Expr3_SWITCH_1allow_gt -> [135][_Expr4_SWITCH_1allow_gt]<! !_Expr3_SWITCH_1allow_gt @ !> ||
+||   [29][12][35]: _Expr4_SWITCH_1allow_gt -> [70][_Expr_NoComma]<! !_Expr4_SWITCH_1allow_gt @ !>            ||
+||   [28][27][35]: _Expr_NoComma -> [50][_Expr0]< _LongType "{" { _Expr_NoComma @ ; "," } "}" >              ||
+||   [10][17][5]: _Expr0 -> [61][_Expr1]<! !_Expr0 @ !>                                                      ||
+||   [9][16][5]: _Expr1 -> [67][_Expr2]<! !_Expr1 @ !>                                                       ||
+||   [8][15][5]: _Expr2 -> [110][_Expr3_SWITCH_COMBINED]<! !_Expr2 @ !>                                      ||
+||   [7][14][5]: _Expr3_SWITCH_COMBINED -> [125][_Expr3_SWITCH_1allow_gt]<! !_Expr3_SWITCH_COMBINED @ !>     ||
+||   [6][13][5]: _Expr3_SWITCH_1allow_gt -> [135][_Expr4_SWITCH_1allow_gt]<! !_Expr3_SWITCH_1allow_gt @ !>   ||
+||   [5][12][5]: _Expr4_SWITCH_1allow_gt -> [70][_Expr_NoComma]<! !_Expr4_SWITCH_1allow_gt @ !>              ||
+||   [4][11][5]: _Expr_NoComma -> [79][_Expr]<! !_Expr_NoComma @ !>                                          ||
+||   [3][38][5]: _Expr -> [89][Module]<! !_Expr @ !>                                                         ||
+|| [PREDECESSORS 45-45]: [45]                                                                                ||
+|| [SUCCESORS 48-48]: [48]                                                                                   ||
+++===========================================================================================================++
+[0]
+ |
+ +
+ |
+[0]
+++===========================================================================================================++
+|| [48]: {ID} Z                                                                                              ||
+|| [16][_Name]{{< ID @ ( "<" { Module_NoGT_NoComma ; "," } ">" ) > ; < ID @ >}}                              ||
+|| [AST-INSTRUCTIONS]:                                                                                       ||
+||   + StackBegin()                                                                                          ||
+||   + Token(0)                                                                                              ||
+|| [RETURN STACK]:                                                                                           ||
+||   [46][4][47]: _Name -> [19][_PrimitiveShared]<! !_Name @ !>                                              ||
+||   [45][20][47]: _PrimitiveShared -> [44][_Expr0] BEGIN [pm-cr-rule: _PrimitiveShared]                     ||
+||   [44][17][47]: _Expr0 -> [61][_Expr1]<! !_Expr0 @ !>                                                     ||
+||   [43][16][47]: _Expr1 -> [67][_Expr2]<! !_Expr1 @ !>                                                     ||
+||   [42][15][47]: _Expr2 -> [110][_Expr3_SWITCH_COMBINED]<! !_Expr2 @ !>                                    ||
+||   [41][14][47]: _Expr3_SWITCH_COMBINED -> [125][_Expr3_SWITCH_1allow_gt]<! !_Expr3_SWITCH_COMBINED @ !>   ||
+||   [40][13][47]: _Expr3_SWITCH_1allow_gt -> [135][_Expr4_SWITCH_1allow_gt]<! !_Expr3_SWITCH_1allow_gt @ !> ||
+||   [39][12][47]: _Expr4_SWITCH_1allow_gt -> [70][_Expr_NoComma]<! !_Expr4_SWITCH_1allow_gt @ !>            ||
+||   [38][26][47]: _Expr_NoComma -> [50][_Expr0]< _LongType "{" { _Expr_NoComma @ ; "," } "}" >              ||
+||   [34][17][35]: _Expr0 -> [61][_Expr1]<! !_Expr0 @ !>                                                     ||
+||   [33][16][35]: _Expr1 -> [67][_Expr2]<! !_Expr1 @ !>                                                     ||
+||   [32][15][35]: _Expr2 -> [110][_Expr3_SWITCH_COMBINED]<! !_Expr2 @ !>                                    ||
+||   [31][14][35]: _Expr3_SWITCH_COMBINED -> [125][_Expr3_SWITCH_1allow_gt]<! !_Expr3_SWITCH_COMBINED @ !>   ||
+||   [30][13][35]: _Expr3_SWITCH_1allow_gt -> [135][_Expr4_SWITCH_1allow_gt]<! !_Expr3_SWITCH_1allow_gt @ !> ||
+||   [29][12][35]: _Expr4_SWITCH_1allow_gt -> [70][_Expr_NoComma]<! !_Expr4_SWITCH_1allow_gt @ !>            ||
+||   [28][27][35]: _Expr_NoComma -> [50][_Expr0]< _LongType "{" { _Expr_NoComma @ ; "," } "}" >              ||
+||   [10][17][5]: _Expr0 -> [61][_Expr1]<! !_Expr0 @ !>                                                      ||
+||   [9][16][5]: _Expr1 -> [67][_Expr2]<! !_Expr1 @ !>                                                       ||
+||   [8][15][5]: _Expr2 -> [110][_Expr3_SWITCH_COMBINED]<! !_Expr2 @ !>                                      ||
+||   [7][14][5]: _Expr3_SWITCH_COMBINED -> [125][_Expr3_SWITCH_1allow_gt]<! !_Expr3_SWITCH_COMBINED @ !>     ||
+||   [6][13][5]: _Expr3_SWITCH_1allow_gt -> [135][_Expr4_SWITCH_1allow_gt]<! !_Expr3_SWITCH_1allow_gt @ !>   ||
+||   [5][12][5]: _Expr4_SWITCH_1allow_gt -> [70][_Expr_NoComma]<! !_Expr4_SWITCH_1allow_gt @ !>              ||
+||   [4][11][5]: _Expr_NoComma -> [79][_Expr]<! !_Expr_NoComma @ !>                                          ||
+||   [3][38][5]: _Expr -> [89][Module]<! !_Expr @ !>                                                         ||
+|| [PREDECESSORS 47-47]: [47]                                                                                ||
+|| [SUCCESORS 49-49]: [49]                                                                                   ||
+++===========================================================================================================++
+|
++
+|
++-----------------------------------------------------------------------------------------------------------+
+| [49]: <Ending>                                                                                            |
+| [19][_PrimitiveShared]<! !_Name @ !>                                                                      |
+| [AST-INSTRUCTIONS]:                                                                                       |
+|   + CreateObject(Name)                                                                                    |
+|   + Field(Name::name, 0)                                                                                  |
+|   + StackEnd()                                                                                            |
+|   > StackBegin()                                                                                          |
+| [RETURN STACK]:                                                                                           |
+|   [45][20][47]: _PrimitiveShared -> [44][_Expr0] BEGIN [pm-cr-rule: _PrimitiveShared]                     |
+|   [44][17][47]: _Expr0 -> [61][_Expr1]<! !_Expr0 @ !>                                                     |
+|   [43][16][47]: _Expr1 -> [67][_Expr2]<! !_Expr1 @ !>                                                     |
+|   [42][15][47]: _Expr2 -> [110][_Expr3_SWITCH_COMBINED]<! !_Expr2 @ !>                                    |
+|   [41][14][47]: _Expr3_SWITCH_COMBINED -> [125][_Expr3_SWITCH_1allow_gt]<! !_Expr3_SWITCH_COMBINED @ !>   |
+|   [40][13][47]: _Expr3_SWITCH_1allow_gt -> [135][_Expr4_SWITCH_1allow_gt]<! !_Expr3_SWITCH_1allow_gt @ !> |
+|   [39][12][47]: _Expr4_SWITCH_1allow_gt -> [70][_Expr_NoComma]<! !_Expr4_SWITCH_1allow_gt @ !>            |
+|   [38][26][47]: _Expr_NoComma -> [50][_Expr0]< _LongType "{" { _Expr_NoComma @ ; "," } "}" >              |
+|   [34][17][35]: _Expr0 -> [61][_Expr1]<! !_Expr0 @ !>                                                     |
+|   [33][16][35]: _Expr1 -> [67][_Expr2]<! !_Expr1 @ !>                                                     |
+|   [32][15][35]: _Expr2 -> [110][_Expr3_SWITCH_COMBINED]<! !_Expr2 @ !>                                    |
+|   [31][14][35]: _Expr3_SWITCH_COMBINED -> [125][_Expr3_SWITCH_1allow_gt]<! !_Expr3_SWITCH_COMBINED @ !>   |
+|   [30][13][35]: _Expr3_SWITCH_1allow_gt -> [135][_Expr4_SWITCH_1allow_gt]<! !_Expr3_SWITCH_1allow_gt @ !> |
+|   [29][12][35]: _Expr4_SWITCH_1allow_gt -> [70][_Expr_NoComma]<! !_Expr4_SWITCH_1allow_gt @ !>            |
+|   [28][27][35]: _Expr_NoComma -> [50][_Expr0]< _LongType "{" { _Expr_NoComma @ ; "," } "}" >              |
+|   [10][17][5]: _Expr0 -> [61][_Expr1]<! !_Expr0 @ !>                                                      |
+|   [9][16][5]: _Expr1 -> [67][_Expr2]<! !_Expr1 @ !>                                                       |
+|   [8][15][5]: _Expr2 -> [110][_Expr3_SWITCH_COMBINED]<! !_Expr2 @ !>                                      |
+|   [7][14][5]: _Expr3_SWITCH_COMBINED -> [125][_Expr3_SWITCH_1allow_gt]<! !_Expr3_SWITCH_COMBINED @ !>     |
+|   [6][13][5]: _Expr3_SWITCH_1allow_gt -> [135][_Expr4_SWITCH_1allow_gt]<! !_Expr3_SWITCH_1allow_gt @ !>   |
+|   [5][12][5]: _Expr4_SWITCH_1allow_gt -> [70][_Expr_NoComma]<! !_Expr4_SWITCH_1allow_gt @ !>              |
+|   [4][11][5]: _Expr_NoComma -> [79][_Expr]<! !_Expr_NoComma @ !>                                          |
+|   [3][38][5]: _Expr -> [89][Module]<! !_Expr @ !>                                                         |
+| [PREDECESSORS 48-48]: [48]                                                                                |
+| [SUCCESORS 50-50]: [50]                                                                                   |
++-----------------------------------------------------------------------------------------------------------+
+|
++
+|
++-----------------------------------------------------------------------------------------------------------+
+| [50]: <Ending>                                                                                            |
+| [44][_Expr0] BEGIN [pm-cr-rule: _PrimitiveShared]                                                         |
+| [AST-INSTRUCTIONS]:                                                                                       |
+|   + StackEnd()                                                                                            |
+| [RETURN STACK]:                                                                                           |
+|   [44][17][47]: _Expr0 -> [61][_Expr1]<! !_Expr0 @ !>                                                     |
+|   [43][16][47]: _Expr1 -> [67][_Expr2]<! !_Expr1 @ !>                                                     |
+|   [42][15][47]: _Expr2 -> [110][_Expr3_SWITCH_COMBINED]<! !_Expr2 @ !>                                    |
+|   [41][14][47]: _Expr3_SWITCH_COMBINED -> [125][_Expr3_SWITCH_1allow_gt]<! !_Expr3_SWITCH_COMBINED @ !>   |
+|   [40][13][47]: _Expr3_SWITCH_1allow_gt -> [135][_Expr4_SWITCH_1allow_gt]<! !_Expr3_SWITCH_1allow_gt @ !> |
+|   [39][12][47]: _Expr4_SWITCH_1allow_gt -> [70][_Expr_NoComma]<! !_Expr4_SWITCH_1allow_gt @ !>            |
+|   [38][26][47]: _Expr_NoComma -> [50][_Expr0]< _LongType "{" { _Expr_NoComma @ ; "," } "}" >              |
+|   [34][17][35]: _Expr0 -> [61][_Expr1]<! !_Expr0 @ !>                                                     |
+|   [33][16][35]: _Expr1 -> [67][_Expr2]<! !_Expr1 @ !>                                                     |
+|   [32][15][35]: _Expr2 -> [110][_Expr3_SWITCH_COMBINED]<! !_Expr2 @ !>                                    |
+|   [31][14][35]: _Expr3_SWITCH_COMBINED -> [125][_Expr3_SWITCH_1allow_gt]<! !_Expr3_SWITCH_COMBINED @ !>   |
+|   [30][13][35]: _Expr3_SWITCH_1allow_gt -> [135][_Expr4_SWITCH_1allow_gt]<! !_Expr3_SWITCH_1allow_gt @ !> |
+|   [29][12][35]: _Expr4_SWITCH_1allow_gt -> [70][_Expr_NoComma]<! !_Expr4_SWITCH_1allow_gt @ !>            |
+|   [28][27][35]: _Expr_NoComma -> [50][_Expr0]< _LongType "{" { _Expr_NoComma @ ; "," } "}" >              |
+|   [10][17][5]: _Expr0 -> [61][_Expr1]<! !_Expr0 @ !>                                                      |
+|   [9][16][5]: _Expr1 -> [67][_Expr2]<! !_Expr1 @ !>                                                       |
+|   [8][15][5]: _Expr2 -> [110][_Expr3_SWITCH_COMBINED]<! !_Expr2 @ !>                                      |
+|   [7][14][5]: _Expr3_SWITCH_COMBINED -> [125][_Expr3_SWITCH_1allow_gt]<! !_Expr3_SWITCH_COMBINED @ !>     |
+|   [6][13][5]: _Expr3_SWITCH_1allow_gt -> [135][_Expr4_SWITCH_1allow_gt]<! !_Expr3_SWITCH_1allow_gt @ !>   |
+|   [5][12][5]: _Expr4_SWITCH_1allow_gt -> [70][_Expr_NoComma]<! !_Expr4_SWITCH_1allow_gt @ !>              |
+|   [4][11][5]: _Expr_NoComma -> [79][_Expr]<! !_Expr_NoComma @ !>                                          |
+|   [3][38][5]: _Expr -> [89][Module]<! !_Expr @ !>                                                         |
+| [PREDECESSORS 49-49]: [49]                                                                                |
+| [SUCCESORS 51-51]: [51]                                                                                   |
++-----------------------------------------------------------------------------------------------------------+
+|
++
+|
++-----------------------------------------------------------------------------------------------------------+
+| [51]: <Ending>                                                                                            |
+| [61][_Expr1]<! !_Expr0 @ !>                                                                               |
+| [AST-INSTRUCTIONS]:                                                                                       |
+|   + StackBegin()                                                                                          |
+|   + StackEnd()                                                                                            |
+|   > StackBegin()                                                                                          |
+| [RETURN STACK]:                                                                                           |
+|   [43][16][47]: _Expr1 -> [67][_Expr2]<! !_Expr1 @ !>                                                     |
+|   [42][15][47]: _Expr2 -> [110][_Expr3_SWITCH_COMBINED]<! !_Expr2 @ !>                                    |
+|   [41][14][47]: _Expr3_SWITCH_COMBINED -> [125][_Expr3_SWITCH_1allow_gt]<! !_Expr3_SWITCH_COMBINED @ !>   |
+|   [40][13][47]: _Expr3_SWITCH_1allow_gt -> [135][_Expr4_SWITCH_1allow_gt]<! !_Expr3_SWITCH_1allow_gt @ !> |
+|   [39][12][47]: _Expr4_SWITCH_1allow_gt -> [70][_Expr_NoComma]<! !_Expr4_SWITCH_1allow_gt @ !>            |
+|   [38][26][47]: _Expr_NoComma -> [50][_Expr0]< _LongType "{" { _Expr_NoComma @ ; "," } "}" >              |
+|   [34][17][35]: _Expr0 -> [61][_Expr1]<! !_Expr0 @ !>                                                     |
+|   [33][16][35]: _Expr1 -> [67][_Expr2]<! !_Expr1 @ !>                                                     |
+|   [32][15][35]: _Expr2 -> [110][_Expr3_SWITCH_COMBINED]<! !_Expr2 @ !>                                    |
+|   [31][14][35]: _Expr3_SWITCH_COMBINED -> [125][_Expr3_SWITCH_1allow_gt]<! !_Expr3_SWITCH_COMBINED @ !>   |
+|   [30][13][35]: _Expr3_SWITCH_1allow_gt -> [135][_Expr4_SWITCH_1allow_gt]<! !_Expr3_SWITCH_1allow_gt @ !> |
+|   [29][12][35]: _Expr4_SWITCH_1allow_gt -> [70][_Expr_NoComma]<! !_Expr4_SWITCH_1allow_gt @ !>            |
+|   [28][27][35]: _Expr_NoComma -> [50][_Expr0]< _LongType "{" { _Expr_NoComma @ ; "," } "}" >              |
+|   [10][17][5]: _Expr0 -> [61][_Expr1]<! !_Expr0 @ !>                                                      |
+|   [9][16][5]: _Expr1 -> [67][_Expr2]<! !_Expr1 @ !>                                                       |
+|   [8][15][5]: _Expr2 -> [110][_Expr3_SWITCH_COMBINED]<! !_Expr2 @ !>                                      |
+|   [7][14][5]: _Expr3_SWITCH_COMBINED -> [125][_Expr3_SWITCH_1allow_gt]<! !_Expr3_SWITCH_COMBINED @ !>     |
+|   [6][13][5]: _Expr3_SWITCH_1allow_gt -> [135][_Expr4_SWITCH_1allow_gt]<! !_Expr3_SWITCH_1allow_gt @ !>   |
+|   [5][12][5]: _Expr4_SWITCH_1allow_gt -> [70][_Expr_NoComma]<! !_Expr4_SWITCH_1allow_gt @ !>              |
+|   [4][11][5]: _Expr_NoComma -> [79][_Expr]<! !_Expr_NoComma @ !>                                          |
+|   [3][38][5]: _Expr -> [89][Module]<! !_Expr @ !>                                                         |
+| [PREDECESSORS 50-50]: [50]                                                                                |
+| [SUCCESORS 52-52]: [52]                                                                                   |
++-----------------------------------------------------------------------------------------------------------+
+|
++
+|
++-----------------------------------------------------------------------------------------------------------+
+| [52]: <Ending>                                                                                            |
+| [67][_Expr2]<! !_Expr1 @ !>                                                                               |
+| [AST-INSTRUCTIONS]:                                                                                       |
+|   + StackEnd()                                                                                            |
+|   > StackBegin()                                                                                          |
+| [RETURN STACK]:                                                                                           |
+|   [42][15][47]: _Expr2 -> [110][_Expr3_SWITCH_COMBINED]<! !_Expr2 @ !>                                    |
+|   [41][14][47]: _Expr3_SWITCH_COMBINED -> [125][_Expr3_SWITCH_1allow_gt]<! !_Expr3_SWITCH_COMBINED @ !>   |
+|   [40][13][47]: _Expr3_SWITCH_1allow_gt -> [135][_Expr4_SWITCH_1allow_gt]<! !_Expr3_SWITCH_1allow_gt @ !> |
+|   [39][12][47]: _Expr4_SWITCH_1allow_gt -> [70][_Expr_NoComma]<! !_Expr4_SWITCH_1allow_gt @ !>            |
+|   [38][26][47]: _Expr_NoComma -> [50][_Expr0]< _LongType "{" { _Expr_NoComma @ ; "," } "}" >              |
+|   [34][17][35]: _Expr0 -> [61][_Expr1]<! !_Expr0 @ !>                                                     |
+|   [33][16][35]: _Expr1 -> [67][_Expr2]<! !_Expr1 @ !>                                                     |
+|   [32][15][35]: _Expr2 -> [110][_Expr3_SWITCH_COMBINED]<! !_Expr2 @ !>                                    |
+|   [31][14][35]: _Expr3_SWITCH_COMBINED -> [125][_Expr3_SWITCH_1allow_gt]<! !_Expr3_SWITCH_COMBINED @ !>   |
+|   [30][13][35]: _Expr3_SWITCH_1allow_gt -> [135][_Expr4_SWITCH_1allow_gt]<! !_Expr3_SWITCH_1allow_gt @ !> |
+|   [29][12][35]: _Expr4_SWITCH_1allow_gt -> [70][_Expr_NoComma]<! !_Expr4_SWITCH_1allow_gt @ !>            |
+|   [28][27][35]: _Expr_NoComma -> [50][_Expr0]< _LongType "{" { _Expr_NoComma @ ; "," } "}" >              |
+|   [10][17][5]: _Expr0 -> [61][_Expr1]<! !_Expr0 @ !>                                                      |
+|   [9][16][5]: _Expr1 -> [67][_Expr2]<! !_Expr1 @ !>                                                       |
+|   [8][15][5]: _Expr2 -> [110][_Expr3_SWITCH_COMBINED]<! !_Expr2 @ !>                                      |
+|   [7][14][5]: _Expr3_SWITCH_COMBINED -> [125][_Expr3_SWITCH_1allow_gt]<! !_Expr3_SWITCH_COMBINED @ !>     |
+|   [6][13][5]: _Expr3_SWITCH_1allow_gt -> [135][_Expr4_SWITCH_1allow_gt]<! !_Expr3_SWITCH_1allow_gt @ !>   |
+|   [5][12][5]: _Expr4_SWITCH_1allow_gt -> [70][_Expr_NoComma]<! !_Expr4_SWITCH_1allow_gt @ !>              |
+|   [4][11][5]: _Expr_NoComma -> [79][_Expr]<! !_Expr_NoComma @ !>                                          |
+|   [3][38][5]: _Expr -> [89][Module]<! !_Expr @ !>                                                         |
+| [PREDECESSORS 51-51]: [51]                                                                                |
+| [SUCCESORS 53-53]: [53]                                                                                   |
++-----------------------------------------------------------------------------------------------------------+
+|
++
+|
++-----------------------------------------------------------------------------------------------------------+
+| [53]: <Ending>                                                                                            |
+| [110][_Expr3_SWITCH_COMBINED]<! !_Expr2 @ !>                                                              |
+| [AST-INSTRUCTIONS]:                                                                                       |
+|   + StackEnd()                                                                                            |
+|   > StackBegin()                                                                                          |
+| [RETURN STACK]:                                                                                           |
+|   [41][14][47]: _Expr3_SWITCH_COMBINED -> [125][_Expr3_SWITCH_1allow_gt]<! !_Expr3_SWITCH_COMBINED @ !>   |
+|   [40][13][47]: _Expr3_SWITCH_1allow_gt -> [135][_Expr4_SWITCH_1allow_gt]<! !_Expr3_SWITCH_1allow_gt @ !> |
+|   [39][12][47]: _Expr4_SWITCH_1allow_gt -> [70][_Expr_NoComma]<! !_Expr4_SWITCH_1allow_gt @ !>            |
+|   [38][26][47]: _Expr_NoComma -> [50][_Expr0]< _LongType "{" { _Expr_NoComma @ ; "," } "}" >              |
+|   [34][17][35]: _Expr0 -> [61][_Expr1]<! !_Expr0 @ !>                                                     |
+|   [33][16][35]: _Expr1 -> [67][_Expr2]<! !_Expr1 @ !>                                                     |
+|   [32][15][35]: _Expr2 -> [110][_Expr3_SWITCH_COMBINED]<! !_Expr2 @ !>                                    |
+|   [31][14][35]: _Expr3_SWITCH_COMBINED -> [125][_Expr3_SWITCH_1allow_gt]<! !_Expr3_SWITCH_COMBINED @ !>   |
+|   [30][13][35]: _Expr3_SWITCH_1allow_gt -> [135][_Expr4_SWITCH_1allow_gt]<! !_Expr3_SWITCH_1allow_gt @ !> |
+|   [29][12][35]: _Expr4_SWITCH_1allow_gt -> [70][_Expr_NoComma]<! !_Expr4_SWITCH_1allow_gt @ !>            |
+|   [28][27][35]: _Expr_NoComma -> [50][_Expr0]< _LongType "{" { _Expr_NoComma @ ; "," } "}" >              |
+|   [10][17][5]: _Expr0 -> [61][_Expr1]<! !_Expr0 @ !>                                                      |
+|   [9][16][5]: _Expr1 -> [67][_Expr2]<! !_Expr1 @ !>                                                       |
+|   [8][15][5]: _Expr2 -> [110][_Expr3_SWITCH_COMBINED]<! !_Expr2 @ !>                                      |
+|   [7][14][5]: _Expr3_SWITCH_COMBINED -> [125][_Expr3_SWITCH_1allow_gt]<! !_Expr3_SWITCH_COMBINED @ !>     |
+|   [6][13][5]: _Expr3_SWITCH_1allow_gt -> [135][_Expr4_SWITCH_1allow_gt]<! !_Expr3_SWITCH_1allow_gt @ !>   |
+|   [5][12][5]: _Expr4_SWITCH_1allow_gt -> [70][_Expr_NoComma]<! !_Expr4_SWITCH_1allow_gt @ !>              |
+|   [4][11][5]: _Expr_NoComma -> [79][_Expr]<! !_Expr_NoComma @ !>                                          |
+|   [3][38][5]: _Expr -> [89][Module]<! !_Expr @ !>                                                         |
+| [PREDECESSORS 52-52]: [52]                                                                                |
+| [SUCCESORS 54-54]: [54]                                                                                   |
++-----------------------------------------------------------------------------------------------------------+
+|
++
+|
++-----------------------------------------------------------------------------------------------------------+
+| [54]: <Ending>                                                                                            |
+| [125][_Expr3_SWITCH_1allow_gt]<! !_Expr3_SWITCH_COMBINED @ !>                                             |
+| [AST-INSTRUCTIONS]:                                                                                       |
+|   + StackEnd()                                                                                            |
+|   > StackBegin()                                                                                          |
+| [RETURN STACK]:                                                                                           |
+|   [40][13][47]: _Expr3_SWITCH_1allow_gt -> [135][_Expr4_SWITCH_1allow_gt]<! !_Expr3_SWITCH_1allow_gt @ !> |
+|   [39][12][47]: _Expr4_SWITCH_1allow_gt -> [70][_Expr_NoComma]<! !_Expr4_SWITCH_1allow_gt @ !>            |
+|   [38][26][47]: _Expr_NoComma -> [50][_Expr0]< _LongType "{" { _Expr_NoComma @ ; "," } "}" >              |
+|   [34][17][35]: _Expr0 -> [61][_Expr1]<! !_Expr0 @ !>                                                     |
+|   [33][16][35]: _Expr1 -> [67][_Expr2]<! !_Expr1 @ !>                                                     |
+|   [32][15][35]: _Expr2 -> [110][_Expr3_SWITCH_COMBINED]<! !_Expr2 @ !>                                    |
+|   [31][14][35]: _Expr3_SWITCH_COMBINED -> [125][_Expr3_SWITCH_1allow_gt]<! !_Expr3_SWITCH_COMBINED @ !>   |
+|   [30][13][35]: _Expr3_SWITCH_1allow_gt -> [135][_Expr4_SWITCH_1allow_gt]<! !_Expr3_SWITCH_1allow_gt @ !> |
+|   [29][12][35]: _Expr4_SWITCH_1allow_gt -> [70][_Expr_NoComma]<! !_Expr4_SWITCH_1allow_gt @ !>            |
+|   [28][27][35]: _Expr_NoComma -> [50][_Expr0]< _LongType "{" { _Expr_NoComma @ ; "," } "}" >              |
+|   [10][17][5]: _Expr0 -> [61][_Expr1]<! !_Expr0 @ !>                                                      |
+|   [9][16][5]: _Expr1 -> [67][_Expr2]<! !_Expr1 @ !>                                                       |
+|   [8][15][5]: _Expr2 -> [110][_Expr3_SWITCH_COMBINED]<! !_Expr2 @ !>                                      |
+|   [7][14][5]: _Expr3_SWITCH_COMBINED -> [125][_Expr3_SWITCH_1allow_gt]<! !_Expr3_SWITCH_COMBINED @ !>     |
+|   [6][13][5]: _Expr3_SWITCH_1allow_gt -> [135][_Expr4_SWITCH_1allow_gt]<! !_Expr3_SWITCH_1allow_gt @ !>   |
+|   [5][12][5]: _Expr4_SWITCH_1allow_gt -> [70][_Expr_NoComma]<! !_Expr4_SWITCH_1allow_gt @ !>              |
+|   [4][11][5]: _Expr_NoComma -> [79][_Expr]<! !_Expr_NoComma @ !>                                          |
+|   [3][38][5]: _Expr -> [89][Module]<! !_Expr @ !>                                                         |
+| [PREDECESSORS 53-53]: [53]                                                                                |
+| [SUCCESORS 55-55]: [55]                                                                                   |
++-----------------------------------------------------------------------------------------------------------+
+|
++
+|
++-----------------------------------------------------------------------------------------------------------+
+| [55]: <Ending>                                                                                            |
+| [135][_Expr4_SWITCH_1allow_gt]<! !_Expr3_SWITCH_1allow_gt @ !>                                            |
+| [AST-INSTRUCTIONS]:                                                                                       |
+|   + StackEnd()                                                                                            |
+|   > StackBegin()                                                                                          |
+| [RETURN STACK]:                                                                                           |
+|   [39][12][47]: _Expr4_SWITCH_1allow_gt -> [70][_Expr_NoComma]<! !_Expr4_SWITCH_1allow_gt @ !>            |
+|   [38][26][47]: _Expr_NoComma -> [50][_Expr0]< _LongType "{" { _Expr_NoComma @ ; "," } "}" >              |
+|   [34][17][35]: _Expr0 -> [61][_Expr1]<! !_Expr0 @ !>                                                     |
+|   [33][16][35]: _Expr1 -> [67][_Expr2]<! !_Expr1 @ !>                                                     |
+|   [32][15][35]: _Expr2 -> [110][_Expr3_SWITCH_COMBINED]<! !_Expr2 @ !>                                    |
+|   [31][14][35]: _Expr3_SWITCH_COMBINED -> [125][_Expr3_SWITCH_1allow_gt]<! !_Expr3_SWITCH_COMBINED @ !>   |
+|   [30][13][35]: _Expr3_SWITCH_1allow_gt -> [135][_Expr4_SWITCH_1allow_gt]<! !_Expr3_SWITCH_1allow_gt @ !> |
+|   [29][12][35]: _Expr4_SWITCH_1allow_gt -> [70][_Expr_NoComma]<! !_Expr4_SWITCH_1allow_gt @ !>            |
+|   [28][27][35]: _Expr_NoComma -> [50][_Expr0]< _LongType "{" { _Expr_NoComma @ ; "," } "}" >              |
+|   [10][17][5]: _Expr0 -> [61][_Expr1]<! !_Expr0 @ !>                                                      |
+|   [9][16][5]: _Expr1 -> [67][_Expr2]<! !_Expr1 @ !>                                                       |
+|   [8][15][5]: _Expr2 -> [110][_Expr3_SWITCH_COMBINED]<! !_Expr2 @ !>                                      |
+|   [7][14][5]: _Expr3_SWITCH_COMBINED -> [125][_Expr3_SWITCH_1allow_gt]<! !_Expr3_SWITCH_COMBINED @ !>     |
+|   [6][13][5]: _Expr3_SWITCH_1allow_gt -> [135][_Expr4_SWITCH_1allow_gt]<! !_Expr3_SWITCH_1allow_gt @ !>   |
+|   [5][12][5]: _Expr4_SWITCH_1allow_gt -> [70][_Expr_NoComma]<! !_Expr4_SWITCH_1allow_gt @ !>              |
+|   [4][11][5]: _Expr_NoComma -> [79][_Expr]<! !_Expr_NoComma @ !>                                          |
+|   [3][38][5]: _Expr -> [89][Module]<! !_Expr @ !>                                                         |
+| [PREDECESSORS 54-54]: [54]                                                                                |
+| [SUCCESORS 56-56]: [56]                                                                                   |
++-----------------------------------------------------------------------------------------------------------+
+|
++
+|
++-----------------------------------------------------------------------------------------------------------+
+| [56]: <Ending>                                                                                            |
+| [70][_Expr_NoComma]<! !_Expr4_SWITCH_1allow_gt @ !>                                                       |
+| [AST-INSTRUCTIONS]:                                                                                       |
+|   + StackEnd()                                                                                            |
+|   > StackBegin()                                                                                          |
+| [RETURN STACK]:                                                                                           |
+|   [38][26][47]: _Expr_NoComma -> [50][_Expr0]< _LongType "{" { _Expr_NoComma @ ; "," } "}" >              |
+|   [34][17][35]: _Expr0 -> [61][_Expr1]<! !_Expr0 @ !>                                                     |
+|   [33][16][35]: _Expr1 -> [67][_Expr2]<! !_Expr1 @ !>                                                     |
+|   [32][15][35]: _Expr2 -> [110][_Expr3_SWITCH_COMBINED]<! !_Expr2 @ !>                                    |
+|   [31][14][35]: _Expr3_SWITCH_COMBINED -> [125][_Expr3_SWITCH_1allow_gt]<! !_Expr3_SWITCH_COMBINED @ !>   |
+|   [30][13][35]: _Expr3_SWITCH_1allow_gt -> [135][_Expr4_SWITCH_1allow_gt]<! !_Expr3_SWITCH_1allow_gt @ !> |
+|   [29][12][35]: _Expr4_SWITCH_1allow_gt -> [70][_Expr_NoComma]<! !_Expr4_SWITCH_1allow_gt @ !>            |
+|   [28][27][35]: _Expr_NoComma -> [50][_Expr0]< _LongType "{" { _Expr_NoComma @ ; "," } "}" >              |
+|   [10][17][5]: _Expr0 -> [61][_Expr1]<! !_Expr0 @ !>                                                      |
+|   [9][16][5]: _Expr1 -> [67][_Expr2]<! !_Expr1 @ !>                                                       |
+|   [8][15][5]: _Expr2 -> [110][_Expr3_SWITCH_COMBINED]<! !_Expr2 @ !>                                      |
+|   [7][14][5]: _Expr3_SWITCH_COMBINED -> [125][_Expr3_SWITCH_1allow_gt]<! !_Expr3_SWITCH_COMBINED @ !>     |
+|   [6][13][5]: _Expr3_SWITCH_1allow_gt -> [135][_Expr4_SWITCH_1allow_gt]<! !_Expr3_SWITCH_1allow_gt @ !>   |
+|   [5][12][5]: _Expr4_SWITCH_1allow_gt -> [70][_Expr_NoComma]<! !_Expr4_SWITCH_1allow_gt @ !>              |
+|   [4][11][5]: _Expr_NoComma -> [79][_Expr]<! !_Expr_NoComma @ !>                                          |
+|   [3][38][5]: _Expr -> [89][Module]<! !_Expr @ !>                                                         |
+| [PREDECESSORS 55-55]: [55]                                                                                |
+| [SUCCESORS 57-57]: [57]                                                                                   |
++-----------------------------------------------------------------------------------------------------------+
+|
++
+|
++-----------------------------------------------------------------------------------------------------------+
+| [57]: <Ending>                                                                                            |
+| [50][_Expr0]< _LongType "{" { _Expr_NoComma @ ; "," } "}" >                                               |
+| [AST-INSTRUCTIONS]:                                                                                       |
+|   + StackEnd()                                                                                            |
+|   > StackSlot(2)                                                                                          |
+| [RETURN STACK]:                                                                                           |
+|   [34][17][35]: _Expr0 -> [61][_Expr1]<! !_Expr0 @ !>                                                     |
+|   [33][16][35]: _Expr1 -> [67][_Expr2]<! !_Expr1 @ !>                                                     |
+|   [32][15][35]: _Expr2 -> [110][_Expr3_SWITCH_COMBINED]<! !_Expr2 @ !>                                    |
+|   [31][14][35]: _Expr3_SWITCH_COMBINED -> [125][_Expr3_SWITCH_1allow_gt]<! !_Expr3_SWITCH_COMBINED @ !>   |
+|   [30][13][35]: _Expr3_SWITCH_1allow_gt -> [135][_Expr4_SWITCH_1allow_gt]<! !_Expr3_SWITCH_1allow_gt @ !> |
+|   [29][12][35]: _Expr4_SWITCH_1allow_gt -> [70][_Expr_NoComma]<! !_Expr4_SWITCH_1allow_gt @ !>            |
+|   [28][27][35]: _Expr_NoComma -> [50][_Expr0]< _LongType "{" { _Expr_NoComma @ ; "," } "}" >              |
+|   [10][17][5]: _Expr0 -> [61][_Expr1]<! !_Expr0 @ !>                                                      |
+|   [9][16][5]: _Expr1 -> [67][_Expr2]<! !_Expr1 @ !>                                                       |
+|   [8][15][5]: _Expr2 -> [110][_Expr3_SWITCH_COMBINED]<! !_Expr2 @ !>                                      |
+|   [7][14][5]: _Expr3_SWITCH_COMBINED -> [125][_Expr3_SWITCH_1allow_gt]<! !_Expr3_SWITCH_COMBINED @ !>     |
+|   [6][13][5]: _Expr3_SWITCH_1allow_gt -> [135][_Expr4_SWITCH_1allow_gt]<! !_Expr3_SWITCH_1allow_gt @ !>   |
+|   [5][12][5]: _Expr4_SWITCH_1allow_gt -> [70][_Expr_NoComma]<! !_Expr4_SWITCH_1allow_gt @ !>              |
+|   [4][11][5]: _Expr_NoComma -> [79][_Expr]<! !_Expr_NoComma @ !>                                          |
+|   [3][38][5]: _Expr -> [89][Module]<! !_Expr @ !>                                                         |
+| [PREDECESSORS 56-56]: [56]                                                                                |
+| [SUCCESORS 58-58]: [58]                                                                                   |
++-----------------------------------------------------------------------------------------------------------+
+[0]
+ |
+ +
+ |
+[0]
+++===========================================================================================================++
+|| [58]: {CLOSE_BRACE} }                                                                                     ||
+|| [49][_Expr0]< _LongType "{" { _Expr_NoComma ; "," } "}" @ >                                               ||
+|| [AST-INSTRUCTIONS]:                                                                                       ||
+||   + Token(4)                                                                                              ||
+|| [RETURN STACK]:                                                                                           ||
+||   [34][17][35]: _Expr0 -> [61][_Expr1]<! !_Expr0 @ !>                                                     ||
+||   [33][16][35]: _Expr1 -> [67][_Expr2]<! !_Expr1 @ !>                                                     ||
+||   [32][15][35]: _Expr2 -> [110][_Expr3_SWITCH_COMBINED]<! !_Expr2 @ !>                                    ||
+||   [31][14][35]: _Expr3_SWITCH_COMBINED -> [125][_Expr3_SWITCH_1allow_gt]<! !_Expr3_SWITCH_COMBINED @ !>   ||
+||   [30][13][35]: _Expr3_SWITCH_1allow_gt -> [135][_Expr4_SWITCH_1allow_gt]<! !_Expr3_SWITCH_1allow_gt @ !> ||
+||   [29][12][35]: _Expr4_SWITCH_1allow_gt -> [70][_Expr_NoComma]<! !_Expr4_SWITCH_1allow_gt @ !>            ||
+||   [28][27][35]: _Expr_NoComma -> [50][_Expr0]< _LongType "{" { _Expr_NoComma @ ; "," } "}" >              ||
+||   [10][17][5]: _Expr0 -> [61][_Expr1]<! !_Expr0 @ !>                                                      ||
+||   [9][16][5]: _Expr1 -> [67][_Expr2]<! !_Expr1 @ !>                                                       ||
+||   [8][15][5]: _Expr2 -> [110][_Expr3_SWITCH_COMBINED]<! !_Expr2 @ !>                                      ||
+||   [7][14][5]: _Expr3_SWITCH_COMBINED -> [125][_Expr3_SWITCH_1allow_gt]<! !_Expr3_SWITCH_COMBINED @ !>     ||
+||   [6][13][5]: _Expr3_SWITCH_1allow_gt -> [135][_Expr4_SWITCH_1allow_gt]<! !_Expr3_SWITCH_1allow_gt @ !>   ||
+||   [5][12][5]: _Expr4_SWITCH_1allow_gt -> [70][_Expr_NoComma]<! !_Expr4_SWITCH_1allow_gt @ !>              ||
+||   [4][11][5]: _Expr_NoComma -> [79][_Expr]<! !_Expr_NoComma @ !>                                          ||
+||   [3][38][5]: _Expr -> [89][Module]<! !_Expr @ !>                                                         ||
+|| [PREDECESSORS 57-57]: [57]                                                                                ||
+|| [SUCCESORS 59-59]: [59]                                                                                   ||
+++===========================================================================================================++
+|
++
+|
++-----------------------------------------------------------------------------------------------------------+
+| [59]: <Ending>                                                                                            |
+| [61][_Expr1]<! !_Expr0 @ !>                                                                               |
+| [AST-INSTRUCTIONS]:                                                                                       |
+|   + CreateObject(CtorExpr)                                                                                |
+|   + Field(CtorExpr::type, 0)                                                                              |
+|   + Field(CtorExpr::args, 2)                                                                              |
+|   + StackEnd()                                                                                            |
+|   > StackBegin()                                                                                          |
+| [RETURN STACK]:                                                                                           |
+|   [33][16][35]: _Expr1 -> [67][_Expr2]<! !_Expr1 @ !>                                                     |
+|   [32][15][35]: _Expr2 -> [110][_Expr3_SWITCH_COMBINED]<! !_Expr2 @ !>                                    |
+|   [31][14][35]: _Expr3_SWITCH_COMBINED -> [125][_Expr3_SWITCH_1allow_gt]<! !_Expr3_SWITCH_COMBINED @ !>   |
+|   [30][13][35]: _Expr3_SWITCH_1allow_gt -> [135][_Expr4_SWITCH_1allow_gt]<! !_Expr3_SWITCH_1allow_gt @ !> |
+|   [29][12][35]: _Expr4_SWITCH_1allow_gt -> [70][_Expr_NoComma]<! !_Expr4_SWITCH_1allow_gt @ !>            |
+|   [28][27][35]: _Expr_NoComma -> [50][_Expr0]< _LongType "{" { _Expr_NoComma @ ; "," } "}" >              |
+|   [10][17][5]: _Expr0 -> [61][_Expr1]<! !_Expr0 @ !>                                                      |
+|   [9][16][5]: _Expr1 -> [67][_Expr2]<! !_Expr1 @ !>                                                       |
+|   [8][15][5]: _Expr2 -> [110][_Expr3_SWITCH_COMBINED]<! !_Expr2 @ !>                                      |
+|   [7][14][5]: _Expr3_SWITCH_COMBINED -> [125][_Expr3_SWITCH_1allow_gt]<! !_Expr3_SWITCH_COMBINED @ !>     |
+|   [6][13][5]: _Expr3_SWITCH_1allow_gt -> [135][_Expr4_SWITCH_1allow_gt]<! !_Expr3_SWITCH_1allow_gt @ !>   |
+|   [5][12][5]: _Expr4_SWITCH_1allow_gt -> [70][_Expr_NoComma]<! !_Expr4_SWITCH_1allow_gt @ !>              |
+|   [4][11][5]: _Expr_NoComma -> [79][_Expr]<! !_Expr_NoComma @ !>                                          |
+|   [3][38][5]: _Expr -> [89][Module]<! !_Expr @ !>                                                         |
+| [PREDECESSORS 58-58]: [58]                                                                                |
+| [SUCCESORS 60-60]: [60]                                                                                   |
++-----------------------------------------------------------------------------------------------------------+
+|
++
+|
++-----------------------------------------------------------------------------------------------------------+
+| [60]: <Ending>                                                                                            |
+| [67][_Expr2]<! !_Expr1 @ !>                                                                               |
+| [AST-INSTRUCTIONS]:                                                                                       |
+|   + StackEnd()                                                                                            |
+|   > StackBegin()                                                                                          |
+| [RETURN STACK]:                                                                                           |
+|   [32][15][35]: _Expr2 -> [110][_Expr3_SWITCH_COMBINED]<! !_Expr2 @ !>                                    |
+|   [31][14][35]: _Expr3_SWITCH_COMBINED -> [125][_Expr3_SWITCH_1allow_gt]<! !_Expr3_SWITCH_COMBINED @ !>   |
+|   [30][13][35]: _Expr3_SWITCH_1allow_gt -> [135][_Expr4_SWITCH_1allow_gt]<! !_Expr3_SWITCH_1allow_gt @ !> |
+|   [29][12][35]: _Expr4_SWITCH_1allow_gt -> [70][_Expr_NoComma]<! !_Expr4_SWITCH_1allow_gt @ !>            |
+|   [28][27][35]: _Expr_NoComma -> [50][_Expr0]< _LongType "{" { _Expr_NoComma @ ; "," } "}" >              |
+|   [10][17][5]: _Expr0 -> [61][_Expr1]<! !_Expr0 @ !>                                                      |
+|   [9][16][5]: _Expr1 -> [67][_Expr2]<! !_Expr1 @ !>                                                       |
+|   [8][15][5]: _Expr2 -> [110][_Expr3_SWITCH_COMBINED]<! !_Expr2 @ !>                                      |
+|   [7][14][5]: _Expr3_SWITCH_COMBINED -> [125][_Expr3_SWITCH_1allow_gt]<! !_Expr3_SWITCH_COMBINED @ !>     |
+|   [6][13][5]: _Expr3_SWITCH_1allow_gt -> [135][_Expr4_SWITCH_1allow_gt]<! !_Expr3_SWITCH_1allow_gt @ !>   |
+|   [5][12][5]: _Expr4_SWITCH_1allow_gt -> [70][_Expr_NoComma]<! !_Expr4_SWITCH_1allow_gt @ !>              |
+|   [4][11][5]: _Expr_NoComma -> [79][_Expr]<! !_Expr_NoComma @ !>                                          |
+|   [3][38][5]: _Expr -> [89][Module]<! !_Expr @ !>                                                         |
+| [PREDECESSORS 59-59]: [59]                                                                                |
+| [SUCCESORS 61-61]: [61]                                                                                   |
++-----------------------------------------------------------------------------------------------------------+
+|
++
+|
++-----------------------------------------------------------------------------------------------------------+
+| [61]: <Ending>                                                                                            |
+| [110][_Expr3_SWITCH_COMBINED]<! !_Expr2 @ !>                                                              |
+| [AST-INSTRUCTIONS]:                                                                                       |
+|   + StackEnd()                                                                                            |
+|   > StackBegin()                                                                                          |
+| [RETURN STACK]:                                                                                           |
+|   [31][14][35]: _Expr3_SWITCH_COMBINED -> [125][_Expr3_SWITCH_1allow_gt]<! !_Expr3_SWITCH_COMBINED @ !>   |
+|   [30][13][35]: _Expr3_SWITCH_1allow_gt -> [135][_Expr4_SWITCH_1allow_gt]<! !_Expr3_SWITCH_1allow_gt @ !> |
+|   [29][12][35]: _Expr4_SWITCH_1allow_gt -> [70][_Expr_NoComma]<! !_Expr4_SWITCH_1allow_gt @ !>            |
+|   [28][27][35]: _Expr_NoComma -> [50][_Expr0]< _LongType "{" { _Expr_NoComma @ ; "," } "}" >              |
+|   [10][17][5]: _Expr0 -> [61][_Expr1]<! !_Expr0 @ !>                                                      |
+|   [9][16][5]: _Expr1 -> [67][_Expr2]<! !_Expr1 @ !>                                                       |
+|   [8][15][5]: _Expr2 -> [110][_Expr3_SWITCH_COMBINED]<! !_Expr2 @ !>                                      |
+|   [7][14][5]: _Expr3_SWITCH_COMBINED -> [125][_Expr3_SWITCH_1allow_gt]<! !_Expr3_SWITCH_COMBINED @ !>     |
+|   [6][13][5]: _Expr3_SWITCH_1allow_gt -> [135][_Expr4_SWITCH_1allow_gt]<! !_Expr3_SWITCH_1allow_gt @ !>   |
+|   [5][12][5]: _Expr4_SWITCH_1allow_gt -> [70][_Expr_NoComma]<! !_Expr4_SWITCH_1allow_gt @ !>              |
+|   [4][11][5]: _Expr_NoComma -> [79][_Expr]<! !_Expr_NoComma @ !>                                          |
+|   [3][38][5]: _Expr -> [89][Module]<! !_Expr @ !>                                                         |
+| [PREDECESSORS 60-60]: [60]                                                                                |
+| [SUCCESORS 62-62]: [62]                                                                                   |
++-----------------------------------------------------------------------------------------------------------+
+|
++
+|
++-----------------------------------------------------------------------------------------------------------+
+| [62]: <Ending>                                                                                            |
+| [125][_Expr3_SWITCH_1allow_gt]<! !_Expr3_SWITCH_COMBINED @ !>                                             |
+| [AST-INSTRUCTIONS]:                                                                                       |
+|   + StackEnd()                                                                                            |
+|   > StackBegin()                                                                                          |
+| [RETURN STACK]:                                                                                           |
+|   [30][13][35]: _Expr3_SWITCH_1allow_gt -> [135][_Expr4_SWITCH_1allow_gt]<! !_Expr3_SWITCH_1allow_gt @ !> |
+|   [29][12][35]: _Expr4_SWITCH_1allow_gt -> [70][_Expr_NoComma]<! !_Expr4_SWITCH_1allow_gt @ !>            |
+|   [28][27][35]: _Expr_NoComma -> [50][_Expr0]< _LongType "{" { _Expr_NoComma @ ; "," } "}" >              |
+|   [10][17][5]: _Expr0 -> [61][_Expr1]<! !_Expr0 @ !>                                                      |
+|   [9][16][5]: _Expr1 -> [67][_Expr2]<! !_Expr1 @ !>                                                       |
+|   [8][15][5]: _Expr2 -> [110][_Expr3_SWITCH_COMBINED]<! !_Expr2 @ !>                                      |
+|   [7][14][5]: _Expr3_SWITCH_COMBINED -> [125][_Expr3_SWITCH_1allow_gt]<! !_Expr3_SWITCH_COMBINED @ !>     |
+|   [6][13][5]: _Expr3_SWITCH_1allow_gt -> [135][_Expr4_SWITCH_1allow_gt]<! !_Expr3_SWITCH_1allow_gt @ !>   |
+|   [5][12][5]: _Expr4_SWITCH_1allow_gt -> [70][_Expr_NoComma]<! !_Expr4_SWITCH_1allow_gt @ !>              |
+|   [4][11][5]: _Expr_NoComma -> [79][_Expr]<! !_Expr_NoComma @ !>                                          |
+|   [3][38][5]: _Expr -> [89][Module]<! !_Expr @ !>                                                         |
+| [PREDECESSORS 61-61]: [61]                                                                                |
+| [SUCCESORS 63-63]: [63]                                                                                   |
++-----------------------------------------------------------------------------------------------------------+
+|
++
+|
++---------------------------------------------------------------------------------------------------------+
+| [63]: <Ending>                                                                                          |
+| [135][_Expr4_SWITCH_1allow_gt]<! !_Expr3_SWITCH_1allow_gt @ !>                                          |
+| [AST-INSTRUCTIONS]:                                                                                     |
+|   + StackEnd()                                                                                          |
+|   > StackBegin()                                                                                        |
+| [RETURN STACK]:                                                                                         |
+|   [29][12][35]: _Expr4_SWITCH_1allow_gt -> [70][_Expr_NoComma]<! !_Expr4_SWITCH_1allow_gt @ !>          |
+|   [28][27][35]: _Expr_NoComma -> [50][_Expr0]< _LongType "{" { _Expr_NoComma @ ; "," } "}" >            |
+|   [10][17][5]: _Expr0 -> [61][_Expr1]<! !_Expr0 @ !>                                                    |
+|   [9][16][5]: _Expr1 -> [67][_Expr2]<! !_Expr1 @ !>                                                     |
+|   [8][15][5]: _Expr2 -> [110][_Expr3_SWITCH_COMBINED]<! !_Expr2 @ !>                                    |
+|   [7][14][5]: _Expr3_SWITCH_COMBINED -> [125][_Expr3_SWITCH_1allow_gt]<! !_Expr3_SWITCH_COMBINED @ !>   |
+|   [6][13][5]: _Expr3_SWITCH_1allow_gt -> [135][_Expr4_SWITCH_1allow_gt]<! !_Expr3_SWITCH_1allow_gt @ !> |
+|   [5][12][5]: _Expr4_SWITCH_1allow_gt -> [70][_Expr_NoComma]<! !_Expr4_SWITCH_1allow_gt @ !>            |
+|   [4][11][5]: _Expr_NoComma -> [79][_Expr]<! !_Expr_NoComma @ !>                                        |
+|   [3][38][5]: _Expr -> [89][Module]<! !_Expr @ !>                                                       |
+| [PREDECESSORS 62-62]: [62]                                                                              |
+| [SUCCESORS 64-64]: [64]                                                                                 |
++---------------------------------------------------------------------------------------------------------+
+|
++
+|
++---------------------------------------------------------------------------------------------------------+
+| [64]: <Ending>                                                                                          |
+| [70][_Expr_NoComma]<! !_Expr4_SWITCH_1allow_gt @ !>                                                     |
+| [AST-INSTRUCTIONS]:                                                                                     |
+|   + StackEnd()                                                                                          |
+|   > StackBegin()                                                                                        |
+| [RETURN STACK]:                                                                                         |
+|   [28][27][35]: _Expr_NoComma -> [50][_Expr0]< _LongType "{" { _Expr_NoComma @ ; "," } "}" >            |
+|   [10][17][5]: _Expr0 -> [61][_Expr1]<! !_Expr0 @ !>                                                    |
+|   [9][16][5]: _Expr1 -> [67][_Expr2]<! !_Expr1 @ !>                                                     |
+|   [8][15][5]: _Expr2 -> [110][_Expr3_SWITCH_COMBINED]<! !_Expr2 @ !>                                    |
+|   [7][14][5]: _Expr3_SWITCH_COMBINED -> [125][_Expr3_SWITCH_1allow_gt]<! !_Expr3_SWITCH_COMBINED @ !>   |
+|   [6][13][5]: _Expr3_SWITCH_1allow_gt -> [135][_Expr4_SWITCH_1allow_gt]<! !_Expr3_SWITCH_1allow_gt @ !> |
+|   [5][12][5]: _Expr4_SWITCH_1allow_gt -> [70][_Expr_NoComma]<! !_Expr4_SWITCH_1allow_gt @ !>            |
+|   [4][11][5]: _Expr_NoComma -> [79][_Expr]<! !_Expr_NoComma @ !>                                        |
+|   [3][38][5]: _Expr -> [89][Module]<! !_Expr @ !>                                                       |
+| [PREDECESSORS 63-63]: [63]                                                                              |
+| [SUCCESORS 65-65]: [65]                                                                                 |
++---------------------------------------------------------------------------------------------------------+
+|
++
+|
++---------------------------------------------------------------------------------------------------------+
+| [65]: <Ending>                                                                                          |
+| [50][_Expr0]< _LongType "{" { _Expr_NoComma @ ; "," } "}" >                                             |
+| [AST-INSTRUCTIONS]:                                                                                     |
+|   + StackEnd()                                                                                          |
+|   > StackSlot(2)                                                                                        |
+| [RETURN STACK]:                                                                                         |
+|   [10][17][5]: _Expr0 -> [61][_Expr1]<! !_Expr0 @ !>                                                    |
+|   [9][16][5]: _Expr1 -> [67][_Expr2]<! !_Expr1 @ !>                                                     |
+|   [8][15][5]: _Expr2 -> [110][_Expr3_SWITCH_COMBINED]<! !_Expr2 @ !>                                    |
+|   [7][14][5]: _Expr3_SWITCH_COMBINED -> [125][_Expr3_SWITCH_1allow_gt]<! !_Expr3_SWITCH_COMBINED @ !>   |
+|   [6][13][5]: _Expr3_SWITCH_1allow_gt -> [135][_Expr4_SWITCH_1allow_gt]<! !_Expr3_SWITCH_1allow_gt @ !> |
+|   [5][12][5]: _Expr4_SWITCH_1allow_gt -> [70][_Expr_NoComma]<! !_Expr4_SWITCH_1allow_gt @ !>            |
+|   [4][11][5]: _Expr_NoComma -> [79][_Expr]<! !_Expr_NoComma @ !>                                        |
+|   [3][38][5]: _Expr -> [89][Module]<! !_Expr @ !>                                                       |
+| [PREDECESSORS 64-64]: [64]                                                                              |
+| [SUCCESORS 66-66]: [66]                                                                                 |
++---------------------------------------------------------------------------------------------------------+
+[0]
+ |
+ +
+ |
+[0]
+++=========================================================================================================++
+|| [66]: {CLOSE_BRACE} }                                                                                   ||
+|| [49][_Expr0]< _LongType "{" { _Expr_NoComma ; "," } "}" @ >                                             ||
+|| [AST-INSTRUCTIONS]:                                                                                     ||
+||   + Token(4)                                                                                            ||
+|| [RETURN STACK]:                                                                                         ||
+||   [10][17][5]: _Expr0 -> [61][_Expr1]<! !_Expr0 @ !>                                                    ||
+||   [9][16][5]: _Expr1 -> [67][_Expr2]<! !_Expr1 @ !>                                                     ||
+||   [8][15][5]: _Expr2 -> [110][_Expr3_SWITCH_COMBINED]<! !_Expr2 @ !>                                    ||
+||   [7][14][5]: _Expr3_SWITCH_COMBINED -> [125][_Expr3_SWITCH_1allow_gt]<! !_Expr3_SWITCH_COMBINED @ !>   ||
+||   [6][13][5]: _Expr3_SWITCH_1allow_gt -> [135][_Expr4_SWITCH_1allow_gt]<! !_Expr3_SWITCH_1allow_gt @ !> ||
+||   [5][12][5]: _Expr4_SWITCH_1allow_gt -> [70][_Expr_NoComma]<! !_Expr4_SWITCH_1allow_gt @ !>            ||
+||   [4][11][5]: _Expr_NoComma -> [79][_Expr]<! !_Expr_NoComma @ !>                                        ||
+||   [3][38][5]: _Expr -> [89][Module]<! !_Expr @ !>                                                       ||
+|| [PREDECESSORS 65-65]: [65]                                                                              ||
+|| [SUCCESORS 67-67]: [67]                                                                                 ||
+++=========================================================================================================++
+|
++
+|
++---------------------------------------------------------------------------------------------------------+
+| [67]: <Ending>                                                                                          |
+| [61][_Expr1]<! !_Expr0 @ !>                                                                             |
+| [AST-INSTRUCTIONS]:                                                                                     |
+|   + CreateObject(CtorExpr)                                                                              |
+|   + Field(CtorExpr::type, 0)                                                                            |
+|   + Field(CtorExpr::args, 2)                                                                            |
+|   + StackEnd()                                                                                          |
+|   > StackBegin()                                                                                        |
+| [RETURN STACK]:                                                                                         |
+|   [9][16][5]: _Expr1 -> [67][_Expr2]<! !_Expr1 @ !>                                                     |
+|   [8][15][5]: _Expr2 -> [110][_Expr3_SWITCH_COMBINED]<! !_Expr2 @ !>                                    |
+|   [7][14][5]: _Expr3_SWITCH_COMBINED -> [125][_Expr3_SWITCH_1allow_gt]<! !_Expr3_SWITCH_COMBINED @ !>   |
+|   [6][13][5]: _Expr3_SWITCH_1allow_gt -> [135][_Expr4_SWITCH_1allow_gt]<! !_Expr3_SWITCH_1allow_gt @ !> |
+|   [5][12][5]: _Expr4_SWITCH_1allow_gt -> [70][_Expr_NoComma]<! !_Expr4_SWITCH_1allow_gt @ !>            |
+|   [4][11][5]: _Expr_NoComma -> [79][_Expr]<! !_Expr_NoComma @ !>                                        |
+|   [3][38][5]: _Expr -> [89][Module]<! !_Expr @ !>                                                       |
+| [PREDECESSORS 66-66]: [66]                                                                              |
+| [SUCCESORS 68-68]: [68]                                                                                 |
++---------------------------------------------------------------------------------------------------------+
+|
++
+|
++---------------------------------------------------------------------------------------------------------+
+| [68]: <Ending>                                                                                          |
+| [67][_Expr2]<! !_Expr1 @ !>                                                                             |
+| [AST-INSTRUCTIONS]:                                                                                     |
+|   + StackEnd()                                                                                          |
+|   > StackBegin()                                                                                        |
+| [RETURN STACK]:                                                                                         |
+|   [8][15][5]: _Expr2 -> [110][_Expr3_SWITCH_COMBINED]<! !_Expr2 @ !>                                    |
+|   [7][14][5]: _Expr3_SWITCH_COMBINED -> [125][_Expr3_SWITCH_1allow_gt]<! !_Expr3_SWITCH_COMBINED @ !>   |
+|   [6][13][5]: _Expr3_SWITCH_1allow_gt -> [135][_Expr4_SWITCH_1allow_gt]<! !_Expr3_SWITCH_1allow_gt @ !> |
+|   [5][12][5]: _Expr4_SWITCH_1allow_gt -> [70][_Expr_NoComma]<! !_Expr4_SWITCH_1allow_gt @ !>            |
+|   [4][11][5]: _Expr_NoComma -> [79][_Expr]<! !_Expr_NoComma @ !>                                        |
+|   [3][38][5]: _Expr -> [89][Module]<! !_Expr @ !>                                                       |
+| [PREDECESSORS 67-67]: [67]                                                                              |
+| [SUCCESORS 69-69]: [69]                                                                                 |
++---------------------------------------------------------------------------------------------------------+
+|
++
+|
++---------------------------------------------------------------------------------------------------------+
+| [69]: <Ending>                                                                                          |
+| [110][_Expr3_SWITCH_COMBINED]<! !_Expr2 @ !>                                                            |
+| [AST-INSTRUCTIONS]:                                                                                     |
+|   + StackEnd()                                                                                          |
+|   > StackBegin()                                                                                        |
+| [RETURN STACK]:                                                                                         |
+|   [7][14][5]: _Expr3_SWITCH_COMBINED -> [125][_Expr3_SWITCH_1allow_gt]<! !_Expr3_SWITCH_COMBINED @ !>   |
+|   [6][13][5]: _Expr3_SWITCH_1allow_gt -> [135][_Expr4_SWITCH_1allow_gt]<! !_Expr3_SWITCH_1allow_gt @ !> |
+|   [5][12][5]: _Expr4_SWITCH_1allow_gt -> [70][_Expr_NoComma]<! !_Expr4_SWITCH_1allow_gt @ !>            |
+|   [4][11][5]: _Expr_NoComma -> [79][_Expr]<! !_Expr_NoComma @ !>                                        |
+|   [3][38][5]: _Expr -> [89][Module]<! !_Expr @ !>                                                       |
+| [PREDECESSORS 68-68]: [68]                                                                              |
+| [SUCCESORS 70-70]: [70]                                                                                 |
++---------------------------------------------------------------------------------------------------------+
+|
++
+|
++---------------------------------------------------------------------------------------------------------+
+| [70]: <Ending>                                                                                          |
+| [125][_Expr3_SWITCH_1allow_gt]<! !_Expr3_SWITCH_COMBINED @ !>                                           |
+| [AST-INSTRUCTIONS]:                                                                                     |
+|   + StackEnd()                                                                                          |
+|   > StackBegin()                                                                                        |
+| [RETURN STACK]:                                                                                         |
+|   [6][13][5]: _Expr3_SWITCH_1allow_gt -> [135][_Expr4_SWITCH_1allow_gt]<! !_Expr3_SWITCH_1allow_gt @ !> |
+|   [5][12][5]: _Expr4_SWITCH_1allow_gt -> [70][_Expr_NoComma]<! !_Expr4_SWITCH_1allow_gt @ !>            |
+|   [4][11][5]: _Expr_NoComma -> [79][_Expr]<! !_Expr_NoComma @ !>                                        |
+|   [3][38][5]: _Expr -> [89][Module]<! !_Expr @ !>                                                       |
+| [PREDECESSORS 69-69]: [69]                                                                              |
+| [SUCCESORS 71-71]: [71]                                                                                 |
++---------------------------------------------------------------------------------------------------------+
+|
++
+|
++----------------------------------------------------------------------------------------------+
+| [71]: <Ending>                                                                               |
+| [135][_Expr4_SWITCH_1allow_gt]<! !_Expr3_SWITCH_1allow_gt @ !>                               |
+| [AST-INSTRUCTIONS]:                                                                          |
+|   + StackEnd()                                                                               |
+|   > StackBegin()                                                                             |
+| [RETURN STACK]:                                                                              |
+|   [5][12][5]: _Expr4_SWITCH_1allow_gt -> [70][_Expr_NoComma]<! !_Expr4_SWITCH_1allow_gt @ !> |
+|   [4][11][5]: _Expr_NoComma -> [79][_Expr]<! !_Expr_NoComma @ !>                             |
+|   [3][38][5]: _Expr -> [89][Module]<! !_Expr @ !>                                            |
+| [PREDECESSORS 70-70]: [70]                                                                   |
+| [SUCCESORS 72-72]: [72]                                                                      |
++----------------------------------------------------------------------------------------------+
+|
++
+|
++------------------------------------------------------------------+
+| [72]: <Ending>                                                   |
+| [70][_Expr_NoComma]<! !_Expr4_SWITCH_1allow_gt @ !>              |
+| [AST-INSTRUCTIONS]:                                              |
+|   + StackEnd()                                                   |
+|   > StackBegin()                                                 |
+| [RETURN STACK]:                                                  |
+|   [4][11][5]: _Expr_NoComma -> [79][_Expr]<! !_Expr_NoComma @ !> |
+|   [3][38][5]: _Expr -> [89][Module]<! !_Expr @ !>                |
+| [PREDECESSORS 71-71]: [71]                                       |
+| [SUCCESORS 73-73]: [73]                                          |
++------------------------------------------------------------------+
+|
++
+|
++---------------------------------------------------+
+| [73]: <Ending>                                    |
+| [79][_Expr]<! !_Expr_NoComma @ !>                 |
+| [AST-INSTRUCTIONS]:                               |
+|   + StackEnd()                                    |
+|   > StackBegin()                                  |
+| [RETURN STACK]:                                   |
+|   [3][38][5]: _Expr -> [89][Module]<! !_Expr @ !> |
+| [PREDECESSORS 72-72]: [72]                        |
+| [SUCCESORS 74-74]: [74]                           |
++---------------------------------------------------+
+|
++
+|
++----------------------------+
+| [74]: <Ending>             |
+| [89][Module]<! !_Expr @ !> |
+| [AST-INSTRUCTIONS]:        |
+|   + StackEnd()             |
+|   > StackBegin()           |
+| [PREDECESSORS 73-73]: [73] |
+| [SUCCESORS 75-75]: [75]    |
++----------------------------+
+|
++
+|
++----------------------------+
+| [75]: <Ending>             |
+| [88][Module] END [ENDING]  |
+| [AST-INSTRUCTIONS]:        |
+|   + StackEnd()             |
+| [PREDECESSORS 74-74]: [74] |
++----------------------------+

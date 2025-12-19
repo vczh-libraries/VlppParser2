@@ -1,0 +1,85 @@
+﻿================ EXECUTION STEPS ================
+[0]: 0@0 - 5@3
+
+==================== TRACES =====================
+
++----------------------+
+| [0]: <Start>         |
+| [17][Module] BEGIN   |
+| [AST-INSTRUCTIONS]:  |
+| [SUCCESORS 1-1]: [1] |
++----------------------+
+[0]
+ |
+ +
+ |
+[0]
+++=========================================================++
+|| [1]: {INT} int                                          ||
+|| [2][_Int]< "int" @ >                                    ||
+|| [AST-INSTRUCTIONS]:                                     ||
+||   + StackBegin()                                        ||
+||   + Token(0)                                            ||
+|| [RETURN STACK]:                                         ||
+||   [2][0][0]: _Int -> [5][_IntItem]<! !_Int @ !>         ||
+||   [1][1][0]: _IntItem -> [7][_Item] BEGIN [pm-lr]       ||
+||   [0][2][0]: _Item -> [19][Module]< _Item @ { _Item } > ||
+|| [PREDECESSORS 0-0]: [0]                                 ||
+|| [SUCCESORS 2-2]: [2]                                    ||
+++=========================================================++
+|
++
+|
++---------------------------------------------------------+
+| [2]: <Ending>                                           |
+| [5][_IntItem]<! !_Int @ !>                              |
+| [AST-INSTRUCTIONS]:                                     |
+|   + CreateObject(IntItem)                               |
+|   + StackEnd()                                          |
+|   > StackBegin()                                        |
+| [RETURN STACK]:                                         |
+|   [1][1][0]: _IntItem -> [7][_Item] BEGIN [pm-lr]       |
+|   [0][2][0]: _Item -> [19][Module]< _Item @ { _Item } > |
+| [PREDECESSORS 1-1]: [1]                                 |
+| [SUCCESORS 3-3]: [3]                                    |
++---------------------------------------------------------+
+|
++
+|
++---------------------------------------------------------+
+| [3]: <Ending>                                           |
+| [7][_Item] BEGIN [pm-lr]                                |
+| [AST-INSTRUCTIONS]:                                     |
+|   + StackEnd()                                          |
+| [RETURN STACK]:                                         |
+|   [0][2][0]: _Item -> [19][Module]< _Item @ { _Item } > |
+| [PREDECESSORS 2-2]: [2]                                 |
+| [SUCCESORS 4-4]: [4]                                    |
++---------------------------------------------------------+
+|
++
+|
++-----------------------------------+
+| [4]: <Ending>                     |
+| [19][Module]< _Item @ { _Item } > |
+| [AST-INSTRUCTIONS]:               |
+|   + StackBegin()                  |
+|   + StackEnd()                    |
+|   > StackBegin()                  |
+|   > StackSlot(0)                  |
+| [PREDECESSORS 3-3]: [3]           |
+| [SUCCESORS 5-5]: [5]              |
++-----------------------------------+
+|
++
+|
++---------------------------+
+| [5]: <Ending>             |
+| [18][Module] END [ENDING] |
+| [AST-INSTRUCTIONS]:       |
+|   + CreateObject(File)    |
+|   + Field(File::items, 0) |
+|   + Field(File::items, 1) |
+|   + StackEnd()            |
+| [PREDECESSORS 4-4]: [4]   |
++---------------------------+

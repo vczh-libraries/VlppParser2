@@ -1,0 +1,253 @@
+﻿[0][_Int]< "int" > @[ENDING]
+[RULE: 0]
+
+[1][_Int]< "int" @ >
+[RULE: 0]
+	epsilon -> [0][_Int]< "int" > @[ENDING]
+		+ CreateObject(IntItem)
+		+ StackEnd()
+
+[2][_Int]< @ "int" >
+[RULE: 0]
+	token: "int" -> [1][_Int]< "int" @ >
+		+ Token(0)
+
+[3][_Int]@ < "int" >
+[RULE: 0]
+	epsilon -> [2][_Int]< @ "int" >
+		+ StackBegin()
+
+[4][_IntItem]<! !_Int !> @[ENDING]
+[RULE: 1]
+
+[5][_IntItem]<! !_Int @ !>
+[RULE: 1]
+	epsilon -> [4][_IntItem]<! !_Int !> @[ENDING]
+		+ StackEnd()
+
+[6][_IntItem]<! @ !_Int !>
+[RULE: 1]
+	rule: _Int -> [5][_IntItem]<! !_Int @ !>
+
+[7][_IntItem]@ <! !_Int !>
+[RULE: 1]
+	epsilon -> [6][_IntItem]<! @ !_Int !>
+		+ StackBegin()
+
+[8][_Item]< "class" "?" > @[ENDING]
+[RULE: 2]
+
+[9][_Item]< "class" "?" @ >
+[RULE: 2]
+	epsilon -> [8][_Item]< "class" "?" > @[ENDING]
+		+ CreateObject(ClassQuestionItem)
+		+ StackEnd()
+
+[10][_Item]< "class" > @[ENDING]
+[RULE: 2]
+
+[11][_Item]< "class" @ "?" >
+[RULE: 2]
+	token: "?" -> [9][_Item]< "class" "?" @ >
+		+ Token(1)
+
+[12][_Item]< "class" @ "?" >
+[RULE: 2]
+	epsilon -> [11][_Item]< "class" @ "?" >
+
+[13][_Item]< "class" @ >
+[RULE: 2]
+	epsilon -> [10][_Item]< "class" > @[ENDING]
+		+ CreateObject(ClassItem)
+		+ StackEnd()
+
+[14][_Item]< @ "class" "?" >
+[RULE: 2]
+	token: "class" -> [12][_Item]< "class" @ "?" >
+		+ Token(0)
+
+[15][_Item]< @ "class" >
+[RULE: 2]
+	token: "class" -> [13][_Item]< "class" @ >
+		+ Token(0)
+
+[16][_Item]< @ _IntItem "," >
+[RULE: 2]
+	rule: _IntItem -> [27][_Item]< _IntItem @ "," >
+		+ StackSlot(0)
+
+[17][_Item]< @ _IntItem "." >
+[RULE: 2]
+	rule: _IntItem -> [29][_Item]< _IntItem @ "." >
+		+ StackSlot(0)
+
+[18][_Item]< @ _IntItem "?" >
+[RULE: 2]
+	rule: _IntItem -> [31][_Item]< _IntItem @ "?" >
+		+ StackSlot(0)
+
+[19][_Item]< @ _Item "?" >
+[RULE: 2]
+	rule: _Item -> [34][_Item]< _Item @ "?" >
+		+ StackSlot(0)
+
+[20][_Item]< _IntItem "," > @[ENDING]
+[RULE: 2]
+
+[21][_Item]< _IntItem "," @ >
+[RULE: 2]
+	epsilon -> [20][_Item]< _IntItem "," > @[ENDING]
+		+ CreateObject(IntCommaItem)
+		+ StackEnd()
+
+[22][_Item]< _IntItem "." > @[ENDING]
+[RULE: 2]
+
+[23][_Item]< _IntItem "." @ >
+[RULE: 2]
+	epsilon -> [22][_Item]< _IntItem "." > @[ENDING]
+		+ CreateObject(IntDotItem)
+		+ StackEnd()
+
+[24][_Item]< _IntItem "?" > @[ENDING]
+[RULE: 2]
+
+[25][_Item]< _IntItem "?" @ >
+[RULE: 2]
+	epsilon -> [24][_Item]< _IntItem "?" > @[ENDING]
+		+ CreateObject(IntQuestionItem)
+		+ StackEnd()
+
+[26][_Item]< _IntItem @ "," >
+[RULE: 2]
+	token: "," -> [21][_Item]< _IntItem "," @ >
+		+ Token(1)
+
+[27][_Item]< _IntItem @ "," >
+[RULE: 2]
+	epsilon -> [26][_Item]< _IntItem @ "," >
+
+[28][_Item]< _IntItem @ "." >
+[RULE: 2]
+	token: "." -> [23][_Item]< _IntItem "." @ >
+		+ Token(1)
+
+[29][_Item]< _IntItem @ "." >
+[RULE: 2]
+	epsilon -> [28][_Item]< _IntItem @ "." >
+
+[30][_Item]< _IntItem @ "?" >
+[RULE: 2]
+	token: "?" -> [25][_Item]< _IntItem "?" @ >
+		+ Token(1)
+
+[31][_Item]< _IntItem @ "?" >
+[RULE: 2]
+	epsilon -> [30][_Item]< _IntItem @ "?" >
+
+[32][_Item]< _Item "?" > @[ENDING]
+[RULE: 2]
+
+[33][_Item]< _Item "?" @ >
+[RULE: 2]
+	epsilon -> [32][_Item]< _Item "?" > @[ENDING]
+		+ CreateObject(QuestionItem)
+		+ Field(QuestionItem::item, 0)
+		+ StackEnd()
+
+[34][_Item]< _Item @ "?" >
+[RULE: 2]
+	epsilon -> [35][_Item]< _Item @ "?" >
+
+[35][_Item]< _Item @ "?" >
+[RULE: 2]
+	token: "?" -> [33][_Item]< _Item "?" @ >
+		+ Token(1)
+
+[36][_Item]<! !_IntItem !> @[ENDING]
+[RULE: 2]
+
+[37][_Item]<! !_IntItem @ !>
+[RULE: 2]
+	epsilon -> [36][_Item]<! !_IntItem !> @[ENDING]
+		+ StackEnd()
+
+[38][_Item]<! @ !_IntItem !>
+[RULE: 2]
+	rule: _IntItem -> [37][_Item]<! !_IntItem @ !>
+
+[39][_Item]@ < "class" "?" >
+[RULE: 2]
+	epsilon -> [14][_Item]< @ "class" "?" >
+		+ StackBegin()
+
+[40][_Item]@ < "class" >
+[RULE: 2]
+	epsilon -> [15][_Item]< @ "class" >
+		+ StackBegin()
+
+[41][_Item]@ < _IntItem "," >
+[RULE: 2]
+	epsilon -> [16][_Item]< @ _IntItem "," >
+		+ StackBegin()
+
+[42][_Item]@ < _IntItem "." >
+[RULE: 2]
+	epsilon -> [17][_Item]< @ _IntItem "." >
+		+ StackBegin()
+
+[43][_Item]@ < _IntItem "?" >
+[RULE: 2]
+	epsilon -> [18][_Item]< @ _IntItem "?" >
+		+ StackBegin()
+
+[44][_Item]@ < _Item "?" >
+[RULE: 2]
+	epsilon -> [19][_Item]< @ _Item "?" >
+		+ StackBegin()
+
+[45][_Item]@ <! !_IntItem !>
+[RULE: 2]
+	epsilon -> [38][_Item]<! @ !_IntItem !>
+		+ StackBegin()
+
+[46][Module]< @ _Item { _Item } >
+[RULE: 3]
+	rule: _Item -> [48][Module]< _Item @ { _Item } >
+		+ StackSlot(0)
+
+[47][Module]< _Item @ { _Item } >
+[RULE: 3]
+	epsilon -> [49][Module]< _Item { @ _Item } >
+	epsilon -> [52][Module]< _Item { _Item } @ >
+
+[48][Module]< _Item @ { _Item } >
+[RULE: 3]
+	epsilon -> [47][Module]< _Item @ { _Item } >
+
+[49][Module]< _Item { @ _Item } >
+[RULE: 3]
+	rule: _Item -> [50][Module]< _Item { _Item @ } >
+		+ StackSlot(1)
+
+[50][Module]< _Item { _Item @ } >
+[RULE: 3]
+	epsilon -> [49][Module]< _Item { @ _Item } >
+	epsilon -> [52][Module]< _Item { _Item } @ >
+
+[51][Module]< _Item { _Item } > @[ENDING]
+[RULE: 3]
+
+[52][Module]< _Item { _Item } @ >
+[RULE: 3]
+	epsilon -> [51][Module]< _Item { _Item } > @[ENDING]
+		+ CreateObject(File)
+		+ Field(File::items, 0)
+		+ Field(File::items, 1)
+		+ StackEnd()
+
+[53][Module]@ < _Item { _Item } >
+[RULE: 3]
+	epsilon -> [46][Module]< @ _Item { _Item } >
+		+ StackBegin()
+
