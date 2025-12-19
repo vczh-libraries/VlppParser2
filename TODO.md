@@ -47,12 +47,6 @@
     - `Throw1`
     - `Throw2`
     - `Throw3`
-- `PrefixMerge7_PmSwitch`
-  - `Generic/ParseModule`, `Generic/ParseExprModule`
-    - `Generic_Ambiguous4`
-- `PrefixMerge8_PmVariadic`
-  - `Variadic/ParseModule`, `Variadic/ParseExprModule` and `Variadic/ParseTypeModule`
-    - `Variadic8`
 
 ## Prefix Merge
 
