@@ -828,7 +828,6 @@ SyntaxSymbolManager::PrefixMergeCrossReference_AccumulatedEdges
 					}
 				}
 
-
 #ifdef LOG_DECISION_MAKING
 				for (auto [edges, index] : indexed(accumulatedEdgesList))
 				{
@@ -840,7 +839,14 @@ SyntaxSymbolManager::PrefixMergeCrossReference_AccumulatedEdges
 						{
 							LOG(L"| ");
 						}
-						LOG(edge->input.rule->Name());
+						if (edge->input.type == EdgeInputType::Rule)
+						{
+							LOG(edge->input.rule->Name());
+						}
+						else
+						{
+							LOG(L"[TOKEN] " + (edge->input.condition ? edge->input.condition.Value() : itow(edge->input.token)));
+						}
 					}
 					LOGL(L"");
 				}
@@ -945,7 +951,15 @@ SyntaxSymbolManager::PrefixMergeCrossReference_AccumulatedEdges
 								auto label = fromState->label + pmLabel;
 								for (vint j = 0; j < i; j++)
 								{
-									label += L" " + edgeList[j]->input.rule->Name();
+									auto&& input = edgeList[j]->input;
+									if (input.type == EdgeInputType::Rule)
+									{
+										label += L" " + input.rule->Name();
+									}
+									else
+									{
+										label += L" [TOKEN] " + (input.condition ? input.condition.Value() : itow(input.token));
+									}
 								}
 								if (contStateLabels.Contains(label)) continue;
 								contStateLabels.Add(label);
@@ -1013,6 +1027,7 @@ SyntaxSymbolManager::PrefixMergeCrossReference_Apply
 							{
 								auto edges = Ptr(new List<EdgeSymbol*>);
 								CopyFrom(*edges.Obj(), accumulatedEdges);
+								edges->Add(edge);
 								pmai.tokenToEdges.Add({ edge->input.token, edge->input.condition }, edges);
 							}
 							break;
