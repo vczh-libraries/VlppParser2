@@ -26,8 +26,8 @@ namespace prefixmerge6_pm2
 		_ExprNoComma = 57,
 		_Expr = 62,
 		Module = 68,
-		ExprModule = 78,
-		TypeModule = 81,
+		ExprModule = 79,
+		TypeModule = 82,
 	};
 
 	const wchar_t* ModuleParserRuleName(vl::vint index);

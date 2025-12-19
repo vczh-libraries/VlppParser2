@@ -28,14 +28,14 @@ namespace prefixmerge7_pmswitch
 		_Expr_NoGT_NoComma = 71,
 		_Expr = 74,
 		Module = 80,
-		Module_NoGT_NoComma = 90,
-		ExprModule = 100,
-		TypeModule = 103,
-		_Expr3_SWITCH_COMBINED = 106,
-		_Expr3_SWITCH_0allow_gt = 109,
-		_Expr3_SWITCH_1allow_gt = 115,
-		_Expr4_SWITCH_0allow_gt = 124,
-		_Expr4_SWITCH_1allow_gt = 129,
+		Module_NoGT_NoComma = 91,
+		ExprModule = 102,
+		TypeModule = 105,
+		_Expr3_SWITCH_COMBINED = 108,
+		_Expr3_SWITCH_0allow_gt = 111,
+		_Expr3_SWITCH_1allow_gt = 117,
+		_Expr4_SWITCH_0allow_gt = 126,
+		_Expr4_SWITCH_1allow_gt = 131,
 	};
 
 	const wchar_t* ModuleParserRuleName(vl::vint index);

@@ -1,4 +1,8 @@
-﻿================ FAILED TRACES ================
+﻿================ EXECUTION STEPS ================
+[0]: 0@0 - 12@0
+
+==================== TRACES =====================
+
 +----------------------+
 | [0]: <Start>         |
 | [68][Module] BEGIN   |
@@ -20,11 +24,162 @@
 |
 +
 |
-+---------------------------+
-| [2]: <Ending>             |
-| [75][Module] END [ENDING] |
-| [AST-INSTRUCTIONS]:       |
-|   + StackBegin()          |
-|   + StackEnd()            |
-| [PREDECESSORS 1-1]: [1]   |
-+---------------------------+
++------------------------------------------------------------------+
+| [2]: <Leftrec>                                                   |
+| [75][Module] BEGIN [pm-cr-token: 7] _Expr _ExprNoComma [TOKEN] 7 |
+| [AST-INSTRUCTIONS]:                                              |
+|   + StackBegin()                                                 |
+|   + Token(0)                                                     |
+| [RETURN STACK]:                                                  |
+|   [1][4][1]: _ExprNoComma -> [67][_Expr]<! !_ExprNoComma @ !>    |
+|   [0][26][1]: _Expr -> [77][Module]<! !_Expr @ !>                |
+| [PREDECESSORS 1-1]: [1]                                          |
+| [SUCCESORS 4-4]: [4]                                             |
++------------------------------------------------------------------+
+[0]
+ |
+ +
+ |
+[0]
+++=====================================================================================++
+|| [4]: {ID} A                                                                         ||
+|| [2][_Name]< ID @ >                                                                  ||
+|| [AST-INSTRUCTIONS]:                                                                 ||
+||   + StackBegin()                                                                    ||
+||   + Token(0)                                                                        ||
+|| [RETURN STACK]:                                                                     ||
+||   [6][0][2]: _Name -> [8][_PrimitiveShared]<! !_Name @ !>                           ||
+||   [5][10][2]: _PrimitiveShared -> [33][_Expr0] BEGIN [pm-cr-rule: _PrimitiveShared] ||
+||   [4][7][2]: _Expr0 -> [50][_Expr1]<! !_Expr0 @ !>                                  ||
+||   [3][6][2]: _Expr1 -> [56][_Expr2]<! !_Expr1 @ !>                                  ||
+||   [2][28][2]: _Expr2 -> [60][_ExprNoComma]< "throw" [ _Expr2 @ ] >                  ||
+||   [1][4][1]: _ExprNoComma -> [67][_Expr]<! !_ExprNoComma @ !>                       ||
+||   [0][26][1]: _Expr -> [77][Module]<! !_Expr @ !>                                   ||
+|| [PREDECESSORS 2-2]: [2]                                                             ||
+|| [SUCCESORS 5-5]: [5]                                                                ||
+++=====================================================================================++
+|
++
+|
++-------------------------------------------------------------------------------------+
+| [5]: <Ending>                                                                       |
+| [8][_PrimitiveShared]<! !_Name @ !>                                                 |
+| [AST-INSTRUCTIONS]:                                                                 |
+|   + CreateObject(Name)                                                              |
+|   + Field(Name::name, 0)                                                            |
+|   + StackEnd()                                                                      |
+|   > StackBegin()                                                                    |
+| [RETURN STACK]:                                                                     |
+|   [5][10][2]: _PrimitiveShared -> [33][_Expr0] BEGIN [pm-cr-rule: _PrimitiveShared] |
+|   [4][7][2]: _Expr0 -> [50][_Expr1]<! !_Expr0 @ !>                                  |
+|   [3][6][2]: _Expr1 -> [56][_Expr2]<! !_Expr1 @ !>                                  |
+|   [2][28][2]: _Expr2 -> [60][_ExprNoComma]< "throw" [ _Expr2 @ ] >                  |
+|   [1][4][1]: _ExprNoComma -> [67][_Expr]<! !_ExprNoComma @ !>                       |
+|   [0][26][1]: _Expr -> [77][Module]<! !_Expr @ !>                                   |
+| [PREDECESSORS 4-4]: [4]                                                             |
+| [SUCCESORS 6-6]: [6]                                                                |
++-------------------------------------------------------------------------------------+
+|
++
+|
++--------------------------------------------------------------------+
+| [6]: <Ending>                                                      |
+| [33][_Expr0] BEGIN [pm-cr-rule: _PrimitiveShared]                  |
+| [AST-INSTRUCTIONS]:                                                |
+|   + StackEnd()                                                     |
+| [RETURN STACK]:                                                    |
+|   [4][7][2]: _Expr0 -> [50][_Expr1]<! !_Expr0 @ !>                 |
+|   [3][6][2]: _Expr1 -> [56][_Expr2]<! !_Expr1 @ !>                 |
+|   [2][28][2]: _Expr2 -> [60][_ExprNoComma]< "throw" [ _Expr2 @ ] > |
+|   [1][4][1]: _ExprNoComma -> [67][_Expr]<! !_ExprNoComma @ !>      |
+|   [0][26][1]: _Expr -> [77][Module]<! !_Expr @ !>                  |
+| [PREDECESSORS 5-5]: [5]                                            |
+| [SUCCESORS 7-7]: [7]                                               |
++--------------------------------------------------------------------+
+|
++
+|
++--------------------------------------------------------------------+
+| [7]: <Ending>                                                      |
+| [50][_Expr1]<! !_Expr0 @ !>                                        |
+| [AST-INSTRUCTIONS]:                                                |
+|   + StackBegin()                                                   |
+|   + StackEnd()                                                     |
+|   > StackBegin()                                                   |
+| [RETURN STACK]:                                                    |
+|   [3][6][2]: _Expr1 -> [56][_Expr2]<! !_Expr1 @ !>                 |
+|   [2][28][2]: _Expr2 -> [60][_ExprNoComma]< "throw" [ _Expr2 @ ] > |
+|   [1][4][1]: _ExprNoComma -> [67][_Expr]<! !_ExprNoComma @ !>      |
+|   [0][26][1]: _Expr -> [77][Module]<! !_Expr @ !>                  |
+| [PREDECESSORS 6-6]: [6]                                            |
+| [SUCCESORS 8-8]: [8]                                               |
++--------------------------------------------------------------------+
+|
++
+|
++--------------------------------------------------------------------+
+| [8]: <Ending>                                                      |
+| [56][_Expr2]<! !_Expr1 @ !>                                        |
+| [AST-INSTRUCTIONS]:                                                |
+|   + StackEnd()                                                     |
+|   > StackBegin()                                                   |
+| [RETURN STACK]:                                                    |
+|   [2][28][2]: _Expr2 -> [60][_ExprNoComma]< "throw" [ _Expr2 @ ] > |
+|   [1][4][1]: _ExprNoComma -> [67][_Expr]<! !_ExprNoComma @ !>      |
+|   [0][26][1]: _Expr -> [77][Module]<! !_Expr @ !>                  |
+| [PREDECESSORS 7-7]: [7]                                            |
+| [SUCCESORS 9-9]: [9]                                               |
++--------------------------------------------------------------------+
+|
++
+|
++---------------------------------------------------------------+
+| [9]: <Ending>                                                 |
+| [60][_ExprNoComma]< "throw" [ _Expr2 @ ] >                    |
+| [AST-INSTRUCTIONS]:                                           |
+|   + StackEnd()                                                |
+|   > StackSlot(1)                                              |
+| [RETURN STACK]:                                               |
+|   [1][4][1]: _ExprNoComma -> [67][_Expr]<! !_ExprNoComma @ !> |
+|   [0][26][1]: _Expr -> [77][Module]<! !_Expr @ !>             |
+| [PREDECESSORS 8-8]: [8]                                       |
+| [SUCCESORS 10-10]: [10]                                       |
++---------------------------------------------------------------+
+|
++
+|
++---------------------------------------------------+
+| [10]: <Ending>                                    |
+| [67][_Expr]<! !_ExprNoComma @ !>                  |
+| [AST-INSTRUCTIONS]:                               |
+|   + CreateObject(ThrowExpr)                       |
+|   + Field(ThrowExpr::arg, 1)                      |
+|   + StackEnd()                                    |
+|   > StackBegin()                                  |
+| [RETURN STACK]:                                   |
+|   [0][26][1]: _Expr -> [77][Module]<! !_Expr @ !> |
+| [PREDECESSORS 9-9]: [9]                           |
+| [SUCCESORS 11-11]: [11]                           |
++---------------------------------------------------+
+|
++
+|
++----------------------------+
+| [11]: <Ending>             |
+| [77][Module]<! !_Expr @ !> |
+| [AST-INSTRUCTIONS]:        |
+|   + StackEnd()             |
+|   > StackBegin()           |
+| [PREDECESSORS 10-10]: [10] |
+| [SUCCESORS 12-12]: [12]    |
++----------------------------+
+|
++
+|
++----------------------------+
+| [12]: <Ending>             |
+| [76][Module] END [ENDING]  |
+| [AST-INSTRUCTIONS]:        |
+|   + StackEnd()             |
+| [PREDECESSORS 11-11]: [11] |
++----------------------------+
