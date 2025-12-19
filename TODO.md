@@ -48,6 +48,24 @@
     - `Throw2`
     - `Throw3`
 
+`[74][Module] BEGIN [pm-cr-token: 7]` missing leftrec transition to `[59][_ExprNoComma]< "throw" @ [ _Expr2 ] >`
+Unlike others, `[TOKEN] 7` dosen't end with `[TOKEN] 7`
+
+```
+[PMAI] Module @  BEGIN
+  [RULE] _PrimitiveShared :
+    | _LongType -> _PrimitiveShared
+    | _Expr -> _ExprNoComma -> _Expr2 -> _Expr1 -> _Expr0 -> _PrimitiveShared
+    _Expr -> _ExprNoComma -> _Expr2 -> _Expr1 -> _Expr0 -> _LongType -> | _PrimitiveShared
+  [RULE] _PrimitiveTypeOnly :
+    | _LongType -> _PrimitiveTypeOnly
+    _Expr -> _ExprNoComma -> _Expr2 -> _Expr1 -> _Expr0 -> _LongType -> | _PrimitiveTypeOnly
+  [RULE] _PrimitiveExprOnly :
+    | _Expr -> _ExprNoComma -> _Expr2 -> _Expr1 -> _Expr0 -> _PrimitiveExprOnly
+  [TOKEN] 7
+    | _Expr -> _ExprNoComma
+```
+
 ## Prefix Merge
 
 In `PrefixMerge5_Pm` test case, one of a prefix merge instance is

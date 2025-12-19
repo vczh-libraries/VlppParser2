@@ -1092,7 +1092,7 @@ SyntaxSymbolManager::PrefixMergeCrossReference_Apply
 					{
 						auto [pmToken, condition] = pmai.tokenToEdges.Keys()[i];
 #ifdef LOG_DECISION_MAKING
-						LOG(L"  [TOKEN] " + (condition ? condition.Value() : itow(pmToken)));
+						LOGL(L"  [TOKEN] " + (condition ? condition.Value() : itow(pmToken)));
 #endif
 						auto&& accumulatedEdgesList = pmai.tokenToEdges.GetByIndex(i);
 						auto newEdge = PrefixMergeCrossReference_AccumulatedEdges(currentState, (L"[pm-cr-token: " + (condition ? condition.Value() : itow(pmToken)) + L"]"), accumulatedEdgesList, ic);
