@@ -33,6 +33,7 @@
     - 109236 -> 10141 -> 6663 states: `Test\ParserLog\BuiltIn-Workflow\Trace-1[Codegen_WorkflowHints].txt`, meanwhile 6750 in master
   - [x] automatically identify prefix_merge
 - [ ] Built-in parsers:
+  - [ ] Add bool/true/false to PrefixMerge5..8 to address C++ parser issue
   - [ ] C++
 - [ ] build.ps1
 - [ ] Finish `## Features to Add`
