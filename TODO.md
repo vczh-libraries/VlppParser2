@@ -21,17 +21,36 @@
 
 ### Progressing
 
-Test\Source\BuiltIn-Cpp\Input\Declarations\Generic_Decls\Forward_Members.txt
+`Test\Source\BuiltIn-Cpp\Input\Declarations\Generic_Decls\Forward_Members.txt`
 ```
 template... A::B<_1, X>::C::D<Y, _2>::D(X, Y){}
 ```
 Ambiguous VariableDeclaration but trying to accept a QualifiedName(A)
 
-Test\Source\BuiltIn-Cpp\Input\Declarations\GenericPS_Decls\ForwardDecl_CtorsDtors.txt
+`Test\Source\BuiltIn-Cpp\Input\Declarations\GenericPS_Decls\ForwardDecl_CtorsDtors.txt`
 ```
 template... A::B<_1, X>::C::D<Y, _2>::D(){}
 ```
 Probably the same reason
+
+`Test\ParserLog\BuiltIn-Cpp\Trace-1[File_AmbiguousDecl4].txt`
+Looks good, but in `Trace-3` there is
+```
+[17]: 6@0 - 6@1
+[18]: 7@0 - 7@4
+[19]: 8@0 - 9@8
+[10]: 10@0 - 205@0
+[11]: RA_Branch
+[21]: 6@0 - 6@1
+[22]: 7@0 - 7@4
+[9]: 8@0 - 9@8
+[12]: 11@0 - 205@0
+[13]: RA_Branch
+[7]: 6@0 - 6@1
+[8]: 7@0 - 7@4
+[14]: RA_Branch
+```
+The third branch should continue from 14@0 to 204@0
 
 - [x] Non-ambiguous test cases
 - [x] Ambiguous test cases
