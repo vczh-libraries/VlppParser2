@@ -159,6 +159,11 @@ TEST_FILE
 		runParser.operator()<CppFile>(L"File", L"AmbiguousDecl3", [&]() { return GetCppParser().Parse_File(L"namespace {A::B::X(){}}"); });
 	});
 
+	TEST_CASE(L"template<>A::B::C::D(){}")
+	{
+		runParser.operator()<CppFile>(L"File", L"AmbiguousDecl4", [&]() { return GetCppParser().Parse_File(L"template<>A::B::C::D(){}"); });
+	});
+
 	TEST_CASE(L"int main() {A X();}")
 	{
 		runParser.operator()<CppFile>(L"File", L"AmbiguousStat", [&]() { return GetCppParser().Parse_File(L"int main() {A X();}"); });
