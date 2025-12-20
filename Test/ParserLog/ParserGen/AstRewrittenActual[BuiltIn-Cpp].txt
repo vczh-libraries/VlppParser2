@@ -446,7 +446,16 @@ class DeclaratorArrayPart
   var argument : TypeOrExpr;
 }
 
-@public class Declarator
+@public @ambiguous class Declarator
+{
+}
+
+class DeclaratorToResolve : Declarator
+{
+  var candidates : Declarator[];
+}
+
+@public class DeclaratorCommon : Declarator
 {
   var keywords : DeclaratorKeyword[];
   var advancedTypes : AdvancedType[];

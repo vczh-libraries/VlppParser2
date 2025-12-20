@@ -444,6 +444,15 @@ namespace cpp_parser::json_visitor
 	}
 	void AstVisitor::PrintFields(CppDeclarator* node)
 	{
+	}
+	void AstVisitor::PrintFields(CppDeclaratorArrayPart* node)
+	{
+		BeginField(vl::WString::Unmanaged(L"argument"));
+		Print(node->argument.Obj());
+		EndField();
+	}
+	void AstVisitor::PrintFields(CppDeclaratorCommon* node)
+	{
 		BeginField(vl::WString::Unmanaged(L"advancedTypes"));
 		BeginArray();
 		for (auto&& listItem : node->advancedTypes)
@@ -491,12 +500,6 @@ namespace cpp_parser::json_visitor
 		EndField();
 		BeginField(vl::WString::Unmanaged(L"variadic"));
 		WriteToken(node->variadic);
-		EndField();
-	}
-	void AstVisitor::PrintFields(CppDeclaratorArrayPart* node)
-	{
-		BeginField(vl::WString::Unmanaged(L"argument"));
-		Print(node->argument.Obj());
 		EndField();
 	}
 	void AstVisitor::PrintFields(CppDeclaratorFunctionPart* node)
@@ -548,6 +551,19 @@ namespace cpp_parser::json_visitor
 	{
 		BeginField(vl::WString::Unmanaged(L"keyword"));
 		WriteToken(node->keyword);
+		EndField();
+	}
+	void AstVisitor::PrintFields(CppDeclaratorToResolve* node)
+	{
+		BeginField(vl::WString::Unmanaged(L"candidates"));
+		BeginArray();
+		for (auto&& listItem : node->candidates)
+		{
+			BeginArrayItem();
+			Print(listItem.Obj());
+			EndArrayItem();
+		}
+		EndArray();
 		EndField();
 	}
 	void AstVisitor::PrintFields(CppDeclaratorType* node)
@@ -3002,6 +3018,34 @@ namespace cpp_parser::json_visitor
 		EndObject();
 	}
 
+	void AstVisitor::Visit(CppDeclaratorToResolve* node)
+	{
+		if (!node)
+		{
+			WriteNull();
+			return;
+		}
+		BeginObject();
+		WriteType(vl::WString::Unmanaged(L"DeclaratorToResolve"), node);
+		PrintFields(static_cast<CppDeclarator*>(node));
+		PrintFields(static_cast<CppDeclaratorToResolve*>(node));
+		EndObject();
+	}
+
+	void AstVisitor::Visit(CppDeclaratorCommon* node)
+	{
+		if (!node)
+		{
+			WriteNull();
+			return;
+		}
+		BeginObject();
+		WriteType(vl::WString::Unmanaged(L"DeclaratorCommon"), node);
+		PrintFields(static_cast<CppDeclarator*>(node));
+		PrintFields(static_cast<CppDeclaratorCommon*>(node));
+		EndObject();
+	}
+
 	void AstVisitor::Visit(CppVarValueInit* node)
 	{
 		if (!node)
@@ -3159,6 +3203,16 @@ namespace cpp_parser::json_visitor
 		node->Accept(static_cast<CppDeclaratorFunctionPart::IVisitor*>(this));
 	}
 
+	void AstVisitor::Print(CppDeclarator* node)
+	{
+		if (!node)
+		{
+			WriteNull();
+			return;
+		}
+		node->Accept(static_cast<CppDeclarator::IVisitor*>(this));
+	}
+
 	void AstVisitor::Print(CppVarInit* node)
 	{
 		if (!node)
@@ -3303,19 +3357,6 @@ namespace cpp_parser::json_visitor
 		BeginObject();
 		WriteType(vl::WString::Unmanaged(L"DeclaratorArrayPart"), node);
 		PrintFields(static_cast<CppDeclaratorArrayPart*>(node));
-		EndObject();
-	}
-
-	void AstVisitor::Print(CppDeclarator* node)
-	{
-		if (!node)
-		{
-			WriteNull();
-			return;
-		}
-		BeginObject();
-		WriteType(vl::WString::Unmanaged(L"Declarator"), node);
-		PrintFields(static_cast<CppDeclarator*>(node));
 		EndObject();
 	}
 

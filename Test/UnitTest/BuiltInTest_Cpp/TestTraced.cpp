@@ -66,12 +66,12 @@ TEST_FILE
 
 	TEST_CASE(L"true")
 	{
-		runParser.operator()<CppExprOnly>(L"TypeOrExpr", L"TrueExpr", [&]() { return GetCppParser().Parse_TypeOrExpr(L"true"); });
+		runParser.operator()<CppPrimitiveExprLiteral>(L"TypeOrExpr", L"TrueExpr", [&]() { return GetCppParser().Parse_TypeOrExpr(L"true"); });
 	});
 
 	TEST_CASE(L"int")
 	{
-		runParser.operator()<CppTypeOnly>(L"TypeOrExpr", L"IntType", [&]() { return GetCppParser().Parse_TypeOrExpr(L"int"); });
+		runParser.operator()<CppPrimitiveType>(L"TypeOrExpr", L"IntType", [&]() { return GetCppParser().Parse_TypeOrExpr(L"int"); });
 	});
 
 	TEST_CASE(L"int*")
@@ -81,7 +81,7 @@ TEST_FILE
 
 	TEST_CASE(L"Name")
 	{
-		runParser.operator() < CppQualifiedName > (L"TypeOrExpr", L"Name", [&]() { return GetCppParser().Parse_TypeOrExpr(L"Name"); });
+		runParser.operator() <CppQualifiedName> (L"TypeOrExpr", L"Name", [&]() { return GetCppParser().Parse_TypeOrExpr(L"Name"); });
 	});
 	
 	TEST_CASE(L"Name<int>")
@@ -96,7 +96,7 @@ TEST_FILE
 	
 	TEST_CASE(L"sizeof a()")
 	{
-		runParser.operator()<CppExprOnly>(L"TypeOrExpr", L"SizeofA", [&]() { return GetCppParser().Parse_TypeOrExpr(L"sizeof a()"); });
+		runParser.operator()<CppSizeofExpr>(L"TypeOrExpr", L"SizeofA", [&]() { return GetCppParser().Parse_TypeOrExpr(L"sizeof a()"); });
 	});
 	
 	TEST_CASE(L"[]<typename T, class ...U = int>{}")
@@ -111,7 +111,7 @@ TEST_FILE
 	
 	TEST_CASE(L"T*{a}")
 	{
-		runParser.operator()<CppExprOnly>(L"TypeOrExpr", L"Multiply", [&]() { return GetCppParser().Parse_TypeOrExpr(L"T*{a}"); });
+		runParser.operator()<CppBinaryExpr>(L"TypeOrExpr", L"Multiply", [&]() { return GetCppParser().Parse_TypeOrExpr(L"T*{a}"); });
 	});
 	
 	TEST_CASE(L"A<B>::C")
@@ -126,17 +126,17 @@ TEST_FILE
 
 	TEST_CASE(L"void(int(...))")
 	{
-		runParser.operator()<CppTypeOnly>(L"TypeOrExpr", L"AmbiguousArgument", [&]() { return GetCppParser().Parse_TypeOrExpr(L"void(int(...))"); });
+		runParser.operator()<CppDeclaratorType>(L"TypeOrExpr", L"AmbiguousArgument", [&]() { return GetCppParser().Parse_TypeOrExpr(L"void(int(...))"); });
 	});
 
 	TEST_CASE(L"A<B>C;")
 	{
-		runParser.operator()<CppStatement>(L"Stat", L"AmbiguousStat", [&]() { return GetCppParser().Parse_Stat(L"A<B>C;"); });
+		runParser.operator()<CppStatementToResolve>(L"Stat", L"AmbiguousStat", [&]() { return GetCppParser().Parse_Stat(L"A<B>C;"); });
 	});
 
 	TEST_CASE(L"while(int a = 0);")
 	{
-		runParser.operator() < CppStatement > (L"Stat", L"WhileStatement", [&]() { return GetCppParser().Parse_Stat(L"while(int a = 0);"); });
+		runParser.operator() <CppWhileStat> (L"Stat", L"WhileStatement", [&]() { return GetCppParser().Parse_Stat(L"while(int a = 0);"); });
 	});
 
 	TEST_CASE(L"class X{};")

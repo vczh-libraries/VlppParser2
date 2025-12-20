@@ -23,6 +23,7 @@ namespace cpp_parser::copy_visitor
 		, protected virtual CppStatement::IVisitor
 		, protected virtual CppIdentifier::IVisitor
 		, protected virtual CppDeclaratorFunctionPart::IVisitor
+		, protected virtual CppDeclarator::IVisitor
 		, protected virtual CppVarInit::IVisitor
 		, protected virtual CppDeclaratorVariablePart::IVisitor
 		, protected virtual CppForStatConditionPart::IVisitor
@@ -48,10 +49,12 @@ namespace cpp_parser::copy_visitor
 		void CopyFields(CppDeclarationToResolve* from, CppDeclarationToResolve* to);
 		void CopyFields(CppDeclarator* from, CppDeclarator* to);
 		void CopyFields(CppDeclaratorArrayPart* from, CppDeclaratorArrayPart* to);
+		void CopyFields(CppDeclaratorCommon* from, CppDeclaratorCommon* to);
 		void CopyFields(CppDeclaratorFunctionPart* from, CppDeclaratorFunctionPart* to);
 		void CopyFields(CppDeclaratorFunctionPartCommon* from, CppDeclaratorFunctionPartCommon* to);
 		void CopyFields(CppDeclaratorFunctionPartToResolve* from, CppDeclaratorFunctionPartToResolve* to);
 		void CopyFields(CppDeclaratorKeyword* from, CppDeclaratorKeyword* to);
+		void CopyFields(CppDeclaratorToResolve* from, CppDeclaratorToResolve* to);
 		void CopyFields(CppDeclaratorType* from, CppDeclaratorType* to);
 		void CopyFields(CppDeclaratorVariablePart* from, CppDeclaratorVariablePart* to);
 		void CopyFields(CppDeclaratorVariablePartCommon* from, CppDeclaratorVariablePartCommon* to);
@@ -143,7 +146,6 @@ namespace cpp_parser::copy_visitor
 		virtual void Visit(CppDeclaratorKeyword* node);
 		virtual void Visit(CppFunctionKeyword* node);
 		virtual void Visit(CppDeclaratorArrayPart* node);
-		virtual void Visit(CppDeclarator* node);
 		virtual void Visit(CppVarStatInitItem* node);
 		virtual void Visit(CppClassInheritance* node);
 		virtual void Visit(CppClassMemberPart* node);
@@ -233,6 +235,9 @@ namespace cpp_parser::copy_visitor
 		void Visit(CppDeclaratorFunctionPartToResolve* node) override;
 		void Visit(CppDeclaratorFunctionPartCommon* node) override;
 
+		void Visit(CppDeclaratorToResolve* node) override;
+		void Visit(CppDeclaratorCommon* node) override;
+
 		void Visit(CppVarValueInit* node) override;
 		void Visit(CppVarParanthesisInit* node) override;
 		void Visit(CppVarBraceInit* node) override;
@@ -249,6 +254,7 @@ namespace cpp_parser::copy_visitor
 		virtual vl::Ptr<CppStatement> CopyNode(CppStatement* node);
 		virtual vl::Ptr<CppIdentifier> CopyNode(CppIdentifier* node);
 		virtual vl::Ptr<CppDeclaratorFunctionPart> CopyNode(CppDeclaratorFunctionPart* node);
+		virtual vl::Ptr<CppDeclarator> CopyNode(CppDeclarator* node);
 		virtual vl::Ptr<CppVarInit> CopyNode(CppVarInit* node);
 		virtual vl::Ptr<CppDeclaratorVariablePart> CopyNode(CppDeclaratorVariablePart* node);
 		virtual vl::Ptr<CppForStatConditionPart> CopyNode(CppForStatConditionPart* node);
@@ -261,7 +267,6 @@ namespace cpp_parser::copy_visitor
 		virtual vl::Ptr<CppDeclaratorKeyword> CopyNode(CppDeclaratorKeyword* node);
 		virtual vl::Ptr<CppFunctionKeyword> CopyNode(CppFunctionKeyword* node);
 		virtual vl::Ptr<CppDeclaratorArrayPart> CopyNode(CppDeclaratorArrayPart* node);
-		virtual vl::Ptr<CppDeclarator> CopyNode(CppDeclarator* node);
 		virtual vl::Ptr<CppVarStatInitItem> CopyNode(CppVarStatInitItem* node);
 		virtual vl::Ptr<CppClassInheritance> CopyNode(CppClassInheritance* node);
 		virtual vl::Ptr<CppClassMemberPart> CopyNode(CppClassMemberPart* node);
@@ -285,8 +290,10 @@ namespace cpp_parser::copy_visitor
 		vl::Ptr<CppDeclaration> CopyNode(CppDeclaration* node);
 		vl::Ptr<CppDeclarationCommon> CopyNode(CppDeclarationCommon* node);
 		vl::Ptr<CppDeclarationToResolve> CopyNode(CppDeclarationToResolve* node);
+		vl::Ptr<CppDeclaratorCommon> CopyNode(CppDeclaratorCommon* node);
 		vl::Ptr<CppDeclaratorFunctionPartCommon> CopyNode(CppDeclaratorFunctionPartCommon* node);
 		vl::Ptr<CppDeclaratorFunctionPartToResolve> CopyNode(CppDeclaratorFunctionPartToResolve* node);
+		vl::Ptr<CppDeclaratorToResolve> CopyNode(CppDeclaratorToResolve* node);
 		vl::Ptr<CppDeclaratorType> CopyNode(CppDeclaratorType* node);
 		vl::Ptr<CppDeclaratorVariablePartCommon> CopyNode(CppDeclaratorVariablePartCommon* node);
 		vl::Ptr<CppDeclaratorVariablePartToResolve> CopyNode(CppDeclaratorVariablePartToResolve* node);
