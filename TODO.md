@@ -33,10 +33,15 @@
     - 109236 -> 10141 -> 6663 states: `Test\ParserLog\BuiltIn-Workflow\Trace-1[Codegen_WorkflowHints].txt`, meanwhile 6750 in master
   - [x] automatically identify prefix_merge
 - [ ] Built-in parsers: C++
+  - [ ] Non-traced test cases save json files with extra field recording the input code at the beginning
 - [ ] build.ps1
 - [ ] Finish `## Features to Add`
 - [ ] Document design principal, algorithm and syntax
 - [ ] build.ps1
+- [ ] Build in Ubuntu. Windows and Linux test output inconsistency on
+    - the order of ambiguous candidates.
+    - `\r\n` or `\n` serialized into `<![CDATA[]]>`.
+    - We can force `\r\n` in unit test, normalizing all inputs.
 
 ## Prefix Merge
 
@@ -109,10 +114,6 @@ Or we are getting this
 - Reconsider in new implementation:
   - Test `SyntaxSymbolManager::PrefixMergeCrossReference_Solve` firmly.
   - Create ambiguity test case caused by only one clause with alternative syntax.
-- Windows and Linux test output inconsistency on
-  - the order of ambiguous candidates.
-  - `\r\n` or `\n` serialized into `<![CDATA[]]>`.
-  - We can force `\r\n` in unit test, normalizing all inputs.
 
 ## Issues (BuiltIn-Cpp)
 
