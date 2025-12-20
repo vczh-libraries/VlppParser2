@@ -6,6 +6,15 @@ TEST_FILE
 	WString caseName;
 	FilePath dirOutput = GetOutputDir(L"BuiltIn-Cpp");
 
+	auto handlerOnError = GetCppParser().OnError.Add(
+		[&](ErrorArgs& args)
+		{
+			args.throwError = true;
+
+			TraceProcessingArgs tpArgs(args.tokens, args.executable, args.executor, false, TraceProcessingPhase::EndOfInput);
+			GetCppParser().OnTraceProcessing(tpArgs);
+		});
+
 	auto handlerOnTraceProcessing = GetCppParser().OnTraceProcessing.Add(
 		[&](TraceProcessingArgs& args)
 		{
@@ -53,6 +62,16 @@ TEST_FILE
 		auto astJson = PrintAstJson<json_visitor::AstVisitor>(ast);
 		File(dirOutput / (L"Output[" + indexName + L"_" + caseName + L"].json")).WriteAllText(astJson, true, BomEncoder::Utf8);
 	};
+
+	TEST_CASE(L"true")
+	{
+		runParser(L"TypeOrExpr", L"TrueExpr", [&]() { return GetCppParser().Parse_TypeOrExpr(L"true"); });
+	});
+
+	TEST_CASE(L"int")
+	{
+		runParser(L"TypeOrExpr", L"IntType", [&]() { return GetCppParser().Parse_TypeOrExpr(L"int"); });
+	});
 
 	TEST_CASE(L"int*")
 	{
@@ -144,6 +163,7 @@ TEST_FILE
 		runParser(L"File", L"AmbiguousGenericArgument", [&]() { return GetCppParser().Parse_File(L"struct S<X()>;"); });
 	});
 
+	GetCppParser().OnError.Remove(handlerOnError);
 	GetCppParser().OnTraceProcessing.Remove(handlerOnTraceProcessing);
 	GetCppParser().OnReadyToExecute.Remove(handlerOnReadyToExecute);
 }
