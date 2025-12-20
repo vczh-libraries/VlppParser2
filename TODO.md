@@ -52,6 +52,22 @@ Looks good, but in `Trace-3` there is
 ```
 The third branch should continue from 14@0 to 204@0
 
+```
+0..7
+  +----------------------+
+  |                      |
+8..9                     |
+  +----------+           |
+  |          |           |
+10..193   11..192        |
+  +----------+           |
+  |                      |
+179..205              18..204
+  +----------------------+
+  |
+182..184
+```
+
 - [x] Non-ambiguous test cases
 - [x] Ambiguous test cases
 - [x] Split FeatureTest
