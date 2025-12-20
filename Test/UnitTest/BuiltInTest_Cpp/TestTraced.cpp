@@ -111,7 +111,7 @@ TEST_FILE
 	
 	TEST_CASE(L"T*{a}")
 	{
-		runParser.operator()<CppTypeOrExprToResolve>(L"TypeOrExpr", L"MuliplyOrInit", [&]() { return GetCppParser().Parse_TypeOrExpr(L"T*{a}"); });
+		runParser.operator()<CppTypeOrExprToResolve>(L"TypeOrExpr", L"MultiplyOrInit", [&]() { return GetCppParser().Parse_TypeOrExpr(L"T*{a}"); });
 	});
 	
 	TEST_CASE(L"A<B>::C")
