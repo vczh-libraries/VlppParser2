@@ -21,32 +21,6 @@
 
 ### Progressing
 
-`_BExpr_NoComma` and `_TypeWithoutFuncVar` performed `MergeEdgesWithSameRuleUsingLeftrec`
-Causing `_BExpr11` and `_TypeBeforeDeclarator` to have empty `insAfterInput`
-Become `rule[] -> ending[StackBegin, StackEnd]`
-Breaking the pattern of `rule[StackBegin] -> ending[StackEnd]
-Which fails the `IsSingleReuseEdge` test
-Making ambiguity happen
-
-```
-@public _TypeOrExpr_Raw
-  ::= !_BExpr
-  ::= !_Type
-  ;
-
-@public _BExpr_NoComma
-  ::= !_BExpr11
-  ::= !_ThrowExpr
-  ::= _BExpr11:condition "?" _Expr:trueBranch ":" _BExpr_NoComma:falseBranch as IfExpr
-  ...
-  ;
-
-@public _TypeWithoutFuncVar
-  ::= !_TypeBeforeDeclarator
-  ::= _TypeBeforeDeclarator:type _DeclaratorWithoutNameAndFuncVar:declarator as DeclaratorType
-  ;
-```
-
 - [x] Non-ambiguous test cases
 - [x] Ambiguous test cases
 - [x] Split FeatureTest
