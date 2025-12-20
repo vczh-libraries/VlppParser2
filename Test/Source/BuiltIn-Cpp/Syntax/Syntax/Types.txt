@@ -31,29 +31,21 @@ _PrimitiveTypeLiteral
   ::= "typename" !_QualifiedNameAfterTypename
   ;
 
-_PM_PrimitiveType
-  ::= !_PrimitiveType
-  ;
-
-_PM_QualifiedName
-  ::= !_QualifiedName
-  ;
-
 _CallConstructibleTypeBeforeDeclarator
-  ::= !_PM_PrimitiveType
+  ::= !_PrimitiveType
   ::= "const" _ShortTypeBeforeDeclarator:type as ConstType
   ::= "volatile" _ShortTypeBeforeDeclarator:type as VolatileType
   ;
 
 _ShortTypeBeforeDeclarator : TypeOrExpr
-  ::= !_PM_QualifiedName
+  ::= !_QualifiedName
   ::= !_CallConstructibleTypeBeforeDeclarator
   ;
 
 @public _CallConstructibleType
   ::= !_CallConstructibleTypeBeforeDeclarator
-  ::= _PM_QualifiedName:type "const" as ConstType
-  ::= _PM_QualifiedName:type "volatile" as VolatileType
+  ::= _QualifiedName:type "const" as ConstType
+  ::= _QualifiedName:type "volatile" as VolatileType
   ::= _CallConstructibleType:type "const" as ConstType
   ::= _CallConstructibleType:type "volatile" as VolatileType
   ;
