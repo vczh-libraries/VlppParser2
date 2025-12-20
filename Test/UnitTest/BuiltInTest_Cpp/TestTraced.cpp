@@ -134,6 +134,11 @@ TEST_FILE
 		runParser.operator()<CppStatement>(L"Stat", L"AmbiguousStat", [&]() { return GetCppParser().Parse_Stat(L"A<B>C;"); });
 	});
 
+	TEST_CASE(L"while(int a = 0);")
+	{
+		runParser.operator() < CppStatement > (L"Stat", L"WhileStatement", [&]() { return GetCppParser().Parse_Stat(L"while(int a = 0);"); });
+	});
+
 	TEST_CASE(L"class X{};")
 	{
 		runParser.operator()<CppFile>(L"File", L"SimpleClass", [&]() { return GetCppParser().Parse_File(L"class X{};"); });
