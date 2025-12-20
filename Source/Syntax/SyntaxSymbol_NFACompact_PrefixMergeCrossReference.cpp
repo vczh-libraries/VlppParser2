@@ -794,8 +794,10 @@ SyntaxSymbolManager::PrefixMergeCrossReference_AccumulatedEdges
 					if (edge->input.type != EdgeInputType::Rule) return false;
 					if (edge->input.ruleType != automaton::ReturnRuleType::Reuse) return false;
 					if (edge->competitions.Count() != 0) return false;
-					if (edge->insAfterInput.Count() != 1) return false;
-					if (edge->insAfterInput[0].type != AstInsType::StackBegin) return false;
+
+					vint edgeIns = edge->insAfterInput.Count();
+					if (edgeIns >= 2) return false;
+					if (edgeIns == 1 && edge->insAfterInput[0].type != AstInsType::StackBegin) return false;
 
 					auto targetState = edge->To();
 					List<EdgeSymbol*> endingEdges;
@@ -807,8 +809,18 @@ SyntaxSymbolManager::PrefixMergeCrossReference_AccumulatedEdges
 
 					auto endingEdge = endingEdges[0];
 					if (endingEdge->input.type != EdgeInputType::Ending) return false;
-					if (endingEdge->insAfterInput.Count() != 1) return false;
-					if (endingEdge->insAfterInput[0].type != AstInsType::StackEnd) return false;
+
+					if (edgeIns == 0)
+					{
+						if (endingEdge->insAfterInput.Count() != 2) return false;
+						if (endingEdge->insAfterInput[0].type != AstInsType::StackBegin) return false;
+						if (endingEdge->insAfterInput[1].type != AstInsType::StackEnd) return false;
+					}
+					else
+					{
+						if (endingEdge->insAfterInput.Count() != 1) return false;
+						if (endingEdge->insAfterInput[0].type != AstInsType::StackEnd) return false;
+					}
 					return true;
 				};
 
