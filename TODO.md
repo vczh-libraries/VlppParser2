@@ -21,28 +21,6 @@
 
 ### Progressing
 
-`while(int a = 0);` when reading `a`, it should goes here:
-```
-@public _ExprOrVarCondition
-  ::= !_Expr
-  ::= {_DeclaratorKeyword:keywords} _TypeBeforeDeclarator:type @ _DeclaratorVariablePartRequiredInit:firstVarPart as VariablesDeclaration
-  ;
-```
-but this state is unreachable from `[1273][_ExprOrVarCondition] BEGIN [pm-cr-rule: _CallConstructibleTypeBeforeDeclarator]`
-
-```
-[PREFIX MERGE APPLICATIONS]
-  _ExprOrVarCondition:  BEGIN 
-    [applies: _AllPrefixUnaryExpr, _CallConstructibleTypeBeforeDeclarator, _PrimitiveExpr, _QualifiedName, _ThrowExpr_SWITCH_1allow_GT] [on: _Expr, _TypeBeforeDeclarator]
-```
-
-```
-[PMAI] _ExprOrVarCondition @  BEGIN
-  [RULE] _CallConstructibleTypeBeforeDeclarator :
-    _TypeBeforeDeclarator -> | _ShortTypeBeforeDeclarator -> _CallConstructibleTypeBeforeDeclarator
-    _Expr -> _Expr_Raw_SWITCH_1allow_GT -> _BExpr_SWITCH_1allow_GT -> _BExpr_NoComma_SWITCH_1allow_GT -> _BExpr11_SWITCH_1allow_GT -> _BExpr10_SWITCH_1allow_GT -> _BExpr9_SWITCH_1allow_GT -> _BExpr8_SWITCH_1allow_GT -> _BExpr7_SWITCH_1allow_GT -> _BExpr6_SWITCH_1allow_GT -> _BExpr5_SWITCH_1allow_GT -> _BExpr5_SWITCH_COMBINED -> _BExpr4 -> _BExpr3 -> _BExpr2 -> _BExpr1 -> _BExpr0 -> _PrefixUnaryExpr -> _PostfixUnaryExpr -> _CallConstructibleType -> | _CallConstructibleTypeBeforeDeclarator
-```
-
 - [x] Non-ambiguous test cases
 - [x] Ambiguous test cases
 - [x] Split FeatureTest
