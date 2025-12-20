@@ -25,29 +25,23 @@
 [PMAI] _TypeOrExpr_NoComma_Raw_SWITCH_0allow_GT @  BEGIN
   [RULE] _CallConstructibleTypeBeforeDeclarator :
     _TypeOrExpr_NoComma_Raw_SWITCH_COMBINED -> _Type -> _TypeBeforeDeclarator -> | _ShortTypeBeforeDeclarator -> _CallConstructibleTypeBeforeDeclarator
-    
+
     _BExpr_NoComma_SWITCH_0allow_GT -> _BExpr11_SWITCH_0allow_GT -> _BExpr10_SWITCH_0allow_GT -> _BExpr9_SWITCH_0allow_GT -> _BExpr8_SWITCH_0allow_GT -> _BExpr7_SWITCH_0allow_GT -> _BExpr6_SWITCH_0allow_GT -> _BExpr5_SWITCH_0allow_GT -> _BExpr5_SWITCH_COMBINED -> _BExpr4 -> _BExpr3 -> _BExpr2 -> _BExpr1 -> _BExpr0 -> _PrefixUnaryExpr -> _PostfixUnaryExpr -> _CallConstructibleType -> | _CallConstructibleTypeBeforeDeclarator
 
-  [RULE] _DeclaratorKeyword :
-    _TypeOrExpr_NoComma_Raw_SWITCH_COMBINED -> _Type -> _DeclaratorKeyword
+  [RULE] _PrimitiveExpr :
+    _BExpr_NoComma_SWITCH_0allow_GT -> _BExpr11_SWITCH_0allow_GT -> | _BExpr10_SWITCH_0allow_GT -> _BExpr9_SWITCH_0allow_GT -> _BExpr8_SWITCH_0allow_GT -> _BExpr7_SWITCH_0allow_GT -> _BExpr6_SWITCH_0allow_GT -> _BExpr5_SWITCH_0allow_GT -> _BExpr5_SWITCH_COMBINED -> _BExpr4 -> _BExpr3 -> _BExpr2 -> _BExpr1 -> _BExpr0 -> _PrefixUnaryExpr -> _PostfixUnaryExpr -> _QualifiedName_PrimitiveExpr -> _PrimitiveExpr
 
   [RULE] _AllPrefixUnaryExpr :
-    _BExpr_NoComma_SWITCH_0allow_GT -> _BExpr11_SWITCH_0allow_GT -> _BExpr10_SWITCH_0allow_GT -> _BExpr9_SWITCH_0allow_GT -> _BExpr8_SWITCH_0allow_GT -> _BExpr7_SWITCH_0allow_GT -> _BExpr6_SWITCH_0allow_GT -> _BExpr5_SWITCH_0allow_GT -> _BExpr5_SWITCH_COMBINED -> _BExpr4 -> _BExpr3 -> | _BExpr2 -> _BExpr1 -> _BExpr0 -> _PrefixUnaryExpr -> _AllPrefixUnaryExpr
+    _BExpr_NoComma_SWITCH_0allow_GT -> _BExpr11_SWITCH_0allow_GT -> | _BExpr10_SWITCH_0allow_GT -> _BExpr9_SWITCH_0allow_GT -> _BExpr8_SWITCH_0allow_GT -> _BExpr7_SWITCH_0allow_GT -> _BExpr6_SWITCH_0allow_GT -> _BExpr5_SWITCH_0allow_GT -> _BExpr5_SWITCH_COMBINED -> _BExpr4 -> _BExpr3 -> _BExpr2 -> _BExpr1 -> _BExpr0 -> _PrefixUnaryExpr -> _AllPrefixUnaryExpr
 
   [RULE] _QualifiedName :
     _TypeOrExpr_NoComma_Raw_SWITCH_COMBINED -> _Type -> _TypeBeforeDeclarator -> | _ShortTypeBeforeDeclarator -> _PM_QualifiedName -> _QualifiedName
 
-    _BExpr_NoComma_SWITCH_0allow_GT -> _BExpr11_SWITCH_0allow_GT -> _BExpr10_SWITCH_0allow_GT -> _BExpr9_SWITCH_0allow_GT -> _BExpr8_SWITCH_0allow_GT -> _BExpr7_SWITCH_0allow_GT -> _BExpr6_SWITCH_0allow_GT -> _BExpr5_SWITCH_0allow_GT -> _BExpr5_SWITCH_COMBINED -> _BExpr4 -> _BExpr3 -> | _BExpr2 -> _BExpr1 -> _BExpr0 -> _PrefixUnaryExpr -> _PostfixUnaryExpr -> _QualifiedName_PrimitiveExpr -> _QualifiedName
+    _BExpr_NoComma_SWITCH_0allow_GT -> _BExpr11_SWITCH_0allow_GT -> | _BExpr10_SWITCH_0allow_GT -> _BExpr9_SWITCH_0allow_GT -> _BExpr8_SWITCH_0allow_GT -> _BExpr7_SWITCH_0allow_GT -> _BExpr6_SWITCH_0allow_GT -> _BExpr5_SWITCH_0allow_GT -> _BExpr5_SWITCH_COMBINED -> _BExpr4 -> _BExpr3 -> _BExpr2 -> _BExpr1 -> _BExpr0 -> _PrefixUnaryExpr -> _PostfixUnaryExpr -> _QualifiedName_PrimitiveExpr -> _QualifiedName
 
     _BExpr_NoComma_SWITCH_0allow_GT -> _BExpr11_SWITCH_0allow_GT -> _BExpr10_SWITCH_0allow_GT -> _BExpr9_SWITCH_0allow_GT -> _BExpr8_SWITCH_0allow_GT -> _BExpr7_SWITCH_0allow_GT -> _BExpr6_SWITCH_0allow_GT -> _BExpr5_SWITCH_0allow_GT -> _BExpr5_SWITCH_COMBINED -> _BExpr4 -> _BExpr3 -> _BExpr2 -> _BExpr1 -> _BExpr0 -> _PrefixUnaryExpr -> _PostfixUnaryExpr -> _QualifiedName
-
+    
     _BExpr_NoComma_SWITCH_0allow_GT -> _BExpr11_SWITCH_0allow_GT -> _BExpr10_SWITCH_0allow_GT -> _BExpr9_SWITCH_0allow_GT -> _BExpr8_SWITCH_0allow_GT -> _BExpr7_SWITCH_0allow_GT -> _BExpr6_SWITCH_0allow_GT -> _BExpr5_SWITCH_0allow_GT -> _BExpr5_SWITCH_COMBINED -> _BExpr4 -> _BExpr3 -> _BExpr2 -> _BExpr1 -> _BExpr0 -> _PrefixUnaryExpr -> _PostfixUnaryExpr -> _CallConstructibleType -> _PM_QualifiedName -> | _QualifiedName
-
-  [RULE] _PrimitiveExpr :
-    _BExpr_NoComma_SWITCH_0allow_GT -> _BExpr11_SWITCH_0allow_GT -> _BExpr10_SWITCH_0allow_GT -> _BExpr9_SWITCH_0allow_GT -> _BExpr8_SWITCH_0allow_GT -> _BExpr7_SWITCH_0allow_GT -> _BExpr6_SWITCH_0allow_GT -> _BExpr5_SWITCH_0allow_GT -> _BExpr5_SWITCH_COMBINED -> _BExpr4 -> _BExpr3 -> | _BExpr2 -> _BExpr1 -> _BExpr0 -> _PrefixUnaryExpr -> _PostfixUnaryExpr -> _QualifiedName_PrimitiveExpr -> _PrimitiveExpr
-
-  [RULE] _ThrowExpr_SWITCH_0allow_GT :
-    | _BExpr_NoComma_SWITCH_0allow_GT -> _ThrowExpr_SWITCH_0allow_GT
 ```
 
 - [x] Non-ambiguous test cases
