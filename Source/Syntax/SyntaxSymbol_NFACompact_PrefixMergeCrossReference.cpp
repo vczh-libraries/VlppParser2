@@ -828,9 +828,20 @@ SyntaxSymbolManager::PrefixMergeCrossReference_AccumulatedEdges
 					}
 				}
 
-#ifdef LOG_DECISION_MAKING
+				// newState labeling [pm-cr] is made if there are multiple choices
+				auto newState = Ptr(new StateSymbol(fromState->Rule()));
+				ic.createdStates.Add(newState);
+				newState->label = fromState->label + pmLabel;
+
+				// newEdge to connect fromState to newState
+				auto newEdge = Ptr(new EdgeSymbol(fromState, newState.Obj()));
+				ic.createdEdges.Add(newEdge);
+
+				SortedList<WString> contStateLabels;
+				Group<Pair<StateSymbol*, StateSymbol*>, EdgeSymbol*> createdContEdges;
 				for (auto [edges, index] : indexed(accumulatedEdgesList))
 				{
+#ifdef LOG_DECISION_MAKING
 					LOG(L"    ");
 					for (auto [edge, edgeIndex] : indexed(*edges.Obj()))
 					{
@@ -849,22 +860,7 @@ SyntaxSymbolManager::PrefixMergeCrossReference_AccumulatedEdges
 						}
 					}
 					LOGL(L"");
-				}
 #endif
-
-				// newState labeling [pm-cr] is made if there are multiple choices
-				auto newState = Ptr(new StateSymbol(fromState->Rule()));
-				ic.createdStates.Add(newState);
-				newState->label = fromState->label + pmLabel;
-
-				// newEdge to connect fromState to newState
-				auto newEdge = Ptr(new EdgeSymbol(fromState, newState.Obj()));
-				ic.createdEdges.Add(newEdge);
-
-				SortedList<WString> contStateLabels;
-				Group<Pair<StateSymbol*, StateSymbol*>, EdgeSymbol*> createdContEdges;
-				for (auto [edges, index] : indexed(accumulatedEdgesList))
-				{
 					auto&& edgeList = *edges.Obj();
 					vint accSize = accumulatedSizes[index];
 					for (vint i = edgeList.Count(); i >= accSize && i > 0; i--)
@@ -875,14 +871,22 @@ SyntaxSymbolManager::PrefixMergeCrossReference_AccumulatedEdges
 						auto lastState = lastEdge->To();
 						for (auto contEdge : lastState->OutEdges())
 						{
-							if (contEdge->input.type == EdgeInputType::Ending && i != 1 && accSize != edgeList.Count())
+							if (contEdge->input.type == EdgeInputType::PrefixMergeDiscardedRule)
 							{
 								continue;
 							}
 
-							if (contEdge->returnEdges.Count() > 0)
+							if (contEdge->input.type == EdgeInputType::LeftRec)
 							{
-								continue;
+								if (contEdge->returnEdges.Count() == 0);
+								else continue;
+							}
+
+							if (contEdge->input.type == EdgeInputType::Ending)
+							{
+								if (accSize == 0 && i == 1);
+								else if (i == accSize);
+								else continue;
 							}
 
 							auto AddNewContEdge = [&](StateSymbol* contFromState, bool useLastEdgeContent, bool useReturnEdges)
@@ -929,12 +933,9 @@ SyntaxSymbolManager::PrefixMergeCrossReference_AccumulatedEdges
 
 							if (i == 1)
 							{
-								switch (contEdge->input.type)
+								if (contEdge->input.type == EdgeInputType::Rule)
 								{
-								case EdgeInputType::Rule:
-								case EdgeInputType::PrefixMergeDiscardedRule:
 									continue;
-								default:;
 								}
 								AddNewContEdge(newState.Obj(), true, false);
 								continue;
@@ -981,12 +982,6 @@ SyntaxSymbolManager::PrefixMergeCrossReference_AccumulatedEdges
 							}
 
 							{
-								switch (contEdge->input.type)
-								{
-								case EdgeInputType::PrefixMergeDiscardedRule:
-									continue;
-								default:;
-								}
 								AddNewContEdge(contState.Obj(), false, false);
 							}
 						}

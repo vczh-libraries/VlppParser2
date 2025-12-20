@@ -76,7 +76,12 @@ TEST_FILE
 
 	TEST_CASE(L"int*")
 	{
-		runParser.operator()<CppTypeOnly>(L"TypeOrExpr", L"PointerOfInt", [&]() { return GetCppParser().Parse_TypeOrExpr(L"int*"); });
+		runParser.operator()<CppDeclaratorType>(L"TypeOrExpr", L"PointerOfInt", [&]() { return GetCppParser().Parse_TypeOrExpr(L"int*"); });
+	});
+
+	TEST_CASE(L"Name")
+	{
+		runParser.operator() < CppQualifiedName > (L"TypeOrExpr", L"Name", [&]() { return GetCppParser().Parse_TypeOrExpr(L"Name"); });
 	});
 	
 	TEST_CASE(L"Name<int>")
