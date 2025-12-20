@@ -123,11 +123,8 @@
 		+ Token(3)
 	token: ">" -> [23][XElement]< "<" NAME { XAttribute } ( "/>" | ">" @ { XSubNode } "</" NAME ">" ) >
 		+ Token(4)
-	token: NAME -> [4][XAttribute]< NAME @ "=" ATTVALUE >
-		+ StackBegin()
-		+ Token(0)
-		> rule: XAttribute -> [21][XElement]< "<" NAME { XAttribute @ } ( "/>" | ">" { XSubNode } "</" NAME ">" ) >
-			+ StackSlot(2)
+	rule: XAttribute -> [21][XElement]< "<" NAME { XAttribute @ } ( "/>" | ">" { XSubNode } "</" NAME ">" ) >
+		+ StackSlot(2)
 
 [21][XElement]< "<" NAME { XAttribute @ } ( "/>" | ">" { XSubNode } "</" NAME ">" ) >
 [RULE: 4]
@@ -135,11 +132,8 @@
 		+ Token(3)
 	token: ">" -> [23][XElement]< "<" NAME { XAttribute } ( "/>" | ">" @ { XSubNode } "</" NAME ">" ) >
 		+ Token(4)
-	token: NAME -> [4][XAttribute]< NAME @ "=" ATTVALUE >
-		+ StackBegin()
-		+ Token(0)
-		> rule: XAttribute -> [21][XElement]< "<" NAME { XAttribute @ } ( "/>" | ">" { XSubNode } "</" NAME ">" ) >
-			+ StackSlot(2)
+	rule: XAttribute -> [21][XElement]< "<" NAME { XAttribute @ } ( "/>" | ">" { XSubNode } "</" NAME ">" ) >
+		+ StackSlot(2)
 
 [22][XElement]< "<" NAME { XAttribute } ( "/>" @ | ">" { XSubNode } "</" NAME ">" ) >
 [RULE: 4]
@@ -155,109 +149,15 @@
 [RULE: 4]
 	token: "</" -> [25][XElement]< "<" NAME { XAttribute } ( "/>" | ">" { XSubNode } "</" @ NAME ">" ) >
 		+ Token(6)
-	token: "<" -> [19][XElement]< "<" @ NAME { XAttribute } ( "/>" | ">" { XSubNode } "</" NAME ">" ) >
-		+ StackBegin()
-		+ Token(0)
-		> rule: XSubNode -> [24][XElement]< "<" NAME { XAttribute } ( "/>" | ">" { XSubNode @ } "</" NAME ">" ) >
-			+ StackSlot(5)
-		> rule: XElement -> [33][XSubNode]<! ( !XText | !XCData | !XComment | !XElement @ ) !>
-			+ StackBegin()
-	token: "=" -> [7][XText]< "=" @ >
-		+ StackBegin()
-		+ Token(0)
-		> rule: XSubNode -> [24][XElement]< "<" NAME { XAttribute } ( "/>" | ">" { XSubNode @ } "</" NAME ">" ) >
-			+ StackSlot(5)
-		> rule: XText -> [30][XSubNode]<! ( !XText @ | !XCData | !XComment | !XElement ) !>
-			+ StackBegin()
-	token: NAME -> [9][XText]< NAME @ >
-		+ StackBegin()
-		+ Token(0)
-		> rule: XSubNode -> [24][XElement]< "<" NAME { XAttribute } ( "/>" | ">" { XSubNode @ } "</" NAME ">" ) >
-			+ StackSlot(5)
-		> rule: XText -> [30][XSubNode]<! ( !XText @ | !XCData | !XComment | !XElement ) !>
-			+ StackBegin()
-	token: ATTVALUE -> [8][XText]< ATTVALUE @ >
-		+ StackBegin()
-		+ Token(0)
-		> rule: XSubNode -> [24][XElement]< "<" NAME { XAttribute } ( "/>" | ">" { XSubNode @ } "</" NAME ">" ) >
-			+ StackSlot(5)
-		> rule: XText -> [30][XSubNode]<! ( !XText @ | !XCData | !XComment | !XElement ) !>
-			+ StackBegin()
-	token: COMMENT -> [16][XComment]< COMMENT @ >
-		+ StackBegin()
-		+ Token(0)
-		> rule: XSubNode -> [24][XElement]< "<" NAME { XAttribute } ( "/>" | ">" { XSubNode @ } "</" NAME ">" ) >
-			+ StackSlot(5)
-		> rule: XComment -> [32][XSubNode]<! ( !XText | !XCData | !XComment @ | !XElement ) !>
-			+ StackBegin()
-	token: CDATA -> [13][XCData]< CDATA @ >
-		+ StackBegin()
-		+ Token(0)
-		> rule: XSubNode -> [24][XElement]< "<" NAME { XAttribute } ( "/>" | ">" { XSubNode @ } "</" NAME ">" ) >
-			+ StackSlot(5)
-		> rule: XCData -> [31][XSubNode]<! ( !XText | !XCData @ | !XComment | !XElement ) !>
-			+ StackBegin()
-	token: TEXT -> [10][XText]< TEXT @ >
-		+ StackBegin()
-		+ Token(0)
-		> rule: XSubNode -> [24][XElement]< "<" NAME { XAttribute } ( "/>" | ">" { XSubNode @ } "</" NAME ">" ) >
-			+ StackSlot(5)
-		> rule: XText -> [30][XSubNode]<! ( !XText @ | !XCData | !XComment | !XElement ) !>
-			+ StackBegin()
+	rule: XSubNode -> [24][XElement]< "<" NAME { XAttribute } ( "/>" | ">" { XSubNode @ } "</" NAME ">" ) >
+		+ StackSlot(5)
 
 [24][XElement]< "<" NAME { XAttribute } ( "/>" | ">" { XSubNode @ } "</" NAME ">" ) >
 [RULE: 4]
 	token: "</" -> [25][XElement]< "<" NAME { XAttribute } ( "/>" | ">" { XSubNode } "</" @ NAME ">" ) >
 		+ Token(6)
-	token: "<" -> [19][XElement]< "<" @ NAME { XAttribute } ( "/>" | ">" { XSubNode } "</" NAME ">" ) >
-		+ StackBegin()
-		+ Token(0)
-		> rule: XSubNode -> [24][XElement]< "<" NAME { XAttribute } ( "/>" | ">" { XSubNode @ } "</" NAME ">" ) >
-			+ StackSlot(5)
-		> rule: XElement -> [33][XSubNode]<! ( !XText | !XCData | !XComment | !XElement @ ) !>
-			+ StackBegin()
-	token: "=" -> [7][XText]< "=" @ >
-		+ StackBegin()
-		+ Token(0)
-		> rule: XSubNode -> [24][XElement]< "<" NAME { XAttribute } ( "/>" | ">" { XSubNode @ } "</" NAME ">" ) >
-			+ StackSlot(5)
-		> rule: XText -> [30][XSubNode]<! ( !XText @ | !XCData | !XComment | !XElement ) !>
-			+ StackBegin()
-	token: NAME -> [9][XText]< NAME @ >
-		+ StackBegin()
-		+ Token(0)
-		> rule: XSubNode -> [24][XElement]< "<" NAME { XAttribute } ( "/>" | ">" { XSubNode @ } "</" NAME ">" ) >
-			+ StackSlot(5)
-		> rule: XText -> [30][XSubNode]<! ( !XText @ | !XCData | !XComment | !XElement ) !>
-			+ StackBegin()
-	token: ATTVALUE -> [8][XText]< ATTVALUE @ >
-		+ StackBegin()
-		+ Token(0)
-		> rule: XSubNode -> [24][XElement]< "<" NAME { XAttribute } ( "/>" | ">" { XSubNode @ } "</" NAME ">" ) >
-			+ StackSlot(5)
-		> rule: XText -> [30][XSubNode]<! ( !XText @ | !XCData | !XComment | !XElement ) !>
-			+ StackBegin()
-	token: COMMENT -> [16][XComment]< COMMENT @ >
-		+ StackBegin()
-		+ Token(0)
-		> rule: XSubNode -> [24][XElement]< "<" NAME { XAttribute } ( "/>" | ">" { XSubNode @ } "</" NAME ">" ) >
-			+ StackSlot(5)
-		> rule: XComment -> [32][XSubNode]<! ( !XText | !XCData | !XComment @ | !XElement ) !>
-			+ StackBegin()
-	token: CDATA -> [13][XCData]< CDATA @ >
-		+ StackBegin()
-		+ Token(0)
-		> rule: XSubNode -> [24][XElement]< "<" NAME { XAttribute } ( "/>" | ">" { XSubNode @ } "</" NAME ">" ) >
-			+ StackSlot(5)
-		> rule: XCData -> [31][XSubNode]<! ( !XText | !XCData @ | !XComment | !XElement ) !>
-			+ StackBegin()
-	token: TEXT -> [10][XText]< TEXT @ >
-		+ StackBegin()
-		+ Token(0)
-		> rule: XSubNode -> [24][XElement]< "<" NAME { XAttribute } ( "/>" | ">" { XSubNode @ } "</" NAME ">" ) >
-			+ StackSlot(5)
-		> rule: XText -> [30][XSubNode]<! ( !XText @ | !XCData | !XComment | !XElement ) !>
-			+ StackBegin()
+	rule: XSubNode -> [24][XElement]< "<" NAME { XAttribute } ( "/>" | ">" { XSubNode @ } "</" NAME ">" ) >
+		+ StackSlot(5)
 
 [25][XElement]< "<" NAME { XAttribute } ( "/>" | ">" { XSubNode } "</" @ NAME ">" ) >
 [RULE: 4]
@@ -281,41 +181,14 @@
 
 [28][XSubNode] BEGIN 
 [RULE: 5]
-	token: "<" -> [19][XElement]< "<" @ NAME { XAttribute } ( "/>" | ">" { XSubNode } "</" NAME ">" ) >
+	rule: XText -> [30][XSubNode]<! ( !XText @ | !XCData | !XComment | !XElement ) !>
 		+ StackBegin()
-		+ Token(0)
-		> rule: XElement -> [33][XSubNode]<! ( !XText | !XCData | !XComment | !XElement @ ) !>
-			+ StackBegin()
-	token: "=" -> [7][XText]< "=" @ >
+	rule: XCData -> [31][XSubNode]<! ( !XText | !XCData @ | !XComment | !XElement ) !>
 		+ StackBegin()
-		+ Token(0)
-		> rule: XText -> [30][XSubNode]<! ( !XText @ | !XCData | !XComment | !XElement ) !>
-			+ StackBegin()
-	token: NAME -> [9][XText]< NAME @ >
+	rule: XComment -> [32][XSubNode]<! ( !XText | !XCData | !XComment @ | !XElement ) !>
 		+ StackBegin()
-		+ Token(0)
-		> rule: XText -> [30][XSubNode]<! ( !XText @ | !XCData | !XComment | !XElement ) !>
-			+ StackBegin()
-	token: ATTVALUE -> [8][XText]< ATTVALUE @ >
+	rule: XElement -> [33][XSubNode]<! ( !XText | !XCData | !XComment | !XElement @ ) !>
 		+ StackBegin()
-		+ Token(0)
-		> rule: XText -> [30][XSubNode]<! ( !XText @ | !XCData | !XComment | !XElement ) !>
-			+ StackBegin()
-	token: COMMENT -> [16][XComment]< COMMENT @ >
-		+ StackBegin()
-		+ Token(0)
-		> rule: XComment -> [32][XSubNode]<! ( !XText | !XCData | !XComment @ | !XElement ) !>
-			+ StackBegin()
-	token: CDATA -> [13][XCData]< CDATA @ >
-		+ StackBegin()
-		+ Token(0)
-		> rule: XCData -> [31][XSubNode]<! ( !XText | !XCData @ | !XComment | !XElement ) !>
-			+ StackBegin()
-	token: TEXT -> [10][XText]< TEXT @ >
-		+ StackBegin()
-		+ Token(0)
-		> rule: XText -> [30][XSubNode]<! ( !XText @ | !XCData | !XComment | !XElement ) !>
-			+ StackBegin()
 
 [29][XSubNode] END [ENDING]
 [RULE: 5]
@@ -358,21 +231,15 @@
 [RULE: 6]
 	token: "?>" -> [39][XInstruction]< "<?" NAME { XAttribute } "?>" @ >
 		+ Token(3)
-	token: NAME -> [4][XAttribute]< NAME @ "=" ATTVALUE >
-		+ StackBegin()
-		+ Token(0)
-		> rule: XAttribute -> [38][XInstruction]< "<?" NAME { XAttribute @ } "?>" >
-			+ StackSlot(2)
+	rule: XAttribute -> [38][XInstruction]< "<?" NAME { XAttribute @ } "?>" >
+		+ StackSlot(2)
 
 [38][XInstruction]< "<?" NAME { XAttribute @ } "?>" >
 [RULE: 6]
 	token: "?>" -> [39][XInstruction]< "<?" NAME { XAttribute } "?>" @ >
 		+ Token(3)
-	token: NAME -> [4][XAttribute]< NAME @ "=" ATTVALUE >
-		+ StackBegin()
-		+ Token(0)
-		> rule: XAttribute -> [38][XInstruction]< "<?" NAME { XAttribute @ } "?>" >
-			+ StackSlot(2)
+	rule: XAttribute -> [38][XInstruction]< "<?" NAME { XAttribute @ } "?>" >
+		+ StackSlot(2)
 
 [39][XInstruction]< "<?" NAME { XAttribute } "?>" @ >
 [RULE: 6]
@@ -384,45 +251,27 @@
 
 [40][XDocument] BEGIN 
 [RULE: 7]
-	token: "<?" -> [36][XInstruction]< "<?" @ NAME { XAttribute } "?>" >
+	rule: XComment -> [44][XDocument]< { ( XInstruction | XComment @ ) } XElement >
 		+ StackBegin()
-		+ Token(0)
-		> rule: XInstruction -> [42][XDocument]< { ( XInstruction @ | XComment ) } XElement >
-			+ StackBegin()
-			+ StackSlot(0)
-	token: "<" -> [19][XElement]< "<" @ NAME { XAttribute } ( "/>" | ">" { XSubNode } "</" NAME ">" ) >
+		+ StackSlot(1)
+	rule: XElement -> [43][XDocument]< { ( XInstruction | XComment ) } XElement @ >
 		+ StackBegin()
-		+ Token(0)
-		> rule: XElement -> [43][XDocument]< { ( XInstruction | XComment ) } XElement @ >
-			+ StackBegin()
-			+ StackSlot(2)
-	token: COMMENT -> [16][XComment]< COMMENT @ >
+		+ StackSlot(2)
+	rule: XInstruction -> [42][XDocument]< { ( XInstruction @ | XComment ) } XElement >
 		+ StackBegin()
-		+ Token(0)
-		> rule: XComment -> [44][XDocument]< { ( XInstruction | XComment @ ) } XElement >
-			+ StackBegin()
-			+ StackSlot(1)
+		+ StackSlot(0)
 
 [41][XDocument] END [ENDING]
 [RULE: 7]
 
 [42][XDocument]< { ( XInstruction @ | XComment ) } XElement >
 [RULE: 7]
-	token: "<?" -> [36][XInstruction]< "<?" @ NAME { XAttribute } "?>" >
-		+ StackBegin()
-		+ Token(0)
-		> rule: XInstruction -> [42][XDocument]< { ( XInstruction @ | XComment ) } XElement >
-			+ StackSlot(0)
-	token: "<" -> [19][XElement]< "<" @ NAME { XAttribute } ( "/>" | ">" { XSubNode } "</" NAME ">" ) >
-		+ StackBegin()
-		+ Token(0)
-		> rule: XElement -> [43][XDocument]< { ( XInstruction | XComment ) } XElement @ >
-			+ StackSlot(2)
-	token: COMMENT -> [16][XComment]< COMMENT @ >
-		+ StackBegin()
-		+ Token(0)
-		> rule: XComment -> [44][XDocument]< { ( XInstruction | XComment @ ) } XElement >
-			+ StackSlot(1)
+	rule: XComment -> [44][XDocument]< { ( XInstruction | XComment @ ) } XElement >
+		+ StackSlot(1)
+	rule: XElement -> [43][XDocument]< { ( XInstruction | XComment ) } XElement @ >
+		+ StackSlot(2)
+	rule: XInstruction -> [42][XDocument]< { ( XInstruction @ | XComment ) } XElement >
+		+ StackSlot(0)
 
 [43][XDocument]< { ( XInstruction | XComment ) } XElement @ >
 [RULE: 7]
@@ -435,19 +284,10 @@
 
 [44][XDocument]< { ( XInstruction | XComment @ ) } XElement >
 [RULE: 7]
-	token: "<?" -> [36][XInstruction]< "<?" @ NAME { XAttribute } "?>" >
-		+ StackBegin()
-		+ Token(0)
-		> rule: XInstruction -> [42][XDocument]< { ( XInstruction @ | XComment ) } XElement >
-			+ StackSlot(0)
-	token: "<" -> [19][XElement]< "<" @ NAME { XAttribute } ( "/>" | ">" { XSubNode } "</" NAME ">" ) >
-		+ StackBegin()
-		+ Token(0)
-		> rule: XElement -> [43][XDocument]< { ( XInstruction | XComment ) } XElement @ >
-			+ StackSlot(2)
-	token: COMMENT -> [16][XComment]< COMMENT @ >
-		+ StackBegin()
-		+ Token(0)
-		> rule: XComment -> [44][XDocument]< { ( XInstruction | XComment @ ) } XElement >
-			+ StackSlot(1)
+	rule: XComment -> [44][XDocument]< { ( XInstruction | XComment @ ) } XElement >
+		+ StackSlot(1)
+	rule: XElement -> [43][XDocument]< { ( XInstruction | XComment ) } XElement @ >
+		+ StackSlot(2)
+	rule: XInstruction -> [42][XDocument]< { ( XInstruction @ | XComment ) } XElement >
+		+ StackSlot(0)
 

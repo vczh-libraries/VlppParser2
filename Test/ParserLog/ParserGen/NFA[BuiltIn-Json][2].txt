@@ -68,55 +68,8 @@
 
 [9][JField]< STRING ":" @ JValue >
 [RULE: 1]
-	token: "true" -> [4][JLiteral]< "true" @ >
-		+ StackBegin()
-		+ Token(0)
-		> rule: JValue -> [10][JField]< STRING ":" JValue @ >
-			+ StackSlot(2)
-		> rule: JLiteral -> [27][JValue]<! !JLiteral @ !>
-			+ StackBegin()
-	token: "false" -> [2][JLiteral]< "false" @ >
-		+ StackBegin()
-		+ Token(0)
-		> rule: JValue -> [10][JField]< STRING ":" JValue @ >
-			+ StackSlot(2)
-		> rule: JLiteral -> [27][JValue]<! !JLiteral @ !>
-			+ StackBegin()
-	token: "null" -> [3][JLiteral]< "null" @ >
-		+ StackBegin()
-		+ Token(0)
-		> rule: JValue -> [10][JField]< STRING ":" JValue @ >
-			+ StackSlot(2)
-		> rule: JLiteral -> [27][JValue]<! !JLiteral @ !>
-			+ StackBegin()
-	token: "{" -> [14][JObject]< "{" @ { JField ; "," } "}" >
-		+ StackBegin()
-		+ Token(0)
-		> rule: JValue -> [10][JField]< STRING ":" JValue @ >
-			+ StackSlot(2)
-		> rule: JObject -> [28][JValue]<! !JObject @ !>
-			+ StackBegin()
-	token: "[" -> [20][JArray]< "[" @ { JValue ; "," } "]" >
-		+ StackBegin()
-		+ Token(0)
-		> rule: JValue -> [10][JField]< STRING ":" JValue @ >
-			+ StackSlot(2)
-		> rule: JArray -> [26][JValue]<! !JArray @ !>
-			+ StackBegin()
-	token: NUMBER -> [5][JLiteral]< NUMBER @ >
-		+ StackBegin()
-		+ Token(0)
-		> rule: JValue -> [10][JField]< STRING ":" JValue @ >
-			+ StackSlot(2)
-		> rule: JLiteral -> [27][JValue]<! !JLiteral @ !>
-			+ StackBegin()
-	token: STRING -> [6][JLiteral]< STRING @ >
-		+ StackBegin()
-		+ Token(0)
-		> rule: JValue -> [10][JField]< STRING ":" JValue @ >
-			+ StackSlot(2)
-		> rule: JLiteral -> [27][JValue]<! !JLiteral @ !>
-			+ StackBegin()
+	rule: JValue -> [10][JField]< STRING ":" JValue @ >
+		+ StackSlot(2)
 
 [10][JField]< STRING ":" JValue @ >
 [RULE: 1]
@@ -144,19 +97,13 @@
 [RULE: 2]
 	token: "}" -> [16][JObject]< "{" { JField ; "," } "}" @ >
 		+ Token(3)
-	token: STRING -> [11][JField]< STRING @ ":" JValue >
-		+ StackBegin()
-		+ Token(0)
-		> rule: JField -> [17][JObject]< "{" { JField @ ; "," } "}" >
-			+ StackSlot(1)
+	rule: JField -> [17][JObject]< "{" { JField @ ; "," } "}" >
+		+ StackSlot(1)
 
 [15][JObject]< "{" { JField ; "," @ } "}" >
 [RULE: 2]
-	token: STRING -> [11][JField]< STRING @ ":" JValue >
-		+ StackBegin()
-		+ Token(0)
-		> rule: JField -> [17][JObject]< "{" { JField @ ; "," } "}" >
-			+ StackSlot(1)
+	rule: JField -> [17][JObject]< "{" { JField @ ; "," } "}" >
+		+ StackSlot(1)
 
 [16][JObject]< "{" { JField ; "," } "}" @ >
 [RULE: 2]
@@ -183,109 +130,15 @@
 
 [20][JArray]< "[" @ { JValue ; "," } "]" >
 [RULE: 3]
-	token: "true" -> [4][JLiteral]< "true" @ >
-		+ StackBegin()
-		+ Token(0)
-		> rule: JValue -> [23][JArray]< "[" { JValue @ ; "," } "]" >
-			+ StackSlot(1)
-		> rule: JLiteral -> [27][JValue]<! !JLiteral @ !>
-			+ StackBegin()
-	token: "false" -> [2][JLiteral]< "false" @ >
-		+ StackBegin()
-		+ Token(0)
-		> rule: JValue -> [23][JArray]< "[" { JValue @ ; "," } "]" >
-			+ StackSlot(1)
-		> rule: JLiteral -> [27][JValue]<! !JLiteral @ !>
-			+ StackBegin()
-	token: "null" -> [3][JLiteral]< "null" @ >
-		+ StackBegin()
-		+ Token(0)
-		> rule: JValue -> [23][JArray]< "[" { JValue @ ; "," } "]" >
-			+ StackSlot(1)
-		> rule: JLiteral -> [27][JValue]<! !JLiteral @ !>
-			+ StackBegin()
-	token: "{" -> [14][JObject]< "{" @ { JField ; "," } "}" >
-		+ StackBegin()
-		+ Token(0)
-		> rule: JValue -> [23][JArray]< "[" { JValue @ ; "," } "]" >
-			+ StackSlot(1)
-		> rule: JObject -> [28][JValue]<! !JObject @ !>
-			+ StackBegin()
-	token: "[" -> [20][JArray]< "[" @ { JValue ; "," } "]" >
-		+ StackBegin()
-		+ Token(0)
-		> rule: JValue -> [23][JArray]< "[" { JValue @ ; "," } "]" >
-			+ StackSlot(1)
-		> rule: JArray -> [26][JValue]<! !JArray @ !>
-			+ StackBegin()
 	token: "]" -> [22][JArray]< "[" { JValue ; "," } "]" @ >
 		+ Token(3)
-	token: NUMBER -> [5][JLiteral]< NUMBER @ >
-		+ StackBegin()
-		+ Token(0)
-		> rule: JValue -> [23][JArray]< "[" { JValue @ ; "," } "]" >
-			+ StackSlot(1)
-		> rule: JLiteral -> [27][JValue]<! !JLiteral @ !>
-			+ StackBegin()
-	token: STRING -> [6][JLiteral]< STRING @ >
-		+ StackBegin()
-		+ Token(0)
-		> rule: JValue -> [23][JArray]< "[" { JValue @ ; "," } "]" >
-			+ StackSlot(1)
-		> rule: JLiteral -> [27][JValue]<! !JLiteral @ !>
-			+ StackBegin()
+	rule: JValue -> [23][JArray]< "[" { JValue @ ; "," } "]" >
+		+ StackSlot(1)
 
 [21][JArray]< "[" { JValue ; "," @ } "]" >
 [RULE: 3]
-	token: "true" -> [4][JLiteral]< "true" @ >
-		+ StackBegin()
-		+ Token(0)
-		> rule: JValue -> [23][JArray]< "[" { JValue @ ; "," } "]" >
-			+ StackSlot(1)
-		> rule: JLiteral -> [27][JValue]<! !JLiteral @ !>
-			+ StackBegin()
-	token: "false" -> [2][JLiteral]< "false" @ >
-		+ StackBegin()
-		+ Token(0)
-		> rule: JValue -> [23][JArray]< "[" { JValue @ ; "," } "]" >
-			+ StackSlot(1)
-		> rule: JLiteral -> [27][JValue]<! !JLiteral @ !>
-			+ StackBegin()
-	token: "null" -> [3][JLiteral]< "null" @ >
-		+ StackBegin()
-		+ Token(0)
-		> rule: JValue -> [23][JArray]< "[" { JValue @ ; "," } "]" >
-			+ StackSlot(1)
-		> rule: JLiteral -> [27][JValue]<! !JLiteral @ !>
-			+ StackBegin()
-	token: "{" -> [14][JObject]< "{" @ { JField ; "," } "}" >
-		+ StackBegin()
-		+ Token(0)
-		> rule: JValue -> [23][JArray]< "[" { JValue @ ; "," } "]" >
-			+ StackSlot(1)
-		> rule: JObject -> [28][JValue]<! !JObject @ !>
-			+ StackBegin()
-	token: "[" -> [20][JArray]< "[" @ { JValue ; "," } "]" >
-		+ StackBegin()
-		+ Token(0)
-		> rule: JValue -> [23][JArray]< "[" { JValue @ ; "," } "]" >
-			+ StackSlot(1)
-		> rule: JArray -> [26][JValue]<! !JArray @ !>
-			+ StackBegin()
-	token: NUMBER -> [5][JLiteral]< NUMBER @ >
-		+ StackBegin()
-		+ Token(0)
-		> rule: JValue -> [23][JArray]< "[" { JValue @ ; "," } "]" >
-			+ StackSlot(1)
-		> rule: JLiteral -> [27][JValue]<! !JLiteral @ !>
-			+ StackBegin()
-	token: STRING -> [6][JLiteral]< STRING @ >
-		+ StackBegin()
-		+ Token(0)
-		> rule: JValue -> [23][JArray]< "[" { JValue @ ; "," } "]" >
-			+ StackSlot(1)
-		> rule: JLiteral -> [27][JValue]<! !JLiteral @ !>
-			+ StackBegin()
+	rule: JValue -> [23][JArray]< "[" { JValue @ ; "," } "]" >
+		+ StackSlot(1)
 
 [22][JArray]< "[" { JValue ; "," } "]" @ >
 [RULE: 3]
@@ -303,41 +156,12 @@
 
 [24][JValue] BEGIN 
 [RULE: 4]
-	token: "true" -> [4][JLiteral]< "true" @ >
+	rule: JLiteral -> [27][JValue]<! !JLiteral @ !>
 		+ StackBegin()
-		+ Token(0)
-		> rule: JLiteral -> [27][JValue]<! !JLiteral @ !>
-			+ StackBegin()
-	token: "false" -> [2][JLiteral]< "false" @ >
+	rule: JObject -> [28][JValue]<! !JObject @ !>
 		+ StackBegin()
-		+ Token(0)
-		> rule: JLiteral -> [27][JValue]<! !JLiteral @ !>
-			+ StackBegin()
-	token: "null" -> [3][JLiteral]< "null" @ >
+	rule: JArray -> [26][JValue]<! !JArray @ !>
 		+ StackBegin()
-		+ Token(0)
-		> rule: JLiteral -> [27][JValue]<! !JLiteral @ !>
-			+ StackBegin()
-	token: "{" -> [14][JObject]< "{" @ { JField ; "," } "}" >
-		+ StackBegin()
-		+ Token(0)
-		> rule: JObject -> [28][JValue]<! !JObject @ !>
-			+ StackBegin()
-	token: "[" -> [20][JArray]< "[" @ { JValue ; "," } "]" >
-		+ StackBegin()
-		+ Token(0)
-		> rule: JArray -> [26][JValue]<! !JArray @ !>
-			+ StackBegin()
-	token: NUMBER -> [5][JLiteral]< NUMBER @ >
-		+ StackBegin()
-		+ Token(0)
-		> rule: JLiteral -> [27][JValue]<! !JLiteral @ !>
-			+ StackBegin()
-	token: STRING -> [6][JLiteral]< STRING @ >
-		+ StackBegin()
-		+ Token(0)
-		> rule: JLiteral -> [27][JValue]<! !JLiteral @ !>
-			+ StackBegin()
 
 [25][JValue] END [ENDING]
 [RULE: 4]
@@ -359,16 +183,10 @@
 
 [29][JRoot] BEGIN 
 [RULE: 5]
-	token: "{" -> [14][JObject]< "{" @ { JField ; "," } "}" >
+	rule: JObject -> [32][JRoot]<! !JObject @ !>
 		+ StackBegin()
-		+ Token(0)
-		> rule: JObject -> [32][JRoot]<! !JObject @ !>
-			+ StackBegin()
-	token: "[" -> [20][JArray]< "[" @ { JValue ; "," } "]" >
+	rule: JArray -> [31][JRoot]<! !JArray @ !>
 		+ StackBegin()
-		+ Token(0)
-		> rule: JArray -> [31][JRoot]<! !JArray @ !>
-			+ StackBegin()
 
 [30][JRoot] END [ENDING]
 [RULE: 5]

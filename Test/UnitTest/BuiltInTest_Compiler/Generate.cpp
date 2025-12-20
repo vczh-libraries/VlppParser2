@@ -186,17 +186,17 @@ void GenerateParser(
 				File(dirOutput / (L"SyntaxRewrittenActual[" + parserName + L"].txt")).WriteAllText(formattedActual, true, BomEncoder::Utf8);
 			}
 			TEST_ASSERT(global.Errors().Count() == 0);
-			logSyntax(0, syntaxManager);
+			logSyntax(1, syntaxManager);
 
 			unittest::UnitTest::PrintMessage(L"BuildCompactNFA() ...", unittest::UnitTest::MessageKind::Info);
 			syntaxManager.BuildCompactNFA();
 			TEST_ASSERT(global.Errors().Count() == 0);
-			logSyntax(1, syntaxManager);
+			logSyntax(2, syntaxManager);
 
 			unittest::UnitTest::PrintMessage(L"BuildCrossReferencedNFA() ...", unittest::UnitTest::MessageKind::Info);
 			syntaxManager.BuildCrossReferencedNFA();
 			TEST_ASSERT(global.Errors().Count() == 0);
-			logSyntax(2, syntaxManager);
+			logSyntax(3, syntaxManager);
 
 			unittest::UnitTest::PrintMessage(L"BuildAutomaton() ...", unittest::UnitTest::MessageKind::Info);
 			Executable executable;
