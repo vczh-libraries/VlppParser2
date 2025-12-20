@@ -21,6 +21,18 @@
 
 ### Progressing
 
+Test\Source\BuiltIn-Cpp\Input\Declarations\Generic_Decls\Forward_Members.txt
+```
+template... A::B<_1, X>::C::D<Y, _2>::D(X, Y){}
+```
+Ambiguous VariableDeclaration but trying to accept a QualifiedName(A)
+
+Test\Source\BuiltIn-Cpp\Input\Declarations\GenericPS_Decls\ForwardDecl_CtorsDtors.txt
+```
+template... A::B<_1, X>::C::D<Y, _2>::D(){}
+```
+Probably the same reason
+
 - [x] Non-ambiguous test cases
 - [x] Ambiguous test cases
 - [x] Split FeatureTest
