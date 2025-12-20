@@ -943,12 +943,8 @@ SyntaxSymbolManager::PrefixMergeCrossReference_AccumulatedEdges
 								ic.createdEdges.Add(newContEdge);
 							};
 
-							if (i == 1)
+							if (i == 1 && contEdge->input.type != EdgeInputType::Rule)
 							{
-								if (contEdge->input.type == EdgeInputType::Rule)
-								{
-									continue;
-								}
 								AddNewContEdge(newState.Obj(), true, false);
 								continue;
 							}
