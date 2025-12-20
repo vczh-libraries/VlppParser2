@@ -1122,6 +1122,9 @@ SyntaxSymbolManager::PrefixMergeCrossReference_Apply
 						newEdge->input.token = pmToken;
 						newEdge->input.condition = condition;
 					}
+#ifdef LOG_DECISION_MAKING
+					LOGL(L"");
+#endif
 				}
 			}
 
