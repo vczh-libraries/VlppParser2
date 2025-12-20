@@ -21,27 +21,30 @@
 
 ### Progressing
 
+`_BExpr_NoComma` and `_TypeWithoutFuncVar` performed `MergeEdgesWithSameRuleUsingLeftrec`
+Causing `_BExpr11` and `_TypeBeforeDeclarator` to have empty `insAfterInput`
+Become `rule[] -> ending[StackBegin, StackEnd]`
+Breaking the pattern of `rule[StackBegin] -> ending[StackEnd]
+Which fails the `IsSingleReuseEdge` test
+Making ambiguity happen
+
 ```
-[PMAI] _TypeOrExpr_NoComma_Raw_SWITCH_0allow_GT @  BEGIN
-  [RULE] _CallConstructibleTypeBeforeDeclarator :
-    _TypeOrExpr_NoComma_Raw_SWITCH_COMBINED -> _Type -> _TypeBeforeDeclarator -> | _ShortTypeBeforeDeclarator -> _CallConstructibleTypeBeforeDeclarator
+@public _TypeOrExpr_Raw
+  ::= !_BExpr
+  ::= !_Type
+  ;
 
-    _BExpr_NoComma_SWITCH_0allow_GT -> _BExpr11_SWITCH_0allow_GT -> _BExpr10_SWITCH_0allow_GT -> _BExpr9_SWITCH_0allow_GT -> _BExpr8_SWITCH_0allow_GT -> _BExpr7_SWITCH_0allow_GT -> _BExpr6_SWITCH_0allow_GT -> _BExpr5_SWITCH_0allow_GT -> _BExpr5_SWITCH_COMBINED -> _BExpr4 -> _BExpr3 -> _BExpr2 -> _BExpr1 -> _BExpr0 -> _PrefixUnaryExpr -> _PostfixUnaryExpr -> _CallConstructibleType -> | _CallConstructibleTypeBeforeDeclarator
+@public _BExpr_NoComma
+  ::= !_BExpr11
+  ::= !_ThrowExpr
+  ::= _BExpr11:condition "?" _Expr:trueBranch ":" _BExpr_NoComma:falseBranch as IfExpr
+  ...
+  ;
 
-  [RULE] _PrimitiveExpr :
-    _BExpr_NoComma_SWITCH_0allow_GT -> _BExpr11_SWITCH_0allow_GT -> | _BExpr10_SWITCH_0allow_GT -> _BExpr9_SWITCH_0allow_GT -> _BExpr8_SWITCH_0allow_GT -> _BExpr7_SWITCH_0allow_GT -> _BExpr6_SWITCH_0allow_GT -> _BExpr5_SWITCH_0allow_GT -> _BExpr5_SWITCH_COMBINED -> _BExpr4 -> _BExpr3 -> _BExpr2 -> _BExpr1 -> _BExpr0 -> _PrefixUnaryExpr -> _PostfixUnaryExpr -> _QualifiedName_PrimitiveExpr -> _PrimitiveExpr
-
-  [RULE] _AllPrefixUnaryExpr :
-    _BExpr_NoComma_SWITCH_0allow_GT -> _BExpr11_SWITCH_0allow_GT -> | _BExpr10_SWITCH_0allow_GT -> _BExpr9_SWITCH_0allow_GT -> _BExpr8_SWITCH_0allow_GT -> _BExpr7_SWITCH_0allow_GT -> _BExpr6_SWITCH_0allow_GT -> _BExpr5_SWITCH_0allow_GT -> _BExpr5_SWITCH_COMBINED -> _BExpr4 -> _BExpr3 -> _BExpr2 -> _BExpr1 -> _BExpr0 -> _PrefixUnaryExpr -> _AllPrefixUnaryExpr
-
-  [RULE] _QualifiedName :
-    _TypeOrExpr_NoComma_Raw_SWITCH_COMBINED -> _Type -> _TypeBeforeDeclarator -> | _ShortTypeBeforeDeclarator -> _PM_QualifiedName -> _QualifiedName
-
-    _BExpr_NoComma_SWITCH_0allow_GT -> _BExpr11_SWITCH_0allow_GT -> | _BExpr10_SWITCH_0allow_GT -> _BExpr9_SWITCH_0allow_GT -> _BExpr8_SWITCH_0allow_GT -> _BExpr7_SWITCH_0allow_GT -> _BExpr6_SWITCH_0allow_GT -> _BExpr5_SWITCH_0allow_GT -> _BExpr5_SWITCH_COMBINED -> _BExpr4 -> _BExpr3 -> _BExpr2 -> _BExpr1 -> _BExpr0 -> _PrefixUnaryExpr -> _PostfixUnaryExpr -> _QualifiedName_PrimitiveExpr -> _QualifiedName
-
-    _BExpr_NoComma_SWITCH_0allow_GT -> _BExpr11_SWITCH_0allow_GT -> _BExpr10_SWITCH_0allow_GT -> _BExpr9_SWITCH_0allow_GT -> _BExpr8_SWITCH_0allow_GT -> _BExpr7_SWITCH_0allow_GT -> _BExpr6_SWITCH_0allow_GT -> _BExpr5_SWITCH_0allow_GT -> _BExpr5_SWITCH_COMBINED -> _BExpr4 -> _BExpr3 -> _BExpr2 -> _BExpr1 -> _BExpr0 -> _PrefixUnaryExpr -> _PostfixUnaryExpr -> _QualifiedName
-    
-    _BExpr_NoComma_SWITCH_0allow_GT -> _BExpr11_SWITCH_0allow_GT -> _BExpr10_SWITCH_0allow_GT -> _BExpr9_SWITCH_0allow_GT -> _BExpr8_SWITCH_0allow_GT -> _BExpr7_SWITCH_0allow_GT -> _BExpr6_SWITCH_0allow_GT -> _BExpr5_SWITCH_0allow_GT -> _BExpr5_SWITCH_COMBINED -> _BExpr4 -> _BExpr3 -> _BExpr2 -> _BExpr1 -> _BExpr0 -> _PrefixUnaryExpr -> _PostfixUnaryExpr -> _CallConstructibleType -> _PM_QualifiedName -> | _QualifiedName
+@public _TypeWithoutFuncVar
+  ::= !_TypeBeforeDeclarator
+  ::= _TypeBeforeDeclarator:type _DeclaratorWithoutNameAndFuncVar:declarator as DeclaratorType
+  ;
 ```
 
 - [x] Non-ambiguous test cases
