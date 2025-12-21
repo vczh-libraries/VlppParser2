@@ -16,20 +16,20 @@ namespace vl
 AppendStepAfterList
 ***********************************************************************/
 
-			void TraceManager::AppendStepsAfterList(ExecutionStepList steps, ExecutionStepList& current)
+			void TraceManager::AppendStepsAfterList(ExecutionStepLinkedList steps, ExecutionStepLinkedList& current)
 			{
-				if (!steps.key)
+				if (!steps.first)
 				{
 					return;
 				}
-				if (!current.key)
+				if (!current.first)
 				{
 					current = steps;
 				}
 				else
 				{
-					steps.key->parent = current.value;
-					current.value = steps.value;
+					steps.first->parent = current.last;
+					current.last = steps.last;
 				}
 			}
 
@@ -37,9 +37,9 @@ AppendStepAfterList
 BuildStepListForAmbiguity
 ***********************************************************************/
 
-			TraceManager::ExecutionStepList TraceManager::BuildStepListForAmbiguity(TraceAmbiguity* ta)
+			ExecutionStepLinkedList TraceManager::BuildStepListForAmbiguity(TraceAmbiguity* ta)
 			{
-				ExecutionStepList result{ nullptr,nullptr };
+				ExecutionStepLinkedList result;
 				auto taFirst = GetTrace(ta->firstTrace);
 				auto taLast = GetTrace(ta->lastTrace);
 				auto taBranch = GetTrace(ta->branchTrace);
@@ -215,9 +215,9 @@ BuildStepListForAmbiguity
 BuildStepList
 ***********************************************************************/
 
-			TraceManager::ExecutionStepList TraceManager::BuildStepListUntilFirstRawBranchTrace(Trace* startTrace, vint32_t startIns, Trace* endTrace, vint32_t endIns, Trace** rawBranchTrace)
+			ExecutionStepLinkedList TraceManager::BuildStepListUntilFirstRawBranchTrace(Trace* startTrace, vint32_t startIns, Trace* endTrace, vint32_t endIns, Trace** rawBranchTrace)
 			{
-				ExecutionStepList result{ nullptr,nullptr };
+				ExecutionStepLinkedList result;
 				Trace* currentTrace = startTrace;
 				vint32_t currentIns = startIns;
 
@@ -406,7 +406,7 @@ BuildStepList
 				return result;
 			}
 
-			TraceManager::ExecutionStepList TraceManager::BuildStepList(Trace* startTrace, vint32_t startIns, Trace* endTrace, vint32_t endIns)
+			ExecutionStepLinkedList TraceManager::BuildStepList(Trace* startTrace, vint32_t startIns, Trace* endTrace, vint32_t endIns)
 			{
 				return BuildStepListUntilFirstRawBranchTrace(startTrace, startIns, endTrace, endIns, nullptr);
 			}
@@ -425,15 +425,15 @@ BuildExecutionOrder
 
 				auto steps = BuildStepList(startTrace, startIns, endTrace, endIns);
 				{
-					auto current = steps.value;
-					while (current != steps.key)
+					auto current = steps.last;
+					while (current != steps.first)
 					{
 						auto parent = GetExecutionStep(current->parent);
 						parent->next = current;
 						current = parent;
 					}
 				}
-				firstStep = steps.key;
+				firstStep = steps.first;
 			}
 #undef TRACE_MAMAGER_PHRASE
 		}

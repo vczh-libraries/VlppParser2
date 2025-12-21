@@ -523,6 +523,19 @@ TraceManager (Data Structures -- BuildExecutionOrder)
 				};
 			};
 
+			struct ExecutionStepLinkedList
+			{
+				ExecutionStep*						first = nullptr;
+				ExecutionStep*						last = nullptr;
+			};
+
+			struct ExecutionStepTree
+			{
+				ExecutionStep*						root = nullptr;
+				ExecutionStep*						firstLeaf = nullptr;
+				ExecutionStep*						lastLeaf = nullptr;
+			};
+
 /***********************************************************************
 TraceManager
 ***********************************************************************/
@@ -687,12 +700,11 @@ TraceManager
 				void										CheckMergeTraces();
 
 				// phase: BuildExecutionOrder
-				using ExecutionStepList = collections::Pair<ExecutionStep*, ExecutionStep*>;
 
-				void										AppendStepsAfterList(ExecutionStepList steps, ExecutionStepList& current);
-				ExecutionStepList							BuildStepListForAmbiguity(TraceAmbiguity* ta);
-				ExecutionStepList							BuildStepListUntilFirstRawBranchTrace(Trace* startTrace, vint32_t startIns, Trace* endTrace, vint32_t endIns, Trace** rawBranchTrace);
-				ExecutionStepList							BuildStepList(Trace* startTrace, vint32_t startIns, Trace* endTrace, vint32_t endIns);
+				void										AppendStepsAfterList(ExecutionStepLinkedList steps, ExecutionStepLinkedList& current);
+				ExecutionStepLinkedList						BuildStepListForAmbiguity(TraceAmbiguity* ta);
+				ExecutionStepLinkedList						BuildStepListUntilFirstRawBranchTrace(Trace* startTrace, vint32_t startIns, Trace* endTrace, vint32_t endIns, Trace** rawBranchTrace);
+				ExecutionStepLinkedList						BuildStepList(Trace* startTrace, vint32_t startIns, Trace* endTrace, vint32_t endIns);
 				void										BuildExecutionOrder();
 
 			public:
