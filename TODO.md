@@ -80,17 +80,17 @@ The third branch should continue from 14@0 to 204@0
     - 109236 -> 10141 -> 6663 states: `Test\ParserLog\BuiltIn-Workflow\Trace-1[Codegen_WorkflowHints].txt`, meanwhile 6750 in master
   - [x] automatically identify prefix_merge
 - [ ] Built-in parsers: C++
-  - [ ] Non-traced test cases save json files with extra field recording the input code at the beginning
+- [ ] build.ps1
 - [ ] Reorganize log utilities for better dependency
 - [ ] Render ambiguity with not only traces but input codes in Trace-3
-- [ ] build.ps1
-- [ ] Finish `## Features to Add`
 - [ ] Document design principal, algorithm and syntax
+- [ ] Finish `## Features to Add`
 - [ ] build.ps1
 - [ ] Build in Ubuntu. Windows and Linux test output inconsistency on
     - the order of ambiguous candidates.
     - `\r\n` or `\n` serialized into `<![CDATA[]]>`.
     - We can force `\r\n` in unit test, normalizing all inputs.
+- [ ] Built-in parsers: C++ Non-traced test cases save json files with extra field recording the input code at the beginning
 
 ## Prefix Merge
 
