@@ -21,37 +21,33 @@
 
 ### Progressing
 
-`Test\Source\BuiltIn-Cpp\Input\Declarations\Generic_Decls\Forward_Members.txt`
+`Test\ParserLog\Generated-PrefixMerge7_PmSwitch\Trace-3[Module-Generic_Ambiguous1].txt`
 ```
-template... A::B<_1, X>::C::D<Y, _2>::D(X, Y){}
+  A
+  |
++-+-+
+|   |
+B   C
+|   |
++-+ |
+| | |
+D E F
+| | |
++-+-+
+|
+G
 ```
-Ambiguous VariableDeclaration but trying to accept a QualifiedName(A)
+This is one `TraceAmbiguity` but it has multiple branches.
+`TraceManager::BuildStepListForAmbiguity` needs to refactor to handle this case.
+It should create a step tree in a new function.
+Otherwise B..D and B..E will crash in a nested call to `::BuildStepList` as B has a branch trace without an associated TraceAmbiguity.
 
-`Test\Source\BuiltIn-Cpp\Input\Declarations\GenericPS_Decls\ForwardDecl_CtorsDtors.txt`
-```
-template... A::B<_1, X>::C::D<Y, _2>::D(){}
-```
-Probably the same reason
+A `BuildStepTreeBranchesForAmbiguityBranch` could be written:
+  if it sees a `TraceAmbiguity`, treat it as a complete list
+  if it sees a branch trace, then this is the case, it creates multiple step tree branches instead of one
+  at the end a new function could be written to convert a step tree to a step list, running from the root to all branches, so shared steps need to be copied multiple times
 
 `Test\ParserLog\BuiltIn-Cpp\Trace-1[File_AmbiguousDecl4].txt`
-Looks good, but in `Trace-3` there is
-```
-[17]: 6@0 - 6@1
-[18]: 7@0 - 7@4
-[19]: 8@0 - 9@8
-[10]: 10@0 - 205@0
-[11]: RA_Branch
-[21]: 6@0 - 6@1
-[22]: 7@0 - 7@4
-[9]: 8@0 - 9@8
-[12]: 11@0 - 205@0
-[13]: RA_Branch
-[7]: 6@0 - 6@1
-[8]: 7@0 - 7@4
-[14]: RA_Branch
-```
-The third branch should be in the outer RA_END
-
 ```
 0..7
   +----------------------+
@@ -68,42 +64,7 @@ The third branch should be in the outer RA_END
 182..184
 ```
 
-There are two `TraceAmbiguity`: `2+0 .. 183-2` and `6+0 .. 205-1`.
-The `ExecutionStep` structure should be
-```
-RA_BEGIN
-{
-  RA_BEGIN
-  {
-    RA_BRANCH
-    RA_BRANCH
-  }
-  RA_END(VariableDeclaration)
-  RA_BRANCH
-  
-  RA_BRANCH
-}
-RA_END(TemplateDeclaration)
-```
-but the current structure is
-```
-RA_BEGIN
-{
-  RA_BEGIN
-  {
-    RA_BRANCH
-    RA_BRANCH
-    RA_BRANCH (incomplete)
-  }
-  RA_END(VariableDeclaration)
-  RA_BRANCH
-}
-RA_END(TemplateDeclaration)
-```
-
-The incomplete branch actually starts from the incorrect `TraceAmbiguity` causing the step generation to fail
-The above issue is proceeded, but instead of moving it to the outer RA, it disappears.
-In `TraceAmbiguity` 0, firstTrace is 2, branchTrace is 7, traversing successors of firstTrace is incorrect (`BuildAmbiguousStepLink`).
+Both `TraceAmbiguity` happens between 0..7 and hits `CHECK_FAIL(L"Not Implemented!")`
 
 - [x] Non-ambiguous test cases
 - [x] Ambiguous test cases
