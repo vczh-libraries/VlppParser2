@@ -120,6 +120,58 @@ ExecutionStep Operations
 			}
 
 /***********************************************************************
+BuildStepLeafsForAmbiguityBranch
+***********************************************************************/
+
+			void TraceManager::BuildStepLeafsForAmbiguityBranch(TraceAmbiguity* ta, ExecutionStep* lastSharedStep, Trace* ambiguityBranchStartTrace, ExecutionStepTree& ambiguityStepTree)
+			{
+				auto taFirst = GetTrace(ta->firstTrace);
+				auto taLast = GetTrace(ta->lastTrace);
+				auto taMerge = GetTrace(ta->mergeTrace);
+				auto taFirstExec = GetTraceExec(taFirst->traceExecRef);
+				auto taLastExec = GetTraceExec(taLast->traceExecRef);
+				auto taMergeExec = GetTraceExec(taMerge->traceExecRef);
+				vint32_t prefixExtra = ta->prefix - taFirstExec->insLists.countAll;
+				vint32_t postfixExtra = ta->postfix - taLastExec->insLists.countAll;
+
+				ExecutionStepLinkedList branchList;
+				// Execute the branch
+				{
+					auto steps = BuildStepList(
+						ambiguityBranchStartTrace,
+						(prefixExtra <= 0 ? 0 : prefixExtra),
+						taMerge,
+						(taMergeExec->insLists.countAll - 1 - (postfixExtra <= 0 ? 0 : postfixExtra))
+					);
+					AppendStepsAfterList(steps, branchList);
+				}
+
+				// Execute from taMerge to taLast
+				if (postfixExtra < 0)
+				{
+					auto steps = BuildStepList(
+						taMerge,
+						0,
+						taLast,
+						-postfixExtra - 1
+					);
+					AppendStepsAfterList(steps, branchList);
+				}
+
+				// Append RA_BRANCH
+				{
+					auto step = GetExecutionStep(executionSteps.Allocate());
+					step->type = ExecutionType::RA_Branch;
+					step->et_ra.trace = taLast->allocatedIndex;
+					step->et_ra.type = -1;
+					AppendStepsAfterList({ step,step }, branchList);
+				}
+
+				branchList.first->parent = lastSharedStep;
+				AppendLeafToTree(branchList.last, ambiguityStepTree);
+			}
+
+/***********************************************************************
 BuildStepListForAmbiguity
 ***********************************************************************/
 
@@ -129,13 +181,9 @@ BuildStepListForAmbiguity
 				auto taFirst = GetTrace(ta->firstTrace);
 				auto taLast = GetTrace(ta->lastTrace);
 				auto taBranch = GetTrace(ta->branchTrace);
-				auto taMerge = GetTrace(ta->mergeTrace);
 				auto taFirstExec = GetTraceExec(taFirst->traceExecRef);
-				auto taLastExec = GetTraceExec(taLast->traceExecRef);
 				auto taBranchExec = GetTraceExec(taBranch->traceExecRef);
-				auto taMergeExec = GetTraceExec(taMerge->traceExecRef);
 				vint32_t prefixExtra = ta->prefix - taFirstExec->insLists.countAll;
-				vint32_t postfixExtra = ta->postfix - taLastExec->insLists.countAll;
 
 				// Find the first nested TraceAmbiguity between taFirst and taBranch
 				{
@@ -197,42 +245,7 @@ BuildStepListForAmbiguity
 					{
 						auto successor = GetTrace(successorId);
 						successorId = successor->successors.siblingNext;
-
-						ExecutionStepLinkedList branchList;
-						// Execute the branch
-						{
-							auto steps = BuildStepList(
-								successor,
-								(prefixExtra <= 0 ? 0 : prefixExtra),
-								taMerge,
-								(taMergeExec->insLists.countAll - 1 - (postfixExtra <= 0 ? 0 : postfixExtra))
-							);
-							AppendStepsAfterList(steps, branchList);
-						}
-
-						// Execute from taMerge to taLast
-						if (postfixExtra < 0)
-						{
-							auto steps = BuildStepList(
-								taMerge,
-								0,
-								taLast,
-								-postfixExtra - 1
-							);
-							AppendStepsAfterList(steps, branchList);
-						}
-
-						// Append RA_BRANCH
-						{
-							auto step = GetExecutionStep(executionSteps.Allocate());
-							step->type = ExecutionType::RA_Branch;
-							step->et_ra.trace = taLast->allocatedIndex;
-							step->et_ra.type = -1;
-							AppendStepsAfterList({ step,step }, branchList);
-						}
-
-						branchList.first->parent = sharedSteps.last;
-						AppendLeafToTree(branchList.last, branchSteps);
+						BuildStepLeafsForAmbiguityBranch(ta, sharedSteps.last, successor, branchSteps);
 					}
 
 					AppendStepsAfterList(ConvertStepTreeToList(branchSteps), result);
