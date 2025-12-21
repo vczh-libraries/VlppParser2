@@ -504,43 +504,11 @@ BuildStepTree
 				}
 
 				// traverse critical until we hit endTrace
-				while (true)
+				while (critical && critical->traceExecRef <= endTrace->traceExecRef)
 				{
 					// if critical is empty
 					// or critical is after endTrace
 					// or critical is endTrace and the first ambiguous instruction is not before endIns
-
-					if (critical)
-					{
-						if (critical->traceExecRef < endTrace->traceExecRef)
-						{
-							goto CONTINUE_SEARCHING;
-						}
-						if (critical == endTrace)
-						{
-							auto criticalExec = GetTraceExec(critical->traceExecRef);
-							if (criticalExec->ambiguityBegins != nullref)
-							{
-								auto taLinkRef = criticalExec->ambiguityBegins;
-								while (taLinkRef != nullref)
-								{
-									auto taLink = GetTraceAmbiguityLink(taLinkRef);
-									taLinkRef = taLink->previous;
-
-									auto ta = GetTraceAmbiguity(taLink->ambiguity);
-									if (ta->prefix < endIns)
-									{
-										goto CONTINUE_SEARCHING;
-									}
-								}
-							}
-						}
-					}
-
-					// it means we have reached the end
-					break;
-
-				CONTINUE_SEARCHING:
 
 					// there is three kinds of critical node:
 					//   ambiguous trace (could also be a branch tree)
