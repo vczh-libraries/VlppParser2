@@ -148,6 +148,11 @@ BuildAmbiguousStepLink
 				auto taLastExec = GetTraceExec(taLast->traceExecRef);
 				auto taBranchExec = GetTraceExec(taBranch->traceExecRef);
 
+				if (taFirst->traceExecRef > taBranch->traceExecRef)
+				{
+					throw TraceException(*this, ta, nullptr, TRACE_MAMAGER_PHRASE, L"TraceAmbiguity firstTrace should not be after branchTrace.");
+				}
+
 				BranchSelectionMap branchSelections;
 				if (ta->branchTrace != nullref)
 				{
@@ -187,7 +192,11 @@ BuildAmbiguousStepLink
 				ExecutionStep* firstLeaf = nullptr;
 				ExecutionStep* currentLeaf = nullptr;
 
-				if (taFirst->traceExecRef < taBranch->traceExecRef || taFirst->traceExecRef == taBranch->traceExecRef)
+				// between firstTrace and branchTrace there could be multiple TraceAmbiguity
+				// These TraceAmbiguity could cover part of successors of branchTrace
+				// if we find the first extra TraceAmbiguity, we will call the function recursively, and that call will cover the rest
+				// and then go through all unexecuted successors
+
 				{
 					auto successorId = taFirst->successors.first;
 					while (successorId != nullref)
@@ -223,10 +232,6 @@ BuildAmbiguousStepLink
 							true
 						);
 					}
-				}
-				else
-				{
-					throw TraceException(*this, ta, nullptr, TRACE_MAMAGER_PHRASE, L"TraceAmbiguity firstTrace should not be after branchTrace.");
 				}
 
 				// create the ResolveAmbiguity step
@@ -448,21 +453,16 @@ BuildStepTree
 ***********************************************************************/
 
 			void TraceManager::BuildOneStepTreeBranch(
-				BranchSelectionMap* taTargetBranchSelections,
+				BranchSelectionMap* branchSelections,
 				Trace* startTrace, vint32_t startIns,
 				Trace* endTrace, vint32_t endIns,
 				ExecutionStep*& root, ExecutionStep*& firstLeaf, ExecutionStep* currentStep, ExecutionStep*& currentLeaf,
 				bool ambiguityBranch)
 			{
-				// this function creates a tree of steps that represents the complete TraceAmbiguity
-				// when taTarget is null, it just runs through each possible path between (startTrace, startIns) and (endTrace, endIns)
-
-				// when taTarget is not null, there could be multiple TraceAmbiguity that begins between taTarget->firstTrace and taTarget->branchTrace
-				// BuildStepTree will be called recursively for the next nested TraceAmbiguity
-
-				// when taTarget is a nested TraceAmbiguity
-				// branch traces between taTarget->firstTrace and taTarget->branchTrace belong to outer TraceAmbiguity
-				// taTargetBranchSelections will guide from taTarget->firstTrace to taTarget->branchTrace
+				// this function creates a linked list of steps
+				// runs through each possible path between (startTrace, startIns) and (endTrace, endIns)
+				// and append the link to the step tree as a new branch
+				// when ambiguityBranch is true, it means this function is creating a branch for an ambiguity, append RA_BRANCH after the branch
 
 				// find the next critical trace record which is or after startTrace
 				auto critical = GetTrace(GetTraceExec(startTrace->traceExecRef)->branchData.forwardTrace);
@@ -502,12 +502,12 @@ BuildStepTree
 						{
 							// if critical is a branch tree
 							Trace* selectedSuccessor = nullptr;
-							if (taTargetBranchSelections)
+							if (branchSelections)
 							{
-								vint index = taTargetBranchSelections->Keys().IndexOf(critical);
+								vint index = branchSelections->Keys().IndexOf(critical);
 								if (index != -1)
 								{
-									selectedSuccessor = GetTrace(taTargetBranchSelections->Values()[index]);
+									selectedSuccessor = GetTrace(branchSelections->Values()[index]);
 								}
 							}
 
@@ -517,7 +517,7 @@ BuildStepTree
 							if (selectedSuccessor)
 							{
 								BuildOneStepTreeBranch(
-									nullptr,
+									branchSelections,
 									selectedSuccessor, 0, endTrace, endIns,
 									PASS_EXECUTION_STEP_CONTEXT,
 									true);
@@ -531,7 +531,7 @@ BuildStepTree
 									auto successor = GetTrace(successorId);
 									successorId = successor->successors.siblingNext;
 									BuildOneStepTreeBranch(
-										nullptr,
+										branchSelections,
 										successor, 0, endTrace, endIns,
 										PASS_EXECUTION_STEP_CONTEXT,
 										true);
