@@ -311,11 +311,11 @@ SyntaxSymbolManager::CreatePrefixMerge
 				return cache;
 			}
 
-#if defined VCZH_MSVC && defined _DEBUG
-#define LOG_DECISION_MAKING
-#define LOG console::Console::Write
-#define LOGL console::Console::WriteLine
-#endif
+//#if defined VCZH_MSVC && defined _DEBUG
+//#define LOG_DECISION_MAKING
+//#define LOG console::Console::Write
+//#define LOGL console::Console::WriteLine
+//#endif
 
 /***********************************************************************
 SyntaxSymbolManager::PrefixMergeCrossReference_SolveInState
