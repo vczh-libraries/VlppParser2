@@ -513,7 +513,6 @@ TraceManager (Data Structures -- BuildExecutionOrder)
 				// tree (parent, leafPrev, leafNext)
 				Ref<ExecutionStep>					next, parent, leafPrev, leafNext;
 
-				vint32_t							copyCount = 0;
 				vint32_t							visitCount = 0;
 
 				union
@@ -702,6 +701,8 @@ TraceManager
 				// phase: BuildExecutionOrder
 
 				void										AppendStepsAfterList(ExecutionStepLinkedList steps, ExecutionStepLinkedList& current);
+				ExecutionStepLinkedList						ConvertStepTreeToList(ExecutionStepTree tree);
+
 				ExecutionStepLinkedList						BuildStepListForAmbiguity(TraceAmbiguity* ta);
 				ExecutionStepLinkedList						BuildStepListUntilFirstRawBranchTrace(Trace* startTrace, vint32_t startIns, Trace* endTrace, vint32_t endIns, Trace** rawBranchTrace);
 				ExecutionStepLinkedList						BuildStepList(Trace* startTrace, vint32_t startIns, Trace* endTrace, vint32_t endIns);

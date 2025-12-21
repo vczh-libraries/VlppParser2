@@ -13,7 +13,7 @@ namespace vl
 #define TRACE_MAMAGER_PHRASE L"ResolveAmbiguity/BuildExecutionOrder"
 
 /***********************************************************************
-AppendStepAfterList
+ExecutionStep Operations
 ***********************************************************************/
 
 			void TraceManager::AppendStepsAfterList(ExecutionStepLinkedList steps, ExecutionStepLinkedList& current)
@@ -31,6 +31,81 @@ AppendStepAfterList
 					steps.first->parent = current.last;
 					current.last = steps.last;
 				}
+			}
+
+			ExecutionStepLinkedList TraceManager::ConvertStepTreeToList(ExecutionStepTree tree)
+			{
+				ExecutionStepLinkedList result;
+
+				// clean visitCount and copyCount
+				{
+					Ref<ExecutionStep> currentLeafRef = tree.firstLeaf;
+					while (currentLeafRef != nullref)
+					{
+						auto currentLeaf = GetExecutionStep(currentLeafRef);
+						currentLeafRef = currentLeaf->leafNext;
+
+						auto currentStepRef = currentLeafRef;
+						while (currentStepRef != nullref)
+						{
+							auto currentStep = GetExecutionStep(currentStepRef);
+							currentStepRef = currentStep->parent;
+
+							currentStep->visitCount = 0;
+						}
+					}
+				}
+
+				// traverse through each leaf
+				// make a list from root to leaf
+				// join them
+				{
+					Ref<ExecutionStep> currentLeafRef = tree.firstLeaf;
+					while (currentLeafRef != nullref)
+					{
+						auto currentLeaf = GetExecutionStep(currentLeafRef);
+						currentLeafRef = currentLeaf->leafNext;
+
+						ExecutionStepLinkedList leafList{ currentLeaf,currentLeaf };
+						auto walkingStep = currentLeaf;
+						while (walkingStep->parent != nullref)
+						{
+							auto parentStep = GetExecutionStep(walkingStep->parent);
+
+							if (walkingStep->visitCount++ == 0)
+							{
+								leafList.first = walkingStep;
+							}
+							else
+							{
+								auto stepCopy = GetExecutionStep(executionSteps.Allocate());
+								static_assert(sizeof(stepCopy->et_i) >= sizeof(stepCopy->et_ra));
+								stepCopy->type = walkingStep->type;
+								stepCopy->et_i = walkingStep->et_i;
+								leafList.first->parent = stepCopy;
+								leafList.first = stepCopy;
+							}
+
+							walkingStep = parentStep;
+						}
+						AppendStepsAfterList(leafList, result);
+					}
+				}
+
+				// clean leafPrev and leafNext
+				{
+					Ref<ExecutionStep> currentLeafRef = tree.firstLeaf;
+					while (currentLeafRef != nullref)
+					{
+						auto currentLeaf = GetExecutionStep(currentLeafRef);
+						auto currentLeafRef = currentLeaf->leafNext;
+
+						currentLeaf->leafPrev = nullref;
+						currentLeaf->leafNext = nullref;
+					}
+				}
+
+				return result;
 			}
 
 /***********************************************************************
