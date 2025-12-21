@@ -12,23 +12,6 @@ namespace vl
 			using namespace collections;
 
 /***********************************************************************
-MarkNewLeafStep
-***********************************************************************/
-
-			void TraceManager::MarkNewLeafStep(ExecutionStep* step, ExecutionStep*& firstLeaf, ExecutionStep*& currentLeaf)
-			{
-				if (!firstLeaf)
-				{
-					firstLeaf = step;
-				}
-
-				if (currentLeaf)
-				{
-					currentLeaf->next = step;
-				}
-				currentLeaf = step;
-			}
-/***********************************************************************
 AppendStepLink
 ***********************************************************************/
 
@@ -204,59 +187,46 @@ BuildAmbiguousStepLink
 				ExecutionStep* firstLeaf = nullptr;
 				ExecutionStep* currentLeaf = nullptr;
 
-				if (taFirst->traceExecRef > taBranch->traceExecRef)
+				if (taFirst->traceExecRef < taBranch->traceExecRef || taFirst->traceExecRef == taBranch->traceExecRef)
 				{
-					throw TraceException(*this, ta, nullptr, TRACE_MAMAGER_PHRASE, L"TraceAmbiguity firstTrace should not be after branchTrace.");
-				}
-				if (taFirst->traceExecRef < taBranch->traceExecRef || ta->prefix < taFirstExec->insLists.countAll)
-				{
-					// if the first ambiguous instruction is in taFirst
-
-					// traverse all successors
 					auto successorId = taFirst->successors.first;
 					while (successorId != nullref)
 					{
 						auto successor = GetTrace(successorId);
 						successorId = successor->successors.siblingNext;
 
-						// append a step to execute from the first ambiguous instruction
-						auto first = GetExecutionStep(executionSteps.Allocate());
-						first->parent = root;
-						first->et_i.startTrace = taFirst->allocatedIndex;
-						first->et_i.startIns = ta->prefix;
-						first->et_i.endTrace = taFirst->allocatedIndex;
-						first->et_i.endIns = taFirstExec->insLists.countAll - 1;
+						auto first = root;
+						vint32_t successorStartIns = 0;
+						if (ta->prefix < taFirstExec->insLists.countAll)
+						{
+							// if the first ambiguous instruction is in the branch traces
+							// append a step to execute from the first ambiguous instruction
+							first = GetExecutionStep(executionSteps.Allocate());
+							first->parent = root;
+							first->et_i.startTrace = taFirst->allocatedIndex;
+							first->et_i.startIns = ta->prefix;
+							first->et_i.endTrace = taFirst->allocatedIndex;
+							first->et_i.endIns = taFirstExec->insLists.countAll - 1;
+						}
+						else
+						{
+							// if the first ambiguous instruction is in successor traces
+							successorStartIns = ta->prefix - taFirstExec->insLists.countAll;
+						}
 
 						// run from successor to the end
-						BuildStepTree(
-							ta, &branchSelections,
-							successor, 0,
+						BuildOneStepTreeBranch(
+							&branchSelections,
+							successor, successorStartIns,
 							taLast, (taLastExec->insLists.countAll - ta->postfix - 1),
 							root, firstLeaf, first, currentLeaf,
 							true
-							);
+						);
 					}
 				}
 				else
 				{
-					// if the first ambiguous instruction is in successor traces
-
-					// traverse all successors
-					auto successorId = taFirst->successors.first;
-					while (successorId != nullref)
-					{
-						auto successor = GetTrace(successorId);
-						successorId = successor->successors.siblingNext;
-
-						// run from the first ambiguous instruction to the last
-						BuildStepTree(
-							ta, &branchSelections,
-							successor, (ta->prefix - taFirstExec->insLists.countAll),
-							taLast, (taLastExec->insLists.countAll - ta->postfix - 1),
-							root, firstLeaf, root, currentLeaf,
-							true
-							);
-					}
+					throw TraceException(*this, ta, nullptr, TRACE_MAMAGER_PHRASE, L"TraceAmbiguity firstTrace should not be after branchTrace.");
 				}
 
 				// create the ResolveAmbiguity step
@@ -477,8 +447,7 @@ AppendStepsBeforeBranch
 BuildStepTree
 ***********************************************************************/
 
-			void TraceManager::BuildStepTree(
-				TraceAmbiguity* taTarget,
+			void TraceManager::BuildOneStepTreeBranch(
 				BranchSelectionMap* taTargetBranchSelections,
 				Trace* startTrace, vint32_t startIns,
 				Trace* endTrace, vint32_t endIns,
@@ -506,10 +475,6 @@ BuildStepTree
 				// traverse critical until we hit endTrace
 				while (critical && critical->traceExecRef <= endTrace->traceExecRef)
 				{
-					// if critical is empty
-					// or critical is after endTrace
-					// or critical is endTrace and the first ambiguous instruction is not before endIns
-
 					// there is three kinds of critical node:
 					//   ambiguous trace (could also be a branch tree)
 					//   branch trace
@@ -551,8 +516,8 @@ BuildStepTree
 
 							if (selectedSuccessor)
 							{
-								BuildStepTree(
-									nullptr, nullptr,
+								BuildOneStepTreeBranch(
+									nullptr,
 									selectedSuccessor, 0, endTrace, endIns,
 									PASS_EXECUTION_STEP_CONTEXT,
 									true);
@@ -565,8 +530,8 @@ BuildStepTree
 								{
 									auto successor = GetTrace(successorId);
 									successorId = successor->successors.siblingNext;
-									BuildStepTree(
-										nullptr, nullptr,
+									BuildOneStepTreeBranch(
+										nullptr,
 										successor, 0, endTrace, endIns,
 										PASS_EXECUTION_STEP_CONTEXT,
 										true);
@@ -622,7 +587,19 @@ BuildStepTree
 					step->et_ra.count = -1;
 					AppendStepLink(step, step, PASS_EXECUTION_STEP_CONTEXT);
 				}
-				MarkNewLeafStep(currentStep, firstLeaf, currentLeaf);
+
+				{
+					if (!firstLeaf)
+					{
+						firstLeaf = currentStep;
+					}
+
+					if (currentLeaf)
+					{
+						currentLeaf->next = currentStep;
+					}
+					currentLeaf = currentStep;
+				}
 			}
 
 /***********************************************************************
@@ -642,8 +619,8 @@ BuildExecutionOrder
 				ExecutionStep* root = nullptr;
 				ExecutionStep* firstLeaf = nullptr;
 				ExecutionStep* currentLeaf = nullptr;
-				BuildStepTree(
-					nullptr, nullptr,
+				BuildOneStepTreeBranch(
+					nullptr,
 					startTrace, startIns, endTrace, endIns,
 					root, firstLeaf, nullptr, currentLeaf,
 					false);
