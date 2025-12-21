@@ -392,20 +392,19 @@ BuildStepList
 					auto criticalTraceExec = GetTraceExec(criticalTrace->traceExecRef);
 					if (criticalTraceExec->ambiguityBegins == nullref)
 					{
-						if (rawBranchTrace && criticalTrace->successors.first != criticalTrace->successors.last)
-						{
-							*rawBranchTrace = criticalTrace;
-							endTrace = criticalTrace;
-							endIns = GetTraceExec(endTrace->traceExecRef)->insLists.countAll - 1;
-							goto NO_CRITICAL_TRACE;
-						}
-					}
-
-					if (criticalTraceExec->ambiguityBegins == nullref)
-					{
 						if (criticalTrace->successors.first != criticalTrace->successors.last)
 						{
-							throw TraceException(*this, currentTrace, criticalTrace, TRACE_MAMAGER_PHRASE, L"The next critical trace after the current trace is not associated with a TraceAmbiguity.");
+							if (rawBranchTrace)
+							{
+								*rawBranchTrace = criticalTrace;
+								endTrace = criticalTrace;
+								endIns = GetTraceExec(endTrace->traceExecRef)->insLists.countAll - 1;
+								goto NO_CRITICAL_TRACE;
+							}
+							else
+							{
+								throw TraceException(*this, currentTrace, criticalTrace, TRACE_MAMAGER_PHRASE, L"The next critical trace after the current trace is not associated with a TraceAmbiguity.");
+							}
 						}
 
 						// A critical trace could be a predecessor of a merge trace
