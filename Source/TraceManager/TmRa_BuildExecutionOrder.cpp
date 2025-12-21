@@ -49,6 +49,11 @@ ConvertStepTreeToLink
 
 			void TraceManager::ConvertStepTreeToLink(ExecutionStep* root, ExecutionStep* firstLeaf, ExecutionStep*& first, ExecutionStep*& last)
 			{
+				// root is a tree of steps, this function creates a linked list of steps that
+				// traverse from root to each leaf
+				// first and last represents the linked list
+				// there will be no subtree as this function will be called once an ambiguity is resolved right away
+
 				// calculate copyCount
 				Ref<ExecutionStep> currentLeafRef = firstLeaf;
 				while (currentLeafRef != nullref)
@@ -151,6 +156,7 @@ BuildAmbiguousStepLink
 
 			void TraceManager::BuildAmbiguousStepLink(TraceAmbiguity* ta, ExecutionStep*& first, ExecutionStep*& last)
 			{
+				// this function creates a linked list of steps that represents the complete TraceAmbiguity
 #define TRACE_MAMAGER_PHRASE L"ResolveAmbiguity/BuildExecutionOrder"
 				auto taFirst = GetTrace(ta->firstTrace);
 				auto taLast = GetTrace(ta->lastTrace);
@@ -223,7 +229,7 @@ BuildAmbiguousStepLink
 
 						// run from successor to the end
 						BuildStepTree(
-							(branchSelections.Count() == 0 ? nullptr : & branchSelections),
+							ta, &branchSelections,
 							successor, 0,
 							taLast, (taLastExec->insLists.countAll - ta->postfix - 1),
 							root, firstLeaf, first, currentLeaf,
@@ -244,7 +250,7 @@ BuildAmbiguousStepLink
 
 						// run from the first ambiguous instruction to the last
 						BuildStepTree(
-							(branchSelections.Count() == 0 ? nullptr : &branchSelections),
+							ta, &branchSelections,
 							successor, (ta->prefix - taFirstExec->insLists.countAll),
 							taLast, (taLastExec->insLists.countAll - ta->postfix - 1),
 							root, firstLeaf, root, currentLeaf,
@@ -472,24 +478,34 @@ BuildStepTree
 ***********************************************************************/
 
 			void TraceManager::BuildStepTree(
-				BranchSelectionMap* branchSelections,
+				TraceAmbiguity* taTarget,
+				BranchSelectionMap* taTargetBranchSelections,
 				Trace* startTrace, vint32_t startIns,
 				Trace* endTrace, vint32_t endIns,
 				ExecutionStep*& root, ExecutionStep*& firstLeaf, ExecutionStep* currentStep, ExecutionStep*& currentLeaf,
 				bool ambiguityBranch)
 			{
+				// this function creates a tree of steps that represents the complete TraceAmbiguity
+				// when taTarget is null, it just runs through each possible path between (startTrace, startIns) and (endTrace, endIns)
+
+				// when taTarget is not null, there could be multiple TraceAmbiguity that begins between taTarget->firstTrace and taTarget->branchTrace
+				// BuildStepTree will be called recursively for the next nested TraceAmbiguity
+
+				// when taTarget is a nested TraceAmbiguity
+				// branch traces between taTarget->firstTrace and taTarget->branchTrace belong to outer TraceAmbiguity
+				// taTargetBranchSelections will guide from taTarget->firstTrace to taTarget->branchTrace
+
 				// find the next critical trace record which is or after startTrace
 				auto critical = GetTrace(GetTraceExec(startTrace->traceExecRef)->branchData.forwardTrace);
+				while (critical && critical->traceExecRef < startTrace->traceExecRef)
+				{
+					auto criticalRef = GetTraceExec(critical->traceExecRef)->nextAmbiguityCriticalTrace;
+					critical = criticalRef == nullref ? nullptr : GetTrace(criticalRef);
+				}
 
 				// traverse critical until we hit endTrace
 				while (true)
 				{
-					// skip if critical is before startTrace
-					if (critical && critical->traceExecRef < startTrace->traceExecRef)
-					{
-						goto NEXT_CRITICAL;
-					}
-
 					// if critical is empty
 					// or critical is after endTrace
 					// or critical is endTrace and the first ambiguous instruction is not before endIns
@@ -553,12 +569,12 @@ BuildStepTree
 						{
 							// if critical is a branch tree
 							Trace* selectedSuccessor = nullptr;
-							if (branchSelections)
+							if (taTargetBranchSelections)
 							{
-								vint index = branchSelections->Keys().IndexOf(critical);
+								vint index = taTargetBranchSelections->Keys().IndexOf(critical);
 								if (index != -1)
 								{
-									selectedSuccessor = GetTrace(branchSelections->Values()[index]);
+									selectedSuccessor = GetTrace(taTargetBranchSelections->Values()[index]);
 								}
 							}
 
@@ -567,7 +583,11 @@ BuildStepTree
 
 							if (selectedSuccessor)
 							{
-								BuildStepTree(branchSelections, selectedSuccessor, 0, endTrace, endIns, PASS_EXECUTION_STEP_CONTEXT, true);
+								BuildStepTree(
+									nullptr, nullptr,
+									selectedSuccessor, 0, endTrace, endIns,
+									PASS_EXECUTION_STEP_CONTEXT,
+									true);
 							}
 							else
 							{
@@ -577,7 +597,11 @@ BuildStepTree
 								{
 									auto successor = GetTrace(successorId);
 									successorId = successor->successors.siblingNext;
-									BuildStepTree(nullptr, successor, 0, endTrace, endIns, PASS_EXECUTION_STEP_CONTEXT, true);
+									BuildStepTree(
+										nullptr, nullptr,
+										successor, 0, endTrace, endIns,
+										PASS_EXECUTION_STEP_CONTEXT,
+										true);
 								}
 							}
 							return;
@@ -606,7 +630,6 @@ BuildStepTree
 						}
 					}
 
-				NEXT_CRITICAL:
 					auto criticalRef = GetTraceExec(critical->traceExecRef)->nextAmbiguityCriticalTrace;
 					critical = criticalRef == nullref ? nullptr : GetTrace(criticalRef);
 				}
@@ -651,7 +674,11 @@ BuildExecutionOrder
 				ExecutionStep* root = nullptr;
 				ExecutionStep* firstLeaf = nullptr;
 				ExecutionStep* currentLeaf = nullptr;
-				BuildStepTree(nullptr, startTrace, startIns, endTrace, endIns, root, firstLeaf, nullptr, currentLeaf, false);
+				BuildStepTree(
+					nullptr, nullptr,
+					startTrace, startIns, endTrace, endIns,
+					root, firstLeaf, nullptr, currentLeaf,
+					false);
 
 				// BuildAmbiguousStepLink should have merged a tree to a link
 				if (firstLeaf == nullptr || firstLeaf->next != nullref)

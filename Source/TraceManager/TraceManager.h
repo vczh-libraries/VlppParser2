@@ -707,7 +707,8 @@ TraceManager
 				void										AppendStepsForAmbiguity(TraceAmbiguity* ta, DEFINE_EXECUTION_STEP_CONTEXT);
 				void										AppendStepsBeforeBranch(Trace* startTrace, vint32_t startIns, Trace* branchTrace, TraceExec* branchTraceExec, DEFINE_EXECUTION_STEP_CONTEXT);
 				void										BuildStepTree(
-																BranchSelectionMap* branchSelections,
+																TraceAmbiguity* taTarget,
+																BranchSelectionMap* taTargetBranchSelections,
 																Trace* startTrace, vint32_t startIns,
 																Trace* endTrace, vint32_t endIns,
 																ExecutionStep*& root, ExecutionStep*& firstLeaf, ExecutionStep* currentStep, ExecutionStep*& currentLeaf,
