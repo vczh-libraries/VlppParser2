@@ -846,17 +846,73 @@ CheckMergeTraces
 					// record branch and merge trace
 					ta->mergeTrace = trace;
 					{
-						auto predecessor = GetTrace(trace->predecessors.first);
-						auto predecessorForward = GetTrace(GetTraceExec(predecessor->traceExecRef)->branchData.forwardTrace);
-						if (predecessorForward->predecessors.first == predecessorForward->predecessors.last)
+						auto currentBranchTrace = trace;
+						auto predecessorRef = trace->predecessors.first;
+						while (predecessorRef != nullref)
 						{
-							ta->branchTrace = predecessorForward;
+							// when traces look like this
+							// the first predecessor locates B while the correct one should be A
+							// so all predecessors need to test
+							// 
+							//   A
+							//   |
+							// +-+-+
+							// |   |
+							// B   C
+							// |   |
+							// +-+ |
+							// | | |
+							// D E F
+							// | | |
+							// +-+-+
+							// |
+							// G
+
+							auto predecessor = GetTrace(predecessorRef);
+							predecessorRef = predecessor->predecessors.siblingNext;
+
+							Trace* branchTrace = nullptr;
+							auto predecessorForward = GetTrace(GetTraceExec(predecessor->traceExecRef)->branchData.forwardTrace);
+							if (predecessorForward->predecessors.first == predecessorForward->predecessors.last)
+							{
+								branchTrace = predecessorForward;
+							}
+							else
+							{
+								branchTrace = GetTrace(GetTraceExec(predecessorForward->traceExecRef)->branchData.commonForwardBranch);
+							}
+
+							// when traces look like this
+							// some branchTrace may be the root, ignores
+							// 
+							//   A
+							//   |
+							// +-+-+
+							// | | |
+							// B C D
+							// | | |
+							// +-+ |
+							// |   |
+							// E   F
+							// |   |
+							// +---+
+							// |
+							// G
+
+							if (branchTrace->predecessors.first != nullref)
+							{
+								branchTrace = GetTrace(branchTrace->predecessors.first);
+								if (currentBranchTrace->traceExecRef > branchTrace->traceExecRef)
+								{
+									currentBranchTrace = branchTrace;
+								}
+							}
 						}
-						else
-						{
-							ta->branchTrace = GetTraceExec(predecessorForward->traceExecRef)->branchData.commonForwardBranch;
-						}
-						ta->branchTrace = GetTrace(ta->branchTrace)->predecessors.first;
+						ta->branchTrace = currentBranchTrace;
+					}
+					if (ta->firstTrace == ta->mergeTrace)
+					{
+						throw TraceException(*this, trace, nullptr, TRACE_MAMAGER_PHRASE, L"Failed to find TraceAmbiguity::branchTrace.");
 					}
 
 					// check if existing TraceAmbiguity in firstTrace are compatible
