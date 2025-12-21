@@ -140,11 +140,11 @@ AppendStepsAfterAmbiguity
 AppendStepsForAmbiguity
 ***********************************************************************/
 
-			void TraceManager::AppendStepsForAmbiguity(TraceAmbiguity* ta, bool checkCoveredMark, DEFINE_EXECUTION_STEP_CONTEXT)
+			void TraceManager::AppendStepsForAmbiguity(TraceAmbiguity* ta, DEFINE_EXECUTION_STEP_CONTEXT)
 			{
 				ExecutionStep* taStepFirst = nullptr;
 				ExecutionStep* taStepLast = nullptr;
-				BuildAmbiguousStepLink(ta, checkCoveredMark, taStepFirst, taStepLast);
+				BuildAmbiguousStepLink(ta, taStepFirst, taStepLast);
 				AppendStepLink(taStepFirst, taStepLast, PASS_EXECUTION_STEP_CONTEXT);
 			}
 
@@ -229,79 +229,19 @@ BuildStepTree
 						auto criticalExec = GetTraceExec(critical->traceExecRef);
 						if (criticalExec->ambiguityBegins != nullref)
 						{
-							// check if the only one TraceAmbiguity covers all successors
-							bool singleCompleteAmbiguity = true;
-							{
-								auto firstSuccessor = GetTrace(critical->successors.first);
-								auto successorId = firstSuccessor->successors.siblingNext;
-								auto covered = GetTraceExec(firstSuccessor->traceExecRef)->ambiguityCoveredInForward;
-								while (successorId != nullref)
-								{
-									auto successor = GetTrace(successorId);
-									successorId = successor->successors.siblingNext;
+							// if yes, it means the TraceAmbiguity will cover all successors
+							// run the ambiguity in place, no need for recursion
+							auto taLink = GetTraceAmbiguityLink(criticalExec->ambiguityBegins);
+							auto ta = GetTraceAmbiguity(taLink->ambiguity);
 
-									if (covered != GetTraceExec(successor->traceExecRef)->ambiguityCoveredInForward)
-									{
-										singleCompleteAmbiguity = false;
-										break;
-									}
-								}
-							}
+							// append steps for ambiguity and fix the current position
+							AppendStepsBeforeAmbiguity(startTrace, startIns, ta, PASS_EXECUTION_STEP_CONTEXT);
+							AppendStepsForAmbiguity(ta, PASS_EXECUTION_STEP_CONTEXT);
+							AppendStepsAfterAmbiguity(startTrace, startIns, ta, PASS_EXECUTION_STEP_CONTEXT);
 
-							if (singleCompleteAmbiguity)
-							{
-								// if yes, it means the TraceAmbiguity will cover all successors
-								// run the ambiguity in place, no need for recursion
-								auto taLink = GetTraceAmbiguityLink(criticalExec->ambiguityBegins);
-								auto ta = GetTraceAmbiguity(taLink->ambiguity);
-
-								// append steps for ambiguity and fix the current position
-								AppendStepsBeforeAmbiguity(startTrace, startIns, ta, PASS_EXECUTION_STEP_CONTEXT);
-								AppendStepsForAmbiguity(ta, false, PASS_EXECUTION_STEP_CONTEXT);
-								AppendStepsAfterAmbiguity(startTrace, startIns, ta, PASS_EXECUTION_STEP_CONTEXT);
-
-								// fix critical
-								critical = GetTrace(GetTraceExec(startTrace->traceExecRef)->branchData.forwardTrace);
-								continue;
-							}
-							else
-							{
-								// there could be one or more TraceAmbiguity
-								// there could also be successors that are not covered by any TraceAmbiguity
-								auto taLinkRef = criticalExec->ambiguityBegins;
-								while (taLinkRef != nullref)
-								{
-									auto taLink = GetTraceAmbiguityLink(taLinkRef);
-									taLinkRef = taLink->previous;
-									auto ta = GetTraceAmbiguity(taLink->ambiguity);
-
-									auto branchStartTrace = startTrace;
-									auto branchStartIns = startIns;
-									auto branchStep = currentStep;
-
-#define PASS_BRANCH_STEP_CONTEXT	root, firstLeaf, branchStep, currentLeaf
-									AppendStepsBeforeAmbiguity(branchStartTrace, branchStartIns, ta, PASS_BRANCH_STEP_CONTEXT);
-									AppendStepsForAmbiguity(ta, true, PASS_BRANCH_STEP_CONTEXT);
-									AppendStepsAfterAmbiguity(branchStartTrace, branchStartIns, ta, PASS_BRANCH_STEP_CONTEXT);
-									BuildStepTree(branchStartTrace, branchStartIns, endTrace, endIns, PASS_BRANCH_STEP_CONTEXT, ambiguityBranch);
-#undef PASS_BRANCH_STEP_CONTEXT
-								}
-
-								// treat the remaining successors as from a branch trace
-								AppendStepsBeforeBranch(startTrace, startIns, critical, criticalExec, PASS_EXECUTION_STEP_CONTEXT);
-
-								auto successorId = critical->successors.first;
-								while (successorId != nullref)
-								{
-									auto successor = GetTrace(successorId);
-									successorId = successor->successors.siblingNext;
-									if (GetTraceExec(successor->traceExecRef)->ambiguityCoveredInForward == nullref)
-									{
-										BuildStepTree(successor, 0, endTrace, endIns, PASS_EXECUTION_STEP_CONTEXT, true);
-									}
-								}
-								return;
-							}
+							// fix critical
+							critical = GetTrace(GetTraceExec(startTrace->traceExecRef)->branchData.forwardTrace);
+							continue;
 						}
 						else if (critical->successors.first != critical->successors.last)
 						{
@@ -478,7 +418,7 @@ ConvertStepTreeToLink
 BuildAmbiguousStepLink
 ***********************************************************************/
 
-			void TraceManager::BuildAmbiguousStepLink(TraceAmbiguity* ta, bool checkCoveredMark, ExecutionStep*& first, ExecutionStep*& last)
+			void TraceManager::BuildAmbiguousStepLink(TraceAmbiguity* ta, ExecutionStep*& first, ExecutionStep*& last)
 			{
 #define TRACE_MAMAGER_PHRASE L"ResolveAmbiguity/BuildExecutionOrder"
 				auto taFirst = GetTrace(ta->firstTrace);
@@ -502,10 +442,6 @@ BuildAmbiguousStepLink
 					{
 						auto successor = GetTrace(successorId);
 						successorId = successor->successors.siblingNext;
-						if (checkCoveredMark && GetTraceExec(successor->traceExecRef)->ambiguityCoveredInForward != ta)
-						{
-							continue;
-						}
 
 						// append a step to execute from the first ambiguous instruction
 						auto first = GetExecutionStep(executionSteps.Allocate());
@@ -534,10 +470,6 @@ BuildAmbiguousStepLink
 					{
 						auto successor = GetTrace(successorId);
 						successorId = successor->successors.siblingNext;
-						if (checkCoveredMark && GetTraceExec(successor->traceExecRef)->ambiguityCoveredInForward != ta)
-						{
-							continue;
-						}
 
 						// run from the first ambiguous instruction to the last
 						BuildStepTree(

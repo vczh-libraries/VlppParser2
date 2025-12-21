@@ -475,11 +475,6 @@ Traversing through branchData.forwardTrace and branchData.commonForwardBranch wi
 				Ref<TraceAmbiguityLink>				ambiguityBegins;		// All TraceAmbiguity whose firstTrace is this trace
 																			// All TraceAmbiguity in this list are grouped by lastTrace (using TraceAmbiguity::overridedAmbiguity)
 																			// To traverse all of them, begins from each TraceAmbiguity in this list, and go through TraceAmbiguity::overridedAmbiguity
-
-				// when this trace is a successor of a branch trace
-				// and such branch trace has non-empty ambiguityBegins
-				// ambiguityCoveredInForward points to the ambiguity which begins in the current trace
-				Ref<TraceAmbiguity>					ambiguityCoveredInForward;
 			};
 
 /***********************************************************************
@@ -705,11 +700,11 @@ TraceManager
 				void										AppendStepLink(ExecutionStep* first, ExecutionStep* last, DEFINE_EXECUTION_STEP_CONTEXT);
 				void										AppendStepsBeforeAmbiguity(Trace* startTrace, vint32_t startIns, TraceAmbiguity* ta, DEFINE_EXECUTION_STEP_CONTEXT);
 				void										AppendStepsAfterAmbiguity(Trace*& startTrace, vint32_t& startIns, TraceAmbiguity* ta, DEFINE_EXECUTION_STEP_CONTEXT);
-				void										AppendStepsForAmbiguity(TraceAmbiguity* ta, bool checkCoveredMark, DEFINE_EXECUTION_STEP_CONTEXT);
+				void										AppendStepsForAmbiguity(TraceAmbiguity* ta, DEFINE_EXECUTION_STEP_CONTEXT);
 				void										AppendStepsBeforeBranch(Trace* startTrace, vint32_t startIns, Trace* branchTrace, TraceExec* branchTraceExec, DEFINE_EXECUTION_STEP_CONTEXT);
 				void										BuildStepTree(Trace* startTrace, vint32_t startIns, Trace* endTrace, vint32_t endIns, ExecutionStep*& root, ExecutionStep*& firstLeaf, ExecutionStep* currentStep, ExecutionStep*& currentLeaf, bool ambiguityBranch);
 				void										ConvertStepTreeToLink(ExecutionStep* root, ExecutionStep* firstLeaf, ExecutionStep*& first, ExecutionStep*& last);
-				void										BuildAmbiguousStepLink(TraceAmbiguity* ta, bool checkCoveredMark, ExecutionStep*& first, ExecutionStep*& last);
+				void										BuildAmbiguousStepLink(TraceAmbiguity* ta, ExecutionStep*& first, ExecutionStep*& last);
 				void										BuildExecutionOrder();
 #undef DEFINE_EXECUTION_STEP_CONTEXT
 

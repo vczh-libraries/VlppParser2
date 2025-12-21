@@ -258,13 +258,6 @@ void RenderTrace(
 				writer.WriteLine(L"]");
 			}
 
-			if (traceExec->ambiguityCoveredInForward != nullref)
-			{
-				writer.WriteString(L"  AmbiguityCoveredInForward: [");
-				writer.WriteString(itow(traceExec->ambiguityCoveredInForward.handle));
-				writer.WriteLine(L"]");
-			}
-
 			if (traceExec->ambiguityDetected != nullref)
 			{
 				auto ta = tm.GetTraceAmbiguity(traceExec->ambiguityDetected);
