@@ -399,7 +399,15 @@ BuildStepList
 							endIns = GetTraceExec(endTrace->traceExecRef)->insLists.countAll - 1;
 							goto NO_CRITICAL_TRACE;
 						}
-						throw TraceException(*this, currentTrace, criticalTrace, TRACE_MAMAGER_PHRASE, L"The next critical trace after the current trace is not associated with a TraceAmbiguity.");
+					}
+
+					if (criticalTraceExec->ambiguityBegins == nullref)
+					{
+						if (criticalTrace->successors.first != criticalTrace->successors.last)
+						{
+							throw TraceException(*this, currentTrace, criticalTrace, TRACE_MAMAGER_PHRASE, L"The next critical trace after the current trace is not associated with a TraceAmbiguity.");
+						}
+						CHECK_FAIL(L"Not Implemented!");
 					}
 
 					// Execute from (currentTrace, currentIns) until the next TraceAmbiguity
