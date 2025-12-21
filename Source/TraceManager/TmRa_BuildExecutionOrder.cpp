@@ -59,7 +59,7 @@ ExecutionStep Operations
 						auto currentLeaf = GetExecutionStep(currentLeafRef);
 						currentLeafRef = currentLeaf->leafNext;
 
-						auto currentStepRef = currentLeafRef;
+						Ref<ExecutionStep> currentStepRef = currentLeaf;
 						while (currentStepRef != nullref)
 						{
 							auto currentStep = GetExecutionStep(currentStepRef);
