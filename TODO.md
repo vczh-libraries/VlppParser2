@@ -91,6 +91,7 @@ The third branch should continue from 14@0 to 204@0
     - `\r\n` or `\n` serialized into `<![CDATA[]]>`.
     - We can force `\r\n` in unit test, normalizing all inputs.
 - [ ] Built-in parsers: C++ Non-traced test cases save json files with extra field recording the input code at the beginning
+- [ ] Refactor TraceTree logging and put together with WriteMonospacedEnglishTable
 
 ## Prefix Merge
 
