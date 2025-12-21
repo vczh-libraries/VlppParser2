@@ -269,12 +269,12 @@ CollectNestedAmbiguities
 								break;
 							}
 
-							if (currentTrace->predecessors.siblingNext != currentTrace->predecessors.siblingPrev)
+							if (currentTrace->successors.siblingNext != currentTrace->successors.siblingPrev)
 							{
 								auto predecessor = GetTrace(currentTrace->predecessors.first);
 								if (nestedTas->branchTraces.Keys().Contains(predecessor))
 								{
-									nestedTas->branchSelections.Add(nestedTa, predecessor);
+									nestedTas->branchSelections.Add(nestedTa, currentTrace);
 								}
 							}
 
