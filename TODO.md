@@ -21,26 +21,6 @@
 
 ### Progressing
 
-`Test\ParserLog\Generated-PrefixMerge7_PmSwitch\Trace-3[Module-Generic_Ambiguous4].txt`
-```
-0..1
-  +-----------------------------+
-  |                             |
-6..22                         2..45
-  +---------+                   +---------+
-  |         |                   |         |
-24..351   25..36             38..336    46..335
-  |         +---------+         +---------+
-  |         |         |      326..364
-  |      56..354   37..353      |
-  |         +---------+         |
-  |         |                   |
-  |     343..350                |
-  +---------+-------------------+
-  |
-341
-```
-
 `Test\ParserLog\BuiltIn-Cpp\Trace-1[File_AmbiguousDecl4].txt`
 ```
 0..7
