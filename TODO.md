@@ -21,32 +21,25 @@
 
 ### Progressing
 
-`Test\ParserLog\Generated-PrefixMerge7_PmSwitch\Trace-3[Module-Generic_Ambiguous1].txt`
+`Test\ParserLog\Generated-PrefixMerge7_PmSwitch\Trace-3[Module-Generic_Ambiguous4].txt`
 ```
-  A
+0..1
+  +-----------------------------+
+  |                             |
+6..22                         2..45
+  +---------+                   +---------+
+  |         |                   |         |
+24..351   25..36             38..336    46..335
+  |         +---------+         +---------+
+  |         |         |      326..364
+  |      56..354   37..353      |
+  |         +---------+         |
+  |         |                   |
+  |     343..350                |
+  +---------+-------------------+
   |
-+-+-+
-|   |
-B   C
-|   |
-+-+ |
-| | |
-D E F
-| | |
-+-+-+
-|
-G
+341
 ```
-This is one `TraceAmbiguity` but it has multiple branches.
-`TraceManager::BuildStepListForAmbiguity` needs to refactor to handle this case.
-It should create a step tree in a new function.
-Otherwise B..D and B..E will crash in a nested call to `::BuildStepList` as B has a branch trace without an associated TraceAmbiguity.
-
-A `BuildStepTreeBranchesForAmbiguityBranch` could be written:
-  if it sees a `TraceAmbiguity`, treat it as a complete list
-  if it sees a branch trace, then this is the case, it creates multiple step tree branches instead of one
-  at the end a new function could be written to convert a step tree to a step list, running from the root to all branches, so shared steps need to be copied multiple times
-  this function takes a branch node and an ending position so it can recursive call itself
 
 `Test\ParserLog\BuiltIn-Cpp\Trace-1[File_AmbiguousDecl4].txt`
 ```
