@@ -217,9 +217,9 @@ BuildAmbiguousStepLink
 
 						// run from successor to the end
 						BuildStepTree(
-							&branchSelections,
+							(branchSelections.Count() == 0 ? nullptr : & branchSelections),
 							successor, 0,
-							taLast, taLastExec->insLists.countAll - ta->postfix - 1,
+							taLast, (taLastExec->insLists.countAll - ta->postfix - 1),
 							root, firstLeaf, first, currentLeaf,
 							true
 							);
@@ -238,9 +238,9 @@ BuildAmbiguousStepLink
 
 						// run from the first ambiguous instruction to the last
 						BuildStepTree(
-							&branchSelections,
-							successor, ta->prefix - taFirstExec->insLists.countAll,
-							taLast, taLastExec->insLists.countAll - ta->postfix - 1,
+							(branchSelections.Count() == 0 ? nullptr : &branchSelections),
+							successor, (ta->prefix - taFirstExec->insLists.countAll),
+							taLast, (taLastExec->insLists.countAll - ta->postfix - 1),
 							root, firstLeaf, root, currentLeaf,
 							true
 							);
