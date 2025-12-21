@@ -908,6 +908,20 @@ BuildStepList
 				}
 			NO_CRITICAL_TRACE:
 
+				if (endIns < 0)
+				{
+					// The real endTrace is a predecessor of endTrace, but we need to find out which
+					auto realEndTrace = currentTrace;
+					while (realEndTrace->successors.first != endTrace)
+					{
+						realEndTrace = GetTrace(realEndTrace->successors.first);
+					}
+
+					auto realEndTraceExec = GetTraceExec(realEndTrace->traceExecRef);
+					endTrace = realEndTrace;
+					endIns = realEndTraceExec->insLists.countAll + endIns;
+				}
+
 				if (currentTrace)
 				{
 					if (
