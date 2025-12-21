@@ -21,37 +21,27 @@
 
 ### Progressing
 
-`Test\Source\BuiltIn-Cpp\Input\Declarations\Generic_Decls\Forward_Members.txt`
+`Test\ParserLog\Generated-PrefixMerge7_PmSwitch\Trace-3[Module-Generic_Ambiguous4].txt`
 ```
-template... A::B<_1, X>::C::D<Y, _2>::D(X, Y){}
+0..1
+  +-----------------------------+
+  |                             |
+6..22                         2..45
+  +---------+                   +---------+
+  |         |                   |         |
+24..351   25..36             38..336    46..335
+  |         +---------+         +---------+
+  |         |         |      326..364
+  |      56..354   37..353      |
+  |         +---------+         |
+  |         |                   |
+  |     343..350                |
+  +---------+-------------------+
+  |
+341
 ```
-Ambiguous VariableDeclaration but trying to accept a QualifiedName(A)
-
-`Test\Source\BuiltIn-Cpp\Input\Declarations\GenericPS_Decls\ForwardDecl_CtorsDtors.txt`
-```
-template... A::B<_1, X>::C::D<Y, _2>::D(){}
-```
-Probably the same reason
 
 `Test\ParserLog\BuiltIn-Cpp\Trace-1[File_AmbiguousDecl4].txt`
-Looks good, but in `Trace-3` there is
-```
-[17]: 6@0 - 6@1
-[18]: 7@0 - 7@4
-[19]: 8@0 - 9@8
-[10]: 10@0 - 205@0
-[11]: RA_Branch
-[21]: 6@0 - 6@1
-[22]: 7@0 - 7@4
-[9]: 8@0 - 9@8
-[12]: 11@0 - 205@0
-[13]: RA_Branch
-[7]: 6@0 - 6@1
-[8]: 7@0 - 7@4
-[14]: RA_Branch
-```
-The third branch should be in the outer RA_END
-
 ```
 0..7
   +----------------------+
@@ -68,42 +58,7 @@ The third branch should be in the outer RA_END
 182..184
 ```
 
-There are two `TraceAmbiguity`: `2+0 .. 183-2` and `6+0 .. 205-1`.
-The `ExecutionStep` structure should be
-```
-RA_BEGIN
-{
-  RA_BEGIN
-  {
-    RA_BRANCH
-    RA_BRANCH
-  }
-  RA_END(VariableDeclaration)
-  RA_BRANCH
-  
-  RA_BRANCH
-}
-RA_END(TemplateDeclaration)
-```
-but the current structure is
-```
-RA_BEGIN
-{
-  RA_BEGIN
-  {
-    RA_BRANCH
-    RA_BRANCH
-    RA_BRANCH (incomplete)
-  }
-  RA_END(VariableDeclaration)
-  RA_BRANCH
-}
-RA_END(TemplateDeclaration)
-```
-
-The incomplete branch actually starts from the incorrect `TraceAmbiguity` causing the step generation to fail
-The above issue is proceeded, but instead of moving it to the outer RA, it disappears.
-In `TraceAmbiguity` 0, firstTrace is 2, branchTrace is 7, traversing successors of firstTrace is incorrect (`BuildAmbiguousStepLink`).
+Both `TraceAmbiguity` happens between 0..7 and hits `CHECK_FAIL(L"Not Implemented!")`
 
 - [x] Non-ambiguous test cases
 - [x] Ambiguous test cases

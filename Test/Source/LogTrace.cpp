@@ -1277,10 +1277,7 @@ FilePath LogTraceManager(
 			writer.WriteLine(L"================ EXECUTION STEPS ================");
 			while (step)
 			{
-				if (step->type != ExecutionType::Empty)
-				{
-					writer.WriteString(L"[" + itow(step->allocatedIndex) + L"]: ");
-				}
+				writer.WriteString(L"[" + itow(step->allocatedIndex) + L"]: ");
 				switch (step->type)
 				{
 				case ExecutionType::Instruction:
@@ -1300,8 +1297,6 @@ FilePath LogTraceManager(
 					break;
 				case ExecutionType::RA_End:
 					writer.WriteString(L"RA_End(");
-					writer.WriteString(itow(step->et_ra.count));
-					writer.WriteString(L", ");
 					writer.WriteString(typeName(step->et_ra.type));
 					writer.WriteLine(L")");
 					break;

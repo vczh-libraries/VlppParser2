@@ -485,7 +485,6 @@ TraceManager (Data Structures -- BuildExecutionOrder)
 
 			enum class ExecutionType
 			{
-				Empty,
 				Instruction,
 				RA_Begin,
 				RA_Branch,
@@ -504,31 +503,35 @@ TraceManager (Data Structures -- BuildExecutionOrder)
 
 				struct ETRA
 				{
-					vint32_t						count;
 					vint32_t						type;
 					vint32_t						trace;
 				};
 
 				ExecutionType						type = ExecutionType::Instruction;
 
-				// for steps that ready to execute
-				// "next" means the next step to execute
-				// for steps that returns from BuildStepTree
-				// "next" in a leaf step points to the next leaf step
-				Ref<ExecutionStep>					next;
-
-				// for steps that returns from BuildStepTree
-				// "next" is the parent step in the tree
-				Ref<ExecutionStep>					parent;
-
-				vint32_t							copyCount = 0;
-				vint32_t							visitCount = 0;
-
 				union
 				{
 					ETI								et_i;
 					ETRA							et_ra;
 				};
+
+				// list (parent, next)
+				// tree (parent, leafPrev, leafNext)
+				Ref<ExecutionStep>					next, parent, leafNext;
+				vint32_t							visitCount = 0;
+				vint32_t							copyCount = 0;
+			};
+
+			struct ExecutionStepLinkedList
+			{
+				ExecutionStep*						first = nullptr;
+				ExecutionStep*						last = nullptr;
+			};
+
+			struct ExecutionStepTree
+			{
+				ExecutionStep*						firstLeaf = nullptr;
+				ExecutionStep*						lastLeaf = nullptr;
 			};
 
 /***********************************************************************
@@ -695,25 +698,16 @@ TraceManager
 				void										CheckMergeTraces();
 
 				// phase: BuildExecutionOrder
-#define DEFINE_EXECUTION_STEP_CONTEXT						ExecutionStep*& root, ExecutionStep*& firstLeaf, ExecutionStep*& currentStep, ExecutionStep*& currentLeaf
-				using BranchSelectionMap = collections::Dictionary<Ref<Trace>, Ref<Trace>>;
 
-				void										AppendStepLink(ExecutionStep* first, ExecutionStep* last, DEFINE_EXECUTION_STEP_CONTEXT);
-				void										ConvertStepTreeToLink(ExecutionStep* root, ExecutionStep* firstLeaf, ExecutionStep*& first, ExecutionStep*& last);
-				void										BuildAmbiguousStepLink(TraceAmbiguity* ta, ExecutionStep*& first, ExecutionStep*& last);
-				void										AppendStepsBeforeAmbiguity(Trace* startTrace, vint32_t startIns, TraceAmbiguity* ta, DEFINE_EXECUTION_STEP_CONTEXT);
-				void										AppendStepsAfterAmbiguity(Trace*& startTrace, vint32_t& startIns, TraceAmbiguity* ta, DEFINE_EXECUTION_STEP_CONTEXT);
-				void										AppendStepsForAmbiguity(TraceAmbiguity* ta, DEFINE_EXECUTION_STEP_CONTEXT);
-				void										AppendStepsBeforeBranch(Trace* startTrace, vint32_t startIns, Trace* branchTrace, TraceExec* branchTraceExec, DEFINE_EXECUTION_STEP_CONTEXT);
-				void										BuildOneStepTreeBranch(
-																BranchSelectionMap* taTargetBranchSelections,
-																Trace* startTrace, vint32_t startIns,
-																Trace* endTrace, vint32_t endIns,
-																ExecutionStep*& root, ExecutionStep*& firstLeaf, ExecutionStep* currentStep, ExecutionStep*& currentLeaf,
-																bool ambiguityBranch);
+				void										AppendStepsAfterList(ExecutionStepLinkedList steps, ExecutionStepLinkedList& current);
+				void										AppendLeafToTree(ExecutionStep* leaf, ExecutionStepTree& tree);
+				ExecutionStepLinkedList						ConvertStepTreeToList(ExecutionStepTree tree);
+
+				void										BuildStepLeafsForAmbiguityBranch(TraceAmbiguity* ta, ExecutionStep* lastSharedStep, Trace* ambiguityBranchStartTrace, ExecutionStepTree& ambiguityStepTree);
+				ExecutionStepLinkedList						BuildStepListForAmbiguity(TraceAmbiguity* ta);
+				ExecutionStepLinkedList						BuildStepListUntilFirstRawBranchTrace(Trace* startTrace, vint32_t startIns, Trace* endTrace, vint32_t endIns, Trace** rawBranchTrace);
+				ExecutionStepLinkedList						BuildStepList(Trace* startTrace, vint32_t startIns, Trace* endTrace, vint32_t endIns);
 				void										BuildExecutionOrder();
-
-#undef DEFINE_EXECUTION_STEP_CONTEXT
 
 			public:
 				TraceManager(Executable& _executable, const ITypeCallback* _typeCallback, vint blockSize);
