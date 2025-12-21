@@ -44,8 +44,8 @@ BuildStepListForAmbiguity
 				auto taLastExec = GetTraceExec(taLast->traceExecRef);
 				auto taBranchExec = GetTraceExec(taBranch->traceExecRef);
 				auto taMergeExec = GetTraceExec(taMerge->traceExecRef);
-				vint32_t prefixExtra = ta->prefix <= taFirstExec->insLists.countAll;
-				vint32_t postfixExtra = ta->postfix <= taLastExec->insLists.countAll;
+				vint32_t prefixExtra = ta->prefix - taFirstExec->insLists.countAll;
+				vint32_t postfixExtra = ta->postfix - taLastExec->insLists.countAll;
 
 				// Find the first nested TraceAmbiguity between taFirst and taBranch
 				{
@@ -229,28 +229,37 @@ BuildStepList
 					else
 					{
 						criticalTrace = GetTrace(currentTraceExec->branchData.forwardTrace);
-						while (criticalTrace && criticalTrace->traceExecRef < startTrace->traceExecRef)
+					}
+
+					while (criticalTrace && criticalTrace->traceExecRef <= currentTrace->traceExecRef)
+					{
+						auto nextRef = GetTraceExec(criticalTrace->traceExecRef)->nextAmbiguityCriticalTrace;
+						if (nextRef == nullref)
 						{
-							auto nextRef = GetTraceExec(criticalTrace->traceExecRef)->nextAmbiguityCriticalTrace;
-							if (nextRef == nullref)
+							if (criticalTrace->successors.first != criticalTrace->successors.last)
 							{
-								if (criticalTrace->successors.first != criticalTrace->successors.last)
-								{
-									throw TraceException(*this, startTrace, nullptr, TRACE_MAMAGER_PHRASE, L"Failed to find a TraceAmbiguity between this trace and the next branch trace.");
-								}
-								else
-								{
-									goto NO_CRITICAL_TRACE;
-								}
+								throw TraceException(*this, currentTrace, nullptr, TRACE_MAMAGER_PHRASE, L"Failed to find a TraceAmbiguity between this trace and the next branch trace.");
 							}
-							criticalTrace = nextRef == nullref ? nullptr : GetTrace(nextRef);
+							else
+							{
+								goto NO_CRITICAL_TRACE;
+							}
+						}
+						criticalTrace = nextRef == nullref ? nullptr : GetTrace(nextRef);
+						if (criticalTrace->traceExecRef >= endTrace->traceExecRef)
+						{
+							goto NO_CRITICAL_TRACE;
+						}
+						else if (endIns < 0 && criticalTrace->successors.first == endTrace)
+						{
+							goto NO_CRITICAL_TRACE;
 						}
 					}
 
 					auto criticalTraceExec = GetTraceExec(criticalTrace->traceExecRef);
 					if (criticalTraceExec->ambiguityBegins == nullref)
 					{
-						throw TraceException(*this, startTrace, criticalTrace, TRACE_MAMAGER_PHRASE, L"The next critical trace after the current trace is not associated with a TraceAmbiguity.");
+						throw TraceException(*this, currentTrace, criticalTrace, TRACE_MAMAGER_PHRASE, L"The next critical trace after the current trace is not associated with a TraceAmbiguity.");
 					}
 
 					// Execute from (currentTrace, currentIns) until the next TraceAmbiguity
@@ -259,8 +268,8 @@ BuildStepList
 					auto taLast = GetTrace(ta->lastTrace);
 					auto taFirstExec = GetTraceExec(taFirst->traceExecRef);
 					auto taLastExec = GetTraceExec(taLast->traceExecRef);
-					vint32_t prefixExtra = ta->prefix <= taFirstExec->insLists.countAll;
-					vint32_t postfixExtra = ta->postfix <= taLastExec->insLists.countAll;
+					vint32_t prefixExtra = ta->prefix - taFirstExec->insLists.countAll;
+					vint32_t postfixExtra = ta->postfix - taLastExec->insLists.countAll;
 
 					if (currentTrace->traceExecRef < taFirst->traceExecRef || currentIns < ta->prefix)
 					{
@@ -316,10 +325,10 @@ BuildStepList
 						auto taLastPredecessor = GetTrace(taLast->predecessors.first);
 						auto taLastPredecessorExec = GetTraceExec(taLastPredecessor->traceExecRef);
 						auto step = GetExecutionStep(executionSteps.Allocate());
-						step->et_i.startTrace = taLastPredecessorExec->allocatedIndex;
-						step->et_i.startIns = taFirstExec->insLists.countAll - postfixExtra;
-						step->et_i.endTrace = taLastPredecessorExec->allocatedIndex;
-						step->et_i.endIns = taFirstExec->insLists.countAll - 1;
+						step->et_i.startTrace = taLastPredecessor->allocatedIndex;
+						step->et_i.startIns = taLastPredecessorExec->insLists.countAll - postfixExtra;
+						step->et_i.endTrace = taLastPredecessor->allocatedIndex;
+						step->et_i.endIns = taLastPredecessorExec->insLists.countAll - 1;
 						AppendStepsAfterList({ step, step }, result);
 					}
 
@@ -398,6 +407,15 @@ BuildExecutionOrder
 				vint32_t endIns = GetTraceExec(endTrace->traceExecRef)->insLists.countAll - 1;
 
 				auto steps = BuildStepList(startTrace, startIns, endTrace, endIns);
+				{
+					auto current = steps.value;
+					while (current != steps.key)
+					{
+						auto parent = GetExecutionStep(current->parent);
+						parent->next = current;
+						current = parent;
+					}
+				}
 				firstStep = steps.key;
 			}
 #undef TRACE_MAMAGER_PHRASE
