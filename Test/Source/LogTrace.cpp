@@ -1277,10 +1277,7 @@ FilePath LogTraceManager(
 			writer.WriteLine(L"================ EXECUTION STEPS ================");
 			while (step)
 			{
-				if (step->type != ExecutionType::Empty)
-				{
-					writer.WriteString(L"[" + itow(step->allocatedIndex) + L"]: ");
-				}
+				writer.WriteString(L"[" + itow(step->allocatedIndex) + L"]: ");
 				switch (step->type)
 				{
 				case ExecutionType::Instruction:
