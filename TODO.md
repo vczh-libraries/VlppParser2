@@ -21,6 +21,23 @@
 
 ### Progressing
 
+`TraceManager::BuildStepListForAmbiguity`
+Aftar RA_BEGIN, the first nested `TraceAmbiguity` in `nestedTas`, each will recursively handle the next one
+
+A nested `TraceAmbiguity` will be expanded to a list
+connected steps before and after the nested `TraceAmbiguity` in the upper `TraceAmbiguity`
+becoming a branch of the upper `TraceAmbiguity`
+
+There will be multiple nested `TraceAmbiguity`
+so we should also calculate all branch selections for all of them
+branch selections guides the function to reach from the current `TraceAmbiguity` to the target nested `TraceAmbiguity` directly
+during execution, selected branches will be recorded and therefore excluded in the upper `TraceAmbiguity`
+
+From the current to the nested `TraceAmbiguity`, there might be other `TraceAmbiguity` that ends before the nested `TraceAmbiguity`
+We should carefully handle it, but no extra branch need to be created, as a `TraceAmbiguity` creates an object, which will be consumed
+
+A `BuildStepListForNestedAmbiguity` could be created
+
 `Test\ParserLog\BuiltIn-Cpp\Trace-1[File_AmbiguousDecl4].txt`
 ```
 0..7
