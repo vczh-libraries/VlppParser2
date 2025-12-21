@@ -402,6 +402,10 @@ Traversing through branchData.forwardTrace and branchData.commonForwardBranch wi
 				// these instructions end bottomObjectIds
 				Ref<Trace>							lastTrace;
 				vint32_t							postfix = -1;
+
+				// The merge trace that creates this TraceAmbiguity, and its associated branch trace
+				Ref<Trace>							branchTrace;
+				Ref<Trace>							mergeTrace;
 			};
 
 			struct TraceAmbiguityLink : Allocatable<TraceAmbiguityLink>

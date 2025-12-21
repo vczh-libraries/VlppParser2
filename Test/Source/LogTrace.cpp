@@ -280,6 +280,8 @@ void RenderTrace(
 
 				writer.WriteLine(L"  first: " + itow(ta->firstTrace.handle) + L" prefix: " + itow(ta->prefix));
 				writer.WriteLine(L"  last: " + itow(ta->lastTrace.handle) + L" postfix: " + itow(ta->postfix));
+				writer.WriteLine(L"  branch: " + itow(ta->branchTrace.handle));
+				writer.WriteLine(L"  merge: " + itow(ta->mergeTrace.handle));
 			}
 		}
 

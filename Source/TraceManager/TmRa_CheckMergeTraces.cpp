@@ -846,6 +846,21 @@ CheckMergeTraces
 					}
 					traceExec->ambiguityDetected = ta;
 
+					// record branch and merge trace
+					ta->mergeTrace = trace;
+					{
+						auto predecessor = GetTrace(trace->predecessors.first);
+						auto predecessorForward = GetTrace(GetTraceExec(predecessor->traceExecRef)->branchData.forwardTrace);
+						if (predecessorForward->predecessors.first == predecessorForward->predecessors.last)
+						{
+							ta->branchTrace = predecessorForward;
+						}
+						else
+						{
+							ta->branchTrace = GetTraceExec(predecessorForward->traceExecRef)->branchData.commonForwardBranch;
+						}
+					}
+
 					// check if existing TraceAmbiguity in firstTrace are compatible
 					CheckTraceAmbiguity(ta);
 				}
