@@ -407,7 +407,26 @@ BuildStepList
 						{
 							throw TraceException(*this, currentTrace, criticalTrace, TRACE_MAMAGER_PHRASE, L"The next critical trace after the current trace is not associated with a TraceAmbiguity.");
 						}
-						CHECK_FAIL(L"Not Implemented!");
+
+						// A critical trace could be a predecessor of a merge trace
+						// Execute until here and continue
+						auto step = GetExecutionStep(executionSteps.Allocate());
+						step->et_i.startTrace = currentTrace->allocatedIndex;
+						step->et_i.startIns = currentIns;
+						step->et_i.endTrace = criticalTrace->allocatedIndex;
+						step->et_i.endIns = criticalTraceExec->insLists.countAll - 1;
+						AppendStepsAfterList({ step, step }, result);
+
+						if (criticalTrace->successors.first == nullref)
+						{
+							currentTrace = nullptr;
+						}
+						else
+						{
+							currentTrace = GetTrace(criticalTrace->successors.first);
+							currentIns = 0;
+						}
+						continue;
 					}
 
 					// Execute from (currentTrace, currentIns) until the next TraceAmbiguity
