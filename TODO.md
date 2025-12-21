@@ -81,6 +81,8 @@ The third branch should continue from 14@0 to 204@0
   - [x] automatically identify prefix_merge
 - [ ] Built-in parsers: C++
   - [ ] Non-traced test cases save json files with extra field recording the input code at the beginning
+- [ ] Reorganize log utilities for better dependency
+- [ ] Render ambiguity with not only traces but input codes in Trace-3
 - [ ] build.ps1
 - [ ] Finish `## Features to Add`
 - [ ] Document design principal, algorithm and syntax
