@@ -635,7 +635,7 @@ BuildStepListForAmbiguity
 
 			TraceManager::ExecutionStepList TraceManager::BuildStepListForAmbiguity(TraceAmbiguity* ta)
 			{
-				ExecutionStepList result;
+				ExecutionStepList result{ nullptr,nullptr };
 				auto taFirst = GetTrace(ta->firstTrace);
 				auto taLast = GetTrace(ta->lastTrace);
 				auto taBranch = GetTrace(ta->branchTrace);
@@ -770,7 +770,7 @@ BuildStepList
 
 			TraceManager::ExecutionStepList TraceManager::BuildStepList(Trace* startTrace, vint32_t startIns, Trace* endTrace, vint32_t endIns)
 			{
-				ExecutionStepList result;
+				ExecutionStepList result{ nullptr,nullptr };
 				Trace* currentTrace = startTrace;
 				vint32_t currentIns = startIns;
 
@@ -815,6 +815,8 @@ BuildStepList
 					auto ta = GetTraceAmbiguity(GetTraceAmbiguityLink(criticalTraceExec->ambiguityBegins)->ambiguity);
 					auto taFirst = GetTrace(ta->firstTrace);
 					auto taLast = GetTrace(ta->lastTrace);
+					auto taFirstExec = GetTraceExec(taFirst->traceExecRef);
+					auto taLastExec = GetTraceExec(taLast->traceExecRef);
 
 					if (currentTrace->traceExecRef < taFirst->traceExecRef || currentIns < ta->prefix)
 					{
@@ -832,11 +834,29 @@ BuildStepList
 							step->et_i.endTrace = taFirstPrev->allocatedIndex;
 							step->et_i.endIns = taFirstPrevExec->insLists.countAll - 1;
 						}
-						else
+						else if (ta->prefix <= taFirstExec->insLists.countAll)
 						{
 							step->et_i.endTrace = taFirst->allocatedIndex;
 							step->et_i.endIns = ta->prefix - 1;
 						}
+						else
+						{
+							step->et_i.endTrace = taFirst->allocatedIndex;
+							step->et_i.endIns = taFirstExec->insLists.countAll - 1;
+						}
+						AppendStepsAfterList({ step, step }, result);
+					}
+
+					if (ta->prefix > taFirstExec->insLists.countAll)
+					{
+						// at the moment taFirst should be taBranch
+						// TraceAmbiguity begins at each successors of taBranch, instead of before taBranch
+						auto taFirstSuccessor = GetTrace(taFirst->successors.first);
+						auto step = GetExecutionStep(executionSteps.Allocate());
+						step->et_i.startTrace = taFirstSuccessor->allocatedIndex;
+						step->et_i.startIns = 0;
+						step->et_i.endTrace = taFirstSuccessor->allocatedIndex;
+						step->et_i.endIns = ta->prefix - taFirstExec->insLists.countAll - 1;
 						AppendStepsAfterList({ step, step }, result);
 					}
 
@@ -845,6 +865,20 @@ BuildStepList
 					AppendStepsAfterList(taSteps, result);
 
 					// Step (currentTrace, currentIns) forward to right after TraceAmbiguity
+					if (ta->postfix > taLastExec->insLists.countAll)
+					{
+						// at the moment taLast should be taMerge
+						// TraceAmbiguity ends at each predecessor of taMerge, instead of after taMerge
+						auto taLastPredecessor = GetTrace(taLast->predecessors.first);
+						auto taLastPredecessorExec = GetTraceExec(taLastPredecessor->traceExecRef);
+						auto step = GetExecutionStep(executionSteps.Allocate());
+						step->et_i.startTrace = taLastPredecessorExec->allocatedIndex;
+						step->et_i.startIns = taFirstExec->insLists.countAll - (ta->postfix - taLastExec->insLists.countAll);
+						step->et_i.endTrace = taLastPredecessorExec->allocatedIndex;
+						step->et_i.endIns = taFirstExec->insLists.countAll - 1;
+						AppendStepsAfterList({ step, step }, result);
+					}
+
 					if (ta->postfix == 0)
 					{
 						if (taLast->successors.first == nullref)
@@ -861,11 +895,15 @@ BuildStepList
 							currentIns = 0;
 						}
 					}
-					else
+					else if (ta->postfix <= taLastExec->insLists.countAll)
 					{
-						auto taLastExec = GetTraceExec(taLast->traceExecRef);
 						currentTrace = taLast;
 						currentIns = taLastExec->insLists.countAll - ta->postfix;
+					}
+					else
+					{
+						currentTrace = taLast;
+						currentIns = 0;
 					}
 				}
 			NO_CRITICAL_TRACE:
