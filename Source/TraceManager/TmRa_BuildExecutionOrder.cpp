@@ -163,20 +163,33 @@ BuildAmbiguousStepLink
 					// The inner TraceAmbiguity may covers the branchTrace of the outer's
 					// In this case only one successor of such bracnTrace should be picked
 					auto taBranch = GetTrace(ta->branchTrace);
-					auto taSelection = taBranch;
-					while (taFirst->traceExecRef < taSelection->traceExecRef)
+					auto taCurrent = GetTrace(GetTraceExec(taBranch->traceExecRef)->branchData.forwardTrace);
+					while (taFirst->traceExecRef < taCurrent->traceExecRef)
 					{
-						auto predecessor = GetTrace(taSelection->predecessors.first);
-						auto forward = GetTrace(GetTraceExec(predecessor->traceExecRef)->branchData.forwardTrace);
-						taSelection = forward;
-
-						if (forward->successors.siblingPrev != forward->successors.siblingNext)
+						if (taCurrent->predecessors.first == nullref)
 						{
-							branchSelections.Add(forward->predecessors.first, forward);
+							// stops at root branch
+							break;
+						}
+						else if (taCurrent->predecessors.first != taCurrent->predecessors.last)
+						{
+							// if this is a merge trace, jumps through the whole block
+							taCurrent = GetTrace(GetTraceExec(taCurrent->traceExecRef)->branchData.commonForwardBranch);
+						}
+						else if (taCurrent->successors.siblingPrev != taCurrent->successors.siblingNext)
+						{
+							// if this is a successor of a branch tree
+							branchSelections.Add(taCurrent->predecessors.first, taCurrent);
+							taCurrent = GetTrace(taCurrent->predecessors.first);
+						}
+						else
+						{
+							// an trivial trace
+							taCurrent = GetTrace(taCurrent->predecessors.first);
 						}
 					}
 				}
-				//CHECK_ERROR(branchSelections.Count() == 0, L"Not Implemented!");
+				CHECK_ERROR(branchSelections.Count() == 0, L"Not Implemented!");
 
 				ExecutionStep* root = GetExecutionStep(executionSteps.Allocate());
 				root->type = ExecutionType::Empty;
