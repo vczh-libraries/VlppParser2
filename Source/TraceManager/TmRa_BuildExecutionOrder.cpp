@@ -196,6 +196,29 @@ BuildAmbiguousStepLink
 				// These TraceAmbiguity could cover part of successors of branchTrace
 				// if we find the first extra TraceAmbiguity, we will call the function recursively, and that call will cover the rest
 				// and then go through all unexecuted successors
+				{
+					auto critical = taFirst;
+					while (critical && critical->traceExecRef <= taBranch->traceExecRef)
+					{
+						auto criticalExec = GetTraceExec(critical->traceExecRef);
+						if (criticalExec->ambiguityBegins != nullref)
+						{
+							auto taLink = GetTraceAmbiguityLink(criticalExec->ambiguityBegins);
+							auto nestedTa = GetTraceAmbiguity(taLink->ambiguity);
+							if (nestedTa != ta)
+							{
+								auto nestedTaLast = GetTrace(nestedTa->lastTrace);
+								if (nestedTaLast->traceExecRef > taBranch->traceExecRef)
+								{
+									CHECK_FAIL(L"Not Implemented!");
+								}
+							}
+						}
+
+						auto criticalRef = criticalExec->nextAmbiguityCriticalTrace;
+						critical = criticalRef == nullref ? nullptr : GetTrace(criticalRef);
+					}
+				}
 
 				{
 					auto successorId = taFirst->successors.first;
@@ -484,7 +507,6 @@ BuildStepTree
 						auto criticalExec = GetTraceExec(critical->traceExecRef);
 						if (criticalExec->ambiguityBegins != nullref)
 						{
-							// if yes, it means the TraceAmbiguity will cover all successors
 							// run the ambiguity in place, no need for recursion
 							auto taLink = GetTraceAmbiguityLink(criticalExec->ambiguityBegins);
 							auto ta = GetTraceAmbiguity(taLink->ambiguity);
