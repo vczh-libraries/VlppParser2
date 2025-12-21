@@ -1300,8 +1300,6 @@ FilePath LogTraceManager(
 					break;
 				case ExecutionType::RA_End:
 					writer.WriteString(L"RA_End(");
-					writer.WriteString(itow(step->et_ra.count));
-					writer.WriteString(L", ");
 					writer.WriteString(typeName(step->et_ra.type));
 					writer.WriteLine(L")");
 					break;

@@ -260,17 +260,8 @@ BuildAmbiguousStepLink
 				// create the ResolveAmbiguity step
 				auto stepRA = GetExecutionStep(executionSteps.Allocate());
 				stepRA->type = ExecutionType::RA_End;
-				stepRA->et_ra.count = 0;
 				stepRA->et_ra.type = -1;
 				stepRA->et_ra.trace = taLast->allocatedIndex;
-				{
-					Ref<ExecutionStep> currentLeafRef = firstLeaf;
-					while (currentLeafRef != nullref)
-					{
-						stepRA->et_ra.count++;
-						currentLeafRef = GetExecutionStep(currentLeafRef)->next;
-					}
-				}
 				{
 					if (typeCallback == nullptr)
 					{
@@ -400,7 +391,6 @@ AppendStepsBeforeAmbiguity
 					step->type = ExecutionType::RA_Begin;
 					step->et_ra.trace = startTrace->allocatedIndex;
 					step->et_ra.type = -1;
-					step->et_ra.count = -1;
 					AppendStepLink(step, step, PASS_EXECUTION_STEP_CONTEXT);
 				}
 			}
@@ -605,7 +595,6 @@ BuildStepTree
 					step->type = ExecutionType::RA_Branch;
 					step->et_ra.trace = startTrace->allocatedIndex;
 					step->et_ra.type = -1;
-					step->et_ra.count = -1;
 					AppendStepLink(step, step, PASS_EXECUTION_STEP_CONTEXT);
 				}
 
@@ -646,7 +635,133 @@ BuildStepListForAmbiguity
 
 			TraceManager::ExecutionStepList TraceManager::BuildStepListForAmbiguity(TraceAmbiguity* ta)
 			{
-				CHECK_FAIL(L"Not Implemented!");
+				ExecutionStepList result;
+				auto taFirst = GetTrace(ta->firstTrace);
+				auto taLast = GetTrace(ta->lastTrace);
+				auto taBranch = GetTrace(ta->branchTrace);
+				auto taMerge = GetTrace(ta->mergeTrace);
+
+				// Find the first nested TraceAmbiguity between taFirst and taBranch
+				{
+					auto criticalTrace = taFirst;
+					while (criticalTrace && criticalTrace->traceExecRef <= taBranch->traceExecRef)
+					{
+						auto criticalTraceExec = GetTraceExec(criticalTrace->traceExecRef);
+						if (criticalTraceExec->ambiguityBegins != nullref)
+						{
+							auto taLink = GetTraceAmbiguityLink(criticalTraceExec->ambiguityBegins);
+							auto nestedTa = GetTraceAmbiguity(taLink->ambiguity);
+							if (nestedTa != ta)
+							{
+								auto nestedTaLast = GetTrace(nestedTa->lastTrace);
+								if (nestedTaLast->traceExecRef > taBranch->traceExecRef)
+								{
+									CHECK_FAIL(L"Not Implemented!");
+								}
+								else
+								{
+									criticalTrace = GetTrace(nestedTa->mergeTrace);
+									continue;
+								}
+							}
+						}
+
+						auto criticalRef = criticalTraceExec->nextAmbiguityCriticalTrace;
+						criticalTrace = criticalRef == nullref ? nullptr : GetTrace(criticalRef);
+					}
+				}
+
+				// Append RA_BEGIN
+				{
+					auto step = GetExecutionStep(executionSteps.Allocate());
+					step->type = ExecutionType::RA_Begin;
+					step->et_ra.trace = taFirst->allocatedIndex;
+					step->et_ra.type = -1;
+					AppendStepsAfterList({ step,step }, result);
+				}
+
+				// Nested TraceAmbiguity is not implemented, so all successors of taBranch are needed
+				auto successorId = taBranch->successors.first;
+				while (successorId != nullref)
+				{
+					auto successor = GetTrace(successorId);
+					successorId = successor->successors.siblingNext;
+
+					// Execute from taFirst to taBranch
+
+					// Execute the branch
+
+					// Execute from taMerge to taList
+
+					// Append RA_BRANCH
+				}
+
+				// Append RA_END
+				{
+					auto stepRA = GetExecutionStep(executionSteps.Allocate());
+					stepRA->type = ExecutionType::RA_End;
+					stepRA->et_ra.type = -1;
+					stepRA->et_ra.trace = taLast->allocatedIndex;
+					{
+						if (typeCallback == nullptr)
+						{
+							throw TraceException(*this, TRACE_MAMAGER_PHRASE, L"Missing ITypeCallback to resolve the type from multiple objects.");
+						}
+						auto currentStackLinkRef = ta->bottomCreateObjectStacks;
+						while (currentStackLinkRef != nullref)
+						{
+							auto currentStackLink = GetInsExec_StackRefLink(currentStackLinkRef);
+							currentStackLinkRef = currentStackLink->previous;
+							auto ieObject = GetInsExec_Stack(currentStackLink->id);
+
+							// find all CreateObject instructions in that stack
+							if (ieObject->summarizing.indirectCreateObjectInsRefs == nullref)
+							{
+								throw TraceException(*this, ieObject, TRACE_MAMAGER_PHRASE, L"indirectCreateObjectInsRefs should not be null.");
+							}
+							auto coInsRefLink = ieObject->summarizing.indirectCreateObjectInsRefs;
+							while (coInsRefLink != nullref)
+							{
+								auto coInsRef = GetInsExec_InsRefLink(coInsRefLink);
+								coInsRefLink = coInsRef->previous;
+
+								auto coTrace = GetTrace(coInsRef->insRef.trace);
+								auto coTraceExec = GetTraceExec(coTrace->traceExecRef);
+								auto&& coIns = ReadInstruction(coInsRef->insRef.ins, coTraceExec->insLists);
+								if (coIns.type != AstInsType::CreateObject || coIns.param == -1)
+								{
+									throw TraceException(*this, ieObject, TRACE_MAMAGER_PHRASE, L"indirectCreateObjectInsRefs points to an unexpected instruction.");
+								}
+
+								if (stepRA->et_ra.type == -1)
+								{
+									stepRA->et_ra.type = coIns.param;
+								}
+								else if (stepRA->et_ra.type != coIns.param)
+								{
+									vint32_t baseClass = typeCallback->FindCommonBaseClass(stepRA->et_ra.type, coIns.param);
+									if (baseClass == -1)
+									{
+										throw UnableToResolveAmbiguityException(
+											WString::Unmanaged(L"Unable to resolve ambiguity type from ") +
+											typeCallback->GetClassName(stepRA->et_ra.type) +
+											WString::Unmanaged(L" and ") +
+											typeCallback->GetClassName(coIns.param) +
+											WString::Unmanaged(L"."),
+											stepRA->et_ra.type,
+											coIns.param,
+											EnsureTraceWithValidStates(taFirst)->currentTokenIndex,
+											EnsureTraceWithValidStates(taLast)->currentTokenIndex
+										);
+									}
+									stepRA->et_ra.type = baseClass;
+								}
+							}
+						}
+					}
+				}
+
+				return result;
 			}
 
 /***********************************************************************
@@ -699,9 +814,8 @@ BuildStepList
 					// Execute from (currentTrace, currentIns) until the next TraceAmbiguity
 					auto ta = GetTraceAmbiguity(GetTraceAmbiguityLink(criticalTraceExec->ambiguityBegins)->ambiguity);
 					auto taFirst = GetTrace(ta->firstTrace);
-					auto taFirstExec = GetTraceExec(taFirst->traceExecRef);
 					auto taLast = GetTrace(ta->lastTrace);
-					auto taLastExec = GetTraceExec(taLast->traceExecRef);
+
 					if (currentTrace->traceExecRef < taFirst->traceExecRef || currentIns < ta->prefix)
 					{
 						auto step = GetExecutionStep(executionSteps.Allocate());
@@ -749,6 +863,7 @@ BuildStepList
 					}
 					else
 					{
+						auto taLastExec = GetTraceExec(taLast->traceExecRef);
 						currentTrace = taLast;
 						currentIns = taLastExec->insLists.countAll - ta->postfix;
 					}

@@ -504,7 +504,6 @@ TraceManager (Data Structures -- BuildExecutionOrder)
 
 				struct ETRA
 				{
-					vint32_t						count;
 					vint32_t						type;
 					vint32_t						trace;
 				};
