@@ -294,6 +294,7 @@ BuildStepListForAmbiguity
 				vint32_t prefixExtra = ta->prefix - taFirstExec->insLists.countAll;
 
 				// Find the first nested TraceAmbiguity between taFirst and taBranch
+				List<TraceAmbiguity*> nestedTas;
 				{
 					auto criticalTrace = taFirst;
 					while (criticalTrace && criticalTrace->traceExecRef <= taBranch->traceExecRef)
@@ -308,7 +309,7 @@ BuildStepListForAmbiguity
 								auto nestedTaLast = GetTrace(nestedTa->lastTrace);
 								if (nestedTaLast->traceExecRef > taBranch->traceExecRef)
 								{
-									CHECK_FAIL(L"Not Implemented!");
+									nestedTas.Add(nestedTa);
 								}
 								else
 								{
@@ -321,6 +322,10 @@ BuildStepListForAmbiguity
 						auto criticalRef = criticalTraceExec->nextAmbiguityCriticalTrace;
 						criticalTrace = criticalRef == nullref ? nullptr : GetTrace(criticalRef);
 					}
+				}
+				if (nestedTas.Count() > 0)
+				{
+					CHECK_FAIL(L"Not Implemented!");
 				}
 
 				// Append RA_BEGIN
