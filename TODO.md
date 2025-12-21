@@ -103,6 +103,8 @@ RA_END(TemplateDeclaration)
 
 The incomplete branch actually starts from the incorrect `TraceAmbiguity` causing the step generation to fail
 
+The above issue is proceeded, but instead of moving it to the outer RA, it disappears.
+
 - [x] Non-ambiguous test cases
 - [x] Ambiguous test cases
 - [x] Split FeatureTest
