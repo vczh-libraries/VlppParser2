@@ -137,12 +137,19 @@ BuildStepLeafsForAmbiguityBranch
 				ExecutionStepLinkedList branchList;
 				// Execute the branch
 				{
-					auto steps = BuildStepList(
+					Trace* rawBranchTrace = nullptr;
+					auto steps = BuildStepListUntilFirstRawBranchTrace(
 						ambiguityBranchStartTrace,
 						(prefixExtra <= 0 ? 0 : prefixExtra),
 						taMerge,
-						(taMergeExec->insLists.countAll - 1 - (postfixExtra <= 0 ? 0 : postfixExtra))
+						(taMergeExec->insLists.countAll - 1 - (postfixExtra <= 0 ? 0 : postfixExtra)),
+						&rawBranchTrace
 					);
+
+					if (rawBranchTrace)
+					{
+						CHECK_FAIL(L"Not Implemented!");
+					}
 					AppendStepsAfterList(steps, branchList);
 				}
 
