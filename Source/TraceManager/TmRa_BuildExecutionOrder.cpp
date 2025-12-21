@@ -18,6 +18,10 @@ AppendStepAfterList
 
 			void TraceManager::AppendStepsAfterList(ExecutionStepList steps, ExecutionStepList& current)
 			{
+				if (!steps.key)
+				{
+					return;
+				}
 				if (!current.key)
 				{
 					current = steps;
@@ -132,7 +136,7 @@ BuildStepListForAmbiguity
 					{
 						auto step = GetExecutionStep(executionSteps.Allocate());
 						step->type = ExecutionType::RA_Branch;
-						step->et_ra.trace = taFirst->allocatedIndex;
+						step->et_ra.trace = taLast->allocatedIndex;
 						step->et_ra.type = -1;
 						AppendStepsAfterList({ step,step }, result);
 					}
@@ -140,10 +144,10 @@ BuildStepListForAmbiguity
 
 				// Append RA_END
 				{
-					auto stepRA = GetExecutionStep(executionSteps.Allocate());
-					stepRA->type = ExecutionType::RA_End;
-					stepRA->et_ra.type = -1;
-					stepRA->et_ra.trace = taLast->allocatedIndex;
+					auto step = GetExecutionStep(executionSteps.Allocate());
+					step->type = ExecutionType::RA_End;
+					step->et_ra.type = -1;
+					step->et_ra.trace = taLast->allocatedIndex;
 					{
 						if (typeCallback == nullptr)
 						{
@@ -175,32 +179,33 @@ BuildStepListForAmbiguity
 									throw TraceException(*this, ieObject, TRACE_MAMAGER_PHRASE, L"indirectCreateObjectInsRefs points to an unexpected instruction.");
 								}
 
-								if (stepRA->et_ra.type == -1)
+								if (step->et_ra.type == -1)
 								{
-									stepRA->et_ra.type = coIns.param;
+									step->et_ra.type = coIns.param;
 								}
-								else if (stepRA->et_ra.type != coIns.param)
+								else if (step->et_ra.type != coIns.param)
 								{
-									vint32_t baseClass = typeCallback->FindCommonBaseClass(stepRA->et_ra.type, coIns.param);
+									vint32_t baseClass = typeCallback->FindCommonBaseClass(step->et_ra.type, coIns.param);
 									if (baseClass == -1)
 									{
 										throw UnableToResolveAmbiguityException(
 											WString::Unmanaged(L"Unable to resolve ambiguity type from ") +
-											typeCallback->GetClassName(stepRA->et_ra.type) +
+											typeCallback->GetClassName(step->et_ra.type) +
 											WString::Unmanaged(L" and ") +
 											typeCallback->GetClassName(coIns.param) +
 											WString::Unmanaged(L"."),
-											stepRA->et_ra.type,
+											step->et_ra.type,
 											coIns.param,
 											EnsureTraceWithValidStates(taFirst)->currentTokenIndex,
 											EnsureTraceWithValidStates(taLast)->currentTokenIndex
 										);
 									}
-									stepRA->et_ra.type = baseClass;
+									step->et_ra.type = baseClass;
 								}
 							}
 						}
 					}
+					AppendStepsAfterList({ step,step }, result);
 				}
 
 				return result;
