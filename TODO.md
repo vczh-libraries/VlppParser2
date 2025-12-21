@@ -102,6 +102,8 @@ RA_END(TemplateDeclaration)
 ```
 
 The incomplete branch actually starts from the incorrect `TraceAmbiguity` causing the step generation to fail
+The above issue is proceeded, but instead of moving it to the outer RA, it disappears.
+In `TraceAmbiguity` 0, firstTrace is 2, branchTrace is 7, traversing successors of firstTrace is incorrect (`BuildAmbiguousStepLink`).
 
 - [x] Non-ambiguous test cases
 - [x] Ambiguous test cases
