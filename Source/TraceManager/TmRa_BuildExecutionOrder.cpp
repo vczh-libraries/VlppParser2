@@ -210,6 +210,59 @@ CreateResolveAmbiguityStep
 			}
 
 /***********************************************************************
+CollectNestedAmbiguities
+***********************************************************************/
+
+			Ptr<NestedAmbiguityInfo> TraceManager::CollectNestedAmbiguities(TraceAmbiguity* ta)
+			{
+				auto taFirst = GetTrace(ta->firstTrace);
+				auto taBranch = GetTrace(ta->branchTrace);
+
+				Ptr<NestedAmbiguityInfo> nestedTas;
+				{
+					auto criticalTrace = taFirst;
+					while (criticalTrace && criticalTrace->traceExecRef <= taBranch->traceExecRef)
+					{
+						auto criticalTraceExec = GetTraceExec(criticalTrace->traceExecRef);
+						if (criticalTraceExec->ambiguityBegins != nullref)
+						{
+							auto taLink = GetTraceAmbiguityLink(criticalTraceExec->ambiguityBegins);
+							auto nestedTa = GetTraceAmbiguity(taLink->ambiguity);
+							if (nestedTa != ta)
+							{
+								auto nestedTaLast = GetTrace(nestedTa->lastTrace);
+								if (nestedTaLast->traceExecRef > taBranch->traceExecRef)
+								{
+									if (!nestedTas) nestedTas = Ptr(new NestedAmbiguityInfo);
+									nestedTas->nestedAmbiguities.Add(nestedTa);
+								}
+								else
+								{
+									criticalTrace = GetTrace(nestedTa->mergeTrace);
+									continue;
+								}
+							}
+						}
+
+						auto criticalRef = criticalTraceExec->nextAmbiguityCriticalTrace;
+						criticalTrace = criticalRef == nullref ? nullptr : GetTrace(criticalRef);
+					}
+				}
+
+				if (nestedTas)
+				{
+					nestedTas->branchTraces.Add(GetTrace(ta->branchTrace), ta);
+					for (auto nestedTa : nestedTas->nestedAmbiguities)
+					{
+						auto branchTrace = GetTrace(nestedTa->branchTrace);
+						nestedTas->branchTraces.Add(branchTrace, nestedTa);
+					}
+				}
+
+				return nestedTas;
+			}
+
+/***********************************************************************
 BuildStepLeafsForAmbiguityBranch
 ***********************************************************************/
 
@@ -294,36 +347,8 @@ BuildStepListForAmbiguity
 				vint32_t prefixExtra = ta->prefix - taFirstExec->insLists.countAll;
 
 				// Find the first nested TraceAmbiguity between taFirst and taBranch
-				List<TraceAmbiguity*> nestedTas;
-				{
-					auto criticalTrace = taFirst;
-					while (criticalTrace && criticalTrace->traceExecRef <= taBranch->traceExecRef)
-					{
-						auto criticalTraceExec = GetTraceExec(criticalTrace->traceExecRef);
-						if (criticalTraceExec->ambiguityBegins != nullref)
-						{
-							auto taLink = GetTraceAmbiguityLink(criticalTraceExec->ambiguityBegins);
-							auto nestedTa = GetTraceAmbiguity(taLink->ambiguity);
-							if (nestedTa != ta)
-							{
-								auto nestedTaLast = GetTrace(nestedTa->lastTrace);
-								if (nestedTaLast->traceExecRef > taBranch->traceExecRef)
-								{
-									nestedTas.Add(nestedTa);
-								}
-								else
-								{
-									criticalTrace = GetTrace(nestedTa->mergeTrace);
-									continue;
-								}
-							}
-						}
-
-						auto criticalRef = criticalTraceExec->nextAmbiguityCriticalTrace;
-						criticalTrace = criticalRef == nullref ? nullptr : GetTrace(criticalRef);
-					}
-				}
-				if (nestedTas.Count() > 0)
+				auto nestedTas = CollectNestedAmbiguities(ta);
+				if (nestedTas)
 				{
 					CHECK_FAIL(L"Not Implemented!");
 				}

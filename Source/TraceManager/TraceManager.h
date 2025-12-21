@@ -481,8 +481,6 @@ Traversing through branchData.forwardTrace and branchData.commonForwardBranch wi
 TraceManager (Data Structures -- BuildExecutionOrder)
 ***********************************************************************/
 
-			struct ExecutionStep;
-
 			enum class ExecutionType
 			{
 				Instruction,
@@ -532,6 +530,13 @@ TraceManager (Data Structures -- BuildExecutionOrder)
 			{
 				ExecutionStep*						firstLeaf = nullptr;
 				ExecutionStep*						lastLeaf = nullptr;
+			};
+
+			struct NestedAmbiguityInfo
+			{
+				collections::List<TraceAmbiguity*>					nestedAmbiguities;	// all nested ambiguities in order from outer to inner
+				collections::Dictionary<Trace*, TraceAmbiguity*>	branchTraces;		// branchTrace to TraceAmbiguities
+				collections::Group<TraceAmbiguity*, Trace*>			branchSelections;	// critial successors of each TraceAmbiguities' branchTrace from inner to outer
 			};
 
 /***********************************************************************
@@ -704,6 +709,8 @@ TraceManager
 				ExecutionStepLinkedList						ConvertStepTreeToList(ExecutionStepTree tree);
 
 				ExecutionStep*								CreateResolveAmbiguityStep(TraceAmbiguity* ta);
+				Ptr<NestedAmbiguityInfo>					CollectNestedAmbiguities(TraceAmbiguity* ta);
+
 				void										BuildStepLeafsForAmbiguityBranch(TraceAmbiguity* ta, ExecutionStep* lastSharedStep, Trace* ambiguityBranchStartTrace, ExecutionStepTree& ambiguityStepTree);
 				ExecutionStepLinkedList						BuildStepListForAmbiguity(TraceAmbiguity* ta);
 				ExecutionStepLinkedList						BuildStepListUntilFirstRawBranchTrace(Trace* startTrace, vint32_t startIns, Trace* endTrace, vint32_t endIns, Trace** rawBranchTrace);
