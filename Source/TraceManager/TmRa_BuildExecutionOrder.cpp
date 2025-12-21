@@ -148,7 +148,19 @@ BuildStepLeafsForAmbiguityBranch
 
 					if (rawBranchTrace)
 					{
-						CHECK_FAIL(L"Not Implemented!");
+						if (steps.first)
+						{
+							steps.first->parent = lastSharedStep;
+						}
+
+						auto successorId = rawBranchTrace->successors.first;
+						while (successorId != nullref)
+						{
+							auto successor = GetTrace(successorId);
+							successorId = successor->successors.siblingNext;
+							BuildStepLeafsForAmbiguityBranch(ta, (steps.first ? steps.last : lastSharedStep), successor, ambiguityStepTree);
+						}
+						return;
 					}
 					AppendStepsAfterList(steps, branchList);
 				}
