@@ -711,6 +711,12 @@ TraceManager
 																Trace* endTrace, vint32_t endIns,
 																ExecutionStep*& root, ExecutionStep*& firstLeaf, ExecutionStep* currentStep, ExecutionStep*& currentLeaf,
 																bool ambiguityBranch);
+
+				using ExecutionStepList = collections::Pair<ExecutionStep*, ExecutionStep*>;
+
+				void										AppendStepsAfterList(ExecutionStepList steps, ExecutionStepList& current);
+				ExecutionStepList							BuildStepListForAmbiguity(TraceAmbiguity* ta);
+				ExecutionStepList							BuildStepList(Trace* startTrace, vint32_t startIns, Trace* endTrace, vint32_t endIns);
 				void										BuildExecutionOrder();
 
 #undef DEFINE_EXECUTION_STEP_CONTEXT

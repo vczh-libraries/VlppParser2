@@ -10,6 +10,7 @@ namespace vl
 		namespace automaton
 		{
 			using namespace collections;
+#define TRACE_MAMAGER_PHRASE L"ResolveAmbiguity/BuildExecutionOrder"
 
 /***********************************************************************
 AppendStepLink
@@ -140,7 +141,6 @@ BuildAmbiguousStepLink
 			void TraceManager::BuildAmbiguousStepLink(TraceAmbiguity* ta, ExecutionStep*& first, ExecutionStep*& last)
 			{
 				// this function creates a linked list of steps that represents the complete TraceAmbiguity
-#define TRACE_MAMAGER_PHRASE L"ResolveAmbiguity/BuildExecutionOrder"
 				auto taFirst = GetTrace(ta->firstTrace);
 				auto taLast = GetTrace(ta->lastTrace);
 				auto taBranch = GetTrace(ta->branchTrace);
@@ -343,7 +343,6 @@ BuildAmbiguousStepLink
 
 				stepRA->parent = last;
 				last = stepRA;
-#undef TRACE_MAMAGER_PHRASE
 			}
 
 /***********************************************************************
@@ -625,41 +624,177 @@ BuildStepTree
 			}
 
 /***********************************************************************
+AppendStepAfterList
+***********************************************************************/
+
+			void TraceManager::AppendStepsAfterList(ExecutionStepList steps, ExecutionStepList& current)
+			{
+				if (!current.key)
+				{
+					current = steps;
+				}
+				else
+				{
+					steps.key->parent = current.value;
+					current.value = steps.value;
+				}
+			}
+
+/***********************************************************************
+BuildStepListForAmbiguity
+***********************************************************************/
+
+			TraceManager::ExecutionStepList TraceManager::BuildStepListForAmbiguity(TraceAmbiguity* ta)
+			{
+				CHECK_FAIL(L"Not Implemented!");
+			}
+
+/***********************************************************************
+BuildStepList
+***********************************************************************/
+
+			TraceManager::ExecutionStepList TraceManager::BuildStepList(Trace* startTrace, vint32_t startIns, Trace* endTrace, vint32_t endIns)
+			{
+				ExecutionStepList result;
+				Trace* currentTrace = startTrace;
+				vint32_t currentIns = startIns;
+
+				while (currentTrace)
+				{
+					auto currentTraceExec = GetTraceExec(currentTrace->traceExecRef);
+
+					// Find the next critical trace 
+					Trace* criticalTrace = nullptr;
+					if (currentTraceExec->nextAmbiguityCriticalTrace != nullref)
+					{
+						criticalTrace = currentTrace;
+					}
+					else
+					{
+						criticalTrace = GetTrace(currentTraceExec->branchData.forwardTrace);
+						while (criticalTrace && criticalTrace->traceExecRef < startTrace->traceExecRef)
+						{
+							auto nextRef = GetTraceExec(criticalTrace->traceExecRef)->nextAmbiguityCriticalTrace;
+							if (nextRef == nullref)
+							{
+								if (criticalTrace->successors.first != criticalTrace->successors.last)
+								{
+									throw TraceException(*this, startTrace, nullptr, TRACE_MAMAGER_PHRASE, L"Failed to find a TraceAmbiguity between this trace and the next branch trace.");
+								}
+								else
+								{
+									goto NO_CRITICAL_TRACE;
+								}
+							}
+							criticalTrace = nextRef == nullref ? nullptr : GetTrace(nextRef);
+						}
+					}
+
+					auto criticalTraceExec = GetTraceExec(criticalTrace->traceExecRef);
+					if (criticalTraceExec->ambiguityBegins == nullref)
+					{
+						throw TraceException(*this, startTrace, criticalTrace, TRACE_MAMAGER_PHRASE, L"The next critical trace after the current trace is not associated with a TraceAmbiguity.");
+					}
+
+					// Execute from (currentTrace, currentIns) until the next TraceAmbiguity
+					auto ta = GetTraceAmbiguity(GetTraceAmbiguityLink(criticalTraceExec->ambiguityBegins)->ambiguity);
+					auto taFirst = GetTrace(ta->firstTrace);
+					auto taFirstExec = GetTraceExec(taFirst->traceExecRef);
+					auto taLast = GetTrace(ta->lastTrace);
+					auto taLastExec = GetTraceExec(taLast->traceExecRef);
+					if (currentTrace->traceExecRef < taFirst->traceExecRef || currentIns < ta->prefix)
+					{
+						auto step = GetExecutionStep(executionSteps.Allocate());
+						step->et_i.startTrace = currentTrace->allocatedIndex;
+						step->et_i.startIns = currentIns;
+						if (ta->prefix == 0)
+						{
+							if (taFirst->predecessors.first != taFirst->predecessors.last)
+							{
+								throw TraceException(*this, ta, nullptr, TRACE_MAMAGER_PHRASE, L"The prefix of the TraceAmbiguity is 0, but its firstTrace is a merge trace.");
+							}
+							auto taFirstPrev = GetTrace(taFirst->predecessors.first);
+							auto taFirstPrevExec = GetTraceExec(taFirstPrev->traceExecRef);
+							step->et_i.endTrace = taFirstPrev->allocatedIndex;
+							step->et_i.endIns = taFirstPrevExec->insLists.countAll - 1;
+						}
+						else
+						{
+							step->et_i.endTrace = taFirst->allocatedIndex;
+							step->et_i.endIns = ta->prefix - 1;
+						}
+						AppendStepsAfterList({ step, step }, result);
+					}
+
+					// Execute the next TraceAmbiguity
+					auto taSteps = BuildStepListForAmbiguity(ta);
+					AppendStepsAfterList(taSteps, result);
+
+					// Step (currentTrace, currentIns) forward to right after TraceAmbiguity
+					if (ta->postfix == 0)
+					{
+						if (taLast->successors.first == nullref)
+						{
+							currentTrace = nullptr;
+						}
+						else if (taLast->successors.first != taLast->successors.last)
+						{
+							throw TraceException(*this, ta, nullptr, TRACE_MAMAGER_PHRASE, L"The postfix of the TraceAmbiguity is 0, but its lastTrace is a branch trace.");
+						}
+						else
+						{
+							currentTrace = GetTrace(taLast->successors.first);
+							currentIns = 0;
+						}
+					}
+					else
+					{
+						currentTrace = taLast;
+						currentIns = taLastExec->insLists.countAll - ta->postfix;
+					}
+				}
+			NO_CRITICAL_TRACE:
+
+				if (currentTrace)
+				{
+					if (
+						currentTrace->traceExecRef < endTrace->traceExecRef ||
+						(currentTrace->traceExecRef == endTrace->traceExecRef && currentIns <= endIns)
+						)
+					{
+						// Execute from (currentTrace, currentIns) to (endTrace, endIns)
+						auto step = GetExecutionStep(executionSteps.Allocate());
+						step->et_i.startTrace = currentTrace->allocatedIndex;
+						step->et_i.startIns = currentIns;
+						step->et_i.endTrace = endTrace->allocatedIndex;
+						step->et_i.endIns = endIns;
+						AppendStepsAfterList({ step, step }, result);
+					}
+					else
+					{
+						throw TraceException(*this, currentTrace, endTrace, TRACE_MAMAGER_PHRASE, L"BuildStepList corrupted with a currentTrace after startIns.");
+					}
+				}
+
+				return result;
+			}
+
+/***********************************************************************
 BuildExecutionOrder
 ***********************************************************************/
 
 			void TraceManager::BuildExecutionOrder()
 			{
-#define TRACE_MAMAGER_PHRASE L"ResolveAmbiguity/BuildExecutionOrder"
 				// get the instruction range
 				auto startTrace = initialTrace;
 				vint32_t startIns = 0;
 				auto endTrace = concurrentTraces->Get(0);
 				vint32_t endIns = GetTraceExec(endTrace->traceExecRef)->insLists.countAll - 1;
 
-				// build step tree
-				ExecutionStep* root = nullptr;
-				ExecutionStep* firstLeaf = nullptr;
-				ExecutionStep* currentLeaf = nullptr;
-				BuildOneStepTreeBranch(
-					nullptr,
-					startTrace, startIns, endTrace, endIns,
-					root, firstLeaf, nullptr, currentLeaf,
-					false);
-
-				// BuildAmbiguousStepLink should have merged a tree to a link
-				if (firstLeaf == nullptr || firstLeaf->next != nullref)
-				{
-					throw TraceException(*this, TRACE_MAMAGER_PHRASE, L"Ambiguity is not fully identified.");
-				}
-
-				// fill firstStep
-				ExecutionStep* first = nullptr;
-				ExecutionStep* last = nullptr;
-				ConvertStepTreeToLink(root, firstLeaf, first, last);
-				firstStep = first;
-#undef TRACE_MAMAGER_PHRASE
+				auto steps = BuildStepList(startTrace, startIns, endTrace, endIns);
+				firstStep = steps.key;
 			}
+#undef TRACE_MAMAGER_PHRASE
 		}
 	}
 }
