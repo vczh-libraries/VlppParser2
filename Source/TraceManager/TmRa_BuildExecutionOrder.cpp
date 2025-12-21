@@ -9,6 +9,8 @@ namespace vl
 	{
 		namespace automaton
 		{
+			using namespace collections;
+
 /***********************************************************************
 MarkNewLeafStep
 ***********************************************************************/
@@ -154,6 +156,27 @@ BuildAmbiguousStepLink
 				auto taFirstExec = GetTraceExec(taFirst->traceExecRef);
 				auto taLast = GetTrace(ta->lastTrace);
 				auto taLastExec = GetTraceExec(taLast->traceExecRef);
+
+				Dictionary<Ref<Trace>, Ref<Trace>> branchSelections;
+				if (ta->branchTrace != nullref)
+				{
+					// The inner TraceAmbiguity may covers the branchTrace of the outer's
+					// In this case only one successor of such bracnTrace should be picked
+					auto taBranch = GetTrace(ta->branchTrace);
+					auto taSelection = taBranch;
+					while (taFirst->traceExecRef < taSelection->traceExecRef)
+					{
+						auto predecessor = GetTrace(taSelection->predecessors.first);
+						auto forward = GetTrace(GetTraceExec(predecessor->traceExecRef)->branchData.forwardTrace);
+						taSelection = forward;
+
+						if (forward->successors.siblingPrev != forward->successors.siblingNext)
+						{
+							branchSelections.Add(forward->predecessors.first, forward);
+						}
+					}
+				}
+				//CHECK_ERROR(branchSelections.Count() == 0, L"Not Implemented!");
 
 				ExecutionStep* root = GetExecutionStep(executionSteps.Allocate());
 				root->type = ExecutionType::Empty;

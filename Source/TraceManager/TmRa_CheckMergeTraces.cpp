@@ -856,6 +856,7 @@ CheckMergeTraces
 						{
 							ta->branchTrace = GetTraceExec(predecessorForward->traceExecRef)->branchData.commonForwardBranch;
 						}
+						ta->branchTrace = GetTrace(ta->branchTrace)->predecessors.first;
 					}
 
 					// check if existing TraceAmbiguity in firstTrace are compatible
