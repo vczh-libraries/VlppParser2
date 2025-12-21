@@ -257,6 +257,38 @@ CollectNestedAmbiguities
 						auto branchTrace = GetTrace(nestedTa->branchTrace);
 						nestedTas->branchTraces.Add(branchTrace, nestedTa);
 					}
+
+					for (auto nestedTa : nestedTas->nestedAmbiguities)
+					{
+						auto currentTraceRef = nestedTa->branchTrace;
+						while (currentTraceRef != nullref)
+						{
+							auto currentTrace = GetTrace(currentTraceRef);
+							if (currentTrace->traceExecRef < taFirst->traceExecRef)
+							{
+								break;
+							}
+
+							if (currentTrace->predecessors.siblingNext != currentTrace->predecessors.siblingPrev)
+							{
+								auto predecessor = GetTrace(currentTrace->predecessors.first);
+								if (nestedTas->branchTraces.Keys().Contains(predecessor))
+								{
+									nestedTas->branchSelections.Add(nestedTa, predecessor);
+								}
+							}
+
+							auto currentTraceExec = GetTraceExec(currentTrace->traceExecRef);
+							if (currentTraceExec->branchData.forwardTrace == currentTrace)
+							{
+								currentTraceRef = currentTrace->predecessors.first;
+							}
+							else
+							{
+								currentTraceRef = currentTraceExec->branchData.forwardTrace;
+							}
+						}
+					}
 				}
 
 				return nestedTas;
