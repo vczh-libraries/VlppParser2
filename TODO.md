@@ -50,7 +50,7 @@ Looks good, but in `Trace-3` there is
 [8]: 7@0 - 7@4
 [14]: RA_Branch
 ```
-The third branch should continue from 14@0 to 204@0
+The third branch should be in the outer RA_END
 
 ```
 0..7
@@ -67,6 +67,41 @@ The third branch should continue from 14@0 to 204@0
   |
 182..184
 ```
+
+There are two `TraceAmbiguity`: `2+0 .. 183-2` and `6+0 .. 205-1`.
+The `ExecutionStep` structure should be
+```
+RA_BEGIN
+{
+  RA_BEGIN
+  {
+    RA_BRANCH
+    RA_BRANCH
+  }
+  RA_END(VariableDeclaration)
+  RA_BRANCH
+  
+  RA_BRANCH
+}
+RA_END(TemplateDeclaration)
+```
+but the current structure is
+```
+RA_BEGIN
+{
+  RA_BEGIN
+  {
+    RA_BRANCH
+    RA_BRANCH
+    RA_BRANCH (incomplete)
+  }
+  RA_END(VariableDeclaration)
+  RA_BRANCH
+}
+RA_END(TemplateDeclaration)
+```
+
+The incomplete branch actually starts from the incorrect `TraceAmbiguity` causing the step generation to fail
 
 - [x] Non-ambiguous test cases
 - [x] Ambiguous test cases
