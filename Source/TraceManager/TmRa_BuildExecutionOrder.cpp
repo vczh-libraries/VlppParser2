@@ -215,7 +215,7 @@ BuildStepListForAmbiguity
 BuildStepList
 ***********************************************************************/
 
-			TraceManager::ExecutionStepList TraceManager::BuildStepList(Trace* startTrace, vint32_t startIns, Trace* endTrace, vint32_t endIns)
+			TraceManager::ExecutionStepList TraceManager::BuildStepListUntilFirstRawBranchTrace(Trace* startTrace, vint32_t startIns, Trace* endTrace, vint32_t endIns, Trace** rawBranchTrace)
 			{
 				ExecutionStepList result{ nullptr,nullptr };
 				Trace* currentTrace = startTrace;
@@ -264,6 +264,13 @@ BuildStepList
 					auto criticalTraceExec = GetTraceExec(criticalTrace->traceExecRef);
 					if (criticalTraceExec->ambiguityBegins == nullref)
 					{
+						if (rawBranchTrace && criticalTrace->successors.first != criticalTrace->successors.last)
+						{
+							*rawBranchTrace = criticalTrace;
+							endTrace = criticalTrace;
+							endIns = GetTraceExec(endTrace->traceExecRef)->insLists.countAll - 1;
+							goto NO_CRITICAL_TRACE;
+						}
 						throw TraceException(*this, currentTrace, criticalTrace, TRACE_MAMAGER_PHRASE, L"The next critical trace after the current trace is not associated with a TraceAmbiguity.");
 					}
 
@@ -397,6 +404,11 @@ BuildStepList
 				}
 
 				return result;
+			}
+
+			TraceManager::ExecutionStepList TraceManager::BuildStepList(Trace* startTrace, vint32_t startIns, Trace* endTrace, vint32_t endIns)
+			{
+				return BuildStepListUntilFirstRawBranchTrace(startTrace, startIns, endTrace, endIns, nullptr);
 			}
 
 /***********************************************************************

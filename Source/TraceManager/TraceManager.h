@@ -698,6 +698,7 @@ TraceManager
 
 				void										AppendStepsAfterList(ExecutionStepList steps, ExecutionStepList& current);
 				ExecutionStepList							BuildStepListForAmbiguity(TraceAmbiguity* ta);
+				ExecutionStepList							BuildStepListUntilFirstRawBranchTrace(Trace* startTrace, vint32_t startIns, Trace* endTrace, vint32_t endIns, Trace** rawBranchTrace);
 				ExecutionStepList							BuildStepList(Trace* startTrace, vint32_t startIns, Trace* endTrace, vint32_t endIns);
 				void										BuildExecutionOrder();
 
