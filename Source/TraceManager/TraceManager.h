@@ -800,9 +800,11 @@ TraceManager
 						WString::Unmanaged(L"] at trace ambiguity ") +
 						itow(ta1->firstTrace.handle) + WString::Unmanaged(L"@") + itow(ta1->prefix) + WString::Unmanaged(L"..") +
 						itow(ta1->lastTrace.handle) + WString::Unmanaged(L"@-") + itow(ta1->postfix) +
-						WString::Unmanaged(L" and ") +
-						itow(ta2->firstTrace.handle) + WString::Unmanaged(L"@") + itow(ta2->prefix) + WString::Unmanaged(L"..") +
-						itow(ta2->lastTrace.handle) + WString::Unmanaged(L"@-") + itow(ta2->postfix) +
+						(ta2 == nullptr ? WString::Empty :
+							WString::Unmanaged(L" and ") +
+							itow(ta2->firstTrace.handle) + WString::Unmanaged(L"@") + itow(ta2->prefix) + WString::Unmanaged(L"..") +
+							itow(ta2->lastTrace.handle) + WString::Unmanaged(L"@-") + itow(ta2->postfix)
+							) +
 						WString::Unmanaged(L" : ") +
 						WString::Unmanaged(message)
 					)

@@ -153,9 +153,11 @@ BuildAmbiguousStepLink
 			{
 #define TRACE_MAMAGER_PHRASE L"ResolveAmbiguity/BuildExecutionOrder"
 				auto taFirst = GetTrace(ta->firstTrace);
-				auto taFirstExec = GetTraceExec(taFirst->traceExecRef);
 				auto taLast = GetTrace(ta->lastTrace);
+				auto taBranch = GetTrace(ta->branchTrace);
+				auto taFirstExec = GetTraceExec(taFirst->traceExecRef);
 				auto taLastExec = GetTraceExec(taLast->traceExecRef);
+				auto taBranchExec = GetTraceExec(taBranch->traceExecRef);
 
 				BranchSelectionMap branchSelections;
 				if (ta->branchTrace != nullref)
@@ -196,7 +198,11 @@ BuildAmbiguousStepLink
 				ExecutionStep* firstLeaf = nullptr;
 				ExecutionStep* currentLeaf = nullptr;
 
-				if (ta->prefix < taFirstExec->insLists.countAll)
+				if (taFirst->traceExecRef > taBranch->traceExecRef)
+				{
+					throw TraceException(*this, ta, nullptr, TRACE_MAMAGER_PHRASE, L"TraceAmbiguity firstTrace should not be after branchTrace.");
+				}
+				if (taFirst->traceExecRef < taBranch->traceExecRef || ta->prefix < taFirstExec->insLists.countAll)
 				{
 					// if the first ambiguous instruction is in taFirst
 
