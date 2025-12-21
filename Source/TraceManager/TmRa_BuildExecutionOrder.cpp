@@ -157,7 +157,7 @@ BuildAmbiguousStepLink
 				auto taLast = GetTrace(ta->lastTrace);
 				auto taLastExec = GetTraceExec(taLast->traceExecRef);
 
-				Dictionary<Ref<Trace>, Ref<Trace>> branchSelections;
+				BranchSelectionMap branchSelections;
 				if (ta->branchTrace != nullref)
 				{
 					// The inner TraceAmbiguity may covers the branchTrace of the outer's
@@ -189,7 +189,6 @@ BuildAmbiguousStepLink
 						}
 					}
 				}
-				CHECK_ERROR(branchSelections.Count() == 0, L"Not Implemented!");
 
 				ExecutionStep* root = GetExecutionStep(executionSteps.Allocate());
 				root->type = ExecutionType::Empty;
@@ -218,6 +217,7 @@ BuildAmbiguousStepLink
 
 						// run from successor to the end
 						BuildStepTree(
+							&branchSelections,
 							successor, 0,
 							taLast, taLastExec->insLists.countAll - ta->postfix - 1,
 							root, firstLeaf, first, currentLeaf,
@@ -238,6 +238,7 @@ BuildAmbiguousStepLink
 
 						// run from the first ambiguous instruction to the last
 						BuildStepTree(
+							&branchSelections,
 							successor, ta->prefix - taFirstExec->insLists.countAll,
 							taLast, taLastExec->insLists.countAll - ta->postfix - 1,
 							root, firstLeaf, root, currentLeaf,
@@ -464,7 +465,12 @@ AppendStepsBeforeBranch
 BuildStepTree
 ***********************************************************************/
 
-			void TraceManager::BuildStepTree(Trace* startTrace, vint32_t startIns, Trace* endTrace, vint32_t endIns, ExecutionStep*& root, ExecutionStep*& firstLeaf, ExecutionStep* currentStep, ExecutionStep*& currentLeaf, bool ambiguityBranch)
+			void TraceManager::BuildStepTree(
+				BranchSelectionMap* branchSelections,
+				Trace* startTrace, vint32_t startIns,
+				Trace* endTrace, vint32_t endIns,
+				ExecutionStep*& root, ExecutionStep*& firstLeaf, ExecutionStep* currentStep, ExecutionStep*& currentLeaf,
+				bool ambiguityBranch)
 			{
 				// find the next critical trace record which is or after startTrace
 				auto critical = GetTrace(GetTraceExec(startTrace->traceExecRef)->branchData.forwardTrace);
@@ -540,17 +546,33 @@ BuildStepTree
 						else if (critical->successors.first != critical->successors.last)
 						{
 							// if critical is a branch tree
+							Trace* selectedSuccessor = nullptr;
+							if (branchSelections)
+							{
+								vint index = branchSelections->Keys().IndexOf(critical);
+								if (index != -1)
+								{
+									selectedSuccessor = GetTrace(branchSelections->Values()[index]);
+								}
+							}
 
 							// append a step current position to the end of critical
 							AppendStepsBeforeBranch(startTrace, startIns, critical, criticalExec, PASS_EXECUTION_STEP_CONTEXT);
 
-							// recursively process all successors
-							auto successorId = critical->successors.first;
-							while (successorId != nullref)
+							if (selectedSuccessor)
 							{
-								auto successor = GetTrace(successorId);
-								successorId = successor->successors.siblingNext;
-								BuildStepTree(successor, 0, endTrace, endIns, PASS_EXECUTION_STEP_CONTEXT, true);
+								BuildStepTree(branchSelections, selectedSuccessor, 0, endTrace, endIns, PASS_EXECUTION_STEP_CONTEXT, true);
+							}
+							else
+							{
+								// recursively process all successors
+								auto successorId = critical->successors.first;
+								while (successorId != nullref)
+								{
+									auto successor = GetTrace(successorId);
+									successorId = successor->successors.siblingNext;
+									BuildStepTree(nullptr, successor, 0, endTrace, endIns, PASS_EXECUTION_STEP_CONTEXT, true);
+								}
 							}
 							return;
 						}
@@ -623,7 +645,7 @@ BuildExecutionOrder
 				ExecutionStep* root = nullptr;
 				ExecutionStep* firstLeaf = nullptr;
 				ExecutionStep* currentLeaf = nullptr;
-				BuildStepTree(startTrace, startIns, endTrace, endIns, root, firstLeaf, nullptr, currentLeaf, false);
+				BuildStepTree(nullptr, startTrace, startIns, endTrace, endIns, root, firstLeaf, nullptr, currentLeaf, false);
 
 				// BuildAmbiguousStepLink should have merged a tree to a link
 				if (firstLeaf == nullptr || firstLeaf->next != nullref)
