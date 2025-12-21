@@ -529,7 +529,6 @@ TraceManager (Data Structures -- BuildExecutionOrder)
 
 			struct ExecutionStepTree
 			{
-				ExecutionStep*						root = nullptr;
 				ExecutionStep*						firstLeaf = nullptr;
 				ExecutionStep*						lastLeaf = nullptr;
 			};

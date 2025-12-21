@@ -84,7 +84,7 @@ ExecutionStep Operations
 						auto walkingStep = currentLeaf;
 						while (walkingStep->parent != nullref)
 						{
-							auto parentStep = GetExecutionStep(walkingStep->parent);
+							walkingStep = GetExecutionStep(walkingStep->parent);
 
 							if (walkingStep->visitCount++ == 0)
 							{
@@ -99,8 +99,6 @@ ExecutionStep Operations
 								leafList.first->parent = stepCopy;
 								leafList.first = stepCopy;
 							}
-
-							walkingStep = parentStep;
 						}
 						AppendStepsAfterList(leafList, result);
 					}
@@ -112,7 +110,7 @@ ExecutionStep Operations
 					while (currentLeafRef != nullref)
 					{
 						auto currentLeaf = GetExecutionStep(currentLeafRef);
-						auto currentLeafRef = currentLeaf->leafNext;
+						currentLeafRef = currentLeaf->leafNext;
 
 						currentLeaf->leafNext = nullref;
 					}
@@ -178,56 +176,66 @@ BuildStepListForAmbiguity
 					AppendStepsAfterList({ step,step }, result);
 				}
 
-				// Nested TraceAmbiguity is not implemented, so all successors of taBranch are needed
-				auto successorId = taBranch->successors.first;
-				while (successorId != nullref)
 				{
-					auto successor = GetTrace(successorId);
-					successorId = successor->successors.siblingNext;
-
+					ExecutionStepLinkedList sharedSteps;
 					// Execute from taFirst to taBranch
 					if (prefixExtra < 0)
 					{
-						auto steps = BuildStepList(
+						sharedSteps = BuildStepList(
 							taFirst,
 							ta->prefix,
 							taBranch,
 							taBranchExec->insLists.countAll - 1
 						);
-						AppendStepsAfterList(steps, result);
 					}
 
-					// Execute the branch
+					ExecutionStepTree branchSteps;
+
+					// Nested TraceAmbiguity is not implemented, so all successors of taBranch are needed
+					auto successorId = taBranch->successors.first;
+					while (successorId != nullref)
 					{
-						auto steps = BuildStepList(
-							successor,
-							(prefixExtra <= 0 ? 0 : prefixExtra),
-							taMerge,
-							(taMergeExec->insLists.countAll - 1 - (postfixExtra <= 0 ? 0 : postfixExtra))
-						);
-						AppendStepsAfterList(steps, result);
+						auto successor = GetTrace(successorId);
+						successorId = successor->successors.siblingNext;
+
+						ExecutionStepLinkedList branchList;
+						// Execute the branch
+						{
+							auto steps = BuildStepList(
+								successor,
+								(prefixExtra <= 0 ? 0 : prefixExtra),
+								taMerge,
+								(taMergeExec->insLists.countAll - 1 - (postfixExtra <= 0 ? 0 : postfixExtra))
+							);
+							AppendStepsAfterList(steps, branchList);
+						}
+
+						// Execute from taMerge to taLast
+						if (postfixExtra < 0)
+						{
+							auto steps = BuildStepList(
+								taMerge,
+								0,
+								taLast,
+								-postfixExtra - 1
+							);
+							AppendStepsAfterList(steps, branchList);
+						}
+
+						// Append RA_BRANCH
+						{
+							auto step = GetExecutionStep(executionSteps.Allocate());
+							step->type = ExecutionType::RA_Branch;
+							step->et_ra.trace = taLast->allocatedIndex;
+							step->et_ra.type = -1;
+							AppendStepsAfterList({ step,step }, branchList);
+						}
+
+						branchList.first->parent = sharedSteps.last;
+						AppendLeafToTree(branchList.last, branchSteps);
 					}
 
-					// Execute from taMerge to taLast
-					if (postfixExtra < 0)
-					{
-						auto steps = BuildStepList(
-							taMerge,
-							0,
-							taLast,
-							-postfixExtra - 1
-						);
-						AppendStepsAfterList(steps, result);
-					}
-
-					// Append RA_BRANCH
-					{
-						auto step = GetExecutionStep(executionSteps.Allocate());
-						step->type = ExecutionType::RA_Branch;
-						step->et_ra.trace = taLast->allocatedIndex;
-						step->et_ra.type = -1;
-						AppendStepsAfterList({ step,step }, result);
-					}
+					AppendStepsAfterList(ConvertStepTreeToList(branchSteps), result);
 				}
 
 				// Append RA_END
