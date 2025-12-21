@@ -703,6 +703,7 @@ TraceManager
 				void										AppendLeafToTree(ExecutionStep* leaf, ExecutionStepTree& tree);
 				ExecutionStepLinkedList						ConvertStepTreeToList(ExecutionStepTree tree);
 
+				ExecutionStep*								CreateResolveAmbiguityStep(TraceAmbiguity* ta);
 				void										BuildStepLeafsForAmbiguityBranch(TraceAmbiguity* ta, ExecutionStep* lastSharedStep, Trace* ambiguityBranchStartTrace, ExecutionStepTree& ambiguityStepTree);
 				ExecutionStepLinkedList						BuildStepListForAmbiguity(TraceAmbiguity* ta);
 				ExecutionStepLinkedList						BuildStepListUntilFirstRawBranchTrace(Trace* startTrace, vint32_t startIns, Trace* endTrace, vint32_t endIns, Trace** rawBranchTrace);

@@ -138,6 +138,78 @@ ExecutionStep Operations
 			}
 
 /***********************************************************************
+CreateResolveAmbiguityStep
+***********************************************************************/
+
+			ExecutionStep* TraceManager::CreateResolveAmbiguityStep(TraceAmbiguity* ta)
+			{
+				auto taFirst = GetTrace(ta->firstTrace);
+				auto taLast = GetTrace(ta->lastTrace);
+				auto step = GetExecutionStep(executionSteps.Allocate());
+				step->type = ExecutionType::RA_End;
+				step->et_ra.type = -1;
+				step->et_ra.trace = taLast->allocatedIndex;
+				{
+					if (typeCallback == nullptr)
+					{
+						throw TraceException(*this, TRACE_MAMAGER_PHRASE, L"Missing ITypeCallback to resolve the type from multiple objects.");
+					}
+					auto currentStackLinkRef = ta->bottomCreateObjectStacks;
+					while (currentStackLinkRef != nullref)
+					{
+						auto currentStackLink = GetInsExec_StackRefLink(currentStackLinkRef);
+						currentStackLinkRef = currentStackLink->previous;
+						auto ieObject = GetInsExec_Stack(currentStackLink->id);
+
+						// find all CreateObject instructions in that stack
+						if (ieObject->summarizing.indirectCreateObjectInsRefs == nullref)
+						{
+							throw TraceException(*this, ieObject, TRACE_MAMAGER_PHRASE, L"indirectCreateObjectInsRefs should not be null.");
+						}
+						auto coInsRefLink = ieObject->summarizing.indirectCreateObjectInsRefs;
+						while (coInsRefLink != nullref)
+						{
+							auto coInsRef = GetInsExec_InsRefLink(coInsRefLink);
+							coInsRefLink = coInsRef->previous;
+
+							auto coTrace = GetTrace(coInsRef->insRef.trace);
+							auto coTraceExec = GetTraceExec(coTrace->traceExecRef);
+							auto&& coIns = ReadInstruction(coInsRef->insRef.ins, coTraceExec->insLists);
+							if (coIns.type != AstInsType::CreateObject || coIns.param == -1)
+							{
+								throw TraceException(*this, ieObject, TRACE_MAMAGER_PHRASE, L"indirectCreateObjectInsRefs points to an unexpected instruction.");
+							}
+
+							if (step->et_ra.type == -1)
+							{
+								step->et_ra.type = coIns.param;
+							}
+							else if (step->et_ra.type != coIns.param)
+							{
+								vint32_t baseClass = typeCallback->FindCommonBaseClass(step->et_ra.type, coIns.param);
+								if (baseClass == -1)
+								{
+									throw UnableToResolveAmbiguityException(
+										WString::Unmanaged(L"Unable to resolve ambiguity type from ") +
+										typeCallback->GetClassName(step->et_ra.type) +
+										WString::Unmanaged(L" and ") +
+										typeCallback->GetClassName(coIns.param) +
+										WString::Unmanaged(L"."),
+										step->et_ra.type,
+										coIns.param,
+										EnsureTraceWithValidStates(taFirst)->currentTokenIndex,
+										EnsureTraceWithValidStates(taLast)->currentTokenIndex
+									);
+								}
+								step->et_ra.type = baseClass;
+							}
+						}
+					}
+				}
+				return step;
+			}
+
+/***********************************************************************
 BuildStepLeafsForAmbiguityBranch
 ***********************************************************************/
 
@@ -216,7 +288,6 @@ BuildStepListForAmbiguity
 			{
 				ExecutionStepLinkedList result;
 				auto taFirst = GetTrace(ta->firstTrace);
-				auto taLast = GetTrace(ta->lastTrace);
 				auto taBranch = GetTrace(ta->branchTrace);
 				auto taFirstExec = GetTraceExec(taFirst->traceExecRef);
 				auto taBranchExec = GetTraceExec(taBranch->traceExecRef);
@@ -290,67 +361,7 @@ BuildStepListForAmbiguity
 
 				// Append RA_END
 				{
-					auto step = GetExecutionStep(executionSteps.Allocate());
-					step->type = ExecutionType::RA_End;
-					step->et_ra.type = -1;
-					step->et_ra.trace = taLast->allocatedIndex;
-					{
-						if (typeCallback == nullptr)
-						{
-							throw TraceException(*this, TRACE_MAMAGER_PHRASE, L"Missing ITypeCallback to resolve the type from multiple objects.");
-						}
-						auto currentStackLinkRef = ta->bottomCreateObjectStacks;
-						while (currentStackLinkRef != nullref)
-						{
-							auto currentStackLink = GetInsExec_StackRefLink(currentStackLinkRef);
-							currentStackLinkRef = currentStackLink->previous;
-							auto ieObject = GetInsExec_Stack(currentStackLink->id);
-
-							// find all CreateObject instructions in that stack
-							if (ieObject->summarizing.indirectCreateObjectInsRefs == nullref)
-							{
-								throw TraceException(*this, ieObject, TRACE_MAMAGER_PHRASE, L"indirectCreateObjectInsRefs should not be null.");
-							}
-							auto coInsRefLink = ieObject->summarizing.indirectCreateObjectInsRefs;
-							while (coInsRefLink != nullref)
-							{
-								auto coInsRef = GetInsExec_InsRefLink(coInsRefLink);
-								coInsRefLink = coInsRef->previous;
-
-								auto coTrace = GetTrace(coInsRef->insRef.trace);
-								auto coTraceExec = GetTraceExec(coTrace->traceExecRef);
-								auto&& coIns = ReadInstruction(coInsRef->insRef.ins, coTraceExec->insLists);
-								if (coIns.type != AstInsType::CreateObject || coIns.param == -1)
-								{
-									throw TraceException(*this, ieObject, TRACE_MAMAGER_PHRASE, L"indirectCreateObjectInsRefs points to an unexpected instruction.");
-								}
-
-								if (step->et_ra.type == -1)
-								{
-									step->et_ra.type = coIns.param;
-								}
-								else if (step->et_ra.type != coIns.param)
-								{
-									vint32_t baseClass = typeCallback->FindCommonBaseClass(step->et_ra.type, coIns.param);
-									if (baseClass == -1)
-									{
-										throw UnableToResolveAmbiguityException(
-											WString::Unmanaged(L"Unable to resolve ambiguity type from ") +
-											typeCallback->GetClassName(step->et_ra.type) +
-											WString::Unmanaged(L" and ") +
-											typeCallback->GetClassName(coIns.param) +
-											WString::Unmanaged(L"."),
-											step->et_ra.type,
-											coIns.param,
-											EnsureTraceWithValidStates(taFirst)->currentTokenIndex,
-											EnsureTraceWithValidStates(taLast)->currentTokenIndex
-										);
-									}
-									step->et_ra.type = baseClass;
-								}
-							}
-						}
-					}
+					auto step = CreateResolveAmbiguityStep(ta);
 					AppendStepsAfterList({ step,step }, result);
 				}
 
