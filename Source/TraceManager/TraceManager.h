@@ -519,6 +519,7 @@ TraceManager (Data Structures -- BuildExecutionOrder)
 				// tree (parent, leafPrev, leafNext)
 				Ref<ExecutionStep>					next, parent, leafNext;
 				vint32_t							visitCount = 0;
+				vint32_t							copyCount = 0;
 			};
 
 			struct ExecutionStepLinkedList

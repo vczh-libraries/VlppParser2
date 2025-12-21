@@ -51,7 +51,7 @@ ExecutionStep Operations
 			{
 				ExecutionStepLinkedList result;
 
-				// clean visitCount and copyCount
+				// initialize visitCount and copyCount
 				{
 					Ref<ExecutionStep> currentLeafRef = tree.firstLeaf;
 					while (currentLeafRef != nullref)
@@ -66,6 +66,24 @@ ExecutionStep Operations
 							currentStepRef = currentStep->parent;
 
 							currentStep->visitCount = 0;
+							currentStep->copyCount = 0;
+						}
+					}
+				}
+				{
+					Ref<ExecutionStep> currentLeafRef = tree.firstLeaf;
+					while (currentLeafRef != nullref)
+					{
+						auto currentLeaf = GetExecutionStep(currentLeafRef);
+						currentLeafRef = currentLeaf->leafNext;
+
+						Ref<ExecutionStep> currentStepRef = currentLeaf;
+						while (currentStepRef != nullref)
+						{
+							auto currentStep = GetExecutionStep(currentStepRef);
+							currentStepRef = currentStep->parent;
+
+							currentStep->copyCount++;
 						}
 					}
 				}
@@ -86,7 +104,7 @@ ExecutionStep Operations
 						{
 							walkingStep = GetExecutionStep(walkingStep->parent);
 
-							if (walkingStep->visitCount++ == 0)
+							if (walkingStep->visitCount++ == walkingStep->copyCount)
 							{
 								leafList.first = walkingStep;
 							}
