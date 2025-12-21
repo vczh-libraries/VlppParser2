@@ -509,17 +509,16 @@ TraceManager (Data Structures -- BuildExecutionOrder)
 
 				ExecutionType						type = ExecutionType::Instruction;
 
-				// list (parent, next)
-				// tree (parent, leafPrev, leafNext)
-				Ref<ExecutionStep>					next, parent, leafPrev, leafNext;
-
-				vint32_t							visitCount = 0;
-
 				union
 				{
 					ETI								et_i;
 					ETRA							et_ra;
 				};
+
+				// list (parent, next)
+				// tree (parent, leafPrev, leafNext)
+				Ref<ExecutionStep>					next, parent, leafNext;
+				vint32_t							visitCount = 0;
 			};
 
 			struct ExecutionStepLinkedList
@@ -701,6 +700,7 @@ TraceManager
 				// phase: BuildExecutionOrder
 
 				void										AppendStepsAfterList(ExecutionStepLinkedList steps, ExecutionStepLinkedList& current);
+				void										AppendLeafToTree(ExecutionStep* leaf, ExecutionStepTree& tree);
 				ExecutionStepLinkedList						ConvertStepTreeToList(ExecutionStepTree tree);
 
 				ExecutionStepLinkedList						BuildStepListForAmbiguity(TraceAmbiguity* ta);

@@ -33,6 +33,20 @@ ExecutionStep Operations
 				}
 			}
 
+			void TraceManager::AppendLeafToTree(ExecutionStep* leaf, ExecutionStepTree& tree)
+			{
+				if (!tree.firstLeaf)
+				{
+					tree.firstLeaf = leaf;
+					tree.lastLeaf = leaf;
+				}
+				else
+				{
+					tree.lastLeaf->leafNext = leaf;
+					tree.lastLeaf = leaf;
+				}
+			}
+
 			ExecutionStepLinkedList TraceManager::ConvertStepTreeToList(ExecutionStepTree tree)
 			{
 				ExecutionStepLinkedList result;
@@ -100,7 +114,6 @@ ExecutionStep Operations
 						auto currentLeaf = GetExecutionStep(currentLeafRef);
 						auto currentLeafRef = currentLeaf->leafNext;
 
-						currentLeaf->leafPrev = nullref;
 						currentLeaf->leafNext = nullref;
 					}
 				}
