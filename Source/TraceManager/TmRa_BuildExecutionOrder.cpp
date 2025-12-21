@@ -389,6 +389,11 @@ BuildStepList
 						{
 							if (criticalTrace->successors.first != criticalTrace->successors.last)
 							{
+								auto criticalTraceExec = GetTraceExec(criticalTrace->traceExecRef);
+								if (criticalTraceExec->ambiguityBegins != nullref)
+								{
+									break;
+								}
 								throw TraceException(*this, currentTrace, nullptr, TRACE_MAMAGER_PHRASE, L"Failed to find a TraceAmbiguity between this trace and the next branch trace.");
 							}
 							else
