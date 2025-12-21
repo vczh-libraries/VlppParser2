@@ -42,6 +42,264 @@ AppendStepLink
 			}
 
 /***********************************************************************
+ConvertStepTreeToLink
+***********************************************************************/
+
+			void TraceManager::ConvertStepTreeToLink(ExecutionStep* root, ExecutionStep* firstLeaf, ExecutionStep*& first, ExecutionStep*& last)
+			{
+				// calculate copyCount
+				Ref<ExecutionStep> currentLeafRef = firstLeaf;
+				while (currentLeafRef != nullref)
+				{
+					auto currentRef = currentLeafRef;
+					while (currentRef != nullref)
+					{
+						auto current = GetExecutionStep(currentRef);
+						current->copyCount++;
+						currentRef = current->parent;
+					}
+
+					currentLeafRef = GetExecutionStep(currentLeafRef)->next;
+				}
+
+				// for each leaf, build a step link from root to the leaf
+				// concat all link, fill first and last
+				currentLeafRef = firstLeaf;
+				while (currentLeafRef != nullref)
+				{
+					// disconnect currentLeaf to the next leaf
+					auto currentLeaf = GetExecutionStep(currentLeafRef);
+					auto nextLeafRef = currentLeaf->next;
+					currentLeaf->next = nullref;
+
+					// fix next from root to currentLeaf
+					auto current = currentLeaf;
+					while (current->parent != nullref)
+					{
+						auto parent = GetExecutionStep(current->parent);
+						parent->next = current;
+						current = parent;
+					}
+
+					// make a step link from root to currentLeaf
+					ExecutionStep* linkFirst = nullptr;
+					ExecutionStep* linkLast = nullptr;
+
+					Ref<ExecutionStep> currentRef = root;
+					while (currentRef != nullref)
+					{
+						// increase visitCount
+						auto current = GetExecutionStep(currentRef);
+						current->visitCount++;
+
+						if (current->visitCount == current->copyCount)
+						{
+							// if visitCount == copyCount
+							// it means current will not be copied in the next round
+							// sublink from current to currentLeaf copy be used directly
+							if (!linkFirst)
+							{
+								linkFirst = current;
+							}
+							if (linkLast)
+							{
+								linkLast->next = current;
+							}
+							linkLast = currentLeaf;
+							break;
+						}
+						else
+						{
+							// otherwise, copy current
+							static_assert(sizeof(ExecutionStep::ETI) >= sizeof(ExecutionStep::ETRA));
+							auto step = GetExecutionStep(executionSteps.Allocate());
+							step->type = current->type;
+							step->et_i = current->et_i;
+
+							if (!linkFirst)
+							{
+								linkFirst = step;
+							}
+							if (linkLast)
+							{
+								linkLast->next = step;
+							}
+							linkLast = step;
+							currentRef = current->next;
+						}
+					}
+
+					if (!first)
+					{
+						first = linkFirst;
+					}
+					if (last)
+					{
+						last->next = linkFirst;
+					}
+					last = linkLast;
+
+					currentLeafRef = nextLeafRef;
+				}
+			}
+
+/***********************************************************************
+BuildAmbiguousStepLink
+***********************************************************************/
+
+			void TraceManager::BuildAmbiguousStepLink(TraceAmbiguity* ta, ExecutionStep*& first, ExecutionStep*& last)
+			{
+#define TRACE_MAMAGER_PHRASE L"ResolveAmbiguity/BuildExecutionOrder"
+				auto taFirst = GetTrace(ta->firstTrace);
+				auto taFirstExec = GetTraceExec(taFirst->traceExecRef);
+				auto taLast = GetTrace(ta->lastTrace);
+				auto taLastExec = GetTraceExec(taLast->traceExecRef);
+
+				ExecutionStep* root = GetExecutionStep(executionSteps.Allocate());
+				root->type = ExecutionType::Empty;
+
+				ExecutionStep* firstLeaf = nullptr;
+				ExecutionStep* currentLeaf = nullptr;
+
+				if (ta->prefix < taFirstExec->insLists.countAll)
+				{
+					// if the first ambiguous instruction is in taFirst
+
+					// traverse all successors
+					auto successorId = taFirst->successors.first;
+					while (successorId != nullref)
+					{
+						auto successor = GetTrace(successorId);
+						successorId = successor->successors.siblingNext;
+
+						// append a step to execute from the first ambiguous instruction
+						auto first = GetExecutionStep(executionSteps.Allocate());
+						first->parent = root;
+						first->et_i.startTrace = taFirst->allocatedIndex;
+						first->et_i.startIns = ta->prefix;
+						first->et_i.endTrace = taFirst->allocatedIndex;
+						first->et_i.endIns = taFirstExec->insLists.countAll - 1;
+
+						// run from successor to the end
+						BuildStepTree(
+							successor, 0,
+							taLast, taLastExec->insLists.countAll - ta->postfix - 1,
+							root, firstLeaf, first, currentLeaf,
+							true
+							);
+					}
+				}
+				else
+				{
+					// if the first ambiguous instruction is in successor traces
+
+					// traverse all successors
+					auto successorId = taFirst->successors.first;
+					while (successorId != nullref)
+					{
+						auto successor = GetTrace(successorId);
+						successorId = successor->successors.siblingNext;
+
+						// run from the first ambiguous instruction to the last
+						BuildStepTree(
+							successor, ta->prefix - taFirstExec->insLists.countAll,
+							taLast, taLastExec->insLists.countAll - ta->postfix - 1,
+							root, firstLeaf, root, currentLeaf,
+							true
+							);
+					}
+				}
+
+				// create the ResolveAmbiguity step
+				auto stepRA = GetExecutionStep(executionSteps.Allocate());
+				stepRA->type = ExecutionType::RA_End;
+				stepRA->et_ra.count = 0;
+				stepRA->et_ra.type = -1;
+				stepRA->et_ra.trace = taLast->allocatedIndex;
+				{
+					Ref<ExecutionStep> currentLeafRef = firstLeaf;
+					while (currentLeafRef != nullref)
+					{
+						stepRA->et_ra.count++;
+						currentLeafRef = GetExecutionStep(currentLeafRef)->next;
+					}
+				}
+				{
+					if (typeCallback == nullptr)
+					{
+						throw TraceException(*this, TRACE_MAMAGER_PHRASE, L"Missing ITypeCallback to resolve the type from multiple objects.");
+					}
+					auto currentStackLinkRef = ta->bottomCreateObjectStacks;
+					while (currentStackLinkRef != nullref)
+					{
+						auto currentStackLink = GetInsExec_StackRefLink(currentStackLinkRef);
+						currentStackLinkRef = currentStackLink->previous;
+						auto ieObject = GetInsExec_Stack(currentStackLink->id);
+
+						// find all CreateObject instructions in that stack
+						if (ieObject->summarizing.indirectCreateObjectInsRefs == nullref)
+						{
+							throw TraceException(*this, ieObject, TRACE_MAMAGER_PHRASE, L"indirectCreateObjectInsRefs should not be null.");
+						}
+						auto coInsRefLink = ieObject->summarizing.indirectCreateObjectInsRefs;
+						while (coInsRefLink != nullref)
+						{
+							auto coInsRef = GetInsExec_InsRefLink(coInsRefLink);
+							coInsRefLink = coInsRef->previous;
+
+							auto coTrace = GetTrace(coInsRef->insRef.trace);
+							auto coTraceExec = GetTraceExec(coTrace->traceExecRef);
+							auto&& coIns = ReadInstruction(coInsRef->insRef.ins, coTraceExec->insLists);
+							if (coIns.type != AstInsType::CreateObject || coIns.param == -1)
+							{
+								throw TraceException(*this, ieObject, TRACE_MAMAGER_PHRASE, L"indirectCreateObjectInsRefs points to an unexpected instruction.");
+							}
+
+							if (stepRA->et_ra.type == -1)
+							{
+								stepRA->et_ra.type = coIns.param;
+							}
+							else if (stepRA->et_ra.type != coIns.param)
+							{
+								vint32_t baseClass = typeCallback->FindCommonBaseClass(stepRA->et_ra.type, coIns.param);
+								if (baseClass == -1)
+								{
+									throw UnableToResolveAmbiguityException(
+										WString::Unmanaged(L"Unable to resolve ambiguity type from ") +
+										typeCallback->GetClassName(stepRA->et_ra.type) +
+										WString::Unmanaged(L" and ") +
+										typeCallback->GetClassName(coIns.param) +
+										WString::Unmanaged(L"."),
+										stepRA->et_ra.type,
+										coIns.param,
+										EnsureTraceWithValidStates(taFirst)->currentTokenIndex,
+										EnsureTraceWithValidStates(taLast)->currentTokenIndex
+									);
+								}
+								stepRA->et_ra.type = baseClass;
+							}
+						}
+					}
+				}
+
+				// append the ResolveAmbiguity step to the step tree
+				ConvertStepTreeToLink(root, firstLeaf, first, last);
+
+				auto current = first;
+				while (current != last)
+				{
+					auto next = GetExecutionStep(current->next);
+					current->next = nullref;
+					next->parent = current;
+					current = next;
+				}
+
+				stepRA->parent = last;
+				last = stepRA;
+#undef TRACE_MAMAGER_PHRASE
+			}
+
+/***********************************************************************
 AppendStepsBeforeAmbiguity
 ***********************************************************************/
 
@@ -310,264 +568,6 @@ BuildStepTree
 					AppendStepLink(step, step, PASS_EXECUTION_STEP_CONTEXT);
 				}
 				MarkNewLeafStep(currentStep, firstLeaf, currentLeaf);
-			}
-
-/***********************************************************************
-ConvertStepTreeToLink
-***********************************************************************/
-
-			void TraceManager::ConvertStepTreeToLink(ExecutionStep* root, ExecutionStep* firstLeaf, ExecutionStep*& first, ExecutionStep*& last)
-			{
-				// calculate copyCount
-				Ref<ExecutionStep> currentLeafRef = firstLeaf;
-				while (currentLeafRef != nullref)
-				{
-					auto currentRef = currentLeafRef;
-					while (currentRef != nullref)
-					{
-						auto current = GetExecutionStep(currentRef);
-						current->copyCount++;
-						currentRef = current->parent;
-					}
-
-					currentLeafRef = GetExecutionStep(currentLeafRef)->next;
-				}
-
-				// for each leaf, build a step link from root to the leaf
-				// concat all link, fill first and last
-				currentLeafRef = firstLeaf;
-				while (currentLeafRef != nullref)
-				{
-					// disconnect currentLeaf to the next leaf
-					auto currentLeaf = GetExecutionStep(currentLeafRef);
-					auto nextLeafRef = currentLeaf->next;
-					currentLeaf->next = nullref;
-
-					// fix next from root to currentLeaf
-					auto current = currentLeaf;
-					while (current->parent != nullref)
-					{
-						auto parent = GetExecutionStep(current->parent);
-						parent->next = current;
-						current = parent;
-					}
-
-					// make a step link from root to currentLeaf
-					ExecutionStep* linkFirst = nullptr;
-					ExecutionStep* linkLast = nullptr;
-
-					Ref<ExecutionStep> currentRef = root;
-					while (currentRef != nullref)
-					{
-						// increase visitCount
-						auto current = GetExecutionStep(currentRef);
-						current->visitCount++;
-
-						if (current->visitCount == current->copyCount)
-						{
-							// if visitCount == copyCount
-							// it means current will not be copied in the next round
-							// sublink from current to currentLeaf copy be used directly
-							if (!linkFirst)
-							{
-								linkFirst = current;
-							}
-							if (linkLast)
-							{
-								linkLast->next = current;
-							}
-							linkLast = currentLeaf;
-							break;
-						}
-						else
-						{
-							// otherwise, copy current
-							static_assert(sizeof(ExecutionStep::ETI) >= sizeof(ExecutionStep::ETRA));
-							auto step = GetExecutionStep(executionSteps.Allocate());
-							step->type = current->type;
-							step->et_i = current->et_i;
-
-							if (!linkFirst)
-							{
-								linkFirst = step;
-							}
-							if (linkLast)
-							{
-								linkLast->next = step;
-							}
-							linkLast = step;
-							currentRef = current->next;
-						}
-					}
-
-					if (!first)
-					{
-						first = linkFirst;
-					}
-					if (last)
-					{
-						last->next = linkFirst;
-					}
-					last = linkLast;
-
-					currentLeafRef = nextLeafRef;
-				}
-			}
-
-/***********************************************************************
-BuildAmbiguousStepLink
-***********************************************************************/
-
-			void TraceManager::BuildAmbiguousStepLink(TraceAmbiguity* ta, ExecutionStep*& first, ExecutionStep*& last)
-			{
-#define TRACE_MAMAGER_PHRASE L"ResolveAmbiguity/BuildExecutionOrder"
-				auto taFirst = GetTrace(ta->firstTrace);
-				auto taFirstExec = GetTraceExec(taFirst->traceExecRef);
-				auto taLast = GetTrace(ta->lastTrace);
-				auto taLastExec = GetTraceExec(taLast->traceExecRef);
-
-				ExecutionStep* root = GetExecutionStep(executionSteps.Allocate());
-				root->type = ExecutionType::Empty;
-
-				ExecutionStep* firstLeaf = nullptr;
-				ExecutionStep* currentLeaf = nullptr;
-
-				if (ta->prefix < taFirstExec->insLists.countAll)
-				{
-					// if the first ambiguous instruction is in taFirst
-
-					// traverse all successors
-					auto successorId = taFirst->successors.first;
-					while (successorId != nullref)
-					{
-						auto successor = GetTrace(successorId);
-						successorId = successor->successors.siblingNext;
-
-						// append a step to execute from the first ambiguous instruction
-						auto first = GetExecutionStep(executionSteps.Allocate());
-						first->parent = root;
-						first->et_i.startTrace = taFirst->allocatedIndex;
-						first->et_i.startIns = ta->prefix;
-						first->et_i.endTrace = taFirst->allocatedIndex;
-						first->et_i.endIns = taFirstExec->insLists.countAll - 1;
-
-						// run from successor to the end
-						BuildStepTree(
-							successor, 0,
-							taLast, taLastExec->insLists.countAll - ta->postfix - 1,
-							root, firstLeaf, first, currentLeaf,
-							true
-							);
-					}
-				}
-				else
-				{
-					// if the first ambiguous instruction is in successor traces
-
-					// traverse all successors
-					auto successorId = taFirst->successors.first;
-					while (successorId != nullref)
-					{
-						auto successor = GetTrace(successorId);
-						successorId = successor->successors.siblingNext;
-
-						// run from the first ambiguous instruction to the last
-						BuildStepTree(
-							successor, ta->prefix - taFirstExec->insLists.countAll,
-							taLast, taLastExec->insLists.countAll - ta->postfix - 1,
-							root, firstLeaf, root, currentLeaf,
-							true
-							);
-					}
-				}
-
-				// create the ResolveAmbiguity step
-				auto stepRA = GetExecutionStep(executionSteps.Allocate());
-				stepRA->type = ExecutionType::RA_End;
-				stepRA->et_ra.count = 0;
-				stepRA->et_ra.type = -1;
-				stepRA->et_ra.trace = taLast->allocatedIndex;
-				{
-					Ref<ExecutionStep> currentLeafRef = firstLeaf;
-					while (currentLeafRef != nullref)
-					{
-						stepRA->et_ra.count++;
-						currentLeafRef = GetExecutionStep(currentLeafRef)->next;
-					}
-				}
-				{
-					if (typeCallback == nullptr)
-					{
-						throw TraceException(*this, TRACE_MAMAGER_PHRASE, L"Missing ITypeCallback to resolve the type from multiple objects.");
-					}
-					auto currentStackLinkRef = ta->bottomCreateObjectStacks;
-					while (currentStackLinkRef != nullref)
-					{
-						auto currentStackLink = GetInsExec_StackRefLink(currentStackLinkRef);
-						currentStackLinkRef = currentStackLink->previous;
-						auto ieObject = GetInsExec_Stack(currentStackLink->id);
-
-						// find all CreateObject instructions in that stack
-						if (ieObject->summarizing.indirectCreateObjectInsRefs == nullref)
-						{
-							throw TraceException(*this, ieObject, TRACE_MAMAGER_PHRASE, L"indirectCreateObjectInsRefs should not be null.");
-						}
-						auto coInsRefLink = ieObject->summarizing.indirectCreateObjectInsRefs;
-						while (coInsRefLink != nullref)
-						{
-							auto coInsRef = GetInsExec_InsRefLink(coInsRefLink);
-							coInsRefLink = coInsRef->previous;
-
-							auto coTrace = GetTrace(coInsRef->insRef.trace);
-							auto coTraceExec = GetTraceExec(coTrace->traceExecRef);
-							auto&& coIns = ReadInstruction(coInsRef->insRef.ins, coTraceExec->insLists);
-							if (coIns.type != AstInsType::CreateObject || coIns.param == -1)
-							{
-								throw TraceException(*this, ieObject, TRACE_MAMAGER_PHRASE, L"indirectCreateObjectInsRefs points to an unexpected instruction.");
-							}
-
-							if (stepRA->et_ra.type == -1)
-							{
-								stepRA->et_ra.type = coIns.param;
-							}
-							else if (stepRA->et_ra.type != coIns.param)
-							{
-								vint32_t baseClass = typeCallback->FindCommonBaseClass(stepRA->et_ra.type, coIns.param);
-								if (baseClass == -1)
-								{
-									throw UnableToResolveAmbiguityException(
-										WString::Unmanaged(L"Unable to resolve ambiguity type from ") +
-										typeCallback->GetClassName(stepRA->et_ra.type) +
-										WString::Unmanaged(L" and ") +
-										typeCallback->GetClassName(coIns.param) +
-										WString::Unmanaged(L"."),
-										stepRA->et_ra.type,
-										coIns.param,
-										EnsureTraceWithValidStates(taFirst)->currentTokenIndex,
-										EnsureTraceWithValidStates(taLast)->currentTokenIndex
-									);
-								}
-								stepRA->et_ra.type = baseClass;
-							}
-						}
-					}
-				}
-
-				// append the ResolveAmbiguity step to the step tree
-				ConvertStepTreeToLink(root, firstLeaf, first, last);
-
-				auto current = first;
-				while (current != last)
-				{
-					auto next = GetExecutionStep(current->next);
-					current->next = nullref;
-					next->parent = current;
-					current = next;
-				}
-
-				stepRA->parent = last;
-				last = stepRA;
-#undef TRACE_MAMAGER_PHRASE
 			}
 
 /***********************************************************************
