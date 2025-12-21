@@ -640,6 +640,12 @@ BuildStepListForAmbiguity
 				auto taLast = GetTrace(ta->lastTrace);
 				auto taBranch = GetTrace(ta->branchTrace);
 				auto taMerge = GetTrace(ta->mergeTrace);
+				auto taFirstExec = GetTraceExec(taFirst->traceExecRef);
+				auto taLastExec = GetTraceExec(taLast->traceExecRef);
+				auto taBranchExec = GetTraceExec(taBranch->traceExecRef);
+				auto taMergeExec = GetTraceExec(taMerge->traceExecRef);
+				vint32_t prefixExtra = ta->prefix <= taFirstExec->insLists.countAll;
+				vint32_t postfixExtra = ta->postfix <= taLastExec->insLists.countAll;
 
 				// Find the first nested TraceAmbiguity between taFirst and taBranch
 				{
@@ -688,12 +694,48 @@ BuildStepListForAmbiguity
 					successorId = successor->successors.siblingNext;
 
 					// Execute from taFirst to taBranch
+					if (prefixExtra < 0)
+					{
+						auto steps = BuildStepList(
+							taFirst,
+							ta->prefix,
+							taBranch,
+							taBranchExec->insLists.countAll - 1
+						);
+						AppendStepsAfterList(steps, result);
+					}
 
 					// Execute the branch
+					{
+						auto steps = BuildStepList(
+							successor,
+							(prefixExtra <= 0 ? 0 : prefixExtra),
+							taMerge,
+							(taMergeExec->insLists.countAll - 1 - (postfixExtra <= 0 ? 0 : postfixExtra))
+						);
+						AppendStepsAfterList(steps, result);
+					}
 
-					// Execute from taMerge to taList
+					// Execute from taMerge to taLast
+					if (postfixExtra < 0)
+					{
+						auto steps = BuildStepList(
+							taMerge,
+							0,
+							taLast,
+							-postfixExtra - 1
+						);
+						AppendStepsAfterList(steps, result);
+					}
 
 					// Append RA_BRANCH
+					{
+						auto step = GetExecutionStep(executionSteps.Allocate());
+						step->type = ExecutionType::RA_Branch;
+						step->et_ra.trace = taFirst->allocatedIndex;
+						step->et_ra.type = -1;
+						AppendStepsAfterList({ step,step }, result);
+					}
 				}
 
 				// Append RA_END
@@ -817,6 +859,8 @@ BuildStepList
 					auto taLast = GetTrace(ta->lastTrace);
 					auto taFirstExec = GetTraceExec(taFirst->traceExecRef);
 					auto taLastExec = GetTraceExec(taLast->traceExecRef);
+					vint32_t prefixExtra = ta->prefix <= taFirstExec->insLists.countAll;
+					vint32_t postfixExtra = ta->postfix <= taLastExec->insLists.countAll;
 
 					if (currentTrace->traceExecRef < taFirst->traceExecRef || currentIns < ta->prefix)
 					{
@@ -834,7 +878,7 @@ BuildStepList
 							step->et_i.endTrace = taFirstPrev->allocatedIndex;
 							step->et_i.endIns = taFirstPrevExec->insLists.countAll - 1;
 						}
-						else if (ta->prefix <= taFirstExec->insLists.countAll)
+						else if (prefixExtra <= 0)
 						{
 							step->et_i.endTrace = taFirst->allocatedIndex;
 							step->et_i.endIns = ta->prefix - 1;
@@ -847,7 +891,7 @@ BuildStepList
 						AppendStepsAfterList({ step, step }, result);
 					}
 
-					if (ta->prefix > taFirstExec->insLists.countAll)
+					if (prefixExtra > 0)
 					{
 						// at the moment taFirst should be taBranch
 						// TraceAmbiguity begins at each successors of taBranch, instead of before taBranch
@@ -856,7 +900,7 @@ BuildStepList
 						step->et_i.startTrace = taFirstSuccessor->allocatedIndex;
 						step->et_i.startIns = 0;
 						step->et_i.endTrace = taFirstSuccessor->allocatedIndex;
-						step->et_i.endIns = ta->prefix - taFirstExec->insLists.countAll - 1;
+						step->et_i.endIns = prefixExtra - 1;
 						AppendStepsAfterList({ step, step }, result);
 					}
 
@@ -865,7 +909,7 @@ BuildStepList
 					AppendStepsAfterList(taSteps, result);
 
 					// Step (currentTrace, currentIns) forward to right after TraceAmbiguity
-					if (ta->postfix > taLastExec->insLists.countAll)
+					if (postfixExtra > 0)
 					{
 						// at the moment taLast should be taMerge
 						// TraceAmbiguity ends at each predecessor of taMerge, instead of after taMerge
@@ -873,7 +917,7 @@ BuildStepList
 						auto taLastPredecessorExec = GetTraceExec(taLastPredecessor->traceExecRef);
 						auto step = GetExecutionStep(executionSteps.Allocate());
 						step->et_i.startTrace = taLastPredecessorExec->allocatedIndex;
-						step->et_i.startIns = taFirstExec->insLists.countAll - (ta->postfix - taLastExec->insLists.countAll);
+						step->et_i.startIns = taFirstExec->insLists.countAll - postfixExtra;
 						step->et_i.endTrace = taLastPredecessorExec->allocatedIndex;
 						step->et_i.endIns = taFirstExec->insLists.countAll - 1;
 						AppendStepsAfterList({ step, step }, result);
@@ -895,15 +939,10 @@ BuildStepList
 							currentIns = 0;
 						}
 					}
-					else if (ta->postfix <= taLastExec->insLists.countAll)
-					{
-						currentTrace = taLast;
-						currentIns = taLastExec->insLists.countAll - ta->postfix;
-					}
 					else
 					{
 						currentTrace = taLast;
-						currentIns = 0;
+						currentIns = -(postfixExtra <= 0 ? postfixExtra : 0);
 					}
 				}
 			NO_CRITICAL_TRACE:
