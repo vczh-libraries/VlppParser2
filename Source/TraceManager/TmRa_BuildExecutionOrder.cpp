@@ -361,7 +361,7 @@ BuildStepList
 				}
 			NO_CRITICAL_TRACE:
 
-				if (endIns < 0)
+				if (endIns < 0 && endIns != GetTraceExec(endTrace->traceExecRef)->insLists.countAll - 1)
 				{
 					// The real endTrace is a predecessor of endTrace, but we need to find out which
 					auto realEndTrace = currentTrace;
