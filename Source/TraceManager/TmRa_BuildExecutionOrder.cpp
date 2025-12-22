@@ -510,7 +510,7 @@ BuildStepListForAmbiguity
 								auto nta = guidance->nestedTas->nestedAmbiguities[i];
 								for (auto selection : guidance->nestedTas->branchSelections[nta])
 								{
-									if (selection == successorId)
+									if (selection == successor)
 									{
 										goto SKIP_CURRENT_SUCCESSOR;
 									}

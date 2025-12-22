@@ -21,40 +21,6 @@
 
 ### Progressing
 
-`Test\ParserLog\BuiltIn-Cpp\Trace-1[File_AmbiguousDecl4].txt`
-```
-0..7
-  +----------------------+
-  |                      |
-8..9                     |
-  +----------+           |
-  |          |           |
-10..193   11..192        |
-  +----------+           |
-  |                      |
-179..205              18..204
-  +----------------------+
-  |
-182..184
-```
-
-The current result is
-```
-RA{
-  RA{
-    A::B (::C:: D)(){}
-    A (::B::C D)(){}
-  }
-  A::B (::C:: D)(){}
-  A (::B::C D)(){}
-  (A::B:: C):: D(){}
-}
-```
-
-Candidates are repeated.
-
-Both `TraceAmbiguity` happens between 0..7 and hits `CHECK_FAIL(L"Not Implemented!")`
-
 - [x] Non-ambiguous test cases
 - [x] Ambiguous test cases
 - [x] Split FeatureTest
@@ -66,7 +32,8 @@ Both `TraceAmbiguity` happens between 0..7 and hits `CHECK_FAIL(L"Not Implemente
   - [x] merge prefix in rules
     - 109236 -> 10141 -> 6663 states: `Test\ParserLog\BuiltIn-Workflow\Trace-1[Codegen_WorkflowHints].txt`, meanwhile 6750 in master
   - [x] automatically identify prefix_merge
-- [ ] Built-in parsers: C++
+- [x] Built-in parsers: C++
+  - [ ] Add more comments
 - [ ] build.ps1
 - [ ] Reorganize log utilities for better dependency
 - [ ] Render ambiguity with not only traces but input codes in Trace-3
@@ -150,14 +117,16 @@ Or we are getting this
   - Collect uncovered code again by break points in executator (trace manager).
 - Reconsider in new implementation:
   - Test `SyntaxSymbolManager::PrefixMergeCrossReference_Solve` firmly.
+  - Test `TraceManager::BuildStepListForAmbiguity` with nested ambiguity firmly.
   - Create ambiguity test case caused by only one clause with alternative syntax.
 
 ## Issues (BuiltIn-Cpp)
 
+- Everytime `BuiltInTest_Compiler` seem to update `BuiltInTest_Cpp` with no reason
 - `::a::b::c::*`
   - Ambiguity
-  - It should be invalid, because `::a::b::c` are always parsed as one QualifiedName, instead of being `::a(::b::c::*)` and `::a::b(::c::*)`
-  - Refer to `Priority in left recursive transition`
+  - It should be invalid, because `::a::b::c` are always parsed as one QualifiedName, instead of being `::a(::b::c::*)` and `::a::b(::c::*)` and `(::a::b) ::c::*`
+  - Refer to `Priority in left recursive transition` (?)
 - Compiler crashes:
   - `_DeclOrExpr ::= !_BExpr ::= {_DeclaratorKeyword:keywords} _TypeBeforeDeclarator:type _DeclaratorRequiredName:declarator as DeclaratorType ;`
   - `workingSwitchValues` is nullptr in `ExpandClauseVisitor::FixRuleName`
