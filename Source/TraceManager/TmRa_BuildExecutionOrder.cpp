@@ -505,9 +505,20 @@ BuildStepListForAmbiguity
 						if (guidance)
 						{
 							// Skip visited branches
-							CHECK_FAIL(L"Not Implemented!");
+							for (vint i = guidance->nextAmbiguityIndex; i < guidance->nestedTas->nestedAmbiguities.Count(); i++)
+							{
+								auto nta = guidance->nestedTas->nestedAmbiguities[i];
+								for (auto selection : guidance->nestedTas->branchSelections[nta])
+								{
+									if (selection == successorId)
+									{
+										goto SKIP_CURRENT_SUCCESSOR;
+									}
+								}
+							}
 						}
 						BuildStepLeafsForAmbiguityBranch(ta, sharedSteps.last, successor, nullptr, branchSteps);
+					SKIP_CURRENT_SUCCESSOR:;
 					}
 
 					AppendStepsAfterList(ConvertStepTreeToList(branchSteps), result);
