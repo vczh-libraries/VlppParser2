@@ -376,8 +376,15 @@ BuildStepListForAmbiguity
 ***********************************************************************/
 
 			ExecutionStepLinkedList TraceManager::BuildStepListForAmbiguity(
-				TraceAmbiguity* ta)
+				TraceAmbiguity* ta,
+				BSLA_Guidance* guidance)
 			{
+				BSLA_Guidance DoNotUse_Guidance;
+				if (guidance && guidance->nextAmbiguityIndex == guidance->nestedTas->nestedAmbiguities.Count())
+				{
+					guidance = nullptr;
+				}
+
 				ExecutionStepLinkedList result;
 				auto taFirst = GetTrace(ta->firstTrace);
 				auto taBranch = GetTrace(ta->branchTrace);
@@ -386,9 +393,9 @@ BuildStepListForAmbiguity
 				vint32_t prefixExtra = ta->prefix - taFirstExec->insLists.countAll;
 
 				// Find the first nested TraceAmbiguity between taFirst and taBranch
-				auto nestedTas = CollectNestedAmbiguities(ta);
-				if (nestedTas)
+				if (!guidance && (DoNotUse_Guidance.nestedTas = CollectNestedAmbiguities(ta)))
 				{
+					guidance = &DoNotUse_Guidance;
 					CHECK_FAIL(L"Not Implemented!");
 				}
 
@@ -624,7 +631,7 @@ BuildStepList
 					}
 
 					// Execute the next TraceAmbiguity
-					auto taSteps = BuildStepListForAmbiguity(ta);
+					auto taSteps = BuildStepListForAmbiguity(ta, nullptr);
 					AppendStepsAfterList(taSteps, result);
 
 					// Step (currentTrace, currentIns) forward to right after TraceAmbiguity

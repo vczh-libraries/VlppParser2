@@ -715,6 +715,8 @@ TraceManager
 
 				struct BSLA_Guidance
 				{
+					Ptr<NestedAmbiguityInfo>							nestedTas;
+					vint												nextAmbiguityIndex = 0;
 				};
 
 				void										AppendStepsAfterList(ExecutionStepLinkedList steps, ExecutionStepLinkedList& current);
@@ -730,7 +732,8 @@ TraceManager
 																Trace* ambiguityBranchStartTrace,
 																ExecutionStepTree& ambiguityStepTree);
 				ExecutionStepLinkedList						BuildStepListForAmbiguity(
-																TraceAmbiguity* ta);
+																TraceAmbiguity* ta,
+																BSLA_Guidance* guidance);
 				ExecutionStepLinkedList						BuildStepListUntilFirstRawBranchTrace(
 																Trace* startTrace,
 																vint32_t startIns,
