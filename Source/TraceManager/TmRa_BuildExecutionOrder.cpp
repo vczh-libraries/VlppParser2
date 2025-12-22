@@ -446,10 +446,17 @@ BuildStepListForAmbiguity
 				vint32_t prefixExtra = ta->prefix - taFirstExec->insLists.countAll;
 
 				// Find the first nested TraceAmbiguity between taFirst and taBranch
+				bool currentAmbiguityIsNested = guidance != nullptr;
 				if (!guidance && (DoNotUse_BSLA_Guidance.nestedTas = CollectNestedAmbiguities(ta)))
 				{
 					guidance = &DoNotUse_BSLA_Guidance;
 				}
+
+				if (currentAmbiguityIsNested)
+				{
+					guidance->nextAmbiguityIndex++;
+				}
+				bool nestedAmbiguityAvailable = guidance && guidance->nextAmbiguityIndex < guidance->nestedTas->nestedAmbiguities.Count();
 
 				// Append RA_BEGIN
 				{
@@ -463,11 +470,9 @@ BuildStepListForAmbiguity
 				{
 					ExecutionStepTree branchSteps;
 					// If there is a nested TraceAmbiguity, Execute it first
-					if (guidance)
+					if (nestedAmbiguityAvailable)
 					{
-						guidance->nextAmbiguityIndex++;
 						BuildStepLeafsForNestedAmbiguityBranch(ta, nullptr, guidance, branchSteps);
-						guidance->nextAmbiguityIndex--;
 					}
 
 					ExecutionStepLinkedList sharedSteps;
@@ -476,11 +481,9 @@ BuildStepListForAmbiguity
 					{
 						if (guidance)
 						{
-							auto nta = guidance->nestedTas->nestedAmbiguities[guidance->nextAmbiguityIndex];
 							DoNotUse_BSL_Guidance = {
-								&guidance->nestedTas->branchSelections[nta],
+								(currentAmbiguityIsNested ? &guidance->nestedTas->branchSelections[ta] : nullptr),
 								&guidance->nestedTas->nestedAmbiguities,
-								guidance->nextAmbiguityIndex
 							};
 						}
 						sharedSteps = BuildStepList(
@@ -508,6 +511,11 @@ BuildStepListForAmbiguity
 					}
 
 					AppendStepsAfterList(ConvertStepTreeToList(branchSteps), result);
+				}
+
+				if (currentAmbiguityIsNested)
+				{
+					guidance->nextAmbiguityIndex--;
 				}
 
 				// Append RA_END
@@ -698,12 +706,12 @@ BuildStepList
 					// treat it as an ordinary trace
 					auto criticalTraceExec = GetTraceExec(criticalTrace->traceExecRef);
 					bool ignoreCriticalAmgiguity = false;
-					if (guidance && criticalTraceExec->ambiguityBegins != nullref)
+					if (guidance && guidance->ambiguitiesToSkip && criticalTraceExec->ambiguityBegins != nullref)
 					{
 						auto ta = GetTraceAmbiguity(GetTraceAmbiguityLink(criticalTraceExec->ambiguityBegins)->ambiguity);
-						for (vint i = guidance->ambiguitiesToSkipStart; i < guidance->ambiguitiesToSkip->Count(); i++)
+						for (auto nestedTa : *guidance->ambiguitiesToSkip)
 						{
-							if (guidance->ambiguitiesToSkip->Get(i) == ta)
+							if (nestedTa == ta)
 							{
 								ignoreCriticalAmgiguity = true;
 								break;
@@ -720,7 +728,7 @@ BuildStepList
 						Trace* specifieidBranchSelection = nullptr;
 						if (criticalTrace->successors.first != criticalTrace->successors.last)
 						{
-							if (guidance)
+							if (guidance && guidance->branchSelections)
 							{
 								for (auto selection : *guidance->branchSelections)
 								{

@@ -709,7 +709,6 @@ TraceManager
 				{
 					const collections::List<Trace*>*					branchSelections = nullptr;
 					const collections::List<TraceAmbiguity*>*			ambiguitiesToSkip = nullptr;
-					vint												ambiguitiesToSkipStart = -1 ;
 
 				};
 
