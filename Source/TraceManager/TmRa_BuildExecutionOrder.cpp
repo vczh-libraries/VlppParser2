@@ -405,10 +405,11 @@ BuildStepLeafsForNestedAmbiguityBranch
 				Trace* currentTrace = ntaFirst;
 				vint32_t currentIns = 0;
 				{
-					auto steps= BuildStepListThroughAmbiguity(
+					auto steps = BuildStepListThroughAmbiguity(
 						currentTrace,
 						currentIns,
-						nta
+						nta,
+						guidance
 					);
 					AppendStepsAfterList(steps, stepsBeforeBranch);
 				}
@@ -436,10 +437,6 @@ BuildStepListForAmbiguity
 			{
 				BSLA_Guidance DoNotUse_BSLA_Guidance;
 				BSL_Guidance DoNotUse_BSL_Guidance;
-				if (guidance && guidance->nextAmbiguityIndex == guidance->nestedTas->nestedAmbiguities.Count())
-				{
-					guidance = nullptr;
-				}
 
 				ExecutionStepLinkedList result;
 				auto taFirst = GetTrace(ta->firstTrace);
@@ -468,7 +465,9 @@ BuildStepListForAmbiguity
 					// If there is a nested TraceAmbiguity, Execute it first
 					if (guidance)
 					{
+						guidance->nextAmbiguityIndex++;
 						BuildStepLeafsForNestedAmbiguityBranch(ta, nullptr, guidance, branchSteps);
+						guidance->nextAmbiguityIndex--;
 					}
 
 					ExecutionStepLinkedList sharedSteps;
@@ -481,7 +480,7 @@ BuildStepListForAmbiguity
 							DoNotUse_BSL_Guidance = {
 								&guidance->nestedTas->branchSelections[nta],
 								&guidance->nestedTas->nestedAmbiguities,
-								guidance->nextAmbiguityIndex + 1
+								guidance->nextAmbiguityIndex
 							};
 						}
 						sharedSteps = BuildStepList(
@@ -527,7 +526,8 @@ BuildStepListThroughAmbiguity
 			ExecutionStepLinkedList TraceManager::BuildStepListThroughAmbiguity(
 				Trace*& currentTrace,
 				vint32_t& currentIns,
-				TraceAmbiguity* ta
+				TraceAmbiguity* ta,
+				BSLA_Guidance* guidance
 			)
 			{
 				ExecutionStepLinkedList result;
@@ -582,7 +582,7 @@ BuildStepListThroughAmbiguity
 				}
 
 				// Execute the next TraceAmbiguity
-				auto taSteps = BuildStepListForAmbiguity(ta, nullptr);
+				auto taSteps = BuildStepListForAmbiguity(ta, guidance);
 				AppendStepsAfterList(taSteps, result);
 
 				// Step (currentTrace, currentIns) forward to right after TraceAmbiguity
@@ -775,7 +775,7 @@ BuildStepList
 
 					// Execute from (currentTrace, currentIns) until the next TraceAmbiguity
 					auto ta = GetTraceAmbiguity(GetTraceAmbiguityLink(criticalTraceExec->ambiguityBegins)->ambiguity);
-					auto steps = BuildStepListThroughAmbiguity(currentTrace, currentIns, ta);
+					auto steps = BuildStepListThroughAmbiguity(currentTrace, currentIns, ta, nullptr);
 					AppendStepsAfterList(steps, result);
 				}
 			NO_CRITICAL_TRACE:

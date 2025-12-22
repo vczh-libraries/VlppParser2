@@ -743,7 +743,8 @@ TraceManager
 				ExecutionStepLinkedList						BuildStepListThroughAmbiguity(
 																Trace*& currentTrace,
 																vint32_t& currentIns,
-																TraceAmbiguity* ta
+																TraceAmbiguity* ta,
+																BSLA_Guidance* guidance
 																);
 				ExecutionStepLinkedList						BuildStepListUntilFirstRawBranchTrace(
 																Trace* startTrace,
