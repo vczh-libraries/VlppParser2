@@ -8,6 +8,7 @@
 #include "../../../Source/Lexer/LexerCppGen.h"
 #include "../../../Source/Syntax/SyntaxCppGen.h"
 #include "../../Source/LogParser.h"
+#include "../../Source/LogTrace.h"
 
 using namespace vl::console;
 
@@ -37,12 +38,20 @@ TEST_FILE
 	parsersToLoad.Add(ParserDef{ L"IfElseSwitch",				L"StatAst",		L"Module" });
 	parsersToLoad.Add(ParserDef{ L"IfElseManual",				L"StatAst",		L"Module" });
 	parsersToLoad.Add(ParserDef{ L"GenericAmbiguity",			L"ExprAst",		L"Module" });
-	parsersToLoad.Add(ParserDef{ L"FeatureTest",				L"FeatureAst",	L"Module" });
+	parsersToLoad.Add(ParserDef{ L"Feature_BO",					L"FeatureAst",	L"Module" });
+	parsersToLoad.Add(ParserDef{ L"Feature_CL",					L"FeatureAst",	L"Module" });
+	parsersToLoad.Add(ParserDef{ L"Feature_ERO",				L"FeatureAst",	L"Module" });
+	parsersToLoad.Add(ParserDef{ L"Feature_FA",					L"FeatureAst",	L"Module" });
+	parsersToLoad.Add(ParserDef{ L"Feature_NOMinus",			L"FeatureAst",	L"Module" });
+	parsersToLoad.Add(ParserDef{ L"Feature_NOPlus",				L"FeatureAst",	L"Module" });
+	parsersToLoad.Add(ParserDef{ L"Feature_NO",					L"FeatureAst",	L"Module" });
+	parsersToLoad.Add(ParserDef{ L"Feature_OptMinus",			L"FeatureAst",	L"Module" });
+	parsersToLoad.Add(ParserDef{ L"Feature_OptPlus",			L"FeatureAst",	L"Module" });
+	parsersToLoad.Add(ParserDef{ L"Feature_Opt",				L"FeatureAst",	L"Module" });
+	parsersToLoad.Add(ParserDef{ L"Feature_Pba",				L"FeatureAst",	L"Module" });
+	parsersToLoad.Add(ParserDef{ L"Feature_Pwa",				L"FeatureAst",	L"Module" });
+	parsersToLoad.Add(ParserDef{ L"Feature_Pwl",				L"FeatureAst",	L"Module" });
 	parsersToLoad.Add(ParserDef{ L"BinaryOp",					L"ExprAst",		L"Module" });
-	parsersToLoad.Add(ParserDef{ L"PrefixMerge1_Lri",			L"TypeOrExpr",	L"Module" });
-	parsersToLoad.Add(ParserDef{ L"PrefixMerge2_LriRequired",	L"TypeOrExpr",	L"Module" });
-	parsersToLoad.Add(ParserDef{ L"PrefixMerge3_LriNested",		L"TypeOrExpr",	L"Module" });
-	parsersToLoad.Add(ParserDef{ L"PrefixMerge4_LriMultiple",	L"TypeOrExpr",	L"Module" });
 	parsersToLoad.Add(ParserDef{ L"PrefixMerge5_Pm",			L"TypeOrExpr",	L"Module" });
 	parsersToLoad.Add(ParserDef{ L"PrefixMerge6_Pm2",			L"TypeOrExpr",	L"Module" });
 	parsersToLoad.Add(ParserDef{ L"PrefixMerge7_PmSwitch",		L"TypeOrExpr",	L"Module" });

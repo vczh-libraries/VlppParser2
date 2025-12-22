@@ -151,6 +151,29 @@ void GenerateParser(
 
 		TEST_CASE(L"CompilerSyntax")
 		{
+			auto logSyntax = [&](vint phase, SyntaxSymbolManager& syntaxManager)
+			{
+				LogSyntaxWithPath(
+					syntaxManager,
+					GetOutputDir(L"ParserGen") / (L"NFA[" + parserName + L"][" + itow(phase) + L"].txt"),
+					[&](vint32_t index) { auto type = output->classIds.Keys()[output->classIds.Values().IndexOf(index)]; return type->Name(); },
+					[&](vint32_t index) { auto prop = output->fieldIds.Keys()[output->fieldIds.Values().IndexOf(index)]; return prop->Parent()->Name() + L"::" + prop->Name(); },
+					[&](vint32_t index) { auto token = lexerManager.Tokens()[lexerManager.TokenOrder()[index]]; return token->displayText == L"" ? token->Name() : L"\"" + token->displayText + L"\""; }
+					);
+			};
+
+			auto logAutomaton = [&](Executable& executable, Metadata& metadata)
+			{
+				LogAutomatonWithPath(
+					dirOutput / (L"Automaton[" + parserName + L"].txt"),
+					executable,
+					metadata,
+					[&](vint32_t index) { auto type = output->classIds.Keys()[output->classIds.Values().IndexOf(index)]; return type->Name(); },
+					[&](vint32_t index) { auto prop = output->fieldIds.Keys()[output->fieldIds.Values().IndexOf(index)]; return prop->Parent()->Name() + L"::" + prop->Name(); },
+					[&](vint32_t index) { auto token = lexerManager.Tokens()[lexerManager.TokenOrder()[index]]; return token->displayText == L"" ? token->Name() : L"\"" + token->displayText + L"\""; }
+					);
+			};
+
 			unittest::UnitTest::PrintMessage(L"CompileSyntax() ...", unittest::UnitTest::MessageKind::Info);
 			auto rewritten = CompileSyntax(astManager, lexerManager, syntaxManager, output, syntaxFiles);
 			for (auto error : global.Errors())
@@ -163,14 +186,17 @@ void GenerateParser(
 				File(dirOutput / (L"SyntaxRewrittenActual[" + parserName + L"].txt")).WriteAllText(formattedActual, true, BomEncoder::Utf8);
 			}
 			TEST_ASSERT(global.Errors().Count() == 0);
+			logSyntax(1, syntaxManager);
 
 			unittest::UnitTest::PrintMessage(L"BuildCompactNFA() ...", unittest::UnitTest::MessageKind::Info);
 			syntaxManager.BuildCompactNFA();
 			TEST_ASSERT(global.Errors().Count() == 0);
+			logSyntax(2, syntaxManager);
 
 			unittest::UnitTest::PrintMessage(L"BuildCrossReferencedNFA() ...", unittest::UnitTest::MessageKind::Info);
 			syntaxManager.BuildCrossReferencedNFA();
 			TEST_ASSERT(global.Errors().Count() == 0);
+			logSyntax(3, syntaxManager);
 
 			unittest::UnitTest::PrintMessage(L"BuildAutomaton() ...", unittest::UnitTest::MessageKind::Info);
 			Executable executable;

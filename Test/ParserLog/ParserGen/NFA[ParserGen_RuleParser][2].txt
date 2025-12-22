@@ -1,0 +1,914 @@
+﻿[0][Cond0] BEGIN 
+[RULE: 0]
+	token: "(" -> [7][Cond0]<! "(" @ !Cond ")" !>
+		+ StackBegin()
+		+ Token(0)
+	token: "!" -> [2][Cond0]< "!" @ Cond0 >
+		+ StackBegin()
+		+ Token(0)
+	token: ID -> [4][Cond0]< ID @ >
+		+ StackBegin()
+		+ Token(0)
+
+[1][Cond0] END [ENDING]
+[RULE: 0]
+
+[2][Cond0]< "!" @ Cond0 >
+[RULE: 0]
+	rule: Cond0 -> [3][Cond0]< "!" Cond0 @ >
+		+ StackSlot(1)
+
+[3][Cond0]< "!" Cond0 @ >
+[RULE: 0]
+	ending -> [1][Cond0] END [ENDING]
+		+ CreateObject(NotCondition)
+		+ Field(NotCondition::condition, 1)
+		+ StackEnd()
+
+[4][Cond0]< ID @ >
+[RULE: 0]
+	ending -> [1][Cond0] END [ENDING]
+		+ CreateObject(RefCondition)
+		+ Field(RefCondition::name, 0)
+		+ StackEnd()
+
+[5][Cond0]<! "(" !Cond ")" @ !>
+[RULE: 0]
+	ending -> [1][Cond0] END [ENDING]
+		+ StackEnd()
+
+[6][Cond0]<! "(" !Cond @ ")" !>
+[RULE: 0]
+	token: ")" -> [5][Cond0]<! "(" !Cond ")" @ !>
+		+ Token(2)
+
+[7][Cond0]<! "(" @ !Cond ")" !>
+[RULE: 0]
+	rule: Cond -> [6][Cond0]<! "(" !Cond @ ")" !>
+
+[8][Cond1] BEGIN 
+[RULE: 1]
+	rule: Cond0 -> [13][Cond1]<! !Cond0 @ !>
+		+ StackBegin()
+
+[9][Cond1] END [ENDING]
+[RULE: 1]
+
+[10][Cond1]< Cond1 "&&" @ Cond0 >
+[RULE: 1]
+	rule: Cond0 -> [11][Cond1]< Cond1 "&&" Cond0 @ >
+		+ StackSlot(2)
+
+[11][Cond1]< Cond1 "&&" Cond0 @ >
+[RULE: 1]
+	ending -> [9][Cond1] END [ENDING]
+		+ CreateObject(AndCondition)
+		+ Field(AndCondition::first, 0)
+		+ Field(AndCondition::second, 2)
+		+ StackEnd()
+	leftrec -> [12][Cond1]< Cond1 @ "&&" Cond0 >
+		+ CreateObject(AndCondition)
+		+ Field(AndCondition::first, 0)
+		+ Field(AndCondition::second, 2)
+		+ StackEnd()
+		+ StackBegin()
+		+ StackSlot(0)
+
+[12][Cond1]< Cond1 @ "&&" Cond0 >
+[RULE: 1]
+	token: "&&" -> [10][Cond1]< Cond1 "&&" @ Cond0 >
+		+ Token(1)
+
+[13][Cond1]<! !Cond0 @ !>
+[RULE: 1]
+	ending -> [9][Cond1] END [ENDING]
+		+ StackEnd()
+	leftrec -> [12][Cond1]< Cond1 @ "&&" Cond0 >
+		+ StackEnd()
+		+ StackBegin()
+		+ StackSlot(0)
+
+[14][Cond2] BEGIN 
+[RULE: 2]
+	rule: Cond1 -> [19][Cond2]<! !Cond1 @ !>
+		+ StackBegin()
+
+[15][Cond2] END [ENDING]
+[RULE: 2]
+
+[16][Cond2]< Cond2 "||" @ Cond1 >
+[RULE: 2]
+	rule: Cond1 -> [17][Cond2]< Cond2 "||" Cond1 @ >
+		+ StackSlot(2)
+
+[17][Cond2]< Cond2 "||" Cond1 @ >
+[RULE: 2]
+	ending -> [15][Cond2] END [ENDING]
+		+ CreateObject(OrCondition)
+		+ Field(OrCondition::first, 0)
+		+ Field(OrCondition::second, 2)
+		+ StackEnd()
+	leftrec -> [18][Cond2]< Cond2 @ "||" Cond1 >
+		+ CreateObject(OrCondition)
+		+ Field(OrCondition::first, 0)
+		+ Field(OrCondition::second, 2)
+		+ StackEnd()
+		+ StackBegin()
+		+ StackSlot(0)
+
+[18][Cond2]< Cond2 @ "||" Cond1 >
+[RULE: 2]
+	token: "||" -> [16][Cond2]< Cond2 "||" @ Cond1 >
+		+ Token(1)
+
+[19][Cond2]<! !Cond1 @ !>
+[RULE: 2]
+	ending -> [15][Cond2] END [ENDING]
+		+ StackEnd()
+	leftrec -> [18][Cond2]< Cond2 @ "||" Cond1 >
+		+ StackEnd()
+		+ StackBegin()
+		+ StackSlot(0)
+
+[20][Cond] BEGIN 
+[RULE: 3]
+	rule: Cond2 -> [22][Cond]<! !Cond2 @ !>
+		+ StackBegin()
+
+[21][Cond] END [ENDING]
+[RULE: 3]
+
+[22][Cond]<! !Cond2 @ !>
+[RULE: 3]
+	ending -> [21][Cond] END [ENDING]
+		+ StackEnd()
+
+[23][SwitchItem] BEGIN 
+[RULE: 4]
+	token: "!" -> [25][SwitchItem]< "!" @ ID >
+		+ StackBegin()
+		+ Token(0)
+	token: ID -> [27][SwitchItem]< ID @ >
+		+ StackBegin()
+		+ Token(0)
+
+[24][SwitchItem] END [ENDING]
+[RULE: 4]
+
+[25][SwitchItem]< "!" @ ID >
+[RULE: 4]
+	token: ID -> [26][SwitchItem]< "!" ID @ >
+		+ Token(1)
+
+[26][SwitchItem]< "!" ID @ >
+[RULE: 4]
+	ending -> [24][SwitchItem] END [ENDING]
+		+ EnumItem(0, 2)
+		+ CreateObject(SwitchItem)
+		+ Field(SwitchItem::name, 1)
+		+ Field(SwitchItem::value, 2)
+		+ StackEnd()
+
+[27][SwitchItem]< ID @ >
+[RULE: 4]
+	ending -> [24][SwitchItem] END [ENDING]
+		+ EnumItem(1, 1)
+		+ CreateObject(SwitchItem)
+		+ Field(SwitchItem::name, 0)
+		+ Field(SwitchItem::value, 1)
+		+ StackEnd()
+
+[28][TestBranch] BEGIN 
+[RULE: 5]
+	rule: Cond -> [33][TestBranch]< Cond @ ":" ( Syntax1 | ";" ) >
+		+ StackBegin()
+		+ StackSlot(0)
+
+[29][TestBranch] END [ENDING]
+[RULE: 5]
+
+[30][TestBranch]< Cond ":" ( Syntax1 @ | ";" ) >
+[RULE: 5]
+	ending -> [29][TestBranch] END [ENDING]
+		+ CreateObject(TestConditionBranch)
+		+ Field(TestConditionBranch::condition, 0)
+		+ Field(TestConditionBranch::syntax, 2)
+		+ StackEnd()
+
+[31][TestBranch]< Cond ":" ( Syntax1 | ";" @ ) >
+[RULE: 5]
+	ending -> [29][TestBranch] END [ENDING]
+		+ CreateObject(TestConditionBranch)
+		+ Field(TestConditionBranch::condition, 0)
+		+ Field(TestConditionBranch::syntax, 2)
+		+ StackEnd()
+
+[32][TestBranch]< Cond ":" @ ( Syntax1 | ";" ) >
+[RULE: 5]
+	token: ";" -> [31][TestBranch]< Cond ":" ( Syntax1 | ";" @ ) >
+		+ Token(3)
+	rule: Syntax1 -> [30][TestBranch]< Cond ":" ( Syntax1 @ | ";" ) >
+		+ StackSlot(2)
+
+[33][TestBranch]< Cond @ ":" ( Syntax1 | ";" ) >
+[RULE: 5]
+	token: ":" -> [32][TestBranch]< Cond ":" @ ( Syntax1 | ";" ) >
+		+ Token(1)
+
+[34][Syntax0] BEGIN 
+[RULE: 6]
+	token: "(" -> [72][Syntax0]<! "(" @ !Syntax ")" !>
+		+ StackBegin()
+		+ Token(0)
+	token: "[" -> [57][Syntax0]< "[" @ Syntax "]" >
+		+ StackBegin()
+		+ Token(0)
+	token: "{" -> [60][Syntax0]< "{" @ Syntax [ ";" Syntax ] "}" >
+		+ StackBegin()
+		+ Token(0)
+	token: "!(" -> [38][Syntax0]< "!(" @ { SwitchItem ; "," } ";" Syntax ")" >
+		+ StackBegin()
+		+ Token(0)
+	token: "?(" -> [52][Syntax0]< "?(" @ TestBranch { "|" TestBranch } ")" >
+		+ StackBegin()
+		+ Token(0)
+	token: "!" -> [36][Syntax0]< "!" @ ID >
+		+ StackBegin()
+		+ Token(0)
+	token: "+" -> [47][Syntax0]< "+" @ "[" Syntax "]" >
+		+ StackBegin()
+		+ Token(0)
+	token: "-" -> [51][Syntax0]< "-" @ "[" Syntax "]" >
+		+ StackBegin()
+		+ Token(0)
+	token: ID -> [65][Syntax0]< ( ID @ | STRING | CONDITIONAL_LITERAL ) [ ":" ID ] >
+		+ StackBegin()
+		+ Token(0)
+	token: STRING -> [66][Syntax0]< ( ID | STRING @ | CONDITIONAL_LITERAL ) [ ":" ID ] >
+		+ StackBegin()
+		+ Token(2)
+	token: CONDITIONAL_LITERAL -> [69][Syntax0]< ( ID | STRING | CONDITIONAL_LITERAL @ ) [ ":" ID ] >
+		+ StackBegin()
+		+ Token(4)
+
+[35][Syntax0] END [ENDING]
+[RULE: 6]
+
+[36][Syntax0]< "!" @ ID >
+[RULE: 6]
+	token: ID -> [37][Syntax0]< "!" ID @ >
+		+ Token(1)
+
+[37][Syntax0]< "!" ID @ >
+[RULE: 6]
+	ending -> [35][Syntax0] END [ENDING]
+		+ CreateObject(UseSyntax)
+		+ Field(UseSyntax::name, 1)
+		+ StackEnd()
+
+[38][Syntax0]< "!(" @ { SwitchItem ; "," } ";" Syntax ")" >
+[RULE: 6]
+	token: ";" -> [40][Syntax0]< "!(" { SwitchItem ; "," } ";" @ Syntax ")" >
+		+ Token(3)
+	rule: SwitchItem -> [43][Syntax0]< "!(" { SwitchItem @ ; "," } ";" Syntax ")" >
+		+ StackSlot(1)
+
+[39][Syntax0]< "!(" { SwitchItem ; "," @ } ";" Syntax ")" >
+[RULE: 6]
+	rule: SwitchItem -> [43][Syntax0]< "!(" { SwitchItem @ ; "," } ";" Syntax ")" >
+		+ StackSlot(1)
+
+[40][Syntax0]< "!(" { SwitchItem ; "," } ";" @ Syntax ")" >
+[RULE: 6]
+	rule: Syntax -> [42][Syntax0]< "!(" { SwitchItem ; "," } ";" Syntax @ ")" >
+		+ StackSlot(4)
+
+[41][Syntax0]< "!(" { SwitchItem ; "," } ";" Syntax ")" @ >
+[RULE: 6]
+	ending -> [35][Syntax0] END [ENDING]
+		+ CreateObject(PushConditionSyntax)
+		+ Field(PushConditionSyntax::switches, 1)
+		+ Field(PushConditionSyntax::syntax, 4)
+		+ StackEnd()
+
+[42][Syntax0]< "!(" { SwitchItem ; "," } ";" Syntax @ ")" >
+[RULE: 6]
+	token: ")" -> [41][Syntax0]< "!(" { SwitchItem ; "," } ";" Syntax ")" @ >
+		+ Token(5)
+
+[43][Syntax0]< "!(" { SwitchItem @ ; "," } ";" Syntax ")" >
+[RULE: 6]
+	token: "," -> [39][Syntax0]< "!(" { SwitchItem ; "," @ } ";" Syntax ")" >
+		+ Token(2)
+	token: ";" -> [40][Syntax0]< "!(" { SwitchItem ; "," } ";" @ Syntax ")" >
+		+ Token(3)
+
+[44][Syntax0]< "+" "[" @ Syntax "]" >
+[RULE: 6]
+	rule: Syntax -> [46][Syntax0]< "+" "[" Syntax @ "]" >
+		+ StackSlot(2)
+
+[45][Syntax0]< "+" "[" Syntax "]" @ >
+[RULE: 6]
+	ending -> [35][Syntax0] END [ENDING]
+		+ EnumItem(1, 4)
+		+ CreateObject(OptionalSyntax)
+		+ Field(OptionalSyntax::syntax, 2)
+		+ Field(OptionalSyntax::priority, 4)
+		+ StackEnd()
+
+[46][Syntax0]< "+" "[" Syntax @ "]" >
+[RULE: 6]
+	token: "]" -> [45][Syntax0]< "+" "[" Syntax "]" @ >
+		+ Token(3)
+
+[47][Syntax0]< "+" @ "[" Syntax "]" >
+[RULE: 6]
+	token: "[" -> [44][Syntax0]< "+" "[" @ Syntax "]" >
+		+ Token(1)
+
+[48][Syntax0]< "-" "[" @ Syntax "]" >
+[RULE: 6]
+	rule: Syntax -> [50][Syntax0]< "-" "[" Syntax @ "]" >
+		+ StackSlot(2)
+
+[49][Syntax0]< "-" "[" Syntax "]" @ >
+[RULE: 6]
+	ending -> [35][Syntax0] END [ENDING]
+		+ EnumItem(2, 4)
+		+ CreateObject(OptionalSyntax)
+		+ Field(OptionalSyntax::syntax, 2)
+		+ Field(OptionalSyntax::priority, 4)
+		+ StackEnd()
+
+[50][Syntax0]< "-" "[" Syntax @ "]" >
+[RULE: 6]
+	token: "]" -> [49][Syntax0]< "-" "[" Syntax "]" @ >
+		+ Token(3)
+
+[51][Syntax0]< "-" @ "[" Syntax "]" >
+[RULE: 6]
+	token: "[" -> [48][Syntax0]< "-" "[" @ Syntax "]" >
+		+ Token(1)
+
+[52][Syntax0]< "?(" @ TestBranch { "|" TestBranch } ")" >
+[RULE: 6]
+	rule: TestBranch -> [53][Syntax0]< "?(" TestBranch @ { "|" TestBranch } ")" >
+		+ StackSlot(1)
+
+[53][Syntax0]< "?(" TestBranch @ { "|" TestBranch } ")" >
+[RULE: 6]
+	token: ")" -> [56][Syntax0]< "?(" TestBranch { "|" TestBranch } ")" @ >
+		+ Token(4)
+	token: "|" -> [54][Syntax0]< "?(" TestBranch { "|" @ TestBranch } ")" >
+		+ Token(2)
+
+[54][Syntax0]< "?(" TestBranch { "|" @ TestBranch } ")" >
+[RULE: 6]
+	rule: TestBranch -> [55][Syntax0]< "?(" TestBranch { "|" TestBranch @ } ")" >
+		+ StackSlot(3)
+
+[55][Syntax0]< "?(" TestBranch { "|" TestBranch @ } ")" >
+[RULE: 6]
+	token: ")" -> [56][Syntax0]< "?(" TestBranch { "|" TestBranch } ")" @ >
+		+ Token(4)
+	token: "|" -> [54][Syntax0]< "?(" TestBranch { "|" @ TestBranch } ")" >
+		+ Token(2)
+
+[56][Syntax0]< "?(" TestBranch { "|" TestBranch } ")" @ >
+[RULE: 6]
+	ending -> [35][Syntax0] END [ENDING]
+		+ CreateObject(TestConditionSyntax)
+		+ Field(TestConditionSyntax::branches, 1)
+		+ Field(TestConditionSyntax::branches, 3)
+		+ StackEnd()
+
+[57][Syntax0]< "[" @ Syntax "]" >
+[RULE: 6]
+	rule: Syntax -> [59][Syntax0]< "[" Syntax @ "]" >
+		+ StackSlot(1)
+
+[58][Syntax0]< "[" Syntax "]" @ >
+[RULE: 6]
+	ending -> [35][Syntax0] END [ENDING]
+		+ EnumItem(0, 3)
+		+ CreateObject(OptionalSyntax)
+		+ Field(OptionalSyntax::syntax, 1)
+		+ Field(OptionalSyntax::priority, 3)
+		+ StackEnd()
+
+[59][Syntax0]< "[" Syntax @ "]" >
+[RULE: 6]
+	token: "]" -> [58][Syntax0]< "[" Syntax "]" @ >
+		+ Token(2)
+
+[60][Syntax0]< "{" @ Syntax [ ";" Syntax ] "}" >
+[RULE: 6]
+	rule: Syntax -> [61][Syntax0]< "{" Syntax @ [ ";" Syntax ] "}" >
+		+ StackSlot(1)
+
+[61][Syntax0]< "{" Syntax @ [ ";" Syntax ] "}" >
+[RULE: 6]
+	token: "}" -> [64][Syntax0]< "{" Syntax [ ";" Syntax ] "}" @ >
+		+ Token(4)
+	token: ";" -> [62][Syntax0]< "{" Syntax [ ";" @ Syntax ] "}" >
+		+ Token(2)
+
+[62][Syntax0]< "{" Syntax [ ";" @ Syntax ] "}" >
+[RULE: 6]
+	rule: Syntax -> [63][Syntax0]< "{" Syntax [ ";" Syntax @ ] "}" >
+		+ StackSlot(3)
+
+[63][Syntax0]< "{" Syntax [ ";" Syntax @ ] "}" >
+[RULE: 6]
+	token: "}" -> [64][Syntax0]< "{" Syntax [ ";" Syntax ] "}" @ >
+		+ Token(4)
+
+[64][Syntax0]< "{" Syntax [ ";" Syntax ] "}" @ >
+[RULE: 6]
+	ending -> [35][Syntax0] END [ENDING]
+		+ CreateObject(LoopSyntax)
+		+ Field(LoopSyntax::syntax, 1)
+		+ Field(LoopSyntax::delimiter, 3)
+		+ StackEnd()
+
+[65][Syntax0]< ( ID @ | STRING | CONDITIONAL_LITERAL ) [ ":" ID ] >
+[RULE: 6]
+	ending -> [35][Syntax0] END [ENDING]
+		+ EnumItem(0, 1)
+		+ CreateObject(RefSyntax)
+		+ Field(RefSyntax::literal, 0)
+		+ Field(RefSyntax::refType, 1)
+		+ Field(RefSyntax::literal, 2)
+		+ Field(RefSyntax::refType, 3)
+		+ Field(RefSyntax::literal, 4)
+		+ Field(RefSyntax::refType, 5)
+		+ Field(RefSyntax::field, 7)
+		+ StackEnd()
+	token: ":" -> [67][Syntax0]< ( ID | STRING | CONDITIONAL_LITERAL ) [ ":" @ ID ] >
+		+ EnumItem(0, 1)
+		+ Token(6)
+
+[66][Syntax0]< ( ID | STRING @ | CONDITIONAL_LITERAL ) [ ":" ID ] >
+[RULE: 6]
+	ending -> [35][Syntax0] END [ENDING]
+		+ EnumItem(1, 3)
+		+ CreateObject(RefSyntax)
+		+ Field(RefSyntax::literal, 0)
+		+ Field(RefSyntax::refType, 1)
+		+ Field(RefSyntax::literal, 2)
+		+ Field(RefSyntax::refType, 3)
+		+ Field(RefSyntax::literal, 4)
+		+ Field(RefSyntax::refType, 5)
+		+ Field(RefSyntax::field, 7)
+		+ StackEnd()
+	token: ":" -> [67][Syntax0]< ( ID | STRING | CONDITIONAL_LITERAL ) [ ":" @ ID ] >
+		+ EnumItem(1, 3)
+		+ Token(6)
+
+[67][Syntax0]< ( ID | STRING | CONDITIONAL_LITERAL ) [ ":" @ ID ] >
+[RULE: 6]
+	token: ID -> [68][Syntax0]< ( ID | STRING | CONDITIONAL_LITERAL ) [ ":" ID @ ] >
+		+ Token(7)
+
+[68][Syntax0]< ( ID | STRING | CONDITIONAL_LITERAL ) [ ":" ID @ ] >
+[RULE: 6]
+	ending -> [35][Syntax0] END [ENDING]
+		+ CreateObject(RefSyntax)
+		+ Field(RefSyntax::literal, 0)
+		+ Field(RefSyntax::refType, 1)
+		+ Field(RefSyntax::literal, 2)
+		+ Field(RefSyntax::refType, 3)
+		+ Field(RefSyntax::literal, 4)
+		+ Field(RefSyntax::refType, 5)
+		+ Field(RefSyntax::field, 7)
+		+ StackEnd()
+
+[69][Syntax0]< ( ID | STRING | CONDITIONAL_LITERAL @ ) [ ":" ID ] >
+[RULE: 6]
+	ending -> [35][Syntax0] END [ENDING]
+		+ EnumItem(2, 5)
+		+ CreateObject(RefSyntax)
+		+ Field(RefSyntax::literal, 0)
+		+ Field(RefSyntax::refType, 1)
+		+ Field(RefSyntax::literal, 2)
+		+ Field(RefSyntax::refType, 3)
+		+ Field(RefSyntax::literal, 4)
+		+ Field(RefSyntax::refType, 5)
+		+ Field(RefSyntax::field, 7)
+		+ StackEnd()
+	token: ":" -> [67][Syntax0]< ( ID | STRING | CONDITIONAL_LITERAL ) [ ":" @ ID ] >
+		+ EnumItem(2, 5)
+		+ Token(6)
+
+[70][Syntax0]<! "(" !Syntax ")" @ !>
+[RULE: 6]
+	ending -> [35][Syntax0] END [ENDING]
+		+ StackEnd()
+
+[71][Syntax0]<! "(" !Syntax @ ")" !>
+[RULE: 6]
+	token: ")" -> [70][Syntax0]<! "(" !Syntax ")" @ !>
+		+ Token(2)
+
+[72][Syntax0]<! "(" @ !Syntax ")" !>
+[RULE: 6]
+	rule: Syntax -> [71][Syntax0]<! "(" !Syntax @ ")" !>
+
+[73][Syntax1] BEGIN 
+[RULE: 7]
+	rule: Syntax0 -> [77][Syntax1]<! !Syntax0 @ !>
+		+ StackBegin()
+
+[74][Syntax1] END [ENDING]
+[RULE: 7]
+
+[75][Syntax1]< Syntax1 @ Syntax0 >
+[RULE: 7]
+	rule: Syntax0 -> [76][Syntax1]< Syntax1 Syntax0 @ >
+		+ StackSlot(1)
+
+[76][Syntax1]< Syntax1 Syntax0 @ >
+[RULE: 7]
+	ending -> [74][Syntax1] END [ENDING]
+		+ CreateObject(SequenceSyntax)
+		+ Field(SequenceSyntax::first, 0)
+		+ Field(SequenceSyntax::second, 1)
+		+ StackEnd()
+	leftrec -> [75][Syntax1]< Syntax1 @ Syntax0 >
+		+ CreateObject(SequenceSyntax)
+		+ Field(SequenceSyntax::first, 0)
+		+ Field(SequenceSyntax::second, 1)
+		+ StackEnd()
+		+ StackBegin()
+		+ StackSlot(0)
+
+[77][Syntax1]<! !Syntax0 @ !>
+[RULE: 7]
+	ending -> [74][Syntax1] END [ENDING]
+		+ StackEnd()
+	leftrec -> [75][Syntax1]< Syntax1 @ Syntax0 >
+		+ StackEnd()
+		+ StackBegin()
+		+ StackSlot(0)
+
+[78][Syntax2] BEGIN 
+[RULE: 8]
+	rule: Syntax1 -> [83][Syntax2]<! !Syntax1 @ !>
+		+ StackBegin()
+
+[79][Syntax2] END [ENDING]
+[RULE: 8]
+
+[80][Syntax2]< Syntax2 "|" @ Syntax1 >
+[RULE: 8]
+	rule: Syntax1 -> [81][Syntax2]< Syntax2 "|" Syntax1 @ >
+		+ StackSlot(2)
+
+[81][Syntax2]< Syntax2 "|" Syntax1 @ >
+[RULE: 8]
+	ending -> [79][Syntax2] END [ENDING]
+		+ CreateObject(AlternativeSyntax)
+		+ Field(AlternativeSyntax::first, 0)
+		+ Field(AlternativeSyntax::second, 2)
+		+ StackEnd()
+	leftrec -> [82][Syntax2]< Syntax2 @ "|" Syntax1 >
+		+ CreateObject(AlternativeSyntax)
+		+ Field(AlternativeSyntax::first, 0)
+		+ Field(AlternativeSyntax::second, 2)
+		+ StackEnd()
+		+ StackBegin()
+		+ StackSlot(0)
+
+[82][Syntax2]< Syntax2 @ "|" Syntax1 >
+[RULE: 8]
+	token: "|" -> [80][Syntax2]< Syntax2 "|" @ Syntax1 >
+		+ Token(1)
+
+[83][Syntax2]<! !Syntax1 @ !>
+[RULE: 8]
+	ending -> [79][Syntax2] END [ENDING]
+		+ StackEnd()
+	leftrec -> [82][Syntax2]< Syntax2 @ "|" Syntax1 >
+		+ StackEnd()
+		+ StackBegin()
+		+ StackSlot(0)
+
+[84][Syntax] BEGIN 
+[RULE: 9]
+	rule: Syntax2 -> [86][Syntax]<! !Syntax2 @ !>
+		+ StackBegin()
+
+[85][Syntax] END [ENDING]
+[RULE: 9]
+
+[86][Syntax]<! !Syntax2 @ !>
+[RULE: 9]
+	ending -> [85][Syntax] END [ENDING]
+		+ StackEnd()
+
+[87][Assignment] BEGIN 
+[RULE: 10]
+	token: ID -> [92][Assignment]< ID @ ( "=" | "?=" ) ID >
+		+ StackBegin()
+		+ Token(0)
+
+[88][Assignment] END [ENDING]
+[RULE: 10]
+
+[89][Assignment]< ID ( "=" @ | "?=" ) ID >
+[RULE: 10]
+	token: ID -> [90][Assignment]< ID ( "=" | "?=" ) ID @ >
+		+ EnumItem(0, 2)
+		+ Token(5)
+
+[90][Assignment]< ID ( "=" | "?=" ) ID @ >
+[RULE: 10]
+	ending -> [88][Assignment] END [ENDING]
+		+ CreateObject(Assignment)
+		+ Field(Assignment::field, 0)
+		+ Field(Assignment::type, 2)
+		+ Field(Assignment::type, 4)
+		+ Field(Assignment::value, 5)
+		+ StackEnd()
+
+[91][Assignment]< ID ( "=" | "?=" @ ) ID >
+[RULE: 10]
+	token: ID -> [90][Assignment]< ID ( "=" | "?=" ) ID @ >
+		+ EnumItem(1, 4)
+		+ Token(5)
+
+[92][Assignment]< ID @ ( "=" | "?=" ) ID >
+[RULE: 10]
+	token: "=" -> [89][Assignment]< ID ( "=" @ | "?=" ) ID >
+		+ Token(1)
+	token: "?=" -> [91][Assignment]< ID ( "=" | "?=" @ ) ID >
+		+ Token(3)
+
+[93][Clause] BEGIN 
+[RULE: 11]
+	rule: Syntax -> [111][Clause]{{< Syntax @ "as" "partial" ID [ "{" { Assignment ; "," } "}" ] > ; < Syntax @ "as" ID [ "{" { Assignment ; "," } "}" ] > ; < Syntax @ [ "{" { Assignment ; "," } "}" ] >}}
+		+ StackBegin()
+		+ StackSlot(0)
+
+[94][Clause] END [ENDING]
+[RULE: 11]
+
+[95][Clause]< Syntax "as" "partial" @ ID [ "{" { Assignment ; "," } "}" ] >
+[RULE: 11]
+	token: ID -> [96][Clause]< Syntax "as" "partial" ID @ [ "{" { Assignment ; "," } "}" ] >
+		+ Token(3)
+
+[96][Clause]< Syntax "as" "partial" ID @ [ "{" { Assignment ; "," } "}" ] >
+[RULE: 11]
+	ending -> [94][Clause] END [ENDING]
+		+ CreateObject(PartialClause)
+		+ Field(PartialClause::syntax, 0)
+		+ Field(PartialClause::type, 3)
+		+ Field(PartialClause::assignments, 5)
+		+ StackEnd()
+	token: "{" -> [97][Clause]< Syntax "as" "partial" ID [ "{" @ { Assignment ; "," } "}" ] >
+		+ Token(4)
+
+[97][Clause]< Syntax "as" "partial" ID [ "{" @ { Assignment ; "," } "}" ] >
+[RULE: 11]
+	token: "}" -> [99][Clause]< Syntax "as" "partial" ID [ "{" { Assignment ; "," } "}" @ ] >
+		+ Token(7)
+	rule: Assignment -> [100][Clause]< Syntax "as" "partial" ID [ "{" { Assignment @ ; "," } "}" ] >
+		+ StackSlot(5)
+
+[98][Clause]< Syntax "as" "partial" ID [ "{" { Assignment ; "," @ } "}" ] >
+[RULE: 11]
+	rule: Assignment -> [100][Clause]< Syntax "as" "partial" ID [ "{" { Assignment @ ; "," } "}" ] >
+		+ StackSlot(5)
+
+[99][Clause]< Syntax "as" "partial" ID [ "{" { Assignment ; "," } "}" @ ] >
+[RULE: 11]
+	ending -> [94][Clause] END [ENDING]
+		+ CreateObject(PartialClause)
+		+ Field(PartialClause::syntax, 0)
+		+ Field(PartialClause::type, 3)
+		+ Field(PartialClause::assignments, 5)
+		+ StackEnd()
+
+[100][Clause]< Syntax "as" "partial" ID [ "{" { Assignment @ ; "," } "}" ] >
+[RULE: 11]
+	token: "}" -> [99][Clause]< Syntax "as" "partial" ID [ "{" { Assignment ; "," } "}" @ ] >
+		+ Token(7)
+	token: "," -> [98][Clause]< Syntax "as" "partial" ID [ "{" { Assignment ; "," @ } "}" ] >
+		+ Token(6)
+
+[101][Clause]< Syntax "as" ID @ [ "{" { Assignment ; "," } "}" ] >
+[RULE: 11]
+	ending -> [94][Clause] END [ENDING]
+		+ CreateObject(CreateClause)
+		+ Field(CreateClause::syntax, 0)
+		+ Field(CreateClause::type, 2)
+		+ Field(CreateClause::assignments, 4)
+		+ StackEnd()
+	token: "{" -> [102][Clause]< Syntax "as" ID [ "{" @ { Assignment ; "," } "}" ] >
+		+ Token(3)
+
+[102][Clause]< Syntax "as" ID [ "{" @ { Assignment ; "," } "}" ] >
+[RULE: 11]
+	token: "}" -> [104][Clause]< Syntax "as" ID [ "{" { Assignment ; "," } "}" @ ] >
+		+ Token(6)
+	rule: Assignment -> [105][Clause]< Syntax "as" ID [ "{" { Assignment @ ; "," } "}" ] >
+		+ StackSlot(4)
+
+[103][Clause]< Syntax "as" ID [ "{" { Assignment ; "," @ } "}" ] >
+[RULE: 11]
+	rule: Assignment -> [105][Clause]< Syntax "as" ID [ "{" { Assignment @ ; "," } "}" ] >
+		+ StackSlot(4)
+
+[104][Clause]< Syntax "as" ID [ "{" { Assignment ; "," } "}" @ ] >
+[RULE: 11]
+	ending -> [94][Clause] END [ENDING]
+		+ CreateObject(CreateClause)
+		+ Field(CreateClause::syntax, 0)
+		+ Field(CreateClause::type, 2)
+		+ Field(CreateClause::assignments, 4)
+		+ StackEnd()
+
+[105][Clause]< Syntax "as" ID [ "{" { Assignment @ ; "," } "}" ] >
+[RULE: 11]
+	token: "}" -> [104][Clause]< Syntax "as" ID [ "{" { Assignment ; "," } "}" @ ] >
+		+ Token(6)
+	token: "," -> [103][Clause]< Syntax "as" ID [ "{" { Assignment ; "," @ } "}" ] >
+		+ Token(5)
+
+[106][Clause]< Syntax [ "{" @ { Assignment ; "," } "}" ] >
+[RULE: 11]
+	token: "}" -> [108][Clause]< Syntax [ "{" { Assignment ; "," } "}" @ ] >
+		+ Token(4)
+	rule: Assignment -> [109][Clause]< Syntax [ "{" { Assignment @ ; "," } "}" ] >
+		+ StackSlot(2)
+
+[107][Clause]< Syntax [ "{" { Assignment ; "," @ } "}" ] >
+[RULE: 11]
+	rule: Assignment -> [109][Clause]< Syntax [ "{" { Assignment @ ; "," } "}" ] >
+		+ StackSlot(2)
+
+[108][Clause]< Syntax [ "{" { Assignment ; "," } "}" @ ] >
+[RULE: 11]
+	ending -> [94][Clause] END [ENDING]
+		+ CreateObject(ReuseClause)
+		+ Field(ReuseClause::syntax, 0)
+		+ Field(ReuseClause::assignments, 2)
+		+ StackEnd()
+
+[109][Clause]< Syntax [ "{" { Assignment @ ; "," } "}" ] >
+[RULE: 11]
+	token: "}" -> [108][Clause]< Syntax [ "{" { Assignment ; "," } "}" @ ] >
+		+ Token(4)
+	token: "," -> [107][Clause]< Syntax [ "{" { Assignment ; "," @ } "}" ] >
+		+ Token(3)
+
+[110][Clause]{{< Syntax "as" @ "partial" ID [ "{" { Assignment ; "," } "}" ] > ; < Syntax "as" @ ID [ "{" { Assignment ; "," } "}" ] >}}
+[RULE: 11]
+	token: "partial" -> [95][Clause]< Syntax "as" "partial" @ ID [ "{" { Assignment ; "," } "}" ] >
+		+ Token(2)
+	token: ID -> [101][Clause]< Syntax "as" ID @ [ "{" { Assignment ; "," } "}" ] >
+		+ Token(2)
+
+[111][Clause]{{< Syntax @ "as" "partial" ID [ "{" { Assignment ; "," } "}" ] > ; < Syntax @ "as" ID [ "{" { Assignment ; "," } "}" ] > ; < Syntax @ [ "{" { Assignment ; "," } "}" ] >}}
+[RULE: 11]
+	ending -> [94][Clause] END [ENDING]
+		+ CreateObject(ReuseClause)
+		+ Field(ReuseClause::syntax, 0)
+		+ Field(ReuseClause::assignments, 2)
+		+ StackEnd()
+	token: "as" -> [110][Clause]{{< Syntax "as" @ "partial" ID [ "{" { Assignment ; "," } "}" ] > ; < Syntax "as" @ ID [ "{" { Assignment ; "," } "}" ] >}}
+		+ Token(1)
+	token: "{" -> [106][Clause]< Syntax [ "{" @ { Assignment ; "," } "}" ] >
+		+ Token(1)
+
+[112][Rule] BEGIN 
+[RULE: 12]
+	token: "@public" -> [114][Rule]< [ "@public" @ ] [ "@parser" ] ID [ ":" ID ] { "::=" Clause } ";" >
+		+ StackBegin()
+		+ Token(0)
+	token: "@parser" -> [115][Rule]< [ "@public" ] [ "@parser" @ ] ID [ ":" ID ] { "::=" Clause } ";" >
+		+ StackBegin()
+		+ Token(1)
+	token: ID -> [116][Rule]< [ "@public" ] [ "@parser" ] ID @ [ ":" ID ] { "::=" Clause } ";" >
+		+ StackBegin()
+		+ Token(2)
+
+[113][Rule] END [ENDING]
+[RULE: 12]
+
+[114][Rule]< [ "@public" @ ] [ "@parser" ] ID [ ":" ID ] { "::=" Clause } ";" >
+[RULE: 12]
+	token: "@parser" -> [115][Rule]< [ "@public" ] [ "@parser" @ ] ID [ ":" ID ] { "::=" Clause } ";" >
+		+ Token(1)
+	token: ID -> [116][Rule]< [ "@public" ] [ "@parser" ] ID @ [ ":" ID ] { "::=" Clause } ";" >
+		+ Token(2)
+
+[115][Rule]< [ "@public" ] [ "@parser" @ ] ID [ ":" ID ] { "::=" Clause } ";" >
+[RULE: 12]
+	token: ID -> [116][Rule]< [ "@public" ] [ "@parser" ] ID @ [ ":" ID ] { "::=" Clause } ";" >
+		+ Token(2)
+
+[116][Rule]< [ "@public" ] [ "@parser" ] ID @ [ ":" ID ] { "::=" Clause } ";" >
+[RULE: 12]
+	token: ":" -> [117][Rule]< [ "@public" ] [ "@parser" ] ID [ ":" @ ID ] { "::=" Clause } ";" >
+		+ Token(3)
+	token: ";" -> [121][Rule]< [ "@public" ] [ "@parser" ] ID [ ":" ID ] { "::=" Clause } ";" @ >
+		+ Token(7)
+	token: "::=" -> [119][Rule]< [ "@public" ] [ "@parser" ] ID [ ":" ID ] { "::=" @ Clause } ";" >
+		+ Token(5)
+
+[117][Rule]< [ "@public" ] [ "@parser" ] ID [ ":" @ ID ] { "::=" Clause } ";" >
+[RULE: 12]
+	token: ID -> [118][Rule]< [ "@public" ] [ "@parser" ] ID [ ":" ID @ ] { "::=" Clause } ";" >
+		+ Token(4)
+
+[118][Rule]< [ "@public" ] [ "@parser" ] ID [ ":" ID @ ] { "::=" Clause } ";" >
+[RULE: 12]
+	token: ";" -> [121][Rule]< [ "@public" ] [ "@parser" ] ID [ ":" ID ] { "::=" Clause } ";" @ >
+		+ Token(7)
+	token: "::=" -> [119][Rule]< [ "@public" ] [ "@parser" ] ID [ ":" ID ] { "::=" @ Clause } ";" >
+		+ Token(5)
+
+[119][Rule]< [ "@public" ] [ "@parser" ] ID [ ":" ID ] { "::=" @ Clause } ";" >
+[RULE: 12]
+	rule: Clause -> [120][Rule]< [ "@public" ] [ "@parser" ] ID [ ":" ID ] { "::=" Clause @ } ";" >
+		+ StackSlot(6)
+
+[120][Rule]< [ "@public" ] [ "@parser" ] ID [ ":" ID ] { "::=" Clause @ } ";" >
+[RULE: 12]
+	token: ";" -> [121][Rule]< [ "@public" ] [ "@parser" ] ID [ ":" ID ] { "::=" Clause } ";" @ >
+		+ Token(7)
+	token: "::=" -> [119][Rule]< [ "@public" ] [ "@parser" ] ID [ ":" ID ] { "::=" @ Clause } ";" >
+		+ Token(5)
+
+[121][Rule]< [ "@public" ] [ "@parser" ] ID [ ":" ID ] { "::=" Clause } ";" @ >
+[RULE: 12]
+	ending -> [113][Rule] END [ENDING]
+		+ CreateObject(Rule)
+		+ Field(Rule::attPublic, 0)
+		+ Field(Rule::attParser, 1)
+		+ Field(Rule::name, 2)
+		+ Field(Rule::type, 4)
+		+ Field(Rule::clauses, 6)
+		+ StackEnd()
+
+[122][File] BEGIN 
+[RULE: 13]
+	token: "switch" -> [124][File]< [ "switch" @ { SwitchItem ; "," } ";" ] Rule { Rule } >
+		+ StackBegin()
+		+ Token(0)
+	rule: Rule -> [127][File]< [ "switch" { SwitchItem ; "," } ";" ] Rule @ { Rule } >
+		+ StackBegin()
+		+ StackSlot(4)
+
+[123][File] END [ENDING]
+[RULE: 13]
+
+[124][File]< [ "switch" @ { SwitchItem ; "," } ";" ] Rule { Rule } >
+[RULE: 13]
+	token: ";" -> [126][File]< [ "switch" { SwitchItem ; "," } ";" @ ] Rule { Rule } >
+		+ Token(3)
+	rule: SwitchItem -> [129][File]< [ "switch" { SwitchItem @ ; "," } ";" ] Rule { Rule } >
+		+ StackSlot(1)
+
+[125][File]< [ "switch" { SwitchItem ; "," @ } ";" ] Rule { Rule } >
+[RULE: 13]
+	rule: SwitchItem -> [129][File]< [ "switch" { SwitchItem @ ; "," } ";" ] Rule { Rule } >
+		+ StackSlot(1)
+
+[126][File]< [ "switch" { SwitchItem ; "," } ";" @ ] Rule { Rule } >
+[RULE: 13]
+	rule: Rule -> [127][File]< [ "switch" { SwitchItem ; "," } ";" ] Rule @ { Rule } >
+		+ StackSlot(4)
+
+[127][File]< [ "switch" { SwitchItem ; "," } ";" ] Rule @ { Rule } >
+[RULE: 13]
+	ending -> [123][File] END [ENDING]
+		+ CreateObject(SyntaxFile)
+		+ Field(SyntaxFile::switches, 1)
+		+ Field(SyntaxFile::rules, 4)
+		+ Field(SyntaxFile::rules, 5)
+		+ StackEnd()
+	rule: Rule -> [128][File]< [ "switch" { SwitchItem ; "," } ";" ] Rule { Rule @ } >
+		+ StackSlot(5)
+
+[128][File]< [ "switch" { SwitchItem ; "," } ";" ] Rule { Rule @ } >
+[RULE: 13]
+	ending -> [123][File] END [ENDING]
+		+ CreateObject(SyntaxFile)
+		+ Field(SyntaxFile::switches, 1)
+		+ Field(SyntaxFile::rules, 4)
+		+ Field(SyntaxFile::rules, 5)
+		+ StackEnd()
+	rule: Rule -> [128][File]< [ "switch" { SwitchItem ; "," } ";" ] Rule { Rule @ } >
+		+ StackSlot(5)
+
+[129][File]< [ "switch" { SwitchItem @ ; "," } ";" ] Rule { Rule } >
+[RULE: 13]
+	token: "," -> [125][File]< [ "switch" { SwitchItem ; "," @ } ";" ] Rule { Rule } >
+		+ Token(2)
+	token: ";" -> [126][File]< [ "switch" { SwitchItem ; "," } ";" @ ] Rule { Rule } >
+		+ Token(3)
+

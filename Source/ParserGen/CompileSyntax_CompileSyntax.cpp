@@ -38,6 +38,19 @@ CompileSyntaxVisitor
 					node->Accept(this);
 					return result;
 				}
+
+				StatePair BuildAssignments(StatePair pair, List<Ptr<GlrAssignment>>& assignments)
+				{
+					for (auto node : assignments)
+					{
+						auto propSymbol = FindPropSymbol(clauseType, node->field.value);
+						auto enumSymbol = dynamic_cast<AstEnumSymbol*>(propSymbol->propSymbol);
+						auto enumItem = (vint32_t)enumSymbol->ItemOrder().IndexOf(node->value.value);
+						auto field = output->fieldIds[propSymbol];
+						pair = automatonBuilder.BuildAssignment(pair, enumItem, field, (node->type == GlrAssignmentType::Weak));
+					}
+					return pair;
+				}
 			public:
 				CompileSyntaxVisitor(
 					VisitorContext& _context,
@@ -90,7 +103,17 @@ CompileSyntaxVisitor
 								auto rule = context.syntaxManager.Rules().Values()[index];
 								if (rule->isPartial)
 								{
-									result = automatonBuilder.BuildPartialRuleSyntax(rule);
+									auto astRule = context.astRules[rule];
+									List<Func<StatePair()>> elements;
+									for (auto clause : astRule->clauses)
+									{
+										auto partialClause = clause.Cast<GlrPartialClause>();
+										elements.Add([this, partialClause]()
+										{
+											return BuildAssignments(Build(partialClause->syntax), partialClause->assignments);
+										});
+									}
+									result = automatonBuilder.BuildAlternativeSyntax(elements);
 								}
 								else if (field == -1)
 								{
@@ -192,19 +215,6 @@ CompileSyntaxVisitor
 				// GlrClause::IVisitor
 				////////////////////////////////////////////////////////////////////////
 
-				StatePair BuildAssignments(StatePair pair, List<Ptr<GlrAssignment>>& assignments)
-				{
-					for (auto node : assignments)
-					{
-						auto propSymbol = FindPropSymbol(clauseType, node->field.value);
-						auto enumSymbol = dynamic_cast<AstEnumSymbol*>(propSymbol->propSymbol);
-						auto enumItem = (vint32_t)enumSymbol->ItemOrder().IndexOf(node->value.value);
-						auto field = output->fieldIds[propSymbol];
-						pair = automatonBuilder.BuildAssignment(pair, enumItem, field, (node->type == GlrAssignmentType::Weak));
-					}
-					return pair;
-				}
-
 				void Visit(GlrCreateClause* node) override
 				{
 					clauseType = context.clauseTypes[node];
@@ -219,13 +229,7 @@ CompileSyntaxVisitor
 
 				void Visit(GlrPartialClause* node) override
 				{
-					clauseType = context.clauseTypes[node];
-					result = automatonBuilder.BuildClause([this, node]()
-					{
-						return automatonBuilder.BuildPartialClause(
-							[this, node]() { return BuildAssignments(Build(node->syntax), node->assignments); }
-							);
-					});
+					// Content of partial clauses are embedded in the caller side
 				}
 
 				void Visit(GlrReuseClause* node) override
@@ -237,101 +241,6 @@ CompileSyntaxVisitor
 							[this, node]() { return BuildAssignments(Build(node->syntax), node->assignments); }
 							);
 					});
-				}
-
-				WString FlagIndexToName(vint32_t flag)
-				{
-					return context.syntaxManager.lrpFlags[flag];
-				}
-
-				void CollectFlagsInOrder(SortedList<vint32_t>& flags, List<Ptr<GlrLeftRecursionPlaceholder>>& placeholders)
-				{
-					CopyFrom(
-						flags,
-						From(placeholders)
-							.Select([this](Ptr<GlrLeftRecursionPlaceholder> flag)
-							{
-								return (vint32_t)context.syntaxManager.lrpFlags.IndexOf(flag->flag.value);
-							})
-							.Distinct()
-						);
-				}
-
-				void Visit(GlrLeftRecursionPlaceholderClause* node) override
-				{
-					SortedList<vint32_t> flags;
-					CollectFlagsInOrder(flags, node->flags);
-
-					result = automatonBuilder.BuildClause([this, &flags]()
-					{
-						return automatonBuilder.BuildLrpClause(
-							flags,
-							{ this,&CompileSyntaxVisitor::FlagIndexToName }
-							);
-					});
-				}
-
-				using StateBuilder = Func<AutomatonBuilder::StatePair()>;
-
-				StateBuilder CompileLriTarget(SortedList<vint32_t>& flags, GlrLeftRecursionInjectClause* lriTarget)
-				{
-					StateBuilder useOrLriSyntax;
-					auto rule = context.syntaxManager.Rules()[lriTarget->rule->literal.value];
-					if (flags.Count() == 0)
-					{
-						useOrLriSyntax = [this, rule]() { return automatonBuilder.BuildUseSyntax(rule); };
-					}
-					else
-					{
-						useOrLriSyntax = [this, rule, &flags]() {
-							return automatonBuilder.BuildLriSyntax(
-								flags,
-								rule,
-								{ this,&CompileSyntaxVisitor::FlagIndexToName }
-								);
-							};
-					}
-
-					if (!lriTarget->continuation)
-					{
-						return useOrLriSyntax;
-					}
-					else
-					{
-						auto cont = lriTarget->continuation;
-						return [this, useOrLriSyntax, cont]()
-						{
-							bool optional = cont->type == GlrLeftRecursionInjectContinuationType::Optional;
-
-							SortedList<vint32_t> flags;
-							CollectFlagsInOrder(flags, cont->flags);
-
-							List<StateBuilder> targetRules;
-							for (auto lriTarget : cont->injectionTargets)
-							{
-								targetRules.Add(CompileLriTarget(flags, lriTarget.Obj()));
-							}
-
-							return automatonBuilder.BuildLriClauseSyntax(
-								useOrLriSyntax,
-								optional,
-								std::move(targetRules));
-						};
-					}
-				}
-
-				void Visit(GlrLeftRecursionInjectClause* node) override
-				{
-					result = automatonBuilder.BuildClause([this, node]()
-					{
-						SortedList<vint32_t> flags;
-						return automatonBuilder.BuildReuseClause(CompileLriTarget(flags, node));
-					});
-				}
-
-				void Visit(GlrPrefixMergeClause* node) override
-				{
-					CHECK_FAIL(L"GlrPrefixMergeClause should have been removed after RewriteSyntax_PrefixMerge()!");
 				}
 			};
 

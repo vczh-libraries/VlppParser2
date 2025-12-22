@@ -1,5 +1,5 @@
 ﻿================ EXECUTION STEPS ================
-[0]: 0@0 - 18@0
+[0]: 0@0 - 21@0
 
 ==================== TRACES =====================
 
@@ -7,157 +7,168 @@
 | [0]: <Start>         |
 | [83][Module] BEGIN   |
 | [AST-INSTRUCTIONS]:  |
-| [SUCCESORS 5-5]: [5] |
+| [SUCCESORS 1-1]: [1] |
 +----------------------+
 [0]
  |
  +
  |
 [0]
-++==========================================================================================================================================================================================++
-|| [5]: {ID} A                                                                                                                                                                              ||
-|| [16][_Name]< ID @ >                                                                                                                                                                      ||
-|| [AST-INSTRUCTIONS]:                                                                                                                                                                      ||
-||   - DelayFieldAssignment()                                                                                                                                                               ||
-||   - DelayFieldAssignment()                                                                                                                                                               ||
-||   - BeginObject(Name)                                                                                                                                                                    ||
-||   + Token()                                                                                                                                                                              ||
-||   + Field(Name::name)                                                                                                                                                                    ||
-|| [RETURN STACK]:                                                                                                                                                                          ||
-||   [3][3][0]: _Name -> [28][_PrimitiveShared]<< !_Name @ >>                                                                                                                               ||
-||   [2][58][0]: _PrimitiveShared -> [91][Module]<< !_PrimitiveShared @ ( lri:(LRI__LongType)->_LongType_LRI_Original ( lri:(LRIP__Expr0__LongType)->_Expr_LRI_Original | lri:<skip> ) ) >> ||
-|| [PREDECESSORS 0-0]: [0]                                                                                                                                                                  ||
-|| [SUCCESORS 6-6]: [6]                                                                                                                                                                     ||
-++==========================================================================================================================================================================================++
+++====================================================================================++
+|| [1]: {ID} A                                                                        ||
+|| [21][_Name]{{< ID @ ( "<" { _GenericArgument ; "," } ">" ) > ; < ID @ >}}          ||
+|| [AST-INSTRUCTIONS]:                                                                ||
+||   + StackBegin()                                                                   ||
+||   + Token(0)                                                                       ||
+|| [RETURN STACK]:                                                                    ||
+||   [1][4][0]: _Name -> [24][_PrimitiveShared]<! !_Name @ !>                         ||
+||   [0][3][0]: _PrimitiveShared -> [85][Module] BEGIN [pm-cr-rule: _PrimitiveShared] ||
+|| [PREDECESSORS 0-0]: [0]                                                            ||
+|| [SUCCESORS 2-2]: [2]                                                               ||
+++====================================================================================++
 |
 +
 |
-+------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------+
-| [6]: <Ending>                                                                                                                                                                            |
-| [28][_PrimitiveShared]<< !_Name @ >>                                                                                                                                                     |
-| [AST-INSTRUCTIONS]:                                                                                                                                                                      |
-|   - EndObject()                                                                                                                                                                          |
-| [RETURN STACK]:                                                                                                                                                                          |
-|   [2][58][0]: _PrimitiveShared -> [91][Module]<< !_PrimitiveShared @ ( lri:(LRI__LongType)->_LongType_LRI_Original ( lri:(LRIP__Expr0__LongType)->_Expr_LRI_Original | lri:<skip> ) ) >> |
-| [PREDECESSORS 5-5]: [5]                                                                                                                                                                  |
-| [SUCCESORS 7-7]: [7]                                                                                                                                                                     |
-+------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------+
++------------------------------------------------------------------------------------+
+| [2]: <Ending>                                                                      |
+| [24][_PrimitiveShared]<! !_Name @ !>                                               |
+| [AST-INSTRUCTIONS]:                                                                |
+|   + CreateObject(Name)                                                             |
+|   + Field(Name::name, 0)                                                           |
+|   + StackEnd()                                                                     |
+|   > StackBegin()                                                                   |
+| [RETURN STACK]:                                                                    |
+|   [0][3][0]: _PrimitiveShared -> [85][Module] BEGIN [pm-cr-rule: _PrimitiveShared] |
+| [PREDECESSORS 1-1]: [1]                                                            |
+| [SUCCESORS 3-3]: [3]                                                               |
++------------------------------------------------------------------------------------+
 |
 +
 |
-+--------------------------------------------------------------------------------------------------------------------------------------------------------+
-| [7]: <Ending>                                                                                                                                          |
-| [91][Module]<< !_PrimitiveShared @ ( lri:(LRI__LongType)->_LongType_LRI_Original ( lri:(LRIP__Expr0__LongType)->_Expr_LRI_Original | lri:<skip> ) ) >> |
-| [AST-INSTRUCTIONS]:                                                                                                                                    |
-|   - ReopenObject()                                                                                                                                     |
-|   - EndObject()                                                                                                                                        |
-|   > ReopenObject()                                                                                                                                     |
-| [PREDECESSORS 6-6]: [6]                                                                                                                                |
-| [SUCCESORS 10-10]: [10]                                                                                                                                |
-+--------------------------------------------------------------------------------------------------------------------------------------------------------+
++---------------------------------------------------+
+| [3]: <Ending>                                     |
+| [85][Module] BEGIN [pm-cr-rule: _PrimitiveShared] |
+| [AST-INSTRUCTIONS]:                               |
+|   + StackEnd()                                    |
+| [PREDECESSORS 2-2]: [2]                           |
+| [SUCCESORS 4-4]: [4]                              |
++---------------------------------------------------+
+|
++
+|
++-----------------------------------------------------------+
+| [4]: <Leftrec>                                            |
+| [50][_LongType]< _LongType @ "const" >                    |
+| [AST-INSTRUCTIONS]:                                       |
+|   + StackBegin()                                          |
+|   + StackEnd()                                            |
+|   + StackBegin()                                          |
+|   + StackSlot(0)                                          |
+| [RETURN STACK]:                                           |
+|   [2][30][3]: _LongType -> [91][Module]<! !_LongType @ !> |
+| [PREDECESSORS 3-3]: [3]                                   |
+| [SUCCESORS 7-7]: [7]                                      |
++-----------------------------------------------------------+
 [0]
  |
  +
  |
 [0]
-++================================================================================================================================================================================================++
-|| [10]: {CONST} const                                                                                                                                                                            ||
-|| [120][_LongType_LRI_Original]< _LongType_LRI_Original "const" @ >                                                                                                                              ||
-|| [AST-INSTRUCTIONS]:                                                                                                                                                                            ||
-||   - EndObject()                                                                                                                                                                                ||
-||   - LriStore()                                                                                                                                                                                 ||
-||   - DelayFieldAssignment()                                                                                                                                                                     ||
-||   - LriFetch()                                                                                                                                                                                 ||
-||   - LriStore()                                                                                                                                                                                 ||
-||   - BeginObject(ConstType)                                                                                                                                                                     ||
-||   - LriFetch()                                                                                                                                                                                 ||
-||   - Field(ConstType::type)                                                                                                                                                                     ||
-|| [RETURN STACK]:                                                                                                                                                                                ||
-||   [8][62][7]: _LongType_LRI_Original -> [89][Module]<< !_PrimitiveShared ( lri:(LRI__LongType)->_LongType_LRI_Original @ ( lri:(LRIP__Expr0__LongType)->_Expr_LRI_Original | lri:<skip> ) ) >> ||
-|| [PREDECESSORS 7-7]: [7]                                                                                                                                                                        ||
-|| [SUCCESORS 11-11]: [11]                                                                                                                                                                        ||
-++================================================================================================================================================================================================++
+++===========================================================++
+|| [7]: {CONST} const                                        ||
+|| [47][_LongType]< _LongType "const" @ >                    ||
+|| [AST-INSTRUCTIONS]:                                       ||
+||   + Token(1)                                              ||
+|| [RETURN STACK]:                                           ||
+||   [2][30][3]: _LongType -> [91][Module]<! !_LongType @ !> ||
+|| [PREDECESSORS 4-4]: [4]                                   ||
+|| [SUCCESORS 8-8]: [8]                                      ||
+++===========================================================++
 |
 +
 |
-+------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------+
-| [11]: <Leftrec>                                                                                                                                                                                |
-| [122][_LongType_LRI_Original]< _LongType_LRI_Original @ "*" >                                                                                                                                  |
-| [AST-INSTRUCTIONS]:                                                                                                                                                                            |
-|   - EndObject()                                                                                                                                                                                |
-|   - LriStore()                                                                                                                                                                                 |
-|   - BeginObject(PointerType)                                                                                                                                                                   |
-|   - LriFetch()                                                                                                                                                                                 |
-|   + Field(PointerType::type)                                                                                                                                                                   |
-| [RETURN STACK]:                                                                                                                                                                                |
-|   [8][62][7]: _LongType_LRI_Original -> [89][Module]<< !_PrimitiveShared ( lri:(LRI__LongType)->_LongType_LRI_Original @ ( lri:(LRIP__Expr0__LongType)->_Expr_LRI_Original | lri:<skip> ) ) >> |
-| [PREDECESSORS 10-10]: [10]                                                                                                                                                                     |
-| [SUCCESORS 13-13]: [13]                                                                                                                                                                        |
-+------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------+
++-----------------------------------------------------------+
+| [8]: <Leftrec>                                            |
+| [49][_LongType]< _LongType @ "*" >                        |
+| [AST-INSTRUCTIONS]:                                       |
+|   + CreateObject(ConstType)                               |
+|   + Field(ConstType::type, 0)                             |
+|   + StackEnd()                                            |
+|   + StackBegin()                                          |
+|   + StackSlot(0)                                          |
+| [RETURN STACK]:                                           |
+|   [2][30][3]: _LongType -> [91][Module]<! !_LongType @ !> |
+| [PREDECESSORS 7-7]: [7]                                   |
+| [SUCCESORS 13-13]: [13]                                   |
++-----------------------------------------------------------+
 [0]
  |
  +
  |
 [0]
-++================================================================================================================================================================================================++
-|| [13]: {ASTERISK} *                                                                                                                                                                             ||
-|| [119][_LongType_LRI_Original]< _LongType_LRI_Original "*" @ >                                                                                                                                  ||
-|| [AST-INSTRUCTIONS]:                                                                                                                                                                            ||
-|| [RETURN STACK]:                                                                                                                                                                                ||
-||   [8][62][7]: _LongType_LRI_Original -> [89][Module]<< !_PrimitiveShared ( lri:(LRI__LongType)->_LongType_LRI_Original @ ( lri:(LRIP__Expr0__LongType)->_Expr_LRI_Original | lri:<skip> ) ) >> ||
-|| [PREDECESSORS 11-11]: [11]                                                                                                                                                                     ||
-|| [SUCCESORS 14-14]: [14]                                                                                                                                                                        ||
-++================================================================================================================================================================================================++
+++===========================================================++
+|| [13]: {ASTERISK} *                                        ||
+|| [46][_LongType]< _LongType "*" @ >                        ||
+|| [AST-INSTRUCTIONS]:                                       ||
+||   + Token(1)                                              ||
+|| [RETURN STACK]:                                           ||
+||   [2][30][3]: _LongType -> [91][Module]<! !_LongType @ !> ||
+|| [PREDECESSORS 8-8]: [8]                                   ||
+|| [SUCCESORS 14-14]: [14]                                   ||
+++===========================================================++
 |
 +
 |
-+------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------+
-| [14]: <Leftrec>                                                                                                                                                                                |
-| [123][_LongType_LRI_Original]< _LongType_LRI_Original @ "const" >                                                                                                                              |
-| [AST-INSTRUCTIONS]:                                                                                                                                                                            |
-|   - EndObject()                                                                                                                                                                                |
-|   - LriStore()                                                                                                                                                                                 |
-|   - BeginObject(ConstType)                                                                                                                                                                     |
-|   - LriFetch()                                                                                                                                                                                 |
-|   + Field(ConstType::type)                                                                                                                                                                     |
-| [RETURN STACK]:                                                                                                                                                                                |
-|   [8][62][7]: _LongType_LRI_Original -> [89][Module]<< !_PrimitiveShared ( lri:(LRI__LongType)->_LongType_LRI_Original @ ( lri:(LRIP__Expr0__LongType)->_Expr_LRI_Original | lri:<skip> ) ) >> |
-| [PREDECESSORS 13-13]: [13]                                                                                                                                                                     |
-| [SUCCESORS 16-16]: [16]                                                                                                                                                                        |
-+------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------+
++-----------------------------------------------------------+
+| [14]: <Leftrec>                                           |
+| [50][_LongType]< _LongType @ "const" >                    |
+| [AST-INSTRUCTIONS]:                                       |
+|   + CreateObject(PointerType)                             |
+|   + Field(PointerType::type, 0)                           |
+|   + StackEnd()                                            |
+|   + StackBegin()                                          |
+|   + StackSlot(0)                                          |
+| [RETURN STACK]:                                           |
+|   [2][30][3]: _LongType -> [91][Module]<! !_LongType @ !> |
+| [PREDECESSORS 13-13]: [13]                                |
+| [SUCCESORS 19-19]: [19]                                   |
++-----------------------------------------------------------+
 [0]
  |
  +
  |
 [0]
-++================================================================================================================================================================================================++
-|| [16]: {CONST} const                                                                                                                                                                            ||
-|| [120][_LongType_LRI_Original]< _LongType_LRI_Original "const" @ >                                                                                                                              ||
-|| [AST-INSTRUCTIONS]:                                                                                                                                                                            ||
-|| [RETURN STACK]:                                                                                                                                                                                ||
-||   [8][62][7]: _LongType_LRI_Original -> [89][Module]<< !_PrimitiveShared ( lri:(LRI__LongType)->_LongType_LRI_Original @ ( lri:(LRIP__Expr0__LongType)->_Expr_LRI_Original | lri:<skip> ) ) >> ||
-|| [PREDECESSORS 14-14]: [14]                                                                                                                                                                     ||
-|| [SUCCESORS 17-17]: [17]                                                                                                                                                                        ||
-++================================================================================================================================================================================================++
+++===========================================================++
+|| [19]: {CONST} const                                       ||
+|| [47][_LongType]< _LongType "const" @ >                    ||
+|| [AST-INSTRUCTIONS]:                                       ||
+||   + Token(1)                                              ||
+|| [RETURN STACK]:                                           ||
+||   [2][30][3]: _LongType -> [91][Module]<! !_LongType @ !> ||
+|| [PREDECESSORS 14-14]: [14]                                ||
+|| [SUCCESORS 20-20]: [20]                                   ||
+++===========================================================++
 |
 +
 |
-+--------------------------------------------------------------------------------------------------------------------------------------------------------+
-| [17]: <Ending>                                                                                                                                         |
-| [89][Module]<< !_PrimitiveShared ( lri:(LRI__LongType)->_LongType_LRI_Original @ ( lri:(LRIP__Expr0__LongType)->_Expr_LRI_Original | lri:<skip> ) ) >> |
-| [AST-INSTRUCTIONS]:                                                                                                                                    |
-|   - EndObject()                                                                                                                                        |
-|   > ReopenObject()                                                                                                                                     |
-| [PREDECESSORS 16-16]: [16]                                                                                                                             |
-| [SUCCESORS 18-18]: [18]                                                                                                                                |
-+--------------------------------------------------------------------------------------------------------------------------------------------------------+
++--------------------------------+
+| [20]: <Ending>                 |
+| [91][Module]<! !_LongType @ !> |
+| [AST-INSTRUCTIONS]:            |
+|   + CreateObject(ConstType)    |
+|   + Field(ConstType::type, 0)  |
+|   + StackEnd()                 |
+|   > StackBegin()               |
+| [PREDECESSORS 19-19]: [19]     |
+| [SUCCESORS 21-21]: [21]        |
++--------------------------------+
 |
 +
 |
 +----------------------------+
-| [18]: <Ending>             |
-| [84][Module] END [ENDING]  |
+| [21]: <Ending>             |
+| [89][Module] END [ENDING]  |
 | [AST-INSTRUCTIONS]:        |
-|   - EndObject()            |
-| [PREDECESSORS 17-17]: [17] |
+|   + StackEnd()             |
+| [PREDECESSORS 20-20]: [20] |
 +----------------------------+

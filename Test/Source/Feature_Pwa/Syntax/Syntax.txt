@@ -1,0 +1,36 @@
+﻿Plus
+  ::= "+" as Plus
+  ;
+
+Lt
+  ::= "<" as Lt
+  ;
+
+Gt
+  ::= ">" as Gt
+  ;
+
+Pwa1Prefix
+  ::= [Plus:optional] Plus {Plus:tails} as PbaFeature
+  ;
+
+Pwa1Body
+  ::= Lt:lts {Lt:lts} {Gt:gts} as Pwa1Feature
+  ;
+
+Pwa1
+  ::= "prefix_with_ambiguity_1" Pwa1Prefix:pba !Pwa1Body
+  ;
+
+Pwa2Body
+  ::= Lt:lts {Lt:lts} {Gt:gts} as PbaFeature
+  ;
+
+Pwa2
+  ::= "prefix_with_ambiguity_2" [Plus:optional] Plus {Plus:tails} !Pwa2Body
+  ;
+
+@parser Module : Feature
+  ::= !Pwa1
+  ::= !Pwa2
+  ;

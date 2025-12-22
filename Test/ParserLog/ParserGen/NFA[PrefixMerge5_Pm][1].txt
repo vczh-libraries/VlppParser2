@@ -1,1333 +1,637 @@
 ﻿[0][_Name]< @ ID >
-[RULE: 0][CLAUSE: 0]
+[RULE: 0]
 	token: ID -> [3][_Name]< ID @ >
-		+ Token()
-		+ Field(Name::name)
+		+ Token(0)
 
 [1][_Name]< @ _Name "." ID >
-[RULE: 0][CLAUSE: 1]
+[RULE: 0]
 	rule: _Name -> [8][_Name]< _Name @ "." ID >
-		+ Field(MemberName::parent)
+		+ StackSlot(0)
 
 [2][_Name]< ID > @[ENDING]
-[RULE: 0][CLAUSE: 0]
+[RULE: 0]
 
 [3][_Name]< ID @ >
-[RULE: 0][CLAUSE: 0]
+[RULE: 0]
 	epsilon -> [2][_Name]< ID > @[ENDING]
-		- EndObject()
+		+ CreateObject(Name)
+		+ Field(Name::name, 0)
+		+ StackEnd()
 
 [4][_Name]< _Name "." @ ID >
-[RULE: 0][CLAUSE: 1]
+[RULE: 0]
 	epsilon -> [5][_Name]< _Name "." @ ID >
 
 [5][_Name]< _Name "." @ ID >
-[RULE: 0][CLAUSE: 1]
+[RULE: 0]
 	token: ID -> [7][_Name]< _Name "." ID @ >
-		+ Token()
-		+ Field(MemberName::member)
+		+ Token(2)
 
 [6][_Name]< _Name "." ID > @[ENDING]
-[RULE: 0][CLAUSE: 1]
+[RULE: 0]
 
 [7][_Name]< _Name "." ID @ >
-[RULE: 0][CLAUSE: 1]
+[RULE: 0]
 	epsilon -> [6][_Name]< _Name "." ID > @[ENDING]
-		- EndObject()
+		+ CreateObject(MemberName)
+		+ Field(MemberName::parent, 0)
+		+ Field(MemberName::member, 2)
+		+ StackEnd()
 
 [8][_Name]< _Name @ "." ID >
-[RULE: 0][CLAUSE: 1]
+[RULE: 0]
 	epsilon -> [9][_Name]< _Name @ "." ID >
 
 [9][_Name]< _Name @ "." ID >
-[RULE: 0][CLAUSE: 1]
+[RULE: 0]
 	token: "." -> [4][_Name]< _Name "." @ ID >
+		+ Token(1)
 
 [10][_Name]@ < ID >
-[RULE: 0][CLAUSE: 0]
+[RULE: 0]
 	epsilon -> [0][_Name]< @ ID >
-		- BeginObject(Name)
+		+ StackBegin()
 
 [11][_Name]@ < _Name "." ID >
-[RULE: 0][CLAUSE: 1]
+[RULE: 0]
 	epsilon -> [1][_Name]< @ _Name "." ID >
-		- BeginObject(MemberName)
+		+ StackBegin()
 
-[12][_PrimitiveShared]<< !_Name >> @[ENDING]
-[RULE: 1][CLAUSE: 0]
+[12][_PrimitiveShared]<! !_Name !> @[ENDING]
+[RULE: 1]
 
-[13][_PrimitiveShared]<< !_Name @ >>
-[RULE: 1][CLAUSE: 0]
-	epsilon -> [12][_PrimitiveShared]<< !_Name >> @[ENDING]
-		- EndObject()
+[13][_PrimitiveShared]<! !_Name @ !>
+[RULE: 1]
+	epsilon -> [12][_PrimitiveShared]<! !_Name !> @[ENDING]
+		+ StackEnd()
 
-[14][_PrimitiveShared]<< @ !_Name >>
-[RULE: 1][CLAUSE: 0]
-	rule: _Name -> [13][_PrimitiveShared]<< !_Name @ >>
-		+ ReopenObject()
+[14][_PrimitiveShared]<! @ !_Name !>
+[RULE: 1]
+	rule: _Name -> [13][_PrimitiveShared]<! !_Name @ !>
 
-[15][_PrimitiveShared]@ << !_Name >>
-[RULE: 1][CLAUSE: 0]
-	epsilon -> [14][_PrimitiveShared]<< @ !_Name >>
-		- DelayFieldAssignment()
+[15][_PrimitiveShared]@ <! !_Name !>
+[RULE: 1]
+	epsilon -> [14][_PrimitiveShared]<! @ !_Name !>
+		+ StackBegin()
 
 [16][_PrimitiveTypeOnly]< "const" @ _PrimitiveShared >
-[RULE: 2][CLAUSE: 0]
+[RULE: 2]
 	rule: _PrimitiveShared -> [21][_PrimitiveTypeOnly]< "const" _PrimitiveShared @ >
-		+ Field(ConstType::type)
+		+ StackSlot(1)
 
 [17][_PrimitiveTypeOnly]< "const" @ _PrimitiveShared >
-[RULE: 2][CLAUSE: 0]
+[RULE: 2]
 	epsilon -> [16][_PrimitiveTypeOnly]< "const" @ _PrimitiveShared >
 
 [18][_PrimitiveTypeOnly]< "const" @ _PrimitiveTypeOnly >
-[RULE: 2][CLAUSE: 1]
+[RULE: 2]
 	epsilon -> [19][_PrimitiveTypeOnly]< "const" @ _PrimitiveTypeOnly >
 
 [19][_PrimitiveTypeOnly]< "const" @ _PrimitiveTypeOnly >
-[RULE: 2][CLAUSE: 1]
+[RULE: 2]
 	rule: _PrimitiveTypeOnly -> [23][_PrimitiveTypeOnly]< "const" _PrimitiveTypeOnly @ >
-		+ Field(ConstType::type)
+		+ StackSlot(1)
 
 [20][_PrimitiveTypeOnly]< "const" _PrimitiveShared > @[ENDING]
-[RULE: 2][CLAUSE: 0]
+[RULE: 2]
 
 [21][_PrimitiveTypeOnly]< "const" _PrimitiveShared @ >
-[RULE: 2][CLAUSE: 0]
+[RULE: 2]
 	epsilon -> [20][_PrimitiveTypeOnly]< "const" _PrimitiveShared > @[ENDING]
-		- EndObject()
+		+ CreateObject(ConstType)
+		+ Field(ConstType::type, 1)
+		+ StackEnd()
 
 [22][_PrimitiveTypeOnly]< "const" _PrimitiveTypeOnly > @[ENDING]
-[RULE: 2][CLAUSE: 1]
+[RULE: 2]
 
 [23][_PrimitiveTypeOnly]< "const" _PrimitiveTypeOnly @ >
-[RULE: 2][CLAUSE: 1]
+[RULE: 2]
 	epsilon -> [22][_PrimitiveTypeOnly]< "const" _PrimitiveTypeOnly > @[ENDING]
-		- EndObject()
+		+ CreateObject(ConstType)
+		+ Field(ConstType::type, 1)
+		+ StackEnd()
 
 [24][_PrimitiveTypeOnly]< @ "const" _PrimitiveShared >
-[RULE: 2][CLAUSE: 0]
+[RULE: 2]
 	token: "const" -> [17][_PrimitiveTypeOnly]< "const" @ _PrimitiveShared >
+		+ Token(0)
 
 [25][_PrimitiveTypeOnly]< @ "const" _PrimitiveTypeOnly >
-[RULE: 2][CLAUSE: 1]
+[RULE: 2]
 	token: "const" -> [18][_PrimitiveTypeOnly]< "const" @ _PrimitiveTypeOnly >
+		+ Token(0)
 
 [26][_PrimitiveTypeOnly]@ < "const" _PrimitiveShared >
-[RULE: 2][CLAUSE: 0]
+[RULE: 2]
 	epsilon -> [24][_PrimitiveTypeOnly]< @ "const" _PrimitiveShared >
-		- BeginObject(ConstType)
+		+ StackBegin()
 
 [27][_PrimitiveTypeOnly]@ < "const" _PrimitiveTypeOnly >
-[RULE: 2][CLAUSE: 1]
+[RULE: 2]
 	epsilon -> [25][_PrimitiveTypeOnly]< @ "const" _PrimitiveTypeOnly >
-		- BeginObject(ConstType)
-
-[28][_PrimitiveExprOnly]<< "(" !_Expr ")" >> @[ENDING]
-[RULE: 3][CLAUSE: 0]
-
-[29][_PrimitiveExprOnly]<< "(" !_Expr ")" @ >>
-[RULE: 3][CLAUSE: 0]
-	epsilon -> [28][_PrimitiveExprOnly]<< "(" !_Expr ")" >> @[ENDING]
-		- EndObject()
-
-[30][_PrimitiveExprOnly]<< "(" !_Expr @ ")" >>
-[RULE: 3][CLAUSE: 0]
-	token: ")" -> [29][_PrimitiveExprOnly]<< "(" !_Expr ")" @ >>
-
-[31][_PrimitiveExprOnly]<< "(" !_Expr @ ")" >>
-[RULE: 3][CLAUSE: 0]
-	epsilon -> [30][_PrimitiveExprOnly]<< "(" !_Expr @ ")" >>
-
-[32][_PrimitiveExprOnly]<< "(" @ !_Expr ")" >>
-[RULE: 3][CLAUSE: 0]
-	rule: _Expr -> [31][_PrimitiveExprOnly]<< "(" !_Expr @ ")" >>
-		+ ReopenObject()
-
-[33][_PrimitiveExprOnly]<< "(" @ !_Expr ")" >>
-[RULE: 3][CLAUSE: 0]
-	epsilon -> [32][_PrimitiveExprOnly]<< "(" @ !_Expr ")" >>
-
-[34][_PrimitiveExprOnly]<< @ "(" !_Expr ")" >>
-[RULE: 3][CLAUSE: 0]
-	token: "(" -> [33][_PrimitiveExprOnly]<< "(" @ !_Expr ")" >>
-
-[35][_PrimitiveExprOnly]@ << "(" !_Expr ")" >>
-[RULE: 3][CLAUSE: 0]
-	epsilon -> [34][_PrimitiveExprOnly]<< @ "(" !_Expr ")" >>
-		- DelayFieldAssignment()
-
-[36][_LongType]<< !_PrimitiveShared ( @ lri:(LRI__LongType)->_LongType_LRI_Original | lri:<skip> ) >>
-[RULE: 4][CLAUSE: 0]
-	lr-inject: LRI__LongType -> _LongType_LRI_Original -> [37][_LongType]<< !_PrimitiveShared ( lri:(LRI__LongType)->_LongType_LRI_Original @ | lri:<skip> ) >>
-		+ ReopenObject()
-
-[37][_LongType]<< !_PrimitiveShared ( lri:(LRI__LongType)->_LongType_LRI_Original @ | lri:<skip> ) >>
-[RULE: 4][CLAUSE: 0]
-	epsilon -> [40][_LongType]<< !_PrimitiveShared ( lri:(LRI__LongType)->_LongType_LRI_Original | lri:<skip> ) @ >>
-
-[38][_LongType]<< !_PrimitiveShared ( lri:(LRI__LongType)->_LongType_LRI_Original | @ lri:<skip> ) >>
-[RULE: 4][CLAUSE: 0]
-	epsilon -> [41][_LongType]<< !_PrimitiveShared ( lri:(LRI__LongType)->_LongType_LRI_Original | lri:<skip> @ ) >>
-
-[39][_LongType]<< !_PrimitiveShared ( lri:(LRI__LongType)->_LongType_LRI_Original | lri:<skip> ) >> @[ENDING]
-[RULE: 4][CLAUSE: 0]
-
-[40][_LongType]<< !_PrimitiveShared ( lri:(LRI__LongType)->_LongType_LRI_Original | lri:<skip> ) @ >>
-[RULE: 4][CLAUSE: 0]
-	epsilon -> [39][_LongType]<< !_PrimitiveShared ( lri:(LRI__LongType)->_LongType_LRI_Original | lri:<skip> ) >> @[ENDING]
-		- EndObject()
-
-[41][_LongType]<< !_PrimitiveShared ( lri:(LRI__LongType)->_LongType_LRI_Original | lri:<skip> @ ) >>
-[RULE: 4][CLAUSE: 0]
-	epsilon -> [40][_LongType]<< !_PrimitiveShared ( lri:(LRI__LongType)->_LongType_LRI_Original | lri:<skip> ) @ >>
-
-[42][_LongType]<< !_PrimitiveShared @ ( lri:(LRI__LongType)->_LongType_LRI_Original | lri:<skip> ) >>
-[RULE: 4][CLAUSE: 0]
-	epsilon -> [43][_LongType]<< !_PrimitiveShared @ ( lri:(LRI__LongType)->_LongType_LRI_Original | lri:<skip> ) >>
-
-[43][_LongType]<< !_PrimitiveShared @ ( lri:(LRI__LongType)->_LongType_LRI_Original | lri:<skip> ) >>
-[RULE: 4][CLAUSE: 0]
-	epsilon -> [36][_LongType]<< !_PrimitiveShared ( @ lri:(LRI__LongType)->_LongType_LRI_Original | lri:<skip> ) >>
-	epsilon -> [38][_LongType]<< !_PrimitiveShared ( lri:(LRI__LongType)->_LongType_LRI_Original | @ lri:<skip> ) >>
-
-[44][_LongType]<< !_PrimitiveTypeOnly ( @ lri:(LRI__LongType)->_LongType_LRI_Original | lri:<skip> ) >>
-[RULE: 4][CLAUSE: 1]
-	lr-inject: LRI__LongType -> _LongType_LRI_Original -> [45][_LongType]<< !_PrimitiveTypeOnly ( lri:(LRI__LongType)->_LongType_LRI_Original @ | lri:<skip> ) >>
-		+ ReopenObject()
-
-[45][_LongType]<< !_PrimitiveTypeOnly ( lri:(LRI__LongType)->_LongType_LRI_Original @ | lri:<skip> ) >>
-[RULE: 4][CLAUSE: 1]
-	epsilon -> [48][_LongType]<< !_PrimitiveTypeOnly ( lri:(LRI__LongType)->_LongType_LRI_Original | lri:<skip> ) @ >>
-
-[46][_LongType]<< !_PrimitiveTypeOnly ( lri:(LRI__LongType)->_LongType_LRI_Original | @ lri:<skip> ) >>
-[RULE: 4][CLAUSE: 1]
-	epsilon -> [49][_LongType]<< !_PrimitiveTypeOnly ( lri:(LRI__LongType)->_LongType_LRI_Original | lri:<skip> @ ) >>
-
-[47][_LongType]<< !_PrimitiveTypeOnly ( lri:(LRI__LongType)->_LongType_LRI_Original | lri:<skip> ) >> @[ENDING]
-[RULE: 4][CLAUSE: 1]
-
-[48][_LongType]<< !_PrimitiveTypeOnly ( lri:(LRI__LongType)->_LongType_LRI_Original | lri:<skip> ) @ >>
-[RULE: 4][CLAUSE: 1]
-	epsilon -> [47][_LongType]<< !_PrimitiveTypeOnly ( lri:(LRI__LongType)->_LongType_LRI_Original | lri:<skip> ) >> @[ENDING]
-		- EndObject()
-
-[49][_LongType]<< !_PrimitiveTypeOnly ( lri:(LRI__LongType)->_LongType_LRI_Original | lri:<skip> @ ) >>
-[RULE: 4][CLAUSE: 1]
-	epsilon -> [48][_LongType]<< !_PrimitiveTypeOnly ( lri:(LRI__LongType)->_LongType_LRI_Original | lri:<skip> ) @ >>
-
-[50][_LongType]<< !_PrimitiveTypeOnly @ ( lri:(LRI__LongType)->_LongType_LRI_Original | lri:<skip> ) >>
-[RULE: 4][CLAUSE: 1]
-	epsilon -> [44][_LongType]<< !_PrimitiveTypeOnly ( @ lri:(LRI__LongType)->_LongType_LRI_Original | lri:<skip> ) >>
-	epsilon -> [46][_LongType]<< !_PrimitiveTypeOnly ( lri:(LRI__LongType)->_LongType_LRI_Original | @ lri:<skip> ) >>
-
-[51][_LongType]<< !_PrimitiveTypeOnly @ ( lri:(LRI__LongType)->_LongType_LRI_Original | lri:<skip> ) >>
-[RULE: 4][CLAUSE: 1]
-	epsilon -> [50][_LongType]<< !_PrimitiveTypeOnly @ ( lri:(LRI__LongType)->_LongType_LRI_Original | lri:<skip> ) >>
-
-[52][_LongType]<< @ !_PrimitiveShared ( lri:(LRI__LongType)->_LongType_LRI_Original | lri:<skip> ) >>
-[RULE: 4][CLAUSE: 0]
-	rule: _PrimitiveShared -> [42][_LongType]<< !_PrimitiveShared @ ( lri:(LRI__LongType)->_LongType_LRI_Original | lri:<skip> ) >>
-		+ ReopenObject()
-
-[53][_LongType]<< @ !_PrimitiveTypeOnly ( lri:(LRI__LongType)->_LongType_LRI_Original | lri:<skip> ) >>
-[RULE: 4][CLAUSE: 1]
-	rule: _PrimitiveTypeOnly -> [51][_LongType]<< !_PrimitiveTypeOnly @ ( lri:(LRI__LongType)->_LongType_LRI_Original | lri:<skip> ) >>
-		+ ReopenObject()
-
-[54][_LongType]@ << !_PrimitiveShared ( lri:(LRI__LongType)->_LongType_LRI_Original | lri:<skip> ) >>
-[RULE: 4][CLAUSE: 0]
-	epsilon -> [52][_LongType]<< @ !_PrimitiveShared ( lri:(LRI__LongType)->_LongType_LRI_Original | lri:<skip> ) >>
-		- DelayFieldAssignment()
-
-[55][_LongType]@ << !_PrimitiveTypeOnly ( lri:(LRI__LongType)->_LongType_LRI_Original | lri:<skip> ) >>
-[RULE: 4][CLAUSE: 1]
-	epsilon -> [53][_LongType]<< @ !_PrimitiveTypeOnly ( lri:(LRI__LongType)->_LongType_LRI_Original | lri:<skip> ) >>
-		- DelayFieldAssignment()
-
-[56][_Expr0]<< !_PrimitiveExprOnly >> @[ENDING]
-[RULE: 5][CLAUSE: 0]
-
-[57][_Expr0]<< !_PrimitiveExprOnly @ >>
-[RULE: 5][CLAUSE: 0]
-	epsilon -> [56][_Expr0]<< !_PrimitiveExprOnly >> @[ENDING]
-		- EndObject()
-
-[58][_Expr0]<< !_PrimitiveShared ( @ lri:(LRI__LongType)->_Expr0_LRI_Original | lri:<skip> ) >>
-[RULE: 5][CLAUSE: 1]
-	lr-inject: LRI__LongType -> _Expr0_LRI_Original -> [59][_Expr0]<< !_PrimitiveShared ( lri:(LRI__LongType)->_Expr0_LRI_Original @ | lri:<skip> ) >>
-		+ ReopenObject()
-
-[59][_Expr0]<< !_PrimitiveShared ( lri:(LRI__LongType)->_Expr0_LRI_Original @ | lri:<skip> ) >>
-[RULE: 5][CLAUSE: 1]
-	epsilon -> [62][_Expr0]<< !_PrimitiveShared ( lri:(LRI__LongType)->_Expr0_LRI_Original | lri:<skip> ) @ >>
-
-[60][_Expr0]<< !_PrimitiveShared ( lri:(LRI__LongType)->_Expr0_LRI_Original | @ lri:<skip> ) >>
-[RULE: 5][CLAUSE: 1]
-	epsilon -> [63][_Expr0]<< !_PrimitiveShared ( lri:(LRI__LongType)->_Expr0_LRI_Original | lri:<skip> @ ) >>
-
-[61][_Expr0]<< !_PrimitiveShared ( lri:(LRI__LongType)->_Expr0_LRI_Original | lri:<skip> ) >> @[ENDING]
-[RULE: 5][CLAUSE: 1]
-
-[62][_Expr0]<< !_PrimitiveShared ( lri:(LRI__LongType)->_Expr0_LRI_Original | lri:<skip> ) @ >>
-[RULE: 5][CLAUSE: 1]
-	epsilon -> [61][_Expr0]<< !_PrimitiveShared ( lri:(LRI__LongType)->_Expr0_LRI_Original | lri:<skip> ) >> @[ENDING]
-		- EndObject()
-
-[63][_Expr0]<< !_PrimitiveShared ( lri:(LRI__LongType)->_Expr0_LRI_Original | lri:<skip> @ ) >>
-[RULE: 5][CLAUSE: 1]
-	epsilon -> [62][_Expr0]<< !_PrimitiveShared ( lri:(LRI__LongType)->_Expr0_LRI_Original | lri:<skip> ) @ >>
-
-[64][_Expr0]<< !_PrimitiveShared @ ( lri:(LRI__LongType)->_Expr0_LRI_Original | lri:<skip> ) >>
-[RULE: 5][CLAUSE: 1]
-	epsilon -> [65][_Expr0]<< !_PrimitiveShared @ ( lri:(LRI__LongType)->_Expr0_LRI_Original | lri:<skip> ) >>
-
-[65][_Expr0]<< !_PrimitiveShared @ ( lri:(LRI__LongType)->_Expr0_LRI_Original | lri:<skip> ) >>
-[RULE: 5][CLAUSE: 1]
-	epsilon -> [58][_Expr0]<< !_PrimitiveShared ( @ lri:(LRI__LongType)->_Expr0_LRI_Original | lri:<skip> ) >>
-	epsilon -> [60][_Expr0]<< !_PrimitiveShared ( lri:(LRI__LongType)->_Expr0_LRI_Original | @ lri:<skip> ) >>
-
-[66][_Expr0]<< !_PrimitiveTypeOnly ( @ lri:(LRI__LongType)->_Expr0_LRI_Original ) >>
-[RULE: 5][CLAUSE: 2]
-	lr-inject: LRI__LongType -> _Expr0_LRI_Original -> [69][_Expr0]<< !_PrimitiveTypeOnly ( lri:(LRI__LongType)->_Expr0_LRI_Original @ ) >>
-		+ ReopenObject()
-
-[67][_Expr0]<< !_PrimitiveTypeOnly ( lri:(LRI__LongType)->_Expr0_LRI_Original ) >> @[ENDING]
-[RULE: 5][CLAUSE: 2]
-
-[68][_Expr0]<< !_PrimitiveTypeOnly ( lri:(LRI__LongType)->_Expr0_LRI_Original ) @ >>
-[RULE: 5][CLAUSE: 2]
-	epsilon -> [67][_Expr0]<< !_PrimitiveTypeOnly ( lri:(LRI__LongType)->_Expr0_LRI_Original ) >> @[ENDING]
-		- EndObject()
-
-[69][_Expr0]<< !_PrimitiveTypeOnly ( lri:(LRI__LongType)->_Expr0_LRI_Original @ ) >>
-[RULE: 5][CLAUSE: 2]
-	epsilon -> [68][_Expr0]<< !_PrimitiveTypeOnly ( lri:(LRI__LongType)->_Expr0_LRI_Original ) @ >>
-
-[70][_Expr0]<< !_PrimitiveTypeOnly @ ( lri:(LRI__LongType)->_Expr0_LRI_Original ) >>
-[RULE: 5][CLAUSE: 2]
-	epsilon -> [71][_Expr0]<< !_PrimitiveTypeOnly @ ( lri:(LRI__LongType)->_Expr0_LRI_Original ) >>
-
-[71][_Expr0]<< !_PrimitiveTypeOnly @ ( lri:(LRI__LongType)->_Expr0_LRI_Original ) >>
-[RULE: 5][CLAUSE: 2]
-	epsilon -> [66][_Expr0]<< !_PrimitiveTypeOnly ( @ lri:(LRI__LongType)->_Expr0_LRI_Original ) >>
-
-[72][_Expr0]<< @ !_PrimitiveExprOnly >>
-[RULE: 5][CLAUSE: 0]
-	rule: _PrimitiveExprOnly -> [57][_Expr0]<< !_PrimitiveExprOnly @ >>
-		+ ReopenObject()
-
-[73][_Expr0]<< @ !_PrimitiveShared ( lri:(LRI__LongType)->_Expr0_LRI_Original | lri:<skip> ) >>
-[RULE: 5][CLAUSE: 1]
-	rule: _PrimitiveShared -> [64][_Expr0]<< !_PrimitiveShared @ ( lri:(LRI__LongType)->_Expr0_LRI_Original | lri:<skip> ) >>
-		+ ReopenObject()
-
-[74][_Expr0]<< @ !_PrimitiveTypeOnly ( lri:(LRI__LongType)->_Expr0_LRI_Original ) >>
-[RULE: 5][CLAUSE: 2]
-	rule: _PrimitiveTypeOnly -> [70][_Expr0]<< !_PrimitiveTypeOnly @ ( lri:(LRI__LongType)->_Expr0_LRI_Original ) >>
-		+ ReopenObject()
-
-[75][_Expr0]@ << !_PrimitiveExprOnly >>
-[RULE: 5][CLAUSE: 0]
-	epsilon -> [72][_Expr0]<< @ !_PrimitiveExprOnly >>
-		- DelayFieldAssignment()
-
-[76][_Expr0]@ << !_PrimitiveShared ( lri:(LRI__LongType)->_Expr0_LRI_Original | lri:<skip> ) >>
-[RULE: 5][CLAUSE: 1]
-	epsilon -> [73][_Expr0]<< @ !_PrimitiveShared ( lri:(LRI__LongType)->_Expr0_LRI_Original | lri:<skip> ) >>
-		- DelayFieldAssignment()
-
-[77][_Expr0]@ << !_PrimitiveTypeOnly ( lri:(LRI__LongType)->_Expr0_LRI_Original ) >>
-[RULE: 5][CLAUSE: 2]
-	epsilon -> [74][_Expr0]<< @ !_PrimitiveTypeOnly ( lri:(LRI__LongType)->_Expr0_LRI_Original ) >>
-		- DelayFieldAssignment()
-
-[78][_Expr1]<< !_PrimitiveExprOnly ( @ lri:(LRI__Expr0)->_Expr1_LRI_Original | lri:<skip> ) >>
-[RULE: 6][CLAUSE: 0]
-	lr-inject: LRI__Expr0 -> _Expr1_LRI_Original -> [79][_Expr1]<< !_PrimitiveExprOnly ( lri:(LRI__Expr0)->_Expr1_LRI_Original @ | lri:<skip> ) >>
-		+ ReopenObject()
-
-[79][_Expr1]<< !_PrimitiveExprOnly ( lri:(LRI__Expr0)->_Expr1_LRI_Original @ | lri:<skip> ) >>
-[RULE: 6][CLAUSE: 0]
-	epsilon -> [82][_Expr1]<< !_PrimitiveExprOnly ( lri:(LRI__Expr0)->_Expr1_LRI_Original | lri:<skip> ) @ >>
-
-[80][_Expr1]<< !_PrimitiveExprOnly ( lri:(LRI__Expr0)->_Expr1_LRI_Original | @ lri:<skip> ) >>
-[RULE: 6][CLAUSE: 0]
-	epsilon -> [83][_Expr1]<< !_PrimitiveExprOnly ( lri:(LRI__Expr0)->_Expr1_LRI_Original | lri:<skip> @ ) >>
-
-[81][_Expr1]<< !_PrimitiveExprOnly ( lri:(LRI__Expr0)->_Expr1_LRI_Original | lri:<skip> ) >> @[ENDING]
-[RULE: 6][CLAUSE: 0]
-
-[82][_Expr1]<< !_PrimitiveExprOnly ( lri:(LRI__Expr0)->_Expr1_LRI_Original | lri:<skip> ) @ >>
-[RULE: 6][CLAUSE: 0]
-	epsilon -> [81][_Expr1]<< !_PrimitiveExprOnly ( lri:(LRI__Expr0)->_Expr1_LRI_Original | lri:<skip> ) >> @[ENDING]
-		- EndObject()
-
-[83][_Expr1]<< !_PrimitiveExprOnly ( lri:(LRI__Expr0)->_Expr1_LRI_Original | lri:<skip> @ ) >>
-[RULE: 6][CLAUSE: 0]
-	epsilon -> [82][_Expr1]<< !_PrimitiveExprOnly ( lri:(LRI__Expr0)->_Expr1_LRI_Original | lri:<skip> ) @ >>
-
-[84][_Expr1]<< !_PrimitiveExprOnly @ ( lri:(LRI__Expr0)->_Expr1_LRI_Original | lri:<skip> ) >>
-[RULE: 6][CLAUSE: 0]
-	epsilon -> [85][_Expr1]<< !_PrimitiveExprOnly @ ( lri:(LRI__Expr0)->_Expr1_LRI_Original | lri:<skip> ) >>
-
-[85][_Expr1]<< !_PrimitiveExprOnly @ ( lri:(LRI__Expr0)->_Expr1_LRI_Original | lri:<skip> ) >>
-[RULE: 6][CLAUSE: 0]
-	epsilon -> [78][_Expr1]<< !_PrimitiveExprOnly ( @ lri:(LRI__Expr0)->_Expr1_LRI_Original | lri:<skip> ) >>
-	epsilon -> [80][_Expr1]<< !_PrimitiveExprOnly ( lri:(LRI__Expr0)->_Expr1_LRI_Original | @ lri:<skip> ) >>
-
-[86][_Expr1]<< !_PrimitiveShared ( @ lri:(LRI__Expr0,LRI__LongType)->_Expr1_LRI_Original | lri:<skip> ) >>
-[RULE: 6][CLAUSE: 1]
-	lr-inject: LRI__Expr0,LRI__LongType -> _Expr1_LRI_Original -> [87][_Expr1]<< !_PrimitiveShared ( lri:(LRI__Expr0,LRI__LongType)->_Expr1_LRI_Original @ | lri:<skip> ) >>
-		+ ReopenObject()
-
-[87][_Expr1]<< !_PrimitiveShared ( lri:(LRI__Expr0,LRI__LongType)->_Expr1_LRI_Original @ | lri:<skip> ) >>
-[RULE: 6][CLAUSE: 1]
-	epsilon -> [90][_Expr1]<< !_PrimitiveShared ( lri:(LRI__Expr0,LRI__LongType)->_Expr1_LRI_Original | lri:<skip> ) @ >>
-
-[88][_Expr1]<< !_PrimitiveShared ( lri:(LRI__Expr0,LRI__LongType)->_Expr1_LRI_Original | @ lri:<skip> ) >>
-[RULE: 6][CLAUSE: 1]
-	epsilon -> [91][_Expr1]<< !_PrimitiveShared ( lri:(LRI__Expr0,LRI__LongType)->_Expr1_LRI_Original | lri:<skip> @ ) >>
-
-[89][_Expr1]<< !_PrimitiveShared ( lri:(LRI__Expr0,LRI__LongType)->_Expr1_LRI_Original | lri:<skip> ) >> @[ENDING]
-[RULE: 6][CLAUSE: 1]
-
-[90][_Expr1]<< !_PrimitiveShared ( lri:(LRI__Expr0,LRI__LongType)->_Expr1_LRI_Original | lri:<skip> ) @ >>
-[RULE: 6][CLAUSE: 1]
-	epsilon -> [89][_Expr1]<< !_PrimitiveShared ( lri:(LRI__Expr0,LRI__LongType)->_Expr1_LRI_Original | lri:<skip> ) >> @[ENDING]
-		- EndObject()
-
-[91][_Expr1]<< !_PrimitiveShared ( lri:(LRI__Expr0,LRI__LongType)->_Expr1_LRI_Original | lri:<skip> @ ) >>
-[RULE: 6][CLAUSE: 1]
-	epsilon -> [90][_Expr1]<< !_PrimitiveShared ( lri:(LRI__Expr0,LRI__LongType)->_Expr1_LRI_Original | lri:<skip> ) @ >>
-
-[92][_Expr1]<< !_PrimitiveShared @ ( lri:(LRI__Expr0,LRI__LongType)->_Expr1_LRI_Original | lri:<skip> ) >>
-[RULE: 6][CLAUSE: 1]
-	epsilon -> [93][_Expr1]<< !_PrimitiveShared @ ( lri:(LRI__Expr0,LRI__LongType)->_Expr1_LRI_Original | lri:<skip> ) >>
-
-[93][_Expr1]<< !_PrimitiveShared @ ( lri:(LRI__Expr0,LRI__LongType)->_Expr1_LRI_Original | lri:<skip> ) >>
-[RULE: 6][CLAUSE: 1]
-	epsilon -> [86][_Expr1]<< !_PrimitiveShared ( @ lri:(LRI__Expr0,LRI__LongType)->_Expr1_LRI_Original | lri:<skip> ) >>
-	epsilon -> [88][_Expr1]<< !_PrimitiveShared ( lri:(LRI__Expr0,LRI__LongType)->_Expr1_LRI_Original | @ lri:<skip> ) >>
-
-[94][_Expr1]<< !_PrimitiveTypeOnly ( @ lri:(LRI__LongType)->_Expr1_LRI_Original ) >>
-[RULE: 6][CLAUSE: 2]
-	lr-inject: LRI__LongType -> _Expr1_LRI_Original -> [97][_Expr1]<< !_PrimitiveTypeOnly ( lri:(LRI__LongType)->_Expr1_LRI_Original @ ) >>
-		+ ReopenObject()
-
-[95][_Expr1]<< !_PrimitiveTypeOnly ( lri:(LRI__LongType)->_Expr1_LRI_Original ) >> @[ENDING]
-[RULE: 6][CLAUSE: 2]
-
-[96][_Expr1]<< !_PrimitiveTypeOnly ( lri:(LRI__LongType)->_Expr1_LRI_Original ) @ >>
-[RULE: 6][CLAUSE: 2]
-	epsilon -> [95][_Expr1]<< !_PrimitiveTypeOnly ( lri:(LRI__LongType)->_Expr1_LRI_Original ) >> @[ENDING]
-		- EndObject()
-
-[97][_Expr1]<< !_PrimitiveTypeOnly ( lri:(LRI__LongType)->_Expr1_LRI_Original @ ) >>
-[RULE: 6][CLAUSE: 2]
-	epsilon -> [96][_Expr1]<< !_PrimitiveTypeOnly ( lri:(LRI__LongType)->_Expr1_LRI_Original ) @ >>
-
-[98][_Expr1]<< !_PrimitiveTypeOnly @ ( lri:(LRI__LongType)->_Expr1_LRI_Original ) >>
-[RULE: 6][CLAUSE: 2]
-	epsilon -> [99][_Expr1]<< !_PrimitiveTypeOnly @ ( lri:(LRI__LongType)->_Expr1_LRI_Original ) >>
-
-[99][_Expr1]<< !_PrimitiveTypeOnly @ ( lri:(LRI__LongType)->_Expr1_LRI_Original ) >>
-[RULE: 6][CLAUSE: 2]
-	epsilon -> [94][_Expr1]<< !_PrimitiveTypeOnly ( @ lri:(LRI__LongType)->_Expr1_LRI_Original ) >>
-
-[100][_Expr1]<< @ !_PrimitiveExprOnly ( lri:(LRI__Expr0)->_Expr1_LRI_Original | lri:<skip> ) >>
-[RULE: 6][CLAUSE: 0]
-	rule: _PrimitiveExprOnly -> [84][_Expr1]<< !_PrimitiveExprOnly @ ( lri:(LRI__Expr0)->_Expr1_LRI_Original | lri:<skip> ) >>
-		+ ReopenObject()
-
-[101][_Expr1]<< @ !_PrimitiveShared ( lri:(LRI__Expr0,LRI__LongType)->_Expr1_LRI_Original | lri:<skip> ) >>
-[RULE: 6][CLAUSE: 1]
-	rule: _PrimitiveShared -> [92][_Expr1]<< !_PrimitiveShared @ ( lri:(LRI__Expr0,LRI__LongType)->_Expr1_LRI_Original | lri:<skip> ) >>
-		+ ReopenObject()
-
-[102][_Expr1]<< @ !_PrimitiveTypeOnly ( lri:(LRI__LongType)->_Expr1_LRI_Original ) >>
-[RULE: 6][CLAUSE: 2]
-	rule: _PrimitiveTypeOnly -> [98][_Expr1]<< !_PrimitiveTypeOnly @ ( lri:(LRI__LongType)->_Expr1_LRI_Original ) >>
-		+ ReopenObject()
-
-[103][_Expr1]@ << !_PrimitiveExprOnly ( lri:(LRI__Expr0)->_Expr1_LRI_Original | lri:<skip> ) >>
-[RULE: 6][CLAUSE: 0]
-	epsilon -> [100][_Expr1]<< @ !_PrimitiveExprOnly ( lri:(LRI__Expr0)->_Expr1_LRI_Original | lri:<skip> ) >>
-		- DelayFieldAssignment()
-
-[104][_Expr1]@ << !_PrimitiveShared ( lri:(LRI__Expr0,LRI__LongType)->_Expr1_LRI_Original | lri:<skip> ) >>
-[RULE: 6][CLAUSE: 1]
-	epsilon -> [101][_Expr1]<< @ !_PrimitiveShared ( lri:(LRI__Expr0,LRI__LongType)->_Expr1_LRI_Original | lri:<skip> ) >>
-		- DelayFieldAssignment()
-
-[105][_Expr1]@ << !_PrimitiveTypeOnly ( lri:(LRI__LongType)->_Expr1_LRI_Original ) >>
-[RULE: 6][CLAUSE: 2]
-	epsilon -> [102][_Expr1]<< @ !_PrimitiveTypeOnly ( lri:(LRI__LongType)->_Expr1_LRI_Original ) >>
-		- DelayFieldAssignment()
-
-[106][_Expr]<< !_PrimitiveExprOnly ( @ lri:(LRI__Expr0)->_Expr_LRI_Original | lri:<skip> ) >>
-[RULE: 7][CLAUSE: 0]
-	lr-inject: LRI__Expr0 -> _Expr_LRI_Original -> [107][_Expr]<< !_PrimitiveExprOnly ( lri:(LRI__Expr0)->_Expr_LRI_Original @ | lri:<skip> ) >>
-		+ ReopenObject()
-
-[107][_Expr]<< !_PrimitiveExprOnly ( lri:(LRI__Expr0)->_Expr_LRI_Original @ | lri:<skip> ) >>
-[RULE: 7][CLAUSE: 0]
-	epsilon -> [110][_Expr]<< !_PrimitiveExprOnly ( lri:(LRI__Expr0)->_Expr_LRI_Original | lri:<skip> ) @ >>
-
-[108][_Expr]<< !_PrimitiveExprOnly ( lri:(LRI__Expr0)->_Expr_LRI_Original | @ lri:<skip> ) >>
-[RULE: 7][CLAUSE: 0]
-	epsilon -> [111][_Expr]<< !_PrimitiveExprOnly ( lri:(LRI__Expr0)->_Expr_LRI_Original | lri:<skip> @ ) >>
-
-[109][_Expr]<< !_PrimitiveExprOnly ( lri:(LRI__Expr0)->_Expr_LRI_Original | lri:<skip> ) >> @[ENDING]
-[RULE: 7][CLAUSE: 0]
-
-[110][_Expr]<< !_PrimitiveExprOnly ( lri:(LRI__Expr0)->_Expr_LRI_Original | lri:<skip> ) @ >>
-[RULE: 7][CLAUSE: 0]
-	epsilon -> [109][_Expr]<< !_PrimitiveExprOnly ( lri:(LRI__Expr0)->_Expr_LRI_Original | lri:<skip> ) >> @[ENDING]
-		- EndObject()
-
-[111][_Expr]<< !_PrimitiveExprOnly ( lri:(LRI__Expr0)->_Expr_LRI_Original | lri:<skip> @ ) >>
-[RULE: 7][CLAUSE: 0]
-	epsilon -> [110][_Expr]<< !_PrimitiveExprOnly ( lri:(LRI__Expr0)->_Expr_LRI_Original | lri:<skip> ) @ >>
-
-[112][_Expr]<< !_PrimitiveExprOnly @ ( lri:(LRI__Expr0)->_Expr_LRI_Original | lri:<skip> ) >>
-[RULE: 7][CLAUSE: 0]
-	epsilon -> [113][_Expr]<< !_PrimitiveExprOnly @ ( lri:(LRI__Expr0)->_Expr_LRI_Original | lri:<skip> ) >>
-
-[113][_Expr]<< !_PrimitiveExprOnly @ ( lri:(LRI__Expr0)->_Expr_LRI_Original | lri:<skip> ) >>
-[RULE: 7][CLAUSE: 0]
-	epsilon -> [106][_Expr]<< !_PrimitiveExprOnly ( @ lri:(LRI__Expr0)->_Expr_LRI_Original | lri:<skip> ) >>
-	epsilon -> [108][_Expr]<< !_PrimitiveExprOnly ( lri:(LRI__Expr0)->_Expr_LRI_Original | @ lri:<skip> ) >>
-
-[114][_Expr]<< !_PrimitiveShared ( @ lri:(LRI__Expr0,LRI__LongType)->_Expr_LRI_Original | lri:<skip> ) >>
-[RULE: 7][CLAUSE: 1]
-	lr-inject: LRI__Expr0,LRI__LongType -> _Expr_LRI_Original -> [115][_Expr]<< !_PrimitiveShared ( lri:(LRI__Expr0,LRI__LongType)->_Expr_LRI_Original @ | lri:<skip> ) >>
-		+ ReopenObject()
-
-[115][_Expr]<< !_PrimitiveShared ( lri:(LRI__Expr0,LRI__LongType)->_Expr_LRI_Original @ | lri:<skip> ) >>
-[RULE: 7][CLAUSE: 1]
-	epsilon -> [118][_Expr]<< !_PrimitiveShared ( lri:(LRI__Expr0,LRI__LongType)->_Expr_LRI_Original | lri:<skip> ) @ >>
-
-[116][_Expr]<< !_PrimitiveShared ( lri:(LRI__Expr0,LRI__LongType)->_Expr_LRI_Original | @ lri:<skip> ) >>
-[RULE: 7][CLAUSE: 1]
-	epsilon -> [119][_Expr]<< !_PrimitiveShared ( lri:(LRI__Expr0,LRI__LongType)->_Expr_LRI_Original | lri:<skip> @ ) >>
-
-[117][_Expr]<< !_PrimitiveShared ( lri:(LRI__Expr0,LRI__LongType)->_Expr_LRI_Original | lri:<skip> ) >> @[ENDING]
-[RULE: 7][CLAUSE: 1]
-
-[118][_Expr]<< !_PrimitiveShared ( lri:(LRI__Expr0,LRI__LongType)->_Expr_LRI_Original | lri:<skip> ) @ >>
-[RULE: 7][CLAUSE: 1]
-	epsilon -> [117][_Expr]<< !_PrimitiveShared ( lri:(LRI__Expr0,LRI__LongType)->_Expr_LRI_Original | lri:<skip> ) >> @[ENDING]
-		- EndObject()
-
-[119][_Expr]<< !_PrimitiveShared ( lri:(LRI__Expr0,LRI__LongType)->_Expr_LRI_Original | lri:<skip> @ ) >>
-[RULE: 7][CLAUSE: 1]
-	epsilon -> [118][_Expr]<< !_PrimitiveShared ( lri:(LRI__Expr0,LRI__LongType)->_Expr_LRI_Original | lri:<skip> ) @ >>
-
-[120][_Expr]<< !_PrimitiveShared @ ( lri:(LRI__Expr0,LRI__LongType)->_Expr_LRI_Original | lri:<skip> ) >>
-[RULE: 7][CLAUSE: 1]
-	epsilon -> [121][_Expr]<< !_PrimitiveShared @ ( lri:(LRI__Expr0,LRI__LongType)->_Expr_LRI_Original | lri:<skip> ) >>
-
-[121][_Expr]<< !_PrimitiveShared @ ( lri:(LRI__Expr0,LRI__LongType)->_Expr_LRI_Original | lri:<skip> ) >>
-[RULE: 7][CLAUSE: 1]
-	epsilon -> [114][_Expr]<< !_PrimitiveShared ( @ lri:(LRI__Expr0,LRI__LongType)->_Expr_LRI_Original | lri:<skip> ) >>
-	epsilon -> [116][_Expr]<< !_PrimitiveShared ( lri:(LRI__Expr0,LRI__LongType)->_Expr_LRI_Original | @ lri:<skip> ) >>
-
-[122][_Expr]<< !_PrimitiveTypeOnly ( @ lri:(LRI__LongType)->_Expr_LRI_Original ) >>
-[RULE: 7][CLAUSE: 2]
-	lr-inject: LRI__LongType -> _Expr_LRI_Original -> [125][_Expr]<< !_PrimitiveTypeOnly ( lri:(LRI__LongType)->_Expr_LRI_Original @ ) >>
-		+ ReopenObject()
-
-[123][_Expr]<< !_PrimitiveTypeOnly ( lri:(LRI__LongType)->_Expr_LRI_Original ) >> @[ENDING]
-[RULE: 7][CLAUSE: 2]
-
-[124][_Expr]<< !_PrimitiveTypeOnly ( lri:(LRI__LongType)->_Expr_LRI_Original ) @ >>
-[RULE: 7][CLAUSE: 2]
-	epsilon -> [123][_Expr]<< !_PrimitiveTypeOnly ( lri:(LRI__LongType)->_Expr_LRI_Original ) >> @[ENDING]
-		- EndObject()
-
-[125][_Expr]<< !_PrimitiveTypeOnly ( lri:(LRI__LongType)->_Expr_LRI_Original @ ) >>
-[RULE: 7][CLAUSE: 2]
-	epsilon -> [124][_Expr]<< !_PrimitiveTypeOnly ( lri:(LRI__LongType)->_Expr_LRI_Original ) @ >>
-
-[126][_Expr]<< !_PrimitiveTypeOnly @ ( lri:(LRI__LongType)->_Expr_LRI_Original ) >>
-[RULE: 7][CLAUSE: 2]
-	epsilon -> [127][_Expr]<< !_PrimitiveTypeOnly @ ( lri:(LRI__LongType)->_Expr_LRI_Original ) >>
-
-[127][_Expr]<< !_PrimitiveTypeOnly @ ( lri:(LRI__LongType)->_Expr_LRI_Original ) >>
-[RULE: 7][CLAUSE: 2]
-	epsilon -> [122][_Expr]<< !_PrimitiveTypeOnly ( @ lri:(LRI__LongType)->_Expr_LRI_Original ) >>
-
-[128][_Expr]<< @ !_PrimitiveExprOnly ( lri:(LRI__Expr0)->_Expr_LRI_Original | lri:<skip> ) >>
-[RULE: 7][CLAUSE: 0]
-	rule: _PrimitiveExprOnly -> [112][_Expr]<< !_PrimitiveExprOnly @ ( lri:(LRI__Expr0)->_Expr_LRI_Original | lri:<skip> ) >>
-		+ ReopenObject()
-
-[129][_Expr]<< @ !_PrimitiveShared ( lri:(LRI__Expr0,LRI__LongType)->_Expr_LRI_Original | lri:<skip> ) >>
-[RULE: 7][CLAUSE: 1]
-	rule: _PrimitiveShared -> [120][_Expr]<< !_PrimitiveShared @ ( lri:(LRI__Expr0,LRI__LongType)->_Expr_LRI_Original | lri:<skip> ) >>
-		+ ReopenObject()
-
-[130][_Expr]<< @ !_PrimitiveTypeOnly ( lri:(LRI__LongType)->_Expr_LRI_Original ) >>
-[RULE: 7][CLAUSE: 2]
-	rule: _PrimitiveTypeOnly -> [126][_Expr]<< !_PrimitiveTypeOnly @ ( lri:(LRI__LongType)->_Expr_LRI_Original ) >>
-		+ ReopenObject()
-
-[131][_Expr]@ << !_PrimitiveExprOnly ( lri:(LRI__Expr0)->_Expr_LRI_Original | lri:<skip> ) >>
-[RULE: 7][CLAUSE: 0]
-	epsilon -> [128][_Expr]<< @ !_PrimitiveExprOnly ( lri:(LRI__Expr0)->_Expr_LRI_Original | lri:<skip> ) >>
-		- DelayFieldAssignment()
-
-[132][_Expr]@ << !_PrimitiveShared ( lri:(LRI__Expr0,LRI__LongType)->_Expr_LRI_Original | lri:<skip> ) >>
-[RULE: 7][CLAUSE: 1]
-	epsilon -> [129][_Expr]<< @ !_PrimitiveShared ( lri:(LRI__Expr0,LRI__LongType)->_Expr_LRI_Original | lri:<skip> ) >>
-		- DelayFieldAssignment()
-
-[133][_Expr]@ << !_PrimitiveTypeOnly ( lri:(LRI__LongType)->_Expr_LRI_Original ) >>
-[RULE: 7][CLAUSE: 2]
-	epsilon -> [130][_Expr]<< @ !_PrimitiveTypeOnly ( lri:(LRI__LongType)->_Expr_LRI_Original ) >>
-		- DelayFieldAssignment()
-
-[134][Module]<< !_PrimitiveExprOnly ( @ lri:(LRI__Expr0)->_Expr_LRI_Original | lri:<skip> ) >>
-[RULE: 8][CLAUSE: 0]
-	lr-inject: LRI__Expr0 -> _Expr_LRI_Original -> [135][Module]<< !_PrimitiveExprOnly ( lri:(LRI__Expr0)->_Expr_LRI_Original @ | lri:<skip> ) >>
-		+ ReopenObject()
-
-[135][Module]<< !_PrimitiveExprOnly ( lri:(LRI__Expr0)->_Expr_LRI_Original @ | lri:<skip> ) >>
-[RULE: 8][CLAUSE: 0]
-	epsilon -> [138][Module]<< !_PrimitiveExprOnly ( lri:(LRI__Expr0)->_Expr_LRI_Original | lri:<skip> ) @ >>
-
-[136][Module]<< !_PrimitiveExprOnly ( lri:(LRI__Expr0)->_Expr_LRI_Original | @ lri:<skip> ) >>
-[RULE: 8][CLAUSE: 0]
-	epsilon -> [139][Module]<< !_PrimitiveExprOnly ( lri:(LRI__Expr0)->_Expr_LRI_Original | lri:<skip> @ ) >>
-
-[137][Module]<< !_PrimitiveExprOnly ( lri:(LRI__Expr0)->_Expr_LRI_Original | lri:<skip> ) >> @[ENDING]
-[RULE: 8][CLAUSE: 0]
-
-[138][Module]<< !_PrimitiveExprOnly ( lri:(LRI__Expr0)->_Expr_LRI_Original | lri:<skip> ) @ >>
-[RULE: 8][CLAUSE: 0]
-	epsilon -> [137][Module]<< !_PrimitiveExprOnly ( lri:(LRI__Expr0)->_Expr_LRI_Original | lri:<skip> ) >> @[ENDING]
-		- EndObject()
-
-[139][Module]<< !_PrimitiveExprOnly ( lri:(LRI__Expr0)->_Expr_LRI_Original | lri:<skip> @ ) >>
-[RULE: 8][CLAUSE: 0]
-	epsilon -> [138][Module]<< !_PrimitiveExprOnly ( lri:(LRI__Expr0)->_Expr_LRI_Original | lri:<skip> ) @ >>
-
-[140][Module]<< !_PrimitiveExprOnly @ ( lri:(LRI__Expr0)->_Expr_LRI_Original | lri:<skip> ) >>
-[RULE: 8][CLAUSE: 0]
-	epsilon -> [141][Module]<< !_PrimitiveExprOnly @ ( lri:(LRI__Expr0)->_Expr_LRI_Original | lri:<skip> ) >>
-
-[141][Module]<< !_PrimitiveExprOnly @ ( lri:(LRI__Expr0)->_Expr_LRI_Original | lri:<skip> ) >>
-[RULE: 8][CLAUSE: 0]
-	epsilon -> [134][Module]<< !_PrimitiveExprOnly ( @ lri:(LRI__Expr0)->_Expr_LRI_Original | lri:<skip> ) >>
-	epsilon -> [136][Module]<< !_PrimitiveExprOnly ( lri:(LRI__Expr0)->_Expr_LRI_Original | @ lri:<skip> ) >>
-
-[142][Module]<< !_PrimitiveShared ( @ lri:(LRIP__Expr0__LongType,LRI__Expr0)->_Expr_LRI_Original | lri:<skip> ) >>
-[RULE: 8][CLAUSE: 1]
-	lr-inject: LRIP__Expr0__LongType,LRI__Expr0 -> _Expr_LRI_Original -> [144][Module]<< !_PrimitiveShared ( lri:(LRIP__Expr0__LongType,LRI__Expr0)->_Expr_LRI_Original @ | lri:<skip> ) >>
-		+ ReopenObject()
-
-[143][Module]<< !_PrimitiveShared ( @ lri:(LRI__LongType)->_LongType_LRI_Original ( lri:(LRIP__Expr0__LongType)->_Expr_LRI_Original | lri:<skip> ) ) >>
-[RULE: 8][CLAUSE: 2]
-	lr-inject: LRI__LongType -> _LongType_LRI_Original -> [157][Module]<< !_PrimitiveShared ( lri:(LRI__LongType)->_LongType_LRI_Original @ ( lri:(LRIP__Expr0__LongType)->_Expr_LRI_Original | lri:<skip> ) ) >>
-		+ ReopenObject()
-
-[144][Module]<< !_PrimitiveShared ( lri:(LRIP__Expr0__LongType,LRI__Expr0)->_Expr_LRI_Original @ | lri:<skip> ) >>
-[RULE: 8][CLAUSE: 1]
-	epsilon -> [147][Module]<< !_PrimitiveShared ( lri:(LRIP__Expr0__LongType,LRI__Expr0)->_Expr_LRI_Original | lri:<skip> ) @ >>
-
-[145][Module]<< !_PrimitiveShared ( lri:(LRIP__Expr0__LongType,LRI__Expr0)->_Expr_LRI_Original | @ lri:<skip> ) >>
-[RULE: 8][CLAUSE: 1]
-	epsilon -> [148][Module]<< !_PrimitiveShared ( lri:(LRIP__Expr0__LongType,LRI__Expr0)->_Expr_LRI_Original | lri:<skip> @ ) >>
-
-[146][Module]<< !_PrimitiveShared ( lri:(LRIP__Expr0__LongType,LRI__Expr0)->_Expr_LRI_Original | lri:<skip> ) >> @[ENDING]
-[RULE: 8][CLAUSE: 1]
-
-[147][Module]<< !_PrimitiveShared ( lri:(LRIP__Expr0__LongType,LRI__Expr0)->_Expr_LRI_Original | lri:<skip> ) @ >>
-[RULE: 8][CLAUSE: 1]
-	epsilon -> [146][Module]<< !_PrimitiveShared ( lri:(LRIP__Expr0__LongType,LRI__Expr0)->_Expr_LRI_Original | lri:<skip> ) >> @[ENDING]
-		- EndObject()
-
-[148][Module]<< !_PrimitiveShared ( lri:(LRIP__Expr0__LongType,LRI__Expr0)->_Expr_LRI_Original | lri:<skip> @ ) >>
-[RULE: 8][CLAUSE: 1]
-	epsilon -> [147][Module]<< !_PrimitiveShared ( lri:(LRIP__Expr0__LongType,LRI__Expr0)->_Expr_LRI_Original | lri:<skip> ) @ >>
-
-[149][Module]<< !_PrimitiveShared ( lri:(LRI__LongType)->_LongType_LRI_Original ( @ lri:(LRIP__Expr0__LongType)->_Expr_LRI_Original | lri:<skip> ) ) >>
-[RULE: 8][CLAUSE: 2]
-	lr-inject: LRIP__Expr0__LongType -> _Expr_LRI_Original -> [150][Module]<< !_PrimitiveShared ( lri:(LRI__LongType)->_LongType_LRI_Original ( lri:(LRIP__Expr0__LongType)->_Expr_LRI_Original @ | lri:<skip> ) ) >>
-		+ ReopenObject()
-
-[150][Module]<< !_PrimitiveShared ( lri:(LRI__LongType)->_LongType_LRI_Original ( lri:(LRIP__Expr0__LongType)->_Expr_LRI_Original @ | lri:<skip> ) ) >>
-[RULE: 8][CLAUSE: 2]
-	epsilon -> [154][Module]<< !_PrimitiveShared ( lri:(LRI__LongType)->_LongType_LRI_Original ( lri:(LRIP__Expr0__LongType)->_Expr_LRI_Original | lri:<skip> ) @ ) >>
-
-[151][Module]<< !_PrimitiveShared ( lri:(LRI__LongType)->_LongType_LRI_Original ( lri:(LRIP__Expr0__LongType)->_Expr_LRI_Original | @ lri:<skip> ) ) >>
-[RULE: 8][CLAUSE: 2]
-	epsilon -> [155][Module]<< !_PrimitiveShared ( lri:(LRI__LongType)->_LongType_LRI_Original ( lri:(LRIP__Expr0__LongType)->_Expr_LRI_Original | lri:<skip> @ ) ) >>
-
-[152][Module]<< !_PrimitiveShared ( lri:(LRI__LongType)->_LongType_LRI_Original ( lri:(LRIP__Expr0__LongType)->_Expr_LRI_Original | lri:<skip> ) ) >> @[ENDING]
-[RULE: 8][CLAUSE: 2]
-
-[153][Module]<< !_PrimitiveShared ( lri:(LRI__LongType)->_LongType_LRI_Original ( lri:(LRIP__Expr0__LongType)->_Expr_LRI_Original | lri:<skip> ) ) @ >>
-[RULE: 8][CLAUSE: 2]
-	epsilon -> [152][Module]<< !_PrimitiveShared ( lri:(LRI__LongType)->_LongType_LRI_Original ( lri:(LRIP__Expr0__LongType)->_Expr_LRI_Original | lri:<skip> ) ) >> @[ENDING]
-		- EndObject()
-
-[154][Module]<< !_PrimitiveShared ( lri:(LRI__LongType)->_LongType_LRI_Original ( lri:(LRIP__Expr0__LongType)->_Expr_LRI_Original | lri:<skip> ) @ ) >>
-[RULE: 8][CLAUSE: 2]
-	epsilon -> [153][Module]<< !_PrimitiveShared ( lri:(LRI__LongType)->_LongType_LRI_Original ( lri:(LRIP__Expr0__LongType)->_Expr_LRI_Original | lri:<skip> ) ) @ >>
-
-[155][Module]<< !_PrimitiveShared ( lri:(LRI__LongType)->_LongType_LRI_Original ( lri:(LRIP__Expr0__LongType)->_Expr_LRI_Original | lri:<skip> @ ) ) >>
-[RULE: 8][CLAUSE: 2]
-	epsilon -> [154][Module]<< !_PrimitiveShared ( lri:(LRI__LongType)->_LongType_LRI_Original ( lri:(LRIP__Expr0__LongType)->_Expr_LRI_Original | lri:<skip> ) @ ) >>
-
-[156][Module]<< !_PrimitiveShared ( lri:(LRI__LongType)->_LongType_LRI_Original @ ( lri:(LRIP__Expr0__LongType)->_Expr_LRI_Original | lri:<skip> ) ) >>
-[RULE: 8][CLAUSE: 2]
-	epsilon -> [149][Module]<< !_PrimitiveShared ( lri:(LRI__LongType)->_LongType_LRI_Original ( @ lri:(LRIP__Expr0__LongType)->_Expr_LRI_Original | lri:<skip> ) ) >>
-	epsilon -> [151][Module]<< !_PrimitiveShared ( lri:(LRI__LongType)->_LongType_LRI_Original ( lri:(LRIP__Expr0__LongType)->_Expr_LRI_Original | @ lri:<skip> ) ) >>
-
-[157][Module]<< !_PrimitiveShared ( lri:(LRI__LongType)->_LongType_LRI_Original @ ( lri:(LRIP__Expr0__LongType)->_Expr_LRI_Original | lri:<skip> ) ) >>
-[RULE: 8][CLAUSE: 2]
-	epsilon -> [156][Module]<< !_PrimitiveShared ( lri:(LRI__LongType)->_LongType_LRI_Original @ ( lri:(LRIP__Expr0__LongType)->_Expr_LRI_Original | lri:<skip> ) ) >>
-
-[158][Module]<< !_PrimitiveShared @ ( lri:(LRIP__Expr0__LongType,LRI__Expr0)->_Expr_LRI_Original | lri:<skip> ) >>
-[RULE: 8][CLAUSE: 1]
-	epsilon -> [159][Module]<< !_PrimitiveShared @ ( lri:(LRIP__Expr0__LongType,LRI__Expr0)->_Expr_LRI_Original | lri:<skip> ) >>
-
-[159][Module]<< !_PrimitiveShared @ ( lri:(LRIP__Expr0__LongType,LRI__Expr0)->_Expr_LRI_Original | lri:<skip> ) >>
-[RULE: 8][CLAUSE: 1]
-	epsilon -> [142][Module]<< !_PrimitiveShared ( @ lri:(LRIP__Expr0__LongType,LRI__Expr0)->_Expr_LRI_Original | lri:<skip> ) >>
-	epsilon -> [145][Module]<< !_PrimitiveShared ( lri:(LRIP__Expr0__LongType,LRI__Expr0)->_Expr_LRI_Original | @ lri:<skip> ) >>
-
-[160][Module]<< !_PrimitiveShared @ ( lri:(LRI__LongType)->_LongType_LRI_Original ( lri:(LRIP__Expr0__LongType)->_Expr_LRI_Original | lri:<skip> ) ) >>
-[RULE: 8][CLAUSE: 2]
-	epsilon -> [143][Module]<< !_PrimitiveShared ( @ lri:(LRI__LongType)->_LongType_LRI_Original ( lri:(LRIP__Expr0__LongType)->_Expr_LRI_Original | lri:<skip> ) ) >>
-
-[161][Module]<< !_PrimitiveShared @ ( lri:(LRI__LongType)->_LongType_LRI_Original ( lri:(LRIP__Expr0__LongType)->_Expr_LRI_Original | lri:<skip> ) ) >>
-[RULE: 8][CLAUSE: 2]
-	epsilon -> [160][Module]<< !_PrimitiveShared @ ( lri:(LRI__LongType)->_LongType_LRI_Original ( lri:(LRIP__Expr0__LongType)->_Expr_LRI_Original | lri:<skip> ) ) >>
-
-[162][Module]<< !_PrimitiveTypeOnly ( @ lri:(LRIP__Expr0__LongType)->_Expr_LRI_Original ) >>
-[RULE: 8][CLAUSE: 3]
-	lr-inject: LRIP__Expr0__LongType -> _Expr_LRI_Original -> [166][Module]<< !_PrimitiveTypeOnly ( lri:(LRIP__Expr0__LongType)->_Expr_LRI_Original @ ) >>
-		+ ReopenObject()
-
-[163][Module]<< !_PrimitiveTypeOnly ( @ lri:(LRI__LongType)->_LongType_LRI_Original ( lri:(LRIP__Expr0__LongType)->_Expr_LRI_Original | lri:<skip> ) | lri:<skip> ) >>
-[RULE: 8][CLAUSE: 4]
-	lr-inject: LRI__LongType -> _LongType_LRI_Original -> [176][Module]<< !_PrimitiveTypeOnly ( lri:(LRI__LongType)->_LongType_LRI_Original @ ( lri:(LRIP__Expr0__LongType)->_Expr_LRI_Original | lri:<skip> ) | lri:<skip> ) >>
-		+ ReopenObject()
-
-[164][Module]<< !_PrimitiveTypeOnly ( lri:(LRIP__Expr0__LongType)->_Expr_LRI_Original ) >> @[ENDING]
-[RULE: 8][CLAUSE: 3]
-
-[165][Module]<< !_PrimitiveTypeOnly ( lri:(LRIP__Expr0__LongType)->_Expr_LRI_Original ) @ >>
-[RULE: 8][CLAUSE: 3]
-	epsilon -> [164][Module]<< !_PrimitiveTypeOnly ( lri:(LRIP__Expr0__LongType)->_Expr_LRI_Original ) >> @[ENDING]
-		- EndObject()
-
-[166][Module]<< !_PrimitiveTypeOnly ( lri:(LRIP__Expr0__LongType)->_Expr_LRI_Original @ ) >>
-[RULE: 8][CLAUSE: 3]
-	epsilon -> [165][Module]<< !_PrimitiveTypeOnly ( lri:(LRIP__Expr0__LongType)->_Expr_LRI_Original ) @ >>
-
-[167][Module]<< !_PrimitiveTypeOnly ( lri:(LRI__LongType)->_LongType_LRI_Original ( @ lri:(LRIP__Expr0__LongType)->_Expr_LRI_Original | lri:<skip> ) | lri:<skip> ) >>
-[RULE: 8][CLAUSE: 4]
-	lr-inject: LRIP__Expr0__LongType -> _Expr_LRI_Original -> [168][Module]<< !_PrimitiveTypeOnly ( lri:(LRI__LongType)->_LongType_LRI_Original ( lri:(LRIP__Expr0__LongType)->_Expr_LRI_Original @ | lri:<skip> ) | lri:<skip> ) >>
-		+ ReopenObject()
-
-[168][Module]<< !_PrimitiveTypeOnly ( lri:(LRI__LongType)->_LongType_LRI_Original ( lri:(LRIP__Expr0__LongType)->_Expr_LRI_Original @ | lri:<skip> ) | lri:<skip> ) >>
-[RULE: 8][CLAUSE: 4]
-	epsilon -> [170][Module]<< !_PrimitiveTypeOnly ( lri:(LRI__LongType)->_LongType_LRI_Original ( lri:(LRIP__Expr0__LongType)->_Expr_LRI_Original | lri:<skip> ) @ | lri:<skip> ) >>
-
-[169][Module]<< !_PrimitiveTypeOnly ( lri:(LRI__LongType)->_LongType_LRI_Original ( lri:(LRIP__Expr0__LongType)->_Expr_LRI_Original | @ lri:<skip> ) | lri:<skip> ) >>
-[RULE: 8][CLAUSE: 4]
-	epsilon -> [175][Module]<< !_PrimitiveTypeOnly ( lri:(LRI__LongType)->_LongType_LRI_Original ( lri:(LRIP__Expr0__LongType)->_Expr_LRI_Original | lri:<skip> @ ) | lri:<skip> ) >>
-
-[170][Module]<< !_PrimitiveTypeOnly ( lri:(LRI__LongType)->_LongType_LRI_Original ( lri:(LRIP__Expr0__LongType)->_Expr_LRI_Original | lri:<skip> ) @ | lri:<skip> ) >>
-[RULE: 8][CLAUSE: 4]
-	epsilon -> [173][Module]<< !_PrimitiveTypeOnly ( lri:(LRI__LongType)->_LongType_LRI_Original ( lri:(LRIP__Expr0__LongType)->_Expr_LRI_Original | lri:<skip> ) | lri:<skip> ) @ >>
-
-[171][Module]<< !_PrimitiveTypeOnly ( lri:(LRI__LongType)->_LongType_LRI_Original ( lri:(LRIP__Expr0__LongType)->_Expr_LRI_Original | lri:<skip> ) | @ lri:<skip> ) >>
-[RULE: 8][CLAUSE: 4]
-	epsilon -> [174][Module]<< !_PrimitiveTypeOnly ( lri:(LRI__LongType)->_LongType_LRI_Original ( lri:(LRIP__Expr0__LongType)->_Expr_LRI_Original | lri:<skip> ) | lri:<skip> @ ) >>
-
-[172][Module]<< !_PrimitiveTypeOnly ( lri:(LRI__LongType)->_LongType_LRI_Original ( lri:(LRIP__Expr0__LongType)->_Expr_LRI_Original | lri:<skip> ) | lri:<skip> ) >> @[ENDING]
-[RULE: 8][CLAUSE: 4]
-
-[173][Module]<< !_PrimitiveTypeOnly ( lri:(LRI__LongType)->_LongType_LRI_Original ( lri:(LRIP__Expr0__LongType)->_Expr_LRI_Original | lri:<skip> ) | lri:<skip> ) @ >>
-[RULE: 8][CLAUSE: 4]
-	epsilon -> [172][Module]<< !_PrimitiveTypeOnly ( lri:(LRI__LongType)->_LongType_LRI_Original ( lri:(LRIP__Expr0__LongType)->_Expr_LRI_Original | lri:<skip> ) | lri:<skip> ) >> @[ENDING]
-		- EndObject()
-
-[174][Module]<< !_PrimitiveTypeOnly ( lri:(LRI__LongType)->_LongType_LRI_Original ( lri:(LRIP__Expr0__LongType)->_Expr_LRI_Original | lri:<skip> ) | lri:<skip> @ ) >>
-[RULE: 8][CLAUSE: 4]
-	epsilon -> [173][Module]<< !_PrimitiveTypeOnly ( lri:(LRI__LongType)->_LongType_LRI_Original ( lri:(LRIP__Expr0__LongType)->_Expr_LRI_Original | lri:<skip> ) | lri:<skip> ) @ >>
-
-[175][Module]<< !_PrimitiveTypeOnly ( lri:(LRI__LongType)->_LongType_LRI_Original ( lri:(LRIP__Expr0__LongType)->_Expr_LRI_Original | lri:<skip> @ ) | lri:<skip> ) >>
-[RULE: 8][CLAUSE: 4]
-	epsilon -> [170][Module]<< !_PrimitiveTypeOnly ( lri:(LRI__LongType)->_LongType_LRI_Original ( lri:(LRIP__Expr0__LongType)->_Expr_LRI_Original | lri:<skip> ) @ | lri:<skip> ) >>
-
-[176][Module]<< !_PrimitiveTypeOnly ( lri:(LRI__LongType)->_LongType_LRI_Original @ ( lri:(LRIP__Expr0__LongType)->_Expr_LRI_Original | lri:<skip> ) | lri:<skip> ) >>
-[RULE: 8][CLAUSE: 4]
-	epsilon -> [177][Module]<< !_PrimitiveTypeOnly ( lri:(LRI__LongType)->_LongType_LRI_Original @ ( lri:(LRIP__Expr0__LongType)->_Expr_LRI_Original | lri:<skip> ) | lri:<skip> ) >>
-
-[177][Module]<< !_PrimitiveTypeOnly ( lri:(LRI__LongType)->_LongType_LRI_Original @ ( lri:(LRIP__Expr0__LongType)->_Expr_LRI_Original | lri:<skip> ) | lri:<skip> ) >>
-[RULE: 8][CLAUSE: 4]
-	epsilon -> [167][Module]<< !_PrimitiveTypeOnly ( lri:(LRI__LongType)->_LongType_LRI_Original ( @ lri:(LRIP__Expr0__LongType)->_Expr_LRI_Original | lri:<skip> ) | lri:<skip> ) >>
-	epsilon -> [169][Module]<< !_PrimitiveTypeOnly ( lri:(LRI__LongType)->_LongType_LRI_Original ( lri:(LRIP__Expr0__LongType)->_Expr_LRI_Original | @ lri:<skip> ) | lri:<skip> ) >>
-
-[178][Module]<< !_PrimitiveTypeOnly @ ( lri:(LRIP__Expr0__LongType)->_Expr_LRI_Original ) >>
-[RULE: 8][CLAUSE: 3]
-	epsilon -> [179][Module]<< !_PrimitiveTypeOnly @ ( lri:(LRIP__Expr0__LongType)->_Expr_LRI_Original ) >>
-
-[179][Module]<< !_PrimitiveTypeOnly @ ( lri:(LRIP__Expr0__LongType)->_Expr_LRI_Original ) >>
-[RULE: 8][CLAUSE: 3]
-	epsilon -> [162][Module]<< !_PrimitiveTypeOnly ( @ lri:(LRIP__Expr0__LongType)->_Expr_LRI_Original ) >>
-
-[180][Module]<< !_PrimitiveTypeOnly @ ( lri:(LRI__LongType)->_LongType_LRI_Original ( lri:(LRIP__Expr0__LongType)->_Expr_LRI_Original | lri:<skip> ) | lri:<skip> ) >>
-[RULE: 8][CLAUSE: 4]
-	epsilon -> [163][Module]<< !_PrimitiveTypeOnly ( @ lri:(LRI__LongType)->_LongType_LRI_Original ( lri:(LRIP__Expr0__LongType)->_Expr_LRI_Original | lri:<skip> ) | lri:<skip> ) >>
-	epsilon -> [171][Module]<< !_PrimitiveTypeOnly ( lri:(LRI__LongType)->_LongType_LRI_Original ( lri:(LRIP__Expr0__LongType)->_Expr_LRI_Original | lri:<skip> ) | @ lri:<skip> ) >>
-
-[181][Module]<< !_PrimitiveTypeOnly @ ( lri:(LRI__LongType)->_LongType_LRI_Original ( lri:(LRIP__Expr0__LongType)->_Expr_LRI_Original | lri:<skip> ) | lri:<skip> ) >>
-[RULE: 8][CLAUSE: 4]
-	epsilon -> [180][Module]<< !_PrimitiveTypeOnly @ ( lri:(LRI__LongType)->_LongType_LRI_Original ( lri:(LRIP__Expr0__LongType)->_Expr_LRI_Original | lri:<skip> ) | lri:<skip> ) >>
-
-[182][Module]<< @ !_PrimitiveExprOnly ( lri:(LRI__Expr0)->_Expr_LRI_Original | lri:<skip> ) >>
-[RULE: 8][CLAUSE: 0]
-	rule: _PrimitiveExprOnly -> [140][Module]<< !_PrimitiveExprOnly @ ( lri:(LRI__Expr0)->_Expr_LRI_Original | lri:<skip> ) >>
-		+ ReopenObject()
-
-[183][Module]<< @ !_PrimitiveShared ( lri:(LRIP__Expr0__LongType,LRI__Expr0)->_Expr_LRI_Original | lri:<skip> ) >>
-[RULE: 8][CLAUSE: 1]
-	rule: _PrimitiveShared -> [158][Module]<< !_PrimitiveShared @ ( lri:(LRIP__Expr0__LongType,LRI__Expr0)->_Expr_LRI_Original | lri:<skip> ) >>
-		+ ReopenObject()
-
-[184][Module]<< @ !_PrimitiveShared ( lri:(LRI__LongType)->_LongType_LRI_Original ( lri:(LRIP__Expr0__LongType)->_Expr_LRI_Original | lri:<skip> ) ) >>
-[RULE: 8][CLAUSE: 2]
-	rule: _PrimitiveShared -> [161][Module]<< !_PrimitiveShared @ ( lri:(LRI__LongType)->_LongType_LRI_Original ( lri:(LRIP__Expr0__LongType)->_Expr_LRI_Original | lri:<skip> ) ) >>
-		+ ReopenObject()
-
-[185][Module]<< @ !_PrimitiveTypeOnly ( lri:(LRIP__Expr0__LongType)->_Expr_LRI_Original ) >>
-[RULE: 8][CLAUSE: 3]
-	rule: _PrimitiveTypeOnly -> [178][Module]<< !_PrimitiveTypeOnly @ ( lri:(LRIP__Expr0__LongType)->_Expr_LRI_Original ) >>
-		+ ReopenObject()
-
-[186][Module]<< @ !_PrimitiveTypeOnly ( lri:(LRI__LongType)->_LongType_LRI_Original ( lri:(LRIP__Expr0__LongType)->_Expr_LRI_Original | lri:<skip> ) | lri:<skip> ) >>
-[RULE: 8][CLAUSE: 4]
-	rule: _PrimitiveTypeOnly -> [181][Module]<< !_PrimitiveTypeOnly @ ( lri:(LRI__LongType)->_LongType_LRI_Original ( lri:(LRIP__Expr0__LongType)->_Expr_LRI_Original | lri:<skip> ) | lri:<skip> ) >>
-		+ ReopenObject()
-
-[187][Module]@ << !_PrimitiveExprOnly ( lri:(LRI__Expr0)->_Expr_LRI_Original | lri:<skip> ) >>
-[RULE: 8][CLAUSE: 0]
-	epsilon -> [182][Module]<< @ !_PrimitiveExprOnly ( lri:(LRI__Expr0)->_Expr_LRI_Original | lri:<skip> ) >>
-		- DelayFieldAssignment()
-
-[188][Module]@ << !_PrimitiveShared ( lri:(LRIP__Expr0__LongType,LRI__Expr0)->_Expr_LRI_Original | lri:<skip> ) >>
-[RULE: 8][CLAUSE: 1]
-	epsilon -> [183][Module]<< @ !_PrimitiveShared ( lri:(LRIP__Expr0__LongType,LRI__Expr0)->_Expr_LRI_Original | lri:<skip> ) >>
-		- DelayFieldAssignment()
-
-[189][Module]@ << !_PrimitiveShared ( lri:(LRI__LongType)->_LongType_LRI_Original ( lri:(LRIP__Expr0__LongType)->_Expr_LRI_Original | lri:<skip> ) ) >>
-[RULE: 8][CLAUSE: 2]
-	epsilon -> [184][Module]<< @ !_PrimitiveShared ( lri:(LRI__LongType)->_LongType_LRI_Original ( lri:(LRIP__Expr0__LongType)->_Expr_LRI_Original | lri:<skip> ) ) >>
-		- DelayFieldAssignment()
-
-[190][Module]@ << !_PrimitiveTypeOnly ( lri:(LRIP__Expr0__LongType)->_Expr_LRI_Original ) >>
-[RULE: 8][CLAUSE: 3]
-	epsilon -> [185][Module]<< @ !_PrimitiveTypeOnly ( lri:(LRIP__Expr0__LongType)->_Expr_LRI_Original ) >>
-		- DelayFieldAssignment()
-
-[191][Module]@ << !_PrimitiveTypeOnly ( lri:(LRI__LongType)->_LongType_LRI_Original ( lri:(LRIP__Expr0__LongType)->_Expr_LRI_Original | lri:<skip> ) | lri:<skip> ) >>
-[RULE: 8][CLAUSE: 4]
-	epsilon -> [186][Module]<< @ !_PrimitiveTypeOnly ( lri:(LRI__LongType)->_LongType_LRI_Original ( lri:(LRIP__Expr0__LongType)->_Expr_LRI_Original | lri:<skip> ) | lri:<skip> ) >>
-		- DelayFieldAssignment()
-
-[192][ExprModule]<< !_Expr >> @[ENDING]
-[RULE: 9][CLAUSE: 0]
-
-[193][ExprModule]<< !_Expr @ >>
-[RULE: 9][CLAUSE: 0]
-	epsilon -> [192][ExprModule]<< !_Expr >> @[ENDING]
-		- EndObject()
-
-[194][ExprModule]<< @ !_Expr >>
-[RULE: 9][CLAUSE: 0]
-	rule: _Expr -> [193][ExprModule]<< !_Expr @ >>
-		+ ReopenObject()
-
-[195][ExprModule]@ << !_Expr >>
-[RULE: 9][CLAUSE: 0]
-	epsilon -> [194][ExprModule]<< @ !_Expr >>
-		- DelayFieldAssignment()
-
-[196][TypeModule]<< !_LongType >> @[ENDING]
-[RULE: 10][CLAUSE: 0]
-
-[197][TypeModule]<< !_LongType @ >>
-[RULE: 10][CLAUSE: 0]
-	epsilon -> [196][TypeModule]<< !_LongType >> @[ENDING]
-		- EndObject()
-
-[198][TypeModule]<< @ !_LongType >>
-[RULE: 10][CLAUSE: 0]
-	rule: _LongType -> [197][TypeModule]<< !_LongType @ >>
-		+ ReopenObject()
-
-[199][TypeModule]@ << !_LongType >>
-[RULE: 10][CLAUSE: 0]
-	epsilon -> [198][TypeModule]<< @ !_LongType >>
-		- DelayFieldAssignment()
-
-[200][_LongType_LRI_Original]< @ _LongType_LRI_Original "(" { _LongType ; "," } ")" >
-[RULE: 11][CLAUSE: 5]
-	rule: _LongType_LRI_Original -> [218][_LongType_LRI_Original]< _LongType_LRI_Original @ "(" { _LongType ; "," } ")" >
-		+ Field(FunctionType::returnType)
-
-[201][_LongType_LRI_Original]< @ _LongType_LRI_Original "*" >
-[RULE: 11][CLAUSE: 4]
-	rule: _LongType_LRI_Original -> [220][_LongType_LRI_Original]< _LongType_LRI_Original @ "*" >
-		+ Field(PointerType::type)
-
-[202][_LongType_LRI_Original]< @ _LongType_LRI_Original "const" >
-[RULE: 11][CLAUSE: 3]
-	rule: _LongType_LRI_Original -> [221][_LongType_LRI_Original]< _LongType_LRI_Original @ "const" >
-		+ Field(ConstType::type)
-
-[203][_LongType_LRI_Original]< _LongType_LRI_Original "(" @ { _LongType ; "," } ")" >
-[RULE: 11][CLAUSE: 5]
-	epsilon -> [204][_LongType_LRI_Original]< _LongType_LRI_Original "(" @ { _LongType ; "," } ")" >
-
-[204][_LongType_LRI_Original]< _LongType_LRI_Original "(" @ { _LongType ; "," } ")" >
-[RULE: 11][CLAUSE: 5]
-	epsilon -> [205][_LongType_LRI_Original]< _LongType_LRI_Original "(" { @ _LongType ; "," } ")" >
-	epsilon -> [209][_LongType_LRI_Original]< _LongType_LRI_Original "(" { _LongType ; "," } @ ")" >
-
-[205][_LongType_LRI_Original]< _LongType_LRI_Original "(" { @ _LongType ; "," } ")" >
-[RULE: 11][CLAUSE: 5]
-	rule: _LongType -> [212][_LongType_LRI_Original]< _LongType_LRI_Original "(" { _LongType @ ; "," } ")" >
-		+ Field(FunctionType::args)
-
-[206][_LongType_LRI_Original]< _LongType_LRI_Original "(" { _LongType ; "," @ } ")" >
-[RULE: 11][CLAUSE: 5]
-	epsilon -> [205][_LongType_LRI_Original]< _LongType_LRI_Original "(" { @ _LongType ; "," } ")" >
-
-[207][_LongType_LRI_Original]< _LongType_LRI_Original "(" { _LongType ; "," } ")" > @[ENDING]
-[RULE: 11][CLAUSE: 5]
-
-[208][_LongType_LRI_Original]< _LongType_LRI_Original "(" { _LongType ; "," } ")" @ >
-[RULE: 11][CLAUSE: 5]
-	epsilon -> [207][_LongType_LRI_Original]< _LongType_LRI_Original "(" { _LongType ; "," } ")" > @[ENDING]
-		- EndObject()
-
-[209][_LongType_LRI_Original]< _LongType_LRI_Original "(" { _LongType ; "," } @ ")" >
-[RULE: 11][CLAUSE: 5]
-	epsilon -> [210][_LongType_LRI_Original]< _LongType_LRI_Original "(" { _LongType ; "," } @ ")" >
-
-[210][_LongType_LRI_Original]< _LongType_LRI_Original "(" { _LongType ; "," } @ ")" >
-[RULE: 11][CLAUSE: 5]
-	token: ")" -> [208][_LongType_LRI_Original]< _LongType_LRI_Original "(" { _LongType ; "," } ")" @ >
-
-[211][_LongType_LRI_Original]< _LongType_LRI_Original "(" { _LongType ; @ "," } ")" >
-[RULE: 11][CLAUSE: 5]
-	token: "," -> [206][_LongType_LRI_Original]< _LongType_LRI_Original "(" { _LongType ; "," @ } ")" >
-
-[212][_LongType_LRI_Original]< _LongType_LRI_Original "(" { _LongType @ ; "," } ")" >
-[RULE: 11][CLAUSE: 5]
-	epsilon -> [209][_LongType_LRI_Original]< _LongType_LRI_Original "(" { _LongType ; "," } @ ")" >
-	epsilon -> [211][_LongType_LRI_Original]< _LongType_LRI_Original "(" { _LongType ; @ "," } ")" >
-
-[213][_LongType_LRI_Original]< _LongType_LRI_Original "*" > @[ENDING]
-[RULE: 11][CLAUSE: 4]
-
-[214][_LongType_LRI_Original]< _LongType_LRI_Original "*" @ >
-[RULE: 11][CLAUSE: 4]
-	epsilon -> [213][_LongType_LRI_Original]< _LongType_LRI_Original "*" > @[ENDING]
-		- EndObject()
-
-[215][_LongType_LRI_Original]< _LongType_LRI_Original "const" > @[ENDING]
-[RULE: 11][CLAUSE: 3]
-
-[216][_LongType_LRI_Original]< _LongType_LRI_Original "const" @ >
-[RULE: 11][CLAUSE: 3]
-	epsilon -> [215][_LongType_LRI_Original]< _LongType_LRI_Original "const" > @[ENDING]
-		- EndObject()
-
-[217][_LongType_LRI_Original]< _LongType_LRI_Original @ "(" { _LongType ; "," } ")" >
-[RULE: 11][CLAUSE: 5]
-	token: "(" -> [203][_LongType_LRI_Original]< _LongType_LRI_Original "(" @ { _LongType ; "," } ")" >
-
-[218][_LongType_LRI_Original]< _LongType_LRI_Original @ "(" { _LongType ; "," } ")" >
-[RULE: 11][CLAUSE: 5]
-	epsilon -> [217][_LongType_LRI_Original]< _LongType_LRI_Original @ "(" { _LongType ; "," } ")" >
-
-[219][_LongType_LRI_Original]< _LongType_LRI_Original @ "*" >
-[RULE: 11][CLAUSE: 4]
-	token: "*" -> [214][_LongType_LRI_Original]< _LongType_LRI_Original "*" @ >
-
-[220][_LongType_LRI_Original]< _LongType_LRI_Original @ "*" >
-[RULE: 11][CLAUSE: 4]
-	epsilon -> [219][_LongType_LRI_Original]< _LongType_LRI_Original @ "*" >
-
-[221][_LongType_LRI_Original]< _LongType_LRI_Original @ "const" >
-[RULE: 11][CLAUSE: 3]
-	epsilon -> [222][_LongType_LRI_Original]< _LongType_LRI_Original @ "const" >
-
-[222][_LongType_LRI_Original]< _LongType_LRI_Original @ "const" >
-[RULE: 11][CLAUSE: 3]
-	token: "const" -> [216][_LongType_LRI_Original]< _LongType_LRI_Original "const" @ >
-
-[223][_LongType_LRI_Original]<< !_PrimitiveShared >> @[ENDING]
-[RULE: 11][CLAUSE: 1]
-
-[224][_LongType_LRI_Original]<< !_PrimitiveShared @ >>
-[RULE: 11][CLAUSE: 1]
-	epsilon -> [223][_LongType_LRI_Original]<< !_PrimitiveShared >> @[ENDING]
-		- EndObject()
-
-[225][_LongType_LRI_Original]<< !_PrimitiveTypeOnly >> @[ENDING]
-[RULE: 11][CLAUSE: 2]
-
-[226][_LongType_LRI_Original]<< !_PrimitiveTypeOnly @ >>
-[RULE: 11][CLAUSE: 2]
-	epsilon -> [225][_LongType_LRI_Original]<< !_PrimitiveTypeOnly >> @[ENDING]
-		- EndObject()
-
-[227][_LongType_LRI_Original]<< @ !_PrimitiveShared >>
-[RULE: 11][CLAUSE: 1]
-	rule: _PrimitiveShared -> [224][_LongType_LRI_Original]<< !_PrimitiveShared @ >>
-		+ ReopenObject()
-
-[228][_LongType_LRI_Original]<< @ !_PrimitiveTypeOnly >>
-[RULE: 11][CLAUSE: 2]
-	rule: _PrimitiveTypeOnly -> [226][_LongType_LRI_Original]<< !_PrimitiveTypeOnly @ >>
-		+ ReopenObject()
-
-[229][_LongType_LRI_Original]@ < _LongType_LRI_Original "(" { _LongType ; "," } ")" >
-[RULE: 11][CLAUSE: 5]
-	epsilon -> [200][_LongType_LRI_Original]< @ _LongType_LRI_Original "(" { _LongType ; "," } ")" >
-		- BeginObject(FunctionType)
-
-[230][_LongType_LRI_Original]@ < _LongType_LRI_Original "*" >
-[RULE: 11][CLAUSE: 4]
-	epsilon -> [201][_LongType_LRI_Original]< @ _LongType_LRI_Original "*" >
-		- BeginObject(PointerType)
-
-[231][_LongType_LRI_Original]@ < _LongType_LRI_Original "const" >
-[RULE: 11][CLAUSE: 3]
-	epsilon -> [202][_LongType_LRI_Original]< @ _LongType_LRI_Original "const" >
-		- BeginObject(ConstType)
-
-[232][_LongType_LRI_Original]@ << !_PrimitiveShared >>
-[RULE: 11][CLAUSE: 1]
-	epsilon -> [227][_LongType_LRI_Original]<< @ !_PrimitiveShared >>
-		- DelayFieldAssignment()
-
-[233][_LongType_LRI_Original]@ << !_PrimitiveTypeOnly >>
-[RULE: 11][CLAUSE: 2]
-	epsilon -> [228][_LongType_LRI_Original]<< @ !_PrimitiveTypeOnly >>
-		- DelayFieldAssignment()
-
-[234][_LongType_LRI_Original]@ lrp:(LRI__LongType)
-[RULE: 11][CLAUSE: 0]
-	lr-placeholder: LRI__LongType -> [235][_LongType_LRI_Original]lrp:(LRI__LongType) @[ENDING]
-
-[235][_LongType_LRI_Original]lrp:(LRI__LongType) @[ENDING]
-[RULE: 11][CLAUSE: 0]
-
-[236][_Expr0_LRI_Original]< @ _Expr0__LongType_LRI_Prefix "{" { _Expr ; "," } "}" >
-[RULE: 12][CLAUSE: 3]
-	rule: _Expr0__LongType_LRI_Prefix -> [248][_Expr0_LRI_Original]< _Expr0__LongType_LRI_Prefix @ "{" { _Expr ; "," } "}" >
-		+ Field(CtorExpr::type)
-
-[237][_Expr0_LRI_Original]< _Expr0__LongType_LRI_Prefix "{" @ { _Expr ; "," } "}" >
-[RULE: 12][CLAUSE: 3]
-	epsilon -> [238][_Expr0_LRI_Original]< _Expr0__LongType_LRI_Prefix "{" @ { _Expr ; "," } "}" >
-
-[238][_Expr0_LRI_Original]< _Expr0__LongType_LRI_Prefix "{" @ { _Expr ; "," } "}" >
-[RULE: 12][CLAUSE: 3]
-	epsilon -> [239][_Expr0_LRI_Original]< _Expr0__LongType_LRI_Prefix "{" { @ _Expr ; "," } "}" >
-	epsilon -> [244][_Expr0_LRI_Original]< _Expr0__LongType_LRI_Prefix "{" { _Expr ; "," } @ "}" >
-
-[239][_Expr0_LRI_Original]< _Expr0__LongType_LRI_Prefix "{" { @ _Expr ; "," } "}" >
-[RULE: 12][CLAUSE: 3]
-	rule: _Expr -> [246][_Expr0_LRI_Original]< _Expr0__LongType_LRI_Prefix "{" { _Expr @ ; "," } "}" >
-		+ Field(CtorExpr::args)
-
-[240][_Expr0_LRI_Original]< _Expr0__LongType_LRI_Prefix "{" { _Expr ; "," @ } "}" >
-[RULE: 12][CLAUSE: 3]
-	epsilon -> [239][_Expr0_LRI_Original]< _Expr0__LongType_LRI_Prefix "{" { @ _Expr ; "," } "}" >
-
-[241][_Expr0_LRI_Original]< _Expr0__LongType_LRI_Prefix "{" { _Expr ; "," } "}" > @[ENDING]
-[RULE: 12][CLAUSE: 3]
-
-[242][_Expr0_LRI_Original]< _Expr0__LongType_LRI_Prefix "{" { _Expr ; "," } "}" @ >
-[RULE: 12][CLAUSE: 3]
-	epsilon -> [241][_Expr0_LRI_Original]< _Expr0__LongType_LRI_Prefix "{" { _Expr ; "," } "}" > @[ENDING]
-		- EndObject()
-
-[243][_Expr0_LRI_Original]< _Expr0__LongType_LRI_Prefix "{" { _Expr ; "," } @ "}" >
-[RULE: 12][CLAUSE: 3]
-	token: "}" -> [242][_Expr0_LRI_Original]< _Expr0__LongType_LRI_Prefix "{" { _Expr ; "," } "}" @ >
-
-[244][_Expr0_LRI_Original]< _Expr0__LongType_LRI_Prefix "{" { _Expr ; "," } @ "}" >
-[RULE: 12][CLAUSE: 3]
-	epsilon -> [243][_Expr0_LRI_Original]< _Expr0__LongType_LRI_Prefix "{" { _Expr ; "," } @ "}" >
-
-[245][_Expr0_LRI_Original]< _Expr0__LongType_LRI_Prefix "{" { _Expr ; @ "," } "}" >
-[RULE: 12][CLAUSE: 3]
-	token: "," -> [240][_Expr0_LRI_Original]< _Expr0__LongType_LRI_Prefix "{" { _Expr ; "," @ } "}" >
-
-[246][_Expr0_LRI_Original]< _Expr0__LongType_LRI_Prefix "{" { _Expr @ ; "," } "}" >
-[RULE: 12][CLAUSE: 3]
-	epsilon -> [244][_Expr0_LRI_Original]< _Expr0__LongType_LRI_Prefix "{" { _Expr ; "," } @ "}" >
-	epsilon -> [245][_Expr0_LRI_Original]< _Expr0__LongType_LRI_Prefix "{" { _Expr ; @ "," } "}" >
-
-[247][_Expr0_LRI_Original]< _Expr0__LongType_LRI_Prefix @ "{" { _Expr ; "," } "}" >
-[RULE: 12][CLAUSE: 3]
-	token: "{" -> [237][_Expr0_LRI_Original]< _Expr0__LongType_LRI_Prefix "{" @ { _Expr ; "," } "}" >
-
-[248][_Expr0_LRI_Original]< _Expr0__LongType_LRI_Prefix @ "{" { _Expr ; "," } "}" >
-[RULE: 12][CLAUSE: 3]
-	epsilon -> [247][_Expr0_LRI_Original]< _Expr0__LongType_LRI_Prefix @ "{" { _Expr ; "," } "}" >
-
-[249][_Expr0_LRI_Original]<< !_PrimitiveExprOnly >> @[ENDING]
-[RULE: 12][CLAUSE: 2]
-
-[250][_Expr0_LRI_Original]<< !_PrimitiveExprOnly @ >>
-[RULE: 12][CLAUSE: 2]
-	epsilon -> [249][_Expr0_LRI_Original]<< !_PrimitiveExprOnly >> @[ENDING]
-		- EndObject()
-
-[251][_Expr0_LRI_Original]<< !_PrimitiveShared >> @[ENDING]
-[RULE: 12][CLAUSE: 1]
-
-[252][_Expr0_LRI_Original]<< !_PrimitiveShared @ >>
-[RULE: 12][CLAUSE: 1]
-	epsilon -> [251][_Expr0_LRI_Original]<< !_PrimitiveShared >> @[ENDING]
-		- EndObject()
-
-[253][_Expr0_LRI_Original]<< @ !_PrimitiveExprOnly >>
-[RULE: 12][CLAUSE: 2]
-	rule: _PrimitiveExprOnly -> [250][_Expr0_LRI_Original]<< !_PrimitiveExprOnly @ >>
-		+ ReopenObject()
-
-[254][_Expr0_LRI_Original]<< @ !_PrimitiveShared >>
-[RULE: 12][CLAUSE: 1]
-	rule: _PrimitiveShared -> [252][_Expr0_LRI_Original]<< !_PrimitiveShared @ >>
-		+ ReopenObject()
-
-[255][_Expr0_LRI_Original]@ < _Expr0__LongType_LRI_Prefix "{" { _Expr ; "," } "}" >
-[RULE: 12][CLAUSE: 3]
-	epsilon -> [236][_Expr0_LRI_Original]< @ _Expr0__LongType_LRI_Prefix "{" { _Expr ; "," } "}" >
-		- BeginObject(CtorExpr)
-
-[256][_Expr0_LRI_Original]@ << !_PrimitiveExprOnly >>
-[RULE: 12][CLAUSE: 2]
-	epsilon -> [253][_Expr0_LRI_Original]<< @ !_PrimitiveExprOnly >>
-		- DelayFieldAssignment()
-
-[257][_Expr0_LRI_Original]@ << !_PrimitiveShared >>
-[RULE: 12][CLAUSE: 1]
-	epsilon -> [254][_Expr0_LRI_Original]<< @ !_PrimitiveShared >>
-		- DelayFieldAssignment()
-
-[258][_Expr0_LRI_Original]@ lrp:(LRI__Expr0)
-[RULE: 12][CLAUSE: 0]
-	lr-placeholder: LRI__Expr0 -> [259][_Expr0_LRI_Original]lrp:(LRI__Expr0) @[ENDING]
-
-[259][_Expr0_LRI_Original]lrp:(LRI__Expr0) @[ENDING]
-[RULE: 12][CLAUSE: 0]
-
-[260][_Expr1_LRI_Original]< @ _Expr1_LRI_Original "(" { _Expr ; "," } ")" >
-[RULE: 13][CLAUSE: 1]
-	rule: _Expr1_LRI_Original -> [272][_Expr1_LRI_Original]< _Expr1_LRI_Original @ "(" { _Expr ; "," } ")" >
-		+ Field(CallExpr::func)
-
-[261][_Expr1_LRI_Original]< _Expr1_LRI_Original "(" @ { _Expr ; "," } ")" >
-[RULE: 13][CLAUSE: 1]
-	epsilon -> [262][_Expr1_LRI_Original]< _Expr1_LRI_Original "(" @ { _Expr ; "," } ")" >
-
-[262][_Expr1_LRI_Original]< _Expr1_LRI_Original "(" @ { _Expr ; "," } ")" >
-[RULE: 13][CLAUSE: 1]
-	epsilon -> [263][_Expr1_LRI_Original]< _Expr1_LRI_Original "(" { @ _Expr ; "," } ")" >
-	epsilon -> [267][_Expr1_LRI_Original]< _Expr1_LRI_Original "(" { _Expr ; "," } @ ")" >
-
-[263][_Expr1_LRI_Original]< _Expr1_LRI_Original "(" { @ _Expr ; "," } ")" >
-[RULE: 13][CLAUSE: 1]
-	rule: _Expr -> [270][_Expr1_LRI_Original]< _Expr1_LRI_Original "(" { _Expr @ ; "," } ")" >
-		+ Field(CallExpr::args)
-
-[264][_Expr1_LRI_Original]< _Expr1_LRI_Original "(" { _Expr ; "," @ } ")" >
-[RULE: 13][CLAUSE: 1]
-	epsilon -> [263][_Expr1_LRI_Original]< _Expr1_LRI_Original "(" { @ _Expr ; "," } ")" >
-
-[265][_Expr1_LRI_Original]< _Expr1_LRI_Original "(" { _Expr ; "," } ")" > @[ENDING]
-[RULE: 13][CLAUSE: 1]
-
-[266][_Expr1_LRI_Original]< _Expr1_LRI_Original "(" { _Expr ; "," } ")" @ >
-[RULE: 13][CLAUSE: 1]
-	epsilon -> [265][_Expr1_LRI_Original]< _Expr1_LRI_Original "(" { _Expr ; "," } ")" > @[ENDING]
-		- EndObject()
-
-[267][_Expr1_LRI_Original]< _Expr1_LRI_Original "(" { _Expr ; "," } @ ")" >
-[RULE: 13][CLAUSE: 1]
-	epsilon -> [268][_Expr1_LRI_Original]< _Expr1_LRI_Original "(" { _Expr ; "," } @ ")" >
-
-[268][_Expr1_LRI_Original]< _Expr1_LRI_Original "(" { _Expr ; "," } @ ")" >
-[RULE: 13][CLAUSE: 1]
-	token: ")" -> [266][_Expr1_LRI_Original]< _Expr1_LRI_Original "(" { _Expr ; "," } ")" @ >
-
-[269][_Expr1_LRI_Original]< _Expr1_LRI_Original "(" { _Expr ; @ "," } ")" >
-[RULE: 13][CLAUSE: 1]
-	token: "," -> [264][_Expr1_LRI_Original]< _Expr1_LRI_Original "(" { _Expr ; "," @ } ")" >
-
-[270][_Expr1_LRI_Original]< _Expr1_LRI_Original "(" { _Expr @ ; "," } ")" >
-[RULE: 13][CLAUSE: 1]
-	epsilon -> [267][_Expr1_LRI_Original]< _Expr1_LRI_Original "(" { _Expr ; "," } @ ")" >
-	epsilon -> [269][_Expr1_LRI_Original]< _Expr1_LRI_Original "(" { _Expr ; @ "," } ")" >
-
-[271][_Expr1_LRI_Original]< _Expr1_LRI_Original @ "(" { _Expr ; "," } ")" >
-[RULE: 13][CLAUSE: 1]
-	token: "(" -> [261][_Expr1_LRI_Original]< _Expr1_LRI_Original "(" @ { _Expr ; "," } ")" >
-
-[272][_Expr1_LRI_Original]< _Expr1_LRI_Original @ "(" { _Expr ; "," } ")" >
-[RULE: 13][CLAUSE: 1]
-	epsilon -> [271][_Expr1_LRI_Original]< _Expr1_LRI_Original @ "(" { _Expr ; "," } ")" >
-
-[273][_Expr1_LRI_Original]<< !_Expr0_LRI_Original >> @[ENDING]
-[RULE: 13][CLAUSE: 0]
-
-[274][_Expr1_LRI_Original]<< !_Expr0_LRI_Original @ >>
-[RULE: 13][CLAUSE: 0]
-	epsilon -> [273][_Expr1_LRI_Original]<< !_Expr0_LRI_Original >> @[ENDING]
-		- EndObject()
-
-[275][_Expr1_LRI_Original]<< @ !_Expr0_LRI_Original >>
-[RULE: 13][CLAUSE: 0]
-	rule: _Expr0_LRI_Original -> [274][_Expr1_LRI_Original]<< !_Expr0_LRI_Original @ >>
-		+ ReopenObject()
-
-[276][_Expr1_LRI_Original]@ < _Expr1_LRI_Original "(" { _Expr ; "," } ")" >
-[RULE: 13][CLAUSE: 1]
-	epsilon -> [260][_Expr1_LRI_Original]< @ _Expr1_LRI_Original "(" { _Expr ; "," } ")" >
-		- BeginObject(CallExpr)
-
-[277][_Expr1_LRI_Original]@ << !_Expr0_LRI_Original >>
-[RULE: 13][CLAUSE: 0]
-	epsilon -> [275][_Expr1_LRI_Original]<< @ !_Expr0_LRI_Original >>
-		- DelayFieldAssignment()
-
-[278][_Expr_LRI_Original]< @ _Expr_LRI_Original "*" _Expr1 >
-[RULE: 14][CLAUSE: 1]
-	rule: _Expr_LRI_Original -> [284][_Expr_LRI_Original]< _Expr_LRI_Original @ "*" _Expr1 >
-		+ Field(MulExpr::first)
-
-[279][_Expr_LRI_Original]< _Expr_LRI_Original "*" @ _Expr1 >
-[RULE: 14][CLAUSE: 1]
-	epsilon -> [280][_Expr_LRI_Original]< _Expr_LRI_Original "*" @ _Expr1 >
-
-[280][_Expr_LRI_Original]< _Expr_LRI_Original "*" @ _Expr1 >
-[RULE: 14][CLAUSE: 1]
-	rule: _Expr1 -> [282][_Expr_LRI_Original]< _Expr_LRI_Original "*" _Expr1 @ >
-		+ Field(MulExpr::second)
-
-[281][_Expr_LRI_Original]< _Expr_LRI_Original "*" _Expr1 > @[ENDING]
-[RULE: 14][CLAUSE: 1]
-
-[282][_Expr_LRI_Original]< _Expr_LRI_Original "*" _Expr1 @ >
-[RULE: 14][CLAUSE: 1]
-	epsilon -> [281][_Expr_LRI_Original]< _Expr_LRI_Original "*" _Expr1 > @[ENDING]
-		- EndObject()
-
-[283][_Expr_LRI_Original]< _Expr_LRI_Original @ "*" _Expr1 >
-[RULE: 14][CLAUSE: 1]
-	token: "*" -> [279][_Expr_LRI_Original]< _Expr_LRI_Original "*" @ _Expr1 >
-
-[284][_Expr_LRI_Original]< _Expr_LRI_Original @ "*" _Expr1 >
-[RULE: 14][CLAUSE: 1]
-	epsilon -> [283][_Expr_LRI_Original]< _Expr_LRI_Original @ "*" _Expr1 >
-
-[285][_Expr_LRI_Original]<< !_Expr1_LRI_Original >> @[ENDING]
-[RULE: 14][CLAUSE: 0]
-
-[286][_Expr_LRI_Original]<< !_Expr1_LRI_Original @ >>
-[RULE: 14][CLAUSE: 0]
-	epsilon -> [285][_Expr_LRI_Original]<< !_Expr1_LRI_Original >> @[ENDING]
-		- EndObject()
-
-[287][_Expr_LRI_Original]<< @ !_Expr1_LRI_Original >>
-[RULE: 14][CLAUSE: 0]
-	rule: _Expr1_LRI_Original -> [286][_Expr_LRI_Original]<< !_Expr1_LRI_Original @ >>
-		+ ReopenObject()
-
-[288][_Expr_LRI_Original]@ < _Expr_LRI_Original "*" _Expr1 >
-[RULE: 14][CLAUSE: 1]
-	epsilon -> [278][_Expr_LRI_Original]< @ _Expr_LRI_Original "*" _Expr1 >
-		- BeginObject(MulExpr)
-
-[289][_Expr_LRI_Original]@ << !_Expr1_LRI_Original >>
-[RULE: 14][CLAUSE: 0]
-	epsilon -> [287][_Expr_LRI_Original]<< @ !_Expr1_LRI_Original >>
-		- DelayFieldAssignment()
-
-[290][Module_LRI_Original]<< !_Expr_LRI_Original >> @[ENDING]
-[RULE: 15][CLAUSE: 0]
-
-[291][Module_LRI_Original]<< !_Expr_LRI_Original @ >>
-[RULE: 15][CLAUSE: 0]
-	epsilon -> [290][Module_LRI_Original]<< !_Expr_LRI_Original >> @[ENDING]
-		- EndObject()
-
-[292][Module_LRI_Original]<< !_LongType_LRI_Original >> @[ENDING]
-[RULE: 15][CLAUSE: 1]
-
-[293][Module_LRI_Original]<< !_LongType_LRI_Original @ >>
-[RULE: 15][CLAUSE: 1]
-	epsilon -> [292][Module_LRI_Original]<< !_LongType_LRI_Original >> @[ENDING]
-		- EndObject()
-
-[294][Module_LRI_Original]<< @ !_Expr_LRI_Original >>
-[RULE: 15][CLAUSE: 0]
-	rule: _Expr_LRI_Original -> [291][Module_LRI_Original]<< !_Expr_LRI_Original @ >>
-		+ ReopenObject()
-
-[295][Module_LRI_Original]<< @ !_LongType_LRI_Original >>
-[RULE: 15][CLAUSE: 1]
-	rule: _LongType_LRI_Original -> [293][Module_LRI_Original]<< !_LongType_LRI_Original @ >>
-		+ ReopenObject()
-
-[296][Module_LRI_Original]@ << !_Expr_LRI_Original >>
-[RULE: 15][CLAUSE: 0]
-	epsilon -> [294][Module_LRI_Original]<< @ !_Expr_LRI_Original >>
-		- DelayFieldAssignment()
-
-[297][Module_LRI_Original]@ << !_LongType_LRI_Original >>
-[RULE: 15][CLAUSE: 1]
-	epsilon -> [295][Module_LRI_Original]<< @ !_LongType_LRI_Original >>
-		- DelayFieldAssignment()
-
-[298][_Expr0__LongType_LRI_Prefix]<< !_LongType_LRI_Original >> @[ENDING]
-[RULE: 16][CLAUSE: 1]
-
-[299][_Expr0__LongType_LRI_Prefix]<< !_LongType_LRI_Original @ >>
-[RULE: 16][CLAUSE: 1]
-	epsilon -> [298][_Expr0__LongType_LRI_Prefix]<< !_LongType_LRI_Original >> @[ENDING]
-		- EndObject()
-
-[300][_Expr0__LongType_LRI_Prefix]<< @ !_LongType_LRI_Original >>
-[RULE: 16][CLAUSE: 1]
-	rule: _LongType_LRI_Original -> [299][_Expr0__LongType_LRI_Prefix]<< !_LongType_LRI_Original @ >>
-		+ ReopenObject()
-
-[301][_Expr0__LongType_LRI_Prefix]@ << !_LongType_LRI_Original >>
-[RULE: 16][CLAUSE: 1]
-	epsilon -> [300][_Expr0__LongType_LRI_Prefix]<< @ !_LongType_LRI_Original >>
-		- DelayFieldAssignment()
-
-[302][_Expr0__LongType_LRI_Prefix]@ lrp:(LRIP__Expr0__LongType)
-[RULE: 16][CLAUSE: 0]
-	lr-placeholder: LRIP__Expr0__LongType -> [303][_Expr0__LongType_LRI_Prefix]lrp:(LRIP__Expr0__LongType) @[ENDING]
-
-[303][_Expr0__LongType_LRI_Prefix]lrp:(LRIP__Expr0__LongType) @[ENDING]
-[RULE: 16][CLAUSE: 0]
+		+ StackBegin()
+
+[28][_PrimitiveExprOnly]<! "(" !_Expr ")" !> @[ENDING]
+[RULE: 3]
+
+[29][_PrimitiveExprOnly]<! "(" !_Expr ")" @ !>
+[RULE: 3]
+	epsilon -> [28][_PrimitiveExprOnly]<! "(" !_Expr ")" !> @[ENDING]
+		+ StackEnd()
+
+[30][_PrimitiveExprOnly]<! "(" !_Expr @ ")" !>
+[RULE: 3]
+	token: ")" -> [29][_PrimitiveExprOnly]<! "(" !_Expr ")" @ !>
+		+ Token(2)
+
+[31][_PrimitiveExprOnly]<! "(" !_Expr @ ")" !>
+[RULE: 3]
+	epsilon -> [30][_PrimitiveExprOnly]<! "(" !_Expr @ ")" !>
+
+[32][_PrimitiveExprOnly]<! "(" @ !_Expr ")" !>
+[RULE: 3]
+	rule: _Expr -> [31][_PrimitiveExprOnly]<! "(" !_Expr @ ")" !>
+
+[33][_PrimitiveExprOnly]<! "(" @ !_Expr ")" !>
+[RULE: 3]
+	epsilon -> [32][_PrimitiveExprOnly]<! "(" @ !_Expr ")" !>
+
+[34][_PrimitiveExprOnly]<! @ "(" !_Expr ")" !>
+[RULE: 3]
+	token: "(" -> [33][_PrimitiveExprOnly]<! "(" @ !_Expr ")" !>
+		+ Token(0)
+
+[35][_PrimitiveExprOnly]@ <! "(" !_Expr ")" !>
+[RULE: 3]
+	epsilon -> [34][_PrimitiveExprOnly]<! @ "(" !_Expr ")" !>
+		+ StackBegin()
+
+[36][_LongType]< @ _LongType "(" { _LongType ; "," } ")" >
+[RULE: 4]
+	rule: _LongType -> [54][_LongType]< _LongType @ "(" { _LongType ; "," } ")" >
+		+ StackSlot(0)
+
+[37][_LongType]< @ _LongType "*" >
+[RULE: 4]
+	rule: _LongType -> [55][_LongType]< _LongType @ "*" >
+		+ StackSlot(0)
+
+[38][_LongType]< @ _LongType "const" >
+[RULE: 4]
+	rule: _LongType -> [58][_LongType]< _LongType @ "const" >
+		+ StackSlot(0)
+
+[39][_LongType]< _LongType "(" @ { _LongType ; "," } ")" >
+[RULE: 4]
+	epsilon -> [40][_LongType]< _LongType "(" @ { _LongType ; "," } ")" >
+
+[40][_LongType]< _LongType "(" @ { _LongType ; "," } ")" >
+[RULE: 4]
+	epsilon -> [41][_LongType]< _LongType "(" { @ _LongType ; "," } ")" >
+	epsilon -> [45][_LongType]< _LongType "(" { _LongType ; "," } @ ")" >
+
+[41][_LongType]< _LongType "(" { @ _LongType ; "," } ")" >
+[RULE: 4]
+	rule: _LongType -> [48][_LongType]< _LongType "(" { _LongType @ ; "," } ")" >
+		+ StackSlot(2)
+
+[42][_LongType]< _LongType "(" { _LongType ; "," @ } ")" >
+[RULE: 4]
+	epsilon -> [41][_LongType]< _LongType "(" { @ _LongType ; "," } ")" >
+
+[43][_LongType]< _LongType "(" { _LongType ; "," } ")" > @[ENDING]
+[RULE: 4]
+
+[44][_LongType]< _LongType "(" { _LongType ; "," } ")" @ >
+[RULE: 4]
+	epsilon -> [43][_LongType]< _LongType "(" { _LongType ; "," } ")" > @[ENDING]
+		+ CreateObject(FunctionType)
+		+ Field(FunctionType::returnType, 0)
+		+ Field(FunctionType::args, 2)
+		+ StackEnd()
+
+[45][_LongType]< _LongType "(" { _LongType ; "," } @ ")" >
+[RULE: 4]
+	epsilon -> [46][_LongType]< _LongType "(" { _LongType ; "," } @ ")" >
+
+[46][_LongType]< _LongType "(" { _LongType ; "," } @ ")" >
+[RULE: 4]
+	token: ")" -> [44][_LongType]< _LongType "(" { _LongType ; "," } ")" @ >
+		+ Token(4)
+
+[47][_LongType]< _LongType "(" { _LongType ; @ "," } ")" >
+[RULE: 4]
+	token: "," -> [42][_LongType]< _LongType "(" { _LongType ; "," @ } ")" >
+		+ Token(3)
+
+[48][_LongType]< _LongType "(" { _LongType @ ; "," } ")" >
+[RULE: 4]
+	epsilon -> [45][_LongType]< _LongType "(" { _LongType ; "," } @ ")" >
+	epsilon -> [47][_LongType]< _LongType "(" { _LongType ; @ "," } ")" >
+
+[49][_LongType]< _LongType "*" > @[ENDING]
+[RULE: 4]
+
+[50][_LongType]< _LongType "*" @ >
+[RULE: 4]
+	epsilon -> [49][_LongType]< _LongType "*" > @[ENDING]
+		+ CreateObject(PointerType)
+		+ Field(PointerType::type, 0)
+		+ StackEnd()
+
+[51][_LongType]< _LongType "const" > @[ENDING]
+[RULE: 4]
+
+[52][_LongType]< _LongType "const" @ >
+[RULE: 4]
+	epsilon -> [51][_LongType]< _LongType "const" > @[ENDING]
+		+ CreateObject(ConstType)
+		+ Field(ConstType::type, 0)
+		+ StackEnd()
+
+[53][_LongType]< _LongType @ "(" { _LongType ; "," } ")" >
+[RULE: 4]
+	token: "(" -> [39][_LongType]< _LongType "(" @ { _LongType ; "," } ")" >
+		+ Token(1)
+
+[54][_LongType]< _LongType @ "(" { _LongType ; "," } ")" >
+[RULE: 4]
+	epsilon -> [53][_LongType]< _LongType @ "(" { _LongType ; "," } ")" >
+
+[55][_LongType]< _LongType @ "*" >
+[RULE: 4]
+	epsilon -> [56][_LongType]< _LongType @ "*" >
+
+[56][_LongType]< _LongType @ "*" >
+[RULE: 4]
+	token: "*" -> [50][_LongType]< _LongType "*" @ >
+		+ Token(1)
+
+[57][_LongType]< _LongType @ "const" >
+[RULE: 4]
+	token: "const" -> [52][_LongType]< _LongType "const" @ >
+		+ Token(1)
+
+[58][_LongType]< _LongType @ "const" >
+[RULE: 4]
+	epsilon -> [57][_LongType]< _LongType @ "const" >
+
+[59][_LongType]<! !_PrimitiveShared !> @[ENDING]
+[RULE: 4]
+
+[60][_LongType]<! !_PrimitiveShared @ !>
+[RULE: 4]
+	epsilon -> [59][_LongType]<! !_PrimitiveShared !> @[ENDING]
+		+ StackEnd()
+
+[61][_LongType]<! !_PrimitiveTypeOnly !> @[ENDING]
+[RULE: 4]
+
+[62][_LongType]<! !_PrimitiveTypeOnly @ !>
+[RULE: 4]
+	epsilon -> [61][_LongType]<! !_PrimitiveTypeOnly !> @[ENDING]
+		+ StackEnd()
+
+[63][_LongType]<! @ !_PrimitiveShared !>
+[RULE: 4]
+	rule: _PrimitiveShared -> [60][_LongType]<! !_PrimitiveShared @ !>
+
+[64][_LongType]<! @ !_PrimitiveTypeOnly !>
+[RULE: 4]
+	rule: _PrimitiveTypeOnly -> [62][_LongType]<! !_PrimitiveTypeOnly @ !>
+
+[65][_LongType]@ < _LongType "(" { _LongType ; "," } ")" >
+[RULE: 4]
+	epsilon -> [36][_LongType]< @ _LongType "(" { _LongType ; "," } ")" >
+		+ StackBegin()
+
+[66][_LongType]@ < _LongType "*" >
+[RULE: 4]
+	epsilon -> [37][_LongType]< @ _LongType "*" >
+		+ StackBegin()
+
+[67][_LongType]@ < _LongType "const" >
+[RULE: 4]
+	epsilon -> [38][_LongType]< @ _LongType "const" >
+		+ StackBegin()
+
+[68][_LongType]@ <! !_PrimitiveShared !>
+[RULE: 4]
+	epsilon -> [63][_LongType]<! @ !_PrimitiveShared !>
+		+ StackBegin()
+
+[69][_LongType]@ <! !_PrimitiveTypeOnly !>
+[RULE: 4]
+	epsilon -> [64][_LongType]<! @ !_PrimitiveTypeOnly !>
+		+ StackBegin()
+
+[70][_Expr0]< @ _LongType "{" { _Expr ; "," } "}" >
+[RULE: 5]
+	rule: _LongType -> [82][_Expr0]< _LongType @ "{" { _Expr ; "," } "}" >
+		+ StackSlot(0)
+
+[71][_Expr0]< _LongType "{" @ { _Expr ; "," } "}" >
+[RULE: 5]
+	epsilon -> [72][_Expr0]< _LongType "{" @ { _Expr ; "," } "}" >
+
+[72][_Expr0]< _LongType "{" @ { _Expr ; "," } "}" >
+[RULE: 5]
+	epsilon -> [73][_Expr0]< _LongType "{" { @ _Expr ; "," } "}" >
+	epsilon -> [77][_Expr0]< _LongType "{" { _Expr ; "," } @ "}" >
+
+[73][_Expr0]< _LongType "{" { @ _Expr ; "," } "}" >
+[RULE: 5]
+	rule: _Expr -> [80][_Expr0]< _LongType "{" { _Expr @ ; "," } "}" >
+		+ StackSlot(2)
+
+[74][_Expr0]< _LongType "{" { _Expr ; "," @ } "}" >
+[RULE: 5]
+	epsilon -> [73][_Expr0]< _LongType "{" { @ _Expr ; "," } "}" >
+
+[75][_Expr0]< _LongType "{" { _Expr ; "," } "}" > @[ENDING]
+[RULE: 5]
+
+[76][_Expr0]< _LongType "{" { _Expr ; "," } "}" @ >
+[RULE: 5]
+	epsilon -> [75][_Expr0]< _LongType "{" { _Expr ; "," } "}" > @[ENDING]
+		+ CreateObject(CtorExpr)
+		+ Field(CtorExpr::type, 0)
+		+ Field(CtorExpr::args, 2)
+		+ StackEnd()
+
+[77][_Expr0]< _LongType "{" { _Expr ; "," } @ "}" >
+[RULE: 5]
+	epsilon -> [78][_Expr0]< _LongType "{" { _Expr ; "," } @ "}" >
+
+[78][_Expr0]< _LongType "{" { _Expr ; "," } @ "}" >
+[RULE: 5]
+	token: "}" -> [76][_Expr0]< _LongType "{" { _Expr ; "," } "}" @ >
+		+ Token(4)
+
+[79][_Expr0]< _LongType "{" { _Expr ; @ "," } "}" >
+[RULE: 5]
+	token: "," -> [74][_Expr0]< _LongType "{" { _Expr ; "," @ } "}" >
+		+ Token(3)
+
+[80][_Expr0]< _LongType "{" { _Expr @ ; "," } "}" >
+[RULE: 5]
+	epsilon -> [77][_Expr0]< _LongType "{" { _Expr ; "," } @ "}" >
+	epsilon -> [79][_Expr0]< _LongType "{" { _Expr ; @ "," } "}" >
+
+[81][_Expr0]< _LongType @ "{" { _Expr ; "," } "}" >
+[RULE: 5]
+	token: "{" -> [71][_Expr0]< _LongType "{" @ { _Expr ; "," } "}" >
+		+ Token(1)
+
+[82][_Expr0]< _LongType @ "{" { _Expr ; "," } "}" >
+[RULE: 5]
+	epsilon -> [81][_Expr0]< _LongType @ "{" { _Expr ; "," } "}" >
+
+[83][_Expr0]<! !_PrimitiveExprOnly !> @[ENDING]
+[RULE: 5]
+
+[84][_Expr0]<! !_PrimitiveExprOnly @ !>
+[RULE: 5]
+	epsilon -> [83][_Expr0]<! !_PrimitiveExprOnly !> @[ENDING]
+		+ StackEnd()
+
+[85][_Expr0]<! !_PrimitiveShared !> @[ENDING]
+[RULE: 5]
+
+[86][_Expr0]<! !_PrimitiveShared @ !>
+[RULE: 5]
+	epsilon -> [85][_Expr0]<! !_PrimitiveShared !> @[ENDING]
+		+ StackEnd()
+
+[87][_Expr0]<! @ !_PrimitiveExprOnly !>
+[RULE: 5]
+	rule: _PrimitiveExprOnly -> [84][_Expr0]<! !_PrimitiveExprOnly @ !>
+
+[88][_Expr0]<! @ !_PrimitiveShared !>
+[RULE: 5]
+	rule: _PrimitiveShared -> [86][_Expr0]<! !_PrimitiveShared @ !>
+
+[89][_Expr0]@ < _LongType "{" { _Expr ; "," } "}" >
+[RULE: 5]
+	epsilon -> [70][_Expr0]< @ _LongType "{" { _Expr ; "," } "}" >
+		+ StackBegin()
+
+[90][_Expr0]@ <! !_PrimitiveExprOnly !>
+[RULE: 5]
+	epsilon -> [87][_Expr0]<! @ !_PrimitiveExprOnly !>
+		+ StackBegin()
+
+[91][_Expr0]@ <! !_PrimitiveShared !>
+[RULE: 5]
+	epsilon -> [88][_Expr0]<! @ !_PrimitiveShared !>
+		+ StackBegin()
+
+[92][_Expr1]< @ _Expr1 "(" { _Expr ; "," } ")" >
+[RULE: 6]
+	rule: _Expr1 -> [104][_Expr1]< _Expr1 @ "(" { _Expr ; "," } ")" >
+		+ StackSlot(0)
+
+[93][_Expr1]< _Expr1 "(" @ { _Expr ; "," } ")" >
+[RULE: 6]
+	epsilon -> [94][_Expr1]< _Expr1 "(" @ { _Expr ; "," } ")" >
+
+[94][_Expr1]< _Expr1 "(" @ { _Expr ; "," } ")" >
+[RULE: 6]
+	epsilon -> [95][_Expr1]< _Expr1 "(" { @ _Expr ; "," } ")" >
+	epsilon -> [99][_Expr1]< _Expr1 "(" { _Expr ; "," } @ ")" >
+
+[95][_Expr1]< _Expr1 "(" { @ _Expr ; "," } ")" >
+[RULE: 6]
+	rule: _Expr -> [102][_Expr1]< _Expr1 "(" { _Expr @ ; "," } ")" >
+		+ StackSlot(2)
+
+[96][_Expr1]< _Expr1 "(" { _Expr ; "," @ } ")" >
+[RULE: 6]
+	epsilon -> [95][_Expr1]< _Expr1 "(" { @ _Expr ; "," } ")" >
+
+[97][_Expr1]< _Expr1 "(" { _Expr ; "," } ")" > @[ENDING]
+[RULE: 6]
+
+[98][_Expr1]< _Expr1 "(" { _Expr ; "," } ")" @ >
+[RULE: 6]
+	epsilon -> [97][_Expr1]< _Expr1 "(" { _Expr ; "," } ")" > @[ENDING]
+		+ CreateObject(CallExpr)
+		+ Field(CallExpr::func, 0)
+		+ Field(CallExpr::args, 2)
+		+ StackEnd()
+
+[99][_Expr1]< _Expr1 "(" { _Expr ; "," } @ ")" >
+[RULE: 6]
+	epsilon -> [100][_Expr1]< _Expr1 "(" { _Expr ; "," } @ ")" >
+
+[100][_Expr1]< _Expr1 "(" { _Expr ; "," } @ ")" >
+[RULE: 6]
+	token: ")" -> [98][_Expr1]< _Expr1 "(" { _Expr ; "," } ")" @ >
+		+ Token(4)
+
+[101][_Expr1]< _Expr1 "(" { _Expr ; @ "," } ")" >
+[RULE: 6]
+	token: "," -> [96][_Expr1]< _Expr1 "(" { _Expr ; "," @ } ")" >
+		+ Token(3)
+
+[102][_Expr1]< _Expr1 "(" { _Expr @ ; "," } ")" >
+[RULE: 6]
+	epsilon -> [99][_Expr1]< _Expr1 "(" { _Expr ; "," } @ ")" >
+	epsilon -> [101][_Expr1]< _Expr1 "(" { _Expr ; @ "," } ")" >
+
+[103][_Expr1]< _Expr1 @ "(" { _Expr ; "," } ")" >
+[RULE: 6]
+	token: "(" -> [93][_Expr1]< _Expr1 "(" @ { _Expr ; "," } ")" >
+		+ Token(1)
+
+[104][_Expr1]< _Expr1 @ "(" { _Expr ; "," } ")" >
+[RULE: 6]
+	epsilon -> [103][_Expr1]< _Expr1 @ "(" { _Expr ; "," } ")" >
+
+[105][_Expr1]<! !_Expr0 !> @[ENDING]
+[RULE: 6]
+
+[106][_Expr1]<! !_Expr0 @ !>
+[RULE: 6]
+	epsilon -> [105][_Expr1]<! !_Expr0 !> @[ENDING]
+		+ StackEnd()
+
+[107][_Expr1]<! @ !_Expr0 !>
+[RULE: 6]
+	rule: _Expr0 -> [106][_Expr1]<! !_Expr0 @ !>
+
+[108][_Expr1]@ < _Expr1 "(" { _Expr ; "," } ")" >
+[RULE: 6]
+	epsilon -> [92][_Expr1]< @ _Expr1 "(" { _Expr ; "," } ")" >
+		+ StackBegin()
+
+[109][_Expr1]@ <! !_Expr0 !>
+[RULE: 6]
+	epsilon -> [107][_Expr1]<! @ !_Expr0 !>
+		+ StackBegin()
+
+[110][_Expr]< @ _Expr "*" _Expr1 >
+[RULE: 7]
+	rule: _Expr -> [116][_Expr]< _Expr @ "*" _Expr1 >
+		+ StackSlot(0)
+
+[111][_Expr]< _Expr "*" @ _Expr1 >
+[RULE: 7]
+	epsilon -> [112][_Expr]< _Expr "*" @ _Expr1 >
+
+[112][_Expr]< _Expr "*" @ _Expr1 >
+[RULE: 7]
+	rule: _Expr1 -> [114][_Expr]< _Expr "*" _Expr1 @ >
+		+ StackSlot(2)
+
+[113][_Expr]< _Expr "*" _Expr1 > @[ENDING]
+[RULE: 7]
+
+[114][_Expr]< _Expr "*" _Expr1 @ >
+[RULE: 7]
+	epsilon -> [113][_Expr]< _Expr "*" _Expr1 > @[ENDING]
+		+ CreateObject(MulExpr)
+		+ Field(MulExpr::first, 0)
+		+ Field(MulExpr::second, 2)
+		+ StackEnd()
+
+[115][_Expr]< _Expr @ "*" _Expr1 >
+[RULE: 7]
+	token: "*" -> [111][_Expr]< _Expr "*" @ _Expr1 >
+		+ Token(1)
+
+[116][_Expr]< _Expr @ "*" _Expr1 >
+[RULE: 7]
+	epsilon -> [115][_Expr]< _Expr @ "*" _Expr1 >
+
+[117][_Expr]<! !_Expr1 !> @[ENDING]
+[RULE: 7]
+
+[118][_Expr]<! !_Expr1 @ !>
+[RULE: 7]
+	epsilon -> [117][_Expr]<! !_Expr1 !> @[ENDING]
+		+ StackEnd()
+
+[119][_Expr]<! @ !_Expr1 !>
+[RULE: 7]
+	rule: _Expr1 -> [118][_Expr]<! !_Expr1 @ !>
+
+[120][_Expr]@ < _Expr "*" _Expr1 >
+[RULE: 7]
+	epsilon -> [110][_Expr]< @ _Expr "*" _Expr1 >
+		+ StackBegin()
+
+[121][_Expr]@ <! !_Expr1 !>
+[RULE: 7]
+	epsilon -> [119][_Expr]<! @ !_Expr1 !>
+		+ StackBegin()
+
+[122][Module]<! !_Expr !> @[ENDING]
+[RULE: 8]
+
+[123][Module]<! !_Expr @ !>
+[RULE: 8]
+	epsilon -> [122][Module]<! !_Expr !> @[ENDING]
+		+ StackEnd()
+
+[124][Module]<! !_LongType !> @[ENDING]
+[RULE: 8]
+
+[125][Module]<! !_LongType @ !>
+[RULE: 8]
+	epsilon -> [124][Module]<! !_LongType !> @[ENDING]
+		+ StackEnd()
+
+[126][Module]<! @ !_Expr !>
+[RULE: 8]
+	rule: _Expr -> [123][Module]<! !_Expr @ !>
+
+[127][Module]<! @ !_LongType !>
+[RULE: 8]
+	rule: _LongType -> [125][Module]<! !_LongType @ !>
+
+[128][Module]@ <! !_Expr !>
+[RULE: 8]
+	epsilon -> [126][Module]<! @ !_Expr !>
+		+ StackBegin()
+
+[129][Module]@ <! !_LongType !>
+[RULE: 8]
+	epsilon -> [127][Module]<! @ !_LongType !>
+		+ StackBegin()
+
+[130][ExprModule]<! !_Expr !> @[ENDING]
+[RULE: 9]
+
+[131][ExprModule]<! !_Expr @ !>
+[RULE: 9]
+	epsilon -> [130][ExprModule]<! !_Expr !> @[ENDING]
+		+ StackEnd()
+
+[132][ExprModule]<! @ !_Expr !>
+[RULE: 9]
+	rule: _Expr -> [131][ExprModule]<! !_Expr @ !>
+
+[133][ExprModule]@ <! !_Expr !>
+[RULE: 9]
+	epsilon -> [132][ExprModule]<! @ !_Expr !>
+		+ StackBegin()
+
+[134][TypeModule]<! !_LongType !> @[ENDING]
+[RULE: 10]
+
+[135][TypeModule]<! !_LongType @ !>
+[RULE: 10]
+	epsilon -> [134][TypeModule]<! !_LongType !> @[ENDING]
+		+ StackEnd()
+
+[136][TypeModule]<! @ !_LongType !>
+[RULE: 10]
+	rule: _LongType -> [135][TypeModule]<! !_LongType @ !>
+
+[137][TypeModule]@ <! !_LongType !>
+[RULE: 10]
+	epsilon -> [136][TypeModule]<! @ !_LongType !>
+		+ StackBegin()
 

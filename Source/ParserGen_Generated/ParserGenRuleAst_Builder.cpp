@@ -86,70 +86,6 @@ MakeCreateClause
 	}
 
 /***********************************************************************
-MakeLeftRecursionInjectClause
-***********************************************************************/
-
-	MakeLeftRecursionInjectClause& MakeLeftRecursionInjectClause::continuation(const vl::Ptr<GlrLeftRecursionInjectContinuation>& value)
-	{
-		node->continuation = value;
-		return *this;
-	}
-
-	MakeLeftRecursionInjectClause& MakeLeftRecursionInjectClause::rule(const vl::Ptr<GlrRefSyntax>& value)
-	{
-		node->rule = value;
-		return *this;
-	}
-
-/***********************************************************************
-MakeLeftRecursionInjectContinuation
-***********************************************************************/
-
-	MakeLeftRecursionInjectContinuation& MakeLeftRecursionInjectContinuation::configuration(GlrLeftRecursionConfiguration value)
-	{
-		node->configuration = value;
-		return *this;
-	}
-
-	MakeLeftRecursionInjectContinuation& MakeLeftRecursionInjectContinuation::flags(const vl::Ptr<GlrLeftRecursionPlaceholder>& value)
-	{
-		node->flags.Add(value);
-		return *this;
-	}
-
-	MakeLeftRecursionInjectContinuation& MakeLeftRecursionInjectContinuation::injectionTargets(const vl::Ptr<GlrLeftRecursionInjectClause>& value)
-	{
-		node->injectionTargets.Add(value);
-		return *this;
-	}
-
-	MakeLeftRecursionInjectContinuation& MakeLeftRecursionInjectContinuation::type(GlrLeftRecursionInjectContinuationType value)
-	{
-		node->type = value;
-		return *this;
-	}
-
-/***********************************************************************
-MakeLeftRecursionPlaceholder
-***********************************************************************/
-
-	MakeLeftRecursionPlaceholder& MakeLeftRecursionPlaceholder::flag(const vl::WString& value)
-	{
-		node->flag.value = value;
-		return *this;
-	}
-
-/***********************************************************************
-MakeLeftRecursionPlaceholderClause
-***********************************************************************/
-
-	MakeLeftRecursionPlaceholderClause& MakeLeftRecursionPlaceholderClause::flags(const vl::Ptr<GlrLeftRecursionPlaceholder>& value)
-	{
-		node->flags.Add(value);
-		return *this;
-	}
-
-/***********************************************************************
 MakeLoopSyntax
 ***********************************************************************/
 
@@ -226,16 +162,6 @@ MakePartialClause
 	MakePartialClause& MakePartialClause::type(const vl::WString& value)
 	{
 		node->type.value = value;
-		return *this;
-	}
-
-/***********************************************************************
-MakePrefixMergeClause
-***********************************************************************/
-
-	MakePrefixMergeClause& MakePrefixMergeClause::rule(const vl::Ptr<GlrRefSyntax>& value)
-	{
-		node->rule = value;
 		return *this;
 	}
 

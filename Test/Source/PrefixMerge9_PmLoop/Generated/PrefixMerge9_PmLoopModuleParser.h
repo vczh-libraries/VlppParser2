@@ -18,11 +18,7 @@ namespace prefixmerge9_pmloop
 		_Int = 0,
 		_IntItem = 3,
 		_Item = 6,
-		Module = 14,
-		_Item_LRI_Isolated_4 = 18,
-		_Item_LRI_Isolated_5 = 21,
-		_IntItem_LRI_Original = 25,
-		_Item_LRI_Original = 29,
+		Module = 17,
 	};
 
 	const wchar_t* ModuleParserRuleName(vl::vint index);

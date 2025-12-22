@@ -1,104 +1,76 @@
-﻿+-------------------------+
-| [0]: <Start>            |
-| [14][Module] BEGIN      |
-| [AST-INSTRUCTIONS]:     |
-| [SUCCESORS 1-5]: [1][5] |
-+-------------------------+
-[0/1]
+﻿+----------------------+
+| [0]: <Start>         |
+| [17][Module] BEGIN   |
+| [AST-INSTRUCTIONS]:  |
+| [SUCCESORS 1-1]: [1] |
++----------------------+
+[0]
  |
- +---------------------------------------------------------------------------------------------------+
- |                                                                                                   |
-[0]                                                                                                 [1]
-++============================================================================================++    ++============================================================================================++
-|| [1]: {CLASS} class                                                                         ||    || [5]: {CLASS} class                                                                         ||
-|| [20][_Item_LRI_Isolated_4]< "class" @ >                                                    ||    || [24][_Item_LRI_Isolated_5]< "class" @ "?" >                                                ||
-|| [AST-INSTRUCTIONS]:                                                                        ||    || [AST-INSTRUCTIONS]:                                                                        ||
-||   - BeginObject(File)                                                                      ||    ||   - BeginObject(File)                                                                      ||
-||   - DelayFieldAssignment()                                                                 ||    ||   - DelayFieldAssignment()                                                                 ||
-||   - BeginObject(ClassItem)                                                                 ||    ||   - BeginObject(ClassQuestionItem)                                                         ||
-|| [RETURN STACK]:                                                                            ||    || [RETURN STACK]:                                                                            ||
-||   [1][8][0]: _Item_LRI_Isolated_4 -> [40][_Item_LRI_Original]<< !_Item_LRI_Isolated_4 @ >> ||    ||   [2][9][0]: _Item_LRI_Isolated_5 -> [41][_Item_LRI_Original]<< !_Item_LRI_Isolated_5 @ >> ||
-||   [0][7][0]: _Item_LRI_Original -> [16][Module]< _Item_LRI_Original @ { _Item } >          ||    ||   [0][7][0]: _Item_LRI_Original -> [16][Module]< _Item_LRI_Original @ { _Item } >          ||
-|| [PREDECESSORS 0-0]: [0]                                                                    ||    || [PREDECESSORS 0-0]: [0]                                                                    ||
-|| [SUCCESORS 2-2]: [2]                                                                       ||    || [SUCCESORS 9-9]: [9]                                                                       ||
-++============================================================================================++    ++============================================================================================++
-|                                                                                                   |
-+                                                                                                   +
-|                                                                                                   |
-+-----------------------------------------------------------------------------------+               |
-| [2]: <Ending>                                                                     |               |
-| [40][_Item_LRI_Original]<< !_Item_LRI_Isolated_4 @ >>                             |               |
-| [AST-INSTRUCTIONS]:                                                               |               |
-|   - EndObject()                                                                   |               |
-|   > ReopenObject()                                                                |               |
-| [RETURN STACK]:                                                                   |               |
-|   [0][7][0]: _Item_LRI_Original -> [16][Module]< _Item_LRI_Original @ { _Item } > |               |
-| [PREDECESSORS 1-1]: [1]                                                           |               |
-| [SUCCESORS 3-3]: [3]                                                              |               |
-+-----------------------------------------------------------------------------------+               |
-|                                                                                                   |
-+                                                                                                   |
-|                                                                                                   |
-+-----------------------------------------------------------------------------------+               |
-| [3]: <Leftrec>                                                                    |               |
-| [38][_Item_LRI_Original]< _Item_LRI_Original @ "?" >                              |               |
-| [AST-INSTRUCTIONS]:                                                               |               |
-|   - EndObject()                                                                   |               |
-|   - LriStore()                                                                    |               |
-|   - BeginObject(QuestionItem)                                                     |               |
-|   - LriFetch()                                                                    |               |
-|   + Field(QuestionItem::item)                                                     |               |
-| [RETURN STACK]:                                                                   |               |
-|   [0][7][0]: _Item_LRI_Original -> [16][Module]< _Item_LRI_Original @ { _Item } > |               |
-| [PREDECESSORS 2-2]: [2]                                                           |               |
-| [SUCCESORS 6-6]: [6]                                                              |               |
-+-----------------------------------------------------------------------------------+               |
-[0]                                                                                                 [1]
- |                                                                                                   |
- +                                                                                          +--------+
- |                                                                                          |
-[0]                                                                                        [1]
-++===================================================================================++    ++============================================================================================++
-|| [6]: {QUESTION} ?                                                                 ||    || [9]: {QUESTION} ?                                                                          ||
-|| [37][_Item_LRI_Original]< _Item_LRI_Original "?" @ >                              ||    || [23][_Item_LRI_Isolated_5]< "class" "?" @ >                                                ||
-|| [AST-INSTRUCTIONS]:                                                               ||    || [AST-INSTRUCTIONS]:                                                                        ||
-|| [RETURN STACK]:                                                                   ||    || [RETURN STACK]:                                                                            ||
-||   [0][7][0]: _Item_LRI_Original -> [16][Module]< _Item_LRI_Original @ { _Item } > ||    ||   [2][9][0]: _Item_LRI_Isolated_5 -> [41][_Item_LRI_Original]<< !_Item_LRI_Isolated_5 @ >> ||
-|| [PREDECESSORS 3-3]: [3]                                                           ||    ||   [0][7][0]: _Item_LRI_Original -> [16][Module]< _Item_LRI_Original @ { _Item } >          ||
-|| [SUCCESORS 12-12]: [12]                                                           ||    || [PREDECESSORS 5-5]: [5]                                                                    ||
-++===================================================================================++    || [SUCCESORS 10-10]: [10]                                                                    ||
-|                                                                                          ++============================================================================================++
-|                                                                                          |
-+                                                                                          +
-|                                                                                          |
-+------------------------------------------------+                                         +-----------------------------------------------------------------------------------+
-| [12]: <Ending>                                 |                                         | [10]: <Ending>                                                                    |
-| [16][Module]< _Item_LRI_Original @ { _Item } > |                                         | [41][_Item_LRI_Original]<< !_Item_LRI_Isolated_5 @ >>                             |
-| [AST-INSTRUCTIONS]:                            |                                         | [AST-INSTRUCTIONS]:                                                               |
-|   - EndObject()                                |                                         |   - EndObject()                                                                   |
-|   > Field(File::items)                         |                                         |   > ReopenObject()                                                                |
-| [PREDECESSORS 6-6]: [6]                        |                                         | [RETURN STACK]:                                                                   |
-| [SUCCESORS 7-7]: [7]                           |                                         |   [0][7][0]: _Item_LRI_Original -> [16][Module]< _Item_LRI_Original @ { _Item } > |
-+------------------------------------------------+                                         | [PREDECESSORS 9-9]: [9]                                                           |
-|                                                                                          | [SUCCESORS 11-11]: [11]                                                           |
-|                                                                                          +-----------------------------------------------------------------------------------+
-|                                                                                          |
-+                                                                                          +
-|                                                                                          |
-|                                                                                          +------------------------------------------------+
-|                                                                                          | [11]: <Ending>                                 |
-|                                                                                          | [16][Module]< _Item_LRI_Original @ { _Item } > |
-|                                                                                          | [AST-INSTRUCTIONS]:                            |
-|                                                                                          |   - EndObject()                                |
-|                                                                                          |   > Field(File::items)                         |
-|                                                                                          | [PREDECESSORS 10-10]: [10]                     |
-|                                                                                          | [SUCCESORS 7-7]: [7]                           |
-|                                                                                          +------------------------------------------------+
-|                                                                                          |
-+------------------------------------------------------------------------------------------+
+ +
+ |
+[0]
+++=========================================================++
+|| [1]: {CLASS} class                                      ||
+|| [15][_Item]{{< "class" @ "?" > ; < "class" @ >}}        ||
+|| [AST-INSTRUCTIONS]:                                     ||
+||   + StackBegin()                                        ||
+||   + Token(0)                                            ||
+|| [RETURN STACK]:                                         ||
+||   [0][2][0]: _Item -> [19][Module]< _Item @ { _Item } > ||
+|| [PREDECESSORS 0-0]: [0]                                 ||
+|| [SUCCESORS 4-2]: [4][2]                                 ||
+++=========================================================++
+|
++----------------------------------------------------------------+
+|                                                                |
+|                                                                +---------------------------------------------------------+
+|                                                                | [2]: <Leftrec>                                          |
+|                                                                | [14][_Item]< _Item @ "?" >                              |
+|                                                                | [AST-INSTRUCTIONS]:                                     |
+|                                                                |   + CreateObject(ClassItem)                             |
+|                                                                |   + StackEnd()                                          |
+|                                                                |   + StackBegin()                                        |
+|                                                                |   + StackSlot(0)                                        |
+|                                                                | [RETURN STACK]:                                         |
+|                                                                |   [0][2][0]: _Item -> [19][Module]< _Item @ { _Item } > |
+|                                                                | [PREDECESSORS 1-1]: [1]                                 |
+|                                                                | [SUCCESORS 7-7]: [7]                                    |
+|                                                                +---------------------------------------------------------+
+[0]                                                              [1]
+ |                                                                |
+ +                                                                +
+ |                                                                |
+[0]                                                              [1]
+++=========================================================++    ++=========================================================++
+|| [4]: {QUESTION} ?                                       ||    || [7]: {QUESTION} ?                                       ||
+|| [9][_Item]< "class" "?" @ >                             ||    || [13][_Item]< _Item "?" @ >                              ||
+|| [AST-INSTRUCTIONS]:                                     ||    || [AST-INSTRUCTIONS]:                                     ||
+||   + Token(1)                                            ||    ||   + Token(1)                                            ||
+|| [RETURN STACK]:                                         ||    || [RETURN STACK]:                                         ||
+||   [0][2][0]: _Item -> [19][Module]< _Item @ { _Item } > ||    ||   [0][2][0]: _Item -> [19][Module]< _Item @ { _Item } > ||
+|| [PREDECESSORS 1-1]: [1]                                 ||    || [PREDECESSORS 2-2]: [2]                                 ||
+|| [SUCCESORS 9-9]: [9]                                    ||    || [SUCCESORS 8-8]: [8]                                    ||
+++=========================================================++    ++=========================================================++
+|                                                                |
++                                                                +
+|                                                                |
++-------------------------------------+                          +-----------------------------------+
+| [9]: <Ending>                       |                          | [8]: <Ending>                     |
+| [19][Module]< _Item @ { _Item } >   |                          | [19][Module]< _Item @ { _Item } > |
+| [AST-INSTRUCTIONS]:                 |                          | [AST-INSTRUCTIONS]:               |
+|   + CreateObject(ClassQuestionItem) |                          |   + CreateObject(QuestionItem)    |
+|   + StackEnd()                      |                          |   + Field(QuestionItem::item, 0)  |
+|   > StackBegin()                    |                          |   + StackEnd()                    |
+|   > StackSlot(0)                    |                          |   > StackBegin()                  |
+| [PREDECESSORS 4-4]: [4]             |                          |   > StackSlot(0)                  |
+| [SUCCESORS 5-5]: [5]                |                          | [PREDECESSORS 7-7]: [7]           |
++-------------------------------------+                          | [SUCCESORS 5-5]: [5]              |
+|                                                                +-----------------------------------+
+|                                                                |
++----------------------------------------------------------------+
 |
 +----------------+
-| [7]: <Merging> |
+| [5]: <Merging> |
 | <Start>        |
 +----------------+
 [0/0]
@@ -106,129 +78,155 @@
  +
  |
 [0]
-++=======================================================================================================++
-|| [13]: {INT} int                                                                                       ||
-|| [2][_Int]< "int" @ >                                                                                  ||
-|| [AST-INSTRUCTIONS]:                                                                                   ||
-||   - DelayFieldAssignment()                                                                            ||
-||   - BeginObject(IntItem)                                                                              ||
-|| [RETURN STACK]:                                                                                       ||
-||   [4][3][12]: _Int -> [9][_Item]<< !_Int @ ( lri:(LRI__IntItem)->_Item_LRI_Original | lri:<skip> ) >> ||
-||   [3][15][12]: _Item -> [17][Module]< _Item_LRI_Original { _Item @ } >                                ||
-|| [PREDECESSORS 7-7]: [7]                                                                               ||
-|| [SUCCESORS 14-14]: [14]                                                                               ||
-++=======================================================================================================++
+++=========================================================++
+|| [10]: {INT} int                                         ||
+|| [2][_Int]< "int" @ >                                    ||
+|| [AST-INSTRUCTIONS]:                                     ||
+||   + StackBegin()                                        ||
+||   + Token(0)                                            ||
+|| [RETURN STACK]:                                         ||
+||   [3][0][9]: _Int -> [5][_IntItem]<! !_Int @ !>         ||
+||   [2][1][9]: _IntItem -> [7][_Item] BEGIN [pm-lr]       ||
+||   [1][3][9]: _Item -> [20][Module]< _Item { _Item @ } > ||
+|| [PREDECESSORS 5-5]: [5]                                 ||
+|| [SUCCESORS 11-11]: [11]                                 ||
+++=========================================================++
 |
 +
 |
-+---------------------------------------------------------------------------------+
-| [14]: <Ending>                                                                  |
-| [9][_Item]<< !_Int @ ( lri:(LRI__IntItem)->_Item_LRI_Original | lri:<skip> ) >> |
-| [AST-INSTRUCTIONS]:                                                             |
-|   - EndObject()                                                                 |
-|   > ReopenObject()                                                              |
-| [RETURN STACK]:                                                                 |
-|   [3][15][12]: _Item -> [17][Module]< _Item_LRI_Original { _Item @ } >          |
-| [PREDECESSORS 13-13]: [13]                                                      |
-| [SUCCESORS 15-15]: [15]                                                         |
-+---------------------------------------------------------------------------------+
++---------------------------------------------------------+
+| [11]: <Ending>                                          |
+| [5][_IntItem]<! !_Int @ !>                              |
+| [AST-INSTRUCTIONS]:                                     |
+|   + CreateObject(IntItem)                               |
+|   + StackEnd()                                          |
+|   > StackBegin()                                        |
+| [RETURN STACK]:                                         |
+|   [2][1][9]: _IntItem -> [7][_Item] BEGIN [pm-lr]       |
+|   [1][3][9]: _Item -> [20][Module]< _Item { _Item @ } > |
+| [PREDECESSORS 10-10]: [10]                              |
+| [SUCCESORS 12-12]: [12]                                 |
++---------------------------------------------------------+
 |
 +
 |
-+------------------------------------------------+
-| [15]: <Ending>                                 |
-| [17][Module]< _Item_LRI_Original { _Item @ } > |
-| [AST-INSTRUCTIONS]:                            |
-|   - EndObject()                                |
-|   > Field(File::items)                         |
-| [PREDECESSORS 14-14]: [14]                     |
-| [SUCCESORS 17-17]: [17]                        |
-+------------------------------------------------+
++---------------------------------------------------------+
+| [12]: <Ending>                                          |
+| [7][_Item] BEGIN [pm-lr]                                |
+| [AST-INSTRUCTIONS]:                                     |
+|   + StackEnd()                                          |
+| [RETURN STACK]:                                         |
+|   [1][3][9]: _Item -> [20][Module]< _Item { _Item @ } > |
+| [PREDECESSORS 11-11]: [11]                              |
+| [SUCCESORS 13-13]: [13]                                 |
++---------------------------------------------------------+
+|
++
+|
++-----------------------------------+
+| [13]: <Ending>                    |
+| [20][Module]< _Item { _Item @ } > |
+| [AST-INSTRUCTIONS]:               |
+|   + StackBegin()                  |
+|   + StackEnd()                    |
+|   > StackSlot(1)                  |
+| [PREDECESSORS 12-12]: [12]        |
+| [SUCCESORS 15-15]: [15]           |
++-----------------------------------+
 [0]
  |
  +
  |
 [0]
-++=======================================================================================================++
-|| [17]: {INT} int                                                                                       ||
-|| [2][_Int]< "int" @ >                                                                                  ||
-|| [AST-INSTRUCTIONS]:                                                                                   ||
-||   - DelayFieldAssignment()                                                                            ||
-||   - BeginObject(IntItem)                                                                              ||
-|| [RETURN STACK]:                                                                                       ||
-||   [6][3][15]: _Int -> [9][_Item]<< !_Int @ ( lri:(LRI__IntItem)->_Item_LRI_Original | lri:<skip> ) >> ||
-||   [5][16][15]: _Item -> [17][Module]< _Item_LRI_Original { _Item @ } >                                ||
-|| [PREDECESSORS 15-15]: [15]                                                                            ||
-|| [SUCCESORS 18-18]: [18]                                                                               ||
-++=======================================================================================================++
+++==========================================================++
+|| [15]: {INT} int                                          ||
+|| [2][_Int]< "int" @ >                                     ||
+|| [AST-INSTRUCTIONS]:                                      ||
+||   + StackBegin()                                         ||
+||   + Token(0)                                             ||
+|| [RETURN STACK]:                                          ||
+||   [6][0][13]: _Int -> [5][_IntItem]<! !_Int @ !>         ||
+||   [5][1][13]: _IntItem -> [7][_Item] BEGIN [pm-lr]       ||
+||   [4][4][13]: _Item -> [20][Module]< _Item { _Item @ } > ||
+|| [PREDECESSORS 13-13]: [13]                               ||
+|| [SUCCESORS 16-16]: [16]                                  ||
+++==========================================================++
 |
 +
 |
-+---------------------------------------------------------------------------------+
-| [18]: <Ending>                                                                  |
-| [9][_Item]<< !_Int @ ( lri:(LRI__IntItem)->_Item_LRI_Original | lri:<skip> ) >> |
-| [AST-INSTRUCTIONS]:                                                             |
-|   - EndObject()                                                                 |
-|   > ReopenObject()                                                              |
-| [RETURN STACK]:                                                                 |
-|   [5][16][15]: _Item -> [17][Module]< _Item_LRI_Original { _Item @ } >          |
-| [PREDECESSORS 17-17]: [17]                                                      |
-| [SUCCESORS 20-24]: [20][24]                                                     |
-+---------------------------------------------------------------------------------+
-[0/1]
- |
- +----------------------------------------------------------------------------------------------------------------------------+
- |                                                                                                                            |
-[0]                                                                                                                          [1]
-++=====================================================================================================================++    ++=====================================================================================================================++
-|| [20]: {QUESTION} ?                                                                                                  ||    || [24]: {QUESTION} ?                                                                                                  ||
-|| [33][_Item_LRI_Original]< _IntItem_LRI_Original "?" @ >                                                             ||    || [37][_Item_LRI_Original]< _Item_LRI_Original "?" @ >                                                                ||
-|| [AST-INSTRUCTIONS]:                                                                                                 ||    || [AST-INSTRUCTIONS]:                                                                                                 ||
-||   - EndObject()                                                                                                     ||    ||   - EndObject()                                                                                                     ||
-||   - LriStore()                                                                                                      ||    ||   - LriStore()                                                                                                      ||
-||   - DelayFieldAssignment()                                                                                          ||    ||   - DelayFieldAssignment()                                                                                          ||
-||   - BeginObject(IntQuestionItem)                                                                                    ||    ||   - DelayFieldAssignment()                                                                                          ||
-||   - LriFetch()                                                                                                      ||    ||   - LriFetch()                                                                                                      ||
-||   - DiscardValue()                                                                                                  ||    ||   - ReopenObject()                                                                                                  ||
-|| [RETURN STACK]:                                                                                                     ||    ||   - EndObject()                                                                                                     ||
-||   [7][4][18]: _Item_LRI_Original -> [8][_Item]<< !_Int ( lri:(LRI__IntItem)->_Item_LRI_Original @ | lri:<skip> ) >> ||    ||   - LriStore()                                                                                                      ||
-||   [5][16][15]: _Item -> [17][Module]< _Item_LRI_Original { _Item @ } >                                              ||    ||   - BeginObject(QuestionItem)                                                                                       ||
-|| [PREDECESSORS 18-18]: [18]                                                                                          ||    ||   - LriFetch()                                                                                                      ||
-|| [SUCCESORS 21-21]: [21]                                                                                             ||    ||   - Field(QuestionItem::item)                                                                                       ||
-++=====================================================================================================================++    || [RETURN STACK]:                                                                                                     ||
-|                                                                                                                            ||   [8][4][18]: _Item_LRI_Original -> [8][_Item]<< !_Int ( lri:(LRI__IntItem)->_Item_LRI_Original @ | lri:<skip> ) >> ||
-|                                                                                                                            ||   [5][16][15]: _Item -> [17][Module]< _Item_LRI_Original { _Item @ } >                                              ||
-|                                                                                                                            || [PREDECESSORS 18-18]: [18]                                                                                          ||
-|                                                                                                                            || [SUCCESORS 25-25]: [25]                                                                                             ||
-|                                                                                                                            ++=====================================================================================================================++
-|                                                                                                                            |
-+                                                                                                                            +
-|                                                                                                                            |
-+---------------------------------------------------------------------------------+                                          +---------------------------------------------------------------------------------+
-| [21]: <Ending>                                                                  |                                          | [25]: <Ending>                                                                  |
-| [8][_Item]<< !_Int ( lri:(LRI__IntItem)->_Item_LRI_Original @ | lri:<skip> ) >> |                                          | [8][_Item]<< !_Int ( lri:(LRI__IntItem)->_Item_LRI_Original @ | lri:<skip> ) >> |
-| [AST-INSTRUCTIONS]:                                                             |                                          | [AST-INSTRUCTIONS]:                                                             |
-|   - EndObject()                                                                 |                                          |   - EndObject()                                                                 |
-|   > ReopenObject()                                                              |                                          |   > ReopenObject()                                                              |
-| [RETURN STACK]:                                                                 |                                          | [RETURN STACK]:                                                                 |
-|   [5][16][15]: _Item -> [17][Module]< _Item_LRI_Original { _Item @ } >          |                                          |   [5][16][15]: _Item -> [17][Module]< _Item_LRI_Original { _Item @ } >          |
-| [PREDECESSORS 20-20]: [20]                                                      |                                          | [PREDECESSORS 24-24]: [24]                                                      |
-| [SUCCESORS 27-27]: [27]                                                         |                                          | [SUCCESORS 26-26]: [26]                                                         |
-+---------------------------------------------------------------------------------+                                          +---------------------------------------------------------------------------------+
-|                                                                                                                            |
-+                                                                                                                            +
-|                                                                                                                            |
-+------------------------------------------------+                                                                           +------------------------------------------------+
-| [27]: <Ending>                                 |                                                                           | [26]: <Ending>                                 |
-| [17][Module]< _Item_LRI_Original { _Item @ } > |                                                                           | [17][Module]< _Item_LRI_Original { _Item @ } > |
-| [AST-INSTRUCTIONS]:                            |                                                                           | [AST-INSTRUCTIONS]:                            |
-|   - EndObject()                                |                                                                           |   - EndObject()                                |
-|   > Field(File::items)                         |                                                                           |   > Field(File::items)                         |
-| [PREDECESSORS 21-21]: [21]                     |                                                                           | [PREDECESSORS 25-25]: [25]                     |
-| [SUCCESORS 22-22]: [22]                        |                                                                           | [SUCCESORS 22-22]: [22]                        |
-+------------------------------------------------+                                                                           +------------------------------------------------+
-|                                                                                                                            |
-+----------------------------------------------------------------------------------------------------------------------------+
++----------------------------------------------------------+
+| [16]: <Ending>                                           |
+| [5][_IntItem]<! !_Int @ !>                               |
+| [AST-INSTRUCTIONS]:                                      |
+|   + CreateObject(IntItem)                                |
+|   + StackEnd()                                           |
+|   > StackBegin()                                         |
+| [RETURN STACK]:                                          |
+|   [5][1][13]: _IntItem -> [7][_Item] BEGIN [pm-lr]       |
+|   [4][4][13]: _Item -> [20][Module]< _Item { _Item @ } > |
+| [PREDECESSORS 15-15]: [15]                               |
+| [SUCCESORS 17-17]: [17]                                  |
++----------------------------------------------------------+
+|
++
+|
++----------------------------------------------------------+
+| [17]: <Ending>                                           |
+| [7][_Item] BEGIN [pm-lr]                                 |
+| [AST-INSTRUCTIONS]:                                      |
+|   + StackEnd()                                           |
+| [RETURN STACK]:                                          |
+|   [4][4][13]: _Item -> [20][Module]< _Item { _Item @ } > |
+| [PREDECESSORS 16-16]: [16]                               |
+| [SUCCESORS 18-19]: [18][19]                              |
++----------------------------------------------------------+
+|
++-----------------------------------------------------------------+
+|                                                                 |
++----------------------------------------------------------+      +-----------------------------------------------------------------------------+
+| [18]: <Leftrec>                                          |      | [19]: <Leftrec>                                                             |
+| [14][_Item]< _Item @ "?" >                               |      | [16][_Item]{{< _IntItem @ "," > ; < _IntItem @ "." > ; < _IntItem @ "?" >}} |
+| [AST-INSTRUCTIONS]:                                      |      | [AST-INSTRUCTIONS]:                                                         |
+|   + StackBegin()                                         |      |   + StackBegin()                                                            |
+|   + StackEnd()                                           |      |   + StackSlot(0)                                                            |
+|   + StackBegin()                                         |      | [RETURN STACK]:                                                             |
+|   + StackSlot(0)                                         |      |   [4][4][13]: _Item -> [20][Module]< _Item { _Item @ } >                    |
+| [RETURN STACK]:                                          |      | [PREDECESSORS 17-17]: [17]                                                  |
+|   [4][4][13]: _Item -> [20][Module]< _Item { _Item @ } > |      | [SUCCESORS 24-24]: [24]                                                     |
+| [PREDECESSORS 17-17]: [17]                               |      +-----------------------------------------------------------------------------+
+| [SUCCESORS 21-21]: [21]                                  |      |
++----------------------------------------------------------+      |
+[0]                                                               [1]
+ |                                                                 |
+ +                                                                 +
+ |                                                                 |
+[0]                                                               [1]
+++==========================================================++    ++==========================================================++
+|| [21]: {QUESTION} ?                                       ||    || [24]: {QUESTION} ?                                       ||
+|| [13][_Item]< _Item "?" @ >                               ||    || [12][_Item]< _IntItem "?" @ >                            ||
+|| [AST-INSTRUCTIONS]:                                      ||    || [AST-INSTRUCTIONS]:                                      ||
+||   + Token(1)                                             ||    ||   + Token(1)                                             ||
+|| [RETURN STACK]:                                          ||    || [RETURN STACK]:                                          ||
+||   [4][4][13]: _Item -> [20][Module]< _Item { _Item @ } > ||    ||   [4][4][13]: _Item -> [20][Module]< _Item { _Item @ } > ||
+|| [PREDECESSORS 18-18]: [18]                               ||    || [PREDECESSORS 19-19]: [19]                               ||
+|| [SUCCESORS 26-26]: [26]                                  ||    || [SUCCESORS 25-25]: [25]                                  ||
+++==========================================================++    ++==========================================================++
+|                                                                 |
++                                                                 +
+|                                                                 |
++-----------------------------------+                             +-----------------------------------+
+| [26]: <Ending>                    |                             | [25]: <Ending>                    |
+| [20][Module]< _Item { _Item @ } > |                             | [20][Module]< _Item { _Item @ } > |
+| [AST-INSTRUCTIONS]:               |                             | [AST-INSTRUCTIONS]:               |
+|   + CreateObject(QuestionItem)    |                             |   + CreateObject(IntQuestionItem) |
+|   + Field(QuestionItem::item, 0)  |                             |   + StackEnd()                    |
+|   + StackEnd()                    |                             |   > StackSlot(1)                  |
+|   > StackSlot(1)                  |                             | [PREDECESSORS 24-24]: [24]        |
+| [PREDECESSORS 21-21]: [21]        |                             | [SUCCESORS 22-22]: [22]           |
+| [SUCCESORS 22-22]: [22]           |                             +-----------------------------------+
++-----------------------------------+                             |
+|                                                                 |
++-----------------------------------------------------------------+
 |
 +-----------------+
 | [22]: <Merging> |
@@ -239,8 +237,11 @@
 |
 +----------------------------+
 | [23]: <Ending>             |
-| [15][Module] END [ENDING]  |
+| [18][Module] END [ENDING]  |
 | [AST-INSTRUCTIONS]:        |
-|   - EndObject()            |
+|   + CreateObject(File)     |
+|   + Field(File::items, 0)  |
+|   + Field(File::items, 1)  |
+|   + StackEnd()             |
 | [PREDECESSORS 22-22]: [22] |
 +----------------------------+

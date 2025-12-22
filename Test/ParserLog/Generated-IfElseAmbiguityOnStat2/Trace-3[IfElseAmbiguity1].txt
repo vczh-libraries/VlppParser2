@@ -1,13 +1,16 @@
 ﻿================ EXECUTION STEPS ================
-[0]: 0@0 - 1@0
-[8]: 1@1 - 1@3
-[9]: 2@0 - 11@0
-[4]: 12@0 - 29@1
-[2]: 1@1 - 1@3
-[3]: 2@0 - 11@0
-[5]: 13@0 - 29@1
-[6]: RA(2, IfStat)
-[10]: 29@2 - 30@1
+[0]: 0@0 - 0@-1
+[1]: RA_Begin
+[11]: 1@0 - 11@3
+[10]: 16@0 - 26@-1
+[9]: 26@0 - 27@0
+[5]: RA_Branch
+[14]: 1@0 - 11@3
+[13]: 12@0 - 26@-1
+[12]: 26@0 - 27@0
+[8]: RA_Branch
+[15]: RA_End(IfStat)
+[16]: 27@1 - 28@2
 
 ==================== TRACES =====================
 
@@ -16,11 +19,9 @@
 |   TraceExec: [0]     |
 |   ForwardTrace: 0    |
 |   NextACT: 1         |
-| [26][Module] BEGIN   |
+| [25][Module] BEGIN   |
 | [AST-INSTRUCTIONS]:  |
-|     CSTop: []        |
-|     OSTop: []        |
-|     LriStored: []    |
+|   @                  |
 | [SUCCESORS 1-1]: [1] |
 +----------------------+
 [0]
@@ -28,811 +29,734 @@
  +
  |
 [0]
-++=================================================================================++
-|| [1]: {IF} if                                                                    ||
-||   TraceExec: [1]                                                                ||
-||   InsExec: [0:4]                                                                ||
-||   ForwardTrace: 0                                                               ||
-||   NextACT: 11                                                                   ||
-||   AmbiguityBegins: [0]                                                          ||
-|| [14][IfThenStat]< "if" @ "cond" "then" Stat >                                   ||
-|| [AST-INSTRUCTIONS]:                                                             ||
-||     CSTop: []                                                                   ||
-||     OSTop: []                                                                   ||
-||     LriStored: []                                                               ||
-||   - BeginObject(Module)                                                         ||
-||       obj:0, new:1@0, top:1@0 bottom:[30@1]                                     ||
-||       eoInsRefs: 30@1                                                           ||
-||                                                                                 ||
-||     CSTop: [0] [0 -> -1]                                                        ||
-||     OSTop: []                                                                   ||
-||     LriStored: []                                                               ||
-||   - DelayFieldAssignment()                                                      ||
-||       objRefs: 1                                                                ||
-||       eoInsRefs: 29@1                                                           ||
-||                                                                                 ||
-||     CSTop: [1] [1 -> 0]                                                         ||
-||     OSTop: []                                                                   ||
-||     LriStored: []                                                               ||
-||   - DelayFieldAssignment()                                                      ||
-||       objRefs: 1, 1                                                             ||
-||       eoInsRefs: 34@0, 35@1                                                     ||
-||                                                                                 ||
-||     CSTop: [1] [2 -> 1]                                                         ||
-||     OSTop: []                                                                   ||
-||     LriStored: []                                                               ||
-||   - BeginObject(IfStat)                                                         ||
-||       obj:1, new:1@3, top:1@1 bottom:[29@1] assignedTo:[0] dfas:[1@1, 1@2, 1@2] ||
-||       eoInsRefs: 15@0, 27@0                                                     ||
-||                                                                                 ||
-||     CSTop: [1] [3 -> 2]                                                         ||
-||     OSTop: []                                                                   ||
-||     LriStored: []                                                               ||
-|| [RETURN STACK]:                                                                 ||
-||   [2][3][0]: IfThenStat -> [20][If]<< !IfThenStat @ >>                          ||
-||   [1][2][0]: If -> [25][Stat]<< !If @ >>                                        ||
-||   [0][8][0]: Stat -> [28][Module]< Stat @ >                                     ||
-|| [PREDECESSORS 0-0]: [0]                                                         ||
-|| [SUCCESORS 2-2]: [2]                                                            ||
-++=================================================================================++
+++==============================================================================================++
+|| [1]: {IF} if                                                                                 ||
+||   TraceExec: [1]                                                                             ||
+||   InsExec: [0:2]                                                                             ||
+||   ForwardTrace: 0                                                                            ||
+||   NextACT: 11                                                                                ||
+||   AmbiguityBegins: [0]                                                                       ||
+|| [14][IfThenStat]< "if" @ "cond" "then" Stat >                                                ||
+|| [AST-INSTRUCTIONS]:                                                                          ||
+||   @                                                                                          ||
+||   + StackBegin()                                                                             ||
+||     obj:0 : IfStat                                                                           ||
+||                                                                                              ||
+||   @ CS(0 -> -1) : [0]                                                                        ||
+||   + Token(0)                                                                                 ||
+||                                                                                              ||
+||   @ CS(0 -> -1) : [0]                                                                        ||
+|| [RETURN STACK]:                                                                              ||
+||   [2][3][0]: IfThenStat -> [19][If]{{<! !IfThenStat @ !> ; <! !IfThenStat @ "else" Stat !>}} ||
+||   [1][2][0]: If -> [24][Stat]<! !If @ !>                                                     ||
+||   [0][8][0]: Stat -> [27][Module]< Stat @ >                                                  ||
+|| [PREDECESSORS 0-0]: [0]                                                                      ||
+|| [SUCCESORS 2-2]: [2]                                                                         ||
+++==============================================================================================++
 [0]
  |
  +
  |
 [0]
-++========================================================++
-|| [2]: {CONDITION} cond                                  ||
-||   TraceExec: [2]                                       ||
-||   ForwardTrace: 0                                      ||
-|| [13][IfThenStat]< "if" "cond" @ "then" Stat >          ||
-|| [AST-INSTRUCTIONS]:                                    ||
-||     CSTop: [1] [3 -> 2]                                ||
-||     OSTop: []                                          ||
-||     LriStored: []                                      ||
-|| [RETURN STACK]:                                        ||
-||   [2][3][0]: IfThenStat -> [20][If]<< !IfThenStat @ >> ||
-||   [1][2][0]: If -> [25][Stat]<< !If @ >>               ||
-||   [0][8][0]: Stat -> [28][Module]< Stat @ >            ||
-|| [PREDECESSORS 1-1]: [1]                                ||
-|| [SUCCESORS 3-3]: [3]                                   ||
-++========================================================++
+++==============================================================================================++
+|| [2]: {CONDITION} cond                                                                        ||
+||   TraceExec: [2]                                                                             ||
+||   InsExec: [2:1]                                                                             ||
+||   ForwardTrace: 0                                                                            ||
+|| [13][IfThenStat]< "if" "cond" @ "then" Stat >                                                ||
+|| [AST-INSTRUCTIONS]:                                                                          ||
+||   @ CS(0 -> -1) : [0]                                                                        ||
+||   + Token(1)                                                                                 ||
+||                                                                                              ||
+||   @ CS(0 -> -1) : [0]                                                                        ||
+|| [RETURN STACK]:                                                                              ||
+||   [2][3][0]: IfThenStat -> [19][If]{{<! !IfThenStat @ !> ; <! !IfThenStat @ "else" Stat !>}} ||
+||   [1][2][0]: If -> [24][Stat]<! !If @ !>                                                     ||
+||   [0][8][0]: Stat -> [27][Module]< Stat @ >                                                  ||
+|| [PREDECESSORS 1-1]: [1]                                                                      ||
+|| [SUCCESORS 3-3]: [3]                                                                         ||
+++==============================================================================================++
 [0]
  |
  +
  |
 [0]
-++========================================================++
-|| [3]: {THEN} then                                       ||
-||   TraceExec: [3]                                       ||
-||   ForwardTrace: 0                                      ||
-|| [11][IfThenStat]< "if" "cond" "then" @ Stat >          ||
-|| [AST-INSTRUCTIONS]:                                    ||
-||     CSTop: [1] [3 -> 2]                                ||
-||     OSTop: []                                          ||
-||     LriStored: []                                      ||
-|| [RETURN STACK]:                                        ||
-||   [2][3][0]: IfThenStat -> [20][If]<< !IfThenStat @ >> ||
-||   [1][2][0]: If -> [25][Stat]<< !If @ >>               ||
-||   [0][8][0]: Stat -> [28][Module]< Stat @ >            ||
-|| [PREDECESSORS 2-2]: [2]                                ||
-|| [SUCCESORS 4-4]: [4]                                   ||
-++========================================================++
+++==============================================================================================++
+|| [3]: {THEN} then                                                                             ||
+||   TraceExec: [3]                                                                             ||
+||   InsExec: [3:1]                                                                             ||
+||   ForwardTrace: 0                                                                            ||
+|| [11][IfThenStat]< "if" "cond" "then" @ Stat >                                                ||
+|| [AST-INSTRUCTIONS]:                                                                          ||
+||   @ CS(0 -> -1) : [0]                                                                        ||
+||   + Token(2)                                                                                 ||
+||                                                                                              ||
+||   @ CS(0 -> -1) : [0]                                                                        ||
+|| [RETURN STACK]:                                                                              ||
+||   [2][3][0]: IfThenStat -> [19][If]{{<! !IfThenStat @ !> ; <! !IfThenStat @ "else" Stat !>}} ||
+||   [1][2][0]: If -> [24][Stat]<! !If @ !>                                                     ||
+||   [0][8][0]: Stat -> [27][Module]< Stat @ >                                                  ||
+|| [PREDECESSORS 2-2]: [2]                                                                      ||
+|| [SUCCESORS 4-4]: [4]                                                                         ||
+++==============================================================================================++
 [0]
  |
  +
  |
 [0]
-++===============================================================================================++
-|| [4]: {IF} if                                                                                  ||
-||   TraceExec: [4]                                                                              ||
-||   InsExec: [4:3]                                                                              ||
-||   ForwardTrace: 0                                                                             ||
-|| [14][IfThenStat]< "if" @ "cond" "then" Stat >                                                 ||
-|| [AST-INSTRUCTIONS]:                                                                           ||
-||     CSTop: [1] [3 -> 2]                                                                       ||
-||     OSTop: []                                                                                 ||
-||     LriStored: []                                                                             ||
-||   - DelayFieldAssignment()                                                                    ||
-||       objRefs: 2, 2                                                                           ||
-||       eoInsRefs: 14@1, 26@1                                                                   ||
-||                                                                                               ||
-||     CSTop: [2] [4 -> 3]                                                                       ||
-||     OSTop: []                                                                                 ||
-||     LriStored: []                                                                             ||
-||   - DelayFieldAssignment()                                                                    ||
-||       objRefs: 2, 2                                                                           ||
-||       eoInsRefs: 13@1, 25@0                                                                   ||
-||                                                                                               ||
-||     CSTop: [2] [5 -> 4]                                                                       ||
-||     OSTop: []                                                                                 ||
-||     LriStored: []                                                                             ||
-||   - BeginObject(IfStat)                                                                       ||
-||       obj:2, new:4@2, top:4@0 bottom:[26@1, 14@1] assignedTo:[1, 1] dfas:[4@0, 4@1, 4@0, 4@1] ||
-||       eoInsRefs: 11@0                                                                         ||
-||                                                                                               ||
-||     CSTop: [2] [6 -> 5]                                                                       ||
-||     OSTop: []                                                                                 ||
-||     LriStored: []                                                                             ||
-|| [RETURN STACK]:                                                                               ||
-||   [5][3][3]: IfThenStat -> [20][If]<< !IfThenStat @ >>                                        ||
-||   [4][2][3]: If -> [25][Stat]<< !If @ >>                                                      ||
-||   [3][6][3]: Stat -> [12][IfThenStat]< "if" "cond" "then" Stat @ >                            ||
-||   [2][3][0]: IfThenStat -> [20][If]<< !IfThenStat @ >>                                        ||
-||   [1][2][0]: If -> [25][Stat]<< !If @ >>                                                      ||
-||   [0][8][0]: Stat -> [28][Module]< Stat @ >                                                   ||
-|| [PREDECESSORS 3-3]: [3]                                                                       ||
-|| [SUCCESORS 5-5]: [5]                                                                          ||
-++===============================================================================================++
+++==============================================================================================++
+|| [4]: {IF} if                                                                                 ||
+||   TraceExec: [4]                                                                             ||
+||   InsExec: [4:2]                                                                             ||
+||   ForwardTrace: 0                                                                            ||
+|| [14][IfThenStat]< "if" @ "cond" "then" Stat >                                                ||
+|| [AST-INSTRUCTIONS]:                                                                          ||
+||   @ CS(0 -> -1) : [0]                                                                        ||
+||   + StackBegin()                                                                             ||
+||     obj:1 : IfStat                                                                           ||
+||                                                                                              ||
+||   @ CS(1 -> 0) : [1][0]                                                                      ||
+||   + Token(0)                                                                                 ||
+||                                                                                              ||
+||   @ CS(1 -> 0) : [1][0]                                                                      ||
+|| [RETURN STACK]:                                                                              ||
+||   [5][3][3]: IfThenStat -> [19][If]{{<! !IfThenStat @ !> ; <! !IfThenStat @ "else" Stat !>}} ||
+||   [4][2][3]: If -> [24][Stat]<! !If @ !>                                                     ||
+||   [3][6][3]: Stat -> [12][IfThenStat]< "if" "cond" "then" Stat @ >                           ||
+||   [2][3][0]: IfThenStat -> [19][If]{{<! !IfThenStat @ !> ; <! !IfThenStat @ "else" Stat !>}} ||
+||   [1][2][0]: If -> [24][Stat]<! !If @ !>                                                     ||
+||   [0][8][0]: Stat -> [27][Module]< Stat @ >                                                  ||
+|| [PREDECESSORS 3-3]: [3]                                                                      ||
+|| [SUCCESORS 5-5]: [5]                                                                         ||
+++==============================================================================================++
 [0]
  |
  +
  |
 [0]
-++====================================================================++
-|| [5]: {CONDITION} cond                                              ||
-||   TraceExec: [5]                                                   ||
-||   ForwardTrace: 0                                                  ||
-|| [13][IfThenStat]< "if" "cond" @ "then" Stat >                      ||
-|| [AST-INSTRUCTIONS]:                                                ||
-||     CSTop: [2] [6 -> 5]                                            ||
-||     OSTop: []                                                      ||
-||     LriStored: []                                                  ||
-|| [RETURN STACK]:                                                    ||
-||   [5][3][3]: IfThenStat -> [20][If]<< !IfThenStat @ >>             ||
-||   [4][2][3]: If -> [25][Stat]<< !If @ >>                           ||
-||   [3][6][3]: Stat -> [12][IfThenStat]< "if" "cond" "then" Stat @ > ||
-||   [2][3][0]: IfThenStat -> [20][If]<< !IfThenStat @ >>             ||
-||   [1][2][0]: If -> [25][Stat]<< !If @ >>                           ||
-||   [0][8][0]: Stat -> [28][Module]< Stat @ >                        ||
-|| [PREDECESSORS 4-4]: [4]                                            ||
-|| [SUCCESORS 6-6]: [6]                                               ||
-++====================================================================++
+++==============================================================================================++
+|| [5]: {CONDITION} cond                                                                        ||
+||   TraceExec: [5]                                                                             ||
+||   InsExec: [6:1]                                                                             ||
+||   ForwardTrace: 0                                                                            ||
+|| [13][IfThenStat]< "if" "cond" @ "then" Stat >                                                ||
+|| [AST-INSTRUCTIONS]:                                                                          ||
+||   @ CS(1 -> 0) : [1][0]                                                                      ||
+||   + Token(1)                                                                                 ||
+||                                                                                              ||
+||   @ CS(1 -> 0) : [1][0]                                                                      ||
+|| [RETURN STACK]:                                                                              ||
+||   [5][3][3]: IfThenStat -> [19][If]{{<! !IfThenStat @ !> ; <! !IfThenStat @ "else" Stat !>}} ||
+||   [4][2][3]: If -> [24][Stat]<! !If @ !>                                                     ||
+||   [3][6][3]: Stat -> [12][IfThenStat]< "if" "cond" "then" Stat @ >                           ||
+||   [2][3][0]: IfThenStat -> [19][If]{{<! !IfThenStat @ !> ; <! !IfThenStat @ "else" Stat !>}} ||
+||   [1][2][0]: If -> [24][Stat]<! !If @ !>                                                     ||
+||   [0][8][0]: Stat -> [27][Module]< Stat @ >                                                  ||
+|| [PREDECESSORS 4-4]: [4]                                                                      ||
+|| [SUCCESORS 6-6]: [6]                                                                         ||
+++==============================================================================================++
 [0]
  |
  +
  |
 [0]
-++====================================================================++
-|| [6]: {THEN} then                                                   ||
-||   TraceExec: [6]                                                   ||
-||   ForwardTrace: 0                                                  ||
-|| [11][IfThenStat]< "if" "cond" "then" @ Stat >                      ||
-|| [AST-INSTRUCTIONS]:                                                ||
-||     CSTop: [2] [6 -> 5]                                            ||
-||     OSTop: []                                                      ||
-||     LriStored: []                                                  ||
-|| [RETURN STACK]:                                                    ||
-||   [5][3][3]: IfThenStat -> [20][If]<< !IfThenStat @ >>             ||
-||   [4][2][3]: If -> [25][Stat]<< !If @ >>                           ||
-||   [3][6][3]: Stat -> [12][IfThenStat]< "if" "cond" "then" Stat @ > ||
-||   [2][3][0]: IfThenStat -> [20][If]<< !IfThenStat @ >>             ||
-||   [1][2][0]: If -> [25][Stat]<< !If @ >>                           ||
-||   [0][8][0]: Stat -> [28][Module]< Stat @ >                        ||
-|| [PREDECESSORS 5-5]: [5]                                            ||
-|| [SUCCESORS 7-7]: [7]                                               ||
-++====================================================================++
+++==============================================================================================++
+|| [6]: {THEN} then                                                                             ||
+||   TraceExec: [6]                                                                             ||
+||   InsExec: [7:1]                                                                             ||
+||   ForwardTrace: 0                                                                            ||
+|| [11][IfThenStat]< "if" "cond" "then" @ Stat >                                                ||
+|| [AST-INSTRUCTIONS]:                                                                          ||
+||   @ CS(1 -> 0) : [1][0]                                                                      ||
+||   + Token(2)                                                                                 ||
+||                                                                                              ||
+||   @ CS(1 -> 0) : [1][0]                                                                      ||
+|| [RETURN STACK]:                                                                              ||
+||   [5][3][3]: IfThenStat -> [19][If]{{<! !IfThenStat @ !> ; <! !IfThenStat @ "else" Stat !>}} ||
+||   [4][2][3]: If -> [24][Stat]<! !If @ !>                                                     ||
+||   [3][6][3]: Stat -> [12][IfThenStat]< "if" "cond" "then" Stat @ >                           ||
+||   [2][3][0]: IfThenStat -> [19][If]{{<! !IfThenStat @ !> ; <! !IfThenStat @ "else" Stat !>}} ||
+||   [1][2][0]: If -> [24][Stat]<! !If @ !>                                                     ||
+||   [0][8][0]: Stat -> [27][Module]< Stat @ >                                                  ||
+|| [PREDECESSORS 5-5]: [5]                                                                      ||
+|| [SUCCESORS 7-7]: [7]                                                                         ||
+++==============================================================================================++
 [0]
  |
  +
  |
 [0]
-++=======================================================================++
-|| [7]: {DO} do                                                          ||
-||   TraceExec: [7]                                                      ||
-||   InsExec: [7:2]                                                      ||
-||   ForwardTrace: 0                                                     ||
-|| [3][Do]< "do" @ ";" >                                                 ||
-|| [AST-INSTRUCTIONS]:                                                   ||
-||     CSTop: [2] [6 -> 5]                                               ||
-||     OSTop: []                                                         ||
-||     LriStored: []                                                     ||
-||   - DelayFieldAssignment()                                            ||
-||       objRefs: 3                                                      ||
-||       eoInsRefs: 10@1                                                 ||
-||                                                                       ||
-||     CSTop: [3] [7 -> 6]                                               ||
-||     OSTop: []                                                         ||
-||     LriStored: []                                                     ||
-||   - BeginObject(DoStat)                                               ||
-||       obj:3, new:7@1, top:7@0 bottom:[10@1] assignedTo:[2] dfas:[7@0] ||
-||       eoInsRefs: 9@0                                                  ||
-||                                                                       ||
-||     CSTop: [3] [8 -> 7]                                               ||
-||     OSTop: []                                                         ||
-||     LriStored: []                                                     ||
-|| [RETURN STACK]:                                                       ||
-||   [7][4][6]: Do -> [24][Stat]<< !Do @ >>                              ||
-||   [6][6][6]: Stat -> [12][IfThenStat]< "if" "cond" "then" Stat @ >    ||
-||   [5][3][3]: IfThenStat -> [20][If]<< !IfThenStat @ >>                ||
-||   [4][2][3]: If -> [25][Stat]<< !If @ >>                              ||
-||   [3][6][3]: Stat -> [12][IfThenStat]< "if" "cond" "then" Stat @ >    ||
-||   [2][3][0]: IfThenStat -> [20][If]<< !IfThenStat @ >>                ||
-||   [1][2][0]: If -> [25][Stat]<< !If @ >>                              ||
-||   [0][8][0]: Stat -> [28][Module]< Stat @ >                           ||
-|| [PREDECESSORS 6-6]: [6]                                               ||
-|| [SUCCESORS 8-8]: [8]                                                  ||
-++=======================================================================++
+++==============================================================================================++
+|| [7]: {DO} do                                                                                 ||
+||   TraceExec: [7]                                                                             ||
+||   InsExec: [8:2]                                                                             ||
+||   ForwardTrace: 0                                                                            ||
+|| [3][Do]< "do" @ ";" >                                                                        ||
+|| [AST-INSTRUCTIONS]:                                                                          ||
+||   @ CS(1 -> 0) : [1][0]                                                                      ||
+||   + StackBegin()                                                                             ||
+||     obj:2 : DoStat                                                                           ||
+||                                                                                              ||
+||   @ CS(2 -> 1) : [2][1][0]                                                                   ||
+||   + Token(0)                                                                                 ||
+||                                                                                              ||
+||   @ CS(2 -> 1) : [2][1][0]                                                                   ||
+|| [RETURN STACK]:                                                                              ||
+||   [7][4][6]: Do -> [23][Stat]<! !Do @ !>                                                     ||
+||   [6][6][6]: Stat -> [12][IfThenStat]< "if" "cond" "then" Stat @ >                           ||
+||   [5][3][3]: IfThenStat -> [19][If]{{<! !IfThenStat @ !> ; <! !IfThenStat @ "else" Stat !>}} ||
+||   [4][2][3]: If -> [24][Stat]<! !If @ !>                                                     ||
+||   [3][6][3]: Stat -> [12][IfThenStat]< "if" "cond" "then" Stat @ >                           ||
+||   [2][3][0]: IfThenStat -> [19][If]{{<! !IfThenStat @ !> ; <! !IfThenStat @ "else" Stat !>}} ||
+||   [1][2][0]: If -> [24][Stat]<! !If @ !>                                                     ||
+||   [0][8][0]: Stat -> [27][Module]< Stat @ >                                                  ||
+|| [PREDECESSORS 6-6]: [6]                                                                      ||
+|| [SUCCESORS 8-8]: [8]                                                                         ||
+++==============================================================================================++
 [0]
  |
  +
  |
 [0]
-++====================================================================++
-|| [8]: {SEMICOLON} ;                                                 ||
-||   TraceExec: [8]                                                   ||
-||   ForwardTrace: 0                                                  ||
-|| [2][Do]< "do" ";" @ >                                              ||
-|| [AST-INSTRUCTIONS]:                                                ||
-||     CSTop: [3] [8 -> 7]                                            ||
-||     OSTop: []                                                      ||
-||     LriStored: []                                                  ||
-|| [RETURN STACK]:                                                    ||
-||   [7][4][6]: Do -> [24][Stat]<< !Do @ >>                           ||
-||   [6][6][6]: Stat -> [12][IfThenStat]< "if" "cond" "then" Stat @ > ||
-||   [5][3][3]: IfThenStat -> [20][If]<< !IfThenStat @ >>             ||
-||   [4][2][3]: If -> [25][Stat]<< !If @ >>                           ||
-||   [3][6][3]: Stat -> [12][IfThenStat]< "if" "cond" "then" Stat @ > ||
-||   [2][3][0]: IfThenStat -> [20][If]<< !IfThenStat @ >>             ||
-||   [1][2][0]: If -> [25][Stat]<< !If @ >>                           ||
-||   [0][8][0]: Stat -> [28][Module]< Stat @ >                        ||
-|| [PREDECESSORS 7-7]: [7]                                            ||
-|| [SUCCESORS 9-9]: [9]                                               ||
-++====================================================================++
+++==============================================================================================++
+|| [8]: {SEMICOLON} ;                                                                           ||
+||   TraceExec: [8]                                                                             ||
+||   InsExec: [10:1]                                                                            ||
+||   ForwardTrace: 0                                                                            ||
+|| [2][Do]< "do" ";" @ >                                                                        ||
+|| [AST-INSTRUCTIONS]:                                                                          ||
+||   @ CS(2 -> 1) : [2][1][0]                                                                   ||
+||   + Token(1)                                                                                 ||
+||                                                                                              ||
+||   @ CS(2 -> 1) : [2][1][0]                                                                   ||
+|| [RETURN STACK]:                                                                              ||
+||   [7][4][6]: Do -> [23][Stat]<! !Do @ !>                                                     ||
+||   [6][6][6]: Stat -> [12][IfThenStat]< "if" "cond" "then" Stat @ >                           ||
+||   [5][3][3]: IfThenStat -> [19][If]{{<! !IfThenStat @ !> ; <! !IfThenStat @ "else" Stat !>}} ||
+||   [4][2][3]: If -> [24][Stat]<! !If @ !>                                                     ||
+||   [3][6][3]: Stat -> [12][IfThenStat]< "if" "cond" "then" Stat @ >                           ||
+||   [2][3][0]: IfThenStat -> [19][If]{{<! !IfThenStat @ !> ; <! !IfThenStat @ "else" Stat !>}} ||
+||   [1][2][0]: If -> [24][Stat]<! !If @ !>                                                     ||
+||   [0][8][0]: Stat -> [27][Module]< Stat @ >                                                  ||
+|| [PREDECESSORS 7-7]: [7]                                                                      ||
+|| [SUCCESORS 9-9]: [9]                                                                         ||
+++==============================================================================================++
 |
 +
 |
-+--------------------------------------------------------------------+
-| [9]: <Ending>                                                      |
-|   TraceExec: [9]                                                   |
-|   InsExec: [9:1]                                                   |
-|   ForwardTrace: 0                                                  |
-| [24][Stat]<< !Do @ >>                                              |
-| [AST-INSTRUCTIONS]:                                                |
-|     CSTop: [3] [8 -> 7]                                            |
-|     OSTop: []                                                      |
-|     LriStored: []                                                  |
-|   - EndObject()                                                    |
-|       objRefs: 3                                                   |
-|                                                                    |
-|     CSTop: [3] [7 -> 6]                                            |
-|     OSTop: [3] [0 -> -1]                                           |
-|     LriStored: []                                                  |
-| [RETURN STACK]:                                                    |
-|   [6][6][6]: Stat -> [12][IfThenStat]< "if" "cond" "then" Stat @ > |
-|   [5][3][3]: IfThenStat -> [20][If]<< !IfThenStat @ >>             |
-|   [4][2][3]: If -> [25][Stat]<< !If @ >>                           |
-|   [3][6][3]: Stat -> [12][IfThenStat]< "if" "cond" "then" Stat @ > |
-|   [2][3][0]: IfThenStat -> [20][If]<< !IfThenStat @ >>             |
-|   [1][2][0]: If -> [25][Stat]<< !If @ >>                           |
-|   [0][8][0]: Stat -> [28][Module]< Stat @ >                        |
-| [PREDECESSORS 8-8]: [8]                                            |
-| [SUCCESORS 10-10]: [10]                                            |
-+--------------------------------------------------------------------+
++----------------------------------------------------------------------------------------------+
+| [9]: <Ending>                                                                                |
+|   TraceExec: [9]                                                                             |
+|   InsExec: [11:3]                                                                            |
+|   ForwardTrace: 0                                                                            |
+| [23][Stat]<! !Do @ !>                                                                        |
+| [AST-INSTRUCTIONS]:                                                                          |
+|   @ CS(2 -> 1) : [2][1][0]                                                                   |
+|   + CreateObject(DoStat)                                                                     |
+|     obj:2 : DoStat                                                                           |
+|                                                                                              |
+|   @ CS(2 -> 1) : [2][1][0]                                                                   |
+|   + StackEnd()                                                                               |
+|     obj+:2 : DoStat                                                                          |
+|       begin:7@0, top:7@0, create!:[9@0], end:[9@1], endLref:[10@0]                           |
+|                                                                                              |
+|   @ CS(1 -> 0) : [1][0] OS(3 -> -1) : [2]                                                    |
+|   > StackBegin()                                                                             |
+|     obj!:3 : DoStat                                                                          |
+|                                                                                              |
+|   @ CS(4 -> 1) : [3][1][0] OS(3 -> -1) : [2]                                                 |
+| [RETURN STACK]:                                                                              |
+|   [6][6][6]: Stat -> [12][IfThenStat]< "if" "cond" "then" Stat @ >                           |
+|   [5][3][3]: IfThenStat -> [19][If]{{<! !IfThenStat @ !> ; <! !IfThenStat @ "else" Stat !>}} |
+|   [4][2][3]: If -> [24][Stat]<! !If @ !>                                                     |
+|   [3][6][3]: Stat -> [12][IfThenStat]< "if" "cond" "then" Stat @ >                           |
+|   [2][3][0]: IfThenStat -> [19][If]{{<! !IfThenStat @ !> ; <! !IfThenStat @ "else" Stat !>}} |
+|   [1][2][0]: If -> [24][Stat]<! !If @ !>                                                     |
+|   [0][8][0]: Stat -> [27][Module]< Stat @ >                                                  |
+| [PREDECESSORS 8-8]: [8]                                                                      |
+| [SUCCESORS 10-10]: [10]                                                                      |
++----------------------------------------------------------------------------------------------+
 |
 +
 |
-+--------------------------------------------------------------------+
-| [10]: <Ending>                                                     |
-|   TraceExec: [10]                                                  |
-|   InsExec: [10:3]                                                  |
-|   ForwardTrace: 0                                                  |
-| [12][IfThenStat]< "if" "cond" "then" Stat @ >                      |
-| [AST-INSTRUCTIONS]:                                                |
-|     CSTop: [3] [7 -> 6]                                            |
-|     OSTop: [3] [0 -> -1]                                           |
-|     LriStored: []                                                  |
-|   - ReopenObject()                                                 |
-|                                                                    |
-|     CSTop: [3] [7 -> 6]                                            |
-|     OSTop: []                                                      |
-|     LriStored: []                                                  |
-|   - EndObject()                                                    |
-|       objRefs: 3                                                   |
-|                                                                    |
-|     CSTop: [2] [6 -> 5]                                            |
-|     OSTop: [3] [1 -> -1]                                           |
-|     LriStored: []                                                  |
-|   > Field(IfStat::thenBranch)                                      |
-|                                                                    |
-|     CSTop: [2] [6 -> 5]                                            |
-|     OSTop: []                                                      |
-|     LriStored: []                                                  |
-| [RETURN STACK]:                                                    |
-|   [5][3][3]: IfThenStat -> [20][If]<< !IfThenStat @ >>             |
-|   [4][2][3]: If -> [25][Stat]<< !If @ >>                           |
-|   [3][6][3]: Stat -> [12][IfThenStat]< "if" "cond" "then" Stat @ > |
-|   [2][3][0]: IfThenStat -> [20][If]<< !IfThenStat @ >>             |
-|   [1][2][0]: If -> [25][Stat]<< !If @ >>                           |
-|   [0][8][0]: Stat -> [28][Module]< Stat @ >                        |
-| [PREDECESSORS 9-9]: [9]                                            |
-| [SUCCESORS 11-11]: [11]                                            |
-+--------------------------------------------------------------------+
++----------------------------------------------------------------------------------------------+
+| [10]: <Ending>                                                                               |
+|   TraceExec: [10]                                                                            |
+|   InsExec: [14:2]                                                                            |
+|   ForwardTrace: 0                                                                            |
+| [12][IfThenStat]< "if" "cond" "then" Stat @ >                                                |
+| [AST-INSTRUCTIONS]:                                                                          |
+|   @ CS(4 -> 1) : [3][1][0] OS(3 -> -1) : [2]                                                 |
+|   + StackEnd()                                                                               |
+|     obj+:3 : DoStat                                                                          |
+|       begin:9@2, top:7@0, use:[2], create!:[9@0], end!:[10@0]                                |
+|                                                                                              |
+|   @ CS(1 -> 0) : [1][0] OS(5 -> -1) : [3]                                                    |
+|   > StackSlot(3)                                                                             |
+|                                                                                              |
+|   @ CS(1 -> 0) : [1][0]                                                                      |
+| [RETURN STACK]:                                                                              |
+|   [5][3][3]: IfThenStat -> [19][If]{{<! !IfThenStat @ !> ; <! !IfThenStat @ "else" Stat !>}} |
+|   [4][2][3]: If -> [24][Stat]<! !If @ !>                                                     |
+|   [3][6][3]: Stat -> [12][IfThenStat]< "if" "cond" "then" Stat @ >                           |
+|   [2][3][0]: IfThenStat -> [19][If]{{<! !IfThenStat @ !> ; <! !IfThenStat @ "else" Stat !>}} |
+|   [1][2][0]: If -> [24][Stat]<! !If @ !>                                                     |
+|   [0][8][0]: Stat -> [27][Module]< Stat @ >                                                  |
+| [PREDECESSORS 9-9]: [9]                                                                      |
+| [SUCCESORS 11-11]: [11]                                                                      |
++----------------------------------------------------------------------------------------------+
 |
 +
 |
-+--------------------------------------------------------------------+
-| [11]: <Ending>                                                     |
-|   TraceExec: [11]                                                  |
-|   InsExec: [13:1]                                                  |
-|   ForwardTrace: 0                                                  |
-| [20][If]<< !IfThenStat @ >>                                        |
-| [AST-INSTRUCTIONS]:                                                |
-|     CSTop: [2] [6 -> 5]                                            |
-|     OSTop: []                                                      |
-|     LriStored: []                                                  |
-|   - EndObject()                                                    |
-|       objRefs: 2                                                   |
-|                                                                    |
-|     CSTop: [2] [5 -> 4]                                            |
-|     OSTop: [2] [2 -> -1]                                           |
-|     LriStored: []                                                  |
-| [RETURN STACK]:                                                    |
-|   [4][2][3]: If -> [25][Stat]<< !If @ >>                           |
-|   [3][6][3]: Stat -> [12][IfThenStat]< "if" "cond" "then" Stat @ > |
-|   [2][3][0]: IfThenStat -> [20][If]<< !IfThenStat @ >>             |
-|   [1][2][0]: If -> [25][Stat]<< !If @ >>                           |
-|   [0][8][0]: Stat -> [28][Module]< Stat @ >                        |
-| [PREDECESSORS 10-10]: [10]                                         |
-| [SUCCESORS 12-13]: [12][13]                                        |
-+--------------------------------------------------------------------+
++----------------------------------------------------------------------------------------------+
+| [11]: <Ending>                                                                               |
+|   TraceExec: [11]                                                                            |
+|   InsExec: [16:4]                                                                            |
+|   ForwardTrace: 0                                                                            |
+| [19][If]{{<! !IfThenStat @ !> ; <! !IfThenStat @ "else" Stat !>}}                            |
+| [AST-INSTRUCTIONS]:                                                                          |
+|   @ CS(1 -> 0) : [1][0]                                                                      |
+|   + CreateObject(IfStat)                                                                     |
+|     obj:1 : IfStat                                                                           |
+|                                                                                              |
+|   @ CS(1 -> 0) : [1][0]                                                                      |
+|   + Field(IfStat::thenBranch, 3)                                                             |
+|                                                                                              |
+|   @ CS(1 -> 0) : [1][0]                                                                      |
+|   + StackEnd()                                                                               |
+|     obj+:1 : IfStat                                                                          |
+|       begin:4@0, top:4@0, field:[3], create!:[11@0], end:[11@2], endLref:[13@0]              |
+|                                                                                              |
+|   @ CS(0 -> -1) : [0] OS(6 -> -1) : [1]                                                      |
+|   > StackBegin()                                                                             |
+|     obj!:4 : IfStat                                                                          |
+|                                                                                              |
+|   @ CS(7 -> 0) : [4][0] OS(6 -> -1) : [1]                                                    |
+| [RETURN STACK]:                                                                              |
+|   [4][2][3]: If -> [24][Stat]<! !If @ !>                                                     |
+|   [3][6][3]: Stat -> [12][IfThenStat]< "if" "cond" "then" Stat @ >                           |
+|   [2][3][0]: IfThenStat -> [19][If]{{<! !IfThenStat @ !> ; <! !IfThenStat @ "else" Stat !>}} |
+|   [1][2][0]: If -> [24][Stat]<! !If @ !>                                                     |
+|   [0][8][0]: Stat -> [27][Module]< Stat @ >                                                  |
+| [PREDECESSORS 10-10]: [10]                                                                   |
+| [SUCCESORS 16-12]: [16][12]                                                                  |
++----------------------------------------------------------------------------------------------+
+|
++-----------------------------------------------------------------------------------------------------+
+|                                                                                                     |
+|                                                                                                     +-----------------------------------------------------------------------------------------------------+
+|                                                                                                     | [12]: <Ending>                                                                                      |
+|                                                                                                     |   TraceExec: [21]                                                                                   |
+|                                                                                                     |   InsExec: [40:2]                                                                                   |
+|                                                                                                     |   ForwardTrace: 12                                                                                  |
+|                                                                                                     |   NextACT: 32                                                                                       |
+|                                                                                                     | [24][Stat]<! !If @ !>                                                                               |
+|                                                                                                     | [AST-INSTRUCTIONS]:                                                                                 |
+|                                                                                                     |   @ CS(7 -> 0) : [4][0] OS(6 -> -1) : [1]                                                           |
+|                                                                                                     |   + StackEnd()                                                                                      |
+|                                                                                                     |     obj+:4 : IfStat                                                                                 |
+|                                                                                                     |       begin:11@3, top:4@0, use:[1, 1], field:[6], create!:[11@0], end!:[12@0, 23@1], endLref:[13@0] |
+|                                                                                                     |                                                                                                     |
+|                                                                                                     |   @ CS(0 -> -1) : [0] OS(19 -> -1) : [4]                                                            |
+|                                                                                                     |   > StackBegin()                                                                                    |
+|                                                                                                     |     obj!:10 : IfStat                                                                                |
+|                                                                                                     |                                                                                                     |
+|                                                                                                     |   @ CS(20 -> 0) : [10][0] OS(19 -> -1) : [4]                                                        |
+|                                                                                                     | [RETURN STACK]:                                                                                     |
+|                                                                                                     |   [3][6][3]: Stat -> [12][IfThenStat]< "if" "cond" "then" Stat @ >                                  |
+|                                                                                                     |   [2][3][0]: IfThenStat -> [19][If]{{<! !IfThenStat @ !> ; <! !IfThenStat @ "else" Stat !>}}        |
+|                                                                                                     |   [1][2][0]: If -> [24][Stat]<! !If @ !>                                                            |
+|                                                                                                     |   [0][8][0]: Stat -> [27][Module]< Stat @ >                                                         |
+|                                                                                                     | [PREDECESSORS 11-11]: [11]                                                                          |
+|                                                                                                     | [SUCCESORS 13-13]: [13]                                                                             |
+|                                                                                                     +-----------------------------------------------------------------------------------------------------+
+|                                                                                                     |
+|                                                                                                     +
+|                                                                                                     |
+|                                                                                                     +----------------------------------------------------------------------------------------------+
+|                                                                                                     | [13]: <Ending>                                                                               |
+|                                                                                                     |   TraceExec: [22]                                                                            |
+|                                                                                                     |   InsExec: [42:2]                                                                            |
+|                                                                                                     |   ForwardTrace: 12                                                                           |
+|                                                                                                     | [12][IfThenStat]< "if" "cond" "then" Stat @ >                                                |
+|                                                                                                     | [AST-INSTRUCTIONS]:                                                                          |
+|                                                                                                     |   @ CS(20 -> 0) : [10][0] OS(19 -> -1) : [4]                                                 |
+|                                                                                                     |   + StackEnd()                                                                               |
+|                                                                                                     |     obj+:10 : IfStat                                                                         |
+|                                                                                                     |       begin:12@1, top:4@0, use:[4], create!:[11@0], end!:[13@0]                              |
+|                                                                                                     |                                                                                              |
+|                                                                                                     |   @ CS(0 -> -1) : [0] OS(21 -> -1) : [10]                                                    |
+|                                                                                                     |   > StackSlot(3)                                                                             |
+|                                                                                                     |                                                                                              |
+|                                                                                                     |   @ CS(0 -> -1) : [0]                                                                        |
+|                                                                                                     | [RETURN STACK]:                                                                              |
+|                                                                                                     |   [2][3][0]: IfThenStat -> [19][If]{{<! !IfThenStat @ !> ; <! !IfThenStat @ "else" Stat !>}} |
+|                                                                                                     |   [1][2][0]: If -> [24][Stat]<! !If @ !>                                                     |
+|                                                                                                     |   [0][8][0]: Stat -> [27][Module]< Stat @ >                                                  |
+|                                                                                                     | [PREDECESSORS 12-12]: [12]                                                                   |
+|                                                                                                     | [SUCCESORS 14-14]: [14]                                                                      |
+|                                                                                                     +----------------------------------------------------------------------------------------------+
+|                                                                                                     |
+|                                                                                                     +
+|                                                                                                     |
+|                                                                                                     +-------------------------------------------------------------------------------------------------+
+|                                                                                                     | [14]: <Ending>                                                                                  |
+|                                                                                                     |   TraceExec: [23]                                                                               |
+|                                                                                                     |   InsExec: [44:4]                                                                               |
+|                                                                                                     |   ForwardTrace: 12                                                                              |
+|                                                                                                     | [19][If]{{<! !IfThenStat @ !> ; <! !IfThenStat @ "else" Stat !>}}                               |
+|                                                                                                     | [AST-INSTRUCTIONS]:                                                                             |
+|                                                                                                     |   @ CS(0 -> -1) : [0]                                                                           |
+|                                                                                                     |   + CreateObject(IfStat)                                                                        |
+|                                                                                                     |     obj:0 : IfStat                                                                              |
+|                                                                                                     |                                                                                                 |
+|                                                                                                     |   @ CS(0 -> -1) : [0]                                                                           |
+|                                                                                                     |   + Field(IfStat::thenBranch, 3)                                                                |
+|                                                                                                     |                                                                                                 |
+|                                                                                                     |   @ CS(0 -> -1) : [0]                                                                           |
+|                                                                                                     |   + StackEnd()                                                                                  |
+|                                                                                                     |     obj+:0 : IfStat                                                                             |
+|                                                                                                     |       begin:1@0, top:1@0, field:[10, 7], create!:[25@0, 14@0], end:[14@2, 25@2], endLref:[27@0] |
+|                                                                                                     |                                                                                                 |
+|                                                                                                     |   @ OS(22 -> -1) : [0]                                                                          |
+|                                                                                                     |   > StackBegin()                                                                                |
+|                                                                                                     |     obj!:11 : IfStat                                                                            |
+|                                                                                                     |                                                                                                 |
+|                                                                                                     |   @ CS(23 -> -1) : [11] OS(22 -> -1) : [0]                                                      |
+|                                                                                                     | [RETURN STACK]:                                                                                 |
+|                                                                                                     |   [1][2][0]: If -> [24][Stat]<! !If @ !>                                                        |
+|                                                                                                     |   [0][8][0]: Stat -> [27][Module]< Stat @ >                                                     |
+|                                                                                                     | [PREDECESSORS 13-13]: [13]                                                                      |
+|                                                                                                     | [SUCCESORS 17-17]: [17]                                                                         |
+|                                                                                                     +-------------------------------------------------------------------------------------------------+
+[0]                                                                                                   [1]
+ |                                                                                                     |
+ +                                                                                                     +
+ |                                                                                                     |
+[0]                                                                                                   [1]
+++==============================================================================================++    ++=============================================++
+|| [16]: {ELSE} else                                                                            ||    || [17]: {ELSE} else                           ||
+||   TraceExec: [12]                                                                            ||    ||   TraceExec: [24]                           ||
+||   InsExec: [20:1]                                                                            ||    ||   InsExec: [48:1]                           ||
+||   ForwardTrace: 16                                                                           ||    ||   ForwardTrace: 12                          ||
+||   NextACT: 33                                                                                ||    || [17][If]<! !IfThenStat "else" @ Stat !>     ||
+|| [17][If]<! !IfThenStat "else" @ Stat !>                                                      ||    || [AST-INSTRUCTIONS]:                         ||
+|| [AST-INSTRUCTIONS]:                                                                          ||    ||   @ CS(23 -> -1) : [11] OS(22 -> -1) : [0]  ||
+||   @ CS(7 -> 0) : [4][0] OS(6 -> -1) : [1]                                                    ||    ||   + Token(1)                                ||
+||   + Token(1)                                                                                 ||    ||                                             ||
+||                                                                                              ||    ||   @ CS(23 -> -1) : [11] OS(22 -> -1) : [0]  ||
+||   @ CS(7 -> 0) : [4][0] OS(6 -> -1) : [1]                                                    ||    || [RETURN STACK]:                             ||
+|| [RETURN STACK]:                                                                              ||    ||   [1][2][0]: If -> [24][Stat]<! !If @ !>    ||
+||   [4][2][3]: If -> [24][Stat]<! !If @ !>                                                     ||    ||   [0][8][0]: Stat -> [27][Module]< Stat @ > ||
+||   [3][6][3]: Stat -> [12][IfThenStat]< "if" "cond" "then" Stat @ >                           ||    || [PREDECESSORS 14-14]: [14]                  ||
+||   [2][3][0]: IfThenStat -> [19][If]{{<! !IfThenStat @ !> ; <! !IfThenStat @ "else" Stat !>}} ||    || [SUCCESORS 19-19]: [19]                     ||
+||   [1][2][0]: If -> [24][Stat]<! !If @ !>                                                     ||    ++=============================================++
+||   [0][8][0]: Stat -> [27][Module]< Stat @ >                                                  ||    |
+|| [PREDECESSORS 11-11]: [11]                                                                   ||    |
+|| [SUCCESORS 18-18]: [18]                                                                      ||    |
+++==============================================================================================++    |
+[0]                                                                                                   [1]
+ |                                                                                                     |
+ +                                                                                                     +
+ |                                                                                                     |
+[0]                                                                                                   [1]
+++==============================================================================================++    ++================================================================++
+|| [18]: {DO} do                                                                                ||    || [19]: {DO} do                                                  ||
+||   TraceExec: [13]                                                                            ||    ||   TraceExec: [25]                                              ||
+||   InsExec: [21:2]                                                                            ||    ||   InsExec: [49:2]                                              ||
+||   ForwardTrace: 16                                                                           ||    ||   ForwardTrace: 12                                             ||
+|| [3][Do]< "do" @ ";" >                                                                        ||    || [3][Do]< "do" @ ";" >                                          ||
+|| [AST-INSTRUCTIONS]:                                                                          ||    || [AST-INSTRUCTIONS]:                                            ||
+||   @ CS(7 -> 0) : [4][0] OS(6 -> -1) : [1]                                                    ||    ||   @ CS(23 -> -1) : [11] OS(22 -> -1) : [0]                     ||
+||   + StackBegin()                                                                             ||    ||   + StackBegin()                                               ||
+||     obj:5 : DoStat                                                                           ||    ||     obj:12 : DoStat                                            ||
+||                                                                                              ||    ||                                                                ||
+||   @ CS(8 -> 7) : [5][4][0] OS(6 -> -1) : [1]                                                 ||    ||   @ CS(24 -> 23) : [12][11] OS(22 -> -1) : [0]                 ||
+||   + Token(0)                                                                                 ||    ||   + Token(0)                                                   ||
+||                                                                                              ||    ||                                                                ||
+||   @ CS(8 -> 7) : [5][4][0] OS(6 -> -1) : [1]                                                 ||    ||   @ CS(24 -> 23) : [12][11] OS(22 -> -1) : [0]                 ||
+|| [RETURN STACK]:                                                                              ||    || [RETURN STACK]:                                                ||
+||   [9][4][16]: Do -> [23][Stat]<! !Do @ !>                                                    ||    ||   [11][4][17]: Do -> [23][Stat]<! !Do @ !>                     ||
+||   [8][7][16]: Stat -> [18][If]<! !IfThenStat "else" Stat @ !>                                ||    ||   [10][7][17]: Stat -> [18][If]<! !IfThenStat "else" Stat @ !> ||
+||   [4][2][3]: If -> [24][Stat]<! !If @ !>                                                     ||    ||   [1][2][0]: If -> [24][Stat]<! !If @ !>                       ||
+||   [3][6][3]: Stat -> [12][IfThenStat]< "if" "cond" "then" Stat @ >                           ||    ||   [0][8][0]: Stat -> [27][Module]< Stat @ >                    ||
+||   [2][3][0]: IfThenStat -> [19][If]{{<! !IfThenStat @ !> ; <! !IfThenStat @ "else" Stat !>}} ||    || [PREDECESSORS 17-17]: [17]                                     ||
+||   [1][2][0]: If -> [24][Stat]<! !If @ !>                                                     ||    || [SUCCESORS 29-29]: [29]                                        ||
+||   [0][8][0]: Stat -> [27][Module]< Stat @ >                                                  ||    ++================================================================++
+|| [PREDECESSORS 16-16]: [16]                                                                   ||    |
+|| [SUCCESORS 20-20]: [20]                                                                      ||    |
+++==============================================================================================++    |
+[0]                                                                                                   [1]
+ |                                                                                                     |
+ +                                                                                                     +----+
+ |                                                                                                          |
+[0]                                                                                                        [1]
+++==============================================================================================++         ++================================================================++
+|| [20]: {SEMICOLON} ;                                                                          ||         || [29]: {SEMICOLON} ;                                            ||
+||   TraceExec: [14]                                                                            ||         ||   TraceExec: [26]                                              ||
+||   InsExec: [23:1]                                                                            ||         ||   InsExec: [51:1]                                              ||
+||   ForwardTrace: 16                                                                           ||         ||   ForwardTrace: 12                                             ||
+|| [2][Do]< "do" ";" @ >                                                                        ||         || [2][Do]< "do" ";" @ >                                          ||
+|| [AST-INSTRUCTIONS]:                                                                          ||         || [AST-INSTRUCTIONS]:                                            ||
+||   @ CS(8 -> 7) : [5][4][0] OS(6 -> -1) : [1]                                                 ||         ||   @ CS(24 -> 23) : [12][11] OS(22 -> -1) : [0]                 ||
+||   + Token(1)                                                                                 ||         ||   + Token(1)                                                   ||
+||                                                                                              ||         ||                                                                ||
+||   @ CS(8 -> 7) : [5][4][0] OS(6 -> -1) : [1]                                                 ||         ||   @ CS(24 -> 23) : [12][11] OS(22 -> -1) : [0]                 ||
+|| [RETURN STACK]:                                                                              ||         || [RETURN STACK]:                                                ||
+||   [9][4][16]: Do -> [23][Stat]<! !Do @ !>                                                    ||         ||   [11][4][17]: Do -> [23][Stat]<! !Do @ !>                     ||
+||   [8][7][16]: Stat -> [18][If]<! !IfThenStat "else" Stat @ !>                                ||         ||   [10][7][17]: Stat -> [18][If]<! !IfThenStat "else" Stat @ !> ||
+||   [4][2][3]: If -> [24][Stat]<! !If @ !>                                                     ||         ||   [1][2][0]: If -> [24][Stat]<! !If @ !>                       ||
+||   [3][6][3]: Stat -> [12][IfThenStat]< "if" "cond" "then" Stat @ >                           ||         ||   [0][8][0]: Stat -> [27][Module]< Stat @ >                    ||
+||   [2][3][0]: IfThenStat -> [19][If]{{<! !IfThenStat @ !> ; <! !IfThenStat @ "else" Stat !>}} ||         || [PREDECESSORS 19-19]: [19]                                     ||
+||   [1][2][0]: If -> [24][Stat]<! !If @ !>                                                     ||         || [SUCCESORS 30-30]: [30]                                        ||
+||   [0][8][0]: Stat -> [27][Module]< Stat @ >                                                  ||         ++================================================================++
+|| [PREDECESSORS 18-18]: [18]                                                                   ||         |
+|| [SUCCESORS 21-21]: [21]                                                                      ||         |
+++==============================================================================================++         |
+|                                                                                                          |
++                                                                                                          +
+|                                                                                                          |
++----------------------------------------------------------------------------------------------+           +------------------------------------------------------------------------+
+| [21]: <Ending>                                                                               |           | [30]: <Ending>                                                         |
+|   TraceExec: [15]                                                                            |           |   TraceExec: [27]                                                      |
+|   InsExec: [24:3]                                                                            |           |   InsExec: [52:3]                                                      |
+|   ForwardTrace: 16                                                                           |           |   ForwardTrace: 12                                                     |
+| [23][Stat]<! !Do @ !>                                                                        |           | [23][Stat]<! !Do @ !>                                                  |
+| [AST-INSTRUCTIONS]:                                                                          |           | [AST-INSTRUCTIONS]:                                                    |
+|   @ CS(8 -> 7) : [5][4][0] OS(6 -> -1) : [1]                                                 |           |   @ CS(24 -> 23) : [12][11] OS(22 -> -1) : [0]                         |
+|   + CreateObject(DoStat)                                                                     |           |   + CreateObject(DoStat)                                               |
+|     obj:5 : DoStat                                                                           |           |     obj:12 : DoStat                                                    |
+|                                                                                              |           |                                                                        |
+|   @ CS(8 -> 7) : [5][4][0] OS(6 -> -1) : [1]                                                 |           |   @ CS(24 -> 23) : [12][11] OS(22 -> -1) : [0]                         |
+|   + StackEnd()                                                                               |           |   + StackEnd()                                                         |
+|     obj+:5 : DoStat                                                                          |           |     obj+:12 : DoStat                                                   |
+|       begin:18@0, top:18@0, create!:[21@0], end:[21@1], endLref:[22@0]                       |           |       begin:19@0, top:19@0, create!:[30@0], end:[30@1], endLref:[31@0] |
+|                                                                                              |           |                                                                        |
+|   @ CS(7 -> 0) : [4][0] OS(9 -> 6) : [5][1]                                                  |           |   @ CS(23 -> -1) : [11] OS(25 -> 22) : [12][0]                         |
+|   > StackBegin()                                                                             |           |   > StackBegin()                                                       |
+|     obj!:6 : DoStat                                                                          |           |     obj!:13 : DoStat                                                   |
+|                                                                                              |           |                                                                        |
+|   @ CS(10 -> 7) : [6][4][0] OS(9 -> 6) : [5][1]                                              |           |   @ CS(26 -> 23) : [13][11] OS(25 -> 22) : [12][0]                     |
+| [RETURN STACK]:                                                                              |           | [RETURN STACK]:                                                        |
+|   [8][7][16]: Stat -> [18][If]<! !IfThenStat "else" Stat @ !>                                |           |   [10][7][17]: Stat -> [18][If]<! !IfThenStat "else" Stat @ !>         |
+|   [4][2][3]: If -> [24][Stat]<! !If @ !>                                                     |           |   [1][2][0]: If -> [24][Stat]<! !If @ !>                               |
+|   [3][6][3]: Stat -> [12][IfThenStat]< "if" "cond" "then" Stat @ >                           |           |   [0][8][0]: Stat -> [27][Module]< Stat @ >                            |
+|   [2][3][0]: IfThenStat -> [19][If]{{<! !IfThenStat @ !> ; <! !IfThenStat @ "else" Stat !>}} |           | [PREDECESSORS 29-29]: [29]                                             |
+|   [1][2][0]: If -> [24][Stat]<! !If @ !>                                                     |           | [SUCCESORS 31-31]: [31]                                                |
+|   [0][8][0]: Stat -> [27][Module]< Stat @ >                                                  |           +------------------------------------------------------------------------+
+| [PREDECESSORS 20-20]: [20]                                                                   |           |
+| [SUCCESORS 22-22]: [22]                                                                      |           |
++----------------------------------------------------------------------------------------------+           |
+|                                                                                                          |
++                                                                                                          +
+|                                                                                                          |
++----------------------------------------------------------------------------------------------+           +-------------------------------------------------------------------+
+| [22]: <Ending>                                                                               |           | [31]: <Ending>                                                    |
+|   TraceExec: [16]                                                                            |           |   TraceExec: [28]                                                 |
+|   InsExec: [27:2]                                                                            |           |   InsExec: [55:2]                                                 |
+|   ForwardTrace: 16                                                                           |           |   ForwardTrace: 12                                                |
+| [18][If]<! !IfThenStat "else" Stat @ !>                                                      |           | [18][If]<! !IfThenStat "else" Stat @ !>                           |
+| [AST-INSTRUCTIONS]:                                                                          |           | [AST-INSTRUCTIONS]:                                               |
+|   @ CS(10 -> 7) : [6][4][0] OS(9 -> 6) : [5][1]                                              |           |   @ CS(26 -> 23) : [13][11] OS(25 -> 22) : [12][0]                |
+|   + StackEnd()                                                                               |           |   + StackEnd()                                                    |
+|     obj+:6 : DoStat                                                                          |           |     obj+:13 : DoStat                                              |
+|       begin:21@2, top:18@0, use:[5], create!:[21@0], end!:[22@0]                             |           |       begin:30@2, top:19@0, use:[12], create!:[30@0], end!:[31@0] |
+|                                                                                              |           |                                                                   |
+|   @ CS(7 -> 0) : [4][0] OS(11 -> 6) : [6][1]                                                 |           |   @ CS(23 -> -1) : [11] OS(27 -> 22) : [13][0]                    |
+|   > StackSlot(2)                                                                             |           |   > StackSlot(2)                                                  |
+|                                                                                              |           |                                                                   |
+|   @ CS(7 -> 0) : [4][0] OS(6 -> -1) : [1]                                                    |           |   @ CS(23 -> -1) : [11] OS(22 -> -1) : [0]                        |
+| [RETURN STACK]:                                                                              |           | [RETURN STACK]:                                                   |
+|   [4][2][3]: If -> [24][Stat]<! !If @ !>                                                     |           |   [1][2][0]: If -> [24][Stat]<! !If @ !>                          |
+|   [3][6][3]: Stat -> [12][IfThenStat]< "if" "cond" "then" Stat @ >                           |           |   [0][8][0]: Stat -> [27][Module]< Stat @ >                       |
+|   [2][3][0]: IfThenStat -> [19][If]{{<! !IfThenStat @ !> ; <! !IfThenStat @ "else" Stat !>}} |           | [PREDECESSORS 30-30]: [30]                                        |
+|   [1][2][0]: If -> [24][Stat]<! !If @ !>                                                     |           | [SUCCESORS 32-32]: [32]                                           |
+|   [0][8][0]: Stat -> [27][Module]< Stat @ >                                                  |           +-------------------------------------------------------------------+
+| [PREDECESSORS 21-21]: [21]                                                                   |           |
+| [SUCCESORS 23-23]: [23]                                                                      |           |
++----------------------------------------------------------------------------------------------+           |
+|                                                                                                          |
++                                                                                                          +
+|                                                                                                          |
++-----------------------------------------------------------------------------------------------------+    +---------------------------------------------------------------------------------------------------+
+| [23]: <Ending>                                                                                      |    | [32]: <Ending>                                                                                    |
+|   TraceExec: [17]                                                                                   |    |   TraceExec: [29]                                                                                 |
+|   InsExec: [29:3]                                                                                   |    |   InsExec: [57:3]                                                                                 |
+|   ForwardTrace: 16                                                                                  |    |   ForwardTrace: 12                                                                                |
+| [24][Stat]<! !If @ !>                                                                               |    | [24][Stat]<! !If @ !>                                                                             |
+| [AST-INSTRUCTIONS]:                                                                                 |    | [AST-INSTRUCTIONS]:                                                                               |
+|   @ CS(7 -> 0) : [4][0] OS(6 -> -1) : [1]                                                           |    |   @ CS(23 -> -1) : [11] OS(22 -> -1) : [0]                                                        |
+|   + Field(IfStat::elseBranch, 2)                                                                    |    |   + Field(IfStat::elseBranch, 2)                                                                  |
+|                                                                                                     |    |                                                                                                   |
+|   @ CS(7 -> 0) : [4][0] OS(6 -> -1) : [1]                                                           |    |   @ CS(23 -> -1) : [11] OS(22 -> -1) : [0]                                                        |
+|   + StackEnd()                                                                                      |    |   + StackEnd()                                                                                    |
+|     obj+:4 : IfStat                                                                                 |    |     obj+:11 : IfStat                                                                              |
+|       begin:11@3, top:4@0, use:[1, 1], field:[6], create!:[11@0], end!:[12@0, 23@1], endLref:[13@0] |    |       begin:14@3, top:1@0, use:[0], field:[13], create!:[25@0, 14@0], end!:[32@1], endLref:[27@0] |
+|                                                                                                     |    |                                                                                                   |
+|   @ CS(0 -> -1) : [0] OS(12 -> -1) : [4]                                                            |    |   @ OS(28 -> -1) : [11]                                                                           |
+|   > StackBegin()                                                                                    |    |   > StackBegin()                                                                                  |
+|     obj!:7 : IfStat                                                                                 |    |     obj!:14 : IfStat                                                                              |
+|                                                                                                     |    |                                                                                                   |
+|   @ CS(13 -> 0) : [7][0] OS(12 -> -1) : [4]                                                         |    |   @ CS(29 -> -1) : [14] OS(28 -> -1) : [11]                                                       |
+| [RETURN STACK]:                                                                                     |    | [RETURN STACK]:                                                                                   |
+|   [3][6][3]: Stat -> [12][IfThenStat]< "if" "cond" "then" Stat @ >                                  |    |   [0][8][0]: Stat -> [27][Module]< Stat @ >                                                       |
+|   [2][3][0]: IfThenStat -> [19][If]{{<! !IfThenStat @ !> ; <! !IfThenStat @ "else" Stat !>}}        |    | [PREDECESSORS 31-31]: [31]                                                                        |
+|   [1][2][0]: If -> [24][Stat]<! !If @ !>                                                            |    | [SUCCESORS 26-26]: [26]                                                                           |
+|   [0][8][0]: Stat -> [27][Module]< Stat @ >                                                         |    +---------------------------------------------------------------------------------------------------+
+| [PREDECESSORS 22-22]: [22]                                                                          |    |
+| [SUCCESORS 24-24]: [24]                                                                             |    |
++-----------------------------------------------------------------------------------------------------+    |
+|                                                                                                          |
++                                                                                                          +
+|                                                                                                          |
++----------------------------------------------------------------------------------------------+           |
+| [24]: <Ending>                                                                               |           |
+|   TraceExec: [18]                                                                            |           |
+|   InsExec: [32:2]                                                                            |           |
+|   ForwardTrace: 16                                                                           |           |
+| [12][IfThenStat]< "if" "cond" "then" Stat @ >                                                |           |
+| [AST-INSTRUCTIONS]:                                                                          |           |
+|   @ CS(13 -> 0) : [7][0] OS(12 -> -1) : [4]                                                  |           |
+|   + StackEnd()                                                                               |           |
+|     obj+:7 : IfStat                                                                          |           |
+|       begin:23@2, top:4@0, use:[4], create!:[11@0], end!:[24@0]                              |           |
+|                                                                                              |           |
+|   @ CS(0 -> -1) : [0] OS(14 -> -1) : [7]                                                     |           |
+|   > StackSlot(3)                                                                             |           |
+|                                                                                              |           |
+|   @ CS(0 -> -1) : [0]                                                                        |           |
+| [RETURN STACK]:                                                                              |           |
+|   [2][3][0]: IfThenStat -> [19][If]{{<! !IfThenStat @ !> ; <! !IfThenStat @ "else" Stat !>}} |           |
+|   [1][2][0]: If -> [24][Stat]<! !If @ !>                                                     |           |
+|   [0][8][0]: Stat -> [27][Module]< Stat @ >                                                  |           |
+| [PREDECESSORS 23-23]: [23]                                                                   |           |
+| [SUCCESORS 25-25]: [25]                                                                      |           |
++----------------------------------------------------------------------------------------------+           |
+|                                                                                                          |
++                                                                                                          |
+|                                                                                                          |
++-------------------------------------------------------------------------------------------------+        |
+| [25]: <Ending>                                                                                  |        |
+|   TraceExec: [19]                                                                               |        |
+|   InsExec: [34:4]                                                                               |        |
+|   ForwardTrace: 16                                                                              |        |
+| [19][If]{{<! !IfThenStat @ !> ; <! !IfThenStat @ "else" Stat !>}}                               |        |
+| [AST-INSTRUCTIONS]:                                                                             |        |
+|   @ CS(0 -> -1) : [0]                                                                           |        |
+|   + CreateObject(IfStat)                                                                        |        |
+|     obj:0 : IfStat                                                                              |        |
+|                                                                                                 |        |
+|   @ CS(0 -> -1) : [0]                                                                           |        |
+|   + Field(IfStat::thenBranch, 3)                                                                |        |
+|                                                                                                 |        |
+|   @ CS(0 -> -1) : [0]                                                                           |        |
+|   + StackEnd()                                                                                  |        |
+|     obj+:0 : IfStat                                                                             |        |
+|       begin:1@0, top:1@0, field:[10, 7], create!:[25@0, 14@0], end:[14@2, 25@2], endLref:[27@0] |        |
+|                                                                                                 |        |
+|   @ OS(15 -> -1) : [0]                                                                          |        |
+|   > StackBegin()                                                                                |        |
+|     obj!:8 : IfStat                                                                             |        |
+|                                                                                                 |        |
+|   @ CS(16 -> -1) : [8] OS(15 -> -1) : [0]                                                       |        |
+| [RETURN STACK]:                                                                                 |        |
+|   [1][2][0]: If -> [24][Stat]<! !If @ !>                                                        |        |
+|   [0][8][0]: Stat -> [27][Module]< Stat @ >                                                     |        |
+| [PREDECESSORS 24-24]: [24]                                                                      |        |
+| [SUCCESORS 33-33]: [33]                                                                         |        |
++-------------------------------------------------------------------------------------------------+        |
+|                                                                                                          |
++                                                                                                          |
+|                                                                                                          |
++---------------------------------------------------------------------------------------+                  |
+| [33]: <Ending>                                                                        |                  |
+|   TraceExec: [20]                                                                     |                  |
+|   InsExec: [38:2]                                                                     |                  |
+|   ForwardTrace: 16                                                                    |                  |
+| [24][Stat]<! !If @ !>                                                                 |                  |
+| [AST-INSTRUCTIONS]:                                                                   |                  |
+|   @ CS(16 -> -1) : [8] OS(15 -> -1) : [0]                                             |                  |
+|   + StackEnd()                                                                        |                  |
+|     obj+:8 : IfStat                                                                   |                  |
+|       begin:25@3, top:1@0, use:[0], create!:[25@0, 14@0], end!:[33@0], endLref:[27@0] |                  |
+|                                                                                       |                  |
+|   @ OS(17 -> -1) : [8]                                                                |                  |
+|   > StackBegin()                                                                      |                  |
+|     obj!:9 : IfStat                                                                   |                  |
+|                                                                                       |                  |
+|   @ CS(18 -> -1) : [9] OS(17 -> -1) : [8]                                             |                  |
+| [RETURN STACK]:                                                                       |                  |
+|   [0][8][0]: Stat -> [27][Module]< Stat @ >                                           |                  |
+| [PREDECESSORS 25-25]: [25]                                                            |                  |
+| [SUCCESORS 26-26]: [26]                                                               |                  |
++---------------------------------------------------------------------------------------+                  |
+|                                                                                                          |
++----------------------------------------------------------------------------------------------------------+
+|
++----------------------------------------------------------+
+| [26]: <Merging>                                          |
+| <Start>                                                  |
+|   TraceExec: [30]                                        |
+|   ForwardTrace: 26                                       |
+|   CommonForwardTrace: 0                                  |
+| [AMBIGUITY-RESOLVING]: [0]                               |
+|   objs: [11, 8]                                          |
+|   first: 1 prefix: 0                                     |
+|   last: 27 postfix: 2                                    |
+|   branch: 11                                             |
+|   merge: 26                                              |
+| [CONTEXT]: CS(31 -> -1) : [14, 9] OS(30 -> -1) : [11, 8] |
++----------------------------------------------------------+
+|
++
 |
 +---------------------------------------------------------------------------+
+| [27]: <Ending>                                                            |
+|   TraceExec: [31]                                                         |
+|   InsExec: [60:3]                                                         |
+|   ForwardTrace: 26                                                        |
+| [27][Module]< Stat @ >                                                    |
+| [AST-INSTRUCTIONS]:                                                       |
+|   @ CS(31 -> -1) : [14, 9] OS(30 -> -1) : [11, 8]                         |
+|   + StackEnd()                                                            |
+|     obj+:9 : IfStat                                                       |
+|       begin:33@1, top:1@0, use:[11, 8], create!:[25@0, 14@0], end!:[27@0] |
+|     obj+:14 : IfStat                                                      |
+|       begin:32@2, top:1@0, use:[11, 8], create!:[25@0, 14@0], end!:[27@0] |
 |                                                                           |
-+--------------------------------------------------------------------+      +--------------------------------------------------------------------+
-| [12]: <Leftrec>                                                    |      | [13]: <Ending>                                                     |
-|   TraceExec: [12]                                                  |      |   TraceExec: [22]                                                  |
-|   InsExec: [14:1]                                                  |      |   InsExec: [28:2]                                                  |
-|   ForwardTrace: 12                                                 |      |   ForwardTrace: 13                                                 |
-|   NextACT: 35                                                      |      |   NextACT: 34                                                      |
-| [19][If]<< !IfThenStat @ "else" Stat >>                            |      | [25][Stat]<< !If @ >>                                              |
-| [AST-INSTRUCTIONS]:                                                |      | [AST-INSTRUCTIONS]:                                                |
-|     CSTop: [2] [5 -> 4]                                            |      |     CSTop: [2] [5 -> 4]                                            |
-|     OSTop: [2] [2 -> -1]                                           |      |     OSTop: [2] [2 -> -1]                                           |
-|     LriStored: []                                                  |      |     LriStored: []                                                  |
-|   + ReopenObject()                                                 |      |   - ReopenObject()                                                 |
-|                                                                    |      |                                                                    |
-|     CSTop: [2] [5 -> 4]                                            |      |     CSTop: [2] [5 -> 4]                                            |
-|     OSTop: []                                                      |      |     OSTop: []                                                      |
-|     LriStored: []                                                  |      |     LriStored: []                                                  |
-| [RETURN STACK]:                                                    |      |   - EndObject()                                                    |
-|   [4][2][3]: If -> [25][Stat]<< !If @ >>                           |      |       objRefs: 2                                                   |
-|   [3][6][3]: Stat -> [12][IfThenStat]< "if" "cond" "then" Stat @ > |      |                                                                    |
-|   [2][3][0]: IfThenStat -> [20][If]<< !IfThenStat @ >>             |      |     CSTop: [2] [4 -> 3]                                            |
-|   [1][2][0]: If -> [25][Stat]<< !If @ >>                           |      |     OSTop: [2] [9 -> -1]                                           |
-|   [0][8][0]: Stat -> [28][Module]< Stat @ >                        |      |     LriStored: []                                                  |
-| [PREDECESSORS 11-11]: [11]                                         |      | [RETURN STACK]:                                                    |
-| [SUCCESORS 18-18]: [18]                                            |      |   [3][6][3]: Stat -> [12][IfThenStat]< "if" "cond" "then" Stat @ > |
-+--------------------------------------------------------------------+      |   [2][3][0]: IfThenStat -> [20][If]<< !IfThenStat @ >>             |
-|                                                                           |   [1][2][0]: If -> [25][Stat]<< !If @ >>                           |
-|                                                                           |   [0][8][0]: Stat -> [28][Module]< Stat @ >                        |
-|                                                                           | [PREDECESSORS 11-11]: [11]                                         |
-|                                                                           | [SUCCESORS 14-14]: [14]                                            |
-|                                                                           +--------------------------------------------------------------------+
+|   @ OS(32 -> -1) : [14, 9]                                                |
+|   > StackBegin()                                                          |
+|     obj:15 : Module                                                       |
 |                                                                           |
-+                                                                           +
+|   @ CS(33 -> -1) : [15] OS(32 -> -1) : [14, 9]                            |
+|   > StackSlot(0)                                                          |
 |                                                                           |
-|                                                                           +--------------------------------------------------------+
-|                                                                           | [14]: <Ending>                                         |
-|                                                                           |   TraceExec: [23]                                      |
-|                                                                           |   InsExec: [30:3]                                      |
-|                                                                           |   ForwardTrace: 13                                     |
-|                                                                           | [12][IfThenStat]< "if" "cond" "then" Stat @ >          |
-|                                                                           | [AST-INSTRUCTIONS]:                                    |
-|                                                                           |     CSTop: [2] [4 -> 3]                                |
-|                                                                           |     OSTop: [2] [9 -> -1]                               |
-|                                                                           |     LriStored: []                                      |
-|                                                                           |   - ReopenObject()                                     |
-|                                                                           |                                                        |
-|                                                                           |     CSTop: [2] [4 -> 3]                                |
-|                                                                           |     OSTop: []                                          |
-|                                                                           |     LriStored: []                                      |
-|                                                                           |   - EndObject()                                        |
-|                                                                           |       objRefs: 2                                       |
-|                                                                           |                                                        |
-|                                                                           |     CSTop: [1] [3 -> 2]                                |
-|                                                                           |     OSTop: [2] [10 -> -1]                              |
-|                                                                           |     LriStored: []                                      |
-|                                                                           |   > Field(IfStat::thenBranch)                          |
-|                                                                           |                                                        |
-|                                                                           |     CSTop: [1] [3 -> 2]                                |
-|                                                                           |     OSTop: []                                          |
-|                                                                           |     LriStored: []                                      |
-|                                                                           | [RETURN STACK]:                                        |
-|                                                                           |   [2][3][0]: IfThenStat -> [20][If]<< !IfThenStat @ >> |
-|                                                                           |   [1][2][0]: If -> [25][Stat]<< !If @ >>               |
-|                                                                           |   [0][8][0]: Stat -> [28][Module]< Stat @ >            |
-|                                                                           | [PREDECESSORS 13-13]: [13]                             |
-|                                                                           | [SUCCESORS 15-15]: [15]                                |
-|                                                                           +--------------------------------------------------------+
-|                                                                           |
-|                                                                           +
-|                                                                           |
-|                                                                           +---------------------------------------------+
-|                                                                           | [15]: <Ending>                              |
-|                                                                           |   TraceExec: [24]                           |
-|                                                                           |   InsExec: [33:1]                           |
-|                                                                           |   ForwardTrace: 13                          |
-|                                                                           | [20][If]<< !IfThenStat @ >>                 |
-|                                                                           | [AST-INSTRUCTIONS]:                         |
-|                                                                           |     CSTop: [1] [3 -> 2]                     |
-|                                                                           |     OSTop: []                               |
-|                                                                           |     LriStored: []                           |
-|                                                                           |   - EndObject()                             |
-|                                                                           |       objRefs: 1                            |
-|                                                                           |                                             |
-|                                                                           |     CSTop: [1] [2 -> 1]                     |
-|                                                                           |     OSTop: [1] [11 -> -1]                   |
-|                                                                           |     LriStored: []                           |
-|                                                                           | [RETURN STACK]:                             |
-|                                                                           |   [1][2][0]: If -> [25][Stat]<< !If @ >>    |
-|                                                                           |   [0][8][0]: Stat -> [28][Module]< Stat @ > |
-|                                                                           | [PREDECESSORS 14-14]: [14]                  |
-|                                                                           | [SUCCESORS 16-16]: [16]                     |
-|                                                                           +---------------------------------------------+
-|                                                                           |
-|                                                                           +
-|                                                                           |
-|                                                                           +---------------------------------------------+
-|                                                                           | [16]: <Leftrec>                             |
-|                                                                           |   TraceExec: [25]                           |
-|                                                                           |   InsExec: [34:1]                           |
-|                                                                           |   ForwardTrace: 13                          |
-|                                                                           | [19][If]<< !IfThenStat @ "else" Stat >>     |
-|                                                                           | [AST-INSTRUCTIONS]:                         |
-|                                                                           |     CSTop: [1] [2 -> 1]                     |
-|                                                                           |     OSTop: [1] [11 -> -1]                   |
-|                                                                           |     LriStored: []                           |
-|                                                                           |   + ReopenObject()                          |
-|                                                                           |                                             |
-|                                                                           |     CSTop: [1] [2 -> 1]                     |
-|                                                                           |     OSTop: []                               |
-|                                                                           |     LriStored: []                           |
-|                                                                           | [RETURN STACK]:                             |
-|                                                                           |   [1][2][0]: If -> [25][Stat]<< !If @ >>    |
-|                                                                           |   [0][8][0]: Stat -> [28][Module]< Stat @ > |
-|                                                                           | [PREDECESSORS 15-15]: [15]                  |
-|                                                                           | [SUCCESORS 19-19]: [19]                     |
-|                                                                           +---------------------------------------------+
-[0]                                                                         [1]
- |                                                                           |
- +                                                                           +
- |                                                                           |
-[0]                                                                         [1]
-++====================================================================++    ++=============================================++
-|| [18]: {ELSE} else                                                  ||    || [19]: {ELSE} else                           ||
-||   TraceExec: [13]                                                  ||    ||   TraceExec: [26]                           ||
-||   ForwardTrace: 12                                                 ||    ||   ForwardTrace: 13                          ||
-|| [17][If]<< !IfThenStat "else" @ Stat >>                            ||    || [17][If]<< !IfThenStat "else" @ Stat >>     ||
-|| [AST-INSTRUCTIONS]:                                                ||    || [AST-INSTRUCTIONS]:                         ||
-||     CSTop: [2] [5 -> 4]                                            ||    ||     CSTop: [1] [2 -> 1]                     ||
-||     OSTop: []                                                      ||    ||     OSTop: []                               ||
-||     LriStored: []                                                  ||    ||     LriStored: []                           ||
-|| [RETURN STACK]:                                                    ||    || [RETURN STACK]:                             ||
-||   [4][2][3]: If -> [25][Stat]<< !If @ >>                           ||    ||   [1][2][0]: If -> [25][Stat]<< !If @ >>    ||
-||   [3][6][3]: Stat -> [12][IfThenStat]< "if" "cond" "then" Stat @ > ||    ||   [0][8][0]: Stat -> [28][Module]< Stat @ > ||
-||   [2][3][0]: IfThenStat -> [20][If]<< !IfThenStat @ >>             ||    || [PREDECESSORS 16-16]: [16]                  ||
-||   [1][2][0]: If -> [25][Stat]<< !If @ >>                           ||    || [SUCCESORS 21-21]: [21]                     ||
-||   [0][8][0]: Stat -> [28][Module]< Stat @ >                        ||    ++=============================================++
-|| [PREDECESSORS 12-12]: [12]                                         ||    |
-|| [SUCCESORS 20-20]: [20]                                            ||    |
-++====================================================================++    |
-[0]                                                                         [1]
- |                                                                           |
- +                                                                           +-----+
- |                                                                                 |
-[0]                                                                               [1]
-++==========================================================================++    ++==========================================================================++
-|| [20]: {DO} do                                                            ||    || [21]: {DO} do                                                            ||
-||   TraceExec: [14]                                                        ||    ||   TraceExec: [27]                                                        ||
-||   InsExec: [15:2]                                                        ||    ||   InsExec: [35:2]                                                        ||
-||   ForwardTrace: 12                                                       ||    ||   ForwardTrace: 13                                                       ||
-|| [3][Do]< "do" @ ";" >                                                    ||    || [3][Do]< "do" @ ";" >                                                    ||
-|| [AST-INSTRUCTIONS]:                                                      ||    || [AST-INSTRUCTIONS]:                                                      ||
-||     CSTop: [2] [5 -> 4]                                                  ||    ||     CSTop: [1] [2 -> 1]                                                  ||
-||     OSTop: []                                                            ||    ||     OSTop: []                                                            ||
-||     LriStored: []                                                        ||    ||     LriStored: []                                                        ||
-||   - DelayFieldAssignment()                                               ||    ||   - DelayFieldAssignment()                                               ||
-||       objRefs: 4                                                         ||    ||       objRefs: 5                                                         ||
-||       eoInsRefs: 24@1                                                    ||    ||       eoInsRefs: 33@1                                                    ||
-||                                                                          ||    ||                                                                          ||
-||     CSTop: [4] [9 -> 5]                                                  ||    ||     CSTop: [5] [11 -> 2]                                                 ||
-||     OSTop: []                                                            ||    ||     OSTop: []                                                            ||
-||     LriStored: []                                                        ||    ||     LriStored: []                                                        ||
-||   - BeginObject(DoStat)                                                  ||    ||   - BeginObject(DoStat)                                                  ||
-||       obj:4, new:20@1, top:20@0 bottom:[24@1] assignedTo:[2] dfas:[20@0] ||    ||       obj:5, new:21@1, top:21@0 bottom:[33@1] assignedTo:[1] dfas:[21@0] ||
-||       eoInsRefs: 23@0                                                    ||    ||       eoInsRefs: 32@0                                                    ||
-||                                                                          ||    ||                                                                          ||
-||     CSTop: [4] [10 -> 9]                                                 ||    ||     CSTop: [5] [12 -> 11]                                                ||
-||     OSTop: []                                                            ||    ||     OSTop: []                                                            ||
-||     LriStored: []                                                        ||    ||     LriStored: []                                                        ||
-|| [RETURN STACK]:                                                          ||    || [RETURN STACK]:                                                          ||
-||   [9][4][18]: Do -> [24][Stat]<< !Do @ >>                                ||    ||   [11][4][19]: Do -> [24][Stat]<< !Do @ >>                               ||
-||   [8][7][18]: Stat -> [18][If]<< !IfThenStat "else" Stat @ >>            ||    ||   [10][7][19]: Stat -> [18][If]<< !IfThenStat "else" Stat @ >>           ||
-||   [4][2][3]: If -> [25][Stat]<< !If @ >>                                 ||    ||   [1][2][0]: If -> [25][Stat]<< !If @ >>                                 ||
-||   [3][6][3]: Stat -> [12][IfThenStat]< "if" "cond" "then" Stat @ >       ||    ||   [0][8][0]: Stat -> [28][Module]< Stat @ >                              ||
-||   [2][3][0]: IfThenStat -> [20][If]<< !IfThenStat @ >>                   ||    || [PREDECESSORS 19-19]: [19]                                               ||
-||   [1][2][0]: If -> [25][Stat]<< !If @ >>                                 ||    || [SUCCESORS 31-31]: [31]                                                  ||
-||   [0][8][0]: Stat -> [28][Module]< Stat @ >                              ||    ++==========================================================================++
-|| [PREDECESSORS 18-18]: [18]                                               ||    |
-|| [SUCCESORS 22-22]: [22]                                                  ||    |
-++==========================================================================++    |
-[0]                                                                               [1]
- |                                                                                 |
- +                                                                           +-----+
- |                                                                           |
-[0]                                                                         [1]
-++====================================================================++    ++================================================================++
-|| [22]: {SEMICOLON} ;                                                ||    || [31]: {SEMICOLON} ;                                            ||
-||   TraceExec: [15]                                                  ||    ||   TraceExec: [28]                                              ||
-||   ForwardTrace: 12                                                 ||    ||   ForwardTrace: 13                                             ||
-|| [2][Do]< "do" ";" @ >                                              ||    || [2][Do]< "do" ";" @ >                                          ||
-|| [AST-INSTRUCTIONS]:                                                ||    || [AST-INSTRUCTIONS]:                                            ||
-||     CSTop: [4] [10 -> 9]                                           ||    ||     CSTop: [5] [12 -> 11]                                      ||
-||     OSTop: []                                                      ||    ||     OSTop: []                                                  ||
-||     LriStored: []                                                  ||    ||     LriStored: []                                              ||
-|| [RETURN STACK]:                                                    ||    || [RETURN STACK]:                                                ||
-||   [9][4][18]: Do -> [24][Stat]<< !Do @ >>                          ||    ||   [11][4][19]: Do -> [24][Stat]<< !Do @ >>                     ||
-||   [8][7][18]: Stat -> [18][If]<< !IfThenStat "else" Stat @ >>      ||    ||   [10][7][19]: Stat -> [18][If]<< !IfThenStat "else" Stat @ >> ||
-||   [4][2][3]: If -> [25][Stat]<< !If @ >>                           ||    ||   [1][2][0]: If -> [25][Stat]<< !If @ >>                       ||
-||   [3][6][3]: Stat -> [12][IfThenStat]< "if" "cond" "then" Stat @ > ||    ||   [0][8][0]: Stat -> [28][Module]< Stat @ >                    ||
-||   [2][3][0]: IfThenStat -> [20][If]<< !IfThenStat @ >>             ||    || [PREDECESSORS 21-21]: [21]                                     ||
-||   [1][2][0]: If -> [25][Stat]<< !If @ >>                           ||    || [SUCCESORS 32-32]: [32]                                        ||
-||   [0][8][0]: Stat -> [28][Module]< Stat @ >                        ||    ++================================================================++
-|| [PREDECESSORS 20-20]: [20]                                         ||    |
-|| [SUCCESORS 23-23]: [23]                                            ||    |
-++====================================================================++    |
-|                                                                           |
-+                                                                           +
-|                                                                           |
-+--------------------------------------------------------------------+      +----------------------------------------------------------------+
-| [23]: <Ending>                                                     |      | [32]: <Ending>                                                 |
-|   TraceExec: [16]                                                  |      |   TraceExec: [29]                                              |
-|   InsExec: [17:1]                                                  |      |   InsExec: [37:1]                                              |
-|   ForwardTrace: 12                                                 |      |   ForwardTrace: 13                                             |
-| [24][Stat]<< !Do @ >>                                              |      | [24][Stat]<< !Do @ >>                                          |
-| [AST-INSTRUCTIONS]:                                                |      | [AST-INSTRUCTIONS]:                                            |
-|     CSTop: [4] [10 -> 9]                                           |      |     CSTop: [5] [12 -> 11]                                      |
-|     OSTop: []                                                      |      |     OSTop: []                                                  |
-|     LriStored: []                                                  |      |     LriStored: []                                              |
-|   - EndObject()                                                    |      |   - EndObject()                                                |
-|       objRefs: 4                                                   |      |       objRefs: 5                                               |
-|                                                                    |      |                                                                |
-|     CSTop: [4] [9 -> 5]                                            |      |     CSTop: [5] [11 -> 2]                                       |
-|     OSTop: [4] [3 -> -1]                                           |      |     OSTop: [5] [12 -> -1]                                      |
-|     LriStored: []                                                  |      |     LriStored: []                                              |
-| [RETURN STACK]:                                                    |      | [RETURN STACK]:                                                |
-|   [8][7][18]: Stat -> [18][If]<< !IfThenStat "else" Stat @ >>      |      |   [10][7][19]: Stat -> [18][If]<< !IfThenStat "else" Stat @ >> |
-|   [4][2][3]: If -> [25][Stat]<< !If @ >>                           |      |   [1][2][0]: If -> [25][Stat]<< !If @ >>                       |
-|   [3][6][3]: Stat -> [12][IfThenStat]< "if" "cond" "then" Stat @ > |      |   [0][8][0]: Stat -> [28][Module]< Stat @ >                    |
-|   [2][3][0]: IfThenStat -> [20][If]<< !IfThenStat @ >>             |      | [PREDECESSORS 31-31]: [31]                                     |
-|   [1][2][0]: If -> [25][Stat]<< !If @ >>                           |      | [SUCCESORS 33-33]: [33]                                        |
-|   [0][8][0]: Stat -> [28][Module]< Stat @ >                        |      +----------------------------------------------------------------+
-| [PREDECESSORS 22-22]: [22]                                         |      |
-| [SUCCESORS 24-24]: [24]                                            |      |
-+--------------------------------------------------------------------+      |
-|                                                                           |
-+                                                                           +
-|                                                                           |
-+--------------------------------------------------------------------+      +---------------------------------------------+
-| [24]: <Ending>                                                     |      | [33]: <Ending>                              |
-|   TraceExec: [17]                                                  |      |   TraceExec: [30]                           |
-|   InsExec: [18:3]                                                  |      |   InsExec: [38:3]                           |
-|   ForwardTrace: 12                                                 |      |   ForwardTrace: 13                          |
-| [18][If]<< !IfThenStat "else" Stat @ >>                            |      | [18][If]<< !IfThenStat "else" Stat @ >>     |
-| [AST-INSTRUCTIONS]:                                                |      | [AST-INSTRUCTIONS]:                         |
-|     CSTop: [4] [9 -> 5]                                            |      |     CSTop: [5] [11 -> 2]                    |
-|     OSTop: [4] [3 -> -1]                                           |      |     OSTop: [5] [12 -> -1]                   |
-|     LriStored: []                                                  |      |     LriStored: []                           |
-|   - ReopenObject()                                                 |      |   - ReopenObject()                          |
-|                                                                    |      |                                             |
-|     CSTop: [4] [9 -> 5]                                            |      |     CSTop: [5] [11 -> 2]                    |
-|     OSTop: []                                                      |      |     OSTop: []                               |
-|     LriStored: []                                                  |      |     LriStored: []                           |
-|   - EndObject()                                                    |      |   - EndObject()                             |
-|       objRefs: 4                                                   |      |       objRefs: 5                            |
-|                                                                    |      |                                             |
-|     CSTop: [2] [5 -> 4]                                            |      |     CSTop: [1] [2 -> 1]                     |
-|     OSTop: [4] [4 -> -1]                                           |      |     OSTop: [5] [13 -> -1]                   |
-|     LriStored: []                                                  |      |     LriStored: []                           |
-|   > Field(IfStat::elseBranch)                                      |      |   > Field(IfStat::elseBranch)               |
-|                                                                    |      |                                             |
-|     CSTop: [2] [5 -> 4]                                            |      |     CSTop: [1] [2 -> 1]                     |
-|     OSTop: []                                                      |      |     OSTop: []                               |
-|     LriStored: []                                                  |      |     LriStored: []                           |
-| [RETURN STACK]:                                                    |      | [RETURN STACK]:                             |
-|   [4][2][3]: If -> [25][Stat]<< !If @ >>                           |      |   [1][2][0]: If -> [25][Stat]<< !If @ >>    |
-|   [3][6][3]: Stat -> [12][IfThenStat]< "if" "cond" "then" Stat @ > |      |   [0][8][0]: Stat -> [28][Module]< Stat @ > |
-|   [2][3][0]: IfThenStat -> [20][If]<< !IfThenStat @ >>             |      | [PREDECESSORS 32-32]: [32]                  |
-|   [1][2][0]: If -> [25][Stat]<< !If @ >>                           |      | [SUCCESORS 34-34]: [34]                     |
-|   [0][8][0]: Stat -> [28][Module]< Stat @ >                        |      +---------------------------------------------+
-| [PREDECESSORS 23-23]: [23]                                         |      |
-| [SUCCESORS 25-25]: [25]                                            |      |
-+--------------------------------------------------------------------+      |
-|                                                                           |
-+                                                                           +
-|                                                                           |
-+--------------------------------------------------------------------+      +---------------------------------------------+
-| [25]: <Ending>                                                     |      | [34]: <Ending>                              |
-|   TraceExec: [18]                                                  |      |   TraceExec: [31]                           |
-|   InsExec: [21:1]                                                  |      |   InsExec: [41:1]                           |
-|   ForwardTrace: 12                                                 |      |   ForwardTrace: 13                          |
-| [25][Stat]<< !If @ >>                                              |      | [25][Stat]<< !If @ >>                       |
-| [AST-INSTRUCTIONS]:                                                |      | [AST-INSTRUCTIONS]:                         |
-|     CSTop: [2] [5 -> 4]                                            |      |     CSTop: [1] [2 -> 1]                     |
-|     OSTop: []                                                      |      |     OSTop: []                               |
-|     LriStored: []                                                  |      |     LriStored: []                           |
-|   - EndObject()                                                    |      |   - EndObject()                             |
-|       objRefs: 2                                                   |      |       objRefs: 1                            |
-|                                                                    |      |                                             |
-|     CSTop: [2] [4 -> 3]                                            |      |     CSTop: [1] [1 -> 0]                     |
-|     OSTop: [2] [5 -> -1]                                           |      |     OSTop: [1] [14 -> -1]                   |
-|     LriStored: []                                                  |      |     LriStored: []                           |
-| [RETURN STACK]:                                                    |      | [RETURN STACK]:                             |
-|   [3][6][3]: Stat -> [12][IfThenStat]< "if" "cond" "then" Stat @ > |      |   [0][8][0]: Stat -> [28][Module]< Stat @ > |
-|   [2][3][0]: IfThenStat -> [20][If]<< !IfThenStat @ >>             |      | [PREDECESSORS 33-33]: [33]                  |
-|   [1][2][0]: If -> [25][Stat]<< !If @ >>                           |      | [SUCCESORS 28-28]: [28]                     |
-|   [0][8][0]: Stat -> [28][Module]< Stat @ >                        |      +---------------------------------------------+
-| [PREDECESSORS 24-24]: [24]                                         |      |
-| [SUCCESORS 26-26]: [26]                                            |      |
-+--------------------------------------------------------------------+      |
-|                                                                           |
-+                                                                           +
-|                                                                           |
-+--------------------------------------------------------+                  |
-| [26]: <Ending>                                         |                  |
-|   TraceExec: [19]                                      |                  |
-|   InsExec: [22:3]                                      |                  |
-|   ForwardTrace: 12                                     |                  |
-| [12][IfThenStat]< "if" "cond" "then" Stat @ >          |                  |
-| [AST-INSTRUCTIONS]:                                    |                  |
-|     CSTop: [2] [4 -> 3]                                |                  |
-|     OSTop: [2] [5 -> -1]                               |                  |
-|     LriStored: []                                      |                  |
-|   - ReopenObject()                                     |                  |
-|                                                        |                  |
-|     CSTop: [2] [4 -> 3]                                |                  |
-|     OSTop: []                                          |                  |
-|     LriStored: []                                      |                  |
-|   - EndObject()                                        |                  |
-|       objRefs: 2                                       |                  |
-|                                                        |                  |
-|     CSTop: [1] [3 -> 2]                                |                  |
-|     OSTop: [2] [6 -> -1]                               |                  |
-|     LriStored: []                                      |                  |
-|   > Field(IfStat::thenBranch)                          |                  |
-|                                                        |                  |
-|     CSTop: [1] [3 -> 2]                                |                  |
-|     OSTop: []                                          |                  |
-|     LriStored: []                                      |                  |
-| [RETURN STACK]:                                        |                  |
-|   [2][3][0]: IfThenStat -> [20][If]<< !IfThenStat @ >> |                  |
-|   [1][2][0]: If -> [25][Stat]<< !If @ >>               |                  |
-|   [0][8][0]: Stat -> [28][Module]< Stat @ >            |                  |
-| [PREDECESSORS 25-25]: [25]                             |                  |
-| [SUCCESORS 27-27]: [27]                                |                  |
-+--------------------------------------------------------+                  |
-|                                                                           |
-+                                                                           |
-|                                                                           |
-+---------------------------------------------+                             |
-| [27]: <Ending>                              |                             |
-|   TraceExec: [20]                           |                             |
-|   InsExec: [25:1]                           |                             |
-|   ForwardTrace: 12                          |                             |
-| [20][If]<< !IfThenStat @ >>                 |                             |
-| [AST-INSTRUCTIONS]:                         |                             |
-|     CSTop: [1] [3 -> 2]                     |                             |
-|     OSTop: []                               |                             |
-|     LriStored: []                           |                             |
-|   - EndObject()                             |                             |
-|       objRefs: 1                            |                             |
-|                                             |                             |
-|     CSTop: [1] [2 -> 1]                     |                             |
-|     OSTop: [1] [7 -> -1]                    |                             |
-|     LriStored: []                           |                             |
-| [RETURN STACK]:                             |                             |
-|   [1][2][0]: If -> [25][Stat]<< !If @ >>    |                             |
-|   [0][8][0]: Stat -> [28][Module]< Stat @ > |                             |
-| [PREDECESSORS 26-26]: [26]                  |                             |
-| [SUCCESORS 35-35]: [35]                     |                             |
-+---------------------------------------------+                             |
-|                                                                           |
-+                                                                           |
-|                                                                           |
-+---------------------------------------------+                             |
-| [35]: <Ending>                              |                             |
-|   TraceExec: [21]                           |                             |
-|   InsExec: [26:2]                           |                             |
-|   ForwardTrace: 12                          |                             |
-| [25][Stat]<< !If @ >>                       |                             |
-| [AST-INSTRUCTIONS]:                         |                             |
-|     CSTop: [1] [2 -> 1]                     |                             |
-|     OSTop: [1] [7 -> -1]                    |                             |
-|     LriStored: []                           |                             |
-|   - ReopenObject()                          |                             |
-|                                             |                             |
-|     CSTop: [1] [2 -> 1]                     |                             |
-|     OSTop: []                               |                             |
-|     LriStored: []                           |                             |
-|   - EndObject()                             |                             |
-|       objRefs: 1                            |                             |
-|                                             |                             |
-|     CSTop: [1] [1 -> 0]                     |                             |
-|     OSTop: [1] [8 -> -1]                    |                             |
-|     LriStored: []                           |                             |
-| [RETURN STACK]:                             |                             |
-|   [0][8][0]: Stat -> [28][Module]< Stat @ > |                             |
-| [PREDECESSORS 27-27]: [27]                  |                             |
-| [SUCCESORS 28-28]: [28]                     |                             |
-+---------------------------------------------+                             |
-|                                                                           |
+|   @ CS(33 -> -1) : [15]                                                   |
+| [PREDECESSORS 26-26]: [26]                                                |
+| [SUCCESORS 28-28]: [28]                                                   |
 +---------------------------------------------------------------------------+
 |
-+----------------------------+
-| [28]: <Merging>            |
-| <Start>                    |
-|   TraceExec: [32]          |
-|   ForwardTrace: 28         |
-|   CommonForwardTrace: 0    |
-| [AMBIGUITY-RESOLVING]: [0] |
-|   objs: [1]                |
-|   first: 1 prefix: 1       |
-|   last: 29 postfix: 0      |
-| [CONTEXT]                  |
-|   CSTop: [1] [1 -> 0]      |
-|   OSTop: [1] [15 -> -1]    |
-|   LriStored: []            |
-+----------------------------+
-|
 +
 |
-+----------------------------+
-| [29]: <Ending>             |
-|   TraceExec: [33]          |
-|   InsExec: [42:2]          |
-|   ForwardTrace: 28         |
-| [28][Module]< Stat @ >     |
-| [AST-INSTRUCTIONS]:        |
-|     CSTop: [1] [1 -> 0]    |
-|     OSTop: [1] [15 -> -1]  |
-|     LriStored: []          |
-|   - ReopenObject()         |
-|                            |
-|     CSTop: [1] [1 -> 0]    |
-|     OSTop: []              |
-|     LriStored: []          |
-|   - EndObject()            |
-|       objRefs: 1           |
-|                            |
-|     CSTop: [0] [0 -> -1]   |
-|     OSTop: [1] [16 -> -1]  |
-|     LriStored: []          |
-| [PREDECESSORS 28-28]: [28] |
-| [SUCCESORS 30-30]: [30]    |
-+----------------------------+
-|
-+
-|
-+----------------------------+
-| [30]: <Ending>             |
-|   TraceExec: [34]          |
-|   InsExec: [44:2]          |
-|   ForwardTrace: 28         |
-| [27][Module] END [ENDING]  |
-| [AST-INSTRUCTIONS]:        |
-|     CSTop: [0] [0 -> -1]   |
-|     OSTop: [1] [16 -> -1]  |
-|     LriStored: []          |
-|   - Field(Module::stat)    |
-|                            |
-|     CSTop: [0] [0 -> -1]   |
-|     OSTop: []              |
-|     LriStored: []          |
-|   - EndObject()            |
-|       objRefs: 0           |
-|                            |
-|     CSTop: []              |
-|     OSTop: [0] [17 -> -1]  |
-|     LriStored: []          |
-| [PREDECESSORS 29-29]: [29] |
-+----------------------------+
++----------------------------------------------------------------------------------+
+| [28]: <Ending>                                                                   |
+|   TraceExec: [32]                                                                |
+|   InsExec: [63:3]                                                                |
+|   ForwardTrace: 26                                                               |
+| [26][Module] END [ENDING]                                                        |
+| [AST-INSTRUCTIONS]:                                                              |
+|   @ CS(33 -> -1) : [15]                                                          |
+|   + CreateObject(Module)                                                         |
+|     obj:15 : Module                                                              |
+|                                                                                  |
+|   @ CS(33 -> -1) : [15]                                                          |
+|   + Field(Module::stat, 0)                                                       |
+|                                                                                  |
+|   @ CS(33 -> -1) : [15]                                                          |
+|   + StackEnd()                                                                   |
+|     obj+:15 : Module                                                             |
+|       begin:27@1, top:27@1, stack:1@0, field:[14, 9], create!:[28@0], end:[28@2] |
+|                                                                                  |
+|   @ OS(34 -> -1) : [15]                                                          |
+| [PREDECESSORS 27-27]: [27]                                                       |
++----------------------------------------------------------------------------------+

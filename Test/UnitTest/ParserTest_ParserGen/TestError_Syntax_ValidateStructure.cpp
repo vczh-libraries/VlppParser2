@@ -162,6 +162,51 @@ Exp1
 			);
 	});
 
+	TEST_CASE(L"PartialRuleIsRecursive 1")
+	{
+		const wchar_t* syntaxCode =
+LR"SYNTAX(
+Exp0
+  ::= NUM:value ["+" Exp0] as partial NumExpr
+  ;
+Exp1
+  ::= Exp0 as NumExpr
+  ;
+)SYNTAX";
+		ExpectError(
+			typeParser,
+			ruleParser,
+			astCode,
+			lexerCode,
+			syntaxCode,
+			{ ParserErrorType::PartialRuleIsRecursive,L"Exp0" }
+			);
+	});
+
+	TEST_CASE(L"PartialRuleIsRecursive 2")
+	{
+		const wchar_t* syntaxCode =
+LR"SYNTAX(
+Exp0
+  ::= NUM:value ["+" Exp1] as partial NumExpr
+  ;
+Exp1
+  ::= NUM:value ["*" Exp0] as partial NumExpr
+  ;
+Exp2
+  ::= Exp0 as NumExpr
+  ;
+)SYNTAX";
+		ExpectError(
+			typeParser,
+			ruleParser,
+			astCode,
+			lexerCode,
+			syntaxCode,
+			{ ParserErrorType::PartialRuleIsRecursive,L"Exp0" }
+			);
+	});
+
 	TEST_CASE(L"ClauseCouldExpandToEmptySequence")
 	{
 		const wchar_t* syntaxCode =

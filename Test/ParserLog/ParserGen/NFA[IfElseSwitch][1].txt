@@ -1,347 +1,408 @@
 ﻿[0][Do]< "do" ";" > @[ENDING]
-[RULE: 0][CLAUSE: 0]
+[RULE: 0]
 
 [1][Do]< "do" ";" @ >
-[RULE: 0][CLAUSE: 0]
+[RULE: 0]
 	epsilon -> [0][Do]< "do" ";" > @[ENDING]
-		- EndObject()
+		+ CreateObject(DoStat)
+		+ StackEnd()
 
 [2][Do]< "do" @ ";" >
-[RULE: 0][CLAUSE: 0]
+[RULE: 0]
 	epsilon -> [3][Do]< "do" @ ";" >
 
 [3][Do]< "do" @ ";" >
-[RULE: 0][CLAUSE: 0]
+[RULE: 0]
 	token: ";" -> [1][Do]< "do" ";" @ >
+		+ Token(1)
 
 [4][Do]< @ "do" ";" >
-[RULE: 0][CLAUSE: 0]
+[RULE: 0]
 	token: "do" -> [2][Do]< "do" @ ";" >
+		+ Token(0)
 
 [5][Do]@ < "do" ";" >
-[RULE: 0][CLAUSE: 0]
+[RULE: 0]
 	epsilon -> [4][Do]< @ "do" ";" >
-		- BeginObject(DoStat)
+		+ StackBegin()
 
 [6][Block]< "{" @ { Stat } "}" >
-[RULE: 1][CLAUSE: 0]
+[RULE: 1]
 	epsilon -> [8][Block]< "{" { @ Stat } "}" >
 	epsilon -> [12][Block]< "{" { Stat } @ "}" >
 
 [7][Block]< "{" @ { Stat } "}" >
-[RULE: 1][CLAUSE: 0]
+[RULE: 1]
 	epsilon -> [6][Block]< "{" @ { Stat } "}" >
 
 [8][Block]< "{" { @ Stat } "}" >
-[RULE: 1][CLAUSE: 0]
+[RULE: 1]
 	rule: Stat -> [9][Block]< "{" { Stat @ } "}" >
-		+ Field(BlockStat::stats)
+		+ StackSlot(1)
 
 [9][Block]< "{" { Stat @ } "}" >
-[RULE: 1][CLAUSE: 0]
+[RULE: 1]
 	epsilon -> [8][Block]< "{" { @ Stat } "}" >
 	epsilon -> [12][Block]< "{" { Stat } @ "}" >
 
 [10][Block]< "{" { Stat } "}" > @[ENDING]
-[RULE: 1][CLAUSE: 0]
+[RULE: 1]
 
 [11][Block]< "{" { Stat } "}" @ >
-[RULE: 1][CLAUSE: 0]
+[RULE: 1]
 	epsilon -> [10][Block]< "{" { Stat } "}" > @[ENDING]
-		- EndObject()
+		+ CreateObject(BlockStat)
+		+ Field(BlockStat::stats, 1)
+		+ StackEnd()
 
 [12][Block]< "{" { Stat } @ "}" >
-[RULE: 1][CLAUSE: 0]
+[RULE: 1]
 	epsilon -> [13][Block]< "{" { Stat } @ "}" >
 
 [13][Block]< "{" { Stat } @ "}" >
-[RULE: 1][CLAUSE: 0]
+[RULE: 1]
 	token: "}" -> [11][Block]< "{" { Stat } "}" @ >
+		+ Token(2)
 
 [14][Block]< @ "{" { Stat } "}" >
-[RULE: 1][CLAUSE: 0]
+[RULE: 1]
 	token: "{" -> [7][Block]< "{" @ { Stat } "}" >
+		+ Token(0)
 
 [15][Block]@ < "{" { Stat } "}" >
-[RULE: 1][CLAUSE: 0]
+[RULE: 1]
 	epsilon -> [14][Block]< @ "{" { Stat } "}" >
-		- BeginObject(BlockStat)
+		+ StackBegin()
 
-[16][OtherStat]<< !Block >> @[ENDING]
-[RULE: 2][CLAUSE: 1]
+[16][OtherStat]<! !Block !> @[ENDING]
+[RULE: 2]
 
-[17][OtherStat]<< !Block @ >>
-[RULE: 2][CLAUSE: 1]
-	epsilon -> [16][OtherStat]<< !Block >> @[ENDING]
-		- EndObject()
+[17][OtherStat]<! !Block @ !>
+[RULE: 2]
+	epsilon -> [16][OtherStat]<! !Block !> @[ENDING]
+		+ StackEnd()
 
-[18][OtherStat]<< !Do >> @[ENDING]
-[RULE: 2][CLAUSE: 0]
+[18][OtherStat]<! !Do !> @[ENDING]
+[RULE: 2]
 
-[19][OtherStat]<< !Do @ >>
-[RULE: 2][CLAUSE: 0]
-	epsilon -> [18][OtherStat]<< !Do >> @[ENDING]
-		- EndObject()
+[19][OtherStat]<! !Do @ !>
+[RULE: 2]
+	epsilon -> [18][OtherStat]<! !Do !> @[ENDING]
+		+ StackEnd()
 
-[20][OtherStat]<< @ !Block >>
-[RULE: 2][CLAUSE: 1]
-	rule: Block -> [17][OtherStat]<< !Block @ >>
-		+ ReopenObject()
+[20][OtherStat]<! @ !Block !>
+[RULE: 2]
+	rule: Block -> [17][OtherStat]<! !Block @ !>
 
-[21][OtherStat]<< @ !Do >>
-[RULE: 2][CLAUSE: 0]
-	rule: Do -> [19][OtherStat]<< !Do @ >>
-		+ ReopenObject()
+[21][OtherStat]<! @ !Do !>
+[RULE: 2]
+	rule: Do -> [19][OtherStat]<! !Do @ !>
 
-[22][OtherStat]@ << !Block >>
-[RULE: 2][CLAUSE: 1]
-	epsilon -> [20][OtherStat]<< @ !Block >>
-		- DelayFieldAssignment()
+[22][OtherStat]@ <! !Block !>
+[RULE: 2]
+	epsilon -> [20][OtherStat]<! @ !Block !>
+		+ StackBegin()
 
-[23][OtherStat]@ << !Do >>
-[RULE: 2][CLAUSE: 0]
-	epsilon -> [21][OtherStat]<< @ !Do >>
-		- DelayFieldAssignment()
+[23][OtherStat]@ <! !Do !>
+[RULE: 2]
+	epsilon -> [21][OtherStat]<! @ !Do !>
+		+ StackBegin()
 
-[24][Stat]<< !If_SWITCH_1allow_half_if >> @[ENDING]
-[RULE: 3][CLAUSE: 1]
+[24][Stat]<! !If_SWITCH_1allow_half_if !> @[ENDING]
+[RULE: 3]
 
-[25][Stat]<< !If_SWITCH_1allow_half_if @ >>
-[RULE: 3][CLAUSE: 1]
-	epsilon -> [24][Stat]<< !If_SWITCH_1allow_half_if >> @[ENDING]
-		- EndObject()
+[25][Stat]<! !If_SWITCH_1allow_half_if @ !>
+[RULE: 3]
+	epsilon -> [24][Stat]<! !If_SWITCH_1allow_half_if !> @[ENDING]
+		+ StackEnd()
 
-[26][Stat]<< !OtherStat >> @[ENDING]
-[RULE: 3][CLAUSE: 0]
+[26][Stat]<! !OtherStat !> @[ENDING]
+[RULE: 3]
 
-[27][Stat]<< !OtherStat @ >>
-[RULE: 3][CLAUSE: 0]
-	epsilon -> [26][Stat]<< !OtherStat >> @[ENDING]
-		- EndObject()
+[27][Stat]<! !OtherStat @ !>
+[RULE: 3]
+	epsilon -> [26][Stat]<! !OtherStat !> @[ENDING]
+		+ StackEnd()
 
-[28][Stat]<< @ !If_SWITCH_1allow_half_if >>
-[RULE: 3][CLAUSE: 1]
-	rule: If_SWITCH_1allow_half_if -> [25][Stat]<< !If_SWITCH_1allow_half_if @ >>
-		+ ReopenObject()
+[28][Stat]<! @ !If_SWITCH_1allow_half_if !>
+[RULE: 3]
+	rule: If_SWITCH_1allow_half_if -> [25][Stat]<! !If_SWITCH_1allow_half_if @ !>
 
-[29][Stat]<< @ !OtherStat >>
-[RULE: 3][CLAUSE: 0]
-	rule: OtherStat -> [27][Stat]<< !OtherStat @ >>
-		+ ReopenObject()
+[29][Stat]<! @ !OtherStat !>
+[RULE: 3]
+	rule: OtherStat -> [27][Stat]<! !OtherStat @ !>
 
-[30][Stat]@ << !If_SWITCH_1allow_half_if >>
-[RULE: 3][CLAUSE: 1]
-	epsilon -> [28][Stat]<< @ !If_SWITCH_1allow_half_if >>
-		- DelayFieldAssignment()
+[30][Stat]@ <! !If_SWITCH_1allow_half_if !>
+[RULE: 3]
+	epsilon -> [28][Stat]<! @ !If_SWITCH_1allow_half_if !>
+		+ StackBegin()
 
-[31][Stat]@ << !OtherStat >>
-[RULE: 3][CLAUSE: 0]
-	epsilon -> [29][Stat]<< @ !OtherStat >>
-		- DelayFieldAssignment()
+[31][Stat]@ <! !OtherStat !>
+[RULE: 3]
+	epsilon -> [29][Stat]<! @ !OtherStat !>
+		+ StackBegin()
 
 [32][Module]< @ Stat >
-[RULE: 4][CLAUSE: 0]
+[RULE: 4]
 	rule: Stat -> [34][Module]< Stat @ >
-		+ Field(Module::stat)
+		+ StackSlot(0)
 
 [33][Module]< Stat > @[ENDING]
-[RULE: 4][CLAUSE: 0]
+[RULE: 4]
 
 [34][Module]< Stat @ >
-[RULE: 4][CLAUSE: 0]
+[RULE: 4]
 	epsilon -> [33][Module]< Stat > @[ENDING]
-		- EndObject()
+		+ CreateObject(Module)
+		+ Field(Module::stat, 0)
+		+ StackEnd()
 
 [35][Module]@ < Stat >
-[RULE: 4][CLAUSE: 0]
+[RULE: 4]
 	epsilon -> [32][Module]< @ Stat >
-		- BeginObject(Module)
+		+ StackBegin()
 
-[36][IfTail_SWITCH_COMBINED]@ If_SWITCH_0allow_half_if "else" Stat
-[RULE: 5][CLAUSE: 0]
-	rule: If_SWITCH_0allow_half_if -> [41][IfTail_SWITCH_COMBINED]If_SWITCH_0allow_half_if @ "else" Stat
-		+ Field(IfStat::thenBranch)
+[36][If_SWITCH_1allow_half_if]< "if" "cond" "then" ( @ OtherStat [ "else" Stat ] | If_SWITCH_1allow_half_if | ( If_SWITCH_0allow_half_if "else" Stat ) ) >
+[RULE: 6]
+	rule: OtherStat -> [38][If_SWITCH_1allow_half_if]< "if" "cond" "then" ( OtherStat @ [ "else" Stat ] | If_SWITCH_1allow_half_if | ( If_SWITCH_0allow_half_if "else" Stat ) ) >
+		+ StackSlot(3)
 
-[37][IfTail_SWITCH_COMBINED]If_SWITCH_0allow_half_if "else" @ Stat
-[RULE: 5][CLAUSE: 0]
-	epsilon -> [38][IfTail_SWITCH_COMBINED]If_SWITCH_0allow_half_if "else" @ Stat
+[37][If_SWITCH_1allow_half_if]< "if" "cond" "then" ( OtherStat @ [ "else" Stat ] | If_SWITCH_1allow_half_if | ( If_SWITCH_0allow_half_if "else" Stat ) ) >
+[RULE: 6]
+	epsilon -> [42][If_SWITCH_1allow_half_if]< "if" "cond" "then" ( OtherStat [ "else" Stat ] @ | If_SWITCH_1allow_half_if | ( If_SWITCH_0allow_half_if "else" Stat ) ) >
+	epsilon -> [55][If_SWITCH_1allow_half_if]< "if" "cond" "then" ( OtherStat [ @ "else" Stat ] | If_SWITCH_1allow_half_if | ( If_SWITCH_0allow_half_if "else" Stat ) ) >
 
-[38][IfTail_SWITCH_COMBINED]If_SWITCH_0allow_half_if "else" @ Stat
-[RULE: 5][CLAUSE: 0]
-	rule: Stat -> [39][IfTail_SWITCH_COMBINED]If_SWITCH_0allow_half_if "else" Stat @[ENDING]
-		+ Field(IfStat::elseBranch)
+[38][If_SWITCH_1allow_half_if]< "if" "cond" "then" ( OtherStat @ [ "else" Stat ] | If_SWITCH_1allow_half_if | ( If_SWITCH_0allow_half_if "else" Stat ) ) >
+[RULE: 6]
+	epsilon -> [37][If_SWITCH_1allow_half_if]< "if" "cond" "then" ( OtherStat @ [ "else" Stat ] | If_SWITCH_1allow_half_if | ( If_SWITCH_0allow_half_if "else" Stat ) ) >
 
-[39][IfTail_SWITCH_COMBINED]If_SWITCH_0allow_half_if "else" Stat @[ENDING]
-[RULE: 5][CLAUSE: 0]
+[39][If_SWITCH_1allow_half_if]< "if" "cond" "then" ( OtherStat [ "else" @ Stat ] | If_SWITCH_1allow_half_if | ( If_SWITCH_0allow_half_if "else" Stat ) ) >
+[RULE: 6]
+	rule: Stat -> [41][If_SWITCH_1allow_half_if]< "if" "cond" "then" ( OtherStat [ "else" Stat @ ] | If_SWITCH_1allow_half_if | ( If_SWITCH_0allow_half_if "else" Stat ) ) >
+		+ StackSlot(5)
 
-[40][IfTail_SWITCH_COMBINED]If_SWITCH_0allow_half_if @ "else" Stat
-[RULE: 5][CLAUSE: 0]
-	token: "else" -> [37][IfTail_SWITCH_COMBINED]If_SWITCH_0allow_half_if "else" @ Stat
+[40][If_SWITCH_1allow_half_if]< "if" "cond" "then" ( OtherStat [ "else" @ Stat ] | If_SWITCH_1allow_half_if | ( If_SWITCH_0allow_half_if "else" Stat ) ) >
+[RULE: 6]
+	epsilon -> [39][If_SWITCH_1allow_half_if]< "if" "cond" "then" ( OtherStat [ "else" @ Stat ] | If_SWITCH_1allow_half_if | ( If_SWITCH_0allow_half_if "else" Stat ) ) >
 
-[41][IfTail_SWITCH_COMBINED]If_SWITCH_0allow_half_if @ "else" Stat
-[RULE: 5][CLAUSE: 0]
-	epsilon -> [40][IfTail_SWITCH_COMBINED]If_SWITCH_0allow_half_if @ "else" Stat
+[41][If_SWITCH_1allow_half_if]< "if" "cond" "then" ( OtherStat [ "else" Stat @ ] | If_SWITCH_1allow_half_if | ( If_SWITCH_0allow_half_if "else" Stat ) ) >
+[RULE: 6]
+	epsilon -> [42][If_SWITCH_1allow_half_if]< "if" "cond" "then" ( OtherStat [ "else" Stat ] @ | If_SWITCH_1allow_half_if | ( If_SWITCH_0allow_half_if "else" Stat ) ) >
 
-[42][If_SWITCH_1allow_half_if]< "if" "cond" "then" @ IfTail_SWITCH_1allow_half_if >
-[RULE: 6][CLAUSE: 0]
-	rule: IfTail_SWITCH_1allow_half_if -> [45][If_SWITCH_1allow_half_if]< "if" "cond" "then" IfTail_SWITCH_1allow_half_if @ >
+[42][If_SWITCH_1allow_half_if]< "if" "cond" "then" ( OtherStat [ "else" Stat ] @ | If_SWITCH_1allow_half_if | ( If_SWITCH_0allow_half_if "else" Stat ) ) >
+[RULE: 6]
+	epsilon -> [49][If_SWITCH_1allow_half_if]< "if" "cond" "then" ( OtherStat [ "else" Stat ] | If_SWITCH_1allow_half_if | ( If_SWITCH_0allow_half_if "else" Stat ) ) @ >
 
-[43][If_SWITCH_1allow_half_if]< "if" "cond" "then" @ IfTail_SWITCH_1allow_half_if >
-[RULE: 6][CLAUSE: 0]
-	epsilon -> [42][If_SWITCH_1allow_half_if]< "if" "cond" "then" @ IfTail_SWITCH_1allow_half_if >
+[43][If_SWITCH_1allow_half_if]< "if" "cond" "then" ( OtherStat [ "else" Stat ] | @ If_SWITCH_1allow_half_if | ( If_SWITCH_0allow_half_if "else" Stat ) ) >
+[RULE: 6]
+	rule: If_SWITCH_1allow_half_if -> [44][If_SWITCH_1allow_half_if]< "if" "cond" "then" ( OtherStat [ "else" Stat ] | If_SWITCH_1allow_half_if @ | ( If_SWITCH_0allow_half_if "else" Stat ) ) >
+		+ StackSlot(6)
 
-[44][If_SWITCH_1allow_half_if]< "if" "cond" "then" IfTail_SWITCH_1allow_half_if > @[ENDING]
-[RULE: 6][CLAUSE: 0]
+[44][If_SWITCH_1allow_half_if]< "if" "cond" "then" ( OtherStat [ "else" Stat ] | If_SWITCH_1allow_half_if @ | ( If_SWITCH_0allow_half_if "else" Stat ) ) >
+[RULE: 6]
+	epsilon -> [49][If_SWITCH_1allow_half_if]< "if" "cond" "then" ( OtherStat [ "else" Stat ] | If_SWITCH_1allow_half_if | ( If_SWITCH_0allow_half_if "else" Stat ) ) @ >
 
-[45][If_SWITCH_1allow_half_if]< "if" "cond" "then" IfTail_SWITCH_1allow_half_if @ >
-[RULE: 6][CLAUSE: 0]
-	epsilon -> [44][If_SWITCH_1allow_half_if]< "if" "cond" "then" IfTail_SWITCH_1allow_half_if > @[ENDING]
-		- EndObject()
+[45][If_SWITCH_1allow_half_if]< "if" "cond" "then" ( OtherStat [ "else" Stat ] | If_SWITCH_1allow_half_if | ( @ If_SWITCH_0allow_half_if "else" Stat ) ) >
+[RULE: 6]
+	rule: If_SWITCH_0allow_half_if -> [52][If_SWITCH_1allow_half_if]< "if" "cond" "then" ( OtherStat [ "else" Stat ] | If_SWITCH_1allow_half_if | ( If_SWITCH_0allow_half_if @ "else" Stat ) ) >
+		+ StackSlot(7)
 
-[46][If_SWITCH_1allow_half_if]< "if" "cond" @ "then" IfTail_SWITCH_1allow_half_if >
-[RULE: 6][CLAUSE: 0]
-	epsilon -> [47][If_SWITCH_1allow_half_if]< "if" "cond" @ "then" IfTail_SWITCH_1allow_half_if >
+[46][If_SWITCH_1allow_half_if]< "if" "cond" "then" ( OtherStat [ "else" Stat ] | If_SWITCH_1allow_half_if | ( If_SWITCH_0allow_half_if "else" @ Stat ) ) >
+[RULE: 6]
+	epsilon -> [47][If_SWITCH_1allow_half_if]< "if" "cond" "then" ( OtherStat [ "else" Stat ] | If_SWITCH_1allow_half_if | ( If_SWITCH_0allow_half_if "else" @ Stat ) ) >
 
-[47][If_SWITCH_1allow_half_if]< "if" "cond" @ "then" IfTail_SWITCH_1allow_half_if >
-[RULE: 6][CLAUSE: 0]
-	token: "then" -> [43][If_SWITCH_1allow_half_if]< "if" "cond" "then" @ IfTail_SWITCH_1allow_half_if >
+[47][If_SWITCH_1allow_half_if]< "if" "cond" "then" ( OtherStat [ "else" Stat ] | If_SWITCH_1allow_half_if | ( If_SWITCH_0allow_half_if "else" @ Stat ) ) >
+[RULE: 6]
+	rule: Stat -> [51][If_SWITCH_1allow_half_if]< "if" "cond" "then" ( OtherStat [ "else" Stat ] | If_SWITCH_1allow_half_if | ( If_SWITCH_0allow_half_if "else" Stat @ ) ) >
+		+ StackSlot(9)
 
-[48][If_SWITCH_1allow_half_if]< "if" @ "cond" "then" IfTail_SWITCH_1allow_half_if >
-[RULE: 6][CLAUSE: 0]
-	epsilon -> [49][If_SWITCH_1allow_half_if]< "if" @ "cond" "then" IfTail_SWITCH_1allow_half_if >
+[48][If_SWITCH_1allow_half_if]< "if" "cond" "then" ( OtherStat [ "else" Stat ] | If_SWITCH_1allow_half_if | ( If_SWITCH_0allow_half_if "else" Stat ) ) > @[ENDING]
+[RULE: 6]
 
-[49][If_SWITCH_1allow_half_if]< "if" @ "cond" "then" IfTail_SWITCH_1allow_half_if >
-[RULE: 6][CLAUSE: 0]
-	token: "cond" -> [46][If_SWITCH_1allow_half_if]< "if" "cond" @ "then" IfTail_SWITCH_1allow_half_if >
+[49][If_SWITCH_1allow_half_if]< "if" "cond" "then" ( OtherStat [ "else" Stat ] | If_SWITCH_1allow_half_if | ( If_SWITCH_0allow_half_if "else" Stat ) ) @ >
+[RULE: 6]
+	epsilon -> [48][If_SWITCH_1allow_half_if]< "if" "cond" "then" ( OtherStat [ "else" Stat ] | If_SWITCH_1allow_half_if | ( If_SWITCH_0allow_half_if "else" Stat ) ) > @[ENDING]
+		+ CreateObject(IfStat)
+		+ Field(IfStat::thenBranch, 3)
+		+ Field(IfStat::elseBranch, 5)
+		+ Field(IfStat::thenBranch, 6)
+		+ Field(IfStat::thenBranch, 7)
+		+ Field(IfStat::elseBranch, 9)
+		+ StackEnd()
 
-[50][If_SWITCH_1allow_half_if]< @ "if" "cond" "then" IfTail_SWITCH_1allow_half_if >
-[RULE: 6][CLAUSE: 0]
-	token: "if" -> [48][If_SWITCH_1allow_half_if]< "if" @ "cond" "then" IfTail_SWITCH_1allow_half_if >
+[50][If_SWITCH_1allow_half_if]< "if" "cond" "then" ( OtherStat [ "else" Stat ] | If_SWITCH_1allow_half_if | ( If_SWITCH_0allow_half_if "else" Stat ) @ ) >
+[RULE: 6]
+	epsilon -> [49][If_SWITCH_1allow_half_if]< "if" "cond" "then" ( OtherStat [ "else" Stat ] | If_SWITCH_1allow_half_if | ( If_SWITCH_0allow_half_if "else" Stat ) ) @ >
 
-[51][If_SWITCH_1allow_half_if]@ < "if" "cond" "then" IfTail_SWITCH_1allow_half_if >
-[RULE: 6][CLAUSE: 0]
-	epsilon -> [50][If_SWITCH_1allow_half_if]< @ "if" "cond" "then" IfTail_SWITCH_1allow_half_if >
-		- BeginObject(IfStat)
+[51][If_SWITCH_1allow_half_if]< "if" "cond" "then" ( OtherStat [ "else" Stat ] | If_SWITCH_1allow_half_if | ( If_SWITCH_0allow_half_if "else" Stat @ ) ) >
+[RULE: 6]
+	epsilon -> [50][If_SWITCH_1allow_half_if]< "if" "cond" "then" ( OtherStat [ "else" Stat ] | If_SWITCH_1allow_half_if | ( If_SWITCH_0allow_half_if "else" Stat ) @ ) >
 
-[52][If_SWITCH_0allow_half_if]< "if" "cond" "then" @ IfTail_SWITCH_0allow_half_if >
-[RULE: 7][CLAUSE: 0]
-	rule: IfTail_SWITCH_0allow_half_if -> [55][If_SWITCH_0allow_half_if]< "if" "cond" "then" IfTail_SWITCH_0allow_half_if @ >
+[52][If_SWITCH_1allow_half_if]< "if" "cond" "then" ( OtherStat [ "else" Stat ] | If_SWITCH_1allow_half_if | ( If_SWITCH_0allow_half_if @ "else" Stat ) ) >
+[RULE: 6]
+	epsilon -> [53][If_SWITCH_1allow_half_if]< "if" "cond" "then" ( OtherStat [ "else" Stat ] | If_SWITCH_1allow_half_if | ( If_SWITCH_0allow_half_if @ "else" Stat ) ) >
 
-[53][If_SWITCH_0allow_half_if]< "if" "cond" "then" @ IfTail_SWITCH_0allow_half_if >
-[RULE: 7][CLAUSE: 0]
-	epsilon -> [52][If_SWITCH_0allow_half_if]< "if" "cond" "then" @ IfTail_SWITCH_0allow_half_if >
+[53][If_SWITCH_1allow_half_if]< "if" "cond" "then" ( OtherStat [ "else" Stat ] | If_SWITCH_1allow_half_if | ( If_SWITCH_0allow_half_if @ "else" Stat ) ) >
+[RULE: 6]
+	token: "else" -> [46][If_SWITCH_1allow_half_if]< "if" "cond" "then" ( OtherStat [ "else" Stat ] | If_SWITCH_1allow_half_if | ( If_SWITCH_0allow_half_if "else" @ Stat ) ) >
+		+ Token(8)
 
-[54][If_SWITCH_0allow_half_if]< "if" "cond" "then" IfTail_SWITCH_0allow_half_if > @[ENDING]
-[RULE: 7][CLAUSE: 0]
+[54][If_SWITCH_1allow_half_if]< "if" "cond" "then" ( OtherStat [ "else" Stat ] | If_SWITCH_1allow_half_if | @ ( If_SWITCH_0allow_half_if "else" Stat ) ) >
+[RULE: 6]
+	epsilon -> [45][If_SWITCH_1allow_half_if]< "if" "cond" "then" ( OtherStat [ "else" Stat ] | If_SWITCH_1allow_half_if | ( @ If_SWITCH_0allow_half_if "else" Stat ) ) >
 
-[55][If_SWITCH_0allow_half_if]< "if" "cond" "then" IfTail_SWITCH_0allow_half_if @ >
-[RULE: 7][CLAUSE: 0]
-	epsilon -> [54][If_SWITCH_0allow_half_if]< "if" "cond" "then" IfTail_SWITCH_0allow_half_if > @[ENDING]
-		- EndObject()
+[55][If_SWITCH_1allow_half_if]< "if" "cond" "then" ( OtherStat [ @ "else" Stat ] | If_SWITCH_1allow_half_if | ( If_SWITCH_0allow_half_if "else" Stat ) ) >
+[RULE: 6]
+	token: "else" -> [40][If_SWITCH_1allow_half_if]< "if" "cond" "then" ( OtherStat [ "else" @ Stat ] | If_SWITCH_1allow_half_if | ( If_SWITCH_0allow_half_if "else" Stat ) ) >
+		+ Token(4)
 
-[56][If_SWITCH_0allow_half_if]< "if" "cond" @ "then" IfTail_SWITCH_0allow_half_if >
-[RULE: 7][CLAUSE: 0]
-	epsilon -> [57][If_SWITCH_0allow_half_if]< "if" "cond" @ "then" IfTail_SWITCH_0allow_half_if >
+[56][If_SWITCH_1allow_half_if]< "if" "cond" "then" @ ( OtherStat [ "else" Stat ] | If_SWITCH_1allow_half_if | ( If_SWITCH_0allow_half_if "else" Stat ) ) >
+[RULE: 6]
+	epsilon -> [36][If_SWITCH_1allow_half_if]< "if" "cond" "then" ( @ OtherStat [ "else" Stat ] | If_SWITCH_1allow_half_if | ( If_SWITCH_0allow_half_if "else" Stat ) ) >
+	epsilon -> [43][If_SWITCH_1allow_half_if]< "if" "cond" "then" ( OtherStat [ "else" Stat ] | @ If_SWITCH_1allow_half_if | ( If_SWITCH_0allow_half_if "else" Stat ) ) >
+	epsilon -> [54][If_SWITCH_1allow_half_if]< "if" "cond" "then" ( OtherStat [ "else" Stat ] | If_SWITCH_1allow_half_if | @ ( If_SWITCH_0allow_half_if "else" Stat ) ) >
 
-[57][If_SWITCH_0allow_half_if]< "if" "cond" @ "then" IfTail_SWITCH_0allow_half_if >
-[RULE: 7][CLAUSE: 0]
-	token: "then" -> [53][If_SWITCH_0allow_half_if]< "if" "cond" "then" @ IfTail_SWITCH_0allow_half_if >
+[57][If_SWITCH_1allow_half_if]< "if" "cond" "then" @ ( OtherStat [ "else" Stat ] | If_SWITCH_1allow_half_if | ( If_SWITCH_0allow_half_if "else" Stat ) ) >
+[RULE: 6]
+	epsilon -> [56][If_SWITCH_1allow_half_if]< "if" "cond" "then" @ ( OtherStat [ "else" Stat ] | If_SWITCH_1allow_half_if | ( If_SWITCH_0allow_half_if "else" Stat ) ) >
 
-[58][If_SWITCH_0allow_half_if]< "if" @ "cond" "then" IfTail_SWITCH_0allow_half_if >
-[RULE: 7][CLAUSE: 0]
-	epsilon -> [59][If_SWITCH_0allow_half_if]< "if" @ "cond" "then" IfTail_SWITCH_0allow_half_if >
+[58][If_SWITCH_1allow_half_if]< "if" "cond" @ "then" ( OtherStat [ "else" Stat ] | If_SWITCH_1allow_half_if | ( If_SWITCH_0allow_half_if "else" Stat ) ) >
+[RULE: 6]
+	epsilon -> [59][If_SWITCH_1allow_half_if]< "if" "cond" @ "then" ( OtherStat [ "else" Stat ] | If_SWITCH_1allow_half_if | ( If_SWITCH_0allow_half_if "else" Stat ) ) >
 
-[59][If_SWITCH_0allow_half_if]< "if" @ "cond" "then" IfTail_SWITCH_0allow_half_if >
-[RULE: 7][CLAUSE: 0]
-	token: "cond" -> [56][If_SWITCH_0allow_half_if]< "if" "cond" @ "then" IfTail_SWITCH_0allow_half_if >
+[59][If_SWITCH_1allow_half_if]< "if" "cond" @ "then" ( OtherStat [ "else" Stat ] | If_SWITCH_1allow_half_if | ( If_SWITCH_0allow_half_if "else" Stat ) ) >
+[RULE: 6]
+	token: "then" -> [57][If_SWITCH_1allow_half_if]< "if" "cond" "then" @ ( OtherStat [ "else" Stat ] | If_SWITCH_1allow_half_if | ( If_SWITCH_0allow_half_if "else" Stat ) ) >
+		+ Token(2)
 
-[60][If_SWITCH_0allow_half_if]< @ "if" "cond" "then" IfTail_SWITCH_0allow_half_if >
-[RULE: 7][CLAUSE: 0]
-	token: "if" -> [58][If_SWITCH_0allow_half_if]< "if" @ "cond" "then" IfTail_SWITCH_0allow_half_if >
+[60][If_SWITCH_1allow_half_if]< "if" @ "cond" "then" ( OtherStat [ "else" Stat ] | If_SWITCH_1allow_half_if | ( If_SWITCH_0allow_half_if "else" Stat ) ) >
+[RULE: 6]
+	epsilon -> [61][If_SWITCH_1allow_half_if]< "if" @ "cond" "then" ( OtherStat [ "else" Stat ] | If_SWITCH_1allow_half_if | ( If_SWITCH_0allow_half_if "else" Stat ) ) >
 
-[61][If_SWITCH_0allow_half_if]@ < "if" "cond" "then" IfTail_SWITCH_0allow_half_if >
-[RULE: 7][CLAUSE: 0]
-	epsilon -> [60][If_SWITCH_0allow_half_if]< @ "if" "cond" "then" IfTail_SWITCH_0allow_half_if >
-		- BeginObject(IfStat)
+[61][If_SWITCH_1allow_half_if]< "if" @ "cond" "then" ( OtherStat [ "else" Stat ] | If_SWITCH_1allow_half_if | ( If_SWITCH_0allow_half_if "else" Stat ) ) >
+[RULE: 6]
+	token: "cond" -> [58][If_SWITCH_1allow_half_if]< "if" "cond" @ "then" ( OtherStat [ "else" Stat ] | If_SWITCH_1allow_half_if | ( If_SWITCH_0allow_half_if "else" Stat ) ) >
+		+ Token(1)
 
-[62][IfTail_SWITCH_1allow_half_if]@ IfTail_SWITCH_COMBINED
-[RULE: 8][CLAUSE: 2]
-	rule: IfTail_SWITCH_COMBINED -> [65][IfTail_SWITCH_1allow_half_if]IfTail_SWITCH_COMBINED @[ENDING]
+[62][If_SWITCH_1allow_half_if]< @ "if" "cond" "then" ( OtherStat [ "else" Stat ] | If_SWITCH_1allow_half_if | ( If_SWITCH_0allow_half_if "else" Stat ) ) >
+[RULE: 6]
+	token: "if" -> [60][If_SWITCH_1allow_half_if]< "if" @ "cond" "then" ( OtherStat [ "else" Stat ] | If_SWITCH_1allow_half_if | ( If_SWITCH_0allow_half_if "else" Stat ) ) >
+		+ Token(0)
 
-[63][IfTail_SWITCH_1allow_half_if]@ If_SWITCH_1allow_half_if
-[RULE: 8][CLAUSE: 1]
-	rule: If_SWITCH_1allow_half_if -> [66][IfTail_SWITCH_1allow_half_if]If_SWITCH_1allow_half_if @[ENDING]
-		+ Field(IfStat::thenBranch)
+[63][If_SWITCH_1allow_half_if]@ < "if" "cond" "then" ( OtherStat [ "else" Stat ] | If_SWITCH_1allow_half_if | ( If_SWITCH_0allow_half_if "else" Stat ) ) >
+[RULE: 6]
+	epsilon -> [62][If_SWITCH_1allow_half_if]< @ "if" "cond" "then" ( OtherStat [ "else" Stat ] | If_SWITCH_1allow_half_if | ( If_SWITCH_0allow_half_if "else" Stat ) ) >
+		+ StackBegin()
 
-[64][IfTail_SWITCH_1allow_half_if]@ OtherStat [ "else" Stat ]
-[RULE: 8][CLAUSE: 0]
-	rule: OtherStat -> [67][IfTail_SWITCH_1allow_half_if]OtherStat @ [ "else" Stat ]
-		+ Field(IfStat::thenBranch)
+[64][If_SWITCH_0allow_half_if]< "if" "cond" "then" ( @ OtherStat "else" Stat | ( If_SWITCH_0allow_half_if "else" Stat ) ) >
+[RULE: 7]
+	rule: OtherStat -> [79][If_SWITCH_0allow_half_if]< "if" "cond" "then" ( OtherStat @ "else" Stat | ( If_SWITCH_0allow_half_if "else" Stat ) ) >
+		+ StackSlot(3)
 
-[65][IfTail_SWITCH_1allow_half_if]IfTail_SWITCH_COMBINED @[ENDING]
-[RULE: 8][CLAUSE: 2]
+[65][If_SWITCH_0allow_half_if]< "if" "cond" "then" ( OtherStat "else" @ Stat | ( If_SWITCH_0allow_half_if "else" Stat ) ) >
+[RULE: 7]
+	epsilon -> [66][If_SWITCH_0allow_half_if]< "if" "cond" "then" ( OtherStat "else" @ Stat | ( If_SWITCH_0allow_half_if "else" Stat ) ) >
 
-[66][IfTail_SWITCH_1allow_half_if]If_SWITCH_1allow_half_if @[ENDING]
-[RULE: 8][CLAUSE: 1]
+[66][If_SWITCH_0allow_half_if]< "if" "cond" "then" ( OtherStat "else" @ Stat | ( If_SWITCH_0allow_half_if "else" Stat ) ) >
+[RULE: 7]
+	rule: Stat -> [67][If_SWITCH_0allow_half_if]< "if" "cond" "then" ( OtherStat "else" Stat @ | ( If_SWITCH_0allow_half_if "else" Stat ) ) >
+		+ StackSlot(5)
 
-[67][IfTail_SWITCH_1allow_half_if]OtherStat @ [ "else" Stat ]
-[RULE: 8][CLAUSE: 0]
-	epsilon -> [68][IfTail_SWITCH_1allow_half_if]OtherStat @ [ "else" Stat ]
+[67][If_SWITCH_0allow_half_if]< "if" "cond" "then" ( OtherStat "else" Stat @ | ( If_SWITCH_0allow_half_if "else" Stat ) ) >
+[RULE: 7]
+	epsilon -> [72][If_SWITCH_0allow_half_if]< "if" "cond" "then" ( OtherStat "else" Stat | ( If_SWITCH_0allow_half_if "else" Stat ) ) @ >
 
-[68][IfTail_SWITCH_1allow_half_if]OtherStat @ [ "else" Stat ]
-[RULE: 8][CLAUSE: 0]
-	epsilon -> [72][IfTail_SWITCH_1allow_half_if]OtherStat [ "else" Stat ] @[ENDING]
-	epsilon -> [73][IfTail_SWITCH_1allow_half_if]OtherStat [ @ "else" Stat ]
+[68][If_SWITCH_0allow_half_if]< "if" "cond" "then" ( OtherStat "else" Stat | ( @ If_SWITCH_0allow_half_if "else" Stat ) ) >
+[RULE: 7]
+	rule: If_SWITCH_0allow_half_if -> [75][If_SWITCH_0allow_half_if]< "if" "cond" "then" ( OtherStat "else" Stat | ( If_SWITCH_0allow_half_if @ "else" Stat ) ) >
+		+ StackSlot(6)
 
-[69][IfTail_SWITCH_1allow_half_if]OtherStat [ "else" @ Stat ]
-[RULE: 8][CLAUSE: 0]
-	epsilon -> [70][IfTail_SWITCH_1allow_half_if]OtherStat [ "else" @ Stat ]
+[69][If_SWITCH_0allow_half_if]< "if" "cond" "then" ( OtherStat "else" Stat | ( If_SWITCH_0allow_half_if "else" @ Stat ) ) >
+[RULE: 7]
+	epsilon -> [70][If_SWITCH_0allow_half_if]< "if" "cond" "then" ( OtherStat "else" Stat | ( If_SWITCH_0allow_half_if "else" @ Stat ) ) >
 
-[70][IfTail_SWITCH_1allow_half_if]OtherStat [ "else" @ Stat ]
-[RULE: 8][CLAUSE: 0]
-	rule: Stat -> [71][IfTail_SWITCH_1allow_half_if]OtherStat [ "else" Stat @ ]
-		+ Field(IfStat::elseBranch)
+[70][If_SWITCH_0allow_half_if]< "if" "cond" "then" ( OtherStat "else" Stat | ( If_SWITCH_0allow_half_if "else" @ Stat ) ) >
+[RULE: 7]
+	rule: Stat -> [74][If_SWITCH_0allow_half_if]< "if" "cond" "then" ( OtherStat "else" Stat | ( If_SWITCH_0allow_half_if "else" Stat @ ) ) >
+		+ StackSlot(8)
 
-[71][IfTail_SWITCH_1allow_half_if]OtherStat [ "else" Stat @ ]
-[RULE: 8][CLAUSE: 0]
-	epsilon -> [72][IfTail_SWITCH_1allow_half_if]OtherStat [ "else" Stat ] @[ENDING]
+[71][If_SWITCH_0allow_half_if]< "if" "cond" "then" ( OtherStat "else" Stat | ( If_SWITCH_0allow_half_if "else" Stat ) ) > @[ENDING]
+[RULE: 7]
 
-[72][IfTail_SWITCH_1allow_half_if]OtherStat [ "else" Stat ] @[ENDING]
-[RULE: 8][CLAUSE: 0]
+[72][If_SWITCH_0allow_half_if]< "if" "cond" "then" ( OtherStat "else" Stat | ( If_SWITCH_0allow_half_if "else" Stat ) ) @ >
+[RULE: 7]
+	epsilon -> [71][If_SWITCH_0allow_half_if]< "if" "cond" "then" ( OtherStat "else" Stat | ( If_SWITCH_0allow_half_if "else" Stat ) ) > @[ENDING]
+		+ CreateObject(IfStat)
+		+ Field(IfStat::thenBranch, 3)
+		+ Field(IfStat::elseBranch, 5)
+		+ Field(IfStat::thenBranch, 6)
+		+ Field(IfStat::elseBranch, 8)
+		+ StackEnd()
 
-[73][IfTail_SWITCH_1allow_half_if]OtherStat [ @ "else" Stat ]
-[RULE: 8][CLAUSE: 0]
-	token: "else" -> [69][IfTail_SWITCH_1allow_half_if]OtherStat [ "else" @ Stat ]
+[73][If_SWITCH_0allow_half_if]< "if" "cond" "then" ( OtherStat "else" Stat | ( If_SWITCH_0allow_half_if "else" Stat ) @ ) >
+[RULE: 7]
+	epsilon -> [72][If_SWITCH_0allow_half_if]< "if" "cond" "then" ( OtherStat "else" Stat | ( If_SWITCH_0allow_half_if "else" Stat ) ) @ >
 
-[74][IfTail_SWITCH_0allow_half_if]@ IfTail_SWITCH_COMBINED
-[RULE: 9][CLAUSE: 1]
-	rule: IfTail_SWITCH_COMBINED -> [76][IfTail_SWITCH_0allow_half_if]IfTail_SWITCH_COMBINED @[ENDING]
+[74][If_SWITCH_0allow_half_if]< "if" "cond" "then" ( OtherStat "else" Stat | ( If_SWITCH_0allow_half_if "else" Stat @ ) ) >
+[RULE: 7]
+	epsilon -> [73][If_SWITCH_0allow_half_if]< "if" "cond" "then" ( OtherStat "else" Stat | ( If_SWITCH_0allow_half_if "else" Stat ) @ ) >
 
-[75][IfTail_SWITCH_0allow_half_if]@ OtherStat "else" Stat
-[RULE: 9][CLAUSE: 0]
-	rule: OtherStat -> [80][IfTail_SWITCH_0allow_half_if]OtherStat @ "else" Stat
-		+ Field(IfStat::thenBranch)
+[75][If_SWITCH_0allow_half_if]< "if" "cond" "then" ( OtherStat "else" Stat | ( If_SWITCH_0allow_half_if @ "else" Stat ) ) >
+[RULE: 7]
+	epsilon -> [76][If_SWITCH_0allow_half_if]< "if" "cond" "then" ( OtherStat "else" Stat | ( If_SWITCH_0allow_half_if @ "else" Stat ) ) >
 
-[76][IfTail_SWITCH_0allow_half_if]IfTail_SWITCH_COMBINED @[ENDING]
-[RULE: 9][CLAUSE: 1]
+[76][If_SWITCH_0allow_half_if]< "if" "cond" "then" ( OtherStat "else" Stat | ( If_SWITCH_0allow_half_if @ "else" Stat ) ) >
+[RULE: 7]
+	token: "else" -> [69][If_SWITCH_0allow_half_if]< "if" "cond" "then" ( OtherStat "else" Stat | ( If_SWITCH_0allow_half_if "else" @ Stat ) ) >
+		+ Token(7)
 
-[77][IfTail_SWITCH_0allow_half_if]OtherStat "else" @ Stat
-[RULE: 9][CLAUSE: 0]
-	epsilon -> [78][IfTail_SWITCH_0allow_half_if]OtherStat "else" @ Stat
+[77][If_SWITCH_0allow_half_if]< "if" "cond" "then" ( OtherStat "else" Stat | @ ( If_SWITCH_0allow_half_if "else" Stat ) ) >
+[RULE: 7]
+	epsilon -> [68][If_SWITCH_0allow_half_if]< "if" "cond" "then" ( OtherStat "else" Stat | ( @ If_SWITCH_0allow_half_if "else" Stat ) ) >
 
-[78][IfTail_SWITCH_0allow_half_if]OtherStat "else" @ Stat
-[RULE: 9][CLAUSE: 0]
-	rule: Stat -> [79][IfTail_SWITCH_0allow_half_if]OtherStat "else" Stat @[ENDING]
-		+ Field(IfStat::elseBranch)
+[78][If_SWITCH_0allow_half_if]< "if" "cond" "then" ( OtherStat @ "else" Stat | ( If_SWITCH_0allow_half_if "else" Stat ) ) >
+[RULE: 7]
+	token: "else" -> [65][If_SWITCH_0allow_half_if]< "if" "cond" "then" ( OtherStat "else" @ Stat | ( If_SWITCH_0allow_half_if "else" Stat ) ) >
+		+ Token(4)
 
-[79][IfTail_SWITCH_0allow_half_if]OtherStat "else" Stat @[ENDING]
-[RULE: 9][CLAUSE: 0]
+[79][If_SWITCH_0allow_half_if]< "if" "cond" "then" ( OtherStat @ "else" Stat | ( If_SWITCH_0allow_half_if "else" Stat ) ) >
+[RULE: 7]
+	epsilon -> [78][If_SWITCH_0allow_half_if]< "if" "cond" "then" ( OtherStat @ "else" Stat | ( If_SWITCH_0allow_half_if "else" Stat ) ) >
 
-[80][IfTail_SWITCH_0allow_half_if]OtherStat @ "else" Stat
-[RULE: 9][CLAUSE: 0]
-	epsilon -> [81][IfTail_SWITCH_0allow_half_if]OtherStat @ "else" Stat
+[80][If_SWITCH_0allow_half_if]< "if" "cond" "then" @ ( OtherStat "else" Stat | ( If_SWITCH_0allow_half_if "else" Stat ) ) >
+[RULE: 7]
+	epsilon -> [81][If_SWITCH_0allow_half_if]< "if" "cond" "then" @ ( OtherStat "else" Stat | ( If_SWITCH_0allow_half_if "else" Stat ) ) >
 
-[81][IfTail_SWITCH_0allow_half_if]OtherStat @ "else" Stat
-[RULE: 9][CLAUSE: 0]
-	token: "else" -> [77][IfTail_SWITCH_0allow_half_if]OtherStat "else" @ Stat
+[81][If_SWITCH_0allow_half_if]< "if" "cond" "then" @ ( OtherStat "else" Stat | ( If_SWITCH_0allow_half_if "else" Stat ) ) >
+[RULE: 7]
+	epsilon -> [64][If_SWITCH_0allow_half_if]< "if" "cond" "then" ( @ OtherStat "else" Stat | ( If_SWITCH_0allow_half_if "else" Stat ) ) >
+	epsilon -> [77][If_SWITCH_0allow_half_if]< "if" "cond" "then" ( OtherStat "else" Stat | @ ( If_SWITCH_0allow_half_if "else" Stat ) ) >
+
+[82][If_SWITCH_0allow_half_if]< "if" "cond" @ "then" ( OtherStat "else" Stat | ( If_SWITCH_0allow_half_if "else" Stat ) ) >
+[RULE: 7]
+	epsilon -> [83][If_SWITCH_0allow_half_if]< "if" "cond" @ "then" ( OtherStat "else" Stat | ( If_SWITCH_0allow_half_if "else" Stat ) ) >
+
+[83][If_SWITCH_0allow_half_if]< "if" "cond" @ "then" ( OtherStat "else" Stat | ( If_SWITCH_0allow_half_if "else" Stat ) ) >
+[RULE: 7]
+	token: "then" -> [80][If_SWITCH_0allow_half_if]< "if" "cond" "then" @ ( OtherStat "else" Stat | ( If_SWITCH_0allow_half_if "else" Stat ) ) >
+		+ Token(2)
+
+[84][If_SWITCH_0allow_half_if]< "if" @ "cond" "then" ( OtherStat "else" Stat | ( If_SWITCH_0allow_half_if "else" Stat ) ) >
+[RULE: 7]
+	epsilon -> [85][If_SWITCH_0allow_half_if]< "if" @ "cond" "then" ( OtherStat "else" Stat | ( If_SWITCH_0allow_half_if "else" Stat ) ) >
+
+[85][If_SWITCH_0allow_half_if]< "if" @ "cond" "then" ( OtherStat "else" Stat | ( If_SWITCH_0allow_half_if "else" Stat ) ) >
+[RULE: 7]
+	token: "cond" -> [82][If_SWITCH_0allow_half_if]< "if" "cond" @ "then" ( OtherStat "else" Stat | ( If_SWITCH_0allow_half_if "else" Stat ) ) >
+		+ Token(1)
+
+[86][If_SWITCH_0allow_half_if]< @ "if" "cond" "then" ( OtherStat "else" Stat | ( If_SWITCH_0allow_half_if "else" Stat ) ) >
+[RULE: 7]
+	token: "if" -> [84][If_SWITCH_0allow_half_if]< "if" @ "cond" "then" ( OtherStat "else" Stat | ( If_SWITCH_0allow_half_if "else" Stat ) ) >
+		+ Token(0)
+
+[87][If_SWITCH_0allow_half_if]@ < "if" "cond" "then" ( OtherStat "else" Stat | ( If_SWITCH_0allow_half_if "else" Stat ) ) >
+[RULE: 7]
+	epsilon -> [86][If_SWITCH_0allow_half_if]< @ "if" "cond" "then" ( OtherStat "else" Stat | ( If_SWITCH_0allow_half_if "else" Stat ) ) >
+		+ StackBegin()
 

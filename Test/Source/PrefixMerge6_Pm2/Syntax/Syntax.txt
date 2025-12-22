@@ -25,8 +25,8 @@ _PrimitiveExprOnly
 ////////////////////////////////////////
 
 _LongType
-  ::= !prefix_merge(_PrimitiveShared)
-  ::= !prefix_merge(_PrimitiveTypeOnly)
+  ::= !_PrimitiveShared
+  ::= !_PrimitiveTypeOnly
   ::= _LongType:type "const" as ConstType
   ::= _LongType:type "*" as PointerType
   ::= _LongType:returnType "(" {_LongType:args ; ","} ")" as FunctionType
@@ -37,8 +37,8 @@ _LongType
 ////////////////////////////////////////
 
 _Expr0
-  ::= !prefix_merge(_PrimitiveShared)
-  ::= !prefix_merge(_PrimitiveExprOnly)
+  ::= !_PrimitiveShared
+  ::= !_PrimitiveExprOnly
   ::= _LongType:type "{" {_ExprNoComma:args ; ","} "}" as CtorExpr
   ;
 

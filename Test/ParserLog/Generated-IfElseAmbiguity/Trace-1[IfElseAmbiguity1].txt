@@ -13,9 +13,8 @@
 || [1]: {IF} if                                                 ||
 || [16][IfContent]< "if" @ "cond" "then" Stat [ "else" Stat ] > ||
 || [AST-INSTRUCTIONS]:                                          ||
-||   - BeginObject(Module)                                      ||
-||   - BeginObject(IfStat)                                      ||
-||   - BeginObject(IfContentCandidate)                          ||
+||   + StackBegin()                                             ||
+||   + Token(0)                                                 ||
 || [RETURN STACK]:                                              ||
 ||   [1][2][0]: IfContent -> [19][Stat]< IfContent @ >          ||
 ||   [0][7][0]: Stat -> [24][Module]< Stat @ >                  ||
@@ -31,6 +30,7 @@
 || [2]: {CONDITION} cond                                        ||
 || [15][IfContent]< "if" "cond" @ "then" Stat [ "else" Stat ] > ||
 || [AST-INSTRUCTIONS]:                                          ||
+||   + Token(1)                                                 ||
 || [RETURN STACK]:                                              ||
 ||   [1][2][0]: IfContent -> [19][Stat]< IfContent @ >          ||
 ||   [0][7][0]: Stat -> [24][Module]< Stat @ >                  ||
@@ -46,6 +46,7 @@
 || [3]: {THEN} then                                             ||
 || [11][IfContent]< "if" "cond" "then" @ Stat [ "else" Stat ] > ||
 || [AST-INSTRUCTIONS]:                                          ||
+||   + Token(2)                                                 ||
 || [RETURN STACK]:                                              ||
 ||   [1][2][0]: IfContent -> [19][Stat]< IfContent @ >          ||
 ||   [0][7][0]: Stat -> [24][Module]< Stat @ >                  ||
@@ -61,8 +62,8 @@
 || [4]: {IF} if                                                                      ||
 || [16][IfContent]< "if" @ "cond" "then" Stat [ "else" Stat ] >                      ||
 || [AST-INSTRUCTIONS]:                                                               ||
-||   - BeginObject(IfStat)                                                           ||
-||   - BeginObject(IfContentCandidate)                                               ||
+||   + StackBegin()                                                                  ||
+||   + Token(0)                                                                      ||
 || [RETURN STACK]:                                                                   ||
 ||   [3][2][3]: IfContent -> [19][Stat]< IfContent @ >                               ||
 ||   [2][5][3]: Stat -> [12][IfContent]< "if" "cond" "then" Stat @ [ "else" Stat ] > ||
@@ -80,6 +81,7 @@
 || [5]: {CONDITION} cond                                                             ||
 || [15][IfContent]< "if" "cond" @ "then" Stat [ "else" Stat ] >                      ||
 || [AST-INSTRUCTIONS]:                                                               ||
+||   + Token(1)                                                                      ||
 || [RETURN STACK]:                                                                   ||
 ||   [3][2][3]: IfContent -> [19][Stat]< IfContent @ >                               ||
 ||   [2][5][3]: Stat -> [12][IfContent]< "if" "cond" "then" Stat @ [ "else" Stat ] > ||
@@ -97,6 +99,7 @@
 || [6]: {THEN} then                                                                  ||
 || [11][IfContent]< "if" "cond" "then" @ Stat [ "else" Stat ] >                      ||
 || [AST-INSTRUCTIONS]:                                                               ||
+||   + Token(2)                                                                      ||
 || [RETURN STACK]:                                                                   ||
 ||   [3][2][3]: IfContent -> [19][Stat]< IfContent @ >                               ||
 ||   [2][5][3]: Stat -> [12][IfContent]< "if" "cond" "then" Stat @ [ "else" Stat ] > ||
@@ -114,10 +117,10 @@
 || [7]: {DO} do                                                                      ||
 || [3][Do]< "do" @ ";" >                                                             ||
 || [AST-INSTRUCTIONS]:                                                               ||
-||   - DelayFieldAssignment()                                                        ||
-||   - BeginObject(DoStat)                                                           ||
+||   + StackBegin()                                                                  ||
+||   + Token(0)                                                                      ||
 || [RETURN STACK]:                                                                   ||
-||   [5][3][6]: Do -> [21][Stat]<< !Do @ >>                                          ||
+||   [5][3][6]: Do -> [21][Stat]<! !Do @ !>                                          ||
 ||   [4][5][6]: Stat -> [12][IfContent]< "if" "cond" "then" Stat @ [ "else" Stat ] > ||
 ||   [3][2][3]: IfContent -> [19][Stat]< IfContent @ >                               ||
 ||   [2][5][3]: Stat -> [12][IfContent]< "if" "cond" "then" Stat @ [ "else" Stat ] > ||
@@ -135,8 +138,9 @@
 || [8]: {SEMICOLON} ;                                                                ||
 || [2][Do]< "do" ";" @ >                                                             ||
 || [AST-INSTRUCTIONS]:                                                               ||
+||   + Token(1)                                                                      ||
 || [RETURN STACK]:                                                                   ||
-||   [5][3][6]: Do -> [21][Stat]<< !Do @ >>                                          ||
+||   [5][3][6]: Do -> [21][Stat]<! !Do @ !>                                          ||
 ||   [4][5][6]: Stat -> [12][IfContent]< "if" "cond" "then" Stat @ [ "else" Stat ] > ||
 ||   [3][2][3]: IfContent -> [19][Stat]< IfContent @ >                               ||
 ||   [2][5][3]: Stat -> [12][IfContent]< "if" "cond" "then" Stat @ [ "else" Stat ] > ||
@@ -150,9 +154,11 @@
 |
 +-----------------------------------------------------------------------------------+
 | [9]: <Ending>                                                                     |
-| [21][Stat]<< !Do @ >>                                                             |
+| [21][Stat]<! !Do @ !>                                                             |
 | [AST-INSTRUCTIONS]:                                                               |
-|   - EndObject()                                                                   |
+|   + CreateObject(DoStat)                                                          |
+|   + StackEnd()                                                                    |
+|   > StackBegin()                                                                  |
 | [RETURN STACK]:                                                                   |
 |   [4][5][6]: Stat -> [12][IfContent]< "if" "cond" "then" Stat @ [ "else" Stat ] > |
 |   [3][2][3]: IfContent -> [19][Stat]< IfContent @ >                               |
@@ -169,9 +175,8 @@
 | [10]: <Ending>                                                                    |
 | [12][IfContent]< "if" "cond" "then" Stat @ [ "else" Stat ] >                      |
 | [AST-INSTRUCTIONS]:                                                               |
-|   - ReopenObject()                                                                |
-|   - EndObject()                                                                   |
-|   > Field(IfContentCandidate::thenBranch)                                         |
+|   + StackEnd()                                                                    |
+|   > StackSlot(3)                                                                  |
 | [RETURN STACK]:                                                                   |
 |   [3][2][3]: IfContent -> [19][Stat]< IfContent @ >                               |
 |   [2][5][3]: Stat -> [12][IfContent]< "if" "cond" "then" Stat @ [ "else" Stat ] > |
@@ -187,7 +192,12 @@
 |                                                                                          | [11]: <Ending>                                                                    |
 |                                                                                          | [19][Stat]< IfContent @ >                                                         |
 |                                                                                          | [AST-INSTRUCTIONS]:                                                               |
-|                                                                                          |   - EndObject()                                                                   |
+|                                                                                          |   + CreateObject(IfContentCandidate)                                              |
+|                                                                                          |   + Field(IfContentCandidate::thenBranch, 3)                                      |
+|                                                                                          |   + Field(IfContentCandidate::elseBranch, 5)                                      |
+|                                                                                          |   + StackEnd()                                                                    |
+|                                                                                          |   > StackBegin()                                                                  |
+|                                                                                          |   > StackSlot(0)                                                                  |
 |                                                                                          | [RETURN STACK]:                                                                   |
 |                                                                                          |   [2][5][3]: Stat -> [12][IfContent]< "if" "cond" "then" Stat @ [ "else" Stat ] > |
 |                                                                                          |   [1][2][0]: IfContent -> [19][Stat]< IfContent @ >                               |
@@ -202,9 +212,10 @@
 |                                                                                          | [12]: <Ending>                                               |
 |                                                                                          | [12][IfContent]< "if" "cond" "then" Stat @ [ "else" Stat ] > |
 |                                                                                          | [AST-INSTRUCTIONS]:                                          |
-|                                                                                          |   - Field(IfStat::content)                                   |
-|                                                                                          |   - EndObject()                                              |
-|                                                                                          |   > Field(IfContentCandidate::thenBranch)                    |
+|                                                                                          |   + CreateObject(IfStat)                                     |
+|                                                                                          |   + Field(IfStat::content, 0)                                |
+|                                                                                          |   + StackEnd()                                               |
+|                                                                                          |   > StackSlot(3)                                             |
 |                                                                                          | [RETURN STACK]:                                              |
 |                                                                                          |   [1][2][0]: IfContent -> [19][Stat]< IfContent @ >          |
 |                                                                                          |   [0][7][0]: Stat -> [24][Module]< Stat @ >                  |
@@ -220,6 +231,7 @@
 || [14]: {ELSE} else                                                                 ||    || [15]: {ELSE} else                                            ||
 || [13][IfContent]< "if" "cond" "then" Stat [ "else" @ Stat ] >                      ||    || [13][IfContent]< "if" "cond" "then" Stat [ "else" @ Stat ] > ||
 || [AST-INSTRUCTIONS]:                                                               ||    || [AST-INSTRUCTIONS]:                                          ||
+||   + Token(4)                                                                      ||    ||   + Token(4)                                                 ||
 || [RETURN STACK]:                                                                   ||    || [RETURN STACK]:                                              ||
 ||   [3][2][3]: IfContent -> [19][Stat]< IfContent @ >                               ||    ||   [1][2][0]: IfContent -> [19][Stat]< IfContent @ >          ||
 ||   [2][5][3]: Stat -> [12][IfContent]< "if" "cond" "then" Stat @ [ "else" Stat ] > ||    ||   [0][7][0]: Stat -> [24][Module]< Stat @ >                  ||
@@ -237,10 +249,10 @@
 || [16]: {DO} do                                                                      ||    || [17]: {DO} do                                                                      ||
 || [3][Do]< "do" @ ";" >                                                              ||    || [3][Do]< "do" @ ";" >                                                              ||
 || [AST-INSTRUCTIONS]:                                                                ||    || [AST-INSTRUCTIONS]:                                                                ||
-||   - DelayFieldAssignment()                                                         ||    ||   - DelayFieldAssignment()                                                         ||
-||   - BeginObject(DoStat)                                                            ||    ||   - BeginObject(DoStat)                                                            ||
+||   + StackBegin()                                                                   ||    ||   + StackBegin()                                                                   ||
+||   + Token(0)                                                                       ||    ||   + Token(0)                                                                       ||
 || [RETURN STACK]:                                                                    ||    || [RETURN STACK]:                                                                    ||
-||   [7][3][14]: Do -> [21][Stat]<< !Do @ >>                                          ||    ||   [9][3][15]: Do -> [21][Stat]<< !Do @ >>                                          ||
+||   [7][3][14]: Do -> [21][Stat]<! !Do @ !>                                          ||    ||   [9][3][15]: Do -> [21][Stat]<! !Do @ !>                                          ||
 ||   [6][6][14]: Stat -> [14][IfContent]< "if" "cond" "then" Stat [ "else" Stat @ ] > ||    ||   [8][6][15]: Stat -> [14][IfContent]< "if" "cond" "then" Stat [ "else" Stat @ ] > ||
 ||   [3][2][3]: IfContent -> [19][Stat]< IfContent @ >                                ||    ||   [1][2][0]: IfContent -> [19][Stat]< IfContent @ >                                ||
 ||   [2][5][3]: Stat -> [12][IfContent]< "if" "cond" "then" Stat @ [ "else" Stat ] >  ||    ||   [0][7][0]: Stat -> [24][Module]< Stat @ >                                        ||
@@ -258,8 +270,9 @@
 || [18]: {SEMICOLON} ;                                                                ||    || [26]: {SEMICOLON} ;                                                                ||
 || [2][Do]< "do" ";" @ >                                                              ||    || [2][Do]< "do" ";" @ >                                                              ||
 || [AST-INSTRUCTIONS]:                                                                ||    || [AST-INSTRUCTIONS]:                                                                ||
+||   + Token(1)                                                                       ||    ||   + Token(1)                                                                       ||
 || [RETURN STACK]:                                                                    ||    || [RETURN STACK]:                                                                    ||
-||   [7][3][14]: Do -> [21][Stat]<< !Do @ >>                                          ||    ||   [9][3][15]: Do -> [21][Stat]<< !Do @ >>                                          ||
+||   [7][3][14]: Do -> [21][Stat]<! !Do @ !>                                          ||    ||   [9][3][15]: Do -> [21][Stat]<! !Do @ !>                                          ||
 ||   [6][6][14]: Stat -> [14][IfContent]< "if" "cond" "then" Stat [ "else" Stat @ ] > ||    ||   [8][6][15]: Stat -> [14][IfContent]< "if" "cond" "then" Stat [ "else" Stat @ ] > ||
 ||   [3][2][3]: IfContent -> [19][Stat]< IfContent @ >                                ||    ||   [1][2][0]: IfContent -> [19][Stat]< IfContent @ >                                ||
 ||   [2][5][3]: Stat -> [12][IfContent]< "if" "cond" "then" Stat @ [ "else" Stat ] >  ||    ||   [0][7][0]: Stat -> [24][Module]< Stat @ >                                        ||
@@ -273,9 +286,11 @@
 |                                                                                           |
 +------------------------------------------------------------------------------------+      +------------------------------------------------------------------------------------+
 | [19]: <Ending>                                                                     |      | [27]: <Ending>                                                                     |
-| [21][Stat]<< !Do @ >>                                                              |      | [21][Stat]<< !Do @ >>                                                              |
+| [21][Stat]<! !Do @ !>                                                              |      | [21][Stat]<! !Do @ !>                                                              |
 | [AST-INSTRUCTIONS]:                                                                |      | [AST-INSTRUCTIONS]:                                                                |
-|   - EndObject()                                                                    |      |   - EndObject()                                                                    |
+|   + CreateObject(DoStat)                                                           |      |   + CreateObject(DoStat)                                                           |
+|   + StackEnd()                                                                     |      |   + StackEnd()                                                                     |
+|   > StackBegin()                                                                   |      |   > StackBegin()                                                                   |
 | [RETURN STACK]:                                                                    |      | [RETURN STACK]:                                                                    |
 |   [6][6][14]: Stat -> [14][IfContent]< "if" "cond" "then" Stat [ "else" Stat @ ] > |      |   [8][6][15]: Stat -> [14][IfContent]< "if" "cond" "then" Stat [ "else" Stat @ ] > |
 |   [3][2][3]: IfContent -> [19][Stat]< IfContent @ >                                |      |   [1][2][0]: IfContent -> [19][Stat]< IfContent @ >                                |
@@ -292,9 +307,8 @@
 | [20]: <Ending>                                                                    |       | [28]: <Ending>                                               |
 | [14][IfContent]< "if" "cond" "then" Stat [ "else" Stat @ ] >                      |       | [14][IfContent]< "if" "cond" "then" Stat [ "else" Stat @ ] > |
 | [AST-INSTRUCTIONS]:                                                               |       | [AST-INSTRUCTIONS]:                                          |
-|   - ReopenObject()                                                                |       |   - ReopenObject()                                           |
-|   - EndObject()                                                                   |       |   - EndObject()                                              |
-|   > Field(IfContentCandidate::elseBranch)                                         |       |   > Field(IfContentCandidate::elseBranch)                    |
+|   + StackEnd()                                                                    |       |   + StackEnd()                                               |
+|   > StackSlot(5)                                                                  |       |   > StackSlot(5)                                             |
 | [RETURN STACK]:                                                                   |       | [RETURN STACK]:                                              |
 |   [3][2][3]: IfContent -> [19][Stat]< IfContent @ >                               |       |   [1][2][0]: IfContent -> [19][Stat]< IfContent @ >          |
 |   [2][5][3]: Stat -> [12][IfContent]< "if" "cond" "then" Stat @ [ "else" Stat ] > |       |   [0][7][0]: Stat -> [24][Module]< Stat @ >                  |
@@ -306,16 +320,21 @@
 |                                                                                           |
 +                                                                                           +
 |                                                                                           |
-+-----------------------------------------------------------------------------------+       +---------------------------------------------+
-| [21]: <Ending>                                                                    |       | [29]: <Ending>                              |
-| [19][Stat]< IfContent @ >                                                         |       | [19][Stat]< IfContent @ >                   |
-| [AST-INSTRUCTIONS]:                                                               |       | [AST-INSTRUCTIONS]:                         |
-|   - EndObject()                                                                   |       |   - EndObject()                             |
-| [RETURN STACK]:                                                                   |       | [RETURN STACK]:                             |
-|   [2][5][3]: Stat -> [12][IfContent]< "if" "cond" "then" Stat @ [ "else" Stat ] > |       |   [0][7][0]: Stat -> [24][Module]< Stat @ > |
-|   [1][2][0]: IfContent -> [19][Stat]< IfContent @ >                               |       | [PREDECESSORS 28-28]: [28]                  |
-|   [0][7][0]: Stat -> [24][Module]< Stat @ >                                       |       | [SUCCESORS 23-23]: [23]                     |
-| [PREDECESSORS 20-20]: [20]                                                        |       +---------------------------------------------+
++-----------------------------------------------------------------------------------+       +----------------------------------------------+
+| [21]: <Ending>                                                                    |       | [29]: <Ending>                               |
+| [19][Stat]< IfContent @ >                                                         |       | [19][Stat]< IfContent @ >                    |
+| [AST-INSTRUCTIONS]:                                                               |       | [AST-INSTRUCTIONS]:                          |
+|   + CreateObject(IfContentCandidate)                                              |       |   + CreateObject(IfContentCandidate)         |
+|   + Field(IfContentCandidate::thenBranch, 3)                                      |       |   + Field(IfContentCandidate::thenBranch, 3) |
+|   + Field(IfContentCandidate::elseBranch, 5)                                      |       |   + Field(IfContentCandidate::elseBranch, 5) |
+|   + StackEnd()                                                                    |       |   + StackEnd()                               |
+|   > StackBegin()                                                                  |       |   > StackBegin()                             |
+|   > StackSlot(0)                                                                  |       |   > StackSlot(0)                             |
+| [RETURN STACK]:                                                                   |       | [RETURN STACK]:                              |
+|   [2][5][3]: Stat -> [12][IfContent]< "if" "cond" "then" Stat @ [ "else" Stat ] > |       |   [0][7][0]: Stat -> [24][Module]< Stat @ >  |
+|   [1][2][0]: IfContent -> [19][Stat]< IfContent @ >                               |       | [PREDECESSORS 28-28]: [28]                   |
+|   [0][7][0]: Stat -> [24][Module]< Stat @ >                                       |       | [SUCCESORS 23-23]: [23]                      |
+| [PREDECESSORS 20-20]: [20]                                                        |       +----------------------------------------------+
 | [SUCCESORS 22-22]: [22]                                                           |       |
 +-----------------------------------------------------------------------------------+       |
 |                                                                                           |
@@ -325,9 +344,10 @@
 | [22]: <Ending>                                               |                            |
 | [12][IfContent]< "if" "cond" "then" Stat @ [ "else" Stat ] > |                            |
 | [AST-INSTRUCTIONS]:                                          |                            |
-|   - Field(IfStat::content)                                   |                            |
-|   - EndObject()                                              |                            |
-|   > Field(IfContentCandidate::thenBranch)                    |                            |
+|   + CreateObject(IfStat)                                     |                            |
+|   + Field(IfStat::content, 0)                                |                            |
+|   + StackEnd()                                               |                            |
+|   > StackSlot(3)                                             |                            |
 | [RETURN STACK]:                                              |                            |
 |   [1][2][0]: IfContent -> [19][Stat]< IfContent @ >          |                            |
 |   [0][7][0]: Stat -> [24][Module]< Stat @ >                  |                            |
@@ -337,16 +357,21 @@
 |                                                                                           |
 +                                                                                           |
 |                                                                                           |
-+---------------------------------------------+                                             |
-| [30]: <Ending>                              |                                             |
-| [19][Stat]< IfContent @ >                   |                                             |
-| [AST-INSTRUCTIONS]:                         |                                             |
-|   - EndObject()                             |                                             |
-| [RETURN STACK]:                             |                                             |
-|   [0][7][0]: Stat -> [24][Module]< Stat @ > |                                             |
-| [PREDECESSORS 22-22]: [22]                  |                                             |
-| [SUCCESORS 23-23]: [23]                     |                                             |
-+---------------------------------------------+                                             |
++----------------------------------------------+                                            |
+| [30]: <Ending>                               |                                            |
+| [19][Stat]< IfContent @ >                    |                                            |
+| [AST-INSTRUCTIONS]:                          |                                            |
+|   + CreateObject(IfContentCandidate)         |                                            |
+|   + Field(IfContentCandidate::thenBranch, 3) |                                            |
+|   + Field(IfContentCandidate::elseBranch, 5) |                                            |
+|   + StackEnd()                               |                                            |
+|   > StackBegin()                             |                                            |
+|   > StackSlot(0)                             |                                            |
+| [RETURN STACK]:                              |                                            |
+|   [0][7][0]: Stat -> [24][Module]< Stat @ >  |                                            |
+| [PREDECESSORS 22-22]: [22]                   |                                            |
+| [SUCCESORS 23-23]: [23]                      |                                            |
++----------------------------------------------+                                            |
 |                                                                                           |
 +-------------------------------------------------------------------------------------------+
 |
@@ -357,15 +382,18 @@
 |
 +
 |
-+----------------------------+
-| [24]: <Ending>             |
-| [24][Module]< Stat @ >     |
-| [AST-INSTRUCTIONS]:        |
-|   - Field(IfStat::content) |
-|   - EndObject()            |
-| [PREDECESSORS 23-23]: [23] |
-| [SUCCESORS 25-25]: [25]    |
-+----------------------------+
++-------------------------------+
+| [24]: <Ending>                |
+| [24][Module]< Stat @ >        |
+| [AST-INSTRUCTIONS]:           |
+|   + CreateObject(IfStat)      |
+|   + Field(IfStat::content, 0) |
+|   + StackEnd()                |
+|   > StackBegin()              |
+|   > StackSlot(0)              |
+| [PREDECESSORS 23-23]: [23]    |
+| [SUCCESORS 25-25]: [25]       |
++-------------------------------+
 |
 +
 |
@@ -373,7 +401,8 @@
 | [25]: <Ending>             |
 | [23][Module] END [ENDING]  |
 | [AST-INSTRUCTIONS]:        |
-|   - Field(Module::stat)    |
-|   - EndObject()            |
+|   + CreateObject(Module)   |
+|   + Field(Module::stat, 0) |
+|   + StackEnd()             |
 | [PREDECESSORS 24-24]: [24] |
 +----------------------------+

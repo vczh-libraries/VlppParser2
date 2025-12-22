@@ -1,0 +1,11 @@
+﻿Plus
+  ::= "+" as Plus
+  ;
+
+PositiveOptional
+  ::= "positive_optional" +[Plus:optional] "+" {Plus:loop} as OptionalFeature {priority = PreferTake}
+  ;
+
+@parser Module : Feature
+  ::= !PositiveOptional
+  ;

@@ -12,36 +12,12 @@ namespace vl
 PartialExecuteOrdinaryTrace
 ***********************************************************************/
 
-			InsExec_Object* TraceManager::NewObject()
+			InsExec_Stack* TraceManager::NewStack()
 			{
-				auto ieObject = GetInsExec_Object(insExec_Objects.Allocate());
-				ieObject->previous = firstObject;
-				firstObject = ieObject;
-				return ieObject;
-			}
-
-			vint32_t TraceManager::GetStackBase(InsExec_Context& context)
-			{
-				if (context.createStack == nullref)
-				{
-					return 0;
-				}
-				else
-				{
-					return GetInsExec_CreateStack(context.createStack)->stackBase;
-				}
-			}
-
-			vint32_t TraceManager::GetStackTop(InsExec_Context& context)
-			{
-				if (context.objectStack == nullref)
-				{
-					return 0;
-				}
-				else
-				{
-					return GetInsExec_ObjectStack(context.objectStack)->pushedCount;
-				}
+				auto ieStack = GetInsExec_Stack(insExec_Stacks.Allocate());
+				ieStack->previous = firstStack;
+				firstStack = ieStack;
+				return ieStack;
 			}
 
 			void TraceManager::PushInsRefLink(Ref<InsExec_InsRefLink>& link, InsRef insRef)
@@ -52,12 +28,36 @@ PartialExecuteOrdinaryTrace
 				link = newLink;
 			}
 
-			void TraceManager::PushObjRefLink(Ref<InsExec_ObjRefLink>& link, Ref<InsExec_Object> id)
+			void TraceManager::PushStackRefLink(Ref<InsExec_StackRefLink>& link, Ref<InsExec_Stack> id)
 			{
-				auto newLink = GetInsExec_ObjRefLink(insExec_ObjRefLinks.Allocate());
+				auto newLink = GetInsExec_StackRefLink(insExec_StackRefLinks.Allocate());
 				newLink->previous = link;
 				newLink->id = id;
 				link = newLink;
+			}
+
+			void TraceManager::PushStackArrayRefLink(Ref<InsExec_StackArrayRefLink>& arrayLink, Ref<InsExec_Stack> id)
+			{
+				Ref<InsExec_StackRefLink> link;
+				PushStackRefLink(link, id);
+				PushStackArrayRefLink(arrayLink, link);
+			}
+
+			void TraceManager::PushStackArrayRefLink(Ref<InsExec_StackArrayRefLink>& arrayLink, Ref<InsExec_StackRefLink> link)
+			{
+				auto newArrayLink = GetInsExec_StackArrayRefLink(insExec_StackArrayRefLinks.Allocate());
+				newArrayLink->previous = arrayLink;
+				newArrayLink->ids = link;
+
+				if (arrayLink == nullref)
+				{
+					newArrayLink->currentDepth = 0;
+				}
+				else
+				{
+					newArrayLink->currentDepth = GetInsExec_StackArrayRefLink(arrayLink)->currentDepth + 1;
+				}
+				arrayLink = newArrayLink;
 			}
 
 			Ref<InsExec_InsRefLink> TraceManager::JoinInsRefLink(Ref<InsExec_InsRefLink> first, Ref<InsExec_InsRefLink> second)
@@ -65,121 +65,52 @@ PartialExecuteOrdinaryTrace
 				if (first == nullref) return second;
 				if (second == nullref) return first;
 
-				Ref<InsExec_InsRefLink> newStack;
+				Ref<InsExec_InsRefLink> newInsRef;
 
 				while (first != nullref)
 				{
-					auto stack = GetInsExec_InsRefLink(first);
-					first = stack->previous;
-					PushInsRefLink(newStack, stack->insRef);
+					auto insRef = GetInsExec_InsRefLink(first);
+					first = insRef->previous;
+					PushInsRefLink(newInsRef, insRef->insRef);
 				}
 
 				while (second != nullref)
 				{
-					auto stack = GetInsExec_InsRefLink(second);
-					second = stack->previous;
-					PushInsRefLink(newStack, stack->insRef);
+					auto insRef = GetInsExec_InsRefLink(second);
+					second = insRef->previous;
+					PushInsRefLink(newInsRef, insRef->insRef);
 				}
 
-				return newStack;
+				return newInsRef;
 			}
 
-			Ref<InsExec_ObjRefLink> TraceManager::JoinObjRefLink(Ref<InsExec_ObjRefLink> first, Ref<InsExec_ObjRefLink> second)
+			Ref<InsExec_StackRefLink> TraceManager::JoinStackRefLink(Ref<InsExec_StackRefLink> first, Ref<InsExec_StackRefLink> second)
 			{
 				if (first == nullref) return second;
 				if (second == nullref) return first;
 
-				Ref<InsExec_ObjRefLink> newStack;
+				Ref<InsExec_StackRefLink> newStack;
 
 				while (first != nullref)
 				{
-					auto stack = GetInsExec_ObjRefLink(first);
+					auto stack = GetInsExec_StackRefLink(first);
 					first = stack->previous;
-					PushObjRefLink(newStack, stack->id);
+					PushStackRefLink(newStack, stack->id);
 				}
 
 				while (second != nullref)
 				{
-					auto stack = GetInsExec_ObjRefLink(second);
+					auto stack = GetInsExec_StackRefLink(second);
 					second = stack->previous;
-					PushObjRefLink(newStack, stack->id);
+					PushStackRefLink(newStack, stack->id);
 				}
 
 				return newStack;
 			}
 
-			void TraceManager::PushAssignedToObjectIdsSingleWithMagic(Ref<InsExec_ObjRefLink> fieldObjectIds, Ref<InsExec_Object> assignedToTarget)
-			{
-				NEW_MERGE_STACK_MAGIC_COUNTER;
-				auto magicFieldObject = MergeStack_MagicCounter;
-
-				auto linkRef = fieldObjectIds;
-				while (linkRef != nullref)
-				{
-					auto link = GetInsExec_ObjRefLink(linkRef);
-					linkRef = link->previous;
-
-					if (link->id.handle == InsExec_Object::TokenOrEnumItemObjectId)
-					{
-						continue;
-					}
-					auto ieFieldObject = GetInsExec_Object(link->id);
-					if (ieFieldObject->mergeCounter == magicFieldObject) continue;
-					ieFieldObject->mergeCounter = magicFieldObject;
-					PushObjRefLink(ieFieldObject->assignedToObjectIds, assignedToTarget);
-				}
-			}
-
-			void TraceManager::PushAssignedToObjectIdsMultipleWithMagic(Ref<InsExec_ObjRefLink> fieldObjectIds, Ref<InsExec_ObjRefLink> assignedToTarget)
-			{
-				NEW_MERGE_STACK_MAGIC_COUNTER;
-				auto magicElement = MergeStack_MagicCounter;
-
-				auto linkRef = assignedToTarget;
-				while (linkRef != nullref)
-				{
-					auto link = GetInsExec_ObjRefLink(linkRef);
-					linkRef = link->previous;
-
-					auto ieAssignedToObject = GetInsExec_Object(link->id);
-					if (ieAssignedToObject->mergeCounter == magicElement) return;
-					ieAssignedToObject->mergeCounter = magicElement;
-
-					PushAssignedToObjectIdsSingleWithMagic(fieldObjectIds, link->id);
-				}
-			}
-
-			InsExec_ObjectStack* TraceManager::PushObjectStackSingle(InsExec_Context& context, Ref<InsExec_Object> objectId)
-			{
-				auto ie = GetInsExec_ObjectStack(insExec_ObjectStacks.Allocate());
-				ie->previous = context.objectStack;
-				PushObjRefLink(ie->objectIds, objectId);
-				ie->pushedCount = GetStackTop(context) + 1;
-				context.objectStack = ie;
-				return ie;
-			}
-
-			InsExec_ObjectStack* TraceManager::PushObjectStackMultiple(InsExec_Context& context, Ref<InsExec_ObjRefLink> linkId)
-			{
-				auto ie = GetInsExec_ObjectStack(insExec_ObjectStacks.Allocate());
-				ie->previous = context.objectStack;
-				ie->objectIds = JoinObjRefLink(ie->objectIds, linkId);
-				ie->pushedCount = GetStackTop(context) + 1;
-				context.objectStack = ie;
-				return ie;
-			}
-
-			InsExec_CreateStack* TraceManager::PushCreateStack(InsExec_Context& context)
-			{
-				auto ie = GetInsExec_CreateStack(insExec_CreateStacks.Allocate());
-				ie->previous = context.createStack;
-				context.createStack = ie;
-				return ie;
-			}
-
 			void TraceManager::PartialExecuteOrdinaryTrace(Trace* trace)
 			{
-#define ERROR_MESSAGE_PREFIX L"vl::glr::automaton::TraceManager::PartialExecuteOrdinaryTrace(Trace*)#"
+#define TRACE_MAMAGER_PHRASE L"PrepareTraceRoute/PartialExecuteOrdinaryTrace"
 				InsExec_Context context;
 				if (trace->predecessors.first != nullref)
 				{
@@ -188,8 +119,21 @@ PartialExecuteOrdinaryTrace
 					context = traceExec->context;
 				}
 
+				auto ForEachStack = [this](Ref<InsExec_StackArrayRefLink> targetStack, auto&& callback)
+				{
+						auto topStackArray = GetInsExec_StackArrayRefLink(targetStack);
+						auto topStackLinkRef = topStackArray->ids;
+						while (topStackLinkRef != nullref)
+						{
+							auto topStackLink = GetInsExec_StackRefLink(topStackLinkRef);
+							topStackLinkRef = topStackLink->previous;
+							auto topStack = GetInsExec_Stack(topStackLink->id);
+							callback(topStack);
+						}
+				};
+
 				auto traceExec = GetTraceExec(trace->traceExecRef);
-				for (vint32_t insRef = 0; insRef < traceExec->insLists.c3; insRef++)
+				for (vint32_t insRef = 0; insRef < traceExec->insLists.countAll; insRef++)
 				{
 					auto&& ins = ReadInstruction(insRef, traceExec->insLists);
 					auto insExec = GetInsExec(traceExec->insExecRefs.start + insRef);
@@ -197,196 +141,123 @@ PartialExecuteOrdinaryTrace
 
 					switch (ins.type)
 					{
-					case AstInsType::BeginObject:
+					case AstInsType::CreateObject:
 						{
-							// new object
-							auto ieObject = NewObject();
-							ieObject->createInsRef = { trace,insRef };
-
-							// new create stack
-							auto ieCSTop = PushCreateStack(context);
-							PushInsRefLink(ieCSTop->createInsRefs, ieObject->createInsRef);
-							ieCSTop->stackBase = GetStackTop(context);
-							PushObjRefLink(ieCSTop->objectIds, ieObject);
-
-							// InsExec::createdObjectId
-							insExec->createdObjectId = ieObject;
-						}
-						break;
-					case AstInsType::DelayFieldAssignment:
-						{
-							// new create stack
-							auto ieCSTop = PushCreateStack(context);
-							PushInsRefLink(ieCSTop->createInsRefs, { trace, insRef });
-							ieCSTop->stackBase = GetStackTop(context);
-						}
-						break;
-					case AstInsType::ReopenObject:
-						{
-							CHECK_ERROR(GetStackTop(context) - GetStackBase(context) >= 1, ERROR_MESSAGE_PREFIX L"Pushed values not enough.");
-							CHECK_ERROR(context.createStack != nullref, ERROR_MESSAGE_PREFIX L"There is no created object.");
-
-							// pop an object
-							auto ieOSTop = GetInsExec_ObjectStack(context.objectStack);
-							context.objectStack = ieOSTop->previous;
-
-							auto ieCSTop = GetInsExec_CreateStack(context.createStack);
-
-							// InsExec_Object::assignedToObjectIds
-							PushAssignedToObjectIdsMultipleWithMagic(ieCSTop->reverseAssignedToObjectIds, ieCSTop->objectIds);
-
-							// reopen an object
-							// ReopenObject in different branches could write to the same InsExec_CreateStack
-							// this happens when ambiguity happens in the !Rule syntax
-							// but the same InsExec_CreateStack means the clause of !Rule does not have ambiguity
-							// so ambiguity should also be resolved here
-							// and such ReopenObject will be the last instruction in a trace
-							// this means it is impossible to continue with InsExec_CreateStack polluted by sibling traces
-							// therefore adding multiple objects to the same InsExec_CreateStack in multiple branches is fine
-							// the successor trace will be a merge trace taking all of the information
-							NEW_MERGE_STACK_MAGIC_COUNTER;
+							if (context.createStack == nullref)
 							{
-								auto magicReopen = MergeStack_MagicCounter;
-								{
-									auto ref = ieCSTop->objectIds;
-									while (ref != nullref)
-									{
-										auto link = GetInsExec_ObjRefLink(ref);
-										auto ieObject = GetInsExec_Object(link->id);
-										ieObject->mergeCounter = magicReopen;
-										ref = link->previous;
-									}
-								}
-								{
-									auto ref = ieOSTop->objectIds;
-									while (ref != nullref)
-									{
-										auto link = GetInsExec_ObjRefLink(ref);
-										auto ieObject = GetInsExec_Object(link->id);
-										if (ieObject->mergeCounter != magicReopen)
-										{
-											ieObject->mergeCounter = magicReopen;
-											PushObjRefLink(ieCSTop->objectIds, link->id);
-										}
-										ref = link->previous;
-									}
-								}
+								throw TraceException(*this, { trace, insRef }, TRACE_MAMAGER_PHRASE, L"[CreateObject] context.createStack is empty.");
 							}
-
-							auto insRefLinkId = ieCSTop->createInsRefs;
-							while(insRefLinkId != nullref)
+							ForEachStack(context.createStack, [=](InsExec_Stack* topStack)
 							{
-								auto insRefLink = GetInsExec_InsRefLink(insRefLinkId);
-								insRefLinkId = insRefLink->previous;
+								PushInsRefLink(topStack->createObjectInsRefs, { trace, insRef });
+								PushStackRefLink(insExec->operatingStacks, topStack);
+							});
+						}
+						break;
+					case AstInsType::StackBegin:
+						{
+							auto newTopStack = NewStack();
+							PushStackArrayRefLink(context.createStack, newTopStack);
+							newTopStack->beginInsRef = { trace, insRef };
+							PushStackRefLink(insExec->operatingStacks, newTopStack);
 
-								// check if the top create stack is from DFA
-								auto traceCSTop = GetTrace(insRefLink->insRef.trace);
-								auto traceExecCSTop = GetTraceExec(traceCSTop->traceExecRef);
-								CHECK_ERROR(ReadInstruction(insRefLink->insRef.ins, traceExecCSTop->insLists).type == AstInsType::DelayFieldAssignment, ERROR_MESSAGE_PREFIX L"DelayFieldAssignment is not submitted before ReopenObject.");
-
-								auto insExecDfa = GetInsExec(traceExecCSTop->insExecRefs.start + insRefLink->insRef.ins);
-								auto ref = ieOSTop->objectIds;
-								while (ref != nullref)
-								{
-									auto link = GetInsExec_ObjRefLink(ref);
-									auto ieObject = GetInsExec_Object(link->id);
-									// InsExec_Object::dfaInsRefs
-									PushInsRefLink(ieObject->dfaInsRefs, insRefLink->insRef);
-									// InsExec::objRefs
-									PushObjRefLink(insExecDfa->objRefs, ieObject);
-									ref = link->previous;
-								}
+							auto newStackTop = GetInsExec_StackArrayRefLink(context.createStack);
+							if (context.objectStack == nullref)
+							{
+								newStackTop->objectStackDepthForCreateStack = 0;
+							}
+							else
+							{
+								newStackTop->objectStackDepthForCreateStack = GetInsExec_StackArrayRefLink(context.objectStack)->currentDepth;
 							}
 						}
 						break;
-					case AstInsType::EndObject:
+					case AstInsType::StackEnd:
 						{
-							CHECK_ERROR(context.createStack != nullref, ERROR_MESSAGE_PREFIX L"There is no created object.");
-
-							// pop a create stack
-							auto ieCSTop = GetInsExec_CreateStack(context.createStack);
-							context.createStack = ieCSTop->previous;
-
-							// push an object
-							CHECK_ERROR(ieCSTop->objectIds != nullref, ERROR_MESSAGE_PREFIX L"An object has not been associated to the create stack yet.");
-							PushObjectStackMultiple(context, ieCSTop->objectIds);
-
-							// InsExec::objRefs
-							insExec->objRefs = ieCSTop->objectIds;
-
-							// InsExec::eoInsRefs
-							auto insRefLinkId = ieCSTop->createInsRefs;
-							while (insRefLinkId != nullref)
+							if (context.createStack == nullref)
 							{
-								auto insRefLink = GetInsExec_InsRefLink(insRefLinkId);
-								insRefLinkId = insRefLink->previous;
-
-								auto traceCSTop = GetTrace(insRefLink->insRef.trace);
-								auto traceExecCSTop = GetTraceExec(traceCSTop->traceExecRef);
-								auto insExecCreate = GetInsExec(traceExecCSTop->insExecRefs.start + insRefLink->insRef.ins);
-								PushInsRefLink(insExecCreate->eoInsRefs, { trace, insRef });
+								throw TraceException(*this, { trace, insRef }, TRACE_MAMAGER_PHRASE, L"[StackEnd] context.createStack is empty.");
 							}
-						}
-						break;
-					case AstInsType::DiscardValue:
-					case AstInsType::Field:
-					case AstInsType::FieldIfUnassigned:
-						{
-							CHECK_ERROR(GetStackTop(context) - GetStackBase(context) >= 1, ERROR_MESSAGE_PREFIX L"Pushed values not enough.");
-
-							auto ieObjTop = GetInsExec_ObjectStack(context.objectStack);
-							context.objectStack = ieObjTop->previous;
-
-							// InsExec_Object::assignedToObjectIds
-							if (context.createStack != nullref)
+							bool endWithCreate = false;
+							bool endWithReuse = false;
+							ForEachStack(context.createStack, [&](InsExec_Stack* topStack)
 							{
-								auto ieCSTop = GetInsExec_CreateStack(context.createStack);
-								if (ieCSTop->objectIds == nullref)
+								bool executedCreateObject = false;
+								if (topStack->createObjectInsRefs != nullref)
 								{
-									ieCSTop->reverseAssignedToObjectIds = JoinObjRefLink(ieCSTop->reverseAssignedToObjectIds, ieObjTop->objectIds);
+									auto lastCreateObjectInsRefLink = GetInsExec_InsRefLink(topStack->createObjectInsRefs);
+									executedCreateObject = lastCreateObjectInsRefLink->insRef.trace == trace;
+								}
+
+								if(executedCreateObject)
+								{
+									endWithCreate = true;
+									PushInsRefLink(topStack->endWithCreateInsRefs, { trace,  insRef });
 								}
 								else
 								{
-									PushAssignedToObjectIdsMultipleWithMagic(ieObjTop->objectIds, ieCSTop->objectIds);
+									endWithReuse = true;
+									PushInsRefLink(topStack->endWithReuseInsRefs, { trace, insRef });
 								}
-							}
-						}
-						break;
-					case AstInsType::LriStore:
-						{
-							CHECK_ERROR(GetStackTop(context) - GetStackBase(context) >= 1, ERROR_MESSAGE_PREFIX L"Pushed values not enough.");
-							CHECK_ERROR(context.lriStoredObjects == nullref, ERROR_MESSAGE_PREFIX L"LriFetch is not executed before the next LriStore.");
 
-							auto ieObjTop = GetInsExec_ObjectStack(context.objectStack);
-							context.objectStack = ieObjTop->previous;
-							context.lriStoredObjects = ieObjTop->objectIds;
+								PushStackRefLink(insExec->operatingStacks, topStack);
+							});
+
+							if (endWithCreate == endWithReuse)
+							{
+								throw TraceException(*this, { trace, insRef }, TRACE_MAMAGER_PHRASE, L"[StackEnd] Connected CreateObject and StackEnd should always be in the same trace.");
+							}
+
+							if (endWithReuse)
+							{
+								if (context.objectStack == nullref)
+								{
+									throw TraceException(*this, { trace, insRef }, TRACE_MAMAGER_PHRASE, L"[StackEnd] context.objectStack is empty.");
+								}
+								auto topObjects = GetInsExec_StackArrayRefLink(context.objectStack);
+								context.objectStack = topObjects->previous;
+								ForEachStack(context.createStack, [&](InsExec_Stack* topStack)
+								{
+									topStack->useFromStacks = JoinStackRefLink(topStack->useFromStacks, topObjects->ids);
+								});
+							}
+
+							auto topStacks = GetInsExec_StackArrayRefLink(context.createStack);
+							context.createStack = topStacks->previous;
+							PushStackArrayRefLink(context.objectStack, topStacks->ids);
 						}
 						break;
-					case AstInsType::LriFetch:
+					case AstInsType::StackSlot:
 						{
-							CHECK_ERROR(context.lriStoredObjects != nullref, ERROR_MESSAGE_PREFIX L"LriStore is not executed before the next LriFetch.");
-							PushObjectStackMultiple(context, context.lriStoredObjects);
-							context.lriStoredObjects = nullref;
+							if (context.createStack == nullref)
+							{
+								throw TraceException(*this, { trace, insRef }, TRACE_MAMAGER_PHRASE, L"[StackSlot] context.createStack is empty.");
+							}
+							if (context.objectStack == nullref)
+							{
+								throw TraceException(*this, { trace, insRef }, TRACE_MAMAGER_PHRASE, L"[StackSlot] context.objectStack is empty.");
+							}
+							auto topObjects = GetInsExec_StackArrayRefLink(context.objectStack);
+							context.objectStack = topObjects->previous;
+							ForEachStack(context.createStack, [&](InsExec_Stack* topStack)
+							{
+								topStack->fieldStacks = JoinStackRefLink(topStack->fieldStacks, topObjects->ids);
+							});
 						}
 						break;
+					case AstInsType::Field:
+					case AstInsType::FieldIfUnassigned:
 					case AstInsType::Token:
 					case AstInsType::EnumItem:
-						{
-							PushObjectStackSingle(context, Ref<InsExec_Object>(InsExec_Object::TokenOrEnumItemObjectId));
-						}
 						break;
 					case AstInsType::ResolveAmbiguity:
-						CHECK_FAIL(ERROR_MESSAGE_PREFIX L"ResolveAmbiguity should not appear in traces.");
-					case AstInsType::AccumulatedDfa:
-						CHECK_FAIL(ERROR_MESSAGE_PREFIX L"AccumulatedDfa should not appear in traces.");
-					case AstInsType::AccumulatedEoRo:
-						CHECK_FAIL(ERROR_MESSAGE_PREFIX L"AccumulatedEoRo should not appear in traces.");
+						throw TraceException(*this, { trace, insRef }, TRACE_MAMAGER_PHRASE, L"[ResolveAmbiguity] should not appear in traces.");
 					default:;
-						CHECK_FAIL(ERROR_MESSAGE_PREFIX L"Unrecognizabled instruction.");
+						throw TraceException(*this, { trace, insRef }, TRACE_MAMAGER_PHRASE, L"Unrecognizabled instruction.");
 					}
 				}
 				traceExec->context = context;
-#undef ERROR_MESSAGE_PREFIX
+#undef TRACE_MAMAGER_PHRASE
 			}
 
 #undef NEW_MERGE_STACK_MAGIC_COUNTER

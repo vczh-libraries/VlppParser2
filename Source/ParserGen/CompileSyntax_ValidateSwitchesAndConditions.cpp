@@ -289,26 +289,6 @@ VerifySwitchesAndConditionsVisitor
 						}
 					}
 				}
-
-				////////////////////////////////////////////////////////////////////////
-				// GlrClause::IVisitor
-				////////////////////////////////////////////////////////////////////////
-
-				void Traverse(GlrPrefixMergeClause* node) override
-				{
-					auto pmRuleSymbol = context.syntaxManager.Rules()[node->rule->literal.value];
-					vint index = sContext.ruleAffectedSwitches.Keys().IndexOf(pmRuleSymbol);
-					if(index != -1)
-					{
-						context.syntaxManager.AddError(
-							ParserErrorType::PrefixMergeAffectedBySwitches,
-							node->codeRange,
-							ruleSymbol->Name(),
-							pmRuleSymbol->Name(),
-							sContext.ruleAffectedSwitches.GetByIndex(index)[0]
-							);
-					}
-				}
 			};
 
 /***********************************************************************

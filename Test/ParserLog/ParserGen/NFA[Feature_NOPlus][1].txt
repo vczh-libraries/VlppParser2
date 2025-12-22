@@ -1,0 +1,158 @@
+﻿[0][Plus]< "+" > @[ENDING]
+[RULE: 0]
+
+[1][Plus]< "+" @ >
+[RULE: 0]
+	epsilon -> [0][Plus]< "+" > @[ENDING]
+		+ CreateObject(Plus)
+		+ StackEnd()
+
+[2][Plus]< @ "+" >
+[RULE: 0]
+	token: "+" -> [1][Plus]< "+" @ >
+		+ Token(0)
+
+[3][Plus]@ < "+" >
+[RULE: 0]
+	epsilon -> [2][Plus]< @ "+" >
+		+ StackBegin()
+
+[4][NestedPositiveOptional]< "nested_positive_optional" +[ ( +[ ( +[ @ Plus ] Plus ) ] Plus ) ] Plus { Plus } >
+[RULE: 3]
+	rule: Plus -> [5][NestedPositiveOptional]< "nested_positive_optional" +[ ( +[ ( +[ Plus @ ] Plus ) ] Plus ) ] Plus { Plus } >
+		+ StackSlot(1)
+
+[5][NestedPositiveOptional]< "nested_positive_optional" +[ ( +[ ( +[ Plus @ ] Plus ) ] Plus ) ] Plus { Plus } >
+[RULE: 3]
+	epsilon -> [6][NestedPositiveOptional]< "nested_positive_optional" +[ ( +[ ( +[ Plus ] @ Plus ) ] Plus ) ] Plus { Plus } >
+
+[6][NestedPositiveOptional]< "nested_positive_optional" +[ ( +[ ( +[ Plus ] @ Plus ) ] Plus ) ] Plus { Plus } >
+[RULE: 3]
+	epsilon -> [7][NestedPositiveOptional]< "nested_positive_optional" +[ ( +[ ( +[ Plus ] @ Plus ) ] Plus ) ] Plus { Plus } >
+
+[7][NestedPositiveOptional]< "nested_positive_optional" +[ ( +[ ( +[ Plus ] @ Plus ) ] Plus ) ] Plus { Plus } >
+[RULE: 3]
+	rule: Plus -> [21][NestedPositiveOptional]< "nested_positive_optional" +[ ( +[ ( +[ Plus ] Plus @ ) ] Plus ) ] Plus { Plus } >
+		+ StackSlot(2)
+
+[8][NestedPositiveOptional]< "nested_positive_optional" +[ ( +[ ( +[ Plus ] Plus ) @ ] Plus ) ] Plus { Plus } >
+[RULE: 3]
+	epsilon -> [9][NestedPositiveOptional]< "nested_positive_optional" +[ ( +[ ( +[ Plus ] Plus ) ] @ Plus ) ] Plus { Plus } >
+
+[9][NestedPositiveOptional]< "nested_positive_optional" +[ ( +[ ( +[ Plus ] Plus ) ] @ Plus ) ] Plus { Plus } >
+[RULE: 3]
+	epsilon -> [10][NestedPositiveOptional]< "nested_positive_optional" +[ ( +[ ( +[ Plus ] Plus ) ] @ Plus ) ] Plus { Plus } >
+
+[10][NestedPositiveOptional]< "nested_positive_optional" +[ ( +[ ( +[ Plus ] Plus ) ] @ Plus ) ] Plus { Plus } >
+[RULE: 3]
+	rule: Plus -> [20][NestedPositiveOptional]< "nested_positive_optional" +[ ( +[ ( +[ Plus ] Plus ) ] Plus @ ) ] Plus { Plus } >
+		+ StackSlot(3)
+
+[11][NestedPositiveOptional]< "nested_positive_optional" +[ ( +[ ( +[ Plus ] Plus ) ] Plus ) @ ] Plus { Plus } >
+[RULE: 3]
+	epsilon -> [13][NestedPositiveOptional]< "nested_positive_optional" +[ ( +[ ( +[ Plus ] Plus ) ] Plus ) ] @ Plus { Plus } >
+
+[12][NestedPositiveOptional]< "nested_positive_optional" +[ ( +[ ( +[ Plus ] Plus ) ] Plus ) ] @ Plus { Plus } >
+[RULE: 3]
+	rule: Plus -> [14][NestedPositiveOptional]< "nested_positive_optional" +[ ( +[ ( +[ Plus ] Plus ) ] Plus ) ] Plus @ { Plus } >
+		+ StackSlot(4)
+
+[13][NestedPositiveOptional]< "nested_positive_optional" +[ ( +[ ( +[ Plus ] Plus ) ] Plus ) ] @ Plus { Plus } >
+[RULE: 3]
+	epsilon -> [12][NestedPositiveOptional]< "nested_positive_optional" +[ ( +[ ( +[ Plus ] Plus ) ] Plus ) ] @ Plus { Plus } >
+
+[14][NestedPositiveOptional]< "nested_positive_optional" +[ ( +[ ( +[ Plus ] Plus ) ] Plus ) ] Plus @ { Plus } >
+[RULE: 3]
+	epsilon -> [15][NestedPositiveOptional]< "nested_positive_optional" +[ ( +[ ( +[ Plus ] Plus ) ] Plus ) ] Plus @ { Plus } >
+
+[15][NestedPositiveOptional]< "nested_positive_optional" +[ ( +[ ( +[ Plus ] Plus ) ] Plus ) ] Plus @ { Plus } >
+[RULE: 3]
+	epsilon -> [16][NestedPositiveOptional]< "nested_positive_optional" +[ ( +[ ( +[ Plus ] Plus ) ] Plus ) ] Plus { @ Plus } >
+	epsilon -> [19][NestedPositiveOptional]< "nested_positive_optional" +[ ( +[ ( +[ Plus ] Plus ) ] Plus ) ] Plus { Plus } @ >
+
+[16][NestedPositiveOptional]< "nested_positive_optional" +[ ( +[ ( +[ Plus ] Plus ) ] Plus ) ] Plus { @ Plus } >
+[RULE: 3]
+	rule: Plus -> [17][NestedPositiveOptional]< "nested_positive_optional" +[ ( +[ ( +[ Plus ] Plus ) ] Plus ) ] Plus { Plus @ } >
+		+ StackSlot(5)
+
+[17][NestedPositiveOptional]< "nested_positive_optional" +[ ( +[ ( +[ Plus ] Plus ) ] Plus ) ] Plus { Plus @ } >
+[RULE: 3]
+	epsilon -> [16][NestedPositiveOptional]< "nested_positive_optional" +[ ( +[ ( +[ Plus ] Plus ) ] Plus ) ] Plus { @ Plus } >
+	epsilon -> [19][NestedPositiveOptional]< "nested_positive_optional" +[ ( +[ ( +[ Plus ] Plus ) ] Plus ) ] Plus { Plus } @ >
+
+[18][NestedPositiveOptional]< "nested_positive_optional" +[ ( +[ ( +[ Plus ] Plus ) ] Plus ) ] Plus { Plus } > @[ENDING]
+[RULE: 3]
+
+[19][NestedPositiveOptional]< "nested_positive_optional" +[ ( +[ ( +[ Plus ] Plus ) ] Plus ) ] Plus { Plus } @ >
+[RULE: 3]
+	epsilon -> [18][NestedPositiveOptional]< "nested_positive_optional" +[ ( +[ ( +[ Plus ] Plus ) ] Plus ) ] Plus { Plus } > @[ENDING]
+		+ CreateObject(NestedOptionalFeature)
+		+ Field(NestedOptionalFeature::optional, 1)
+		+ Field(NestedOptionalFeature::tail1, 2)
+		+ Field(NestedOptionalFeature::tail2, 3)
+		+ Field(NestedOptionalFeature::tail3, 4)
+		+ Field(NestedOptionalFeature::tails, 5)
+		+ StackEnd()
+
+[20][NestedPositiveOptional]< "nested_positive_optional" +[ ( +[ ( +[ Plus ] Plus ) ] Plus @ ) ] Plus { Plus } >
+[RULE: 3]
+	epsilon -> [11][NestedPositiveOptional]< "nested_positive_optional" +[ ( +[ ( +[ Plus ] Plus ) ] Plus ) @ ] Plus { Plus } >
+
+[21][NestedPositiveOptional]< "nested_positive_optional" +[ ( +[ ( +[ Plus ] Plus @ ) ] Plus ) ] Plus { Plus } >
+[RULE: 3]
+	epsilon -> [8][NestedPositiveOptional]< "nested_positive_optional" +[ ( +[ ( +[ Plus ] Plus ) @ ] Plus ) ] Plus { Plus } >
+
+[22][NestedPositiveOptional]< "nested_positive_optional" +[ ( +[ ( @ +[ Plus ] Plus ) ] Plus ) ] Plus { Plus } >
+[RULE: 3]
+	epsilon[H1] -> [4][NestedPositiveOptional]< "nested_positive_optional" +[ ( +[ ( +[ @ Plus ] Plus ) ] Plus ) ] Plus { Plus } >
+	epsilon[L1] -> [6][NestedPositiveOptional]< "nested_positive_optional" +[ ( +[ ( +[ Plus ] @ Plus ) ] Plus ) ] Plus { Plus } >
+
+[23][NestedPositiveOptional]< "nested_positive_optional" +[ ( +[ @ ( +[ Plus ] Plus ) ] Plus ) ] Plus { Plus } >
+[RULE: 3]
+	epsilon -> [22][NestedPositiveOptional]< "nested_positive_optional" +[ ( +[ ( @ +[ Plus ] Plus ) ] Plus ) ] Plus { Plus } >
+
+[24][NestedPositiveOptional]< "nested_positive_optional" +[ ( @ +[ ( +[ Plus ] Plus ) ] Plus ) ] Plus { Plus } >
+[RULE: 3]
+	epsilon[L2] -> [9][NestedPositiveOptional]< "nested_positive_optional" +[ ( +[ ( +[ Plus ] Plus ) ] @ Plus ) ] Plus { Plus } >
+	epsilon[H2] -> [23][NestedPositiveOptional]< "nested_positive_optional" +[ ( +[ @ ( +[ Plus ] Plus ) ] Plus ) ] Plus { Plus } >
+
+[25][NestedPositiveOptional]< "nested_positive_optional" +[ @ ( +[ ( +[ Plus ] Plus ) ] Plus ) ] Plus { Plus } >
+[RULE: 3]
+	epsilon -> [24][NestedPositiveOptional]< "nested_positive_optional" +[ ( @ +[ ( +[ Plus ] Plus ) ] Plus ) ] Plus { Plus } >
+
+[26][NestedPositiveOptional]< "nested_positive_optional" @ +[ ( +[ ( +[ Plus ] Plus ) ] Plus ) ] Plus { Plus } >
+[RULE: 3]
+	epsilon -> [27][NestedPositiveOptional]< "nested_positive_optional" @ +[ ( +[ ( +[ Plus ] Plus ) ] Plus ) ] Plus { Plus } >
+
+[27][NestedPositiveOptional]< "nested_positive_optional" @ +[ ( +[ ( +[ Plus ] Plus ) ] Plus ) ] Plus { Plus } >
+[RULE: 3]
+	epsilon[L3] -> [13][NestedPositiveOptional]< "nested_positive_optional" +[ ( +[ ( +[ Plus ] Plus ) ] Plus ) ] @ Plus { Plus } >
+	epsilon[H3] -> [25][NestedPositiveOptional]< "nested_positive_optional" +[ @ ( +[ ( +[ Plus ] Plus ) ] Plus ) ] Plus { Plus } >
+
+[28][NestedPositiveOptional]< @ "nested_positive_optional" +[ ( +[ ( +[ Plus ] Plus ) ] Plus ) ] Plus { Plus } >
+[RULE: 3]
+	token: "nested_positive_optional" -> [26][NestedPositiveOptional]< "nested_positive_optional" @ +[ ( +[ ( +[ Plus ] Plus ) ] Plus ) ] Plus { Plus } >
+		+ Token(0)
+
+[29][NestedPositiveOptional]@ < "nested_positive_optional" +[ ( +[ ( +[ Plus ] Plus ) ] Plus ) ] Plus { Plus } >
+[RULE: 3]
+	epsilon -> [28][NestedPositiveOptional]< @ "nested_positive_optional" +[ ( +[ ( +[ Plus ] Plus ) ] Plus ) ] Plus { Plus } >
+		+ StackBegin()
+
+[30][Module]<! !NestedPositiveOptional !> @[ENDING]
+[RULE: 4]
+
+[31][Module]<! !NestedPositiveOptional @ !>
+[RULE: 4]
+	epsilon -> [30][Module]<! !NestedPositiveOptional !> @[ENDING]
+		+ StackEnd()
+
+[32][Module]<! @ !NestedPositiveOptional !>
+[RULE: 4]
+	rule: NestedPositiveOptional -> [31][Module]<! !NestedPositiveOptional @ !>
+
+[33][Module]@ <! !NestedPositiveOptional !>
+[RULE: 4]
+	epsilon -> [32][Module]<! @ !NestedPositiveOptional !>
+		+ StackBegin()
+

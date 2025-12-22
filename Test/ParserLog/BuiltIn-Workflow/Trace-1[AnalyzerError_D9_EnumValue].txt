@@ -1,11 +1,11 @@
 ﻿================ EXECUTION STEPS ================
-[0]: 0@0 - 33@2
+[0]: 0@0 - 32@6
 
 ==================== TRACES =====================
 
 +-----------------------+
 | [0]: <Start>          |
-| [817][_Module] BEGIN  |
+| [779][_Module] BEGIN  |
 | [AST-INSTRUCTIONS]:   |
 | [SUCCESORS 1-1]: [1]  |
 +-----------------------+
@@ -14,44 +14,41 @@
  +
  |
 [0]
-++==========================================++
-|| [1]: {KEYWORD_MODULE} module             ||
-|| [819][_Module]< "module" @ _ModuleBody > ||
-|| [AST-INSTRUCTIONS]:                      ||
-||   - BeginObject(Module)                  ||
-|| [PREDECESSORS 0-0]: [0]                  ||
-|| [SUCCESORS 2-2]: [2]                     ||
-++==========================================++
+++===========================================================================++
+|| [1]: {KEYWORD_MODULE} module                                              ||
+|| [785][_Module]< "module" @ ( NAME ";" { _UsingPath } { _Declaration } ) > ||
+|| [AST-INSTRUCTIONS]:                                                       ||
+||   + StackBegin()                                                          ||
+||   + Token(0)                                                              ||
+|| [PREDECESSORS 0-0]: [0]                                                   ||
+|| [SUCCESORS 2-2]: [2]                                                      ||
+++===========================================================================++
 [0]
  |
  +
  |
 [0]
-++========================================================================++
-|| [2]: {NAME} test                                                       ||
-|| [816][_ModuleBody]NAME @ ";" { _UsingPath } { _Declaration }           ||
-|| [AST-INSTRUCTIONS]:                                                    ||
-||   + Token()                                                            ||
-||   + Field(Module::name)                                                ||
-|| [RETURN STACK]:                                                        ||
-||   [0][258][1]: _ModuleBody -> [820][_Module]< "module" _ModuleBody @ > ||
-|| [PREDECESSORS 1-1]: [1]                                                ||
-|| [SUCCESORS 3-3]: [3]                                                   ||
-++========================================================================++
+++===========================================================================++
+|| [2]: {NAME} test                                                          ||
+|| [784][_Module]< "module" ( NAME @ ";" { _UsingPath } { _Declaration } ) > ||
+|| [AST-INSTRUCTIONS]:                                                       ||
+||   + Token(1)                                                              ||
+|| [PREDECESSORS 1-1]: [1]                                                   ||
+|| [SUCCESORS 3-3]: [3]                                                      ||
+++===========================================================================++
 [0]
  |
  +
  |
 [0]
-++========================================================================++
-|| [3]: {SEMICOLON} ;                                                     ||
-|| [813][_ModuleBody]NAME ";" @ { _UsingPath } { _Declaration }           ||
-|| [AST-INSTRUCTIONS]:                                                    ||
-|| [RETURN STACK]:                                                        ||
-||   [0][258][1]: _ModuleBody -> [820][_Module]< "module" _ModuleBody @ > ||
-|| [PREDECESSORS 2-2]: [2]                                                ||
-|| [SUCCESORS 5-5]: [5]                                                   ||
-++========================================================================++
+++===========================================================================++
+|| [3]: {SEMICOLON} ;                                                        ||
+|| [781][_Module]< "module" ( NAME ";" @ { _UsingPath } { _Declaration } ) > ||
+|| [AST-INSTRUCTIONS]:                                                       ||
+||   + Token(2)                                                              ||
+|| [PREDECESSORS 2-2]: [2]                                                   ||
+|| [SUCCESORS 5-5]: [5]                                                      ||
+++===========================================================================++
 [0]
  |
  +
@@ -59,16 +56,14 @@
 [0]
 ++===========================================================================================================++
 || [5]: {KEYWORD_ENUM} enum                                                                                  ||
-|| [707][_Enum]< "enum" @ NAME "{" _EnumItemA { _EnumItemA } "}" >                                           ||
+|| [682][_Enum]< "enum" @ NAME "{" _EnumItem { _EnumItem } "}" >                                             ||
 || [AST-INSTRUCTIONS]:                                                                                       ||
-||   - DelayFieldAssignment()                                                                                ||
-||   - DelayFieldAssignment()                                                                                ||
-||   - BeginObject(EnumDeclaration)                                                                          ||
+||   + StackBegin()                                                                                          ||
+||   + Token(0)                                                                                              ||
 || [RETURN STACK]:                                                                                           ||
-||   [3][54][3]: _Enum -> [784][_DeclarationCandidates]<< !_Enum @ >>                                        ||
-||   [2][47][3]: _DeclarationCandidates -> [795][_Declaration]<< { _Attribute } !_DeclarationCandidates @ >> ||
-||   [1][253][3]: _Declaration -> [815][_ModuleBody]NAME ";" { _UsingPath } { _Declaration @ }               ||
-||   [0][258][1]: _ModuleBody -> [820][_Module]< "module" _ModuleBody @ >                                    ||
+||   [2][49][3]: _Enum -> [752][_DeclarationCandidates]<! !_Enum @ !>                                        ||
+||   [1][43][3]: _DeclarationCandidates -> [763][_Declaration]<! { _Attribute } !_DeclarationCandidates @ !> ||
+||   [0][251][3]: _Declaration -> [783][_Module]< "module" ( NAME ";" { _UsingPath } { _Declaration @ } ) >  ||
 || [PREDECESSORS 3-3]: [3]                                                                                   ||
 || [SUCCESORS 6-6]: [6]                                                                                      ||
 ++===========================================================================================================++
@@ -79,15 +74,13 @@
 [0]
 ++===========================================================================================================++
 || [6]: {NAME} Seasons                                                                                       ||
-|| [712][_Enum]< "enum" NAME @ "{" _EnumItemA { _EnumItemA } "}" >                                           ||
+|| [687][_Enum]< "enum" NAME @ "{" _EnumItem { _EnumItem } "}" >                                             ||
 || [AST-INSTRUCTIONS]:                                                                                       ||
-||   + Token()                                                                                               ||
-||   + Field(Declaration::name)                                                                              ||
+||   + Token(1)                                                                                              ||
 || [RETURN STACK]:                                                                                           ||
-||   [3][54][3]: _Enum -> [784][_DeclarationCandidates]<< !_Enum @ >>                                        ||
-||   [2][47][3]: _DeclarationCandidates -> [795][_Declaration]<< { _Attribute } !_DeclarationCandidates @ >> ||
-||   [1][253][3]: _Declaration -> [815][_ModuleBody]NAME ";" { _UsingPath } { _Declaration @ }               ||
-||   [0][258][1]: _ModuleBody -> [820][_Module]< "module" _ModuleBody @ >                                    ||
+||   [2][49][3]: _Enum -> [752][_DeclarationCandidates]<! !_Enum @ !>                                        ||
+||   [1][43][3]: _DeclarationCandidates -> [763][_Declaration]<! { _Attribute } !_DeclarationCandidates @ !> ||
+||   [0][251][3]: _Declaration -> [783][_Module]< "module" ( NAME ";" { _UsingPath } { _Declaration @ } ) >  ||
 || [PREDECESSORS 5-5]: [5]                                                                                   ||
 || [SUCCESORS 7-7]: [7]                                                                                      ||
 ++===========================================================================================================++
@@ -98,13 +91,13 @@
 [0]
 ++===========================================================================================================++
 || [7]: {OPEN_BRACE} {                                                                                       ||
-|| [708][_Enum]< "enum" NAME "{" @ _EnumItemA { _EnumItemA } "}" >                                           ||
+|| [683][_Enum]< "enum" NAME "{" @ _EnumItem { _EnumItem } "}" >                                             ||
 || [AST-INSTRUCTIONS]:                                                                                       ||
+||   + Token(2)                                                                                              ||
 || [RETURN STACK]:                                                                                           ||
-||   [3][54][3]: _Enum -> [784][_DeclarationCandidates]<< !_Enum @ >>                                        ||
-||   [2][47][3]: _DeclarationCandidates -> [795][_Declaration]<< { _Attribute } !_DeclarationCandidates @ >> ||
-||   [1][253][3]: _Declaration -> [815][_ModuleBody]NAME ";" { _UsingPath } { _Declaration @ }               ||
-||   [0][258][1]: _ModuleBody -> [820][_Module]< "module" _ModuleBody @ >                                    ||
+||   [2][49][3]: _Enum -> [752][_DeclarationCandidates]<! !_Enum @ !>                                        ||
+||   [1][43][3]: _DeclarationCandidates -> [763][_Declaration]<! { _Attribute } !_DeclarationCandidates @ !> ||
+||   [0][251][3]: _Declaration -> [783][_Module]< "module" ( NAME ";" { _UsingPath } { _Declaration @ } ) >  ||
 || [PREDECESSORS 6-6]: [6]                                                                                   ||
 || [SUCCESORS 8-8]: [8]                                                                                      ||
 ++===========================================================================================================++
@@ -115,17 +108,15 @@
 [0]
 ++===========================================================================================================++
 || [8]: {NAME} Spring                                                                                        ||
-|| [695][_EnumItemA]< { _Attribute } NAME @ "=" INTEGER "," >                                                ||
+|| [669][_EnumItem]< { _Attribute } NAME @ "=" ( INTEGER ) "," >                                             ||
 || [AST-INSTRUCTIONS]:                                                                                       ||
-||   - BeginObject(EnumItem)                                                                                 ||
-||   + Token()                                                                                               ||
-||   + Field(EnumItem::name)                                                                                 ||
+||   + StackBegin()                                                                                          ||
+||   + Token(1)                                                                                              ||
 || [RETURN STACK]:                                                                                           ||
-||   [4][226][7]: _EnumItemA -> [709][_Enum]< "enum" NAME "{" _EnumItemA @ { _EnumItemA } "}" >              ||
-||   [3][54][3]: _Enum -> [784][_DeclarationCandidates]<< !_Enum @ >>                                        ||
-||   [2][47][3]: _DeclarationCandidates -> [795][_Declaration]<< { _Attribute } !_DeclarationCandidates @ >> ||
-||   [1][253][3]: _Declaration -> [815][_ModuleBody]NAME ";" { _UsingPath } { _Declaration @ }               ||
-||   [0][258][1]: _ModuleBody -> [820][_Module]< "module" _ModuleBody @ >                                    ||
+||   [3][229][7]: _EnumItem -> [684][_Enum]< "enum" NAME "{" _EnumItem @ { _EnumItem } "}" >                 ||
+||   [2][49][3]: _Enum -> [752][_DeclarationCandidates]<! !_Enum @ !>                                        ||
+||   [1][43][3]: _DeclarationCandidates -> [763][_Declaration]<! { _Attribute } !_DeclarationCandidates @ !> ||
+||   [0][251][3]: _Declaration -> [783][_Module]< "module" ( NAME ";" { _UsingPath } { _Declaration @ } ) >  ||
 || [PREDECESSORS 7-7]: [7]                                                                                   ||
 || [SUCCESORS 9-9]: [9]                                                                                      ||
 ++===========================================================================================================++
@@ -136,14 +127,14 @@
 [0]
 ++===========================================================================================================++
 || [9]: {ASSIGN} =                                                                                           ||
-|| [692][_EnumItemA]< { _Attribute } NAME "=" @ INTEGER "," >                                                ||
+|| [668][_EnumItem]< { _Attribute } NAME "=" @ ( INTEGER ) "," >                                             ||
 || [AST-INSTRUCTIONS]:                                                                                       ||
+||   + Token(2)                                                                                              ||
 || [RETURN STACK]:                                                                                           ||
-||   [4][226][7]: _EnumItemA -> [709][_Enum]< "enum" NAME "{" _EnumItemA @ { _EnumItemA } "}" >              ||
-||   [3][54][3]: _Enum -> [784][_DeclarationCandidates]<< !_Enum @ >>                                        ||
-||   [2][47][3]: _DeclarationCandidates -> [795][_Declaration]<< { _Attribute } !_DeclarationCandidates @ >> ||
-||   [1][253][3]: _Declaration -> [815][_ModuleBody]NAME ";" { _UsingPath } { _Declaration @ }               ||
-||   [0][258][1]: _ModuleBody -> [820][_Module]< "module" _ModuleBody @ >                                    ||
+||   [3][229][7]: _EnumItem -> [684][_Enum]< "enum" NAME "{" _EnumItem @ { _EnumItem } "}" >                 ||
+||   [2][49][3]: _Enum -> [752][_DeclarationCandidates]<! !_Enum @ !>                                        ||
+||   [1][43][3]: _DeclarationCandidates -> [763][_Declaration]<! { _Attribute } !_DeclarationCandidates @ !> ||
+||   [0][251][3]: _Declaration -> [783][_Module]< "module" ( NAME ";" { _UsingPath } { _Declaration @ } ) >  ||
 || [PREDECESSORS 8-8]: [8]                                                                                   ||
 || [SUCCESORS 10-10]: [10]                                                                                   ||
 ++===========================================================================================================++
@@ -154,16 +145,14 @@
 [0]
 ++===========================================================================================================++
 || [10]: {INTEGER} 0                                                                                         ||
-|| [694][_EnumItemA]< { _Attribute } NAME "=" INTEGER @ "," >                                                ||
+|| [667][_EnumItem]< { _Attribute } NAME "=" ( INTEGER @ ) "," >                                             ||
 || [AST-INSTRUCTIONS]:                                                                                       ||
-||   + Token()                                                                                               ||
-||   + Field(EnumItem::number)                                                                               ||
+||   + Token(3)                                                                                              ||
 || [RETURN STACK]:                                                                                           ||
-||   [4][226][7]: _EnumItemA -> [709][_Enum]< "enum" NAME "{" _EnumItemA @ { _EnumItemA } "}" >              ||
-||   [3][54][3]: _Enum -> [784][_DeclarationCandidates]<< !_Enum @ >>                                        ||
-||   [2][47][3]: _DeclarationCandidates -> [795][_Declaration]<< { _Attribute } !_DeclarationCandidates @ >> ||
-||   [1][253][3]: _Declaration -> [815][_ModuleBody]NAME ";" { _UsingPath } { _Declaration @ }               ||
-||   [0][258][1]: _ModuleBody -> [820][_Module]< "module" _ModuleBody @ >                                    ||
+||   [3][229][7]: _EnumItem -> [684][_Enum]< "enum" NAME "{" _EnumItem @ { _EnumItem } "}" >                 ||
+||   [2][49][3]: _Enum -> [752][_DeclarationCandidates]<! !_Enum @ !>                                        ||
+||   [1][43][3]: _DeclarationCandidates -> [763][_Declaration]<! { _Attribute } !_DeclarationCandidates @ !> ||
+||   [0][251][3]: _Declaration -> [783][_Module]< "module" ( NAME ";" { _UsingPath } { _Declaration @ } ) >  ||
 || [PREDECESSORS 9-9]: [9]                                                                                   ||
 || [SUCCESORS 11-11]: [11]                                                                                   ||
 ++===========================================================================================================++
@@ -174,14 +163,15 @@
 [0]
 ++===========================================================================================================++
 || [11]: {COMMA} ,                                                                                           ||
-|| [693][_EnumItemA]< { _Attribute } NAME "=" INTEGER "," @ >                                                ||
+|| [666][_EnumItem]< { _Attribute } NAME "=" ( INTEGER ) "," @ >                                             ||
 || [AST-INSTRUCTIONS]:                                                                                       ||
+||   + EnumItem(0, 4)                                                                                        ||
+||   + Token(5)                                                                                              ||
 || [RETURN STACK]:                                                                                           ||
-||   [4][226][7]: _EnumItemA -> [709][_Enum]< "enum" NAME "{" _EnumItemA @ { _EnumItemA } "}" >              ||
-||   [3][54][3]: _Enum -> [784][_DeclarationCandidates]<< !_Enum @ >>                                        ||
-||   [2][47][3]: _DeclarationCandidates -> [795][_Declaration]<< { _Attribute } !_DeclarationCandidates @ >> ||
-||   [1][253][3]: _Declaration -> [815][_ModuleBody]NAME ";" { _UsingPath } { _Declaration @ }               ||
-||   [0][258][1]: _ModuleBody -> [820][_Module]< "module" _ModuleBody @ >                                    ||
+||   [3][229][7]: _EnumItem -> [684][_Enum]< "enum" NAME "{" _EnumItem @ { _EnumItem } "}" >                 ||
+||   [2][49][3]: _Enum -> [752][_DeclarationCandidates]<! !_Enum @ !>                                        ||
+||   [1][43][3]: _DeclarationCandidates -> [763][_Declaration]<! { _Attribute } !_DeclarationCandidates @ !> ||
+||   [0][251][3]: _Declaration -> [783][_Module]< "module" ( NAME ";" { _UsingPath } { _Declaration @ } ) >  ||
 || [PREDECESSORS 10-10]: [10]                                                                                ||
 || [SUCCESORS 12-12]: [12]                                                                                   ||
 ++===========================================================================================================++
@@ -190,17 +180,19 @@
 |
 +-----------------------------------------------------------------------------------------------------------+
 | [12]: <Ending>                                                                                            |
-| [709][_Enum]< "enum" NAME "{" _EnumItemA @ { _EnumItemA } "}" >                                           |
+| [684][_Enum]< "enum" NAME "{" _EnumItem @ { _EnumItem } "}" >                                             |
 | [AST-INSTRUCTIONS]:                                                                                       |
-|   - EnumItem(0)                                                                                           |
-|   - Field(EnumItem::kind)                                                                                 |
-|   - EndObject()                                                                                           |
-|   > Field(EnumDeclaration::items)                                                                         |
+|   + CreateObject(EnumItem)                                                                                |
+|   + Field(EnumItem::attributes, 0)                                                                        |
+|   + Field(EnumItem::name, 1)                                                                              |
+|   + Field(EnumItem::number, 3)                                                                            |
+|   + Field(EnumItem::kind, 4)                                                                              |
+|   + StackEnd()                                                                                            |
+|   > StackSlot(3)                                                                                          |
 | [RETURN STACK]:                                                                                           |
-|   [3][54][3]: _Enum -> [784][_DeclarationCandidates]<< !_Enum @ >>                                        |
-|   [2][47][3]: _DeclarationCandidates -> [795][_Declaration]<< { _Attribute } !_DeclarationCandidates @ >> |
-|   [1][253][3]: _Declaration -> [815][_ModuleBody]NAME ";" { _UsingPath } { _Declaration @ }               |
-|   [0][258][1]: _ModuleBody -> [820][_Module]< "module" _ModuleBody @ >                                    |
+|   [2][49][3]: _Enum -> [752][_DeclarationCandidates]<! !_Enum @ !>                                        |
+|   [1][43][3]: _DeclarationCandidates -> [763][_Declaration]<! { _Attribute } !_DeclarationCandidates @ !> |
+|   [0][251][3]: _Declaration -> [783][_Module]< "module" ( NAME ";" { _UsingPath } { _Declaration @ } ) >  |
 | [PREDECESSORS 11-11]: [11]                                                                                |
 | [SUCCESORS 13-13]: [13]                                                                                   |
 +-----------------------------------------------------------------------------------------------------------+
@@ -211,17 +203,15 @@
 [0]
 ++===========================================================================================================++
 || [13]: {NAME} Summer                                                                                       ||
-|| [695][_EnumItemA]< { _Attribute } NAME @ "=" INTEGER "," >                                                ||
+|| [669][_EnumItem]< { _Attribute } NAME @ "=" ( INTEGER ) "," >                                             ||
 || [AST-INSTRUCTIONS]:                                                                                       ||
-||   - BeginObject(EnumItem)                                                                                 ||
-||   + Token()                                                                                               ||
-||   + Field(EnumItem::name)                                                                                 ||
+||   + StackBegin()                                                                                          ||
+||   + Token(1)                                                                                              ||
 || [RETURN STACK]:                                                                                           ||
-||   [5][227][12]: _EnumItemA -> [710][_Enum]< "enum" NAME "{" _EnumItemA { _EnumItemA @ } "}" >             ||
-||   [3][54][3]: _Enum -> [784][_DeclarationCandidates]<< !_Enum @ >>                                        ||
-||   [2][47][3]: _DeclarationCandidates -> [795][_Declaration]<< { _Attribute } !_DeclarationCandidates @ >> ||
-||   [1][253][3]: _Declaration -> [815][_ModuleBody]NAME ";" { _UsingPath } { _Declaration @ }               ||
-||   [0][258][1]: _ModuleBody -> [820][_Module]< "module" _ModuleBody @ >                                    ||
+||   [4][230][12]: _EnumItem -> [685][_Enum]< "enum" NAME "{" _EnumItem { _EnumItem @ } "}" >                ||
+||   [2][49][3]: _Enum -> [752][_DeclarationCandidates]<! !_Enum @ !>                                        ||
+||   [1][43][3]: _DeclarationCandidates -> [763][_Declaration]<! { _Attribute } !_DeclarationCandidates @ !> ||
+||   [0][251][3]: _Declaration -> [783][_Module]< "module" ( NAME ";" { _UsingPath } { _Declaration @ } ) >  ||
 || [PREDECESSORS 12-12]: [12]                                                                                ||
 || [SUCCESORS 14-14]: [14]                                                                                   ||
 ++===========================================================================================================++
@@ -232,14 +222,14 @@
 [0]
 ++===========================================================================================================++
 || [14]: {ASSIGN} =                                                                                          ||
-|| [692][_EnumItemA]< { _Attribute } NAME "=" @ INTEGER "," >                                                ||
+|| [668][_EnumItem]< { _Attribute } NAME "=" @ ( INTEGER ) "," >                                             ||
 || [AST-INSTRUCTIONS]:                                                                                       ||
+||   + Token(2)                                                                                              ||
 || [RETURN STACK]:                                                                                           ||
-||   [5][227][12]: _EnumItemA -> [710][_Enum]< "enum" NAME "{" _EnumItemA { _EnumItemA @ } "}" >             ||
-||   [3][54][3]: _Enum -> [784][_DeclarationCandidates]<< !_Enum @ >>                                        ||
-||   [2][47][3]: _DeclarationCandidates -> [795][_Declaration]<< { _Attribute } !_DeclarationCandidates @ >> ||
-||   [1][253][3]: _Declaration -> [815][_ModuleBody]NAME ";" { _UsingPath } { _Declaration @ }               ||
-||   [0][258][1]: _ModuleBody -> [820][_Module]< "module" _ModuleBody @ >                                    ||
+||   [4][230][12]: _EnumItem -> [685][_Enum]< "enum" NAME "{" _EnumItem { _EnumItem @ } "}" >                ||
+||   [2][49][3]: _Enum -> [752][_DeclarationCandidates]<! !_Enum @ !>                                        ||
+||   [1][43][3]: _DeclarationCandidates -> [763][_Declaration]<! { _Attribute } !_DeclarationCandidates @ !> ||
+||   [0][251][3]: _Declaration -> [783][_Module]< "module" ( NAME ";" { _UsingPath } { _Declaration @ } ) >  ||
 || [PREDECESSORS 13-13]: [13]                                                                                ||
 || [SUCCESORS 15-15]: [15]                                                                                   ||
 ++===========================================================================================================++
@@ -250,16 +240,14 @@
 [0]
 ++===========================================================================================================++
 || [15]: {INTEGER} 1                                                                                         ||
-|| [694][_EnumItemA]< { _Attribute } NAME "=" INTEGER @ "," >                                                ||
+|| [667][_EnumItem]< { _Attribute } NAME "=" ( INTEGER @ ) "," >                                             ||
 || [AST-INSTRUCTIONS]:                                                                                       ||
-||   + Token()                                                                                               ||
-||   + Field(EnumItem::number)                                                                               ||
+||   + Token(3)                                                                                              ||
 || [RETURN STACK]:                                                                                           ||
-||   [5][227][12]: _EnumItemA -> [710][_Enum]< "enum" NAME "{" _EnumItemA { _EnumItemA @ } "}" >             ||
-||   [3][54][3]: _Enum -> [784][_DeclarationCandidates]<< !_Enum @ >>                                        ||
-||   [2][47][3]: _DeclarationCandidates -> [795][_Declaration]<< { _Attribute } !_DeclarationCandidates @ >> ||
-||   [1][253][3]: _Declaration -> [815][_ModuleBody]NAME ";" { _UsingPath } { _Declaration @ }               ||
-||   [0][258][1]: _ModuleBody -> [820][_Module]< "module" _ModuleBody @ >                                    ||
+||   [4][230][12]: _EnumItem -> [685][_Enum]< "enum" NAME "{" _EnumItem { _EnumItem @ } "}" >                ||
+||   [2][49][3]: _Enum -> [752][_DeclarationCandidates]<! !_Enum @ !>                                        ||
+||   [1][43][3]: _DeclarationCandidates -> [763][_Declaration]<! { _Attribute } !_DeclarationCandidates @ !> ||
+||   [0][251][3]: _Declaration -> [783][_Module]< "module" ( NAME ";" { _UsingPath } { _Declaration @ } ) >  ||
 || [PREDECESSORS 14-14]: [14]                                                                                ||
 || [SUCCESORS 16-16]: [16]                                                                                   ||
 ++===========================================================================================================++
@@ -270,14 +258,15 @@
 [0]
 ++===========================================================================================================++
 || [16]: {COMMA} ,                                                                                           ||
-|| [693][_EnumItemA]< { _Attribute } NAME "=" INTEGER "," @ >                                                ||
+|| [666][_EnumItem]< { _Attribute } NAME "=" ( INTEGER ) "," @ >                                             ||
 || [AST-INSTRUCTIONS]:                                                                                       ||
+||   + EnumItem(0, 4)                                                                                        ||
+||   + Token(5)                                                                                              ||
 || [RETURN STACK]:                                                                                           ||
-||   [5][227][12]: _EnumItemA -> [710][_Enum]< "enum" NAME "{" _EnumItemA { _EnumItemA @ } "}" >             ||
-||   [3][54][3]: _Enum -> [784][_DeclarationCandidates]<< !_Enum @ >>                                        ||
-||   [2][47][3]: _DeclarationCandidates -> [795][_Declaration]<< { _Attribute } !_DeclarationCandidates @ >> ||
-||   [1][253][3]: _Declaration -> [815][_ModuleBody]NAME ";" { _UsingPath } { _Declaration @ }               ||
-||   [0][258][1]: _ModuleBody -> [820][_Module]< "module" _ModuleBody @ >                                    ||
+||   [4][230][12]: _EnumItem -> [685][_Enum]< "enum" NAME "{" _EnumItem { _EnumItem @ } "}" >                ||
+||   [2][49][3]: _Enum -> [752][_DeclarationCandidates]<! !_Enum @ !>                                        ||
+||   [1][43][3]: _DeclarationCandidates -> [763][_Declaration]<! { _Attribute } !_DeclarationCandidates @ !> ||
+||   [0][251][3]: _Declaration -> [783][_Module]< "module" ( NAME ";" { _UsingPath } { _Declaration @ } ) >  ||
 || [PREDECESSORS 15-15]: [15]                                                                                ||
 || [SUCCESORS 17-17]: [17]                                                                                   ||
 ++===========================================================================================================++
@@ -286,17 +275,19 @@
 |
 +-----------------------------------------------------------------------------------------------------------+
 | [17]: <Ending>                                                                                            |
-| [710][_Enum]< "enum" NAME "{" _EnumItemA { _EnumItemA @ } "}" >                                           |
+| [685][_Enum]< "enum" NAME "{" _EnumItem { _EnumItem @ } "}" >                                             |
 | [AST-INSTRUCTIONS]:                                                                                       |
-|   - EnumItem(0)                                                                                           |
-|   - Field(EnumItem::kind)                                                                                 |
-|   - EndObject()                                                                                           |
-|   > Field(EnumDeclaration::items)                                                                         |
+|   + CreateObject(EnumItem)                                                                                |
+|   + Field(EnumItem::attributes, 0)                                                                        |
+|   + Field(EnumItem::name, 1)                                                                              |
+|   + Field(EnumItem::number, 3)                                                                            |
+|   + Field(EnumItem::kind, 4)                                                                              |
+|   + StackEnd()                                                                                            |
+|   > StackSlot(4)                                                                                          |
 | [RETURN STACK]:                                                                                           |
-|   [3][54][3]: _Enum -> [784][_DeclarationCandidates]<< !_Enum @ >>                                        |
-|   [2][47][3]: _DeclarationCandidates -> [795][_Declaration]<< { _Attribute } !_DeclarationCandidates @ >> |
-|   [1][253][3]: _Declaration -> [815][_ModuleBody]NAME ";" { _UsingPath } { _Declaration @ }               |
-|   [0][258][1]: _ModuleBody -> [820][_Module]< "module" _ModuleBody @ >                                    |
+|   [2][49][3]: _Enum -> [752][_DeclarationCandidates]<! !_Enum @ !>                                        |
+|   [1][43][3]: _DeclarationCandidates -> [763][_Declaration]<! { _Attribute } !_DeclarationCandidates @ !> |
+|   [0][251][3]: _Declaration -> [783][_Module]< "module" ( NAME ";" { _UsingPath } { _Declaration @ } ) >  |
 | [PREDECESSORS 16-16]: [16]                                                                                |
 | [SUCCESORS 18-18]: [18]                                                                                   |
 +-----------------------------------------------------------------------------------------------------------+
@@ -307,17 +298,15 @@
 [0]
 ++===========================================================================================================++
 || [18]: {NAME} Autumn                                                                                       ||
-|| [695][_EnumItemA]< { _Attribute } NAME @ "=" INTEGER "," >                                                ||
+|| [669][_EnumItem]< { _Attribute } NAME @ "=" ( INTEGER ) "," >                                             ||
 || [AST-INSTRUCTIONS]:                                                                                       ||
-||   - BeginObject(EnumItem)                                                                                 ||
-||   + Token()                                                                                               ||
-||   + Field(EnumItem::name)                                                                                 ||
+||   + StackBegin()                                                                                          ||
+||   + Token(1)                                                                                              ||
 || [RETURN STACK]:                                                                                           ||
-||   [6][228][17]: _EnumItemA -> [710][_Enum]< "enum" NAME "{" _EnumItemA { _EnumItemA @ } "}" >             ||
-||   [3][54][3]: _Enum -> [784][_DeclarationCandidates]<< !_Enum @ >>                                        ||
-||   [2][47][3]: _DeclarationCandidates -> [795][_Declaration]<< { _Attribute } !_DeclarationCandidates @ >> ||
-||   [1][253][3]: _Declaration -> [815][_ModuleBody]NAME ";" { _UsingPath } { _Declaration @ }               ||
-||   [0][258][1]: _ModuleBody -> [820][_Module]< "module" _ModuleBody @ >                                    ||
+||   [5][231][17]: _EnumItem -> [685][_Enum]< "enum" NAME "{" _EnumItem { _EnumItem @ } "}" >                ||
+||   [2][49][3]: _Enum -> [752][_DeclarationCandidates]<! !_Enum @ !>                                        ||
+||   [1][43][3]: _DeclarationCandidates -> [763][_Declaration]<! { _Attribute } !_DeclarationCandidates @ !> ||
+||   [0][251][3]: _Declaration -> [783][_Module]< "module" ( NAME ";" { _UsingPath } { _Declaration @ } ) >  ||
 || [PREDECESSORS 17-17]: [17]                                                                                ||
 || [SUCCESORS 19-19]: [19]                                                                                   ||
 ++===========================================================================================================++
@@ -328,14 +317,14 @@
 [0]
 ++===========================================================================================================++
 || [19]: {ASSIGN} =                                                                                          ||
-|| [692][_EnumItemA]< { _Attribute } NAME "=" @ INTEGER "," >                                                ||
+|| [668][_EnumItem]< { _Attribute } NAME "=" @ ( INTEGER ) "," >                                             ||
 || [AST-INSTRUCTIONS]:                                                                                       ||
+||   + Token(2)                                                                                              ||
 || [RETURN STACK]:                                                                                           ||
-||   [6][228][17]: _EnumItemA -> [710][_Enum]< "enum" NAME "{" _EnumItemA { _EnumItemA @ } "}" >             ||
-||   [3][54][3]: _Enum -> [784][_DeclarationCandidates]<< !_Enum @ >>                                        ||
-||   [2][47][3]: _DeclarationCandidates -> [795][_Declaration]<< { _Attribute } !_DeclarationCandidates @ >> ||
-||   [1][253][3]: _Declaration -> [815][_ModuleBody]NAME ";" { _UsingPath } { _Declaration @ }               ||
-||   [0][258][1]: _ModuleBody -> [820][_Module]< "module" _ModuleBody @ >                                    ||
+||   [5][231][17]: _EnumItem -> [685][_Enum]< "enum" NAME "{" _EnumItem { _EnumItem @ } "}" >                ||
+||   [2][49][3]: _Enum -> [752][_DeclarationCandidates]<! !_Enum @ !>                                        ||
+||   [1][43][3]: _DeclarationCandidates -> [763][_Declaration]<! { _Attribute } !_DeclarationCandidates @ !> ||
+||   [0][251][3]: _Declaration -> [783][_Module]< "module" ( NAME ";" { _UsingPath } { _Declaration @ } ) >  ||
 || [PREDECESSORS 18-18]: [18]                                                                                ||
 || [SUCCESORS 20-20]: [20]                                                                                   ||
 ++===========================================================================================================++
@@ -346,16 +335,14 @@
 [0]
 ++===========================================================================================================++
 || [20]: {INTEGER} 2                                                                                         ||
-|| [694][_EnumItemA]< { _Attribute } NAME "=" INTEGER @ "," >                                                ||
+|| [667][_EnumItem]< { _Attribute } NAME "=" ( INTEGER @ ) "," >                                             ||
 || [AST-INSTRUCTIONS]:                                                                                       ||
-||   + Token()                                                                                               ||
-||   + Field(EnumItem::number)                                                                               ||
+||   + Token(3)                                                                                              ||
 || [RETURN STACK]:                                                                                           ||
-||   [6][228][17]: _EnumItemA -> [710][_Enum]< "enum" NAME "{" _EnumItemA { _EnumItemA @ } "}" >             ||
-||   [3][54][3]: _Enum -> [784][_DeclarationCandidates]<< !_Enum @ >>                                        ||
-||   [2][47][3]: _DeclarationCandidates -> [795][_Declaration]<< { _Attribute } !_DeclarationCandidates @ >> ||
-||   [1][253][3]: _Declaration -> [815][_ModuleBody]NAME ";" { _UsingPath } { _Declaration @ }               ||
-||   [0][258][1]: _ModuleBody -> [820][_Module]< "module" _ModuleBody @ >                                    ||
+||   [5][231][17]: _EnumItem -> [685][_Enum]< "enum" NAME "{" _EnumItem { _EnumItem @ } "}" >                ||
+||   [2][49][3]: _Enum -> [752][_DeclarationCandidates]<! !_Enum @ !>                                        ||
+||   [1][43][3]: _DeclarationCandidates -> [763][_Declaration]<! { _Attribute } !_DeclarationCandidates @ !> ||
+||   [0][251][3]: _Declaration -> [783][_Module]< "module" ( NAME ";" { _UsingPath } { _Declaration @ } ) >  ||
 || [PREDECESSORS 19-19]: [19]                                                                                ||
 || [SUCCESORS 21-21]: [21]                                                                                   ||
 ++===========================================================================================================++
@@ -366,14 +353,15 @@
 [0]
 ++===========================================================================================================++
 || [21]: {COMMA} ,                                                                                           ||
-|| [693][_EnumItemA]< { _Attribute } NAME "=" INTEGER "," @ >                                                ||
+|| [666][_EnumItem]< { _Attribute } NAME "=" ( INTEGER ) "," @ >                                             ||
 || [AST-INSTRUCTIONS]:                                                                                       ||
+||   + EnumItem(0, 4)                                                                                        ||
+||   + Token(5)                                                                                              ||
 || [RETURN STACK]:                                                                                           ||
-||   [6][228][17]: _EnumItemA -> [710][_Enum]< "enum" NAME "{" _EnumItemA { _EnumItemA @ } "}" >             ||
-||   [3][54][3]: _Enum -> [784][_DeclarationCandidates]<< !_Enum @ >>                                        ||
-||   [2][47][3]: _DeclarationCandidates -> [795][_Declaration]<< { _Attribute } !_DeclarationCandidates @ >> ||
-||   [1][253][3]: _Declaration -> [815][_ModuleBody]NAME ";" { _UsingPath } { _Declaration @ }               ||
-||   [0][258][1]: _ModuleBody -> [820][_Module]< "module" _ModuleBody @ >                                    ||
+||   [5][231][17]: _EnumItem -> [685][_Enum]< "enum" NAME "{" _EnumItem { _EnumItem @ } "}" >                ||
+||   [2][49][3]: _Enum -> [752][_DeclarationCandidates]<! !_Enum @ !>                                        ||
+||   [1][43][3]: _DeclarationCandidates -> [763][_Declaration]<! { _Attribute } !_DeclarationCandidates @ !> ||
+||   [0][251][3]: _Declaration -> [783][_Module]< "module" ( NAME ";" { _UsingPath } { _Declaration @ } ) >  ||
 || [PREDECESSORS 20-20]: [20]                                                                                ||
 || [SUCCESORS 22-22]: [22]                                                                                   ||
 ++===========================================================================================================++
@@ -382,17 +370,19 @@
 |
 +-----------------------------------------------------------------------------------------------------------+
 | [22]: <Ending>                                                                                            |
-| [710][_Enum]< "enum" NAME "{" _EnumItemA { _EnumItemA @ } "}" >                                           |
+| [685][_Enum]< "enum" NAME "{" _EnumItem { _EnumItem @ } "}" >                                             |
 | [AST-INSTRUCTIONS]:                                                                                       |
-|   - EnumItem(0)                                                                                           |
-|   - Field(EnumItem::kind)                                                                                 |
-|   - EndObject()                                                                                           |
-|   > Field(EnumDeclaration::items)                                                                         |
+|   + CreateObject(EnumItem)                                                                                |
+|   + Field(EnumItem::attributes, 0)                                                                        |
+|   + Field(EnumItem::name, 1)                                                                              |
+|   + Field(EnumItem::number, 3)                                                                            |
+|   + Field(EnumItem::kind, 4)                                                                              |
+|   + StackEnd()                                                                                            |
+|   > StackSlot(4)                                                                                          |
 | [RETURN STACK]:                                                                                           |
-|   [3][54][3]: _Enum -> [784][_DeclarationCandidates]<< !_Enum @ >>                                        |
-|   [2][47][3]: _DeclarationCandidates -> [795][_Declaration]<< { _Attribute } !_DeclarationCandidates @ >> |
-|   [1][253][3]: _Declaration -> [815][_ModuleBody]NAME ";" { _UsingPath } { _Declaration @ }               |
-|   [0][258][1]: _ModuleBody -> [820][_Module]< "module" _ModuleBody @ >                                    |
+|   [2][49][3]: _Enum -> [752][_DeclarationCandidates]<! !_Enum @ !>                                        |
+|   [1][43][3]: _DeclarationCandidates -> [763][_Declaration]<! { _Attribute } !_DeclarationCandidates @ !> |
+|   [0][251][3]: _Declaration -> [783][_Module]< "module" ( NAME ";" { _UsingPath } { _Declaration @ } ) >  |
 | [PREDECESSORS 21-21]: [21]                                                                                |
 | [SUCCESORS 23-23]: [23]                                                                                   |
 +-----------------------------------------------------------------------------------------------------------+
@@ -403,17 +393,15 @@
 [0]
 ++===========================================================================================================++
 || [23]: {NAME} Winter                                                                                       ||
-|| [695][_EnumItemA]< { _Attribute } NAME @ "=" INTEGER "," >                                                ||
+|| [669][_EnumItem]< { _Attribute } NAME @ "=" ( INTEGER ) "," >                                             ||
 || [AST-INSTRUCTIONS]:                                                                                       ||
-||   - BeginObject(EnumItem)                                                                                 ||
-||   + Token()                                                                                               ||
-||   + Field(EnumItem::name)                                                                                 ||
+||   + StackBegin()                                                                                          ||
+||   + Token(1)                                                                                              ||
 || [RETURN STACK]:                                                                                           ||
-||   [7][228][22]: _EnumItemA -> [710][_Enum]< "enum" NAME "{" _EnumItemA { _EnumItemA @ } "}" >             ||
-||   [3][54][3]: _Enum -> [784][_DeclarationCandidates]<< !_Enum @ >>                                        ||
-||   [2][47][3]: _DeclarationCandidates -> [795][_Declaration]<< { _Attribute } !_DeclarationCandidates @ >> ||
-||   [1][253][3]: _Declaration -> [815][_ModuleBody]NAME ";" { _UsingPath } { _Declaration @ }               ||
-||   [0][258][1]: _ModuleBody -> [820][_Module]< "module" _ModuleBody @ >                                    ||
+||   [6][231][22]: _EnumItem -> [685][_Enum]< "enum" NAME "{" _EnumItem { _EnumItem @ } "}" >                ||
+||   [2][49][3]: _Enum -> [752][_DeclarationCandidates]<! !_Enum @ !>                                        ||
+||   [1][43][3]: _DeclarationCandidates -> [763][_Declaration]<! { _Attribute } !_DeclarationCandidates @ !> ||
+||   [0][251][3]: _Declaration -> [783][_Module]< "module" ( NAME ";" { _UsingPath } { _Declaration @ } ) >  ||
 || [PREDECESSORS 22-22]: [22]                                                                                ||
 || [SUCCESORS 24-24]: [24]                                                                                   ||
 ++===========================================================================================================++
@@ -424,14 +412,14 @@
 [0]
 ++===========================================================================================================++
 || [24]: {ASSIGN} =                                                                                          ||
-|| [692][_EnumItemA]< { _Attribute } NAME "=" @ INTEGER "," >                                                ||
+|| [668][_EnumItem]< { _Attribute } NAME "=" @ ( INTEGER ) "," >                                             ||
 || [AST-INSTRUCTIONS]:                                                                                       ||
+||   + Token(2)                                                                                              ||
 || [RETURN STACK]:                                                                                           ||
-||   [7][228][22]: _EnumItemA -> [710][_Enum]< "enum" NAME "{" _EnumItemA { _EnumItemA @ } "}" >             ||
-||   [3][54][3]: _Enum -> [784][_DeclarationCandidates]<< !_Enum @ >>                                        ||
-||   [2][47][3]: _DeclarationCandidates -> [795][_Declaration]<< { _Attribute } !_DeclarationCandidates @ >> ||
-||   [1][253][3]: _Declaration -> [815][_ModuleBody]NAME ";" { _UsingPath } { _Declaration @ }               ||
-||   [0][258][1]: _ModuleBody -> [820][_Module]< "module" _ModuleBody @ >                                    ||
+||   [6][231][22]: _EnumItem -> [685][_Enum]< "enum" NAME "{" _EnumItem { _EnumItem @ } "}" >                ||
+||   [2][49][3]: _Enum -> [752][_DeclarationCandidates]<! !_Enum @ !>                                        ||
+||   [1][43][3]: _DeclarationCandidates -> [763][_Declaration]<! { _Attribute } !_DeclarationCandidates @ !> ||
+||   [0][251][3]: _Declaration -> [783][_Module]< "module" ( NAME ";" { _UsingPath } { _Declaration @ } ) >  ||
 || [PREDECESSORS 23-23]: [23]                                                                                ||
 || [SUCCESORS 25-25]: [25]                                                                                   ||
 ++===========================================================================================================++
@@ -442,16 +430,14 @@
 [0]
 ++===========================================================================================================++
 || [25]: {INTEGER} 4                                                                                         ||
-|| [694][_EnumItemA]< { _Attribute } NAME "=" INTEGER @ "," >                                                ||
+|| [667][_EnumItem]< { _Attribute } NAME "=" ( INTEGER @ ) "," >                                             ||
 || [AST-INSTRUCTIONS]:                                                                                       ||
-||   + Token()                                                                                               ||
-||   + Field(EnumItem::number)                                                                               ||
+||   + Token(3)                                                                                              ||
 || [RETURN STACK]:                                                                                           ||
-||   [7][228][22]: _EnumItemA -> [710][_Enum]< "enum" NAME "{" _EnumItemA { _EnumItemA @ } "}" >             ||
-||   [3][54][3]: _Enum -> [784][_DeclarationCandidates]<< !_Enum @ >>                                        ||
-||   [2][47][3]: _DeclarationCandidates -> [795][_Declaration]<< { _Attribute } !_DeclarationCandidates @ >> ||
-||   [1][253][3]: _Declaration -> [815][_ModuleBody]NAME ";" { _UsingPath } { _Declaration @ }               ||
-||   [0][258][1]: _ModuleBody -> [820][_Module]< "module" _ModuleBody @ >                                    ||
+||   [6][231][22]: _EnumItem -> [685][_Enum]< "enum" NAME "{" _EnumItem { _EnumItem @ } "}" >                ||
+||   [2][49][3]: _Enum -> [752][_DeclarationCandidates]<! !_Enum @ !>                                        ||
+||   [1][43][3]: _DeclarationCandidates -> [763][_Declaration]<! { _Attribute } !_DeclarationCandidates @ !> ||
+||   [0][251][3]: _Declaration -> [783][_Module]< "module" ( NAME ";" { _UsingPath } { _Declaration @ } ) >  ||
 || [PREDECESSORS 24-24]: [24]                                                                                ||
 || [SUCCESORS 26-26]: [26]                                                                                   ||
 ++===========================================================================================================++
@@ -462,14 +448,15 @@
 [0]
 ++===========================================================================================================++
 || [26]: {COMMA} ,                                                                                           ||
-|| [693][_EnumItemA]< { _Attribute } NAME "=" INTEGER "," @ >                                                ||
+|| [666][_EnumItem]< { _Attribute } NAME "=" ( INTEGER ) "," @ >                                             ||
 || [AST-INSTRUCTIONS]:                                                                                       ||
+||   + EnumItem(0, 4)                                                                                        ||
+||   + Token(5)                                                                                              ||
 || [RETURN STACK]:                                                                                           ||
-||   [7][228][22]: _EnumItemA -> [710][_Enum]< "enum" NAME "{" _EnumItemA { _EnumItemA @ } "}" >             ||
-||   [3][54][3]: _Enum -> [784][_DeclarationCandidates]<< !_Enum @ >>                                        ||
-||   [2][47][3]: _DeclarationCandidates -> [795][_Declaration]<< { _Attribute } !_DeclarationCandidates @ >> ||
-||   [1][253][3]: _Declaration -> [815][_ModuleBody]NAME ";" { _UsingPath } { _Declaration @ }               ||
-||   [0][258][1]: _ModuleBody -> [820][_Module]< "module" _ModuleBody @ >                                    ||
+||   [6][231][22]: _EnumItem -> [685][_Enum]< "enum" NAME "{" _EnumItem { _EnumItem @ } "}" >                ||
+||   [2][49][3]: _Enum -> [752][_DeclarationCandidates]<! !_Enum @ !>                                        ||
+||   [1][43][3]: _DeclarationCandidates -> [763][_Declaration]<! { _Attribute } !_DeclarationCandidates @ !> ||
+||   [0][251][3]: _Declaration -> [783][_Module]< "module" ( NAME ";" { _UsingPath } { _Declaration @ } ) >  ||
 || [PREDECESSORS 25-25]: [25]                                                                                ||
 || [SUCCESORS 27-27]: [27]                                                                                   ||
 ++===========================================================================================================++
@@ -478,17 +465,19 @@
 |
 +-----------------------------------------------------------------------------------------------------------+
 | [27]: <Ending>                                                                                            |
-| [710][_Enum]< "enum" NAME "{" _EnumItemA { _EnumItemA @ } "}" >                                           |
+| [685][_Enum]< "enum" NAME "{" _EnumItem { _EnumItem @ } "}" >                                             |
 | [AST-INSTRUCTIONS]:                                                                                       |
-|   - EnumItem(0)                                                                                           |
-|   - Field(EnumItem::kind)                                                                                 |
-|   - EndObject()                                                                                           |
-|   > Field(EnumDeclaration::items)                                                                         |
+|   + CreateObject(EnumItem)                                                                                |
+|   + Field(EnumItem::attributes, 0)                                                                        |
+|   + Field(EnumItem::name, 1)                                                                              |
+|   + Field(EnumItem::number, 3)                                                                            |
+|   + Field(EnumItem::kind, 4)                                                                              |
+|   + StackEnd()                                                                                            |
+|   > StackSlot(4)                                                                                          |
 | [RETURN STACK]:                                                                                           |
-|   [3][54][3]: _Enum -> [784][_DeclarationCandidates]<< !_Enum @ >>                                        |
-|   [2][47][3]: _DeclarationCandidates -> [795][_Declaration]<< { _Attribute } !_DeclarationCandidates @ >> |
-|   [1][253][3]: _Declaration -> [815][_ModuleBody]NAME ";" { _UsingPath } { _Declaration @ }               |
-|   [0][258][1]: _ModuleBody -> [820][_Module]< "module" _ModuleBody @ >                                    |
+|   [2][49][3]: _Enum -> [752][_DeclarationCandidates]<! !_Enum @ !>                                        |
+|   [1][43][3]: _DeclarationCandidates -> [763][_Declaration]<! { _Attribute } !_DeclarationCandidates @ !> |
+|   [0][251][3]: _Declaration -> [783][_Module]< "module" ( NAME ";" { _UsingPath } { _Declaration @ } ) >  |
 | [PREDECESSORS 26-26]: [26]                                                                                |
 | [SUCCESORS 28-28]: [28]                                                                                   |
 +-----------------------------------------------------------------------------------------------------------+
@@ -499,13 +488,13 @@
 [0]
 ++===========================================================================================================++
 || [28]: {CLOSE_BRACE} }                                                                                     ||
-|| [711][_Enum]< "enum" NAME "{" _EnumItemA { _EnumItemA } "}" @ >                                           ||
+|| [686][_Enum]< "enum" NAME "{" _EnumItem { _EnumItem } "}" @ >                                             ||
 || [AST-INSTRUCTIONS]:                                                                                       ||
+||   + Token(5)                                                                                              ||
 || [RETURN STACK]:                                                                                           ||
-||   [3][54][3]: _Enum -> [784][_DeclarationCandidates]<< !_Enum @ >>                                        ||
-||   [2][47][3]: _DeclarationCandidates -> [795][_Declaration]<< { _Attribute } !_DeclarationCandidates @ >> ||
-||   [1][253][3]: _Declaration -> [815][_ModuleBody]NAME ";" { _UsingPath } { _Declaration @ }               ||
-||   [0][258][1]: _ModuleBody -> [820][_Module]< "module" _ModuleBody @ >                                    ||
+||   [2][49][3]: _Enum -> [752][_DeclarationCandidates]<! !_Enum @ !>                                        ||
+||   [1][43][3]: _DeclarationCandidates -> [763][_Declaration]<! { _Attribute } !_DeclarationCandidates @ !> ||
+||   [0][251][3]: _Declaration -> [783][_Module]< "module" ( NAME ";" { _UsingPath } { _Declaration @ } ) >  ||
 || [PREDECESSORS 27-27]: [27]                                                                                ||
 || [SUCCESORS 29-29]: [29]                                                                                   ||
 ++===========================================================================================================++
@@ -514,67 +503,62 @@
 |
 +-----------------------------------------------------------------------------------------------------------+
 | [29]: <Ending>                                                                                            |
-| [784][_DeclarationCandidates]<< !_Enum @ >>                                                               |
+| [752][_DeclarationCandidates]<! !_Enum @ !>                                                               |
 | [AST-INSTRUCTIONS]:                                                                                       |
-|   - EnumItem(0)                                                                                           |
-|   - Field(EnumDeclaration::kind)                                                                          |
-|   - EndObject()                                                                                           |
+|   + EnumItem(0, 6)                                                                                        |
+|   + CreateObject(EnumDeclaration)                                                                         |
+|   + Field(Declaration::name, 1)                                                                           |
+|   + Field(EnumDeclaration::items, 3)                                                                      |
+|   + Field(EnumDeclaration::items, 4)                                                                      |
+|   + Field(EnumDeclaration::kind, 6)                                                                       |
+|   + StackEnd()                                                                                            |
+|   > StackBegin()                                                                                          |
 | [RETURN STACK]:                                                                                           |
-|   [2][47][3]: _DeclarationCandidates -> [795][_Declaration]<< { _Attribute } !_DeclarationCandidates @ >> |
-|   [1][253][3]: _Declaration -> [815][_ModuleBody]NAME ";" { _UsingPath } { _Declaration @ }               |
-|   [0][258][1]: _ModuleBody -> [820][_Module]< "module" _ModuleBody @ >                                    |
+|   [1][43][3]: _DeclarationCandidates -> [763][_Declaration]<! { _Attribute } !_DeclarationCandidates @ !> |
+|   [0][251][3]: _Declaration -> [783][_Module]< "module" ( NAME ";" { _UsingPath } { _Declaration @ } ) >  |
 | [PREDECESSORS 28-28]: [28]                                                                                |
 | [SUCCESORS 30-30]: [30]                                                                                   |
 +-----------------------------------------------------------------------------------------------------------+
 |
 +
 |
-+---------------------------------------------------------------------------------------------+
-| [30]: <Ending>                                                                              |
-| [795][_Declaration]<< { _Attribute } !_DeclarationCandidates @ >>                           |
-| [AST-INSTRUCTIONS]:                                                                         |
-|   - ReopenObject()                                                                          |
-|   - EndObject()                                                                             |
-|   > ReopenObject()                                                                          |
-| [RETURN STACK]:                                                                             |
-|   [1][253][3]: _Declaration -> [815][_ModuleBody]NAME ";" { _UsingPath } { _Declaration @ } |
-|   [0][258][1]: _ModuleBody -> [820][_Module]< "module" _ModuleBody @ >                      |
-| [PREDECESSORS 29-29]: [29]                                                                  |
-| [SUCCESORS 31-31]: [31]                                                                     |
-+---------------------------------------------------------------------------------------------+
++----------------------------------------------------------------------------------------------------------+
+| [30]: <Ending>                                                                                           |
+| [763][_Declaration]<! { _Attribute } !_DeclarationCandidates @ !>                                        |
+| [AST-INSTRUCTIONS]:                                                                                      |
+|   + StackEnd()                                                                                           |
+|   > StackBegin()                                                                                         |
+| [RETURN STACK]:                                                                                          |
+|   [0][251][3]: _Declaration -> [783][_Module]< "module" ( NAME ";" { _UsingPath } { _Declaration @ } ) > |
+| [PREDECESSORS 29-29]: [29]                                                                               |
+| [SUCCESORS 31-31]: [31]                                                                                  |
++----------------------------------------------------------------------------------------------------------+
 |
 +
 |
-+------------------------------------------------------------------------+
-| [31]: <Ending>                                                         |
-| [815][_ModuleBody]NAME ";" { _UsingPath } { _Declaration @ }           |
-| [AST-INSTRUCTIONS]:                                                    |
-|   - EndObject()                                                        |
-|   > Field(Module::declarations)                                        |
-| [RETURN STACK]:                                                        |
-|   [0][258][1]: _ModuleBody -> [820][_Module]< "module" _ModuleBody @ > |
-| [PREDECESSORS 30-30]: [30]                                             |
-| [SUCCESORS 32-32]: [32]                                                |
-+------------------------------------------------------------------------+
++---------------------------------------------------------------------------+
+| [31]: <Ending>                                                            |
+| [783][_Module]< "module" ( NAME ";" { _UsingPath } { _Declaration @ } ) > |
+| [AST-INSTRUCTIONS]:                                                       |
+|   + Field(Declaration::attributes, 0)                                     |
+|   + StackEnd()                                                            |
+|   > StackSlot(4)                                                          |
+| [PREDECESSORS 30-30]: [30]                                                |
+| [SUCCESORS 32-32]: [32]                                                   |
++---------------------------------------------------------------------------+
 |
 +
 |
-+------------------------------------------+
-| [32]: <Ending>                           |
-| [820][_Module]< "module" _ModuleBody @ > |
-| [AST-INSTRUCTIONS]:                      |
-| [PREDECESSORS 31-31]: [31]               |
-| [SUCCESORS 33-33]: [33]                  |
-+------------------------------------------+
-|
-+
-|
-+-------------------------------+
-| [33]: <Ending>                |
-| [818][_Module] END [ENDING]   |
-| [AST-INSTRUCTIONS]:           |
-|   - EnumItem(0)               |
-|   - Field(Module::moduleType) |
-|   - EndObject()               |
-| [PREDECESSORS 32-32]: [32]    |
-+-------------------------------+
++------------------------------------+
+| [32]: <Ending>                     |
+| [780][_Module] END [ENDING]        |
+| [AST-INSTRUCTIONS]:                |
+|   + EnumItem(0, 5)                 |
+|   + CreateObject(Module)           |
+|   + Field(Module::name, 1)         |
+|   + Field(Module::paths, 3)        |
+|   + Field(Module::declarations, 4) |
+|   + Field(Module::moduleType, 5)   |
+|   + StackEnd()                     |
+| [PREDECESSORS 31-31]: [31]         |
++------------------------------------+

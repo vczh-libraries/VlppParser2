@@ -37,18 +37,16 @@ StateSymbol
 			protected:
 				SyntaxSymbolManager*		ownerManager;
 				RuleSymbol*					rule;
-				vint32_t					clauseId;
 				EdgeList					inEdges;
 				EdgeList					outEdges;
 
-				StateSymbol(RuleSymbol* _rule, vint32_t _clauseId);
+				StateSymbol(RuleSymbol* _rule);
 			public:
 				WString						label;
 				bool						endingState = false;
 
 				SyntaxSymbolManager*		Owner() { return ownerManager; }
 				RuleSymbol*					Rule() { return rule; }
-				vint32_t					ClauseId() { return clauseId; }
 				const EdgeList&				InEdges() { return inEdges; }
 				const EdgeList&				OutEdges() { return outEdges; }
 
@@ -61,43 +59,38 @@ EdgeSymbol
 
 			enum class EdgeInputType
 			{
-				Epsilon,		// No input is needed to execute this edge.
-				Ending,			// An epsilon edge that reduces the current rule.
-				LeftRec,		// An epsilon edge that reduces the current rule, which is the first input of one of its left recursive clause.
-				Token,			// An token is read to execute this edge.
-				Rule,			// A rule is reduced to execute this edge.
-				LrPlaceholder,	// A left recursion placeholder is consumed to execute this edge. EdgeInput::token is the index of SyntaxSymbolManager::lrpFlags.
-				LrInject,		// A left recursion injection.
+				Epsilon,						// No input is needed to execute this edge.
+				PrefixMergeRule,				// Rule transition that created from accumulated transitions, it is a temporarily mark and will be converted back to Rule, during prefix-merge process
+				PrefixMergeDiscardedRule,		// Rule transition that leads accmuulated transitions, converted to PrefixMergeDiscardedRule during prefix-merge process
+				CrossReferencedToken,			// Token transition that created from accumulated transitions, it is a temporarily mark and will be converted back to Token, during cross-reference process
+
+				Ending,							// An epsilon edge that reduces the current rule.
+				LeftRec,						// An epsilon edge that reduces the current rule, which is the first input of one of its left recursive clause.
+				Token,							// An token is read to execute this edge.
+				Rule,							// A rule is reduced to execute this edge.
 			};
 
 			struct EdgeInput
 			{
 				EdgeInputType						type = EdgeInputType::Epsilon;
-				vint32_t							token = -1;										// useful when type == Token
-				Nullable<WString>					condition;										// useful when type == Token
 
-				collections::SortedList<vint32_t>	flags;											// usefule when type == LrPlaceholder or LrInject
+				// Token
+				vint32_t							token = -1;
+				Nullable<WString>					condition;
 
-				automaton::ReturnRuleType			ruleType = automaton::ReturnRuleType::Field;	// useful when type == Rule or LrInject
-				RuleSymbol*							rule = nullptr;									// useful when type == Rule or LrInject
+				// Rule
+				automaton::ReturnRuleType			ruleType = automaton::ReturnRuleType::Field;
+				RuleSymbol*							rule = nullptr;
 
-				EdgeInput& operator=(EdgeInput& input)
-				{
-					type = input.type;
-					token = input.token;
-					condition = input.condition;
-					CopyFrom(flags, input.flags);
-					ruleType = input.ruleType;
-					rule = input.rule;
-					return *this;
-				}
+				auto operator<=>(const EdgeInput&) const = default;
 			};
 
-			enum class EdgeImportancy
+			struct EdgeCompetition
 			{
-				NoCompetition,
-				HighPriority,
-				LowPriority,
+				vint32_t					competitionId = -1;
+				bool						highPriority = false;
+
+				auto operator<=>(const EdgeCompetition&) const = default;
 			};
 
 			class EdgeSymbol : public Object
@@ -107,6 +100,7 @@ EdgeSymbol
 
 				using InsList = collections::List<AstIns>;
 				using EdgeList = collections::List<EdgeSymbol*>;
+				using CompetitionList = collections::List<EdgeCompetition>;
 			protected:
 				SyntaxSymbolManager*		ownerManager;
 				StateSymbol*				fromState;
@@ -115,11 +109,9 @@ EdgeSymbol
 				EdgeSymbol(StateSymbol* _from, StateSymbol* _to);
 			public:
 				EdgeInput					input;											// Input of this edge.
-				bool						important = false;								// true and false are the only two priorites of edges.
-				EdgeImportancy				importancy = EdgeImportancy::NoCompetition;		// important -> HighPriority, !important with important sibling -> LowPriority.
+				CompetitionList				competitions;									// Competitions this edge involves in.
 																							// (filled by BuildCompactNFA)
 																							// If any important edge forms a cross referenced NFA edge, it becomes important too.
-				InsList						insBeforeInput;									// Instructions to execute before pushing the value from a token or a reduced rule.
 				InsList						insAfterInput;									// Instructions to execute after pushing the value from a token or a reduced rule.
 				EdgeList					returnEdges;									// Edges of rule reduction.
 																							// InsBeforeInput will be copied to a cross-referenced edge.
@@ -139,11 +131,10 @@ RuleSymbol
 				friend class SyntaxSymbolManager;
 
 				using StateList = collections::List<StateSymbol*>;
-				using NameList = collections::SortedList<WString>;
 			protected:
 				SyntaxSymbolManager*		ownerManager;
 				WString						name;
-				vint32_t					currentClauseId = -1;
+				vint						pmRuleIndex = -1;
 
 				RuleSymbol(SyntaxSymbolManager* _ownerManager, const WString& _name, vint _fileIndex);
 			public:
@@ -154,12 +145,9 @@ RuleSymbol
 				bool						isPartial = false;
 				bool						assignedNonArrayField = false;
 				AstClassSymbol*				ruleType = nullptr;
-				NameList					lrFlags;
 
 				SyntaxSymbolManager*		Owner() { return ownerManager; }
 				const WString&				Name() { return name; }
-				void						NewClause() { currentClauseId++; }
-				vint32_t					CurrentClauseId() { return currentClauseId; }
 			};
 
 /***********************************************************************
@@ -168,64 +156,154 @@ SyntaxSymbolManager
 
 			enum class SyntaxPhase
 			{
-				EpsilonNFA,					// An automaton that has edges of Epsilon, Token, Rule.
+				EpsilonNFA,					// An automaton that has edges of:
+											//   Epsilon
+											//   Token
+											//   Rule
+											//   Ending
 
-				CompactNFA,					// Epsilon edges are eliminated by compressing multiple edges into one.
+				CompactNFA,					// An automaton that has edges of
+											//   Token
+											//   Rule
+											//   Ending
+											//   LeftRec
+											// with ignored but still existing edges
+											//   PrefixMergeDiscardedRule
+											// Epsilon edges are eliminated by compressing multiple edges into one.
 											// Epsilon edges to the ending state will be compressed to an Ending edge.
 											// The first edge of Rule in left-recursive clauses becomes a LeftRec edge, with its fromState changed to the ending state.
 											// fromState and toState of non-LeftRec edges belong to the same clause.
+											// PrefixMergeRule transitions will be built from several Rule transitions.
+											// Such Rule transitions will be disconnected but still stored, and PrefixMergeRule will be renamed to Rule.
 
-				CrossReferencedNFA,			// Edges of Rule are compressed to an edge that pointing towards states in other clauses.
+				CrossReferencedNFA,			// An automaton that has edges of
+											//   Token
+											//   Ending
+											//   LeftRec
+											// with ignored but still existing edges
+											//   Rule
+											//   PrefixMergeDiscardedRule
+											// Edges of Rule are compressed to an edge that pointing towards states in other clauses.
 											// Multiple edges of rule are stored in returnEdges in the order of execution.
 											// insBeforeInput of an edge contains insBeforeInput from its returnEdges.
 											// returnEdges of an edge will be pushed to a stack when it is executed.
 											// Executing an Ending edge pops a returnEdges and execute its insAfterInput only.
 											// automaton::Executable is exactly the same to CrossReferencedNFA, stored a more cache friendly way.
+											// Rule transitions will be kept, but it is not logged, and also ignored during building automaton.
 			};
+
+			struct PrefixMergeCache;
+
+			struct PrefixMergeSolutionApplication
+			{
+				collections::Array<EdgeSymbol*>					edgesToMerge;
+				collections::SortedList<RuleSymbol*>			prefixRules;
+			};
+			using PrefixMergeSolutionApplicationList = collections::List<Ptr<PrefixMergeSolutionApplication>>;
+
+			struct PrefixMergeSolutionValue
+			{
+				collections::SortedList<RuleSymbol*>			prefixRules;
+				PrefixMergeSolutionApplicationList				applications;
+			};
+			using PrefixMergeSolutionKey = Tuple<RuleSymbol*, StateSymbol*>;
+			using PrefixMergeSolutionMap = collections::Dictionary<PrefixMergeSolutionKey, Ptr<PrefixMergeSolutionValue>>;
+
+			struct PrefixMergeApplicationItems;
 
 			class SyntaxSymbolManager : public Object
 			{
 				using StateList = collections::List<Ptr<StateSymbol>>;
 				using EdgeList = collections::List<Ptr<EdgeSymbol>>;
-				using LrpFlagList = collections::SortedList<WString>;
+				using StartEndStatePair = collections::Pair<StateSymbol*, StateSymbol*>;
 			protected:
-				MappedOwning<RuleSymbol>	rules;
-				StateList					states;
-				EdgeList					edges;
-				ParserSymbolManager&		global;
-				SyntaxPhase					phase = SyntaxPhase::EpsilonNFA;
+				MappedOwning<RuleSymbol>						rules;
+				StateList										states;
+				EdgeList										edges;
+				ParserSymbolManager&							global;
+				SyntaxPhase										phase = SyntaxPhase::EpsilonNFA;
 
-				void						BuildLeftRecEdge(EdgeSymbol* newEdge, EdgeSymbol* endingEdge, EdgeSymbol* lrecPrefixEdge);
-				void						EliminateLeftRecursion(RuleSymbol* rule, StateSymbol* startState, StateSymbol* endState, StateList& newStates, EdgeList& newEdges);
-				void						EliminateSingleRulePrefix(RuleSymbol* rule, StateSymbol* startState, StateSymbol* endState, StateList& newStates, EdgeList& newEdges);
-				StateSymbol*				EliminateEpsilonEdges(RuleSymbol* rule, StateList& newStates, EdgeList& newEdges);
+			protected:
+				struct IncrementalChange
+				{
+					StateList									createdStates;
+					EdgeList									createdEdges;
+					bool										reuseOps = true; // In ApplyIncrementalChange, true means to keep opStates and opEdges, false means to remove
+					collections::SortedList<StateSymbol*>		opStates;
+					collections::SortedList<EdgeSymbol*>		opEdges;
+				};
+
+				static StartEndStatePair	EliminateEpsilonEdges(RuleSymbol* rule, StateList& newStates, EdgeList& newEdges);
+				static void					BuildLeftRecEdge(EdgeSymbol* newEdge, EdgeSymbol* endingEdge, EdgeSymbol* lrecPrefixEdge);
+				static void					EliminateLeftRecursion(RuleSymbol* rule, StateSymbol* startState, StateSymbol* endState, StateList& newStates, EdgeList& newEdges);
+				static void					MergeEdgesWithSameInput(RuleSymbol* rule, StateSymbol* startState, StateList& newStates, EdgeList& newEdges);
+				static void					MergeEdgesWithSameRuleUsingLeftrec(RuleSymbol* rule, StateSymbol* startState, StateList& newStates, EdgeList& newEdges);
+
+				Ptr<PrefixMergeCache>		CreatePrefixMergeCache();
+				static void					PrefixMergeCrossReference_SolveInState(
+												PrefixMergeCache* cache,
+												RuleSymbol* rule,
+												StateSymbol* currentState,
+												Ptr<PrefixMergeSolutionApplication> application);
+				static void					PrefixMergeCrossReference_Solve(
+												PrefixMergeCache* cache,
+												bool forStartState,
+												RuleSymbol* rule,
+												StateSymbol* startState,
+												PrefixMergeSolutionMap& prefixMergeSolutions);
+				static void					PrefixMergeCrossReference_Solve(PrefixMergeCache* cache, PrefixMergeSolutionMap& prefixMergeSolutions);
+
+				static EdgeSymbol*			PrefixMergeCrossReference_AccumulatedEdges(
+												StateSymbol* fromState,
+												const WString& pmLabel,
+												const collections::List<Ptr<collections::List<EdgeSymbol*>>>& accumulatedEdgesList,
+												IncrementalChange& ic);
+				static void					PrefixMergeCrossReference_Apply(
+												PrefixMergeCache* cache,
+												collections::List<EdgeSymbol*>& accumulatedEdges,
+												PrefixMergeApplicationItems& pmai);
+				static void					PrefixMergeCrossReference_Apply(
+												PrefixMergeCache* cache,
+												RuleSymbol* rule,
+												StateSymbol* currentState,
+												Ptr<PrefixMergeSolutionValue> solution,
+												IncrementalChange& ic);
+
+				static void					ApplyIncrementalChange(const IncrementalChange& ic, StateList& newStates, EdgeList& newEdges);
 				void						BuildCompactNFAInternal();
 
-				void						FixCrossReferencedRuleEdge(StateSymbol* startState, collections::Group<StateSymbol*, EdgeSymbol*>& orderedEdges, collections::List<EdgeSymbol*>& accumulatedEdges);
-				void						FixLeftRecursionInjectEdge(StateSymbol* startState, EdgeSymbol* injectEdge);
+			protected:
+
+				void						FixCrossReferencedRuleEdge(
+												StateSymbol* startState,
+												collections::Group<StateSymbol*,
+												EdgeSymbol*>& orderedEdges,
+												collections::List<EdgeSymbol*>& accumulatedEdges);
 				void						BuildCrossReferencedNFAInternal();
+
 			public:
 				SyntaxSymbolManager(ParserSymbolManager& _global);
 
-				WString						name;
-				LrpFlagList					lrpFlags;
+				WString							name;
+				vint32_t						usedCompetitionIds = 0;
+				PrefixMergeSolutionMap			prefixMergeSolutions;
 
-				RuleSymbol*					CreateRule(const WString& name, vint fileIndex, bool isPublic, bool isParser, ParsingTextRange codeRange = {});
-				void						RemoveRule(const WString& name);
+				RuleSymbol*						CreateRule(const WString& name, vint fileIndex, bool isPublic, bool isParser, ParsingTextRange codeRange = {});
+				void							RemoveRule(const WString& name);
 
-				StateSymbol*				CreateState(RuleSymbol* rule, vint32_t clauseId);
-				EdgeSymbol*					CreateEdge(StateSymbol* from, StateSymbol* to);
+				StateSymbol*					CreateState(RuleSymbol* rule);
+				EdgeSymbol*						CreateEdge(StateSymbol* from, StateSymbol* to);
 
-				void						BuildCompactNFA();
-				void						BuildCrossReferencedNFA();
-				void						BuildAutomaton(vint tokenCount, automaton::Executable& executable, automaton::Metadata& metadata);
-				void						GetStatesInStableOrder(collections::List<StateSymbol*>& order);
-				WString						GetStateGlobalLabel(StateSymbol* state, vint index);
+				void							BuildCompactNFA();
+				void							BuildCrossReferencedNFA();
+				void							BuildAutomaton(vint tokenCount, automaton::Executable& executable, automaton::Metadata& metadata);
+				void							GetStatesInStableOrder(collections::List<StateSymbol*>& order);
+				WString							GetStateGlobalLabel(StateSymbol* state, vint index);
 
-				const ParserSymbolManager&	Global() const { return global; }
-				const auto&					Rules() const { return rules.map; }
-				const auto&					RuleOrder() { return rules.order; }
-				SyntaxPhase					Phase() { return phase; }
+				const ParserSymbolManager&		Global() const { return global; }
+				const auto&						Rules() const { return rules.map; }
+				const auto&						RuleOrder() { return rules.order; }
+				SyntaxPhase						Phase() { return phase; }
 
 				template<typename ...TArgs>
 				void AddError(ParserErrorType type, ParsingTextRange codeRange, TArgs&&... args) const
@@ -234,8 +312,8 @@ SyntaxSymbolManager
 				}
 			};
 
-			extern void						CreateParserGenTypeSyntax(AstSymbolManager& ast, SyntaxSymbolManager& manager);
-			extern void						CreateParserGenRuleSyntax(AstSymbolManager& ast, SyntaxSymbolManager& manager);
+			extern void							CreateParserGenTypeSyntax(AstSymbolManager& ast, SyntaxSymbolManager& manager);
+			extern void							CreateParserGenRuleSyntax(AstSymbolManager& ast, SyntaxSymbolManager& manager);
 		}
 	}
 }

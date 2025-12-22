@@ -1,11 +1,11 @@
 ﻿================ EXECUTION STEPS ================
-[0]: 0@0 - 3@0
+[0]: 0@0 - 3@1
 
 ==================== TRACES =====================
 
 +--------------------------+
 | [0]: <Start>             |
-| [480][_Statement] BEGIN  |
+| [456][_Statement] BEGIN  |
 | [AST-INSTRUCTIONS]:      |
 | [SUCCESORS 1-1]: [1]     |
 +--------------------------+
@@ -16,9 +16,10 @@
 [0]
 ++====================================++
 || [1]: {KEYWORD_BREAK} break         ||
-|| [483][_Statement]< "break" @ ";" > ||
+|| [459][_Statement]< "break" @ ";" > ||
 || [AST-INSTRUCTIONS]:                ||
-||   - BeginObject(BreakStatement)    ||
+||   + StackBegin()                   ||
+||   + Token(0)                       ||
 || [PREDECESSORS 0-0]: [0]            ||
 || [SUCCESORS 2-2]: [2]               ||
 ++====================================++
@@ -29,18 +30,20 @@
 [0]
 ++====================================++
 || [2]: {SEMICOLON} ;                 ||
-|| [482][_Statement]< "break" ";" @ > ||
+|| [458][_Statement]< "break" ";" @ > ||
 || [AST-INSTRUCTIONS]:                ||
+||   + Token(1)                       ||
 || [PREDECESSORS 1-1]: [1]            ||
 || [SUCCESORS 3-3]: [3]               ||
 ++====================================++
 |
 +
 |
-+--------------------------------+
-| [3]: <Ending>                  |
-| [481][_Statement] END [ENDING] |
-| [AST-INSTRUCTIONS]:            |
-|   - EndObject()                |
-| [PREDECESSORS 2-2]: [2]        |
-+--------------------------------+
++----------------------------------+
+| [3]: <Ending>                    |
+| [457][_Statement] END [ENDING]   |
+| [AST-INSTRUCTIONS]:              |
+|   + CreateObject(BreakStatement) |
+|   + StackEnd()                   |
+| [PREDECESSORS 2-2]: [2]          |
++----------------------------------+

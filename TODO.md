@@ -2,57 +2,99 @@
 
 ## Next task
 
-- Try remove `beforeIns`.
-  - Is it possible to only handle object type in EndObject instead of BeginObject?
-  - We may need to store raw field id, and when reaches EndObject, translate raw field id to field id for the specific object type.
-  - Completely remove `beforeIns`.
-- Try remove all LRJ syntax, build LRJ structure from state machine instead.
 - Try to make large AST not causing stack overflow while disposing.
   - Generate code to collect all nodes in any destructor and mark (to tell all sub nodes they are processed)?
 
 ## Big Design Change
 
-- What about no field assignment instructions generated until EndObject
-  - Keep the prefix clean so that no leftrec and high level structures are needed
-- Rule begins on one rule instead of statements in a rule.
-- The StackBegin(n) instruction is used after the first consumption.
-  - Saying that the currect finished object is stored in the n-th slot in the previous stack.
-- The StackEnd(schema) instruction is used at the ending of a rule.
-  - Offer an object type and a mapping from slot to field.
-  - A stack will be implemented as a linked list so there is no need to specify if it will be stored in an array field.
-- The StackSlot(n) is like StackBegin(n) but it doesn't start a new stack.
-- A rule will create a NFA and it will aggresively perform prefix merge.
-  - There will be no need to specify leftrec manually.
-  - There will be no beed to specify like Expr and Type begins with an identifier, this should be calculated/discovered.
-- There will be no need for beforeIns as all instructions happen after an edge.
-- There will be no need for rule rewriting.
-- For inline rule:
-  - No StackBegin or StackEnd generated.
-  - The created NFA becomes a template.
-  - The created NFA will be copied recursively all the way to the actual rule.
-  - Be careful of slot assignment and schema building.
-- Must check if any sub class overrides any field in any base class.
-- Allow indirect left recursion as it doesn't matter anymore for left recursion or non-left recursion.
+### New Instructions
 
-## Test Cases
+- StackBegin() and StackEnd() manage a separated storage of slots.
+- CreateObject(type) pushes a new creating object.
+- StackSlot(n) pops a creating object and store it to the n-th slot.
+- StackBegin() and StackEnd() do not affect the creating object stack.
+- Token(n) and EnumItem(v, n) store a value directly to the n-th slot.
+- Field(f, n) assign all values in the n-th slot to a field.
+- If the first input in a clause is a rule, StackBegin() + optional(StackSlot(n)) is generated after existing the rule.
+- If the first input in a clause is a token, StackBegin() is generated before Token(n).
+- ResolveAmbiguity(type) merge all objects in 0-th slot.
 
-- Code Coverage
-  - Compiler
-    - TODO(s) in `RewriteRules_GenerateAffectedLRIClausesSubgroup`.
-    - `FixPrefixMergeClauses` in `if (ruleSymbol->isPartial)`.
-  - Runtime
-    - TODO(s) in `CalculateObjectFirstInstruction` and `InjectFirstInstruction`.
-    - `TraceManager::TryMergeSurvivingTraces` in `// if trace is a merge trace`.
-    - `TraceManager::BuildStepTree` in which are not covered.
-    - `TraceManager::AddTraceToCollection` in `else if (collection == &Trace::predecessors)`
-- Make a test case to test `prefix_merge` generates `left_recursion_inject_multiple`.
-- Create ambiguity test case caused by only one clause with alternative syntax.
-- Test when an object get LriFetch to multiple branches following a ReopenObject.
-- Deny `X ::= Y LRI ...` when `X` is or a prefix of `Y`.
-- Windows and Linux test output inconsistency on
-  - the order of ambiguous candidates.
-  - `\r\n` or `\n` serialized into `<![CDATA[]]>`.
-  - We can force `\r\n` in unit test, normalizing all inputs.
+### Progressing
+
+- [x] Non-ambiguous test cases
+- [x] Ambiguous test cases
+- [x] Split FeatureTest
+- [x] Built-in parsers:
+  - [x] Json
+  - [x] Xml
+  - [x] Workflow
+- [x] prefix_merge test cases
+  - [x] merge prefix in rules
+    - 109236 -> 10141 -> 6663 states: `Test\ParserLog\BuiltIn-Workflow\Trace-1[Codegen_WorkflowHints].txt`, meanwhile 6750 in master
+  - [x] automatically identify prefix_merge
+- [x] Built-in parsers: C++
+  - [ ] Add more comments
+- [ ] build.ps1
+- [ ] Reorganize log utilities for better dependency
+- [ ] Render ambiguity with not only traces but input codes in Trace-3
+- [ ] Document design principal, algorithm and syntax
+- [ ] Finish `## Features to Add`
+- [ ] build.ps1
+- [ ] Build in Ubuntu. Windows and Linux test output inconsistency on
+    - the order of ambiguous candidates.
+    - `\r\n` or `\n` serialized into `<![CDATA[]]>`.
+    - We can force `\r\n` in unit test, normalizing all inputs.
+- [ ] Built-in parsers: C++ Non-traced test cases save json files with extra field recording the input code at the beginning
+- [ ] Refactor TraceTree logging and put together with WriteMonospacedEnglishTable
+
+## Prefix Merge
+
+In `PrefixMerge5_Pm` test case, one of a prefix merge instance is
+```
+  [RULE] _PrimitiveShared :
+    _LongType -> _PrimitiveShared
+    _Expr -> _Expr1 -> _Expr0 -> _PrimitiveShared
+    _Expr -> _Expr1 -> _Expr0 -> _LongType -> _PrimitiveShared
+```
+Currently we only do `_PrimitiveShared` merging.
+In the future we should do
+```
+_PrimitiveShared +-> _Expr0 ... _Expr
+                 +-> _LongType +-> _LongType
+                               +-> _Expr0 ... _Expr
+```
+Or we are getting this
+```
+[59][Module] BEGIN [pm-cr-rule: _PrimitiveShared]
+[RULE: 8]
+	ending -> [63][Module] END [ENDING]
+		+ StackBegin()
+		+ StackEnd()
+	ending -> [63][Module] END [ENDING]
+		+ StackBegin()
+		+ StackEnd()
+	leftrec -> [27][_LongType]< _LongType @ "(" { _LongType ; "," } ")" >
+		+ StackBegin()
+		+ StackEnd()
+		+ StackBegin()
+		+ StackSlot(0)
+		> rule: _LongType -> [65][Module]<! !_LongType @ !>
+			+ StackBegin()
+	leftrec -> [27][_LongType]< _LongType @ "(" { _LongType ; "," } ")" >
+		+ StackBegin()
+		+ StackEnd()
+		+ StackBegin()
+		+ StackSlot(0)
+		> rule: _Expr -> [64][Module]<! !_Expr @ !>
+			+ StackBegin()
+		> rule: _Expr1 -> [56][_Expr]<! !_Expr1 @ !>
+			+ StackBegin()
+		> rule: _Expr0 -> [50][_Expr1]<! !_Expr0 @ !>
+			+ StackBegin()
+		> rule: _LongType -> [40][_Expr0]< _LongType @ "{" { _Expr ; "," } "}" >
+			+ StackBegin()
+			+ StackSlot(0)
+```
 
 ## Features to Add
 
@@ -68,19 +110,23 @@
   - C++ codegen are created per groups.
     - Only AST classes `#include` depended files groups, visitors do not.
     - When a visitor need to call types in different file groups, leave it abstract.
-- Multiple LRI following one Target
-- Generate multiple level of LRI from prefix_merge
-  - Remove `PrefixExtractionAffectedRuleReferencedAnother`
-  - Currently it generates an error if 3 levels are required
-  - Allow one prefix followed by multiple continuations
-    - Optional applies to all continuations as a whole
+
+## Test Cases
+
+- Code Coverage
+  - Collect uncovered code again by break points in executator (trace manager).
+- Reconsider in new implementation:
+  - Test `SyntaxSymbolManager::PrefixMergeCrossReference_Solve` firmly.
+  - Test `TraceManager::BuildStepListForAmbiguity` with nested ambiguity firmly.
+  - Create ambiguity test case caused by only one clause with alternative syntax.
 
 ## Issues (BuiltIn-Cpp)
 
+- Everytime `BuiltInTest_Compiler` seem to update `BuiltInTest_Cpp` with no reason
 - `::a::b::c::*`
   - Ambiguity
-  - It should be invalid, because `::a::b::c` are always parsed as one QualifiedName, instead of being `::a(::b::c::*)` and `::a::b(::c::*)`
-  - Refer to `Priority in left recursive transition`
+  - It should be invalid, because `::a::b::c` are always parsed as one QualifiedName, instead of being `::a(::b::c::*)` and `::a::b(::c::*)` and `(::a::b) ::c::*`
+  - Refer to `Priority in left recursive transition` (?)
 - Compiler crashes:
   - `_DeclOrExpr ::= !_BExpr ::= {_DeclaratorKeyword:keywords} _TypeBeforeDeclarator:type _DeclaratorRequiredName:declarator as DeclaratorType ;`
   - `workingSwitchValues` is nullptr in `ExpandClauseVisitor::FixRuleName`
@@ -111,6 +157,8 @@
 
 ## Experiments
 
+- Indirect and multiple left recursion.
+- Twist slot number in alternative branches in a clause and see if it is possible to merge prefix
 - Add union type and remove `TypeOrExprOrOthers` in C++.
   - Consider what does `@ambiguous union` mean.
 - Try to see if it is possible to

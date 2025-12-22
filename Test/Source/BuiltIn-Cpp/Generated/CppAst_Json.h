@@ -23,6 +23,7 @@ namespace cpp_parser::json_visitor
 		, protected virtual CppStatement::IVisitor
 		, protected virtual CppIdentifier::IVisitor
 		, protected virtual CppDeclaratorFunctionPart::IVisitor
+		, protected virtual CppDeclarator::IVisitor
 		, protected virtual CppVarInit::IVisitor
 		, protected virtual CppDeclaratorVariablePart::IVisitor
 		, protected virtual CppForStatConditionPart::IVisitor
@@ -48,10 +49,12 @@ namespace cpp_parser::json_visitor
 		virtual void PrintFields(CppDeclarationToResolve* node);
 		virtual void PrintFields(CppDeclarator* node);
 		virtual void PrintFields(CppDeclaratorArrayPart* node);
+		virtual void PrintFields(CppDeclaratorCommon* node);
 		virtual void PrintFields(CppDeclaratorFunctionPart* node);
 		virtual void PrintFields(CppDeclaratorFunctionPartCommon* node);
 		virtual void PrintFields(CppDeclaratorFunctionPartToResolve* node);
 		virtual void PrintFields(CppDeclaratorKeyword* node);
+		virtual void PrintFields(CppDeclaratorToResolve* node);
 		virtual void PrintFields(CppDeclaratorType* node);
 		virtual void PrintFields(CppDeclaratorVariablePart* node);
 		virtual void PrintFields(CppDeclaratorVariablePartCommon* node);
@@ -214,6 +217,9 @@ namespace cpp_parser::json_visitor
 		void Visit(CppDeclaratorFunctionPartToResolve* node) override;
 		void Visit(CppDeclaratorFunctionPartCommon* node) override;
 
+		void Visit(CppDeclaratorToResolve* node) override;
+		void Visit(CppDeclaratorCommon* node) override;
+
 		void Visit(CppVarValueInit* node) override;
 		void Visit(CppVarParanthesisInit* node) override;
 		void Visit(CppVarBraceInit* node) override;
@@ -232,6 +238,7 @@ namespace cpp_parser::json_visitor
 		void Print(CppStatement* node);
 		void Print(CppIdentifier* node);
 		void Print(CppDeclaratorFunctionPart* node);
+		void Print(CppDeclarator* node);
 		void Print(CppVarInit* node);
 		void Print(CppDeclaratorVariablePart* node);
 		void Print(CppForStatConditionPart* node);
@@ -244,7 +251,6 @@ namespace cpp_parser::json_visitor
 		void Print(CppDeclaratorKeyword* node);
 		void Print(CppFunctionKeyword* node);
 		void Print(CppDeclaratorArrayPart* node);
-		void Print(CppDeclarator* node);
 		void Print(CppVarStatInitItem* node);
 		void Print(CppClassInheritance* node);
 		void Print(CppClassMemberPart* node);

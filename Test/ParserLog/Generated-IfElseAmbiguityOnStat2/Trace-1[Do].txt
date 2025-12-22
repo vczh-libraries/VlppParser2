@@ -1,11 +1,11 @@
 ﻿================ EXECUTION STEPS ================
-[0]: 0@0 - 5@1
+[0]: 0@0 - 5@2
 
 ==================== TRACES =====================
 
 +----------------------+
 | [0]: <Start>         |
-| [26][Module] BEGIN   |
+| [25][Module] BEGIN   |
 | [AST-INSTRUCTIONS]:  |
 | [SUCCESORS 1-1]: [1] |
 +----------------------+
@@ -18,12 +18,11 @@
 || [1]: {DO} do                                ||
 || [3][Do]< "do" @ ";" >                       ||
 || [AST-INSTRUCTIONS]:                         ||
-||   - BeginObject(Module)                     ||
-||   - DelayFieldAssignment()                  ||
-||   - BeginObject(DoStat)                     ||
+||   + StackBegin()                            ||
+||   + Token(0)                                ||
 || [RETURN STACK]:                             ||
-||   [1][4][0]: Do -> [24][Stat]<< !Do @ >>    ||
-||   [0][8][0]: Stat -> [28][Module]< Stat @ > ||
+||   [1][4][0]: Do -> [23][Stat]<! !Do @ !>    ||
+||   [0][8][0]: Stat -> [27][Module]< Stat @ > ||
 || [PREDECESSORS 0-0]: [0]                     ||
 || [SUCCESORS 2-2]: [2]                        ||
 ++=============================================++
@@ -36,9 +35,10 @@
 || [2]: {SEMICOLON} ;                          ||
 || [2][Do]< "do" ";" @ >                       ||
 || [AST-INSTRUCTIONS]:                         ||
+||   + Token(1)                                ||
 || [RETURN STACK]:                             ||
-||   [1][4][0]: Do -> [24][Stat]<< !Do @ >>    ||
-||   [0][8][0]: Stat -> [28][Module]< Stat @ > ||
+||   [1][4][0]: Do -> [23][Stat]<! !Do @ !>    ||
+||   [0][8][0]: Stat -> [27][Module]< Stat @ > ||
 || [PREDECESSORS 1-1]: [1]                     ||
 || [SUCCESORS 3-3]: [3]                        ||
 ++=============================================++
@@ -47,11 +47,13 @@
 |
 +---------------------------------------------+
 | [3]: <Ending>                               |
-| [24][Stat]<< !Do @ >>                       |
+| [23][Stat]<! !Do @ !>                       |
 | [AST-INSTRUCTIONS]:                         |
-|   - EndObject()                             |
+|   + CreateObject(DoStat)                    |
+|   + StackEnd()                              |
+|   > StackBegin()                            |
 | [RETURN STACK]:                             |
-|   [0][8][0]: Stat -> [28][Module]< Stat @ > |
+|   [0][8][0]: Stat -> [27][Module]< Stat @ > |
 | [PREDECESSORS 2-2]: [2]                     |
 | [SUCCESORS 4-4]: [4]                        |
 +---------------------------------------------+
@@ -60,21 +62,23 @@
 |
 +-------------------------+
 | [4]: <Ending>           |
-| [28][Module]< Stat @ >  |
+| [27][Module]< Stat @ >  |
 | [AST-INSTRUCTIONS]:     |
-|   - ReopenObject()      |
-|   - EndObject()         |
+|   + StackEnd()          |
+|   > StackBegin()        |
+|   > StackSlot(0)        |
 | [PREDECESSORS 3-3]: [3] |
 | [SUCCESORS 5-5]: [5]    |
 +-------------------------+
 |
 +
 |
-+---------------------------+
-| [5]: <Ending>             |
-| [27][Module] END [ENDING] |
-| [AST-INSTRUCTIONS]:       |
-|   - Field(Module::stat)   |
-|   - EndObject()           |
-| [PREDECESSORS 4-4]: [4]   |
-+---------------------------+
++----------------------------+
+| [5]: <Ending>              |
+| [26][Module] END [ENDING]  |
+| [AST-INSTRUCTIONS]:        |
+|   + CreateObject(Module)   |
+|   + Field(Module::stat, 0) |
+|   + StackEnd()             |
+| [PREDECESSORS 4-4]: [4]    |
++----------------------------+

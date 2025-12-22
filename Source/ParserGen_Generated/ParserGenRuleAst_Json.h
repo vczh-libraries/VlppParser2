@@ -25,16 +25,11 @@ namespace vl::glr::parsergen::json_visitor
 		virtual void PrintFields(GlrClause* node);
 		virtual void PrintFields(GlrCondition* node);
 		virtual void PrintFields(GlrCreateClause* node);
-		virtual void PrintFields(GlrLeftRecursionInjectClause* node);
-		virtual void PrintFields(GlrLeftRecursionInjectContinuation* node);
-		virtual void PrintFields(GlrLeftRecursionPlaceholder* node);
-		virtual void PrintFields(GlrLeftRecursionPlaceholderClause* node);
 		virtual void PrintFields(GlrLoopSyntax* node);
 		virtual void PrintFields(GlrNotCondition* node);
 		virtual void PrintFields(GlrOptionalSyntax* node);
 		virtual void PrintFields(GlrOrCondition* node);
 		virtual void PrintFields(GlrPartialClause* node);
-		virtual void PrintFields(GlrPrefixMergeClause* node);
 		virtual void PrintFields(GlrPushConditionSyntax* node);
 		virtual void PrintFields(GlrRefCondition* node);
 		virtual void PrintFields(GlrRefSyntax* node);
@@ -66,9 +61,6 @@ namespace vl::glr::parsergen::json_visitor
 		void Visit(GlrCreateClause* node) override;
 		void Visit(GlrPartialClause* node) override;
 		void Visit(GlrReuseClause* node) override;
-		void Visit(GlrLeftRecursionPlaceholderClause* node) override;
-		void Visit(GlrLeftRecursionInjectClause* node) override;
-		void Visit(GlrPrefixMergeClause* node) override;
 
 	public:
 		RuleAstVisitor(vl::stream::StreamWriter& _writer);
@@ -79,8 +71,6 @@ namespace vl::glr::parsergen::json_visitor
 		void Print(GlrSwitchItem* node);
 		void Print(GlrTestConditionBranch* node);
 		void Print(GlrAssignment* node);
-		void Print(GlrLeftRecursionPlaceholder* node);
-		void Print(GlrLeftRecursionInjectContinuation* node);
 		void Print(GlrRule* node);
 		void Print(GlrSyntaxFile* node);
 	};

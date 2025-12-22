@@ -4,6 +4,51 @@ extern WString GetTestOutputPath();
 extern FilePath GetOutputDir(const WString& parserName);
 
 /***********************************************************************
+LogInstruction (AstIns)
+***********************************************************************/
+
+void LogInstruction(
+	AstIns ins,
+	const Func<WString(vint32_t)>& typeName,
+	const Func<WString(vint32_t)>& fieldName,
+	StreamWriter& writer
+)
+{
+	switch (ins.type)
+	{
+	case AstInsType::Token:
+		writer.WriteLine(L"Token(" + itow(ins.count) + L")");
+		break;
+	case AstInsType::EnumItem:
+		writer.WriteLine(L"EnumItem(" + itow(ins.param) + L", " + itow(ins.count) + L")");
+		break;
+	case AstInsType::StackBegin:
+		writer.WriteLine(L"StackBegin()");
+		break;
+	case AstInsType::StackSlot:
+		writer.WriteLine(L"StackSlot(" + itow(ins.count) + L")");
+		break;
+	case AstInsType::CreateObject:
+		writer.WriteLine(L"CreateObject(" + typeName(ins.param) + L")");
+		break;
+	case AstInsType::Field:
+		writer.WriteLine(L"Field(" + fieldName(ins.param) + L", " + itow(ins.count) + L")");
+		break;
+	case AstInsType::FieldIfUnassigned:
+		writer.WriteLine(L"FieldIfUnassigned(" + fieldName(ins.param) + L", " + itow(ins.count) + L")");
+		break;
+	case AstInsType::StackEnd:
+		writer.WriteLine(L"StackEnd()");
+		break;
+	case AstInsType::ResolveAmbiguity:
+		writer.WriteLine(L"ResolveAmbiguity(" + typeName(ins.param) + L", " + itow(ins.count) + L")");
+		break;
+	default:
+		writer.WriteLine(L"<UNKNOWN-INSTRUCTION>");
+	}
+}
+
+/***********************************************************************
 LogAutomaton
 ***********************************************************************/
 
@@ -24,7 +69,7 @@ FilePath LogAutomatonWithPath(
 	for (auto&& [state, stateIndex] : indexed(executable.states))
 	{
 		writer.WriteLine(metadata.stateLabels[stateIndex]);
-		writer.WriteLine(L"[RULE: " + itow(state.rule) + L"][CLAUSE: " + itow(state.clause) + L"]");
+		writer.WriteLine(L"[RULE: " + itow(state.rule) + L"]");
 		for (vint32_t input = 0; input < Executable::TokenBegin + executable.tokenCount; input++)
 		{
 			auto&& transition = executable.transitions[executable.GetTransitionIndex((vint32_t)stateIndex, input)];
@@ -47,23 +92,15 @@ FilePath LogAutomatonWithPath(
 					}
 					break;
 				}
-				switch (edge.priority)
+
+				for (vint compRef = 0; compRef < edge.competitions.count; compRef++)
 				{
-				case EdgePriority::HighPriority:
-					writer.WriteString(L" [HIGH PRIORITY]");
-					break;
-				case EdgePriority::LowPriority:
-					writer.WriteString(L" [LOW PRIORITY]");
-					break;
-				default:;
+					auto&& compDesc = executable.competitions[executable.competitions[edge.competitions.start + compRef].competitionId];
+					writer.WriteString(compDesc.highPriority ? L"[H" : L"[L");
+					writer.WriteString(itow(compDesc.competitionId));
+					writer.WriteString(L"]");
 				}
 				writer.WriteLine(L" -> " + metadata.stateLabels[edge.toState]);
-
-				for (vint insRef = 0; insRef < edge.insBeforeInput.count; insRef++)
-				{
-					writer.WriteString(L"\t\t- ");
-					LogInstruction(executable.astInstructions[edge.insBeforeInput.start + insRef], typeName, fieldName, writer);
-				}
 
 				for (vint insRef = 0; insRef < edge.insAfterInput.count; insRef++)
 				{
@@ -75,15 +112,12 @@ FilePath LogAutomatonWithPath(
 				{
 					auto&& returnDesc = executable.returns[executable.returnIndices[edge.returnIndices.start + returnRef]];
 					writer.WriteString(L"\t\t> rule");
-					switch (returnDesc.priority)
+					for (vint compRef = 0; compRef < returnDesc.competitions.count; compRef++)
 					{
-					case EdgePriority::HighPriority:
-						writer.WriteString(L" [HIGH PRIORITY]");
-						break;
-					case EdgePriority::LowPriority:
-						writer.WriteString(L" [LOW PRIORITY]");
-						break;
-					default:;
+						auto&& compDesc = executable.competitions[executable.competitions[returnDesc.competitions.start + compRef].competitionId];
+						writer.WriteString(compDesc.highPriority ? L"[H" : L"[L");
+						writer.WriteString(itow(compDesc.competitionId));
+						writer.WriteString(L"]");
 					}
 					writer.WriteLine(L": " + metadata.ruleNames[returnDesc.consumedRule] + L" -> " + metadata.stateLabels[returnDesc.returnState]);
 					for (vint insRef = 0; insRef < returnDesc.insAfterInput.count; insRef++)

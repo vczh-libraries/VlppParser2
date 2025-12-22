@@ -91,8 +91,7 @@ ParserSymbolManager
 			ERROR_ITEM(TokenFragmentNotExists,																		fragmentName)\
 			/* SyntaxSymbolManager */\
 			ERROR_ITEM(DuplicatedRule,																				ruleName)\
-			ERROR_ITEM(RuleIsIndirectlyLeftRecursive,																ruleName)													/* Indirect left recursion must be resolved before */\
-			ERROR_ITEM(LeftRecursionInjectHasNoContinuation,														ruleName, placeholder, targetRuleName)\
+			ERROR_ITEM(RuleIsIndirectlyLeftRecursive,																ruleNames)													/* Indirect left recursion must be resolved before */\
 			/* SyntaxAst(ResolveName) */\
 			ERROR_ITEM(RuleNameConflictedWithToken,																	ruleName)\
 			ERROR_ITEM(TypeNotUniqueInRule,																			ruleName, name)\
@@ -109,8 +108,6 @@ ParserSymbolManager
 			ERROR_ITEM(UnusedSwitch,																				switchName)\
 			ERROR_ITEM(SwitchNotExists,																				ruleName, switchName)\
 			ERROR_ITEM(SyntaxInvolvesSwitchWithIllegalRuleName,														ruleName)													/* A syntax uses switch should not use rule name that has _SWITCH/SWITCH_ */\
-			ERROR_ITEM(SyntaxInvolvesPrefixMergeWithIllegalRuleName,												ruleName)													/* A syntax uses prefix_merge should not use rule name that has _LRI/_LRIP/LRI_/LRIP_ */\
-			ERROR_ITEM(SyntaxInvolvesPrefixMergeWithIllegalPlaceholderName,											ruleName, placeholderName)									/* A syntax uses prefix_merge should not use placeholder name that has _LRI/_LRIP/LRI_/LRIP_ */\
 			/* SyntaxAst(CalculateTypes) */\
 			ERROR_ITEM(RuleMixedPartialClauseWithOtherClause,														ruleName)\
 			ERROR_ITEM(RuleWithDifferentPartialTypes,																ruleName, ruleType, newType)\
@@ -121,7 +118,6 @@ ParserSymbolManager
 			ERROR_ITEM(ReuseClauseContainsNoUseRule,																ruleName)													/* A reuse clause contains no use rule therefore the type cannot be determined */\
 			/* SyntaxAst(ValidateSwitchesAndConditions, condition) */\
 			ERROR_ITEM(PushedSwitchIsNotTested,																		ruleName, switchName)\
-			ERROR_ITEM(PrefixMergeAffectedBySwitches,																ruleName, prefixMergeRule, switchName)\
 			ERROR_ITEM(SwitchUnaffectedRuleNotExist)\
 			/* SyntaxAst(RewriteSyntax_Switch, condition) */\
 			ERROR_ITEM(SwitchUnaffectedRuleExpandedToNoClause,														ruleName)\
@@ -135,12 +131,6 @@ ParserSymbolManager
 			ERROR_ITEM(UseRuleInNonReuseClause,																		ruleName, useRuleName)										/* A use rule should only appear in reuse clause */\
 			ERROR_ITEM(PartialRuleUsedOnField,																		ruleName, clauseType, partialRuleName, fieldName)			/* A partial rule does not create object, it cannot be assigned to a field */\
 			ERROR_ITEM(ClauseTypeMismatchedToPartialRule,															ruleName, clauseType, partialRuleName, partialRuleType)		/* A clause uses a partial rule of an incompatible type */\
-			ERROR_ITEM(LeftRecursionPlaceholderNotFoundInRule,														ruleName, placeholder, targetRuleName)						/* left_recursion_inject injects to a rule which doesn't accept the specified placeholder */\
-			ERROR_ITEM(LeftRecursionPlaceholderNotUnique,															ruleName, placeholder, targetRuleName)						/* left_recursion_inject injects to a rule which has multiple places accepting the specified placeholder */\
-			ERROR_ITEM(LeftRecursionInjectTargetIsPrefixOfAnotherSameEnding,										ruleName, placeholder, targetPrefixName, targetRuleName)	/* left_recursion_inject injects into two targets, A is a prefix of B, and both injection could end with the same target C, C could be B */\
-			ERROR_ITEM(LeftRecursionPlaceholderTypeMismatched,														ruleName, placeholder, targetRuleName, placeholderRuleName)\
-			ERROR_ITEM(PartialRuleInLeftRecursionInject,															ruleName, partialRuleName)\
-			ERROR_ITEM(PartialRuleInPrefixMerge,																	ruleName, partialRuleName)\
 			/* SyntaxAst(ValidateStructure, counting) */\
 			ERROR_ITEM(ClauseNotCreateObject,																		ruleName)													/* A reuse clause does not contain use rule in some potential sequences */\
 			ERROR_ITEM(UseRuleUsedInOptionalBody,																	ruleName, useRuleName)\
@@ -153,19 +143,10 @@ ParserSymbolManager
 			ERROR_ITEM(OptionalBodyCouldExpandToEmptySequence,														ruleName)\
 			ERROR_ITEM(NegativeOptionalEndsAClause,																	ruleName)													/* Negative optional syntax cannot ends a clause */\
 			ERROR_ITEM(MultiplePrioritySyntaxInAClause,																ruleName)\
-			ERROR_ITEM(TooManyLeftRecursionPlaceholderClauses,														ruleName)\
 			/* SyntaxAst(ValidateStructure, relationship) */\
 			ERROR_ITEM(FieldAssignedMoreThanOnce,																	ruleName, clauseType, fieldName)\
-			/* SyntaxAst(ValidatePrefixMerge, prefix_merge) */\
-			ERROR_ITEM(RuleMixedPrefixMergeWithClauseNotSyntacticallyBeginWithARule,								ruleName)													/* If a rule has prefix_merge clause, than all other clause must syntactically begins with a rule */\
-			ERROR_ITEM(RuleMixedPrefixMergeWithClauseNotBeginWithIndirectPrefixMerge,								ruleName, startRule)										/* If a rule has prefix_merge clause, than all other clause must directly or indirectly starts with prefix_merge */\
-			ERROR_ITEM(RuleIndirectlyBeginsWithPrefixMergeMixedLeftRecursionMarkers,								ruleName, prefixMergeRule, leftRecursionMarkerRule)\
-			ERROR_ITEM(PartialRuleIndirectlyBeginsWithPrefixMerge,													ruleName, prefixMergeRule)\
-			ERROR_ITEM(ClausePartiallyIndirectlyBeginsWithPrefixMergeAndLiteral,									ruleName, prefixMergeRule, literal)\
-			ERROR_ITEM(ClausePartiallyIndirectlyBeginsWithPrefixMergeAndRule,										ruleName, prefixMergeRule, literal)\
-			/* SyntaxAst(RewriteSyntax_PrefixMerge, prefix_merge) */\
-			ERROR_ITEM(PrefixExtractionAffectedRuleReferencedAnother,												ruleName, conflictedRule, prefixRule)						/* During left_recursion_inject clause generation, if prefix extracted affected the process, all !prefixRule clauses where prefixRule is the prefix of conflictedRule in any !conflictedRule clauses, prefixRule should not be affected */\
-
+			ERROR_ITEM(PartialRuleIsRecursive,																		ruleName)\
+			
 			enum class ParserErrorType
 			{
 #define ParserErrorType_EnumItem(NAME, ...) NAME,

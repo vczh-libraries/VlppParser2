@@ -1,787 +1,870 @@
 ﻿[0][Arg] BEGIN 
-[RULE: 0][CLAUSE: -1]
+[RULE: 0]
 	token: ID -> [2][Arg]< ID @ >
-		- BeginObject(Arg)
-		+ Token()
-		+ Field(Arg::name)
+		+ StackBegin()
+		+ Token(0)
 
 [1][Arg] END [ENDING]
-[RULE: 0][CLAUSE: -1]
+[RULE: 0]
 
 [2][Arg]< ID @ >
-[RULE: 0][CLAUSE: 0]
+[RULE: 0]
 	ending -> [1][Arg] END [ENDING]
-		- EndObject()
+		+ CreateObject(Arg)
+		+ Field(Arg::name, 0)
+		+ StackEnd()
 
 [3][Exp0] BEGIN 
-[RULE: 1][CLAUSE: -1]
-	token: "(" -> [11][Exp0]<< "(" @ !Exp ")" >>
-		- DelayFieldAssignment()
+[RULE: 1]
+	token: "(" -> [11][Exp0]<! "(" @ !Exp ")" !>
+		+ StackBegin()
+		+ Token(0)
 	token: "true" -> [6][Exp0]< "true" @ >
-		- BeginObject(True)
+		+ StackBegin()
+		+ Token(0)
 	token: "false" -> [5][Exp0]< "false" @ >
-		- BeginObject(False)
+		+ StackBegin()
+		+ Token(0)
 	token: NUM -> [8][Exp0]< NUM @ >
-		- BeginObject(NumExpr)
-		+ Token()
-		+ Field(NumExpr::value)
+		+ StackBegin()
+		+ Token(0)
 	token: ID -> [7][Exp0]< ID @ >
-		- BeginObject(Ref)
-		+ Token()
-		+ Field(Ref::name)
+		+ StackBegin()
+		+ Token(0)
 
 [4][Exp0] END [ENDING]
-[RULE: 1][CLAUSE: -1]
+[RULE: 1]
 
 [5][Exp0]< "false" @ >
-[RULE: 1][CLAUSE: 3]
+[RULE: 1]
 	ending -> [4][Exp0] END [ENDING]
-		- EndObject()
+		+ CreateObject(False)
+		+ StackEnd()
 
 [6][Exp0]< "true" @ >
-[RULE: 1][CLAUSE: 2]
+[RULE: 1]
 	ending -> [4][Exp0] END [ENDING]
-		- EndObject()
+		+ CreateObject(True)
+		+ StackEnd()
 
 [7][Exp0]< ID @ >
-[RULE: 1][CLAUSE: 1]
+[RULE: 1]
 	ending -> [4][Exp0] END [ENDING]
-		- EndObject()
+		+ CreateObject(Ref)
+		+ Field(Ref::name, 0)
+		+ StackEnd()
 
 [8][Exp0]< NUM @ >
-[RULE: 1][CLAUSE: 0]
+[RULE: 1]
 	ending -> [4][Exp0] END [ENDING]
-		- EndObject()
+		+ CreateObject(NumExpr)
+		+ Field(NumExpr::value, 0)
+		+ StackEnd()
 
-[9][Exp0]<< "(" !Exp ")" @ >>
-[RULE: 1][CLAUSE: 4]
+[9][Exp0]<! "(" !Exp ")" @ !>
+[RULE: 1]
 	ending -> [4][Exp0] END [ENDING]
-		- EndObject()
+		+ StackEnd()
 
-[10][Exp0]<< "(" !Exp @ ")" >>
-[RULE: 1][CLAUSE: 4]
-	token: ")" -> [9][Exp0]<< "(" !Exp ")" @ >>
+[10][Exp0]<! "(" !Exp @ ")" !>
+[RULE: 1]
+	token: ")" -> [9][Exp0]<! "(" !Exp ")" @ !>
+		+ Token(2)
 
-[11][Exp0]<< "(" @ !Exp ")" >>
-[RULE: 1][CLAUSE: 4]
-	rule: Exp -> [10][Exp0]<< "(" !Exp @ ")" >>
-		+ ReopenObject()
+[11][Exp0]<! "(" @ !Exp ")" !>
+[RULE: 1]
+	rule: Exp -> [10][Exp0]<! "(" !Exp @ ")" !>
 
 [12][Exp1] BEGIN 
-[RULE: 2][CLAUSE: -1]
+[RULE: 2]
 	token: "+" -> [14][Exp1]< "+" @ Exp1 >
-		- BeginObject(Unary)
+		+ StackBegin()
+		+ Token(0)
 	token: "-" -> [16][Exp1]< "-" @ Exp1 >
-		- BeginObject(Unary)
-	rule: Exp0 -> [23][Exp1]<< !Exp0 @ >>
-		- DelayFieldAssignment()
-		+ ReopenObject()
+		+ StackBegin()
+		+ Token(0)
+	rule: Exp0 -> [23][Exp1]<! !Exp0 @ !>
+		+ StackBegin()
 
 [13][Exp1] END [ENDING]
-[RULE: 2][CLAUSE: -1]
+[RULE: 2]
 
 [14][Exp1]< "+" @ Exp1 >
-[RULE: 2][CLAUSE: 1]
+[RULE: 2]
 	rule: Exp1 -> [15][Exp1]< "+" Exp1 @ >
-		+ Field(Unary::operand)
+		+ StackSlot(1)
 
 [15][Exp1]< "+" Exp1 @ >
-[RULE: 2][CLAUSE: 1]
+[RULE: 2]
 	ending -> [13][Exp1] END [ENDING]
-		- EnumItem(0)
-		- Field(Unary::op)
-		- EndObject()
+		+ EnumItem(0, 2)
+		+ CreateObject(Unary)
+		+ Field(Unary::operand, 1)
+		+ Field(Unary::op, 2)
+		+ StackEnd()
 	leftrec -> [22][Exp1]< Exp1 @ "(" { Exp ; "," } ")" >
-		- EnumItem(0)
-		- Field(Unary::op)
-		- EndObject()
-		- LriStore()
-		- BeginObject(Call)
-		- LriFetch()
-		+ Field(Call::func)
+		+ EnumItem(0, 2)
+		+ CreateObject(Unary)
+		+ Field(Unary::operand, 1)
+		+ Field(Unary::op, 2)
+		+ StackEnd()
+		+ StackBegin()
+		+ StackSlot(0)
 
 [16][Exp1]< "-" @ Exp1 >
-[RULE: 2][CLAUSE: 2]
+[RULE: 2]
 	rule: Exp1 -> [17][Exp1]< "-" Exp1 @ >
-		+ Field(Unary::operand)
+		+ StackSlot(1)
 
 [17][Exp1]< "-" Exp1 @ >
-[RULE: 2][CLAUSE: 2]
+[RULE: 2]
 	ending -> [13][Exp1] END [ENDING]
-		- EnumItem(1)
-		- Field(Unary::op)
-		- EndObject()
+		+ EnumItem(1, 2)
+		+ CreateObject(Unary)
+		+ Field(Unary::operand, 1)
+		+ Field(Unary::op, 2)
+		+ StackEnd()
 	leftrec -> [22][Exp1]< Exp1 @ "(" { Exp ; "," } ")" >
-		- EnumItem(1)
-		- Field(Unary::op)
-		- EndObject()
-		- LriStore()
-		- BeginObject(Call)
-		- LriFetch()
-		+ Field(Call::func)
+		+ EnumItem(1, 2)
+		+ CreateObject(Unary)
+		+ Field(Unary::operand, 1)
+		+ Field(Unary::op, 2)
+		+ StackEnd()
+		+ StackBegin()
+		+ StackSlot(0)
 
 [18][Exp1]< Exp1 "(" @ { Exp ; "," } ")" >
-[RULE: 2][CLAUSE: 3]
+[RULE: 2]
 	token: ")" -> [20][Exp1]< Exp1 "(" { Exp ; "," } ")" @ >
+		+ Token(4)
 	rule: Exp -> [21][Exp1]< Exp1 "(" { Exp @ ; "," } ")" >
-		+ Field(Call::args)
+		+ StackSlot(2)
 
 [19][Exp1]< Exp1 "(" { Exp ; "," @ } ")" >
-[RULE: 2][CLAUSE: 3]
+[RULE: 2]
 	rule: Exp -> [21][Exp1]< Exp1 "(" { Exp @ ; "," } ")" >
-		+ Field(Call::args)
+		+ StackSlot(2)
 
 [20][Exp1]< Exp1 "(" { Exp ; "," } ")" @ >
-[RULE: 2][CLAUSE: 3]
+[RULE: 2]
 	ending -> [13][Exp1] END [ENDING]
-		- EndObject()
+		+ CreateObject(Call)
+		+ Field(Call::func, 0)
+		+ Field(Call::args, 2)
+		+ StackEnd()
 	leftrec -> [22][Exp1]< Exp1 @ "(" { Exp ; "," } ")" >
-		- EndObject()
-		- LriStore()
-		- BeginObject(Call)
-		- LriFetch()
-		+ Field(Call::func)
+		+ CreateObject(Call)
+		+ Field(Call::func, 0)
+		+ Field(Call::args, 2)
+		+ StackEnd()
+		+ StackBegin()
+		+ StackSlot(0)
 
 [21][Exp1]< Exp1 "(" { Exp @ ; "," } ")" >
-[RULE: 2][CLAUSE: 3]
+[RULE: 2]
 	token: ")" -> [20][Exp1]< Exp1 "(" { Exp ; "," } ")" @ >
+		+ Token(4)
 	token: "," -> [19][Exp1]< Exp1 "(" { Exp ; "," @ } ")" >
+		+ Token(3)
 
 [22][Exp1]< Exp1 @ "(" { Exp ; "," } ")" >
-[RULE: 2][CLAUSE: 3]
+[RULE: 2]
 	token: "(" -> [18][Exp1]< Exp1 "(" @ { Exp ; "," } ")" >
+		+ Token(1)
 
-[23][Exp1]<< !Exp0 @ >>
-[RULE: 2][CLAUSE: 0]
+[23][Exp1]<! !Exp0 @ !>
+[RULE: 2]
 	ending -> [13][Exp1] END [ENDING]
-		- EndObject()
+		+ StackEnd()
 	leftrec -> [22][Exp1]< Exp1 @ "(" { Exp ; "," } ")" >
-		- EndObject()
-		- LriStore()
-		- BeginObject(Call)
-		- LriFetch()
-		+ Field(Call::func)
+		+ StackEnd()
+		+ StackBegin()
+		+ StackSlot(0)
 
 [24][Exp2] BEGIN 
-[RULE: 3][CLAUSE: -1]
-	rule: Exp1 -> [32][Exp2]<< !Exp1 @ >>
-		- DelayFieldAssignment()
-		+ ReopenObject()
+[RULE: 3]
+	rule: Exp1 -> [32][Exp2]<! !Exp1 @ !>
+		+ StackBegin()
 
 [25][Exp2] END [ENDING]
-[RULE: 3][CLAUSE: -1]
+[RULE: 3]
 
 [26][Exp2]< Exp2 "*" @ Exp1 >
-[RULE: 3][CLAUSE: 1]
+[RULE: 3]
 	rule: Exp1 -> [27][Exp2]< Exp2 "*" Exp1 @ >
-		+ Field(Binary::right)
+		+ StackSlot(2)
 
 [27][Exp2]< Exp2 "*" Exp1 @ >
-[RULE: 3][CLAUSE: 1]
+[RULE: 3]
 	ending -> [25][Exp2] END [ENDING]
-		- EnumItem(2)
-		- Field(Binary::op)
-		- EndObject()
+		+ EnumItem(2, 3)
+		+ CreateObject(Binary)
+		+ Field(Binary::left, 0)
+		+ Field(Binary::right, 2)
+		+ Field(Binary::op, 3)
+		+ StackEnd()
 	leftrec -> [30][Exp2]< Exp2 @ "*" Exp1 >
-		- EnumItem(2)
-		- Field(Binary::op)
-		- EndObject()
-		- LriStore()
-		- BeginObject(Binary)
-		- LriFetch()
-		+ Field(Binary::left)
+		+ EnumItem(2, 3)
+		+ CreateObject(Binary)
+		+ Field(Binary::left, 0)
+		+ Field(Binary::right, 2)
+		+ Field(Binary::op, 3)
+		+ StackEnd()
+		+ StackBegin()
+		+ StackSlot(0)
 	leftrec -> [31][Exp2]< Exp2 @ "/" Exp1 >
-		- EnumItem(2)
-		- Field(Binary::op)
-		- EndObject()
-		- LriStore()
-		- BeginObject(Binary)
-		- LriFetch()
-		+ Field(Binary::left)
+		+ EnumItem(2, 3)
+		+ CreateObject(Binary)
+		+ Field(Binary::left, 0)
+		+ Field(Binary::right, 2)
+		+ Field(Binary::op, 3)
+		+ StackEnd()
+		+ StackBegin()
+		+ StackSlot(0)
 
 [28][Exp2]< Exp2 "/" @ Exp1 >
-[RULE: 3][CLAUSE: 2]
+[RULE: 3]
 	rule: Exp1 -> [29][Exp2]< Exp2 "/" Exp1 @ >
-		+ Field(Binary::right)
+		+ StackSlot(2)
 
 [29][Exp2]< Exp2 "/" Exp1 @ >
-[RULE: 3][CLAUSE: 2]
+[RULE: 3]
 	ending -> [25][Exp2] END [ENDING]
-		- EnumItem(3)
-		- Field(Binary::op)
-		- EndObject()
+		+ EnumItem(3, 3)
+		+ CreateObject(Binary)
+		+ Field(Binary::left, 0)
+		+ Field(Binary::right, 2)
+		+ Field(Binary::op, 3)
+		+ StackEnd()
 	leftrec -> [30][Exp2]< Exp2 @ "*" Exp1 >
-		- EnumItem(3)
-		- Field(Binary::op)
-		- EndObject()
-		- LriStore()
-		- BeginObject(Binary)
-		- LriFetch()
-		+ Field(Binary::left)
+		+ EnumItem(3, 3)
+		+ CreateObject(Binary)
+		+ Field(Binary::left, 0)
+		+ Field(Binary::right, 2)
+		+ Field(Binary::op, 3)
+		+ StackEnd()
+		+ StackBegin()
+		+ StackSlot(0)
 	leftrec -> [31][Exp2]< Exp2 @ "/" Exp1 >
-		- EnumItem(3)
-		- Field(Binary::op)
-		- EndObject()
-		- LriStore()
-		- BeginObject(Binary)
-		- LriFetch()
-		+ Field(Binary::left)
+		+ EnumItem(3, 3)
+		+ CreateObject(Binary)
+		+ Field(Binary::left, 0)
+		+ Field(Binary::right, 2)
+		+ Field(Binary::op, 3)
+		+ StackEnd()
+		+ StackBegin()
+		+ StackSlot(0)
 
 [30][Exp2]< Exp2 @ "*" Exp1 >
-[RULE: 3][CLAUSE: 1]
+[RULE: 3]
 	token: "*" -> [26][Exp2]< Exp2 "*" @ Exp1 >
+		+ Token(1)
 
 [31][Exp2]< Exp2 @ "/" Exp1 >
-[RULE: 3][CLAUSE: 2]
+[RULE: 3]
 	token: "/" -> [28][Exp2]< Exp2 "/" @ Exp1 >
+		+ Token(1)
 
-[32][Exp2]<< !Exp1 @ >>
-[RULE: 3][CLAUSE: 0]
+[32][Exp2]<! !Exp1 @ !>
+[RULE: 3]
 	ending -> [25][Exp2] END [ENDING]
-		- EndObject()
+		+ StackEnd()
 	leftrec -> [30][Exp2]< Exp2 @ "*" Exp1 >
-		- EndObject()
-		- LriStore()
-		- BeginObject(Binary)
-		- LriFetch()
-		+ Field(Binary::left)
+		+ StackEnd()
+		+ StackBegin()
+		+ StackSlot(0)
 	leftrec -> [31][Exp2]< Exp2 @ "/" Exp1 >
-		- EndObject()
-		- LriStore()
-		- BeginObject(Binary)
-		- LriFetch()
-		+ Field(Binary::left)
+		+ StackEnd()
+		+ StackBegin()
+		+ StackSlot(0)
 
 [33][Exp3] BEGIN 
-[RULE: 4][CLAUSE: -1]
-	rule: Exp2 -> [41][Exp3]<< !Exp2 @ >>
-		- DelayFieldAssignment()
-		+ ReopenObject()
+[RULE: 4]
+	rule: Exp2 -> [41][Exp3]<! !Exp2 @ !>
+		+ StackBegin()
 
 [34][Exp3] END [ENDING]
-[RULE: 4][CLAUSE: -1]
+[RULE: 4]
 
 [35][Exp3]< Exp3 "+" @ Exp2 >
-[RULE: 4][CLAUSE: 1]
+[RULE: 4]
 	rule: Exp2 -> [36][Exp3]< Exp3 "+" Exp2 @ >
-		+ Field(Binary::right)
+		+ StackSlot(2)
 
 [36][Exp3]< Exp3 "+" Exp2 @ >
-[RULE: 4][CLAUSE: 1]
+[RULE: 4]
 	ending -> [34][Exp3] END [ENDING]
-		- EnumItem(0)
-		- Field(Binary::op)
-		- EndObject()
+		+ EnumItem(0, 3)
+		+ CreateObject(Binary)
+		+ Field(Binary::left, 0)
+		+ Field(Binary::right, 2)
+		+ Field(Binary::op, 3)
+		+ StackEnd()
 	leftrec -> [39][Exp3]< Exp3 @ "+" Exp2 >
-		- EnumItem(0)
-		- Field(Binary::op)
-		- EndObject()
-		- LriStore()
-		- BeginObject(Binary)
-		- LriFetch()
-		+ Field(Binary::left)
+		+ EnumItem(0, 3)
+		+ CreateObject(Binary)
+		+ Field(Binary::left, 0)
+		+ Field(Binary::right, 2)
+		+ Field(Binary::op, 3)
+		+ StackEnd()
+		+ StackBegin()
+		+ StackSlot(0)
 	leftrec -> [40][Exp3]< Exp3 @ "-" Exp2 >
-		- EnumItem(0)
-		- Field(Binary::op)
-		- EndObject()
-		- LriStore()
-		- BeginObject(Binary)
-		- LriFetch()
-		+ Field(Binary::left)
+		+ EnumItem(0, 3)
+		+ CreateObject(Binary)
+		+ Field(Binary::left, 0)
+		+ Field(Binary::right, 2)
+		+ Field(Binary::op, 3)
+		+ StackEnd()
+		+ StackBegin()
+		+ StackSlot(0)
 
 [37][Exp3]< Exp3 "-" @ Exp2 >
-[RULE: 4][CLAUSE: 2]
+[RULE: 4]
 	rule: Exp2 -> [38][Exp3]< Exp3 "-" Exp2 @ >
-		+ Field(Binary::right)
+		+ StackSlot(2)
 
 [38][Exp3]< Exp3 "-" Exp2 @ >
-[RULE: 4][CLAUSE: 2]
+[RULE: 4]
 	ending -> [34][Exp3] END [ENDING]
-		- EnumItem(1)
-		- Field(Binary::op)
-		- EndObject()
+		+ EnumItem(1, 3)
+		+ CreateObject(Binary)
+		+ Field(Binary::left, 0)
+		+ Field(Binary::right, 2)
+		+ Field(Binary::op, 3)
+		+ StackEnd()
 	leftrec -> [39][Exp3]< Exp3 @ "+" Exp2 >
-		- EnumItem(1)
-		- Field(Binary::op)
-		- EndObject()
-		- LriStore()
-		- BeginObject(Binary)
-		- LriFetch()
-		+ Field(Binary::left)
+		+ EnumItem(1, 3)
+		+ CreateObject(Binary)
+		+ Field(Binary::left, 0)
+		+ Field(Binary::right, 2)
+		+ Field(Binary::op, 3)
+		+ StackEnd()
+		+ StackBegin()
+		+ StackSlot(0)
 	leftrec -> [40][Exp3]< Exp3 @ "-" Exp2 >
-		- EnumItem(1)
-		- Field(Binary::op)
-		- EndObject()
-		- LriStore()
-		- BeginObject(Binary)
-		- LriFetch()
-		+ Field(Binary::left)
+		+ EnumItem(1, 3)
+		+ CreateObject(Binary)
+		+ Field(Binary::left, 0)
+		+ Field(Binary::right, 2)
+		+ Field(Binary::op, 3)
+		+ StackEnd()
+		+ StackBegin()
+		+ StackSlot(0)
 
 [39][Exp3]< Exp3 @ "+" Exp2 >
-[RULE: 4][CLAUSE: 1]
+[RULE: 4]
 	token: "+" -> [35][Exp3]< Exp3 "+" @ Exp2 >
+		+ Token(1)
 
 [40][Exp3]< Exp3 @ "-" Exp2 >
-[RULE: 4][CLAUSE: 2]
+[RULE: 4]
 	token: "-" -> [37][Exp3]< Exp3 "-" @ Exp2 >
+		+ Token(1)
 
-[41][Exp3]<< !Exp2 @ >>
-[RULE: 4][CLAUSE: 0]
+[41][Exp3]<! !Exp2 @ !>
+[RULE: 4]
 	ending -> [34][Exp3] END [ENDING]
-		- EndObject()
+		+ StackEnd()
 	leftrec -> [39][Exp3]< Exp3 @ "+" Exp2 >
-		- EndObject()
-		- LriStore()
-		- BeginObject(Binary)
-		- LriFetch()
-		+ Field(Binary::left)
+		+ StackEnd()
+		+ StackBegin()
+		+ StackSlot(0)
 	leftrec -> [40][Exp3]< Exp3 @ "-" Exp2 >
-		- EndObject()
-		- LriStore()
-		- BeginObject(Binary)
-		- LriFetch()
-		+ Field(Binary::left)
+		+ StackEnd()
+		+ StackBegin()
+		+ StackSlot(0)
 
 [42][Exp4] BEGIN 
-[RULE: 5][CLAUSE: -1]
-	rule: Exp3 -> [56][Exp4]<< !Exp3 @ >>
-		- DelayFieldAssignment()
-		+ ReopenObject()
+[RULE: 5]
+	rule: Exp3 -> [56][Exp4]<! !Exp3 @ !>
+		+ StackBegin()
 
 [43][Exp4] END [ENDING]
-[RULE: 5][CLAUSE: -1]
+[RULE: 5]
 
 [44][Exp4]< Exp4 "<" @ Exp3 >
-[RULE: 5][CLAUSE: 1]
+[RULE: 5]
 	rule: Exp3 -> [45][Exp4]< Exp4 "<" Exp3 @ >
-		+ Field(Binary::right)
+		+ StackSlot(2)
 
 [45][Exp4]< Exp4 "<" Exp3 @ >
-[RULE: 5][CLAUSE: 1]
+[RULE: 5]
 	ending -> [43][Exp4] END [ENDING]
-		- EnumItem(6)
-		- Field(Binary::op)
-		- EndObject()
+		+ EnumItem(6, 3)
+		+ CreateObject(Binary)
+		+ Field(Binary::left, 0)
+		+ Field(Binary::right, 2)
+		+ Field(Binary::op, 3)
+		+ StackEnd()
 	leftrec -> [52][Exp4]< Exp4 @ "<" Exp3 >
-		- EnumItem(6)
-		- Field(Binary::op)
-		- EndObject()
-		- LriStore()
-		- BeginObject(Binary)
-		- LriFetch()
-		+ Field(Binary::left)
+		+ EnumItem(6, 3)
+		+ CreateObject(Binary)
+		+ Field(Binary::left, 0)
+		+ Field(Binary::right, 2)
+		+ Field(Binary::op, 3)
+		+ StackEnd()
+		+ StackBegin()
+		+ StackSlot(0)
 	leftrec -> [53][Exp4]< Exp4 @ "<=" Exp3 >
-		- EnumItem(6)
-		- Field(Binary::op)
-		- EndObject()
-		- LriStore()
-		- BeginObject(Binary)
-		- LriFetch()
-		+ Field(Binary::left)
+		+ EnumItem(6, 3)
+		+ CreateObject(Binary)
+		+ Field(Binary::left, 0)
+		+ Field(Binary::right, 2)
+		+ Field(Binary::op, 3)
+		+ StackEnd()
+		+ StackBegin()
+		+ StackSlot(0)
 	leftrec -> [54][Exp4]< Exp4 @ ">" Exp3 >
-		- EnumItem(6)
-		- Field(Binary::op)
-		- EndObject()
-		- LriStore()
-		- BeginObject(Binary)
-		- LriFetch()
-		+ Field(Binary::left)
+		+ EnumItem(6, 3)
+		+ CreateObject(Binary)
+		+ Field(Binary::left, 0)
+		+ Field(Binary::right, 2)
+		+ Field(Binary::op, 3)
+		+ StackEnd()
+		+ StackBegin()
+		+ StackSlot(0)
 	leftrec -> [55][Exp4]< Exp4 @ ">=" Exp3 >
-		- EnumItem(6)
-		- Field(Binary::op)
-		- EndObject()
-		- LriStore()
-		- BeginObject(Binary)
-		- LriFetch()
-		+ Field(Binary::left)
+		+ EnumItem(6, 3)
+		+ CreateObject(Binary)
+		+ Field(Binary::left, 0)
+		+ Field(Binary::right, 2)
+		+ Field(Binary::op, 3)
+		+ StackEnd()
+		+ StackBegin()
+		+ StackSlot(0)
 
 [46][Exp4]< Exp4 "<=" @ Exp3 >
-[RULE: 5][CLAUSE: 2]
+[RULE: 5]
 	rule: Exp3 -> [47][Exp4]< Exp4 "<=" Exp3 @ >
-		+ Field(Binary::right)
+		+ StackSlot(2)
 
 [47][Exp4]< Exp4 "<=" Exp3 @ >
-[RULE: 5][CLAUSE: 2]
+[RULE: 5]
 	ending -> [43][Exp4] END [ENDING]
-		- EnumItem(7)
-		- Field(Binary::op)
-		- EndObject()
+		+ EnumItem(7, 3)
+		+ CreateObject(Binary)
+		+ Field(Binary::left, 0)
+		+ Field(Binary::right, 2)
+		+ Field(Binary::op, 3)
+		+ StackEnd()
 	leftrec -> [52][Exp4]< Exp4 @ "<" Exp3 >
-		- EnumItem(7)
-		- Field(Binary::op)
-		- EndObject()
-		- LriStore()
-		- BeginObject(Binary)
-		- LriFetch()
-		+ Field(Binary::left)
+		+ EnumItem(7, 3)
+		+ CreateObject(Binary)
+		+ Field(Binary::left, 0)
+		+ Field(Binary::right, 2)
+		+ Field(Binary::op, 3)
+		+ StackEnd()
+		+ StackBegin()
+		+ StackSlot(0)
 	leftrec -> [53][Exp4]< Exp4 @ "<=" Exp3 >
-		- EnumItem(7)
-		- Field(Binary::op)
-		- EndObject()
-		- LriStore()
-		- BeginObject(Binary)
-		- LriFetch()
-		+ Field(Binary::left)
+		+ EnumItem(7, 3)
+		+ CreateObject(Binary)
+		+ Field(Binary::left, 0)
+		+ Field(Binary::right, 2)
+		+ Field(Binary::op, 3)
+		+ StackEnd()
+		+ StackBegin()
+		+ StackSlot(0)
 	leftrec -> [54][Exp4]< Exp4 @ ">" Exp3 >
-		- EnumItem(7)
-		- Field(Binary::op)
-		- EndObject()
-		- LriStore()
-		- BeginObject(Binary)
-		- LriFetch()
-		+ Field(Binary::left)
+		+ EnumItem(7, 3)
+		+ CreateObject(Binary)
+		+ Field(Binary::left, 0)
+		+ Field(Binary::right, 2)
+		+ Field(Binary::op, 3)
+		+ StackEnd()
+		+ StackBegin()
+		+ StackSlot(0)
 	leftrec -> [55][Exp4]< Exp4 @ ">=" Exp3 >
-		- EnumItem(7)
-		- Field(Binary::op)
-		- EndObject()
-		- LriStore()
-		- BeginObject(Binary)
-		- LriFetch()
-		+ Field(Binary::left)
+		+ EnumItem(7, 3)
+		+ CreateObject(Binary)
+		+ Field(Binary::left, 0)
+		+ Field(Binary::right, 2)
+		+ Field(Binary::op, 3)
+		+ StackEnd()
+		+ StackBegin()
+		+ StackSlot(0)
 
 [48][Exp4]< Exp4 ">" @ Exp3 >
-[RULE: 5][CLAUSE: 3]
+[RULE: 5]
 	rule: Exp3 -> [49][Exp4]< Exp4 ">" Exp3 @ >
-		+ Field(Binary::right)
+		+ StackSlot(2)
 
 [49][Exp4]< Exp4 ">" Exp3 @ >
-[RULE: 5][CLAUSE: 3]
+[RULE: 5]
 	ending -> [43][Exp4] END [ENDING]
-		- EnumItem(4)
-		- Field(Binary::op)
-		- EndObject()
+		+ EnumItem(4, 3)
+		+ CreateObject(Binary)
+		+ Field(Binary::left, 0)
+		+ Field(Binary::right, 2)
+		+ Field(Binary::op, 3)
+		+ StackEnd()
 	leftrec -> [52][Exp4]< Exp4 @ "<" Exp3 >
-		- EnumItem(4)
-		- Field(Binary::op)
-		- EndObject()
-		- LriStore()
-		- BeginObject(Binary)
-		- LriFetch()
-		+ Field(Binary::left)
+		+ EnumItem(4, 3)
+		+ CreateObject(Binary)
+		+ Field(Binary::left, 0)
+		+ Field(Binary::right, 2)
+		+ Field(Binary::op, 3)
+		+ StackEnd()
+		+ StackBegin()
+		+ StackSlot(0)
 	leftrec -> [53][Exp4]< Exp4 @ "<=" Exp3 >
-		- EnumItem(4)
-		- Field(Binary::op)
-		- EndObject()
-		- LriStore()
-		- BeginObject(Binary)
-		- LriFetch()
-		+ Field(Binary::left)
+		+ EnumItem(4, 3)
+		+ CreateObject(Binary)
+		+ Field(Binary::left, 0)
+		+ Field(Binary::right, 2)
+		+ Field(Binary::op, 3)
+		+ StackEnd()
+		+ StackBegin()
+		+ StackSlot(0)
 	leftrec -> [54][Exp4]< Exp4 @ ">" Exp3 >
-		- EnumItem(4)
-		- Field(Binary::op)
-		- EndObject()
-		- LriStore()
-		- BeginObject(Binary)
-		- LriFetch()
-		+ Field(Binary::left)
+		+ EnumItem(4, 3)
+		+ CreateObject(Binary)
+		+ Field(Binary::left, 0)
+		+ Field(Binary::right, 2)
+		+ Field(Binary::op, 3)
+		+ StackEnd()
+		+ StackBegin()
+		+ StackSlot(0)
 	leftrec -> [55][Exp4]< Exp4 @ ">=" Exp3 >
-		- EnumItem(4)
-		- Field(Binary::op)
-		- EndObject()
-		- LriStore()
-		- BeginObject(Binary)
-		- LriFetch()
-		+ Field(Binary::left)
+		+ EnumItem(4, 3)
+		+ CreateObject(Binary)
+		+ Field(Binary::left, 0)
+		+ Field(Binary::right, 2)
+		+ Field(Binary::op, 3)
+		+ StackEnd()
+		+ StackBegin()
+		+ StackSlot(0)
 
 [50][Exp4]< Exp4 ">=" @ Exp3 >
-[RULE: 5][CLAUSE: 4]
+[RULE: 5]
 	rule: Exp3 -> [51][Exp4]< Exp4 ">=" Exp3 @ >
-		+ Field(Binary::right)
+		+ StackSlot(2)
 
 [51][Exp4]< Exp4 ">=" Exp3 @ >
-[RULE: 5][CLAUSE: 4]
+[RULE: 5]
 	ending -> [43][Exp4] END [ENDING]
-		- EnumItem(5)
-		- Field(Binary::op)
-		- EndObject()
+		+ EnumItem(5, 3)
+		+ CreateObject(Binary)
+		+ Field(Binary::left, 0)
+		+ Field(Binary::right, 2)
+		+ Field(Binary::op, 3)
+		+ StackEnd()
 	leftrec -> [52][Exp4]< Exp4 @ "<" Exp3 >
-		- EnumItem(5)
-		- Field(Binary::op)
-		- EndObject()
-		- LriStore()
-		- BeginObject(Binary)
-		- LriFetch()
-		+ Field(Binary::left)
+		+ EnumItem(5, 3)
+		+ CreateObject(Binary)
+		+ Field(Binary::left, 0)
+		+ Field(Binary::right, 2)
+		+ Field(Binary::op, 3)
+		+ StackEnd()
+		+ StackBegin()
+		+ StackSlot(0)
 	leftrec -> [53][Exp4]< Exp4 @ "<=" Exp3 >
-		- EnumItem(5)
-		- Field(Binary::op)
-		- EndObject()
-		- LriStore()
-		- BeginObject(Binary)
-		- LriFetch()
-		+ Field(Binary::left)
+		+ EnumItem(5, 3)
+		+ CreateObject(Binary)
+		+ Field(Binary::left, 0)
+		+ Field(Binary::right, 2)
+		+ Field(Binary::op, 3)
+		+ StackEnd()
+		+ StackBegin()
+		+ StackSlot(0)
 	leftrec -> [54][Exp4]< Exp4 @ ">" Exp3 >
-		- EnumItem(5)
-		- Field(Binary::op)
-		- EndObject()
-		- LriStore()
-		- BeginObject(Binary)
-		- LriFetch()
-		+ Field(Binary::left)
+		+ EnumItem(5, 3)
+		+ CreateObject(Binary)
+		+ Field(Binary::left, 0)
+		+ Field(Binary::right, 2)
+		+ Field(Binary::op, 3)
+		+ StackEnd()
+		+ StackBegin()
+		+ StackSlot(0)
 	leftrec -> [55][Exp4]< Exp4 @ ">=" Exp3 >
-		- EnumItem(5)
-		- Field(Binary::op)
-		- EndObject()
-		- LriStore()
-		- BeginObject(Binary)
-		- LriFetch()
-		+ Field(Binary::left)
+		+ EnumItem(5, 3)
+		+ CreateObject(Binary)
+		+ Field(Binary::left, 0)
+		+ Field(Binary::right, 2)
+		+ Field(Binary::op, 3)
+		+ StackEnd()
+		+ StackBegin()
+		+ StackSlot(0)
 
 [52][Exp4]< Exp4 @ "<" Exp3 >
-[RULE: 5][CLAUSE: 1]
+[RULE: 5]
 	token: "<" -> [44][Exp4]< Exp4 "<" @ Exp3 >
+		+ Token(1)
 
 [53][Exp4]< Exp4 @ "<=" Exp3 >
-[RULE: 5][CLAUSE: 2]
+[RULE: 5]
 	token: "<=" -> [46][Exp4]< Exp4 "<=" @ Exp3 >
+		+ Token(1)
 
 [54][Exp4]< Exp4 @ ">" Exp3 >
-[RULE: 5][CLAUSE: 3]
+[RULE: 5]
 	token: ">" -> [48][Exp4]< Exp4 ">" @ Exp3 >
+		+ Token(1)
 
 [55][Exp4]< Exp4 @ ">=" Exp3 >
-[RULE: 5][CLAUSE: 4]
+[RULE: 5]
 	token: ">=" -> [50][Exp4]< Exp4 ">=" @ Exp3 >
+		+ Token(1)
 
-[56][Exp4]<< !Exp3 @ >>
-[RULE: 5][CLAUSE: 0]
+[56][Exp4]<! !Exp3 @ !>
+[RULE: 5]
 	ending -> [43][Exp4] END [ENDING]
-		- EndObject()
+		+ StackEnd()
 	leftrec -> [52][Exp4]< Exp4 @ "<" Exp3 >
-		- EndObject()
-		- LriStore()
-		- BeginObject(Binary)
-		- LriFetch()
-		+ Field(Binary::left)
+		+ StackEnd()
+		+ StackBegin()
+		+ StackSlot(0)
 	leftrec -> [53][Exp4]< Exp4 @ "<=" Exp3 >
-		- EndObject()
-		- LriStore()
-		- BeginObject(Binary)
-		- LriFetch()
-		+ Field(Binary::left)
+		+ StackEnd()
+		+ StackBegin()
+		+ StackSlot(0)
 	leftrec -> [54][Exp4]< Exp4 @ ">" Exp3 >
-		- EndObject()
-		- LriStore()
-		- BeginObject(Binary)
-		- LriFetch()
-		+ Field(Binary::left)
+		+ StackEnd()
+		+ StackBegin()
+		+ StackSlot(0)
 	leftrec -> [55][Exp4]< Exp4 @ ">=" Exp3 >
-		- EndObject()
-		- LriStore()
-		- BeginObject(Binary)
-		- LriFetch()
-		+ Field(Binary::left)
+		+ StackEnd()
+		+ StackBegin()
+		+ StackSlot(0)
 
 [57][Exp5] BEGIN 
-[RULE: 6][CLAUSE: -1]
-	rule: Exp4 -> [65][Exp5]<< !Exp4 @ >>
-		- DelayFieldAssignment()
-		+ ReopenObject()
+[RULE: 6]
+	rule: Exp4 -> [65][Exp5]<! !Exp4 @ !>
+		+ StackBegin()
 
 [58][Exp5] END [ENDING]
-[RULE: 6][CLAUSE: -1]
+[RULE: 6]
 
 [59][Exp5]< Exp5 "!=" @ Exp4 >
-[RULE: 6][CLAUSE: 2]
+[RULE: 6]
 	rule: Exp4 -> [60][Exp5]< Exp5 "!=" Exp4 @ >
-		+ Field(Binary::right)
+		+ StackSlot(2)
 
 [60][Exp5]< Exp5 "!=" Exp4 @ >
-[RULE: 6][CLAUSE: 2]
+[RULE: 6]
 	ending -> [58][Exp5] END [ENDING]
-		- EnumItem(9)
-		- Field(Binary::op)
-		- EndObject()
+		+ EnumItem(9, 3)
+		+ CreateObject(Binary)
+		+ Field(Binary::left, 0)
+		+ Field(Binary::right, 2)
+		+ Field(Binary::op, 3)
+		+ StackEnd()
 	leftrec -> [63][Exp5]< Exp5 @ "!=" Exp4 >
-		- EnumItem(9)
-		- Field(Binary::op)
-		- EndObject()
-		- LriStore()
-		- BeginObject(Binary)
-		- LriFetch()
-		+ Field(Binary::left)
+		+ EnumItem(9, 3)
+		+ CreateObject(Binary)
+		+ Field(Binary::left, 0)
+		+ Field(Binary::right, 2)
+		+ Field(Binary::op, 3)
+		+ StackEnd()
+		+ StackBegin()
+		+ StackSlot(0)
 	leftrec -> [64][Exp5]< Exp5 @ "==" Exp4 >
-		- EnumItem(9)
-		- Field(Binary::op)
-		- EndObject()
-		- LriStore()
-		- BeginObject(Binary)
-		- LriFetch()
-		+ Field(Binary::left)
+		+ EnumItem(9, 3)
+		+ CreateObject(Binary)
+		+ Field(Binary::left, 0)
+		+ Field(Binary::right, 2)
+		+ Field(Binary::op, 3)
+		+ StackEnd()
+		+ StackBegin()
+		+ StackSlot(0)
 
 [61][Exp5]< Exp5 "==" @ Exp4 >
-[RULE: 6][CLAUSE: 1]
+[RULE: 6]
 	rule: Exp4 -> [62][Exp5]< Exp5 "==" Exp4 @ >
-		+ Field(Binary::right)
+		+ StackSlot(2)
 
 [62][Exp5]< Exp5 "==" Exp4 @ >
-[RULE: 6][CLAUSE: 1]
+[RULE: 6]
 	ending -> [58][Exp5] END [ENDING]
-		- EnumItem(8)
-		- Field(Binary::op)
-		- EndObject()
+		+ EnumItem(8, 3)
+		+ CreateObject(Binary)
+		+ Field(Binary::left, 0)
+		+ Field(Binary::right, 2)
+		+ Field(Binary::op, 3)
+		+ StackEnd()
 	leftrec -> [63][Exp5]< Exp5 @ "!=" Exp4 >
-		- EnumItem(8)
-		- Field(Binary::op)
-		- EndObject()
-		- LriStore()
-		- BeginObject(Binary)
-		- LriFetch()
-		+ Field(Binary::left)
+		+ EnumItem(8, 3)
+		+ CreateObject(Binary)
+		+ Field(Binary::left, 0)
+		+ Field(Binary::right, 2)
+		+ Field(Binary::op, 3)
+		+ StackEnd()
+		+ StackBegin()
+		+ StackSlot(0)
 	leftrec -> [64][Exp5]< Exp5 @ "==" Exp4 >
-		- EnumItem(8)
-		- Field(Binary::op)
-		- EndObject()
-		- LriStore()
-		- BeginObject(Binary)
-		- LriFetch()
-		+ Field(Binary::left)
+		+ EnumItem(8, 3)
+		+ CreateObject(Binary)
+		+ Field(Binary::left, 0)
+		+ Field(Binary::right, 2)
+		+ Field(Binary::op, 3)
+		+ StackEnd()
+		+ StackBegin()
+		+ StackSlot(0)
 
 [63][Exp5]< Exp5 @ "!=" Exp4 >
-[RULE: 6][CLAUSE: 2]
+[RULE: 6]
 	token: "!=" -> [59][Exp5]< Exp5 "!=" @ Exp4 >
+		+ Token(1)
 
 [64][Exp5]< Exp5 @ "==" Exp4 >
-[RULE: 6][CLAUSE: 1]
+[RULE: 6]
 	token: "==" -> [61][Exp5]< Exp5 "==" @ Exp4 >
+		+ Token(1)
 
-[65][Exp5]<< !Exp4 @ >>
-[RULE: 6][CLAUSE: 0]
+[65][Exp5]<! !Exp4 @ !>
+[RULE: 6]
 	ending -> [58][Exp5] END [ENDING]
-		- EndObject()
+		+ StackEnd()
 	leftrec -> [63][Exp5]< Exp5 @ "!=" Exp4 >
-		- EndObject()
-		- LriStore()
-		- BeginObject(Binary)
-		- LriFetch()
-		+ Field(Binary::left)
+		+ StackEnd()
+		+ StackBegin()
+		+ StackSlot(0)
 	leftrec -> [64][Exp5]< Exp5 @ "==" Exp4 >
-		- EndObject()
-		- LriStore()
-		- BeginObject(Binary)
-		- LriFetch()
-		+ Field(Binary::left)
+		+ StackEnd()
+		+ StackBegin()
+		+ StackSlot(0)
 
 [66][Exp] BEGIN 
-[RULE: 7][CLAUSE: -1]
+[RULE: 7]
 	token: "(" -> [68][Exp]< "(" @ { Arg ; "," } ")" "->" Exp >
-		- BeginObject(Func)
+		+ StackBegin()
+		+ Token(0)
 	token: "let" -> [74][Exp]< "let" @ ID "<-" Exp "in" Exp >
-		- BeginObject(LetExpr)
-	rule: Exp5 -> [80][Exp]<< !Exp5 @ >>
-		- DelayFieldAssignment()
+		+ StackBegin()
+		+ Token(0)
+	rule: Exp5 -> [80][Exp]<! !Exp5 @ !>
+		+ StackBegin()
 
 [67][Exp] END [ENDING]
-[RULE: 7][CLAUSE: -1]
+[RULE: 7]
 
 [68][Exp]< "(" @ { Arg ; "," } ")" "->" Exp >
-[RULE: 7][CLAUSE: 1]
+[RULE: 7]
 	token: ")" -> [72][Exp]< "(" { Arg ; "," } ")" @ "->" Exp >
+		+ Token(3)
 	rule: Arg -> [73][Exp]< "(" { Arg @ ; "," } ")" "->" Exp >
-		+ Field(Func::args)
+		+ StackSlot(1)
 
 [69][Exp]< "(" { Arg ; "," @ } ")" "->" Exp >
-[RULE: 7][CLAUSE: 1]
+[RULE: 7]
 	rule: Arg -> [73][Exp]< "(" { Arg @ ; "," } ")" "->" Exp >
-		+ Field(Func::args)
+		+ StackSlot(1)
 
 [70][Exp]< "(" { Arg ; "," } ")" "->" @ Exp >
-[RULE: 7][CLAUSE: 1]
+[RULE: 7]
 	rule: Exp -> [71][Exp]< "(" { Arg ; "," } ")" "->" Exp @ >
-		+ Field(Func::value)
+		+ StackSlot(5)
 
 [71][Exp]< "(" { Arg ; "," } ")" "->" Exp @ >
-[RULE: 7][CLAUSE: 1]
+[RULE: 7]
 	ending -> [67][Exp] END [ENDING]
-		- EndObject()
+		+ CreateObject(Func)
+		+ Field(Func::args, 1)
+		+ Field(Func::value, 5)
+		+ StackEnd()
 
 [72][Exp]< "(" { Arg ; "," } ")" @ "->" Exp >
-[RULE: 7][CLAUSE: 1]
+[RULE: 7]
 	token: "->" -> [70][Exp]< "(" { Arg ; "," } ")" "->" @ Exp >
+		+ Token(4)
 
 [73][Exp]< "(" { Arg @ ; "," } ")" "->" Exp >
-[RULE: 7][CLAUSE: 1]
+[RULE: 7]
 	token: ")" -> [72][Exp]< "(" { Arg ; "," } ")" @ "->" Exp >
+		+ Token(3)
 	token: "," -> [69][Exp]< "(" { Arg ; "," @ } ")" "->" Exp >
+		+ Token(2)
 
 [74][Exp]< "let" @ ID "<-" Exp "in" Exp >
-[RULE: 7][CLAUSE: 2]
+[RULE: 7]
 	token: ID -> [79][Exp]< "let" ID @ "<-" Exp "in" Exp >
-		+ Token()
-		+ Field(LetExpr::name)
+		+ Token(1)
 
 [75][Exp]< "let" ID "<-" @ Exp "in" Exp >
-[RULE: 7][CLAUSE: 2]
+[RULE: 7]
 	rule: Exp -> [78][Exp]< "let" ID "<-" Exp @ "in" Exp >
-		+ Field(LetExpr::value)
+		+ StackSlot(3)
 
 [76][Exp]< "let" ID "<-" Exp "in" @ Exp >
-[RULE: 7][CLAUSE: 2]
+[RULE: 7]
 	rule: Exp -> [77][Exp]< "let" ID "<-" Exp "in" Exp @ >
-		+ Field(LetExpr::result)
+		+ StackSlot(5)
 
 [77][Exp]< "let" ID "<-" Exp "in" Exp @ >
-[RULE: 7][CLAUSE: 2]
+[RULE: 7]
 	ending -> [67][Exp] END [ENDING]
-		- EndObject()
+		+ CreateObject(LetExpr)
+		+ Field(LetExpr::name, 1)
+		+ Field(LetExpr::value, 3)
+		+ Field(LetExpr::result, 5)
+		+ StackEnd()
 
 [78][Exp]< "let" ID "<-" Exp @ "in" Exp >
-[RULE: 7][CLAUSE: 2]
+[RULE: 7]
 	token: "in" -> [76][Exp]< "let" ID "<-" Exp "in" @ Exp >
+		+ Token(4)
 
 [79][Exp]< "let" ID @ "<-" Exp "in" Exp >
-[RULE: 7][CLAUSE: 2]
+[RULE: 7]
 	token: "<-" -> [75][Exp]< "let" ID "<-" @ Exp "in" Exp >
+		+ Token(2)
 
-[80][Exp]<< !Exp5 @ >>
-[RULE: 7][CLAUSE: 0]
+[80][Exp]<! !Exp5 @ !>
+[RULE: 7]
 	ending -> [67][Exp] END [ENDING]
-		- ReopenObject()
-		- EndObject()
+		+ StackEnd()
 
 [81][Import] BEGIN 
-[RULE: 8][CLAUSE: -1]
+[RULE: 8]
 	token: "import" -> [83][Import]< "import" @ ID >
-		- BeginObject(Import)
+		+ StackBegin()
+		+ Token(0)
 
 [82][Import] END [ENDING]
-[RULE: 8][CLAUSE: -1]
+[RULE: 8]
 
 [83][Import]< "import" @ ID >
-[RULE: 8][CLAUSE: 0]
+[RULE: 8]
 	token: ID -> [84][Import]< "import" ID @ >
-		+ Token()
-		+ Field(Import::name)
+		+ Token(1)
 
 [84][Import]< "import" ID @ >
-[RULE: 8][CLAUSE: 0]
+[RULE: 8]
 	ending -> [82][Import] END [ENDING]
-		- EndObject()
+		+ CreateObject(Import)
+		+ Field(Import::name, 1)
+		+ StackEnd()
 
 [85][Module] BEGIN 
-[RULE: 9][CLAUSE: -1]
+[RULE: 9]
 	token: "export" -> [88][Module]< { Import } "export" @ Exp >
-		- BeginObject(Module)
+		+ StackBegin()
+		+ Token(1)
 	rule: Import -> [87][Module]< { Import @ } "export" Exp >
-		- BeginObject(Module)
-		+ Field(Module::imports)
+		+ StackBegin()
+		+ StackSlot(0)
 
 [86][Module] END [ENDING]
-[RULE: 9][CLAUSE: -1]
+[RULE: 9]
 
 [87][Module]< { Import @ } "export" Exp >
-[RULE: 9][CLAUSE: 0]
+[RULE: 9]
 	token: "export" -> [88][Module]< { Import } "export" @ Exp >
+		+ Token(1)
 	rule: Import -> [87][Module]< { Import @ } "export" Exp >
-		+ Field(Module::imports)
+		+ StackSlot(0)
 
 [88][Module]< { Import } "export" @ Exp >
-[RULE: 9][CLAUSE: 0]
+[RULE: 9]
 	rule: Exp -> [89][Module]< { Import } "export" Exp @ >
-		+ Field(Module::exported)
+		+ StackSlot(2)
 
 [89][Module]< { Import } "export" Exp @ >
-[RULE: 9][CLAUSE: 0]
+[RULE: 9]
 	ending -> [86][Module] END [ENDING]
-		- EndObject()
+		+ CreateObject(Module)
+		+ Field(Module::imports, 0)
+		+ Field(Module::exported, 2)
+		+ StackEnd()
 

@@ -1,0 +1,9 @@
+﻿Plus
+  ::= "+" as Plus
+  ;
+
+@parser Module : Feature
+  ::= "entry_rule_priority" +[Plus:optional] Plus {Plus:tails} as BranchedOptionalFeature {type = Plus}
+  ::= "entry_rule_priority" -[Plus:optional] Plus {Plus:tails} as BranchedOptionalFeature {type = Minus}
+  ::= "entry_rule_priority" [Plus:optional] Plus {Plus:tails} as BranchedOptionalFeature {type = NoCompetition}
+  ;

@@ -30,6 +30,12 @@ Executable
 				vint32_t							count = 0;
 			};
 
+			struct CompetitionArray
+			{
+				vint32_t							start = -1;
+				vint32_t							count = 0;
+			};
+
 			struct ReturnIndexArray
 			{
 				vint32_t							start = -1;
@@ -42,11 +48,10 @@ Executable
 				vint32_t							count = 0;
 			};
 
-			enum class EdgePriority
+			struct CompetitionDesc
 			{
-				NoCompetition,
-				HighPriority,
-				LowPriority,
+				vint32_t							competitionId = -1;
+				bool								highPriority = false;
 			};
 
 			enum class ReturnRuleType
@@ -61,7 +66,7 @@ Executable
 			{
 				vint32_t							consumedRule = -1;
 				vint32_t							returnState = -1;
-				EdgePriority						priority = EdgePriority::NoCompetition;
+				CompetitionArray					competitions;
 				ReturnRuleType						ruleType = ReturnRuleType::Field;
 				InstructionArray					insAfterInput;
 			};
@@ -71,8 +76,7 @@ Executable
 				vint32_t							fromState = -1;
 				vint32_t							toState = -1;
 				StringLiteral						condition;
-				EdgePriority						priority = EdgePriority::NoCompetition;
-				InstructionArray					insBeforeInput;
+				CompetitionArray					competitions;
 				InstructionArray					insAfterInput;
 				ReturnIndexArray					returnIndices;
 			};
@@ -80,7 +84,6 @@ Executable
 			struct StateDesc
 			{
 				vint32_t							rule = -1;
-				vint32_t							clause = -1;
 				bool								endingState = false;
 			};
 
@@ -97,6 +100,7 @@ Executable
 				collections::Array<EdgeArray>		transitions;			// transitions[state * (TokenBegin + tokenCount) + input] = edges from state with specified input.
 				collections::Array<AstIns>			astInstructions;		// referenced by EdgeDesc::insBeforeInput and EdgeDesc::insAfterInput
 				collections::Array<vint32_t>		returnIndices;			// referenced by ReturnIndexArray
+				collections::Array<CompetitionDesc>	competitions;			// referenced by EdgeArray
 				collections::Array<ReturnDesc>		returns;				// referenced by Executable::returnIndices
 				collections::Array<EdgeDesc>		edges;					// referenced by EdgeArray
 				collections::Array<StateDesc>		states;					// referenced by returnState/fromState/toState

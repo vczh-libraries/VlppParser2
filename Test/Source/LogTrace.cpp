@@ -1,67 +1,8 @@
 #include "LogTrace.h"
+#include "LogAutomaton.h"
 
 extern WString GetTestOutputPath();
 extern FilePath GetOutputDir(const WString& parserName);
-
-/***********************************************************************
-LogInstruction (AstIns)
-***********************************************************************/
-
-void LogInstruction(
-	AstIns ins,
-	const Func<WString(vint32_t)>& typeName,
-	const Func<WString(vint32_t)>& fieldName,
-	StreamWriter& writer
-)
-{
-	switch (ins.type)
-	{
-	case AstInsType::Token:
-		writer.WriteLine(L"Token()");
-		break;
-	case AstInsType::EnumItem:
-		writer.WriteLine(L"EnumItem(" + itow(ins.param) + L")");
-		break;
-	case AstInsType::BeginObject:
-		writer.WriteLine(L"BeginObject(" + typeName(ins.param) + L")");
-		break;
-	case AstInsType::DelayFieldAssignment:
-		writer.WriteLine(L"DelayFieldAssignment()");
-		break;
-	case AstInsType::ReopenObject:
-		writer.WriteLine(L"ReopenObject()");
-		break;
-	case AstInsType::EndObject:
-		writer.WriteLine(L"EndObject()");
-		break;
-	case AstInsType::DiscardValue:
-		writer.WriteLine(L"DiscardValue()");
-		break;
-	case AstInsType::LriStore:
-		writer.WriteLine(L"LriStore()");
-		break;
-	case AstInsType::LriFetch:
-		writer.WriteLine(L"LriFetch()");
-		break;
-	case AstInsType::Field:
-		writer.WriteLine(L"Field(" + fieldName(ins.param) + L")");
-		break;
-	case AstInsType::FieldIfUnassigned:
-		writer.WriteLine(L"FieldIfUnassigned(" + fieldName(ins.param) + L")");
-		break;
-	case AstInsType::ResolveAmbiguity:
-		writer.WriteLine(L"ResolveAmbiguity(" + typeName(ins.param) + L", " + itow(ins.count) + L")");
-		break;
-	case AstInsType::AccumulatedDfa:
-		writer.WriteLine(L"AccumulatedDfa(" + itow(ins.count) + L")");
-		break;
-	case AstInsType::AccumulatedEoRo:
-		writer.WriteLine(L"AccumulatedEoRo(" + itow(ins.count) + L")");
-		break;
-	default:
-		writer.WriteLine(L"<UNKNOWN-INSTRUCTION>");
-	}
-}
 
 /***********************************************************************
 LogTraceInsReceiver
@@ -74,6 +15,8 @@ protected:
 	const Func<WString(vint32_t)>&		fieldName;
 	const Func<WString(vint32_t)>&		tokenName;
 	StreamWriter&						writer;
+	vint								indentation = 0;
+
 public:
 	LogTraceInsReceiver(
 		const Func<WString(vint32_t)>& _typeName,
@@ -89,6 +32,11 @@ public:
 
 	void Execute(AstIns instruction, const regex::RegexToken& token, vint32_t tokenIndex) override
 	{
+		if (instruction.type == AstInsType::StackEnd) indentation--;
+		for (vint i = 0; i < indentation; i++)
+		{
+			writer.WriteString(L"  ");
+		}
 		writer.WriteString(L"<[");
 		writer.WriteString(itow(tokenIndex));
 		writer.WriteString(L"]");
@@ -97,6 +45,7 @@ public:
 		writer.WriteString(token.reading, token.length);
 		writer.WriteString(L"> ");
 		LogInstruction(instruction, typeName, fieldName, writer);
+		if (instruction.type == AstInsType::StackBegin) indentation++;
 	}
 
 	Ptr<ParsingAstBase> Finished() override
@@ -177,13 +126,13 @@ void RenderTrace(
 			}
 		};
 
-		auto logObjRefLink = [&tm, &writer](Ref<InsExec_ObjRefLink> first)
+		auto logStackRefLink = [&tm, &writer](Ref<InsExec_StackRefLink> first)
 		{
 			auto ref = first;
 			while (ref != nullref)
 			{
 				if (ref != first) writer.WriteString(L", ");
-				auto link = tm.GetInsExec_ObjRefLink(ref);
+				auto link = tm.GetInsExec_StackRefLink(ref);
 				writer.WriteString(itow(link->id.handle));
 				ref = link->previous;
 			}
@@ -201,55 +150,46 @@ void RenderTrace(
 			}
 		};
 
-		auto logContext = [&tm, &writer, &logObjRefLink](InsExec_Context& context, const wchar_t* indentation)
+		auto logContext = [&tm, &writer, &logStackRefLink](InsExec_Context& context)
 		{
-			writer.WriteString(indentation);
-			if (context.createStack == nullref)
+			if (context.createStack != nullref)
 			{
-				writer.WriteLine(L"CSTop: []");
-			}
-			else
-			{
-				auto ieCSTop = tm.GetInsExec_CreateStack(context.createStack);
-				writer.WriteString(L"CSTop: [");
-				logObjRefLink(ieCSTop->objectIds);
-				writer.WriteLine(
-					L"] [" +
+				auto ieCSTop = tm.GetInsExec_StackArrayRefLink(context.createStack);
+				writer.WriteString(
+					L" CS(" + 
 					itow(ieCSTop->allocatedIndex) +
 					L" -> " +
 					itow(ieCSTop->previous.handle) +
-					L"]");
+					L") : ");
+
+				while (ieCSTop)
+				{
+					writer.WriteString(L"[");
+					logStackRefLink(ieCSTop->ids);
+					writer.WriteString(L"]");
+					ieCSTop = ieCSTop->previous == nullref ? nullptr : tm.GetInsExec_StackArrayRefLink(ieCSTop->previous);
+				}
 			}
 
-			writer.WriteString(indentation);
-			if (context.objectStack == nullref)
+			if (context.objectStack != nullref)
 			{
-				writer.WriteLine(L"OSTop: []");
-			}
-			else
-			{
-				auto ieOSTop = tm.GetInsExec_ObjectStack(context.objectStack);
-				writer.WriteString(L"OSTop: [");
-				logObjRefLink(ieOSTop->objectIds);
-				writer.WriteLine(
-					L"] [" +
+				auto ieOSTop = tm.GetInsExec_StackArrayRefLink(context.objectStack);
+				writer.WriteString(
+					L" OS(" +
 					itow(ieOSTop->allocatedIndex) +
 					L" -> " +
 					itow(ieOSTop->previous.handle) +
-					L"]");
-			}
+					L") : ");
 
-			writer.WriteString(indentation);
-			if (context.lriStoredObjects == nullref)
-			{
-				writer.WriteLine(L"LriStored: []");
+				while (ieOSTop)
+				{
+					writer.WriteString(L"[");
+					logStackRefLink(ieOSTop->ids);
+					writer.WriteString(L"]");
+					ieOSTop = ieOSTop->previous == nullref ? nullptr : tm.GetInsExec_StackArrayRefLink(ieOSTop->previous);
+				}
 			}
-			else
-			{
-				writer.WriteString(L"LriStored: [");
-				logObjRefLink(context.lriStoredObjects);
-				writer.WriteLine(L"]");
-			}
+			writer.WriteLine(L"");
 		};
 
 		/***********************************************************************
@@ -318,13 +258,6 @@ void RenderTrace(
 				writer.WriteLine(L"]");
 			}
 
-			if (traceExec->ambiguityCoveredInForward != nullref)
-			{
-				writer.WriteString(L"  AmbiguityCoveredInForward: [");
-				writer.WriteString(itow(traceExec->ambiguityCoveredInForward.handle));
-				writer.WriteLine(L"]");
-			}
-
 			if (traceExec->ambiguityDetected != nullref)
 			{
 				auto ta = tm.GetTraceAmbiguity(traceExec->ambiguityDetected);
@@ -335,11 +268,13 @@ void RenderTrace(
 				}
 				writer.WriteLine(L"]");
 				writer.WriteString(L"  objs: [");
-				logObjRefLink(ta->bottomObjectIds);
+				logStackRefLink(ta->bottomCreateObjectStacks);
 				writer.WriteLine(L"]");
 
 				writer.WriteLine(L"  first: " + itow(ta->firstTrace.handle) + L" prefix: " + itow(ta->prefix));
 				writer.WriteLine(L"  last: " + itow(ta->lastTrace.handle) + L" postfix: " + itow(ta->postfix));
+				writer.WriteLine(L"  branch: " + itow(ta->branchTrace.handle));
+				writer.WriteLine(L"  merge: " + itow(ta->mergeTrace.handle));
 			}
 		}
 
@@ -347,9 +282,9 @@ void RenderTrace(
 		{
 			if (trace->traceExecRef != nullref)
 			{
-				writer.WriteLine(L"[CONTEXT]");
+				writer.WriteString(L"[CONTEXT]:");
 				auto traceExec = tm.GetTraceExec(trace->traceExecRef);
-				logContext(traceExec->context, L"  ");
+				logContext(traceExec->context);
 			}
 			return;
 		}
@@ -382,7 +317,7 @@ void RenderTrace(
 				}
 				writer.WriteLine(
 					L"[RULE: " + itow(competition->ruleId) +
-					L"][CLAUSE: " + itow(competition->clauseId) + L"]");
+					L"][COMPID: " + itow(competition->competitionId) + L"]");
 				cid = competition->nextHoldCompetition;
 			}
 		}
@@ -392,110 +327,174 @@ void RenderTrace(
 		***********************************************************************/
 
 		writer.WriteLine(L"[AST-INSTRUCTIONS]:");
-		vint32_t c1 = 0, c2 = 0, c3 = 0;
+		vint32_t c1 = 0, c2 = 0;
 		if (trace->byEdge != -1)
 		{
 			auto& edgeDesc = executable.edges[trace->byEdge];
-			c1 = edgeDesc.insBeforeInput.count;
-			c2 = c1 + edgeDesc.insAfterInput.count;
-			c3 = c2;
+			c1 = edgeDesc.insAfterInput.count;
+			c2 = c1;
 		}
 		if (trace->executedReturnStack != nullref)
 		{
 			auto returnStack = tm.GetReturnStack(trace->executedReturnStack);
 			auto& returnDesc = executable.returns[returnStack->returnIndex];
-			c3 = c2 + returnDesc.insAfterInput.count;
+			c2 = c1 + returnDesc.insAfterInput.count;
 		}
 
-		for (vint32_t i = 0; i < c3; i++)
+		for (vint32_t i = 0; i < c2; i++)
 		{
 			if (trace->traceExecRef != nullref)
 			{
+				writer.WriteString(L"  @");
 				auto traceExec = tm.GetTraceExec(trace->traceExecRef);
 				auto insExec = tm.GetInsExec(traceExec->insExecRefs.start + i);
-				logContext(insExec->contextBeforeExecution, L"    ");
+				logContext(insExec->contextBeforeExecution);
 			}
 
 			AstIns ins;
 			if (i < c1)
 			{
 				auto& edgeDesc = executable.edges[trace->byEdge];
-				ins = executable.astInstructions[edgeDesc.insBeforeInput.start + i];
-				writer.WriteString(L"  - ");
-			}
-			else if (i < c2)
-			{
-				auto& edgeDesc = executable.edges[trace->byEdge];
-				ins = executable.astInstructions[edgeDesc.insAfterInput.start + (i - c1)];
+				ins = executable.astInstructions[edgeDesc.insAfterInput.start + i];
 				writer.WriteString(L"  + ");
 			}
 			else
 			{
 				auto returnStack = tm.GetReturnStack(trace->executedReturnStack);
 				auto& returnDesc = executable.returns[returnStack->returnIndex];
-				ins = executable.astInstructions[returnDesc.insAfterInput.start + (i - c2)];
+				ins = executable.astInstructions[returnDesc.insAfterInput.start + (i - c1)];
 				writer.WriteString(L"  > ");
 			}
-
 			LogInstruction(ins, typeName, fieldName, writer);
 
 			if (trace->traceExecRef != nullref)
 			{
 				auto traceExec = tm.GetTraceExec(trace->traceExecRef);
 				auto insExec = tm.GetInsExec(traceExec->insExecRefs.start + i);
-
-				if (insExec->createdObjectId != nullref)
+				auto currentStackRefLink = insExec->operatingStacks;
+				while (currentStackRefLink != nullref)
 				{
-					auto ieObject = tm.GetInsExec_Object(insExec->createdObjectId);
-					writer.WriteString(
-						L"      obj:" + itow(ieObject->allocatedIndex) +
-						L", new:" + itow(ieObject->createInsRef.trace.handle) +
-						L"@" + itow(ieObject->createInsRef.ins)
-					);
+					auto stackRefLink = tm.GetInsExec_StackRefLink(currentStackRefLink);
+					currentStackRefLink = stackRefLink->previous;
 
-					if (ieObject->topInsRef.trace != nullref)
+					auto ieObject = tm.GetInsExec_Stack(stackRefLink->id);
+
+					if (ins.type == AstInsType::StackEnd)
 					{
 						writer.WriteString(
-							L", top:" + itow(ieObject->topInsRef.trace.handle) +
-							L"@" + itow(ieObject->topInsRef.ins)
+							L"    obj+:" + itow(ieObject->allocatedIndex)
+						);
+					}
+					else if (ieObject->endWithCreateInsRefs == nullref)
+					{
+						writer.WriteString(
+							L"    obj!:" + itow(ieObject->allocatedIndex)
+						);
+					}
+					else
+					{
+						writer.WriteString(
+							L"    obj:" + itow(ieObject->allocatedIndex)
 						);
 					}
 
-					if (ieObject->bottomInsRefs != nullref)
+					writer.WriteString(L" :");
+					SortedList<WString> coTypeNames;
+					auto currentCreateObjectRefLink = ieObject->summarizing.indirectCreateObjectInsRefs;
+					while (currentCreateObjectRefLink != nullref)
 					{
-						writer.WriteString(L" bottom:[");
-						logInsRefLink(ieObject->bottomInsRefs);
-						writer.WriteString(L"]");
-					}
+						auto createObjectRefLink = tm.GetInsExec_InsRefLink(currentCreateObjectRefLink);
+						currentCreateObjectRefLink = createObjectRefLink->previous;
 
-					if (ieObject->assignedToObjectIds != nullref)
-					{
-						writer.WriteString(L" assignedTo:[");
-						logObjRefLink(ieObject->assignedToObjectIds);
-						writer.WriteString(L"]");
+						auto coInsRef = createObjectRefLink->insRef;
+						auto coTrace = tm.GetTrace(coInsRef.trace);
+						auto coTraceExec = tm.GetTraceExec(coTrace->traceExecRef);
+						auto&& coIns = tm.ReadInstruction(coInsRef.ins, coTraceExec->insLists);
+						auto name = typeName(coIns.param);
+						if (!coTypeNames.Contains(name))
+						{
+							coTypeNames.Add(name);
+						}
 					}
-
-					if (ieObject->dfaInsRefs != nullref)
+					for (auto&& name : coTypeNames)
 					{
-						writer.WriteString(L" dfas:[");
-						logInsRefLink(ieObject->dfaInsRefs);
-						writer.WriteString(L"]");
+						writer.WriteString(L" ");
+						writer.WriteString(name);
 					}
 					writer.WriteLine(L"");
-				}
 
-				if (insExec->objRefs != nullref)
-				{
-					writer.WriteString(L"      objRefs: ");
-					logObjRefLink(insExec->objRefs);
-					writer.WriteLine(L"");
-				}
+					if (ins.type == AstInsType::StackEnd)
+					{
+						writer.WriteString(
+							L"      begin:" + itow(ieObject->beginInsRef.trace.handle) +
+							L"@" + itow(ieObject->beginInsRef.ins)
+						);
 
-				if (insExec->eoInsRefs != nullref)
-				{
-					writer.WriteString(L"      eoInsRefs: ");
-					logInsRefLink(insExec->eoInsRefs);
-					writer.WriteLine(L"");
+						writer.WriteString(
+							L", top:" + itow(ieObject->summarizing.earliestLocalInsRef.trace.handle) +
+							L"@" + itow(ieObject->summarizing.earliestLocalInsRef.ins)
+						);
+
+						if (ieObject->summarizing.earliestStackInsRef != ieObject->summarizing.earliestLocalInsRef)
+						{
+							writer.WriteString(
+								L", stack:" + itow(ieObject->summarizing.earliestStackInsRef.trace.handle) +
+								L"@" + itow(ieObject->summarizing.earliestStackInsRef.ins)
+							);
+						}
+
+						if (ieObject->summarizing.earliestInsRef != ieObject->summarizing.earliestStackInsRef)
+						{
+							writer.WriteString(
+								L", lrec:" + itow(ieObject->summarizing.earliestInsRef.trace.handle) +
+								L"@" + itow(ieObject->summarizing.earliestInsRef.ins)
+							);
+						}
+
+						if (ieObject->useFromStacks != nullref)
+						{
+							writer.WriteString(L", use:[");
+							logStackRefLink(ieObject->useFromStacks);
+							writer.WriteString(L"]");
+						}
+
+						if (ieObject->fieldStacks != nullref)
+						{
+							writer.WriteString(L", field:[");
+							logStackRefLink(ieObject->fieldStacks);
+							writer.WriteString(L"]");
+						}
+
+						if (ieObject->summarizing.indirectCreateObjectInsRefs != nullref)
+						{
+							writer.WriteString(L", create!:[");
+							logInsRefLink(ieObject->summarizing.indirectCreateObjectInsRefs);
+							writer.WriteString(L"]");
+						}
+
+						if (ieObject->endWithCreateInsRefs != nullref)
+						{
+							writer.WriteString(L", end:[");
+							logInsRefLink(ieObject->endWithCreateInsRefs);
+							writer.WriteString(L"]");
+						}
+
+						if (ieObject->endWithReuseInsRefs != nullref)
+						{
+							writer.WriteString(L", end!:[");
+							logInsRefLink(ieObject->endWithReuseInsRefs);
+							writer.WriteString(L"]");
+						}
+
+						if (ieObject->summarizing.bottomInsRefs != ieObject->endWithCreateInsRefs && ieObject->summarizing.bottomInsRefs != ieObject->endWithReuseInsRefs)
+						{
+							writer.WriteString(L", endLref:[");
+							logInsRefLink(ieObject->summarizing.bottomInsRefs);
+							writer.WriteString(L"]");
+						}
+
+						writer.WriteLine(L"");
+					}
 				}
 
 				writer.WriteLine(L"");
@@ -504,8 +503,9 @@ void RenderTrace(
 
 		if (trace->traceExecRef != nullref)
 		{
+			writer.WriteString(L"  @");
 			auto traceExec = tm.GetTraceExec(trace->traceExecRef);
-			logContext(traceExec->context, L"    ");
+			logContext(traceExec->context);
 		}
 
 		/***********************************************************************
@@ -1227,7 +1227,6 @@ FilePath LogTraceManager(
 	const Func<WString(vint32_t)>& stateLabel
 )
 {
-	CHECK_ERROR(tm.concurrentCount > 0, L"Cannot log failed traces!");
 	Group<Trace*, WString> traceLogs;
 	{
 		SortedList<Trace*> logged;
@@ -1269,15 +1268,19 @@ FilePath LogTraceManager(
 	auto outputFile = outputDir / (L"Trace-" + itow((vint)traceProcessingPhase + 1) + L"[" + caseName + L"].txt");
 	auto content = GenerateToStream([&](StreamWriter& writer)
 	{
-		if (auto step = tm.GetInitialExecutionStep())
+		if (tm.concurrentCountBeforeError)
+		{
+			writer.WriteLine(L"================ FAILED TRACES ================");
+		}
+		else if (auto step = tm.GetInitialExecutionStep())
 		{
 			writer.WriteLine(L"================ EXECUTION STEPS ================");
 			while (step)
 			{
+				writer.WriteString(L"[" + itow(step->allocatedIndex) + L"]: ");
 				switch (step->type)
 				{
 				case ExecutionType::Instruction:
-					writer.WriteString(L"[" + itow(step->allocatedIndex) + L"]: ");
 					writer.WriteString(itow(step->et_i.startTrace));
 					writer.WriteChar(L'@');
 					writer.WriteString(itow(step->et_i.startIns));
@@ -1286,11 +1289,14 @@ FilePath LogTraceManager(
 					writer.WriteChar(L'@');
 					writer.WriteLine(itow(step->et_i.endIns));
 					break;
-				case ExecutionType::ResolveAmbiguity:
-					writer.WriteString(L"[" + itow(step->allocatedIndex) + L"]: ");
-					writer.WriteString(L"RA(");
-					writer.WriteString(itow(step->et_ra.count));
-					writer.WriteString(L", ");
+				case ExecutionType::RA_Begin:
+					writer.WriteLine(L"RA_Begin");
+					break;
+				case ExecutionType::RA_Branch:
+					writer.WriteLine(L"RA_Branch");
+					break;
+				case ExecutionType::RA_End:
+					writer.WriteString(L"RA_End(");
 					writer.WriteString(typeName(step->et_ra.type));
 					writer.WriteLine(L")");
 					break;

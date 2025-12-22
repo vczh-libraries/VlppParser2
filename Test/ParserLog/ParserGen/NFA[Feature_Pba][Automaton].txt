@@ -1,0 +1,198 @@
+﻿[0][Plus] BEGIN 
+[RULE: 0]
+	token: "+" -> [2][Plus]< "+" @ >
+		+ StackBegin()
+		+ Token(0)
+
+[1][Plus] END [ENDING]
+[RULE: 0]
+
+[2][Plus]< "+" @ >
+[RULE: 0]
+	ending -> [1][Plus] END [ENDING]
+		+ CreateObject(Plus)
+		+ StackEnd()
+
+[3][Lt] BEGIN 
+[RULE: 1]
+	token: "<" -> [5][Lt]< "<" @ >
+		+ StackBegin()
+		+ Token(0)
+
+[4][Lt] END [ENDING]
+[RULE: 1]
+
+[5][Lt]< "<" @ >
+[RULE: 1]
+	ending -> [4][Lt] END [ENDING]
+		+ CreateObject(Lt)
+		+ StackEnd()
+
+[6][Gt] BEGIN 
+[RULE: 2]
+	token: ">" -> [8][Gt]< ">" @ >
+		+ StackBegin()
+		+ Token(0)
+
+[7][Gt] END [ENDING]
+[RULE: 2]
+
+[8][Gt]< ">" @ >
+[RULE: 2]
+	ending -> [7][Gt] END [ENDING]
+		+ CreateObject(Gt)
+		+ StackEnd()
+
+[9][PbaBody] BEGIN 
+[RULE: 4]
+	token: "+" -> [2][Plus]< "+" @ >
+		+ StackBegin()
+		+ Token(0)
+		> rule: Plus -> [10][PbaBody] BEGIN [pm-lr]
+
+[10][PbaBody] BEGIN [pm-lr]
+[RULE: 4]
+	ending -> [11][PbaBody] END [ENDING]
+		+ StackBegin()
+		+ StackSlot(1)
+		+ CreateObject(PbaFeature)
+		+ Field(PbaFeature::optional, 0)
+		+ Field(PbaFeature::tails, 2)
+		+ StackEnd()
+	leftrec -> [12][PbaBody]< [ Plus @ ] Plus { Plus } >
+		+ StackBegin()
+		+ StackSlot(0)
+	leftrec -> [14][PbaBody]< [ Plus ] Plus @ { Plus } >[pm-dup]
+		+ StackBegin()
+		+ StackSlot(1)
+
+[11][PbaBody] END [ENDING]
+[RULE: 4]
+
+[12][PbaBody]< [ Plus @ ] Plus { Plus } >
+[RULE: 4]
+	token: "+" -> [2][Plus]< "+" @ >
+		+ StackBegin()
+		+ Token(0)
+		> rule: Plus -> [13][PbaBody]< [ Plus ] Plus @ { Plus } >
+			+ StackSlot(1)
+
+[13][PbaBody]< [ Plus ] Plus @ { Plus } >
+[RULE: 4]
+	ending -> [11][PbaBody] END [ENDING]
+		+ CreateObject(PbaFeature)
+		+ Field(PbaFeature::optional, 0)
+		+ Field(PbaFeature::tails, 2)
+		+ StackEnd()
+	token: "+" -> [2][Plus]< "+" @ >
+		+ StackBegin()
+		+ Token(0)
+		> rule: Plus -> [15][PbaBody]< [ Plus ] Plus { Plus @ } >
+			+ StackSlot(2)
+
+[14][PbaBody]< [ Plus ] Plus @ { Plus } >[pm-dup]
+[RULE: 4]
+	token: "+" -> [2][Plus]< "+" @ >
+		+ StackBegin()
+		+ Token(0)
+		> rule: Plus -> [15][PbaBody]< [ Plus ] Plus { Plus @ } >
+			+ StackSlot(2)
+
+[15][PbaBody]< [ Plus ] Plus { Plus @ } >
+[RULE: 4]
+	ending -> [11][PbaBody] END [ENDING]
+		+ CreateObject(PbaFeature)
+		+ Field(PbaFeature::optional, 0)
+		+ Field(PbaFeature::tails, 2)
+		+ StackEnd()
+	token: "+" -> [2][Plus]< "+" @ >
+		+ StackBegin()
+		+ Token(0)
+		> rule: Plus -> [15][PbaBody]< [ Plus ] Plus { Plus @ } >
+			+ StackSlot(2)
+
+[16][Pba] BEGIN 
+[RULE: 5]
+	token: "prefix_before_ambiguity" -> [18][Pba]<! "prefix_before_ambiguity" @ { Lt } ( Gt { Gt } ) !PbaBody !>
+		+ StackBegin()
+		+ Token(0)
+
+[17][Pba] END [ENDING]
+[RULE: 5]
+
+[18][Pba]<! "prefix_before_ambiguity" @ { Lt } ( Gt { Gt } ) !PbaBody !>
+[RULE: 5]
+	token: "<" -> [5][Lt]< "<" @ >
+		+ StackBegin()
+		+ Token(0)
+		> rule: Lt -> [19][Pba]<! "prefix_before_ambiguity" { Lt @ } ( Gt { Gt } ) !PbaBody !>
+			+ StackSlot(1)
+	token: ">" -> [8][Gt]< ">" @ >
+		+ StackBegin()
+		+ Token(0)
+		> rule: Gt -> [20][Pba]<! "prefix_before_ambiguity" { Lt } ( Gt @ { Gt } ) !PbaBody !>
+			+ StackSlot(2)
+
+[19][Pba]<! "prefix_before_ambiguity" { Lt @ } ( Gt { Gt } ) !PbaBody !>
+[RULE: 5]
+	token: "<" -> [5][Lt]< "<" @ >
+		+ StackBegin()
+		+ Token(0)
+		> rule: Lt -> [19][Pba]<! "prefix_before_ambiguity" { Lt @ } ( Gt { Gt } ) !PbaBody !>
+			+ StackSlot(1)
+	token: ">" -> [8][Gt]< ">" @ >
+		+ StackBegin()
+		+ Token(0)
+		> rule: Gt -> [20][Pba]<! "prefix_before_ambiguity" { Lt } ( Gt @ { Gt } ) !PbaBody !>
+			+ StackSlot(2)
+
+[20][Pba]<! "prefix_before_ambiguity" { Lt } ( Gt @ { Gt } ) !PbaBody !>
+[RULE: 5]
+	token: "+" -> [2][Plus]< "+" @ >
+		+ StackBegin()
+		+ Token(0)
+		> rule: PbaBody -> [22][Pba]<! "prefix_before_ambiguity" { Lt } ( Gt { Gt } ) !PbaBody @ !>
+		> rule: Plus -> [10][PbaBody] BEGIN [pm-lr]
+	token: ">" -> [8][Gt]< ">" @ >
+		+ StackBegin()
+		+ Token(0)
+		> rule: Gt -> [21][Pba]<! "prefix_before_ambiguity" { Lt } ( Gt { Gt @ } ) !PbaBody !>
+			+ StackSlot(3)
+
+[21][Pba]<! "prefix_before_ambiguity" { Lt } ( Gt { Gt @ } ) !PbaBody !>
+[RULE: 5]
+	token: "+" -> [2][Plus]< "+" @ >
+		+ StackBegin()
+		+ Token(0)
+		> rule: PbaBody -> [22][Pba]<! "prefix_before_ambiguity" { Lt } ( Gt { Gt } ) !PbaBody @ !>
+		> rule: Plus -> [10][PbaBody] BEGIN [pm-lr]
+	token: ">" -> [8][Gt]< ">" @ >
+		+ StackBegin()
+		+ Token(0)
+		> rule: Gt -> [21][Pba]<! "prefix_before_ambiguity" { Lt } ( Gt { Gt @ } ) !PbaBody !>
+			+ StackSlot(3)
+
+[22][Pba]<! "prefix_before_ambiguity" { Lt } ( Gt { Gt } ) !PbaBody @ !>
+[RULE: 5]
+	ending -> [17][Pba] END [ENDING]
+		+ Field(PbaFeature::lts, 1)
+		+ Field(PbaFeature::gts, 2)
+		+ Field(PbaFeature::gts, 3)
+		+ StackEnd()
+
+[23][Module] BEGIN 
+[RULE: 6]
+	token: "prefix_before_ambiguity" -> [18][Pba]<! "prefix_before_ambiguity" @ { Lt } ( Gt { Gt } ) !PbaBody !>
+		+ StackBegin()
+		+ Token(0)
+		> rule: Pba -> [25][Module]<! !Pba @ !>
+			+ StackBegin()
+
+[24][Module] END [ENDING]
+[RULE: 6]
+
+[25][Module]<! !Pba @ !>
+[RULE: 6]
+	ending -> [24][Module] END [ENDING]
+		+ StackEnd()
+

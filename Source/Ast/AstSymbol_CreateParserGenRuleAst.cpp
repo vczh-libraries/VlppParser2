@@ -152,41 +152,6 @@ CreateParserGenRuleAst
 				_ReuseClause->CreateProp(L"assignments")->SetPropType(AstPropType::Array, L"Assignment");
 
 				///////////////////////////////////////////////////////////////////////////////////
-				// Left Recursion Clauses
-				///////////////////////////////////////////////////////////////////////////////////
-
-				auto _Lrp = _ast->CreateClass(L"LeftRecursionPlaceholder");
-				_Lrp->CreateProp(L"flag")->SetPropType(AstPropType::Token);
-
-				auto _LrpClause = _ast->CreateClass(L"LeftRecursionPlaceholderClause");
-				_LrpClause->SetBaseClass(L"Clause");
-				_LrpClause->CreateProp(L"flags")->SetPropType(AstPropType::Array, L"LeftRecursionPlaceholder");
-
-				auto LriConfig = _ast->CreateEnum(L"LeftRecursionConfiguration");
-				LriConfig->CreateItem(L"Single");
-				LriConfig->CreateItem(L"Multiple");
-
-				auto LriContinuationType = _ast->CreateEnum(L"LeftRecursionInjectContinuationType");
-				LriContinuationType->CreateItem(L"Optional");
-				LriContinuationType->CreateItem(L"Required");
-
-				auto _LriContinuation = _ast->CreateClass(L"LeftRecursionInjectContinuation");
-				auto _LriClause = _ast->CreateClass(L"LeftRecursionInjectClause");
-
-				_LriContinuation->CreateProp(L"flags")->SetPropType(AstPropType::Array, L"LeftRecursionPlaceholder");
-				_LriContinuation->CreateProp(L"configuration")->SetPropType(AstPropType::Type, L"LeftRecursionConfiguration");
-				_LriContinuation->CreateProp(L"type")->SetPropType(AstPropType::Type, L"LeftRecursionInjectContinuationType");
-				_LriContinuation->CreateProp(L"injectionTargets")->SetPropType(AstPropType::Array, L"LeftRecursionInjectClause");
-
-				_LriClause->SetBaseClass(L"Clause");
-				_LriClause->CreateProp(L"rule")->SetPropType(AstPropType::Type, L"RefSyntax");
-				_LriClause->CreateProp(L"continuation")->SetPropType(AstPropType::Type, L"LeftRecursionInjectContinuation");
-
-				auto _PmClause = _ast->CreateClass(L"PrefixMergeClause");
-				_PmClause->SetBaseClass(L"Clause");
-				_PmClause->CreateProp(L"rule")->SetPropType(AstPropType::Type, L"RefSyntax");
-
-				///////////////////////////////////////////////////////////////////////////////////
 				// Rule
 				///////////////////////////////////////////////////////////////////////////////////
 

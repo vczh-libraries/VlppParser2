@@ -73,83 +73,6 @@ namespace vl::glr::parsergen::json_visitor
 		WriteToken(node->type);
 		EndField();
 	}
-	void RuleAstVisitor::PrintFields(GlrLeftRecursionInjectClause* node)
-	{
-		BeginField(vl::WString::Unmanaged(L"continuation"));
-		Print(node->continuation.Obj());
-		EndField();
-		BeginField(vl::WString::Unmanaged(L"rule"));
-		Print(node->rule.Obj());
-		EndField();
-	}
-	void RuleAstVisitor::PrintFields(GlrLeftRecursionInjectContinuation* node)
-	{
-		BeginField(vl::WString::Unmanaged(L"configuration"));
-		switch (node->configuration)
-		{
-		case vl::glr::parsergen::GlrLeftRecursionConfiguration::Multiple:
-			WriteString(vl::WString::Unmanaged(L"Multiple"));
-			break;
-		case vl::glr::parsergen::GlrLeftRecursionConfiguration::Single:
-			WriteString(vl::WString::Unmanaged(L"Single"));
-			break;
-		default:
-			WriteNull();
-		}
-		EndField();
-		BeginField(vl::WString::Unmanaged(L"flags"));
-		BeginArray();
-		for (auto&& listItem : node->flags)
-		{
-			BeginArrayItem();
-			Print(listItem.Obj());
-			EndArrayItem();
-		}
-		EndArray();
-		EndField();
-		BeginField(vl::WString::Unmanaged(L"injectionTargets"));
-		BeginArray();
-		for (auto&& listItem : node->injectionTargets)
-		{
-			BeginArrayItem();
-			Print(listItem.Obj());
-			EndArrayItem();
-		}
-		EndArray();
-		EndField();
-		BeginField(vl::WString::Unmanaged(L"type"));
-		switch (node->type)
-		{
-		case vl::glr::parsergen::GlrLeftRecursionInjectContinuationType::Optional:
-			WriteString(vl::WString::Unmanaged(L"Optional"));
-			break;
-		case vl::glr::parsergen::GlrLeftRecursionInjectContinuationType::Required:
-			WriteString(vl::WString::Unmanaged(L"Required"));
-			break;
-		default:
-			WriteNull();
-		}
-		EndField();
-	}
-	void RuleAstVisitor::PrintFields(GlrLeftRecursionPlaceholder* node)
-	{
-		BeginField(vl::WString::Unmanaged(L"flag"));
-		WriteToken(node->flag);
-		EndField();
-	}
-	void RuleAstVisitor::PrintFields(GlrLeftRecursionPlaceholderClause* node)
-	{
-		BeginField(vl::WString::Unmanaged(L"flags"));
-		BeginArray();
-		for (auto&& listItem : node->flags)
-		{
-			BeginArrayItem();
-			Print(listItem.Obj());
-			EndArrayItem();
-		}
-		EndArray();
-		EndField();
-	}
 	void RuleAstVisitor::PrintFields(GlrLoopSyntax* node)
 	{
 		BeginField(vl::WString::Unmanaged(L"delimiter"));
@@ -213,12 +136,6 @@ namespace vl::glr::parsergen::json_visitor
 		EndField();
 		BeginField(vl::WString::Unmanaged(L"type"));
 		WriteToken(node->type);
-		EndField();
-	}
-	void RuleAstVisitor::PrintFields(GlrPrefixMergeClause* node)
-	{
-		BeginField(vl::WString::Unmanaged(L"rule"));
-		Print(node->rule.Obj());
 		EndField();
 	}
 	void RuleAstVisitor::PrintFields(GlrPushConditionSyntax* node)
@@ -602,48 +519,6 @@ namespace vl::glr::parsergen::json_visitor
 		EndObject();
 	}
 
-	void RuleAstVisitor::Visit(GlrLeftRecursionPlaceholderClause* node)
-	{
-		if (!node)
-		{
-			WriteNull();
-			return;
-		}
-		BeginObject();
-		WriteType(vl::WString::Unmanaged(L"LeftRecursionPlaceholderClause"), node);
-		PrintFields(static_cast<GlrClause*>(node));
-		PrintFields(static_cast<GlrLeftRecursionPlaceholderClause*>(node));
-		EndObject();
-	}
-
-	void RuleAstVisitor::Visit(GlrLeftRecursionInjectClause* node)
-	{
-		if (!node)
-		{
-			WriteNull();
-			return;
-		}
-		BeginObject();
-		WriteType(vl::WString::Unmanaged(L"LeftRecursionInjectClause"), node);
-		PrintFields(static_cast<GlrClause*>(node));
-		PrintFields(static_cast<GlrLeftRecursionInjectClause*>(node));
-		EndObject();
-	}
-
-	void RuleAstVisitor::Visit(GlrPrefixMergeClause* node)
-	{
-		if (!node)
-		{
-			WriteNull();
-			return;
-		}
-		BeginObject();
-		WriteType(vl::WString::Unmanaged(L"PrefixMergeClause"), node);
-		PrintFields(static_cast<GlrClause*>(node));
-		PrintFields(static_cast<GlrPrefixMergeClause*>(node));
-		EndObject();
-	}
-
 	RuleAstVisitor::RuleAstVisitor(vl::stream::StreamWriter& _writer)
 		: vl::glr::JsonVisitorBase(_writer)
 	{
@@ -715,32 +590,6 @@ namespace vl::glr::parsergen::json_visitor
 		BeginObject();
 		WriteType(vl::WString::Unmanaged(L"Assignment"), node);
 		PrintFields(static_cast<GlrAssignment*>(node));
-		EndObject();
-	}
-
-	void RuleAstVisitor::Print(GlrLeftRecursionPlaceholder* node)
-	{
-		if (!node)
-		{
-			WriteNull();
-			return;
-		}
-		BeginObject();
-		WriteType(vl::WString::Unmanaged(L"LeftRecursionPlaceholder"), node);
-		PrintFields(static_cast<GlrLeftRecursionPlaceholder*>(node));
-		EndObject();
-	}
-
-	void RuleAstVisitor::Print(GlrLeftRecursionInjectContinuation* node)
-	{
-		if (!node)
-		{
-			WriteNull();
-			return;
-		}
-		BeginObject();
-		WriteType(vl::WString::Unmanaged(L"LeftRecursionInjectContinuation"), node);
-		PrintFields(static_cast<GlrLeftRecursionInjectContinuation*>(node));
 		EndObject();
 	}
 

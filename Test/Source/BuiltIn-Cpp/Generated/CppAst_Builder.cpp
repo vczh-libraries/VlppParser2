@@ -262,70 +262,70 @@ MakeDeclarationToResolve
 	}
 
 /***********************************************************************
-MakeDeclarator
-***********************************************************************/
-
-	MakeDeclarator& MakeDeclarator::advancedTypes(const vl::Ptr<CppAdvancedType>& value)
-	{
-		node->advancedTypes.Add(value);
-		return *this;
-	}
-
-	MakeDeclarator& MakeDeclarator::arguments(const vl::Ptr<CppGenericArguments>& value)
-	{
-		node->arguments = value;
-		return *this;
-	}
-
-	MakeDeclarator& MakeDeclarator::arrayParts(const vl::Ptr<CppDeclaratorArrayPart>& value)
-	{
-		node->arrayParts.Add(value);
-		return *this;
-	}
-
-	MakeDeclarator& MakeDeclarator::bitfield(const vl::Ptr<CppTypeOrExpr>& value)
-	{
-		node->bitfield = value;
-		return *this;
-	}
-
-	MakeDeclarator& MakeDeclarator::funcPart(const vl::Ptr<CppDeclaratorFunctionPart>& value)
-	{
-		node->funcPart = value;
-		return *this;
-	}
-
-	MakeDeclarator& MakeDeclarator::id(const vl::Ptr<CppIdentifier>& value)
-	{
-		node->id = value;
-		return *this;
-	}
-
-	MakeDeclarator& MakeDeclarator::innerDeclarator(const vl::Ptr<CppDeclarator>& value)
-	{
-		node->innerDeclarator = value;
-		return *this;
-	}
-
-	MakeDeclarator& MakeDeclarator::keywords(const vl::Ptr<CppDeclaratorKeyword>& value)
-	{
-		node->keywords.Add(value);
-		return *this;
-	}
-
-	MakeDeclarator& MakeDeclarator::variadic(const vl::WString& value)
-	{
-		node->variadic.value = value;
-		return *this;
-	}
-
-/***********************************************************************
 MakeDeclaratorArrayPart
 ***********************************************************************/
 
 	MakeDeclaratorArrayPart& MakeDeclaratorArrayPart::argument(const vl::Ptr<CppTypeOrExpr>& value)
 	{
 		node->argument = value;
+		return *this;
+	}
+
+/***********************************************************************
+MakeDeclaratorCommon
+***********************************************************************/
+
+	MakeDeclaratorCommon& MakeDeclaratorCommon::advancedTypes(const vl::Ptr<CppAdvancedType>& value)
+	{
+		node->advancedTypes.Add(value);
+		return *this;
+	}
+
+	MakeDeclaratorCommon& MakeDeclaratorCommon::arguments(const vl::Ptr<CppGenericArguments>& value)
+	{
+		node->arguments = value;
+		return *this;
+	}
+
+	MakeDeclaratorCommon& MakeDeclaratorCommon::arrayParts(const vl::Ptr<CppDeclaratorArrayPart>& value)
+	{
+		node->arrayParts.Add(value);
+		return *this;
+	}
+
+	MakeDeclaratorCommon& MakeDeclaratorCommon::bitfield(const vl::Ptr<CppTypeOrExpr>& value)
+	{
+		node->bitfield = value;
+		return *this;
+	}
+
+	MakeDeclaratorCommon& MakeDeclaratorCommon::funcPart(const vl::Ptr<CppDeclaratorFunctionPart>& value)
+	{
+		node->funcPart = value;
+		return *this;
+	}
+
+	MakeDeclaratorCommon& MakeDeclaratorCommon::id(const vl::Ptr<CppIdentifier>& value)
+	{
+		node->id = value;
+		return *this;
+	}
+
+	MakeDeclaratorCommon& MakeDeclaratorCommon::innerDeclarator(const vl::Ptr<CppDeclarator>& value)
+	{
+		node->innerDeclarator = value;
+		return *this;
+	}
+
+	MakeDeclaratorCommon& MakeDeclaratorCommon::keywords(const vl::Ptr<CppDeclaratorKeyword>& value)
+	{
+		node->keywords.Add(value);
+		return *this;
+	}
+
+	MakeDeclaratorCommon& MakeDeclaratorCommon::variadic(const vl::WString& value)
+	{
+		node->variadic.value = value;
 		return *this;
 	}
 
@@ -374,6 +374,16 @@ MakeDeclaratorKeyword
 	MakeDeclaratorKeyword& MakeDeclaratorKeyword::keyword(const vl::WString& value)
 	{
 		node->keyword.value = value;
+		return *this;
+	}
+
+/***********************************************************************
+MakeDeclaratorToResolve
+***********************************************************************/
+
+	MakeDeclaratorToResolve& MakeDeclaratorToResolve::candidates(const vl::Ptr<CppDeclarator>& value)
+	{
+		node->candidates.Add(value);
 		return *this;
 	}
 

@@ -268,23 +268,19 @@ AST (Visitor)
 Instructions
 ***********************************************************************/
 
+		constexpr vint32_t ResolveAmbiguitySlotIndex = -2;
+
 		enum class AstInsType
 		{
-			Token,										// Token()							: Push the current token as a value.
-			EnumItem,									// EnumItem(Value)					: Push an enum item.
-			BeginObject,								// BeginObject(Type)				: Begin creating an AST node.
-			DelayFieldAssignment,						// DelayFieldAssignment()			: An object will be created later by ReopenObject, delay future field assignments to this object before ReopenObject.
-			ReopenObject,								// ReopenObject()					: Move the last pushed object back to creating status.
-			EndObject,									// EndObject()						: Finish creating an AST node, all objects pushed after BeginObject are supposed to be its fields.
-			DiscardValue,								// DiscardValue()					: Remove a pushed value.
-			LriStore,									// LriStore()						: Take the top object away and store to a register temporarily.
-			LriFetch,									// LriFetch()						: Clear the register and put it back as a top object.
-			Field,										// Field(Field)						: Associate a field name with the top object.
-			FieldIfUnassigned,							// FieldIfUnassigned(Field)			: Like Field(Field) but only take effect if such field has never been assigned.
-			ResolveAmbiguity,							// ResolveAmbiguity(Type, Count)	: Combine several top objects to one using an ambiguity node. Type is the type of each top object.
-
-			AccumulatedDfa,								// AccumulatedDfa(Count)			: Multiple DelayFieldAssignment
-			AccumulatedEoRo,							// AccumulatedEoRo(Count)			: Multiple EndObject + ReopenObject
+			Token,										// Token(Count)						: Put the current token in the Count-th slot.
+			EnumItem,									// EnumItem(Value, Count)			: Put an enum item in the Count-th slot.
+			StackBegin,									// StackBegin()						: Begin a new stack frame.
+			StackSlot,									// StackSlot(Count)					: Assign the just created object to the Count-th slot. Reset the creating object.
+			CreateObject,								// CreateObject(Type)				: Create an AST node, it becomes the creating object. Error if the previous creating object has not been reset.
+			Field,										// Field(Field, Count)				: Associate a field name of the creating object with the value in the Count-th slot. Ignored if the Count-th slot is empty.
+			FieldIfUnassigned,							// FieldIfUnassigned(Field, Count)	: Like Field(Field) but only take effect if such field has never been assigned.
+			StackEnd,									// StackEnd()						: End the current stack frame. Leave the creating object as is.
+			ResolveAmbiguity,							// ResolveAmbiguity(Type)			: Combine several values in the specified slot to one using an ambiguity node. Type is the type of each value.
 		};
 
 		struct AstIns
@@ -313,28 +309,22 @@ Instructions
 			UnknownType,								// UnknownType(Type)					: The type id does not exist.
 			UnknownField,								// UnknownField(Field)					: The field id does not exist.
 			UnsupportedAbstractType,					// UnsupportedAbstractType(Type)		: Unable to create abstract class.
-			UnsupportedAmbiguityType,					// UnsupportedAmbiguityType(Type)		: The type is not configured to allow ambiguity.
-			UnexpectedAmbiguousCandidate,				// UnexpectedAmbiguousCandidate(Type)	: The type of the ambiguous candidate is not compatible to the required type.
 			FieldNotExistsInType,						// FieldNotExistsInType(Field)			: The type doesn't have such field.
 			FieldReassigned,							// FieldReassigned(Field)				: An object is assigned to a field but this field has already been assigned.
 			FieldWeakAssignmentOnNonEnum,				// FieldWeakAssignmentOnNonEnum(Field)	: Weak assignment only available for field of enum type.
 			ObjectTypeMismatchedToField,				// ObjectTypeMismatchedToField(Field)	: Unable to assign an object to a field because the type does not match.
 
-			NoRootObject,								// NoRootObject()						: There is no created objects.
-			NoRootObjectAfterDfa,						// NoRootObjectAfterDfa()				: There is no created objects after DelayFieldAssignment.
-			TooManyUnassignedValues,					// LeavingUnassignedValues()			: The value to reopen is not the only unassigned value.
-			MissingDfaBeforeReopen,						// MissingDfaBeforeReopen()				: DelayFieldAssignment is not submitted before ReopenObject.
-			MissingValueToReopen,						// MissingValueToReopen()				: There is no pushed value to reopen.
-			ReopenedValueIsNotObject,					// ReopenedValueIsNotObject()			: The pushed value to reopen is not an object.
-			MissingValueToDiscard,						// MissingValueToDiscard()				: There is no pushed value to discard.
-			MissingValueToLriStore,						// MissingValueToLriStore()				: There is no pushed value to run LriStore.
-			LriStoredValueIsNotObject,					// LriStoredValueIsNotObject()			: The value to run LriStore is not an object.
-			LriStoredValueNotCleared,					// LriStoredValueNotCleared()			: LriFetch is not executed before the next LriStore.
-			LriStoredValueNotExists,					// LriStoredValueNotExists()			: LriStore is not executed before the next LriFetch.
-			LeavingUnassignedValues,					// LeavingUnassignedValues()			: There are still values to assign to fields before finishing an object.
-			MissingFieldValue,							// MissingFieldValue()					: There is no pushed value to be assigned to a field.
-			MissingAmbiguityCandidate,					// MissingAmbiguityCandidate()			: There are not enough candidates to create an ambiguity node.
+			UnsupportedAmbiguityType,					// UnsupportedAmbiguityType(Type)		: The type is not configured to allow ambiguity.
+			UnexpectedAmbiguousCandidate,				// UnexpectedAmbiguousCandidate(Type)	: The type of the ambiguous candidate is not compatible to the required type.
+			MissingAmbiguityCandidate,					// MissingAmbiguityCandidate()			: There are less than two candidates to create an ambiguity node.
 			AmbiguityCandidateIsNotObject,				// AmbiguityCandidateIsNotObject()		: Tokens or enum items cannot be ambiguity candidates.
+
+			NoStackFrame,								// NoStackFrame()						: Stack operations are executed while no stack frame exists.
+			NoStackFrameForStackEnd,					// NoStackFrameForStackEnd()			: StackEnd when no stack frame exists.
+			NoCreatingObjectForField,					// NoCreatingObjectForField()			: Field when no creating object.
+			NoCreatingObjectForStackSlot,				// NoCreatingObjectForStackSlot()		: StackSlot when no creating object.
+			NoCreatingObjectForStackEnd,				// NoCreatingObjectForStackEnd()		: StackEnd when no creating object.
+			
 			InstructionNotComplete,						// InstructionNotComplete()				: No more instruction but the root object has not been completed yet.
 			Corrupted,									// Corrupted()							: An exception has been thrown therefore this receiver cannot be used anymore.
 			Finished,									// Finished()							: The finished instruction has been executed therefore this receiver cannot be used anymore.
@@ -368,61 +358,54 @@ IAstInsReceiver
 		class AstInsReceiverBase : public Object, public virtual IAstInsReceiver
 		{
 		private:
-			struct ObjectOrToken
+			struct TokenSlot
+			{
+				regex::RegexToken						token;
+				vint32_t								index = -1;
+
+				auto operator<=>(const TokenSlot&) const = default;
+			};
+
+			struct EnumItemSlot
+			{
+				vint32_t								value = -1;
+
+				auto operator<=>(const EnumItemSlot&) const = default;
+			};
+
+			using SlotValue = Variant<TokenSlot, EnumItemSlot, Ptr<ParsingAstBase>>;
+
+			struct SlotStorage
+			{
+				SlotValue								value;
+				Ptr<collections::List<SlotValue>>		additionalValues;
+
+				auto operator<=>(const SlotStorage&) const = default;
+			};
+			using SlotMap = collections::Dictionary<vint, SlotStorage>;
+
+			struct StackFrame
+			{
+				SlotMap									slots;
+				ParsingTextPos							codeRangeStart;
+			};
+			using StackFrameList = collections::List<StackFrame>;
+
+			struct CreatingObject
 			{
 				Ptr<ParsingAstBase>						object;
-				vint32_t								enumItem = -1;
-				regex::RegexToken						token = {};
-				vint32_t								tokenIndex = -1;
-
-				explicit ObjectOrToken(Ptr<ParsingAstBase> _object) : object(_object) {}
-				explicit ObjectOrToken(vint32_t _enumItem) : enumItem(_enumItem) {}
-				explicit ObjectOrToken(const regex::RegexToken& _token, vint32_t _tokenIndex) : token(_token), tokenIndex(_tokenIndex) {}
+				vint32_t								type = -1;
 			};
+			using CreatingObjectList = collections::List<CreatingObject>;
 
-			struct FieldAssignment
-			{
-				ObjectOrToken							value;
-				vint32_t								field = -1;
-				bool									weakAssignment = false;
-			};
-
-			struct CreatedObject
-			{
-				Ptr<ParsingAstBase>						object;
-				vint									pushedCount;
-
-				regex::RegexToken						delayedToken;
-				collections::List<FieldAssignment>		delayedFieldAssignments;
-				vint									extraEmptyDfaBelow = 0;
-
-				CreatedObject(Ptr<ParsingAstBase> _object, vint _pushedCount)
-					: object(_object)
-					, pushedCount(_pushedCount)
-				{
-				}
-
-				CreatedObject(Ptr<ParsingAstBase> _object, vint _pushedCount, const regex::RegexToken& _delayedToken)
-					: object(_object)
-					, pushedCount(_pushedCount)
-					, delayedToken(_delayedToken)
-				{
-				}
-			};
-
-			collections::List<CreatedObject>			created;
-			collections::List<ObjectOrToken>			pushed;
-			Ptr<ParsingAstBase>							lriStoredObject;
+			CreatingObjectList							creatingObjects;
+			StackFrameList								stackFrames;
 			bool										finished = false;
 			bool										corrupted = false;
 
 			void										EnsureContinuable();
-			void										SetField(ParsingAstBase* object, vint32_t field, const ObjectOrToken& value, bool weakAssignment);
+			void										SetField(ParsingAstBase* object, vint32_t field, const SlotValue& value, bool weakAssignment);
 
-			CreatedObject&								PushCreated(CreatedObject&& createdObject);
-			const CreatedObject&						TopCreated();
-			void										PopCreated();
-			void										DelayAssign(FieldAssignment&& fa);
 		protected:
 			virtual Ptr<ParsingAstBase>					CreateAstNode(vint32_t type) = 0;
 			virtual void								SetField(ParsingAstBase* object, vint32_t field, Ptr<ParsingAstBase> value) = 0;

@@ -1,0 +1,85 @@
+﻿{
+    "$ast": "SyntaxFile",
+    "rules": [{
+        "$ast": "Rule",
+        "attParser": "",
+        "attPublic": "",
+        "clauses": [{
+            "$ast": "PartialClause",
+            "assignments": [{
+                "$ast": "Assignment",
+                "field": "fa",
+                "type": "Strong",
+                "value": "B"
+            }],
+            "syntax": {
+                "$ast": "RefSyntax",
+                "field": "",
+                "literal": "'b'",
+                "refType": "ConditionalLiteral"
+            },
+            "type": "FaFeature"
+        }],
+        "name": "FaPrefix",
+        "type": ""
+    }, {
+        "$ast": "Rule",
+        "attParser": "",
+        "attPublic": "",
+        "clauses": [{
+            "$ast": "CreateClause",
+            "assignments": [{
+                "$ast": "Assignment",
+                "field": "fa",
+                "type": "Weak",
+                "value": "A"
+            }],
+            "syntax": {
+                "$ast": "SequenceSyntax",
+                "first": {
+                    "$ast": "OptionalSyntax",
+                    "priority": "Equal",
+                    "syntax": {
+                        "$ast": "RefSyntax",
+                        "field": "",
+                        "literal": "FaPrefix",
+                        "refType": "Id"
+                    }
+                },
+                "second": {
+                    "$ast": "RefSyntax",
+                    "field": "",
+                    "literal": "'a'",
+                    "refType": "ConditionalLiteral"
+                }
+            },
+            "type": "FaFeature"
+        }],
+        "name": "Fa",
+        "type": ""
+    }, {
+        "$ast": "Rule",
+        "attParser": "@parser",
+        "attPublic": "",
+        "clauses": [{
+            "$ast": "ReuseClause",
+            "assignments": [],
+            "syntax": {
+                "$ast": "SequenceSyntax",
+                "first": {
+                    "$ast": "RefSyntax",
+                    "field": "",
+                    "literal": "\"field_assignment\"",
+                    "refType": "Literal"
+                },
+                "second": {
+                    "$ast": "UseSyntax",
+                    "name": "Fa"
+                }
+            }
+        }],
+        "name": "Module",
+        "type": "Feature"
+    }],
+    "switches": []
+}

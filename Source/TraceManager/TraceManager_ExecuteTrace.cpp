@@ -10,217 +10,70 @@ namespace vl
 TraceManager::ExecuteTrace
 ***********************************************************************/
 
-			struct TraceManagerSubmitter
+#define ERROR_MESSAGE_PREFIX L"vl::glr::automaton::TraceManager::ExecuteTrace(Trace*, IAstInsReceiver&, List<RegexToken>&)#"
+
+			class AstInsOptimizer : public Object, public virtual IAstInsReceiver
 			{
-				// LriFetch + LriStore
-				bool					lriFetch = false;
+			protected:
+				IAstInsReceiver&				receiver;
 
-				// AccumulatedDfa
-				vint32_t				adfaCount = 0;
-				vint32_t				adfaIndex = -1;
-				regex::RegexToken*		adfaToken = nullptr;
+				bool							cachedStackBegin = false;
+				const regex::RegexToken*		cachedStackBeginToken = nullptr;
+				vint32_t						cachedStackBeginTokenIndex = -1;
 
-				// AccumulatedEoRo
-				vint32_t				aeoroCount = 0;
-				vint32_t				aeoroIndex = -1;
-				regex::RegexToken*		aeoroToken = nullptr;
-
-				// Caching EndObject / LriFetch
-				AstIns					cachedIns;
-				vint32_t				cachedIndex = -1;
-				regex::RegexToken*		cachedToken = nullptr;
-
-				IAstInsReceiver*		receiver = nullptr;
-
-				void Submit(AstIns& ins, regex::RegexToken& token, vint32_t tokenIndex)
+			public:
+				AstInsOptimizer(IAstInsReceiver& _receiver)
+					:receiver(_receiver)
 				{
-#define ERROR_MESSAGE_PREFIX L"vl::glr::automaton::TraceManagerSubmitter::Submit(AstIns&, RegexToken&, vint32_t)#"
-					// LriFetch+LriStore disappear
-					// multiple DelayFieldAssignment of the same token are compressed to single AccumulatedDfa
-					// multiple EndObject+ReopenObject of the same token are compressed to single AccumulatedEoRo
-
-					// cache availability conditions
-					//   lriFetch == true && cachedToken != nullptr
-					//     one LriFetch instruction is cached
-					//     cachedIns is the cached instruction
-					//     { cachedToken,cachedIndex } is the token with this instruction
-					//   lriFetch == false && cachedToken != nullptr
-					//     one EndObject instruction is cached
-					//     cachedIns is the cached instruction
-					//     { cachedToken,cachedIndex } is the token with this instruction
-					//   aeoroToken != nullptr
-					//     aeoroCount EndObject+ReopenObject instruction pairs is cached
-					//     { aeoroToken,aeoroIndex } is the token with this instruction
-					//   adfaToken != nullptr
-					//     aeoroCount DelayFieldAssignment instructions is cached
-					//     { adfaToken,adfaIndex } is the token with this instruction
-
-					bool cacheLf = lriFetch == true && cachedToken != nullptr;
-					bool cacheEo = lriFetch == false && cachedToken != nullptr;
-					bool cacheEoRo = aeoroToken != nullptr;
-					bool cacheDfa = adfaToken != nullptr;
-					bool cacheAvailable = cacheLf || cacheEo || cacheEoRo || cacheDfa;
-					CHECK_ERROR(
-						(!cacheLf && !cacheEo && !cacheEoRo && !cacheDfa) ||
-						( cacheLf && !cacheEo && !cacheEoRo && !cacheDfa) ||
-						(!cacheLf &&  cacheEo && !cacheEoRo && !cacheDfa) ||
-						(!cacheLf && !cacheEo &&  cacheEoRo && !cacheDfa) ||
-						(!cacheLf &&  cacheEo &&  cacheEoRo && !cacheDfa) ||
-						(!cacheLf && !cacheEo && !cacheEoRo &&  cacheDfa),
-						ERROR_MESSAGE_PREFIX L"Internal error: instruction cache corrupted."
-						);
-
-					// clear cache if it is unrelated to the current instruction
-					if (cacheAvailable)
-					{
-						bool cacheRelated = false;
-
-						switch (ins.type)
-						{
-						case AstInsType::LriStore:
-							if (cacheLf) cacheRelated = true;
-							break;
-						case AstInsType::DelayFieldAssignment:
-							if (cacheDfa && adfaToken == &token) cacheRelated = true;
-							break;
-						case AstInsType::EndObject:
-							if ((cacheEoRo && aeoroToken == &token) && !cacheEo) cacheRelated = true;
-							break;
-						case AstInsType::ReopenObject:
-							if ((cacheEo && cachedToken == &token) && (!cacheEoRo || aeoroToken == &token)) cacheRelated = true;
-							break;
-						default:;
-						}
-
-						if (!cacheRelated)
-						{
-							ExecuteSubmitted();
-							cacheAvailable = false;
-						}
-					}
-
-					if (cacheAvailable)
-					{
-						// execute instructions with cache
-						switch (ins.type)
-						{
-						case AstInsType::LriStore:
-							{
-								lriFetch = false;
-								cachedToken = nullptr;
-							}
-							break;
-						case AstInsType::DelayFieldAssignment:
-							{
-								adfaCount++;
-							}
-							break;
-						case AstInsType::EndObject:
-							{
-								cachedIns = ins;
-								cachedIndex = tokenIndex;
-								cachedToken = &token;
-							}
-							break;
-						case AstInsType::ReopenObject:
-							{
-								if (cacheEoRo)
-								{
-									aeoroCount++;
-								}
-								else
-								{
-									aeoroCount = 1;
-									aeoroIndex = tokenIndex;
-									aeoroToken = &token;
-								}
-								cachedToken = nullptr;
-							}
-							break;
-						default:
-							CHECK_FAIL(ERROR_MESSAGE_PREFIX L"Internal error: unrelated cache should have been cleared.");
-						}
-					}
-					else
-					{
-						// execute instructions without cache
-						switch (ins.type)
-						{
-						case AstInsType::LriFetch:
-							{
-								lriFetch = true;
-								cachedIns = ins;
-								cachedIndex = tokenIndex;
-								cachedToken = &token;
-							}
-							break;
-						case AstInsType::DelayFieldAssignment:
-							{
-								adfaCount = 1;
-								adfaIndex = tokenIndex;
-								adfaToken = &token;
-							}
-							break;
-						case AstInsType::EndObject:
-							{
-								cachedIns = ins;
-								cachedIndex = tokenIndex;
-								cachedToken = &token;
-							}
-							break;
-						default:
-							receiver->Execute(ins, token, tokenIndex);
-						}
-					}
-#undef ERROR_MESSAGE_PREFIX
 				}
 
-				void ExecuteSubmitted()
+				void Execute(AstIns instruction, const regex::RegexToken& token, vint32_t tokenIndex) override
 				{
-					if (adfaToken)
+					if (cachedStackBegin)
 					{
-						if (adfaCount == 1)
+						if (instruction.type == AstInsType::StackEnd)
 						{
-							AstIns ins = { AstInsType::DelayFieldAssignment };
-							receiver->Execute(ins, *adfaToken, adfaIndex);
+							cachedStackBegin = false;
+							return;
 						}
-						else
-						{
-							AstIns ins = { AstInsType::AccumulatedDfa,-1,adfaCount };
-							receiver->Execute(ins, *adfaToken, adfaIndex);
-						}
-						adfaCount = 0;
-						adfaToken = nullptr;
+
+						receiver.Execute({ AstInsType::StackBegin }, *cachedStackBeginToken, cachedStackBeginTokenIndex);
+						cachedStackBegin = false;
 					}
-					if (aeoroToken)
+
+					if (instruction.type == AstInsType::StackBegin)
 					{
-						AstIns ins = { AstInsType::AccumulatedEoRo,-1,aeoroCount };
-						receiver->Execute(ins, *aeoroToken, aeoroIndex);
-						aeoroCount = 0;
-						aeoroToken = nullptr;
+						cachedStackBegin = true;
+						cachedStackBeginToken = &token;
+						cachedStackBeginTokenIndex = tokenIndex;
+						return;
 					}
-					if (cachedToken)
+
+					receiver.Execute(instruction, token, tokenIndex);
+				}
+
+				Ptr<ParsingAstBase> Finished() override
+				{
+					if (cachedStackBegin)
 					{
-						receiver->Execute(cachedIns, *cachedToken, cachedIndex);
-						cachedToken = nullptr;
-						lriFetch = false;
+						receiver.Execute({ AstInsType::StackBegin }, *cachedStackBeginToken, cachedStackBeginTokenIndex);
+						cachedStackBegin = false;
 					}
+					return receiver.Finished();
 				}
 			};
 
-#define ERROR_MESSAGE_PREFIX L"vl::glr::automaton::TraceManager::ExecuteTrace(Trace*, IAstInsReceiver&, List<RegexToken>&)#"
-
-			void TraceManager::ExecuteSingleTrace(TraceManagerSubmitter& submitter, Trace* trace, vint32_t firstIns, vint32_t lastIns, TraceInsLists& insLists, collections::List<regex::RegexToken>& tokens)
+			void TraceManager::ExecuteSingleTrace(IAstInsReceiver& receiver, Trace* trace, vint32_t firstIns, vint32_t lastIns, TraceInsLists& insLists, collections::List<regex::RegexToken>& tokens)
 			{
 				for (vint32_t i = firstIns; i <= lastIns; i++)
 				{
 					auto& ins = ReadInstruction(i, insLists);
 					auto& token = tokens[trace->currentTokenIndex];
-					submitter.Submit(ins, token, trace->currentTokenIndex);
+					receiver.Execute(ins, token, trace->currentTokenIndex);
 				}
 			}
 
-			void TraceManager::ExecuteSingleStep(TraceManagerSubmitter& submitter, ExecutionStep* step, collections::List<regex::RegexToken>& tokens)
+			void TraceManager::ExecuteSingleStep(IAstInsReceiver& receiver, ExecutionStep* step, collections::List<regex::RegexToken>& tokens)
 			{
 				TraceInsLists temp;
 
@@ -261,11 +114,11 @@ TraceManager::ExecuteTrace
 							}
 							else
 							{
-								lastIns = insLists->c3 - 1;
+								lastIns = insLists->countAll - 1;
 							}
 
 							// execute instructions
-							ExecuteSingleTrace(submitter, trace, firstIns, lastIns, *insLists, tokens);
+							ExecuteSingleTrace(receiver, trace, firstIns, lastIns, *insLists, tokens);
 
 							// find the next trace
 							if (step->et_i.endTrace == trace->allocatedIndex)
@@ -287,16 +140,40 @@ TraceManager::ExecuteTrace
 						}
 					}
 					break;
-				case ExecutionType::ResolveAmbiguity:
+				default:
 					{
-						AstIns ins = { AstInsType::ResolveAmbiguity,step->et_ra.type,step->et_ra.count };
 						auto raTrace = GetTrace(Ref<Trace>(step->et_ra.trace));
 						raTrace = EnsureTraceWithValidStates(raTrace);
 						auto raToken = raTrace->currentTokenIndex;
-						submitter.Submit(ins, tokens[raToken], raToken);
+
+						switch (step->type)
+						{
+						case ExecutionType::RA_Begin:
+							{
+								if (raToken == -1) raToken = 0;
+								AstIns ins = { AstInsType::StackBegin };
+								receiver.Execute(ins, tokens[raToken], raToken);
+							}
+							break;
+						case ExecutionType::RA_Branch:
+							{
+								AstIns ins = { AstInsType::StackSlot,-1,ResolveAmbiguitySlotIndex };
+								receiver.Execute(ins, tokens[raToken], raToken);
+							}
+							break;
+						case ExecutionType::RA_End:
+							{
+								AstIns ins = { AstInsType::ResolveAmbiguity,step->et_ra.type,0 };
+								receiver.Execute(ins, tokens[raToken], raToken);
+							}
+							{
+								AstIns ins = { AstInsType::StackEnd };
+								receiver.Execute(ins, tokens[raToken], raToken);
+							}
+							break;
+						default:;
+						}
 					}
-					break;
-				default:;
 				}
 			}
 
@@ -304,23 +181,20 @@ TraceManager::ExecuteTrace
 			{
 				CHECK_ERROR(state == TraceManagerState::ResolvedAmbiguity, ERROR_MESSAGE_PREFIX L"Wrong timing to call this function.");
 
-				TraceManagerSubmitter submitter;
-				submitter.receiver = &receiver;
-
 				// execute from the first step
+				AstInsOptimizer optimizedReceiver(receiver);
 				auto step = GetInitialExecutionStep();
 				CHECK_ERROR(step != nullptr, L"Internal error: execution steps not built!");
 				while (step)
 				{
 					// execute step
-					ExecuteSingleStep(submitter, step, tokens);
+					ExecuteSingleStep(optimizedReceiver, step, tokens);
 
 					// find the next step
 					step = step->next == nullref ? nullptr : GetExecutionStep(step->next);
 				}
 
-				submitter.ExecuteSubmitted();
-				return receiver.Finished();
+				return optimizedReceiver.Finished();
 			}
 #undef ERROR_MESSAGE_PREFIX
 		}

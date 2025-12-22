@@ -36,6 +36,34 @@ TraceManager::IsQualifiedTokenForEdgeArray
 			}
 
 /***********************************************************************
+TraceManager::TestLeftrecEdgeQualification
+***********************************************************************/
+
+			void TraceManager::TestLeftrecEdgeQualification(EdgeDesc& edgeDesc, regex::RegexToken* lookAhead, bool& acceptLookAhead, bool& acceptEndingInput)
+			{
+				if (lookAhead)
+				{
+					vint32_t lookAheadTransitionIndex = executable.GetTransitionIndex(edgeDesc.toState, Executable::TokenBegin + (vint32_t)lookAhead->token);
+					auto& lookAheadEdgeArray = executable.transitions[lookAheadTransitionIndex];
+
+					// mark this EndingInput if any LeftrecInput + lookAhead transition exists
+					if (IsQualifiedTokenForEdgeArray(lookAhead, lookAheadEdgeArray))
+					{
+						acceptLookAhead = true;
+					}
+				}
+
+				{
+					vint32_t endingInputTransitionIndex = executable.GetTransitionIndex(edgeDesc.toState, Executable::EndingInput);
+					auto& endingInputEdgeArray = executable.transitions[endingInputTransitionIndex];
+					if (endingInputEdgeArray.count > 0)
+					{
+						acceptEndingInput = true;
+					}
+				}
+			}
+
+/***********************************************************************
 TraceManager::WalkAlongSingleEdge
 ***********************************************************************/
 
@@ -127,25 +155,31 @@ TraceManager::WalkAlongEpsilonEdges
 				EdgeArray& edgeArray
 			)
 			{
-				// if there is no more token
-				// then it is not possible for more left recursions
-				if (!lookAhead) return;
-
 				for (vint32_t edgeRef = 0; edgeRef < edgeArray.count; edgeRef++)
 				{
 					vint32_t byEdge = edgeArray.start + edgeRef;
 					auto& edgeDesc = executable.edges[byEdge];
 
 					// see if the target state could consume that token
-					vint32_t lookAheadTransitionIndex = executable.GetTransitionIndex(edgeDesc.toState, Executable::TokenBegin + (vint32_t)lookAhead->token);
-					auto& lookAheadEdgeArray = executable.transitions[lookAheadTransitionIndex];
-					if (!IsQualifiedTokenForEdgeArray(lookAhead, lookAheadEdgeArray)) continue;
+					bool acceptLookAhead = false;
+					bool acceptEndingInput = false;
+					TestLeftrecEdgeQualification(edgeDesc, lookAhead, acceptLookAhead, acceptEndingInput);
 
-					// proceed only if it can
-					WalkAlongSingleEdge(currentTokenIndex, Executable::LeftrecInput, trace, byEdge, edgeDesc);
+					if (acceptLookAhead || acceptEndingInput)
+					{
+						// proceed only if it can
+						auto nextTrace = WalkAlongSingleEdge(currentTokenIndex, Executable::LeftrecInput, trace, byEdge, edgeDesc);
 
-					// A LeftrecInput transition points to a non ending state in another clause
-					// so there is no need to find other epsilon transitions after LeftrecInput
+						if (acceptEndingInput && nextTrace)
+						{
+							// A LeftrecInput will be generated because of
+							//   A real left-recursive rule
+							//   Merging prefix inside a rule
+							//   Merging prefix crossed-reference
+							// The last two cases could connect LeftrecInput transitions to an ending state
+							WalkAlongEpsilonEdges(currentTokenIndex, lookAhead, nextTrace);
+						}
+					}
 				}
 			}
 
@@ -161,64 +195,21 @@ TraceManager::WalkAlongEpsilonEdges
 				// so we count how many EndingInput transition we could walk along first
 
 				vint32_t endingCount = -1;
-
-				if (!lookAhead)
 				{
 					// if there is no more tokens
 					// then we have to go all the way to the end anyway
-					vint32_t currentState = trace.stateTrace->state;
-					auto currentReturnStack = trace.stateTrace->returnStack;
-
-					while (currentState != -1)
-					{
-						vint32_t transitionIndex = executable.GetTransitionIndex(currentState, Executable::EndingInput);
-						auto&& edgeArray = executable.transitions[transitionIndex];
-
-						// at most one EndingInput transition could exist from any state
-						CHECK_ERROR(edgeArray.count < 2, L"vl::glr::automaton::TraceManager::WalkAlongEpsilonEdges(vint32_t, vint32_t, Trace*)#Too many EndingInput transitions.");
-
-						if (edgeArray.count == 0)
-						{
-							// if there is no more EndingInput to go
-							// and the current state is not an ending state
-							// then we just give up
-
-							auto&& stateDesc = executable.states[currentState];
-							if (stateDesc.endingState)
-							{
-								currentState = -1;
-							}
-							else
-							{
-								return;
-							}
-						}
-						else if (currentReturnStack == nullref)
-						{
-							vint32_t byEdge = edgeArray.start;
-							auto& edgeDesc = executable.edges[byEdge];
-							currentState = edgeDesc.toState;
-						}
-						else
-						{
-							auto rs = GetReturnStack(currentReturnStack);
-							currentReturnStack = rs->previous;
-							currentState = executable.returns[rs->returnIndex].returnState;
-						}
-					}
-				}
-				else
-				{
 					// otherwise we see how many EndingInput transition we need to walk along
 					vint32_t currentCount = 0;
 					vint32_t currentState = trace.stateTrace->state;
 					auto currentReturnStack = trace.stateTrace->returnStack;
 
+#define MARK_AT_LEAST_EXECUTE_TO_THIS_LEVEL endingCount = currentCount
+
 					while (currentState != -1)
 					{
 						currentCount++;
 
-						// try LeftrecInput + lookAhead
+						// try LeftrecInput + (lookAhead or EndingInput)
 						{
 							vint32_t transitionIndex = executable.GetTransitionIndex(currentState, Executable::LeftrecInput);
 							auto&& edgeArray = executable.transitions[transitionIndex];
@@ -226,19 +217,22 @@ TraceManager::WalkAlongEpsilonEdges
 							{
 								vint32_t byEdge = edgeArray.start + edgeRef;
 								auto& edgeDesc = executable.edges[byEdge];
-								vint32_t lookAheadTransitionIndex = executable.GetTransitionIndex(edgeDesc.toState, Executable::TokenBegin + (vint32_t)lookAhead->token);
-								auto& lookAheadEdgeArray = executable.transitions[lookAheadTransitionIndex];
 
-								// mark this EndingInput if any LeftrecInput + lookAhead transition exists
-								if (IsQualifiedTokenForEdgeArray(lookAhead, lookAheadEdgeArray))
+								bool acceptLookAhead = false;
+								bool acceptEndingInput = false;
+								TestLeftrecEdgeQualification(edgeDesc, lookAhead, acceptLookAhead, acceptEndingInput);
+
+								// mark this EndingInput if any LeftrecInput + (lookAhead or EndingInput) transition exists
+								if (acceptLookAhead || acceptEndingInput)
 								{
-									endingCount = currentCount;
+									MARK_AT_LEAST_EXECUTE_TO_THIS_LEVEL;
 									goto TRY_ENDING_INPUT;
 								}
 							}
 						}
 
 						// try lookAhead
+						if (lookAhead)
 						{
 							vint32_t transitionIndex = executable.GetTransitionIndex(currentState, Executable::TokenBegin + (vint32_t)lookAhead->token);
 							auto&& edgeArray = executable.transitions[transitionIndex];
@@ -246,7 +240,7 @@ TraceManager::WalkAlongEpsilonEdges
 							// mark this EndingInput if lookAhead transition exists
 							if (IsQualifiedTokenForEdgeArray(lookAhead, edgeArray))
 							{
-								endingCount = currentCount;
+								MARK_AT_LEAST_EXECUTE_TO_THIS_LEVEL;
 							}
 						}
 
@@ -256,26 +250,58 @@ TraceManager::WalkAlongEpsilonEdges
 							vint32_t transitionIndex = executable.GetTransitionIndex(currentState, Executable::EndingInput);
 							auto&& edgeArray = executable.transitions[transitionIndex];
 
-							// at most one EndingInput transition could exist from any state
-							CHECK_ERROR(edgeArray.count < 2, L"vl::glr::automaton::TraceManager::WalkAlongEpsilonEdges(vint32_t, vint32_t, Trace*)#Too many EndingInput transitions.");
-
-							if (edgeArray.count == 0 || currentReturnStack == nullref)
+							if (edgeArray.count > 1)
 							{
-								// currentReturnStack == -1 means this is the last possible EndingInput
-								// no need to test forward
-								// because if the current EndingInput is doable
-								// it would have already been marked
-								currentState = -1;
+								// if there are multiple EndingInput transitions
+								// assume they would all succeed, and do recursive calls later
+								MARK_AT_LEAST_EXECUTE_TO_THIS_LEVEL;
+								break;
 							}
-							else
+							else if (edgeArray.count == 1 && currentReturnStack != nullref)
 							{
 								auto rs = GetReturnStack(currentReturnStack);
 								currentReturnStack = rs->previous;
 								currentState = executable.returns[rs->returnIndex].returnState;
 							}
+							else if (lookAhead)
+							{
+								// lookAhead && (edgeArray.count == 0 || currentReturnStack == nullref)
+								// if edgeArray.count == 0
+								//   no further EndingInput transition could be walked
+								// if currentReturnStack == nullref
+								//   it means this is the last possible EndingInput
+								//   no need to test forward
+								//   because if the current EndingInput is doable
+								//   it would have already been marked
+								break;
+							}
+							else if (edgeArray.count == 0)
+							{
+								// !lookAhead && edgeArray.count == 0
+								// if there is no more EndingInput to go
+								// and the current state is not an ending state
+								// then we just give up
+								// it is possible that a LeftrecInput transition is available
+
+								auto&& stateDesc = executable.states[currentState];
+								if (stateDesc.endingState)
+								{
+									MARK_AT_LEAST_EXECUTE_TO_THIS_LEVEL;
+								}
+								break;
+							}
+							else
+							{
+								// !lookAhead && edgeArray.count == 1 && currentReturnStack == nullref
+								vint32_t byEdge = edgeArray.start;
+								auto& edgeDesc = executable.edges[byEdge];
+								currentState = edgeDesc.toState;
+							}
 						}
 					}
 				}
+
+#undef MARK_AT_LEAST_EXECUTE_TO_THIS_LEVEL
 
 				for (vint32_t i = 0; trace && (i < endingCount || endingCount == -1); i++)
 				{
@@ -297,9 +323,33 @@ TraceManager::WalkAlongEpsilonEdges
 					}
 					else
 					{
-						vint32_t byEdge = edgeArray.start;
-						auto& edgeDesc = executable.edges[byEdge];
-						trace = WalkAlongSingleEdge(currentTokenIndex, Executable::EndingInput, trace, byEdge, edgeDesc);
+						for (vint32_t edgeRef = 0; edgeRef < edgeArray.count; edgeRef++)
+						{
+							vint32_t byEdge = edgeArray.start + edgeRef;
+							auto& edgeDesc = executable.edges[byEdge];
+							auto nextTrace = WalkAlongSingleEdge(currentTokenIndex, Executable::EndingInput, trace, byEdge, edgeDesc);
+
+							if (edgeArray.count > 1)
+							{
+								// if the current trace has multiple EndingInput
+								// we don't know if the current trace will survive or not
+								// a following recursive call is necessary
+								if (nextTrace)
+								{
+									WalkAlongEpsilonEdges(currentTokenIndex, lookAhead, nextTrace);
+								}
+							}
+							else
+							{
+								trace = nextTrace;
+							}
+						}
+
+						if (edgeArray.count > 1)
+						{
+							// when this for-loop ends, the outer for-loop also ends
+							trace = { nullptr,nullptr };
+						}
 
 						// EndingInput could be followed by EndingInput or LeftrecInput
 					}
@@ -325,7 +375,7 @@ TraceManager::WalkAlongTokenEdges
 				for (vint32_t edgeRef = 0; edgeRef < edgeArray.count; edgeRef++)
 				{
 					vint32_t byEdge = edgeArray.start + edgeRef;
-					auto& edgeDesc = executable.edges[edgeArray.start + edgeRef];
+					auto& edgeDesc = executable.edges[byEdge];
 					if (IsQualifiedTokenForCondition(token, edgeDesc.condition))
 					{
 						if (auto newTrace = WalkAlongSingleEdge(currentTokenIndex, input, trace, byEdge, edgeDesc))

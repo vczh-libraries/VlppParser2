@@ -1,5 +1,5 @@
 ﻿================ EXECUTION STEPS ================
-[0]: 0@0 - 92@0
+[0]: 0@0 - 92@3
 
 ==================== TRACES =====================
 
@@ -18,8 +18,8 @@
 || [1]: {IMPORT} import                                              ||
 || [83][Import]< "import" @ ID >                                     ||
 || [AST-INSTRUCTIONS]:                                               ||
-||   - BeginObject(Module)                                           ||
-||   - BeginObject(Import)                                           ||
+||   + StackBegin()                                                  ||
+||   + Token(0)                                                      ||
 || [RETURN STACK]:                                                   ||
 ||   [0][26][0]: Import -> [87][Module]< { Import @ } "export" Exp > ||
 || [PREDECESSORS 0-0]: [0]                                           ||
@@ -34,8 +34,7 @@
 || [2]: {ID} exp                                                     ||
 || [84][Import]< "import" ID @ >                                     ||
 || [AST-INSTRUCTIONS]:                                               ||
-||   + Token()                                                       ||
-||   + Field(Import::name)                                           ||
+||   + Token(1)                                                      ||
 || [RETURN STACK]:                                                   ||
 ||   [0][26][0]: Import -> [87][Module]< { Import @ } "export" Exp > ||
 || [PREDECESSORS 1-1]: [1]                                           ||
@@ -48,8 +47,11 @@
 | [3]: <Ending>                             |
 | [87][Module]< { Import @ } "export" Exp > |
 | [AST-INSTRUCTIONS]:                       |
-|   - EndObject()                           |
-|   > Field(Module::imports)                |
+|   + CreateObject(Import)                  |
+|   + Field(Import::name, 1)                |
+|   + StackEnd()                            |
+|   > StackBegin()                          |
+|   > StackSlot(0)                          |
 | [PREDECESSORS 2-2]: [2]                   |
 | [SUCCESORS 4-4]: [4]                      |
 +-------------------------------------------+
@@ -62,7 +64,8 @@
 || [4]: {IMPORT} import                                              ||
 || [83][Import]< "import" @ ID >                                     ||
 || [AST-INSTRUCTIONS]:                                               ||
-||   - BeginObject(Import)                                           ||
+||   + StackBegin()                                                  ||
+||   + Token(0)                                                      ||
 || [RETURN STACK]:                                                   ||
 ||   [1][27][3]: Import -> [87][Module]< { Import @ } "export" Exp > ||
 || [PREDECESSORS 3-3]: [3]                                           ||
@@ -77,8 +80,7 @@
 || [5]: {ID} sin                                                     ||
 || [84][Import]< "import" ID @ >                                     ||
 || [AST-INSTRUCTIONS]:                                               ||
-||   + Token()                                                       ||
-||   + Field(Import::name)                                           ||
+||   + Token(1)                                                      ||
 || [RETURN STACK]:                                                   ||
 ||   [1][27][3]: Import -> [87][Module]< { Import @ } "export" Exp > ||
 || [PREDECESSORS 4-4]: [4]                                           ||
@@ -91,8 +93,10 @@
 | [6]: <Ending>                             |
 | [87][Module]< { Import @ } "export" Exp > |
 | [AST-INSTRUCTIONS]:                       |
-|   - EndObject()                           |
-|   > Field(Module::imports)                |
+|   + CreateObject(Import)                  |
+|   + Field(Import::name, 1)                |
+|   + StackEnd()                            |
+|   > StackSlot(0)                          |
 | [PREDECESSORS 5-5]: [5]                   |
 | [SUCCESORS 7-7]: [7]                      |
 +-------------------------------------------+
@@ -105,7 +109,8 @@
 || [7]: {IMPORT} import                                              ||
 || [83][Import]< "import" @ ID >                                     ||
 || [AST-INSTRUCTIONS]:                                               ||
-||   - BeginObject(Import)                                           ||
+||   + StackBegin()                                                  ||
+||   + Token(0)                                                      ||
 || [RETURN STACK]:                                                   ||
 ||   [2][27][6]: Import -> [87][Module]< { Import @ } "export" Exp > ||
 || [PREDECESSORS 6-6]: [6]                                           ||
@@ -120,8 +125,7 @@
 || [8]: {ID} cos                                                     ||
 || [84][Import]< "import" ID @ >                                     ||
 || [AST-INSTRUCTIONS]:                                               ||
-||   + Token()                                                       ||
-||   + Field(Import::name)                                           ||
+||   + Token(1)                                                      ||
 || [RETURN STACK]:                                                   ||
 ||   [2][27][6]: Import -> [87][Module]< { Import @ } "export" Exp > ||
 || [PREDECESSORS 7-7]: [7]                                           ||
@@ -134,8 +138,10 @@
 | [9]: <Ending>                             |
 | [87][Module]< { Import @ } "export" Exp > |
 | [AST-INSTRUCTIONS]:                       |
-|   - EndObject()                           |
-|   > Field(Module::imports)                |
+|   + CreateObject(Import)                  |
+|   + Field(Import::name, 1)                |
+|   + StackEnd()                            |
+|   > StackSlot(0)                          |
 | [PREDECESSORS 8-8]: [8]                   |
 | [SUCCESORS 10-10]: [10]                   |
 +-------------------------------------------+
@@ -148,6 +154,7 @@
 || [10]: {EXPORT} export                     ||
 || [88][Module]< { Import } "export" @ Exp > ||
 || [AST-INSTRUCTIONS]:                       ||
+||   + Token(1)                              ||
 || [PREDECESSORS 9-9]: [9]                   ||
 || [SUCCESORS 11-11]: [11]                   ||
 ++===========================================++
@@ -160,22 +167,15 @@
 || [11]: {ID} exp                                                  ||
 || [7][Exp0]< ID @ >                                               ||
 || [AST-INSTRUCTIONS]:                                             ||
-||   - DelayFieldAssignment()                                      ||
-||   - DelayFieldAssignment()                                      ||
-||   - DelayFieldAssignment()                                      ||
-||   - DelayFieldAssignment()                                      ||
-||   - DelayFieldAssignment()                                      ||
-||   - DelayFieldAssignment()                                      ||
-||   - BeginObject(Ref)                                            ||
-||   + Token()                                                     ||
-||   + Field(Ref::name)                                            ||
+||   + StackBegin()                                                ||
+||   + Token(0)                                                    ||
 || [RETURN STACK]:                                                 ||
-||   [9][6][10]: Exp0 -> [23][Exp1]<< !Exp0 @ >>                   ||
-||   [8][5][10]: Exp1 -> [32][Exp2]<< !Exp1 @ >>                   ||
-||   [7][4][10]: Exp2 -> [41][Exp3]<< !Exp2 @ >>                   ||
-||   [6][3][10]: Exp3 -> [56][Exp4]<< !Exp3 @ >>                   ||
-||   [5][2][10]: Exp4 -> [65][Exp5]<< !Exp4 @ >>                   ||
-||   [4][1][10]: Exp5 -> [80][Exp]<< !Exp5 @ >>                    ||
+||   [9][6][10]: Exp0 -> [23][Exp1]<! !Exp0 @ !>                   ||
+||   [8][5][10]: Exp1 -> [32][Exp2]<! !Exp1 @ !>                   ||
+||   [7][4][10]: Exp2 -> [41][Exp3]<! !Exp2 @ !>                   ||
+||   [6][3][10]: Exp3 -> [56][Exp4]<! !Exp3 @ !>                   ||
+||   [5][2][10]: Exp4 -> [65][Exp5]<! !Exp4 @ !>                   ||
+||   [4][1][10]: Exp5 -> [80][Exp]<! !Exp5 @ !>                    ||
 ||   [3][28][10]: Exp -> [89][Module]< { Import } "export" Exp @ > ||
 || [PREDECESSORS 10-10]: [10]                                      ||
 || [SUCCESORS 12-12]: [12]                                         ||
@@ -185,16 +185,18 @@
 |
 +-----------------------------------------------------------------+
 | [12]: <Ending>                                                  |
-| [23][Exp1]<< !Exp0 @ >>                                         |
+| [23][Exp1]<! !Exp0 @ !>                                         |
 | [AST-INSTRUCTIONS]:                                             |
-|   - EndObject()                                                 |
-|   > ReopenObject()                                              |
+|   + CreateObject(Ref)                                           |
+|   + Field(Ref::name, 0)                                         |
+|   + StackEnd()                                                  |
+|   > StackBegin()                                                |
 | [RETURN STACK]:                                                 |
-|   [8][5][10]: Exp1 -> [32][Exp2]<< !Exp1 @ >>                   |
-|   [7][4][10]: Exp2 -> [41][Exp3]<< !Exp2 @ >>                   |
-|   [6][3][10]: Exp3 -> [56][Exp4]<< !Exp3 @ >>                   |
-|   [5][2][10]: Exp4 -> [65][Exp5]<< !Exp4 @ >>                   |
-|   [4][1][10]: Exp5 -> [80][Exp]<< !Exp5 @ >>                    |
+|   [8][5][10]: Exp1 -> [32][Exp2]<! !Exp1 @ !>                   |
+|   [7][4][10]: Exp2 -> [41][Exp3]<! !Exp2 @ !>                   |
+|   [6][3][10]: Exp3 -> [56][Exp4]<! !Exp3 @ !>                   |
+|   [5][2][10]: Exp4 -> [65][Exp5]<! !Exp4 @ !>                   |
+|   [4][1][10]: Exp5 -> [80][Exp]<! !Exp5 @ !>                    |
 |   [3][28][10]: Exp -> [89][Module]< { Import } "export" Exp @ > |
 | [PREDECESSORS 11-11]: [11]                                      |
 | [SUCCESORS 13-13]: [13]                                         |
@@ -206,17 +208,15 @@
 | [13]: <Leftrec>                                                 |
 | [22][Exp1]< Exp1 @ "(" { Exp ; "," } ")" >                      |
 | [AST-INSTRUCTIONS]:                                             |
-|   - EndObject()                                                 |
-|   - LriStore()                                                  |
-|   - BeginObject(Call)                                           |
-|   - LriFetch()                                                  |
-|   + Field(Call::func)                                           |
+|   + StackEnd()                                                  |
+|   + StackBegin()                                                |
+|   + StackSlot(0)                                                |
 | [RETURN STACK]:                                                 |
-|   [8][5][10]: Exp1 -> [32][Exp2]<< !Exp1 @ >>                   |
-|   [7][4][10]: Exp2 -> [41][Exp3]<< !Exp2 @ >>                   |
-|   [6][3][10]: Exp3 -> [56][Exp4]<< !Exp3 @ >>                   |
-|   [5][2][10]: Exp4 -> [65][Exp5]<< !Exp4 @ >>                   |
-|   [4][1][10]: Exp5 -> [80][Exp]<< !Exp5 @ >>                    |
+|   [8][5][10]: Exp1 -> [32][Exp2]<! !Exp1 @ !>                   |
+|   [7][4][10]: Exp2 -> [41][Exp3]<! !Exp2 @ !>                   |
+|   [6][3][10]: Exp3 -> [56][Exp4]<! !Exp3 @ !>                   |
+|   [5][2][10]: Exp4 -> [65][Exp5]<! !Exp4 @ !>                   |
+|   [4][1][10]: Exp5 -> [80][Exp]<! !Exp5 @ !>                    |
 |   [3][28][10]: Exp -> [89][Module]< { Import } "export" Exp @ > |
 | [PREDECESSORS 12-12]: [12]                                      |
 | [SUCCESORS 15-15]: [15]                                         |
@@ -230,12 +230,13 @@
 || [15]: {OPEN_BRACE} (                                            ||
 || [18][Exp1]< Exp1 "(" @ { Exp ; "," } ")" >                      ||
 || [AST-INSTRUCTIONS]:                                             ||
+||   + Token(1)                                                    ||
 || [RETURN STACK]:                                                 ||
-||   [8][5][10]: Exp1 -> [32][Exp2]<< !Exp1 @ >>                   ||
-||   [7][4][10]: Exp2 -> [41][Exp3]<< !Exp2 @ >>                   ||
-||   [6][3][10]: Exp3 -> [56][Exp4]<< !Exp3 @ >>                   ||
-||   [5][2][10]: Exp4 -> [65][Exp5]<< !Exp4 @ >>                   ||
-||   [4][1][10]: Exp5 -> [80][Exp]<< !Exp5 @ >>                    ||
+||   [8][5][10]: Exp1 -> [32][Exp2]<! !Exp1 @ !>                   ||
+||   [7][4][10]: Exp2 -> [41][Exp3]<! !Exp2 @ !>                   ||
+||   [6][3][10]: Exp3 -> [56][Exp4]<! !Exp3 @ !>                   ||
+||   [5][2][10]: Exp4 -> [65][Exp5]<! !Exp4 @ !>                   ||
+||   [4][1][10]: Exp5 -> [80][Exp]<! !Exp5 @ !>                    ||
 ||   [3][28][10]: Exp -> [89][Module]< { Import } "export" Exp @ > ||
 || [PREDECESSORS 13-13]: [13]                                      ||
 || [SUCCESORS 16-16]: [16]                                         ||
@@ -249,28 +250,21 @@
 || [16]: {ID} sin                                                   ||
 || [7][Exp0]< ID @ >                                                ||
 || [AST-INSTRUCTIONS]:                                              ||
-||   - DelayFieldAssignment()                                       ||
-||   - DelayFieldAssignment()                                       ||
-||   - DelayFieldAssignment()                                       ||
-||   - DelayFieldAssignment()                                       ||
-||   - DelayFieldAssignment()                                       ||
-||   - DelayFieldAssignment()                                       ||
-||   - BeginObject(Ref)                                             ||
-||   + Token()                                                      ||
-||   + Field(Ref::name)                                             ||
+||   + StackBegin()                                                 ||
+||   + Token(0)                                                     ||
 || [RETURN STACK]:                                                  ||
-||   [16][6][15]: Exp0 -> [23][Exp1]<< !Exp0 @ >>                   ||
-||   [15][5][15]: Exp1 -> [32][Exp2]<< !Exp1 @ >>                   ||
-||   [14][4][15]: Exp2 -> [41][Exp3]<< !Exp2 @ >>                   ||
-||   [13][3][15]: Exp3 -> [56][Exp4]<< !Exp3 @ >>                   ||
-||   [12][2][15]: Exp4 -> [65][Exp5]<< !Exp4 @ >>                   ||
-||   [11][1][15]: Exp5 -> [80][Exp]<< !Exp5 @ >>                    ||
+||   [16][6][15]: Exp0 -> [23][Exp1]<! !Exp0 @ !>                   ||
+||   [15][5][15]: Exp1 -> [32][Exp2]<! !Exp1 @ !>                   ||
+||   [14][4][15]: Exp2 -> [41][Exp3]<! !Exp2 @ !>                   ||
+||   [13][3][15]: Exp3 -> [56][Exp4]<! !Exp3 @ !>                   ||
+||   [12][2][15]: Exp4 -> [65][Exp5]<! !Exp4 @ !>                   ||
+||   [11][1][15]: Exp5 -> [80][Exp]<! !Exp5 @ !>                    ||
 ||   [10][9][15]: Exp -> [21][Exp1]< Exp1 "(" { Exp @ ; "," } ")" > ||
-||   [8][5][10]: Exp1 -> [32][Exp2]<< !Exp1 @ >>                    ||
-||   [7][4][10]: Exp2 -> [41][Exp3]<< !Exp2 @ >>                    ||
-||   [6][3][10]: Exp3 -> [56][Exp4]<< !Exp3 @ >>                    ||
-||   [5][2][10]: Exp4 -> [65][Exp5]<< !Exp4 @ >>                    ||
-||   [4][1][10]: Exp5 -> [80][Exp]<< !Exp5 @ >>                     ||
+||   [8][5][10]: Exp1 -> [32][Exp2]<! !Exp1 @ !>                    ||
+||   [7][4][10]: Exp2 -> [41][Exp3]<! !Exp2 @ !>                    ||
+||   [6][3][10]: Exp3 -> [56][Exp4]<! !Exp3 @ !>                    ||
+||   [5][2][10]: Exp4 -> [65][Exp5]<! !Exp4 @ !>                    ||
+||   [4][1][10]: Exp5 -> [80][Exp]<! !Exp5 @ !>                     ||
 ||   [3][28][10]: Exp -> [89][Module]< { Import } "export" Exp @ >  ||
 || [PREDECESSORS 15-15]: [15]                                       ||
 || [SUCCESORS 17-17]: [17]                                          ||
@@ -280,22 +274,24 @@
 |
 +------------------------------------------------------------------+
 | [17]: <Ending>                                                   |
-| [23][Exp1]<< !Exp0 @ >>                                          |
+| [23][Exp1]<! !Exp0 @ !>                                          |
 | [AST-INSTRUCTIONS]:                                              |
-|   - EndObject()                                                  |
-|   > ReopenObject()                                               |
+|   + CreateObject(Ref)                                            |
+|   + Field(Ref::name, 0)                                          |
+|   + StackEnd()                                                   |
+|   > StackBegin()                                                 |
 | [RETURN STACK]:                                                  |
-|   [15][5][15]: Exp1 -> [32][Exp2]<< !Exp1 @ >>                   |
-|   [14][4][15]: Exp2 -> [41][Exp3]<< !Exp2 @ >>                   |
-|   [13][3][15]: Exp3 -> [56][Exp4]<< !Exp3 @ >>                   |
-|   [12][2][15]: Exp4 -> [65][Exp5]<< !Exp4 @ >>                   |
-|   [11][1][15]: Exp5 -> [80][Exp]<< !Exp5 @ >>                    |
+|   [15][5][15]: Exp1 -> [32][Exp2]<! !Exp1 @ !>                   |
+|   [14][4][15]: Exp2 -> [41][Exp3]<! !Exp2 @ !>                   |
+|   [13][3][15]: Exp3 -> [56][Exp4]<! !Exp3 @ !>                   |
+|   [12][2][15]: Exp4 -> [65][Exp5]<! !Exp4 @ !>                   |
+|   [11][1][15]: Exp5 -> [80][Exp]<! !Exp5 @ !>                    |
 |   [10][9][15]: Exp -> [21][Exp1]< Exp1 "(" { Exp @ ; "," } ")" > |
-|   [8][5][10]: Exp1 -> [32][Exp2]<< !Exp1 @ >>                    |
-|   [7][4][10]: Exp2 -> [41][Exp3]<< !Exp2 @ >>                    |
-|   [6][3][10]: Exp3 -> [56][Exp4]<< !Exp3 @ >>                    |
-|   [5][2][10]: Exp4 -> [65][Exp5]<< !Exp4 @ >>                    |
-|   [4][1][10]: Exp5 -> [80][Exp]<< !Exp5 @ >>                     |
+|   [8][5][10]: Exp1 -> [32][Exp2]<! !Exp1 @ !>                    |
+|   [7][4][10]: Exp2 -> [41][Exp3]<! !Exp2 @ !>                    |
+|   [6][3][10]: Exp3 -> [56][Exp4]<! !Exp3 @ !>                    |
+|   [5][2][10]: Exp4 -> [65][Exp5]<! !Exp4 @ !>                    |
+|   [4][1][10]: Exp5 -> [80][Exp]<! !Exp5 @ !>                     |
 |   [3][28][10]: Exp -> [89][Module]< { Import } "export" Exp @ >  |
 | [PREDECESSORS 16-16]: [16]                                       |
 | [SUCCESORS 18-18]: [18]                                          |
@@ -307,23 +303,21 @@
 | [18]: <Leftrec>                                                  |
 | [22][Exp1]< Exp1 @ "(" { Exp ; "," } ")" >                       |
 | [AST-INSTRUCTIONS]:                                              |
-|   - EndObject()                                                  |
-|   - LriStore()                                                   |
-|   - BeginObject(Call)                                            |
-|   - LriFetch()                                                   |
-|   + Field(Call::func)                                            |
+|   + StackEnd()                                                   |
+|   + StackBegin()                                                 |
+|   + StackSlot(0)                                                 |
 | [RETURN STACK]:                                                  |
-|   [15][5][15]: Exp1 -> [32][Exp2]<< !Exp1 @ >>                   |
-|   [14][4][15]: Exp2 -> [41][Exp3]<< !Exp2 @ >>                   |
-|   [13][3][15]: Exp3 -> [56][Exp4]<< !Exp3 @ >>                   |
-|   [12][2][15]: Exp4 -> [65][Exp5]<< !Exp4 @ >>                   |
-|   [11][1][15]: Exp5 -> [80][Exp]<< !Exp5 @ >>                    |
+|   [15][5][15]: Exp1 -> [32][Exp2]<! !Exp1 @ !>                   |
+|   [14][4][15]: Exp2 -> [41][Exp3]<! !Exp2 @ !>                   |
+|   [13][3][15]: Exp3 -> [56][Exp4]<! !Exp3 @ !>                   |
+|   [12][2][15]: Exp4 -> [65][Exp5]<! !Exp4 @ !>                   |
+|   [11][1][15]: Exp5 -> [80][Exp]<! !Exp5 @ !>                    |
 |   [10][9][15]: Exp -> [21][Exp1]< Exp1 "(" { Exp @ ; "," } ")" > |
-|   [8][5][10]: Exp1 -> [32][Exp2]<< !Exp1 @ >>                    |
-|   [7][4][10]: Exp2 -> [41][Exp3]<< !Exp2 @ >>                    |
-|   [6][3][10]: Exp3 -> [56][Exp4]<< !Exp3 @ >>                    |
-|   [5][2][10]: Exp4 -> [65][Exp5]<< !Exp4 @ >>                    |
-|   [4][1][10]: Exp5 -> [80][Exp]<< !Exp5 @ >>                     |
+|   [8][5][10]: Exp1 -> [32][Exp2]<! !Exp1 @ !>                    |
+|   [7][4][10]: Exp2 -> [41][Exp3]<! !Exp2 @ !>                    |
+|   [6][3][10]: Exp3 -> [56][Exp4]<! !Exp3 @ !>                    |
+|   [5][2][10]: Exp4 -> [65][Exp5]<! !Exp4 @ !>                    |
+|   [4][1][10]: Exp5 -> [80][Exp]<! !Exp5 @ !>                     |
 |   [3][28][10]: Exp -> [89][Module]< { Import } "export" Exp @ >  |
 | [PREDECESSORS 17-17]: [17]                                       |
 | [SUCCESORS 20-20]: [20]                                          |
@@ -337,18 +331,19 @@
 || [20]: {OPEN_BRACE} (                                             ||
 || [18][Exp1]< Exp1 "(" @ { Exp ; "," } ")" >                       ||
 || [AST-INSTRUCTIONS]:                                              ||
+||   + Token(1)                                                     ||
 || [RETURN STACK]:                                                  ||
-||   [15][5][15]: Exp1 -> [32][Exp2]<< !Exp1 @ >>                   ||
-||   [14][4][15]: Exp2 -> [41][Exp3]<< !Exp2 @ >>                   ||
-||   [13][3][15]: Exp3 -> [56][Exp4]<< !Exp3 @ >>                   ||
-||   [12][2][15]: Exp4 -> [65][Exp5]<< !Exp4 @ >>                   ||
-||   [11][1][15]: Exp5 -> [80][Exp]<< !Exp5 @ >>                    ||
+||   [15][5][15]: Exp1 -> [32][Exp2]<! !Exp1 @ !>                   ||
+||   [14][4][15]: Exp2 -> [41][Exp3]<! !Exp2 @ !>                   ||
+||   [13][3][15]: Exp3 -> [56][Exp4]<! !Exp3 @ !>                   ||
+||   [12][2][15]: Exp4 -> [65][Exp5]<! !Exp4 @ !>                   ||
+||   [11][1][15]: Exp5 -> [80][Exp]<! !Exp5 @ !>                    ||
 ||   [10][9][15]: Exp -> [21][Exp1]< Exp1 "(" { Exp @ ; "," } ")" > ||
-||   [8][5][10]: Exp1 -> [32][Exp2]<< !Exp1 @ >>                    ||
-||   [7][4][10]: Exp2 -> [41][Exp3]<< !Exp2 @ >>                    ||
-||   [6][3][10]: Exp3 -> [56][Exp4]<< !Exp3 @ >>                    ||
-||   [5][2][10]: Exp4 -> [65][Exp5]<< !Exp4 @ >>                    ||
-||   [4][1][10]: Exp5 -> [80][Exp]<< !Exp5 @ >>                     ||
+||   [8][5][10]: Exp1 -> [32][Exp2]<! !Exp1 @ !>                    ||
+||   [7][4][10]: Exp2 -> [41][Exp3]<! !Exp2 @ !>                    ||
+||   [6][3][10]: Exp3 -> [56][Exp4]<! !Exp3 @ !>                    ||
+||   [5][2][10]: Exp4 -> [65][Exp5]<! !Exp4 @ !>                    ||
+||   [4][1][10]: Exp5 -> [80][Exp]<! !Exp5 @ !>                     ||
 ||   [3][28][10]: Exp -> [89][Module]< { Import } "export" Exp @ >  ||
 || [PREDECESSORS 18-18]: [18]                                       ||
 || [SUCCESORS 21-21]: [21]                                          ||
@@ -362,34 +357,27 @@
 || [21]: {NUM} 1                                                    ||
 || [8][Exp0]< NUM @ >                                               ||
 || [AST-INSTRUCTIONS]:                                              ||
-||   - DelayFieldAssignment()                                       ||
-||   - DelayFieldAssignment()                                       ||
-||   - DelayFieldAssignment()                                       ||
-||   - DelayFieldAssignment()                                       ||
-||   - DelayFieldAssignment()                                       ||
-||   - DelayFieldAssignment()                                       ||
-||   - BeginObject(NumExpr)                                         ||
-||   + Token()                                                      ||
-||   + Field(NumExpr::value)                                        ||
+||   + StackBegin()                                                 ||
+||   + Token(0)                                                     ||
 || [RETURN STACK]:                                                  ||
-||   [23][6][20]: Exp0 -> [23][Exp1]<< !Exp0 @ >>                   ||
-||   [22][5][20]: Exp1 -> [32][Exp2]<< !Exp1 @ >>                   ||
-||   [21][4][20]: Exp2 -> [41][Exp3]<< !Exp2 @ >>                   ||
-||   [20][3][20]: Exp3 -> [56][Exp4]<< !Exp3 @ >>                   ||
-||   [19][2][20]: Exp4 -> [65][Exp5]<< !Exp4 @ >>                   ||
-||   [18][1][20]: Exp5 -> [80][Exp]<< !Exp5 @ >>                    ||
+||   [23][6][20]: Exp0 -> [23][Exp1]<! !Exp0 @ !>                   ||
+||   [22][5][20]: Exp1 -> [32][Exp2]<! !Exp1 @ !>                   ||
+||   [21][4][20]: Exp2 -> [41][Exp3]<! !Exp2 @ !>                   ||
+||   [20][3][20]: Exp3 -> [56][Exp4]<! !Exp3 @ !>                   ||
+||   [19][2][20]: Exp4 -> [65][Exp5]<! !Exp4 @ !>                   ||
+||   [18][1][20]: Exp5 -> [80][Exp]<! !Exp5 @ !>                    ||
 ||   [17][9][20]: Exp -> [21][Exp1]< Exp1 "(" { Exp @ ; "," } ")" > ||
-||   [15][5][15]: Exp1 -> [32][Exp2]<< !Exp1 @ >>                   ||
-||   [14][4][15]: Exp2 -> [41][Exp3]<< !Exp2 @ >>                   ||
-||   [13][3][15]: Exp3 -> [56][Exp4]<< !Exp3 @ >>                   ||
-||   [12][2][15]: Exp4 -> [65][Exp5]<< !Exp4 @ >>                   ||
-||   [11][1][15]: Exp5 -> [80][Exp]<< !Exp5 @ >>                    ||
+||   [15][5][15]: Exp1 -> [32][Exp2]<! !Exp1 @ !>                   ||
+||   [14][4][15]: Exp2 -> [41][Exp3]<! !Exp2 @ !>                   ||
+||   [13][3][15]: Exp3 -> [56][Exp4]<! !Exp3 @ !>                   ||
+||   [12][2][15]: Exp4 -> [65][Exp5]<! !Exp4 @ !>                   ||
+||   [11][1][15]: Exp5 -> [80][Exp]<! !Exp5 @ !>                    ||
 ||   [10][9][15]: Exp -> [21][Exp1]< Exp1 "(" { Exp @ ; "," } ")" > ||
-||   [8][5][10]: Exp1 -> [32][Exp2]<< !Exp1 @ >>                    ||
-||   [7][4][10]: Exp2 -> [41][Exp3]<< !Exp2 @ >>                    ||
-||   [6][3][10]: Exp3 -> [56][Exp4]<< !Exp3 @ >>                    ||
-||   [5][2][10]: Exp4 -> [65][Exp5]<< !Exp4 @ >>                    ||
-||   [4][1][10]: Exp5 -> [80][Exp]<< !Exp5 @ >>                     ||
+||   [8][5][10]: Exp1 -> [32][Exp2]<! !Exp1 @ !>                    ||
+||   [7][4][10]: Exp2 -> [41][Exp3]<! !Exp2 @ !>                    ||
+||   [6][3][10]: Exp3 -> [56][Exp4]<! !Exp3 @ !>                    ||
+||   [5][2][10]: Exp4 -> [65][Exp5]<! !Exp4 @ !>                    ||
+||   [4][1][10]: Exp5 -> [80][Exp]<! !Exp5 @ !>                     ||
 ||   [3][28][10]: Exp -> [89][Module]< { Import } "export" Exp @ >  ||
 || [PREDECESSORS 20-20]: [20]                                       ||
 || [SUCCESORS 22-22]: [22]                                          ||
@@ -399,28 +387,30 @@
 |
 +------------------------------------------------------------------+
 | [22]: <Ending>                                                   |
-| [23][Exp1]<< !Exp0 @ >>                                          |
+| [23][Exp1]<! !Exp0 @ !>                                          |
 | [AST-INSTRUCTIONS]:                                              |
-|   - EndObject()                                                  |
-|   > ReopenObject()                                               |
+|   + CreateObject(NumExpr)                                        |
+|   + Field(NumExpr::value, 0)                                     |
+|   + StackEnd()                                                   |
+|   > StackBegin()                                                 |
 | [RETURN STACK]:                                                  |
-|   [22][5][20]: Exp1 -> [32][Exp2]<< !Exp1 @ >>                   |
-|   [21][4][20]: Exp2 -> [41][Exp3]<< !Exp2 @ >>                   |
-|   [20][3][20]: Exp3 -> [56][Exp4]<< !Exp3 @ >>                   |
-|   [19][2][20]: Exp4 -> [65][Exp5]<< !Exp4 @ >>                   |
-|   [18][1][20]: Exp5 -> [80][Exp]<< !Exp5 @ >>                    |
+|   [22][5][20]: Exp1 -> [32][Exp2]<! !Exp1 @ !>                   |
+|   [21][4][20]: Exp2 -> [41][Exp3]<! !Exp2 @ !>                   |
+|   [20][3][20]: Exp3 -> [56][Exp4]<! !Exp3 @ !>                   |
+|   [19][2][20]: Exp4 -> [65][Exp5]<! !Exp4 @ !>                   |
+|   [18][1][20]: Exp5 -> [80][Exp]<! !Exp5 @ !>                    |
 |   [17][9][20]: Exp -> [21][Exp1]< Exp1 "(" { Exp @ ; "," } ")" > |
-|   [15][5][15]: Exp1 -> [32][Exp2]<< !Exp1 @ >>                   |
-|   [14][4][15]: Exp2 -> [41][Exp3]<< !Exp2 @ >>                   |
-|   [13][3][15]: Exp3 -> [56][Exp4]<< !Exp3 @ >>                   |
-|   [12][2][15]: Exp4 -> [65][Exp5]<< !Exp4 @ >>                   |
-|   [11][1][15]: Exp5 -> [80][Exp]<< !Exp5 @ >>                    |
+|   [15][5][15]: Exp1 -> [32][Exp2]<! !Exp1 @ !>                   |
+|   [14][4][15]: Exp2 -> [41][Exp3]<! !Exp2 @ !>                   |
+|   [13][3][15]: Exp3 -> [56][Exp4]<! !Exp3 @ !>                   |
+|   [12][2][15]: Exp4 -> [65][Exp5]<! !Exp4 @ !>                   |
+|   [11][1][15]: Exp5 -> [80][Exp]<! !Exp5 @ !>                    |
 |   [10][9][15]: Exp -> [21][Exp1]< Exp1 "(" { Exp @ ; "," } ")" > |
-|   [8][5][10]: Exp1 -> [32][Exp2]<< !Exp1 @ >>                    |
-|   [7][4][10]: Exp2 -> [41][Exp3]<< !Exp2 @ >>                    |
-|   [6][3][10]: Exp3 -> [56][Exp4]<< !Exp3 @ >>                    |
-|   [5][2][10]: Exp4 -> [65][Exp5]<< !Exp4 @ >>                    |
-|   [4][1][10]: Exp5 -> [80][Exp]<< !Exp5 @ >>                     |
+|   [8][5][10]: Exp1 -> [32][Exp2]<! !Exp1 @ !>                    |
+|   [7][4][10]: Exp2 -> [41][Exp3]<! !Exp2 @ !>                    |
+|   [6][3][10]: Exp3 -> [56][Exp4]<! !Exp3 @ !>                    |
+|   [5][2][10]: Exp4 -> [65][Exp5]<! !Exp4 @ !>                    |
+|   [4][1][10]: Exp5 -> [80][Exp]<! !Exp5 @ !>                     |
 |   [3][28][10]: Exp -> [89][Module]< { Import } "export" Exp @ >  |
 | [PREDECESSORS 21-21]: [21]                                       |
 | [SUCCESORS 23-23]: [23]                                          |
@@ -430,27 +420,27 @@
 |
 +------------------------------------------------------------------+
 | [23]: <Ending>                                                   |
-| [32][Exp2]<< !Exp1 @ >>                                          |
+| [32][Exp2]<! !Exp1 @ !>                                          |
 | [AST-INSTRUCTIONS]:                                              |
-|   - EndObject()                                                  |
-|   > ReopenObject()                                               |
+|   + StackEnd()                                                   |
+|   > StackBegin()                                                 |
 | [RETURN STACK]:                                                  |
-|   [21][4][20]: Exp2 -> [41][Exp3]<< !Exp2 @ >>                   |
-|   [20][3][20]: Exp3 -> [56][Exp4]<< !Exp3 @ >>                   |
-|   [19][2][20]: Exp4 -> [65][Exp5]<< !Exp4 @ >>                   |
-|   [18][1][20]: Exp5 -> [80][Exp]<< !Exp5 @ >>                    |
+|   [21][4][20]: Exp2 -> [41][Exp3]<! !Exp2 @ !>                   |
+|   [20][3][20]: Exp3 -> [56][Exp4]<! !Exp3 @ !>                   |
+|   [19][2][20]: Exp4 -> [65][Exp5]<! !Exp4 @ !>                   |
+|   [18][1][20]: Exp5 -> [80][Exp]<! !Exp5 @ !>                    |
 |   [17][9][20]: Exp -> [21][Exp1]< Exp1 "(" { Exp @ ; "," } ")" > |
-|   [15][5][15]: Exp1 -> [32][Exp2]<< !Exp1 @ >>                   |
-|   [14][4][15]: Exp2 -> [41][Exp3]<< !Exp2 @ >>                   |
-|   [13][3][15]: Exp3 -> [56][Exp4]<< !Exp3 @ >>                   |
-|   [12][2][15]: Exp4 -> [65][Exp5]<< !Exp4 @ >>                   |
-|   [11][1][15]: Exp5 -> [80][Exp]<< !Exp5 @ >>                    |
+|   [15][5][15]: Exp1 -> [32][Exp2]<! !Exp1 @ !>                   |
+|   [14][4][15]: Exp2 -> [41][Exp3]<! !Exp2 @ !>                   |
+|   [13][3][15]: Exp3 -> [56][Exp4]<! !Exp3 @ !>                   |
+|   [12][2][15]: Exp4 -> [65][Exp5]<! !Exp4 @ !>                   |
+|   [11][1][15]: Exp5 -> [80][Exp]<! !Exp5 @ !>                    |
 |   [10][9][15]: Exp -> [21][Exp1]< Exp1 "(" { Exp @ ; "," } ")" > |
-|   [8][5][10]: Exp1 -> [32][Exp2]<< !Exp1 @ >>                    |
-|   [7][4][10]: Exp2 -> [41][Exp3]<< !Exp2 @ >>                    |
-|   [6][3][10]: Exp3 -> [56][Exp4]<< !Exp3 @ >>                    |
-|   [5][2][10]: Exp4 -> [65][Exp5]<< !Exp4 @ >>                    |
-|   [4][1][10]: Exp5 -> [80][Exp]<< !Exp5 @ >>                     |
+|   [8][5][10]: Exp1 -> [32][Exp2]<! !Exp1 @ !>                    |
+|   [7][4][10]: Exp2 -> [41][Exp3]<! !Exp2 @ !>                    |
+|   [6][3][10]: Exp3 -> [56][Exp4]<! !Exp3 @ !>                    |
+|   [5][2][10]: Exp4 -> [65][Exp5]<! !Exp4 @ !>                    |
+|   [4][1][10]: Exp5 -> [80][Exp]<! !Exp5 @ !>                     |
 |   [3][28][10]: Exp -> [89][Module]< { Import } "export" Exp @ >  |
 | [PREDECESSORS 22-22]: [22]                                       |
 | [SUCCESORS 24-24]: [24]                                          |
@@ -460,26 +450,26 @@
 |
 +------------------------------------------------------------------+
 | [24]: <Ending>                                                   |
-| [41][Exp3]<< !Exp2 @ >>                                          |
+| [41][Exp3]<! !Exp2 @ !>                                          |
 | [AST-INSTRUCTIONS]:                                              |
-|   - EndObject()                                                  |
-|   > ReopenObject()                                               |
+|   + StackEnd()                                                   |
+|   > StackBegin()                                                 |
 | [RETURN STACK]:                                                  |
-|   [20][3][20]: Exp3 -> [56][Exp4]<< !Exp3 @ >>                   |
-|   [19][2][20]: Exp4 -> [65][Exp5]<< !Exp4 @ >>                   |
-|   [18][1][20]: Exp5 -> [80][Exp]<< !Exp5 @ >>                    |
+|   [20][3][20]: Exp3 -> [56][Exp4]<! !Exp3 @ !>                   |
+|   [19][2][20]: Exp4 -> [65][Exp5]<! !Exp4 @ !>                   |
+|   [18][1][20]: Exp5 -> [80][Exp]<! !Exp5 @ !>                    |
 |   [17][9][20]: Exp -> [21][Exp1]< Exp1 "(" { Exp @ ; "," } ")" > |
-|   [15][5][15]: Exp1 -> [32][Exp2]<< !Exp1 @ >>                   |
-|   [14][4][15]: Exp2 -> [41][Exp3]<< !Exp2 @ >>                   |
-|   [13][3][15]: Exp3 -> [56][Exp4]<< !Exp3 @ >>                   |
-|   [12][2][15]: Exp4 -> [65][Exp5]<< !Exp4 @ >>                   |
-|   [11][1][15]: Exp5 -> [80][Exp]<< !Exp5 @ >>                    |
+|   [15][5][15]: Exp1 -> [32][Exp2]<! !Exp1 @ !>                   |
+|   [14][4][15]: Exp2 -> [41][Exp3]<! !Exp2 @ !>                   |
+|   [13][3][15]: Exp3 -> [56][Exp4]<! !Exp3 @ !>                   |
+|   [12][2][15]: Exp4 -> [65][Exp5]<! !Exp4 @ !>                   |
+|   [11][1][15]: Exp5 -> [80][Exp]<! !Exp5 @ !>                    |
 |   [10][9][15]: Exp -> [21][Exp1]< Exp1 "(" { Exp @ ; "," } ")" > |
-|   [8][5][10]: Exp1 -> [32][Exp2]<< !Exp1 @ >>                    |
-|   [7][4][10]: Exp2 -> [41][Exp3]<< !Exp2 @ >>                    |
-|   [6][3][10]: Exp3 -> [56][Exp4]<< !Exp3 @ >>                    |
-|   [5][2][10]: Exp4 -> [65][Exp5]<< !Exp4 @ >>                    |
-|   [4][1][10]: Exp5 -> [80][Exp]<< !Exp5 @ >>                     |
+|   [8][5][10]: Exp1 -> [32][Exp2]<! !Exp1 @ !>                    |
+|   [7][4][10]: Exp2 -> [41][Exp3]<! !Exp2 @ !>                    |
+|   [6][3][10]: Exp3 -> [56][Exp4]<! !Exp3 @ !>                    |
+|   [5][2][10]: Exp4 -> [65][Exp5]<! !Exp4 @ !>                    |
+|   [4][1][10]: Exp5 -> [80][Exp]<! !Exp5 @ !>                     |
 |   [3][28][10]: Exp -> [89][Module]< { Import } "export" Exp @ >  |
 | [PREDECESSORS 23-23]: [23]                                       |
 | [SUCCESORS 25-25]: [25]                                          |
@@ -489,25 +479,25 @@
 |
 +------------------------------------------------------------------+
 | [25]: <Ending>                                                   |
-| [56][Exp4]<< !Exp3 @ >>                                          |
+| [56][Exp4]<! !Exp3 @ !>                                          |
 | [AST-INSTRUCTIONS]:                                              |
-|   - EndObject()                                                  |
-|   > ReopenObject()                                               |
+|   + StackEnd()                                                   |
+|   > StackBegin()                                                 |
 | [RETURN STACK]:                                                  |
-|   [19][2][20]: Exp4 -> [65][Exp5]<< !Exp4 @ >>                   |
-|   [18][1][20]: Exp5 -> [80][Exp]<< !Exp5 @ >>                    |
+|   [19][2][20]: Exp4 -> [65][Exp5]<! !Exp4 @ !>                   |
+|   [18][1][20]: Exp5 -> [80][Exp]<! !Exp5 @ !>                    |
 |   [17][9][20]: Exp -> [21][Exp1]< Exp1 "(" { Exp @ ; "," } ")" > |
-|   [15][5][15]: Exp1 -> [32][Exp2]<< !Exp1 @ >>                   |
-|   [14][4][15]: Exp2 -> [41][Exp3]<< !Exp2 @ >>                   |
-|   [13][3][15]: Exp3 -> [56][Exp4]<< !Exp3 @ >>                   |
-|   [12][2][15]: Exp4 -> [65][Exp5]<< !Exp4 @ >>                   |
-|   [11][1][15]: Exp5 -> [80][Exp]<< !Exp5 @ >>                    |
+|   [15][5][15]: Exp1 -> [32][Exp2]<! !Exp1 @ !>                   |
+|   [14][4][15]: Exp2 -> [41][Exp3]<! !Exp2 @ !>                   |
+|   [13][3][15]: Exp3 -> [56][Exp4]<! !Exp3 @ !>                   |
+|   [12][2][15]: Exp4 -> [65][Exp5]<! !Exp4 @ !>                   |
+|   [11][1][15]: Exp5 -> [80][Exp]<! !Exp5 @ !>                    |
 |   [10][9][15]: Exp -> [21][Exp1]< Exp1 "(" { Exp @ ; "," } ")" > |
-|   [8][5][10]: Exp1 -> [32][Exp2]<< !Exp1 @ >>                    |
-|   [7][4][10]: Exp2 -> [41][Exp3]<< !Exp2 @ >>                    |
-|   [6][3][10]: Exp3 -> [56][Exp4]<< !Exp3 @ >>                    |
-|   [5][2][10]: Exp4 -> [65][Exp5]<< !Exp4 @ >>                    |
-|   [4][1][10]: Exp5 -> [80][Exp]<< !Exp5 @ >>                     |
+|   [8][5][10]: Exp1 -> [32][Exp2]<! !Exp1 @ !>                    |
+|   [7][4][10]: Exp2 -> [41][Exp3]<! !Exp2 @ !>                    |
+|   [6][3][10]: Exp3 -> [56][Exp4]<! !Exp3 @ !>                    |
+|   [5][2][10]: Exp4 -> [65][Exp5]<! !Exp4 @ !>                    |
+|   [4][1][10]: Exp5 -> [80][Exp]<! !Exp5 @ !>                     |
 |   [3][28][10]: Exp -> [89][Module]< { Import } "export" Exp @ >  |
 | [PREDECESSORS 24-24]: [24]                                       |
 | [SUCCESORS 26-26]: [26]                                          |
@@ -517,24 +507,24 @@
 |
 +------------------------------------------------------------------+
 | [26]: <Ending>                                                   |
-| [65][Exp5]<< !Exp4 @ >>                                          |
+| [65][Exp5]<! !Exp4 @ !>                                          |
 | [AST-INSTRUCTIONS]:                                              |
-|   - EndObject()                                                  |
-|   > ReopenObject()                                               |
+|   + StackEnd()                                                   |
+|   > StackBegin()                                                 |
 | [RETURN STACK]:                                                  |
-|   [18][1][20]: Exp5 -> [80][Exp]<< !Exp5 @ >>                    |
+|   [18][1][20]: Exp5 -> [80][Exp]<! !Exp5 @ !>                    |
 |   [17][9][20]: Exp -> [21][Exp1]< Exp1 "(" { Exp @ ; "," } ")" > |
-|   [15][5][15]: Exp1 -> [32][Exp2]<< !Exp1 @ >>                   |
-|   [14][4][15]: Exp2 -> [41][Exp3]<< !Exp2 @ >>                   |
-|   [13][3][15]: Exp3 -> [56][Exp4]<< !Exp3 @ >>                   |
-|   [12][2][15]: Exp4 -> [65][Exp5]<< !Exp4 @ >>                   |
-|   [11][1][15]: Exp5 -> [80][Exp]<< !Exp5 @ >>                    |
+|   [15][5][15]: Exp1 -> [32][Exp2]<! !Exp1 @ !>                   |
+|   [14][4][15]: Exp2 -> [41][Exp3]<! !Exp2 @ !>                   |
+|   [13][3][15]: Exp3 -> [56][Exp4]<! !Exp3 @ !>                   |
+|   [12][2][15]: Exp4 -> [65][Exp5]<! !Exp4 @ !>                   |
+|   [11][1][15]: Exp5 -> [80][Exp]<! !Exp5 @ !>                    |
 |   [10][9][15]: Exp -> [21][Exp1]< Exp1 "(" { Exp @ ; "," } ")" > |
-|   [8][5][10]: Exp1 -> [32][Exp2]<< !Exp1 @ >>                    |
-|   [7][4][10]: Exp2 -> [41][Exp3]<< !Exp2 @ >>                    |
-|   [6][3][10]: Exp3 -> [56][Exp4]<< !Exp3 @ >>                    |
-|   [5][2][10]: Exp4 -> [65][Exp5]<< !Exp4 @ >>                    |
-|   [4][1][10]: Exp5 -> [80][Exp]<< !Exp5 @ >>                     |
+|   [8][5][10]: Exp1 -> [32][Exp2]<! !Exp1 @ !>                    |
+|   [7][4][10]: Exp2 -> [41][Exp3]<! !Exp2 @ !>                    |
+|   [6][3][10]: Exp3 -> [56][Exp4]<! !Exp3 @ !>                    |
+|   [5][2][10]: Exp4 -> [65][Exp5]<! !Exp4 @ !>                    |
+|   [4][1][10]: Exp5 -> [80][Exp]<! !Exp5 @ !>                     |
 |   [3][28][10]: Exp -> [89][Module]< { Import } "export" Exp @ >  |
 | [PREDECESSORS 25-25]: [25]                                       |
 | [SUCCESORS 27-27]: [27]                                          |
@@ -544,22 +534,23 @@
 |
 +------------------------------------------------------------------+
 | [27]: <Ending>                                                   |
-| [80][Exp]<< !Exp5 @ >>                                           |
+| [80][Exp]<! !Exp5 @ !>                                           |
 | [AST-INSTRUCTIONS]:                                              |
-|   - EndObject()                                                  |
+|   + StackEnd()                                                   |
+|   > StackBegin()                                                 |
 | [RETURN STACK]:                                                  |
 |   [17][9][20]: Exp -> [21][Exp1]< Exp1 "(" { Exp @ ; "," } ")" > |
-|   [15][5][15]: Exp1 -> [32][Exp2]<< !Exp1 @ >>                   |
-|   [14][4][15]: Exp2 -> [41][Exp3]<< !Exp2 @ >>                   |
-|   [13][3][15]: Exp3 -> [56][Exp4]<< !Exp3 @ >>                   |
-|   [12][2][15]: Exp4 -> [65][Exp5]<< !Exp4 @ >>                   |
-|   [11][1][15]: Exp5 -> [80][Exp]<< !Exp5 @ >>                    |
+|   [15][5][15]: Exp1 -> [32][Exp2]<! !Exp1 @ !>                   |
+|   [14][4][15]: Exp2 -> [41][Exp3]<! !Exp2 @ !>                   |
+|   [13][3][15]: Exp3 -> [56][Exp4]<! !Exp3 @ !>                   |
+|   [12][2][15]: Exp4 -> [65][Exp5]<! !Exp4 @ !>                   |
+|   [11][1][15]: Exp5 -> [80][Exp]<! !Exp5 @ !>                    |
 |   [10][9][15]: Exp -> [21][Exp1]< Exp1 "(" { Exp @ ; "," } ")" > |
-|   [8][5][10]: Exp1 -> [32][Exp2]<< !Exp1 @ >>                    |
-|   [7][4][10]: Exp2 -> [41][Exp3]<< !Exp2 @ >>                    |
-|   [6][3][10]: Exp3 -> [56][Exp4]<< !Exp3 @ >>                    |
-|   [5][2][10]: Exp4 -> [65][Exp5]<< !Exp4 @ >>                    |
-|   [4][1][10]: Exp5 -> [80][Exp]<< !Exp5 @ >>                     |
+|   [8][5][10]: Exp1 -> [32][Exp2]<! !Exp1 @ !>                    |
+|   [7][4][10]: Exp2 -> [41][Exp3]<! !Exp2 @ !>                    |
+|   [6][3][10]: Exp3 -> [56][Exp4]<! !Exp3 @ !>                    |
+|   [5][2][10]: Exp4 -> [65][Exp5]<! !Exp4 @ !>                    |
+|   [4][1][10]: Exp5 -> [80][Exp]<! !Exp5 @ !>                     |
 |   [3][28][10]: Exp -> [89][Module]< { Import } "export" Exp @ >  |
 | [PREDECESSORS 26-26]: [26]                                       |
 | [SUCCESORS 28-28]: [28]                                          |
@@ -571,21 +562,20 @@
 | [28]: <Ending>                                                   |
 | [21][Exp1]< Exp1 "(" { Exp @ ; "," } ")" >                       |
 | [AST-INSTRUCTIONS]:                                              |
-|   - ReopenObject()                                               |
-|   - EndObject()                                                  |
-|   > Field(Call::args)                                            |
+|   + StackEnd()                                                   |
+|   > StackSlot(2)                                                 |
 | [RETURN STACK]:                                                  |
-|   [15][5][15]: Exp1 -> [32][Exp2]<< !Exp1 @ >>                   |
-|   [14][4][15]: Exp2 -> [41][Exp3]<< !Exp2 @ >>                   |
-|   [13][3][15]: Exp3 -> [56][Exp4]<< !Exp3 @ >>                   |
-|   [12][2][15]: Exp4 -> [65][Exp5]<< !Exp4 @ >>                   |
-|   [11][1][15]: Exp5 -> [80][Exp]<< !Exp5 @ >>                    |
+|   [15][5][15]: Exp1 -> [32][Exp2]<! !Exp1 @ !>                   |
+|   [14][4][15]: Exp2 -> [41][Exp3]<! !Exp2 @ !>                   |
+|   [13][3][15]: Exp3 -> [56][Exp4]<! !Exp3 @ !>                   |
+|   [12][2][15]: Exp4 -> [65][Exp5]<! !Exp4 @ !>                   |
+|   [11][1][15]: Exp5 -> [80][Exp]<! !Exp5 @ !>                    |
 |   [10][9][15]: Exp -> [21][Exp1]< Exp1 "(" { Exp @ ; "," } ")" > |
-|   [8][5][10]: Exp1 -> [32][Exp2]<< !Exp1 @ >>                    |
-|   [7][4][10]: Exp2 -> [41][Exp3]<< !Exp2 @ >>                    |
-|   [6][3][10]: Exp3 -> [56][Exp4]<< !Exp3 @ >>                    |
-|   [5][2][10]: Exp4 -> [65][Exp5]<< !Exp4 @ >>                    |
-|   [4][1][10]: Exp5 -> [80][Exp]<< !Exp5 @ >>                     |
+|   [8][5][10]: Exp1 -> [32][Exp2]<! !Exp1 @ !>                    |
+|   [7][4][10]: Exp2 -> [41][Exp3]<! !Exp2 @ !>                    |
+|   [6][3][10]: Exp3 -> [56][Exp4]<! !Exp3 @ !>                    |
+|   [5][2][10]: Exp4 -> [65][Exp5]<! !Exp4 @ !>                    |
+|   [4][1][10]: Exp5 -> [80][Exp]<! !Exp5 @ !>                     |
 |   [3][28][10]: Exp -> [89][Module]< { Import } "export" Exp @ >  |
 | [PREDECESSORS 27-27]: [27]                                       |
 | [SUCCESORS 29-29]: [29]                                          |
@@ -599,18 +589,19 @@
 || [29]: {CLOSE_BRACE} )                                            ||
 || [20][Exp1]< Exp1 "(" { Exp ; "," } ")" @ >                       ||
 || [AST-INSTRUCTIONS]:                                              ||
+||   + Token(4)                                                     ||
 || [RETURN STACK]:                                                  ||
-||   [15][5][15]: Exp1 -> [32][Exp2]<< !Exp1 @ >>                   ||
-||   [14][4][15]: Exp2 -> [41][Exp3]<< !Exp2 @ >>                   ||
-||   [13][3][15]: Exp3 -> [56][Exp4]<< !Exp3 @ >>                   ||
-||   [12][2][15]: Exp4 -> [65][Exp5]<< !Exp4 @ >>                   ||
-||   [11][1][15]: Exp5 -> [80][Exp]<< !Exp5 @ >>                    ||
+||   [15][5][15]: Exp1 -> [32][Exp2]<! !Exp1 @ !>                   ||
+||   [14][4][15]: Exp2 -> [41][Exp3]<! !Exp2 @ !>                   ||
+||   [13][3][15]: Exp3 -> [56][Exp4]<! !Exp3 @ !>                   ||
+||   [12][2][15]: Exp4 -> [65][Exp5]<! !Exp4 @ !>                   ||
+||   [11][1][15]: Exp5 -> [80][Exp]<! !Exp5 @ !>                    ||
 ||   [10][9][15]: Exp -> [21][Exp1]< Exp1 "(" { Exp @ ; "," } ")" > ||
-||   [8][5][10]: Exp1 -> [32][Exp2]<< !Exp1 @ >>                    ||
-||   [7][4][10]: Exp2 -> [41][Exp3]<< !Exp2 @ >>                    ||
-||   [6][3][10]: Exp3 -> [56][Exp4]<< !Exp3 @ >>                    ||
-||   [5][2][10]: Exp4 -> [65][Exp5]<< !Exp4 @ >>                    ||
-||   [4][1][10]: Exp5 -> [80][Exp]<< !Exp5 @ >>                     ||
+||   [8][5][10]: Exp1 -> [32][Exp2]<! !Exp1 @ !>                    ||
+||   [7][4][10]: Exp2 -> [41][Exp3]<! !Exp2 @ !>                    ||
+||   [6][3][10]: Exp3 -> [56][Exp4]<! !Exp3 @ !>                    ||
+||   [5][2][10]: Exp4 -> [65][Exp5]<! !Exp4 @ !>                    ||
+||   [4][1][10]: Exp5 -> [80][Exp]<! !Exp5 @ !>                     ||
 ||   [3][28][10]: Exp -> [89][Module]< { Import } "export" Exp @ >  ||
 || [PREDECESSORS 28-28]: [28]                                       ||
 || [SUCCESORS 30-30]: [30]                                          ||
@@ -620,21 +611,24 @@
 |
 +------------------------------------------------------------------+
 | [30]: <Ending>                                                   |
-| [32][Exp2]<< !Exp1 @ >>                                          |
+| [32][Exp2]<! !Exp1 @ !>                                          |
 | [AST-INSTRUCTIONS]:                                              |
-|   - EndObject()                                                  |
-|   > ReopenObject()                                               |
+|   + CreateObject(Call)                                           |
+|   + Field(Call::func, 0)                                         |
+|   + Field(Call::args, 2)                                         |
+|   + StackEnd()                                                   |
+|   > StackBegin()                                                 |
 | [RETURN STACK]:                                                  |
-|   [14][4][15]: Exp2 -> [41][Exp3]<< !Exp2 @ >>                   |
-|   [13][3][15]: Exp3 -> [56][Exp4]<< !Exp3 @ >>                   |
-|   [12][2][15]: Exp4 -> [65][Exp5]<< !Exp4 @ >>                   |
-|   [11][1][15]: Exp5 -> [80][Exp]<< !Exp5 @ >>                    |
+|   [14][4][15]: Exp2 -> [41][Exp3]<! !Exp2 @ !>                   |
+|   [13][3][15]: Exp3 -> [56][Exp4]<! !Exp3 @ !>                   |
+|   [12][2][15]: Exp4 -> [65][Exp5]<! !Exp4 @ !>                   |
+|   [11][1][15]: Exp5 -> [80][Exp]<! !Exp5 @ !>                    |
 |   [10][9][15]: Exp -> [21][Exp1]< Exp1 "(" { Exp @ ; "," } ")" > |
-|   [8][5][10]: Exp1 -> [32][Exp2]<< !Exp1 @ >>                    |
-|   [7][4][10]: Exp2 -> [41][Exp3]<< !Exp2 @ >>                    |
-|   [6][3][10]: Exp3 -> [56][Exp4]<< !Exp3 @ >>                    |
-|   [5][2][10]: Exp4 -> [65][Exp5]<< !Exp4 @ >>                    |
-|   [4][1][10]: Exp5 -> [80][Exp]<< !Exp5 @ >>                     |
+|   [8][5][10]: Exp1 -> [32][Exp2]<! !Exp1 @ !>                    |
+|   [7][4][10]: Exp2 -> [41][Exp3]<! !Exp2 @ !>                    |
+|   [6][3][10]: Exp3 -> [56][Exp4]<! !Exp3 @ !>                    |
+|   [5][2][10]: Exp4 -> [65][Exp5]<! !Exp4 @ !>                    |
+|   [4][1][10]: Exp5 -> [80][Exp]<! !Exp5 @ !>                     |
 |   [3][28][10]: Exp -> [89][Module]< { Import } "export" Exp @ >  |
 | [PREDECESSORS 29-29]: [29]                                       |
 | [SUCCESORS 31-31]: [31]                                          |
@@ -644,20 +638,20 @@
 |
 +------------------------------------------------------------------+
 | [31]: <Ending>                                                   |
-| [41][Exp3]<< !Exp2 @ >>                                          |
+| [41][Exp3]<! !Exp2 @ !>                                          |
 | [AST-INSTRUCTIONS]:                                              |
-|   - EndObject()                                                  |
-|   > ReopenObject()                                               |
+|   + StackEnd()                                                   |
+|   > StackBegin()                                                 |
 | [RETURN STACK]:                                                  |
-|   [13][3][15]: Exp3 -> [56][Exp4]<< !Exp3 @ >>                   |
-|   [12][2][15]: Exp4 -> [65][Exp5]<< !Exp4 @ >>                   |
-|   [11][1][15]: Exp5 -> [80][Exp]<< !Exp5 @ >>                    |
+|   [13][3][15]: Exp3 -> [56][Exp4]<! !Exp3 @ !>                   |
+|   [12][2][15]: Exp4 -> [65][Exp5]<! !Exp4 @ !>                   |
+|   [11][1][15]: Exp5 -> [80][Exp]<! !Exp5 @ !>                    |
 |   [10][9][15]: Exp -> [21][Exp1]< Exp1 "(" { Exp @ ; "," } ")" > |
-|   [8][5][10]: Exp1 -> [32][Exp2]<< !Exp1 @ >>                    |
-|   [7][4][10]: Exp2 -> [41][Exp3]<< !Exp2 @ >>                    |
-|   [6][3][10]: Exp3 -> [56][Exp4]<< !Exp3 @ >>                    |
-|   [5][2][10]: Exp4 -> [65][Exp5]<< !Exp4 @ >>                    |
-|   [4][1][10]: Exp5 -> [80][Exp]<< !Exp5 @ >>                     |
+|   [8][5][10]: Exp1 -> [32][Exp2]<! !Exp1 @ !>                    |
+|   [7][4][10]: Exp2 -> [41][Exp3]<! !Exp2 @ !>                    |
+|   [6][3][10]: Exp3 -> [56][Exp4]<! !Exp3 @ !>                    |
+|   [5][2][10]: Exp4 -> [65][Exp5]<! !Exp4 @ !>                    |
+|   [4][1][10]: Exp5 -> [80][Exp]<! !Exp5 @ !>                     |
 |   [3][28][10]: Exp -> [89][Module]< { Import } "export" Exp @ >  |
 | [PREDECESSORS 30-30]: [30]                                       |
 | [SUCCESORS 32-32]: [32]                                          |
@@ -667,19 +661,19 @@
 |
 +------------------------------------------------------------------+
 | [32]: <Ending>                                                   |
-| [56][Exp4]<< !Exp3 @ >>                                          |
+| [56][Exp4]<! !Exp3 @ !>                                          |
 | [AST-INSTRUCTIONS]:                                              |
-|   - EndObject()                                                  |
-|   > ReopenObject()                                               |
+|   + StackEnd()                                                   |
+|   > StackBegin()                                                 |
 | [RETURN STACK]:                                                  |
-|   [12][2][15]: Exp4 -> [65][Exp5]<< !Exp4 @ >>                   |
-|   [11][1][15]: Exp5 -> [80][Exp]<< !Exp5 @ >>                    |
+|   [12][2][15]: Exp4 -> [65][Exp5]<! !Exp4 @ !>                   |
+|   [11][1][15]: Exp5 -> [80][Exp]<! !Exp5 @ !>                    |
 |   [10][9][15]: Exp -> [21][Exp1]< Exp1 "(" { Exp @ ; "," } ")" > |
-|   [8][5][10]: Exp1 -> [32][Exp2]<< !Exp1 @ >>                    |
-|   [7][4][10]: Exp2 -> [41][Exp3]<< !Exp2 @ >>                    |
-|   [6][3][10]: Exp3 -> [56][Exp4]<< !Exp3 @ >>                    |
-|   [5][2][10]: Exp4 -> [65][Exp5]<< !Exp4 @ >>                    |
-|   [4][1][10]: Exp5 -> [80][Exp]<< !Exp5 @ >>                     |
+|   [8][5][10]: Exp1 -> [32][Exp2]<! !Exp1 @ !>                    |
+|   [7][4][10]: Exp2 -> [41][Exp3]<! !Exp2 @ !>                    |
+|   [6][3][10]: Exp3 -> [56][Exp4]<! !Exp3 @ !>                    |
+|   [5][2][10]: Exp4 -> [65][Exp5]<! !Exp4 @ !>                    |
+|   [4][1][10]: Exp5 -> [80][Exp]<! !Exp5 @ !>                     |
 |   [3][28][10]: Exp -> [89][Module]< { Import } "export" Exp @ >  |
 | [PREDECESSORS 31-31]: [31]                                       |
 | [SUCCESORS 33-33]: [33]                                          |
@@ -689,18 +683,18 @@
 |
 +------------------------------------------------------------------+
 | [33]: <Ending>                                                   |
-| [65][Exp5]<< !Exp4 @ >>                                          |
+| [65][Exp5]<! !Exp4 @ !>                                          |
 | [AST-INSTRUCTIONS]:                                              |
-|   - EndObject()                                                  |
-|   > ReopenObject()                                               |
+|   + StackEnd()                                                   |
+|   > StackBegin()                                                 |
 | [RETURN STACK]:                                                  |
-|   [11][1][15]: Exp5 -> [80][Exp]<< !Exp5 @ >>                    |
+|   [11][1][15]: Exp5 -> [80][Exp]<! !Exp5 @ !>                    |
 |   [10][9][15]: Exp -> [21][Exp1]< Exp1 "(" { Exp @ ; "," } ")" > |
-|   [8][5][10]: Exp1 -> [32][Exp2]<< !Exp1 @ >>                    |
-|   [7][4][10]: Exp2 -> [41][Exp3]<< !Exp2 @ >>                    |
-|   [6][3][10]: Exp3 -> [56][Exp4]<< !Exp3 @ >>                    |
-|   [5][2][10]: Exp4 -> [65][Exp5]<< !Exp4 @ >>                    |
-|   [4][1][10]: Exp5 -> [80][Exp]<< !Exp5 @ >>                     |
+|   [8][5][10]: Exp1 -> [32][Exp2]<! !Exp1 @ !>                    |
+|   [7][4][10]: Exp2 -> [41][Exp3]<! !Exp2 @ !>                    |
+|   [6][3][10]: Exp3 -> [56][Exp4]<! !Exp3 @ !>                    |
+|   [5][2][10]: Exp4 -> [65][Exp5]<! !Exp4 @ !>                    |
+|   [4][1][10]: Exp5 -> [80][Exp]<! !Exp5 @ !>                     |
 |   [3][28][10]: Exp -> [89][Module]< { Import } "export" Exp @ >  |
 | [PREDECESSORS 32-32]: [32]                                       |
 | [SUCCESORS 34-34]: [34]                                          |
@@ -710,16 +704,17 @@
 |
 +------------------------------------------------------------------+
 | [34]: <Ending>                                                   |
-| [80][Exp]<< !Exp5 @ >>                                           |
+| [80][Exp]<! !Exp5 @ !>                                           |
 | [AST-INSTRUCTIONS]:                                              |
-|   - EndObject()                                                  |
+|   + StackEnd()                                                   |
+|   > StackBegin()                                                 |
 | [RETURN STACK]:                                                  |
 |   [10][9][15]: Exp -> [21][Exp1]< Exp1 "(" { Exp @ ; "," } ")" > |
-|   [8][5][10]: Exp1 -> [32][Exp2]<< !Exp1 @ >>                    |
-|   [7][4][10]: Exp2 -> [41][Exp3]<< !Exp2 @ >>                    |
-|   [6][3][10]: Exp3 -> [56][Exp4]<< !Exp3 @ >>                    |
-|   [5][2][10]: Exp4 -> [65][Exp5]<< !Exp4 @ >>                    |
-|   [4][1][10]: Exp5 -> [80][Exp]<< !Exp5 @ >>                     |
+|   [8][5][10]: Exp1 -> [32][Exp2]<! !Exp1 @ !>                    |
+|   [7][4][10]: Exp2 -> [41][Exp3]<! !Exp2 @ !>                    |
+|   [6][3][10]: Exp3 -> [56][Exp4]<! !Exp3 @ !>                    |
+|   [5][2][10]: Exp4 -> [65][Exp5]<! !Exp4 @ !>                    |
+|   [4][1][10]: Exp5 -> [80][Exp]<! !Exp5 @ !>                     |
 |   [3][28][10]: Exp -> [89][Module]< { Import } "export" Exp @ >  |
 | [PREDECESSORS 33-33]: [33]                                       |
 | [SUCCESORS 35-35]: [35]                                          |
@@ -731,15 +726,14 @@
 | [35]: <Ending>                                                  |
 | [21][Exp1]< Exp1 "(" { Exp @ ; "," } ")" >                      |
 | [AST-INSTRUCTIONS]:                                             |
-|   - ReopenObject()                                              |
-|   - EndObject()                                                 |
-|   > Field(Call::args)                                           |
+|   + StackEnd()                                                  |
+|   > StackSlot(2)                                                |
 | [RETURN STACK]:                                                 |
-|   [8][5][10]: Exp1 -> [32][Exp2]<< !Exp1 @ >>                   |
-|   [7][4][10]: Exp2 -> [41][Exp3]<< !Exp2 @ >>                   |
-|   [6][3][10]: Exp3 -> [56][Exp4]<< !Exp3 @ >>                   |
-|   [5][2][10]: Exp4 -> [65][Exp5]<< !Exp4 @ >>                   |
-|   [4][1][10]: Exp5 -> [80][Exp]<< !Exp5 @ >>                    |
+|   [8][5][10]: Exp1 -> [32][Exp2]<! !Exp1 @ !>                   |
+|   [7][4][10]: Exp2 -> [41][Exp3]<! !Exp2 @ !>                   |
+|   [6][3][10]: Exp3 -> [56][Exp4]<! !Exp3 @ !>                   |
+|   [5][2][10]: Exp4 -> [65][Exp5]<! !Exp4 @ !>                   |
+|   [4][1][10]: Exp5 -> [80][Exp]<! !Exp5 @ !>                    |
 |   [3][28][10]: Exp -> [89][Module]< { Import } "export" Exp @ > |
 | [PREDECESSORS 34-34]: [34]                                      |
 | [SUCCESORS 36-36]: [36]                                         |
@@ -753,12 +747,13 @@
 || [36]: {COMMA} ,                                                 ||
 || [19][Exp1]< Exp1 "(" { Exp ; "," @ } ")" >                      ||
 || [AST-INSTRUCTIONS]:                                             ||
+||   + Token(3)                                                    ||
 || [RETURN STACK]:                                                 ||
-||   [8][5][10]: Exp1 -> [32][Exp2]<< !Exp1 @ >>                   ||
-||   [7][4][10]: Exp2 -> [41][Exp3]<< !Exp2 @ >>                   ||
-||   [6][3][10]: Exp3 -> [56][Exp4]<< !Exp3 @ >>                   ||
-||   [5][2][10]: Exp4 -> [65][Exp5]<< !Exp4 @ >>                   ||
-||   [4][1][10]: Exp5 -> [80][Exp]<< !Exp5 @ >>                    ||
+||   [8][5][10]: Exp1 -> [32][Exp2]<! !Exp1 @ !>                   ||
+||   [7][4][10]: Exp2 -> [41][Exp3]<! !Exp2 @ !>                   ||
+||   [6][3][10]: Exp3 -> [56][Exp4]<! !Exp3 @ !>                   ||
+||   [5][2][10]: Exp4 -> [65][Exp5]<! !Exp4 @ !>                   ||
+||   [4][1][10]: Exp5 -> [80][Exp]<! !Exp5 @ !>                    ||
 ||   [3][28][10]: Exp -> [89][Module]< { Import } "export" Exp @ > ||
 || [PREDECESSORS 35-35]: [35]                                      ||
 || [SUCCESORS 37-37]: [37]                                         ||
@@ -772,28 +767,21 @@
 || [37]: {NUM} 2                                                     ||
 || [8][Exp0]< NUM @ >                                                ||
 || [AST-INSTRUCTIONS]:                                               ||
-||   - DelayFieldAssignment()                                        ||
-||   - DelayFieldAssignment()                                        ||
-||   - DelayFieldAssignment()                                        ||
-||   - DelayFieldAssignment()                                        ||
-||   - DelayFieldAssignment()                                        ||
-||   - DelayFieldAssignment()                                        ||
-||   - BeginObject(NumExpr)                                          ||
-||   + Token()                                                       ||
-||   + Field(NumExpr::value)                                         ||
+||   + StackBegin()                                                  ||
+||   + Token(0)                                                      ||
 || [RETURN STACK]:                                                   ||
-||   [30][6][36]: Exp0 -> [23][Exp1]<< !Exp0 @ >>                    ||
-||   [29][5][36]: Exp1 -> [32][Exp2]<< !Exp1 @ >>                    ||
-||   [28][4][36]: Exp2 -> [41][Exp3]<< !Exp2 @ >>                    ||
-||   [27][3][36]: Exp3 -> [56][Exp4]<< !Exp3 @ >>                    ||
-||   [26][2][36]: Exp4 -> [65][Exp5]<< !Exp4 @ >>                    ||
-||   [25][1][36]: Exp5 -> [80][Exp]<< !Exp5 @ >>                     ||
+||   [30][6][36]: Exp0 -> [23][Exp1]<! !Exp0 @ !>                    ||
+||   [29][5][36]: Exp1 -> [32][Exp2]<! !Exp1 @ !>                    ||
+||   [28][4][36]: Exp2 -> [41][Exp3]<! !Exp2 @ !>                    ||
+||   [27][3][36]: Exp3 -> [56][Exp4]<! !Exp3 @ !>                    ||
+||   [26][2][36]: Exp4 -> [65][Exp5]<! !Exp4 @ !>                    ||
+||   [25][1][36]: Exp5 -> [80][Exp]<! !Exp5 @ !>                     ||
 ||   [24][10][36]: Exp -> [21][Exp1]< Exp1 "(" { Exp @ ; "," } ")" > ||
-||   [8][5][10]: Exp1 -> [32][Exp2]<< !Exp1 @ >>                     ||
-||   [7][4][10]: Exp2 -> [41][Exp3]<< !Exp2 @ >>                     ||
-||   [6][3][10]: Exp3 -> [56][Exp4]<< !Exp3 @ >>                     ||
-||   [5][2][10]: Exp4 -> [65][Exp5]<< !Exp4 @ >>                     ||
-||   [4][1][10]: Exp5 -> [80][Exp]<< !Exp5 @ >>                      ||
+||   [8][5][10]: Exp1 -> [32][Exp2]<! !Exp1 @ !>                     ||
+||   [7][4][10]: Exp2 -> [41][Exp3]<! !Exp2 @ !>                     ||
+||   [6][3][10]: Exp3 -> [56][Exp4]<! !Exp3 @ !>                     ||
+||   [5][2][10]: Exp4 -> [65][Exp5]<! !Exp4 @ !>                     ||
+||   [4][1][10]: Exp5 -> [80][Exp]<! !Exp5 @ !>                      ||
 ||   [3][28][10]: Exp -> [89][Module]< { Import } "export" Exp @ >   ||
 || [PREDECESSORS 36-36]: [36]                                        ||
 || [SUCCESORS 38-38]: [38]                                           ||
@@ -803,22 +791,24 @@
 |
 +-------------------------------------------------------------------+
 | [38]: <Ending>                                                    |
-| [23][Exp1]<< !Exp0 @ >>                                           |
+| [23][Exp1]<! !Exp0 @ !>                                           |
 | [AST-INSTRUCTIONS]:                                               |
-|   - EndObject()                                                   |
-|   > ReopenObject()                                                |
+|   + CreateObject(NumExpr)                                         |
+|   + Field(NumExpr::value, 0)                                      |
+|   + StackEnd()                                                    |
+|   > StackBegin()                                                  |
 | [RETURN STACK]:                                                   |
-|   [29][5][36]: Exp1 -> [32][Exp2]<< !Exp1 @ >>                    |
-|   [28][4][36]: Exp2 -> [41][Exp3]<< !Exp2 @ >>                    |
-|   [27][3][36]: Exp3 -> [56][Exp4]<< !Exp3 @ >>                    |
-|   [26][2][36]: Exp4 -> [65][Exp5]<< !Exp4 @ >>                    |
-|   [25][1][36]: Exp5 -> [80][Exp]<< !Exp5 @ >>                     |
+|   [29][5][36]: Exp1 -> [32][Exp2]<! !Exp1 @ !>                    |
+|   [28][4][36]: Exp2 -> [41][Exp3]<! !Exp2 @ !>                    |
+|   [27][3][36]: Exp3 -> [56][Exp4]<! !Exp3 @ !>                    |
+|   [26][2][36]: Exp4 -> [65][Exp5]<! !Exp4 @ !>                    |
+|   [25][1][36]: Exp5 -> [80][Exp]<! !Exp5 @ !>                     |
 |   [24][10][36]: Exp -> [21][Exp1]< Exp1 "(" { Exp @ ; "," } ")" > |
-|   [8][5][10]: Exp1 -> [32][Exp2]<< !Exp1 @ >>                     |
-|   [7][4][10]: Exp2 -> [41][Exp3]<< !Exp2 @ >>                     |
-|   [6][3][10]: Exp3 -> [56][Exp4]<< !Exp3 @ >>                     |
-|   [5][2][10]: Exp4 -> [65][Exp5]<< !Exp4 @ >>                     |
-|   [4][1][10]: Exp5 -> [80][Exp]<< !Exp5 @ >>                      |
+|   [8][5][10]: Exp1 -> [32][Exp2]<! !Exp1 @ !>                     |
+|   [7][4][10]: Exp2 -> [41][Exp3]<! !Exp2 @ !>                     |
+|   [6][3][10]: Exp3 -> [56][Exp4]<! !Exp3 @ !>                     |
+|   [5][2][10]: Exp4 -> [65][Exp5]<! !Exp4 @ !>                     |
+|   [4][1][10]: Exp5 -> [80][Exp]<! !Exp5 @ !>                      |
 |   [3][28][10]: Exp -> [89][Module]< { Import } "export" Exp @ >   |
 | [PREDECESSORS 37-37]: [37]                                        |
 | [SUCCESORS 39-39]: [39]                                           |
@@ -828,21 +818,21 @@
 |
 +-------------------------------------------------------------------+
 | [39]: <Ending>                                                    |
-| [32][Exp2]<< !Exp1 @ >>                                           |
+| [32][Exp2]<! !Exp1 @ !>                                           |
 | [AST-INSTRUCTIONS]:                                               |
-|   - EndObject()                                                   |
-|   > ReopenObject()                                                |
+|   + StackEnd()                                                    |
+|   > StackBegin()                                                  |
 | [RETURN STACK]:                                                   |
-|   [28][4][36]: Exp2 -> [41][Exp3]<< !Exp2 @ >>                    |
-|   [27][3][36]: Exp3 -> [56][Exp4]<< !Exp3 @ >>                    |
-|   [26][2][36]: Exp4 -> [65][Exp5]<< !Exp4 @ >>                    |
-|   [25][1][36]: Exp5 -> [80][Exp]<< !Exp5 @ >>                     |
+|   [28][4][36]: Exp2 -> [41][Exp3]<! !Exp2 @ !>                    |
+|   [27][3][36]: Exp3 -> [56][Exp4]<! !Exp3 @ !>                    |
+|   [26][2][36]: Exp4 -> [65][Exp5]<! !Exp4 @ !>                    |
+|   [25][1][36]: Exp5 -> [80][Exp]<! !Exp5 @ !>                     |
 |   [24][10][36]: Exp -> [21][Exp1]< Exp1 "(" { Exp @ ; "," } ")" > |
-|   [8][5][10]: Exp1 -> [32][Exp2]<< !Exp1 @ >>                     |
-|   [7][4][10]: Exp2 -> [41][Exp3]<< !Exp2 @ >>                     |
-|   [6][3][10]: Exp3 -> [56][Exp4]<< !Exp3 @ >>                     |
-|   [5][2][10]: Exp4 -> [65][Exp5]<< !Exp4 @ >>                     |
-|   [4][1][10]: Exp5 -> [80][Exp]<< !Exp5 @ >>                      |
+|   [8][5][10]: Exp1 -> [32][Exp2]<! !Exp1 @ !>                     |
+|   [7][4][10]: Exp2 -> [41][Exp3]<! !Exp2 @ !>                     |
+|   [6][3][10]: Exp3 -> [56][Exp4]<! !Exp3 @ !>                     |
+|   [5][2][10]: Exp4 -> [65][Exp5]<! !Exp4 @ !>                     |
+|   [4][1][10]: Exp5 -> [80][Exp]<! !Exp5 @ !>                      |
 |   [3][28][10]: Exp -> [89][Module]< { Import } "export" Exp @ >   |
 | [PREDECESSORS 38-38]: [38]                                        |
 | [SUCCESORS 40-40]: [40]                                           |
@@ -852,20 +842,20 @@
 |
 +-------------------------------------------------------------------+
 | [40]: <Ending>                                                    |
-| [41][Exp3]<< !Exp2 @ >>                                           |
+| [41][Exp3]<! !Exp2 @ !>                                           |
 | [AST-INSTRUCTIONS]:                                               |
-|   - EndObject()                                                   |
-|   > ReopenObject()                                                |
+|   + StackEnd()                                                    |
+|   > StackBegin()                                                  |
 | [RETURN STACK]:                                                   |
-|   [27][3][36]: Exp3 -> [56][Exp4]<< !Exp3 @ >>                    |
-|   [26][2][36]: Exp4 -> [65][Exp5]<< !Exp4 @ >>                    |
-|   [25][1][36]: Exp5 -> [80][Exp]<< !Exp5 @ >>                     |
+|   [27][3][36]: Exp3 -> [56][Exp4]<! !Exp3 @ !>                    |
+|   [26][2][36]: Exp4 -> [65][Exp5]<! !Exp4 @ !>                    |
+|   [25][1][36]: Exp5 -> [80][Exp]<! !Exp5 @ !>                     |
 |   [24][10][36]: Exp -> [21][Exp1]< Exp1 "(" { Exp @ ; "," } ")" > |
-|   [8][5][10]: Exp1 -> [32][Exp2]<< !Exp1 @ >>                     |
-|   [7][4][10]: Exp2 -> [41][Exp3]<< !Exp2 @ >>                     |
-|   [6][3][10]: Exp3 -> [56][Exp4]<< !Exp3 @ >>                     |
-|   [5][2][10]: Exp4 -> [65][Exp5]<< !Exp4 @ >>                     |
-|   [4][1][10]: Exp5 -> [80][Exp]<< !Exp5 @ >>                      |
+|   [8][5][10]: Exp1 -> [32][Exp2]<! !Exp1 @ !>                     |
+|   [7][4][10]: Exp2 -> [41][Exp3]<! !Exp2 @ !>                     |
+|   [6][3][10]: Exp3 -> [56][Exp4]<! !Exp3 @ !>                     |
+|   [5][2][10]: Exp4 -> [65][Exp5]<! !Exp4 @ !>                     |
+|   [4][1][10]: Exp5 -> [80][Exp]<! !Exp5 @ !>                      |
 |   [3][28][10]: Exp -> [89][Module]< { Import } "export" Exp @ >   |
 | [PREDECESSORS 39-39]: [39]                                        |
 | [SUCCESORS 41-41]: [41]                                           |
@@ -875,19 +865,19 @@
 |
 +-------------------------------------------------------------------+
 | [41]: <Ending>                                                    |
-| [56][Exp4]<< !Exp3 @ >>                                           |
+| [56][Exp4]<! !Exp3 @ !>                                           |
 | [AST-INSTRUCTIONS]:                                               |
-|   - EndObject()                                                   |
-|   > ReopenObject()                                                |
+|   + StackEnd()                                                    |
+|   > StackBegin()                                                  |
 | [RETURN STACK]:                                                   |
-|   [26][2][36]: Exp4 -> [65][Exp5]<< !Exp4 @ >>                    |
-|   [25][1][36]: Exp5 -> [80][Exp]<< !Exp5 @ >>                     |
+|   [26][2][36]: Exp4 -> [65][Exp5]<! !Exp4 @ !>                    |
+|   [25][1][36]: Exp5 -> [80][Exp]<! !Exp5 @ !>                     |
 |   [24][10][36]: Exp -> [21][Exp1]< Exp1 "(" { Exp @ ; "," } ")" > |
-|   [8][5][10]: Exp1 -> [32][Exp2]<< !Exp1 @ >>                     |
-|   [7][4][10]: Exp2 -> [41][Exp3]<< !Exp2 @ >>                     |
-|   [6][3][10]: Exp3 -> [56][Exp4]<< !Exp3 @ >>                     |
-|   [5][2][10]: Exp4 -> [65][Exp5]<< !Exp4 @ >>                     |
-|   [4][1][10]: Exp5 -> [80][Exp]<< !Exp5 @ >>                      |
+|   [8][5][10]: Exp1 -> [32][Exp2]<! !Exp1 @ !>                     |
+|   [7][4][10]: Exp2 -> [41][Exp3]<! !Exp2 @ !>                     |
+|   [6][3][10]: Exp3 -> [56][Exp4]<! !Exp3 @ !>                     |
+|   [5][2][10]: Exp4 -> [65][Exp5]<! !Exp4 @ !>                     |
+|   [4][1][10]: Exp5 -> [80][Exp]<! !Exp5 @ !>                      |
 |   [3][28][10]: Exp -> [89][Module]< { Import } "export" Exp @ >   |
 | [PREDECESSORS 40-40]: [40]                                        |
 | [SUCCESORS 42-42]: [42]                                           |
@@ -897,18 +887,18 @@
 |
 +-------------------------------------------------------------------+
 | [42]: <Ending>                                                    |
-| [65][Exp5]<< !Exp4 @ >>                                           |
+| [65][Exp5]<! !Exp4 @ !>                                           |
 | [AST-INSTRUCTIONS]:                                               |
-|   - EndObject()                                                   |
-|   > ReopenObject()                                                |
+|   + StackEnd()                                                    |
+|   > StackBegin()                                                  |
 | [RETURN STACK]:                                                   |
-|   [25][1][36]: Exp5 -> [80][Exp]<< !Exp5 @ >>                     |
+|   [25][1][36]: Exp5 -> [80][Exp]<! !Exp5 @ !>                     |
 |   [24][10][36]: Exp -> [21][Exp1]< Exp1 "(" { Exp @ ; "," } ")" > |
-|   [8][5][10]: Exp1 -> [32][Exp2]<< !Exp1 @ >>                     |
-|   [7][4][10]: Exp2 -> [41][Exp3]<< !Exp2 @ >>                     |
-|   [6][3][10]: Exp3 -> [56][Exp4]<< !Exp3 @ >>                     |
-|   [5][2][10]: Exp4 -> [65][Exp5]<< !Exp4 @ >>                     |
-|   [4][1][10]: Exp5 -> [80][Exp]<< !Exp5 @ >>                      |
+|   [8][5][10]: Exp1 -> [32][Exp2]<! !Exp1 @ !>                     |
+|   [7][4][10]: Exp2 -> [41][Exp3]<! !Exp2 @ !>                     |
+|   [6][3][10]: Exp3 -> [56][Exp4]<! !Exp3 @ !>                     |
+|   [5][2][10]: Exp4 -> [65][Exp5]<! !Exp4 @ !>                     |
+|   [4][1][10]: Exp5 -> [80][Exp]<! !Exp5 @ !>                      |
 |   [3][28][10]: Exp -> [89][Module]< { Import } "export" Exp @ >   |
 | [PREDECESSORS 41-41]: [41]                                        |
 | [SUCCESORS 43-43]: [43]                                           |
@@ -918,16 +908,17 @@
 |
 +-------------------------------------------------------------------+
 | [43]: <Ending>                                                    |
-| [80][Exp]<< !Exp5 @ >>                                            |
+| [80][Exp]<! !Exp5 @ !>                                            |
 | [AST-INSTRUCTIONS]:                                               |
-|   - EndObject()                                                   |
+|   + StackEnd()                                                    |
+|   > StackBegin()                                                  |
 | [RETURN STACK]:                                                   |
 |   [24][10][36]: Exp -> [21][Exp1]< Exp1 "(" { Exp @ ; "," } ")" > |
-|   [8][5][10]: Exp1 -> [32][Exp2]<< !Exp1 @ >>                     |
-|   [7][4][10]: Exp2 -> [41][Exp3]<< !Exp2 @ >>                     |
-|   [6][3][10]: Exp3 -> [56][Exp4]<< !Exp3 @ >>                     |
-|   [5][2][10]: Exp4 -> [65][Exp5]<< !Exp4 @ >>                     |
-|   [4][1][10]: Exp5 -> [80][Exp]<< !Exp5 @ >>                      |
+|   [8][5][10]: Exp1 -> [32][Exp2]<! !Exp1 @ !>                     |
+|   [7][4][10]: Exp2 -> [41][Exp3]<! !Exp2 @ !>                     |
+|   [6][3][10]: Exp3 -> [56][Exp4]<! !Exp3 @ !>                     |
+|   [5][2][10]: Exp4 -> [65][Exp5]<! !Exp4 @ !>                     |
+|   [4][1][10]: Exp5 -> [80][Exp]<! !Exp5 @ !>                      |
 |   [3][28][10]: Exp -> [89][Module]< { Import } "export" Exp @ >   |
 | [PREDECESSORS 42-42]: [42]                                        |
 | [SUCCESORS 44-44]: [44]                                           |
@@ -939,15 +930,14 @@
 | [44]: <Ending>                                                  |
 | [21][Exp1]< Exp1 "(" { Exp @ ; "," } ")" >                      |
 | [AST-INSTRUCTIONS]:                                             |
-|   - ReopenObject()                                              |
-|   - EndObject()                                                 |
-|   > Field(Call::args)                                           |
+|   + StackEnd()                                                  |
+|   > StackSlot(2)                                                |
 | [RETURN STACK]:                                                 |
-|   [8][5][10]: Exp1 -> [32][Exp2]<< !Exp1 @ >>                   |
-|   [7][4][10]: Exp2 -> [41][Exp3]<< !Exp2 @ >>                   |
-|   [6][3][10]: Exp3 -> [56][Exp4]<< !Exp3 @ >>                   |
-|   [5][2][10]: Exp4 -> [65][Exp5]<< !Exp4 @ >>                   |
-|   [4][1][10]: Exp5 -> [80][Exp]<< !Exp5 @ >>                    |
+|   [8][5][10]: Exp1 -> [32][Exp2]<! !Exp1 @ !>                   |
+|   [7][4][10]: Exp2 -> [41][Exp3]<! !Exp2 @ !>                   |
+|   [6][3][10]: Exp3 -> [56][Exp4]<! !Exp3 @ !>                   |
+|   [5][2][10]: Exp4 -> [65][Exp5]<! !Exp4 @ !>                   |
+|   [4][1][10]: Exp5 -> [80][Exp]<! !Exp5 @ !>                    |
 |   [3][28][10]: Exp -> [89][Module]< { Import } "export" Exp @ > |
 | [PREDECESSORS 43-43]: [43]                                      |
 | [SUCCESORS 45-45]: [45]                                         |
@@ -961,12 +951,13 @@
 || [45]: {CLOSE_BRACE} )                                           ||
 || [20][Exp1]< Exp1 "(" { Exp ; "," } ")" @ >                      ||
 || [AST-INSTRUCTIONS]:                                             ||
+||   + Token(4)                                                    ||
 || [RETURN STACK]:                                                 ||
-||   [8][5][10]: Exp1 -> [32][Exp2]<< !Exp1 @ >>                   ||
-||   [7][4][10]: Exp2 -> [41][Exp3]<< !Exp2 @ >>                   ||
-||   [6][3][10]: Exp3 -> [56][Exp4]<< !Exp3 @ >>                   ||
-||   [5][2][10]: Exp4 -> [65][Exp5]<< !Exp4 @ >>                   ||
-||   [4][1][10]: Exp5 -> [80][Exp]<< !Exp5 @ >>                    ||
+||   [8][5][10]: Exp1 -> [32][Exp2]<! !Exp1 @ !>                   ||
+||   [7][4][10]: Exp2 -> [41][Exp3]<! !Exp2 @ !>                   ||
+||   [6][3][10]: Exp3 -> [56][Exp4]<! !Exp3 @ !>                   ||
+||   [5][2][10]: Exp4 -> [65][Exp5]<! !Exp4 @ !>                   ||
+||   [4][1][10]: Exp5 -> [80][Exp]<! !Exp5 @ !>                    ||
 ||   [3][28][10]: Exp -> [89][Module]< { Import } "export" Exp @ > ||
 || [PREDECESSORS 44-44]: [44]                                      ||
 || [SUCCESORS 46-46]: [46]                                         ||
@@ -976,15 +967,18 @@
 |
 +-----------------------------------------------------------------+
 | [46]: <Ending>                                                  |
-| [32][Exp2]<< !Exp1 @ >>                                         |
+| [32][Exp2]<! !Exp1 @ !>                                         |
 | [AST-INSTRUCTIONS]:                                             |
-|   - EndObject()                                                 |
-|   > ReopenObject()                                              |
+|   + CreateObject(Call)                                          |
+|   + Field(Call::func, 0)                                        |
+|   + Field(Call::args, 2)                                        |
+|   + StackEnd()                                                  |
+|   > StackBegin()                                                |
 | [RETURN STACK]:                                                 |
-|   [7][4][10]: Exp2 -> [41][Exp3]<< !Exp2 @ >>                   |
-|   [6][3][10]: Exp3 -> [56][Exp4]<< !Exp3 @ >>                   |
-|   [5][2][10]: Exp4 -> [65][Exp5]<< !Exp4 @ >>                   |
-|   [4][1][10]: Exp5 -> [80][Exp]<< !Exp5 @ >>                    |
+|   [7][4][10]: Exp2 -> [41][Exp3]<! !Exp2 @ !>                   |
+|   [6][3][10]: Exp3 -> [56][Exp4]<! !Exp3 @ !>                   |
+|   [5][2][10]: Exp4 -> [65][Exp5]<! !Exp4 @ !>                   |
+|   [4][1][10]: Exp5 -> [80][Exp]<! !Exp5 @ !>                    |
 |   [3][28][10]: Exp -> [89][Module]< { Import } "export" Exp @ > |
 | [PREDECESSORS 45-45]: [45]                                      |
 | [SUCCESORS 47-47]: [47]                                         |
@@ -994,14 +988,14 @@
 |
 +-----------------------------------------------------------------+
 | [47]: <Ending>                                                  |
-| [41][Exp3]<< !Exp2 @ >>                                         |
+| [41][Exp3]<! !Exp2 @ !>                                         |
 | [AST-INSTRUCTIONS]:                                             |
-|   - EndObject()                                                 |
-|   > ReopenObject()                                              |
+|   + StackEnd()                                                  |
+|   > StackBegin()                                                |
 | [RETURN STACK]:                                                 |
-|   [6][3][10]: Exp3 -> [56][Exp4]<< !Exp3 @ >>                   |
-|   [5][2][10]: Exp4 -> [65][Exp5]<< !Exp4 @ >>                   |
-|   [4][1][10]: Exp5 -> [80][Exp]<< !Exp5 @ >>                    |
+|   [6][3][10]: Exp3 -> [56][Exp4]<! !Exp3 @ !>                   |
+|   [5][2][10]: Exp4 -> [65][Exp5]<! !Exp4 @ !>                   |
+|   [4][1][10]: Exp5 -> [80][Exp]<! !Exp5 @ !>                    |
 |   [3][28][10]: Exp -> [89][Module]< { Import } "export" Exp @ > |
 | [PREDECESSORS 46-46]: [46]                                      |
 | [SUCCESORS 48-48]: [48]                                         |
@@ -1013,15 +1007,13 @@
 | [48]: <Leftrec>                                                 |
 | [39][Exp3]< Exp3 @ "+" Exp2 >                                   |
 | [AST-INSTRUCTIONS]:                                             |
-|   - EndObject()                                                 |
-|   - LriStore()                                                  |
-|   - BeginObject(Binary)                                         |
-|   - LriFetch()                                                  |
-|   + Field(Binary::left)                                         |
+|   + StackEnd()                                                  |
+|   + StackBegin()                                                |
+|   + StackSlot(0)                                                |
 | [RETURN STACK]:                                                 |
-|   [6][3][10]: Exp3 -> [56][Exp4]<< !Exp3 @ >>                   |
-|   [5][2][10]: Exp4 -> [65][Exp5]<< !Exp4 @ >>                   |
-|   [4][1][10]: Exp5 -> [80][Exp]<< !Exp5 @ >>                    |
+|   [6][3][10]: Exp3 -> [56][Exp4]<! !Exp3 @ !>                   |
+|   [5][2][10]: Exp4 -> [65][Exp5]<! !Exp4 @ !>                   |
+|   [4][1][10]: Exp5 -> [80][Exp]<! !Exp5 @ !>                    |
 |   [3][28][10]: Exp -> [89][Module]< { Import } "export" Exp @ > |
 | [PREDECESSORS 47-47]: [47]                                      |
 | [SUCCESORS 50-50]: [50]                                         |
@@ -1035,10 +1027,11 @@
 || [50]: {ADD} +                                                   ||
 || [35][Exp3]< Exp3 "+" @ Exp2 >                                   ||
 || [AST-INSTRUCTIONS]:                                             ||
+||   + Token(1)                                                    ||
 || [RETURN STACK]:                                                 ||
-||   [6][3][10]: Exp3 -> [56][Exp4]<< !Exp3 @ >>                   ||
-||   [5][2][10]: Exp4 -> [65][Exp5]<< !Exp4 @ >>                   ||
-||   [4][1][10]: Exp5 -> [80][Exp]<< !Exp5 @ >>                    ||
+||   [6][3][10]: Exp3 -> [56][Exp4]<! !Exp3 @ !>                   ||
+||   [5][2][10]: Exp4 -> [65][Exp5]<! !Exp4 @ !>                   ||
+||   [4][1][10]: Exp5 -> [80][Exp]<! !Exp5 @ !>                    ||
 ||   [3][28][10]: Exp -> [89][Module]< { Import } "export" Exp @ > ||
 || [PREDECESSORS 48-48]: [48]                                      ||
 || [SUCCESORS 51-51]: [51]                                         ||
@@ -1052,18 +1045,15 @@
 || [51]: {ID} exp                                                  ||
 || [7][Exp0]< ID @ >                                               ||
 || [AST-INSTRUCTIONS]:                                             ||
-||   - DelayFieldAssignment()                                      ||
-||   - DelayFieldAssignment()                                      ||
-||   - BeginObject(Ref)                                            ||
-||   + Token()                                                     ||
-||   + Field(Ref::name)                                            ||
+||   + StackBegin()                                                ||
+||   + Token(0)                                                    ||
 || [RETURN STACK]:                                                 ||
-||   [33][6][50]: Exp0 -> [23][Exp1]<< !Exp0 @ >>                  ||
-||   [32][5][50]: Exp1 -> [32][Exp2]<< !Exp1 @ >>                  ||
+||   [33][6][50]: Exp0 -> [23][Exp1]<! !Exp0 @ !>                  ||
+||   [32][5][50]: Exp1 -> [32][Exp2]<! !Exp1 @ !>                  ||
 ||   [31][13][50]: Exp2 -> [36][Exp3]< Exp3 "+" Exp2 @ >           ||
-||   [6][3][10]: Exp3 -> [56][Exp4]<< !Exp3 @ >>                   ||
-||   [5][2][10]: Exp4 -> [65][Exp5]<< !Exp4 @ >>                   ||
-||   [4][1][10]: Exp5 -> [80][Exp]<< !Exp5 @ >>                    ||
+||   [6][3][10]: Exp3 -> [56][Exp4]<! !Exp3 @ !>                   ||
+||   [5][2][10]: Exp4 -> [65][Exp5]<! !Exp4 @ !>                   ||
+||   [4][1][10]: Exp5 -> [80][Exp]<! !Exp5 @ !>                    ||
 ||   [3][28][10]: Exp -> [89][Module]< { Import } "export" Exp @ > ||
 || [PREDECESSORS 50-50]: [50]                                      ||
 || [SUCCESORS 52-52]: [52]                                         ||
@@ -1073,16 +1063,18 @@
 |
 +-----------------------------------------------------------------+
 | [52]: <Ending>                                                  |
-| [23][Exp1]<< !Exp0 @ >>                                         |
+| [23][Exp1]<! !Exp0 @ !>                                         |
 | [AST-INSTRUCTIONS]:                                             |
-|   - EndObject()                                                 |
-|   > ReopenObject()                                              |
+|   + CreateObject(Ref)                                           |
+|   + Field(Ref::name, 0)                                         |
+|   + StackEnd()                                                  |
+|   > StackBegin()                                                |
 | [RETURN STACK]:                                                 |
-|   [32][5][50]: Exp1 -> [32][Exp2]<< !Exp1 @ >>                  |
+|   [32][5][50]: Exp1 -> [32][Exp2]<! !Exp1 @ !>                  |
 |   [31][13][50]: Exp2 -> [36][Exp3]< Exp3 "+" Exp2 @ >           |
-|   [6][3][10]: Exp3 -> [56][Exp4]<< !Exp3 @ >>                   |
-|   [5][2][10]: Exp4 -> [65][Exp5]<< !Exp4 @ >>                   |
-|   [4][1][10]: Exp5 -> [80][Exp]<< !Exp5 @ >>                    |
+|   [6][3][10]: Exp3 -> [56][Exp4]<! !Exp3 @ !>                   |
+|   [5][2][10]: Exp4 -> [65][Exp5]<! !Exp4 @ !>                   |
+|   [4][1][10]: Exp5 -> [80][Exp]<! !Exp5 @ !>                    |
 |   [3][28][10]: Exp -> [89][Module]< { Import } "export" Exp @ > |
 | [PREDECESSORS 51-51]: [51]                                      |
 | [SUCCESORS 53-53]: [53]                                         |
@@ -1094,17 +1086,15 @@
 | [53]: <Leftrec>                                                 |
 | [22][Exp1]< Exp1 @ "(" { Exp ; "," } ")" >                      |
 | [AST-INSTRUCTIONS]:                                             |
-|   - EndObject()                                                 |
-|   - LriStore()                                                  |
-|   - BeginObject(Call)                                           |
-|   - LriFetch()                                                  |
-|   + Field(Call::func)                                           |
+|   + StackEnd()                                                  |
+|   + StackBegin()                                                |
+|   + StackSlot(0)                                                |
 | [RETURN STACK]:                                                 |
-|   [32][5][50]: Exp1 -> [32][Exp2]<< !Exp1 @ >>                  |
+|   [32][5][50]: Exp1 -> [32][Exp2]<! !Exp1 @ !>                  |
 |   [31][13][50]: Exp2 -> [36][Exp3]< Exp3 "+" Exp2 @ >           |
-|   [6][3][10]: Exp3 -> [56][Exp4]<< !Exp3 @ >>                   |
-|   [5][2][10]: Exp4 -> [65][Exp5]<< !Exp4 @ >>                   |
-|   [4][1][10]: Exp5 -> [80][Exp]<< !Exp5 @ >>                    |
+|   [6][3][10]: Exp3 -> [56][Exp4]<! !Exp3 @ !>                   |
+|   [5][2][10]: Exp4 -> [65][Exp5]<! !Exp4 @ !>                   |
+|   [4][1][10]: Exp5 -> [80][Exp]<! !Exp5 @ !>                    |
 |   [3][28][10]: Exp -> [89][Module]< { Import } "export" Exp @ > |
 | [PREDECESSORS 52-52]: [52]                                      |
 | [SUCCESORS 55-55]: [55]                                         |
@@ -1118,12 +1108,13 @@
 || [55]: {OPEN_BRACE} (                                            ||
 || [18][Exp1]< Exp1 "(" @ { Exp ; "," } ")" >                      ||
 || [AST-INSTRUCTIONS]:                                             ||
+||   + Token(1)                                                    ||
 || [RETURN STACK]:                                                 ||
-||   [32][5][50]: Exp1 -> [32][Exp2]<< !Exp1 @ >>                  ||
+||   [32][5][50]: Exp1 -> [32][Exp2]<! !Exp1 @ !>                  ||
 ||   [31][13][50]: Exp2 -> [36][Exp3]< Exp3 "+" Exp2 @ >           ||
-||   [6][3][10]: Exp3 -> [56][Exp4]<< !Exp3 @ >>                   ||
-||   [5][2][10]: Exp4 -> [65][Exp5]<< !Exp4 @ >>                   ||
-||   [4][1][10]: Exp5 -> [80][Exp]<< !Exp5 @ >>                    ||
+||   [6][3][10]: Exp3 -> [56][Exp4]<! !Exp3 @ !>                   ||
+||   [5][2][10]: Exp4 -> [65][Exp5]<! !Exp4 @ !>                   ||
+||   [4][1][10]: Exp5 -> [80][Exp]<! !Exp5 @ !>                    ||
 ||   [3][28][10]: Exp -> [89][Module]< { Import } "export" Exp @ > ||
 || [PREDECESSORS 53-53]: [53]                                      ||
 || [SUCCESORS 56-56]: [56]                                         ||
@@ -1137,28 +1128,21 @@
 || [56]: {ID} cos                                                   ||
 || [7][Exp0]< ID @ >                                                ||
 || [AST-INSTRUCTIONS]:                                              ||
-||   - DelayFieldAssignment()                                       ||
-||   - DelayFieldAssignment()                                       ||
-||   - DelayFieldAssignment()                                       ||
-||   - DelayFieldAssignment()                                       ||
-||   - DelayFieldAssignment()                                       ||
-||   - DelayFieldAssignment()                                       ||
-||   - BeginObject(Ref)                                             ||
-||   + Token()                                                      ||
-||   + Field(Ref::name)                                             ||
+||   + StackBegin()                                                 ||
+||   + Token(0)                                                     ||
 || [RETURN STACK]:                                                  ||
-||   [40][6][55]: Exp0 -> [23][Exp1]<< !Exp0 @ >>                   ||
-||   [39][5][55]: Exp1 -> [32][Exp2]<< !Exp1 @ >>                   ||
-||   [38][4][55]: Exp2 -> [41][Exp3]<< !Exp2 @ >>                   ||
-||   [37][3][55]: Exp3 -> [56][Exp4]<< !Exp3 @ >>                   ||
-||   [36][2][55]: Exp4 -> [65][Exp5]<< !Exp4 @ >>                   ||
-||   [35][1][55]: Exp5 -> [80][Exp]<< !Exp5 @ >>                    ||
+||   [40][6][55]: Exp0 -> [23][Exp1]<! !Exp0 @ !>                   ||
+||   [39][5][55]: Exp1 -> [32][Exp2]<! !Exp1 @ !>                   ||
+||   [38][4][55]: Exp2 -> [41][Exp3]<! !Exp2 @ !>                   ||
+||   [37][3][55]: Exp3 -> [56][Exp4]<! !Exp3 @ !>                   ||
+||   [36][2][55]: Exp4 -> [65][Exp5]<! !Exp4 @ !>                   ||
+||   [35][1][55]: Exp5 -> [80][Exp]<! !Exp5 @ !>                    ||
 ||   [34][9][55]: Exp -> [21][Exp1]< Exp1 "(" { Exp @ ; "," } ")" > ||
-||   [32][5][50]: Exp1 -> [32][Exp2]<< !Exp1 @ >>                   ||
+||   [32][5][50]: Exp1 -> [32][Exp2]<! !Exp1 @ !>                   ||
 ||   [31][13][50]: Exp2 -> [36][Exp3]< Exp3 "+" Exp2 @ >            ||
-||   [6][3][10]: Exp3 -> [56][Exp4]<< !Exp3 @ >>                    ||
-||   [5][2][10]: Exp4 -> [65][Exp5]<< !Exp4 @ >>                    ||
-||   [4][1][10]: Exp5 -> [80][Exp]<< !Exp5 @ >>                     ||
+||   [6][3][10]: Exp3 -> [56][Exp4]<! !Exp3 @ !>                    ||
+||   [5][2][10]: Exp4 -> [65][Exp5]<! !Exp4 @ !>                    ||
+||   [4][1][10]: Exp5 -> [80][Exp]<! !Exp5 @ !>                     ||
 ||   [3][28][10]: Exp -> [89][Module]< { Import } "export" Exp @ >  ||
 || [PREDECESSORS 55-55]: [55]                                       ||
 || [SUCCESORS 57-57]: [57]                                          ||
@@ -1168,22 +1152,24 @@
 |
 +------------------------------------------------------------------+
 | [57]: <Ending>                                                   |
-| [23][Exp1]<< !Exp0 @ >>                                          |
+| [23][Exp1]<! !Exp0 @ !>                                          |
 | [AST-INSTRUCTIONS]:                                              |
-|   - EndObject()                                                  |
-|   > ReopenObject()                                               |
+|   + CreateObject(Ref)                                            |
+|   + Field(Ref::name, 0)                                          |
+|   + StackEnd()                                                   |
+|   > StackBegin()                                                 |
 | [RETURN STACK]:                                                  |
-|   [39][5][55]: Exp1 -> [32][Exp2]<< !Exp1 @ >>                   |
-|   [38][4][55]: Exp2 -> [41][Exp3]<< !Exp2 @ >>                   |
-|   [37][3][55]: Exp3 -> [56][Exp4]<< !Exp3 @ >>                   |
-|   [36][2][55]: Exp4 -> [65][Exp5]<< !Exp4 @ >>                   |
-|   [35][1][55]: Exp5 -> [80][Exp]<< !Exp5 @ >>                    |
+|   [39][5][55]: Exp1 -> [32][Exp2]<! !Exp1 @ !>                   |
+|   [38][4][55]: Exp2 -> [41][Exp3]<! !Exp2 @ !>                   |
+|   [37][3][55]: Exp3 -> [56][Exp4]<! !Exp3 @ !>                   |
+|   [36][2][55]: Exp4 -> [65][Exp5]<! !Exp4 @ !>                   |
+|   [35][1][55]: Exp5 -> [80][Exp]<! !Exp5 @ !>                    |
 |   [34][9][55]: Exp -> [21][Exp1]< Exp1 "(" { Exp @ ; "," } ")" > |
-|   [32][5][50]: Exp1 -> [32][Exp2]<< !Exp1 @ >>                   |
+|   [32][5][50]: Exp1 -> [32][Exp2]<! !Exp1 @ !>                   |
 |   [31][13][50]: Exp2 -> [36][Exp3]< Exp3 "+" Exp2 @ >            |
-|   [6][3][10]: Exp3 -> [56][Exp4]<< !Exp3 @ >>                    |
-|   [5][2][10]: Exp4 -> [65][Exp5]<< !Exp4 @ >>                    |
-|   [4][1][10]: Exp5 -> [80][Exp]<< !Exp5 @ >>                     |
+|   [6][3][10]: Exp3 -> [56][Exp4]<! !Exp3 @ !>                    |
+|   [5][2][10]: Exp4 -> [65][Exp5]<! !Exp4 @ !>                    |
+|   [4][1][10]: Exp5 -> [80][Exp]<! !Exp5 @ !>                     |
 |   [3][28][10]: Exp -> [89][Module]< { Import } "export" Exp @ >  |
 | [PREDECESSORS 56-56]: [56]                                       |
 | [SUCCESORS 58-58]: [58]                                          |
@@ -1195,23 +1181,21 @@
 | [58]: <Leftrec>                                                  |
 | [22][Exp1]< Exp1 @ "(" { Exp ; "," } ")" >                       |
 | [AST-INSTRUCTIONS]:                                              |
-|   - EndObject()                                                  |
-|   - LriStore()                                                   |
-|   - BeginObject(Call)                                            |
-|   - LriFetch()                                                   |
-|   + Field(Call::func)                                            |
+|   + StackEnd()                                                   |
+|   + StackBegin()                                                 |
+|   + StackSlot(0)                                                 |
 | [RETURN STACK]:                                                  |
-|   [39][5][55]: Exp1 -> [32][Exp2]<< !Exp1 @ >>                   |
-|   [38][4][55]: Exp2 -> [41][Exp3]<< !Exp2 @ >>                   |
-|   [37][3][55]: Exp3 -> [56][Exp4]<< !Exp3 @ >>                   |
-|   [36][2][55]: Exp4 -> [65][Exp5]<< !Exp4 @ >>                   |
-|   [35][1][55]: Exp5 -> [80][Exp]<< !Exp5 @ >>                    |
+|   [39][5][55]: Exp1 -> [32][Exp2]<! !Exp1 @ !>                   |
+|   [38][4][55]: Exp2 -> [41][Exp3]<! !Exp2 @ !>                   |
+|   [37][3][55]: Exp3 -> [56][Exp4]<! !Exp3 @ !>                   |
+|   [36][2][55]: Exp4 -> [65][Exp5]<! !Exp4 @ !>                   |
+|   [35][1][55]: Exp5 -> [80][Exp]<! !Exp5 @ !>                    |
 |   [34][9][55]: Exp -> [21][Exp1]< Exp1 "(" { Exp @ ; "," } ")" > |
-|   [32][5][50]: Exp1 -> [32][Exp2]<< !Exp1 @ >>                   |
+|   [32][5][50]: Exp1 -> [32][Exp2]<! !Exp1 @ !>                   |
 |   [31][13][50]: Exp2 -> [36][Exp3]< Exp3 "+" Exp2 @ >            |
-|   [6][3][10]: Exp3 -> [56][Exp4]<< !Exp3 @ >>                    |
-|   [5][2][10]: Exp4 -> [65][Exp5]<< !Exp4 @ >>                    |
-|   [4][1][10]: Exp5 -> [80][Exp]<< !Exp5 @ >>                     |
+|   [6][3][10]: Exp3 -> [56][Exp4]<! !Exp3 @ !>                    |
+|   [5][2][10]: Exp4 -> [65][Exp5]<! !Exp4 @ !>                    |
+|   [4][1][10]: Exp5 -> [80][Exp]<! !Exp5 @ !>                     |
 |   [3][28][10]: Exp -> [89][Module]< { Import } "export" Exp @ >  |
 | [PREDECESSORS 57-57]: [57]                                       |
 | [SUCCESORS 60-60]: [60]                                          |
@@ -1225,18 +1209,19 @@
 || [60]: {OPEN_BRACE} (                                             ||
 || [18][Exp1]< Exp1 "(" @ { Exp ; "," } ")" >                       ||
 || [AST-INSTRUCTIONS]:                                              ||
+||   + Token(1)                                                     ||
 || [RETURN STACK]:                                                  ||
-||   [39][5][55]: Exp1 -> [32][Exp2]<< !Exp1 @ >>                   ||
-||   [38][4][55]: Exp2 -> [41][Exp3]<< !Exp2 @ >>                   ||
-||   [37][3][55]: Exp3 -> [56][Exp4]<< !Exp3 @ >>                   ||
-||   [36][2][55]: Exp4 -> [65][Exp5]<< !Exp4 @ >>                   ||
-||   [35][1][55]: Exp5 -> [80][Exp]<< !Exp5 @ >>                    ||
+||   [39][5][55]: Exp1 -> [32][Exp2]<! !Exp1 @ !>                   ||
+||   [38][4][55]: Exp2 -> [41][Exp3]<! !Exp2 @ !>                   ||
+||   [37][3][55]: Exp3 -> [56][Exp4]<! !Exp3 @ !>                   ||
+||   [36][2][55]: Exp4 -> [65][Exp5]<! !Exp4 @ !>                   ||
+||   [35][1][55]: Exp5 -> [80][Exp]<! !Exp5 @ !>                    ||
 ||   [34][9][55]: Exp -> [21][Exp1]< Exp1 "(" { Exp @ ; "," } ")" > ||
-||   [32][5][50]: Exp1 -> [32][Exp2]<< !Exp1 @ >>                   ||
+||   [32][5][50]: Exp1 -> [32][Exp2]<! !Exp1 @ !>                   ||
 ||   [31][13][50]: Exp2 -> [36][Exp3]< Exp3 "+" Exp2 @ >            ||
-||   [6][3][10]: Exp3 -> [56][Exp4]<< !Exp3 @ >>                    ||
-||   [5][2][10]: Exp4 -> [65][Exp5]<< !Exp4 @ >>                    ||
-||   [4][1][10]: Exp5 -> [80][Exp]<< !Exp5 @ >>                     ||
+||   [6][3][10]: Exp3 -> [56][Exp4]<! !Exp3 @ !>                    ||
+||   [5][2][10]: Exp4 -> [65][Exp5]<! !Exp4 @ !>                    ||
+||   [4][1][10]: Exp5 -> [80][Exp]<! !Exp5 @ !>                     ||
 ||   [3][28][10]: Exp -> [89][Module]< { Import } "export" Exp @ >  ||
 || [PREDECESSORS 58-58]: [58]                                       ||
 || [SUCCESORS 61-61]: [61]                                          ||
@@ -1250,34 +1235,27 @@
 || [61]: {NUM} 1                                                    ||
 || [8][Exp0]< NUM @ >                                               ||
 || [AST-INSTRUCTIONS]:                                              ||
-||   - DelayFieldAssignment()                                       ||
-||   - DelayFieldAssignment()                                       ||
-||   - DelayFieldAssignment()                                       ||
-||   - DelayFieldAssignment()                                       ||
-||   - DelayFieldAssignment()                                       ||
-||   - DelayFieldAssignment()                                       ||
-||   - BeginObject(NumExpr)                                         ||
-||   + Token()                                                      ||
-||   + Field(NumExpr::value)                                        ||
+||   + StackBegin()                                                 ||
+||   + Token(0)                                                     ||
 || [RETURN STACK]:                                                  ||
-||   [47][6][60]: Exp0 -> [23][Exp1]<< !Exp0 @ >>                   ||
-||   [46][5][60]: Exp1 -> [32][Exp2]<< !Exp1 @ >>                   ||
-||   [45][4][60]: Exp2 -> [41][Exp3]<< !Exp2 @ >>                   ||
-||   [44][3][60]: Exp3 -> [56][Exp4]<< !Exp3 @ >>                   ||
-||   [43][2][60]: Exp4 -> [65][Exp5]<< !Exp4 @ >>                   ||
-||   [42][1][60]: Exp5 -> [80][Exp]<< !Exp5 @ >>                    ||
+||   [47][6][60]: Exp0 -> [23][Exp1]<! !Exp0 @ !>                   ||
+||   [46][5][60]: Exp1 -> [32][Exp2]<! !Exp1 @ !>                   ||
+||   [45][4][60]: Exp2 -> [41][Exp3]<! !Exp2 @ !>                   ||
+||   [44][3][60]: Exp3 -> [56][Exp4]<! !Exp3 @ !>                   ||
+||   [43][2][60]: Exp4 -> [65][Exp5]<! !Exp4 @ !>                   ||
+||   [42][1][60]: Exp5 -> [80][Exp]<! !Exp5 @ !>                    ||
 ||   [41][9][60]: Exp -> [21][Exp1]< Exp1 "(" { Exp @ ; "," } ")" > ||
-||   [39][5][55]: Exp1 -> [32][Exp2]<< !Exp1 @ >>                   ||
-||   [38][4][55]: Exp2 -> [41][Exp3]<< !Exp2 @ >>                   ||
-||   [37][3][55]: Exp3 -> [56][Exp4]<< !Exp3 @ >>                   ||
-||   [36][2][55]: Exp4 -> [65][Exp5]<< !Exp4 @ >>                   ||
-||   [35][1][55]: Exp5 -> [80][Exp]<< !Exp5 @ >>                    ||
+||   [39][5][55]: Exp1 -> [32][Exp2]<! !Exp1 @ !>                   ||
+||   [38][4][55]: Exp2 -> [41][Exp3]<! !Exp2 @ !>                   ||
+||   [37][3][55]: Exp3 -> [56][Exp4]<! !Exp3 @ !>                   ||
+||   [36][2][55]: Exp4 -> [65][Exp5]<! !Exp4 @ !>                   ||
+||   [35][1][55]: Exp5 -> [80][Exp]<! !Exp5 @ !>                    ||
 ||   [34][9][55]: Exp -> [21][Exp1]< Exp1 "(" { Exp @ ; "," } ")" > ||
-||   [32][5][50]: Exp1 -> [32][Exp2]<< !Exp1 @ >>                   ||
+||   [32][5][50]: Exp1 -> [32][Exp2]<! !Exp1 @ !>                   ||
 ||   [31][13][50]: Exp2 -> [36][Exp3]< Exp3 "+" Exp2 @ >            ||
-||   [6][3][10]: Exp3 -> [56][Exp4]<< !Exp3 @ >>                    ||
-||   [5][2][10]: Exp4 -> [65][Exp5]<< !Exp4 @ >>                    ||
-||   [4][1][10]: Exp5 -> [80][Exp]<< !Exp5 @ >>                     ||
+||   [6][3][10]: Exp3 -> [56][Exp4]<! !Exp3 @ !>                    ||
+||   [5][2][10]: Exp4 -> [65][Exp5]<! !Exp4 @ !>                    ||
+||   [4][1][10]: Exp5 -> [80][Exp]<! !Exp5 @ !>                     ||
 ||   [3][28][10]: Exp -> [89][Module]< { Import } "export" Exp @ >  ||
 || [PREDECESSORS 60-60]: [60]                                       ||
 || [SUCCESORS 62-62]: [62]                                          ||
@@ -1287,28 +1265,30 @@
 |
 +------------------------------------------------------------------+
 | [62]: <Ending>                                                   |
-| [23][Exp1]<< !Exp0 @ >>                                          |
+| [23][Exp1]<! !Exp0 @ !>                                          |
 | [AST-INSTRUCTIONS]:                                              |
-|   - EndObject()                                                  |
-|   > ReopenObject()                                               |
+|   + CreateObject(NumExpr)                                        |
+|   + Field(NumExpr::value, 0)                                     |
+|   + StackEnd()                                                   |
+|   > StackBegin()                                                 |
 | [RETURN STACK]:                                                  |
-|   [46][5][60]: Exp1 -> [32][Exp2]<< !Exp1 @ >>                   |
-|   [45][4][60]: Exp2 -> [41][Exp3]<< !Exp2 @ >>                   |
-|   [44][3][60]: Exp3 -> [56][Exp4]<< !Exp3 @ >>                   |
-|   [43][2][60]: Exp4 -> [65][Exp5]<< !Exp4 @ >>                   |
-|   [42][1][60]: Exp5 -> [80][Exp]<< !Exp5 @ >>                    |
+|   [46][5][60]: Exp1 -> [32][Exp2]<! !Exp1 @ !>                   |
+|   [45][4][60]: Exp2 -> [41][Exp3]<! !Exp2 @ !>                   |
+|   [44][3][60]: Exp3 -> [56][Exp4]<! !Exp3 @ !>                   |
+|   [43][2][60]: Exp4 -> [65][Exp5]<! !Exp4 @ !>                   |
+|   [42][1][60]: Exp5 -> [80][Exp]<! !Exp5 @ !>                    |
 |   [41][9][60]: Exp -> [21][Exp1]< Exp1 "(" { Exp @ ; "," } ")" > |
-|   [39][5][55]: Exp1 -> [32][Exp2]<< !Exp1 @ >>                   |
-|   [38][4][55]: Exp2 -> [41][Exp3]<< !Exp2 @ >>                   |
-|   [37][3][55]: Exp3 -> [56][Exp4]<< !Exp3 @ >>                   |
-|   [36][2][55]: Exp4 -> [65][Exp5]<< !Exp4 @ >>                   |
-|   [35][1][55]: Exp5 -> [80][Exp]<< !Exp5 @ >>                    |
+|   [39][5][55]: Exp1 -> [32][Exp2]<! !Exp1 @ !>                   |
+|   [38][4][55]: Exp2 -> [41][Exp3]<! !Exp2 @ !>                   |
+|   [37][3][55]: Exp3 -> [56][Exp4]<! !Exp3 @ !>                   |
+|   [36][2][55]: Exp4 -> [65][Exp5]<! !Exp4 @ !>                   |
+|   [35][1][55]: Exp5 -> [80][Exp]<! !Exp5 @ !>                    |
 |   [34][9][55]: Exp -> [21][Exp1]< Exp1 "(" { Exp @ ; "," } ")" > |
-|   [32][5][50]: Exp1 -> [32][Exp2]<< !Exp1 @ >>                   |
+|   [32][5][50]: Exp1 -> [32][Exp2]<! !Exp1 @ !>                   |
 |   [31][13][50]: Exp2 -> [36][Exp3]< Exp3 "+" Exp2 @ >            |
-|   [6][3][10]: Exp3 -> [56][Exp4]<< !Exp3 @ >>                    |
-|   [5][2][10]: Exp4 -> [65][Exp5]<< !Exp4 @ >>                    |
-|   [4][1][10]: Exp5 -> [80][Exp]<< !Exp5 @ >>                     |
+|   [6][3][10]: Exp3 -> [56][Exp4]<! !Exp3 @ !>                    |
+|   [5][2][10]: Exp4 -> [65][Exp5]<! !Exp4 @ !>                    |
+|   [4][1][10]: Exp5 -> [80][Exp]<! !Exp5 @ !>                     |
 |   [3][28][10]: Exp -> [89][Module]< { Import } "export" Exp @ >  |
 | [PREDECESSORS 61-61]: [61]                                       |
 | [SUCCESORS 63-63]: [63]                                          |
@@ -1318,27 +1298,27 @@
 |
 +------------------------------------------------------------------+
 | [63]: <Ending>                                                   |
-| [32][Exp2]<< !Exp1 @ >>                                          |
+| [32][Exp2]<! !Exp1 @ !>                                          |
 | [AST-INSTRUCTIONS]:                                              |
-|   - EndObject()                                                  |
-|   > ReopenObject()                                               |
+|   + StackEnd()                                                   |
+|   > StackBegin()                                                 |
 | [RETURN STACK]:                                                  |
-|   [45][4][60]: Exp2 -> [41][Exp3]<< !Exp2 @ >>                   |
-|   [44][3][60]: Exp3 -> [56][Exp4]<< !Exp3 @ >>                   |
-|   [43][2][60]: Exp4 -> [65][Exp5]<< !Exp4 @ >>                   |
-|   [42][1][60]: Exp5 -> [80][Exp]<< !Exp5 @ >>                    |
+|   [45][4][60]: Exp2 -> [41][Exp3]<! !Exp2 @ !>                   |
+|   [44][3][60]: Exp3 -> [56][Exp4]<! !Exp3 @ !>                   |
+|   [43][2][60]: Exp4 -> [65][Exp5]<! !Exp4 @ !>                   |
+|   [42][1][60]: Exp5 -> [80][Exp]<! !Exp5 @ !>                    |
 |   [41][9][60]: Exp -> [21][Exp1]< Exp1 "(" { Exp @ ; "," } ")" > |
-|   [39][5][55]: Exp1 -> [32][Exp2]<< !Exp1 @ >>                   |
-|   [38][4][55]: Exp2 -> [41][Exp3]<< !Exp2 @ >>                   |
-|   [37][3][55]: Exp3 -> [56][Exp4]<< !Exp3 @ >>                   |
-|   [36][2][55]: Exp4 -> [65][Exp5]<< !Exp4 @ >>                   |
-|   [35][1][55]: Exp5 -> [80][Exp]<< !Exp5 @ >>                    |
+|   [39][5][55]: Exp1 -> [32][Exp2]<! !Exp1 @ !>                   |
+|   [38][4][55]: Exp2 -> [41][Exp3]<! !Exp2 @ !>                   |
+|   [37][3][55]: Exp3 -> [56][Exp4]<! !Exp3 @ !>                   |
+|   [36][2][55]: Exp4 -> [65][Exp5]<! !Exp4 @ !>                   |
+|   [35][1][55]: Exp5 -> [80][Exp]<! !Exp5 @ !>                    |
 |   [34][9][55]: Exp -> [21][Exp1]< Exp1 "(" { Exp @ ; "," } ")" > |
-|   [32][5][50]: Exp1 -> [32][Exp2]<< !Exp1 @ >>                   |
+|   [32][5][50]: Exp1 -> [32][Exp2]<! !Exp1 @ !>                   |
 |   [31][13][50]: Exp2 -> [36][Exp3]< Exp3 "+" Exp2 @ >            |
-|   [6][3][10]: Exp3 -> [56][Exp4]<< !Exp3 @ >>                    |
-|   [5][2][10]: Exp4 -> [65][Exp5]<< !Exp4 @ >>                    |
-|   [4][1][10]: Exp5 -> [80][Exp]<< !Exp5 @ >>                     |
+|   [6][3][10]: Exp3 -> [56][Exp4]<! !Exp3 @ !>                    |
+|   [5][2][10]: Exp4 -> [65][Exp5]<! !Exp4 @ !>                    |
+|   [4][1][10]: Exp5 -> [80][Exp]<! !Exp5 @ !>                     |
 |   [3][28][10]: Exp -> [89][Module]< { Import } "export" Exp @ >  |
 | [PREDECESSORS 62-62]: [62]                                       |
 | [SUCCESORS 64-64]: [64]                                          |
@@ -1348,26 +1328,26 @@
 |
 +------------------------------------------------------------------+
 | [64]: <Ending>                                                   |
-| [41][Exp3]<< !Exp2 @ >>                                          |
+| [41][Exp3]<! !Exp2 @ !>                                          |
 | [AST-INSTRUCTIONS]:                                              |
-|   - EndObject()                                                  |
-|   > ReopenObject()                                               |
+|   + StackEnd()                                                   |
+|   > StackBegin()                                                 |
 | [RETURN STACK]:                                                  |
-|   [44][3][60]: Exp3 -> [56][Exp4]<< !Exp3 @ >>                   |
-|   [43][2][60]: Exp4 -> [65][Exp5]<< !Exp4 @ >>                   |
-|   [42][1][60]: Exp5 -> [80][Exp]<< !Exp5 @ >>                    |
+|   [44][3][60]: Exp3 -> [56][Exp4]<! !Exp3 @ !>                   |
+|   [43][2][60]: Exp4 -> [65][Exp5]<! !Exp4 @ !>                   |
+|   [42][1][60]: Exp5 -> [80][Exp]<! !Exp5 @ !>                    |
 |   [41][9][60]: Exp -> [21][Exp1]< Exp1 "(" { Exp @ ; "," } ")" > |
-|   [39][5][55]: Exp1 -> [32][Exp2]<< !Exp1 @ >>                   |
-|   [38][4][55]: Exp2 -> [41][Exp3]<< !Exp2 @ >>                   |
-|   [37][3][55]: Exp3 -> [56][Exp4]<< !Exp3 @ >>                   |
-|   [36][2][55]: Exp4 -> [65][Exp5]<< !Exp4 @ >>                   |
-|   [35][1][55]: Exp5 -> [80][Exp]<< !Exp5 @ >>                    |
+|   [39][5][55]: Exp1 -> [32][Exp2]<! !Exp1 @ !>                   |
+|   [38][4][55]: Exp2 -> [41][Exp3]<! !Exp2 @ !>                   |
+|   [37][3][55]: Exp3 -> [56][Exp4]<! !Exp3 @ !>                   |
+|   [36][2][55]: Exp4 -> [65][Exp5]<! !Exp4 @ !>                   |
+|   [35][1][55]: Exp5 -> [80][Exp]<! !Exp5 @ !>                    |
 |   [34][9][55]: Exp -> [21][Exp1]< Exp1 "(" { Exp @ ; "," } ")" > |
-|   [32][5][50]: Exp1 -> [32][Exp2]<< !Exp1 @ >>                   |
+|   [32][5][50]: Exp1 -> [32][Exp2]<! !Exp1 @ !>                   |
 |   [31][13][50]: Exp2 -> [36][Exp3]< Exp3 "+" Exp2 @ >            |
-|   [6][3][10]: Exp3 -> [56][Exp4]<< !Exp3 @ >>                    |
-|   [5][2][10]: Exp4 -> [65][Exp5]<< !Exp4 @ >>                    |
-|   [4][1][10]: Exp5 -> [80][Exp]<< !Exp5 @ >>                     |
+|   [6][3][10]: Exp3 -> [56][Exp4]<! !Exp3 @ !>                    |
+|   [5][2][10]: Exp4 -> [65][Exp5]<! !Exp4 @ !>                    |
+|   [4][1][10]: Exp5 -> [80][Exp]<! !Exp5 @ !>                     |
 |   [3][28][10]: Exp -> [89][Module]< { Import } "export" Exp @ >  |
 | [PREDECESSORS 63-63]: [63]                                       |
 | [SUCCESORS 65-65]: [65]                                          |
@@ -1377,25 +1357,25 @@
 |
 +------------------------------------------------------------------+
 | [65]: <Ending>                                                   |
-| [56][Exp4]<< !Exp3 @ >>                                          |
+| [56][Exp4]<! !Exp3 @ !>                                          |
 | [AST-INSTRUCTIONS]:                                              |
-|   - EndObject()                                                  |
-|   > ReopenObject()                                               |
+|   + StackEnd()                                                   |
+|   > StackBegin()                                                 |
 | [RETURN STACK]:                                                  |
-|   [43][2][60]: Exp4 -> [65][Exp5]<< !Exp4 @ >>                   |
-|   [42][1][60]: Exp5 -> [80][Exp]<< !Exp5 @ >>                    |
+|   [43][2][60]: Exp4 -> [65][Exp5]<! !Exp4 @ !>                   |
+|   [42][1][60]: Exp5 -> [80][Exp]<! !Exp5 @ !>                    |
 |   [41][9][60]: Exp -> [21][Exp1]< Exp1 "(" { Exp @ ; "," } ")" > |
-|   [39][5][55]: Exp1 -> [32][Exp2]<< !Exp1 @ >>                   |
-|   [38][4][55]: Exp2 -> [41][Exp3]<< !Exp2 @ >>                   |
-|   [37][3][55]: Exp3 -> [56][Exp4]<< !Exp3 @ >>                   |
-|   [36][2][55]: Exp4 -> [65][Exp5]<< !Exp4 @ >>                   |
-|   [35][1][55]: Exp5 -> [80][Exp]<< !Exp5 @ >>                    |
+|   [39][5][55]: Exp1 -> [32][Exp2]<! !Exp1 @ !>                   |
+|   [38][4][55]: Exp2 -> [41][Exp3]<! !Exp2 @ !>                   |
+|   [37][3][55]: Exp3 -> [56][Exp4]<! !Exp3 @ !>                   |
+|   [36][2][55]: Exp4 -> [65][Exp5]<! !Exp4 @ !>                   |
+|   [35][1][55]: Exp5 -> [80][Exp]<! !Exp5 @ !>                    |
 |   [34][9][55]: Exp -> [21][Exp1]< Exp1 "(" { Exp @ ; "," } ")" > |
-|   [32][5][50]: Exp1 -> [32][Exp2]<< !Exp1 @ >>                   |
+|   [32][5][50]: Exp1 -> [32][Exp2]<! !Exp1 @ !>                   |
 |   [31][13][50]: Exp2 -> [36][Exp3]< Exp3 "+" Exp2 @ >            |
-|   [6][3][10]: Exp3 -> [56][Exp4]<< !Exp3 @ >>                    |
-|   [5][2][10]: Exp4 -> [65][Exp5]<< !Exp4 @ >>                    |
-|   [4][1][10]: Exp5 -> [80][Exp]<< !Exp5 @ >>                     |
+|   [6][3][10]: Exp3 -> [56][Exp4]<! !Exp3 @ !>                    |
+|   [5][2][10]: Exp4 -> [65][Exp5]<! !Exp4 @ !>                    |
+|   [4][1][10]: Exp5 -> [80][Exp]<! !Exp5 @ !>                     |
 |   [3][28][10]: Exp -> [89][Module]< { Import } "export" Exp @ >  |
 | [PREDECESSORS 64-64]: [64]                                       |
 | [SUCCESORS 66-66]: [66]                                          |
@@ -1405,24 +1385,24 @@
 |
 +------------------------------------------------------------------+
 | [66]: <Ending>                                                   |
-| [65][Exp5]<< !Exp4 @ >>                                          |
+| [65][Exp5]<! !Exp4 @ !>                                          |
 | [AST-INSTRUCTIONS]:                                              |
-|   - EndObject()                                                  |
-|   > ReopenObject()                                               |
+|   + StackEnd()                                                   |
+|   > StackBegin()                                                 |
 | [RETURN STACK]:                                                  |
-|   [42][1][60]: Exp5 -> [80][Exp]<< !Exp5 @ >>                    |
+|   [42][1][60]: Exp5 -> [80][Exp]<! !Exp5 @ !>                    |
 |   [41][9][60]: Exp -> [21][Exp1]< Exp1 "(" { Exp @ ; "," } ")" > |
-|   [39][5][55]: Exp1 -> [32][Exp2]<< !Exp1 @ >>                   |
-|   [38][4][55]: Exp2 -> [41][Exp3]<< !Exp2 @ >>                   |
-|   [37][3][55]: Exp3 -> [56][Exp4]<< !Exp3 @ >>                   |
-|   [36][2][55]: Exp4 -> [65][Exp5]<< !Exp4 @ >>                   |
-|   [35][1][55]: Exp5 -> [80][Exp]<< !Exp5 @ >>                    |
+|   [39][5][55]: Exp1 -> [32][Exp2]<! !Exp1 @ !>                   |
+|   [38][4][55]: Exp2 -> [41][Exp3]<! !Exp2 @ !>                   |
+|   [37][3][55]: Exp3 -> [56][Exp4]<! !Exp3 @ !>                   |
+|   [36][2][55]: Exp4 -> [65][Exp5]<! !Exp4 @ !>                   |
+|   [35][1][55]: Exp5 -> [80][Exp]<! !Exp5 @ !>                    |
 |   [34][9][55]: Exp -> [21][Exp1]< Exp1 "(" { Exp @ ; "," } ")" > |
-|   [32][5][50]: Exp1 -> [32][Exp2]<< !Exp1 @ >>                   |
+|   [32][5][50]: Exp1 -> [32][Exp2]<! !Exp1 @ !>                   |
 |   [31][13][50]: Exp2 -> [36][Exp3]< Exp3 "+" Exp2 @ >            |
-|   [6][3][10]: Exp3 -> [56][Exp4]<< !Exp3 @ >>                    |
-|   [5][2][10]: Exp4 -> [65][Exp5]<< !Exp4 @ >>                    |
-|   [4][1][10]: Exp5 -> [80][Exp]<< !Exp5 @ >>                     |
+|   [6][3][10]: Exp3 -> [56][Exp4]<! !Exp3 @ !>                    |
+|   [5][2][10]: Exp4 -> [65][Exp5]<! !Exp4 @ !>                    |
+|   [4][1][10]: Exp5 -> [80][Exp]<! !Exp5 @ !>                     |
 |   [3][28][10]: Exp -> [89][Module]< { Import } "export" Exp @ >  |
 | [PREDECESSORS 65-65]: [65]                                       |
 | [SUCCESORS 67-67]: [67]                                          |
@@ -1432,22 +1412,23 @@
 |
 +------------------------------------------------------------------+
 | [67]: <Ending>                                                   |
-| [80][Exp]<< !Exp5 @ >>                                           |
+| [80][Exp]<! !Exp5 @ !>                                           |
 | [AST-INSTRUCTIONS]:                                              |
-|   - EndObject()                                                  |
+|   + StackEnd()                                                   |
+|   > StackBegin()                                                 |
 | [RETURN STACK]:                                                  |
 |   [41][9][60]: Exp -> [21][Exp1]< Exp1 "(" { Exp @ ; "," } ")" > |
-|   [39][5][55]: Exp1 -> [32][Exp2]<< !Exp1 @ >>                   |
-|   [38][4][55]: Exp2 -> [41][Exp3]<< !Exp2 @ >>                   |
-|   [37][3][55]: Exp3 -> [56][Exp4]<< !Exp3 @ >>                   |
-|   [36][2][55]: Exp4 -> [65][Exp5]<< !Exp4 @ >>                   |
-|   [35][1][55]: Exp5 -> [80][Exp]<< !Exp5 @ >>                    |
+|   [39][5][55]: Exp1 -> [32][Exp2]<! !Exp1 @ !>                   |
+|   [38][4][55]: Exp2 -> [41][Exp3]<! !Exp2 @ !>                   |
+|   [37][3][55]: Exp3 -> [56][Exp4]<! !Exp3 @ !>                   |
+|   [36][2][55]: Exp4 -> [65][Exp5]<! !Exp4 @ !>                   |
+|   [35][1][55]: Exp5 -> [80][Exp]<! !Exp5 @ !>                    |
 |   [34][9][55]: Exp -> [21][Exp1]< Exp1 "(" { Exp @ ; "," } ")" > |
-|   [32][5][50]: Exp1 -> [32][Exp2]<< !Exp1 @ >>                   |
+|   [32][5][50]: Exp1 -> [32][Exp2]<! !Exp1 @ !>                   |
 |   [31][13][50]: Exp2 -> [36][Exp3]< Exp3 "+" Exp2 @ >            |
-|   [6][3][10]: Exp3 -> [56][Exp4]<< !Exp3 @ >>                    |
-|   [5][2][10]: Exp4 -> [65][Exp5]<< !Exp4 @ >>                    |
-|   [4][1][10]: Exp5 -> [80][Exp]<< !Exp5 @ >>                     |
+|   [6][3][10]: Exp3 -> [56][Exp4]<! !Exp3 @ !>                    |
+|   [5][2][10]: Exp4 -> [65][Exp5]<! !Exp4 @ !>                    |
+|   [4][1][10]: Exp5 -> [80][Exp]<! !Exp5 @ !>                     |
 |   [3][28][10]: Exp -> [89][Module]< { Import } "export" Exp @ >  |
 | [PREDECESSORS 66-66]: [66]                                       |
 | [SUCCESORS 68-68]: [68]                                          |
@@ -1459,21 +1440,20 @@
 | [68]: <Ending>                                                   |
 | [21][Exp1]< Exp1 "(" { Exp @ ; "," } ")" >                       |
 | [AST-INSTRUCTIONS]:                                              |
-|   - ReopenObject()                                               |
-|   - EndObject()                                                  |
-|   > Field(Call::args)                                            |
+|   + StackEnd()                                                   |
+|   > StackSlot(2)                                                 |
 | [RETURN STACK]:                                                  |
-|   [39][5][55]: Exp1 -> [32][Exp2]<< !Exp1 @ >>                   |
-|   [38][4][55]: Exp2 -> [41][Exp3]<< !Exp2 @ >>                   |
-|   [37][3][55]: Exp3 -> [56][Exp4]<< !Exp3 @ >>                   |
-|   [36][2][55]: Exp4 -> [65][Exp5]<< !Exp4 @ >>                   |
-|   [35][1][55]: Exp5 -> [80][Exp]<< !Exp5 @ >>                    |
+|   [39][5][55]: Exp1 -> [32][Exp2]<! !Exp1 @ !>                   |
+|   [38][4][55]: Exp2 -> [41][Exp3]<! !Exp2 @ !>                   |
+|   [37][3][55]: Exp3 -> [56][Exp4]<! !Exp3 @ !>                   |
+|   [36][2][55]: Exp4 -> [65][Exp5]<! !Exp4 @ !>                   |
+|   [35][1][55]: Exp5 -> [80][Exp]<! !Exp5 @ !>                    |
 |   [34][9][55]: Exp -> [21][Exp1]< Exp1 "(" { Exp @ ; "," } ")" > |
-|   [32][5][50]: Exp1 -> [32][Exp2]<< !Exp1 @ >>                   |
+|   [32][5][50]: Exp1 -> [32][Exp2]<! !Exp1 @ !>                   |
 |   [31][13][50]: Exp2 -> [36][Exp3]< Exp3 "+" Exp2 @ >            |
-|   [6][3][10]: Exp3 -> [56][Exp4]<< !Exp3 @ >>                    |
-|   [5][2][10]: Exp4 -> [65][Exp5]<< !Exp4 @ >>                    |
-|   [4][1][10]: Exp5 -> [80][Exp]<< !Exp5 @ >>                     |
+|   [6][3][10]: Exp3 -> [56][Exp4]<! !Exp3 @ !>                    |
+|   [5][2][10]: Exp4 -> [65][Exp5]<! !Exp4 @ !>                    |
+|   [4][1][10]: Exp5 -> [80][Exp]<! !Exp5 @ !>                     |
 |   [3][28][10]: Exp -> [89][Module]< { Import } "export" Exp @ >  |
 | [PREDECESSORS 67-67]: [67]                                       |
 | [SUCCESORS 69-69]: [69]                                          |
@@ -1487,18 +1467,19 @@
 || [69]: {CLOSE_BRACE} )                                            ||
 || [20][Exp1]< Exp1 "(" { Exp ; "," } ")" @ >                       ||
 || [AST-INSTRUCTIONS]:                                              ||
+||   + Token(4)                                                     ||
 || [RETURN STACK]:                                                  ||
-||   [39][5][55]: Exp1 -> [32][Exp2]<< !Exp1 @ >>                   ||
-||   [38][4][55]: Exp2 -> [41][Exp3]<< !Exp2 @ >>                   ||
-||   [37][3][55]: Exp3 -> [56][Exp4]<< !Exp3 @ >>                   ||
-||   [36][2][55]: Exp4 -> [65][Exp5]<< !Exp4 @ >>                   ||
-||   [35][1][55]: Exp5 -> [80][Exp]<< !Exp5 @ >>                    ||
+||   [39][5][55]: Exp1 -> [32][Exp2]<! !Exp1 @ !>                   ||
+||   [38][4][55]: Exp2 -> [41][Exp3]<! !Exp2 @ !>                   ||
+||   [37][3][55]: Exp3 -> [56][Exp4]<! !Exp3 @ !>                   ||
+||   [36][2][55]: Exp4 -> [65][Exp5]<! !Exp4 @ !>                   ||
+||   [35][1][55]: Exp5 -> [80][Exp]<! !Exp5 @ !>                    ||
 ||   [34][9][55]: Exp -> [21][Exp1]< Exp1 "(" { Exp @ ; "," } ")" > ||
-||   [32][5][50]: Exp1 -> [32][Exp2]<< !Exp1 @ >>                   ||
+||   [32][5][50]: Exp1 -> [32][Exp2]<! !Exp1 @ !>                   ||
 ||   [31][13][50]: Exp2 -> [36][Exp3]< Exp3 "+" Exp2 @ >            ||
-||   [6][3][10]: Exp3 -> [56][Exp4]<< !Exp3 @ >>                    ||
-||   [5][2][10]: Exp4 -> [65][Exp5]<< !Exp4 @ >>                    ||
-||   [4][1][10]: Exp5 -> [80][Exp]<< !Exp5 @ >>                     ||
+||   [6][3][10]: Exp3 -> [56][Exp4]<! !Exp3 @ !>                    ||
+||   [5][2][10]: Exp4 -> [65][Exp5]<! !Exp4 @ !>                    ||
+||   [4][1][10]: Exp5 -> [80][Exp]<! !Exp5 @ !>                     ||
 ||   [3][28][10]: Exp -> [89][Module]< { Import } "export" Exp @ >  ||
 || [PREDECESSORS 68-68]: [68]                                       ||
 || [SUCCESORS 70-70]: [70]                                          ||
@@ -1508,21 +1489,24 @@
 |
 +------------------------------------------------------------------+
 | [70]: <Ending>                                                   |
-| [32][Exp2]<< !Exp1 @ >>                                          |
+| [32][Exp2]<! !Exp1 @ !>                                          |
 | [AST-INSTRUCTIONS]:                                              |
-|   - EndObject()                                                  |
-|   > ReopenObject()                                               |
+|   + CreateObject(Call)                                           |
+|   + Field(Call::func, 0)                                         |
+|   + Field(Call::args, 2)                                         |
+|   + StackEnd()                                                   |
+|   > StackBegin()                                                 |
 | [RETURN STACK]:                                                  |
-|   [38][4][55]: Exp2 -> [41][Exp3]<< !Exp2 @ >>                   |
-|   [37][3][55]: Exp3 -> [56][Exp4]<< !Exp3 @ >>                   |
-|   [36][2][55]: Exp4 -> [65][Exp5]<< !Exp4 @ >>                   |
-|   [35][1][55]: Exp5 -> [80][Exp]<< !Exp5 @ >>                    |
+|   [38][4][55]: Exp2 -> [41][Exp3]<! !Exp2 @ !>                   |
+|   [37][3][55]: Exp3 -> [56][Exp4]<! !Exp3 @ !>                   |
+|   [36][2][55]: Exp4 -> [65][Exp5]<! !Exp4 @ !>                   |
+|   [35][1][55]: Exp5 -> [80][Exp]<! !Exp5 @ !>                    |
 |   [34][9][55]: Exp -> [21][Exp1]< Exp1 "(" { Exp @ ; "," } ")" > |
-|   [32][5][50]: Exp1 -> [32][Exp2]<< !Exp1 @ >>                   |
+|   [32][5][50]: Exp1 -> [32][Exp2]<! !Exp1 @ !>                   |
 |   [31][13][50]: Exp2 -> [36][Exp3]< Exp3 "+" Exp2 @ >            |
-|   [6][3][10]: Exp3 -> [56][Exp4]<< !Exp3 @ >>                    |
-|   [5][2][10]: Exp4 -> [65][Exp5]<< !Exp4 @ >>                    |
-|   [4][1][10]: Exp5 -> [80][Exp]<< !Exp5 @ >>                     |
+|   [6][3][10]: Exp3 -> [56][Exp4]<! !Exp3 @ !>                    |
+|   [5][2][10]: Exp4 -> [65][Exp5]<! !Exp4 @ !>                    |
+|   [4][1][10]: Exp5 -> [80][Exp]<! !Exp5 @ !>                     |
 |   [3][28][10]: Exp -> [89][Module]< { Import } "export" Exp @ >  |
 | [PREDECESSORS 69-69]: [69]                                       |
 | [SUCCESORS 71-71]: [71]                                          |
@@ -1532,20 +1516,20 @@
 |
 +------------------------------------------------------------------+
 | [71]: <Ending>                                                   |
-| [41][Exp3]<< !Exp2 @ >>                                          |
+| [41][Exp3]<! !Exp2 @ !>                                          |
 | [AST-INSTRUCTIONS]:                                              |
-|   - EndObject()                                                  |
-|   > ReopenObject()                                               |
+|   + StackEnd()                                                   |
+|   > StackBegin()                                                 |
 | [RETURN STACK]:                                                  |
-|   [37][3][55]: Exp3 -> [56][Exp4]<< !Exp3 @ >>                   |
-|   [36][2][55]: Exp4 -> [65][Exp5]<< !Exp4 @ >>                   |
-|   [35][1][55]: Exp5 -> [80][Exp]<< !Exp5 @ >>                    |
+|   [37][3][55]: Exp3 -> [56][Exp4]<! !Exp3 @ !>                   |
+|   [36][2][55]: Exp4 -> [65][Exp5]<! !Exp4 @ !>                   |
+|   [35][1][55]: Exp5 -> [80][Exp]<! !Exp5 @ !>                    |
 |   [34][9][55]: Exp -> [21][Exp1]< Exp1 "(" { Exp @ ; "," } ")" > |
-|   [32][5][50]: Exp1 -> [32][Exp2]<< !Exp1 @ >>                   |
+|   [32][5][50]: Exp1 -> [32][Exp2]<! !Exp1 @ !>                   |
 |   [31][13][50]: Exp2 -> [36][Exp3]< Exp3 "+" Exp2 @ >            |
-|   [6][3][10]: Exp3 -> [56][Exp4]<< !Exp3 @ >>                    |
-|   [5][2][10]: Exp4 -> [65][Exp5]<< !Exp4 @ >>                    |
-|   [4][1][10]: Exp5 -> [80][Exp]<< !Exp5 @ >>                     |
+|   [6][3][10]: Exp3 -> [56][Exp4]<! !Exp3 @ !>                    |
+|   [5][2][10]: Exp4 -> [65][Exp5]<! !Exp4 @ !>                    |
+|   [4][1][10]: Exp5 -> [80][Exp]<! !Exp5 @ !>                     |
 |   [3][28][10]: Exp -> [89][Module]< { Import } "export" Exp @ >  |
 | [PREDECESSORS 70-70]: [70]                                       |
 | [SUCCESORS 72-72]: [72]                                          |
@@ -1555,19 +1539,19 @@
 |
 +------------------------------------------------------------------+
 | [72]: <Ending>                                                   |
-| [56][Exp4]<< !Exp3 @ >>                                          |
+| [56][Exp4]<! !Exp3 @ !>                                          |
 | [AST-INSTRUCTIONS]:                                              |
-|   - EndObject()                                                  |
-|   > ReopenObject()                                               |
+|   + StackEnd()                                                   |
+|   > StackBegin()                                                 |
 | [RETURN STACK]:                                                  |
-|   [36][2][55]: Exp4 -> [65][Exp5]<< !Exp4 @ >>                   |
-|   [35][1][55]: Exp5 -> [80][Exp]<< !Exp5 @ >>                    |
+|   [36][2][55]: Exp4 -> [65][Exp5]<! !Exp4 @ !>                   |
+|   [35][1][55]: Exp5 -> [80][Exp]<! !Exp5 @ !>                    |
 |   [34][9][55]: Exp -> [21][Exp1]< Exp1 "(" { Exp @ ; "," } ")" > |
-|   [32][5][50]: Exp1 -> [32][Exp2]<< !Exp1 @ >>                   |
+|   [32][5][50]: Exp1 -> [32][Exp2]<! !Exp1 @ !>                   |
 |   [31][13][50]: Exp2 -> [36][Exp3]< Exp3 "+" Exp2 @ >            |
-|   [6][3][10]: Exp3 -> [56][Exp4]<< !Exp3 @ >>                    |
-|   [5][2][10]: Exp4 -> [65][Exp5]<< !Exp4 @ >>                    |
-|   [4][1][10]: Exp5 -> [80][Exp]<< !Exp5 @ >>                     |
+|   [6][3][10]: Exp3 -> [56][Exp4]<! !Exp3 @ !>                    |
+|   [5][2][10]: Exp4 -> [65][Exp5]<! !Exp4 @ !>                    |
+|   [4][1][10]: Exp5 -> [80][Exp]<! !Exp5 @ !>                     |
 |   [3][28][10]: Exp -> [89][Module]< { Import } "export" Exp @ >  |
 | [PREDECESSORS 71-71]: [71]                                       |
 | [SUCCESORS 73-73]: [73]                                          |
@@ -1577,18 +1561,18 @@
 |
 +------------------------------------------------------------------+
 | [73]: <Ending>                                                   |
-| [65][Exp5]<< !Exp4 @ >>                                          |
+| [65][Exp5]<! !Exp4 @ !>                                          |
 | [AST-INSTRUCTIONS]:                                              |
-|   - EndObject()                                                  |
-|   > ReopenObject()                                               |
+|   + StackEnd()                                                   |
+|   > StackBegin()                                                 |
 | [RETURN STACK]:                                                  |
-|   [35][1][55]: Exp5 -> [80][Exp]<< !Exp5 @ >>                    |
+|   [35][1][55]: Exp5 -> [80][Exp]<! !Exp5 @ !>                    |
 |   [34][9][55]: Exp -> [21][Exp1]< Exp1 "(" { Exp @ ; "," } ")" > |
-|   [32][5][50]: Exp1 -> [32][Exp2]<< !Exp1 @ >>                   |
+|   [32][5][50]: Exp1 -> [32][Exp2]<! !Exp1 @ !>                   |
 |   [31][13][50]: Exp2 -> [36][Exp3]< Exp3 "+" Exp2 @ >            |
-|   [6][3][10]: Exp3 -> [56][Exp4]<< !Exp3 @ >>                    |
-|   [5][2][10]: Exp4 -> [65][Exp5]<< !Exp4 @ >>                    |
-|   [4][1][10]: Exp5 -> [80][Exp]<< !Exp5 @ >>                     |
+|   [6][3][10]: Exp3 -> [56][Exp4]<! !Exp3 @ !>                    |
+|   [5][2][10]: Exp4 -> [65][Exp5]<! !Exp4 @ !>                    |
+|   [4][1][10]: Exp5 -> [80][Exp]<! !Exp5 @ !>                     |
 |   [3][28][10]: Exp -> [89][Module]< { Import } "export" Exp @ >  |
 | [PREDECESSORS 72-72]: [72]                                       |
 | [SUCCESORS 74-74]: [74]                                          |
@@ -1598,16 +1582,17 @@
 |
 +------------------------------------------------------------------+
 | [74]: <Ending>                                                   |
-| [80][Exp]<< !Exp5 @ >>                                           |
+| [80][Exp]<! !Exp5 @ !>                                           |
 | [AST-INSTRUCTIONS]:                                              |
-|   - EndObject()                                                  |
+|   + StackEnd()                                                   |
+|   > StackBegin()                                                 |
 | [RETURN STACK]:                                                  |
 |   [34][9][55]: Exp -> [21][Exp1]< Exp1 "(" { Exp @ ; "," } ")" > |
-|   [32][5][50]: Exp1 -> [32][Exp2]<< !Exp1 @ >>                   |
+|   [32][5][50]: Exp1 -> [32][Exp2]<! !Exp1 @ !>                   |
 |   [31][13][50]: Exp2 -> [36][Exp3]< Exp3 "+" Exp2 @ >            |
-|   [6][3][10]: Exp3 -> [56][Exp4]<< !Exp3 @ >>                    |
-|   [5][2][10]: Exp4 -> [65][Exp5]<< !Exp4 @ >>                    |
-|   [4][1][10]: Exp5 -> [80][Exp]<< !Exp5 @ >>                     |
+|   [6][3][10]: Exp3 -> [56][Exp4]<! !Exp3 @ !>                    |
+|   [5][2][10]: Exp4 -> [65][Exp5]<! !Exp4 @ !>                    |
+|   [4][1][10]: Exp5 -> [80][Exp]<! !Exp5 @ !>                     |
 |   [3][28][10]: Exp -> [89][Module]< { Import } "export" Exp @ >  |
 | [PREDECESSORS 73-73]: [73]                                       |
 | [SUCCESORS 75-75]: [75]                                          |
@@ -1619,15 +1604,14 @@
 | [75]: <Ending>                                                  |
 | [21][Exp1]< Exp1 "(" { Exp @ ; "," } ")" >                      |
 | [AST-INSTRUCTIONS]:                                             |
-|   - ReopenObject()                                              |
-|   - EndObject()                                                 |
-|   > Field(Call::args)                                           |
+|   + StackEnd()                                                  |
+|   > StackSlot(2)                                                |
 | [RETURN STACK]:                                                 |
-|   [32][5][50]: Exp1 -> [32][Exp2]<< !Exp1 @ >>                  |
+|   [32][5][50]: Exp1 -> [32][Exp2]<! !Exp1 @ !>                  |
 |   [31][13][50]: Exp2 -> [36][Exp3]< Exp3 "+" Exp2 @ >           |
-|   [6][3][10]: Exp3 -> [56][Exp4]<< !Exp3 @ >>                   |
-|   [5][2][10]: Exp4 -> [65][Exp5]<< !Exp4 @ >>                   |
-|   [4][1][10]: Exp5 -> [80][Exp]<< !Exp5 @ >>                    |
+|   [6][3][10]: Exp3 -> [56][Exp4]<! !Exp3 @ !>                   |
+|   [5][2][10]: Exp4 -> [65][Exp5]<! !Exp4 @ !>                   |
+|   [4][1][10]: Exp5 -> [80][Exp]<! !Exp5 @ !>                    |
 |   [3][28][10]: Exp -> [89][Module]< { Import } "export" Exp @ > |
 | [PREDECESSORS 74-74]: [74]                                      |
 | [SUCCESORS 76-76]: [76]                                         |
@@ -1641,12 +1625,13 @@
 || [76]: {COMMA} ,                                                 ||
 || [19][Exp1]< Exp1 "(" { Exp ; "," @ } ")" >                      ||
 || [AST-INSTRUCTIONS]:                                             ||
+||   + Token(3)                                                    ||
 || [RETURN STACK]:                                                 ||
-||   [32][5][50]: Exp1 -> [32][Exp2]<< !Exp1 @ >>                  ||
+||   [32][5][50]: Exp1 -> [32][Exp2]<! !Exp1 @ !>                  ||
 ||   [31][13][50]: Exp2 -> [36][Exp3]< Exp3 "+" Exp2 @ >           ||
-||   [6][3][10]: Exp3 -> [56][Exp4]<< !Exp3 @ >>                   ||
-||   [5][2][10]: Exp4 -> [65][Exp5]<< !Exp4 @ >>                   ||
-||   [4][1][10]: Exp5 -> [80][Exp]<< !Exp5 @ >>                    ||
+||   [6][3][10]: Exp3 -> [56][Exp4]<! !Exp3 @ !>                   ||
+||   [5][2][10]: Exp4 -> [65][Exp5]<! !Exp4 @ !>                   ||
+||   [4][1][10]: Exp5 -> [80][Exp]<! !Exp5 @ !>                    ||
 ||   [3][28][10]: Exp -> [89][Module]< { Import } "export" Exp @ > ||
 || [PREDECESSORS 75-75]: [75]                                      ||
 || [SUCCESORS 77-77]: [77]                                         ||
@@ -1660,28 +1645,21 @@
 || [77]: {NUM} 2                                                     ||
 || [8][Exp0]< NUM @ >                                                ||
 || [AST-INSTRUCTIONS]:                                               ||
-||   - DelayFieldAssignment()                                        ||
-||   - DelayFieldAssignment()                                        ||
-||   - DelayFieldAssignment()                                        ||
-||   - DelayFieldAssignment()                                        ||
-||   - DelayFieldAssignment()                                        ||
-||   - DelayFieldAssignment()                                        ||
-||   - BeginObject(NumExpr)                                          ||
-||   + Token()                                                       ||
-||   + Field(NumExpr::value)                                         ||
+||   + StackBegin()                                                  ||
+||   + Token(0)                                                      ||
 || [RETURN STACK]:                                                   ||
-||   [54][6][76]: Exp0 -> [23][Exp1]<< !Exp0 @ >>                    ||
-||   [53][5][76]: Exp1 -> [32][Exp2]<< !Exp1 @ >>                    ||
-||   [52][4][76]: Exp2 -> [41][Exp3]<< !Exp2 @ >>                    ||
-||   [51][3][76]: Exp3 -> [56][Exp4]<< !Exp3 @ >>                    ||
-||   [50][2][76]: Exp4 -> [65][Exp5]<< !Exp4 @ >>                    ||
-||   [49][1][76]: Exp5 -> [80][Exp]<< !Exp5 @ >>                     ||
+||   [54][6][76]: Exp0 -> [23][Exp1]<! !Exp0 @ !>                    ||
+||   [53][5][76]: Exp1 -> [32][Exp2]<! !Exp1 @ !>                    ||
+||   [52][4][76]: Exp2 -> [41][Exp3]<! !Exp2 @ !>                    ||
+||   [51][3][76]: Exp3 -> [56][Exp4]<! !Exp3 @ !>                    ||
+||   [50][2][76]: Exp4 -> [65][Exp5]<! !Exp4 @ !>                    ||
+||   [49][1][76]: Exp5 -> [80][Exp]<! !Exp5 @ !>                     ||
 ||   [48][10][76]: Exp -> [21][Exp1]< Exp1 "(" { Exp @ ; "," } ")" > ||
-||   [32][5][50]: Exp1 -> [32][Exp2]<< !Exp1 @ >>                    ||
+||   [32][5][50]: Exp1 -> [32][Exp2]<! !Exp1 @ !>                    ||
 ||   [31][13][50]: Exp2 -> [36][Exp3]< Exp3 "+" Exp2 @ >             ||
-||   [6][3][10]: Exp3 -> [56][Exp4]<< !Exp3 @ >>                     ||
-||   [5][2][10]: Exp4 -> [65][Exp5]<< !Exp4 @ >>                     ||
-||   [4][1][10]: Exp5 -> [80][Exp]<< !Exp5 @ >>                      ||
+||   [6][3][10]: Exp3 -> [56][Exp4]<! !Exp3 @ !>                     ||
+||   [5][2][10]: Exp4 -> [65][Exp5]<! !Exp4 @ !>                     ||
+||   [4][1][10]: Exp5 -> [80][Exp]<! !Exp5 @ !>                      ||
 ||   [3][28][10]: Exp -> [89][Module]< { Import } "export" Exp @ >   ||
 || [PREDECESSORS 76-76]: [76]                                        ||
 || [SUCCESORS 78-78]: [78]                                           ||
@@ -1691,22 +1669,24 @@
 |
 +-------------------------------------------------------------------+
 | [78]: <Ending>                                                    |
-| [23][Exp1]<< !Exp0 @ >>                                           |
+| [23][Exp1]<! !Exp0 @ !>                                           |
 | [AST-INSTRUCTIONS]:                                               |
-|   - EndObject()                                                   |
-|   > ReopenObject()                                                |
+|   + CreateObject(NumExpr)                                         |
+|   + Field(NumExpr::value, 0)                                      |
+|   + StackEnd()                                                    |
+|   > StackBegin()                                                  |
 | [RETURN STACK]:                                                   |
-|   [53][5][76]: Exp1 -> [32][Exp2]<< !Exp1 @ >>                    |
-|   [52][4][76]: Exp2 -> [41][Exp3]<< !Exp2 @ >>                    |
-|   [51][3][76]: Exp3 -> [56][Exp4]<< !Exp3 @ >>                    |
-|   [50][2][76]: Exp4 -> [65][Exp5]<< !Exp4 @ >>                    |
-|   [49][1][76]: Exp5 -> [80][Exp]<< !Exp5 @ >>                     |
+|   [53][5][76]: Exp1 -> [32][Exp2]<! !Exp1 @ !>                    |
+|   [52][4][76]: Exp2 -> [41][Exp3]<! !Exp2 @ !>                    |
+|   [51][3][76]: Exp3 -> [56][Exp4]<! !Exp3 @ !>                    |
+|   [50][2][76]: Exp4 -> [65][Exp5]<! !Exp4 @ !>                    |
+|   [49][1][76]: Exp5 -> [80][Exp]<! !Exp5 @ !>                     |
 |   [48][10][76]: Exp -> [21][Exp1]< Exp1 "(" { Exp @ ; "," } ")" > |
-|   [32][5][50]: Exp1 -> [32][Exp2]<< !Exp1 @ >>                    |
+|   [32][5][50]: Exp1 -> [32][Exp2]<! !Exp1 @ !>                    |
 |   [31][13][50]: Exp2 -> [36][Exp3]< Exp3 "+" Exp2 @ >             |
-|   [6][3][10]: Exp3 -> [56][Exp4]<< !Exp3 @ >>                     |
-|   [5][2][10]: Exp4 -> [65][Exp5]<< !Exp4 @ >>                     |
-|   [4][1][10]: Exp5 -> [80][Exp]<< !Exp5 @ >>                      |
+|   [6][3][10]: Exp3 -> [56][Exp4]<! !Exp3 @ !>                     |
+|   [5][2][10]: Exp4 -> [65][Exp5]<! !Exp4 @ !>                     |
+|   [4][1][10]: Exp5 -> [80][Exp]<! !Exp5 @ !>                      |
 |   [3][28][10]: Exp -> [89][Module]< { Import } "export" Exp @ >   |
 | [PREDECESSORS 77-77]: [77]                                        |
 | [SUCCESORS 79-79]: [79]                                           |
@@ -1716,21 +1696,21 @@
 |
 +-------------------------------------------------------------------+
 | [79]: <Ending>                                                    |
-| [32][Exp2]<< !Exp1 @ >>                                           |
+| [32][Exp2]<! !Exp1 @ !>                                           |
 | [AST-INSTRUCTIONS]:                                               |
-|   - EndObject()                                                   |
-|   > ReopenObject()                                                |
+|   + StackEnd()                                                    |
+|   > StackBegin()                                                  |
 | [RETURN STACK]:                                                   |
-|   [52][4][76]: Exp2 -> [41][Exp3]<< !Exp2 @ >>                    |
-|   [51][3][76]: Exp3 -> [56][Exp4]<< !Exp3 @ >>                    |
-|   [50][2][76]: Exp4 -> [65][Exp5]<< !Exp4 @ >>                    |
-|   [49][1][76]: Exp5 -> [80][Exp]<< !Exp5 @ >>                     |
+|   [52][4][76]: Exp2 -> [41][Exp3]<! !Exp2 @ !>                    |
+|   [51][3][76]: Exp3 -> [56][Exp4]<! !Exp3 @ !>                    |
+|   [50][2][76]: Exp4 -> [65][Exp5]<! !Exp4 @ !>                    |
+|   [49][1][76]: Exp5 -> [80][Exp]<! !Exp5 @ !>                     |
 |   [48][10][76]: Exp -> [21][Exp1]< Exp1 "(" { Exp @ ; "," } ")" > |
-|   [32][5][50]: Exp1 -> [32][Exp2]<< !Exp1 @ >>                    |
+|   [32][5][50]: Exp1 -> [32][Exp2]<! !Exp1 @ !>                    |
 |   [31][13][50]: Exp2 -> [36][Exp3]< Exp3 "+" Exp2 @ >             |
-|   [6][3][10]: Exp3 -> [56][Exp4]<< !Exp3 @ >>                     |
-|   [5][2][10]: Exp4 -> [65][Exp5]<< !Exp4 @ >>                     |
-|   [4][1][10]: Exp5 -> [80][Exp]<< !Exp5 @ >>                      |
+|   [6][3][10]: Exp3 -> [56][Exp4]<! !Exp3 @ !>                     |
+|   [5][2][10]: Exp4 -> [65][Exp5]<! !Exp4 @ !>                     |
+|   [4][1][10]: Exp5 -> [80][Exp]<! !Exp5 @ !>                      |
 |   [3][28][10]: Exp -> [89][Module]< { Import } "export" Exp @ >   |
 | [PREDECESSORS 78-78]: [78]                                        |
 | [SUCCESORS 80-80]: [80]                                           |
@@ -1740,20 +1720,20 @@
 |
 +-------------------------------------------------------------------+
 | [80]: <Ending>                                                    |
-| [41][Exp3]<< !Exp2 @ >>                                           |
+| [41][Exp3]<! !Exp2 @ !>                                           |
 | [AST-INSTRUCTIONS]:                                               |
-|   - EndObject()                                                   |
-|   > ReopenObject()                                                |
+|   + StackEnd()                                                    |
+|   > StackBegin()                                                  |
 | [RETURN STACK]:                                                   |
-|   [51][3][76]: Exp3 -> [56][Exp4]<< !Exp3 @ >>                    |
-|   [50][2][76]: Exp4 -> [65][Exp5]<< !Exp4 @ >>                    |
-|   [49][1][76]: Exp5 -> [80][Exp]<< !Exp5 @ >>                     |
+|   [51][3][76]: Exp3 -> [56][Exp4]<! !Exp3 @ !>                    |
+|   [50][2][76]: Exp4 -> [65][Exp5]<! !Exp4 @ !>                    |
+|   [49][1][76]: Exp5 -> [80][Exp]<! !Exp5 @ !>                     |
 |   [48][10][76]: Exp -> [21][Exp1]< Exp1 "(" { Exp @ ; "," } ")" > |
-|   [32][5][50]: Exp1 -> [32][Exp2]<< !Exp1 @ >>                    |
+|   [32][5][50]: Exp1 -> [32][Exp2]<! !Exp1 @ !>                    |
 |   [31][13][50]: Exp2 -> [36][Exp3]< Exp3 "+" Exp2 @ >             |
-|   [6][3][10]: Exp3 -> [56][Exp4]<< !Exp3 @ >>                     |
-|   [5][2][10]: Exp4 -> [65][Exp5]<< !Exp4 @ >>                     |
-|   [4][1][10]: Exp5 -> [80][Exp]<< !Exp5 @ >>                      |
+|   [6][3][10]: Exp3 -> [56][Exp4]<! !Exp3 @ !>                     |
+|   [5][2][10]: Exp4 -> [65][Exp5]<! !Exp4 @ !>                     |
+|   [4][1][10]: Exp5 -> [80][Exp]<! !Exp5 @ !>                      |
 |   [3][28][10]: Exp -> [89][Module]< { Import } "export" Exp @ >   |
 | [PREDECESSORS 79-79]: [79]                                        |
 | [SUCCESORS 81-81]: [81]                                           |
@@ -1763,19 +1743,19 @@
 |
 +-------------------------------------------------------------------+
 | [81]: <Ending>                                                    |
-| [56][Exp4]<< !Exp3 @ >>                                           |
+| [56][Exp4]<! !Exp3 @ !>                                           |
 | [AST-INSTRUCTIONS]:                                               |
-|   - EndObject()                                                   |
-|   > ReopenObject()                                                |
+|   + StackEnd()                                                    |
+|   > StackBegin()                                                  |
 | [RETURN STACK]:                                                   |
-|   [50][2][76]: Exp4 -> [65][Exp5]<< !Exp4 @ >>                    |
-|   [49][1][76]: Exp5 -> [80][Exp]<< !Exp5 @ >>                     |
+|   [50][2][76]: Exp4 -> [65][Exp5]<! !Exp4 @ !>                    |
+|   [49][1][76]: Exp5 -> [80][Exp]<! !Exp5 @ !>                     |
 |   [48][10][76]: Exp -> [21][Exp1]< Exp1 "(" { Exp @ ; "," } ")" > |
-|   [32][5][50]: Exp1 -> [32][Exp2]<< !Exp1 @ >>                    |
+|   [32][5][50]: Exp1 -> [32][Exp2]<! !Exp1 @ !>                    |
 |   [31][13][50]: Exp2 -> [36][Exp3]< Exp3 "+" Exp2 @ >             |
-|   [6][3][10]: Exp3 -> [56][Exp4]<< !Exp3 @ >>                     |
-|   [5][2][10]: Exp4 -> [65][Exp5]<< !Exp4 @ >>                     |
-|   [4][1][10]: Exp5 -> [80][Exp]<< !Exp5 @ >>                      |
+|   [6][3][10]: Exp3 -> [56][Exp4]<! !Exp3 @ !>                     |
+|   [5][2][10]: Exp4 -> [65][Exp5]<! !Exp4 @ !>                     |
+|   [4][1][10]: Exp5 -> [80][Exp]<! !Exp5 @ !>                      |
 |   [3][28][10]: Exp -> [89][Module]< { Import } "export" Exp @ >   |
 | [PREDECESSORS 80-80]: [80]                                        |
 | [SUCCESORS 82-82]: [82]                                           |
@@ -1785,18 +1765,18 @@
 |
 +-------------------------------------------------------------------+
 | [82]: <Ending>                                                    |
-| [65][Exp5]<< !Exp4 @ >>                                           |
+| [65][Exp5]<! !Exp4 @ !>                                           |
 | [AST-INSTRUCTIONS]:                                               |
-|   - EndObject()                                                   |
-|   > ReopenObject()                                                |
+|   + StackEnd()                                                    |
+|   > StackBegin()                                                  |
 | [RETURN STACK]:                                                   |
-|   [49][1][76]: Exp5 -> [80][Exp]<< !Exp5 @ >>                     |
+|   [49][1][76]: Exp5 -> [80][Exp]<! !Exp5 @ !>                     |
 |   [48][10][76]: Exp -> [21][Exp1]< Exp1 "(" { Exp @ ; "," } ")" > |
-|   [32][5][50]: Exp1 -> [32][Exp2]<< !Exp1 @ >>                    |
+|   [32][5][50]: Exp1 -> [32][Exp2]<! !Exp1 @ !>                    |
 |   [31][13][50]: Exp2 -> [36][Exp3]< Exp3 "+" Exp2 @ >             |
-|   [6][3][10]: Exp3 -> [56][Exp4]<< !Exp3 @ >>                     |
-|   [5][2][10]: Exp4 -> [65][Exp5]<< !Exp4 @ >>                     |
-|   [4][1][10]: Exp5 -> [80][Exp]<< !Exp5 @ >>                      |
+|   [6][3][10]: Exp3 -> [56][Exp4]<! !Exp3 @ !>                     |
+|   [5][2][10]: Exp4 -> [65][Exp5]<! !Exp4 @ !>                     |
+|   [4][1][10]: Exp5 -> [80][Exp]<! !Exp5 @ !>                      |
 |   [3][28][10]: Exp -> [89][Module]< { Import } "export" Exp @ >   |
 | [PREDECESSORS 81-81]: [81]                                        |
 | [SUCCESORS 83-83]: [83]                                           |
@@ -1806,16 +1786,17 @@
 |
 +-------------------------------------------------------------------+
 | [83]: <Ending>                                                    |
-| [80][Exp]<< !Exp5 @ >>                                            |
+| [80][Exp]<! !Exp5 @ !>                                            |
 | [AST-INSTRUCTIONS]:                                               |
-|   - EndObject()                                                   |
+|   + StackEnd()                                                    |
+|   > StackBegin()                                                  |
 | [RETURN STACK]:                                                   |
 |   [48][10][76]: Exp -> [21][Exp1]< Exp1 "(" { Exp @ ; "," } ")" > |
-|   [32][5][50]: Exp1 -> [32][Exp2]<< !Exp1 @ >>                    |
+|   [32][5][50]: Exp1 -> [32][Exp2]<! !Exp1 @ !>                    |
 |   [31][13][50]: Exp2 -> [36][Exp3]< Exp3 "+" Exp2 @ >             |
-|   [6][3][10]: Exp3 -> [56][Exp4]<< !Exp3 @ >>                     |
-|   [5][2][10]: Exp4 -> [65][Exp5]<< !Exp4 @ >>                     |
-|   [4][1][10]: Exp5 -> [80][Exp]<< !Exp5 @ >>                      |
+|   [6][3][10]: Exp3 -> [56][Exp4]<! !Exp3 @ !>                     |
+|   [5][2][10]: Exp4 -> [65][Exp5]<! !Exp4 @ !>                     |
+|   [4][1][10]: Exp5 -> [80][Exp]<! !Exp5 @ !>                      |
 |   [3][28][10]: Exp -> [89][Module]< { Import } "export" Exp @ >   |
 | [PREDECESSORS 82-82]: [82]                                        |
 | [SUCCESORS 84-84]: [84]                                           |
@@ -1827,15 +1808,14 @@
 | [84]: <Ending>                                                  |
 | [21][Exp1]< Exp1 "(" { Exp @ ; "," } ")" >                      |
 | [AST-INSTRUCTIONS]:                                             |
-|   - ReopenObject()                                              |
-|   - EndObject()                                                 |
-|   > Field(Call::args)                                           |
+|   + StackEnd()                                                  |
+|   > StackSlot(2)                                                |
 | [RETURN STACK]:                                                 |
-|   [32][5][50]: Exp1 -> [32][Exp2]<< !Exp1 @ >>                  |
+|   [32][5][50]: Exp1 -> [32][Exp2]<! !Exp1 @ !>                  |
 |   [31][13][50]: Exp2 -> [36][Exp3]< Exp3 "+" Exp2 @ >           |
-|   [6][3][10]: Exp3 -> [56][Exp4]<< !Exp3 @ >>                   |
-|   [5][2][10]: Exp4 -> [65][Exp5]<< !Exp4 @ >>                   |
-|   [4][1][10]: Exp5 -> [80][Exp]<< !Exp5 @ >>                    |
+|   [6][3][10]: Exp3 -> [56][Exp4]<! !Exp3 @ !>                   |
+|   [5][2][10]: Exp4 -> [65][Exp5]<! !Exp4 @ !>                   |
+|   [4][1][10]: Exp5 -> [80][Exp]<! !Exp5 @ !>                    |
 |   [3][28][10]: Exp -> [89][Module]< { Import } "export" Exp @ > |
 | [PREDECESSORS 83-83]: [83]                                      |
 | [SUCCESORS 85-85]: [85]                                         |
@@ -1849,12 +1829,13 @@
 || [85]: {CLOSE_BRACE} )                                           ||
 || [20][Exp1]< Exp1 "(" { Exp ; "," } ")" @ >                      ||
 || [AST-INSTRUCTIONS]:                                             ||
+||   + Token(4)                                                    ||
 || [RETURN STACK]:                                                 ||
-||   [32][5][50]: Exp1 -> [32][Exp2]<< !Exp1 @ >>                  ||
+||   [32][5][50]: Exp1 -> [32][Exp2]<! !Exp1 @ !>                  ||
 ||   [31][13][50]: Exp2 -> [36][Exp3]< Exp3 "+" Exp2 @ >           ||
-||   [6][3][10]: Exp3 -> [56][Exp4]<< !Exp3 @ >>                   ||
-||   [5][2][10]: Exp4 -> [65][Exp5]<< !Exp4 @ >>                   ||
-||   [4][1][10]: Exp5 -> [80][Exp]<< !Exp5 @ >>                    ||
+||   [6][3][10]: Exp3 -> [56][Exp4]<! !Exp3 @ !>                   ||
+||   [5][2][10]: Exp4 -> [65][Exp5]<! !Exp4 @ !>                   ||
+||   [4][1][10]: Exp5 -> [80][Exp]<! !Exp5 @ !>                    ||
 ||   [3][28][10]: Exp -> [89][Module]< { Import } "export" Exp @ > ||
 || [PREDECESSORS 84-84]: [84]                                      ||
 || [SUCCESORS 86-86]: [86]                                         ||
@@ -1864,15 +1845,18 @@
 |
 +-----------------------------------------------------------------+
 | [86]: <Ending>                                                  |
-| [32][Exp2]<< !Exp1 @ >>                                         |
+| [32][Exp2]<! !Exp1 @ !>                                         |
 | [AST-INSTRUCTIONS]:                                             |
-|   - EndObject()                                                 |
-|   > ReopenObject()                                              |
+|   + CreateObject(Call)                                          |
+|   + Field(Call::func, 0)                                        |
+|   + Field(Call::args, 2)                                        |
+|   + StackEnd()                                                  |
+|   > StackBegin()                                                |
 | [RETURN STACK]:                                                 |
 |   [31][13][50]: Exp2 -> [36][Exp3]< Exp3 "+" Exp2 @ >           |
-|   [6][3][10]: Exp3 -> [56][Exp4]<< !Exp3 @ >>                   |
-|   [5][2][10]: Exp4 -> [65][Exp5]<< !Exp4 @ >>                   |
-|   [4][1][10]: Exp5 -> [80][Exp]<< !Exp5 @ >>                    |
+|   [6][3][10]: Exp3 -> [56][Exp4]<! !Exp3 @ !>                   |
+|   [5][2][10]: Exp4 -> [65][Exp5]<! !Exp4 @ !>                   |
+|   [4][1][10]: Exp5 -> [80][Exp]<! !Exp5 @ !>                    |
 |   [3][28][10]: Exp -> [89][Module]< { Import } "export" Exp @ > |
 | [PREDECESSORS 85-85]: [85]                                      |
 | [SUCCESORS 87-87]: [87]                                         |
@@ -1884,12 +1868,12 @@
 | [87]: <Ending>                                                  |
 | [36][Exp3]< Exp3 "+" Exp2 @ >                                   |
 | [AST-INSTRUCTIONS]:                                             |
-|   - EndObject()                                                 |
-|   > Field(Binary::right)                                        |
+|   + StackEnd()                                                  |
+|   > StackSlot(2)                                                |
 | [RETURN STACK]:                                                 |
-|   [6][3][10]: Exp3 -> [56][Exp4]<< !Exp3 @ >>                   |
-|   [5][2][10]: Exp4 -> [65][Exp5]<< !Exp4 @ >>                   |
-|   [4][1][10]: Exp5 -> [80][Exp]<< !Exp5 @ >>                    |
+|   [6][3][10]: Exp3 -> [56][Exp4]<! !Exp3 @ !>                   |
+|   [5][2][10]: Exp4 -> [65][Exp5]<! !Exp4 @ !>                   |
+|   [4][1][10]: Exp5 -> [80][Exp]<! !Exp5 @ !>                    |
 |   [3][28][10]: Exp -> [89][Module]< { Import } "export" Exp @ > |
 | [PREDECESSORS 86-86]: [86]                                      |
 | [SUCCESORS 88-88]: [88]                                         |
@@ -1899,15 +1883,18 @@
 |
 +-----------------------------------------------------------------+
 | [88]: <Ending>                                                  |
-| [56][Exp4]<< !Exp3 @ >>                                         |
+| [56][Exp4]<! !Exp3 @ !>                                         |
 | [AST-INSTRUCTIONS]:                                             |
-|   - EnumItem(0)                                                 |
-|   - Field(Binary::op)                                           |
-|   - EndObject()                                                 |
-|   > ReopenObject()                                              |
+|   + EnumItem(0, 3)                                              |
+|   + CreateObject(Binary)                                        |
+|   + Field(Binary::left, 0)                                      |
+|   + Field(Binary::right, 2)                                     |
+|   + Field(Binary::op, 3)                                        |
+|   + StackEnd()                                                  |
+|   > StackBegin()                                                |
 | [RETURN STACK]:                                                 |
-|   [5][2][10]: Exp4 -> [65][Exp5]<< !Exp4 @ >>                   |
-|   [4][1][10]: Exp5 -> [80][Exp]<< !Exp5 @ >>                    |
+|   [5][2][10]: Exp4 -> [65][Exp5]<! !Exp4 @ !>                   |
+|   [4][1][10]: Exp5 -> [80][Exp]<! !Exp5 @ !>                    |
 |   [3][28][10]: Exp -> [89][Module]< { Import } "export" Exp @ > |
 | [PREDECESSORS 87-87]: [87]                                      |
 | [SUCCESORS 89-89]: [89]                                         |
@@ -1917,12 +1904,12 @@
 |
 +-----------------------------------------------------------------+
 | [89]: <Ending>                                                  |
-| [65][Exp5]<< !Exp4 @ >>                                         |
+| [65][Exp5]<! !Exp4 @ !>                                         |
 | [AST-INSTRUCTIONS]:                                             |
-|   - EndObject()                                                 |
-|   > ReopenObject()                                              |
+|   + StackEnd()                                                  |
+|   > StackBegin()                                                |
 | [RETURN STACK]:                                                 |
-|   [4][1][10]: Exp5 -> [80][Exp]<< !Exp5 @ >>                    |
+|   [4][1][10]: Exp5 -> [80][Exp]<! !Exp5 @ !>                    |
 |   [3][28][10]: Exp -> [89][Module]< { Import } "export" Exp @ > |
 | [PREDECESSORS 88-88]: [88]                                      |
 | [SUCCESORS 90-90]: [90]                                         |
@@ -1932,9 +1919,10 @@
 |
 +-----------------------------------------------------------------+
 | [90]: <Ending>                                                  |
-| [80][Exp]<< !Exp5 @ >>                                          |
+| [80][Exp]<! !Exp5 @ !>                                          |
 | [AST-INSTRUCTIONS]:                                             |
-|   - EndObject()                                                 |
+|   + StackEnd()                                                  |
+|   > StackBegin()                                                |
 | [RETURN STACK]:                                                 |
 |   [3][28][10]: Exp -> [89][Module]< { Import } "export" Exp @ > |
 | [PREDECESSORS 89-89]: [89]                                      |
@@ -1947,19 +1935,21 @@
 | [91]: <Ending>                            |
 | [89][Module]< { Import } "export" Exp @ > |
 | [AST-INSTRUCTIONS]:                       |
-|   - ReopenObject()                        |
-|   - EndObject()                           |
-|   > Field(Module::exported)               |
+|   + StackEnd()                            |
+|   > StackSlot(2)                          |
 | [PREDECESSORS 90-90]: [90]                |
 | [SUCCESORS 92-92]: [92]                   |
 +-------------------------------------------+
 |
 +
 |
-+----------------------------+
-| [92]: <Ending>             |
-| [86][Module] END [ENDING]  |
-| [AST-INSTRUCTIONS]:        |
-|   - EndObject()            |
-| [PREDECESSORS 91-91]: [91] |
-+----------------------------+
++--------------------------------+
+| [92]: <Ending>                 |
+| [86][Module] END [ENDING]      |
+| [AST-INSTRUCTIONS]:            |
+|   + CreateObject(Module)       |
+|   + Field(Module::imports, 0)  |
+|   + Field(Module::exported, 2) |
+|   + StackEnd()                 |
+| [PREDECESSORS 91-91]: [91]     |
++--------------------------------+

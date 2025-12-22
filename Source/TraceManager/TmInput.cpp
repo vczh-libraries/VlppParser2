@@ -35,15 +35,14 @@ Initialize
 
 				traceExecs.Clear();
 				insExecs.Resize(0);
-				insExec_Objects.Clear();
+				insExec_Stacks.Clear();
 				insExec_InsRefLinks.Clear();
-				insExec_ObjRefLinks.Clear();
-				insExec_ObjectStacks.Clear();
-				insExec_CreateStacks.Clear();
+				insExec_StackRefLinks.Clear();
+				insExec_StackArrayRefLinks.Clear();
 
 				firstBranchTrace = nullref;
 				firstMergeTrace = nullref;
-				firstObject = nullref;
+				firstStack = nullref;
 				firstStep = nullref;
 				traceAmbiguities.Clear();
 				traceAmbiguityLinks.Clear();
@@ -52,6 +51,7 @@ Initialize
 				initialTrace = AllocateTrace();
 				initialTrace->state = startState;
 				concurrentCount = 1;
+				concurrentCountBeforeError.Reset();
 				concurrentTraces->Add(initialTrace);
 			}
 
@@ -117,6 +117,12 @@ Input
 					concurrentTraces->Set(traceIndex, nullptr);
 				}
 
+				if (concurrentCount == 0)
+				{
+					bool ambiguityInvolved = false;
+					concurrentCountBeforeError = traceCount;
+					FillSuccessorsAfterEndOfInput(ambiguityInvolved);
+				}
 				return concurrentCount > 0;
 			}
 
@@ -129,41 +135,51 @@ FillSuccessorsAfterEndOfInput
 				ambiguityInvolved = false;
 				List<Trace*> visiting;
 
-				// create a merge trace for multiple surviving traces
-				if (concurrentCount > 1)
+				if (concurrentCountBeforeError)
 				{
-					auto newTrace = GetTrace(traces.Allocate());
-					for (vint32_t traceIndex = 0; traceIndex < concurrentCount; traceIndex++)
+					for (vint i = 0; i < concurrentCountBeforeError.Value(); i++)
 					{
-						auto trace = concurrentTraces->Get(traceIndex);
-						auto first = trace;
-						auto last = trace;
-
-						if (trace->state == -1)
-						{
-							// a surviving trace could also be a merge trace
-							// in this case we move predecessors to the new trace
-							first = GetTrace(trace->predecessors.first);
-							last = GetTrace(trace->predecessors.last);
-						}
-
-						if (newTrace->predecessors.first == nullref)
-						{
-							newTrace->predecessors.first = first;
-							newTrace->predecessors.last = last;
-						}
-						else
-						{
-							GetTrace(newTrace->predecessors.last)->predecessors.siblingNext = first;
-							first->predecessors.siblingPrev = newTrace->predecessors.last;
-							newTrace->predecessors.last = last;
-						}
+						visiting.Add(backupTraces->Get(i));
 					}
-					BeginSwap();
-					AddTrace(newTrace);
-					EndSwap();
 				}
-				visiting.Add(concurrentTraces->Get(0));
+				else
+				{
+					// create a merge trace for multiple surviving traces
+					if (concurrentCount > 1)
+					{
+						auto newTrace = GetTrace(traces.Allocate());
+						for (vint32_t traceIndex = 0; traceIndex < concurrentCount; traceIndex++)
+						{
+							auto trace = concurrentTraces->Get(traceIndex);
+							auto first = trace;
+							auto last = trace;
+
+							if (trace->state == -1)
+							{
+								// a surviving trace could also be a merge trace
+								// in this case we move predecessors to the new trace
+								first = GetTrace(trace->predecessors.first);
+								last = GetTrace(trace->predecessors.last);
+							}
+
+							if (newTrace->predecessors.first == nullref)
+							{
+								newTrace->predecessors.first = first;
+								newTrace->predecessors.last = last;
+							}
+							else
+							{
+								GetTrace(newTrace->predecessors.last)->predecessors.siblingNext = first;
+								first->predecessors.siblingPrev = newTrace->predecessors.last;
+								newTrace->predecessors.last = last;
+							}
+						}
+						BeginSwap();
+						AddTrace(newTrace);
+						EndSwap();
+					}
+					visiting.Add(concurrentTraces->Get(0));
+				}
 
 				// fill successors based on predecessors
 				bool initialTraceVisited = false;
@@ -246,7 +262,12 @@ EndOfInput
 				}
 
 				EndSwap();
-				if (concurrentCount == 0) return false;
+				if (concurrentCount == 0)
+				{
+					concurrentCountBeforeError = traceCount;
+					FillSuccessorsAfterEndOfInput(ambiguityInvolved);
+					return false;
+				}
 
 				FillSuccessorsAfterEndOfInput(ambiguityInvolved);
 				if (!ambiguityInvolved)
@@ -262,7 +283,7 @@ EndOfInput
 					step->et_i.startTrace = initialTrace->allocatedIndex;
 					step->et_i.startIns = 0;
 					step->et_i.endTrace = lastTrace->allocatedIndex;
-					step->et_i.endIns = insList.c3 - 1;
+					step->et_i.endIns = insList.countAll - 1;
 				}
 				return initialTrace;
 			}

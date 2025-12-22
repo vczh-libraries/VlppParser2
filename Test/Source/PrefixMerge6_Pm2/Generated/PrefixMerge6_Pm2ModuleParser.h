@@ -18,25 +18,16 @@ namespace prefixmerge6_pm2
 		_Name = 0,
 		_PrimitiveShared = 6,
 		_PrimitiveTypeOnly = 9,
-		_PrimitiveExprOnly = 15,
-		_LongType = 20,
-		_Expr0 = 26,
-		_Expr1 = 33,
-		_Expr2 = 41,
-		_ExprNoComma = 49,
-		_Expr = 58,
+		_PrimitiveExprOnly = 14,
+		_LongType = 19,
+		_Expr0 = 32,
+		_Expr1 = 43,
+		_Expr2 = 51,
+		_ExprNoComma = 57,
+		_Expr = 62,
 		Module = 68,
-		ExprModule = 84,
-		TypeModule = 87,
-		_ExprNoComma_LRI_Isolated_1 = 90,
-		_LongType_LRI_Original = 94,
-		_Expr0_LRI_Original = 108,
-		_Expr1_LRI_Original = 118,
-		_Expr2_LRI_Original = 126,
-		_ExprNoComma_LRI_Original = 132,
-		_Expr_LRI_Original = 137,
-		Module_LRI_Original = 143,
-		_Expr0__LongType_LRI_Prefix = 147,
+		ExprModule = 79,
+		TypeModule = 82,
 	};
 
 	const wchar_t* ModuleParserRuleName(vl::vint index);
@@ -59,8 +50,6 @@ namespace prefixmerge6_pm2
 		vl::Ptr<prefixmerge6_pm2::TypeOrExpr> ParseExprModule(vl::collections::List<vl::regex::RegexToken>& tokens, vl::vint codeIndex = -1) const;
 		vl::Ptr<prefixmerge6_pm2::TypeOrExpr> ParseTypeModule(const vl::WString& input, vl::vint codeIndex = -1) const;
 		vl::Ptr<prefixmerge6_pm2::TypeOrExpr> ParseTypeModule(vl::collections::List<vl::regex::RegexToken>& tokens, vl::vint codeIndex = -1) const;
-		vl::Ptr<prefixmerge6_pm2::TypeOrExpr> ParseModule_LRI_Original(const vl::WString& input, vl::vint codeIndex = -1) const;
-		vl::Ptr<prefixmerge6_pm2::TypeOrExpr> ParseModule_LRI_Original(vl::collections::List<vl::regex::RegexToken>& tokens, vl::vint codeIndex = -1) const;
 	};
 }
 #endif

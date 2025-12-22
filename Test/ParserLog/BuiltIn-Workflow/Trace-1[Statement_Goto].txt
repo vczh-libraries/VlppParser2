@@ -1,11 +1,11 @@
 ﻿================ EXECUTION STEPS ================
-[0]: 0@0 - 27@1
+[0]: 0@0 - 27@0
 
 ==================== TRACES =====================
 
 +--------------------------+
 | [0]: <Start>             |
-| [480][_Statement] BEGIN  |
+| [456][_Statement] BEGIN  |
 | [AST-INSTRUCTIONS]:      |
 | [SUCCESORS 2-2]: [2]     |
 +--------------------------+
@@ -16,12 +16,12 @@
 [0]
 ++============================================================++
 || [2]: {OPEN_BRACE} {                                        ||
-|| [358][_Block]< "{" @ { _Statement } [ NAME ":" ";" ] "}" > ||
+|| [346][_Block]< "{" @ { _Statement } [ NAME ":" ";" ] "}" > ||
 || [AST-INSTRUCTIONS]:                                        ||
-||   - DelayFieldAssignment()                                 ||
-||   - BeginObject(BlockStatement)                            ||
+||   + StackBegin()                                           ||
+||   + Token(0)                                               ||
 || [RETURN STACK]:                                            ||
-||   [14][123][0]: _Block -> [515][_Statement]<< !_Block @ >> ||
+||   [14][117][0]: _Block -> [491][_Statement]<! !_Block @ !> ||
 || [PREDECESSORS 0-0]: [0]                                    ||
 || [SUCCESORS 3-3]: [3]                                       ||
 ++============================================================++
@@ -32,12 +32,13 @@
 [0]
 ++==========================================================================================++
 || [3]: {KEYWORD_GOTO} goto                                                                 ||
-|| [489][_Statement]< "goto" @ NAME ";" >                                                   ||
+|| [465][_Statement]< "goto" @ NAME ";" >                                                   ||
 || [AST-INSTRUCTIONS]:                                                                      ||
-||   - BeginObject(GotoStatement)                                                           ||
+||   + StackBegin()                                                                         ||
+||   + Token(0)                                                                             ||
 || [RETURN STACK]:                                                                          ||
-||   [15][121][2]: _Statement -> [359][_Block]< "{" { _Statement @ } [ NAME ":" ";" ] "}" > ||
-||   [14][123][0]: _Block -> [515][_Statement]<< !_Block @ >>                               ||
+||   [15][115][2]: _Statement -> [347][_Block]< "{" { _Statement @ } [ NAME ":" ";" ] "}" > ||
+||   [14][117][0]: _Block -> [491][_Statement]<! !_Block @ !>                               ||
 || [PREDECESSORS 2-2]: [2]                                                                  ||
 || [SUCCESORS 4-4]: [4]                                                                     ||
 ++==========================================================================================++
@@ -48,13 +49,12 @@
 [0]
 ++==========================================================================================++
 || [4]: {NAME} Label                                                                        ||
-|| [491][_Statement]< "goto" NAME @ ";" >                                                   ||
+|| [467][_Statement]< "goto" NAME @ ";" >                                                   ||
 || [AST-INSTRUCTIONS]:                                                                      ||
-||   + Token()                                                                              ||
-||   + Field(GotoStatement::label)                                                          ||
+||   + Token(1)                                                                             ||
 || [RETURN STACK]:                                                                          ||
-||   [15][121][2]: _Statement -> [359][_Block]< "{" { _Statement @ } [ NAME ":" ";" ] "}" > ||
-||   [14][123][0]: _Block -> [515][_Statement]<< !_Block @ >>                               ||
+||   [15][115][2]: _Statement -> [347][_Block]< "{" { _Statement @ } [ NAME ":" ";" ] "}" > ||
+||   [14][117][0]: _Block -> [491][_Statement]<! !_Block @ !>                               ||
 || [PREDECESSORS 3-3]: [3]                                                                  ||
 || [SUCCESORS 5-5]: [5]                                                                     ||
 ++==========================================================================================++
@@ -65,11 +65,12 @@
 [0]
 ++==========================================================================================++
 || [5]: {SEMICOLON} ;                                                                       ||
-|| [490][_Statement]< "goto" NAME ";" @ >                                                   ||
+|| [466][_Statement]< "goto" NAME ";" @ >                                                   ||
 || [AST-INSTRUCTIONS]:                                                                      ||
+||   + Token(2)                                                                             ||
 || [RETURN STACK]:                                                                          ||
-||   [15][121][2]: _Statement -> [359][_Block]< "{" { _Statement @ } [ NAME ":" ";" ] "}" > ||
-||   [14][123][0]: _Block -> [515][_Statement]<< !_Block @ >>                               ||
+||   [15][115][2]: _Statement -> [347][_Block]< "{" { _Statement @ } [ NAME ":" ";" ] "}" > ||
+||   [14][117][0]: _Block -> [491][_Statement]<! !_Block @ !>                               ||
 || [PREDECESSORS 4-4]: [4]                                                                  ||
 || [SUCCESORS 6-6]: [6]                                                                     ||
 ++==========================================================================================++
@@ -78,12 +79,14 @@
 |
 +------------------------------------------------------------+
 | [6]: <Ending>                                              |
-| [359][_Block]< "{" { _Statement @ } [ NAME ":" ";" ] "}" > |
+| [347][_Block]< "{" { _Statement @ } [ NAME ":" ";" ] "}" > |
 | [AST-INSTRUCTIONS]:                                        |
-|   - EndObject()                                            |
-|   > Field(BlockStatement::statements)                      |
+|   + CreateObject(GotoStatement)                            |
+|   + Field(GotoStatement::label, 1)                         |
+|   + StackEnd()                                             |
+|   > StackSlot(1)                                           |
 | [RETURN STACK]:                                            |
-|   [14][123][0]: _Block -> [515][_Statement]<< !_Block @ >> |
+|   [14][117][0]: _Block -> [491][_Statement]<! !_Block @ !> |
 | [PREDECESSORS 5-5]: [5]                                    |
 | [SUCCESORS 22-22]: [22]                                    |
 +------------------------------------------------------------+
@@ -94,12 +97,11 @@
 [0]
 ++============================================================++
 || [22]: {NAME} Label                                         ||
-|| [363][_Block]< "{" { _Statement } [ NAME @ ":" ";" ] "}" > ||
+|| [351][_Block]< "{" { _Statement } [ NAME @ ":" ";" ] "}" > ||
 || [AST-INSTRUCTIONS]:                                        ||
-||   + Token()                                                ||
-||   + Field(BlockStatement::endLabel)                        ||
+||   + Token(2)                                               ||
 || [RETURN STACK]:                                            ||
-||   [14][123][0]: _Block -> [515][_Statement]<< !_Block @ >> ||
+||   [14][117][0]: _Block -> [491][_Statement]<! !_Block @ !> ||
 || [PREDECESSORS 6-6]: [6]                                    ||
 || [SUCCESORS 23-23]: [23]                                    ||
 ++============================================================++
@@ -110,10 +112,11 @@
 [0]
 ++============================================================++
 || [23]: {COLON} :                                            ||
-|| [362][_Block]< "{" { _Statement } [ NAME ":" @ ";" ] "}" > ||
+|| [350][_Block]< "{" { _Statement } [ NAME ":" @ ";" ] "}" > ||
 || [AST-INSTRUCTIONS]:                                        ||
+||   + Token(3)                                               ||
 || [RETURN STACK]:                                            ||
-||   [14][123][0]: _Block -> [515][_Statement]<< !_Block @ >> ||
+||   [14][117][0]: _Block -> [491][_Statement]<! !_Block @ !> ||
 || [PREDECESSORS 22-22]: [22]                                 ||
 || [SUCCESORS 24-24]: [24]                                    ||
 ++============================================================++
@@ -124,10 +127,11 @@
 [0]
 ++============================================================++
 || [24]: {SEMICOLON} ;                                        ||
-|| [360][_Block]< "{" { _Statement } [ NAME ":" ";" @ ] "}" > ||
+|| [348][_Block]< "{" { _Statement } [ NAME ":" ";" @ ] "}" > ||
 || [AST-INSTRUCTIONS]:                                        ||
+||   + Token(4)                                               ||
 || [RETURN STACK]:                                            ||
-||   [14][123][0]: _Block -> [515][_Statement]<< !_Block @ >> ||
+||   [14][117][0]: _Block -> [491][_Statement]<! !_Block @ !> ||
 || [PREDECESSORS 23-23]: [23]                                 ||
 || [SUCCESORS 25-25]: [25]                                    ||
 ++============================================================++
@@ -138,32 +142,36 @@
 [0]
 ++============================================================++
 || [25]: {CLOSE_BRACE} }                                      ||
-|| [361][_Block]< "{" { _Statement } [ NAME ":" ";" ] "}" @ > ||
+|| [349][_Block]< "{" { _Statement } [ NAME ":" ";" ] "}" @ > ||
 || [AST-INSTRUCTIONS]:                                        ||
+||   + Token(5)                                               ||
 || [RETURN STACK]:                                            ||
-||   [14][123][0]: _Block -> [515][_Statement]<< !_Block @ >> ||
+||   [14][117][0]: _Block -> [491][_Statement]<! !_Block @ !> ||
 || [PREDECESSORS 24-24]: [24]                                 ||
 || [SUCCESORS 26-26]: [26]                                    ||
 ++============================================================++
 |
 +
 |
-+----------------------------------+
-| [26]: <Ending>                   |
-| [515][_Statement]<< !_Block @ >> |
-| [AST-INSTRUCTIONS]:              |
-|   - EndObject()                  |
-| [PREDECESSORS 25-25]: [25]       |
-| [SUCCESORS 27-27]: [27]          |
-+----------------------------------+
++------------------------------------------+
+| [26]: <Ending>                           |
+| [491][_Statement]<! !_Block @ !>         |
+| [AST-INSTRUCTIONS]:                      |
+|   + CreateObject(BlockStatement)         |
+|   + Field(BlockStatement::statements, 1) |
+|   + Field(BlockStatement::endLabel, 2)   |
+|   + StackEnd()                           |
+|   > StackBegin()                         |
+| [PREDECESSORS 25-25]: [25]               |
+| [SUCCESORS 27-27]: [27]                  |
++------------------------------------------+
 |
 +
 |
 +--------------------------------+
 | [27]: <Ending>                 |
-| [481][_Statement] END [ENDING] |
+| [457][_Statement] END [ENDING] |
 | [AST-INSTRUCTIONS]:            |
-|   - ReopenObject()             |
-|   - EndObject()                |
+|   + StackEnd()                 |
 | [PREDECESSORS 26-26]: [26]     |
 +--------------------------------+

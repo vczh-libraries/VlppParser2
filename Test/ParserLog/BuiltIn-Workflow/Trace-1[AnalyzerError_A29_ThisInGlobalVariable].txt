@@ -1,11 +1,11 @@
 ﻿================ EXECUTION STEPS ================
-[0]: 0@0 - 28@2
+[0]: 0@0 - 27@6
 
 ==================== TRACES =====================
 
 +-----------------------+
 | [0]: <Start>          |
-| [817][_Module] BEGIN  |
+| [779][_Module] BEGIN  |
 | [AST-INSTRUCTIONS]:   |
 | [SUCCESORS 1-1]: [1]  |
 +-----------------------+
@@ -14,44 +14,41 @@
  +
  |
 [0]
-++==========================================++
-|| [1]: {KEYWORD_MODULE} module             ||
-|| [819][_Module]< "module" @ _ModuleBody > ||
-|| [AST-INSTRUCTIONS]:                      ||
-||   - BeginObject(Module)                  ||
-|| [PREDECESSORS 0-0]: [0]                  ||
-|| [SUCCESORS 2-2]: [2]                     ||
-++==========================================++
+++===========================================================================++
+|| [1]: {KEYWORD_MODULE} module                                              ||
+|| [785][_Module]< "module" @ ( NAME ";" { _UsingPath } { _Declaration } ) > ||
+|| [AST-INSTRUCTIONS]:                                                       ||
+||   + StackBegin()                                                          ||
+||   + Token(0)                                                              ||
+|| [PREDECESSORS 0-0]: [0]                                                   ||
+|| [SUCCESORS 2-2]: [2]                                                      ||
+++===========================================================================++
 [0]
  |
  +
  |
 [0]
-++========================================================================++
-|| [2]: {NAME} test                                                       ||
-|| [816][_ModuleBody]NAME @ ";" { _UsingPath } { _Declaration }           ||
-|| [AST-INSTRUCTIONS]:                                                    ||
-||   + Token()                                                            ||
-||   + Field(Module::name)                                                ||
-|| [RETURN STACK]:                                                        ||
-||   [0][258][1]: _ModuleBody -> [820][_Module]< "module" _ModuleBody @ > ||
-|| [PREDECESSORS 1-1]: [1]                                                ||
-|| [SUCCESORS 3-3]: [3]                                                   ||
-++========================================================================++
+++===========================================================================++
+|| [2]: {NAME} test                                                          ||
+|| [784][_Module]< "module" ( NAME @ ";" { _UsingPath } { _Declaration } ) > ||
+|| [AST-INSTRUCTIONS]:                                                       ||
+||   + Token(1)                                                              ||
+|| [PREDECESSORS 1-1]: [1]                                                   ||
+|| [SUCCESORS 3-3]: [3]                                                      ||
+++===========================================================================++
 [0]
  |
  +
  |
 [0]
-++========================================================================++
-|| [3]: {SEMICOLON} ;                                                     ||
-|| [813][_ModuleBody]NAME ";" @ { _UsingPath } { _Declaration }           ||
-|| [AST-INSTRUCTIONS]:                                                    ||
-|| [RETURN STACK]:                                                        ||
-||   [0][258][1]: _ModuleBody -> [820][_Module]< "module" _ModuleBody @ > ||
-|| [PREDECESSORS 2-2]: [2]                                                ||
-|| [SUCCESORS 5-5]: [5]                                                   ||
-++========================================================================++
+++===========================================================================++
+|| [3]: {SEMICOLON} ;                                                        ||
+|| [781][_Module]< "module" ( NAME ";" @ { _UsingPath } { _Declaration } ) > ||
+|| [AST-INSTRUCTIONS]:                                                       ||
+||   + Token(2)                                                              ||
+|| [PREDECESSORS 2-2]: [2]                                                   ||
+|| [SUCCESORS 5-5]: [5]                                                      ||
+++===========================================================================++
 [0]
  |
  +
@@ -59,16 +56,14 @@
 [0]
 ++===========================================================================================================++
 || [5]: {KEYWORD_VAR} var                                                                                    ||
-|| [604][_Variable]< "var" @ NAME [ ":" _Type ] "=" _Expression ";" >                                        ||
+|| [574][_Variable]< "var" @ NAME [ ":" _Type ] "=" _Expression ";" >                                        ||
 || [AST-INSTRUCTIONS]:                                                                                       ||
-||   - DelayFieldAssignment()                                                                                ||
-||   - DelayFieldAssignment()                                                                                ||
-||   - BeginObject(VariableDeclaration)                                                                      ||
+||   + StackBegin()                                                                                          ||
+||   + Token(0)                                                                                              ||
 || [RETURN STACK]:                                                                                           ||
-||   [3][52][3]: _Variable -> [791][_DeclarationCandidates]<< !_Variable @ >>                                ||
-||   [2][47][3]: _DeclarationCandidates -> [795][_Declaration]<< { _Attribute } !_DeclarationCandidates @ >> ||
-||   [1][253][3]: _Declaration -> [815][_ModuleBody]NAME ";" { _UsingPath } { _Declaration @ }               ||
-||   [0][258][1]: _ModuleBody -> [820][_Module]< "module" _ModuleBody @ >                                    ||
+||   [2][47][3]: _Variable -> [759][_DeclarationCandidates]<! !_Variable @ !>                                ||
+||   [1][43][3]: _DeclarationCandidates -> [763][_Declaration]<! { _Attribute } !_DeclarationCandidates @ !> ||
+||   [0][251][3]: _Declaration -> [783][_Module]< "module" ( NAME ";" { _UsingPath } { _Declaration @ } ) >  ||
 || [PREDECESSORS 3-3]: [3]                                                                                   ||
 || [SUCCESORS 6-6]: [6]                                                                                      ||
 ++===========================================================================================================++
@@ -79,15 +74,13 @@
 [0]
 ++===========================================================================================================++
 || [6]: {NAME} a                                                                                             ||
-|| [605][_Variable]< "var" NAME @ [ ":" _Type ] "=" _Expression ";" >                                        ||
+|| [575][_Variable]< "var" NAME @ [ ":" _Type ] "=" _Expression ";" >                                        ||
 || [AST-INSTRUCTIONS]:                                                                                       ||
-||   + Token()                                                                                               ||
-||   + Field(Declaration::name)                                                                              ||
+||   + Token(1)                                                                                              ||
 || [RETURN STACK]:                                                                                           ||
-||   [3][52][3]: _Variable -> [791][_DeclarationCandidates]<< !_Variable @ >>                                ||
-||   [2][47][3]: _DeclarationCandidates -> [795][_Declaration]<< { _Attribute } !_DeclarationCandidates @ >> ||
-||   [1][253][3]: _Declaration -> [815][_ModuleBody]NAME ";" { _UsingPath } { _Declaration @ }               ||
-||   [0][258][1]: _ModuleBody -> [820][_Module]< "module" _ModuleBody @ >                                    ||
+||   [2][47][3]: _Variable -> [759][_DeclarationCandidates]<! !_Variable @ !>                                ||
+||   [1][43][3]: _DeclarationCandidates -> [763][_Declaration]<! { _Attribute } !_DeclarationCandidates @ !> ||
+||   [0][251][3]: _Declaration -> [783][_Module]< "module" ( NAME ";" { _UsingPath } { _Declaration @ } ) >  ||
 || [PREDECESSORS 5-5]: [5]                                                                                   ||
 || [SUCCESORS 7-7]: [7]                                                                                      ||
 ++===========================================================================================================++
@@ -98,13 +91,13 @@
 [0]
 ++===========================================================================================================++
 || [7]: {ASSIGN} =                                                                                           ||
-|| [608][_Variable]< "var" NAME [ ":" _Type ] "=" @ _Expression ";" >                                        ||
+|| [578][_Variable]< "var" NAME [ ":" _Type ] "=" @ _Expression ";" >                                        ||
 || [AST-INSTRUCTIONS]:                                                                                       ||
+||   + Token(4)                                                                                              ||
 || [RETURN STACK]:                                                                                           ||
-||   [3][52][3]: _Variable -> [791][_DeclarationCandidates]<< !_Variable @ >>                                ||
-||   [2][47][3]: _DeclarationCandidates -> [795][_Declaration]<< { _Attribute } !_DeclarationCandidates @ >> ||
-||   [1][253][3]: _Declaration -> [815][_ModuleBody]NAME ";" { _UsingPath } { _Declaration @ }               ||
-||   [0][258][1]: _ModuleBody -> [820][_Module]< "module" _ModuleBody @ >                                    ||
+||   [2][47][3]: _Variable -> [759][_DeclarationCandidates]<! !_Variable @ !>                                ||
+||   [1][43][3]: _DeclarationCandidates -> [763][_Declaration]<! { _Attribute } !_DeclarationCandidates @ !> ||
+||   [0][251][3]: _Declaration -> [783][_Module]< "module" ( NAME ";" { _UsingPath } { _Declaration @ } ) >  ||
 || [PREDECESSORS 6-6]: [6]                                                                                   ||
 || [SUCCESORS 8-8]: [8]                                                                                      ||
 ++===========================================================================================================++
@@ -115,39 +108,28 @@
 [0]
 ++===========================================================================================================++
 || [8]: {KEYWORD_THIS} this                                                                                  ||
-|| [140][_ExpPrimitive]< "this" @ >                                                                          ||
+|| [125][_ExpPrimitive]< "this" @ >                                                                          ||
 || [AST-INSTRUCTIONS]:                                                                                       ||
-||   - DelayFieldAssignment()                                                                                ||
-||   - DelayFieldAssignment()                                                                                ||
-||   - DelayFieldAssignment()                                                                                ||
-||   - DelayFieldAssignment()                                                                                ||
-||   - DelayFieldAssignment()                                                                                ||
-||   - DelayFieldAssignment()                                                                                ||
-||   - DelayFieldAssignment()                                                                                ||
-||   - DelayFieldAssignment()                                                                                ||
-||   - DelayFieldAssignment()                                                                                ||
-||   - DelayFieldAssignment()                                                                                ||
-||   - DelayFieldAssignment()                                                                                ||
-||   - BeginObject(ThisExpression)                                                                           ||
+||   + StackBegin()                                                                                          ||
+||   + Token(0)                                                                                              ||
 || [RETURN STACK]:                                                                                           ||
-||   [17][21][7]: _ExpPrimitive -> [245][_Exp0]<< !_ExpPrimitive @ >>                                        ||
-||   [16][20][7]: _Exp0 -> [251][_Exp1]<< !_Exp0 @ >>                                                        ||
-||   [15][19][7]: _Exp1 -> [263][_Exp2]<< !_Exp1 @ >>                                                        ||
-||   [14][18][7]: _Exp2 -> [278][_Exp3]<< !_Exp2 @ >>                                                        ||
-||   [13][17][7]: _Exp3 -> [287][_Exp4]<< !_Exp3 @ >>                                                        ||
-||   [12][16][7]: _Exp4 -> [308][_Exp5]<< !_Exp4 @ >>                                                        ||
-||   [11][15][7]: _Exp5 -> [314][_Exp6]<< !_Exp5 @ >>                                                        ||
-||   [10][14][7]: _Exp6 -> [320][_Exp7]<< !_Exp6 @ >>                                                        ||
-||   [9][13][7]: _Exp7 -> [326][_Exp8]<< !_Exp7 @ >>                                                         ||
-||   [8][12][7]: _Exp8 -> [332][_Exp9]<< !_Exp8 @ >>                                                         ||
-||   [7][11][7]: _Exp9 -> [340][_Exp10]<< !_Exp9 @ >>                                                        ||
-||   [6][10][7]: _Exp10 -> [346][_Exp11]<< !_Exp10 @ >>                                                      ||
-||   [5][9][7]: _Exp11 -> [349][_Expression]<< !_Exp11 @ >>                                                  ||
-||   [4][195][7]: _Expression -> [610][_Variable]< "var" NAME [ ":" _Type ] "=" _Expression @ ";" >          ||
-||   [3][52][3]: _Variable -> [791][_DeclarationCandidates]<< !_Variable @ >>                                ||
-||   [2][47][3]: _DeclarationCandidates -> [795][_Declaration]<< { _Attribute } !_DeclarationCandidates @ >> ||
-||   [1][253][3]: _Declaration -> [815][_ModuleBody]NAME ";" { _UsingPath } { _Declaration @ }               ||
-||   [0][258][1]: _ModuleBody -> [820][_Module]< "module" _ModuleBody @ >                                    ||
+||   [16][21][7]: _ExpPrimitive -> [232][_Exp0]<! !_ExpPrimitive @ !>                                        ||
+||   [15][20][7]: _Exp0 -> [239][_Exp1]<! !_Exp0 @ !>                                                        ||
+||   [14][19][7]: _Exp1 -> [251][_Exp2]<! !_Exp1 @ !>                                                        ||
+||   [13][18][7]: _Exp2 -> [266][_Exp3]<! !_Exp2 @ !>                                                        ||
+||   [12][17][7]: _Exp3 -> [275][_Exp4]<! !_Exp3 @ !>                                                        ||
+||   [11][16][7]: _Exp4 -> [296][_Exp5]<! !_Exp4 @ !>                                                        ||
+||   [10][15][7]: _Exp5 -> [302][_Exp6]<! !_Exp5 @ !>                                                        ||
+||   [9][14][7]: _Exp6 -> [308][_Exp7]<! !_Exp6 @ !>                                                         ||
+||   [8][13][7]: _Exp7 -> [314][_Exp8]<! !_Exp7 @ !>                                                         ||
+||   [7][12][7]: _Exp8 -> [320][_Exp9]<! !_Exp8 @ !>                                                         ||
+||   [6][11][7]: _Exp9 -> [322][_Exp10] BEGIN [pm-lr]                                                        ||
+||   [5][10][7]: _Exp10 -> [330][_Exp11] BEGIN [pm-lr]                                                       ||
+||   [4][9][7]: _Exp11 -> [337][_Expression]<! !_Exp11 @ !>                                                  ||
+||   [3][189][7]: _Expression -> [580][_Variable]< "var" NAME [ ":" _Type ] "=" _Expression @ ";" >          ||
+||   [2][47][3]: _Variable -> [759][_DeclarationCandidates]<! !_Variable @ !>                                ||
+||   [1][43][3]: _DeclarationCandidates -> [763][_Declaration]<! { _Attribute } !_DeclarationCandidates @ !> ||
+||   [0][251][3]: _Declaration -> [783][_Module]< "module" ( NAME ";" { _UsingPath } { _Declaration @ } ) >  ||
 || [PREDECESSORS 7-7]: [7]                                                                                   ||
 || [SUCCESORS 9-9]: [9]                                                                                      ||
 ++===========================================================================================================++
@@ -156,27 +138,28 @@
 |
 +-----------------------------------------------------------------------------------------------------------+
 | [9]: <Ending>                                                                                             |
-| [245][_Exp0]<< !_ExpPrimitive @ >>                                                                        |
+| [232][_Exp0]<! !_ExpPrimitive @ !>                                                                        |
 | [AST-INSTRUCTIONS]:                                                                                       |
-|   - EndObject()                                                                                           |
+|   + CreateObject(ThisExpression)                                                                          |
+|   + StackEnd()                                                                                            |
+|   > StackBegin()                                                                                          |
 | [RETURN STACK]:                                                                                           |
-|   [16][20][7]: _Exp0 -> [251][_Exp1]<< !_Exp0 @ >>                                                        |
-|   [15][19][7]: _Exp1 -> [263][_Exp2]<< !_Exp1 @ >>                                                        |
-|   [14][18][7]: _Exp2 -> [278][_Exp3]<< !_Exp2 @ >>                                                        |
-|   [13][17][7]: _Exp3 -> [287][_Exp4]<< !_Exp3 @ >>                                                        |
-|   [12][16][7]: _Exp4 -> [308][_Exp5]<< !_Exp4 @ >>                                                        |
-|   [11][15][7]: _Exp5 -> [314][_Exp6]<< !_Exp5 @ >>                                                        |
-|   [10][14][7]: _Exp6 -> [320][_Exp7]<< !_Exp6 @ >>                                                        |
-|   [9][13][7]: _Exp7 -> [326][_Exp8]<< !_Exp7 @ >>                                                         |
-|   [8][12][7]: _Exp8 -> [332][_Exp9]<< !_Exp8 @ >>                                                         |
-|   [7][11][7]: _Exp9 -> [340][_Exp10]<< !_Exp9 @ >>                                                        |
-|   [6][10][7]: _Exp10 -> [346][_Exp11]<< !_Exp10 @ >>                                                      |
-|   [5][9][7]: _Exp11 -> [349][_Expression]<< !_Exp11 @ >>                                                  |
-|   [4][195][7]: _Expression -> [610][_Variable]< "var" NAME [ ":" _Type ] "=" _Expression @ ";" >          |
-|   [3][52][3]: _Variable -> [791][_DeclarationCandidates]<< !_Variable @ >>                                |
-|   [2][47][3]: _DeclarationCandidates -> [795][_Declaration]<< { _Attribute } !_DeclarationCandidates @ >> |
-|   [1][253][3]: _Declaration -> [815][_ModuleBody]NAME ";" { _UsingPath } { _Declaration @ }               |
-|   [0][258][1]: _ModuleBody -> [820][_Module]< "module" _ModuleBody @ >                                    |
+|   [15][20][7]: _Exp0 -> [239][_Exp1]<! !_Exp0 @ !>                                                        |
+|   [14][19][7]: _Exp1 -> [251][_Exp2]<! !_Exp1 @ !>                                                        |
+|   [13][18][7]: _Exp2 -> [266][_Exp3]<! !_Exp2 @ !>                                                        |
+|   [12][17][7]: _Exp3 -> [275][_Exp4]<! !_Exp3 @ !>                                                        |
+|   [11][16][7]: _Exp4 -> [296][_Exp5]<! !_Exp4 @ !>                                                        |
+|   [10][15][7]: _Exp5 -> [302][_Exp6]<! !_Exp5 @ !>                                                        |
+|   [9][14][7]: _Exp6 -> [308][_Exp7]<! !_Exp6 @ !>                                                         |
+|   [8][13][7]: _Exp7 -> [314][_Exp8]<! !_Exp7 @ !>                                                         |
+|   [7][12][7]: _Exp8 -> [320][_Exp9]<! !_Exp8 @ !>                                                         |
+|   [6][11][7]: _Exp9 -> [322][_Exp10] BEGIN [pm-lr]                                                        |
+|   [5][10][7]: _Exp10 -> [330][_Exp11] BEGIN [pm-lr]                                                       |
+|   [4][9][7]: _Exp11 -> [337][_Expression]<! !_Exp11 @ !>                                                  |
+|   [3][189][7]: _Expression -> [580][_Variable]< "var" NAME [ ":" _Type ] "=" _Expression @ ";" >          |
+|   [2][47][3]: _Variable -> [759][_DeclarationCandidates]<! !_Variable @ !>                                |
+|   [1][43][3]: _DeclarationCandidates -> [763][_Declaration]<! { _Attribute } !_DeclarationCandidates @ !> |
+|   [0][251][3]: _Declaration -> [783][_Module]< "module" ( NAME ";" { _UsingPath } { _Declaration @ } ) >  |
 | [PREDECESSORS 8-8]: [8]                                                                                   |
 | [SUCCESORS 10-10]: [10]                                                                                   |
 +-----------------------------------------------------------------------------------------------------------+
@@ -185,28 +168,26 @@
 |
 +-----------------------------------------------------------------------------------------------------------+
 | [10]: <Ending>                                                                                            |
-| [251][_Exp1]<< !_Exp0 @ >>                                                                                |
+| [239][_Exp1]<! !_Exp0 @ !>                                                                                |
 | [AST-INSTRUCTIONS]:                                                                                       |
-|   - ReopenObject()                                                                                        |
-|   - EndObject()                                                                                           |
-|   > ReopenObject()                                                                                        |
+|   + StackEnd()                                                                                            |
+|   > StackBegin()                                                                                          |
 | [RETURN STACK]:                                                                                           |
-|   [15][19][7]: _Exp1 -> [263][_Exp2]<< !_Exp1 @ >>                                                        |
-|   [14][18][7]: _Exp2 -> [278][_Exp3]<< !_Exp2 @ >>                                                        |
-|   [13][17][7]: _Exp3 -> [287][_Exp4]<< !_Exp3 @ >>                                                        |
-|   [12][16][7]: _Exp4 -> [308][_Exp5]<< !_Exp4 @ >>                                                        |
-|   [11][15][7]: _Exp5 -> [314][_Exp6]<< !_Exp5 @ >>                                                        |
-|   [10][14][7]: _Exp6 -> [320][_Exp7]<< !_Exp6 @ >>                                                        |
-|   [9][13][7]: _Exp7 -> [326][_Exp8]<< !_Exp7 @ >>                                                         |
-|   [8][12][7]: _Exp8 -> [332][_Exp9]<< !_Exp8 @ >>                                                         |
-|   [7][11][7]: _Exp9 -> [340][_Exp10]<< !_Exp9 @ >>                                                        |
-|   [6][10][7]: _Exp10 -> [346][_Exp11]<< !_Exp10 @ >>                                                      |
-|   [5][9][7]: _Exp11 -> [349][_Expression]<< !_Exp11 @ >>                                                  |
-|   [4][195][7]: _Expression -> [610][_Variable]< "var" NAME [ ":" _Type ] "=" _Expression @ ";" >          |
-|   [3][52][3]: _Variable -> [791][_DeclarationCandidates]<< !_Variable @ >>                                |
-|   [2][47][3]: _DeclarationCandidates -> [795][_Declaration]<< { _Attribute } !_DeclarationCandidates @ >> |
-|   [1][253][3]: _Declaration -> [815][_ModuleBody]NAME ";" { _UsingPath } { _Declaration @ }               |
-|   [0][258][1]: _ModuleBody -> [820][_Module]< "module" _ModuleBody @ >                                    |
+|   [14][19][7]: _Exp1 -> [251][_Exp2]<! !_Exp1 @ !>                                                        |
+|   [13][18][7]: _Exp2 -> [266][_Exp3]<! !_Exp2 @ !>                                                        |
+|   [12][17][7]: _Exp3 -> [275][_Exp4]<! !_Exp3 @ !>                                                        |
+|   [11][16][7]: _Exp4 -> [296][_Exp5]<! !_Exp4 @ !>                                                        |
+|   [10][15][7]: _Exp5 -> [302][_Exp6]<! !_Exp5 @ !>                                                        |
+|   [9][14][7]: _Exp6 -> [308][_Exp7]<! !_Exp6 @ !>                                                         |
+|   [8][13][7]: _Exp7 -> [314][_Exp8]<! !_Exp7 @ !>                                                         |
+|   [7][12][7]: _Exp8 -> [320][_Exp9]<! !_Exp8 @ !>                                                         |
+|   [6][11][7]: _Exp9 -> [322][_Exp10] BEGIN [pm-lr]                                                        |
+|   [5][10][7]: _Exp10 -> [330][_Exp11] BEGIN [pm-lr]                                                       |
+|   [4][9][7]: _Exp11 -> [337][_Expression]<! !_Exp11 @ !>                                                  |
+|   [3][189][7]: _Expression -> [580][_Variable]< "var" NAME [ ":" _Type ] "=" _Expression @ ";" >          |
+|   [2][47][3]: _Variable -> [759][_DeclarationCandidates]<! !_Variable @ !>                                |
+|   [1][43][3]: _DeclarationCandidates -> [763][_Declaration]<! { _Attribute } !_DeclarationCandidates @ !> |
+|   [0][251][3]: _Declaration -> [783][_Module]< "module" ( NAME ";" { _UsingPath } { _Declaration @ } ) >  |
 | [PREDECESSORS 9-9]: [9]                                                                                   |
 | [SUCCESORS 11-11]: [11]                                                                                   |
 +-----------------------------------------------------------------------------------------------------------+
@@ -215,26 +196,25 @@
 |
 +-----------------------------------------------------------------------------------------------------------+
 | [11]: <Ending>                                                                                            |
-| [263][_Exp2]<< !_Exp1 @ >>                                                                                |
+| [251][_Exp2]<! !_Exp1 @ !>                                                                                |
 | [AST-INSTRUCTIONS]:                                                                                       |
-|   - EndObject()                                                                                           |
-|   > ReopenObject()                                                                                        |
+|   + StackEnd()                                                                                            |
+|   > StackBegin()                                                                                          |
 | [RETURN STACK]:                                                                                           |
-|   [14][18][7]: _Exp2 -> [278][_Exp3]<< !_Exp2 @ >>                                                        |
-|   [13][17][7]: _Exp3 -> [287][_Exp4]<< !_Exp3 @ >>                                                        |
-|   [12][16][7]: _Exp4 -> [308][_Exp5]<< !_Exp4 @ >>                                                        |
-|   [11][15][7]: _Exp5 -> [314][_Exp6]<< !_Exp5 @ >>                                                        |
-|   [10][14][7]: _Exp6 -> [320][_Exp7]<< !_Exp6 @ >>                                                        |
-|   [9][13][7]: _Exp7 -> [326][_Exp8]<< !_Exp7 @ >>                                                         |
-|   [8][12][7]: _Exp8 -> [332][_Exp9]<< !_Exp8 @ >>                                                         |
-|   [7][11][7]: _Exp9 -> [340][_Exp10]<< !_Exp9 @ >>                                                        |
-|   [6][10][7]: _Exp10 -> [346][_Exp11]<< !_Exp10 @ >>                                                      |
-|   [5][9][7]: _Exp11 -> [349][_Expression]<< !_Exp11 @ >>                                                  |
-|   [4][195][7]: _Expression -> [610][_Variable]< "var" NAME [ ":" _Type ] "=" _Expression @ ";" >          |
-|   [3][52][3]: _Variable -> [791][_DeclarationCandidates]<< !_Variable @ >>                                |
-|   [2][47][3]: _DeclarationCandidates -> [795][_Declaration]<< { _Attribute } !_DeclarationCandidates @ >> |
-|   [1][253][3]: _Declaration -> [815][_ModuleBody]NAME ";" { _UsingPath } { _Declaration @ }               |
-|   [0][258][1]: _ModuleBody -> [820][_Module]< "module" _ModuleBody @ >                                    |
+|   [13][18][7]: _Exp2 -> [266][_Exp3]<! !_Exp2 @ !>                                                        |
+|   [12][17][7]: _Exp3 -> [275][_Exp4]<! !_Exp3 @ !>                                                        |
+|   [11][16][7]: _Exp4 -> [296][_Exp5]<! !_Exp4 @ !>                                                        |
+|   [10][15][7]: _Exp5 -> [302][_Exp6]<! !_Exp5 @ !>                                                        |
+|   [9][14][7]: _Exp6 -> [308][_Exp7]<! !_Exp6 @ !>                                                         |
+|   [8][13][7]: _Exp7 -> [314][_Exp8]<! !_Exp7 @ !>                                                         |
+|   [7][12][7]: _Exp8 -> [320][_Exp9]<! !_Exp8 @ !>                                                         |
+|   [6][11][7]: _Exp9 -> [322][_Exp10] BEGIN [pm-lr]                                                        |
+|   [5][10][7]: _Exp10 -> [330][_Exp11] BEGIN [pm-lr]                                                       |
+|   [4][9][7]: _Exp11 -> [337][_Expression]<! !_Exp11 @ !>                                                  |
+|   [3][189][7]: _Expression -> [580][_Variable]< "var" NAME [ ":" _Type ] "=" _Expression @ ";" >          |
+|   [2][47][3]: _Variable -> [759][_DeclarationCandidates]<! !_Variable @ !>                                |
+|   [1][43][3]: _DeclarationCandidates -> [763][_Declaration]<! { _Attribute } !_DeclarationCandidates @ !> |
+|   [0][251][3]: _Declaration -> [783][_Module]< "module" ( NAME ";" { _UsingPath } { _Declaration @ } ) >  |
 | [PREDECESSORS 10-10]: [10]                                                                                |
 | [SUCCESORS 12-12]: [12]                                                                                   |
 +-----------------------------------------------------------------------------------------------------------+
@@ -243,25 +223,24 @@
 |
 +-----------------------------------------------------------------------------------------------------------+
 | [12]: <Ending>                                                                                            |
-| [278][_Exp3]<< !_Exp2 @ >>                                                                                |
+| [266][_Exp3]<! !_Exp2 @ !>                                                                                |
 | [AST-INSTRUCTIONS]:                                                                                       |
-|   - EndObject()                                                                                           |
-|   > ReopenObject()                                                                                        |
+|   + StackEnd()                                                                                            |
+|   > StackBegin()                                                                                          |
 | [RETURN STACK]:                                                                                           |
-|   [13][17][7]: _Exp3 -> [287][_Exp4]<< !_Exp3 @ >>                                                        |
-|   [12][16][7]: _Exp4 -> [308][_Exp5]<< !_Exp4 @ >>                                                        |
-|   [11][15][7]: _Exp5 -> [314][_Exp6]<< !_Exp5 @ >>                                                        |
-|   [10][14][7]: _Exp6 -> [320][_Exp7]<< !_Exp6 @ >>                                                        |
-|   [9][13][7]: _Exp7 -> [326][_Exp8]<< !_Exp7 @ >>                                                         |
-|   [8][12][7]: _Exp8 -> [332][_Exp9]<< !_Exp8 @ >>                                                         |
-|   [7][11][7]: _Exp9 -> [340][_Exp10]<< !_Exp9 @ >>                                                        |
-|   [6][10][7]: _Exp10 -> [346][_Exp11]<< !_Exp10 @ >>                                                      |
-|   [5][9][7]: _Exp11 -> [349][_Expression]<< !_Exp11 @ >>                                                  |
-|   [4][195][7]: _Expression -> [610][_Variable]< "var" NAME [ ":" _Type ] "=" _Expression @ ";" >          |
-|   [3][52][3]: _Variable -> [791][_DeclarationCandidates]<< !_Variable @ >>                                |
-|   [2][47][3]: _DeclarationCandidates -> [795][_Declaration]<< { _Attribute } !_DeclarationCandidates @ >> |
-|   [1][253][3]: _Declaration -> [815][_ModuleBody]NAME ";" { _UsingPath } { _Declaration @ }               |
-|   [0][258][1]: _ModuleBody -> [820][_Module]< "module" _ModuleBody @ >                                    |
+|   [12][17][7]: _Exp3 -> [275][_Exp4]<! !_Exp3 @ !>                                                        |
+|   [11][16][7]: _Exp4 -> [296][_Exp5]<! !_Exp4 @ !>                                                        |
+|   [10][15][7]: _Exp5 -> [302][_Exp6]<! !_Exp5 @ !>                                                        |
+|   [9][14][7]: _Exp6 -> [308][_Exp7]<! !_Exp6 @ !>                                                         |
+|   [8][13][7]: _Exp7 -> [314][_Exp8]<! !_Exp7 @ !>                                                         |
+|   [7][12][7]: _Exp8 -> [320][_Exp9]<! !_Exp8 @ !>                                                         |
+|   [6][11][7]: _Exp9 -> [322][_Exp10] BEGIN [pm-lr]                                                        |
+|   [5][10][7]: _Exp10 -> [330][_Exp11] BEGIN [pm-lr]                                                       |
+|   [4][9][7]: _Exp11 -> [337][_Expression]<! !_Exp11 @ !>                                                  |
+|   [3][189][7]: _Expression -> [580][_Variable]< "var" NAME [ ":" _Type ] "=" _Expression @ ";" >          |
+|   [2][47][3]: _Variable -> [759][_DeclarationCandidates]<! !_Variable @ !>                                |
+|   [1][43][3]: _DeclarationCandidates -> [763][_Declaration]<! { _Attribute } !_DeclarationCandidates @ !> |
+|   [0][251][3]: _Declaration -> [783][_Module]< "module" ( NAME ";" { _UsingPath } { _Declaration @ } ) >  |
 | [PREDECESSORS 11-11]: [11]                                                                                |
 | [SUCCESORS 13-13]: [13]                                                                                   |
 +-----------------------------------------------------------------------------------------------------------+
@@ -270,24 +249,23 @@
 |
 +-----------------------------------------------------------------------------------------------------------+
 | [13]: <Ending>                                                                                            |
-| [287][_Exp4]<< !_Exp3 @ >>                                                                                |
+| [275][_Exp4]<! !_Exp3 @ !>                                                                                |
 | [AST-INSTRUCTIONS]:                                                                                       |
-|   - EndObject()                                                                                           |
-|   > ReopenObject()                                                                                        |
+|   + StackEnd()                                                                                            |
+|   > StackBegin()                                                                                          |
 | [RETURN STACK]:                                                                                           |
-|   [12][16][7]: _Exp4 -> [308][_Exp5]<< !_Exp4 @ >>                                                        |
-|   [11][15][7]: _Exp5 -> [314][_Exp6]<< !_Exp5 @ >>                                                        |
-|   [10][14][7]: _Exp6 -> [320][_Exp7]<< !_Exp6 @ >>                                                        |
-|   [9][13][7]: _Exp7 -> [326][_Exp8]<< !_Exp7 @ >>                                                         |
-|   [8][12][7]: _Exp8 -> [332][_Exp9]<< !_Exp8 @ >>                                                         |
-|   [7][11][7]: _Exp9 -> [340][_Exp10]<< !_Exp9 @ >>                                                        |
-|   [6][10][7]: _Exp10 -> [346][_Exp11]<< !_Exp10 @ >>                                                      |
-|   [5][9][7]: _Exp11 -> [349][_Expression]<< !_Exp11 @ >>                                                  |
-|   [4][195][7]: _Expression -> [610][_Variable]< "var" NAME [ ":" _Type ] "=" _Expression @ ";" >          |
-|   [3][52][3]: _Variable -> [791][_DeclarationCandidates]<< !_Variable @ >>                                |
-|   [2][47][3]: _DeclarationCandidates -> [795][_Declaration]<< { _Attribute } !_DeclarationCandidates @ >> |
-|   [1][253][3]: _Declaration -> [815][_ModuleBody]NAME ";" { _UsingPath } { _Declaration @ }               |
-|   [0][258][1]: _ModuleBody -> [820][_Module]< "module" _ModuleBody @ >                                    |
+|   [11][16][7]: _Exp4 -> [296][_Exp5]<! !_Exp4 @ !>                                                        |
+|   [10][15][7]: _Exp5 -> [302][_Exp6]<! !_Exp5 @ !>                                                        |
+|   [9][14][7]: _Exp6 -> [308][_Exp7]<! !_Exp6 @ !>                                                         |
+|   [8][13][7]: _Exp7 -> [314][_Exp8]<! !_Exp7 @ !>                                                         |
+|   [7][12][7]: _Exp8 -> [320][_Exp9]<! !_Exp8 @ !>                                                         |
+|   [6][11][7]: _Exp9 -> [322][_Exp10] BEGIN [pm-lr]                                                        |
+|   [5][10][7]: _Exp10 -> [330][_Exp11] BEGIN [pm-lr]                                                       |
+|   [4][9][7]: _Exp11 -> [337][_Expression]<! !_Exp11 @ !>                                                  |
+|   [3][189][7]: _Expression -> [580][_Variable]< "var" NAME [ ":" _Type ] "=" _Expression @ ";" >          |
+|   [2][47][3]: _Variable -> [759][_DeclarationCandidates]<! !_Variable @ !>                                |
+|   [1][43][3]: _DeclarationCandidates -> [763][_Declaration]<! { _Attribute } !_DeclarationCandidates @ !> |
+|   [0][251][3]: _Declaration -> [783][_Module]< "module" ( NAME ";" { _UsingPath } { _Declaration @ } ) >  |
 | [PREDECESSORS 12-12]: [12]                                                                                |
 | [SUCCESORS 14-14]: [14]                                                                                   |
 +-----------------------------------------------------------------------------------------------------------+
@@ -296,23 +274,22 @@
 |
 +-----------------------------------------------------------------------------------------------------------+
 | [14]: <Ending>                                                                                            |
-| [308][_Exp5]<< !_Exp4 @ >>                                                                                |
+| [296][_Exp5]<! !_Exp4 @ !>                                                                                |
 | [AST-INSTRUCTIONS]:                                                                                       |
-|   - EndObject()                                                                                           |
-|   > ReopenObject()                                                                                        |
+|   + StackEnd()                                                                                            |
+|   > StackBegin()                                                                                          |
 | [RETURN STACK]:                                                                                           |
-|   [11][15][7]: _Exp5 -> [314][_Exp6]<< !_Exp5 @ >>                                                        |
-|   [10][14][7]: _Exp6 -> [320][_Exp7]<< !_Exp6 @ >>                                                        |
-|   [9][13][7]: _Exp7 -> [326][_Exp8]<< !_Exp7 @ >>                                                         |
-|   [8][12][7]: _Exp8 -> [332][_Exp9]<< !_Exp8 @ >>                                                         |
-|   [7][11][7]: _Exp9 -> [340][_Exp10]<< !_Exp9 @ >>                                                        |
-|   [6][10][7]: _Exp10 -> [346][_Exp11]<< !_Exp10 @ >>                                                      |
-|   [5][9][7]: _Exp11 -> [349][_Expression]<< !_Exp11 @ >>                                                  |
-|   [4][195][7]: _Expression -> [610][_Variable]< "var" NAME [ ":" _Type ] "=" _Expression @ ";" >          |
-|   [3][52][3]: _Variable -> [791][_DeclarationCandidates]<< !_Variable @ >>                                |
-|   [2][47][3]: _DeclarationCandidates -> [795][_Declaration]<< { _Attribute } !_DeclarationCandidates @ >> |
-|   [1][253][3]: _Declaration -> [815][_ModuleBody]NAME ";" { _UsingPath } { _Declaration @ }               |
-|   [0][258][1]: _ModuleBody -> [820][_Module]< "module" _ModuleBody @ >                                    |
+|   [10][15][7]: _Exp5 -> [302][_Exp6]<! !_Exp5 @ !>                                                        |
+|   [9][14][7]: _Exp6 -> [308][_Exp7]<! !_Exp6 @ !>                                                         |
+|   [8][13][7]: _Exp7 -> [314][_Exp8]<! !_Exp7 @ !>                                                         |
+|   [7][12][7]: _Exp8 -> [320][_Exp9]<! !_Exp8 @ !>                                                         |
+|   [6][11][7]: _Exp9 -> [322][_Exp10] BEGIN [pm-lr]                                                        |
+|   [5][10][7]: _Exp10 -> [330][_Exp11] BEGIN [pm-lr]                                                       |
+|   [4][9][7]: _Exp11 -> [337][_Expression]<! !_Exp11 @ !>                                                  |
+|   [3][189][7]: _Expression -> [580][_Variable]< "var" NAME [ ":" _Type ] "=" _Expression @ ";" >          |
+|   [2][47][3]: _Variable -> [759][_DeclarationCandidates]<! !_Variable @ !>                                |
+|   [1][43][3]: _DeclarationCandidates -> [763][_Declaration]<! { _Attribute } !_DeclarationCandidates @ !> |
+|   [0][251][3]: _Declaration -> [783][_Module]< "module" ( NAME ";" { _UsingPath } { _Declaration @ } ) >  |
 | [PREDECESSORS 13-13]: [13]                                                                                |
 | [SUCCESORS 15-15]: [15]                                                                                   |
 +-----------------------------------------------------------------------------------------------------------+
@@ -321,22 +298,21 @@
 |
 +-----------------------------------------------------------------------------------------------------------+
 | [15]: <Ending>                                                                                            |
-| [314][_Exp6]<< !_Exp5 @ >>                                                                                |
+| [302][_Exp6]<! !_Exp5 @ !>                                                                                |
 | [AST-INSTRUCTIONS]:                                                                                       |
-|   - EndObject()                                                                                           |
-|   > ReopenObject()                                                                                        |
+|   + StackEnd()                                                                                            |
+|   > StackBegin()                                                                                          |
 | [RETURN STACK]:                                                                                           |
-|   [10][14][7]: _Exp6 -> [320][_Exp7]<< !_Exp6 @ >>                                                        |
-|   [9][13][7]: _Exp7 -> [326][_Exp8]<< !_Exp7 @ >>                                                         |
-|   [8][12][7]: _Exp8 -> [332][_Exp9]<< !_Exp8 @ >>                                                         |
-|   [7][11][7]: _Exp9 -> [340][_Exp10]<< !_Exp9 @ >>                                                        |
-|   [6][10][7]: _Exp10 -> [346][_Exp11]<< !_Exp10 @ >>                                                      |
-|   [5][9][7]: _Exp11 -> [349][_Expression]<< !_Exp11 @ >>                                                  |
-|   [4][195][7]: _Expression -> [610][_Variable]< "var" NAME [ ":" _Type ] "=" _Expression @ ";" >          |
-|   [3][52][3]: _Variable -> [791][_DeclarationCandidates]<< !_Variable @ >>                                |
-|   [2][47][3]: _DeclarationCandidates -> [795][_Declaration]<< { _Attribute } !_DeclarationCandidates @ >> |
-|   [1][253][3]: _Declaration -> [815][_ModuleBody]NAME ";" { _UsingPath } { _Declaration @ }               |
-|   [0][258][1]: _ModuleBody -> [820][_Module]< "module" _ModuleBody @ >                                    |
+|   [9][14][7]: _Exp6 -> [308][_Exp7]<! !_Exp6 @ !>                                                         |
+|   [8][13][7]: _Exp7 -> [314][_Exp8]<! !_Exp7 @ !>                                                         |
+|   [7][12][7]: _Exp8 -> [320][_Exp9]<! !_Exp8 @ !>                                                         |
+|   [6][11][7]: _Exp9 -> [322][_Exp10] BEGIN [pm-lr]                                                        |
+|   [5][10][7]: _Exp10 -> [330][_Exp11] BEGIN [pm-lr]                                                       |
+|   [4][9][7]: _Exp11 -> [337][_Expression]<! !_Exp11 @ !>                                                  |
+|   [3][189][7]: _Expression -> [580][_Variable]< "var" NAME [ ":" _Type ] "=" _Expression @ ";" >          |
+|   [2][47][3]: _Variable -> [759][_DeclarationCandidates]<! !_Variable @ !>                                |
+|   [1][43][3]: _DeclarationCandidates -> [763][_Declaration]<! { _Attribute } !_DeclarationCandidates @ !> |
+|   [0][251][3]: _Declaration -> [783][_Module]< "module" ( NAME ";" { _UsingPath } { _Declaration @ } ) >  |
 | [PREDECESSORS 14-14]: [14]                                                                                |
 | [SUCCESORS 16-16]: [16]                                                                                   |
 +-----------------------------------------------------------------------------------------------------------+
@@ -345,21 +321,20 @@
 |
 +-----------------------------------------------------------------------------------------------------------+
 | [16]: <Ending>                                                                                            |
-| [320][_Exp7]<< !_Exp6 @ >>                                                                                |
+| [308][_Exp7]<! !_Exp6 @ !>                                                                                |
 | [AST-INSTRUCTIONS]:                                                                                       |
-|   - EndObject()                                                                                           |
-|   > ReopenObject()                                                                                        |
+|   + StackEnd()                                                                                            |
+|   > StackBegin()                                                                                          |
 | [RETURN STACK]:                                                                                           |
-|   [9][13][7]: _Exp7 -> [326][_Exp8]<< !_Exp7 @ >>                                                         |
-|   [8][12][7]: _Exp8 -> [332][_Exp9]<< !_Exp8 @ >>                                                         |
-|   [7][11][7]: _Exp9 -> [340][_Exp10]<< !_Exp9 @ >>                                                        |
-|   [6][10][7]: _Exp10 -> [346][_Exp11]<< !_Exp10 @ >>                                                      |
-|   [5][9][7]: _Exp11 -> [349][_Expression]<< !_Exp11 @ >>                                                  |
-|   [4][195][7]: _Expression -> [610][_Variable]< "var" NAME [ ":" _Type ] "=" _Expression @ ";" >          |
-|   [3][52][3]: _Variable -> [791][_DeclarationCandidates]<< !_Variable @ >>                                |
-|   [2][47][3]: _DeclarationCandidates -> [795][_Declaration]<< { _Attribute } !_DeclarationCandidates @ >> |
-|   [1][253][3]: _Declaration -> [815][_ModuleBody]NAME ";" { _UsingPath } { _Declaration @ }               |
-|   [0][258][1]: _ModuleBody -> [820][_Module]< "module" _ModuleBody @ >                                    |
+|   [8][13][7]: _Exp7 -> [314][_Exp8]<! !_Exp7 @ !>                                                         |
+|   [7][12][7]: _Exp8 -> [320][_Exp9]<! !_Exp8 @ !>                                                         |
+|   [6][11][7]: _Exp9 -> [322][_Exp10] BEGIN [pm-lr]                                                        |
+|   [5][10][7]: _Exp10 -> [330][_Exp11] BEGIN [pm-lr]                                                       |
+|   [4][9][7]: _Exp11 -> [337][_Expression]<! !_Exp11 @ !>                                                  |
+|   [3][189][7]: _Expression -> [580][_Variable]< "var" NAME [ ":" _Type ] "=" _Expression @ ";" >          |
+|   [2][47][3]: _Variable -> [759][_DeclarationCandidates]<! !_Variable @ !>                                |
+|   [1][43][3]: _DeclarationCandidates -> [763][_Declaration]<! { _Attribute } !_DeclarationCandidates @ !> |
+|   [0][251][3]: _Declaration -> [783][_Module]< "module" ( NAME ";" { _UsingPath } { _Declaration @ } ) >  |
 | [PREDECESSORS 15-15]: [15]                                                                                |
 | [SUCCESORS 17-17]: [17]                                                                                   |
 +-----------------------------------------------------------------------------------------------------------+
@@ -368,20 +343,19 @@
 |
 +-----------------------------------------------------------------------------------------------------------+
 | [17]: <Ending>                                                                                            |
-| [326][_Exp8]<< !_Exp7 @ >>                                                                                |
+| [314][_Exp8]<! !_Exp7 @ !>                                                                                |
 | [AST-INSTRUCTIONS]:                                                                                       |
-|   - EndObject()                                                                                           |
-|   > ReopenObject()                                                                                        |
+|   + StackEnd()                                                                                            |
+|   > StackBegin()                                                                                          |
 | [RETURN STACK]:                                                                                           |
-|   [8][12][7]: _Exp8 -> [332][_Exp9]<< !_Exp8 @ >>                                                         |
-|   [7][11][7]: _Exp9 -> [340][_Exp10]<< !_Exp9 @ >>                                                        |
-|   [6][10][7]: _Exp10 -> [346][_Exp11]<< !_Exp10 @ >>                                                      |
-|   [5][9][7]: _Exp11 -> [349][_Expression]<< !_Exp11 @ >>                                                  |
-|   [4][195][7]: _Expression -> [610][_Variable]< "var" NAME [ ":" _Type ] "=" _Expression @ ";" >          |
-|   [3][52][3]: _Variable -> [791][_DeclarationCandidates]<< !_Variable @ >>                                |
-|   [2][47][3]: _DeclarationCandidates -> [795][_Declaration]<< { _Attribute } !_DeclarationCandidates @ >> |
-|   [1][253][3]: _Declaration -> [815][_ModuleBody]NAME ";" { _UsingPath } { _Declaration @ }               |
-|   [0][258][1]: _ModuleBody -> [820][_Module]< "module" _ModuleBody @ >                                    |
+|   [7][12][7]: _Exp8 -> [320][_Exp9]<! !_Exp8 @ !>                                                         |
+|   [6][11][7]: _Exp9 -> [322][_Exp10] BEGIN [pm-lr]                                                        |
+|   [5][10][7]: _Exp10 -> [330][_Exp11] BEGIN [pm-lr]                                                       |
+|   [4][9][7]: _Exp11 -> [337][_Expression]<! !_Exp11 @ !>                                                  |
+|   [3][189][7]: _Expression -> [580][_Variable]< "var" NAME [ ":" _Type ] "=" _Expression @ ";" >          |
+|   [2][47][3]: _Variable -> [759][_DeclarationCandidates]<! !_Variable @ !>                                |
+|   [1][43][3]: _DeclarationCandidates -> [763][_Declaration]<! { _Attribute } !_DeclarationCandidates @ !> |
+|   [0][251][3]: _Declaration -> [783][_Module]< "module" ( NAME ";" { _UsingPath } { _Declaration @ } ) >  |
 | [PREDECESSORS 16-16]: [16]                                                                                |
 | [SUCCESORS 18-18]: [18]                                                                                   |
 +-----------------------------------------------------------------------------------------------------------+
@@ -390,19 +364,18 @@
 |
 +-----------------------------------------------------------------------------------------------------------+
 | [18]: <Ending>                                                                                            |
-| [332][_Exp9]<< !_Exp8 @ >>                                                                                |
+| [320][_Exp9]<! !_Exp8 @ !>                                                                                |
 | [AST-INSTRUCTIONS]:                                                                                       |
-|   - EndObject()                                                                                           |
-|   > ReopenObject()                                                                                        |
+|   + StackEnd()                                                                                            |
+|   > StackBegin()                                                                                          |
 | [RETURN STACK]:                                                                                           |
-|   [7][11][7]: _Exp9 -> [340][_Exp10]<< !_Exp9 @ >>                                                        |
-|   [6][10][7]: _Exp10 -> [346][_Exp11]<< !_Exp10 @ >>                                                      |
-|   [5][9][7]: _Exp11 -> [349][_Expression]<< !_Exp11 @ >>                                                  |
-|   [4][195][7]: _Expression -> [610][_Variable]< "var" NAME [ ":" _Type ] "=" _Expression @ ";" >          |
-|   [3][52][3]: _Variable -> [791][_DeclarationCandidates]<< !_Variable @ >>                                |
-|   [2][47][3]: _DeclarationCandidates -> [795][_Declaration]<< { _Attribute } !_DeclarationCandidates @ >> |
-|   [1][253][3]: _Declaration -> [815][_ModuleBody]NAME ";" { _UsingPath } { _Declaration @ }               |
-|   [0][258][1]: _ModuleBody -> [820][_Module]< "module" _ModuleBody @ >                                    |
+|   [6][11][7]: _Exp9 -> [322][_Exp10] BEGIN [pm-lr]                                                        |
+|   [5][10][7]: _Exp10 -> [330][_Exp11] BEGIN [pm-lr]                                                       |
+|   [4][9][7]: _Exp11 -> [337][_Expression]<! !_Exp11 @ !>                                                  |
+|   [3][189][7]: _Expression -> [580][_Variable]< "var" NAME [ ":" _Type ] "=" _Expression @ ";" >          |
+|   [2][47][3]: _Variable -> [759][_DeclarationCandidates]<! !_Variable @ !>                                |
+|   [1][43][3]: _DeclarationCandidates -> [763][_Declaration]<! { _Attribute } !_DeclarationCandidates @ !> |
+|   [0][251][3]: _Declaration -> [783][_Module]< "module" ( NAME ";" { _UsingPath } { _Declaration @ } ) >  |
 | [PREDECESSORS 17-17]: [17]                                                                                |
 | [SUCCESORS 19-19]: [19]                                                                                   |
 +-----------------------------------------------------------------------------------------------------------+
@@ -411,17 +384,16 @@
 |
 +-----------------------------------------------------------------------------------------------------------+
 | [19]: <Ending>                                                                                            |
-| [340][_Exp10]<< !_Exp9 @ >>                                                                               |
+| [322][_Exp10] BEGIN [pm-lr]                                                                               |
 | [AST-INSTRUCTIONS]:                                                                                       |
-|   - EndObject()                                                                                           |
+|   + StackEnd()                                                                                            |
 | [RETURN STACK]:                                                                                           |
-|   [6][10][7]: _Exp10 -> [346][_Exp11]<< !_Exp10 @ >>                                                      |
-|   [5][9][7]: _Exp11 -> [349][_Expression]<< !_Exp11 @ >>                                                  |
-|   [4][195][7]: _Expression -> [610][_Variable]< "var" NAME [ ":" _Type ] "=" _Expression @ ";" >          |
-|   [3][52][3]: _Variable -> [791][_DeclarationCandidates]<< !_Variable @ >>                                |
-|   [2][47][3]: _DeclarationCandidates -> [795][_Declaration]<< { _Attribute } !_DeclarationCandidates @ >> |
-|   [1][253][3]: _Declaration -> [815][_ModuleBody]NAME ";" { _UsingPath } { _Declaration @ }               |
-|   [0][258][1]: _ModuleBody -> [820][_Module]< "module" _ModuleBody @ >                                    |
+|   [5][10][7]: _Exp10 -> [330][_Exp11] BEGIN [pm-lr]                                                       |
+|   [4][9][7]: _Exp11 -> [337][_Expression]<! !_Exp11 @ !>                                                  |
+|   [3][189][7]: _Expression -> [580][_Variable]< "var" NAME [ ":" _Type ] "=" _Expression @ ";" >          |
+|   [2][47][3]: _Variable -> [759][_DeclarationCandidates]<! !_Variable @ !>                                |
+|   [1][43][3]: _DeclarationCandidates -> [763][_Declaration]<! { _Attribute } !_DeclarationCandidates @ !> |
+|   [0][251][3]: _Declaration -> [783][_Module]< "module" ( NAME ";" { _UsingPath } { _Declaration @ } ) >  |
 | [PREDECESSORS 18-18]: [18]                                                                                |
 | [SUCCESORS 20-20]: [20]                                                                                   |
 +-----------------------------------------------------------------------------------------------------------+
@@ -430,20 +402,16 @@
 |
 +-----------------------------------------------------------------------------------------------------------+
 | [20]: <Ending>                                                                                            |
-| [346][_Exp11]<< !_Exp10 @ >>                                                                              |
+| [330][_Exp11] BEGIN [pm-lr]                                                                               |
 | [AST-INSTRUCTIONS]:                                                                                       |
-|   - LriStore()                                                                                            |
-|   - DelayFieldAssignment()                                                                                |
-|   - LriFetch()                                                                                            |
-|   - ReopenObject()                                                                                        |
-|   - EndObject()                                                                                           |
+|   + StackBegin()                                                                                          |
+|   + StackEnd()                                                                                            |
 | [RETURN STACK]:                                                                                           |
-|   [5][9][7]: _Exp11 -> [349][_Expression]<< !_Exp11 @ >>                                                  |
-|   [4][195][7]: _Expression -> [610][_Variable]< "var" NAME [ ":" _Type ] "=" _Expression @ ";" >          |
-|   [3][52][3]: _Variable -> [791][_DeclarationCandidates]<< !_Variable @ >>                                |
-|   [2][47][3]: _DeclarationCandidates -> [795][_Declaration]<< { _Attribute } !_DeclarationCandidates @ >> |
-|   [1][253][3]: _Declaration -> [815][_ModuleBody]NAME ";" { _UsingPath } { _Declaration @ }               |
-|   [0][258][1]: _ModuleBody -> [820][_Module]< "module" _ModuleBody @ >                                    |
+|   [4][9][7]: _Exp11 -> [337][_Expression]<! !_Exp11 @ !>                                                  |
+|   [3][189][7]: _Expression -> [580][_Variable]< "var" NAME [ ":" _Type ] "=" _Expression @ ";" >          |
+|   [2][47][3]: _Variable -> [759][_DeclarationCandidates]<! !_Variable @ !>                                |
+|   [1][43][3]: _DeclarationCandidates -> [763][_Declaration]<! { _Attribute } !_DeclarationCandidates @ !> |
+|   [0][251][3]: _Declaration -> [783][_Module]< "module" ( NAME ";" { _UsingPath } { _Declaration @ } ) >  |
 | [PREDECESSORS 19-19]: [19]                                                                                |
 | [SUCCESORS 21-21]: [21]                                                                                   |
 +-----------------------------------------------------------------------------------------------------------+
@@ -452,19 +420,16 @@
 |
 +-----------------------------------------------------------------------------------------------------------+
 | [21]: <Ending>                                                                                            |
-| [349][_Expression]<< !_Exp11 @ >>                                                                         |
+| [337][_Expression]<! !_Exp11 @ !>                                                                         |
 | [AST-INSTRUCTIONS]:                                                                                       |
-|   - LriStore()                                                                                            |
-|   - DelayFieldAssignment()                                                                                |
-|   - LriFetch()                                                                                            |
-|   - ReopenObject()                                                                                        |
-|   - EndObject()                                                                                           |
+|   + StackBegin()                                                                                          |
+|   + StackEnd()                                                                                            |
+|   > StackBegin()                                                                                          |
 | [RETURN STACK]:                                                                                           |
-|   [4][195][7]: _Expression -> [610][_Variable]< "var" NAME [ ":" _Type ] "=" _Expression @ ";" >          |
-|   [3][52][3]: _Variable -> [791][_DeclarationCandidates]<< !_Variable @ >>                                |
-|   [2][47][3]: _DeclarationCandidates -> [795][_Declaration]<< { _Attribute } !_DeclarationCandidates @ >> |
-|   [1][253][3]: _Declaration -> [815][_ModuleBody]NAME ";" { _UsingPath } { _Declaration @ }               |
-|   [0][258][1]: _ModuleBody -> [820][_Module]< "module" _ModuleBody @ >                                    |
+|   [3][189][7]: _Expression -> [580][_Variable]< "var" NAME [ ":" _Type ] "=" _Expression @ ";" >          |
+|   [2][47][3]: _Variable -> [759][_DeclarationCandidates]<! !_Variable @ !>                                |
+|   [1][43][3]: _DeclarationCandidates -> [763][_Declaration]<! { _Attribute } !_DeclarationCandidates @ !> |
+|   [0][251][3]: _Declaration -> [783][_Module]< "module" ( NAME ";" { _UsingPath } { _Declaration @ } ) >  |
 | [PREDECESSORS 20-20]: [20]                                                                                |
 | [SUCCESORS 22-22]: [22]                                                                                   |
 +-----------------------------------------------------------------------------------------------------------+
@@ -473,16 +438,14 @@
 |
 +-----------------------------------------------------------------------------------------------------------+
 | [22]: <Ending>                                                                                            |
-| [610][_Variable]< "var" NAME [ ":" _Type ] "=" _Expression @ ";" >                                        |
+| [580][_Variable]< "var" NAME [ ":" _Type ] "=" _Expression @ ";" >                                        |
 | [AST-INSTRUCTIONS]:                                                                                       |
-|   - ReopenObject()                                                                                        |
-|   - EndObject()                                                                                           |
-|   > Field(VariableDeclaration::expression)                                                                |
+|   + StackEnd()                                                                                            |
+|   > StackSlot(5)                                                                                          |
 | [RETURN STACK]:                                                                                           |
-|   [3][52][3]: _Variable -> [791][_DeclarationCandidates]<< !_Variable @ >>                                |
-|   [2][47][3]: _DeclarationCandidates -> [795][_Declaration]<< { _Attribute } !_DeclarationCandidates @ >> |
-|   [1][253][3]: _Declaration -> [815][_ModuleBody]NAME ";" { _UsingPath } { _Declaration @ }               |
-|   [0][258][1]: _ModuleBody -> [820][_Module]< "module" _ModuleBody @ >                                    |
+|   [2][47][3]: _Variable -> [759][_DeclarationCandidates]<! !_Variable @ !>                                |
+|   [1][43][3]: _DeclarationCandidates -> [763][_Declaration]<! { _Attribute } !_DeclarationCandidates @ !> |
+|   [0][251][3]: _Declaration -> [783][_Module]< "module" ( NAME ";" { _UsingPath } { _Declaration @ } ) >  |
 | [PREDECESSORS 21-21]: [21]                                                                                |
 | [SUCCESORS 23-23]: [23]                                                                                   |
 +-----------------------------------------------------------------------------------------------------------+
@@ -493,13 +456,13 @@
 [0]
 ++===========================================================================================================++
 || [23]: {SEMICOLON} ;                                                                                       ||
-|| [609][_Variable]< "var" NAME [ ":" _Type ] "=" _Expression ";" @ >                                        ||
+|| [579][_Variable]< "var" NAME [ ":" _Type ] "=" _Expression ";" @ >                                        ||
 || [AST-INSTRUCTIONS]:                                                                                       ||
+||   + Token(6)                                                                                              ||
 || [RETURN STACK]:                                                                                           ||
-||   [3][52][3]: _Variable -> [791][_DeclarationCandidates]<< !_Variable @ >>                                ||
-||   [2][47][3]: _DeclarationCandidates -> [795][_Declaration]<< { _Attribute } !_DeclarationCandidates @ >> ||
-||   [1][253][3]: _Declaration -> [815][_ModuleBody]NAME ";" { _UsingPath } { _Declaration @ }               ||
-||   [0][258][1]: _ModuleBody -> [820][_Module]< "module" _ModuleBody @ >                                    ||
+||   [2][47][3]: _Variable -> [759][_DeclarationCandidates]<! !_Variable @ !>                                ||
+||   [1][43][3]: _DeclarationCandidates -> [763][_Declaration]<! { _Attribute } !_DeclarationCandidates @ !> ||
+||   [0][251][3]: _Declaration -> [783][_Module]< "module" ( NAME ";" { _UsingPath } { _Declaration @ } ) >  ||
 || [PREDECESSORS 22-22]: [22]                                                                                ||
 || [SUCCESORS 24-24]: [24]                                                                                   ||
 ++===========================================================================================================++
@@ -508,65 +471,60 @@
 |
 +-----------------------------------------------------------------------------------------------------------+
 | [24]: <Ending>                                                                                            |
-| [791][_DeclarationCandidates]<< !_Variable @ >>                                                           |
+| [759][_DeclarationCandidates]<! !_Variable @ !>                                                           |
 | [AST-INSTRUCTIONS]:                                                                                       |
-|   - EndObject()                                                                                           |
+|   + CreateObject(VariableDeclaration)                                                                     |
+|   + Field(Declaration::name, 1)                                                                           |
+|   + Field(VariableDeclaration::type, 3)                                                                   |
+|   + Field(VariableDeclaration::expression, 5)                                                             |
+|   + StackEnd()                                                                                            |
+|   > StackBegin()                                                                                          |
 | [RETURN STACK]:                                                                                           |
-|   [2][47][3]: _DeclarationCandidates -> [795][_Declaration]<< { _Attribute } !_DeclarationCandidates @ >> |
-|   [1][253][3]: _Declaration -> [815][_ModuleBody]NAME ";" { _UsingPath } { _Declaration @ }               |
-|   [0][258][1]: _ModuleBody -> [820][_Module]< "module" _ModuleBody @ >                                    |
+|   [1][43][3]: _DeclarationCandidates -> [763][_Declaration]<! { _Attribute } !_DeclarationCandidates @ !> |
+|   [0][251][3]: _Declaration -> [783][_Module]< "module" ( NAME ";" { _UsingPath } { _Declaration @ } ) >  |
 | [PREDECESSORS 23-23]: [23]                                                                                |
 | [SUCCESORS 25-25]: [25]                                                                                   |
 +-----------------------------------------------------------------------------------------------------------+
 |
 +
 |
-+---------------------------------------------------------------------------------------------+
-| [25]: <Ending>                                                                              |
-| [795][_Declaration]<< { _Attribute } !_DeclarationCandidates @ >>                           |
-| [AST-INSTRUCTIONS]:                                                                         |
-|   - ReopenObject()                                                                          |
-|   - EndObject()                                                                             |
-|   > ReopenObject()                                                                          |
-| [RETURN STACK]:                                                                             |
-|   [1][253][3]: _Declaration -> [815][_ModuleBody]NAME ";" { _UsingPath } { _Declaration @ } |
-|   [0][258][1]: _ModuleBody -> [820][_Module]< "module" _ModuleBody @ >                      |
-| [PREDECESSORS 24-24]: [24]                                                                  |
-| [SUCCESORS 26-26]: [26]                                                                     |
-+---------------------------------------------------------------------------------------------+
++----------------------------------------------------------------------------------------------------------+
+| [25]: <Ending>                                                                                           |
+| [763][_Declaration]<! { _Attribute } !_DeclarationCandidates @ !>                                        |
+| [AST-INSTRUCTIONS]:                                                                                      |
+|   + StackEnd()                                                                                           |
+|   > StackBegin()                                                                                         |
+| [RETURN STACK]:                                                                                          |
+|   [0][251][3]: _Declaration -> [783][_Module]< "module" ( NAME ";" { _UsingPath } { _Declaration @ } ) > |
+| [PREDECESSORS 24-24]: [24]                                                                               |
+| [SUCCESORS 26-26]: [26]                                                                                  |
++----------------------------------------------------------------------------------------------------------+
 |
 +
 |
-+------------------------------------------------------------------------+
-| [26]: <Ending>                                                         |
-| [815][_ModuleBody]NAME ";" { _UsingPath } { _Declaration @ }           |
-| [AST-INSTRUCTIONS]:                                                    |
-|   - EndObject()                                                        |
-|   > Field(Module::declarations)                                        |
-| [RETURN STACK]:                                                        |
-|   [0][258][1]: _ModuleBody -> [820][_Module]< "module" _ModuleBody @ > |
-| [PREDECESSORS 25-25]: [25]                                             |
-| [SUCCESORS 27-27]: [27]                                                |
-+------------------------------------------------------------------------+
++---------------------------------------------------------------------------+
+| [26]: <Ending>                                                            |
+| [783][_Module]< "module" ( NAME ";" { _UsingPath } { _Declaration @ } ) > |
+| [AST-INSTRUCTIONS]:                                                       |
+|   + Field(Declaration::attributes, 0)                                     |
+|   + StackEnd()                                                            |
+|   > StackSlot(4)                                                          |
+| [PREDECESSORS 25-25]: [25]                                                |
+| [SUCCESORS 27-27]: [27]                                                   |
++---------------------------------------------------------------------------+
 |
 +
 |
-+------------------------------------------+
-| [27]: <Ending>                           |
-| [820][_Module]< "module" _ModuleBody @ > |
-| [AST-INSTRUCTIONS]:                      |
-| [PREDECESSORS 26-26]: [26]               |
-| [SUCCESORS 28-28]: [28]                  |
-+------------------------------------------+
-|
-+
-|
-+-------------------------------+
-| [28]: <Ending>                |
-| [818][_Module] END [ENDING]   |
-| [AST-INSTRUCTIONS]:           |
-|   - EnumItem(0)               |
-|   - Field(Module::moduleType) |
-|   - EndObject()               |
-| [PREDECESSORS 27-27]: [27]    |
-+-------------------------------+
++------------------------------------+
+| [27]: <Ending>                     |
+| [780][_Module] END [ENDING]        |
+| [AST-INSTRUCTIONS]:                |
+|   + EnumItem(0, 5)                 |
+|   + CreateObject(Module)           |
+|   + Field(Module::name, 1)         |
+|   + Field(Module::paths, 3)        |
+|   + Field(Module::declarations, 4) |
+|   + Field(Module::moduleType, 5)   |
+|   + StackEnd()                     |
+| [PREDECESSORS 26-26]: [26]         |
++------------------------------------+

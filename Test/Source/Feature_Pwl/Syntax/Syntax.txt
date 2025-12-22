@@ -1,0 +1,31 @@
+﻿Plus
+  ::= "+" as Plus
+  ;
+
+Lt
+  ::= "<" as Lt
+  ;
+
+Pwl1_P
+  ::= Lt:one as PwlFeature
+  ::= Plus:prefix !Pwl1_P
+  ;
+
+Pwl1
+  ::= !Pwl1_P
+  ::= Pwl1:prev Lt:one as PwlFeature
+  ;
+
+Pwl2_P
+  ::= Lt:two as PwlFeature
+  ::= Pwl2_P:prev Lt:two as PwlFeature
+  ;
+
+Pwl2
+  ::= {Plus:prefix} !Pwl2_P
+  ;
+
+@parser Module : Feature
+  ::= "prefix_with_leftrec" !Pwl1
+  ::= "prefix_with_leftrec" !Pwl2
+  ;

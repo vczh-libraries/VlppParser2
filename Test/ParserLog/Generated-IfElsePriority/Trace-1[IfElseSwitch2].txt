@@ -1,5 +1,5 @@
 ﻿================ EXECUTION STEPS ================
-[0]: 0@0 - 92@1
+[0]: 0@0 - 92@2
 
 ==================== TRACES =====================
 
@@ -18,11 +18,10 @@
 || [1]: {OPEN_BRACE} {                            ||
 || [6][Block]< "{" @ { Stat } "}" >               ||
 || [AST-INSTRUCTIONS]:                            ||
-||   - BeginObject(Module)                        ||
-||   - DelayFieldAssignment()                     ||
-||   - BeginObject(BlockStat)                     ||
+||   + StackBegin()                               ||
+||   + Token(0)                                   ||
 || [RETURN STACK]:                                ||
-||   [1][1][0]: Block -> [19][Stat]<< !Block @ >> ||
+||   [1][1][0]: Block -> [19][Stat]<! !Block @ !> ||
 ||   [0][7][0]: Stat -> [24][Module]< Stat @ >    ||
 || [PREDECESSORS 0-0]: [0]                        ||
 || [SUCCESORS 2-2]: [2]                           ||
@@ -36,12 +35,12 @@
 || [2]: {IF} if                                           ||
 || [16][If]< "if" @ "cond" "then" Stat +[ "else" Stat ] > ||
 || [AST-INSTRUCTIONS]:                                    ||
-||   - DelayFieldAssignment()                             ||
-||   - BeginObject(IfStat)                                ||
+||   + StackBegin()                                       ||
+||   + Token(0)                                           ||
 || [RETURN STACK]:                                        ||
-||   [3][2][1]: If -> [21][Stat]<< !If @ >>               ||
+||   [3][2][1]: If -> [21][Stat]<! !If @ !>               ||
 ||   [2][0][1]: Stat -> [7][Block]< "{" { Stat @ } "}" >  ||
-||   [1][1][0]: Block -> [19][Stat]<< !Block @ >>         ||
+||   [1][1][0]: Block -> [19][Stat]<! !Block @ !>         ||
 ||   [0][7][0]: Stat -> [24][Module]< Stat @ >            ||
 || [PREDECESSORS 1-1]: [1]                                ||
 || [SUCCESORS 3-3]: [3]                                   ||
@@ -55,10 +54,11 @@
 || [3]: {CONDITION} cond                                  ||
 || [15][If]< "if" "cond" @ "then" Stat +[ "else" Stat ] > ||
 || [AST-INSTRUCTIONS]:                                    ||
+||   + Token(1)                                           ||
 || [RETURN STACK]:                                        ||
-||   [3][2][1]: If -> [21][Stat]<< !If @ >>               ||
+||   [3][2][1]: If -> [21][Stat]<! !If @ !>               ||
 ||   [2][0][1]: Stat -> [7][Block]< "{" { Stat @ } "}" >  ||
-||   [1][1][0]: Block -> [19][Stat]<< !Block @ >>         ||
+||   [1][1][0]: Block -> [19][Stat]<! !Block @ !>         ||
 ||   [0][7][0]: Stat -> [24][Module]< Stat @ >            ||
 || [PREDECESSORS 2-2]: [2]                                ||
 || [SUCCESORS 4-4]: [4]                                   ||
@@ -72,10 +72,11 @@
 || [4]: {THEN} then                                       ||
 || [11][If]< "if" "cond" "then" @ Stat +[ "else" Stat ] > ||
 || [AST-INSTRUCTIONS]:                                    ||
+||   + Token(2)                                           ||
 || [RETURN STACK]:                                        ||
-||   [3][2][1]: If -> [21][Stat]<< !If @ >>               ||
+||   [3][2][1]: If -> [21][Stat]<! !If @ !>               ||
 ||   [2][0][1]: Stat -> [7][Block]< "{" { Stat @ } "}" >  ||
-||   [1][1][0]: Block -> [19][Stat]<< !Block @ >>         ||
+||   [1][1][0]: Block -> [19][Stat]<! !Block @ !>         ||
 ||   [0][7][0]: Stat -> [24][Module]< Stat @ >            ||
 || [PREDECESSORS 3-3]: [3]                                ||
 || [SUCCESORS 5-5]: [5]                                   ||
@@ -89,14 +90,14 @@
 || [5]: {IF} if                                                                ||
 || [16][If]< "if" @ "cond" "then" Stat +[ "else" Stat ] >                      ||
 || [AST-INSTRUCTIONS]:                                                         ||
-||   - DelayFieldAssignment()                                                  ||
-||   - BeginObject(IfStat)                                                     ||
+||   + StackBegin()                                                            ||
+||   + Token(0)                                                                ||
 || [RETURN STACK]:                                                             ||
-||   [5][2][4]: If -> [21][Stat]<< !If @ >>                                    ||
+||   [5][2][4]: If -> [21][Stat]<! !If @ !>                                    ||
 ||   [4][5][4]: Stat -> [14][If]< "if" "cond" "then" Stat @ +[ "else" Stat ] > ||
-||   [3][2][1]: If -> [21][Stat]<< !If @ >>                                    ||
+||   [3][2][1]: If -> [21][Stat]<! !If @ !>                                    ||
 ||   [2][0][1]: Stat -> [7][Block]< "{" { Stat @ } "}" >                       ||
-||   [1][1][0]: Block -> [19][Stat]<< !Block @ >>                              ||
+||   [1][1][0]: Block -> [19][Stat]<! !Block @ !>                              ||
 ||   [0][7][0]: Stat -> [24][Module]< Stat @ >                                 ||
 || [PREDECESSORS 4-4]: [4]                                                     ||
 || [SUCCESORS 6-6]: [6]                                                        ||
@@ -110,12 +111,13 @@
 || [6]: {CONDITION} cond                                                       ||
 || [15][If]< "if" "cond" @ "then" Stat +[ "else" Stat ] >                      ||
 || [AST-INSTRUCTIONS]:                                                         ||
+||   + Token(1)                                                                ||
 || [RETURN STACK]:                                                             ||
-||   [5][2][4]: If -> [21][Stat]<< !If @ >>                                    ||
+||   [5][2][4]: If -> [21][Stat]<! !If @ !>                                    ||
 ||   [4][5][4]: Stat -> [14][If]< "if" "cond" "then" Stat @ +[ "else" Stat ] > ||
-||   [3][2][1]: If -> [21][Stat]<< !If @ >>                                    ||
+||   [3][2][1]: If -> [21][Stat]<! !If @ !>                                    ||
 ||   [2][0][1]: Stat -> [7][Block]< "{" { Stat @ } "}" >                       ||
-||   [1][1][0]: Block -> [19][Stat]<< !Block @ >>                              ||
+||   [1][1][0]: Block -> [19][Stat]<! !Block @ !>                              ||
 ||   [0][7][0]: Stat -> [24][Module]< Stat @ >                                 ||
 || [PREDECESSORS 5-5]: [5]                                                     ||
 || [SUCCESORS 7-7]: [7]                                                        ||
@@ -129,12 +131,13 @@
 || [7]: {THEN} then                                                            ||
 || [11][If]< "if" "cond" "then" @ Stat +[ "else" Stat ] >                      ||
 || [AST-INSTRUCTIONS]:                                                         ||
+||   + Token(2)                                                                ||
 || [RETURN STACK]:                                                             ||
-||   [5][2][4]: If -> [21][Stat]<< !If @ >>                                    ||
+||   [5][2][4]: If -> [21][Stat]<! !If @ !>                                    ||
 ||   [4][5][4]: Stat -> [14][If]< "if" "cond" "then" Stat @ +[ "else" Stat ] > ||
-||   [3][2][1]: If -> [21][Stat]<< !If @ >>                                    ||
+||   [3][2][1]: If -> [21][Stat]<! !If @ !>                                    ||
 ||   [2][0][1]: Stat -> [7][Block]< "{" { Stat @ } "}" >                       ||
-||   [1][1][0]: Block -> [19][Stat]<< !Block @ >>                              ||
+||   [1][1][0]: Block -> [19][Stat]<! !Block @ !>                              ||
 ||   [0][7][0]: Stat -> [24][Module]< Stat @ >                                 ||
 || [PREDECESSORS 6-6]: [6]                                                     ||
 || [SUCCESORS 8-8]: [8]                                                        ||
@@ -148,16 +151,16 @@
 || [8]: {DO} do                                                                ||
 || [3][Do]< "do" @ ";" >                                                       ||
 || [AST-INSTRUCTIONS]:                                                         ||
-||   - DelayFieldAssignment()                                                  ||
-||   - BeginObject(DoStat)                                                     ||
+||   + StackBegin()                                                            ||
+||   + Token(0)                                                                ||
 || [RETURN STACK]:                                                             ||
-||   [7][3][7]: Do -> [20][Stat]<< !Do @ >>                                    ||
+||   [7][3][7]: Do -> [20][Stat]<! !Do @ !>                                    ||
 ||   [6][5][7]: Stat -> [14][If]< "if" "cond" "then" Stat @ +[ "else" Stat ] > ||
-||   [5][2][4]: If -> [21][Stat]<< !If @ >>                                    ||
+||   [5][2][4]: If -> [21][Stat]<! !If @ !>                                    ||
 ||   [4][5][4]: Stat -> [14][If]< "if" "cond" "then" Stat @ +[ "else" Stat ] > ||
-||   [3][2][1]: If -> [21][Stat]<< !If @ >>                                    ||
+||   [3][2][1]: If -> [21][Stat]<! !If @ !>                                    ||
 ||   [2][0][1]: Stat -> [7][Block]< "{" { Stat @ } "}" >                       ||
-||   [1][1][0]: Block -> [19][Stat]<< !Block @ >>                              ||
+||   [1][1][0]: Block -> [19][Stat]<! !Block @ !>                              ||
 ||   [0][7][0]: Stat -> [24][Module]< Stat @ >                                 ||
 || [PREDECESSORS 7-7]: [7]                                                     ||
 || [SUCCESORS 9-9]: [9]                                                        ||
@@ -171,14 +174,15 @@
 || [9]: {SEMICOLON} ;                                                          ||
 || [2][Do]< "do" ";" @ >                                                       ||
 || [AST-INSTRUCTIONS]:                                                         ||
+||   + Token(1)                                                                ||
 || [RETURN STACK]:                                                             ||
-||   [7][3][7]: Do -> [20][Stat]<< !Do @ >>                                    ||
+||   [7][3][7]: Do -> [20][Stat]<! !Do @ !>                                    ||
 ||   [6][5][7]: Stat -> [14][If]< "if" "cond" "then" Stat @ +[ "else" Stat ] > ||
-||   [5][2][4]: If -> [21][Stat]<< !If @ >>                                    ||
+||   [5][2][4]: If -> [21][Stat]<! !If @ !>                                    ||
 ||   [4][5][4]: Stat -> [14][If]< "if" "cond" "then" Stat @ +[ "else" Stat ] > ||
-||   [3][2][1]: If -> [21][Stat]<< !If @ >>                                    ||
+||   [3][2][1]: If -> [21][Stat]<! !If @ !>                                    ||
 ||   [2][0][1]: Stat -> [7][Block]< "{" { Stat @ } "}" >                       ||
-||   [1][1][0]: Block -> [19][Stat]<< !Block @ >>                              ||
+||   [1][1][0]: Block -> [19][Stat]<! !Block @ !>                              ||
 ||   [0][7][0]: Stat -> [24][Module]< Stat @ >                                 ||
 || [PREDECESSORS 8-8]: [8]                                                     ||
 || [SUCCESORS 10-10]: [10]                                                     ||
@@ -188,16 +192,18 @@
 |
 +-----------------------------------------------------------------------------+
 | [10]: <Ending>                                                              |
-| [20][Stat]<< !Do @ >>                                                       |
+| [20][Stat]<! !Do @ !>                                                       |
 | [AST-INSTRUCTIONS]:                                                         |
-|   - EndObject()                                                             |
+|   + CreateObject(DoStat)                                                    |
+|   + StackEnd()                                                              |
+|   > StackBegin()                                                            |
 | [RETURN STACK]:                                                             |
 |   [6][5][7]: Stat -> [14][If]< "if" "cond" "then" Stat @ +[ "else" Stat ] > |
-|   [5][2][4]: If -> [21][Stat]<< !If @ >>                                    |
+|   [5][2][4]: If -> [21][Stat]<! !If @ !>                                    |
 |   [4][5][4]: Stat -> [14][If]< "if" "cond" "then" Stat @ +[ "else" Stat ] > |
-|   [3][2][1]: If -> [21][Stat]<< !If @ >>                                    |
+|   [3][2][1]: If -> [21][Stat]<! !If @ !>                                    |
 |   [2][0][1]: Stat -> [7][Block]< "{" { Stat @ } "}" >                       |
-|   [1][1][0]: Block -> [19][Stat]<< !Block @ >>                              |
+|   [1][1][0]: Block -> [19][Stat]<! !Block @ !>                              |
 |   [0][7][0]: Stat -> [24][Module]< Stat @ >                                 |
 | [PREDECESSORS 9-9]: [9]                                                     |
 | [SUCCESORS 11-11]: [11]                                                     |
@@ -209,17 +215,16 @@
 | [11]: <Ending>                                                              |
 | [14][If]< "if" "cond" "then" Stat @ +[ "else" Stat ] >                      |
 | [HOLDING COMPETITION]:                                                      |
-|   [0][HIGH PRIORITY WIN][RULE: 2][CLAUSE: 0]                                |
+|   [0][HIGH PRIORITY WIN][RULE: 2][COMPID: 1]                                |
 | [AST-INSTRUCTIONS]:                                                         |
-|   - ReopenObject()                                                          |
-|   - EndObject()                                                             |
-|   > Field(IfStat::thenBranch)                                               |
+|   + StackEnd()                                                              |
+|   > StackSlot(3)                                                            |
 | [RETURN STACK]:                                                             |
-|   [5][2][4]: If -> [21][Stat]<< !If @ >>                                    |
+|   [5][2][4]: If -> [21][Stat]<! !If @ !>                                    |
 |   [4][5][4]: Stat -> [14][If]< "if" "cond" "then" Stat @ +[ "else" Stat ] > |
-|   [3][2][1]: If -> [21][Stat]<< !If @ >>                                    |
+|   [3][2][1]: If -> [21][Stat]<! !If @ !>                                    |
 |   [2][0][1]: Stat -> [7][Block]< "{" { Stat @ } "}" >                       |
-|   [1][1][0]: Block -> [19][Stat]<< !Block @ >>                              |
+|   [1][1][0]: Block -> [19][Stat]<! !Block @ !>                              |
 |   [0][7][0]: Stat -> [24][Module]< Stat @ >                                 |
 | [PREDECESSORS 10-10]: [10]                                                  |
 | [SUCCESORS 15-15]: [15]                                                     |
@@ -233,12 +238,13 @@
 || [15]: {ELSE} else                                                           ||
 || [12][If]< "if" "cond" "then" Stat +[ "else" @ Stat ] >                      ||
 || [AST-INSTRUCTIONS]:                                                         ||
+||   + Token(4)                                                                ||
 || [RETURN STACK]:                                                             ||
-||   [5][2][4]: If -> [21][Stat]<< !If @ >>                                    ||
+||   [5][2][4]: If -> [21][Stat]<! !If @ !>                                    ||
 ||   [4][5][4]: Stat -> [14][If]< "if" "cond" "then" Stat @ +[ "else" Stat ] > ||
-||   [3][2][1]: If -> [21][Stat]<< !If @ >>                                    ||
+||   [3][2][1]: If -> [21][Stat]<! !If @ !>                                    ||
 ||   [2][0][1]: Stat -> [7][Block]< "{" { Stat @ } "}" >                       ||
-||   [1][1][0]: Block -> [19][Stat]<< !Block @ >>                              ||
+||   [1][1][0]: Block -> [19][Stat]<! !Block @ !>                              ||
 ||   [0][7][0]: Stat -> [24][Module]< Stat @ >                                 ||
 || [FIRST ATTENDING COMPETITION]:  [2]                                         ||
 || [CARRIED COMPETITION]:                                                      ||
@@ -255,16 +261,16 @@
 || [17]: {DO} do                                                                ||
 || [3][Do]< "do" @ ";" >                                                        ||
 || [AST-INSTRUCTIONS]:                                                          ||
-||   - DelayFieldAssignment()                                                   ||
-||   - BeginObject(DoStat)                                                      ||
+||   + StackBegin()                                                             ||
+||   + Token(0)                                                                 ||
 || [RETURN STACK]:                                                              ||
-||   [9][3][15]: Do -> [20][Stat]<< !Do @ >>                                    ||
+||   [9][3][15]: Do -> [20][Stat]<! !Do @ !>                                    ||
 ||   [8][6][15]: Stat -> [13][If]< "if" "cond" "then" Stat +[ "else" Stat @ ] > ||
-||   [5][2][4]: If -> [21][Stat]<< !If @ >>                                     ||
+||   [5][2][4]: If -> [21][Stat]<! !If @ !>                                     ||
 ||   [4][5][4]: Stat -> [14][If]< "if" "cond" "then" Stat @ +[ "else" Stat ] >  ||
-||   [3][2][1]: If -> [21][Stat]<< !If @ >>                                     ||
+||   [3][2][1]: If -> [21][Stat]<! !If @ !>                                     ||
 ||   [2][0][1]: Stat -> [7][Block]< "{" { Stat @ } "}" >                        ||
-||   [1][1][0]: Block -> [19][Stat]<< !Block @ >>                               ||
+||   [1][1][0]: Block -> [19][Stat]<! !Block @ !>                               ||
 ||   [0][7][0]: Stat -> [24][Module]< Stat @ >                                  ||
 || [FIRST ATTENDING COMPETITION]:  [2]                                          ||
 || [CARRIED COMPETITION]:                                                       ||
@@ -281,14 +287,15 @@
 || [19]: {SEMICOLON} ;                                                          ||
 || [2][Do]< "do" ";" @ >                                                        ||
 || [AST-INSTRUCTIONS]:                                                          ||
+||   + Token(1)                                                                 ||
 || [RETURN STACK]:                                                              ||
-||   [9][3][15]: Do -> [20][Stat]<< !Do @ >>                                    ||
+||   [9][3][15]: Do -> [20][Stat]<! !Do @ !>                                    ||
 ||   [8][6][15]: Stat -> [13][If]< "if" "cond" "then" Stat +[ "else" Stat @ ] > ||
-||   [5][2][4]: If -> [21][Stat]<< !If @ >>                                     ||
+||   [5][2][4]: If -> [21][Stat]<! !If @ !>                                     ||
 ||   [4][5][4]: Stat -> [14][If]< "if" "cond" "then" Stat @ +[ "else" Stat ] >  ||
-||   [3][2][1]: If -> [21][Stat]<< !If @ >>                                     ||
+||   [3][2][1]: If -> [21][Stat]<! !If @ !>                                     ||
 ||   [2][0][1]: Stat -> [7][Block]< "{" { Stat @ } "}" >                        ||
-||   [1][1][0]: Block -> [19][Stat]<< !Block @ >>                               ||
+||   [1][1][0]: Block -> [19][Stat]<! !Block @ !>                               ||
 ||   [0][7][0]: Stat -> [24][Module]< Stat @ >                                  ||
 || [CARRIED COMPETITION]:                                                       ||
 ||   [2]: competition[0][RS: 5] high                                            ||
@@ -300,16 +307,18 @@
 |
 +------------------------------------------------------------------------------+
 | [20]: <Ending>                                                               |
-| [20][Stat]<< !Do @ >>                                                        |
+| [20][Stat]<! !Do @ !>                                                        |
 | [AST-INSTRUCTIONS]:                                                          |
-|   - EndObject()                                                              |
+|   + CreateObject(DoStat)                                                     |
+|   + StackEnd()                                                               |
+|   > StackBegin()                                                             |
 | [RETURN STACK]:                                                              |
 |   [8][6][15]: Stat -> [13][If]< "if" "cond" "then" Stat +[ "else" Stat @ ] > |
-|   [5][2][4]: If -> [21][Stat]<< !If @ >>                                     |
+|   [5][2][4]: If -> [21][Stat]<! !If @ !>                                     |
 |   [4][5][4]: Stat -> [14][If]< "if" "cond" "then" Stat @ +[ "else" Stat ] >  |
-|   [3][2][1]: If -> [21][Stat]<< !If @ >>                                     |
+|   [3][2][1]: If -> [21][Stat]<! !If @ !>                                     |
 |   [2][0][1]: Stat -> [7][Block]< "{" { Stat @ } "}" >                        |
-|   [1][1][0]: Block -> [19][Stat]<< !Block @ >>                               |
+|   [1][1][0]: Block -> [19][Stat]<! !Block @ !>                               |
 |   [0][7][0]: Stat -> [24][Module]< Stat @ >                                  |
 | [CARRIED COMPETITION]:                                                       |
 |   [2]: competition[0][RS: 5] high                                            |
@@ -323,15 +332,14 @@
 | [21]: <Ending>                                                              |
 | [13][If]< "if" "cond" "then" Stat +[ "else" Stat @ ] >                      |
 | [AST-INSTRUCTIONS]:                                                         |
-|   - ReopenObject()                                                          |
-|   - EndObject()                                                             |
-|   > Field(IfStat::elseBranch)                                               |
+|   + StackEnd()                                                              |
+|   > StackSlot(5)                                                            |
 | [RETURN STACK]:                                                             |
-|   [5][2][4]: If -> [21][Stat]<< !If @ >>                                    |
+|   [5][2][4]: If -> [21][Stat]<! !If @ !>                                    |
 |   [4][5][4]: Stat -> [14][If]< "if" "cond" "then" Stat @ +[ "else" Stat ] > |
-|   [3][2][1]: If -> [21][Stat]<< !If @ >>                                    |
+|   [3][2][1]: If -> [21][Stat]<! !If @ !>                                    |
 |   [2][0][1]: Stat -> [7][Block]< "{" { Stat @ } "}" >                       |
-|   [1][1][0]: Block -> [19][Stat]<< !Block @ >>                              |
+|   [1][1][0]: Block -> [19][Stat]<! !Block @ !>                              |
 |   [0][7][0]: Stat -> [24][Module]< Stat @ >                                 |
 | [CARRIED COMPETITION]:                                                      |
 |   [2]: competition[0][RS: 5] high                                           |
@@ -343,14 +351,18 @@
 |
 +-----------------------------------------------------------------------------+
 | [22]: <Ending>                                                              |
-| [21][Stat]<< !If @ >>                                                       |
+| [21][Stat]<! !If @ !>                                                       |
 | [AST-INSTRUCTIONS]:                                                         |
-|   - EndObject()                                                             |
+|   + CreateObject(IfStat)                                                    |
+|   + Field(IfStat::thenBranch, 3)                                            |
+|   + Field(IfStat::elseBranch, 5)                                            |
+|   + StackEnd()                                                              |
+|   > StackBegin()                                                            |
 | [RETURN STACK]:                                                             |
 |   [4][5][4]: Stat -> [14][If]< "if" "cond" "then" Stat @ +[ "else" Stat ] > |
-|   [3][2][1]: If -> [21][Stat]<< !If @ >>                                    |
+|   [3][2][1]: If -> [21][Stat]<! !If @ !>                                    |
 |   [2][0][1]: Stat -> [7][Block]< "{" { Stat @ } "}" >                       |
-|   [1][1][0]: Block -> [19][Stat]<< !Block @ >>                              |
+|   [1][1][0]: Block -> [19][Stat]<! !Block @ !>                              |
 |   [0][7][0]: Stat -> [24][Module]< Stat @ >                                 |
 | [CARRIED COMPETITION]:                                                      |
 |   [2]: competition[0][RS: 5] high                                           |
@@ -364,15 +376,14 @@
 | [23]: <Ending>                                         |
 | [14][If]< "if" "cond" "then" Stat @ +[ "else" Stat ] > |
 | [HOLDING COMPETITION]:                                 |
-|   [2][LOW PRIORITY WIN][RULE: 2][CLAUSE: 0]            |
+|   [2][LOW PRIORITY WIN][RULE: 2][COMPID: 1]            |
 | [AST-INSTRUCTIONS]:                                    |
-|   - ReopenObject()                                     |
-|   - EndObject()                                        |
-|   > Field(IfStat::thenBranch)                          |
+|   + StackEnd()                                         |
+|   > StackSlot(3)                                       |
 | [RETURN STACK]:                                        |
-|   [3][2][1]: If -> [21][Stat]<< !If @ >>               |
+|   [3][2][1]: If -> [21][Stat]<! !If @ !>               |
 |   [2][0][1]: Stat -> [7][Block]< "{" { Stat @ } "}" >  |
-|   [1][1][0]: Block -> [19][Stat]<< !Block @ >>         |
+|   [1][1][0]: Block -> [19][Stat]<! !Block @ !>         |
 |   [0][7][0]: Stat -> [24][Module]< Stat @ >            |
 | [CARRIED COMPETITION]:                                 |
 |   [2]: competition[0][RS: 5] high                      |
@@ -384,12 +395,16 @@
 |
 +-------------------------------------------------------+
 | [24]: <Ending>                                        |
-| [21][Stat]<< !If @ >>                                 |
+| [21][Stat]<! !If @ !>                                 |
 | [AST-INSTRUCTIONS]:                                   |
-|   - EndObject()                                       |
+|   + CreateObject(IfStat)                              |
+|   + Field(IfStat::thenBranch, 3)                      |
+|   + Field(IfStat::elseBranch, 5)                      |
+|   + StackEnd()                                        |
+|   > StackBegin()                                      |
 | [RETURN STACK]:                                       |
 |   [2][0][1]: Stat -> [7][Block]< "{" { Stat @ } "}" > |
-|   [1][1][0]: Block -> [19][Stat]<< !Block @ >>        |
+|   [1][1][0]: Block -> [19][Stat]<! !Block @ !>        |
 |   [0][7][0]: Stat -> [24][Module]< Stat @ >           |
 | [FIRST ATTENDING COMPETITION]:  [4]                   |
 | [CARRIED COMPETITION]:                                |
@@ -405,11 +420,10 @@
 | [25]: <Ending>                                 |
 | [7][Block]< "{" { Stat @ } "}" >               |
 | [AST-INSTRUCTIONS]:                            |
-|   - ReopenObject()                             |
-|   - EndObject()                                |
-|   > Field(BlockStat::stats)                    |
+|   + StackEnd()                                 |
+|   > StackSlot(1)                               |
 | [RETURN STACK]:                                |
-|   [1][1][0]: Block -> [19][Stat]<< !Block @ >> |
+|   [1][1][0]: Block -> [19][Stat]<! !Block @ !> |
 |   [0][7][0]: Stat -> [24][Module]< Stat @ >    |
 | [FIRST ATTENDING COMPETITION]:  [4]            |
 | [CARRIED COMPETITION]:                         |
@@ -427,12 +441,12 @@
 || [31]: {IF} if                                           ||
 || [16][If]< "if" @ "cond" "then" Stat +[ "else" Stat ] >  ||
 || [AST-INSTRUCTIONS]:                                     ||
-||   - DelayFieldAssignment()                              ||
-||   - BeginObject(IfStat)                                 ||
+||   + StackBegin()                                        ||
+||   + Token(0)                                            ||
 || [RETURN STACK]:                                         ||
-||   [13][2][25]: If -> [21][Stat]<< !If @ >>              ||
+||   [13][2][25]: If -> [21][Stat]<! !If @ !>              ||
 ||   [12][4][25]: Stat -> [7][Block]< "{" { Stat @ } "}" > ||
-||   [1][1][0]: Block -> [19][Stat]<< !Block @ >>          ||
+||   [1][1][0]: Block -> [19][Stat]<! !Block @ !>          ||
 ||   [0][7][0]: Stat -> [24][Module]< Stat @ >             ||
 || [CARRIED COMPETITION]:                                  ||
 ||   [4]: competition[2][RS: 3] low                        ||
@@ -449,10 +463,11 @@
 || [32]: {CONDITION} cond                                  ||
 || [15][If]< "if" "cond" @ "then" Stat +[ "else" Stat ] >  ||
 || [AST-INSTRUCTIONS]:                                     ||
+||   + Token(1)                                            ||
 || [RETURN STACK]:                                         ||
-||   [13][2][25]: If -> [21][Stat]<< !If @ >>              ||
+||   [13][2][25]: If -> [21][Stat]<! !If @ !>              ||
 ||   [12][4][25]: Stat -> [7][Block]< "{" { Stat @ } "}" > ||
-||   [1][1][0]: Block -> [19][Stat]<< !Block @ >>          ||
+||   [1][1][0]: Block -> [19][Stat]<! !Block @ !>          ||
 ||   [0][7][0]: Stat -> [24][Module]< Stat @ >             ||
 || [CARRIED COMPETITION]:                                  ||
 ||   [4]: competition[2][RS: 3] low                        ||
@@ -469,10 +484,11 @@
 || [33]: {THEN} then                                       ||
 || [11][If]< "if" "cond" "then" @ Stat +[ "else" Stat ] >  ||
 || [AST-INSTRUCTIONS]:                                     ||
+||   + Token(2)                                            ||
 || [RETURN STACK]:                                         ||
-||   [13][2][25]: If -> [21][Stat]<< !If @ >>              ||
+||   [13][2][25]: If -> [21][Stat]<! !If @ !>              ||
 ||   [12][4][25]: Stat -> [7][Block]< "{" { Stat @ } "}" > ||
-||   [1][1][0]: Block -> [19][Stat]<< !Block @ >>          ||
+||   [1][1][0]: Block -> [19][Stat]<! !Block @ !>          ||
 ||   [0][7][0]: Stat -> [24][Module]< Stat @ >             ||
 || [CARRIED COMPETITION]:                                  ||
 ||   [4]: competition[2][RS: 3] low                        ||
@@ -489,14 +505,14 @@
 || [34]: {IF} if                                                                 ||
 || [16][If]< "if" @ "cond" "then" Stat +[ "else" Stat ] >                        ||
 || [AST-INSTRUCTIONS]:                                                           ||
-||   - DelayFieldAssignment()                                                    ||
-||   - BeginObject(IfStat)                                                       ||
+||   + StackBegin()                                                              ||
+||   + Token(0)                                                                  ||
 || [RETURN STACK]:                                                               ||
-||   [15][2][33]: If -> [21][Stat]<< !If @ >>                                    ||
+||   [15][2][33]: If -> [21][Stat]<! !If @ !>                                    ||
 ||   [14][5][33]: Stat -> [14][If]< "if" "cond" "then" Stat @ +[ "else" Stat ] > ||
-||   [13][2][25]: If -> [21][Stat]<< !If @ >>                                    ||
+||   [13][2][25]: If -> [21][Stat]<! !If @ !>                                    ||
 ||   [12][4][25]: Stat -> [7][Block]< "{" { Stat @ } "}" >                       ||
-||   [1][1][0]: Block -> [19][Stat]<< !Block @ >>                                ||
+||   [1][1][0]: Block -> [19][Stat]<! !Block @ !>                                ||
 ||   [0][7][0]: Stat -> [24][Module]< Stat @ >                                   ||
 || [CARRIED COMPETITION]:                                                        ||
 ||   [4]: competition[2][RS: 3] low                                              ||
@@ -513,12 +529,13 @@
 || [35]: {CONDITION} cond                                                        ||
 || [15][If]< "if" "cond" @ "then" Stat +[ "else" Stat ] >                        ||
 || [AST-INSTRUCTIONS]:                                                           ||
+||   + Token(1)                                                                  ||
 || [RETURN STACK]:                                                               ||
-||   [15][2][33]: If -> [21][Stat]<< !If @ >>                                    ||
+||   [15][2][33]: If -> [21][Stat]<! !If @ !>                                    ||
 ||   [14][5][33]: Stat -> [14][If]< "if" "cond" "then" Stat @ +[ "else" Stat ] > ||
-||   [13][2][25]: If -> [21][Stat]<< !If @ >>                                    ||
+||   [13][2][25]: If -> [21][Stat]<! !If @ !>                                    ||
 ||   [12][4][25]: Stat -> [7][Block]< "{" { Stat @ } "}" >                       ||
-||   [1][1][0]: Block -> [19][Stat]<< !Block @ >>                                ||
+||   [1][1][0]: Block -> [19][Stat]<! !Block @ !>                                ||
 ||   [0][7][0]: Stat -> [24][Module]< Stat @ >                                   ||
 || [CARRIED COMPETITION]:                                                        ||
 ||   [4]: competition[2][RS: 3] low                                              ||
@@ -535,12 +552,13 @@
 || [36]: {THEN} then                                                             ||
 || [11][If]< "if" "cond" "then" @ Stat +[ "else" Stat ] >                        ||
 || [AST-INSTRUCTIONS]:                                                           ||
+||   + Token(2)                                                                  ||
 || [RETURN STACK]:                                                               ||
-||   [15][2][33]: If -> [21][Stat]<< !If @ >>                                    ||
+||   [15][2][33]: If -> [21][Stat]<! !If @ !>                                    ||
 ||   [14][5][33]: Stat -> [14][If]< "if" "cond" "then" Stat @ +[ "else" Stat ] > ||
-||   [13][2][25]: If -> [21][Stat]<< !If @ >>                                    ||
+||   [13][2][25]: If -> [21][Stat]<! !If @ !>                                    ||
 ||   [12][4][25]: Stat -> [7][Block]< "{" { Stat @ } "}" >                       ||
-||   [1][1][0]: Block -> [19][Stat]<< !Block @ >>                                ||
+||   [1][1][0]: Block -> [19][Stat]<! !Block @ !>                                ||
 ||   [0][7][0]: Stat -> [24][Module]< Stat @ >                                   ||
 || [CARRIED COMPETITION]:                                                        ||
 ||   [4]: competition[2][RS: 3] low                                              ||
@@ -557,16 +575,16 @@
 || [37]: {DO} do                                                                 ||
 || [3][Do]< "do" @ ";" >                                                         ||
 || [AST-INSTRUCTIONS]:                                                           ||
-||   - DelayFieldAssignment()                                                    ||
-||   - BeginObject(DoStat)                                                       ||
+||   + StackBegin()                                                              ||
+||   + Token(0)                                                                  ||
 || [RETURN STACK]:                                                               ||
-||   [17][3][36]: Do -> [20][Stat]<< !Do @ >>                                    ||
+||   [17][3][36]: Do -> [20][Stat]<! !Do @ !>                                    ||
 ||   [16][5][36]: Stat -> [14][If]< "if" "cond" "then" Stat @ +[ "else" Stat ] > ||
-||   [15][2][33]: If -> [21][Stat]<< !If @ >>                                    ||
+||   [15][2][33]: If -> [21][Stat]<! !If @ !>                                    ||
 ||   [14][5][33]: Stat -> [14][If]< "if" "cond" "then" Stat @ +[ "else" Stat ] > ||
-||   [13][2][25]: If -> [21][Stat]<< !If @ >>                                    ||
+||   [13][2][25]: If -> [21][Stat]<! !If @ !>                                    ||
 ||   [12][4][25]: Stat -> [7][Block]< "{" { Stat @ } "}" >                       ||
-||   [1][1][0]: Block -> [19][Stat]<< !Block @ >>                                ||
+||   [1][1][0]: Block -> [19][Stat]<! !Block @ !>                                ||
 ||   [0][7][0]: Stat -> [24][Module]< Stat @ >                                   ||
 || [CARRIED COMPETITION]:                                                        ||
 ||   [4]: competition[2][RS: 3] low                                              ||
@@ -583,14 +601,15 @@
 || [38]: {SEMICOLON} ;                                                           ||
 || [2][Do]< "do" ";" @ >                                                         ||
 || [AST-INSTRUCTIONS]:                                                           ||
+||   + Token(1)                                                                  ||
 || [RETURN STACK]:                                                               ||
-||   [17][3][36]: Do -> [20][Stat]<< !Do @ >>                                    ||
+||   [17][3][36]: Do -> [20][Stat]<! !Do @ !>                                    ||
 ||   [16][5][36]: Stat -> [14][If]< "if" "cond" "then" Stat @ +[ "else" Stat ] > ||
-||   [15][2][33]: If -> [21][Stat]<< !If @ >>                                    ||
+||   [15][2][33]: If -> [21][Stat]<! !If @ !>                                    ||
 ||   [14][5][33]: Stat -> [14][If]< "if" "cond" "then" Stat @ +[ "else" Stat ] > ||
-||   [13][2][25]: If -> [21][Stat]<< !If @ >>                                    ||
+||   [13][2][25]: If -> [21][Stat]<! !If @ !>                                    ||
 ||   [12][4][25]: Stat -> [7][Block]< "{" { Stat @ } "}" >                       ||
-||   [1][1][0]: Block -> [19][Stat]<< !Block @ >>                                ||
+||   [1][1][0]: Block -> [19][Stat]<! !Block @ !>                                ||
 ||   [0][7][0]: Stat -> [24][Module]< Stat @ >                                   ||
 || [CARRIED COMPETITION]:                                                        ||
 ||   [4]: competition[2][RS: 3] low                                              ||
@@ -603,16 +622,18 @@
 |
 +-------------------------------------------------------------------------------+
 | [39]: <Ending>                                                                |
-| [20][Stat]<< !Do @ >>                                                         |
+| [20][Stat]<! !Do @ !>                                                         |
 | [AST-INSTRUCTIONS]:                                                           |
-|   - EndObject()                                                               |
+|   + CreateObject(DoStat)                                                      |
+|   + StackEnd()                                                                |
+|   > StackBegin()                                                              |
 | [RETURN STACK]:                                                               |
 |   [16][5][36]: Stat -> [14][If]< "if" "cond" "then" Stat @ +[ "else" Stat ] > |
-|   [15][2][33]: If -> [21][Stat]<< !If @ >>                                    |
+|   [15][2][33]: If -> [21][Stat]<! !If @ !>                                    |
 |   [14][5][33]: Stat -> [14][If]< "if" "cond" "then" Stat @ +[ "else" Stat ] > |
-|   [13][2][25]: If -> [21][Stat]<< !If @ >>                                    |
+|   [13][2][25]: If -> [21][Stat]<! !If @ !>                                    |
 |   [12][4][25]: Stat -> [7][Block]< "{" { Stat @ } "}" >                       |
-|   [1][1][0]: Block -> [19][Stat]<< !Block @ >>                                |
+|   [1][1][0]: Block -> [19][Stat]<! !Block @ !>                                |
 |   [0][7][0]: Stat -> [24][Module]< Stat @ >                                   |
 | [CARRIED COMPETITION]:                                                        |
 |   [4]: competition[2][RS: 3] low                                              |
@@ -627,17 +648,16 @@
 | [40]: <Ending>                                                                |
 | [14][If]< "if" "cond" "then" Stat @ +[ "else" Stat ] >                        |
 | [HOLDING COMPETITION]:                                                        |
-|   [3][HIGH PRIORITY WIN][RULE: 2][CLAUSE: 0]                                  |
+|   [3][HIGH PRIORITY WIN][RULE: 2][COMPID: 1]                                  |
 | [AST-INSTRUCTIONS]:                                                           |
-|   - ReopenObject()                                                            |
-|   - EndObject()                                                               |
-|   > Field(IfStat::thenBranch)                                                 |
+|   + StackEnd()                                                                |
+|   > StackSlot(3)                                                              |
 | [RETURN STACK]:                                                               |
-|   [15][2][33]: If -> [21][Stat]<< !If @ >>                                    |
+|   [15][2][33]: If -> [21][Stat]<! !If @ !>                                    |
 |   [14][5][33]: Stat -> [14][If]< "if" "cond" "then" Stat @ +[ "else" Stat ] > |
-|   [13][2][25]: If -> [21][Stat]<< !If @ >>                                    |
+|   [13][2][25]: If -> [21][Stat]<! !If @ !>                                    |
 |   [12][4][25]: Stat -> [7][Block]< "{" { Stat @ } "}" >                       |
-|   [1][1][0]: Block -> [19][Stat]<< !Block @ >>                                |
+|   [1][1][0]: Block -> [19][Stat]<! !Block @ !>                                |
 |   [0][7][0]: Stat -> [24][Module]< Stat @ >                                   |
 | [CARRIED COMPETITION]:                                                        |
 |   [4]: competition[2][RS: 3] low                                              |
@@ -654,12 +674,13 @@
 || [44]: {ELSE} else                                                             ||
 || [12][If]< "if" "cond" "then" Stat +[ "else" @ Stat ] >                        ||
 || [AST-INSTRUCTIONS]:                                                           ||
+||   + Token(4)                                                                  ||
 || [RETURN STACK]:                                                               ||
-||   [15][2][33]: If -> [21][Stat]<< !If @ >>                                    ||
+||   [15][2][33]: If -> [21][Stat]<! !If @ !>                                    ||
 ||   [14][5][33]: Stat -> [14][If]< "if" "cond" "then" Stat @ +[ "else" Stat ] > ||
-||   [13][2][25]: If -> [21][Stat]<< !If @ >>                                    ||
+||   [13][2][25]: If -> [21][Stat]<! !If @ !>                                    ||
 ||   [12][4][25]: Stat -> [7][Block]< "{" { Stat @ } "}" >                       ||
-||   [1][1][0]: Block -> [19][Stat]<< !Block @ >>                                ||
+||   [1][1][0]: Block -> [19][Stat]<! !Block @ !>                                ||
 ||   [0][7][0]: Stat -> [24][Module]< Stat @ >                                   ||
 || [FIRST ATTENDING COMPETITION]:  [7]                                           ||
 || [CARRIED COMPETITION]:                                                        ||
@@ -678,16 +699,16 @@
 || [46]: {DO} do                                                                 ||
 || [3][Do]< "do" @ ";" >                                                         ||
 || [AST-INSTRUCTIONS]:                                                           ||
-||   - DelayFieldAssignment()                                                    ||
-||   - BeginObject(DoStat)                                                       ||
+||   + StackBegin()                                                              ||
+||   + Token(0)                                                                  ||
 || [RETURN STACK]:                                                               ||
-||   [19][3][44]: Do -> [20][Stat]<< !Do @ >>                                    ||
+||   [19][3][44]: Do -> [20][Stat]<! !Do @ !>                                    ||
 ||   [18][6][44]: Stat -> [13][If]< "if" "cond" "then" Stat +[ "else" Stat @ ] > ||
-||   [15][2][33]: If -> [21][Stat]<< !If @ >>                                    ||
+||   [15][2][33]: If -> [21][Stat]<! !If @ !>                                    ||
 ||   [14][5][33]: Stat -> [14][If]< "if" "cond" "then" Stat @ +[ "else" Stat ] > ||
-||   [13][2][25]: If -> [21][Stat]<< !If @ >>                                    ||
+||   [13][2][25]: If -> [21][Stat]<! !If @ !>                                    ||
 ||   [12][4][25]: Stat -> [7][Block]< "{" { Stat @ } "}" >                       ||
-||   [1][1][0]: Block -> [19][Stat]<< !Block @ >>                                ||
+||   [1][1][0]: Block -> [19][Stat]<! !Block @ !>                                ||
 ||   [0][7][0]: Stat -> [24][Module]< Stat @ >                                   ||
 || [FIRST ATTENDING COMPETITION]:  [7]                                           ||
 || [CARRIED COMPETITION]:                                                        ||
@@ -706,14 +727,15 @@
 || [48]: {SEMICOLON} ;                                                           ||
 || [2][Do]< "do" ";" @ >                                                         ||
 || [AST-INSTRUCTIONS]:                                                           ||
+||   + Token(1)                                                                  ||
 || [RETURN STACK]:                                                               ||
-||   [19][3][44]: Do -> [20][Stat]<< !Do @ >>                                    ||
+||   [19][3][44]: Do -> [20][Stat]<! !Do @ !>                                    ||
 ||   [18][6][44]: Stat -> [13][If]< "if" "cond" "then" Stat +[ "else" Stat @ ] > ||
-||   [15][2][33]: If -> [21][Stat]<< !If @ >>                                    ||
+||   [15][2][33]: If -> [21][Stat]<! !If @ !>                                    ||
 ||   [14][5][33]: Stat -> [14][If]< "if" "cond" "then" Stat @ +[ "else" Stat ] > ||
-||   [13][2][25]: If -> [21][Stat]<< !If @ >>                                    ||
+||   [13][2][25]: If -> [21][Stat]<! !If @ !>                                    ||
 ||   [12][4][25]: Stat -> [7][Block]< "{" { Stat @ } "}" >                       ||
-||   [1][1][0]: Block -> [19][Stat]<< !Block @ >>                                ||
+||   [1][1][0]: Block -> [19][Stat]<! !Block @ !>                                ||
 ||   [0][7][0]: Stat -> [24][Module]< Stat @ >                                   ||
 || [CARRIED COMPETITION]:                                                        ||
 ||   [7]: competition[3][RS: 15] high                                            ||
@@ -727,16 +749,18 @@
 |
 +-------------------------------------------------------------------------------+
 | [49]: <Ending>                                                                |
-| [20][Stat]<< !Do @ >>                                                         |
+| [20][Stat]<! !Do @ !>                                                         |
 | [AST-INSTRUCTIONS]:                                                           |
-|   - EndObject()                                                               |
+|   + CreateObject(DoStat)                                                      |
+|   + StackEnd()                                                                |
+|   > StackBegin()                                                              |
 | [RETURN STACK]:                                                               |
 |   [18][6][44]: Stat -> [13][If]< "if" "cond" "then" Stat +[ "else" Stat @ ] > |
-|   [15][2][33]: If -> [21][Stat]<< !If @ >>                                    |
+|   [15][2][33]: If -> [21][Stat]<! !If @ !>                                    |
 |   [14][5][33]: Stat -> [14][If]< "if" "cond" "then" Stat @ +[ "else" Stat ] > |
-|   [13][2][25]: If -> [21][Stat]<< !If @ >>                                    |
+|   [13][2][25]: If -> [21][Stat]<! !If @ !>                                    |
 |   [12][4][25]: Stat -> [7][Block]< "{" { Stat @ } "}" >                       |
-|   [1][1][0]: Block -> [19][Stat]<< !Block @ >>                                |
+|   [1][1][0]: Block -> [19][Stat]<! !Block @ !>                                |
 |   [0][7][0]: Stat -> [24][Module]< Stat @ >                                   |
 | [CARRIED COMPETITION]:                                                        |
 |   [7]: competition[3][RS: 15] high                                            |
@@ -752,15 +776,14 @@
 | [50]: <Ending>                                                                |
 | [13][If]< "if" "cond" "then" Stat +[ "else" Stat @ ] >                        |
 | [AST-INSTRUCTIONS]:                                                           |
-|   - ReopenObject()                                                            |
-|   - EndObject()                                                               |
-|   > Field(IfStat::elseBranch)                                                 |
+|   + StackEnd()                                                                |
+|   > StackSlot(5)                                                              |
 | [RETURN STACK]:                                                               |
-|   [15][2][33]: If -> [21][Stat]<< !If @ >>                                    |
+|   [15][2][33]: If -> [21][Stat]<! !If @ !>                                    |
 |   [14][5][33]: Stat -> [14][If]< "if" "cond" "then" Stat @ +[ "else" Stat ] > |
-|   [13][2][25]: If -> [21][Stat]<< !If @ >>                                    |
+|   [13][2][25]: If -> [21][Stat]<! !If @ !>                                    |
 |   [12][4][25]: Stat -> [7][Block]< "{" { Stat @ } "}" >                       |
-|   [1][1][0]: Block -> [19][Stat]<< !Block @ >>                                |
+|   [1][1][0]: Block -> [19][Stat]<! !Block @ !>                                |
 |   [0][7][0]: Stat -> [24][Module]< Stat @ >                                   |
 | [CARRIED COMPETITION]:                                                        |
 |   [7]: competition[3][RS: 15] high                                            |
@@ -774,14 +797,18 @@
 |
 +-------------------------------------------------------------------------------+
 | [51]: <Ending>                                                                |
-| [21][Stat]<< !If @ >>                                                         |
+| [21][Stat]<! !If @ !>                                                         |
 | [AST-INSTRUCTIONS]:                                                           |
-|   - EndObject()                                                               |
+|   + CreateObject(IfStat)                                                      |
+|   + Field(IfStat::thenBranch, 3)                                              |
+|   + Field(IfStat::elseBranch, 5)                                              |
+|   + StackEnd()                                                                |
+|   > StackBegin()                                                              |
 | [RETURN STACK]:                                                               |
 |   [14][5][33]: Stat -> [14][If]< "if" "cond" "then" Stat @ +[ "else" Stat ] > |
-|   [13][2][25]: If -> [21][Stat]<< !If @ >>                                    |
+|   [13][2][25]: If -> [21][Stat]<! !If @ !>                                    |
 |   [12][4][25]: Stat -> [7][Block]< "{" { Stat @ } "}" >                       |
-|   [1][1][0]: Block -> [19][Stat]<< !Block @ >>                                |
+|   [1][1][0]: Block -> [19][Stat]<! !Block @ !>                                |
 |   [0][7][0]: Stat -> [24][Module]< Stat @ >                                   |
 | [CARRIED COMPETITION]:                                                        |
 |   [7]: competition[3][RS: 15] high                                            |
@@ -797,15 +824,14 @@
 | [52]: <Ending>                                          |
 | [14][If]< "if" "cond" "then" Stat @ +[ "else" Stat ] >  |
 | [HOLDING COMPETITION]:                                  |
-|   [5][LOW PRIORITY WIN][RULE: 2][CLAUSE: 0]             |
+|   [5][LOW PRIORITY WIN][RULE: 2][COMPID: 1]             |
 | [AST-INSTRUCTIONS]:                                     |
-|   - ReopenObject()                                      |
-|   - EndObject()                                         |
-|   > Field(IfStat::thenBranch)                           |
+|   + StackEnd()                                          |
+|   > StackSlot(3)                                        |
 | [RETURN STACK]:                                         |
-|   [13][2][25]: If -> [21][Stat]<< !If @ >>              |
+|   [13][2][25]: If -> [21][Stat]<! !If @ !>              |
 |   [12][4][25]: Stat -> [7][Block]< "{" { Stat @ } "}" > |
-|   [1][1][0]: Block -> [19][Stat]<< !Block @ >>          |
+|   [1][1][0]: Block -> [19][Stat]<! !Block @ !>          |
 |   [0][7][0]: Stat -> [24][Module]< Stat @ >             |
 | [CARRIED COMPETITION]:                                  |
 |   [7]: competition[3][RS: 15] high                      |
@@ -819,12 +845,16 @@
 |
 +---------------------------------------------------------+
 | [53]: <Ending>                                          |
-| [21][Stat]<< !If @ >>                                   |
+| [21][Stat]<! !If @ !>                                   |
 | [AST-INSTRUCTIONS]:                                     |
-|   - EndObject()                                         |
+|   + CreateObject(IfStat)                                |
+|   + Field(IfStat::thenBranch, 3)                        |
+|   + Field(IfStat::elseBranch, 5)                        |
+|   + StackEnd()                                          |
+|   > StackBegin()                                        |
 | [RETURN STACK]:                                         |
 |   [12][4][25]: Stat -> [7][Block]< "{" { Stat @ } "}" > |
-|   [1][1][0]: Block -> [19][Stat]<< !Block @ >>          |
+|   [1][1][0]: Block -> [19][Stat]<! !Block @ !>          |
 |   [0][7][0]: Stat -> [24][Module]< Stat @ >             |
 | [FIRST ATTENDING COMPETITION]:  [9]                     |
 | [CARRIED COMPETITION]:                                  |
@@ -842,11 +872,10 @@
 | [54]: <Ending>                                 |
 | [7][Block]< "{" { Stat @ } "}" >               |
 | [AST-INSTRUCTIONS]:                            |
-|   - ReopenObject()                             |
-|   - EndObject()                                |
-|   > Field(BlockStat::stats)                    |
+|   + StackEnd()                                 |
+|   > StackSlot(1)                               |
 | [RETURN STACK]:                                |
-|   [1][1][0]: Block -> [19][Stat]<< !Block @ >> |
+|   [1][1][0]: Block -> [19][Stat]<! !Block @ !> |
 |   [0][7][0]: Stat -> [24][Module]< Stat @ >    |
 | [FIRST ATTENDING COMPETITION]:  [9]            |
 | [CARRIED COMPETITION]:                         |
@@ -866,12 +895,12 @@
 || [60]: {IF} if                                           ||
 || [16][If]< "if" @ "cond" "then" Stat +[ "else" Stat ] >  ||
 || [AST-INSTRUCTIONS]:                                     ||
-||   - DelayFieldAssignment()                              ||
-||   - BeginObject(IfStat)                                 ||
+||   + StackBegin()                                        ||
+||   + Token(0)                                            ||
 || [RETURN STACK]:                                         ||
-||   [23][2][54]: If -> [21][Stat]<< !If @ >>              ||
+||   [23][2][54]: If -> [21][Stat]<! !If @ !>              ||
 ||   [22][4][54]: Stat -> [7][Block]< "{" { Stat @ } "}" > ||
-||   [1][1][0]: Block -> [19][Stat]<< !Block @ >>          ||
+||   [1][1][0]: Block -> [19][Stat]<! !Block @ !>          ||
 ||   [0][7][0]: Stat -> [24][Module]< Stat @ >             ||
 || [CARRIED COMPETITION]:                                  ||
 ||   [9]: competition[5][RS: 13] low                       ||
@@ -890,10 +919,11 @@
 || [61]: {CONDITION} cond                                  ||
 || [15][If]< "if" "cond" @ "then" Stat +[ "else" Stat ] >  ||
 || [AST-INSTRUCTIONS]:                                     ||
+||   + Token(1)                                            ||
 || [RETURN STACK]:                                         ||
-||   [23][2][54]: If -> [21][Stat]<< !If @ >>              ||
+||   [23][2][54]: If -> [21][Stat]<! !If @ !>              ||
 ||   [22][4][54]: Stat -> [7][Block]< "{" { Stat @ } "}" > ||
-||   [1][1][0]: Block -> [19][Stat]<< !Block @ >>          ||
+||   [1][1][0]: Block -> [19][Stat]<! !Block @ !>          ||
 ||   [0][7][0]: Stat -> [24][Module]< Stat @ >             ||
 || [CARRIED COMPETITION]:                                  ||
 ||   [9]: competition[5][RS: 13] low                       ||
@@ -912,10 +942,11 @@
 || [62]: {THEN} then                                       ||
 || [11][If]< "if" "cond" "then" @ Stat +[ "else" Stat ] >  ||
 || [AST-INSTRUCTIONS]:                                     ||
+||   + Token(2)                                            ||
 || [RETURN STACK]:                                         ||
-||   [23][2][54]: If -> [21][Stat]<< !If @ >>              ||
+||   [23][2][54]: If -> [21][Stat]<! !If @ !>              ||
 ||   [22][4][54]: Stat -> [7][Block]< "{" { Stat @ } "}" > ||
-||   [1][1][0]: Block -> [19][Stat]<< !Block @ >>          ||
+||   [1][1][0]: Block -> [19][Stat]<! !Block @ !>          ||
 ||   [0][7][0]: Stat -> [24][Module]< Stat @ >             ||
 || [CARRIED COMPETITION]:                                  ||
 ||   [9]: competition[5][RS: 13] low                       ||
@@ -934,14 +965,14 @@
 || [63]: {IF} if                                                                 ||
 || [16][If]< "if" @ "cond" "then" Stat +[ "else" Stat ] >                        ||
 || [AST-INSTRUCTIONS]:                                                           ||
-||   - DelayFieldAssignment()                                                    ||
-||   - BeginObject(IfStat)                                                       ||
+||   + StackBegin()                                                              ||
+||   + Token(0)                                                                  ||
 || [RETURN STACK]:                                                               ||
-||   [25][2][62]: If -> [21][Stat]<< !If @ >>                                    ||
+||   [25][2][62]: If -> [21][Stat]<! !If @ !>                                    ||
 ||   [24][5][62]: Stat -> [14][If]< "if" "cond" "then" Stat @ +[ "else" Stat ] > ||
-||   [23][2][54]: If -> [21][Stat]<< !If @ >>                                    ||
+||   [23][2][54]: If -> [21][Stat]<! !If @ !>                                    ||
 ||   [22][4][54]: Stat -> [7][Block]< "{" { Stat @ } "}" >                       ||
-||   [1][1][0]: Block -> [19][Stat]<< !Block @ >>                                ||
+||   [1][1][0]: Block -> [19][Stat]<! !Block @ !>                                ||
 ||   [0][7][0]: Stat -> [24][Module]< Stat @ >                                   ||
 || [CARRIED COMPETITION]:                                                        ||
 ||   [9]: competition[5][RS: 13] low                                             ||
@@ -960,12 +991,13 @@
 || [64]: {CONDITION} cond                                                        ||
 || [15][If]< "if" "cond" @ "then" Stat +[ "else" Stat ] >                        ||
 || [AST-INSTRUCTIONS]:                                                           ||
+||   + Token(1)                                                                  ||
 || [RETURN STACK]:                                                               ||
-||   [25][2][62]: If -> [21][Stat]<< !If @ >>                                    ||
+||   [25][2][62]: If -> [21][Stat]<! !If @ !>                                    ||
 ||   [24][5][62]: Stat -> [14][If]< "if" "cond" "then" Stat @ +[ "else" Stat ] > ||
-||   [23][2][54]: If -> [21][Stat]<< !If @ >>                                    ||
+||   [23][2][54]: If -> [21][Stat]<! !If @ !>                                    ||
 ||   [22][4][54]: Stat -> [7][Block]< "{" { Stat @ } "}" >                       ||
-||   [1][1][0]: Block -> [19][Stat]<< !Block @ >>                                ||
+||   [1][1][0]: Block -> [19][Stat]<! !Block @ !>                                ||
 ||   [0][7][0]: Stat -> [24][Module]< Stat @ >                                   ||
 || [CARRIED COMPETITION]:                                                        ||
 ||   [9]: competition[5][RS: 13] low                                             ||
@@ -984,12 +1016,13 @@
 || [65]: {THEN} then                                                             ||
 || [11][If]< "if" "cond" "then" @ Stat +[ "else" Stat ] >                        ||
 || [AST-INSTRUCTIONS]:                                                           ||
+||   + Token(2)                                                                  ||
 || [RETURN STACK]:                                                               ||
-||   [25][2][62]: If -> [21][Stat]<< !If @ >>                                    ||
+||   [25][2][62]: If -> [21][Stat]<! !If @ !>                                    ||
 ||   [24][5][62]: Stat -> [14][If]< "if" "cond" "then" Stat @ +[ "else" Stat ] > ||
-||   [23][2][54]: If -> [21][Stat]<< !If @ >>                                    ||
+||   [23][2][54]: If -> [21][Stat]<! !If @ !>                                    ||
 ||   [22][4][54]: Stat -> [7][Block]< "{" { Stat @ } "}" >                       ||
-||   [1][1][0]: Block -> [19][Stat]<< !Block @ >>                                ||
+||   [1][1][0]: Block -> [19][Stat]<! !Block @ !>                                ||
 ||   [0][7][0]: Stat -> [24][Module]< Stat @ >                                   ||
 || [CARRIED COMPETITION]:                                                        ||
 ||   [9]: competition[5][RS: 13] low                                             ||
@@ -1008,16 +1041,16 @@
 || [66]: {DO} do                                                                 ||
 || [3][Do]< "do" @ ";" >                                                         ||
 || [AST-INSTRUCTIONS]:                                                           ||
-||   - DelayFieldAssignment()                                                    ||
-||   - BeginObject(DoStat)                                                       ||
+||   + StackBegin()                                                              ||
+||   + Token(0)                                                                  ||
 || [RETURN STACK]:                                                               ||
-||   [27][3][65]: Do -> [20][Stat]<< !Do @ >>                                    ||
+||   [27][3][65]: Do -> [20][Stat]<! !Do @ !>                                    ||
 ||   [26][5][65]: Stat -> [14][If]< "if" "cond" "then" Stat @ +[ "else" Stat ] > ||
-||   [25][2][62]: If -> [21][Stat]<< !If @ >>                                    ||
+||   [25][2][62]: If -> [21][Stat]<! !If @ !>                                    ||
 ||   [24][5][62]: Stat -> [14][If]< "if" "cond" "then" Stat @ +[ "else" Stat ] > ||
-||   [23][2][54]: If -> [21][Stat]<< !If @ >>                                    ||
+||   [23][2][54]: If -> [21][Stat]<! !If @ !>                                    ||
 ||   [22][4][54]: Stat -> [7][Block]< "{" { Stat @ } "}" >                       ||
-||   [1][1][0]: Block -> [19][Stat]<< !Block @ >>                                ||
+||   [1][1][0]: Block -> [19][Stat]<! !Block @ !>                                ||
 ||   [0][7][0]: Stat -> [24][Module]< Stat @ >                                   ||
 || [CARRIED COMPETITION]:                                                        ||
 ||   [9]: competition[5][RS: 13] low                                             ||
@@ -1036,14 +1069,15 @@
 || [67]: {SEMICOLON} ;                                                           ||
 || [2][Do]< "do" ";" @ >                                                         ||
 || [AST-INSTRUCTIONS]:                                                           ||
+||   + Token(1)                                                                  ||
 || [RETURN STACK]:                                                               ||
-||   [27][3][65]: Do -> [20][Stat]<< !Do @ >>                                    ||
+||   [27][3][65]: Do -> [20][Stat]<! !Do @ !>                                    ||
 ||   [26][5][65]: Stat -> [14][If]< "if" "cond" "then" Stat @ +[ "else" Stat ] > ||
-||   [25][2][62]: If -> [21][Stat]<< !If @ >>                                    ||
+||   [25][2][62]: If -> [21][Stat]<! !If @ !>                                    ||
 ||   [24][5][62]: Stat -> [14][If]< "if" "cond" "then" Stat @ +[ "else" Stat ] > ||
-||   [23][2][54]: If -> [21][Stat]<< !If @ >>                                    ||
+||   [23][2][54]: If -> [21][Stat]<! !If @ !>                                    ||
 ||   [22][4][54]: Stat -> [7][Block]< "{" { Stat @ } "}" >                       ||
-||   [1][1][0]: Block -> [19][Stat]<< !Block @ >>                                ||
+||   [1][1][0]: Block -> [19][Stat]<! !Block @ !>                                ||
 ||   [0][7][0]: Stat -> [24][Module]< Stat @ >                                   ||
 || [CARRIED COMPETITION]:                                                        ||
 ||   [9]: competition[5][RS: 13] low                                             ||
@@ -1058,16 +1092,18 @@
 |
 +-------------------------------------------------------------------------------+
 | [68]: <Ending>                                                                |
-| [20][Stat]<< !Do @ >>                                                         |
+| [20][Stat]<! !Do @ !>                                                         |
 | [AST-INSTRUCTIONS]:                                                           |
-|   - EndObject()                                                               |
+|   + CreateObject(DoStat)                                                      |
+|   + StackEnd()                                                                |
+|   > StackBegin()                                                              |
 | [RETURN STACK]:                                                               |
 |   [26][5][65]: Stat -> [14][If]< "if" "cond" "then" Stat @ +[ "else" Stat ] > |
-|   [25][2][62]: If -> [21][Stat]<< !If @ >>                                    |
+|   [25][2][62]: If -> [21][Stat]<! !If @ !>                                    |
 |   [24][5][62]: Stat -> [14][If]< "if" "cond" "then" Stat @ +[ "else" Stat ] > |
-|   [23][2][54]: If -> [21][Stat]<< !If @ >>                                    |
+|   [23][2][54]: If -> [21][Stat]<! !If @ !>                                    |
 |   [22][4][54]: Stat -> [7][Block]< "{" { Stat @ } "}" >                       |
-|   [1][1][0]: Block -> [19][Stat]<< !Block @ >>                                |
+|   [1][1][0]: Block -> [19][Stat]<! !Block @ !>                                |
 |   [0][7][0]: Stat -> [24][Module]< Stat @ >                                   |
 | [CARRIED COMPETITION]:                                                        |
 |   [9]: competition[5][RS: 13] low                                             |
@@ -1084,17 +1120,16 @@
 | [69]: <Ending>                                                                |
 | [14][If]< "if" "cond" "then" Stat @ +[ "else" Stat ] >                        |
 | [HOLDING COMPETITION]:                                                        |
-|   [6][HIGH PRIORITY WIN][RULE: 2][CLAUSE: 0]                                  |
+|   [6][HIGH PRIORITY WIN][RULE: 2][COMPID: 1]                                  |
 | [AST-INSTRUCTIONS]:                                                           |
-|   - ReopenObject()                                                            |
-|   - EndObject()                                                               |
-|   > Field(IfStat::thenBranch)                                                 |
+|   + StackEnd()                                                                |
+|   > StackSlot(3)                                                              |
 | [RETURN STACK]:                                                               |
-|   [25][2][62]: If -> [21][Stat]<< !If @ >>                                    |
+|   [25][2][62]: If -> [21][Stat]<! !If @ !>                                    |
 |   [24][5][62]: Stat -> [14][If]< "if" "cond" "then" Stat @ +[ "else" Stat ] > |
-|   [23][2][54]: If -> [21][Stat]<< !If @ >>                                    |
+|   [23][2][54]: If -> [21][Stat]<! !If @ !>                                    |
 |   [22][4][54]: Stat -> [7][Block]< "{" { Stat @ } "}" >                       |
-|   [1][1][0]: Block -> [19][Stat]<< !Block @ >>                                |
+|   [1][1][0]: Block -> [19][Stat]<! !Block @ !>                                |
 |   [0][7][0]: Stat -> [24][Module]< Stat @ >                                   |
 | [CARRIED COMPETITION]:                                                        |
 |   [9]: competition[5][RS: 13] low                                             |
@@ -1113,12 +1148,13 @@
 || [73]: {ELSE} else                                                             ||
 || [12][If]< "if" "cond" "then" Stat +[ "else" @ Stat ] >                        ||
 || [AST-INSTRUCTIONS]:                                                           ||
+||   + Token(4)                                                                  ||
 || [RETURN STACK]:                                                               ||
-||   [25][2][62]: If -> [21][Stat]<< !If @ >>                                    ||
+||   [25][2][62]: If -> [21][Stat]<! !If @ !>                                    ||
 ||   [24][5][62]: Stat -> [14][If]< "if" "cond" "then" Stat @ +[ "else" Stat ] > ||
-||   [23][2][54]: If -> [21][Stat]<< !If @ >>                                    ||
+||   [23][2][54]: If -> [21][Stat]<! !If @ !>                                    ||
 ||   [22][4][54]: Stat -> [7][Block]< "{" { Stat @ } "}" >                       ||
-||   [1][1][0]: Block -> [19][Stat]<< !Block @ >>                                ||
+||   [1][1][0]: Block -> [19][Stat]<! !Block @ !>                                ||
 ||   [0][7][0]: Stat -> [24][Module]< Stat @ >                                   ||
 || [FIRST ATTENDING COMPETITION]:  [12]                                          ||
 || [CARRIED COMPETITION]:                                                        ||
@@ -1139,16 +1175,16 @@
 || [75]: {DO} do                                                                 ||
 || [3][Do]< "do" @ ";" >                                                         ||
 || [AST-INSTRUCTIONS]:                                                           ||
-||   - DelayFieldAssignment()                                                    ||
-||   - BeginObject(DoStat)                                                       ||
+||   + StackBegin()                                                              ||
+||   + Token(0)                                                                  ||
 || [RETURN STACK]:                                                               ||
-||   [29][3][73]: Do -> [20][Stat]<< !Do @ >>                                    ||
+||   [29][3][73]: Do -> [20][Stat]<! !Do @ !>                                    ||
 ||   [28][6][73]: Stat -> [13][If]< "if" "cond" "then" Stat +[ "else" Stat @ ] > ||
-||   [25][2][62]: If -> [21][Stat]<< !If @ >>                                    ||
+||   [25][2][62]: If -> [21][Stat]<! !If @ !>                                    ||
 ||   [24][5][62]: Stat -> [14][If]< "if" "cond" "then" Stat @ +[ "else" Stat ] > ||
-||   [23][2][54]: If -> [21][Stat]<< !If @ >>                                    ||
+||   [23][2][54]: If -> [21][Stat]<! !If @ !>                                    ||
 ||   [22][4][54]: Stat -> [7][Block]< "{" { Stat @ } "}" >                       ||
-||   [1][1][0]: Block -> [19][Stat]<< !Block @ >>                                ||
+||   [1][1][0]: Block -> [19][Stat]<! !Block @ !>                                ||
 ||   [0][7][0]: Stat -> [24][Module]< Stat @ >                                   ||
 || [FIRST ATTENDING COMPETITION]:  [12]                                          ||
 || [CARRIED COMPETITION]:                                                        ||
@@ -1169,14 +1205,15 @@
 || [77]: {SEMICOLON} ;                                                           ||
 || [2][Do]< "do" ";" @ >                                                         ||
 || [AST-INSTRUCTIONS]:                                                           ||
+||   + Token(1)                                                                  ||
 || [RETURN STACK]:                                                               ||
-||   [29][3][73]: Do -> [20][Stat]<< !Do @ >>                                    ||
+||   [29][3][73]: Do -> [20][Stat]<! !Do @ !>                                    ||
 ||   [28][6][73]: Stat -> [13][If]< "if" "cond" "then" Stat +[ "else" Stat @ ] > ||
-||   [25][2][62]: If -> [21][Stat]<< !If @ >>                                    ||
+||   [25][2][62]: If -> [21][Stat]<! !If @ !>                                    ||
 ||   [24][5][62]: Stat -> [14][If]< "if" "cond" "then" Stat @ +[ "else" Stat ] > ||
-||   [23][2][54]: If -> [21][Stat]<< !If @ >>                                    ||
+||   [23][2][54]: If -> [21][Stat]<! !If @ !>                                    ||
 ||   [22][4][54]: Stat -> [7][Block]< "{" { Stat @ } "}" >                       ||
-||   [1][1][0]: Block -> [19][Stat]<< !Block @ >>                                ||
+||   [1][1][0]: Block -> [19][Stat]<! !Block @ !>                                ||
 ||   [0][7][0]: Stat -> [24][Module]< Stat @ >                                   ||
 || [CARRIED COMPETITION]:                                                        ||
 ||   [12]: competition[6][RS: 25] high                                           ||
@@ -1192,16 +1229,18 @@
 |
 +-------------------------------------------------------------------------------+
 | [78]: <Ending>                                                                |
-| [20][Stat]<< !Do @ >>                                                         |
+| [20][Stat]<! !Do @ !>                                                         |
 | [AST-INSTRUCTIONS]:                                                           |
-|   - EndObject()                                                               |
+|   + CreateObject(DoStat)                                                      |
+|   + StackEnd()                                                                |
+|   > StackBegin()                                                              |
 | [RETURN STACK]:                                                               |
 |   [28][6][73]: Stat -> [13][If]< "if" "cond" "then" Stat +[ "else" Stat @ ] > |
-|   [25][2][62]: If -> [21][Stat]<< !If @ >>                                    |
+|   [25][2][62]: If -> [21][Stat]<! !If @ !>                                    |
 |   [24][5][62]: Stat -> [14][If]< "if" "cond" "then" Stat @ +[ "else" Stat ] > |
-|   [23][2][54]: If -> [21][Stat]<< !If @ >>                                    |
+|   [23][2][54]: If -> [21][Stat]<! !If @ !>                                    |
 |   [22][4][54]: Stat -> [7][Block]< "{" { Stat @ } "}" >                       |
-|   [1][1][0]: Block -> [19][Stat]<< !Block @ >>                                |
+|   [1][1][0]: Block -> [19][Stat]<! !Block @ !>                                |
 |   [0][7][0]: Stat -> [24][Module]< Stat @ >                                   |
 | [CARRIED COMPETITION]:                                                        |
 |   [12]: competition[6][RS: 25] high                                           |
@@ -1219,15 +1258,14 @@
 | [79]: <Ending>                                                                |
 | [13][If]< "if" "cond" "then" Stat +[ "else" Stat @ ] >                        |
 | [AST-INSTRUCTIONS]:                                                           |
-|   - ReopenObject()                                                            |
-|   - EndObject()                                                               |
-|   > Field(IfStat::elseBranch)                                                 |
+|   + StackEnd()                                                                |
+|   > StackSlot(5)                                                              |
 | [RETURN STACK]:                                                               |
-|   [25][2][62]: If -> [21][Stat]<< !If @ >>                                    |
+|   [25][2][62]: If -> [21][Stat]<! !If @ !>                                    |
 |   [24][5][62]: Stat -> [14][If]< "if" "cond" "then" Stat @ +[ "else" Stat ] > |
-|   [23][2][54]: If -> [21][Stat]<< !If @ >>                                    |
+|   [23][2][54]: If -> [21][Stat]<! !If @ !>                                    |
 |   [22][4][54]: Stat -> [7][Block]< "{" { Stat @ } "}" >                       |
-|   [1][1][0]: Block -> [19][Stat]<< !Block @ >>                                |
+|   [1][1][0]: Block -> [19][Stat]<! !Block @ !>                                |
 |   [0][7][0]: Stat -> [24][Module]< Stat @ >                                   |
 | [CARRIED COMPETITION]:                                                        |
 |   [12]: competition[6][RS: 25] high                                           |
@@ -1243,14 +1281,18 @@
 |
 +-------------------------------------------------------------------------------+
 | [80]: <Ending>                                                                |
-| [21][Stat]<< !If @ >>                                                         |
+| [21][Stat]<! !If @ !>                                                         |
 | [AST-INSTRUCTIONS]:                                                           |
-|   - EndObject()                                                               |
+|   + CreateObject(IfStat)                                                      |
+|   + Field(IfStat::thenBranch, 3)                                              |
+|   + Field(IfStat::elseBranch, 5)                                              |
+|   + StackEnd()                                                                |
+|   > StackBegin()                                                              |
 | [RETURN STACK]:                                                               |
 |   [24][5][62]: Stat -> [14][If]< "if" "cond" "then" Stat @ +[ "else" Stat ] > |
-|   [23][2][54]: If -> [21][Stat]<< !If @ >>                                    |
+|   [23][2][54]: If -> [21][Stat]<! !If @ !>                                    |
 |   [22][4][54]: Stat -> [7][Block]< "{" { Stat @ } "}" >                       |
-|   [1][1][0]: Block -> [19][Stat]<< !Block @ >>                                |
+|   [1][1][0]: Block -> [19][Stat]<! !Block @ !>                                |
 |   [0][7][0]: Stat -> [24][Module]< Stat @ >                                   |
 | [CARRIED COMPETITION]:                                                        |
 |   [12]: competition[6][RS: 25] high                                           |
@@ -1268,15 +1310,14 @@
 | [81]: <Ending>                                          |
 | [14][If]< "if" "cond" "then" Stat @ +[ "else" Stat ] >  |
 | [HOLDING COMPETITION]:                                  |
-|   [8][LOW PRIORITY WIN][RULE: 2][CLAUSE: 0]             |
+|   [8][LOW PRIORITY WIN][RULE: 2][COMPID: 1]             |
 | [AST-INSTRUCTIONS]:                                     |
-|   - ReopenObject()                                      |
-|   - EndObject()                                         |
-|   > Field(IfStat::thenBranch)                           |
+|   + StackEnd()                                          |
+|   > StackSlot(3)                                        |
 | [RETURN STACK]:                                         |
-|   [23][2][54]: If -> [21][Stat]<< !If @ >>              |
+|   [23][2][54]: If -> [21][Stat]<! !If @ !>              |
 |   [22][4][54]: Stat -> [7][Block]< "{" { Stat @ } "}" > |
-|   [1][1][0]: Block -> [19][Stat]<< !Block @ >>          |
+|   [1][1][0]: Block -> [19][Stat]<! !Block @ !>          |
 |   [0][7][0]: Stat -> [24][Module]< Stat @ >             |
 | [CARRIED COMPETITION]:                                  |
 |   [12]: competition[6][RS: 25] high                     |
@@ -1292,12 +1333,16 @@
 |
 +---------------------------------------------------------+
 | [82]: <Ending>                                          |
-| [21][Stat]<< !If @ >>                                   |
+| [21][Stat]<! !If @ !>                                   |
 | [AST-INSTRUCTIONS]:                                     |
-|   - EndObject()                                         |
+|   + CreateObject(IfStat)                                |
+|   + Field(IfStat::thenBranch, 3)                        |
+|   + Field(IfStat::elseBranch, 5)                        |
+|   + StackEnd()                                          |
+|   > StackBegin()                                        |
 | [RETURN STACK]:                                         |
 |   [22][4][54]: Stat -> [7][Block]< "{" { Stat @ } "}" > |
-|   [1][1][0]: Block -> [19][Stat]<< !Block @ >>          |
+|   [1][1][0]: Block -> [19][Stat]<! !Block @ !>          |
 |   [0][7][0]: Stat -> [24][Module]< Stat @ >             |
 | [FIRST ATTENDING COMPETITION]:  [14]                    |
 | [CARRIED COMPETITION]:                                  |
@@ -1317,11 +1362,10 @@
 | [83]: <Ending>                                 |
 | [7][Block]< "{" { Stat @ } "}" >               |
 | [AST-INSTRUCTIONS]:                            |
-|   - ReopenObject()                             |
-|   - EndObject()                                |
-|   > Field(BlockStat::stats)                    |
+|   + StackEnd()                                 |
+|   > StackSlot(1)                               |
 | [RETURN STACK]:                                |
-|   [1][1][0]: Block -> [19][Stat]<< !Block @ >> |
+|   [1][1][0]: Block -> [19][Stat]<! !Block @ !> |
 |   [0][7][0]: Stat -> [24][Module]< Stat @ >    |
 | [FIRST ATTENDING COMPETITION]:  [14]           |
 | [CARRIED COMPETITION]:                         |
@@ -1343,8 +1387,9 @@
 || [89]: {CLOSE_BRACE} }                          ||
 || [8][Block]< "{" { Stat } "}" @ >               ||
 || [AST-INSTRUCTIONS]:                            ||
+||   + Token(2)                                   ||
 || [RETURN STACK]:                                ||
-||   [1][1][0]: Block -> [19][Stat]<< !Block @ >> ||
+||   [1][1][0]: Block -> [19][Stat]<! !Block @ !> ||
 ||   [0][7][0]: Stat -> [24][Module]< Stat @ >    ||
 || [CARRIED COMPETITION]:                         ||
 ||   [14]: competition[8][RS: 23] low             ||
@@ -1361,9 +1406,12 @@
 |
 +---------------------------------------------+
 | [90]: <Ending>                              |
-| [19][Stat]<< !Block @ >>                    |
+| [19][Stat]<! !Block @ !>                    |
 | [AST-INSTRUCTIONS]:                         |
-|   - EndObject()                             |
+|   + CreateObject(BlockStat)                 |
+|   + Field(BlockStat::stats, 1)              |
+|   + StackEnd()                              |
+|   > StackBegin()                            |
 | [RETURN STACK]:                             |
 |   [0][7][0]: Stat -> [24][Module]< Stat @ > |
 | [CARRIED COMPETITION]:                      |
@@ -1383,8 +1431,9 @@
 | [91]: <Ending>                      |
 | [24][Module]< Stat @ >              |
 | [AST-INSTRUCTIONS]:                 |
-|   - ReopenObject()                  |
-|   - EndObject()                     |
+|   + StackEnd()                      |
+|   > StackBegin()                    |
+|   > StackSlot(0)                    |
 | [CARRIED COMPETITION]:              |
 |   [14]: competition[8][RS: 23] low  |
 |   [12]: competition[6][RS: 25] high |
@@ -1402,8 +1451,9 @@
 | [92]: <Ending>                      |
 | [23][Module] END [ENDING]           |
 | [AST-INSTRUCTIONS]:                 |
-|   - Field(Module::stat)             |
-|   - EndObject()                     |
+|   + CreateObject(Module)            |
+|   + Field(Module::stat, 0)          |
+|   + StackEnd()                      |
 | [CARRIED COMPETITION]:              |
 |   [14]: competition[8][RS: 23] low  |
 |   [12]: competition[6][RS: 25] high |

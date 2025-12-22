@@ -118,24 +118,24 @@ namespace cpp_parser::builder
 		MakeDeclarationToResolve& candidates(const vl::Ptr<CppDeclaration>& value);
 	};
 
-	class MakeDeclarator : public vl::glr::ParsingAstBuilder<CppDeclarator>
-	{
-	public:
-		MakeDeclarator& advancedTypes(const vl::Ptr<CppAdvancedType>& value);
-		MakeDeclarator& arguments(const vl::Ptr<CppGenericArguments>& value);
-		MakeDeclarator& arrayParts(const vl::Ptr<CppDeclaratorArrayPart>& value);
-		MakeDeclarator& bitfield(const vl::Ptr<CppTypeOrExpr>& value);
-		MakeDeclarator& funcPart(const vl::Ptr<CppDeclaratorFunctionPart>& value);
-		MakeDeclarator& id(const vl::Ptr<CppIdentifier>& value);
-		MakeDeclarator& innerDeclarator(const vl::Ptr<CppDeclarator>& value);
-		MakeDeclarator& keywords(const vl::Ptr<CppDeclaratorKeyword>& value);
-		MakeDeclarator& variadic(const vl::WString& value);
-	};
-
 	class MakeDeclaratorArrayPart : public vl::glr::ParsingAstBuilder<CppDeclaratorArrayPart>
 	{
 	public:
 		MakeDeclaratorArrayPart& argument(const vl::Ptr<CppTypeOrExpr>& value);
+	};
+
+	class MakeDeclaratorCommon : public vl::glr::ParsingAstBuilder<CppDeclaratorCommon>
+	{
+	public:
+		MakeDeclaratorCommon& advancedTypes(const vl::Ptr<CppAdvancedType>& value);
+		MakeDeclaratorCommon& arguments(const vl::Ptr<CppGenericArguments>& value);
+		MakeDeclaratorCommon& arrayParts(const vl::Ptr<CppDeclaratorArrayPart>& value);
+		MakeDeclaratorCommon& bitfield(const vl::Ptr<CppTypeOrExpr>& value);
+		MakeDeclaratorCommon& funcPart(const vl::Ptr<CppDeclaratorFunctionPart>& value);
+		MakeDeclaratorCommon& id(const vl::Ptr<CppIdentifier>& value);
+		MakeDeclaratorCommon& innerDeclarator(const vl::Ptr<CppDeclarator>& value);
+		MakeDeclaratorCommon& keywords(const vl::Ptr<CppDeclaratorKeyword>& value);
+		MakeDeclaratorCommon& variadic(const vl::WString& value);
 	};
 
 	class MakeDeclaratorFunctionPartCommon : public vl::glr::ParsingAstBuilder<CppDeclaratorFunctionPartCommon>
@@ -157,6 +157,12 @@ namespace cpp_parser::builder
 	{
 	public:
 		MakeDeclaratorKeyword& keyword(const vl::WString& value);
+	};
+
+	class MakeDeclaratorToResolve : public vl::glr::ParsingAstBuilder<CppDeclaratorToResolve>
+	{
+	public:
+		MakeDeclaratorToResolve& candidates(const vl::Ptr<CppDeclarator>& value);
 	};
 
 	class MakeDeclaratorType : public vl::glr::ParsingAstBuilder<CppDeclaratorType>

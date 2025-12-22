@@ -12,10 +12,9 @@ namespace vl
 StateSymbol
 ***********************************************************************/
 
-			StateSymbol::StateSymbol(RuleSymbol* _rule, vint32_t _clauseId)
+			StateSymbol::StateSymbol(RuleSymbol* _rule)
 				: ownerManager(_rule->Owner())
 				, rule(_rule)
-				, clauseId(_clauseId)
 			{
 			}
 
@@ -33,18 +32,7 @@ StateSymbol
 								result = e1->input.token <=> e2->input.token;
 								if (result == 0)
 								{
-									if (e1->input.condition && e2->input.condition)
-									{
-										result = e1->input.condition.Value() <=> e2->input.condition.Value();
-									}
-									else if (e1->input.condition)
-									{
-										result = std::strong_ordering::greater;
-									}
-									else if (e2->input.condition)
-									{
-										result = std::strong_ordering::less;
-									}
+									result = e1->input.condition <=> e2->input.condition;
 								}
 								break;
 							case EdgeInputType::Rule:
@@ -53,9 +41,30 @@ StateSymbol
 							default:;
 							}
 						}
-
-						if (result != 0) return result;
-						return orderedStates.IndexOf(e1->To()) <=> orderedStates.IndexOf(e2->To());
+						if (result == 0)
+						{
+							result = orderedStates.IndexOf(e1->To()) <=> orderedStates.IndexOf(e2->To());
+						}
+						if (result == 0)
+						{
+							result = CompareEnumerable(e1->competitions, e2->competitions);
+						}
+						if (result == 0)
+						{
+							result = CompareEnumerable(e1->insAfterInput, e2->insAfterInput);
+						}
+						if (result == 0)
+						{
+							result = e1->returnEdges.Count() <=> e2->returnEdges.Count();
+						}
+						if (result == 0)
+						{
+							result = CompareEnumerable(
+								From(e1->returnEdges).Select([&](EdgeSymbol* e) { return orderedStates.IndexOf(e->To()); }),
+								From(e2->returnEdges).Select([&](EdgeSymbol* e) { return orderedStates.IndexOf(e->To()); })
+								);
+						}
+						return result;
 					}));
 			}
 
@@ -114,10 +123,10 @@ SyntaxSymbolManager
 				rules.Remove(name);
 			}
 
-			StateSymbol* SyntaxSymbolManager::CreateState(RuleSymbol* rule, vint32_t clauseId)
+			StateSymbol* SyntaxSymbolManager::CreateState(RuleSymbol* rule)
 			{
 				CHECK_ERROR(phase == SyntaxPhase::EpsilonNFA, L"vl::gre::parsergen::SyntaxSymbolManager::CreateState(RuleSymbol*)#Cannot change the automaton after calling BuildCompactSyntax().");
-				auto symbol = Ptr(new StateSymbol(rule, clauseId));
+				auto symbol = Ptr(new StateSymbol(rule));
 				states.Add(symbol);
 				return symbol.Obj();
 			}
@@ -182,6 +191,7 @@ SyntaxSymbolManager
 					for (auto ruleName : rules.order)
 					{
 						auto ruleSymbol = rules.map[ruleName];
+						if (ruleSymbol->isPartial) continue;
 						auto orderedStates = From(groupedStates[ruleSymbol])
 							.OrderByKey([](StateSymbol* s)
 							{

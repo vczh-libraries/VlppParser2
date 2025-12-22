@@ -33,10 +33,12 @@ AutomatonBuilder (Syntax)
 					edge->input.type = EdgeInputType::Token;
 					edge->input.token = tokenId;
 					edge->input.condition = condition;
+
+					vint count = usedFieldIds++;
+					edge->insAfterInput.Add({ AstInsType::Token,-1,count });
 					if (field != -1)
 					{
-						edge->insAfterInput.Add({ AstInsType::Token });
-						edge->insAfterInput.Add({ AstInsType::Field,field });
+						fieldIns.Add({ AstInsType::Field,field,count });
 					}
 				}
 
@@ -59,22 +61,23 @@ AutomatonBuilder (Syntax)
 					edge->input.rule = rule;
 					edge->input.ruleType = ruleType;
 
+					vint count = usedFieldIds++;
 					switch (ruleType)
 					{
 					case automaton::ReturnRuleType::Field:
 						CHECK_ERROR(field != -1, ERROR_MESSAGE_PREFIX L"Field must set for ReturnRuleType::Field.");
-						edge->insAfterInput.Add({ AstInsType::Field,field });
+						edge->insAfterInput.Add({ AstInsType::StackSlot,-1,count });
+						fieldIns.Add({ AstInsType::Field,field,count });
 						break;
 					case automaton::ReturnRuleType::Partial:
 						CHECK_ERROR(field == -1, ERROR_MESSAGE_PREFIX L"Field must not set for ReturnRuleType::Partial.");
 						break;
 					case automaton::ReturnRuleType::Discard:
 						CHECK_ERROR(field == -1, ERROR_MESSAGE_PREFIX L"Field must not set for ReturnRuleType::Discard.");
-						edge->insAfterInput.Add({ AstInsType::DiscardValue });
+						edge->insAfterInput.Add({ AstInsType::StackSlot,-1,count });
 						break;
 					case automaton::ReturnRuleType::Reuse:
 						CHECK_ERROR(field == -1, ERROR_MESSAGE_PREFIX L"Field must not set for ReturnRuleType::Reuse.");
-						edge->insAfterInput.Add({ AstInsType::ReopenObject });
 						break;
 					}
 				}
@@ -96,11 +99,6 @@ AutomatonBuilder (Syntax)
 			AutomatonBuilder::StatePair AutomatonBuilder::BuildFieldRuleSyntax(RuleSymbol* rule, vint32_t field)
 			{
 				return BuildRuleSyntaxInternal(rule, field, automaton::ReturnRuleType::Field);
-			}
-
-			AutomatonBuilder::StatePair AutomatonBuilder::BuildPartialRuleSyntax(RuleSymbol* rule)
-			{
-				return BuildRuleSyntaxInternal(rule, -1, automaton::ReturnRuleType::Partial);
 			}
 
 			AutomatonBuilder::StatePair AutomatonBuilder::BuildDiscardRuleSyntax(RuleSymbol* rule)
@@ -194,13 +192,11 @@ AutomatonBuilder (Syntax)
 				CreateEdge(bodyPair.end, pair.end);
 				auto skipEdge = CreateEdge(pair.begin, pair.end);
 
-				if (preferTake)
+				if (preferTake || preferSkip)
 				{
-					takeEdge->important = true;
-				}
-				if (preferSkip)
-				{
-					skipEdge->important = true;
+					vint32_t id = ++ruleSymbol->Owner()->usedCompetitionIds;
+					takeEdge->competitions.Add({ id,preferTake });
+					skipEdge->competitions.Add({ id,preferSkip });
 				}
 
 				endPoses.Add(pair.end, clauseDisplayText.Length());
@@ -260,7 +256,8 @@ AutomatonBuilder (Clause)
 
 			AutomatonBuilder::StatePair AutomatonBuilder::BuildClause(const StateBuilder& compileSyntax)
 			{
-				ruleSymbol->NewClause();
+				usedFieldIds = 0;
+				fieldIns.Clear();
 				clauseDisplayText = L"";
 				startPoses.Clear();
 				endPoses.Clear();
@@ -287,8 +284,9 @@ AutomatonBuilder (Clause)
 			{
 				auto withState = CreateState();
 				auto edge = CreateEdge(pair.end, withState);
-				edge->insBeforeInput.Add({ AstInsType::EnumItem,enumItem });
-				edge->insBeforeInput.Add({ (weakAssignment ? AstInsType::FieldIfUnassigned : AstInsType::Field),field});
+				vint count = usedFieldIds++;
+				edge->insAfterInput.Add({ AstInsType::EnumItem,enumItem,count });
+				fieldIns.Add({ (weakAssignment ? AstInsType::FieldIfUnassigned : AstInsType::Field),field,count});
 				endPoses.Add(withState, clauseDisplayText.Length());
 				return { pair.begin,withState };
 			}
@@ -305,19 +303,16 @@ AutomatonBuilder (Clause)
 				clauseDisplayText += L" >";
 				{
 					auto edge = CreateEdge(pair.begin, bodyPair.begin);
-					edge->insBeforeInput.Add({ AstInsType::BeginObject,classId });
+					edge->insAfterInput.Add({ AstInsType::StackBegin });
 				}
 				{
 					auto edge = CreateEdge(bodyPair.end, pair.end);
-					edge->insBeforeInput.Add({ AstInsType::EndObject });
+					edge->insAfterInput.Add({ AstInsType::CreateObject,classId });
+					CopyFrom(edge->insAfterInput, fieldIns, true);
+					edge->insAfterInput.Add({ AstInsType::StackEnd });
 				}
 				endPoses.Add(pair.end, clauseDisplayText.Length());
 				return pair;
-			}
-
-			AutomatonBuilder::StatePair AutomatonBuilder::BuildPartialClause(const StateBuilder& compileSyntax)
-			{
-				return compileSyntax();
 			}
 
 			AutomatonBuilder::StatePair AutomatonBuilder::BuildReuseClause(const StateBuilder& compileSyntax)
@@ -327,118 +322,20 @@ AutomatonBuilder (Clause)
 				pair.end = CreateState();
 				startPoses.Add(pair.begin, clauseDisplayText.Length());
 
-				clauseDisplayText += L"<< ";
+				clauseDisplayText += L"<! ";
 				auto bodyPair = compileSyntax();
-				clauseDisplayText += L" >>";
+				clauseDisplayText += L" !>";
 				{
 					auto edge = CreateEdge(pair.begin, bodyPair.begin);
-					edge->insBeforeInput.Add({ AstInsType::DelayFieldAssignment });
+					edge->insAfterInput.Add({ AstInsType::StackBegin });
 				}
 				{
 					auto edge = CreateEdge(bodyPair.end, pair.end);
-					edge->insBeforeInput.Add({ AstInsType::EndObject });
+					CopyFrom(edge->insAfterInput, fieldIns, true);
+					edge->insAfterInput.Add({ AstInsType::StackEnd });
 				}
 				endPoses.Add(pair.end, clauseDisplayText.Length());
 				return pair;
-			}
-
-			AutomatonBuilder::StatePair AutomatonBuilder::BuildLrpClause(collections::SortedList<vint32_t>& flags, const Func<WString(vint32_t)>& flagName)
-			{
-				/*
-				* S --+--(lrp:(a,b))--+--> E
-				*/
-
-				StatePair pair;
-				pair.begin = CreateState();
-				pair.end = CreateState();
-				startPoses.Add(pair.begin, clauseDisplayText.Length());
-
-				{
-					auto edge = CreateEdge(pair.begin, pair.end);
-					edge->input.type = EdgeInputType::LrPlaceholder;
-					CopyFrom(edge->input.flags, flags);
-				}
-
-				clauseDisplayText += L"lrp:(";
-				// TODO: (enumerable) Linq:Aggregate
-				for (vint i = 0; i < flags.Count(); i++)
-				{
-					if (i > 0) clauseDisplayText += L",";
-					clauseDisplayText += flagName(flags[i]);
-				}
-				clauseDisplayText += L")";
-				endPoses.Add(pair.end, clauseDisplayText.Length());
-				return pair;
-			}
-
-			AutomatonBuilder::StatePair AutomatonBuilder::BuildLriSyntax(collections::SortedList<vint32_t>& flags, RuleSymbol* rule, const Func<WString(vint32_t)>& flagName)
-			{
-				StatePair pair;
-				pair.begin = CreateState();
-				pair.end = CreateState();
-				startPoses.Add(pair.begin, clauseDisplayText.Length());
-
-				{
-					auto edge = CreateEdge(pair.begin, pair.end);
-					edge->input.type = EdgeInputType::LrInject;
-					CopyFrom(edge->input.flags, flags);
-					edge->input.rule = rule;
-					edge->input.ruleType = automaton::ReturnRuleType::Reuse;
-					edge->insAfterInput.Add({ AstInsType::ReopenObject });
-				}
-
-				clauseDisplayText += L"lri:(";
-				// TODO: (enumerable) Linq:Aggregate
-				for (vint i = 0; i < flags.Count(); i++)
-				{
-					if (i > 0) clauseDisplayText += L",";
-					clauseDisplayText += flagName(flags[i]);
-				}
-				clauseDisplayText += L")->" + rule->Name();
-				endPoses.Add(pair.end, clauseDisplayText.Length());
-				return pair;
-			}
-
-			AutomatonBuilder::StatePair AutomatonBuilder::BuildLriSkip()
-			{
-				StatePair pair;
-				pair.begin = CreateState();
-				pair.end = CreateState();
-				startPoses.Add(pair.begin, clauseDisplayText.Length());
-
-				{
-					auto edge = CreateEdge(pair.begin, pair.end);
-					edge->input.type = EdgeInputType::Epsilon;
-				}
-
-				clauseDisplayText += L"lri:<skip>";
-				endPoses.Add(pair.end, clauseDisplayText.Length());
-				return pair;
-			}
-
-			AutomatonBuilder::StatePair AutomatonBuilder::BuildLriClauseSyntax(StateBuilder useOrLriSyntax, bool optional, collections::List<StateBuilder>&& continuations)
-			{
-				/*
-				*                                                   +--(lri:c:ReopenObject)--+
-				*                                                   |                        |
-				*                          +--(lri:a:ReopenObject)--+--(lri:d:ReopenObject)--+--+
-				*                          |                        |                        |  |
-				*                          |                        +------------------------+  | {<-- if optional}
-				*                          |                                                    V
-				* S --(rule:ReopenObject)--+--(lri:b:ReopenObject)------------------------------+--> E
-				*                          |                                                    ^
-				*                          +----------------------------------------------------+  {<-- if optional}
-				*/
-
-				if (optional)
-				{
-					continuations.Add([this]() { return BuildLriSkip(); });
-				}
-
-				List<StateBuilder> seqs;
-				seqs.Add(useOrLriSyntax);
-				seqs.Add([this, &continuations]() { return BuildAlternativeSyntax(continuations); });
-				return BuildSequenceSyntax(seqs);
 			}
 		}
 	}

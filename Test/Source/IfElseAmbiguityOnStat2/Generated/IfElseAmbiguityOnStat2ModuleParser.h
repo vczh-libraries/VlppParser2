@@ -19,8 +19,8 @@ namespace ifelseambiguityonstat2
 		Block = 4,
 		IfThenStat = 9,
 		If = 15,
-		Stat = 21,
-		Module = 26,
+		Stat = 20,
+		Module = 25,
 	};
 
 	const wchar_t* ModuleParserRuleName(vl::vint index);

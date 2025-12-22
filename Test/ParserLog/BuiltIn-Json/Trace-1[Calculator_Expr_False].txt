@@ -1,5 +1,5 @@
 ﻿================ EXECUTION STEPS ================
-[0]: 0@0 - 32@1
+[0]: 0@0 - 32@0
 
 ==================== TRACES =====================
 
@@ -18,10 +18,10 @@
 || [1]: {OBJOPEN} {                                    ||
 || [14][JObject]< "{" @ { JField ; "," } "}" >         ||
 || [AST-INSTRUCTIONS]:                                 ||
-||   - DelayFieldAssignment()                          ||
-||   - BeginObject(Object)                             ||
+||   + StackBegin()                                    ||
+||   + Token(0)                                        ||
 || [RETURN STACK]:                                     ||
-||   [0][8][0]: JObject -> [32][JRoot]<< !JObject @ >> ||
+||   [0][8][0]: JObject -> [32][JRoot]<! !JObject @ !> ||
 || [PREDECESSORS 0-0]: [0]                             ||
 || [SUCCESORS 2-2]: [2]                                ||
 ++=====================================================++
@@ -34,12 +34,11 @@
 || [2]: {STRING} "$ast"                                               ||
 || [11][JField]< STRING @ ":" JValue >                                ||
 || [AST-INSTRUCTIONS]:                                                ||
-||   - BeginObject(ObjectField)                                       ||
-||   + Token()                                                        ||
-||   + Field(ObjectField::name)                                       ||
+||   + StackBegin()                                                   ||
+||   + Token(0)                                                       ||
 || [RETURN STACK]:                                                    ||
 ||   [1][4][1]: JField -> [17][JObject]< "{" { JField @ ; "," } "}" > ||
-||   [0][8][0]: JObject -> [32][JRoot]<< !JObject @ >>                ||
+||   [0][8][0]: JObject -> [32][JRoot]<! !JObject @ !>                ||
 || [PREDECESSORS 1-1]: [1]                                            ||
 || [SUCCESORS 3-3]: [3]                                               ||
 ++====================================================================++
@@ -52,9 +51,10 @@
 || [3]: {COLON} :                                                     ||
 || [9][JField]< STRING ":" @ JValue >                                 ||
 || [AST-INSTRUCTIONS]:                                                ||
+||   + Token(1)                                                       ||
 || [RETURN STACK]:                                                    ||
 ||   [1][4][1]: JField -> [17][JObject]< "{" { JField @ ; "," } "}" > ||
-||   [0][8][0]: JObject -> [32][JRoot]<< !JObject @ >>                ||
+||   [0][8][0]: JObject -> [32][JRoot]<! !JObject @ !>                ||
 || [PREDECESSORS 2-2]: [2]                                            ||
 || [SUCCESORS 4-4]: [4]                                               ||
 ++====================================================================++
@@ -67,15 +67,13 @@
 || [4]: {STRING} "Module"                                             ||
 || [6][JLiteral]< STRING @ >                                          ||
 || [AST-INSTRUCTIONS]:                                                ||
-||   - DelayFieldAssignment()                                         ||
-||   - BeginObject(String)                                            ||
-||   + Token()                                                        ||
-||   + Field(String::content)                                         ||
+||   + StackBegin()                                                   ||
+||   + Token(0)                                                       ||
 || [RETURN STACK]:                                                    ||
-||   [3][1][3]: JLiteral -> [27][JValue]<< !JLiteral @ >>             ||
+||   [3][1][3]: JLiteral -> [27][JValue]<! !JLiteral @ !>             ||
 ||   [2][0][3]: JValue -> [10][JField]< STRING ":" JValue @ >         ||
 ||   [1][4][1]: JField -> [17][JObject]< "{" { JField @ ; "," } "}" > ||
-||   [0][8][0]: JObject -> [32][JRoot]<< !JObject @ >>                ||
+||   [0][8][0]: JObject -> [32][JRoot]<! !JObject @ !>                ||
 || [PREDECESSORS 3-3]: [3]                                            ||
 || [SUCCESORS 5-5]: [5]                                               ||
 ++====================================================================++
@@ -84,13 +82,16 @@
 |
 +--------------------------------------------------------------------+
 | [5]: <Ending>                                                      |
-| [27][JValue]<< !JLiteral @ >>                                      |
+| [27][JValue]<! !JLiteral @ !>                                      |
 | [AST-INSTRUCTIONS]:                                                |
-|   - EndObject()                                                    |
+|   + CreateObject(String)                                           |
+|   + Field(String::content, 0)                                      |
+|   + StackEnd()                                                     |
+|   > StackBegin()                                                   |
 | [RETURN STACK]:                                                    |
 |   [2][0][3]: JValue -> [10][JField]< STRING ":" JValue @ >         |
 |   [1][4][1]: JField -> [17][JObject]< "{" { JField @ ; "," } "}" > |
-|   [0][8][0]: JObject -> [32][JRoot]<< !JObject @ >>                |
+|   [0][8][0]: JObject -> [32][JRoot]<! !JObject @ !>                |
 | [PREDECESSORS 4-4]: [4]                                            |
 | [SUCCESORS 6-6]: [6]                                               |
 +--------------------------------------------------------------------+
@@ -101,12 +102,11 @@
 | [6]: <Ending>                                                      |
 | [10][JField]< STRING ":" JValue @ >                                |
 | [AST-INSTRUCTIONS]:                                                |
-|   - ReopenObject()                                                 |
-|   - EndObject()                                                    |
-|   > Field(ObjectField::value)                                      |
+|   + StackEnd()                                                     |
+|   > StackSlot(2)                                                   |
 | [RETURN STACK]:                                                    |
 |   [1][4][1]: JField -> [17][JObject]< "{" { JField @ ; "," } "}" > |
-|   [0][8][0]: JObject -> [32][JRoot]<< !JObject @ >>                |
+|   [0][8][0]: JObject -> [32][JRoot]<! !JObject @ !>                |
 | [PREDECESSORS 5-5]: [5]                                            |
 | [SUCCESORS 7-7]: [7]                                               |
 +--------------------------------------------------------------------+
@@ -117,10 +117,13 @@
 | [7]: <Ending>                                       |
 | [17][JObject]< "{" { JField @ ; "," } "}" >         |
 | [AST-INSTRUCTIONS]:                                 |
-|   - EndObject()                                     |
-|   > Field(Object::fields)                           |
+|   + CreateObject(ObjectField)                       |
+|   + Field(ObjectField::name, 0)                     |
+|   + Field(ObjectField::value, 2)                    |
+|   + StackEnd()                                      |
+|   > StackSlot(1)                                    |
 | [RETURN STACK]:                                     |
-|   [0][8][0]: JObject -> [32][JRoot]<< !JObject @ >> |
+|   [0][8][0]: JObject -> [32][JRoot]<! !JObject @ !> |
 | [PREDECESSORS 6-6]: [6]                             |
 | [SUCCESORS 8-8]: [8]                                |
 +-----------------------------------------------------+
@@ -133,8 +136,9 @@
 || [8]: {COMMA} ,                                      ||
 || [15][JObject]< "{" { JField ; "," @ } "}" >         ||
 || [AST-INSTRUCTIONS]:                                 ||
+||   + Token(2)                                        ||
 || [RETURN STACK]:                                     ||
-||   [0][8][0]: JObject -> [32][JRoot]<< !JObject @ >> ||
+||   [0][8][0]: JObject -> [32][JRoot]<! !JObject @ !> ||
 || [PREDECESSORS 7-7]: [7]                             ||
 || [SUCCESORS 9-9]: [9]                                ||
 ++=====================================================++
@@ -147,12 +151,11 @@
 || [9]: {STRING} "exported"                                           ||
 || [11][JField]< STRING @ ":" JValue >                                ||
 || [AST-INSTRUCTIONS]:                                                ||
-||   - BeginObject(ObjectField)                                       ||
-||   + Token()                                                        ||
-||   + Field(ObjectField::name)                                       ||
+||   + StackBegin()                                                   ||
+||   + Token(0)                                                       ||
 || [RETURN STACK]:                                                    ||
 ||   [4][5][8]: JField -> [17][JObject]< "{" { JField @ ; "," } "}" > ||
-||   [0][8][0]: JObject -> [32][JRoot]<< !JObject @ >>                ||
+||   [0][8][0]: JObject -> [32][JRoot]<! !JObject @ !>                ||
 || [PREDECESSORS 8-8]: [8]                                            ||
 || [SUCCESORS 10-10]: [10]                                            ||
 ++====================================================================++
@@ -165,9 +168,10 @@
 || [10]: {COLON} :                                                    ||
 || [9][JField]< STRING ":" @ JValue >                                 ||
 || [AST-INSTRUCTIONS]:                                                ||
+||   + Token(1)                                                       ||
 || [RETURN STACK]:                                                    ||
 ||   [4][5][8]: JField -> [17][JObject]< "{" { JField @ ; "," } "}" > ||
-||   [0][8][0]: JObject -> [32][JRoot]<< !JObject @ >>                ||
+||   [0][8][0]: JObject -> [32][JRoot]<! !JObject @ !>                ||
 || [PREDECESSORS 9-9]: [9]                                            ||
 || [SUCCESORS 11-11]: [11]                                            ||
 ++====================================================================++
@@ -180,13 +184,13 @@
 || [11]: {OBJOPEN} {                                                  ||
 || [14][JObject]< "{" @ { JField ; "," } "}" >                        ||
 || [AST-INSTRUCTIONS]:                                                ||
-||   - DelayFieldAssignment()                                         ||
-||   - BeginObject(Object)                                            ||
+||   + StackBegin()                                                   ||
+||   + Token(0)                                                       ||
 || [RETURN STACK]:                                                    ||
-||   [6][2][10]: JObject -> [28][JValue]<< !JObject @ >>              ||
+||   [6][2][10]: JObject -> [28][JValue]<! !JObject @ !>              ||
 ||   [5][0][10]: JValue -> [10][JField]< STRING ":" JValue @ >        ||
 ||   [4][5][8]: JField -> [17][JObject]< "{" { JField @ ; "," } "}" > ||
-||   [0][8][0]: JObject -> [32][JRoot]<< !JObject @ >>                ||
+||   [0][8][0]: JObject -> [32][JRoot]<! !JObject @ !>                ||
 || [PREDECESSORS 10-10]: [10]                                         ||
 || [SUCCESORS 12-12]: [12]                                            ||
 ++====================================================================++
@@ -199,15 +203,14 @@
 || [12]: {STRING} "$ast"                                               ||
 || [11][JField]< STRING @ ":" JValue >                                 ||
 || [AST-INSTRUCTIONS]:                                                 ||
-||   - BeginObject(ObjectField)                                        ||
-||   + Token()                                                         ||
-||   + Field(ObjectField::name)                                        ||
+||   + StackBegin()                                                    ||
+||   + Token(0)                                                        ||
 || [RETURN STACK]:                                                     ||
 ||   [7][4][11]: JField -> [17][JObject]< "{" { JField @ ; "," } "}" > ||
-||   [6][2][10]: JObject -> [28][JValue]<< !JObject @ >>               ||
+||   [6][2][10]: JObject -> [28][JValue]<! !JObject @ !>               ||
 ||   [5][0][10]: JValue -> [10][JField]< STRING ":" JValue @ >         ||
 ||   [4][5][8]: JField -> [17][JObject]< "{" { JField @ ; "," } "}" >  ||
-||   [0][8][0]: JObject -> [32][JRoot]<< !JObject @ >>                 ||
+||   [0][8][0]: JObject -> [32][JRoot]<! !JObject @ !>                 ||
 || [PREDECESSORS 11-11]: [11]                                          ||
 || [SUCCESORS 13-13]: [13]                                             ||
 ++=====================================================================++
@@ -220,12 +223,13 @@
 || [13]: {COLON} :                                                     ||
 || [9][JField]< STRING ":" @ JValue >                                  ||
 || [AST-INSTRUCTIONS]:                                                 ||
+||   + Token(1)                                                        ||
 || [RETURN STACK]:                                                     ||
 ||   [7][4][11]: JField -> [17][JObject]< "{" { JField @ ; "," } "}" > ||
-||   [6][2][10]: JObject -> [28][JValue]<< !JObject @ >>               ||
+||   [6][2][10]: JObject -> [28][JValue]<! !JObject @ !>               ||
 ||   [5][0][10]: JValue -> [10][JField]< STRING ":" JValue @ >         ||
 ||   [4][5][8]: JField -> [17][JObject]< "{" { JField @ ; "," } "}" >  ||
-||   [0][8][0]: JObject -> [32][JRoot]<< !JObject @ >>                 ||
+||   [0][8][0]: JObject -> [32][JRoot]<! !JObject @ !>                 ||
 || [PREDECESSORS 12-12]: [12]                                          ||
 || [SUCCESORS 14-14]: [14]                                             ||
 ++=====================================================================++
@@ -238,18 +242,16 @@
 || [14]: {STRING} "False"                                              ||
 || [6][JLiteral]< STRING @ >                                           ||
 || [AST-INSTRUCTIONS]:                                                 ||
-||   - DelayFieldAssignment()                                          ||
-||   - BeginObject(String)                                             ||
-||   + Token()                                                         ||
-||   + Field(String::content)                                          ||
+||   + StackBegin()                                                    ||
+||   + Token(0)                                                        ||
 || [RETURN STACK]:                                                     ||
-||   [9][1][13]: JLiteral -> [27][JValue]<< !JLiteral @ >>             ||
+||   [9][1][13]: JLiteral -> [27][JValue]<! !JLiteral @ !>             ||
 ||   [8][0][13]: JValue -> [10][JField]< STRING ":" JValue @ >         ||
 ||   [7][4][11]: JField -> [17][JObject]< "{" { JField @ ; "," } "}" > ||
-||   [6][2][10]: JObject -> [28][JValue]<< !JObject @ >>               ||
+||   [6][2][10]: JObject -> [28][JValue]<! !JObject @ !>               ||
 ||   [5][0][10]: JValue -> [10][JField]< STRING ":" JValue @ >         ||
 ||   [4][5][8]: JField -> [17][JObject]< "{" { JField @ ; "," } "}" >  ||
-||   [0][8][0]: JObject -> [32][JRoot]<< !JObject @ >>                 ||
+||   [0][8][0]: JObject -> [32][JRoot]<! !JObject @ !>                 ||
 || [PREDECESSORS 13-13]: [13]                                          ||
 || [SUCCESORS 15-15]: [15]                                             ||
 ++=====================================================================++
@@ -258,16 +260,19 @@
 |
 +---------------------------------------------------------------------+
 | [15]: <Ending>                                                      |
-| [27][JValue]<< !JLiteral @ >>                                       |
+| [27][JValue]<! !JLiteral @ !>                                       |
 | [AST-INSTRUCTIONS]:                                                 |
-|   - EndObject()                                                     |
+|   + CreateObject(String)                                            |
+|   + Field(String::content, 0)                                       |
+|   + StackEnd()                                                      |
+|   > StackBegin()                                                    |
 | [RETURN STACK]:                                                     |
 |   [8][0][13]: JValue -> [10][JField]< STRING ":" JValue @ >         |
 |   [7][4][11]: JField -> [17][JObject]< "{" { JField @ ; "," } "}" > |
-|   [6][2][10]: JObject -> [28][JValue]<< !JObject @ >>               |
+|   [6][2][10]: JObject -> [28][JValue]<! !JObject @ !>               |
 |   [5][0][10]: JValue -> [10][JField]< STRING ":" JValue @ >         |
 |   [4][5][8]: JField -> [17][JObject]< "{" { JField @ ; "," } "}" >  |
-|   [0][8][0]: JObject -> [32][JRoot]<< !JObject @ >>                 |
+|   [0][8][0]: JObject -> [32][JRoot]<! !JObject @ !>                 |
 | [PREDECESSORS 14-14]: [14]                                          |
 | [SUCCESORS 16-16]: [16]                                             |
 +---------------------------------------------------------------------+
@@ -278,15 +283,14 @@
 | [16]: <Ending>                                                      |
 | [10][JField]< STRING ":" JValue @ >                                 |
 | [AST-INSTRUCTIONS]:                                                 |
-|   - ReopenObject()                                                  |
-|   - EndObject()                                                     |
-|   > Field(ObjectField::value)                                       |
+|   + StackEnd()                                                      |
+|   > StackSlot(2)                                                    |
 | [RETURN STACK]:                                                     |
 |   [7][4][11]: JField -> [17][JObject]< "{" { JField @ ; "," } "}" > |
-|   [6][2][10]: JObject -> [28][JValue]<< !JObject @ >>               |
+|   [6][2][10]: JObject -> [28][JValue]<! !JObject @ !>               |
 |   [5][0][10]: JValue -> [10][JField]< STRING ":" JValue @ >         |
 |   [4][5][8]: JField -> [17][JObject]< "{" { JField @ ; "," } "}" >  |
-|   [0][8][0]: JObject -> [32][JRoot]<< !JObject @ >>                 |
+|   [0][8][0]: JObject -> [32][JRoot]<! !JObject @ !>                 |
 | [PREDECESSORS 15-15]: [15]                                          |
 | [SUCCESORS 17-17]: [17]                                             |
 +---------------------------------------------------------------------+
@@ -297,13 +301,16 @@
 | [17]: <Ending>                                                     |
 | [17][JObject]< "{" { JField @ ; "," } "}" >                        |
 | [AST-INSTRUCTIONS]:                                                |
-|   - EndObject()                                                    |
-|   > Field(Object::fields)                                          |
+|   + CreateObject(ObjectField)                                      |
+|   + Field(ObjectField::name, 0)                                    |
+|   + Field(ObjectField::value, 2)                                   |
+|   + StackEnd()                                                     |
+|   > StackSlot(1)                                                   |
 | [RETURN STACK]:                                                    |
-|   [6][2][10]: JObject -> [28][JValue]<< !JObject @ >>              |
+|   [6][2][10]: JObject -> [28][JValue]<! !JObject @ !>              |
 |   [5][0][10]: JValue -> [10][JField]< STRING ":" JValue @ >        |
 |   [4][5][8]: JField -> [17][JObject]< "{" { JField @ ; "," } "}" > |
-|   [0][8][0]: JObject -> [32][JRoot]<< !JObject @ >>                |
+|   [0][8][0]: JObject -> [32][JRoot]<! !JObject @ !>                |
 | [PREDECESSORS 16-16]: [16]                                         |
 | [SUCCESORS 18-18]: [18]                                            |
 +--------------------------------------------------------------------+
@@ -316,11 +323,12 @@
 || [18]: {OBJCLOSE} }                                                 ||
 || [16][JObject]< "{" { JField ; "," } "}" @ >                        ||
 || [AST-INSTRUCTIONS]:                                                ||
+||   + Token(3)                                                       ||
 || [RETURN STACK]:                                                    ||
-||   [6][2][10]: JObject -> [28][JValue]<< !JObject @ >>              ||
+||   [6][2][10]: JObject -> [28][JValue]<! !JObject @ !>              ||
 ||   [5][0][10]: JValue -> [10][JField]< STRING ":" JValue @ >        ||
 ||   [4][5][8]: JField -> [17][JObject]< "{" { JField @ ; "," } "}" > ||
-||   [0][8][0]: JObject -> [32][JRoot]<< !JObject @ >>                ||
+||   [0][8][0]: JObject -> [32][JRoot]<! !JObject @ !>                ||
 || [PREDECESSORS 17-17]: [17]                                         ||
 || [SUCCESORS 19-19]: [19]                                            ||
 ++====================================================================++
@@ -329,13 +337,16 @@
 |
 +--------------------------------------------------------------------+
 | [19]: <Ending>                                                     |
-| [28][JValue]<< !JObject @ >>                                       |
+| [28][JValue]<! !JObject @ !>                                       |
 | [AST-INSTRUCTIONS]:                                                |
-|   - EndObject()                                                    |
+|   + CreateObject(Object)                                           |
+|   + Field(Object::fields, 1)                                       |
+|   + StackEnd()                                                     |
+|   > StackBegin()                                                   |
 | [RETURN STACK]:                                                    |
 |   [5][0][10]: JValue -> [10][JField]< STRING ":" JValue @ >        |
 |   [4][5][8]: JField -> [17][JObject]< "{" { JField @ ; "," } "}" > |
-|   [0][8][0]: JObject -> [32][JRoot]<< !JObject @ >>                |
+|   [0][8][0]: JObject -> [32][JRoot]<! !JObject @ !>                |
 | [PREDECESSORS 18-18]: [18]                                         |
 | [SUCCESORS 20-20]: [20]                                            |
 +--------------------------------------------------------------------+
@@ -346,12 +357,11 @@
 | [20]: <Ending>                                                     |
 | [10][JField]< STRING ":" JValue @ >                                |
 | [AST-INSTRUCTIONS]:                                                |
-|   - ReopenObject()                                                 |
-|   - EndObject()                                                    |
-|   > Field(ObjectField::value)                                      |
+|   + StackEnd()                                                     |
+|   > StackSlot(2)                                                   |
 | [RETURN STACK]:                                                    |
 |   [4][5][8]: JField -> [17][JObject]< "{" { JField @ ; "," } "}" > |
-|   [0][8][0]: JObject -> [32][JRoot]<< !JObject @ >>                |
+|   [0][8][0]: JObject -> [32][JRoot]<! !JObject @ !>                |
 | [PREDECESSORS 19-19]: [19]                                         |
 | [SUCCESORS 21-21]: [21]                                            |
 +--------------------------------------------------------------------+
@@ -362,10 +372,13 @@
 | [21]: <Ending>                                      |
 | [17][JObject]< "{" { JField @ ; "," } "}" >         |
 | [AST-INSTRUCTIONS]:                                 |
-|   - EndObject()                                     |
-|   > Field(Object::fields)                           |
+|   + CreateObject(ObjectField)                       |
+|   + Field(ObjectField::name, 0)                     |
+|   + Field(ObjectField::value, 2)                    |
+|   + StackEnd()                                      |
+|   > StackSlot(1)                                    |
 | [RETURN STACK]:                                     |
-|   [0][8][0]: JObject -> [32][JRoot]<< !JObject @ >> |
+|   [0][8][0]: JObject -> [32][JRoot]<! !JObject @ !> |
 | [PREDECESSORS 20-20]: [20]                          |
 | [SUCCESORS 22-22]: [22]                             |
 +-----------------------------------------------------+
@@ -378,8 +391,9 @@
 || [22]: {COMMA} ,                                     ||
 || [15][JObject]< "{" { JField ; "," @ } "}" >         ||
 || [AST-INSTRUCTIONS]:                                 ||
+||   + Token(2)                                        ||
 || [RETURN STACK]:                                     ||
-||   [0][8][0]: JObject -> [32][JRoot]<< !JObject @ >> ||
+||   [0][8][0]: JObject -> [32][JRoot]<! !JObject @ !> ||
 || [PREDECESSORS 21-21]: [21]                          ||
 || [SUCCESORS 23-23]: [23]                             ||
 ++=====================================================++
@@ -392,12 +406,11 @@
 || [23]: {STRING} "imports"                                             ||
 || [11][JField]< STRING @ ":" JValue >                                  ||
 || [AST-INSTRUCTIONS]:                                                  ||
-||   - BeginObject(ObjectField)                                         ||
-||   + Token()                                                          ||
-||   + Field(ObjectField::name)                                         ||
+||   + StackBegin()                                                     ||
+||   + Token(0)                                                         ||
 || [RETURN STACK]:                                                      ||
 ||   [10][5][22]: JField -> [17][JObject]< "{" { JField @ ; "," } "}" > ||
-||   [0][8][0]: JObject -> [32][JRoot]<< !JObject @ >>                  ||
+||   [0][8][0]: JObject -> [32][JRoot]<! !JObject @ !>                  ||
 || [PREDECESSORS 22-22]: [22]                                           ||
 || [SUCCESORS 24-24]: [24]                                              ||
 ++======================================================================++
@@ -410,9 +423,10 @@
 || [24]: {COLON} :                                                      ||
 || [9][JField]< STRING ":" @ JValue >                                   ||
 || [AST-INSTRUCTIONS]:                                                  ||
+||   + Token(1)                                                         ||
 || [RETURN STACK]:                                                      ||
 ||   [10][5][22]: JField -> [17][JObject]< "{" { JField @ ; "," } "}" > ||
-||   [0][8][0]: JObject -> [32][JRoot]<< !JObject @ >>                  ||
+||   [0][8][0]: JObject -> [32][JRoot]<! !JObject @ !>                  ||
 || [PREDECESSORS 23-23]: [23]                                           ||
 || [SUCCESORS 25-25]: [25]                                              ||
 ++======================================================================++
@@ -425,13 +439,13 @@
 || [25]: {ARROPEN} [                                                    ||
 || [20][JArray]< "[" @ { JValue ; "," } "]" >                           ||
 || [AST-INSTRUCTIONS]:                                                  ||
-||   - DelayFieldAssignment()                                           ||
-||   - BeginObject(Array)                                               ||
+||   + StackBegin()                                                     ||
+||   + Token(0)                                                         ||
 || [RETURN STACK]:                                                      ||
-||   [12][3][24]: JArray -> [26][JValue]<< !JArray @ >>                 ||
+||   [12][3][24]: JArray -> [26][JValue]<! !JArray @ !>                 ||
 ||   [11][0][24]: JValue -> [10][JField]< STRING ":" JValue @ >         ||
 ||   [10][5][22]: JField -> [17][JObject]< "{" { JField @ ; "," } "}" > ||
-||   [0][8][0]: JObject -> [32][JRoot]<< !JObject @ >>                  ||
+||   [0][8][0]: JObject -> [32][JRoot]<! !JObject @ !>                  ||
 || [PREDECESSORS 24-24]: [24]                                           ||
 || [SUCCESORS 26-26]: [26]                                              ||
 ++======================================================================++
@@ -444,11 +458,12 @@
 || [26]: {ARRCLOSE} ]                                                   ||
 || [22][JArray]< "[" { JValue ; "," } "]" @ >                           ||
 || [AST-INSTRUCTIONS]:                                                  ||
+||   + Token(3)                                                         ||
 || [RETURN STACK]:                                                      ||
-||   [12][3][24]: JArray -> [26][JValue]<< !JArray @ >>                 ||
+||   [12][3][24]: JArray -> [26][JValue]<! !JArray @ !>                 ||
 ||   [11][0][24]: JValue -> [10][JField]< STRING ":" JValue @ >         ||
 ||   [10][5][22]: JField -> [17][JObject]< "{" { JField @ ; "," } "}" > ||
-||   [0][8][0]: JObject -> [32][JRoot]<< !JObject @ >>                  ||
+||   [0][8][0]: JObject -> [32][JRoot]<! !JObject @ !>                  ||
 || [PREDECESSORS 25-25]: [25]                                           ||
 || [SUCCESORS 27-27]: [27]                                              ||
 ++======================================================================++
@@ -457,13 +472,16 @@
 |
 +----------------------------------------------------------------------+
 | [27]: <Ending>                                                       |
-| [26][JValue]<< !JArray @ >>                                          |
+| [26][JValue]<! !JArray @ !>                                          |
 | [AST-INSTRUCTIONS]:                                                  |
-|   - EndObject()                                                      |
+|   + CreateObject(Array)                                              |
+|   + Field(Array::items, 1)                                           |
+|   + StackEnd()                                                       |
+|   > StackBegin()                                                     |
 | [RETURN STACK]:                                                      |
 |   [11][0][24]: JValue -> [10][JField]< STRING ":" JValue @ >         |
 |   [10][5][22]: JField -> [17][JObject]< "{" { JField @ ; "," } "}" > |
-|   [0][8][0]: JObject -> [32][JRoot]<< !JObject @ >>                  |
+|   [0][8][0]: JObject -> [32][JRoot]<! !JObject @ !>                  |
 | [PREDECESSORS 26-26]: [26]                                           |
 | [SUCCESORS 28-28]: [28]                                              |
 +----------------------------------------------------------------------+
@@ -474,12 +492,11 @@
 | [28]: <Ending>                                                       |
 | [10][JField]< STRING ":" JValue @ >                                  |
 | [AST-INSTRUCTIONS]:                                                  |
-|   - ReopenObject()                                                   |
-|   - EndObject()                                                      |
-|   > Field(ObjectField::value)                                        |
+|   + StackEnd()                                                       |
+|   > StackSlot(2)                                                     |
 | [RETURN STACK]:                                                      |
 |   [10][5][22]: JField -> [17][JObject]< "{" { JField @ ; "," } "}" > |
-|   [0][8][0]: JObject -> [32][JRoot]<< !JObject @ >>                  |
+|   [0][8][0]: JObject -> [32][JRoot]<! !JObject @ !>                  |
 | [PREDECESSORS 27-27]: [27]                                           |
 | [SUCCESORS 29-29]: [29]                                              |
 +----------------------------------------------------------------------+
@@ -490,10 +507,13 @@
 | [29]: <Ending>                                      |
 | [17][JObject]< "{" { JField @ ; "," } "}" >         |
 | [AST-INSTRUCTIONS]:                                 |
-|   - EndObject()                                     |
-|   > Field(Object::fields)                           |
+|   + CreateObject(ObjectField)                       |
+|   + Field(ObjectField::name, 0)                     |
+|   + Field(ObjectField::value, 2)                    |
+|   + StackEnd()                                      |
+|   > StackSlot(1)                                    |
 | [RETURN STACK]:                                     |
-|   [0][8][0]: JObject -> [32][JRoot]<< !JObject @ >> |
+|   [0][8][0]: JObject -> [32][JRoot]<! !JObject @ !> |
 | [PREDECESSORS 28-28]: [28]                          |
 | [SUCCESORS 30-30]: [30]                             |
 +-----------------------------------------------------+
@@ -506,22 +526,26 @@
 || [30]: {OBJCLOSE} }                                  ||
 || [16][JObject]< "{" { JField ; "," } "}" @ >         ||
 || [AST-INSTRUCTIONS]:                                 ||
+||   + Token(3)                                        ||
 || [RETURN STACK]:                                     ||
-||   [0][8][0]: JObject -> [32][JRoot]<< !JObject @ >> ||
+||   [0][8][0]: JObject -> [32][JRoot]<! !JObject @ !> ||
 || [PREDECESSORS 29-29]: [29]                          ||
 || [SUCCESORS 31-31]: [31]                             ||
 ++=====================================================++
 |
 +
 |
-+-----------------------------+
-| [31]: <Ending>              |
-| [32][JRoot]<< !JObject @ >> |
-| [AST-INSTRUCTIONS]:         |
-|   - EndObject()             |
-| [PREDECESSORS 30-30]: [30]  |
-| [SUCCESORS 32-32]: [32]     |
-+-----------------------------+
++------------------------------+
+| [31]: <Ending>               |
+| [32][JRoot]<! !JObject @ !>  |
+| [AST-INSTRUCTIONS]:          |
+|   + CreateObject(Object)     |
+|   + Field(Object::fields, 1) |
+|   + StackEnd()               |
+|   > StackBegin()             |
+| [PREDECESSORS 30-30]: [30]   |
+| [SUCCESORS 32-32]: [32]      |
++------------------------------+
 |
 +
 |
@@ -529,7 +553,6 @@
 | [32]: <Ending>             |
 | [30][JRoot] END [ENDING]   |
 | [AST-INSTRUCTIONS]:        |
-|   - ReopenObject()         |
-|   - EndObject()            |
+|   + StackEnd()             |
 | [PREDECESSORS 31-31]: [31] |
 +----------------------------+

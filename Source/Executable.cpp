@@ -25,6 +25,16 @@ namespace vl
 				SERIALIZE(count)
 			END_SERIALIZATION
 
+			BEGIN_SERIALIZATION(CompetitionArray)
+				SERIALIZE(start)
+				SERIALIZE(count)
+			END_SERIALIZATION
+
+			BEGIN_SERIALIZATION(CompetitionDesc)
+				SERIALIZE(competitionId)
+				SERIALIZE(highPriority)
+			END_SERIALIZATION
+
 			BEGIN_SERIALIZATION(ReturnIndexArray)
 				SERIALIZE(start)
 				SERIALIZE(count)
@@ -38,7 +48,7 @@ namespace vl
 			BEGIN_SERIALIZATION(ReturnDesc)
 				SERIALIZE(consumedRule)
 				SERIALIZE(returnState)
-				SERIALIZE(priority)
+				SERIALIZE(competitions)
 				SERIALIZE(ruleType)
 				SERIALIZE(insAfterInput)
 			END_SERIALIZATION
@@ -47,15 +57,13 @@ namespace vl
 				SERIALIZE(fromState)
 				SERIALIZE(toState)
 				SERIALIZE(condition)
-				SERIALIZE(priority)
-				SERIALIZE(insBeforeInput)
+				SERIALIZE(competitions)
 				SERIALIZE(insAfterInput)
 				SERIALIZE(returnIndices)
 			END_SERIALIZATION
 
 			BEGIN_SERIALIZATION(StateDesc)
 				SERIALIZE(rule)
-				SERIALIZE(clause)
 				SERIALIZE(endingState)
 			END_SERIALIZATION
 
@@ -66,6 +74,7 @@ namespace vl
 				SERIALIZE(transitions)
 				SERIALIZE(astInstructions)
 				SERIALIZE(returnIndices)
+				SERIALIZE(competitions)
 				SERIALIZE(returns)
 				SERIALIZE(edges)
 				SERIALIZE(states)

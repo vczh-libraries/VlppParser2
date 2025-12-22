@@ -1,0 +1,107 @@
+﻿[0][Plus] BEGIN 
+[RULE: 0]
+	token: "+" -> [2][Plus]< "+" @ >
+		+ StackBegin()
+		+ Token(0)
+
+[1][Plus] END [ENDING]
+[RULE: 0]
+
+[2][Plus]< "+" @ >
+[RULE: 0]
+	ending -> [1][Plus] END [ENDING]
+		+ CreateObject(Plus)
+		+ StackEnd()
+
+[3][NestedPositiveOptional] BEGIN 
+[RULE: 3]
+	token: "nested_positive_optional" -> [11][NestedPositiveOptional]< "nested_positive_optional" @ +[ ( +[ ( +[ Plus ] Plus ) ] Plus ) ] Plus { Plus } >
+		+ StackBegin()
+		+ Token(0)
+
+[4][NestedPositiveOptional] END [ENDING]
+[RULE: 3]
+
+[5][NestedPositiveOptional]< "nested_positive_optional" +[ ( +[ ( +[ Plus @ ] Plus ) ] Plus ) ] Plus { Plus } >
+[RULE: 3]
+	rule: Plus -> [10][NestedPositiveOptional]< "nested_positive_optional" +[ ( +[ ( +[ Plus ] Plus @ ) ] Plus ) ] Plus { Plus } >
+		+ StackSlot(2)
+
+[6][NestedPositiveOptional]< "nested_positive_optional" +[ ( +[ ( +[ Plus ] Plus ) ] Plus ) ] Plus @ { Plus } >
+[RULE: 3]
+	ending -> [4][NestedPositiveOptional] END [ENDING]
+		+ CreateObject(NestedOptionalFeature)
+		+ Field(NestedOptionalFeature::optional, 1)
+		+ Field(NestedOptionalFeature::tail1, 2)
+		+ Field(NestedOptionalFeature::tail2, 3)
+		+ Field(NestedOptionalFeature::tail3, 4)
+		+ Field(NestedOptionalFeature::tails, 5)
+		+ StackEnd()
+	rule: Plus -> [8][NestedPositiveOptional]< "nested_positive_optional" +[ ( +[ ( +[ Plus ] Plus ) ] Plus ) ] Plus { Plus @ } >
+		+ StackSlot(5)
+
+[7][NestedPositiveOptional]< "nested_positive_optional" +[ ( +[ ( +[ Plus ] Plus ) ] Plus ) ] Plus @ { Plus } >[pm-dup]
+[RULE: 3]
+	rule: Plus -> [8][NestedPositiveOptional]< "nested_positive_optional" +[ ( +[ ( +[ Plus ] Plus ) ] Plus ) ] Plus { Plus @ } >
+		+ StackSlot(5)
+
+[8][NestedPositiveOptional]< "nested_positive_optional" +[ ( +[ ( +[ Plus ] Plus ) ] Plus ) ] Plus { Plus @ } >
+[RULE: 3]
+	ending -> [4][NestedPositiveOptional] END [ENDING]
+		+ CreateObject(NestedOptionalFeature)
+		+ Field(NestedOptionalFeature::optional, 1)
+		+ Field(NestedOptionalFeature::tail1, 2)
+		+ Field(NestedOptionalFeature::tail2, 3)
+		+ Field(NestedOptionalFeature::tail3, 4)
+		+ Field(NestedOptionalFeature::tails, 5)
+		+ StackEnd()
+	rule: Plus -> [8][NestedPositiveOptional]< "nested_positive_optional" +[ ( +[ ( +[ Plus ] Plus ) ] Plus ) ] Plus { Plus @ } >
+		+ StackSlot(5)
+
+[9][NestedPositiveOptional]< "nested_positive_optional" +[ ( +[ ( +[ Plus ] Plus ) ] Plus @ ) ] Plus { Plus } >
+[RULE: 3]
+	rule: Plus -> [6][NestedPositiveOptional]< "nested_positive_optional" +[ ( +[ ( +[ Plus ] Plus ) ] Plus ) ] Plus @ { Plus } >
+		+ StackSlot(4)
+
+[10][NestedPositiveOptional]< "nested_positive_optional" +[ ( +[ ( +[ Plus ] Plus @ ) ] Plus ) ] Plus { Plus } >
+[RULE: 3]
+	rule: Plus -> [9][NestedPositiveOptional]< "nested_positive_optional" +[ ( +[ ( +[ Plus ] Plus ) ] Plus @ ) ] Plus { Plus } >
+		+ StackSlot(3)
+
+[11][NestedPositiveOptional]< "nested_positive_optional" @ +[ ( +[ ( +[ Plus ] Plus ) ] Plus ) ] Plus { Plus } >
+[RULE: 3]
+	rule: Plus -> [12][NestedPositiveOptional]< "nested_positive_optional" @ +[ ( +[ ( +[ Plus ] Plus ) ] Plus ) ] Plus { Plus } >[pm-lr]
+
+[12][NestedPositiveOptional]< "nested_positive_optional" @ +[ ( +[ ( +[ Plus ] Plus ) ] Plus ) ] Plus { Plus } >[pm-lr]
+[RULE: 3]
+	ending[L3] -> [4][NestedPositiveOptional] END [ENDING]
+		+ StackSlot(4)
+		+ CreateObject(NestedOptionalFeature)
+		+ Field(NestedOptionalFeature::optional, 1)
+		+ Field(NestedOptionalFeature::tail1, 2)
+		+ Field(NestedOptionalFeature::tail2, 3)
+		+ Field(NestedOptionalFeature::tail3, 4)
+		+ Field(NestedOptionalFeature::tails, 5)
+		+ StackEnd()
+	leftrec[H3][H2][H1] -> [5][NestedPositiveOptional]< "nested_positive_optional" +[ ( +[ ( +[ Plus @ ] Plus ) ] Plus ) ] Plus { Plus } >
+		+ StackSlot(1)
+	leftrec[L3] -> [7][NestedPositiveOptional]< "nested_positive_optional" +[ ( +[ ( +[ Plus ] Plus ) ] Plus ) ] Plus @ { Plus } >[pm-dup]
+		+ StackSlot(4)
+	leftrec[H3][L2] -> [9][NestedPositiveOptional]< "nested_positive_optional" +[ ( +[ ( +[ Plus ] Plus ) ] Plus @ ) ] Plus { Plus } >
+		+ StackSlot(3)
+	leftrec[H3][H2][L1] -> [10][NestedPositiveOptional]< "nested_positive_optional" +[ ( +[ ( +[ Plus ] Plus @ ) ] Plus ) ] Plus { Plus } >
+		+ StackSlot(2)
+
+[13][Module] BEGIN 
+[RULE: 4]
+	rule: NestedPositiveOptional -> [15][Module]<! !NestedPositiveOptional @ !>
+		+ StackBegin()
+
+[14][Module] END [ENDING]
+[RULE: 4]
+
+[15][Module]<! !NestedPositiveOptional @ !>
+[RULE: 4]
+	ending -> [14][Module] END [ENDING]
+		+ StackEnd()
+

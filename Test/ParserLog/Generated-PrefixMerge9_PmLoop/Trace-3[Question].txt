@@ -1,256 +1,187 @@
 ﻿================ EXECUTION STEPS ================
-[0]: 1@0 - 1@0
-[2]: 1@1 - 12@0
-[3]: 5@1 - 11@0
-[4]: RA(2, Item)
-[6]: 12@1 - 12@1
-[7]: 7@0 - 8@0
+[0]: 0@0 - 0@-1
+[1]: RA_Begin
+[8]: 1@0 - 1@1
+[7]: 4@0 - 9@1
+[4]: RA_Branch
+[10]: 1@0 - 1@1
+[9]: 2@0 - 8@2
+[6]: RA_Branch
+[11]: RA_End(Item)
+[12]: 9@2 - 9@3
+[13]: 5@0 - 6@3
 
 ==================== TRACES =====================
 
-+-------------------------+
-| [0]: <Start>            |
-|   TraceExec: [0]        |
-|   ForwardTrace: 0       |
-|   AmbiguityBegins: [0]  |
-| [14][Module] BEGIN      |
-| [AST-INSTRUCTIONS]:     |
-|     CSTop: []           |
-|     OSTop: []           |
-|     LriStored: []       |
-| [SUCCESORS 1-5]: [1][5] |
-+-------------------------+
-[0/1]
++----------------------+
+| [0]: <Start>         |
+|   TraceExec: [0]     |
+|   ForwardTrace: 0    |
+|   NextACT: 1         |
+| [17][Module] BEGIN   |
+| [AST-INSTRUCTIONS]:  |
+|   @                  |
+| [SUCCESORS 1-1]: [1] |
++----------------------+
+[0]
  |
- +---------------------------------------------------------------------------------------------------+
- |                                                                                                   |
-[0]                                                                                                 [1]
-++============================================================================================++    ++============================================================================================++
-|| [1]: {CLASS} class                                                                         ||    || [5]: {CLASS} class                                                                         ||
-||   TraceExec: [1]                                                                           ||    ||   TraceExec: [6]                                                                           ||
-||   InsExec: [0:3]                                                                           ||    ||   InsExec: [12:3]                                                                          ||
-||   ForwardTrace: 1                                                                          ||    ||   ForwardTrace: 5                                                                          ||
-||   NextACT: 12                                                                              ||    ||   NextACT: 11                                                                              ||
-||   AmbiguityCoveredInForward: [0]                                                           ||    ||   AmbiguityCoveredInForward: [0]                                                           ||
-|| [20][_Item_LRI_Isolated_4]< "class" @ >                                                    ||    || [24][_Item_LRI_Isolated_5]< "class" @ "?" >                                                ||
-|| [AST-INSTRUCTIONS]:                                                                        ||    || [AST-INSTRUCTIONS]:                                                                        ||
-||     CSTop: []                                                                              ||    ||     CSTop: []                                                                              ||
-||     OSTop: []                                                                              ||    ||     OSTop: []                                                                              ||
-||     LriStored: []                                                                          ||    ||     LriStored: []                                                                          ||
-||   - BeginObject(File)                                                                      ||    ||   - BeginObject(File)                                                                      ||
-||       obj:0, new:1@0, top:1@0 bottom:[8@0]                                                 ||    ||       obj:3, new:5@0, top:5@0 bottom:[8@0]                                                 ||
-||       eoInsRefs: 8@0                                                                       ||    ||       eoInsRefs: 8@0                                                                       ||
-||                                                                                            ||    ||                                                                                            ||
-||     CSTop: [0] [0 -> -1]                                                                   ||    ||     CSTop: [3] [4 -> -1]                                                                   ||
-||     OSTop: []                                                                              ||    ||     OSTop: []                                                                              ||
-||     LriStored: []                                                                          ||    ||     LriStored: []                                                                          ||
-||   - DelayFieldAssignment()                                                                 ||    ||   - DelayFieldAssignment()                                                                 ||
-||       objRefs: 1                                                                           ||    ||       objRefs: 4                                                                           ||
-||       eoInsRefs: 3@0                                                                       ||    ||       eoInsRefs: 11@0                                                                      ||
-||                                                                                            ||    ||                                                                                            ||
-||     CSTop: [1] [1 -> 0]                                                                    ||    ||     CSTop: [4] [5 -> 4]                                                                    ||
-||     OSTop: []                                                                              ||    ||     OSTop: []                                                                              ||
-||     LriStored: []                                                                          ||    ||     LriStored: []                                                                          ||
-||   - BeginObject(ClassItem)                                                                 ||    ||   - BeginObject(ClassQuestionItem)                                                         ||
-||       obj:1, new:1@2, top:1@1 bottom:[3@0] assignedTo:[2] dfas:[1@1]                       ||    ||       obj:4, new:5@2, top:5@1 bottom:[11@0] assignedTo:[3] dfas:[5@1]                      ||
-||       eoInsRefs: 2@0                                                                       ||    ||       eoInsRefs: 10@0                                                                      ||
-||                                                                                            ||    ||                                                                                            ||
-||     CSTop: [1] [2 -> 1]                                                                    ||    ||     CSTop: [4] [6 -> 5]                                                                    ||
-||     OSTop: []                                                                              ||    ||     OSTop: []                                                                              ||
-||     LriStored: []                                                                          ||    ||     LriStored: []                                                                          ||
-|| [RETURN STACK]:                                                                            ||    || [RETURN STACK]:                                                                            ||
-||   [1][8][0]: _Item_LRI_Isolated_4 -> [40][_Item_LRI_Original]<< !_Item_LRI_Isolated_4 @ >> ||    ||   [2][9][0]: _Item_LRI_Isolated_5 -> [41][_Item_LRI_Original]<< !_Item_LRI_Isolated_5 @ >> ||
-||   [0][7][0]: _Item_LRI_Original -> [16][Module]< _Item_LRI_Original @ { _Item } >          ||    ||   [0][7][0]: _Item_LRI_Original -> [16][Module]< _Item_LRI_Original @ { _Item } >          ||
-|| [PREDECESSORS 0-0]: [0]                                                                    ||    || [PREDECESSORS 0-0]: [0]                                                                    ||
-|| [SUCCESORS 2-2]: [2]                                                                       ||    || [SUCCESORS 9-9]: [9]                                                                       ||
-++============================================================================================++    ++============================================================================================++
-|                                                                                                   |
-+                                                                                                   +
-|                                                                                                   |
-+-----------------------------------------------------------------------------------+               |
-| [2]: <Ending>                                                                     |               |
-|   TraceExec: [2]                                                                  |               |
-|   InsExec: [3:2]                                                                  |               |
-|   ForwardTrace: 1                                                                 |               |
-| [40][_Item_LRI_Original]<< !_Item_LRI_Isolated_4 @ >>                             |               |
-| [AST-INSTRUCTIONS]:                                                               |               |
-|     CSTop: [1] [2 -> 1]                                                           |               |
-|     OSTop: []                                                                     |               |
-|     LriStored: []                                                                 |               |
-|   - EndObject()                                                                   |               |
-|       objRefs: 1                                                                  |               |
-|                                                                                   |               |
-|     CSTop: [1] [1 -> 0]                                                           |               |
-|     OSTop: [1] [0 -> -1]                                                          |               |
-|     LriStored: []                                                                 |               |
-|   > ReopenObject()                                                                |               |
-|                                                                                   |               |
-|     CSTop: [1] [1 -> 0]                                                           |               |
-|     OSTop: []                                                                     |               |
-|     LriStored: []                                                                 |               |
-| [RETURN STACK]:                                                                   |               |
-|   [0][7][0]: _Item_LRI_Original -> [16][Module]< _Item_LRI_Original @ { _Item } > |               |
-| [PREDECESSORS 1-1]: [1]                                                           |               |
-| [SUCCESORS 3-3]: [3]                                                              |               |
-+-----------------------------------------------------------------------------------+               |
-|                                                                                                   |
-+                                                                                                   |
-|                                                                                                   |
-+-----------------------------------------------------------------------------------+               |
-| [3]: <Leftrec>                                                                    |               |
-|   TraceExec: [3]                                                                  |               |
-|   InsExec: [5:5]                                                                  |               |
-|   ForwardTrace: 1                                                                 |               |
-| [38][_Item_LRI_Original]< _Item_LRI_Original @ "?" >                              |               |
-| [AST-INSTRUCTIONS]:                                                               |               |
-|     CSTop: [1] [1 -> 0]                                                           |               |
-|     OSTop: []                                                                     |               |
-|     LriStored: []                                                                 |               |
-|   - EndObject()                                                                   |               |
-|       objRefs: 1                                                                  |               |
-|                                                                                   |               |
-|     CSTop: [0] [0 -> -1]                                                          |               |
-|     OSTop: [1] [1 -> -1]                                                          |               |
-|     LriStored: []                                                                 |               |
-|   - LriStore()                                                                    |               |
-|                                                                                   |               |
-|     CSTop: [0] [0 -> -1]                                                          |               |
-|     OSTop: []                                                                     |               |
-|     LriStored: [1]                                                                |               |
-|   - BeginObject(QuestionItem)                                                     |               |
-|       obj:2, new:3@2, top:1@1 bottom:[12@0] assignedTo:[0]                        |               |
-|       eoInsRefs: 12@0                                                             |               |
-|                                                                                   |               |
-|     CSTop: [2] [3 -> 0]                                                           |               |
-|     OSTop: []                                                                     |               |
-|     LriStored: [1]                                                                |               |
-|   - LriFetch()                                                                    |               |
-|                                                                                   |               |
-|     CSTop: [2] [3 -> 0]                                                           |               |
-|     OSTop: [1] [2 -> -1]                                                          |               |
-|     LriStored: []                                                                 |               |
-|   + Field(QuestionItem::item)                                                     |               |
-|                                                                                   |               |
-|     CSTop: [2] [3 -> 0]                                                           |               |
-|     OSTop: []                                                                     |               |
-|     LriStored: []                                                                 |               |
-| [RETURN STACK]:                                                                   |               |
-|   [0][7][0]: _Item_LRI_Original -> [16][Module]< _Item_LRI_Original @ { _Item } > |               |
-| [PREDECESSORS 2-2]: [2]                                                           |               |
-| [SUCCESORS 6-6]: [6]                                                              |               |
-+-----------------------------------------------------------------------------------+               |
-[0]                                                                                                 [1]
- |                                                                                                   |
- +                                                                                          +--------+
- |                                                                                          |
-[0]                                                                                        [1]
-++===================================================================================++    ++============================================================================================++
-|| [6]: {QUESTION} ?                                                                 ||    || [9]: {QUESTION} ?                                                                          ||
-||   TraceExec: [4]                                                                  ||    ||   TraceExec: [7]                                                                           ||
-||   ForwardTrace: 1                                                                 ||    ||   ForwardTrace: 5                                                                          ||
-|| [37][_Item_LRI_Original]< _Item_LRI_Original "?" @ >                              ||    || [23][_Item_LRI_Isolated_5]< "class" "?" @ >                                                ||
-|| [AST-INSTRUCTIONS]:                                                               ||    || [AST-INSTRUCTIONS]:                                                                        ||
-||     CSTop: [2] [3 -> 0]                                                           ||    ||     CSTop: [4] [6 -> 5]                                                                    ||
-||     OSTop: []                                                                     ||    ||     OSTop: []                                                                              ||
-||     LriStored: []                                                                 ||    ||     LriStored: []                                                                          ||
-|| [RETURN STACK]:                                                                   ||    || [RETURN STACK]:                                                                            ||
-||   [0][7][0]: _Item_LRI_Original -> [16][Module]< _Item_LRI_Original @ { _Item } > ||    ||   [2][9][0]: _Item_LRI_Isolated_5 -> [41][_Item_LRI_Original]<< !_Item_LRI_Isolated_5 @ >> ||
-|| [PREDECESSORS 3-3]: [3]                                                           ||    ||   [0][7][0]: _Item_LRI_Original -> [16][Module]< _Item_LRI_Original @ { _Item } >          ||
-|| [SUCCESORS 12-12]: [12]                                                           ||    || [PREDECESSORS 5-5]: [5]                                                                    ||
-++===================================================================================++    || [SUCCESORS 10-10]: [10]                                                                    ||
-|                                                                                          ++============================================================================================++
-|                                                                                          |
-+                                                                                          +
-|                                                                                          |
-+------------------------------------------------+                                         +-----------------------------------------------------------------------------------+
-| [12]: <Ending>                                 |                                         | [10]: <Ending>                                                                    |
-|   TraceExec: [5]                               |                                         |   TraceExec: [8]                                                                  |
-|   InsExec: [10:2]                              |                                         |   InsExec: [15:2]                                                                 |
-|   ForwardTrace: 1                              |                                         |   ForwardTrace: 5                                                                 |
-| [16][Module]< _Item_LRI_Original @ { _Item } > |                                         | [41][_Item_LRI_Original]<< !_Item_LRI_Isolated_5 @ >>                             |
-| [AST-INSTRUCTIONS]:                            |                                         | [AST-INSTRUCTIONS]:                                                               |
-|     CSTop: [2] [3 -> 0]                        |                                         |     CSTop: [4] [6 -> 5]                                                           |
-|     OSTop: []                                  |                                         |     OSTop: []                                                                     |
-|     LriStored: []                              |                                         |     LriStored: []                                                                 |
-|   - EndObject()                                |                                         |   - EndObject()                                                                   |
-|       objRefs: 2                               |                                         |       objRefs: 4                                                                  |
-|                                                |                                         |                                                                                   |
-|     CSTop: [0] [0 -> -1]                       |                                         |     CSTop: [4] [5 -> 4]                                                           |
-|     OSTop: [2] [3 -> -1]                       |                                         |     OSTop: [4] [4 -> -1]                                                          |
-|     LriStored: []                              |                                         |     LriStored: []                                                                 |
-|   > Field(File::items)                         |                                         |   > ReopenObject()                                                                |
-|                                                |                                         |                                                                                   |
-|     CSTop: [0] [0 -> -1]                       |                                         |     CSTop: [4] [5 -> 4]                                                           |
-|     OSTop: []                                  |                                         |     OSTop: []                                                                     |
-|     LriStored: []                              |                                         |     LriStored: []                                                                 |
-| [PREDECESSORS 6-6]: [6]                        |                                         | [RETURN STACK]:                                                                   |
-| [SUCCESORS 7-7]: [7]                           |                                         |   [0][7][0]: _Item_LRI_Original -> [16][Module]< _Item_LRI_Original @ { _Item } > |
-+------------------------------------------------+                                         | [PREDECESSORS 9-9]: [9]                                                           |
-|                                                                                          | [SUCCESORS 11-11]: [11]                                                           |
-|                                                                                          +-----------------------------------------------------------------------------------+
-|                                                                                          |
-+                                                                                          +
-|                                                                                          |
-|                                                                                          +------------------------------------------------+
-|                                                                                          | [11]: <Ending>                                 |
-|                                                                                          |   TraceExec: [9]                               |
-|                                                                                          |   InsExec: [17:2]                              |
-|                                                                                          |   ForwardTrace: 5                              |
-|                                                                                          | [16][Module]< _Item_LRI_Original @ { _Item } > |
-|                                                                                          | [AST-INSTRUCTIONS]:                            |
-|                                                                                          |     CSTop: [4] [5 -> 4]                        |
-|                                                                                          |     OSTop: []                                  |
-|                                                                                          |     LriStored: []                              |
-|                                                                                          |   - EndObject()                                |
-|                                                                                          |       objRefs: 4                               |
-|                                                                                          |                                                |
-|                                                                                          |     CSTop: [3] [4 -> -1]                       |
-|                                                                                          |     OSTop: [4] [5 -> -1]                       |
-|                                                                                          |     LriStored: []                              |
-|                                                                                          |   > Field(File::items)                         |
-|                                                                                          |                                                |
-|                                                                                          |     CSTop: [3] [4 -> -1]                       |
-|                                                                                          |     OSTop: []                                  |
-|                                                                                          |     LriStored: []                              |
-|                                                                                          | [PREDECESSORS 10-10]: [10]                     |
-|                                                                                          | [SUCCESORS 7-7]: [7]                           |
-|                                                                                          +------------------------------------------------+
-|                                                                                          |
-+------------------------------------------------------------------------------------------+
+ +
+ |
+[0]
+++=========================================================++
+|| [1]: {CLASS} class                                      ||
+||   TraceExec: [1]                                        ||
+||   InsExec: [0:2]                                        ||
+||   ForwardTrace: 0                                       ||
+||   AmbiguityBegins: [0]                                  ||
+|| [15][_Item]{{< "class" @ "?" > ; < "class" @ >}}        ||
+|| [AST-INSTRUCTIONS]:                                     ||
+||   @                                                     ||
+||   + StackBegin()                                        ||
+||     obj:0 : ClassItem ClassQuestionItem                 ||
+||                                                         ||
+||   @ CS(0 -> -1) : [0]                                   ||
+||   + Token(0)                                            ||
+||                                                         ||
+||   @ CS(0 -> -1) : [0]                                   ||
+|| [RETURN STACK]:                                         ||
+||   [0][2][0]: _Item -> [19][Module]< _Item @ { _Item } > ||
+|| [PREDECESSORS 0-0]: [0]                                 ||
+|| [SUCCESORS 4-2]: [4][2]                                 ||
+++=========================================================++
 |
-+----------------------------+
-| [7]: <Merging>             |
-| <Start>                    |
-|   TraceExec: [10]          |
-|   ForwardTrace: 7          |
-|   CommonForwardTrace: 0    |
-| [AMBIGUITY-RESOLVING]: [0] |
-|   objs: [4, 2]             |
-|   first: 0 prefix: 1       |
-|   last: 7 postfix: 1       |
-| [CONTEXT]                  |
-|   CSTop: [3, 0] [7 -> -1]  |
-|   OSTop: []                |
-|   LriStored: []            |
-+----------------------------+
++----------------------------------------------------------------+
+|                                                                |
+|                                                                +--------------------------------------------------------------+
+|                                                                | [2]: <Leftrec>                                               |
+|                                                                |   TraceExec: [4]                                             |
+|                                                                |   InsExec: [7:4]                                             |
+|                                                                |   ForwardTrace: 2                                            |
+|                                                                |   NextACT: 8                                                 |
+|                                                                | [14][_Item]< _Item @ "?" >                                   |
+|                                                                | [AST-INSTRUCTIONS]:                                          |
+|                                                                |   @ CS(0 -> -1) : [0]                                        |
+|                                                                |   + CreateObject(ClassItem)                                  |
+|                                                                |     obj:0 : ClassItem ClassQuestionItem                      |
+|                                                                |                                                              |
+|                                                                |   @ CS(0 -> -1) : [0]                                        |
+|                                                                |   + StackEnd()                                               |
+|                                                                |     obj+:0 : ClassItem ClassQuestionItem                     |
+|                                                                |       begin:1@0, top:1@0, create!:[9@0, 2@0], end:[2@1, 9@1] |
+|                                                                |                                                              |
+|                                                                |   @ OS(3 -> -1) : [0]                                        |
+|                                                                |   + StackBegin()                                             |
+|                                                                |     obj:2 : QuestionItem                                     |
+|                                                                |                                                              |
+|                                                                |   @ CS(4 -> -1) : [2] OS(3 -> -1) : [0]                      |
+|                                                                |   + StackSlot(0)                                             |
+|                                                                |                                                              |
+|                                                                |   @ CS(4 -> -1) : [2]                                        |
+|                                                                | [RETURN STACK]:                                              |
+|                                                                |   [0][2][0]: _Item -> [19][Module]< _Item @ { _Item } >      |
+|                                                                | [PREDECESSORS 1-1]: [1]                                      |
+|                                                                | [SUCCESORS 7-7]: [7]                                         |
+|                                                                +--------------------------------------------------------------+
+[0]                                                              [1]
+ |                                                                |
+ +                                                                +--------------+
+ |                                                                               |
+[0]                                                                             [1]
+++=========================================================++                   ++=========================================================++
+|| [4]: {QUESTION} ?                                       ||                   || [7]: {QUESTION} ?                                       ||
+||   TraceExec: [2]                                        ||                   ||   TraceExec: [5]                                        ||
+||   InsExec: [2:1]                                        ||                   ||   InsExec: [11:1]                                       ||
+||   ForwardTrace: 4                                       ||                   ||   ForwardTrace: 2                                       ||
+||   NextACT: 9                                            ||                   || [13][_Item]< _Item "?" @ >                              ||
+|| [9][_Item]< "class" "?" @ >                             ||                   || [AST-INSTRUCTIONS]:                                     ||
+|| [AST-INSTRUCTIONS]:                                     ||                   ||   @ CS(4 -> -1) : [2]                                   ||
+||   @ CS(0 -> -1) : [0]                                   ||                   ||   + Token(1)                                            ||
+||   + Token(1)                                            ||                   ||                                                         ||
+||                                                         ||                   ||   @ CS(4 -> -1) : [2]                                   ||
+||   @ CS(0 -> -1) : [0]                                   ||                   || [RETURN STACK]:                                         ||
+|| [RETURN STACK]:                                         ||                   ||   [0][2][0]: _Item -> [19][Module]< _Item @ { _Item } > ||
+||   [0][2][0]: _Item -> [19][Module]< _Item @ { _Item } > ||                   || [PREDECESSORS 2-2]: [2]                                 ||
+|| [PREDECESSORS 1-1]: [1]                                 ||                   || [SUCCESORS 8-8]: [8]                                    ||
+|| [SUCCESORS 9-9]: [9]                                    ||                   ++=========================================================++
+++=========================================================++                   |
+|                                                                               |
++                                                                               +
+|                                                                               |
++--------------------------------------------------------------+                +--------------------------------------------------------------------------+
+| [9]: <Ending>                                                |                | [8]: <Ending>                                                            |
+|   TraceExec: [3]                                             |                |   TraceExec: [6]                                                         |
+|   InsExec: [3:4]                                             |                |   InsExec: [12:5]                                                        |
+|   ForwardTrace: 4                                            |                |   ForwardTrace: 2                                                        |
+| [19][Module]< _Item @ { _Item } >                            |                | [19][Module]< _Item @ { _Item } >                                        |
+| [AST-INSTRUCTIONS]:                                          |                | [AST-INSTRUCTIONS]:                                                      |
+|   @ CS(0 -> -1) : [0]                                        |                |   @ CS(4 -> -1) : [2]                                                    |
+|   + CreateObject(ClassQuestionItem)                          |                |   + CreateObject(QuestionItem)                                           |
+|     obj:0 : ClassItem ClassQuestionItem                      |                |     obj:2 : QuestionItem                                                 |
+|                                                              |                |                                                                          |
+|   @ CS(0 -> -1) : [0]                                        |                |   @ CS(4 -> -1) : [2]                                                    |
+|   + StackEnd()                                               |                |   + Field(QuestionItem::item, 0)                                         |
+|     obj+:0 : ClassItem ClassQuestionItem                     |                |                                                                          |
+|       begin:1@0, top:1@0, create!:[9@0, 2@0], end:[2@1, 9@1] |                |   @ CS(4 -> -1) : [2]                                                    |
+|                                                              |                |   + StackEnd()                                                           |
+|   @ OS(1 -> -1) : [0]                                        |                |     obj+:2 : QuestionItem                                                |
+|   > StackBegin()                                             |                |       begin:2@2, top:2@2, stack:1@0, field:[0], create!:[8@0], end:[8@2] |
+|     obj:1 : File                                             |                |                                                                          |
+|                                                              |                |   @ OS(5 -> -1) : [2]                                                    |
+|   @ CS(2 -> -1) : [1] OS(1 -> -1) : [0]                      |                |   > StackBegin()                                                         |
+|   > StackSlot(0)                                             |                |     obj:3 : File                                                         |
+|                                                              |                |                                                                          |
+|   @ CS(2 -> -1) : [1]                                        |                |   @ CS(6 -> -1) : [3] OS(5 -> -1) : [2]                                  |
+| [PREDECESSORS 4-4]: [4]                                      |                |   > StackSlot(0)                                                         |
+| [SUCCESORS 5-5]: [5]                                         |                |                                                                          |
++--------------------------------------------------------------+                |   @ CS(6 -> -1) : [3]                                                    |
+|                                                                               | [PREDECESSORS 7-7]: [7]                                                  |
+|                                                                               | [SUCCESORS 5-5]: [5]                                                     |
+|                                                                               +--------------------------------------------------------------------------+
+|                                                                               |
++-------------------------------------------------------------------------------+
+|
++---------------------------------+
+| [5]: <Merging>                  |
+| <Start>                         |
+|   TraceExec: [7]                |
+|   ForwardTrace: 5               |
+|   CommonForwardTrace: 0         |
+| [AMBIGUITY-RESOLVING]: [0]      |
+|   objs: [2, 0]                  |
+|   first: 1 prefix: 0            |
+|   last: 5 postfix: 2            |
+|   branch: 1                     |
+|   merge: 5                      |
+| [CONTEXT]: CS(7 -> -1) : [3, 1] |
++---------------------------------+
 |
 +
 |
-+-----------------------------+
-| [8]: <Ending>               |
-|   TraceExec: [11]           |
-|   InsExec: [19:1]           |
-|   ForwardTrace: 7           |
-| [15][Module] END [ENDING]   |
-| [AST-INSTRUCTIONS]:         |
-|     CSTop: [3, 0] [7 -> -1] |
-|     OSTop: []               |
-|     LriStored: []           |
-|   - EndObject()             |
-|       objRefs: 3, 0         |
-|                             |
-|     CSTop: []               |
-|     OSTop: [3, 0] [6 -> -1] |
-|     LriStored: []           |
-| [PREDECESSORS 7-7]: [7]     |
-+-----------------------------+
++--------------------------------------------------------------------------+
+| [6]: <Ending>                                                            |
+|   TraceExec: [8]                                                         |
+|   InsExec: [17:4]                                                        |
+|   ForwardTrace: 5                                                        |
+| [18][Module] END [ENDING]                                                |
+| [AST-INSTRUCTIONS]:                                                      |
+|   @ CS(7 -> -1) : [3, 1]                                                 |
+|   + CreateObject(File)                                                   |
+|     obj:1 : File                                                         |
+|     obj:3 : File                                                         |
+|                                                                          |
+|   @ CS(7 -> -1) : [3, 1]                                                 |
+|   + Field(File::items, 0)                                                |
+|                                                                          |
+|   @ CS(7 -> -1) : [3, 1]                                                 |
+|   + Field(File::items, 1)                                                |
+|                                                                          |
+|   @ CS(7 -> -1) : [3, 1]                                                 |
+|   + StackEnd()                                                           |
+|     obj+:1 : File                                                        |
+|       begin:9@2, top:9@2, stack:1@0, field:[0], create!:[6@0], end:[6@3] |
+|     obj+:3 : File                                                        |
+|       begin:8@3, top:8@3, stack:1@0, field:[2], create!:[6@0], end:[6@3] |
+|                                                                          |
+|   @ OS(8 -> -1) : [3, 1]                                                 |
+| [PREDECESSORS 5-5]: [5]                                                  |
++--------------------------------------------------------------------------+

@@ -1,0 +1,27 @@
+﻿Plus
+  ::= "+" as Plus
+  ;
+
+Lt
+  ::= "<" as Lt
+  ;
+
+Gt
+  ::= ">" as Gt
+  ;
+
+PbaGts
+  ::= Gt:gts {Gt:gts} as partial PbaFeature
+  ;
+
+PbaBody
+  ::= [Plus:optional] Plus {Plus:tails} as PbaFeature
+  ;
+
+Pba
+  ::= "prefix_before_ambiguity" {Lt:lts} PbaGts !PbaBody
+  ;
+
+@parser Module : Feature
+  ::= !Pba
+  ;

@@ -15,44 +15,27 @@ namespace prefixmerge7_pmswitch
 {
 	enum class ModuleParserStates
 	{
-		_GenericArguments = 0,
-		_Name = 6,
-		_PrimitiveShared = 18,
-		_PrimitiveTypeOnly = 21,
-		_PrimitiveExprOnly = 27,
-		_LongType = 32,
-		_Expr0 = 38,
-		_Expr1 = 45,
-		_Expr2 = 53,
-		_Expr_NoComma = 61,
-		_Expr_NoGT_NoComma = 70,
-		_Expr = 79,
-		Module = 89,
-		Module_NoGT_NoComma = 105,
-		ExprModule = 120,
-		TypeModule = 123,
-		_Expr3_SWITCH_COMBINED = 126,
-		_Expr3_SWITCH_0allow_gt = 134,
-		_Expr3_SWITCH_1allow_gt = 142,
-		_Expr4_SWITCH_0allow_gt = 150,
-		_Expr4_SWITCH_1allow_gt = 159,
-		_Expr4_SWITCH_0allow_gt_LRI_Isolated_1 = 168,
-		_Expr4_SWITCH_1allow_gt_LRI_Isolated_1 = 172,
-		_LongType_LRI_Original = 176,
-		_Expr0_LRI_Original = 190,
-		_Expr1_LRI_Original = 200,
-		_Expr2_LRI_Original = 208,
-		_Expr3_SWITCH_COMBINED_LRI_Original = 214,
-		_Expr3_SWITCH_0allow_gt_LRI_Original = 217,
-		_Expr3_SWITCH_1allow_gt_LRI_Original = 223,
-		_Expr4_SWITCH_0allow_gt_LRI_Original = 232,
-		_Expr4_SWITCH_1allow_gt_LRI_Original = 237,
-		_Expr_NoComma_LRI_Original = 242,
-		_Expr_NoGT_NoComma_LRI_Original = 245,
-		_Expr_LRI_Original = 248,
-		Module_LRI_Original = 254,
-		Module_NoGT_NoComma_LRI_Original = 258,
-		_Expr0__LongType_LRI_Prefix = 262,
+		_GenericArguments = -1,
+		_Name = 0,
+		_PrimitiveShared = 17,
+		_PrimitiveTypeOnly = 20,
+		_PrimitiveExprOnly = 25,
+		_LongType = 30,
+		_Expr0 = 43,
+		_Expr1 = 54,
+		_Expr2 = 62,
+		_Expr_NoComma = 68,
+		_Expr_NoGT_NoComma = 71,
+		_Expr = 74,
+		Module = 80,
+		Module_NoGT_NoComma = 91,
+		ExprModule = 102,
+		TypeModule = 105,
+		_Expr3_SWITCH_COMBINED = 108,
+		_Expr3_SWITCH_0allow_gt = 111,
+		_Expr3_SWITCH_1allow_gt = 117,
+		_Expr4_SWITCH_0allow_gt = 126,
+		_Expr4_SWITCH_1allow_gt = 131,
 	};
 
 	const wchar_t* ModuleParserRuleName(vl::vint index);
@@ -75,8 +58,6 @@ namespace prefixmerge7_pmswitch
 		vl::Ptr<prefixmerge7_pmswitch::TypeOrExpr> ParseExprModule(vl::collections::List<vl::regex::RegexToken>& tokens, vl::vint codeIndex = -1) const;
 		vl::Ptr<prefixmerge7_pmswitch::TypeOrExpr> ParseTypeModule(const vl::WString& input, vl::vint codeIndex = -1) const;
 		vl::Ptr<prefixmerge7_pmswitch::TypeOrExpr> ParseTypeModule(vl::collections::List<vl::regex::RegexToken>& tokens, vl::vint codeIndex = -1) const;
-		vl::Ptr<prefixmerge7_pmswitch::TypeOrExpr> ParseModule_LRI_Original(const vl::WString& input, vl::vint codeIndex = -1) const;
-		vl::Ptr<prefixmerge7_pmswitch::TypeOrExpr> ParseModule_LRI_Original(vl::collections::List<vl::regex::RegexToken>& tokens, vl::vint codeIndex = -1) const;
 	};
 }
 #endif

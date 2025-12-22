@@ -267,88 +267,38 @@ AstInsReceiverBase
 			}
 		}
 
-		void AstInsReceiverBase::SetField(ParsingAstBase* object, vint32_t field, const ObjectOrToken& value, bool weakAssignment)
+		void AstInsReceiverBase::SetField(ParsingAstBase* object, vint32_t field, const SlotValue& value, bool weakAssignment)
 		{
-			if (value.object)
-			{
-				if (weakAssignment)
+			value.Apply(Overloading(
+				[&](const TokenSlot& tokenSlot)
 				{
-					throw AstInsException(
-						L"Weak assignment only available for field of enum type",
-						AstInsErrorType::FieldWeakAssignmentOnNonEnum,
-						field
+					if (weakAssignment)
+					{
+						throw AstInsException(
+							L"Weak assignment only available for field of enum type",
+							AstInsErrorType::FieldWeakAssignmentOnNonEnum,
+							field
 						);
-				}
-				SetField(object, field, value.object);
-			}
-			else if (value.enumItem != -1)
-			{
-				SetField(object, field, value.enumItem, weakAssignment);
-			}
-			else
-			{
-				if (weakAssignment)
+					}
+					SetField(object, field, tokenSlot.token, tokenSlot.index);
+				},
+				[&](const EnumItemSlot& enumItemSlot)
 				{
-					throw AstInsException(
-						L"Weak assignment only available for field of enum type",
-						AstInsErrorType::FieldWeakAssignmentOnNonEnum,
-						field
+					SetField(object, field, enumItemSlot.value, weakAssignment);
+				},
+				[&](const Ptr< ParsingAstBase>& objectSlot)
+				{
+					if (weakAssignment)
+					{
+						throw AstInsException(
+							L"Weak assignment only available for field of enum type",
+							AstInsErrorType::FieldWeakAssignmentOnNonEnum,
+							field
 						);
+					}
+					SetField(object, field, objectSlot);
 				}
-				SetField(object, field, value.token, value.tokenIndex);
-			}
-		}
-
-		AstInsReceiverBase::CreatedObject& AstInsReceiverBase::PushCreated(CreatedObject&& createdObject)
-		{
-			if (created.Count() == 0)
-			{
-				created.Add(std::move(createdObject));
-			}
-			else
-			{
-				auto& top = created[created.Count() - 1];
-				if (
-					!top.object &&
-					top.pushedCount == createdObject.pushedCount &&
-					top.delayedToken.reading == createdObject.delayedToken.reading &&
-					top.delayedFieldAssignments.Count() == 0
-					)
-				{
-					top.object = createdObject.object;
-					top.extraEmptyDfaBelow++;
-				}
-				else
-				{
-					created.Add(std::move(createdObject));
-				}
-			}
-			return created[created.Count() - 1];
-		}
-
-		const AstInsReceiverBase::CreatedObject& AstInsReceiverBase::TopCreated()
-		{
-			return created[created.Count() - 1];
-		}
-
-		void AstInsReceiverBase::PopCreated()
-		{
-			auto& top = created[created.Count() - 1];
-			if (top.extraEmptyDfaBelow == 0)
-			{
-				created.RemoveAt(created.Count() - 1);
-			}
-			else if (top.object)
-			{
-				top.object = nullptr;
-				top.delayedFieldAssignments.Clear();
-				top.extraEmptyDfaBelow--;
-			}
-		}
-
-		void AstInsReceiverBase::DelayAssign(FieldAssignment&& fa)
-		{
-			created[created.Count() - 1].delayedFieldAssignments.Add(std::move(fa));
+			));
 		}
 
 		void AstInsReceiverBase::Execute(AstIns instruction, const regex::RegexToken& token, vint32_t tokenIndex)
@@ -356,306 +306,254 @@ AstInsReceiverBase
 			EnsureContinuable();
 			try
 			{
-				if (created.Count() == 0 && instruction.type != AstInsType::BeginObject)
-				{
-					switch (instruction.type)
-					{
-					case AstInsType::BeginObject:
-					case AstInsType::DelayFieldAssignment:
-					case AstInsType::ResolveAmbiguity:
-					case AstInsType::AccumulatedDfa:
-					case AstInsType::LriStore:
-					case AstInsType::LriFetch:
-						break;
-					default:
-						throw AstInsException(
-							L"There is no created object.",
-							AstInsErrorType::NoRootObject
-							);
-					}
-				}
-
-				vint expectedLeavings = 0;
-				if (created.Count() > 0)
-				{
-					expectedLeavings = TopCreated().pushedCount;
-				}
-
 				switch (instruction.type)
 				{
 				case AstInsType::Token:
-					{
-						pushed.Add(ObjectOrToken{ token,tokenIndex });
-					}
-					break;
 				case AstInsType::EnumItem:
+				case AstInsType::StackSlot:
 					{
-						pushed.Add(ObjectOrToken{ instruction.param });
-					}
-					break;
-				case AstInsType::BeginObject:
-					{
-						auto value = CreateAstNode(instruction.param);
-						value->codeRange = { &token,&token };
-						PushCreated(CreatedObject{ value,pushed.Count() });
-					}
-					break;
-				case AstInsType::DelayFieldAssignment:
-					{
-						PushCreated(CreatedObject{ nullptr,pushed.Count(),token });
-					}
-					break;
-				case AstInsType::ReopenObject:
-					{
-						auto& createdObject = created[created.Count() - 1];
-						if (createdObject.object)
+						if (stackFrames.Count() == 0)
 						{
 							throw AstInsException(
-								L"DelayFieldAssignment is not submitted before ReopenObject.",
-								AstInsErrorType::MissingDfaBeforeReopen
-								);
+								L"There is no stack frame to store slot values.",
+								AstInsErrorType::NoStackFrame
+							);
 						}
-						if (pushed.Count() < expectedLeavings + 1)
-						{
-							throw AstInsException(
-								L"There is no pushed value to reopen.",
-								AstInsErrorType::MissingValueToReopen
-								);
-						}
-						if (pushed.Count() > expectedLeavings + 1)
-						{
-							throw AstInsException(
-								L"The value to reopen is not the only unassigned value.",
-								AstInsErrorType::TooManyUnassignedValues
-								);
-						}
+						auto&& frame = stackFrames[stackFrames.Count() - 1];
 
-						auto value = pushed[pushed.Count() - 1];
-						if (value.object)
+						SlotValue slotValue;
+						switch (instruction.type)
 						{
-							pushed.RemoveAt(pushed.Count() - 1);
-							createdObject.object = value.object;
-							createdObject.object->codeRange.start = ParsingTextPos::Start(&createdObject.delayedToken);
-
-							for (auto&& dfa : createdObject.delayedFieldAssignments)
+						case AstInsType::Token:
+							slotValue = SlotValue(TokenSlot{ token,tokenIndex });
+							break;
+						case AstInsType::EnumItem:
+							slotValue = SlotValue(EnumItemSlot{ instruction.param });
+							break;
+						case AstInsType::StackSlot:
 							{
-								SetField(createdObject.object.Obj(), dfa.field, dfa.value, dfa.weakAssignment);
+								if (creatingObjects.Count() == 0)
+								{
+									throw AstInsException(
+										L"There is no creating object to store in a stack slot.",
+										AstInsErrorType::NoCreatingObjectForStackSlot
+									);
+								}
+								auto astNode = creatingObjects[creatingObjects.Count() - 1].object;
+								creatingObjects.RemoveAt(creatingObjects.Count() - 1);
+								slotValue = SlotValue(astNode);
+
+								if (frame.codeRangeStart > astNode->codeRange.start)
+								{
+									frame.codeRangeStart = astNode->codeRange.start;
+								}
 							}
-							createdObject.delayedFieldAssignments.Clear();
+							break;
+						default:;
+						}
+
+						auto keyIndex = frame.slots.Keys().IndexOf(instruction.count);
+						if (keyIndex == -1)
+						{
+							SlotStorage storage;
+							storage.value = slotValue;
+							frame.slots.Add(instruction.count, storage);
 						}
 						else
 						{
-							throw AstInsException(
-								L"The pushed value to reopen is not an object.",
-								AstInsErrorType::ReopenedValueIsNotObject
-								);
+							auto&& storage = const_cast<SlotStorage&>(frame.slots.Values()[keyIndex]);
+							if (!storage.additionalValues)
+							{
+								storage.additionalValues = Ptr(new List<SlotValue>);
+							}
+							storage.additionalValues->Add(slotValue);
 						}
 					}
 					break;
-				case AstInsType::EndObject:
+				case AstInsType::StackBegin:
 					{
-						Ptr<ParsingAstBase> objectToPush;
-						{
-							auto& createdObject = TopCreated();
-							if (!createdObject.object)
-							{
-								throw AstInsException(
-									L"There is no created objects after DelayFieldAssignment.",
-									AstInsErrorType::NoRootObjectAfterDfa
-									);
-							}
-							if (pushed.Count() > createdObject.pushedCount)
-							{
-								throw AstInsException(
-									L"There are still values to assign to fields before finishing an object.",
-									AstInsErrorType::LeavingUnassignedValues
-									);
-							}
-
-							objectToPush = createdObject.object;
-							PopCreated();
-						}
-
-						objectToPush->codeRange.end = ParsingTextPos::End(&token);
-						pushed.Add(ObjectOrToken{ objectToPush });
+						stackFrames.Add({ {},ParsingTextPos::Start(&token) });
 					}
 					break;
-				case AstInsType::DiscardValue:
+				case AstInsType::CreateObject:
 					{
-						auto& createdObject = TopCreated();
-						if (pushed.Count() <= createdObject.pushedCount)
+						if (stackFrames.Count() == 0)
 						{
 							throw AstInsException(
-								L"There is no pushed value to discard.",
-								AstInsErrorType::MissingValueToDiscard
-								);
+								L"There is no stack frame to store slot values.",
+								AstInsErrorType::NoStackFrame
+							);
 						}
-						pushed.RemoveAt(pushed.Count() - 1);
-					}
-					break;
-				case AstInsType::LriStore:
-					{
-						{
-							vint pushedCount = 0;
-							if (created.Count() > 0)
-							{
-								auto& createdObject = TopCreated();
-								pushedCount = createdObject.pushedCount;
-							}
+						auto&& frame = stackFrames[stackFrames.Count() - 1];
 
-							if (pushed.Count() <= pushedCount)
-							{
-								throw AstInsException(
-									L"There is no pushed value to run LriStore.",
-									AstInsErrorType::MissingValueToLriStore
-									);
-							}
+						auto astNode = CreateAstNode(instruction.param);
+						astNode->codeRange = { &token,&token };
+						if (astNode->codeRange.start > frame.codeRangeStart)
+						{
+							astNode->codeRange.start = frame.codeRangeStart;
 						}
 
-						auto value = pushed[pushed.Count() - 1];
-						if (value.object)
-						{
-							if (lriStoredObject)
-							{
-								throw AstInsException(
-									L"LriFetch is not executed before the next LriStore.",
-									AstInsErrorType::LriStoredValueNotCleared
-									);
-							}
-							else
-							{
-								lriStoredObject = value.object;
-								pushed.RemoveAt(pushed.Count() - 1);
-							}
-						}
-						else
-						{
-							throw AstInsException(
-								L"The value to run LriStore is not an object.",
-								AstInsErrorType::LriStoredValueIsNotObject
-								);
-						}
-					}
-					break;
-				case AstInsType::LriFetch:
-					{
-						if (lriStoredObject)
-						{
-							pushed.Add(ObjectOrToken{ lriStoredObject });
-							lriStoredObject = nullptr;
-						}
-						else
-						{
-							throw AstInsException(
-								L"LriStore is not executed before the next LriFetch.",
-								AstInsErrorType::LriStoredValueNotExists
-								);
-						}
+						CreatingObject info;
+						info.object = astNode;
+						info.type = instruction.param;
+						creatingObjects.Add(info);
 					}
 					break;
 				case AstInsType::Field:
 				case AstInsType::FieldIfUnassigned:
 					{
-						auto& createdObject = TopCreated();
-						if (pushed.Count() <= createdObject.pushedCount)
+						if (creatingObjects.Count() == 0)
 						{
 							throw AstInsException(
-								L"There is no pushed value to be assigned to a field.",
-								AstInsErrorType::MissingFieldValue
-								);
+								L"There is no creating object to assign fields.",
+								AstInsErrorType::NoCreatingObjectForField,
+								instruction.param
+							);
 						}
 
-						auto value = pushed[pushed.Count() - 1];
-						pushed.RemoveAt(pushed.Count() - 1);
+						if (stackFrames.Count() == 0)
+						{
+							throw AstInsException(
+								L"There is no stack frame to provide values for field assignment.",
+								AstInsErrorType::NoStackFrame
+							);
+						}
+						auto&& frame = stackFrames[stackFrames.Count() - 1];
 
-						bool weakAssignment = instruction.type == AstInsType::FieldIfUnassigned;
-						if (createdObject.object)
+						auto slotKeyIndex = frame.slots.Keys().IndexOf(instruction.count);
+						if (slotKeyIndex == -1)
 						{
-							SetField(createdObject.object.Obj(), instruction.param, value, weakAssignment);
+							break;
 						}
-						else
+
+						auto storage = frame.slots.Values()[slotKeyIndex];
+						auto object = creatingObjects[creatingObjects.Count() - 1].object.Obj();
+
+						const bool weakAssignment = instruction.type == AstInsType::FieldIfUnassigned;
+						auto assignValue = [&](const SlotValue& slotValue)
 						{
-							DelayAssign({ value,instruction.param,weakAssignment });
+							SetField(object, instruction.param, slotValue, weakAssignment);
+						};
+
+						SetField(object, instruction.param, storage.value, weakAssignment);
+						if (storage.additionalValues)
+						{
+							for (auto&& additionalValue : *storage.additionalValues.Obj())
+							{
+								SetField(object, instruction.param, additionalValue, weakAssignment);
+							}
 						}
+					}
+					break;
+				case AstInsType::StackEnd:
+					{
+						if (stackFrames.Count() == 0)
+						{
+							throw AstInsException(
+								L"There is no stack frame to end.",
+								AstInsErrorType::NoStackFrameForStackEnd
+							);
+						}
+						if (creatingObjects.Count() == 0)
+						{
+							throw AstInsException(
+								L"There is no creating object when ending the current stack frame.",
+								AstInsErrorType::NoCreatingObjectForStackEnd
+							);
+						}
+
+						auto&& frame = stackFrames[stackFrames.Count() - 1];
+						auto astNode = creatingObjects[creatingObjects.Count() - 1].object.Obj();
+
+						if (astNode->codeRange.start > frame.codeRangeStart)
+						{
+							astNode->codeRange.start = frame.codeRangeStart;
+						}
+
+						auto codeRangeEnd = ParsingTextPos::End(&token);
+						if (astNode->codeRange.end < codeRangeEnd)
+						{
+							astNode->codeRange.end = codeRangeEnd;
+						}
+
+						stackFrames.RemoveAt(stackFrames.Count() - 1);
 					}
 					break;
 				case AstInsType::ResolveAmbiguity:
 					{
-						if (instruction.count <= 0 || pushed.Count() < expectedLeavings + instruction.count)
+						if (stackFrames.Count() == 0)
+						{
+							throw AstInsException(
+								L"There is no stack frame to resolve ambiguity.",
+								AstInsErrorType::NoStackFrame
+							);
+						}
+						auto&& frame = stackFrames[stackFrames.Count() - 1];
+
+						auto slotKeyIndex = frame.slots.Keys().IndexOf(ResolveAmbiguitySlotIndex);
+						if (slotKeyIndex == -1)
 						{
 							throw AstInsException(
 								L"There are not enough candidates to create an ambiguity node.",
 								AstInsErrorType::MissingAmbiguityCandidate
-								);
+							);
 						}
 
-						for (vint i = 0; i < instruction.count; i++)
+						auto storage = frame.slots.Values()[slotKeyIndex];
+						vint candidateCount = 1;
+						if (storage.additionalValues)
 						{
-							if (!pushed[pushed.Count() - i - 1].object)
-							{
-								throw AstInsException(
-									L"Tokens or enum items cannot be ambiguity candidates.",
-									AstInsErrorType::AmbiguityCandidateIsNotObject
+							candidateCount += storage.additionalValues->Count();
+						}
+						if (candidateCount < 2)
+						{
+							throw AstInsException(
+								L"There are not enough candidates to create an ambiguity node.",
+								AstInsErrorType::MissingAmbiguityCandidate
+							);
+						}
+
+						Array<Ptr<ParsingAstBase>> candidates(candidateCount);
+						auto readCandidate = [&](const SlotValue& slotValue, vint index)
+						{
+							slotValue.Apply(Overloading(
+								[&](const TokenSlot&)
+								{
+									throw AstInsException(
+										L"Tokens cannot be ambiguity candidates.",
+										AstInsErrorType::AmbiguityCandidateIsNotObject
 									);
+								},
+								[&](const EnumItemSlot&)
+								{
+									throw AstInsException(
+										L"Enum items cannot be ambiguity candidates.",
+										AstInsErrorType::AmbiguityCandidateIsNotObject
+									);
+								},
+								[&](const Ptr<ParsingAstBase>& objectSlot)
+								{
+									candidates[index] = objectSlot;
+								}
+							));
+						};
+
+						readCandidate(storage.value, 0);
+						if (storage.additionalValues)
+						{
+							for (vint i = 0; i < storage.additionalValues->Count(); i++)
+							{
+								readCandidate(storage.additionalValues->Get(i), i + 1);
 							}
 						}
 
-						Array<Ptr<ParsingAstBase>> candidates(instruction.count);
-						for (vint i = 0; i < instruction.count; i++)
-						{
-							auto value = pushed[pushed.Count() - 1];
-							pushed.RemoveAt(pushed.Count() - 1);
-							candidates[i] = value.object;
-						}
-
-						pushed.Add(ObjectOrToken{ ResolveAmbiguity(instruction.param, candidates) });
+						auto resolved = ResolveAmbiguity(instruction.param, candidates);
+						CreatingObject info;
+						info.object = resolved;
+						info.type = instruction.param;
+						creatingObjects.Add(info);
 					}
 					break;
-				case AstInsType::AccumulatedDfa:
-					{
-						auto&& createdObject = PushCreated(CreatedObject{ nullptr,pushed.Count(),token });
-						createdObject.extraEmptyDfaBelow += instruction.count - 1;
-					}
-					break;
-				case AstInsType::AccumulatedEoRo:
-					{
-						while (instruction.count > 0)
-						{
-							auto& createdObject = created[created.Count() - 1];
-							if (!createdObject.object)
-							{
-								throw AstInsException(
-									L"There is no created objects after DelayFieldAssignment.",
-									AstInsErrorType::NoRootObjectAfterDfa
-									);
-							}
-							if (pushed.Count() > createdObject.pushedCount)
-							{
-								throw AstInsException(
-									L"There are still values to assign to fields before finishing an object.",
-									AstInsErrorType::LeavingUnassignedValues
-									);
-							}
-
-							if (createdObject.extraEmptyDfaBelow >= instruction.count)
-							{
-								createdObject.object->codeRange.start = ParsingTextPos::Start(&createdObject.delayedToken);
-								createdObject.object->codeRange.end = ParsingTextPos::End(&token);
-								createdObject.extraEmptyDfaBelow -= instruction.count;
-								instruction.count = 0;
-							}
-							else
-							{
-								instruction.count -= createdObject.extraEmptyDfaBelow + 1;
-								createdObject.extraEmptyDfaBelow = 0;
-								Execute({ AstInsType::EndObject }, token, tokenIndex);
-								Execute({ AstInsType::ReopenObject }, token, tokenIndex);
-							}
-						}
-					}
-					break;
-				default:
-					CHECK_FAIL(L"vl::glr::AstInsReceiverBase::Execute(AstIns, const regex::RegexToken&)#Unknown Instruction.");
 				}
 			}
 			catch (const AstInsException&)
@@ -670,7 +568,7 @@ AstInsReceiverBase
 			EnsureContinuable();
 			try
 			{
-				if (created.Count() > 0 || pushed.Count() > 1)
+				if (stackFrames.Count() > 0 || creatingObjects.Count() != 1)
 				{
 					throw AstInsException(
 						L"No more instruction but the root object has not been completed yet.",
@@ -678,15 +576,8 @@ AstInsReceiverBase
 						);
 				}
 
-				auto object = pushed[0].object;
-				if (!object)
-				{
-					throw AstInsException(
-						L"No more instruction but the root object has not been completed yet.",
-						AstInsErrorType::InstructionNotComplete
-						);
-				}
-				pushed.Clear();
+				auto object = creatingObjects[0].object;
+				creatingObjects.RemoveAt(0);
 				finished = true;
 				return object;
 			}

@@ -54,32 +54,7 @@ Z
 			astCode,
 			lexerCode,
 			syntaxCode,
-			{ ParserErrorType::RuleIsIndirectlyLeftRecursive,L"Z" }
-			);
-	});
-
-	TEST_CASE(L"LeftRecursionInjectHasNoContinuation")
-	{
-		const wchar_t* syntaxCode =
-LR"SYNTAX(
-Exp0
-  ::= left_recursion_placeholder(A)
-  ::= A as Ast
-  ;
-Exp1
-  ::= !Exp0
-  ;
-Exp2
-  ::= !Exp0 [left_recursion_inject(A) Exp1]
-  ;
-)SYNTAX";
-		ExpectError(
-			typeParser,
-			ruleParser,
-			astCode,
-			lexerCode,
-			syntaxCode,
-			{ ParserErrorType::LeftRecursionInjectHasNoContinuation,L"Exp2",L"A",L"Exp1" }
+			{ ParserErrorType::RuleIsIndirectlyLeftRecursive,L"Y, Z" }
 			);
 	});
 }

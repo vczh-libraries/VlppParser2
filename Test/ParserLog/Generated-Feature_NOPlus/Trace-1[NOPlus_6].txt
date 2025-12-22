@@ -1,0 +1,320 @@
+﻿================ EXECUTION STEPS ================
+[0]: 0@0 - 39@0
+
+==================== TRACES =====================
+
++----------------------+
+| [0]: <Start>         |
+| [13][Module] BEGIN   |
+| [AST-INSTRUCTIONS]:  |
+| [SUCCESORS 1-1]: [1] |
++----------------------+
+[0]
+ |
+ +
+ |
+[0]
+++==================================================================================================================++
+|| [1]: {NESTED_POSITIVE_OPTIONAL} nested_positive_optional                                                         ||
+|| [11][NestedPositiveOptional]< "nested_positive_optional" @ +[ ( +[ ( +[ Plus ] Plus ) ] Plus ) ] Plus { Plus } > ||
+|| [AST-INSTRUCTIONS]:                                                                                              ||
+||   + StackBegin()                                                                                                 ||
+||   + Token(0)                                                                                                     ||
+|| [RETURN STACK]:                                                                                                  ||
+||   [0][7][0]: NestedPositiveOptional -> [15][Module]<! !NestedPositiveOptional @ !>                               ||
+|| [PREDECESSORS 0-0]: [0]                                                                                          ||
+|| [SUCCESORS 2-2]: [2]                                                                                             ||
+++==================================================================================================================++
+[0]
+ |
+ +
+ |
+[0]
+++==============================================================================================================================================++
+|| [2]: {PLUS} +                                                                                                                                ||
+|| [2][Plus]< "+" @ >                                                                                                                           ||
+|| [AST-INSTRUCTIONS]:                                                                                                                          ||
+||   + StackBegin()                                                                                                                             ||
+||   + Token(0)                                                                                                                                 ||
+|| [RETURN STACK]:                                                                                                                              ||
+||   [1][6][1]: Plus -> [12][NestedPositiveOptional]< "nested_positive_optional" @ +[ ( +[ ( +[ Plus ] Plus ) ] Plus ) ] Plus { Plus } >[pm-lr] ||
+||   [0][7][0]: NestedPositiveOptional -> [15][Module]<! !NestedPositiveOptional @ !>                                                           ||
+|| [PREDECESSORS 1-1]: [1]                                                                                                                      ||
+|| [SUCCESORS 3-3]: [3]                                                                                                                         ||
+++==============================================================================================================================================++
+|
++
+|
++-------------------------------------------------------------------------------------------------------------------------+
+| [3]: <Ending>                                                                                                           |
+| [12][NestedPositiveOptional]< "nested_positive_optional" @ +[ ( +[ ( +[ Plus ] Plus ) ] Plus ) ] Plus { Plus } >[pm-lr] |
+| [HOLDING COMPETITION]:                                                                                                  |
+|   [2][HIGH PRIORITY WIN][RULE: 3][COMPID: 1]                                                                            |
+|   [1][HIGH PRIORITY WIN][RULE: 3][COMPID: 2]                                                                            |
+|   [0][HIGH PRIORITY WIN][RULE: 3][COMPID: 3]                                                                            |
+| [AST-INSTRUCTIONS]:                                                                                                     |
+|   + CreateObject(Plus)                                                                                                  |
+|   + StackEnd()                                                                                                          |
+| [RETURN STACK]:                                                                                                         |
+|   [0][7][0]: NestedPositiveOptional -> [15][Module]<! !NestedPositiveOptional @ !>                                      |
+| [PREDECESSORS 2-2]: [2]                                                                                                 |
+| [SUCCESORS 4-4]: [4]                                                                                                    |
++-------------------------------------------------------------------------------------------------------------------------+
+|
++
+|
++-----------------------------------------------------------------------------------------------------------------+
+| [4]: <Leftrec>                                                                                                  |
+| [5][NestedPositiveOptional]< "nested_positive_optional" +[ ( +[ ( +[ Plus @ ] Plus ) ] Plus ) ] Plus { Plus } > |
+| [AST-INSTRUCTIONS]:                                                                                             |
+|   + StackSlot(1)                                                                                                |
+| [RETURN STACK]:                                                                                                 |
+|   [0][7][0]: NestedPositiveOptional -> [15][Module]<! !NestedPositiveOptional @ !>                              |
+| [FIRST ATTENDING COMPETITION]:  [2]                                                                             |
+| [CARRIED COMPETITION]:                                                                                          |
+|   [2]: competition[2][RS: 0] high                                                                               |
+|   [1]: competition[1][RS: 0] high                                                                               |
+|   [0]: competition[0][RS: 0] high                                                                               |
+| [PREDECESSORS 3-3]: [3]                                                                                         |
+| [SUCCESORS 9-9]: [9]                                                                                            |
++-----------------------------------------------------------------------------------------------------------------+
+[0]
+ |
+ +
+ |
+[0]
+++=======================================================================================================================================++
+|| [9]: {PLUS} +                                                                                                                         ||
+|| [2][Plus]< "+" @ >                                                                                                                    ||
+|| [AST-INSTRUCTIONS]:                                                                                                                   ||
+||   + StackBegin()                                                                                                                      ||
+||   + Token(0)                                                                                                                          ||
+|| [RETURN STACK]:                                                                                                                       ||
+||   [2][0][4]: Plus -> [10][NestedPositiveOptional]< "nested_positive_optional" +[ ( +[ ( +[ Plus ] Plus @ ) ] Plus ) ] Plus { Plus } > ||
+||   [0][7][0]: NestedPositiveOptional -> [15][Module]<! !NestedPositiveOptional @ !>                                                    ||
+|| [FIRST ATTENDING COMPETITION]:  [2]                                                                                                   ||
+|| [CARRIED COMPETITION]:                                                                                                                ||
+||   [2]: competition[2][RS: 0] high                                                                                                     ||
+||   [1]: competition[1][RS: 0] high                                                                                                     ||
+||   [0]: competition[0][RS: 0] high                                                                                                     ||
+|| [PREDECESSORS 4-4]: [4]                                                                                                               ||
+|| [SUCCESORS 10-10]: [10]                                                                                                               ||
+++=======================================================================================================================================++
+|
++
+|
++------------------------------------------------------------------------------------------------------------------+
+| [10]: <Ending>                                                                                                   |
+| [10][NestedPositiveOptional]< "nested_positive_optional" +[ ( +[ ( +[ Plus ] Plus @ ) ] Plus ) ] Plus { Plus } > |
+| [AST-INSTRUCTIONS]:                                                                                              |
+|   + CreateObject(Plus)                                                                                           |
+|   + StackEnd()                                                                                                   |
+|   > StackSlot(2)                                                                                                 |
+| [RETURN STACK]:                                                                                                  |
+|   [0][7][0]: NestedPositiveOptional -> [15][Module]<! !NestedPositiveOptional @ !>                               |
+| [FIRST ATTENDING COMPETITION]:  [2]                                                                              |
+| [CARRIED COMPETITION]:                                                                                           |
+|   [2]: competition[2][RS: 0] high                                                                                |
+|   [1]: competition[1][RS: 0] high                                                                                |
+|   [0]: competition[0][RS: 0] high                                                                                |
+| [PREDECESSORS 9-9]: [9]                                                                                          |
+| [SUCCESORS 19-19]: [19]                                                                                          |
++------------------------------------------------------------------------------------------------------------------+
+[0]
+ |
+ +
+ |
+[0]
+++=======================================================================================================================================++
+|| [19]: {PLUS} +                                                                                                                        ||
+|| [2][Plus]< "+" @ >                                                                                                                    ||
+|| [AST-INSTRUCTIONS]:                                                                                                                   ||
+||   + StackBegin()                                                                                                                      ||
+||   + Token(0)                                                                                                                          ||
+|| [RETURN STACK]:                                                                                                                       ||
+||   [6][5][10]: Plus -> [9][NestedPositiveOptional]< "nested_positive_optional" +[ ( +[ ( +[ Plus ] Plus ) ] Plus @ ) ] Plus { Plus } > ||
+||   [0][7][0]: NestedPositiveOptional -> [15][Module]<! !NestedPositiveOptional @ !>                                                    ||
+|| [FIRST ATTENDING COMPETITION]:  [2]                                                                                                   ||
+|| [CARRIED COMPETITION]:                                                                                                                ||
+||   [2]: competition[2][RS: 0] high                                                                                                     ||
+||   [1]: competition[1][RS: 0] high                                                                                                     ||
+||   [0]: competition[0][RS: 0] high                                                                                                     ||
+|| [PREDECESSORS 10-10]: [10]                                                                                                            ||
+|| [SUCCESORS 20-20]: [20]                                                                                                               ||
+++=======================================================================================================================================++
+|
++
+|
++-----------------------------------------------------------------------------------------------------------------+
+| [20]: <Ending>                                                                                                  |
+| [9][NestedPositiveOptional]< "nested_positive_optional" +[ ( +[ ( +[ Plus ] Plus ) ] Plus @ ) ] Plus { Plus } > |
+| [AST-INSTRUCTIONS]:                                                                                             |
+|   + CreateObject(Plus)                                                                                          |
+|   + StackEnd()                                                                                                  |
+|   > StackSlot(3)                                                                                                |
+| [RETURN STACK]:                                                                                                 |
+|   [0][7][0]: NestedPositiveOptional -> [15][Module]<! !NestedPositiveOptional @ !>                              |
+| [FIRST ATTENDING COMPETITION]:  [2]                                                                             |
+| [CARRIED COMPETITION]:                                                                                          |
+|   [2]: competition[2][RS: 0] high                                                                               |
+|   [1]: competition[1][RS: 0] high                                                                               |
+|   [0]: competition[0][RS: 0] high                                                                               |
+| [PREDECESSORS 19-19]: [19]                                                                                      |
+| [SUCCESORS 27-27]: [27]                                                                                         |
++-----------------------------------------------------------------------------------------------------------------+
+[0]
+ |
+ +
+ |
+[0]
+++=======================================================================================================================================++
+|| [27]: {PLUS} +                                                                                                                        ||
+|| [2][Plus]< "+" @ >                                                                                                                    ||
+|| [AST-INSTRUCTIONS]:                                                                                                                   ||
+||   + StackBegin()                                                                                                                      ||
+||   + Token(0)                                                                                                                          ||
+|| [RETURN STACK]:                                                                                                                       ||
+||   [9][4][20]: Plus -> [6][NestedPositiveOptional]< "nested_positive_optional" +[ ( +[ ( +[ Plus ] Plus ) ] Plus ) ] Plus @ { Plus } > ||
+||   [0][7][0]: NestedPositiveOptional -> [15][Module]<! !NestedPositiveOptional @ !>                                                    ||
+|| [CARRIED COMPETITION]:                                                                                                                ||
+||   [2]: competition[2][RS: 0] high                                                                                                     ||
+||   [1]: competition[1][RS: 0] high                                                                                                     ||
+||   [0]: competition[0][RS: 0] high                                                                                                     ||
+|| [PREDECESSORS 20-20]: [20]                                                                                                            ||
+|| [SUCCESORS 28-28]: [28]                                                                                                               ||
+++=======================================================================================================================================++
+|
++
+|
++-----------------------------------------------------------------------------------------------------------------+
+| [28]: <Ending>                                                                                                  |
+| [6][NestedPositiveOptional]< "nested_positive_optional" +[ ( +[ ( +[ Plus ] Plus ) ] Plus ) ] Plus @ { Plus } > |
+| [AST-INSTRUCTIONS]:                                                                                             |
+|   + CreateObject(Plus)                                                                                          |
+|   + StackEnd()                                                                                                  |
+|   > StackSlot(4)                                                                                                |
+| [RETURN STACK]:                                                                                                 |
+|   [0][7][0]: NestedPositiveOptional -> [15][Module]<! !NestedPositiveOptional @ !>                              |
+| [CARRIED COMPETITION]:                                                                                          |
+|   [2]: competition[2][RS: 0] high                                                                               |
+|   [1]: competition[1][RS: 0] high                                                                               |
+|   [0]: competition[0][RS: 0] high                                                                               |
+| [PREDECESSORS 27-27]: [27]                                                                                      |
+| [SUCCESORS 33-33]: [33]                                                                                         |
++-----------------------------------------------------------------------------------------------------------------+
+[0]
+ |
+ +
+ |
+[0]
+++========================================================================================================================================++
+|| [33]: {PLUS} +                                                                                                                         ||
+|| [2][Plus]< "+" @ >                                                                                                                     ||
+|| [AST-INSTRUCTIONS]:                                                                                                                    ||
+||   + StackBegin()                                                                                                                       ||
+||   + Token(0)                                                                                                                           ||
+|| [RETURN STACK]:                                                                                                                        ||
+||   [11][1][28]: Plus -> [8][NestedPositiveOptional]< "nested_positive_optional" +[ ( +[ ( +[ Plus ] Plus ) ] Plus ) ] Plus { Plus @ } > ||
+||   [0][7][0]: NestedPositiveOptional -> [15][Module]<! !NestedPositiveOptional @ !>                                                     ||
+|| [CARRIED COMPETITION]:                                                                                                                 ||
+||   [2]: competition[2][RS: 0] high                                                                                                      ||
+||   [1]: competition[1][RS: 0] high                                                                                                      ||
+||   [0]: competition[0][RS: 0] high                                                                                                      ||
+|| [PREDECESSORS 28-28]: [28]                                                                                                             ||
+|| [SUCCESORS 34-34]: [34]                                                                                                                ||
+++========================================================================================================================================++
+|
++
+|
++-----------------------------------------------------------------------------------------------------------------+
+| [34]: <Ending>                                                                                                  |
+| [8][NestedPositiveOptional]< "nested_positive_optional" +[ ( +[ ( +[ Plus ] Plus ) ] Plus ) ] Plus { Plus @ } > |
+| [AST-INSTRUCTIONS]:                                                                                             |
+|   + CreateObject(Plus)                                                                                          |
+|   + StackEnd()                                                                                                  |
+|   > StackSlot(5)                                                                                                |
+| [RETURN STACK]:                                                                                                 |
+|   [0][7][0]: NestedPositiveOptional -> [15][Module]<! !NestedPositiveOptional @ !>                              |
+| [CARRIED COMPETITION]:                                                                                          |
+|   [2]: competition[2][RS: 0] high                                                                               |
+|   [1]: competition[1][RS: 0] high                                                                               |
+|   [0]: competition[0][RS: 0] high                                                                               |
+| [PREDECESSORS 33-33]: [33]                                                                                      |
+| [SUCCESORS 36-36]: [36]                                                                                         |
++-----------------------------------------------------------------------------------------------------------------+
+[0]
+ |
+ +
+ |
+[0]
+++========================================================================================================================================++
+|| [36]: {PLUS} +                                                                                                                         ||
+|| [2][Plus]< "+" @ >                                                                                                                     ||
+|| [AST-INSTRUCTIONS]:                                                                                                                    ||
+||   + StackBegin()                                                                                                                       ||
+||   + Token(0)                                                                                                                           ||
+|| [RETURN STACK]:                                                                                                                        ||
+||   [12][3][34]: Plus -> [8][NestedPositiveOptional]< "nested_positive_optional" +[ ( +[ ( +[ Plus ] Plus ) ] Plus ) ] Plus { Plus @ } > ||
+||   [0][7][0]: NestedPositiveOptional -> [15][Module]<! !NestedPositiveOptional @ !>                                                     ||
+|| [CARRIED COMPETITION]:                                                                                                                 ||
+||   [2]: competition[2][RS: 0] high                                                                                                      ||
+||   [1]: competition[1][RS: 0] high                                                                                                      ||
+||   [0]: competition[0][RS: 0] high                                                                                                      ||
+|| [PREDECESSORS 34-34]: [34]                                                                                                             ||
+|| [SUCCESORS 37-37]: [37]                                                                                                                ||
+++========================================================================================================================================++
+|
++
+|
++-----------------------------------------------------------------------------------------------------------------+
+| [37]: <Ending>                                                                                                  |
+| [8][NestedPositiveOptional]< "nested_positive_optional" +[ ( +[ ( +[ Plus ] Plus ) ] Plus ) ] Plus { Plus @ } > |
+| [AST-INSTRUCTIONS]:                                                                                             |
+|   + CreateObject(Plus)                                                                                          |
+|   + StackEnd()                                                                                                  |
+|   > StackSlot(5)                                                                                                |
+| [RETURN STACK]:                                                                                                 |
+|   [0][7][0]: NestedPositiveOptional -> [15][Module]<! !NestedPositiveOptional @ !>                              |
+| [CARRIED COMPETITION]:                                                                                          |
+|   [2]: competition[2][RS: 0] high                                                                               |
+|   [1]: competition[1][RS: 0] high                                                                               |
+|   [0]: competition[0][RS: 0] high                                                                               |
+| [PREDECESSORS 36-36]: [36]                                                                                      |
+| [SUCCESORS 38-38]: [38]                                                                                         |
++-----------------------------------------------------------------------------------------------------------------+
+|
++
+|
++-----------------------------------------------+
+| [38]: <Ending>                                |
+| [15][Module]<! !NestedPositiveOptional @ !>   |
+| [AST-INSTRUCTIONS]:                           |
+|   + CreateObject(NestedOptionalFeature)       |
+|   + Field(NestedOptionalFeature::optional, 1) |
+|   + Field(NestedOptionalFeature::tail1, 2)    |
+|   + Field(NestedOptionalFeature::tail2, 3)    |
+|   + Field(NestedOptionalFeature::tail3, 4)    |
+|   + Field(NestedOptionalFeature::tails, 5)    |
+|   + StackEnd()                                |
+|   > StackBegin()                              |
+| [CARRIED COMPETITION]:                        |
+|   [2]: competition[2][RS: 0] high             |
+|   [1]: competition[1][RS: 0] high             |
+|   [0]: competition[0][RS: 0] high             |
+| [PREDECESSORS 37-37]: [37]                    |
+| [SUCCESORS 39-39]: [39]                       |
++-----------------------------------------------+
+|
++
+|
++-----------------------------------+
+| [39]: <Ending>                    |
+| [14][Module] END [ENDING]         |
+| [AST-INSTRUCTIONS]:               |
+|   + StackEnd()                    |
+| [CARRIED COMPETITION]:            |
+|   [2]: competition[2][RS: 0] high |
+|   [1]: competition[1][RS: 0] high |
+|   [0]: competition[0][RS: 0] high |
+| [PREDECESSORS 38-38]: [38]        |
++-----------------------------------+

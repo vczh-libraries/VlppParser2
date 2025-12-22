@@ -1,0 +1,80 @@
+﻿================ EXECUTION STEPS ================
+[0]: 0@0 - 6@0
+
+==================== TRACES =====================
+
++----------------------+
+| [0]: <Start>         |
+| [9][Module] BEGIN    |
+| [AST-INSTRUCTIONS]:  |
+| [SUCCESORS 1-1]: [1] |
++----------------------+
+[0]
+ |
+ +
+ |
+[0]
+++========================================================================++
+|| [1]: {POSITIVE_OPTIONAL} positive_optional                             ||
+|| [8][PositiveOptional]< "positive_optional" @ +[ Plus ] "+" { Plus } >  ||
+|| [HOLDING COMPETITION]:                                                 ||
+||   [0][HOLDING][RULE: 1][COMPID: 1]                                     ||
+|| [AST-INSTRUCTIONS]:                                                    ||
+||   + StackBegin()                                                       ||
+||   + Token(0)                                                           ||
+|| [RETURN STACK]:                                                        ||
+||   [0][3][0]: PositiveOptional -> [11][Module]<! !PositiveOptional @ !> ||
+|| [PREDECESSORS 0-0]: [0]                                                ||
+|| [SUCCESORS 4-4]: [4]                                                   ||
+++========================================================================++
+[0]
+ |
+ +
+ |
+[0]
+++========================================================================++
+|| [4]: {PLUS} +                                                          ||
+|| [6][PositiveOptional]< "positive_optional" +[ Plus ] "+" @ { Plus } >  ||
+|| [AST-INSTRUCTIONS]:                                                    ||
+||   + Token(2)                                                           ||
+|| [RETURN STACK]:                                                        ||
+||   [0][3][0]: PositiveOptional -> [11][Module]<! !PositiveOptional @ !> ||
+|| [FIRST ATTENDING COMPETITION]:  [1]                                    ||
+|| [CARRIED COMPETITION]:                                                 ||
+||   [1]: competition[0][RS: 0] low                                       ||
+|| [PREDECESSORS 1-1]: [1]                                                ||
+|| [SUCCESORS 5-5]: [5]                                                   ||
+++========================================================================++
+|
++
+|
++-----------------------------------------+
+| [5]: <Ending>                           |
+| [11][Module]<! !PositiveOptional @ !>   |
+| [AST-INSTRUCTIONS]:                     |
+|   + EnumItem(1, 4)                      |
+|   + CreateObject(OptionalFeature)       |
+|   + Field(OptionalFeature::optional, 1) |
+|   + Field(OptionalFeature::loop, 3)     |
+|   + Field(OptionalFeature::priority, 4) |
+|   + StackEnd()                          |
+|   > StackBegin()                        |
+| [FIRST ATTENDING COMPETITION]:  [1]     |
+| [CARRIED COMPETITION]:                  |
+|   [1]: competition[0][RS: 0] low        |
+| [PREDECESSORS 4-4]: [4]                 |
+| [SUCCESORS 6-6]: [6]                    |
++-----------------------------------------+
+|
++
+|
++-------------------------------------+
+| [6]: <Ending>                       |
+| [10][Module] END [ENDING]           |
+| [AST-INSTRUCTIONS]:                 |
+|   + StackEnd()                      |
+| [FIRST ATTENDING COMPETITION]:  [1] |
+| [CARRIED COMPETITION]:              |
+|   [1]: competition[0][RS: 0] low    |
+| [PREDECESSORS 5-5]: [5]             |
++-------------------------------------+

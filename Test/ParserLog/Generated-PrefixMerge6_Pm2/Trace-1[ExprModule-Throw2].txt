@@ -1,11 +1,11 @@
 ﻿================ EXECUTION STEPS ================
-[0]: 0@0 - 9@1
+[0]: 0@0 - 11@0
 
 ==================== TRACES =====================
 
 +-------------------------+
 | [0]: <Start>            |
-| [84][ExprModule] BEGIN  |
+| [79][ExprModule] BEGIN  |
 | [AST-INSTRUCTIONS]:     |
 | [SUCCESORS 1-1]: [1]    |
 +-------------------------+
@@ -14,123 +14,162 @@
  +
  |
 [0]
-++=========================================================================================================================================================++
-|| [1]: {THROW} throw                                                                                                                                      ||
-|| [92][_ExprNoComma_LRI_Isolated_1]< "throw" @ [ _Expr2 ] >                                                                                               ||
-|| [AST-INSTRUCTIONS]:                                                                                                                                     ||
-||   - DelayFieldAssignment()                                                                                                                              ||
-||   - DelayFieldAssignment()                                                                                                                              ||
-||   - BeginObject(ThrowExpr)                                                                                                                              ||
-|| [RETURN STACK]:                                                                                                                                         ||
-||   [1][6][0]: _ExprNoComma_LRI_Isolated_1 -> [61][_Expr]<< !_ExprNoComma_LRI_Isolated_1 @ ( lri:(LRI__ExprNoComma)->_Expr_LRI_Original | lri:<skip> ) >> ||
-||   [0][60][0]: _Expr -> [86][ExprModule]<< !_Expr @ >>                                                                                                   ||
-|| [PREDECESSORS 0-0]: [0]                                                                                                                                 ||
-|| [SUCCESORS 3-3]: [3]                                                                                                                                    ||
-++=========================================================================================================================================================++
+++===============================================================++
+|| [1]: {THROW} throw                                            ||
+|| [59][_ExprNoComma]< "throw" @ [ _Expr2 ] >                    ||
+|| [AST-INSTRUCTIONS]:                                           ||
+||   + StackBegin()                                              ||
+||   + Token(0)                                                  ||
+|| [RETURN STACK]:                                               ||
+||   [1][4][0]: _ExprNoComma -> [67][_Expr]<! !_ExprNoComma @ !> ||
+||   [0][29][0]: _Expr -> [81][ExprModule]<! !_Expr @ !>         ||
+|| [PREDECESSORS 0-0]: [0]                                       ||
+|| [SUCCESORS 3-3]: [3]                                          ||
+++===============================================================++
 [0]
  |
  +
  |
 [0]
-++=========================================================================================================================================================++
-|| [3]: {ID} A                                                                                                                                             ||
-|| [2][_Name]< ID @ >                                                                                                                                      ||
-|| [AST-INSTRUCTIONS]:                                                                                                                                     ||
-||   - DelayFieldAssignment()                                                                                                                              ||
-||   - DelayFieldAssignment()                                                                                                                              ||
-||   - BeginObject(Name)                                                                                                                                   ||
-||   + Token()                                                                                                                                             ||
-||   + Field(Name::name)                                                                                                                                   ||
-|| [RETURN STACK]:                                                                                                                                         ||
-||   [4][0][1]: _Name -> [8][_PrimitiveShared]<< !_Name @ >>                                                                                               ||
-||   [3][28][1]: _PrimitiveShared -> [46][_Expr2]<< !_PrimitiveShared @ ( lri:(LRI__Expr0,LRI__LongType)->_Expr2_LRI_Original | lri:<skip> ) >>            ||
-||   [2][62][1]: _Expr2 -> [93][_ExprNoComma_LRI_Isolated_1]< "throw" [ _Expr2 @ ] >                                                                       ||
-||   [1][6][0]: _ExprNoComma_LRI_Isolated_1 -> [61][_Expr]<< !_ExprNoComma_LRI_Isolated_1 @ ( lri:(LRI__ExprNoComma)->_Expr_LRI_Original | lri:<skip> ) >> ||
-||   [0][60][0]: _Expr -> [86][ExprModule]<< !_Expr @ >>                                                                                                   ||
-|| [PREDECESSORS 1-1]: [1]                                                                                                                                 ||
-|| [SUCCESORS 4-4]: [4]                                                                                                                                    ||
-++=========================================================================================================================================================++
+++=====================================================================================++
+|| [3]: {ID} A                                                                         ||
+|| [2][_Name]< ID @ >                                                                  ||
+|| [AST-INSTRUCTIONS]:                                                                 ||
+||   + StackBegin()                                                                    ||
+||   + Token(0)                                                                        ||
+|| [RETURN STACK]:                                                                     ||
+||   [6][0][1]: _Name -> [8][_PrimitiveShared]<! !_Name @ !>                           ||
+||   [5][10][1]: _PrimitiveShared -> [33][_Expr0] BEGIN [pm-cr-rule: _PrimitiveShared] ||
+||   [4][7][1]: _Expr0 -> [50][_Expr1]<! !_Expr0 @ !>                                  ||
+||   [3][6][1]: _Expr1 -> [56][_Expr2]<! !_Expr1 @ !>                                  ||
+||   [2][21][1]: _Expr2 -> [60][_ExprNoComma]< "throw" [ _Expr2 @ ] >                  ||
+||   [1][4][0]: _ExprNoComma -> [67][_Expr]<! !_ExprNoComma @ !>                       ||
+||   [0][29][0]: _Expr -> [81][ExprModule]<! !_Expr @ !>                               ||
+|| [PREDECESSORS 1-1]: [1]                                                             ||
+|| [SUCCESORS 4-4]: [4]                                                                ||
+++=====================================================================================++
 |
 +
 |
-+---------------------------------------------------------------------------------------------------------------------------------------------------------+
-| [4]: <Ending>                                                                                                                                           |
-| [8][_PrimitiveShared]<< !_Name @ >>                                                                                                                     |
-| [AST-INSTRUCTIONS]:                                                                                                                                     |
-|   - EndObject()                                                                                                                                         |
-| [RETURN STACK]:                                                                                                                                         |
-|   [3][28][1]: _PrimitiveShared -> [46][_Expr2]<< !_PrimitiveShared @ ( lri:(LRI__Expr0,LRI__LongType)->_Expr2_LRI_Original | lri:<skip> ) >>            |
-|   [2][62][1]: _Expr2 -> [93][_ExprNoComma_LRI_Isolated_1]< "throw" [ _Expr2 @ ] >                                                                       |
-|   [1][6][0]: _ExprNoComma_LRI_Isolated_1 -> [61][_Expr]<< !_ExprNoComma_LRI_Isolated_1 @ ( lri:(LRI__ExprNoComma)->_Expr_LRI_Original | lri:<skip> ) >> |
-|   [0][60][0]: _Expr -> [86][ExprModule]<< !_Expr @ >>                                                                                                   |
-| [PREDECESSORS 3-3]: [3]                                                                                                                                 |
-| [SUCCESORS 5-5]: [5]                                                                                                                                    |
-+---------------------------------------------------------------------------------------------------------------------------------------------------------+
++-------------------------------------------------------------------------------------+
+| [4]: <Ending>                                                                       |
+| [8][_PrimitiveShared]<! !_Name @ !>                                                 |
+| [AST-INSTRUCTIONS]:                                                                 |
+|   + CreateObject(Name)                                                              |
+|   + Field(Name::name, 0)                                                            |
+|   + StackEnd()                                                                      |
+|   > StackBegin()                                                                    |
+| [RETURN STACK]:                                                                     |
+|   [5][10][1]: _PrimitiveShared -> [33][_Expr0] BEGIN [pm-cr-rule: _PrimitiveShared] |
+|   [4][7][1]: _Expr0 -> [50][_Expr1]<! !_Expr0 @ !>                                  |
+|   [3][6][1]: _Expr1 -> [56][_Expr2]<! !_Expr1 @ !>                                  |
+|   [2][21][1]: _Expr2 -> [60][_ExprNoComma]< "throw" [ _Expr2 @ ] >                  |
+|   [1][4][0]: _ExprNoComma -> [67][_Expr]<! !_ExprNoComma @ !>                       |
+|   [0][29][0]: _Expr -> [81][ExprModule]<! !_Expr @ !>                               |
+| [PREDECESSORS 3-3]: [3]                                                             |
+| [SUCCESORS 5-5]: [5]                                                                |
++-------------------------------------------------------------------------------------+
 |
 +
 |
-+---------------------------------------------------------------------------------------------------------------------------------------------------------+
-| [5]: <Ending>                                                                                                                                           |
-| [46][_Expr2]<< !_PrimitiveShared @ ( lri:(LRI__Expr0,LRI__LongType)->_Expr2_LRI_Original | lri:<skip> ) >>                                              |
-| [AST-INSTRUCTIONS]:                                                                                                                                     |
-|   - ReopenObject()                                                                                                                                      |
-|   - EndObject()                                                                                                                                         |
-|   > ReopenObject()                                                                                                                                      |
-| [RETURN STACK]:                                                                                                                                         |
-|   [2][62][1]: _Expr2 -> [93][_ExprNoComma_LRI_Isolated_1]< "throw" [ _Expr2 @ ] >                                                                       |
-|   [1][6][0]: _ExprNoComma_LRI_Isolated_1 -> [61][_Expr]<< !_ExprNoComma_LRI_Isolated_1 @ ( lri:(LRI__ExprNoComma)->_Expr_LRI_Original | lri:<skip> ) >> |
-|   [0][60][0]: _Expr -> [86][ExprModule]<< !_Expr @ >>                                                                                                   |
-| [PREDECESSORS 4-4]: [4]                                                                                                                                 |
-| [SUCCESORS 6-6]: [6]                                                                                                                                    |
-+---------------------------------------------------------------------------------------------------------------------------------------------------------+
++--------------------------------------------------------------------+
+| [5]: <Ending>                                                      |
+| [33][_Expr0] BEGIN [pm-cr-rule: _PrimitiveShared]                  |
+| [AST-INSTRUCTIONS]:                                                |
+|   + StackEnd()                                                     |
+| [RETURN STACK]:                                                    |
+|   [4][7][1]: _Expr0 -> [50][_Expr1]<! !_Expr0 @ !>                 |
+|   [3][6][1]: _Expr1 -> [56][_Expr2]<! !_Expr1 @ !>                 |
+|   [2][21][1]: _Expr2 -> [60][_ExprNoComma]< "throw" [ _Expr2 @ ] > |
+|   [1][4][0]: _ExprNoComma -> [67][_Expr]<! !_ExprNoComma @ !>      |
+|   [0][29][0]: _Expr -> [81][ExprModule]<! !_Expr @ !>              |
+| [PREDECESSORS 4-4]: [4]                                            |
+| [SUCCESORS 6-6]: [6]                                               |
++--------------------------------------------------------------------+
 |
 +
 |
-+---------------------------------------------------------------------------------------------------------------------------------------------------------+
-| [6]: <Ending>                                                                                                                                           |
-| [93][_ExprNoComma_LRI_Isolated_1]< "throw" [ _Expr2 @ ] >                                                                                               |
-| [AST-INSTRUCTIONS]:                                                                                                                                     |
-|   - EndObject()                                                                                                                                         |
-|   > Field(ThrowExpr::arg)                                                                                                                               |
-| [RETURN STACK]:                                                                                                                                         |
-|   [1][6][0]: _ExprNoComma_LRI_Isolated_1 -> [61][_Expr]<< !_ExprNoComma_LRI_Isolated_1 @ ( lri:(LRI__ExprNoComma)->_Expr_LRI_Original | lri:<skip> ) >> |
-|   [0][60][0]: _Expr -> [86][ExprModule]<< !_Expr @ >>                                                                                                   |
-| [PREDECESSORS 5-5]: [5]                                                                                                                                 |
-| [SUCCESORS 7-7]: [7]                                                                                                                                    |
-+---------------------------------------------------------------------------------------------------------------------------------------------------------+
++--------------------------------------------------------------------+
+| [6]: <Ending>                                                      |
+| [50][_Expr1]<! !_Expr0 @ !>                                        |
+| [AST-INSTRUCTIONS]:                                                |
+|   + StackBegin()                                                   |
+|   + StackEnd()                                                     |
+|   > StackBegin()                                                   |
+| [RETURN STACK]:                                                    |
+|   [3][6][1]: _Expr1 -> [56][_Expr2]<! !_Expr1 @ !>                 |
+|   [2][21][1]: _Expr2 -> [60][_ExprNoComma]< "throw" [ _Expr2 @ ] > |
+|   [1][4][0]: _ExprNoComma -> [67][_Expr]<! !_ExprNoComma @ !>      |
+|   [0][29][0]: _Expr -> [81][ExprModule]<! !_Expr @ !>              |
+| [PREDECESSORS 5-5]: [5]                                            |
+| [SUCCESORS 7-7]: [7]                                               |
++--------------------------------------------------------------------+
 |
 +
 |
-+-------------------------------------------------------------------------------------------------------------+
-| [7]: <Ending>                                                                                               |
-| [61][_Expr]<< !_ExprNoComma_LRI_Isolated_1 @ ( lri:(LRI__ExprNoComma)->_Expr_LRI_Original | lri:<skip> ) >> |
-| [AST-INSTRUCTIONS]:                                                                                         |
-|   - EndObject()                                                                                             |
-|   > ReopenObject()                                                                                          |
-| [RETURN STACK]:                                                                                             |
-|   [0][60][0]: _Expr -> [86][ExprModule]<< !_Expr @ >>                                                       |
-| [PREDECESSORS 6-6]: [6]                                                                                     |
-| [SUCCESORS 8-8]: [8]                                                                                        |
-+-------------------------------------------------------------------------------------------------------------+
++--------------------------------------------------------------------+
+| [7]: <Ending>                                                      |
+| [56][_Expr2]<! !_Expr1 @ !>                                        |
+| [AST-INSTRUCTIONS]:                                                |
+|   + StackEnd()                                                     |
+|   > StackBegin()                                                   |
+| [RETURN STACK]:                                                    |
+|   [2][21][1]: _Expr2 -> [60][_ExprNoComma]< "throw" [ _Expr2 @ ] > |
+|   [1][4][0]: _ExprNoComma -> [67][_Expr]<! !_ExprNoComma @ !>      |
+|   [0][29][0]: _Expr -> [81][ExprModule]<! !_Expr @ !>              |
+| [PREDECESSORS 6-6]: [6]                                            |
+| [SUCCESORS 8-8]: [8]                                               |
++--------------------------------------------------------------------+
+|
++
+|
++---------------------------------------------------------------+
+| [8]: <Ending>                                                 |
+| [60][_ExprNoComma]< "throw" [ _Expr2 @ ] >                    |
+| [AST-INSTRUCTIONS]:                                           |
+|   + StackEnd()                                                |
+|   > StackSlot(1)                                              |
+| [RETURN STACK]:                                               |
+|   [1][4][0]: _ExprNoComma -> [67][_Expr]<! !_ExprNoComma @ !> |
+|   [0][29][0]: _Expr -> [81][ExprModule]<! !_Expr @ !>         |
+| [PREDECESSORS 7-7]: [7]                                       |
+| [SUCCESORS 9-9]: [9]                                          |
++---------------------------------------------------------------+
+|
++
+|
++-------------------------------------------------------+
+| [9]: <Ending>                                         |
+| [67][_Expr]<! !_ExprNoComma @ !>                      |
+| [AST-INSTRUCTIONS]:                                   |
+|   + CreateObject(ThrowExpr)                           |
+|   + Field(ThrowExpr::arg, 1)                          |
+|   + StackEnd()                                        |
+|   > StackBegin()                                      |
+| [RETURN STACK]:                                       |
+|   [0][29][0]: _Expr -> [81][ExprModule]<! !_Expr @ !> |
+| [PREDECESSORS 8-8]: [8]                               |
+| [SUCCESORS 10-10]: [10]                               |
++-------------------------------------------------------+
 |
 +
 |
 +--------------------------------+
-| [8]: <Ending>                  |
-| [86][ExprModule]<< !_Expr @ >> |
+| [10]: <Ending>                 |
+| [81][ExprModule]<! !_Expr @ !> |
 | [AST-INSTRUCTIONS]:            |
-|   - EndObject()                |
-| [PREDECESSORS 7-7]: [7]        |
-| [SUCCESORS 9-9]: [9]           |
+|   + StackEnd()                 |
+|   > StackBegin()               |
+| [PREDECESSORS 9-9]: [9]        |
+| [SUCCESORS 11-11]: [11]        |
 +--------------------------------+
 |
 +
 |
 +-------------------------------+
-| [9]: <Ending>                 |
-| [85][ExprModule] END [ENDING] |
+| [11]: <Ending>                |
+| [80][ExprModule] END [ENDING] |
 | [AST-INSTRUCTIONS]:           |
-|   - ReopenObject()            |
-|   - EndObject()               |
-| [PREDECESSORS 8-8]: [8]       |
+|   + StackEnd()                |
+| [PREDECESSORS 10-10]: [10]    |
 +-------------------------------+

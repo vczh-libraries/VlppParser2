@@ -1,0 +1,935 @@
+﻿================ EXECUTION STEPS ================
+[0]: 0@0 - 43@0
+
+==================== TRACES =====================
+
++----------------------+
+| [0]: <Start>         |
+| [675][_Stat] BEGIN   |
+| [AST-INSTRUCTIONS]:  |
+| [SUCCESORS 1-1]: [1] |
++----------------------+
+[0]
+ |
+ +
+ |
+[0]
+++===================================================================++
+|| [1]: {STAT_WHILE} while                                           ||
+|| [671][_OtherStats]< "while" @ "(" _ExprOrVarCondition ")" _Stat > ||
+|| [AST-INSTRUCTIONS]:                                               ||
+||   + StackBegin()                                                  ||
+||   + Token(0)                                                      ||
+|| [RETURN STACK]:                                                   ||
+||   [0][248][0]: _OtherStats -> [681][_Stat]<! !_OtherStats @ !>    ||
+|| [PREDECESSORS 0-0]: [0]                                           ||
+|| [SUCCESORS 2-2]: [2]                                              ||
+++===================================================================++
+[0]
+ |
+ +
+ |
+[0]
+++===================================================================++
+|| [2]: {LPARENTHESIS} (                                             ||
+|| [667][_OtherStats]< "while" "(" @ _ExprOrVarCondition ")" _Stat > ||
+|| [AST-INSTRUCTIONS]:                                               ||
+||   + Token(1)                                                      ||
+|| [RETURN STACK]:                                                   ||
+||   [0][248][0]: _OtherStats -> [681][_Stat]<! !_OtherStats @ !>    ||
+|| [PREDECESSORS 1-1]: [1]                                           ||
+|| [SUCCESORS 3-3]: [3]                                              ||
+++===================================================================++
+[0]
+ |
+ +
+ |
+[0]
+++==================================================================================================================================================================================================++
+|| [3]: {TYPE_INT} int                                                                                                                                                                              ||
+|| [450][_PrimitiveType]< ( "wchar_t" | "char8_t" | "char16_t" | "char32_t" | "char" | "short" | "int" @ | "__int8" | "__int16" | "__int32" | "__int64" | "long" | "long" "int" | "long" "long" ) > ||
+|| [AST-INSTRUCTIONS]:                                                                                                                                                                              ||
+||   + StackBegin()                                                                                                                                                                                 ||
+||   + Token(6)                                                                                                                                                                                     ||
+|| [RETURN STACK]:                                                                                                                                                                                  ||
+||   [3][8][2]: _PrimitiveType -> [468][_CallConstructibleTypeBeforeDeclarator]<! !_PrimitiveType @ !>                                                                                              ||
+||   [2][291][2]: _CallConstructibleTypeBeforeDeclarator -> [1267][_ExprOrVarCondition] BEGIN [pm-cr-rule: _CallConstructibleTypeBeforeDeclarator]                                                  ||
+||   [1][331][2]: _ExprOrVarCondition -> [670][_OtherStats]< "while" "(" _ExprOrVarCondition @ ")" _Stat >                                                                                          ||
+||   [0][248][0]: _OtherStats -> [681][_Stat]<! !_OtherStats @ !>                                                                                                                                   ||
+|| [PREDECESSORS 2-2]: [2]                                                                                                                                                                          ||
+|| [SUCCESORS 4-4]: [4]                                                                                                                                                                             ||
+++==================================================================================================================================================================================================++
+|
++
+|
++-------------------------------------------------------------------------------------------------------------------------------------------------+
+| [4]: <Ending>                                                                                                                                   |
+| [468][_CallConstructibleTypeBeforeDeclarator]<! !_PrimitiveType @ !>                                                                            |
+| [AST-INSTRUCTIONS]:                                                                                                                             |
+|   + EnumItem(0, 16)                                                                                                                             |
+|   + CreateObject(PrimitiveType)                                                                                                                 |
+|   + Field(PrimitiveType::literal1, 0)                                                                                                           |
+|   + Field(PrimitiveType::literal1, 1)                                                                                                           |
+|   + Field(PrimitiveType::literal1, 2)                                                                                                           |
+|   + Field(PrimitiveType::literal1, 3)                                                                                                           |
+|   + Field(PrimitiveType::literal1, 4)                                                                                                           |
+|   + Field(PrimitiveType::literal1, 5)                                                                                                           |
+|   + Field(PrimitiveType::literal1, 6)                                                                                                           |
+|   + Field(PrimitiveType::literal1, 7)                                                                                                           |
+|   + Field(PrimitiveType::literal1, 8)                                                                                                           |
+|   + Field(PrimitiveType::literal1, 9)                                                                                                           |
+|   + Field(PrimitiveType::literal1, 10)                                                                                                          |
+|   + Field(PrimitiveType::literal1, 11)                                                                                                          |
+|   + Field(PrimitiveType::literal1, 12)                                                                                                          |
+|   + Field(PrimitiveType::literal2, 13)                                                                                                          |
+|   + Field(PrimitiveType::literal1, 14)                                                                                                          |
+|   + Field(PrimitiveType::literal2, 15)                                                                                                          |
+|   + Field(PrimitiveType::kind, 16)                                                                                                              |
+|   + StackEnd()                                                                                                                                  |
+|   > StackBegin()                                                                                                                                |
+| [RETURN STACK]:                                                                                                                                 |
+|   [2][291][2]: _CallConstructibleTypeBeforeDeclarator -> [1267][_ExprOrVarCondition] BEGIN [pm-cr-rule: _CallConstructibleTypeBeforeDeclarator] |
+|   [1][331][2]: _ExprOrVarCondition -> [670][_OtherStats]< "while" "(" _ExprOrVarCondition @ ")" _Stat >                                         |
+|   [0][248][0]: _OtherStats -> [681][_Stat]<! !_OtherStats @ !>                                                                                  |
+| [PREDECESSORS 3-3]: [3]                                                                                                                         |
+| [SUCCESORS 5-5]: [5]                                                                                                                            |
++-------------------------------------------------------------------------------------------------------------------------------------------------+
+|
++
+|
++---------------------------------------------------------------------------------------------------------+
+| [5]: <Ending>                                                                                           |
+| [1267][_ExprOrVarCondition] BEGIN [pm-cr-rule: _CallConstructibleTypeBeforeDeclarator]                  |
+| [AST-INSTRUCTIONS]:                                                                                     |
+|   + StackEnd()                                                                                          |
+| [RETURN STACK]:                                                                                         |
+|   [1][331][2]: _ExprOrVarCondition -> [670][_OtherStats]< "while" "(" _ExprOrVarCondition @ ")" _Stat > |
+|   [0][248][0]: _OtherStats -> [681][_Stat]<! !_OtherStats @ !>                                          |
+| [PREDECESSORS 4-4]: [4]                                                                                 |
+| [SUCCESORS 6-6]: [6]                                                                                    |
++---------------------------------------------------------------------------------------------------------+
+|
++
+|
++--------------------------------------------------------------------------------------------------------------+
+| [6]: <Leftrec>                                                                                               |
+| [1269][_ExprOrVarCondition] BEGIN [pm-cr-rule: _CallConstructibleTypeBeforeDeclarator] _TypeBeforeDeclarator |
+| [AST-INSTRUCTIONS]:                                                                                          |
+|   + StackBegin()                                                                                             |
+|   + StackSlot(1)                                                                                             |
+| [RETURN STACK]:                                                                                              |
+|   [1][331][2]: _ExprOrVarCondition -> [670][_OtherStats]< "while" "(" _ExprOrVarCondition @ ")" _Stat >      |
+|   [0][248][0]: _OtherStats -> [681][_Stat]<! !_OtherStats @ !>                                               |
+| [PREDECESSORS 5-5]: [5]                                                                                      |
+| [SUCCESORS 7-7]: [7]                                                                                         |
++--------------------------------------------------------------------------------------------------------------+
+[0]
+ |
+ +
+ |
+[0]
+++=========================================================================================================================================================================++
+|| [7]: {ID} a                                                                                                                                                             ||
+|| [2][_NameIdentifier]< ID @ >                                                                                                                                            ||
+|| [AST-INSTRUCTIONS]:                                                                                                                                                     ||
+||   + StackBegin()                                                                                                                                                        ||
+||   + Token(0)                                                                                                                                                            ||
+|| [RETURN STACK]:                                                                                                                                                         ||
+||   [6][222][6]: _NameIdentifier -> [1031][_DeclaratorRequiredName] BEGIN [pm-cr-rule: _NameIdentifier]                                                                   ||
+||   [5][279][6]: _DeclaratorRequiredName -> [1240][_DeclaratorVariablePartRequiredInit]< _DeclaratorRequiredName @ _VarInit >                                             ||
+||   [4][766][6]: _DeclaratorVariablePartRequiredInit -> [1279][_ExprOrVarCondition]< { _DeclaratorKeyword } _TypeBeforeDeclarator _DeclaratorVariablePartRequiredInit @ > ||
+||   [1][331][2]: _ExprOrVarCondition -> [670][_OtherStats]< "while" "(" _ExprOrVarCondition @ ")" _Stat >                                                                 ||
+||   [0][248][0]: _OtherStats -> [681][_Stat]<! !_OtherStats @ !>                                                                                                          ||
+|| [PREDECESSORS 6-6]: [6]                                                                                                                                                 ||
+|| [SUCCESORS 8-8]: [8]                                                                                                                                                    ||
+++=========================================================================================================================================================================++
+|
++
+|
++-------------------------------------------------------------------------------------------------------------------------------------------------------------------------+
+| [8]: <Ending>                                                                                                                                                           |
+| [1031][_DeclaratorRequiredName] BEGIN [pm-cr-rule: _NameIdentifier]                                                                                                     |
+| [AST-INSTRUCTIONS]:                                                                                                                                                     |
+|   + EnumItem(0, 1)                                                                                                                                                      |
+|   + CreateObject(NameIdentifier)                                                                                                                                        |
+|   + Field(NameIdentifier::name, 0)                                                                                                                                      |
+|   + Field(NameIdentifier::kind, 1)                                                                                                                                      |
+|   + StackEnd()                                                                                                                                                          |
+| [RETURN STACK]:                                                                                                                                                         |
+|   [5][279][6]: _DeclaratorRequiredName -> [1240][_DeclaratorVariablePartRequiredInit]< _DeclaratorRequiredName @ _VarInit >                                             |
+|   [4][766][6]: _DeclaratorVariablePartRequiredInit -> [1279][_ExprOrVarCondition]< { _DeclaratorKeyword } _TypeBeforeDeclarator _DeclaratorVariablePartRequiredInit @ > |
+|   [1][331][2]: _ExprOrVarCondition -> [670][_OtherStats]< "while" "(" _ExprOrVarCondition @ ")" _Stat >                                                                 |
+|   [0][248][0]: _OtherStats -> [681][_Stat]<! !_OtherStats @ !>                                                                                                          |
+| [PREDECESSORS 7-7]: [7]                                                                                                                                                 |
+| [SUCCESORS 12-12]: [12]                                                                                                                                                 |
++-------------------------------------------------------------------------------------------------------------------------------------------------------------------------+
+|
++
+|
++-------------------------------------------------------------------------------------------------------------------------------------------------------------------------+
+| [12]: <Ending>                                                                                                                                                          |
+| [1240][_DeclaratorVariablePartRequiredInit]< _DeclaratorRequiredName @ _VarInit >                                                                                       |
+| [AST-INSTRUCTIONS]:                                                                                                                                                     |
+|   + StackBegin()                                                                                                                                                        |
+|   + StackSlot(3)                                                                                                                                                        |
+|   + CreateObject(DeclaratorCommon)                                                                                                                                      |
+|   + Field(DeclaratorCommon::innerDeclarator, 1)                                                                                                                         |
+|   + Field(DeclaratorCommon::id, 3)                                                                                                                                      |
+|   + Field(DeclaratorCommon::id, 4)                                                                                                                                      |
+|   + Field(DeclaratorCommon::bitfield, 6)                                                                                                                                |
+|   + Field(DeclaratorCommon::id, 7)                                                                                                                                      |
+|   + Field(DeclaratorCommon::arguments, 8)                                                                                                                               |
+|   + Field(DeclaratorCommon::variadic, 9)                                                                                                                                |
+|   + Field(DeclaratorCommon::id, 10)                                                                                                                                     |
+|   + Field(DeclaratorCommon::id, 11)                                                                                                                                     |
+|   + Field(DeclaratorCommon::bitfield, 13)                                                                                                                               |
+|   + Field(DeclaratorCommon::id, 14)                                                                                                                                     |
+|   + Field(DeclaratorCommon::arguments, 15)                                                                                                                              |
+|   + Field(DeclaratorCommon::funcPart, 16)                                                                                                                               |
+|   + Field(DeclaratorCommon::arrayParts, 17)                                                                                                                             |
+|   + Field(DeclaratorCommon::arrayParts, 18)                                                                                                                             |
+|   + StackEnd()                                                                                                                                                          |
+|   > StackBegin()                                                                                                                                                        |
+|   > StackSlot(0)                                                                                                                                                        |
+| [RETURN STACK]:                                                                                                                                                         |
+|   [4][766][6]: _DeclaratorVariablePartRequiredInit -> [1279][_ExprOrVarCondition]< { _DeclaratorKeyword } _TypeBeforeDeclarator _DeclaratorVariablePartRequiredInit @ > |
+|   [1][331][2]: _ExprOrVarCondition -> [670][_OtherStats]< "while" "(" _ExprOrVarCondition @ ")" _Stat >                                                                 |
+|   [0][248][0]: _OtherStats -> [681][_Stat]<! !_OtherStats @ !>                                                                                                          |
+| [PREDECESSORS 8-8]: [8]                                                                                                                                                 |
+| [SUCCESORS 13-13]: [13]                                                                                                                                                 |
++-------------------------------------------------------------------------------------------------------------------------------------------------------------------------+
+[0]
+ |
+ +
+ |
+[0]
+++=========================================================================================================================================================================++
+|| [13]: {ASSIGN} =                                                                                                                                                        ||
+|| [1189][_VarValueInit]< "=" @ _Expr_NoComma >                                                                                                                            ||
+|| [AST-INSTRUCTIONS]:                                                                                                                                                     ||
+||   + StackBegin()                                                                                                                                                        ||
+||   + Token(0)                                                                                                                                                            ||
+|| [RETURN STACK]:                                                                                                                                                         ||
+||   [11][74][12]: _VarValueInit -> [1211][_VarInit]<! !_VarValueInit @ !>                                                                                                 ||
+||   [10][752][12]: _VarInit -> [1241][_DeclaratorVariablePartRequiredInit]< _DeclaratorRequiredName _VarInit @ >                                                          ||
+||   [4][766][6]: _DeclaratorVariablePartRequiredInit -> [1279][_ExprOrVarCondition]< { _DeclaratorKeyword } _TypeBeforeDeclarator _DeclaratorVariablePartRequiredInit @ > ||
+||   [1][331][2]: _ExprOrVarCondition -> [670][_OtherStats]< "while" "(" _ExprOrVarCondition @ ")" _Stat >                                                                 ||
+||   [0][248][0]: _OtherStats -> [681][_Stat]<! !_OtherStats @ !>                                                                                                          ||
+|| [PREDECESSORS 12-12]: [12]                                                                                                                                              ||
+|| [SUCCESORS 14-14]: [14]                                                                                                                                                 ||
+++=========================================================================================================================================================================++
+[0]
+ |
+ +
+ |
+[0]
+++=========================================================================================================================================================================++
+|| [14]: {INT} 0                                                                                                                                                           ||
+|| [238][_PrimitiveExpr]< INT @ >                                                                                                                                          ||
+|| [AST-INSTRUCTIONS]:                                                                                                                                                     ||
+||   + StackBegin()                                                                                                                                                        ||
+||   + Token(0)                                                                                                                                                            ||
+|| [RETURN STACK]:                                                                                                                                                         ||
+||   [30][40][13]: _PrimitiveExpr -> [248][_PostfixUnaryExpr] BEGIN [pm-cr-rule: _PrimitiveExpr]                                                                           ||
+||   [29][33][13]: _PostfixUnaryExpr -> [349][_PrefixUnaryExpr]<! !_PostfixUnaryExpr @ !>                                                                                  ||
+||   [28][32][13]: _PrefixUnaryExpr -> [363][_BExpr0]<! !_PrefixUnaryExpr @ !>                                                                                             ||
+||   [27][31][13]: _BExpr0 -> [375][_BExpr1]<! !_BExpr0 @ !>                                                                                                               ||
+||   [26][30][13]: _BExpr1 -> [384][_BExpr2]<! !_BExpr1 @ !>                                                                                                               ||
+||   [25][29][13]: _BExpr2 -> [395][_BExpr3]<! !_BExpr2 @ !>                                                                                                               ||
+||   [24][28][13]: _BExpr3 -> [401][_BExpr4]<! !_BExpr3 @ !>                                                                                                               ||
+||   [23][27][13]: _BExpr4 -> [1725][_BExpr5_SWITCH_COMBINED]<! !_BExpr4 @ !>                                                                                              ||
+||   [22][26][13]: _BExpr5_SWITCH_COMBINED -> [1792][_BExpr5_SWITCH_1allow_GT]<! !_BExpr5_SWITCH_COMBINED @ !>                                                             ||
+||   [21][25][13]: _BExpr5_SWITCH_1allow_GT -> [1810][_BExpr6_SWITCH_1allow_GT]<! !_BExpr5_SWITCH_1allow_GT @ !>                                                           ||
+||   [20][24][13]: _BExpr6_SWITCH_1allow_GT -> [1822][_BExpr7_SWITCH_1allow_GT]<! !_BExpr6_SWITCH_1allow_GT @ !>                                                           ||
+||   [19][23][13]: _BExpr7_SWITCH_1allow_GT -> [1834][_BExpr8_SWITCH_1allow_GT]<! !_BExpr7_SWITCH_1allow_GT @ !>                                                           ||
+||   [18][22][13]: _BExpr8_SWITCH_1allow_GT -> [1846][_BExpr9_SWITCH_1allow_GT]<! !_BExpr8_SWITCH_1allow_GT @ !>                                                           ||
+||   [17][21][13]: _BExpr9_SWITCH_1allow_GT -> [1749][_BExpr10_SWITCH_1allow_GT]<! !_BExpr9_SWITCH_1allow_GT @ !>                                                          ||
+||   [16][20][13]: _BExpr10_SWITCH_1allow_GT -> [1761][_BExpr11_SWITCH_1allow_GT]<! !_BExpr10_SWITCH_1allow_GT @ !>                                                        ||
+||   [15][19][13]: _BExpr11_SWITCH_1allow_GT -> [1883][_BExpr_NoComma_SWITCH_1allow_GT] BEGIN [pm-lr]                                                                      ||
+||   [14][118][13]: _BExpr_NoComma_SWITCH_1allow_GT -> [1919][_Expr_NoComma_Raw_SWITCH_1allow_GT]<! !_BExpr_NoComma_SWITCH_1allow_GT @ !>                                  ||
+||   [13][117][13]: _Expr_NoComma_Raw_SWITCH_1allow_GT -> [1704][_Expr_NoComma]<! !_Expr_NoComma_Raw_SWITCH_1allow_GT @ !>                                                 ||
+||   [12][736][13]: _Expr_NoComma -> [1190][_VarValueInit]< "=" _Expr_NoComma @ >                                                                                          ||
+||   [11][74][12]: _VarValueInit -> [1211][_VarInit]<! !_VarValueInit @ !>                                                                                                 ||
+||   [10][752][12]: _VarInit -> [1241][_DeclaratorVariablePartRequiredInit]< _DeclaratorRequiredName _VarInit @ >                                                          ||
+||   [4][766][6]: _DeclaratorVariablePartRequiredInit -> [1279][_ExprOrVarCondition]< { _DeclaratorKeyword } _TypeBeforeDeclarator _DeclaratorVariablePartRequiredInit @ > ||
+||   [1][331][2]: _ExprOrVarCondition -> [670][_OtherStats]< "while" "(" _ExprOrVarCondition @ ")" _Stat >                                                                 ||
+||   [0][248][0]: _OtherStats -> [681][_Stat]<! !_OtherStats @ !>                                                                                                          ||
+|| [PREDECESSORS 13-13]: [13]                                                                                                                                              ||
+|| [SUCCESORS 15-15]: [15]                                                                                                                                                 ||
+++=========================================================================================================================================================================++
+|
++
+|
++-------------------------------------------------------------------------------------------------------------------------------------------------------------------------+
+| [15]: <Ending>                                                                                                                                                          |
+| [248][_PostfixUnaryExpr] BEGIN [pm-cr-rule: _PrimitiveExpr]                                                                                                             |
+| [AST-INSTRUCTIONS]:                                                                                                                                                     |
+|   + EnumItem(0, 1)                                                                                                                                                      |
+|   + CreateObject(NumericExprLiteral)                                                                                                                                    |
+|   + Field(NumericExprLiteral::literal, 0)                                                                                                                               |
+|   + Field(NumericExprLiteral::kind, 1)                                                                                                                                  |
+|   + StackEnd()                                                                                                                                                          |
+| [RETURN STACK]:                                                                                                                                                         |
+|   [29][33][13]: _PostfixUnaryExpr -> [349][_PrefixUnaryExpr]<! !_PostfixUnaryExpr @ !>                                                                                  |
+|   [28][32][13]: _PrefixUnaryExpr -> [363][_BExpr0]<! !_PrefixUnaryExpr @ !>                                                                                             |
+|   [27][31][13]: _BExpr0 -> [375][_BExpr1]<! !_BExpr0 @ !>                                                                                                               |
+|   [26][30][13]: _BExpr1 -> [384][_BExpr2]<! !_BExpr1 @ !>                                                                                                               |
+|   [25][29][13]: _BExpr2 -> [395][_BExpr3]<! !_BExpr2 @ !>                                                                                                               |
+|   [24][28][13]: _BExpr3 -> [401][_BExpr4]<! !_BExpr3 @ !>                                                                                                               |
+|   [23][27][13]: _BExpr4 -> [1725][_BExpr5_SWITCH_COMBINED]<! !_BExpr4 @ !>                                                                                              |
+|   [22][26][13]: _BExpr5_SWITCH_COMBINED -> [1792][_BExpr5_SWITCH_1allow_GT]<! !_BExpr5_SWITCH_COMBINED @ !>                                                             |
+|   [21][25][13]: _BExpr5_SWITCH_1allow_GT -> [1810][_BExpr6_SWITCH_1allow_GT]<! !_BExpr5_SWITCH_1allow_GT @ !>                                                           |
+|   [20][24][13]: _BExpr6_SWITCH_1allow_GT -> [1822][_BExpr7_SWITCH_1allow_GT]<! !_BExpr6_SWITCH_1allow_GT @ !>                                                           |
+|   [19][23][13]: _BExpr7_SWITCH_1allow_GT -> [1834][_BExpr8_SWITCH_1allow_GT]<! !_BExpr7_SWITCH_1allow_GT @ !>                                                           |
+|   [18][22][13]: _BExpr8_SWITCH_1allow_GT -> [1846][_BExpr9_SWITCH_1allow_GT]<! !_BExpr8_SWITCH_1allow_GT @ !>                                                           |
+|   [17][21][13]: _BExpr9_SWITCH_1allow_GT -> [1749][_BExpr10_SWITCH_1allow_GT]<! !_BExpr9_SWITCH_1allow_GT @ !>                                                          |
+|   [16][20][13]: _BExpr10_SWITCH_1allow_GT -> [1761][_BExpr11_SWITCH_1allow_GT]<! !_BExpr10_SWITCH_1allow_GT @ !>                                                        |
+|   [15][19][13]: _BExpr11_SWITCH_1allow_GT -> [1883][_BExpr_NoComma_SWITCH_1allow_GT] BEGIN [pm-lr]                                                                      |
+|   [14][118][13]: _BExpr_NoComma_SWITCH_1allow_GT -> [1919][_Expr_NoComma_Raw_SWITCH_1allow_GT]<! !_BExpr_NoComma_SWITCH_1allow_GT @ !>                                  |
+|   [13][117][13]: _Expr_NoComma_Raw_SWITCH_1allow_GT -> [1704][_Expr_NoComma]<! !_Expr_NoComma_Raw_SWITCH_1allow_GT @ !>                                                 |
+|   [12][736][13]: _Expr_NoComma -> [1190][_VarValueInit]< "=" _Expr_NoComma @ >                                                                                          |
+|   [11][74][12]: _VarValueInit -> [1211][_VarInit]<! !_VarValueInit @ !>                                                                                                 |
+|   [10][752][12]: _VarInit -> [1241][_DeclaratorVariablePartRequiredInit]< _DeclaratorRequiredName _VarInit @ >                                                          |
+|   [4][766][6]: _DeclaratorVariablePartRequiredInit -> [1279][_ExprOrVarCondition]< { _DeclaratorKeyword } _TypeBeforeDeclarator _DeclaratorVariablePartRequiredInit @ > |
+|   [1][331][2]: _ExprOrVarCondition -> [670][_OtherStats]< "while" "(" _ExprOrVarCondition @ ")" _Stat >                                                                 |
+|   [0][248][0]: _OtherStats -> [681][_Stat]<! !_OtherStats @ !>                                                                                                          |
+| [PREDECESSORS 14-14]: [14]                                                                                                                                              |
+| [SUCCESORS 16-16]: [16]                                                                                                                                                 |
++-------------------------------------------------------------------------------------------------------------------------------------------------------------------------+
+|
++
+|
++-------------------------------------------------------------------------------------------------------------------------------------------------------------------------+
+| [16]: <Ending>                                                                                                                                                          |
+| [349][_PrefixUnaryExpr]<! !_PostfixUnaryExpr @ !>                                                                                                                       |
+| [AST-INSTRUCTIONS]:                                                                                                                                                     |
+|   + StackBegin()                                                                                                                                                        |
+|   + StackEnd()                                                                                                                                                          |
+|   > StackBegin()                                                                                                                                                        |
+| [RETURN STACK]:                                                                                                                                                         |
+|   [28][32][13]: _PrefixUnaryExpr -> [363][_BExpr0]<! !_PrefixUnaryExpr @ !>                                                                                             |
+|   [27][31][13]: _BExpr0 -> [375][_BExpr1]<! !_BExpr0 @ !>                                                                                                               |
+|   [26][30][13]: _BExpr1 -> [384][_BExpr2]<! !_BExpr1 @ !>                                                                                                               |
+|   [25][29][13]: _BExpr2 -> [395][_BExpr3]<! !_BExpr2 @ !>                                                                                                               |
+|   [24][28][13]: _BExpr3 -> [401][_BExpr4]<! !_BExpr3 @ !>                                                                                                               |
+|   [23][27][13]: _BExpr4 -> [1725][_BExpr5_SWITCH_COMBINED]<! !_BExpr4 @ !>                                                                                              |
+|   [22][26][13]: _BExpr5_SWITCH_COMBINED -> [1792][_BExpr5_SWITCH_1allow_GT]<! !_BExpr5_SWITCH_COMBINED @ !>                                                             |
+|   [21][25][13]: _BExpr5_SWITCH_1allow_GT -> [1810][_BExpr6_SWITCH_1allow_GT]<! !_BExpr5_SWITCH_1allow_GT @ !>                                                           |
+|   [20][24][13]: _BExpr6_SWITCH_1allow_GT -> [1822][_BExpr7_SWITCH_1allow_GT]<! !_BExpr6_SWITCH_1allow_GT @ !>                                                           |
+|   [19][23][13]: _BExpr7_SWITCH_1allow_GT -> [1834][_BExpr8_SWITCH_1allow_GT]<! !_BExpr7_SWITCH_1allow_GT @ !>                                                           |
+|   [18][22][13]: _BExpr8_SWITCH_1allow_GT -> [1846][_BExpr9_SWITCH_1allow_GT]<! !_BExpr8_SWITCH_1allow_GT @ !>                                                           |
+|   [17][21][13]: _BExpr9_SWITCH_1allow_GT -> [1749][_BExpr10_SWITCH_1allow_GT]<! !_BExpr9_SWITCH_1allow_GT @ !>                                                          |
+|   [16][20][13]: _BExpr10_SWITCH_1allow_GT -> [1761][_BExpr11_SWITCH_1allow_GT]<! !_BExpr10_SWITCH_1allow_GT @ !>                                                        |
+|   [15][19][13]: _BExpr11_SWITCH_1allow_GT -> [1883][_BExpr_NoComma_SWITCH_1allow_GT] BEGIN [pm-lr]                                                                      |
+|   [14][118][13]: _BExpr_NoComma_SWITCH_1allow_GT -> [1919][_Expr_NoComma_Raw_SWITCH_1allow_GT]<! !_BExpr_NoComma_SWITCH_1allow_GT @ !>                                  |
+|   [13][117][13]: _Expr_NoComma_Raw_SWITCH_1allow_GT -> [1704][_Expr_NoComma]<! !_Expr_NoComma_Raw_SWITCH_1allow_GT @ !>                                                 |
+|   [12][736][13]: _Expr_NoComma -> [1190][_VarValueInit]< "=" _Expr_NoComma @ >                                                                                          |
+|   [11][74][12]: _VarValueInit -> [1211][_VarInit]<! !_VarValueInit @ !>                                                                                                 |
+|   [10][752][12]: _VarInit -> [1241][_DeclaratorVariablePartRequiredInit]< _DeclaratorRequiredName _VarInit @ >                                                          |
+|   [4][766][6]: _DeclaratorVariablePartRequiredInit -> [1279][_ExprOrVarCondition]< { _DeclaratorKeyword } _TypeBeforeDeclarator _DeclaratorVariablePartRequiredInit @ > |
+|   [1][331][2]: _ExprOrVarCondition -> [670][_OtherStats]< "while" "(" _ExprOrVarCondition @ ")" _Stat >                                                                 |
+|   [0][248][0]: _OtherStats -> [681][_Stat]<! !_OtherStats @ !>                                                                                                          |
+| [PREDECESSORS 15-15]: [15]                                                                                                                                              |
+| [SUCCESORS 17-17]: [17]                                                                                                                                                 |
++-------------------------------------------------------------------------------------------------------------------------------------------------------------------------+
+|
++
+|
++-------------------------------------------------------------------------------------------------------------------------------------------------------------------------+
+| [17]: <Ending>                                                                                                                                                          |
+| [363][_BExpr0]<! !_PrefixUnaryExpr @ !>                                                                                                                                 |
+| [AST-INSTRUCTIONS]:                                                                                                                                                     |
+|   + StackEnd()                                                                                                                                                          |
+|   > StackBegin()                                                                                                                                                        |
+| [RETURN STACK]:                                                                                                                                                         |
+|   [27][31][13]: _BExpr0 -> [375][_BExpr1]<! !_BExpr0 @ !>                                                                                                               |
+|   [26][30][13]: _BExpr1 -> [384][_BExpr2]<! !_BExpr1 @ !>                                                                                                               |
+|   [25][29][13]: _BExpr2 -> [395][_BExpr3]<! !_BExpr2 @ !>                                                                                                               |
+|   [24][28][13]: _BExpr3 -> [401][_BExpr4]<! !_BExpr3 @ !>                                                                                                               |
+|   [23][27][13]: _BExpr4 -> [1725][_BExpr5_SWITCH_COMBINED]<! !_BExpr4 @ !>                                                                                              |
+|   [22][26][13]: _BExpr5_SWITCH_COMBINED -> [1792][_BExpr5_SWITCH_1allow_GT]<! !_BExpr5_SWITCH_COMBINED @ !>                                                             |
+|   [21][25][13]: _BExpr5_SWITCH_1allow_GT -> [1810][_BExpr6_SWITCH_1allow_GT]<! !_BExpr5_SWITCH_1allow_GT @ !>                                                           |
+|   [20][24][13]: _BExpr6_SWITCH_1allow_GT -> [1822][_BExpr7_SWITCH_1allow_GT]<! !_BExpr6_SWITCH_1allow_GT @ !>                                                           |
+|   [19][23][13]: _BExpr7_SWITCH_1allow_GT -> [1834][_BExpr8_SWITCH_1allow_GT]<! !_BExpr7_SWITCH_1allow_GT @ !>                                                           |
+|   [18][22][13]: _BExpr8_SWITCH_1allow_GT -> [1846][_BExpr9_SWITCH_1allow_GT]<! !_BExpr8_SWITCH_1allow_GT @ !>                                                           |
+|   [17][21][13]: _BExpr9_SWITCH_1allow_GT -> [1749][_BExpr10_SWITCH_1allow_GT]<! !_BExpr9_SWITCH_1allow_GT @ !>                                                          |
+|   [16][20][13]: _BExpr10_SWITCH_1allow_GT -> [1761][_BExpr11_SWITCH_1allow_GT]<! !_BExpr10_SWITCH_1allow_GT @ !>                                                        |
+|   [15][19][13]: _BExpr11_SWITCH_1allow_GT -> [1883][_BExpr_NoComma_SWITCH_1allow_GT] BEGIN [pm-lr]                                                                      |
+|   [14][118][13]: _BExpr_NoComma_SWITCH_1allow_GT -> [1919][_Expr_NoComma_Raw_SWITCH_1allow_GT]<! !_BExpr_NoComma_SWITCH_1allow_GT @ !>                                  |
+|   [13][117][13]: _Expr_NoComma_Raw_SWITCH_1allow_GT -> [1704][_Expr_NoComma]<! !_Expr_NoComma_Raw_SWITCH_1allow_GT @ !>                                                 |
+|   [12][736][13]: _Expr_NoComma -> [1190][_VarValueInit]< "=" _Expr_NoComma @ >                                                                                          |
+|   [11][74][12]: _VarValueInit -> [1211][_VarInit]<! !_VarValueInit @ !>                                                                                                 |
+|   [10][752][12]: _VarInit -> [1241][_DeclaratorVariablePartRequiredInit]< _DeclaratorRequiredName _VarInit @ >                                                          |
+|   [4][766][6]: _DeclaratorVariablePartRequiredInit -> [1279][_ExprOrVarCondition]< { _DeclaratorKeyword } _TypeBeforeDeclarator _DeclaratorVariablePartRequiredInit @ > |
+|   [1][331][2]: _ExprOrVarCondition -> [670][_OtherStats]< "while" "(" _ExprOrVarCondition @ ")" _Stat >                                                                 |
+|   [0][248][0]: _OtherStats -> [681][_Stat]<! !_OtherStats @ !>                                                                                                          |
+| [PREDECESSORS 16-16]: [16]                                                                                                                                              |
+| [SUCCESORS 18-18]: [18]                                                                                                                                                 |
++-------------------------------------------------------------------------------------------------------------------------------------------------------------------------+
+|
++
+|
++-------------------------------------------------------------------------------------------------------------------------------------------------------------------------+
+| [18]: <Ending>                                                                                                                                                          |
+| [375][_BExpr1]<! !_BExpr0 @ !>                                                                                                                                          |
+| [AST-INSTRUCTIONS]:                                                                                                                                                     |
+|   + StackEnd()                                                                                                                                                          |
+|   > StackBegin()                                                                                                                                                        |
+| [RETURN STACK]:                                                                                                                                                         |
+|   [26][30][13]: _BExpr1 -> [384][_BExpr2]<! !_BExpr1 @ !>                                                                                                               |
+|   [25][29][13]: _BExpr2 -> [395][_BExpr3]<! !_BExpr2 @ !>                                                                                                               |
+|   [24][28][13]: _BExpr3 -> [401][_BExpr4]<! !_BExpr3 @ !>                                                                                                               |
+|   [23][27][13]: _BExpr4 -> [1725][_BExpr5_SWITCH_COMBINED]<! !_BExpr4 @ !>                                                                                              |
+|   [22][26][13]: _BExpr5_SWITCH_COMBINED -> [1792][_BExpr5_SWITCH_1allow_GT]<! !_BExpr5_SWITCH_COMBINED @ !>                                                             |
+|   [21][25][13]: _BExpr5_SWITCH_1allow_GT -> [1810][_BExpr6_SWITCH_1allow_GT]<! !_BExpr5_SWITCH_1allow_GT @ !>                                                           |
+|   [20][24][13]: _BExpr6_SWITCH_1allow_GT -> [1822][_BExpr7_SWITCH_1allow_GT]<! !_BExpr6_SWITCH_1allow_GT @ !>                                                           |
+|   [19][23][13]: _BExpr7_SWITCH_1allow_GT -> [1834][_BExpr8_SWITCH_1allow_GT]<! !_BExpr7_SWITCH_1allow_GT @ !>                                                           |
+|   [18][22][13]: _BExpr8_SWITCH_1allow_GT -> [1846][_BExpr9_SWITCH_1allow_GT]<! !_BExpr8_SWITCH_1allow_GT @ !>                                                           |
+|   [17][21][13]: _BExpr9_SWITCH_1allow_GT -> [1749][_BExpr10_SWITCH_1allow_GT]<! !_BExpr9_SWITCH_1allow_GT @ !>                                                          |
+|   [16][20][13]: _BExpr10_SWITCH_1allow_GT -> [1761][_BExpr11_SWITCH_1allow_GT]<! !_BExpr10_SWITCH_1allow_GT @ !>                                                        |
+|   [15][19][13]: _BExpr11_SWITCH_1allow_GT -> [1883][_BExpr_NoComma_SWITCH_1allow_GT] BEGIN [pm-lr]                                                                      |
+|   [14][118][13]: _BExpr_NoComma_SWITCH_1allow_GT -> [1919][_Expr_NoComma_Raw_SWITCH_1allow_GT]<! !_BExpr_NoComma_SWITCH_1allow_GT @ !>                                  |
+|   [13][117][13]: _Expr_NoComma_Raw_SWITCH_1allow_GT -> [1704][_Expr_NoComma]<! !_Expr_NoComma_Raw_SWITCH_1allow_GT @ !>                                                 |
+|   [12][736][13]: _Expr_NoComma -> [1190][_VarValueInit]< "=" _Expr_NoComma @ >                                                                                          |
+|   [11][74][12]: _VarValueInit -> [1211][_VarInit]<! !_VarValueInit @ !>                                                                                                 |
+|   [10][752][12]: _VarInit -> [1241][_DeclaratorVariablePartRequiredInit]< _DeclaratorRequiredName _VarInit @ >                                                          |
+|   [4][766][6]: _DeclaratorVariablePartRequiredInit -> [1279][_ExprOrVarCondition]< { _DeclaratorKeyword } _TypeBeforeDeclarator _DeclaratorVariablePartRequiredInit @ > |
+|   [1][331][2]: _ExprOrVarCondition -> [670][_OtherStats]< "while" "(" _ExprOrVarCondition @ ")" _Stat >                                                                 |
+|   [0][248][0]: _OtherStats -> [681][_Stat]<! !_OtherStats @ !>                                                                                                          |
+| [PREDECESSORS 17-17]: [17]                                                                                                                                              |
+| [SUCCESORS 19-19]: [19]                                                                                                                                                 |
++-------------------------------------------------------------------------------------------------------------------------------------------------------------------------+
+|
++
+|
++-------------------------------------------------------------------------------------------------------------------------------------------------------------------------+
+| [19]: <Ending>                                                                                                                                                          |
+| [384][_BExpr2]<! !_BExpr1 @ !>                                                                                                                                          |
+| [AST-INSTRUCTIONS]:                                                                                                                                                     |
+|   + StackEnd()                                                                                                                                                          |
+|   > StackBegin()                                                                                                                                                        |
+| [RETURN STACK]:                                                                                                                                                         |
+|   [25][29][13]: _BExpr2 -> [395][_BExpr3]<! !_BExpr2 @ !>                                                                                                               |
+|   [24][28][13]: _BExpr3 -> [401][_BExpr4]<! !_BExpr3 @ !>                                                                                                               |
+|   [23][27][13]: _BExpr4 -> [1725][_BExpr5_SWITCH_COMBINED]<! !_BExpr4 @ !>                                                                                              |
+|   [22][26][13]: _BExpr5_SWITCH_COMBINED -> [1792][_BExpr5_SWITCH_1allow_GT]<! !_BExpr5_SWITCH_COMBINED @ !>                                                             |
+|   [21][25][13]: _BExpr5_SWITCH_1allow_GT -> [1810][_BExpr6_SWITCH_1allow_GT]<! !_BExpr5_SWITCH_1allow_GT @ !>                                                           |
+|   [20][24][13]: _BExpr6_SWITCH_1allow_GT -> [1822][_BExpr7_SWITCH_1allow_GT]<! !_BExpr6_SWITCH_1allow_GT @ !>                                                           |
+|   [19][23][13]: _BExpr7_SWITCH_1allow_GT -> [1834][_BExpr8_SWITCH_1allow_GT]<! !_BExpr7_SWITCH_1allow_GT @ !>                                                           |
+|   [18][22][13]: _BExpr8_SWITCH_1allow_GT -> [1846][_BExpr9_SWITCH_1allow_GT]<! !_BExpr8_SWITCH_1allow_GT @ !>                                                           |
+|   [17][21][13]: _BExpr9_SWITCH_1allow_GT -> [1749][_BExpr10_SWITCH_1allow_GT]<! !_BExpr9_SWITCH_1allow_GT @ !>                                                          |
+|   [16][20][13]: _BExpr10_SWITCH_1allow_GT -> [1761][_BExpr11_SWITCH_1allow_GT]<! !_BExpr10_SWITCH_1allow_GT @ !>                                                        |
+|   [15][19][13]: _BExpr11_SWITCH_1allow_GT -> [1883][_BExpr_NoComma_SWITCH_1allow_GT] BEGIN [pm-lr]                                                                      |
+|   [14][118][13]: _BExpr_NoComma_SWITCH_1allow_GT -> [1919][_Expr_NoComma_Raw_SWITCH_1allow_GT]<! !_BExpr_NoComma_SWITCH_1allow_GT @ !>                                  |
+|   [13][117][13]: _Expr_NoComma_Raw_SWITCH_1allow_GT -> [1704][_Expr_NoComma]<! !_Expr_NoComma_Raw_SWITCH_1allow_GT @ !>                                                 |
+|   [12][736][13]: _Expr_NoComma -> [1190][_VarValueInit]< "=" _Expr_NoComma @ >                                                                                          |
+|   [11][74][12]: _VarValueInit -> [1211][_VarInit]<! !_VarValueInit @ !>                                                                                                 |
+|   [10][752][12]: _VarInit -> [1241][_DeclaratorVariablePartRequiredInit]< _DeclaratorRequiredName _VarInit @ >                                                          |
+|   [4][766][6]: _DeclaratorVariablePartRequiredInit -> [1279][_ExprOrVarCondition]< { _DeclaratorKeyword } _TypeBeforeDeclarator _DeclaratorVariablePartRequiredInit @ > |
+|   [1][331][2]: _ExprOrVarCondition -> [670][_OtherStats]< "while" "(" _ExprOrVarCondition @ ")" _Stat >                                                                 |
+|   [0][248][0]: _OtherStats -> [681][_Stat]<! !_OtherStats @ !>                                                                                                          |
+| [PREDECESSORS 18-18]: [18]                                                                                                                                              |
+| [SUCCESORS 20-20]: [20]                                                                                                                                                 |
++-------------------------------------------------------------------------------------------------------------------------------------------------------------------------+
+|
++
+|
++-------------------------------------------------------------------------------------------------------------------------------------------------------------------------+
+| [20]: <Ending>                                                                                                                                                          |
+| [395][_BExpr3]<! !_BExpr2 @ !>                                                                                                                                          |
+| [AST-INSTRUCTIONS]:                                                                                                                                                     |
+|   + StackEnd()                                                                                                                                                          |
+|   > StackBegin()                                                                                                                                                        |
+| [RETURN STACK]:                                                                                                                                                         |
+|   [24][28][13]: _BExpr3 -> [401][_BExpr4]<! !_BExpr3 @ !>                                                                                                               |
+|   [23][27][13]: _BExpr4 -> [1725][_BExpr5_SWITCH_COMBINED]<! !_BExpr4 @ !>                                                                                              |
+|   [22][26][13]: _BExpr5_SWITCH_COMBINED -> [1792][_BExpr5_SWITCH_1allow_GT]<! !_BExpr5_SWITCH_COMBINED @ !>                                                             |
+|   [21][25][13]: _BExpr5_SWITCH_1allow_GT -> [1810][_BExpr6_SWITCH_1allow_GT]<! !_BExpr5_SWITCH_1allow_GT @ !>                                                           |
+|   [20][24][13]: _BExpr6_SWITCH_1allow_GT -> [1822][_BExpr7_SWITCH_1allow_GT]<! !_BExpr6_SWITCH_1allow_GT @ !>                                                           |
+|   [19][23][13]: _BExpr7_SWITCH_1allow_GT -> [1834][_BExpr8_SWITCH_1allow_GT]<! !_BExpr7_SWITCH_1allow_GT @ !>                                                           |
+|   [18][22][13]: _BExpr8_SWITCH_1allow_GT -> [1846][_BExpr9_SWITCH_1allow_GT]<! !_BExpr8_SWITCH_1allow_GT @ !>                                                           |
+|   [17][21][13]: _BExpr9_SWITCH_1allow_GT -> [1749][_BExpr10_SWITCH_1allow_GT]<! !_BExpr9_SWITCH_1allow_GT @ !>                                                          |
+|   [16][20][13]: _BExpr10_SWITCH_1allow_GT -> [1761][_BExpr11_SWITCH_1allow_GT]<! !_BExpr10_SWITCH_1allow_GT @ !>                                                        |
+|   [15][19][13]: _BExpr11_SWITCH_1allow_GT -> [1883][_BExpr_NoComma_SWITCH_1allow_GT] BEGIN [pm-lr]                                                                      |
+|   [14][118][13]: _BExpr_NoComma_SWITCH_1allow_GT -> [1919][_Expr_NoComma_Raw_SWITCH_1allow_GT]<! !_BExpr_NoComma_SWITCH_1allow_GT @ !>                                  |
+|   [13][117][13]: _Expr_NoComma_Raw_SWITCH_1allow_GT -> [1704][_Expr_NoComma]<! !_Expr_NoComma_Raw_SWITCH_1allow_GT @ !>                                                 |
+|   [12][736][13]: _Expr_NoComma -> [1190][_VarValueInit]< "=" _Expr_NoComma @ >                                                                                          |
+|   [11][74][12]: _VarValueInit -> [1211][_VarInit]<! !_VarValueInit @ !>                                                                                                 |
+|   [10][752][12]: _VarInit -> [1241][_DeclaratorVariablePartRequiredInit]< _DeclaratorRequiredName _VarInit @ >                                                          |
+|   [4][766][6]: _DeclaratorVariablePartRequiredInit -> [1279][_ExprOrVarCondition]< { _DeclaratorKeyword } _TypeBeforeDeclarator _DeclaratorVariablePartRequiredInit @ > |
+|   [1][331][2]: _ExprOrVarCondition -> [670][_OtherStats]< "while" "(" _ExprOrVarCondition @ ")" _Stat >                                                                 |
+|   [0][248][0]: _OtherStats -> [681][_Stat]<! !_OtherStats @ !>                                                                                                          |
+| [PREDECESSORS 19-19]: [19]                                                                                                                                              |
+| [SUCCESORS 21-21]: [21]                                                                                                                                                 |
++-------------------------------------------------------------------------------------------------------------------------------------------------------------------------+
+|
++
+|
++-------------------------------------------------------------------------------------------------------------------------------------------------------------------------+
+| [21]: <Ending>                                                                                                                                                          |
+| [401][_BExpr4]<! !_BExpr3 @ !>                                                                                                                                          |
+| [AST-INSTRUCTIONS]:                                                                                                                                                     |
+|   + StackEnd()                                                                                                                                                          |
+|   > StackBegin()                                                                                                                                                        |
+| [RETURN STACK]:                                                                                                                                                         |
+|   [23][27][13]: _BExpr4 -> [1725][_BExpr5_SWITCH_COMBINED]<! !_BExpr4 @ !>                                                                                              |
+|   [22][26][13]: _BExpr5_SWITCH_COMBINED -> [1792][_BExpr5_SWITCH_1allow_GT]<! !_BExpr5_SWITCH_COMBINED @ !>                                                             |
+|   [21][25][13]: _BExpr5_SWITCH_1allow_GT -> [1810][_BExpr6_SWITCH_1allow_GT]<! !_BExpr5_SWITCH_1allow_GT @ !>                                                           |
+|   [20][24][13]: _BExpr6_SWITCH_1allow_GT -> [1822][_BExpr7_SWITCH_1allow_GT]<! !_BExpr6_SWITCH_1allow_GT @ !>                                                           |
+|   [19][23][13]: _BExpr7_SWITCH_1allow_GT -> [1834][_BExpr8_SWITCH_1allow_GT]<! !_BExpr7_SWITCH_1allow_GT @ !>                                                           |
+|   [18][22][13]: _BExpr8_SWITCH_1allow_GT -> [1846][_BExpr9_SWITCH_1allow_GT]<! !_BExpr8_SWITCH_1allow_GT @ !>                                                           |
+|   [17][21][13]: _BExpr9_SWITCH_1allow_GT -> [1749][_BExpr10_SWITCH_1allow_GT]<! !_BExpr9_SWITCH_1allow_GT @ !>                                                          |
+|   [16][20][13]: _BExpr10_SWITCH_1allow_GT -> [1761][_BExpr11_SWITCH_1allow_GT]<! !_BExpr10_SWITCH_1allow_GT @ !>                                                        |
+|   [15][19][13]: _BExpr11_SWITCH_1allow_GT -> [1883][_BExpr_NoComma_SWITCH_1allow_GT] BEGIN [pm-lr]                                                                      |
+|   [14][118][13]: _BExpr_NoComma_SWITCH_1allow_GT -> [1919][_Expr_NoComma_Raw_SWITCH_1allow_GT]<! !_BExpr_NoComma_SWITCH_1allow_GT @ !>                                  |
+|   [13][117][13]: _Expr_NoComma_Raw_SWITCH_1allow_GT -> [1704][_Expr_NoComma]<! !_Expr_NoComma_Raw_SWITCH_1allow_GT @ !>                                                 |
+|   [12][736][13]: _Expr_NoComma -> [1190][_VarValueInit]< "=" _Expr_NoComma @ >                                                                                          |
+|   [11][74][12]: _VarValueInit -> [1211][_VarInit]<! !_VarValueInit @ !>                                                                                                 |
+|   [10][752][12]: _VarInit -> [1241][_DeclaratorVariablePartRequiredInit]< _DeclaratorRequiredName _VarInit @ >                                                          |
+|   [4][766][6]: _DeclaratorVariablePartRequiredInit -> [1279][_ExprOrVarCondition]< { _DeclaratorKeyword } _TypeBeforeDeclarator _DeclaratorVariablePartRequiredInit @ > |
+|   [1][331][2]: _ExprOrVarCondition -> [670][_OtherStats]< "while" "(" _ExprOrVarCondition @ ")" _Stat >                                                                 |
+|   [0][248][0]: _OtherStats -> [681][_Stat]<! !_OtherStats @ !>                                                                                                          |
+| [PREDECESSORS 20-20]: [20]                                                                                                                                              |
+| [SUCCESORS 22-22]: [22]                                                                                                                                                 |
++-------------------------------------------------------------------------------------------------------------------------------------------------------------------------+
+|
++
+|
++-------------------------------------------------------------------------------------------------------------------------------------------------------------------------+
+| [22]: <Ending>                                                                                                                                                          |
+| [1725][_BExpr5_SWITCH_COMBINED]<! !_BExpr4 @ !>                                                                                                                         |
+| [AST-INSTRUCTIONS]:                                                                                                                                                     |
+|   + StackEnd()                                                                                                                                                          |
+|   > StackBegin()                                                                                                                                                        |
+| [RETURN STACK]:                                                                                                                                                         |
+|   [22][26][13]: _BExpr5_SWITCH_COMBINED -> [1792][_BExpr5_SWITCH_1allow_GT]<! !_BExpr5_SWITCH_COMBINED @ !>                                                             |
+|   [21][25][13]: _BExpr5_SWITCH_1allow_GT -> [1810][_BExpr6_SWITCH_1allow_GT]<! !_BExpr5_SWITCH_1allow_GT @ !>                                                           |
+|   [20][24][13]: _BExpr6_SWITCH_1allow_GT -> [1822][_BExpr7_SWITCH_1allow_GT]<! !_BExpr6_SWITCH_1allow_GT @ !>                                                           |
+|   [19][23][13]: _BExpr7_SWITCH_1allow_GT -> [1834][_BExpr8_SWITCH_1allow_GT]<! !_BExpr7_SWITCH_1allow_GT @ !>                                                           |
+|   [18][22][13]: _BExpr8_SWITCH_1allow_GT -> [1846][_BExpr9_SWITCH_1allow_GT]<! !_BExpr8_SWITCH_1allow_GT @ !>                                                           |
+|   [17][21][13]: _BExpr9_SWITCH_1allow_GT -> [1749][_BExpr10_SWITCH_1allow_GT]<! !_BExpr9_SWITCH_1allow_GT @ !>                                                          |
+|   [16][20][13]: _BExpr10_SWITCH_1allow_GT -> [1761][_BExpr11_SWITCH_1allow_GT]<! !_BExpr10_SWITCH_1allow_GT @ !>                                                        |
+|   [15][19][13]: _BExpr11_SWITCH_1allow_GT -> [1883][_BExpr_NoComma_SWITCH_1allow_GT] BEGIN [pm-lr]                                                                      |
+|   [14][118][13]: _BExpr_NoComma_SWITCH_1allow_GT -> [1919][_Expr_NoComma_Raw_SWITCH_1allow_GT]<! !_BExpr_NoComma_SWITCH_1allow_GT @ !>                                  |
+|   [13][117][13]: _Expr_NoComma_Raw_SWITCH_1allow_GT -> [1704][_Expr_NoComma]<! !_Expr_NoComma_Raw_SWITCH_1allow_GT @ !>                                                 |
+|   [12][736][13]: _Expr_NoComma -> [1190][_VarValueInit]< "=" _Expr_NoComma @ >                                                                                          |
+|   [11][74][12]: _VarValueInit -> [1211][_VarInit]<! !_VarValueInit @ !>                                                                                                 |
+|   [10][752][12]: _VarInit -> [1241][_DeclaratorVariablePartRequiredInit]< _DeclaratorRequiredName _VarInit @ >                                                          |
+|   [4][766][6]: _DeclaratorVariablePartRequiredInit -> [1279][_ExprOrVarCondition]< { _DeclaratorKeyword } _TypeBeforeDeclarator _DeclaratorVariablePartRequiredInit @ > |
+|   [1][331][2]: _ExprOrVarCondition -> [670][_OtherStats]< "while" "(" _ExprOrVarCondition @ ")" _Stat >                                                                 |
+|   [0][248][0]: _OtherStats -> [681][_Stat]<! !_OtherStats @ !>                                                                                                          |
+| [PREDECESSORS 21-21]: [21]                                                                                                                                              |
+| [SUCCESORS 23-23]: [23]                                                                                                                                                 |
++-------------------------------------------------------------------------------------------------------------------------------------------------------------------------+
+|
++
+|
++-------------------------------------------------------------------------------------------------------------------------------------------------------------------------+
+| [23]: <Ending>                                                                                                                                                          |
+| [1792][_BExpr5_SWITCH_1allow_GT]<! !_BExpr5_SWITCH_COMBINED @ !>                                                                                                        |
+| [AST-INSTRUCTIONS]:                                                                                                                                                     |
+|   + StackEnd()                                                                                                                                                          |
+|   > StackBegin()                                                                                                                                                        |
+| [RETURN STACK]:                                                                                                                                                         |
+|   [21][25][13]: _BExpr5_SWITCH_1allow_GT -> [1810][_BExpr6_SWITCH_1allow_GT]<! !_BExpr5_SWITCH_1allow_GT @ !>                                                           |
+|   [20][24][13]: _BExpr6_SWITCH_1allow_GT -> [1822][_BExpr7_SWITCH_1allow_GT]<! !_BExpr6_SWITCH_1allow_GT @ !>                                                           |
+|   [19][23][13]: _BExpr7_SWITCH_1allow_GT -> [1834][_BExpr8_SWITCH_1allow_GT]<! !_BExpr7_SWITCH_1allow_GT @ !>                                                           |
+|   [18][22][13]: _BExpr8_SWITCH_1allow_GT -> [1846][_BExpr9_SWITCH_1allow_GT]<! !_BExpr8_SWITCH_1allow_GT @ !>                                                           |
+|   [17][21][13]: _BExpr9_SWITCH_1allow_GT -> [1749][_BExpr10_SWITCH_1allow_GT]<! !_BExpr9_SWITCH_1allow_GT @ !>                                                          |
+|   [16][20][13]: _BExpr10_SWITCH_1allow_GT -> [1761][_BExpr11_SWITCH_1allow_GT]<! !_BExpr10_SWITCH_1allow_GT @ !>                                                        |
+|   [15][19][13]: _BExpr11_SWITCH_1allow_GT -> [1883][_BExpr_NoComma_SWITCH_1allow_GT] BEGIN [pm-lr]                                                                      |
+|   [14][118][13]: _BExpr_NoComma_SWITCH_1allow_GT -> [1919][_Expr_NoComma_Raw_SWITCH_1allow_GT]<! !_BExpr_NoComma_SWITCH_1allow_GT @ !>                                  |
+|   [13][117][13]: _Expr_NoComma_Raw_SWITCH_1allow_GT -> [1704][_Expr_NoComma]<! !_Expr_NoComma_Raw_SWITCH_1allow_GT @ !>                                                 |
+|   [12][736][13]: _Expr_NoComma -> [1190][_VarValueInit]< "=" _Expr_NoComma @ >                                                                                          |
+|   [11][74][12]: _VarValueInit -> [1211][_VarInit]<! !_VarValueInit @ !>                                                                                                 |
+|   [10][752][12]: _VarInit -> [1241][_DeclaratorVariablePartRequiredInit]< _DeclaratorRequiredName _VarInit @ >                                                          |
+|   [4][766][6]: _DeclaratorVariablePartRequiredInit -> [1279][_ExprOrVarCondition]< { _DeclaratorKeyword } _TypeBeforeDeclarator _DeclaratorVariablePartRequiredInit @ > |
+|   [1][331][2]: _ExprOrVarCondition -> [670][_OtherStats]< "while" "(" _ExprOrVarCondition @ ")" _Stat >                                                                 |
+|   [0][248][0]: _OtherStats -> [681][_Stat]<! !_OtherStats @ !>                                                                                                          |
+| [PREDECESSORS 22-22]: [22]                                                                                                                                              |
+| [SUCCESORS 24-24]: [24]                                                                                                                                                 |
++-------------------------------------------------------------------------------------------------------------------------------------------------------------------------+
+|
++
+|
++-------------------------------------------------------------------------------------------------------------------------------------------------------------------------+
+| [24]: <Ending>                                                                                                                                                          |
+| [1810][_BExpr6_SWITCH_1allow_GT]<! !_BExpr5_SWITCH_1allow_GT @ !>                                                                                                       |
+| [AST-INSTRUCTIONS]:                                                                                                                                                     |
+|   + StackEnd()                                                                                                                                                          |
+|   > StackBegin()                                                                                                                                                        |
+| [RETURN STACK]:                                                                                                                                                         |
+|   [20][24][13]: _BExpr6_SWITCH_1allow_GT -> [1822][_BExpr7_SWITCH_1allow_GT]<! !_BExpr6_SWITCH_1allow_GT @ !>                                                           |
+|   [19][23][13]: _BExpr7_SWITCH_1allow_GT -> [1834][_BExpr8_SWITCH_1allow_GT]<! !_BExpr7_SWITCH_1allow_GT @ !>                                                           |
+|   [18][22][13]: _BExpr8_SWITCH_1allow_GT -> [1846][_BExpr9_SWITCH_1allow_GT]<! !_BExpr8_SWITCH_1allow_GT @ !>                                                           |
+|   [17][21][13]: _BExpr9_SWITCH_1allow_GT -> [1749][_BExpr10_SWITCH_1allow_GT]<! !_BExpr9_SWITCH_1allow_GT @ !>                                                          |
+|   [16][20][13]: _BExpr10_SWITCH_1allow_GT -> [1761][_BExpr11_SWITCH_1allow_GT]<! !_BExpr10_SWITCH_1allow_GT @ !>                                                        |
+|   [15][19][13]: _BExpr11_SWITCH_1allow_GT -> [1883][_BExpr_NoComma_SWITCH_1allow_GT] BEGIN [pm-lr]                                                                      |
+|   [14][118][13]: _BExpr_NoComma_SWITCH_1allow_GT -> [1919][_Expr_NoComma_Raw_SWITCH_1allow_GT]<! !_BExpr_NoComma_SWITCH_1allow_GT @ !>                                  |
+|   [13][117][13]: _Expr_NoComma_Raw_SWITCH_1allow_GT -> [1704][_Expr_NoComma]<! !_Expr_NoComma_Raw_SWITCH_1allow_GT @ !>                                                 |
+|   [12][736][13]: _Expr_NoComma -> [1190][_VarValueInit]< "=" _Expr_NoComma @ >                                                                                          |
+|   [11][74][12]: _VarValueInit -> [1211][_VarInit]<! !_VarValueInit @ !>                                                                                                 |
+|   [10][752][12]: _VarInit -> [1241][_DeclaratorVariablePartRequiredInit]< _DeclaratorRequiredName _VarInit @ >                                                          |
+|   [4][766][6]: _DeclaratorVariablePartRequiredInit -> [1279][_ExprOrVarCondition]< { _DeclaratorKeyword } _TypeBeforeDeclarator _DeclaratorVariablePartRequiredInit @ > |
+|   [1][331][2]: _ExprOrVarCondition -> [670][_OtherStats]< "while" "(" _ExprOrVarCondition @ ")" _Stat >                                                                 |
+|   [0][248][0]: _OtherStats -> [681][_Stat]<! !_OtherStats @ !>                                                                                                          |
+| [PREDECESSORS 23-23]: [23]                                                                                                                                              |
+| [SUCCESORS 25-25]: [25]                                                                                                                                                 |
++-------------------------------------------------------------------------------------------------------------------------------------------------------------------------+
+|
++
+|
++-------------------------------------------------------------------------------------------------------------------------------------------------------------------------+
+| [25]: <Ending>                                                                                                                                                          |
+| [1822][_BExpr7_SWITCH_1allow_GT]<! !_BExpr6_SWITCH_1allow_GT @ !>                                                                                                       |
+| [AST-INSTRUCTIONS]:                                                                                                                                                     |
+|   + StackEnd()                                                                                                                                                          |
+|   > StackBegin()                                                                                                                                                        |
+| [RETURN STACK]:                                                                                                                                                         |
+|   [19][23][13]: _BExpr7_SWITCH_1allow_GT -> [1834][_BExpr8_SWITCH_1allow_GT]<! !_BExpr7_SWITCH_1allow_GT @ !>                                                           |
+|   [18][22][13]: _BExpr8_SWITCH_1allow_GT -> [1846][_BExpr9_SWITCH_1allow_GT]<! !_BExpr8_SWITCH_1allow_GT @ !>                                                           |
+|   [17][21][13]: _BExpr9_SWITCH_1allow_GT -> [1749][_BExpr10_SWITCH_1allow_GT]<! !_BExpr9_SWITCH_1allow_GT @ !>                                                          |
+|   [16][20][13]: _BExpr10_SWITCH_1allow_GT -> [1761][_BExpr11_SWITCH_1allow_GT]<! !_BExpr10_SWITCH_1allow_GT @ !>                                                        |
+|   [15][19][13]: _BExpr11_SWITCH_1allow_GT -> [1883][_BExpr_NoComma_SWITCH_1allow_GT] BEGIN [pm-lr]                                                                      |
+|   [14][118][13]: _BExpr_NoComma_SWITCH_1allow_GT -> [1919][_Expr_NoComma_Raw_SWITCH_1allow_GT]<! !_BExpr_NoComma_SWITCH_1allow_GT @ !>                                  |
+|   [13][117][13]: _Expr_NoComma_Raw_SWITCH_1allow_GT -> [1704][_Expr_NoComma]<! !_Expr_NoComma_Raw_SWITCH_1allow_GT @ !>                                                 |
+|   [12][736][13]: _Expr_NoComma -> [1190][_VarValueInit]< "=" _Expr_NoComma @ >                                                                                          |
+|   [11][74][12]: _VarValueInit -> [1211][_VarInit]<! !_VarValueInit @ !>                                                                                                 |
+|   [10][752][12]: _VarInit -> [1241][_DeclaratorVariablePartRequiredInit]< _DeclaratorRequiredName _VarInit @ >                                                          |
+|   [4][766][6]: _DeclaratorVariablePartRequiredInit -> [1279][_ExprOrVarCondition]< { _DeclaratorKeyword } _TypeBeforeDeclarator _DeclaratorVariablePartRequiredInit @ > |
+|   [1][331][2]: _ExprOrVarCondition -> [670][_OtherStats]< "while" "(" _ExprOrVarCondition @ ")" _Stat >                                                                 |
+|   [0][248][0]: _OtherStats -> [681][_Stat]<! !_OtherStats @ !>                                                                                                          |
+| [PREDECESSORS 24-24]: [24]                                                                                                                                              |
+| [SUCCESORS 26-26]: [26]                                                                                                                                                 |
++-------------------------------------------------------------------------------------------------------------------------------------------------------------------------+
+|
++
+|
++-------------------------------------------------------------------------------------------------------------------------------------------------------------------------+
+| [26]: <Ending>                                                                                                                                                          |
+| [1834][_BExpr8_SWITCH_1allow_GT]<! !_BExpr7_SWITCH_1allow_GT @ !>                                                                                                       |
+| [AST-INSTRUCTIONS]:                                                                                                                                                     |
+|   + StackEnd()                                                                                                                                                          |
+|   > StackBegin()                                                                                                                                                        |
+| [RETURN STACK]:                                                                                                                                                         |
+|   [18][22][13]: _BExpr8_SWITCH_1allow_GT -> [1846][_BExpr9_SWITCH_1allow_GT]<! !_BExpr8_SWITCH_1allow_GT @ !>                                                           |
+|   [17][21][13]: _BExpr9_SWITCH_1allow_GT -> [1749][_BExpr10_SWITCH_1allow_GT]<! !_BExpr9_SWITCH_1allow_GT @ !>                                                          |
+|   [16][20][13]: _BExpr10_SWITCH_1allow_GT -> [1761][_BExpr11_SWITCH_1allow_GT]<! !_BExpr10_SWITCH_1allow_GT @ !>                                                        |
+|   [15][19][13]: _BExpr11_SWITCH_1allow_GT -> [1883][_BExpr_NoComma_SWITCH_1allow_GT] BEGIN [pm-lr]                                                                      |
+|   [14][118][13]: _BExpr_NoComma_SWITCH_1allow_GT -> [1919][_Expr_NoComma_Raw_SWITCH_1allow_GT]<! !_BExpr_NoComma_SWITCH_1allow_GT @ !>                                  |
+|   [13][117][13]: _Expr_NoComma_Raw_SWITCH_1allow_GT -> [1704][_Expr_NoComma]<! !_Expr_NoComma_Raw_SWITCH_1allow_GT @ !>                                                 |
+|   [12][736][13]: _Expr_NoComma -> [1190][_VarValueInit]< "=" _Expr_NoComma @ >                                                                                          |
+|   [11][74][12]: _VarValueInit -> [1211][_VarInit]<! !_VarValueInit @ !>                                                                                                 |
+|   [10][752][12]: _VarInit -> [1241][_DeclaratorVariablePartRequiredInit]< _DeclaratorRequiredName _VarInit @ >                                                          |
+|   [4][766][6]: _DeclaratorVariablePartRequiredInit -> [1279][_ExprOrVarCondition]< { _DeclaratorKeyword } _TypeBeforeDeclarator _DeclaratorVariablePartRequiredInit @ > |
+|   [1][331][2]: _ExprOrVarCondition -> [670][_OtherStats]< "while" "(" _ExprOrVarCondition @ ")" _Stat >                                                                 |
+|   [0][248][0]: _OtherStats -> [681][_Stat]<! !_OtherStats @ !>                                                                                                          |
+| [PREDECESSORS 25-25]: [25]                                                                                                                                              |
+| [SUCCESORS 27-27]: [27]                                                                                                                                                 |
++-------------------------------------------------------------------------------------------------------------------------------------------------------------------------+
+|
++
+|
++-------------------------------------------------------------------------------------------------------------------------------------------------------------------------+
+| [27]: <Ending>                                                                                                                                                          |
+| [1846][_BExpr9_SWITCH_1allow_GT]<! !_BExpr8_SWITCH_1allow_GT @ !>                                                                                                       |
+| [AST-INSTRUCTIONS]:                                                                                                                                                     |
+|   + StackEnd()                                                                                                                                                          |
+|   > StackBegin()                                                                                                                                                        |
+| [RETURN STACK]:                                                                                                                                                         |
+|   [17][21][13]: _BExpr9_SWITCH_1allow_GT -> [1749][_BExpr10_SWITCH_1allow_GT]<! !_BExpr9_SWITCH_1allow_GT @ !>                                                          |
+|   [16][20][13]: _BExpr10_SWITCH_1allow_GT -> [1761][_BExpr11_SWITCH_1allow_GT]<! !_BExpr10_SWITCH_1allow_GT @ !>                                                        |
+|   [15][19][13]: _BExpr11_SWITCH_1allow_GT -> [1883][_BExpr_NoComma_SWITCH_1allow_GT] BEGIN [pm-lr]                                                                      |
+|   [14][118][13]: _BExpr_NoComma_SWITCH_1allow_GT -> [1919][_Expr_NoComma_Raw_SWITCH_1allow_GT]<! !_BExpr_NoComma_SWITCH_1allow_GT @ !>                                  |
+|   [13][117][13]: _Expr_NoComma_Raw_SWITCH_1allow_GT -> [1704][_Expr_NoComma]<! !_Expr_NoComma_Raw_SWITCH_1allow_GT @ !>                                                 |
+|   [12][736][13]: _Expr_NoComma -> [1190][_VarValueInit]< "=" _Expr_NoComma @ >                                                                                          |
+|   [11][74][12]: _VarValueInit -> [1211][_VarInit]<! !_VarValueInit @ !>                                                                                                 |
+|   [10][752][12]: _VarInit -> [1241][_DeclaratorVariablePartRequiredInit]< _DeclaratorRequiredName _VarInit @ >                                                          |
+|   [4][766][6]: _DeclaratorVariablePartRequiredInit -> [1279][_ExprOrVarCondition]< { _DeclaratorKeyword } _TypeBeforeDeclarator _DeclaratorVariablePartRequiredInit @ > |
+|   [1][331][2]: _ExprOrVarCondition -> [670][_OtherStats]< "while" "(" _ExprOrVarCondition @ ")" _Stat >                                                                 |
+|   [0][248][0]: _OtherStats -> [681][_Stat]<! !_OtherStats @ !>                                                                                                          |
+| [PREDECESSORS 26-26]: [26]                                                                                                                                              |
+| [SUCCESORS 28-28]: [28]                                                                                                                                                 |
++-------------------------------------------------------------------------------------------------------------------------------------------------------------------------+
+|
++
+|
++-------------------------------------------------------------------------------------------------------------------------------------------------------------------------+
+| [28]: <Ending>                                                                                                                                                          |
+| [1749][_BExpr10_SWITCH_1allow_GT]<! !_BExpr9_SWITCH_1allow_GT @ !>                                                                                                      |
+| [AST-INSTRUCTIONS]:                                                                                                                                                     |
+|   + StackEnd()                                                                                                                                                          |
+|   > StackBegin()                                                                                                                                                        |
+| [RETURN STACK]:                                                                                                                                                         |
+|   [16][20][13]: _BExpr10_SWITCH_1allow_GT -> [1761][_BExpr11_SWITCH_1allow_GT]<! !_BExpr10_SWITCH_1allow_GT @ !>                                                        |
+|   [15][19][13]: _BExpr11_SWITCH_1allow_GT -> [1883][_BExpr_NoComma_SWITCH_1allow_GT] BEGIN [pm-lr]                                                                      |
+|   [14][118][13]: _BExpr_NoComma_SWITCH_1allow_GT -> [1919][_Expr_NoComma_Raw_SWITCH_1allow_GT]<! !_BExpr_NoComma_SWITCH_1allow_GT @ !>                                  |
+|   [13][117][13]: _Expr_NoComma_Raw_SWITCH_1allow_GT -> [1704][_Expr_NoComma]<! !_Expr_NoComma_Raw_SWITCH_1allow_GT @ !>                                                 |
+|   [12][736][13]: _Expr_NoComma -> [1190][_VarValueInit]< "=" _Expr_NoComma @ >                                                                                          |
+|   [11][74][12]: _VarValueInit -> [1211][_VarInit]<! !_VarValueInit @ !>                                                                                                 |
+|   [10][752][12]: _VarInit -> [1241][_DeclaratorVariablePartRequiredInit]< _DeclaratorRequiredName _VarInit @ >                                                          |
+|   [4][766][6]: _DeclaratorVariablePartRequiredInit -> [1279][_ExprOrVarCondition]< { _DeclaratorKeyword } _TypeBeforeDeclarator _DeclaratorVariablePartRequiredInit @ > |
+|   [1][331][2]: _ExprOrVarCondition -> [670][_OtherStats]< "while" "(" _ExprOrVarCondition @ ")" _Stat >                                                                 |
+|   [0][248][0]: _OtherStats -> [681][_Stat]<! !_OtherStats @ !>                                                                                                          |
+| [PREDECESSORS 27-27]: [27]                                                                                                                                              |
+| [SUCCESORS 29-29]: [29]                                                                                                                                                 |
++-------------------------------------------------------------------------------------------------------------------------------------------------------------------------+
+|
++
+|
++-------------------------------------------------------------------------------------------------------------------------------------------------------------------------+
+| [29]: <Ending>                                                                                                                                                          |
+| [1761][_BExpr11_SWITCH_1allow_GT]<! !_BExpr10_SWITCH_1allow_GT @ !>                                                                                                     |
+| [AST-INSTRUCTIONS]:                                                                                                                                                     |
+|   + StackEnd()                                                                                                                                                          |
+|   > StackBegin()                                                                                                                                                        |
+| [RETURN STACK]:                                                                                                                                                         |
+|   [15][19][13]: _BExpr11_SWITCH_1allow_GT -> [1883][_BExpr_NoComma_SWITCH_1allow_GT] BEGIN [pm-lr]                                                                      |
+|   [14][118][13]: _BExpr_NoComma_SWITCH_1allow_GT -> [1919][_Expr_NoComma_Raw_SWITCH_1allow_GT]<! !_BExpr_NoComma_SWITCH_1allow_GT @ !>                                  |
+|   [13][117][13]: _Expr_NoComma_Raw_SWITCH_1allow_GT -> [1704][_Expr_NoComma]<! !_Expr_NoComma_Raw_SWITCH_1allow_GT @ !>                                                 |
+|   [12][736][13]: _Expr_NoComma -> [1190][_VarValueInit]< "=" _Expr_NoComma @ >                                                                                          |
+|   [11][74][12]: _VarValueInit -> [1211][_VarInit]<! !_VarValueInit @ !>                                                                                                 |
+|   [10][752][12]: _VarInit -> [1241][_DeclaratorVariablePartRequiredInit]< _DeclaratorRequiredName _VarInit @ >                                                          |
+|   [4][766][6]: _DeclaratorVariablePartRequiredInit -> [1279][_ExprOrVarCondition]< { _DeclaratorKeyword } _TypeBeforeDeclarator _DeclaratorVariablePartRequiredInit @ > |
+|   [1][331][2]: _ExprOrVarCondition -> [670][_OtherStats]< "while" "(" _ExprOrVarCondition @ ")" _Stat >                                                                 |
+|   [0][248][0]: _OtherStats -> [681][_Stat]<! !_OtherStats @ !>                                                                                                          |
+| [PREDECESSORS 28-28]: [28]                                                                                                                                              |
+| [SUCCESORS 30-30]: [30]                                                                                                                                                 |
++-------------------------------------------------------------------------------------------------------------------------------------------------------------------------+
+|
++
+|
++-------------------------------------------------------------------------------------------------------------------------------------------------------------------------+
+| [30]: <Ending>                                                                                                                                                          |
+| [1883][_BExpr_NoComma_SWITCH_1allow_GT] BEGIN [pm-lr]                                                                                                                   |
+| [AST-INSTRUCTIONS]:                                                                                                                                                     |
+|   + StackEnd()                                                                                                                                                          |
+| [RETURN STACK]:                                                                                                                                                         |
+|   [14][118][13]: _BExpr_NoComma_SWITCH_1allow_GT -> [1919][_Expr_NoComma_Raw_SWITCH_1allow_GT]<! !_BExpr_NoComma_SWITCH_1allow_GT @ !>                                  |
+|   [13][117][13]: _Expr_NoComma_Raw_SWITCH_1allow_GT -> [1704][_Expr_NoComma]<! !_Expr_NoComma_Raw_SWITCH_1allow_GT @ !>                                                 |
+|   [12][736][13]: _Expr_NoComma -> [1190][_VarValueInit]< "=" _Expr_NoComma @ >                                                                                          |
+|   [11][74][12]: _VarValueInit -> [1211][_VarInit]<! !_VarValueInit @ !>                                                                                                 |
+|   [10][752][12]: _VarInit -> [1241][_DeclaratorVariablePartRequiredInit]< _DeclaratorRequiredName _VarInit @ >                                                          |
+|   [4][766][6]: _DeclaratorVariablePartRequiredInit -> [1279][_ExprOrVarCondition]< { _DeclaratorKeyword } _TypeBeforeDeclarator _DeclaratorVariablePartRequiredInit @ > |
+|   [1][331][2]: _ExprOrVarCondition -> [670][_OtherStats]< "while" "(" _ExprOrVarCondition @ ")" _Stat >                                                                 |
+|   [0][248][0]: _OtherStats -> [681][_Stat]<! !_OtherStats @ !>                                                                                                          |
+| [PREDECESSORS 29-29]: [29]                                                                                                                                              |
+| [SUCCESORS 31-31]: [31]                                                                                                                                                 |
++-------------------------------------------------------------------------------------------------------------------------------------------------------------------------+
+|
++
+|
++-------------------------------------------------------------------------------------------------------------------------------------------------------------------------+
+| [31]: <Ending>                                                                                                                                                          |
+| [1919][_Expr_NoComma_Raw_SWITCH_1allow_GT]<! !_BExpr_NoComma_SWITCH_1allow_GT @ !>                                                                                      |
+| [AST-INSTRUCTIONS]:                                                                                                                                                     |
+|   + StackBegin()                                                                                                                                                        |
+|   + StackEnd()                                                                                                                                                          |
+|   > StackBegin()                                                                                                                                                        |
+| [RETURN STACK]:                                                                                                                                                         |
+|   [13][117][13]: _Expr_NoComma_Raw_SWITCH_1allow_GT -> [1704][_Expr_NoComma]<! !_Expr_NoComma_Raw_SWITCH_1allow_GT @ !>                                                 |
+|   [12][736][13]: _Expr_NoComma -> [1190][_VarValueInit]< "=" _Expr_NoComma @ >                                                                                          |
+|   [11][74][12]: _VarValueInit -> [1211][_VarInit]<! !_VarValueInit @ !>                                                                                                 |
+|   [10][752][12]: _VarInit -> [1241][_DeclaratorVariablePartRequiredInit]< _DeclaratorRequiredName _VarInit @ >                                                          |
+|   [4][766][6]: _DeclaratorVariablePartRequiredInit -> [1279][_ExprOrVarCondition]< { _DeclaratorKeyword } _TypeBeforeDeclarator _DeclaratorVariablePartRequiredInit @ > |
+|   [1][331][2]: _ExprOrVarCondition -> [670][_OtherStats]< "while" "(" _ExprOrVarCondition @ ")" _Stat >                                                                 |
+|   [0][248][0]: _OtherStats -> [681][_Stat]<! !_OtherStats @ !>                                                                                                          |
+| [PREDECESSORS 30-30]: [30]                                                                                                                                              |
+| [SUCCESORS 32-32]: [32]                                                                                                                                                 |
++-------------------------------------------------------------------------------------------------------------------------------------------------------------------------+
+|
++
+|
++-------------------------------------------------------------------------------------------------------------------------------------------------------------------------+
+| [32]: <Ending>                                                                                                                                                          |
+| [1704][_Expr_NoComma]<! !_Expr_NoComma_Raw_SWITCH_1allow_GT @ !>                                                                                                        |
+| [AST-INSTRUCTIONS]:                                                                                                                                                     |
+|   + StackEnd()                                                                                                                                                          |
+|   > StackBegin()                                                                                                                                                        |
+| [RETURN STACK]:                                                                                                                                                         |
+|   [12][736][13]: _Expr_NoComma -> [1190][_VarValueInit]< "=" _Expr_NoComma @ >                                                                                          |
+|   [11][74][12]: _VarValueInit -> [1211][_VarInit]<! !_VarValueInit @ !>                                                                                                 |
+|   [10][752][12]: _VarInit -> [1241][_DeclaratorVariablePartRequiredInit]< _DeclaratorRequiredName _VarInit @ >                                                          |
+|   [4][766][6]: _DeclaratorVariablePartRequiredInit -> [1279][_ExprOrVarCondition]< { _DeclaratorKeyword } _TypeBeforeDeclarator _DeclaratorVariablePartRequiredInit @ > |
+|   [1][331][2]: _ExprOrVarCondition -> [670][_OtherStats]< "while" "(" _ExprOrVarCondition @ ")" _Stat >                                                                 |
+|   [0][248][0]: _OtherStats -> [681][_Stat]<! !_OtherStats @ !>                                                                                                          |
+| [PREDECESSORS 31-31]: [31]                                                                                                                                              |
+| [SUCCESORS 33-33]: [33]                                                                                                                                                 |
++-------------------------------------------------------------------------------------------------------------------------------------------------------------------------+
+|
++
+|
++-------------------------------------------------------------------------------------------------------------------------------------------------------------------------+
+| [33]: <Ending>                                                                                                                                                          |
+| [1190][_VarValueInit]< "=" _Expr_NoComma @ >                                                                                                                            |
+| [AST-INSTRUCTIONS]:                                                                                                                                                     |
+|   + StackEnd()                                                                                                                                                          |
+|   > StackSlot(1)                                                                                                                                                        |
+| [RETURN STACK]:                                                                                                                                                         |
+|   [11][74][12]: _VarValueInit -> [1211][_VarInit]<! !_VarValueInit @ !>                                                                                                 |
+|   [10][752][12]: _VarInit -> [1241][_DeclaratorVariablePartRequiredInit]< _DeclaratorRequiredName _VarInit @ >                                                          |
+|   [4][766][6]: _DeclaratorVariablePartRequiredInit -> [1279][_ExprOrVarCondition]< { _DeclaratorKeyword } _TypeBeforeDeclarator _DeclaratorVariablePartRequiredInit @ > |
+|   [1][331][2]: _ExprOrVarCondition -> [670][_OtherStats]< "while" "(" _ExprOrVarCondition @ ")" _Stat >                                                                 |
+|   [0][248][0]: _OtherStats -> [681][_Stat]<! !_OtherStats @ !>                                                                                                          |
+| [PREDECESSORS 32-32]: [32]                                                                                                                                              |
+| [SUCCESORS 34-34]: [34]                                                                                                                                                 |
++-------------------------------------------------------------------------------------------------------------------------------------------------------------------------+
+|
++
+|
++-------------------------------------------------------------------------------------------------------------------------------------------------------------------------+
+| [34]: <Ending>                                                                                                                                                          |
+| [1211][_VarInit]<! !_VarValueInit @ !>                                                                                                                                  |
+| [AST-INSTRUCTIONS]:                                                                                                                                                     |
+|   + CreateObject(VarValueInit)                                                                                                                                          |
+|   + Field(VarValueInit::expr, 1)                                                                                                                                        |
+|   + StackEnd()                                                                                                                                                          |
+|   > StackBegin()                                                                                                                                                        |
+| [RETURN STACK]:                                                                                                                                                         |
+|   [10][752][12]: _VarInit -> [1241][_DeclaratorVariablePartRequiredInit]< _DeclaratorRequiredName _VarInit @ >                                                          |
+|   [4][766][6]: _DeclaratorVariablePartRequiredInit -> [1279][_ExprOrVarCondition]< { _DeclaratorKeyword } _TypeBeforeDeclarator _DeclaratorVariablePartRequiredInit @ > |
+|   [1][331][2]: _ExprOrVarCondition -> [670][_OtherStats]< "while" "(" _ExprOrVarCondition @ ")" _Stat >                                                                 |
+|   [0][248][0]: _OtherStats -> [681][_Stat]<! !_OtherStats @ !>                                                                                                          |
+| [PREDECESSORS 33-33]: [33]                                                                                                                                              |
+| [SUCCESORS 35-35]: [35]                                                                                                                                                 |
++-------------------------------------------------------------------------------------------------------------------------------------------------------------------------+
+|
++
+|
++-------------------------------------------------------------------------------------------------------------------------------------------------------------------------+
+| [35]: <Ending>                                                                                                                                                          |
+| [1241][_DeclaratorVariablePartRequiredInit]< _DeclaratorRequiredName _VarInit @ >                                                                                       |
+| [AST-INSTRUCTIONS]:                                                                                                                                                     |
+|   + StackEnd()                                                                                                                                                          |
+|   > StackSlot(1)                                                                                                                                                        |
+| [RETURN STACK]:                                                                                                                                                         |
+|   [4][766][6]: _DeclaratorVariablePartRequiredInit -> [1279][_ExprOrVarCondition]< { _DeclaratorKeyword } _TypeBeforeDeclarator _DeclaratorVariablePartRequiredInit @ > |
+|   [1][331][2]: _ExprOrVarCondition -> [670][_OtherStats]< "while" "(" _ExprOrVarCondition @ ")" _Stat >                                                                 |
+|   [0][248][0]: _OtherStats -> [681][_Stat]<! !_OtherStats @ !>                                                                                                          |
+| [PREDECESSORS 34-34]: [34]                                                                                                                                              |
+| [SUCCESORS 36-36]: [36]                                                                                                                                                 |
++-------------------------------------------------------------------------------------------------------------------------------------------------------------------------+
+|
++
+|
++-------------------------------------------------------------------------------------------------------------------+
+| [36]: <Ending>                                                                                                    |
+| [1279][_ExprOrVarCondition]< { _DeclaratorKeyword } _TypeBeforeDeclarator _DeclaratorVariablePartRequiredInit @ > |
+| [AST-INSTRUCTIONS]:                                                                                               |
+|   + CreateObject(DeclaratorVariablePartCommon)                                                                    |
+|   + Field(DeclaratorVariablePartCommon::declarator, 0)                                                            |
+|   + Field(DeclaratorVariablePartCommon::init, 1)                                                                  |
+|   + StackEnd()                                                                                                    |
+|   > StackSlot(2)                                                                                                  |
+| [RETURN STACK]:                                                                                                   |
+|   [1][331][2]: _ExprOrVarCondition -> [670][_OtherStats]< "while" "(" _ExprOrVarCondition @ ")" _Stat >           |
+|   [0][248][0]: _OtherStats -> [681][_Stat]<! !_OtherStats @ !>                                                    |
+| [PREDECESSORS 35-35]: [35]                                                                                        |
+| [SUCCESORS 37-37]: [37]                                                                                           |
++-------------------------------------------------------------------------------------------------------------------+
+|
++
+|
++-------------------------------------------------------------------+
+| [37]: <Ending>                                                    |
+| [670][_OtherStats]< "while" "(" _ExprOrVarCondition @ ")" _Stat > |
+| [AST-INSTRUCTIONS]:                                               |
+|   + CreateObject(VariablesDeclaration)                            |
+|   + Field(DeclarationCommon::keywords, 0)                         |
+|   + Field(VariablesDeclaration::type, 1)                          |
+|   + Field(VariablesDeclaration::firstVarPart, 2)                  |
+|   + StackEnd()                                                    |
+|   > StackSlot(2)                                                  |
+| [RETURN STACK]:                                                   |
+|   [0][248][0]: _OtherStats -> [681][_Stat]<! !_OtherStats @ !>    |
+| [PREDECESSORS 36-36]: [36]                                        |
+| [SUCCESORS 38-38]: [38]                                           |
++-------------------------------------------------------------------+
+[0]
+ |
+ +
+ |
+[0]
+++===================================================================++
+|| [38]: {RPARENTHESIS} )                                            ||
+|| [668][_OtherStats]< "while" "(" _ExprOrVarCondition ")" @ _Stat > ||
+|| [AST-INSTRUCTIONS]:                                               ||
+||   + Token(3)                                                      ||
+|| [RETURN STACK]:                                                   ||
+||   [0][248][0]: _OtherStats -> [681][_Stat]<! !_OtherStats @ !>    ||
+|| [PREDECESSORS 37-37]: [37]                                        ||
+|| [SUCCESORS 39-39]: [39]                                           ||
+++===================================================================++
+[0]
+ |
+ +
+ |
+[0]
+++=============================================================================================++
+|| [39]: {SEMICOLON} ;                                                                         ||
+|| [635][_OtherStats]< ";" @ >                                                                 ||
+|| [AST-INSTRUCTIONS]:                                                                         ||
+||   + StackBegin()                                                                            ||
+||   + Token(0)                                                                                ||
+|| [RETURN STACK]:                                                                             ||
+||   [32][248][38]: _OtherStats -> [681][_Stat]<! !_OtherStats @ !>                            ||
+||   [31][332][38]: _Stat -> [669][_OtherStats]< "while" "(" _ExprOrVarCondition ")" _Stat @ > ||
+||   [0][248][0]: _OtherStats -> [681][_Stat]<! !_OtherStats @ !>                              ||
+|| [PREDECESSORS 38-38]: [38]                                                                  ||
+|| [SUCCESORS 40-40]: [40]                                                                     ||
+++=============================================================================================++
+|
++
+|
++---------------------------------------------------------------------------------------------+
+| [40]: <Ending>                                                                              |
+| [681][_Stat]<! !_OtherStats @ !>                                                            |
+| [AST-INSTRUCTIONS]:                                                                         |
+|   + CreateObject(EmptyStat)                                                                 |
+|   + StackEnd()                                                                              |
+|   > StackBegin()                                                                            |
+| [RETURN STACK]:                                                                             |
+|   [31][332][38]: _Stat -> [669][_OtherStats]< "while" "(" _ExprOrVarCondition ")" _Stat @ > |
+|   [0][248][0]: _OtherStats -> [681][_Stat]<! !_OtherStats @ !>                              |
+| [PREDECESSORS 39-39]: [39]                                                                  |
+| [SUCCESORS 41-41]: [41]                                                                     |
++---------------------------------------------------------------------------------------------+
+|
++
+|
++-------------------------------------------------------------------+
+| [41]: <Ending>                                                    |
+| [669][_OtherStats]< "while" "(" _ExprOrVarCondition ")" _Stat @ > |
+| [AST-INSTRUCTIONS]:                                               |
+|   + StackEnd()                                                    |
+|   > StackSlot(4)                                                  |
+| [RETURN STACK]:                                                   |
+|   [0][248][0]: _OtherStats -> [681][_Stat]<! !_OtherStats @ !>    |
+| [PREDECESSORS 40-40]: [40]                                        |
+| [SUCCESORS 42-42]: [42]                                           |
++-------------------------------------------------------------------+
+|
++
+|
++------------------------------------+
+| [42]: <Ending>                     |
+| [681][_Stat]<! !_OtherStats @ !>   |
+| [AST-INSTRUCTIONS]:                |
+|   + CreateObject(WhileStat)        |
+|   + Field(WhileStat::condition, 2) |
+|   + Field(WhileStat::stat, 4)      |
+|   + StackEnd()                     |
+|   > StackBegin()                   |
+| [PREDECESSORS 41-41]: [41]         |
+| [SUCCESORS 43-43]: [43]            |
++------------------------------------+
+|
++
+|
++----------------------------+
+| [43]: <Ending>             |
+| [676][_Stat] END [ENDING]  |
+| [AST-INSTRUCTIONS]:        |
+|   + StackEnd()             |
+| [PREDECESSORS 42-42]: [42] |
++----------------------------+

@@ -1,11 +1,11 @@
 ﻿================ EXECUTION STEPS ================
-[0]: 0@0 - 35@1
+[0]: 0@0 - 30@0
 
 ==================== TRACES =====================
 
 +----------------------------+
 | [0]: <Start>               |
-| [1572][_TypeOrExpr] BEGIN  |
+| [1716][_TypeOrExpr] BEGIN  |
 | [AST-INSTRUCTIONS]:        |
 | [SUCCESORS 1-1]: [1]       |
 +----------------------------+
@@ -14,265 +14,307 @@
  +
  |
 [0]
-++==============================================================================================================================================================================================================================++
-|| [1]: {ID} Name                                                                                                                                                                                                               ||
-|| [2][_NameIdentifier]< ID @ >                                                                                                                                                                                                 ||
-|| [AST-INSTRUCTIONS]:                                                                                                                                                                                                          ||
-||   - DelayFieldAssignment()                                                                                                                                                                                                   ||
-||   - DelayFieldAssignment()                                                                                                                                                                                                   ||
-||   - DelayFieldAssignment()                                                                                                                                                                                                   ||
-||   - BeginObject(QualifiedName)                                                                                                                                                                                               ||
-||   - DelayFieldAssignment()                                                                                                                                                                                                   ||
-||   - BeginObject(NameIdentifier)                                                                                                                                                                                              ||
-||   + Token()                                                                                                                                                                                                                  ||
-||   + Field(NameIdentifier::name)                                                                                                                                                                                              ||
-|| [RETURN STACK]:                                                                                                                                                                                                              ||
-||   [5][13][0]: _NameIdentifier -> [137][_Identifier]<< !_NameIdentifier @ >>                                                                                                                                                  ||
-||   [4][6][0]: _Identifier -> [145][_QualifiedNameFragment]_Identifier @ [ _GenericArguments ]                                                                                                                                 ||
-||   [3][5][0]: _QualifiedNameFragment -> [160][_SingleLevelQualifiedName]< _QualifiedNameFragment @ >                                                                                                                          ||
-||   [2][4][0]: _SingleLevelQualifiedName -> [171][_QualifiedName]<< !_SingleLevelQualifiedName @ >>                                                                                                                            ||
-||   [1][75][0]: _QualifiedName -> [1971][_TypeOrExpr_Raw_SWITCH_1allow_GT]<< !_QualifiedName @ ( lri:(LRI__PM_QualifiedName,LRI__QualifiedName_PrimitiveExpr)->_TypeOrExpr_Raw_SWITCH_1allow_GT_LRI_Original | lri:<skip> ) >> ||
-||   [0][74][0]: _TypeOrExpr_Raw_SWITCH_1allow_GT -> [1574][_TypeOrExpr]<< !_TypeOrExpr_Raw_SWITCH_1allow_GT @ >>                                                                                                               ||
-|| [PREDECESSORS 0-0]: [0]                                                                                                                                                                                                      ||
-|| [SUCCESORS 2-2]: [2]                                                                                                                                                                                                         ||
-++==============================================================================================================================================================================================================================++
+++===================================================================================================================================================++
+|| [1]: {ID} Name                                                                                                                                    ||
+|| [2][_NameIdentifier]< ID @ >                                                                                                                      ||
+|| [AST-INSTRUCTIONS]:                                                                                                                               ||
+||   + StackBegin()                                                                                                                                  ||
+||   + Token(0)                                                                                                                                      ||
+|| [RETURN STACK]:                                                                                                                                   ||
+||   [4][10][0]: _NameIdentifier -> [78][_Identifier]<! !_NameIdentifier @ !>                                                                        ||
+||   [3][5][0]: _Identifier -> [94][_SingleLevelQualifiedName]< ( _Identifier @ [ _GenericArguments ] | "template" _Identifier _GenericArguments ) > ||
+||   [2][4][0]: _SingleLevelQualifiedName -> [111][_QualifiedName]<! !_SingleLevelQualifiedName @ !>                                                 ||
+||   [1][91][0]: _QualifiedName -> [1952][_TypeOrExpr_Raw_SWITCH_1allow_GT] BEGIN [pm-cr-rule: _QualifiedName]                                       ||
+||   [0][90][0]: _TypeOrExpr_Raw_SWITCH_1allow_GT -> [1718][_TypeOrExpr]<! !_TypeOrExpr_Raw_SWITCH_1allow_GT @ !>                                    ||
+|| [PREDECESSORS 0-0]: [0]                                                                                                                           ||
+|| [SUCCESORS 2-2]: [2]                                                                                                                              ||
+++===================================================================================================================================================++
 |
 +
 |
-+------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------+
-| [2]: <Ending>                                                                                                                                                                                                                |
-| [137][_Identifier]<< !_NameIdentifier @ >>                                                                                                                                                                                   |
-| [AST-INSTRUCTIONS]:                                                                                                                                                                                                          |
-|   - EnumItem(0)                                                                                                                                                                                                              |
-|   - Field(NameIdentifier::kind)                                                                                                                                                                                              |
-|   - EndObject()                                                                                                                                                                                                              |
-| [RETURN STACK]:                                                                                                                                                                                                              |
-|   [4][6][0]: _Identifier -> [145][_QualifiedNameFragment]_Identifier @ [ _GenericArguments ]                                                                                                                                 |
-|   [3][5][0]: _QualifiedNameFragment -> [160][_SingleLevelQualifiedName]< _QualifiedNameFragment @ >                                                                                                                          |
-|   [2][4][0]: _SingleLevelQualifiedName -> [171][_QualifiedName]<< !_SingleLevelQualifiedName @ >>                                                                                                                            |
-|   [1][75][0]: _QualifiedName -> [1971][_TypeOrExpr_Raw_SWITCH_1allow_GT]<< !_QualifiedName @ ( lri:(LRI__PM_QualifiedName,LRI__QualifiedName_PrimitiveExpr)->_TypeOrExpr_Raw_SWITCH_1allow_GT_LRI_Original | lri:<skip> ) >> |
-|   [0][74][0]: _TypeOrExpr_Raw_SWITCH_1allow_GT -> [1574][_TypeOrExpr]<< !_TypeOrExpr_Raw_SWITCH_1allow_GT @ >>                                                                                                               |
-| [PREDECESSORS 1-1]: [1]                                                                                                                                                                                                      |
-| [SUCCESORS 3-3]: [3]                                                                                                                                                                                                         |
-+------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------+
++---------------------------------------------------------------------------------------------------------------------------------------------------+
+| [2]: <Ending>                                                                                                                                     |
+| [78][_Identifier]<! !_NameIdentifier @ !>                                                                                                         |
+| [AST-INSTRUCTIONS]:                                                                                                                               |
+|   + EnumItem(0, 1)                                                                                                                                |
+|   + CreateObject(NameIdentifier)                                                                                                                  |
+|   + Field(NameIdentifier::name, 0)                                                                                                                |
+|   + Field(NameIdentifier::kind, 1)                                                                                                                |
+|   + StackEnd()                                                                                                                                    |
+|   > StackBegin()                                                                                                                                  |
+| [RETURN STACK]:                                                                                                                                   |
+|   [3][5][0]: _Identifier -> [94][_SingleLevelQualifiedName]< ( _Identifier @ [ _GenericArguments ] | "template" _Identifier _GenericArguments ) > |
+|   [2][4][0]: _SingleLevelQualifiedName -> [111][_QualifiedName]<! !_SingleLevelQualifiedName @ !>                                                 |
+|   [1][91][0]: _QualifiedName -> [1952][_TypeOrExpr_Raw_SWITCH_1allow_GT] BEGIN [pm-cr-rule: _QualifiedName]                                       |
+|   [0][90][0]: _TypeOrExpr_Raw_SWITCH_1allow_GT -> [1718][_TypeOrExpr]<! !_TypeOrExpr_Raw_SWITCH_1allow_GT @ !>                                    |
+| [PREDECESSORS 1-1]: [1]                                                                                                                           |
+| [SUCCESORS 3-3]: [3]                                                                                                                              |
++---------------------------------------------------------------------------------------------------------------------------------------------------+
 |
 +
 |
-+------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------+
-| [3]: <Ending>                                                                                                                                                                                                                |
-| [145][_QualifiedNameFragment]_Identifier @ [ _GenericArguments ]                                                                                                                                                             |
-| [AST-INSTRUCTIONS]:                                                                                                                                                                                                          |
-|   - ReopenObject()                                                                                                                                                                                                           |
-|   - EndObject()                                                                                                                                                                                                              |
-|   > Field(QualifiedName::id)                                                                                                                                                                                                 |
-| [RETURN STACK]:                                                                                                                                                                                                              |
-|   [3][5][0]: _QualifiedNameFragment -> [160][_SingleLevelQualifiedName]< _QualifiedNameFragment @ >                                                                                                                          |
-|   [2][4][0]: _SingleLevelQualifiedName -> [171][_QualifiedName]<< !_SingleLevelQualifiedName @ >>                                                                                                                            |
-|   [1][75][0]: _QualifiedName -> [1971][_TypeOrExpr_Raw_SWITCH_1allow_GT]<< !_QualifiedName @ ( lri:(LRI__PM_QualifiedName,LRI__QualifiedName_PrimitiveExpr)->_TypeOrExpr_Raw_SWITCH_1allow_GT_LRI_Original | lri:<skip> ) >> |
-|   [0][74][0]: _TypeOrExpr_Raw_SWITCH_1allow_GT -> [1574][_TypeOrExpr]<< !_TypeOrExpr_Raw_SWITCH_1allow_GT @ >>                                                                                                               |
-| [PREDECESSORS 2-2]: [2]                                                                                                                                                                                                      |
-| [SUCCESORS 12-12]: [12]                                                                                                                                                                                                      |
-+------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------+
++-----------------------------------------------------------------------------------------------------------------------+
+| [3]: <Ending>                                                                                                         |
+| [94][_SingleLevelQualifiedName]< ( _Identifier @ [ _GenericArguments ] | "template" _Identifier _GenericArguments ) > |
+| [AST-INSTRUCTIONS]:                                                                                                   |
+|   + StackEnd()                                                                                                        |
+|   > StackBegin()                                                                                                      |
+|   > StackSlot(0)                                                                                                      |
+| [RETURN STACK]:                                                                                                       |
+|   [2][4][0]: _SingleLevelQualifiedName -> [111][_QualifiedName]<! !_SingleLevelQualifiedName @ !>                     |
+|   [1][91][0]: _QualifiedName -> [1952][_TypeOrExpr_Raw_SWITCH_1allow_GT] BEGIN [pm-cr-rule: _QualifiedName]           |
+|   [0][90][0]: _TypeOrExpr_Raw_SWITCH_1allow_GT -> [1718][_TypeOrExpr]<! !_TypeOrExpr_Raw_SWITCH_1allow_GT @ !>        |
+| [PREDECESSORS 2-2]: [2]                                                                                               |
+| [SUCCESORS 11-11]: [11]                                                                                               |
++-----------------------------------------------------------------------------------------------------------------------+
 [0]
  |
  +
  |
 [0]
-++==============================================================================================================================================================================================================================++
-|| [12]: {LT} <                                                                                                                                                                                                                 ||
-|| [819][_GenericArguments]< "<" @ { _GenericArgument ; "," } ">" >                                                                                                                                                             ||
-|| [AST-INSTRUCTIONS]:                                                                                                                                                                                                          ||
-||   - BeginObject(GenericArguments)                                                                                                                                                                                            ||
-|| [RETURN STACK]:                                                                                                                                                                                                              ||
-||   [13][16][3]: _GenericArguments -> [146][_QualifiedNameFragment]_Identifier [ _GenericArguments @ ]                                                                                                                         ||
-||   [3][5][0]: _QualifiedNameFragment -> [160][_SingleLevelQualifiedName]< _QualifiedNameFragment @ >                                                                                                                          ||
-||   [2][4][0]: _SingleLevelQualifiedName -> [171][_QualifiedName]<< !_SingleLevelQualifiedName @ >>                                                                                                                            ||
-||   [1][75][0]: _QualifiedName -> [1971][_TypeOrExpr_Raw_SWITCH_1allow_GT]<< !_QualifiedName @ ( lri:(LRI__PM_QualifiedName,LRI__QualifiedName_PrimitiveExpr)->_TypeOrExpr_Raw_SWITCH_1allow_GT_LRI_Original | lri:<skip> ) >> ||
-||   [0][74][0]: _TypeOrExpr_Raw_SWITCH_1allow_GT -> [1574][_TypeOrExpr]<< !_TypeOrExpr_Raw_SWITCH_1allow_GT @ >>                                                                                                               ||
-|| [PREDECESSORS 3-3]: [3]                                                                                                                                                                                                      ||
-|| [SUCCESORS 18-18]: [18]                                                                                                                                                                                                      ||
-++==============================================================================================================================================================================================================================++
+++===========================================================================================================================================================++
+|| [11]: {LT} <                                                                                                                                              ||
+|| [726][_GenericArguments]< "<" @ { _GenericArgument ; "," } ">" >                                                                                          ||
+|| [AST-INSTRUCTIONS]:                                                                                                                                       ||
+||   + StackBegin()                                                                                                                                          ||
+||   + Token(0)                                                                                                                                              ||
+|| [RETURN STACK]:                                                                                                                                           ||
+||   [37][45][3]: _GenericArguments -> [95][_SingleLevelQualifiedName]< ( _Identifier [ _GenericArguments @ ] | "template" _Identifier _GenericArguments ) > ||
+||   [2][4][0]: _SingleLevelQualifiedName -> [111][_QualifiedName]<! !_SingleLevelQualifiedName @ !>                                                         ||
+||   [1][91][0]: _QualifiedName -> [1952][_TypeOrExpr_Raw_SWITCH_1allow_GT] BEGIN [pm-cr-rule: _QualifiedName]                                               ||
+||   [0][90][0]: _TypeOrExpr_Raw_SWITCH_1allow_GT -> [1718][_TypeOrExpr]<! !_TypeOrExpr_Raw_SWITCH_1allow_GT @ !>                                            ||
+|| [PREDECESSORS 3-3]: [3]                                                                                                                                   ||
+|| [SUCCESORS 16-16]: [16]                                                                                                                                   ||
+++===========================================================================================================================================================++
 [0]
  |
  +
  |
 [0]
-++==============================================================================================================================================================================================================================++
-|| [18]: {TYPE_INT} int                                                                                                                                                                                                         ||
-|| [489][_PrimitiveTypeLiteral]"int" @                                                                                                                                                                                          ||
-|| [AST-INSTRUCTIONS]:                                                                                                                                                                                                          ||
-||   - DelayFieldAssignment()                                                                                                                                                                                                   ||
-||   - BeginObject(PrimitiveType)                                                                                                                                                                                               ||
-||   + Token()                                                                                                                                                                                                                  ||
-||   + Field(PrimitiveType::literal1)                                                                                                                                                                                           ||
-|| [RETURN STACK]:                                                                                                                                                                                                              ||
-||   [53][11][12]: _PrimitiveTypeLiteral -> [509][_PrimitiveType]< _PrimitiveTypeLiteral @ >                                                                                                                                    ||
-||   [52][558][12]: _PrimitiveType -> [812][_GenericArgument]<< !_PrimitiveType @ ( lri:(LRI__PM_PrimitiveType)->_GenericArgument_LRI_Original | lri:<skip> ) >>                                                                ||
-||   [51][586][12]: _GenericArgument -> [822][_GenericArguments]< "<" { _GenericArgument @ ; "," } ">" >                                                                                                                        ||
-||   [13][16][3]: _GenericArguments -> [146][_QualifiedNameFragment]_Identifier [ _GenericArguments @ ]                                                                                                                         ||
-||   [3][5][0]: _QualifiedNameFragment -> [160][_SingleLevelQualifiedName]< _QualifiedNameFragment @ >                                                                                                                          ||
-||   [2][4][0]: _SingleLevelQualifiedName -> [171][_QualifiedName]<< !_SingleLevelQualifiedName @ >>                                                                                                                            ||
-||   [1][75][0]: _QualifiedName -> [1971][_TypeOrExpr_Raw_SWITCH_1allow_GT]<< !_QualifiedName @ ( lri:(LRI__PM_QualifiedName,LRI__QualifiedName_PrimitiveExpr)->_TypeOrExpr_Raw_SWITCH_1allow_GT_LRI_Original | lri:<skip> ) >> ||
-||   [0][74][0]: _TypeOrExpr_Raw_SWITCH_1allow_GT -> [1574][_TypeOrExpr]<< !_TypeOrExpr_Raw_SWITCH_1allow_GT @ >>                                                                                                               ||
-|| [PREDECESSORS 12-12]: [12]                                                                                                                                                                                                   ||
-|| [SUCCESORS 19-19]: [19]                                                                                                                                                                                                      ||
-++==============================================================================================================================================================================================================================++
+++==================================================================================================================================================================================================++
+|| [16]: {TYPE_INT} int                                                                                                                                                                             ||
+|| [450][_PrimitiveType]< ( "wchar_t" | "char8_t" | "char16_t" | "char32_t" | "char" | "short" | "int" @ | "__int8" | "__int16" | "__int32" | "__int64" | "long" | "long" "int" | "long" "long" ) > ||
+|| [AST-INSTRUCTIONS]:                                                                                                                                                                              ||
+||   + StackBegin()                                                                                                                                                                                 ||
+||   + Token(6)                                                                                                                                                                                     ||
+|| [RETURN STACK]:                                                                                                                                                                                  ||
+||   [42][8][11]: _PrimitiveType -> [468][_CallConstructibleTypeBeforeDeclarator]<! !_PrimitiveType @ !>                                                                                            ||
+||   [41][343][11]: _CallConstructibleTypeBeforeDeclarator -> [1933][_TypeOrExpr_NoComma_Raw_SWITCH_0allow_GT] BEGIN [pm-cr-rule: _CallConstructibleTypeBeforeDeclarator]                           ||
+||   [40][339][11]: _TypeOrExpr_NoComma_Raw_SWITCH_0allow_GT -> [1715][_TypeOrExpr_NoComma_NoGT]<! !_TypeOrExpr_NoComma_Raw_SWITCH_0allow_GT @ !>                                                   ||
+||   [39][364][11]: _TypeOrExpr_NoComma_NoGT -> [720][_GenericArgument] BEGIN [pm-lr]                                                                                                               ||
+||   [38][365][11]: _GenericArgument -> [729][_GenericArguments]< "<" { _GenericArgument @ ; "," } ">" >                                                                                            ||
+||   [37][45][3]: _GenericArguments -> [95][_SingleLevelQualifiedName]< ( _Identifier [ _GenericArguments @ ] | "template" _Identifier _GenericArguments ) >                                        ||
+||   [2][4][0]: _SingleLevelQualifiedName -> [111][_QualifiedName]<! !_SingleLevelQualifiedName @ !>                                                                                                ||
+||   [1][91][0]: _QualifiedName -> [1952][_TypeOrExpr_Raw_SWITCH_1allow_GT] BEGIN [pm-cr-rule: _QualifiedName]                                                                                      ||
+||   [0][90][0]: _TypeOrExpr_Raw_SWITCH_1allow_GT -> [1718][_TypeOrExpr]<! !_TypeOrExpr_Raw_SWITCH_1allow_GT @ !>                                                                                   ||
+|| [PREDECESSORS 11-11]: [11]                                                                                                                                                                       ||
+|| [SUCCESORS 17-17]: [17]                                                                                                                                                                          ||
+++==================================================================================================================================================================================================++
 |
 +
 |
-+------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------+
-| [19]: <Ending>                                                                                                                                                                                                               |
-| [509][_PrimitiveType]< _PrimitiveTypeLiteral @ >                                                                                                                                                                             |
-| [AST-INSTRUCTIONS]:                                                                                                                                                                                                          |
-| [RETURN STACK]:                                                                                                                                                                                                              |
-|   [52][558][12]: _PrimitiveType -> [812][_GenericArgument]<< !_PrimitiveType @ ( lri:(LRI__PM_PrimitiveType)->_GenericArgument_LRI_Original | lri:<skip> ) >>                                                                |
-|   [51][586][12]: _GenericArgument -> [822][_GenericArguments]< "<" { _GenericArgument @ ; "," } ">" >                                                                                                                        |
-|   [13][16][3]: _GenericArguments -> [146][_QualifiedNameFragment]_Identifier [ _GenericArguments @ ]                                                                                                                         |
-|   [3][5][0]: _QualifiedNameFragment -> [160][_SingleLevelQualifiedName]< _QualifiedNameFragment @ >                                                                                                                          |
-|   [2][4][0]: _SingleLevelQualifiedName -> [171][_QualifiedName]<< !_SingleLevelQualifiedName @ >>                                                                                                                            |
-|   [1][75][0]: _QualifiedName -> [1971][_TypeOrExpr_Raw_SWITCH_1allow_GT]<< !_QualifiedName @ ( lri:(LRI__PM_QualifiedName,LRI__QualifiedName_PrimitiveExpr)->_TypeOrExpr_Raw_SWITCH_1allow_GT_LRI_Original | lri:<skip> ) >> |
-|   [0][74][0]: _TypeOrExpr_Raw_SWITCH_1allow_GT -> [1574][_TypeOrExpr]<< !_TypeOrExpr_Raw_SWITCH_1allow_GT @ >>                                                                                                               |
-| [PREDECESSORS 18-18]: [18]                                                                                                                                                                                                   |
-| [SUCCESORS 20-20]: [20]                                                                                                                                                                                                      |
-+------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------+
++------------------------------------------------------------------------------------------------------------------------------------------------------------------------+
+| [17]: <Ending>                                                                                                                                                         |
+| [468][_CallConstructibleTypeBeforeDeclarator]<! !_PrimitiveType @ !>                                                                                                   |
+| [AST-INSTRUCTIONS]:                                                                                                                                                    |
+|   + EnumItem(0, 16)                                                                                                                                                    |
+|   + CreateObject(PrimitiveType)                                                                                                                                        |
+|   + Field(PrimitiveType::literal1, 0)                                                                                                                                  |
+|   + Field(PrimitiveType::literal1, 1)                                                                                                                                  |
+|   + Field(PrimitiveType::literal1, 2)                                                                                                                                  |
+|   + Field(PrimitiveType::literal1, 3)                                                                                                                                  |
+|   + Field(PrimitiveType::literal1, 4)                                                                                                                                  |
+|   + Field(PrimitiveType::literal1, 5)                                                                                                                                  |
+|   + Field(PrimitiveType::literal1, 6)                                                                                                                                  |
+|   + Field(PrimitiveType::literal1, 7)                                                                                                                                  |
+|   + Field(PrimitiveType::literal1, 8)                                                                                                                                  |
+|   + Field(PrimitiveType::literal1, 9)                                                                                                                                  |
+|   + Field(PrimitiveType::literal1, 10)                                                                                                                                 |
+|   + Field(PrimitiveType::literal1, 11)                                                                                                                                 |
+|   + Field(PrimitiveType::literal1, 12)                                                                                                                                 |
+|   + Field(PrimitiveType::literal2, 13)                                                                                                                                 |
+|   + Field(PrimitiveType::literal1, 14)                                                                                                                                 |
+|   + Field(PrimitiveType::literal2, 15)                                                                                                                                 |
+|   + Field(PrimitiveType::kind, 16)                                                                                                                                     |
+|   + StackEnd()                                                                                                                                                         |
+|   > StackBegin()                                                                                                                                                       |
+| [RETURN STACK]:                                                                                                                                                        |
+|   [41][343][11]: _CallConstructibleTypeBeforeDeclarator -> [1933][_TypeOrExpr_NoComma_Raw_SWITCH_0allow_GT] BEGIN [pm-cr-rule: _CallConstructibleTypeBeforeDeclarator] |
+|   [40][339][11]: _TypeOrExpr_NoComma_Raw_SWITCH_0allow_GT -> [1715][_TypeOrExpr_NoComma_NoGT]<! !_TypeOrExpr_NoComma_Raw_SWITCH_0allow_GT @ !>                         |
+|   [39][364][11]: _TypeOrExpr_NoComma_NoGT -> [720][_GenericArgument] BEGIN [pm-lr]                                                                                     |
+|   [38][365][11]: _GenericArgument -> [729][_GenericArguments]< "<" { _GenericArgument @ ; "," } ">" >                                                                  |
+|   [37][45][3]: _GenericArguments -> [95][_SingleLevelQualifiedName]< ( _Identifier [ _GenericArguments @ ] | "template" _Identifier _GenericArguments ) >              |
+|   [2][4][0]: _SingleLevelQualifiedName -> [111][_QualifiedName]<! !_SingleLevelQualifiedName @ !>                                                                      |
+|   [1][91][0]: _QualifiedName -> [1952][_TypeOrExpr_Raw_SWITCH_1allow_GT] BEGIN [pm-cr-rule: _QualifiedName]                                                            |
+|   [0][90][0]: _TypeOrExpr_Raw_SWITCH_1allow_GT -> [1718][_TypeOrExpr]<! !_TypeOrExpr_Raw_SWITCH_1allow_GT @ !>                                                         |
+| [PREDECESSORS 16-16]: [16]                                                                                                                                             |
+| [SUCCESORS 18-18]: [18]                                                                                                                                                |
++------------------------------------------------------------------------------------------------------------------------------------------------------------------------+
 |
 +
 |
-+------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------+
-| [20]: <Ending>                                                                                                                                                                                                               |
-| [812][_GenericArgument]<< !_PrimitiveType @ ( lri:(LRI__PM_PrimitiveType)->_GenericArgument_LRI_Original | lri:<skip> ) >>                                                                                                   |
-| [AST-INSTRUCTIONS]:                                                                                                                                                                                                          |
-|   - EnumItem(0)                                                                                                                                                                                                              |
-|   - Field(PrimitiveType::kind)                                                                                                                                                                                               |
-|   - EndObject()                                                                                                                                                                                                              |
-|   > ReopenObject()                                                                                                                                                                                                           |
-| [RETURN STACK]:                                                                                                                                                                                                              |
-|   [51][586][12]: _GenericArgument -> [822][_GenericArguments]< "<" { _GenericArgument @ ; "," } ">" >                                                                                                                        |
-|   [13][16][3]: _GenericArguments -> [146][_QualifiedNameFragment]_Identifier [ _GenericArguments @ ]                                                                                                                         |
-|   [3][5][0]: _QualifiedNameFragment -> [160][_SingleLevelQualifiedName]< _QualifiedNameFragment @ >                                                                                                                          |
-|   [2][4][0]: _SingleLevelQualifiedName -> [171][_QualifiedName]<< !_SingleLevelQualifiedName @ >>                                                                                                                            |
-|   [1][75][0]: _QualifiedName -> [1971][_TypeOrExpr_Raw_SWITCH_1allow_GT]<< !_QualifiedName @ ( lri:(LRI__PM_QualifiedName,LRI__QualifiedName_PrimitiveExpr)->_TypeOrExpr_Raw_SWITCH_1allow_GT_LRI_Original | lri:<skip> ) >> |
-|   [0][74][0]: _TypeOrExpr_Raw_SWITCH_1allow_GT -> [1574][_TypeOrExpr]<< !_TypeOrExpr_Raw_SWITCH_1allow_GT @ >>                                                                                                               |
-| [PREDECESSORS 19-19]: [19]                                                                                                                                                                                                   |
-| [SUCCESORS 21-21]: [21]                                                                                                                                                                                                      |
-+------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------+
++-----------------------------------------------------------------------------------------------------------------------------------------------------------+
+| [18]: <Ending>                                                                                                                                            |
+| [1933][_TypeOrExpr_NoComma_Raw_SWITCH_0allow_GT] BEGIN [pm-cr-rule: _CallConstructibleTypeBeforeDeclarator]                                               |
+| [AST-INSTRUCTIONS]:                                                                                                                                       |
+|   + StackEnd()                                                                                                                                            |
+| [RETURN STACK]:                                                                                                                                           |
+|   [40][339][11]: _TypeOrExpr_NoComma_Raw_SWITCH_0allow_GT -> [1715][_TypeOrExpr_NoComma_NoGT]<! !_TypeOrExpr_NoComma_Raw_SWITCH_0allow_GT @ !>            |
+|   [39][364][11]: _TypeOrExpr_NoComma_NoGT -> [720][_GenericArgument] BEGIN [pm-lr]                                                                        |
+|   [38][365][11]: _GenericArgument -> [729][_GenericArguments]< "<" { _GenericArgument @ ; "," } ">" >                                                     |
+|   [37][45][3]: _GenericArguments -> [95][_SingleLevelQualifiedName]< ( _Identifier [ _GenericArguments @ ] | "template" _Identifier _GenericArguments ) > |
+|   [2][4][0]: _SingleLevelQualifiedName -> [111][_QualifiedName]<! !_SingleLevelQualifiedName @ !>                                                         |
+|   [1][91][0]: _QualifiedName -> [1952][_TypeOrExpr_Raw_SWITCH_1allow_GT] BEGIN [pm-cr-rule: _QualifiedName]                                               |
+|   [0][90][0]: _TypeOrExpr_Raw_SWITCH_1allow_GT -> [1718][_TypeOrExpr]<! !_TypeOrExpr_Raw_SWITCH_1allow_GT @ !>                                            |
+| [PREDECESSORS 17-17]: [17]                                                                                                                                |
+| [SUCCESORS 19-19]: [19]                                                                                                                                   |
++-----------------------------------------------------------------------------------------------------------------------------------------------------------+
 |
 +
 |
-+------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------+
-| [21]: <Ending>                                                                                                                                                                                                               |
-| [822][_GenericArguments]< "<" { _GenericArgument @ ; "," } ">" >                                                                                                                                                             |
-| [AST-INSTRUCTIONS]:                                                                                                                                                                                                          |
-|   - EndObject()                                                                                                                                                                                                              |
-|   > Field(GenericArguments::arguments)                                                                                                                                                                                       |
-| [RETURN STACK]:                                                                                                                                                                                                              |
-|   [13][16][3]: _GenericArguments -> [146][_QualifiedNameFragment]_Identifier [ _GenericArguments @ ]                                                                                                                         |
-|   [3][5][0]: _QualifiedNameFragment -> [160][_SingleLevelQualifiedName]< _QualifiedNameFragment @ >                                                                                                                          |
-|   [2][4][0]: _SingleLevelQualifiedName -> [171][_QualifiedName]<< !_SingleLevelQualifiedName @ >>                                                                                                                            |
-|   [1][75][0]: _QualifiedName -> [1971][_TypeOrExpr_Raw_SWITCH_1allow_GT]<< !_QualifiedName @ ( lri:(LRI__PM_QualifiedName,LRI__QualifiedName_PrimitiveExpr)->_TypeOrExpr_Raw_SWITCH_1allow_GT_LRI_Original | lri:<skip> ) >> |
-|   [0][74][0]: _TypeOrExpr_Raw_SWITCH_1allow_GT -> [1574][_TypeOrExpr]<< !_TypeOrExpr_Raw_SWITCH_1allow_GT @ >>                                                                                                               |
-| [PREDECESSORS 20-20]: [20]                                                                                                                                                                                                   |
-| [SUCCESORS 29-29]: [29]                                                                                                                                                                                                      |
-+------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------+
++-----------------------------------------------------------------------------------------------------------------------------------------------------------+
+| [19]: <Ending>                                                                                                                                            |
+| [1715][_TypeOrExpr_NoComma_NoGT]<! !_TypeOrExpr_NoComma_Raw_SWITCH_0allow_GT @ !>                                                                         |
+| [AST-INSTRUCTIONS]:                                                                                                                                       |
+|   + StackBegin()                                                                                                                                          |
+|   + StackEnd()                                                                                                                                            |
+|   > StackBegin()                                                                                                                                          |
+| [RETURN STACK]:                                                                                                                                           |
+|   [39][364][11]: _TypeOrExpr_NoComma_NoGT -> [720][_GenericArgument] BEGIN [pm-lr]                                                                        |
+|   [38][365][11]: _GenericArgument -> [729][_GenericArguments]< "<" { _GenericArgument @ ; "," } ">" >                                                     |
+|   [37][45][3]: _GenericArguments -> [95][_SingleLevelQualifiedName]< ( _Identifier [ _GenericArguments @ ] | "template" _Identifier _GenericArguments ) > |
+|   [2][4][0]: _SingleLevelQualifiedName -> [111][_QualifiedName]<! !_SingleLevelQualifiedName @ !>                                                         |
+|   [1][91][0]: _QualifiedName -> [1952][_TypeOrExpr_Raw_SWITCH_1allow_GT] BEGIN [pm-cr-rule: _QualifiedName]                                               |
+|   [0][90][0]: _TypeOrExpr_Raw_SWITCH_1allow_GT -> [1718][_TypeOrExpr]<! !_TypeOrExpr_Raw_SWITCH_1allow_GT @ !>                                            |
+| [PREDECESSORS 18-18]: [18]                                                                                                                                |
+| [SUCCESORS 20-20]: [20]                                                                                                                                   |
++-----------------------------------------------------------------------------------------------------------------------------------------------------------+
+|
++
+|
++-----------------------------------------------------------------------------------------------------------------------------------------------------------+
+| [20]: <Ending>                                                                                                                                            |
+| [720][_GenericArgument] BEGIN [pm-lr]                                                                                                                     |
+| [AST-INSTRUCTIONS]:                                                                                                                                       |
+|   + StackEnd()                                                                                                                                            |
+| [RETURN STACK]:                                                                                                                                           |
+|   [38][365][11]: _GenericArgument -> [729][_GenericArguments]< "<" { _GenericArgument @ ; "," } ">" >                                                     |
+|   [37][45][3]: _GenericArguments -> [95][_SingleLevelQualifiedName]< ( _Identifier [ _GenericArguments @ ] | "template" _Identifier _GenericArguments ) > |
+|   [2][4][0]: _SingleLevelQualifiedName -> [111][_QualifiedName]<! !_SingleLevelQualifiedName @ !>                                                         |
+|   [1][91][0]: _QualifiedName -> [1952][_TypeOrExpr_Raw_SWITCH_1allow_GT] BEGIN [pm-cr-rule: _QualifiedName]                                               |
+|   [0][90][0]: _TypeOrExpr_Raw_SWITCH_1allow_GT -> [1718][_TypeOrExpr]<! !_TypeOrExpr_Raw_SWITCH_1allow_GT @ !>                                            |
+| [PREDECESSORS 19-19]: [19]                                                                                                                                |
+| [SUCCESORS 21-21]: [21]                                                                                                                                   |
++-----------------------------------------------------------------------------------------------------------------------------------------------------------+
+|
++
+|
++-----------------------------------------------------------------------------------------------------------------------------------------------------------+
+| [21]: <Ending>                                                                                                                                            |
+| [729][_GenericArguments]< "<" { _GenericArgument @ ; "," } ">" >                                                                                          |
+| [AST-INSTRUCTIONS]:                                                                                                                                       |
+|   + StackBegin()                                                                                                                                          |
+|   + StackEnd()                                                                                                                                            |
+|   > StackSlot(1)                                                                                                                                          |
+| [RETURN STACK]:                                                                                                                                           |
+|   [37][45][3]: _GenericArguments -> [95][_SingleLevelQualifiedName]< ( _Identifier [ _GenericArguments @ ] | "template" _Identifier _GenericArguments ) > |
+|   [2][4][0]: _SingleLevelQualifiedName -> [111][_QualifiedName]<! !_SingleLevelQualifiedName @ !>                                                         |
+|   [1][91][0]: _QualifiedName -> [1952][_TypeOrExpr_Raw_SWITCH_1allow_GT] BEGIN [pm-cr-rule: _QualifiedName]                                               |
+|   [0][90][0]: _TypeOrExpr_Raw_SWITCH_1allow_GT -> [1718][_TypeOrExpr]<! !_TypeOrExpr_Raw_SWITCH_1allow_GT @ !>                                            |
+| [PREDECESSORS 20-20]: [20]                                                                                                                                |
+| [SUCCESORS 25-25]: [25]                                                                                                                                   |
++-----------------------------------------------------------------------------------------------------------------------------------------------------------+
 [0]
  |
  +
  |
 [0]
-++==============================================================================================================================================================================================================================++
-|| [29]: {GT} >                                                                                                                                                                                                                 ||
-|| [821][_GenericArguments]< "<" { _GenericArgument ; "," } ">" @ >                                                                                                                                                             ||
-|| [AST-INSTRUCTIONS]:                                                                                                                                                                                                          ||
-|| [RETURN STACK]:                                                                                                                                                                                                              ||
-||   [13][16][3]: _GenericArguments -> [146][_QualifiedNameFragment]_Identifier [ _GenericArguments @ ]                                                                                                                         ||
-||   [3][5][0]: _QualifiedNameFragment -> [160][_SingleLevelQualifiedName]< _QualifiedNameFragment @ >                                                                                                                          ||
-||   [2][4][0]: _SingleLevelQualifiedName -> [171][_QualifiedName]<< !_SingleLevelQualifiedName @ >>                                                                                                                            ||
-||   [1][75][0]: _QualifiedName -> [1971][_TypeOrExpr_Raw_SWITCH_1allow_GT]<< !_QualifiedName @ ( lri:(LRI__PM_QualifiedName,LRI__QualifiedName_PrimitiveExpr)->_TypeOrExpr_Raw_SWITCH_1allow_GT_LRI_Original | lri:<skip> ) >> ||
-||   [0][74][0]: _TypeOrExpr_Raw_SWITCH_1allow_GT -> [1574][_TypeOrExpr]<< !_TypeOrExpr_Raw_SWITCH_1allow_GT @ >>                                                                                                               ||
-|| [PREDECESSORS 21-21]: [21]                                                                                                                                                                                                   ||
-|| [SUCCESORS 30-30]: [30]                                                                                                                                                                                                      ||
-++==============================================================================================================================================================================================================================++
+++===========================================================================================================================================================++
+|| [25]: {GT} >                                                                                                                                              ||
+|| [728][_GenericArguments]< "<" { _GenericArgument ; "," } ">" @ >                                                                                          ||
+|| [AST-INSTRUCTIONS]:                                                                                                                                       ||
+||   + Token(3)                                                                                                                                              ||
+|| [RETURN STACK]:                                                                                                                                           ||
+||   [37][45][3]: _GenericArguments -> [95][_SingleLevelQualifiedName]< ( _Identifier [ _GenericArguments @ ] | "template" _Identifier _GenericArguments ) > ||
+||   [2][4][0]: _SingleLevelQualifiedName -> [111][_QualifiedName]<! !_SingleLevelQualifiedName @ !>                                                         ||
+||   [1][91][0]: _QualifiedName -> [1952][_TypeOrExpr_Raw_SWITCH_1allow_GT] BEGIN [pm-cr-rule: _QualifiedName]                                               ||
+||   [0][90][0]: _TypeOrExpr_Raw_SWITCH_1allow_GT -> [1718][_TypeOrExpr]<! !_TypeOrExpr_Raw_SWITCH_1allow_GT @ !>                                            ||
+|| [PREDECESSORS 21-21]: [21]                                                                                                                                ||
+|| [SUCCESORS 26-26]: [26]                                                                                                                                   ||
+++===========================================================================================================================================================++
 |
 +
 |
-+------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------+
-| [30]: <Ending>                                                                                                                                                                                                               |
-| [146][_QualifiedNameFragment]_Identifier [ _GenericArguments @ ]                                                                                                                                                             |
-| [AST-INSTRUCTIONS]:                                                                                                                                                                                                          |
-|   - EndObject()                                                                                                                                                                                                              |
-|   > Field(QualifiedName::arguments)                                                                                                                                                                                          |
-| [RETURN STACK]:                                                                                                                                                                                                              |
-|   [3][5][0]: _QualifiedNameFragment -> [160][_SingleLevelQualifiedName]< _QualifiedNameFragment @ >                                                                                                                          |
-|   [2][4][0]: _SingleLevelQualifiedName -> [171][_QualifiedName]<< !_SingleLevelQualifiedName @ >>                                                                                                                            |
-|   [1][75][0]: _QualifiedName -> [1971][_TypeOrExpr_Raw_SWITCH_1allow_GT]<< !_QualifiedName @ ( lri:(LRI__PM_QualifiedName,LRI__QualifiedName_PrimitiveExpr)->_TypeOrExpr_Raw_SWITCH_1allow_GT_LRI_Original | lri:<skip> ) >> |
-|   [0][74][0]: _TypeOrExpr_Raw_SWITCH_1allow_GT -> [1574][_TypeOrExpr]<< !_TypeOrExpr_Raw_SWITCH_1allow_GT @ >>                                                                                                               |
-| [PREDECESSORS 29-29]: [29]                                                                                                                                                                                                   |
-| [SUCCESORS 31-31]: [31]                                                                                                                                                                                                      |
-+------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------+
++-----------------------------------------------------------------------------------------------------------------------+
+| [26]: <Ending>                                                                                                        |
+| [95][_SingleLevelQualifiedName]< ( _Identifier [ _GenericArguments @ ] | "template" _Identifier _GenericArguments ) > |
+| [AST-INSTRUCTIONS]:                                                                                                   |
+|   + CreateObject(GenericArguments)                                                                                    |
+|   + Field(GenericArguments::arguments, 1)                                                                             |
+|   + StackEnd()                                                                                                        |
+|   > StackSlot(1)                                                                                                      |
+| [RETURN STACK]:                                                                                                       |
+|   [2][4][0]: _SingleLevelQualifiedName -> [111][_QualifiedName]<! !_SingleLevelQualifiedName @ !>                     |
+|   [1][91][0]: _QualifiedName -> [1952][_TypeOrExpr_Raw_SWITCH_1allow_GT] BEGIN [pm-cr-rule: _QualifiedName]           |
+|   [0][90][0]: _TypeOrExpr_Raw_SWITCH_1allow_GT -> [1718][_TypeOrExpr]<! !_TypeOrExpr_Raw_SWITCH_1allow_GT @ !>        |
+| [PREDECESSORS 25-25]: [25]                                                                                            |
+| [SUCCESORS 27-27]: [27]                                                                                               |
++-----------------------------------------------------------------------------------------------------------------------+
 |
 +
 |
-+------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------+
-| [31]: <Ending>                                                                                                                                                                                                               |
-| [160][_SingleLevelQualifiedName]< _QualifiedNameFragment @ >                                                                                                                                                                 |
-| [AST-INSTRUCTIONS]:                                                                                                                                                                                                          |
-| [RETURN STACK]:                                                                                                                                                                                                              |
-|   [2][4][0]: _SingleLevelQualifiedName -> [171][_QualifiedName]<< !_SingleLevelQualifiedName @ >>                                                                                                                            |
-|   [1][75][0]: _QualifiedName -> [1971][_TypeOrExpr_Raw_SWITCH_1allow_GT]<< !_QualifiedName @ ( lri:(LRI__PM_QualifiedName,LRI__QualifiedName_PrimitiveExpr)->_TypeOrExpr_Raw_SWITCH_1allow_GT_LRI_Original | lri:<skip> ) >> |
-|   [0][74][0]: _TypeOrExpr_Raw_SWITCH_1allow_GT -> [1574][_TypeOrExpr]<< !_TypeOrExpr_Raw_SWITCH_1allow_GT @ >>                                                                                                               |
-| [PREDECESSORS 30-30]: [30]                                                                                                                                                                                                   |
-| [SUCCESORS 32-32]: [32]                                                                                                                                                                                                      |
-+------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------+
++----------------------------------------------------------------------------------------------------------------+
+| [27]: <Ending>                                                                                                 |
+| [111][_QualifiedName]<! !_SingleLevelQualifiedName @ !>                                                        |
+| [AST-INSTRUCTIONS]:                                                                                            |
+|   + EnumItem(1, 5)                                                                                             |
+|   + CreateObject(QualifiedName)                                                                                |
+|   + Field(QualifiedName::id, 0)                                                                                |
+|   + Field(QualifiedName::arguments, 1)                                                                         |
+|   + Field(QualifiedName::id, 3)                                                                                |
+|   + Field(QualifiedName::arguments, 4)                                                                         |
+|   + Field(QualifiedName::kind, 5)                                                                              |
+|   + StackEnd()                                                                                                 |
+|   > StackBegin()                                                                                               |
+| [RETURN STACK]:                                                                                                |
+|   [1][91][0]: _QualifiedName -> [1952][_TypeOrExpr_Raw_SWITCH_1allow_GT] BEGIN [pm-cr-rule: _QualifiedName]    |
+|   [0][90][0]: _TypeOrExpr_Raw_SWITCH_1allow_GT -> [1718][_TypeOrExpr]<! !_TypeOrExpr_Raw_SWITCH_1allow_GT @ !> |
+| [PREDECESSORS 26-26]: [26]                                                                                     |
+| [SUCCESORS 28-28]: [28]                                                                                        |
++----------------------------------------------------------------------------------------------------------------+
 |
 +
 |
-+------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------+
-| [32]: <Ending>                                                                                                                                                                                                               |
-| [171][_QualifiedName]<< !_SingleLevelQualifiedName @ >>                                                                                                                                                                      |
-| [AST-INSTRUCTIONS]:                                                                                                                                                                                                          |
-|   - EnumItem(1)                                                                                                                                                                                                              |
-|   - Field(QualifiedName::kind)                                                                                                                                                                                               |
-|   - EndObject()                                                                                                                                                                                                              |
-|   > ReopenObject()                                                                                                                                                                                                           |
-| [RETURN STACK]:                                                                                                                                                                                                              |
-|   [1][75][0]: _QualifiedName -> [1971][_TypeOrExpr_Raw_SWITCH_1allow_GT]<< !_QualifiedName @ ( lri:(LRI__PM_QualifiedName,LRI__QualifiedName_PrimitiveExpr)->_TypeOrExpr_Raw_SWITCH_1allow_GT_LRI_Original | lri:<skip> ) >> |
-|   [0][74][0]: _TypeOrExpr_Raw_SWITCH_1allow_GT -> [1574][_TypeOrExpr]<< !_TypeOrExpr_Raw_SWITCH_1allow_GT @ >>                                                                                                               |
-| [PREDECESSORS 31-31]: [31]                                                                                                                                                                                                   |
-| [SUCCESORS 33-33]: [33]                                                                                                                                                                                                      |
-+------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------+
-|
-+
-|
-+----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------+
-| [33]: <Ending>                                                                                                                                                                               |
-| [1971][_TypeOrExpr_Raw_SWITCH_1allow_GT]<< !_QualifiedName @ ( lri:(LRI__PM_QualifiedName,LRI__QualifiedName_PrimitiveExpr)->_TypeOrExpr_Raw_SWITCH_1allow_GT_LRI_Original | lri:<skip> ) >> |
-| [AST-INSTRUCTIONS]:                                                                                                                                                                          |
-|   - EndObject()                                                                                                                                                                              |
-|   > ReopenObject()                                                                                                                                                                           |
-| [RETURN STACK]:                                                                                                                                                                              |
-|   [0][74][0]: _TypeOrExpr_Raw_SWITCH_1allow_GT -> [1574][_TypeOrExpr]<< !_TypeOrExpr_Raw_SWITCH_1allow_GT @ >>                                                                               |
-| [PREDECESSORS 32-32]: [32]                                                                                                                                                                   |
-| [SUCCESORS 34-34]: [34]                                                                                                                                                                      |
-+----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------+
++----------------------------------------------------------------------------------------------------------------+
+| [28]: <Ending>                                                                                                 |
+| [1952][_TypeOrExpr_Raw_SWITCH_1allow_GT] BEGIN [pm-cr-rule: _QualifiedName]                                    |
+| [AST-INSTRUCTIONS]:                                                                                            |
+|   + StackEnd()                                                                                                 |
+| [RETURN STACK]:                                                                                                |
+|   [0][90][0]: _TypeOrExpr_Raw_SWITCH_1allow_GT -> [1718][_TypeOrExpr]<! !_TypeOrExpr_Raw_SWITCH_1allow_GT @ !> |
+| [PREDECESSORS 27-27]: [27]                                                                                     |
+| [SUCCESORS 29-29]: [29]                                                                                        |
++----------------------------------------------------------------------------------------------------------------+
 |
 +
 |
 +--------------------------------------------------------------+
-| [34]: <Ending>                                               |
-| [1574][_TypeOrExpr]<< !_TypeOrExpr_Raw_SWITCH_1allow_GT @ >> |
+| [29]: <Ending>                                               |
+| [1718][_TypeOrExpr]<! !_TypeOrExpr_Raw_SWITCH_1allow_GT @ !> |
 | [AST-INSTRUCTIONS]:                                          |
-|   - EndObject()                                              |
-| [PREDECESSORS 33-33]: [33]                                   |
-| [SUCCESORS 35-35]: [35]                                      |
+|   + StackBegin()                                             |
+|   + StackEnd()                                               |
+|   > StackBegin()                                             |
+| [PREDECESSORS 28-28]: [28]                                   |
+| [SUCCESORS 30-30]: [30]                                      |
 +--------------------------------------------------------------+
 |
 +
 |
 +----------------------------------+
-| [35]: <Ending>                   |
-| [1573][_TypeOrExpr] END [ENDING] |
+| [30]: <Ending>                   |
+| [1717][_TypeOrExpr] END [ENDING] |
 | [AST-INSTRUCTIONS]:              |
-|   - ReopenObject()               |
-|   - EndObject()                  |
-| [PREDECESSORS 34-34]: [34]       |
+|   + StackEnd()                   |
+| [PREDECESSORS 29-29]: [29]       |
 +----------------------------------+

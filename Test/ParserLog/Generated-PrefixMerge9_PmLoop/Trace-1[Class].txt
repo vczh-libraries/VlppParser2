@@ -1,11 +1,11 @@
 ﻿================ EXECUTION STEPS ================
-[0]: 0@0 - 4@0
+[0]: 0@0 - 3@3
 
 ==================== TRACES =====================
 
 +----------------------+
 | [0]: <Start>         |
-| [14][Module] BEGIN   |
+| [17][Module] BEGIN   |
 | [AST-INSTRUCTIONS]:  |
 | [SUCCESORS 1-1]: [1] |
 +----------------------+
@@ -14,52 +14,41 @@
  +
  |
 [0]
-++============================================================================================++
-|| [1]: {CLASS} class                                                                         ||
-|| [20][_Item_LRI_Isolated_4]< "class" @ >                                                    ||
-|| [AST-INSTRUCTIONS]:                                                                        ||
-||   - BeginObject(File)                                                                      ||
-||   - DelayFieldAssignment()                                                                 ||
-||   - BeginObject(ClassItem)                                                                 ||
-|| [RETURN STACK]:                                                                            ||
-||   [1][8][0]: _Item_LRI_Isolated_4 -> [40][_Item_LRI_Original]<< !_Item_LRI_Isolated_4 @ >> ||
-||   [0][7][0]: _Item_LRI_Original -> [16][Module]< _Item_LRI_Original @ { _Item } >          ||
-|| [PREDECESSORS 0-0]: [0]                                                                    ||
-|| [SUCCESORS 2-2]: [2]                                                                       ||
-++============================================================================================++
+++=========================================================++
+|| [1]: {CLASS} class                                      ||
+|| [15][_Item]{{< "class" @ "?" > ; < "class" @ >}}        ||
+|| [AST-INSTRUCTIONS]:                                     ||
+||   + StackBegin()                                        ||
+||   + Token(0)                                            ||
+|| [RETURN STACK]:                                         ||
+||   [0][2][0]: _Item -> [19][Module]< _Item @ { _Item } > ||
+|| [PREDECESSORS 0-0]: [0]                                 ||
+|| [SUCCESORS 2-2]: [2]                                    ||
+++=========================================================++
 |
 +
 |
-+-----------------------------------------------------------------------------------+
-| [2]: <Ending>                                                                     |
-| [40][_Item_LRI_Original]<< !_Item_LRI_Isolated_4 @ >>                             |
-| [AST-INSTRUCTIONS]:                                                               |
-|   - EndObject()                                                                   |
-|   > ReopenObject()                                                                |
-| [RETURN STACK]:                                                                   |
-|   [0][7][0]: _Item_LRI_Original -> [16][Module]< _Item_LRI_Original @ { _Item } > |
-| [PREDECESSORS 1-1]: [1]                                                           |
-| [SUCCESORS 3-3]: [3]                                                              |
-+-----------------------------------------------------------------------------------+
-|
-+
-|
-+------------------------------------------------+
-| [3]: <Ending>                                  |
-| [16][Module]< _Item_LRI_Original @ { _Item } > |
-| [AST-INSTRUCTIONS]:                            |
-|   - EndObject()                                |
-|   > Field(File::items)                         |
-| [PREDECESSORS 2-2]: [2]                        |
-| [SUCCESORS 4-4]: [4]                           |
-+------------------------------------------------+
++-----------------------------------+
+| [2]: <Ending>                     |
+| [19][Module]< _Item @ { _Item } > |
+| [AST-INSTRUCTIONS]:               |
+|   + CreateObject(ClassItem)       |
+|   + StackEnd()                    |
+|   > StackBegin()                  |
+|   > StackSlot(0)                  |
+| [PREDECESSORS 1-1]: [1]           |
+| [SUCCESORS 3-3]: [3]              |
++-----------------------------------+
 |
 +
 |
 +---------------------------+
-| [4]: <Ending>             |
-| [15][Module] END [ENDING] |
+| [3]: <Ending>             |
+| [18][Module] END [ENDING] |
 | [AST-INSTRUCTIONS]:       |
-|   - EndObject()           |
-| [PREDECESSORS 3-3]: [3]   |
+|   + CreateObject(File)    |
+|   + Field(File::items, 0) |
+|   + Field(File::items, 1) |
+|   + StackEnd()            |
+| [PREDECESSORS 2-2]: [2]   |
 +---------------------------+

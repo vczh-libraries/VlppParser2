@@ -738,21 +738,6 @@ DeductAndVerifyClauseVisitor
 						Verify(node->syntax);
 					}
 
-					void Visit(GlrLeftRecursionPlaceholderClause* node) override
-					{
-						result = true;
-					}
-
-					void Visit(GlrLeftRecursionInjectClause* node) override
-					{
-						result = true;
-					}
-
-					void Visit(GlrPrefixMergeClause* node) override
-					{
-						result = true;
-					}
-
 				public:
 					bool								result = false;
 

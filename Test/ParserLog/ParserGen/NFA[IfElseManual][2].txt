@@ -1,236 +1,259 @@
 ﻿[0][Do] BEGIN 
-[RULE: 0][CLAUSE: -1]
+[RULE: 0]
 	token: "do" -> [3][Do]< "do" @ ";" >
-		- BeginObject(DoStat)
+		+ StackBegin()
+		+ Token(0)
 
 [1][Do] END [ENDING]
-[RULE: 0][CLAUSE: -1]
+[RULE: 0]
 
 [2][Do]< "do" ";" @ >
-[RULE: 0][CLAUSE: 0]
+[RULE: 0]
 	ending -> [1][Do] END [ENDING]
-		- EndObject()
+		+ CreateObject(DoStat)
+		+ StackEnd()
 
 [3][Do]< "do" @ ";" >
-[RULE: 0][CLAUSE: 0]
+[RULE: 0]
 	token: ";" -> [2][Do]< "do" ";" @ >
+		+ Token(1)
 
 [4][Block] BEGIN 
-[RULE: 1][CLAUSE: -1]
+[RULE: 1]
 	token: "{" -> [6][Block]< "{" @ { Stat } "}" >
-		- BeginObject(BlockStat)
+		+ StackBegin()
+		+ Token(0)
 
 [5][Block] END [ENDING]
-[RULE: 1][CLAUSE: -1]
+[RULE: 1]
 
 [6][Block]< "{" @ { Stat } "}" >
-[RULE: 1][CLAUSE: 0]
+[RULE: 1]
 	token: "}" -> [8][Block]< "{" { Stat } "}" @ >
+		+ Token(2)
 	rule: Stat -> [7][Block]< "{" { Stat @ } "}" >
-		+ Field(BlockStat::stats)
+		+ StackSlot(1)
 
 [7][Block]< "{" { Stat @ } "}" >
-[RULE: 1][CLAUSE: 0]
+[RULE: 1]
 	token: "}" -> [8][Block]< "{" { Stat } "}" @ >
+		+ Token(2)
 	rule: Stat -> [7][Block]< "{" { Stat @ } "}" >
-		+ Field(BlockStat::stats)
+		+ StackSlot(1)
 
 [8][Block]< "{" { Stat } "}" @ >
-[RULE: 1][CLAUSE: 0]
+[RULE: 1]
 	ending -> [5][Block] END [ENDING]
-		- EndObject()
+		+ CreateObject(BlockStat)
+		+ Field(BlockStat::stats, 1)
+		+ StackEnd()
 
 [9][HalfIf] BEGIN 
-[RULE: 2][CLAUSE: -1]
+[RULE: 2]
 	token: "if" -> [14][HalfIf]< "if" @ "cond" "then" Stat >
-		- BeginObject(IfStat)
+		+ StackBegin()
+		+ Token(0)
 
 [10][HalfIf] END [ENDING]
-[RULE: 2][CLAUSE: -1]
+[RULE: 2]
 
 [11][HalfIf]< "if" "cond" "then" @ Stat >
-[RULE: 2][CLAUSE: 0]
+[RULE: 2]
 	rule: Stat -> [12][HalfIf]< "if" "cond" "then" Stat @ >
-		+ Field(IfStat::thenBranch)
+		+ StackSlot(3)
 
 [12][HalfIf]< "if" "cond" "then" Stat @ >
-[RULE: 2][CLAUSE: 0]
+[RULE: 2]
 	ending -> [10][HalfIf] END [ENDING]
-		- EndObject()
+		+ CreateObject(IfStat)
+		+ Field(IfStat::thenBranch, 3)
+		+ StackEnd()
 
 [13][HalfIf]< "if" "cond" @ "then" Stat >
-[RULE: 2][CLAUSE: 0]
+[RULE: 2]
 	token: "then" -> [11][HalfIf]< "if" "cond" "then" @ Stat >
+		+ Token(2)
 
 [14][HalfIf]< "if" @ "cond" "then" Stat >
-[RULE: 2][CLAUSE: 0]
+[RULE: 2]
 	token: "cond" -> [13][HalfIf]< "if" "cond" @ "then" Stat >
+		+ Token(1)
 
 [15][CompleteIf] BEGIN 
-[RULE: 3][CLAUSE: -1]
+[RULE: 3]
 	token: "if" -> [22][CompleteIf]< "if" @ "cond" "then" CompleteStat "else" Stat >
-		- BeginObject(IfStat)
+		+ StackBegin()
+		+ Token(0)
 
 [16][CompleteIf] END [ENDING]
-[RULE: 3][CLAUSE: -1]
+[RULE: 3]
 
 [17][CompleteIf]< "if" "cond" "then" @ CompleteStat "else" Stat >
-[RULE: 3][CLAUSE: 0]
+[RULE: 3]
 	rule: CompleteStat -> [20][CompleteIf]< "if" "cond" "then" CompleteStat @ "else" Stat >
-		+ Field(IfStat::thenBranch)
+		+ StackSlot(3)
 
 [18][CompleteIf]< "if" "cond" "then" CompleteStat "else" @ Stat >
-[RULE: 3][CLAUSE: 0]
+[RULE: 3]
 	rule: Stat -> [19][CompleteIf]< "if" "cond" "then" CompleteStat "else" Stat @ >
-		+ Field(IfStat::elseBranch)
+		+ StackSlot(5)
 
 [19][CompleteIf]< "if" "cond" "then" CompleteStat "else" Stat @ >
-[RULE: 3][CLAUSE: 0]
+[RULE: 3]
 	ending -> [16][CompleteIf] END [ENDING]
-		- EndObject()
+		+ CreateObject(IfStat)
+		+ Field(IfStat::thenBranch, 3)
+		+ Field(IfStat::elseBranch, 5)
+		+ StackEnd()
 
 [20][CompleteIf]< "if" "cond" "then" CompleteStat @ "else" Stat >
-[RULE: 3][CLAUSE: 0]
+[RULE: 3]
 	token: "else" -> [18][CompleteIf]< "if" "cond" "then" CompleteStat "else" @ Stat >
+		+ Token(4)
 
 [21][CompleteIf]< "if" "cond" @ "then" CompleteStat "else" Stat >
-[RULE: 3][CLAUSE: 0]
+[RULE: 3]
 	token: "then" -> [17][CompleteIf]< "if" "cond" "then" @ CompleteStat "else" Stat >
+		+ Token(2)
 
 [22][CompleteIf]< "if" @ "cond" "then" CompleteStat "else" Stat >
-[RULE: 3][CLAUSE: 0]
+[RULE: 3]
 	token: "cond" -> [21][CompleteIf]< "if" "cond" @ "then" CompleteStat "else" Stat >
+		+ Token(1)
 
-[23][IfTail] BEGIN 
-[RULE: 4][CLAUSE: -1]
-	rule: HalfIf -> [28][IfTail]( CompleteStat [ "else" Stat ] | HalfIf @ )
-	rule: CompleteStat -> [25][IfTail]( CompleteStat @ [ "else" Stat ] | HalfIf )
-		+ Field(IfStat::thenBranch)
+[23][If] BEGIN 
+[RULE: 5]
+	token: "if" -> [31][If]< "if" @ "cond" "then" ( ( CompleteStat [ "else" Stat ] | HalfIf ) ) >
+		+ StackBegin()
+		+ Token(0)
 
-[24][IfTail] END [ENDING]
-[RULE: 4][CLAUSE: -1]
+[24][If] END [ENDING]
+[RULE: 5]
 
-[25][IfTail]( CompleteStat @ [ "else" Stat ] | HalfIf )
-[RULE: 4][CLAUSE: 0]
-	ending -> [24][IfTail] END [ENDING]
-	token: "else" -> [26][IfTail]( CompleteStat [ "else" @ Stat ] | HalfIf )
+[25][If]< "if" "cond" "then" ( ( CompleteStat @ [ "else" Stat ] | HalfIf ) ) >
+[RULE: 5]
+	ending -> [24][If] END [ENDING]
+		+ CreateObject(IfStat)
+		+ Field(IfStat::thenBranch, 3)
+		+ Field(IfStat::elseBranch, 5)
+		+ Field(IfStat::thenBranch, 6)
+		+ StackEnd()
+	token: "else" -> [26][If]< "if" "cond" "then" ( ( CompleteStat [ "else" @ Stat ] | HalfIf ) ) >
+		+ Token(4)
 
-[26][IfTail]( CompleteStat [ "else" @ Stat ] | HalfIf )
-[RULE: 4][CLAUSE: 0]
-	rule: Stat -> [27][IfTail]( CompleteStat [ "else" Stat @ ] | HalfIf )
-		+ Field(IfStat::elseBranch)
+[26][If]< "if" "cond" "then" ( ( CompleteStat [ "else" @ Stat ] | HalfIf ) ) >
+[RULE: 5]
+	rule: Stat -> [27][If]< "if" "cond" "then" ( ( CompleteStat [ "else" Stat @ ] | HalfIf ) ) >
+		+ StackSlot(5)
 
-[27][IfTail]( CompleteStat [ "else" Stat @ ] | HalfIf )
-[RULE: 4][CLAUSE: 0]
-	ending -> [24][IfTail] END [ENDING]
+[27][If]< "if" "cond" "then" ( ( CompleteStat [ "else" Stat @ ] | HalfIf ) ) >
+[RULE: 5]
+	ending -> [24][If] END [ENDING]
+		+ CreateObject(IfStat)
+		+ Field(IfStat::thenBranch, 3)
+		+ Field(IfStat::elseBranch, 5)
+		+ Field(IfStat::thenBranch, 6)
+		+ StackEnd()
 
-[28][IfTail]( CompleteStat [ "else" Stat ] | HalfIf @ )
-[RULE: 4][CLAUSE: 0]
-	ending -> [24][IfTail] END [ENDING]
-		- Field(IfStat::thenBranch)
+[28][If]< "if" "cond" "then" ( ( CompleteStat [ "else" Stat ] | HalfIf @ ) ) >
+[RULE: 5]
+	ending -> [24][If] END [ENDING]
+		+ CreateObject(IfStat)
+		+ Field(IfStat::thenBranch, 3)
+		+ Field(IfStat::elseBranch, 5)
+		+ Field(IfStat::thenBranch, 6)
+		+ StackEnd()
 
-[29][If] BEGIN 
-[RULE: 5][CLAUSE: -1]
-	token: "if" -> [34][If]< "if" @ "cond" "then" IfTail >
-		- BeginObject(IfStat)
+[29][If]< "if" "cond" "then" @ ( ( CompleteStat [ "else" Stat ] | HalfIf ) ) >
+[RULE: 5]
+	rule: HalfIf -> [28][If]< "if" "cond" "then" ( ( CompleteStat [ "else" Stat ] | HalfIf @ ) ) >
+		+ StackSlot(6)
+	rule: CompleteStat -> [25][If]< "if" "cond" "then" ( ( CompleteStat @ [ "else" Stat ] | HalfIf ) ) >
+		+ StackSlot(3)
 
-[30][If] END [ENDING]
-[RULE: 5][CLAUSE: -1]
+[30][If]< "if" "cond" @ "then" ( ( CompleteStat [ "else" Stat ] | HalfIf ) ) >
+[RULE: 5]
+	token: "then" -> [29][If]< "if" "cond" "then" @ ( ( CompleteStat [ "else" Stat ] | HalfIf ) ) >
+		+ Token(2)
 
-[31][If]< "if" "cond" "then" @ IfTail >
-[RULE: 5][CLAUSE: 0]
-	rule: IfTail -> [32][If]< "if" "cond" "then" IfTail @ >
+[31][If]< "if" @ "cond" "then" ( ( CompleteStat [ "else" Stat ] | HalfIf ) ) >
+[RULE: 5]
+	token: "cond" -> [30][If]< "if" "cond" @ "then" ( ( CompleteStat [ "else" Stat ] | HalfIf ) ) >
+		+ Token(1)
 
-[32][If]< "if" "cond" "then" IfTail @ >
-[RULE: 5][CLAUSE: 0]
-	ending -> [30][If] END [ENDING]
-		- EndObject()
+[32][OtherStat] BEGIN 
+[RULE: 6]
+	rule: Do -> [34][OtherStat]<! ( !Do @ | !Block ) !>
+		+ StackBegin()
+	rule: Block -> [35][OtherStat]<! ( !Do | !Block @ ) !>
+		+ StackBegin()
 
-[33][If]< "if" "cond" @ "then" IfTail >
-[RULE: 5][CLAUSE: 0]
-	token: "then" -> [31][If]< "if" "cond" "then" @ IfTail >
+[33][OtherStat] END [ENDING]
+[RULE: 6]
 
-[34][If]< "if" @ "cond" "then" IfTail >
-[RULE: 5][CLAUSE: 0]
-	token: "cond" -> [33][If]< "if" "cond" @ "then" IfTail >
+[34][OtherStat]<! ( !Do @ | !Block ) !>
+[RULE: 6]
+	ending -> [33][OtherStat] END [ENDING]
+		+ StackEnd()
 
-[35][OtherStat] BEGIN 
-[RULE: 6][CLAUSE: -1]
-	rule: Do -> [37][OtherStat]<< ( !Do @ | !Block ) >>
-		- DelayFieldAssignment()
-	rule: Block -> [38][OtherStat]<< ( !Do | !Block @ ) >>
-		- DelayFieldAssignment()
+[35][OtherStat]<! ( !Do | !Block @ ) !>
+[RULE: 6]
+	ending -> [33][OtherStat] END [ENDING]
+		+ StackEnd()
 
-[36][OtherStat] END [ENDING]
-[RULE: 6][CLAUSE: -1]
+[36][CompleteStat] BEGIN 
+[RULE: 7]
+	rule: CompleteIf -> [39][CompleteStat]<! ( !OtherStat | !CompleteIf @ ) !>
+		+ StackBegin()
+	rule: OtherStat -> [38][CompleteStat]<! ( !OtherStat @ | !CompleteIf ) !>
+		+ StackBegin()
 
-[37][OtherStat]<< ( !Do @ | !Block ) >>
-[RULE: 6][CLAUSE: 0]
-	ending -> [36][OtherStat] END [ENDING]
-		- ReopenObject()
-		- EndObject()
+[37][CompleteStat] END [ENDING]
+[RULE: 7]
 
-[38][OtherStat]<< ( !Do | !Block @ ) >>
-[RULE: 6][CLAUSE: 0]
-	ending -> [36][OtherStat] END [ENDING]
-		- ReopenObject()
-		- EndObject()
+[38][CompleteStat]<! ( !OtherStat @ | !CompleteIf ) !>
+[RULE: 7]
+	ending -> [37][CompleteStat] END [ENDING]
+		+ StackEnd()
 
-[39][CompleteStat] BEGIN 
-[RULE: 7][CLAUSE: -1]
-	rule: CompleteIf -> [42][CompleteStat]<< ( !OtherStat | !CompleteIf @ ) >>
-		- DelayFieldAssignment()
-	rule: OtherStat -> [41][CompleteStat]<< ( !OtherStat @ | !CompleteIf ) >>
-		- DelayFieldAssignment()
+[39][CompleteStat]<! ( !OtherStat | !CompleteIf @ ) !>
+[RULE: 7]
+	ending -> [37][CompleteStat] END [ENDING]
+		+ StackEnd()
 
-[40][CompleteStat] END [ENDING]
-[RULE: 7][CLAUSE: -1]
+[40][Stat] BEGIN 
+[RULE: 8]
+	rule: If -> [43][Stat]<! ( !OtherStat | !If @ ) !>
+		+ StackBegin()
+	rule: OtherStat -> [42][Stat]<! ( !OtherStat @ | !If ) !>
+		+ StackBegin()
 
-[41][CompleteStat]<< ( !OtherStat @ | !CompleteIf ) >>
-[RULE: 7][CLAUSE: 0]
-	ending -> [40][CompleteStat] END [ENDING]
-		- ReopenObject()
-		- EndObject()
+[41][Stat] END [ENDING]
+[RULE: 8]
 
-[42][CompleteStat]<< ( !OtherStat | !CompleteIf @ ) >>
-[RULE: 7][CLAUSE: 0]
-	ending -> [40][CompleteStat] END [ENDING]
-		- ReopenObject()
-		- EndObject()
+[42][Stat]<! ( !OtherStat @ | !If ) !>
+[RULE: 8]
+	ending -> [41][Stat] END [ENDING]
+		+ StackEnd()
 
-[43][Stat] BEGIN 
-[RULE: 8][CLAUSE: -1]
-	rule: If -> [46][Stat]<< ( !OtherStat | !If @ ) >>
-		- DelayFieldAssignment()
-	rule: OtherStat -> [45][Stat]<< ( !OtherStat @ | !If ) >>
-		- DelayFieldAssignment()
+[43][Stat]<! ( !OtherStat | !If @ ) !>
+[RULE: 8]
+	ending -> [41][Stat] END [ENDING]
+		+ StackEnd()
 
-[44][Stat] END [ENDING]
-[RULE: 8][CLAUSE: -1]
+[44][Module] BEGIN 
+[RULE: 9]
+	rule: Stat -> [46][Module]< Stat @ >
+		+ StackBegin()
+		+ StackSlot(0)
 
-[45][Stat]<< ( !OtherStat @ | !If ) >>
-[RULE: 8][CLAUSE: 0]
-	ending -> [44][Stat] END [ENDING]
-		- ReopenObject()
-		- EndObject()
+[45][Module] END [ENDING]
+[RULE: 9]
 
-[46][Stat]<< ( !OtherStat | !If @ ) >>
-[RULE: 8][CLAUSE: 0]
-	ending -> [44][Stat] END [ENDING]
-		- ReopenObject()
-		- EndObject()
-
-[47][Module] BEGIN 
-[RULE: 9][CLAUSE: -1]
-	rule: Stat -> [49][Module]< Stat @ >
-		- BeginObject(Module)
-
-[48][Module] END [ENDING]
-[RULE: 9][CLAUSE: -1]
-
-[49][Module]< Stat @ >
-[RULE: 9][CLAUSE: 0]
-	ending -> [48][Module] END [ENDING]
-		- Field(Module::stat)
-		- EndObject()
+[46][Module]< Stat @ >
+[RULE: 9]
+	ending -> [45][Module] END [ENDING]
+		+ CreateObject(Module)
+		+ Field(Module::stat, 0)
+		+ StackEnd()
 

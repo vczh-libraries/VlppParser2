@@ -1,0 +1,207 @@
+﻿{
+    "$ast": "SyntaxFile",
+    "rules": [{
+        "$ast": "Rule",
+        "attParser": "",
+        "attPublic": "",
+        "clauses": [{
+            "$ast": "CreateClause",
+            "assignments": [],
+            "syntax": {
+                "$ast": "RefSyntax",
+                "field": "",
+                "literal": "\"+\"",
+                "refType": "Literal"
+            },
+            "type": "Plus"
+        }],
+        "name": "Plus",
+        "type": ""
+    }, {
+        "$ast": "Rule",
+        "attParser": "",
+        "attPublic": "",
+        "clauses": [{
+            "$ast": "CreateClause",
+            "assignments": [],
+            "syntax": {
+                "$ast": "RefSyntax",
+                "field": "",
+                "literal": "\"<\"",
+                "refType": "Literal"
+            },
+            "type": "Lt"
+        }],
+        "name": "Lt",
+        "type": ""
+    }, {
+        "$ast": "Rule",
+        "attParser": "",
+        "attPublic": "",
+        "clauses": [{
+            "$ast": "CreateClause",
+            "assignments": [],
+            "syntax": {
+                "$ast": "RefSyntax",
+                "field": "one",
+                "literal": "Lt",
+                "refType": "Id"
+            },
+            "type": "PwlFeature"
+        }, {
+            "$ast": "ReuseClause",
+            "assignments": [],
+            "syntax": {
+                "$ast": "SequenceSyntax",
+                "first": {
+                    "$ast": "RefSyntax",
+                    "field": "prefix",
+                    "literal": "Plus",
+                    "refType": "Id"
+                },
+                "second": {
+                    "$ast": "UseSyntax",
+                    "name": "Pwl1_P"
+                }
+            }
+        }],
+        "name": "Pwl1_P",
+        "type": ""
+    }, {
+        "$ast": "Rule",
+        "attParser": "",
+        "attPublic": "",
+        "clauses": [{
+            "$ast": "ReuseClause",
+            "assignments": [],
+            "syntax": {
+                "$ast": "UseSyntax",
+                "name": "Pwl1_P"
+            }
+        }, {
+            "$ast": "CreateClause",
+            "assignments": [],
+            "syntax": {
+                "$ast": "SequenceSyntax",
+                "first": {
+                    "$ast": "RefSyntax",
+                    "field": "prev",
+                    "literal": "Pwl1",
+                    "refType": "Id"
+                },
+                "second": {
+                    "$ast": "RefSyntax",
+                    "field": "one",
+                    "literal": "Lt",
+                    "refType": "Id"
+                }
+            },
+            "type": "PwlFeature"
+        }],
+        "name": "Pwl1",
+        "type": ""
+    }, {
+        "$ast": "Rule",
+        "attParser": "",
+        "attPublic": "",
+        "clauses": [{
+            "$ast": "CreateClause",
+            "assignments": [],
+            "syntax": {
+                "$ast": "RefSyntax",
+                "field": "two",
+                "literal": "Lt",
+                "refType": "Id"
+            },
+            "type": "PwlFeature"
+        }, {
+            "$ast": "CreateClause",
+            "assignments": [],
+            "syntax": {
+                "$ast": "SequenceSyntax",
+                "first": {
+                    "$ast": "RefSyntax",
+                    "field": "prev",
+                    "literal": "Pwl2_P",
+                    "refType": "Id"
+                },
+                "second": {
+                    "$ast": "RefSyntax",
+                    "field": "two",
+                    "literal": "Lt",
+                    "refType": "Id"
+                }
+            },
+            "type": "PwlFeature"
+        }],
+        "name": "Pwl2_P",
+        "type": ""
+    }, {
+        "$ast": "Rule",
+        "attParser": "",
+        "attPublic": "",
+        "clauses": [{
+            "$ast": "ReuseClause",
+            "assignments": [],
+            "syntax": {
+                "$ast": "SequenceSyntax",
+                "first": {
+                    "$ast": "LoopSyntax",
+                    "delimiter": null,
+                    "syntax": {
+                        "$ast": "RefSyntax",
+                        "field": "prefix",
+                        "literal": "Plus",
+                        "refType": "Id"
+                    }
+                },
+                "second": {
+                    "$ast": "UseSyntax",
+                    "name": "Pwl2_P"
+                }
+            }
+        }],
+        "name": "Pwl2",
+        "type": ""
+    }, {
+        "$ast": "Rule",
+        "attParser": "@parser",
+        "attPublic": "",
+        "clauses": [{
+            "$ast": "ReuseClause",
+            "assignments": [],
+            "syntax": {
+                "$ast": "SequenceSyntax",
+                "first": {
+                    "$ast": "RefSyntax",
+                    "field": "",
+                    "literal": "\"prefix_with_leftrec\"",
+                    "refType": "Literal"
+                },
+                "second": {
+                    "$ast": "UseSyntax",
+                    "name": "Pwl1"
+                }
+            }
+        }, {
+            "$ast": "ReuseClause",
+            "assignments": [],
+            "syntax": {
+                "$ast": "SequenceSyntax",
+                "first": {
+                    "$ast": "RefSyntax",
+                    "field": "",
+                    "literal": "\"prefix_with_leftrec\"",
+                    "refType": "Literal"
+                },
+                "second": {
+                    "$ast": "UseSyntax",
+                    "name": "Pwl2"
+                }
+            }
+        }],
+        "name": "Module",
+        "type": "Feature"
+    }],
+    "switches": []
+}

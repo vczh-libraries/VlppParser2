@@ -1,11 +1,11 @@
 ﻿================ EXECUTION STEPS ================
-[0]: 0@0 - 51@1
+[0]: 0@0 - 51@0
 
 ==================== TRACES =====================
 
 +--------------------------+
 | [0]: <Start>             |
-| [480][_Statement] BEGIN  |
+| [456][_Statement] BEGIN  |
 | [AST-INSTRUCTIONS]:      |
 | [SUCCESORS 1-1]: [1]     |
 +--------------------------+
@@ -16,12 +16,12 @@
 [0]
 ++====================================================================================================++
 || [1]: {KEYWORD_IF} if                                                                               ||
-|| [381][_If]< "if" @ "(" [ "var" NAME ":" _Type "=" ] _Expression ")" _Block +[ "else" _ElseStat ] > ||
+|| [369][_If]< "if" @ "(" [ "var" NAME ":" _Type "=" ] _Expression ")" _Block +[ "else" _ElseStat ] > ||
 || [AST-INSTRUCTIONS]:                                                                                ||
-||   - DelayFieldAssignment()                                                                         ||
-||   - BeginObject(IfStatement)                                                                       ||
+||   + StackBegin()                                                                                   ||
+||   + Token(0)                                                                                       ||
 || [RETURN STACK]:                                                                                    ||
-||   [0][126][0]: _If -> [517][_Statement]<< !_If @ >>                                                ||
+||   [0][120][0]: _If -> [493][_Statement]<! !_If @ !>                                                ||
 || [PREDECESSORS 0-0]: [0]                                                                            ||
 || [SUCCESORS 2-2]: [2]                                                                               ||
 ++====================================================================================================++
@@ -32,10 +32,11 @@
 [0]
 ++====================================================================================================++
 || [2]: {OPEN_BRACKET} (                                                                              ||
-|| [370][_If]< "if" "(" @ [ "var" NAME ":" _Type "=" ] _Expression ")" _Block +[ "else" _ElseStat ] > ||
+|| [358][_If]< "if" "(" @ [ "var" NAME ":" _Type "=" ] _Expression ")" _Block +[ "else" _ElseStat ] > ||
 || [AST-INSTRUCTIONS]:                                                                                ||
+||   + Token(1)                                                                                       ||
 || [RETURN STACK]:                                                                                    ||
-||   [0][126][0]: _If -> [517][_Statement]<< !_If @ >>                                                ||
+||   [0][120][0]: _If -> [493][_Statement]<! !_If @ !>                                                ||
 || [PREDECESSORS 1-1]: [1]                                                                            ||
 || [SUCCESORS 3-3]: [3]                                                                               ||
 ++====================================================================================================++
@@ -46,10 +47,11 @@
 [0]
 ++====================================================================================================++
 || [3]: {KEYWORD_VAR} var                                                                             ||
-|| [371][_If]< "if" "(" [ "var" @ NAME ":" _Type "=" ] _Expression ")" _Block +[ "else" _ElseStat ] > ||
+|| [359][_If]< "if" "(" [ "var" @ NAME ":" _Type "=" ] _Expression ")" _Block +[ "else" _ElseStat ] > ||
 || [AST-INSTRUCTIONS]:                                                                                ||
+||   + Token(2)                                                                                       ||
 || [RETURN STACK]:                                                                                    ||
-||   [0][126][0]: _If -> [517][_Statement]<< !_If @ >>                                                ||
+||   [0][120][0]: _If -> [493][_Statement]<! !_If @ !>                                                ||
 || [PREDECESSORS 2-2]: [2]                                                                            ||
 || [SUCCESORS 4-4]: [4]                                                                               ||
 ++====================================================================================================++
@@ -60,12 +62,11 @@
 [0]
 ++====================================================================================================++
 || [4]: {NAME} a                                                                                      ||
-|| [380][_If]< "if" "(" [ "var" NAME @ ":" _Type "=" ] _Expression ")" _Block +[ "else" _ElseStat ] > ||
+|| [368][_If]< "if" "(" [ "var" NAME @ ":" _Type "=" ] _Expression ")" _Block +[ "else" _ElseStat ] > ||
 || [AST-INSTRUCTIONS]:                                                                                ||
-||   + Token()                                                                                        ||
-||   + Field(IfStatement::name)                                                                       ||
+||   + Token(3)                                                                                       ||
 || [RETURN STACK]:                                                                                    ||
-||   [0][126][0]: _If -> [517][_Statement]<< !_If @ >>                                                ||
+||   [0][120][0]: _If -> [493][_Statement]<! !_If @ !>                                                ||
 || [PREDECESSORS 3-3]: [3]                                                                            ||
 || [SUCCESORS 5-5]: [5]                                                                               ||
 ++====================================================================================================++
@@ -76,10 +77,11 @@
 [0]
 ++====================================================================================================++
 || [5]: {COLON} :                                                                                     ||
-|| [372][_If]< "if" "(" [ "var" NAME ":" @ _Type "=" ] _Expression ")" _Block +[ "else" _ElseStat ] > ||
+|| [360][_If]< "if" "(" [ "var" NAME ":" @ _Type "=" ] _Expression ")" _Block +[ "else" _ElseStat ] > ||
 || [AST-INSTRUCTIONS]:                                                                                ||
+||   + Token(4)                                                                                       ||
 || [RETURN STACK]:                                                                                    ||
-||   [0][126][0]: _If -> [517][_Statement]<< !_If @ >>                                                ||
+||   [0][120][0]: _If -> [493][_Statement]<! !_If @ !>                                                ||
 || [PREDECESSORS 4-4]: [4]                                                                            ||
 || [SUCCESORS 6-6]: [6]                                                                               ||
 ++====================================================================================================++
@@ -92,12 +94,11 @@
 || [6]: {NAME} Button                                                                                                         ||
 || [30][_Type]< NAME @ >                                                                                                      ||
 || [AST-INSTRUCTIONS]:                                                                                                        ||
-||   - BeginObject(ReferenceType)                                                                                             ||
-||   + Token()                                                                                                                ||
-||   + Field(ReferenceType::name)                                                                                             ||
+||   + StackBegin()                                                                                                           ||
+||   + Token(0)                                                                                                               ||
 || [RETURN STACK]:                                                                                                            ||
-||   [1][134][5]: _Type -> [379][_If]< "if" "(" [ "var" NAME ":" _Type @ "=" ] _Expression ")" _Block +[ "else" _ElseStat ] > ||
-||   [0][126][0]: _If -> [517][_Statement]<< !_If @ >>                                                                        ||
+||   [1][128][5]: _Type -> [367][_If]< "if" "(" [ "var" NAME ":" _Type @ "=" ] _Expression ")" _Block +[ "else" _ElseStat ] > ||
+||   [0][120][0]: _If -> [493][_Statement]<! !_If @ !>                                                                        ||
 || [PREDECESSORS 5-5]: [5]                                                                                                    ||
 || [SUCCESORS 7-7]: [7]                                                                                                       ||
 ++============================================================================================================================++
@@ -106,12 +107,14 @@
 |
 +----------------------------------------------------------------------------------------------------+
 | [7]: <Ending>                                                                                      |
-| [379][_If]< "if" "(" [ "var" NAME ":" _Type @ "=" ] _Expression ")" _Block +[ "else" _ElseStat ] > |
+| [367][_If]< "if" "(" [ "var" NAME ":" _Type @ "=" ] _Expression ")" _Block +[ "else" _ElseStat ] > |
 | [AST-INSTRUCTIONS]:                                                                                |
-|   - EndObject()                                                                                    |
-|   > Field(IfStatement::type)                                                                       |
+|   + CreateObject(ReferenceType)                                                                    |
+|   + Field(ReferenceType::name, 0)                                                                  |
+|   + StackEnd()                                                                                     |
+|   > StackSlot(5)                                                                                   |
 | [RETURN STACK]:                                                                                    |
-|   [0][126][0]: _If -> [517][_Statement]<< !_If @ >>                                                |
+|   [0][120][0]: _If -> [493][_Statement]<! !_If @ !>                                                |
 | [PREDECESSORS 6-6]: [6]                                                                            |
 | [SUCCESORS 8-8]: [8]                                                                               |
 +----------------------------------------------------------------------------------------------------+
@@ -122,10 +125,11 @@
 [0]
 ++====================================================================================================++
 || [8]: {ASSIGN} =                                                                                    ||
-|| [373][_If]< "if" "(" [ "var" NAME ":" _Type "=" @ ] _Expression ")" _Block +[ "else" _ElseStat ] > ||
+|| [361][_If]< "if" "(" [ "var" NAME ":" _Type "=" @ ] _Expression ")" _Block +[ "else" _ElseStat ] > ||
 || [AST-INSTRUCTIONS]:                                                                                ||
+||   + Token(6)                                                                                       ||
 || [RETURN STACK]:                                                                                    ||
-||   [0][126][0]: _If -> [517][_Statement]<< !_If @ >>                                                ||
+||   [0][120][0]: _If -> [493][_Statement]<! !_If @ !>                                                ||
 || [PREDECESSORS 7-7]: [7]                                                                            ||
 || [SUCCESORS 9-9]: [9]                                                                               ||
 ++====================================================================================================++
@@ -136,38 +140,26 @@
 [0]
 ++==================================================================================================================================++
 || [9]: {NAME} GetControl                                                                                                           ||
-|| [159][_ExpPrimitive]< NAME @ >                                                                                                   ||
+|| [144][_ExpPrimitive]< NAME @ >                                                                                                   ||
 || [AST-INSTRUCTIONS]:                                                                                                              ||
-||   - DelayFieldAssignment()                                                                                                       ||
-||   - DelayFieldAssignment()                                                                                                       ||
-||   - DelayFieldAssignment()                                                                                                       ||
-||   - DelayFieldAssignment()                                                                                                       ||
-||   - DelayFieldAssignment()                                                                                                       ||
-||   - DelayFieldAssignment()                                                                                                       ||
-||   - DelayFieldAssignment()                                                                                                       ||
-||   - DelayFieldAssignment()                                                                                                       ||
-||   - DelayFieldAssignment()                                                                                                       ||
-||   - DelayFieldAssignment()                                                                                                       ||
-||   - DelayFieldAssignment()                                                                                                       ||
-||   - BeginObject(ReferenceExpression)                                                                                             ||
-||   + Token()                                                                                                                      ||
-||   + Field(ReferenceExpression::name)                                                                                             ||
+||   + StackBegin()                                                                                                                 ||
+||   + Token(0)                                                                                                                     ||
 || [RETURN STACK]:                                                                                                                  ||
-||   [15][21][8]: _ExpPrimitive -> [245][_Exp0]<< !_ExpPrimitive @ >>                                                               ||
-||   [14][20][8]: _Exp0 -> [251][_Exp1]<< !_Exp0 @ >>                                                                               ||
-||   [13][19][8]: _Exp1 -> [263][_Exp2]<< !_Exp1 @ >>                                                                               ||
-||   [12][18][8]: _Exp2 -> [278][_Exp3]<< !_Exp2 @ >>                                                                               ||
-||   [11][17][8]: _Exp3 -> [287][_Exp4]<< !_Exp3 @ >>                                                                               ||
-||   [10][16][8]: _Exp4 -> [308][_Exp5]<< !_Exp4 @ >>                                                                               ||
-||   [9][15][8]: _Exp5 -> [314][_Exp6]<< !_Exp5 @ >>                                                                                ||
-||   [8][14][8]: _Exp6 -> [320][_Exp7]<< !_Exp6 @ >>                                                                                ||
-||   [7][13][8]: _Exp7 -> [326][_Exp8]<< !_Exp7 @ >>                                                                                ||
-||   [6][12][8]: _Exp8 -> [332][_Exp9]<< !_Exp8 @ >>                                                                                ||
-||   [5][11][8]: _Exp9 -> [340][_Exp10]<< !_Exp9 @ >>                                                                               ||
-||   [4][10][8]: _Exp10 -> [346][_Exp11]<< !_Exp10 @ >>                                                                             ||
-||   [3][9][8]: _Exp11 -> [349][_Expression]<< !_Exp11 @ >>                                                                         ||
-||   [2][135][8]: _Expression -> [378][_If]< "if" "(" [ "var" NAME ":" _Type "=" ] _Expression @ ")" _Block +[ "else" _ElseStat ] > ||
-||   [0][126][0]: _If -> [517][_Statement]<< !_If @ >>                                                                              ||
+||   [15][21][8]: _ExpPrimitive -> [232][_Exp0]<! !_ExpPrimitive @ !>                                                               ||
+||   [14][20][8]: _Exp0 -> [239][_Exp1]<! !_Exp0 @ !>                                                                               ||
+||   [13][19][8]: _Exp1 -> [251][_Exp2]<! !_Exp1 @ !>                                                                               ||
+||   [12][18][8]: _Exp2 -> [266][_Exp3]<! !_Exp2 @ !>                                                                               ||
+||   [11][17][8]: _Exp3 -> [275][_Exp4]<! !_Exp3 @ !>                                                                               ||
+||   [10][16][8]: _Exp4 -> [296][_Exp5]<! !_Exp4 @ !>                                                                               ||
+||   [9][15][8]: _Exp5 -> [302][_Exp6]<! !_Exp5 @ !>                                                                                ||
+||   [8][14][8]: _Exp6 -> [308][_Exp7]<! !_Exp6 @ !>                                                                                ||
+||   [7][13][8]: _Exp7 -> [314][_Exp8]<! !_Exp7 @ !>                                                                                ||
+||   [6][12][8]: _Exp8 -> [320][_Exp9]<! !_Exp8 @ !>                                                                                ||
+||   [5][11][8]: _Exp9 -> [322][_Exp10] BEGIN [pm-lr]                                                                               ||
+||   [4][10][8]: _Exp10 -> [330][_Exp11] BEGIN [pm-lr]                                                                              ||
+||   [3][9][8]: _Exp11 -> [337][_Expression]<! !_Exp11 @ !>                                                                         ||
+||   [2][129][8]: _Expression -> [366][_If]< "if" "(" [ "var" NAME ":" _Type "=" ] _Expression @ ")" _Block +[ "else" _ElseStat ] > ||
+||   [0][120][0]: _If -> [493][_Statement]<! !_If @ !>                                                                              ||
 || [PREDECESSORS 8-8]: [8]                                                                                                          ||
 || [SUCCESORS 10-10]: [10]                                                                                                          ||
 ++==================================================================================================================================++
@@ -176,29 +168,29 @@
 |
 +----------------------------------------------------------------------------------------------------------------------------------+
 | [10]: <Leftrec>                                                                                                                  |
-| [210][_ExpPrimitive]< _ExpPrimitive @ "(" [ _Expression { "," _Expression } ] ")" >                                              |
+| [199][_ExpPrimitive]< _ExpPrimitive @ "(" [ _Expression { "," _Expression } ] ")" >                                              |
 | [AST-INSTRUCTIONS]:                                                                                                              |
-|   - EndObject()                                                                                                                  |
-|   - LriStore()                                                                                                                   |
-|   - BeginObject(CallExpression)                                                                                                  |
-|   - LriFetch()                                                                                                                   |
-|   + Field(CallExpression::function)                                                                                              |
+|   + CreateObject(ReferenceExpression)                                                                                            |
+|   + Field(ReferenceExpression::name, 0)                                                                                          |
+|   + StackEnd()                                                                                                                   |
+|   + StackBegin()                                                                                                                 |
+|   + StackSlot(0)                                                                                                                 |
 | [RETURN STACK]:                                                                                                                  |
-|   [15][21][8]: _ExpPrimitive -> [245][_Exp0]<< !_ExpPrimitive @ >>                                                               |
-|   [14][20][8]: _Exp0 -> [251][_Exp1]<< !_Exp0 @ >>                                                                               |
-|   [13][19][8]: _Exp1 -> [263][_Exp2]<< !_Exp1 @ >>                                                                               |
-|   [12][18][8]: _Exp2 -> [278][_Exp3]<< !_Exp2 @ >>                                                                               |
-|   [11][17][8]: _Exp3 -> [287][_Exp4]<< !_Exp3 @ >>                                                                               |
-|   [10][16][8]: _Exp4 -> [308][_Exp5]<< !_Exp4 @ >>                                                                               |
-|   [9][15][8]: _Exp5 -> [314][_Exp6]<< !_Exp5 @ >>                                                                                |
-|   [8][14][8]: _Exp6 -> [320][_Exp7]<< !_Exp6 @ >>                                                                                |
-|   [7][13][8]: _Exp7 -> [326][_Exp8]<< !_Exp7 @ >>                                                                                |
-|   [6][12][8]: _Exp8 -> [332][_Exp9]<< !_Exp8 @ >>                                                                                |
-|   [5][11][8]: _Exp9 -> [340][_Exp10]<< !_Exp9 @ >>                                                                               |
-|   [4][10][8]: _Exp10 -> [346][_Exp11]<< !_Exp10 @ >>                                                                             |
-|   [3][9][8]: _Exp11 -> [349][_Expression]<< !_Exp11 @ >>                                                                         |
-|   [2][135][8]: _Expression -> [378][_If]< "if" "(" [ "var" NAME ":" _Type "=" ] _Expression @ ")" _Block +[ "else" _ElseStat ] > |
-|   [0][126][0]: _If -> [517][_Statement]<< !_If @ >>                                                                              |
+|   [15][21][8]: _ExpPrimitive -> [232][_Exp0]<! !_ExpPrimitive @ !>                                                               |
+|   [14][20][8]: _Exp0 -> [239][_Exp1]<! !_Exp0 @ !>                                                                               |
+|   [13][19][8]: _Exp1 -> [251][_Exp2]<! !_Exp1 @ !>                                                                               |
+|   [12][18][8]: _Exp2 -> [266][_Exp3]<! !_Exp2 @ !>                                                                               |
+|   [11][17][8]: _Exp3 -> [275][_Exp4]<! !_Exp3 @ !>                                                                               |
+|   [10][16][8]: _Exp4 -> [296][_Exp5]<! !_Exp4 @ !>                                                                               |
+|   [9][15][8]: _Exp5 -> [302][_Exp6]<! !_Exp5 @ !>                                                                                |
+|   [8][14][8]: _Exp6 -> [308][_Exp7]<! !_Exp6 @ !>                                                                                |
+|   [7][13][8]: _Exp7 -> [314][_Exp8]<! !_Exp7 @ !>                                                                                |
+|   [6][12][8]: _Exp8 -> [320][_Exp9]<! !_Exp8 @ !>                                                                                |
+|   [5][11][8]: _Exp9 -> [322][_Exp10] BEGIN [pm-lr]                                                                               |
+|   [4][10][8]: _Exp10 -> [330][_Exp11] BEGIN [pm-lr]                                                                              |
+|   [3][9][8]: _Exp11 -> [337][_Expression]<! !_Exp11 @ !>                                                                         |
+|   [2][129][8]: _Expression -> [366][_If]< "if" "(" [ "var" NAME ":" _Type "=" ] _Expression @ ")" _Block +[ "else" _ElseStat ] > |
+|   [0][120][0]: _If -> [493][_Statement]<! !_If @ !>                                                                              |
 | [PREDECESSORS 9-9]: [9]                                                                                                          |
 | [SUCCESORS 12-12]: [12]                                                                                                          |
 +----------------------------------------------------------------------------------------------------------------------------------+
@@ -209,24 +201,25 @@
 [0]
 ++==================================================================================================================================++
 || [12]: {OPEN_BRACKET} (                                                                                                           ||
-|| [162][_ExpPrimitive]< _ExpPrimitive "(" @ [ _Expression { "," _Expression } ] ")" >                                              ||
+|| [147][_ExpPrimitive]< _ExpPrimitive "(" @ [ _Expression { "," _Expression } ] ")" >                                              ||
 || [AST-INSTRUCTIONS]:                                                                                                              ||
+||   + Token(1)                                                                                                                     ||
 || [RETURN STACK]:                                                                                                                  ||
-||   [15][21][8]: _ExpPrimitive -> [245][_Exp0]<< !_ExpPrimitive @ >>                                                               ||
-||   [14][20][8]: _Exp0 -> [251][_Exp1]<< !_Exp0 @ >>                                                                               ||
-||   [13][19][8]: _Exp1 -> [263][_Exp2]<< !_Exp1 @ >>                                                                               ||
-||   [12][18][8]: _Exp2 -> [278][_Exp3]<< !_Exp2 @ >>                                                                               ||
-||   [11][17][8]: _Exp3 -> [287][_Exp4]<< !_Exp3 @ >>                                                                               ||
-||   [10][16][8]: _Exp4 -> [308][_Exp5]<< !_Exp4 @ >>                                                                               ||
-||   [9][15][8]: _Exp5 -> [314][_Exp6]<< !_Exp5 @ >>                                                                                ||
-||   [8][14][8]: _Exp6 -> [320][_Exp7]<< !_Exp6 @ >>                                                                                ||
-||   [7][13][8]: _Exp7 -> [326][_Exp8]<< !_Exp7 @ >>                                                                                ||
-||   [6][12][8]: _Exp8 -> [332][_Exp9]<< !_Exp8 @ >>                                                                                ||
-||   [5][11][8]: _Exp9 -> [340][_Exp10]<< !_Exp9 @ >>                                                                               ||
-||   [4][10][8]: _Exp10 -> [346][_Exp11]<< !_Exp10 @ >>                                                                             ||
-||   [3][9][8]: _Exp11 -> [349][_Expression]<< !_Exp11 @ >>                                                                         ||
-||   [2][135][8]: _Expression -> [378][_If]< "if" "(" [ "var" NAME ":" _Type "=" ] _Expression @ ")" _Block +[ "else" _ElseStat ] > ||
-||   [0][126][0]: _If -> [517][_Statement]<< !_If @ >>                                                                              ||
+||   [15][21][8]: _ExpPrimitive -> [232][_Exp0]<! !_ExpPrimitive @ !>                                                               ||
+||   [14][20][8]: _Exp0 -> [239][_Exp1]<! !_Exp0 @ !>                                                                               ||
+||   [13][19][8]: _Exp1 -> [251][_Exp2]<! !_Exp1 @ !>                                                                               ||
+||   [12][18][8]: _Exp2 -> [266][_Exp3]<! !_Exp2 @ !>                                                                               ||
+||   [11][17][8]: _Exp3 -> [275][_Exp4]<! !_Exp3 @ !>                                                                               ||
+||   [10][16][8]: _Exp4 -> [296][_Exp5]<! !_Exp4 @ !>                                                                               ||
+||   [9][15][8]: _Exp5 -> [302][_Exp6]<! !_Exp5 @ !>                                                                                ||
+||   [8][14][8]: _Exp6 -> [308][_Exp7]<! !_Exp6 @ !>                                                                                ||
+||   [7][13][8]: _Exp7 -> [314][_Exp8]<! !_Exp7 @ !>                                                                                ||
+||   [6][12][8]: _Exp8 -> [320][_Exp9]<! !_Exp8 @ !>                                                                                ||
+||   [5][11][8]: _Exp9 -> [322][_Exp10] BEGIN [pm-lr]                                                                               ||
+||   [4][10][8]: _Exp10 -> [330][_Exp11] BEGIN [pm-lr]                                                                              ||
+||   [3][9][8]: _Exp11 -> [337][_Expression]<! !_Exp11 @ !>                                                                         ||
+||   [2][129][8]: _Expression -> [366][_If]< "if" "(" [ "var" NAME ":" _Type "=" ] _Expression @ ")" _Block +[ "else" _ElseStat ] > ||
+||   [0][120][0]: _If -> [493][_Statement]<! !_If @ !>                                                                              ||
 || [PREDECESSORS 10-10]: [10]                                                                                                       ||
 || [SUCCESORS 13-13]: [13]                                                                                                          ||
 ++==================================================================================================================================++
@@ -237,24 +230,25 @@
 [0]
 ++==================================================================================================================================++
 || [13]: {CLOSE_BRACKET} )                                                                                                          ||
-|| [166][_ExpPrimitive]< _ExpPrimitive "(" [ _Expression { "," _Expression } ] ")" @ >                                              ||
+|| [151][_ExpPrimitive]< _ExpPrimitive "(" [ _Expression { "," _Expression } ] ")" @ >                                              ||
 || [AST-INSTRUCTIONS]:                                                                                                              ||
+||   + Token(5)                                                                                                                     ||
 || [RETURN STACK]:                                                                                                                  ||
-||   [15][21][8]: _ExpPrimitive -> [245][_Exp0]<< !_ExpPrimitive @ >>                                                               ||
-||   [14][20][8]: _Exp0 -> [251][_Exp1]<< !_Exp0 @ >>                                                                               ||
-||   [13][19][8]: _Exp1 -> [263][_Exp2]<< !_Exp1 @ >>                                                                               ||
-||   [12][18][8]: _Exp2 -> [278][_Exp3]<< !_Exp2 @ >>                                                                               ||
-||   [11][17][8]: _Exp3 -> [287][_Exp4]<< !_Exp3 @ >>                                                                               ||
-||   [10][16][8]: _Exp4 -> [308][_Exp5]<< !_Exp4 @ >>                                                                               ||
-||   [9][15][8]: _Exp5 -> [314][_Exp6]<< !_Exp5 @ >>                                                                                ||
-||   [8][14][8]: _Exp6 -> [320][_Exp7]<< !_Exp6 @ >>                                                                                ||
-||   [7][13][8]: _Exp7 -> [326][_Exp8]<< !_Exp7 @ >>                                                                                ||
-||   [6][12][8]: _Exp8 -> [332][_Exp9]<< !_Exp8 @ >>                                                                                ||
-||   [5][11][8]: _Exp9 -> [340][_Exp10]<< !_Exp9 @ >>                                                                               ||
-||   [4][10][8]: _Exp10 -> [346][_Exp11]<< !_Exp10 @ >>                                                                             ||
-||   [3][9][8]: _Exp11 -> [349][_Expression]<< !_Exp11 @ >>                                                                         ||
-||   [2][135][8]: _Expression -> [378][_If]< "if" "(" [ "var" NAME ":" _Type "=" ] _Expression @ ")" _Block +[ "else" _ElseStat ] > ||
-||   [0][126][0]: _If -> [517][_Statement]<< !_If @ >>                                                                              ||
+||   [15][21][8]: _ExpPrimitive -> [232][_Exp0]<! !_ExpPrimitive @ !>                                                               ||
+||   [14][20][8]: _Exp0 -> [239][_Exp1]<! !_Exp0 @ !>                                                                               ||
+||   [13][19][8]: _Exp1 -> [251][_Exp2]<! !_Exp1 @ !>                                                                               ||
+||   [12][18][8]: _Exp2 -> [266][_Exp3]<! !_Exp2 @ !>                                                                               ||
+||   [11][17][8]: _Exp3 -> [275][_Exp4]<! !_Exp3 @ !>                                                                               ||
+||   [10][16][8]: _Exp4 -> [296][_Exp5]<! !_Exp4 @ !>                                                                               ||
+||   [9][15][8]: _Exp5 -> [302][_Exp6]<! !_Exp5 @ !>                                                                                ||
+||   [8][14][8]: _Exp6 -> [308][_Exp7]<! !_Exp6 @ !>                                                                                ||
+||   [7][13][8]: _Exp7 -> [314][_Exp8]<! !_Exp7 @ !>                                                                                ||
+||   [6][12][8]: _Exp8 -> [320][_Exp9]<! !_Exp8 @ !>                                                                                ||
+||   [5][11][8]: _Exp9 -> [322][_Exp10] BEGIN [pm-lr]                                                                               ||
+||   [4][10][8]: _Exp10 -> [330][_Exp11] BEGIN [pm-lr]                                                                              ||
+||   [3][9][8]: _Exp11 -> [337][_Expression]<! !_Exp11 @ !>                                                                         ||
+||   [2][129][8]: _Expression -> [366][_If]< "if" "(" [ "var" NAME ":" _Type "=" ] _Expression @ ")" _Block +[ "else" _ElseStat ] > ||
+||   [0][120][0]: _If -> [493][_Statement]<! !_If @ !>                                                                              ||
 || [PREDECESSORS 12-12]: [12]                                                                                                       ||
 || [SUCCESORS 14-14]: [14]                                                                                                          ||
 ++==================================================================================================================================++
@@ -263,24 +257,29 @@
 |
 +----------------------------------------------------------------------------------------------------------------------------------+
 | [14]: <Ending>                                                                                                                   |
-| [245][_Exp0]<< !_ExpPrimitive @ >>                                                                                               |
+| [232][_Exp0]<! !_ExpPrimitive @ !>                                                                                               |
 | [AST-INSTRUCTIONS]:                                                                                                              |
-|   - EndObject()                                                                                                                  |
+|   + CreateObject(CallExpression)                                                                                                 |
+|   + Field(CallExpression::function, 0)                                                                                           |
+|   + Field(CallExpression::arguments, 2)                                                                                          |
+|   + Field(CallExpression::arguments, 4)                                                                                          |
+|   + StackEnd()                                                                                                                   |
+|   > StackBegin()                                                                                                                 |
 | [RETURN STACK]:                                                                                                                  |
-|   [14][20][8]: _Exp0 -> [251][_Exp1]<< !_Exp0 @ >>                                                                               |
-|   [13][19][8]: _Exp1 -> [263][_Exp2]<< !_Exp1 @ >>                                                                               |
-|   [12][18][8]: _Exp2 -> [278][_Exp3]<< !_Exp2 @ >>                                                                               |
-|   [11][17][8]: _Exp3 -> [287][_Exp4]<< !_Exp3 @ >>                                                                               |
-|   [10][16][8]: _Exp4 -> [308][_Exp5]<< !_Exp4 @ >>                                                                               |
-|   [9][15][8]: _Exp5 -> [314][_Exp6]<< !_Exp5 @ >>                                                                                |
-|   [8][14][8]: _Exp6 -> [320][_Exp7]<< !_Exp6 @ >>                                                                                |
-|   [7][13][8]: _Exp7 -> [326][_Exp8]<< !_Exp7 @ >>                                                                                |
-|   [6][12][8]: _Exp8 -> [332][_Exp9]<< !_Exp8 @ >>                                                                                |
-|   [5][11][8]: _Exp9 -> [340][_Exp10]<< !_Exp9 @ >>                                                                               |
-|   [4][10][8]: _Exp10 -> [346][_Exp11]<< !_Exp10 @ >>                                                                             |
-|   [3][9][8]: _Exp11 -> [349][_Expression]<< !_Exp11 @ >>                                                                         |
-|   [2][135][8]: _Expression -> [378][_If]< "if" "(" [ "var" NAME ":" _Type "=" ] _Expression @ ")" _Block +[ "else" _ElseStat ] > |
-|   [0][126][0]: _If -> [517][_Statement]<< !_If @ >>                                                                              |
+|   [14][20][8]: _Exp0 -> [239][_Exp1]<! !_Exp0 @ !>                                                                               |
+|   [13][19][8]: _Exp1 -> [251][_Exp2]<! !_Exp1 @ !>                                                                               |
+|   [12][18][8]: _Exp2 -> [266][_Exp3]<! !_Exp2 @ !>                                                                               |
+|   [11][17][8]: _Exp3 -> [275][_Exp4]<! !_Exp3 @ !>                                                                               |
+|   [10][16][8]: _Exp4 -> [296][_Exp5]<! !_Exp4 @ !>                                                                               |
+|   [9][15][8]: _Exp5 -> [302][_Exp6]<! !_Exp5 @ !>                                                                                |
+|   [8][14][8]: _Exp6 -> [308][_Exp7]<! !_Exp6 @ !>                                                                                |
+|   [7][13][8]: _Exp7 -> [314][_Exp8]<! !_Exp7 @ !>                                                                                |
+|   [6][12][8]: _Exp8 -> [320][_Exp9]<! !_Exp8 @ !>                                                                                |
+|   [5][11][8]: _Exp9 -> [322][_Exp10] BEGIN [pm-lr]                                                                               |
+|   [4][10][8]: _Exp10 -> [330][_Exp11] BEGIN [pm-lr]                                                                              |
+|   [3][9][8]: _Exp11 -> [337][_Expression]<! !_Exp11 @ !>                                                                         |
+|   [2][129][8]: _Expression -> [366][_If]< "if" "(" [ "var" NAME ":" _Type "=" ] _Expression @ ")" _Block +[ "else" _ElseStat ] > |
+|   [0][120][0]: _If -> [493][_Statement]<! !_If @ !>                                                                              |
 | [PREDECESSORS 13-13]: [13]                                                                                                       |
 | [SUCCESORS 15-15]: [15]                                                                                                          |
 +----------------------------------------------------------------------------------------------------------------------------------+
@@ -289,25 +288,24 @@
 |
 +----------------------------------------------------------------------------------------------------------------------------------+
 | [15]: <Ending>                                                                                                                   |
-| [251][_Exp1]<< !_Exp0 @ >>                                                                                                       |
+| [239][_Exp1]<! !_Exp0 @ !>                                                                                                       |
 | [AST-INSTRUCTIONS]:                                                                                                              |
-|   - ReopenObject()                                                                                                               |
-|   - EndObject()                                                                                                                  |
-|   > ReopenObject()                                                                                                               |
+|   + StackEnd()                                                                                                                   |
+|   > StackBegin()                                                                                                                 |
 | [RETURN STACK]:                                                                                                                  |
-|   [13][19][8]: _Exp1 -> [263][_Exp2]<< !_Exp1 @ >>                                                                               |
-|   [12][18][8]: _Exp2 -> [278][_Exp3]<< !_Exp2 @ >>                                                                               |
-|   [11][17][8]: _Exp3 -> [287][_Exp4]<< !_Exp3 @ >>                                                                               |
-|   [10][16][8]: _Exp4 -> [308][_Exp5]<< !_Exp4 @ >>                                                                               |
-|   [9][15][8]: _Exp5 -> [314][_Exp6]<< !_Exp5 @ >>                                                                                |
-|   [8][14][8]: _Exp6 -> [320][_Exp7]<< !_Exp6 @ >>                                                                                |
-|   [7][13][8]: _Exp7 -> [326][_Exp8]<< !_Exp7 @ >>                                                                                |
-|   [6][12][8]: _Exp8 -> [332][_Exp9]<< !_Exp8 @ >>                                                                                |
-|   [5][11][8]: _Exp9 -> [340][_Exp10]<< !_Exp9 @ >>                                                                               |
-|   [4][10][8]: _Exp10 -> [346][_Exp11]<< !_Exp10 @ >>                                                                             |
-|   [3][9][8]: _Exp11 -> [349][_Expression]<< !_Exp11 @ >>                                                                         |
-|   [2][135][8]: _Expression -> [378][_If]< "if" "(" [ "var" NAME ":" _Type "=" ] _Expression @ ")" _Block +[ "else" _ElseStat ] > |
-|   [0][126][0]: _If -> [517][_Statement]<< !_If @ >>                                                                              |
+|   [13][19][8]: _Exp1 -> [251][_Exp2]<! !_Exp1 @ !>                                                                               |
+|   [12][18][8]: _Exp2 -> [266][_Exp3]<! !_Exp2 @ !>                                                                               |
+|   [11][17][8]: _Exp3 -> [275][_Exp4]<! !_Exp3 @ !>                                                                               |
+|   [10][16][8]: _Exp4 -> [296][_Exp5]<! !_Exp4 @ !>                                                                               |
+|   [9][15][8]: _Exp5 -> [302][_Exp6]<! !_Exp5 @ !>                                                                                |
+|   [8][14][8]: _Exp6 -> [308][_Exp7]<! !_Exp6 @ !>                                                                                |
+|   [7][13][8]: _Exp7 -> [314][_Exp8]<! !_Exp7 @ !>                                                                                |
+|   [6][12][8]: _Exp8 -> [320][_Exp9]<! !_Exp8 @ !>                                                                                |
+|   [5][11][8]: _Exp9 -> [322][_Exp10] BEGIN [pm-lr]                                                                               |
+|   [4][10][8]: _Exp10 -> [330][_Exp11] BEGIN [pm-lr]                                                                              |
+|   [3][9][8]: _Exp11 -> [337][_Expression]<! !_Exp11 @ !>                                                                         |
+|   [2][129][8]: _Expression -> [366][_If]< "if" "(" [ "var" NAME ":" _Type "=" ] _Expression @ ")" _Block +[ "else" _ElseStat ] > |
+|   [0][120][0]: _If -> [493][_Statement]<! !_If @ !>                                                                              |
 | [PREDECESSORS 14-14]: [14]                                                                                                       |
 | [SUCCESORS 16-16]: [16]                                                                                                          |
 +----------------------------------------------------------------------------------------------------------------------------------+
@@ -316,23 +314,23 @@
 |
 +----------------------------------------------------------------------------------------------------------------------------------+
 | [16]: <Ending>                                                                                                                   |
-| [263][_Exp2]<< !_Exp1 @ >>                                                                                                       |
+| [251][_Exp2]<! !_Exp1 @ !>                                                                                                       |
 | [AST-INSTRUCTIONS]:                                                                                                              |
-|   - EndObject()                                                                                                                  |
-|   > ReopenObject()                                                                                                               |
+|   + StackEnd()                                                                                                                   |
+|   > StackBegin()                                                                                                                 |
 | [RETURN STACK]:                                                                                                                  |
-|   [12][18][8]: _Exp2 -> [278][_Exp3]<< !_Exp2 @ >>                                                                               |
-|   [11][17][8]: _Exp3 -> [287][_Exp4]<< !_Exp3 @ >>                                                                               |
-|   [10][16][8]: _Exp4 -> [308][_Exp5]<< !_Exp4 @ >>                                                                               |
-|   [9][15][8]: _Exp5 -> [314][_Exp6]<< !_Exp5 @ >>                                                                                |
-|   [8][14][8]: _Exp6 -> [320][_Exp7]<< !_Exp6 @ >>                                                                                |
-|   [7][13][8]: _Exp7 -> [326][_Exp8]<< !_Exp7 @ >>                                                                                |
-|   [6][12][8]: _Exp8 -> [332][_Exp9]<< !_Exp8 @ >>                                                                                |
-|   [5][11][8]: _Exp9 -> [340][_Exp10]<< !_Exp9 @ >>                                                                               |
-|   [4][10][8]: _Exp10 -> [346][_Exp11]<< !_Exp10 @ >>                                                                             |
-|   [3][9][8]: _Exp11 -> [349][_Expression]<< !_Exp11 @ >>                                                                         |
-|   [2][135][8]: _Expression -> [378][_If]< "if" "(" [ "var" NAME ":" _Type "=" ] _Expression @ ")" _Block +[ "else" _ElseStat ] > |
-|   [0][126][0]: _If -> [517][_Statement]<< !_If @ >>                                                                              |
+|   [12][18][8]: _Exp2 -> [266][_Exp3]<! !_Exp2 @ !>                                                                               |
+|   [11][17][8]: _Exp3 -> [275][_Exp4]<! !_Exp3 @ !>                                                                               |
+|   [10][16][8]: _Exp4 -> [296][_Exp5]<! !_Exp4 @ !>                                                                               |
+|   [9][15][8]: _Exp5 -> [302][_Exp6]<! !_Exp5 @ !>                                                                                |
+|   [8][14][8]: _Exp6 -> [308][_Exp7]<! !_Exp6 @ !>                                                                                |
+|   [7][13][8]: _Exp7 -> [314][_Exp8]<! !_Exp7 @ !>                                                                                |
+|   [6][12][8]: _Exp8 -> [320][_Exp9]<! !_Exp8 @ !>                                                                                |
+|   [5][11][8]: _Exp9 -> [322][_Exp10] BEGIN [pm-lr]                                                                               |
+|   [4][10][8]: _Exp10 -> [330][_Exp11] BEGIN [pm-lr]                                                                              |
+|   [3][9][8]: _Exp11 -> [337][_Expression]<! !_Exp11 @ !>                                                                         |
+|   [2][129][8]: _Expression -> [366][_If]< "if" "(" [ "var" NAME ":" _Type "=" ] _Expression @ ")" _Block +[ "else" _ElseStat ] > |
+|   [0][120][0]: _If -> [493][_Statement]<! !_If @ !>                                                                              |
 | [PREDECESSORS 15-15]: [15]                                                                                                       |
 | [SUCCESORS 17-17]: [17]                                                                                                          |
 +----------------------------------------------------------------------------------------------------------------------------------+
@@ -341,22 +339,22 @@
 |
 +----------------------------------------------------------------------------------------------------------------------------------+
 | [17]: <Ending>                                                                                                                   |
-| [278][_Exp3]<< !_Exp2 @ >>                                                                                                       |
+| [266][_Exp3]<! !_Exp2 @ !>                                                                                                       |
 | [AST-INSTRUCTIONS]:                                                                                                              |
-|   - EndObject()                                                                                                                  |
-|   > ReopenObject()                                                                                                               |
+|   + StackEnd()                                                                                                                   |
+|   > StackBegin()                                                                                                                 |
 | [RETURN STACK]:                                                                                                                  |
-|   [11][17][8]: _Exp3 -> [287][_Exp4]<< !_Exp3 @ >>                                                                               |
-|   [10][16][8]: _Exp4 -> [308][_Exp5]<< !_Exp4 @ >>                                                                               |
-|   [9][15][8]: _Exp5 -> [314][_Exp6]<< !_Exp5 @ >>                                                                                |
-|   [8][14][8]: _Exp6 -> [320][_Exp7]<< !_Exp6 @ >>                                                                                |
-|   [7][13][8]: _Exp7 -> [326][_Exp8]<< !_Exp7 @ >>                                                                                |
-|   [6][12][8]: _Exp8 -> [332][_Exp9]<< !_Exp8 @ >>                                                                                |
-|   [5][11][8]: _Exp9 -> [340][_Exp10]<< !_Exp9 @ >>                                                                               |
-|   [4][10][8]: _Exp10 -> [346][_Exp11]<< !_Exp10 @ >>                                                                             |
-|   [3][9][8]: _Exp11 -> [349][_Expression]<< !_Exp11 @ >>                                                                         |
-|   [2][135][8]: _Expression -> [378][_If]< "if" "(" [ "var" NAME ":" _Type "=" ] _Expression @ ")" _Block +[ "else" _ElseStat ] > |
-|   [0][126][0]: _If -> [517][_Statement]<< !_If @ >>                                                                              |
+|   [11][17][8]: _Exp3 -> [275][_Exp4]<! !_Exp3 @ !>                                                                               |
+|   [10][16][8]: _Exp4 -> [296][_Exp5]<! !_Exp4 @ !>                                                                               |
+|   [9][15][8]: _Exp5 -> [302][_Exp6]<! !_Exp5 @ !>                                                                                |
+|   [8][14][8]: _Exp6 -> [308][_Exp7]<! !_Exp6 @ !>                                                                                |
+|   [7][13][8]: _Exp7 -> [314][_Exp8]<! !_Exp7 @ !>                                                                                |
+|   [6][12][8]: _Exp8 -> [320][_Exp9]<! !_Exp8 @ !>                                                                                |
+|   [5][11][8]: _Exp9 -> [322][_Exp10] BEGIN [pm-lr]                                                                               |
+|   [4][10][8]: _Exp10 -> [330][_Exp11] BEGIN [pm-lr]                                                                              |
+|   [3][9][8]: _Exp11 -> [337][_Expression]<! !_Exp11 @ !>                                                                         |
+|   [2][129][8]: _Expression -> [366][_If]< "if" "(" [ "var" NAME ":" _Type "=" ] _Expression @ ")" _Block +[ "else" _ElseStat ] > |
+|   [0][120][0]: _If -> [493][_Statement]<! !_If @ !>                                                                              |
 | [PREDECESSORS 16-16]: [16]                                                                                                       |
 | [SUCCESORS 18-18]: [18]                                                                                                          |
 +----------------------------------------------------------------------------------------------------------------------------------+
@@ -365,21 +363,21 @@
 |
 +----------------------------------------------------------------------------------------------------------------------------------+
 | [18]: <Ending>                                                                                                                   |
-| [287][_Exp4]<< !_Exp3 @ >>                                                                                                       |
+| [275][_Exp4]<! !_Exp3 @ !>                                                                                                       |
 | [AST-INSTRUCTIONS]:                                                                                                              |
-|   - EndObject()                                                                                                                  |
-|   > ReopenObject()                                                                                                               |
+|   + StackEnd()                                                                                                                   |
+|   > StackBegin()                                                                                                                 |
 | [RETURN STACK]:                                                                                                                  |
-|   [10][16][8]: _Exp4 -> [308][_Exp5]<< !_Exp4 @ >>                                                                               |
-|   [9][15][8]: _Exp5 -> [314][_Exp6]<< !_Exp5 @ >>                                                                                |
-|   [8][14][8]: _Exp6 -> [320][_Exp7]<< !_Exp6 @ >>                                                                                |
-|   [7][13][8]: _Exp7 -> [326][_Exp8]<< !_Exp7 @ >>                                                                                |
-|   [6][12][8]: _Exp8 -> [332][_Exp9]<< !_Exp8 @ >>                                                                                |
-|   [5][11][8]: _Exp9 -> [340][_Exp10]<< !_Exp9 @ >>                                                                               |
-|   [4][10][8]: _Exp10 -> [346][_Exp11]<< !_Exp10 @ >>                                                                             |
-|   [3][9][8]: _Exp11 -> [349][_Expression]<< !_Exp11 @ >>                                                                         |
-|   [2][135][8]: _Expression -> [378][_If]< "if" "(" [ "var" NAME ":" _Type "=" ] _Expression @ ")" _Block +[ "else" _ElseStat ] > |
-|   [0][126][0]: _If -> [517][_Statement]<< !_If @ >>                                                                              |
+|   [10][16][8]: _Exp4 -> [296][_Exp5]<! !_Exp4 @ !>                                                                               |
+|   [9][15][8]: _Exp5 -> [302][_Exp6]<! !_Exp5 @ !>                                                                                |
+|   [8][14][8]: _Exp6 -> [308][_Exp7]<! !_Exp6 @ !>                                                                                |
+|   [7][13][8]: _Exp7 -> [314][_Exp8]<! !_Exp7 @ !>                                                                                |
+|   [6][12][8]: _Exp8 -> [320][_Exp9]<! !_Exp8 @ !>                                                                                |
+|   [5][11][8]: _Exp9 -> [322][_Exp10] BEGIN [pm-lr]                                                                               |
+|   [4][10][8]: _Exp10 -> [330][_Exp11] BEGIN [pm-lr]                                                                              |
+|   [3][9][8]: _Exp11 -> [337][_Expression]<! !_Exp11 @ !>                                                                         |
+|   [2][129][8]: _Expression -> [366][_If]< "if" "(" [ "var" NAME ":" _Type "=" ] _Expression @ ")" _Block +[ "else" _ElseStat ] > |
+|   [0][120][0]: _If -> [493][_Statement]<! !_If @ !>                                                                              |
 | [PREDECESSORS 17-17]: [17]                                                                                                       |
 | [SUCCESORS 19-19]: [19]                                                                                                          |
 +----------------------------------------------------------------------------------------------------------------------------------+
@@ -388,20 +386,20 @@
 |
 +----------------------------------------------------------------------------------------------------------------------------------+
 | [19]: <Ending>                                                                                                                   |
-| [308][_Exp5]<< !_Exp4 @ >>                                                                                                       |
+| [296][_Exp5]<! !_Exp4 @ !>                                                                                                       |
 | [AST-INSTRUCTIONS]:                                                                                                              |
-|   - EndObject()                                                                                                                  |
-|   > ReopenObject()                                                                                                               |
+|   + StackEnd()                                                                                                                   |
+|   > StackBegin()                                                                                                                 |
 | [RETURN STACK]:                                                                                                                  |
-|   [9][15][8]: _Exp5 -> [314][_Exp6]<< !_Exp5 @ >>                                                                                |
-|   [8][14][8]: _Exp6 -> [320][_Exp7]<< !_Exp6 @ >>                                                                                |
-|   [7][13][8]: _Exp7 -> [326][_Exp8]<< !_Exp7 @ >>                                                                                |
-|   [6][12][8]: _Exp8 -> [332][_Exp9]<< !_Exp8 @ >>                                                                                |
-|   [5][11][8]: _Exp9 -> [340][_Exp10]<< !_Exp9 @ >>                                                                               |
-|   [4][10][8]: _Exp10 -> [346][_Exp11]<< !_Exp10 @ >>                                                                             |
-|   [3][9][8]: _Exp11 -> [349][_Expression]<< !_Exp11 @ >>                                                                         |
-|   [2][135][8]: _Expression -> [378][_If]< "if" "(" [ "var" NAME ":" _Type "=" ] _Expression @ ")" _Block +[ "else" _ElseStat ] > |
-|   [0][126][0]: _If -> [517][_Statement]<< !_If @ >>                                                                              |
+|   [9][15][8]: _Exp5 -> [302][_Exp6]<! !_Exp5 @ !>                                                                                |
+|   [8][14][8]: _Exp6 -> [308][_Exp7]<! !_Exp6 @ !>                                                                                |
+|   [7][13][8]: _Exp7 -> [314][_Exp8]<! !_Exp7 @ !>                                                                                |
+|   [6][12][8]: _Exp8 -> [320][_Exp9]<! !_Exp8 @ !>                                                                                |
+|   [5][11][8]: _Exp9 -> [322][_Exp10] BEGIN [pm-lr]                                                                               |
+|   [4][10][8]: _Exp10 -> [330][_Exp11] BEGIN [pm-lr]                                                                              |
+|   [3][9][8]: _Exp11 -> [337][_Expression]<! !_Exp11 @ !>                                                                         |
+|   [2][129][8]: _Expression -> [366][_If]< "if" "(" [ "var" NAME ":" _Type "=" ] _Expression @ ")" _Block +[ "else" _ElseStat ] > |
+|   [0][120][0]: _If -> [493][_Statement]<! !_If @ !>                                                                              |
 | [PREDECESSORS 18-18]: [18]                                                                                                       |
 | [SUCCESORS 20-20]: [20]                                                                                                          |
 +----------------------------------------------------------------------------------------------------------------------------------+
@@ -410,19 +408,19 @@
 |
 +----------------------------------------------------------------------------------------------------------------------------------+
 | [20]: <Ending>                                                                                                                   |
-| [314][_Exp6]<< !_Exp5 @ >>                                                                                                       |
+| [302][_Exp6]<! !_Exp5 @ !>                                                                                                       |
 | [AST-INSTRUCTIONS]:                                                                                                              |
-|   - EndObject()                                                                                                                  |
-|   > ReopenObject()                                                                                                               |
+|   + StackEnd()                                                                                                                   |
+|   > StackBegin()                                                                                                                 |
 | [RETURN STACK]:                                                                                                                  |
-|   [8][14][8]: _Exp6 -> [320][_Exp7]<< !_Exp6 @ >>                                                                                |
-|   [7][13][8]: _Exp7 -> [326][_Exp8]<< !_Exp7 @ >>                                                                                |
-|   [6][12][8]: _Exp8 -> [332][_Exp9]<< !_Exp8 @ >>                                                                                |
-|   [5][11][8]: _Exp9 -> [340][_Exp10]<< !_Exp9 @ >>                                                                               |
-|   [4][10][8]: _Exp10 -> [346][_Exp11]<< !_Exp10 @ >>                                                                             |
-|   [3][9][8]: _Exp11 -> [349][_Expression]<< !_Exp11 @ >>                                                                         |
-|   [2][135][8]: _Expression -> [378][_If]< "if" "(" [ "var" NAME ":" _Type "=" ] _Expression @ ")" _Block +[ "else" _ElseStat ] > |
-|   [0][126][0]: _If -> [517][_Statement]<< !_If @ >>                                                                              |
+|   [8][14][8]: _Exp6 -> [308][_Exp7]<! !_Exp6 @ !>                                                                                |
+|   [7][13][8]: _Exp7 -> [314][_Exp8]<! !_Exp7 @ !>                                                                                |
+|   [6][12][8]: _Exp8 -> [320][_Exp9]<! !_Exp8 @ !>                                                                                |
+|   [5][11][8]: _Exp9 -> [322][_Exp10] BEGIN [pm-lr]                                                                               |
+|   [4][10][8]: _Exp10 -> [330][_Exp11] BEGIN [pm-lr]                                                                              |
+|   [3][9][8]: _Exp11 -> [337][_Expression]<! !_Exp11 @ !>                                                                         |
+|   [2][129][8]: _Expression -> [366][_If]< "if" "(" [ "var" NAME ":" _Type "=" ] _Expression @ ")" _Block +[ "else" _ElseStat ] > |
+|   [0][120][0]: _If -> [493][_Statement]<! !_If @ !>                                                                              |
 | [PREDECESSORS 19-19]: [19]                                                                                                       |
 | [SUCCESORS 21-21]: [21]                                                                                                          |
 +----------------------------------------------------------------------------------------------------------------------------------+
@@ -431,18 +429,18 @@
 |
 +----------------------------------------------------------------------------------------------------------------------------------+
 | [21]: <Ending>                                                                                                                   |
-| [320][_Exp7]<< !_Exp6 @ >>                                                                                                       |
+| [308][_Exp7]<! !_Exp6 @ !>                                                                                                       |
 | [AST-INSTRUCTIONS]:                                                                                                              |
-|   - EndObject()                                                                                                                  |
-|   > ReopenObject()                                                                                                               |
+|   + StackEnd()                                                                                                                   |
+|   > StackBegin()                                                                                                                 |
 | [RETURN STACK]:                                                                                                                  |
-|   [7][13][8]: _Exp7 -> [326][_Exp8]<< !_Exp7 @ >>                                                                                |
-|   [6][12][8]: _Exp8 -> [332][_Exp9]<< !_Exp8 @ >>                                                                                |
-|   [5][11][8]: _Exp9 -> [340][_Exp10]<< !_Exp9 @ >>                                                                               |
-|   [4][10][8]: _Exp10 -> [346][_Exp11]<< !_Exp10 @ >>                                                                             |
-|   [3][9][8]: _Exp11 -> [349][_Expression]<< !_Exp11 @ >>                                                                         |
-|   [2][135][8]: _Expression -> [378][_If]< "if" "(" [ "var" NAME ":" _Type "=" ] _Expression @ ")" _Block +[ "else" _ElseStat ] > |
-|   [0][126][0]: _If -> [517][_Statement]<< !_If @ >>                                                                              |
+|   [7][13][8]: _Exp7 -> [314][_Exp8]<! !_Exp7 @ !>                                                                                |
+|   [6][12][8]: _Exp8 -> [320][_Exp9]<! !_Exp8 @ !>                                                                                |
+|   [5][11][8]: _Exp9 -> [322][_Exp10] BEGIN [pm-lr]                                                                               |
+|   [4][10][8]: _Exp10 -> [330][_Exp11] BEGIN [pm-lr]                                                                              |
+|   [3][9][8]: _Exp11 -> [337][_Expression]<! !_Exp11 @ !>                                                                         |
+|   [2][129][8]: _Expression -> [366][_If]< "if" "(" [ "var" NAME ":" _Type "=" ] _Expression @ ")" _Block +[ "else" _ElseStat ] > |
+|   [0][120][0]: _If -> [493][_Statement]<! !_If @ !>                                                                              |
 | [PREDECESSORS 20-20]: [20]                                                                                                       |
 | [SUCCESORS 22-22]: [22]                                                                                                          |
 +----------------------------------------------------------------------------------------------------------------------------------+
@@ -451,17 +449,17 @@
 |
 +----------------------------------------------------------------------------------------------------------------------------------+
 | [22]: <Ending>                                                                                                                   |
-| [326][_Exp8]<< !_Exp7 @ >>                                                                                                       |
+| [314][_Exp8]<! !_Exp7 @ !>                                                                                                       |
 | [AST-INSTRUCTIONS]:                                                                                                              |
-|   - EndObject()                                                                                                                  |
-|   > ReopenObject()                                                                                                               |
+|   + StackEnd()                                                                                                                   |
+|   > StackBegin()                                                                                                                 |
 | [RETURN STACK]:                                                                                                                  |
-|   [6][12][8]: _Exp8 -> [332][_Exp9]<< !_Exp8 @ >>                                                                                |
-|   [5][11][8]: _Exp9 -> [340][_Exp10]<< !_Exp9 @ >>                                                                               |
-|   [4][10][8]: _Exp10 -> [346][_Exp11]<< !_Exp10 @ >>                                                                             |
-|   [3][9][8]: _Exp11 -> [349][_Expression]<< !_Exp11 @ >>                                                                         |
-|   [2][135][8]: _Expression -> [378][_If]< "if" "(" [ "var" NAME ":" _Type "=" ] _Expression @ ")" _Block +[ "else" _ElseStat ] > |
-|   [0][126][0]: _If -> [517][_Statement]<< !_If @ >>                                                                              |
+|   [6][12][8]: _Exp8 -> [320][_Exp9]<! !_Exp8 @ !>                                                                                |
+|   [5][11][8]: _Exp9 -> [322][_Exp10] BEGIN [pm-lr]                                                                               |
+|   [4][10][8]: _Exp10 -> [330][_Exp11] BEGIN [pm-lr]                                                                              |
+|   [3][9][8]: _Exp11 -> [337][_Expression]<! !_Exp11 @ !>                                                                         |
+|   [2][129][8]: _Expression -> [366][_If]< "if" "(" [ "var" NAME ":" _Type "=" ] _Expression @ ")" _Block +[ "else" _ElseStat ] > |
+|   [0][120][0]: _If -> [493][_Statement]<! !_If @ !>                                                                              |
 | [PREDECESSORS 21-21]: [21]                                                                                                       |
 | [SUCCESORS 23-23]: [23]                                                                                                          |
 +----------------------------------------------------------------------------------------------------------------------------------+
@@ -470,16 +468,16 @@
 |
 +----------------------------------------------------------------------------------------------------------------------------------+
 | [23]: <Ending>                                                                                                                   |
-| [332][_Exp9]<< !_Exp8 @ >>                                                                                                       |
+| [320][_Exp9]<! !_Exp8 @ !>                                                                                                       |
 | [AST-INSTRUCTIONS]:                                                                                                              |
-|   - EndObject()                                                                                                                  |
-|   > ReopenObject()                                                                                                               |
+|   + StackEnd()                                                                                                                   |
+|   > StackBegin()                                                                                                                 |
 | [RETURN STACK]:                                                                                                                  |
-|   [5][11][8]: _Exp9 -> [340][_Exp10]<< !_Exp9 @ >>                                                                               |
-|   [4][10][8]: _Exp10 -> [346][_Exp11]<< !_Exp10 @ >>                                                                             |
-|   [3][9][8]: _Exp11 -> [349][_Expression]<< !_Exp11 @ >>                                                                         |
-|   [2][135][8]: _Expression -> [378][_If]< "if" "(" [ "var" NAME ":" _Type "=" ] _Expression @ ")" _Block +[ "else" _ElseStat ] > |
-|   [0][126][0]: _If -> [517][_Statement]<< !_If @ >>                                                                              |
+|   [5][11][8]: _Exp9 -> [322][_Exp10] BEGIN [pm-lr]                                                                               |
+|   [4][10][8]: _Exp10 -> [330][_Exp11] BEGIN [pm-lr]                                                                              |
+|   [3][9][8]: _Exp11 -> [337][_Expression]<! !_Exp11 @ !>                                                                         |
+|   [2][129][8]: _Expression -> [366][_If]< "if" "(" [ "var" NAME ":" _Type "=" ] _Expression @ ")" _Block +[ "else" _ElseStat ] > |
+|   [0][120][0]: _If -> [493][_Statement]<! !_If @ !>                                                                              |
 | [PREDECESSORS 22-22]: [22]                                                                                                       |
 | [SUCCESORS 24-24]: [24]                                                                                                          |
 +----------------------------------------------------------------------------------------------------------------------------------+
@@ -488,14 +486,14 @@
 |
 +----------------------------------------------------------------------------------------------------------------------------------+
 | [24]: <Ending>                                                                                                                   |
-| [340][_Exp10]<< !_Exp9 @ >>                                                                                                      |
+| [322][_Exp10] BEGIN [pm-lr]                                                                                                      |
 | [AST-INSTRUCTIONS]:                                                                                                              |
-|   - EndObject()                                                                                                                  |
+|   + StackEnd()                                                                                                                   |
 | [RETURN STACK]:                                                                                                                  |
-|   [4][10][8]: _Exp10 -> [346][_Exp11]<< !_Exp10 @ >>                                                                             |
-|   [3][9][8]: _Exp11 -> [349][_Expression]<< !_Exp11 @ >>                                                                         |
-|   [2][135][8]: _Expression -> [378][_If]< "if" "(" [ "var" NAME ":" _Type "=" ] _Expression @ ")" _Block +[ "else" _ElseStat ] > |
-|   [0][126][0]: _If -> [517][_Statement]<< !_If @ >>                                                                              |
+|   [4][10][8]: _Exp10 -> [330][_Exp11] BEGIN [pm-lr]                                                                              |
+|   [3][9][8]: _Exp11 -> [337][_Expression]<! !_Exp11 @ !>                                                                         |
+|   [2][129][8]: _Expression -> [366][_If]< "if" "(" [ "var" NAME ":" _Type "=" ] _Expression @ ")" _Block +[ "else" _ElseStat ] > |
+|   [0][120][0]: _If -> [493][_Statement]<! !_If @ !>                                                                              |
 | [PREDECESSORS 23-23]: [23]                                                                                                       |
 | [SUCCESORS 25-25]: [25]                                                                                                          |
 +----------------------------------------------------------------------------------------------------------------------------------+
@@ -504,17 +502,14 @@
 |
 +----------------------------------------------------------------------------------------------------------------------------------+
 | [25]: <Ending>                                                                                                                   |
-| [346][_Exp11]<< !_Exp10 @ >>                                                                                                     |
+| [330][_Exp11] BEGIN [pm-lr]                                                                                                      |
 | [AST-INSTRUCTIONS]:                                                                                                              |
-|   - LriStore()                                                                                                                   |
-|   - DelayFieldAssignment()                                                                                                       |
-|   - LriFetch()                                                                                                                   |
-|   - ReopenObject()                                                                                                               |
-|   - EndObject()                                                                                                                  |
+|   + StackBegin()                                                                                                                 |
+|   + StackEnd()                                                                                                                   |
 | [RETURN STACK]:                                                                                                                  |
-|   [3][9][8]: _Exp11 -> [349][_Expression]<< !_Exp11 @ >>                                                                         |
-|   [2][135][8]: _Expression -> [378][_If]< "if" "(" [ "var" NAME ":" _Type "=" ] _Expression @ ")" _Block +[ "else" _ElseStat ] > |
-|   [0][126][0]: _If -> [517][_Statement]<< !_If @ >>                                                                              |
+|   [3][9][8]: _Exp11 -> [337][_Expression]<! !_Exp11 @ !>                                                                         |
+|   [2][129][8]: _Expression -> [366][_If]< "if" "(" [ "var" NAME ":" _Type "=" ] _Expression @ ")" _Block +[ "else" _ElseStat ] > |
+|   [0][120][0]: _If -> [493][_Statement]<! !_If @ !>                                                                              |
 | [PREDECESSORS 24-24]: [24]                                                                                                       |
 | [SUCCESORS 26-26]: [26]                                                                                                          |
 +----------------------------------------------------------------------------------------------------------------------------------+
@@ -523,16 +518,14 @@
 |
 +----------------------------------------------------------------------------------------------------------------------------------+
 | [26]: <Ending>                                                                                                                   |
-| [349][_Expression]<< !_Exp11 @ >>                                                                                                |
+| [337][_Expression]<! !_Exp11 @ !>                                                                                                |
 | [AST-INSTRUCTIONS]:                                                                                                              |
-|   - LriStore()                                                                                                                   |
-|   - DelayFieldAssignment()                                                                                                       |
-|   - LriFetch()                                                                                                                   |
-|   - ReopenObject()                                                                                                               |
-|   - EndObject()                                                                                                                  |
+|   + StackBegin()                                                                                                                 |
+|   + StackEnd()                                                                                                                   |
+|   > StackBegin()                                                                                                                 |
 | [RETURN STACK]:                                                                                                                  |
-|   [2][135][8]: _Expression -> [378][_If]< "if" "(" [ "var" NAME ":" _Type "=" ] _Expression @ ")" _Block +[ "else" _ElseStat ] > |
-|   [0][126][0]: _If -> [517][_Statement]<< !_If @ >>                                                                              |
+|   [2][129][8]: _Expression -> [366][_If]< "if" "(" [ "var" NAME ":" _Type "=" ] _Expression @ ")" _Block +[ "else" _ElseStat ] > |
+|   [0][120][0]: _If -> [493][_Statement]<! !_If @ !>                                                                              |
 | [PREDECESSORS 25-25]: [25]                                                                                                       |
 | [SUCCESORS 27-27]: [27]                                                                                                          |
 +----------------------------------------------------------------------------------------------------------------------------------+
@@ -541,13 +534,12 @@
 |
 +----------------------------------------------------------------------------------------------------+
 | [27]: <Ending>                                                                                     |
-| [378][_If]< "if" "(" [ "var" NAME ":" _Type "=" ] _Expression @ ")" _Block +[ "else" _ElseStat ] > |
+| [366][_If]< "if" "(" [ "var" NAME ":" _Type "=" ] _Expression @ ")" _Block +[ "else" _ElseStat ] > |
 | [AST-INSTRUCTIONS]:                                                                                |
-|   - ReopenObject()                                                                                 |
-|   - EndObject()                                                                                    |
-|   > Field(IfStatement::expression)                                                                 |
+|   + StackEnd()                                                                                     |
+|   > StackSlot(7)                                                                                   |
 | [RETURN STACK]:                                                                                    |
-|   [0][126][0]: _If -> [517][_Statement]<< !_If @ >>                                                |
+|   [0][120][0]: _If -> [493][_Statement]<! !_If @ !>                                                |
 | [PREDECESSORS 26-26]: [26]                                                                         |
 | [SUCCESORS 28-28]: [28]                                                                            |
 +----------------------------------------------------------------------------------------------------+
@@ -558,10 +550,11 @@
 [0]
 ++====================================================================================================++
 || [28]: {CLOSE_BRACKET} )                                                                            ||
-|| [374][_If]< "if" "(" [ "var" NAME ":" _Type "=" ] _Expression ")" @ _Block +[ "else" _ElseStat ] > ||
+|| [362][_If]< "if" "(" [ "var" NAME ":" _Type "=" ] _Expression ")" @ _Block +[ "else" _ElseStat ] > ||
 || [AST-INSTRUCTIONS]:                                                                                ||
+||   + Token(8)                                                                                       ||
 || [RETURN STACK]:                                                                                    ||
-||   [0][126][0]: _If -> [517][_Statement]<< !_If @ >>                                                ||
+||   [0][120][0]: _If -> [493][_Statement]<! !_If @ !>                                                ||
 || [PREDECESSORS 27-27]: [27]                                                                         ||
 || [SUCCESORS 29-29]: [29]                                                                            ||
 ++====================================================================================================++
@@ -572,12 +565,13 @@
 [0]
 ++===============================================================================================================================++
 || [29]: {OPEN_BRACE} {                                                                                                          ||
-|| [358][_Block]< "{" @ { _Statement } [ NAME ":" ";" ] "}" >                                                                    ||
+|| [346][_Block]< "{" @ { _Statement } [ NAME ":" ";" ] "}" >                                                                    ||
 || [AST-INSTRUCTIONS]:                                                                                                           ||
-||   - BeginObject(BlockStatement)                                                                                               ||
+||   + StackBegin()                                                                                                              ||
+||   + Token(0)                                                                                                                  ||
 || [RETURN STACK]:                                                                                                               ||
-||   [16][136][28]: _Block -> [377][_If]< "if" "(" [ "var" NAME ":" _Type "=" ] _Expression ")" _Block @ +[ "else" _ElseStat ] > ||
-||   [0][126][0]: _If -> [517][_Statement]<< !_If @ >>                                                                           ||
+||   [16][130][28]: _Block -> [365][_If]< "if" "(" [ "var" NAME ":" _Type "=" ] _Expression ")" _Block @ +[ "else" _ElseStat ] > ||
+||   [0][120][0]: _If -> [493][_Statement]<! !_If @ !>                                                                           ||
 || [PREDECESSORS 28-28]: [28]                                                                                                    ||
 || [SUCCESORS 30-30]: [30]                                                                                                       ||
 ++===============================================================================================================================++
@@ -588,13 +582,14 @@
 [0]
 ++===============================================================================================================================++
 || [30]: {KEYWORD_RETURN} return                                                                                                 ||
-|| [495][_Statement]< "return" @ [ _Expression ] ";" >                                                                           ||
+|| [471][_Statement]< "return" @ [ _Expression ] ";" >                                                                           ||
 || [AST-INSTRUCTIONS]:                                                                                                           ||
-||   - BeginObject(ReturnStatement)                                                                                              ||
+||   + StackBegin()                                                                                                              ||
+||   + Token(0)                                                                                                                  ||
 || [RETURN STACK]:                                                                                                               ||
-||   [17][121][29]: _Statement -> [359][_Block]< "{" { _Statement @ } [ NAME ":" ";" ] "}" >                                     ||
-||   [16][136][28]: _Block -> [377][_If]< "if" "(" [ "var" NAME ":" _Type "=" ] _Expression ")" _Block @ +[ "else" _ElseStat ] > ||
-||   [0][126][0]: _If -> [517][_Statement]<< !_If @ >>                                                                           ||
+||   [17][115][29]: _Statement -> [347][_Block]< "{" { _Statement @ } [ NAME ":" ";" ] "}" >                                     ||
+||   [16][130][28]: _Block -> [365][_If]< "if" "(" [ "var" NAME ":" _Type "=" ] _Expression ")" _Block @ +[ "else" _ElseStat ] > ||
+||   [0][120][0]: _If -> [493][_Statement]<! !_If @ !>                                                                           ||
 || [PREDECESSORS 29-29]: [29]                                                                                                    ||
 || [SUCCESORS 31-31]: [31]                                                                                                       ||
 ++===============================================================================================================================++
@@ -605,40 +600,28 @@
 [0]
 ++===============================================================================================================================++
 || [31]: {STRING} "Yes!"                                                                                                         ||
-|| [161][_ExpPrimitive]< STRING @ >                                                                                              ||
+|| [146][_ExpPrimitive]< STRING @ >                                                                                              ||
 || [AST-INSTRUCTIONS]:                                                                                                           ||
-||   - DelayFieldAssignment()                                                                                                    ||
-||   - DelayFieldAssignment()                                                                                                    ||
-||   - DelayFieldAssignment()                                                                                                    ||
-||   - DelayFieldAssignment()                                                                                                    ||
-||   - DelayFieldAssignment()                                                                                                    ||
-||   - DelayFieldAssignment()                                                                                                    ||
-||   - DelayFieldAssignment()                                                                                                    ||
-||   - DelayFieldAssignment()                                                                                                    ||
-||   - DelayFieldAssignment()                                                                                                    ||
-||   - DelayFieldAssignment()                                                                                                    ||
-||   - DelayFieldAssignment()                                                                                                    ||
-||   - BeginObject(StringExpression)                                                                                             ||
-||   + Token()                                                                                                                   ||
-||   + Field(StringExpression::value)                                                                                            ||
+||   + StackBegin()                                                                                                              ||
+||   + Token(0)                                                                                                                  ||
 || [RETURN STACK]:                                                                                                               ||
-||   [31][21][30]: _ExpPrimitive -> [245][_Exp0]<< !_ExpPrimitive @ >>                                                           ||
-||   [30][20][30]: _Exp0 -> [251][_Exp1]<< !_Exp0 @ >>                                                                           ||
-||   [29][19][30]: _Exp1 -> [263][_Exp2]<< !_Exp1 @ >>                                                                           ||
-||   [28][18][30]: _Exp2 -> [278][_Exp3]<< !_Exp2 @ >>                                                                           ||
-||   [27][17][30]: _Exp3 -> [287][_Exp4]<< !_Exp3 @ >>                                                                           ||
-||   [26][16][30]: _Exp4 -> [308][_Exp5]<< !_Exp4 @ >>                                                                           ||
-||   [25][15][30]: _Exp5 -> [314][_Exp6]<< !_Exp5 @ >>                                                                           ||
-||   [24][14][30]: _Exp6 -> [320][_Exp7]<< !_Exp6 @ >>                                                                           ||
-||   [23][13][30]: _Exp7 -> [326][_Exp8]<< !_Exp7 @ >>                                                                           ||
-||   [22][12][30]: _Exp8 -> [332][_Exp9]<< !_Exp8 @ >>                                                                           ||
-||   [21][11][30]: _Exp9 -> [340][_Exp10]<< !_Exp9 @ >>                                                                          ||
-||   [20][10][30]: _Exp10 -> [346][_Exp11]<< !_Exp10 @ >>                                                                        ||
-||   [19][9][30]: _Exp11 -> [349][_Expression]<< !_Exp11 @ >>                                                                    ||
-||   [18][161][30]: _Expression -> [496][_Statement]< "return" [ _Expression @ ] ";" >                                           ||
-||   [17][121][29]: _Statement -> [359][_Block]< "{" { _Statement @ } [ NAME ":" ";" ] "}" >                                     ||
-||   [16][136][28]: _Block -> [377][_If]< "if" "(" [ "var" NAME ":" _Type "=" ] _Expression ")" _Block @ +[ "else" _ElseStat ] > ||
-||   [0][126][0]: _If -> [517][_Statement]<< !_If @ >>                                                                           ||
+||   [31][21][30]: _ExpPrimitive -> [232][_Exp0]<! !_ExpPrimitive @ !>                                                           ||
+||   [30][20][30]: _Exp0 -> [239][_Exp1]<! !_Exp0 @ !>                                                                           ||
+||   [29][19][30]: _Exp1 -> [251][_Exp2]<! !_Exp1 @ !>                                                                           ||
+||   [28][18][30]: _Exp2 -> [266][_Exp3]<! !_Exp2 @ !>                                                                           ||
+||   [27][17][30]: _Exp3 -> [275][_Exp4]<! !_Exp3 @ !>                                                                           ||
+||   [26][16][30]: _Exp4 -> [296][_Exp5]<! !_Exp4 @ !>                                                                           ||
+||   [25][15][30]: _Exp5 -> [302][_Exp6]<! !_Exp5 @ !>                                                                           ||
+||   [24][14][30]: _Exp6 -> [308][_Exp7]<! !_Exp6 @ !>                                                                           ||
+||   [23][13][30]: _Exp7 -> [314][_Exp8]<! !_Exp7 @ !>                                                                           ||
+||   [22][12][30]: _Exp8 -> [320][_Exp9]<! !_Exp8 @ !>                                                                           ||
+||   [21][11][30]: _Exp9 -> [322][_Exp10] BEGIN [pm-lr]                                                                          ||
+||   [20][10][30]: _Exp10 -> [330][_Exp11] BEGIN [pm-lr]                                                                         ||
+||   [19][9][30]: _Exp11 -> [337][_Expression]<! !_Exp11 @ !>                                                                    ||
+||   [18][155][30]: _Expression -> [472][_Statement]< "return" [ _Expression @ ] ";" >                                           ||
+||   [17][115][29]: _Statement -> [347][_Block]< "{" { _Statement @ } [ NAME ":" ";" ] "}" >                                     ||
+||   [16][130][28]: _Block -> [365][_If]< "if" "(" [ "var" NAME ":" _Type "=" ] _Expression ")" _Block @ +[ "else" _ElseStat ] > ||
+||   [0][120][0]: _If -> [493][_Statement]<! !_If @ !>                                                                           ||
 || [PREDECESSORS 30-30]: [30]                                                                                                    ||
 || [SUCCESORS 32-32]: [32]                                                                                                       ||
 ++===============================================================================================================================++
@@ -647,26 +630,29 @@
 |
 +-------------------------------------------------------------------------------------------------------------------------------+
 | [32]: <Ending>                                                                                                                |
-| [245][_Exp0]<< !_ExpPrimitive @ >>                                                                                            |
+| [232][_Exp0]<! !_ExpPrimitive @ !>                                                                                            |
 | [AST-INSTRUCTIONS]:                                                                                                           |
-|   - EndObject()                                                                                                               |
+|   + CreateObject(StringExpression)                                                                                            |
+|   + Field(StringExpression::value, 0)                                                                                         |
+|   + StackEnd()                                                                                                                |
+|   > StackBegin()                                                                                                              |
 | [RETURN STACK]:                                                                                                               |
-|   [30][20][30]: _Exp0 -> [251][_Exp1]<< !_Exp0 @ >>                                                                           |
-|   [29][19][30]: _Exp1 -> [263][_Exp2]<< !_Exp1 @ >>                                                                           |
-|   [28][18][30]: _Exp2 -> [278][_Exp3]<< !_Exp2 @ >>                                                                           |
-|   [27][17][30]: _Exp3 -> [287][_Exp4]<< !_Exp3 @ >>                                                                           |
-|   [26][16][30]: _Exp4 -> [308][_Exp5]<< !_Exp4 @ >>                                                                           |
-|   [25][15][30]: _Exp5 -> [314][_Exp6]<< !_Exp5 @ >>                                                                           |
-|   [24][14][30]: _Exp6 -> [320][_Exp7]<< !_Exp6 @ >>                                                                           |
-|   [23][13][30]: _Exp7 -> [326][_Exp8]<< !_Exp7 @ >>                                                                           |
-|   [22][12][30]: _Exp8 -> [332][_Exp9]<< !_Exp8 @ >>                                                                           |
-|   [21][11][30]: _Exp9 -> [340][_Exp10]<< !_Exp9 @ >>                                                                          |
-|   [20][10][30]: _Exp10 -> [346][_Exp11]<< !_Exp10 @ >>                                                                        |
-|   [19][9][30]: _Exp11 -> [349][_Expression]<< !_Exp11 @ >>                                                                    |
-|   [18][161][30]: _Expression -> [496][_Statement]< "return" [ _Expression @ ] ";" >                                           |
-|   [17][121][29]: _Statement -> [359][_Block]< "{" { _Statement @ } [ NAME ":" ";" ] "}" >                                     |
-|   [16][136][28]: _Block -> [377][_If]< "if" "(" [ "var" NAME ":" _Type "=" ] _Expression ")" _Block @ +[ "else" _ElseStat ] > |
-|   [0][126][0]: _If -> [517][_Statement]<< !_If @ >>                                                                           |
+|   [30][20][30]: _Exp0 -> [239][_Exp1]<! !_Exp0 @ !>                                                                           |
+|   [29][19][30]: _Exp1 -> [251][_Exp2]<! !_Exp1 @ !>                                                                           |
+|   [28][18][30]: _Exp2 -> [266][_Exp3]<! !_Exp2 @ !>                                                                           |
+|   [27][17][30]: _Exp3 -> [275][_Exp4]<! !_Exp3 @ !>                                                                           |
+|   [26][16][30]: _Exp4 -> [296][_Exp5]<! !_Exp4 @ !>                                                                           |
+|   [25][15][30]: _Exp5 -> [302][_Exp6]<! !_Exp5 @ !>                                                                           |
+|   [24][14][30]: _Exp6 -> [308][_Exp7]<! !_Exp6 @ !>                                                                           |
+|   [23][13][30]: _Exp7 -> [314][_Exp8]<! !_Exp7 @ !>                                                                           |
+|   [22][12][30]: _Exp8 -> [320][_Exp9]<! !_Exp8 @ !>                                                                           |
+|   [21][11][30]: _Exp9 -> [322][_Exp10] BEGIN [pm-lr]                                                                          |
+|   [20][10][30]: _Exp10 -> [330][_Exp11] BEGIN [pm-lr]                                                                         |
+|   [19][9][30]: _Exp11 -> [337][_Expression]<! !_Exp11 @ !>                                                                    |
+|   [18][155][30]: _Expression -> [472][_Statement]< "return" [ _Expression @ ] ";" >                                           |
+|   [17][115][29]: _Statement -> [347][_Block]< "{" { _Statement @ } [ NAME ":" ";" ] "}" >                                     |
+|   [16][130][28]: _Block -> [365][_If]< "if" "(" [ "var" NAME ":" _Type "=" ] _Expression ")" _Block @ +[ "else" _ElseStat ] > |
+|   [0][120][0]: _If -> [493][_Statement]<! !_If @ !>                                                                           |
 | [PREDECESSORS 31-31]: [31]                                                                                                    |
 | [SUCCESORS 33-33]: [33]                                                                                                       |
 +-------------------------------------------------------------------------------------------------------------------------------+
@@ -675,27 +661,26 @@
 |
 +-------------------------------------------------------------------------------------------------------------------------------+
 | [33]: <Ending>                                                                                                                |
-| [251][_Exp1]<< !_Exp0 @ >>                                                                                                    |
+| [239][_Exp1]<! !_Exp0 @ !>                                                                                                    |
 | [AST-INSTRUCTIONS]:                                                                                                           |
-|   - ReopenObject()                                                                                                            |
-|   - EndObject()                                                                                                               |
-|   > ReopenObject()                                                                                                            |
+|   + StackEnd()                                                                                                                |
+|   > StackBegin()                                                                                                              |
 | [RETURN STACK]:                                                                                                               |
-|   [29][19][30]: _Exp1 -> [263][_Exp2]<< !_Exp1 @ >>                                                                           |
-|   [28][18][30]: _Exp2 -> [278][_Exp3]<< !_Exp2 @ >>                                                                           |
-|   [27][17][30]: _Exp3 -> [287][_Exp4]<< !_Exp3 @ >>                                                                           |
-|   [26][16][30]: _Exp4 -> [308][_Exp5]<< !_Exp4 @ >>                                                                           |
-|   [25][15][30]: _Exp5 -> [314][_Exp6]<< !_Exp5 @ >>                                                                           |
-|   [24][14][30]: _Exp6 -> [320][_Exp7]<< !_Exp6 @ >>                                                                           |
-|   [23][13][30]: _Exp7 -> [326][_Exp8]<< !_Exp7 @ >>                                                                           |
-|   [22][12][30]: _Exp8 -> [332][_Exp9]<< !_Exp8 @ >>                                                                           |
-|   [21][11][30]: _Exp9 -> [340][_Exp10]<< !_Exp9 @ >>                                                                          |
-|   [20][10][30]: _Exp10 -> [346][_Exp11]<< !_Exp10 @ >>                                                                        |
-|   [19][9][30]: _Exp11 -> [349][_Expression]<< !_Exp11 @ >>                                                                    |
-|   [18][161][30]: _Expression -> [496][_Statement]< "return" [ _Expression @ ] ";" >                                           |
-|   [17][121][29]: _Statement -> [359][_Block]< "{" { _Statement @ } [ NAME ":" ";" ] "}" >                                     |
-|   [16][136][28]: _Block -> [377][_If]< "if" "(" [ "var" NAME ":" _Type "=" ] _Expression ")" _Block @ +[ "else" _ElseStat ] > |
-|   [0][126][0]: _If -> [517][_Statement]<< !_If @ >>                                                                           |
+|   [29][19][30]: _Exp1 -> [251][_Exp2]<! !_Exp1 @ !>                                                                           |
+|   [28][18][30]: _Exp2 -> [266][_Exp3]<! !_Exp2 @ !>                                                                           |
+|   [27][17][30]: _Exp3 -> [275][_Exp4]<! !_Exp3 @ !>                                                                           |
+|   [26][16][30]: _Exp4 -> [296][_Exp5]<! !_Exp4 @ !>                                                                           |
+|   [25][15][30]: _Exp5 -> [302][_Exp6]<! !_Exp5 @ !>                                                                           |
+|   [24][14][30]: _Exp6 -> [308][_Exp7]<! !_Exp6 @ !>                                                                           |
+|   [23][13][30]: _Exp7 -> [314][_Exp8]<! !_Exp7 @ !>                                                                           |
+|   [22][12][30]: _Exp8 -> [320][_Exp9]<! !_Exp8 @ !>                                                                           |
+|   [21][11][30]: _Exp9 -> [322][_Exp10] BEGIN [pm-lr]                                                                          |
+|   [20][10][30]: _Exp10 -> [330][_Exp11] BEGIN [pm-lr]                                                                         |
+|   [19][9][30]: _Exp11 -> [337][_Expression]<! !_Exp11 @ !>                                                                    |
+|   [18][155][30]: _Expression -> [472][_Statement]< "return" [ _Expression @ ] ";" >                                           |
+|   [17][115][29]: _Statement -> [347][_Block]< "{" { _Statement @ } [ NAME ":" ";" ] "}" >                                     |
+|   [16][130][28]: _Block -> [365][_If]< "if" "(" [ "var" NAME ":" _Type "=" ] _Expression ")" _Block @ +[ "else" _ElseStat ] > |
+|   [0][120][0]: _If -> [493][_Statement]<! !_If @ !>                                                                           |
 | [PREDECESSORS 32-32]: [32]                                                                                                    |
 | [SUCCESORS 34-34]: [34]                                                                                                       |
 +-------------------------------------------------------------------------------------------------------------------------------+
@@ -704,25 +689,25 @@
 |
 +-------------------------------------------------------------------------------------------------------------------------------+
 | [34]: <Ending>                                                                                                                |
-| [263][_Exp2]<< !_Exp1 @ >>                                                                                                    |
+| [251][_Exp2]<! !_Exp1 @ !>                                                                                                    |
 | [AST-INSTRUCTIONS]:                                                                                                           |
-|   - EndObject()                                                                                                               |
-|   > ReopenObject()                                                                                                            |
+|   + StackEnd()                                                                                                                |
+|   > StackBegin()                                                                                                              |
 | [RETURN STACK]:                                                                                                               |
-|   [28][18][30]: _Exp2 -> [278][_Exp3]<< !_Exp2 @ >>                                                                           |
-|   [27][17][30]: _Exp3 -> [287][_Exp4]<< !_Exp3 @ >>                                                                           |
-|   [26][16][30]: _Exp4 -> [308][_Exp5]<< !_Exp4 @ >>                                                                           |
-|   [25][15][30]: _Exp5 -> [314][_Exp6]<< !_Exp5 @ >>                                                                           |
-|   [24][14][30]: _Exp6 -> [320][_Exp7]<< !_Exp6 @ >>                                                                           |
-|   [23][13][30]: _Exp7 -> [326][_Exp8]<< !_Exp7 @ >>                                                                           |
-|   [22][12][30]: _Exp8 -> [332][_Exp9]<< !_Exp8 @ >>                                                                           |
-|   [21][11][30]: _Exp9 -> [340][_Exp10]<< !_Exp9 @ >>                                                                          |
-|   [20][10][30]: _Exp10 -> [346][_Exp11]<< !_Exp10 @ >>                                                                        |
-|   [19][9][30]: _Exp11 -> [349][_Expression]<< !_Exp11 @ >>                                                                    |
-|   [18][161][30]: _Expression -> [496][_Statement]< "return" [ _Expression @ ] ";" >                                           |
-|   [17][121][29]: _Statement -> [359][_Block]< "{" { _Statement @ } [ NAME ":" ";" ] "}" >                                     |
-|   [16][136][28]: _Block -> [377][_If]< "if" "(" [ "var" NAME ":" _Type "=" ] _Expression ")" _Block @ +[ "else" _ElseStat ] > |
-|   [0][126][0]: _If -> [517][_Statement]<< !_If @ >>                                                                           |
+|   [28][18][30]: _Exp2 -> [266][_Exp3]<! !_Exp2 @ !>                                                                           |
+|   [27][17][30]: _Exp3 -> [275][_Exp4]<! !_Exp3 @ !>                                                                           |
+|   [26][16][30]: _Exp4 -> [296][_Exp5]<! !_Exp4 @ !>                                                                           |
+|   [25][15][30]: _Exp5 -> [302][_Exp6]<! !_Exp5 @ !>                                                                           |
+|   [24][14][30]: _Exp6 -> [308][_Exp7]<! !_Exp6 @ !>                                                                           |
+|   [23][13][30]: _Exp7 -> [314][_Exp8]<! !_Exp7 @ !>                                                                           |
+|   [22][12][30]: _Exp8 -> [320][_Exp9]<! !_Exp8 @ !>                                                                           |
+|   [21][11][30]: _Exp9 -> [322][_Exp10] BEGIN [pm-lr]                                                                          |
+|   [20][10][30]: _Exp10 -> [330][_Exp11] BEGIN [pm-lr]                                                                         |
+|   [19][9][30]: _Exp11 -> [337][_Expression]<! !_Exp11 @ !>                                                                    |
+|   [18][155][30]: _Expression -> [472][_Statement]< "return" [ _Expression @ ] ";" >                                           |
+|   [17][115][29]: _Statement -> [347][_Block]< "{" { _Statement @ } [ NAME ":" ";" ] "}" >                                     |
+|   [16][130][28]: _Block -> [365][_If]< "if" "(" [ "var" NAME ":" _Type "=" ] _Expression ")" _Block @ +[ "else" _ElseStat ] > |
+|   [0][120][0]: _If -> [493][_Statement]<! !_If @ !>                                                                           |
 | [PREDECESSORS 33-33]: [33]                                                                                                    |
 | [SUCCESORS 35-35]: [35]                                                                                                       |
 +-------------------------------------------------------------------------------------------------------------------------------+
@@ -731,24 +716,24 @@
 |
 +-------------------------------------------------------------------------------------------------------------------------------+
 | [35]: <Ending>                                                                                                                |
-| [278][_Exp3]<< !_Exp2 @ >>                                                                                                    |
+| [266][_Exp3]<! !_Exp2 @ !>                                                                                                    |
 | [AST-INSTRUCTIONS]:                                                                                                           |
-|   - EndObject()                                                                                                               |
-|   > ReopenObject()                                                                                                            |
+|   + StackEnd()                                                                                                                |
+|   > StackBegin()                                                                                                              |
 | [RETURN STACK]:                                                                                                               |
-|   [27][17][30]: _Exp3 -> [287][_Exp4]<< !_Exp3 @ >>                                                                           |
-|   [26][16][30]: _Exp4 -> [308][_Exp5]<< !_Exp4 @ >>                                                                           |
-|   [25][15][30]: _Exp5 -> [314][_Exp6]<< !_Exp5 @ >>                                                                           |
-|   [24][14][30]: _Exp6 -> [320][_Exp7]<< !_Exp6 @ >>                                                                           |
-|   [23][13][30]: _Exp7 -> [326][_Exp8]<< !_Exp7 @ >>                                                                           |
-|   [22][12][30]: _Exp8 -> [332][_Exp9]<< !_Exp8 @ >>                                                                           |
-|   [21][11][30]: _Exp9 -> [340][_Exp10]<< !_Exp9 @ >>                                                                          |
-|   [20][10][30]: _Exp10 -> [346][_Exp11]<< !_Exp10 @ >>                                                                        |
-|   [19][9][30]: _Exp11 -> [349][_Expression]<< !_Exp11 @ >>                                                                    |
-|   [18][161][30]: _Expression -> [496][_Statement]< "return" [ _Expression @ ] ";" >                                           |
-|   [17][121][29]: _Statement -> [359][_Block]< "{" { _Statement @ } [ NAME ":" ";" ] "}" >                                     |
-|   [16][136][28]: _Block -> [377][_If]< "if" "(" [ "var" NAME ":" _Type "=" ] _Expression ")" _Block @ +[ "else" _ElseStat ] > |
-|   [0][126][0]: _If -> [517][_Statement]<< !_If @ >>                                                                           |
+|   [27][17][30]: _Exp3 -> [275][_Exp4]<! !_Exp3 @ !>                                                                           |
+|   [26][16][30]: _Exp4 -> [296][_Exp5]<! !_Exp4 @ !>                                                                           |
+|   [25][15][30]: _Exp5 -> [302][_Exp6]<! !_Exp5 @ !>                                                                           |
+|   [24][14][30]: _Exp6 -> [308][_Exp7]<! !_Exp6 @ !>                                                                           |
+|   [23][13][30]: _Exp7 -> [314][_Exp8]<! !_Exp7 @ !>                                                                           |
+|   [22][12][30]: _Exp8 -> [320][_Exp9]<! !_Exp8 @ !>                                                                           |
+|   [21][11][30]: _Exp9 -> [322][_Exp10] BEGIN [pm-lr]                                                                          |
+|   [20][10][30]: _Exp10 -> [330][_Exp11] BEGIN [pm-lr]                                                                         |
+|   [19][9][30]: _Exp11 -> [337][_Expression]<! !_Exp11 @ !>                                                                    |
+|   [18][155][30]: _Expression -> [472][_Statement]< "return" [ _Expression @ ] ";" >                                           |
+|   [17][115][29]: _Statement -> [347][_Block]< "{" { _Statement @ } [ NAME ":" ";" ] "}" >                                     |
+|   [16][130][28]: _Block -> [365][_If]< "if" "(" [ "var" NAME ":" _Type "=" ] _Expression ")" _Block @ +[ "else" _ElseStat ] > |
+|   [0][120][0]: _If -> [493][_Statement]<! !_If @ !>                                                                           |
 | [PREDECESSORS 34-34]: [34]                                                                                                    |
 | [SUCCESORS 36-36]: [36]                                                                                                       |
 +-------------------------------------------------------------------------------------------------------------------------------+
@@ -757,23 +742,23 @@
 |
 +-------------------------------------------------------------------------------------------------------------------------------+
 | [36]: <Ending>                                                                                                                |
-| [287][_Exp4]<< !_Exp3 @ >>                                                                                                    |
+| [275][_Exp4]<! !_Exp3 @ !>                                                                                                    |
 | [AST-INSTRUCTIONS]:                                                                                                           |
-|   - EndObject()                                                                                                               |
-|   > ReopenObject()                                                                                                            |
+|   + StackEnd()                                                                                                                |
+|   > StackBegin()                                                                                                              |
 | [RETURN STACK]:                                                                                                               |
-|   [26][16][30]: _Exp4 -> [308][_Exp5]<< !_Exp4 @ >>                                                                           |
-|   [25][15][30]: _Exp5 -> [314][_Exp6]<< !_Exp5 @ >>                                                                           |
-|   [24][14][30]: _Exp6 -> [320][_Exp7]<< !_Exp6 @ >>                                                                           |
-|   [23][13][30]: _Exp7 -> [326][_Exp8]<< !_Exp7 @ >>                                                                           |
-|   [22][12][30]: _Exp8 -> [332][_Exp9]<< !_Exp8 @ >>                                                                           |
-|   [21][11][30]: _Exp9 -> [340][_Exp10]<< !_Exp9 @ >>                                                                          |
-|   [20][10][30]: _Exp10 -> [346][_Exp11]<< !_Exp10 @ >>                                                                        |
-|   [19][9][30]: _Exp11 -> [349][_Expression]<< !_Exp11 @ >>                                                                    |
-|   [18][161][30]: _Expression -> [496][_Statement]< "return" [ _Expression @ ] ";" >                                           |
-|   [17][121][29]: _Statement -> [359][_Block]< "{" { _Statement @ } [ NAME ":" ";" ] "}" >                                     |
-|   [16][136][28]: _Block -> [377][_If]< "if" "(" [ "var" NAME ":" _Type "=" ] _Expression ")" _Block @ +[ "else" _ElseStat ] > |
-|   [0][126][0]: _If -> [517][_Statement]<< !_If @ >>                                                                           |
+|   [26][16][30]: _Exp4 -> [296][_Exp5]<! !_Exp4 @ !>                                                                           |
+|   [25][15][30]: _Exp5 -> [302][_Exp6]<! !_Exp5 @ !>                                                                           |
+|   [24][14][30]: _Exp6 -> [308][_Exp7]<! !_Exp6 @ !>                                                                           |
+|   [23][13][30]: _Exp7 -> [314][_Exp8]<! !_Exp7 @ !>                                                                           |
+|   [22][12][30]: _Exp8 -> [320][_Exp9]<! !_Exp8 @ !>                                                                           |
+|   [21][11][30]: _Exp9 -> [322][_Exp10] BEGIN [pm-lr]                                                                          |
+|   [20][10][30]: _Exp10 -> [330][_Exp11] BEGIN [pm-lr]                                                                         |
+|   [19][9][30]: _Exp11 -> [337][_Expression]<! !_Exp11 @ !>                                                                    |
+|   [18][155][30]: _Expression -> [472][_Statement]< "return" [ _Expression @ ] ";" >                                           |
+|   [17][115][29]: _Statement -> [347][_Block]< "{" { _Statement @ } [ NAME ":" ";" ] "}" >                                     |
+|   [16][130][28]: _Block -> [365][_If]< "if" "(" [ "var" NAME ":" _Type "=" ] _Expression ")" _Block @ +[ "else" _ElseStat ] > |
+|   [0][120][0]: _If -> [493][_Statement]<! !_If @ !>                                                                           |
 | [PREDECESSORS 35-35]: [35]                                                                                                    |
 | [SUCCESORS 37-37]: [37]                                                                                                       |
 +-------------------------------------------------------------------------------------------------------------------------------+
@@ -782,22 +767,22 @@
 |
 +-------------------------------------------------------------------------------------------------------------------------------+
 | [37]: <Ending>                                                                                                                |
-| [308][_Exp5]<< !_Exp4 @ >>                                                                                                    |
+| [296][_Exp5]<! !_Exp4 @ !>                                                                                                    |
 | [AST-INSTRUCTIONS]:                                                                                                           |
-|   - EndObject()                                                                                                               |
-|   > ReopenObject()                                                                                                            |
+|   + StackEnd()                                                                                                                |
+|   > StackBegin()                                                                                                              |
 | [RETURN STACK]:                                                                                                               |
-|   [25][15][30]: _Exp5 -> [314][_Exp6]<< !_Exp5 @ >>                                                                           |
-|   [24][14][30]: _Exp6 -> [320][_Exp7]<< !_Exp6 @ >>                                                                           |
-|   [23][13][30]: _Exp7 -> [326][_Exp8]<< !_Exp7 @ >>                                                                           |
-|   [22][12][30]: _Exp8 -> [332][_Exp9]<< !_Exp8 @ >>                                                                           |
-|   [21][11][30]: _Exp9 -> [340][_Exp10]<< !_Exp9 @ >>                                                                          |
-|   [20][10][30]: _Exp10 -> [346][_Exp11]<< !_Exp10 @ >>                                                                        |
-|   [19][9][30]: _Exp11 -> [349][_Expression]<< !_Exp11 @ >>                                                                    |
-|   [18][161][30]: _Expression -> [496][_Statement]< "return" [ _Expression @ ] ";" >                                           |
-|   [17][121][29]: _Statement -> [359][_Block]< "{" { _Statement @ } [ NAME ":" ";" ] "}" >                                     |
-|   [16][136][28]: _Block -> [377][_If]< "if" "(" [ "var" NAME ":" _Type "=" ] _Expression ")" _Block @ +[ "else" _ElseStat ] > |
-|   [0][126][0]: _If -> [517][_Statement]<< !_If @ >>                                                                           |
+|   [25][15][30]: _Exp5 -> [302][_Exp6]<! !_Exp5 @ !>                                                                           |
+|   [24][14][30]: _Exp6 -> [308][_Exp7]<! !_Exp6 @ !>                                                                           |
+|   [23][13][30]: _Exp7 -> [314][_Exp8]<! !_Exp7 @ !>                                                                           |
+|   [22][12][30]: _Exp8 -> [320][_Exp9]<! !_Exp8 @ !>                                                                           |
+|   [21][11][30]: _Exp9 -> [322][_Exp10] BEGIN [pm-lr]                                                                          |
+|   [20][10][30]: _Exp10 -> [330][_Exp11] BEGIN [pm-lr]                                                                         |
+|   [19][9][30]: _Exp11 -> [337][_Expression]<! !_Exp11 @ !>                                                                    |
+|   [18][155][30]: _Expression -> [472][_Statement]< "return" [ _Expression @ ] ";" >                                           |
+|   [17][115][29]: _Statement -> [347][_Block]< "{" { _Statement @ } [ NAME ":" ";" ] "}" >                                     |
+|   [16][130][28]: _Block -> [365][_If]< "if" "(" [ "var" NAME ":" _Type "=" ] _Expression ")" _Block @ +[ "else" _ElseStat ] > |
+|   [0][120][0]: _If -> [493][_Statement]<! !_If @ !>                                                                           |
 | [PREDECESSORS 36-36]: [36]                                                                                                    |
 | [SUCCESORS 38-38]: [38]                                                                                                       |
 +-------------------------------------------------------------------------------------------------------------------------------+
@@ -806,21 +791,21 @@
 |
 +-------------------------------------------------------------------------------------------------------------------------------+
 | [38]: <Ending>                                                                                                                |
-| [314][_Exp6]<< !_Exp5 @ >>                                                                                                    |
+| [302][_Exp6]<! !_Exp5 @ !>                                                                                                    |
 | [AST-INSTRUCTIONS]:                                                                                                           |
-|   - EndObject()                                                                                                               |
-|   > ReopenObject()                                                                                                            |
+|   + StackEnd()                                                                                                                |
+|   > StackBegin()                                                                                                              |
 | [RETURN STACK]:                                                                                                               |
-|   [24][14][30]: _Exp6 -> [320][_Exp7]<< !_Exp6 @ >>                                                                           |
-|   [23][13][30]: _Exp7 -> [326][_Exp8]<< !_Exp7 @ >>                                                                           |
-|   [22][12][30]: _Exp8 -> [332][_Exp9]<< !_Exp8 @ >>                                                                           |
-|   [21][11][30]: _Exp9 -> [340][_Exp10]<< !_Exp9 @ >>                                                                          |
-|   [20][10][30]: _Exp10 -> [346][_Exp11]<< !_Exp10 @ >>                                                                        |
-|   [19][9][30]: _Exp11 -> [349][_Expression]<< !_Exp11 @ >>                                                                    |
-|   [18][161][30]: _Expression -> [496][_Statement]< "return" [ _Expression @ ] ";" >                                           |
-|   [17][121][29]: _Statement -> [359][_Block]< "{" { _Statement @ } [ NAME ":" ";" ] "}" >                                     |
-|   [16][136][28]: _Block -> [377][_If]< "if" "(" [ "var" NAME ":" _Type "=" ] _Expression ")" _Block @ +[ "else" _ElseStat ] > |
-|   [0][126][0]: _If -> [517][_Statement]<< !_If @ >>                                                                           |
+|   [24][14][30]: _Exp6 -> [308][_Exp7]<! !_Exp6 @ !>                                                                           |
+|   [23][13][30]: _Exp7 -> [314][_Exp8]<! !_Exp7 @ !>                                                                           |
+|   [22][12][30]: _Exp8 -> [320][_Exp9]<! !_Exp8 @ !>                                                                           |
+|   [21][11][30]: _Exp9 -> [322][_Exp10] BEGIN [pm-lr]                                                                          |
+|   [20][10][30]: _Exp10 -> [330][_Exp11] BEGIN [pm-lr]                                                                         |
+|   [19][9][30]: _Exp11 -> [337][_Expression]<! !_Exp11 @ !>                                                                    |
+|   [18][155][30]: _Expression -> [472][_Statement]< "return" [ _Expression @ ] ";" >                                           |
+|   [17][115][29]: _Statement -> [347][_Block]< "{" { _Statement @ } [ NAME ":" ";" ] "}" >                                     |
+|   [16][130][28]: _Block -> [365][_If]< "if" "(" [ "var" NAME ":" _Type "=" ] _Expression ")" _Block @ +[ "else" _ElseStat ] > |
+|   [0][120][0]: _If -> [493][_Statement]<! !_If @ !>                                                                           |
 | [PREDECESSORS 37-37]: [37]                                                                                                    |
 | [SUCCESORS 39-39]: [39]                                                                                                       |
 +-------------------------------------------------------------------------------------------------------------------------------+
@@ -829,20 +814,20 @@
 |
 +-------------------------------------------------------------------------------------------------------------------------------+
 | [39]: <Ending>                                                                                                                |
-| [320][_Exp7]<< !_Exp6 @ >>                                                                                                    |
+| [308][_Exp7]<! !_Exp6 @ !>                                                                                                    |
 | [AST-INSTRUCTIONS]:                                                                                                           |
-|   - EndObject()                                                                                                               |
-|   > ReopenObject()                                                                                                            |
+|   + StackEnd()                                                                                                                |
+|   > StackBegin()                                                                                                              |
 | [RETURN STACK]:                                                                                                               |
-|   [23][13][30]: _Exp7 -> [326][_Exp8]<< !_Exp7 @ >>                                                                           |
-|   [22][12][30]: _Exp8 -> [332][_Exp9]<< !_Exp8 @ >>                                                                           |
-|   [21][11][30]: _Exp9 -> [340][_Exp10]<< !_Exp9 @ >>                                                                          |
-|   [20][10][30]: _Exp10 -> [346][_Exp11]<< !_Exp10 @ >>                                                                        |
-|   [19][9][30]: _Exp11 -> [349][_Expression]<< !_Exp11 @ >>                                                                    |
-|   [18][161][30]: _Expression -> [496][_Statement]< "return" [ _Expression @ ] ";" >                                           |
-|   [17][121][29]: _Statement -> [359][_Block]< "{" { _Statement @ } [ NAME ":" ";" ] "}" >                                     |
-|   [16][136][28]: _Block -> [377][_If]< "if" "(" [ "var" NAME ":" _Type "=" ] _Expression ")" _Block @ +[ "else" _ElseStat ] > |
-|   [0][126][0]: _If -> [517][_Statement]<< !_If @ >>                                                                           |
+|   [23][13][30]: _Exp7 -> [314][_Exp8]<! !_Exp7 @ !>                                                                           |
+|   [22][12][30]: _Exp8 -> [320][_Exp9]<! !_Exp8 @ !>                                                                           |
+|   [21][11][30]: _Exp9 -> [322][_Exp10] BEGIN [pm-lr]                                                                          |
+|   [20][10][30]: _Exp10 -> [330][_Exp11] BEGIN [pm-lr]                                                                         |
+|   [19][9][30]: _Exp11 -> [337][_Expression]<! !_Exp11 @ !>                                                                    |
+|   [18][155][30]: _Expression -> [472][_Statement]< "return" [ _Expression @ ] ";" >                                           |
+|   [17][115][29]: _Statement -> [347][_Block]< "{" { _Statement @ } [ NAME ":" ";" ] "}" >                                     |
+|   [16][130][28]: _Block -> [365][_If]< "if" "(" [ "var" NAME ":" _Type "=" ] _Expression ")" _Block @ +[ "else" _ElseStat ] > |
+|   [0][120][0]: _If -> [493][_Statement]<! !_If @ !>                                                                           |
 | [PREDECESSORS 38-38]: [38]                                                                                                    |
 | [SUCCESORS 40-40]: [40]                                                                                                       |
 +-------------------------------------------------------------------------------------------------------------------------------+
@@ -851,19 +836,19 @@
 |
 +-------------------------------------------------------------------------------------------------------------------------------+
 | [40]: <Ending>                                                                                                                |
-| [326][_Exp8]<< !_Exp7 @ >>                                                                                                    |
+| [314][_Exp8]<! !_Exp7 @ !>                                                                                                    |
 | [AST-INSTRUCTIONS]:                                                                                                           |
-|   - EndObject()                                                                                                               |
-|   > ReopenObject()                                                                                                            |
+|   + StackEnd()                                                                                                                |
+|   > StackBegin()                                                                                                              |
 | [RETURN STACK]:                                                                                                               |
-|   [22][12][30]: _Exp8 -> [332][_Exp9]<< !_Exp8 @ >>                                                                           |
-|   [21][11][30]: _Exp9 -> [340][_Exp10]<< !_Exp9 @ >>                                                                          |
-|   [20][10][30]: _Exp10 -> [346][_Exp11]<< !_Exp10 @ >>                                                                        |
-|   [19][9][30]: _Exp11 -> [349][_Expression]<< !_Exp11 @ >>                                                                    |
-|   [18][161][30]: _Expression -> [496][_Statement]< "return" [ _Expression @ ] ";" >                                           |
-|   [17][121][29]: _Statement -> [359][_Block]< "{" { _Statement @ } [ NAME ":" ";" ] "}" >                                     |
-|   [16][136][28]: _Block -> [377][_If]< "if" "(" [ "var" NAME ":" _Type "=" ] _Expression ")" _Block @ +[ "else" _ElseStat ] > |
-|   [0][126][0]: _If -> [517][_Statement]<< !_If @ >>                                                                           |
+|   [22][12][30]: _Exp8 -> [320][_Exp9]<! !_Exp8 @ !>                                                                           |
+|   [21][11][30]: _Exp9 -> [322][_Exp10] BEGIN [pm-lr]                                                                          |
+|   [20][10][30]: _Exp10 -> [330][_Exp11] BEGIN [pm-lr]                                                                         |
+|   [19][9][30]: _Exp11 -> [337][_Expression]<! !_Exp11 @ !>                                                                    |
+|   [18][155][30]: _Expression -> [472][_Statement]< "return" [ _Expression @ ] ";" >                                           |
+|   [17][115][29]: _Statement -> [347][_Block]< "{" { _Statement @ } [ NAME ":" ";" ] "}" >                                     |
+|   [16][130][28]: _Block -> [365][_If]< "if" "(" [ "var" NAME ":" _Type "=" ] _Expression ")" _Block @ +[ "else" _ElseStat ] > |
+|   [0][120][0]: _If -> [493][_Statement]<! !_If @ !>                                                                           |
 | [PREDECESSORS 39-39]: [39]                                                                                                    |
 | [SUCCESORS 41-41]: [41]                                                                                                       |
 +-------------------------------------------------------------------------------------------------------------------------------+
@@ -872,18 +857,18 @@
 |
 +-------------------------------------------------------------------------------------------------------------------------------+
 | [41]: <Ending>                                                                                                                |
-| [332][_Exp9]<< !_Exp8 @ >>                                                                                                    |
+| [320][_Exp9]<! !_Exp8 @ !>                                                                                                    |
 | [AST-INSTRUCTIONS]:                                                                                                           |
-|   - EndObject()                                                                                                               |
-|   > ReopenObject()                                                                                                            |
+|   + StackEnd()                                                                                                                |
+|   > StackBegin()                                                                                                              |
 | [RETURN STACK]:                                                                                                               |
-|   [21][11][30]: _Exp9 -> [340][_Exp10]<< !_Exp9 @ >>                                                                          |
-|   [20][10][30]: _Exp10 -> [346][_Exp11]<< !_Exp10 @ >>                                                                        |
-|   [19][9][30]: _Exp11 -> [349][_Expression]<< !_Exp11 @ >>                                                                    |
-|   [18][161][30]: _Expression -> [496][_Statement]< "return" [ _Expression @ ] ";" >                                           |
-|   [17][121][29]: _Statement -> [359][_Block]< "{" { _Statement @ } [ NAME ":" ";" ] "}" >                                     |
-|   [16][136][28]: _Block -> [377][_If]< "if" "(" [ "var" NAME ":" _Type "=" ] _Expression ")" _Block @ +[ "else" _ElseStat ] > |
-|   [0][126][0]: _If -> [517][_Statement]<< !_If @ >>                                                                           |
+|   [21][11][30]: _Exp9 -> [322][_Exp10] BEGIN [pm-lr]                                                                          |
+|   [20][10][30]: _Exp10 -> [330][_Exp11] BEGIN [pm-lr]                                                                         |
+|   [19][9][30]: _Exp11 -> [337][_Expression]<! !_Exp11 @ !>                                                                    |
+|   [18][155][30]: _Expression -> [472][_Statement]< "return" [ _Expression @ ] ";" >                                           |
+|   [17][115][29]: _Statement -> [347][_Block]< "{" { _Statement @ } [ NAME ":" ";" ] "}" >                                     |
+|   [16][130][28]: _Block -> [365][_If]< "if" "(" [ "var" NAME ":" _Type "=" ] _Expression ")" _Block @ +[ "else" _ElseStat ] > |
+|   [0][120][0]: _If -> [493][_Statement]<! !_If @ !>                                                                           |
 | [PREDECESSORS 40-40]: [40]                                                                                                    |
 | [SUCCESORS 42-42]: [42]                                                                                                       |
 +-------------------------------------------------------------------------------------------------------------------------------+
@@ -892,16 +877,16 @@
 |
 +-------------------------------------------------------------------------------------------------------------------------------+
 | [42]: <Ending>                                                                                                                |
-| [340][_Exp10]<< !_Exp9 @ >>                                                                                                   |
+| [322][_Exp10] BEGIN [pm-lr]                                                                                                   |
 | [AST-INSTRUCTIONS]:                                                                                                           |
-|   - EndObject()                                                                                                               |
+|   + StackEnd()                                                                                                                |
 | [RETURN STACK]:                                                                                                               |
-|   [20][10][30]: _Exp10 -> [346][_Exp11]<< !_Exp10 @ >>                                                                        |
-|   [19][9][30]: _Exp11 -> [349][_Expression]<< !_Exp11 @ >>                                                                    |
-|   [18][161][30]: _Expression -> [496][_Statement]< "return" [ _Expression @ ] ";" >                                           |
-|   [17][121][29]: _Statement -> [359][_Block]< "{" { _Statement @ } [ NAME ":" ";" ] "}" >                                     |
-|   [16][136][28]: _Block -> [377][_If]< "if" "(" [ "var" NAME ":" _Type "=" ] _Expression ")" _Block @ +[ "else" _ElseStat ] > |
-|   [0][126][0]: _If -> [517][_Statement]<< !_If @ >>                                                                           |
+|   [20][10][30]: _Exp10 -> [330][_Exp11] BEGIN [pm-lr]                                                                         |
+|   [19][9][30]: _Exp11 -> [337][_Expression]<! !_Exp11 @ !>                                                                    |
+|   [18][155][30]: _Expression -> [472][_Statement]< "return" [ _Expression @ ] ";" >                                           |
+|   [17][115][29]: _Statement -> [347][_Block]< "{" { _Statement @ } [ NAME ":" ";" ] "}" >                                     |
+|   [16][130][28]: _Block -> [365][_If]< "if" "(" [ "var" NAME ":" _Type "=" ] _Expression ")" _Block @ +[ "else" _ElseStat ] > |
+|   [0][120][0]: _If -> [493][_Statement]<! !_If @ !>                                                                           |
 | [PREDECESSORS 41-41]: [41]                                                                                                    |
 | [SUCCESORS 43-43]: [43]                                                                                                       |
 +-------------------------------------------------------------------------------------------------------------------------------+
@@ -910,19 +895,16 @@
 |
 +-------------------------------------------------------------------------------------------------------------------------------+
 | [43]: <Ending>                                                                                                                |
-| [346][_Exp11]<< !_Exp10 @ >>                                                                                                  |
+| [330][_Exp11] BEGIN [pm-lr]                                                                                                   |
 | [AST-INSTRUCTIONS]:                                                                                                           |
-|   - LriStore()                                                                                                                |
-|   - DelayFieldAssignment()                                                                                                    |
-|   - LriFetch()                                                                                                                |
-|   - ReopenObject()                                                                                                            |
-|   - EndObject()                                                                                                               |
+|   + StackBegin()                                                                                                              |
+|   + StackEnd()                                                                                                                |
 | [RETURN STACK]:                                                                                                               |
-|   [19][9][30]: _Exp11 -> [349][_Expression]<< !_Exp11 @ >>                                                                    |
-|   [18][161][30]: _Expression -> [496][_Statement]< "return" [ _Expression @ ] ";" >                                           |
-|   [17][121][29]: _Statement -> [359][_Block]< "{" { _Statement @ } [ NAME ":" ";" ] "}" >                                     |
-|   [16][136][28]: _Block -> [377][_If]< "if" "(" [ "var" NAME ":" _Type "=" ] _Expression ")" _Block @ +[ "else" _ElseStat ] > |
-|   [0][126][0]: _If -> [517][_Statement]<< !_If @ >>                                                                           |
+|   [19][9][30]: _Exp11 -> [337][_Expression]<! !_Exp11 @ !>                                                                    |
+|   [18][155][30]: _Expression -> [472][_Statement]< "return" [ _Expression @ ] ";" >                                           |
+|   [17][115][29]: _Statement -> [347][_Block]< "{" { _Statement @ } [ NAME ":" ";" ] "}" >                                     |
+|   [16][130][28]: _Block -> [365][_If]< "if" "(" [ "var" NAME ":" _Type "=" ] _Expression ")" _Block @ +[ "else" _ElseStat ] > |
+|   [0][120][0]: _If -> [493][_Statement]<! !_If @ !>                                                                           |
 | [PREDECESSORS 42-42]: [42]                                                                                                    |
 | [SUCCESORS 44-44]: [44]                                                                                                       |
 +-------------------------------------------------------------------------------------------------------------------------------+
@@ -931,18 +913,16 @@
 |
 +-------------------------------------------------------------------------------------------------------------------------------+
 | [44]: <Ending>                                                                                                                |
-| [349][_Expression]<< !_Exp11 @ >>                                                                                             |
+| [337][_Expression]<! !_Exp11 @ !>                                                                                             |
 | [AST-INSTRUCTIONS]:                                                                                                           |
-|   - LriStore()                                                                                                                |
-|   - DelayFieldAssignment()                                                                                                    |
-|   - LriFetch()                                                                                                                |
-|   - ReopenObject()                                                                                                            |
-|   - EndObject()                                                                                                               |
+|   + StackBegin()                                                                                                              |
+|   + StackEnd()                                                                                                                |
+|   > StackBegin()                                                                                                              |
 | [RETURN STACK]:                                                                                                               |
-|   [18][161][30]: _Expression -> [496][_Statement]< "return" [ _Expression @ ] ";" >                                           |
-|   [17][121][29]: _Statement -> [359][_Block]< "{" { _Statement @ } [ NAME ":" ";" ] "}" >                                     |
-|   [16][136][28]: _Block -> [377][_If]< "if" "(" [ "var" NAME ":" _Type "=" ] _Expression ")" _Block @ +[ "else" _ElseStat ] > |
-|   [0][126][0]: _If -> [517][_Statement]<< !_If @ >>                                                                           |
+|   [18][155][30]: _Expression -> [472][_Statement]< "return" [ _Expression @ ] ";" >                                           |
+|   [17][115][29]: _Statement -> [347][_Block]< "{" { _Statement @ } [ NAME ":" ";" ] "}" >                                     |
+|   [16][130][28]: _Block -> [365][_If]< "if" "(" [ "var" NAME ":" _Type "=" ] _Expression ")" _Block @ +[ "else" _ElseStat ] > |
+|   [0][120][0]: _If -> [493][_Statement]<! !_If @ !>                                                                           |
 | [PREDECESSORS 43-43]: [43]                                                                                                    |
 | [SUCCESORS 45-45]: [45]                                                                                                       |
 +-------------------------------------------------------------------------------------------------------------------------------+
@@ -951,15 +931,14 @@
 |
 +-------------------------------------------------------------------------------------------------------------------------------+
 | [45]: <Ending>                                                                                                                |
-| [496][_Statement]< "return" [ _Expression @ ] ";" >                                                                           |
+| [472][_Statement]< "return" [ _Expression @ ] ";" >                                                                           |
 | [AST-INSTRUCTIONS]:                                                                                                           |
-|   - ReopenObject()                                                                                                            |
-|   - EndObject()                                                                                                               |
-|   > Field(ReturnStatement::expression)                                                                                        |
+|   + StackEnd()                                                                                                                |
+|   > StackSlot(1)                                                                                                              |
 | [RETURN STACK]:                                                                                                               |
-|   [17][121][29]: _Statement -> [359][_Block]< "{" { _Statement @ } [ NAME ":" ";" ] "}" >                                     |
-|   [16][136][28]: _Block -> [377][_If]< "if" "(" [ "var" NAME ":" _Type "=" ] _Expression ")" _Block @ +[ "else" _ElseStat ] > |
-|   [0][126][0]: _If -> [517][_Statement]<< !_If @ >>                                                                           |
+|   [17][115][29]: _Statement -> [347][_Block]< "{" { _Statement @ } [ NAME ":" ";" ] "}" >                                     |
+|   [16][130][28]: _Block -> [365][_If]< "if" "(" [ "var" NAME ":" _Type "=" ] _Expression ")" _Block @ +[ "else" _ElseStat ] > |
+|   [0][120][0]: _If -> [493][_Statement]<! !_If @ !>                                                                           |
 | [PREDECESSORS 44-44]: [44]                                                                                                    |
 | [SUCCESORS 46-46]: [46]                                                                                                       |
 +-------------------------------------------------------------------------------------------------------------------------------+
@@ -970,12 +949,13 @@
 [0]
 ++===============================================================================================================================++
 || [46]: {SEMICOLON} ;                                                                                                           ||
-|| [497][_Statement]< "return" [ _Expression ] ";" @ >                                                                           ||
+|| [473][_Statement]< "return" [ _Expression ] ";" @ >                                                                           ||
 || [AST-INSTRUCTIONS]:                                                                                                           ||
+||   + Token(2)                                                                                                                  ||
 || [RETURN STACK]:                                                                                                               ||
-||   [17][121][29]: _Statement -> [359][_Block]< "{" { _Statement @ } [ NAME ":" ";" ] "}" >                                     ||
-||   [16][136][28]: _Block -> [377][_If]< "if" "(" [ "var" NAME ":" _Type "=" ] _Expression ")" _Block @ +[ "else" _ElseStat ] > ||
-||   [0][126][0]: _If -> [517][_Statement]<< !_If @ >>                                                                           ||
+||   [17][115][29]: _Statement -> [347][_Block]< "{" { _Statement @ } [ NAME ":" ";" ] "}" >                                     ||
+||   [16][130][28]: _Block -> [365][_If]< "if" "(" [ "var" NAME ":" _Type "=" ] _Expression ")" _Block @ +[ "else" _ElseStat ] > ||
+||   [0][120][0]: _If -> [493][_Statement]<! !_If @ !>                                                                           ||
 || [PREDECESSORS 45-45]: [45]                                                                                                    ||
 || [SUCCESORS 47-47]: [47]                                                                                                       ||
 ++===============================================================================================================================++
@@ -984,13 +964,15 @@
 |
 +-------------------------------------------------------------------------------------------------------------------------------+
 | [47]: <Ending>                                                                                                                |
-| [359][_Block]< "{" { _Statement @ } [ NAME ":" ";" ] "}" >                                                                    |
+| [347][_Block]< "{" { _Statement @ } [ NAME ":" ";" ] "}" >                                                                    |
 | [AST-INSTRUCTIONS]:                                                                                                           |
-|   - EndObject()                                                                                                               |
-|   > Field(BlockStatement::statements)                                                                                         |
+|   + CreateObject(ReturnStatement)                                                                                             |
+|   + Field(ReturnStatement::expression, 1)                                                                                     |
+|   + StackEnd()                                                                                                                |
+|   > StackSlot(1)                                                                                                              |
 | [RETURN STACK]:                                                                                                               |
-|   [16][136][28]: _Block -> [377][_If]< "if" "(" [ "var" NAME ":" _Type "=" ] _Expression ")" _Block @ +[ "else" _ElseStat ] > |
-|   [0][126][0]: _If -> [517][_Statement]<< !_If @ >>                                                                           |
+|   [16][130][28]: _Block -> [365][_If]< "if" "(" [ "var" NAME ":" _Type "=" ] _Expression ")" _Block @ +[ "else" _ElseStat ] > |
+|   [0][120][0]: _If -> [493][_Statement]<! !_If @ !>                                                                           |
 | [PREDECESSORS 46-46]: [46]                                                                                                    |
 | [SUCCESORS 48-48]: [48]                                                                                                       |
 +-------------------------------------------------------------------------------------------------------------------------------+
@@ -1001,11 +983,12 @@
 [0]
 ++===============================================================================================================================++
 || [48]: {CLOSE_BRACE} }                                                                                                         ||
-|| [361][_Block]< "{" { _Statement } [ NAME ":" ";" ] "}" @ >                                                                    ||
+|| [349][_Block]< "{" { _Statement } [ NAME ":" ";" ] "}" @ >                                                                    ||
 || [AST-INSTRUCTIONS]:                                                                                                           ||
+||   + Token(5)                                                                                                                  ||
 || [RETURN STACK]:                                                                                                               ||
-||   [16][136][28]: _Block -> [377][_If]< "if" "(" [ "var" NAME ":" _Type "=" ] _Expression ")" _Block @ +[ "else" _ElseStat ] > ||
-||   [0][126][0]: _If -> [517][_Statement]<< !_If @ >>                                                                           ||
+||   [16][130][28]: _Block -> [365][_If]< "if" "(" [ "var" NAME ":" _Type "=" ] _Expression ")" _Block @ +[ "else" _ElseStat ] > ||
+||   [0][120][0]: _If -> [493][_Statement]<! !_If @ !>                                                                           ||
 || [PREDECESSORS 47-47]: [47]                                                                                                    ||
 || [SUCCESORS 49-49]: [49]                                                                                                       ||
 ++===============================================================================================================================++
@@ -1014,40 +997,49 @@
 |
 +----------------------------------------------------------------------------------------------------+
 | [49]: <Ending>                                                                                     |
-| [377][_If]< "if" "(" [ "var" NAME ":" _Type "=" ] _Expression ")" _Block @ +[ "else" _ElseStat ] > |
+| [365][_If]< "if" "(" [ "var" NAME ":" _Type "=" ] _Expression ")" _Block @ +[ "else" _ElseStat ] > |
 | [HOLDING COMPETITION]:                                                                             |
-|   [0][HOLDING][RULE: 24][CLAUSE: 0]                                                                |
+|   [0][HOLDING][RULE: 24][COMPID: 1]                                                                |
 | [AST-INSTRUCTIONS]:                                                                                |
-|   - EndObject()                                                                                    |
-|   > Field(IfStatement::trueBranch)                                                                 |
+|   + CreateObject(BlockStatement)                                                                   |
+|   + Field(BlockStatement::statements, 1)                                                           |
+|   + Field(BlockStatement::endLabel, 2)                                                             |
+|   + StackEnd()                                                                                     |
+|   > StackSlot(9)                                                                                   |
 | [RETURN STACK]:                                                                                    |
-|   [0][126][0]: _If -> [517][_Statement]<< !_If @ >>                                                |
+|   [0][120][0]: _If -> [493][_Statement]<! !_If @ !>                                                |
 | [PREDECESSORS 48-48]: [48]                                                                         |
 | [SUCCESORS 50-50]: [50]                                                                            |
 +----------------------------------------------------------------------------------------------------+
 |
 +
 |
-+-------------------------------------+
-| [50]: <Ending>                      |
-| [517][_Statement]<< !_If @ >>       |
-| [AST-INSTRUCTIONS]:                 |
-|   - EndObject()                     |
-| [FIRST ATTENDING COMPETITION]:  [0] |
-| [CARRIED COMPETITION]:              |
-|   [0]: competition[0][RS: 0] low    |
-| [PREDECESSORS 49-49]: [49]          |
-| [SUCCESORS 51-51]: [51]             |
-+-------------------------------------+
++-----------------------------------------+
+| [50]: <Ending>                          |
+| [493][_Statement]<! !_If @ !>           |
+| [AST-INSTRUCTIONS]:                     |
+|   + CreateObject(IfStatement)           |
+|   + Field(IfStatement::name, 3)         |
+|   + Field(IfStatement::type, 5)         |
+|   + Field(IfStatement::expression, 7)   |
+|   + Field(IfStatement::trueBranch, 9)   |
+|   + Field(IfStatement::falseBranch, 11) |
+|   + StackEnd()                          |
+|   > StackBegin()                        |
+| [FIRST ATTENDING COMPETITION]:  [0]     |
+| [CARRIED COMPETITION]:                  |
+|   [0]: competition[0][RS: 0] low        |
+| [PREDECESSORS 49-49]: [49]              |
+| [SUCCESORS 51-51]: [51]                 |
++-----------------------------------------+
 |
 +
 |
 +-------------------------------------+
 | [51]: <Ending>                      |
-| [481][_Statement] END [ENDING]      |
+| [457][_Statement] END [ENDING]      |
 | [AST-INSTRUCTIONS]:                 |
-|   - ReopenObject()                  |
-|   - EndObject()                     |
+|   + StackEnd()                      |
 | [FIRST ATTENDING COMPETITION]:  [0] |
 | [CARRIED COMPETITION]:              |
 |   [0]: competition[0][RS: 0] low    |

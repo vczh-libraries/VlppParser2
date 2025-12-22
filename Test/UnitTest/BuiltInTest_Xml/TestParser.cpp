@@ -16,6 +16,7 @@ TEST_FILE
 	parser.OnTraceProcessing.Add(
 		[&](TraceProcessingArgs& args)
 		{
+			TEST_PRINT(L"Printing Trace-" + itow((vint)args.phase + 1) + L"[" + caseName + L"].txt ...");
 			auto& traceManager = *dynamic_cast<TraceManager*>(args.executor);
 			LogTraceManager(
 				L"BuiltIn-Xml",
@@ -30,10 +31,12 @@ TEST_FILE
 				[=](vint32_t rule) { return WString::Unmanaged(ParserRuleName(rule)); },
 				[=](vint32_t state) { return WString::Unmanaged(ParserStateLabel(state)); }
 			);
+			TEST_PRINT(L"Finished");
 		});
 	parser.OnReadyToExecute.Add(
 		[&](ReadyToExecuteArgs& args)
 		{
+			TEST_PRINT(L"Printing Instructions[" + caseName + L"].txt ...");
 			auto& traceManager = *dynamic_cast<TraceManager*>(args.executor);
 			LogTraceExecution(
 				L"BuiltIn-Xml",
@@ -45,6 +48,7 @@ TEST_FILE
 				{
 					traceManager.ExecuteTrace(receiver, args.tokens);
 				});
+			TEST_PRINT(L"Finished");
 		});
 #endif
 

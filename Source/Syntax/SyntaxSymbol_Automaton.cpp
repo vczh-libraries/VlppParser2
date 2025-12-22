@@ -52,12 +52,12 @@ SyntaxSymbolManager::BuildAutomaton
 				{
 					auto&& stateDesc = executable.states[index];
 					stateDesc.rule = (vint32_t)rulesInOrder.IndexOf(state->Rule());
-					stateDesc.clause = state->ClauseId();
 					stateDesc.endingState = state->endingState;
 				}
 
 				List<EdgeSymbol*> edgesInOrder;
 				List<EdgeSymbol*> returnEdgesInOrder;
+				List<automaton::CompetitionDesc> competitionsInOrder;
 				List<vint32_t> returnIndicesInOrder;
 				List<AstIns> astInsInOrder;
 
@@ -133,25 +133,20 @@ SyntaxSymbolManager::BuildAutomaton
 						stringLiteralIndex += length;
 					}
 
-					switch (edge->importancy)
+					// edgeDesc.competitions
+					edgeDesc.competitions.start = (vint32_t)competitionsInOrder.Count();
+					for (auto competition : edge->competitions)
 					{
-					case EdgeImportancy::HighPriority:
-						edgeDesc.priority = automaton::EdgePriority::HighPriority;
-						break;
-					case EdgeImportancy::LowPriority:
-						edgeDesc.priority = automaton::EdgePriority::LowPriority;
-						break;
-					default:;
+						competitionsInOrder.Add({ competition.competitionId, competition.highPriority });
 					}
+					edgeDesc.competitions.count = (vint32_t)competitionsInOrder.Count() - edgeDesc.competitions.start;
 
-					edgeDesc.insBeforeInput.start = (vint32_t)astInsInOrder.Count();
-					CopyFrom(astInsInOrder, edge->insBeforeInput, true);
-					edgeDesc.insBeforeInput.count = (vint32_t)astInsInOrder.Count() - edgeDesc.insBeforeInput.start;
-
+					// edgeDesc.insAfterInput
 					edgeDesc.insAfterInput.start = (vint32_t)astInsInOrder.Count();
 					CopyFrom(astInsInOrder, edge->insAfterInput, true);
 					edgeDesc.insAfterInput.count = (vint32_t)astInsInOrder.Count() - edgeDesc.insAfterInput.start;
 
+					// edgeDesc.returnIndices
 					edgeDesc.returnIndices.start = (vint32_t)returnIndicesInOrder.Count();
 					for (auto returnEdge : edge->returnEdges)
 					{
@@ -164,7 +159,7 @@ SyntaxSymbolManager::BuildAutomaton
 					}
 					edgeDesc.returnIndices.count = (vint32_t)returnIndicesInOrder.Count() - edgeDesc.returnIndices.start;
 
-					if (edgeDesc.insBeforeInput.count == 0) edgeDesc.insBeforeInput.start = -1;
+					if (edgeDesc.competitions.count == 0) edgeDesc.competitions.start = -1;
 					if (edgeDesc.insAfterInput.count == 0) edgeDesc.insAfterInput.start = -1;
 					if (edgeDesc.returnIndices.count == 0) edgeDesc.returnIndices.start = -1;
 				}
@@ -176,23 +171,27 @@ SyntaxSymbolManager::BuildAutomaton
 					auto&& returnDesc = executable.returns[edgeIndex];
 					returnDesc.consumedRule = (vint32_t)rulesInOrder.IndexOf(edge->input.rule);
 					returnDesc.returnState = (vint32_t)statesInOrder.IndexOf(edge->To());
-					switch (edge->importancy)
-					{
-					case EdgeImportancy::HighPriority:
-						returnDesc.priority = automaton::EdgePriority::HighPriority;
-						break;
-					case EdgeImportancy::LowPriority:
-						returnDesc.priority = automaton::EdgePriority::LowPriority;
-						break;
-					default:;
-					}
-
 					returnDesc.ruleType = edge->input.ruleType;
+
+					// returnDesc.competitions
+					returnDesc.competitions.start = (vint32_t)competitionsInOrder.Count();
+					for (auto competition : edge->competitions)
+					{
+						competitionsInOrder.Add({ competition.competitionId, competition.highPriority });
+					}
+					returnDesc.competitions.count = (vint32_t)competitionsInOrder.Count() - returnDesc.competitions.start;
+
+					// returnDesc.insAfterInput
 					returnDesc.insAfterInput.start = (vint32_t)astInsInOrder.Count();
 					CopyFrom(astInsInOrder, edge->insAfterInput, true);
 					returnDesc.insAfterInput.count = (vint32_t)astInsInOrder.Count() - returnDesc.insAfterInput.start;
+
+					if (returnDesc.competitions.count == 0) returnDesc.competitions.start = -1;
 					if (returnDesc.insAfterInput.count == 0) returnDesc.insAfterInput.start = -1;
 				}
+
+				// executable.competitions
+				CopyFrom(executable.competitions, competitionsInOrder);
 
 				// executable.returnIndices
 				CopyFrom(executable.returnIndices, returnIndicesInOrder);

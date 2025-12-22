@@ -16,18 +16,34 @@
 #include "../../Source/IfElseSwitch/Generated/IfElseSwitchModuleParser.h"
 #include "../../Source/GenericAmbiguity/Generated/GenericAmbiguityExprAst_Json.h"
 #include "../../Source/GenericAmbiguity/Generated/GenericAmbiguityModuleParser.h"
-#include "../../Source/FeatureTest/Generated/FeatureTestFeatureAst_Json.h"
-#include "../../Source/FeatureTest/Generated/FeatureTestModuleParser.h"
+#include "../../Source/Feature_BO/Generated/Feature_BOFeatureAst_Json.h"
+#include "../../Source/Feature_BO/Generated/Feature_BOModuleParser.h"
+#include "../../Source/Feature_CL/Generated/Feature_CLFeatureAst_Json.h"
+#include "../../Source/Feature_CL/Generated/Feature_CLModuleParser.h"
+#include "../../Source/Feature_ERO/Generated/Feature_EROFeatureAst_Json.h"
+#include "../../Source/Feature_ERO/Generated/Feature_EROModuleParser.h"
+#include "../../Source/Feature_FA/Generated/Feature_FAFeatureAst_Json.h"
+#include "../../Source/Feature_FA/Generated/Feature_FAModuleParser.h"
+#include "../../Source/Feature_NOMinus/Generated/Feature_NOMinusFeatureAst_Json.h"
+#include "../../Source/Feature_NOMinus/Generated/Feature_NOMinusModuleParser.h"
+#include "../../Source/Feature_NOPlus/Generated/Feature_NOPlusFeatureAst_Json.h"
+#include "../../Source/Feature_NOPlus/Generated/Feature_NOPlusModuleParser.h"
+#include "../../Source/Feature_NO/Generated/Feature_NOFeatureAst_Json.h"
+#include "../../Source/Feature_NO/Generated/Feature_NOModuleParser.h"
+#include "../../Source/Feature_OptMinus/Generated/Feature_OptMinusFeatureAst_Json.h"
+#include "../../Source/Feature_OptMinus/Generated/Feature_OptMinusModuleParser.h"
+#include "../../Source/Feature_OptPlus/Generated/Feature_OptPlusFeatureAst_Json.h"
+#include "../../Source/Feature_OptPlus/Generated/Feature_OptPlusModuleParser.h"
+#include "../../Source/Feature_Opt/Generated/Feature_OptFeatureAst_Json.h"
+#include "../../Source/Feature_Opt/Generated/Feature_OptModuleParser.h"
+#include "../../Source/Feature_Pba/Generated/Feature_PbaFeatureAst_Json.h"
+#include "../../Source/Feature_Pba/Generated/Feature_PbaModuleParser.h"
+#include "../../Source/Feature_Pwa/Generated/Feature_PwaFeatureAst_Json.h"
+#include "../../Source/Feature_Pwa/Generated/Feature_PwaModuleParser.h"
+#include "../../Source/Feature_Pwl/Generated/Feature_PwlFeatureAst_Json.h"
+#include "../../Source/Feature_Pwl/Generated/Feature_PwlModuleParser.h"
 #include "../../Source/BinaryOp/Generated/BinaryOpExprAst_Json.h"
 #include "../../Source/BinaryOp/Generated/BinaryOpModuleParser.h"
-#include "../../Source/PrefixMerge1_Lri/Generated/PrefixMerge1_LriTypeOrExpr_Json.h"
-#include "../../Source/PrefixMerge1_Lri/Generated/PrefixMerge1_LriModuleParser.h"
-#include "../../Source/PrefixMerge2_LriRequired/Generated/PrefixMerge2_LriRequiredTypeOrExpr_Json.h"
-#include "../../Source/PrefixMerge2_LriRequired/Generated/PrefixMerge2_LriRequiredModuleParser.h"
-#include "../../Source/PrefixMerge3_LriNested/Generated/PrefixMerge3_LriNestedTypeOrExpr_Json.h"
-#include "../../Source/PrefixMerge3_LriNested/Generated/PrefixMerge3_LriNestedModuleParser.h"
-#include "../../Source/PrefixMerge4_LriMultiple/Generated/PrefixMerge4_LriMultipleTypeOrExpr_Json.h"
-#include "../../Source/PrefixMerge4_LriMultiple/Generated/PrefixMerge4_LriMultipleModuleParser.h"
 #include "../../Source/PrefixMerge5_Pm/Generated/PrefixMerge5_PmTypeOrExpr_Json.h"
 #include "../../Source/PrefixMerge5_Pm/Generated/PrefixMerge5_PmModuleParser.h"
 #include "../../Source/PrefixMerge6_Pm2/Generated/PrefixMerge6_Pm2TypeOrExpr_Json.h"
@@ -281,6 +297,9 @@ namespace TestParser_Generated_TestObjects
 			[&](ErrorArgs& args)
 			{
 				args.throwError = true;
+
+				TraceProcessingArgs tpArgs(args.tokens, args.executable, args.executor, false, TraceProcessingPhase::EndOfInput);
+				parser.OnTraceProcessing(tpArgs);
 			});
 
 		parser.OnTraceProcessing.Add(
@@ -335,199 +354,61 @@ using namespace TestParser_Generated_TestObjects;
 
 TEST_FILE
 {
-	TestParser<calculator::ModuleParser, calculator::json_visitor::ExprAstVisitor>(
-		L"Calculator",
-		&calculator::CalculatorTypeName,
-		&calculator::CalculatorFieldName,
-		&calculator::CalculatorTokenId,
-		&calculator::ModuleParserRuleName,
-		&calculator::ModuleParserStateLabel
-		);
-	TestParser<ifelseambiguity::ModuleParser, ifelseambiguity::json_visitor::StatAstVisitor>(
-		L"IfElseAmbiguity",
-		&ifelseambiguity::IfElseAmbiguityTypeName,
-		&ifelseambiguity::IfElseAmbiguityFieldName,
-		&ifelseambiguity::IfElseAmbiguityTokenId,
-		&ifelseambiguity::ModuleParserRuleName,
-		&ifelseambiguity::ModuleParserStateLabel,
-		L"TestCase_IfElseAmbiguity"
-		);
-	TestParser<ifelseambiguity2::ModuleParser, ifelseambiguity2::json_visitor::StatAstVisitor>(
-		L"IfElseAmbiguity2",
-		&ifelseambiguity2::IfElseAmbiguity2TypeName,
-		&ifelseambiguity2::IfElseAmbiguity2FieldName,
-		&ifelseambiguity2::IfElseAmbiguity2TokenId,
-		&ifelseambiguity2::ModuleParserRuleName,
-		&ifelseambiguity2::ModuleParserStateLabel,
-		L"TestCase_IfElseAmbiguity"
-		);
-	TestParser<ifelseambiguityonstat::ModuleParser, ifelseambiguityonstat::json_visitor::StatAstVisitor>(
-		L"IfElseAmbiguityOnStat",
-		&ifelseambiguityonstat::IfElseAmbiguityOnStatTypeName,
-		&ifelseambiguityonstat::IfElseAmbiguityOnStatFieldName,
-		&ifelseambiguityonstat::IfElseAmbiguityOnStatTokenId,
-		&ifelseambiguityonstat::ModuleParserRuleName,
-		&ifelseambiguityonstat::ModuleParserStateLabel,
-		L"TestCase_IfElseAmbiguityOnStat"
-		);
-	TestParser<ifelseambiguityonstat2::ModuleParser, ifelseambiguityonstat2::json_visitor::StatAstVisitor>(
-		L"IfElseAmbiguityOnStat2",
-		&ifelseambiguityonstat2::IfElseAmbiguityOnStat2TypeName,
-		&ifelseambiguityonstat2::IfElseAmbiguityOnStat2FieldName,
-		&ifelseambiguityonstat2::IfElseAmbiguityOnStat2TokenId,
-		&ifelseambiguityonstat2::ModuleParserRuleName,
-		&ifelseambiguityonstat2::ModuleParserStateLabel,
-		L"TestCase_IfElseAmbiguityOnStat"
-		);
-	TestParser<ifelsepriority::ModuleParser, ifelsepriority::json_visitor::StatAstVisitor>(
-		L"IfElsePriority",
-		&ifelsepriority::IfElsePriorityTypeName,
-		&ifelsepriority::IfElsePriorityFieldName,
-		&ifelsepriority::IfElsePriorityTokenId,
-		&ifelsepriority::ModuleParserRuleName,
-		&ifelsepriority::ModuleParserStateLabel,
-		L"TestCase_IfElse"
-		);
-	TestParser<ifelsemanual::ModuleParser, ifelsemanual::json_visitor::StatAstVisitor>(
-		L"IfElseManual",
-		&ifelsemanual::IfElseManualTypeName,
-		&ifelsemanual::IfElseManualFieldName,
-		&ifelsemanual::IfElseManualTokenId,
-		&ifelsemanual::ModuleParserRuleName,
-		&ifelsemanual::ModuleParserStateLabel,
-		L"TestCase_IfElse"
-		);
-	TestParser<ifelseswitch::ModuleParser, ifelseswitch::json_visitor::StatAstVisitor>(
-		L"IfElseSwitch",
-		&ifelseswitch::IfElseSwitchTypeName,
-		&ifelseswitch::IfElseSwitchFieldName,
-		&ifelseswitch::IfElseSwitchTokenId,
-		&ifelseswitch::ModuleParserRuleName,
-		&ifelseswitch::ModuleParserStateLabel,
-		L"TestCase_IfElse"
-		);
-	TestParser<genericambiguity::ModuleParser, genericambiguity::json_visitor::ExprAstVisitor>(
-		L"GenericAmbiguity",
-		&genericambiguity::GenericAmbiguityTypeName,
-		&genericambiguity::GenericAmbiguityFieldName,
-		&genericambiguity::GenericAmbiguityTokenId,
-		&genericambiguity::ModuleParserRuleName,
-		&genericambiguity::ModuleParserStateLabel
-		);
-	TestParser<featuretest::ModuleParser, featuretest::json_visitor::FeatureAstVisitor>(
-		L"FeatureTest",
-		&featuretest::FeatureTestTypeName,
-		&featuretest::FeatureTestFieldName,
-		&featuretest::FeatureTestTokenId,
-		&featuretest::ModuleParserRuleName,
-		&featuretest::ModuleParserStateLabel
-		);
-	TestParser<binaryop::ModuleParser, binaryop::json_visitor::ExprAstVisitor>(
-		L"BinaryOp",
-		&binaryop::BinaryOpTypeName,
-		&binaryop::BinaryOpFieldName,
-		&binaryop::BinaryOpTokenId,
-		&binaryop::ModuleParserRuleName,
-		&binaryop::ModuleParserStateLabel
-		);
-	TestParser<prefixmerge1_lri::ModuleParser, prefixmerge1_lri::json_visitor::TypeOrExprVisitor>(
-		L"PrefixMerge1_Lri",
-		&prefixmerge1_lri::PrefixMerge1_LriTypeName,
-		&prefixmerge1_lri::PrefixMerge1_LriFieldName,
-		&prefixmerge1_lri::PrefixMerge1_LriTokenId,
-		&prefixmerge1_lri::ModuleParserRuleName,
-		&prefixmerge1_lri::ModuleParserStateLabel,
-		L"TestCase_Cpp/Basic",
-		L"TestCase_Cpp/Ambiguous1"
-		);
-	TestParser<prefixmerge2_lrirequired::ModuleParser, prefixmerge2_lrirequired::json_visitor::TypeOrExprVisitor>(
-		L"PrefixMerge2_LriRequired",
-		&prefixmerge2_lrirequired::PrefixMerge2_LriRequiredTypeName,
-		&prefixmerge2_lrirequired::PrefixMerge2_LriRequiredFieldName,
-		&prefixmerge2_lrirequired::PrefixMerge2_LriRequiredTokenId,
-		&prefixmerge2_lrirequired::ModuleParserRuleName,
-		&prefixmerge2_lrirequired::ModuleParserStateLabel,
-		L"TestCase_Cpp/Basic",
-		L"TestCase_Cpp/Ambiguous1"
-		);
-	TestParser<prefixmerge3_lrinested::ModuleParser, prefixmerge3_lrinested::json_visitor::TypeOrExprVisitor>(
-		L"PrefixMerge3_LriNested",
-		&prefixmerge3_lrinested::PrefixMerge3_LriNestedTypeName,
-		&prefixmerge3_lrinested::PrefixMerge3_LriNestedFieldName,
-		&prefixmerge3_lrinested::PrefixMerge3_LriNestedTokenId,
-		&prefixmerge3_lrinested::ModuleParserRuleName,
-		&prefixmerge3_lrinested::ModuleParserStateLabel,
-		L"TestCase_Cpp/Basic",
-		L"TestCase_Cpp/Ambiguous1",
-		L"TestCase_Cpp/CtorExpr"
-		);
-	TestParser<prefixmerge4_lrimultiple::ModuleParser, prefixmerge4_lrimultiple::json_visitor::TypeOrExprVisitor>(
-		L"PrefixMerge4_LriMultiple",
-		&prefixmerge4_lrimultiple::PrefixMerge4_LriMultipleTypeName,
-		&prefixmerge4_lrimultiple::PrefixMerge4_LriMultipleFieldName,
-		&prefixmerge4_lrimultiple::PrefixMerge4_LriMultipleTokenId,
-		&prefixmerge4_lrimultiple::ModuleParserRuleName,
-		&prefixmerge4_lrimultiple::ModuleParserStateLabel,
-		L"TestCase_Cpp/Basic",
-		L"TestCase_Cpp/Ambiguous1",
-		L"TestCase_Cpp/CtorExpr"
-		);
-	TestParser<prefixmerge5_pm::ModuleParser, prefixmerge5_pm::json_visitor::TypeOrExprVisitor>(
-		L"PrefixMerge5_Pm",
-		&prefixmerge5_pm::PrefixMerge5_PmTypeName,
-		&prefixmerge5_pm::PrefixMerge5_PmFieldName,
-		&prefixmerge5_pm::PrefixMerge5_PmTokenId,
-		&prefixmerge5_pm::ModuleParserRuleName,
-		&prefixmerge5_pm::ModuleParserStateLabel,
-		L"TestCase_Cpp/Basic",
-		L"TestCase_Cpp/Ambiguous2",
-		L"TestCase_Cpp/CtorExpr"
-		);
-	TestParser<prefixmerge6_pm2::ModuleParser, prefixmerge6_pm2::json_visitor::TypeOrExprVisitor>(
-		L"PrefixMerge6_Pm2",
-		&prefixmerge6_pm2::PrefixMerge6_Pm2TypeName,
-		&prefixmerge6_pm2::PrefixMerge6_Pm2FieldName,
-		&prefixmerge6_pm2::PrefixMerge6_Pm2TokenId,
-		&prefixmerge6_pm2::ModuleParserRuleName,
-		&prefixmerge6_pm2::ModuleParserStateLabel,
-		L"TestCase_Cpp/Basic",
-		L"TestCase_Cpp/Ambiguous2",
-		L"TestCase_Cpp/CtorExpr",
-		L"TestCase_Cpp/ThrowComma"
-		);
-	TestParser<prefixmerge7_pmswitch::ModuleParser, prefixmerge7_pmswitch::json_visitor::TypeOrExprVisitor>(
-		L"PrefixMerge7_PmSwitch",
-		&prefixmerge7_pmswitch::PrefixMerge7_PmSwitchTypeName,
-		&prefixmerge7_pmswitch::PrefixMerge7_PmSwitchFieldName,
-		&prefixmerge7_pmswitch::PrefixMerge7_PmSwitchTokenId,
-		&prefixmerge7_pmswitch::ModuleParserRuleName,
-		&prefixmerge7_pmswitch::ModuleParserStateLabel,
-		L"TestCase_Cpp/Basic",
-		L"TestCase_Cpp/Ambiguous2",
-		L"TestCase_Cpp/CtorExpr",
-		L"TestCase_Cpp/ThrowComma",
-		L"TestCase_Cpp/Generic"
-		);
-	TestParser<prefixmerge8_pmvariadic::ModuleParser, prefixmerge8_pmvariadic::json_visitor::TypeOrExprVisitor>(
-		L"PrefixMerge8_PmVariadic",
-		&prefixmerge8_pmvariadic::PrefixMerge8_PmVariadicTypeName,
-		&prefixmerge8_pmvariadic::PrefixMerge8_PmVariadicFieldName,
-		&prefixmerge8_pmvariadic::PrefixMerge8_PmVariadicTokenId,
-		&prefixmerge8_pmvariadic::ModuleParserRuleName,
-		&prefixmerge8_pmvariadic::ModuleParserStateLabel,
-		L"TestCase_Cpp/Basic",
-		L"TestCase_Cpp/Ambiguous2",
-		L"TestCase_Cpp/CtorExpr",
-		L"TestCase_Cpp/Variadic"
-		);
-	TestParser<prefixmerge9_pmloop::ModuleParser, prefixmerge9_pmloop::json_visitor::FileVisitor>(
-		L"PrefixMerge9_PmLoop",
-		&prefixmerge9_pmloop::PrefixMerge9_PmLoopTypeName,
-		&prefixmerge9_pmloop::PrefixMerge9_PmLoopFieldName,
-		&prefixmerge9_pmloop::PrefixMerge9_PmLoopTokenId,
-		&prefixmerge9_pmloop::ModuleParserRuleName,
-		&prefixmerge9_pmloop::ModuleParserStateLabel
-		);
+
+#define ENABLE_PARSER(UPPERCASE, LOWERCASE, VISITOR, ...)													\
+	TestParser<LOWERCASE::ModuleParser, LOWERCASE::json_visitor::VISITOR##Visitor>(						\
+		L#UPPERCASE,																						\
+		&LOWERCASE::UPPERCASE##TypeName,																	\
+		&LOWERCASE::UPPERCASE##FieldName,																	\
+		&LOWERCASE::UPPERCASE##TokenId,																		\
+		&LOWERCASE::ModuleParserRuleName,																	\
+		&LOWERCASE::ModuleParserStateLabel,																	\
+		__VA_ARGS__																							\
+		)																									\
+
+#define ENABLE_FEATURE(UPPERCASE, LOWERCASE)																\
+	TestParser<feature_##LOWERCASE::ModuleParser, feature_##LOWERCASE::json_visitor::FeatureAstVisitor>(	\
+		L"Feature_" #UPPERCASE,																				\
+		&feature_##LOWERCASE::Feature_##UPPERCASE##TypeName,												\
+		&feature_##LOWERCASE::Feature_##UPPERCASE##FieldName,												\
+		&feature_##LOWERCASE::Feature_##UPPERCASE##TokenId,													\
+		&feature_##LOWERCASE::ModuleParserRuleName,															\
+		&feature_##LOWERCASE::ModuleParserStateLabel														\
+		)																									\
+
+	ENABLE_PARSER(Calculator,				calculator,				ExprAst);
+	ENABLE_PARSER(IfElseAmbiguity,			ifelseambiguity,		StatAst,	L"TestCase_IfElseAmbiguity");
+	ENABLE_PARSER(IfElseAmbiguity2,			ifelseambiguity2,		StatAst,	L"TestCase_IfElseAmbiguity");
+	ENABLE_PARSER(IfElseAmbiguityOnStat,	ifelseambiguityonstat,	StatAst,	L"TestCase_IfElseAmbiguityOnStat");
+	ENABLE_PARSER(IfElseAmbiguityOnStat2,	ifelseambiguityonstat2,	StatAst,	L"TestCase_IfElseAmbiguityOnStat");
+	ENABLE_PARSER(IfElsePriority,			ifelsepriority,			StatAst,	L"TestCase_IfElse");
+	ENABLE_PARSER(IfElseManual,				ifelsemanual,			StatAst,	L"TestCase_IfElse");
+	ENABLE_PARSER(IfElseSwitch,				ifelseswitch,			StatAst,	L"TestCase_IfElse");
+	ENABLE_PARSER(GenericAmbiguity,			genericambiguity,		ExprAst);
+	ENABLE_PARSER(BinaryOp,					binaryop,				ExprAst);
+
+	ENABLE_FEATURE(BO, bo);
+	ENABLE_FEATURE(CL, cl);
+	ENABLE_FEATURE(ERO, ero);
+	ENABLE_FEATURE(FA, fa);
+	ENABLE_FEATURE(NOMinus, nominus);
+	ENABLE_FEATURE(NOPlus, noplus);
+	ENABLE_FEATURE(NO, no);
+	ENABLE_FEATURE(OptMinus, optminus);
+	ENABLE_FEATURE(OptPlus, optplus);
+	ENABLE_FEATURE(Opt, opt);
+	ENABLE_FEATURE(Pba, pba);
+	ENABLE_FEATURE(Pwa, pwa);
+	ENABLE_FEATURE(Pwl, pwl);
+
+	ENABLE_PARSER(PrefixMerge5_Pm,			prefixmerge5_pm,			TypeOrExpr,		L"TestCase_Cpp/Basic", L"TestCase_Cpp/Ambiguous2", L"TestCase_Cpp/CtorExpr");
+	ENABLE_PARSER(PrefixMerge6_Pm2,			prefixmerge6_pm2,			TypeOrExpr,		L"TestCase_Cpp/Basic", L"TestCase_Cpp/Ambiguous2", L"TestCase_Cpp/CtorExpr", L"TestCase_Cpp/ThrowComma");
+	ENABLE_PARSER(PrefixMerge7_PmSwitch,	prefixmerge7_pmswitch,		TypeOrExpr,		L"TestCase_Cpp/Basic", L"TestCase_Cpp/Ambiguous2", L"TestCase_Cpp/CtorExpr", L"TestCase_Cpp/ThrowComma", L"TestCase_Cpp/Generic");
+	ENABLE_PARSER(PrefixMerge8_PmVariadic,	prefixmerge8_pmvariadic,	TypeOrExpr,		L"TestCase_Cpp/Basic", L"TestCase_Cpp/Ambiguous2", L"TestCase_Cpp/CtorExpr", L"TestCase_Cpp/Variadic");
+	ENABLE_PARSER(PrefixMerge9_PmLoop,		prefixmerge9_pmloop,		File);
+
+#undef ENABLE_FEATURE
+#undef ENABLE_PARSER
 
 	using namespace TestParser_Generated_TestObjects;
 

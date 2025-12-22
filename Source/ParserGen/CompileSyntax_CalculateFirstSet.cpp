@@ -33,29 +33,6 @@ DirectFirstSetVisitor
 					return context.syntaxManager.Rules().Values()[index];
 				}
 
-				void AddStartLiteral(const ParsingToken& literal)
-				{
-					context.ruleBeginsWithLiteral.Add(ruleSymbol, literal);
-					context.clauseBeginsWithLiteral.Add(currentClause, literal);
-				}
-
-				void AddStartTokenOrRule(const ParsingToken& literal)
-				{
-					if (auto startRule = TryGetRuleSymbol(literal.value))
-					{
-						context.directStartRules.Add(ruleSymbol, { startRule,currentClause });
-						context.clauseToStartRules.Add(currentClause, startRule);
-						if (ruleSymbol == startRule && !context.leftRecursiveClauses.Contains(ruleSymbol, currentClause))
-						{
-							context.leftRecursiveClauses.Add(ruleSymbol, currentClause);
-						}
-					}
-					else
-					{
-						AddStartLiteral(literal);
-					}
-				}
-
 			public:
 				DirectFirstSetVisitor(
 					VisitorContext& _context,
@@ -79,20 +56,11 @@ DirectFirstSetVisitor
 
 				void Visit(GlrRefSyntax* node) override
 				{
-					if (node->refType == GlrRefType::Id)
-					{
-						AddStartTokenOrRule(node->literal);
-					}
-					else
-					{
-						AddStartLiteral(node->literal);
-					}
 					couldBeEmpty = false;
 				}
 
 				void Visit(GlrUseSyntax* node) override
 				{
-					AddStartTokenOrRule(node->name);
 					couldBeEmpty = false;
 				}
 
@@ -155,30 +123,7 @@ DirectFirstSetVisitor
 						auto nodeSyntax = node->syntax.Obj();
 						auto pushSyntax = dynamic_cast<GlrPushConditionSyntax*>(nodeSyntax);
 						if (pushSyntax) nodeSyntax = pushSyntax->syntax.Obj();
-
-						if (auto useSyntax = dynamic_cast<GlrUseSyntax*>(nodeSyntax))
-						{
-							if (auto startRule = TryGetRuleSymbol(useSyntax->name.value))
-							{
-								context.directSimpleUseRules.Add(ruleSymbol, { startRule,currentClause });
-								context.simpleUseClauseToReferencedRules.Add(currentClause, startRule);
-							}
-						}
 					}
-				}
-
-				void Visit(GlrLeftRecursionPlaceholderClause* node) override
-				{
-				}
-
-				void Visit(GlrLeftRecursionInjectClause* node) override
-				{
-					node->rule->Accept(this);
-				}
-
-				void Visit(GlrPrefixMergeClause* node) override
-				{
-					node->rule->Accept(this);
 				}
 			};
 
@@ -197,74 +142,6 @@ CalculateFirstSet
 						visitor.VisitClause(clause);
 					}
 				}
-			}
-
-			void CalculateFirstSet_RuleClosure(const RulePathDependencies& direct, RulePathDependencies& indirect, PathToLastRuleMap& pathToLastRules)
-			{
-				for (auto [rule, index] : indexed(direct.Keys()))
-				{
-					auto&& startRules = direct.GetByIndex(index);
-					for (auto [startRule, clause] : startRules)
-					{
-						indirect.Add(rule, { startRule,clause });
-						pathToLastRules.Add({ rule,startRule }, { rule,clause });
-					}
-				}
-
-				while (true)
-				{
-					vint offset = 0;
-					// TODO: (enumerable) foreach:alterable
-					for (auto [rule, index] : indexed(indirect.Keys()))
-					{
-						auto&& startRules1 = indirect.GetByIndex(index);
-						for (auto [startRule1, clause1] : startRules1)
-						{
-							if (rule == startRule1) continue;
-							vint index2 = direct.Keys().IndexOf(startRule1);
-							if (index2 != -1)
-							{
-								auto&& startRules2 = direct.GetByIndex(index2);
-								for (auto [startRule2, clause2] : startRules2)
-								{
-									if (rule == startRule2 || startRule1 == startRule2) continue;
-									if (!pathToLastRules.Contains({ rule,startRule2 }, { startRule1,clause2 }))
-									{
-										offset++;
-										if (!indirect.Contains(rule, { startRule2,clause2 }))
-										{
-											indirect.Add(rule, { startRule2,clause2 });
-										}
-										pathToLastRules.Add({ rule,startRule2 }, { startRule1,clause2 });
-									}
-								}
-							}
-						}
-					}
-
-					if (offset == 0)
-					{
-						break;
-					}
-				}
-			}
-
-			void CalculateFirstSet_IndirectStartRules(VisitorContext& context)
-			{
-				CalculateFirstSet_RuleClosure(
-					context.directStartRules,
-					context.indirectStartRules,
-					context.indirectStartPathToLastRules
-					);
-			}
-
-			void CalculateFirstSet_IndirectSimpleUseRules(VisitorContext& context)
-			{
-				CalculateFirstSet_RuleClosure(
-					context.directSimpleUseRules,
-					context.indirectSimpleUseRules,
-					context.indirectSimpleUsePathToLastRules
-					);
 			}
 
 			template<typename TClause>
@@ -290,35 +167,9 @@ CalculateFirstSet
 				}
 			}
 
-			void CalculateFirstSet_IndirectLrpPmClauses(VisitorContext& context)
-			{
-				for (auto [rule, index] : indexed(context.indirectStartRules.Keys()))
-				{
-					SortedList<GlrLeftRecursionInjectClause*> lriClauses;
-					SortedList<GlrLeftRecursionPlaceholderClause*> lrpClauses;
-					SortedList<GlrPrefixMergeClause*> pmClauses;
-
-					CalculateFirstSet_MoveFromDirectClauses(lriClauses, context.indirectLriClauses, context.directLriClauses, rule, rule);
-					CalculateFirstSet_MoveFromDirectClauses(lrpClauses, context.indirectLrpClauses, context.directLrpClauses, rule, rule);
-					CalculateFirstSet_MoveFromDirectClauses(pmClauses, context.indirectPmClauses, context.directPmClauses, rule, rule);
-
-					auto&& startRules = context.indirectStartRules.GetByIndex(index);
-
-					for (auto startRule : startRules)
-					{
-						CalculateFirstSet_MoveFromDirectClauses(lriClauses, context.indirectLriClauses, context.directLriClauses, rule, startRule.ruleSymbol);
-						CalculateFirstSet_MoveFromDirectClauses(lrpClauses, context.indirectLrpClauses, context.directLrpClauses, rule, startRule.ruleSymbol);
-						CalculateFirstSet_MoveFromDirectClauses(pmClauses, context.indirectPmClauses, context.directPmClauses, rule, startRule.ruleSymbol);
-					}
-				}
-			}
-
 			void CalculateFirstSet(VisitorContext& context, Ptr<GlrSyntaxFile> syntaxFile)
 			{
 				CalculateFirstSet_DirectStartRules(context, syntaxFile);
-				CalculateFirstSet_IndirectStartRules(context);
-				CalculateFirstSet_IndirectSimpleUseRules(context);
-				CalculateFirstSet_IndirectLrpPmClauses(context);
 			}
 		}
 	}

@@ -1,6 +1,6 @@
 #include "../../Source/Calculator/Parser/CalculatorExprAst_Json.h"
 #include "../../Source/Calculator/Parser/CalculatorModuleParser.h"
-#include "../../Source/LogAutomaton.h"
+#include "../../Source/LogTrace.h"
 
 using namespace calculator;
 

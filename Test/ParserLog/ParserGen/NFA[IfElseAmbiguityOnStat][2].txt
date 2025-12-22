@@ -1,123 +1,140 @@
 ﻿[0][Do] BEGIN 
-[RULE: 0][CLAUSE: -1]
+[RULE: 0]
 	token: "do" -> [3][Do]< "do" @ ";" >
-		- BeginObject(DoStat)
+		+ StackBegin()
+		+ Token(0)
 
 [1][Do] END [ENDING]
-[RULE: 0][CLAUSE: -1]
+[RULE: 0]
 
 [2][Do]< "do" ";" @ >
-[RULE: 0][CLAUSE: 0]
+[RULE: 0]
 	ending -> [1][Do] END [ENDING]
-		- EndObject()
+		+ CreateObject(DoStat)
+		+ StackEnd()
 
 [3][Do]< "do" @ ";" >
-[RULE: 0][CLAUSE: 0]
+[RULE: 0]
 	token: ";" -> [2][Do]< "do" ";" @ >
+		+ Token(1)
 
 [4][Block] BEGIN 
-[RULE: 1][CLAUSE: -1]
+[RULE: 1]
 	token: "{" -> [6][Block]< "{" @ { Stat } "}" >
-		- BeginObject(BlockStat)
+		+ StackBegin()
+		+ Token(0)
 
 [5][Block] END [ENDING]
-[RULE: 1][CLAUSE: -1]
+[RULE: 1]
 
 [6][Block]< "{" @ { Stat } "}" >
-[RULE: 1][CLAUSE: 0]
+[RULE: 1]
 	token: "}" -> [8][Block]< "{" { Stat } "}" @ >
+		+ Token(2)
 	rule: Stat -> [7][Block]< "{" { Stat @ } "}" >
-		+ Field(BlockStat::stats)
+		+ StackSlot(1)
 
 [7][Block]< "{" { Stat @ } "}" >
-[RULE: 1][CLAUSE: 0]
+[RULE: 1]
 	token: "}" -> [8][Block]< "{" { Stat } "}" @ >
+		+ Token(2)
 	rule: Stat -> [7][Block]< "{" { Stat @ } "}" >
-		+ Field(BlockStat::stats)
+		+ StackSlot(1)
 
 [8][Block]< "{" { Stat } "}" @ >
-[RULE: 1][CLAUSE: 0]
+[RULE: 1]
 	ending -> [5][Block] END [ENDING]
-		- EndObject()
+		+ CreateObject(BlockStat)
+		+ Field(BlockStat::stats, 1)
+		+ StackEnd()
 
 [9][If] BEGIN 
-[RULE: 2][CLAUSE: -1]
+[RULE: 2]
 	token: "if" -> [16][If]< "if" @ "cond" "then" Stat [ "else" Stat ] >
-		- BeginObject(IfStat)
+		+ StackBegin()
+		+ Token(0)
 
 [10][If] END [ENDING]
-[RULE: 2][CLAUSE: -1]
+[RULE: 2]
 
 [11][If]< "if" "cond" "then" @ Stat [ "else" Stat ] >
-[RULE: 2][CLAUSE: 0]
+[RULE: 2]
 	rule: Stat -> [12][If]< "if" "cond" "then" Stat @ [ "else" Stat ] >
-		+ Field(IfStat::thenBranch)
+		+ StackSlot(3)
 
 [12][If]< "if" "cond" "then" Stat @ [ "else" Stat ] >
-[RULE: 2][CLAUSE: 0]
+[RULE: 2]
 	ending -> [10][If] END [ENDING]
-		- EndObject()
+		+ CreateObject(IfStat)
+		+ Field(IfStat::thenBranch, 3)
+		+ Field(IfStat::elseBranch, 5)
+		+ StackEnd()
 	token: "else" -> [13][If]< "if" "cond" "then" Stat [ "else" @ Stat ] >
+		+ Token(4)
 
 [13][If]< "if" "cond" "then" Stat [ "else" @ Stat ] >
-[RULE: 2][CLAUSE: 0]
+[RULE: 2]
 	rule: Stat -> [14][If]< "if" "cond" "then" Stat [ "else" Stat @ ] >
-		+ Field(IfStat::elseBranch)
+		+ StackSlot(5)
 
 [14][If]< "if" "cond" "then" Stat [ "else" Stat @ ] >
-[RULE: 2][CLAUSE: 0]
+[RULE: 2]
 	ending -> [10][If] END [ENDING]
-		- EndObject()
+		+ CreateObject(IfStat)
+		+ Field(IfStat::thenBranch, 3)
+		+ Field(IfStat::elseBranch, 5)
+		+ StackEnd()
 
 [15][If]< "if" "cond" @ "then" Stat [ "else" Stat ] >
-[RULE: 2][CLAUSE: 0]
+[RULE: 2]
 	token: "then" -> [11][If]< "if" "cond" "then" @ Stat [ "else" Stat ] >
+		+ Token(2)
 
 [16][If]< "if" @ "cond" "then" Stat [ "else" Stat ] >
-[RULE: 2][CLAUSE: 0]
+[RULE: 2]
 	token: "cond" -> [15][If]< "if" "cond" @ "then" Stat [ "else" Stat ] >
+		+ Token(1)
 
 [17][Stat] BEGIN 
-[RULE: 3][CLAUSE: -1]
-	rule: Do -> [20][Stat]<< !Do @ >>
-		- DelayFieldAssignment()
-	rule: Block -> [19][Stat]<< !Block @ >>
-		- DelayFieldAssignment()
-	rule: If -> [21][Stat]<< !If @ >>
-		- DelayFieldAssignment()
+[RULE: 3]
+	rule: Do -> [20][Stat]<! !Do @ !>
+		+ StackBegin()
+	rule: Block -> [19][Stat]<! !Block @ !>
+		+ StackBegin()
+	rule: If -> [21][Stat]<! !If @ !>
+		+ StackBegin()
 
 [18][Stat] END [ENDING]
-[RULE: 3][CLAUSE: -1]
+[RULE: 3]
 
-[19][Stat]<< !Block @ >>
-[RULE: 3][CLAUSE: 1]
+[19][Stat]<! !Block @ !>
+[RULE: 3]
 	ending -> [18][Stat] END [ENDING]
-		- ReopenObject()
-		- EndObject()
+		+ StackEnd()
 
-[20][Stat]<< !Do @ >>
-[RULE: 3][CLAUSE: 0]
+[20][Stat]<! !Do @ !>
+[RULE: 3]
 	ending -> [18][Stat] END [ENDING]
-		- ReopenObject()
-		- EndObject()
+		+ StackEnd()
 
-[21][Stat]<< !If @ >>
-[RULE: 3][CLAUSE: 2]
+[21][Stat]<! !If @ !>
+[RULE: 3]
 	ending -> [18][Stat] END [ENDING]
-		- ReopenObject()
-		- EndObject()
+		+ StackEnd()
 
 [22][Module] BEGIN 
-[RULE: 4][CLAUSE: -1]
+[RULE: 4]
 	rule: Stat -> [24][Module]< Stat @ >
-		- BeginObject(Module)
+		+ StackBegin()
+		+ StackSlot(0)
 
 [23][Module] END [ENDING]
-[RULE: 4][CLAUSE: -1]
+[RULE: 4]
 
 [24][Module]< Stat @ >
-[RULE: 4][CLAUSE: 0]
+[RULE: 4]
 	ending -> [23][Module] END [ENDING]
-		- Field(Module::stat)
-		- EndObject()
+		+ CreateObject(Module)
+		+ Field(Module::stat, 0)
+		+ StackEnd()
 

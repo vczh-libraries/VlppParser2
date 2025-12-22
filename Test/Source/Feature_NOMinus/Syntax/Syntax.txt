@@ -1,0 +1,19 @@
+﻿Plus
+  ::= "+" as Plus
+  ;
+
+NegativeNO1
+  ::= -[Plus:optional] Plus:tail1 as partial NestedOptionalFeature
+  ;
+
+NegativeNO2
+  ::= -[NegativeNO1] Plus:tail2 as partial NestedOptionalFeature
+  ;
+
+NestedNegativeOptional
+  ::= "nested_negative_optional" -[NegativeNO2] Plus:tail3 {Plus:tails} as NestedOptionalFeature
+  ;
+
+@parser Module : Feature
+  ::= !NestedNegativeOptional
+  ;

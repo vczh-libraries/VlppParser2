@@ -1,0 +1,83 @@
+﻿[0][Fa]< @ [ ( ID ) ] ID >
+[RULE: 1]
+	epsilon -> [3][Fa]< [ ( ID ) ] @ ID >
+	epsilon -> [10][Fa]< [ @ ( ID ) ] ID >
+
+[1][Fa]< [ ( @ ID ) ] ID >
+[RULE: 1]
+	token: ID="b" -> [9][Fa]< [ ( ID @ ) ] ID >
+		+ Token(0)
+
+[2][Fa]< [ ( ID ) @ ] ID >
+[RULE: 1]
+	epsilon -> [3][Fa]< [ ( ID ) ] @ ID >
+
+[3][Fa]< [ ( ID ) ] @ ID >
+[RULE: 1]
+	epsilon -> [4][Fa]< [ ( ID ) ] @ ID >
+
+[4][Fa]< [ ( ID ) ] @ ID >
+[RULE: 1]
+	token: ID="a" -> [7][Fa]< [ ( ID ) ] ID @ >
+		+ Token(2)
+
+[5][Fa]< [ ( ID ) ] ID > @[ENDING]
+[RULE: 1]
+
+[6][Fa]< [ ( ID ) ] ID @ >
+[RULE: 1]
+	epsilon -> [5][Fa]< [ ( ID ) ] ID > @[ENDING]
+		+ CreateObject(FaFeature)
+		+ Field(FaFeature::fa, 1)
+		+ FieldIfUnassigned(FaFeature::fa, 3)
+		+ StackEnd()
+
+[7][Fa]< [ ( ID ) ] ID @ >
+[RULE: 1]
+	epsilon -> [6][Fa]< [ ( ID ) ] ID @ >
+		+ EnumItem(0, 3)
+
+[8][Fa]< [ ( ID @ ) ] ID >
+[RULE: 1]
+	epsilon -> [2][Fa]< [ ( ID ) @ ] ID >
+
+[9][Fa]< [ ( ID @ ) ] ID >
+[RULE: 1]
+	epsilon -> [8][Fa]< [ ( ID @ ) ] ID >
+		+ EnumItem(1, 1)
+
+[10][Fa]< [ @ ( ID ) ] ID >
+[RULE: 1]
+	epsilon -> [1][Fa]< [ ( @ ID ) ] ID >
+
+[11][Fa]@ < [ ( ID ) ] ID >
+[RULE: 1]
+	epsilon -> [0][Fa]< @ [ ( ID ) ] ID >
+		+ StackBegin()
+
+[12][Module]<! "field_assignment" !Fa !> @[ENDING]
+[RULE: 2]
+
+[13][Module]<! "field_assignment" !Fa @ !>
+[RULE: 2]
+	epsilon -> [12][Module]<! "field_assignment" !Fa !> @[ENDING]
+		+ StackEnd()
+
+[14][Module]<! "field_assignment" @ !Fa !>
+[RULE: 2]
+	epsilon -> [15][Module]<! "field_assignment" @ !Fa !>
+
+[15][Module]<! "field_assignment" @ !Fa !>
+[RULE: 2]
+	rule: Fa -> [13][Module]<! "field_assignment" !Fa @ !>
+
+[16][Module]<! @ "field_assignment" !Fa !>
+[RULE: 2]
+	token: "field_assignment" -> [14][Module]<! "field_assignment" @ !Fa !>
+		+ Token(0)
+
+[17][Module]@ <! "field_assignment" !Fa !>
+[RULE: 2]
+	epsilon -> [16][Module]<! @ "field_assignment" !Fa !>
+		+ StackBegin()
+

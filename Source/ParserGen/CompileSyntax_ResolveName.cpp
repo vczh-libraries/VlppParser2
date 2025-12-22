@@ -87,7 +87,6 @@ ResolveNameVisitor
 
 				void ResolveClause(Ptr<GlrClause> clause)
 				{
-					context.clauseToRules.Add(clause.Obj(), ruleSymbol);
 					clause->Accept(this);
 				}
 
@@ -366,7 +365,6 @@ ResolveNameVisitor
 				{
 					if (auto classSymbol = GetRuleClass(node->type))
 					{
-						context.ruleKnownTypes.Add(ruleSymbol, classSymbol);
 						context.clauseTypes.Add(node, classSymbol);
 					}
 					node->syntax->Accept(this);
@@ -376,7 +374,6 @@ ResolveNameVisitor
 				{
 					if (auto classSymbol = GetRuleClass(node->type))
 					{
-						context.ruleKnownTypes.Add(ruleSymbol, classSymbol);
 						context.clauseTypes.Add(node, classSymbol);
 					}
 					node->syntax->Accept(this);
@@ -386,46 +383,6 @@ ResolveNameVisitor
 				{
 					reuseClause = node;
 					node->syntax->Accept(this);
-				}
-
-				void Visit(GlrLeftRecursionPlaceholderClause* node) override
-				{
-					for (auto flag : node->flags)
-					{
-						auto name = flag->flag.value;
-						if (!ruleSymbol->lrFlags.Contains(name))
-						{
-							ruleSymbol->lrFlags.Add(name);
-						}
-					}
-					context.directLrpClauses.Add(ruleSymbol, node);
-				}
-
-				void VisitLriClause(GlrLeftRecursionInjectClause* node)
-				{
-					VisitReuseSyntax(
-						node->rule->literal,
-						(!node->continuation || node->continuation->type == GlrLeftRecursionInjectContinuationType::Optional)
-						);
-					if (node->continuation)
-					{
-						for (auto lriTarget : node->continuation->injectionTargets)
-						{
-							VisitLriClause(lriTarget.Obj());
-						}
-					}
-				}
-
-				void Visit(GlrLeftRecursionInjectClause* node) override
-				{
-					VisitLriClause(node);
-					context.directLriClauses.Add(ruleSymbol, node);
-				}
-
-				void Visit(GlrPrefixMergeClause* node) override
-				{
-					VisitReuseSyntax(node->rule->literal, true);
-					context.directPmClauses.Add(ruleSymbol, node);
 				}
 			};
 
@@ -521,37 +478,6 @@ ResolveName
 								rule->name.codeRange,
 								rule->name.value
 								);
-						}
-					}
-				}
-
-				if (context.directPmClauses.Count() > 0)
-				{
-					for (auto rule : syntaxFile->rules)
-					{
-						if (!IsLegalNameBeforeWithPrefixMerge(rule->name.value))
-						{
-							context.syntaxManager.AddError(
-								ParserErrorType::SyntaxInvolvesPrefixMergeWithIllegalRuleName,
-								rule->name.codeRange,
-								rule->name.value
-								);
-						}
-
-						for (auto lrp : From(rule->clauses).FindType<GlrLeftRecursionPlaceholderClause>())
-						{
-							for (auto p : lrp->flags)
-							{
-								if (!IsLegalNameBeforeWithPrefixMerge(p->flag.value))
-								{
-									context.syntaxManager.AddError(
-										ParserErrorType::SyntaxInvolvesPrefixMergeWithIllegalPlaceholderName,
-										p->flag.codeRange,
-										rule->name.value,
-										p->flag.value
-										);
-								}
-							}
 						}
 					}
 				}

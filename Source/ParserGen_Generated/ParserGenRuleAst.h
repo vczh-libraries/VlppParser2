@@ -17,16 +17,11 @@ namespace vl::glr::parsergen
 	class GlrClause;
 	class GlrCondition;
 	class GlrCreateClause;
-	class GlrLeftRecursionInjectClause;
-	class GlrLeftRecursionInjectContinuation;
-	class GlrLeftRecursionPlaceholder;
-	class GlrLeftRecursionPlaceholderClause;
 	class GlrLoopSyntax;
 	class GlrNotCondition;
 	class GlrOptionalSyntax;
 	class GlrOrCondition;
 	class GlrPartialClause;
-	class GlrPrefixMergeClause;
 	class GlrPushConditionSyntax;
 	class GlrRefCondition;
 	class GlrRefSyntax;
@@ -68,20 +63,6 @@ namespace vl::glr::parsergen
 		UNDEFINED_ENUM_ITEM_VALUE = -1,
 		Strong = 0,
 		Weak = 1,
-	};
-
-	enum class GlrLeftRecursionConfiguration
-	{
-		UNDEFINED_ENUM_ITEM_VALUE = -1,
-		Single = 0,
-		Multiple = 1,
-	};
-
-	enum class GlrLeftRecursionInjectContinuationType
-	{
-		UNDEFINED_ENUM_ITEM_VALUE = -1,
-		Optional = 0,
-		Required = 1,
 	};
 
 	class GlrCondition abstract : public vl::glr::ParsingAstBase, vl::reflection::Description<GlrCondition>
@@ -248,9 +229,6 @@ namespace vl::glr::parsergen
 			virtual void Visit(GlrCreateClause* node) = 0;
 			virtual void Visit(GlrPartialClause* node) = 0;
 			virtual void Visit(GlrReuseClause* node) = 0;
-			virtual void Visit(GlrLeftRecursionPlaceholderClause* node) = 0;
-			virtual void Visit(GlrLeftRecursionInjectClause* node) = 0;
-			virtual void Visit(GlrPrefixMergeClause* node) = 0;
 		};
 
 		virtual void Accept(GlrClause::IVisitor* visitor) = 0;
@@ -290,46 +268,6 @@ namespace vl::glr::parsergen
 	public:
 		vl::Ptr<GlrSyntax> syntax;
 		vl::collections::List<vl::Ptr<GlrAssignment>> assignments;
-
-		void Accept(GlrClause::IVisitor* visitor) override;
-	};
-
-	class GlrLeftRecursionPlaceholder : public vl::glr::ParsingAstBase, vl::reflection::Description<GlrLeftRecursionPlaceholder>
-	{
-	public:
-		vl::glr::ParsingToken flag;
-	};
-
-	class GlrLeftRecursionPlaceholderClause : public GlrClause, vl::reflection::Description<GlrLeftRecursionPlaceholderClause>
-	{
-	public:
-		vl::collections::List<vl::Ptr<GlrLeftRecursionPlaceholder>> flags;
-
-		void Accept(GlrClause::IVisitor* visitor) override;
-	};
-
-	class GlrLeftRecursionInjectContinuation : public vl::glr::ParsingAstBase, vl::reflection::Description<GlrLeftRecursionInjectContinuation>
-	{
-	public:
-		vl::collections::List<vl::Ptr<GlrLeftRecursionPlaceholder>> flags;
-		GlrLeftRecursionConfiguration configuration = GlrLeftRecursionConfiguration::UNDEFINED_ENUM_ITEM_VALUE;
-		GlrLeftRecursionInjectContinuationType type = GlrLeftRecursionInjectContinuationType::UNDEFINED_ENUM_ITEM_VALUE;
-		vl::collections::List<vl::Ptr<GlrLeftRecursionInjectClause>> injectionTargets;
-	};
-
-	class GlrLeftRecursionInjectClause : public GlrClause, vl::reflection::Description<GlrLeftRecursionInjectClause>
-	{
-	public:
-		vl::Ptr<GlrRefSyntax> rule;
-		vl::Ptr<GlrLeftRecursionInjectContinuation> continuation;
-
-		void Accept(GlrClause::IVisitor* visitor) override;
-	};
-
-	class GlrPrefixMergeClause : public GlrClause, vl::reflection::Description<GlrPrefixMergeClause>
-	{
-	public:
-		vl::Ptr<GlrRefSyntax> rule;
 
 		void Accept(GlrClause::IVisitor* visitor) override;
 	};
@@ -382,13 +320,6 @@ namespace vl::reflection::description
 	DECL_TYPE_INFO(vl::glr::parsergen::GlrCreateClause)
 	DECL_TYPE_INFO(vl::glr::parsergen::GlrPartialClause)
 	DECL_TYPE_INFO(vl::glr::parsergen::GlrReuseClause)
-	DECL_TYPE_INFO(vl::glr::parsergen::GlrLeftRecursionPlaceholder)
-	DECL_TYPE_INFO(vl::glr::parsergen::GlrLeftRecursionPlaceholderClause)
-	DECL_TYPE_INFO(vl::glr::parsergen::GlrLeftRecursionConfiguration)
-	DECL_TYPE_INFO(vl::glr::parsergen::GlrLeftRecursionInjectContinuationType)
-	DECL_TYPE_INFO(vl::glr::parsergen::GlrLeftRecursionInjectContinuation)
-	DECL_TYPE_INFO(vl::glr::parsergen::GlrLeftRecursionInjectClause)
-	DECL_TYPE_INFO(vl::glr::parsergen::GlrPrefixMergeClause)
 	DECL_TYPE_INFO(vl::glr::parsergen::GlrRule)
 	DECL_TYPE_INFO(vl::glr::parsergen::GlrSyntaxFile)
 
@@ -472,21 +403,6 @@ namespace vl::reflection::description
 		}
 
 		void Visit(vl::glr::parsergen::GlrReuseClause* node) override
-		{
-			INVOKE_INTERFACE_PROXY(Visit, node);
-		}
-
-		void Visit(vl::glr::parsergen::GlrLeftRecursionPlaceholderClause* node) override
-		{
-			INVOKE_INTERFACE_PROXY(Visit, node);
-		}
-
-		void Visit(vl::glr::parsergen::GlrLeftRecursionInjectClause* node) override
-		{
-			INVOKE_INTERFACE_PROXY(Visit, node);
-		}
-
-		void Visit(vl::glr::parsergen::GlrPrefixMergeClause* node) override
 		{
 			INVOKE_INTERFACE_PROXY(Visit, node);
 		}

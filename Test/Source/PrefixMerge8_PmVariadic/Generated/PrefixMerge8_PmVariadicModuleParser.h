@@ -16,29 +16,20 @@ namespace prefixmerge8_pmvariadic
 	enum class ModuleParserStates
 	{
 		_GenericArgument = 0,
-		_GenericArguments = 8,
-		_Name = 14,
-		_PrimitiveShared = 26,
-		_PrimitiveTypeOnly = 29,
-		_PrimitiveExprOnly = 35,
-		_LongTypeArg = 40,
-		_LongType = 46,
-		_ExprArg = 52,
-		_Expr0 = 60,
-		_Expr1 = 67,
-		_Expr = 75,
+		_GenericArguments = -1,
+		_Name = 5,
+		_PrimitiveShared = 22,
+		_PrimitiveTypeOnly = 25,
+		_PrimitiveExprOnly = 30,
+		_LongTypeArg = 35,
+		_LongType = 40,
+		_ExprArg = 53,
+		_Expr0 = 58,
+		_Expr1 = 69,
+		_Expr = 77,
 		Module = 83,
-		ExprModule = 97,
-		TypeModule = 100,
-		_GenericArgument_LRI_Original = 103,
-		_LongTypeArg_LRI_Original = 108,
-		_LongType_LRI_Original = 113,
-		_ExprArg_LRI_Original = 127,
-		_Expr0_LRI_Original = 132,
-		_Expr1_LRI_Original = 142,
-		_Expr_LRI_Original = 150,
-		Module_LRI_Original = 156,
-		_Expr0__LongType_LRI_Prefix = 160,
+		ExprModule = 92,
+		TypeModule = 95,
 	};
 
 	const wchar_t* ModuleParserRuleName(vl::vint index);
@@ -61,8 +52,6 @@ namespace prefixmerge8_pmvariadic
 		vl::Ptr<prefixmerge8_pmvariadic::TypeOrExpr> ParseExprModule(vl::collections::List<vl::regex::RegexToken>& tokens, vl::vint codeIndex = -1) const;
 		vl::Ptr<prefixmerge8_pmvariadic::TypeOrExpr> ParseTypeModule(const vl::WString& input, vl::vint codeIndex = -1) const;
 		vl::Ptr<prefixmerge8_pmvariadic::TypeOrExpr> ParseTypeModule(vl::collections::List<vl::regex::RegexToken>& tokens, vl::vint codeIndex = -1) const;
-		vl::Ptr<prefixmerge8_pmvariadic::TypeOrExpr> ParseModule_LRI_Original(const vl::WString& input, vl::vint codeIndex = -1) const;
-		vl::Ptr<prefixmerge8_pmvariadic::TypeOrExpr> ParseModule_LRI_Original(vl::collections::List<vl::regex::RegexToken>& tokens, vl::vint codeIndex = -1) const;
 	};
 }
 #endif
