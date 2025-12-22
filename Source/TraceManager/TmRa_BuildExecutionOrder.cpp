@@ -447,7 +447,7 @@ BuildStepList
 				vint32_t startIns,
 				Trace* endTrace,
 				vint32_t endIns,
-				NestedAmbiguityInfo* guidance,
+				BSL_Guidance* guidance,
 				Trace** rawBranchTrace)
 			{
 				ExecutionStepLinkedList result;
@@ -500,20 +500,50 @@ BuildStepList
 					}
 
 					auto criticalTraceExec = GetTraceExec(criticalTrace->traceExecRef);
-					if (criticalTraceExec->ambiguityBegins == nullref)
+					bool ignoreCriticalAmgiguity = false;
+					if (guidance && criticalTraceExec->ambiguityBegins != nullref)
 					{
+						auto ta = GetTraceAmbiguity(GetTraceAmbiguityLink(criticalTraceExec->ambiguityBegins)->ambiguity);
+						for (vint i = guidance->ambiguitiesToSkipStart; i < guidance->ambiguitiesToSkip.Count(); i++)
+						{
+							if (guidance->ambiguitiesToSkip[i] == ta)
+							{
+								ignoreCriticalAmgiguity = true;
+								break;
+							}
+						}
+					}
+
+					if (ignoreCriticalAmgiguity || criticalTraceExec->ambiguityBegins == nullref)
+					{
+						Trace* specifieidBranchSelection = nullptr;
 						if (criticalTrace->successors.first != criticalTrace->successors.last)
 						{
-							if (rawBranchTrace)
+							if (guidance)
 							{
-								*rawBranchTrace = criticalTrace;
-								endTrace = criticalTrace;
-								endIns = GetTraceExec(endTrace->traceExecRef)->insLists.countAll - 1;
-								goto NO_CRITICAL_TRACE;
+								for (auto selection : guidance->branchSelections)
+								{
+									if (criticalTrace == selection->predecessors.first)
+									{
+										specifieidBranchSelection = selection;
+										break;
+									}
+								}
 							}
-							else
+
+							if (!specifieidBranchSelection)
 							{
-								throw TraceException(*this, currentTrace, criticalTrace, TRACE_MAMAGER_PHRASE, L"The next critical trace after the current trace is not associated with a TraceAmbiguity.");
+								if (rawBranchTrace)
+								{
+									*rawBranchTrace = criticalTrace;
+									endTrace = criticalTrace;
+									endIns = GetTraceExec(endTrace->traceExecRef)->insLists.countAll - 1;
+									goto NO_CRITICAL_TRACE;
+								}
+								else
+								{
+									throw TraceException(*this, currentTrace, criticalTrace, TRACE_MAMAGER_PHRASE, L"The next critical trace after the current trace is not associated with a TraceAmbiguity.");
+								}
 							}
 						}
 
@@ -526,7 +556,11 @@ BuildStepList
 						step->et_i.endIns = criticalTraceExec->insLists.countAll - 1;
 						AppendStepsAfterList({ step, step }, result);
 
-						if (criticalTrace->successors.first == nullref)
+						if(specifieidBranchSelection)
+						{
+							currentTrace = specifieidBranchSelection;
+						}
+						else if (criticalTrace->successors.first == nullref)
 						{
 							currentTrace = nullptr;
 						}
@@ -675,7 +709,7 @@ BuildStepList
 				vint32_t startIns,
 				Trace* endTrace,
 				vint32_t endIns,
-				NestedAmbiguityInfo* guidance)
+				BSL_Guidance* guidance)
 			{
 				return BuildStepListUntilFirstRawBranchTrace(startTrace, startIns, endTrace, endIns, guidance, nullptr);
 			}

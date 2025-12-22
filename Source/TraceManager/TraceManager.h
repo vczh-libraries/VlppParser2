@@ -736,14 +736,14 @@ TraceManager
 																vint32_t startIns,
 																Trace* endTrace,
 																vint32_t endIns,
-																NestedAmbiguityInfo* guidance,
+																BSL_Guidance* guidance,
 																Trace** rawBranchTrace);
 				ExecutionStepLinkedList						BuildStepList(
 																Trace* startTrace,
 																vint32_t startIns,
 																Trace* endTrace,
 																vint32_t endIns,
-																NestedAmbiguityInfo* guidance);
+																BSL_Guidance* guidance);
 				void										BuildExecutionOrder();
 
 			public:
