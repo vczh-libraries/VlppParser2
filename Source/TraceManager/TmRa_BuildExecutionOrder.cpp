@@ -302,6 +302,7 @@ BuildStepLeafsForAmbiguityBranch
 				TraceAmbiguity* ta,
 				ExecutionStep* lastSharedStep,
 				Trace* ambiguityBranchStartTrace,
+				vint32_t* ambiguityBranchStartIns,
 				ExecutionStepTree& ambiguityStepTree)
 			{
 				auto taFirst = GetTrace(ta->firstTrace);
@@ -319,7 +320,7 @@ BuildStepLeafsForAmbiguityBranch
 					Trace* rawBranchTrace = nullptr;
 					auto steps = BuildStepListUntilFirstRawBranchTrace(
 						ambiguityBranchStartTrace,
-						(prefixExtra <= 0 ? 0 : prefixExtra),
+						ambiguityBranchStartIns ? *ambiguityBranchStartIns : (prefixExtra <= 0 ? 0 : prefixExtra),
 						taMerge,
 						(taMergeExec->insLists.countAll - 1 - (postfixExtra <= 0 ? 0 : postfixExtra)),
 						nullptr,
@@ -338,7 +339,7 @@ BuildStepLeafsForAmbiguityBranch
 						{
 							auto successor = GetTrace(successorId);
 							successorId = successor->successors.siblingNext;
-							BuildStepLeafsForAmbiguityBranch(ta, (steps.first ? steps.last : lastSharedStep), successor, ambiguityStepTree);
+							BuildStepLeafsForAmbiguityBranch(ta, (steps.first ? steps.last : lastSharedStep), successor, nullptr, ambiguityStepTree);
 						}
 						return;
 					}
@@ -371,8 +372,6 @@ BuildStepLeafsForAmbiguityBranch
 				AppendLeafToTree(branchList.last, ambiguityStepTree);
 			}
 
-
-
 /***********************************************************************
 BuildStepLeafsForNestedAmbiguityBranch
 ***********************************************************************/
@@ -383,17 +382,48 @@ BuildStepLeafsForNestedAmbiguityBranch
 				BSLA_Guidance* guidance,
 				ExecutionStepTree& ambiguityStepTree)
 			{
-				CHECK_FAIL(L"Not Implemented!");
 				ExecutionStepLinkedList stepsBeforeBranch;
 				auto nta = guidance->nestedTas->nestedAmbiguities[guidance->nextAmbiguityIndex];
 
+				auto taFirst = GetTrace(ta->firstTrace);
+				auto ntaFirst = GetTrace(nta->firstTrace);
+
 				// Execute from taFirst until the nested TraceAmbiguity
+				{
+					auto ntaFirst = GetTrace(nta->firstTrace);
+					auto steps = BuildStepList(
+						taFirst,
+						ta->prefix,
+						ntaFirst,
+						-1,
+						nullptr
+					);
+					AppendStepsAfterList(steps, stepsBeforeBranch);
+				}
 
 				// Execute the nested TraceAmbiguity
+				Trace* currentTrace = ntaFirst;
+				vint32_t currentIns = 0;
+				{
+					auto steps= BuildStepListThroughAmbiguity(
+						currentTrace,
+						currentIns,
+						nta
+					);
+					AppendStepsAfterList(steps, stepsBeforeBranch);
+				}
+
 
 				// Execute the rest
-
-				// Append RA_Branch
+				stepsBeforeBranch.first->parent = lastSharedStep;
+				lastSharedStep = stepsBeforeBranch.last;
+				BuildStepLeafsForAmbiguityBranch(
+					ta,
+					lastSharedStep,
+					currentTrace,
+					&currentIns,
+					ambiguityStepTree
+				);
 			}
 
 /***********************************************************************
@@ -466,7 +496,7 @@ BuildStepListForAmbiguity
 							// Skip visited branches
 							CHECK_FAIL(L"Not Implemented!");
 						}
-						BuildStepLeafsForAmbiguityBranch(ta, sharedSteps.last, successor, branchSteps);
+						BuildStepLeafsForAmbiguityBranch(ta, sharedSteps.last, successor, nullptr, branchSteps);
 					}
 
 					AppendStepsAfterList(ConvertStepTreeToList(branchSteps), result);
@@ -587,7 +617,7 @@ BuildStepListThroughAmbiguity
 			}
 
 /***********************************************************************
-BuildStepListUntilFirstRawBranchTrace
+BuildStepList
 ***********************************************************************/
 
 			ExecutionStepLinkedList TraceManager::BuildStepListUntilFirstRawBranchTrace(
@@ -778,10 +808,6 @@ BuildStepListUntilFirstRawBranchTrace
 
 				return result;
 			}
-
-/***********************************************************************
-BuildStepList
-***********************************************************************/
 
 			ExecutionStepLinkedList TraceManager::BuildStepList(
 				Trace* startTrace,

@@ -725,11 +725,12 @@ TraceManager
 
 				ExecutionStep*								CreateResolveAmbiguityStep(TraceAmbiguity* ta);
 				Ptr<NestedAmbiguityInfo>					CollectNestedAmbiguities(TraceAmbiguity* ta);
-
+				
 				void										BuildStepLeafsForAmbiguityBranch(
 																TraceAmbiguity* ta,
 																ExecutionStep* lastSharedStep,
 																Trace* ambiguityBranchStartTrace,
+																vint32_t* ambiguityBranchStartIns,
 																ExecutionStepTree& ambiguityStepTree);
 				void										BuildStepLeafsForNestedAmbiguityBranch(
 																TraceAmbiguity* ta,
