@@ -465,7 +465,7 @@ BuildStepList
 				{
 					auto currentTraceExec = GetTraceExec(currentTrace->traceExecRef);
 
-					// Find the next critical trace 
+					// Find the next critical trace
 					Trace* criticalTrace = nullptr;
 					if (currentTraceExec->nextAmbiguityCriticalTrace != nullref)
 					{
@@ -483,18 +483,25 @@ BuildStepList
 						{
 							if (criticalTrace->successors.first != criticalTrace->successors.last)
 							{
+								// When there is no more next critical trace before a branch trace
 								auto criticalTraceExec = GetTraceExec(criticalTrace->traceExecRef);
 								if (criticalTraceExec->ambiguityBegins != nullref)
 								{
+									// If it is associated with a TraceAmbiguity, it is a critical trace we are looking for
 									break;
 								}
 								throw TraceException(*this, currentTrace, nullptr, TRACE_MAMAGER_PHRASE, L"Failed to find a TraceAmbiguity between this trace and the next branch trace.");
 							}
 							else
 							{
+								// When there is no more next critical trace, we are about to reach the end
+								// Ignore the current critical trace, stop searching, just run through the end
 								goto NO_CRITICAL_TRACE;
 							}
 						}
+
+						// When it runs past (endTrace, endIns)
+						// Ignore the current critical trace, stop searching, just run through the end
 						criticalTrace = nextRef == nullref ? nullptr : GetTrace(nextRef);
 						if (criticalTrace->traceExecRef >= endTrace->traceExecRef)
 						{
@@ -506,6 +513,9 @@ BuildStepList
 						}
 					}
 
+					// If the current critical trace is associated with a TraceAmbiguity
+					// and the TraceAmbiguity is what configured to skip
+					// treat it as an ordinary trace
 					auto criticalTraceExec = GetTraceExec(criticalTrace->traceExecRef);
 					bool ignoreCriticalAmgiguity = false;
 					if (guidance && criticalTraceExec->ambiguityBegins != nullref)
@@ -523,6 +533,10 @@ BuildStepList
 
 					if (ignoreCriticalAmgiguity || criticalTraceExec->ambiguityBegins == nullref)
 					{
+						// If the current critical trace is a branch trace
+						// and there is a specified successor to execute
+						// treat it as an ordinary trace
+						// otherwise, exit properly
 						Trace* specifieidBranchSelection = nullptr;
 						if (criticalTrace->successors.first != criticalTrace->successors.last)
 						{
