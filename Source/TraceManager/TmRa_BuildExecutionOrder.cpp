@@ -213,7 +213,7 @@ CreateResolveAmbiguityStep
 CollectNestedAmbiguities
 ***********************************************************************/
 
-			Ptr<NestedAmbiguityInfo> TraceManager::CollectNestedAmbiguities(TraceAmbiguity* ta)
+			Ptr<TraceManager::NestedAmbiguityInfo> TraceManager::CollectNestedAmbiguities(TraceAmbiguity* ta)
 			{
 				auto taFirst = GetTrace(ta->firstTrace);
 				auto taBranch = GetTrace(ta->branchTrace);
@@ -298,7 +298,11 @@ CollectNestedAmbiguities
 BuildStepLeafsForAmbiguityBranch
 ***********************************************************************/
 
-			void TraceManager::BuildStepLeafsForAmbiguityBranch(TraceAmbiguity* ta, ExecutionStep* lastSharedStep, Trace* ambiguityBranchStartTrace, ExecutionStepTree& ambiguityStepTree)
+			void TraceManager::BuildStepLeafsForAmbiguityBranch(
+				TraceAmbiguity* ta,
+				ExecutionStep* lastSharedStep,
+				Trace* ambiguityBranchStartTrace,
+				ExecutionStepTree& ambiguityStepTree)
 			{
 				auto taFirst = GetTrace(ta->firstTrace);
 				auto taLast = GetTrace(ta->lastTrace);
@@ -318,6 +322,7 @@ BuildStepLeafsForAmbiguityBranch
 						(prefixExtra <= 0 ? 0 : prefixExtra),
 						taMerge,
 						(taMergeExec->insLists.countAll - 1 - (postfixExtra <= 0 ? 0 : postfixExtra)),
+						nullptr,
 						&rawBranchTrace
 					);
 
@@ -347,7 +352,8 @@ BuildStepLeafsForAmbiguityBranch
 						taMerge,
 						0,
 						taLast,
-						-postfixExtra - 1
+						-postfixExtra - 1,
+						nullptr
 					);
 					AppendStepsAfterList(steps, branchList);
 				}
@@ -369,7 +375,8 @@ BuildStepLeafsForAmbiguityBranch
 BuildStepListForAmbiguity
 ***********************************************************************/
 
-			ExecutionStepLinkedList TraceManager::BuildStepListForAmbiguity(TraceAmbiguity* ta)
+			ExecutionStepLinkedList TraceManager::BuildStepListForAmbiguity(
+				TraceAmbiguity* ta)
 			{
 				ExecutionStepLinkedList result;
 				auto taFirst = GetTrace(ta->firstTrace);
@@ -403,7 +410,8 @@ BuildStepListForAmbiguity
 							taFirst,
 							ta->prefix,
 							taBranch,
-							taBranchExec->insLists.countAll - 1
+							taBranchExec->insLists.countAll - 1,
+							nullptr
 						);
 					}
 
@@ -434,7 +442,13 @@ BuildStepListForAmbiguity
 BuildStepList
 ***********************************************************************/
 
-			ExecutionStepLinkedList TraceManager::BuildStepListUntilFirstRawBranchTrace(Trace* startTrace, vint32_t startIns, Trace* endTrace, vint32_t endIns, Trace** rawBranchTrace)
+			ExecutionStepLinkedList TraceManager::BuildStepListUntilFirstRawBranchTrace(
+				Trace* startTrace,
+				vint32_t startIns,
+				Trace* endTrace,
+				vint32_t endIns,
+				NestedAmbiguityInfo* guidance,
+				Trace** rawBranchTrace)
 			{
 				ExecutionStepLinkedList result;
 				Trace* currentTrace = startTrace;
@@ -656,9 +670,14 @@ BuildStepList
 				return result;
 			}
 
-			ExecutionStepLinkedList TraceManager::BuildStepList(Trace* startTrace, vint32_t startIns, Trace* endTrace, vint32_t endIns)
+			ExecutionStepLinkedList TraceManager::BuildStepList(
+				Trace* startTrace,
+				vint32_t startIns,
+				Trace* endTrace,
+				vint32_t endIns,
+				NestedAmbiguityInfo* guidance)
 			{
-				return BuildStepListUntilFirstRawBranchTrace(startTrace, startIns, endTrace, endIns, nullptr);
+				return BuildStepListUntilFirstRawBranchTrace(startTrace, startIns, endTrace, endIns, guidance, nullptr);
 			}
 
 /***********************************************************************
@@ -673,7 +692,7 @@ BuildExecutionOrder
 				auto endTrace = concurrentTraces->Get(0);
 				vint32_t endIns = GetTraceExec(endTrace->traceExecRef)->insLists.countAll - 1;
 
-				auto steps = BuildStepList(startTrace, startIns, endTrace, endIns);
+				auto steps = BuildStepList(startTrace, startIns, endTrace, endIns, nullptr);
 				{
 					auto current = steps.last;
 					while (current != steps.first)
