@@ -481,8 +481,6 @@ Traversing through branchData.forwardTrace and branchData.commonForwardBranch wi
 TraceManager (Data Structures -- BuildExecutionOrder)
 ***********************************************************************/
 
-			struct ExecutionStep;
-
 			enum class ExecutionType
 			{
 				Instruction,
@@ -699,14 +697,67 @@ TraceManager
 
 				// phase: BuildExecutionOrder
 
+
+				struct NestedAmbiguityInfo
+				{
+					collections::List<TraceAmbiguity*>					nestedAmbiguities;	// all nested ambiguities in order from outer to inner
+					collections::Dictionary<Trace*, TraceAmbiguity*>	branchTraces;		// branchTrace to TraceAmbiguities
+					collections::Group<TraceAmbiguity*, Trace*>			branchSelections;	// critial successors of each TraceAmbiguities' branchTrace from inner to outer
+				};
+
+				struct BSL_Guidance
+				{
+					const collections::List<Trace*>*					branchSelections = nullptr;
+					const collections::List<TraceAmbiguity*>*			ambiguitiesToSkip = nullptr;
+
+				};
+
+				struct BSLA_Guidance
+				{
+					Ptr<NestedAmbiguityInfo>							nestedTas;
+					vint												nextAmbiguityIndex = 0;
+				};
+
 				void										AppendStepsAfterList(ExecutionStepLinkedList steps, ExecutionStepLinkedList& current);
 				void										AppendLeafToTree(ExecutionStep* leaf, ExecutionStepTree& tree);
 				ExecutionStepLinkedList						ConvertStepTreeToList(ExecutionStepTree tree);
 
-				void										BuildStepLeafsForAmbiguityBranch(TraceAmbiguity* ta, ExecutionStep* lastSharedStep, Trace* ambiguityBranchStartTrace, ExecutionStepTree& ambiguityStepTree);
-				ExecutionStepLinkedList						BuildStepListForAmbiguity(TraceAmbiguity* ta);
-				ExecutionStepLinkedList						BuildStepListUntilFirstRawBranchTrace(Trace* startTrace, vint32_t startIns, Trace* endTrace, vint32_t endIns, Trace** rawBranchTrace);
-				ExecutionStepLinkedList						BuildStepList(Trace* startTrace, vint32_t startIns, Trace* endTrace, vint32_t endIns);
+				ExecutionStep*								CreateResolveAmbiguityStep(TraceAmbiguity* ta);
+				Ptr<NestedAmbiguityInfo>					CollectNestedAmbiguities(TraceAmbiguity* ta);
+				
+				void										BuildStepLeafsForAmbiguityBranch(
+																TraceAmbiguity* ta,
+																ExecutionStep* lastSharedStep,
+																Trace* ambiguityBranchStartTrace,
+																vint32_t* ambiguityBranchStartIns,
+																ExecutionStepTree& ambiguityStepTree);
+				void										BuildStepLeafsForNestedAmbiguityBranch(
+																TraceAmbiguity* ta,
+																ExecutionStep* lastSharedStep,
+																BSLA_Guidance* guidance,
+																ExecutionStepTree& ambiguityStepTree);
+				ExecutionStepLinkedList						BuildStepListForAmbiguity(
+																TraceAmbiguity* ta,
+																BSLA_Guidance* guidance);
+				ExecutionStepLinkedList						BuildStepListThroughAmbiguity(
+																Trace*& currentTrace,
+																vint32_t& currentIns,
+																TraceAmbiguity* ta,
+																BSLA_Guidance* guidance
+																);
+				ExecutionStepLinkedList						BuildStepListUntilFirstRawBranchTrace(
+																Trace* startTrace,
+																vint32_t startIns,
+																Trace* endTrace,
+																vint32_t endIns,
+																BSL_Guidance* guidance,
+																Trace** rawBranchTrace);
+				ExecutionStepLinkedList						BuildStepList(
+																Trace* startTrace,
+																vint32_t startIns,
+																Trace* endTrace,
+																vint32_t endIns,
+																BSL_Guidance* guidance);
 				void										BuildExecutionOrder();
 
 			public:
