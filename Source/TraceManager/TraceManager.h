@@ -731,9 +731,19 @@ TraceManager
 																ExecutionStep* lastSharedStep,
 																Trace* ambiguityBranchStartTrace,
 																ExecutionStepTree& ambiguityStepTree);
+				void										BuildStepLeafsForNestedAmbiguityBranch(
+																TraceAmbiguity* ta,
+																ExecutionStep* lastSharedStep,
+																BSLA_Guidance* guidance,
+																ExecutionStepTree& ambiguityStepTree);
 				ExecutionStepLinkedList						BuildStepListForAmbiguity(
 																TraceAmbiguity* ta,
 																BSLA_Guidance* guidance);
+				ExecutionStepLinkedList						BuildStepListThroughAmbiguity(
+																Trace*& currentTrace,
+																vint32_t& currentIns,
+																TraceAmbiguity* ta
+																);
 				ExecutionStepLinkedList						BuildStepListUntilFirstRawBranchTrace(
 																Trace* startTrace,
 																vint32_t startIns,

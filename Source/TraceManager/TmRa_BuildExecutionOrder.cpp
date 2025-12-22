@@ -371,6 +371,31 @@ BuildStepLeafsForAmbiguityBranch
 				AppendLeafToTree(branchList.last, ambiguityStepTree);
 			}
 
+
+
+/***********************************************************************
+BuildStepLeafsForNestedAmbiguityBranch
+***********************************************************************/
+
+			void TraceManager::BuildStepLeafsForNestedAmbiguityBranch(
+				TraceAmbiguity* ta,
+				ExecutionStep* lastSharedStep,
+				BSLA_Guidance* guidance,
+				ExecutionStepTree& ambiguityStepTree)
+			{
+				CHECK_FAIL(L"Not Implemented!");
+				ExecutionStepLinkedList stepsBeforeBranch;
+				auto nta = guidance->nestedTas->nestedAmbiguities[guidance->nextAmbiguityIndex];
+
+				// Execute from taFirst until the nested TraceAmbiguity
+
+				// Execute the nested TraceAmbiguity
+
+				// Execute the rest
+
+				// Append RA_Branch
+			}
+
 /***********************************************************************
 BuildStepListForAmbiguity
 ***********************************************************************/
@@ -396,7 +421,6 @@ BuildStepListForAmbiguity
 				if (!guidance && (DoNotUse_Guidance.nestedTas = CollectNestedAmbiguities(ta)))
 				{
 					guidance = &DoNotUse_Guidance;
-					CHECK_FAIL(L"Not Implemented!");
 				}
 
 				// Append RA_BEGIN
@@ -408,7 +432,15 @@ BuildStepListForAmbiguity
 					AppendStepsAfterList({ step,step }, result);
 				}
 
+
 				{
+					ExecutionStepTree branchSteps;
+					// If there is a nested TraceAmbiguity, Execute it first
+					if (guidance)
+					{
+						BuildStepLeafsForNestedAmbiguityBranch(ta, nullptr, guidance, branchSteps);
+					}
+
 					ExecutionStepLinkedList sharedSteps;
 					// Execute from taFirst to taBranch
 					if (prefixExtra < 0)
@@ -422,14 +454,18 @@ BuildStepListForAmbiguity
 						);
 					}
 
-					ExecutionStepTree branchSteps;
-
 					// Nested TraceAmbiguity is not implemented, so all successors of taBranch are needed
 					auto successorId = taBranch->successors.first;
 					while (successorId != nullref)
 					{
 						auto successor = GetTrace(successorId);
 						successorId = successor->successors.siblingNext;
+
+						if (guidance)
+						{
+							// Skip visited branches
+							CHECK_FAIL(L"Not Implemented!");
+						}
 						BuildStepLeafsForAmbiguityBranch(ta, sharedSteps.last, successor, branchSteps);
 					}
 
@@ -446,7 +482,112 @@ BuildStepListForAmbiguity
 			}
 
 /***********************************************************************
-BuildStepList
+BuildStepListThroughAmbiguity
+***********************************************************************/
+
+			ExecutionStepLinkedList TraceManager::BuildStepListThroughAmbiguity(
+				Trace*& currentTrace,
+				vint32_t& currentIns,
+				TraceAmbiguity* ta
+			)
+			{
+				ExecutionStepLinkedList result;
+
+				auto taFirst = GetTrace(ta->firstTrace);
+				auto taLast = GetTrace(ta->lastTrace);
+				auto taFirstExec = GetTraceExec(taFirst->traceExecRef);
+				auto taLastExec = GetTraceExec(taLast->traceExecRef);
+				vint32_t prefixExtra = ta->prefix - taFirstExec->insLists.countAll;
+				vint32_t postfixExtra = ta->postfix - taLastExec->insLists.countAll;
+
+				if (currentTrace->traceExecRef < taFirst->traceExecRef || currentIns < ta->prefix)
+				{
+					auto step = GetExecutionStep(executionSteps.Allocate());
+					step->et_i.startTrace = currentTrace->allocatedIndex;
+					step->et_i.startIns = currentIns;
+					if (ta->prefix == 0)
+					{
+						if (taFirst->predecessors.first != taFirst->predecessors.last)
+						{
+							throw TraceException(*this, ta, nullptr, TRACE_MAMAGER_PHRASE, L"The prefix of the TraceAmbiguity is 0, but its firstTrace is a merge trace.");
+						}
+						auto taFirstPrev = GetTrace(taFirst->predecessors.first);
+						auto taFirstPrevExec = GetTraceExec(taFirstPrev->traceExecRef);
+						step->et_i.endTrace = taFirstPrev->allocatedIndex;
+						step->et_i.endIns = taFirstPrevExec->insLists.countAll - 1;
+					}
+					else if (prefixExtra <= 0)
+					{
+						step->et_i.endTrace = taFirst->allocatedIndex;
+						step->et_i.endIns = ta->prefix - 1;
+					}
+					else
+					{
+						step->et_i.endTrace = taFirst->allocatedIndex;
+						step->et_i.endIns = taFirstExec->insLists.countAll - 1;
+					}
+					AppendStepsAfterList({ step, step }, result);
+				}
+
+				if (prefixExtra > 0)
+				{
+					// at the moment taFirst should be taBranch
+					// TraceAmbiguity begins at each successors of taBranch, instead of before taBranch
+					auto taFirstSuccessor = GetTrace(taFirst->successors.first);
+					auto step = GetExecutionStep(executionSteps.Allocate());
+					step->et_i.startTrace = taFirstSuccessor->allocatedIndex;
+					step->et_i.startIns = 0;
+					step->et_i.endTrace = taFirstSuccessor->allocatedIndex;
+					step->et_i.endIns = prefixExtra - 1;
+					AppendStepsAfterList({ step, step }, result);
+				}
+
+				// Execute the next TraceAmbiguity
+				auto taSteps = BuildStepListForAmbiguity(ta, nullptr);
+				AppendStepsAfterList(taSteps, result);
+
+				// Step (currentTrace, currentIns) forward to right after TraceAmbiguity
+				if (postfixExtra > 0)
+				{
+					// at the moment taLast should be taMerge
+					// TraceAmbiguity ends at each predecessor of taMerge, instead of after taMerge
+					auto taLastPredecessor = GetTrace(taLast->predecessors.first);
+					auto taLastPredecessorExec = GetTraceExec(taLastPredecessor->traceExecRef);
+					auto step = GetExecutionStep(executionSteps.Allocate());
+					step->et_i.startTrace = taLastPredecessor->allocatedIndex;
+					step->et_i.startIns = taLastPredecessorExec->insLists.countAll - postfixExtra;
+					step->et_i.endTrace = taLastPredecessor->allocatedIndex;
+					step->et_i.endIns = taLastPredecessorExec->insLists.countAll - 1;
+					AppendStepsAfterList({ step, step }, result);
+				}
+
+				if (ta->postfix == 0)
+				{
+					if (taLast->successors.first == nullref)
+					{
+						currentTrace = nullptr;
+					}
+					else if (taLast->successors.first != taLast->successors.last)
+					{
+						throw TraceException(*this, ta, nullptr, TRACE_MAMAGER_PHRASE, L"The postfix of the TraceAmbiguity is 0, but its lastTrace is a branch trace.");
+					}
+					else
+					{
+						currentTrace = GetTrace(taLast->successors.first);
+						currentIns = 0;
+					}
+				}
+				else
+				{
+					currentTrace = taLast;
+					currentIns = -(postfixExtra <= 0 ? postfixExtra : 0);
+				}
+
+				return result;
+			}
+
+/***********************************************************************
+BuildStepListUntilFirstRawBranchTrace
 ***********************************************************************/
 
 			ExecutionStepLinkedList TraceManager::BuildStepListUntilFirstRawBranchTrace(
@@ -595,95 +736,8 @@ BuildStepList
 
 					// Execute from (currentTrace, currentIns) until the next TraceAmbiguity
 					auto ta = GetTraceAmbiguity(GetTraceAmbiguityLink(criticalTraceExec->ambiguityBegins)->ambiguity);
-					auto taFirst = GetTrace(ta->firstTrace);
-					auto taLast = GetTrace(ta->lastTrace);
-					auto taFirstExec = GetTraceExec(taFirst->traceExecRef);
-					auto taLastExec = GetTraceExec(taLast->traceExecRef);
-					vint32_t prefixExtra = ta->prefix - taFirstExec->insLists.countAll;
-					vint32_t postfixExtra = ta->postfix - taLastExec->insLists.countAll;
-
-					if (currentTrace->traceExecRef < taFirst->traceExecRef || currentIns < ta->prefix)
-					{
-						auto step = GetExecutionStep(executionSteps.Allocate());
-						step->et_i.startTrace = currentTrace->allocatedIndex;
-						step->et_i.startIns = currentIns;
-						if (ta->prefix == 0)
-						{
-							if (taFirst->predecessors.first != taFirst->predecessors.last)
-							{
-								throw TraceException(*this, ta, nullptr, TRACE_MAMAGER_PHRASE, L"The prefix of the TraceAmbiguity is 0, but its firstTrace is a merge trace.");
-							}
-							auto taFirstPrev = GetTrace(taFirst->predecessors.first);
-							auto taFirstPrevExec = GetTraceExec(taFirstPrev->traceExecRef);
-							step->et_i.endTrace = taFirstPrev->allocatedIndex;
-							step->et_i.endIns = taFirstPrevExec->insLists.countAll - 1;
-						}
-						else if (prefixExtra <= 0)
-						{
-							step->et_i.endTrace = taFirst->allocatedIndex;
-							step->et_i.endIns = ta->prefix - 1;
-						}
-						else
-						{
-							step->et_i.endTrace = taFirst->allocatedIndex;
-							step->et_i.endIns = taFirstExec->insLists.countAll - 1;
-						}
-						AppendStepsAfterList({ step, step }, result);
-					}
-
-					if (prefixExtra > 0)
-					{
-						// at the moment taFirst should be taBranch
-						// TraceAmbiguity begins at each successors of taBranch, instead of before taBranch
-						auto taFirstSuccessor = GetTrace(taFirst->successors.first);
-						auto step = GetExecutionStep(executionSteps.Allocate());
-						step->et_i.startTrace = taFirstSuccessor->allocatedIndex;
-						step->et_i.startIns = 0;
-						step->et_i.endTrace = taFirstSuccessor->allocatedIndex;
-						step->et_i.endIns = prefixExtra - 1;
-						AppendStepsAfterList({ step, step }, result);
-					}
-
-					// Execute the next TraceAmbiguity
-					auto taSteps = BuildStepListForAmbiguity(ta, nullptr);
-					AppendStepsAfterList(taSteps, result);
-
-					// Step (currentTrace, currentIns) forward to right after TraceAmbiguity
-					if (postfixExtra > 0)
-					{
-						// at the moment taLast should be taMerge
-						// TraceAmbiguity ends at each predecessor of taMerge, instead of after taMerge
-						auto taLastPredecessor = GetTrace(taLast->predecessors.first);
-						auto taLastPredecessorExec = GetTraceExec(taLastPredecessor->traceExecRef);
-						auto step = GetExecutionStep(executionSteps.Allocate());
-						step->et_i.startTrace = taLastPredecessor->allocatedIndex;
-						step->et_i.startIns = taLastPredecessorExec->insLists.countAll - postfixExtra;
-						step->et_i.endTrace = taLastPredecessor->allocatedIndex;
-						step->et_i.endIns = taLastPredecessorExec->insLists.countAll - 1;
-						AppendStepsAfterList({ step, step }, result);
-					}
-
-					if (ta->postfix == 0)
-					{
-						if (taLast->successors.first == nullref)
-						{
-							currentTrace = nullptr;
-						}
-						else if (taLast->successors.first != taLast->successors.last)
-						{
-							throw TraceException(*this, ta, nullptr, TRACE_MAMAGER_PHRASE, L"The postfix of the TraceAmbiguity is 0, but its lastTrace is a branch trace.");
-						}
-						else
-						{
-							currentTrace = GetTrace(taLast->successors.first);
-							currentIns = 0;
-						}
-					}
-					else
-					{
-						currentTrace = taLast;
-						currentIns = -(postfixExtra <= 0 ? postfixExtra : 0);
-					}
+					auto steps = BuildStepListThroughAmbiguity(currentTrace, currentIns, ta);
+					AppendStepsAfterList(steps, result);
 				}
 			NO_CRITICAL_TRACE:
 
@@ -724,6 +778,10 @@ BuildStepList
 
 				return result;
 			}
+
+/***********************************************************************
+BuildStepList
+***********************************************************************/
 
 			ExecutionStepLinkedList TraceManager::BuildStepList(
 				Trace* startTrace,
