@@ -707,9 +707,9 @@ TraceManager
 
 				struct BSL_Guidance
 				{
-					const collections::List<TraceAmbiguity*>&			ambiguitiesToSkip;
-					vint												ambiguitiesToSkipStart;
-					const collections::List<Trace*>&					branchSelections;
+					const collections::List<Trace*>*					branchSelections = nullptr;
+					const collections::List<TraceAmbiguity*>*			ambiguitiesToSkip = nullptr;
+					vint												ambiguitiesToSkipStart = -1 ;
 
 				};
 
