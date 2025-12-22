@@ -34,7 +34,7 @@
   - [x] automatically identify prefix_merge
 - [x] Built-in parsers: C++
   - [ ] Add more comments
-- [ ] build.ps1
+- [x] build.ps1
 - [ ] Reorganize log utilities for better dependency
 - [ ] Render ambiguity with not only traces but input codes in Trace-3
 - [ ] Document design principal, algorithm and syntax
