@@ -2,102 +2,9 @@
 
 ## Next task
 
+- Document algorithm and syntax
 - Try to make large AST not causing stack overflow while disposing.
-  - Generate code to collect all nodes in any destructor and mark (to tell all sub nodes they are processed)?
-
-## Big Design Change
-
-### New Instructions
-
-- StackBegin() and StackEnd() manage a separated storage of slots.
-- CreateObject(type) pushes a new creating object.
-- StackSlot(n) pops a creating object and store it to the n-th slot.
-- StackBegin() and StackEnd() do not affect the creating object stack.
-- Token(n) and EnumItem(v, n) store a value directly to the n-th slot.
-- Field(f, n) assign all values in the n-th slot to a field.
-- If the first input in a clause is a rule, StackBegin() + optional(StackSlot(n)) is generated after existing the rule.
-- If the first input in a clause is a token, StackBegin() is generated before Token(n).
-- ResolveAmbiguity(type) merge all objects in 0-th slot.
-
-### Progressing
-
-- [x] Non-ambiguous test cases
-- [x] Ambiguous test cases
-- [x] Split FeatureTest
-- [x] Built-in parsers:
-  - [x] Json
-  - [x] Xml
-  - [x] Workflow
-- [x] prefix_merge test cases
-  - [x] merge prefix in rules
-    - 109236 -> 10141 -> 6663 states: `Test\ParserLog\BuiltIn-Workflow\Trace-1[Codegen_WorkflowHints].txt`, meanwhile 6750 in master
-  - [x] automatically identify prefix_merge
-- [x] Built-in parsers: C++
-  - [ ] Add more comments
-- [x] build.ps1
-- [ ] Reorganize log utilities for better dependency
-- [ ] Render ambiguity with not only traces but input codes in Trace-3
-- [ ] Document design principal, algorithm and syntax
-- [ ] Finish `## Features to Add`
-- [ ] build.ps1
-- [ ] Build in Ubuntu. Windows and Linux test output inconsistency on
-    - the order of ambiguous candidates.
-    - `\r\n` or `\n` serialized into `<![CDATA[]]>`.
-    - We can force `\r\n` in unit test, normalizing all inputs.
-- [ ] Built-in parsers: C++ Non-traced test cases save json files with extra field recording the input code at the beginning
-- [ ] Refactor TraceTree logging and put together with WriteMonospacedEnglishTable
-
-## Prefix Merge
-
-In `PrefixMerge5_Pm` test case, one of a prefix merge instance is
-```
-  [RULE] _PrimitiveShared :
-    _LongType -> _PrimitiveShared
-    _Expr -> _Expr1 -> _Expr0 -> _PrimitiveShared
-    _Expr -> _Expr1 -> _Expr0 -> _LongType -> _PrimitiveShared
-```
-Currently we only do `_PrimitiveShared` merging.
-In the future we should do
-```
-_PrimitiveShared +-> _Expr0 ... _Expr
-                 +-> _LongType +-> _LongType
-                               +-> _Expr0 ... _Expr
-```
-Or we are getting this
-```
-[59][Module] BEGIN [pm-cr-rule: _PrimitiveShared]
-[RULE: 8]
-	ending -> [63][Module] END [ENDING]
-		+ StackBegin()
-		+ StackEnd()
-	ending -> [63][Module] END [ENDING]
-		+ StackBegin()
-		+ StackEnd()
-	leftrec -> [27][_LongType]< _LongType @ "(" { _LongType ; "," } ")" >
-		+ StackBegin()
-		+ StackEnd()
-		+ StackBegin()
-		+ StackSlot(0)
-		> rule: _LongType -> [65][Module]<! !_LongType @ !>
-			+ StackBegin()
-	leftrec -> [27][_LongType]< _LongType @ "(" { _LongType ; "," } ")" >
-		+ StackBegin()
-		+ StackEnd()
-		+ StackBegin()
-		+ StackSlot(0)
-		> rule: _Expr -> [64][Module]<! !_Expr @ !>
-			+ StackBegin()
-		> rule: _Expr1 -> [56][_Expr]<! !_Expr1 @ !>
-			+ StackBegin()
-		> rule: _Expr0 -> [50][_Expr1]<! !_Expr0 @ !>
-			+ StackBegin()
-		> rule: _LongType -> [40][_Expr0]< _LongType @ "{" { _Expr ; "," } "}" >
-			+ StackBegin()
-			+ StackSlot(0)
-```
-
-## Features to Add
-
+  - Generate a helper function to flatten an AST tree to a node list, disconnect all fields.
 - Extensible tokens, for example, recognize `R"[^\s(]\(` and invoke a callback function to determine the end of the string.
   - `RegexTokenizer`
   - New syntax for tokenizers for such extensible tokens.
@@ -110,6 +17,15 @@ Or we are getting this
   - C++ codegen are created per groups.
     - Only AST classes `#include` depended files groups, visitors do not.
     - When a visitor need to call types in different file groups, leave it abstract.
+- Build in Ubuntu. Windows and Linux test output inconsistency on
+    - the order of ambiguous candidates.
+    - `\r\n` or `\n` serialized into `<![CDATA[]]>`.
+    - We can force `\r\n` in unit test, normalizing all inputs.
+- Render input text in Trace-3
+  - Try to visualize ambiguity using input text
+  - Built-in parsers: C++ Non-traced test cases save json files with extra field recording the input code at the beginning
+- Refactor TraceTree logging and put together with WriteMonospacedEnglishTable
+  - Reorganize log utilities for better dependency
 
 ## Test Cases
 
