@@ -356,19 +356,19 @@ TEST_FILE
 {
 
 #define ENABLE_PARSER(UPPERCASE, LOWERCASE, VISITOR, ...)													\
-	TestParser<LOWERCASE::ModuleParser, LOWERCASE::json_visitor::VISITOR##Visitor>(						\
-		L#UPPERCASE,																						\
+	TestParser<LOWERCASE::ModuleParser, LOWERCASE::json_visitor::VISITOR##Visitor>(							\
+		L ## #UPPERCASE,																					\
 		&LOWERCASE::UPPERCASE##TypeName,																	\
 		&LOWERCASE::UPPERCASE##FieldName,																	\
 		&LOWERCASE::UPPERCASE##TokenId,																		\
 		&LOWERCASE::ModuleParserRuleName,																	\
 		&LOWERCASE::ModuleParserStateLabel,																	\
-		__VA_ARGS__																							\
+		##__VA_ARGS__																						\
 		)																									\
 
 #define ENABLE_FEATURE(UPPERCASE, LOWERCASE)																\
 	TestParser<feature_##LOWERCASE::ModuleParser, feature_##LOWERCASE::json_visitor::FeatureAstVisitor>(	\
-		L"Feature_" #UPPERCASE,																				\
+		L"Feature_" L ## #UPPERCASE,																		\
 		&feature_##LOWERCASE::Feature_##UPPERCASE##TypeName,												\
 		&feature_##LOWERCASE::Feature_##UPPERCASE##FieldName,												\
 		&feature_##LOWERCASE::Feature_##UPPERCASE##TokenId,													\
