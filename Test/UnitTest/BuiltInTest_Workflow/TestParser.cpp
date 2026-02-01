@@ -79,7 +79,16 @@ TEST_FILE
 
 				TEST_CASE(caseName)
 				{
-					WString inputCode = File(dirWorkflow / indexName / (caseName + L".txt")).ReadAllTextByBom();
+					File workflowFile = dirWorkflow / indexName / (caseName + L".txt");
+					WString inputCode =stream::GenerateToStream([&](TextWriter& writer)
+					{
+						List<WString> lines;
+						workflowFile.ReadAllLinesByBom(lines);
+						for (auto&& line : lines)
+						{
+							writer.WriteLine(line);
+						}
+					});
 					if (indexName == L"Declaration")
 					{
 						auto ast = parser.Parse_Declaration(inputCode);

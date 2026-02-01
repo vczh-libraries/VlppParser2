@@ -67,7 +67,15 @@ TEST_FILE
 
 			TEST_CASE(caseName)
 			{
-				auto inputXml = inputFile.ReadAllTextByBom();
+				auto inputXml = stream::GenerateToStream([&](TextWriter& writer)
+				{
+					List<WString> lines;
+					inputFile.ReadAllLinesByBom(lines);
+					for (auto&& line : lines)
+					{
+						writer.WriteLine(line);
+					}
+				});
 				auto ast = parser.ParseXDocument(inputXml);
 				auto astJson = PrintAstJson<json_visitor::AstVisitor>(ast);
 				File(dirOutput / (L"Output[DarkSkin_" + caseName + L"].json")).WriteAllText(astJson, true, BomEncoder::Utf8);

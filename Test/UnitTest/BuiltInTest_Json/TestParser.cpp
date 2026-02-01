@@ -76,7 +76,15 @@ TEST_FILE
 
 				TEST_CASE(caseName)
 				{
-					auto baselineJson = jsonFile.ReadAllTextByBom();
+					auto baselineJson = stream::GenerateToStream([&](TextWriter& writer)
+					{
+						List<WString> lines;
+						jsonFile.ReadAllLinesByBom(lines);
+						for (auto&& line : lines)
+						{
+							writer.WriteLine(line);
+						}
+					});
 					auto ast = parser.ParseJRoot(baselineJson);
 					auto astJson = PrintAstJson<json_visitor::AstVisitor>(ast);
 					File(dirOutput / (L"Output[" + parserName + L"_" + caseName + L"].json")).WriteAllText(astJson, true, BomEncoder::Utf8);
