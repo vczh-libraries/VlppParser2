@@ -147,7 +147,7 @@ PartialExecuteOrdinaryTrace
 							{
 								throw TraceException(*this, { trace, insRef }, TRACE_MAMAGER_PHRASE, L"[CreateObject] context.createStack is empty.");
 							}
-							ForEachStack(context.createStack, [=](InsExec_Stack* topStack)
+							ForEachStack(context.createStack, [=, this](InsExec_Stack* topStack)
 							{
 								PushInsRefLink(topStack->createObjectInsRefs, { trace, insRef });
 								PushStackRefLink(insExec->operatingStacks, topStack);

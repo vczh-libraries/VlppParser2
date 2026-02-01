@@ -6,6 +6,7 @@ namespace vl
 	{
 		using namespace collections;
 		using namespace stream;
+		using namespace astins_slots;
 
 /***********************************************************************
 JsonVisitorBase

@@ -24,7 +24,7 @@ FilePath LogSyntaxWithPath(
 	{
 		writer.WriteLine(L"[PREFIX MERGE SOLUTIONS]");
 		for (auto key : From(manager.prefixMergeSolutions.Keys())
-			.OrderByKey([](auto k) {return Tuple(k.get<0>()->Name(), k.get<1>()->label); })
+			.OrderByKey([](auto k) {return Tuple(k.template get<0>()->Name(), k.template get<1>()->label); })
 			)
 		{
 			auto value = manager.prefixMergeSolutions[key];
@@ -41,7 +41,7 @@ FilePath LogSyntaxWithPath(
 
 		writer.WriteLine(L"[PREFIX MERGE APPLICATIONS]");
 		for (auto key : From(manager.prefixMergeSolutions.Keys())
-			.OrderByKey([](auto k) {return Tuple(k.get<0>()->Name(), k.get<1>()->label); })
+			.OrderByKey([](auto k) {return Tuple(k.template get<0>()->Name(), k.template get<1>()->label); })
 			)
 		{
 			auto value = manager.prefixMergeSolutions[key];
