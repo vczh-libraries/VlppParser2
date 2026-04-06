@@ -20,7 +20,8 @@ These files are prepared for foreign dependencies.
 
 ## Projects for Verification
 
-Here is a list of unit test projects in `REPO-ROOT/Test/UnitTest/{NAME}/{NAME}.vcxproj` folder, you are required to run all of them in order:
+Here is a list of unit test projects in `REPO-ROOT/Test/UnitTest/{NAME}/{NAME}.vcxproj` folder, you are required to run all of them in order.
+Each project must be executed in the correct order because most of them generate files for following projects.
 - `ParserTest_AstGen`: Generate Calculator AST C++ types from manual definitions. Generate Parser AST C++ types from manual definitions.
 - `ParserTest_AstParserGen`: Run Calculator lexer from manual definitions. Assembly to AST Building. Generate Calculator lexer C++ types from manual definitions. Generate Parser lexer C++ types from manual definitions.
 - `ParserTest_LexerAndParser`: Generate Calculator parser C++ types from manual definitions. Generate Parser parser C++ types from manual definitions.
