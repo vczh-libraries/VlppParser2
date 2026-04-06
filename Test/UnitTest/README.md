@@ -25,13 +25,13 @@ Run the following projects in order.
 - `ParserTest_ParserGen_Generated`
   - Run generated multiple parser from previous projects.
 
-- `BuildInTest_Compiler`
+- `BuiltInTest_Compiler`
   - Build real world parsers below
-- `BuildInTest_Json`
+- `BuiltInTest_Json`
   - Run generated JSON parser against real world examples.
-- `BuildInTest_Xml`
+- `BuiltInTest_Xml`
   - Run generated XML parser against real world examples.
-- `BuildInTest_Workflow`
+- `BuiltInTest_Workflow`
   - Run generated Workflow parser against real world examples.
-- `BuildInTest_Cpp`
+- `BuiltInTest_Cpp`
   - Run generated C++ parser against real world examples.
