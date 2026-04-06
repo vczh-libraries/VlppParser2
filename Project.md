@@ -23,18 +23,18 @@ These files are prepared for foreign dependencies.
 Here is a list of unit test projects in `REPO-ROOT/Test/UnitTest/{NAME}/{NAME}.vcxproj` folder, you are required to run all of them in order.
 Each project must be executed in the correct order because most of them generate files for following projects.
 - `ParserTest_AstGen`: Generate Calculator AST C++ types from manual definitions. Generate Parser AST C++ types from manual definitions.
-  - Rebuild the solution after execution.
+  - **Rebuild the solution after execution**.
 - `ParserTest_AstParserGen`: Run Calculator lexer from manual definitions. Assembly to AST Building. Generate Calculator lexer C++ types from manual definitions. Generate Parser lexer C++ types from manual definitions.
-  - Rebuild the solution after execution.
+  - **Rebuild the solution after execution**.
 - `ParserTest_LexerAndParser`: Generate Calculator parser C++ types from manual definitions. Generate Parser parser C++ types from manual definitions.
-  - Rebuild the solution after execution.
+  - **Rebuild the solution after execution**.
 - `ParserTest_LexerAndParser_Generated`: Run generated Calculator lexer types from previous projects. Run Calculator parser from manual definitions.
 - `ParserTest_ParserGen`: ParserGen error detection.
 - `ParserTest_ParserGen_Compiler`: Run generated Calculator parser from previous projects. Run generated Parser parser from previous projects. Build multiple parsers from external syntax definitions.
-  - Rebuild the solution after execution.
+  - **Rebuild the solution after execution**.
 - `ParserTest_ParserGen_Generated`: Run generated multiple parsers from previous projects.
 - `BuiltInTest_Compiler`: Build real world parsers below.
-  - Rebuild the solution after execution.
+  - **Rebuild the solution after execution**.
 - `BuiltInTest_Json`: Run generated JSON parser against real world examples.
 - `BuiltInTest_Xml`: Run generated XML parser against real world examples.
 - `BuiltInTest_Workflow`: Run generated Workflow parser against real world examples.
