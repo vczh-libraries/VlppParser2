@@ -10,6 +10,7 @@
   - New syntax for tokenizers for such extensible tokens.
   - We can try `/***/` with extensible tokens.
 - AST file groups.
+  - Dump .d.ts for the JSON schema.
   - An AST file only sees:
     - [x] Types defined in this file.
     - [x] `@public` types defined in the same file group.
