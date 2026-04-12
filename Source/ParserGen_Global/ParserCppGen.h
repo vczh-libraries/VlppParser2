@@ -39,6 +39,7 @@ Output
 				WString			traverseCpp;
 				WString			jsonH;
 				WString			jsonCpp;
+				WString			jsonDts;
 			};
 
 			struct CppSyntaxGenOutput

@@ -242,6 +242,180 @@ WriteJsonVisitorCppFile
 					}
 				});
 			}
+
+/***********************************************************************
+WriteJsonVisitorDtsFile
+***********************************************************************/
+
+			void CollectAllLeafClasses(AstClassSymbol* classSymbol, List<AstClassSymbol*>& leafClasses)
+			{
+				if (classSymbol->derivedClasses.Count() == 0)
+				{
+					leafClasses.Add(classSymbol);
+				}
+				else
+				{
+					for (auto derived : classSymbol->derivedClasses)
+					{
+						CollectAllLeafClasses(derived, leafClasses);
+					}
+				}
+			}
+
+			AstClassSymbol* FindNearestAncestorWithProps(AstClassSymbol* classSymbol)
+			{
+				auto current = classSymbol->baseClass;
+				while (current)
+				{
+					if (current->Props().Count() > 0)
+					{
+						return current;
+					}
+					current = current->baseClass;
+				}
+				return nullptr;
+			}
+
+			void WriteDtsPropType(AstDefFileGroup* group, AstClassPropSymbol* propSymbol, stream::StreamWriter& writer)
+			{
+				switch (propSymbol->propType)
+				{
+				case AstPropType::Token:
+					writer.WriteString(L"string");
+					break;
+				case AstPropType::Type:
+					if (auto enumPropSymbol = dynamic_cast<AstEnumSymbol*>(propSymbol->propSymbol))
+					{
+						writer.WriteString(enumPropSymbol->Name());
+					}
+					else if (auto classPropSymbol = dynamic_cast<AstClassSymbol*>(propSymbol->propSymbol))
+					{
+						writer.WriteString(classPropSymbol->Name() + L" | null");
+					}
+					break;
+				case AstPropType::Array:
+					if (auto classPropSymbol = dynamic_cast<AstClassSymbol*>(propSymbol->propSymbol))
+					{
+						writer.WriteString(L"(" + classPropSymbol->Name() + L" | null)[]");
+					}
+					else
+					{
+						writer.WriteString(L"unknown[]");
+					}
+					break;
+				}
+			}
+
+			void WriteJsonVisitorDtsFile(AstDefFileGroup* group, Ptr<CppAstGenOutput> output, stream::StreamWriter& writer)
+			{
+				List<AstClassSymbol*> visitors, concreteClasses;
+				CollectVisitorsAndConcreteClasses(group, visitors, concreteClasses);
+
+				// write enums
+				for (auto name : group->SymbolOrder())
+				{
+					if (auto enumSymbol = dynamic_cast<AstEnumSymbol*>(group->Symbols()[name]))
+					{
+						writer.WriteString(L"export type " + enumSymbol->Name() + L" =");
+						bool first = true;
+						for (auto itemName : enumSymbol->ItemOrder())
+						{
+							if (!first) writer.WriteString(L" |");
+							writer.WriteString(L" \"" + itemName + L"\"");
+							first = false;
+						}
+						writer.WriteLine(L";");
+						writer.WriteLine(L"");
+					}
+				}
+
+				// write union types for abstract classes (classes with derived classes)
+				for (auto visitorSymbol : visitors)
+				{
+					List<AstClassSymbol*> leafClasses;
+					CollectAllLeafClasses(visitorSymbol, leafClasses);
+
+					writer.WriteString(L"export type " + visitorSymbol->Name() + L" =");
+					for (auto [leafClass, index] : indexed(leafClasses))
+					{
+						if (index > 0) writer.WriteString(L" |");
+						writer.WriteString(L" " + leafClass->Name());
+					}
+					writer.WriteLine(L";");
+					writer.WriteLine(L"");
+				}
+
+				// write _Common interfaces for abstract classes that have own properties
+				for (auto name : group->SymbolOrder())
+				{
+					if (auto classSymbol = dynamic_cast<AstClassSymbol*>(group->Symbols()[name]))
+					{
+						if (classSymbol->derivedClasses.Count() > 0 && classSymbol->Props().Count() > 0)
+						{
+							auto ancestor = FindNearestAncestorWithProps(classSymbol);
+							writer.WriteString(L"export interface " + classSymbol->Name() + L"_Common");
+							if (ancestor)
+							{
+								writer.WriteString(L" extends " + ancestor->Name() + L"_Common");
+							}
+							writer.WriteLine(L" {");
+							for (auto propName : classSymbol->PropOrder())
+							{
+								auto propSymbol = classSymbol->Props()[propName];
+								writer.WriteString(L"    " + propName + L": ");
+								WriteDtsPropType(group, propSymbol, writer);
+								writer.WriteLine(L";");
+							}
+							writer.WriteLine(L"}");
+							writer.WriteLine(L"");
+						}
+					}
+				}
+
+				// write interfaces for leaf classes (classes with no derived classes)
+				for (auto name : group->SymbolOrder())
+				{
+					if (auto classSymbol = dynamic_cast<AstClassSymbol*>(group->Symbols()[name]))
+					{
+						if (classSymbol->derivedClasses.Count() == 0)
+						{
+							// find the nearest ancestor with properties for extends
+							auto ancestor = FindNearestAncestorWithProps(classSymbol);
+							writer.WriteString(L"export interface " + classSymbol->Name());
+							if (ancestor)
+							{
+								if (ancestor->derivedClasses.Count() > 0)
+								{
+									writer.WriteString(L" extends " + ancestor->Name() + L"_Common");
+								}
+								else
+								{
+									writer.WriteString(L" extends " + ancestor->Name());
+								}
+							}
+							writer.WriteLine(L" {");
+							writer.WriteLine(L"    $ast: \"" + classSymbol->Name() + L"\";");
+							for (auto propName : classSymbol->PropOrder())
+							{
+								auto propSymbol = classSymbol->Props()[propName];
+								writer.WriteString(L"    " + propName + L": ");
+								WriteDtsPropType(group, propSymbol, writer);
+								writer.WriteLine(L";");
+							}
+							writer.WriteLine(L"}");
+							writer.WriteLine(L"");
+						}
+					}
+				}
+
+				// write interfaces for concrete classes (standalone, no base and no derived)
+				for (auto classSymbol : concreteClasses)
+				{
+					// concreteClasses are !baseClass && derivedClasses.Count()==0
+					// these are already handled in the leaf class section above
+					// (they would appear as leaf classes with no ancestor)
+				}
+			}
 		}
 	}
 }

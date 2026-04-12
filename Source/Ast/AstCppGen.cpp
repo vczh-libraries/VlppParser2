@@ -31,6 +31,7 @@ GenerateAstFileNames
 					astOutput->traverseCpp	= globalName + group->Name() + L"_Traverse.cpp";
 					astOutput->jsonH		= globalName + group->Name() + L"_Json.h";
 					astOutput->jsonCpp		= globalName + group->Name() + L"_Json.cpp";
+					astOutput->jsonDts		= globalName + group->Name() + L"_Json.d.ts";
 					parserOutput->astOutputs.Add(group, astOutput);
 				}
 			}
@@ -372,6 +373,15 @@ WriteAstFiles
 
 					files.Add(output->jsonH, fileH);
 					files.Add(output->jsonCpp, fileCpp);
+				}
+
+				{
+					WString fileDts = GenerateToStream([&](StreamWriter& writer)
+					{
+						WriteJsonVisitorDtsFile(group, output, writer);
+					});
+
+					files.Add(output->jsonDts, fileDts);
 				}
 			}
 
