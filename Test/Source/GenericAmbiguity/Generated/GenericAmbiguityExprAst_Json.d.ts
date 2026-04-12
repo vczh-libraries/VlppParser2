@@ -6,7 +6,7 @@ export type Expr = ExprToResolve | RefExpr | GenericExpr | CallExpr | PostfixExp
 
 export interface ExprToResolve {
     $ast: "ExprToResolve";
-    candidates: (Expr | undefined)[];
+    candidates: (Expr | null)[];
 }
 
 export interface RefExpr {
@@ -17,35 +17,35 @@ export interface RefExpr {
 export interface GenericExpr {
     $ast: "GenericExpr";
     name: string;
-    args: (Expr | undefined)[];
+    args: (Expr | null)[];
 }
 
 export interface CallExpr {
     $ast: "CallExpr";
-    func: Expr | undefined;
-    args: (Expr | undefined)[];
+    func: Expr | null;
+    args: (Expr | null)[];
 }
 
 export interface PostfixExpr {
     $ast: "PostfixExpr";
     op: PostfixOp;
-    expr: Expr | undefined;
+    expr: Expr | null;
 }
 
 export interface DecrementExpr {
     $ast: "DecrementExpr";
-    expr: Expr | undefined;
+    expr: Expr | null;
 }
 
 export interface BinaryExpr {
     $ast: "BinaryExpr";
     op: BinaryOp;
-    left: Expr | undefined;
-    right: Expr | undefined;
+    left: Expr | null;
+    right: Expr | null;
 }
 
 export interface Module {
     $ast: "Module";
-    expr: Expr | undefined;
+    expr: Expr | null;
 }
 

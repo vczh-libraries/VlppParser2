@@ -19,19 +19,19 @@ export interface RefCondition {
 
 export interface NotCondition {
     $ast: "NotCondition";
-    condition: Condition | undefined;
+    condition: Condition | null;
 }
 
 export interface AndCondition {
     $ast: "AndCondition";
-    first: Condition | undefined;
-    second: Condition | undefined;
+    first: Condition | null;
+    second: Condition | null;
 }
 
 export interface OrCondition {
     $ast: "OrCondition";
-    first: Condition | undefined;
-    second: Condition | undefined;
+    first: Condition | null;
+    second: Condition | null;
 }
 
 export interface SwitchItem {
@@ -54,43 +54,43 @@ export interface UseSyntax {
 
 export interface LoopSyntax {
     $ast: "LoopSyntax";
-    syntax: Syntax | undefined;
-    delimiter: Syntax | undefined;
+    syntax: Syntax | null;
+    delimiter: Syntax | null;
 }
 
 export interface OptionalSyntax {
     $ast: "OptionalSyntax";
     priority: OptionalPriority;
-    syntax: Syntax | undefined;
+    syntax: Syntax | null;
 }
 
 export interface SequenceSyntax {
     $ast: "SequenceSyntax";
-    first: Syntax | undefined;
-    second: Syntax | undefined;
+    first: Syntax | null;
+    second: Syntax | null;
 }
 
 export interface AlternativeSyntax {
     $ast: "AlternativeSyntax";
-    first: Syntax | undefined;
-    second: Syntax | undefined;
+    first: Syntax | null;
+    second: Syntax | null;
 }
 
 export interface PushConditionSyntax {
     $ast: "PushConditionSyntax";
-    switches: (SwitchItem | undefined)[];
-    syntax: Syntax | undefined;
+    switches: (SwitchItem | null)[];
+    syntax: Syntax | null;
 }
 
 export interface TestConditionBranch {
     $ast: "TestConditionBranch";
-    condition: Condition | undefined;
-    syntax: Syntax | undefined;
+    condition: Condition | null;
+    syntax: Syntax | null;
 }
 
 export interface TestConditionSyntax {
     $ast: "TestConditionSyntax";
-    branches: (TestConditionBranch | undefined)[];
+    branches: (TestConditionBranch | null)[];
 }
 
 export interface Assignment {
@@ -103,21 +103,21 @@ export interface Assignment {
 export interface CreateClause {
     $ast: "CreateClause";
     type: string;
-    syntax: Syntax | undefined;
-    assignments: (Assignment | undefined)[];
+    syntax: Syntax | null;
+    assignments: (Assignment | null)[];
 }
 
 export interface PartialClause {
     $ast: "PartialClause";
     type: string;
-    syntax: Syntax | undefined;
-    assignments: (Assignment | undefined)[];
+    syntax: Syntax | null;
+    assignments: (Assignment | null)[];
 }
 
 export interface ReuseClause {
     $ast: "ReuseClause";
-    syntax: Syntax | undefined;
-    assignments: (Assignment | undefined)[];
+    syntax: Syntax | null;
+    assignments: (Assignment | null)[];
 }
 
 export interface Rule {
@@ -126,12 +126,12 @@ export interface Rule {
     attParser: string;
     name: string;
     type: string;
-    clauses: (Clause | undefined)[];
+    clauses: (Clause | null)[];
 }
 
 export interface SyntaxFile {
     $ast: "SyntaxFile";
-    switches: (SwitchItem | undefined)[];
-    rules: (Rule | undefined)[];
+    switches: (SwitchItem | null)[];
+    rules: (Rule | null)[];
 }
 

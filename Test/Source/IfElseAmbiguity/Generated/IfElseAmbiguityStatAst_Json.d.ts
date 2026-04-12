@@ -8,27 +8,27 @@ export interface DoStat {
 
 export interface IfContentToResolve {
     $ast: "IfContentToResolve";
-    candidates: (IfContent | undefined)[];
+    candidates: (IfContent | null)[];
 }
 
 export interface IfContentCandidate {
     $ast: "IfContentCandidate";
-    thenBranch: Stat | undefined;
-    elseBranch: Stat | undefined;
+    thenBranch: Stat | null;
+    elseBranch: Stat | null;
 }
 
 export interface IfStat {
     $ast: "IfStat";
-    content: IfContent | undefined;
+    content: IfContent | null;
 }
 
 export interface BlockStat {
     $ast: "BlockStat";
-    stats: (Stat | undefined)[];
+    stats: (Stat | null)[];
 }
 
 export interface Module {
     $ast: "Module";
-    stat: Stat | undefined;
+    stat: Stat | null;
 }
 

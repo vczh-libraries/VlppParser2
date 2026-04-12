@@ -10,14 +10,14 @@ export interface Lt {
 
 export interface FeatureToResolve {
     $ast: "FeatureToResolve";
-    candidates: (Feature | undefined)[];
+    candidates: (Feature | null)[];
 }
 
 export interface PwlFeature {
     $ast: "PwlFeature";
-    prefix: (Plus | undefined)[];
-    one: (Lt | undefined)[];
-    two: (Lt | undefined)[];
-    prev: PwlFeature | undefined;
+    prefix: (Plus | null)[];
+    one: (Lt | null)[];
+    two: (Lt | null)[];
+    prev: PwlFeature | null;
 }
 

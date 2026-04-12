@@ -10,7 +10,7 @@ export interface RefExpr {
 export interface BinaryExpr {
     $ast: "BinaryExpr";
     op: BinaryOp;
-    left: Expr | undefined;
-    right: Expr | undefined;
+    left: Expr | null;
+    right: Expr | null;
 }
 

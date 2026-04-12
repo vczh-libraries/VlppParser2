@@ -6,17 +6,17 @@ export interface DoStat {
 
 export interface IfStat {
     $ast: "IfStat";
-    thenBranch: Stat | undefined;
-    elseBranch: Stat | undefined;
+    thenBranch: Stat | null;
+    elseBranch: Stat | null;
 }
 
 export interface BlockStat {
     $ast: "BlockStat";
-    stats: (Stat | undefined)[];
+    stats: (Stat | null)[];
 }
 
 export interface Module {
     $ast: "Module";
-    stat: Stat | undefined;
+    stat: Stat | null;
 }
 

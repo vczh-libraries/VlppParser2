@@ -7,7 +7,7 @@ export type Expr = NumExpr | Ref | True | False | Func | Call | LetExpr | Unary 
 export type Expandable = LetExpr | Unary | Binary;
 
 export interface Expandable_Common {
-    expanded: Expr | undefined;
+    expanded: Expr | null;
 }
 
 export interface NumExpr {
@@ -35,34 +35,34 @@ export interface Arg {
 
 export interface Func {
     $ast: "Func";
-    args: (Arg | undefined)[];
-    value: Expr | undefined;
+    args: (Arg | null)[];
+    value: Expr | null;
 }
 
 export interface Call {
     $ast: "Call";
-    func: Expr | undefined;
-    args: (Expr | undefined)[];
+    func: Expr | null;
+    args: (Expr | null)[];
 }
 
 export interface LetExpr extends Expandable_Common {
     $ast: "LetExpr";
     name: string;
-    value: Expr | undefined;
-    result: Expr | undefined;
+    value: Expr | null;
+    result: Expr | null;
 }
 
 export interface Unary extends Expandable_Common {
     $ast: "Unary";
     op: UnaryOp;
-    operand: Expr | undefined;
+    operand: Expr | null;
 }
 
 export interface Binary extends Expandable_Common {
     $ast: "Binary";
     op: BinaryOp;
-    left: Expr | undefined;
-    right: Expr | undefined;
+    left: Expr | null;
+    right: Expr | null;
 }
 
 export interface Import {
@@ -72,7 +72,7 @@ export interface Import {
 
 export interface Module {
     $ast: "Module";
-    imports: (Import | undefined)[];
-    exported: Expr | undefined;
+    imports: (Import | null)[];
+    exported: Expr | null;
 }
 

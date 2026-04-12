@@ -2,7 +2,7 @@ export type Feature = FeatureToResolve | ClFeature;
 
 export interface FeatureToResolve {
     $ast: "FeatureToResolve";
-    candidates: (Feature | undefined)[];
+    candidates: (Feature | null)[];
 }
 
 export interface ClFeature {

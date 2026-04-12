@@ -14,7 +14,7 @@ export interface EnumItem {
 
 export interface Enum extends Type_Common {
     $ast: "Enum";
-    items: (EnumItem | undefined)[];
+    items: (EnumItem | null)[];
 }
 
 export interface ClassProp {
@@ -28,11 +28,11 @@ export interface Class extends Type_Common {
     $ast: "Class";
     attAmbiguous: string;
     baseClass: string;
-    props: (ClassProp | undefined)[];
+    props: (ClassProp | null)[];
 }
 
 export interface AstFile {
     $ast: "AstFile";
-    types: (Type | undefined)[];
+    types: (Type | null)[];
 }
 

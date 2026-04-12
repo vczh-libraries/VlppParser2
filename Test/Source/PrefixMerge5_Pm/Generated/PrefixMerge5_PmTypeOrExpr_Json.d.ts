@@ -4,7 +4,7 @@ export type QualifiedName = Name | MemberName;
 
 export interface TypeOrExprToResolve {
     $ast: "TypeOrExprToResolve";
-    candidates: (TypeOrExpr | undefined)[];
+    candidates: (TypeOrExpr | null)[];
 }
 
 export interface Name {
@@ -14,41 +14,41 @@ export interface Name {
 
 export interface MemberName {
     $ast: "MemberName";
-    parent: QualifiedName | undefined;
+    parent: QualifiedName | null;
     member: string;
 }
 
 export interface CallExpr {
     $ast: "CallExpr";
-    func: TypeOrExpr | undefined;
-    args: (TypeOrExpr | undefined)[];
+    func: TypeOrExpr | null;
+    args: (TypeOrExpr | null)[];
 }
 
 export interface CtorExpr {
     $ast: "CtorExpr";
-    type: TypeOrExpr | undefined;
-    args: (TypeOrExpr | undefined)[];
+    type: TypeOrExpr | null;
+    args: (TypeOrExpr | null)[];
 }
 
 export interface MulExpr {
     $ast: "MulExpr";
-    first: TypeOrExpr | undefined;
-    second: TypeOrExpr | undefined;
+    first: TypeOrExpr | null;
+    second: TypeOrExpr | null;
 }
 
 export interface ConstType {
     $ast: "ConstType";
-    type: TypeOrExpr | undefined;
+    type: TypeOrExpr | null;
 }
 
 export interface PointerType {
     $ast: "PointerType";
-    type: TypeOrExpr | undefined;
+    type: TypeOrExpr | null;
 }
 
 export interface FunctionType {
     $ast: "FunctionType";
-    returnType: TypeOrExpr | undefined;
-    args: (TypeOrExpr | undefined)[];
+    returnType: TypeOrExpr | null;
+    args: (TypeOrExpr | null)[];
 }
 

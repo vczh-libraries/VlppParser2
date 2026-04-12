@@ -2,7 +2,7 @@ export type Item = ItemToResolve | IntItem | IntCommaItem | IntDotItem | IntQues
 
 export interface ItemToResolve {
     $ast: "ItemToResolve";
-    candidates: (Item | undefined)[];
+    candidates: (Item | null)[];
 }
 
 export interface IntItem {
@@ -31,11 +31,11 @@ export interface ClassQuestionItem {
 
 export interface QuestionItem {
     $ast: "QuestionItem";
-    item: Item | undefined;
+    item: Item | null;
 }
 
 export interface File {
     $ast: "File";
-    items: (Item | undefined)[];
+    items: (Item | null)[];
 }
 

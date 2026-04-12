@@ -4,7 +4,7 @@ export type Feature = FeatureToResolve | FaFeature;
 
 export interface FeatureToResolve {
     $ast: "FeatureToResolve";
-    candidates: (Feature | undefined)[];
+    candidates: (Feature | null)[];
 }
 
 export interface FaFeature {

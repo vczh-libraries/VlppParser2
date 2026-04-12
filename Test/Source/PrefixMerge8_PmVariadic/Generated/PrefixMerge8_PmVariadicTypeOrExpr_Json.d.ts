@@ -7,22 +7,22 @@ export type QualifiedName = Name | MemberName | GenericName | GenericMemberName;
 export type GenericQualifiedName = GenericName | GenericMemberName;
 
 export interface GenericQualifiedName_Common {
-    args: (TypeOrExprOrOthers | undefined)[];
+    args: (TypeOrExprOrOthers | null)[];
 }
 
 export interface TypeOrExprOrOthersToResolve {
     $ast: "TypeOrExprOrOthersToResolve";
-    candidates: (TypeOrExprOrOthers | undefined)[];
+    candidates: (TypeOrExprOrOthers | null)[];
 }
 
 export interface VariadicArgument {
     $ast: "VariadicArgument";
-    operand: TypeOrExpr | undefined;
+    operand: TypeOrExpr | null;
 }
 
 export interface TypeOrExprToResolve {
     $ast: "TypeOrExprToResolve";
-    candidates: (TypeOrExpr | undefined)[];
+    candidates: (TypeOrExpr | null)[];
 }
 
 export interface Name {
@@ -32,7 +32,7 @@ export interface Name {
 
 export interface MemberName {
     $ast: "MemberName";
-    parent: QualifiedName | undefined;
+    parent: QualifiedName | null;
     member: string;
 }
 
@@ -43,41 +43,41 @@ export interface GenericName extends GenericQualifiedName_Common {
 
 export interface GenericMemberName extends GenericQualifiedName_Common {
     $ast: "GenericMemberName";
-    parent: QualifiedName | undefined;
+    parent: QualifiedName | null;
     member: string;
 }
 
 export interface CallExpr {
     $ast: "CallExpr";
-    func: TypeOrExpr | undefined;
-    args: (TypeOrExprOrOthers | undefined)[];
+    func: TypeOrExpr | null;
+    args: (TypeOrExprOrOthers | null)[];
 }
 
 export interface CtorExpr {
     $ast: "CtorExpr";
-    type: TypeOrExpr | undefined;
-    args: (TypeOrExprOrOthers | undefined)[];
+    type: TypeOrExpr | null;
+    args: (TypeOrExprOrOthers | null)[];
 }
 
 export interface MulExpr {
     $ast: "MulExpr";
-    first: TypeOrExpr | undefined;
-    second: TypeOrExpr | undefined;
+    first: TypeOrExpr | null;
+    second: TypeOrExpr | null;
 }
 
 export interface ConstType {
     $ast: "ConstType";
-    type: TypeOrExpr | undefined;
+    type: TypeOrExpr | null;
 }
 
 export interface PointerType {
     $ast: "PointerType";
-    type: TypeOrExpr | undefined;
+    type: TypeOrExpr | null;
 }
 
 export interface FunctionType {
     $ast: "FunctionType";
-    returnType: TypeOrExpr | undefined;
-    args: (TypeOrExprOrOthers | undefined)[];
+    returnType: TypeOrExpr | null;
+    args: (TypeOrExprOrOthers | null)[];
 }
 

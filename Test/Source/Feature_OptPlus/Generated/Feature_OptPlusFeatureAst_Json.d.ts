@@ -8,13 +8,13 @@ export interface Plus {
 
 export interface FeatureToResolve {
     $ast: "FeatureToResolve";
-    candidates: (Feature | undefined)[];
+    candidates: (Feature | null)[];
 }
 
 export interface OptionalFeature {
     $ast: "OptionalFeature";
     priority: OptionalProprity;
-    optional: Plus | undefined;
-    loop: (Plus | undefined)[];
+    optional: Plus | null;
+    loop: (Plus | null)[];
 }
 

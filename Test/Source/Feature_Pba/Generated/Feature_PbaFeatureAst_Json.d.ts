@@ -14,15 +14,15 @@ export interface Gt {
 
 export interface FeatureToResolve {
     $ast: "FeatureToResolve";
-    candidates: (Feature | undefined)[];
+    candidates: (Feature | null)[];
 }
 
 export interface PbaFeature {
     $ast: "PbaFeature";
-    lts: (Lt | undefined)[];
-    gts: (Gt | undefined)[];
-    optional: Plus | undefined;
-    tail: Plus | undefined;
-    tails: (Plus | undefined)[];
+    lts: (Lt | null)[];
+    gts: (Gt | null)[];
+    optional: Plus | null;
+    tail: Plus | null;
+    tails: (Plus | null)[];
 }
 

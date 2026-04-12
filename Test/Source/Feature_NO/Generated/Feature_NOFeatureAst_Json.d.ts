@@ -6,15 +6,15 @@ export interface Plus {
 
 export interface FeatureToResolve {
     $ast: "FeatureToResolve";
-    candidates: (Feature | undefined)[];
+    candidates: (Feature | null)[];
 }
 
 export interface NestedOptionalFeature {
     $ast: "NestedOptionalFeature";
-    optional: Plus | undefined;
-    tail1: Plus | undefined;
-    tail2: Plus | undefined;
-    tail3: Plus | undefined;
-    tails: (Plus | undefined)[];
+    optional: Plus | null;
+    tail1: Plus | null;
+    tail2: Plus | null;
+    tail3: Plus | null;
+    tails: (Plus | null)[];
 }
 

@@ -8,13 +8,13 @@ export interface Plus {
 
 export interface FeatureToResolve {
     $ast: "FeatureToResolve";
-    candidates: (Feature | undefined)[];
+    candidates: (Feature | null)[];
 }
 
 export interface BranchedOptionalFeature {
     $ast: "BranchedOptionalFeature";
     type: BranchType;
-    optional: Plus | undefined;
-    tails: (Plus | undefined)[];
+    optional: Plus | null;
+    tails: (Plus | null)[];
 }
 
