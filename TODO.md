@@ -11,6 +11,11 @@
   - We can try `/***/` with extensible tokens.
 - AST file groups.
   - Dump .d.ts for the JSON schema.
+    - Work on XML/JSON/Workflow
+    - `Test/TypeScript` npmjs package for typescript compiler
+    - Each AST will generate a JSON to match the generated schema in a .ts file
+    - Build the package and see if there is compile errors
+    - Should be completed by a powershell script
   - An AST file only sees:
     - [x] Types defined in this file.
     - [x] `@public` types defined in the same file group.
