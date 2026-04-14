@@ -1,0 +1,721 @@
+﻿{
+    "$ast": "Module",
+    "declarations": [{
+        "$ast": "VariableDeclaration",
+        "attributes": [],
+        "name": "s",
+        "expression": {
+            "$ast": "StringExpression",
+            "value": "\"\""
+        },
+        "type": null
+    }, {
+        "$ast": "ClassDeclaration",
+        "attributes": [],
+        "name": "IDtor",
+        "baseTypes": [],
+        "constructorType": "RawPtr",
+        "declarations": [{
+            "$ast": "FunctionDeclaration",
+            "attributes": [],
+            "name": "SetName",
+            "anonymity": "Named",
+            "arguments": [{
+                "$ast": "FunctionArgument",
+                "attributes": [],
+                "name": "name",
+                "type": {
+                    "$ast": "PredefinedType",
+                    "name": "String"
+                }
+            }],
+            "functionKind": "Normal",
+            "returnType": {
+                "$ast": "PredefinedType",
+                "name": "Void"
+            },
+            "statement": null
+        }, {
+            "$ast": "FunctionDeclaration",
+            "attributes": [],
+            "name": "SetNext",
+            "anonymity": "Named",
+            "arguments": [{
+                "$ast": "FunctionArgument",
+                "attributes": [],
+                "name": "next",
+                "type": {
+                    "$ast": "RawPointerType",
+                    "element": {
+                        "$ast": "ReferenceType",
+                        "name": "IDtor"
+                    }
+                }
+            }],
+            "functionKind": "Normal",
+            "returnType": {
+                "$ast": "PredefinedType",
+                "name": "Void"
+            },
+            "statement": null
+        }],
+        "kind": "Interface"
+    }, {
+        "$ast": "FunctionDeclaration",
+        "attributes": [],
+        "name": "main",
+        "anonymity": "Named",
+        "arguments": [],
+        "functionKind": "Normal",
+        "returnType": {
+            "$ast": "PredefinedType",
+            "name": "String"
+        },
+        "statement": {
+            "$ast": "BlockStatement",
+            "endLabel": "",
+            "statements": [{
+                "$ast": "VariableStatement",
+                "variable": {
+                    "$ast": "VariableDeclaration",
+                    "attributes": [],
+                    "name": "x",
+                    "expression": {
+                        "$ast": "NewInterfaceExpression",
+                        "declarations": [{
+                            "$ast": "VariableDeclaration",
+                            "attributes": [],
+                            "name": "name",
+                            "expression": {
+                                "$ast": "StringExpression",
+                                "value": "\"\""
+                            },
+                            "type": null
+                        }, {
+                            "$ast": "VariableDeclaration",
+                            "attributes": [],
+                            "name": "next",
+                            "expression": {
+                                "$ast": "LiteralExpression",
+                                "value": "Null"
+                            },
+                            "type": {
+                                "$ast": "RawPointerType",
+                                "element": {
+                                    "$ast": "ReferenceType",
+                                    "name": "IDtor"
+                                }
+                            }
+                        }, {
+                            "$ast": "DestructorDeclaration",
+                            "attributes": [],
+                            "name": "",
+                            "statement": {
+                                "$ast": "BlockStatement",
+                                "endLabel": "",
+                                "statements": [{
+                                    "$ast": "ExpressionStatement",
+                                    "expression": {
+                                        "$ast": "BinaryExpression",
+                                        "first": {
+                                            "$ast": "ReferenceExpression",
+                                            "name": "s"
+                                        },
+                                        "op": "Assign",
+                                        "second": {
+                                            "$ast": "FormatExpression",
+                                            "expandedExpression": null,
+                                            "value": "$\"$(s)[$(name)]\""
+                                        }
+                                    }
+                                }, {
+                                    "$ast": "IfStatement",
+                                    "expression": {
+                                        "$ast": "TypeTestingExpression",
+                                        "expression": {
+                                            "$ast": "ReferenceExpression",
+                                            "name": "next"
+                                        },
+                                        "test": "IsNotNull",
+                                        "type": null
+                                    },
+                                    "falseBranch": null,
+                                    "name": "",
+                                    "trueBranch": {
+                                        "$ast": "BlockStatement",
+                                        "endLabel": "",
+                                        "statements": [{
+                                            "$ast": "DeleteStatement",
+                                            "expression": {
+                                                "$ast": "ReferenceExpression",
+                                                "name": "next"
+                                            }
+                                        }]
+                                    },
+                                    "type": null
+                                }]
+                            }
+                        }, {
+                            "$ast": "FunctionDeclaration",
+                            "attributes": [],
+                            "name": "SetName",
+                            "anonymity": "Named",
+                            "arguments": [{
+                                "$ast": "FunctionArgument",
+                                "attributes": [],
+                                "name": "name_",
+                                "type": {
+                                    "$ast": "PredefinedType",
+                                    "name": "String"
+                                }
+                            }],
+                            "functionKind": "Override",
+                            "returnType": {
+                                "$ast": "PredefinedType",
+                                "name": "Void"
+                            },
+                            "statement": {
+                                "$ast": "BlockStatement",
+                                "endLabel": "",
+                                "statements": [{
+                                    "$ast": "ExpressionStatement",
+                                    "expression": {
+                                        "$ast": "BinaryExpression",
+                                        "first": {
+                                            "$ast": "ReferenceExpression",
+                                            "name": "name"
+                                        },
+                                        "op": "Assign",
+                                        "second": {
+                                            "$ast": "ReferenceExpression",
+                                            "name": "name_"
+                                        }
+                                    }
+                                }]
+                            }
+                        }, {
+                            "$ast": "FunctionDeclaration",
+                            "attributes": [],
+                            "name": "SetNext",
+                            "anonymity": "Named",
+                            "arguments": [{
+                                "$ast": "FunctionArgument",
+                                "attributes": [],
+                                "name": "next_",
+                                "type": {
+                                    "$ast": "RawPointerType",
+                                    "element": {
+                                        "$ast": "ReferenceType",
+                                        "name": "IDtor"
+                                    }
+                                }
+                            }],
+                            "functionKind": "Override",
+                            "returnType": {
+                                "$ast": "PredefinedType",
+                                "name": "Void"
+                            },
+                            "statement": {
+                                "$ast": "BlockStatement",
+                                "endLabel": "",
+                                "statements": [{
+                                    "$ast": "ExpressionStatement",
+                                    "expression": {
+                                        "$ast": "BinaryExpression",
+                                        "first": {
+                                            "$ast": "ReferenceExpression",
+                                            "name": "next"
+                                        },
+                                        "op": "Assign",
+                                        "second": {
+                                            "$ast": "ReferenceExpression",
+                                            "name": "next_"
+                                        }
+                                    }
+                                }]
+                            }
+                        }],
+                        "type": {
+                            "$ast": "RawPointerType",
+                            "element": {
+                                "$ast": "ReferenceType",
+                                "name": "IDtor"
+                            }
+                        }
+                    },
+                    "type": null
+                }
+            }, {
+                "$ast": "ExpressionStatement",
+                "expression": {
+                    "$ast": "CallExpression",
+                    "arguments": [{
+                        "$ast": "StringExpression",
+                        "value": "\"x\""
+                    }],
+                    "function": {
+                        "$ast": "MemberExpression",
+                        "name": "SetName",
+                        "parent": {
+                            "$ast": "ReferenceExpression",
+                            "name": "x"
+                        }
+                    }
+                }
+            }, {
+                "$ast": "VariableStatement",
+                "variable": {
+                    "$ast": "VariableDeclaration",
+                    "attributes": [],
+                    "name": "y",
+                    "expression": {
+                        "$ast": "NewInterfaceExpression",
+                        "declarations": [{
+                            "$ast": "VariableDeclaration",
+                            "attributes": [],
+                            "name": "name",
+                            "expression": {
+                                "$ast": "StringExpression",
+                                "value": "\"\""
+                            },
+                            "type": null
+                        }, {
+                            "$ast": "VariableDeclaration",
+                            "attributes": [],
+                            "name": "next",
+                            "expression": {
+                                "$ast": "LiteralExpression",
+                                "value": "Null"
+                            },
+                            "type": {
+                                "$ast": "RawPointerType",
+                                "element": {
+                                    "$ast": "ReferenceType",
+                                    "name": "IDtor"
+                                }
+                            }
+                        }, {
+                            "$ast": "FunctionDeclaration",
+                            "attributes": [],
+                            "name": "SetName",
+                            "anonymity": "Named",
+                            "arguments": [{
+                                "$ast": "FunctionArgument",
+                                "attributes": [],
+                                "name": "name_",
+                                "type": {
+                                    "$ast": "PredefinedType",
+                                    "name": "String"
+                                }
+                            }],
+                            "functionKind": "Override",
+                            "returnType": {
+                                "$ast": "PredefinedType",
+                                "name": "Void"
+                            },
+                            "statement": {
+                                "$ast": "BlockStatement",
+                                "endLabel": "",
+                                "statements": [{
+                                    "$ast": "ExpressionStatement",
+                                    "expression": {
+                                        "$ast": "BinaryExpression",
+                                        "first": {
+                                            "$ast": "ReferenceExpression",
+                                            "name": "name"
+                                        },
+                                        "op": "Assign",
+                                        "second": {
+                                            "$ast": "ReferenceExpression",
+                                            "name": "name_"
+                                        }
+                                    }
+                                }]
+                            }
+                        }, {
+                            "$ast": "DestructorDeclaration",
+                            "attributes": [],
+                            "name": "",
+                            "statement": {
+                                "$ast": "BlockStatement",
+                                "endLabel": "",
+                                "statements": [{
+                                    "$ast": "ExpressionStatement",
+                                    "expression": {
+                                        "$ast": "BinaryExpression",
+                                        "first": {
+                                            "$ast": "ReferenceExpression",
+                                            "name": "s"
+                                        },
+                                        "op": "Assign",
+                                        "second": {
+                                            "$ast": "FormatExpression",
+                                            "expandedExpression": null,
+                                            "value": "$\"$(s)[$(name)]\""
+                                        }
+                                    }
+                                }, {
+                                    "$ast": "IfStatement",
+                                    "expression": {
+                                        "$ast": "TypeTestingExpression",
+                                        "expression": {
+                                            "$ast": "ReferenceExpression",
+                                            "name": "next"
+                                        },
+                                        "test": "IsNotNull",
+                                        "type": null
+                                    },
+                                    "falseBranch": null,
+                                    "name": "",
+                                    "trueBranch": {
+                                        "$ast": "BlockStatement",
+                                        "endLabel": "",
+                                        "statements": [{
+                                            "$ast": "DeleteStatement",
+                                            "expression": {
+                                                "$ast": "ReferenceExpression",
+                                                "name": "next"
+                                            }
+                                        }]
+                                    },
+                                    "type": null
+                                }]
+                            }
+                        }, {
+                            "$ast": "FunctionDeclaration",
+                            "attributes": [],
+                            "name": "SetNext",
+                            "anonymity": "Named",
+                            "arguments": [{
+                                "$ast": "FunctionArgument",
+                                "attributes": [],
+                                "name": "next_",
+                                "type": {
+                                    "$ast": "RawPointerType",
+                                    "element": {
+                                        "$ast": "ReferenceType",
+                                        "name": "IDtor"
+                                    }
+                                }
+                            }],
+                            "functionKind": "Override",
+                            "returnType": {
+                                "$ast": "PredefinedType",
+                                "name": "Void"
+                            },
+                            "statement": {
+                                "$ast": "BlockStatement",
+                                "endLabel": "",
+                                "statements": [{
+                                    "$ast": "ExpressionStatement",
+                                    "expression": {
+                                        "$ast": "BinaryExpression",
+                                        "first": {
+                                            "$ast": "ReferenceExpression",
+                                            "name": "next"
+                                        },
+                                        "op": "Assign",
+                                        "second": {
+                                            "$ast": "ReferenceExpression",
+                                            "name": "next_"
+                                        }
+                                    }
+                                }]
+                            }
+                        }],
+                        "type": {
+                            "$ast": "RawPointerType",
+                            "element": {
+                                "$ast": "ReferenceType",
+                                "name": "IDtor"
+                            }
+                        }
+                    },
+                    "type": null
+                }
+            }, {
+                "$ast": "ExpressionStatement",
+                "expression": {
+                    "$ast": "CallExpression",
+                    "arguments": [{
+                        "$ast": "StringExpression",
+                        "value": "\"y\""
+                    }],
+                    "function": {
+                        "$ast": "MemberExpression",
+                        "name": "SetName",
+                        "parent": {
+                            "$ast": "ReferenceExpression",
+                            "name": "y"
+                        }
+                    }
+                }
+            }, {
+                "$ast": "VariableStatement",
+                "variable": {
+                    "$ast": "VariableDeclaration",
+                    "attributes": [],
+                    "name": "z",
+                    "expression": {
+                        "$ast": "NewInterfaceExpression",
+                        "declarations": [{
+                            "$ast": "VariableDeclaration",
+                            "attributes": [],
+                            "name": "name",
+                            "expression": {
+                                "$ast": "StringExpression",
+                                "value": "\"\""
+                            },
+                            "type": null
+                        }, {
+                            "$ast": "VariableDeclaration",
+                            "attributes": [],
+                            "name": "next",
+                            "expression": {
+                                "$ast": "LiteralExpression",
+                                "value": "Null"
+                            },
+                            "type": {
+                                "$ast": "RawPointerType",
+                                "element": {
+                                    "$ast": "ReferenceType",
+                                    "name": "IDtor"
+                                }
+                            }
+                        }, {
+                            "$ast": "FunctionDeclaration",
+                            "attributes": [],
+                            "name": "SetName",
+                            "anonymity": "Named",
+                            "arguments": [{
+                                "$ast": "FunctionArgument",
+                                "attributes": [],
+                                "name": "name_",
+                                "type": {
+                                    "$ast": "PredefinedType",
+                                    "name": "String"
+                                }
+                            }],
+                            "functionKind": "Override",
+                            "returnType": {
+                                "$ast": "PredefinedType",
+                                "name": "Void"
+                            },
+                            "statement": {
+                                "$ast": "BlockStatement",
+                                "endLabel": "",
+                                "statements": [{
+                                    "$ast": "ExpressionStatement",
+                                    "expression": {
+                                        "$ast": "BinaryExpression",
+                                        "first": {
+                                            "$ast": "ReferenceExpression",
+                                            "name": "name"
+                                        },
+                                        "op": "Assign",
+                                        "second": {
+                                            "$ast": "ReferenceExpression",
+                                            "name": "name_"
+                                        }
+                                    }
+                                }]
+                            }
+                        }, {
+                            "$ast": "FunctionDeclaration",
+                            "attributes": [],
+                            "name": "SetNext",
+                            "anonymity": "Named",
+                            "arguments": [{
+                                "$ast": "FunctionArgument",
+                                "attributes": [],
+                                "name": "next_",
+                                "type": {
+                                    "$ast": "RawPointerType",
+                                    "element": {
+                                        "$ast": "ReferenceType",
+                                        "name": "IDtor"
+                                    }
+                                }
+                            }],
+                            "functionKind": "Override",
+                            "returnType": {
+                                "$ast": "PredefinedType",
+                                "name": "Void"
+                            },
+                            "statement": {
+                                "$ast": "BlockStatement",
+                                "endLabel": "",
+                                "statements": [{
+                                    "$ast": "ExpressionStatement",
+                                    "expression": {
+                                        "$ast": "BinaryExpression",
+                                        "first": {
+                                            "$ast": "ReferenceExpression",
+                                            "name": "next"
+                                        },
+                                        "op": "Assign",
+                                        "second": {
+                                            "$ast": "ReferenceExpression",
+                                            "name": "next_"
+                                        }
+                                    }
+                                }]
+                            }
+                        }, {
+                            "$ast": "DestructorDeclaration",
+                            "attributes": [],
+                            "name": "",
+                            "statement": {
+                                "$ast": "BlockStatement",
+                                "endLabel": "",
+                                "statements": [{
+                                    "$ast": "ExpressionStatement",
+                                    "expression": {
+                                        "$ast": "BinaryExpression",
+                                        "first": {
+                                            "$ast": "ReferenceExpression",
+                                            "name": "s"
+                                        },
+                                        "op": "Assign",
+                                        "second": {
+                                            "$ast": "FormatExpression",
+                                            "expandedExpression": null,
+                                            "value": "$\"$(s)[$(name)]\""
+                                        }
+                                    }
+                                }, {
+                                    "$ast": "IfStatement",
+                                    "expression": {
+                                        "$ast": "TypeTestingExpression",
+                                        "expression": {
+                                            "$ast": "ReferenceExpression",
+                                            "name": "next"
+                                        },
+                                        "test": "IsNotNull",
+                                        "type": null
+                                    },
+                                    "falseBranch": null,
+                                    "name": "",
+                                    "trueBranch": {
+                                        "$ast": "BlockStatement",
+                                        "endLabel": "",
+                                        "statements": [{
+                                            "$ast": "DeleteStatement",
+                                            "expression": {
+                                                "$ast": "ReferenceExpression",
+                                                "name": "next"
+                                            }
+                                        }]
+                                    },
+                                    "type": null
+                                }]
+                            }
+                        }],
+                        "type": {
+                            "$ast": "RawPointerType",
+                            "element": {
+                                "$ast": "ReferenceType",
+                                "name": "IDtor"
+                            }
+                        }
+                    },
+                    "type": null
+                }
+            }, {
+                "$ast": "ExpressionStatement",
+                "expression": {
+                    "$ast": "CallExpression",
+                    "arguments": [{
+                        "$ast": "StringExpression",
+                        "value": "\"z\""
+                    }],
+                    "function": {
+                        "$ast": "MemberExpression",
+                        "name": "SetName",
+                        "parent": {
+                            "$ast": "ReferenceExpression",
+                            "name": "z"
+                        }
+                    }
+                }
+            }, {
+                "$ast": "ExpressionStatement",
+                "expression": {
+                    "$ast": "CallExpression",
+                    "arguments": [{
+                        "$ast": "ReferenceExpression",
+                        "name": "y"
+                    }],
+                    "function": {
+                        "$ast": "MemberExpression",
+                        "name": "SetNext",
+                        "parent": {
+                            "$ast": "ReferenceExpression",
+                            "name": "x"
+                        }
+                    }
+                }
+            }, {
+                "$ast": "ExpressionStatement",
+                "expression": {
+                    "$ast": "CallExpression",
+                    "arguments": [{
+                        "$ast": "ReferenceExpression",
+                        "name": "z"
+                    }],
+                    "function": {
+                        "$ast": "MemberExpression",
+                        "name": "SetNext",
+                        "parent": {
+                            "$ast": "ReferenceExpression",
+                            "name": "y"
+                        }
+                    }
+                }
+            }, {
+                "$ast": "DeleteStatement",
+                "expression": {
+                    "$ast": "ReferenceExpression",
+                    "name": "x"
+                }
+            }, {
+                "$ast": "ReturnStatement",
+                "expression": {
+                    "$ast": "ReferenceExpression",
+                    "name": "s"
+                }
+            }]
+        }
+    }],
+    "moduleType": "Module",
+    "name": "test",
+    "paths": [{
+        "$ast": "ModuleUsingPath",
+        "items": [{
+            "$ast": "ModuleUsingItem",
+            "fragments": [{
+                "$ast": "ModuleUsingNameFragment",
+                "name": "test"
+            }]
+        }, {
+            "$ast": "ModuleUsingItem",
+            "fragments": [{
+                "$ast": "ModuleUsingWildCardFragment"
+            }]
+        }]
+    }, {
+        "$ast": "ModuleUsingPath",
+        "items": [{
+            "$ast": "ModuleUsingItem",
+            "fragments": [{
+                "$ast": "ModuleUsingNameFragment",
+                "name": "system"
+            }]
+        }, {
+            "$ast": "ModuleUsingItem",
+            "fragments": [{
+                "$ast": "ModuleUsingWildCardFragment"
+            }]
+        }]
+    }]
+}

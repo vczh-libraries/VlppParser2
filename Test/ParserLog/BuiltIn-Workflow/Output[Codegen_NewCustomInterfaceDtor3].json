@@ -1,0 +1,310 @@
+﻿{
+    "$ast": "Module",
+    "declarations": [{
+        "$ast": "VariableDeclaration",
+        "attributes": [],
+        "name": "s",
+        "expression": {
+            "$ast": "StringExpression",
+            "value": "\"\""
+        },
+        "type": null
+    }, {
+        "$ast": "ClassDeclaration",
+        "attributes": [],
+        "name": "IMyInterfaceDtor3",
+        "baseTypes": [],
+        "constructorType": "RawPtr",
+        "declarations": [{
+            "$ast": "FunctionDeclaration",
+            "attributes": [],
+            "name": "GetResult",
+            "anonymity": "Named",
+            "arguments": [],
+            "functionKind": "Normal",
+            "returnType": {
+                "$ast": "PredefinedType",
+                "name": "String"
+            },
+            "statement": null
+        }],
+        "kind": "Interface"
+    }, {
+        "$ast": "ClassDeclaration",
+        "attributes": [],
+        "name": "MyDtorClass",
+        "baseTypes": [],
+        "constructorType": "Undefined",
+        "declarations": [{
+            "$ast": "VariableDeclaration",
+            "attributes": [],
+            "name": "factor",
+            "expression": {
+                "$ast": "IntegerExpression",
+                "value": "0"
+            },
+            "type": {
+                "$ast": "PredefinedType",
+                "name": "Int"
+            }
+        }, {
+            "$ast": "ConstructorDeclaration",
+            "attributes": [],
+            "name": "",
+            "arguments": [{
+                "$ast": "FunctionArgument",
+                "attributes": [],
+                "name": "f",
+                "type": {
+                    "$ast": "PredefinedType",
+                    "name": "Int"
+                }
+            }],
+            "baseConstructorCalls": [],
+            "constructorType": "SharedPtr",
+            "statement": {
+                "$ast": "BlockStatement",
+                "endLabel": "",
+                "statements": [{
+                    "$ast": "ExpressionStatement",
+                    "expression": {
+                        "$ast": "BinaryExpression",
+                        "first": {
+                            "$ast": "ReferenceExpression",
+                            "name": "factor"
+                        },
+                        "op": "Assign",
+                        "second": {
+                            "$ast": "ReferenceExpression",
+                            "name": "f"
+                        }
+                    }
+                }]
+            }
+        }, {
+            "$ast": "FunctionDeclaration",
+            "attributes": [],
+            "name": "GetBase",
+            "anonymity": "Named",
+            "arguments": [],
+            "functionKind": "Static",
+            "returnType": {
+                "$ast": "PredefinedType",
+                "name": "Int"
+            },
+            "statement": {
+                "$ast": "BlockStatement",
+                "endLabel": "",
+                "statements": [{
+                    "$ast": "ReturnStatement",
+                    "expression": {
+                        "$ast": "IntegerExpression",
+                        "value": "10"
+                    }
+                }]
+            }
+        }, {
+            "$ast": "FunctionDeclaration",
+            "attributes": [],
+            "name": "CreateInterface",
+            "anonymity": "Named",
+            "arguments": [],
+            "functionKind": "Normal",
+            "returnType": {
+                "$ast": "RawPointerType",
+                "element": {
+                    "$ast": "ReferenceType",
+                    "name": "IMyInterfaceDtor3"
+                }
+            },
+            "statement": {
+                "$ast": "BlockStatement",
+                "endLabel": "",
+                "statements": [{
+                    "$ast": "ReturnStatement",
+                    "expression": {
+                        "$ast": "NewInterfaceExpression",
+                        "declarations": [{
+                            "$ast": "FunctionDeclaration",
+                            "attributes": [],
+                            "name": "GetResult",
+                            "anonymity": "Named",
+                            "arguments": [],
+                            "functionKind": "Override",
+                            "returnType": {
+                                "$ast": "PredefinedType",
+                                "name": "String"
+                            },
+                            "statement": {
+                                "$ast": "BlockStatement",
+                                "endLabel": "",
+                                "statements": [{
+                                    "$ast": "ReturnStatement",
+                                    "expression": {
+                                        "$ast": "FormatExpression",
+                                        "expandedExpression": null,
+                                        "value": "$\"[$(GetBase()):$(factor)]\""
+                                    }
+                                }]
+                            }
+                        }, {
+                            "$ast": "DestructorDeclaration",
+                            "attributes": [],
+                            "name": "",
+                            "statement": {
+                                "$ast": "BlockStatement",
+                                "endLabel": "",
+                                "statements": [{
+                                    "$ast": "ExpressionStatement",
+                                    "expression": {
+                                        "$ast": "BinaryExpression",
+                                        "first": {
+                                            "$ast": "ReferenceExpression",
+                                            "name": "s"
+                                        },
+                                        "op": "Assign",
+                                        "second": {
+                                            "$ast": "FormatExpression",
+                                            "expandedExpression": null,
+                                            "value": "$\"$(s)[$(GetBase()):$(factor)]\""
+                                        }
+                                    }
+                                }]
+                            }
+                        }],
+                        "type": {
+                            "$ast": "RawPointerType",
+                            "element": {
+                                "$ast": "ReferenceType",
+                                "name": "IMyInterfaceDtor3"
+                            }
+                        }
+                    }
+                }]
+            }
+        }],
+        "kind": "Class"
+    }, {
+        "$ast": "FunctionDeclaration",
+        "attributes": [],
+        "name": "main",
+        "anonymity": "Named",
+        "arguments": [],
+        "functionKind": "Normal",
+        "returnType": {
+            "$ast": "PredefinedType",
+            "name": "String"
+        },
+        "statement": {
+            "$ast": "BlockStatement",
+            "endLabel": "",
+            "statements": [{
+                "$ast": "VariableStatement",
+                "variable": {
+                    "$ast": "VariableDeclaration",
+                    "attributes": [],
+                    "name": "x",
+                    "expression": {
+                        "$ast": "NewClassExpression",
+                        "arguments": [{
+                            "$ast": "IntegerExpression",
+                            "value": "5"
+                        }],
+                        "type": {
+                            "$ast": "SharedPointerType",
+                            "element": {
+                                "$ast": "ReferenceType",
+                                "name": "MyDtorClass"
+                            }
+                        }
+                    },
+                    "type": null
+                }
+            }, {
+                "$ast": "VariableStatement",
+                "variable": {
+                    "$ast": "VariableDeclaration",
+                    "attributes": [],
+                    "name": "obj",
+                    "expression": {
+                        "$ast": "CallExpression",
+                        "arguments": [],
+                        "function": {
+                            "$ast": "MemberExpression",
+                            "name": "CreateInterface",
+                            "parent": {
+                                "$ast": "ReferenceExpression",
+                                "name": "x"
+                            }
+                        }
+                    },
+                    "type": null
+                }
+            }, {
+                "$ast": "VariableStatement",
+                "variable": {
+                    "$ast": "VariableDeclaration",
+                    "attributes": [],
+                    "name": "r",
+                    "expression": {
+                        "$ast": "CallExpression",
+                        "arguments": [],
+                        "function": {
+                            "$ast": "MemberExpression",
+                            "name": "GetResult",
+                            "parent": {
+                                "$ast": "ReferenceExpression",
+                                "name": "obj"
+                            }
+                        }
+                    },
+                    "type": null
+                }
+            }, {
+                "$ast": "DeleteStatement",
+                "expression": {
+                    "$ast": "ReferenceExpression",
+                    "name": "obj"
+                }
+            }, {
+                "$ast": "ReturnStatement",
+                "expression": {
+                    "$ast": "FormatExpression",
+                    "expandedExpression": null,
+                    "value": "$\"$(r)$(s)\""
+                }
+            }]
+        }
+    }],
+    "moduleType": "Module",
+    "name": "test",
+    "paths": [{
+        "$ast": "ModuleUsingPath",
+        "items": [{
+            "$ast": "ModuleUsingItem",
+            "fragments": [{
+                "$ast": "ModuleUsingNameFragment",
+                "name": "system"
+            }]
+        }, {
+            "$ast": "ModuleUsingItem",
+            "fragments": [{
+                "$ast": "ModuleUsingWildCardFragment"
+            }]
+        }]
+    }, {
+        "$ast": "ModuleUsingPath",
+        "items": [{
+            "$ast": "ModuleUsingItem",
+            "fragments": [{
+                "$ast": "ModuleUsingNameFragment",
+                "name": "test"
+            }]
+        }, {
+            "$ast": "ModuleUsingItem",
+            "fragments": [{
+                "$ast": "ModuleUsingWildCardFragment"
+            }]
+        }]
+    }]
+}

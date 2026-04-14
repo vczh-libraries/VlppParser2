@@ -1,0 +1,218 @@
+﻿{
+    "$ast": "Module",
+    "declarations": [{
+        "$ast": "VariableDeclaration",
+        "attributes": [],
+        "name": "s",
+        "expression": {
+            "$ast": "StringExpression",
+            "value": "\"\""
+        },
+        "type": null
+    }, {
+        "$ast": "ClassDeclaration",
+        "attributes": [],
+        "name": "IMyInterfaceDtor2",
+        "baseTypes": [],
+        "constructorType": "RawPtr",
+        "declarations": [{
+            "$ast": "FunctionDeclaration",
+            "attributes": [],
+            "name": "GetResult",
+            "anonymity": "Named",
+            "arguments": [],
+            "functionKind": "Normal",
+            "returnType": {
+                "$ast": "PredefinedType",
+                "name": "String"
+            },
+            "statement": null
+        }],
+        "kind": "Interface"
+    }, {
+        "$ast": "FunctionDeclaration",
+        "attributes": [],
+        "name": "main",
+        "anonymity": "Named",
+        "arguments": [],
+        "functionKind": "Normal",
+        "returnType": {
+            "$ast": "PredefinedType",
+            "name": "String"
+        },
+        "statement": {
+            "$ast": "BlockStatement",
+            "endLabel": "",
+            "statements": [{
+                "$ast": "VariableStatement",
+                "variable": {
+                    "$ast": "VariableDeclaration",
+                    "attributes": [],
+                    "name": "obj",
+                    "expression": {
+                        "$ast": "NewInterfaceExpression",
+                        "declarations": [{
+                            "$ast": "VariableDeclaration",
+                            "attributes": [],
+                            "name": "value",
+                            "expression": {
+                                "$ast": "IntegerExpression",
+                                "value": "42"
+                            },
+                            "type": null
+                        }, {
+                            "$ast": "FunctionDeclaration",
+                            "attributes": [],
+                            "name": "DoubleValue",
+                            "anonymity": "Named",
+                            "arguments": [],
+                            "functionKind": "Normal",
+                            "returnType": {
+                                "$ast": "PredefinedType",
+                                "name": "Int"
+                            },
+                            "statement": {
+                                "$ast": "BlockStatement",
+                                "endLabel": "",
+                                "statements": [{
+                                    "$ast": "ReturnStatement",
+                                    "expression": {
+                                        "$ast": "BinaryExpression",
+                                        "first": {
+                                            "$ast": "ReferenceExpression",
+                                            "name": "value"
+                                        },
+                                        "op": "Mul",
+                                        "second": {
+                                            "$ast": "IntegerExpression",
+                                            "value": "2"
+                                        }
+                                    }
+                                }]
+                            }
+                        }, {
+                            "$ast": "FunctionDeclaration",
+                            "attributes": [],
+                            "name": "GetResult",
+                            "anonymity": "Named",
+                            "arguments": [],
+                            "functionKind": "Override",
+                            "returnType": {
+                                "$ast": "PredefinedType",
+                                "name": "String"
+                            },
+                            "statement": {
+                                "$ast": "BlockStatement",
+                                "endLabel": "",
+                                "statements": [{
+                                    "$ast": "ReturnStatement",
+                                    "expression": {
+                                        "$ast": "FormatExpression",
+                                        "expandedExpression": null,
+                                        "value": "$\"[$(DoubleValue())]\""
+                                    }
+                                }]
+                            }
+                        }, {
+                            "$ast": "DestructorDeclaration",
+                            "attributes": [],
+                            "name": "",
+                            "statement": {
+                                "$ast": "BlockStatement",
+                                "endLabel": "",
+                                "statements": [{
+                                    "$ast": "ExpressionStatement",
+                                    "expression": {
+                                        "$ast": "BinaryExpression",
+                                        "first": {
+                                            "$ast": "ReferenceExpression",
+                                            "name": "s"
+                                        },
+                                        "op": "Assign",
+                                        "second": {
+                                            "$ast": "FormatExpression",
+                                            "expandedExpression": null,
+                                            "value": "$\"$(s)[$(DoubleValue())]\""
+                                        }
+                                    }
+                                }]
+                            }
+                        }],
+                        "type": {
+                            "$ast": "RawPointerType",
+                            "element": {
+                                "$ast": "ReferenceType",
+                                "name": "IMyInterfaceDtor2"
+                            }
+                        }
+                    },
+                    "type": null
+                }
+            }, {
+                "$ast": "VariableStatement",
+                "variable": {
+                    "$ast": "VariableDeclaration",
+                    "attributes": [],
+                    "name": "r",
+                    "expression": {
+                        "$ast": "CallExpression",
+                        "arguments": [],
+                        "function": {
+                            "$ast": "MemberExpression",
+                            "name": "GetResult",
+                            "parent": {
+                                "$ast": "ReferenceExpression",
+                                "name": "obj"
+                            }
+                        }
+                    },
+                    "type": null
+                }
+            }, {
+                "$ast": "DeleteStatement",
+                "expression": {
+                    "$ast": "ReferenceExpression",
+                    "name": "obj"
+                }
+            }, {
+                "$ast": "ReturnStatement",
+                "expression": {
+                    "$ast": "FormatExpression",
+                    "expandedExpression": null,
+                    "value": "$\"$(r)$(s)\""
+                }
+            }]
+        }
+    }],
+    "moduleType": "Module",
+    "name": "test",
+    "paths": [{
+        "$ast": "ModuleUsingPath",
+        "items": [{
+            "$ast": "ModuleUsingItem",
+            "fragments": [{
+                "$ast": "ModuleUsingNameFragment",
+                "name": "system"
+            }]
+        }, {
+            "$ast": "ModuleUsingItem",
+            "fragments": [{
+                "$ast": "ModuleUsingWildCardFragment"
+            }]
+        }]
+    }, {
+        "$ast": "ModuleUsingPath",
+        "items": [{
+            "$ast": "ModuleUsingItem",
+            "fragments": [{
+                "$ast": "ModuleUsingNameFragment",
+                "name": "test"
+            }]
+        }, {
+            "$ast": "ModuleUsingItem",
+            "fragments": [{
+                "$ast": "ModuleUsingWildCardFragment"
+            }]
+        }]
+    }]
+}

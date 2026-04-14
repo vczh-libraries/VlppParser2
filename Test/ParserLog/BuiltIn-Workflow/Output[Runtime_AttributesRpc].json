@@ -1,0 +1,985 @@
+﻿{
+    "$ast": "Module",
+    "declarations": [{
+        "$ast": "EnumDeclaration",
+        "attributes": [],
+        "name": "Season",
+        "items": [{
+            "$ast": "EnumItem",
+            "attributes": [],
+            "intersections": [],
+            "kind": "Constant",
+            "name": "Spring",
+            "number": "0"
+        }, {
+            "$ast": "EnumItem",
+            "attributes": [],
+            "intersections": [],
+            "kind": "Constant",
+            "name": "Summer",
+            "number": "1"
+        }, {
+            "$ast": "EnumItem",
+            "attributes": [],
+            "intersections": [],
+            "kind": "Constant",
+            "name": "Autumn",
+            "number": "2"
+        }, {
+            "$ast": "EnumItem",
+            "attributes": [],
+            "intersections": [],
+            "kind": "Constant",
+            "name": "Winter",
+            "number": "3"
+        }],
+        "kind": "Normal"
+    }, {
+        "$ast": "EnumDeclaration",
+        "attributes": [],
+        "name": "Permission",
+        "items": [{
+            "$ast": "EnumItem",
+            "attributes": [],
+            "intersections": [],
+            "kind": "Constant",
+            "name": "None",
+            "number": "0"
+        }, {
+            "$ast": "EnumItem",
+            "attributes": [],
+            "intersections": [],
+            "kind": "Constant",
+            "name": "Read",
+            "number": "1"
+        }, {
+            "$ast": "EnumItem",
+            "attributes": [],
+            "intersections": [],
+            "kind": "Constant",
+            "name": "Write",
+            "number": "2"
+        }, {
+            "$ast": "EnumItem",
+            "attributes": [],
+            "intersections": [],
+            "kind": "Constant",
+            "name": "Execute",
+            "number": "4"
+        }, {
+            "$ast": "EnumItem",
+            "attributes": [],
+            "intersections": [{
+                "$ast": "EnumItemIntersection",
+                "name": "Read"
+            }, {
+                "$ast": "EnumItemIntersection",
+                "name": "Write"
+            }, {
+                "$ast": "EnumItemIntersection",
+                "name": "Execute"
+            }],
+            "kind": "Intersection",
+            "name": "All",
+            "number": ""
+        }],
+        "kind": "Flag"
+    }, {
+        "$ast": "StructDeclaration",
+        "attributes": [],
+        "name": "Point",
+        "members": [{
+            "$ast": "StructMember",
+            "attributes": [],
+            "name": "x",
+            "type": {
+                "$ast": "PredefinedType",
+                "name": "Int"
+            }
+        }, {
+            "$ast": "StructMember",
+            "attributes": [],
+            "name": "y",
+            "type": {
+                "$ast": "PredefinedType",
+                "name": "Int"
+            }
+        }]
+    }, {
+        "$ast": "StructDeclaration",
+        "attributes": [],
+        "name": "Line",
+        "members": [{
+            "$ast": "StructMember",
+            "attributes": [],
+            "name": "start",
+            "type": {
+                "$ast": "ReferenceType",
+                "name": "Point"
+            }
+        }, {
+            "$ast": "StructMember",
+            "attributes": [],
+            "name": "end",
+            "type": {
+                "$ast": "ReferenceType",
+                "name": "Point"
+            }
+        }]
+    }, {
+        "$ast": "ClassDeclaration",
+        "attributes": [{
+            "$ast": "Attribute",
+            "category": "rpc",
+            "name": "Interface",
+            "value": null
+        }],
+        "name": "ISimple",
+        "baseTypes": [],
+        "constructorType": "SharedPtr",
+        "declarations": [{
+            "$ast": "FunctionDeclaration",
+            "attributes": [],
+            "name": "Hello",
+            "anonymity": "Named",
+            "arguments": [],
+            "functionKind": "Normal",
+            "returnType": {
+                "$ast": "PredefinedType",
+                "name": "String"
+            },
+            "statement": null
+        }, {
+            "$ast": "FunctionDeclaration",
+            "attributes": [],
+            "name": "Add",
+            "anonymity": "Named",
+            "arguments": [{
+                "$ast": "FunctionArgument",
+                "attributes": [],
+                "name": "a",
+                "type": {
+                    "$ast": "PredefinedType",
+                    "name": "Int"
+                }
+            }, {
+                "$ast": "FunctionArgument",
+                "attributes": [],
+                "name": "b",
+                "type": {
+                    "$ast": "PredefinedType",
+                    "name": "Int"
+                }
+            }],
+            "functionKind": "Normal",
+            "returnType": {
+                "$ast": "PredefinedType",
+                "name": "Int"
+            },
+            "statement": null
+        }, {
+            "$ast": "PropertyDeclaration",
+            "attributes": [],
+            "name": "Name",
+            "getter": "GetName",
+            "setter": "SetName",
+            "type": {
+                "$ast": "PredefinedType",
+                "name": "String"
+            },
+            "valueChangedEvent": "NameChanged"
+        }, {
+            "$ast": "FunctionDeclaration",
+            "attributes": [],
+            "name": "GetName",
+            "anonymity": "Named",
+            "arguments": [],
+            "functionKind": "Normal",
+            "returnType": {
+                "$ast": "PredefinedType",
+                "name": "String"
+            },
+            "statement": null
+        }, {
+            "$ast": "FunctionDeclaration",
+            "attributes": [],
+            "name": "SetName",
+            "anonymity": "Named",
+            "arguments": [{
+                "$ast": "FunctionArgument",
+                "attributes": [],
+                "name": "value",
+                "type": {
+                    "$ast": "PredefinedType",
+                    "name": "String"
+                }
+            }],
+            "functionKind": "Normal",
+            "returnType": {
+                "$ast": "PredefinedType",
+                "name": "Void"
+            },
+            "statement": null
+        }, {
+            "$ast": "EventDeclaration",
+            "attributes": [],
+            "name": "NameChanged",
+            "arguments": []
+        }],
+        "kind": "Interface"
+    }, {
+        "$ast": "ClassDeclaration",
+        "attributes": [{
+            "$ast": "Attribute",
+            "category": "rpc",
+            "name": "Interface",
+            "value": null
+        }, {
+            "$ast": "Attribute",
+            "category": "rpc",
+            "name": "Ctor",
+            "value": null
+        }],
+        "name": "IWithCtor",
+        "baseTypes": [],
+        "constructorType": "SharedPtr",
+        "declarations": [{
+            "$ast": "FunctionDeclaration",
+            "attributes": [],
+            "name": "GetValue",
+            "anonymity": "Named",
+            "arguments": [],
+            "functionKind": "Normal",
+            "returnType": {
+                "$ast": "PredefinedType",
+                "name": "Int"
+            },
+            "statement": null
+        }],
+        "kind": "Interface"
+    }, {
+        "$ast": "ClassDeclaration",
+        "attributes": [{
+            "$ast": "Attribute",
+            "category": "rpc",
+            "name": "Interface",
+            "value": null
+        }],
+        "name": "IBase",
+        "baseTypes": [],
+        "constructorType": "SharedPtr",
+        "declarations": [{
+            "$ast": "FunctionDeclaration",
+            "attributes": [],
+            "name": "GetId",
+            "anonymity": "Named",
+            "arguments": [],
+            "functionKind": "Normal",
+            "returnType": {
+                "$ast": "PredefinedType",
+                "name": "Int"
+            },
+            "statement": null
+        }],
+        "kind": "Interface"
+    }, {
+        "$ast": "ClassDeclaration",
+        "attributes": [{
+            "$ast": "Attribute",
+            "category": "rpc",
+            "name": "Interface",
+            "value": null
+        }],
+        "name": "IDerived",
+        "baseTypes": [{
+            "$ast": "ReferenceType",
+            "name": "IBase"
+        }],
+        "constructorType": "SharedPtr",
+        "declarations": [{
+            "$ast": "FunctionDeclaration",
+            "attributes": [],
+            "name": "GetLabel",
+            "anonymity": "Named",
+            "arguments": [],
+            "functionKind": "Normal",
+            "returnType": {
+                "$ast": "PredefinedType",
+                "name": "String"
+            },
+            "statement": null
+        }],
+        "kind": "Interface"
+    }, {
+        "$ast": "ClassDeclaration",
+        "attributes": [{
+            "$ast": "Attribute",
+            "category": "rpc",
+            "name": "Interface",
+            "value": null
+        }],
+        "name": "IUsingEnum",
+        "baseTypes": [],
+        "constructorType": "SharedPtr",
+        "declarations": [{
+            "$ast": "FunctionDeclaration",
+            "attributes": [],
+            "name": "GetSeason",
+            "anonymity": "Named",
+            "arguments": [],
+            "functionKind": "Normal",
+            "returnType": {
+                "$ast": "ReferenceType",
+                "name": "Season"
+            },
+            "statement": null
+        }, {
+            "$ast": "FunctionDeclaration",
+            "attributes": [],
+            "name": "SetSeason",
+            "anonymity": "Named",
+            "arguments": [{
+                "$ast": "FunctionArgument",
+                "attributes": [],
+                "name": "value",
+                "type": {
+                    "$ast": "ReferenceType",
+                    "name": "Season"
+                }
+            }],
+            "functionKind": "Normal",
+            "returnType": {
+                "$ast": "PredefinedType",
+                "name": "Void"
+            },
+            "statement": null
+        }, {
+            "$ast": "FunctionDeclaration",
+            "attributes": [],
+            "name": "GetPermission",
+            "anonymity": "Named",
+            "arguments": [],
+            "functionKind": "Normal",
+            "returnType": {
+                "$ast": "ReferenceType",
+                "name": "Permission"
+            },
+            "statement": null
+        }],
+        "kind": "Interface"
+    }, {
+        "$ast": "ClassDeclaration",
+        "attributes": [{
+            "$ast": "Attribute",
+            "category": "rpc",
+            "name": "Interface",
+            "value": null
+        }],
+        "name": "IUsingStruct",
+        "baseTypes": [],
+        "constructorType": "SharedPtr",
+        "declarations": [{
+            "$ast": "FunctionDeclaration",
+            "attributes": [],
+            "name": "GetPoint",
+            "anonymity": "Named",
+            "arguments": [],
+            "functionKind": "Normal",
+            "returnType": {
+                "$ast": "ReferenceType",
+                "name": "Point"
+            },
+            "statement": null
+        }, {
+            "$ast": "FunctionDeclaration",
+            "attributes": [],
+            "name": "SetLine",
+            "anonymity": "Named",
+            "arguments": [{
+                "$ast": "FunctionArgument",
+                "attributes": [],
+                "name": "value",
+                "type": {
+                    "$ast": "ReferenceType",
+                    "name": "Line"
+                }
+            }],
+            "functionKind": "Normal",
+            "returnType": {
+                "$ast": "PredefinedType",
+                "name": "Void"
+            },
+            "statement": null
+        }, {
+            "$ast": "FunctionDeclaration",
+            "attributes": [],
+            "name": "Transform",
+            "anonymity": "Named",
+            "arguments": [{
+                "$ast": "FunctionArgument",
+                "attributes": [],
+                "name": "p",
+                "type": {
+                    "$ast": "ReferenceType",
+                    "name": "Point"
+                }
+            }],
+            "functionKind": "Normal",
+            "returnType": {
+                "$ast": "ReferenceType",
+                "name": "Point"
+            },
+            "statement": null
+        }],
+        "kind": "Interface"
+    }, {
+        "$ast": "ClassDeclaration",
+        "attributes": [{
+            "$ast": "Attribute",
+            "category": "rpc",
+            "name": "Interface",
+            "value": null
+        }],
+        "name": "ICollections",
+        "baseTypes": [],
+        "constructorType": "SharedPtr",
+        "declarations": [{
+            "$ast": "FunctionDeclaration",
+            "attributes": [],
+            "name": "GetItems",
+            "anonymity": "Named",
+            "arguments": [],
+            "functionKind": "Normal",
+            "returnType": {
+                "$ast": "MapType",
+                "key": null,
+                "value": {
+                    "$ast": "PredefinedType",
+                    "name": "Int"
+                },
+                "writability": "Writable"
+            },
+            "statement": null
+        }, {
+            "$ast": "FunctionDeclaration",
+            "attributes": [{
+                "$ast": "Attribute",
+                "category": "rpc",
+                "name": "Byval",
+                "value": null
+            }],
+            "name": "GetNames",
+            "anonymity": "Named",
+            "arguments": [],
+            "functionKind": "Normal",
+            "returnType": {
+                "$ast": "MapType",
+                "key": null,
+                "value": {
+                    "$ast": "PredefinedType",
+                    "name": "String"
+                },
+                "writability": "Writable"
+            },
+            "statement": null
+        }, {
+            "$ast": "FunctionDeclaration",
+            "attributes": [{
+                "$ast": "Attribute",
+                "category": "rpc",
+                "name": "Byref",
+                "value": null
+            }],
+            "name": "GetScores",
+            "anonymity": "Named",
+            "arguments": [],
+            "functionKind": "Normal",
+            "returnType": {
+                "$ast": "MapType",
+                "key": null,
+                "value": {
+                    "$ast": "PredefinedType",
+                    "name": "Int"
+                },
+                "writability": "Writable"
+            },
+            "statement": null
+        }, {
+            "$ast": "FunctionDeclaration",
+            "attributes": [],
+            "name": "SetMapping",
+            "anonymity": "Named",
+            "arguments": [{
+                "$ast": "FunctionArgument",
+                "attributes": [],
+                "name": "m",
+                "type": {
+                    "$ast": "MapType",
+                    "key": {
+                        "$ast": "PredefinedType",
+                        "name": "Int"
+                    },
+                    "value": {
+                        "$ast": "PredefinedType",
+                        "name": "String"
+                    },
+                    "writability": "Writable"
+                }
+            }],
+            "functionKind": "Normal",
+            "returnType": {
+                "$ast": "PredefinedType",
+                "name": "Void"
+            },
+            "statement": null
+        }, {
+            "$ast": "PropertyDeclaration",
+            "attributes": [],
+            "name": "Items",
+            "getter": "GetItems",
+            "setter": "",
+            "type": {
+                "$ast": "MapType",
+                "key": null,
+                "value": {
+                    "$ast": "PredefinedType",
+                    "name": "Int"
+                },
+                "writability": "Writable"
+            },
+            "valueChangedEvent": ""
+        }, {
+            "$ast": "PropertyDeclaration",
+            "attributes": [{
+                "$ast": "Attribute",
+                "category": "rpc",
+                "name": "Byval",
+                "value": null
+            }],
+            "name": "ByvalProp",
+            "getter": "GetNames",
+            "setter": "",
+            "type": {
+                "$ast": "MapType",
+                "key": null,
+                "value": {
+                    "$ast": "PredefinedType",
+                    "name": "String"
+                },
+                "writability": "Writable"
+            },
+            "valueChangedEvent": ""
+        }, {
+            "$ast": "PropertyDeclaration",
+            "attributes": [{
+                "$ast": "Attribute",
+                "category": "rpc",
+                "name": "Byref",
+                "value": null
+            }],
+            "name": "ByrefProp",
+            "getter": "GetScores",
+            "setter": "",
+            "type": {
+                "$ast": "MapType",
+                "key": null,
+                "value": {
+                    "$ast": "PredefinedType",
+                    "name": "Int"
+                },
+                "writability": "Writable"
+            },
+            "valueChangedEvent": ""
+        }, {
+            "$ast": "EventDeclaration",
+            "attributes": [],
+            "name": "ItemsChanged",
+            "arguments": [{
+                "$ast": "MapType",
+                "key": null,
+                "value": {
+                    "$ast": "PredefinedType",
+                    "name": "Int"
+                },
+                "writability": "Writable"
+            }]
+        }],
+        "kind": "Interface"
+    }, {
+        "$ast": "ClassDeclaration",
+        "attributes": [{
+            "$ast": "Attribute",
+            "category": "rpc",
+            "name": "Interface",
+            "value": null
+        }],
+        "name": "IMethodParams",
+        "baseTypes": [],
+        "constructorType": "SharedPtr",
+        "declarations": [{
+            "$ast": "FunctionDeclaration",
+            "attributes": [],
+            "name": "Process",
+            "anonymity": "Named",
+            "arguments": [{
+                "$ast": "FunctionArgument",
+                "attributes": [{
+                    "$ast": "Attribute",
+                    "category": "rpc",
+                    "name": "Byval",
+                    "value": null
+                }],
+                "name": "items",
+                "type": {
+                    "$ast": "MapType",
+                    "key": null,
+                    "value": {
+                        "$ast": "PredefinedType",
+                        "name": "Int"
+                    },
+                    "writability": "Writable"
+                }
+            }, {
+                "$ast": "FunctionArgument",
+                "attributes": [{
+                    "$ast": "Attribute",
+                    "category": "rpc",
+                    "name": "Byref",
+                    "value": null
+                }],
+                "name": "refs",
+                "type": {
+                    "$ast": "MapType",
+                    "key": null,
+                    "value": {
+                        "$ast": "PredefinedType",
+                        "name": "String"
+                    },
+                    "writability": "Writable"
+                }
+            }],
+            "functionKind": "Normal",
+            "returnType": {
+                "$ast": "PredefinedType",
+                "name": "Void"
+            },
+            "statement": null
+        }],
+        "kind": "Interface"
+    }, {
+        "$ast": "ClassDeclaration",
+        "attributes": [{
+            "$ast": "Attribute",
+            "category": "rpc",
+            "name": "Interface",
+            "value": null
+        }],
+        "name": "ICaching",
+        "baseTypes": [],
+        "constructorType": "SharedPtr",
+        "declarations": [{
+            "$ast": "PropertyDeclaration",
+            "attributes": [],
+            "name": "Value",
+            "getter": "GetValue",
+            "setter": "",
+            "type": {
+                "$ast": "PredefinedType",
+                "name": "Int"
+            },
+            "valueChangedEvent": "ValueChanged"
+        }, {
+            "$ast": "PropertyDeclaration",
+            "attributes": [{
+                "$ast": "Attribute",
+                "category": "rpc",
+                "name": "Cached",
+                "value": null
+            }],
+            "name": "CachedProp",
+            "getter": "GetCachedProp",
+            "setter": "",
+            "type": {
+                "$ast": "PredefinedType",
+                "name": "String"
+            },
+            "valueChangedEvent": ""
+        }, {
+            "$ast": "PropertyDeclaration",
+            "attributes": [{
+                "$ast": "Attribute",
+                "category": "rpc",
+                "name": "Dynamic",
+                "value": null
+            }],
+            "name": "DynamicProp",
+            "getter": "GetDynamicProp",
+            "setter": "",
+            "type": {
+                "$ast": "PredefinedType",
+                "name": "String"
+            },
+            "valueChangedEvent": ""
+        }, {
+            "$ast": "FunctionDeclaration",
+            "attributes": [],
+            "name": "GetValue",
+            "anonymity": "Named",
+            "arguments": [],
+            "functionKind": "Normal",
+            "returnType": {
+                "$ast": "PredefinedType",
+                "name": "Int"
+            },
+            "statement": null
+        }, {
+            "$ast": "FunctionDeclaration",
+            "attributes": [],
+            "name": "GetCachedProp",
+            "anonymity": "Named",
+            "arguments": [],
+            "functionKind": "Normal",
+            "returnType": {
+                "$ast": "PredefinedType",
+                "name": "String"
+            },
+            "statement": null
+        }, {
+            "$ast": "FunctionDeclaration",
+            "attributes": [],
+            "name": "GetDynamicProp",
+            "anonymity": "Named",
+            "arguments": [],
+            "functionKind": "Normal",
+            "returnType": {
+                "$ast": "PredefinedType",
+                "name": "String"
+            },
+            "statement": null
+        }, {
+            "$ast": "EventDeclaration",
+            "attributes": [],
+            "name": "ValueChanged",
+            "arguments": []
+        }],
+        "kind": "Interface"
+    }, {
+        "$ast": "ClassDeclaration",
+        "attributes": [{
+            "$ast": "Attribute",
+            "category": "rpc",
+            "name": "Interface",
+            "value": null
+        }],
+        "name": "IVoidReturn",
+        "baseTypes": [],
+        "constructorType": "SharedPtr",
+        "declarations": [{
+            "$ast": "FunctionDeclaration",
+            "attributes": [],
+            "name": "DoWork",
+            "anonymity": "Named",
+            "arguments": [],
+            "functionKind": "Normal",
+            "returnType": {
+                "$ast": "PredefinedType",
+                "name": "Void"
+            },
+            "statement": null
+        }, {
+            "$ast": "FunctionDeclaration",
+            "attributes": [],
+            "name": "DoWorkWithArgs",
+            "anonymity": "Named",
+            "arguments": [{
+                "$ast": "FunctionArgument",
+                "attributes": [],
+                "name": "x",
+                "type": {
+                    "$ast": "PredefinedType",
+                    "name": "Int"
+                }
+            }, {
+                "$ast": "FunctionArgument",
+                "attributes": [],
+                "name": "y",
+                "type": {
+                    "$ast": "PredefinedType",
+                    "name": "String"
+                }
+            }],
+            "functionKind": "Normal",
+            "returnType": {
+                "$ast": "PredefinedType",
+                "name": "Void"
+            },
+            "statement": null
+        }],
+        "kind": "Interface"
+    }, {
+        "$ast": "ClassDeclaration",
+        "attributes": [{
+            "$ast": "Attribute",
+            "category": "rpc",
+            "name": "Interface",
+            "value": null
+        }],
+        "name": "INested",
+        "baseTypes": [],
+        "constructorType": "SharedPtr",
+        "declarations": [{
+            "$ast": "FunctionDeclaration",
+            "attributes": [],
+            "name": "GetSimple",
+            "anonymity": "Named",
+            "arguments": [],
+            "functionKind": "Normal",
+            "returnType": {
+                "$ast": "SharedPointerType",
+                "element": {
+                    "$ast": "ReferenceType",
+                    "name": "ISimple"
+                }
+            },
+            "statement": null
+        }, {
+            "$ast": "FunctionDeclaration",
+            "attributes": [],
+            "name": "SetSimple",
+            "anonymity": "Named",
+            "arguments": [{
+                "$ast": "FunctionArgument",
+                "attributes": [],
+                "name": "value",
+                "type": {
+                    "$ast": "SharedPointerType",
+                    "element": {
+                        "$ast": "ReferenceType",
+                        "name": "ISimple"
+                    }
+                }
+            }],
+            "functionKind": "Normal",
+            "returnType": {
+                "$ast": "PredefinedType",
+                "name": "Void"
+            },
+            "statement": null
+        }, {
+            "$ast": "PropertyDeclaration",
+            "attributes": [],
+            "name": "Ref",
+            "getter": "GetSimple",
+            "setter": "SetSimple",
+            "type": {
+                "$ast": "SharedPointerType",
+                "element": {
+                    "$ast": "ReferenceType",
+                    "name": "ISimple"
+                }
+            },
+            "valueChangedEvent": ""
+        }],
+        "kind": "Interface"
+    }, {
+        "$ast": "ClassDeclaration",
+        "attributes": [{
+            "$ast": "Attribute",
+            "category": "rpc",
+            "name": "Interface",
+            "value": null
+        }],
+        "name": "IEventArgs",
+        "baseTypes": [],
+        "constructorType": "SharedPtr",
+        "declarations": [{
+            "$ast": "EventDeclaration",
+            "attributes": [],
+            "name": "DataChanged",
+            "arguments": [{
+                "$ast": "PredefinedType",
+                "name": "Int"
+            }, {
+                "$ast": "PredefinedType",
+                "name": "String"
+            }]
+        }, {
+            "$ast": "EventDeclaration",
+            "attributes": [],
+            "name": "PointMoved",
+            "arguments": [{
+                "$ast": "ReferenceType",
+                "name": "Point"
+            }]
+        }],
+        "kind": "Interface"
+    }, {
+        "$ast": "ClassDeclaration",
+        "attributes": [{
+            "$ast": "Attribute",
+            "category": "rpc",
+            "name": "Interface",
+            "value": null
+        }],
+        "name": "IAutoProps",
+        "baseTypes": [],
+        "constructorType": "SharedPtr",
+        "declarations": [{
+            "$ast": "AutoPropertyDeclaration",
+            "attributes": [],
+            "name": "ReadWrite",
+            "expandedDeclarations": [],
+            "configConst": "Writable",
+            "configObserve": "Observable",
+            "expression": null,
+            "functionKind": "Normal",
+            "type": {
+                "$ast": "PredefinedType",
+                "name": "String"
+            }
+        }, {
+            "$ast": "AutoPropertyDeclaration",
+            "attributes": [],
+            "name": "ReadOnly",
+            "expandedDeclarations": [],
+            "configConst": "Readonly",
+            "configObserve": "Observable",
+            "expression": null,
+            "functionKind": "Normal",
+            "type": {
+                "$ast": "PredefinedType",
+                "name": "Int"
+            }
+        }, {
+            "$ast": "AutoPropertyDeclaration",
+            "attributes": [],
+            "name": "NoObserve",
+            "expandedDeclarations": [],
+            "configConst": "Writable",
+            "configObserve": "NotObservable",
+            "expression": null,
+            "functionKind": "Normal",
+            "type": {
+                "$ast": "PredefinedType",
+                "name": "String"
+            }
+        }, {
+            "$ast": "AutoPropertyDeclaration",
+            "attributes": [],
+            "name": "ConstNoObserve",
+            "expandedDeclarations": [],
+            "configConst": "Readonly",
+            "configObserve": "NotObservable",
+            "expression": null,
+            "functionKind": "Normal",
+            "type": {
+                "$ast": "PredefinedType",
+                "name": "Int"
+            }
+        }],
+        "kind": "Interface"
+    }],
+    "moduleType": "Module",
+    "name": "test",
+    "paths": []
+}
