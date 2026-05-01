@@ -42,3 +42,19 @@ Each project must be executed in the correct order because most of them generate
 When any *.h or *.cpp file is changed, unit test is required to run.
 
 When any test case fails, you must fix the issue immediately, even those errors are unrelated to the issue you are working on.
+
+## Linux Specific
+
+`REPO-ROOT/Test/Linux` stores linux configurations for:
+- `BuiltInTest_Json`: `BuiltInTest_Json.vcxproj`.
+- `BuiltInTest_Xml`: `BuiltInTest_Xml.vcxproj`.
+- `ParserTest_ParserGen_Generated`: `ParserTest_ParserGen_Generated.vcxproj`.
+- `ParserTest_ParserGen_Compiler`: `ParserTest_ParserGen_Compiler.vcxproj`, `ParserTest_ParserGen.vcxproj`.
+
+There are a lot of MSBuild test projects that are not included in this folder.
+They serve the purpose of generating the parser compiler itself.
+Unfortunately under Linux only parser running are tested, unless more projects are added.
+
+You need to build, test and debug in that specific folder, otherwise the unit test will not function properly.
+On Linux, only configuration "debug x64" is available, no need to build or run projects with other configurations.
+Unlike Windows, building have to be done in each folder separately.
