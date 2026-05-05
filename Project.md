@@ -43,6 +43,14 @@ When any *.h or *.cpp file is changed, unit test is required to run.
 
 When any test case fails, you must fix the issue immediately, even those errors are unrelated to the issue you are working on.
 
+## Verifying Generated .d.ts Files
+
+All C++ unit test projects have to be successfully completed first.
+Run `REPO-ROOT/Test/TypeScript/prepare.ps1`, and it copies all generated .d.ts files to this folder.
+Generated .d.ts files are JSON representation of AST, creating from the parser with inputs.
+All inputs will also be copied here, becoming .ts files matching ASTs with AST type definitions.
+Build `REPO-ROOT/Test/TypeScript/package/json` to make sure all generated .d.ts files are valid.
+
 ## Linux Specific
 
 `REPO-ROOT/Test/Linux` stores linux configurations for:
