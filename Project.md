@@ -39,8 +39,10 @@ Each project must be executed in the correct order because most of them generate
 - `BuiltInTest_Xml`: Run generated XML parser against real world examples.
 - `BuiltInTest_Workflow`: Run generated Workflow parser against real world examples.
 - `BuiltInTest_Cpp`: Run generated C++ parser against real world examples.
-When any *.h or *.cpp file is changed, unit test is required to run.
 
+In `REPO-ROOT/Test/TypeScript` there is a TypeScript package, it will becomes available after running `BuiltInTest_(Compiler|Json|Xml|Workflow)`. You need to run `prepare.ps1` followed by `npm run build` and ensure you don't see any error. This project verifies if JSON schema of ASTs is properly generated.
+
+When any *.h or *.cpp file is changed, unit test is required to run.
 When any test case fails, you must fix the issue immediately, even those errors are unrelated to the issue you are working on.
 
 ## Verifying Generated .d.ts Files
