@@ -37,7 +37,7 @@ Each project must be executed in the correct order because most of them generate
   - **Rebuild the solution after execution**.
 - `BuiltInTest_Json`: Run generated JSON parser against real world examples.
 - `BuiltInTest_Xml`: Run generated XML parser against real world examples.
-- `BuiltInTest_Workflow`: Run generated Workflow parser against real world examples.
+- `BuiltInTest_Workflow`: Run generated Workflow parser against real world examples from `Workflow` repo directly. It assumes `Workflow` repo is cloned as a sibiling folder.
 - `BuiltInTest_Cpp`: Run generated C++ parser against real world examples.
 
 In `REPO-ROOT/Test/TypeScript` there is a TypeScript package, it will becomes available after running `BuiltInTest_(Compiler|Json|Xml|Workflow)`. You need to run `prepare.ps1` followed by `npm run build` and ensure you don't see any error. This project verifies if JSON schema of ASTs is properly generated.
