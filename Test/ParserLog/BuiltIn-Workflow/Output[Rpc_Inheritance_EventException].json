@@ -1,0 +1,145 @@
+﻿{
+    "$ast": "Module",
+    "declarations": [{
+        "$ast": "NamespaceDeclaration",
+        "attributes": [],
+        "name": "RpcInheritanceEventException",
+        "declarations": [{
+            "$ast": "ClassDeclaration",
+            "attributes": [{
+                "$ast": "Attribute",
+                "category": "rpc",
+                "name": "Interface",
+                "value": null
+            }],
+            "name": "IValue",
+            "baseTypes": [],
+            "constructorType": "SharedPtr",
+            "declarations": [],
+            "kind": "Interface"
+        }, {
+            "$ast": "ClassDeclaration",
+            "attributes": [{
+                "$ast": "Attribute",
+                "category": "rpc",
+                "name": "Interface",
+                "value": null
+            }],
+            "name": "IOne",
+            "baseTypes": [{
+                "$ast": "ReferenceType",
+                "name": "IValue"
+            }],
+            "constructorType": "SharedPtr",
+            "declarations": [{
+                "$ast": "EventDeclaration",
+                "attributes": [],
+                "name": "CrashAtServer",
+                "arguments": []
+            }],
+            "kind": "Interface"
+        }, {
+            "$ast": "ClassDeclaration",
+            "attributes": [{
+                "$ast": "Attribute",
+                "category": "rpc",
+                "name": "Interface",
+                "value": null
+            }],
+            "name": "ITwo",
+            "baseTypes": [{
+                "$ast": "ReferenceType",
+                "name": "IValue"
+            }],
+            "constructorType": "SharedPtr",
+            "declarations": [{
+                "$ast": "EventDeclaration",
+                "attributes": [],
+                "name": "CrashAtClient",
+                "arguments": []
+            }],
+            "kind": "Interface"
+        }, {
+            "$ast": "ClassDeclaration",
+            "attributes": [{
+                "$ast": "Attribute",
+                "category": "rpc",
+                "name": "Interface",
+                "value": null
+            }],
+            "name": "IDerived",
+            "baseTypes": [{
+                "$ast": "ReferenceType",
+                "name": "IOne"
+            }, {
+                "$ast": "ReferenceType",
+                "name": "ITwo"
+            }],
+            "constructorType": "SharedPtr",
+            "declarations": [{
+                "$ast": "FunctionDeclaration",
+                "attributes": [],
+                "name": "GuardCrashAtClient",
+                "anonymity": "Named",
+                "arguments": [],
+                "functionKind": "Normal",
+                "returnType": {
+                    "$ast": "PredefinedType",
+                    "name": "String"
+                },
+                "statement": null
+            }],
+            "kind": "Interface"
+        }, {
+            "$ast": "ClassDeclaration",
+            "attributes": [{
+                "$ast": "Attribute",
+                "category": "rpc",
+                "name": "Interface",
+                "value": null
+            }, {
+                "$ast": "Attribute",
+                "category": "rpc",
+                "name": "Ctor",
+                "value": null
+            }],
+            "name": "IService",
+            "baseTypes": [],
+            "constructorType": "SharedPtr",
+            "declarations": [{
+                "$ast": "FunctionDeclaration",
+                "attributes": [],
+                "name": "CreateDerived",
+                "anonymity": "Named",
+                "arguments": [],
+                "functionKind": "Normal",
+                "returnType": {
+                    "$ast": "SharedPointerType",
+                    "element": {
+                        "$ast": "ReferenceType",
+                        "name": "IDerived"
+                    }
+                },
+                "statement": null
+            }],
+            "kind": "Interface"
+        }]
+    }],
+    "moduleType": "Module",
+    "name": "Rpc",
+    "paths": [{
+        "$ast": "ModuleUsingPath",
+        "items": [{
+            "$ast": "ModuleUsingItem",
+            "fragments": [{
+                "$ast": "ModuleUsingNameFragment",
+                "name": "system"
+            }]
+        }, {
+            "$ast": "ModuleUsingItem",
+            "fragments": [{
+                "$ast": "ModuleUsingWildCardFragment"
+            }]
+        }]
+    }]
+}

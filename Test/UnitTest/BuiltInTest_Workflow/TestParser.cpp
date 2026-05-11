@@ -74,6 +74,10 @@ TEST_FILE
 			indexFile.ReadAllLinesByBom(caseDescs);
 			for (auto caseDesc : caseDescs)
 			{
+				if (caseDesc == L"")
+				{
+					continue;
+				}
 				auto match = regexCaseName.MatchHead(caseDesc);
 				caseName = match->Groups()[NAME][0].Value();
 
