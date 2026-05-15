@@ -138,8 +138,6 @@ int main(int argc, char* argv[])
 	int result = unittest::UnitTest::RunAndDisposeTests(argc, argv);
 	if (runAfterTests) runAfterTests();
 	FinalizeGlobalStorage();
-#ifdef VCZH_CHECK_MEMORY_LEAKS
-	_CrtDumpMemoryLeaks();
-#endif
+	unittest::UnitTest::DumpMemoryLeak(argc, argv);
 	return result;
 }
