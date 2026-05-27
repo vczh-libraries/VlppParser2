@@ -84,6 +84,16 @@ namespace vl
 			extern collections::LazyList<Ptr<XmlElement>>		XmlGetElements(XmlElement* element, const WString& name);
 			extern WString										XmlGetValue(XmlElement* element);
 
+			struct XmlElementListSerializer
+			{
+				using SourceType = collections::List<Ptr<XmlElement>>;
+				using DestType = WString;
+				using ContextType = Ptr<Parser>;
+
+				static void										Serialize(Ptr<Parser> parser, const SourceType& source, DestType& dest);
+				static void										Deserialize(Ptr<Parser> parser, const DestType& source, SourceType& dest);
+			};
+
 			class XmlElementWriter : public Object
 			{
 			protected:

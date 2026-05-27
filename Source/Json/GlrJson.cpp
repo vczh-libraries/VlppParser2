@@ -284,6 +284,31 @@ API
 					JsonPrint(node, writer, formatting);
 				});
 			}
+
+			void JsonNodeListSerializer::Serialize(Ptr<Parser> parser, const SourceType& source, DestType& dest)
+			{
+				auto array = Ptr(new JsonArray);
+				for (auto&& package : source)
+				{
+					array->items.Add(package);
+				}
+				dest = JsonToString(array);
+			}
+
+			void JsonNodeListSerializer::Deserialize(Ptr<Parser> parser, const DestType& source, SourceType& dest)
+			{
+#define ERROR_MESSAGE_PREFIX L"vl::glr::json::JsonNodeListSerializer::Deserialize(Ptr<Parser>, const WString&, SourceType&)#"
+				auto value = JsonParse(source, *parser.Obj());
+				auto array = value.Cast<JsonArray>();
+				CHECK_ERROR(array, ERROR_MESSAGE_PREFIX L"The serialized channel package should be a JsonArray.");
+
+				dest.Clear();
+				for (auto&& package : array->items)
+				{
+					dest.Add(package);
+				}
+#undef ERROR_MESSAGE_PREFIX
+			}
 		}
 	}
 }

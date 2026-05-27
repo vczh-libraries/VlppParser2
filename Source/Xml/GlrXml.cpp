@@ -407,6 +407,36 @@ Utility
 			}
 
 /***********************************************************************
+XmlElementListSerializer
+***********************************************************************/
+
+			void XmlElementListSerializer::Serialize(Ptr<Parser> parser, const SourceType& source, DestType& dest)
+			{
+				auto array = Ptr(new XmlElement);
+				array->name.value = L"Array";
+				for (auto&& element : source)
+				{
+					array->subNodes.Add(element);
+				}
+				dest = GenerateToStream([&](StreamWriter& writer)
+				{
+					XmlPrint(array, writer);
+				});
+			}
+
+			void XmlElementListSerializer::Deserialize(Ptr<Parser> parser, const DestType& source, SourceType& dest)
+			{
+				auto array = XmlParseElement(source, *parser.Obj());
+				auto elements = XmlGetElements(array);
+
+				dest.Clear();
+				for (auto&& element : elements)
+				{
+					dest.Add(element);
+				}
+			}
+
+/***********************************************************************
 XmlElementWriter
 ***********************************************************************/
 

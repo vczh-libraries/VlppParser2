@@ -46,6 +46,16 @@ namespace vl
 			/// <returns>The serialized string.</returns>
 			/// <param name="node">The JSON node to serialize.</param>
 			extern WString					JsonToString(Ptr<JsonNode> node, JsonFormatting formatting = {});
+
+			struct JsonNodeListSerializer
+			{
+				using SourceType = collections::List<Ptr<JsonNode>>;
+				using DestType = WString;
+				using ContextType = Ptr<Parser>;
+
+				static void					Serialize(Ptr<Parser> parser, const SourceType& source, DestType& dest);
+				static void					Deserialize(Ptr<Parser> parser, const DestType& source, SourceType& dest);
+			};
 		}
 	}
 }
