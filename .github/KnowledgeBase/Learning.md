@@ -4,10 +4,11 @@
 
 - Process staged tasks one by one with verification [15]
 - Crash early instead of adding error-tolerance fallbacks [6]
+- Port fixes from imports to source repositories [6]
 - Make `Stop()` drain asynchronous work before returning [5]
+- Verify generated artifacts with downstream consumer checks [5]
 - Use `WString::IndexOf` with `wchar_t` (not `const wchar_t*`) [4]
 - Use `collections::BinarySearchLambda` on contiguous buffers (guard empty) [4]
-- Port fixes from imports to source repositories [4]
 - Capture dependent lambdas explicitly [2]
 - Don't assume observable changes are batched [2]
 - Do not assume async callback owners are heap allocated [2]
@@ -17,7 +18,6 @@
 - Validate expectations against implementation and existing tests [2]
 - Use `vl::Exception` for expected semantic failures and `CHECK_ERROR` for invariants [2]
 - Treat Debug memory leak dumps as required failures [2]
-- Verify generated artifacts with downstream consumer checks [2]
 - Prefer well-defined tests over ambiguous edge cases [1]
 - Prefer `operator<=> = default` for lexicographic key structs [1]
 - Prefer two-pointer merge for sorted range maps [1]
@@ -33,6 +33,7 @@
 - `vl::regex` separator regex: `L"[\\/\\\\]+"` [1]
 - Use 2-space indentation in embedded XML/JSON literals [1]
 - `collections::List` has deleted copy constructor; use `std::move()` for structs with `List` members [1]
+- Compare type descriptors by pointer when descriptor identity is available [1]
 
 # Refinements
 
@@ -189,3 +190,7 @@ When a C++ struct contains `vl::collections::List` fields, the struct's implicit
 ## Use `vl::Exception` for expected semantic failures and `CHECK_ERROR` for invariants
 
 When a failure is part of the public or script-visible semantics and tests are expected to catch it as a recoverable error, throw `vl::Exception`. Reserve `CHECK_ERROR` / `CHECK_FAIL` / `vl::Error` for internal invariant violations and states that indicate implementation corruption. For example, duplicate RPC registration can remain a catchable semantic exception when samples intentionally verify it, while impossible local type ids should fail as invariants.
+
+## Compare type descriptors by pointer when descriptor identity is available
+
+`GetTypeDescriptor<T>()` and `GetTypeDescriptor(typeName)` guarantee one descriptor instance per type in a loaded type manager, so prefer direct `ITypeDescriptor*` pointer comparison over comparing type-name strings. Use `TypeInfo<T>::content.typeName` only where the type manager cannot be loaded yet; if a name lookup is unavoidable, resolve the descriptor once and compare pointers inside hot or repeated paths.
