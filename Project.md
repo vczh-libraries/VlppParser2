@@ -1,3 +1,7 @@
+# VlppParser2 design documentation
+
+Begin with [`doc/Index.md`](./doc/Index.md) for the architecture, parser-generation pipeline, runtime parsing and ambiguity algorithms, generated-code contracts, source map, and bootstrap guidance.
+
 # General Instruction
 
 ## Solution to Work On
