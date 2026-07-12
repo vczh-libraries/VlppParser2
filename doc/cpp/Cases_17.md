@@ -1,6 +1,6 @@
 # C++ 17 Missing Features
 
-This file contains phase-7 syntax and AST gaps in `Test/Source/BuiltIn-Cpp` for C++17 and every earlier standard edition. Token formation and preprocessing are intentionally excluded and are covered by `Cpp_Cases_Tokenizer.md`.
+This file contains phase-7 syntax and AST gaps in `Test/Source/BuiltIn-Cpp` for C++17 and every earlier standard edition. Token formation and preprocessing are intentionally excluded and are covered by [Tokenizer and Preprocessor Gaps](Cases_Tokenizer.md).
 
 Most sections describe spellings the current parser rejects. A few are called out as **AST fidelity gaps**: the token sequence is accepted, but the resulting generic node does not identify the standard construct well enough for a code indexer. Cases containing a complete declaration are intended for the `_File` entry; cases explicitly described as expressions are intended for `_TypeOrExpr` or `_Expr`.
 
@@ -416,7 +416,7 @@ int select(T value)
 
 ## Structured Bindings
 
-There is no structured-binding declaration. Coverage should include copy and reference forms, all initializer spellings, and range-for declarations. Storage-duration specifiers on structured bindings are a C++20 extension and are covered in `Cpp_Cases_20.md`.
+There is no structured-binding declaration. Coverage should include copy and reference forms, all initializer spellings, and range-for declarations. Storage-duration specifiers on structured bindings are a C++20 extension and are covered in [C++20 Missing Features](Cases_20.md).
 
 ### Case No.1
 

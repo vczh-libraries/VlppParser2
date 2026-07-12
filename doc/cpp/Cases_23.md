@@ -1,6 +1,6 @@
 # C++ 23 Missing Features
 
-This file contains phase-7 syntax and AST gaps introduced by C++23. Token and preprocessing changes, including literal suffixes, escape forms, and new directives, are listed in `Cpp_Cases_Tokenizer.md`.
+This file contains phase-7 syntax and AST gaps introduced by C++23. Token and preprocessing changes, including literal suffixes, escape forms, and new directives, are listed in [Tokenizer and Preprocessor Gaps](Cases_Tokenizer.md).
 
 The current grammar already accepts several famous C++23 spellings, including `auto(expression)`, `auto{expression}`, static `operator()`/`operator[]` declarations, and `object[x, y]` through its older comma-expression AST. The cases below focus on rejected spellings and on AST shapes that cannot distinguish the C++23 construct.
 

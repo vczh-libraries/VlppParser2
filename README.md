@@ -18,17 +18,55 @@ You are welcome to contribute to this repo by opening pull requests.
 
 ## Unit Test
 
-For **Windows**, open `Test/UnitTest/UnitTest.sln`, and run the following projects in order:
-- **ParserTest_AstGen**: Run AST related unit test and generate AST from the parser syntax.
-- **ParserTest_AstParserGen**: Run AST instruction related unit test and generate lexer from the parser syntax.
-- **ParserTest_LexerAndParser**: Run basic parsing unit test and generate parser from the parser syntax.
-- **ParserTest_ParserGen**: Run unit test for detecting errors in parser syntax.
-- **ParserTest_ParserGen_Compiler**: Generate many test only parsers for the following unit test, for testing different advanced features that the parser syntax offers.
-- **ParserTest_ParserGen_Generated**: Run generated parsers and compare parser results with baselines.
-- **BuiltInTest_Compiler**: Generate parser for built-in JSON, built-in XML and some test only parsers for the following unit tests:
-  - **BuiltInTest_Json**
-  - **BuiltInTest_Xml**
-  - **BuiltInTest_Workflow**
-  - **BuiltInTest_Cpp**
+### Windows
 
-For **Linux**, use `Test/Linux/*/makefile` to build and run unit test projects as described above.
+Build `Test/UnitTest/UnitTest.sln`, then run these projects in order. Rebuild the solution at every explicit rebuild barrier because the preceding project generates C++ consumed by later projects.
+
+1. **ParserTest_AstGen**: Test AST support and generate Calculator and parser-definition AST types.
+2. **Rebuild the solution.**
+3. **ParserTest_AstParserGen**: Test the manual Calculator lexer and AST assembler, then generate Calculator and parser-definition lexer types.
+4. **Rebuild the solution.**
+5. **ParserTest_LexerAndParser**: Test basic parsing and generate Calculator and parser-definition parser types.
+6. **Rebuild the solution.**
+7. **ParserTest_LexerAndParser_Generated**: Test the generated Calculator lexer and the manually defined Calculator parser.
+8. **ParserTest_ParserGen**: Test parser-definition error detection.
+9. **ParserTest_ParserGen_Compiler**: Test the generated Calculator and parser-definition parsers, then generate the external parsers used by the next project.
+10. **Rebuild the solution.**
+11. **ParserTest_ParserGen_Generated**: Run the generated external parsers and compare their results with baselines.
+12. **BuiltInTest_Compiler**: Generate the JSON, XML, Workflow, and C++ parsers.
+13. **Rebuild the solution.**
+14. Run **BuiltInTest_Json**, **BuiltInTest_Xml**, **BuiltInTest_Workflow**, and **BuiltInTest_Cpp**, in that order.
+
+`BuiltInTest_Workflow` expects the [Workflow repository](https://github.com/vczh-libraries/Workflow) to be cloned as a sibling of this repository.
+
+The repository-provided command-line wrappers can be run from `Test/UnitTest` as follows. The build wrapper requires `VLPP_VSDEVCMD_PATH` to point to Visual Studio's `VsDevCmd.bat`.
+
+```powershell
+cd Test\UnitTest
+& (Resolve-Path ..\..\.github\Scripts\copilotBuild.ps1)
+& (Resolve-Path ..\..\.github\Scripts\copilotExecute.ps1) -Mode UnitTest -Executable PROJECT-NAME
+```
+
+After all native projects pass, use Node.js and npm to verify the generated TypeScript declarations. From the repository root:
+
+```powershell
+cd Test\TypeScript
+npm ci
+& (Resolve-Path .\prepare.ps1)
+npm run build
+```
+
+`npm ci` is needed on a fresh checkout or after the lock file changes.
+
+### Linux
+
+Linux currently has configurations for **ParserTest_ParserGen_Compiler**, **ParserTest_ParserGen_Generated**, **BuiltInTest_Json**, **BuiltInTest_Xml**, and **BuiltInTest_Workflow**. It does not contain the full Windows bootstrap sequence or BuiltIn-Cpp test. Run the two ParserGen projects in that order; the built-in parser projects can then be verified individually.
+
+From each `Test/Linux/PROJECT-NAME` directory, use the repository build wrapper and then run the produced unit test:
+
+```bash
+../../../.github/Ubuntu/build.sh
+./Bin/UnitTest /C
+```
+
+Do not invoke the generated `makefile` directly. Only Debug x64 is supported. The Workflow sibling-repository prerequisite also applies to **BuiltInTest_Workflow**.

@@ -1,6 +1,6 @@
 # C++ 20 Missing Features
 
-This file contains phase-7 syntax and AST gaps introduced by C++20. It assumes the input has already passed through a C++ scanner and preprocessor; missing keyword tokens, header-name recognition, and preprocessing are recorded in `Cpp_Cases_Tokenizer.md`.
+This file contains phase-7 syntax and AST gaps introduced by C++20. It assumes the input has already passed through a C++ scanner and preprocessor; missing keyword tokens, header-name recognition, and preprocessing are recorded in [Tokenizer and Preprocessor Gaps](Cases_Tokenizer.md).
 
 The largest missing families are modules, constraints/requires syntax, coroutines, and new declaration specifiers. Several C++20 spellings happen to fit an older generic BuiltIn-Cpp production. Those cases are marked as **AST fidelity gaps** because accepting text as the wrong kind of declaration is not enough for a code indexer.
 
@@ -263,7 +263,7 @@ Point{.x{1}, .y = {2},}
 
 ## Array-Bound Deduction in New Expressions
 
-C++20 permits an omitted first array bound when an initializer supplies the size. The current new-expression rule requires an expression in every pair of brackets. The rest of the full new-type-id gap is documented in `Cpp_Cases_17.md`.
+C++20 permits an omitted first array bound when an initializer supplies the size. The current new-expression rule requires an expression in every pair of brackets. The rest of the full new-type-id gap is documented in [C++17 and Earlier Missing Features](Cases_17.md).
 
 ### Case No.1
 

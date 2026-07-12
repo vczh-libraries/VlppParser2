@@ -1,6 +1,9 @@
-# VlppParser2 design documentation
+# Documentation entry points
 
-Begin with [`doc/Index.md`](./doc/Index.md) for the architecture, parser-generation pipeline, runtime parsing and ambiguity algorithms, generated-code contracts, source map, and bootstrap guidance.
+- Begin with [`doc/Index.md`](./doc/Index.md) for the architecture, parser-generation pipeline, runtime parsing and ambiguity algorithms, generated-code contracts, source map, and bootstrap guidance.
+- Begin with [`doc/cpp/Index.md`](./doc/cpp/Index.md) for BuiltIn-Cpp syntax design, C++26 parser capability, frontend boundaries, standard-coverage gaps, and de-ambiguation guidance.
+
+Treat these documents as semantic companions to the code. When a related code change alters a documented behavior, invariant, public grammar contract, or responsibility boundary, update the owning document in the same change. Do not churn documentation for formatting, generated output, or mechanical code refactoring that leaves those semantics unchanged; reference repairs are still required when files move.
 
 # General Instruction
 
@@ -62,12 +65,12 @@ Build `REPO-ROOT/Test/TypeScript/package/json` to make sure all generated .d.ts 
 `REPO-ROOT/Test/Linux` stores linux configurations for:
 - `BuiltInTest_Json`: `BuiltInTest_Json.vcxproj`.
 - `BuiltInTest_Xml`: `BuiltInTest_Xml.vcxproj`.
-- `ParserTest_ParserGen_Generated`: `ParserTest_ParserGen_Generated.vcxproj`.
+- `BuiltInTest_Workflow`: `BuiltInTest_Workflow.vcxproj`.
 - `ParserTest_ParserGen_Compiler`: `ParserTest_ParserGen_Compiler.vcxproj`, `ParserTest_ParserGen.vcxproj`.
+- `ParserTest_ParserGen_Generated`: `ParserTest_ParserGen_Generated.vcxproj`.
 
-There are a lot of MSBuild test projects that are not included in this folder.
-They serve the purpose of generating the parser compiler itself.
-Unfortunately under Linux only parser running are tested, unless more projects are added.
+There are many MSBuild test projects that are not included in this folder.
+Linux supports only the five configurations listed above and does not provide the full Windows bootstrap and generator sequence.
 
 You need to build, test and debug in that specific folder, otherwise the unit test will not function properly.
 On Linux, only configuration "debug x64" is available, no need to build or run projects with other configurations.

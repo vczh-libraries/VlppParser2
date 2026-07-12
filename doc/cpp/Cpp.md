@@ -2,7 +2,7 @@
 
 ## Scope and conclusion
 
-This document evaluates whether the **design of VlppParser2** can support the complete C++26 language syntax. It is not a gap report for the C++ grammar under [`Test/Source/BuiltIn-Cpp`](Test/Source/BuiltIn-Cpp): that grammar is a deliberately useful design specimen, not the proposed C++26 deliverable.
+This document evaluates whether the **design of VlppParser2** can support the complete C++26 language syntax. It is not a gap report for the C++ grammar under [`Test/Source/BuiltIn-Cpp`](../../Test/Source/BuiltIn-Cpp): that grammar is a deliberately useful design specimen, not the proposed C++26 deliverable.
 
 The standards baseline is [N5046, Working Draft, Programming Languages — C++ (2026-05-12)](https://www.open-std.org/jtc1/sc22/wg21/docs/papers/2026/n5046.pdf). [N5047](https://www.open-std.org/jtc1/sc22/wg21/docs/papers/2026/n5047.html) identifies N5046 as the current C++26 working draft and the text from which the Draft International Standard is being prepared. Links to `eel.is/c++draft` below provide a navigable rendering of the current draft.
 
@@ -49,7 +49,7 @@ flowchart LR
 
 This division preserves the main advantage of VlppParser2: the grammar remains declarative and symbol-blind, while C++-specific state is concentrated in a scanner/preprocessor and a later resolver.
 
-The parser already exposes the right seam. Generated parser entry methods provide public overloads that accept a prepared `RegexToken` list; for example, see the generated [`CppParser.h`](Test/Source/BuiltIn-Cpp/Generated/CppParser.h). Those overloads call the protected [`ParserBase::ParseWithTokens`](Source/SyntaxBase.h) helper, whereas the string overload is the convenience path through the bundled lexer. A custom frontend can therefore use the generated AST assembler and GLR runtime without using the generated lexer for every translation phase.
+The parser already exposes the right seam. Generated parser entry methods provide public overloads that accept a prepared `RegexToken` list; for example, see the generated [`CppParser.h`](../../Test/Source/BuiltIn-Cpp/Generated/CppParser.h). Those overloads call the protected [`ParserBase::ParseWithTokens`](../../Source/SyntaxBase.h) helper, whereas the string overload is the convenience path through the bundled lexer. A custom frontend can therefore use the generated AST assembler and GLR runtime without using the generated lexer for every translation phase.
 
 ## What “handle C++26 syntax” means
 
@@ -83,10 +83,10 @@ C++ eventually applies rules involving declarations, types, template names, and 
 
 The existing grammar already implements this policy:
 
-- [`Ast/Ast.txt`](Test/Source/BuiltIn-Cpp/Syntax/Ast/Ast.txt) marks `TypeOrExprOrOthers`, `Declaration`, `TypeOrExpr`, and `Statement` as `@ambiguous`.
-- [`Syntax/Statements.txt`](Test/Source/BuiltIn-Cpp/Syntax/Syntax/Statements.txt) permits an expression or a declaration in statement position.
-- [`TestTraced.cpp`](Test/UnitTest/BuiltInTest_Cpp/TestTraced.cpp) parses `A<B>C;` and expects `CppStatementToResolve`.
-- [`TestAmbiguity.cpp`](Test/UnitTest/BuiltInTest_Cpp/TestAmbiguity.cpp) also checks declaration/expression, call/cast, qualified-name/binary-expression, and type/expression alternatives.
+- [`Ast/Ast.txt`](../../Test/Source/BuiltIn-Cpp/Syntax/Ast/Ast.txt) marks `TypeOrExprOrOthers`, `Declaration`, `TypeOrExpr`, and `Statement` as `@ambiguous`.
+- [`Syntax/Statements.txt`](../../Test/Source/BuiltIn-Cpp/Syntax/Syntax/Statements.txt) permits an expression or a declaration in statement position.
+- [`TestTraced.cpp`](../../Test/UnitTest/BuiltInTest_Cpp/TestTraced.cpp) parses `A<B>C;` and expects `CppStatementToResolve`.
+- [`TestAmbiguity.cpp`](../../Test/UnitTest/BuiltInTest_Cpp/TestAmbiguity.cpp) also checks declaration/expression, call/cast, qualified-name/binary-expression, and type/expression alternatives.
 
 The standard contains cases where token-only selection is fundamentally insufficient. [Template names](https://eel.is/c++draft/temp.names) can require lookup to decide whether `<` starts template arguments, and [statement ambiguity](https://eel.is/c++draft/stmt.ambig) and [declarator ambiguity](https://eel.is/c++draft/dcl.ambig.res) prescribe interpretations that can depend on type information or instantiation. Keeping alternatives is the correct parser-layer design.
 
@@ -94,7 +94,7 @@ The standard contains cases where token-only selection is fundamentally insuffic
 
 ### Generalized recognition and late AST construction
 
-VlppParser2 lowers EBNF-like rules through NFA and compact PDA representations. The runtime walks token, ending, and left-recursion transitions using persistent return stacks. Multiple surviving paths form a trace graph. AST instructions are not executed speculatively while those paths are still failing or merging; they are replayed after recognition and ambiguity analysis. See [Architecture](doc/Architecture.md), [Automaton Construction](doc/AutomatonConstruction.md), [Runtime Parsing](doc/RuntimeParsing.md), and [Ambiguity and AST Execution](doc/AmbiguityAndAstExecution.md).
+VlppParser2 lowers EBNF-like rules through NFA and compact PDA representations. The runtime walks token, ending, and left-recursion transitions using persistent return stacks. Multiple surviving paths form a trace graph. AST instructions are not executed speculatively while those paths are still failing or merging; they are replayed after recognition and ambiguity analysis. See [Architecture](../Architecture.md), [Automaton Construction](../AutomatonConstruction.md), [Runtime Parsing](../RuntimeParsing.md), and [Ambiguity and AST Execution](../AmbiguityAndAstExecution.md).
 
 That architecture provides the relevant capabilities:
 
@@ -111,13 +111,13 @@ That architecture provides the relevant capabilities:
 
 The local grammar's most important decision is not its list of productions. It is its AST and decomposition strategy:
 
-- [`QualifiedName`](Test/Source/BuiltIn-Cpp/Syntax/Ast/QualifiedName.txt) is itself a `TypeOrExpr`, so the identical name prefix is not duplicated into a false “type candidate” and “expression candidate.”
-- [`Types.txt`](Test/Source/BuiltIn-Cpp/Syntax/Syntax/Types.txt) and [`Expressions.txt`](Test/Source/BuiltIn-Cpp/Syntax/Syntax/Expressions.txt) reuse that common representation until the interpretations actually diverge.
-- [`DeclaratorComponents.txt`](Test/Source/BuiltIn-Cpp/Syntax/Syntax/DeclaratorComponents.txt) and [`DeclaratorConfigurations.txt`](Test/Source/BuiltIn-Cpp/Syntax/Syntax/DeclaratorConfigurations.txt) divide declarators into prefix operators, a nested core, suffixes, and policies for required/optional/absent names.
+- [`QualifiedName`](../../Test/Source/BuiltIn-Cpp/Syntax/Ast/QualifiedName.txt) is itself a `TypeOrExpr`, so the identical name prefix is not duplicated into a false “type candidate” and “expression candidate.”
+- [`Types.txt`](../../Test/Source/BuiltIn-Cpp/Syntax/Syntax/Types.txt) and [`Expressions.txt`](../../Test/Source/BuiltIn-Cpp/Syntax/Syntax/Expressions.txt) reuse that common representation until the interpretations actually diverge.
+- [`DeclaratorComponents.txt`](../../Test/Source/BuiltIn-Cpp/Syntax/Syntax/DeclaratorComponents.txt) and [`DeclaratorConfigurations.txt`](../../Test/Source/BuiltIn-Cpp/Syntax/Syntax/DeclaratorConfigurations.txt) divide declarators into prefix operators, a nested core, suffixes, and policies for required/optional/absent names.
 - The expression grammar encodes precedence with direct left recursion, which the generator explicitly supports.
-- [`Generic.txt`](Test/Source/BuiltIn-Cpp/Syntax/Syntax/Generic.txt) permits both type and expression template arguments.
-- [`API.txt`](Test/Source/BuiltIn-Cpp/Syntax/Syntax/API.txt) uses the static `allow_GT` switch to create an expression specialization suitable for a template-argument context.
-- [`Lexer.txt`](Test/Source/BuiltIn-Cpp/Syntax/Lexer.txt) represents `<` and `>` individually, allowing the grammar to compose comparisons, shifts, and nested template closers.
+- [`Generic.txt`](../../Test/Source/BuiltIn-Cpp/Syntax/Syntax/Generic.txt) permits both type and expression template arguments.
+- [`API.txt`](../../Test/Source/BuiltIn-Cpp/Syntax/Syntax/API.txt) uses the static `allow_GT` switch to create an expression specialization suitable for a template-argument context.
+- [`Lexer.txt`](../../Test/Source/BuiltIn-Cpp/Syntax/Lexer.txt) represents `<` and `>` individually, allowing the grammar to compose comparisons, shifts, and nested template closers.
 
 Those choices address the difficult topology of C++. New C++26 constructs enlarge the grammar and AST, but they do not invalidate this model.
 
@@ -165,7 +165,7 @@ The lexical domain includes:
 
 Most individual token languages are regular and are suitable for a generated lexer. The complete C++ tokenization procedure is nevertheless not just a static list of independent regular expressions. [Preprocessing-token formation](https://eel.is/c++draft/lex.pptoken) includes longest-match rules and exceptions; a header name is recognized only in particular directive/import contexts; user-defined literals depend on adjacency; and a raw string ends only at a delimiter equal to the delimiter captured at its beginning.
 
-The generated lexer definitions are required to be pure regular expressions by [`LexerSymbolManager::CreateToken`](Source/Lexer/LexerSymbol.cpp). [`RegexProc::extendProc`](Import/VlppRegex.h) is an existing escape hatch and its documentation includes a raw-string matching example. The generated `ParseWithString` path does not install such a callback: a frontend using `RegexProc` must call `Lexer().Parse` itself, validate/filter the resulting tokens, and then call a generated token-list entry overload. A production C++ frontend should go one step further and own the complete scanning policy.
+The generated lexer definitions are required to be pure regular expressions by [`LexerSymbolManager::CreateToken`](../../Source/Lexer/LexerSymbol.cpp). [`RegexProc::extendProc`](../../Import/VlppRegex.h) is an existing escape hatch and its documentation includes a raw-string matching example. The generated `ParseWithString` path does not install such a callback: a frontend using `RegexProc` must call `Lexer().Parse` itself, validate/filter the resulting tokens, and then call a generated token-list entry overload. A production C++ frontend should go one step further and own the complete scanning policy.
 
 **Verdict:** all tokens can be delivered to VlppParser2, but the bundled declarative lexer alone is not a complete conforming C++26 scanner.
 
@@ -175,7 +175,7 @@ At the grammar level, a translation unit is either an optional declaration seque
 
 The delimiters and recursive contents of splices are ordinary grammar material. Evaluating a splice and deciding what entity or declarations it denotes is not.
 
-The one direct recognition exception is the empty translation unit. The standard permits the declaration sequence to be absent, but [`CompileSyntax_ValidateStructure.cpp`](Source/ParserGen/CompileSyntax_ValidateStructure.cpp) reports `ClauseCouldExpandToEmptySequence` when a complete clause has minimum length zero. The runtime's initial configuration also has no general epsilon-only route to a successful root ending.
+The one direct recognition exception is the empty translation unit. The standard permits the declaration sequence to be absent, but [`CompileSyntax_ValidateStructure.cpp`](../../Source/ParserGen/CompileSyntax_ValidateStructure.cpp) reports `ClauseCouldExpandToEmptySequence` when a complete clause has minimum length zero. The runtime's initial configuration also has no general epsilon-only route to a successful root ending.
 
 Practical choices are:
 
@@ -530,16 +530,16 @@ These are framework details a full C++26 implementation must design around or im
 | Constraint | Consequence for C++26 work | Response |
 | --- | --- | --- |
 | Complete clauses that expand to zero tokens are rejected. | Empty translation unit cannot use an ordinary entry; nullable-only helper designs also fail validation. | Special-case empty input or add safe nullable-root support. |
-| Structural validation also rejects nullable optional/loop bodies, recursive partial rules, reuse inside an optional/loop, incompatible preferred-option placements, and repeated assignment to one scalar field. | Some compact specification-style productions cannot be copied literally. | Refactor into consuming helper rules and distinct construction paths; see [Syntax Validation](doc/SyntaxValidation.md). |
-| Indirect leading left recursion is rejected in [`PrefixMergeCrossReference`](Source/Syntax/SyntaxSymbol_NFACompact_PrefixMergeCrossReference.cpp). | The standard's mutually referential presentation cannot always be copied literally. | Refactor cycles so recursion is direct or a token is consumed before the cycle. |
+| Structural validation also rejects nullable optional/loop bodies, recursive partial rules, reuse inside an optional/loop, incompatible preferred-option placements, and repeated assignment to one scalar field. | Some compact specification-style productions cannot be copied literally. | Refactor into consuming helper rules and distinct construction paths; see [Syntax Validation](../SyntaxValidation.md). |
+| Indirect leading left recursion is rejected in [`PrefixMergeCrossReference`](../../Source/Syntax/SyntaxSymbol_NFACompact_PrefixMergeCrossReference.cpp). | The standard's mutually referential presentation cannot always be copied literally. | Refactor cycles so recursion is direct or a token is consumed before the cycle. |
 | Direct left recursion is supported. | Expression precedence, qualified names, lists, and declarator continuations remain practical. | Prefer direct LR where it reflects the structure. |
 | Ambiguity candidates must be AST objects with an ambiguity-enabled common base. | Raw token/enum alternatives cannot themselves become `ToResolve` candidates. | Use broad semantic bases and token wrapper nodes where necessary. |
 | There is no wildcard-token terminal. | Balanced attributes/`asm` need a finite leaf rule or scanner normalization. | Enumerate token kinds or map payload leaves to a generic token. |
 | Generated token regexes must be pure regular expressions. | Practical raw-string correlation and genuinely context-sensitive token formation do not belong in the default lexer definition. Contextual spellings can remain one broad identifier token and use grammar conditional literals. | Use `RegexProc` or a dedicated C++ scanner for token formation; use generated token-list entry overloads for parsing. |
 | A token carries one linear source range. | Macro expansion and token pasting can have multiple origins. | Maintain a separate provenance/origin table keyed by prepared tokens. |
-| [`TraceManager::AddTraceToCollection`](Source/TraceManager/TraceManager.cpp) rejects a general many-to-many predecessor/successor topology. | There is no unconditional implementation-level proof that every highly ambiguous C++ trace graph will survive. | Stress generated C++ grammars; generalize the relation representation if a reproducer reaches this topology. |
+| [`TraceManager::AddTraceToCollection`](../../Source/TraceManager/TraceManager.cpp) rejects a general many-to-many predecessor/successor topology. | There is no unconditional implementation-level proof that every highly ambiguous C++ trace graph will survive. | Stress generated C++ grammars; generalize the relation representation if a reproducer reaches this topology. |
 | Branches meeting at one ambiguity merge must have compatible symbolic object/create-stack depths and object dependencies, followed by compatible ambiguity boundaries. | A common `@ambiguous` AST base is necessary but not sufficient; incompatible AST instruction shapes fail during trace preparation. | Design alternatives to construct equivalent local object regions and stress nested/overlapping cases. |
-| `ComparePrefix`/`ComparePostfix` currently compare both operands through the baseline instruction list, as recorded in [Source Map](doc/SourceMap.md#current-implementation-notes). | Some equal-length but instruction-different ambiguity boundaries may be treated as equal. | Fix before claiming production-grade ambiguity correctness. |
+| `ComparePrefix`/`ComparePostfix` currently compare both operands through the baseline instruction list, as recorded in [Source Map](../SourceMap.md#current-implementation-notes). | Some equal-length but instruction-different ambiguity boundaries may be treated as equal. | Fix before claiming production-grade ambiguity correctness. |
 | Every semantically distinct candidate surviving explicit grammar priorities is intentionally retained. | Highly dependent code can cause severe trace and AST candidate growth. | Benchmark, share prefixes aggressively, and prune only through explicit later resolution. |
 
 The trace-topology restriction and boundary-comparison defect are implementation risks, not identified C++26 productions that are theoretically unrepresentable. They do prevent a blanket claim that the current executable has already been validated against every ambiguity pattern a complete C++ grammar can generate.

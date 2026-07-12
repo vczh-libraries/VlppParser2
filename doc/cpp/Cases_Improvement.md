@@ -1,6 +1,6 @@
 # BuiltIn-Cpp De-ambiguation Improvements
 
-This document describes improvements around the C++ syntax and AST produced by [`Test/Source/BuiltIn-Cpp`](./Test/Source/BuiltIn-Cpp). It does not propose changes to the parser generator. The examples are a design corpus for manual AST postpasses that run after parsing.
+This document describes improvements around the C++ syntax and AST produced by [`Test/Source/BuiltIn-Cpp`](../../Test/Source/BuiltIn-Cpp). It does not propose changes to the parser generator. The examples are a design corpus for manual AST postpasses that run after parsing.
 
 Some names are deliberately undeclared. BuiltIn-Cpp is expected to preserve ambiguity instead of performing symbol resolution, so a case does not need to be a complete compiler test. The input reaching the indexer is assumed to have already been accepted by a compiler.
 
@@ -50,7 +50,7 @@ int ::qname_fixture::A::b::c::* canonical_member_pointer;
 int ::a::b::c::* todo_member_pointer;
 ```
 
-The qualifier of the first declaration is `::qname_fixture::A::b::c::`; it must not become several nested declarators. The second declaration is the exact regression shape from [`TODO.md`](./TODO.md). Whether those names actually denote namespaces and classes is a later lookup question.
+The qualifier of the first declaration is `::qname_fixture::A::b::c::`; it must not become several nested declarators. The second declaration is the exact regression shape from [`TODO.md`](../../TODO.md). Whether those names actually denote namespaces and classes is a later lookup question.
 
 ### Case No.3 — Elaborated and Dependent Disambiguators
 
@@ -395,4 +395,4 @@ The standard consumes `*` as the pointer new-declarator and then rejects the str
 
 ## C++26 Reflection Boundary
 
-Reflection has its own syntax-only longest-operand rule. Its valid boundary pairs and the deliberately excluded invalid form are documented in [`Cpp_Cases_26.md`](./Cpp_Cases_26.md) under **Longest Reflect-Expression Boundary**.
+Reflection has its own syntax-only longest-operand rule. Its valid boundary pairs and the deliberately excluded invalid form are documented in [C++26 Missing Features](Cases_26.md) under **Longest Reflect-Expression Boundary**.
