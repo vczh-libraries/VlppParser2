@@ -4,6 +4,13 @@ This file contains phase-7 syntax and AST gaps introduced by C++23. Token and pr
 
 The current grammar already accepts several famous C++23 spellings, including `auto(expression)`, `auto{expression}`, static `operator()`/`operator[]` declarations, and `object[x, y]` through its older comma-expression AST. The cases below focus on rejected spellings and on AST shapes that cannot distinguish the C++23 construct.
 
+Implementation categories used below:
+
+- **Implementation suggestion — Additive:** introduce a wholly absent syntax family in the AST and grammar box that owns it.
+- **Implementation suggestion — Structural:** generalize an existing shared representation so all affected contexts compose from one orthogonal design.
+
+Bounded practical over-acceptance is preferred when a small invalid superset substantially improves orthogonality and cannot misinterpret valid, compiler-verified input.
+
 ## Explicit Object Parameters
 
 Function parameters have no optional leading `this`. Coverage must include concrete and dependent explicit object types and the lambda form.
@@ -28,6 +35,8 @@ struct S
     return n <= 1 ? 1 : n * self(n - 1);
 }
 ```
+
+**Implementation suggestion — Structural:** Introduce a dedicated function-parameter declaration shape in `Syntax/Ast/DeclsFuncVar.txt` with an optional explicit-object (`this`) marker, instead of representing every parameter only as a generic `VariablesDeclaration`. Update `Syntax/Syntax/DeclarationVariable.txt::_FunctionParameter` and `DeclaratorComponents.txt::_DeclaratorFunctionParameters` to consume it so member functions and lambdas share one parameter model; first-parameter placement can then be checked without symbol resolution.
 
 ## If-Consteval Statements
 
@@ -75,6 +84,8 @@ constexpr int g()
 }
 ```
 
+**Implementation suggestion — Additive:** Add an `IfConstevalStat` node, including the negation flag and optional else branch, to `Syntax/Ast/Statements.txt`, and add its alternatives beside `_IfStat` in `Syntax/Syntax/Statements.txt`. It is a separate selection form because it has no parenthesized condition and its selected substatements are compound statements; the existing dangling-else priority should still be reused.
+
 ## Omitted Lambda Parentheses with C++23 Specifiers
 
 BuiltIn-Cpp already accepts several no-parameter-list forms such as `[] mutable {}`, `[] constexpr {}`, `[] noexcept {}`, and `[] -> int {}`. The C++23 omission rule also exposes specifiers and clauses that are otherwise missing.
@@ -90,6 +101,8 @@ BuiltIn-Cpp already accepts several no-parameter-list forms such as `[] mutable 
 ```C++
 [] static {}
 ```
+
+**Implementation suggestion — Structural:** Remodel `Syntax/Ast/Types.txt::DeclaratorFunctionPart` so parameter-clause presence is independent from the suffix specifier, exception, constraint, and trailing-return components. Generalize `Syntax/Syntax/DeclaratorComponents.txt::_DeclaratorFunctionPartOptionalParameters` and have `Syntax/Syntax/Expressions.txt::_LambdaExpr` compose that header, rather than adding one no-parentheses alternative for each newly admitted specifier.
 
 ## Static Lambdas
 
@@ -115,6 +128,8 @@ BuiltIn-Cpp already accepts several no-parameter-list forms such as `[] mutable 
     return value;
 }
 ```
+
+**Implementation suggestion — Structural:** Split lambda-only specifiers from ordinary function-declarator suffixes: add a `LambdaSpecifier` sequence owned by `Syntax/Ast/Expressions.txt::LambdaExpr`, while retaining shared parameter, exception, constraint, and trailing-return components from `DeclaratorFunctionPart`. Parse that sequence in `Syntax/Syntax/Expressions.txt::_LambdaExpr`; adding `static` directly to `DeclaratorComponents.txt::_FunctionKeyword` would also admit it in invalid ordinary-function suffix positions.
 
 ## Multidimensional Subscript Expressions
 
@@ -146,6 +161,8 @@ matrix[indices...]
 matrix[row, indices...]
 ```
 
+**Implementation suggestion — Structural:** Change `Syntax/Ast/Expressions.txt::IndexExpr` from one `index` expression to an optional initializer-clause argument list, and make the postfix-index rule in `Syntax/Syntax/Expressions.txt` consume the same initializer-list component used by calls and braced initialization. Preserve the pre-C++23 single comma-expression reading as an ambiguity alternative (or a version-aware post-pass), rather than flattening commas irreversibly.
+
 ## Attributes Immediately After a Lambda Introducer
 
 C++23 adds an attribute-specifier sequence between the lambda introducer or explicit template/requires prefix and the lambda declarator. This is distinct from the older attribute position after a parameter list.
@@ -176,6 +193,8 @@ C++23 adds an attribute-specifier sequence between the lambda introducer or expl
     return value;
 }
 ```
+
+**Implementation suggestion — Structural:** Reuse the canonical `AttributeSpecifier` family from `Syntax/Ast/Attributes.txt` and `Syntax/Syntax/Attributes.txt`, but give `Syntax/Ast/Expressions.txt::LambdaExpr` distinct front-attribute and declarator-attribute fields. Update `Syntax/Syntax/Expressions.txt::_LambdaExpr` at the two actual attachment points so source position and meaning are retained instead of collecting all lambda attributes into an undifferentiated token list.
 
 ## Alias Declarations in Init-Statements
 
@@ -211,6 +230,8 @@ void f(Range values)
 }
 ```
 
+**Implementation suggestion — Structural:** Make the canonical `InitStatement` family in `Syntax/Ast/Statements.txt` and `Syntax/Syntax/Statements.txt` include an alias-declaration alternative that reuses the declaration core of `Syntax/Syntax/DeclarationOthers.txt::_UsingTypeDecl`. Then have `if`, `switch`, classic `for`, and range-`for` consume that same family; four local `using` alternatives would duplicate delimiter ownership and precedence.
+
 ## Labels at the End of Compound Statements
 
 `LabelStat`, `CaseStat`, and `DefaultStat` all require a following statement. C++23 permits a trailing label sequence immediately before `}`.
@@ -243,6 +264,8 @@ void g(int value)
 }
 ```
 
+**Implementation suggestion — Structural:** Factor identifier, `case`, and `default` labels into a label-payload hierarchy in `Syntax/Ast/Statements.txt`, let an ordinary labeled statement pair one or more payloads with a following statement, and let `BlockStat` own a trailing payload sequence. Refactor the corresponding rules in `Syntax/Syntax/Statements.txt`; making `LabelStat.stat` nullable or synthesizing an empty statement would hide the C++23 structure and complicate stacked labels.
+
 ## Attributes on Concept Definitions
 
 CWG 2428 added the attribute position after a concept name. It was adopted during the C++23 cycle. This case depends on both the missing concept AST and the missing general attribute grammar.
@@ -253,6 +276,8 @@ CWG 2428 added the attribute position after a concept name. It was adopted durin
 template<class T>
 concept C [[deprecated]] = true;
 ```
+
+**Implementation suggestion — Additive:** In the canonical concept/constraint boxes (`Syntax/Ast/Constraints.txt` and `Syntax/Syntax/Constraints.txt`), give `ConceptDeclaration` an attribute sequence immediately after its name and consume the shared `AttributeSpecifier` family from the attribute boxes. Keeping the attachment on the concept node avoids treating `deprecated` as part of either the name or constraint expression.
 
 ## Assume Attribute
 
@@ -272,6 +297,8 @@ void f(int value)
     [[assume(value >= 0)]];
 }
 ```
+
+**Implementation suggestion — Additive:** Implement `assume` through the generic balanced-token nodes in `Syntax/Ast/Attributes.txt` and `Syntax/Syntax/Attributes.txt`, and add the shared attribute attachment to the empty-statement/attribute-declaration hosts in `Syntax/Ast/Statements.txt`, `Syntax/Syntax/Statements.txt`, and the declaration router. No `assume`-specific expression production is needed: its argument remains attribute-token data for indexing.
 
 ## Already Covered or Practically Accepted
 

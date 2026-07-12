@@ -4,6 +4,13 @@ This file contains phase-7 syntax and AST gaps in the current C++26 working draf
 
 C++26 adds several genuinely new grammar families: pack indexing, structured-binding extensions, variadic friends, new template-template parameter kinds, contracts, reflection and splicing, annotations, consteval blocks, and expansion statements. None has a corresponding BuiltIn-Cpp AST today. Semantic evaluation of reflection, constraints, or contracts is outside this audit; the parser only needs to retain their written structure and any syntactic ambiguity.
 
+Implementation notes use two categories:
+
+- **Implementation suggestion — Additive:** the construct is wholly absent and should be added to the AST and syntax box that owns its category.
+- **Implementation suggestion — Structural:** an existing AST or rule family must be generalized or reorganized so all affected contexts share one orthogonal implementation.
+
+Either category may use bounded practical over-acceptance when one shared rule replaces a large matrix of context-specific rules and cannot change the parse of valid input. Each such relaxation should state exactly which invalid combination is admitted; compiler-verified input, not the grammar, supplies the omitted validation.
+
 ## Pack Indexing
 
 Both the expression and type computed-specifier forms are missing. The index is a constant-expression enclosed by brackets after an ellipsis.
@@ -33,6 +40,8 @@ template<class... Ts>
 void consume(Ts...[1] value);
 ```
 
+**Implementation suggestion — Structural:** Add one `PackIndex : TypeOrExpr` node in `Syntax/Ast/Expressions.txt` and one public `_PackIndex` rule in `Syntax/Syntax/Expressions.txt`; make `_PostfixUnaryExpr` and `Syntax/Syntax/Types.txt`'s `_ShortTypeBeforeDeclarator` consume that same representation. Keeping the operand-plus-index spelling canonical avoids separate expression and type implementations and preserves the lookup-dependent interpretation; accepting a syntactically suitable operand without proving that it names a pack is the intended bounded semantic over-acceptance.
+
 ## Attributes on Individual Structured Bindings
 
 An attribute-specifier sequence can follow each `sb-identifier`, independently of attributes on the whole structured-binding declaration.
@@ -48,6 +57,8 @@ auto [first [[maybe_unused]], second] = value;
 ```C++
 auto [first, second [[maybe_unused]]] = value;
 ```
+
+**Implementation suggestion — Additive:** Add `StructuredBindingDeclaration` and `StructuredBindingItem` to `Syntax/Ast/DeclsFuncVar.txt`, with the attribute list stored on each item, and add canonical `_StructuredBindingDecl` and `_StructuredBindingItem` rules to `Syntax/Syntax/DeclarationVariable.txt`. The item rule should consume the shared `_AttributeSpecifierSeq` owned by a dedicated `Syntax/Syntax/Attributes.txt` box rather than reproducing attribute syntax in the binding grammar.
 
 ## Structured-Binding Packs
 
@@ -93,6 +104,8 @@ void bindMiddle(T value)
 }
 ```
 
+**Implementation suggestion — Additive:** Give every `StructuredBindingItem` in `Syntax/Ast/DeclsFuncVar.txt` an optional pack marker and parse one uniform comma-separated item list in `Syntax/Syntax/DeclarationVariable.txt`. This deliberately also accepts multiple marked items; that bounded cardinality relaxation does not alter any valid parse and avoids separate before/middle/after list productions, while compiler-verified input guarantees the standard's single pack item.
+
 ## Structured-Binding Declarations as Conditions
 
 `condition-declaration` gains a structured-binding branch. Coverage should exercise every statement consumer. Whether the decision variable is valid in each example is semantic and intentionally outside the parser.
@@ -127,6 +140,8 @@ void f()
 }
 ```
 
+**Implementation suggestion — Structural:** Generalize `_ExprOrVarCondition` in `Syntax/Syntax/DeclarationVariable.txt` into one condition router that accepts expressions, `VariablesDeclaration`, and the new `StructuredBindingDeclaration`, then use it from every declaration-capable condition consumer in `Syntax/Syntax/Statements.txt`. `ForStatLoopCondition.condition` in `Syntax/Ast/Statements.txt` must become `TypeOrExprOrOthers`, matching `IfElseStat`, `WhileStat`, and `SwitchStat`, so the classic-for condition is not patched separately.
+
 ## Constant-Initialization Specifiers on Structured Bindings
 
 `constexpr` and `constinit` are now permitted in the structured binding's decl-specifier sequence. `constexpr` should also compose with the new binding-pack form; `constinit` composes with its required static or thread storage duration.
@@ -153,6 +168,8 @@ void bindConstexprPack()
 static constinit auto [initializedFirst, initializedSecond] = value;
 ```
 
+**Implementation suggestion — Structural:** Keep one `DeclaratorKeyword` representation in `Syntax/Ast/Types.txt`, add `constinit` to the canonical keyword mapping in `Syntax/Syntax/DeclaratorComponents.txt`, and expose context-specific decl-specifier views over that mapping. The `_StructuredBindingDecl` rule in `Syntax/Syntax/DeclarationVariable.txt` should consume a shared sequence drawn from `static`, `thread_local`, `constexpr`, and `constinit`; deliberately accepting repeated or otherwise incompatible combinations is bounded to those four specifiers and keeps every valid ordering on one path.
+
 ## Deleted-Function Reasons
 
 A deleted-function body can contain one unevaluated string explaining the deletion.
@@ -171,6 +188,8 @@ struct Value
     Value(const Value&) = delete("Value is move-only");
 };
 ```
+
+**Implementation suggestion — Structural:** Split `_FunctionKeyword` in `Syntax/Syntax/DeclaratorComponents.txt` into ordered qualifier, exception-specifier, and function-body-specifier families, and represent the latter explicitly in `Syntax/Ast/Types.txt` instead of treating `= delete` like an undifferentiated keyword. The delete body-specifier node should retain its optional unevaluated string, while `_DeclaratorFunctionPart` composes the shared suffix families for ordinary functions and lambdas.
 
 ## Variadic Friend Type Declarations
 
@@ -203,6 +222,8 @@ struct TemplateFriends
     friend typename Ts::Nested...;
 };
 ```
+
+**Implementation suggestion — Structural:** Replace `FriendTypeDeclaration.type : QualifiedName` in `Syntax/Ast/Decls.txt` with a list of `FriendTypeItem` objects containing a `TypeOrExpr` and a pack marker. Generalize `_FriendTypeDecl` in `Syntax/Syntax/DeclarationOthers.txt` around one `_FriendTypeItem` rule that reuses the canonical type, elaborated-type, and dependent-`typename` paths, then parses the comma-separated list once.
 
 ## Variable and Concept Template-Template Parameters
 
@@ -252,6 +273,8 @@ template<template<class> concept...>
 struct UnnamedConceptParameterPack;
 ```
 
+**Implementation suggestion — Structural:** Generalize `OrdinaryGenericParameter` in `Syntax/Ast/Ast.txt` with an explicit template-parameter kind, and refactor `_GenericParameterKeyword` plus `_OrdinaryGenericParameter` in `Syntax/Syntax/Generic.txt` so `class`, `typename`, `auto`, and `concept` share the same inner header, optional pack, optional identifier, and default tail. This keeps parameter kind orthogonal to naming, packing, and defaulting instead of adding separate productions for every combination.
+
 ## Contract Assertion Statements
 
 `contract_assert` introduces an assertion statement with an optional attribute-specifier sequence and a conditional-expression predicate. The unattributed form is an **AST fidelity gap** when `contract_assert` is still tokenized as `ID`: a block-statement entry can accept it as an ordinary call expression. The attributed form is a text-acceptance gap, and both forms need a dedicated assertion node for indexing.
@@ -267,6 +290,8 @@ contract_assert(value > 0);
 ```C++
 contract_assert [[ ]] (value > 0);
 ```
+
+**Implementation suggestion — Additive:** Add `ContractAssertStat : Statement` with attributes and predicate fields to `Syntax/Ast/Statements.txt`, then add `_ContractAssertStat` to `Syntax/Syntax/Statements.txt` and route it once through `_Stat`. It should reuse `_AttributeSpecifierSeq` and `_Expr_NoComma`, producing the dedicated node even when the same tokens could be accepted as an identifier call.
 
 ## Function Preconditions and Postconditions
 
@@ -312,6 +337,8 @@ int constrained(T value)
     return value;
 }
 ```
+
+**Implementation suggestion — Structural:** Add contract-specifier and postcondition-result-binding nodes to `Syntax/Ast/Types.txt`, including their attribute lists, and attach an ordered collection to `DeclaratorFunctionPart`. Refactor `_DeclaratorFunctionPart` and `_DeclaratorFunctionPartOptionalParameters` in `Syntax/Syntax/DeclaratorComponents.txt` to share one tail ordered as qualifiers, trailing return, optional requires-clause, then contracts; both ordinary functions and lambdas must reach the same `_ContractSpecifier` rule.
 
 ## Reflect Expressions
 
@@ -359,6 +386,8 @@ The `^^` prefix can reflect the global namespace, a reflection-name, a type-id, 
 ^^int*
 ```
 
+**Implementation suggestion — Additive:** Create a dedicated `Syntax/Ast/Reflection.txt` and `Syntax/Syntax/Reflection.txt` responsibility box containing `ReflectExpr : ExprOnly`, its operand representation, and public `_ReflectExpr`/`_ReflectOperand` rules. `_PrimitiveExpr` in `Syntax/Syntax/Expressions.txt` should consume that one entry; the AST should record `^^::` explicitly and use an ambiguity-enabled `TypeOrExpr` field for the reflection-name, type-id, and id-expression candidates.
+
 ## Longest Reflect-Expression Boundary
 
 The standard requires `^^` to consume the longest token sequence that can syntactically form a reflect-expression. This is a parser priority/post-recognition filter, not symbol resolution. Parentheses explicitly terminate the operand. All cases below are well-formed boundary spellings; the deliberately excluded `^^X < value` form is ill-formed because an unparenthesized reflection representing a template cannot be followed by `<`.
@@ -386,6 +415,8 @@ r == (^^int) && true
 ```C++
 ^^X<true> < value
 ```
+
+**Implementation suggestion — Structural:** Factor all reflection operands through `_ReflectOperand` in `Syntax/Syntax/Reflection.txt` and apply longest-candidate priority or a syntax-only post-recognition filter at that boundary, not in `_QualifiedName`, `_Type`, or the relational-expression ladder. Parentheses should select an explicitly bounded operand branch, while the unparenthesized branch consumes the longest qualified/template/type-id form before normal expression parsing resumes.
 
 ## Splice Expressions and Splice Specializations
 
@@ -415,6 +446,8 @@ template [:template_reflection:]<>
 template [:template_reflection:]<int>
 ```
 
+**Implementation suggestion — Additive:** Let `Syntax/Ast/Reflection.txt` own distinct splice-specifier, template-splice, and specialization shapes, and let `Syntax/Syntax/Reflection.txt` expose one canonical `_SpliceExpr` family with optional specialization arguments represented by the existing `GenericArguments` contract. `_PrimitiveExpr` should add only that public family, leaving all later type, name, and declaration contexts to reuse the same splice nodes.
+
 ## Spliced Types
 
 A splice can be a type in a type-only context, can be forced by `typename`, can carry template arguments, and can appear as a base type.
@@ -441,6 +474,8 @@ struct Derived : [:base_reflection:]
 };
 ```
 
+**Implementation suggestion — Structural:** Generalize `_PrimitiveType`/`_ShortTypeBeforeDeclarator` in `Syntax/Syntax/Types.txt` to consume the canonical splice-specifier and `typename` splice forms from `Syntax/Syntax/Reflection.txt`, with the result remaining a `TypeOrExpr`. Because `_ClassInheritanceFirst` and `_ClassInheritanceSecond` already consume `_Type`, base classes should receive the feature through that shared type path rather than through class-specific splice productions.
+
 ## Computed Destructor Names
 
 A destructor unqualified-id can use a computed type specifier. Member access through both `.` and `->` must therefore admit a splice-derived destructor name.
@@ -456,6 +491,8 @@ object.~[:type_reflection:]()
 ```C++
 pointer->~[:type_reflection:]()
 ```
+
+**Implementation suggestion — Structural:** Generalize the destructor identifier model in `Syntax/Ast/QualifiedName.txt` so it can retain either an ordinary token name or a computed type/splice, then extend the canonical `_DtorIdentifier` in `Syntax/Syntax/QualifiedName.txt`. `_MemberQualifiedNameFragment` in that file and `_DeclaratorUntypedFuncId` in `Syntax/Syntax/DeclaratorComponents.txt` must continue to reuse the single identifier rule, covering member access and destructor declarations together.
 
 ## Spliced Scopes and Members
 
@@ -485,6 +522,8 @@ object.[:member_reflection:]
 pointer->template [:member_template_reflection:]<int>
 ```
 
+**Implementation suggestion — Structural:** Extend the fragment representation in `Syntax/Ast/QualifiedName.txt` and the `_QualifiedNameFragment`/`_NextLevelQualifiedName` families in `Syntax/Syntax/QualifiedName.txt` to admit canonical splice and template-splice fragments. Then keep `.` and `->` handling in `_PostfixUnaryExpr` pointed at `_QualifiedName`; duplicating splice-member alternatives in `Syntax/Syntax/Expressions.txt` would break the shared name topology.
+
 ## Splices in Type Requirements
 
 Requires-expressions add dedicated type-requirement branches for splice specifiers and splice specializations.
@@ -499,6 +538,8 @@ concept ReflectedType = requires
     typename [:R:]<int>;
 };
 ```
+
+**Implementation suggestion — Additive:** When the missing requires-expression family is added, give `Syntax/Ast/Expressions.txt` a requirement hierarchy with a dedicated splice type-requirement node and add `_SpliceTypeRequirement` beside the other requirement rules in `Syntax/Syntax/Expressions.txt`. That rule should consume the canonical `_SpliceSpecifier` or `_SpliceSpecialization` entry from `Syntax/Syntax/Reflection.txt`, so specialization arguments and splice delimiters are not reimplemented inside requires-expressions.
 
 ## Namespace and Enum Splices
 
@@ -521,6 +562,8 @@ using namespace [:namespace_reflection:];
 ```C++
 using enum [:enum_reflection:];
 ```
+
+**Implementation suggestion — Structural:** Generalize the using-directive and namespace-alias target fields in `Syntax/Ast/Decls.txt` from token-only namespace-name lists to a shared qualified-name-or-splice representation, adding explicit namespace-alias and using-enum declaration nodes where they are absent. Refactor `_UsingNsDecl` and the namespace/using families in `Syntax/Syntax/DeclarationOthers.txt` around one canonical target rule, then route the new alias and using-enum declarations through `Syntax/Syntax/Declarations.txt`.
 
 ## Reflection Annotations
 
@@ -561,6 +604,8 @@ struct Derived : [[=1]] Base
 };
 ```
 
+**Implementation suggestion — Additive:** Create `Syntax/Ast/Attributes.txt` and `Syntax/Syntax/Attributes.txt` as the single attribute responsibility box, with an annotation entry storing its constant expression and optional pack marker as an alternative to an ordinary attribute item. Expose `_AttributeSpecifierSeq` publicly and make every declaration, declarator, statement, and base-specifier attachment point consume it; deliberately leaving per-attribute subject restrictions to compiler validation is bounded to otherwise valid attribute attachment sites and prevents the reflection form from being copied into each owner.
+
 ## Consteval Block Declarations
 
 A `consteval` followed by a compound statement is a declaration. It is permitted at namespace, block, and class scope and needs its own AST rather than being confused with a function specifier.
@@ -594,6 +639,8 @@ struct S
     }
 };
 ```
+
+**Implementation suggestion — Structural:** Add `ConstevalBlockDeclaration : Declaration` to `Syntax/Ast/Decls.txt` and `_ConstevalBlockDecl` to `Syntax/Syntax/DeclarationOthers.txt`, but also generalize declaration-statement routing in `Syntax/Syntax/Declarations.txt` and `Syntax/Syntax/Statements.txt`. A canonical block-scope declaration router should distinguish caller-owned semicolons from declarations that own a body, allowing the same consteval-block rule at namespace, class, and block scope without teaching `_ExprStat` a one-off exception.
 
 ## Expansion Statements
 
@@ -644,6 +691,8 @@ consteval void enumerate(auto const& range)
 }
 ```
 
+**Implementation suggestion — Structural:** Add `ExpansionStat : Statement` to `Syntax/Ast/Statements.txt`, generalize `ForStatIterateCondition` into a shared range-control object, and factor reusable init-statement and range-declaration rules out of `_ForStatConditionPart` in `Syntax/Syntax/Statements.txt`. Ordinary range-for and `_ExpansionStat` should consume that same control, which in turn uses `_ForEachParameter`, the structured-binding declaration rule, and one canonical braced-initializer-list rule.
+
 ## Generalized Asm Payloads
 
 C++26 changes the conditionally-supported standard asm declaration from one string-literal to an arbitrary nonempty balanced-token sequence. The payload meaning remains implementation-defined, but balanced parentheses, brackets, braces, and splice delimiters are standard grammar input. With `asm` still tokenized as `ID`, a call-shaped spelling can be accepted as an ordinary expression statement inside a block, which is an **AST fidelity gap**; the same spelling at namespace scope and non-expression payloads remain text-acceptance gaps.
@@ -666,6 +715,8 @@ asm("instruction" (nested) [tokens] {more_tokens});
 asm([: tokens :]);
 ```
 
+**Implementation suggestion — Additive:** Design the wholly absent `AsmDeclaration` in `Syntax/Ast/Decls.txt` with a nonempty payload of the generic balanced-token nodes owned by `Syntax/Ast/Attributes.txt`, then add `_AsmDecl` to `Syntax/Syntax/DeclarationOthers.txt` using the matching balanced-token rule from `Syntax/Syntax/Attributes.txt`. Route it through `Syntax/Syntax/Declarations.txt`; enumerating balanced leaves belongs in that shared token-tree family, not in an asm-only flat token list.
+
 ## Indeterminate Attribute
 
 `[[indeterminate]]` is a new standard attribute for function parameters and uninitialized automatic block variables. It uses the generic attribute grammar but deserves version-specific coverage.
@@ -678,6 +729,8 @@ void f([[indeterminate]] int parameter)
     int local [[indeterminate]];
 }
 ```
+
+**Implementation suggestion — Additive:** Represent `indeterminate` as an ordinary named item in the shared `Syntax/Ast/Attributes.txt`/`Syntax/Syntax/Attributes.txt` grammar; it needs no keyword-specific AST node. Connect `_AttributeSpecifierSeq` to the leading parameter and declarator attachment points owned by `Syntax/Syntax/DeclarationVariable.txt` and `Syntax/Syntax/DeclaratorConfigurations.txt`; accepting that name at other generic attribute hosts is an explicit bounded relaxation, since it neither changes valid parses nor requires a host-by-attribute matrix.
 
 ## Expanded Maybe-Unused Subjects
 
@@ -693,6 +746,8 @@ void f()
 [[maybe_unused]] done:
 }
 ```
+
+**Implementation suggestion — Structural:** Add the attribute list to the canonical label-payload hierarchy in `Syntax/Ast/Statements.txt` and make the shared `_LabelPayload` rule in `Syntax/Syntax/Statements.txt` consume `_AttributeSpecifierSeq` before the identifier. Ordinary labeled statements and `BlockStat`'s C++23 trailing payloads should reuse that node; contract result bindings obtain `maybe_unused` through their own result-binding node and the same attribute sequence.
 
 ## Already Covered or Practically Accepted
 

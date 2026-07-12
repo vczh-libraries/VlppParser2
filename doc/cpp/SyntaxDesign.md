@@ -46,6 +46,20 @@ Some contexts intentionally exclude part of a category. That does not violate or
 
 A restricted view should express one contextual switch. If it begins accumulating an independent copy of the underlying grammar, the design has stopped being orthogonal.
 
+### Prefer bounded over-acceptance to duplicated grammar
+
+BuiltIn-Cpp parses input that has already been accepted by a compiler. It may therefore accept a small, deliberate superset of standard syntax when doing so produces a much more orthogonal grammar.
+
+This is a design tool, not permission to make every rule broad. Practical over-acceptance is appropriate only when all of the following hold:
+
+- The extra spellings form a small and explainable set.
+- No valid spelling loses a candidate or receives a different useful interpretation.
+- Tokens and source ranges remain available, so a later pass can recover strict distinctions if needed.
+- The broader rule removes substantial duplication or keeps one syntactic category behind one public API.
+- The choice is documented beside the affected coverage and does not conceal a genuinely missing standard construct.
+
+Examples include accepting split operator spellings such as `a > > b` through the same shift rule, treating selected contextual or version-dependent words such as `final` and `concept` as `ID` before conditional-literal matching, and using one declarator configuration when a stricter split would only duplicate binding logic. By contrast, an over-broad rule that turns a valid construct into the wrong AST or creates uncontrolled ambiguity is not practical.
+
 ### Factor shared syntax before interpretations diverge
 
 An identifier chain has the same token structure before lookup tells whether it names a type, value, namespace, or template. [`QualifiedName`](../../Test/Source/BuiltIn-Cpp/Syntax/Ast/QualifiedName.txt) therefore derives from `TypeOrExpr`. [`QualifiedName.txt`](../../Test/Source/BuiltIn-Cpp/Syntax/Syntax/QualifiedName.txt) builds that shared node once instead of manufacturing duplicate type and expression trees.
@@ -132,13 +146,252 @@ Parenthesized nesting changes which suffix binds to which prefix. The `innerDecl
 
 The `AK` partial rules are deliberately categorized:
 
-- `_DeclaratorAKFirst` admits the components legal at the start of a prefix sequence.
+- `_DeclaratorAKFirst` admits the components accepted by the current grammar at the start of a prefix sequence.
 - `_DeclaratorAKFollow` admits subsequent components, including CV qualifiers.
 - `_DeclaratorAKCV` supplies the CV-only boundary used before a nested declarator.
 - `_DeclaratorAKMember` supplies the qualified-name-and-`::` fragment of a member pointer; a separate `*` component completes the pointer.
 - `_DeclaratorAKCtorDtor` is a separate contract for the qualified prefix of an untyped function-shaped declarator, even though its current spelling matches the member-qualification category.
 
 Keep these semantic categories separate when their present productions happen to be identical. A later language feature may change one context without changing the other.
+
+### Worked declarator examples
+
+The declaration owns the base type; the declarator owns the binding around a name or an anonymous type-id. In the AST, one `Declarator` nesting level contains:
+
+- `advancedTypes` for prefix components such as `*`, `&`, CV qualifiers, and member qualification;
+- optional `id` or `innerDeclarator` for the core (abstract configurations may have neither);
+- `funcPart` or `arrayParts` for suffixes;
+- initialization outside the declarator, in `DeclaratorVariablePart`.
+
+The binding effect of parentheses is preserved by `innerDeclarator`, although the delimiter tokens themselves are not stored as fields. That structural distinction separates an array of pointers from a pointer to an array.
+
+| Source | Base owned by the outer declaration | Declarator shape | Resulting structure |
+| --- | --- | --- | --- |
+| `int value;` | `int` | name `value` | object of type `int` |
+| `int * const pointer = nullptr;` | `int` | prefix `* const`, name `pointer` | const pointer to `int` |
+| `int *items[4];` | `int` | prefix `*`, name `items`, suffix `[4]` | array of four pointers to `int` |
+| `int (*items)[4];` | `int` | nested `(*items)`, outer suffix `[4]` | pointer to an array of four `int` values |
+| `int (*callback)(double);` | `int` | nested `(*callback)`, outer function suffix | pointer to a function returning `int` |
+| `int (*callbacks[8])(double);` | `int` | nested `(*callbacks[8])`, outer function suffix | array of eight pointers to functions returning `int` |
+| `int Widget::*member;` | `int` | member qualification `Widget::`, `*`, name | pointer to an `int` member of `Widget` |
+| `int (Widget::*method)(double) const;` | `int` | nested member pointer, outer function suffix | pointer to a const member function returning `int` |
+
+#### Named object and pointer qualifiers
+
+```C++
+int value;
+const int* pointerToConst;
+int* const constPointer = nullptr;
+```
+
+All three declarations use the shared typed-variable machinery in `DeclarationVariable.txt` with one `_TypeBeforeDeclarator` and one `_DeclaratorRequiredName`. File/class declarations reach it through `_MultiVarsOrFuncDecl`, declaration statements through `_MultiVarsOrFuncForwardDecl`, and loop/selection contexts may call `_MultiVarsDecl` directly.
+
+- `value` needs only `_DeclaratorName`.
+- `pointerToConst` stores `const int` in the base type and `*` in the declarator.
+- `constPointer` stores `int` in the base type and the ordered `* const` components in `advancedTypes`.
+
+This separation matters: base-type CV and pointer CV must not be normalized into the same field. Adding a new pointer-like modifier belongs in the declarator components and automatically reaches declarations and abstract type-ids.
+
+#### Array of pointers versus pointer to array
+
+```C++
+int *arrayOfPointers[4];
+int (*pointerToArray)[4];
+```
+
+For `arrayOfPointers`, `_DeclaratorBeforeInner` consumes `*`, `_DeclaratorName` consumes the name, and `_DeclaratorAfterInner` consumes `[4]` through `_DeclaratorArrayPart`. The array suffix binds to the name at that level, with the pointer applying to each element type.
+
+For `pointerToArray`, `_DeclaratorInnerRequiredName` first creates a parenthesized `innerDeclarator` for `*pointerToArray`. The outer declarator then receives `[4]`. Keeping the nesting produces the opposite binding without inventing a separate “pointer-to-array type” production.
+
+Any change to the shared `_DeclaratorArrayPart` must be tested in both shapes. Adding an array feature only to a variable-declaration consumer would fail to reach the parenthesized type-id and function-return forms.
+
+#### Functions, function pointers, and arrays of function pointers
+
+```C++
+int function(double argument);
+int (*callback)(double);
+int (*callbacks[8])(double);
+auto makeCallback() -> int (*)(double);
+```
+
+`_DeclaratorFunctionPart` is the one function-suffix implementation in all four declarations. Its parameters reuse `_FunctionParameter`; its trailing return type reuses `_Type`.
+
+- `function` has a name followed directly by the function part.
+- `callback` puts `*callback` in `innerDeclarator`, then attaches the function part outside the parentheses.
+- `callbacks` puts the array suffix inside that nested pointer declarator before attaching the outer function part.
+- `makeCallback` uses an ordinary required-name declarator for the function and an abstract declarator inside the deferred `_Type` for `int (*)(double)`.
+
+The fourth case is an important orthogonality check: a complex abstract type appears inside a complex named declaration, but both use the same declarator component rules.
+
+#### Abstract declarators in type-ids
+
+```C++
+using Pointer = int*;
+using PointerToArray = int (*)[4];
+using Callback = int (*)(double);
+
+sizeof(int[4]);
+static_cast<int*>(value);
+```
+
+`_UsingTypeDecl`, `sizeof`, and named casts all reach the public `_Type` rule. `_Type` parses `_TypeBeforeDeclarator` and `_DeclaratorWithoutName`, so the same prefix, nesting, array, and function components are available with no identifier.
+
+The anonymous equivalents line up with named declarations:
+
+| Named declaration | Abstract type-id | Shared components |
+| --- | --- | --- |
+| `int *pointer` | `int*` | pointer prefix |
+| `int array[4]` | `int[4]` | array suffix |
+| `int (*pointer)[4]` | `int(*)[4]` | nested pointer plus outer array |
+| `int (*callback)(double)` | `int(*)(double)` | nested pointer plus outer function part |
+
+If a feature works only in the named or only in the abstract column, it was probably added to a consumer instead of the owning declarator component/configuration.
+
+#### One base type with multiple declarators
+
+```C++
+int *left, right[4], (*callback)(double);
+```
+
+`VariablesDeclaration.type` stores `int` once. The no-semicolon variable core uses `_MultiVarsDeclVariablePartFirst` for `*left`; complete file/class declarations use `_MultiVarsOrTypedFuncDeclVariablePart` for that first item. Both routes hand `right[4]` and the recursive `(*callback)(double)` tail to `_MultiVarsDeclVariablePartSecond`. Each `DeclaratorVariablePart` has an independent declarator and initializer, so `*` from the first item cannot leak into later items.
+
+This is why first and subsequent variable-part rules exist even though they share declarator machinery. A new modifier must work after a comma as well as on the first declarator; copying the whole declaration rule for later items would destroy that invariant.
+
+#### Parameters reuse optional-name declarators
+
+```C++
+void visit(
+    int,
+    const char* name,
+    double values[3],
+    int (*callback)(double)
+);
+```
+
+Every item is parsed by `_FunctionParameter`:
+
+- `int` uses the type-only alternative.
+- `const char* name` attaches an optional-name pointer declarator.
+- `double values[3]` attaches an optional-name array declarator.
+- `int (*callback)(double)` attaches an optional-name nested function-pointer declarator.
+
+C++ later adjusts array and function parameters to pointer types. That adjustment belongs to a post-parse declarator/type pass; it should not create parameter-only copies of array and function syntax.
+
+The same policy dimension produces related configurations for other contexts: `_CatchParameter` permits an optional name without a general initializer, `_ForEachParameter` requires a name and leaves `:` to the statement rule, and `_ExprOrVarCondition` requires an initialized declaration candidate.
+
+#### Declarator structure can intentionally remain ambiguous
+
+```C++
+S function(int(a));
+S object((int(a)));
+S dependent(auto()->C);
+```
+
+The first spelling has the classic function-declaration preference. The extra parentheses in the second force an object initializer. The third can remain unresolved until lookup establishes whether `C` is a type suitable for the trailing return.
+
+These outcomes should not be encoded as special `S`/`int` productions. The parser builds candidates through the same type, expression, parameter, and declarator rules; a post-parse pass reads the normalized declarator binding tree, applies syntax-only standard preferences, and retains the cases that need lookup. [De-ambiguation Improvements](Cases_Improvement.md) gives the complete case matrix.
+
+#### Typedef declarations and aliases reach the same type shape differently
+
+```C++
+typedef int (*CallbackA)(double);
+using CallbackB = int (*)(double);
+```
+
+The `typedef` form uses `_MultiTypedefVarsDeclWithoutKeyword`: `int` is the shared base and `(*CallbackA)(double)` is a required-name declarator. The alias form uses `_UsingTypeDecl`: its right side is one `_Type` containing the nameless `(*)(double)` declarator. Both paths share declarator components, so function-pointer support is implemented once.
+
+#### Untyped function-shaped declarators
+
+```C++
+struct Widget
+{
+    Widget(int value);
+    ~Widget();
+    operator bool() const;
+};
+
+template<typename T>
+struct Box
+{
+    Box(T value);
+};
+
+Box(int) -> Box<int>;
+```
+
+These declarations have no `_TypeBeforeDeclarator`. `_DeclaratorUntypedFuncWithoutKeyword` combines an optional qualified prefix, `_DeclaratorUntypedFuncId`, and `_DeclaratorFunctionPart`.
+
+- An ordinary name covers constructors and also the deduction-guide shape.
+- `_DtorIdentifier` covers destructors.
+- `_OperatorTypeIdentifier` covers conversion functions and reuses `_TypeWithoutFuncVar` for the conversion type.
+
+The ordinary-name branch intentionally accepts a little more than strict C++ would permit in every scope. That bounded over-acceptance keeps one untyped function-shaped declarator path; a later declaration classifier can distinguish constructors and deduction guides from invalid input.
+
+#### Member pointers combine qualification, pointer, and nesting
+
+```C++
+int Widget::*member;
+int (Widget::*method)(double) const;
+```
+
+In the current grammar, `_DeclaratorAKMember` contributes the `Widget::` qualification and a following pointer component contributes `*`. The data-member declaration can use those components directly. The member-function pointer puts `Widget::*method` in `innerDeclarator` and attaches `_DeclaratorFunctionPart` outside it, where `const` is a function qualifier.
+
+The qualification and `*` are semantically one member-pointer operator, so ambiguity around a long qualified prefix should be fixed in the shared member-pointer component rather than by special-casing fields or methods. [De-ambiguation Improvements](Cases_Improvement.md) records that structural recommendation.
+
+#### Choosing a declarator configuration
+
+| Context | Public entry | Name policy and restriction |
+| --- | --- | --- |
+| Complete type-id such as `int(*)[4]` | `_Type` → `_DeclaratorWithoutName` | no name; full suffix support |
+| Conversion type in `operator int*()` | `_TypeWithoutFuncVar` → `_DeclaratorWithoutNameAndFuncVar` | no name; restricted direct suffixes |
+| Variable or field `int *value` | `_DeclaratorRequiredName` | name required |
+| Function parameter `int *value` or `int*` | `_DeclaratorOptionalName` | name optional |
+| Catch parameter `const Error& error` | `_CatchParameter` → `_DeclaratorOptionalName` | name optional; no initializer |
+| Range-for declaration `auto& item` | `_ForEachParameter` → required-name path | name required; `:` owned by statement |
+| Constructor, destructor, conversion, or guide | `_DeclaratorUntypedFuncWithoutKeyword` | no base type; function part required |
+
+When a new C++ feature changes declarators, test every applicable row. If two rows need different acceptance, introduce one clearly named configuration switch at that dimension while keeping the component grammar shared.
+
+#### Adding a new declarator context: allocated types
+
+```C++
+new int;
+new int[4];
+new int*[4];
+new (arena) int[4];
+```
+
+The current `_NewExpr` does not follow the declarator design: it accepts only `_QualifiedName` followed by an ad hoc array-bound loop, so even the primitive base in `new int` is outside its type path.
+
+The orthogonal extension is not to add `int`, pointer, and array alternatives to `_NewExpr`. It is to introduce `_DeclaratorForNewTypeId`, assembled from the existing nameless pointer/member-pointer and array components with the restrictions of a new-declarator:
+
+```text
+new-type-id = _TypeBeforeDeclarator + [_DeclaratorForNewTypeId]
+new-expression = placement? + new-type-id + initializer?
+```
+
+The parenthesized allocated-type alternative can reuse the complete `_Type` rule. Placement arguments and the new-initializer stay outside the type. This one configuration makes primitive, qualified, pointer, member-pointer, array, and nested allocated types improve together.
+
+It is acceptable if the shared configuration admits a small invalid combination that a compiler would reject, provided it consumes every valid new-type-id consistently and does not steal tokens from another valid interpretation. [De-ambiguation Improvements](Cases_Improvement.md) records the required longest-boundary behavior.
+
+#### Declaration specifiers should wrap, not fork, declarators
+
+```C++
+struct Owner
+{
+    friend int compare(const Owner&, const Owner&);
+    friend class Helper;
+
+    template<typename T>
+    friend void visit(T&& value);
+};
+```
+
+`friend`, storage specifiers, function specifiers, CV specifiers, and the base type form a declaration-level sequence around the declarator. Their ordering rules are complicated, but they do not change how `compare(...)` or `visit(...)` binds.
+
+A maintainable grammar parses one shared decl-specifier sequence, normalizes it into declaration-wide properties, and then invokes the ordinary type/declarator or friend-type path. Context views may exclude specifier families where useful, but they should not duplicate function and type declarators merely to place `friend` in another order.
+
+For this indexer, allowing `friend` in a few compiler-invalid positions can be the better design if it removes a large matrix of reordered-specifier productions. The over-acceptance must remain bounded to the shared specifier sequence; it must not cause a valid non-friend declaration to acquire a different AST.
 
 ### Declarator configurations
 
@@ -256,7 +509,7 @@ Both depend on the no-comma/no-`>` view instead of copying expression or type sy
 | `_DeclarationKeywordWithoutFriend` | Declaration keyword subset valid where `friend` is excluded; currently includes `extern` and optional language linkage. |
 | `_DeclarationKeyword` | Adds `friend` to the declaration-keyword subset. |
 | `_DeclaratorKeyword` | Storage, function, calling-convention, and extension keywords accepted around a declarator. |
-| `_DeclaratorAKFirst` | Partial `Declarator` fragment legal as the first prefix component. |
+| `_DeclaratorAKFirst` | Partial `Declarator` fragment accepted by the current grammar as the first prefix component. |
 | `_DeclaratorAKFollow` | Partial fragment for subsequent prefix components, including CV. |
 | `_DeclaratorAKCV` | CV-only fragment for an inner declarator boundary. |
 | `_DeclaratorAKMember` | Member-qualification fragment ending in `::`; a separate `*` component completes a member pointer. |
