@@ -1,8 +1,8 @@
 # BuiltIn-Cpp Syntax Design
 
-This document is the maintenance guide for the C++ grammar in [`Test/Source/BuiltIn-Cpp`](../../Test/Source/BuiltIn-Cpp). It explains how the syntax files cooperate, which rules are cross-file contracts, and how to extend the grammar without duplicating C++ concepts.
+This document is the maintenance guide for the C++ grammar in [`Test/Source/BuiltIn-Cpp`](../../Test/Source/BuiltIn-Cpp). It explains the syntax that is implemented now, how the syntax files cooperate, and which rules are cross-file contracts. Proposed additions and coverage gaps belong in the case documents, not in this description of the current grammar.
 
-BuiltIn-Cpp is a test parser and a design specimen. It intentionally preserves interpretations that require lookup instead of resolving symbols during parsing. Its current standard-coverage gaps are indexed separately in [C++ Parsing Documentation](Index.md).
+Read [C++ Syntax Implementation Philosophy](Philosophy.md) before changing this grammar. BuiltIn-Cpp is a code-indexing test parser and a design specimen: it intentionally preserves interpretations that require lookup, accepts bounded compiler-invalid syntax when that keeps the grammar orthogonal, and avoids symbol resolution. Its current standard-coverage gaps are indexed separately in [C++ Parsing Documentation](Index.md).
 
 ## Source layout and composition
 
@@ -30,6 +30,14 @@ For the grammar notation itself, including reuse clauses, partial rules, prefere
 
 ## Governing design principles
 
+[C++ Syntax Implementation Philosophy](Philosophy.md) is the authority for design choices. Its order is significant: accepting compatible history is the baseline; orthogonality may override it; bounded incorrect syntax may be accepted to preserve orthogonality; and avoiding unnecessary ambiguity has the highest priority. The sections below describe how the current grammar realizes that hierarchy.
+
+### Preserve compatible history, but prefer the newer standard
+
+The grammar does not select one input language version. Compatible spellings from different editions share the same rules: for example, `register` remains a declarator keyword and dynamic exception specifications remain accepted beside `noexcept`.
+
+Historical compatibility stops when it would add an avoidable competing interpretation to ordinary modern code. The current grammar therefore gives `auto` its dedicated `QualifiedNameKinds::Auto` form and does not admit it through `_NameIdentifier`. This intentionally rejects its pre-C++11 identifier use instead of making a declaration such as `auto value;` ambiguous for no semantic reason.
+
 ### Preserve orthogonality
 
 Every C++ syntactic category should have one canonical implementation. If every place needs a type, all such places should eventually reach `_Type`, `_TypeBeforeDeclarator`, or another explicitly documented type view. Do not copy the productions for a type into template arguments, casts, parameters, base classes, and declarations independently.
@@ -54,11 +62,17 @@ This is a design tool, not permission to make every rule broad. Practical over-a
 
 - The extra spellings form a small and explainable set.
 - No valid spelling loses a candidate or receives a different useful interpretation.
-- Tokens and source ranges remain available, so a later pass can recover strict distinctions if needed.
+- Tokens and source ranges remain available, so downstream tooling can inspect the spelling without requiring the parser to enforce strict compiler validity.
 - The broader rule removes substantial duplication or keeps one syntactic category behind one public API.
 - The choice is documented beside the affected coverage and does not conceal a genuinely missing standard construct.
 
-Examples include accepting split operator spellings such as `a > > b` through the same shift rule, treating selected contextual or version-dependent words such as `final` and `concept` as `ID` before conditional-literal matching, and using one declarator configuration when a stricter split would only duplicate binding logic. By contrast, an over-broad rule that turns a valid construct into the wrong AST or creates uncontrolled ambiguity is not practical.
+Examples include accepting split operator spellings such as `a > > b` through the same shift rule, admitting declarator keywords in some compiler-invalid orders through the shared declarator combinators, and using one untyped function-shaped declarator for constructors and deduction-guide-shaped declarations. By contrast, an over-broad rule that turns a valid construct into the wrong AST or creates uncontrolled ambiguity is not practical.
+
+### Avoid unnecessary ambiguity
+
+Ambiguity is justified only when the correct interpretation requires semantic facts that the syntax deliberately does not collect. Token spelling, delimiters, precedence, associativity, and other purely syntactic facts should select one shape whenever the standard supplies such a choice.
+
+The dedicated `auto` form is the current historical-compatibility example. The preferred optional `else` and the longest `operator new[]`/`operator delete[]` forms are current token-only priority examples. Limited over-acceptance must not reintroduce alternatives in these cases merely because an older edition or an invalid spelling could be represented.
 
 ### Factor shared syntax before interpretations diverge
 
@@ -70,7 +84,7 @@ Create distinct AST nodes where syntax actually diverges, not merely where seman
 
 The AST roots `TypeOrExprOrOthers`, `Declaration`, `TypeOrExpr`, and `Statement` are marked `@ambiguous` in [`Ast/Ast.txt`](../../Test/Source/BuiltIn-Cpp/Syntax/Ast/Ast.txt). Declarator-related nodes also expose ambiguity where competing constructions need a common result type.
 
-The grammar should use token-only facts, precedence, and required punctuation. It should not guess whether a name denotes a type or template. For example, `A<B>C;` can remain both a declaration and an expression statement. A later indexer pass may resolve the candidates with symbol information.
+The grammar should use token-only facts, precedence, and required punctuation. It should not guess whether a name denotes a type or template. For example, `A<B>C;` can remain both a declaration and an expression statement. BuiltIn-Cpp keeps those candidates unresolved; a separate consumer may inspect them if it already owns semantic information, but symbol resolution is not part of this grammar.
 
 An ambiguity is constructible only when the alternatives have a suitable ambiguity-enabled common AST base and compatible assembly shapes. When adding a competing alternative, design its AST relationship at the same time as its syntax.
 
@@ -152,7 +166,7 @@ The `AK` partial rules are deliberately categorized:
 - `_DeclaratorAKMember` supplies the qualified-name-and-`::` fragment of a member pointer; a separate `*` component completes the pointer.
 - `_DeclaratorAKCtorDtor` is a separate contract for the qualified prefix of an untyped function-shaped declarator, even though its current spelling matches the member-qualification category.
 
-Keep these semantic categories separate when their present productions happen to be identical. A later language feature may change one context without changing the other.
+The current grammar keeps these semantic categories separate even though their productions are identical, because each public rule documents a different caller contract.
 
 ### Worked declarator examples
 
@@ -275,7 +289,7 @@ Every item is parsed by `_FunctionParameter`:
 - `double values[3]` attaches an optional-name array declarator.
 - `int (*callback)(double)` attaches an optional-name nested function-pointer declarator.
 
-C++ later adjusts array and function parameters to pointer types. That adjustment belongs to a post-parse declarator/type pass; it should not create parameter-only copies of array and function syntax.
+C++ later adjusts array and function parameters to pointer types, but the current syntax AST preserves the written array or function shape. BuiltIn-Cpp does not perform that semantic adjustment and does not duplicate parameter-only array or function syntax.
 
 The same policy dimension produces related configurations for other contexts: `_CatchParameter` permits an optional name without a general initializer, `_ForEachParameter` requires a name and leaves `:` to the statement rule, and `_ExprOrVarCondition` requires an initialized declaration candidate.
 
@@ -287,9 +301,9 @@ S object((int(a)));
 S dependent(auto()->C);
 ```
 
-The first spelling has the classic function-declaration preference. The extra parentheses in the second force an object initializer. The third can remain unresolved until lookup establishes whether `C` is a type suitable for the trailing return.
+The first spelling has the classic function-declaration preference. The extra parentheses in the second force an object initializer. The third remains unresolved because establishing whether `C` is a type suitable for the trailing return requires lookup.
 
-These outcomes should not be encoded as special `S`/`int` productions. The parser builds candidates through the same type, expression, parameter, and declarator rules; a post-parse pass reads the normalized declarator binding tree, applies syntax-only standard preferences, and retains the cases that need lookup. [De-ambiguation Improvements](Cases_Improvement.md) gives the complete case matrix.
+The current parser builds candidates through the same type, expression, parameter, and declarator rules rather than special `S`/`int` productions. It preserves the declarator binding structure and leaves lookup-dependent cases unresolved. Syntax-only preference gaps are recorded in [De-ambiguation Improvements](Cases_Improvement.md); they are not implemented by this grammar today.
 
 #### Typedef declarations and aliases reach the same type shape differently
 
@@ -325,7 +339,7 @@ These declarations have no `_TypeBeforeDeclarator`. `_DeclaratorUntypedFuncWitho
 - `_DtorIdentifier` covers destructors.
 - `_OperatorTypeIdentifier` covers conversion functions and reuses `_TypeWithoutFuncVar` for the conversion type.
 
-The ordinary-name branch intentionally accepts a little more than strict C++ would permit in every scope. That bounded over-acceptance keeps one untyped function-shaped declarator path; a later declaration classifier can distinguish constructors and deduction guides from invalid input.
+The ordinary-name branch intentionally accepts a little more than strict C++ would permit in every scope. That bounded over-acceptance keeps one untyped function-shaped declarator path. The syntax AST leaves the ordinary-name form unclassified, and compiler-invalid uses are outside the indexer's responsibility.
 
 #### Member pointers combine qualification, pointer, and nesting
 
@@ -336,7 +350,7 @@ int (Widget::*method)(double) const;
 
 In the current grammar, `_DeclaratorAKMember` contributes the `Widget::` qualification and a following pointer component contributes `*`. The data-member declaration can use those components directly. The member-function pointer puts `Widget::*method` in `innerDeclarator` and attaches `_DeclaratorFunctionPart` outside it, where `const` is a function qualifier.
 
-The qualification and `*` are semantically one member-pointer operator, so ambiguity around a long qualified prefix should be fixed in the shared member-pointer component rather than by special-casing fields or methods. [De-ambiguation Improvements](Cases_Improvement.md) records that structural recommendation.
+The qualification and `*` are semantically one member-pointer operator, but the current grammar stores them as a member-qualification component followed by a separate pointer component. The resulting long-prefix ambiguity is recorded as a current gap in [De-ambiguation Improvements](Cases_Improvement.md).
 
 #### Choosing a declarator configuration
 
@@ -352,29 +366,7 @@ The qualification and `*` are semantically one member-pointer operator, so ambig
 
 When a new C++ feature changes declarators, test every applicable row. If two rows need different acceptance, introduce one clearly named configuration switch at that dimension while keeping the component grammar shared.
 
-#### Adding a new declarator context: allocated types
-
-```C++
-new int;
-new int[4];
-new int*[4];
-new (arena) int[4];
-```
-
-The current `_NewExpr` does not follow the declarator design: it accepts only `_QualifiedName` followed by an ad hoc array-bound loop, so even the primitive base in `new int` is outside its type path.
-
-The orthogonal extension is not to add `int`, pointer, and array alternatives to `_NewExpr`. It is to introduce `_DeclaratorForNewTypeId`, assembled from the existing nameless pointer/member-pointer and array components with the restrictions of a new-declarator:
-
-```text
-new-type-id = _TypeBeforeDeclarator + [_DeclaratorForNewTypeId]
-new-expression = placement? + new-type-id + initializer?
-```
-
-The parenthesized allocated-type alternative can reuse the complete `_Type` rule. Placement arguments and the new-initializer stay outside the type. This one configuration makes primitive, qualified, pointer, member-pointer, array, and nested allocated types improve together.
-
-It is acceptable if the shared configuration admits a small invalid combination that a compiler would reject, provided it consumes every valid new-type-id consistently and does not steal tokens from another valid interpretation. [De-ambiguation Improvements](Cases_Improvement.md) records the required longest-boundary behavior.
-
-#### Declaration specifiers should wrap, not fork, declarators
+#### Declaration keywords participate in the shared declarator grammar
 
 ```C++
 struct Owner
@@ -387,11 +379,9 @@ struct Owner
 };
 ```
 
-`friend`, storage specifiers, function specifiers, CV specifiers, and the base type form a declaration-level sequence around the declarator. Their ordering rules are complicated, but they do not change how `compare(...)` or `visit(...)` binds.
+`_DeclarationKeywordWithoutFriend` accepts `extern` and an optional linkage string; `_DeclarationKeyword` adds `friend`; `_DeclaratorKeyword` then combines those declaration-wide words with storage, function, and calling-convention words. Declaration routers use the narrower views where class/enum forwarding or friend declarations need different routing, while typed variable/function paths use `_DeclaratorKeyword` before the base type.
 
-A maintainable grammar parses one shared decl-specifier sequence, normalizes it into declaration-wide properties, and then invokes the ordinary type/declarator or friend-type path. Context views may exclude specifier families where useful, but they should not duplicate function and type declarators merely to place `friend` in another order.
-
-For this indexer, allowing `friend` in a few compiler-invalid positions can be the better design if it removes a large matrix of reordered-specifier productions. The over-acceptance must remain bounded to the shared specifier sequence; it must not cause a valid non-friend declaration to acquire a different AST.
+The declarator prefix also admits `_DeclaratorKeyword`, so the current grammar accepts keyword orders such as `int static *method();` and records keywords at the syntactic level where they occur. It does not normalize one strict standard decl-specifier sequence. This is the implemented bounded over-acceptance: the same declarator combinators handle every position, while compiler-invalid arrangements are left for the compiler that validates input before the indexer sees it.
 
 ### Declarator configurations
 

@@ -4,6 +4,8 @@
 
 This document evaluates whether the **design of VlppParser2** can support the complete C++26 language syntax. It is not a gap report for the C++ grammar under [`Test/Source/BuiltIn-Cpp`](../../Test/Source/BuiltIn-Cpp): that grammar is a deliberately useful design specimen, not the proposed C++26 deliverable.
 
+The BuiltIn-Cpp target is governed by [C++ Syntax Implementation Philosophy](Philosophy.md). It is a code indexer over compiler-checked input, not a compiler frontend: compatible historical spellings are welcome, reusable grammar is preferred over edition-specific duplication, limited invalid syntax is acceptable when it preserves that reuse, and token-only ambiguity should still be eliminated. The C++26 baseline below audits recognition capability; it does not require compiler-grade rejection or introduce symbol resolution into BuiltIn-Cpp.
+
 The standards baseline is [N5046, Working Draft, Programming Languages — C++ (2026-05-12)](https://www.open-std.org/jtc1/sc22/wg21/docs/papers/2026/n5046.pdf). [N5047](https://www.open-std.org/jtc1/sc22/wg21/docs/papers/2026/n5047.html) identifies N5046 as the current C++26 working draft and the text from which the Draft International Standard is being prepared. Links to `eel.is/c++draft` below provide a navigable rendering of the current draft.
 
 The short answer is:
@@ -21,7 +23,7 @@ There are, however, important boundaries:
 | Can the bundled regex lexer turn arbitrary raw C++26 source directly into the exact required tokens? | **No**; a C++-aware scanner is required for several translation-phase rules. |
 | Can a parser grammar perform macro expansion, inclusion, conditional compilation, module preprocessing, and `#embed`? | **No**; use a preprocessor before phase-7 parsing. |
 | Can it parse a valid empty translation unit through an ordinary generated entry rule? | **No**, because clauses that can consume zero tokens are rejected. A wrapper or sentinel is required. |
-| Can it choose the unique interpretation required by lookup, type information, template instantiation, constraints, or reflection evaluation? | **No, intentionally**; preserve candidates and resolve them later. |
+| Can it choose the unique interpretation required by lookup, type information, template instantiation, constraints, or reflection evaluation? | **No, intentionally**; BuiltIn-Cpp preserves those candidates instead of adding a symbol resolver. |
 | Can the current implementation be claimed proven for every possible full-C++ ambiguity graph and workload? | **Not yet**; there are explicit trace-topology limits, a known ambiguity-boundary comparison defect, and potentially severe candidate growth. |
 
 The intended result is therefore not an underpowered C++ parser. It is a **pre-semantic C++ AST**: a typed tree containing local `ToResolve` nodes wherever tokens alone do not justify selecting one interpretation.
@@ -40,14 +42,14 @@ flowchart LR
     Tokens["Prepared parser-token encoding<br/>of the phase-7 stream"]
     GLR["VlppParser2 GLR recognizer"]
     AST["Typed AST with local ToResolve nodes"]
-    Resolver["Name/type lookup and ambiguity resolver"]
-    Semantic["Constraints, instantiation, constant evaluation, reflection"]
+    Indexer["Code indexer<br/>retains unresolved candidates"]
+    Consumer["Optional semantic consumer<br/>outside BuiltIn-Cpp"]
 
-    Source --> Scanner --> PP --> Tokens --> GLR --> AST --> Resolver --> Semantic
-    Semantic -. "injected declarations or information affecting later analysis" .-> Resolver
+    Source --> Scanner --> PP --> Tokens --> GLR --> AST --> Indexer
+    AST -. "only when another consumer needs compiler semantics" .-> Consumer
 ```
 
-This division preserves the main advantage of VlppParser2: the grammar remains declarative and symbol-blind, while C++-specific state is concentrated in a scanner/preprocessor and a later resolver.
+This division preserves the main advantage of VlppParser2: the grammar remains declarative and symbol-blind. Token preparation is a frontend boundary; lookup, constraint solving, instantiation, and reflection evaluation are optional downstream capabilities, not responsibilities of the BuiltIn-Cpp syntax or indexer.
 
 The parser already exposes the right seam. Generated parser entry methods provide public overloads that accept a prepared `RegexToken` list; for example, see the generated [`CppParser.h`](../../Test/Source/BuiltIn-Cpp/Generated/CppParser.h). Those overloads call the protected [`ParserBase::ParseWithTokens`](../../Source/SyntaxBase.h) helper, whereas the string overload is the convenience path through the bundled lexer. A custom frontend can therefore use the generated AST assembler and GLR runtime without using the generated lexer for every translation phase.
 
@@ -58,9 +60,9 @@ Four capability levels should remain distinct:
 1. **Token formation** turns characters into preprocessing tokens and then language tokens. Whitespace, line boundaries, raw strings, header names, token adjacency, Unicode rules, and maximal-munch exceptions matter here.
 2. **Preprocessing** selects and transforms the token stream. Includes, macros, token pasting, conditional groups, `#embed`, and module-related preprocessing occur here.
 3. **Syntactic recognition** determines every viable tree shape for the resulting tokens. This is the responsibility proposed for VlppParser2.
-4. **Standard interpretation and validity** apply lookup, type classification, the standard's disambiguation rules, constraint satisfaction, instantiation, access rules, and other semantic restrictions.
+4. **Standard interpretation and validity** apply lookup, type classification, the standard's disambiguation rules, constraint satisfaction, instantiation, access rules, and other semantic restrictions. BuiltIn-Cpp intentionally does not implement this level.
 
-This document calls a construct **supported by the parser** when level 3 can represent it and build the appropriate AST, even if levels 1, 2, or 4 require another component. That definition matches the requested policy of accepting ambiguity and postponing symbol resolution.
+This document calls a construct **supported by the parser** when level 3 can represent it and build the appropriate AST, even if levels 1 and 2 require another component or level 4 would be required by a compiler-like consumer. For BuiltIn-Cpp, the unresolved level-3 AST is the intended final syntax result.
 
 It also matches the standard's own presentation. [Annex A](https://eel.is/c++draft/gram) says that its grammar is informative, is not an exact statement of the language, accepts a superset, and relies on later disambiguation and type rules to remove meaningless constructs. An ambiguity-preserving grammar is therefore not a compromise unique to this project; it exposes a separation that the C++ specification itself already makes.
 
@@ -79,7 +81,7 @@ expression-statement: (A < B) > C;
 declaration-statement: A<B> C;
 ```
 
-C++ eventually applies rules involving declarations, types, template names, and lookup. VlppParser2 should not invent those facts while recognizing tokens. It should return a `StatementToResolve` with the expression-statement and declaration-statement candidates. A later C++ resolver can then apply the standard's rules or retain a diagnostic if neither candidate becomes valid.
+C++ eventually applies rules involving declarations, types, template names, and lookup. VlppParser2 should not invent those facts while recognizing tokens. It should return a `StatementToResolve` with the expression-statement and declaration-statement candidates, and BuiltIn-Cpp should retain that node for indexing. A different consumer that already implements C++ semantics may filter it, but this project does not add that machinery.
 
 The existing grammar already implements this policy:
 
@@ -150,7 +152,7 @@ The current draft lists `final`, `import`, `module`, `override`, `post`, and `pr
 
 The `_` placeholder/name-independent declaration feature adds no new token shape. Its effect is semantic classification, so the parser simply preserves the identifier spelling.
 
-**Verdict:** all written forms are representable. Name categories and contextual meaning belong to the later resolver.
+**Verdict:** all written forms are representable. BuiltIn-Cpp preserves unresolved name categories and contextual meaning instead of implementing lookup.
 
 ### Lexical conventions
 
@@ -404,7 +406,7 @@ This is solvable, but responsibility must be explicit:
 - the scanner implements the standard's preprocessing-token maximal-munch rules and exceptions;
 - the parser-token normalization policy preserves original punctuator identity while encoding the special template treatment of `>>`;
 - the GLR grammar retains lookup-dependent template/operator alternatives;
-- the resolver uses symbol facts and standard rules to select or diagnose them.
+- the BuiltIn-Cpp indexer retains alternatives that require symbol facts; only an optional external semantic consumer selects or diagnoses them.
 
 Trying to make the lexer decide whether `A` is a template would put semantic lookup in the wrong layer.
 
@@ -427,7 +429,7 @@ Pointers, references, pointer-to-members, nested parentheses, functions, arrays,
 
 The grammar should preserve binding structure directly rather than flatten a declaration into a list of tokens. A reusable declarator component model also prevents separate, subtly inconsistent grammars for variables, parameters, fields, type-ids, conversion types, and new-expressions.
 
-C++26 retains a specific declarator ambiguity when an ellipsis ends a parameter-declaration-clause without a preceding comma. The ellipsis belongs to the parameter's abstract declarator when that parameter type names an unexpanded template parameter pack or contains `auto`; otherwise it is the function's varargs ellipsis. A symbol-blind parser should retain both object shapes and let the resolver apply that type-dependent rule.
+C++26 retains a specific declarator ambiguity when an ellipsis ends a parameter-declaration-clause without a preceding comma. The ellipsis belongs to the parameter's abstract declarator when that parameter type names an unexpanded template parameter pack or contains `auto`; otherwise it is the function's varargs ellipsis. A symbol-blind parser should retain both object shapes. Applying that type-dependent rule is outside BuiltIn-Cpp.
 
 ### Contextual identifiers
 
@@ -450,7 +452,7 @@ A GLR grammar may initially find both the shorter expression operand and the lon
 
 Reflection's phase ordering is harder than its punctuation. A `consteval` block and reflection facilities can compute information and inject declarations that affect later analysis. The [translation phases](https://eel.is/c++draft/lex.phases) explicitly permit required instantiation and manifest constant evaluation to affect syntactic analysis.
 
-No reflection spelling introduces an identified grammar-level blocker for the first GLR pass. A conforming C++ frontend then needs a semantic feedback mechanism that can add synthesized declarations/AST nodes, update scopes, instantiate templates, and revisit unresolved candidates. This is not a reason to perform reflection inside the grammar.
+No reflection spelling introduces an identified grammar-level blocker for the first GLR pass. A conforming compiler frontend would additionally need a semantic feedback mechanism that can add synthesized declarations/AST nodes, update scopes, instantiate templates, and revisit unresolved candidates. BuiltIn-Cpp does not pursue that mechanism; the indexer keeps the syntactic representation without performing reflection evaluation.
 
 ### Splice category rules
 
@@ -570,7 +572,7 @@ A scalable AST should distinguish:
 2. **Shared name/type/expression prefixes**: identifiers, qualified-name components, template argument syntax, and splice components that should not be cloned before interpretations diverge.
 3. **Syntactic category objects**: declarations, statements, expressions, types, declarators, requirements, attributes, module declarations, and preprocessing artifacts if those are exposed.
 4. **Local ambiguity objects**: broad `@ambiguous` bases such as `TypeOrExpr`, `Declaration`, `Statement`, and possibly name/template-argument/declarator bases.
-5. **Semantic overlays**: resolved entity references, types, scopes, constraints, instantiated nodes, and reflection products stored separately from immutable syntax where practical.
+5. **Optional consumer overlays**: a compiler-like consumer may store resolved entities, types, scopes, constraints, instantiated nodes, and reflection products separately from immutable syntax. BuiltIn-Cpp does not require this layer.
 
 Broad common bases must be intentional. If two viable branches have no ambiguity-enabled common AST base, the runtime cannot construct the requested local `ToResolve` node even though recognition succeeded. Even with a common base, their symbolic AST stack depths, dependencies, and instruction boundaries must be compatible at the merge.
 
@@ -592,20 +594,15 @@ Organize the grammar around dependencies rather than standard chapter file size:
 
 The standard's grammar is a specification aid, not an implementation grammar. Normalize indirect left recursion, semantic name terminals, nullable roots, and wildcard balanced tokens before translating productions.
 
-### Resolution pipeline
+### Indexer pipeline boundary
 
-Resolution should be explicit and repeatable:
+The BuiltIn-Cpp syntax pipeline should be explicit and short:
 
 1. Parse the prepared parser-token encoding of the phase-7 stream and retain every semantically distinct candidate that survives explicit syntax priorities.
-2. Apply mandatory token/syntax preferences such as longest reflect-expression, unevaluated-string `static_assert` messages, and token-context splice categories.
-3. Build lexical scopes and register declarations that do not require unresolved choices.
-4. Classify names as types, templates, namespaces, concepts, or values where lookup permits.
-5. Filter local candidates using the standard's declaration, type-id, template, and comma-less-ellipsis rules.
-6. Evaluate constraints and instantiate only where required for the current decision.
-7. Execute/evaluate C++26 reflection and consteval declaration-producing constructs, update the semantic graph, and revisit affected unresolved nodes.
-8. Report zero surviving candidates as an error; collapse one surviving candidate; retain/report multiple candidates according to the frontend's policy.
+2. Apply mandatory token-only preferences such as longest reflect-expression, unevaluated-string `static_assert` messages, and token-context splice categories.
+3. Publish the syntax AST, including every remaining local `ToResolve` node, to the indexer.
 
-This keeps ambiguity handling local. It avoids selecting one whole-program parse before enough semantic information exists.
+Building scopes for C++ lookup, classifying names, applying type-dependent disambiguation, satisfying constraints, instantiating templates, and evaluating reflection are compiler-semantic operations. Another consumer may layer them over the immutable syntax AST, but they are deliberately outside the BuiltIn-Cpp goal.
 
 ## Final assessment
 

@@ -1,5 +1,69 @@
 # C++ 20 Missing Features
 
+## Feature and Case Index
+
+- Modules and Export Declarations
+  - Case No.1
+  - Case No.2
+  - Case No.3
+  - Case No.4
+  - Case No.5
+  - Case No.6
+  - Case No.7
+  - Case No.8
+  - Case No.9
+- Concepts, Constraints, and Constrained Placeholders
+  - Case No.1
+  - Case No.2
+  - Case No.3
+- Requires Expressions
+  - Case No.1
+  - Case No.2
+  - Case No.3
+- Lambda Constraints
+  - Case No.1
+  - Case No.2
+- Coroutines
+  - Case No.1
+  - Case No.2
+  - Case No.3
+  - Case No.4
+  - Case No.5
+  - Case No.6
+  - Case No.7
+- Designated Initializers
+  - Case No.1
+  - Case No.2
+- Array-Bound Deduction in New Expressions
+  - Case No.1
+- Range-For Init-Statements
+  - Case No.1
+  - Case No.2
+  - Case No.3
+- Static and Thread-Local Structured Bindings
+  - Case No.1
+  - Case No.2
+- Consteval Declarations and Lambdas
+  - Case No.1
+  - Case No.2
+- Constinit Declarations
+  - Case No.1
+- Conditional Explicit Specifiers
+  - Case No.1
+  - Case No.2
+- Nested Inline Namespace Components
+  - Case No.1
+- Three-Way Comparison Operator Declarations
+  - Case No.1
+  - Case No.2
+- C++20 Standard Attribute Uses
+  - Case No.1
+  - Case No.2
+  - Case No.3
+- Using-Enum AST Classification
+  - Case No.1
+  - Case No.2
+
 This file contains phase-7 syntax and AST gaps introduced by C++20. It assumes the input has already passed through a C++ scanner and preprocessor; missing keyword tokens, header-name recognition, and preprocessing are recorded in [Tokenizer and Preprocessor Gaps](Cases_Tokenizer.md).
 
 The largest missing families are modules, constraints/requires syntax, coroutines, and new declaration specifiers. Several C++20 spellings happen to fit an older generic BuiltIn-Cpp production. Those cases are marked as **AST fidelity gaps** because accepting text as the wrong kind of declaration is not enough for a code indexer.
@@ -9,11 +73,11 @@ Implementation categories used below:
 - **Implementation suggestion — Additive:** introduce a wholly absent syntax family in the AST and syntax box that owns that family, then connect it to the existing public routers.
 - **Implementation suggestion — Structural:** generalize an existing shared representation and route all affected consumers through the redesigned rule instead of adding a context-specific production.
 
-Bounded practical over-acceptance is preferred when a small invalid superset substantially improves orthogonality and cannot misinterpret valid, compiler-verified input.
+Apply the [C++ Syntax Implementation Philosophy](Philosophy.md) in its stated priority order: keep shared grammar concepts orthogonal, tolerate bounded invalid supersets, and preserve ambiguity that would require lookup, while preferring the modern standard spelling and avoiding unnecessary ambiguity.
 
 ## Modules and Export Declarations
 
-There are no module-unit, module declaration, import, partition, fragment, or C++20 export productions. Each case is a separate translation unit because module declarations have ordering constraints. Header-unit cases additionally require context-sensitive tokenizer support.
+There are no module-unit, module declaration, import, partition, fragment, or C++20 export productions. Each case is a separate valid translation unit because the standard places ordering constraints on module declarations; the indexer grammar does not need to enforce those constraints. Header-unit cases additionally require context-sensitive tokenizer support.
 
 ### Case No.1
 
@@ -83,11 +147,11 @@ export
 }
 ```
 
-**Implementation suggestion — Additive:** Create dedicated `Syntax/Ast/DeclsModule.txt` and `Syntax/Syntax/DeclarationModules.txt` boxes for module declarations, imports, exports, partitions, and fragments. Route declaration-shaped forms through `Syntax/Syntax/Declarations.txt`, and generalize only `Syntax/Syntax/API.txt::_File` to own the ordered module-unit envelope.
+**Implementation suggestion — Additive:** Create dedicated `Syntax/Ast/DeclsModule.txt` and `Syntax/Syntax/DeclarationModules.txt` boxes for module declarations, imports, exports, partitions, and fragments. Route all declaration-shaped forms through `Syntax/Syntax/Declarations.txt` and retain them in the ordinary source-ordered `File.decls` sequence. Do not encode module-unit ordering or uniqueness in `Syntax/Syntax/API.txt::_File`; accepting misplaced module declarations is a bounded invalid superset that keeps the declaration router orthogonal, while an optional downstream validator can enforce ordering without changing the parser.
 
 ## Concepts, Constraints, and Constrained Placeholders
 
-There is no concept-definition, type-constraint, or requires-clause AST. `template<C T>` and `template<C... Ts>` can already be consumed as non-type parameters whose type is the qualified name `C`; when `C` is a concept, that is the wrong AST interpretation. A symbol-blind parser should retain both parameter candidates until lookup.
+There is no concept-definition, type-constraint, or requires-clause AST. `template<C T>` and `template<C... Ts>` can already be consumed as non-type parameters whose type is the qualified name `C`; when `C` is a concept, that is the wrong AST interpretation. A symbol-blind parser should retain both parameter candidates as the final index representation because choosing between them requires lookup.
 
 ### Case No.1
 

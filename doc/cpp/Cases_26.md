@@ -1,8 +1,106 @@
 # C++ 26 Missing Features
 
+## Feature and Case Index
+
+- Pack Indexing
+  - Case No.1
+  - Case No.2
+  - Case No.3
+- Attributes on Individual Structured Bindings
+  - Case No.1
+  - Case No.2
+- Structured-Binding Packs
+  - Case No.1
+  - Case No.2
+  - Case No.3
+  - Case No.4
+- Structured-Binding Declarations as Conditions
+  - Case No.1
+  - Case No.2
+- Constant-Initialization Specifiers on Structured Bindings
+  - Case No.1
+  - Case No.2
+  - Case No.3
+- Deleted-Function Reasons
+  - Case No.1
+  - Case No.2
+- Variadic Friend Type Declarations
+  - Case No.1
+  - Case No.2
+- Variable and Concept Template-Template Parameters
+  - Case No.1
+  - Case No.2
+- Contract Assertion Statements
+  - Case No.1
+  - Case No.2
+- Function Preconditions and Postconditions
+  - Case No.1
+  - Case No.2
+  - Case No.3
+  - Case No.4
+- Reflect Expressions
+  - Case No.1
+  - Case No.2
+  - Case No.3
+  - Case No.4
+  - Case No.5
+  - Case No.6
+  - Case No.7
+- Longest Reflect-Expression Boundary
+  - Case No.1
+  - Case No.2
+  - Case No.3
+  - Case No.4
+- Splice Expressions and Splice Specializations
+  - Case No.1
+  - Case No.2
+  - Case No.3
+  - Case No.4
+- Spliced Types
+  - Case No.1
+  - Case No.2
+  - Case No.3
+- Computed Destructor Names
+  - Case No.1
+  - Case No.2
+- Spliced Scopes and Members
+  - Case No.1
+  - Case No.2
+  - Case No.3
+  - Case No.4
+- Splices in Type Requirements
+  - Case No.1
+- Namespace and Enum Splices
+  - Case No.1
+  - Case No.2
+  - Case No.3
+- Reflection Annotations
+  - Case No.1
+  - Case No.2
+  - Case No.3
+  - Case No.4
+- Consteval Block Declarations
+  - Case No.1
+  - Case No.2
+  - Case No.3
+- Expansion Statements
+  - Case No.1
+  - Case No.2
+  - Case No.3
+- Generalized Asm Payloads
+  - Case No.1
+  - Case No.2
+  - Case No.3
+- Indeterminate Attribute
+  - Case No.1
+- Expanded Maybe-Unused Subjects
+  - Case No.1
+
 This file contains phase-7 syntax and AST gaps in the current C++26 working draft, N5046. Token formation for `^^`, `[:`, `:]`, `contract_assert`, raw strings, and `#embed` is covered separately in [Tokenizer and Preprocessor Gaps](Cases_Tokenizer.md).
 
 C++26 adds several genuinely new grammar families: pack indexing, structured-binding extensions, variadic friends, new template-template parameter kinds, contracts, reflection and splicing, annotations, consteval blocks, and expansion statements. None has a corresponding BuiltIn-Cpp AST today. Semantic evaluation of reflection, constraints, or contracts is outside this audit; the parser only needs to retain their written structure and any syntactic ambiguity.
+
+Apply the [C++ Syntax Implementation Philosophy](Philosophy.md) throughout: use a shared type, name, declarator, attribute, or statement path wherever possible; keep lookup-dependent candidates; and leave bounded semantic or cardinality restrictions to compiler-verified input instead of multiplying context-specific productions.
 
 Implementation notes use two categories:
 
@@ -189,7 +287,7 @@ struct Value
 };
 ```
 
-**Implementation suggestion — Structural:** Split `_FunctionKeyword` in `Syntax/Syntax/DeclaratorComponents.txt` into ordered qualifier, exception-specifier, and function-body-specifier families, and represent the latter explicitly in `Syntax/Ast/Types.txt` instead of treating `= delete` like an undifferentiated keyword. The delete body-specifier node should retain its optional unevaluated string, while `_DeclaratorFunctionPart` composes the shared suffix families for ordinary functions and lambdas.
+**Implementation suggestion — Structural:** Extend the existing `= delete` branch of `Syntax/Syntax/DeclaratorComponents.txt::_FunctionKeyword` with an optional parenthesized `_Expr_NoComma`, storing the result in the existing `FunctionKeyword.arguments` collection in `Syntax/Ast/Types.txt`. The standard requires an unevaluated string, but accepting another expression in this syntactically isolated position is a bounded invalid superset. Reusing the current shared suffix representation is preferable to splitting every function keyword into ordered subfamilies solely for this case.
 
 ## Variadic Friend Type Declarations
 
@@ -338,7 +436,7 @@ int constrained(T value)
 }
 ```
 
-**Implementation suggestion — Structural:** Add contract-specifier and postcondition-result-binding nodes to `Syntax/Ast/Types.txt`, including their attribute lists, and attach an ordered collection to `DeclaratorFunctionPart`. Refactor `_DeclaratorFunctionPart` and `_DeclaratorFunctionPartOptionalParameters` in `Syntax/Syntax/DeclaratorComponents.txt` to share one tail ordered as qualifiers, trailing return, optional requires-clause, then contracts; both ordinary functions and lambdas must reach the same `_ContractSpecifier` rule.
+**Implementation suggestion — Structural:** Add contract-specifier and postcondition-result-binding nodes to `Syntax/Ast/Types.txt`, including their attribute lists, and attach an ordered collection to `DeclaratorFunctionPart`. Refactor `_DeclaratorFunctionPart` and `_DeclaratorFunctionPartOptionalParameters` in `Syntax/Syntax/DeclaratorComponents.txt` to share one tail containing the trailing return, optional requires-clause, and contracts; both ordinary functions and lambdas must reach the same `_ContractSpecifier` rule. Use the existing broad expression family for predicates and leave restrictions involving virtual, deleted, or defaulted functions and predicate types to compiler validation.
 
 ## Reflect Expressions
 
@@ -416,7 +514,7 @@ r == (^^int) && true
 ^^X<true> < value
 ```
 
-**Implementation suggestion — Structural:** Factor all reflection operands through `_ReflectOperand` in `Syntax/Syntax/Reflection.txt` and apply longest-candidate priority or a syntax-only post-recognition filter at that boundary, not in `_QualifiedName`, `_Type`, or the relational-expression ladder. Parentheses should select an explicitly bounded operand branch, while the unparenthesized branch consumes the longest qualified/template/type-id form before normal expression parsing resumes.
+**Implementation suggestion — Structural:** Factor all reflection operands through `_ReflectOperand` in `Syntax/Syntax/Reflection.txt` and apply longest-candidate priority or a syntax-only post-recognition filter at that boundary, not in `_QualifiedName`, `_Type`, or the relational-expression ladder. Parentheses should select an explicitly bounded operand branch, while the unparenthesized branch consumes the longest qualified/template/type-id form before normal expression parsing resumes. This filter compares only syntactic boundaries; it must not inspect what a name denotes.
 
 ## Splice Expressions and Splice Specializations
 
@@ -747,12 +845,13 @@ void f()
 }
 ```
 
-**Implementation suggestion — Structural:** Add the attribute list to the canonical label-payload hierarchy in `Syntax/Ast/Statements.txt` and make the shared `_LabelPayload` rule in `Syntax/Syntax/Statements.txt` consume `_AttributeSpecifierSeq` before the identifier. Ordinary labeled statements and `BlockStat`'s C++23 trailing payloads should reuse that node; contract result bindings obtain `maybe_unused` through their own result-binding node and the same attribute sequence.
+**Implementation suggestion — Structural:** Add an attribute list to the existing `LabelStat` in `Syntax/Ast/Statements.txt` and make the existing identifier-label alternative in `Syntax/Syntax/Statements.txt` consume `_AttributeSpecifierSeq` before the identifier. Its preferred optional statement tail from the C++23 trailing-label case then covers both ordinary and block-ending labels without a second label representation. Contract result bindings obtain `maybe_unused` through their own result-binding node and the same attribute sequence.
 
 ## Already Covered or Practically Accepted
 
 - A user-generated `static_assert` message is already accepted because `_StaticAssertDecl` permits any `_Expr_NoComma` as its message.
 - The name-independent placeholder `_` is already an ordinary `ID`; its special declaration rules are semantic.
+- Defaulted postfix increment and decrement declarations already compose from the existing `operator++`/`operator--` identifiers, ordinary dummy parameter, and `= default` function keyword; the remaining restrictions are semantic.
 - The C++26 treatment of a comma-less trailing ellipsis does not add a new accepted spelling. The established cases remain in [C++17 and Earlier Missing Features](Cases_17.md), and the type-dependent interpretation belongs in [De-ambiguation Improvements](Cases_Improvement.md).
 - Unevaluated-string changes mostly restrict already broad string acceptance, which does not require work under the practical policy.
 - Trivial unions, constexpr exception handling, constexpr virtual inheritance, observable checkpoints, and most other constexpr changes are semantic.

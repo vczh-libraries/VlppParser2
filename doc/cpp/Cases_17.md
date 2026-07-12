@@ -1,5 +1,119 @@
 # C++ 17 Missing Features
 
+## Feature and Case Index
+
+- Empty Translation Units and Empty Declarations
+  - Case No.1
+  - Case No.2
+- Complete Decl-Specifier Ordering and Fundamental Type Sequences
+  - Case No.1
+  - Case No.2
+- Standard Attributes
+  - Case No.1
+  - Case No.2
+  - Case No.3
+  - Case No.4
+  - Case No.5
+  - Case No.6
+  - Case No.7
+  - Case No.8
+- Alignment Specifiers
+  - Case No.1
+  - Case No.2
+- Unqualified Conversion-Function and Pseudo-Destructor Names
+  - Case No.1
+  - Case No.2
+  - Case No.3
+  - Case No.4
+- Complete New-Expression Type Syntax
+  - Case No.1
+  - Case No.2
+  - Case No.3
+  - Case No.4
+  - Case No.5
+  - Case No.6
+  - Case No.7
+- Complete Throw-Expression Operand
+  - Case No.1
+  - Case No.2
+  - Case No.3
+  - Case No.4
+- Trailing Commas in Braced Initializer Lists
+  - Case No.1
+  - Case No.2
+- Alias Declarations with Defining Class or Enum Types
+  - Case No.1
+  - Case No.2
+- Complete Classic-For Init-Statements
+  - Case No.1
+- Declaration Conditions in Classic For Statements
+  - Case No.1
+- C++17 Selection-Statement Initializers
+  - Case No.1
+  - Case No.2
+  - Case No.3
+- If-Constexpr Statements
+  - Case No.1
+- Structured Bindings
+  - Case No.1
+  - Case No.2
+- Fold Expressions
+  - Case No.1
+  - Case No.2
+  - Case No.3
+  - Case No.4
+  - Case No.5
+- Namespace Aliases
+  - Case No.1
+- Inline Namespaces
+  - Case No.1
+- Root-Qualified Using Directives
+  - Case No.1
+- Using-Declarator Lists and Pack Expansion
+  - Case No.1
+  - Case No.2
+- Standard Asm Declarations
+  - Case No.1
+- Enum-Struct Declarations
+  - Case No.1
+- Qualified Enum Definitions
+  - Case No.1
+  - Case No.2
+- Qualified Class Heads and Class Final
+  - Case No.1
+- Virtual Base Specifiers
+  - Case No.1
+- Unnamed Bit-Fields
+  - Case No.1
+- Complete Friend Type Forms
+  - Case No.1
+  - Case No.2
+- Function Suffixes After a Trailing Return Type
+  - Case No.1
+- Function-Try-Blocks
+  - Case No.1
+  - Case No.2
+- Complete Mem-Initializer-Ids and Pack Expansion
+  - Case No.1
+  - Case No.2
+  - Case No.3
+- Explicit Template Instantiations
+  - Case No.1
+  - Case No.2
+- Typename Template-Template Parameter Keys
+  - Case No.1
+- Deduction-Guide AST Classification
+  - Case No.1
+- Historical Exported Templates
+  - Case No.1
+- ~~Historical Auto Storage-Class Specifier [WON'T FIX]~~
+  - ~~Case No.1~~
+- Historical Class Access Declarations
+  - Case No.1
+- Comma-Less Variadic Parameters
+  - Case No.1
+  - Case No.2
+
 This file contains phase-7 syntax and AST gaps in `Test/Source/BuiltIn-Cpp` for C++17 and every earlier standard edition. Token formation and preprocessing are intentionally excluded and are covered by [Tokenizer and Preprocessor Gaps](Cases_Tokenizer.md).
 
 Most sections describe spellings the current parser rejects. A few are called out as **AST fidelity gaps**: the token sequence is accepted, but the resulting generic node does not identify the standard construct well enough for a code indexer. Cases containing a complete declaration are intended for the `_File` entry; cases explicitly described as expressions are intended for `_TypeOrExpr` or `_Expr`.
@@ -11,7 +125,7 @@ Implementation notes use two categories:
 - **Implementation suggestion — Additive:** the construct has no current AST or grammar representation, so it should be added to the named responsibility box.
 - **Implementation suggestion — Structural:** the construct overlaps an existing category, so its canonical AST and rule family should be generalized for all consumers instead of patching one use site.
 
-Prefer bounded practical over-acceptance when a small invalid superset substantially improves orthogonality and cannot misinterpret valid, compiler-verified input.
+Apply the [C++ Syntax Implementation Philosophy](Philosophy.md) in its stated priority order: accept historical versions where possible, keep shared grammar concepts orthogonal, tolerate bounded invalid supersets, and preserve ambiguity that would require lookup, but do not add unnecessary ambiguity. A section marked **[WON'T FIX]** records a real standard spelling that is deliberately excluded by a higher-priority principle.
 
 ## Empty Translation Units and Empty Declarations
 
@@ -76,7 +190,7 @@ struct Owner
 
 ## Standard Attributes
 
-There is no attribute AST or grammar. Coverage must exercise declaration and name positions, declarator attachment points, statements and standalone attribute declarations, namespace/class/enum positions, pack expansion, attribute namespaces, and arbitrary balanced payloads.
+There is no attribute AST or grammar. Coverage must exercise declaration and name positions, declarator attachment points, statements, labels and standalone attribute declarations, namespace/class/enum positions, pack expansion, attribute namespaces, and arbitrary balanced payloads.
 
 ### Case No.1
 
@@ -164,7 +278,27 @@ template<typename... Types>
 [[indexer::for_types(Types)...]] void attributesFromPack();
 ```
 
-**Implementation suggestion — Additive:** Add shared attribute AST nodes in a dedicated `Syntax/Ast/Attributes.txt` and balanced-token rules in a matching `Syntax/Syntax/Attributes.txt`, exporting one `_AttributeSpecifierSeq` contract. Reference that contract from the owning declaration, name, declarator, statement, lambda, class, enum, namespace, and base-specifier productions instead of defining feature-specific attributes.
+### Case No.8
+
+```C++
+int labeledControl(int value)
+{
+    [[indexer::ordinary_label]] retry:
+    if (value-- > 0)
+        goto retry;
+
+    switch (value)
+    {
+    [[indexer::case_label]] case 0:
+        break;
+    [[indexer::default_label]] default:
+        break;
+    }
+    return value;
+}
+```
+
+**Implementation suggestion — Additive:** Add shared attribute AST nodes in a dedicated `Syntax/Ast/Attributes.txt` and balanced-token rules in a matching `Syntax/Syntax/Attributes.txt`, exporting one `_AttributeSpecifierSeq` contract. Reference that contract from the owning declaration, name, declarator, statement, labeled-statement, lambda, class, enum, namespace, and base-specifier productions instead of defining feature-specific attributes.
 
 ## Alignment Specifiers
 
@@ -367,6 +501,27 @@ void function()
 ```
 
 **Implementation suggestion — Structural:** Define one init-statement AST/rule family in `Syntax/Ast/Statements.txt` and `Syntax/Syntax/Statements.txt` that covers empty, expression, and standard simple-declaration forms. Make classic `for`, selection statements, and later range-for extensions reuse it rather than keeping `_ForStatConditionPart` branches tied to `_MultiVarsDecl`.
+
+## Declaration Conditions in Classic For Statements
+
+`_ForStatConditionPart` uses `_Expr` for the condition between its two semicolons. Standard classic `for` also permits a declaration condition, just like `if`, `while`, and `switch`.
+
+### Case No.1
+
+```C++
+int next();
+
+void function()
+{
+    for (; int value = next(); )
+    {
+        if (value == 0)
+            break;
+    }
+}
+```
+
+**Implementation suggestion — Structural:** Change `ForStatLoopCondition.condition` in `Syntax/Ast/Statements.txt` to the shared type-or-expression-or-declaration result and make the classic-for grammar reuse `DeclarationVariable.txt::_ExprOrVarCondition`. Keep the init-statement on the separate shared init-statement path, and preserve type-versus-expression candidates rather than attempting lookup in the grammar.
 
 ## C++17 Selection-Statement Initializers
 
@@ -993,9 +1148,9 @@ T identity(T value)
 
 **Implementation suggestion — Structural:** Add an export token/property to `TemplateDeclaration` in `Syntax/Ast/Decls.txt` and factor the ordinary template-declaration prefix in `Declarations.txt` so `export` composes only with the `_GenericHeader` form. Keep explicit specialization and explicit instantiation as separate template declaration families.
 
-## Historical Auto Storage-Class Specifier
+## Historical Auto Storage-Class Specifier [WON'T FIX]
 
-Before C++11, `auto` could be a storage-class specifier followed by an ordinary type. BuiltIn-Cpp always treats it as a placeholder type.
+Before C++11, `auto` could be a storage-class specifier followed by an ordinary type. This remains a real historical spelling, but the philosophy explicitly gives the modern placeholder meaning priority instead of restoring `auto` as a second declaration-specifier role.
 
 ### Case No.1
 
@@ -1006,7 +1161,7 @@ void function()
 }
 ```
 
-**Implementation suggestion — Structural:** Handle historical storage-class `auto` in the shared decl-specifier-sequence redesign owned by `Types.txt` and `DeclaratorComponents.txt`, not in `_QualifiedName`'s placeholder branch. The normalized sequence can treat `auto` followed by another type specifier as storage-class syntax while preserving placeholder `auto` when it supplies the type.
+**Decision — [WON'T FIX]:** Keep `auto` exclusively on the modern placeholder-type path and continue rejecting the pre-C++11 storage-class spelling. Recovering this removed role is not worth weakening the higher-priority preference for the new standard around a token whose modern type interpretation is pervasive.
 
 ## Historical Class Access Declarations
 

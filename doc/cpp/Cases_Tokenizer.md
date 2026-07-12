@@ -1,16 +1,86 @@
 # C++ Tokenizer Missing Features
 
-This file audits `Test/Source/BuiltIn-Cpp/Syntax/Lexer.txt` against the lexical and preprocessing syntax needed by standard C++ through the C++26 working draft. It deliberately covers every supported language version: syntax removed from a later standard, such as trigraphs, still matters to the code indexer.
+## Feature and Case Index
+
+- Missing Standard Keywords
+  - Case No.1
+  - Case No.2
+  - Case No.3
+  - Case No.4
+- Over-Reserved Identifiers
+  - Case No.1
+  - Case No.2
+- Union-of-Versions Keyword Policy
+  - Case No.1
+  - Case No.2 — Prefer Modern `auto`
+- Alternative Operator Spellings
+  - Case No.1
+  - Case No.2
+- Digraph Punctuators
+  - Case No.1
+  - ~~Case No.2 [WON'T FIX]~~
+- Composite Punctuators
+  - Case No.1
+  - Case No.2
+- C++26 Basic-Character Additions and Fallback Tokens
+  - Case No.1
+  - ~~Case No.2 [WON'T FIX]~~
+- Digit Separators in Numeric Literals
+  - Case No.1
+  - Case No.2
+- C++23 Integer Size Suffixes
+  - Case No.1
+- C++23 Extended Floating-Point Suffixes
+  - Case No.1
+- User-Defined Literal Tokens
+  - Case No.1
+  - Case No.2
+  - Case No.3
+- Unicode Identifiers and Universal Character Names
+  - Case No.1
+  - Case No.2
+- ~~Preprocessing-Number Tokens [WON'T FIX]~~
+  - ~~Case No.1 [WON'T FIX]~~
+- Raw String Literals Require a Stateful Extension
+  - Case No.1
+  - Case No.2
+- Translation-Phase Line Splicing Requires a Scanner
+  - Case No.1
+  - Case No.2
+  - Case No.3
+  - Case No.4
+  - ~~Case No.5 [WON'T FIX]~~
+  - Case No.6
+- Historical Trigraph Translation Requires a Scanner
+  - Case No.1
+  - Case No.2
+- Context-Sensitive Header Names Require a Scanner
+  - Case No.1
+  - ~~Case No.2 [WON'T FIX]~~
+- Maximal-Munch Exceptions Require Scanner Lookahead
+  - Case No.1
+  - Case No.2
+- Source Decoding and Normalization Require a Source Layer
+  - Case No.1
+  - ~~Case No.2 [WON'T FIX]~~
+- ~~Preprocessing Requires a Separate Component [WON'T FIX]~~
+  - ~~Case No.1 [WON'T FIX]~~
+  - ~~Case No.2 [WON'T FIX]~~
+  - ~~Case No.3 [WON'T FIX]~~
+  - ~~Case No.4 [WON'T FIX]~~
+  - ~~Case No.5 [WON'T FIX]~~
+
+This file audits `Test/Source/BuiltIn-Cpp/Syntax/Lexer.txt` against the lexical forms useful to standard C++ through the C++26 working draft. It follows [C++ Syntax Implementation Philosophy](Philosophy.md): historically valid spellings matter to the code indexer, but compiler-precise rejection and preprocessing semantics do not.
 
 The important boundary is that `Lexer.txt` is a convenient phase-7 lexer, not a complete raw-source C++ frontend. The gaps divide into three groups:
 
 1. Regular token definitions that are missing or incomplete and can be repaired in `Lexer.txt`.
 2. Stateful source translation and token formation that need `RegexProc` or a dedicated C++ scanner.
-3. Preprocessing operations that transform the token stream and therefore require a separate preprocessor.
+3. Preprocessing operations that transform the token stream and therefore remain outside BuiltIn-Cpp syntax.
 
-The first group covers keyword/identifier policy, operator aliases, regular literal forms, suffixes, and generated Unicode ranges. The second begins where tokenization depends on captured delimiters, physical-line state, context, source decoding, maximal-munch exceptions, universal-character-name replacement, or phase-5 literal concatenation. The final `Preprocessing Requires a Separate Component` section is the third group. Sections such as digraphs, user-defined literals, Unicode, and C++26 basic characters deliberately describe both their declarative subset and the point where they cross into group 2.
+The first group covers keyword/identifier policy, operator aliases, regular literal forms, suffixes, and permissive Unicode recognition. The second begins where tokenization depends on captured delimiters, physical-line state, context, source decoding, maximal-munch exceptions, or universal-character-name replacement. The final `Preprocessing Requires a Separate Component` section records the third group as **WON'T FIX** for this syntax project. A caller that needs macro-expanded input may still supply an externally prepared linear token list through the generated parser overload; that external tool is not part of BuiltIn-Cpp.
 
-Exact rejection of invalid text is not a goal. For example, assembling `>` `>` into a shift in the grammar is useful even though it also accepts `a > > b`. The cases below focus on accepting every valid spelling and retaining enough token identity for the syntax AST and later indexer passes.
+Exact rejection of invalid text is not a goal. For example, assembling `>` `>` into a shift in the grammar is useful even though it also accepts `a > > b`. The cases below focus on accepting valid source spellings with the smallest orthogonal token contract; token adjacency, provenance, Unicode normalization, and edition-specific branches are retained only when the index actually needs them.
 
 Implementation notes use two categories:
 
@@ -78,11 +148,11 @@ void check(int value)
 }
 ```
 
-**Implementation suggestion — Structural:** Keep word spellings as preprocessing identifiers through macro processing. In the post-preprocessing phase-6/phase-7 token adapter, map invariant keywords such as `asm` and historical `export` to their generated token IDs, while leaving spellings whose keyword status changed across supported editions on the `ID` path for conditional-literal rules. Put `asm` in `Ast/Decls.txt` and `DeclarationOthers.txt::_AsmDecl` so block scope reaches it through declaration-statement routing; put `export` in template/module routing, `concept`/`requires` in a constraint box, `constinit` in the shared declaration-specifier family, `consteval` in function/lambda specifiers and consteval-block declarations, `co_await` in unary expressions and `QualifiedName.txt::_OperatorIdentifier`, `co_yield` at the assignment-expression layer, `co_return` in statements, and `contract_assert` in statements. Union mode preserves both keyword-shaped and ordinary-identifier candidates; only an explicit edition setting may select one early.
+**Implementation suggestion — Structural:** Add one lexer token for each missing spelling, as `Lexer.txt` already does for other reserved words. Put `asm` in `Ast/Decls.txt` and `DeclarationOthers.txt::_AsmDecl` so block scope reaches it through declaration-statement routing; put `export` in template/module routing, `concept`/`requires` in a constraint box, `constinit` in the shared declaration-specifier family, `consteval` in function/lambda specifiers and consteval-block declarations, `co_await` in unary expressions and `QualifiedName.txt::_OperatorIdentifier`, `co_yield` at the assignment-expression layer, `co_return` in statements, and `contract_assert` in statements. Historical name use should reuse these same token kinds through the shared identifier rule when that does not introduce a competing modern parse; do not create edition-specific token streams.
 
 ## Over-Reserved Identifiers
 
-`final` and `override` are identifiers with special meaning only in their grammar positions. `abstract` is not a standard special identifier at all. They are currently unconditional lexer tokens, so valid ordinary identifier uses are rejected before the parser can apply context.
+`final` and `override` are identifiers with special meaning only in their grammar positions. `abstract` is not a standard special identifier at all. They are currently unconditional lexer tokens and `_NameIdentifier` accepts only `ID`, so valid ordinary identifier uses are rejected before the parser can apply context.
 
 `module`, `import`, `pre`, and `post` correctly remain identifiers and should be recognized with conditional literals or equivalent grammar rules.
 
@@ -109,11 +179,11 @@ int pre;
 int post;
 ```
 
-**Implementation suggestion — Structural:** Remove the unconditional `final`, `override`, and `abstract` token categories and recognize them through `ID` conditional literals only at their owned grammar positions. A post-declarator virt-specifier family should consume `final` and `override`, while the class-head family also consumes `final`; they should not remain in the generic pre-arrow `_FunctionKeyword` list. `abstract` remains an ordinary identifier unless an explicitly supported extension rule owns it. All other identifier consumers continue to use `_NameIdentifier` unchanged.
+**Implementation suggestion — Structural:** Keep the dedicated tokens so grammar rules can request these spellings directly, and add them to the one `_NameIdentifier` family used by all name consumers. A post-declarator virt-specifier family should consume `final` and `override`, while the class-head family also consumes `final`; they should not remain in the generic pre-arrow `_FunctionKeyword` list. `abstract` stays available both to the explicitly supported extension rule and to `_NameIdentifier`. This shared-token design avoids both conditional-literal copies and context-specific identifier rules.
 
 ## Union-of-Versions Keyword Policy
 
-The indexer must also accept a spelling as an identifier in editions before that spelling became a keyword. A practical union lexer should tokenize word-shaped spellings as `ID` and let the grammar use exact conditional literals. This intentionally permits some keyword-as-identifier spellings in newer code, which matches the requested over-accepting policy.
+The indexer should accept a spelling as an identifier in editions before that spelling became a keyword, unless doing so creates an unnecessary competing interpretation for modern syntax. Dedicated keyword tokens can still participate in the shared `_NameIdentifier` rule; they do not need to be downgraded to `ID` or branched by edition.
 
 | Valid as an identifier before | Spellings that later became keywords |
 | --- | --- |
@@ -130,7 +200,15 @@ int concept;         // Valid through C++17.
 int contract_assert; // Valid through C++23.
 ```
 
-**Implementation suggestion — Structural:** Establish one adapter contract for the listed version-changing spellings: emit `ID` after preprocessing and let syntax rules request exact text with conditional literals, independent of selected language edition. Union mode must preserve both a completed keyword-shaped construct and an ordinary-name interpretation that could be valid in an earlier edition; an explicit edition setting can filter them. Invariant keywords are mapped by the phase-6/phase-7 adapter, while the eleven alternative operator words are scanner-level operator-token exceptions. Every evolving spelling still follows the same historical-acceptance path.
+### Case No.2 — Prefer Modern `auto`
+
+```C++
+auto value = factory();
+```
+
+This has only the modern placeholder-type interpretation. BuiltIn-Cpp does not also treat `auto` as an identifier-shaped type, because that historical accommodation would add a duplicate declaration candidate.
+
+**Implementation suggestion — Structural:** Add the version-changing keyword token kinds to the shared `_NameIdentifier` alternatives, then give every exact modern keyword construct token-only preference and exclude the identifier alternative whenever both would cover the same construct. `auto` is the canonical example, not the only exclusion. Outside such a collision, exact keyword syntax requests the dedicated token directly and historical name use continues through `_NameIdentifier`. This accepts historical names orthogonally without manufacturing keyword/name ambiguity or requiring an edition setting.
 
 ## Alternative Operator Spellings
 
@@ -155,7 +233,7 @@ a or_eq b;
 a xor_eq b;
 ```
 
-**Implementation suggestion — Structural:** Canonicalize alternative operator words in the scanner to the same token IDs as their punctuator equivalents, while retaining original spelling in token provenance. Expression precedence, assignment, and `_OperatorIdentifier` should continue to consume one canonical operator vocabulary; duplicating all eleven spellings through every operator rule would violate orthogonality.
+**Implementation suggestion — Additive:** Extend the existing punctuator token regexes with their word alternatives, so each spelling is emitted with the same generated token kind as its symbolic operator. For example, `AND_AND` owns both `&&` and `and`, and `AND_ASSIGN` owns both `&=` and `and_eq`. Longest-token matching keeps longer identifiers intact, while expression precedence, assignment, and `_OperatorIdentifier` continue to consume one canonical operator vocabulary with no scanner adapter or duplicated syntax branches.
 
 ## Digraph Punctuators
 
@@ -176,19 +254,21 @@ The standard digraphs are not canonicalized. The `<::` maximal-munch exception m
 int values<:2:> = <% 1, 2 %>;
 ```
 
-### Case No.2
+### Case No.2 [WON'T FIX]
 
 ```C++
 %:define CONCATENATE(a, b) a %:%: b
 ```
 
-**Implementation suggestion — Structural:** Put digraph recognition in the C++ scanner's punctuator-selection algorithm, where the `<::` exception and adjacency are visible, and emit canonical primary punctuator tokens plus original-spelling metadata. Route `%:` and `%:%:` to the preprocessor rather than adding phase-7 grammar alternatives. The syntax grammar should remain unaware of which equivalent punctuator spelling was used.
+**Reason for not fixing Case No.2:** `%:` and `%:%:` are preprocessing operators. BuiltIn-Cpp does not implement directive execution, token pasting, or a preprocessing-token AST.
+
+**Implementation suggestion — Structural:** Put the four phase-7 digraphs in the C++ scanner's punctuator-selection algorithm, where the `<::` exception is visible, and emit the existing `{`, `}`, `[`, or `]` token kind. The syntax grammar stays unaware of which equivalent spelling was used, and the index does not need original-spelling metadata. A raw-source wrapper may skip directive lines containing `%:` or `%:%:`; it must not route them into phase-7 syntax.
 
 ## Composite Punctuators
 
-`Lexer.txt` has no dedicated token for `<=`, `>=`, `<<`, `>>`, `<<=`, `>>=`, or `##`. C++26 also adds `^^`, `[:`, and `:]`. The current grammar deliberately composes most comparison and shift operators from smaller tokens. That is sufficient for practical acceptance but loses adjacency and original-token identity.
+`Lexer.txt` has no dedicated token for `<=`, `>=`, `<<`, `>>`, `<<=`, `>>=`, or `##`. C++26 also adds `^^`, `[:`, and `:]`. The current grammar deliberately composes comparison and shift operators from smaller tokens. For an indexer this is the desired representation, not a fidelity gap.
 
-Dedicated tokens are necessary only if later logic must distinguish one standard preprocessing token from separated characters. Otherwise the same practical decomposition can be extended to the C++26 punctuators.
+The same practical decomposition can be extended to the C++26 punctuators. `##` belongs only to the preprocessing boundary marked **WON'T FIX** below.
 
 ### Case No.1
 
@@ -205,7 +285,7 @@ constexpr auto info = ^^int;
 using Reflected = [:info:];
 ```
 
-**Implementation suggestion — Structural:** Define one scanner-level punctuator table that recognizes adjacent composite spellings and preserves their provenance, then let the phase-7 adapter expand comparisons and shifts into the existing individual-token sequences consumed by `Expressions.txt`, `QualifiedName.txt`, and template closing. This retains the current practical acceptance of separated forms without creating a second operator vocabulary. Emit `##`, like its `%:%:` digraph, as a preprocessing operator consumed before phase 7; never flatten it to two `SHARP` tokens. Feed `^^`, `[:`, and `:]` to canonical reflection/splice rules as documented token sequences, deliberately accepting separated spellings if that bounded relaxation avoids context-sensitive token splitting.
+**Implementation suggestion — Additive:** Keep comparisons and shifts exactly as the existing individual-token sequences consumed by `Expressions.txt`, `QualifiedName.txt`, and template closing. Define reflection and splice grammar rules with the equally orthogonal `^` `^`, `[` `:`, and `:` `]` sequences. This deliberately accepts separated spellings and needs no composite-token provenance. Do not add `##` to phase-7 grammar.
 
 ## C++26 Basic-Character Additions and Fallback Tokens
 
@@ -219,7 +299,7 @@ auto atDelimiter = R"@(text)@";
 auto graveDelimiter = R"`(text)`";
 ```
 
-### Case No.2
+### Case No.2 [WON'T FIX]
 
 ```C++
 #if 0
@@ -227,7 +307,9 @@ $ @ `
 #endif
 ```
 
-**Implementation suggestion — Additive:** Extend the raw-source scanner's character classifier with `$`, `@`, and grave accent, permit them in raw-string delimiters, and add one generic fallback preprocessing-token kind for otherwise unmatched basic characters. Phase-7 syntax needs no new general character rule; only features that consume these tokens should expose them after preprocessing.
+**Reason for not fixing Case No.2:** The characters occur only in a skipped preprocessing group. BuiltIn-Cpp does not tokenize or evaluate conditional groups; a raw-source wrapper may skip the complete directive-controlled region or an external tool may supply prepared tokens.
+
+**Implementation suggestion — Additive:** Extend only the raw-string scanner's delimiter classifier with `$`, `@`, and grave accent. Phase-7 syntax needs no general fallback-character token because no supported syntax construct consumes one.
 
 ## Digit Separators in Numeric Literals
 
@@ -305,7 +387,7 @@ auto value = "text"s;
 
 ### Case No.3
 
-The edition-appropriate adjacent-string concatenation step propagates the one user-defined suffix across the complete literal sequence, regardless of which component carries it.
+The shared string-fragment representation should retain every suffix position without reproducing edition-specific concatenation validation.
 
 ```C++
 auto suffixOnLast = "A" "B"_tag;
@@ -313,13 +395,13 @@ auto suffixOnFirst = "A"_tag "B";
 auto repeatedSuffix = "A"_tag "B"_tag;
 ```
 
-**Implementation suggestion — Structural:** Introduce one literal-sequence abstraction spanning scanner output, AST, and `_PrimitiveExpr`. The scanner should retain each literal fragment, adjacency, and optional suffix; the edition-appropriate adjacent-string concatenation step should combine fragments and assign the effective suffix once. `_PrimitiveExpr` should consume that canonical literal-sequence node, while literal-operator declarations continue to use `_OperatorIdentifier`. Do not bolt `ID` onto each numeric, character, string, and raw-string clause independently.
+**Implementation suggestion — Structural:** Add one shared literal-suffix rule that consumes `_NameIdentifier` after any numeric, character, ordinary-string, or raw-string token and deliberately ignores adjacency. Let numeric/character literals use one small user-defined-literal wrapper, and let each existing `StringLiteralFragment` retain an optional suffix while `StringLiteral` continues to own the fragment sequence. This accepts whitespace-separated and repeatedly suffixed invalid forms, but it covers every valid literal uniformly without a phase-5 concatenation engine or edition-specific suffix propagation.
 
 ## Unicode Identifiers and Universal Character Names
 
 `ID` is ASCII-only. Standard identifiers require direct Unicode `XID_Start`/`XID_Continue` characters and universal-character-name spellings. C++23 adds delimited and named forms.
 
-Direct Unicode identifier characters are declaratively doable: VlppRegex processes Unicode scalar values, but `/w` is ASCII and has no Unicode property escape, so exact support requires generated `XID_Start` and `XID_Continue` range tables. Universal-character-name recognition, named-character lookup, replacement before token classification, and normalization checks are translation/scanner responsibilities. A deliberately broader non-ASCII rule followed by validation is another practical split.
+VlppRegex processes Unicode scalar values, but `/w` is ASCII and has no Unicode property escape. Exact `XID_Start`/`XID_Continue`, named-character lookup, and NFC validation are compiler concerns. The indexer only needs one deliberately broader identifier path that accepts direct non-ASCII characters and all written universal-character-name forms.
 
 ### Case No.1
 
@@ -337,13 +419,13 @@ int \u{03B3} = 5;
 int \N{GREEK SMALL LETTER DELTA} = 6;
 ```
 
-**Implementation suggestion — Additive:** Extend preprocessing-token formation with one identifier builder. Generate shared `XID_Start` and `XID_Continue` tables for direct characters; recognize universal-character-name components only while forming identifier candidates, excluding literal, header-name, and raw-string contents; apply XID/NFC checks to the resulting identifier; emit the existing `ID` token; and preserve the original spelling in provenance. `QualifiedName.txt` and declarator-name rules remain unchanged because every valid spelling reaches the same identifier contract.
+**Implementation suggestion — Additive:** Extend one identifier matcher with a broad non-ASCII scalar range and permissive `\u`, `\U`, `\u{...}`, and `\N{...}` components. Do not resolve named characters or enforce XID/NFC constraints. Emit the existing `ID` token and keep its original token text. String, character, header-name, and raw-string matchers still own their complete spans, while `QualifiedName.txt` and every declarator-name rule remain unchanged because all identifier spellings reach the same contract.
 
-## Preprocessing-Number Tokens
+## Preprocessing-Number Tokens [WON'T FIX]
 
 The current lexer immediately classifies complete language literals. Before macro expansion, C++ instead recognizes the broader `pp-number` language. A preprocessing number need not itself be a valid phase-7 numeric literal; token pasting or stringizing can still use it.
 
-### Case No.1
+### Case No.1 [WON'T FIX]
 
 ```C++
 #define STRINGIZE_IMPL(x) #x
@@ -352,7 +434,7 @@ The current lexer immediately classifies complete language literals. Before macr
 const char* text = STRINGIZE(0xe+foo);
 ```
 
-**Implementation suggestion — Additive:** Add `pp-number` to the preprocessing scanner, not `Lexer.txt`'s phase-7 literal set. Preserve it through macro argument collection, stringizing, token pasting, and rescanning; only after preprocessing should the frontend classify surviving pp-numbers into `INT`, `HEX`, `BIN`, `FLOAT`, `FLOATHEX`, or the canonical user-defined integer/floating literal representation when a `ud-suffix` remains.
+**Reason for not fixing:** A `pp-number` exists to support macro argument collection, stringizing, token pasting, and rescanning. BuiltIn-Cpp begins from phase-7-shaped input and does not implement those preprocessing transformations. An external preprocessor may classify its surviving output into the existing literal token families before calling the prepared-token parser overload.
 
 ## Raw String Literals Require a Stateful Extension
 
@@ -381,11 +463,11 @@ auto maxDelimiter = R"abcdefghijklmnop(text)abcdefghijklmnop";
 auto suffixed = R"tag(text)tag"_suffix;
 ```
 
-**Implementation suggestion — Additive:** Implement raw-string matching in the dedicated C++ scanner (or a `RegexProc`-backed tokenization adapter) and emit it through the same literal-fragment contract used by ordinary strings. Delimiter capture and matching belong entirely to token formation; `_StringLiteralFragment` and the proposed literal-sequence layer should not duplicate raw-delimiter states.
+**Implementation suggestion — Additive:** Implement raw-string matching in the dedicated C++ scanner (or a `RegexProc`-backed tokenization adapter) and emit it through the same `StringLiteralFragment` contract used by ordinary strings. Delimiter capture and matching belong entirely to token formation; `_StringLiteralFragment` and the shared permissive literal-suffix rule should not duplicate raw-delimiter states.
 
 ## Translation-Phase Line Splicing Requires a Scanner
 
-Through C++20, an immediately adjacent backslash-newline pair is removed before preprocessing tokens are formed. C++23 and later also permit zero or more intervening non-newline whitespace characters. Only the last backslash on a physical source line is eligible. Splicing can join identifiers and string fragments, extend `//` comments, form a universal-character-name, and continue preprocessing directives. Each edition's complete phase-2 algorithm also supplies the required final-newline handling after its applicable splicing decisions. Raw strings require special handling because applicable early transformations are reverted within their content.
+Through C++20, an immediately adjacent backslash-newline pair is removed before tokens are formed. C++23 and later also permit intervening non-newline whitespace. Splicing can join identifiers and string fragments, extend `//` comments, form a universal-character-name, and continue preprocessing directives. Raw strings require special handling because their contents retain the written characters.
 
 ### Case No.1
 
@@ -400,9 +482,6 @@ cd";
 ### Case No.2
 
 ```C++
-#define ADD(a, b) ((a) + \
-                   (b))
-
 int first; // the comment continues \
 int stillCommented;
 int second;
@@ -424,13 +503,15 @@ int \\
 u0061 = 0;
 ```
 
-### Case No.5
+### Case No.5 [WON'T FIX]
 
 Store this one-line source fixture with no physical newline after the semicolon; phase 2 must synthesize it:
 
 ```C++
 int finalLine = 0;
 ```
+
+**Reason for not fixing Case No.5:** The generated lexer and parser already accept end-of-input without a physical newline. Synthesizing a newline that is immediately discarded would add source-translation precision without changing the index.
 
 ### Case No.6
 
@@ -441,7 +522,7 @@ The physical line ending after the backslash contains three U+0020 spaces before
 73 70 61 63 65 20 3D 20 30 3B 0A
 ```
 
-**Implementation suggestion — Additive:** Add an edition-aware physical-line transformation before preprocessing-token recognition. It should select immediate backslash-newline removal through C++20 or the whitespace-tolerant C++23 rule, complete that edition's final-newline handling, record a source map from logical characters back to physical ranges, and cooperate with raw-string restoration. When union mode produces different translations, create separate linear token streams, run the generated parser once per stream, and merge the resulting index records; VlppParser2 does not accept a token lattice.
+**Implementation suggestion — Additive:** Add one permissive physical-line transformation before token recognition. Always remove a final backslash plus optional horizontal whitespace and the following newline, which accepts both historical and current spellings without edition branches. Protect raw-string spans, and retain only the physical range mapping needed for indexed tokens. Do not synthesize final newlines or run and merge separate edition-specific parses.
 
 ## Historical Trigraph Translation Requires a Scanner
 
@@ -462,8 +543,6 @@ C++14 and earlier replace trigraphs before token recognition. They were removed 
 ### Case No.1
 
 ```C++
-??=define VALUE 1
-
 int values??(2??) = ??<1, 2??>;
 auto x = 1 ??' 2;
 auto y = true ??! false;
@@ -477,7 +556,7 @@ int fo??/
 o = 0;
 ```
 
-**Implementation suggestion — Additive:** Add an edition-controlled trigraph translation pass ahead of line splicing in the same source-translation pipeline. Translate before splicing on the C++14-and-earlier branch and preserve the untranslated source on the C++17-and-later branch. In union mode, parse the resulting linear token streams separately and merge index records. Preserve provenance for each replacement; because `??/` feeds splicing, trigraphs cannot be token aliases applied after scanning.
+**Implementation suggestion — Additive:** Add one permissive trigraph translation pass ahead of line splicing and apply it for all input editions. This deliberately gives the historical spelling priority; modern compiler-verified code cannot depend on an adjacent trigraph sequence as a different phase-7 construct, and literal-content fidelity is not an indexing goal. Because `??/` feeds splicing, this remains a source transformation rather than a token alias. No edition branches, merged parses, or replacement provenance are required.
 
 ## Context-Sensitive Header Names Require a Scanner
 
@@ -486,24 +565,26 @@ A header-name token is formed only after specific occurrences of `include`, `emb
 ### Case No.1
 
 ```C++
+import <library/header.hpp>;
+```
+
+### Case No.2 [WON'T FIX]
+
+```C++
 #include <library/header.hpp>
 
 #if __has_include("optional/header.hpp")
 #endif
 
-import <library/header.hpp>;
-```
-
-### Case No.2
-
-```C++
 #embed "data.bin"
 
 #if __has_embed(<optional/data.bin>)
 #endif
 ```
 
-**Implementation suggestion — Additive:** Add header-name mode to the preprocessing scanner and activate it only after directive/import tokens that directly permit a header name, emitting one dedicated token with the complete spelling. Also support the macro-expanded path: for forms such as `#include HEADER`, expand the pp-token sequence first and then reconstruct/validate a header name from the resulting spellings. Include lookup, `#embed`, import handling, and `__has_*` evaluation consume this representation before phase-7 parsing.
+**Reason for not fixing Case No.2:** `#include`, `#embed`, `__has_include`, and `__has_embed` require preprocessing handling and file lookup, which are outside BuiltIn-Cpp syntax.
+
+**Implementation suggestion — Additive:** Add a narrow header-name scanner mode for the phase-7 `import <...>;` form and emit one permissive header token with the complete spelling. A raw-source wrapper may recognize and skip `#include`, `#embed`, and `__has_*` directive lines, but it should not expand macros, reconstruct header names, perform lookup, or evaluate the directives. An external preprocessor can instead supply prepared tokens when expanded input is required.
 
 ## Maximal-Munch Exceptions Require Scanner Lookahead
 
@@ -527,11 +608,11 @@ int values[::N];
 extern int incomplete[:>;
 ```
 
-**Implementation suggestion — Structural:** Generalize the C++ scanner's punctuator chooser from unconditional longest match to an ordered decision table containing the standard exceptions. The same table should own digraphs, `<::`, and the C++26 `[:` boundaries, returning canonical token kinds plus provenance. Keeping all exceptions in one chooser prevents template, array, and splice grammar rules from growing lexer workarounds.
+**Implementation suggestion — Structural:** Generalize the C++ scanner's punctuator chooser from unconditional longest match to an ordered decision table containing the standard exceptions. The same table should own digraphs, `<::`, and the C++26 `[:` boundaries and return the existing canonical token kinds. Keeping all exceptions in one chooser prevents template, array, and splice grammar rules from growing workarounds; original punctuator provenance is unnecessary for the index.
 
 ## Source Decoding and Normalization Require a Source Layer
 
-Raw-source support also needs mandatory UTF-8 decoding, implementation-selected decoding for other accepted encodings, CRLF/CR normalization, leading BOM removal, Unicode scalar handling, and optional NFC/XID validation. `WString` input begins after much of this work has conceptually happened, so these are source-translation responsibilities rather than additional token regexes.
+Ordinary raw-source support needs UTF-8 decoding, CRLF/CR normalization, leading BOM removal, and Unicode scalar handling. `WString` input begins after this work has conceptually happened, so these are source-reader responsibilities rather than additional token regexes. Implementation-selected legacy encodings and NFC/XID validation are not required by the syntax indexer.
 
 ### Case No.1
 
@@ -541,7 +622,7 @@ Raw-source support also needs mandatory UTF-8 decoding, implementation-selected 
 int résumé = 0;
 ```
 
-### Case No.2
+### Case No.2 [WON'T FIX]
 
 The basic literal character set includes U+0000, so an exhaustive raw-source frontend must permit a physical null code point inside literal source text. A null-terminated `RegexLexer` walk cannot consume it. Create this fixture as binary UTF-8 source by replacing the marker with one U+0000 code point, not the two-character escape `\0`:
 
@@ -549,15 +630,17 @@ The basic literal character set includes U+0000, so an exhaustive raw-source fro
 auto physicalNull = R"(before<U+0000>after)";
 ```
 
-**Implementation suggestion — Additive:** Add a byte-oriented source reader before `WString` and `RegexLexer`. It should decode UTF-8 and supported implementation encodings, remove a leading BOM, normalize physical newlines, preserve U+0000 as data, and produce a character-to-byte source map. The scanner and parser should consume a length-aware buffer so this layer does not leak encoding cases into token regexes.
+**Reason for not fixing Case No.2:** Supporting a physical U+0000 would require replacing the null-terminated lexer walk with a length-aware pipeline solely for literal-content fidelity. Literal contents are not indexed, so this compiler-precision edge case does not justify changing the parser contract.
 
-## Preprocessing Requires a Separate Component
+**Implementation suggestion — Additive:** Keep a small byte-oriented wrapper outside BuiltIn-Cpp that decodes UTF-8, removes a leading BOM, normalizes physical newlines, and maps emitted token ranges back to byte offsets. It may reject embedded U+0000 and leave non-UTF-8 decoding to the caller. No normalization validator belongs in `Lexer.txt`.
+
+## Preprocessing Requires a Separate Component [WON'T FIX]
 
 The current lexer discards every newline as `SPACE`. It therefore cannot identify preprocessing directive boundaries. More fundamentally, preprocessing inserts, removes, duplicates, and synthesizes tokens; `RegexProc` can extend one token match but cannot implement those token-stream transformations.
 
-A complete preprocessing stage must handle logical-line directive recognition, comments-as-space while preserving newlines, conditional inclusion, object-like and function-like macros, recursive rescanning, macro argument collection, `#`, `##`, placemarkers, `__VA_ARGS__`, `__VA_OPT__`, include/header lookup, module/import preprocessing, the null directive, `_Pragma`, predefined and feature-test macros, `__has_cpp_attribute`, `#embed` and its parameters, preprocessing constant expressions, and source provenance across expansion and token pasting.
+A conforming preprocessing stage would need logical-line directive recognition, conditional inclusion, macros and recursive rescanning, `#`/`##`, inclusion and embed services, preprocessing expressions, and expansion provenance. Those operations implement compiler/build-environment behavior rather than BuiltIn-Cpp syntax.
 
-### Case No.1
+### Case No.1 [WON'T FIX]
 
 ```C++
 #include "header.hpp"
@@ -572,7 +655,7 @@ A complete preprocessing stage must handle logical-line directive recognition, c
 #endif
 ```
 
-### Case No.2
+### Case No.2 [WON'T FIX]
 
 ```C++
 #line 100 "generated.cpp"
@@ -583,7 +666,7 @@ A complete preprocessing stage must handle logical-line directive recognition, c
 #define LOG(format, ...) log(format __VA_OPT__(,) __VA_ARGS__)
 ```
 
-### Case No.3
+### Case No.3 [WON'T FIX]
 
 ```C++
 #if 0
@@ -594,7 +677,7 @@ A complete preprocessing stage must handle logical-line directive recognition, c
 #embed "data.bin"
 ```
 
-### Case No.4
+### Case No.4 [WON'T FIX]
 
 ```C++
 _Pragma("once")
@@ -610,7 +693,7 @@ constexpr int featureTest = 0;
 #
 ```
 
-### Case No.5
+### Case No.5 [WON'T FIX]
 
 ```C++
 constexpr unsigned char data[] = {
@@ -618,7 +701,7 @@ constexpr unsigned char data[] = {
 };
 ```
 
-**Implementation suggestion — Additive:** Add a standalone preprocessing component between the source scanner and the generated phase-7 parser. Give it explicit preprocessing-token types, logical-line boundaries, macro-expansion state, include/embed services, conditional-group evaluation, and a many-origin provenance graph. Its output adapter should map final tokens to the generated C++ parser token IDs; no syntax rule should attempt to perform token insertion, deletion, pasting, or rescanning.
+**Reason for not fixing:** BuiltIn-Cpp is a symbol-blind syntax indexer, not a compiler frontend. It will not own macro expansion, conditional selection, include/embed lookup, pragma execution, predefined macros, or preprocessing expression evaluation. A lightweight raw-source wrapper may skip complete directive lines when indexing written declarations. A build-aware caller that needs expanded code must use its own preprocessor and map the resulting linear token stream to generated C++ token IDs before calling the prepared-token parser overload. No syntax rule should insert, delete, paste, or rescan tokens.
 
 ## Already Covered or Intentionally Practical
 
@@ -628,9 +711,11 @@ The following are not tokenizer gaps under the requested policy:
 - Binary literals and hexadecimal floating literals have token families, although their separator coverage is incomplete.
 - Ordinary `u8`, `u`, `U`, and `L` character/string prefixes exist.
 - C++23 delimited and named escape spellings inside ordinary strings and characters are swallowed by the deliberately broad escape regex. Exact escape validation is not needed for verified input.
-- Standard comments are recognized. Only their interaction with translation phases and directive newlines remains missing.
+- Standard comments are recognized. Their line-splicing interaction remains a scanner case; directive processing is intentionally outside scope.
 - Split comparisons, shifts, and shift assignments already implement the desired practical behavior.
 - `module`, `import`, `pre`, and `post` remaining `ID` tokens is desirable.
+- Composite-token adjacency and original punctuator provenance are intentionally not retained.
+- `auto` keeps only its preferred modern syntax roles instead of also entering the identifier/type path.
 
 ## Standards References
 

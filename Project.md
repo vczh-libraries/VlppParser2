@@ -2,6 +2,7 @@
 
 - Begin with [`doc/Index.md`](./doc/Index.md) for the architecture, parser-generation pipeline, runtime parsing and ambiguity algorithms, generated-code contracts, source map, and bootstrap guidance.
 - Begin with [`doc/cpp/Index.md`](./doc/cpp/Index.md) for BuiltIn-Cpp syntax design, C++26 parser capability, frontend boundaries, standard-coverage gaps, and de-ambiguation guidance.
+- Before making a BuiltIn-Cpp syntax or coverage decision, read [`doc/cpp/Philosophy.md`](./doc/cpp/Philosophy.md). It defines the code-indexing goal and the priority order for historical compatibility, orthogonality, bounded over-acceptance, and avoiding unnecessary ambiguity.
 
 Treat these documents as semantic companions to the code. When a related code change alters a documented behavior, invariant, public grammar contract, or responsibility boundary, update the owning document in the same change. Do not churn documentation for formatting, generated output, or mechanical code refactoring that leaves those semantics unchanged; reference repairs are still required when files move.
 

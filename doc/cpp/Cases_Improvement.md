@@ -1,8 +1,48 @@
 # BuiltIn-Cpp De-ambiguation Improvements
 
+## Feature and Case Index
+
+- Qualified-Name Normalization
+  - Case No.1 — Whitespace Around Scope Operators
+  - Case No.2 — Complete Member-Pointer Qualifiers
+  - Case No.3 — Elaborated and Dependent Disambiguators
+- Standard Declaration Ambiguity
+  - Case No.1 — Function Declarations
+  - Case No.2 — Object Declarations
+  - Case No.3 — Lookup-Dependent Trailing Return Type
+  - Case No.4 — Parenthesized Parameter Types
+- Statement Ambiguity
+  - Case No.1 — Declaration Statements Forced by a Built-In Type
+  - Case No.2 — Expression Statements
+  - Case No.3 — Trailing Return Type Requiring Lookup
+- Conditions Forced to Declarations
+  - Case No.1
+- Type-Id and Expression Ambiguity
+  - Case No.1 — Template Arguments
+  - Case No.2 — `sizeof` Operands
+  - Case No.3 — Cast or Parenthesized Expression
+  - Case No.4 — Structurally Shared Qualified Names
+- Lookup-Dependent Ambiguities That Must Remain
+  - Case No.1 — Declaration or Expression
+  - Case No.2 — Template-Id or Relational Operators
+  - Case No.3 — Call, Binary Expression, or Function Type
+- AST Reclassification Without Lookup
+  - Case No.1 — Deduction Guide
+  - Case No.2 — Using-Enum Declaration
+  - Case No.3 — Constrained or Non-Type Template Parameter
+  - ~~Case No.4 — Comma-Less Ellipsis Classification [WON'T FIX]~~
+- Language-Version Preference
+  - Case No.1 — Multidimensional Subscript or Comma Expression
+- Deliberate Practical Over-Acceptance
+  - Case No.1 — Split Comparison and Shift Punctuators
+  - Case No.2 — Split Operator Names
+  - ~~Case No.3 — Longest New-Type-Id Boundary [WON'T FIX]~~
+  - Case No.4 — Declarator Keywords as Orthogonal Components
+- C++26 Reflection Boundary
+
 This document describes improvements around the C++ syntax and AST produced by [`Test/Source/BuiltIn-Cpp`](../../Test/Source/BuiltIn-Cpp). It does not propose changes to the parser generator. The examples are a design corpus for manual AST postpasses that run after parsing.
 
-Some names are deliberately undeclared. BuiltIn-Cpp is expected to preserve ambiguity instead of performing symbol resolution, so a case does not need to be a complete compiler test. The input reaching the indexer is assumed to have already been accepted by a compiler.
+This audit applies the priorities in [C++ Syntax Implementation Philosophy](Philosophy.md). Some names are deliberately undeclared. BuiltIn-Cpp preserves ambiguity instead of performing symbol resolution, so a case does not need to be a complete compiler test. The input reaching the indexer is assumed to have already been accepted by a compiler.
 
 Implementation notes use two categories:
 
@@ -17,7 +57,7 @@ Both categories may use bounded practical over-acceptance: accept a small, docum
 | --- | --- |
 | **One interpretation** | A syntax-only postpass can retain one AST candidate without name lookup. |
 | **Reclassify** | The current grammar accepts the tokens through an older or more general node; a postpass gives the construct its standard identity. |
-| **Preserve ambiguity** | The choice requires name, type, template, pack, or language-version information. Keep an ambiguity node or an equivalently lossless representation. |
+| **Preserve ambiguity** | The choice requires name, type, template, or pack information. Keep an ambiguity node or an equivalently lossless representation. |
 | **Practical over-acceptance** | The spelling is not a well-formed standard program, but accepting one useful interpretation cannot misread any valid compiler-verified input. |
 
 ## Recommended Pass Order
@@ -25,8 +65,8 @@ Both categories may use bounded practical over-acceptance: accept a small, docum
 1. Normalize token chains whose shape is independent of lookup, especially qualified names and deliberately split punctuators.
 2. Apply the standard's syntax-only declaration and type-id ambiguity rules.
 3. Reclassify generic nodes whose token shape identifies a newer standard construct.
-4. Preserve every choice that still depends on lookup, pack binding, or the selected language version.
-5. Let a later symbol-aware indexer pass resolve the remaining ambiguity nodes.
+4. Preserve every choice that still depends on lookup or pack binding; for identical cross-version spellings, prefer the new-standard representation.
+5. Publish every remaining lookup-dependent ambiguity node as part of the final index result.
 
 This order prevents an early semantic guess from destroying a valid parse candidate.
 
@@ -59,9 +99,9 @@ int ::qname_fixture::A::b::c::* canonical_member_pointer;
 int ::a::b::c::* todo_member_pointer;
 ```
 
-The qualifier of the first declaration is `::qname_fixture::A::b::c::`; it must not become several nested declarators. The second declaration is the exact regression shape from [`TODO.md`](../../TODO.md). Whether those names actually denote namespaces and classes is a later lookup question.
+The qualifier of the first declaration is `::qname_fixture::A::b::c::`; it must not become several nested declarators. The second declaration is the exact regression shape from [`TODO.md`](../../TODO.md). BuiltIn-Cpp intentionally does not decide whether those names denote namespaces and classes.
 
-**Implementation suggestion — Structural:** Replace the loose `_DeclaratorAKMember` plus later `*` composition with one public member-pointer component that consumes a complete `_QualifiedName`, the final `::`, and `*` as one declarator modifier. Reuse that component from every declarator configuration. This gives the grammar one boundary for `::a::b::c::*` and prevents prefix splits without hard-coding qualification depths.
+**Implementation suggestion — Additive:** Add a regression assertion first: the existing `_AdvancedTypeMember` already consumes one complete `_QualifiedName` plus the final `::`, and the following shared `_AdvancedTypeNoCVNoMember` component consumes `*`. Keep those orthogonal components so every declarator configuration continues to share the same qualified-name and pointer rules. If the GLR result contains equivalent prefix splits, deduplicate only structurally identical modifiers covering the same source range; do not create a member-pointer-only copy of qualified-name or pointer syntax.
 
 ### Case No.3 — Elaborated and Dependent Disambiguators
 
@@ -81,7 +121,7 @@ void explicit_disambiguators(T& object)
 
 `typename` forces a type interpretation and `template` forces a template-id interpretation. Preserve both tokens, or at least their source ranges, so the decision remains explainable in the AST.
 
-**Implementation suggestion — Structural:** Give qualified-name use sites an orthogonal context wrapper carrying elaborated-type, `typename`, and `template` disambiguators while reusing the same `_QualifiedName` component chain. Extend `QualifiedName.txt` with the narrow public wrappers and add the wrapper/flags to the AST; do not create separate copies of qualified-name recursion for types and expressions.
+**Implementation suggestion — Additive:** Keep the current shared identifier and `_QualifiedName` component chain. `_TypeIdentifier`, `_QualifiedNameAfterTypename`, and the `template` qualified-name fragment already apply the three syntactic restrictions without symbol lookup. Add regression coverage and, only if the index needs the written disambiguator, retain its token or source range on the existing name/type node. Do not add context-specific copies or wrappers around qualified-name recursion.
 
 ## Standard Declaration Ambiguity
 
@@ -115,7 +155,7 @@ The extra parentheses or initializer form prevent the first three from being fun
 
 ### Case No.3 — Lookup-Dependent Trailing Return Type
 
-**Expected:** Preserve ambiguity until `C` is known to be a type.
+**Expected:** Preserve ambiguity because deciding whether `C` is a type requires lookup, which BuiltIn-Cpp does not perform.
 
 ```C++
 S function_case(auto()->C);
@@ -123,7 +163,7 @@ S function_case(auto()->C);
 
 Leading `auto` enables the function-declaration candidate, but it does not establish that `C` is a type.
 
-**Implementation suggestion — Additive:** Let the declarator-ambiguity pass tag this node with a focused unresolved reason such as `TrailingReturnTypeNeedsLookup` and retain both candidates. This is new post-parse metadata, not a grammar decision; the later symbol resolver should revisit the node after classifying `C`.
+**Implementation suggestion — Additive:** Let the declarator-ambiguity pass tag this node with a focused unresolved reason such as `TrailingReturnTypeNeedsLookup` and retain both candidates as the final index representation. This is post-parse metadata, not a grammar or symbol-resolution decision.
 
 ### Case No.4 — Parenthesized Parameter Types
 
@@ -142,9 +182,9 @@ namespace nested_parameter_fixture
 
 The expected outcomes are:
 
-- `nested_type_parameter` preserves ambiguity until lookup establishes that `C` is a type. The standard interpretation is then a parameter of pointer-to-function type, not a parameter named `C` with redundant parentheses.
+- `nested_type_parameter` preserves ambiguity because the standard's pointer-to-function interpretation depends on lookup establishing that `C` is a type. BuiltIn-Cpp does not perform that lookup.
 - `nested_type_parameter_control` has one syntactic interpretation and explicitly spells the selected function-pointer declarator.
-- `nested_array_parameter` preserves ambiguity until `C` is known to be a type. Its selected function parameter is adjusted from `C[10]`.
+- `nested_array_parameter` preserves ambiguity because treating and adjusting `C[10]` as a function parameter depends on `C` being a type.
 
 **Implementation suggestion — Additive:** Add a canonical declarator binding-tree view that represents prefix operators, nested declarators, and function/array suffixes in binding order. Build it from the existing `Declarator` AST once, then run parameter adjustment and `[dcl.ambig.res]` against that view. This avoids teaching individual declaration rules how to reinterpret `int(C)`, `int(*fp)(C)`, and `int *(C[10])` separately without reorganizing the parsed AST.
 
@@ -178,19 +218,19 @@ int(expression3, 5) << value;
 S(s)()->M;
 ```
 
-The final line is an expression even if `M` later resolves to a type, because its outermost declarator candidate does not begin with `auto`.
+The final line is an expression even if `M` denotes a type, because its outermost declarator candidate does not begin with `auto`.
 
 **Implementation suggestion — Additive:** Add the complementary syntax-only filters to the statement-ambiguity pass: member access, postfix operators, comma-expression arguments, and a trailing-return-shaped suffix without leading `auto` eliminate the declaration candidate. Keep the original source/candidate record for diagnostics, but return the one surviving expression statement.
 
 ### Case No.3 — Trailing Return Type Requiring Lookup
 
-**Expected:** Preserve ambiguity until lookup determines whether `M` is a type.
+**Expected:** Preserve ambiguity because determining whether `M` is a type requires lookup, which BuiltIn-Cpp does not perform.
 
 ```C++
 auto(s)()->M;
 ```
 
-**Implementation suggestion — Additive:** Preserve this `StatementToResolve` and attach the same trailing-return lookup reason used for declarations. The resolver should collapse it only after deciding whether `M` is a type; the statement grammar already owns the correct declaration/expression union.
+**Implementation suggestion — Additive:** Preserve this `StatementToResolve` in the final index and attach the same trailing-return lookup reason used for declarations. BuiltIn-Cpp does not collapse it by deciding whether `M` is a type; the statement grammar already owns the correct declaration/expression union.
 
 ## Conditions Forced to Declarations
 
@@ -264,7 +304,7 @@ typeid(T);
 X<T> value;
 ```
 
-**Implementation suggestion — Additive:** Canonicalize candidates that contain the same normalized `QualifiedName` node and source range into one spelling object with deferred semantic roles. The ambiguity layer should distinguish different syntax trees, not duplicate a structurally identical name merely because it can later denote a type or value.
+**Implementation suggestion — Additive:** Canonicalize candidates that contain the same normalized `QualifiedName` node and source range into one spelling object with deferred semantic roles. The ambiguity layer should distinguish different syntax trees, not duplicate a structurally identical name merely because it may denote a type or value.
 
 ## Lookup-Dependent Ambiguities That Must Remain
 
@@ -285,7 +325,7 @@ T(indexed)[5];
 
 `A<B>C;` can be a declaration or a relational-expression statement. The other lines similarly depend on whether `T` denotes a type.
 
-**Implementation suggestion — Additive:** Add an ambiguity-audit pass that records the lookup facts required by each candidate—type-name, template-name, or value-name—without selecting one. It should flatten nested `ToResolve` wrappers and deduplicate equivalent candidates while preserving the declaration/expression alternatives for the symbol-aware resolver.
+**Implementation suggestion — Additive:** Add an ambiguity-audit pass that records the unavailable lookup facts required by each candidate—type-name, template-name, or value-name—without selecting one. It should flatten nested `ToResolve` wrappers, deduplicate equivalent candidates, and publish the declaration/expression alternatives in the final index.
 
 ### Case No.2 — Template-Id or Relational Operators
 
@@ -306,7 +346,7 @@ Name<a < b>;
 A<B>(C);
 ```
 
-**Implementation suggestion — Additive:** Keep all call, binary-expression, and function-type candidates in one local ambiguity node after structural deduplication. The audit pass should verify that each candidate covers the same source range and expose its required lookup facts, leaving selection to later semantic processing.
+**Implementation suggestion — Additive:** Keep all call, binary-expression, and function-type candidates in one local ambiguity node after structural deduplication. The audit pass should verify that each candidate covers the same source range, expose its unavailable lookup facts, and publish the unresolved node without a selection step.
 
 ## AST Reclassification Without Lookup
 
@@ -360,7 +400,7 @@ struct constrained_or_nontype_parameter;
 
 **Implementation suggestion — Structural:** Generalize the generic-parameter AST into ambiguity-enabled parameter kinds sharing one spelling range: type parameter, non-type parameter, constrained type parameter, and constrained placeholder. Add a constraint-prefix rule in `Generic.txt` that reuses `_QualifiedName`/generic arguments and combines with the existing declarator-based non-type parameter path. Preserve both candidates for `C T`; do not decide that `C` is a concept in the grammar.
 
-### Case No.4 — Comma-Less Ellipsis Classification
+### Case No.4 — Comma-Less Ellipsis Classification [WON'T FIX]
 
 ```C++
 template<typename T>
@@ -373,28 +413,28 @@ void known_varargs_parameter(int...);
 void placeholder_pack_parameter(auto...);
 ```
 
-A local binder-aware postpass can classify these without global symbol lookup:
+A binder-aware postpass could classify these by resolving the surrounding parameter declarations:
 
 - `T` is declared as a non-pack, so the first ellipsis is the deprecated C-style varargs suffix.
 - `Types` is a declared type pack, so the second declaration has a function parameter pack.
 - A built-in type cannot be a pack pattern, so `int...` is varargs.
 - A placeholder followed by an ellipsis declares a parameter pack.
 
-**Implementation suggestion — Additive:** Add a binder-local declarator classification pass that records template and abbreviated-function parameters before visiting their function declarators. It can then label an existing ellipsis as pack expansion, pack declaration, or C-style varargs without global lookup. Store the classification on `DeclaratorFunctionPart` rather than creating separate parameter-list grammars.
+**Reason for not fixing:** Even a binder-local pass is symbol resolution, which BuiltIn-Cpp deliberately does not introduce. Keep the ellipsis and its source range in the shared declarator representation as the final index result; neither the syntax nor a mandatory syntax postpass chooses among pack expansion, pack declaration, and C-style varargs.
 
-## Language-Version Ambiguity
+## Language-Version Preference
 
 ### Case No.1 — Multidimensional Subscript or Comma Expression
 
-**Expected:** Preserve the versioned alternatives, or use one lossless index representation that retains the original comma grouping.
+**Expected:** One lossless, new-standard-preferred index representation: an ordered subscript argument list retaining the original source range.
 
 ```C++
 matrix[row, column];
 ```
 
-In C++23 this can be a two-argument subscript. In an earlier edition it can be a single comma-expression index.
+In C++23 this is a two-argument subscript. An earlier edition treats it as a single comma-expression index, but producing both AST candidates would add language-version ambiguity without helping the symbol-blind index.
 
-**Implementation suggestion — Structural:** Change `IndexExpr` in `Ast/Expressions.txt` from one `index` field to an ordered argument list plus enough grouping/source information to reconstruct a legacy comma expression. Update the single `_PostfixUnaryExpr` index rule to parse comma-separated `_Expr_Argument` values and let a version-aware postpass expose either the C++23 multidimensional form or the earlier one-expression view. This keeps one index grammar instead of edition-specific branches.
+**Implementation suggestion — Structural:** Change `IndexExpr` in `Ast/Expressions.txt` from one `index` field to an ordered argument list and retain the complete source range. Update the single `_PostfixUnaryExpr` index rule to parse comma-separated `_Expr_Argument` values. Prefer this C++23 shape for every edition; the same node still indexes every operand in compiler-verified historical source, and no version-aware grammar or postpass is required.
 
 ## Deliberate Practical Over-Acceptance
 
@@ -440,9 +480,9 @@ struct PracticalOperatorNames
 };
 ```
 
-**Implementation suggestion — Structural:** Add a shared `OperatorSpelling` AST/rule family carrying the canonical `Operators` value and original token slice, and let both binary-expression nodes and `_OperatorIdentifier` reference it. Shift spellings can then consume `>` `>` or `<` `<` only where an operator is expected, deliberately ignoring adjacency. Do not combine these tokens globally before parsing, because the same sequence closes nested template argument lists; the shared operator-position rule provides orthogonality without changing valid template parses.
+**Implementation suggestion — Additive:** Extend `_OperatorIdentifier` with the same split `>` `>` and `<` `<` sequences already used by expression rules and map them directly to `Operators::RightShift` and `Operators::LeftShift`. Ignoring adjacency is the deliberate bounded over-acceptance. Keep the tokens separate globally because the same sequence closes nested template arguments; no spelling-provenance AST family is needed for indexing.
 
-### Case No.3 — Longest New-Type-Id Boundary
+### Case No.3 — Longest New-Type-Id Boundary [WON'T FIX]
 
 ```C++
 new int * i;
@@ -450,7 +490,20 @@ new int * i;
 
 The standard consumes `*` as the pointer new-declarator and then rejects the stray `i`; it does not parse `(new int) * i`. Accepting the multiplication-shaped overparse is tolerable under the practical policy because the complete standard input is already invalid.
 
-**Implementation suggestion — Structural:** Replace `_NewExpr`'s `_QualifiedName` plus ad hoc array loop with an orthogonal new-type-id subsystem. Reuse `_TypeBeforeDeclarator`, factor a nameless `_DeclaratorForNewTypeId` from the declarator components with exactly the pointer/member-pointer and array forms allowed after `new`, and store the result as one type/declarator object in `NewExpr`. The new-expression rule should consume the longest legal new-type-id before parsing its initializer. This fixes ordinary `new int`, complex allocated types, and the `new int * i` boundary together instead of adding primitive-type and pointer special cases.
+**Reason for not fixing:** The example is invalid and the accepted multiplication-shaped interpretation cannot misread compiler-verified input. [Complete New-Expression Type Syntax](Cases_17.md#complete-new-expression-type-syntax) separately adds valid allocated types by reusing shared type/declarator components in a new-expression view. That view must not gain extra machinery solely to reject this invalid boundary. Bounded over-acceptance is the intended outcome.
+
+### Case No.4 — Declarator Keywords as Orthogonal Components
+
+**Expected:** Accept both the valid declaration and the deliberately over-accepted alias type.
+
+```C++
+int static * method();
+using X = int static *;
+```
+
+The second declaration is not standard C++, but it is harmless for compiler-verified input and follows from sharing the same declarator combinators everywhere a type is needed.
+
+**Implementation suggestion — Additive:** Preserve `_DeclaratorKeyword` as a shared declarator component before and after the base type, as the current `_Type` and declarator configurations already do. Add regression coverage rather than distributing keyword-order matrices across declarations, type aliases, parameters, and nested declarators. A real compiler remains responsible for rejecting invalid placements.
 
 ## C++26 Reflection Boundary
 
