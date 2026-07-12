@@ -698,7 +698,7 @@ void f()
 
 - A user-generated `static_assert` message is already accepted because `_StaticAssertDecl` permits any `_Expr_NoComma` as its message.
 - The name-independent placeholder `_` is already an ordinary `ID`; its special declaration rules are semantic.
-- The C++26 treatment of a comma-less trailing ellipsis does not add a new accepted spelling. Historical cases remain in `Cpp_Cases_17.md`, and the type-dependent interpretation belongs in `Cpp_Cases_Improvement.cpp`.
+- The C++26 treatment of a comma-less trailing ellipsis does not add a new accepted spelling. The established cases remain in [`Cpp_Cases_17.md`](./Cpp_Cases_17.md), and the type-dependent interpretation belongs in [`Cpp_Cases_Improvement.md`](./Cpp_Cases_Improvement.md).
 - Unevaluated-string changes mostly restrict already broad string acceptance, which does not require work under the practical policy.
 - Trivial unions, constexpr exception handling, constexpr virtual inheritance, observable checkpoints, and most other constexpr changes are semantic.
 - `#embed` and reflection punctuator formation belong in the tokenizer/preprocessor layer.
