@@ -61,7 +61,7 @@ Generated .d.ts files are JSON representation of AST, creating from the parser w
 All inputs will also be copied here, becoming .ts files matching ASTs with AST type definitions.
 Build `REPO-ROOT/Test/TypeScript/package/json` to make sure all generated .d.ts files are valid.
 
-## Linux Specific
+## Linux/macOS Specific
 
 `REPO-ROOT/Test/Linux` stores linux configurations for:
 - `BuiltInTest_Json`: `BuiltInTest_Json.vcxproj`.
