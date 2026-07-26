@@ -136,9 +136,9 @@ int main(int argc, char* argv[])
 		}
 	}
 	if (runBeforeTests) runBeforeTests();
-	int result = unittest::UnitTest::RunAndDisposeTests(argc, argv);
+	int result = vl::unittest::UnitTest::RunAndDisposeTests(argc, argv);
 	if (runAfterTests) runAfterTests();
 	FinalizeGlobalStorage();
-	unittest::UnitTest::DumpMemoryLeak(argc, argv);
+	vl::unittest::UnitTest::DumpMemoryLeak(argc, argv);
 	return result;
 }
