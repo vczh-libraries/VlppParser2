@@ -8,6 +8,11 @@ Treat these documents as semantic companions to the code. When a related code ch
 
 # General Instruction
 
+## Maintaining Tools
+
+- If the behavior of `REPO-ROOT/Tools/GlrParserGen` changes, update `REPO-ROOT/.github/KnowledgeBase/KB_VlppParser2_Design_GlrParserGen.md`.
+- If the behavior of `REPO-ROOT/Tools/CodePack` changes, update `REPO-ROOT/.github/KnowledgeBase/KB_VlppParser2_Design_CodePack.md`.
+
 ## Solution to Work On
 
 You are working on the solution `REPO-ROOT/Test/UnitTest/UnitTest.sln`,
