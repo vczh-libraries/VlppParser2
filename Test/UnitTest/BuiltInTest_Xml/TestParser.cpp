@@ -10,6 +10,7 @@ extern FilePath GetOutputDir(const WString& parserName);
 TEST_FILE
 {
 	xml::Parser parser;
+	json::Parser jsonParser;
 	WString caseName;
 
 #if !defined _DEBUG || defined NDEBUG
@@ -78,6 +79,7 @@ TEST_FILE
 				});
 				auto ast = parser.ParseXDocument(inputXml);
 				auto astJson = PrintAstJson<json_visitor::AstVisitor>(ast);
+				AssertAstJsonRoundtrip<json_visitor::AstVisitor, json_reader::AstVisitor>(ast, astJson, jsonParser);
 				File(dirOutput / (L"Output[DarkSkin_" + caseName + L"].json")).WriteAllText(astJson, true, BomEncoder::Utf8);
 			});
 		}

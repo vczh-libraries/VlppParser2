@@ -87,6 +87,7 @@ TEST_FILE
 					});
 					auto ast = parser.ParseJRoot(baselineJson);
 					auto astJson = PrintAstJson<json_visitor::AstVisitor>(ast);
+					AssertAstJsonRoundtrip<json_visitor::AstVisitor, json_reader::AstVisitor>(ast, astJson, parser);
 					File(dirOutput / (L"Output[" + parserName + L"_" + caseName + L"].json")).WriteAllText(astJson, true, BomEncoder::Utf8);
 				});
 			}

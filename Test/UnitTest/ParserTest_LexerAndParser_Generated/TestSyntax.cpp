@@ -105,6 +105,12 @@ namespace TestSyntax_TestObjects
 		return astModule;
 	}
 
+	Ptr<ParsingAstBase> ReadCalculatorAstJson(const WString& input, const json::Parser& parser)
+	{
+		auto jsonObject = json::JsonParse(input, parser).Cast<json::JsonObject>();
+		return json_reader::ExprAstVisitor().ReadJson(jsonObject.Obj());
+	}
+
 	class CalculatorInspectTokenVisitor : public traverse_visitor::ExprAstVisitor
 	{
 	public:
@@ -142,6 +148,7 @@ using namespace TestSyntax_TestObjects;
 
 TEST_FILE
 {
+	json::Parser jsonParser;
 	ParserSymbolManager global;
 	AstSymbolManager astManager(global);
 	SyntaxSymbolManager syntaxManager(global);
@@ -251,6 +258,12 @@ export abs((sin(x) + cos(y)))
 			AssertAst<json_visitor::ExprAstVisitor>(ast, output);
 		});
 
+		TEST_CASE(L"Test json_reader::ExprAstVisitor")
+		{
+			auto astJson = PrintAstJson<json_visitor::ExprAstVisitor>(ast);
+			AssertAstJsonRoundtrip<json_visitor::ExprAstVisitor, json_reader::ExprAstVisitor>(ast, astJson, jsonParser);
+		});
+
 		TEST_CASE(L"Test copy_visitor::ExprAstVisitor")
 		{
 			auto copiedAst = copy_visitor::ExprAstVisitor().CopyNode(ast.Obj());
@@ -304,6 +317,86 @@ export abs((sin(x) + cos(y)))
 			expected.Add(L"abs((sin(x) + cos(y)))");
 
 			TEST_ASSERT(CompareEnumerable(expected, visitor.visitorExprs) == 0);
+		});
+	});
+
+	TEST_CATEGORY(L"Test Generated JSON Reader")
+	{
+		TEST_CASE(L"Read all field kinds and defaults")
+		{
+			auto module = ReadCalculatorAstJson(LR"({
+  "$ast": "Module",
+  "imports": [{
+    "$ast": "Import",
+    "name": "system"
+  }, null],
+  "exported": {
+    "$ast": "Unary",
+    "expanded": null,
+    "op": "Negative",
+    "operand": {
+      "$ast": "NumExpr",
+      "value": "42"
+    }
+  }
+})", jsonParser).Cast<Module>();
+			TEST_ASSERT(module);
+			TEST_ASSERT(module->imports.Count() == 2);
+			TEST_ASSERT(module->imports[0]->name.value == L"system");
+			TEST_ASSERT(!module->imports[1]);
+			auto unary = module->exported.Cast<Unary>();
+			TEST_ASSERT(unary);
+			TEST_ASSERT(!unary->expanded);
+			TEST_ASSERT(unary->op == UnaryOp::Negative);
+			TEST_ASSERT(unary->operand.Cast<NumExpr>()->value.value == L"42");
+
+			auto defaultUnary = ReadCalculatorAstJson(LR"({"$ast":"Unary"})", jsonParser).Cast<Unary>();
+			TEST_ASSERT(defaultUnary);
+			TEST_ASSERT(defaultUnary->op == UnaryOp::Positive);
+			TEST_ASSERT(!defaultUnary->expanded);
+			TEST_ASSERT(!defaultUnary->operand);
+
+			auto defaultNumber = ReadCalculatorAstJson(LR"({"$ast":"NumExpr"})", jsonParser).Cast<NumExpr>();
+			TEST_ASSERT(defaultNumber);
+			TEST_ASSERT(defaultNumber->value.value == L"");
+
+			auto defaultModule = ReadCalculatorAstJson(LR"({"$ast":"Module"})", jsonParser).Cast<Module>();
+			TEST_ASSERT(defaultModule);
+			TEST_ASSERT(defaultModule->imports.Count() == 0);
+			TEST_ASSERT(!defaultModule->exported);
+
+			auto arg = ReadCalculatorAstJson(LR"({"$ast":"Arg","name":"x"})", jsonParser).Cast<Arg>();
+			TEST_ASSERT(arg);
+			TEST_ASSERT(arg->name.value == L"x");
+		});
+
+		TEST_CASE(L"Reject malformed AST JSON")
+		{
+			TEST_EXCEPTION(json_reader::ExprAstVisitor().ReadJson(nullptr), Exception, [](const Exception&) {});
+
+			const wchar_t* invalidInputs[] =
+			{
+				LR"([])",
+				LR"({})",
+				LR"({"$ast":"NumExpr","$ast":"NumExpr"})",
+				LR"({"$ast":1})",
+				LR"({"$ast":"Unknown"})",
+				LR"({"$ast":"Expr"})",
+				LR"({"$ast":"NumExpr","unknown":1})",
+				LR"({"$ast":"NumExpr","value":"1","value":"2"})",
+				LR"({"$ast":"NumExpr","value":1})",
+				LR"({"$ast":"Unary","op":1})",
+				LR"({"$ast":"Unary","op":"Unknown"})",
+				LR"({"$ast":"Unary","operand":"1"})",
+				LR"({"$ast":"Unary","operand":{"$ast":"Module"}})",
+				LR"({"$ast":"Module","imports":{}})",
+				LR"({"$ast":"Module","imports":[1]})",
+				LR"({"$ast":"Module","imports":[{"$ast":"NumExpr"}]})",
+			};
+			for (auto input : invalidInputs)
+			{
+				TEST_EXCEPTION(ReadCalculatorAstJson(WString::Unmanaged(input), jsonParser), Exception, [](const Exception&) {});
+			}
 		});
 	});
 

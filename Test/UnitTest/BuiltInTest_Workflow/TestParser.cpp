@@ -17,6 +17,7 @@ TEST_FILE
 	Folder(dirWorkflow).GetFiles(indexFiles);
 
 	workflow::Parser parser;
+	json::Parser jsonParser;
 	Regex regexCaseName(L"^(-)?(<name>/w+)(@/d+)?(/=/.*)?$");
 	vint NAME = regexCaseName.CaptureNames().IndexOf(L"name");
 
@@ -97,24 +98,28 @@ TEST_FILE
 					{
 						auto ast = parser.Parse_Declaration(inputCode);
 						auto astJson = PrintAstJson<json_visitor::AstVisitor>(ast);
+						AssertAstJsonRoundtrip<json_visitor::AstVisitor, json_reader::AstVisitor>(ast, astJson, jsonParser);
 						File(dirOutput / (L"Output[" + indexName + L"_" + caseName + L"].json")).WriteAllText(astJson, true, BomEncoder::Utf8);
 					}
 					else if (indexName == L"Expression")
 					{
 						auto ast = parser.Parse_Expression(inputCode);
 						auto astJson = PrintAstJson<json_visitor::AstVisitor>(ast);
+						AssertAstJsonRoundtrip<json_visitor::AstVisitor, json_reader::AstVisitor>(ast, astJson, jsonParser);
 						File(dirOutput / (L"Output[" + indexName + L"_" + caseName + L"].json")).WriteAllText(astJson, true, BomEncoder::Utf8);
 					}
 					else if (indexName == L"Statement")
 					{
 						auto ast = parser.Parse_Statement(inputCode);
 						auto astJson = PrintAstJson<json_visitor::AstVisitor>(ast);
+						AssertAstJsonRoundtrip<json_visitor::AstVisitor, json_reader::AstVisitor>(ast, astJson, jsonParser);
 						File(dirOutput / (L"Output[" + indexName + L"_" + caseName + L"].json")).WriteAllText(astJson, true, BomEncoder::Utf8);
 					}
 					else
 					{
 						auto ast = parser.Parse_Module(inputCode);
 						auto astJson = PrintAstJson<json_visitor::AstVisitor>(ast);
+						AssertAstJsonRoundtrip<json_visitor::AstVisitor, json_reader::AstVisitor>(ast, astJson, jsonParser);
 						File(dirOutput / (L"Output[" + indexName + L"_" + caseName + L"].json")).WriteAllText(astJson, true, BomEncoder::Utf8);
 					}
 				});

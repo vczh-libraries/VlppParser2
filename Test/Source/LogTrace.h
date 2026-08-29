@@ -3,6 +3,7 @@
 
 #include "../../Source/SyntaxBase.h"
 #include "../../Source/TraceManager/TraceManager.h"
+#include "../../Source/Json/GlrJson.h"
 
 using namespace vl;
 using namespace vl::collections;
@@ -88,6 +89,17 @@ inline void AssertLines(const WString& expectedString, const WString& actualStri
 		auto sa = actual[i];
 		TEST_ASSERT(se == sa);
 	}
+}
+
+template<typename TJsonVisitor, typename TJsonReader, typename T>
+void AssertAstJsonRoundtrip(Ptr<T> ast, const WString& astJson, const json::Parser& parser)
+{
+	auto jsonObject = json::JsonParse(astJson, parser).Cast<json::JsonObject>();
+	TEST_ASSERT(jsonObject);
+	auto restoredAst = TJsonReader().ReadJson(jsonObject.Obj()).template Cast<T>();
+	TEST_ASSERT(restoredAst);
+	auto restoredJson = PrintAstJson<TJsonVisitor>(restoredAst);
+	AssertLines(astJson, restoredJson);
 }
 
 template<typename TVisitor, typename T>

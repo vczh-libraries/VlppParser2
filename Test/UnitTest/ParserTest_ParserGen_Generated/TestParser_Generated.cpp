@@ -97,10 +97,12 @@ namespace TestParser_Generated_TestObjects
 
 	template<
 		typename TParser,
-		typename TJsonVisitor
+		typename TJsonVisitor,
+		typename TJsonReader
 	>
 		void RunParserSingleTestFolder(
 			TParser& parser,
+			const json::Parser& jsonParser,
 			const WString& parserName,
 			const WString& testFolder,
 			WString& displayCaseName,
@@ -144,6 +146,7 @@ namespace TestParser_Generated_TestObjects
 					parsedSuccessfully++;
 
 					auto actualJson = PrintAstJson<TJsonVisitor>(ast);
+					AssertAstJsonRoundtrip<TJsonVisitor, TJsonReader>(ast, actualJson, jsonParser);
 					File(dirOutput / (L"Output[" + caseName + L"]" + caseModule + L".json")).WriteAllText(actualJson, true, BomEncoder::Utf8);
 
 					File expectedJsonFile;
@@ -242,10 +245,12 @@ namespace TestParser_Generated_TestObjects
 
 	template<
 		typename TParser,
-		typename TJsonVisitor
+		typename TJsonVisitor,
+		typename TJsonReader
 	>
 		void RunParser(
 			TParser& parser,
+			const json::Parser& jsonParser,
 			const WString& parserName,
 			WString& displayCaseName,
 			const Array<WString>& testFolders
@@ -256,7 +261,7 @@ namespace TestParser_Generated_TestObjects
 			FilePath dirOutput = GetOutputDir(L"Generated-" + parserName);
 			if (testFolders.Count() == 0)
 			{
-				RunParserSingleTestFolder<TParser, TJsonVisitor>(parser, parserName, parserName, displayCaseName, dirOutput);
+				RunParserSingleTestFolder<TParser, TJsonVisitor, TJsonReader>(parser, jsonParser, parserName, parserName, displayCaseName, dirOutput);
 			}
 			else
 			{
@@ -264,7 +269,7 @@ namespace TestParser_Generated_TestObjects
 				{
 					TEST_CATEGORY(testFolder)
 					{
-						RunParserSingleTestFolder<TParser, TJsonVisitor>(parser, parserName, testFolder, displayCaseName, dirOutput);
+						RunParserSingleTestFolder<TParser, TJsonVisitor, TJsonReader>(parser, jsonParser, parserName, testFolder, displayCaseName, dirOutput);
 					});
 				}
 			}
@@ -274,12 +279,14 @@ namespace TestParser_Generated_TestObjects
 	template<
 		typename TParser,
 		typename TJsonVisitor,
+		typename TJsonReader,
 		typename TClasses,
 		typename TFields,
 		typename TTokens,
 		typename ...TTestFolders
 		>
 	void TestParser(
+		const json::Parser& jsonParser,
 		const wchar_t* parserNameRaw,
 		const wchar_t* (*typeName)(TClasses),
 		const wchar_t* (*fieldName)(TFields),
@@ -347,16 +354,18 @@ namespace TestParser_Generated_TestObjects
 				testFolderArray[i] =  WString::Unmanaged(testFolderRawArray[i]);
 			}
 		}
-		RunParser<TParser, TJsonVisitor>(parser, parserName, displayCaseName, testFolderArray);
+		RunParser<TParser, TJsonVisitor, TJsonReader>(parser, jsonParser, parserName, displayCaseName, testFolderArray);
 	}
 }
 using namespace TestParser_Generated_TestObjects;
 
 TEST_FILE
 {
+	json::Parser jsonParser;
 
 #define ENABLE_PARSER(UPPERCASE, LOWERCASE, VISITOR, ...)													\
-	TestParser<LOWERCASE::ModuleParser, LOWERCASE::json_visitor::VISITOR##Visitor>(							\
+	TestParser<LOWERCASE::ModuleParser, LOWERCASE::json_visitor::VISITOR##Visitor, LOWERCASE::json_reader::VISITOR##Visitor>(\
+		jsonParser,																							\
 		L ## #UPPERCASE,																					\
 		&LOWERCASE::UPPERCASE##TypeName,																	\
 		&LOWERCASE::UPPERCASE##FieldName,																	\
@@ -367,7 +376,8 @@ TEST_FILE
 		)																									\
 
 #define ENABLE_FEATURE(UPPERCASE, LOWERCASE)																\
-	TestParser<feature_##LOWERCASE::ModuleParser, feature_##LOWERCASE::json_visitor::FeatureAstVisitor>(	\
+	TestParser<feature_##LOWERCASE::ModuleParser, feature_##LOWERCASE::json_visitor::FeatureAstVisitor, feature_##LOWERCASE::json_reader::FeatureAstVisitor>(\
+		jsonParser,																							\
 		L"Feature_" L ## #UPPERCASE,																		\
 		&feature_##LOWERCASE::Feature_##UPPERCASE##TypeName,												\
 		&feature_##LOWERCASE::Feature_##UPPERCASE##FieldName,												\

@@ -2,6 +2,7 @@
 
 TEST_FILE
 {
+	json::Parser jsonParser;
 	WString indexName;
 	WString caseName;
 	FilePath dirOutput = GetOutputDir(L"BuiltIn-Cpp");
@@ -61,7 +62,9 @@ TEST_FILE
 		auto ast = parse();
 		auto astJson = PrintAstJson<json_visitor::AstVisitor>(ast);
 		File(dirOutput / (L"Output[" + indexName + L"_" + caseName + L"].json")).WriteAllText(astJson, true, BomEncoder::Utf8);
-		TEST_ASSERT(ast.Cast<T>());
+		auto typedAst = ast.template Cast<T>();
+		TEST_ASSERT(typedAst);
+		AssertAstJsonRoundtrip<json_visitor::AstVisitor, json_reader::AstVisitor>(typedAst, astJson, jsonParser);
 	};
 
 	TEST_CASE(L"true")
